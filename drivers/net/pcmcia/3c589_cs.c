@@ -1,8 +1,8 @@
-multiline_comment|/*======================================================================&n;&n;    A PCMCIA ethernet driver for the 3com 3c589 card.&n;    &n;    Copyright (C) 1999 David A. Hinds -- dahinds@users.sourceforge.net&n;&n;    3c589_cs.c 1.162 2001/10/13 00:08:50&n;&n;    The network driver code is based on Donald Becker&squot;s 3c589 code:&n;    &n;    Written 1994 by Donald Becker.&n;    Copyright 1993 United States Government as represented by the&n;    Director, National Security Agency.  This software may be used and&n;    distributed according to the terms of the GNU General Public License,&n;    incorporated herein by reference.&n;    Donald Becker may be reached at becker@scyld.com&n;&n;======================================================================*/
+multiline_comment|/*======================================================================&n;&n;    A PCMCIA ethernet driver for the 3com 3c589 card.&n;    &n;    Copyright (C) 1999 David A. Hinds -- dahinds@users.sourceforge.net&n;&n;    3c589_cs.c 1.162 2001/10/13 00:08:50&n;&n;    The network driver code is based on Donald Becker&squot;s 3c589 code:&n;    &n;    Written 1994 by Donald Becker.&n;    Copyright 1993 United States Government as represented by the&n;    Director, National Security Agency.  This software may be used and&n;    distributed according to the terms of the GNU General Public License,&n;    incorporated herein by reference.&n;    Donald Becker may be reached at becker@scyld.com&n;    &n;    Updated for 2.5.x by Alan Cox &lt;alan@redhat.com&gt;&n;&n;======================================================================*/
 DECL|macro|DRV_NAME
 mdefine_line|#define DRV_NAME&t;&quot;3c589_cs&quot;
 DECL|macro|DRV_VERSION
-mdefine_line|#define DRV_VERSION&t;&quot;1.162&quot;
+mdefine_line|#define DRV_VERSION&t;&quot;1.162-ac&quot;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -328,16 +328,21 @@ id|timer_list
 id|media
 suffix:semicolon
 DECL|member|media_status
-id|u_short
+id|u16
 id|media_status
 suffix:semicolon
 DECL|member|fast_poll
-id|u_short
+id|u16
 id|fast_poll
 suffix:semicolon
 DECL|member|last_irq
-id|u_long
+r_int
+r_int
 id|last_irq
+suffix:semicolon
+DECL|member|lock
+id|spinlock_t
+id|lock
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -462,7 +467,8 @@ r_void
 id|tc589_release
 c_func
 (paren
-id|u_long
+r_int
+r_int
 id|arg
 )paren
 suffix:semicolon
@@ -483,7 +489,7 @@ id|args
 )paren
 suffix:semicolon
 r_static
-id|u_short
+id|u16
 id|read_eeprom
 c_func
 (paren
@@ -510,7 +516,8 @@ r_void
 id|media_check
 c_func
 (paren
-id|u_long
+r_int
+r_int
 id|arg
 )paren
 suffix:semicolon
@@ -864,6 +871,13 @@ id|lp
 )paren
 )paren
 suffix:semicolon
+id|spin_lock_init
+c_func
+(paren
+op_amp
+id|lp-&gt;lock
+)paren
+suffix:semicolon
 id|link
 op_assign
 op_amp
@@ -890,7 +904,8 @@ suffix:semicolon
 id|link-&gt;release.data
 op_assign
 (paren
-id|u_long
+r_int
+r_int
 )paren
 id|link
 suffix:semicolon
@@ -1199,7 +1214,7 @@ l_int|NULL
 )paren
 r_return
 suffix:semicolon
-id|del_timer
+id|del_timer_sync
 c_func
 (paren
 op_amp
@@ -1218,7 +1233,8 @@ id|tc589_release
 c_func
 (paren
 (paren
-id|u_long
+r_int
+r_int
 )paren
 id|link
 )paren
@@ -1318,7 +1334,7 @@ suffix:semicolon
 id|cisparse_t
 id|parse
 suffix:semicolon
-id|u_short
+id|u16
 id|buf
 (braket
 l_int|32
@@ -1372,7 +1388,7 @@ suffix:semicolon
 id|phys_addr
 op_assign
 (paren
-id|u_short
+id|u16
 op_star
 )paren
 id|dev-&gt;dev_addr
@@ -1669,7 +1685,7 @@ l_int|0
 id|printk
 c_func
 (paren
-id|KERN_NOTICE
+id|KERN_ERR
 l_string|&quot;3c589_cs: register_netdev() failed&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -1796,7 +1812,7 @@ l_int|0x6060
 id|printk
 c_func
 (paren
-id|KERN_NOTICE
+id|KERN_ERR
 l_string|&quot;3c589_cs: IO port conflict at 0x%03lx&quot;
 l_string|&quot;-0x%03lx&bslash;n&quot;
 comma
@@ -1865,7 +1881,7 @@ r_else
 id|printk
 c_func
 (paren
-id|KERN_NOTICE
+id|KERN_ERR
 l_string|&quot;3c589_cs: invalid if_port requested&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -1991,7 +2007,8 @@ id|tc589_release
 c_func
 (paren
 (paren
-id|u_long
+r_int
+r_int
 )paren
 id|link
 )paren
@@ -2007,7 +2024,8 @@ r_void
 id|tc589_release
 c_func
 (paren
-id|u_long
+r_int
+r_int
 id|arg
 )paren
 (brace
@@ -2369,7 +2387,7 @@ l_int|0
 id|printk
 c_func
 (paren
-id|KERN_NOTICE
+id|KERN_WARNING
 l_string|&quot;%s: command 0x%04x did not complete!&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -2381,7 +2399,7 @@ suffix:semicolon
 multiline_comment|/*&n;  Read a word from the EEPROM using the regular EEPROM access register.&n;  Assume that we are in register window zero.&n;*/
 DECL|function|read_eeprom
 r_static
-id|u_short
+id|u16
 id|read_eeprom
 c_func
 (paren
@@ -3425,7 +3443,8 @@ suffix:semicolon
 id|lp-&gt;media.data
 op_assign
 (paren
-id|u_long
+r_int
+r_int
 )paren
 id|lp
 suffix:semicolon
@@ -3496,7 +3515,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-id|KERN_NOTICE
+id|KERN_WARNING
 l_string|&quot;%s: Transmit timed out!&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -3907,6 +3926,13 @@ id|EL3_STATUS
 )paren
 )paren
 suffix:semicolon
+id|spin_lock
+c_func
+(paren
+op_amp
+id|lp-&gt;lock
+)paren
+suffix:semicolon
 r_while
 c_loop
 (paren
@@ -4120,7 +4146,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-id|KERN_NOTICE
+id|KERN_WARNING
 l_string|&quot;%s: adapter failure, FIFO diagnostic&quot;
 l_string|&quot; register %04x.&bslash;n&quot;
 comma
@@ -4217,7 +4243,7 @@ l_int|10
 id|printk
 c_func
 (paren
-id|KERN_NOTICE
+id|KERN_ERR
 l_string|&quot;%s: infinite loop in interrupt, &quot;
 l_string|&quot;status %4.4x.&bslash;n&quot;
 comma
@@ -4262,6 +4288,13 @@ id|lp-&gt;last_irq
 op_assign
 id|jiffies
 suffix:semicolon
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|lp-&gt;lock
+)paren
+suffix:semicolon
 id|DEBUG
 c_func
 (paren
@@ -4289,7 +4322,8 @@ r_void
 id|media_check
 c_func
 (paren
-id|u_long
+r_int
+r_int
 id|arg
 )paren
 (brace
@@ -4320,12 +4354,13 @@ id|ioaddr
 op_assign
 id|dev-&gt;base_addr
 suffix:semicolon
-id|u_short
+id|u16
 id|media
 comma
 id|errs
 suffix:semicolon
-id|u_long
+r_int
+r_int
 id|flags
 suffix:semicolon
 r_if
@@ -4385,7 +4420,7 @@ id|lp-&gt;fast_poll
 id|printk
 c_func
 (paren
-id|KERN_INFO
+id|KERN_WARNING
 l_string|&quot;%s: interrupt(s) dropped!&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -4431,15 +4466,14 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-id|save_flags
+multiline_comment|/* lp-&gt;lock guards the EL3 window. Window should always be 1 except&n;       when the lock is held */
+id|spin_lock_irqsave
 c_func
 (paren
+op_amp
+id|lp-&gt;lock
+comma
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 id|EL3WINDOW
@@ -4716,9 +4750,12 @@ c_func
 l_int|1
 )paren
 suffix:semicolon
-id|restore_flags
+id|spin_unlock_irqrestore
 c_func
 (paren
+op_amp
+id|lp-&gt;lock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -4785,15 +4822,13 @@ id|link
 )paren
 )paren
 (brace
-id|save_flags
+id|spin_lock_irqsave
 c_func
 (paren
+op_amp
+id|lp-&gt;lock
+comma
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 id|update_stats
@@ -4802,9 +4837,12 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-id|restore_flags
+id|spin_unlock_irqrestore
 c_func
 (paren
+op_amp
+id|lp-&gt;lock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -4814,7 +4852,7 @@ op_amp
 id|lp-&gt;stats
 suffix:semicolon
 )brace
-multiline_comment|/*&n;  Update statistics.  We change to register window 6, so this should be run&n;  single-threaded if the device is active. This is expected to be a rare&n;  operation, and it&squot;s simpler for the rest of the driver to assume that&n;  window 1 is always valid rather than use a special window-state variable.&n;*/
+multiline_comment|/*&n;  Update statistics.  We change to register window 6, so this should be run&n;  single-threaded if the device is active. This is expected to be a rare&n;  operation, and it&squot;s simpler for the rest of the driver to assume that&n;  window 1 is always valid rather than use a special window-state variable.&n;  &n;  Caller must hold the lock for this&n;*/
 DECL|function|update_stats
 r_static
 r_void
@@ -5309,7 +5347,7 @@ l_int|0
 id|printk
 c_func
 (paren
-id|KERN_NOTICE
+id|KERN_WARNING
 l_string|&quot;%s: too much work in el3_rx!&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -5350,7 +5388,7 @@ id|ioaddr
 op_assign
 id|dev-&gt;base_addr
 suffix:semicolon
-id|u_short
+id|u16
 id|opts
 op_assign
 id|SetRxFilter
@@ -5593,7 +5631,7 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-id|del_timer
+id|del_timer_sync
 c_func
 (paren
 op_amp
@@ -5670,9 +5708,8 @@ id|CS_RELEASE_CODE
 id|printk
 c_func
 (paren
-id|KERN_NOTICE
-l_string|&quot;3c589_cs: Card Services release &quot;
-l_string|&quot;does not match!&bslash;n&quot;
+id|KERN_ERR
+l_string|&quot;3c589_cs: Card Services release does not match!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return

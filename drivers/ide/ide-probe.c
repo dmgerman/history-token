@@ -576,6 +576,10 @@ id|printk
 l_string|&quot;FLOPPY&quot;
 )paren
 suffix:semicolon
+id|drive-&gt;removable
+op_assign
+l_int|1
+suffix:semicolon
 r_break
 suffix:semicolon
 )brace

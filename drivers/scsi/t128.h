@@ -46,6 +46,7 @@ mdefine_line|#define T_5380_OFFSET&t;&t;0x1d00&t;/* 8 registers here, see NCR538
 DECL|macro|T_DATA_REG_OFFSET
 mdefine_line|#define T_DATA_REG_OFFSET&t;0x1e00&t;/* rw 512 bytes long */
 macro_line|#ifndef ASM
+r_static
 r_int
 id|t128_abort
 c_func
@@ -54,6 +55,7 @@ id|Scsi_Cmnd
 op_star
 )paren
 suffix:semicolon
+r_static
 r_int
 id|t128_biosparam
 c_func
@@ -69,6 +71,7 @@ r_int
 op_star
 )paren
 suffix:semicolon
+r_static
 r_int
 id|t128_detect
 c_func
@@ -77,6 +80,7 @@ id|Scsi_Host_Template
 op_star
 )paren
 suffix:semicolon
+r_static
 r_int
 id|t128_queue_command
 c_func
@@ -95,6 +99,7 @@ op_star
 )paren
 )paren
 suffix:semicolon
+r_static
 r_int
 id|t128_host_reset
 c_func
@@ -103,6 +108,7 @@ id|Scsi_Cmnd
 op_star
 )paren
 suffix:semicolon
+r_static
 r_int
 id|t128_bus_reset
 c_func
@@ -111,6 +117,7 @@ id|Scsi_Cmnd
 op_star
 )paren
 suffix:semicolon
+r_static
 r_int
 id|t128_device_reset
 c_func
@@ -119,6 +126,7 @@ id|Scsi_Cmnd
 op_star
 )paren
 suffix:semicolon
+r_static
 r_int
 id|t128_proc_info
 (paren
@@ -188,7 +196,7 @@ mdefine_line|#define NCR5380_queue_command t128_queue_command
 DECL|macro|NCR5380_abort
 mdefine_line|#define NCR5380_abort t128_abort
 DECL|macro|NCR5380_host_reset
-mdefine_line|#define NCR5380_host_reset t128_hostreset
+mdefine_line|#define NCR5380_host_reset t128_host_reset
 DECL|macro|NCR5380_device_reset
 mdefine_line|#define NCR5380_device_reset t128_device_reset
 DECL|macro|NCR5380_bus_reset

@@ -1,5 +1,5 @@
 multiline_comment|/*----------------------------------------------------------------*/
-multiline_comment|/*&n;   Qlogic linux driver - work in progress. No Warranty express or implied.&n;   Use at your own risk.  Support Tort Reform so you won&squot;t have to read all&n;   these silly disclaimers.&n;&n;   Copyright 1994, Tom Zerucha.   &n;   tz@execpc.com&n;   &n;   Additional Code, and much appreciated help by&n;   Michael A. Griffith&n;   grif@cs.ucr.edu&n;&n;   Thanks to Eric Youngdale and Dave Hinds for loadable module and PCMCIA&n;   help respectively, and for suffering through my foolishness during the&n;   debugging process.&n;&n;   Reference Qlogic FAS408 Technical Manual, 53408-510-00A, May 10, 1994&n;   (you can reference it, but it is incomplete and inaccurate in places)&n;&n;   Version 0.46 1/30/97 - kernel 1.2.0+&n;&n;   Functions as standalone, loadable, and PCMCIA driver, the latter from&n;   Dave Hinds&squot; PCMCIA package.&n;&n;   Redistributable under terms of the GNU General Public License&n;&n;*/
+multiline_comment|/*&n;   Qlogic linux driver - work in progress. No Warranty express or implied.&n;   Use at your own risk.  Support Tort Reform so you won&squot;t have to read all&n;   these silly disclaimers.&n;&n;   Copyright 1994, Tom Zerucha.   &n;   tz@execpc.com&n;   &n;   Additional Code, and much appreciated help by&n;   Michael A. Griffith&n;   grif@cs.ucr.edu&n;&n;   Thanks to Eric Youngdale and Dave Hinds for loadable module and PCMCIA&n;   help respectively, and for suffering through my foolishness during the&n;   debugging process.&n;&n;   Reference Qlogic FAS408 Technical Manual, 53408-510-00A, May 10, 1994&n;   (you can reference it, but it is incomplete and inaccurate in places)&n;&n;   Version 0.46 1/30/97 - kernel 1.2.0+&n;&n;   Functions as standalone, loadable, and PCMCIA driver, the latter from&n;   Dave Hinds&squot; PCMCIA package.&n;   &n;   Cleaned up 26/10/2002 by Alan Cox &lt;alan@redhat.com&gt; as part of the 2.5&n;   SCSI driver cleanup and audit. This driver still needs work on the&n;   following&n;   &t;-&t;Non terminating hardware waits&n;   &t;-&t;Support multiple cards at a time&n;   &t;-&t;Some layering violations with its pcmcia stub&n;&n;   Redistributable under terms of the GNU General Public License&n;&n;   For the avoidance of doubt the &quot;preferred form&quot; of this code is one which&n;   is in an open non patent encumbered format. Where cryptographic key signing&n;   forms part of the process of creating an executable the information&n;   including keys needed to generate an equivalently functional executable&n;   are deemed to be part of the source code.&n;&n;*/
 multiline_comment|/*----------------------------------------------------------------*/
 multiline_comment|/* Configuration */
 multiline_comment|/* Set the following to 2 to use normal interrupt (active high/totempole-&n;   tristate), otherwise use 0 (REQUIRED FOR PCMCIA) for active low, open&n;   drain */
@@ -36,14 +36,12 @@ DECL|macro|FASTSCSI
 mdefine_line|#define FASTSCSI 0
 multiline_comment|/* This when set to 1 will set a faster sync transfer rate */
 DECL|macro|FASTCLK
-mdefine_line|#define FASTCLK 0
-multiline_comment|/*(XTALFREQ&gt;25?1:0)*/
+mdefine_line|#define FASTCLK 0&t;/*(XTALFREQ&gt;25?1:0)*/
 multiline_comment|/*****/
 multiline_comment|/* offset 6 */
 multiline_comment|/* This is the sync transfer divisor, XTALFREQ/X will be the maximum&n;   achievable data rate (assuming the rest of the system is capable&n;   and set properly) */
 DECL|macro|SYNCXFRPD
-mdefine_line|#define SYNCXFRPD 5
-multiline_comment|/*(XTALFREQ/5)*/
+mdefine_line|#define SYNCXFRPD 5&t;/*(XTALFREQ/5)*/
 multiline_comment|/*****/
 multiline_comment|/* offset 7 */
 multiline_comment|/* This is the count of how many synchronous transfers can take place&n;&t;i.e. how many reqs can occur before an ack is given.&n;&t;The maximum value for this is 15, the upper bits can modify&n;&t;REQ/ACK assertion and deassertion during synchronous transfers&n;&t;If this is 0, the bus will only transfer asynchronously */
@@ -56,13 +54,13 @@ DECL|macro|QL_INT_ACTIVE_HIGH
 macro_line|#undef QL_INT_ACTIVE_HIGH
 DECL|macro|QL_INT_ACTIVE_HIGH
 mdefine_line|#define QL_INT_ACTIVE_HIGH 0
-macro_line|#endif 
+macro_line|#endif
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#ifdef PCMCIA
 DECL|macro|MODULE
 macro_line|#undef MODULE
-macro_line|#endif 
-macro_line|#include &lt;linux/blk.h&gt;&t;/* to get disk capacity */
+macro_line|#endif
+macro_line|#include &lt;linux/blk.h&gt;&t;&t;/* to get disk capacity */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -217,6 +215,8 @@ macro_line|#endif
 multiline_comment|/*----------------------------------------------------------------*/
 multiline_comment|/* local functions */
 multiline_comment|/*----------------------------------------------------------------*/
+multiline_comment|/* error recovery - reset everything */
+DECL|function|ql_zap
 r_static
 r_void
 id|ql_zap
@@ -224,32 +224,9 @@ c_func
 (paren
 r_void
 )paren
-suffix:semicolon
-multiline_comment|/* error recovery - reset everything */
-DECL|function|ql_zap
-r_void
-id|ql_zap
-c_func
-(paren
-)paren
 (brace
 r_int
 id|x
-suffix:semicolon
-r_int
-r_int
-id|flags
-suffix:semicolon
-id|save_flags
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
-)paren
 suffix:semicolon
 id|x
 op_assign
@@ -294,15 +271,8 @@ l_int|0x80
 )paren
 id|REG1
 suffix:semicolon
-id|restore_flags
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
 )brace
-multiline_comment|/*----------------------------------------------------------------*/
-multiline_comment|/* do pseudo-dma */
+multiline_comment|/*&n; *&t;Do a pseudo-dma tranfer&n; */
 DECL|function|ql_pdma
 r_static
 r_int
@@ -564,7 +534,6 @@ id|j
 op_amp
 l_int|0x10
 )paren
-(brace
 id|j
 op_assign
 id|inb
@@ -575,7 +544,6 @@ op_plus
 l_int|8
 )paren
 suffix:semicolon
-)brace
 )brace
 )brace
 r_else
@@ -806,7 +774,6 @@ id|j
 op_amp
 l_int|2
 )paren
-(brace
 id|j
 op_assign
 id|inb
@@ -817,7 +784,6 @@ op_plus
 l_int|8
 )paren
 suffix:semicolon
-)brace
 )brace
 )brace
 multiline_comment|/* maybe return reqlen */
@@ -833,8 +799,7 @@ op_amp
 l_int|0xc0
 suffix:semicolon
 )brace
-multiline_comment|/*----------------------------------------------------------------*/
-multiline_comment|/* wait for interrupt flag (polled - not real hardware interrupt) */
+multiline_comment|/*&n; *&t;Wait for interrupt flag (polled - not real hardware interrupt) &n; */
 DECL|function|ql_wai
 r_static
 r_int
@@ -975,8 +940,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*----------------------------------------------------------------*/
-multiline_comment|/* initiate scsi command - queueing handler */
+multiline_comment|/*&n; *&t;Initiate scsi command - queueing handler &n; *&t;caller must hold host lock&n; */
 DECL|function|ql_icmd
 r_static
 r_void
@@ -992,24 +956,9 @@ r_int
 r_int
 id|i
 suffix:semicolon
-r_int
-r_int
-id|flags
-suffix:semicolon
 id|qabort
 op_assign
 l_int|0
-suffix:semicolon
-id|save_flags
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
-)paren
 suffix:semicolon
 id|REG0
 suffix:semicolon
@@ -1254,15 +1203,8 @@ l_int|3
 )paren
 suffix:semicolon
 multiline_comment|/* select and send command */
-id|restore_flags
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
 )brace
-multiline_comment|/*----------------------------------------------------------------*/
-multiline_comment|/* process scsi command - usually after interrupt */
+multiline_comment|/*&n; *&t;Process scsi command - usually after interrupt &n; */
 DECL|function|ql_pcmd
 r_static
 r_int
@@ -1386,6 +1328,7 @@ l_int|0x18
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;Ql:Bad Interrupt status:%02x&bslash;n&quot;
 comma
 id|i
@@ -1411,7 +1354,7 @@ suffix:semicolon
 multiline_comment|/* j = inb( qbase + 7 ) &gt;&gt; 5; */
 multiline_comment|/* correct status is supposed to be step 4 */
 multiline_comment|/* it sometimes returns step 3 but with 0 bytes left to send */
-multiline_comment|/* We can try stuffing the FIFO with the max each time, but we will get a&n;   sequence of 3 if any bytes are left (but we do flush the FIFO anyway */
+multiline_comment|/* We can try stuffing the FIFO with the max each time, but we will get a&n;&t;   sequence of 3 if any bytes are left (but we do flush the FIFO anyway */
 r_if
 c_cond
 (paren
@@ -1427,6 +1370,7 @@ l_int|4
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;Ql:Bad sequence for command %d, int %02X, cmdleft = %d&bslash;n&quot;
 comma
 id|j
@@ -1665,7 +1609,7 @@ c_func
 (paren
 l_int|2
 )paren
-multiline_comment|/* wait for irq (split into second state of irq handler if this can take time) */
+multiline_comment|/*&n;&t;&t; *&t;Wait for irq (split into second state of irq handler&n;&t;&t; *&t;if this can take time) &n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -1697,7 +1641,7 @@ l_int|5
 suffix:semicolon
 multiline_comment|/* should be 0x10, bus service */
 )brace
-multiline_comment|/*** Enter Status (and Message In) Phase ***/
+multiline_comment|/*&n;&t; *&t;Enter Status (and Message In) Phase &n;&t; */
 id|k
 op_assign
 id|jiffies
@@ -1731,6 +1675,10 @@ op_amp
 l_int|6
 )paren
 )paren
+id|cpu_relax
+c_func
+(paren
+)paren
 suffix:semicolon
 multiline_comment|/* wait for status phase */
 r_if
@@ -1758,6 +1706,7 @@ l_int|16
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* FIXME: timeout ?? */
 r_while
 c_loop
 (paren
@@ -1768,6 +1717,10 @@ id|qbase
 op_plus
 l_int|5
 )paren
+)paren
+id|cpu_relax
+c_func
+(paren
 )paren
 suffix:semicolon
 multiline_comment|/* clear pending ints */
@@ -1866,7 +1819,7 @@ op_plus
 l_int|2
 )paren
 suffix:semicolon
-multiline_comment|/* should get function complete int if Status and message, else bus serv if only status */
+multiline_comment|/*&n;&t; *&t;Should get function complete int if Status and message, else &n;&t; *&t;bus serv if only status &n;&t; */
 r_if
 c_cond
 (paren
@@ -1897,6 +1850,7 @@ l_int|1
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;Ql:Error during status phase, int=%02X, %d bytes recd&bslash;n&quot;
 comma
 id|i
@@ -1944,7 +1898,7 @@ op_lshift
 l_int|16
 )paren
 suffix:semicolon
-multiline_comment|/* should get bus service interrupt and disconnect interrupt */
+multiline_comment|/*&n;&t; *&t;Should get bus service interrupt and disconnect interrupt &n;&t; */
 id|i
 op_assign
 id|inb
@@ -2041,8 +1995,7 @@ id|STATUS_MASK
 suffix:semicolon
 )brace
 macro_line|#if QL_USE_IRQ
-multiline_comment|/*----------------------------------------------------------------*/
-multiline_comment|/* interrupt handler */
+multiline_comment|/*&n; *&t;Interrupt handler &n; */
 DECL|function|ql_ihandl
 r_static
 r_void
@@ -2138,7 +2091,7 @@ id|qlcmd
 op_assign
 l_int|NULL
 suffix:semicolon
-multiline_comment|/* if result is CHECK CONDITION done calls qcommand to request sense */
+multiline_comment|/*&n;&t; *&t;If result is CHECK CONDITION done calls qcommand to request &n;&t; *&t;sense &n;&t; */
 (paren
 id|icmd-&gt;scsi_done
 )paren
@@ -2205,10 +2158,6 @@ id|flags
 suffix:semicolon
 )brace
 macro_line|#endif
-multiline_comment|/*----------------------------------------------------------------*/
-multiline_comment|/* global functions */
-multiline_comment|/*----------------------------------------------------------------*/
-multiline_comment|/* non queued command */
 macro_line|#if QL_USE_IRQ
 DECL|function|qlidone
 r_static
@@ -2222,11 +2171,11 @@ id|cmd
 )paren
 (brace
 )brace
-suffix:semicolon
 multiline_comment|/* null function */
 macro_line|#endif
-multiline_comment|/* command process */
+multiline_comment|/*&n; *&t;Synchronous command processing&n; */
 DECL|function|qlogicfas_command
+r_static
 r_int
 id|qlogicfas_command
 c_func
@@ -2263,13 +2212,24 @@ id|qlcmd
 op_ne
 l_int|NULL
 )paren
+(brace
+id|cpu_relax
+c_func
+(paren
+)paren
 suffix:semicolon
+id|barrier
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
 r_return
 id|cmd-&gt;result
 suffix:semicolon
 )brace
 macro_line|#endif
-multiline_comment|/* non-irq version */
+multiline_comment|/*&n;&t; *&t;Non-irq version&n;&t; */
 r_if
 c_cond
 (paren
@@ -2318,8 +2278,7 @@ id|cmd
 suffix:semicolon
 )brace
 macro_line|#if QL_USE_IRQ
-multiline_comment|/*----------------------------------------------------------------*/
-multiline_comment|/* queued command */
+multiline_comment|/*&n; *&t;Queued command&n; */
 DECL|function|qlogicfas_queuecommand
 r_int
 id|qlogicfas_queuecommand
@@ -2425,9 +2384,23 @@ suffix:semicolon
 )brace
 macro_line|#endif
 macro_line|#ifdef PCMCIA
-multiline_comment|/*----------------------------------------------------------------*/
-multiline_comment|/* allow PCMCIA code to preset the port */
-multiline_comment|/* port should be 0 and irq to -1 respectively for autoprobing */
+multiline_comment|/*&n; *&t;Allow PCMCIA code to preset the port */
+op_star
+id|port
+id|should
+id|be
+l_int|0
+op_logical_and
+id|irq
+id|to
+op_minus
+l_int|1
+id|respectively
+r_for
+c_loop
+id|autoprobing
+op_star
+op_div
 DECL|function|qlogicfas_preset
 r_void
 id|qlogicfas_preset
@@ -2450,11 +2423,10 @@ id|irq
 suffix:semicolon
 )brace
 macro_line|#endif
-multiline_comment|/*----------------------------------------------------------------*/
-multiline_comment|/* look for qlogic card and init if found */
+multiline_comment|/*&n; *&t;Look for qlogic card and init if found &n; */
 DECL|function|qlogicfas_detect
 r_int
-id|__QLINIT
+id|__devinit
 id|qlogicfas_detect
 c_func
 (paren
@@ -2479,15 +2451,11 @@ op_star
 id|hreg
 suffix:semicolon
 multiline_comment|/* registered host structure */
-r_int
-r_int
-id|flags
-suffix:semicolon
 id|host-&gt;proc_name
 op_assign
 l_string|&quot;qlogicfas&quot;
 suffix:semicolon
-multiline_comment|/* Qlogic Cards only exist at 0x230 or 0x330 (the chip itself decodes the&n;   address - I check 230 first since MIDI cards are typically at 330&n;&n;   Theoretically, two Qlogic cards can coexist in the same system.  This&n;   should work by simply using this as a loadable module for the second&n;   card, but I haven&squot;t tested this.&n;*/
+multiline_comment|/*&t;Qlogic Cards only exist at 0x230 or 0x330 (the chip itself&n;&t; *&t;decodes the address - I check 230 first since MIDI cards are&n;&t; *&t;typically at 0x330&n;&t; *&n;&t; *&t;Theoretically, two Qlogic cards can coexist in the same system.&n;&t; *&t;This should work by simply using this as a loadable module for&n;&t; *&t;the second card, but I haven&squot;t tested this.&n;&t; */
 r_if
 c_cond
 (paren
@@ -2525,10 +2493,8 @@ comma
 l_string|&quot;qlogicfas&quot;
 )paren
 )paren
-(brace
 r_continue
 suffix:semicolon
-)brace
 id|REG1
 suffix:semicolon
 r_if
@@ -2604,6 +2570,7 @@ r_else
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;Ql: Using preset base address of %03x&bslash;n&quot;
 comma
 id|qbase
@@ -2700,6 +2667,7 @@ l_int|3
 suffix:semicolon
 id|REG1
 suffix:semicolon
+multiline_comment|/* FIXME: timeout */
 r_while
 c_loop
 (paren
@@ -2713,14 +2681,16 @@ l_int|0xf
 op_amp
 l_int|4
 )paren
-(brace
+id|cpu_relax
+c_func
+(paren
+)paren
 suffix:semicolon
-)brace
 id|REG0
 suffix:semicolon
 macro_line|#endif
 macro_line|#if QL_USE_IRQ
-multiline_comment|/* IRQ probe - toggle pin and check request pending */
+multiline_comment|/*&n;&t; *&t;IRQ probe - toggle pin and check request pending &n;&t; */
 r_if
 c_cond
 (paren
@@ -2730,17 +2700,6 @@ op_minus
 l_int|1
 )paren
 (brace
-id|save_flags
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
-)paren
-suffix:semicolon
 id|i
 op_assign
 l_int|0xffff
@@ -2892,17 +2851,12 @@ id|qlirq
 op_assign
 id|j
 suffix:semicolon
-id|restore_flags
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
 )brace
 r_else
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;Ql: Using preset IRQ %d&bslash;n&quot;
 comma
 id|qlirq
@@ -2976,12 +2930,10 @@ op_ne
 op_minus
 l_int|1
 )paren
-(brace
 id|hreg-&gt;irq
 op_assign
 id|qlirq
 suffix:semicolon
-)brace
 id|sprintf
 c_func
 (paren
@@ -3032,8 +2984,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*----------------------------------------------------------------*/
-multiline_comment|/* return bios parameters */
+multiline_comment|/* &n; *&t;Return bios parameters &n; */
 DECL|function|qlogicfas_biosparam
 r_int
 id|qlogicfas_biosparam
@@ -3164,9 +3115,9 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*----------------------------------------------------------------*/
-multiline_comment|/* abort command in progress */
+multiline_comment|/*&n; *&t;Abort a command in progress&n; */
 DECL|function|qlogicfas_abort
+r_static
 r_int
 id|qlogicfas_abort
 c_func
@@ -3186,23 +3137,19 @@ c_func
 )paren
 suffix:semicolon
 r_return
-l_int|0
+id|SUCCESS
 suffix:semicolon
 )brace
-multiline_comment|/*----------------------------------------------------------------*/
-multiline_comment|/* reset SCSI bus */
-DECL|function|qlogicfas_reset
+multiline_comment|/* &n; *&t;Reset SCSI bus&n; *&t;FIXME: This function is invoked with cmd = NULL directly by&n; *&t;the PCMCIA qlogic_stub code. This wants fixing&n; */
+DECL|function|qlogicfas_bus_reset
+r_static
 r_int
-id|qlogicfas_reset
+id|qlogicfas_bus_reset
 c_func
 (paren
 id|Scsi_Cmnd
 op_star
 id|cmd
-comma
-r_int
-r_int
-id|ignored
 )paren
 (brace
 id|qabort
@@ -3215,12 +3162,44 @@ c_func
 )paren
 suffix:semicolon
 r_return
-l_int|1
+id|SUCCESS
 suffix:semicolon
 )brace
-multiline_comment|/*----------------------------------------------------------------*/
-multiline_comment|/* return info string */
+multiline_comment|/* &n; *&t;Reset SCSI host controller&n; */
+DECL|function|qlogicfas_host_reset
+r_static
+r_int
+id|qlogicfas_host_reset
+c_func
+(paren
+id|Scsi_Cmnd
+op_star
+id|cmd
+)paren
+(brace
+r_return
+id|FAILED
+suffix:semicolon
+)brace
+multiline_comment|/* &n; *&t;Reset SCSI device&n; */
+DECL|function|qlogicfas_device_reset
+r_static
+r_int
+id|qlogicfas_device_reset
+c_func
+(paren
+id|Scsi_Cmnd
+op_star
+id|cmd
+)paren
+(brace
+r_return
+id|FAILED
+suffix:semicolon
+)brace
+multiline_comment|/*&n; *&t;Return info string&n; */
 DECL|function|qlogicfas_info
+r_static
 r_const
 r_char
 op_star
@@ -3237,19 +3216,32 @@ r_return
 id|qinfo
 suffix:semicolon
 )brace
+id|MODULE_AUTHOR
+c_func
+(paren
+l_string|&quot;Tom Zerucha, Michael Griffith&quot;
+)paren
+suffix:semicolon
+id|MODULE_DESCRIPTION
+c_func
+(paren
+l_string|&quot;Driver for the Qlogic FAS SCSI controllers&quot;
+)paren
+suffix:semicolon
 id|MODULE_LICENSE
 c_func
 (paren
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* Eventually this will go into an include file, but this will be later */
-DECL|variable|driver_template
-r_static
+multiline_comment|/*&n; *&t;The driver template is also needed for PCMCIA&n; */
+DECL|variable|qlogicfas_driver_template
 id|Scsi_Host_Template
-id|driver_template
+id|qlogicfas_driver_template
 op_assign
 id|QLOGICFAS
 suffix:semicolon
+DECL|macro|driver_template
+mdefine_line|#define driver_template qlogicfas_driver_template
 macro_line|#include &quot;scsi_module.c&quot;
 eof

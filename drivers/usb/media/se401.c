@@ -3017,7 +3017,6 @@ op_decrement
 (brace
 op_star
 id|frame
-op_increment
 op_assign
 (paren
 (paren
@@ -3040,6 +3039,9 @@ l_int|255
 )paren
 op_xor
 l_int|255
+suffix:semicolon
+id|frame
+op_increment
 suffix:semicolon
 )brace
 )brace
@@ -4387,8 +4389,10 @@ id|i
 op_increment
 )paren
 (brace
-op_star
+id|framedata
 op_decrement
+suffix:semicolon
+op_star
 id|framedata
 op_assign
 op_star

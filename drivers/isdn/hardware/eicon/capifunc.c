@@ -651,6 +651,7 @@ id|num
 suffix:semicolon
 id|next_id
 suffix:colon
+suffix:semicolon
 )brace
 id|diva_os_leave_spin_lock
 (paren
