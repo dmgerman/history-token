@@ -740,10 +740,6 @@ DECL|macro|AMD_TLBFLUSH
 mdefine_line|#define AMD_TLBFLUSH&t;0x0c&t;/* In mmio region (32-bit register) */
 DECL|macro|AMD_CACHEENTRY
 mdefine_line|#define AMD_CACHEENTRY&t;0x10&t;/* In mmio region (32-bit register) */
-DECL|macro|AMD_8151_APSIZE
-mdefine_line|#define AMD_8151_APSIZE&t;&t;0xb4
-DECL|macro|AMD_8151_GARTBLOCK
-mdefine_line|#define AMD_8151_GARTBLOCK&t;0xb8
 DECL|macro|AMD_X86_64_GARTAPERTURECTL
 mdefine_line|#define AMD_X86_64_GARTAPERTURECTL&t;0x90
 DECL|macro|AMD_X86_64_GARTAPERTUREBASE
@@ -754,16 +750,6 @@ DECL|macro|AMD_X86_64_GARTCACHECTL
 mdefine_line|#define AMD_X86_64_GARTCACHECTL&t;&t;0x9c
 DECL|macro|AMD_X86_64_GARTEN
 mdefine_line|#define AMD_X86_64_GARTEN&t;&t;1&lt;&lt;0
-DECL|macro|AMD_8151_AGP_CTL
-mdefine_line|#define AMD_8151_AGP_CTL&t;&t;0xb0
-DECL|macro|AMD_8151_APERTURESIZE
-mdefine_line|#define AMD_8151_APERTURESIZE&t;&t;0xb4
-DECL|macro|AMD_8151_GARTPTR
-mdefine_line|#define AMD_8151_GARTPTR&t;&t;0xb8
-DECL|macro|AMD_8151_GTLBEN
-mdefine_line|#define AMD_8151_GTLBEN&t;&t;&t;1&lt;&lt;7
-DECL|macro|AMD_8151_APEREN
-mdefine_line|#define AMD_8151_APEREN&t;&t;&t;1&lt;&lt;8
 multiline_comment|/* ALi registers */
 DECL|macro|ALI_AGPCTRL
 mdefine_line|#define ALI_AGPCTRL&t;&t;&t;0xb8
