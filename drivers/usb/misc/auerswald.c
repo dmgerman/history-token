@@ -3569,14 +3569,27 @@ l_int|2
 suffix:semicolon
 id|bytecount
 op_assign
-id|le16_to_cpup
 (paren
-op_amp
+r_int
+r_char
+)paren
 id|cp-&gt;intbufp
 (braket
 l_int|3
 )braket
+suffix:semicolon
+id|bytecount
+op_or_assign
+(paren
+r_int
+r_char
 )paren
+id|cp-&gt;intbufp
+(braket
+l_int|4
+)braket
+op_lshift
+l_int|8
 suffix:semicolon
 multiline_comment|/* check the channel id */
 r_if
@@ -7042,7 +7055,7 @@ id|u
 op_assign
 l_int|0
 suffix:semicolon
-r_char
+id|u16
 op_star
 id|pbuf
 suffix:semicolon
@@ -7371,7 +7384,7 @@ multiline_comment|/* get the maximum allowed control transfer length */
 id|pbuf
 op_assign
 (paren
-r_char
+id|u16
 op_star
 )paren
 id|kmalloc
