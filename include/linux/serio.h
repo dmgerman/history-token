@@ -450,6 +450,8 @@ DECL|macro|SERIO_PC9800
 mdefine_line|#define SERIO_PC9800&t;0x04000000UL
 DECL|macro|SERIO_PS_PSTHRU
 mdefine_line|#define SERIO_PS_PSTHRU&t;0x05000000UL
+DECL|macro|SERIO_8042_XL
+mdefine_line|#define SERIO_8042_XL&t;0x06000000UL
 DECL|macro|SERIO_PROTO
 mdefine_line|#define SERIO_PROTO&t;0xFFUL
 DECL|macro|SERIO_MSC

@@ -90,10 +90,6 @@ DECL|macro|EVIOCGVERSION
 mdefine_line|#define EVIOCGVERSION&t;&t;_IOR(&squot;E&squot;, 0x01, int)&t;&t;&t;/* get driver version */
 DECL|macro|EVIOCGID
 mdefine_line|#define EVIOCGID&t;&t;_IOR(&squot;E&squot;, 0x02, struct input_id)&t;/* get device ID */
-DECL|macro|EVIOCGREP
-mdefine_line|#define EVIOCGREP&t;&t;_IOR(&squot;E&squot;, 0x03, int[2])&t;&t;&t;/* get repeat settings */
-DECL|macro|EVIOCSREP
-mdefine_line|#define EVIOCSREP&t;&t;_IOW(&squot;E&squot;, 0x03, int[2])&t;&t;&t;/* get repeat settings */
 DECL|macro|EVIOCGKEYCODE
 mdefine_line|#define EVIOCGKEYCODE&t;&t;_IOR(&squot;E&squot;, 0x04, int[2])&t;&t;&t;/* get keycode */
 DECL|macro|EVIOCSKEYCODE
