@@ -952,9 +952,9 @@ suffix:semicolon
 suffix:semicolon
 multiline_comment|/* Internal numbers to terminate lists */
 DECL|macro|I2C_CLIENT_END
-mdefine_line|#define I2C_CLIENT_END&t;&t;0xfffe
+mdefine_line|#define I2C_CLIENT_END&t;&t;0xfffeU
 DECL|macro|I2C_CLIENT_ISA_END
-mdefine_line|#define I2C_CLIENT_ISA_END&t;0xfffefffe
+mdefine_line|#define I2C_CLIENT_ISA_END&t;0xfffefffeU
 multiline_comment|/* The numbers to use to set I2C bus address */
 DECL|macro|ANY_I2C_BUS
 mdefine_line|#define ANY_I2C_BUS&t;&t;0xffff
