@@ -175,31 +175,6 @@ l_int|0
 )paren
 comma
 macro_line|#endif
-multiline_comment|/* Made with the help of Edd Dumbill &lt;edd@usefulinc.com&gt; */
-id|UNUSUAL_DEV
-c_func
-(paren
-l_int|0x0451
-comma
-l_int|0x5409
-comma
-l_int|0x0001
-comma
-l_int|0x0001
-comma
-l_string|&quot;Frontier Labs&quot;
-comma
-l_string|&quot;Nex II Digital&quot;
-comma
-id|US_SC_SCSI
-comma
-id|US_PR_BULK
-comma
-l_int|NULL
-comma
-l_int|0
-)paren
-comma
 multiline_comment|/* Patch submitted by Philipp Friedrich &lt;philipp@void.at&gt; */
 id|UNUSUAL_DEV
 c_func
@@ -861,9 +836,9 @@ l_string|&quot;Sony&quot;
 comma
 l_string|&quot;Memorystick MSC-U01N&quot;
 comma
-id|US_SC_UFI
+id|US_SC_DEVICE
 comma
-id|US_PR_CB
+id|US_PR_DEVICE
 comma
 l_int|NULL
 comma
@@ -958,9 +933,9 @@ l_string|&quot;Y-E Data&quot;
 comma
 l_string|&quot;Flashbuster-U&quot;
 comma
-id|US_SC_UFI
+id|US_SC_DEVICE
 comma
-id|US_PR_CBI
+id|US_PR_DEVICE
 comma
 l_int|NULL
 comma
