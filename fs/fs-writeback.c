@@ -1106,7 +1106,7 @@ id|inode_lock
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n; * writeback and wait upon the filesystem&squot;s dirty inodes.  The caller will&n; * do this in two passes - one to write, and one to wait.  WB_SYNC_HOLD is&n; * used to park the written inodes on sb-&gt;s_dirty for the wait pass.&n; */
+multiline_comment|/*&n; * writeback and wait upon the filesystem&squot;s dirty inodes.  The caller will&n; * do this in two passes - one to write, and one to wait.  WB_SYNC_HOLD is&n; * used to park the written inodes on sb-&gt;s_dirty for the wait pass.&n; *&n; * A finite limit is set on the number of pages which will be written.&n; * To prevent infinite livelock of sys_sync().&n; */
 DECL|function|sync_inodes_sb
 r_void
 id|sync_inodes_sb
@@ -1121,6 +1121,28 @@ r_int
 id|wait
 )paren
 (brace
+r_struct
+id|page_state
+id|ps
+suffix:semicolon
+r_int
+id|nr_to_write
+suffix:semicolon
+id|get_page_state
+c_func
+(paren
+op_amp
+id|ps
+)paren
+suffix:semicolon
+id|nr_to_write
+op_assign
+id|ps.nr_dirty
+op_plus
+id|ps.nr_dirty
+op_div
+l_int|4
+suffix:semicolon
 id|spin_lock
 c_func
 (paren
@@ -1140,7 +1162,8 @@ id|WB_SYNC_ALL
 suffix:colon
 id|WB_SYNC_HOLD
 comma
-l_int|NULL
+op_amp
+id|nr_to_write
 comma
 l_int|NULL
 )paren
