@@ -14341,6 +14341,13 @@ c_func
 id|vt_cons
 )paren
 suffix:semicolon
+DECL|variable|vc_cons
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|vc_cons
+)paren
+suffix:semicolon
 macro_line|#ifndef VT_SINGLE_DRIVER
 DECL|variable|take_over_console
 id|EXPORT_SYMBOL
