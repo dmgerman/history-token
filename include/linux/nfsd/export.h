@@ -94,6 +94,11 @@ id|cl_export
 id|NFSCLNT_EXPMAX
 )braket
 suffix:semicolon
+DECL|member|cl_list
+r_struct
+id|list_head
+id|cl_list
+suffix:semicolon
 )brace
 suffix:semicolon
 DECL|struct|svc_export
@@ -104,6 +109,11 @@ DECL|member|ex_hash
 r_struct
 id|list_head
 id|ex_hash
+suffix:semicolon
+DECL|member|ex_list
+r_struct
+id|list_head
+id|ex_list
 suffix:semicolon
 DECL|member|ex_path
 r_char
