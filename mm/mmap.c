@@ -5659,12 +5659,6 @@ id|address
 r_int
 id|error
 suffix:semicolon
-r_int
-r_int
-id|size
-comma
-id|grow
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -5716,6 +5710,25 @@ id|address
 op_and_assign
 id|PAGE_MASK
 suffix:semicolon
+id|error
+op_assign
+l_int|0
+suffix:semicolon
+multiline_comment|/* Somebody else might have raced and expanded it already */
+r_if
+c_cond
+(paren
+id|address
+OG
+id|vma-&gt;vm_end
+)paren
+(brace
+r_int
+r_int
+id|size
+comma
+id|grow
+suffix:semicolon
 id|size
 op_assign
 id|address
@@ -5754,6 +5767,7 @@ id|vma-&gt;vm_end
 op_assign
 id|address
 suffix:semicolon
+)brace
 id|anon_vma_unlock
 c_func
 (paren
@@ -5878,12 +5892,6 @@ id|address
 r_int
 id|error
 suffix:semicolon
-r_int
-r_int
-id|size
-comma
-id|grow
-suffix:semicolon
 multiline_comment|/*&n;&t; * We must make sure the anon_vma is allocated&n;&t; * so that the anon_vma locking is not a noop.&n;&t; */
 r_if
 c_cond
@@ -5912,6 +5920,25 @@ multiline_comment|/*&n;&t; * vma-&gt;vm_start/vm_end cannot change under us beca
 id|address
 op_and_assign
 id|PAGE_MASK
+suffix:semicolon
+id|error
+op_assign
+l_int|0
+suffix:semicolon
+multiline_comment|/* Somebody else might have raced and expanded it already */
+r_if
+c_cond
+(paren
+id|address
+OL
+id|vma-&gt;vm_start
+)paren
+(brace
+r_int
+r_int
+id|size
+comma
+id|grow
 suffix:semicolon
 id|size
 op_assign
@@ -5956,6 +5983,7 @@ id|vma-&gt;vm_pgoff
 op_sub_assign
 id|grow
 suffix:semicolon
+)brace
 )brace
 id|anon_vma_unlock
 c_func
