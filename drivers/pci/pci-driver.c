@@ -65,7 +65,7 @@ c_func
 (paren
 id|pci_dev
 comma
-l_int|NULL
+id|drv-&gt;id_table
 )paren
 suffix:semicolon
 r_return
