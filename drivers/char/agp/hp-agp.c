@@ -1528,7 +1528,7 @@ id|hp_zx1_mask_memory
 suffix:semicolon
 id|agp_bridge-&gt;agp_enable
 op_assign
-id|agp_generic_agp_enable
+id|agp_generic_enable
 suffix:semicolon
 id|agp_bridge-&gt;cache_flush
 op_assign
@@ -1649,7 +1649,7 @@ dot
 id|owner
 op_assign
 id|THIS_MODULE
-suffix:semicolon
+comma
 )brace
 suffix:semicolon
 DECL|function|agp_hp_probe
@@ -1759,7 +1759,7 @@ c_func
 (paren
 id|pci
 comma
-id|agp_pci_table
+id|agp_hp_pci_table
 )paren
 suffix:semicolon
 DECL|variable|agp_hp_pci_driver

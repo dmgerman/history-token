@@ -145,6 +145,7 @@ id|which
 comma
 r_struct
 id|itimerval
+id|__user
 op_star
 id|value
 )paren
@@ -482,11 +483,13 @@ id|which
 comma
 r_struct
 id|itimerval
+id|__user
 op_star
 id|value
 comma
 r_struct
 id|itimerval
+id|__user
 op_star
 id|ovalue
 )paren

@@ -491,6 +491,7 @@ r_int
 id|type
 comma
 r_char
+id|__user
 op_star
 id|buf
 comma
@@ -1074,6 +1075,7 @@ r_int
 id|type
 comma
 r_char
+id|__user
 op_star
 id|buf
 comma
