@@ -14,8 +14,8 @@ macro_line|#include &quot;seq_timer.h&quot;
 macro_line|#include &quot;seq_info.h&quot;
 macro_line|#include &quot;seq_system.h&quot;
 macro_line|#include &lt;sound/seq_device.h&gt;
-macro_line|#if defined(CONFIG_SND_BIT32_EMUL) || defined(CONFIG_SND_BIT32_EMUL_MODULE)
-macro_line|#include &quot;../ioctl32/ioctl32.h&quot;
+macro_line|#ifdef CONFIG_COMPAT
+macro_line|#include &lt;linux/compat.h&gt;
 macro_line|#endif
 multiline_comment|/* Client Manager&n;&n; * this module handles the connections of userland and kernel clients&n; * &n; */
 DECL|macro|SNDRV_SEQ_LFLG_INPUT
