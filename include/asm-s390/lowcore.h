@@ -90,6 +90,8 @@ DECL|macro|__LC_IPLDEV
 mdefine_line|#define __LC_IPLDEV                     0xC7C
 DECL|macro|__LC_JIFFY_TIMER
 mdefine_line|#define __LC_JIFFY_TIMER&t;&t;0xC80
+DECL|macro|__LC_CURRENT
+mdefine_line|#define __LC_CURRENT&t;&t;&t;0xC90
 macro_line|#else /* __s390x__ */
 DECL|macro|__LC_KERNEL_STACK
 mdefine_line|#define __LC_KERNEL_STACK               0xD40
@@ -103,6 +105,8 @@ DECL|macro|__LC_IPLDEV
 mdefine_line|#define __LC_IPLDEV                     0xDB8
 DECL|macro|__LC_JIFFY_TIMER
 mdefine_line|#define __LC_JIFFY_TIMER&t;&t;0xDC0
+DECL|macro|__LC_CURRENT
+mdefine_line|#define __LC_CURRENT&t;&t;&t;0xDD8
 macro_line|#endif /* __s390x__ */
 DECL|macro|__LC_PANIC_MAGIC
 mdefine_line|#define __LC_PANIC_MAGIC                0xE00
@@ -538,16 +542,31 @@ id|__u32
 id|ext_call_fast
 suffix:semicolon
 multiline_comment|/* 0xc88 */
+DECL|member|percpu_offset
+id|__u32
+id|percpu_offset
+suffix:semicolon
+multiline_comment|/* 0xc8c */
+DECL|member|current_task
+id|__u32
+id|current_task
+suffix:semicolon
+multiline_comment|/* 0xc90 */
+DECL|member|softirq_pending
+id|__u32
+id|softirq_pending
+suffix:semicolon
+multiline_comment|/* 0xc94 */
 DECL|member|pad11
 id|__u8
 id|pad11
 (braket
 l_int|0xe00
 op_minus
-l_int|0xc8c
+l_int|0xc98
 )braket
 suffix:semicolon
-multiline_comment|/* 0xc8c */
+multiline_comment|/* 0xc98 */
 multiline_comment|/* 0xe00 is used as indicator for dump tools */
 multiline_comment|/* whether the kernel died with panic() or not */
 DECL|member|panic_magic
@@ -878,15 +897,27 @@ id|__u64
 id|ext_call_fast
 suffix:semicolon
 multiline_comment|/* 0xdc8 */
+id|__u64
+id|percpu_offset
+suffix:semicolon
+multiline_comment|/* 0xdd0 */
+id|__u64
+id|current_task
+suffix:semicolon
+multiline_comment|/* 0xdd8 */
+id|__u64
+id|softirq_pending
+suffix:semicolon
+multiline_comment|/* 0xde0 */
 id|__u8
 id|pad12
 (braket
 l_int|0xe00
 op_minus
-l_int|0xdd0
+l_int|0xde8
 )braket
 suffix:semicolon
-multiline_comment|/* 0xdd0 */
+multiline_comment|/* 0xde8 */
 multiline_comment|/* 0xe00 is used as indicator for dump tools */
 multiline_comment|/* whether the kernel died with panic() or not */
 id|__u32

@@ -1389,7 +1389,7 @@ l_int|5
 comma
 l_int|2
 comma
-id|__LC_KERNEL_STACK
+id|__LC_CURRENT
 comma
 l_int|1ULL
 op_lshift
@@ -1578,24 +1578,14 @@ suffix:semicolon
 multiline_comment|/*&n;&t; * Get the token (= address of kernel stack of affected task).&n;&t; */
 id|tsk
 op_assign
+op_star
 (paren
 r_struct
 id|task_struct
 op_star
-)paren
-(paren
-op_star
-(paren
-(paren
-r_int
-r_int
 op_star
 )paren
 id|__LC_PFAULT_INTPARM
-)paren
-op_minus
-id|THREAD_SIZE
-)paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * We got all needed information from the lowcore and can&n;&t; * now safely switch on interrupts.&n;&t; */
 r_if

@@ -7,7 +7,7 @@ macro_line|#include &lt;linux/threads.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/cache.h&gt;
 macro_line|#include &lt;asm/lowcore.h&gt;
-multiline_comment|/* entry.S is sensitive to the offsets of these fields */
+multiline_comment|/* irq_cpustat_t is unused currently, but could be converted&n; * into a percpu variable instead of storing softirq_pending&n; * on the lowcore */
 r_typedef
 r_struct
 (brace
@@ -16,24 +16,16 @@ r_int
 r_int
 id|__softirq_pending
 suffix:semicolon
-DECL|member|__syscall_count
-r_int
-r_int
-id|__syscall_count
-suffix:semicolon
-DECL|member|__ksoftirqd_task
-r_struct
-id|task_struct
-op_star
-id|__ksoftirqd_task
-suffix:semicolon
-multiline_comment|/* waitqueue is too large */
 DECL|typedef|irq_cpustat_t
 )brace
-id|____cacheline_aligned
 id|irq_cpustat_t
 suffix:semicolon
-macro_line|#include &lt;linux/irq_cpustat.h&gt;&t;/* Standard mappings for irq_cpustat_t above */
+DECL|macro|softirq_pending
+mdefine_line|#define softirq_pending(cpu) (lowcore_ptr[(cpu)]-&gt;softirq_pending)
+DECL|macro|local_softirq_pending
+mdefine_line|#define local_softirq_pending() (S390_lowcore.softirq_pending)
+DECL|macro|__ARCH_IRQ_STAT
+mdefine_line|#define __ARCH_IRQ_STAT
 multiline_comment|/*&n; * We put the hardirq and softirq counter into the preemption&n; * counter. The bitmask has the following meaning:&n; *&n; * - bits 0-7 are the preemption count (max preemption depth: 256)&n; * - bits 8-15 are the softirq count (max # of softirqs: 256)&n; * - bits 16-23 are the hardirq count (max # of hardirqs: 256)&n; *&n; * - ( bit 26 is the PREEMPT_ACTIVE flag. )&n; *&n; * PREEMPT_MASK: 0x000000ff&n; * SOFTIRQ_MASK: 0x0000ff00&n; * HARDIRQ_MASK: 0x00010000&n; */
 DECL|macro|PREEMPT_BITS
 mdefine_line|#define PREEMPT_BITS&t;8
@@ -79,7 +71,7 @@ mdefine_line|#define hardirq_trylock()&t;(!in_interrupt())
 DECL|macro|hardirq_endlock
 mdefine_line|#define hardirq_endlock()&t;do { } while (0)
 DECL|macro|irq_enter
-mdefine_line|#define irq_enter()&t;&t;(preempt_count() += HARDIRQ_OFFSET)
+mdefine_line|#define irq_enter()&t;&t;&t;&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;BUG_ON( hardirq_count() );&t;&t;&t;&t;&t;&bslash;&n;&t;(preempt_count() += HARDIRQ_OFFSET);&t;&t;&t;&t;&bslash;&n;} while(0)
 r_extern
 r_void
 id|do_call_softirq
@@ -102,21 +94,6 @@ DECL|macro|IRQ_EXIT_OFFSET
 macro_line|# define IRQ_EXIT_OFFSET HARDIRQ_OFFSET
 macro_line|#endif
 DECL|macro|irq_exit
-mdefine_line|#define irq_exit()&t;&t;&t;&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;preempt_count() -= IRQ_EXIT_OFFSET;&t;&t;&t;&t;&bslash;&n;&t;if (!in_interrupt() &amp;&amp; softirq_pending(smp_processor_id()))&t;&bslash;&n;&t;&t;/* Use the async. stack for softirq */&t;&t;&t;&bslash;&n;&t;&t;do_call_softirq();&t;&t;&t;&t;&t;&bslash;&n;&t;preempt_enable_no_resched();&t;&t;&t;&t;&t;&bslash;&n;} while (0)
-macro_line|#ifndef CONFIG_SMP
-DECL|macro|synchronize_irq
-macro_line|# define synchronize_irq(irq)&t;barrier()
-macro_line|#else
-r_extern
-r_void
-id|synchronize_irq
-c_func
-(paren
-r_int
-r_int
-id|irq
-)paren
-suffix:semicolon
-macro_line|#endif /* CONFIG_SMP */
+mdefine_line|#define irq_exit()&t;&t;&t;&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;preempt_count() -= IRQ_EXIT_OFFSET;&t;&t;&t;&t;&bslash;&n;&t;if (!in_interrupt() &amp;&amp; local_softirq_pending())&t;&t;&t;&bslash;&n;&t;&t;/* Use the async. stack for softirq */&t;&t;&t;&bslash;&n;&t;&t;do_call_softirq();&t;&t;&t;&t;&t;&bslash;&n;&t;preempt_enable_no_resched();&t;&t;&t;&t;&t;&bslash;&n;} while (0)
 macro_line|#endif /* __ASM_HARDIRQ_H */
 eof
