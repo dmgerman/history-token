@@ -847,7 +847,7 @@ c_cond
 (paren
 id|cls-&gt;release
 )paren
-id|cd
+id|cls
 op_member_access_from_pointer
 id|release
 c_func
