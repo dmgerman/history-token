@@ -2272,12 +2272,6 @@ id|resetting_device
 suffix:colon
 l_int|1
 suffix:semicolon
-DECL|member|tcq_active
-id|u8
-id|tcq_active
-suffix:colon
-l_int|1
-suffix:semicolon
 DECL|member|sdev
 r_struct
 id|scsi_device

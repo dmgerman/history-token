@@ -2824,10 +2824,6 @@ id|res-&gt;resetting_device
 op_assign
 l_int|0
 suffix:semicolon
-id|res-&gt;tcq_active
-op_assign
-l_int|0
-suffix:semicolon
 id|res-&gt;sdev
 op_assign
 l_int|NULL
@@ -9845,11 +9841,6 @@ c_cond
 (paren
 id|tag_type
 )paren
-(brace
-id|res-&gt;tcq_active
-op_assign
-l_int|1
-suffix:semicolon
 id|scsi_activate_tcq
 c_func
 (paren
@@ -9858,13 +9849,7 @@ comma
 id|sdev-&gt;queue_depth
 )paren
 suffix:semicolon
-)brace
 r_else
-(brace
-id|res-&gt;tcq_active
-op_assign
-l_int|0
-suffix:semicolon
 id|scsi_deactivate_tcq
 c_func
 (paren
@@ -9873,7 +9858,6 @@ comma
 id|sdev-&gt;queue_depth
 )paren
 suffix:semicolon
-)brace
 )brace
 r_else
 id|tag_type
@@ -12711,7 +12695,11 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|res-&gt;tcq_active
+id|scsi_get_tag_type
+c_func
+(paren
+id|scsi_cmd-&gt;device
+)paren
 )paren
 (brace
 id|ipr_erp_request_sense
