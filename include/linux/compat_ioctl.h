@@ -1250,6 +1250,11 @@ id|SIOCGIFENCAP
 id|COMPATIBLE_IOCTL
 c_func
 (paren
+id|SIOCSIFNAME
+)paren
+id|COMPATIBLE_IOCTL
+c_func
+(paren
 id|SIOCSIFBR
 )paren
 id|COMPATIBLE_IOCTL
