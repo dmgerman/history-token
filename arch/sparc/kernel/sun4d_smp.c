@@ -513,16 +513,6 @@ c_func
 r_void
 )paren
 suffix:semicolon
-r_extern
-r_int
-id|start_secondary
-c_func
-(paren
-r_void
-op_star
-id|unused
-)paren
-suffix:semicolon
 multiline_comment|/*&n; *&t;Cycle through the processors asking the PROM to start each one.&n; */
 r_extern
 r_struct
