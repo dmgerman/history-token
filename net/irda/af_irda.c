@@ -6664,25 +6664,7 @@ id|IAS_STRING
 suffix:colon
 multiline_comment|/* Should check charset &amp; co */
 multiline_comment|/* Check length */
-r_if
-c_cond
-(paren
-id|ias_opt-&gt;attribute.irda_attrib_string.len
-OG
-id|IAS_MAX_STRING
-)paren
-(brace
-id|kfree
-c_func
-(paren
-id|ias_opt
-)paren
-suffix:semicolon
-r_return
-op_minus
-id|EINVAL
-suffix:semicolon
-)brace
+multiline_comment|/* The length is encoded in a __u8, and&n;&t;&t;&t; * IAS_MAX_STRING == 256, so there is no way&n;&t;&t;&t; * userspace can pass us a string too large.&n;&t;&t;&t; * Jean II */
 multiline_comment|/* NULL terminate the string (avoid troubles) */
 id|ias_opt-&gt;attribute.irda_attrib_string.string
 (braket
