@@ -80,7 +80,7 @@ DECL|typedef|mca_type_t
 id|mca_type_t
 suffix:semicolon
 DECL|macro|MAX_PAGE_ISOLATE
-mdefine_line|#define MAX_PAGE_ISOLATE 32
+mdefine_line|#define MAX_PAGE_ISOLATE 1024
 DECL|variable|page_isolate
 r_static
 r_struct
