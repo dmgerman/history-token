@@ -227,6 +227,12 @@ DECL|macro|CHIPREV_5700_CX
 mdefine_line|#define   CHIPREV_5700_CX&t;&t; 0x72
 DECL|macro|CHIPREV_5701_AX
 mdefine_line|#define   CHIPREV_5701_AX&t;&t; 0x00
+DECL|macro|CHIPREV_5703_AX
+mdefine_line|#define   CHIPREV_5703_AX&t;&t; 0x10
+DECL|macro|CHIPREV_5704_AX
+mdefine_line|#define   CHIPREV_5704_AX&t;&t; 0x20
+DECL|macro|CHIPREV_5704_BX
+mdefine_line|#define   CHIPREV_5704_BX&t;&t; 0x21
 DECL|macro|GET_METAL_REV
 mdefine_line|#define  GET_METAL_REV(CHIP_REV_ID)&t;((CHIP_REV_ID) &amp; 0xff)
 DECL|macro|METAL_REV_A0
@@ -3773,8 +3779,13 @@ DECL|macro|TG3_FLAG_5701_REG_WRITE_BUG
 mdefine_line|#define TG3_FLAG_5701_REG_WRITE_BUG&t;0x00000040
 DECL|macro|TG3_FLAG_POLL_SERDES
 mdefine_line|#define TG3_FLAG_POLL_SERDES&t;&t;0x00000080
+macro_line|#if defined(CONFIG_X86)
 DECL|macro|TG3_FLAG_MBOX_WRITE_REORDER
 mdefine_line|#define TG3_FLAG_MBOX_WRITE_REORDER&t;0x00000100
+macro_line|#else
+DECL|macro|TG3_FLAG_MBOX_WRITE_REORDER
+mdefine_line|#define TG3_FLAG_MBOX_WRITE_REORDER&t;0&t;/* disables code too */
+macro_line|#endif
 DECL|macro|TG3_FLAG_PCIX_TARGET_HWBUG
 mdefine_line|#define TG3_FLAG_PCIX_TARGET_HWBUG&t;0x00000200
 DECL|macro|TG3_FLAG_WOL_SPEED_100MB
@@ -3837,6 +3848,10 @@ DECL|macro|TG3_FLG2_MAX_RXPEND_64
 mdefine_line|#define TG3_FLG2_MAX_RXPEND_64&t;&t;0x00000010
 DECL|macro|TG3_FLG2_TSO_CAPABLE
 mdefine_line|#define TG3_FLG2_TSO_CAPABLE&t;&t;0x00000020
+DECL|macro|TG3_FLG2_PHY_ADC_BUG
+mdefine_line|#define TG3_FLG2_PHY_ADC_BUG&t;&t;0x00000040
+DECL|macro|TG3_FLG2_PHY_5704_A0_BUG
+mdefine_line|#define TG3_FLG2_PHY_5704_A0_BUG&t;0x00000080
 DECL|member|split_mode_max_reqs
 id|u32
 id|split_mode_max_reqs
