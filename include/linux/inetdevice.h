@@ -58,6 +58,10 @@ DECL|member|arp_filter
 r_int
 id|arp_filter
 suffix:semicolon
+DECL|member|medium_id
+r_int
+id|medium_id
+suffix:semicolon
 DECL|member|sysctl
 r_void
 op_star
@@ -146,6 +150,8 @@ DECL|macro|IN_DEV_SEC_REDIRECTS
 mdefine_line|#define IN_DEV_SEC_REDIRECTS(in_dev)&t;(ipv4_devconf.secure_redirects || (in_dev)-&gt;cnf.secure_redirects)
 DECL|macro|IN_DEV_IDTAG
 mdefine_line|#define IN_DEV_IDTAG(in_dev)&t;&t;((in_dev)-&gt;cnf.tag)
+DECL|macro|IN_DEV_MEDIUM_ID
+mdefine_line|#define IN_DEV_MEDIUM_ID(in_dev)&t;((in_dev)-&gt;cnf.medium_id)
 DECL|macro|IN_DEV_RX_REDIRECTS
 mdefine_line|#define IN_DEV_RX_REDIRECTS(in_dev) &bslash;&n;&t;((IN_DEV_FORWARD(in_dev) &amp;&amp; &bslash;&n;&t;  (ipv4_devconf.accept_redirects &amp;&amp; (in_dev)-&gt;cnf.accept_redirects)) &bslash;&n;&t; || (!IN_DEV_FORWARD(in_dev) &amp;&amp; &bslash;&n;&t;  (ipv4_devconf.accept_redirects || (in_dev)-&gt;cnf.accept_redirects)))
 DECL|macro|IN_DEV_ARPFILTER
