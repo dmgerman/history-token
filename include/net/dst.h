@@ -5,6 +5,7 @@ mdefine_line|#define _NET_DST_H
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/rtnetlink.h&gt;
 macro_line|#include &lt;net/neighbour.h&gt;
+macro_line|#include &lt;asm/processor.h&gt;
 multiline_comment|/*&n; * 0 - no debugging messages&n; * 1 - rare events and bugs (default)&n; * 2 - trace mode.&n; */
 DECL|macro|RT_CACHE_DEBUG
 mdefine_line|#define RT_CACHE_DEBUG&t;&t;0
@@ -502,9 +503,6 @@ OL
 l_int|1
 )paren
 (brace
-id|__label__
-id|__lbl
-suffix:semicolon
 id|printk
 c_func
 (paren
@@ -517,12 +515,12 @@ op_amp
 id|dst-&gt;__refcnt
 )paren
 comma
-op_logical_and
-id|__lbl
+id|current_text_addr
+c_func
+(paren
+)paren
 )paren
 suffix:semicolon
-id|__lbl
-suffix:colon
 )brace
 id|atomic_dec
 c_func
