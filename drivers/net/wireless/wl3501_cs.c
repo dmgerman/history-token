@@ -31,6 +31,13 @@ macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &quot;wl3501.h&quot;
+macro_line|#ifndef __i386__
+DECL|macro|slow_down_io
+mdefine_line|#define slow_down_io()
+macro_line|#endif
+multiline_comment|/* For rough constant delay */
+DECL|macro|WL3501_NOPLOOP
+mdefine_line|#define WL3501_NOPLOOP(n) { int x = 0; while (x++ &lt; n) slow_down_io(); }
 multiline_comment|/*&n; * All the PCMCIA modules use PCMCIA_DEBUG to control debugging.  If you do not&n; * define PCMCIA_DEBUG at all, all the debug code will be left out.  If you&n; * compile with PCMCIA_DEBUG=0, the debug code will be present but disabled --&n; * but it can then be enabled for specific modules at load time with a&n; * &squot;pc_debug=#&squot; option to insmod.&n; */
 DECL|macro|PCMCIA_DEBUG
 mdefine_line|#define PCMCIA_DEBUG 0

@@ -1584,9 +1584,6 @@ id|sig_id
 suffix:semicolon
 )brace
 suffix:semicolon
-multiline_comment|/* For rough constant delay */
-DECL|macro|WL3501_NOPLOOP
-mdefine_line|#define WL3501_NOPLOOP(n) { int x = 0; while (x++ &lt; n) slow_down_io(); }
 multiline_comment|/* Definitions for supporting clone adapters. */
 multiline_comment|/* System Interface Registers (SIR space) */
 DECL|macro|WL3501_NIC_GCR
