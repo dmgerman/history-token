@@ -5882,9 +5882,9 @@ l_int|0x40
 suffix:semicolon
 )brace
 )brace
+macro_line|#if 0
 r_static
 r_int
-DECL|function|imsttfb_load_cursor_image
 id|imsttfb_load_cursor_image
 c_func
 (paren
@@ -6591,7 +6591,6 @@ suffix:semicolon
 )brace
 r_static
 r_void
-DECL|function|imstt_set_cursor
 id|imstt_set_cursor
 c_func
 (paren
@@ -6925,7 +6924,6 @@ suffix:semicolon
 )brace
 )brace
 )brace
-macro_line|#if 0
 r_static
 r_int
 id|imsttfb_cursor
