@@ -4712,7 +4712,7 @@ id|tp
 comma
 id|mp-&gt;m_rootip
 comma
-id|IFREG
+id|S_IFREG
 comma
 l_int|1
 comma

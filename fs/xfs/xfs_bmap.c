@@ -1372,10 +1372,10 @@ c_cond
 (paren
 id|ip-&gt;i_d.di_mode
 op_amp
-id|IFMT
+id|S_IFMT
 )paren
 op_eq
-id|IFDIR
+id|S_IFDIR
 )paren
 (brace
 id|mp
@@ -15080,10 +15080,10 @@ op_logical_neg
 (paren
 id|ip-&gt;i_d.di_mode
 op_amp
-id|IFMT
+id|S_IFMT
 )paren
 op_eq
-id|IFREG
+id|S_IFREG
 op_logical_and
 id|whichfork
 op_eq

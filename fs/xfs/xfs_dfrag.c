@@ -541,7 +541,7 @@ c_func
 (paren
 id|ip
 comma
-id|IWRITE
+id|S_IWUSR
 comma
 l_int|NULL
 )paren
@@ -578,7 +578,7 @@ c_func
 (paren
 id|tip
 comma
-id|IWRITE
+id|S_IWUSR
 comma
 l_int|NULL
 )paren

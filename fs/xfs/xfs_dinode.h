@@ -241,7 +241,7 @@ DECL|member|di_dev
 id|xfs_dev_t
 id|di_dev
 suffix:semicolon
-multiline_comment|/* device for IFCHR/IFBLK */
+multiline_comment|/* device for S_IFCHR/S_IFBLK */
 DECL|member|di_muuid
 id|uuid_t
 id|di_muuid
@@ -1247,35 +1247,6 @@ mdefine_line|#define&t;XFS_DFORK_NEXT_SET_ARCH(dip,w,n,arch)&t;XFS_CFORK_NEXT_SE
 DECL|macro|XFS_DFORK_NEXT_SET
 mdefine_line|#define XFS_DFORK_NEXT_SET(dip,w,n)             XFS_DFORK_NEXT_SET_ARCH(dip,w,n,ARCH_NOCONVERT)
 macro_line|#endif
-multiline_comment|/*&n; * File types (mode field)&n; */
-DECL|macro|IFMT
-mdefine_line|#define&t;IFMT&t;&t;S_IFMT
-DECL|macro|IFSOCK
-mdefine_line|#define&t;IFSOCK&t;&t;S_IFSOCK
-DECL|macro|IFLNK
-mdefine_line|#define&t;IFLNK&t;&t;S_IFLNK
-DECL|macro|IFREG
-mdefine_line|#define&t;IFREG&t;&t;S_IFREG
-DECL|macro|IFBLK
-mdefine_line|#define&t;IFBLK&t;&t;S_IFBLK
-DECL|macro|IFDIR
-mdefine_line|#define&t;IFDIR&t;&t;S_IFDIR
-DECL|macro|IFCHR
-mdefine_line|#define&t;IFCHR&t;&t;S_IFCHR
-DECL|macro|IFIFO
-mdefine_line|#define&t;IFIFO&t;&t;S_IFIFO
-DECL|macro|ISUID
-mdefine_line|#define&t;ISUID&t;&t;S_ISUID
-DECL|macro|ISGID
-mdefine_line|#define&t;ISGID&t;&t;S_ISGID
-DECL|macro|ISVTX
-mdefine_line|#define&t;ISVTX&t;&t;S_ISVTX
-DECL|macro|IREAD
-mdefine_line|#define&t;IREAD&t;&t;S_IRUSR
-DECL|macro|IWRITE
-mdefine_line|#define&t;IWRITE&t;&t;S_IWUSR
-DECL|macro|IEXEC
-mdefine_line|#define&t;IEXEC&t;&t;S_IXUSR
 macro_line|#if XFS_WANT_FUNCS || (XFS_WANT_SPACE &amp;&amp; XFSSO_XFS_BUF_TO_DINODE)
 id|xfs_dinode_t
 op_star

@@ -8541,10 +8541,10 @@ c_func
 (paren
 id|dicp-&gt;di_mode
 op_amp
-id|IFMT
+id|S_IFMT
 )paren
 op_eq
-id|IFREG
+id|S_IFREG
 )paren
 )paren
 (brace
@@ -8619,10 +8619,10 @@ c_func
 (paren
 id|dicp-&gt;di_mode
 op_amp
-id|IFMT
+id|S_IFMT
 )paren
 op_eq
-id|IFDIR
+id|S_IFDIR
 )paren
 )paren
 (brace

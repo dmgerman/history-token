@@ -1421,7 +1421,7 @@ c_cond
 (paren
 id|vap-&gt;va_mode
 op_amp
-id|ISUID
+id|S_ISUID
 )paren
 op_logical_and
 op_logical_neg
@@ -1429,7 +1429,7 @@ id|file_owner
 )paren
 id|m
 op_or_assign
-id|ISUID
+id|S_ISUID
 suffix:semicolon
 r_if
 c_cond
@@ -1437,7 +1437,7 @@ c_cond
 (paren
 id|vap-&gt;va_mode
 op_amp
-id|ISGID
+id|S_ISGID
 )paren
 op_logical_and
 op_logical_neg
@@ -1452,7 +1452,7 @@ id|ip-&gt;i_d.di_gid
 )paren
 id|m
 op_or_assign
-id|ISGID
+id|S_ISGID
 suffix:semicolon
 macro_line|#if 0
 multiline_comment|/* Linux allows this, Irix doesn&squot;t. */
@@ -1462,7 +1462,7 @@ c_cond
 (paren
 id|vap-&gt;va_mode
 op_amp
-id|ISVTX
+id|S_ISVTX
 )paren
 op_logical_and
 id|vp-&gt;v_type
@@ -1471,7 +1471,7 @@ id|VDIR
 )paren
 id|m
 op_or_assign
-id|ISVTX
+id|S_ISVTX
 suffix:semicolon
 macro_line|#endif
 r_if
@@ -2548,14 +2548,14 @@ id|XFS_AT_MODE
 (brace
 id|ip-&gt;i_d.di_mode
 op_and_assign
-id|IFMT
+id|S_IFMT
 suffix:semicolon
 id|ip-&gt;i_d.di_mode
 op_or_assign
 id|vap-&gt;va_mode
 op_amp
 op_complement
-id|IFMT
+id|S_IFMT
 suffix:semicolon
 id|xfs_trans_log_inode
 (paren
@@ -2594,9 +2594,9 @@ c_cond
 id|ip-&gt;i_d.di_mode
 op_amp
 (paren
-id|ISUID
+id|S_ISUID
 op_or
-id|ISGID
+id|S_ISGID
 )paren
 )paren
 op_logical_and
@@ -2612,9 +2612,9 @@ id|ip-&gt;i_d.di_mode
 op_and_assign
 op_complement
 (paren
-id|ISUID
+id|S_ISUID
 op_or
-id|ISGID
+id|S_ISGID
 )paren
 suffix:semicolon
 )brace
@@ -3503,10 +3503,10 @@ c_func
 (paren
 id|ip-&gt;i_d.di_mode
 op_amp
-id|IFMT
+id|S_IFMT
 )paren
 op_eq
-id|IFLNK
+id|S_IFLNK
 )paren
 suffix:semicolon
 id|offset
@@ -5930,10 +5930,10 @@ c_cond
 (paren
 id|ip-&gt;i_d.di_mode
 op_amp
-id|IFMT
+id|S_IFMT
 )paren
 op_eq
-id|IFREG
+id|S_IFREG
 )paren
 op_logical_and
 (paren
@@ -6154,10 +6154,10 @@ op_logical_and
 (paren
 id|ip-&gt;i_d.di_mode
 op_amp
-id|IFMT
+id|S_IFMT
 )paren
 op_eq
-id|IFREG
+id|S_IFREG
 )paren
 )paren
 suffix:semicolon
@@ -6228,10 +6228,10 @@ c_cond
 (paren
 id|ip-&gt;i_d.di_mode
 op_amp
-id|IFMT
+id|S_IFMT
 )paren
 op_eq
-id|IFREG
+id|S_IFREG
 )paren
 op_logical_and
 (paren
@@ -6547,10 +6547,10 @@ c_cond
 (paren
 id|ip-&gt;i_d.di_mode
 op_amp
-id|IFMT
+id|S_IFMT
 )paren
 op_eq
-id|IFLNK
+id|S_IFLNK
 )paren
 (brace
 multiline_comment|/*&n;&t;&t; * If we get an error while cleaning up a&n;&t;&t; * symlink we bail out.&n;&t;&t; */
@@ -13045,13 +13045,13 @@ id|tp
 comma
 id|dp
 comma
-id|IFLNK
+id|S_IFLNK
 op_or
 (paren
 id|vap-&gt;va_mode
 op_amp
 op_complement
-id|IFMT
+id|S_IFMT
 )paren
 comma
 l_int|1
@@ -14645,10 +14645,10 @@ c_cond
 (paren
 id|ip-&gt;i_d.di_mode
 op_amp
-id|IFMT
+id|S_IFMT
 )paren
 op_eq
-id|IFREG
+id|S_IFREG
 )paren
 (brace
 r_if
@@ -17582,7 +17582,7 @@ c_func
 (paren
 id|ip
 comma
-id|IWRITE
+id|S_IWUSR
 comma
 id|credp
 )paren
@@ -17981,24 +17981,20 @@ suffix:semicolon
 id|ip-&gt;i_d.di_mode
 op_and_assign
 op_complement
-id|ISUID
+id|S_ISUID
 suffix:semicolon
-multiline_comment|/*&n;&t; * Note that we don&squot;t have to worry about mandatory&n;&t; * file locking being disabled here because we only&n;&t; * clear the ISGID bit if the Group execute bit is&n;&t; * on, but if it was on then mandatory locking wouldn&squot;t&n;&t; * have been enabled.&n;&t; */
+multiline_comment|/*&n;&t; * Note that we don&squot;t have to worry about mandatory&n;&t; * file locking being disabled here because we only&n;&t; * clear the S_ISGID bit if the Group execute bit is&n;&t; * on, but if it was on then mandatory locking wouldn&squot;t&n;&t; * have been enabled.&n;&t; */
 r_if
 c_cond
 (paren
 id|ip-&gt;i_d.di_mode
 op_amp
-(paren
-id|IEXEC
-op_rshift
-l_int|3
-)paren
+id|S_IXGRP
 )paren
 id|ip-&gt;i_d.di_mode
 op_and_assign
 op_complement
-id|ISGID
+id|S_ISGID
 suffix:semicolon
 id|xfs_ichgtime
 c_func

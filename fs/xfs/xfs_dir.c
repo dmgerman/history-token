@@ -698,10 +698,10 @@ c_func
 (paren
 id|dp-&gt;i_d.di_mode
 op_amp
-id|IFMT
+id|S_IFMT
 )paren
 op_eq
-id|IFDIR
+id|S_IFDIR
 )paren
 suffix:semicolon
 r_if
@@ -800,10 +800,10 @@ c_func
 (paren
 id|dir-&gt;i_d.di_mode
 op_amp
-id|IFMT
+id|S_IFMT
 )paren
 op_eq
-id|IFDIR
+id|S_IFDIR
 )paren
 suffix:semicolon
 r_if
@@ -889,10 +889,10 @@ c_func
 (paren
 id|dp-&gt;i_d.di_mode
 op_amp
-id|IFMT
+id|S_IFMT
 )paren
 op_eq
-id|IFDIR
+id|S_IFDIR
 )paren
 suffix:semicolon
 r_if
@@ -1189,10 +1189,10 @@ c_func
 (paren
 id|dp-&gt;i_d.di_mode
 op_amp
-id|IFMT
+id|S_IFMT
 )paren
 op_eq
-id|IFDIR
+id|S_IFDIR
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Fill in the arg structure for this request.&n;&t; */
@@ -1391,10 +1391,10 @@ c_func
 (paren
 id|dp-&gt;i_d.di_mode
 op_amp
-id|IFMT
+id|S_IFMT
 )paren
 op_eq
-id|IFDIR
+id|S_IFDIR
 )paren
 suffix:semicolon
 id|XFS_STATS_INC
@@ -1602,10 +1602,10 @@ c_func
 (paren
 id|dp-&gt;i_d.di_mode
 op_amp
-id|IFMT
+id|S_IFMT
 )paren
 op_eq
-id|IFDIR
+id|S_IFDIR
 )paren
 suffix:semicolon
 id|XFS_STATS_INC
@@ -1794,10 +1794,10 @@ c_func
 (paren
 id|dp-&gt;i_d.di_mode
 op_amp
-id|IFMT
+id|S_IFMT
 )paren
 op_eq
-id|IFDIR
+id|S_IFDIR
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * If our caller has given us a single contiguous memory buffer,&n;&t; * just work directly within that buffer.  If it&squot;s in user memory,&n;&t; * lock it down first.&n;&t; */
@@ -2043,10 +2043,10 @@ c_func
 (paren
 id|dp-&gt;i_d.di_mode
 op_amp
-id|IFMT
+id|S_IFMT
 )paren
 op_eq
-id|IFDIR
+id|S_IFDIR
 )paren
 suffix:semicolon
 r_if
@@ -2227,10 +2227,10 @@ comma
 id|ARCH_CONVERT
 )paren
 op_amp
-id|IFMT
+id|S_IFMT
 )paren
 op_ne
-id|IFDIR
+id|S_IFDIR
 )paren
 (brace
 r_return

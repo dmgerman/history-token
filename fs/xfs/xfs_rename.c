@@ -1020,10 +1020,10 @@ c_cond
 (paren
 id|src_ip-&gt;i_d.di_mode
 op_amp
-id|IFMT
+id|S_IFMT
 )paren
 op_eq
-id|IFDIR
+id|S_IFDIR
 )paren
 (brace
 multiline_comment|/*&n;&t;&t; * Check for link count overflow on target_dp&n;&t;&t; */
@@ -1084,10 +1084,10 @@ op_assign
 (paren
 id|src_ip-&gt;i_d.di_mode
 op_amp
-id|IFMT
+id|S_IFMT
 )paren
 op_eq
-id|IFDIR
+id|S_IFDIR
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Drop the locks on our inodes so that we can do the ancestor&n;&t; * check if necessary and start the transaction.&n;&t; */
@@ -1519,10 +1519,10 @@ c_cond
 (paren
 id|target_ip-&gt;i_d.di_mode
 op_amp
-id|IFMT
+id|S_IFMT
 )paren
 op_eq
-id|IFDIR
+id|S_IFDIR
 )paren
 (brace
 multiline_comment|/*&n;&t;&t;&t; * Make sure target dir is empty.&n;&t;&t;&t; */

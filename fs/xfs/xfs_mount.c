@@ -4052,10 +4052,10 @@ c_func
 (paren
 id|rip-&gt;i_d.di_mode
 op_amp
-id|IFMT
+id|S_IFMT
 )paren
 op_ne
-id|IFDIR
+id|S_IFDIR
 )paren
 )paren
 (brace
