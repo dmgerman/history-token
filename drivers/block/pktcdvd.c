@@ -376,7 +376,7 @@ id|alloc_page
 c_func
 (paren
 id|GFP_KERNEL
-op_logical_or
+op_or
 id|__GFP_ZERO
 )paren
 suffix:semicolon
