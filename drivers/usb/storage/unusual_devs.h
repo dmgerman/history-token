@@ -1205,7 +1205,7 @@ l_string|&quot;Lexar&quot;
 comma
 l_string|&quot;Jumpshot USB CF Reader&quot;
 comma
-id|US_SC_SCSI
+id|US_SC_DEVICE
 comma
 id|US_PR_JUMPSHOT
 comma
