@@ -1202,6 +1202,12 @@ r_int
 r_int
 id|ptrace_message
 suffix:semicolon
+DECL|member|last_siginfo
+id|siginfo_t
+op_star
+id|last_siginfo
+suffix:semicolon
+multiline_comment|/* For ptrace use.  */
 )brace
 suffix:semicolon
 r_extern

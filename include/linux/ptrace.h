@@ -36,6 +36,10 @@ DECL|macro|PTRACE_SETOPTIONS
 mdefine_line|#define PTRACE_SETOPTIONS&t;0x4200
 DECL|macro|PTRACE_GETEVENTMSG
 mdefine_line|#define PTRACE_GETEVENTMSG&t;0x4201
+DECL|macro|PTRACE_GETSIGINFO
+mdefine_line|#define PTRACE_GETSIGINFO&t;0x4202
+DECL|macro|PTRACE_SETSIGINFO
+mdefine_line|#define PTRACE_SETSIGINFO&t;0x4203
 multiline_comment|/* options set using PTRACE_SETOPTIONS */
 DECL|macro|PTRACE_O_TRACESYSGOOD
 mdefine_line|#define PTRACE_O_TRACESYSGOOD&t;0x00000001
