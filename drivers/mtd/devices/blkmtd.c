@@ -3014,6 +3014,10 @@ id|blkmtd_dev
 )paren
 )paren
 suffix:semicolon
+id|dev-&gt;blkdev
+op_assign
+id|bdev
+suffix:semicolon
 id|atomic_set
 c_func
 (paren
@@ -3040,10 +3044,6 @@ id|dev-&gt;wrbuf_mutex
 )paren
 suffix:semicolon
 )brace
-id|dev-&gt;blkdev
-op_assign
-id|bdev
-suffix:semicolon
 id|dev-&gt;mtd_info.size
 op_assign
 id|dev-&gt;blkdev-&gt;bd_inode-&gt;i_size
