@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/sysctl.h&gt;
 macro_line|#include &lt;net/tcp.h&gt;
 macro_line|#include &lt;net/inet_common.h&gt;
 macro_line|#include &lt;linux/ipsec.h&gt;
+macro_line|#include &lt;asm/unaligned.h&gt;
 DECL|variable|sysctl_tcp_timestamps
 r_int
 id|sysctl_tcp_timestamps
@@ -10734,12 +10735,15 @@ op_assign
 id|ntohs
 c_func
 (paren
-op_star
+id|get_unaligned
+c_func
+(paren
 (paren
 id|__u16
 op_star
 )paren
 id|ptr
+)paren
 )paren
 suffix:semicolon
 r_if
@@ -10876,12 +10880,15 @@ op_assign
 id|ntohl
 c_func
 (paren
-op_star
+id|get_unaligned
+c_func
+(paren
 (paren
 id|__u32
 op_star
 )paren
 id|ptr
+)paren
 )paren
 suffix:semicolon
 id|opt_rx-&gt;rcv_tsecr
@@ -10889,7 +10896,9 @@ op_assign
 id|ntohl
 c_func
 (paren
-op_star
+id|get_unaligned
+c_func
+(paren
 (paren
 id|__u32
 op_star
@@ -10898,6 +10907,7 @@ op_star
 id|ptr
 op_plus
 l_int|4
+)paren
 )paren
 )paren
 suffix:semicolon
