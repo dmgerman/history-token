@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * $Id: mtd_blkdevs.c,v 1.15 2003/06/23 12:00:08 dwmw2 Exp $&n; *&n; * (C) 2003 David Woodhouse &lt;dwmw2@infradead.org&gt;&n; *&n; * Interface to Linux 2.5 block layer for MTD &squot;translation layers&squot;.&n; *&n; */
+multiline_comment|/*&n; * $Id: mtd_blkdevs.c,v 1.16 2003/06/23 13:34:43 dwmw2 Exp $&n; *&n; * (C) 2003 David Woodhouse &lt;dwmw2@infradead.org&gt;&n; *&n; * Interface to Linux 2.5 block layer for MTD &squot;translation layers&squot;.&n; *&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -1488,25 +1488,6 @@ id|MTD_ABSENT
 )paren
 r_return
 suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;%s:%s %d: count %d&bslash;n&quot;
-comma
-id|__FILE__
-comma
-id|__func__
-comma
-id|__LINE__
-comma
-id|atomic_read
-c_func
-(paren
-op_amp
-id|mtd_table_mutex.count
-)paren
-)paren
-suffix:semicolon
 id|list_for_each
 c_func
 (paren
@@ -1798,25 +1779,6 @@ id|tr-&gt;list
 comma
 op_amp
 id|blktrans_majors
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;%s:%s %d: count %d&bslash;n&quot;
-comma
-id|__FILE__
-comma
-id|__func__
-comma
-id|__LINE__
-comma
-id|atomic_read
-c_func
-(paren
-op_amp
-id|mtd_table_mutex.count
-)paren
 )paren
 suffix:semicolon
 r_for
