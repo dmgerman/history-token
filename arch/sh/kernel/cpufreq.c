@@ -552,9 +552,9 @@ op_assign
 id|min_freq
 suffix:semicolon
 multiline_comment|/* cpuinfo and default policy values */
-id|policy-&gt;policy
+id|policy-&gt;governor
 op_assign
-id|CPUFREQ_POLICY_PERFORMANCE
+id|CPUFREQ_DEFAULT_GOVERNOR
 suffix:semicolon
 id|policy-&gt;cpuinfo.transition_latency
 op_assign

@@ -868,11 +868,7 @@ suffix:colon
 multiline_comment|/* reserve rdev for later checking */
 id|attr-&gt;ia_size
 op_assign
-id|kdev_t_to_nr
-c_func
-(paren
 id|inode-&gt;i_rdev
-)paren
 suffix:semicolon
 id|attr-&gt;ia_valid
 op_or_assign
@@ -978,12 +974,14 @@ id|size
 op_assign
 id|attr-&gt;ia_size
 suffix:semicolon
+multiline_comment|/* may need to change when we widen dev_t */
 id|rdev
 op_assign
+id|old_decode_dev
+c_func
 (paren
-id|dev_t
-)paren
 id|size
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -1078,11 +1076,7 @@ op_logical_or
 (paren
 id|is_borc
 op_logical_and
-id|kdev_t_to_nr
-c_func
-(paren
 id|inode-&gt;i_rdev
-)paren
 op_ne
 id|rdev
 )paren

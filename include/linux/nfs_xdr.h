@@ -86,7 +86,7 @@ DECL|member|du
 id|du
 suffix:semicolon
 DECL|member|rdev
-id|__u32
+id|dev_t
 id|rdev
 suffix:semicolon
 r_union

@@ -943,7 +943,7 @@ op_assign
 (paren
 id|__u32
 )paren
-id|kdev_t_to_nr
+id|old_encode_dev
 c_func
 (paren
 id|inode-&gt;i_rdev

@@ -44,13 +44,11 @@ DECL|macro|CPUFREQ_TRANSITION_NOTIFIER
 mdefine_line|#define CPUFREQ_TRANSITION_NOTIFIER&t;(0)
 DECL|macro|CPUFREQ_POLICY_NOTIFIER
 mdefine_line|#define CPUFREQ_POLICY_NOTIFIER&t;&t;(1)
-multiline_comment|/********************** cpufreq policy notifiers *********************/
+multiline_comment|/* if (cpufreq_driver-&gt;target) exists, the -&gt;governor decides what frequency&n; * within the limits is used. If (cpufreq_driver-&gt;setpolicy&gt; exists, these&n; * two generic policies are available:&n; */
 DECL|macro|CPUFREQ_POLICY_POWERSAVE
 mdefine_line|#define CPUFREQ_POLICY_POWERSAVE&t;(1)
 DECL|macro|CPUFREQ_POLICY_PERFORMANCE
 mdefine_line|#define CPUFREQ_POLICY_PERFORMANCE&t;(2)
-DECL|macro|CPUFREQ_POLICY_GOVERNOR
-mdefine_line|#define CPUFREQ_POLICY_GOVERNOR&t;&t;(3)
 multiline_comment|/* Frequency values here are CPU kHz so that hardware which doesn&squot;t run &n; * with some frequencies can complain without having to guess what per &n; * cent / per mille means. &n; * Maximum transition latency is in microseconds - if it&squot;s unknown,&n; * CPUFREQ_ETERNAL shall be used.&n; */
 r_struct
 id|cpufreq_governor
@@ -464,6 +462,19 @@ op_star
 id|policy
 )paren
 suffix:semicolon
+DECL|member|resume
+r_int
+(paren
+op_star
+id|resume
+)paren
+(paren
+r_struct
+id|cpufreq_policy
+op_star
+id|policy
+)paren
+suffix:semicolon
 DECL|member|attr
 r_struct
 id|freq_attr
@@ -678,11 +689,6 @@ id|governor
 suffix:semicolon
 macro_line|#if defined(CONFIG_CPU_FREQ_GOV_USERSPACE) || defined(CONFIG_CPU_FREQ_GOV_USERSPACE_MODULE)
 multiline_comment|/*********************************************************************&n; *                      CPUFREQ USERSPACE GOVERNOR                   *&n; *********************************************************************/
-r_extern
-r_struct
-id|cpufreq_governor
-id|cpufreq_gov_userspace
-suffix:semicolon
 r_int
 id|cpufreq_gov_userspace_init
 c_func
@@ -916,6 +922,24 @@ comma
 suffix:semicolon
 macro_line|#endif /* CONFIG_CPU_FREQ_24_API */
 macro_line|#endif /* CONFIG_CPU_FREQ_GOV_USERSPACE */
+multiline_comment|/*********************************************************************&n; *                       CPUFREQ DEFAULT GOVERNOR                    *&n; *********************************************************************/
+macro_line|#ifdef CONFIG_CPU_FREQ_DEFAULT_GOV_PERFORMANCE
+r_extern
+r_struct
+id|cpufreq_governor
+id|cpufreq_gov_performance
+suffix:semicolon
+DECL|macro|CPUFREQ_DEFAULT_GOVERNOR
+mdefine_line|#define CPUFREQ_DEFAULT_GOVERNOR&t;&amp;cpufreq_gov_performance
+macro_line|#elif CONFIG_CPU_FREQ_DEFAULT_GOV_USERSPACE
+r_extern
+r_struct
+id|cpufreq_governor
+id|cpufreq_gov_userspace
+suffix:semicolon
+DECL|macro|CPUFREQ_DEFAULT_GOVERNOR
+mdefine_line|#define CPUFREQ_DEFAULT_GOVERNOR&t;&amp;cpufreq_gov_userspace
+macro_line|#endif
 multiline_comment|/*********************************************************************&n; *                     FREQUENCY TABLE HELPERS                       *&n; *********************************************************************/
 DECL|macro|CPUFREQ_ENTRY_INVALID
 mdefine_line|#define CPUFREQ_ENTRY_INVALID ~0

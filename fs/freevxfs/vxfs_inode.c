@@ -1035,7 +1035,11 @@ id|ip
 comma
 id|ip-&gt;i_mode
 comma
+id|old_decode_dev
+c_func
+(paren
 id|vip-&gt;vii_rdev
+)paren
 )paren
 suffix:semicolon
 r_return

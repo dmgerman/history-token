@@ -22,14 +22,6 @@ macro_line|#include &lt;asm/atari_stram.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#include &lt;linux/swapops.h&gt;
-macro_line|#ifdef CONFIG_STRAM_SWAP
-DECL|macro|MAJOR_NR
-mdefine_line|#define MAJOR_NR    Z2RAM_MAJOR
-DECL|macro|do_z2_request
-mdefine_line|#define do_z2_request do_stram_request
-DECL|macro|DEVICE_NR
-mdefine_line|#define DEVICE_NR(device) (minor(device))
-macro_line|#endif
 DECL|macro|DEBUG
 macro_line|#undef DEBUG
 macro_line|#ifdef DEBUG

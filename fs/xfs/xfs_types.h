@@ -484,6 +484,6 @@ mdefine_line|#define XFS_DEV_MINOR(dev)&t;((int)((dev)&amp;XFS_DEV_MAXMIN))
 DECL|macro|XFS_MKDEV
 mdefine_line|#define XFS_MKDEV(major,minor) ((xfs_dev_t)(((major)&lt;&lt;XFS_DEV_BITSMINOR) &bslash;&n;&t;&t;&t;&t;    | (minor&amp;XFS_DEV_MAXMIN)))
 DECL|macro|XFS_DEV_TO_KDEVT
-mdefine_line|#define XFS_DEV_TO_KDEVT(dev)&t;mk_kdev(XFS_DEV_MAJOR(dev),XFS_DEV_MINOR(dev))
+mdefine_line|#define XFS_DEV_TO_KDEVT(dev)&t;MKDEV(XFS_DEV_MAJOR(dev),XFS_DEV_MINOR(dev))
 macro_line|#endif&t;/* !__XFS_TYPES_H */
 eof

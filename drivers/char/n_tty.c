@@ -17,10 +17,6 @@ macro_line|#include &lt;linux/poll.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
-DECL|macro|IS_CONSOLE_DEV
-mdefine_line|#define IS_CONSOLE_DEV(dev)&t;(kdev_val(dev) == __mkdev(TTY_MAJOR,0))
-DECL|macro|IS_SYSCONS_DEV
-mdefine_line|#define IS_SYSCONS_DEV(dev)&t;(kdev_val(dev) == __mkdev(TTYAUX_MAJOR,1))
 multiline_comment|/* number of characters left in xmit buffer before select has we have room */
 DECL|macro|WAKEUP_CHARS
 mdefine_line|#define WAKEUP_CHARS 256
@@ -4681,6 +4677,25 @@ r_return
 id|retval
 suffix:semicolon
 )brace
+r_extern
+id|ssize_t
+id|redirected_tty_write
+c_func
+(paren
+r_struct
+id|file
+op_star
+comma
+r_const
+r_char
+op_star
+comma
+r_int
+comma
+id|loff_t
+op_star
+)paren
+suffix:semicolon
 DECL|function|read_chan
 r_static
 id|ssize_t
@@ -4770,19 +4785,9 @@ multiline_comment|/* don&squot;t stop on /dev/console */
 r_if
 c_cond
 (paren
-op_logical_neg
-id|IS_CONSOLE_DEV
-c_func
-(paren
-id|file-&gt;f_dentry-&gt;d_inode-&gt;i_rdev
-)paren
-op_logical_and
-op_logical_neg
-id|IS_SYSCONS_DEV
-c_func
-(paren
-id|file-&gt;f_dentry-&gt;d_inode-&gt;i_rdev
-)paren
+id|file-&gt;f_op-&gt;write
+op_ne
+id|redirected_tty_write
 op_logical_and
 id|current-&gt;tty
 op_eq
@@ -5678,19 +5683,9 @@ c_func
 id|tty
 )paren
 op_logical_and
-op_logical_neg
-id|IS_CONSOLE_DEV
-c_func
-(paren
-id|file-&gt;f_dentry-&gt;d_inode-&gt;i_rdev
-)paren
-op_logical_and
-op_logical_neg
-id|IS_SYSCONS_DEV
-c_func
-(paren
-id|file-&gt;f_dentry-&gt;d_inode-&gt;i_rdev
-)paren
+id|file-&gt;f_op-&gt;write
+op_ne
+id|redirected_tty_write
 )paren
 (brace
 id|retval

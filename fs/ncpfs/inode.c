@@ -951,10 +951,6 @@ id|inode-&gt;i_gid
 op_assign
 id|server-&gt;m.gid
 suffix:semicolon
-id|inode-&gt;i_rdev
-op_assign
-id|NODEV
-suffix:semicolon
 id|inode-&gt;i_blksize
 op_assign
 id|NCP_BLOCK_SIZE
@@ -1167,7 +1163,11 @@ id|inode
 comma
 id|inode-&gt;i_mode
 comma
+id|old_decode_dev
+c_func
+(paren
 id|info-&gt;i.nfs.rdev
+)paren
 )paren
 suffix:semicolon
 macro_line|#endif

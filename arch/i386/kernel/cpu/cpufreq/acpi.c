@@ -2340,9 +2340,9 @@ dot
 id|transition_latency
 suffix:semicolon
 )brace
-id|policy-&gt;policy
+id|policy-&gt;governor
 op_assign
-id|CPUFREQ_POLICY_PERFORMANCE
+id|CPUFREQ_DEFAULT_GOVERNOR
 suffix:semicolon
 id|policy-&gt;cur
 op_assign

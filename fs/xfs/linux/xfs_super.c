@@ -336,11 +336,7 @@ id|inode
 comma
 id|inode-&gt;i_mode
 comma
-id|kdev_t_to_nr
-c_func
-(paren
 id|inode-&gt;i_rdev
-)paren
 )paren
 suffix:semicolon
 )brace
@@ -432,7 +428,7 @@ l_int|0
 (brace
 id|inode-&gt;i_rdev
 op_assign
-id|NODEV
+l_int|0
 suffix:semicolon
 )brace
 r_else
