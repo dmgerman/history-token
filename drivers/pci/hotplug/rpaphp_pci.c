@@ -1028,6 +1028,12 @@ r_goto
 m_exit
 suffix:semicolon
 )brace
+id|eeh_add_device_early
+c_func
+(paren
+id|slot-&gt;dn-&gt;child
+)paren
+suffix:semicolon
 id|dev
 op_assign
 id|rpaphp_pci_config_dn
@@ -1038,7 +1044,7 @@ comma
 id|pci_bus
 )paren
 suffix:semicolon
-id|eeh_add_device
+id|eeh_add_device_late
 c_func
 (paren
 id|dev
