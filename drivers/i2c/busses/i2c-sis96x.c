@@ -1139,7 +1139,7 @@ c_func
 (paren
 id|sis96x_adapter.name
 comma
-id|DEVICE_NAME_SIZE
+id|I2C_NAME_SIZE
 comma
 l_string|&quot;SiS96x SMBus adapter at 0x%04x&quot;
 comma

@@ -7061,7 +7061,7 @@ c_func
 (paren
 id|c-&gt;name
 comma
-id|DEVICE_NAME_SIZE
+id|I2C_NAME_SIZE
 comma
 l_string|&quot;MSP34%02d%c-%c%d&quot;
 comma

@@ -2964,7 +2964,7 @@ id|new_client-&gt;name
 comma
 id|name
 comma
-id|DEVICE_NAME_SIZE
+id|I2C_NAME_SIZE
 )paren
 suffix:semicolon
 id|data-&gt;type

@@ -119,6 +119,8 @@ DECL|macro|I2C_DRIVERID_UDA1342
 mdefine_line|#define I2C_DRIVERID_UDA1342&t;53&t;/* UDA1342 audio codec&t;&t;*/
 DECL|macro|I2C_DRIVERID_ADV7170
 mdefine_line|#define I2C_DRIVERID_ADV7170&t;54&t;/* video encoder&t;&t;*/
+DECL|macro|I2C_DRIVERID_RADEON
+mdefine_line|#define I2C_DRIVERID_RADEON&t;55&t;/* I2C bus on Radeon boards&t;*/
 DECL|macro|I2C_DRIVERID_EXP0
 mdefine_line|#define I2C_DRIVERID_EXP0&t;0xF0&t;/* experimental use id&squot;s&t;*/
 DECL|macro|I2C_DRIVERID_EXP1

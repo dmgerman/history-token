@@ -532,7 +532,7 @@ id|client-&gt;name
 comma
 id|IF_NAME
 comma
-id|DEVICE_NAME_SIZE
+id|I2C_NAME_SIZE
 )paren
 suffix:semicolon
 id|init_MUTEX
