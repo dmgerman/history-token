@@ -5126,6 +5126,10 @@ comma
 r_void
 op_star
 )paren
+(paren
+r_int
+r_int
+)paren
 id|current_cpu
 c_func
 (paren
@@ -14043,12 +14047,20 @@ comma
 r_void
 op_star
 )paren
+(paren
+r_int
+r_int
+)paren
 id|lock
 comma
 multiline_comment|/* 1 = LOCK, 3=UNLOCK, etc */
 (paren
 r_void
 op_star
+)paren
+(paren
+r_int
+r_int
 )paren
 id|lockflags
 comma
@@ -14064,6 +14076,10 @@ multiline_comment|/* caller of ilock */
 r_void
 op_star
 )paren
+(paren
+r_int
+r_int
+)paren
 id|current_cpu
 c_func
 (paren
@@ -14072,6 +14088,10 @@ comma
 (paren
 r_void
 op_star
+)paren
+(paren
+r_int
+r_int
 )paren
 id|current_pid
 c_func
