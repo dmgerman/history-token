@@ -6,6 +6,8 @@ macro_line|#include &lt;linux/cpufreq.h&gt;
 macro_line|#include &lt;linux/ctype.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
+DECL|macro|CPUFREQ_ALL_CPUS
+mdefine_line|#define CPUFREQ_ALL_CPUS&t;&t;((NR_CPUS))
 multiline_comment|/**&n; * cpufreq_parse_policy - parse a policy string&n; * @input_string: the string to parse.&n; * @policy: the policy written inside input_string&n; *&n; * This function parses a &quot;policy string&quot; - something the user echo&squot;es into&n; * /proc/cpufreq or gives as boot parameter - into a struct cpufreq_policy.&n; * If there are invalid/missing entries, they are replaced with current&n; * cpufreq policy.&n; */
 DECL|function|cpufreq_parse_policy
 r_static
@@ -647,7 +649,6 @@ id|file
 comma
 r_const
 r_char
-id|__user
 op_star
 id|buffer
 comma

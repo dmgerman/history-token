@@ -11,8 +11,6 @@ macro_line|#include &lt;linux/sysfs.h&gt;
 macro_line|#include &lt;linux/completion.h&gt;
 DECL|macro|CPUFREQ_NAME_LEN
 mdefine_line|#define CPUFREQ_NAME_LEN 16
-DECL|macro|CPUFREQ_ALL_CPUS
-mdefine_line|#define CPUFREQ_ALL_CPUS&t;((NR_CPUS))
 multiline_comment|/*********************************************************************&n; *                     CPUFREQ NOTIFIER INTERFACE                    *&n; *********************************************************************/
 r_int
 id|cpufreq_register_notifier
