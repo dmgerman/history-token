@@ -1,5 +1,6 @@
 multiline_comment|/*&n; * Copyright (c) 2004, 2005 Topspin Communications.  All rights reserved.&n; *&n; * This software is available to you under a choice of one of two&n; * licenses.  You may choose to be licensed under the terms of the GNU&n; * General Public License (GPL) Version 2, available from the file&n; * COPYING in the main directory of this source tree, or the&n; * OpenIB.org BSD license below:&n; *&n; *     Redistribution and use in source and binary forms, with or&n; *     without modification, are permitted provided that the following&n; *     conditions are met:&n; *&n; *      - Redistributions of source code must retain the above&n; *        copyright notice, this list of conditions and the following&n; *        disclaimer.&n; *&n; *      - Redistributions in binary form must reproduce the above&n; *        copyright notice, this list of conditions and the following&n; *        disclaimer in the documentation and/or other materials&n; *        provided with the distribution.&n; *&n; * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND,&n; * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF&n; * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND&n; * NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS&n; * BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN&n; * ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN&n; * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE&n; * SOFTWARE.&n; *&n; * $Id: mthca_cq.c 1369 2004-12-20 16:17:07Z roland $&n; */
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/hardirq.h&gt;
 macro_line|#include &lt;ib_pack.h&gt;
 macro_line|#include &quot;mthca_dev.h&quot;
 macro_line|#include &quot;mthca_cmd.h&quot;
@@ -562,13 +563,6 @@ id|mthca_cq
 op_star
 id|cq
 suffix:semicolon
-id|spin_lock
-c_func
-(paren
-op_amp
-id|dev-&gt;cq_table.lock
-)paren
-suffix:semicolon
 id|cq
 op_assign
 id|mthca_array_get
@@ -584,25 +578,6 @@ id|dev-&gt;limits.num_cqs
 op_minus
 l_int|1
 )paren
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|cq
-)paren
-id|atomic_inc
-c_func
-(paren
-op_amp
-id|cq-&gt;refcount
-)paren
-suffix:semicolon
-id|spin_unlock
-c_func
-(paren
-op_amp
-id|dev-&gt;cq_table.lock
 )paren
 suffix:semicolon
 r_if
@@ -634,23 +609,6 @@ op_amp
 id|cq-&gt;ibcq
 comma
 id|cq-&gt;ibcq.cq_context
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|atomic_dec_and_test
-c_func
-(paren
-op_amp
-id|cq-&gt;refcount
-)paren
-)paren
-id|wake_up
-c_func
-(paren
-op_amp
-id|cq-&gt;wait
 )paren
 suffix:semicolon
 )brace
@@ -3477,6 +3435,31 @@ c_func
 (paren
 op_amp
 id|dev-&gt;cq_table.lock
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|dev-&gt;mthca_flags
+op_amp
+id|MTHCA_FLAG_MSI_X
+)paren
+id|synchronize_irq
+c_func
+(paren
+id|dev-&gt;eq_table.eq
+(braket
+id|MTHCA_EQ_COMP
+)braket
+dot
+id|msi_x_vector
+)paren
+suffix:semicolon
+r_else
+id|synchronize_irq
+c_func
+(paren
+id|dev-&gt;pdev-&gt;irq
 )paren
 suffix:semicolon
 id|atomic_dec
