@@ -198,8 +198,6 @@ id|curptr
 comma
 id|size
 )paren
-OL
-l_int|0
 )paren
 r_return
 op_minus
@@ -543,8 +541,6 @@ id|event-&gt;data.ext.ptr
 comma
 id|len
 )paren
-OL
-l_int|0
 )paren
 r_return
 op_minus
