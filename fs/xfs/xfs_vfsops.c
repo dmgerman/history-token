@@ -2158,6 +2158,11 @@ id|pincount
 comma
 id|error
 suffix:semicolon
+r_int
+id|count
+op_assign
+l_int|0
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2230,6 +2235,7 @@ comma
 l_int|0
 )paren
 suffix:semicolon
+multiline_comment|/* This loop must run at least twice.&n;&t;&t; * The first instance of the loop will flush&n;&t;&t; * most meta data but that will generate more&n;&t;&t; * meta data (typically directory updates).&n;&t;&t; * Which then must be flushed and logged before&n;&t;&t; * we can write the unmount record.&n;&t;&t; */
 r_do
 (brace
 id|VFS_SYNC
@@ -2255,11 +2261,31 @@ op_amp
 id|pincount
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+l_int|0
+op_eq
+id|pincount
+)paren
+(brace
+id|delay
+c_func
+(paren
+l_int|50
+)paren
+suffix:semicolon
+id|count
+op_increment
+suffix:semicolon
+)brace
 )brace
 r_while
 c_loop
 (paren
-id|pincount
+id|count
+OL
+l_int|2
 )paren
 suffix:semicolon
 multiline_comment|/* Ok now write out an unmount record */
