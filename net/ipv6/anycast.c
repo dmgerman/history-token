@@ -1852,7 +1852,7 @@ suffix:semicolon
 )brace
 suffix:semicolon
 DECL|macro|ac6_seq_private
-mdefine_line|#define ac6_seq_private(seq)&t;((struct ac6_iter_state *)&amp;seq-&gt;private)
+mdefine_line|#define ac6_seq_private(seq)&t;((struct ac6_iter_state *)(seq)-&gt;private)
 DECL|function|ac6_get_first
 r_static
 r_inline
