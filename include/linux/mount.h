@@ -208,6 +208,10 @@ op_star
 id|data
 )paren
 suffix:semicolon
+r_extern
+id|spinlock_t
+id|vfsmount_lock
+suffix:semicolon
 macro_line|#endif
 macro_line|#endif /* _LINUX_MOUNT_H */
 eof
