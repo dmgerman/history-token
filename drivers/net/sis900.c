@@ -877,7 +877,7 @@ r_int
 id|duplex
 )paren
 suffix:semicolon
-multiline_comment|/**&n; *&t;sis900_get_mac_addr: - Get MAC address for stand alone SiS900 model&n; *&t;@pci_dev: the sis900 pci device&n; *&t;@net_dev: the net device to get address for &n; *&n; *&t;Older SiS900 and friends, use EEPROM to store MAC address.&n; *&t;MAC address is read from read_eeprom() into @net_dev-&gt;dev_addr.&n; */
+multiline_comment|/**&n; *&t;sis900_get_mac_addr - Get MAC address for stand alone SiS900 model&n; *&t;@pci_dev: the sis900 pci device&n; *&t;@net_dev: the net device to get address for &n; *&n; *&t;Older SiS900 and friends, use EEPROM to store MAC address.&n; *&t;MAC address is read from read_eeprom() into @net_dev-&gt;dev_addr.&n; */
 DECL|function|sis900_get_mac_addr
 r_static
 r_int
@@ -995,7 +995,7 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;sis630e_get_mac_addr: - Get MAC address for SiS630E model&n; *&t;@pci_dev: the sis900 pci device&n; *&t;@net_dev: the net device to get address for &n; *&n; *&t;SiS630E model, use APC CMOS RAM to store MAC address.&n; *&t;APC CMOS RAM is accessed through ISA bridge.&n; *&t;MAC address is read into @net_dev-&gt;dev_addr.&n; */
+multiline_comment|/**&n; *&t;sis630e_get_mac_addr - Get MAC address for SiS630E model&n; *&t;@pci_dev: the sis900 pci device&n; *&t;@net_dev: the net device to get address for &n; *&n; *&t;SiS630E model, use APC CMOS RAM to store MAC address.&n; *&t;APC CMOS RAM is accessed through ISA bridge.&n; *&t;MAC address is read into @net_dev-&gt;dev_addr.&n; */
 DECL|function|sis630e_get_mac_addr
 r_static
 r_int
@@ -1144,7 +1144,7 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;sis635_get_mac_addr: - Get MAC address for SIS635 model&n; *&t;@pci_dev: the sis900 pci device&n; *&t;@net_dev: the net device to get address for &n; *&n; *&t;SiS635 model, set MAC Reload Bit to load Mac address from APC&n; *&t;to rfdr. rfdr is accessed through rfcr. MAC address is read into &n; *&t;@net_dev-&gt;dev_addr.&n; */
+multiline_comment|/**&n; *&t;sis635_get_mac_addr - Get MAC address for SIS635 model&n; *&t;@pci_dev: the sis900 pci device&n; *&t;@net_dev: the net device to get address for &n; *&n; *&t;SiS635 model, set MAC Reload Bit to load Mac address from APC&n; *&t;to rfdr. rfdr is accessed through rfcr. MAC address is read into &n; *&t;@net_dev-&gt;dev_addr.&n; */
 DECL|function|sis635_get_mac_addr
 r_static
 r_int
@@ -1289,7 +1289,7 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;sis96x_get_mac_addr: - Get MAC address for SiS962 or SiS963 model&n; *&t;@pci_dev: the sis900 pci device&n; *&t;@net_dev: the net device to get address for &n; *&n; *&t;SiS962 or SiS963 model, use EEPROM to store MAC address. And EEPROM &n; *&t;is shared by&n; *&t;LAN and 1394. When access EEPROM, send EEREQ signal to hardware first &n; *&t;and wait for EEGNT. If EEGNT is ON, EEPROM is permitted to be access &n; *&t;by LAN, otherwise is not. After MAC address is read from EEPROM, send&n; *&t;EEDONE signal to refuse EEPROM access by LAN. &n; *&t;The EEPROM map of SiS962 or SiS963 is different to SiS900. &n; *&t;The signature field in SiS962 or SiS963 spec is meaningless. &n; *&t;MAC address is read into @net_dev-&gt;dev_addr.&n; */
+multiline_comment|/**&n; *&t;sis96x_get_mac_addr - Get MAC address for SiS962 or SiS963 model&n; *&t;@pci_dev: the sis900 pci device&n; *&t;@net_dev: the net device to get address for &n; *&n; *&t;SiS962 or SiS963 model, use EEPROM to store MAC address. And EEPROM &n; *&t;is shared by&n; *&t;LAN and 1394. When access EEPROM, send EEREQ signal to hardware first &n; *&t;and wait for EEGNT. If EEGNT is ON, EEPROM is permitted to be access &n; *&t;by LAN, otherwise is not. After MAC address is read from EEPROM, send&n; *&t;EEDONE signal to refuse EEPROM access by LAN. &n; *&t;The EEPROM map of SiS962 or SiS963 is different to SiS900. &n; *&t;The signature field in SiS962 or SiS963 spec is meaningless. &n; *&t;MAC address is read into @net_dev-&gt;dev_addr.&n; */
 DECL|function|sis96x_get_mac_addr
 r_static
 r_int
@@ -1431,7 +1431,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;sis900_probe: - Probe for sis900 device&n; *&t;@pci_dev: the sis900 pci device&n; *&t;@pci_id: the pci device ID&n; *&n; *&t;Check and probe sis900 net device for @pci_dev.&n; *&t;Get mac address according to the chip revision, &n; *&t;and assign SiS900-specific entries in the device structure.&n; *&t;ie: sis900_open(), sis900_start_xmit(), sis900_close(), etc.&n; */
+multiline_comment|/**&n; *&t;sis900_probe - Probe for sis900 device&n; *&t;@pci_dev: the sis900 pci device&n; *&t;@pci_id: the pci device ID&n; *&n; *&t;Check and probe sis900 net device for @pci_dev.&n; *&t;Get mac address according to the chip revision, &n; *&t;and assign SiS900-specific entries in the device structure.&n; *&t;ie: sis900_open(), sis900_start_xmit(), sis900_close(), etc.&n; */
 DECL|function|sis900_probe
 r_static
 r_int
@@ -2074,7 +2074,7 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;sis900_mii_probe: - Probe MII PHY for sis900&n; *&t;@net_dev: the net device to probe for&n; *&t;&n; *&t;Search for total of 32 possible mii phy addresses.&n; *&t;Identify and set current phy if found one,&n; *&t;return error if it failed to found.&n; */
+multiline_comment|/**&n; *&t;sis900_mii_probe - Probe MII PHY for sis900&n; *&t;@net_dev: the net device to probe for&n; *&t;&n; *&t;Search for total of 32 possible mii phy addresses.&n; *&t;Identify and set current phy if found one,&n; *&t;return error if it failed to found.&n; */
 DECL|function|sis900_mii_probe
 r_static
 r_int
@@ -2687,7 +2687,7 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;sis900_default_phy: - Select default PHY for sis900 mac.&n; *&t;@net_dev: the net device to probe for&n; *&n; *&t;Select first detected PHY with link as default.&n; *&t;If no one is link on, select PHY whose types is HOME as default.&n; *&t;If HOME doesn&squot;t exist, select LAN.&n; */
+multiline_comment|/**&n; *&t;sis900_default_phy - Select default PHY for sis900 mac.&n; *&t;@net_dev: the net device to probe for&n; *&n; *&t;Select first detected PHY with link as default.&n; *&t;If no one is link on, select PHY whose types is HOME as default.&n; *&t;If HOME doesn&squot;t exist, select LAN.&n; */
 DECL|function|sis900_default_phy
 r_static
 id|u16
@@ -2945,7 +2945,7 @@ r_return
 id|status
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * &t;sis900_set_capability: - set the media capability of network adapter.&n; *&t;@net_dev : the net device to probe for&n; *&t;@phy : default PHY&n; *&n; *&t;Set the media capability of network adapter according to&n; *&t;mii status register. It&squot;s necessary before auto-negotiate.&n; */
+multiline_comment|/**&n; * &t;sis900_set_capability - set the media capability of network adapter.&n; *&t;@net_dev : the net device to probe for&n; *&t;@phy : default PHY&n; *&n; *&t;Set the media capability of network adapter according to&n; *&t;mii status register. It&squot;s necessary before auto-negotiate.&n; */
 DECL|function|sis900_set_capability
 r_static
 r_void
@@ -3065,7 +3065,7 @@ suffix:semicolon
 multiline_comment|/* Delay between EEPROM clock transitions. */
 DECL|macro|eeprom_delay
 mdefine_line|#define eeprom_delay()  inl(ee_addr)
-multiline_comment|/**&n; *&t;read_eeprom: - Read Serial EEPROM&n; *&t;@ioaddr: base i/o address&n; *&t;@location: the EEPROM location to read&n; *&n; *&t;Read Serial EEPROM through EEPROM Access Register.&n; *&t;Note that location is in word (16 bits) unit&n; */
+multiline_comment|/**&n; *&t;read_eeprom - Read Serial EEPROM&n; *&t;@ioaddr: base i/o address&n; *&t;@location: the EEPROM location to read&n; *&n; *&t;Read Serial EEPROM through EEPROM Access Register.&n; *&t;Note that location is in word (16 bits) unit&n; */
 DECL|function|read_eeprom
 r_static
 id|u16
@@ -3407,7 +3407,7 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;mdio_read: - read MII PHY register&n; *&t;@net_dev: the net device to read&n; *&t;@phy_id: the phy address to read&n; *&t;@location: the phy regiester id to read&n; *&n; *&t;Read MII registers through MDIO and MDC&n; *&t;using MDIO management frame structure and protocol(defined by ISO/IEC).&n; *&t;Please see SiS7014 or ICS spec&n; */
+multiline_comment|/**&n; *&t;mdio_read - read MII PHY register&n; *&t;@net_dev: the net device to read&n; *&t;@phy_id: the phy address to read&n; *&t;@location: the phy regiester id to read&n; *&n; *&t;Read MII registers through MDIO and MDC&n; *&t;using MDIO management frame structure and protocol(defined by ISO/IEC).&n; *&t;Please see SiS7014 or ICS spec&n; */
 DECL|function|mdio_read
 r_static
 id|u16
@@ -3614,7 +3614,7 @@ r_return
 id|retval
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;mdio_write: - write MII PHY register&n; *&t;@net_dev: the net device to write&n; *&t;@phy_id: the phy address to write&n; *&t;@location: the phy regiester id to write&n; *&t;@value: the register value to write with&n; *&n; *&t;Write MII registers with @value through MDIO and MDC&n; *&t;using MDIO management frame structure and protocol(defined by ISO/IEC)&n; *&t;please see SiS7014 or ICS spec&n; */
+multiline_comment|/**&n; *&t;mdio_write - write MII PHY register&n; *&t;@net_dev: the net device to write&n; *&t;@phy_id: the phy address to write&n; *&t;@location: the phy regiester id to write&n; *&t;@value: the register value to write with&n; *&n; *&t;Write MII registers with @value through MDIO and MDC&n; *&t;using MDIO management frame structure and protocol(defined by ISO/IEC)&n; *&t;please see SiS7014 or ICS spec&n; */
 DECL|function|mdio_write
 r_static
 r_void
@@ -3869,7 +3869,7 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;sis900_reset_phy: - reset sis900 mii phy.&n; *&t;@net_dev: the net device to write&n; *&t;@phy_addr: default phy address&n; *&n; *&t;Some specific phy can&squot;t work properly without reset.&n; *&t;This function will be called during initialization and&n; *&t;link status change from ON to DOWN.&n; */
+multiline_comment|/**&n; *&t;sis900_reset_phy - reset sis900 mii phy.&n; *&t;@net_dev: the net device to write&n; *&t;@phy_addr: default phy address&n; *&n; *&t;Some specific phy can&squot;t work properly without reset.&n; *&t;This function will be called during initialization and&n; *&t;link status change from ON to DOWN.&n; */
 DECL|function|sis900_reset_phy
 r_static
 id|u16
@@ -3929,7 +3929,7 @@ r_return
 id|status
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;sis900_open: - open sis900 device&n; *&t;@net_dev: the net device to open&n; *&n; *&t;Do some initialization and start net interface.&n; *&t;enable interrupts and set sis900 timer.&n; */
+multiline_comment|/**&n; *&t;sis900_open - open sis900 device&n; *&t;@net_dev: the net device to open&n; *&n; *&t;Do some initialization and start net interface.&n; *&t;enable interrupts and set sis900 timer.&n; */
 r_static
 r_int
 DECL|function|sis900_open
@@ -4152,7 +4152,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;sis900_init_rxfilter: - Initialize the Rx filter&n; *&t;@net_dev: the net device to initialize for&n; *&n; *&t;Set receive filter address to our MAC address&n; *&t;and enable packet filtering.&n; */
+multiline_comment|/**&n; *&t;sis900_init_rxfilter - Initialize the Rx filter&n; *&t;@net_dev: the net device to initialize for&n; *&n; *&t;Set receive filter address to our MAC address&n; *&t;and enable packet filtering.&n; */
 r_static
 r_void
 DECL|function|sis900_init_rxfilter
@@ -4303,7 +4303,7 @@ id|ioaddr
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;sis900_init_tx_ring: - Initialize the Tx descriptor ring&n; *&t;@net_dev: the net device to initialize for&n; *&n; *&t;Initialize the Tx descriptor ring, &n; */
+multiline_comment|/**&n; *&t;sis900_init_tx_ring - Initialize the Tx descriptor ring&n; *&t;@net_dev: the net device to initialize for&n; *&n; *&t;Initialize the Tx descriptor ring, &n; */
 r_static
 r_void
 DECL|function|sis900_init_tx_ring
@@ -4442,7 +4442,7 @@ id|txdp
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;sis900_init_rx_ring: - Initialize the Rx descriptor ring&n; *&t;@net_dev: the net device to initialize for&n; *&n; *&t;Initialize the Rx descriptor ring, &n; *&t;and pre-allocate recevie buffers (socket buffer)&n; */
+multiline_comment|/**&n; *&t;sis900_init_rx_ring - Initialize the Rx descriptor ring&n; *&t;@net_dev: the net device to initialize for&n; *&n; *&t;Initialize the Rx descriptor ring, &n; *&t;and pre-allocate recevie buffers (socket buffer)&n; */
 r_static
 r_void
 DECL|function|sis900_init_rx_ring
@@ -4673,7 +4673,7 @@ id|rxdp
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;sis630_set_eq: - set phy equalizer value for 630 LAN&n; *&t;@net_dev: the net device to set equalizer value&n; *&t;@revision: 630 LAN revision number&n; *&n; *&t;630E equalizer workaround rule(Cyrus Huang 08/15)&n; *&t;PHY register 14h(Test)&n; *&t;Bit 14: 0 -- Automatically dectect (default)&n; *&t;&t;1 -- Manually set Equalizer filter&n; *&t;Bit 13: 0 -- (Default)&n; *&t;&t;1 -- Speed up convergence of equalizer setting&n; *&t;Bit 9 : 0 -- (Default)&n; *&t;&t;1 -- Disable Baseline Wander&n; *&t;Bit 3~7   -- Equalizer filter setting&n; *&t;Link ON: Set Bit 9, 13 to 1, Bit 14 to 0&n; *&t;Then calculate equalizer value&n; *&t;Then set equalizer value, and set Bit 14 to 1, Bit 9 to 0&n; *&t;Link Off:Set Bit 13 to 1, Bit 14 to 0&n; *&t;Calculate Equalizer value:&n; *&t;When Link is ON and Bit 14 is 0, SIS900PHY will auto-dectect proper equalizer value.&n; *&t;When the equalizer is stable, this value is not a fixed value. It will be within&n; *&t;a small range(eg. 7~9). Then we get a minimum and a maximum value(eg. min=7, max=9)&n; *&t;0 &lt;= max &lt;= 4  --&gt; set equalizer to max&n; *&t;5 &lt;= max &lt;= 14 --&gt; set equalizer to max+1 or set equalizer to max+2 if max == min&n; *&t;max &gt;= 15      --&gt; set equalizer to max+5 or set equalizer to max+6 if max == min&n; */
+multiline_comment|/**&n; *&t;sis630_set_eq - set phy equalizer value for 630 LAN&n; *&t;@net_dev: the net device to set equalizer value&n; *&t;@revision: 630 LAN revision number&n; *&n; *&t;630E equalizer workaround rule(Cyrus Huang 08/15)&n; *&t;PHY register 14h(Test)&n; *&t;Bit 14: 0 -- Automatically dectect (default)&n; *&t;&t;1 -- Manually set Equalizer filter&n; *&t;Bit 13: 0 -- (Default)&n; *&t;&t;1 -- Speed up convergence of equalizer setting&n; *&t;Bit 9 : 0 -- (Default)&n; *&t;&t;1 -- Disable Baseline Wander&n; *&t;Bit 3~7   -- Equalizer filter setting&n; *&t;Link ON: Set Bit 9, 13 to 1, Bit 14 to 0&n; *&t;Then calculate equalizer value&n; *&t;Then set equalizer value, and set Bit 14 to 1, Bit 9 to 0&n; *&t;Link Off:Set Bit 13 to 1, Bit 14 to 0&n; *&t;Calculate Equalizer value:&n; *&t;When Link is ON and Bit 14 is 0, SIS900PHY will auto-dectect proper equalizer value.&n; *&t;When the equalizer is stable, this value is not a fixed value. It will be within&n; *&t;a small range(eg. 7~9). Then we get a minimum and a maximum value(eg. min=7, max=9)&n; *&t;0 &lt;= max &lt;= 4  --&gt; set equalizer to max&n; *&t;5 &lt;= max &lt;= 14 --&gt; set equalizer to max+1 or set equalizer to max+2 if max == min&n; *&t;max &gt;= 15      --&gt; set equalizer to max+5 or set equalizer to max+6 if max == min&n; */
 DECL|function|sis630_set_eq
 r_static
 r_void
@@ -5146,7 +5146,7 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;sis900_timer: - sis900 timer routine&n; *&t;@data: pointer to sis900 net device&n; *&n; *&t;On each timer ticks we check two things, &n; *&t;link status (ON/OFF) and link mode (10/100/Full/Half)&n; */
+multiline_comment|/**&n; *&t;sis900_timer - sis900 timer routine&n; *&t;@data: pointer to sis900 net device&n; *&n; *&t;On each timer ticks we check two things, &n; *&t;link status (ON/OFF) and link mode (10/100/Full/Half)&n; */
 DECL|function|sis900_timer
 r_static
 r_void
@@ -5452,7 +5452,7 @@ id|sis_priv-&gt;timer
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;sis900_check_mode: - check the media mode for sis900&n; *&t;@net_dev: the net device to be checked&n; *&t;@mii_phy: the mii phy&n; *&n; *&t;Older driver gets the media mode from mii status output&n; *&t;register. Now we set our media capability and auto-negotiate&n; *&t;to get the upper bound of speed and duplex between two ends.&n; *&t;If the types of mii phy is HOME, it doesn&squot;t need to auto-negotiate&n; *&t;and autong_complete should be set to 1.&n; */
+multiline_comment|/**&n; *&t;sis900_check_mode - check the media mode for sis900&n; *&t;@net_dev: the net device to be checked&n; *&t;@mii_phy: the mii phy&n; *&n; *&t;Older driver gets the media mode from mii status output&n; *&t;register. Now we set our media capability and auto-negotiate&n; *&t;to get the upper bound of speed and duplex between two ends.&n; *&t;If the types of mii phy is HOME, it doesn&squot;t need to auto-negotiate&n; *&t;and autong_complete should be set to 1.&n; */
 DECL|function|sis900_check_mode
 r_static
 r_void
@@ -5574,7 +5574,7 @@ l_int|1
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/**&n; *&t;sis900_set_mode: - Set the media mode of mac register.&n; *&t;@ioaddr: the address of the device&n; *&t;@speed : the transmit speed to be determined&n; *&t;@duplex: the duplex mode to be determined&n; *&n; *&t;Set the media mode of mac register txcfg/rxcfg according to&n; *&t;speed and duplex of phy. Bit EDB_MASTER_EN indicates the EDB&n; *&t;bus is used instead of PCI bus. When this bit is set 1, the&n; *&t;Max DMA Burst Size for TX/RX DMA should be no larger than 16&n; *&t;double words.&n; */
+multiline_comment|/**&n; *&t;sis900_set_mode - Set the media mode of mac register.&n; *&t;@ioaddr: the address of the device&n; *&t;@speed : the transmit speed to be determined&n; *&t;@duplex: the duplex mode to be determined&n; *&n; *&t;Set the media mode of mac register txcfg/rxcfg according to&n; *&t;speed and duplex of phy. Bit EDB_MASTER_EN indicates the EDB&n; *&t;bus is used instead of PCI bus. When this bit is set 1, the&n; *&t;Max DMA Burst Size for TX/RX DMA should be no larger than 16&n; *&t;double words.&n; */
 DECL|function|sis900_set_mode
 r_static
 r_void
@@ -5749,7 +5749,7 @@ id|rxcfg
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;sis900_auto_negotiate:  Set the Auto-Negotiation Enable/Reset bit.&n; *&t;@net_dev: the net device to read mode for&n; *&t;@phy_addr: mii phy address&n; *&n; *&t;If the adapter is link-on, set the auto-negotiate enable/reset bit.&n; *&t;autong_complete should be set to 0 when starting auto-negotiation.&n; *&t;autong_complete should be set to 1 if we didn&squot;t start auto-negotiation.&n; *&t;sis900_timer will wait for link on again if autong_complete = 0.&n; */
+multiline_comment|/**&n; *&t;sis900_auto_negotiate - Set the Auto-Negotiation Enable/Reset bit.&n; *&t;@net_dev: the net device to read mode for&n; *&t;@phy_addr: mii phy address&n; *&n; *&t;If the adapter is link-on, set the auto-negotiate enable/reset bit.&n; *&t;autong_complete should be set to 0 when starting auto-negotiation.&n; *&t;autong_complete should be set to 1 if we didn&squot;t start auto-negotiation.&n; *&t;sis900_timer will wait for link on again if autong_complete = 0.&n; */
 DECL|function|sis900_auto_negotiate
 r_static
 r_void
@@ -5853,7 +5853,7 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;sis900_read_mode: - read media mode for sis900 internal phy&n; *&t;@net_dev: the net device to read mode for&n; *&t;@speed  : the transmit speed to be determined&n; *&t;@duplex : the duplex mode to be determined&n; *&n; *&t;The capability of remote end will be put in mii register autorec&n; *&t;after auto-negotiation. Use AND operation to get the upper bound&n; *&t;of speed and duplex between two ends.&n; */
+multiline_comment|/**&n; *&t;sis900_read_mode - read media mode for sis900 internal phy&n; *&t;@net_dev: the net device to read mode for&n; *&t;@speed  : the transmit speed to be determined&n; *&t;@duplex : the duplex mode to be determined&n; *&n; *&t;The capability of remote end will be put in mii register autorec&n; *&t;after auto-negotiation. Use AND operation to get the upper bound&n; *&t;of speed and duplex between two ends.&n; */
 DECL|function|sis900_read_mode
 r_static
 r_void
@@ -6111,7 +6111,7 @@ l_string|&quot;half&quot;
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;sis900_tx_timeout: - sis900 transmit timeout routine&n; *&t;@net_dev: the net device to transmit&n; *&n; *&t;print transmit timeout status&n; *&t;disable interrupts and do some tasks&n; */
+multiline_comment|/**&n; *&t;sis900_tx_timeout - sis900 transmit timeout routine&n; *&t;@net_dev: the net device to transmit&n; *&n; *&t;print transmit timeout status&n; *&t;disable interrupts and do some tasks&n; */
 DECL|function|sis900_tx_timeout
 r_static
 r_void
@@ -6342,7 +6342,7 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;sis900_start_xmit: - sis900 start transmit routine&n; *&t;@skb: socket buffer pointer to put the data being transmitted&n; *&t;@net_dev: the net device to transmit with&n; *&n; *&t;Set the transmit buffer descriptor, &n; *&t;and write TxENA to enable transimt state machine.&n; *&t;tell upper layer if the buffer is full&n; */
+multiline_comment|/**&n; *&t;sis900_start_xmit - sis900 start transmit routine&n; *&t;@skb: socket buffer pointer to put the data being transmitted&n; *&t;@net_dev: the net device to transmit with&n; *&n; *&t;Set the transmit buffer descriptor, &n; *&t;and write TxENA to enable transimt state machine.&n; *&t;tell upper layer if the buffer is full&n; */
 r_static
 r_int
 DECL|function|sis900_start_xmit
@@ -6604,7 +6604,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;sis900_interrupt: - sis900 interrupt handler&n; *&t;@irq: the irq number&n; *&t;@dev_instance: the client data object&n; *&t;@regs: snapshot of processor context&n; *&n; *&t;The interrupt handler does all of the Rx thread work, &n; *&t;and cleans up after the Tx thread&n; */
+multiline_comment|/**&n; *&t;sis900_interrupt - sis900 interrupt handler&n; *&t;@irq: the irq number&n; *&t;@dev_instance: the client data object&n; *&t;@regs: snapshot of processor context&n; *&n; *&t;The interrupt handler does all of the Rx thread work, &n; *&t;and cleans up after the Tx thread&n; */
 DECL|function|sis900_interrupt
 r_static
 id|irqreturn_t
@@ -6842,7 +6842,7 @@ id|handled
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;sis900_rx: - sis900 receive routine&n; *&t;@net_dev: the net device which receives data&n; *&n; *&t;Process receive interrupt events, &n; *&t;put buffer to higher layer and refill buffer pool&n; *&t;Note: This fucntion is called by interrupt handler, &n; *&t;don&squot;t do &quot;too much&quot; work here&n; */
+multiline_comment|/**&n; *&t;sis900_rx - sis900 receive routine&n; *&t;@net_dev: the net device which receives data&n; *&n; *&t;Process receive interrupt events, &n; *&t;put buffer to higher layer and refill buffer pool&n; *&t;Note: This fucntion is called by interrupt handler, &n; *&t;don&squot;t do &quot;too much&quot; work here&n; */
 DECL|function|sis900_rx
 r_static
 r_int
@@ -7413,7 +7413,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;sis900_finish_xmit: - finish up transmission of packets&n; *&t;@net_dev: the net device to be transmitted on&n; *&n; *&t;Check for error condition and free socket buffer etc &n; *&t;schedule for more transmission as needed&n; *&t;Note: This fucntion is called by interrupt handler, &n; *&t;don&squot;t do &quot;too much&quot; work here&n; */
+multiline_comment|/**&n; *&t;sis900_finish_xmit - finish up transmission of packets&n; *&t;@net_dev: the net device to be transmitted on&n; *&n; *&t;Check for error condition and free socket buffer etc &n; *&t;schedule for more transmission as needed&n; *&t;Note: This fucntion is called by interrupt handler, &n; *&t;don&squot;t do &quot;too much&quot; work here&n; */
 DECL|function|sis900_finish_xmit
 r_static
 r_void
@@ -7673,7 +7673,7 @@ id|net_dev
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/**&n; *&t;sis900_close: - close sis900 device &n; *&t;@net_dev: the net device to be closed&n; *&n; *&t;Disable interrupts, stop the Tx and Rx Status Machine &n; *&t;free Tx and RX socket buffer&n; */
+multiline_comment|/**&n; *&t;sis900_close - close sis900 device &n; *&t;@net_dev: the net device to be closed&n; *&n; *&t;Disable interrupts, stop the Tx and Rx Status Machine &n; *&t;free Tx and RX socket buffer&n; */
 r_static
 r_int
 DECL|function|sis900_close
@@ -7895,7 +7895,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;netdev_ethtool_ioctl: - For the basic support of ethtool&n; *&t;@net_dev: the net device to command for&n; *&t;@useraddr: start address of interface request&n; *&n; *&t;Process ethtool command such as &quot;ehtool -i&quot; to show information&n; */
+multiline_comment|/**&n; *&t;netdev_ethtool_ioctl - For the basic support of ethtool&n; *&t;@net_dev: the net device to command for&n; *&t;@useraddr: start address of interface request&n; *&n; *&t;Process ethtool command such as &quot;ehtool -i&quot; to show information&n; */
 DECL|function|netdev_ethtool_ioctl
 r_static
 r_int
@@ -8014,7 +8014,7 @@ op_minus
 id|EOPNOTSUPP
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;mii_ioctl: - process MII i/o control command &n; *&t;@net_dev: the net device to command for&n; *&t;@rq: parameter for command&n; *&t;@cmd: the i/o command&n; *&n; *&t;Process MII command like read/write MII register&n; */
+multiline_comment|/**&n; *&t;mii_ioctl - process MII i/o control command &n; *&t;@net_dev: the net device to command for&n; *&t;@rq: parameter for command&n; *&t;@cmd: the i/o command&n; *&n; *&t;Process MII command like read/write MII register&n; */
 DECL|function|mii_ioctl
 r_static
 r_int
@@ -8154,7 +8154,7 @@ id|EOPNOTSUPP
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/**&n; *&t;sis900_get_stats: - Get sis900 read/write statistics &n; *&t;@net_dev: the net device to get statistics for&n; *&n; *&t;get tx/rx statistics for sis900&n; */
+multiline_comment|/**&n; *&t;sis900_get_stats - Get sis900 read/write statistics &n; *&t;@net_dev: the net device to get statistics for&n; *&n; *&t;get tx/rx statistics for sis900&n; */
 r_static
 r_struct
 id|net_device_stats
@@ -8181,7 +8181,7 @@ op_amp
 id|sis_priv-&gt;stats
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;sis900_set_config: - Set media type by net_device.set_config &n; *&t;@dev: the net device for media type change&n; *&t;@map: ifmap passed by ifconfig&n; *&n; *&t;Set media type to 10baseT, 100baseT or 0(for auto) by ifconfig&n; *&t;we support only port changes. All other runtime configuration&n; *&t;changes will be ignored&n; */
+multiline_comment|/**&n; *&t;sis900_set_config - Set media type by net_device.set_config &n; *&t;@dev: the net device for media type change&n; *&t;@map: ifmap passed by ifconfig&n; *&n; *&t;Set media type to 10baseT, 100baseT or 0(for auto) by ifconfig&n; *&t;we support only port changes. All other runtime configuration&n; *&t;changes will be ignored&n; */
 DECL|function|sis900_set_config
 r_static
 r_int
@@ -8442,7 +8442,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;sis900_mcast_bitnr: - compute hashtable index &n; *&t;@addr: multicast address&n; *&t;@revision: revision id of chip&n; *&n; *&t;SiS 900 uses the most sigificant 7 bits to index a 128 bits multicast&n; *&t;hash table, which makes this function a little bit different from other drivers&n; *&t;SiS 900 B0 &amp; 635 M/B uses the most significat 8 bits to index 256 bits&n; *   &t;multicast hash table. &n; */
+multiline_comment|/**&n; *&t;sis900_mcast_bitnr - compute hashtable index &n; *&t;@addr: multicast address&n; *&t;@revision: revision id of chip&n; *&n; *&t;SiS 900 uses the most sigificant 7 bits to index a 128 bits multicast&n; *&t;hash table, which makes this function a little bit different from other drivers&n; *&t;SiS 900 B0 &amp; 635 M/B uses the most significat 8 bits to index 256 bits&n; *   &t;multicast hash table. &n; */
 DECL|function|sis900_mcast_bitnr
 r_static
 r_inline
@@ -8511,7 +8511,7 @@ l_int|25
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;set_rx_mode: - Set SiS900 receive mode &n; *&t;@net_dev: the net device to be set&n; *&n; *&t;Set SiS900 receive mode for promiscuous, multicast, or broadcast mode.&n; *&t;And set the appropriate multicast filter.&n; *&t;Multicast hash table changes from 128 to 256 bits for 635M/B &amp; 900B0.&n; */
+multiline_comment|/**&n; *&t;set_rx_mode - Set SiS900 receive mode &n; *&t;@net_dev: the net device to be set&n; *&n; *&t;Set SiS900 receive mode for promiscuous, multicast, or broadcast mode.&n; *&t;And set the appropriate multicast filter.&n; *&t;Multicast hash table changes from 128 to 256 bits for 635M/B &amp; 900B0.&n; */
 DECL|function|set_rx_mode
 r_static
 r_void
@@ -8892,7 +8892,7 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;sis900_reset: - Reset sis900 MAC &n; *&t;@net_dev: the net device to reset&n; *&n; *&t;reset sis900 MAC and wait until finished&n; *&t;reset through command register&n; *&t;change backoff algorithm for 900B0 &amp; 635 M/B&n; */
+multiline_comment|/**&n; *&t;sis900_reset - Reset sis900 MAC &n; *&t;@net_dev: the net device to reset&n; *&n; *&t;reset sis900 MAC and wait until finished&n; *&t;reset through command register&n; *&t;change backoff algorithm for 900B0 &amp; 635 M/B&n; */
 DECL|function|sis900_reset
 r_static
 r_void
@@ -9065,7 +9065,7 @@ id|cfg
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;sis900_remove: - Remove sis900 device &n; *&t;@pci_dev: the pci device to be removed&n; *&n; *&t;remove and release SiS900 net device&n; */
+multiline_comment|/**&n; *&t;sis900_remove - Remove sis900 device &n; *&t;@pci_dev: the pci device to be removed&n; *&n; *&t;remove and release SiS900 net device&n; */
 DECL|function|sis900_remove
 r_static
 r_void

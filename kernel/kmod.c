@@ -34,8 +34,6 @@ op_assign
 l_string|&quot;/sbin/modprobe&quot;
 suffix:semicolon
 multiline_comment|/**&n; * request_module - try to load a kernel module&n; * @module_name: Name of module&n; *&n; * Load a module using the user mode module loader. The function returns&n; * zero on success or a negative errno code on failure. Note that a&n; * successful module load does not mean the module did not then unload&n; * and exit on an error of its own. Callers must check that the service&n; * they requested is now available not blindly invoke it.&n; *&n; * If module auto-loading support is disabled then this function&n; * becomes a no-operation.&n; */
-DECL|macro|MODULENAME_SIZE
-mdefine_line|#define MODULENAME_SIZE 32
 DECL|function|request_module
 r_int
 id|request_module
@@ -51,6 +49,8 @@ dot
 dot
 )paren
 (brace
+DECL|macro|MODULENAME_SIZE
+mdefine_line|#define MODULENAME_SIZE 32
 id|va_list
 id|args
 suffix:semicolon
