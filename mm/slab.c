@@ -3366,6 +3366,19 @@ c_func
 )paren
 suffix:semicolon
 macro_line|#if DEBUG
+id|WARN_ON
+c_func
+(paren
+id|strchr
+c_func
+(paren
+id|name
+comma
+l_char|&squot; &squot;
+)paren
+)paren
+suffix:semicolon
+multiline_comment|/* It confuses parsers */
 r_if
 c_cond
 (paren
