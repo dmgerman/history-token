@@ -67,11 +67,6 @@ id|dm_create
 c_func
 (paren
 r_struct
-id|dm_table
-op_star
-id|table
-comma
-r_struct
 id|mapped_device
 op_star
 op_star
@@ -85,11 +80,6 @@ c_func
 r_int
 r_int
 id|minor
-comma
-r_struct
-id|dm_table
-op_star
-id|table
 comma
 r_struct
 id|mapped_device
