@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * arch/ppc64/kernel/pmac_iommu.c&n; *&n; * Copyright (C) 2004 Olof Johansson &lt;olof@austin.ibm.com&gt;, IBM Corporation&n; *&n; * Based on pSeries_iommu.c:&n; * Copyright (C) 2001 Mike Corrigan &amp; Dave Engebretsen, IBM Corporation&n; * Copyright (C) 2004 Olof Johansson &lt;olof@austin.ibm.com&gt;, IBM Corporation&n; *&n; * Dynamic DMA mapping support, PowerMac G5 (DART)-specific parts.&n; *&n; * &n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; * &n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; * &n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA&n; */
+multiline_comment|/*&n; * arch/ppc64/kernel/u3_iommu.c&n; *&n; * Copyright (C) 2004 Olof Johansson &lt;olof@austin.ibm.com&gt;, IBM Corporation&n; *&n; * Based on pSeries_iommu.c:&n; * Copyright (C) 2001 Mike Corrigan &amp; Dave Engebretsen, IBM Corporation&n; * Copyright (C) 2004 Olof Johansson &lt;olof@austin.ibm.com&gt;, IBM Corporation&n; *&n; * Dynamic DMA mapping support, Apple U3 &amp; IBM CPC925 &quot;DART&quot; iommu.&n; *&n; * &n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; * &n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; * &n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -86,11 +86,11 @@ r_int
 r_int
 id|dart_emptyval
 suffix:semicolon
-DECL|variable|iommu_table_pmac
+DECL|variable|iommu_table_u3
 r_static
 r_struct
 id|iommu_table
-id|iommu_table_pmac
+id|iommu_table_u3
 suffix:semicolon
 DECL|variable|dart_dirty
 r_static
@@ -306,10 +306,10 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|dart_build_pmac
+DECL|function|dart_build
 r_static
 r_void
-id|dart_build_pmac
+id|dart_build
 c_func
 (paren
 r_struct
@@ -366,7 +366,7 @@ id|tbl-&gt;it_base
 op_plus
 id|index
 suffix:semicolon
-multiline_comment|/* On pmac, all memory is contigous, so we can move this&n;&t; * out of the loop.&n;&t; */
+multiline_comment|/* On U3, all memory is contigous, so we can move this&n;&t; * out of the loop.&n;&t; */
 r_while
 c_loop
 (paren
@@ -411,10 +411,10 @@ op_assign
 l_int|1
 suffix:semicolon
 )brace
-DECL|function|dart_free_pmac
+DECL|function|dart_free
 r_static
 r_void
-id|dart_free_pmac
+id|dart_free
 c_func
 (paren
 r_struct
@@ -698,24 +698,24 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|iommu_table_pmac.it_busno
+id|iommu_table_u3.it_busno
 op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* Units of tce entries */
-id|iommu_table_pmac.it_offset
+id|iommu_table_u3.it_offset
 op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* Set the tce table size - measured in pages */
-id|iommu_table_pmac.it_size
+id|iommu_table_u3.it_size
 op_assign
 id|dart_tablesize
 op_rshift
 id|PAGE_SHIFT
 suffix:semicolon
 multiline_comment|/* Initialize the common IOMMU code */
-id|iommu_table_pmac.it_base
+id|iommu_table_u3.it_base
 op_assign
 (paren
 r_int
@@ -723,15 +723,15 @@ r_int
 )paren
 id|dart_vbase
 suffix:semicolon
-id|iommu_table_pmac.it_index
+id|iommu_table_u3.it_index
 op_assign
 l_int|0
 suffix:semicolon
-id|iommu_table_pmac.it_blocksize
+id|iommu_table_u3.it_blocksize
 op_assign
 l_int|1
 suffix:semicolon
-id|iommu_table_pmac.it_entrysize
+id|iommu_table_u3.it_entrysize
 op_assign
 r_sizeof
 (paren
@@ -742,34 +742,34 @@ id|iommu_init_table
 c_func
 (paren
 op_amp
-id|iommu_table_pmac
+id|iommu_table_u3
 )paren
 suffix:semicolon
 multiline_comment|/* Reserve the last page of the DART to avoid possible prefetch&n;&t; * past the DART mapped area&n;&t; */
 id|set_bit
 c_func
 (paren
-id|iommu_table_pmac.it_mapsize
+id|iommu_table_u3.it_mapsize
 op_minus
 l_int|1
 comma
-id|iommu_table_pmac.it_map
+id|iommu_table_u3.it_map
 )paren
 suffix:semicolon
 id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;U3-DART IOMMU initialized&bslash;n&quot;
+l_string|&quot;U3/CPC925 DART IOMMU initialized&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|iommu_setup_pmac
+DECL|function|iommu_setup_u3
 r_void
-id|iommu_setup_pmac
+id|iommu_setup_u3
 c_func
 (paren
 r_void
@@ -812,11 +812,11 @@ suffix:semicolon
 multiline_comment|/* Setup low level TCE operations for the core IOMMU code */
 id|ppc_md.tce_build
 op_assign
-id|dart_build_pmac
+id|dart_build
 suffix:semicolon
 id|ppc_md.tce_free
 op_assign
-id|dart_free_pmac
+id|dart_free
 suffix:semicolon
 id|ppc_md.tce_flush
 op_assign
@@ -881,14 +881,14 @@ id|dn
 id|dn-&gt;iommu_table
 op_assign
 op_amp
-id|iommu_table_pmac
+id|iommu_table_u3
 suffix:semicolon
 )brace
 )brace
-DECL|function|pmac_iommu_alloc
+DECL|function|alloc_u3_dart_table
 r_void
 id|__init
-id|pmac_iommu_alloc
+id|alloc_u3_dart_table
 c_func
 (paren
 r_void
