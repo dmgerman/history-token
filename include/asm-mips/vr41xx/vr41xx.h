@@ -609,18 +609,6 @@ id|DATA_HIGH
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * Serial Interface Unit&n; */
-r_extern
-r_void
-id|vr41xx_siu_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|vr41xx_serial_ports
-suffix:semicolon
 multiline_comment|/* SIU interfaces */
 r_typedef
 r_enum
