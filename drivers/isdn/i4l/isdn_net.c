@@ -591,103 +591,6 @@ id|skb
 )paren
 suffix:semicolon
 )brace
-r_static
-r_void
-DECL|function|isdn_net_reset
-id|isdn_net_reset
-c_func
-(paren
-r_struct
-id|net_device
-op_star
-id|dev
-)paren
-(brace
-macro_line|#ifdef CONFIG_ISDN_X25
-r_struct
-id|concap_device_ops
-op_star
-id|dops
-op_assign
-(paren
-(paren
-id|isdn_net_local
-op_star
-)paren
-id|dev-&gt;priv
-)paren
-op_member_access_from_pointer
-id|dops
-suffix:semicolon
-r_struct
-id|concap_proto
-op_star
-id|cprot
-op_assign
-(paren
-(paren
-id|isdn_net_local
-op_star
-)paren
-id|dev-&gt;priv
-)paren
-op_member_access_from_pointer
-id|netdev
-op_member_access_from_pointer
-id|cprot
-suffix:semicolon
-macro_line|#endif
-id|ulong
-id|flags
-suffix:semicolon
-multiline_comment|/* not sure if the cli() is needed at all --KG */
-id|save_flags
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
-)paren
-suffix:semicolon
-multiline_comment|/* Avoid glitch on writes to CMD regs */
-macro_line|#ifdef CONFIG_ISDN_X25
-r_if
-c_cond
-(paren
-id|cprot
-op_logical_and
-id|cprot
-op_member_access_from_pointer
-id|pops
-op_logical_and
-id|dops
-)paren
-(brace
-id|cprot
-op_member_access_from_pointer
-id|pops
-op_member_access_from_pointer
-id|restart
-(paren
-id|cprot
-comma
-id|dev
-comma
-id|dops
-)paren
-suffix:semicolon
-)brace
-macro_line|#endif
-id|restore_flags
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/* Open/initialize the board. */
 r_static
 r_int
@@ -721,7 +624,7 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-id|isdn_net_reset
+id|isdn_x25_open
 c_func
 (paren
 id|dev
@@ -822,7 +725,7 @@ c_loop
 id|p
 )paren
 (brace
-id|isdn_net_reset
+id|isdn_x25_open
 c_func
 (paren
 id|p
@@ -1305,33 +1208,6 @@ op_star
 id|lp
 )paren
 (brace
-macro_line|#ifdef CONFIG_ISDN_X25
-r_struct
-id|concap_proto
-op_star
-id|cprot
-op_assign
-id|lp
-op_member_access_from_pointer
-id|netdev
-op_member_access_from_pointer
-id|cprot
-suffix:semicolon
-r_struct
-id|concap_proto_ops
-op_star
-id|pops
-op_assign
-id|cprot
-ques
-c_cond
-id|cprot
-op_member_access_from_pointer
-id|pops
-suffix:colon
-l_int|0
-suffix:semicolon
-macro_line|#endif
 id|lp-&gt;dialstate
 op_assign
 id|ST_ACTIVE
@@ -1436,7 +1312,6 @@ id|lp-&gt;last_jiffies
 op_assign
 id|jiffies
 suffix:semicolon
-macro_line|#ifdef CONFIG_ISDN_PPP
 r_if
 c_cond
 (paren
@@ -1450,30 +1325,12 @@ c_func
 id|lp
 )paren
 suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef CONFIG_ISDN_X25
-multiline_comment|/* try if there are generic concap receiver routines */
-r_if
-c_cond
-(paren
-id|pops
-)paren
-r_if
-c_cond
-(paren
-id|pops-&gt;connect_ind
-)paren
-(brace
-id|pops
-op_member_access_from_pointer
-id|connect_ind
+id|isdn_x25_connected
 c_func
 (paren
-id|cprot
+id|lp
 )paren
 suffix:semicolon
-)brace
-macro_line|#endif /* CONFIG_ISDN_X25 */
 multiline_comment|/* ppp needs to do negotiations first */
 r_if
 c_cond
@@ -1999,33 +1856,6 @@ op_star
 id|arg
 )paren
 (brace
-macro_line|#ifdef CONFIG_ISDN_X25
-r_struct
-id|concap_proto
-op_star
-id|cprot
-op_assign
-id|lp
-op_member_access_from_pointer
-id|netdev
-op_member_access_from_pointer
-id|cprot
-suffix:semicolon
-r_struct
-id|concap_proto_ops
-op_star
-id|pops
-op_assign
-id|cprot
-ques
-c_cond
-id|cprot
-op_member_access_from_pointer
-id|pops
-suffix:colon
-l_int|0
-suffix:semicolon
-macro_line|#endif
 id|isdn_net_dev
 op_star
 id|p
@@ -2103,32 +1933,12 @@ r_case
 id|ISDN_STAT_DHUP
 suffix:colon
 multiline_comment|/* Either D-Channel-hangup or error during dialout */
-macro_line|#ifdef CONFIG_ISDN_X25 
-singleline_comment|// FIXME handle != ST_0?
-multiline_comment|/* If we are not connencted then dialing had&n;&t;&t;&t;   failed. If there are generic encap protocol&n;&t;&t;&t;   receiver routines signal the closure of&n;&t;&t;&t;   the link*/
-r_if
-c_cond
-(paren
-op_logical_neg
-(paren
-id|lp-&gt;flags
-op_amp
-id|ISDN_NET_CONNECTED
-)paren
-op_logical_and
-id|pops
-op_logical_and
-id|pops-&gt;disconn_ind
-)paren
-id|pops
-op_member_access_from_pointer
-id|disconn_ind
+id|isdn_x25_dhup
 c_func
 (paren
-id|cprot
+id|lp
 )paren
 suffix:semicolon
-macro_line|#endif /* CONFIG_ISDN_X25 */
 r_if
 c_cond
 (paren
@@ -2150,7 +1960,6 @@ c_func
 id|lp
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_ISDN_PPP
 r_if
 c_cond
 (paren
@@ -2164,7 +1973,6 @@ c_func
 id|lp
 )paren
 suffix:semicolon
-macro_line|#endif
 id|isdn_net_lp_disconnected
 c_func
 (paren
@@ -2209,38 +2017,17 @@ suffix:semicolon
 )brace
 r_break
 suffix:semicolon
-macro_line|#ifdef CONFIG_ISDN_X25 
-singleline_comment|// FIXME handle != ST_0?
 r_case
 id|ISDN_STAT_BHUP
 suffix:colon
-multiline_comment|/* B-Channel-hangup */
-multiline_comment|/* try if there are generic encap protocol&n;&t;&t;&t;   receiver routines and signal the closure of&n;&t;&t;&t;   the link */
-r_if
-c_cond
-(paren
-id|pops
-op_logical_and
-id|pops
-op_member_access_from_pointer
-id|disconn_ind
-)paren
-(brace
-id|pops
-op_member_access_from_pointer
-id|disconn_ind
+id|isdn_x25_bhup
 c_func
 (paren
-id|cprot
+id|lp
 )paren
 suffix:semicolon
-r_return
-l_int|1
-suffix:semicolon
-)brace
 r_break
 suffix:semicolon
-macro_line|#endif /* CONFIG_ISDN_X25 */
 r_case
 id|ISDN_STAT_CINF
 suffix:colon
@@ -2774,33 +2561,6 @@ id|lp
 id|isdn_ctrl
 id|cmd
 suffix:semicolon
-macro_line|#ifdef CONFIG_ISDN_X25
-r_struct
-id|concap_proto
-op_star
-id|cprot
-op_assign
-id|lp
-op_member_access_from_pointer
-id|netdev
-op_member_access_from_pointer
-id|cprot
-suffix:semicolon
-r_struct
-id|concap_proto_ops
-op_star
-id|pops
-op_assign
-id|cprot
-ques
-c_cond
-id|cprot
-op_member_access_from_pointer
-id|pops
-suffix:colon
-l_int|0
-suffix:semicolon
-macro_line|#endif
 id|del_timer_sync
 c_func
 (paren
@@ -2870,7 +2630,6 @@ comma
 id|lp-&gt;name
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_ISDN_PPP
 r_if
 c_cond
 (paren
@@ -2884,35 +2643,18 @@ c_func
 id|lp
 )paren
 suffix:semicolon
-macro_line|#endif
 id|isdn_net_lp_disconnected
 c_func
 (paren
 id|lp
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_ISDN_X25
-multiline_comment|/* try if there are generic encap protocol&n;&t;&t;   receiver routines and signal the closure of&n;&t;&t;   the link */
-r_if
-c_cond
-(paren
-id|pops
-op_logical_and
-id|pops
-op_member_access_from_pointer
-id|disconn_ind
-)paren
-(brace
-id|pops
-op_member_access_from_pointer
-id|disconn_ind
+id|isdn_x25_hangup
 c_func
 (paren
-id|cprot
+id|lp
 )paren
 suffix:semicolon
-)brace
-macro_line|#endif /* CONFIG_ISDN_X25 */
 id|isdn_slot_command
 c_func
 (paren
@@ -3201,7 +2943,6 @@ l_int|4
 suffix:semicolon
 r_break
 suffix:semicolon
-macro_line|#ifdef CONFIG_ISDN_PPP
 r_case
 id|ISDN_NET_ENCAP_SYNCPPP
 suffix:colon
@@ -3223,7 +2964,6 @@ id|IPPP_MAX_HEADER
 suffix:semicolon
 r_break
 suffix:semicolon
-macro_line|#endif
 )brace
 )brace
 id|data_ofs
@@ -3892,7 +3632,6 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* For the other encaps the header has already been built */
-macro_line|#ifdef CONFIG_ISDN_PPP
 r_if
 c_cond
 (paren
@@ -3911,7 +3650,6 @@ id|ndev
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif
 id|nd
 op_assign
 (paren
@@ -4315,58 +4053,20 @@ op_star
 id|ndev-&gt;priv
 suffix:semicolon
 macro_line|#ifdef CONFIG_ISDN_X25
-r_struct
-id|concap_proto
-op_star
-id|cprot
-op_assign
-id|lp
-op_member_access_from_pointer
-id|netdev
-op_member_access_from_pointer
-id|cprot
-suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef CONFIG_ISDN_X25
-multiline_comment|/* At this point hard_start_xmit() passes control to the encapsulation&n;   protocol (if present).&n;   For X.25 auto-dialing is completly bypassed because:&n;   - It does not conform with the semantics of a reliable datalink&n;     service as needed by X.25 PLP.&n;   - I don&squot;t want that the interface starts dialing when the network layer&n;     sends a message which requests to disconnect the lapb link (or if it&n;     sends any other message not resulting in data transmission).&n;   Instead, dialing will be initiated by the encapsulation protocol entity&n;   when a dl_establish request is received from the upper layer.&n;*/
 r_if
 c_cond
 (paren
-id|cprot
+id|lp-&gt;netdev-&gt;cprot
 )paren
-(brace
-r_int
-id|ret
-op_assign
-id|cprot
-op_member_access_from_pointer
-id|pops
-op_member_access_from_pointer
-id|encap_and_xmit
-(paren
-id|cprot
-comma
-id|skb
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ret
-)paren
-(brace
-id|netif_stop_queue
+r_return
+id|isdn_x25_start_xmit
 c_func
 (paren
+id|skb
+comma
 id|ndev
 )paren
 suffix:semicolon
-)brace
-r_return
-id|ret
-suffix:semicolon
-)brace
-r_else
 macro_line|#endif
 multiline_comment|/* auto-dialing xmit function */
 (brace
@@ -4648,7 +4348,6 @@ comma
 id|chi
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_ISDN_PPP
 r_if
 c_cond
 (paren
@@ -4716,7 +4415,6 @@ l_int|1
 suffix:semicolon
 multiline_comment|/* let upper layer requeue skb packet */
 )brace
-macro_line|#endif
 multiline_comment|/* Initiate dialing */
 id|restore_flags
 c_func
@@ -4819,49 +4517,12 @@ id|net_device
 op_star
 id|p
 suffix:semicolon
-macro_line|#ifdef CONFIG_ISDN_X25
-r_struct
-id|concap_proto
-op_star
-id|cprot
-op_assign
-(paren
-(paren
-id|isdn_net_local
-op_star
-)paren
-id|dev-&gt;priv
-)paren
-op_member_access_from_pointer
-id|netdev
-op_member_access_from_pointer
-id|cprot
-suffix:semicolon
-multiline_comment|/* printk(KERN_DEBUG &quot;isdn_net_close %s&bslash;n&quot; , dev-&gt; name ); */
-macro_line|#endif
-macro_line|#ifdef CONFIG_ISDN_X25
-r_if
-c_cond
-(paren
-id|cprot
-op_logical_and
-id|cprot
-op_member_access_from_pointer
-id|pops
-)paren
-(brace
-id|cprot
-op_member_access_from_pointer
-id|pops
-op_member_access_from_pointer
-id|close
+id|isdn_x25_close
 c_func
 (paren
-id|cprot
+id|dev
 )paren
 suffix:semicolon
-)brace
-macro_line|#endif
 id|netif_stop_queue
 c_func
 (paren
@@ -4895,43 +4556,12 @@ c_loop
 id|p
 )paren
 (brace
-macro_line|#ifdef CONFIG_ISDN_X25
-id|cprot
-op_assign
-(paren
-(paren
-id|isdn_net_local
-op_star
-)paren
-id|p-&gt;priv
-)paren
-op_member_access_from_pointer
-id|netdev
-op_member_access_from_pointer
-id|cprot
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|cprot
-op_logical_and
-id|cprot
-op_member_access_from_pointer
-id|pops
-)paren
-(brace
-id|cprot
-op_member_access_from_pointer
-id|pops
-op_member_access_from_pointer
-id|close
+id|isdn_x25_close
 c_func
 (paren
-id|cprot
+id|p
 )paren
 suffix:semicolon
-)brace
-macro_line|#endif
 id|isdn_net_hangup
 c_func
 (paren
@@ -5192,30 +4822,6 @@ op_assign
 id|lp
 suffix:semicolon
 multiline_comment|/* original &squot;lp&squot; */
-macro_line|#ifdef CONFIG_ISDN_PPP
-r_int
-id|proto
-op_assign
-id|PPP_PROTOCOL
-c_func
-(paren
-id|skb-&gt;data
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef CONFIG_ISDN_X25
-r_struct
-id|concap_proto
-op_star
-id|cprot
-op_assign
-id|lp
-op_member_access_from_pointer
-id|netdev
-op_member_access_from_pointer
-id|cprot
-suffix:semicolon
-macro_line|#endif
 id|lp-&gt;transcount
 op_add_assign
 id|skb-&gt;len
@@ -5436,7 +5042,6 @@ id|ETH_P_802_3
 suffix:semicolon
 r_break
 suffix:semicolon
-macro_line|#ifdef CONFIG_ISDN_PPP
 r_case
 id|ISDN_NET_ENCAP_SYNCPPP
 suffix:colon
@@ -5444,7 +5049,11 @@ multiline_comment|/*&n;&t;&t;&t; * If encapsulation is syncppp, don&squot;t rese
 r_if
 c_cond
 (paren
-id|proto
+id|PPP_PROTOCOL
+c_func
+(paren
+id|skb-&gt;data
+)paren
 op_ne
 id|PPP_LCP
 )paren
@@ -5470,64 +5079,13 @@ id|skb
 suffix:semicolon
 r_return
 suffix:semicolon
-macro_line|#endif
 r_default
 suffix:colon
-(brace
-)brace
-macro_line|#ifdef CONFIG_ISDN_X25
-multiline_comment|/* try if there are generic sync_device receiver routines */
-r_if
-c_cond
-(paren
-id|cprot
-)paren
-r_if
-c_cond
-(paren
-id|cprot
-op_member_access_from_pointer
-id|pops
-)paren
-r_if
-c_cond
-(paren
-id|cprot
-op_member_access_from_pointer
-id|pops
-op_member_access_from_pointer
-id|data_ind
-)paren
-(brace
-id|cprot
-op_member_access_from_pointer
-id|pops
-op_member_access_from_pointer
-id|data_ind
+id|isdn_x25_receive
 c_func
 (paren
-id|cprot
+id|lp
 comma
-id|skb
-)paren
-suffix:semicolon
-r_return
-suffix:semicolon
-)brace
-suffix:semicolon
-macro_line|#endif /* CONFIG_ISDN_X25 */
-id|printk
-c_func
-(paren
-id|KERN_WARNING
-l_string|&quot;%s: unknown encapsulation, dropping&bslash;n&quot;
-comma
-id|lp-&gt;name
-)paren
-suffix:semicolon
-id|kfree_skb
-c_func
-(paren
 id|skb
 )paren
 suffix:semicolon
@@ -5850,7 +5408,6 @@ id|plen
 suffix:semicolon
 r_break
 suffix:semicolon
-macro_line|#ifdef CONFIG_ISDN_PPP
 r_case
 id|ISDN_NET_ENCAP_SYNCPPP
 suffix:colon
@@ -5866,23 +5423,6 @@ id|skb
 comma
 id|len
 )paren
-suffix:semicolon
-r_break
-suffix:semicolon
-macro_line|#endif
-r_case
-id|ISDN_NET_ENCAP_RAWIP
-suffix:colon
-id|printk
-c_func
-(paren
-id|KERN_WARNING
-l_string|&quot;isdn_net_header called with RAW_IP!&bslash;n&quot;
-)paren
-suffix:semicolon
-id|len
-op_assign
-l_int|0
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -5998,27 +5538,15 @@ l_int|4
 suffix:semicolon
 r_break
 suffix:semicolon
-macro_line|#ifdef CONFIG_ISDN_X25
 r_default
 suffix:colon
-(brace
-)brace
-multiline_comment|/* try if there are generic concap protocol routines */
-r_if
-c_cond
-(paren
-id|lp
-op_member_access_from_pointer
-id|netdev
-op_member_access_from_pointer
-id|cprot
-)paren
-(brace
 id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;isdn_net_header called with concap_proto!&bslash;n&quot;
+l_string|&quot;isdn_net_header called with encap %d!&bslash;n&quot;
+comma
+id|lp-&gt;p_encap
 )paren
 suffix:semicolon
 id|len
@@ -6027,10 +5555,6 @@ l_int|0
 suffix:semicolon
 r_break
 suffix:semicolon
-)brace
-r_break
-suffix:semicolon
-macro_line|#endif /* CONFIG_ISDN_X25 */
 )brace
 r_return
 id|len
@@ -7641,7 +7165,6 @@ comma
 id|chi
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_ISDN_PPP
 r_if
 c_cond
 (paren
@@ -7677,7 +7200,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#endif
 multiline_comment|/* Initiate dialing by returning 2 or 4 */
 id|restore_flags
 c_func
@@ -7722,7 +7244,6 @@ op_eq
 id|ST_OUT_WAIT_DCONN
 )paren
 (brace
-macro_line|#ifdef CONFIG_ISDN_PPP
 r_if
 c_cond
 (paren
@@ -7736,7 +7257,6 @@ c_func
 id|lp
 )paren
 suffix:semicolon
-macro_line|#endif
 id|isdn_net_lp_disconnected
 c_func
 (paren
@@ -10986,36 +10506,12 @@ op_minus
 id|EBUSY
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_ISDN_X25
-r_if
-c_cond
+id|isdn_x25_realrm
+c_func
 (paren
 id|p
-op_member_access_from_pointer
-id|cprot
-op_logical_and
-id|p
-op_member_access_from_pointer
-id|cprot
-op_member_access_from_pointer
-id|pops
-)paren
-(brace
-id|p
-op_member_access_from_pointer
-id|cprot
-op_member_access_from_pointer
-id|pops
-op_member_access_from_pointer
-id|proto_del
-(paren
-id|p
-op_member_access_from_pointer
-id|cprot
 )paren
 suffix:semicolon
-)brace
-macro_line|#endif
 multiline_comment|/* Free all phone-entries */
 id|isdn_net_rmallphone
 c_func

@@ -552,7 +552,7 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/*&n; * unbind isdn_net_local &lt;=&gt; ippp-device&n; * note: it can happen, that we hangup/free the master before the slaves&n; *       in this case we bind another lp to the master device&n; */
-r_int
+r_void
 DECL|function|isdn_ppp_free
 id|isdn_ppp_free
 c_func
@@ -591,7 +591,6 @@ id|lp-&gt;ppp_slot
 )paren
 suffix:semicolon
 r_return
-l_int|0
 suffix:semicolon
 )brace
 id|save_flags
@@ -672,7 +671,6 @@ id|flags
 )paren
 suffix:semicolon
 r_return
-l_int|0
 suffix:semicolon
 )brace
 id|is
@@ -755,7 +753,6 @@ id|flags
 )paren
 suffix:semicolon
 r_return
-l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * bind isdn_net_local &lt;=&gt; ippp-device&n; */
