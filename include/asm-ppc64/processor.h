@@ -668,8 +668,8 @@ DECL|macro|IMMR
 mdefine_line|#define&t;IMMR&t;SPRN_IMMR      &t;/* PPC 860/821 Internal Memory Map Register */
 DECL|macro|L2CR
 mdefine_line|#define&t;L2CR&t;SPRN_L2CR    &t;/* PPC 750 L2 control register */
-DECL|macro|LR
-mdefine_line|#define&t;LR&t;SPRN_LR
+DECL|macro|__LR
+mdefine_line|#define&t;__LR&t;SPRN_LR
 DECL|macro|PVR
 mdefine_line|#define&t;PVR&t;SPRN_PVR&t;/* Processor Version */
 DECL|macro|PIR
