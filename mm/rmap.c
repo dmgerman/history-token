@@ -1010,7 +1010,7 @@ r_return
 id|SWAP_AGAIN
 suffix:semicolon
 )brace
-multiline_comment|/* During mremap, it&squot;s possible pages are not in a VMA. */
+multiline_comment|/* unmap_vmas drops page_table_lock with vma unlinked */
 id|vma
 op_assign
 id|find_vma
