@@ -2845,6 +2845,7 @@ suffix:semicolon
 DECL|macro|A_OP
 mdefine_line|#define A_OP(icode, ptr, op, r, a, x, y) &bslash;&n;&t;snd_emu10k1_audigy_write_op(icode, ptr, op, r, a, x, y)
 DECL|function|snd_emu10k1_efx_write
+r_static
 r_void
 id|snd_emu10k1_efx_write
 c_func

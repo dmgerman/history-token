@@ -15,6 +15,19 @@ macro_line|#include &lt;sound/asoundef.h&gt;
 macro_line|#include &lt;sound/cs46xx.h&gt;
 macro_line|#include &quot;cs46xx_lib.h&quot;
 macro_line|#include &quot;dsp_spos.h&quot;
+r_static
+r_int
+id|cs46xx_dsp_async_init
+(paren
+id|cs46xx_t
+op_star
+id|chip
+comma
+id|dsp_scb_descriptor_t
+op_star
+id|fg_entry
+)paren
+suffix:semicolon
 DECL|variable|wide_opcodes
 r_static
 id|wide_opcode_t
@@ -1900,6 +1913,7 @@ l_int|NULL
 suffix:semicolon
 )brace
 DECL|function|cs46xx_dsp_lookup_symbol_addr
+r_static
 id|symbol_entry_t
 op_star
 id|cs46xx_dsp_lookup_symbol_addr
@@ -5159,6 +5173,7 @@ id|desc
 suffix:semicolon
 )brace
 DECL|function|cs46xx_dsp_create_task_tree
+r_static
 id|dsp_task_descriptor_t
 op_star
 id|cs46xx_dsp_create_task_tree
@@ -6661,6 +6676,7 @@ id|EINVAL
 suffix:semicolon
 )brace
 DECL|function|cs46xx_dsp_async_init
+r_static
 r_int
 id|cs46xx_dsp_async_init
 (paren

@@ -1313,6 +1313,7 @@ comma
 )brace
 suffix:semicolon
 DECL|variable|ClockSourceSelector
+r_static
 id|u16
 id|ClockSourceSelector
 (braket

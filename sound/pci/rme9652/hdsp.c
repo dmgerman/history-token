@@ -5455,6 +5455,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|variable|snd_hdsp_midi_output
+r_static
 id|snd_rawmidi_ops_t
 id|snd_hdsp_midi_output
 op_assign
@@ -5477,6 +5478,7 @@ comma
 )brace
 suffix:semicolon
 DECL|variable|snd_hdsp_midi_input
+r_static
 id|snd_rawmidi_ops_t
 id|snd_hdsp_midi_input
 op_assign
@@ -12716,6 +12718,7 @@ op_assign
 id|HDSP_ADAT_SYNC_CHECK
 suffix:semicolon
 DECL|function|snd_hdsp_create_controls
+r_static
 r_int
 id|snd_hdsp_create_controls
 c_func
@@ -15107,6 +15110,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|hdsp_midi_tasklet
+r_static
 r_void
 id|hdsp_midi_tasklet
 c_func

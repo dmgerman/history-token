@@ -1275,6 +1275,7 @@ r_return
 id|scb
 suffix:semicolon
 )brace
+r_static
 id|dsp_scb_descriptor_t
 op_star
 DECL|function|cs46xx_dsp_create_generic_scb
@@ -1716,6 +1717,7 @@ r_return
 id|scb
 suffix:semicolon
 )brace
+r_static
 id|dsp_scb_descriptor_t
 op_star
 DECL|function|cs46xx_dsp_create_pcm_reader_scb
@@ -2297,9 +2299,9 @@ r_return
 id|scb
 suffix:semicolon
 )brace
+macro_line|#if 0 /* not used */
 id|dsp_scb_descriptor_t
 op_star
-DECL|function|cs46xx_dsp_create_filter_scb
 id|cs46xx_dsp_create_filter_scb
 c_func
 (paren
@@ -2484,6 +2486,7 @@ r_return
 id|scb
 suffix:semicolon
 )brace
+macro_line|#endif /* not used */
 id|dsp_scb_descriptor_t
 op_star
 DECL|function|cs46xx_dsp_create_mix_only_scb
@@ -2925,6 +2928,7 @@ r_return
 id|scb
 suffix:semicolon
 )brace
+r_static
 id|dsp_scb_descriptor_t
 op_star
 DECL|function|cs46xx_dsp_create_pcm_serial_input_scb
@@ -3045,6 +3049,7 @@ r_return
 id|scb
 suffix:semicolon
 )brace
+r_static
 id|dsp_scb_descriptor_t
 op_star
 DECL|function|cs46xx_dsp_create_asynch_fg_tx_scb
@@ -3345,9 +3350,9 @@ r_return
 id|scb
 suffix:semicolon
 )brace
+macro_line|#if 0 /* not used */
 id|dsp_scb_descriptor_t
 op_star
-DECL|function|cs46xx_dsp_create_output_snoop_scb
 id|cs46xx_dsp_create_output_snoop_scb
 c_func
 (paren
@@ -3466,6 +3471,7 @@ r_return
 id|scb
 suffix:semicolon
 )brace
+macro_line|#endif /* not used */
 id|dsp_scb_descriptor_t
 op_star
 DECL|function|cs46xx_dsp_create_spio_write_scb

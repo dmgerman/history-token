@@ -5375,6 +5375,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|snd_trident_synth_event_input
+r_static
 r_int
 id|snd_trident_synth_event_input
 c_func

@@ -3715,6 +3715,7 @@ id|shift_right
 suffix:semicolon
 )brace
 DECL|function|snd_ac97_getput_page
+r_static
 r_int
 id|snd_ac97_getput_page
 c_func

@@ -1129,6 +1129,7 @@ id|ENOMEM
 suffix:semicolon
 )brace
 DECL|function|snd_ymfpci_voice_alloc
+r_static
 r_int
 id|snd_ymfpci_voice_alloc
 c_func
@@ -1244,6 +1245,7 @@ id|result
 suffix:semicolon
 )brace
 DECL|function|snd_ymfpci_voice_free
+r_static
 r_int
 id|snd_ymfpci_voice_free
 c_func
