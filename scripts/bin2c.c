@@ -1,3 +1,4 @@
+multiline_comment|/*&n; * Unloved program to convert a binary on stdin to a C include on stdout&n; *&n; * Jan 1999 Matt Mackall &lt;mpm@selenic.com&gt;&n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; */
 macro_line|#include &lt;stdio.h&gt;
 DECL|function|main
 r_int
