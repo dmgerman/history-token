@@ -3409,9 +3409,6 @@ op_amp
 id|ei_local-&gt;page_lock
 )paren
 suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
 )brace
 multiline_comment|/**&n; * alloc_ei_netdev - alloc_etherdev counterpart for 8390&n; *&n; * Allocate 8390-specific net_device.&n; */
 DECL|function|__alloc_ei_netdev
