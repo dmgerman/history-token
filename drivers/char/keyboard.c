@@ -4252,7 +4252,7 @@ suffix:semicolon
 )brace
 macro_line|#if defined(CONFIG_X86) || defined(CONFIG_IA64) || defined(CONFIG_ALPHA) || defined(CONFIG_MIPS) || defined(CONFIG_PPC) || defined(CONFIG_SPARC32) || defined(CONFIG_SPARC64) || defined(CONFIG_PARISC) || defined(CONFIG_SH_MPC1211)
 DECL|macro|HW_RAW
-mdefine_line|#define HW_RAW(dev) (((dev)-&gt;id.bustype == BUS_I8042) &amp;&amp; ((dev)-&gt;id.vendor == 0x0001) &amp;&amp; ((dev)-&gt;id.product == 0x0001))
+mdefine_line|#define HW_RAW(dev) (test_bit(EV_MSC, dev-&gt;evbit) &amp;&amp; test_bit(MSC_RAW, dev-&gt;mscbit) &amp;&amp;&bslash;&n;&t;&t;&t;((dev)-&gt;id.bustype == BUS_I8042) &amp;&amp; ((dev)-&gt;id.vendor == 0x0001) &amp;&amp; ((dev)-&gt;id.product == 0x0001))
 DECL|variable|x86_keycodes
 r_static
 r_int

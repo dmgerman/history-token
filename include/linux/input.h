@@ -940,6 +940,8 @@ DECL|macro|MSC_GESTURE
 mdefine_line|#define MSC_GESTURE&t;&t;0x02
 DECL|macro|MSC_RAW
 mdefine_line|#define MSC_RAW&t;&t;&t;0x03
+DECL|macro|MSC_SCAN
+mdefine_line|#define MSC_SCAN&t;&t;0x04
 DECL|macro|MSC_MAX
 mdefine_line|#define MSC_MAX&t;&t;&t;0x07
 multiline_comment|/*&n; * LEDs&n; */
