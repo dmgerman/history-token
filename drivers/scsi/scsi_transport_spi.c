@@ -9,13 +9,14 @@ macro_line|#include &lt;linux/workqueue.h&gt;
 macro_line|#include &lt;asm/scatterlist.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;scsi/scsi.h&gt;
+macro_line|#include &quot;scsi_priv.h&quot;
 macro_line|#include &lt;scsi/scsi_device.h&gt;
 macro_line|#include &lt;scsi/scsi_host.h&gt;
 macro_line|#include &lt;scsi/scsi_request.h&gt;
 macro_line|#include &lt;scsi/scsi_transport.h&gt;
 macro_line|#include &lt;scsi/scsi_transport_spi.h&gt;
 DECL|macro|SPI_PRINTK
-mdefine_line|#define SPI_PRINTK(x, l, f, a...)&t;printk(l &quot;scsi(%d:%d:%d:%d): &quot; f, (x)-&gt;host-&gt;host_no, (x)-&gt;channel, (x)-&gt;id, (x)-&gt;lun , ##a)
+mdefine_line|#define SPI_PRINTK(x, l, f, a...)&t;dev_printk(l, &amp;(x)-&gt;dev, f , ##a)
 r_static
 r_void
 id|transport_class_release
@@ -35,9 +36,9 @@ DECL|macro|SPI_MAX_ECHO_BUFFER_SIZE
 mdefine_line|#define SPI_MAX_ECHO_BUFFER_SIZE&t;4096
 multiline_comment|/* Private data accessors (keep these out of the header file) */
 DECL|macro|spi_dv_pending
-mdefine_line|#define spi_dv_pending(x) (((struct spi_transport_attrs *)&amp;(x)-&gt;sdev_data)-&gt;dv_pending)
+mdefine_line|#define spi_dv_pending(x) (((struct spi_transport_attrs *)&amp;(x)-&gt;starget_data)-&gt;dv_pending)
 DECL|macro|spi_dv_sem
-mdefine_line|#define spi_dv_sem(x) (((struct spi_transport_attrs *)&amp;(x)-&gt;sdev_data)-&gt;dv_sem)
+mdefine_line|#define spi_dv_sem(x) (((struct spi_transport_attrs *)&amp;(x)-&gt;starget_data)-&gt;dv_sem)
 DECL|struct|spi_internal
 r_struct
 id|spi_internal
@@ -198,15 +199,15 @@ id|spi_setup_transport_attrs
 c_func
 (paren
 r_struct
-id|scsi_device
+id|scsi_target
 op_star
-id|sdev
+id|starget
 )paren
 (brace
 id|spi_period
 c_func
 (paren
-id|sdev
+id|starget
 )paren
 op_assign
 op_minus
@@ -216,7 +217,7 @@ multiline_comment|/* illegal value */
 id|spi_offset
 c_func
 (paren
-id|sdev
+id|starget
 )paren
 op_assign
 l_int|0
@@ -225,7 +226,7 @@ multiline_comment|/* async */
 id|spi_width
 c_func
 (paren
-id|sdev
+id|starget
 )paren
 op_assign
 l_int|0
@@ -234,7 +235,7 @@ multiline_comment|/* narrow */
 id|spi_iu
 c_func
 (paren
-id|sdev
+id|starget
 )paren
 op_assign
 l_int|0
@@ -243,7 +244,7 @@ multiline_comment|/* no IU */
 id|spi_dt
 c_func
 (paren
-id|sdev
+id|starget
 )paren
 op_assign
 l_int|0
@@ -252,7 +253,7 @@ multiline_comment|/* ST */
 id|spi_qas
 c_func
 (paren
-id|sdev
+id|starget
 )paren
 op_assign
 l_int|0
@@ -260,7 +261,7 @@ suffix:semicolon
 id|spi_wr_flow
 c_func
 (paren
-id|sdev
+id|starget
 )paren
 op_assign
 l_int|0
@@ -268,7 +269,7 @@ suffix:semicolon
 id|spi_rd_strm
 c_func
 (paren
-id|sdev
+id|starget
 )paren
 op_assign
 l_int|0
@@ -276,7 +277,7 @@ suffix:semicolon
 id|spi_rti
 c_func
 (paren
-id|sdev
+id|starget
 )paren
 op_assign
 l_int|0
@@ -284,7 +285,7 @@ suffix:semicolon
 id|spi_pcomp_en
 c_func
 (paren
-id|sdev
+id|starget
 )paren
 op_assign
 l_int|0
@@ -292,7 +293,15 @@ suffix:semicolon
 id|spi_dv_pending
 c_func
 (paren
-id|sdev
+id|starget
+)paren
+op_assign
+l_int|0
+suffix:semicolon
+id|spi_initial_dv
+c_func
+(paren
+id|starget
 )paren
 op_assign
 l_int|0
@@ -304,7 +313,7 @@ op_amp
 id|spi_dv_sem
 c_func
 (paren
-id|sdev
+id|starget
 )paren
 )paren
 suffix:semicolon
@@ -325,11 +334,11 @@ id|class_dev
 )paren
 (brace
 r_struct
-id|scsi_device
+id|scsi_target
 op_star
-id|sdev
+id|starget
 op_assign
-id|transport_class_to_sdev
+id|transport_class_to_starget
 c_func
 (paren
 id|class_dev
@@ -339,14 +348,14 @@ id|put_device
 c_func
 (paren
 op_amp
-id|sdev-&gt;sdev_gendev
+id|starget-&gt;dev
 )paren
 suffix:semicolon
 )brace
 DECL|macro|spi_transport_show_function
-mdefine_line|#define spi_transport_show_function(field, format_string)&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;static ssize_t&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;show_spi_transport_##field(struct class_device *cdev, char *buf)&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;struct scsi_device *sdev = transport_class_to_sdev(cdev);&t;&bslash;&n;&t;struct spi_transport_attrs *tp;&t;&t;&t;&t;&t;&bslash;&n;&t;struct spi_internal *i = to_spi_internal(sdev-&gt;host-&gt;transportt); &bslash;&n;&t;tp = (struct spi_transport_attrs *)&amp;sdev-&gt;sdev_data;&t;&t;&bslash;&n;&t;if (i-&gt;f-&gt;get_##field)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;i-&gt;f-&gt;get_##field(sdev);&t;&t;&t;&t;&bslash;&n;&t;return snprintf(buf, 20, format_string, tp-&gt;field);&t;&t;&bslash;&n;}
+mdefine_line|#define spi_transport_show_function(field, format_string)&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;static ssize_t&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;show_spi_transport_##field(struct class_device *cdev, char *buf)&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;struct scsi_target *starget = transport_class_to_starget(cdev);&t;&bslash;&n;&t;struct Scsi_Host *shost = dev_to_shost(starget-&gt;dev.parent);&t;&bslash;&n;&t;struct spi_transport_attrs *tp;&t;&t;&t;&t;&t;&bslash;&n;&t;struct spi_internal *i = to_spi_internal(shost-&gt;transportt);&t;&bslash;&n;&t;tp = (struct spi_transport_attrs *)&amp;starget-&gt;starget_data;&t;&bslash;&n;&t;if (i-&gt;f-&gt;get_##field)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;i-&gt;f-&gt;get_##field(starget);&t;&t;&t;&t;&bslash;&n;&t;return snprintf(buf, 20, format_string, tp-&gt;field);&t;&t;&bslash;&n;}
 DECL|macro|spi_transport_store_function
-mdefine_line|#define spi_transport_store_function(field, format_string)&t;&t;&bslash;&n;static ssize_t&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;store_spi_transport_##field(struct class_device *cdev, const char *buf, &bslash;&n;&t;&t;&t;    size_t count)&t;&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;int val;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;struct scsi_device *sdev = transport_class_to_sdev(cdev);&t;&bslash;&n;&t;struct spi_internal *i = to_spi_internal(sdev-&gt;host-&gt;transportt); &bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;val = simple_strtoul(buf, NULL, 0);&t;&t;&t;&t;&bslash;&n;&t;i-&gt;f-&gt;set_##field(sdev, val);&t;&t;&t;&t;&t;&bslash;&n;&t;return count;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;}
+mdefine_line|#define spi_transport_store_function(field, format_string)&t;&t;&bslash;&n;static ssize_t&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;store_spi_transport_##field(struct class_device *cdev, const char *buf, &bslash;&n;&t;&t;&t;    size_t count)&t;&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;int val;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;struct scsi_target *starget = transport_class_to_starget(cdev);&t;&bslash;&n;&t;struct Scsi_Host *shost = dev_to_shost(starget-&gt;dev.parent);&t;&bslash;&n;&t;struct spi_internal *i = to_spi_internal(shost-&gt;transportt);&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;val = simple_strtoul(buf, NULL, 0);&t;&t;&t;&t;&bslash;&n;&t;i-&gt;f-&gt;set_##field(starget, val);&t;&t;&t;&t;&bslash;&n;&t;return count;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;}
 DECL|macro|spi_transport_rd_attr
 mdefine_line|#define spi_transport_rd_attr(field, format_string)&t;&t;&t;&bslash;&n;&t;spi_transport_show_function(field, format_string)&t;&t;&bslash;&n;&t;spi_transport_store_function(field, format_string)&t;&t;&bslash;&n;static CLASS_DEVICE_ATTR(field, S_IRUGO | S_IWUSR,&t;&t;&t;&bslash;&n;&t;&t;&t; show_spi_transport_##field,&t;&t;&t;&bslash;&n;&t;&t;&t; store_spi_transport_##field);
 multiline_comment|/* The Parallel SCSI Tranport Attributes: */
@@ -443,14 +452,42 @@ id|count
 )paren
 (brace
 r_struct
+id|scsi_target
+op_star
+id|starget
+op_assign
+id|transport_class_to_starget
+c_func
+(paren
+id|cdev
+)paren
+suffix:semicolon
+multiline_comment|/* FIXME: we&squot;re relying on an awful lot of device internals&n;&t; * here.  We really need a function to get the first available&n;&t; * child */
+r_struct
+id|device
+op_star
+id|dev
+op_assign
+id|container_of
+c_func
+(paren
+id|starget-&gt;dev.children.next
+comma
+r_struct
+id|device
+comma
+id|node
+)paren
+suffix:semicolon
+r_struct
 id|scsi_device
 op_star
 id|sdev
 op_assign
-id|transport_class_to_sdev
+id|to_scsi_device
 c_func
 (paren
-id|cdev
+id|dev
 )paren
 suffix:semicolon
 id|spi_dv_device
@@ -494,14 +531,25 @@ id|buf
 )paren
 (brace
 r_struct
-id|scsi_device
+id|scsi_target
 op_star
-id|sdev
+id|starget
 op_assign
-id|transport_class_to_sdev
+id|transport_class_to_starget
 c_func
 (paren
 id|cdev
+)paren
+suffix:semicolon
+r_struct
+id|Scsi_Host
+op_star
+id|shost
+op_assign
+id|dev_to_shost
+c_func
+(paren
+id|starget-&gt;dev.parent
 )paren
 suffix:semicolon
 r_struct
@@ -522,7 +570,7 @@ op_assign
 id|to_spi_internal
 c_func
 (paren
-id|sdev-&gt;host-&gt;transportt
+id|shost-&gt;transportt
 )paren
 suffix:semicolon
 id|tp
@@ -533,7 +581,7 @@ id|spi_transport_attrs
 op_star
 )paren
 op_amp
-id|sdev-&gt;sdev_data
+id|starget-&gt;starget_data
 suffix:semicolon
 r_if
 c_cond
@@ -545,7 +593,7 @@ op_member_access_from_pointer
 id|get_period
 c_func
 (paren
-id|sdev
+id|starget
 )paren
 suffix:semicolon
 r_switch
@@ -646,14 +694,25 @@ id|count
 )paren
 (brace
 r_struct
-id|scsi_device
+id|scsi_target
 op_star
-id|sdev
+id|starget
 op_assign
-id|transport_class_to_sdev
+id|transport_class_to_starget
 c_func
 (paren
 id|cdev
+)paren
+suffix:semicolon
+r_struct
+id|Scsi_Host
+op_star
+id|shost
+op_assign
+id|dev_to_shost
+c_func
+(paren
+id|starget-&gt;dev.parent
 )paren
 suffix:semicolon
 r_struct
@@ -664,7 +723,7 @@ op_assign
 id|to_spi_internal
 c_func
 (paren
-id|sdev-&gt;host-&gt;transportt
+id|shost-&gt;transportt
 )paren
 suffix:semicolon
 r_int
@@ -807,7 +866,7 @@ op_member_access_from_pointer
 id|set_period
 c_func
 (paren
-id|sdev
+id|starget
 comma
 id|period
 )paren
@@ -832,7 +891,7 @@ id|store_spi_transport_period
 )paren
 suffix:semicolon
 DECL|macro|DV_SET
-mdefine_line|#define DV_SET(x, y)&t;&t;&t;&bslash;&n;&t;if(i-&gt;f-&gt;set_##x)&t;&t;&bslash;&n;&t;&t;i-&gt;f-&gt;set_##x(sdev, y)
+mdefine_line|#define DV_SET(x, y)&t;&t;&t;&bslash;&n;&t;if(i-&gt;f-&gt;set_##x)&t;&t;&bslash;&n;&t;&t;i-&gt;f-&gt;set_##x(sdev-&gt;sdev_target, y)
 DECL|macro|DV_LOOPS
 mdefine_line|#define DV_LOOPS&t;3
 DECL|macro|DV_TIMEOUT
@@ -1241,7 +1300,7 @@ suffix:semicolon
 id|SPI_PRINTK
 c_func
 (paren
-id|sdev
+id|sdev-&gt;sdev_target
 comma
 id|KERN_ERR
 comma
@@ -1604,7 +1663,7 @@ op_member_access_from_pointer
 id|get_period
 c_func
 (paren
-id|sdev
+id|sdev-&gt;sdev_target
 )paren
 suffix:semicolon
 id|newperiod
@@ -1612,7 +1671,7 @@ op_assign
 id|spi_period
 c_func
 (paren
-id|sdev
+id|sdev-&gt;sdev_target
 )paren
 suffix:semicolon
 id|period
@@ -1663,7 +1722,7 @@ multiline_comment|/* Total failure; set to async and return */
 id|SPI_PRINTK
 c_func
 (paren
-id|sdev
+id|sdev-&gt;sdev_target
 comma
 id|KERN_ERR
 comma
@@ -1685,7 +1744,7 @@ suffix:semicolon
 id|SPI_PRINTK
 c_func
 (paren
-id|sdev
+id|sdev-&gt;sdev_target
 comma
 id|KERN_ERR
 comma
@@ -1969,7 +2028,7 @@ id|DV_LOOPS
 id|SPI_PRINTK
 c_func
 (paren
-id|sdev
+id|sdev-&gt;sdev_target
 comma
 id|KERN_ERR
 comma
@@ -1994,7 +2053,7 @@ op_member_access_from_pointer
 id|set_width
 c_func
 (paren
-id|sdev
+id|sdev-&gt;sdev_target
 comma
 l_int|1
 )paren
@@ -2021,7 +2080,7 @@ id|DV_LOOPS
 id|SPI_PRINTK
 c_func
 (paren
-id|sdev
+id|sdev-&gt;sdev_target
 comma
 id|KERN_ERR
 comma
@@ -2033,7 +2092,7 @@ op_member_access_from_pointer
 id|set_width
 c_func
 (paren
-id|sdev
+id|sdev-&gt;sdev_target
 comma
 l_int|0
 )paren
@@ -2121,7 +2180,7 @@ l_int|0
 id|SPI_PRINTK
 c_func
 (paren
-id|sdev
+id|sdev-&gt;sdev_target
 comma
 id|KERN_INFO
 comma
@@ -2142,7 +2201,7 @@ id|SPI_MAX_ECHO_BUFFER_SIZE
 id|SPI_PRINTK
 c_func
 (paren
-id|sdev
+id|sdev-&gt;sdev_target
 comma
 id|KERN_WARNING
 comma
@@ -2197,6 +2256,13 @@ id|sdev
 comma
 id|GFP_KERNEL
 )paren
+suffix:semicolon
+r_struct
+id|scsi_target
+op_star
+id|starget
+op_assign
+id|sdev-&gt;sdev_target
 suffix:semicolon
 id|u8
 op_star
@@ -2271,6 +2337,7 @@ comma
 id|len
 )paren
 suffix:semicolon
+multiline_comment|/* We need to verify that the actual device will quiesce; the&n;&t; * later target quiesce is just a nice to have */
 r_if
 c_cond
 (paren
@@ -2287,10 +2354,16 @@ id|sdev
 r_goto
 id|out_free
 suffix:semicolon
+id|scsi_target_quiesce
+c_func
+(paren
+id|starget
+)paren
+suffix:semicolon
 id|spi_dv_pending
 c_func
 (paren
-id|sdev
+id|starget
 )paren
 op_assign
 l_int|1
@@ -2302,14 +2375,14 @@ op_amp
 id|spi_dv_sem
 c_func
 (paren
-id|sdev
+id|starget
 )paren
 )paren
 suffix:semicolon
 id|SPI_PRINTK
 c_func
 (paren
-id|sdev
+id|starget
 comma
 id|KERN_INFO
 comma
@@ -2327,7 +2400,7 @@ suffix:semicolon
 id|SPI_PRINTK
 c_func
 (paren
-id|sdev
+id|starget
 comma
 id|KERN_INFO
 comma
@@ -2341,23 +2414,31 @@ op_amp
 id|spi_dv_sem
 c_func
 (paren
-id|sdev
+id|starget
 )paren
 )paren
 suffix:semicolon
 id|spi_dv_pending
 c_func
 (paren
-id|sdev
+id|starget
 )paren
 op_assign
 l_int|0
 suffix:semicolon
-id|scsi_device_resume
+id|scsi_target_resume
 c_func
 (paren
-id|sdev
+id|starget
 )paren
+suffix:semicolon
+id|spi_initial_dv
+c_func
+(paren
+id|starget
+)paren
+op_assign
+l_int|1
 suffix:semicolon
 id|out_free
 suffix:colon
@@ -2453,7 +2534,7 @@ suffix:semicolon
 id|spi_dv_pending
 c_func
 (paren
-id|sdev
+id|sdev-&gt;sdev_target
 )paren
 op_assign
 l_int|0
@@ -2515,7 +2596,7 @@ c_func
 id|spi_dv_pending
 c_func
 (paren
-id|sdev
+id|sdev-&gt;sdev_target
 )paren
 )paren
 )paren
@@ -2533,7 +2614,7 @@ multiline_comment|/* Set pending early (dv_device doesn&squot;t check it, only s
 id|spi_dv_pending
 c_func
 (paren
-id|sdev
+id|sdev-&gt;sdev_target
 )paren
 op_assign
 l_int|1
@@ -2561,7 +2642,7 @@ suffix:semicolon
 id|spi_dv_pending
 c_func
 (paren
-id|sdev
+id|sdev-&gt;sdev_target
 )paren
 op_assign
 l_int|0
@@ -2663,7 +2744,7 @@ id|spi_internal
 )paren
 )paren
 suffix:semicolon
-id|i-&gt;t.device_attrs
+id|i-&gt;t.target_attrs
 op_assign
 op_amp
 id|i-&gt;attrs
@@ -2671,17 +2752,17 @@ id|i-&gt;attrs
 l_int|0
 )braket
 suffix:semicolon
-id|i-&gt;t.device_class
+id|i-&gt;t.target_class
 op_assign
 op_amp
 id|spi_transport_class
 suffix:semicolon
-id|i-&gt;t.device_setup
+id|i-&gt;t.target_setup
 op_assign
 op_amp
 id|spi_setup_transport_attrs
 suffix:semicolon
-id|i-&gt;t.device_size
+id|i-&gt;t.target_size
 op_assign
 r_sizeof
 (paren

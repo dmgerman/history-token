@@ -18,6 +18,9 @@ macro_line|#include &lt;asm/hardware.h&gt;
 macro_line|#include &lt;asm/parisc-device.h&gt;
 macro_line|#include &lt;asm/delay.h&gt;
 macro_line|#include &lt;scsi/scsi_host.h&gt;
+macro_line|#include &lt;scsi/scsi_device.h&gt;
+macro_line|#include &lt;scsi/scsi_transport.h&gt;
+macro_line|#include &lt;scsi/scsi_transport_spi.h&gt;
 macro_line|#include &quot;lasi700.h&quot;
 macro_line|#include &quot;53c700.h&quot;
 id|MODULE_AUTHOR
