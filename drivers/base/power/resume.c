@@ -185,4 +185,35 @@ c_func
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * device_resume - resume all the devices in the system&n; * @level:&t;stage of resume process we&squot;re at &n; * &n; *&t;This function is deprecated, and should be replaced with appropriate&n; *&t;calls to device_pm_power_up() and device_pm_resume() above.&n; */
+DECL|function|device_resume
+r_void
+id|device_resume
+c_func
+(paren
+id|u32
+id|level
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;%s is deprecated. Called from:&bslash;n&quot;
+comma
+id|__FUNCTION__
+)paren
+suffix:semicolon
+id|dump_stack
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
+DECL|variable|device_resume
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|device_resume
+)paren
+suffix:semicolon
 eof

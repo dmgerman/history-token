@@ -2846,6 +2846,7 @@ suffix:semicolon
 )brace
 multiline_comment|/**&n; *&t;generic_NCR5380_proc_info&t;-&t;/proc for NCR5380 driver&n; *&t;@buffer: buffer to print into&n; *&t;@start: start position&n; *&t;@offset: offset into buffer&n; *&t;@len: length&n; *&t;@hostno: instance to affect&n; *&t;@inout: read/write&n; *&n; *&t;Provide the procfs information for the 5380 controller. We fill&n; *&t;this with useful debugging information including the commands&n; *&t;being executed, disconnected command queue and the statistical&n; *&t;data&n; *&n; *&t;Locks: global cli/lock for queue walk&n; */
 DECL|function|generic_NCR5380_proc_info
+r_static
 r_int
 id|generic_NCR5380_proc_info
 c_func

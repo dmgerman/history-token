@@ -10,6 +10,7 @@ macro_line|#include &lt;asm/mpspec.h&gt;
 macro_line|#if defined (CONFIG_X86_LOCAL_APIC)
 macro_line|#include &lt;mach_apic.h&gt;
 macro_line|#include &lt;mach_mpparse.h&gt;
+macro_line|#include &lt;asm/io_apic.h&gt;
 macro_line|#endif
 DECL|macro|PREFIX
 mdefine_line|#define PREFIX&t;&t;&t;&quot;ACPI: &quot;

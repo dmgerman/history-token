@@ -3323,6 +3323,7 @@ op_assign
 id|dev-&gt;base_addr
 suffix:semicolon
 r_int
+r_int
 id|tmp
 suffix:semicolon
 r_int
