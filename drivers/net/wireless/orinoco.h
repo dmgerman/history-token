@@ -6,8 +6,32 @@ macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/wireless.h&gt;
-macro_line|#include &lt;linux/workqueue.h&gt;
+macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &quot;hermes.h&quot;
+multiline_comment|/* Workqueue / task queue backwards compatibility stuff */
+macro_line|#if LINUX_VERSION_CODE &gt; KERNEL_VERSION(2,5,41)
+macro_line|#include &lt;linux/workqueue.h&gt;
+macro_line|#else
+macro_line|#include &lt;linux/tqueue.h&gt;
+DECL|macro|work_struct
+mdefine_line|#define work_struct tq_struct
+DECL|macro|INIT_WORK
+mdefine_line|#define INIT_WORK INIT_TQUEUE
+DECL|macro|schedule_work
+mdefine_line|#define schedule_work schedule_task
+macro_line|#endif
+multiline_comment|/* Interrupt handler backwards compatibility stuff */
+macro_line|#ifndef IRQ_NONE
+DECL|macro|IRQ_NONE
+mdefine_line|#define IRQ_NONE
+DECL|macro|IRQ_HANDLED
+mdefine_line|#define IRQ_HANDLED
+DECL|typedef|irqreturn_t
+r_typedef
+r_void
+id|irqreturn_t
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/* To enable debug messages */
 singleline_comment|//#define ORINOCO_DEBUG&t;&t;3
 macro_line|#if (! defined (WIRELESS_EXT)) || (WIRELESS_EXT &lt; 10)
@@ -77,14 +101,23 @@ DECL|member|hw_unavailable
 r_int
 id|hw_unavailable
 suffix:semicolon
-DECL|member|timeout_task
+DECL|member|reset_work
 r_struct
 id|work_struct
-id|timeout_task
+id|reset_work
 suffix:semicolon
+multiline_comment|/* driver state */
 DECL|member|open
 r_int
 id|open
+suffix:semicolon
+DECL|member|last_linkstatus
+id|u16
+id|last_linkstatus
+suffix:semicolon
+DECL|member|connected
+r_int
+id|connected
 suffix:semicolon
 multiline_comment|/* Net device stuff */
 DECL|member|ndev
@@ -166,6 +199,10 @@ suffix:semicolon
 DECL|member|channel_mask
 id|u16
 id|channel_mask
+suffix:semicolon
+DECL|member|broken_disableport
+r_int
+id|broken_disableport
 suffix:semicolon
 multiline_comment|/* Configuration paramaters */
 DECL|member|iw_mode
@@ -290,13 +327,6 @@ id|promiscuous
 comma
 id|mc_count
 suffix:semicolon
-multiline_comment|/* /proc based debugging stuff */
-DECL|member|dir_dev
-r_struct
-id|proc_dir_entry
-op_star
-id|dir_dev
-suffix:semicolon
 )brace
 suffix:semicolon
 macro_line|#ifdef ORINOCO_DEBUG
@@ -358,30 +388,20 @@ op_star
 id|dev
 )paren
 suffix:semicolon
+r_extern
+r_int
+id|orinoco_stop
+c_func
+(paren
+r_struct
+id|net_device
+op_star
+id|dev
+)paren
+suffix:semicolon
+r_extern
 r_int
 id|orinoco_reinit_firmware
-c_func
-(paren
-r_struct
-id|net_device
-op_star
-id|dev
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|orinoco_proc_dev_init
-c_func
-(paren
-r_struct
-id|net_device
-op_star
-id|dev
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|orinoco_proc_dev_cleanup
 c_func
 (paren
 r_struct

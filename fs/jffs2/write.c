@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2001, 2002 Red Hat, Inc.&n; *&n; * Created by David Woodhouse &lt;dwmw2@cambridge.redhat.com&gt;&n; *&n; * For licensing information, see the file &squot;LICENCE&squot; in this directory.&n; *&n; * $Id: write.c,v 1.60 2002/09/09 16:29:08 dwmw2 Exp $&n; *&n; */
+multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2001, 2002 Red Hat, Inc.&n; *&n; * Created by David Woodhouse &lt;dwmw2@cambridge.redhat.com&gt;&n; *&n; * For licensing information, see the file &squot;LICENCE&squot; in this directory.&n; *&n; * $Id: write.c,v 1.65 2003/01/21 18:11:29 dwmw2 Exp $&n; *&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/crc32.h&gt;
@@ -186,7 +186,7 @@ l_int|4
 suffix:semicolon
 id|ri-&gt;mode
 op_assign
-id|cpu_to_je32
+id|cpu_to_jemode
 c_func
 (paren
 id|mode
@@ -208,6 +208,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+macro_line|#if CONFIG_JFFS2_FS_DEBUG &gt; 0
 DECL|function|writecheck
 r_static
 r_void
@@ -274,7 +275,7 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;read failed or short in writecheck(). ret %d, retlen %d&bslash;n&quot;
+l_string|&quot;read failed or short in writecheck(). ret %d, retlen %zd&bslash;n&quot;
 comma
 id|ret
 comma
@@ -425,6 +426,7 @@ l_int|15
 suffix:semicolon
 )brace
 )brace
+macro_line|#endif
 multiline_comment|/* jffs2_write_dnode - given a raw_inode, allocate a full_dnode for it, &n;   write it to the flash, link it into the existing inode/fragment list */
 DECL|function|jffs2_write_dnode
 r_struct
@@ -582,12 +584,16 @@ id|iov_len
 op_assign
 id|datalen
 suffix:semicolon
+id|D1
+c_func
+(paren
 id|writecheck
 c_func
 (paren
 id|c
 comma
 id|flash_ofs
+)paren
 )paren
 suffix:semicolon
 r_if
@@ -612,7 +618,7 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;jffs2_write_dnode: ri-&gt;totlen (0x%08x) != sizeof(*ri) (0x%08x) + datalen (0x%08x)&bslash;n&quot;
+l_string|&quot;jffs2_write_dnode: ri-&gt;totlen (0x%08x) != sizeof(*ri) (0x%08zx) + datalen (0x%08x)&bslash;n&quot;
 comma
 id|je32_to_cpu
 c_func
@@ -779,7 +785,7 @@ id|printk
 c_func
 (paren
 id|KERN_NOTICE
-l_string|&quot;Write of %d bytes at 0x%08x failed. returned %d, retlen %d&bslash;n&quot;
+l_string|&quot;Write of %zd bytes at 0x%08x failed. returned %d, retlen %zd&bslash;n&quot;
 comma
 r_sizeof
 (paren
@@ -880,22 +886,73 @@ id|EIO
 suffix:semicolon
 )brace
 multiline_comment|/* Mark the space used */
+multiline_comment|/* If node covers at least a whole page, or if it starts at the &n;&t;   beginning of a page and runs to the end of the file, or if &n;&t;   it&squot;s a hole node, mark it REF_PRISTINE, else REF_NORMAL. &n;&t;*/
 r_if
 c_cond
 (paren
-id|datalen
-op_eq
+(paren
+id|je32_to_cpu
+c_func
+(paren
+id|ri-&gt;dsize
+)paren
+op_ge
 id|PAGE_CACHE_SIZE
 )paren
+op_logical_or
+(paren
+(paren
+(paren
+id|je32_to_cpu
+c_func
+(paren
+id|ri-&gt;offset
+)paren
+op_amp
+(paren
+id|PAGE_CACHE_SIZE
+op_minus
+l_int|1
+)paren
+)paren
+op_eq
+l_int|0
+)paren
+op_logical_and
+(paren
+id|je32_to_cpu
+c_func
+(paren
+id|ri-&gt;dsize
+)paren
+op_plus
+id|je32_to_cpu
+c_func
+(paren
+id|ri-&gt;offset
+)paren
+op_eq
+id|je32_to_cpu
+c_func
+(paren
+id|ri-&gt;isize
+)paren
+)paren
+)paren
+)paren
+(brace
 id|raw-&gt;flash_offset
 op_or_assign
 id|REF_PRISTINE
 suffix:semicolon
+)brace
 r_else
+(brace
 id|raw-&gt;flash_offset
 op_or_assign
 id|REF_NORMAL
 suffix:semicolon
+)brace
 id|jffs2_add_physical_node_ref
 c_func
 (paren
@@ -920,9 +977,15 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;jffs2_write_dnode wrote node at 0x%08x with dsize 0x%x, csize 0x%x, node_crc 0x%08x, data_crc 0x%08x, totlen 0x%08x&bslash;n&quot;
+l_string|&quot;jffs2_write_dnode wrote node at 0x%08x(%d) with dsize 0x%x, csize 0x%x, node_crc 0x%08x, data_crc 0x%08x, totlen 0x%08x&bslash;n&quot;
 comma
 id|flash_ofs
+comma
+id|ref_flags
+c_func
+(paren
+id|raw
+)paren
 comma
 id|je32_to_cpu
 c_func
@@ -1069,12 +1132,16 @@ id|rd-&gt;name_crc
 )paren
 )paren
 suffix:semicolon
+id|D1
+c_func
+(paren
 id|writecheck
 c_func
 (paren
 id|c
 comma
 id|flash_ofs
+)paren
 )paren
 suffix:semicolon
 id|D1
@@ -1342,7 +1409,7 @@ id|printk
 c_func
 (paren
 id|KERN_NOTICE
-l_string|&quot;Write of %d bytes at 0x%08x failed. returned %d, retlen %d&bslash;n&quot;
+l_string|&quot;Write of %zd bytes at 0x%08x failed. returned %d, retlen %zd&bslash;n&quot;
 comma
 r_sizeof
 (paren
@@ -1639,9 +1706,11 @@ id|writelen
 suffix:semicolon
 id|cdatalen
 op_assign
-id|min
+id|min_t
 c_func
 (paren
+r_uint32
+comma
 id|alloclen
 op_minus
 r_sizeof
@@ -2272,7 +2341,7 @@ c_func
 id|KERN_DEBUG
 l_string|&quot;jffs2_do_create created file with mode 0x%x&bslash;n&quot;
 comma
-id|je32_to_cpu
+id|jemode_to_cpu
 c_func
 (paren
 id|ri-&gt;mode

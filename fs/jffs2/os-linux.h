@@ -1,8 +1,13 @@
-multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2002 Red Hat, Inc.&n; *&n; * Created by David Woodhouse &lt;dwmw2@cambridge.redhat.com&gt;&n; *&n; * For licensing information, see the file &squot;LICENCE&squot; in this directory.&n; *&n; * $Id: os-linux.h,v 1.21 2002/11/12 09:44:30 dwmw2 Exp $&n; *&n; */
+multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2002 Red Hat, Inc.&n; *&n; * Created by David Woodhouse &lt;dwmw2@cambridge.redhat.com&gt;&n; *&n; * For licensing information, see the file &squot;LICENCE&squot; in this directory.&n; *&n; * $Id: os-linux.h,v 1.26 2003/05/16 18:45:25 dwmw2 Exp $&n; *&n; */
 macro_line|#ifndef __JFFS2_OS_LINUX_H__
 DECL|macro|__JFFS2_OS_LINUX_H__
 mdefine_line|#define __JFFS2_OS_LINUX_H__
 macro_line|#include &lt;linux/version.h&gt;
+multiline_comment|/* JFFS2 uses Linux mode bits natively -- no need for conversion */
+DECL|macro|os_to_jffs2_mode
+mdefine_line|#define os_to_jffs2_mode(x) (x)
+DECL|macro|jffs2_to_os_mode
+mdefine_line|#define jffs2_to_os_mode(x) (x)
 macro_line|#if LINUX_VERSION_CODE &gt; KERNEL_VERSION(2,5,2)
 DECL|macro|JFFS2_INODE_INFO
 mdefine_line|#define JFFS2_INODE_INFO(i) (list_entry(i, struct jffs2_inode_info, vfs_inode))
@@ -39,12 +44,6 @@ DECL|macro|JFFS2_F_I_UID
 mdefine_line|#define JFFS2_F_I_UID(f) (OFNI_EDONI_2SFFJ(f)-&gt;i_uid)
 DECL|macro|JFFS2_F_I_GID
 mdefine_line|#define JFFS2_F_I_GID(f) (OFNI_EDONI_2SFFJ(f)-&gt;i_gid)
-DECL|macro|JFFS2_F_I_CTIME
-mdefine_line|#define JFFS2_F_I_CTIME(f) (OFNI_EDONI_2SFFJ(f)-&gt;i_ctime.tv_sec)
-DECL|macro|JFFS2_F_I_MTIME
-mdefine_line|#define JFFS2_F_I_MTIME(f) (OFNI_EDONI_2SFFJ(f)-&gt;i_mtime.tv_sec)
-DECL|macro|JFFS2_F_I_ATIME
-mdefine_line|#define JFFS2_F_I_ATIME(f) (OFNI_EDONI_2SFFJ(f)-&gt;i_atime.tv_sec)
 macro_line|#if LINUX_VERSION_CODE &gt; KERNEL_VERSION(2,5,1)
 DECL|macro|JFFS2_F_I_RDEV_MIN
 mdefine_line|#define JFFS2_F_I_RDEV_MIN(f) (minor(OFNI_EDONI_2SFFJ(f)-&gt;i_rdev))
@@ -56,6 +55,30 @@ mdefine_line|#define JFFS2_F_I_RDEV_MIN(f) (MINOR(to_kdev_t(OFNI_EDONI_2SFFJ(f)-
 DECL|macro|JFFS2_F_I_RDEV_MAJ
 mdefine_line|#define JFFS2_F_I_RDEV_MAJ(f) (MAJOR(to_kdev_t(OFNI_EDONI_2SFFJ(f)-&gt;i_rdev)))
 macro_line|#endif
+multiline_comment|/* Urgh. The things we do to keep the 2.4 build working */
+macro_line|#if LINUX_VERSION_CODE &gt; KERNEL_VERSION(2,5,47)
+DECL|macro|ITIME
+mdefine_line|#define ITIME(sec) ((struct timespec){sec, 0})
+DECL|macro|I_SEC
+mdefine_line|#define I_SEC(tv) ((tv).tv_sec)
+DECL|macro|JFFS2_F_I_CTIME
+mdefine_line|#define JFFS2_F_I_CTIME(f) (OFNI_EDONI_2SFFJ(f)-&gt;i_ctime.tv_sec)
+DECL|macro|JFFS2_F_I_MTIME
+mdefine_line|#define JFFS2_F_I_MTIME(f) (OFNI_EDONI_2SFFJ(f)-&gt;i_mtime.tv_sec)
+DECL|macro|JFFS2_F_I_ATIME
+mdefine_line|#define JFFS2_F_I_ATIME(f) (OFNI_EDONI_2SFFJ(f)-&gt;i_atime.tv_sec)
+macro_line|#else
+DECL|macro|ITIME
+mdefine_line|#define ITIME(x) (x)
+DECL|macro|I_SEC
+mdefine_line|#define I_SEC(x) (x)
+DECL|macro|JFFS2_F_I_CTIME
+mdefine_line|#define JFFS2_F_I_CTIME(f) (OFNI_EDONI_2SFFJ(f)-&gt;i_ctime)
+DECL|macro|JFFS2_F_I_MTIME
+mdefine_line|#define JFFS2_F_I_MTIME(f) (OFNI_EDONI_2SFFJ(f)-&gt;i_mtime)
+DECL|macro|JFFS2_F_I_ATIME
+mdefine_line|#define JFFS2_F_I_ATIME(f) (OFNI_EDONI_2SFFJ(f)-&gt;i_atime)
+macro_line|#endif
 multiline_comment|/* Hmmm. P&squot;raps generic code should only ever see versions of signal&n;   functions which do the locking automatically? */
 macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,5,40)
 DECL|macro|current_sig_lock
@@ -64,6 +87,8 @@ macro_line|#else
 DECL|macro|current_sig_lock
 mdefine_line|#define current_sig_lock current-&gt;sighand-&gt;siglock
 macro_line|#endif
+DECL|macro|sleep_on_spinunlock
+mdefine_line|#define sleep_on_spinunlock(wq, s)&t;&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;DECLARE_WAITQUEUE(__wait, current);&t;&t;&bslash;&n;&t;&t;add_wait_queue((wq), &amp;__wait);&t;&t;&t;&bslash;&n;&t;&t;set_current_state(TASK_UNINTERRUPTIBLE);&t;&bslash;&n;&t;&t;spin_unlock(s);&t;&t;&t;&t;&t;&bslash;&n;&t;&t;schedule();&t;&t;&t;&t;&t;&bslash;&n;&t;&t;remove_wait_queue((wq), &amp;__wait);&t;&t;&bslash;&n;&t;} while(0)
 DECL|function|jffs2_init_inode_info
 r_static
 r_inline

@@ -2012,8 +2012,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
 id|ret
+OG
+l_int|0
 )paren
 (brace
 r_if

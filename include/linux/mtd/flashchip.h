@@ -1,4 +1,4 @@
-multiline_comment|/* &n; * struct flchip definition&n; * &n; * Contains information about the location and state of a given flash device &n; *&n; * (C) 2000 Red Hat. GPLd.&n; *&n; * $Id: flashchip.h,v 1.7 2001/01/18 03:52:36 nico Exp $&n; *&n; */
+multiline_comment|/* &n; * struct flchip definition&n; * &n; * Contains information about the location and state of a given flash device &n; *&n; * (C) 2000 Red Hat. GPLd.&n; *&n; * $Id: flashchip.h,v 1.9 2003/04/30 11:15:22 dwmw2 Exp $&n; *&n; */
 macro_line|#ifndef __MTD_FLASHCHIP_H__
 DECL|macro|__MTD_FLASHCHIP_H__
 mdefine_line|#define __MTD_FLASHCHIP_H__
@@ -55,6 +55,9 @@ comma
 DECL|enumerator|FL_UNLOCKING
 id|FL_UNLOCKING
 comma
+DECL|enumerator|FL_POINT
+id|FL_POINT
+comma
 DECL|enumerator|FL_UNKNOWN
 id|FL_UNKNOWN
 DECL|typedef|flstate_t
@@ -74,6 +77,10 @@ suffix:semicolon
 multiline_comment|/* Offset within the map */
 singleline_comment|//&t;unsigned long len;
 multiline_comment|/* We omit len for now, because when we group them together&n;&t;   we insist that they&squot;re all of the same size, and the chip size&n;&t;   is held in the next level up. If we get more versatile later,&n;&t;   it&squot;ll make it a damn sight harder to find which chip we want from&n;&t;   a given offset, and we&squot;ll want to add the per-chip length field&n;&t;   back in.&n;&t;*/
+DECL|member|ref_point_counter
+r_int
+id|ref_point_counter
+suffix:semicolon
 DECL|member|state
 id|flstate_t
 id|state
@@ -81,6 +88,18 @@ suffix:semicolon
 DECL|member|oldstate
 id|flstate_t
 id|oldstate
+suffix:semicolon
+DECL|member|write_suspended
+r_int
+id|write_suspended
+suffix:colon
+l_int|1
+suffix:semicolon
+DECL|member|erase_suspended
+r_int
+id|erase_suspended
+suffix:colon
+l_int|1
 suffix:semicolon
 DECL|member|mutex
 id|spinlock_t

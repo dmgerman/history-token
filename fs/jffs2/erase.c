@@ -1,10 +1,11 @@
-multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2001, 2002 Red Hat, Inc.&n; *&n; * Created by David Woodhouse &lt;dwmw2@cambridge.redhat.com&gt;&n; *&n; * For licensing information, see the file &squot;LICENCE&squot; in this directory.&n; *&n; * $Id: erase.c,v 1.45 2002/10/09 08:27:08 dwmw2 Exp $&n; *&n; */
+multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2001, 2002 Red Hat, Inc.&n; *&n; * Created by David Woodhouse &lt;dwmw2@cambridge.redhat.com&gt;&n; *&n; * For licensing information, see the file &squot;LICENCE&squot; in this directory.&n; *&n; * $Id: erase.c,v 1.51 2003/05/11 22:47:36 dwmw2 Exp $&n; *&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/mtd/mtd.h&gt;
-macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/compiler.h&gt;
 macro_line|#include &lt;linux/crc32.h&gt;
+macro_line|#include &lt;linux/sched.h&gt;
+macro_line|#include &lt;linux/pagemap.h&gt;
 macro_line|#include &quot;nodelist.h&quot;
 DECL|struct|erase_priv_struct
 r_struct
@@ -24,6 +25,7 @@ id|c
 suffix:semicolon
 )brace
 suffix:semicolon
+macro_line|#ifndef __ECOS
 r_static
 r_void
 id|jffs2_erase_callback
@@ -32,6 +34,23 @@ c_func
 r_struct
 id|erase_info
 op_star
+)paren
+suffix:semicolon
+macro_line|#endif
+r_static
+r_void
+id|jffs2_erase_failed
+c_func
+(paren
+r_struct
+id|jffs2_sb_info
+op_star
+id|c
+comma
+r_struct
+id|jffs2_eraseblock
+op_star
+id|jeb
 )paren
 suffix:semicolon
 r_static
@@ -101,6 +120,36 @@ id|jeb
 r_int
 id|ret
 suffix:semicolon
+macro_line|#ifdef __ECOS
+id|ret
+op_assign
+id|jffs2_flash_erase
+c_func
+(paren
+id|c
+comma
+id|jeb
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|ret
+)paren
+(brace
+id|jffs2_erase_succeeded
+c_func
+(paren
+id|c
+comma
+id|jeb
+)paren
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
+macro_line|#else /* Linux */
 r_struct
 id|erase_info
 op_star
@@ -140,7 +189,7 @@ id|KERN_WARNING
 l_string|&quot;kmalloc for struct erase_info in jffs2_erase_block failed. Refiling block for later&bslash;n&quot;
 )paren
 suffix:semicolon
-id|spin_lock_bh
+id|spin_lock
 c_func
 (paren
 op_amp
@@ -168,7 +217,15 @@ id|c-&gt;erasing_size
 op_sub_assign
 id|c-&gt;sector_size
 suffix:semicolon
-id|spin_unlock_bh
+id|c-&gt;dirty_size
+op_add_assign
+id|c-&gt;sector_size
+suffix:semicolon
+id|jeb-&gt;dirty_size
+op_assign
+id|c-&gt;sector_size
+suffix:semicolon
+id|spin_unlock
 c_func
 (paren
 op_amp
@@ -293,6 +350,7 @@ c_func
 id|instr
 )paren
 suffix:semicolon
+macro_line|#endif /* __ECOS */
 r_if
 c_cond
 (paren
@@ -323,7 +381,7 @@ id|ret
 )paren
 )paren
 suffix:semicolon
-id|spin_lock_bh
+id|spin_lock
 c_func
 (paren
 op_amp
@@ -351,7 +409,15 @@ id|c-&gt;erasing_size
 op_sub_assign
 id|c-&gt;sector_size
 suffix:semicolon
-id|spin_unlock_bh
+id|c-&gt;dirty_size
+op_add_assign
+id|c-&gt;sector_size
+suffix:semicolon
+id|jeb-&gt;dirty_size
+op_assign
+id|c-&gt;sector_size
+suffix:semicolon
+id|spin_unlock
 c_func
 (paren
 op_amp
@@ -390,54 +456,12 @@ comma
 id|ret
 )paren
 suffix:semicolon
-multiline_comment|/* Note: This is almost identical to jffs2_erase_failed() except&n;&t;   for the fact that we used spin_lock_bh() not spin_lock(). If&n;&t;   we could use spin_lock_bh() from a BH, we could merge them.&n;&t;   Or if we abandon the idea that MTD drivers may call the erase&n;&t;   callback from a BH, I suppose :)&n;&t;*/
-id|spin_lock_bh
+id|jffs2_erase_failed
 c_func
 (paren
-op_amp
-id|c-&gt;erase_completion_lock
-)paren
-suffix:semicolon
-id|c-&gt;erasing_size
-op_sub_assign
-id|c-&gt;sector_size
-suffix:semicolon
-id|c-&gt;bad_size
-op_add_assign
-id|c-&gt;sector_size
-suffix:semicolon
-id|list_del
-c_func
-(paren
-op_amp
-id|jeb-&gt;list
-)paren
-suffix:semicolon
-id|list_add
-c_func
-(paren
-op_amp
-id|jeb-&gt;list
+id|c
 comma
-op_amp
-id|c-&gt;bad_list
-)paren
-suffix:semicolon
-id|c-&gt;nr_erasing_blocks
-op_decrement
-suffix:semicolon
-id|spin_unlock_bh
-c_func
-(paren
-op_amp
-id|c-&gt;erase_completion_lock
-)paren
-suffix:semicolon
-id|wake_up
-c_func
-(paren
-op_amp
-id|c-&gt;erase_wait
+id|jeb
 )paren
 suffix:semicolon
 )brace
@@ -464,7 +488,7 @@ op_amp
 id|c-&gt;erase_free_sem
 )paren
 suffix:semicolon
-id|spin_lock_bh
+id|spin_lock
 c_func
 (paren
 op_amp
@@ -523,7 +547,7 @@ op_amp
 id|jeb-&gt;list
 )paren
 suffix:semicolon
-id|spin_unlock_bh
+id|spin_unlock
 c_func
 (paren
 op_amp
@@ -627,7 +651,7 @@ op_amp
 id|c-&gt;erasing_list
 )paren
 suffix:semicolon
-id|spin_unlock_bh
+id|spin_unlock
 c_func
 (paren
 op_amp
@@ -657,7 +681,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|spin_lock_bh
+id|spin_lock
 c_func
 (paren
 op_amp
@@ -665,7 +689,7 @@ id|c-&gt;erase_completion_lock
 )paren
 suffix:semicolon
 )brace
-id|spin_unlock_bh
+id|spin_unlock
 c_func
 (paren
 op_amp
@@ -762,7 +786,6 @@ suffix:semicolon
 )brace
 DECL|function|jffs2_erase_failed
 r_static
-r_inline
 r_void
 id|jffs2_erase_failed
 c_func
@@ -828,6 +851,7 @@ id|c-&gt;erase_wait
 )paren
 suffix:semicolon
 )brace
+macro_line|#ifndef __ECOS
 DECL|function|jffs2_erase_callback
 r_static
 r_void
@@ -897,6 +921,7 @@ id|instr
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif /* !__ECOS */
 multiline_comment|/* Hmmm. Maybe we should accept the extra space it takes and make&n;   this a standard doubly-linked list? */
 DECL|function|jffs2_remove_node_refs_from_ino_list
 r_static
@@ -1382,7 +1407,7 @@ c_func
 id|c
 )paren
 suffix:semicolon
-id|spin_lock_bh
+id|spin_lock
 c_func
 (paren
 op_amp
@@ -1399,7 +1424,7 @@ op_amp
 id|c-&gt;erase_complete_list
 )paren
 suffix:semicolon
-id|spin_unlock_bh
+id|spin_unlock
 c_func
 (paren
 op_amp
@@ -1538,7 +1563,7 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;Short read from newly-erased block at 0x%08x. Wanted %d, got %d&bslash;n&quot;
+l_string|&quot;Short read from newly-erased block at 0x%08x. Wanted %d, got %zd&bslash;n&quot;
 comma
 id|ofs
 comma
@@ -1646,7 +1671,7 @@ id|ebuf
 suffix:semicolon
 id|bad2
 suffix:colon
-id|spin_lock_bh
+id|spin_lock
 c_func
 (paren
 op_amp
@@ -1674,7 +1699,7 @@ suffix:semicolon
 id|c-&gt;nr_erasing_blocks
 op_decrement
 suffix:semicolon
-id|spin_unlock_bh
+id|spin_unlock
 c_func
 (paren
 op_amp
@@ -1891,7 +1916,7 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;Short write to newly-erased block at 0x%08x: Wanted %d, got %d&bslash;n&quot;
+l_string|&quot;Short write to newly-erased block at 0x%08x: Wanted %d, got %zd&bslash;n&quot;
 comma
 id|jeb-&gt;offset
 comma
@@ -1959,7 +1984,7 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
-id|spin_lock_bh
+id|spin_lock
 c_func
 (paren
 op_amp
@@ -2012,7 +2037,7 @@ suffix:semicolon
 id|c-&gt;nr_free_blocks
 op_increment
 suffix:semicolon
-id|spin_unlock_bh
+id|spin_unlock
 c_func
 (paren
 op_amp
