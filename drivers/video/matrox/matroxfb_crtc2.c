@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&n; * Hardware accelerated Matrox Millennium I, II, Mystique, G100, G200, G400 and G450.&n; *&n; * (c) 1998-2001 Petr Vandrovec &lt;vandrove@vc.cvut.cz&gt;&n; *&n; * Portions Copyright (c) 2001 Matrox Graphics Inc.&n; *&n; * Version: 1.62 2001/11/29&n; *&n; */
+multiline_comment|/*&n; *&n; * Hardware accelerated Matrox Millennium I, II, Mystique, G100, G200, G400 and G450.&n; *&n; * (c) 1998-2002 Petr Vandrovec &lt;vandrove@vc.cvut.cz&gt;&n; *&n; * Portions Copyright (c) 2001 Matrox Graphics Inc.&n; *&n; * Version: 1.64 2002/06/10&n; *&n; */
 macro_line|#include &quot;matroxfb_maven.h&quot;
 macro_line|#include &quot;matroxfb_crtc2.h&quot;
 macro_line|#include &quot;matroxfb_misc.h&quot;
@@ -446,6 +446,9 @@ id|pos
 id|u_int32_t
 id|tmp
 suffix:semicolon
+id|u_int32_t
+id|datactl
+suffix:semicolon
 id|MINFO_FROM
 c_func
 (paren
@@ -491,6 +494,10 @@ op_or_assign
 l_int|0x00000001
 suffix:semicolon
 multiline_comment|/* enable CRTC2 */
+id|datactl
+op_assign
+l_int|0
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -523,7 +530,30 @@ op_or_assign
 l_int|0x00000006
 suffix:semicolon
 multiline_comment|/* source from secondary pixel PLL */
-multiline_comment|/* no vidrst */
+multiline_comment|/* no vidrst when in monitor mode */
+r_if
+c_cond
+(paren
+id|ACCESS_FBINFO
+c_func
+(paren
+id|outputs
+(braket
+l_int|1
+)braket
+)paren
+dot
+id|mode
+op_ne
+id|MATROXFB_OUTPUT_MODE_MONITOR
+)paren
+(brace
+id|tmp
+op_or_assign
+l_int|0xC0001000
+suffix:semicolon
+multiline_comment|/* Enable H/V vidrst */
+)brace
 )brace
 r_else
 (brace
@@ -614,6 +644,28 @@ suffix:semicolon
 id|mt-&gt;VTotal
 op_rshift_assign
 l_int|1
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+(paren
+id|mt-&gt;HTotal
+op_amp
+l_int|7
+)paren
+op_eq
+l_int|2
+)paren
+(brace
+id|datactl
+op_or_assign
+l_int|0x00000010
+suffix:semicolon
+id|mt-&gt;HTotal
+op_and_assign
+op_complement
+l_int|7
 suffix:semicolon
 )brace
 id|tmp
@@ -773,6 +825,10 @@ id|linelen
 op_lshift_assign
 l_int|1
 suffix:semicolon
+id|m2info-&gt;interlaced
+op_assign
+l_int|1
+suffix:semicolon
 )brace
 r_else
 (brace
@@ -785,6 +841,10 @@ id|pos
 )paren
 suffix:semicolon
 multiline_comment|/* vmemory start */
+id|m2info-&gt;interlaced
+op_assign
+l_int|0
+suffix:semicolon
 )brace
 id|mga_outl
 c_func
@@ -800,7 +860,7 @@ c_func
 (paren
 l_int|0x3C4C
 comma
-l_int|0
+id|datactl
 )paren
 suffix:semicolon
 multiline_comment|/* data control */
@@ -1051,9 +1111,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|var-&gt;vmode
-op_amp
-id|FB_VMODE_INTERLACED
+id|m2info-&gt;interlaced
 )paren
 (brace
 id|mga_outl

@@ -96,6 +96,12 @@ id|display
 op_star
 id|currcon_display
 suffix:semicolon
+DECL|member|interlaced
+r_int
+id|interlaced
+suffix:colon
+l_int|1
+suffix:semicolon
 r_union
 (brace
 macro_line|#ifdef FBCON_HAS_CFB16
