@@ -1353,6 +1353,19 @@ c_cond
 (paren
 id|kobj
 )paren
+(brace
+id|WARN_ON
+c_func
+(paren
+op_logical_neg
+id|atomic_read
+c_func
+(paren
+op_amp
+id|kobj-&gt;refcount
+)paren
+)paren
+suffix:semicolon
 id|atomic_inc
 c_func
 (paren
@@ -1360,6 +1373,7 @@ op_amp
 id|kobj-&gt;refcount
 )paren
 suffix:semicolon
+)brace
 r_else
 id|ret
 op_assign
