@@ -1,6 +1,7 @@
 multiline_comment|/*&n; * cpcihp_zt5550.c&n; *&n; * Intel/Ziatech ZT5550 CompactPCI Host Controller driver&n; *&n; * Copyright 2002 SOMA Networks, Inc.&n; * Copyright 2001 Intel San Luis Obispo&n; * Copyright 2000,2001 MontaVista Software Inc.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of the GNU General Public License as published by the&n; * Free Software Foundation; either version 2 of the License, or (at your&n; * option) any later version.&n; *&n; * THIS SOFTWARE IS PROVIDED &quot;AS IS&quot; AND ANY EXPRESS OR IMPLIED WARRANTIES,&n; * INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY &n; * AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL &n; * THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, &n; * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, &n; * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR &n; * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF &n; * LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING &n; * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS &n; * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write to the Free Software Foundation, Inc.,&n; * 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; * Send feedback to &lt;scottm@somanetworks.com&gt;&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
@@ -12,13 +13,8 @@ DECL|macro|DRIVER_AUTHOR
 mdefine_line|#define DRIVER_AUTHOR&t;&quot;Scott Murray &lt;scottm@somanetworks.com&gt;&quot;
 DECL|macro|DRIVER_DESC
 mdefine_line|#define DRIVER_DESC&t;&quot;ZT5550 CompactPCI Hot Plug Driver&quot;
-macro_line|#if !defined(CONFIG_HOTPLUG_PCI_CPCI_ZT5550_MODULE)
 DECL|macro|MY_NAME
 mdefine_line|#define MY_NAME&t;&quot;cpcihp_zt5550&quot;
-macro_line|#else
-DECL|macro|MY_NAME
-mdefine_line|#define MY_NAME&t;THIS_MODULE-&gt;name
-macro_line|#endif
 DECL|macro|dbg
 mdefine_line|#define dbg(format, arg...)&t;&t;&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;if(debug)&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;printk (KERN_DEBUG &quot;%s: &quot; format &quot;&bslash;n&quot;,&t;&bslash;&n;&t;&t;&t;&t;MY_NAME , ## arg); &t;&t;&bslash;&n;&t;} while(0)
 DECL|macro|err
@@ -1114,12 +1110,14 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|debug
 comma
-l_string|&quot;i&quot;
+r_bool
+comma
+l_int|644
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -1130,12 +1128,14 @@ comma
 l_string|&quot;Debugging mode enabled or not&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|poll
 comma
-l_string|&quot;i&quot;
+r_bool
+comma
+l_int|644
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
