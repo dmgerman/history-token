@@ -604,13 +604,6 @@ r_int
 id|state
 )paren
 suffix:semicolon
-DECL|member|pm_dev
-r_struct
-id|pm_dev
-op_star
-id|pm_dev
-suffix:semicolon
-multiline_comment|/* for ISA */
 DECL|member|pm_private_data
 r_void
 op_star
@@ -632,6 +625,15 @@ DECL|member|power_sleep
 id|wait_queue_head_t
 id|power_sleep
 suffix:semicolon
+macro_line|#ifdef CONFIG_SND_GENERIC_PM
+DECL|member|pm_dev
+r_struct
+id|snd_generic_device
+op_star
+id|pm_dev
+suffix:semicolon
+multiline_comment|/* for ISA */
+macro_line|#endif
 macro_line|#endif
 macro_line|#if defined(CONFIG_SND_MIXER_OSS) || defined(CONFIG_SND_MIXER_OSS_MODULE)
 DECL|member|mixer_oss
@@ -790,15 +792,12 @@ id|private_data
 )paren
 suffix:semicolon
 r_int
-id|snd_card_set_dev_pm_callback
+id|snd_card_set_generic_pm_callback
 c_func
 (paren
 id|snd_card_t
 op_star
 id|card
-comma
-r_int
-id|type
 comma
 r_int
 (paren
@@ -832,9 +831,10 @@ id|private_data
 )paren
 suffix:semicolon
 DECL|macro|snd_card_set_isa_pm_callback
-mdefine_line|#define snd_card_set_isa_pm_callback(card,suspend,resume,data) &bslash;&n;&t;snd_card_set_dev_pm_callback(card, PM_ISA_DEV, suspend, resume, data)
-macro_line|#ifdef CONFIG_PCI
-macro_line|#ifndef SND_PCI_PM_CALLBACKS
+mdefine_line|#define snd_card_set_isa_pm_callback(card,suspend,resume,data) &bslash;&n;&t;snd_card_set_generic_pm_callback(card, suspend, resume, data)
+r_struct
+id|pci_dev
+suffix:semicolon
 r_int
 id|snd_card_pci_suspend
 c_func
@@ -860,9 +860,7 @@ id|dev
 suffix:semicolon
 DECL|macro|SND_PCI_PM_CALLBACKS
 mdefine_line|#define SND_PCI_PM_CALLBACKS &bslash;&n;&t;.suspend = snd_card_pci_suspend,  .resume = snd_card_pci_resume
-macro_line|#endif
-macro_line|#endif
-macro_line|#else
+macro_line|#else /* ! CONFIG_PM */
 DECL|macro|snd_power_lock
 mdefine_line|#define snd_power_lock(card)&t;&t;do { (void)(card); } while (0)
 DECL|macro|snd_power_unlock
@@ -898,15 +896,13 @@ DECL|macro|snd_power_change_state
 mdefine_line|#define snd_power_change_state(card, state)&t;do { (void)(card); } while (0)
 DECL|macro|snd_card_set_pm_callback
 mdefine_line|#define snd_card_set_pm_callback(card,suspend,resume,data)
-DECL|macro|snd_card_set_dev_pm_callback
-mdefine_line|#define snd_card_set_dev_pm_callback(card,suspend,resume,data)
+DECL|macro|snd_card_set_generic_pm_callback
+mdefine_line|#define snd_card_set_generic_pm_callback(card,suspend,resume,data)
 DECL|macro|snd_card_set_isa_pm_callback
 mdefine_line|#define snd_card_set_isa_pm_callback(card,suspend,resume,data)
-macro_line|#ifdef CONFIG_PCI
 DECL|macro|SND_PCI_PM_CALLBACKS
 mdefine_line|#define SND_PCI_PM_CALLBACKS
-macro_line|#endif
-macro_line|#endif
+macro_line|#endif /* CONFIG_PM */
 multiline_comment|/* device.c */
 DECL|struct|_snd_minor
 r_struct
