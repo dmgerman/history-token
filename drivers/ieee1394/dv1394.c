@@ -7847,7 +7847,7 @@ suffix:semicolon
 r_char
 id|new_value
 (braket
-l_int|64
+l_int|65
 )braket
 suffix:semicolon
 r_char
@@ -7899,6 +7899,13 @@ r_return
 op_minus
 id|EFAULT
 suffix:semicolon
+id|new_value
+(braket
+id|len
+)braket
+op_assign
+l_int|0
+suffix:semicolon
 id|pos
 op_assign
 id|strchr
@@ -7933,7 +7940,7 @@ suffix:semicolon
 r_char
 id|buf
 (braket
-l_int|64
+l_int|65
 )braket
 suffix:semicolon
 id|memset
@@ -7943,7 +7950,7 @@ id|buf
 comma
 l_int|0
 comma
-l_int|64
+l_int|65
 )paren
 suffix:semicolon
 id|strncpy
