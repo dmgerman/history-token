@@ -192,6 +192,8 @@ DECL|macro|LAN
 mdefine_line|#define LAN&t;0x0002
 DECL|macro|MIX
 mdefine_line|#define MIX&t;0x0003
+DECL|macro|UNKNOWN
+mdefine_line|#define UNKNOWN&t;0x0
 DECL|variable|mii_chip_table
 )brace
 id|mii_chip_table
@@ -2517,6 +2519,10 @@ comma
 id|phy_addr
 )paren
 suffix:semicolon
+id|mii_phy-&gt;phy_types
+op_assign
+id|UNKNOWN
+suffix:semicolon
 )brace
 )brace
 r_if
@@ -2806,6 +2812,11 @@ op_star
 id|default_phy
 op_assign
 l_int|NULL
+comma
+op_star
+id|phy_lan
+op_assign
+l_int|NULL
 suffix:semicolon
 id|u16
 id|status
@@ -2848,7 +2859,7 @@ comma
 id|MII_STATUS
 )paren
 suffix:semicolon
-multiline_comment|/* Link ON &amp; Not select deafalut PHY */
+multiline_comment|/* Link ON &amp; Not select default PHY &amp; not ghost PHY */
 r_if
 c_cond
 (paren
@@ -2859,8 +2870,12 @@ id|MII_STAT_LINK
 )paren
 op_logical_and
 op_logical_neg
-(paren
 id|default_phy
+op_logical_and
+(paren
+id|phy-&gt;phy_types
+op_ne
+id|UNKNOWN
 )paren
 )paren
 id|default_phy
@@ -2910,15 +2925,25 @@ op_assign
 id|phy
 suffix:semicolon
 )brace
+r_else
+r_if
+c_cond
+(paren
+id|phy-&gt;phy_types
+op_eq
+id|LAN
+)paren
+id|phy_lan
+op_assign
+id|phy
+suffix:semicolon
 )brace
 )brace
 r_if
 c_cond
 (paren
-(paren
 op_logical_neg
 id|default_phy
-)paren
 op_logical_and
 id|phy_home
 )paren
@@ -2934,13 +2959,26 @@ c_cond
 (paren
 op_logical_neg
 id|default_phy
+op_logical_and
+id|phy_lan
 )paren
 (brace
 id|default_phy
 op_assign
-id|sis_priv-&gt;first_mii
+id|phy_lan
 suffix:semicolon
 )brace
+r_else
+r_if
+c_cond
+(paren
+op_logical_neg
+id|default_phy
+)paren
+id|default_phy
+op_assign
+id|sis_priv-&gt;first_mii
+suffix:semicolon
 r_if
 c_cond
 (paren
