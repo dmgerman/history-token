@@ -2219,6 +2219,15 @@ id|agp_hp_init
 r_void
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|agp_off
+)paren
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
 id|acpi_get_devices
 c_func
 (paren

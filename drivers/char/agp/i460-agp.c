@@ -2644,6 +2644,15 @@ c_func
 r_void
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|agp_off
+)paren
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
 r_return
 id|pci_module_init
 c_func

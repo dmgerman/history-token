@@ -1775,6 +1775,15 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|agp_off
+)paren
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
+r_if
+c_cond
+(paren
 id|agp_initialised
 op_eq
 l_int|1
