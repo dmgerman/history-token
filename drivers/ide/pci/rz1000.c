@@ -181,26 +181,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;rz1000_remove_one&t;-&t;called with an RZ1000 is unplugged&n; *&t;@dev: the device that was removed&n; *&n; *&t;Disconnect an RZ1000 device that has been unplugged either by hotplug&n; *&t;or by a more civilized notification scheme. Not yet supported.&n; */
-DECL|function|rz1000_remove_one
-r_static
-r_void
-id|rz1000_remove_one
-c_func
-(paren
-r_struct
-id|pci_dev
-op_star
-id|dev
-)paren
-(brace
-id|panic
-c_func
-(paren
-l_string|&quot;RZ1000 removal not yet supported&quot;
-)paren
-suffix:semicolon
-)brace
 DECL|variable|__devinitdata
 r_static
 r_struct
@@ -268,14 +248,6 @@ comma
 id|probe
 suffix:colon
 id|rz1000_init_one
-comma
-id|remove
-suffix:colon
-id|__devexit_p
-c_func
-(paren
-id|rz1000_remove_one
-)paren
 comma
 )brace
 suffix:semicolon
