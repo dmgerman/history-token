@@ -416,6 +416,10 @@ DECL|macro|EXTENDED_EXTENDED_IDENTIFY
 mdefine_line|#define     EXTENDED_EXTENDED_IDENTIFY      0x02    /* SCSI-I only */
 DECL|macro|EXTENDED_WDTR
 mdefine_line|#define     EXTENDED_WDTR                   0x03
+DECL|macro|EXTENDED_PPR
+mdefine_line|#define     EXTENDED_PPR                    0x04
+DECL|macro|EXTENDED_MODIFY_BIDI_DATA_PTR
+mdefine_line|#define     EXTENDED_MODIFY_BIDI_DATA_PTR   0x05
 DECL|macro|SAVE_POINTERS
 mdefine_line|#define SAVE_POINTERS       0x02
 DECL|macro|RESTORE_POINTERS
@@ -424,8 +428,8 @@ DECL|macro|DISCONNECT
 mdefine_line|#define DISCONNECT          0x04
 DECL|macro|INITIATOR_ERROR
 mdefine_line|#define INITIATOR_ERROR     0x05
-DECL|macro|ABORT
-mdefine_line|#define ABORT               0x06
+DECL|macro|ABORT_TASK_SET
+mdefine_line|#define ABORT_TASK_SET      0x06
 DECL|macro|MESSAGE_REJECT
 mdefine_line|#define MESSAGE_REJECT      0x07
 DECL|macro|NOP
@@ -436,18 +440,39 @@ DECL|macro|LINKED_CMD_COMPLETE
 mdefine_line|#define LINKED_CMD_COMPLETE 0x0a
 DECL|macro|LINKED_FLG_CMD_COMPLETE
 mdefine_line|#define LINKED_FLG_CMD_COMPLETE 0x0b
-DECL|macro|BUS_DEVICE_RESET
-mdefine_line|#define BUS_DEVICE_RESET    0x0c
+DECL|macro|TARGET_RESET
+mdefine_line|#define TARGET_RESET        0x0c
+DECL|macro|ABORT_TASK
+mdefine_line|#define ABORT_TASK          0x0d
+DECL|macro|CLEAR_TASK_SET
+mdefine_line|#define CLEAR_TASK_SET      0x0e
 DECL|macro|INITIATE_RECOVERY
 mdefine_line|#define INITIATE_RECOVERY   0x0f            /* SCSI-II only */
 DECL|macro|RELEASE_RECOVERY
 mdefine_line|#define RELEASE_RECOVERY    0x10            /* SCSI-II only */
+DECL|macro|CLEAR_ACA
+mdefine_line|#define CLEAR_ACA           0x16
+DECL|macro|LOGICAL_UNIT_RESET
+mdefine_line|#define LOGICAL_UNIT_RESET  0x17
 DECL|macro|SIMPLE_QUEUE_TAG
 mdefine_line|#define SIMPLE_QUEUE_TAG    0x20
 DECL|macro|HEAD_OF_QUEUE_TAG
 mdefine_line|#define HEAD_OF_QUEUE_TAG   0x21
 DECL|macro|ORDERED_QUEUE_TAG
 mdefine_line|#define ORDERED_QUEUE_TAG   0x22
+DECL|macro|IGNORE_WIDE_RESIDUE
+mdefine_line|#define IGNORE_WIDE_RESIDUE 0x23
+DECL|macro|ACA
+mdefine_line|#define ACA                 0x24
+DECL|macro|QAS_REQUEST
+mdefine_line|#define QAS_REQUEST         0x55
+DECL|macro|IDENTIFY
+mdefine_line|#define IDENTIFY            0x80
+multiline_comment|/* Old SCSI2 names, don&squot;t use in new code */
+DECL|macro|BUS_DEVICE_RESET
+mdefine_line|#define BUS_DEVICE_RESET    TARGET_RESET
+DECL|macro|ABORT
+mdefine_line|#define ABORT               ABORT_TASK_SET
 multiline_comment|/*&n; * Host byte codes&n; */
 DECL|macro|DID_OK
 mdefine_line|#define DID_OK          0x00&t;/* NO error                                */
