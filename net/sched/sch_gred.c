@@ -259,7 +259,13 @@ op_amp
 id|sch-&gt;q
 )paren
 OL
+(paren
 id|sch-&gt;dev-&gt;tx_queue_len
+ques
+c_cond
+suffix:colon
+l_int|1
+)paren
 )paren
 (brace
 id|D2PRINTK
