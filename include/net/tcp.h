@@ -1562,17 +1562,6 @@ id|sk
 suffix:semicolon
 r_extern
 r_void
-id|__tcp_put_port
-c_func
-(paren
-r_struct
-id|sock
-op_star
-id|sk
-)paren
-suffix:semicolon
-r_extern
-r_void
 id|tcp_inherit_port
 c_func
 (paren
