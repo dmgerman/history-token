@@ -1077,6 +1077,9 @@ id|mc_addr_count
 comma
 r_uint32
 id|pad
+comma
+r_uint32
+id|rar_used_count
 )paren
 suffix:semicolon
 r_uint32
@@ -3023,6 +3026,10 @@ suffix:semicolon
 DECL|member|get_link_status
 id|boolean_t
 id|get_link_status
+suffix:semicolon
+DECL|member|serdes_link_down
+id|boolean_t
+id|serdes_link_down
 suffix:semicolon
 DECL|member|tbi_compatibility_en
 id|boolean_t

@@ -1,6 +1,6 @@
 multiline_comment|/*******************************************************************************&n;&n;  &n;  Copyright(c) 1999 - 2003 Intel Corporation. All rights reserved.&n;  &n;  This program is free software; you can redistribute it and/or modify it &n;  under the terms of the GNU General Public License as published by the Free &n;  Software Foundation; either version 2 of the License, or (at your option) &n;  any later version.&n;  &n;  This program is distributed in the hope that it will be useful, but WITHOUT &n;  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or &n;  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for &n;  more details.&n;  &n;  You should have received a copy of the GNU General Public License along with&n;  this program; if not, write to the Free Software Foundation, Inc., 59 &n;  Temple Place - Suite 330, Boston, MA  02111-1307, USA.&n;  &n;  The full GNU General Public License is included in this distribution in the&n;  file called LICENSE.&n;  &n;  Contact Information:&n;  Linux NICS &lt;linux.nics@intel.com&gt;&n;  Intel Corporation, 5200 N.E. Elam Young Parkway, Hillsboro, OR 97124-6497&n;&n;*******************************************************************************/
 macro_line|#include &quot;e1000.h&quot;
-multiline_comment|/* Change Log&n; *&n; * 5.2.20&t;9/30/03&n; *   o Bug fix: SERDES devices might be connected to a back-plane&n; *     switch that doesn&squot;t support auto-neg, so add the capability&n; *     to force 1000/Full.&n; *   o Bug fix: Flow control settings for hi/lo watermark didn&squot;t&n; *     consider changes in the Rx FIFO size, which could occur with&n; *     Jumbo Frames or with the reduced FIFO in 82547.&n; *   o Better propagation of error codes. [Janice Girouard &n; *     (janiceg@us.ibm.com)].&n; *   o Bug fix: hang under heavy Tx stress when running out of Tx&n; *     descriptors; wasn&squot;t clearing context descriptor when backing&n; *     out of send because of no-resource condition.&n; *&n; * 5.2.16&t;8/8/03&n; *   o Added support for new controllers: 82545GM, 82546GB, 82541/7_B1&n; *   o Bug fix: reset h/w before first EEPROM read because we don&squot;t know&n; *     who may have been messing with the device before we got there.&n; *     [Dave Johnson (ddj -a-t- cascv.brown.edu)]&n; *   o Bug fix: read the correct work from EEPROM to detect programmed&n; *     WoL settings.&n; *   o Bug fix: TSO would hang if space left in FIFO was being miscalculated&n; *     when mss dropped without a correspoding drop in the DMA buffer size.&n; *   o ASF for Fiber nics isn&squot;t supported.&n; *   o Bug fix: Workaround added for potential hang with 82544 running in&n; *     PCI-X if send buffer terminates within an evenly-aligned dword.&n; *   o Feature: Add support for ethtool flow control setting.&n; *   o Feature: Add support for ethtool TSO setting.&n; *   o Feature: Increase default Tx Descriptor count to 1024 for &gt;= 82544.&n; *   &n; * 5.1.13&t;5/28/03&n; */
+multiline_comment|/* Change Log&n; *&n; * 5.2.26&t;11/13/03&n; *   o Fixed endianess bug causing ethtool loopback diags to fail on ppc.&n; *   o Use pdev-&gt;irq rather than netdev-&gt;irq in preparation for MSI support.&n; *   o Report driver message on user override of InterruptThrottleRate&n; *     module parameter.&n; *   o Change I/O address storage from uint32_t to unsigned long.&n; *   o Added ethtool RINGPARAM support.&n; *&n; * 5.2.22&t;10/15/03&n; *   o Bug fix: SERDES devices might be connected to a back-plane&n; *     switch that doesn&squot;t support auto-neg, so add the capability&n; *     to force 1000/Full.  Also, since forcing 1000/Full, sample&n; *     RxSynchronize bit to detect link state.&n; *   o Bug fix: Flow control settings for hi/lo watermark didn&squot;t&n; *     consider changes in the Rx FIFO size, which could occur with&n; *     Jumbo Frames or with the reduced FIFO in 82547.&n; *   o Better propagation of error codes. [Janice Girouard &n; *     (janiceg@us.ibm.com)].&n; *   o Bug fix: hang under heavy Tx stress when running out of Tx&n; *     descriptors; wasn&squot;t clearing context descriptor when backing&n; *     out of send because of no-resource condition.&n; *   o Bug fix: check netif_running in dev-&gt;poll so we don&squot;t have to&n; *     hang in dev-&gt;close until all polls are finished.  [Robert&n; *     Ollson (robert.olsson@data.slu.se)].&n; *   o Revert TxDescriptor ring size back to 256 since change to 1024&n; *     wasn&squot;t accepted into the kernel.&n; *&n; * 5.2.16&t;8/8/03&n; */
 DECL|variable|e1000_driver_name
 r_char
 id|e1000_driver_name
@@ -23,7 +23,7 @@ id|e1000_driver_version
 (braket
 )braket
 op_assign
-l_string|&quot;5.2.20-k1&quot;
+l_string|&quot;5.2.26-k1&quot;
 suffix:semicolon
 DECL|variable|e1000_copyright
 r_char
@@ -5473,6 +5473,9 @@ r_int
 r_int
 id|i
 suffix:semicolon
+r_uint32
+id|link
+suffix:semicolon
 id|e1000_check_for_link
 c_func
 (paren
@@ -5483,6 +5486,36 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
+id|adapter-&gt;hw.media_type
+op_eq
+id|e1000_media_type_internal_serdes
+)paren
+op_logical_and
+op_logical_neg
+(paren
+id|E1000_READ_REG
+c_func
+(paren
+op_amp
+id|adapter-&gt;hw
+comma
+id|TXCW
+)paren
+op_amp
+id|E1000_TXCW_ANE
+)paren
+)paren
+(brace
+id|link
+op_assign
+op_logical_neg
+id|adapter-&gt;hw.serdes_link_down
+suffix:semicolon
+)brace
+r_else
+id|link
+op_assign
 id|E1000_READ_REG
 c_func
 (paren
@@ -5493,6 +5526,11 @@ id|STATUS
 )paren
 op_amp
 id|E1000_STATUS_LU
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|link
 )paren
 (brace
 r_if
