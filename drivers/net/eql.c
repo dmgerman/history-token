@@ -1189,7 +1189,7 @@ id|slave_t
 op_star
 id|duplicate_slave
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|duplicate_slave
 op_assign
