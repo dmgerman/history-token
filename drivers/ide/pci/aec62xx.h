@@ -309,7 +309,7 @@ macro_line|#endif
 DECL|macro|BUSCLOCK
 mdefine_line|#define BUSCLOCK(D)&t;&bslash;&n;&t;((struct chipset_bus_clock_list_entry *) pci_get_drvdata((D)))
 r_static
-r_void
+r_int
 id|init_setup_aec6x80
 c_func
 (paren
@@ -322,7 +322,7 @@ op_star
 )paren
 suffix:semicolon
 r_static
-r_void
+r_int
 id|init_setup_aec62xx
 c_func
 (paren

@@ -42,7 +42,7 @@ mdefine_line|#define set_ata2(a, b)&t;&t;&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;
 DECL|macro|set_pio
 mdefine_line|#define set_pio(a, b, c)&t;&t;&t;&t;&bslash;&n;&t;do { &t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;set_2regs(0x0c,(a));&t;&t;&t;&bslash;&n;&t;&t;set_2regs(0x0d,(b));&t;&t;&t;&bslash;&n;&t;&t;set_2regs(0x13,(c));&t;&t;&t;&bslash;&n;&t;} while(0)
 r_static
-r_void
+r_int
 id|init_setup_pdcnew
 c_func
 (paren
@@ -55,7 +55,7 @@ op_star
 )paren
 suffix:semicolon
 r_static
-r_void
+r_int
 id|init_setup_pdc20270
 c_func
 (paren
@@ -68,7 +68,7 @@ op_star
 )paren
 suffix:semicolon
 r_static
-r_void
+r_int
 id|init_setup_pdc20276
 c_func
 (paren

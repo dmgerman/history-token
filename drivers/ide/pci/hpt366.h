@@ -1692,7 +1692,7 @@ mdefine_line|#define F_LOW_PCI_50      0x2d
 DECL|macro|F_LOW_PCI_66
 mdefine_line|#define F_LOW_PCI_66      0x42
 r_static
-r_void
+r_int
 id|init_setup_hpt366
 c_func
 (paren
@@ -1705,7 +1705,7 @@ op_star
 )paren
 suffix:semicolon
 r_static
-r_void
+r_int
 id|init_setup_hpt37x
 c_func
 (paren
@@ -1718,7 +1718,7 @@ op_star
 )paren
 suffix:semicolon
 r_static
-r_void
+r_int
 id|init_setup_hpt374
 c_func
 (paren

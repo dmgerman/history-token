@@ -97,7 +97,7 @@ mdefine_line|#define&t;MC1&t;&t;0x02&t;/* DMA&quot;C&quot; timing */
 DECL|macro|MC0
 mdefine_line|#define&t;MC0&t;&t;0x01&t;/* DMA&quot;C&quot; timing */
 r_static
-r_void
+r_int
 id|init_setup_pdc202ata4
 c_func
 (paren
@@ -112,7 +112,7 @@ id|d
 )paren
 suffix:semicolon
 r_static
-r_void
+r_int
 id|init_setup_pdc20265
 c_func
 (paren
@@ -125,7 +125,7 @@ op_star
 )paren
 suffix:semicolon
 r_static
-r_void
+r_int
 id|init_setup_pdc202xx
 c_func
 (paren

@@ -1960,7 +1960,7 @@ suffix:semicolon
 )brace
 DECL|function|init_setup_aec62xx
 r_static
-r_void
+r_int
 id|__devinit
 id|init_setup_aec62xx
 c_func
@@ -1975,6 +1975,7 @@ op_star
 id|d
 )paren
 (brace
+r_return
 id|ide_setup_pci_device
 c_func
 (paren
@@ -1986,7 +1987,7 @@ suffix:semicolon
 )brace
 DECL|function|init_setup_aec6x80
 r_static
-r_void
+r_int
 id|__devinit
 id|init_setup_aec6x80
 c_func
@@ -2077,6 +2078,7 @@ l_string|&quot;AEC6280R&quot;
 )paren
 suffix:semicolon
 )brace
+r_return
 id|ide_setup_pci_device
 c_func
 (paren
@@ -2116,6 +2118,7 @@ id|aec62xx_chipsets
 id|id-&gt;driver_data
 )braket
 suffix:semicolon
+r_return
 id|d
 op_member_access_from_pointer
 id|init_setup
@@ -2125,9 +2128,6 @@ id|dev
 comma
 id|d
 )paren
-suffix:semicolon
-r_return
-l_int|0
 suffix:semicolon
 )brace
 DECL|variable|aec62xx_pci_tbl

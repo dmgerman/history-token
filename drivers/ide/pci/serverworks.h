@@ -33,7 +33,7 @@ l_int|NULL
 )brace
 suffix:semicolon
 r_static
-r_void
+r_int
 id|init_setup_svwks
 c_func
 (paren
@@ -46,7 +46,7 @@ op_star
 )paren
 suffix:semicolon
 r_static
-r_void
+r_int
 id|init_setup_csb6
 c_func
 (paren

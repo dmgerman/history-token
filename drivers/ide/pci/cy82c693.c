@@ -1334,6 +1334,12 @@ id|pci_dev
 op_star
 id|dev2
 suffix:semicolon
+r_int
+id|ret
+op_assign
+op_minus
+id|ENODEV
+suffix:semicolon
 multiline_comment|/* CY82C693 is more than only a IDE controller.&n;&t;   Function 1 is primary IDE channel, function 2 - secondary. */
 r_if
 c_cond
@@ -1369,6 +1375,8 @@ op_plus
 l_int|1
 )paren
 suffix:semicolon
+id|ret
+op_assign
 id|ide_setup_pci_devices
 c_func
 (paren
@@ -1381,7 +1389,7 @@ id|d
 suffix:semicolon
 )brace
 r_return
-l_int|0
+id|ret
 suffix:semicolon
 )brace
 DECL|variable|cy82c693_pci_tbl
