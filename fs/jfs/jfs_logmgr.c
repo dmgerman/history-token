@@ -1795,6 +1795,7 @@ id|tblkGC_ERROR
 )paren
 id|rc
 op_assign
+op_minus
 id|EIO
 suffix:semicolon
 id|LOGGC_UNLOCK
@@ -1912,6 +1913,7 @@ id|tblkGC_ERROR
 )paren
 id|rc
 op_assign
+op_minus
 id|EIO
 suffix:semicolon
 id|LOGGC_UNLOCK
@@ -1966,6 +1968,7 @@ id|tblkGC_ERROR
 )paren
 id|rc
 op_assign
+op_minus
 id|EIO
 suffix:semicolon
 id|LOGGC_UNLOCK
@@ -2895,6 +2898,7 @@ id|GFP_KERNEL
 )paren
 )paren
 r_return
+op_minus
 id|ENOMEM
 suffix:semicolon
 id|memset
@@ -3086,11 +3090,6 @@ id|log
 )paren
 )paren
 (brace
-id|rc
-op_assign
-op_minus
-id|rc
-suffix:semicolon
 r_goto
 id|close
 suffix:semicolon
@@ -3222,7 +3221,7 @@ r_return
 id|rc
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * NAME:&t;lmLogInit()&n; *&n; * FUNCTION:&t;log initialization at first log open.&n; *&n; *&t;logredo() (or logformat()) should have been run previously.&n; *&t;initialize the log inode from log superblock.&n; *&t;set the log state in the superblock to LOGMOUNT and&n; *&t;write SYNCPT log record.&n; *&t;&t;&n; * PARAMETER:&t;log&t;- log structure&n; *&n; * RETURN:&t;0&t;- if ok&n; *&t;&t;EINVAL&t;- bad log magic number or superblock dirty&n; *&t;&t;error returned from logwait()&n; *&t;&t;&t;&n; * serialization: single first open thread&n; */
+multiline_comment|/*&n; * NAME:&t;lmLogInit()&n; *&n; * FUNCTION:&t;log initialization at first log open.&n; *&n; *&t;logredo() (or logformat()) should have been run previously.&n; *&t;initialize the log inode from log superblock.&n; *&t;set the log state in the superblock to LOGMOUNT and&n; *&t;write SYNCPT log record.&n; *&t;&t;&n; * PARAMETER:&t;log&t;- log structure&n; *&n; * RETURN:&t;0&t;- if ok&n; *&t;&t;-EINVAL&t;- bad log magic number or superblock dirty&n; *&t;&t;error returned from logwait()&n; *&t;&t;&t;&n; * serialization: single first open thread&n; */
 DECL|function|lmLogInit
 r_int
 id|lmLogInit
@@ -3361,6 +3360,7 @@ l_string|&quot;*** Log Format Error ! ***&quot;
 suffix:semicolon
 id|rc
 op_assign
+op_minus
 id|EINVAL
 suffix:semicolon
 r_goto
@@ -3388,6 +3388,7 @@ l_string|&quot;*** Log Is Dirty ! ***&quot;
 suffix:semicolon
 id|rc
 op_assign
+op_minus
 id|EINVAL
 suffix:semicolon
 r_goto
@@ -3422,6 +3423,7 @@ id|logsuper-&gt;size
 (brace
 id|rc
 op_assign
+op_minus
 id|EINVAL
 suffix:semicolon
 r_goto
@@ -4840,6 +4842,7 @@ id|bpsuper
 )paren
 suffix:semicolon
 r_return
+op_minus
 id|EIO
 suffix:semicolon
 )brace
@@ -5029,9 +5032,8 @@ id|log
 )paren
 suffix:semicolon
 r_return
-(paren
+op_minus
 id|ENOMEM
-)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n; *&t;lbmLogShutdown()&n; *&n; * finalize per log I/O setup at lmLogShutdown()&n; */
@@ -5958,6 +5960,7 @@ id|lbmERROR
 )paren
 ques
 c_cond
+op_minus
 id|EIO
 suffix:colon
 l_int|0

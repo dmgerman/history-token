@@ -844,6 +844,7 @@ op_eq
 l_int|NULL
 )paren
 r_return
+op_minus
 id|ENOMEM
 suffix:semicolon
 r_for
@@ -987,6 +988,7 @@ id|TxBlock
 )paren
 suffix:semicolon
 r_return
+op_minus
 id|ENOMEM
 suffix:semicolon
 )brace
@@ -3321,10 +3323,6 @@ r_int
 id|rc
 op_assign
 l_int|0
-comma
-id|rc1
-op_assign
-l_int|0
 suffix:semicolon
 r_struct
 id|commit
@@ -3924,11 +3922,6 @@ id|cd
 comma
 id|rc
 )paren
-suffix:semicolon
-r_else
-id|rc
-op_assign
-id|rc1
 suffix:semicolon
 id|TheEnd
 suffix:colon

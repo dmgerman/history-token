@@ -337,7 +337,7 @@ id|DXD_INLINE
 )paren
 r_return
 op_minus
-l_int|1
+id|EPERM
 suffix:semicolon
 id|DXDsize
 c_func
@@ -589,7 +589,6 @@ c_cond
 id|rc
 )paren
 r_return
-op_minus
 id|rc
 suffix:semicolon
 multiline_comment|/*&n;&t; * Now have nblocks worth of storage to stuff into the FEALIST.&n;&t; * loop over the FEALIST copying data into the buffer one page at&n;&t; * a time.&n;&t; */
@@ -1559,7 +1558,6 @@ c_cond
 id|rc
 )paren
 r_return
-op_minus
 id|rc
 suffix:semicolon
 id|DXDlength

@@ -105,7 +105,7 @@ DECL|macro|DPE1
 mdefine_line|#define DPE1(a)          (printk(&quot;&bslash;nENTERING: %s&quot;,(a)))
 DECL|macro|DPS1
 mdefine_line|#define DPS1(a)         (printk(&quot;  %s  &quot;,(a)))
-multiline_comment|/*&n; * NAME:&t;extAlloc()&n; *&n; * FUNCTION:    allocate an extent for a specified page range within a&n; *&t;&t;file.&n; *&n; * PARAMETERS:&n; *&t;ip&t;- the inode of the file.&n; *&t;xlen&t;- requested extent length.&n; *&t;pno&t;- the starting page number with the file.&n; *&t;xp&t;- pointer to an xad.  on entry, xad describes an&n; *&t;&t;  extent that is used as an allocation hint if the&n; *&t;&t;  xaddr of the xad is non-zero.  on successful exit,&n; *&t;&t;  the xad describes the newly allocated extent.&n; *&t;abnr&t;- boolean_t indicating whether the newly allocated extent&n; *&t;&t;  should be marked as allocated but not recorded.&n; *&n; * RETURN VALUES:&n; *      0       - success&n; *      EIO&t;- i/o error.&n; *      ENOSPC&t;- insufficient disk resources.&n; */
+multiline_comment|/*&n; * NAME:&t;extAlloc()&n; *&n; * FUNCTION:    allocate an extent for a specified page range within a&n; *&t;&t;file.&n; *&n; * PARAMETERS:&n; *&t;ip&t;- the inode of the file.&n; *&t;xlen&t;- requested extent length.&n; *&t;pno&t;- the starting page number with the file.&n; *&t;xp&t;- pointer to an xad.  on entry, xad describes an&n; *&t;&t;  extent that is used as an allocation hint if the&n; *&t;&t;  xaddr of the xad is non-zero.  on successful exit,&n; *&t;&t;  the xad describes the newly allocated extent.&n; *&t;abnr&t;- boolean_t indicating whether the newly allocated extent&n; *&t;&t;  should be marked as allocated but not recorded.&n; *&n; * RETURN VALUES:&n; *      0       - success&n; *      -EIO&t;- i/o error.&n; *      -ENOSPC&t;- insufficient disk resources.&n; */
 r_int
 DECL|function|extAlloc
 id|extAlloc
@@ -514,7 +514,7 @@ l_int|0
 suffix:semicolon
 )brace
 macro_line|#ifdef _NOTYET
-multiline_comment|/*&n; * NAME:        extRealloc()&n; *&n; * FUNCTION:    extend the allocation of a file extent containing a&n; *&t;&t;partial back last page.&n; *&n; * PARAMETERS:&n; *&t;ip&t;- the inode of the file.&n; *&t;cp&t;- cbuf for the partial backed last page.&n; *&t;xlen&t;- request size of the resulting extent.&n; *&t;xp&t;- pointer to an xad. on successful exit, the xad&n; *&t;&t;  describes the newly allocated extent.&n; *&t;abnr&t;- boolean_t indicating whether the newly allocated extent&n; *&t;&t;  should be marked as allocated but not recorded.&n; *&n; * RETURN VALUES:&n; *      0       - success&n; *      EIO&t;- i/o error.&n; *      ENOSPC&t;- insufficient disk resources.&n; */
+multiline_comment|/*&n; * NAME:        extRealloc()&n; *&n; * FUNCTION:    extend the allocation of a file extent containing a&n; *&t;&t;partial back last page.&n; *&n; * PARAMETERS:&n; *&t;ip&t;- the inode of the file.&n; *&t;cp&t;- cbuf for the partial backed last page.&n; *&t;xlen&t;- request size of the resulting extent.&n; *&t;xp&t;- pointer to an xad. on successful exit, the xad&n; *&t;&t;  describes the newly allocated extent.&n; *&t;abnr&t;- boolean_t indicating whether the newly allocated extent&n; *&t;&t;  should be marked as allocated but not recorded.&n; *&n; * RETURN VALUES:&n; *      0       - success&n; *      -EIO&t;- i/o error.&n; *      -ENOSPC&t;- insufficient disk resources.&n; */
 DECL|function|extRealloc
 r_int
 id|extRealloc
@@ -1003,7 +1003,7 @@ id|rc
 suffix:semicolon
 )brace
 macro_line|#endif&t;&t;&t;/* _NOTYET */
-multiline_comment|/*&n; * NAME:        extHint()&n; *&n; * FUNCTION:    produce an extent allocation hint for a file offset.&n; *&n; * PARAMETERS:&n; *&t;ip&t;- the inode of the file.&n; *&t;offset  - file offset for which the hint is needed.&n; *&t;xp&t;- pointer to the xad that is to be filled in with&n; *&t;&t;  the hint.&n; *&n; * RETURN VALUES:&n; *      0       - success&n; *      EIO&t;- i/o error.&n; */
+multiline_comment|/*&n; * NAME:        extHint()&n; *&n; * FUNCTION:    produce an extent allocation hint for a file offset.&n; *&n; * PARAMETERS:&n; *&t;ip&t;- the inode of the file.&n; *&t;offset  - file offset for which the hint is needed.&n; *&t;xp&t;- pointer to the xad that is to be filled in with&n; *&t;&t;  the hint.&n; *&n; * RETURN VALUES:&n; *      0       - success&n; *      -EIO&t;- i/o error.&n; */
 DECL|function|extHint
 r_int
 id|extHint
@@ -1215,7 +1215,7 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * NAME:        extRecord()&n; *&n; * FUNCTION:    change a page with a file from not recorded to recorded.&n; *&n; * PARAMETERS:&n; *&t;ip&t;- inode of the file.&n; *&t;cp&t;- cbuf of the file page.&n; *&n; * RETURN VALUES:&n; *      0       - success&n; *      EIO&t;- i/o error.&n; *      ENOSPC&t;- insufficient disk resources.&n; */
+multiline_comment|/*&n; * NAME:        extRecord()&n; *&n; * FUNCTION:    change a page with a file from not recorded to recorded.&n; *&n; * PARAMETERS:&n; *&t;ip&t;- inode of the file.&n; *&t;cp&t;- cbuf of the file page.&n; *&n; * RETURN VALUES:&n; *      0       - success&n; *      -EIO&t;- i/o error.&n; *      -ENOSPC&t;- insufficient disk resources.&n; */
 DECL|function|extRecord
 r_int
 id|extRecord
@@ -1280,13 +1280,11 @@ id|commit_sem
 )paren
 suffix:semicolon
 r_return
-(paren
 id|rc
-)paren
 suffix:semicolon
 )brace
 macro_line|#ifdef _NOTYET
-multiline_comment|/*&n; * NAME:        extFill()&n; *&n; * FUNCTION:    allocate disk space for a file page that represents&n; *&t;&t;a file hole.&n; *&n; * PARAMETERS:&n; *&t;ip&t;- the inode of the file.&n; *&t;cp&t;- cbuf of the file page represent the hole.&n; *&n; * RETURN VALUES:&n; *      0       - success&n; *      EIO&t;- i/o error.&n; *      ENOSPC&t;- insufficient disk resources.&n; */
+multiline_comment|/*&n; * NAME:        extFill()&n; *&n; * FUNCTION:    allocate disk space for a file page that represents&n; *&t;&t;a file hole.&n; *&n; * PARAMETERS:&n; *&t;ip&t;- the inode of the file.&n; *&t;cp&t;- cbuf of the file page represent the hole.&n; *&n; * RETURN VALUES:&n; *      0       - success&n; *      -EIO&t;- i/o error.&n; *      -ENOSPC&t;- insufficient disk resources.&n; */
 DECL|function|extFill
 r_int
 id|extFill
@@ -1381,7 +1379,7 @@ l_int|0
 suffix:semicolon
 )brace
 macro_line|#endif&t;&t;&t;/* _NOTYET */
-multiline_comment|/*&n; * NAME:&t;extBalloc()&n; *&n; * FUNCTION:    allocate disk blocks to form an extent.&n; *&n; *&t;&t;initially, we will try to allocate disk blocks for the&n; *&t;&t;requested size (nblocks).  if this fails (nblocks &n; *&t;&t;contigious free blocks not avaliable), we&squot;ll try to allocate&n; *&t;&t;a smaller number of blocks (producing a smaller extent), with&n; *&t;&t;this smaller number of blocks consisting of the requested&n; *&t;&t;number of blocks rounded down to the next smaller power of 2&n; *&t;&t;number (i.e. 16 -&gt; 8).  we&squot;ll continue to round down and&n; *&t;&t;retry the allocation until the number of blocks to allocate&n; *&t;&t;is smaller than the number of blocks per page.&n; *&t;&t;&n; * PARAMETERS:&n; *&t;ip&t; - the inode of the file.&n; *&t;hint&t; - disk block number to be used as an allocation hint.&n; *&t;*nblocks - pointer to an s64 value.  on entry, this value specifies&n; *&t;&t;   the desired number of block to be allocated. on successful&n; *&t;&t;   exit, this value is set to the number of blocks actually&n; *&t;&t;   allocated.&n; *&t;blkno&t; - pointer to a block address that is filled in on successful&n; *&t;&t;   return with the starting block number of the newly &n; *&t;&t;   allocated block range.&n; *&n; * RETURN VALUES:&n; *      0       - success&n; *      EIO&t;- i/o error.&n; *      ENOSPC&t;- insufficient disk resources.&n; */
+multiline_comment|/*&n; * NAME:&t;extBalloc()&n; *&n; * FUNCTION:    allocate disk blocks to form an extent.&n; *&n; *&t;&t;initially, we will try to allocate disk blocks for the&n; *&t;&t;requested size (nblocks).  if this fails (nblocks &n; *&t;&t;contigious free blocks not avaliable), we&squot;ll try to allocate&n; *&t;&t;a smaller number of blocks (producing a smaller extent), with&n; *&t;&t;this smaller number of blocks consisting of the requested&n; *&t;&t;number of blocks rounded down to the next smaller power of 2&n; *&t;&t;number (i.e. 16 -&gt; 8).  we&squot;ll continue to round down and&n; *&t;&t;retry the allocation until the number of blocks to allocate&n; *&t;&t;is smaller than the number of blocks per page.&n; *&t;&t;&n; * PARAMETERS:&n; *&t;ip&t; - the inode of the file.&n; *&t;hint&t; - disk block number to be used as an allocation hint.&n; *&t;*nblocks - pointer to an s64 value.  on entry, this value specifies&n; *&t;&t;   the desired number of block to be allocated. on successful&n; *&t;&t;   exit, this value is set to the number of blocks actually&n; *&t;&t;   allocated.&n; *&t;blkno&t; - pointer to a block address that is filled in on successful&n; *&t;&t;   return with the starting block number of the newly &n; *&t;&t;   allocated block range.&n; *&n; * RETURN VALUES:&n; *      0       - success&n; *      -EIO&t;- i/o error.&n; *      -ENOSPC&t;- insufficient disk resources.&n; */
 r_static
 r_int
 DECL|function|extBalloc
@@ -1527,6 +1525,7 @@ c_cond
 (paren
 id|rc
 op_ne
+op_minus
 id|ENOSPC
 )paren
 r_return
@@ -1665,7 +1664,7 @@ l_int|0
 suffix:semicolon
 )brace
 macro_line|#ifdef _NOTYET
-multiline_comment|/*&n; * NAME:&t;extBrealloc()&n; *&n; * FUNCTION:    attempt to extend an extent&squot;s allocation.&n; *&n; *&t;&t;initially, we will try to extend the extent&squot;s allocation&n; *&t;&t;in place.  if this fails, we&squot;ll try to move the extent&n; *&t;&t;to a new set of blocks. if moving the extent, we initially&n; *&t;&t;will try to allocate disk blocks for the requested size&n; *&t;&t;(nnew).  if this fails &t;(nnew contigious free blocks not&n; *&t;&t;avaliable), we&squot;ll try  to allocate a smaller number of&n; *&t;&t;blocks (producing a smaller extent), with this smaller&n; *&t;&t;number of blocks consisting of the requested number of&n; *&t;&t;blocks rounded down to the next smaller power of 2&n; *&t;&t;number (i.e. 16 -&gt; 8).  we&squot;ll continue to round down and&n; *&t;&t;retry the allocation until the number of blocks to allocate&n; *&t;&t;is smaller than the number of blocks per page.&n; *&t;&t;&n; * PARAMETERS:&n; *&t;ip&t; - the inode of the file.&n; *&t;blkno    - starting block number of the extents current allocation.&n; *&t;nblks    - number of blocks within the extents current allocation.&n; *&t;newnblks - pointer to a s64 value.  on entry, this value is the&n; *&t;&t;   the new desired extent size (number of blocks).  on&n; *&t;&t;   successful exit, this value is set to the extent&squot;s actual&n; *&t;&t;   new size (new number of blocks).&n; *&t;newblkno - the starting block number of the extents new allocation.&n; *&n; * RETURN VALUES:&n; *      0       - success&n; *      EIO&t;- i/o error.&n; *      ENOSPC&t;- insufficient disk resources.&n; */
+multiline_comment|/*&n; * NAME:&t;extBrealloc()&n; *&n; * FUNCTION:    attempt to extend an extent&squot;s allocation.&n; *&n; *&t;&t;initially, we will try to extend the extent&squot;s allocation&n; *&t;&t;in place.  if this fails, we&squot;ll try to move the extent&n; *&t;&t;to a new set of blocks. if moving the extent, we initially&n; *&t;&t;will try to allocate disk blocks for the requested size&n; *&t;&t;(nnew).  if this fails &t;(nnew contigious free blocks not&n; *&t;&t;avaliable), we&squot;ll try  to allocate a smaller number of&n; *&t;&t;blocks (producing a smaller extent), with this smaller&n; *&t;&t;number of blocks consisting of the requested number of&n; *&t;&t;blocks rounded down to the next smaller power of 2&n; *&t;&t;number (i.e. 16 -&gt; 8).  we&squot;ll continue to round down and&n; *&t;&t;retry the allocation until the number of blocks to allocate&n; *&t;&t;is smaller than the number of blocks per page.&n; *&t;&t;&n; * PARAMETERS:&n; *&t;ip&t; - the inode of the file.&n; *&t;blkno    - starting block number of the extents current allocation.&n; *&t;nblks    - number of blocks within the extents current allocation.&n; *&t;newnblks - pointer to a s64 value.  on entry, this value is the&n; *&t;&t;   the new desired extent size (number of blocks).  on&n; *&t;&t;   successful exit, this value is set to the extent&squot;s actual&n; *&t;&t;   new size (new number of blocks).&n; *&t;newblkno - the starting block number of the extents new allocation.&n; *&n; * RETURN VALUES:&n; *      0       - success&n; *      -EIO&t;- i/o error.&n; *      -ENOSPC&t;- insufficient disk resources.&n; */
 r_static
 r_int
 DECL|function|extBrealloc
@@ -1739,6 +1738,7 @@ c_cond
 (paren
 id|rc
 op_ne
+op_minus
 id|ENOSPC
 )paren
 r_return

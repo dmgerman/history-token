@@ -942,7 +942,6 @@ id|ip
 suffix:semicolon
 )brace
 r_return
-op_minus
 id|rc
 suffix:semicolon
 )brace

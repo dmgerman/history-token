@@ -2315,7 +2315,6 @@ id|jfs_inode_cachep
 )paren
 suffix:semicolon
 r_return
-op_minus
 id|rc
 suffix:semicolon
 )brace
