@@ -4,17 +4,8 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/err.h&gt;
-DECL|macro|DEBUG
-macro_line|#undef DEBUG
-macro_line|#ifdef DEBUG
-DECL|macro|DBG
-macro_line|# define DBG(x...) printk(x)
-macro_line|#else
-DECL|macro|DBG
-macro_line|# define DBG(x...)
-macro_line|#endif
+macro_line|#include &quot;base.h&quot;
 DECL|variable|device_root
-r_static
 r_struct
 id|device
 id|device_root
@@ -60,36 +51,13 @@ id|dev
 op_assign
 l_int|NULL
 suffix:semicolon
-r_extern
-r_int
-id|device_make_dir
-c_func
-(paren
-r_struct
-id|device
-op_star
-id|dev
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|device_remove_dir
-c_func
-(paren
-r_struct
-id|device
-op_star
-id|dev
-)paren
-suffix:semicolon
 DECL|variable|device_lock
-r_static
 id|spinlock_t
 id|device_lock
 op_assign
 id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
-multiline_comment|/**&n; * device_register - register a device&n; * @dev:&t;pointer to the device structure&n; *&n; * First, make sure that the device has a parent, create&n; * a directory for it, then add it to the parent&squot;s list of&n; * children.&n; */
+multiline_comment|/**&n; * device_register - register a device&n; * @dev:&t;pointer to the device structure&n; *&n; * First, make sure that the device has a parent, create&n; * a directory for it, then add it to the parent&squot;s list of&n; * children.&n; *&n; * Maintains a global list of all devices, in depth-first ordering.&n; * The head for that list is device_root.g_list.&n; */
 DECL|function|device_register
 r_int
 id|device_register
@@ -103,6 +71,11 @@ id|dev
 (brace
 r_int
 id|error
+suffix:semicolon
+r_struct
+id|device
+op_star
+id|prev_dev
 suffix:semicolon
 r_if
 c_cond
@@ -140,6 +113,13 @@ c_func
 (paren
 op_amp
 id|dev-&gt;children
+)paren
+suffix:semicolon
+id|INIT_LIST_HEAD
+c_func
+(paren
+op_amp
+id|dev-&gt;g_list
 )paren
 suffix:semicolon
 id|spin_lock_init
@@ -182,6 +162,44 @@ id|get_device
 c_func
 (paren
 id|dev-&gt;parent
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|list_empty
+c_func
+(paren
+op_amp
+id|dev-&gt;parent-&gt;children
+)paren
+)paren
+id|prev_dev
+op_assign
+id|dev-&gt;parent
+suffix:semicolon
+r_else
+id|prev_dev
+op_assign
+id|list_entry
+c_func
+(paren
+id|dev-&gt;parent-&gt;children.prev
+comma
+r_struct
+id|device
+comma
+id|node
+)paren
+suffix:semicolon
+id|list_add
+c_func
+(paren
+op_amp
+id|dev-&gt;g_list
+comma
+op_amp
+id|prev_dev-&gt;g_list
 )paren
 suffix:semicolon
 id|list_add_tail
@@ -265,7 +283,7 @@ r_return
 id|error
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * put_device - clean up device&n; * @dev:&t;device in question&n; *&n; * Decrement reference count for device.&n; * If it hits 0, we need to clean it up.&n; * However, we may be here in interrupt context, and it may&n; * take some time to do proper clean up (removing files, calling&n; * back down to device to clean up everything it has).&n; * So, we remove it from its parent&squot;s list and add it to the list of&n; * devices to be cleaned up.&n; */
+multiline_comment|/**&n; * put_device - decrement reference count, and clean up when it hits 0&n; * @dev:&t;device in question&n; */
 DECL|function|put_device
 r_void
 id|put_device
@@ -298,6 +316,13 @@ c_func
 (paren
 op_amp
 id|dev-&gt;node
+)paren
+suffix:semicolon
+id|list_del_init
+c_func
+(paren
+op_amp
+id|dev-&gt;g_list
 )paren
 suffix:semicolon
 id|spin_unlock
