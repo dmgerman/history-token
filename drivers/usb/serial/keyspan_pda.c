@@ -381,9 +381,7 @@ l_int|NULL
 comma
 l_int|0
 comma
-l_int|2
-op_star
-id|HZ
+l_int|2000
 )paren
 suffix:semicolon
 r_if
@@ -899,9 +897,7 @@ multiline_comment|/* &amp;data */
 l_int|0
 comma
 multiline_comment|/* size */
-l_int|2
-op_star
-id|HZ
+l_int|2000
 )paren
 suffix:semicolon
 multiline_comment|/* timeout */
@@ -987,9 +983,7 @@ l_int|NULL
 comma
 l_int|0
 comma
-l_int|2
-op_star
-id|HZ
+l_int|2000
 )paren
 suffix:semicolon
 r_if
@@ -1250,9 +1244,7 @@ id|data
 comma
 l_int|1
 comma
-l_int|2
-op_star
-id|HZ
+l_int|2000
 )paren
 suffix:semicolon
 r_if
@@ -1322,9 +1314,7 @@ l_int|NULL
 comma
 l_int|0
 comma
-l_int|2
-op_star
-id|HZ
+l_int|2000
 )paren
 suffix:semicolon
 r_return
@@ -1844,9 +1834,7 @@ id|room
 comma
 l_int|1
 comma
-l_int|2
-op_star
-id|HZ
+l_int|2000
 )paren
 suffix:semicolon
 r_if
@@ -2213,9 +2201,7 @@ id|room
 comma
 l_int|1
 comma
-l_int|2
-op_star
-id|HZ
+l_int|2000
 )paren
 suffix:semicolon
 r_if
