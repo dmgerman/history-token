@@ -1,4 +1,7 @@
 multiline_comment|/* $Id: isdn_net.h,v 1.19.6.4 2001/09/28 08:05:29 kai Exp $&n; *&n; * header for Linux ISDN subsystem, network related functions (linklevel).&n; *&n; * Copyright 1994-1999  by Fritz Elfert (fritz@isdn4linux.de)&n; * Copyright 1995,96    by Thinking Objects Software GmbH Wuerzburg&n; * Copyright 1995,96    by Michael Hipp (Michael.Hipp@student.uni-tuebingen.de)&n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; */
+macro_line|#include &lt;linux/kernel.h&gt;
+macro_line|#include &lt;linux/netdevice.h&gt;
+macro_line|#include &lt;linux/isdn.h&gt;
 multiline_comment|/* Definitions for hupflags:                */
 DECL|macro|ISDN_CHARGEHUP
 mdefine_line|#define ISDN_CHARGEHUP   4      /* We want to use the charge mechanism      */
