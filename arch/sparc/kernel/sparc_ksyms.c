@@ -301,11 +301,58 @@ id|user
 op_star
 )paren
 suffix:semicolon
+multiline_comment|/* Private functions with odd calling conventions. */
+r_extern
+r_void
+id|___atomic_add
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|___atomic_sub
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|___set_bit
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|___clear_bit
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|___change_bit
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 multiline_comment|/* One thing to note is that the way the symbols of the mul/div&n; * support routines are named is a mess, they all start with&n; * a &squot;.&squot; which makes it a bitch to export, here is the trick:&n; */
+multiline_comment|/* If the interface of any of these special functions does ever&n; * change in an incompatible way, you must modify this.&n; */
+DECL|macro|DOT_PROTO
+mdefine_line|#define DOT_PROTO(sym) extern int __dot_##sym(int, int)
+macro_line|#ifdef __GENKSYMS__
 DECL|macro|EXPORT_SYMBOL_DOT
-mdefine_line|#define EXPORT_SYMBOL_DOT(sym)&t;&t;&t;&t;&t;&bslash;&n;extern int __sparc_dot_ ## sym (int) __asm__(&quot;.&quot; #sym);&t;&t;&bslash;&n;const struct kernel_symbol __ksymtab___sparc_dot_##sym&t;&t;&bslash;&n;__attribute__((section(&quot;__ksymtab&quot;)))&t;&t;&t;&t;&bslash;&n;= { (unsigned long)&amp;__sparc_dot_##sym , &quot;.&quot; #sym }
-DECL|macro|EXPORT_SYMBOL_PRIVATE
-mdefine_line|#define EXPORT_SYMBOL_PRIVATE(sym)&t;&t;&t;&t;&bslash;&n;extern int __sparc_priv_ ## sym (int) __asm__(&quot;__&quot; #sym);&t;&bslash;&n;const struct kernel_symbol __export_priv_##sym&t;&t;&t;&bslash;&n;__attribute__((section(&quot;__ksymtab&quot;))) =&t;&t;&t;&t;&bslash;&n;{ (unsigned long) &amp;__sparc_priv_ ## sym, &quot;__&quot; #sym }
+mdefine_line|#define EXPORT_SYMBOL_DOT(sym)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;DOT_PROTO(sym);&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;EXPORT_SYMBOL(__dot_ ## sym)
+macro_line|#else /* !__GENKSYMS__ */
+DECL|macro|EXPORT_SYMBOL_DOT
+mdefine_line|#define EXPORT_SYMBOL_DOT(sym)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;DOT_PROTO(sym) __asm__(&quot;.&quot; # sym);&t;&t;&t;&t;&bslash;&n;&t;__CRC_SYMBOL(__dot_##sym, &quot;&quot;)&t;&t;&t;&t;&t;&bslash;&n;&t;static const char __kstrtab___dot_##sym[]&t;&t;&t;&bslash;&n;&t;__attribute__((section(&quot;__ksymtab_strings&quot;)))&t;&t;&t;&bslash;&n;&t;= &quot;.&quot; #sym;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;static const struct kernel_symbol __ksymtab___dot_##sym&t;&t;&bslash;&n;&t;__attribute__((section(&quot;__ksymtab&quot;)))&t;&t;&t;&t;&bslash;&n;&t;= { (unsigned long)&amp;__dot_##sym, __kstrtab___dot_##sym }
+macro_line|#endif
 multiline_comment|/* used by various drivers */
 DECL|variable|sparc_cpu_model
 id|EXPORT_SYMBOL
@@ -423,40 +470,40 @@ id|phys_base
 )paren
 suffix:semicolon
 multiline_comment|/* Atomic operations. */
-DECL|variable|_atomic_add
-id|EXPORT_SYMBOL_PRIVATE
+DECL|variable|___atomic_add
+id|EXPORT_SYMBOL
 c_func
 (paren
-id|_atomic_add
+id|___atomic_add
 )paren
 suffix:semicolon
-DECL|variable|_atomic_sub
-id|EXPORT_SYMBOL_PRIVATE
+DECL|variable|___atomic_sub
+id|EXPORT_SYMBOL
 c_func
 (paren
-id|_atomic_sub
+id|___atomic_sub
 )paren
 suffix:semicolon
 multiline_comment|/* Bit operations. */
-DECL|variable|_set_bit
-id|EXPORT_SYMBOL_PRIVATE
+DECL|variable|___set_bit
+id|EXPORT_SYMBOL
 c_func
 (paren
-id|_set_bit
+id|___set_bit
 )paren
 suffix:semicolon
-DECL|variable|_clear_bit
-id|EXPORT_SYMBOL_PRIVATE
+DECL|variable|___clear_bit
+id|EXPORT_SYMBOL
 c_func
 (paren
-id|_clear_bit
+id|___clear_bit
 )paren
 suffix:semicolon
-DECL|variable|_change_bit
-id|EXPORT_SYMBOL_PRIVATE
+DECL|variable|___change_bit
+id|EXPORT_SYMBOL
 c_func
 (paren
-id|_change_bit
+id|___change_bit
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_SMP
