@@ -131,16 +131,6 @@ l_int|6
 )paren
 comma
 multiline_comment|/* buffer has dirty pages                  */
-DECL|enumerator|PBF_FREED
-id|PBF_FREED
-op_assign
-(paren
-l_int|1
-op_lshift
-l_int|7
-)paren
-comma
-multiline_comment|/* buffer has been freed and is invalid    */
 DECL|enumerator|PBF_SYNC
 id|PBF_SYNC
 op_assign
@@ -233,16 +223,6 @@ l_int|16
 )paren
 comma
 multiline_comment|/* page_buf_t may be locked&t;&t;   */
-DECL|enumerator|_PBF_PRIVATE_BH
-id|_PBF_PRIVATE_BH
-op_assign
-(paren
-l_int|1
-op_lshift
-l_int|17
-)paren
-comma
-multiline_comment|/* do not use public buffer heads&t;   */
 DECL|enumerator|_PBF_ALL_PAGES_MAPPED
 id|_PBF_ALL_PAGES_MAPPED
 op_assign
