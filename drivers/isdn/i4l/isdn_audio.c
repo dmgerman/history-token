@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: isdn_audio.c,v 1.21.6.2 2001/09/23 22:24:31 kai Exp $&n; *&n; * Linux ISDN subsystem, audio conversion and compression (linklevel).&n; *&n; * Copyright 1994-1999 by Fritz Elfert (fritz@isdn4linux.de)&n; * DTMF code (c) 1996 by Christian Mock (cm@kukuruz.ping.at)&n; * Silence detection (c) 1998 by Armin Schindler (mac@gismo.telekom.de)&n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; */
+multiline_comment|/* $Id: isdn_audio.c,v 1.21.6.3 2002/08/13 09:45:33 keil Exp $&n; *&n; * Linux ISDN subsystem, audio conversion and compression (linklevel).&n; *&n; * Copyright 1994-1999 by Fritz Elfert (fritz@isdn4linux.de)&n; * DTMF code (c) 1996 by Christian Mock (cm@tahina.priv.at)&n; * Silence detection (c) 1998 by Armin Schindler (mac@gismo.telekom.de)&n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; */
 macro_line|#include &lt;linux/isdn.h&gt;
 macro_line|#include &quot;isdn_audio.h&quot;
 macro_line|#include &quot;isdn_common.h&quot;
@@ -7,7 +7,7 @@ r_char
 op_star
 id|isdn_audio_revision
 op_assign
-l_string|&quot;$Revision: 1.21.6.2 $&quot;
+l_string|&quot;$Revision: 1.21.6.3 $&quot;
 suffix:semicolon
 multiline_comment|/*&n; * Misc. lookup-tables.&n; */
 multiline_comment|/* ulaw -&gt; signed 16-bit */
