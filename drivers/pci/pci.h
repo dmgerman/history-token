@@ -35,15 +35,4 @@ op_star
 id|pdev
 )paren
 suffix:semicolon
-r_extern
-r_int
-id|pci_register_dynids
-c_func
-(paren
-r_struct
-id|pci_driver
-op_star
-id|drv
-)paren
-suffix:semicolon
 eof
