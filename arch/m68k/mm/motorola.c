@@ -940,7 +940,11 @@ r_int
 id|high_memory
 ques
 c_cond
+(paren
 id|mach_max_dma_address
+op_plus
+l_int|1
+)paren
 suffix:colon
 (paren
 r_int
