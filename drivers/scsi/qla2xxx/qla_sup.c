@@ -124,6 +124,13 @@ comma
 l_int|0x1
 )paren
 suffix:semicolon
+id|RD_REG_WORD
+c_func
+(paren
+op_amp
+id|reg-&gt;u.isp2300.host_semaphore
+)paren
+suffix:semicolon
 id|udelay
 c_func
 (paren
@@ -165,6 +172,13 @@ op_amp
 id|reg-&gt;u.isp2300.host_semaphore
 comma
 l_int|0x1
+)paren
+suffix:semicolon
+id|RD_REG_WORD
+c_func
+(paren
+op_amp
+id|reg-&gt;u.isp2300.host_semaphore
 )paren
 suffix:semicolon
 id|udelay
@@ -228,6 +242,7 @@ c_func
 id|ha
 )paren
 )paren
+(brace
 id|WRT_REG_WORD
 c_func
 (paren
@@ -237,6 +252,14 @@ comma
 l_int|0
 )paren
 suffix:semicolon
+id|RD_REG_WORD
+c_func
+(paren
+op_amp
+id|reg-&gt;u.isp2300.host_semaphore
+)paren
+suffix:semicolon
+)brace
 )brace
 multiline_comment|/**&n; * qla2x00_get_nvram_word() - Calculates word position in NVRAM and calls the&n; *&t;request routine to get the word from NVRAM.&n; * @ha: HA context&n; * @addr: Address in NVRAM to read&n; *&n; * Returns the word read from nvram @addr.&n; */
 r_uint16

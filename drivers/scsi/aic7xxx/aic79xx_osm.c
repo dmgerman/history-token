@@ -2483,6 +2483,11 @@ suffix:semicolon
 r_int
 id|found
 suffix:semicolon
+r_int
+id|error
+op_assign
+l_int|0
+suffix:semicolon
 macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,5,0)
 multiline_comment|/*&n;&t; * It is a bug that the upper layer takes&n;&t; * this lock just prior to calling us.&n;&t; */
 id|spin_unlock_irq
@@ -2595,10 +2600,20 @@ c_func
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_PCI
+id|error
+op_assign
 id|ahd_linux_pci_init
 c_func
 (paren
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|error
+)paren
+r_return
+id|error
 suffix:semicolon
 macro_line|#endif
 multiline_comment|/*&n;&t; * Register with the SCSI layer all&n;&t; * controllers we&squot;ve found.&n;&t; */
@@ -2647,9 +2662,7 @@ id|aic79xx_detect_complete
 op_increment
 suffix:semicolon
 r_return
-(paren
-id|found
-)paren
+l_int|0
 suffix:semicolon
 )brace
 macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,5,0)
@@ -5192,6 +5205,17 @@ comma
 id|M_WAITOK
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|recovery_cmd
+)paren
+r_return
+(paren
+id|FAILED
+)paren
+suffix:semicolon
 id|memset
 c_func
 (paren
@@ -5290,6 +5314,12 @@ op_amp
 id|s
 )paren
 suffix:semicolon
+id|kfree
+c_func
+(paren
+id|recovery_cmd
+)paren
+suffix:semicolon
 r_return
 (paren
 id|FAILED
@@ -5321,6 +5351,12 @@ id|ahd
 comma
 op_amp
 id|s
+)paren
+suffix:semicolon
+id|kfree
+c_func
+(paren
+id|recovery_cmd
 )paren
 suffix:semicolon
 r_return
@@ -6171,6 +6207,12 @@ id|KERN_WARNING
 l_string|&quot;aic79xx: No suitable DMA available.&bslash;n&quot;
 )paren
 suffix:semicolon
+id|kfree
+c_func
+(paren
+id|map
+)paren
+suffix:semicolon
 r_return
 (paren
 id|ENODEV
@@ -6215,6 +6257,12 @@ c_func
 (paren
 id|KERN_WARNING
 l_string|&quot;aic79xx: No suitable DMA available.&bslash;n&quot;
+)paren
+suffix:semicolon
+id|kfree
+c_func
+(paren
+id|map
 )paren
 suffix:semicolon
 r_return
@@ -20035,19 +20083,11 @@ r_void
 (brace
 macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,5,0)
 r_return
-(paren
 id|ahd_linux_detect
 c_func
 (paren
 op_amp
 id|aic79xx_driver_template
-)paren
-ques
-c_cond
-l_int|0
-suffix:colon
-op_minus
-id|ENODEV
 )paren
 suffix:semicolon
 macro_line|#else

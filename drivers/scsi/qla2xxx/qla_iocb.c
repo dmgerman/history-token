@@ -1437,6 +1437,14 @@ id|fclun-&gt;lun
 )paren
 suffix:semicolon
 multiline_comment|/* Update tagged queuing modifier */
+id|cmd_pkt-&gt;control_flags
+op_assign
+id|__constant_cpu_to_le16
+c_func
+(paren
+id|CF_SIMPLE_TAG
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1458,19 +1466,6 @@ l_int|0
 )braket
 )paren
 (brace
-r_case
-id|MSG_SIMPLE_TAG
-suffix:colon
-id|cmd_pkt-&gt;control_flags
-op_assign
-id|__constant_cpu_to_le16
-c_func
-(paren
-id|CF_SIMPLE_TAG
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
 r_case
 id|MSG_HEAD_TAG
 suffix:colon

@@ -609,7 +609,7 @@ id|BLIST_NOLUN
 )brace
 comma
 multiline_comment|/* locks up */
-multiline_comment|/*&n;&t; * Other types of devices that have special flags.&n;&t; */
+multiline_comment|/*&n;&t; * Other types of devices that have special flags.&n;&t; * Note that all USB devices should have the BLIST_INQUIRY_36 flag.&n;&t; */
 (brace
 l_string|&quot;ADAPTEC&quot;
 comma
@@ -648,6 +648,8 @@ comma
 l_string|&quot;1.95&quot;
 comma
 id|BLIST_FORCELUN
+op_or
+id|BLIST_INQUIRY_36
 )brace
 comma
 (brace
@@ -668,6 +670,8 @@ comma
 l_string|&quot;300A&quot;
 comma
 id|BLIST_FORCELUN
+op_or
+id|BLIST_INQUIRY_36
 )brace
 comma
 (brace
@@ -898,6 +902,8 @@ comma
 l_string|&quot;1.00&quot;
 comma
 id|BLIST_FORCELUN
+op_or
+id|BLIST_INQUIRY_36
 )brace
 comma
 (brace
@@ -908,6 +914,8 @@ comma
 l_string|&quot;0180&quot;
 comma
 id|BLIST_FORCELUN
+op_or
+id|BLIST_INQUIRY_36
 )brace
 comma
 (brace
@@ -918,6 +926,8 @@ comma
 l_string|&quot;0207&quot;
 comma
 id|BLIST_FORCELUN
+op_or
+id|BLIST_INQUIRY_36
 )brace
 comma
 (brace
@@ -1006,6 +1016,16 @@ comma
 l_int|NULL
 comma
 id|BLIST_FORCELUN
+)brace
+comma
+(brace
+l_string|&quot;HP&quot;
+comma
+l_string|&quot;C3323-300&quot;
+comma
+l_string|&quot;4269&quot;
+comma
+id|BLIST_NOTQ
 )brace
 comma
 (brace
@@ -1301,6 +1321,16 @@ id|BLIST_FORCELUN
 )brace
 comma
 (brace
+l_string|&quot;SEAGATE&quot;
+comma
+l_string|&quot;ST3390N&quot;
+comma
+l_string|&quot;9546&quot;
+comma
+id|BLIST_NOTQ
+)brace
+comma
+(brace
 l_string|&quot;SGI&quot;
 comma
 l_string|&quot;RAID3&quot;
@@ -1338,6 +1368,8 @@ comma
 l_int|NULL
 comma
 id|BLIST_SPARSELUN
+op_or
+id|BLIST_INQUIRY_36
 )brace
 comma
 (brace
@@ -1419,6 +1451,8 @@ comma
 l_int|NULL
 comma
 id|BLIST_FORCELUN
+op_or
+id|BLIST_INQUIRY_36
 )brace
 comma
 (brace

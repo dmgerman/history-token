@@ -484,7 +484,7 @@ op_assign
 dot
 id|proc_name
 op_assign
-l_string|&quot;esp&quot;
+l_string|&quot;dec_esp&quot;
 comma
 dot
 id|proc_info
