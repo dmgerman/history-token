@@ -971,6 +971,17 @@ op_star
 id|drv
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|drv-&gt;dev
+op_eq
+l_int|NULL
+)paren
+r_return
+op_minus
+id|ENODEV
+suffix:semicolon
 id|agp_bridge.type
 op_assign
 id|NOT_SUPPORTED
