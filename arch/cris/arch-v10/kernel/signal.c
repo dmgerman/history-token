@@ -936,9 +936,6 @@ suffix:semicolon
 id|sigset_t
 id|set
 suffix:semicolon
-id|stack_t
-id|st
-suffix:semicolon
 multiline_comment|/*&n;         * Since we stacked the signal on a dword boundary,&n;         * then frame should be dword aligned here.  If it&squot;s&n;         * not, then the user is trying to mess with us.&n;         */
 r_if
 c_cond
@@ -1047,30 +1044,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|__copy_from_user
-c_func
-(paren
-op_amp
-id|st
-comma
-op_amp
-id|frame-&gt;uc.uc_stack
-comma
-r_sizeof
-(paren
-id|st
-)paren
-)paren
-)paren
-r_goto
-id|badframe
-suffix:semicolon
-multiline_comment|/* It is more difficult to avoid calling this function than to&n;&t;   call it and ignore errors.  */
 id|do_sigaltstack
 c_func
 (paren
 op_amp
-id|st
+id|frame-&gt;uc.uc_stack
 comma
 l_int|NULL
 comma
@@ -1079,6 +1057,12 @@ c_func
 (paren
 )paren
 )paren
+op_eq
+op_minus
+id|EFAULT
+)paren
+r_goto
+id|badframe
 suffix:semicolon
 r_return
 id|regs-&gt;r10
@@ -1438,6 +1422,7 @@ l_int|0x9c5f
 comma
 (paren
 r_int
+id|__user
 op_star
 )paren
 (paren
@@ -1456,6 +1441,7 @@ id|__NR_sigreturn
 comma
 (paren
 r_int
+id|__user
 op_star
 )paren
 (paren
@@ -1474,6 +1460,7 @@ l_int|0xe93d
 comma
 (paren
 r_int
+id|__user
 op_star
 )paren
 (paren
@@ -1758,6 +1745,7 @@ l_int|0x9c5f
 comma
 (paren
 r_int
+id|__user
 op_star
 )paren
 (paren
@@ -1776,6 +1764,7 @@ id|__NR_rt_sigreturn
 comma
 (paren
 r_int
+id|__user
 op_star
 )paren
 (paren
@@ -1794,6 +1783,7 @@ l_int|0xe93d
 comma
 (paren
 r_int
+id|__user
 op_star
 )paren
 (paren
@@ -1891,6 +1881,11 @@ id|siginfo_t
 op_star
 id|info
 comma
+r_struct
+id|k_sigaction
+op_star
+id|ka
+comma
 id|sigset_t
 op_star
 id|oldset
@@ -1901,19 +1896,6 @@ op_star
 id|regs
 )paren
 (brace
-r_struct
-id|k_sigaction
-op_star
-id|ka
-op_assign
-op_amp
-id|current-&gt;sighand-&gt;action
-(braket
-id|sig
-op_minus
-l_int|1
-)braket
-suffix:semicolon
 multiline_comment|/* Are we from a system call? */
 r_if
 c_cond
@@ -2107,6 +2089,10 @@ suffix:semicolon
 r_int
 id|signr
 suffix:semicolon
+r_struct
+id|k_sigaction
+id|ka
+suffix:semicolon
 multiline_comment|/*&n;&t; * We want the common case to go fast, which&n;&t; * is why we may in certain cases get here from&n;&t; * kernel mode. Just return without doing anything&n;&t; * if so.&n;&t; */
 r_if
 c_cond
@@ -2140,6 +2126,9 @@ c_func
 op_amp
 id|info
 comma
+op_amp
+id|ka
+comma
 id|regs
 comma
 l_int|NULL
@@ -2163,6 +2152,9 @@ id|signr
 comma
 op_amp
 id|info
+comma
+op_amp
+id|ka
 comma
 id|oldset
 comma
