@@ -619,28 +619,32 @@ id|i2c_algorithm
 id|i2c_sibyte_algo
 op_assign
 (brace
+dot
+id|name
+op_assign
 l_string|&quot;SiByte algorithm&quot;
 comma
+dot
+id|id
+op_assign
 id|I2C_ALGO_SIBYTE
 comma
-l_int|NULL
-comma
-multiline_comment|/* master_xfer          */
+dot
+id|smbus_xfer
+op_assign
 id|smbus_xfer
 comma
-multiline_comment|/* smbus_xfer           */
-l_int|NULL
-comma
-multiline_comment|/* slave_xmit&t;&t;*/
-l_int|NULL
-comma
-multiline_comment|/* slave_recv&t;&t;*/
+dot
+id|algo_control
+op_assign
 id|algo_control
 comma
-multiline_comment|/* ioctl&t;&t;*/
+multiline_comment|/* ioctl */
+dot
+id|functionality
+op_assign
 id|bit_func
 comma
-multiline_comment|/* functionality&t;*/
 )brace
 suffix:semicolon
 multiline_comment|/* &n; * registering functions to load algorithms at runtime &n; */
