@@ -262,6 +262,10 @@ op_lshift
 id|PG_uptodate
 )paren
 suffix:semicolon
+id|page-&gt;age
+op_assign
+id|PAGE_AGE_START
+suffix:semicolon
 id|add_to_page_cache_locked
 c_func
 (paren

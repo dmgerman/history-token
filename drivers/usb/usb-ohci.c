@@ -11833,6 +11833,8 @@ suffix:colon
 id|ohci_pci_suspend
 (paren
 id|ohci-&gt;ohci_dev
+comma
+l_int|3
 )paren
 suffix:semicolon
 r_break

@@ -719,7 +719,7 @@ id|i.freeswap
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/*&n;         * Tagged format, for easy grepping and expansion.&n;         * The above will go away eventually, once the tools&n;         * have been updated.&n;         */
+multiline_comment|/*&n;&t; * Tagged format, for easy grepping and expansion.&n;&t; * The above will go away eventually, once the tools&n;&t; * have been updated.&n;&t; */
 id|len
 op_add_assign
 id|sprintf
@@ -733,7 +733,8 @@ l_string|&quot;MemTotal:     %8lu kB&bslash;n&quot;
 l_string|&quot;MemFree:      %8lu kB&bslash;n&quot;
 l_string|&quot;MemShared:    %8lu kB&bslash;n&quot;
 l_string|&quot;Buffers:      %8lu kB&bslash;n&quot;
-l_string|&quot;Cached:       %8u kB&bslash;n&quot;
+l_string|&quot;Cached:       %8lu kB&bslash;n&quot;
+l_string|&quot;SwapCached:   %8lu kB&bslash;n&quot;
 l_string|&quot;Active:       %8u kB&bslash;n&quot;
 l_string|&quot;Inact_dirty:  %8u kB&bslash;n&quot;
 l_string|&quot;Inact_clean:  %8u kB&bslash;n&quot;
@@ -778,6 +779,14 @@ c_func
 op_amp
 id|page_cache_size
 )paren
+op_minus
+id|swapper_space.nrpages
+)paren
+comma
+id|K
+c_func
+(paren
+id|swapper_space.nrpages
 )paren
 comma
 id|K

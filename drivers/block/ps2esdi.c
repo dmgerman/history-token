@@ -378,6 +378,16 @@ op_lshift
 l_int|6
 )braket
 suffix:semicolon
+DECL|variable|ps2esdi_maxsect
+r_static
+r_int
+id|ps2esdi_maxsect
+(braket
+id|MAX_HD
+op_lshift
+l_int|6
+)braket
+suffix:semicolon
 DECL|variable|ps2esdi_drives
 r_static
 r_int

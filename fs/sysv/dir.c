@@ -1104,6 +1104,8 @@ comma
 id|SYSV_DIRSIZE
 op_minus
 id|namelen
+op_minus
+l_int|2
 )paren
 suffix:semicolon
 id|de-&gt;inode

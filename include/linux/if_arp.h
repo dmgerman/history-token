@@ -22,6 +22,8 @@ DECL|macro|ARPHRD_ARCNET
 mdefine_line|#define&t;ARPHRD_ARCNET&t;7&t;&t;/* ARCnet&t;&t;&t;*/
 DECL|macro|ARPHRD_APPLETLK
 mdefine_line|#define&t;ARPHRD_APPLETLK&t;8&t;&t;/* APPLEtalk&t;&t;&t;*/
+DECL|macro|ARPHRD_IEEE1394
+mdefine_line|#define&t;ARPHRD_IEEE1394&t;9&t;&t;/* IEEE 1394 IPv4 - RFC 2734&t;*/
 DECL|macro|ARPHRD_DLCI
 mdefine_line|#define ARPHRD_DLCI&t;15&t;&t;/* Frame Relay DLCI&t;&t;*/
 DECL|macro|ARPHRD_ATM

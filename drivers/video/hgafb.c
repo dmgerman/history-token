@@ -16,8 +16,8 @@ macro_line|#include &lt;asm/vga.h&gt;
 macro_line|#include &lt;video/fbcon.h&gt;
 macro_line|#include &lt;video/fbcon-hga.h&gt;
 macro_line|#ifdef MODULE
-DECL|macro|INCLUDE_LINUX_LOGOBW
-mdefine_line|#define INCLUDE_LINUX_LOGOBW
+DECL|macro|INCLUDE_LINUX_LOGO_DATA
+mdefine_line|#define INCLUDE_LINUX_LOGO_DATA
 macro_line|#include &lt;linux/linux_logo.h&gt;
 macro_line|#endif /* MODULE */
 macro_line|#if 0

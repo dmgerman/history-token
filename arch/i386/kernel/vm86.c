@@ -1655,7 +1655,7 @@ suffix:semicolon
 DECL|macro|CHECK_IF_IN_TRAP
 mdefine_line|#define CHECK_IF_IN_TRAP &bslash;&n;&t;if (VMPI.vm86dbg_active &amp;&amp; VMPI.vm86dbg_TFpendig) &bslash;&n;&t;&t;pushw(ssp,sp,popw(ssp,sp) | TF_MASK);
 DECL|macro|VM86_FAULT_RETURN
-mdefine_line|#define VM86_FAULT_RETURN &bslash;&n;&t;if (VMPI.force_return_for_pic  &amp;&amp; (VEFLAGS &amp; IF_MASK)) &bslash;&n;&t;&t;return_to_32bit(regs, VM86_PICRETURN); &bslash;&n;&t;return;
+mdefine_line|#define VM86_FAULT_RETURN &bslash;&n;&t;if (VMPI.force_return_for_pic  &amp;&amp; (VEFLAGS &amp; (IF_MASK | VIF_MASK))) &bslash;&n;&t;&t;return_to_32bit(regs, VM86_PICRETURN); &bslash;&n;&t;return;
 id|csp
 op_assign
 (paren

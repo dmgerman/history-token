@@ -917,6 +917,13 @@ c_func
 id|submit_bh
 )paren
 suffix:semicolon
+DECL|variable|unlock_buffer
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|unlock_buffer
+)paren
+suffix:semicolon
 DECL|variable|__wait_on_buffer
 id|EXPORT_SYMBOL
 c_func

@@ -3170,6 +3170,13 @@ c_func
 id|bh
 )paren
 suffix:semicolon
+id|atomic_dec
+c_func
+(paren
+op_amp
+id|bh-&gt;b_count
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/**&n; * ll_rw_block: low-level access to block devices&n; * @rw: whether to %READ or %WRITE or maybe %READA (readahead)&n; * @nr: number of &amp;struct buffer_heads in the array&n; * @bhs: array of pointers to &amp;struct buffer_head&n; *&n; * ll_rw_block() takes an array of pointers to &amp;struct buffer_heads,&n; * and requests an I/O operation on them, either a %READ or a %WRITE.&n; * The third %READA option is described in the documentation for&n; * generic_make_request() which ll_rw_block() calls.&n; *&n; * This function provides extra functionality that is not in&n; * generic_make_request() that is relevant to buffers in the buffer&n; * cache or page cache.  In particular it drops any buffer that it&n; * cannot get a lock on (with the BH_Lock state bit), any buffer that&n; * appears to be clean when doing a write request, and any buffer that&n; * appears to be up-to-date when doing read request.  Further it marks&n; * as clean buffers that are processed for writing (the buffer cache&n; * wont assume that they are actually clean until the buffer gets&n; * unlocked).&n; *&n; * ll_rw_block sets b_end_io to simple completion handler that marks&n; * the buffer up-to-date (if approriate), unlocks the buffer and wakes&n; * any waiters.  As client that needs a more interesting completion&n; * routine should call submit_bh() (or generic_make_request())&n; * directly.&n; *&n; * Caveat:&n; *  All of the buffers must be for the same device, and must also be&n; *  of the current approved size for the device.  */
 DECL|function|ll_rw_block
@@ -3448,6 +3455,13 @@ id|bh-&gt;b_state
 r_continue
 suffix:semicolon
 multiline_comment|/* We have the buffer lock */
+id|atomic_inc
+c_func
+(paren
+op_amp
+id|bh-&gt;b_count
+)paren
+suffix:semicolon
 id|bh-&gt;b_end_io
 op_assign
 id|end_buffer_io_sync

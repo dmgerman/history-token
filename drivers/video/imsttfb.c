@@ -7231,6 +7231,8 @@ macro_line|#ifdef FBCON_HAS_CFB32
 r_case
 l_int|32
 suffix:colon
+(brace
+r_int
 id|i
 op_assign
 (paren
@@ -7256,6 +7258,7 @@ id|i
 suffix:semicolon
 r_break
 suffix:semicolon
+)brace
 macro_line|#endif
 )brace
 r_return

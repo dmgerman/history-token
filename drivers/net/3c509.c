@@ -590,7 +590,7 @@ comma
 )brace
 suffix:semicolon
 macro_line|#endif /* CONFIG_MCA */
-macro_line|#ifdef CONFIG_ISAPNP
+macro_line|#if defined(CONFIG_ISAPNP) || defined(CONFIG_ISAPNP_MODULE)
 DECL|variable|__initdata
 r_static
 r_struct
@@ -814,12 +814,12 @@ l_int|8
 l_int|3
 )braket
 suffix:semicolon
+macro_line|#endif /* CONFIG_ISAPNP || CONFIG_ISAPNP_MODULE */
 DECL|variable|nopnp
 r_static
 r_int
 id|nopnp
 suffix:semicolon
-macro_line|#endif /* CONFIG_ISAPNP */
 DECL|function|el3_probe
 r_int
 id|__init
@@ -867,12 +867,12 @@ op_assign
 op_minus
 l_int|1
 suffix:semicolon
-macro_line|#ifdef CONFIG_ISAPNP
+macro_line|#if defined(CONFIG_ISAPNP) || defined(CONFIG_ISAPNP_MODULE)
 r_static
 r_int
 id|pnp_cards
 suffix:semicolon
-macro_line|#endif /* CONFIG_ISAPNP */
+macro_line|#endif /* CONFIG_ISAPNP || CONFIG_ISAPNP_MODULE */
 r_if
 c_cond
 (paren
@@ -1342,7 +1342,7 @@ id|ENODEV
 suffix:semicolon
 )brace
 macro_line|#endif /* CONFIG_MCA */
-macro_line|#ifdef CONFIG_ISAPNP
+macro_line|#if defined(CONFIG_ISAPNP) || defined(CONFIG_ISAPNP_MODULE)
 r_if
 c_cond
 (paren
@@ -1594,7 +1594,7 @@ suffix:semicolon
 )brace
 id|no_pnp
 suffix:colon
-macro_line|#endif /* CONFIG_ISAPNP */
+macro_line|#endif /* CONFIG_ISAPNP || CONFIG_ISAPNP_MODULE */
 multiline_comment|/* Select an open I/O location at 0x1*0 to do contention select. */
 r_for
 c_loop
@@ -1805,7 +1805,7 @@ id|i
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_ISAPNP
+macro_line|#if defined(CONFIG_ISAPNP) || defined(CONFIG_ISAPNP_MODULE)
 r_if
 c_cond
 (paren
@@ -1946,7 +1946,7 @@ suffix:semicolon
 )brace
 )brace
 )brace
-macro_line|#endif /* CONFIG_ISAPNP */
+macro_line|#endif /* CONFIG_ISAPNP || CONFIG_ISAPNP_MODULE */
 (brace
 r_int
 r_int

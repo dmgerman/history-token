@@ -2,7 +2,7 @@ multiline_comment|/*&n;&n;&t;8139too.c: A RealTek RTL-8139 Fast Ethernet driver 
 DECL|macro|DRV_NAME
 mdefine_line|#define DRV_NAME&t;&quot;8139too&quot;
 DECL|macro|DRV_VERSION
-mdefine_line|#define DRV_VERSION&t;&quot;0.9.18-pre4&quot;
+mdefine_line|#define DRV_VERSION&t;&quot;0.9.18&quot;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -147,7 +147,7 @@ mdefine_line|#define RX_BUF_WRAP_PAD 2048 /* spare padding to handle lack of pac
 DECL|macro|RX_BUF_TOT_LEN
 mdefine_line|#define RX_BUF_TOT_LEN (RX_BUF_LEN + RX_BUF_PAD + RX_BUF_WRAP_PAD)
 DECL|macro|RX_EARLY_THRESH
-mdefine_line|#define RX_EARLY_THRESH 2
+mdefine_line|#define RX_EARLY_THRESH 14
 multiline_comment|/* Number of Tx descriptor registers. */
 DECL|macro|NUM_TX_DESC
 mdefine_line|#define NUM_TX_DESC&t;4

@@ -5,7 +5,7 @@ r_char
 op_star
 id|serial_version
 op_assign
-l_string|&quot;5.05b&quot;
+l_string|&quot;5.05c&quot;
 suffix:semicolon
 DECL|variable|serial_revdate
 r_static
@@ -13,7 +13,7 @@ r_char
 op_star
 id|serial_revdate
 op_assign
-l_string|&quot;2001-05-03&quot;
+l_string|&quot;2001-07-08&quot;
 suffix:semicolon
 multiline_comment|/*&n; * Serial driver configuration section.  Here are the various options:&n; *&n; * CONFIG_HUB6&n; *&t;&t;Enables support for the venerable Bell Technologies&n; *&t;&t;HUB6 card.&n; *&n; * CONFIG_SERIAL_MANY_PORTS&n; * &t;&t;Enables support for ports beyond the standard, stupid&n; * &t;&t;COM 1/2/3/4.&n; *&n; * CONFIG_SERIAL_MULTIPORT&n; * &t;&t;Enables support for special multiport board support.&n; *&n; * CONFIG_SERIAL_SHARE_IRQ&n; * &t;&t;Enables support for multiple serial ports on one IRQ&n; *&n; * CONFIG_SERIAL_DETECT_IRQ&n; *&t;&t;Enable the autodetection of IRQ on standart ports&n; *&n; * SERIAL_PARANOIA_CHECK&n; * &t;&t;Check the magic number for the async_structure where&n; * &t;&t;ever possible.&n; */
 macro_line|#include &lt;linux/config.h&gt;
@@ -14611,6 +14611,8 @@ comma
 id|scratch2
 comma
 id|scratch3
+comma
+id|scratch4
 suffix:semicolon
 multiline_comment|/*&n;&t; * First we check to see if it&squot;s an Oxford Semiconductor UART.&n;&t; *&n;&t; * If we have to do this here because some non-National&n;&t; * Semiconductor clone chips lock up if you try writing to the&n;&t; * LSR register (which serial_icr_read does)&n;&t; */
 r_if
@@ -14738,6 +14740,7 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/*&n;&t; * We check for a XR16C850 by setting DLL and DLM to 0, and&n;&t; * then reading back DLL and DLM.  If DLM reads back 0x10,&n;&t; * then the UART is a XR16C850 and the DLL contains the chip&n;&t; * revision.  If DLM reads back 0x14, then the UART is a&n;&t; * XR16C854.&n;&t; * &n;&t; */
+multiline_comment|/* Save the DLL and DLM */
 id|serial_outp
 c_func
 (paren
@@ -14746,6 +14749,26 @@ comma
 id|UART_LCR
 comma
 id|UART_LCR_DLAB
+)paren
+suffix:semicolon
+id|scratch3
+op_assign
+id|serial_inp
+c_func
+(paren
+id|info
+comma
+id|UART_DLL
+)paren
+suffix:semicolon
+id|scratch4
+op_assign
+id|serial_inp
+c_func
+(paren
+id|info
+comma
+id|UART_DLM
 )paren
 suffix:semicolon
 id|serial_outp
@@ -14768,7 +14791,7 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-id|state-&gt;revision
+id|scratch2
 op_assign
 id|serial_inp
 c_func
@@ -14810,6 +14833,17 @@ op_eq
 l_int|0x14
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|scratch
+op_eq
+l_int|0x10
+)paren
+id|state-&gt;revision
+op_assign
+id|scratch2
+suffix:semicolon
 id|state-&gt;type
 op_assign
 id|PORT_16850
@@ -14817,6 +14851,47 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
+multiline_comment|/* Restore the DLL and DLM */
+id|serial_outp
+c_func
+(paren
+id|info
+comma
+id|UART_LCR
+comma
+id|UART_LCR_DLAB
+)paren
+suffix:semicolon
+id|serial_outp
+c_func
+(paren
+id|info
+comma
+id|UART_DLL
+comma
+id|scratch3
+)paren
+suffix:semicolon
+id|serial_outp
+c_func
+(paren
+id|info
+comma
+id|UART_DLM
+comma
+id|scratch4
+)paren
+suffix:semicolon
+id|serial_outp
+c_func
+(paren
+id|info
+comma
+id|UART_LCR
+comma
+l_int|0
+)paren
+suffix:semicolon
 multiline_comment|/*&n;&t; * We distinguish between the &squot;654 and the &squot;650 by counting&n;&t; * how many bytes are in the FIFO.  I&squot;m using this for now,&n;&t; * since that&squot;s the technique that was sent to me in the&n;&t; * serial driver update, but I&squot;m not convinced this works.&n;&t; * I&squot;ve had problems doing this in the past.  -TYT&n;&t; */
 r_if
 c_cond
@@ -16691,9 +16766,7 @@ macro_line|#ifdef ENABLE_SERIAL_PCI
 multiline_comment|/*&n; * Some PCI serial cards using the PLX 9050 PCI interface chip require&n; * that the card interrupt be explicitly enabled or disabled.  This&n; * seems to be mainly needed on card using the PLX which also use I/O&n; * mapped memory.&n; */
 r_static
 r_int
-macro_line|#ifndef MODULE
 id|__devinit
-macro_line|#endif
 DECL|function|pci_plx9050_fn
 id|pci_plx9050_fn
 c_func
@@ -16870,9 +16943,7 @@ DECL|macro|PCI_DEVICE_ID_SIIG_2S_10x
 mdefine_line|#define PCI_DEVICE_ID_SIIG_2S_10x (PCI_DEVICE_ID_SIIG_2S_10x_550 &amp; 0xfff8)
 r_static
 r_int
-macro_line|#ifndef MODULE
 id|__devinit
-macro_line|#endif
 DECL|function|pci_siig10x_fn
 id|pci_siig10x_fn
 c_func
@@ -17002,9 +17073,7 @@ DECL|macro|PCI_DEVICE_ID_SIIG_2S1P_20x
 mdefine_line|#define PCI_DEVICE_ID_SIIG_2S1P_20x (PCI_DEVICE_ID_SIIG_2S1P_20x_550 &amp; 0xfffc)
 r_static
 r_int
-macro_line|#ifndef MODULE
 id|__devinit
-macro_line|#endif
 DECL|function|pci_siig20x_fn
 id|pci_siig20x_fn
 c_func
@@ -17115,9 +17184,7 @@ suffix:semicolon
 multiline_comment|/* Added for EKF Intel i960 serial boards */
 r_static
 r_int
-macro_line|#ifndef MODULE
 id|__devinit
-macro_line|#endif
 DECL|function|pci_inteli960ni_fn
 id|pci_inteli960ni_fn
 c_func
@@ -17464,9 +17531,7 @@ l_int|0
 suffix:semicolon
 r_static
 r_int
-macro_line|#ifndef MODULE
 id|__devinit
-macro_line|#endif
 DECL|function|pci_timedia_fn
 id|pci_timedia_fn
 c_func
@@ -17583,9 +17648,7 @@ suffix:semicolon
 )brace
 r_static
 r_int
-macro_line|#ifndef MODULE
 id|__devinit
-macro_line|#endif
 DECL|function|pci_xircom_fn
 id|pci_xircom_fn
 c_func

@@ -799,6 +799,10 @@ id|ret
 op_ne
 id|NF_STOLEN
 op_logical_and
+id|ret
+op_ne
+id|NF_QUEUE
+op_logical_and
 (paren
 (paren
 op_star

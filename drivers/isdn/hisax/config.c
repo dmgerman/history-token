@@ -13,7 +13,7 @@ DECL|macro|HISAX_STATUS_BUFSIZE
 mdefine_line|#define HISAX_STATUS_BUFSIZE 4096
 DECL|macro|INCLUDE_INLINE_FUNCS
 mdefine_line|#define INCLUDE_INLINE_FUNCS
-multiline_comment|/*&n; * This structure array contains one entry per card. An entry looks&n; * like this:&n; *&n; * { type, protocol, p0, p1, p2, NULL }&n; *&n; * type&n; *    1 Teles 16.0       p0=irq p1=membase p2=iobase&n; *    2 Teles  8.0       p0=irq p1=membase&n; *    3 Teles 16.3       p0=irq p1=iobase&n; *    4 Creatix PNP      p0=irq p1=IO0 (ISAC)  p2=IO1 (HSCX)&n; *    5 AVM A1 (Fritz)   p0=irq p1=iobase&n; *    6 ELSA PC          [p0=iobase] or nothing (autodetect)&n; *    7 ELSA Quickstep   p0=irq p1=iobase&n; *    8 Teles PCMCIA     p0=irq p1=iobase&n; *    9 ITK ix1-micro    p0=irq p1=iobase&n; *   10 ELSA PCMCIA      p0=irq p1=iobase&n; *   11 Eicon.Diehl Diva p0=irq p1=iobase&n; *   12 Asuscom ISDNLink p0=irq p1=iobase&n; *   13 Teleint          p0=irq p1=iobase&n; *   14 Teles 16.3c      p0=irq p1=iobase&n; *   15 Sedlbauer speed  p0=irq p1=iobase&n; *   15 Sedlbauer PC/104&t;p0=irq p1=iobase&n; *   15 Sedlbauer speed pci&t;no parameter&n; *   16 USR Sportster internal  p0=irq  p1=iobase&n; *   17 MIC card                p0=irq  p1=iobase&n; *   18 ELSA Quickstep 1000PCI  no parameter&n; *   19 Compaq ISDN S0 ISA card p0=irq  p1=IO0 (HSCX)  p2=IO1 (ISAC) p3=IO2&n; *   20 Travers Technologies NETjet-S PCI card&n; *   21 TELES PCI               no parameter&n; *   22 Sedlbauer Speed Star    p0=irq p1=iobase&n; *   23 reserved&n; *   24 Dr Neuhaus Niccy PnP/PCI card p0=irq p1=IO0 p2=IO1 (PnP only)&n; *   25 Teles S0Box             p0=irq p1=iobase (from isapnp setup)&n; *   26 AVM A1 PCMCIA (Fritz)   p0=irq p1=iobase&n; *   27 AVM PnP/PCI &t;&t;p0=irq p1=iobase (PCI no parameter)&n; *   28 Sedlbauer Speed Fax+ &t;p0=irq p1=iobase (from isapnp setup)&n; *   29 Siemens I-Surf          p0=irq p1=iobase p2=memory (from isapnp setup)   &n; *   30 ACER P10                p0=irq p1=iobase (from isapnp setup)   &n; *   31 HST Saphir              p0=irq  p1=iobase&n; *   32 Telekom A4T             none&n; *   33 Scitel Quadro&t;&t;p0=subcontroller (4*S0, subctrl 1...4)&n; *   34&t;Gazel ISDN cards&n; *   35 HFC 2BDS0 PCI           none&n; *   36 Winbond 6692 PCI        none&n; *   37 HFC 2BDS0 S+/SP         p0=irq p1=iobase&n; *   38 Travers Technologies NETspider-U PCI card&n; *   39 HFC 2BDS0-SP PCMCIA     p0=irq p1=iobase&n; *&n; * protocol can be either ISDN_PTYPE_EURO or ISDN_PTYPE_1TR6 or ISDN_PTYPE_NI1&n; *&n; *&n; */
+multiline_comment|/*&n; * This structure array contains one entry per card. An entry looks&n; * like this:&n; *&n; * { type, protocol, p0, p1, p2, NULL }&n; *&n; * type&n; *    1 Teles 16.0       p0=irq p1=membase p2=iobase&n; *    2 Teles  8.0       p0=irq p1=membase&n; *    3 Teles 16.3       p0=irq p1=iobase&n; *    4 Creatix PNP      p0=irq p1=IO0 (ISAC)  p2=IO1 (HSCX)&n; *    5 AVM A1 (Fritz)   p0=irq p1=iobase&n; *    6 ELSA PC          [p0=iobase] or nothing (autodetect)&n; *    7 ELSA Quickstep   p0=irq p1=iobase&n; *    8 Teles PCMCIA     p0=irq p1=iobase&n; *    9 ITK ix1-micro    p0=irq p1=iobase&n; *   10 ELSA PCMCIA      p0=irq p1=iobase&n; *   11 Eicon.Diehl Diva p0=irq p1=iobase&n; *   12 Asuscom ISDNLink p0=irq p1=iobase&n; *   13 Teleint          p0=irq p1=iobase&n; *   14 Teles 16.3c      p0=irq p1=iobase&n; *   15 Sedlbauer speed  p0=irq p1=iobase&n; *   15 Sedlbauer PC/104&t;p0=irq p1=iobase&n; *   15 Sedlbauer speed pci&t;no parameter&n; *   16 USR Sportster internal  p0=irq  p1=iobase&n; *   17 MIC card                p0=irq  p1=iobase&n; *   18 ELSA Quickstep 1000PCI  no parameter&n; *   19 Compaq ISDN S0 ISA card p0=irq  p1=IO0 (HSCX)  p2=IO1 (ISAC) p3=IO2&n; *   20 Travers Technologies NETjet-S PCI card&n; *   21 TELES PCI               no parameter&n; *   22 Sedlbauer Speed Star    p0=irq p1=iobase&n; *   23 reserved&n; *   24 Dr Neuhaus Niccy PnP/PCI card p0=irq p1=IO0 p2=IO1 (PnP only)&n; *   25 Teles S0Box             p0=irq p1=iobase (from isapnp setup)&n; *   26 AVM A1 PCMCIA (Fritz)   p0=irq p1=iobase&n; *   27 AVM PnP/PCI &t;&t;p0=irq p1=iobase (PCI no parameter)&n; *   28 Sedlbauer Speed Fax+ &t;p0=irq p1=iobase (from isapnp setup)&n; *   29 Siemens I-Surf          p0=irq p1=iobase p2=memory (from isapnp setup)&n; *   30 ACER P10                p0=irq p1=iobase (from isapnp setup)&n; *   31 HST Saphir              p0=irq  p1=iobase&n; *   32 Telekom A4T             none&n; *   33 Scitel Quadro&t;&t;p0=subcontroller (4*S0, subctrl 1...4)&n; *   34&t;Gazel ISDN cards&n; *   35 HFC 2BDS0 PCI           none&n; *   36 Winbond 6692 PCI        none&n; *   37 HFC 2BDS0 S+/SP         p0=irq p1=iobase&n; *   38 Travers Technologies NETspider-U PCI card&n; *   39 HFC 2BDS0-SP PCMCIA     p0=irq p1=iobase&n; *&n; * protocol can be either ISDN_PTYPE_EURO or ISDN_PTYPE_1TR6 or ISDN_PTYPE_NI1&n; *&n; *&n; */
 DECL|variable|CardType
 r_const
 r_char
@@ -140,7 +140,7 @@ c_func
 id|elsa_init_pcmcia
 )paren
 suffix:semicolon
-macro_line|#endif /* CONFIG_HISAX_ELSA */
+macro_line|#endif
 macro_line|#ifdef CONFIG_HISAX_AVM_A1
 DECL|macro|DEFAULT_CARD
 macro_line|#undef DEFAULT_CARD
@@ -182,7 +182,7 @@ c_func
 id|avm_a1_init_pcmcia
 )paren
 suffix:semicolon
-macro_line|#endif /* CONFIG_HISAX_AVM_A1_PCMCIA */
+macro_line|#endif
 macro_line|#ifdef CONFIG_HISAX_FRITZPCI
 DECL|macro|DEFAULT_CARD
 macro_line|#undef DEFAULT_CARD
@@ -304,7 +304,7 @@ c_func
 id|sedl_init_pcmcia
 )paren
 suffix:semicolon
-macro_line|#endif /* CONFIG_HISAX_SEDLBAUER */
+macro_line|#endif
 macro_line|#ifdef CONFIG_HISAX_SPORTSTER
 DECL|macro|DEFAULT_CARD
 macro_line|#undef DEFAULT_CARD
@@ -427,7 +427,7 @@ mdefine_line|#define DEFAULT_CARD ISDN_CTYPE_HSTSAPHIR
 DECL|macro|DEFAULT_CFG
 mdefine_line|#define DEFAULT_CFG {5,0x250,0,0}
 macro_line|#endif
-macro_line|#ifdef CONFIG_HISAX_BKM_A4T            
+macro_line|#ifdef CONFIG_HISAX_BKM_A4T
 DECL|macro|DEFAULT_CARD
 macro_line|#undef DEFAULT_CARD
 DECL|macro|DEFAULT_CFG
@@ -787,7 +787,7 @@ comma
 l_string|&quot;1-8i&quot;
 )paren
 suffix:semicolon
-macro_line|#endif /* IO0_IO1 */
+macro_line|#endif
 macro_line|#endif /* MODULE */
 DECL|variable|nrcards
 r_int
@@ -818,9 +818,9 @@ r_char
 op_star
 id|tei_revision
 suffix:semicolon
+DECL|function|HiSax_getrev
 r_char
 op_star
-DECL|function|HiSax_getrev
 id|HiSax_getrev
 c_func
 (paren
@@ -886,9 +886,9 @@ r_return
 id|rev
 suffix:semicolon
 )brace
+DECL|function|HiSaxVersion
 r_void
 id|__init
-DECL|function|HiSaxVersion
 id|HiSaxVersion
 c_func
 (paren
@@ -1037,8 +1037,8 @@ l_int|1
 )paren
 suffix:semicolon
 )brace
-r_void
 DECL|function|HiSax_mod_dec_use_count
+r_void
 id|HiSax_mod_dec_use_count
 c_func
 (paren
@@ -1048,8 +1048,8 @@ r_void
 id|MOD_DEC_USE_COUNT
 suffix:semicolon
 )brace
-r_void
 DECL|function|HiSax_mod_inc_use_count
+r_void
 id|HiSax_mod_inc_use_count
 c_func
 (paren
@@ -1062,10 +1062,10 @@ suffix:semicolon
 macro_line|#ifndef MODULE
 DECL|macro|MAX_ARG
 mdefine_line|#define MAX_ARG&t;(HISAX_MAX_CARDS*5)
+DECL|function|HiSax_setup
 r_static
 r_int
 id|__init
-DECL|function|HiSax_setup
 id|HiSax_setup
 c_func
 (paren
@@ -1709,11 +1709,11 @@ id|card
 suffix:semicolon
 macro_line|#endif
 multiline_comment|/*&n; * Find card with given driverId&n; */
+DECL|function|hisax_findcard
 r_static
 r_inline
 r_struct
 id|IsdnCardState
-DECL|function|hisax_findcard
 op_star
 id|hisax_findcard
 c_func
@@ -1762,25 +1762,21 @@ op_eq
 id|driverid
 )paren
 r_return
-(paren
 id|cards
 (braket
 id|i
 )braket
 dot
 id|cs
-)paren
 suffix:semicolon
 r_return
-(paren
 l_int|NULL
-)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Find card with given card number&n; */
+DECL|function|hisax_get_card
 r_struct
 id|IsdnCardState
-DECL|function|hisax_get_card
 op_star
 id|hisax_get_card
 c_func
@@ -1817,7 +1813,6 @@ dot
 id|cs
 )paren
 r_return
-(paren
 id|cards
 (braket
 id|cardnr
@@ -1826,16 +1821,13 @@ l_int|1
 )braket
 dot
 id|cs
-)paren
 suffix:semicolon
 r_return
-(paren
 l_int|NULL
-)paren
 suffix:semicolon
 )brace
-r_int
 DECL|function|HiSax_readstatus
+r_int
 id|HiSax_readstatus
 c_func
 (paren
@@ -2056,9 +2048,10 @@ id|ENODEV
 suffix:semicolon
 )brace
 )brace
+DECL|function|jiftime
+r_static
 r_inline
 r_int
-DECL|function|jiftime
 id|jiftime
 c_func
 (paren
@@ -2184,8 +2177,8 @@ id|tmpbuf
 id|HISAX_STATUS_BUFSIZE
 )braket
 suffix:semicolon
-r_void
 DECL|function|VHiSax_putstatus
+r_void
 id|VHiSax_putstatus
 c_func
 (paren
@@ -2560,8 +2553,8 @@ id|ic
 suffix:semicolon
 )brace
 )brace
-r_void
 DECL|function|HiSax_putstatus
+r_void
 id|HiSax_putstatus
 c_func
 (paren
@@ -2613,8 +2606,8 @@ id|args
 )paren
 suffix:semicolon
 )brace
-r_int
 DECL|function|ll_run
+r_int
 id|ll_run
 c_func
 (paren
@@ -2675,8 +2668,8 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-r_void
 DECL|function|ll_stop
+r_void
 id|ll_stop
 c_func
 (paren
@@ -2706,11 +2699,11 @@ op_amp
 id|ic
 )paren
 suffix:semicolon
-singleline_comment|//&t;CallcFreeChan(cs);
+singleline_comment|//      CallcFreeChan(cs);
 )brace
+DECL|function|ll_unload
 r_static
 r_void
-DECL|function|ll_unload
 id|ll_unload
 c_func
 (paren
@@ -2770,9 +2763,9 @@ id|cs-&gt;dlog
 )paren
 suffix:semicolon
 )brace
+DECL|function|closecard
 r_static
 r_void
-DECL|function|closecard
 id|closecard
 c_func
 (paren
@@ -2917,10 +2910,10 @@ id|csta
 )paren
 suffix:semicolon
 )brace
+DECL|function|init_card
 r_static
 r_int
 id|__devinit
-DECL|function|init_card
 id|init_card
 c_func
 (paren
@@ -3146,9 +3139,7 @@ id|cs
 )paren
 suffix:semicolon
 r_return
-(paren
 l_int|2
-)paren
 suffix:semicolon
 )brace
 r_else
@@ -3199,10 +3190,10 @@ r_return
 l_int|3
 suffix:semicolon
 )brace
+DECL|function|checkcard
 r_static
 r_int
 id|__devinit
-DECL|function|checkcard
 id|checkcard
 c_func
 (paren
@@ -4002,7 +3993,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 macro_line|#endif
-macro_line|#if&t;CARD_BKM_A4T       
+macro_line|#if&t;CARD_BKM_A4T
 r_case
 id|ISDN_CTYPE_BKM_A4T
 suffix:colon
@@ -4331,9 +4322,9 @@ r_return
 id|ret
 suffix:semicolon
 )brace
+DECL|function|HiSax_shiftcards
 r_void
 id|__devinit
-DECL|function|HiSax_shiftcards
 id|HiSax_shiftcards
 c_func
 (paren
@@ -4389,9 +4380,9 @@ id|i
 )paren
 suffix:semicolon
 )brace
+DECL|function|HiSax_inithardware
 r_int
 id|__devinit
-DECL|function|HiSax_inithardware
 id|HiSax_inithardware
 c_func
 (paren
@@ -4620,8 +4611,8 @@ r_return
 id|foundcards
 suffix:semicolon
 )brace
-r_void
 DECL|function|HiSax_closecard
+r_void
 id|HiSax_closecard
 c_func
 (paren
@@ -4758,7 +4749,7 @@ r_while
 c_loop
 (paren
 id|i
-op_ne
+op_le
 id|last
 )paren
 (brace
@@ -4782,8 +4773,8 @@ id|nrcards
 op_decrement
 suffix:semicolon
 )brace
-r_void
 DECL|function|HiSax_reportcard
+r_void
 id|HiSax_reportcard
 c_func
 (paren
@@ -5122,7 +5113,7 @@ id|i
 comma
 id|retval
 suffix:semicolon
-macro_line|#ifdef MODULE 
+macro_line|#ifdef MODULE
 r_int
 id|j
 suffix:semicolon
@@ -5223,7 +5214,7 @@ l_int|0
 )braket
 )paren
 (brace
-multiline_comment|/* We &squot;ll register drivers later, but init basic functions*/
+multiline_comment|/* We &squot;ll register drivers later, but init basic functions */
 r_return
 l_int|0
 suffix:semicolon
@@ -6140,7 +6131,6 @@ id|cardnr
 op_ge
 l_int|0
 )paren
-(brace
 id|HiSax_closecard
 c_func
 (paren
@@ -6148,7 +6138,6 @@ id|cardnr
 op_decrement
 )paren
 suffix:semicolon
-)brace
 id|Isdnl1Free
 c_func
 (paren
@@ -6217,7 +6206,7 @@ id|nrcards
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* Initialize all structs, even though we only accept&n;&t;   two pcmcia cards&n;&t;   */
+multiline_comment|/* Initialize all structs, even though we only accept&n;&t;   two pcmcia cards&n;&t;*/
 r_for
 c_loop
 (paren
@@ -6434,9 +6423,7 @@ l_string|&quot;HiSax: module installed&bslash;n&quot;
 suffix:semicolon
 macro_line|#endif
 r_return
-(paren
 l_int|0
-)paren
 suffix:semicolon
 )brace
 macro_line|#endif
@@ -6474,7 +6461,7 @@ id|nrcards
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* Initialize all structs, even though we only accept&n;&t;   two pcmcia cards&n;&t;   */
+multiline_comment|/* Initialize all structs, even though we only accept&n;&t;   two pcmcia cards&n;&t;*/
 r_for
 c_loop
 (paren
@@ -6698,9 +6685,7 @@ l_string|&quot;HiSax: module installed&bslash;n&quot;
 suffix:semicolon
 macro_line|#endif
 r_return
-(paren
 l_int|0
-)paren
 suffix:semicolon
 )brace
 macro_line|#endif
@@ -6738,7 +6723,7 @@ id|nrcards
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* Initialize all structs, even though we only accept&n;&t;   two pcmcia cards&n;&t;   */
+multiline_comment|/* Initialize all structs, even though we only accept&n;&t;   two pcmcia cards&n;&t;*/
 r_for
 c_loop
 (paren
@@ -6962,9 +6947,7 @@ l_string|&quot;HiSax: module installed&bslash;n&quot;
 suffix:semicolon
 macro_line|#endif
 r_return
-(paren
 l_int|0
-)paren
 suffix:semicolon
 )brace
 macro_line|#endif
@@ -7002,7 +6985,7 @@ id|nrcards
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* Initialize all structs, even though we only accept&n;&t;   two pcmcia cards&n;&t;   */
+multiline_comment|/* Initialize all structs, even though we only accept&n;&t;   two pcmcia cards&n;&t;*/
 r_for
 c_loop
 (paren
@@ -7226,9 +7209,7 @@ l_string|&quot;HiSax: module installed&bslash;n&quot;
 suffix:semicolon
 macro_line|#endif
 r_return
-(paren
 l_int|0
-)paren
 suffix:semicolon
 )brace
 macro_line|#endif
@@ -7324,9 +7305,7 @@ id|nrcards
 op_increment
 suffix:semicolon
 r_return
-(paren
 id|ret
-)paren
 suffix:semicolon
 )brace
 macro_line|#include &lt;linux/pci.h&gt;
