@@ -1477,10 +1477,6 @@ id|clnt-&gt;cl_chatty
 op_assign
 l_int|1
 suffix:semicolon
-id|cb-&gt;cb_client
-op_assign
-id|clnt
-suffix:semicolon
 multiline_comment|/* Kick rpciod, put the call on the wire. */
 r_if
 c_cond
@@ -1504,6 +1500,10 @@ id|out_clnt
 suffix:semicolon
 )brace
 multiline_comment|/* the task holds a reference to the nfs4_client struct */
+id|cb-&gt;cb_client
+op_assign
+id|clnt
+suffix:semicolon
 id|atomic_inc
 c_func
 (paren
@@ -1560,6 +1560,13 @@ r_return
 suffix:semicolon
 id|out_rpciod
 suffix:colon
+id|atomic_dec
+c_func
+(paren
+op_amp
+id|clp-&gt;cl_count
+)paren
+suffix:semicolon
 id|rpciod_down
 c_func
 (paren
