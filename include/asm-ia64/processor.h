@@ -42,8 +42,7 @@ DECL|macro|IA64_THREAD_UAC_NOPRINT
 mdefine_line|#define IA64_THREAD_UAC_NOPRINT&t;(__IA64_UL(1) &lt;&lt; 3)&t;/* don&squot;t log unaligned accesses */
 DECL|macro|IA64_THREAD_UAC_SIGBUS
 mdefine_line|#define IA64_THREAD_UAC_SIGBUS&t;(__IA64_UL(1) &lt;&lt; 4)&t;/* generate SIGBUS on unaligned acc. */
-DECL|macro|IA64_THREAD_KRBS_SYNCED
-mdefine_line|#define IA64_THREAD_KRBS_SYNCED&t;(__IA64_UL(1) &lt;&lt; 5)&t;/* krbs synced with process vm? */
+multiline_comment|/* bit 5 is currently unused */
 DECL|macro|IA64_THREAD_FPEMU_NOPRINT
 mdefine_line|#define IA64_THREAD_FPEMU_NOPRINT (__IA64_UL(1) &lt;&lt; 6)&t;/* don&squot;t log any fpswa faults */
 DECL|macro|IA64_THREAD_FPEMU_SIGFPE
