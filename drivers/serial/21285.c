@@ -5,11 +5,13 @@ macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/console.h&gt;
+macro_line|#include &lt;linux/device.h&gt;
+macro_line|#include &lt;linux/tty_flip.h&gt;
 macro_line|#include &lt;linux/serial_core.h&gt;
 macro_line|#include &lt;linux/serial.h&gt;
-macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
+macro_line|#include &lt;asm/mach-types.h&gt;
 macro_line|#include &lt;asm/hardware/dec21285.h&gt;
 macro_line|#include &lt;asm/hardware.h&gt;
 DECL|macro|BAUD_BASE
@@ -230,6 +232,8 @@ id|status
 comma
 id|ch
 comma
+id|flag
+comma
 id|rxs
 comma
 id|max_count
@@ -263,50 +267,25 @@ op_ge
 id|TTY_FLIPBUF_SIZE
 )paren
 (brace
-id|tty-&gt;flip.work
-dot
-id|func
-c_func
-(paren
-(paren
-r_void
-op_star
-)paren
-id|tty
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
-id|tty-&gt;flip.count
-op_ge
-id|TTY_FLIPBUF_SIZE
+id|tty-&gt;low_latency
 )paren
-(brace
-id|printk
+id|tty_flip_buffer_push
 c_func
 (paren
-id|KERN_WARNING
-l_string|&quot;TTY_DONT_FLIP set&bslash;n&quot;
+id|tty
 )paren
 suffix:semicolon
-r_goto
-id|out
-suffix:semicolon
-)brace
+multiline_comment|/*&n;&t;&t;&t; * If this failed then we will throw away the&n;&t;&t;&t; * bytes but must do so to clear interrupts&n;&t;&t;&t; */
 )brace
 id|ch
 op_assign
 op_star
 id|CSR_UARTDR
 suffix:semicolon
-op_star
-id|tty-&gt;flip.char_buf_ptr
-op_assign
-id|ch
-suffix:semicolon
-op_star
-id|tty-&gt;flip.flag_buf_ptr
+id|flag
 op_assign
 id|TTY_NORMAL
 suffix:semicolon
@@ -370,8 +349,7 @@ id|rxs
 op_amp
 id|RXSTAT_PARITY
 )paren
-op_star
-id|tty-&gt;flip.flag_buf_ptr
+id|flag
 op_assign
 id|TTY_PARITY
 suffix:semicolon
@@ -383,8 +361,7 @@ id|rxs
 op_amp
 id|RXSTAT_FRAME
 )paren
-op_star
-id|tty-&gt;flip.flag_buf_ptr
+id|flag
 op_assign
 id|TTY_FRAME
 suffix:semicolon
@@ -401,14 +378,15 @@ op_eq
 l_int|0
 )paren
 (brace
-id|tty-&gt;flip.flag_buf_ptr
-op_increment
-suffix:semicolon
-id|tty-&gt;flip.char_buf_ptr
-op_increment
-suffix:semicolon
-id|tty-&gt;flip.count
-op_increment
+id|tty_insert_flip_char
+c_func
+(paren
+id|tty
+comma
+id|ch
+comma
+id|flag
+)paren
 suffix:semicolon
 )brace
 r_if
@@ -426,20 +404,15 @@ id|TTY_FLIPBUF_SIZE
 )paren
 (brace
 multiline_comment|/*&n;&t;&t;&t; * Overrun is special, since it&squot;s reported&n;&t;&t;&t; * immediately, and doesn&squot;t affect the current&n;&t;&t;&t; * character.&n;&t;&t;&t; */
-op_star
-id|tty-&gt;flip.char_buf_ptr
-op_increment
-op_assign
+id|tty_insert_flip_char
+c_func
+(paren
+id|tty
+comma
 l_int|0
-suffix:semicolon
-op_star
-id|tty-&gt;flip.flag_buf_ptr
-op_increment
-op_assign
+comma
 id|TTY_OVERRUN
-suffix:semicolon
-id|tty-&gt;flip.count
-op_increment
+)paren
 suffix:semicolon
 )brace
 id|status
