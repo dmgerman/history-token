@@ -115,6 +115,16 @@ comma
 DECL|member|lru_busy
 id|lru_busy
 suffix:semicolon
+DECL|member|fh
+r_struct
+id|nfs_fh
+id|fh
+suffix:semicolon
+DECL|member|addr
+r_struct
+id|sockaddr_in
+id|addr
+suffix:semicolon
 )brace
 suffix:semicolon
 macro_line|#endif
