@@ -674,10 +674,6 @@ r_int
 id|size
 )paren
 suffix:semicolon
-DECL|macro|virt_to_phys
-mdefine_line|#define virt_to_phys(x) __pa((unsigned long)(x))
-DECL|macro|phys_to_virt
-mdefine_line|#define phys_to_virt(x) __va((unsigned long)(x))
 multiline_comment|/*&n; * At the moment, we do not use CMOS_READ anywhere outside of rtc.c,&n; * so rtc_port is static in it. This should not change unless a new&n; * hardware pops up.&n; */
 DECL|macro|RTC_PORT
 mdefine_line|#define RTC_PORT(x)   (rtc_port + (x))
