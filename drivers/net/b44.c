@@ -9,8 +9,8 @@ macro_line|#include &lt;linux/if_ether.h&gt;
 macro_line|#include &lt;linux/etherdevice.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
-macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
@@ -20,9 +20,9 @@ mdefine_line|#define DRV_MODULE_NAME&t;&t;&quot;b44&quot;
 DECL|macro|PFX
 mdefine_line|#define PFX DRV_MODULE_NAME&t;&quot;: &quot;
 DECL|macro|DRV_MODULE_VERSION
-mdefine_line|#define DRV_MODULE_VERSION&t;&quot;0.1&quot;
+mdefine_line|#define DRV_MODULE_VERSION&t;&quot;0.6&quot;
 DECL|macro|DRV_MODULE_RELDATE
-mdefine_line|#define DRV_MODULE_RELDATE&t;&quot;Nov 6, 2002&quot;
+mdefine_line|#define DRV_MODULE_RELDATE&t;&quot;Nov 11, 2002&quot;
 DECL|macro|B44_DEF_MSG_ENABLE
 mdefine_line|#define B44_DEF_MSG_ENABLE&t;  &bslash;&n;&t;(NETIF_MSG_DRV&t;&t;| &bslash;&n;&t; NETIF_MSG_PROBE&t;| &bslash;&n;&t; NETIF_MSG_LINK&t;&t;| &bslash;&n;&t; NETIF_MSG_TIMER&t;| &bslash;&n;&t; NETIF_MSG_IFDOWN&t;| &bslash;&n;&t; NETIF_MSG_IFUP&t;&t;| &bslash;&n;&t; NETIF_MSG_RX_ERR&t;| &bslash;&n;&t; NETIF_MSG_TX_ERR)
 multiline_comment|/* length of time before we decide the hardware is borked,&n; * and dev-&gt;tx_timeout() should be called to fix the problem&n; */
@@ -51,7 +51,6 @@ DECL|macro|TX_BUFFS_AVAIL
 mdefine_line|#define TX_BUFFS_AVAIL(BP)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;(((BP)-&gt;tx_cons &lt;= (BP)-&gt;tx_prod) ?&t;&t;&t;&t;&bslash;&n;&t;  (BP)-&gt;tx_cons + (BP)-&gt;tx_pending - (BP)-&gt;tx_prod :&t;&t;&bslash;&n;&t;  (BP)-&gt;tx_cons - (BP)-&gt;tx_prod - TX_RING_GAP(BP))
 DECL|macro|NEXT_TX
 mdefine_line|#define NEXT_TX(N)&t;&t;(((N) + 1) &amp; (B44_TX_RING_SIZE - 1))
-multiline_comment|/* XXX check this */
 DECL|macro|RX_PKT_BUF_SZ
 mdefine_line|#define RX_PKT_BUF_SZ&t;&t;(1536 + bp-&gt;rx_offset + 64)
 multiline_comment|/* minimum number of free TX descriptors required to wake up TX process */
@@ -191,7 +190,7 @@ op_star
 suffix:semicolon
 DECL|function|b44_wait_bit
 r_static
-r_void
+r_int
 id|b44_wait_bit
 c_func
 (paren
@@ -211,6 +210,7 @@ r_int
 r_int
 id|timeout
 comma
+r_const
 r_int
 id|clear
 )paren
@@ -310,7 +310,14 @@ l_string|&quot;set&quot;
 )paren
 )paren
 suffix:semicolon
+r_return
+op_minus
+id|ENODEV
+suffix:semicolon
 )brace
+r_return
+l_int|0
+suffix:semicolon
 )brace
 multiline_comment|/* Sonics SiliconBackplane support routines.  ROFL, you should see all the&n; * buzz words used on this company&squot;s website :-)&n; *&n; * All of these routines must be invoked with bp-&gt;lock held and&n; * interrupts disabled.&n; */
 DECL|macro|SBID_SDRAM
@@ -1174,6 +1181,9 @@ op_star
 id|val
 )paren
 (brace
+r_int
+id|err
+suffix:semicolon
 id|bw32
 c_func
 (paren
@@ -1216,6 +1226,8 @@ id|MDIO_DATA_TA_SHIFT
 )paren
 )paren
 suffix:semicolon
+id|err
+op_assign
 id|b44_wait_bit
 c_func
 (paren
@@ -1242,7 +1254,7 @@ op_amp
 id|MDIO_DATA_DATA
 suffix:semicolon
 r_return
-l_int|0
+id|err
 suffix:semicolon
 )brace
 DECL|function|b44_writephy
@@ -1311,6 +1323,7 @@ id|MDIO_DATA_DATA
 )paren
 )paren
 suffix:semicolon
+r_return
 id|b44_wait_bit
 c_func
 (paren
@@ -1324,9 +1337,6 @@ l_int|100
 comma
 l_int|0
 )paren
-suffix:semicolon
-r_return
-l_int|0
 suffix:semicolon
 )brace
 DECL|function|b44_phy_reset
@@ -2676,6 +2686,7 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* Works like this.  This chip writes a &squot;struct rx_header&quot; 30 bytes&n; * before the DMA address you give it.  So we allocate 30 more bytes&n; * for the RX buffer, DMA map all of it, skb_reserve the 30 bytes, then&n; * point the chip at 30 bytes past where the rx_header will go.&n; */
 DECL|function|b44_alloc_rx_skb
 r_static
 r_int
@@ -2706,6 +2717,11 @@ id|src_map
 comma
 op_star
 id|map
+suffix:semicolon
+r_struct
+id|rx_header
+op_star
+id|rh
 suffix:semicolon
 r_struct
 id|sk_buff
@@ -2802,6 +2818,27 @@ id|skb
 comma
 id|bp-&gt;rx_offset
 )paren
+suffix:semicolon
+id|rh
+op_assign
+(paren
+r_struct
+id|rx_header
+op_star
+)paren
+(paren
+id|skb-&gt;data
+op_minus
+id|bp-&gt;rx_offset
+)paren
+suffix:semicolon
+id|rh-&gt;len
+op_assign
+l_int|0
+suffix:semicolon
+id|rh-&gt;flags
+op_assign
+l_int|0
 suffix:semicolon
 id|map-&gt;skb
 op_assign
@@ -2924,6 +2961,11 @@ comma
 op_star
 id|dest_map
 suffix:semicolon
+r_struct
+id|rx_header
+op_star
+id|rh
+suffix:semicolon
 r_int
 id|dest_idx
 suffix:semicolon
@@ -2975,6 +3017,27 @@ suffix:semicolon
 id|dest_map-&gt;skb
 op_assign
 id|src_map-&gt;skb
+suffix:semicolon
+id|rh
+op_assign
+(paren
+r_struct
+id|rx_header
+op_star
+)paren
+(paren
+id|src_map-&gt;skb-&gt;data
+op_minus
+id|bp-&gt;rx_offset
+)paren
+suffix:semicolon
+id|rh-&gt;len
+op_assign
+l_int|0
+suffix:semicolon
+id|rh-&gt;flags
+op_assign
+l_int|0
 suffix:semicolon
 id|pci_unmap_addr_set
 c_func
@@ -3158,12 +3221,24 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
+id|len
+OG
+(paren
+id|RX_PKT_BUF_SZ
+op_minus
+id|bp-&gt;rx_offset
+)paren
+)paren
+op_logical_or
+(paren
 id|rh-&gt;flags
 op_amp
 id|cpu_to_le16
 c_func
 (paren
 id|RX_FLAG_ERRORS
+)paren
 )paren
 )paren
 (brace
@@ -3188,6 +3263,70 @@ r_goto
 id|next_pkt
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|len
+op_eq
+l_int|0
+)paren
+(brace
+r_int
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+r_do
+(brace
+id|udelay
+c_func
+(paren
+l_int|2
+)paren
+suffix:semicolon
+id|barrier
+c_func
+(paren
+)paren
+suffix:semicolon
+id|len
+op_assign
+id|cpu_to_le16
+c_func
+(paren
+id|rh-&gt;len
+)paren
+suffix:semicolon
+)brace
+r_while
+c_loop
+(paren
+id|len
+op_eq
+l_int|0
+op_logical_and
+id|i
+op_increment
+OL
+l_int|5
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|len
+op_eq
+l_int|0
+)paren
+r_goto
+id|drop_it
+suffix:semicolon
+)brace
+multiline_comment|/* Omit CRC. */
+id|len
+op_sub_assign
+l_int|4
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -4234,8 +4373,6 @@ id|mapping
 )paren
 comma
 id|RX_PKT_BUF_SZ
-op_minus
-id|bp-&gt;rx_offset
 comma
 id|PCI_DMA_FROMDEVICE
 )paren
@@ -4778,6 +4915,18 @@ id|bp-&gt;tx_cons
 op_assign
 l_int|0
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|br32
+c_func
+(paren
+id|B44_DMARX_STAT
+)paren
+op_amp
+id|DMARX_STAT_EMASK
+)paren
+(brace
 id|b44_wait_bit
 c_func
 (paren
@@ -4792,6 +4941,7 @@ comma
 l_int|0
 )paren
 suffix:semicolon
+)brace
 id|bw32
 c_func
 (paren
@@ -5604,11 +5754,49 @@ c_func
 id|dev
 )paren
 suffix:semicolon
+id|del_timer_sync
+c_func
+(paren
+op_amp
+id|bp-&gt;timer
+)paren
+suffix:semicolon
 id|spin_lock_irq
 c_func
 (paren
 op_amp
 id|bp-&gt;lock
+)paren
+suffix:semicolon
+macro_line|#if 0
+id|b44_dump_state
+c_func
+(paren
+id|bp
+)paren
+suffix:semicolon
+macro_line|#endif
+id|b44_halt
+c_func
+(paren
+id|bp
+)paren
+suffix:semicolon
+id|b44_free_rings
+c_func
+(paren
+id|bp
+)paren
+suffix:semicolon
+id|bp-&gt;flags
+op_and_assign
+op_complement
+id|B44_FLAG_INIT_COMPLETE
+suffix:semicolon
+id|netif_carrier_off
+c_func
+(paren
+id|bp-&gt;dev
 )paren
 suffix:semicolon
 id|spin_unlock_irq
@@ -8206,17 +8394,6 @@ c_func
 id|b44_remove_one
 )paren
 comma
-macro_line|#if 0
-dot
-id|suspend
-op_assign
-id|b44_suspend
-comma
-dot
-id|resume
-op_assign
-id|b44_resume
-macro_line|#endif
 )brace
 suffix:semicolon
 DECL|function|b44_init
