@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Core definitions and data structures shareable across OS platforms.&n; *&n; * Copyright (c) 1994-2001 Justin T. Gibbs.&n; * Copyright (c) 2000-2001 Adaptec Inc.&n; * All rights reserved.&n; *&n; * Redistribution and use in source and binary forms, with or without&n; * modification, are permitted provided that the following conditions&n; * are met:&n; * 1. Redistributions of source code must retain the above copyright&n; *    notice, this list of conditions, and the following disclaimer,&n; *    without modification.&n; * 2. Redistributions in binary form must reproduce at minimum a disclaimer&n; *    substantially similar to the &quot;NO WARRANTY&quot; disclaimer below&n; *    (&quot;Disclaimer&quot;) and any redistribution must be conditioned upon&n; *    including a substantially similar Disclaimer requirement for further&n; *    binary redistribution.&n; * 3. Neither the names of the above-listed copyright holders nor the names&n; *    of any contributors may be used to endorse or promote products derived&n; *    from this software without specific prior written permission.&n; *&n; * Alternatively, this software may be distributed under the terms of the&n; * GNU General Public License (&quot;GPL&quot;) version 2 as published by the Free&n; * Software Foundation.&n; *&n; * NO WARRANTY&n; * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS&n; * &quot;AS IS&quot; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT&n; * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR&n; * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT&n; * HOLDERS OR CONTRIBUTORS BE LIABLE FOR SPECIAL, EXEMPLARY, OR CONSEQUENTIAL&n; * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS&n; * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)&n; * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,&n; * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING&n; * IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE&n; * POSSIBILITY OF SUCH DAMAGES.&n; *&n; * $Id: //depot/aic7xxx/aic7xxx/aic7xxx.h#34 $&n; *&n; * $FreeBSD: src/sys/dev/aic7xxx/aic7xxx.h,v 1.30 2000/11/10 20:13:40 gibbs Exp $&n; */
+multiline_comment|/*&n; * Core definitions and data structures shareable across OS platforms.&n; *&n; * Copyright (c) 1994-2001 Justin T. Gibbs.&n; * Copyright (c) 2000-2001 Adaptec Inc.&n; * All rights reserved.&n; *&n; * Redistribution and use in source and binary forms, with or without&n; * modification, are permitted provided that the following conditions&n; * are met:&n; * 1. Redistributions of source code must retain the above copyright&n; *    notice, this list of conditions, and the following disclaimer,&n; *    without modification.&n; * 2. Redistributions in binary form must reproduce at minimum a disclaimer&n; *    substantially similar to the &quot;NO WARRANTY&quot; disclaimer below&n; *    (&quot;Disclaimer&quot;) and any redistribution must be conditioned upon&n; *    including a substantially similar Disclaimer requirement for further&n; *    binary redistribution.&n; * 3. Neither the names of the above-listed copyright holders nor the names&n; *    of any contributors may be used to endorse or promote products derived&n; *    from this software without specific prior written permission.&n; *&n; * Alternatively, this software may be distributed under the terms of the&n; * GNU General Public License (&quot;GPL&quot;) version 2 as published by the Free&n; * Software Foundation.&n; *&n; * NO WARRANTY&n; * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS&n; * &quot;AS IS&quot; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT&n; * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR&n; * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT&n; * HOLDERS OR CONTRIBUTORS BE LIABLE FOR SPECIAL, EXEMPLARY, OR CONSEQUENTIAL&n; * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS&n; * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)&n; * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,&n; * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING&n; * IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE&n; * POSSIBILITY OF SUCH DAMAGES.&n; *&n; * $Id: //depot/aic7xxx/aic7xxx/aic7xxx.h#51 $&n; *&n; * $FreeBSD$&n; */
 macro_line|#ifndef _AIC7XXX_H_
 DECL|macro|_AIC7XXX_H_
 mdefine_line|#define _AIC7XXX_H_
@@ -10,6 +10,9 @@ id|ahc_platform_data
 suffix:semicolon
 r_struct
 id|scb_platform_data
+suffix:semicolon
+r_struct
+id|seeprom_descriptor
 suffix:semicolon
 multiline_comment|/****************************** Useful Macros *********************************/
 macro_line|#ifndef MAX
@@ -92,7 +95,7 @@ DECL|macro|AHC_TMODE_CMDS
 mdefine_line|#define AHC_TMODE_CMDS&t;256
 multiline_comment|/* Reset line assertion time in us */
 DECL|macro|AHC_BUSRESET_DELAY
-mdefine_line|#define AHC_BUSRESET_DELAY&t;250
+mdefine_line|#define AHC_BUSRESET_DELAY&t;25
 multiline_comment|/******************* Chip Characteristics/Operating Settings  *****************/
 multiline_comment|/*&n; * Chip Type&n; * The chip order is from least sophisticated to most sophisticated.&n; */
 r_typedef
@@ -623,7 +626,19 @@ DECL|enumerator|AHC_39BIT_ADDRESSING
 id|AHC_39BIT_ADDRESSING
 op_assign
 l_int|0x1000000
+comma
 multiline_comment|/* Use 39 bit addressing scheme. */
+DECL|enumerator|AHC_LSCBS_ENABLED
+id|AHC_LSCBS_ENABLED
+op_assign
+l_int|0x2000000
+comma
+multiline_comment|/* 64Byte SCBs enabled */
+DECL|enumerator|AHC_SCB_CONFIG_USED
+id|AHC_SCB_CONFIG_USED
+op_assign
+l_int|0x4000000
+multiline_comment|/* No SEEPROM but SCB2 had info. */
 DECL|typedef|ahc_flag
 )brace
 id|ahc_flag
@@ -1361,14 +1376,6 @@ id|rate
 suffix:semicolon
 )brace
 suffix:semicolon
-multiline_comment|/*&n; * The synchronouse transfer rate table.&n; */
-r_extern
-r_struct
-id|ahc_syncrate
-id|ahc_syncrates
-(braket
-)braket
-suffix:semicolon
 multiline_comment|/*&n; * Indexes into our table of syncronous transfer rates.&n; */
 DECL|macro|AHC_SYNCRATE_DT
 mdefine_line|#define AHC_SYNCRATE_DT&t;&t;0
@@ -1829,6 +1836,12 @@ DECL|member|flags
 id|ahc_flag
 id|flags
 suffix:semicolon
+DECL|member|seep_config
+r_struct
+id|seeprom_config
+op_star
+id|seep_config
+suffix:semicolon
 multiline_comment|/* Values to store in the SEQCTL register for pause and unpause */
 DECL|member|unpause
 r_uint8
@@ -2273,6 +2286,9 @@ comma
 r_struct
 id|aic7770_identity
 op_star
+comma
+id|u_int
+id|port
 )paren
 suffix:semicolon
 multiline_comment|/************************** SCB and SCB queue management **********************/
@@ -2454,6 +2470,18 @@ c_func
 r_struct
 id|ahc_softc
 op_star
+)paren
+suffix:semicolon
+r_struct
+id|ahc_softc
+op_star
+id|ahc_find_softc
+c_func
+(paren
+r_struct
+id|ahc_softc
+op_star
+id|ahc
 )paren
 suffix:semicolon
 r_void
@@ -2658,6 +2686,34 @@ id|action
 )paren
 suffix:semicolon
 r_int
+id|ahc_search_untagged_queues
+c_func
+(paren
+r_struct
+id|ahc_softc
+op_star
+id|ahc
+comma
+id|ahc_io_ctx_t
+id|ctx
+comma
+r_int
+id|target
+comma
+r_char
+id|channel
+comma
+r_int
+id|lun
+comma
+r_uint32
+id|status
+comma
+id|ahc_search_action
+id|action
+)paren
+suffix:semicolon
+r_int
 id|ahc_search_disc_list
 c_func
 (paren
@@ -2761,6 +2817,11 @@ r_void
 id|ahc_calc_residual
 c_func
 (paren
+r_struct
+id|ahc_softc
+op_star
+id|ahc
+comma
 r_struct
 id|scb
 op_star
@@ -3087,6 +3148,34 @@ mdefine_line|#define AHC_TMODE_ENABLE 0
 macro_line|#endif
 macro_line|#endif
 multiline_comment|/******************************* Debug ***************************************/
+macro_line|#ifdef AHC_DEBUG
+r_extern
+r_uint32
+id|ahc_debug
+suffix:semicolon
+DECL|macro|AHC_SHOW_MISC
+mdefine_line|#define&t;AHC_SHOW_MISC&t;&t;0x0001
+DECL|macro|AHC_SHOW_SENSE
+mdefine_line|#define&t;AHC_SHOW_SENSE&t;&t;0x0002
+DECL|macro|AHC_DUMP_SEEPROM
+mdefine_line|#define AHC_DUMP_SEEPROM&t;0x0004
+DECL|macro|AHC_SHOW_TERMCTL
+mdefine_line|#define AHC_SHOW_TERMCTL&t;0x0008
+DECL|macro|AHC_SHOW_MEMORY
+mdefine_line|#define AHC_SHOW_MEMORY&t;&t;0x0010
+DECL|macro|AHC_SHOW_MESSAGES
+mdefine_line|#define AHC_SHOW_MESSAGES&t;0x0020
+DECL|macro|AHC_SHOW_SELTO
+mdefine_line|#define AHC_SHOW_SELTO&t;&t;0x0080
+DECL|macro|AHC_SHOW_QFULL
+mdefine_line|#define AHC_SHOW_QFULL&t;&t;0x0200
+DECL|macro|AHC_SHOW_QUEUE
+mdefine_line|#define AHC_SHOW_QUEUE&t;&t;0x0400
+DECL|macro|AHC_SHOW_TQIN
+mdefine_line|#define AHC_SHOW_TQIN&t;&t;0x0800
+DECL|macro|AHC_DEBUG_SEQUENCER
+mdefine_line|#define AHC_DEBUG_SEQUENCER&t;0x1000
+macro_line|#endif
 r_void
 id|ahc_print_scb
 c_func
@@ -3105,6 +3194,62 @@ r_struct
 id|ahc_softc
 op_star
 id|ahc
+)paren
+suffix:semicolon
+r_int
+id|ahc_print_register
+c_func
+(paren
+id|ahc_reg_parse_entry_t
+op_star
+id|table
+comma
+id|u_int
+id|num_entries
+comma
+r_const
+r_char
+op_star
+id|name
+comma
+id|u_int
+id|address
+comma
+id|u_int
+id|value
+comma
+id|u_int
+op_star
+id|cur_column
+comma
+id|u_int
+id|wrap_point
+)paren
+suffix:semicolon
+multiline_comment|/******************************* SEEPROM *************************************/
+r_int
+id|ahc_acquire_seeprom
+c_func
+(paren
+r_struct
+id|ahc_softc
+op_star
+id|ahc
+comma
+r_struct
+id|seeprom_descriptor
+op_star
+id|sd
+)paren
+suffix:semicolon
+r_void
+id|ahc_release_seeprom
+c_func
+(paren
+r_struct
+id|seeprom_descriptor
+op_star
+id|sd
 )paren
 suffix:semicolon
 macro_line|#endif /* _AIC7XXX_H_ */
