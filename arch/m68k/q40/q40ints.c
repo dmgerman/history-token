@@ -20,7 +20,7 @@ r_extern
 r_int
 id|ints_inited
 suffix:semicolon
-r_void
+id|irqreturn_t
 id|q40_irq2_handler
 (paren
 r_int
@@ -35,7 +35,7 @@ id|fp
 )paren
 suffix:semicolon
 r_extern
-r_void
+id|irqreturn_t
 (paren
 op_star
 id|q40_sys_default_handler
@@ -54,7 +54,7 @@ op_star
 )paren
 suffix:semicolon
 r_static
-r_void
+id|irqreturn_t
 id|q40_defhand
 (paren
 r_int
@@ -71,7 +71,7 @@ id|fp
 )paren
 suffix:semicolon
 r_static
-r_void
+id|irqreturn_t
 id|sys_default_handler
 c_func
 (paren
@@ -96,7 +96,7 @@ r_struct
 id|q40_irq_node
 (brace
 DECL|member|handler
-r_void
+id|irqreturn_t
 (paren
 op_star
 id|handler
@@ -306,7 +306,7 @@ r_int
 r_int
 id|irq
 comma
-r_void
+id|irqreturn_t
 (paren
 op_star
 id|handler
@@ -780,7 +780,7 @@ suffix:semicolon
 )brace
 )brace
 DECL|function|q40_process_int
-r_void
+id|irqreturn_t
 id|q40_process_int
 (paren
 r_int
@@ -799,6 +799,9 @@ l_string|&quot;unexpected interrupt %x&bslash;n&quot;
 comma
 id|level
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 multiline_comment|/* &n; * this stuff doesn&squot;t really belong here..&n;*/
@@ -882,7 +885,7 @@ suffix:semicolon
 )brace
 DECL|variable|q40_timer_routine
 r_static
-r_void
+id|irqreturn_t
 (paren
 op_star
 id|q40_timer_routine
@@ -900,7 +903,7 @@ op_star
 suffix:semicolon
 DECL|function|q40_timer_int
 r_static
-r_void
+id|irqreturn_t
 id|q40_timer_int
 (paren
 r_int
@@ -967,10 +970,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|ql_ticks
 )paren
-r_return
-suffix:semicolon
 id|q40_timer_routine
 c_func
 (paren
@@ -981,12 +983,15 @@ comma
 id|regs
 )paren
 suffix:semicolon
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 DECL|function|q40_sched_init
 r_void
 id|q40_sched_init
 (paren
-r_void
+id|irqreturn_t
 (paren
 op_star
 id|timer_routine
@@ -1128,7 +1133,7 @@ suffix:semicolon
 multiline_comment|/* how many times inside handler ?*/
 multiline_comment|/* got level 2 interrupt, dispatch to ISA or keyboard/timer IRQs */
 DECL|function|q40_irq2_handler
-r_void
+id|irqreturn_t
 id|q40_irq2_handler
 (paren
 r_int
@@ -1462,6 +1467,7 @@ macro_line|#endif
 )brace
 singleline_comment|// used to do &squot;goto repeat;&squot; her, this delayed bh processing too long
 r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 )brace
@@ -1536,6 +1542,9 @@ id|fp
 )paren
 suffix:semicolon
 )brace
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 DECL|function|show_q40_interrupts
 r_int
@@ -1648,7 +1657,7 @@ suffix:semicolon
 )brace
 DECL|function|q40_defhand
 r_static
-r_void
+id|irqreturn_t
 id|q40_defhand
 (paren
 r_int
@@ -1671,10 +1680,13 @@ comma
 id|irq
 )paren
 suffix:semicolon
+r_return
+id|IRQ_NONE
+suffix:semicolon
 )brace
 DECL|function|sys_default_handler
 r_static
-r_void
+id|irqreturn_t
 id|sys_default_handler
 c_func
 (paren
@@ -1698,9 +1710,12 @@ comma
 id|lev
 )paren
 suffix:semicolon
+r_return
+id|IRQ_NONE
+suffix:semicolon
 )brace
 DECL|variable|q40_sys_default_handler
-r_void
+id|irqreturn_t
 (paren
 op_star
 id|q40_sys_default_handler
