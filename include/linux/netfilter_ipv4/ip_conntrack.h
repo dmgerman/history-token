@@ -2,11 +2,6 @@ macro_line|#ifndef _IP_CONNTRACK_H
 DECL|macro|_IP_CONNTRACK_H
 mdefine_line|#define _IP_CONNTRACK_H
 multiline_comment|/* Connection state tracking for netfilter.  This is separated from,&n;   but required by, the NAT layer; it can also be used by an iptables&n;   extension. */
-macro_line|#include &lt;linux/config.h&gt;
-macro_line|#include &lt;linux/netfilter_ipv4/ip_conntrack_tuple.h&gt;
-macro_line|#include &lt;linux/bitops.h&gt;
-macro_line|#include &lt;linux/compiler.h&gt;
-macro_line|#include &lt;asm/atomic.h&gt;
 DECL|enum|ip_conntrack_info
 r_enum
 id|ip_conntrack_info
@@ -105,6 +100,12 @@ id|IPS_CONFIRMED_BIT
 comma
 )brace
 suffix:semicolon
+macro_line|#ifdef __KERNEL__
+macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/netfilter_ipv4/ip_conntrack_tuple.h&gt;
+macro_line|#include &lt;linux/bitops.h&gt;
+macro_line|#include &lt;linux/compiler.h&gt;
+macro_line|#include &lt;asm/atomic.h&gt;
 macro_line|#include &lt;linux/netfilter_ipv4/ip_conntrack_tcp.h&gt;
 macro_line|#include &lt;linux/netfilter_ipv4/ip_conntrack_icmp.h&gt;
 macro_line|#include &lt;linux/netfilter_ipv4/ip_conntrack_sctp.h&gt;
@@ -142,38 +143,6 @@ multiline_comment|/* Add protocol helper include file here */
 macro_line|#include &lt;linux/netfilter_ipv4/ip_conntrack_amanda.h&gt;
 macro_line|#include &lt;linux/netfilter_ipv4/ip_conntrack_ftp.h&gt;
 macro_line|#include &lt;linux/netfilter_ipv4/ip_conntrack_irc.h&gt;
-multiline_comment|/* per expectation: application helper private data */
-DECL|union|ip_conntrack_expect_help
-r_union
-id|ip_conntrack_expect_help
-(brace
-multiline_comment|/* insert conntrack helper private data (expect) here */
-DECL|member|exp_amanda_info
-r_struct
-id|ip_ct_amanda_expect
-id|exp_amanda_info
-suffix:semicolon
-DECL|member|exp_ftp_info
-r_struct
-id|ip_ct_ftp_expect
-id|exp_ftp_info
-suffix:semicolon
-DECL|member|exp_irc_info
-r_struct
-id|ip_ct_irc_expect
-id|exp_irc_info
-suffix:semicolon
-macro_line|#ifdef CONFIG_IP_NF_NAT_NEEDED
-r_union
-(brace
-multiline_comment|/* insert nat helper private data (expect) here */
-DECL|member|nat
-)brace
-id|nat
-suffix:semicolon
-macro_line|#endif
-)brace
-suffix:semicolon
 multiline_comment|/* per conntrack: application helper private data */
 DECL|union|ip_conntrack_help
 r_union
@@ -203,7 +172,6 @@ multiline_comment|/* insert nat helper private data here */
 )brace
 suffix:semicolon
 macro_line|#endif
-macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#ifdef CONFIG_NETFILTER_DEBUG
@@ -272,7 +240,7 @@ id|mask
 suffix:semicolon
 multiline_comment|/* Function to call after setup and insertion */
 DECL|member|expectfn
-r_int
+r_void
 (paren
 op_star
 id|expectfn
@@ -284,20 +252,24 @@ op_star
 r_new
 )paren
 suffix:semicolon
-multiline_comment|/* At which sequence number did this expectation occur */
-DECL|member|seq
-id|u_int32_t
-id|seq
+macro_line|#ifdef CONFIG_IP_NF_NAT_NEEDED
+multiline_comment|/* This is the original per-proto part, used to map the&n;&t; * expected connection the way the recipient expects. */
+DECL|member|saved_proto
+r_union
+id|ip_conntrack_manip_proto
+id|saved_proto
 suffix:semicolon
+multiline_comment|/* Direction relative to the master connection. */
+DECL|member|dir
+r_enum
+id|ip_conntrack_dir
+id|dir
+suffix:semicolon
+macro_line|#endif
 DECL|member|proto
 r_union
 id|ip_conntrack_expect_proto
 id|proto
-suffix:semicolon
-DECL|member|help
-r_union
-id|ip_conntrack_expect_help
-id|help
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -600,7 +572,7 @@ suffix:semicolon
 multiline_comment|/* These are for NAT.  Icky. */
 multiline_comment|/* Update TCP window tracking data when NAT mangles the packet */
 r_extern
-r_int
+r_void
 id|ip_conntrack_tcp_update
 c_func
 (paren
@@ -614,7 +586,8 @@ id|ip_conntrack
 op_star
 id|conntrack
 comma
-r_int
+r_enum
+id|ip_conntrack_dir
 id|dir
 )paren
 suffix:semicolon
