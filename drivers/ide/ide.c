@@ -8980,7 +8980,7 @@ l_int|0
 suffix:semicolon
 id|hwif-&gt;chipset
 op_assign
-id|ide_generic
+id|ide_forced
 suffix:semicolon
 r_goto
 id|done

@@ -363,7 +363,10 @@ comma
 id|ide_acorn
 comma
 DECL|enumerator|ide_pc9800
+DECL|enumerator|ide_forced
 id|ide_pc9800
+comma
+id|ide_forced
 DECL|typedef|hwif_chipset_t
 )brace
 id|hwif_chipset_t
