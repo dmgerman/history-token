@@ -500,4 +500,11 @@ c_func
 id|sys32_sysctl
 )paren
 suffix:semicolon
+DECL|variable|ppc_rtas
+id|cond_syscall
+c_func
+(paren
+id|ppc_rtas
+)paren
+suffix:semicolon
 eof
