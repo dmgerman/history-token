@@ -824,6 +824,8 @@ c_func
 id|idev
 )paren
 suffix:semicolon
+r_continue
+suffix:semicolon
 )brace
 multiline_comment|/* if no io and irq, search for next */
 r_if
