@@ -2085,7 +2085,7 @@ l_int|0
 suffix:semicolon
 id|self-&gt;tty
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_if
 c_cond
@@ -3719,7 +3719,7 @@ id|ASYNC_NORMAL_ACTIVE
 suffix:semicolon
 id|self-&gt;tty
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|self-&gt;open_count
 op_assign

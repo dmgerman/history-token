@@ -4998,7 +4998,7 @@ l_int|0
 suffix:semicolon
 id|clip_tbl.proxy_timer.function
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|init_timer
 c_func

@@ -118,7 +118,7 @@ l_int|NULL
 (brace
 id|dest-&gt;dst_cache
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_return
 l_int|NULL

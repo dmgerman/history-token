@@ -748,7 +748,7 @@ id|ipv6_sk_ac_lock
 suffix:semicolon
 id|prev_pac
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_for
 c_loop
@@ -910,7 +910,7 @@ id|net_device
 op_star
 id|dev
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_struct
 id|ipv6_ac_socklist
@@ -933,7 +933,7 @@ id|np-&gt;ipv6_ac_list
 suffix:semicolon
 id|np-&gt;ipv6_ac_list
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|write_unlock_bh
 c_func
@@ -1503,7 +1503,7 @@ id|idev-&gt;lock
 suffix:semicolon
 id|prev_aca
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_for
 c_loop

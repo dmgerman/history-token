@@ -5358,7 +5358,7 @@ id|__FUNCTION__
 )paren
 suffix:semicolon
 r_return
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 id|service-&gt;hints.word
@@ -5611,7 +5611,7 @@ op_ne
 l_int|NULL
 comma
 r_return
-l_int|0
+l_int|NULL
 suffix:semicolon
 )paren
 suffix:semicolon
@@ -5647,7 +5647,7 @@ id|__FUNCTION__
 )paren
 suffix:semicolon
 r_return
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 multiline_comment|/* Register the details */
