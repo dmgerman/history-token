@@ -1124,6 +1124,23 @@ c_func
 (paren
 )paren
 suffix:semicolon
+multiline_comment|/* Starting with the 1.2GHz parts, theres a 200MHz bus. */
+r_if
+c_cond
+(paren
+(paren
+id|cpu_khz
+op_div
+l_int|1000
+)paren
+OG
+l_int|1200
+)paren
+id|fsb
+op_assign
+l_int|200
+suffix:semicolon
+r_else
 id|fsb
 op_assign
 id|eblcr_fsb_table_v2
