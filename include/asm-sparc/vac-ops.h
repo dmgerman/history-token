@@ -100,14 +100,6 @@ r_struct
 id|sun4c_vac_props
 id|sun4c_vacinfo
 suffix:semicolon
-r_extern
-r_void
-id|sun4c_flush_all
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 multiline_comment|/* sun4c_enable_vac() enables the sun4c virtual address cache. */
 DECL|function|sun4c_enable_vac
 r_extern

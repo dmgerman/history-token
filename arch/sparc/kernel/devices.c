@@ -47,16 +47,13 @@ c_func
 r_void
 )paren
 suffix:semicolon
-r_int
-r_int
+r_void
 id|__init
 DECL|function|device_scan
 id|device_scan
 c_func
 (paren
-r_int
-r_int
-id|mem_start
+r_void
 )paren
 (brace
 r_char
@@ -121,7 +118,6 @@ id|prom_root_node
 )paren
 suffix:semicolon
 multiline_comment|/* One can look it up in PROM instead */
-multiline_comment|/* prom_printf(&quot;root child is %08lx&bslash;n&quot;, (unsigned long) scan); */
 r_while
 c_loop
 (paren
@@ -205,7 +201,6 @@ id|mid
 op_assign
 id|thismid
 suffix:semicolon
-multiline_comment|/* prom_printf(&quot;Found CPU %d &lt;node=%08lx,mid=%d&gt;&bslash;n&quot;, linux_num_cpus, (unsigned long) scan, thismid); */
 id|printk
 c_func
 (paren
@@ -233,11 +228,7 @@ c_cond
 id|linux_num_cpus
 op_eq
 l_int|0
-)paren
-(brace
-r_if
-c_cond
-(paren
+op_logical_and
 id|sparc_cpu_model
 op_eq
 id|sun4d
@@ -357,7 +348,6 @@ id|mid
 op_assign
 id|thismid
 suffix:semicolon
-multiline_comment|/* prom_printf(&quot;Found CPU %d &lt;node=%08lx,mid=%d&gt;&bslash;n&quot;, &n;&t;&t;&t;&t;&t;&t;&t;       linux_num_cpus, (unsigned long) node, thismid); */
 id|printk
 c_func
 (paren
@@ -377,7 +367,6 @@ suffix:semicolon
 id|linux_num_cpus
 op_increment
 suffix:semicolon
-)brace
 )brace
 )brace
 )brace
@@ -411,7 +400,6 @@ id|linux_num_cpus
 )paren
 suffix:semicolon
 )brace
-suffix:semicolon
 id|cpu_probe
 c_func
 (paren
@@ -463,7 +451,6 @@ c_func
 )paren
 suffix:semicolon
 r_return
-id|mem_start
 suffix:semicolon
 )brace
 eof

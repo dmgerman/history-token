@@ -808,7 +808,6 @@ op_star
 id|xdr
 comma
 r_int
-r_int
 id|base
 )paren
 (brace
@@ -1069,7 +1068,6 @@ id|xdr_buf
 op_star
 id|xdr
 comma
-r_int
 r_int
 id|base
 )paren
