@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Core definitions and data structures shareable across OS platforms.&n; *&n; * Copyright (c) 1994-2002 Justin T. Gibbs.&n; * Copyright (c) 2000-2002 Adaptec Inc.&n; * All rights reserved.&n; *&n; * Redistribution and use in source and binary forms, with or without&n; * modification, are permitted provided that the following conditions&n; * are met:&n; * 1. Redistributions of source code must retain the above copyright&n; *    notice, this list of conditions, and the following disclaimer,&n; *    without modification.&n; * 2. Redistributions in binary form must reproduce at minimum a disclaimer&n; *    substantially similar to the &quot;NO WARRANTY&quot; disclaimer below&n; *    (&quot;Disclaimer&quot;) and any redistribution must be conditioned upon&n; *    including a substantially similar Disclaimer requirement for further&n; *    binary redistribution.&n; * 3. Neither the names of the above-listed copyright holders nor the names&n; *    of any contributors may be used to endorse or promote products derived&n; *    from this software without specific prior written permission.&n; *&n; * Alternatively, this software may be distributed under the terms of the&n; * GNU General Public License (&quot;GPL&quot;) version 2 as published by the Free&n; * Software Foundation.&n; *&n; * NO WARRANTY&n; * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS&n; * &quot;AS IS&quot; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT&n; * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR&n; * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT&n; * HOLDERS OR CONTRIBUTORS BE LIABLE FOR SPECIAL, EXEMPLARY, OR CONSEQUENTIAL&n; * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS&n; * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)&n; * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,&n; * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING&n; * IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE&n; * POSSIBILITY OF SUCH DAMAGES.&n; *&n; * $Id: //depot/aic7xxx/aic7xxx/aic79xx.h#76 $&n; *&n; * $FreeBSD$&n; */
+multiline_comment|/*&n; * Core definitions and data structures shareable across OS platforms.&n; *&n; * Copyright (c) 1994-2002 Justin T. Gibbs.&n; * Copyright (c) 2000-2002 Adaptec Inc.&n; * All rights reserved.&n; *&n; * Redistribution and use in source and binary forms, with or without&n; * modification, are permitted provided that the following conditions&n; * are met:&n; * 1. Redistributions of source code must retain the above copyright&n; *    notice, this list of conditions, and the following disclaimer,&n; *    without modification.&n; * 2. Redistributions in binary form must reproduce at minimum a disclaimer&n; *    substantially similar to the &quot;NO WARRANTY&quot; disclaimer below&n; *    (&quot;Disclaimer&quot;) and any redistribution must be conditioned upon&n; *    including a substantially similar Disclaimer requirement for further&n; *    binary redistribution.&n; * 3. Neither the names of the above-listed copyright holders nor the names&n; *    of any contributors may be used to endorse or promote products derived&n; *    from this software without specific prior written permission.&n; *&n; * Alternatively, this software may be distributed under the terms of the&n; * GNU General Public License (&quot;GPL&quot;) version 2 as published by the Free&n; * Software Foundation.&n; *&n; * NO WARRANTY&n; * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS&n; * &quot;AS IS&quot; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT&n; * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR&n; * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT&n; * HOLDERS OR CONTRIBUTORS BE LIABLE FOR SPECIAL, EXEMPLARY, OR CONSEQUENTIAL&n; * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS&n; * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)&n; * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,&n; * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING&n; * IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE&n; * POSSIBILITY OF SUCH DAMAGES.&n; *&n; * $Id: //depot/aic7xxx/aic7xxx/aic79xx.h#78 $&n; *&n; * $FreeBSD$&n; */
 macro_line|#ifndef _AIC79XX_H_
 DECL|macro|_AIC79XX_H_
 mdefine_line|#define _AIC79XX_H_
@@ -522,6 +522,16 @@ DECL|enumerator|AHD_RESET_POLL_ACTIVE
 id|AHD_RESET_POLL_ACTIVE
 op_assign
 l_int|0x200000
+comma
+DECL|enumerator|AHD_UPDATE_PEND_CMDS
+id|AHD_UPDATE_PEND_CMDS
+op_assign
+l_int|0x400000
+comma
+DECL|enumerator|AHD_RUNNING_QOUTFIFO
+id|AHD_RUNNING_QOUTFIFO
+op_assign
+l_int|0x800000
 DECL|typedef|ahd_flag
 )brace
 id|ahd_flag
@@ -2128,6 +2138,30 @@ DECL|member|reset_timer
 id|ahd_timer_t
 id|reset_timer
 suffix:semicolon
+DECL|member|stat_timer
+id|ahd_timer_t
+id|stat_timer
+suffix:semicolon
+multiline_comment|/*&n;&t; * Statistics.&n;&t; */
+DECL|macro|AHD_STAT_UPDATE_US
+mdefine_line|#define&t;AHD_STAT_UPDATE_US&t;250000 /* 250ms */
+DECL|macro|AHD_STAT_BUCKETS
+mdefine_line|#define&t;AHD_STAT_BUCKETS&t;4
+DECL|member|cmdcmplt_bucket
+id|u_int
+id|cmdcmplt_bucket
+suffix:semicolon
+DECL|member|cmdcmplt_counts
+r_uint32
+id|cmdcmplt_counts
+(braket
+id|AHD_STAT_BUCKETS
+)braket
+suffix:semicolon
+DECL|member|cmdcmplt_total
+r_uint32
+id|cmdcmplt_total
+suffix:semicolon
 multiline_comment|/*&n;&t; * Card characteristics&n;&t; */
 DECL|member|chip
 id|ahd_chip
@@ -2230,6 +2264,11 @@ suffix:semicolon
 DECL|member|tqinfifonext
 r_uint8
 id|tqinfifonext
+suffix:semicolon
+multiline_comment|/*&n;&t; * Cached verson of the hs_mailbox so we can avoid&n;&t; * pausing the sequencer during mailbox updates.&n;&t; */
+DECL|member|hs_mailbox
+r_uint8
+id|hs_mailbox
 suffix:semicolon
 multiline_comment|/*&n;&t; * Incoming and outgoing message handling.&n;&t; */
 DECL|member|send_msg_perror
@@ -2356,6 +2395,41 @@ multiline_comment|/* Selection Timer settings */
 DECL|member|seltime
 r_int
 id|seltime
+suffix:semicolon
+multiline_comment|/*&n;&t; * Interrupt coalessing settings.&n;&t; */
+DECL|macro|AHD_INT_COALESSING_TIMER_DEFAULT
+mdefine_line|#define&t;AHD_INT_COALESSING_TIMER_DEFAULT&t;&t;250 /*us*/
+DECL|macro|AHD_INT_COALESSING_MAXCMDS_DEFAULT
+mdefine_line|#define&t;AHD_INT_COALESSING_MAXCMDS_DEFAULT&t;&t;10
+DECL|macro|AHD_INT_COALESSING_MAXCMDS_MAX
+mdefine_line|#define&t;AHD_INT_COALESSING_MAXCMDS_MAX&t;&t;&t;127
+DECL|macro|AHD_INT_COALESSING_MINCMDS_DEFAULT
+mdefine_line|#define&t;AHD_INT_COALESSING_MINCMDS_DEFAULT&t;&t;5
+DECL|macro|AHD_INT_COALESSING_MINCMDS_MAX
+mdefine_line|#define&t;AHD_INT_COALESSING_MINCMDS_MAX&t;&t;&t;127
+DECL|macro|AHD_INT_COALESSING_THRESHOLD_DEFAULT
+mdefine_line|#define&t;AHD_INT_COALESSING_THRESHOLD_DEFAULT&t;&t;2000
+DECL|macro|AHD_INT_COALESSING_STOP_THRESHOLD_DEFAULT
+mdefine_line|#define&t;AHD_INT_COALESSING_STOP_THRESHOLD_DEFAULT&t;1000
+DECL|member|int_coalessing_timer
+id|u_int
+id|int_coalessing_timer
+suffix:semicolon
+DECL|member|int_coalessing_maxcmds
+id|u_int
+id|int_coalessing_maxcmds
+suffix:semicolon
+DECL|member|int_coalessing_mincmds
+id|u_int
+id|int_coalessing_mincmds
+suffix:semicolon
+DECL|member|int_coalessing_threshold
+id|u_int
+id|int_coalessing_threshold
+suffix:semicolon
+DECL|member|int_coalessing_stop_threshold
+id|u_int
+id|int_coalessing_stop_threshold
 suffix:semicolon
 DECL|member|user_discenable
 r_uint16
@@ -2542,6 +2616,16 @@ DECL|macro|AHD_EISA_IOSIZE
 mdefine_line|#define AHD_EISA_IOSIZE&t;&t;0x100
 multiline_comment|/*************************** Function Declarations ****************************/
 multiline_comment|/******************************************************************************/
+r_void
+id|ahd_reset_cmds_pending
+c_func
+(paren
+r_struct
+id|ahd_softc
+op_star
+id|ahd
+)paren
+suffix:semicolon
 id|u_int
 id|ahd_find_busy_tcl
 c_func
@@ -2788,6 +2872,38 @@ id|enable
 )paren
 suffix:semicolon
 r_void
+id|ahd_update_coalessing_values
+c_func
+(paren
+r_struct
+id|ahd_softc
+op_star
+id|ahd
+comma
+id|u_int
+id|timer
+comma
+id|u_int
+id|maxcmds
+comma
+id|u_int
+id|mincmds
+)paren
+suffix:semicolon
+r_void
+id|ahd_enable_coalessing
+c_func
+(paren
+r_struct
+id|ahd_softc
+op_star
+id|ahd
+comma
+r_int
+id|enable
+)paren
+suffix:semicolon
+r_void
 id|ahd_pause_and_flushwork
 c_func
 (paren
@@ -2986,6 +3102,16 @@ id|ahd
 suffix:semicolon
 r_void
 id|ahd_clear_intstat
+c_func
+(paren
+r_struct
+id|ahd_softc
+op_star
+id|ahd
+)paren
+suffix:semicolon
+r_void
+id|ahd_flush_qoutfifo
 c_func
 (paren
 r_struct
@@ -3623,8 +3749,10 @@ DECL|macro|AHD_SHOW_TQIN
 mdefine_line|#define AHD_SHOW_TQIN&t;&t;0x04000
 DECL|macro|AHD_SHOW_SG
 mdefine_line|#define AHD_SHOW_SG&t;&t;0x08000
+DECL|macro|AHD_SHOW_INT_COALESSING
+mdefine_line|#define AHD_SHOW_INT_COALESSING&t;0x10000
 DECL|macro|AHD_DEBUG_SEQUENCER
-mdefine_line|#define AHD_DEBUG_SEQUENCER&t;0x10000
+mdefine_line|#define AHD_DEBUG_SEQUENCER&t;0x20000
 macro_line|#endif
 r_void
 id|ahd_print_scb
