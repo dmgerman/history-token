@@ -5,15 +5,20 @@ mdefine_line|#define _W9968CF_H_
 macro_line|#include &lt;linux/videodev.h&gt;
 macro_line|#include &lt;linux/usb.h&gt;
 macro_line|#include &lt;linux/i2c.h&gt;
+macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/wait.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/param.h&gt;
+macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
-macro_line|#include &lt;asm/types.h&gt;
-macro_line|#include &quot;w9968cf_externaldef.h&quot;
+macro_line|#include &lt;asm/rwsem.h&gt;
+macro_line|#include &lt;media/ovcamchip.h&gt;
+macro_line|#include &quot;w9968cf_vpp.h&quot;
 multiline_comment|/****************************************************************************&n; * Default values                                                           *&n; ****************************************************************************/
+DECL|macro|W9968CF_OVMOD_LOAD
+mdefine_line|#define W9968CF_OVMOD_LOAD      1  /* automatic &squot;ovcamchip&squot; module loading */
 DECL|macro|W9968CF_VPPMOD_LOAD
 mdefine_line|#define W9968CF_VPPMOD_LOAD     1  /* automatic &squot;w9968cf-vpp&squot; module loading */
 multiline_comment|/* Comment/uncomment the following line to enable/disable debugging messages */
@@ -241,9 +246,9 @@ mdefine_line|#define W9968CF_PALETTE_DECOMP_ON    VIDEO_PALETTE_UYVY    /* when 
 DECL|macro|W9968CF_FORCE_RGB
 mdefine_line|#define W9968CF_FORCE_RGB        0  /* read RGB instead of BGR, yes=1/no=0 */
 DECL|macro|W9968CF_MAX_WIDTH
-mdefine_line|#define W9968CF_MAX_WIDTH      800 /* should be &gt;= 640 */
+mdefine_line|#define W9968CF_MAX_WIDTH      800 /* Has effect if up-scaling is on */
 DECL|macro|W9968CF_MAX_HEIGHT
-mdefine_line|#define W9968CF_MAX_HEIGHT     600 /* should be &gt;= 480 */
+mdefine_line|#define W9968CF_MAX_HEIGHT     600 /* Has effect if up-scaling is on */
 DECL|macro|W9968CF_WIDTH
 mdefine_line|#define W9968CF_WIDTH          320 /* from 128 to 352, multiple of 16 */
 DECL|macro|W9968CF_HEIGHT
@@ -290,19 +295,13 @@ multiline_comment|/*************************************************************
 DECL|macro|W9968CF_MODULE_NAME
 mdefine_line|#define W9968CF_MODULE_NAME     &quot;V4L driver for W996[87]CF JPEG USB &quot; &bslash;&n;                                &quot;Dual Mode Camera Chip&quot;
 DECL|macro|W9968CF_MODULE_VERSION
-mdefine_line|#define W9968CF_MODULE_VERSION  &quot;v1.25-basic&quot;
+mdefine_line|#define W9968CF_MODULE_VERSION  &quot;1:1.32-basic&quot;
 DECL|macro|W9968CF_MODULE_AUTHOR
 mdefine_line|#define W9968CF_MODULE_AUTHOR   &quot;(C) 2002-2004 Luca Risolia&quot;
 DECL|macro|W9968CF_AUTHOR_EMAIL
 mdefine_line|#define W9968CF_AUTHOR_EMAIL    &quot;&lt;luca.risolia@studio.unibo.it&gt;&quot;
 DECL|macro|W9968CF_MODULE_LICENSE
 mdefine_line|#define W9968CF_MODULE_LICENSE  &quot;GPL&quot;
-DECL|variable|w9968cf_vppmod_present
-r_static
-id|u8
-id|w9968cf_vppmod_present
-suffix:semicolon
-multiline_comment|/* status flag: yes=1, no=0 */
 DECL|variable|winbond_id_table
 r_static
 r_const
@@ -360,14 +359,6 @@ comma
 multiline_comment|/* terminating entry */
 )brace
 suffix:semicolon
-id|MODULE_DEVICE_TABLE
-c_func
-(paren
-id|usb
-comma
-id|winbond_id_table
-)paren
-suffix:semicolon
 multiline_comment|/* W996[87]CF camera models, internal ids: */
 DECL|enum|w9968cf_model_id
 r_enum
@@ -385,42 +376,60 @@ op_assign
 l_int|11
 comma
 multiline_comment|/*Creative Labs Video Blaster WebCam Go Plus*/
-DECL|enumerator|W9968CF_MOD_ADPA5R
-id|W9968CF_MOD_ADPA5R
+DECL|enumerator|W9968CF_MOD_ADPVDMA
+id|W9968CF_MOD_ADPVDMA
 op_assign
 l_int|21
 comma
-multiline_comment|/* Aroma Digi Pen ADG-5000 Refurbished */
-DECL|enumerator|W9986CF_MOD_AU
-id|W9986CF_MOD_AU
+multiline_comment|/* Aroma Digi Pen VGA Dual Mode ADG-5000 */
+DECL|enumerator|W9986CF_MOD_AAU
+id|W9986CF_MOD_AAU
 op_assign
 l_int|31
 comma
-multiline_comment|/* AVerTV USB */
+multiline_comment|/* AVerMedia AVerTV USB */
 DECL|enumerator|W9968CF_MOD_CLVBWG
 id|W9968CF_MOD_CLVBWG
 op_assign
 l_int|34
 comma
 multiline_comment|/* Creative Labs Video Blaster WebCam Go */
-DECL|enumerator|W9968CF_MOD_DLLDK
-id|W9968CF_MOD_DLLDK
+DECL|enumerator|W9968CF_MOD_LL
+id|W9968CF_MOD_LL
 op_assign
 l_int|37
 comma
-multiline_comment|/* Die Lebon LDC-D35A Digital Kamera */
+multiline_comment|/* Lebon LDC-035A */
 DECL|enumerator|W9968CF_MOD_EEEMC
 id|W9968CF_MOD_EEEMC
 op_assign
 l_int|40
 comma
 multiline_comment|/* Ezonics EZ-802 EZMega Cam */
+DECL|enumerator|W9968CF_MOD_OOE
+id|W9968CF_MOD_OOE
+op_assign
+l_int|42
+comma
+multiline_comment|/* OmniVision OV8610-EDE */
 DECL|enumerator|W9968CF_MOD_ODPVDMPC
 id|W9968CF_MOD_ODPVDMPC
 op_assign
 l_int|43
 comma
 multiline_comment|/* OPCOM Digi Pen VGA Dual Mode Pen Camera */
+DECL|enumerator|W9968CF_MOD_PDPII
+id|W9968CF_MOD_PDPII
+op_assign
+l_int|46
+comma
+multiline_comment|/* Pretec Digi Pen-II */
+DECL|enumerator|W9968CF_MOD_PDP480
+id|W9968CF_MOD_PDP480
+op_assign
+l_int|49
+comma
+multiline_comment|/* Pretec DigiPen-480 */
 )brace
 suffix:semicolon
 DECL|enum|w9968cf_frame_status
@@ -448,16 +457,23 @@ DECL|struct|w9968cf_frame_t
 r_struct
 id|w9968cf_frame_t
 (brace
-DECL|macro|W9968CF_HW_BUF_SIZE
-mdefine_line|#define W9968CF_HW_BUF_SIZE 640*480*2 /* buf.size of original frames */
 DECL|member|buffer
 r_void
 op_star
 id|buffer
 suffix:semicolon
+DECL|member|size
+r_int
+r_int
+id|size
+suffix:semicolon
 DECL|member|length
 id|u32
 id|length
+suffix:semicolon
+DECL|member|number
+r_int
+id|number
 suffix:semicolon
 DECL|member|status
 r_enum
@@ -507,13 +523,27 @@ l_int|0x08
 comma
 )brace
 suffix:semicolon
-DECL|variable|w9968cf_dev_list
+DECL|variable|w9968cf_vpp
 r_static
 r_struct
-id|list_head
-id|w9968cf_dev_list
+id|w9968cf_vpp_t
+op_star
+id|w9968cf_vpp
 suffix:semicolon
-multiline_comment|/* head of V4L registered cameras list */
+r_static
+id|DECLARE_MUTEX
+c_func
+(paren
+id|w9968cf_vppmod_lock
+)paren
+suffix:semicolon
+r_static
+id|DECLARE_WAIT_QUEUE_HEAD
+c_func
+(paren
+id|w9968cf_vppmod_wait
+)paren
+suffix:semicolon
 r_static
 id|LIST_HEAD
 c_func
@@ -521,17 +551,34 @@ c_func
 id|w9968cf_dev_list
 )paren
 suffix:semicolon
-DECL|variable|w9968cf_devlist_sem
-r_struct
-id|semaphore
+multiline_comment|/* head of V4L registered cameras list */
+r_static
+id|DECLARE_MUTEX
+c_func
+(paren
 id|w9968cf_devlist_sem
+)paren
 suffix:semicolon
 multiline_comment|/* semaphore for list traversal */
+r_static
+id|DECLARE_RWSEM
+c_func
+(paren
+id|w9968cf_disconnect
+)paren
+suffix:semicolon
+multiline_comment|/* prevent races with open() */
 multiline_comment|/* Main device driver structure */
 DECL|struct|w9968cf_device
 r_struct
 id|w9968cf_device
 (brace
+DECL|member|dev
+r_struct
+id|device
+id|dev
+suffix:semicolon
+multiline_comment|/* device structure */
 DECL|member|id
 r_enum
 id|w9968cf_model_id
@@ -603,6 +650,12 @@ id|w9968cf_frame_t
 id|frame_tmp
 suffix:semicolon
 multiline_comment|/* temporary frame */
+DECL|member|frame_vpp
+r_struct
+id|w9968cf_frame_t
+id|frame_vpp
+suffix:semicolon
+multiline_comment|/* helper frame.*/
 DECL|member|frame_current
 r_struct
 id|w9968cf_frame_t
@@ -619,12 +672,6 @@ id|requested_frame
 id|W9968CF_MAX_BUFFERS
 )braket
 suffix:semicolon
-DECL|member|vpp_buffer
-r_void
-op_star
-id|vpp_buffer
-suffix:semicolon
-multiline_comment|/*-&gt; helper buf.for video post-processing routines */
 DECL|member|max_buffers
 id|u8
 id|max_buffers
@@ -710,7 +757,7 @@ multiline_comment|/* pixels from HS inactive edge to 1st cropped pixel*/
 DECL|member|start_cropy
 id|start_cropy
 suffix:semicolon
-multiline_comment|/* pixels from VS incative edge to 1st cropped pixel*/
+multiline_comment|/* pixels from VS inactive edge to 1st cropped pixel*/
 DECL|member|vpp_flag
 r_enum
 id|w9968cf_vpp_flag
@@ -747,7 +794,7 @@ id|u8
 id|sensor_initialized
 suffix:semicolon
 multiline_comment|/* flag: yes=1, no=0 */
-multiline_comment|/* Determined by CMOS sensor type: */
+multiline_comment|/* Determined by the image sensor type: */
 DECL|member|sensor
 r_int
 id|sensor
@@ -756,24 +803,24 @@ multiline_comment|/* type of image sensor chip (CC_*) */
 DECL|member|monochrome
 id|monochrome
 suffix:semicolon
-multiline_comment|/* CMOS sensor is (probably) monochrome */
+multiline_comment|/* image sensor is (probably) monochrome */
 DECL|member|maxwidth
 id|u16
 id|maxwidth
 comma
-multiline_comment|/* maximum width supported by the CMOS sensor */
+multiline_comment|/* maximum width supported by the image sensor */
 DECL|member|maxheight
 id|maxheight
 comma
-multiline_comment|/* maximum height supported by the CMOS sensor */
+multiline_comment|/* maximum height supported by the image sensor */
 DECL|member|minwidth
 id|minwidth
 comma
-multiline_comment|/* minimum width supported by the CMOS sensor */
+multiline_comment|/* minimum width supported by the image sensor */
 DECL|member|minheight
 id|minheight
 suffix:semicolon
-multiline_comment|/* minimum height supported by the CMOS sensor */
+multiline_comment|/* minimum height supported by the image sensor */
 DECL|member|auto_brt
 id|u8
 id|auto_brt
@@ -836,6 +883,13 @@ DECL|member|flist_lock
 id|flist_lock
 suffix:semicolon
 multiline_comment|/* for requested frame list accesses */
+DECL|member|open
+DECL|member|wait_queue
+id|wait_queue_head_t
+id|open
+comma
+id|wait_queue
+suffix:semicolon
 DECL|member|command
 r_char
 id|command
@@ -844,32 +898,33 @@ l_int|16
 )braket
 suffix:semicolon
 multiline_comment|/* name of the program holding the device */
-DECL|member|open
-DECL|member|wait_queue
-id|wait_queue_head_t
-id|open
-comma
-id|wait_queue
-suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/****************************************************************************&n; * Macros for debugging                                                     *&n; ****************************************************************************/
 DECL|macro|DBG
 macro_line|#undef DBG
+DECL|macro|KDBG
+macro_line|#undef KDBG
 macro_line|#ifdef W9968CF_DEBUG
+multiline_comment|/* For device specific debugging messages */
 DECL|macro|DBG
-macro_line|#&t;define DBG(level, fmt, args...) &bslash;&n;{ &bslash;&n;if ( ((specific_debug) &amp;&amp; (debug == (level))) || &bslash;&n;     ((!specific_debug) &amp;&amp; (debug &gt;= (level))) ) { &bslash;&n;&t;if ((level) == 1) &bslash;&n;&t;&t;err(fmt, ## args); &bslash;&n;&t;else if ((level) == 2 || (level) == 3) &bslash;&n;&t;&t;info(fmt, ## args); &bslash;&n;&t;else if ((level) == 4) &bslash;&n;&t;&t;warn(fmt, ## args); &bslash;&n;&t;else if ((level) &gt;= 5) &bslash;&n;&t;&t;info(&quot;[%s:%d] &quot; fmt, &bslash;&n;&t;&t;     __FUNCTION__, __LINE__ , ## args); &bslash;&n;} &bslash;&n;}
+macro_line|#&t;define DBG(level, fmt, args...)                                       &bslash;&n;{                                                                             &bslash;&n;&t;if ( ((specific_debug) &amp;&amp; (debug == (level))) ||                      &bslash;&n;&t;     ((!specific_debug) &amp;&amp; (debug &gt;= (level))) ) {                    &bslash;&n;&t;&t;if ((level) == 1)                                             &bslash;&n;&t;&t;&t;dev_err(&amp;cam-&gt;dev, fmt &quot;&bslash;n&quot;, ## args);                &bslash;&n;&t;&t;else if ((level) == 2 || (level) == 3)                        &bslash;&n;&t;&t;&t;dev_info(&amp;cam-&gt;dev, fmt &quot;&bslash;n&quot;, ## args);               &bslash;&n;&t;&t;else if ((level) == 4)                                        &bslash;&n;&t;&t;&t;dev_warn(&amp;cam-&gt;dev, fmt &quot;&bslash;n&quot;, ## args);               &bslash;&n;&t;&t;else if ((level) &gt;= 5)                                        &bslash;&n;&t;&t;&t;dev_info(&amp;cam-&gt;dev, &quot;[%s:%d] &quot; fmt &quot;&bslash;n&quot;,              &bslash;&n;&t;&t;&t;         __FUNCTION__, __LINE__ , ## args);           &bslash;&n;&t;}                                                                     &bslash;&n;}
+multiline_comment|/* For generic kernel (not device specific) messages */
+DECL|macro|KDBG
+macro_line|#&t;define KDBG(level, fmt, args...)                                      &bslash;&n;{                                                                             &bslash;&n;&t;if ( ((specific_debug) &amp;&amp; (debug == (level))) ||                      &bslash;&n;&t;     ((!specific_debug) &amp;&amp; (debug &gt;= (level))) ) {                    &bslash;&n;&t;&t;if ((level) &gt;= 1 &amp;&amp; (level) &lt;= 4)                             &bslash;&n;&t;&t;&t;pr_info(&quot;w9968cf: &quot; fmt &quot;&bslash;n&quot;, ## args);               &bslash;&n;&t;&t;else if ((level) &gt;= 5)                                        &bslash;&n;&t;&t;&t;pr_debug(&quot;w9968cf: [%s:%d] &quot; fmt &quot;&bslash;n&quot;, __FUNCTION__,  &bslash;&n;&t;&t;&t;         __LINE__ , ## args);                         &bslash;&n;&t;}                                                                     &bslash;&n;}
 macro_line|#else
 multiline_comment|/* Not debugging: nothing */
 DECL|macro|DBG
 macro_line|#&t;define DBG(level, fmt, args...) do {;} while(0);
+DECL|macro|KDBG
+macro_line|#&t;define KDBG(level, fmt, args...) do {;} while(0);
 macro_line|#endif
 DECL|macro|PDBG
 macro_line|#undef PDBG
+DECL|macro|PDBG
+mdefine_line|#define PDBG(fmt, args...)                                                    &bslash;&n;dev_info(&amp;cam-&gt;dev, &quot;[%s:%d] &quot; fmt &quot;&bslash;n&quot;, __FUNCTION__, __LINE__ , ## args);
 DECL|macro|PDBGG
 macro_line|#undef PDBGG
-DECL|macro|PDBG
-mdefine_line|#define PDBG(fmt, args...) info(&quot;[%s:%d] &quot;fmt, &bslash;&n;&t;                        __PRETTY_FUNCTION__, __LINE__ , ## args);
 DECL|macro|PDBGG
 mdefine_line|#define PDBGG(fmt, args...) do {;} while(0); /* nothing: it&squot;s a placeholder */
 macro_line|#endif /* _W9968CF_H_ */
