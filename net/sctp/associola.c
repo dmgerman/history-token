@@ -1,4 +1,4 @@
-multiline_comment|/* SCTP kernel reference Implementation&n; * Copyright (c) 1999-2000 Cisco, Inc.&n; * Copyright (c) 1999-2001 Motorola, Inc.&n; * Copyright (c) 2001-2002 International Business Machines Corp.&n; * Copyright (c) 2001 Intel Corp.&n; * Copyright (c) 2001 La Monte H.P. Yarroll&n; *&n; * This file is part of the SCTP kernel reference Implementation&n; *&n; * This module provides the abstraction for an SCTP association.&n; *&n; * The SCTP reference implementation is free software;&n; * you can redistribute it and/or modify it under the terms of&n; * the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * The SCTP reference implementation is distributed in the hope that it&n; * will be useful, but WITHOUT ANY WARRANTY; without even the implied&n; *                 ************************&n; * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; * See the GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with GNU CC; see the file COPYING.  If not, write to&n; * the Free Software Foundation, 59 Temple Place - Suite 330,&n; * Boston, MA 02111-1307, USA.&n; *&n; * Please send any bug reports or fixes you make to the&n; * email address(es):&n; *    lksctp developers &lt;lksctp-developers@lists.sourceforge.net&gt;&n; *&n; * Or submit a bug report through the following website:&n; *    http://www.sf.net/projects/lksctp&n; *&n; * Written or modified by:&n; *    La Monte H.P. Yarroll &lt;piggy@acm.org&gt;&n; *    Karl Knutson          &lt;karl@athena.chicago.il.us&gt;&n; *    Jon Grimm             &lt;jgrimm@us.ibm.com&gt;&n; *    Xingang Guo           &lt;xingang.guo@intel.com&gt;&n; *    Hui Huang             &lt;hui.huang@nokia.com&gt;&n; *    Sridhar Samudrala&t;    &lt;sri@us.ibm.com&gt;&n; *    Daisy Chang&t;    &lt;daisyc@us.ibm.com&gt;&n; *&n; * Any bugs reported given to us we will try to fix... any fixes shared will&n; * be incorporated into the next SCTP release.&n; */
+multiline_comment|/* SCTP kernel reference Implementation&n; * Copyright (c) 1999-2000 Cisco, Inc.&n; * Copyright (c) 1999-2001 Motorola, Inc.&n; * Copyright (c) 2001-2003 International Business Machines Corp.&n; * Copyright (c) 2001 Intel Corp.&n; * Copyright (c) 2001 La Monte H.P. Yarroll&n; *&n; * This file is part of the SCTP kernel reference Implementation&n; *&n; * This module provides the abstraction for an SCTP association.&n; *&n; * The SCTP reference implementation is free software;&n; * you can redistribute it and/or modify it under the terms of&n; * the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * The SCTP reference implementation is distributed in the hope that it&n; * will be useful, but WITHOUT ANY WARRANTY; without even the implied&n; *                 ************************&n; * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; * See the GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with GNU CC; see the file COPYING.  If not, write to&n; * the Free Software Foundation, 59 Temple Place - Suite 330,&n; * Boston, MA 02111-1307, USA.&n; *&n; * Please send any bug reports or fixes you make to the&n; * email address(es):&n; *    lksctp developers &lt;lksctp-developers@lists.sourceforge.net&gt;&n; *&n; * Or submit a bug report through the following website:&n; *    http://www.sf.net/projects/lksctp&n; *&n; * Written or modified by:&n; *    La Monte H.P. Yarroll &lt;piggy@acm.org&gt;&n; *    Karl Knutson          &lt;karl@athena.chicago.il.us&gt;&n; *    Jon Grimm             &lt;jgrimm@us.ibm.com&gt;&n; *    Xingang Guo           &lt;xingang.guo@intel.com&gt;&n; *    Hui Huang             &lt;hui.huang@nokia.com&gt;&n; *    Sridhar Samudrala&t;    &lt;sri@us.ibm.com&gt;&n; *    Daisy Chang&t;    &lt;daisyc@us.ibm.com&gt;&n; *&n; * Any bugs reported given to us we will try to fix... any fixes shared will&n; * be incorporated into the next SCTP release.&n; */
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/fcntl.h&gt;
 macro_line|#include &lt;linux/poll.h&gt;
@@ -394,27 +394,10 @@ id|sp-&gt;initmsg.sinit_max_init_timeo
 op_star
 id|HZ
 suffix:semicolon
-multiline_comment|/* RFC 2960 6.5 Stream Identifier and Stream Sequence Number&n;&t; *&n;&t; * The stream sequence number in all the streams shall start&n;&t; * from 0 when the association is established.  Also, when the&n;&t; * stream sequence number reaches the value 65535 the next&n;&t; * stream sequence number shall be set to 0.&n;&t; */
-r_for
-c_loop
-(paren
-id|i
+multiline_comment|/* Allocate storage for the ssnmap after the inbound and outbound&n;&t; * streams have been negotiated during Init.&n;&t; */
+id|asoc-&gt;ssnmap
 op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-id|SCTP_MAX_STREAM
-suffix:semicolon
-id|i
-op_increment
-)paren
-id|asoc-&gt;ssn
-(braket
-id|i
-)braket
-op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 multiline_comment|/* Set the local window size for receive.&n;&t; * This is also the rcvbuf space per association.&n;&t; * RFC 6 - A SCTP receiver MUST be able to receive a minimum of&n;&t; * 1500 bytes in one SCTP packet.&n;&t; */
 r_if
@@ -571,7 +554,7 @@ id|asoc
 )paren
 suffix:semicolon
 multiline_comment|/* Create an output queue.  */
-id|sctp_outqueue_init
+id|sctp_outq_init
 c_func
 (paren
 id|asoc
@@ -580,7 +563,7 @@ op_amp
 id|asoc-&gt;outqueue
 )paren
 suffix:semicolon
-id|sctp_outqueue_set_output_handlers
+id|sctp_outq_set_output_handlers
 c_func
 (paren
 op_amp
@@ -602,15 +585,13 @@ c_cond
 (paren
 l_int|NULL
 op_eq
-id|sctp_ulpqueue_init
+id|sctp_ulpq_init
 c_func
 (paren
 op_amp
 id|asoc-&gt;ulpq
 comma
 id|asoc
-comma
-id|SCTP_MAX_STREAM
 )paren
 )paren
 r_goto
@@ -739,7 +720,7 @@ op_assign
 l_int|1
 suffix:semicolon
 multiline_comment|/* Dispose of any data lying around in the outqueue. */
-id|sctp_outqueue_free
+id|sctp_outq_free
 c_func
 (paren
 op_amp
@@ -747,7 +728,7 @@ id|asoc-&gt;outqueue
 )paren
 suffix:semicolon
 multiline_comment|/* Dispose of any pending messages for the upper layer. */
-id|sctp_ulpqueue_free
+id|sctp_ulpq_free
 c_func
 (paren
 op_amp
@@ -760,6 +741,13 @@ c_func
 (paren
 op_amp
 id|asoc-&gt;base.inqueue
+)paren
+suffix:semicolon
+multiline_comment|/* Free ssnmap storage. */
+id|sctp_ssnmap_free
+c_func
+(paren
+id|asoc-&gt;ssnmap
 )paren
 suffix:semicolon
 multiline_comment|/* Clean up the bound address list. */
@@ -1387,10 +1375,7 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
-id|BUG
-c_func
-(paren
-)paren
+r_return
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -1424,7 +1409,7 @@ c_cond
 (paren
 id|event
 )paren
-id|sctp_ulpqueue_tail_event
+id|sctp_ulpq_tail_event
 c_func
 (paren
 op_amp
@@ -1675,11 +1660,14 @@ id|sid
 )paren
 (brace
 r_return
-id|asoc-&gt;ssn
-(braket
+id|sctp_ssn_next
+c_func
+(paren
+op_amp
+id|asoc-&gt;ssnmap-&gt;out
+comma
 id|sid
-)braket
-op_increment
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/* Compare two addresses to see if they match.  Wildcard addresses&n; * only match themselves.&n; *&n; * FIXME: We do not match address scopes correctly.&n; */
@@ -2349,9 +2337,6 @@ op_star
 r_new
 )paren
 (brace
-r_int
-id|i
-suffix:semicolon
 multiline_comment|/* Copy in new parameters of peer. */
 id|asoc-&gt;c
 op_assign
@@ -2395,7 +2380,7 @@ id|asoc-&gt;peer.i.initial_tsn
 )paren
 suffix:semicolon
 multiline_comment|/* FIXME:&n;&t; *    Do we need to copy primary_path etc?&n;&t; *&n;&t; *    More explicitly, addresses may have been removed and&n;&t; *    this needs accounting for.&n;&t; */
-multiline_comment|/* If the case is A (association restart), use&n;&t; * initial_tsn as next_tsn. If the case is B, use&n;&t; * current next_tsn in case there is data sent to peer&n;&t; * has been discarded and needs retransmission.&n;&t; */
+multiline_comment|/* If the case is A (association restart), use&n;&t; * initial_tsn as next_tsn. If the case is B, use&n;&t; * current next_tsn in case data sent to peer&n;&t; * has been discarded and needs retransmission.&n;&t; */
 r_if
 c_cond
 (paren
@@ -2417,36 +2402,12 @@ op_member_access_from_pointer
 id|ctsn_ack_point
 suffix:semicolon
 multiline_comment|/* Reinitialize SSN for both local streams&n;&t;&t; * and peer&squot;s streams.&n;&t;&t; */
-r_for
-c_loop
+id|sctp_ssnmap_clear
+c_func
 (paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-id|SCTP_MAX_STREAM
-suffix:semicolon
-id|i
-op_increment
+id|asoc-&gt;ssnmap
 )paren
-(brace
-id|asoc-&gt;ssn
-(braket
-id|i
-)braket
-op_assign
-l_int|0
 suffix:semicolon
-id|asoc-&gt;ulpq.ssn
-(braket
-id|i
-)braket
-op_assign
-l_int|0
-suffix:semicolon
-)brace
 )brace
 r_else
 (brace
@@ -2456,6 +2417,27 @@ id|asoc-&gt;next_tsn
 op_minus
 l_int|1
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|asoc-&gt;ssnmap
+)paren
+(brace
+multiline_comment|/* Move the ssnmap. */
+id|asoc-&gt;ssnmap
+op_assign
+r_new
+op_member_access_from_pointer
+id|ssnmap
+suffix:semicolon
+r_new
+op_member_access_from_pointer
+id|ssnmap
+op_assign
+l_int|NULL
+suffix:semicolon
+)brace
 )brace
 )brace
 multiline_comment|/* Choose the transport for sending a shutdown packet.&n; * Round-robin through the active transports, else round-robin&n; * through the inactive transports as this is the next best thing&n; * we can try.&n; */

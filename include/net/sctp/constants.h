@@ -6,13 +6,29 @@ macro_line|#include &lt;linux/tcp.h&gt;  /* For TCP states used in sctp_sock_sta
 macro_line|#include &lt;linux/sctp.h&gt;
 macro_line|#include &lt;linux/ipv6.h&gt; /* For ipv6hdr. */
 macro_line|#include &lt;net/sctp/user.h&gt;
-multiline_comment|/* What a hack!  Jiminy Cricket!  */
+multiline_comment|/* Value used for stream negotiation. */
 DECL|enumerator|SCTP_MAX_STREAM
 r_enum
 (brace
 id|SCTP_MAX_STREAM
 op_assign
+l_int|0xffff
+)brace
+suffix:semicolon
+DECL|enumerator|SCTP_DEFAULT_OUTSTREAMS
+r_enum
+(brace
+id|SCTP_DEFAULT_OUTSTREAMS
+op_assign
 l_int|10
+)brace
+suffix:semicolon
+DECL|enumerator|SCTP_DEFAULT_INSTREAMS
+r_enum
+(brace
+id|SCTP_DEFAULT_INSTREAMS
+op_assign
+id|SCTP_MAX_STREAM
 )brace
 suffix:semicolon
 multiline_comment|/* Define the amount of space to reserve for SCTP, IP, LL.&n; * There is a little bit of waste that we are always allocating&n; * for ipv6 headers, but this seems worth the simplicity.&n; */

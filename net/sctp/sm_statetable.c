@@ -3,6 +3,7 @@ macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;net/sctp/sctp.h&gt;
 macro_line|#include &lt;net/sctp/sm.h&gt;
 DECL|variable|bug
+r_static
 id|sctp_sm_table_entry_t
 id|bug
 op_assign

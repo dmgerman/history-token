@@ -1100,6 +1100,9 @@ id|priority
 id|sctp_ulpevent_t
 op_star
 id|event
+comma
+op_star
+id|levent
 suffix:semicolon
 r_struct
 id|sctp_sndrcvinfo
@@ -1110,6 +1113,9 @@ r_struct
 id|sk_buff
 op_star
 id|skb
+comma
+op_star
+id|list
 suffix:semicolon
 r_int
 id|padding
@@ -1212,6 +1218,61 @@ id|event-&gt;malloced
 op_assign
 l_int|1
 suffix:semicolon
+r_for
+c_loop
+(paren
+id|list
+op_assign
+id|skb_shinfo
+c_func
+(paren
+id|skb
+)paren
+op_member_access_from_pointer
+id|frag_list
+suffix:semicolon
+id|list
+suffix:semicolon
+id|list
+op_assign
+id|list-&gt;next
+)paren
+(brace
+id|sctp_ulpevent_set_owner_r
+c_func
+(paren
+id|list
+comma
+id|asoc
+)paren
+suffix:semicolon
+multiline_comment|/* Initialize event with flags 0.  */
+id|levent
+op_assign
+id|sctp_ulpevent_init
+c_func
+(paren
+id|event
+comma
+id|skb
+comma
+l_int|0
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|levent
+)paren
+r_goto
+id|fail_init
+suffix:semicolon
+id|levent-&gt;malloced
+op_assign
+l_int|1
+suffix:semicolon
+)brace
 id|info
 op_assign
 (paren
@@ -1419,6 +1480,15 @@ id|timer_list
 op_star
 id|timer
 suffix:semicolon
+r_int
+id|skb_len
+op_assign
+id|skb_headlen
+c_func
+(paren
+id|skb
+)paren
+suffix:semicolon
 multiline_comment|/* Current stack structures assume that the rcv buffer is&n;&t; * per socket.   For UDP style sockets this is not true as&n;&t; * multiple associations may be on a single UDP-style socket.&n;&t; * Use the local private area of the skb to track the owning&n;&t; * association.&n;&t; */
 id|event
 op_assign
@@ -1443,12 +1513,12 @@ c_cond
 (paren
 id|asoc-&gt;rwnd_over
 op_ge
-id|skb-&gt;len
+id|skb_len
 )paren
 (brace
 id|asoc-&gt;rwnd_over
 op_sub_assign
-id|skb-&gt;len
+id|skb_len
 suffix:semicolon
 )brace
 r_else
@@ -1456,7 +1526,7 @@ r_else
 id|asoc-&gt;rwnd
 op_add_assign
 (paren
-id|skb-&gt;len
+id|skb_len
 op_minus
 id|asoc-&gt;rwnd_over
 )paren
@@ -1471,7 +1541,7 @@ r_else
 (brace
 id|asoc-&gt;rwnd
 op_add_assign
-id|skb-&gt;len
+id|skb_len
 suffix:semicolon
 )brace
 id|SCTP_DEBUG_PRINTK
@@ -1479,7 +1549,7 @@ c_func
 (paren
 l_string|&quot;rwnd increased by %d to (%u, %u) - %u&bslash;n&quot;
 comma
-id|skb-&gt;len
+id|skb_len
 comma
 id|asoc-&gt;rwnd
 comma
@@ -1488,7 +1558,7 @@ comma
 id|asoc-&gt;a_rwnd
 )paren
 suffix:semicolon
-multiline_comment|/* Send a window update SACK if the rwnd has increased by at least the&n;&t; * minimum of the association&squot;s PMTU and half of the receive buffer.&n;&t; * The algorithm used is similar to the one described in Section 4.2.3.3&n;&t; * of RFC 1122.&n;&t; */
+multiline_comment|/* Send a window update SACK if the rwnd has increased by at least the&n;&t; * minimum of the association&squot;s PMTU and half of the receive buffer.&n;&t; * The algorithm used is similar to the one described in &n;&t; * Section 4.2.3.3 of RFC 1122.&n;&t; */
 r_if
 c_cond
 (paren
@@ -1568,7 +1638,7 @@ id|asoc-&gt;peer.next_dup_tsn
 op_assign
 l_int|0
 suffix:semicolon
-id|sctp_push_outqueue
+id|sctp_outq_tail
 c_func
 (paren
 op_amp
@@ -1638,6 +1708,15 @@ id|sctp_ulpevent_t
 op_star
 id|event
 suffix:semicolon
+r_int
+id|skb_len
+op_assign
+id|skb_headlen
+c_func
+(paren
+id|skb
+)paren
+suffix:semicolon
 multiline_comment|/* The current stack structures assume that the rcv buffer is&n;&t; * per socket.  For UDP-style sockets this is not true as&n;&t; * multiple associations may be on a single UDP-style socket.&n;&t; * We use the local private area of the skb to track the owning&n;&t; * association.&n;&t; */
 id|sctp_association_hold
 c_func
@@ -1691,19 +1770,19 @@ c_cond
 (paren
 id|asoc-&gt;rwnd
 op_ge
-id|skb-&gt;len
+id|skb_len
 )paren
 (brace
 id|asoc-&gt;rwnd
 op_sub_assign
-id|skb-&gt;len
+id|skb_len
 suffix:semicolon
 )brace
 r_else
 (brace
 id|asoc-&gt;rwnd_over
 op_assign
-id|skb-&gt;len
+id|skb_len
 op_minus
 id|asoc-&gt;rwnd
 suffix:semicolon
@@ -1717,7 +1796,7 @@ c_func
 (paren
 l_string|&quot;rwnd decreased by %d to (%u, %u)&bslash;n&quot;
 comma
-id|skb-&gt;len
+id|skb_len
 comma
 id|asoc-&gt;rwnd
 comma

@@ -907,6 +907,14 @@ id|sctp_chunk_t
 op_star
 )paren
 suffix:semicolon
+r_void
+id|sctp_chunk_assign_ssn
+c_func
+(paren
+id|sctp_chunk_t
+op_star
+)paren
+suffix:semicolon
 multiline_comment|/* Prototypes for statetable processing. */
 r_int
 id|sctp_do_sm

@@ -813,7 +813,7 @@ suffix:semicolon
 r_case
 id|SCTP_CMD_PURGE_OUTQUEUE
 suffix:colon
-id|sctp_outqueue_teardown
+id|sctp_outq_teardown
 c_func
 (paren
 op_amp
@@ -1113,7 +1113,7 @@ op_amp
 id|asoc-&gt;ulpq
 )paren
 suffix:semicolon
-id|sctp_ulpqueue_tail_data
+id|sctp_ulpq_tail_data
 c_func
 (paren
 op_amp
@@ -1145,7 +1145,7 @@ op_amp
 id|asoc-&gt;ulpq
 )paren
 suffix:semicolon
-id|sctp_ulpqueue_tail_event
+id|sctp_ulpq_tail_event
 c_func
 (paren
 op_amp
@@ -1162,7 +1162,7 @@ suffix:colon
 multiline_comment|/* Send a chunk to our peer.  */
 id|error
 op_assign
-id|sctp_push_outqueue
+id|sctp_outq_tail
 c_func
 (paren
 op_amp
@@ -1218,7 +1218,7 @@ suffix:colon
 multiline_comment|/* Kick start transmission. */
 id|error
 op_assign
-id|sctp_flush_outqueue
+id|sctp_outq_flush
 c_func
 (paren
 op_amp
@@ -2104,7 +2104,7 @@ l_int|0
 suffix:semicolon
 id|error
 op_assign
-id|sctp_push_outqueue
+id|sctp_outq_tail
 c_func
 (paren
 op_amp
@@ -3209,7 +3209,7 @@ c_func
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Process an init chunk (may be real INIT/INIT-ACK or an embedded INIT&n; * inside the cookie.  In reality, this is only used for INIT-ACK processing&n; * since all other cases use &quot;temporary&quot; associations and can do all&n; * their work in statefuns directly. &n; */
+multiline_comment|/* Process an init chunk (may be real INIT/INIT-ACK or an embedded INIT&n; * inside the cookie.  In reality, this is only used for INIT-ACK processing&n; * since all other cases use &quot;temporary&quot; associations and can do all&n; * their work in statefuns directly.&n; */
 DECL|function|sctp_cmd_process_init
 r_static
 r_int
@@ -3337,6 +3337,12 @@ id|t-&gt;hb_interval
 op_plus
 id|t-&gt;rto
 op_plus
+id|sctp_jitter
+c_func
+(paren
+id|t-&gt;rto
+)paren
+op_plus
 id|jiffies
 )paren
 )paren
@@ -3384,6 +3390,12 @@ comma
 id|t-&gt;hb_interval
 op_plus
 id|t-&gt;rto
+op_plus
+id|sctp_jitter
+c_func
+(paren
+id|t-&gt;rto
+)paren
 op_plus
 id|jiffies
 )paren
@@ -3599,7 +3611,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sctp_sack_outqueue
+id|sctp_outq_sack
 c_func
 (paren
 op_amp
@@ -3640,7 +3652,7 @@ r_else
 multiline_comment|/* Windows may have opened, so we need&n;&t;&t; * to check if we have DATA to transmit&n;&t;&t; */
 id|err
 op_assign
-id|sctp_flush_outqueue
+id|sctp_outq_flush
 c_func
 (paren
 op_amp

@@ -1,9 +1,9 @@
-multiline_comment|/* SCTP kernel reference Implementation&n; * Copyright (c) 1999-2000 Cisco, Inc.&n; * Copyright (c) 1999-2001 Motorola, Inc.&n; * Copyright (c) 2001 Intel Corp.&n; * Copyright (c) 2001-2002 International Business Machines Corp.&n; *&n; * This file is part of the SCTP kernel reference Implementation&n; *&n; * These functions implement the outqueue class.   The outqueue handles&n; * bundling and queueing of outgoing SCTP chunks.&n; *&n; * The SCTP reference implementation is free software;&n; * you can redistribute it and/or modify it under the terms of&n; * the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * The SCTP reference implementation is distributed in the hope that it&n; * will be useful, but WITHOUT ANY WARRANTY; without even the implied&n; *                 ************************&n; * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; * See the GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with GNU CC; see the file COPYING.  If not, write to&n; * the Free Software Foundation, 59 Temple Place - Suite 330,&n; * Boston, MA 02111-1307, USA.&n; *&n; * Please send any bug reports or fixes you make to the&n; * email address(es):&n; *    lksctp developers &lt;lksctp-developers@lists.sourceforge.net&gt;&n; *&n; * Or submit a bug report through the following website:&n; *    http://www.sf.net/projects/lksctp&n; *&n; * Written or modified by:&n; *    La Monte H.P. Yarroll &lt;piggy@acm.org&gt;&n; *    Karl Knutson          &lt;karl@athena.chicago.il.us&gt;&n; *    Perry Melange         &lt;pmelange@null.cc.uic.edu&gt;&n; *    Xingang Guo           &lt;xingang.guo@intel.com&gt;&n; *    Hui Huang &t;    &lt;hui.huang@nokia.com&gt;&n; *    Sridhar Samudrala     &lt;sri@us.ibm.com&gt;&n; *    Jon Grimm             &lt;jgrimm@us.ibm.com&gt;&n; *&n; * Any bugs reported given to us we will try to fix... any fixes shared will&n; * be incorporated into the next SCTP release.&n; */
+multiline_comment|/* SCTP kernel reference Implementation&n; * Copyright (c) 1999-2000 Cisco, Inc.&n; * Copyright (c) 1999-2001 Motorola, Inc.&n; * Copyright (c) 2001 Intel Corp.&n; * Copyright (c) 2001-2003 International Business Machines Corp.&n; *&n; * This file is part of the SCTP kernel reference Implementation&n; *&n; * These functions implement the sctp_outq class.   The outqueue handles&n; * bundling and queueing of outgoing SCTP chunks.&n; *&n; * The SCTP reference implementation is free software;&n; * you can redistribute it and/or modify it under the terms of&n; * the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * The SCTP reference implementation is distributed in the hope that it&n; * will be useful, but WITHOUT ANY WARRANTY; without even the implied&n; *                 ************************&n; * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; * See the GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with GNU CC; see the file COPYING.  If not, write to&n; * the Free Software Foundation, 59 Temple Place - Suite 330,&n; * Boston, MA 02111-1307, USA.&n; *&n; * Please send any bug reports or fixes you make to the&n; * email address(es):&n; *    lksctp developers &lt;lksctp-developers@lists.sourceforge.net&gt;&n; *&n; * Or submit a bug report through the following website:&n; *    http://www.sf.net/projects/lksctp&n; *&n; * Written or modified by:&n; *    La Monte H.P. Yarroll &lt;piggy@acm.org&gt;&n; *    Karl Knutson          &lt;karl@athena.chicago.il.us&gt;&n; *    Perry Melange         &lt;pmelange@null.cc.uic.edu&gt;&n; *    Xingang Guo           &lt;xingang.guo@intel.com&gt;&n; *    Hui Huang &t;    &lt;hui.huang@nokia.com&gt;&n; *    Sridhar Samudrala     &lt;sri@us.ibm.com&gt;&n; *    Jon Grimm             &lt;jgrimm@us.ibm.com&gt;&n; *&n; * Any bugs reported given to us we will try to fix... any fixes shared will&n; * be incorporated into the next SCTP release.&n; */
 macro_line|#include &lt;linux/types.h&gt;
-macro_line|#include &lt;linux/list.h&gt; /* For struct list_head */
+macro_line|#include &lt;linux/list.h&gt;   /* For struct list_head */
 macro_line|#include &lt;linux/socket.h&gt;
 macro_line|#include &lt;linux/ip.h&gt;
-macro_line|#include &lt;net/sock.h&gt;&t;&t;/* For skb_set_owner_w */
+macro_line|#include &lt;net/sock.h&gt;&t;  /* For skb_set_owner_w */
 macro_line|#include &lt;net/sctp/sctp.h&gt;
 multiline_comment|/* Declare internal functions here.  */
 r_static
@@ -24,7 +24,8 @@ r_void
 id|sctp_check_transmitted
 c_func
 (paren
-id|sctp_outqueue_t
+r_struct
+id|sctp_outq
 op_star
 id|q
 comma
@@ -46,10 +47,11 @@ id|highest_new_tsn
 )paren
 suffix:semicolon
 multiline_comment|/* Generate a new outqueue.  */
-DECL|function|sctp_outqueue_new
-id|sctp_outqueue_t
+DECL|function|sctp_outq_new
+r_struct
+id|sctp_outq
 op_star
-id|sctp_outqueue_new
+id|sctp_outq_new
 c_func
 (paren
 id|sctp_association_t
@@ -57,7 +59,8 @@ op_star
 id|asoc
 )paren
 (brace
-id|sctp_outqueue_t
+r_struct
+id|sctp_outq
 op_star
 id|q
 suffix:semicolon
@@ -66,7 +69,8 @@ op_assign
 id|t_new
 c_func
 (paren
-id|sctp_outqueue_t
+r_struct
+id|sctp_outq
 comma
 id|GFP_KERNEL
 )paren
@@ -77,7 +81,7 @@ c_cond
 id|q
 )paren
 (brace
-id|sctp_outqueue_init
+id|sctp_outq_init
 c_func
 (paren
 id|asoc
@@ -94,17 +98,18 @@ r_return
 id|q
 suffix:semicolon
 )brace
-multiline_comment|/* Initialize an existing SCTP_outqueue.  This does the boring stuff.&n; * You still need to define handlers if you really want to DO&n; * something with this structure...&n; */
-DECL|function|sctp_outqueue_init
+multiline_comment|/* Initialize an existing sctp_outq.  This does the boring stuff.&n; * You still need to define handlers if you really want to DO&n; * something with this structure...&n; */
+DECL|function|sctp_outq_init
 r_void
-id|sctp_outqueue_init
+id|sctp_outq_init
 c_func
 (paren
 id|sctp_association_t
 op_star
 id|asoc
 comma
-id|sctp_outqueue_t
+r_struct
+id|sctp_outq
 op_star
 id|q
 )paren
@@ -175,12 +180,13 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* Free the outqueue structure and any related pending chunks.&n; * FIXME: Add SEND_FAILED support.&n; */
-DECL|function|sctp_outqueue_teardown
+DECL|function|sctp_outq_teardown
 r_void
-id|sctp_outqueue_teardown
+id|sctp_outq_teardown
 c_func
 (paren
-id|sctp_outqueue_t
+r_struct
+id|sctp_outq
 op_star
 id|q
 )paren
@@ -325,18 +331,19 @@ id|chunk
 suffix:semicolon
 )brace
 multiline_comment|/* Free the outqueue structure and any related pending chunks.  */
-DECL|function|sctp_outqueue_free
+DECL|function|sctp_outq_free
 r_void
-id|sctp_outqueue_free
+id|sctp_outq_free
 c_func
 (paren
-id|sctp_outqueue_t
+r_struct
+id|sctp_outq
 op_star
 id|q
 )paren
 (brace
 multiline_comment|/* Throw away leftover chunks. */
-id|sctp_outqueue_teardown
+id|sctp_outq_teardown
 c_func
 (paren
 id|q
@@ -355,27 +362,14 @@ id|q
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Transmit any pending partial chunks.  */
-DECL|function|sctp_force_outqueue
-r_void
-id|sctp_force_outqueue
-c_func
-(paren
-id|sctp_outqueue_t
-op_star
-id|q
-)paren
-(brace
-multiline_comment|/* Do we really need this? */
-multiline_comment|/* BUG */
-)brace
-multiline_comment|/* Put a new chunk in an SCTP_outqueue.  */
-DECL|function|sctp_push_outqueue
+multiline_comment|/* Put a new chunk in an sctp_outq.  */
+DECL|function|sctp_outq_tail
 r_int
-id|sctp_push_outqueue
+id|sctp_outq_tail
 c_func
 (paren
-id|sctp_outqueue_t
+r_struct
+id|sctp_outq
 op_star
 id|q
 comma
@@ -392,7 +386,7 @@ suffix:semicolon
 id|SCTP_DEBUG_PRINTK
 c_func
 (paren
-l_string|&quot;sctp_push_outqueue(%p, %p[%s])&bslash;n&quot;
+l_string|&quot;sctp_outq_tail(%p, %p[%s])&bslash;n&quot;
 comma
 id|q
 comma
@@ -512,7 +506,6 @@ suffix:semicolon
 suffix:semicolon
 )brace
 r_else
-(brace
 id|skb_queue_tail
 c_func
 (paren
@@ -527,7 +520,6 @@ op_star
 id|chunk
 )paren
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -540,7 +532,7 @@ id|error
 suffix:semicolon
 id|error
 op_assign
-id|sctp_flush_outqueue
+id|sctp_outq_flush
 c_func
 (paren
 id|q
@@ -563,7 +555,8 @@ id|list_head
 op_star
 id|tlchunk
 comma
-id|sctp_outqueue_t
+r_struct
+id|sctp_outq
 op_star
 id|q
 )paren
@@ -691,7 +684,8 @@ r_void
 id|sctp_retransmit_mark
 c_func
 (paren
-id|sctp_outqueue_t
+r_struct
+id|sctp_outq
 op_star
 id|q
 comma
@@ -850,7 +844,8 @@ r_void
 id|sctp_retransmit
 c_func
 (paren
-id|sctp_outqueue_t
+r_struct
+id|sctp_outq
 op_star
 id|q
 comma
@@ -905,7 +900,7 @@ id|fast_retransmit
 suffix:semicolon
 id|error
 op_assign
-id|sctp_flush_outqueue
+id|sctp_outq_flush
 c_func
 (paren
 id|q
@@ -925,14 +920,15 @@ op_minus
 id|error
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Transmit DATA chunks on the retransmit queue.  Upon return from&n; * sctp_flush_retran_queue() the packet &squot;pkt&squot; may contain chunks which&n; * need to be transmitted by the caller.&n; * We assume that pkt-&gt;transport has already been set.&n; *&n; * The return value is a normal kernel error return value.&n; */
-DECL|function|sctp_flush_retran_queue
+multiline_comment|/*&n; * Transmit DATA chunks on the retransmit queue.  Upon return from&n; * sctp_outq_flush_rtx() the packet &squot;pkt&squot; may contain chunks which&n; * need to be transmitted by the caller.&n; * We assume that pkt-&gt;transport has already been set.&n; *&n; * The return value is a normal kernel error return value.&n; */
+DECL|function|sctp_outq_flush_rtx
 r_static
 r_int
-id|sctp_flush_retran_queue
+id|sctp_outq_flush_rtx
 c_func
 (paren
-id|sctp_outqueue_t
+r_struct
+id|sctp_outq
 op_star
 id|q
 comma
@@ -1036,6 +1032,33 @@ r_continue
 suffix:semicolon
 )brace
 macro_line|#endif
+multiline_comment|/* Make sure that Gap Acked TSNs are not retransmitted.  A&n;&t;&t; * simple approach is just to move such TSNs out of the&n;&t;&t; * way and into a &squot;transmitted&squot; queue and skip to the&n;&t;&t; * next chunk.&n;&t;&t; */
+r_if
+c_cond
+(paren
+id|chunk-&gt;tsn_gap_acked
+)paren
+(brace
+id|list_add_tail
+c_func
+(paren
+id|lchunk
+comma
+op_amp
+id|transport-&gt;transmitted
+)paren
+suffix:semicolon
+id|lchunk
+op_assign
+id|sctp_list_dequeue
+c_func
+(paren
+id|lqueue
+)paren
+suffix:semicolon
+r_continue
+suffix:semicolon
+)brace
 multiline_comment|/* Attempt to append this chunk to the packet. */
 id|status
 op_assign
@@ -1190,7 +1213,8 @@ r_void
 id|sctp_xmit_frag
 c_func
 (paren
-id|sctp_outqueue_t
+r_struct
+id|sctp_outq
 op_star
 id|q
 comma
@@ -1503,7 +1527,8 @@ r_void
 id|sctp_xmit_fragmented_chunks
 c_func
 (paren
-id|sctp_outqueue_t
+r_struct
+id|sctp_outq
 op_star
 id|q
 comma
@@ -1768,6 +1793,10 @@ id|first_frag
 r_goto
 id|err
 suffix:semicolon
+id|first_frag-&gt;has_ssn
+op_assign
+l_int|1
+suffix:semicolon
 multiline_comment|/* All the fragments are added to the frag_list of the first chunk. */
 id|frag_list
 op_assign
@@ -1818,6 +1847,10 @@ id|frag
 r_goto
 id|err
 suffix:semicolon
+id|frag-&gt;has_ssn
+op_assign
+l_int|1
+suffix:semicolon
 multiline_comment|/* Add the middle fragment to the first fragment&squot;s&n;&t;&t; * frag_list.&n;&t;&t; */
 id|list_add_tail
 c_func
@@ -1864,6 +1897,10 @@ id|frag
 )paren
 r_goto
 id|err
+suffix:semicolon
+id|frag-&gt;has_ssn
+op_assign
+l_int|1
 suffix:semicolon
 multiline_comment|/* Add the last fragment to the first fragment&squot;s frag_list. */
 id|list_add_tail
@@ -1955,13 +1992,14 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * sctp_flush_outqueue - Try to flush an outqueue.&n; *&n; * Description: Send everything in q which we legally can, subject to&n; * congestion limitations.&n; *&n; * Note: This function can be called from multiple contexts so appropriate&n; * locking concerns must be made.  Today we use the sock lock to protect&n; * this function.&n; */
-DECL|function|sctp_flush_outqueue
+multiline_comment|/*&n; * sctp_outq_flush - Try to flush an outqueue.&n; *&n; * Description: Send everything in q which we legally can, subject to&n; * congestion limitations.&n; *&n; * Note: This function can be called from multiple contexts so appropriate&n; * locking concerns must be made.  Today we use the sock lock to protect&n; * this function.&n; */
+DECL|function|sctp_outq_flush
 r_int
-id|sctp_flush_outqueue
+id|sctp_outq_flush
 c_func
 (paren
-id|sctp_outqueue_t
+r_struct
+id|sctp_outq
 op_star
 id|q
 comma
@@ -2046,10 +2084,6 @@ r_int
 id|start_timer
 op_assign
 l_int|0
-suffix:semicolon
-id|sctp_ulpevent_t
-op_star
-id|event
 suffix:semicolon
 multiline_comment|/* These transports have chunks to send. */
 r_struct
@@ -2476,7 +2510,7 @@ id|retran
 suffix:colon
 id|error
 op_assign
-id|sctp_flush_retran_queue
+id|sctp_outq_flush_rtx
 c_func
 (paren
 id|q
@@ -2564,8 +2598,13 @@ op_ge
 id|asoc-&gt;c.sinit_num_ostreams
 )paren
 (brace
+r_struct
+id|sctp_ulpevent
+op_star
+id|ev
+suffix:semicolon
 multiline_comment|/* Generate a SEND FAILED event. */
-id|event
+id|ev
 op_assign
 id|sctp_ulpevent_make_send_failed
 c_func
@@ -2584,19 +2623,17 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|event
+id|ev
 )paren
-(brace
-id|sctp_ulpqueue_tail_event
+id|sctp_ulpq_tail_event
 c_func
 (paren
 op_amp
 id|asoc-&gt;ulpq
 comma
-id|event
+id|ev
 )paren
 suffix:semicolon
-)brace
 multiline_comment|/* Free the chunk. This chunk is not on any&n;&t;&t;&t;&t; * list yet, just free it.&n;&t;&t;&t;&t; */
 id|sctp_free_chunk
 c_func
@@ -2607,6 +2644,13 @@ suffix:semicolon
 r_continue
 suffix:semicolon
 )brace
+multiline_comment|/* Now do delayed assignment of SSN.  This will&n;&t;&t;&t; * probably change again when we start supporting&n;&t;&t;&t; * large (&gt; approximately 2^16) size messages.&n;&t;&t;&t; */
+id|sctp_chunk_assign_ssn
+c_func
+(paren
+id|chunk
+)paren
+suffix:semicolon
 multiline_comment|/* If there is a specified transport, use it.&n;&t;&t;&t; * Otherwise, we want to use the active path.&n;&t;&t;&t; */
 id|new_transport
 op_assign
@@ -2771,7 +2815,7 @@ multiline_comment|/* We could not append this chunk, so put&n;&t;&t;&t;&t; * the
 id|SCTP_DEBUG_PRINTK
 c_func
 (paren
-l_string|&quot;sctp_flush_outqueue: could &quot;
+l_string|&quot;sctp_outq_flush: could &quot;
 l_string|&quot;not transmit TSN: 0x%x, status: %d&bslash;n&quot;
 comma
 id|ntohl
@@ -2983,28 +3027,29 @@ id|error
 suffix:semicolon
 )brace
 multiline_comment|/* Set the various output handling callbacks.  */
-DECL|function|sctp_outqueue_set_output_handlers
+DECL|function|sctp_outq_set_output_handlers
 r_int
-id|sctp_outqueue_set_output_handlers
+id|sctp_outq_set_output_handlers
 c_func
 (paren
-id|sctp_outqueue_t
+r_struct
+id|sctp_outq
 op_star
 id|q
 comma
-id|sctp_outqueue_ohandler_init_t
+id|sctp_outq_ohandler_init_t
 id|init
 comma
-id|sctp_outqueue_ohandler_config_t
+id|sctp_outq_ohandler_config_t
 id|config
 comma
-id|sctp_outqueue_ohandler_t
+id|sctp_outq_ohandler_t
 id|append
 comma
-id|sctp_outqueue_ohandler_t
+id|sctp_outq_ohandler_t
 id|build
 comma
-id|sctp_outqueue_ohandler_force_t
+id|sctp_outq_ohandler_force_t
 id|force
 )paren
 (brace
@@ -3259,13 +3304,14 @@ r_return
 id|highest_new_tsn
 suffix:semicolon
 )brace
-multiline_comment|/* This is where we REALLY process a SACK.&n; *&n; * Process the sack against the outqueue.  Mostly, this just frees&n; * things off the transmitted queue.&n; */
-DECL|function|sctp_sack_outqueue
+multiline_comment|/* This is where we REALLY process a SACK.&n; *&n; * Process the SACK against the outqueue.  Mostly, this just frees&n; * things off the transmitted queue.&n; */
+DECL|function|sctp_outq_sack
 r_int
-id|sctp_sack_outqueue
+id|sctp_outq_sack
 c_func
 (paren
-id|sctp_outqueue_t
+r_struct
+id|sctp_outq
 op_star
 id|q
 comma
@@ -3669,13 +3715,14 @@ id|q-&gt;empty
 suffix:semicolon
 )brace
 multiline_comment|/* Is the outqueue empty?  */
-DECL|function|sctp_outqueue_is_empty
+DECL|function|sctp_outq_is_empty
 r_int
-id|sctp_outqueue_is_empty
+id|sctp_outq_is_empty
 c_func
 (paren
 r_const
-id|sctp_outqueue_t
+r_struct
+id|sctp_outq
 op_star
 id|q
 )paren
@@ -3692,7 +3739,8 @@ r_void
 id|sctp_check_transmitted
 c_func
 (paren
-id|sctp_outqueue_t
+r_struct
+id|sctp_outq
 op_star
 id|q
 comma

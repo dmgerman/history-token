@@ -87,6 +87,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* Set up the proc fs entry for the SCTP protocol. */
 DECL|function|sctp_proc_init
+id|__init
 r_void
 id|sctp_proc_init
 c_func
@@ -135,6 +136,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* Clean up the proc fs entry for the SCTP protocol. */
 DECL|function|sctp_proc_exit
+id|__exit
 r_void
 id|sctp_proc_exit
 c_func
@@ -2542,6 +2544,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* Initialize the universe into something sensible.  */
 DECL|function|sctp_init
+id|__init
 r_int
 id|sctp_init
 c_func
@@ -2687,14 +2690,14 @@ op_star
 id|HZ
 suffix:semicolon
 multiline_comment|/* Implementation specific variables. */
-multiline_comment|/* Initialize default stream count setup information.&n;&t; * Note: today the stream accounting data structures are very&n;&t; * fixed size, so one really does need to make sure that these have&n;&t; * upper/lower limits when changing.&n;&t; */
+multiline_comment|/* Initialize default stream count setup information. */
 id|sctp_proto.max_instreams
 op_assign
-id|SCTP_MAX_STREAM
+id|SCTP_DEFAULT_INSTREAMS
 suffix:semicolon
 id|sctp_proto.max_outstreams
 op_assign
-id|SCTP_MAX_STREAM
+id|SCTP_DEFAULT_OUTSTREAMS
 suffix:semicolon
 multiline_comment|/* Allocate and initialize the association hash table.  */
 id|sctp_proto.assoc_hashsize
@@ -3124,6 +3127,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* Exit handler for the SCTP protocol.  */
 DECL|function|sctp_exit
+id|__exit
 r_void
 id|sctp_exit
 c_func
