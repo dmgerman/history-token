@@ -4586,7 +4586,7 @@ r_if
 c_cond
 (paren
 id|open-&gt;op_share_access
-op_logical_and
+op_amp
 id|NFS4_SHARE_ACCESS_WRITE
 )paren
 id|flags
