@@ -10,6 +10,9 @@ macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/fb.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#ifdef __i386__
+macro_line|#include &lt;video/edid.h&gt;
+macro_line|#endif
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/mtrr.h&gt;
 DECL|macro|dac_reg
@@ -953,6 +956,12 @@ r_void
 r_int
 id|video_cmap_len
 suffix:semicolon
+r_char
+op_star
+id|edid
+op_assign
+l_int|0
+suffix:semicolon
 r_int
 id|i
 suffix:semicolon
@@ -1376,6 +1385,32 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
+macro_line|#ifdef __i386__
+id|edid
+op_assign
+id|get_EDID_from_BIOS
+c_func
+(paren
+l_int|0
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|edid
+)paren
+id|parse_edid
+c_func
+(paren
+id|edid
+comma
+op_amp
+id|vesafb_defined
+)paren
+suffix:semicolon
+r_else
+macro_line|#endif
+(brace
 multiline_comment|/* some dummy values for timing to make fbset happy */
 id|vesafb_defined.pixclock
 op_assign
@@ -1407,6 +1442,7 @@ l_int|8
 op_amp
 l_int|0xf8
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren

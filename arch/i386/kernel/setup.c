@@ -14,6 +14,7 @@ macro_line|#include &lt;linux/seq_file.h&gt;
 macro_line|#include &lt;linux/console.h&gt;
 macro_line|#include &lt;linux/root_dev.h&gt;
 macro_line|#include &lt;linux/highmem.h&gt;
+macro_line|#include &lt;video/edid.h&gt;
 macro_line|#include &lt;asm/e820.h&gt;
 macro_line|#include &lt;asm/mpspec.h&gt;
 macro_line|#include &lt;asm/edd.h&gt;
@@ -200,6 +201,11 @@ l_int|0
 )braket
 suffix:semicolon
 )brace
+suffix:semicolon
+DECL|variable|edid_info
+r_struct
+id|edid_info
+id|edid_info
 suffix:semicolon
 DECL|variable|e820
 r_struct
@@ -3679,6 +3685,10 @@ suffix:semicolon
 id|screen_info
 op_assign
 id|SCREEN_INFO
+suffix:semicolon
+id|edid_info
+op_assign
+id|EDID_INFO
 suffix:semicolon
 id|apm_info.bios
 op_assign

@@ -2,6 +2,7 @@ multiline_comment|/*&n; * misc.c&n; * &n; * This is a collection of several rout
 macro_line|#include &lt;linux/linkage.h&gt;
 macro_line|#include &lt;linux/vmalloc.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
+macro_line|#include &lt;video/edid.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 multiline_comment|/*&n; * gzip declarations&n; */
 DECL|macro|OF
@@ -214,6 +215,8 @@ mdefine_line|#define ALT_MEM_K   (*(unsigned long *)(real_mode + 0x1e0))
 macro_line|#endif
 DECL|macro|SCREEN_INFO
 mdefine_line|#define SCREEN_INFO (*(struct screen_info *)(real_mode+0))
+DECL|macro|EDID_INFO
+mdefine_line|#define EDID_INFO   (*(struct edid_info *)(real_mode+0x440))
 r_extern
 r_char
 id|input_data
