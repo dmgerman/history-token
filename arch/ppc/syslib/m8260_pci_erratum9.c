@@ -131,7 +131,7 @@ suffix:semicolon
 multiline_comment|/* allocate IDMA dpram */
 id|dpram_offset
 op_assign
-id|cpm2_dpalloc
+id|cpm_dpalloc
 c_func
 (paren
 r_sizeof
@@ -144,16 +144,11 @@ l_int|64
 suffix:semicolon
 id|idma_dpram
 op_assign
+id|cpm_dpram_addr
+c_func
 (paren
-r_volatile
-id|idma_dpram_t
-op_star
-)paren
-op_amp
-id|immap-&gt;im_dprambase
-(braket
 id|dpram_offset
-)braket
+)paren
 suffix:semicolon
 multiline_comment|/* initialize the IDMA parameter RAM */
 id|memset
