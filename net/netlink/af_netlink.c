@@ -5697,13 +5697,6 @@ c_func
 id|netlink_broadcast
 )paren
 suffix:semicolon
-DECL|variable|netlink_broadcast_deliver
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|netlink_broadcast_deliver
-)paren
-suffix:semicolon
 DECL|variable|netlink_dump_start
 id|EXPORT_SYMBOL
 c_func
