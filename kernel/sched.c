@@ -6114,6 +6114,9 @@ r_void
 (brace
 id|task_t
 op_star
+id|g
+comma
+op_star
 id|p
 suffix:semicolon
 macro_line|#if (BITS_PER_LONG == 32)
@@ -6152,9 +6155,11 @@ op_amp
 id|tasklist_lock
 )paren
 suffix:semicolon
-id|for_each_task
+id|do_each_thread
 c_func
 (paren
+id|g
+comma
 id|p
 )paren
 (brace
@@ -6171,6 +6176,14 @@ id|p
 )paren
 suffix:semicolon
 )brace
+id|while_each_thread
+c_func
+(paren
+id|g
+comma
+id|p
+)paren
+suffix:semicolon
 id|read_unlock
 c_func
 (paren

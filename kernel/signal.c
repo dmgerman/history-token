@@ -3313,7 +3313,7 @@ op_assign
 op_minus
 id|ESRCH
 suffix:semicolon
-id|for_each_task
+id|for_each_process
 c_func
 (paren
 id|p
@@ -3325,12 +3325,6 @@ c_cond
 id|p-&gt;pgrp
 op_eq
 id|pgrp
-op_logical_and
-id|thread_group_leader
-c_func
-(paren
-id|p
-)paren
 )paren
 (brace
 r_int
@@ -3461,7 +3455,7 @@ op_amp
 id|tasklist_lock
 )paren
 suffix:semicolon
-id|for_each_task
+id|for_each_process
 c_func
 (paren
 id|p
@@ -3656,7 +3650,7 @@ op_amp
 id|tasklist_lock
 )paren
 suffix:semicolon
-id|for_each_task
+id|for_each_process
 c_func
 (paren
 id|p
@@ -3672,12 +3666,6 @@ op_logical_and
 id|p
 op_ne
 id|current
-op_logical_and
-id|thread_group_leader
-c_func
-(paren
-id|p
-)paren
 )paren
 (brace
 r_int
