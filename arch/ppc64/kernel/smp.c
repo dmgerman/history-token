@@ -1331,16 +1331,6 @@ id|__current-&gt;thread_info-&gt;preempt_count
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* Fixup SLB round-robin so next segment (kernel) goes in segment 0 */
-id|paca
-(braket
-id|lcpu
-)braket
-dot
-id|stab_next_rr
-op_assign
-l_int|0
-suffix:semicolon
 multiline_comment|/* At boot this is done in prom.c. */
 id|paca
 (braket
