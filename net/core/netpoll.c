@@ -372,7 +372,7 @@ id|np-&gt;dev-&gt;state
 op_logical_and
 id|np-&gt;poll_owner
 op_ne
-id|__smp_processor_id
+id|smp_processor_id
 c_func
 (paren
 )paren
@@ -898,14 +898,14 @@ c_cond
 (paren
 id|np-&gt;poll_owner
 op_eq
-id|__smp_processor_id
+id|smp_processor_id
 c_func
 (paren
 )paren
 op_logical_or
 id|np-&gt;dev-&gt;xmit_lock_owner
 op_eq
-id|__smp_processor_id
+id|smp_processor_id
 c_func
 (paren
 )paren

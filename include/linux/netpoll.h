@@ -254,7 +254,7 @@ id|dev-&gt;np-&gt;poll_lock
 suffix:semicolon
 id|dev-&gt;np-&gt;poll_owner
 op_assign
-id|__smp_processor_id
+id|smp_processor_id
 c_func
 (paren
 )paren
