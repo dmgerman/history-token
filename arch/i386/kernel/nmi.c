@@ -521,6 +521,12 @@ suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_PM
 macro_line|#include &lt;linux/device.h&gt;
+DECL|variable|nmi_pm_active
+r_static
+r_int
+id|nmi_pm_active
+suffix:semicolon
+multiline_comment|/* nmi_active before suspend */
 DECL|function|lapic_nmi_suspend
 r_static
 r_int
@@ -548,6 +554,10 @@ id|SUSPEND_POWER_DOWN
 )paren
 r_return
 l_int|0
+suffix:semicolon
+id|nmi_pm_active
+op_assign
+id|nmi_active
 suffix:semicolon
 id|disable_lapic_nmi_watchdog
 c_func
@@ -583,6 +593,13 @@ id|RESUME_POWER_ON
 r_return
 l_int|0
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|nmi_pm_active
+OG
+l_int|0
+)paren
 id|enable_lapic_nmi_watchdog
 c_func
 (paren
