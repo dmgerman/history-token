@@ -53,6 +53,8 @@ DECL|macro|LIST_TOUCHED
 mdefine_line|#define LIST_TOUCHED 1
 DECL|macro|LIST_DIRTY
 mdefine_line|#define LIST_DIRTY   2
+DECL|macro|LIST_COMMIT_PENDING
+mdefine_line|#define LIST_COMMIT_PENDING  4&t;&t;/* someone will commit this list */
 multiline_comment|/* flags for do_journal_end */
 DECL|macro|FLUSH_ALL
 mdefine_line|#define FLUSH_ALL   1&t;&t;/* flush commit and real blocks */
@@ -12863,10 +12865,27 @@ c_loop
 l_int|1
 )paren
 (brace
-id|yield
+id|set_current_state
 c_func
 (paren
+id|TASK_UNINTERRUPTIBLE
 )paren
+suffix:semicolon
+id|schedule_timeout
+c_func
+(paren
+l_int|1
+)paren
+suffix:semicolon
+id|SB_JOURNAL
+c_func
+(paren
+id|sb
+)paren
+op_member_access_from_pointer
+id|j_current_jl-&gt;j_state
+op_or_assign
+id|LIST_COMMIT_PENDING
 suffix:semicolon
 r_while
 c_loop
@@ -15044,6 +15063,25 @@ c_func
 (paren
 )paren
 suffix:semicolon
+multiline_comment|/*&n;   * this is a little racey, but there&squot;s no harm in missing&n;   * the filemap_fdata_write&n;   */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|atomic_read
+c_func
+(paren
+op_amp
+id|SB_JOURNAL
+c_func
+(paren
+id|p_s_sb
+)paren
+op_member_access_from_pointer
+id|j_async_throttle
+)paren
+)paren
+(brace
 id|atomic_inc
 c_func
 (paren
@@ -15076,6 +15114,7 @@ op_member_access_from_pointer
 id|j_async_throttle
 )paren
 suffix:semicolon
+)brace
 )brace
 multiline_comment|/*&n;** flushes any old transactions to disk&n;** ends the current transaction if it is too old&n;*/
 DECL|function|reiserfs_flush_old_commits
@@ -15452,6 +15491,15 @@ suffix:semicolon
 id|trans_id
 op_assign
 id|jl-&gt;j_trans_id
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|wait_on_commit
+)paren
+id|jl-&gt;j_state
+op_or_assign
+id|LIST_COMMIT_PENDING
 suffix:semicolon
 id|atomic_set
 c_func
@@ -18251,7 +18299,17 @@ l_int|1
 suffix:semicolon
 )brace
 r_else
-id|queue_work
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|jl-&gt;j_state
+op_amp
+id|LIST_COMMIT_PENDING
+)paren
+)paren
+id|queue_delayed_work
 c_func
 (paren
 id|commit_wq
@@ -18264,6 +18322,10 @@ id|p_s_sb
 )paren
 op_member_access_from_pointer
 id|j_work
+comma
+id|HZ
+op_div
+l_int|10
 )paren
 suffix:semicolon
 multiline_comment|/* if the next transaction has any chance of wrapping, flush &n;  ** transactions that might get overwritten.  If any journal lists are very &n;  ** old flush them as well.  &n;  */
