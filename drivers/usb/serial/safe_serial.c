@@ -169,7 +169,7 @@ mdefine_line|#define LINEO_SAFESERIAL_CRC                    0x01
 DECL|macro|LINEO_SAFESERIAL_CRC_PADDED
 mdefine_line|#define LINEO_SAFESERIAL_CRC_PADDED             0x02
 DECL|macro|MY_USB_DEVICE
-mdefine_line|#define MY_USB_DEVICE(vend,prod,dc,ic,isc) &bslash;&n;        match_flags: USB_DEVICE_ID_MATCH_DEVICE | USB_DEVICE_ID_MATCH_DEV_CLASS | &bslash;&n;                USB_DEVICE_ID_MATCH_INT_CLASS | USB_DEVICE_ID_MATCH_INT_SUBCLASS, &bslash;&n;        idVendor: (vend), &bslash;&n;        idProduct: (prod),&bslash;&n;        bDeviceClass: (dc),&bslash;&n;        bInterfaceClass: (ic), &bslash;&n;        bInterfaceSubClass: (isc),
+mdefine_line|#define MY_USB_DEVICE(vend,prod,dc,ic,isc) &bslash;&n;        .match_flags = USB_DEVICE_ID_MATCH_DEVICE | USB_DEVICE_ID_MATCH_DEV_CLASS | &bslash;&n;                USB_DEVICE_ID_MATCH_INT_CLASS | USB_DEVICE_ID_MATCH_INT_SUBCLASS, &bslash;&n;        .idVendor = (vend), &bslash;&n;        .idProduct = (prod),&bslash;&n;        .bDeviceClass = (dc),&bslash;&n;        .bInterfaceClass = (ic), &bslash;&n;        .bInterfaceSubClass = (isc),
 DECL|variable|id_table
 r_static
 r_struct
