@@ -224,10 +224,10 @@ id|arg
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|function|ixgb_validate_option
 r_static
 r_int
 id|__devinit
+DECL|function|ixgb_validate_option
 id|ixgb_validate_option
 c_func
 (paren
@@ -397,6 +397,7 @@ l_int|0
 op_ne
 l_char|&squot;&bslash;0&squot;
 )paren
+(brace
 id|printk
 c_func
 (paren
@@ -406,6 +407,7 @@ comma
 id|ent-&gt;str
 )paren
 suffix:semicolon
+)brace
 r_return
 l_int|0
 suffix:semicolon
@@ -449,9 +451,9 @@ suffix:semicolon
 DECL|macro|LIST_LEN
 mdefine_line|#define LIST_LEN(l) (sizeof(l) / sizeof(l[0]))
 multiline_comment|/**&n; * ixgb_check_options - Range Checking for Command Line Parameters&n; * @adapter: board private structure&n; *&n; * This routine checks all command line parameters for valid user&n; * input.  If an invalid value is given, or if no user specified&n; * value exists, a default value is used.  The final value is stored&n; * in a variable in the adapter structure.&n; **/
-DECL|function|ixgb_check_options
 r_void
 id|__devinit
+DECL|function|ixgb_check_options
 id|ixgb_check_options
 c_func
 (paren
@@ -489,10 +491,6 @@ c_func
 id|KERN_NOTICE
 l_string|&quot;Using defaults for all values&bslash;n&quot;
 )paren
-suffix:semicolon
-id|bd
-op_assign
-id|IXGB_MAX_NIC
 suffix:semicolon
 )brace
 (brace
@@ -1108,7 +1106,7 @@ suffix:semicolon
 )brace
 )brace
 (brace
-multiline_comment|/* Flow Control Pause Time Request */
+multiline_comment|/* Flow Control Pause Time Request*/
 r_struct
 id|ixgb_option
 id|opt
@@ -1241,7 +1239,6 @@ l_int|8
 (brace
 multiline_comment|/* set defaults */
 id|printk
-c_func
 (paren
 id|KERN_INFO
 l_string|&quot;RxFCHighThresh must be &gt;= (RxFCLowThresh + 8), &quot;

@@ -332,5 +332,5 @@ suffix:semicolon
 macro_line|#endif
 )brace
 suffix:semicolon
-macro_line|#endif&t;&t;&t;&t;/* _IXGB_H_ */
+macro_line|#endif /* _IXGB_H_ */
 eof

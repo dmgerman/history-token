@@ -115,30 +115,6 @@ id|ixgb_pci_tbl
 )paren
 suffix:semicolon
 multiline_comment|/* Local Function Prototypes */
-r_static
-r_inline
-r_void
-id|ixgb_irq_disable
-c_func
-(paren
-r_struct
-id|ixgb_adapter
-op_star
-id|adapter
-)paren
-suffix:semicolon
-r_static
-r_inline
-r_void
-id|ixgb_irq_enable
-c_func
-(paren
-r_struct
-id|ixgb_adapter
-op_star
-id|adapter
-)paren
-suffix:semicolon
 r_int
 id|ixgb_up
 c_func
@@ -463,28 +439,6 @@ op_star
 id|adapter
 )paren
 suffix:semicolon
-r_static
-r_inline
-r_void
-id|ixgb_rx_checksum
-c_func
-(paren
-r_struct
-id|ixgb_adapter
-op_star
-id|adapter
-comma
-r_struct
-id|ixgb_rx_desc
-op_star
-id|rx_desc
-comma
-r_struct
-id|sk_buff
-op_star
-id|skb
-)paren
-suffix:semicolon
 macro_line|#ifdef CONFIG_IXGB_NAPI
 r_static
 r_int
@@ -779,10 +733,10 @@ mdefine_line|#define RXDCTL_HTHRESH_DEFAULT 16&t;/* chip will only prefetch if t
 DECL|macro|RXDCTL_WTHRESH_DEFAULT
 mdefine_line|#define RXDCTL_WTHRESH_DEFAULT 16&t;/* chip writes back at this many or RXT0 */
 multiline_comment|/**&n; * ixgb_init_module - Driver Registration Routine&n; *&n; * ixgb_init_module is the first routine called when the driver is&n; * loaded. All it does is register with the PCI subsystem.&n; **/
-DECL|function|ixgb_init_module
 r_static
 r_int
 id|__init
+DECL|function|ixgb_init_module
 id|ixgb_init_module
 c_func
 (paren
@@ -849,10 +803,10 @@ id|ixgb_init_module
 )paren
 suffix:semicolon
 multiline_comment|/**&n; * ixgb_exit_module - Driver Exit Cleanup Routine&n; *&n; * ixgb_exit_module is called just before the driver is removed&n; * from memory.&n; **/
-DECL|function|ixgb_exit_module
 r_static
 r_void
 id|__exit
+DECL|function|ixgb_exit_module
 id|ixgb_exit_module
 c_func
 (paren
@@ -882,10 +836,10 @@ id|ixgb_exit_module
 )paren
 suffix:semicolon
 multiline_comment|/**&n; * ixgb_irq_disable - Mask off interrupt generation on the NIC&n; * @adapter: board private structure&n; **/
-DECL|function|ixgb_irq_disable
 r_static
 r_inline
 r_void
+DECL|function|ixgb_irq_disable
 id|ixgb_irq_disable
 c_func
 (paren
@@ -929,10 +883,10 @@ id|adapter-&gt;pdev-&gt;irq
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * ixgb_irq_enable - Enable default interrupt generation settings&n; * @adapter: board private structure&n; **/
-DECL|function|ixgb_irq_enable
 r_static
 r_inline
 r_void
+DECL|function|ixgb_irq_enable
 id|ixgb_irq_enable
 c_func
 (paren
@@ -981,8 +935,8 @@ id|adapter-&gt;hw
 suffix:semicolon
 )brace
 )brace
-DECL|function|ixgb_up
 r_int
+DECL|function|ixgb_up
 id|ixgb_up
 c_func
 (paren
@@ -1275,8 +1229,8 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|ixgb_down
 r_void
+DECL|function|ixgb_down
 id|ixgb_down
 c_func
 (paren
@@ -1380,8 +1334,8 @@ id|adapter
 )paren
 suffix:semicolon
 )brace
-DECL|function|ixgb_reset
 r_void
+DECL|function|ixgb_reset
 id|ixgb_reset
 c_func
 (paren
@@ -1409,12 +1363,14 @@ op_amp
 id|adapter-&gt;hw
 )paren
 )paren
+(brace
 id|IXGB_DBG
 c_func
 (paren
 l_string|&quot;ixgb_init_hw failed.&bslash;n&quot;
 )paren
 suffix:semicolon
+)brace
 )brace
 multiline_comment|/**&n; * ixgb_probe - Device Initialization Routine&n; * @pdev: PCI device information struct&n; * @ent: entry in ixgb_pci_tbl&n; *&n; * Returns 0 on success, negative on failure&n; *&n; * ixgb_probe initializes an adapter identified by a pci_dev structure.&n; * The OS initialization, configuring of the adapter private structure,&n; * and a hardware reset occur.&n; **/
 r_static
@@ -1483,9 +1439,11 @@ id|pdev
 )paren
 )paren
 )paren
+(brace
 r_return
 id|err
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -1556,9 +1514,11 @@ id|ixgb_driver_name
 )paren
 )paren
 )paren
+(brace
 r_return
 id|err
 suffix:semicolon
+)brace
 id|pci_set_master
 c_func
 (paren
@@ -1706,8 +1666,10 @@ id|i
 op_eq
 l_int|0
 )paren
+(brace
 r_continue
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -1855,9 +1817,11 @@ id|adapter
 )paren
 )paren
 )paren
+(brace
 r_goto
 id|err_sw_init
 suffix:semicolon
+)brace
 id|netdev-&gt;features
 op_assign
 id|NETIF_F_SG
@@ -1881,10 +1845,12 @@ c_cond
 (paren
 id|pci_using_dac
 )paren
+(brace
 id|netdev-&gt;features
 op_or_assign
 id|NETIF_F_HIGHDMA
 suffix:semicolon
+)brace
 multiline_comment|/* make sure the EEPROM is good */
 r_if
 c_cond
@@ -2006,9 +1972,11 @@ id|netdev
 )paren
 )paren
 )paren
+(brace
 r_goto
 id|err_register
 suffix:semicolon
+)brace
 multiline_comment|/* we&squot;re going to reset, so assume we have no link for now */
 id|netif_carrier_off
 c_func
@@ -2083,10 +2051,10 @@ id|err
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * ixgb_remove - Device Removal Routine&n; * @pdev: PCI device information struct&n; *&n; * ixgb_remove is called by the PCI subsystem to alert the driver&n; * that it should release a PCI device.  The could be caused by a&n; * Hot-Plug event, or because the driver is going to be removed from&n; * memory.&n; **/
-DECL|function|ixgb_remove
 r_static
 r_void
 id|__devexit
+DECL|function|ixgb_remove
 id|ixgb_remove
 c_func
 (paren
@@ -2140,10 +2108,10 @@ id|netdev
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * ixgb_sw_init - Initialize general software structures (struct ixgb_adapter)&n; * @adapter: board private structure to initialize&n; *&n; * ixgb_sw_init initializes the Adapter private data structure.&n; * Fields are initialized based on PCI device information and&n; * OS network device settings (MTU size).&n; **/
-DECL|function|ixgb_sw_init
 r_static
 r_int
 id|__devinit
+DECL|function|ixgb_sw_init
 id|ixgb_sw_init
 c_func
 (paren
@@ -2268,9 +2236,9 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * ixgb_open - Called when a network interface is made active&n; * @netdev: network interface device structure&n; *&n; * Returns 0 on success, negative value on failure&n; *&n; * The open entry point is called when a network interface is made&n; * active by the system (IFF_UP).  At this point all resources needed&n; * for transmit and receive operations are allocated, the interrupt&n; * handler is registered with the OS, the watchdog timer is started,&n; * and the stack is notified that the interface is ready.&n; **/
-DECL|function|ixgb_open
 r_static
 r_int
+DECL|function|ixgb_open
 id|ixgb_open
 c_func
 (paren
@@ -2304,9 +2272,11 @@ id|adapter
 )paren
 )paren
 )paren
+(brace
 r_goto
 id|err_setup_tx
 suffix:semicolon
+)brace
 multiline_comment|/* allocate receive descriptors */
 r_if
 c_cond
@@ -2321,9 +2291,11 @@ id|adapter
 )paren
 )paren
 )paren
+(brace
 r_goto
 id|err_setup_rx
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -2337,9 +2309,11 @@ id|adapter
 )paren
 )paren
 )paren
+(brace
 r_goto
 id|err_up
 suffix:semicolon
+)brace
 r_return
 l_int|0
 suffix:semicolon
@@ -2372,9 +2346,9 @@ id|err
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * ixgb_close - Disables a network interface&n; * @netdev: network interface device structure&n; *&n; * Returns 0, this is not allowed to fail&n; *&n; * The close entry point is called when an interface is de-activated&n; * by the OS.  The hardware is still under the drivers control, but&n; * needs to be disabled.  A global MAC reset is issued to stop the&n; * hardware, and all transmit and receive resources are freed.&n; **/
-DECL|function|ixgb_close
 r_static
 r_int
+DECL|function|ixgb_close
 id|ixgb_close
 c_func
 (paren
@@ -2455,13 +2429,6 @@ id|ixgb_buffer
 op_star
 id|txdr-&gt;count
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|txdr-&gt;buffer_info
-)paren
-(brace
 id|txdr-&gt;buffer_info
 op_assign
 id|vmalloc
@@ -2470,6 +2437,13 @@ c_func
 id|size
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|txdr-&gt;buffer_info
+)paren
+(brace
 r_return
 op_minus
 id|ENOMEM
@@ -2558,9 +2532,9 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * ixgb_configure_tx - Configure 82597 Transmit Unit after Reset.&n; * @adapter: board private structure&n; *&n; * Configure the Tx unit of the MAC after a reset.&n; **/
-DECL|function|ixgb_configure_tx
 r_static
 r_void
+DECL|function|ixgb_configure_tx
 id|ixgb_configure_tx
 c_func
 (paren
@@ -2743,13 +2717,6 @@ id|ixgb_buffer
 op_star
 id|rxdr-&gt;count
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|rxdr-&gt;buffer_info
-)paren
-(brace
 id|rxdr-&gt;buffer_info
 op_assign
 id|vmalloc
@@ -2758,6 +2725,13 @@ c_func
 id|size
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|rxdr-&gt;buffer_info
+)paren
+(brace
 r_return
 op_minus
 id|ENOMEM
@@ -2846,9 +2820,9 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * ixgb_setup_rctl - configure the receive control register&n; * @adapter: Board private structure&n; **/
-DECL|function|ixgb_setup_rctl
 r_static
 r_void
+DECL|function|ixgb_setup_rctl
 id|ixgb_setup_rctl
 c_func
 (paren
@@ -2959,9 +2933,9 @@ id|rctl
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * ixgb_configure_rx - Configure 82597 Receive Unit after Reset.&n; * @adapter: board private structure&n; *&n; * Configure the Rx unit of the MAC after a reset.&n; **/
-DECL|function|ixgb_configure_rx
 r_static
 r_void
+DECL|function|ixgb_configure_rx
 id|ixgb_configure_rx
 c_func
 (paren
@@ -3099,7 +3073,7 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-multiline_comment|/* burst 16 or burst when RXT0 */
+multiline_comment|/* burst 16 or burst when RXT0*/
 id|rxdctl
 op_assign
 id|RXDCTL_WTHRESH_DEFAULT
@@ -3289,9 +3263,9 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/**&n; * ixgb_clean_tx_ring - Free Tx Buffers&n; * @adapter: board private structure&n; **/
-DECL|function|ixgb_clean_tx_ring
 r_static
 r_void
+DECL|function|ixgb_clean_tx_ring
 id|ixgb_clean_tx_ring
 c_func
 (paren
@@ -3478,9 +3452,9 @@ l_int|NULL
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * ixgb_clean_rx_ring - Free Rx Buffers&n; * @adapter: board private structure&n; **/
-DECL|function|ixgb_clean_rx_ring
 r_static
 r_void
+DECL|function|ixgb_clean_rx_ring
 id|ixgb_clean_rx_ring
 c_func
 (paren
@@ -3635,9 +3609,9 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * ixgb_set_mac - Change the Ethernet Address of the NIC&n; * @netdev: network interface device structure&n; * @p: pointer to an address structure&n; *&n; * Returns 0 on success, negative on failure&n; **/
-DECL|function|ixgb_set_mac
 r_static
 r_int
+DECL|function|ixgb_set_mac
 id|ixgb_set_mac
 c_func
 (paren
@@ -3675,10 +3649,12 @@ c_func
 id|addr-&gt;sa_data
 )paren
 )paren
+(brace
 r_return
 op_minus
 id|EADDRNOTAVAIL
 suffix:semicolon
+)brace
 id|memcpy
 c_func
 (paren
@@ -3705,9 +3681,9 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * ixgb_set_multi - Multicast and Promiscuous mode set&n; * @netdev: network interface device structure&n; *&n; * The set_multi entry point is called whenever the multicast address&n; * list or the network interface flags are updated.  This routine is&n; * responsible for configuring the hardware for proper multicast,&n; * promiscuous mode, and all-multi behavior.&n; **/
-DECL|function|ixgb_set_multi
 r_static
 r_void
+DECL|function|ixgb_set_multi
 id|ixgb_set_multi
 c_func
 (paren
@@ -3865,6 +3841,7 @@ id|mc_ptr
 op_assign
 id|mc_ptr-&gt;next
 )paren
+(brace
 id|memcpy
 c_func
 (paren
@@ -3881,6 +3858,7 @@ comma
 id|IXGB_ETH_LENGTH_OF_ADDRESS
 )paren
 suffix:semicolon
+)brace
 id|ixgb_mc_addr_list_update
 c_func
 (paren
@@ -3896,9 +3874,9 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/**&n; * ixgb_watchdog - Timer Call-back&n; * @data: pointer to netdev cast into an unsigned long&n; **/
-DECL|function|ixgb_watchdog
 r_static
 r_void
+DECL|function|ixgb_watchdog
 id|ixgb_watchdog
 c_func
 (paren
@@ -4144,12 +4122,14 @@ op_amp
 id|IXGB_STATUS_TXOFF
 )paren
 )paren
+(brace
 id|netif_stop_queue
 c_func
 (paren
 id|netdev
 )paren
 suffix:semicolon
+)brace
 multiline_comment|/* generate an interrupt to force clean up of any stragglers */
 id|IXGB_WRITE_REG
 c_func
@@ -4450,10 +4430,12 @@ id|i
 op_eq
 id|adapter-&gt;tx_ring.count
 )paren
+(brace
 id|i
 op_assign
 l_int|0
 suffix:semicolon
+)brace
 id|adapter-&gt;tx_ring.next_to_use
 op_assign
 id|i
@@ -4598,10 +4580,12 @@ id|i
 op_eq
 id|adapter-&gt;tx_ring.count
 )paren
+(brace
 id|i
 op_assign
 l_int|0
 suffix:semicolon
+)brace
 id|adapter-&gt;tx_ring.next_to_use
 op_assign
 id|i
@@ -4763,10 +4747,12 @@ id|i
 op_eq
 id|tx_ring-&gt;count
 )paren
+(brace
 id|i
 op_assign
 l_int|0
 suffix:semicolon
+)brace
 )brace
 r_for
 c_loop
@@ -4879,10 +4865,12 @@ id|i
 op_eq
 id|tx_ring-&gt;count
 )paren
+(brace
 id|i
 op_assign
 l_int|0
 suffix:semicolon
+)brace
 )brace
 )brace
 id|i
@@ -5013,10 +5001,12 @@ id|tx_flags
 op_amp
 id|IXGB_TX_FLAGS_CSUM
 )paren
+(brace
 id|popts
 op_or_assign
 id|IXGB_TX_DESC_POPTS_TXSM
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -5102,10 +5092,12 @@ id|i
 op_eq
 id|tx_ring-&gt;count
 )paren
+(brace
 id|i
 op_assign
 l_int|0
 suffix:semicolon
+)brace
 )brace
 id|tx_desc-&gt;cmd_type_len
 op_or_assign
@@ -5144,9 +5136,9 @@ DECL|macro|TXD_USE_COUNT
 mdefine_line|#define TXD_USE_COUNT(S) (((S) &gt;&gt; IXGB_MAX_TXD_PWR) + &bslash;&n;&t;&t;&t; (((S) &amp; (IXGB_MAX_DATA_PER_TXD - 1)) ? 1 : 0))
 DECL|macro|DESC_NEEDED
 mdefine_line|#define DESC_NEEDED TXD_USE_COUNT(IXGB_MAX_DATA_PER_TXD) + &bslash;&n;&t;MAX_SKB_FRAGS * TXD_USE_COUNT(PAGE_SIZE) + 1
-DECL|function|ixgb_xmit_frame
 r_static
 r_int
+DECL|function|ixgb_xmit_frame
 id|ixgb_xmit_frame
 c_func
 (paren
@@ -5299,10 +5291,12 @@ comma
 id|skb
 )paren
 )paren
+(brace
 id|tx_flags
 op_or_assign
 id|IXGB_TX_FLAGS_TSO
 suffix:semicolon
+)brace
 r_else
 r_if
 c_cond
@@ -5315,10 +5309,12 @@ comma
 id|skb
 )paren
 )paren
+(brace
 id|tx_flags
 op_or_assign
 id|IXGB_TX_FLAGS_CSUM
 suffix:semicolon
+)brace
 id|ixgb_tx_queue
 c_func
 (paren
@@ -5348,9 +5344,9 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * ixgb_tx_timeout - Respond to a Tx Hang&n; * @netdev: network interface device structure&n; **/
-DECL|function|ixgb_tx_timeout
 r_static
 r_void
+DECL|function|ixgb_tx_timeout
 id|ixgb_tx_timeout
 c_func
 (paren
@@ -5376,9 +5372,9 @@ id|adapter-&gt;tx_timeout_task
 )paren
 suffix:semicolon
 )brace
-DECL|function|ixgb_tx_timeout_task
 r_static
 r_void
+DECL|function|ixgb_tx_timeout_task
 id|ixgb_tx_timeout_task
 c_func
 (paren
@@ -5411,11 +5407,11 @@ id|adapter
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * ixgb_get_stats - Get System Network Statistics&n; * @netdev: network interface device structure&n; *&n; * Returns the address of the device statistics structure.&n; * The statistics are actually updated from the timer callback.&n; **/
-DECL|function|ixgb_get_stats
 r_static
 r_struct
 id|net_device_stats
 op_star
+DECL|function|ixgb_get_stats
 id|ixgb_get_stats
 c_func
 (paren
@@ -5438,9 +5434,9 @@ id|adapter-&gt;net_stats
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * ixgb_change_mtu - Change the Maximum Transfer Unit&n; * @netdev: network interface device structure&n; * @new_mtu: new value for maximum frame size&n; *&n; * Returns 0 on success, negative on failure&n; **/
-DECL|function|ixgb_change_mtu
 r_static
 r_int
+DECL|function|ixgb_change_mtu
 id|ixgb_change_mtu
 c_func
 (paren
@@ -6371,9 +6367,9 @@ suffix:semicolon
 DECL|macro|IXGB_MAX_INTR
 mdefine_line|#define IXGB_MAX_INTR 10
 multiline_comment|/**&n; * ixgb_intr - Interrupt Handler&n; * @irq: interrupt number&n; * @data: pointer to a network interface device structure&n; * @pt_regs: CPU registers structure&n; **/
-DECL|function|ixgb_intr
 r_static
 id|irqreturn_t
+DECL|function|ixgb_intr
 id|ixgb_intr
 c_func
 (paren
@@ -6439,9 +6435,11 @@ op_logical_neg
 id|icr
 )paren
 )paren
+(brace
 r_return
 id|IRQ_NONE
 suffix:semicolon
+)brace
 multiline_comment|/* Not our interrupt */
 r_if
 c_cond
@@ -6480,7 +6478,7 @@ id|netdev
 )paren
 )paren
 (brace
-multiline_comment|/* Disable interrupts and register for poll. The flush &n;&t;&t;   of the posted write is intentionally left out.&n;&t;&t; */
+multiline_comment|/* Disable interrupts and register for poll. The flush &n;&t;&t;  of the posted write is intentionally left out.&n;&t;&t;*/
 id|atomic_inc
 c_func
 (paren
@@ -6682,9 +6680,9 @@ suffix:semicolon
 )brace
 macro_line|#endif
 multiline_comment|/**&n; * ixgb_clean_tx_irq - Reclaim resources after transmit completes&n; * @adapter: board private structure&n; **/
-DECL|function|ixgb_clean_tx_irq
 r_static
 id|boolean_t
+DECL|function|ixgb_clean_tx_irq
 id|ixgb_clean_tx_irq
 c_func
 (paren
@@ -6846,10 +6844,12 @@ id|i
 op_eq
 id|tx_ring-&gt;count
 )paren
+(brace
 id|i
 op_assign
 l_int|0
 suffix:semicolon
+)brace
 )brace
 id|eop
 op_assign
@@ -7174,10 +7174,12 @@ id|i
 op_eq
 id|rx_ring-&gt;count
 )paren
+(brace
 id|i
 op_assign
 l_int|0
 suffix:semicolon
+)brace
 id|next_rxd
 op_assign
 id|IXGB_RX_DESC
@@ -7208,10 +7210,12 @@ l_int|1
 op_eq
 id|rx_ring-&gt;count
 )paren
+(brace
 id|j
 op_assign
 l_int|0
 suffix:semicolon
+)brace
 id|next2_buffer
 op_assign
 op_amp
@@ -7432,7 +7436,7 @@ id|skb
 )paren
 suffix:semicolon
 )brace
-macro_line|#else&t;&t;&t;&t;/* CONFIG_IXGB_NAPI */
+macro_line|#else /* CONFIG_IXGB_NAPI */
 r_if
 c_cond
 (paren
@@ -7471,7 +7475,7 @@ id|skb
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif&t;&t;&t;&t;/* CONFIG_IXGB_NAPI */
+macro_line|#endif /* CONFIG_IXGB_NAPI */
 id|netdev-&gt;last_rx
 op_assign
 id|jiffies
@@ -7508,9 +7512,9 @@ id|cleaned
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * ixgb_alloc_rx_buffers - Replace used receive buffers&n; * @adapter: address of board private structure&n; **/
-DECL|function|ixgb_alloc_rx_buffers
 r_static
 r_void
+DECL|function|ixgb_alloc_rx_buffers
 id|ixgb_alloc_rx_buffers
 c_func
 (paren
@@ -7723,10 +7727,12 @@ id|i
 op_eq
 id|rx_ring-&gt;count
 )paren
+(brace
 id|i
 op_assign
 l_int|0
 suffix:semicolon
+)brace
 id|buffer_info
 op_assign
 op_amp
@@ -7913,9 +7919,9 @@ id|adapter
 )paren
 suffix:semicolon
 )brace
-DECL|function|ixgb_vlan_rx_add_vid
 r_static
 r_void
+DECL|function|ixgb_vlan_rx_add_vid
 id|ixgb_vlan_rx_add_vid
 c_func
 (paren
@@ -7988,9 +7994,9 @@ id|vfta
 )paren
 suffix:semicolon
 )brace
-DECL|function|ixgb_vlan_rx_kill_vid
 r_static
 r_void
+DECL|function|ixgb_vlan_rx_kill_vid
 id|ixgb_vlan_rx_kill_vid
 c_func
 (paren
@@ -8026,6 +8032,7 @@ c_cond
 (paren
 id|adapter-&gt;vlgrp
 )paren
+(brace
 id|adapter-&gt;vlgrp-&gt;vlan_devices
 (braket
 id|vid
@@ -8033,13 +8040,14 @@ id|vid
 op_assign
 l_int|NULL
 suffix:semicolon
+)brace
 id|ixgb_irq_enable
 c_func
 (paren
 id|adapter
 )paren
 suffix:semicolon
-multiline_comment|/* remove VID from filter table */
+multiline_comment|/* remove VID from filter table*/
 id|index
 op_assign
 (paren
@@ -8088,9 +8096,9 @@ id|vfta
 )paren
 suffix:semicolon
 )brace
-DECL|function|ixgb_restore_vlan
 r_static
 r_void
+DECL|function|ixgb_restore_vlan
 id|ixgb_restore_vlan
 c_func
 (paren
@@ -8141,8 +8149,10 @@ id|adapter-&gt;vlgrp-&gt;vlan_devices
 id|vid
 )braket
 )paren
+(brace
 r_continue
 suffix:semicolon
+)brace
 id|ixgb_vlan_rx_add_vid
 c_func
 (paren
@@ -8242,9 +8252,9 @@ id|NOTIFY_DONE
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * ixgb_suspend - driver suspend function called from notify.&n; * @param pdev pci driver structure used for passing to&n; * @param state power state to enter &n; **/
-DECL|function|ixgb_suspend
 r_static
 r_int
+DECL|function|ixgb_suspend
 id|ixgb_suspend
 c_func
 (paren
@@ -8290,6 +8300,7 @@ c_func
 id|netdev
 )paren
 )paren
+(brace
 id|ixgb_down
 c_func
 (paren
@@ -8298,6 +8309,7 @@ comma
 id|TRUE
 )paren
 suffix:semicolon
+)brace
 id|pci_save_state
 c_func
 (paren

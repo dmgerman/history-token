@@ -1095,17 +1095,17 @@ mdefine_line|#define IXGB_RAR_ENTRIES&t;&t;  3&t;/* Number of entries in Rx Addr
 DECL|macro|IXGB_MEMORY_REGISTER_BASE_ADDRESS
 mdefine_line|#define IXGB_MEMORY_REGISTER_BASE_ADDRESS   0
 DECL|macro|ENET_HEADER_SIZE
-mdefine_line|#define ENET_HEADER_SIZE            14
+mdefine_line|#define ENET_HEADER_SIZE&t;&t;&t;14
 DECL|macro|ENET_FCS_LENGTH
-mdefine_line|#define ENET_FCS_LENGTH             4
+mdefine_line|#define ENET_FCS_LENGTH&t;&t;&t; 4
 DECL|macro|IXGB_MAX_NUM_MULTICAST_ADDRESSES
-mdefine_line|#define IXGB_MAX_NUM_MULTICAST_ADDRESSES    128
+mdefine_line|#define IXGB_MAX_NUM_MULTICAST_ADDRESSES&t;128
 DECL|macro|IXGB_MIN_ENET_FRAME_SIZE_WITHOUT_FCS
-mdefine_line|#define IXGB_MIN_ENET_FRAME_SIZE_WITHOUT_FCS    60
+mdefine_line|#define IXGB_MIN_ENET_FRAME_SIZE_WITHOUT_FCS&t;60
 DECL|macro|IXGB_MAX_ENET_FRAME_SIZE_WITHOUT_FCS
-mdefine_line|#define IXGB_MAX_ENET_FRAME_SIZE_WITHOUT_FCS    1514
+mdefine_line|#define IXGB_MAX_ENET_FRAME_SIZE_WITHOUT_FCS&t;1514
 DECL|macro|IXGB_MAX_JUMBO_FRAME_SIZE
-mdefine_line|#define IXGB_MAX_JUMBO_FRAME_SIZE       0x3F00
+mdefine_line|#define IXGB_MAX_JUMBO_FRAME_SIZE&t;&t;0x3F00
 multiline_comment|/* Phy Addresses */
 DECL|macro|IXGB_OPTICAL_PHY_ADDR
 mdefine_line|#define IXGB_OPTICAL_PHY_ADDR 0x0&t;/* Optical Module phy address */
@@ -2040,5 +2040,5 @@ op_star
 id|value
 )paren
 suffix:semicolon
-macro_line|#endif&t;&t;&t;&t;/* _IXGB_HW_H_ */
+macro_line|#endif /* _IXGB_HW_H_ */
 eof

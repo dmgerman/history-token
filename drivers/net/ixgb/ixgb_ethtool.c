@@ -600,10 +600,12 @@ id|SPEED_10000
 op_plus
 id|DUPLEX_FULL
 )paren
+(brace
 r_return
 op_minus
 id|EINVAL
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -3115,12 +3117,14 @@ id|first_word
 op_le
 id|EEPROM_CHECKSUM_REG
 )paren
+(brace
 id|ixgb_update_eeprom_checksum
 c_func
 (paren
 id|hw
 )paren
 suffix:semicolon
+)brace
 id|kfree
 c_func
 (paren
@@ -3598,9 +3602,9 @@ mdefine_line|#define IXGB_ID_INTERVAL&t;(HZ/4)
 multiline_comment|/* bit defines for adapter-&gt;led_status */
 DECL|macro|IXGB_LED_ON
 mdefine_line|#define IXGB_LED_ON&t;&t;0
-DECL|function|ixgb_led_blink_callback
 r_static
 r_void
+DECL|function|ixgb_led_blink_callback
 id|ixgb_led_blink_callback
 c_func
 (paren
@@ -3633,6 +3637,7 @@ op_amp
 id|adapter-&gt;led_status
 )paren
 )paren
+(brace
 id|ixgb_led_off
 c_func
 (paren
@@ -3640,6 +3645,7 @@ op_amp
 id|adapter-&gt;hw
 )paren
 suffix:semicolon
+)brace
 r_else
 id|ixgb_led_on
 c_func
