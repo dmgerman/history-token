@@ -238,6 +238,11 @@ op_assign
 id|BLK_BOUNCE_ANY
 suffix:semicolon
 r_else
+r_if
+c_cond
+(paren
+id|SHpnt-&gt;pci_dev
+)paren
 id|bounce_limit
 op_assign
 id|SHpnt-&gt;pci_dev-&gt;dma_mask
