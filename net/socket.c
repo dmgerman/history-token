@@ -6316,7 +6316,7 @@ multiline_comment|/* do not move before msg_sys is valid */
 id|err
 op_assign
 op_minus
-id|EINVAL
+id|EMSGSIZE
 suffix:semicolon
 r_if
 c_cond
@@ -6803,7 +6803,7 @@ suffix:semicolon
 id|err
 op_assign
 op_minus
-id|EINVAL
+id|EMSGSIZE
 suffix:semicolon
 r_if
 c_cond

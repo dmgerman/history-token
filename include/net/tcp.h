@@ -1449,7 +1449,7 @@ macro_line|#else
 DECL|macro|TCP_INET_FAMILY
 mdefine_line|#define TCP_INET_FAMILY(fam) 1
 macro_line|#endif
-multiline_comment|/*&n; *&t;Pointers to address related TCP functions&n; *&t;(i.e. things that depend on the address family)&n; *&n; * &t;BUGGG_FUTURE: all the idea behind this struct is wrong.&n; *&t;It mixes socket frontend with transport function.&n; *&t;With port sharing between IPv6/v4 it gives the only advantage,&n; *&t;only poor IPv6 needs to permanently recheck, that it&n; *&t;is still IPv6 8)8) It must be cleaned up as soon as possible.&n; *&t;&t;&t;&t;&t;&t;--ANK (980802)&n; */
+multiline_comment|/*&n; *&t;Pointers to address related TCP functions&n; *&t;(i.e. things that depend on the address family)&n; */
 DECL|struct|tcp_func
 r_struct
 id|tcp_func
