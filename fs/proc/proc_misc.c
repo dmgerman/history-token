@@ -1971,12 +1971,15 @@ id|file
 r_int
 id|size
 op_assign
-id|PAGE_SIZE
+l_int|4096
 op_star
 (paren
 l_int|1
 op_plus
-id|NR_CPUS
+id|num_online_cpus
+c_func
+(paren
+)paren
 op_div
 l_int|8
 )paren
