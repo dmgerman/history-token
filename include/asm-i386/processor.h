@@ -1225,6 +1225,8 @@ id|packed
 )paren
 )paren
 suffix:semicolon
+DECL|macro|ARCH_MIN_TASKALIGN
+mdefine_line|#define ARCH_MIN_TASKALIGN&t;16
 DECL|struct|thread_struct
 r_struct
 id|thread_struct

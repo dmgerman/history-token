@@ -1806,9 +1806,13 @@ r_struct
 id|pte_chain
 )paren
 comma
-l_int|0
+r_sizeof
+(paren
+r_struct
+id|pte_chain
+)paren
 comma
-id|SLAB_MUST_HWCACHE_ALIGN
+l_int|0
 comma
 id|pte_chain_ctor
 comma
