@@ -56,7 +56,8 @@ op_assign
 id|driverfs_create_file
 c_func
 (paren
-id|entry
+op_amp
+id|entry-&gt;attr
 comma
 op_amp
 id|dev-&gt;dir
@@ -108,7 +109,7 @@ c_func
 op_amp
 id|dev-&gt;dir
 comma
-id|attr-&gt;name
+id|attr-&gt;attr.name
 )paren
 suffix:semicolon
 id|put_device

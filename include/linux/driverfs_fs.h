@@ -23,12 +23,9 @@ id|mode
 suffix:semicolon
 )brace
 suffix:semicolon
+DECL|struct|attribute
 r_struct
-id|device
-suffix:semicolon
-DECL|struct|device_attribute
-r_struct
-id|device_attribute
+id|attribute
 (brace
 DECL|member|name
 r_char
@@ -38,6 +35,20 @@ suffix:semicolon
 DECL|member|mode
 id|mode_t
 id|mode
+suffix:semicolon
+)brace
+suffix:semicolon
+r_struct
+id|device
+suffix:semicolon
+DECL|struct|device_attribute
+r_struct
+id|device_attribute
+(brace
+DECL|member|attr
+r_struct
+id|attribute
+id|attr
 suffix:semicolon
 DECL|member|show
 id|ssize_t
@@ -89,7 +100,9 @@ suffix:semicolon
 )brace
 suffix:semicolon
 DECL|macro|DEVICE_ATTR
-mdefine_line|#define DEVICE_ATTR(_name,_str,_mode,_show,_store) &bslash;&n;struct device_attribute dev_attr_##_name = { &bslash;&n;&t;.name&t;= _str,&t;&t;&bslash;&n;&t;.mode&t;= _mode,&t;&bslash;&n;&t;.show&t;= _show,&t;&bslash;&n;&t;.store&t;= _store,&t;&bslash;&n;};
+mdefine_line|#define DEVICE_ATTR(_name,_str,_mode,_show,_store)&t;&bslash;&n;struct device_attribute dev_attr_##_name = { &t;&t;&bslash;&n;&t;.attr = {.name&t;= _str,&t;.mode&t;= _mode },&t;&bslash;&n;&t;.show&t;= _show,&t;&t;&t;&t;&bslash;&n;&t;.store&t;= _store,&t;&t;&t;&t;&bslash;&n;};
+DECL|macro|to_dev_attr
+mdefine_line|#define to_dev_attr(_attr) container_of(_attr,struct device_attribute,attr)
 r_extern
 r_int
 id|driverfs_create_dir
@@ -121,9 +134,9 @@ id|driverfs_create_file
 c_func
 (paren
 r_struct
-id|device_attribute
+id|attribute
 op_star
-id|entry
+id|attr
 comma
 r_struct
 id|driver_dir_entry
