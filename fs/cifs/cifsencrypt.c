@@ -5,6 +5,7 @@ macro_line|#include &quot;cifsglob.h&quot;
 macro_line|#include &quot;cifs_debug.h&quot;
 macro_line|#include &quot;md5.h&quot;
 macro_line|#include &quot;cifs_unicode.h&quot;
+macro_line|#include &quot;cifsproto.h&quot;
 multiline_comment|/* Calculate and return the CIFS signature based on the mac key and the smb pdu */
 multiline_comment|/* the 16 byte signature must be allocated by the caller  */
 multiline_comment|/* Note we only use the 1st eight bytes */

@@ -229,6 +229,7 @@ suffix:semicolon
 )brace
 )brace
 macro_line|#ifdef CONFIG_PROC_FS
+r_static
 r_int
 DECL|function|cifs_debug_data_read
 id|cifs_debug_data_read
@@ -811,6 +812,7 @@ id|length
 suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_CIFS_STATS
+r_static
 r_int
 DECL|function|cifs_stats_read
 id|cifs_stats_read
@@ -1341,6 +1343,7 @@ suffix:semicolon
 )brace
 macro_line|#endif
 DECL|variable|proc_fs_cifs
+r_static
 r_struct
 id|proc_dir_entry
 op_star

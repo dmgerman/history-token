@@ -28,6 +28,7 @@ suffix:semicolon
 )brace
 suffix:semicolon
 DECL|variable|mapping_table_ERRDOS
+r_static
 r_const
 r_struct
 id|smb_to_posix_error
@@ -282,6 +283,7 @@ l_int|0
 )brace
 suffix:semicolon
 DECL|variable|mapping_table_ERRSRV
+r_static
 r_const
 r_struct
 id|smb_to_posix_error
@@ -543,6 +545,7 @@ l_int|0
 )brace
 suffix:semicolon
 DECL|variable|mapping_table_ERRHRD
+r_static
 r_const
 r_struct
 id|smb_to_posix_error

@@ -6,7 +6,9 @@ macro_line|#include &quot;cifsglob.h&quot;
 macro_line|#include &quot;cifsproto.h&quot;
 macro_line|#include &quot;cifs_unicode.h&quot;
 macro_line|#include &quot;cifs_debug.h&quot;
+macro_line|#include &quot;cifsfs.h&quot;
 DECL|function|convert_to_cifs_notify_flags
+r_static
 id|__u32
 id|convert_to_cifs_notify_flags
 c_func
