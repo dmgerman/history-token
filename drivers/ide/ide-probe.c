@@ -4003,14 +4003,6 @@ id|gd
 op_plus
 id|unit
 suffix:semicolon
-id|add_gendisk
-c_func
-(paren
-id|gd
-op_plus
-id|unit
-)paren
-suffix:semicolon
 )brace
 r_for
 c_loop

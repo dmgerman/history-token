@@ -942,13 +942,6 @@ suffix:colon
 l_int|1
 suffix:semicolon
 multiline_comment|/* flag: do not probe bios for drive */
-DECL|member|revalidate
-r_int
-id|revalidate
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* request revalidation */
 DECL|member|atapi_overlap
 r_int
 id|atapi_overlap
