@@ -3459,8 +3459,7 @@ suffix:colon
 id|printk
 c_func
 (paren
-id|KERN_DEBUG
-l_string|&quot;bug: unknown timer value&bslash;n&quot;
+id|timer_bug_msg
 )paren
 suffix:semicolon
 )brace
