@@ -1001,7 +1001,7 @@ id|PCIBR_DEBUG_INTR_ALLOC
 comma
 id|pconn_vhdl
 comma
-l_string|&quot;pcibr_intr_alloc: xtalk_intr=0x%x&bslash;n&quot;
+l_string|&quot;pcibr_intr_alloc: xtalk_intr=0x%lx&bslash;n&quot;
 comma
 id|xtalk_intr
 )paren
@@ -1250,16 +1250,19 @@ id|PCIBR_DEBUG_INTR_ALLOC
 comma
 id|pconn_vhdl
 comma
-l_string|&quot;Bridge bit 0x%x wrap=0x%x&bslash;n&quot;
+l_string|&quot;Bridge bit 0x%x wrap=0x%lx&bslash;n&quot;
 comma
 id|pcibr_int_bit
 comma
+op_amp
+(paren
 id|pcibr_soft-&gt;bs_intr
 (braket
 id|pcibr_int_bit
 )braket
 dot
 id|bsi_pcibr_intr_wrap
+)paren
 )paren
 )paren
 suffix:semicolon
@@ -1533,6 +1536,20 @@ suffix:semicolon
 id|pcibr_intr-&gt;bi_cpu
 op_assign
 id|hub_intr-&gt;i_cpuid
+suffix:semicolon
+id|PCIBR_DEBUG_ALWAYS
+c_func
+(paren
+(paren
+id|PCIBR_DEBUG_INTR_ALLOC
+comma
+id|pconn_vhdl
+comma
+l_string|&quot;pcibr_intr_alloc complete: pcibr_intr=0x%lx&bslash;n&quot;
+comma
+id|pcibr_intr
+)paren
+)paren
 suffix:semicolon
 r_return
 id|pcibr_intr
@@ -1907,9 +1924,11 @@ id|PCIBR_DEBUG_INTR_ALLOC
 comma
 id|pcibr_intr-&gt;bi_dev
 comma
-l_string|&quot;pcibr_intr_connect: intr_func=0x%x&bslash;n&quot;
+l_string|&quot;pcibr_intr_connect: intr_func=0x%lx, intr_arg=0x%lx&bslash;n&quot;
 comma
-id|pcibr_intr
+id|intr_func
+comma
+id|intr_arg
 )paren
 )paren
 suffix:semicolon
