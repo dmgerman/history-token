@@ -907,7 +907,7 @@ id|lock
 )paren
 suffix:semicolon
 )brace
-id|sk_add_node
+id|__sk_add_node
 c_func
 (paren
 id|sk

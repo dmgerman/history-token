@@ -2590,27 +2590,6 @@ c_func
 id|pdev
 )paren
 suffix:semicolon
-singleline_comment|// poison memory before freeing 
-id|memset
-c_func
-(paren
-id|dev
-comma
-l_int|0xBC
-comma
-r_sizeof
-(paren
-r_struct
-id|net_device
-)paren
-op_plus
-r_sizeof
-(paren
-r_struct
-id|rtl8169_private
-)paren
-)paren
-suffix:semicolon
 id|pci_disable_device
 c_func
 (paren

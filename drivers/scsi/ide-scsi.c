@@ -2672,6 +2672,10 @@ l_int|1024
 )paren
 suffix:semicolon
 multiline_comment|/* Request to transfer the entire buffer at once */
+id|feature.all
+op_assign
+l_int|0
+suffix:semicolon
 r_if
 c_cond
 (paren

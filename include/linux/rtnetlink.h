@@ -225,6 +225,8 @@ DECL|macro|RTPROT_BIRD
 mdefine_line|#define RTPROT_BIRD&t;12&t;/* BIRD */
 DECL|macro|RTPROT_DNROUTED
 mdefine_line|#define RTPROT_DNROUTED&t;13&t;/* DECnet routing daemon */
+DECL|macro|RTPROT_XORP
+mdefine_line|#define RTPROT_XORP&t;14&t;/* XORP */
 multiline_comment|/* rtm_scope&n;&n;   Really it is not scope, but sort of distance to the destination.&n;   NOWHERE are reserved for not existing destinations, HOST is our&n;   local addresses, LINK are destinations, located on directly attached&n;   link and UNIVERSE is everywhere in the Universe.&n;&n;   Intermediate values are also possible f.e. interior routes&n;   could be assigned a value between UNIVERSE and LINK.&n;*/
 DECL|enum|rt_scope_t
 r_enum

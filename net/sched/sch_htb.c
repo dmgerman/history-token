@@ -43,7 +43,7 @@ mdefine_line|#define HTB_QLOCK(S) spin_lock_bh(&amp;(S)-&gt;dev-&gt;queue_lock)
 DECL|macro|HTB_QUNLOCK
 mdefine_line|#define HTB_QUNLOCK(S) spin_unlock_bh(&amp;(S)-&gt;dev-&gt;queue_lock)
 DECL|macro|HTB_VER
-mdefine_line|#define HTB_VER 0x3000d&t;/* major must be matched with number suplied by TC as version */
+mdefine_line|#define HTB_VER 0x3000e&t;/* major must be matched with number suplied by TC as version */
 macro_line|#if HTB_VER &gt;&gt; 16 != TC_HTB_PROTOVER
 macro_line|#error &quot;Mismatched sch_htb.c and pkt_sch.h&quot;
 macro_line|#endif
@@ -689,6 +689,34 @@ suffix:semicolon
 multiline_comment|/**&n; * htb_classify - classify a packet into class&n; *&n; * It returns NULL if the packet should be dropped or -1 if the packet&n; * should be passed directly thru. In all other cases leaf class is returned.&n; * We allow direct class selection by classid in priority. The we examine&n; * filters in qdisc and in inner nodes (if higher filter points to the inner&n; * node). If we end up with classid MAJOR:0 we enqueue the skb into special&n; * internal fifo (direct). These packets then go directly thru. If we still &n; * have no valid leaf we try to use MAJOR:default leaf. It still unsuccessfull&n; * then finish and return direct queue.&n; */
 DECL|macro|HTB_DIRECT
 mdefine_line|#define HTB_DIRECT (struct htb_class*)-1
+DECL|function|htb_classid
+r_static
+r_inline
+id|u32
+id|htb_classid
+c_func
+(paren
+r_struct
+id|htb_class
+op_star
+id|cl
+)paren
+(brace
+r_return
+(paren
+id|cl
+op_logical_and
+id|cl
+op_ne
+id|HTB_DIRECT
+)paren
+ques
+c_cond
+id|cl-&gt;classid
+suffix:colon
+id|TC_H_UNSPEC
+suffix:semicolon
+)brace
 DECL|function|htb_classify
 r_static
 r_struct
@@ -2835,12 +2863,11 @@ l_int|1
 comma
 l_string|&quot;htb_enq_ok cl=%X skb=%p&bslash;n&quot;
 comma
+id|htb_classid
+c_func
+(paren
 id|cl
-ques
-c_cond
-id|cl-&gt;classid
-suffix:colon
-l_int|0
+)paren
 comma
 id|skb
 )paren
@@ -2989,12 +3016,11 @@ l_int|1
 comma
 l_string|&quot;htb_req_ok cl=%X skb=%p&bslash;n&quot;
 comma
+id|htb_classid
+c_func
+(paren
 id|cl
-ques
-c_cond
-id|cl-&gt;classid
-suffix:colon
-l_int|0
+)paren
 comma
 id|skb
 )paren
@@ -6698,6 +6724,14 @@ id|q-&gt;rttim
 )paren
 suffix:semicolon
 macro_line|#endif
+multiline_comment|/* This line used to be after htb_destroy_class call below&n;&t;   and surprisingly it worked in 2.4. But it must precede it &n;&t;   because filter need its target class alive to be able to call&n;&t;   unbind_filter on it (without Oops). */
+id|htb_destroy_filters
+c_func
+(paren
+op_amp
+id|q-&gt;filter_list
+)paren
+suffix:semicolon
 r_while
 c_loop
 (paren
@@ -6723,13 +6757,6 @@ id|htb_class
 comma
 id|sibling
 )paren
-)paren
-suffix:semicolon
-id|htb_destroy_filters
-c_func
-(paren
-op_amp
-id|q-&gt;filter_list
 )paren
 suffix:semicolon
 id|__skb_queue_purge

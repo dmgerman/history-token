@@ -361,7 +361,11 @@ comma
 dot
 id|tos
 op_assign
+id|RT_TOS
+c_func
+(paren
 id|iph-&gt;tos
+)paren
 )brace
 )brace
 comma
