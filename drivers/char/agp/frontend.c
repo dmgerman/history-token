@@ -178,14 +178,16 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/*&n; * Routines for managing each client&squot;s segment list -&n; * These routines handle adding and removing segments&n; * to each auth&squot;ed client.&n; */
-DECL|function|agp_find_seg_in_client
 r_static
+r_struct
+DECL|function|agp_find_seg_in_client
 id|agp_segment_priv
 op_star
 id|agp_find_seg_in_client
 c_func
 (paren
 r_const
+r_struct
 id|agp_client
 op_star
 id|client
@@ -201,6 +203,7 @@ id|pgprot_t
 id|page_prot
 )paren
 (brace
+r_struct
 id|agp_segment_priv
 op_star
 id|seg
@@ -316,6 +319,7 @@ r_void
 id|agp_remove_seg_from_client
 c_func
 (paren
+r_struct
 id|agp_client
 op_star
 id|client
@@ -399,10 +403,12 @@ r_void
 id|agp_add_seg_to_client
 c_func
 (paren
+r_struct
 id|agp_client
 op_star
 id|client
 comma
+r_struct
 id|agp_segment_priv
 op_star
 op_star
@@ -412,6 +418,7 @@ r_int
 id|num_segments
 )paren
 (brace
+r_struct
 id|agp_segment_priv
 op_star
 op_star
@@ -573,24 +580,29 @@ r_int
 id|agp_create_segment
 c_func
 (paren
+r_struct
 id|agp_client
 op_star
 id|client
 comma
+r_struct
 id|agp_region
 op_star
 id|region
 )paren
 (brace
+r_struct
 id|agp_segment_priv
 op_star
 op_star
 id|ret_seg
 suffix:semicolon
+r_struct
 id|agp_segment_priv
 op_star
 id|seg
 suffix:semicolon
+r_struct
 id|agp_segment
 op_star
 id|user_seg
@@ -606,6 +618,7 @@ c_func
 (paren
 r_sizeof
 (paren
+r_struct
 id|agp_segment_priv
 )paren
 op_star
@@ -648,6 +661,7 @@ comma
 (paren
 r_sizeof
 (paren
+r_struct
 id|agp_segment_priv
 )paren
 op_star
@@ -828,6 +842,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* File private list routines */
 DECL|function|agp_find_private
+r_struct
 id|agp_file_private
 op_star
 id|agp_find_private
@@ -837,6 +852,7 @@ id|pid_t
 id|pid
 )paren
 (brace
+r_struct
 id|agp_file_private
 op_star
 id|curr
@@ -877,11 +893,13 @@ r_void
 id|agp_insert_file_private
 c_func
 (paren
+r_struct
 id|agp_file_private
 op_star
 id|priv
 )paren
 (brace
+r_struct
 id|agp_file_private
 op_star
 id|prev
@@ -915,15 +933,18 @@ r_void
 id|agp_remove_file_private
 c_func
 (paren
+r_struct
 id|agp_file_private
 op_star
 id|priv
 )paren
 (brace
+r_struct
 id|agp_file_private
 op_star
 id|next
 suffix:semicolon
+r_struct
 id|agp_file_private
 op_star
 id|prev
@@ -1065,6 +1086,7 @@ suffix:semicolon
 multiline_comment|/* Routines for managing the list of controllers -&n; * These routines manage the current controller, and the list of&n; * controllers&n; */
 DECL|function|agp_find_controller_by_pid
 r_static
+r_struct
 id|agp_controller
 op_star
 id|agp_find_controller_by_pid
@@ -1074,6 +1096,7 @@ id|pid_t
 id|id
 )paren
 (brace
+r_struct
 id|agp_controller
 op_star
 id|controller
@@ -1111,6 +1134,7 @@ suffix:semicolon
 )brace
 DECL|function|agp_create_controller
 r_static
+r_struct
 id|agp_controller
 op_star
 id|agp_create_controller
@@ -1120,6 +1144,7 @@ id|pid_t
 id|id
 )paren
 (brace
+r_struct
 id|agp_controller
 op_star
 id|controller
@@ -1131,6 +1156,7 @@ c_func
 (paren
 r_sizeof
 (paren
+r_struct
 id|agp_controller
 )paren
 comma
@@ -1156,6 +1182,7 @@ l_int|0
 comma
 r_sizeof
 (paren
+r_struct
 id|agp_controller
 )paren
 )paren
@@ -1174,11 +1201,13 @@ r_int
 id|agp_insert_controller
 c_func
 (paren
+r_struct
 id|agp_controller
 op_star
 id|controller
 )paren
 (brace
+r_struct
 id|agp_controller
 op_star
 id|prev_controller
@@ -1216,15 +1245,18 @@ r_void
 id|agp_remove_all_clients
 c_func
 (paren
+r_struct
 id|agp_controller
 op_star
 id|controller
 )paren
 (brace
+r_struct
 id|agp_client
 op_star
 id|client
 suffix:semicolon
+r_struct
 id|agp_client
 op_star
 id|temp
@@ -1239,6 +1271,7 @@ c_loop
 id|client
 )paren
 (brace
+r_struct
 id|agp_file_private
 op_star
 id|priv
@@ -1306,6 +1339,7 @@ r_void
 id|agp_remove_all_memory
 c_func
 (paren
+r_struct
 id|agp_controller
 op_star
 id|controller
@@ -1351,15 +1385,18 @@ r_int
 id|agp_remove_controller
 c_func
 (paren
+r_struct
 id|agp_controller
 op_star
 id|controller
 )paren
 (brace
+r_struct
 id|agp_controller
 op_star
 id|prev_controller
 suffix:semicolon
+r_struct
 id|agp_controller
 op_star
 id|next_controller
@@ -1464,11 +1501,13 @@ r_void
 id|agp_controller_make_current
 c_func
 (paren
+r_struct
 id|agp_controller
 op_star
 id|controller
 )paren
 (brace
+r_struct
 id|agp_client
 op_star
 id|clients
@@ -1485,6 +1524,7 @@ op_ne
 l_int|NULL
 )paren
 (brace
+r_struct
 id|agp_file_private
 op_star
 id|priv
@@ -1540,15 +1580,18 @@ r_void
 id|agp_controller_release_current
 c_func
 (paren
+r_struct
 id|agp_controller
 op_star
 id|controller
 comma
+r_struct
 id|agp_file_private
 op_star
 id|controller_priv
 )paren
 (brace
+r_struct
 id|agp_client
 op_star
 id|clients
@@ -1574,6 +1617,7 @@ op_ne
 l_int|NULL
 )paren
 (brace
+r_struct
 id|agp_file_private
 op_star
 id|priv
@@ -1622,13 +1666,15 @@ c_func
 suffix:semicolon
 )brace
 multiline_comment|/* &n; * Routines for managing client lists -&n; * These routines are for managing the list of auth&squot;ed clients.&n; */
-DECL|function|agp_find_client_in_controller
 r_static
+r_struct
 id|agp_client
+DECL|function|agp_find_client_in_controller
 op_star
 id|agp_find_client_in_controller
 c_func
 (paren
+r_struct
 id|agp_controller
 op_star
 id|controller
@@ -1637,6 +1683,7 @@ id|pid_t
 id|id
 )paren
 (brace
+r_struct
 id|agp_client
 op_star
 id|client
@@ -1684,6 +1731,7 @@ suffix:semicolon
 )brace
 DECL|function|agp_find_controller_for_client
 r_static
+r_struct
 id|agp_controller
 op_star
 id|agp_find_controller_for_client
@@ -1693,6 +1741,7 @@ id|pid_t
 id|id
 )paren
 (brace
+r_struct
 id|agp_controller
 op_star
 id|controller
@@ -1738,6 +1787,7 @@ suffix:semicolon
 )brace
 DECL|function|agp_find_client_by_pid
 r_static
+r_struct
 id|agp_client
 op_star
 id|agp_find_client_by_pid
@@ -1747,6 +1797,7 @@ id|pid_t
 id|id
 )paren
 (brace
+r_struct
 id|agp_client
 op_star
 id|temp
@@ -1781,11 +1832,13 @@ r_void
 id|agp_insert_client
 c_func
 (paren
+r_struct
 id|agp_client
 op_star
 id|client
 )paren
 (brace
+r_struct
 id|agp_client
 op_star
 id|prev_client
@@ -1819,6 +1872,7 @@ suffix:semicolon
 )brace
 DECL|function|agp_create_client
 r_static
+r_struct
 id|agp_client
 op_star
 id|agp_create_client
@@ -1828,6 +1882,7 @@ id|pid_t
 id|id
 )paren
 (brace
+r_struct
 id|agp_client
 op_star
 id|new_client
@@ -1839,6 +1894,7 @@ c_func
 (paren
 r_sizeof
 (paren
+r_struct
 id|agp_client
 )paren
 comma
@@ -1864,6 +1920,7 @@ l_int|0
 comma
 r_sizeof
 (paren
+r_struct
 id|agp_client
 )paren
 )paren
@@ -1892,18 +1949,22 @@ id|pid_t
 id|id
 )paren
 (brace
+r_struct
 id|agp_client
 op_star
 id|client
 suffix:semicolon
+r_struct
 id|agp_client
 op_star
 id|prev_client
 suffix:semicolon
+r_struct
 id|agp_client
 op_star
 id|next_client
 suffix:semicolon
+r_struct
 id|agp_controller
 op_star
 id|controller
@@ -2046,18 +2107,16 @@ r_int
 r_int
 id|offset
 suffix:semicolon
+r_struct
 id|agp_client
 op_star
 id|client
 suffix:semicolon
+r_struct
 id|agp_file_private
 op_star
 id|priv
 op_assign
-(paren
-id|agp_file_private
-op_star
-)paren
 id|file-&gt;private_data
 suffix:semicolon
 id|agp_kern_info
@@ -2405,14 +2464,11 @@ op_star
 id|file
 )paren
 (brace
+r_struct
 id|agp_file_private
 op_star
 id|priv
 op_assign
-(paren
-id|agp_file_private
-op_star
-)paren
 id|file-&gt;private_data
 suffix:semicolon
 id|down
@@ -2445,6 +2501,7 @@ id|priv-&gt;access_flags
 )paren
 )paren
 (brace
+r_struct
 id|agp_controller
 op_star
 id|controller
@@ -2472,7 +2529,6 @@ id|controller
 op_eq
 id|agp_fe.current_controller
 )paren
-(brace
 id|agp_controller_release_current
 c_func
 (paren
@@ -2481,7 +2537,6 @@ comma
 id|priv
 )paren
 suffix:semicolon
-)brace
 id|agp_remove_controller
 c_func
 (paren
@@ -2524,10 +2579,6 @@ c_func
 id|priv
 )paren
 suffix:semicolon
-(paren
-id|agp_file_private
-op_star
-)paren
 id|file-&gt;private_data
 op_assign
 l_int|NULL
@@ -2571,10 +2622,12 @@ c_func
 id|inode-&gt;i_rdev
 )paren
 suffix:semicolon
+r_struct
 id|agp_file_private
 op_star
 id|priv
 suffix:semicolon
+r_struct
 id|agp_client
 op_star
 id|client
@@ -2611,6 +2664,7 @@ c_func
 (paren
 r_sizeof
 (paren
+r_struct
 id|agp_file_private
 )paren
 comma
@@ -2636,6 +2690,7 @@ l_int|0
 comma
 r_sizeof
 (paren
+r_struct
 id|agp_file_private
 )paren
 )paren
@@ -2836,6 +2891,7 @@ r_int
 id|agpioc_info_wrap
 c_func
 (paren
+r_struct
 id|agp_file_private
 op_star
 id|priv
@@ -2845,6 +2901,7 @@ r_int
 id|arg
 )paren
 (brace
+r_struct
 id|agp_info
 id|userinfo
 suffix:semicolon
@@ -2915,6 +2972,7 @@ id|userinfo
 comma
 r_sizeof
 (paren
+r_struct
 id|agp_info
 )paren
 )paren
@@ -2933,6 +2991,7 @@ r_int
 id|agpioc_acquire_wrap
 c_func
 (paren
+r_struct
 id|agp_file_private
 op_star
 id|priv
@@ -2945,6 +3004,7 @@ id|arg
 r_int
 id|ret
 suffix:semicolon
+r_struct
 id|agp_controller
 op_star
 id|controller
@@ -3103,6 +3163,7 @@ r_int
 id|agpioc_release_wrap
 c_func
 (paren
+r_struct
 id|agp_file_private
 op_star
 id|priv
@@ -3136,6 +3197,7 @@ r_int
 id|agpioc_setup_wrap
 c_func
 (paren
+r_struct
 id|agp_file_private
 op_star
 id|priv
@@ -3145,6 +3207,7 @@ r_int
 id|arg
 )paren
 (brace
+r_struct
 id|agp_setup
 id|mode
 suffix:semicolon
@@ -3171,6 +3234,7 @@ id|arg
 comma
 r_sizeof
 (paren
+r_struct
 id|agp_setup
 )paren
 )paren
@@ -3195,6 +3259,7 @@ r_int
 id|agpioc_reserve_wrap
 c_func
 (paren
+r_struct
 id|agp_file_private
 op_star
 id|priv
@@ -3204,13 +3269,16 @@ r_int
 id|arg
 )paren
 (brace
+r_struct
 id|agp_region
 id|reserve
 suffix:semicolon
+r_struct
 id|agp_client
 op_star
 id|client
 suffix:semicolon
+r_struct
 id|agp_file_private
 op_star
 id|client_priv
@@ -3238,6 +3306,7 @@ id|arg
 comma
 r_sizeof
 (paren
+r_struct
 id|agp_region
 )paren
 )paren
@@ -3259,6 +3328,7 @@ l_int|0U
 op_div
 r_sizeof
 (paren
+r_struct
 id|agp_segment
 )paren
 )paren
@@ -3341,6 +3411,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
+r_struct
 id|agp_segment
 op_star
 id|segment
@@ -3364,6 +3435,7 @@ c_func
 (paren
 r_sizeof
 (paren
+r_struct
 id|agp_segment
 )paren
 op_star
@@ -3400,6 +3472,7 @@ id|reserve.seg_list
 comma
 r_sizeof
 (paren
+r_struct
 id|agp_segment
 )paren
 op_star
@@ -3517,6 +3590,7 @@ r_int
 id|agpioc_protect_wrap
 c_func
 (paren
+r_struct
 id|agp_file_private
 op_star
 id|priv
@@ -3544,6 +3618,7 @@ r_int
 id|agpioc_allocate_wrap
 c_func
 (paren
+r_struct
 id|agp_file_private
 op_star
 id|priv
@@ -3557,6 +3632,7 @@ id|agp_memory
 op_star
 id|memory
 suffix:semicolon
+r_struct
 id|agp_allocate
 id|alloc
 suffix:semicolon
@@ -3583,6 +3659,7 @@ id|arg
 comma
 r_sizeof
 (paren
+r_struct
 id|agp_allocate
 )paren
 )paren
@@ -3637,6 +3714,7 @@ id|alloc
 comma
 r_sizeof
 (paren
+r_struct
 id|agp_allocate
 )paren
 )paren
@@ -3663,6 +3741,7 @@ r_int
 id|agpioc_deallocate_wrap
 c_func
 (paren
+r_struct
 id|agp_file_private
 op_star
 id|priv
@@ -3720,6 +3799,7 @@ r_int
 id|agpioc_bind_wrap
 c_func
 (paren
+r_struct
 id|agp_file_private
 op_star
 id|priv
@@ -3729,6 +3809,7 @@ r_int
 id|arg
 )paren
 (brace
+r_struct
 id|agp_bind
 id|bind_info
 suffix:semicolon
@@ -3759,6 +3840,7 @@ id|arg
 comma
 r_sizeof
 (paren
+r_struct
 id|agp_bind
 )paren
 )paren
@@ -3802,6 +3884,7 @@ r_int
 id|agpioc_unbind_wrap
 c_func
 (paren
+r_struct
 id|agp_file_private
 op_star
 id|priv
@@ -3815,6 +3898,7 @@ id|agp_memory
 op_star
 id|memory
 suffix:semicolon
+r_struct
 id|agp_unbind
 id|unbind
 suffix:semicolon
@@ -3841,6 +3925,7 @@ id|arg
 comma
 r_sizeof
 (paren
+r_struct
 id|agp_unbind
 )paren
 )paren
@@ -3901,14 +3986,11 @@ r_int
 id|arg
 )paren
 (brace
+r_struct
 id|agp_file_private
 op_star
 id|curr_priv
 op_assign
-(paren
-id|agp_file_private
-op_star
-)paren
 id|file-&gt;private_data
 suffix:semicolon
 r_int
