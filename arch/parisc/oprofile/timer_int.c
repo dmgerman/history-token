@@ -128,6 +128,11 @@ dot
 id|stop
 op_assign
 id|timer_stop
+comma
+dot
+id|cpu_type
+op_assign
+l_string|&quot;timer&quot;
 )brace
 suffix:semicolon
 DECL|function|timer_init
@@ -141,11 +146,6 @@ id|oprofile_operations
 op_star
 op_star
 id|ops
-comma
-r_enum
-id|oprofile_cpu
-op_star
-id|cpu
 )paren
 (brace
 op_star
@@ -153,11 +153,6 @@ id|ops
 op_assign
 op_amp
 id|timer_ops
-suffix:semicolon
-op_star
-id|cpu
-op_assign
-id|OPROFILE_CPU_TIMER
 suffix:semicolon
 id|printk
 c_func

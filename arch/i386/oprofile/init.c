@@ -12,11 +12,6 @@ id|oprofile_operations
 op_star
 op_star
 id|ops
-comma
-r_enum
-id|oprofile_cpu
-op_star
-id|cpu
 )paren
 suffix:semicolon
 r_extern
@@ -29,11 +24,6 @@ id|oprofile_operations
 op_star
 op_star
 id|ops
-comma
-r_enum
-id|oprofile_cpu
-op_star
-id|cpu
 )paren
 suffix:semicolon
 DECL|function|oprofile_arch_init
@@ -47,11 +37,6 @@ id|oprofile_operations
 op_star
 op_star
 id|ops
-comma
-r_enum
-id|oprofile_cpu
-op_star
-id|cpu
 )paren
 (brace
 macro_line|#ifdef CONFIG_X86_LOCAL_APIC
@@ -63,8 +48,6 @@ id|nmi_init
 c_func
 (paren
 id|ops
-comma
-id|cpu
 )paren
 )paren
 macro_line|#endif
@@ -72,8 +55,6 @@ id|timer_init
 c_func
 (paren
 id|ops
-comma
-id|cpu
 )paren
 suffix:semicolon
 r_return
