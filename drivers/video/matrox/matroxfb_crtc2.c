@@ -4356,7 +4356,7 @@ c_func
 id|KERN_INFO
 l_string|&quot;matroxfb_crtc2: secondary head of fb%u was registered as fb%u&bslash;n&quot;
 comma
-id|GET_FB_IDX
+id|minor
 c_func
 (paren
 id|ACCESS_FBINFO
@@ -4366,7 +4366,7 @@ id|fbcon.node
 )paren
 )paren
 comma
-id|GET_FB_IDX
+id|minor
 c_func
 (paren
 id|m2info-&gt;fbcon.node
@@ -4487,7 +4487,7 @@ suffix:semicolon
 )brace
 id|id
 op_assign
-id|GET_FB_IDX
+id|minor
 c_func
 (paren
 id|m2info-&gt;fbcon.node

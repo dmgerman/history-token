@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/vt.h&gt;
 macro_line|#include &lt;linux/kd.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
+macro_line|#include &lt;linux/console_struct.h&gt;
 multiline_comment|/*&n; * Presently, a lot of graphics programs do not restore the contents of&n; * the higher font pages.  Defining this flag will avoid use of them, but&n; * will lose support for PIO_FONTRESET.  Note that many font operations are&n; * not likely to work with these programs anyway; they need to be&n; * fixed.  The linux/Documentation directory includes a code snippet&n; * to save and restore the text font.&n; */
 macro_line|#ifdef CONFIG_VGA_CONSOLE
 DECL|macro|BROKEN_GRAPHICS_PROGRAMS
@@ -77,9 +78,6 @@ id|rep
 )paren
 suffix:semicolon
 multiline_comment|/* console.c */
-r_struct
-id|console_font_op
-suffix:semicolon
 r_int
 id|vc_allocate
 c_func
@@ -103,8 +101,7 @@ id|vc_resize
 c_func
 (paren
 r_int
-r_int
-id|lines
+id|currcons
 comma
 r_int
 r_int
@@ -112,17 +109,9 @@ id|cols
 comma
 r_int
 r_int
-id|first
-comma
-r_int
-r_int
-id|last
+id|lines
 )paren
 suffix:semicolon
-DECL|macro|vc_resize_all
-mdefine_line|#define vc_resize_all(l, c) vc_resize(l, c, 0, MAX_NR_CONSOLES-1)
-DECL|macro|vc_resize_con
-mdefine_line|#define vc_resize_con(l, c, x) vc_resize(l, c, x, x)
 r_void
 id|vc_disallocate
 c_func
