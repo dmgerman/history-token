@@ -357,10 +357,6 @@ r_void
 r_int
 r_int
 id|i
-comma
-id|physbase
-op_assign
-l_int|0
 suffix:semicolon
 r_int
 r_int
@@ -401,6 +397,14 @@ op_amp
 id|lmb
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_MSCHUNKS
+r_int
+r_int
+id|physbase
+op_assign
+l_int|0
+suffix:semicolon
+macro_line|#endif
 r_for
 c_loop
 (paren
@@ -1624,12 +1628,6 @@ id|idx
 op_decrement
 )paren
 (brace
-r_int
-r_int
-id|lastbase
-comma
-id|lastsize
-suffix:semicolon
 r_if
 c_cond
 (paren
