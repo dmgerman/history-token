@@ -6101,8 +6101,6 @@ id|flags
 suffix:semicolon
 multiline_comment|/* unlock+enable */
 )brace
-r_return
-suffix:semicolon
 )brace
 DECL|function|jfsIOWait
 r_int
