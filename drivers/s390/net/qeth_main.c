@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&n; * linux/drivers/s390/net/qeth_main.c ($Revision: 1.112 $)&n; *&n; * Linux on zSeries OSA Express and HiperSockets support&n; *&n; * Copyright 2000,2003 IBM Corporation&n; *&n; *    Author(s): Original Code written by&n; *&t;&t;&t;  Utz Bacher (utz.bacher@de.ibm.com)&n; *&t;&t; Rewritten by&n; *&t;&t;&t;  Frank Pavlic (pavlic@de.ibm.com) and&n; *&t;&t; &t;  Thomas Spatzier &lt;tspat@de.ibm.com&gt;&n; *&n; *    $Revision: 1.112 $&t; $Date: 2004/05/19 09:28:21 $&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&t; See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
+multiline_comment|/*&n; *&n; * linux/drivers/s390/net/qeth_main.c ($Revision: 1.118 $)&n; *&n; * Linux on zSeries OSA Express and HiperSockets support&n; *&n; * Copyright 2000,2003 IBM Corporation&n; *&n; *    Author(s): Original Code written by&n; *&t;&t;&t;  Utz Bacher (utz.bacher@de.ibm.com)&n; *&t;&t; Rewritten by&n; *&t;&t;&t;  Frank Pavlic (pavlic@de.ibm.com) and&n; *&t;&t; &t;  Thomas Spatzier &lt;tspat@de.ibm.com&gt;&n; *&n; *    $Revision: 1.118 $&t; $Date: 2004/06/02 06:34:52 $&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&t; See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
 multiline_comment|/***&n; * eye catcher; just for debugging purposes&n; */
 r_void
 r_volatile
@@ -48,7 +48,7 @@ macro_line|#include &quot;qeth.h&quot;
 macro_line|#include &quot;qeth_mpc.h&quot;
 macro_line|#include &quot;qeth_fs.h&quot;
 DECL|macro|VERSION_QETH_C
-mdefine_line|#define VERSION_QETH_C &quot;$Revision: 1.112 $&quot;
+mdefine_line|#define VERSION_QETH_C &quot;$Revision: 1.118 $&quot;
 DECL|variable|version
 r_static
 r_const
@@ -115,13 +115,16 @@ id|qeth_dbf_qerr
 op_assign
 l_int|NULL
 suffix:semicolon
-DECL|variable|qeth_dbf_text_buf
-r_static
+id|DEFINE_PER_CPU
+c_func
+(paren
 r_char
-id|qeth_dbf_text_buf
 (braket
-l_int|255
+l_int|256
 )braket
+comma
+id|qeth_dbf_txt_buf
+)paren
 suffix:semicolon
 multiline_comment|/**&n; * some more definitions and declarations&n; */
 DECL|variable|known_devices
@@ -20917,7 +20920,7 @@ r_char
 op_star
 )paren
 op_amp
-id|snmp-&gt;request
+id|snmp-&gt;data
 op_minus
 (paren
 r_char
@@ -20938,7 +20941,7 @@ r_char
 op_star
 )paren
 op_amp
-id|snmp-&gt;data
+id|snmp-&gt;request
 op_minus
 (paren
 r_char
@@ -21003,7 +21006,7 @@ l_int|4
 comma
 l_string|&quot;sseqn%i&quot;
 comma
-id|cmd-&gt;data.setassparms.hdr.seq_no
+id|cmd-&gt;data.setadapterparms.hdr.seq_no
 )paren
 suffix:semicolon
 multiline_comment|/*copy entries to user buffer*/
@@ -21028,6 +21031,8 @@ op_star
 )paren
 id|snmp
 comma
+id|data_len
+op_plus
 m_offsetof
 (paren
 r_struct
@@ -21048,6 +21053,8 @@ id|data
 )paren
 suffix:semicolon
 )brace
+r_else
+(brace
 id|memcpy
 c_func
 (paren
@@ -21060,11 +21067,12 @@ r_char
 op_star
 )paren
 op_amp
-id|snmp-&gt;data
+id|snmp-&gt;request
 comma
 id|data_len
 )paren
 suffix:semicolon
+)brace
 id|qinfo-&gt;udata_offset
 op_add_assign
 id|data_len
@@ -22314,6 +22322,24 @@ suffix:semicolon
 r_case
 id|SIOC_QETH_GET_CARD_TYPE
 suffix:colon
+r_if
+c_cond
+(paren
+(paren
+id|card-&gt;info.type
+op_eq
+id|QETH_CARD_TYPE_OSAE
+)paren
+op_logical_and
+op_logical_neg
+id|card-&gt;info.guestlan
+)paren
+r_return
+l_int|1
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
 r_break
 suffix:semicolon
 r_case
