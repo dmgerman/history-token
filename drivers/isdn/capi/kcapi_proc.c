@@ -391,10 +391,10 @@ id|ctr-&gt;cardstate
 comma
 id|ctr-&gt;name
 comma
-id|ctr-&gt;driver-&gt;procinfo
+id|ctr-&gt;procinfo
 ques
 c_cond
-id|ctr-&gt;driver
+id|ctr
 op_member_access_from_pointer
 id|procinfo
 c_func

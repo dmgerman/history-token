@@ -205,7 +205,7 @@ id|card
 r_if
 c_cond
 (paren
-id|card-&gt;driver-&gt;owner
+id|card-&gt;owner
 )paren
 (brace
 r_if
@@ -214,7 +214,7 @@ c_cond
 id|try_inc_mod_count
 c_func
 (paren
-id|card-&gt;driver-&gt;owner
+id|card-&gt;owner
 )paren
 )paren
 (brace
@@ -259,12 +259,12 @@ id|card
 r_if
 c_cond
 (paren
-id|card-&gt;driver-&gt;owner
+id|card-&gt;owner
 )paren
 id|__MOD_DEC_USE_COUNT
 c_func
 (paren
-id|card-&gt;driver-&gt;owner
+id|card-&gt;owner
 )paren
 suffix:semicolon
 id|DBG
@@ -479,7 +479,7 @@ c_func
 id|card
 )paren
 suffix:semicolon
-id|card-&gt;driver
+id|card
 op_member_access_from_pointer
 id|register_appl
 c_func
@@ -515,7 +515,7 @@ comma
 id|applid
 )paren
 suffix:semicolon
-id|card-&gt;driver
+id|card
 op_member_access_from_pointer
 id|release_appl
 c_func
@@ -1934,7 +1934,7 @@ r_void
 op_star
 )paren
 )paren
-id|card-&gt;driver-&gt;ctr_read_proc
+id|card-&gt;ctr_read_proc
 suffix:semicolon
 id|card-&gt;procent-&gt;data
 op_assign
@@ -2801,7 +2801,7 @@ suffix:semicolon
 )brace
 )brace
 r_return
-id|card-&gt;driver
+id|card
 op_member_access_from_pointer
 id|send_message
 c_func
@@ -3396,7 +3396,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|card-&gt;driver-&gt;load_firmware
+id|card-&gt;load_firmware
 op_eq
 l_int|0
 )paren
@@ -3509,7 +3509,7 @@ id|CARD_LOADING
 suffix:semicolon
 id|retval
 op_assign
-id|card-&gt;driver
+id|card
 op_member_access_from_pointer
 id|load_firmware
 c_func
@@ -3650,7 +3650,7 @@ id|CARD_DETECTED
 r_return
 l_int|0
 suffix:semicolon
-id|card-&gt;driver
+id|card
 op_member_access_from_pointer
 id|reset_ctr
 c_func
