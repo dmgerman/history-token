@@ -2352,15 +2352,11 @@ suffix:semicolon
 multiline_comment|/* Add frequency. (short) bss-&gt;channel is the frequency in MHz */
 id|iwe.u.freq.m
 op_assign
-id|channel_of_freq
-c_func
-(paren
 id|bss-&gt;channel
-)paren
 suffix:semicolon
 id|iwe.u.freq.e
 op_assign
-l_int|0
+l_int|6
 suffix:semicolon
 id|iwe.cmd
 op_assign
