@@ -8995,6 +8995,8 @@ op_assign
 id|bio-&gt;bi_size
 suffix:semicolon
 )brace
+macro_line|#if 0
+multiline_comment|/* FIXME: What what this supposed to achieve? */
 id|set_bit
 (paren
 id|BH_Lock
@@ -9003,6 +9005,7 @@ op_amp
 id|bio-&gt;bi_flags
 )paren
 suffix:semicolon
+macro_line|#endif
 r_while
 c_loop
 (paren
@@ -9178,6 +9181,8 @@ suffix:colon
 l_int|0
 )paren
 suffix:semicolon
+macro_line|#if 0
+multiline_comment|/* FIXME: What what this supposed to achieve? */
 id|set_bit
 (paren
 id|BH_Lock
@@ -9186,6 +9191,7 @@ op_amp
 id|bio-&gt;bi_flags
 )paren
 suffix:semicolon
+macro_line|#endif
 id|prev_bio-&gt;bi_next
 op_assign
 id|bio
@@ -25717,7 +25723,7 @@ id|drive
 op_minus
 id|channel-&gt;drives
 suffix:semicolon
-id|ide_revalidate_disk
+id|ata_revalidate
 c_func
 (paren
 id|mk_kdev
