@@ -640,6 +640,11 @@ r_int
 id|charge
 suffix:semicolon
 multiline_comment|/* Counter for charging units       */
+DECL|member|charge_state
+r_int
+id|charge_state
+suffix:semicolon
+multiline_comment|/* ChargeInfo state machine         */
 DECL|member|chargetime
 id|ulong
 id|chargetime
