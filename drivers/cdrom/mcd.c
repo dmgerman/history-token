@@ -764,6 +764,7 @@ id|__init
 id|mcd_setup
 c_func
 (paren
+r_const
 r_char
 op_star
 id|str
