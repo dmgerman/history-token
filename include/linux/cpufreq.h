@@ -8,6 +8,7 @@ macro_line|#include &lt;linux/threads.h&gt;
 macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;linux/kobject.h&gt;
 macro_line|#include &lt;linux/sysfs.h&gt;
+macro_line|#include &lt;linux/completion.h&gt;
 DECL|macro|CPUFREQ_NAME_LEN
 mdefine_line|#define CPUFREQ_NAME_LEN 16
 multiline_comment|/*********************************************************************&n; *                     CPUFREQ NOTIFIER INTERFACE                    *&n; *********************************************************************/
@@ -137,6 +138,11 @@ id|semaphore
 id|lock
 suffix:semicolon
 multiline_comment|/* CPU -&gt;setpolicy or -&gt;target may&n;&t;&t;&t;&t;&t;   only be called once a time */
+DECL|member|kobj_unregister
+r_struct
+id|completion
+id|kobj_unregister
+suffix:semicolon
 )brace
 suffix:semicolon
 DECL|macro|CPUFREQ_ADJUST

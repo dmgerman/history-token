@@ -10,6 +10,7 @@ macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/cpu.h&gt;
+macro_line|#include &lt;linux/completion.h&gt;
 multiline_comment|/**&n; * The &quot;cpufreq driver&quot; - the arch- or hardware-dependend low&n; * level driver of CPUFreq support, and its locking mutex. &n; * cpu_max_freq is in kHz.&n; */
 DECL|variable|cpufreq_driver
 r_static
@@ -998,6 +999,37 @@ r_return
 id|ret
 suffix:semicolon
 )brace
+DECL|function|cpufreq_sysfs_release
+r_static
+r_void
+id|cpufreq_sysfs_release
+c_func
+(paren
+r_struct
+id|kobject
+op_star
+id|kobj
+)paren
+(brace
+r_struct
+id|cpufreq_policy
+op_star
+id|policy
+op_assign
+id|to_policy
+c_func
+(paren
+id|kobj
+)paren
+suffix:semicolon
+id|complete
+c_func
+(paren
+op_amp
+id|policy-&gt;kobj_unregister
+)paren
+suffix:semicolon
+)brace
 DECL|variable|sysfs_ops
 r_static
 r_struct
@@ -1034,6 +1066,11 @@ dot
 id|default_attrs
 op_assign
 id|default_attrs
+comma
+dot
+id|release
+op_assign
+id|cpufreq_sysfs_release
 comma
 )brace
 suffix:semicolon
@@ -1164,6 +1201,13 @@ op_amp
 id|policy-&gt;lock
 )paren
 suffix:semicolon
+id|init_completion
+c_func
+(paren
+op_amp
+id|policy-&gt;kobj_unregister
+)paren
+suffix:semicolon
 multiline_comment|/* prepare interface data */
 id|policy-&gt;kobj.parent
 op_assign
@@ -1256,6 +1300,7 @@ c_cond
 (paren
 id|ret
 )paren
+(brace
 id|kobject_unregister
 c_func
 (paren
@@ -1263,6 +1308,14 @@ op_amp
 id|policy-&gt;kobj
 )paren
 suffix:semicolon
+id|wait_for_completion
+c_func
+(paren
+op_amp
+id|policy-&gt;kobj_unregister
+)paren
+suffix:semicolon
+)brace
 id|out
 suffix:colon
 id|module_put
@@ -1418,6 +1471,19 @@ id|cpu
 )braket
 dot
 id|kobj
+)paren
+suffix:semicolon
+multiline_comment|/* we need to make sure that the underlying kobj is actually&n;&t; * destroyed before we proceed e.g. with cpufreq driver module&n;&t; * unloading&n;&t; */
+id|wait_for_completion
+c_func
+(paren
+op_amp
+id|cpufreq_driver-&gt;policy
+(braket
+id|cpu
+)braket
+dot
+id|kobj_unregister
 )paren
 suffix:semicolon
 r_return
