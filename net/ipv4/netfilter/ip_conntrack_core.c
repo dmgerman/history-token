@@ -1203,12 +1203,18 @@ op_amp
 id|ip_conntrack_lock
 )paren
 suffix:semicolon
-multiline_comment|/* Delete us from our own list to prevent corruption later */
-id|list_del
+multiline_comment|/* Make sure don&squot;t leave any orphaned expectations lying around */
+r_if
+c_cond
+(paren
+id|ct-&gt;expecting
+)paren
+id|remove_expectations
 c_func
 (paren
-op_amp
-id|ct-&gt;sibling_list
+id|ct
+comma
+l_int|1
 )paren
 suffix:semicolon
 multiline_comment|/* Delete our master expectation */
