@@ -1310,6 +1310,17 @@ comma
 id|nr_pages
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t; * Bad things happen if we get here for anything that is not an&n;&t; * unnamed $DATA attribute.&n;&t; */
+id|BUG_ON
+c_func
+(paren
+id|ni-&gt;type
+op_ne
+id|AT_DATA
+op_logical_or
+id|ni-&gt;name_len
+)paren
+suffix:semicolon
 id|pages
 op_assign
 id|kmalloc

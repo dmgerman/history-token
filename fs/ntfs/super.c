@@ -327,6 +327,14 @@ id|opt
 r_goto
 id|no_mount_options
 suffix:semicolon
+id|ntfs_debug
+c_func
+(paren
+l_string|&quot;Entering with mount options string: %s&quot;
+comma
+id|opt
+)paren
+suffix:semicolon
 r_while
 c_loop
 (paren
@@ -795,6 +803,10 @@ r_if
 c_cond
 (paren
 id|vol-&gt;nls_map
+op_logical_and
+id|vol-&gt;nls_map
+op_ne
+id|nls_map
 )paren
 (brace
 id|ntfs_error
@@ -936,7 +948,6 @@ c_cond
 op_logical_neg
 id|vol-&gt;mft_zone_multiplier
 )paren
-multiline_comment|/* Not specified and it is the first mount, so set default. */
 id|vol-&gt;mft_zone_multiplier
 op_assign
 l_int|1
@@ -1168,7 +1179,9 @@ suffix:semicolon
 id|ntfs_debug
 c_func
 (paren
-l_string|&quot;Entering.&quot;
+l_string|&quot;Entering with remount options string: %s&quot;
+comma
+id|opt
 )paren
 suffix:semicolon
 singleline_comment|// FIXME/TODO: If left like this we will have problems with rw-&gt;ro and
@@ -7057,7 +7070,7 @@ macro_line|#endif
 macro_line|#ifdef MODULE
 l_string|&quot; MODULE&quot;
 macro_line|#endif
-l_string|&quot;]. Copyright (c) 2001,2002 Anton Altaparmakov.&bslash;n&quot;
+l_string|&quot;].&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ntfs_debug
@@ -7514,7 +7527,7 @@ suffix:semicolon
 id|MODULE_DESCRIPTION
 c_func
 (paren
-l_string|&quot;NTFS 1.2/3.x driver&quot;
+l_string|&quot;NTFS 1.2/3.x driver - Copyright (c) 2001-2002 Anton Altaparmakov&quot;
 )paren
 suffix:semicolon
 id|MODULE_LICENSE

@@ -3,34 +3,6 @@ macro_line|#ifndef _LINUX_NTFS_VOLUME_H
 DECL|macro|_LINUX_NTFS_VOLUME_H
 mdefine_line|#define _LINUX_NTFS_VOLUME_H
 macro_line|#include &quot;types.h&quot;
-multiline_comment|/*&n; * Defined bits for the flags field in the ntfs_volume structure.&n; */
-r_typedef
-r_enum
-(brace
-DECL|enumerator|NV_ShowSystemFiles
-id|NV_ShowSystemFiles
-comma
-multiline_comment|/* 1: Return system files in ntfs_readdir(). */
-DECL|enumerator|NV_CaseSensitive
-id|NV_CaseSensitive
-comma
-multiline_comment|/* 1: Treat file names as case sensitive and&n;&t;&t;&t;&t;      create filenames in the POSIX namespace.&n;&t;&t;&t;&t;      Otherwise be case insensitive and create&n;&t;&t;&t;&t;      file names in WIN32 namespace. */
-DECL|typedef|ntfs_volume_flags
-)brace
-id|ntfs_volume_flags
-suffix:semicolon
-DECL|macro|NVolShowSystemFiles
-mdefine_line|#define NVolShowSystemFiles(n_vol)&t;test_bit(NV_ShowSystemFiles,&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&amp;(n_vol)-&gt;flags)
-DECL|macro|NVolSetShowSystemFiles
-mdefine_line|#define NVolSetShowSystemFiles(n_vol)&t;set_bit(NV_ShowSystemFiles,&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&amp;(n_vol)-&gt;flags)
-DECL|macro|NVolClearShowSystemFiles
-mdefine_line|#define NVolClearShowSystemFiles(n_vol)&t;clear_bit(NV_ShowSystemFiles,&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&amp;(n_vol)-&gt;flags)
-DECL|macro|NVolCaseSensitive
-mdefine_line|#define NVolCaseSensitive(n_vol)&t;test_bit(NV_CaseSensitive,&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&amp;(n_vol)-&gt;flags)
-DECL|macro|NVolSetCaseSensitive
-mdefine_line|#define NVolSetCaseSensitive(n_vol)&t;set_bit(NV_CaseSensitive,&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&amp;(n_vol)-&gt;flags)
-DECL|macro|NVolClearCaseSensitive
-mdefine_line|#define NVolClearCaseSensitive(n_vol)&t;clear_bit(NV_CaseSensitive,&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&amp;(n_vol)-&gt;flags)
 multiline_comment|/*&n; * The NTFS in memory super block structure.&n; */
 r_typedef
 r_struct
@@ -296,5 +268,35 @@ DECL|typedef|ntfs_volume
 )brace
 id|ntfs_volume
 suffix:semicolon
+multiline_comment|/*&n; * Defined bits for the flags field in the ntfs_volume structure.&n; */
+r_typedef
+r_enum
+(brace
+DECL|enumerator|NV_ShowSystemFiles
+id|NV_ShowSystemFiles
+comma
+multiline_comment|/* 1: Return system files in ntfs_readdir(). */
+DECL|enumerator|NV_CaseSensitive
+id|NV_CaseSensitive
+comma
+multiline_comment|/* 1: Treat file names as case sensitive and&n;&t;&t;&t;&t;      create filenames in the POSIX namespace.&n;&t;&t;&t;&t;      Otherwise be case insensitive and create&n;&t;&t;&t;&t;      file names in WIN32 namespace. */
+DECL|typedef|ntfs_volume_flags
+)brace
+id|ntfs_volume_flags
+suffix:semicolon
+multiline_comment|/*&n; * Macro tricks to expand the NVolFoo(), NVolSetFoo(), and NVolClearFoo()&n; * functions.&n; */
+DECL|macro|NVOL_FNS
+mdefine_line|#define NVOL_FNS(flag)&t;&t;&t;&t;&t;&bslash;&n;static inline int NVol##flag(ntfs_volume *vol)&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;return test_bit(NV_##flag, &amp;(vol)-&gt;flags);&t;&bslash;&n;}&t;&t;&t;&t;&t;&t;&t;&bslash;&n;static inline void NVolSet##flag(ntfs_volume *vol)&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;set_bit(NV_##flag, &amp;(vol)-&gt;flags);&t;&t;&bslash;&n;}&t;&t;&t;&t;&t;&t;&t;&bslash;&n;static inline void NVolClear##flag(ntfs_volume *vol)&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;clear_bit(NV_##flag, &amp;(vol)-&gt;flags);&t;&t;&bslash;&n;}
+multiline_comment|/* Emit the ntfs volume bitops functions. */
+id|NVOL_FNS
+c_func
+(paren
+id|ShowSystemFiles
+)paren
+id|NVOL_FNS
+c_func
+(paren
+id|CaseSensitive
+)paren
 macro_line|#endif /* _LINUX_NTFS_VOLUME_H */
 eof

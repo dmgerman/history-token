@@ -5,11 +5,11 @@ macro_line|#include &lt;linux/pagemap.h&gt;
 macro_line|#include &lt;linux/swap.h&gt;
 macro_line|#include &lt;linux/buffer_head.h&gt;
 macro_line|#include &quot;ntfs.h&quot;
-multiline_comment|/**&n; * end_buffer_read_attr_async - async io completion for reading attributes&n; * @bh:&t;&t;buffer head on which io is completed&n; * @uptodate:&t;whether @bh is now uptodate or not&n; *&n; * Asynchronous I/O completion handler for reading pages belonging to the&n; * attribute address space of an inode. The inodes can either be files or&n; * directories or they can be fake inodes describing some attribute.&n; *&n; * If NInoMstProtected(), perform the post read mst fixups when all IO on the&n; * page has been completed and mark the page uptodate or set the error bit on&n; * the page. To determine the size of the records that need fixing up, we cheat&n; * a little bit by setting the index_block_size in ntfs_inode to the ntfs&n; * record size, and index_block_size_bits, to the log(base 2) of the ntfs&n; * record size.&n; */
-DECL|function|end_buffer_read_attr_async
+multiline_comment|/**&n; * ntfs_end_buffer_read_async - async io completion for reading attributes&n; * @bh:&t;&t;buffer head on which io is completed&n; * @uptodate:&t;whether @bh is now uptodate or not&n; *&n; * Asynchronous I/O completion handler for reading pages belonging to the&n; * attribute address space of an inode. The inodes can either be files or&n; * directories or they can be fake inodes describing some attribute.&n; *&n; * If NInoMstProtected(), perform the post read mst fixups when all IO on the&n; * page has been completed and mark the page uptodate or set the error bit on&n; * the page. To determine the size of the records that need fixing up, we cheat&n; * a little bit by setting the index_block_size in ntfs_inode to the ntfs&n; * record size, and index_block_size_bits, to the log(base 2) of the ntfs&n; * record size.&n; */
+DECL|function|ntfs_end_buffer_read_async
 r_static
 r_void
-id|end_buffer_read_attr_async
+id|ntfs_end_buffer_read_async
 c_func
 (paren
 r_struct
@@ -528,11 +528,11 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * ntfs_attr_read_block - fill a @page of an address space with data&n; * @page:&t;page cache page to fill with data&n; *&n; * Fill the page @page of the address space belonging to the @page-&gt;host inode.&n; * We read each buffer asynchronously and when all buffers are read in, our io&n; * completion handler end_buffer_read_attr_async(), if required, automatically&n; * applies the mst fixups to the page before finally marking it uptodate and&n; * unlocking it.&n; *&n; * Return 0 on success and -errno on error.&n; *&n; * Contains an adapted version of fs/buffer.c::block_read_full_page().&n; */
-DECL|function|ntfs_attr_read_block
+multiline_comment|/**&n; * ntfs_read_block - fill a @page of an address space with data&n; * @page:&t;page cache page to fill with data&n; *&n; * Fill the page @page of the address space belonging to the @page-&gt;host inode.&n; * We read each buffer asynchronously and when all buffers are read in, our io&n; * completion handler ntfs_end_buffer_read_async(), if required, automatically&n; * applies the mst fixups to the page before finally marking it uptodate and&n; * unlocking it.&n; *&n; * Return 0 on success and -errno on error.&n; *&n; * Contains an adapted version of fs/buffer.c::block_read_full_page().&n; */
+DECL|function|ntfs_read_block
 r_static
 r_int
-id|ntfs_attr_read_block
+id|ntfs_read_block
 c_func
 (paren
 r_struct
@@ -1094,7 +1094,7 @@ id|tbh
 suffix:semicolon
 id|tbh-&gt;b_end_io
 op_assign
-id|end_buffer_read_attr_async
+id|ntfs_end_buffer_read_async
 suffix:semicolon
 id|set_buffer_async_read
 c_func
@@ -1171,11 +1171,10 @@ r_return
 id|nr
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * ntfs_file_readpage - fill a @page of a @file with data from the device&n; * @file:&t;open file to which the page @page belongs or NULL&n; * @page:&t;page cache page to fill with data&n; *&n; * For non-resident attributes, ntfs_file_readpage() fills the @page of the open&n; * file @file by calling the ntfs version of the generic block_read_full_page()&n; * function provided by the kernel, ntfs_attr_read_block(), which in turn&n; * creates and reads in the buffers associated with the page asynchronously.&n; *&n; * For resident attributes, OTOH, ntfs_file_readpage() fills @page by copying&n; * the data from the mft record (which at this stage is most likely in memory)&n; * and fills the remainder with zeroes. Thus, in this case, I/O is synchronous,&n; * as even if the mft record is not cached at this point in time, we need to&n; * wait for it to be read in before we can do the copy.&n; *&n; * Return 0 on success or -errno on error.&n; */
-DECL|function|ntfs_file_readpage
-r_static
+multiline_comment|/**&n; * ntfs_readpage - fill a @page of a @file with data from the device&n; * @file:&t;open file to which the page @page belongs or NULL&n; * @page:&t;page cache page to fill with data&n; *&n; * For non-resident attributes, ntfs_readpage() fills the @page of the open&n; * file @file by calling the ntfs version of the generic block_read_full_page()&n; * function, ntfs_read_block(), which in turn creates and reads in the buffers&n; * associated with the page asynchronously.&n; *&n; * For resident attributes, OTOH, ntfs_readpage() fills @page by copying the&n; * data from the mft record (which at this stage is most likely in memory) and&n; * fills the remainder with zeroes. Thus, in this case, I/O is synchronous, as&n; * even if the mft record is not cached at this point in time, we need to wait&n; * for it to be read in before we can do the copy.&n; *&n; * Return 0 on success and -errno on error.&n; */
+DECL|function|ntfs_readpage
 r_int
-id|ntfs_file_readpage
+id|ntfs_readpage
 c_func
 (paren
 r_struct
@@ -1195,6 +1194,9 @@ suffix:semicolon
 id|ntfs_inode
 op_star
 id|ni
+comma
+op_star
+id|base_ni
 suffix:semicolon
 r_char
 op_star
@@ -1244,7 +1246,6 @@ c_func
 id|page-&gt;mapping-&gt;host
 )paren
 suffix:semicolon
-multiline_comment|/* Is the unnamed $DATA attribute resident? */
 r_if
 c_cond
 (paren
@@ -1255,8 +1256,19 @@ id|ni
 )paren
 )paren
 (brace
-multiline_comment|/* Attribute is not resident. */
-multiline_comment|/* If the file is encrypted, we deny access, just like NT4. */
+multiline_comment|/*&n;&t;&t; * Only unnamed $DATA attributes can be compressed or&n;&t;&t; * encrypted.&n;&t;&t; */
+r_if
+c_cond
+(paren
+id|ni-&gt;type
+op_eq
+id|AT_DATA
+op_logical_and
+op_logical_neg
+id|ni-&gt;name_len
+)paren
+(brace
+multiline_comment|/* If file is encrypted, deny access, just like NT4. */
 r_if
 c_cond
 (paren
@@ -1273,10 +1285,10 @@ op_minus
 id|EACCES
 suffix:semicolon
 r_goto
-id|unl_err_out
+id|err_out
 suffix:semicolon
 )brace
-multiline_comment|/* Compressed data stream. Handled in compress.c. */
+multiline_comment|/* Compressed data streams are handled in compress.c. */
 r_if
 c_cond
 (paren
@@ -1293,9 +1305,10 @@ c_func
 id|page
 )paren
 suffix:semicolon
+)brace
 multiline_comment|/* Normal data stream. */
 r_return
-id|ntfs_attr_read_block
+id|ntfs_read_block
 c_func
 (paren
 id|page
@@ -1303,6 +1316,31 @@ id|page
 suffix:semicolon
 )brace
 multiline_comment|/* Attribute is resident, implying it is not compressed or encrypted. */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|NInoAttr
+c_func
+(paren
+id|ni
+)paren
+)paren
+id|base_ni
+op_assign
+id|ni
+suffix:semicolon
+r_else
+id|base_ni
+op_assign
+id|ni
+op_member_access_from_pointer
+id|_INE
+c_func
+(paren
+id|base_ntfs_ino
+)paren
+suffix:semicolon
 multiline_comment|/* Map, pin and lock the mft record for reading. */
 id|mrec
 op_assign
@@ -1311,7 +1349,7 @@ c_func
 (paren
 id|READ
 comma
-id|ni
+id|base_ni
 )paren
 suffix:semicolon
 r_if
@@ -1337,7 +1375,7 @@ id|mrec
 )paren
 suffix:semicolon
 r_goto
-id|unl_err_out
+id|err_out
 suffix:semicolon
 )brace
 id|ctx
@@ -1345,7 +1383,7 @@ op_assign
 id|get_attr_search_ctx
 c_func
 (paren
-id|ni
+id|base_ni
 comma
 id|mrec
 )paren
@@ -1367,10 +1405,9 @@ op_minus
 id|ENOMEM
 suffix:semicolon
 r_goto
-id|unm_unl_err_out
+id|unm_err_out
 suffix:semicolon
 )brace
-multiline_comment|/* Find the data attribute in the mft record. */
 r_if
 c_cond
 (paren
@@ -1381,13 +1418,13 @@ op_logical_neg
 id|lookup_attr
 c_func
 (paren
-id|AT_DATA
+id|ni-&gt;type
 comma
-l_int|NULL
+id|ni-&gt;name
 comma
-l_int|0
+id|ni-&gt;name_len
 comma
-l_int|0
+id|IGNORE_CASE
 comma
 l_int|0
 comma
@@ -1406,7 +1443,7 @@ op_minus
 id|ENOENT
 suffix:semicolon
 r_goto
-id|put_unm_unl_err_out
+id|put_unm_err_out
 suffix:semicolon
 )brace
 multiline_comment|/* Starting position of the page within the attribute value. */
@@ -1547,7 +1584,7 @@ c_func
 id|page
 )paren
 suffix:semicolon
-id|put_unm_unl_err_out
+id|put_unm_err_out
 suffix:colon
 id|put_attr_search_ctx
 c_func
@@ -1555,17 +1592,17 @@ c_func
 id|ctx
 )paren
 suffix:semicolon
-id|unm_unl_err_out
+id|unm_err_out
 suffix:colon
 id|unmap_mft_record
 c_func
 (paren
 id|READ
 comma
-id|ni
+id|base_ni
 )paren
 suffix:semicolon
-id|unl_err_out
+id|err_out
 suffix:colon
 id|unlock_page
 c_func
@@ -1575,51 +1612,6 @@ id|page
 suffix:semicolon
 r_return
 id|err
-suffix:semicolon
-)brace
-multiline_comment|/**&n; * ntfs_mst_readpage - fill a @page of the mft or a directory with data&n; * @file:&t;open file/directory to which the @page belongs or NULL&n; * @page:&t;page cache page to fill with data&n; *&n; * Readpage method for the VFS address space operations of directory inodes&n; * and the $MFT/$DATA attribute.&n; *&n; * We just call ntfs_attr_read_block() here, in fact we only need this wrapper&n; * because of the difference in function parameters.&n; */
-DECL|function|ntfs_mst_readpage
-r_int
-id|ntfs_mst_readpage
-c_func
-(paren
-r_struct
-id|file
-op_star
-id|file
-comma
-r_struct
-id|page
-op_star
-id|page
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|unlikely
-c_func
-(paren
-op_logical_neg
-id|PageLocked
-c_func
-(paren
-id|page
-)paren
-)paren
-)paren
-id|PAGE_BUG
-c_func
-(paren
-id|page
-)paren
-suffix:semicolon
-r_return
-id|ntfs_attr_read_block
-c_func
-(paren
-id|page
-)paren
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * end_buffer_read_mftbmp_async -&n; *&n; * Async io completion handler for accessing mft bitmap. Adapted from&n; * end_buffer_read_mst_async().&n; */
@@ -1936,7 +1928,7 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * ntfs_mftbmp_readpage -&n; *&n; * Readpage for accessing mft bitmap. Adapted from ntfs_mst_readpage().&n; */
+multiline_comment|/**&n; * ntfs_mftbmp_readpage -&n; *&n; * Readpage for accessing mft bitmap.&n; */
 DECL|function|ntfs_mftbmp_readpage
 r_static
 r_int
@@ -2505,11 +2497,11 @@ r_return
 id|nr
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * ntfs_file_aops - address space operations for accessing normal file data&n; */
-DECL|variable|ntfs_file_aops
+multiline_comment|/**&n; * ntfs_aops - general address space operations for inodes and attributes&n; */
+DECL|variable|ntfs_aops
 r_struct
 id|address_space_operations
-id|ntfs_file_aops
+id|ntfs_aops
 op_assign
 (brace
 id|writepage
@@ -2519,7 +2511,7 @@ comma
 multiline_comment|/* Write dirty page to disk. */
 id|readpage
 suffix:colon
-id|ntfs_file_readpage
+id|ntfs_readpage
 comma
 multiline_comment|/* Fill page with data. */
 id|sync_page
@@ -2575,40 +2567,6 @@ op_star
 id|ntfs_mftbmp_readpage
 comma
 multiline_comment|/* Fill page with&n;&t;&t;&t;&t;&t;&t;&t;      data. */
-id|sync_page
-suffix:colon
-id|block_sync_page
-comma
-multiline_comment|/* Currently, just unplugs the&n;&t;&t;&t;&t;&t;&t;   disk request queue. */
-id|prepare_write
-suffix:colon
-l_int|NULL
-comma
-multiline_comment|/* . */
-id|commit_write
-suffix:colon
-l_int|NULL
-comma
-multiline_comment|/* . */
-)brace
-suffix:semicolon
-multiline_comment|/**&n; * ntfs_dir_aops -&n; *&n; * Address space operations for accessing normal directory data (i.e. index&n; * allocation attribute). We can&squot;t just use the same operations as for files&n; * because 1) the attribute is different and even more importantly 2) the index&n; * records have to be multi sector transfer deprotected (i.e. fixed-up).&n; */
-DECL|variable|ntfs_dir_aops
-r_struct
-id|address_space_operations
-id|ntfs_dir_aops
-op_assign
-(brace
-id|writepage
-suffix:colon
-l_int|NULL
-comma
-multiline_comment|/* Write dirty page to disk. */
-id|readpage
-suffix:colon
-id|ntfs_mst_readpage
-comma
-multiline_comment|/* Fill page with data. */
 id|sync_page
 suffix:colon
 id|block_sync_page
