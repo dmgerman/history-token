@@ -2746,7 +2746,7 @@ suffix:semicolon
 id|outb
 c_func
 (paren
-id|SCpnt-&gt;target
+id|SCpnt-&gt;device-&gt;id
 comma
 id|DEST_ID
 )paren
