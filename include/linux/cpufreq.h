@@ -5,6 +5,7 @@ mdefine_line|#define _LINUX_CPUFREQ_H
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/notifier.h&gt;
 macro_line|#include &lt;linux/threads.h&gt;
+macro_line|#include &lt;linux/device.h&gt;
 multiline_comment|/*********************************************************************&n; *                     CPUFREQ NOTIFIER INTERFACE                    *&n; *********************************************************************/
 r_int
 id|cpufreq_register_notifier
@@ -103,6 +104,12 @@ id|cpufreq_cpuinfo
 id|cpuinfo
 suffix:semicolon
 multiline_comment|/* see above */
+DECL|member|intf
+r_struct
+id|intf_data
+id|intf
+suffix:semicolon
+multiline_comment|/* interface data */
 )brace
 suffix:semicolon
 DECL|macro|CPUFREQ_ADJUST
