@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * device driver for philips saa7134 based TV cards&n; * video4linux video interface&n; *&n; * (c) 2001,02 Gerd Knorr &lt;kraxel@bytesex.org&gt; [SuSE Labs]&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
+multiline_comment|/*&n; * $Id: saa7134-vbi.c,v 1.3 2004/09/23 13:58:19 kraxel Exp $&n; *&n; * device driver for philips saa7134 based TV cards&n; * video4linux video interface&n; *&n; * (c) 2001,02 Gerd Knorr &lt;kraxel@bytesex.org&gt; [SuSE Labs]&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -561,10 +561,9 @@ r_int
 id|buffer_prepare
 c_func
 (paren
-r_struct
-id|file
+r_void
 op_star
-id|file
+id|priv
 comma
 r_struct
 id|videobuf_buffer
@@ -581,7 +580,7 @@ id|saa7134_fh
 op_star
 id|fh
 op_assign
-id|file-&gt;private_data
+id|priv
 suffix:semicolon
 r_struct
 id|saa7134_dev
@@ -817,10 +816,9 @@ DECL|function|buffer_setup
 id|buffer_setup
 c_func
 (paren
-r_struct
-id|file
+r_void
 op_star
-id|file
+id|priv
 comma
 r_int
 r_int
@@ -838,7 +836,7 @@ id|saa7134_fh
 op_star
 id|fh
 op_assign
-id|file-&gt;private_data
+id|priv
 suffix:semicolon
 r_struct
 id|saa7134_dev
@@ -935,10 +933,9 @@ r_void
 id|buffer_queue
 c_func
 (paren
-r_struct
-id|file
+r_void
 op_star
-id|file
+id|priv
 comma
 r_struct
 id|videobuf_buffer
@@ -951,7 +948,7 @@ id|saa7134_fh
 op_star
 id|fh
 op_assign
-id|file-&gt;private_data
+id|priv
 suffix:semicolon
 r_struct
 id|saa7134_dev
@@ -990,10 +987,9 @@ r_void
 id|buffer_release
 c_func
 (paren
-r_struct
-id|file
+r_void
 op_star
-id|file
+id|priv
 comma
 r_struct
 id|videobuf_buffer
@@ -1006,7 +1002,7 @@ id|saa7134_fh
 op_star
 id|fh
 op_assign
-id|file-&gt;private_data
+id|priv
 suffix:semicolon
 r_struct
 id|saa7134_dev

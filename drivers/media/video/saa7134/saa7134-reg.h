@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * philips saa7134 registers&n; */
+multiline_comment|/*&n; * $Id: saa7134-reg.h,v 1.2 2004/09/15 16:15:24 kraxel Exp $&n; *&n; * philips saa7134 registers&n; */
 multiline_comment|/* ------------------------------------------------------------------ */
 multiline_comment|/*&n; * PCI ID&squot;s&n; */
 macro_line|#ifndef PCI_DEVICE_ID_PHILIPS_SAA7130
