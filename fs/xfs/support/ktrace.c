@@ -2,8 +2,8 @@ multiline_comment|/*&n; * Copyright (c) 2000-2003 Silicon Graphics, Inc.  All Ri
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;xfs_types.h&gt;
-macro_line|#include &lt;kmem.h&gt;
-macro_line|#include &lt;spin.h&gt;
+macro_line|#include &quot;kmem.h&quot;
+macro_line|#include &quot;spin.h&quot;
 macro_line|#include &quot;debug.h&quot;
 macro_line|#include &quot;ktrace.h&quot;
 DECL|variable|ktrace_hdr_zone

@@ -5147,6 +5147,7 @@ id|tmp
 OL
 id|PNP_MAX_PORT
 op_logical_and
+(paren
 id|res-&gt;port_resource
 (braket
 id|tmp
@@ -5154,6 +5155,13 @@ id|tmp
 dot
 id|flags
 op_amp
+(paren
+id|IORESOURCE_IO
+op_or
+id|IORESOURCE_UNSET
+)paren
+)paren
+op_eq
 id|IORESOURCE_IO
 suffix:semicolon
 id|tmp
@@ -5189,6 +5197,7 @@ id|tmp
 OL
 id|PNP_MAX_IRQ
 op_logical_and
+(paren
 id|res-&gt;irq_resource
 (braket
 id|tmp
@@ -5196,6 +5205,13 @@ id|tmp
 dot
 id|flags
 op_amp
+(paren
+id|IORESOURCE_IRQ
+op_or
+id|IORESOURCE_UNSET
+)paren
+)paren
+op_eq
 id|IORESOURCE_IRQ
 suffix:semicolon
 id|tmp
@@ -5249,6 +5265,7 @@ id|tmp
 OL
 id|PNP_MAX_DMA
 op_logical_and
+(paren
 id|res-&gt;dma_resource
 (braket
 id|tmp
@@ -5256,6 +5273,13 @@ id|tmp
 dot
 id|flags
 op_amp
+(paren
+id|IORESOURCE_DMA
+op_or
+id|IORESOURCE_UNSET
+)paren
+)paren
+op_eq
 id|IORESOURCE_DMA
 suffix:semicolon
 id|tmp
@@ -5287,6 +5311,7 @@ id|tmp
 OL
 id|PNP_MAX_MEM
 op_logical_and
+(paren
 id|res-&gt;mem_resource
 (braket
 id|tmp
@@ -5294,6 +5319,13 @@ id|tmp
 dot
 id|flags
 op_amp
+(paren
+id|IORESOURCE_MEM
+op_or
+id|IORESOURCE_UNSET
+)paren
+)paren
+op_eq
 id|IORESOURCE_MEM
 suffix:semicolon
 id|tmp
