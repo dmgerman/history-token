@@ -34,7 +34,7 @@ l_int|1
 )paren
 suffix:semicolon
 multiline_comment|/* memory probe? */
-macro_line|#ifdef CONFIG_ISA
+macro_line|#ifdef CONFIG_PCMCIA_PROBE
 id|INT_MODULE_PARM
 c_func
 (paren
@@ -113,7 +113,7 @@ c_func
 id|rsrc_sem
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_ISA
+macro_line|#ifdef CONFIG_PCMCIA_PROBE
 DECL|struct|irq_info_t
 r_typedef
 r_struct
@@ -1027,7 +1027,7 @@ id|CS_SUCCESS
 suffix:semicolon
 )brace
 multiline_comment|/*======================================================================&n;&n;    These routines examine a region of IO or memory addresses to&n;    determine what ranges might be genuinely available.&n;    &n;======================================================================*/
-macro_line|#ifdef CONFIG_ISA
+macro_line|#ifdef CONFIG_PCMCIA_PROBE
 DECL|function|do_io_probe
 r_static
 r_void
@@ -1765,7 +1765,7 @@ id|bad
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_ISA
+macro_line|#ifdef CONFIG_PCMCIA_PROBE
 DECL|function|inv_probe
 r_static
 id|u_long
@@ -2175,7 +2175,7 @@ id|rsrc_sem
 )paren
 suffix:semicolon
 )brace
-macro_line|#else /* CONFIG_ISA */
+macro_line|#else /* CONFIG_PCMCIA_PROBE */
 DECL|function|validate_mem
 r_void
 id|validate_mem
@@ -2279,7 +2279,7 @@ id|rsrc_sem
 suffix:semicolon
 )brace
 )brace
-macro_line|#endif /* CONFIG_ISA */
+macro_line|#endif /* CONFIG_PCMCIA_PROBE */
 multiline_comment|/*======================================================================&n;&n;    These find ranges of I/O ports or memory addresses that are not&n;    currently allocated by other devices.&n;&n;    The &squot;align&squot; field should reflect the number of bits of address&n;    that need to be preserved from the initial value of *base.  It&n;    should be a power of two, greater than or equal to &squot;num&squot;.  A value&n;    of 0 means that all bits of *base are significant.  *base should&n;    also be strictly less than &squot;align&squot;.&n;    &n;======================================================================*/
 DECL|function|find_io_region
 r_int
@@ -2660,7 +2660,7 @@ id|ret
 suffix:semicolon
 )brace
 multiline_comment|/*======================================================================&n;&n;    This checks to see if an interrupt is available, with support&n;    for interrupt sharing.  We don&squot;t support reserving interrupts&n;    yet.  If the interrupt is available, we allocate it.&n;    &n;======================================================================*/
-macro_line|#ifdef CONFIG_ISA
+macro_line|#ifdef CONFIG_PCMCIA_PROBE
 DECL|function|fake_irq
 r_static
 r_void
@@ -3030,7 +3030,7 @@ suffix:semicolon
 )brace
 macro_line|#endif
 multiline_comment|/*====================================================================*/
-macro_line|#ifdef CONFIG_ISA
+macro_line|#ifdef CONFIG_PCMCIA_PROBE
 DECL|function|undo_irq
 r_void
 id|undo_irq
@@ -3410,7 +3410,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_ISA
+macro_line|#ifdef CONFIG_PCMCIA_PROBE
 r_if
 c_cond
 (paren
@@ -3480,7 +3480,7 @@ id|ret
 op_assign
 id|CS_SUCCESS
 suffix:semicolon
-macro_line|#ifdef CONFIG_ISA
+macro_line|#ifdef CONFIG_PCMCIA_PROBE
 r_int
 id|irq
 suffix:semicolon

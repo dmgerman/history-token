@@ -7309,7 +7309,7 @@ id|req-&gt;Instance
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_ISA
+macro_line|#ifdef CONFIG_PCMCIA_PROBE
 r_if
 c_cond
 (paren
@@ -8552,7 +8552,7 @@ l_int|0
 suffix:colon
 id|CS_IN_USE
 suffix:semicolon
-macro_line|#ifdef CONFIG_ISA
+macro_line|#ifdef CONFIG_PCMCIA_PROBE
 )brace
 r_else
 r_if
