@@ -2841,7 +2841,7 @@ suffix:semicolon
 id|dput
 c_func
 (paren
-id|dir-&gt;dentry
+id|dentry
 )paren
 suffix:semicolon
 id|put_mount
@@ -2950,7 +2950,7 @@ suffix:semicolon
 id|dput
 c_func
 (paren
-id|dentry
+id|d
 )paren
 suffix:semicolon
 id|put_mount

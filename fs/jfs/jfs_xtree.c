@@ -8197,7 +8197,6 @@ r_return
 id|rc
 suffix:semicolon
 )brace
-macro_line|#ifdef _STILL_TO_PORT
 multiline_comment|/*&n; *      xtAppend()&n; *&n; * function: grow in append mode from contiguous region specified ;&n; *&n; * parameter:&n; *      tid             - transaction id;&n; *      ip              - file object;&n; *      xflag           - extent flag:&n; *      xoff            - extent offset;&n; *      maxblocks       - max extent length;&n; *      xlen            - extent length (in/out);&n; *      xaddrp          - extent address pointer (in/out):&n; *      flag            -&n; *&n; * return:&n; */
 DECL|function|xtAppend
 r_int
@@ -8222,7 +8221,6 @@ comma
 id|s32
 id|maxblocks
 comma
-multiline_comment|/* @GD1 */
 id|s32
 op_star
 id|xlenp
@@ -8479,7 +8477,6 @@ op_sub_assign
 id|nblocks
 )paren
 (brace
-multiline_comment|/* @GD1 */
 r_if
 c_cond
 (paren
@@ -8540,7 +8537,6 @@ comma
 id|maxblocks
 )paren
 suffix:semicolon
-multiline_comment|/* @GD1 */
 multiline_comment|/*&n;&t; * allocate data extent requested&n;&t; */
 r_if
 c_cond
@@ -8755,6 +8751,9 @@ c_func
 (paren
 id|index
 comma
+(paren
+r_int
+)paren
 id|xtlck-&gt;lwm.offset
 )paren
 suffix:colon
@@ -8793,6 +8792,7 @@ r_return
 id|rc
 suffix:semicolon
 )brace
+macro_line|#ifdef _STILL_TO_PORT
 multiline_comment|/* - TBD for defragmentaion/reorganization -&n; *&n; *      xtDelete()&n; *&n; * function:&n; *      delete the entry with the specified key.&n; *&n; *      N.B.: whole extent of the entry is assumed to be deleted.&n; *&n; * parameter:&n; *&n; * return:&n; *       ENOENT: if the entry is not found.&n; *&n; * exception:&n; */
 DECL|function|xtDelete
 r_int

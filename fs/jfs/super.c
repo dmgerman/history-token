@@ -236,7 +236,21 @@ op_star
 id|dentry
 )paren
 suffix:semicolon
-macro_line|#ifdef PROC_FS_JFS /* see jfs_debug.h */
+r_extern
+r_int
+id|jfs_extendfs
+c_func
+(paren
+r_struct
+id|super_block
+op_star
+comma
+id|s64
+comma
+r_int
+)paren
+suffix:semicolon
+macro_line|#ifdef PROC_FS_JFS&t;&t;/* see jfs_debug.h */
 r_extern
 r_void
 id|jfs_proc_init
@@ -596,15 +610,20 @@ DECL|function|parse_options
 r_static
 r_int
 id|parse_options
+c_func
 (paren
 r_char
 op_star
 id|options
 comma
 r_struct
-id|jfs_sb_info
+id|super_block
 op_star
-id|sbi
+id|sb
+comma
+id|s64
+op_star
+id|newLVSize
 )paren
 (brace
 r_void
@@ -620,6 +639,22 @@ suffix:semicolon
 r_char
 op_star
 id|value
+suffix:semicolon
+r_struct
+id|jfs_sb_info
+op_star
+id|sbi
+op_assign
+id|JFS_SBI
+c_func
+(paren
+id|sb
+)paren
+suffix:semicolon
+op_star
+id|newLVSize
+op_assign
+l_int|0
 suffix:semicolon
 r_if
 c_cond
@@ -637,6 +672,7 @@ c_loop
 id|this_char
 op_assign
 id|strsep
+c_func
 (paren
 op_amp
 id|options
@@ -664,6 +700,7 @@ c_cond
 id|value
 op_assign
 id|strchr
+c_func
 (paren
 id|this_char
 comma
@@ -684,6 +721,7 @@ c_cond
 (paren
 op_logical_neg
 id|strcmp
+c_func
 (paren
 id|this_char
 comma
@@ -742,6 +780,70 @@ r_goto
 id|cleanup
 suffix:semicolon
 )brace
+)brace
+r_else
+r_if
+c_cond
+(paren
+op_logical_neg
+id|strcmp
+c_func
+(paren
+id|this_char
+comma
+l_string|&quot;resize&quot;
+)paren
+)paren
+(brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|value
+op_logical_or
+op_logical_neg
+op_star
+id|value
+)paren
+(brace
+op_star
+id|newLVSize
+op_assign
+id|sb-&gt;s_bdev-&gt;bd_inode-&gt;i_size
+op_rshift
+id|sb-&gt;s_blocksize_bits
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_star
+id|newLVSize
+op_eq
+l_int|0
+)paren
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;JFS: Cannot determine volume size&bslash;n&quot;
+)paren
+suffix:semicolon
+)brace
+r_else
+op_star
+id|newLVSize
+op_assign
+id|simple_strtoull
+c_func
+(paren
+id|value
+comma
+op_amp
+id|value
+comma
+l_int|0
+)paren
+suffix:semicolon
 multiline_comment|/* Silently ignore the quota options */
 )brace
 r_else
@@ -750,6 +852,7 @@ c_cond
 (paren
 op_logical_neg
 id|strcmp
+c_func
 (paren
 id|this_char
 comma
@@ -758,6 +861,7 @@ l_string|&quot;grpquota&quot;
 op_logical_or
 op_logical_neg
 id|strcmp
+c_func
 (paren
 id|this_char
 comma
@@ -766,6 +870,7 @@ l_string|&quot;noquota&quot;
 op_logical_or
 op_logical_neg
 id|strcmp
+c_func
 (paren
 id|this_char
 comma
@@ -774,6 +879,7 @@ l_string|&quot;quota&quot;
 op_logical_or
 op_logical_neg
 id|strcmp
+c_func
 (paren
 id|this_char
 comma
@@ -785,6 +891,7 @@ suffix:semicolon
 r_else
 (brace
 id|printk
+c_func
 (paren
 l_string|&quot;jfs: Unrecognized mount option %s&bslash;n&quot;
 comma
@@ -880,6 +987,16 @@ c_func
 id|sb
 )paren
 suffix:semicolon
+id|s64
+id|newLVSize
+op_assign
+l_int|0
+suffix:semicolon
+r_int
+id|rc
+op_assign
+l_int|0
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -889,13 +1006,63 @@ c_func
 (paren
 id|data
 comma
-id|sbi
+id|sb
+comma
+op_amp
+id|newLVSize
 )paren
 )paren
 (brace
 r_return
 op_minus
 id|EINVAL
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|newLVSize
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|sb-&gt;s_flags
+op_amp
+id|MS_RDONLY
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;JFS: resize requires volume to be mounted read-write&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|EROFS
+suffix:semicolon
+)brace
+id|rc
+op_assign
+id|jfs_extendfs
+c_func
+(paren
+id|sb
+comma
+id|newLVSize
+comma
+l_int|0
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|rc
+)paren
+r_return
+id|rc
 suffix:semicolon
 )brace
 r_if
@@ -998,6 +1165,11 @@ suffix:semicolon
 r_int
 id|rc
 suffix:semicolon
+id|s64
+id|newLVSize
+op_assign
+l_int|0
+suffix:semicolon
 id|jFYI
 c_func
 (paren
@@ -1065,7 +1237,10 @@ op_star
 )paren
 id|data
 comma
-id|sbi
+id|sb
+comma
+op_amp
+id|newLVSize
 )paren
 )paren
 (brace
@@ -1073,6 +1248,24 @@ id|kfree
 c_func
 (paren
 id|sbi
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|newLVSize
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;resize option for remount only&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -1691,12 +1884,23 @@ op_amp
 id|jfs_ip-&gt;mp_list
 )paren
 suffix:semicolon
-id|RDWRLOCK_INIT
+id|init_rwsem
 c_func
 (paren
 op_amp
 id|jfs_ip-&gt;rdwrlock
 )paren
+suffix:semicolon
+id|init_MUTEX
+c_func
+(paren
+op_amp
+id|jfs_ip-&gt;commit_sem
+)paren
+suffix:semicolon
+id|jfs_ip-&gt;atlhead
+op_assign
+l_int|0
 suffix:semicolon
 id|inode_init_once
 c_func
@@ -1861,7 +2065,7 @@ op_amp
 id|jfsIOwait
 )paren
 suffix:semicolon
-multiline_comment|/* Wait until IO thread starts */
+multiline_comment|/* Wait until thread starts */
 id|jfsCommitThread
 op_assign
 id|kernel_thread
@@ -1909,7 +2113,7 @@ op_amp
 id|jfsIOwait
 )paren
 suffix:semicolon
-multiline_comment|/* Wait until IO thread starts */
+multiline_comment|/* Wait until thread starts */
 id|jfsSyncThread
 op_assign
 id|kernel_thread
@@ -1957,7 +2161,7 @@ op_amp
 id|jfsIOwait
 )paren
 suffix:semicolon
-multiline_comment|/* Wait until IO thread starts */
+multiline_comment|/* Wait until thread starts */
 macro_line|#ifdef PROC_FS_JFS
 id|jfs_proc_init
 c_func
@@ -1993,7 +2197,7 @@ op_amp
 id|jfsIOwait
 )paren
 suffix:semicolon
-multiline_comment|/* Wait until Commit thread exits */
+multiline_comment|/* Wait for thread exit */
 id|kill_iotask
 suffix:colon
 id|jfs_stop_threads
@@ -2014,7 +2218,7 @@ op_amp
 id|jfsIOwait
 )paren
 suffix:semicolon
-multiline_comment|/* Wait until IO thread exits */
+multiline_comment|/* Wait for thread exit */
 id|end_txmngr
 suffix:colon
 id|txExit
