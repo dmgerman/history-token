@@ -9038,14 +9038,7 @@ id|tblk-&gt;gcwait
 )paren
 suffix:semicolon
 singleline_comment|// LOGGC_WAKEUP
-id|spin_unlock_irq
-c_func
-(paren
-op_amp
-id|log-&gt;gclock
-)paren
-suffix:semicolon
-singleline_comment|// LOGGC_UNLOCK
+multiline_comment|/*&n;&t; * Can&squot;t release log-&gt;gclock until we&squot;ve tested tblk-&gt;flag&n;&t; */
 r_if
 c_cond
 (paren
@@ -9054,6 +9047,14 @@ op_amp
 id|tblkGC_LAZY
 )paren
 (brace
+id|spin_unlock_irq
+c_func
+(paren
+op_amp
+id|log-&gt;gclock
+)paren
+suffix:semicolon
+singleline_comment|// LOGGC_UNLOCK
 id|txUnlock
 c_func
 (paren
@@ -9075,6 +9076,15 @@ id|TxBlock
 suffix:semicolon
 multiline_comment|/* Convert back to tid */
 )brace
+r_else
+id|spin_unlock_irq
+c_func
+(paren
+op_amp
+id|log-&gt;gclock
+)paren
+suffix:semicolon
+singleline_comment|// LOGGC_UNLOCK
 id|jFYI
 c_func
 (paren
