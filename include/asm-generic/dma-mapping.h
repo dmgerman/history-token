@@ -4,6 +4,8 @@ DECL|macro|_ASM_GENERIC_DMA_MAPPING_H
 mdefine_line|#define _ASM_GENERIC_DMA_MAPPING_H
 multiline_comment|/* we implement the API below in terms of the existing PCI one,&n; * so include it */
 macro_line|#include &lt;linux/pci.h&gt;
+multiline_comment|/* need struct page definitions */
+macro_line|#include &lt;linux/mm.h&gt;
 r_static
 r_inline
 r_int
