@@ -123,11 +123,6 @@ multiline_comment|/*&n;    * Some handy macros&n;    */
 macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,4,20) || defined CONFIG_HIGHIO
 DECL|macro|IPS_HIGHIO
 mdefine_line|#define IPS_HIGHIO
-DECL|macro|IPS_HIGHMEM_IO
-mdefine_line|#define IPS_HIGHMEM_IO     .highmem_io = 1,
-macro_line|#else
-DECL|macro|IPS_HIGHMEM_IO
-mdefine_line|#define IPS_HIGHMEM_IO
 macro_line|#endif
 DECL|macro|IPS_HA
 mdefine_line|#define IPS_HA(x)                   ((ips_ha_t *) x-&gt;hostdata)
@@ -153,11 +148,22 @@ DECL|macro|IPS_SGLIST_SIZE
 mdefine_line|#define IPS_SGLIST_SIZE(ha)       (IPS_USE_ENH_SGLIST(ha) ? &bslash;&n;                                         sizeof(IPS_ENH_SG_LIST) : sizeof(IPS_STD_SG_LIST))
 macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,4,4)
 DECL|macro|pci_set_dma_mask
-mdefine_line|#define pci_set_dma_mask(dev,mask) (1)
+mdefine_line|#define pci_set_dma_mask(dev,mask) ( mask &gt; 0xffffffff ? 1:0 )
 DECL|macro|scsi_set_pci_device
 mdefine_line|#define scsi_set_pci_device(sh,dev) (0)
 macro_line|#endif
 macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,5,0)
+DECL|typedef|irqreturn_t
+r_typedef
+r_void
+id|irqreturn_t
+suffix:semicolon
+DECL|macro|IRQ_NONE
+mdefine_line|#define IRQ_NONE
+DECL|macro|IRQ_HANDLED
+mdefine_line|#define IRQ_HANDLED
+DECL|macro|IRQ_RETVAL
+mdefine_line|#define IRQ_RETVAL(x)
 DECL|macro|IPS_REGISTER_HOSTS
 mdefine_line|#define IPS_REGISTER_HOSTS(SHT)      scsi_register_module(MODULE_SCSI_HA,SHT)
 DECL|macro|IPS_UNREGISTER_HOSTS
@@ -166,6 +172,10 @@ DECL|macro|IPS_ADD_HOST
 mdefine_line|#define IPS_ADD_HOST(shost,device)
 DECL|macro|IPS_REMOVE_HOST
 mdefine_line|#define IPS_REMOVE_HOST(shost)
+DECL|macro|IPS_SCSI_SET_DEVICE
+mdefine_line|#define IPS_SCSI_SET_DEVICE(sh,ha)   scsi_set_pci_device(sh, (ha)-&gt;pcidev)
+DECL|macro|IPS_PRINTK
+mdefine_line|#define IPS_PRINTK(level, pcidev, format, arg...)                 &bslash;&n;            printk(level &quot;%s %s:&quot; format , (pcidev)-&gt;driver-&gt;name ,     &bslash;&n;            (pcidev)-&gt;slot_name , ## arg)
 macro_line|#else
 DECL|macro|IPS_REGISTER_HOSTS
 mdefine_line|#define IPS_REGISTER_HOSTS(SHT)      (!ips_detect(SHT))
@@ -175,6 +185,10 @@ DECL|macro|IPS_ADD_HOST
 mdefine_line|#define IPS_ADD_HOST(shost,device)   scsi_add_host(shost,device)
 DECL|macro|IPS_REMOVE_HOST
 mdefine_line|#define IPS_REMOVE_HOST(shost)       scsi_remove_host(shost)
+DECL|macro|IPS_SCSI_SET_DEVICE
+mdefine_line|#define IPS_SCSI_SET_DEVICE(sh,ha)   scsi_set_device(sh, &amp;(ha)-&gt;pcidev-&gt;dev)
+DECL|macro|IPS_PRINTK
+mdefine_line|#define IPS_PRINTK(level, pcidev, format, arg...)                 &bslash;&n;            dev_printk(level , &amp;((pcidev)-&gt;dev) , format , ## arg)
 macro_line|#endif
 macro_line|#ifndef MDELAY
 DECL|macro|MDELAY
@@ -704,8 +718,6 @@ id|geom
 )braket
 )paren
 suffix:semicolon
-DECL|macro|IPS
-mdefine_line|#define IPS {&t;&bslash;&n;&t;.detect&t;&t;&t;&t;= ips_detect,&t;&bslash;&n;&t;.release&t;&t;&t;= ips_release,&t;&bslash;&n;&t;.info&t;&t;&t;&t;= ips_info,&t;&bslash;&n;&t;.queuecommand&t;&t;&t;= ips_queue,&t;&bslash;&n;&t;.eh_abort_handler&t;&t;= ips_eh_abort,&t;&bslash;&n;&t;.eh_host_reset_handler&t;&t;= ips_eh_reset,&t;&bslash;&n;&t;.bios_param&t;&t;&t;= ips_biosparam,&bslash;&n;&t;.select_queue_depths&t;&t;= ips_select_queue_depth, &bslash;&n;&t;.can_queue&t;&t;&t;= 0,&t;&t;&bslash;&n;&t;.this_id&t;&t;&t;= -1,&t;&t;&bslash;&n;&t;.sg_tablesize&t;&t;&t;= IPS_MAX_SG,&t;&bslash;&n;&t;.cmd_per_lun&t;&t;&t;= 16,&t;&t;&bslash;&n;&t;.present&t;&t;&t;= 0,&t;&t;&bslash;&n;&t;.unchecked_isa_dma&t;&t;= 0,&t;&t;&bslash;&n;&t;.use_clustering&t;&t;&t;= ENABLE_CLUSTERING,&bslash;&n;&t;.use_new_eh_code&t;&t;= 1, &bslash;&n;&t;IPS_HIGHMEM_IO &bslash;&n;}
 macro_line|#else
 r_static
 r_int
@@ -740,8 +752,6 @@ op_star
 id|SDptr
 )paren
 suffix:semicolon
-DECL|macro|IPS
-mdefine_line|#define IPS {&t;&bslash;&n;&t;.detect&t;&t;&t;= ips_detect,&t;&t;&bslash;&n;&t;.release&t;&t;= ips_release,&t;&t;&bslash;&n;&t;.info&t;&t;&t;= ips_info,&t;&t;&bslash;&n;&t;.queuecommand&t;&t;= ips_queue,&t;&t;&bslash;&n;&t;.eh_abort_handler&t;= ips_eh_abort,&t;&t;&bslash;&n;&t;.eh_host_reset_handler&t;= ips_eh_reset,&t;&t;&bslash;&n;&t;.slave_configure&t;= ips_slave_configure,&t;&bslash;&n;&t;.bios_param&t;&t;= ips_biosparam,&t;&bslash;&n;&t;.can_queue&t;&t;= 0,&t;&t;&t;&bslash;&n;&t;.this_id&t;&t;= -1,&t;&t;&t;&bslash;&n;&t;.sg_tablesize&t;&t;= IPS_MAX_SG,&t;&t;&bslash;&n;&t;.cmd_per_lun&t;&t;= 3,&t;&t;&t;&bslash;&n;&t;.present&t;&t;= 0,&t;&t;&t;&bslash;&n;&t;.unchecked_isa_dma&t;= 0,&t;&t;&t;&bslash;&n;&t;.use_clustering&t;&t;= ENABLE_CLUSTERING,&t;&bslash;&n;&t;.highmem_io&t;&t;= 1 &bslash;&n;}
 macro_line|#endif
 multiline_comment|/*&n; * Raid Command Formats&n; */
 r_typedef
@@ -3134,7 +3144,7 @@ op_star
 )paren
 suffix:semicolon
 DECL|member|intr
-r_void
+r_int
 (paren
 op_star
 id|intr

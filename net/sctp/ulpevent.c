@@ -52,7 +52,7 @@ r_int
 id|msg_flags
 comma
 r_int
-id|priority
+id|gfp
 )paren
 (brace
 r_struct
@@ -72,7 +72,7 @@ c_func
 (paren
 id|size
 comma
-id|priority
+id|gfp
 )paren
 suffix:semicolon
 r_if
@@ -222,7 +222,8 @@ id|sctp_ulpevent_make_assoc_change
 c_func
 (paren
 r_const
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 id|asoc
 comma
@@ -242,7 +243,7 @@ id|__u16
 id|inbound
 comma
 r_int
-id|priority
+id|gfp
 )paren
 (brace
 r_struct
@@ -273,7 +274,7 @@ id|sctp_assoc_change
 comma
 id|MSG_NOTIFICATION
 comma
-id|priority
+id|gfp
 )paren
 suffix:semicolon
 r_if
@@ -385,7 +386,8 @@ id|sctp_ulpevent_make_peer_addr_change
 c_func
 (paren
 r_const
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 id|asoc
 comma
@@ -405,7 +407,7 @@ r_int
 id|error
 comma
 r_int
-id|priority
+id|gfp
 )paren
 (brace
 r_struct
@@ -436,7 +438,7 @@ id|sctp_paddr_change
 comma
 id|MSG_NOTIFICATION
 comma
-id|priority
+id|gfp
 )paren
 suffix:semicolon
 r_if
@@ -555,11 +557,13 @@ id|sctp_ulpevent_make_remote_error
 c_func
 (paren
 r_const
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 id|asoc
 comma
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 op_star
 id|chunk
 comma
@@ -567,7 +571,7 @@ id|__u16
 id|flags
 comma
 r_int
-id|priority
+id|gfp
 )paren
 (brace
 r_struct
@@ -611,10 +615,14 @@ id|ch-&gt;cause
 suffix:semicolon
 id|elen
 op_assign
+id|WORD_ROUND
+c_func
+(paren
 id|ntohs
 c_func
 (paren
 id|ch-&gt;length
+)paren
 )paren
 op_minus
 r_sizeof
@@ -648,11 +656,9 @@ r_struct
 id|sctp_remote_error
 )paren
 comma
-multiline_comment|/* headroom */
 l_int|0
 comma
-multiline_comment|/* tailroom */
-id|priority
+id|gfp
 )paren
 suffix:semicolon
 multiline_comment|/* Pull off the rest of the cause TLV from the chunk.  */
@@ -798,11 +804,13 @@ id|sctp_ulpevent_make_send_failed
 c_func
 (paren
 r_const
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 id|asoc
 comma
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 op_star
 id|chunk
 comma
@@ -813,7 +821,7 @@ id|__u32
 id|error
 comma
 r_int
-id|priority
+id|gfp
 )paren
 (brace
 r_struct
@@ -830,6 +838,16 @@ r_struct
 id|sk_buff
 op_star
 id|skb
+suffix:semicolon
+multiline_comment|/* Pull off any padding. */
+r_int
+id|len
+op_assign
+id|ntohs
+c_func
+(paren
+id|chunk-&gt;chunk_hdr-&gt;length
+)paren
 suffix:semicolon
 multiline_comment|/* Make skb with more room so we can prepend notification.  */
 id|skb
@@ -849,7 +867,7 @@ multiline_comment|/* headroom */
 l_int|0
 comma
 multiline_comment|/* tailroom */
-id|priority
+id|gfp
 )paren
 suffix:semicolon
 r_if
@@ -869,8 +887,17 @@ id|skb
 comma
 r_sizeof
 (paren
-id|sctp_data_chunk_t
+r_struct
+id|sctp_data_chunk
 )paren
+)paren
+suffix:semicolon
+id|len
+op_sub_assign
+r_sizeof
+(paren
+r_struct
+id|sctp_data_chunk
 )paren
 suffix:semicolon
 multiline_comment|/* Embed the event fields inside the cloned skb.  */
@@ -933,7 +960,21 @@ suffix:semicolon
 multiline_comment|/* Socket Extensions for SCTP&n;&t; * 5.3.1.4 SCTP_SEND_FAILED&n;&t; *&n;&t; * ssf_length: sizeof (__u32)&n;&t; * This field is the total length of the notification data, including&n;&t; * the notification header.&n;&t; */
 id|ssf-&gt;ssf_length
 op_assign
-id|skb-&gt;len
+r_sizeof
+(paren
+r_struct
+id|sctp_send_failed
+)paren
+op_plus
+id|len
+suffix:semicolon
+id|skb_trim
+c_func
+(paren
+id|skb
+comma
+id|ssf-&gt;ssf_length
+)paren
 suffix:semicolon
 multiline_comment|/* Socket Extensions for SCTP&n;&t; * 5.3.1.4 SCTP_SEND_FAILED&n;&t; *&n;&t; * ssf_error: 16 bits (unsigned integer)&n;&t; * This value represents the reason why the send failed, and if set,&n;&t; * will be a SCTP protocol error code as defined in [SCTP] section&n;&t; * 3.3.10.&n;&t; */
 id|ssf-&gt;ssf_error
@@ -956,6 +997,11 @@ r_struct
 id|sctp_sndrcvinfo
 )paren
 )paren
+suffix:semicolon
+multiline_comment|/* Per TSVWG discussion with Randy. Allow the application to&n;&t; * ressemble a fragmented message. &n;&t; */
+id|ssf-&gt;ssf_info.sinfo_flags
+op_assign
+id|chunk-&gt;chunk_hdr-&gt;flags
 suffix:semicolon
 multiline_comment|/* Socket Extensions for SCTP&n;&t; * 5.3.1.4 SCTP_SEND_FAILED&n;&t; *&n;&t; * ssf_assoc_id: sizeof (sctp_assoc_t)&n;&t; * The association id field, sf_assoc_id, holds the identifier for the&n;&t; * association.  All notifications for a given association have the&n;&t; * same association identifier.  For TCP style socket, this field is&n;&t; * ignored.&n;&t; */
 id|skb
@@ -1000,7 +1046,8 @@ id|sctp_ulpevent_make_shutdown_event
 c_func
 (paren
 r_const
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 id|asoc
 comma
@@ -1008,7 +1055,7 @@ id|__u16
 id|flags
 comma
 r_int
-id|priority
+id|gfp
 )paren
 (brace
 r_struct
@@ -1039,7 +1086,7 @@ id|sctp_assoc_change
 comma
 id|MSG_NOTIFICATION
 comma
-id|priority
+id|gfp
 )paren
 suffix:semicolon
 r_if
@@ -1131,16 +1178,18 @@ op_star
 id|sctp_ulpevent_make_rcvmsg
 c_func
 (paren
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 id|asoc
 comma
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 op_star
 id|chunk
 comma
 r_int
-id|priority
+id|gfp
 )paren
 (brace
 r_struct
@@ -1174,7 +1223,7 @@ c_func
 (paren
 id|chunk-&gt;skb
 comma
-id|priority
+id|gfp
 )paren
 suffix:semicolon
 r_if
@@ -1264,7 +1313,7 @@ c_func
 id|chunk
 )paren
 suffix:semicolon
-multiline_comment|/* Note:  Not clearing the entire event struct as&n;&t; * this is just a fragment of the real event.  However,&n;&t; * we still need to do rwnd accounting. &n;&t; */
+multiline_comment|/* Note:  Not clearing the entire event struct as&n;&t; * this is just a fragment of the real event.  However,&n;&t; * we still need to do rwnd accounting.&n;&t; */
 r_for
 c_loop
 (paren
@@ -1342,7 +1391,7 @@ id|info-&gt;sinfo_flags
 op_or_assign
 id|MSG_UNORDERED
 suffix:semicolon
-multiline_comment|/* sinfo_cumtsn: 32 bit (unsigned integer)&n;&t;&t; *  &n;&t;&t; * This field will hold the current cumulative TSN as &n;&t;&t; * known by the underlying SCTP layer.  Note this field is &n;&t;&t; * ignored when sending and only valid for a receive &n;&t;&t; * operation when sinfo_flags are set to MSG_UNORDERED.&n;&t;&t; */
+multiline_comment|/* sinfo_cumtsn: 32 bit (unsigned integer)&n;&t;&t; *&n;&t;&t; * This field will hold the current cumulative TSN as&n;&t;&t; * known by the underlying SCTP layer.  Note this field is&n;&t;&t; * ignored when sending and only valid for a receive&n;&t;&t; * operation when sinfo_flags are set to MSG_UNORDERED.&n;&t;&t; */
 id|info-&gt;sinfo_cumtsn
 op_assign
 id|sctp_tsnmap_get_ctsn
@@ -1353,7 +1402,7 @@ id|asoc-&gt;peer.tsn_map
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Note:  For reassembly, we need to have the fragmentation bits. &n;&t; * For now, merge these into the msg_flags, since those bit&n;&t; * possitions are not used.&n;&t; */
+multiline_comment|/* Note:  For reassembly, we need to have the fragmentation bits.&n;&t; * For now, merge these into the msg_flags, since those bit&n;&t; * possitions are not used.&n;&t; */
 id|event-&gt;msg_flags
 op_or_assign
 id|chunk-&gt;chunk_hdr-&gt;flags
@@ -1398,7 +1447,7 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
-multiline_comment|/* Create a partial delivery related event. &n; *&n; * 5.3.1.7 SCTP_PARTIAL_DELIVERY_EVENT&n; *&n; *   When a reciever is engaged in a partial delivery of a&n; *   message this notification will be used to inidicate&n; *   various events.&n; */
+multiline_comment|/* Create a partial delivery related event.&n; *&n; * 5.3.1.7 SCTP_PARTIAL_DELIVERY_EVENT&n; *&n; *   When a reciever is engaged in a partial delivery of a&n; *   message this notification will be used to inidicate&n; *   various events.&n; */
 DECL|function|sctp_ulpevent_make_pdapi
 r_struct
 id|sctp_ulpevent
@@ -1407,7 +1456,8 @@ id|sctp_ulpevent_make_pdapi
 c_func
 (paren
 r_const
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 id|asoc
 comma
@@ -1415,7 +1465,7 @@ id|__u32
 id|indication
 comma
 r_int
-id|priority
+id|gfp
 )paren
 (brace
 r_struct
@@ -1446,7 +1496,7 @@ id|sctp_assoc_change
 comma
 id|MSG_NOTIFICATION
 comma
-id|priority
+id|gfp
 )paren
 suffix:semicolon
 r_if
@@ -1508,7 +1558,7 @@ id|pd-&gt;pdapi_indication
 op_assign
 id|indication
 suffix:semicolon
-multiline_comment|/*  pdapi_assoc_id: sizeof (sctp_assoc_t)&n;&t; * &n;&t; * The association id field, holds the identifier for the association.&n;&t; */
+multiline_comment|/*  pdapi_assoc_id: sizeof (sctp_assoc_t)&n;&t; *&n;&t; * The association id field, holds the identifier for the association.&n;&t; */
 id|pd-&gt;pdapi_assoc_id
 op_assign
 id|sctp_assoc2id
@@ -1642,7 +1692,8 @@ op_star
 id|skb
 )paren
 (brace
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 id|asoc
 suffix:semicolon
@@ -1695,7 +1746,8 @@ id|sk_buff
 op_star
 id|skb
 comma
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 id|asoc
 )paren

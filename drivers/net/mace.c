@@ -311,7 +311,7 @@ id|addr
 )paren
 suffix:semicolon
 r_static
-r_void
+id|irqreturn_t
 id|mace_interrupt
 c_func
 (paren
@@ -329,7 +329,7 @@ id|regs
 )paren
 suffix:semicolon
 r_static
-r_void
+id|irqreturn_t
 id|mace_txdma_intr
 c_func
 (paren
@@ -347,7 +347,7 @@ id|regs
 )paren
 suffix:semicolon
 r_static
-r_void
+id|irqreturn_t
 id|mace_rxdma_intr
 c_func
 (paren
@@ -3472,7 +3472,7 @@ suffix:semicolon
 )brace
 DECL|function|mace_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|mace_interrupt
 c_func
 (paren
@@ -4206,6 +4206,9 @@ comma
 id|flags
 )paren
 suffix:semicolon
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 DECL|function|mace_tx_timeout
 r_static
@@ -4586,7 +4589,7 @@ suffix:semicolon
 )brace
 DECL|function|mace_txdma_intr
 r_static
-r_void
+id|irqreturn_t
 id|mace_txdma_intr
 c_func
 (paren
@@ -4603,10 +4606,13 @@ op_star
 id|regs
 )paren
 (brace
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 DECL|function|mace_rxdma_intr
 r_static
-r_void
+id|irqreturn_t
 id|mace_rxdma_intr
 c_func
 (paren
@@ -5281,6 +5287,9 @@ id|mp-&gt;lock
 comma
 id|flags
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 id|MODULE_AUTHOR

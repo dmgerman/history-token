@@ -99,6 +99,7 @@ id|end
 comma
 r_int
 r_char
+id|__user
 op_star
 id|vec
 )paren
@@ -325,6 +326,7 @@ id|len
 comma
 r_int
 r_char
+id|__user
 op_star
 id|vec
 )paren

@@ -1,4 +1,4 @@
-multiline_comment|/*&n;* cycx_cfm.h&t;Cyclom 2X WAN Link Driver.&n;*&t;&t;Definitions for the Cyclom 2X Firmware Module (CFM).&n;*&n;* Author:&t;Arnaldo Carvalho de Melo &lt;acme@conectiva.com.br&gt;&n;*&n;* Copyright:&t;(c) 1998-2000 Arnaldo Carvalho de Melo&n;*&n;* Based on sdlasfm.h by Gene Kozin &lt;74604.152@compuserve.com&gt;&n;*&n;*&t;&t;This program is free software; you can redistribute it and/or&n;*&t;&t;modify it under the terms of the GNU General Public License&n;*&t;&t;as published by the Free Software Foundation; either version&n;*&t;&t;2 of the License, or (at your option) any later version.&n;* ============================================================================&n;* 1998/08/08&t;acme&t;&t;Initial version.&n;*/
+multiline_comment|/*&n;* cycx_cfm.h&t;Cyclom 2X WAN Link Driver.&n;*&t;&t;Definitions for the Cyclom 2X Firmware Module (CFM).&n;*&n;* Author:&t;Arnaldo Carvalho de Melo &lt;acme@conectiva.com.br&gt;&n;*&n;* Copyright:&t;(c) 1998-2003 Arnaldo Carvalho de Melo&n;*&n;* Based on sdlasfm.h by Gene Kozin &lt;74604.152@compuserve.com&gt;&n;*&n;*&t;&t;This program is free software; you can redistribute it and/or&n;*&t;&t;modify it under the terms of the GNU General Public License&n;*&t;&t;as published by the Free Software Foundation; either version&n;*&t;&t;2 of the License, or (at your option) any later version.&n;* ============================================================================&n;* 1998/08/08&t;acme&t;&t;Initial version.&n;*/
 macro_line|#ifndef&t;_CYCX_CFM_H
 DECL|macro|_CYCX_CFM_H
 mdefine_line|#define&t;_CYCX_CFM_H
@@ -37,25 +37,21 @@ DECL|macro|CYCX_16X
 mdefine_line|#define CYCX_16X&t;16
 DECL|macro|CFID_X25_2X
 mdefine_line|#define&t;CFID_X25_2X&t;5200
-multiline_comment|/* Data Types */
-DECL|struct|cfm_info
-r_typedef
+multiline_comment|/**&n; *&t;struct cycx_fw_info - firmware module information.&n; *&t;@codeid - firmware ID&n; *&t;@version - firmware version number&n; *&t;@adapter - compatible adapter types&n; *&t;@memsize - minimum memory size&n; *&t;@reserved - reserved&n; *&t;@startoffs - entry point offset&n; *&t;@winoffs - dual-port memory window offset&n; *&t;@codeoffs - code load offset&n; *&t;@codesize - code size&n; *&t;@dataoffs - configuration data load offset&n; *&t;@datasize - configuration data size&n; */
+DECL|struct|cycx_fw_info
 r_struct
-id|cfm_info
-multiline_comment|/* firmware module information */
+id|cycx_fw_info
 (brace
 DECL|member|codeid
 r_int
 r_int
 id|codeid
 suffix:semicolon
-multiline_comment|/* firmware ID */
 DECL|member|version
 r_int
 r_int
 id|version
 suffix:semicolon
-multiline_comment|/* firmware version number */
 DECL|member|adapter
 r_int
 r_int
@@ -64,13 +60,11 @@ id|adapter
 id|CFM_MAX_CYCX
 )braket
 suffix:semicolon
-multiline_comment|/* compatible adapter types */
 DECL|member|memsize
 r_int
 r_int
 id|memsize
 suffix:semicolon
-multiline_comment|/* minimum memory size */
 DECL|member|reserved
 r_int
 r_int
@@ -79,52 +73,42 @@ id|reserved
 l_int|2
 )braket
 suffix:semicolon
-multiline_comment|/* reserved */
 DECL|member|startoffs
 r_int
 r_int
 id|startoffs
 suffix:semicolon
-multiline_comment|/* entry point offset */
 DECL|member|winoffs
 r_int
 r_int
 id|winoffs
 suffix:semicolon
-multiline_comment|/* dual-port memory window offset */
 DECL|member|codeoffs
 r_int
 r_int
 id|codeoffs
 suffix:semicolon
-multiline_comment|/* code load offset */
 DECL|member|codesize
 r_int
 r_int
 id|codesize
 suffix:semicolon
-multiline_comment|/* code size */
 DECL|member|dataoffs
 r_int
 r_int
 id|dataoffs
 suffix:semicolon
-multiline_comment|/* configuration data load offset */
 DECL|member|datasize
 r_int
 r_int
 id|datasize
 suffix:semicolon
-multiline_comment|/* configuration data size */
-DECL|typedef|cfm_info_t
 )brace
-id|cfm_info_t
 suffix:semicolon
-DECL|struct|cfm
-r_typedef
+multiline_comment|/**&n; *&t;struct cycx_firmware - CYCX firmware file structure&n; *&t;@signature - CFM file signature&n; *&t;@version - file format version&n; *&t;@checksum - info + image&n; *&t;@reserved - reserved&n; *&t;@descr - description string&n; *&t;@info - firmware module info&n; *&t;@image - code image (variable size)&n; */
+DECL|struct|cycx_firmware
 r_struct
-id|cfm
-multiline_comment|/* CYCX firmware file structure */
+id|cycx_firmware
 (brace
 DECL|member|signature
 r_char
@@ -133,19 +117,16 @@ id|signature
 l_int|80
 )braket
 suffix:semicolon
-multiline_comment|/* CFM file signature */
 DECL|member|version
 r_int
 r_int
 id|version
 suffix:semicolon
-multiline_comment|/* file format version */
 DECL|member|checksum
 r_int
 r_int
 id|checksum
 suffix:semicolon
-multiline_comment|/* info + image */
 DECL|member|reserved
 r_int
 r_int
@@ -154,7 +135,6 @@ id|reserved
 l_int|6
 )braket
 suffix:semicolon
-multiline_comment|/* reserved */
 DECL|member|descr
 r_char
 id|descr
@@ -162,12 +142,11 @@ id|descr
 id|CFM_DESCR_LEN
 )braket
 suffix:semicolon
-multiline_comment|/* description string */
 DECL|member|info
-id|cfm_info_t
+r_struct
+id|cycx_fw_info
 id|info
 suffix:semicolon
-multiline_comment|/* firmware module info */
 DECL|member|image
 r_int
 r_char
@@ -176,15 +155,11 @@ id|image
 l_int|1
 )braket
 suffix:semicolon
-multiline_comment|/* code image (variable size) */
-DECL|typedef|cfm_t
 )brace
-id|cfm_t
 suffix:semicolon
-DECL|struct|cycx_header_s
-r_typedef
+DECL|struct|cycx_fw_header
 r_struct
-id|cycx_header_s
+id|cycx_fw_header
 (brace
 DECL|member|reset_size
 r_int
@@ -201,9 +176,7 @@ r_int
 r_int
 id|code_size
 suffix:semicolon
-DECL|typedef|cycx_header_t
 )brace
-id|cycx_header_t
 suffix:semicolon
 macro_line|#endif&t;/* _CYCX_CFM_H */
 eof

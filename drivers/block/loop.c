@@ -2639,7 +2639,12 @@ suffix:semicolon
 r_int
 id|error
 suffix:semicolon
-id|MOD_INC_USE_COUNT
+multiline_comment|/* This is safe, since we have a reference from open(). */
+id|__module_get
+c_func
+(paren
+id|THIS_MODULE
+)paren
 suffix:semicolon
 id|error
 op_assign
@@ -3056,7 +3061,12 @@ id|file
 suffix:semicolon
 id|out
 suffix:colon
-id|MOD_DEC_USE_COUNT
+multiline_comment|/* This is safe: open() is still holding a reference. */
+id|module_put
+c_func
+(paren
+id|THIS_MODULE
+)paren
 suffix:semicolon
 r_return
 id|error
@@ -3425,7 +3435,12 @@ c_func
 id|filp
 )paren
 suffix:semicolon
-id|MOD_DEC_USE_COUNT
+multiline_comment|/* This is safe: open() is still holding a reference. */
+id|module_put
+c_func
+(paren
+id|THIS_MODULE
+)paren
 suffix:semicolon
 r_return
 l_int|0

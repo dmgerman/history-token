@@ -47,6 +47,10 @@ DECL|macro|PPP_COMPFRAG
 mdefine_line|#define PPP_COMPFRAG&t;0xfb&t;/* fragment compressed below bundle */
 DECL|macro|PPP_COMP
 mdefine_line|#define PPP_COMP&t;0xfd&t;/* compressed packet */
+DECL|macro|PPP_MPLS_UC
+mdefine_line|#define PPP_MPLS_UC&t;0x0281&t;/* Multi Protocol Label Switching - Unicast */
+DECL|macro|PPP_MPLS_MC
+mdefine_line|#define PPP_MPLS_MC&t;0x0283&t;/* Multi Protocol Label Switching - Multicast */
 DECL|macro|PPP_IPCP
 mdefine_line|#define PPP_IPCP&t;0x8021&t;/* IP Control Protocol */
 DECL|macro|PPP_ATCP
@@ -59,6 +63,8 @@ DECL|macro|PPP_CCPFRAG
 mdefine_line|#define PPP_CCPFRAG&t;0x80fb&t;/* CCP at link level (below MP bundle) */
 DECL|macro|PPP_CCP
 mdefine_line|#define PPP_CCP&t;&t;0x80fd&t;/* Compression Control Protocol */
+DECL|macro|PPP_MPLSCP
+mdefine_line|#define PPP_MPLSCP&t;0x80fd&t;/* MPLS Control Protocol */
 DECL|macro|PPP_LCP
 mdefine_line|#define PPP_LCP&t;&t;0xc021&t;/* Link Control Protocol */
 DECL|macro|PPP_PAP

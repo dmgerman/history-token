@@ -344,8 +344,8 @@ l_int|0
 suffix:semicolon
 multiline_comment|/* Memory Tracking Functions. */
 DECL|function|frag_kfree_skb
-r_extern
-id|__inline__
+r_static
+r_inline
 r_void
 id|frag_kfree_skb
 c_func
@@ -373,8 +373,8 @@ id|skb
 suffix:semicolon
 )brace
 DECL|function|frag_free_queue
-r_extern
-id|__inline__
+r_static
+r_inline
 r_void
 id|frag_free_queue
 c_func
@@ -406,8 +406,8 @@ id|fq
 suffix:semicolon
 )brace
 DECL|function|frag_alloc_queue
-r_extern
-id|__inline__
+r_static
+r_inline
 r_struct
 id|frag_queue
 op_star

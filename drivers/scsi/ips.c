@@ -258,24 +258,18 @@ r_static
 r_int
 r_int
 id|ips_next_controller
-op_assign
-l_int|0
 suffix:semicolon
 DECL|variable|ips_num_controllers
 r_static
 r_int
 r_int
 id|ips_num_controllers
-op_assign
-l_int|0
 suffix:semicolon
 DECL|variable|ips_released_controllers
 r_static
 r_int
 r_int
 id|ips_released_controllers
-op_assign
-l_int|0
 suffix:semicolon
 DECL|variable|ips_hotplug
 r_static
@@ -326,8 +320,6 @@ DECL|variable|ips_cd_boot
 r_static
 r_int
 id|ips_cd_boot
-op_assign
-l_int|0
 suffix:semicolon
 multiline_comment|/* Booting from Manager CD         */
 DECL|variable|ips_FlashData
@@ -343,8 +335,6 @@ DECL|variable|ips_FlashDataInUse
 r_static
 r_int
 id|ips_FlashDataInUse
-op_assign
-l_int|0
 suffix:semicolon
 multiline_comment|/* CD Boot - Flash Data In Use Flag */
 DECL|variable|MaxLiteCmds
@@ -360,7 +350,91 @@ r_static
 id|Scsi_Host_Template
 id|ips_driver_template
 op_assign
-id|IPS
+(brace
+dot
+id|detect
+op_assign
+id|ips_detect
+comma
+dot
+id|release
+op_assign
+id|ips_release
+comma
+dot
+id|info
+op_assign
+id|ips_info
+comma
+dot
+id|queuecommand
+op_assign
+id|ips_queue
+comma
+dot
+id|eh_abort_handler
+op_assign
+id|ips_eh_abort
+comma
+dot
+id|eh_host_reset_handler
+op_assign
+id|ips_eh_reset
+comma
+macro_line|#if LINUX_VERSION_CODE &gt; KERNEL_VERSION(2,5,0)
+dot
+id|slave_configure
+op_assign
+id|ips_slave_configure
+comma
+macro_line|#else
+dot
+id|select_queue_depths
+op_assign
+id|ips_select_queue_depth
+comma
+macro_line|#endif
+dot
+id|bios_param
+op_assign
+id|ips_biosparam
+comma
+dot
+id|this_id
+op_assign
+op_minus
+l_int|1
+comma
+dot
+id|sg_tablesize
+op_assign
+id|IPS_MAX_SG
+comma
+dot
+id|cmd_per_lun
+op_assign
+l_int|3
+comma
+dot
+id|use_clustering
+op_assign
+id|ENABLE_CLUSTERING
+comma
+macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,4,20) || (defined CONFIG_HIGHIO)
+dot
+id|highmem_io
+op_assign
+l_int|1
+comma
+macro_line|#endif
+macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,5,0)
+dot
+id|use_new_eh_code
+op_assign
+l_int|1
+comma
+macro_line|#endif
+)brace
 suffix:semicolon
 DECL|variable|Compatable
 id|IPS_DEFINE_COMPAT_TABLE
@@ -1747,7 +1821,7 @@ op_star
 )paren
 suffix:semicolon
 r_static
-r_void
+r_int
 id|ips_intr_copperhead
 c_func
 (paren
@@ -1756,7 +1830,7 @@ op_star
 )paren
 suffix:semicolon
 r_static
-r_void
+r_int
 id|ips_intr_morpheus
 c_func
 (paren
@@ -2666,20 +2740,6 @@ l_string|&quot;ERROR: Can&squot;t Allocate Large Buffer for Flashing&bslash;n&qu
 suffix:semicolon
 )brace
 )brace
-r_if
-c_cond
-(paren
-op_logical_neg
-id|pci_present
-c_func
-(paren
-)paren
-)paren
-r_return
-(paren
-l_int|0
-)paren
-suffix:semicolon
 id|SHT-&gt;proc_info
 op_assign
 id|ips_proc_info
@@ -3117,15 +3177,14 @@ id|scb-&gt;cmd.flush_cache.reserved4
 op_assign
 l_int|0
 suffix:semicolon
-id|printk
+id|IPS_PRINTK
 c_func
 (paren
-id|KERN_NOTICE
-l_string|&quot;(%s%d) Flushing Cache.&bslash;n&quot;
+id|KERN_WARNING
 comma
-id|ips_name
+id|ha-&gt;pcidev
 comma
-id|ha-&gt;host_num
+l_string|&quot;Flushing Cache.&bslash;n&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* send command */
@@ -3146,26 +3205,24 @@ id|IPS_INTR_ON
 op_eq
 id|IPS_FAILURE
 )paren
-id|printk
+id|IPS_PRINTK
 c_func
 (paren
-id|KERN_NOTICE
-l_string|&quot;(%s%d) Incomplete Flush.&bslash;n&quot;
+id|KERN_WARNING
 comma
-id|ips_name
+id|ha-&gt;pcidev
 comma
-id|ha-&gt;host_num
+l_string|&quot;Incomplete Flush.&bslash;n&quot;
 )paren
 suffix:semicolon
-id|printk
+id|IPS_PRINTK
 c_func
 (paren
-id|KERN_NOTICE
-l_string|&quot;(%s%d) Flushing Complete.&bslash;n&quot;
+id|KERN_WARNING
 comma
-id|ips_name
+id|ha-&gt;pcidev
 comma
-id|ha-&gt;host_num
+l_string|&quot;Flushing Complete.&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ips_sh
@@ -3404,15 +3461,14 @@ id|scb-&gt;cmd.flush_cache.reserved4
 op_assign
 l_int|0
 suffix:semicolon
-id|printk
+id|IPS_PRINTK
 c_func
 (paren
-id|KERN_NOTICE
-l_string|&quot;(%s%d) Flushing Cache.&bslash;n&quot;
+id|KERN_WARNING
 comma
-id|ips_name
+id|ha-&gt;pcidev
 comma
-id|ha-&gt;host_num
+l_string|&quot;Flushing Cache.&bslash;n&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* send command */
@@ -3433,27 +3489,25 @@ id|IPS_INTR_ON
 op_eq
 id|IPS_FAILURE
 )paren
-id|printk
+id|IPS_PRINTK
 c_func
 (paren
-id|KERN_NOTICE
-l_string|&quot;(%s%d) Incomplete Flush.&bslash;n&quot;
+id|KERN_WARNING
 comma
-id|ips_name
+id|ha-&gt;pcidev
 comma
-id|ha-&gt;host_num
+l_string|&quot;Incomplete Flush.&bslash;n&quot;
 )paren
 suffix:semicolon
 r_else
-id|printk
+id|IPS_PRINTK
 c_func
 (paren
-id|KERN_NOTICE
-l_string|&quot;(%s%d) Flushing Complete.&bslash;n&quot;
+id|KERN_WARNING
 comma
-id|ips_name
+id|ha-&gt;pcidev
 comma
-id|ha-&gt;host_num
+l_string|&quot;Flushing Complete.&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -3931,15 +3985,14 @@ op_eq
 id|IPS_SUCCESS
 )paren
 (brace
-id|printk
+id|IPS_PRINTK
 c_func
 (paren
 id|KERN_NOTICE
-l_string|&quot;(%s%d) Reset Request - Flushed Cache&bslash;n&quot;
 comma
-id|ips_name
+id|ha-&gt;pcidev
 comma
-id|ha-&gt;host_num
+l_string|&quot;Reset Request - Flushed Cache&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -3957,15 +4010,14 @@ l_int|0
 suffix:semicolon
 multiline_comment|/* Reset the IOCTL Requested Reset Flag */
 multiline_comment|/*&n;    * command must have already been sent&n;    * reset the controller&n;    */
-id|printk
+id|IPS_PRINTK
 c_func
 (paren
 id|KERN_NOTICE
-l_string|&quot;(%s%d) Resetting controller.&bslash;n&quot;
 comma
-id|ips_name
+id|ha-&gt;pcidev
 comma
-id|ha-&gt;host_num
+l_string|&quot;Resetting controller.&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ret
@@ -3989,15 +4041,14 @@ id|Scsi_Cmnd
 op_star
 id|scsi_cmd
 suffix:semicolon
-id|printk
+id|IPS_PRINTK
 c_func
 (paren
 id|KERN_NOTICE
-l_string|&quot;(%s%d) Controller reset failed - controller now offline.&bslash;n&quot;
 comma
-id|ips_name
+id|ha-&gt;pcidev
 comma
-id|ha-&gt;host_num
+l_string|&quot;Controller reset failed - controller now offline.&bslash;n&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Now fail all of the active commands */
@@ -4119,15 +4170,14 @@ id|Scsi_Cmnd
 op_star
 id|scsi_cmd
 suffix:semicolon
-id|printk
+id|IPS_PRINTK
 c_func
 (paren
 id|KERN_NOTICE
-l_string|&quot;(%s%d) Controller reset failed - controller now offline.&bslash;n&quot;
 comma
-id|ips_name
+id|ha-&gt;pcidev
 comma
-id|ha-&gt;host_num
+l_string|&quot;Controller reset failed - controller now offline.&bslash;n&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Now fail all of the active commands */
@@ -5299,6 +5349,9 @@ id|Scsi_Host
 op_star
 id|host
 suffix:semicolon
+r_int
+id|irqstatus
+suffix:semicolon
 id|METHOD_TRACE
 c_func
 (paren
@@ -5378,6 +5431,8 @@ r_return
 id|IRQ_HANDLED
 suffix:semicolon
 )brace
+id|irqstatus
+op_assign
 (paren
 op_star
 id|ha-&gt;func.intr
@@ -5404,7 +5459,11 @@ id|IPS_INTR_ON
 )paren
 suffix:semicolon
 r_return
-id|IRQ_HANDLED
+id|IRQ_RETVAL
+c_func
+(paren
+id|irqstatus
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/****************************************************************************/
@@ -5418,7 +5477,7 @@ multiline_comment|/*                                                            
 multiline_comment|/*   ASSUMES interrupts are disabled                                        */
 multiline_comment|/*                                                                          */
 multiline_comment|/****************************************************************************/
-r_void
+r_int
 DECL|function|ips_intr_copperhead
 id|ips_intr_copperhead
 c_func
@@ -5457,6 +5516,7 @@ op_logical_neg
 id|ha
 )paren
 r_return
+l_int|0
 suffix:semicolon
 r_if
 c_cond
@@ -5465,6 +5525,7 @@ op_logical_neg
 id|ha-&gt;active
 )paren
 r_return
+l_int|0
 suffix:semicolon
 id|intrstatus
 op_assign
@@ -5485,6 +5546,7 @@ id|intrstatus
 (brace
 multiline_comment|/*&n;       * Unexpected/Shared interrupt&n;       */
 r_return
+l_int|0
 suffix:semicolon
 )brace
 r_while
@@ -5573,6 +5635,9 @@ id|scb
 suffix:semicolon
 )brace
 multiline_comment|/* end while */
+r_return
+l_int|1
+suffix:semicolon
 )brace
 multiline_comment|/****************************************************************************/
 multiline_comment|/*                                                                          */
@@ -5585,7 +5650,7 @@ multiline_comment|/*                                                            
 multiline_comment|/*   ASSUMES interrupts are disabled                                        */
 multiline_comment|/*                                                                          */
 multiline_comment|/****************************************************************************/
-r_void
+r_int
 DECL|function|ips_intr_morpheus
 id|ips_intr_morpheus
 c_func
@@ -5624,6 +5689,7 @@ op_logical_neg
 id|ha
 )paren
 r_return
+l_int|0
 suffix:semicolon
 r_if
 c_cond
@@ -5632,6 +5698,7 @@ op_logical_neg
 id|ha-&gt;active
 )paren
 r_return
+l_int|0
 suffix:semicolon
 id|intrstatus
 op_assign
@@ -5652,6 +5719,7 @@ id|intrstatus
 (brace
 multiline_comment|/*&n;       * Unexpected/Shared interrupt&n;       */
 r_return
+l_int|0
 suffix:semicolon
 )brace
 r_while
@@ -5716,15 +5784,14 @@ l_int|1
 )paren
 )paren
 (brace
-id|printk
+id|IPS_PRINTK
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;(%s%d) Spurious interrupt; no ccb.&bslash;n&quot;
 comma
-id|ips_name
+id|ha-&gt;pcidev
 comma
-id|ha-&gt;host_num
+l_string|&quot;Spurious interrupt; no ccb.&bslash;n&quot;
 )paren
 suffix:semicolon
 r_continue
@@ -5760,6 +5827,9 @@ id|scb
 suffix:semicolon
 )brace
 multiline_comment|/* end while */
+r_return
+l_int|1
+suffix:semicolon
 )brace
 multiline_comment|/****************************************************************************/
 multiline_comment|/*                                                                          */
@@ -7072,10 +7142,13 @@ c_func
 id|ha
 )paren
 suffix:semicolon
-id|printk
+id|IPS_PRINTK
 c_func
 (paren
 id|KERN_WARNING
+comma
+id|ha-&gt;pcidev
+comma
 l_string|&quot;failed size sanity check&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -10061,6 +10134,12 @@ multiline_comment|/* Offset 0x1fd after the header (0xc0) */
 )brace
 r_else
 (brace
+id|kfree
+c_func
+(paren
+id|buffer
+)paren
+suffix:semicolon
 r_return
 suffix:semicolon
 )brace
@@ -10270,15 +10349,14 @@ id|IPS_INTR_IORL
 )paren
 )paren
 (brace
-id|printk
+id|IPS_PRINTK
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;(%s%d) unable to read config from controller.&bslash;n&quot;
 comma
-id|ips_name
+id|ha-&gt;pcidev
 comma
-id|ha-&gt;host_num
+l_string|&quot;unable to read config from controller.&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -10301,15 +10379,14 @@ id|IPS_INTR_IORL
 )paren
 )paren
 (brace
-id|printk
+id|IPS_PRINTK
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;(%s%d) unable to read controller status.&bslash;n&quot;
 comma
-id|ips_name
+id|ha-&gt;pcidev
 comma
-id|ha-&gt;host_num
+l_string|&quot;unable to read controller status.&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -10338,15 +10415,14 @@ id|IPS_INTR_IORL
 )paren
 )paren
 (brace
-id|printk
+id|IPS_PRINTK
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;(%s%d) unable to read subsystem parameters.&bslash;n&quot;
 comma
-id|ips_name
+id|ha-&gt;pcidev
 comma
-id|ha-&gt;host_num
+l_string|&quot;unable to read subsystem parameters.&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -10369,15 +10445,14 @@ id|IPS_INTR_IORL
 )paren
 )paren
 (brace
-id|printk
+id|IPS_PRINTK
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;(%s%d) unable to write driver info to controller.&bslash;n&quot;
 comma
-id|ips_name
+id|ha-&gt;pcidev
 comma
-id|ha-&gt;host_num
+l_string|&quot;unable to write driver info to controller.&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -12811,15 +12886,14 @@ op_logical_neg
 id|scb
 )paren
 (brace
-id|printk
+id|IPS_PRINTK
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;(%s%d) Spurious interrupt; scb NULL.&bslash;n&quot;
 comma
-id|ips_name
+id|ha-&gt;pcidev
 comma
-id|ha-&gt;host_num
+l_string|&quot;Spurious interrupt; scb NULL.&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -12834,15 +12908,14 @@ l_int|NULL
 )paren
 (brace
 multiline_comment|/* unexpected interrupt */
-id|printk
+id|IPS_PRINTK
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;(%s%d) Spurious interrupt; scsi_cmd not set.&bslash;n&quot;
 comma
-id|ips_name
+id|ha-&gt;pcidev
 comma
-id|ha-&gt;host_num
+l_string|&quot;Spurious interrupt; scsi_cmd not set.&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -18567,15 +18640,14 @@ OL
 id|IPS_GOOD_POST_STATUS
 )paren
 (brace
-id|printk
+id|IPS_PRINTK
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;(%s%d) reset controller fails (post status %x %x).&bslash;n&quot;
 comma
-id|ips_name
+id|ha-&gt;pcidev
 comma
-id|ha-&gt;host_num
+l_string|&quot;reset controller fails (post status %x %x).&bslash;n&quot;
 comma
 id|PostByte
 (braket
@@ -18966,15 +19038,14 @@ OL
 id|IPS_GOOD_POST_STATUS
 )paren
 (brace
-id|printk
+id|IPS_PRINTK
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;(%s%d) reset controller fails (post status %x %x).&bslash;n&quot;
 comma
-id|ips_name
+id|ha-&gt;pcidev
 comma
-id|ha-&gt;host_num
+l_string|&quot;reset controller fails (post status %x %x).&bslash;n&quot;
 comma
 id|PostByte
 (braket
@@ -19299,15 +19370,14 @@ l_int|45
 )paren
 (brace
 multiline_comment|/* error occurred */
-id|printk
+id|IPS_PRINTK
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;(%s%d) timeout waiting for post.&bslash;n&quot;
 comma
-id|ips_name
+id|ha-&gt;pcidev
 comma
-id|ha-&gt;host_num
+l_string|&quot;timeout waiting for post.&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -19335,10 +19405,13 @@ l_int|0x4F00
 )paren
 (brace
 multiline_comment|/* If Flashing the Battery PIC         */
-id|printk
+id|IPS_PRINTK
 c_func
 (paren
 id|KERN_WARNING
+comma
+id|ha-&gt;pcidev
+comma
 l_string|&quot;Flashing Battery PIC, Please wait ...&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -19411,15 +19484,14 @@ op_ge
 l_int|120
 )paren
 (brace
-id|printk
+id|IPS_PRINTK
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;(%s%d) timeout waiting for Battery PIC Flash&bslash;n&quot;
 comma
-id|ips_name
+id|ha-&gt;pcidev
 comma
-id|ha-&gt;host_num
+l_string|&quot;timeout waiting for Battery PIC Flash&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -19459,15 +19531,14 @@ l_int|8
 )paren
 )paren
 (brace
-id|printk
+id|IPS_PRINTK
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;(%s%d) reset controller fails (post status %x).&bslash;n&quot;
 comma
-id|ips_name
+id|ha-&gt;pcidev
 comma
-id|ha-&gt;host_num
+l_string|&quot;reset controller fails (post status %x).&bslash;n&quot;
 comma
 id|Post
 )paren
@@ -19530,15 +19601,14 @@ l_int|240
 )paren
 (brace
 multiline_comment|/* error occurred */
-id|printk
+id|IPS_PRINTK
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;(%s%d) timeout waiting for config.&bslash;n&quot;
 comma
-id|ips_name
+id|ha-&gt;pcidev
 comma
-id|ha-&gt;host_num
+l_string|&quot;timeout waiting for config.&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -20582,28 +20652,26 @@ id|IPS_BIT_START_STOP
 )paren
 r_break
 suffix:semicolon
-id|printk
+id|IPS_PRINTK
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;(%s%d) ips_issue val [0x%x].&bslash;n&quot;
 comma
-id|ips_name
+id|ha-&gt;pcidev
 comma
-id|ha-&gt;host_num
+l_string|&quot;ips_issue val [0x%x].&bslash;n&quot;
 comma
 id|val
 )paren
 suffix:semicolon
-id|printk
+id|IPS_PRINTK
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;(%s%d) ips_issue semaphore chk timeout.&bslash;n&quot;
 comma
-id|ips_name
+id|ha-&gt;pcidev
 comma
-id|ha-&gt;host_num
+l_string|&quot;ips_issue semaphore chk timeout.&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -20785,28 +20853,26 @@ id|IPS_BIT_START_STOP
 )paren
 r_break
 suffix:semicolon
-id|printk
+id|IPS_PRINTK
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;(%s%d) ips_issue val [0x%x].&bslash;n&quot;
 comma
-id|ips_name
+id|ha-&gt;pcidev
 comma
-id|ha-&gt;host_num
+l_string|&quot;ips_issue val [0x%x].&bslash;n&quot;
 comma
 id|val
 )paren
 suffix:semicolon
-id|printk
+id|IPS_PRINTK
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;(%s%d) ips_issue semaphore chk timeout.&bslash;n&quot;
 comma
-id|ips_name
+id|ha-&gt;pcidev
 comma
-id|ha-&gt;host_num
+l_string|&quot;ips_issue semaphore chk timeout.&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -21496,15 +21562,14 @@ id|intr
 )paren
 )paren
 (brace
-id|printk
+id|IPS_PRINTK
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;(%s%d) unable to read NVRAM page 5.&bslash;n&quot;
 comma
-id|ips_name
+id|ha-&gt;pcidev
 comma
-id|ha-&gt;host_num
+l_string|&quot;unable to read NVRAM page 5.&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -21706,15 +21771,14 @@ id|intr
 )paren
 )paren
 (brace
-id|printk
+id|IPS_PRINTK
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;(%s%d) unable to write NVRAM page 5.&bslash;n&quot;
 comma
-id|ips_name
+id|ha-&gt;pcidev
 comma
-id|ha-&gt;host_num
+l_string|&quot;unable to write NVRAM page 5.&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -25721,17 +25785,23 @@ l_int|8
 op_assign
 l_int|0
 suffix:semicolon
-id|printk
+id|IPS_PRINTK
 c_func
 (paren
 id|KERN_WARNING
+comma
+id|ha-&gt;pcidev
+comma
 l_string|&quot;Warning ! ! ! ServeRAID Version Mismatch&bslash;n&quot;
 )paren
 suffix:semicolon
-id|printk
+id|IPS_PRINTK
 c_func
 (paren
 id|KERN_WARNING
+comma
+id|ha-&gt;pcidev
+comma
 l_string|&quot;Bios = %s, Firmware = %s, Device Driver = %s%s&bslash;n&quot;
 comma
 id|BiosString
@@ -25743,10 +25813,13 @@ comma
 id|IPS_VERSION_LOW
 )paren
 suffix:semicolon
-id|printk
+id|IPS_PRINTK
 c_func
 (paren
 id|KERN_WARNING
+comma
+id|ha-&gt;pcidev
+comma
 l_string|&quot;These levels should match to avoid possible compatibility problems.&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -26346,8 +26419,8 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
-(brace
-)brace
+r_break
+suffix:semicolon
 )brace
 )brace
 )brace
@@ -26524,6 +26597,11 @@ id|ha
 comma
 op_star
 id|oldha
+op_assign
+id|ips_ha
+(braket
+id|index
+)braket
 suffix:semicolon
 id|sh
 op_assign
@@ -26546,10 +26624,13 @@ op_logical_neg
 id|sh
 )paren
 (brace
-id|printk
+id|IPS_PRINTK
 c_func
 (paren
 id|KERN_WARNING
+comma
+id|oldha-&gt;pcidev
+comma
 l_string|&quot;Unable to register controller with SCSI subsystem&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -26558,13 +26639,6 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
-id|oldha
-op_assign
-id|ips_ha
-(braket
-id|index
-)braket
-suffix:semicolon
 id|ha
 op_assign
 id|IPS_HA
@@ -26613,10 +26687,13 @@ id|ha
 )paren
 )paren
 (brace
-id|printk
+id|IPS_PRINTK
 c_func
 (paren
 id|KERN_WARNING
+comma
+id|ha-&gt;pcidev
+comma
 l_string|&quot;Unable to install interrupt handler&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -26651,13 +26728,12 @@ id|index
 op_assign
 id|ha
 suffix:semicolon
-id|scsi_set_device
+id|IPS_SCSI_SET_DEVICE
 c_func
 (paren
 id|sh
 comma
-op_amp
-id|ha-&gt;pcidev-&gt;dev
+id|ha
 )paren
 suffix:semicolon
 multiline_comment|/* Store away needed values for later use */
@@ -27386,10 +27462,13 @@ l_string|&quot;ips&quot;
 )paren
 )paren
 (brace
-id|printk
+id|IPS_PRINTK
 c_func
 (paren
 id|KERN_WARNING
+comma
+id|pci_dev
+comma
 l_string|&quot;Couldn&squot;t allocate IO Memory space %x len %d.&bslash;n&quot;
 comma
 id|mem_addr
@@ -27464,10 +27543,13 @@ l_string|&quot;ips&quot;
 )paren
 )paren
 (brace
-id|printk
+id|IPS_PRINTK
 c_func
 (paren
 id|KERN_WARNING
+comma
+id|pci_dev
+comma
 l_string|&quot;Couldn&squot;t allocate IO space %x len %d.&bslash;n&quot;
 comma
 id|io_addr
@@ -27497,10 +27579,13 @@ id|revision_id
 )paren
 )paren
 (brace
-id|printk
+id|IPS_PRINTK
 c_func
 (paren
 id|KERN_WARNING
+comma
+id|pci_dev
+comma
 l_string|&quot;Can&squot;t get revision id.&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -27535,10 +27620,13 @@ op_eq
 l_int|NULL
 )paren
 (brace
-id|printk
+id|IPS_PRINTK
 c_func
 (paren
 id|KERN_WARNING
+comma
+id|pci_dev
+comma
 l_string|&quot;Unable to allocate temporary ha struct&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -27674,6 +27762,9 @@ suffix:semicolon
 )brace
 r_else
 (brace
+r_if
+c_cond
+(paren
 id|pci_set_dma_mask
 c_func
 (paren
@@ -27684,7 +27775,27 @@ id|u64
 )paren
 l_int|0xffffffff
 )paren
+op_ne
+l_int|0
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;Unable to set DMA Mask&bslash;n&quot;
+)paren
 suffix:semicolon
+r_return
+id|ips_abort_init
+c_func
+(paren
+id|ha
+comma
+id|index
+)paren
+suffix:semicolon
+)brace
 )brace
 id|ha-&gt;enq
 op_assign
@@ -27706,10 +27817,13 @@ op_logical_neg
 id|ha-&gt;enq
 )paren
 (brace
-id|printk
+id|IPS_PRINTK
 c_func
 (paren
 id|KERN_WARNING
+comma
+id|pci_dev
+comma
 l_string|&quot;Unable to allocate host inquiry structure&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -27751,10 +27865,13 @@ op_logical_neg
 id|ha-&gt;adapt
 )paren
 (brace
-id|printk
+id|IPS_PRINTK
 c_func
 (paren
 id|KERN_WARNING
+comma
+id|pci_dev
+comma
 l_string|&quot;Unable to allocate host adapt &amp; dummy structures&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -27804,10 +27921,13 @@ op_logical_neg
 id|ha-&gt;conf
 )paren
 (brace
-id|printk
+id|IPS_PRINTK
 c_func
 (paren
 id|KERN_WARNING
+comma
+id|pci_dev
+comma
 l_string|&quot;Unable to allocate host conf structure&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -27841,10 +27961,13 @@ op_logical_neg
 id|ha-&gt;nvram
 )paren
 (brace
-id|printk
+id|IPS_PRINTK
 c_func
 (paren
 id|KERN_WARNING
+comma
+id|pci_dev
+comma
 l_string|&quot;Unable to allocate host NVRAM structure&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -27878,10 +28001,13 @@ op_logical_neg
 id|ha-&gt;subsys
 )paren
 (brace
-id|printk
+id|IPS_PRINTK
 c_func
 (paren
 id|KERN_WARNING
+comma
+id|pci_dev
+comma
 l_string|&quot;Unable to allocate host subsystem structure&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -27943,10 +28069,13 @@ op_logical_neg
 id|ha-&gt;ioctl_data
 )paren
 (brace
-id|printk
+id|IPS_PRINTK
 c_func
 (paren
 id|KERN_WARNING
+comma
+id|pci_dev
+comma
 l_string|&quot;Unable to allocate IOCTL data&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -28045,10 +28174,13 @@ id|ha
 )paren
 (brace
 multiline_comment|/*&n;           * Initialization failed&n;           */
-id|printk
+id|IPS_PRINTK
 c_func
 (paren
 id|KERN_WARNING
+comma
+id|pci_dev
+comma
 l_string|&quot;Unable to initialize controller&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -28148,10 +28280,13 @@ id|ha
 )paren
 )paren
 (brace
-id|printk
+id|IPS_PRINTK
 c_func
 (paren
 id|KERN_WARNING
+comma
+id|ha-&gt;pcidev
+comma
 l_string|&quot;Unable to install interrupt handler&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -28181,10 +28316,13 @@ id|ha
 )paren
 )paren
 (brace
-id|printk
+id|IPS_PRINTK
 c_func
 (paren
 id|KERN_WARNING
+comma
+id|ha-&gt;pcidev
+comma
 l_string|&quot;Unable to allocate a CCB&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -28217,10 +28355,13 @@ id|ha
 )paren
 )paren
 (brace
-id|printk
+id|IPS_PRINTK
 c_func
 (paren
 id|KERN_WARNING
+comma
+id|ha-&gt;pcidev
+comma
 l_string|&quot;Unable to initialize controller&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -28263,10 +28404,13 @@ id|ha
 )paren
 )paren
 (brace
-id|printk
+id|IPS_PRINTK
 c_func
 (paren
 id|KERN_WARNING
+comma
+id|ha-&gt;pcidev
+comma
 l_string|&quot;Unable to allocate CCBs&bslash;n&quot;
 )paren
 suffix:semicolon

@@ -41,6 +41,7 @@ macro_line|#include &quot;scsi.h&quot;
 macro_line|#include &quot;hosts.h&quot;
 macro_line|#include &lt;scsi/scsi_ioctl.h&gt;
 macro_line|#include &lt;scsi/sg.h&gt;
+macro_line|#include &quot;scsi_logging.h&quot;
 macro_line|#ifdef CONFIG_PROC_FS
 macro_line|#include &lt;linux/proc_fs.h&gt;
 r_static
@@ -7366,22 +7367,6 @@ r_return
 op_minus
 id|ENOMEM
 suffix:semicolon
-id|error
-op_assign
-id|scsi_slave_attach
-c_func
-(paren
-id|scsidp
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|error
-)paren
-r_goto
-id|out_put
-suffix:semicolon
 id|write_lock_irqsave
 c_func
 (paren
@@ -7461,7 +7446,7 @@ op_minus
 id|ENOMEM
 suffix:semicolon
 r_goto
-id|out_detach
+id|out
 suffix:semicolon
 )brace
 id|write_lock_irqsave
@@ -7611,7 +7596,7 @@ op_minus
 id|ENODEV
 suffix:semicolon
 r_goto
-id|out_detach
+id|out
 suffix:semicolon
 )brace
 r_if
@@ -7712,7 +7697,7 @@ op_minus
 id|ENOMEM
 suffix:semicolon
 r_goto
-id|out_detach
+id|out
 suffix:semicolon
 )brace
 id|SCSI_LOG_TIMEOUT
@@ -7978,15 +7963,7 @@ suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
-id|out_detach
-suffix:colon
-id|scsi_slave_detach
-c_func
-(paren
-id|scsidp
-)paren
-suffix:semicolon
-id|out_put
+id|out
 suffix:colon
 id|put_disk
 c_func
@@ -8269,12 +8246,6 @@ op_assign
 l_int|NULL
 suffix:semicolon
 )brace
-id|scsi_slave_detach
-c_func
-(paren
-id|scsidp
-)paren
-suffix:semicolon
 id|sg_nr_dev
 op_decrement
 suffix:semicolon

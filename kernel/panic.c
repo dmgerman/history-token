@@ -300,6 +300,7 @@ op_star
 id|print_tainted
 c_func
 (paren
+r_void
 )paren
 (brace
 r_static

@@ -166,7 +166,7 @@ r_new
 suffix:semicolon
 )brace
 DECL|macro|atomic_add_return
-mdefine_line|#define atomic_add_return(i,v)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;((__builtin_constant_p(i) &amp;&amp;&t;&t;&t;&t;&t;&bslash;&n;&t;  (   (i ==  1) || (i ==  4) || (i ==  8) || (i ==  16)&t;&t;&bslash;&n;&t;   || (i == -1) || (i == -4) || (i == -8) || (i == -16)))&t;&bslash;&n;&t; ? ia64_fetch_and_add(i, &amp;(v)-&gt;counter)&t;&t;&t;&t;&bslash;&n;&t; : ia64_atomic_add(i, v))
+mdefine_line|#define atomic_add_return(i,v)&t;&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;int __ia64_aar_i = (i);&t;&t;&t;&t;&t;&t;&bslash;&n;&t;(__builtin_constant_p(i)&t;&t;&t;&t;&t;&bslash;&n;&t; &amp;&amp; (   (__ia64_aar_i ==  1) || (__ia64_aar_i ==   4)&t;&t;&bslash;&n;&t;     || (__ia64_aar_i ==  8) || (__ia64_aar_i ==  16)&t;&t;&bslash;&n;&t;     || (__ia64_aar_i == -1) || (__ia64_aar_i ==  -4)&t;&t;&bslash;&n;&t;     || (__ia64_aar_i == -8) || (__ia64_aar_i == -16)))&t;&t;&bslash;&n;&t;&t;? ia64_fetch_and_add(__ia64_aar_i, &amp;(v)-&gt;counter)&t;&bslash;&n;&t;&t;: ia64_atomic_add(__ia64_aar_i, v);&t;&t;&t;&bslash;&n;})
 multiline_comment|/*&n; * Atomically add I to V and return TRUE if the resulting value is&n; * negative.&n; */
 r_static
 id|__inline__
@@ -195,7 +195,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|macro|atomic_sub_return
-mdefine_line|#define atomic_sub_return(i,v)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;((__builtin_constant_p(i) &amp;&amp;&t;&t;&t;&t;&t;&bslash;&n;&t;  (   (i ==  1) || (i ==  4) || (i ==  8) || (i ==  16)&t;&t;&bslash;&n;&t;   || (i == -1) || (i == -4) || (i == -8) || (i == -16)))&t;&bslash;&n;&t; ? ia64_fetch_and_add(-(i), &amp;(v)-&gt;counter)&t;&t;&t;&bslash;&n;&t; : ia64_atomic_sub(i, v))
+mdefine_line|#define atomic_sub_return(i,v)&t;&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;int __ia64_asr_i = (i);&t;&t;&t;&t;&t;&t;&bslash;&n;&t;(__builtin_constant_p(i)&t;&t;&t;&t;&t;&bslash;&n;&t; &amp;&amp; (   (__ia64_asr_i ==   1) || (__ia64_asr_i ==   4)&t;&t;&bslash;&n;&t;     || (__ia64_asr_i ==   8) || (__ia64_asr_i ==  16)&t;&t;&bslash;&n;&t;     || (__ia64_asr_i ==  -1) || (__ia64_asr_i ==  -4)&t;&t;&bslash;&n;&t;     || (__ia64_asr_i ==  -8) || (__ia64_asr_i == -16)))&t;&bslash;&n;&t;&t;? ia64_fetch_and_add(-__ia64_asr_i, &amp;(v)-&gt;counter)&t;&bslash;&n;&t;&t;: ia64_atomic_sub(__ia64_asr_i, v);&t;&t;&t;&bslash;&n;})
 DECL|macro|atomic_dec_return
 mdefine_line|#define atomic_dec_return(v)&t;&t;atomic_sub_return(1, (v))
 DECL|macro|atomic_inc_return

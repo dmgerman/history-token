@@ -1041,6 +1041,16 @@ comma
 id|thread-&gt;session
 )paren
 suffix:semicolon
+id|list_add_tail
+c_func
+(paren
+op_amp
+id|thread-&gt;tasks
+comma
+op_amp
+id|init_task.tasks
+)paren
+suffix:semicolon
 id|attach_pid
 c_func
 (paren

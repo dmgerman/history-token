@@ -196,7 +196,7 @@ comma
 r_struct
 id|sockaddr
 op_star
-id|umyaddr
+id|myaddr
 comma
 r_int
 id|sockaddr_len
@@ -217,7 +217,7 @@ comma
 r_struct
 id|sockaddr
 op_star
-id|uservaddr
+id|vaddr
 comma
 r_int
 id|sockaddr_len
@@ -280,11 +280,11 @@ comma
 r_struct
 id|sockaddr
 op_star
-id|uaddr
+id|addr
 comma
 r_int
 op_star
-id|usockaddr_len
+id|sockaddr_len
 comma
 r_int
 id|peer
@@ -386,6 +386,7 @@ r_int
 id|optname
 comma
 r_char
+id|__user
 op_star
 id|optval
 comma
@@ -412,10 +413,12 @@ r_int
 id|optname
 comma
 r_char
+id|__user
 op_star
 id|optval
 comma
 r_int
+id|__user
 op_star
 id|optlen
 )paren

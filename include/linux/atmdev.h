@@ -21,8 +21,6 @@ multiline_comment|/* OC12 link rate: 622080000 bps&n;&t;&t;&t;   SONET overhead:
 DECL|macro|ATM_DS3_PCR
 mdefine_line|#define ATM_DS3_PCR&t;(8000*12)
 multiline_comment|/* DS3: 12 cells in a 125 usec time slot */
-DECL|macro|ATM_PDU_OVHD
-mdefine_line|#define ATM_PDU_OVHD&t;0&t;/* number of bytes to charge against buffer&n;&t;&t;&t;&t;   quota per PDU */
 DECL|macro|atm_sk
 mdefine_line|#define atm_sk(__sk) ((struct atm_vcc *)(__sk)-&gt;protinfo)
 DECL|macro|ATM_SD
@@ -451,28 +449,6 @@ id|skb
 )paren
 suffix:semicolon
 multiline_comment|/* optional */
-DECL|member|alloc_tx
-r_struct
-id|sk_buff
-op_star
-(paren
-op_star
-id|alloc_tx
-)paren
-(paren
-r_struct
-id|atm_vcc
-op_star
-id|vcc
-comma
-r_int
-r_int
-id|size
-)paren
-suffix:semicolon
-multiline_comment|/* TX allocation routine - can be */
-multiline_comment|/* modified by protocol or by driver.*/
-multiline_comment|/* NOTE: this interface will change */
 DECL|member|push_oam
 r_int
 (paren
@@ -724,6 +700,16 @@ r_int
 id|link_rate
 suffix:semicolon
 multiline_comment|/* link rate (default: OC3) */
+DECL|member|refcnt
+id|atomic_t
+id|refcnt
+suffix:semicolon
+multiline_comment|/* reference count */
+DECL|member|lock
+id|spinlock_t
+id|lock
+suffix:semicolon
+multiline_comment|/* protect internal members */
 macro_line|#ifdef CONFIG_PROC_FS
 DECL|member|proc_entry
 r_struct
@@ -1066,25 +1052,6 @@ r_int
 id|flags
 )paren
 suffix:semicolon
-DECL|member|free_rx_skb
-r_void
-(paren
-op_star
-id|free_rx_skb
-)paren
-(paren
-r_struct
-id|atm_vcc
-op_star
-id|vcc
-comma
-r_struct
-id|sk_buff
-op_star
-id|skb
-)paren
-suffix:semicolon
-multiline_comment|/* @@@ temporary hack */
 DECL|member|proc_read
 r_int
 (paren
@@ -1191,11 +1158,6 @@ op_star
 id|vcc
 suffix:semicolon
 multiline_comment|/* ATM VCC */
-DECL|member|iovcnt
-r_int
-id|iovcnt
-suffix:semicolon
-multiline_comment|/* 0 for &quot;normal&quot; operation */
 DECL|member|atm_options
 r_int
 r_int
@@ -1236,7 +1198,7 @@ multiline_comment|/* number == -1: pick first available */
 r_struct
 id|atm_dev
 op_star
-id|atm_find_dev
+id|atm_dev_lookup
 c_func
 (paren
 r_int
@@ -1281,7 +1243,7 @@ suffix:semicolon
 multiline_comment|/*&n; * This is approximately the algorithm used by alloc_skb.&n; *&n; */
 DECL|function|atm_guess_pdu2truesize
 r_static
-id|__inline__
+r_inline
 r_int
 id|atm_guess_pdu2truesize
 c_func
@@ -1311,7 +1273,7 @@ suffix:semicolon
 )brace
 DECL|function|atm_force_charge
 r_static
-id|__inline__
+r_inline
 r_void
 id|atm_force_charge
 c_func
@@ -1329,8 +1291,6 @@ id|atomic_add
 c_func
 (paren
 id|truesize
-op_plus
-id|ATM_PDU_OVHD
 comma
 op_amp
 id|vcc-&gt;sk-&gt;rmem_alloc
@@ -1339,7 +1299,7 @@ suffix:semicolon
 )brace
 DECL|function|atm_return
 r_static
-id|__inline__
+r_inline
 r_void
 id|atm_return
 c_func
@@ -1357,8 +1317,6 @@ id|atomic_sub
 c_func
 (paren
 id|truesize
-op_plus
-id|ATM_PDU_OVHD
 comma
 op_amp
 id|vcc-&gt;sk-&gt;rmem_alloc
@@ -1367,7 +1325,7 @@ suffix:semicolon
 )brace
 DECL|function|atm_may_send
 r_static
-id|__inline__
+r_inline
 r_int
 id|atm_may_send
 c_func
@@ -1383,6 +1341,7 @@ id|size
 )paren
 (brace
 r_return
+(paren
 id|size
 op_plus
 id|atomic_read
@@ -1391,10 +1350,80 @@ c_func
 op_amp
 id|vcc-&gt;sk-&gt;wmem_alloc
 )paren
-op_plus
-id|ATM_PDU_OVHD
+)paren
 OL
 id|vcc-&gt;sk-&gt;sndbuf
+suffix:semicolon
+)brace
+DECL|function|atm_dev_hold
+r_static
+r_inline
+r_void
+id|atm_dev_hold
+c_func
+(paren
+r_struct
+id|atm_dev
+op_star
+id|dev
+)paren
+(brace
+id|atomic_inc
+c_func
+(paren
+op_amp
+id|dev-&gt;refcnt
+)paren
+suffix:semicolon
+)brace
+DECL|function|atm_dev_release
+r_static
+r_inline
+r_void
+id|atm_dev_release
+c_func
+(paren
+r_struct
+id|atm_dev
+op_star
+id|dev
+)paren
+(brace
+id|atomic_dec
+c_func
+(paren
+op_amp
+id|dev-&gt;refcnt
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|atomic_read
+c_func
+(paren
+op_amp
+id|dev-&gt;refcnt
+)paren
+op_eq
+l_int|1
+)paren
+op_logical_and
+id|test_bit
+c_func
+(paren
+id|ATM_DF_CLOSE
+comma
+op_amp
+id|dev-&gt;flags
+)paren
+)paren
+id|shutdown_atm_dev
+c_func
+(paren
+id|dev
+)paren
 suffix:semicolon
 )brace
 r_int

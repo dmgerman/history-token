@@ -1946,6 +1946,8 @@ comma
 id|arg
 comma
 id|TERMIOS_FLUSH
+op_or
+id|TERMIOS_WAIT
 )paren
 suffix:semicolon
 r_case
@@ -2005,6 +2007,8 @@ comma
 id|arg
 comma
 id|TERMIOS_FLUSH
+op_or
+id|TERMIOS_WAIT
 op_or
 id|TERMIOS_TERMIO
 )paren

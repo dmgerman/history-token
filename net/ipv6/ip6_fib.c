@@ -1176,7 +1176,6 @@ id|RTF_ALLONLINK
 )paren
 )paren
 (brace
-multiline_comment|/*&n;&t;&t; * The top fib of ip6 routing table includes ip6_null_entry.&n;&t;&t; */
 id|fn-&gt;leaf
 op_assign
 id|rt
@@ -1419,6 +1418,10 @@ r_struct
 id|nlmsghdr
 op_star
 id|nlh
+comma
+r_void
+op_star
+id|_rtattr
 )paren
 (brace
 r_struct
@@ -2975,6 +2978,10 @@ r_struct
 id|nlmsghdr
 op_star
 id|nlh
+comma
+r_void
+op_star
+id|_rtattr
 )paren
 (brace
 r_struct
@@ -3225,6 +3232,10 @@ r_struct
 id|nlmsghdr
 op_star
 id|nlh
+comma
+r_void
+op_star
+id|_rtattr
 )paren
 (brace
 r_struct
@@ -3345,6 +3356,8 @@ comma
 id|rtp
 comma
 id|nlh
+comma
+id|_rtattr
 )paren
 suffix:semicolon
 r_return
@@ -3776,6 +3789,8 @@ id|fib6_del
 c_func
 (paren
 id|rt
+comma
+l_int|NULL
 comma
 l_int|NULL
 )paren
@@ -4257,12 +4272,6 @@ c_func
 r_void
 )paren
 (brace
-r_if
-c_cond
-(paren
-op_logical_neg
-id|fib6_node_kmem
-)paren
 id|fib6_node_kmem
 op_assign
 id|kmem_cache_create
@@ -4300,6 +4309,12 @@ c_func
 (paren
 op_amp
 id|ip6_fib_timer
+)paren
+suffix:semicolon
+id|kmem_cache_destroy
+c_func
+(paren
+id|fib6_node_kmem
 )paren
 suffix:semicolon
 )brace

@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/rwsem.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/binfmts.h&gt;
+macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;asm/segment.h&gt; 
 macro_line|#include &lt;asm/ptrace.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
@@ -759,26 +760,6 @@ id|TIF_IA32
 )paren
 suffix:semicolon
 )brace
-r_extern
-r_void
-id|put_dirty_page
-c_func
-(paren
-r_struct
-id|task_struct
-op_star
-id|tsk
-comma
-r_struct
-id|page
-op_star
-id|page
-comma
-r_int
-r_int
-id|address
-)paren
-suffix:semicolon
 DECL|function|setup_arg_pages
 r_int
 id|setup_arg_pages
@@ -1024,6 +1005,8 @@ comma
 id|page
 comma
 id|stack_base
+comma
+id|PAGE_COPY_EXEC
 )paren
 suffix:semicolon
 )brace

@@ -458,8 +458,6 @@ comma
 id|conn
 )paren
 suffix:semicolon
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 r_return
 id|conn
 suffix:semicolon
@@ -613,8 +611,6 @@ c_func
 (paren
 id|conn
 )paren
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 r_return
 l_int|0
@@ -1397,8 +1393,6 @@ c_func
 id|sk-&gt;protinfo
 )paren
 suffix:semicolon
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 )brace
 DECL|function|sco_sock_cleanup_listen
 r_static
@@ -1718,6 +1712,14 @@ id|sk
 r_return
 l_int|NULL
 suffix:semicolon
+id|sk_set_owner
+c_func
+(paren
+id|sk
+comma
+id|THIS_MODULE
+)paren
+suffix:semicolon
 id|sk-&gt;destruct
 op_assign
 id|sco_sock_destruct
@@ -1744,8 +1746,6 @@ id|sco_sk_list
 comma
 id|sk
 )paren
-suffix:semicolon
-id|MOD_INC_USE_COUNT
 suffix:semicolon
 r_return
 id|sk
@@ -3979,6 +3979,11 @@ id|file_operations
 id|sco_seq_fops
 op_assign
 (brace
+dot
+id|owner
+op_assign
+id|THIS_MODULE
+comma
 dot
 id|open
 op_assign

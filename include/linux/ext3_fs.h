@@ -1181,6 +1181,8 @@ id|seed
 suffix:semicolon
 )brace
 suffix:semicolon
+DECL|macro|EXT3_HTREE_EOF
+mdefine_line|#define EXT3_HTREE_EOF&t;0x7fffffff
 macro_line|#ifdef __KERNEL__
 multiline_comment|/*&n; * Control parameters used by ext3_htree_next_block&n; */
 DECL|macro|HASH_NB_ALWAYS

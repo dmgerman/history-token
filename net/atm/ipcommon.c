@@ -184,6 +184,13 @@ id|flags
 )paren
 suffix:semicolon
 )brace
+DECL|variable|llc_oui
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|llc_oui
+)paren
+suffix:semicolon
 DECL|variable|skb_migrate
 id|EXPORT_SYMBOL
 c_func

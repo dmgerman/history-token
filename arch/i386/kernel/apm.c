@@ -22,6 +22,7 @@ macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/desc.h&gt;
+macro_line|#include &lt;asm/suspend.h&gt;
 macro_line|#include &quot;io_ports.h&quot;
 r_extern
 id|spinlock_t
@@ -2726,7 +2727,6 @@ macro_line|#endif
 )brace
 DECL|function|reinit_timer
 r_static
-r_inline
 r_void
 id|reinit_timer
 c_func
@@ -2735,6 +2735,23 @@ r_void
 )paren
 (brace
 macro_line|#ifdef INIT_TIMER_AFTER_SUSPEND
+r_int
+r_int
+id|flags
+suffix:semicolon
+r_extern
+id|spinlock_t
+id|i8253_lock
+suffix:semicolon
+id|spin_lock_irqsave
+c_func
+(paren
+op_amp
+id|i8253_lock
+comma
+id|flags
+)paren
+suffix:semicolon
 multiline_comment|/* set the clock to 100 Hz */
 id|outb_p
 c_func
@@ -2783,6 +2800,15 @@ id|udelay
 c_func
 (paren
 l_int|10
+)paren
+suffix:semicolon
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|i8253_lock
+comma
+id|flags
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -2913,12 +2939,22 @@ op_amp
 id|xtime_lock
 )paren
 suffix:semicolon
+id|save_processor_state
+c_func
+(paren
+)paren
+suffix:semicolon
 id|err
 op_assign
 id|set_system_power_state
 c_func
 (paren
 id|APM_STATE_SUSPEND
+)paren
+suffix:semicolon
+id|restore_processor_state
+c_func
+(paren
 )paren
 suffix:semicolon
 id|write_seqlock_irq

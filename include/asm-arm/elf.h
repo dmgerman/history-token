@@ -25,6 +25,12 @@ DECL|macro|EM_ARM
 mdefine_line|#define EM_ARM&t;40
 DECL|macro|EF_ARM_APCS26
 mdefine_line|#define EF_ARM_APCS26 0x08
+DECL|macro|R_ARM_NONE
+mdefine_line|#define R_ARM_NONE&t;0
+DECL|macro|R_ARM_PC24
+mdefine_line|#define R_ARM_PC24&t;1
+DECL|macro|R_ARM_ABS32
+mdefine_line|#define R_ARM_ABS32&t;2
 DECL|macro|ELF_NGREG
 mdefine_line|#define ELF_NGREG (sizeof (struct pt_regs) / sizeof(elf_greg_t))
 DECL|typedef|elf_gregset_t

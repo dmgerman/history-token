@@ -319,7 +319,7 @@ r_struct
 id|spinlock_t
 id|lock
 suffix:semicolon
-r_int
+id|u32
 id|lock_owner
 suffix:semicolon
 r_int

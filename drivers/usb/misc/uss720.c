@@ -601,6 +601,7 @@ l_int|0x20
 (brace
 multiline_comment|/* This mode resets the FIFO, so we may&n;&t;&t; * have to wait for it to drain first. */
 r_int
+r_int
 id|expire
 op_assign
 id|jiffies

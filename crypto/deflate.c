@@ -185,9 +185,9 @@ id|stream-&gt;workspace
 comma
 l_int|0
 comma
-r_sizeof
+id|zlib_deflate_workspacesize
+c_func
 (paren
-id|stream-&gt;workspace
 )paren
 )paren
 suffix:semicolon
@@ -312,9 +312,9 @@ id|stream-&gt;workspace
 comma
 l_int|0
 comma
-r_sizeof
+id|zlib_inflate_workspacesize
+c_func
 (paren
-id|stream-&gt;workspace
 )paren
 )paren
 suffix:semicolon

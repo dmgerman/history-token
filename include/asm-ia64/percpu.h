@@ -3,7 +3,7 @@ DECL|macro|_ASM_IA64_PERCPU_H
 mdefine_line|#define _ASM_IA64_PERCPU_H
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/compiler.h&gt;
-multiline_comment|/*&n; * Copyright (C) 2002 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; */
+multiline_comment|/*&n; * Copyright (C) 2002-2003 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; */
 macro_line|#ifdef __ASSEMBLY__
 DECL|macro|THIS_CPU
 mdefine_line|#define THIS_CPU(var)&t;(var##__per_cpu)  /* use this to mark accesses to per-CPU variables... */
@@ -36,6 +36,13 @@ DECL|macro|EXPORT_PER_CPU_SYMBOL
 mdefine_line|#define EXPORT_PER_CPU_SYMBOL(var) EXPORT_SYMBOL(var##__per_cpu)
 DECL|macro|EXPORT_PER_CPU_SYMBOL_GPL
 mdefine_line|#define EXPORT_PER_CPU_SYMBOL_GPL(var) EXPORT_SYMBOL_GPL(var##__per_cpu)
+r_extern
+r_void
+id|setup_per_cpu_areas
+(paren
+r_void
+)paren
+suffix:semicolon
 macro_line|#endif /* !__ASSEMBLY__ */
 macro_line|#endif /* _ASM_IA64_PERCPU_H */
 eof

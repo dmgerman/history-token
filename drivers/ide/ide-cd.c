@@ -7358,6 +7358,10 @@ l_int|0
 op_assign
 id|GPCMD_TEST_UNIT_READY
 suffix:semicolon
+id|req.flags
+op_or_assign
+id|REQ_QUIET
+suffix:semicolon
 macro_line|#if ! STANDARD_ATAPI
 multiline_comment|/* the Sanyo 3 CD changer uses byte 7 of TEST_UNIT_READY to &n;           switch CDs instead of supporting the LOAD_UNLOAD opcode   */
 id|req.cmd
@@ -10936,6 +10940,26 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|drive-&gt;media
+op_eq
+id|ide_optical
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;%s: ATAPI magneto-optical drive&bslash;n&quot;
+comma
+id|drive-&gt;name
+)paren
+suffix:semicolon
+r_return
+id|nslots
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
 id|CDROM_CONFIG_FLAGS
 c_func
 (paren
@@ -13566,6 +13590,10 @@ c_cond
 id|drive-&gt;media
 op_ne
 id|ide_cdrom
+op_logical_and
+id|drive-&gt;media
+op_ne
+id|ide_optical
 )paren
 r_goto
 id|failed

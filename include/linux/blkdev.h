@@ -10,6 +10,8 @@ macro_line|#include &lt;linux/workqueue.h&gt;
 macro_line|#include &lt;linux/pagemap.h&gt;
 macro_line|#include &lt;linux/backing-dev.h&gt;
 macro_line|#include &lt;linux/wait.h&gt;
+macro_line|#include &lt;linux/mempool.h&gt;
+macro_line|#include &lt;linux/bio.h&gt;
 macro_line|#include &lt;asm/scatterlist.h&gt;
 r_struct
 id|request_queue
@@ -29,23 +31,25 @@ r_struct
 id|elevator_s
 id|elevator_t
 suffix:semicolon
+DECL|macro|BLKDEV_MIN_RQ
+mdefine_line|#define BLKDEV_MIN_RQ&t;4
+DECL|macro|BLKDEV_MAX_RQ
+mdefine_line|#define BLKDEV_MAX_RQ&t;128
 DECL|struct|request_list
 r_struct
 id|request_list
 (brace
 DECL|member|count
 r_int
-r_int
 id|count
+(braket
+l_int|2
+)braket
 suffix:semicolon
-DECL|member|free
-r_struct
-id|list_head
-id|free
-suffix:semicolon
-DECL|member|wait
-id|wait_queue_head_t
-id|wait
+DECL|member|rq_pool
+id|mempool_t
+op_star
+id|rq_pool
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -66,19 +70,72 @@ r_int
 id|flags
 suffix:semicolon
 multiline_comment|/* see REQ_ bits below */
+multiline_comment|/* Maintain bio traversal state for part by part I/O submission.&n;&t; * hard_* are block layer internals, no driver should touch them!&n;&t; */
 DECL|member|sector
 id|sector_t
 id|sector
 suffix:semicolon
+multiline_comment|/* next sector to submit */
 DECL|member|nr_sectors
 r_int
 r_int
 id|nr_sectors
 suffix:semicolon
+multiline_comment|/* no. of sectors left to submit */
+multiline_comment|/* no. of sectors left to submit in the current segment */
 DECL|member|current_nr_sectors
 r_int
 r_int
 id|current_nr_sectors
+suffix:semicolon
+DECL|member|hard_sector
+id|sector_t
+id|hard_sector
+suffix:semicolon
+multiline_comment|/* next sector to complete */
+DECL|member|hard_nr_sectors
+r_int
+r_int
+id|hard_nr_sectors
+suffix:semicolon
+multiline_comment|/* no. of sectors left to complete */
+multiline_comment|/* no. of sectors left to complete in the current segment */
+DECL|member|hard_cur_sectors
+r_int
+r_int
+id|hard_cur_sectors
+suffix:semicolon
+multiline_comment|/* no. of segments left to submit in the current bio */
+DECL|member|nr_cbio_segments
+r_int
+r_int
+id|nr_cbio_segments
+suffix:semicolon
+multiline_comment|/* no. of sectors left to submit in the current bio */
+DECL|member|nr_cbio_sectors
+r_int
+r_int
+id|nr_cbio_sectors
+suffix:semicolon
+DECL|member|cbio
+r_struct
+id|bio
+op_star
+id|cbio
+suffix:semicolon
+multiline_comment|/* next bio to submit */
+DECL|member|bio
+r_struct
+id|bio
+op_star
+id|bio
+suffix:semicolon
+multiline_comment|/* next unfinished bio to complete */
+DECL|member|biotail
+r_struct
+id|bio
+op_star
+id|biotail
 suffix:semicolon
 DECL|member|elevator_private
 r_void
@@ -104,33 +161,6 @@ DECL|member|start_time
 r_int
 r_int
 id|start_time
-suffix:semicolon
-DECL|member|hard_sector
-id|sector_t
-id|hard_sector
-suffix:semicolon
-multiline_comment|/* the hard_* are block layer&n;&t;&t;&t;&t;&t; * internals, no driver should&n;&t;&t;&t;&t;&t; * touch them&n;&t;&t;&t;&t;&t; */
-DECL|member|hard_nr_sectors
-r_int
-r_int
-id|hard_nr_sectors
-suffix:semicolon
-DECL|member|hard_cur_sectors
-r_int
-r_int
-id|hard_cur_sectors
-suffix:semicolon
-DECL|member|bio
-r_struct
-id|bio
-op_star
-id|bio
-suffix:semicolon
-DECL|member|biotail
-r_struct
-id|bio
-op_star
-id|biotail
 suffix:semicolon
 multiline_comment|/* Number of scatter-gather DMA addr+len pairs after&n;&t; * physical address coalescing is performed.&n;&t; */
 DECL|member|nr_phys_segments
@@ -531,9 +561,6 @@ DECL|member|rq
 r_struct
 id|request_list
 id|rq
-(braket
-l_int|2
-)braket
 suffix:semicolon
 DECL|member|request_fn
 id|request_fn_proc
@@ -730,6 +757,86 @@ mdefine_line|#define rq_mergeable(rq)&t;&bslash;&n;&t;(!((rq)-&gt;flags &amp; RQ
 multiline_comment|/*&n; * noop, requests are automagically marked as active/inactive by I/O&n; * scheduler -- see elv_next_request&n; */
 DECL|macro|blk_queue_headactive
 mdefine_line|#define blk_queue_headactive(q, head_active)
+multiline_comment|/* current index into bio being processed for submission */
+DECL|macro|blk_rq_idx
+mdefine_line|#define blk_rq_idx(rq)&t;((rq)-&gt;cbio-&gt;bi_vcnt - (rq)-&gt;nr_cbio_segments)
+multiline_comment|/* current bio vector being processed */
+DECL|macro|blk_rq_vec
+mdefine_line|#define blk_rq_vec(rq)&t;(bio_iovec_idx((rq)-&gt;cbio, blk_rq_idx(rq)))
+multiline_comment|/* current offset with respect to start of the segment being submitted */
+DECL|macro|blk_rq_offset
+mdefine_line|#define blk_rq_offset(rq) &bslash;&n;&t;(((rq)-&gt;hard_cur_sectors - (rq)-&gt;current_nr_sectors) &lt;&lt; 9)
+multiline_comment|/*&n; * temporarily mapping a (possible) highmem bio (typically for PIO transfer)&n; */
+multiline_comment|/* Assumes rq-&gt;cbio != NULL */
+DECL|function|rq_map_buffer
+r_static
+r_inline
+r_char
+op_star
+id|rq_map_buffer
+c_func
+(paren
+r_struct
+id|request
+op_star
+id|rq
+comma
+r_int
+r_int
+op_star
+id|flags
+)paren
+(brace
+r_return
+(paren
+id|__bio_kmap_irq
+c_func
+(paren
+id|rq-&gt;cbio
+comma
+id|blk_rq_idx
+c_func
+(paren
+id|rq
+)paren
+comma
+id|flags
+)paren
+op_plus
+id|blk_rq_offset
+c_func
+(paren
+id|rq
+)paren
+)paren
+suffix:semicolon
+)brace
+DECL|function|rq_unmap_buffer
+r_static
+r_inline
+r_void
+id|rq_unmap_buffer
+c_func
+(paren
+r_char
+op_star
+id|buffer
+comma
+r_int
+r_int
+op_star
+id|flags
+)paren
+(brace
+id|__bio_kunmap_irq
+c_func
+(paren
+id|buffer
+comma
+id|flags
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/*&n; * q-&gt;prep_rq_fn return values&n; */
 DECL|macro|BLKPREP_OK
 mdefine_line|#define BLKPREP_OK&t;&t;0&t;/* serve it */
@@ -751,7 +858,7 @@ DECL|macro|BLK_BOUNCE_ANY
 mdefine_line|#define BLK_BOUNCE_ANY&t;&t;((u64)blk_max_pfn &lt;&lt; PAGE_SHIFT)
 DECL|macro|BLK_BOUNCE_ISA
 mdefine_line|#define BLK_BOUNCE_ISA&t;&t;(ISA_DMA_THRESHOLD)
-macro_line|#if CONFIG_MMU
+macro_line|#ifdef CONFIG_MMU
 r_extern
 r_int
 id|init_emergency_isa_pool
@@ -896,19 +1003,6 @@ id|request_queue_t
 op_star
 comma
 r_int
-comma
-r_int
-)paren
-suffix:semicolon
-r_extern
-r_struct
-id|request
-op_star
-id|__blk_get_request
-c_func
-(paren
-id|request_queue_t
-op_star
 comma
 r_int
 )paren
@@ -1121,6 +1215,19 @@ c_func
 r_struct
 id|request
 op_star
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|process_that_request_first
+c_func
+(paren
+r_struct
+id|request
+op_star
+comma
+r_int
+r_int
 )paren
 suffix:semicolon
 r_extern

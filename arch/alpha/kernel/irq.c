@@ -2323,7 +2323,7 @@ id|flags
 )paren
 suffix:semicolon
 )brace
-macro_line|#if CONFIG_SMP
+macro_line|#ifdef CONFIG_SMP
 id|seq_puts
 c_func
 (paren

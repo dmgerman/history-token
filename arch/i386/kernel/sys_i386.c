@@ -22,6 +22,7 @@ c_func
 (paren
 r_int
 r_int
+id|__user
 op_star
 id|fildes
 )paren
@@ -305,6 +306,7 @@ c_func
 (paren
 r_struct
 id|mmap_arg_struct
+id|__user
 op_star
 id|arg
 )paren
@@ -390,16 +392,20 @@ c_func
 r_int
 comma
 id|fd_set
+id|__user
 op_star
 comma
 id|fd_set
+id|__user
 op_star
 comma
 id|fd_set
+id|__user
 op_star
 comma
 r_struct
 id|timeval
+id|__user
 op_star
 )paren
 suffix:semicolon
@@ -416,6 +422,7 @@ DECL|member|inp
 DECL|member|outp
 DECL|member|exp
 id|fd_set
+id|__user
 op_star
 id|inp
 comma
@@ -428,6 +435,7 @@ suffix:semicolon
 DECL|member|tvp
 r_struct
 id|timeval
+id|__user
 op_star
 id|tvp
 suffix:semicolon
@@ -441,6 +449,7 @@ c_func
 (paren
 r_struct
 id|sel_arg_struct
+id|__user
 op_star
 id|arg
 )paren
@@ -506,6 +515,7 @@ r_int
 id|third
 comma
 r_void
+id|__user
 op_star
 id|ptr
 comma
@@ -546,6 +556,7 @@ comma
 (paren
 r_struct
 id|sembuf
+id|__user
 op_star
 )paren
 id|ptr
@@ -567,6 +578,7 @@ comma
 (paren
 r_struct
 id|sembuf
+id|__user
 op_star
 )paren
 id|ptr
@@ -577,6 +589,7 @@ comma
 r_const
 r_struct
 id|timespec
+id|__user
 op_star
 )paren
 id|fifth
@@ -624,6 +637,7 @@ comma
 (paren
 r_void
 op_star
+id|__user
 op_star
 )paren
 id|ptr
@@ -657,6 +671,7 @@ comma
 (paren
 r_struct
 id|msgbuf
+id|__user
 op_star
 )paren
 id|ptr
@@ -705,6 +720,7 @@ comma
 (paren
 r_struct
 id|ipc_kludge
+id|__user
 op_star
 )paren
 id|ptr
@@ -744,6 +760,7 @@ comma
 (paren
 r_struct
 id|msgbuf
+id|__user
 op_star
 )paren
 id|ptr
@@ -783,6 +800,7 @@ comma
 (paren
 r_struct
 id|msqid_ds
+id|__user
 op_star
 )paren
 id|ptr
@@ -813,6 +831,7 @@ id|first
 comma
 (paren
 r_char
+id|__user
 op_star
 )paren
 id|ptr
@@ -838,6 +857,7 @@ id|raddr
 comma
 (paren
 id|ulong
+id|__user
 op_star
 )paren
 id|third
@@ -870,6 +890,7 @@ r_return
 op_minus
 id|EINVAL
 suffix:semicolon
+multiline_comment|/* The &quot;(ulong *) third&quot; is valid _only_ because of the kernel segment thing */
 r_return
 id|sys_shmat
 (paren
@@ -877,6 +898,7 @@ id|first
 comma
 (paren
 r_char
+id|__user
 op_star
 )paren
 id|ptr
@@ -899,6 +921,7 @@ id|sys_shmdt
 (paren
 (paren
 r_char
+id|__user
 op_star
 )paren
 id|ptr
@@ -930,6 +953,7 @@ comma
 (paren
 r_struct
 id|shmid_ds
+id|__user
 op_star
 )paren
 id|ptr
@@ -952,6 +976,7 @@ c_func
 (paren
 r_struct
 id|old_utsname
+id|__user
 op_star
 id|name
 )paren
@@ -1017,6 +1042,7 @@ c_func
 (paren
 r_struct
 id|oldold_utsname
+id|__user
 op_star
 id|name
 )paren

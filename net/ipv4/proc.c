@@ -216,6 +216,11 @@ id|sockstat_seq_fops
 op_assign
 (brace
 dot
+id|owner
+op_assign
+id|THIS_MODULE
+comma
+dot
 id|open
 op_assign
 id|sockstat_seq_open
@@ -386,10 +391,6 @@ op_star
 id|v
 )paren
 (brace
-r_extern
-r_int
-id|sysctl_ip_default_ttl
-suffix:semicolon
 r_int
 id|i
 suffix:semicolon
@@ -730,6 +731,11 @@ id|snmp_seq_fops
 op_assign
 (brace
 dot
+id|owner
+op_assign
+id|THIS_MODULE
+comma
+dot
 id|open
 op_assign
 id|snmp_seq_open
@@ -901,6 +907,11 @@ id|file_operations
 id|netstat_seq_fops
 op_assign
 (brace
+dot
+id|owner
+op_assign
+id|THIS_MODULE
+comma
 dot
 id|open
 op_assign

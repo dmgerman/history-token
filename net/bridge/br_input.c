@@ -197,7 +197,7 @@ op_eq
 id|BR_STATE_DISABLED
 )paren
 (brace
-id|kfree
+id|kfree_skb
 c_func
 (paren
 id|skb

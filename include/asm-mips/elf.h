@@ -2,6 +2,139 @@ multiline_comment|/*&n; * This file is subject to the terms and conditions of th
 macro_line|#ifndef __ASM_ELF_H
 DECL|macro|__ASM_ELF_H
 mdefine_line|#define __ASM_ELF_H
+DECL|macro|PT_MIPS_REGINFO
+mdefine_line|#define PT_MIPS_REGINFO&t;&t;0x70000000
+multiline_comment|/* Flags in the e_flags field of the header */
+DECL|macro|EF_MIPS_NOREORDER
+mdefine_line|#define EF_MIPS_NOREORDER 0x00000001
+DECL|macro|EF_MIPS_PIC
+mdefine_line|#define EF_MIPS_PIC       0x00000002
+DECL|macro|EF_MIPS_CPIC
+mdefine_line|#define EF_MIPS_CPIC      0x00000004
+DECL|macro|EF_MIPS_ARCH
+mdefine_line|#define EF_MIPS_ARCH      0xf0000000
+DECL|macro|DT_MIPS_RLD_VERSION
+mdefine_line|#define DT_MIPS_RLD_VERSION&t;0x70000001
+DECL|macro|DT_MIPS_TIME_STAMP
+mdefine_line|#define DT_MIPS_TIME_STAMP&t;0x70000002
+DECL|macro|DT_MIPS_ICHECKSUM
+mdefine_line|#define DT_MIPS_ICHECKSUM&t;0x70000003
+DECL|macro|DT_MIPS_IVERSION
+mdefine_line|#define DT_MIPS_IVERSION&t;0x70000004
+DECL|macro|DT_MIPS_FLAGS
+mdefine_line|#define DT_MIPS_FLAGS&t;&t;0x70000005
+DECL|macro|RHF_NONE
+mdefine_line|#define RHF_NONE&t;&t;  0
+DECL|macro|RHF_HARDWAY
+mdefine_line|#define RHF_HARDWAY&t;&t;  1
+DECL|macro|RHF_NOTPOT
+mdefine_line|#define RHF_NOTPOT&t;&t;  2
+DECL|macro|DT_MIPS_BASE_ADDRESS
+mdefine_line|#define DT_MIPS_BASE_ADDRESS&t;0x70000006
+DECL|macro|DT_MIPS_CONFLICT
+mdefine_line|#define DT_MIPS_CONFLICT&t;0x70000008
+DECL|macro|DT_MIPS_LIBLIST
+mdefine_line|#define DT_MIPS_LIBLIST&t;&t;0x70000009
+DECL|macro|DT_MIPS_LOCAL_GOTNO
+mdefine_line|#define DT_MIPS_LOCAL_GOTNO&t;0x7000000a
+DECL|macro|DT_MIPS_CONFLICTNO
+mdefine_line|#define DT_MIPS_CONFLICTNO&t;0x7000000b
+DECL|macro|DT_MIPS_LIBLISTNO
+mdefine_line|#define DT_MIPS_LIBLISTNO&t;0x70000010
+DECL|macro|DT_MIPS_SYMTABNO
+mdefine_line|#define DT_MIPS_SYMTABNO&t;0x70000011
+DECL|macro|DT_MIPS_UNREFEXTNO
+mdefine_line|#define DT_MIPS_UNREFEXTNO&t;0x70000012
+DECL|macro|DT_MIPS_GOTSYM
+mdefine_line|#define DT_MIPS_GOTSYM&t;&t;0x70000013
+DECL|macro|DT_MIPS_HIPAGENO
+mdefine_line|#define DT_MIPS_HIPAGENO&t;0x70000014
+DECL|macro|DT_MIPS_RLD_MAP
+mdefine_line|#define DT_MIPS_RLD_MAP&t;&t;0x70000016
+DECL|macro|R_MIPS_NONE
+mdefine_line|#define R_MIPS_NONE&t;&t;0
+DECL|macro|R_MIPS_16
+mdefine_line|#define R_MIPS_16&t;&t;1
+DECL|macro|R_MIPS_32
+mdefine_line|#define R_MIPS_32&t;&t;2
+DECL|macro|R_MIPS_REL32
+mdefine_line|#define R_MIPS_REL32&t;&t;3
+DECL|macro|R_MIPS_26
+mdefine_line|#define R_MIPS_26&t;&t;4
+DECL|macro|R_MIPS_HI16
+mdefine_line|#define R_MIPS_HI16&t;&t;5
+DECL|macro|R_MIPS_LO16
+mdefine_line|#define R_MIPS_LO16&t;&t;6
+DECL|macro|R_MIPS_GPREL16
+mdefine_line|#define R_MIPS_GPREL16&t;&t;7
+DECL|macro|R_MIPS_LITERAL
+mdefine_line|#define R_MIPS_LITERAL&t;&t;8
+DECL|macro|R_MIPS_GOT16
+mdefine_line|#define R_MIPS_GOT16&t;&t;9
+DECL|macro|R_MIPS_PC16
+mdefine_line|#define R_MIPS_PC16&t;&t;10
+DECL|macro|R_MIPS_CALL16
+mdefine_line|#define R_MIPS_CALL16&t;&t;11
+DECL|macro|R_MIPS_GPREL32
+mdefine_line|#define R_MIPS_GPREL32&t;&t;12
+multiline_comment|/* The remaining relocs are defined on Irix, although they are not&n;   in the MIPS ELF ABI.  */
+DECL|macro|R_MIPS_UNUSED1
+mdefine_line|#define R_MIPS_UNUSED1&t;&t;13
+DECL|macro|R_MIPS_UNUSED2
+mdefine_line|#define R_MIPS_UNUSED2&t;&t;14
+DECL|macro|R_MIPS_UNUSED3
+mdefine_line|#define R_MIPS_UNUSED3&t;&t;15
+DECL|macro|R_MIPS_SHIFT5
+mdefine_line|#define R_MIPS_SHIFT5&t;&t;16
+DECL|macro|R_MIPS_SHIFT6
+mdefine_line|#define R_MIPS_SHIFT6&t;&t;17
+DECL|macro|R_MIPS_64
+mdefine_line|#define R_MIPS_64&t;&t;18
+DECL|macro|R_MIPS_GOT_DISP
+mdefine_line|#define R_MIPS_GOT_DISP&t;&t;19
+DECL|macro|R_MIPS_GOT_PAGE
+mdefine_line|#define R_MIPS_GOT_PAGE&t;&t;20
+DECL|macro|R_MIPS_GOT_OFST
+mdefine_line|#define R_MIPS_GOT_OFST&t;&t;21
+multiline_comment|/*&n; * The following two relocation types are specified in the MIPS ABI&n; * conformance guide version 1.2 but not yet in the psABI.&n; */
+DECL|macro|R_MIPS_GOTHI16
+mdefine_line|#define R_MIPS_GOTHI16&t;&t;22
+DECL|macro|R_MIPS_GOTLO16
+mdefine_line|#define R_MIPS_GOTLO16&t;&t;23
+DECL|macro|R_MIPS_SUB
+mdefine_line|#define R_MIPS_SUB&t;&t;24
+DECL|macro|R_MIPS_INSERT_A
+mdefine_line|#define R_MIPS_INSERT_A&t;&t;25
+DECL|macro|R_MIPS_INSERT_B
+mdefine_line|#define R_MIPS_INSERT_B&t;&t;26
+DECL|macro|R_MIPS_DELETE
+mdefine_line|#define R_MIPS_DELETE&t;&t;27
+DECL|macro|R_MIPS_HIGHER
+mdefine_line|#define R_MIPS_HIGHER&t;&t;28
+DECL|macro|R_MIPS_HIGHEST
+mdefine_line|#define R_MIPS_HIGHEST&t;&t;29
+multiline_comment|/*&n; * The following two relocation types are specified in the MIPS ABI&n; * conformance guide version 1.2 but not yet in the psABI.&n; */
+DECL|macro|R_MIPS_CALLHI16
+mdefine_line|#define R_MIPS_CALLHI16&t;&t;30
+DECL|macro|R_MIPS_CALLLO16
+mdefine_line|#define R_MIPS_CALLLO16&t;&t;31
+multiline_comment|/*&n; * This range is reserved for vendor specific relocations.&n; */
+DECL|macro|R_MIPS_LOVENDOR
+mdefine_line|#define R_MIPS_LOVENDOR&t;&t;100
+DECL|macro|R_MIPS_HIVENDOR
+mdefine_line|#define R_MIPS_HIVENDOR&t;&t;127
+DECL|macro|SHN_MIPS_ACCOMON
+mdefine_line|#define SHN_MIPS_ACCOMON&t;0xff00
+DECL|macro|SHT_MIPS_LIST
+mdefine_line|#define SHT_MIPS_LIST&t;&t;0x70000000
+DECL|macro|SHT_MIPS_CONFLICT
+mdefine_line|#define SHT_MIPS_CONFLICT&t;0x70000002
+DECL|macro|SHT_MIPS_GPTAB
+mdefine_line|#define SHT_MIPS_GPTAB&t;&t;0x70000003
+DECL|macro|SHT_MIPS_UCODE
+mdefine_line|#define SHT_MIPS_UCODE&t;&t;0x70000004
+DECL|macro|SHF_MIPS_GPREL
+mdefine_line|#define SHF_MIPS_GPREL&t;0x10000000
 multiline_comment|/* ELF register definitions */
 DECL|macro|ELF_NGREG
 mdefine_line|#define ELF_NGREG&t;45

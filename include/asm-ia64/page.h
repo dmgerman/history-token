@@ -34,6 +34,9 @@ macro_line|#ifdef CONFIG_HUGETLB_PAGE
 macro_line|# if defined(CONFIG_HUGETLB_PAGE_SIZE_4GB)
 DECL|macro|HPAGE_SHIFT
 macro_line|#  define HPAGE_SHIFT&t;32
+macro_line|# elif defined(CONFIG_HUGETLB_PAGE_SIZE_1GB)
+DECL|macro|HPAGE_SHIFT
+macro_line|#  define HPAGE_SHIFT&t;30
 macro_line|# elif defined(CONFIG_HUGETLB_PAGE_SIZE_256MB)
 DECL|macro|HPAGE_SHIFT
 macro_line|#  define HPAGE_SHIFT&t;28
@@ -105,8 +108,22 @@ mdefine_line|#define copy_user_page(to, from, vaddr, page)&t;&bslash;&n;do {&t;&
 DECL|macro|virt_addr_valid
 mdefine_line|#define virt_addr_valid(kaddr)&t;pfn_valid(__pa(kaddr) &gt;&gt; PAGE_SHIFT)
 macro_line|#ifndef CONFIG_DISCONTIGMEM
+macro_line|# ifdef CONFIG_VIRTUAL_MEM_MAP
+r_extern
+r_int
+id|ia64_pfn_valid
+(paren
+r_int
+r_int
+id|pfn
+)paren
+suffix:semicolon
 DECL|macro|pfn_valid
-mdefine_line|#define pfn_valid(pfn)&t;&t;((pfn) &lt; max_mapnr)
+macro_line|#  define pfn_valid(pfn)&t;(((pfn) &lt; max_mapnr) &amp;&amp; ia64_pfn_valid(pfn))
+macro_line|# else
+DECL|macro|pfn_valid
+macro_line|#  define pfn_valid(pfn)&t;((pfn) &lt; max_mapnr)
+macro_line|# endif
 DECL|macro|virt_to_page
 mdefine_line|#define virt_to_page(kaddr)&t;pfn_to_page(__pa(kaddr) &gt;&gt; PAGE_SHIFT)
 DECL|macro|page_to_pfn

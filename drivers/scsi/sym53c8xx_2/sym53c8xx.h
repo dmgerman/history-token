@@ -25,107 +25,7 @@ DECL|macro|CONFIG_SCSI_SYM53C8XX_MAX_TAGS
 mdefine_line|#define&t;CONFIG_SCSI_SYM53C8XX_MAX_TAGS&t;&t;CONFIG_SCSI_NCR53C8XX_MAX_TAGS
 macro_line|#endif
 macro_line|#endif
-r_int
-id|sym53c8xx_detect
-c_func
-(paren
-id|Scsi_Host_Template
-op_star
-id|tpnt
-)paren
-suffix:semicolon
-r_const
-r_char
-op_star
-id|sym53c8xx_info
-c_func
-(paren
-r_struct
-id|Scsi_Host
-op_star
-id|host
-)paren
-suffix:semicolon
-r_int
-id|sym53c8xx_queue_command
-c_func
-(paren
-id|Scsi_Cmnd
-op_star
-comma
-r_void
-(paren
-op_star
-id|done
-)paren
-(paren
-id|Scsi_Cmnd
-op_star
-)paren
-)paren
-suffix:semicolon
-r_int
-id|sym53c8xx_eh_abort_handler
-c_func
-(paren
-id|Scsi_Cmnd
-op_star
-)paren
-suffix:semicolon
-r_int
-id|sym53c8xx_eh_device_reset_handler
-c_func
-(paren
-id|Scsi_Cmnd
-op_star
-)paren
-suffix:semicolon
-r_int
-id|sym53c8xx_eh_bus_reset_handler
-c_func
-(paren
-id|Scsi_Cmnd
-op_star
-)paren
-suffix:semicolon
-r_int
-id|sym53c8xx_eh_host_reset_handler
-c_func
-(paren
-id|Scsi_Cmnd
-op_star
-)paren
-suffix:semicolon
-r_int
-id|sym53c8xx_slave_configure
-c_func
-(paren
-id|Scsi_Device
-op_star
-)paren
-suffix:semicolon
-macro_line|#ifdef MODULE
-r_int
-id|sym53c8xx_release
-c_func
-(paren
-r_struct
-id|Scsi_Host
-op_star
-)paren
-suffix:semicolon
-macro_line|#else
-DECL|macro|sym53c8xx_release
-mdefine_line|#define sym53c8xx_release NULL
-macro_line|#endif
-multiline_comment|/*&n; *  Host template defintion&n; */
-macro_line|#if (LINUX_VERSION_CODE &gt;= 0x020400) || defined(HOSTS_C) || defined(MODULE)
-macro_line|#include &lt;scsi/scsicam.h&gt;
-DECL|macro|SYM53C8XX
-mdefine_line|#define SYM53C8XX {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;.name&t;&t;&t;= &quot;sym53c8xx&quot;,&t;&t;&t;&t;&bslash;&n;&t;.detect&t;&t;&t;= sym53c8xx_detect,&t;&t;&t;&bslash;&n;&t;.release&t;&t;= sym53c8xx_release,&t;&t;&t;&bslash;&n;&t;.info&t;&t;&t;= sym53c8xx_info, &t;&t;&t;&bslash;&n;&t;.queuecommand&t;&t;= sym53c8xx_queue_command,&t;&t;&bslash;&n;&t;.slave_configure&t;= sym53c8xx_slave_configure,&t;&t;&bslash;&n;&t;.eh_abort_handler&t;= sym53c8xx_eh_abort_handler,&t;&t;&bslash;&n;&t;.eh_device_reset_handler&t;= sym53c8xx_eh_device_reset_handler,&bslash;&n;&t;.eh_bus_reset_handler&t;= sym53c8xx_eh_bus_reset_handler,&t;&bslash;&n;&t;.eh_host_reset_handler&t;= sym53c8xx_eh_host_reset_handler,&t;&bslash;&n;&t;.can_queue&t;&t;= 0,&t;&t;&t;&t;&t;&bslash;&n;&t;.this_id&t;&t;= 7,&t;&t;&t;&t;&t;&bslash;&n;&t;.sg_tablesize&t;&t;= 0,&t;&t;&t;&t;&t;&bslash;&n;&t;.cmd_per_lun&t;&t;= 0,&t;&t;&t;&t;&t;&bslash;&n;&t;.use_clustering&t;&t;= DISABLE_CLUSTERING,&t;&t;&t;&bslash;&n;&t;.highmem_io&t;&t;= 1}
-macro_line|#endif /* defined(HOSTS_C) || defined(MODULE) */ 
 multiline_comment|/*&n; *  Translate kernel configuration parameters&n; *  into corresponding driver parameters.&n; */
-macro_line|#if !defined(HOSTS_C)
 multiline_comment|/*&n; *  Use normal IO if configured.&n; *  Normal IO forced for alpha.&n; *  Forced to MMIO for sparc.&n; */
 macro_line|#if defined(__alpha__)
 DECL|macro|SYM_CONF_IOMAPPED
@@ -386,6 +286,5 @@ mdefine_line|#define DEBUG_FLAGS&t;sym_debug_flags
 macro_line|#endif
 DECL|macro|boot_verbose
 mdefine_line|#define boot_verbose&t;sym_driver_setup.verbose
-macro_line|#endif /* !defined(HOSTS_C) */ 
 macro_line|#endif /* SYM53C8XX_H */
 eof

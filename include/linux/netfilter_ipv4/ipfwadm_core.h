@@ -470,7 +470,8 @@ id|ip_fw_chk
 c_func
 (paren
 r_struct
-id|iphdr
+id|sk_buff
+op_star
 op_star
 comma
 r_struct

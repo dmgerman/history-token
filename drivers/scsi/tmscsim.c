@@ -2494,6 +2494,7 @@ suffix:semicolon
 multiline_comment|/* Queueing philosphy:&n; * There are a couple of lists:&n; * - Query: Contains the Scsi Commands not yet turned into SRBs (per ACB)&n; *   (Note: For new EH, it is unnecessary!)&n; * - Waiting: Contains a list of SRBs not yet sent (per DCB)&n; * - Free: List of free SRB slots&n; * &n; * If there are no waiting commands for the DCB, the new one is sent to the bus&n; * otherwise the oldest one is taken from the Waiting list and the new one is &n; * queued to the Waiting List&n; * &n; * Lists are managed using two pointers and eventually a counter&n; */
 macro_line|#if 0
 multiline_comment|/* Look for a SCSI cmd in a SRB queue */
+DECL|function|dc390_find_cmd_in_SRBq
 r_static
 id|PSRB
 id|dc390_find_cmd_in_SRBq
@@ -6019,6 +6020,7 @@ suffix:semicolon
 )brace
 macro_line|#if 0
 multiline_comment|/* Moves all SRBs from Going to Waiting for all DCBs */
+DECL|function|dc390_RecoverSRB
 r_static
 r_void
 id|dc390_RecoverSRB
@@ -12201,7 +12203,6 @@ l_int|1
 suffix:semicolon
 )brace
 macro_line|#endif /* def MODULE */
-macro_line|#if LINUX_VERSION_CODE &gt; KERNEL_VERSION(2,3,99)
 DECL|variable|driver_template
 r_static
 id|Scsi_Host_Template
@@ -12209,6 +12210,79 @@ id|driver_template
 op_assign
 id|DC390_T
 suffix:semicolon
+dot
+id|proc_name
+op_assign
+l_string|&quot;tmscsim&quot;
+comma
+dot
+id|proc_info
+op_assign
+id|DC390_proc_info
+comma
+dot
+id|name
+op_assign
+id|DC390_BANNER
+l_string|&quot; V&quot;
+id|DC390_VERSION
+comma
+dot
+id|detect
+op_assign
+id|DC390_detect
+comma
+dot
+id|release
+op_assign
+id|DC390_release
+comma
+dot
+id|queuecommand
+op_assign
+id|DC390_queue_command
+comma
+dot
+m_abort
+op_assign
+id|DC390_abort
+comma
+dot
+id|reset
+op_assign
+id|DC390_reset
+comma
+dot
+id|bios_param
+op_assign
+id|DC390_bios_param
+comma
+dot
+id|can_queue
+op_assign
+l_int|42
+comma
+dot
+id|this_id
+op_assign
+l_int|7
+comma
+dot
+id|sg_tablesize
+op_assign
+id|SG_ALL
+comma
+dot
+id|cmd_per_lun
+op_assign
+l_int|16
+comma
+dot
+id|use_clustering
+op_assign
+id|DISABLE_CLUSTERING
+comma
+)brace
+suffix:semicolon
 macro_line|#include &quot;scsi_module.c&quot;
-macro_line|#endif
 eof

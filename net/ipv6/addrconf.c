@@ -1,5 +1,5 @@
 multiline_comment|/*&n; *&t;IPv6 Address [auto]configuration&n; *&t;Linux INET6 implementation&n; *&n; *&t;Authors:&n; *&t;Pedro Roque&t;&t;&lt;roque@di.fc.ul.pt&gt;&t;&n; *&t;Alexey Kuznetsov&t;&lt;kuznet@ms2.inr.ac.ru&gt;&n; *&n; *&t;$Id: addrconf.c,v 1.69 2001/10/31 21:55:54 davem Exp $&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *      modify it under the terms of the GNU General Public License&n; *      as published by the Free Software Foundation; either version&n; *      2 of the License, or (at your option) any later version.&n; */
-multiline_comment|/*&n; *&t;Changes:&n; *&n; *&t;Janos Farkas&t;&t;&t;:&t;delete timer on ifdown&n; *&t;&lt;chexum@bankinf.banki.hu&gt;&n; *&t;Andi Kleen&t;&t;&t;:&t;kill doube kfree on module&n; *&t;&t;&t;&t;&t;&t;unload.&n; *&t;Maciej W. Rozycki&t;&t;:&t;FDDI support&n; *&t;sekiya@USAGI&t;&t;&t;:&t;Don&squot;t send too many RS&n; *&t;&t;&t;&t;&t;&t;packets.&n; *&t;yoshfuji@USAGI&t;&t;&t;:       Fixed interval between DAD&n; *&t;&t;&t;&t;&t;&t;packets.&n; *&t;YOSHIFUJI Hideaki @USAGI&t;:&t;improved accuracy of&n; *&t;&t;&t;&t;&t;&t;address validation timer.&n; *&t;YOSHIFUJI Hideaki @USAGI&t;:&t;Privacy Extensions (RFC3041)&n; *&t;&t;&t;&t;&t;&t;support.&n; *&t;Yuji SEKIYA @USAGI&t;&t;:&t;Don&squot;t assign a same IPv6&n; *&t;&t;&t;&t;&t;&t;address on a same interface.&n; */
+multiline_comment|/*&n; *&t;Changes:&n; *&n; *&t;Janos Farkas&t;&t;&t;:&t;delete timer on ifdown&n; *&t;&lt;chexum@bankinf.banki.hu&gt;&n; *&t;Andi Kleen&t;&t;&t;:&t;kill doube kfree on module&n; *&t;&t;&t;&t;&t;&t;unload.&n; *&t;Maciej W. Rozycki&t;&t;:&t;FDDI support&n; *&t;sekiya@USAGI&t;&t;&t;:&t;Don&squot;t send too many RS&n; *&t;&t;&t;&t;&t;&t;packets.&n; *&t;yoshfuji@USAGI&t;&t;&t;:       Fixed interval between DAD&n; *&t;&t;&t;&t;&t;&t;packets.&n; *&t;YOSHIFUJI Hideaki @USAGI&t;:&t;improved accuracy of&n; *&t;&t;&t;&t;&t;&t;address validation timer.&n; *&t;YOSHIFUJI Hideaki @USAGI&t;:&t;Privacy Extensions (RFC3041)&n; *&t;&t;&t;&t;&t;&t;support.&n; *&t;Yuji SEKIYA @USAGI&t;&t;:&t;Don&squot;t assign a same IPv6&n; *&t;&t;&t;&t;&t;&t;address on a same interface.&n; *&t;YOSHIFUJI Hideaki @USAGI&t;:&t;ARCnet support&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -10,6 +10,7 @@ macro_line|#include &lt;linux/net.h&gt;
 macro_line|#include &lt;linux/in6.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/if_arp.h&gt;
+macro_line|#include &lt;linux/if_arcnet.h&gt;
 macro_line|#include &lt;linux/route.h&gt;
 macro_line|#include &lt;linux/inetdevice.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -4763,6 +4764,46 @@ suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
+r_case
+id|ARPHRD_ARCNET
+suffix:colon
+multiline_comment|/* XXX: inherit EUI-64 fro mother interface -- yoshfuji */
+r_if
+c_cond
+(paren
+id|dev-&gt;addr_len
+op_ne
+id|ARCNET_ALEN
+)paren
+r_return
+op_minus
+l_int|1
+suffix:semicolon
+id|memset
+c_func
+(paren
+id|eui
+comma
+l_int|0
+comma
+l_int|7
+)paren
+suffix:semicolon
+id|eui
+(braket
+l_int|7
+)braket
+op_assign
+op_star
+(paren
+id|u8
+op_star
+)paren
+id|dev-&gt;dev_addr
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
 )brace
 r_return
 op_minus
@@ -5502,19 +5543,13 @@ id|rtmsg
 )paren
 )paren
 suffix:semicolon
-id|memcpy
+id|ipv6_addr_copy
 c_func
 (paren
 op_amp
 id|rtmsg.rtmsg_dst
 comma
 id|pfx
-comma
-r_sizeof
-(paren
-r_struct
-id|in6_addr
-)paren
 )paren
 suffix:semicolon
 id|rtmsg.rtmsg_dst_len
@@ -5566,6 +5601,8 @@ c_func
 (paren
 op_amp
 id|rtmsg
+comma
+l_int|NULL
 comma
 l_int|NULL
 )paren
@@ -5650,6 +5687,8 @@ op_amp
 id|rtmsg
 comma
 l_int|NULL
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 )brace
@@ -5711,6 +5750,8 @@ c_func
 (paren
 op_amp
 id|rtmsg
+comma
+l_int|NULL
 comma
 l_int|NULL
 )paren
@@ -6089,6 +6130,8 @@ id|ip6_del_rt
 c_func
 (paren
 id|rt
+comma
+l_int|NULL
 comma
 l_int|NULL
 )paren
@@ -7946,6 +7989,12 @@ id|dev-&gt;type
 op_ne
 id|ARPHRD_IEEE802_TR
 )paren
+op_logical_and
+(paren
+id|dev-&gt;type
+op_ne
+id|ARPHRD_ARCNET
+)paren
 )paren
 (brace
 multiline_comment|/* Alas, we support only Ethernet autoconfiguration. */
@@ -8810,6 +8859,8 @@ c_func
 (paren
 op_amp
 id|rtmsg
+comma
+l_int|NULL
 comma
 l_int|NULL
 )paren
@@ -12562,6 +12613,9 @@ id|ARPHRD_FDDI
 suffix:colon
 r_case
 id|ARPHRD_IEEE802_TR
+suffix:colon
+r_case
+id|ARPHRD_ARCNET
 suffix:colon
 id|addrconf_dev_config
 c_func

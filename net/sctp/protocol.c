@@ -9,6 +9,7 @@ macro_line|#include &lt;net/ipv6.h&gt;
 macro_line|#include &lt;net/sctp/sctp.h&gt;
 macro_line|#include &lt;net/addrconf.h&gt;
 macro_line|#include &lt;net/inet_common.h&gt;
+macro_line|#include &lt;net/inet_ecn.h&gt;
 multiline_comment|/* Global data structures. */
 DECL|variable|sctp_proto
 r_struct
@@ -615,7 +616,7 @@ id|sctp_scope_t
 id|scope
 comma
 r_int
-id|priority
+id|gfp
 comma
 r_int
 id|copy_flags
@@ -737,7 +738,7 @@ comma
 op_amp
 id|addr-&gt;a
 comma
-id|priority
+id|GFP_ATOMIC
 )paren
 suffix:semicolon
 r_if
@@ -916,10 +917,10 @@ id|rcv_saddr
 suffix:semicolon
 )brace
 multiline_comment|/* Initialize sk-&gt;rcv_saddr from sctp_addr. */
-DECL|function|sctp_v4_to_sk
+DECL|function|sctp_v4_to_sk_saddr
 r_static
 r_void
-id|sctp_v4_to_sk
+id|sctp_v4_to_sk_saddr
 c_func
 (paren
 r_union
@@ -940,6 +941,35 @@ id|sk
 )paren
 op_member_access_from_pointer
 id|rcv_saddr
+op_assign
+id|addr-&gt;v4.sin_addr.s_addr
+suffix:semicolon
+)brace
+multiline_comment|/* Initialize sk-&gt;daddr from sctp_addr. */
+DECL|function|sctp_v4_to_sk_daddr
+r_static
+r_void
+id|sctp_v4_to_sk_daddr
+c_func
+(paren
+r_union
+id|sctp_addr
+op_star
+id|addr
+comma
+r_struct
+id|sock
+op_star
+id|sk
+)paren
+(brace
+id|inet_sk
+c_func
+(paren
+id|sk
+)paren
+op_member_access_from_pointer
+id|daddr
 op_assign
 id|addr-&gt;v4.sin_addr.s_addr
 suffix:semicolon
@@ -1296,7 +1326,8 @@ r_struct
 id|flowi
 id|fl
 suffix:semicolon
-id|sctp_bind_addr_t
+r_struct
+id|sctp_bind_addr
 op_star
 id|bp
 suffix:semicolon
@@ -1618,7 +1649,8 @@ r_void
 id|sctp_v4_get_saddr
 c_func
 (paren
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 id|asoc
 comma
@@ -1638,9 +1670,41 @@ op_star
 id|saddr
 )paren
 (brace
+r_struct
+id|rtable
+op_star
+id|rt
+op_assign
+(paren
+r_struct
+id|rtable
+op_star
+)paren
+id|dst
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|rt
+)paren
+(brace
+id|saddr-&gt;v4.sin_family
+op_assign
+id|AF_INET
+suffix:semicolon
+id|saddr-&gt;v4.sin_port
+op_assign
+id|asoc-&gt;base.bind_addr.port
+suffix:semicolon
+id|saddr-&gt;v4.sin_addr.s_addr
+op_assign
+id|rt-&gt;rt_src
+suffix:semicolon
+)brace
 )brace
 multiline_comment|/* What interface did this skb arrive on? */
 DECL|function|sctp_v4_skb_iif
+r_static
 r_int
 id|sctp_v4_skb_iif
 c_func
@@ -1663,6 +1727,28 @@ id|skb-&gt;dst
 )paren
 op_member_access_from_pointer
 id|rt_iif
+suffix:semicolon
+)brace
+multiline_comment|/* Was this packet marked by Explicit Congestion Notification? */
+DECL|function|sctp_v4_is_ce
+r_static
+r_int
+id|sctp_v4_is_ce
+c_func
+(paren
+r_const
+r_struct
+id|sk_buff
+op_star
+id|skb
+)paren
+(brace
+r_return
+id|INET_ECN_is_ce
+c_func
+(paren
+id|skb-&gt;nh.iph-&gt;tos
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/* Create and initialize a new sk for the socket returned by accept(). */
@@ -1764,6 +1850,10 @@ id|newsk-&gt;reuse
 op_assign
 id|sk-&gt;reuse
 suffix:semicolon
+id|newsk-&gt;shutdown
+op_assign
+id|sk-&gt;shutdown
+suffix:semicolon
 id|newsk-&gt;destruct
 op_assign
 id|inet_sock_destruct
@@ -1792,6 +1882,7 @@ c_func
 id|newsk
 )paren
 suffix:semicolon
+multiline_comment|/* Initialize sk&squot;s sport, dport, rcv_saddr and daddr for&n;&t; * getsockname() and getpeername()&n;&t; */
 id|newinet-&gt;sport
 op_assign
 id|inet-&gt;sport
@@ -1802,11 +1893,15 @@ id|inet-&gt;saddr
 suffix:semicolon
 id|newinet-&gt;rcv_saddr
 op_assign
-id|inet-&gt;saddr
+id|inet-&gt;rcv_saddr
 suffix:semicolon
 id|newinet-&gt;dport
 op_assign
+id|htons
+c_func
+(paren
 id|asoc-&gt;peer.port
+)paren
 suffix:semicolon
 id|newinet-&gt;daddr
 op_assign
@@ -1820,9 +1915,10 @@ id|newinet-&gt;id
 op_assign
 l_int|0
 suffix:semicolon
-id|newinet-&gt;ttl
+id|newinet-&gt;uc_ttl
 op_assign
-id|sysctl_ip_default_ttl
+op_minus
+l_int|1
 suffix:semicolon
 id|newinet-&gt;mc_loop
 op_assign
@@ -2018,9 +2114,10 @@ c_func
 id|sctp_ctl_socket-&gt;sk
 )paren
 op_member_access_from_pointer
-id|ttl
+id|uc_ttl
 op_assign
-id|MAXTTL
+op_minus
+l_int|1
 suffix:semicolon
 r_return
 l_int|0
@@ -2453,7 +2550,7 @@ id|addr
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Verify that sockaddr looks sendable.  Common verification has already &n; * been taken care of.&n; */
+multiline_comment|/* Verify that sockaddr looks sendable.  Common verification has already&n; * been taken care of.&n; */
 DECL|function|sctp_inet_send_verify
 r_static
 r_int
@@ -2928,9 +3025,14 @@ op_assign
 id|sctp_v4_from_sk
 comma
 dot
-id|to_sk
+id|to_sk_saddr
 op_assign
-id|sctp_v4_to_sk
+id|sctp_v4_to_sk_saddr
+comma
+dot
+id|to_sk_daddr
+op_assign
+id|sctp_v4_to_sk_daddr
 comma
 dot
 id|dst_saddr
@@ -2971,6 +3073,11 @@ dot
 id|skb_iif
 op_assign
 id|sctp_v4_skb_iif
+comma
+dot
+id|is_ce
+op_assign
+id|sctp_v4_is_ce
 comma
 dot
 id|net_header_len

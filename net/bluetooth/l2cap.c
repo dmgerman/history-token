@@ -498,8 +498,6 @@ comma
 id|conn
 )paren
 suffix:semicolon
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 r_return
 id|conn
 suffix:semicolon
@@ -612,8 +610,6 @@ c_func
 (paren
 id|conn
 )paren
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 r_return
 l_int|0
@@ -984,8 +980,6 @@ c_func
 (paren
 id|sk-&gt;protinfo
 )paren
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 )brace
 DECL|function|l2cap_sock_cleanup_listen
@@ -1479,6 +1473,14 @@ id|sk
 r_return
 l_int|NULL
 suffix:semicolon
+id|sk_set_owner
+c_func
+(paren
+id|sk
+comma
+id|THIS_MODULE
+)paren
+suffix:semicolon
 id|sk-&gt;destruct
 op_assign
 id|l2cap_sock_destruct
@@ -1509,8 +1511,6 @@ id|l2cap_sk_list
 comma
 id|sk
 )paren
-suffix:semicolon
-id|MOD_INC_USE_COUNT
 suffix:semicolon
 r_return
 id|sk
@@ -6165,6 +6165,11 @@ id|ptr
 op_assign
 id|rsp-&gt;data
 suffix:semicolon
+id|u16
+id|flags
+op_assign
+l_int|0
+suffix:semicolon
 id|BT_DBG
 c_func
 (paren
@@ -6196,6 +6201,11 @@ comma
 op_amp
 id|ptr
 )paren
+suffix:semicolon
+r_else
+id|flags
+op_assign
+l_int|0x0001
 suffix:semicolon
 id|rsp-&gt;scid
 op_assign
@@ -6230,7 +6240,7 @@ op_assign
 id|__cpu_to_le16
 c_func
 (paren
-l_int|0
+id|flags
 )paren
 suffix:semicolon
 r_return
@@ -6852,7 +6862,7 @@ id|sk
 op_member_access_from_pointer
 id|conf_state
 op_or_assign
-id|CONF_REQ_SENT
+id|L2CAP_CONF_REQ_SENT
 suffix:semicolon
 id|l2cap_send_req
 c_func
@@ -7023,7 +7033,7 @@ c_cond
 (paren
 id|flags
 op_amp
-l_int|0x01
+l_int|0x0001
 )paren
 (brace
 multiline_comment|/* Incomplete config. Send empty response. */
@@ -7094,7 +7104,7 @@ id|sk
 op_member_access_from_pointer
 id|conf_state
 op_or_assign
-id|CONF_OUTPUT_DONE
+id|L2CAP_CONF_OUTPUT_DONE
 suffix:semicolon
 r_if
 c_cond
@@ -7107,7 +7117,7 @@ id|sk
 op_member_access_from_pointer
 id|conf_state
 op_amp
-id|CONF_INPUT_DONE
+id|L2CAP_CONF_INPUT_DONE
 )paren
 (brace
 id|sk-&gt;state
@@ -7135,7 +7145,7 @@ id|sk
 op_member_access_from_pointer
 id|conf_state
 op_amp
-id|CONF_REQ_SENT
+id|L2CAP_CONF_REQ_SENT
 )paren
 )paren
 (brace
@@ -7376,7 +7386,7 @@ id|sk
 op_member_access_from_pointer
 id|conf_state
 op_or_assign
-id|CONF_INPUT_DONE
+id|L2CAP_CONF_INPUT_DONE
 suffix:semicolon
 r_if
 c_cond
@@ -7389,7 +7399,7 @@ id|sk
 op_member_access_from_pointer
 id|conf_state
 op_amp
-id|CONF_OUTPUT_DONE
+id|L2CAP_CONF_OUTPUT_DONE
 )paren
 (brace
 id|sk-&gt;state
@@ -9376,7 +9386,7 @@ l_int|2
 id|BT_ERR
 c_func
 (paren
-l_string|&quot;Frame is too small (len %d)&quot;
+l_string|&quot;Frame is too short (len %d)&quot;
 comma
 id|skb-&gt;len
 )paren
@@ -9404,16 +9414,6 @@ id|hdr-&gt;len
 op_plus
 id|L2CAP_HDR_SIZE
 suffix:semicolon
-id|BT_DBG
-c_func
-(paren
-l_string|&quot;Start: total len %d, frag len %d&quot;
-comma
-id|len
-comma
-id|skb-&gt;len
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -9433,6 +9433,38 @@ id|skb
 suffix:semicolon
 r_return
 l_int|0
+suffix:semicolon
+)brace
+id|BT_DBG
+c_func
+(paren
+l_string|&quot;Start: total len %d, frag len %d&quot;
+comma
+id|len
+comma
+id|skb-&gt;len
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|skb-&gt;len
+OG
+id|len
+)paren
+(brace
+id|BT_ERR
+c_func
+(paren
+l_string|&quot;Frame is too long (len %d, expected len %d)&quot;
+comma
+id|skb-&gt;len
+comma
+id|len
+)paren
+suffix:semicolon
+r_goto
+id|drop
 suffix:semicolon
 )brace
 multiline_comment|/* Allocate skb for the complete frame (with header) */
@@ -9520,7 +9552,7 @@ id|conn-&gt;rx_len
 id|BT_ERR
 c_func
 (paren
-l_string|&quot;Fragment is too large (len %d, expect %d)&quot;
+l_string|&quot;Fragment is too long (len %d, expected %d)&quot;
 comma
 id|skb-&gt;len
 comma
@@ -9874,6 +9906,11 @@ id|file_operations
 id|l2cap_seq_fops
 op_assign
 (brace
+dot
+id|owner
+op_assign
+id|THIS_MODULE
+comma
 dot
 id|open
 op_assign
@@ -10291,6 +10328,25 @@ l_string|&quot;L2CAP protocol unregistration failed&quot;
 )paren
 suffix:semicolon
 )brace
+DECL|function|l2cap_load
+r_void
+id|l2cap_load
+c_func
+(paren
+r_void
+)paren
+(brace
+multiline_comment|/* Dummy function to trigger automatic L2CAP module loading by &n;&t;   other modules that use L2CAP sockets but don not use any other&n;&t;   symbols from it. */
+r_return
+suffix:semicolon
+)brace
+DECL|variable|l2cap_load
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|l2cap_load
+)paren
+suffix:semicolon
 DECL|variable|l2cap_init
 id|module_init
 c_func

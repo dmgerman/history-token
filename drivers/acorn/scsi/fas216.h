@@ -938,9 +938,9 @@ id|Scsi_Cmnd
 op_star
 )paren
 suffix:semicolon
-multiline_comment|/* Function: void fas216_intr (FAS216_Info *info)&n; * Purpose : handle interrupts from the interface to progress a command&n; * Params  : info - interface to service&n; */
+multiline_comment|/* Function: irqreturn_t fas216_intr (FAS216_Info *info)&n; * Purpose : handle interrupts from the interface to progress a command&n; * Params  : info - interface to service&n; */
 r_extern
-r_void
+id|irqreturn_t
 id|fas216_intr
 (paren
 id|FAS216_Info

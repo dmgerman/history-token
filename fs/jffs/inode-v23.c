@@ -25,7 +25,7 @@ macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &quot;jffs_fm.h&quot;
 macro_line|#include &quot;intrep.h&quot;
-macro_line|#if CONFIG_JFFS_PROC_FS
+macro_line|#ifdef CONFIG_JFFS_PROC_FS
 macro_line|#include &quot;jffs_proc.h&quot;
 macro_line|#endif
 r_static

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Machine vector for IA-64.&n; *&n; * Copyright (C) 1999 Silicon Graphics, Inc.&n; * Copyright (C) Srinivasa Thirumalachar &lt;sprasad@engr.sgi.com&gt;&n; * Copyright (C) Vijay Chander &lt;vijay@engr.sgi.com&gt;&n; * Copyright (C) 1999-2001 Hewlett-Packard Co.&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; */
+multiline_comment|/*&n; * Machine vector for IA-64.&n; *&n; * Copyright (C) 1999 Silicon Graphics, Inc.&n; * Copyright (C) Srinivasa Thirumalachar &lt;sprasad@engr.sgi.com&gt;&n; * Copyright (C) Vijay Chander &lt;vijay@engr.sgi.com&gt;&n; * Copyright (C) 1999-2001, 2003 Hewlett-Packard Co.&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; */
 macro_line|#ifndef _ASM_IA64_MACHVEC_H
 DECL|macro|_ASM_IA64_MACHVEC_H
 mdefine_line|#define _ASM_IA64_MACHVEC_H
@@ -6,7 +6,7 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 multiline_comment|/* forward declarations: */
 r_struct
-id|pci_dev
+id|device
 suffix:semicolon
 r_struct
 id|pt_regs
@@ -144,38 +144,40 @@ id|u8
 id|vector
 )paren
 suffix:semicolon
-multiline_comment|/* PCI-DMA interface: */
-DECL|typedef|ia64_mv_pci_dma_init
+multiline_comment|/* DMA-mapping interface: */
+DECL|typedef|ia64_mv_dma_init
 r_typedef
 r_void
-id|ia64_mv_pci_dma_init
+id|ia64_mv_dma_init
 (paren
 r_void
 )paren
 suffix:semicolon
-DECL|typedef|ia64_mv_pci_alloc_consistent
+DECL|typedef|ia64_mv_dma_alloc_coherent
 r_typedef
 r_void
 op_star
-id|ia64_mv_pci_alloc_consistent
+id|ia64_mv_dma_alloc_coherent
 (paren
 r_struct
-id|pci_dev
+id|device
 op_star
 comma
 r_int
 comma
 id|dma_addr_t
 op_star
+comma
+r_int
 )paren
 suffix:semicolon
-DECL|typedef|ia64_mv_pci_free_consistent
+DECL|typedef|ia64_mv_dma_free_coherent
 r_typedef
 r_void
-id|ia64_mv_pci_free_consistent
+id|ia64_mv_dma_free_coherent
 (paren
 r_struct
-id|pci_dev
+id|device
 op_star
 comma
 r_int
@@ -186,13 +188,13 @@ comma
 id|dma_addr_t
 )paren
 suffix:semicolon
-DECL|typedef|ia64_mv_pci_map_single
+DECL|typedef|ia64_mv_dma_map_single
 r_typedef
 id|dma_addr_t
-id|ia64_mv_pci_map_single
+id|ia64_mv_dma_map_single
 (paren
 r_struct
-id|pci_dev
+id|device
 op_star
 comma
 r_void
@@ -203,13 +205,13 @@ comma
 r_int
 )paren
 suffix:semicolon
-DECL|typedef|ia64_mv_pci_unmap_single
+DECL|typedef|ia64_mv_dma_unmap_single
 r_typedef
 r_void
-id|ia64_mv_pci_unmap_single
+id|ia64_mv_dma_unmap_single
 (paren
 r_struct
-id|pci_dev
+id|device
 op_star
 comma
 id|dma_addr_t
@@ -219,13 +221,13 @@ comma
 r_int
 )paren
 suffix:semicolon
-DECL|typedef|ia64_mv_pci_map_sg
+DECL|typedef|ia64_mv_dma_map_sg
 r_typedef
 r_int
-id|ia64_mv_pci_map_sg
+id|ia64_mv_dma_map_sg
 (paren
 r_struct
-id|pci_dev
+id|device
 op_star
 comma
 r_struct
@@ -237,13 +239,13 @@ comma
 r_int
 )paren
 suffix:semicolon
-DECL|typedef|ia64_mv_pci_unmap_sg
+DECL|typedef|ia64_mv_dma_unmap_sg
 r_typedef
 r_void
-id|ia64_mv_pci_unmap_sg
+id|ia64_mv_dma_unmap_sg
 (paren
 r_struct
-id|pci_dev
+id|device
 op_star
 comma
 r_struct
@@ -255,13 +257,13 @@ comma
 r_int
 )paren
 suffix:semicolon
-DECL|typedef|ia64_mv_pci_dma_sync_single
+DECL|typedef|ia64_mv_dma_sync_single
 r_typedef
 r_void
-id|ia64_mv_pci_dma_sync_single
+id|ia64_mv_dma_sync_single
 (paren
 r_struct
-id|pci_dev
+id|device
 op_star
 comma
 id|dma_addr_t
@@ -271,13 +273,13 @@ comma
 r_int
 )paren
 suffix:semicolon
-DECL|typedef|ia64_mv_pci_dma_sync_sg
+DECL|typedef|ia64_mv_dma_sync_sg
 r_typedef
 r_void
-id|ia64_mv_pci_dma_sync_sg
+id|ia64_mv_dma_sync_sg
 (paren
 r_struct
-id|pci_dev
+id|device
 op_star
 comma
 r_struct
@@ -289,13 +291,13 @@ comma
 r_int
 )paren
 suffix:semicolon
-DECL|typedef|ia64_mv_pci_dma_supported
+DECL|typedef|ia64_mv_dma_supported
 r_typedef
 r_int
-id|ia64_mv_pci_dma_supported
+id|ia64_mv_dma_supported
 (paren
 r_struct
-id|pci_dev
+id|device
 op_star
 comma
 id|u64
@@ -415,6 +417,13 @@ id|machvec_noop
 r_void
 )paren
 suffix:semicolon
+r_extern
+r_void
+id|machvec_memory_fence
+(paren
+r_void
+)paren
+suffix:semicolon
 macro_line|# if defined (CONFIG_IA64_HP_SIM)
 macro_line|#  include &lt;asm/machvec_hpsim.h&gt;
 macro_line|# elif defined (CONFIG_IA64_DIG)
@@ -449,26 +458,26 @@ DECL|macro|platform_send_ipi
 macro_line|#  define platform_send_ipi&t;ia64_mv.send_ipi
 DECL|macro|platform_global_tlb_purge
 macro_line|#  define platform_global_tlb_purge&t;ia64_mv.global_tlb_purge
-DECL|macro|platform_pci_dma_init
-macro_line|#  define platform_pci_dma_init&t;&t;ia64_mv.dma_init
-DECL|macro|platform_pci_alloc_consistent
-macro_line|#  define platform_pci_alloc_consistent&t;ia64_mv.alloc_consistent
-DECL|macro|platform_pci_free_consistent
-macro_line|#  define platform_pci_free_consistent&t;ia64_mv.free_consistent
-DECL|macro|platform_pci_map_single
-macro_line|#  define platform_pci_map_single&t;ia64_mv.map_single
-DECL|macro|platform_pci_unmap_single
-macro_line|#  define platform_pci_unmap_single&t;ia64_mv.unmap_single
-DECL|macro|platform_pci_map_sg
-macro_line|#  define platform_pci_map_sg&t;&t;ia64_mv.map_sg
-DECL|macro|platform_pci_unmap_sg
-macro_line|#  define platform_pci_unmap_sg&t;&t;ia64_mv.unmap_sg
-DECL|macro|platform_pci_dma_sync_single
-macro_line|#  define platform_pci_dma_sync_single&t;ia64_mv.sync_single
-DECL|macro|platform_pci_dma_sync_sg
-macro_line|#  define platform_pci_dma_sync_sg&t;ia64_mv.sync_sg
-DECL|macro|platform_pci_dma_supported
-macro_line|#  define platform_pci_dma_supported&t;ia64_mv.dma_supported
+DECL|macro|platform_dma_init
+macro_line|#  define platform_dma_init&t;&t;ia64_mv.dma_init
+DECL|macro|platform_dma_alloc_coherent
+macro_line|#  define platform_dma_alloc_coherent&t;ia64_mv.dma_alloc_coherent
+DECL|macro|platform_dma_free_coherent
+macro_line|#  define platform_dma_free_coherent&t;ia64_mv.dma_free_coherent
+DECL|macro|platform_dma_map_single
+macro_line|#  define platform_dma_map_single&t;ia64_mv.dma_map_single
+DECL|macro|platform_dma_unmap_single
+macro_line|#  define platform_dma_unmap_single&t;ia64_mv.dma_unmap_single
+DECL|macro|platform_dma_map_sg
+macro_line|#  define platform_dma_map_sg&t;&t;ia64_mv.dma_map_sg
+DECL|macro|platform_dma_unmap_sg
+macro_line|#  define platform_dma_unmap_sg&t;&t;ia64_mv.dma_unmap_sg
+DECL|macro|platform_dma_sync_single
+macro_line|#  define platform_dma_sync_single&t;ia64_mv.dma_sync_single
+DECL|macro|platform_dma_sync_sg
+macro_line|#  define platform_dma_sync_sg&t;&t;ia64_mv.dma_sync_sg
+DECL|macro|platform_dma_supported
+macro_line|#  define platform_dma_supported&t;ia64_mv.dma_supported
 DECL|macro|platform_irq_desc
 macro_line|#  define platform_irq_desc&t;&t;ia64_mv.irq_desc
 DECL|macro|platform_irq_to_vector
@@ -496,7 +505,7 @@ macro_line|#  define platform_readl        ia64_mv.readl
 DECL|macro|platform_readq
 macro_line|#  define platform_readq        ia64_mv.readq
 macro_line|# endif
-multiline_comment|/* __attribute__((__aligned__(16))) is required to make size of the&n; * structure multiple of 16 bytes.&n; * This will fillup the holes created because of section 3.3.1 in &n; * Software Conventions guide.&n; */
+multiline_comment|/* __attribute__((__aligned__(16))) is required to make size of the&n; * structure multiple of 16 bytes.&n; * This will fillup the holes created because of section 3.3.1 in&n; * Software Conventions guide.&n; */
 DECL|struct|ia64_machine_vector
 r_struct
 id|ia64_machine_vector
@@ -553,52 +562,52 @@ op_star
 id|global_tlb_purge
 suffix:semicolon
 DECL|member|dma_init
-id|ia64_mv_pci_dma_init
+id|ia64_mv_dma_init
 op_star
 id|dma_init
 suffix:semicolon
-DECL|member|alloc_consistent
-id|ia64_mv_pci_alloc_consistent
+DECL|member|dma_alloc_coherent
+id|ia64_mv_dma_alloc_coherent
 op_star
-id|alloc_consistent
+id|dma_alloc_coherent
 suffix:semicolon
-DECL|member|free_consistent
-id|ia64_mv_pci_free_consistent
+DECL|member|dma_free_coherent
+id|ia64_mv_dma_free_coherent
 op_star
-id|free_consistent
+id|dma_free_coherent
 suffix:semicolon
-DECL|member|map_single
-id|ia64_mv_pci_map_single
+DECL|member|dma_map_single
+id|ia64_mv_dma_map_single
 op_star
-id|map_single
+id|dma_map_single
 suffix:semicolon
-DECL|member|unmap_single
-id|ia64_mv_pci_unmap_single
+DECL|member|dma_unmap_single
+id|ia64_mv_dma_unmap_single
 op_star
-id|unmap_single
+id|dma_unmap_single
 suffix:semicolon
-DECL|member|map_sg
-id|ia64_mv_pci_map_sg
+DECL|member|dma_map_sg
+id|ia64_mv_dma_map_sg
 op_star
-id|map_sg
+id|dma_map_sg
 suffix:semicolon
-DECL|member|unmap_sg
-id|ia64_mv_pci_unmap_sg
+DECL|member|dma_unmap_sg
+id|ia64_mv_dma_unmap_sg
 op_star
-id|unmap_sg
+id|dma_unmap_sg
 suffix:semicolon
-DECL|member|sync_single
-id|ia64_mv_pci_dma_sync_single
+DECL|member|dma_sync_single
+id|ia64_mv_dma_sync_single
 op_star
-id|sync_single
+id|dma_sync_single
 suffix:semicolon
-DECL|member|sync_sg
-id|ia64_mv_pci_dma_sync_sg
+DECL|member|dma_sync_sg
+id|ia64_mv_dma_sync_sg
 op_star
-id|sync_sg
+id|dma_sync_sg
 suffix:semicolon
 DECL|member|dma_supported
-id|ia64_mv_pci_dma_supported
+id|ia64_mv_dma_supported
 op_star
 id|dma_supported
 suffix:semicolon
@@ -670,7 +679,7 @@ suffix:semicolon
 )brace
 suffix:semicolon
 DECL|macro|MACHVEC_INIT
-mdefine_line|#define MACHVEC_INIT(name)&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&bslash;&n;&t;#name,&t;&t;&t;&t;&t;&bslash;&n;&t;platform_setup,&t;&t;&t;&t;&bslash;&n;&t;platform_cpu_init,&t;&t;&t;&bslash;&n;&t;platform_irq_init,&t;&t;&t;&bslash;&n;&t;platform_mca_init,&t;&t;&t;&bslash;&n;&t;platform_mca_handler,&t;&t;&t;&bslash;&n;&t;platform_cmci_handler,&t;&t;&t;&bslash;&n;&t;platform_log_print,&t;&t;&t;&bslash;&n;&t;platform_send_ipi,&t;&t;&t;&bslash;&n;&t;platform_global_tlb_purge,&t;&t;&bslash;&n;&t;platform_pci_dma_init,&t;&t;&t;&bslash;&n;&t;platform_pci_alloc_consistent,&t;&t;&bslash;&n;&t;platform_pci_free_consistent,&t;&t;&bslash;&n;&t;platform_pci_map_single,&t;&t;&bslash;&n;&t;platform_pci_unmap_single,&t;&t;&bslash;&n;&t;platform_pci_map_sg,&t;&t;&t;&bslash;&n;&t;platform_pci_unmap_sg,&t;&t;&t;&bslash;&n;&t;platform_pci_dma_sync_single,&t;&t;&bslash;&n;&t;platform_pci_dma_sync_sg,&t;&t;&bslash;&n;&t;platform_pci_dma_supported,&t;&t;&bslash;&n;&t;platform_irq_desc,&t;&t;&t;&bslash;&n;&t;platform_irq_to_vector,&t;&t;&t;&bslash;&n;&t;platform_local_vector_to_irq,&t;&t;&bslash;&n;&t;platform_inb,&t;&t;&t;&t;&bslash;&n;&t;platform_inw,&t;&t;&t;&t;&bslash;&n;&t;platform_inl,&t;&t;&t;&t;&bslash;&n;&t;platform_outb,&t;&t;&t;&t;&bslash;&n;&t;platform_outw,&t;&t;&t;&t;&bslash;&n;&t;platform_outl,&t;&t;&t;&t;&bslash;&n;&t;platform_readb,&t;&t;&t;&t;&bslash;&n;&t;platform_readw,&t;&t;&t;&t;&bslash;&n;&t;platform_readl,&t;&t;&t;&t;&bslash;&n;&t;platform_readq,&t;&t;&t;&t;&bslash;&n;}
+mdefine_line|#define MACHVEC_INIT(name)&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&bslash;&n;&t;#name,&t;&t;&t;&t;&t;&bslash;&n;&t;platform_setup,&t;&t;&t;&t;&bslash;&n;&t;platform_cpu_init,&t;&t;&t;&bslash;&n;&t;platform_irq_init,&t;&t;&t;&bslash;&n;&t;platform_mca_init,&t;&t;&t;&bslash;&n;&t;platform_mca_handler,&t;&t;&t;&bslash;&n;&t;platform_cmci_handler,&t;&t;&t;&bslash;&n;&t;platform_log_print,&t;&t;&t;&bslash;&n;&t;platform_send_ipi,&t;&t;&t;&bslash;&n;&t;platform_global_tlb_purge,&t;&t;&bslash;&n;&t;platform_dma_init,&t;&t;&t;&bslash;&n;&t;platform_dma_alloc_coherent,&t;&t;&bslash;&n;&t;platform_dma_free_coherent,&t;&t;&bslash;&n;&t;platform_dma_map_single,&t;&t;&bslash;&n;&t;platform_dma_unmap_single,&t;&t;&bslash;&n;&t;platform_dma_map_sg,&t;&t;&t;&bslash;&n;&t;platform_dma_unmap_sg,&t;&t;&t;&bslash;&n;&t;platform_dma_sync_single,&t;&t;&bslash;&n;&t;platform_dma_sync_sg,&t;&t;&t;&bslash;&n;&t;platform_dma_supported,&t;&t;&t;&bslash;&n;&t;platform_irq_desc,&t;&t;&t;&bslash;&n;&t;platform_irq_to_vector,&t;&t;&t;&bslash;&n;&t;platform_local_vector_to_irq,&t;&t;&bslash;&n;&t;platform_inb,&t;&t;&t;&t;&bslash;&n;&t;platform_inw,&t;&t;&t;&t;&bslash;&n;&t;platform_inl,&t;&t;&t;&t;&bslash;&n;&t;platform_outb,&t;&t;&t;&t;&bslash;&n;&t;platform_outw,&t;&t;&t;&t;&bslash;&n;&t;platform_outl,&t;&t;&t;&t;&bslash;&n;&t;platform_readb,&t;&t;&t;&t;&bslash;&n;&t;platform_readw,&t;&t;&t;&t;&bslash;&n;&t;platform_readl,&t;&t;&t;&t;&bslash;&n;&t;platform_readq,&t;&t;&t;&t;&bslash;&n;}
 r_extern
 r_struct
 id|ia64_machine_vector
@@ -691,44 +700,44 @@ macro_line|#  error Unknown configuration.  Update asm-ia64/machvec.h.
 macro_line|# endif /* CONFIG_IA64_GENERIC */
 multiline_comment|/*&n; * Declare default routines which aren&squot;t declared anywhere else:&n; */
 r_extern
-id|ia64_mv_pci_dma_init
+id|ia64_mv_dma_init
 id|swiotlb_init
 suffix:semicolon
 r_extern
-id|ia64_mv_pci_alloc_consistent
-id|swiotlb_alloc_consistent
+id|ia64_mv_dma_alloc_coherent
+id|swiotlb_alloc_coherent
 suffix:semicolon
 r_extern
-id|ia64_mv_pci_free_consistent
-id|swiotlb_free_consistent
+id|ia64_mv_dma_free_coherent
+id|swiotlb_free_coherent
 suffix:semicolon
 r_extern
-id|ia64_mv_pci_map_single
+id|ia64_mv_dma_map_single
 id|swiotlb_map_single
 suffix:semicolon
 r_extern
-id|ia64_mv_pci_unmap_single
+id|ia64_mv_dma_unmap_single
 id|swiotlb_unmap_single
 suffix:semicolon
 r_extern
-id|ia64_mv_pci_map_sg
+id|ia64_mv_dma_map_sg
 id|swiotlb_map_sg
 suffix:semicolon
 r_extern
-id|ia64_mv_pci_unmap_sg
+id|ia64_mv_dma_unmap_sg
 id|swiotlb_unmap_sg
 suffix:semicolon
 r_extern
-id|ia64_mv_pci_dma_sync_single
+id|ia64_mv_dma_sync_single
 id|swiotlb_sync_single
 suffix:semicolon
 r_extern
-id|ia64_mv_pci_dma_sync_sg
+id|ia64_mv_dma_sync_sg
 id|swiotlb_sync_sg
 suffix:semicolon
 r_extern
-id|ia64_mv_pci_dma_supported
-id|swiotlb_pci_dma_supported
+id|ia64_mv_dma_supported
+id|swiotlb_dma_supported
 suffix:semicolon
 multiline_comment|/*&n; * Define default versions so we can extend machvec for new platforms without having&n; * to update the machvec files for all existing platforms.&n; */
 macro_line|#ifndef platform_setup
@@ -767,45 +776,45 @@ macro_line|#ifndef platform_global_tlb_purge
 DECL|macro|platform_global_tlb_purge
 macro_line|# define platform_global_tlb_purge&t;ia64_global_tlb_purge /* default to architected version */
 macro_line|#endif
-macro_line|#ifndef platform_pci_dma_init
-DECL|macro|platform_pci_dma_init
-macro_line|# define platform_pci_dma_init&t;&t;swiotlb_init
+macro_line|#ifndef platform_dma_init
+DECL|macro|platform_dma_init
+macro_line|# define platform_dma_init&t;&t;swiotlb_init
 macro_line|#endif
-macro_line|#ifndef platform_pci_alloc_consistent
-DECL|macro|platform_pci_alloc_consistent
-macro_line|# define platform_pci_alloc_consistent&t;swiotlb_alloc_consistent
+macro_line|#ifndef platform_dma_alloc_coherent
+DECL|macro|platform_dma_alloc_coherent
+macro_line|# define platform_dma_alloc_coherent&t;swiotlb_alloc_coherent
 macro_line|#endif
-macro_line|#ifndef platform_pci_free_consistent
-DECL|macro|platform_pci_free_consistent
-macro_line|# define platform_pci_free_consistent&t;swiotlb_free_consistent
+macro_line|#ifndef platform_dma_free_coherent
+DECL|macro|platform_dma_free_coherent
+macro_line|# define platform_dma_free_coherent&t;swiotlb_free_coherent
 macro_line|#endif
-macro_line|#ifndef platform_pci_map_single
-DECL|macro|platform_pci_map_single
-macro_line|# define platform_pci_map_single&t;swiotlb_map_single
+macro_line|#ifndef platform_dma_map_single
+DECL|macro|platform_dma_map_single
+macro_line|# define platform_dma_map_single&t;swiotlb_map_single
 macro_line|#endif
-macro_line|#ifndef platform_pci_unmap_single
-DECL|macro|platform_pci_unmap_single
-macro_line|# define platform_pci_unmap_single&t;swiotlb_unmap_single
+macro_line|#ifndef platform_dma_unmap_single
+DECL|macro|platform_dma_unmap_single
+macro_line|# define platform_dma_unmap_single&t;swiotlb_unmap_single
 macro_line|#endif
-macro_line|#ifndef platform_pci_map_sg
-DECL|macro|platform_pci_map_sg
-macro_line|# define platform_pci_map_sg&t;&t;swiotlb_map_sg
+macro_line|#ifndef platform_dma_map_sg
+DECL|macro|platform_dma_map_sg
+macro_line|# define platform_dma_map_sg&t;&t;swiotlb_map_sg
 macro_line|#endif
-macro_line|#ifndef platform_pci_unmap_sg
-DECL|macro|platform_pci_unmap_sg
-macro_line|# define platform_pci_unmap_sg&t;&t;swiotlb_unmap_sg
+macro_line|#ifndef platform_dma_unmap_sg
+DECL|macro|platform_dma_unmap_sg
+macro_line|# define platform_dma_unmap_sg&t;&t;swiotlb_unmap_sg
 macro_line|#endif
-macro_line|#ifndef platform_pci_dma_sync_single
-DECL|macro|platform_pci_dma_sync_single
-macro_line|# define platform_pci_dma_sync_single&t;swiotlb_sync_single
+macro_line|#ifndef platform_dma_sync_single
+DECL|macro|platform_dma_sync_single
+macro_line|# define platform_dma_sync_single&t;swiotlb_sync_single
 macro_line|#endif
-macro_line|#ifndef platform_pci_dma_sync_sg
-DECL|macro|platform_pci_dma_sync_sg
-macro_line|# define platform_pci_dma_sync_sg&t;swiotlb_sync_sg
+macro_line|#ifndef platform_dma_sync_sg
+DECL|macro|platform_dma_sync_sg
+macro_line|# define platform_dma_sync_sg&t;&t;swiotlb_sync_sg
 macro_line|#endif
-macro_line|#ifndef platform_pci_dma_supported
-DECL|macro|platform_pci_dma_supported
-macro_line|# define  platform_pci_dma_supported&t;swiotlb_pci_dma_supported
+macro_line|#ifndef platform_dma_supported
+DECL|macro|platform_dma_supported
+macro_line|# define  platform_dma_supported&t;swiotlb_dma_supported
 macro_line|#endif
 macro_line|#ifndef platform_irq_desc
 DECL|macro|platform_irq_desc

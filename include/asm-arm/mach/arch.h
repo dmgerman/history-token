@@ -144,27 +144,25 @@ suffix:semicolon
 suffix:semicolon
 multiline_comment|/*&n; * Set of macros to define architecture features.  This is built into&n; * a table by the linker.&n; */
 DECL|macro|MACHINE_START
-mdefine_line|#define MACHINE_START(_type,_name)&t;&t;&bslash;&n;const struct machine_desc __mach_desc_##_type&t;&bslash;&n; __attribute__((__section__(&quot;.arch.info&quot;))) = {&t;&bslash;&n;&t;nr:&t;&t;MACH_TYPE_##_type,&t;&bslash;&n;&t;name:&t;&t;_name,
+mdefine_line|#define MACHINE_START(_type,_name)&t;&t;&bslash;&n;const struct machine_desc __mach_desc_##_type&t;&bslash;&n; __attribute__((__section__(&quot;.arch.info&quot;))) = {&t;&bslash;&n;&t;.nr&t;&t;= MACH_TYPE_##_type,&t;&bslash;&n;&t;.name&t;&t;= _name,
 DECL|macro|MAINTAINER
 mdefine_line|#define MAINTAINER(n)
 DECL|macro|BOOT_MEM
-mdefine_line|#define BOOT_MEM(_pram,_pio,_vio)&t;&t;&bslash;&n;&t;phys_ram:&t;_pram,&t;                &bslash;&n;&t;phys_io:&t;_pio,  &t;                &bslash;&n;&t;io_pg_offst:&t;((_vio)&gt;&gt;18)&amp;0xfffc,
+mdefine_line|#define BOOT_MEM(_pram,_pio,_vio)&t;&t;&bslash;&n;&t;.phys_ram&t;= _pram,&t;&t;&bslash;&n;&t;.phys_io&t;= _pio,&t;&t;&t;&bslash;&n;&t;.io_pg_offst&t;= ((_vio)&gt;&gt;18)&amp;0xfffc,
 DECL|macro|BOOT_PARAMS
-mdefine_line|#define BOOT_PARAMS(_params)&t;&t;&t;&bslash;&n;&t;param_offset:&t;_params,
+mdefine_line|#define BOOT_PARAMS(_params)&t;&t;&t;&bslash;&n;&t;.param_offset&t;= _params,
 DECL|macro|VIDEO
-mdefine_line|#define VIDEO(_start,_end)&t;&t;&t;&bslash;&n;&t;video_start:&t;_start,&t;&t;&t;&bslash;&n;&t;video_end:&t;_end,
+mdefine_line|#define VIDEO(_start,_end)&t;&t;&t;&bslash;&n;&t;.video_start&t;= _start,&t;&t;&bslash;&n;&t;.video_end&t;= _end,
 DECL|macro|DISABLE_PARPORT
-mdefine_line|#define DISABLE_PARPORT(_n)&t;&t;&t;&bslash;&n;&t;reserve_lp##_n:&t;1,
-DECL|macro|BROKEN_HLT
-mdefine_line|#define BROKEN_HLT /* unused */
+mdefine_line|#define DISABLE_PARPORT(_n)&t;&t;&t;&bslash;&n;&t;.reserve_lp##_n&t;= 1,
 DECL|macro|SOFT_REBOOT
-mdefine_line|#define SOFT_REBOOT&t;&t;&t;&t;&bslash;&n;&t;soft_reboot:&t;1,
+mdefine_line|#define SOFT_REBOOT&t;&t;&t;&t;&bslash;&n;&t;.soft_reboot&t;= 1,
 DECL|macro|FIXUP
-mdefine_line|#define FIXUP(_func)&t;&t;&t;&t;&bslash;&n;&t;fixup:&t;&t;_func,
+mdefine_line|#define FIXUP(_func)&t;&t;&t;&t;&bslash;&n;&t;.fixup&t;&t;= _func,
 DECL|macro|MAPIO
-mdefine_line|#define MAPIO(_func)&t;&t;&t;&t;&bslash;&n;&t;map_io:&t;&t;_func,
+mdefine_line|#define MAPIO(_func)&t;&t;&t;&t;&bslash;&n;&t;.map_io&t;&t;= _func,
 DECL|macro|INITIRQ
-mdefine_line|#define INITIRQ(_func)&t;&t;&t;&t;&bslash;&n;&t;init_irq:&t;_func,
+mdefine_line|#define INITIRQ(_func)&t;&t;&t;&t;&bslash;&n;&t;.init_irq&t;= _func,
 DECL|macro|MACHINE_END
 mdefine_line|#define MACHINE_END&t;&t;&t;&t;&bslash;&n;};
 macro_line|#endif

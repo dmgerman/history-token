@@ -243,11 +243,11 @@ id|__u32
 id|saddr
 suffix:semicolon
 multiline_comment|/* Sending source */
-DECL|member|ttl
+DECL|member|uc_ttl
 r_int
-id|ttl
+id|uc_ttl
 suffix:semicolon
-multiline_comment|/* TTL setting */
+multiline_comment|/* Unicast TTL */
 DECL|member|tos
 r_int
 id|tos
@@ -530,6 +530,24 @@ l_int|0
 )braket
 suffix:semicolon
 multiline_comment|/* Variable len but &gt;=8. Mind the 64 bit alignment! */
+)brace
+suffix:semicolon
+DECL|struct|ip_comp_hdr
+r_struct
+id|ip_comp_hdr
+(brace
+DECL|member|nexthdr
+id|__u8
+id|nexthdr
+suffix:semicolon
+DECL|member|flags
+id|__u8
+id|flags
+suffix:semicolon
+DECL|member|cpi
+id|__u16
+id|cpi
+suffix:semicolon
 )brace
 suffix:semicolon
 macro_line|#endif&t;/* _LINUX_IP_H */

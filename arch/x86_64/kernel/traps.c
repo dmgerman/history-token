@@ -2523,7 +2523,7 @@ l_int|0xc0
 )paren
 )paren
 (brace
-macro_line|#if CONFIG_X86_LOCAL_APIC
+macro_line|#ifdef CONFIG_X86_LOCAL_APIC
 multiline_comment|/*&n;&t;&t; * Ok, so this is none of the documented NMI sources,&n;&t;&t; * so it must be the NMI watchdog.&n;&t;&t; */
 r_if
 c_cond

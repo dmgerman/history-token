@@ -49,10 +49,6 @@ id|dev
 comma
 r_void
 op_star
-id|phdr
-comma
-r_void
-op_star
 id|arg
 comma
 r_struct
@@ -84,10 +80,6 @@ id|dev
 comma
 r_void
 op_star
-id|phdr
-comma
-r_void
-op_star
 id|arg
 comma
 r_struct
@@ -116,10 +108,6 @@ r_struct
 id|net_device
 op_star
 id|dev
-comma
-r_void
-op_star
-id|phdr
 comma
 r_void
 op_star
@@ -155,10 +143,6 @@ id|dev
 comma
 r_void
 op_star
-id|phdr
-comma
-r_void
-op_star
 id|arg
 comma
 r_struct
@@ -187,10 +171,6 @@ r_struct
 id|net_device
 op_star
 id|dev
-comma
-r_void
-op_star
-id|phdr
 comma
 r_void
 op_star

@@ -7,11 +7,11 @@ macro_line|#include &lt;linux/hugetlb.h&gt;
 macro_line|#include &lt;linux/pagemap.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
+macro_line|#include &lt;linux/sysctl.h&gt;
 macro_line|#include &lt;asm/mman.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/tlb.h&gt;
 macro_line|#include &lt;asm/tlbflush.h&gt;
-macro_line|#include &lt;linux/sysctl.h&gt;
 DECL|macro|TASK_HPAGE_BASE
 mdefine_line|#define TASK_HPAGE_BASE (REGION_HPAGE &lt;&lt; REGION_SHIFT)
 DECL|variable|htlbpagemem
@@ -2047,15 +2047,6 @@ r_struct
 id|page
 op_star
 id|page
-suffix:semicolon
-r_extern
-r_int
-id|htlbzone_pages
-suffix:semicolon
-r_extern
-r_struct
-id|list_head
-id|htlbpage_freelist
 suffix:semicolon
 r_if
 c_cond

@@ -4597,6 +4597,14 @@ c_func
 id|fsinfo-&gt;free_clusters
 )paren
 suffix:semicolon
+id|sbi-&gt;prev_free
+op_assign
+id|CF_LE_L
+c_func
+(paren
+id|fsinfo-&gt;next_cluster
+)paren
+suffix:semicolon
 )brace
 id|brelse
 c_func

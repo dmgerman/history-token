@@ -4648,6 +4648,7 @@ id|filp
 comma
 r_struct
 id|flock
+id|__user
 op_star
 id|l
 )paren
@@ -4949,6 +4950,7 @@ id|cmd
 comma
 r_struct
 id|flock
+id|__user
 op_star
 id|l
 )paren
@@ -5307,6 +5309,7 @@ id|filp
 comma
 r_struct
 id|flock64
+id|__user
 op_star
 id|l
 )paren
@@ -5572,6 +5575,7 @@ id|cmd
 comma
 r_struct
 id|flock64
+id|__user
 op_star
 id|l
 )paren

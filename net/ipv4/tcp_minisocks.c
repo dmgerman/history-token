@@ -105,6 +105,7 @@ id|tcp_tw_count
 suffix:semicolon
 multiline_comment|/* Must be called with locally disabled BHs. */
 DECL|function|tcp_timewait_kill
+r_static
 r_void
 id|tcp_timewait_kill
 c_func
@@ -535,12 +536,6 @@ c_func
 id|tw
 )paren
 suffix:semicolon
-id|tcp_timewait_kill
-c_func
-(paren
-id|tw
-)paren
-suffix:semicolon
 id|tcp_tw_put
 c_func
 (paren
@@ -679,12 +674,6 @@ l_int|0
 id|kill
 suffix:colon
 id|tcp_tw_deschedule
-c_func
-(paren
-id|tw
-)paren
-suffix:semicolon
-id|tcp_timewait_kill
 c_func
 (paren
 id|tw
@@ -1311,7 +1300,7 @@ c_func
 id|sk
 )paren
 suffix:semicolon
-id|memcpy
+id|ipv6_addr_copy
 c_func
 (paren
 op_amp
@@ -1319,15 +1308,9 @@ id|tw-&gt;v6_daddr
 comma
 op_amp
 id|np-&gt;daddr
-comma
-r_sizeof
-(paren
-r_struct
-id|in6_addr
-)paren
 )paren
 suffix:semicolon
-id|memcpy
+id|ipv6_addr_copy
 c_func
 (paren
 op_amp
@@ -1335,12 +1318,6 @@ id|tw-&gt;v6_rcv_saddr
 comma
 op_amp
 id|np-&gt;rcv_saddr
-comma
-r_sizeof
-(paren
-r_struct
-id|in6_addr
-)paren
 )paren
 suffix:semicolon
 )brace
@@ -1736,6 +1713,12 @@ c_func
 (paren
 op_amp
 id|tw_death_lock
+)paren
+suffix:semicolon
+id|tcp_timewait_kill
+c_func
+(paren
+id|tw
 )paren
 suffix:semicolon
 )brace
@@ -2897,6 +2880,10 @@ op_assign
 l_int|NULL
 suffix:semicolon
 id|newsk-&gt;sleep
+op_assign
+l_int|NULL
+suffix:semicolon
+id|newsk-&gt;owner
 op_assign
 l_int|NULL
 suffix:semicolon

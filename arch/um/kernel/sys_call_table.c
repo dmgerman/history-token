@@ -896,7 +896,7 @@ r_extern
 id|syscall_handler_t
 id|sys_set_tid_address
 suffix:semicolon
-macro_line|#if CONFIG_NFSD
+macro_line|#ifdef CONFIG_NFSD
 DECL|macro|NFSSERVCTL
 mdefine_line|#define NFSSERVCTL sys_nfsservctl
 macro_line|#else

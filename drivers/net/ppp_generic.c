@@ -35,8 +35,12 @@ DECL|macro|NP_IPX
 mdefine_line|#define NP_IPX&t;2&t;&t;/* IPX protocol */
 DECL|macro|NP_AT
 mdefine_line|#define NP_AT&t;3&t;&t;/* Appletalk protocol */
+DECL|macro|NP_MPLS_UC
+mdefine_line|#define NP_MPLS_UC 4&t;&t;/* MPLS unicast */
+DECL|macro|NP_MPLS_MC
+mdefine_line|#define NP_MPLS_MC 5&t;&t;/* MPLS multicast */
 DECL|macro|NUM_NP
-mdefine_line|#define NUM_NP&t;4&t;&t;/* Number of NPs. */
+mdefine_line|#define NUM_NP&t;6&t;&t;/* Number of NPs. */
 DECL|macro|MPHDRLEN
 mdefine_line|#define MPHDRLEN&t;6&t;/* multilink protocol header length */
 DECL|macro|MPHDRLEN_SSN
@@ -984,6 +988,18 @@ suffix:colon
 r_return
 id|NP_AT
 suffix:semicolon
+r_case
+id|PPP_MPLS_UC
+suffix:colon
+r_return
+id|NP_MPLS_UC
+suffix:semicolon
+r_case
+id|PPP_MPLS_MC
+suffix:colon
+r_return
+id|NP_MPLS_MC
+suffix:semicolon
 )brace
 r_return
 op_minus
@@ -1008,6 +1024,10 @@ comma
 id|PPP_IPX
 comma
 id|PPP_AT
+comma
+id|PPP_MPLS_UC
+comma
+id|PPP_MPLS_MC
 comma
 )brace
 suffix:semicolon
@@ -1056,6 +1076,18 @@ suffix:colon
 r_return
 id|NP_AT
 suffix:semicolon
+r_case
+id|ETH_P_MPLS_UC
+suffix:colon
+r_return
+id|NP_MPLS_UC
+suffix:semicolon
+r_case
+id|ETH_P_MPLS_MC
+suffix:colon
+r_return
+id|NP_MPLS_MC
+suffix:semicolon
 )brace
 r_return
 op_minus
@@ -1080,6 +1112,10 @@ comma
 id|ETH_P_IPX
 comma
 id|ETH_P_PPPTALK
+comma
+id|ETH_P_MPLS_UC
+comma
+id|ETH_P_MPLS_MC
 comma
 )brace
 suffix:semicolon
@@ -8171,14 +8207,6 @@ id|ccp_option
 id|CCP_MAX_OPTION_LENGTH
 )braket
 suffix:semicolon
-macro_line|#ifdef CONFIG_KMOD
-r_char
-id|modname
-(braket
-l_int|32
-)braket
-suffix:semicolon
-macro_line|#endif
 id|err
 op_assign
 op_minus
@@ -8266,23 +8294,15 @@ op_eq
 l_int|0
 )paren
 (brace
-id|sprintf
+id|request_module
 c_func
 (paren
-id|modname
-comma
 l_string|&quot;ppp-compress-%d&quot;
 comma
 id|ccp_option
 (braket
 l_int|0
 )braket
-)paren
-suffix:semicolon
-id|request_module
-c_func
-(paren
-id|modname
 )paren
 suffix:semicolon
 id|cp

@@ -2346,17 +2346,6 @@ c_func
 id|skb
 )paren
 op_member_access_from_pointer
-id|iovcnt
-op_assign
-l_int|0
-suffix:semicolon
-multiline_comment|/* just to be safe ... */
-id|ATM_SKB
-c_func
-(paren
-id|skb
-)paren
-op_member_access_from_pointer
 id|atm_options
 op_assign
 id|entry-&gt;shortcut-&gt;atm_options
@@ -3461,6 +3450,24 @@ c_func
 id|eg
 )paren
 suffix:semicolon
+id|memset
+c_func
+(paren
+id|ATM_SKB
+c_func
+(paren
+id|skb
+)paren
+comma
+l_int|0
+comma
+r_sizeof
+(paren
+r_struct
+id|atm_skb_data
+)paren
+)paren
+suffix:semicolon
 id|netif_rx
 c_func
 (paren
@@ -3512,6 +3519,10 @@ id|number
 op_assign
 l_int|42
 comma
+dot
+id|lock
+op_assign
+id|SPIN_LOCK_UNLOCKED
 multiline_comment|/* members not explicitly initialised will be 0 */
 )brace
 suffix:semicolon
@@ -4029,8 +4040,6 @@ id|atomic_sub
 c_func
 (paren
 id|skb-&gt;truesize
-op_plus
-id|ATM_PDU_OVHD
 comma
 op_amp
 id|vcc-&gt;sk-&gt;wmem_alloc

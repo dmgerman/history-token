@@ -1,6 +1,7 @@
 multiline_comment|/*&n; * IA-32 ELF support.&n; *&n; * Copyright (C) 1999 Arun Sharma &lt;arun.sharma@intel.com&gt;&n; * Copyright (C) 2001 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; *&n; * 06/16/00&t;A. Mallick&t;initialize csd/ssd/tssd/cflg for ia32_load_state&n; * 04/13/01&t;D. Mosberger&t;dropped saving tssd in ar.k1---it&squot;s not needed&n; * 09/14/01&t;D. Mosberger&t;fixed memory management for gdt/tss page&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
+macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;asm/param.h&gt;
 macro_line|#include &lt;asm/signal.h&gt;
 macro_line|#include &lt;asm/ia32.h&gt;
@@ -41,25 +42,6 @@ r_struct
 id|pt_regs
 op_star
 id|regs
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|put_dirty_page
-(paren
-r_struct
-id|task_struct
-op_star
-id|tsk
-comma
-r_struct
-id|page
-op_star
-id|page
-comma
-r_int
-r_int
-id|address
 )paren
 suffix:semicolon
 r_static
@@ -720,6 +702,8 @@ comma
 id|page
 comma
 id|stack_base
+comma
+id|PAGE_COPY
 )paren
 suffix:semicolon
 )brace

@@ -1103,13 +1103,13 @@ c_cond
 id|time_after
 c_func
 (paren
+id|jiffies
+comma
 id|start
 op_plus
 l_int|180
 op_star
 id|HZ
-comma
-id|jiffies
 )paren
 )paren
 (brace

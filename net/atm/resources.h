@@ -11,12 +11,9 @@ id|list_head
 id|atm_devs
 suffix:semicolon
 r_extern
-r_struct
-id|atm_vcc
-op_star
-id|nodev_vccs
+id|spinlock_t
+id|atm_dev_lock
 suffix:semicolon
-multiline_comment|/* VCCs not linked to any device */
 r_struct
 id|sock
 op_star

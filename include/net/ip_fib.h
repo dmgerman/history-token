@@ -5,6 +5,7 @@ mdefine_line|#define _NET_IP_FIB_H
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;net/flow.h&gt;
 macro_line|#include &lt;linux/seq_file.h&gt;
+multiline_comment|/* WARNING: The ordering of these elements must match ordering&n; *          of RTA_* rtnetlink attribute numbers.&n; */
 DECL|struct|kern_rta
 r_struct
 id|kern_rta
@@ -63,8 +64,7 @@ op_star
 id|rta_protoinfo
 suffix:semicolon
 DECL|member|rta_flow
-r_int
-r_char
+id|u32
 op_star
 id|rta_flow
 suffix:semicolon
@@ -73,6 +73,12 @@ r_struct
 id|rta_cacheinfo
 op_star
 id|rta_ci
+suffix:semicolon
+DECL|member|rta_sess
+r_struct
+id|rta_session
+op_star
+id|rta_sess
 suffix:semicolon
 )brace
 suffix:semicolon

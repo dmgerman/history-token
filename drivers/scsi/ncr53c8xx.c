@@ -29527,25 +29527,6 @@ op_star
 id|tpnt
 )paren
 (brace
-multiline_comment|/*&n;&t;**    Initialize driver general stuff.&n;&t;*/
-macro_line|#ifdef SCSI_NCR_PROC_INFO_SUPPORT
-macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,3,27)
-id|tpnt-&gt;proc_dir
-op_assign
-op_amp
-id|proc_scsi_ncr53c8xx
-suffix:semicolon
-macro_line|#else
-id|tpnt-&gt;proc_name
-op_assign
-id|NAME53C8XX
-suffix:semicolon
-macro_line|#endif
-id|tpnt-&gt;proc_info
-op_assign
-id|ncr53c8xx_proc_info
-suffix:semicolon
-macro_line|#endif
 macro_line|#if&t;defined(SCSI_NCR_BOOT_COMMAND_LINE_SUPPORT) &amp;&amp; defined(MODULE)
 r_if
 c_cond
@@ -29606,16 +29587,13 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,4,0)
-r_static
-macro_line|#endif
-macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,4,0) || defined(MODULE)
-macro_line|#ifdef ENABLE_SCSI_ZALON
 DECL|variable|driver_template
+r_static
 id|Scsi_Host_Template
 id|driver_template
 op_assign
 (brace
+macro_line|#ifdef ENABLE_SCSI_ZALON
 dot
 id|proc_name
 op_assign
@@ -29631,6 +29609,30 @@ id|release
 op_assign
 id|zalon7xx_release
 comma
+macro_line|#else
+dot
+id|proc_name
+op_assign
+id|NAME53C8XX
+comma
+dot
+id|detect
+op_assign
+id|ncr53c8xx_detect
+comma
+dot
+id|release
+op_assign
+id|ncr53c8xx_release
+comma
+macro_line|#endif
+macro_line|#ifdef SCSI_NCR_PROC_INFO_SUPPORT
+dot
+id|proc_info
+op_assign
+id|ncr53c8xx_proc_info
+comma
+macro_line|#endif
 dot
 id|info
 op_assign
@@ -29678,14 +29680,5 @@ id|DISABLE_CLUSTERING
 comma
 )brace
 suffix:semicolon
-macro_line|#else
-DECL|variable|driver_template
-id|Scsi_Host_Template
-id|driver_template
-op_assign
-id|NCR53C8XX
-suffix:semicolon
-macro_line|#endif
 macro_line|#include &quot;scsi_module.c&quot;
-macro_line|#endif
 eof

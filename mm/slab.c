@@ -2883,11 +2883,7 @@ c_cond
 (paren
 id|size
 OL
-(paren
-id|PAGE_SIZE
-op_rshift
-l_int|3
-)paren
+l_int|4096
 op_logical_or
 id|fls
 c_func
@@ -9253,6 +9249,7 @@ id|file
 comma
 r_const
 r_char
+id|__user
 op_star
 id|buffer
 comma

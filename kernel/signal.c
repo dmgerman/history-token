@@ -2481,7 +2481,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#if CONFIG_SMP
+macro_line|#ifdef CONFIG_SMP
 r_if
 c_cond
 (paren
@@ -2831,7 +2831,7 @@ id|ret
 op_assign
 l_int|0
 suffix:semicolon
-macro_line|#if CONFIG_SMP
+macro_line|#ifdef CONFIG_SMP
 r_if
 c_cond
 (paren
@@ -3950,6 +3950,10 @@ id|p
 r_int
 id|ret
 suffix:semicolon
+r_int
+r_int
+id|flags
+suffix:semicolon
 multiline_comment|/*&n;&t; * We need the tasklist lock even for the specific&n;&t; * thread case (when we don&squot;t need to follow the group&n;&t; * lists) in order to avoid races with &quot;p-&gt;sighand&quot;&n;&t; * going away or changing from under us.&n;&t; */
 id|read_lock
 c_func
@@ -3958,11 +3962,13 @@ op_amp
 id|tasklist_lock
 )paren
 suffix:semicolon
-id|spin_lock_irq
+id|spin_lock_irqsave
 c_func
 (paren
 op_amp
 id|p-&gt;sighand-&gt;siglock
+comma
+id|flags
 )paren
 suffix:semicolon
 id|ret
@@ -3977,11 +3983,13 @@ comma
 id|p
 )paren
 suffix:semicolon
-id|spin_unlock_irq
+id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
 id|p-&gt;sighand-&gt;siglock
+comma
+id|flags
 )paren
 suffix:semicolon
 id|read_unlock

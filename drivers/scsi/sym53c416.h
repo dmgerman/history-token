@@ -133,7 +133,5 @@ op_star
 id|ints
 )paren
 suffix:semicolon
-DECL|macro|SYM53C416
-mdefine_line|#define SYM53C416 {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;.proc_name =&t;&t;&quot;sym53c416&quot;,&t;&t;&bslash;&n;&t;&t;.name =&t;&t;&t;&quot;Symbios Logic 53c416&quot;,&t;&bslash;&n;&t;&t;.detect =&t;&t;sym53c416_detect,&t;&bslash;&n;&t;&t;.info =&t;&t;&t;sym53c416_info,&t;&t;&bslash;&n;&t;&t;.command =&t;&t;sym53c416_command,&t;&bslash;&n;&t;&t;.queuecommand =&t;&t;sym53c416_queuecommand,&t;&bslash;&n;&t;&t;.eh_abort_handler =&t;sym53c416_abort,&t;&bslash;&n;&t;&t;.eh_host_reset_handler =sym53c416_host_reset,&t;&bslash;&n;&t;&t;.eh_bus_reset_handler = sym53c416_bus_reset,&t;&bslash;&n;&t;&t;.eh_device_reset_handler =sym53c416_device_reset,&bslash;&n;&t;&t;.release = &t;&t;sym53c416_release,&t;&bslash;&n;&t;&t;.bios_param =&t;&t;sym53c416_bios_param,&t;&bslash;&n;&t;&t;.can_queue =&t;&t;1,&t;&t;&t;&bslash;&n;&t;&t;.this_id =&t;&t;SYM53C416_SCSI_ID,&t;&bslash;&n;&t;&t;.sg_tablesize =&t;&t;32,&t;&t;&t;&bslash;&n;&t;&t;.cmd_per_lun =&t;&t;1,&t;&t;&t;&bslash;&n;&t;&t;.unchecked_isa_dma =&t;1,&t;&t;&t;&bslash;&n;&t;&t;.use_clustering =&t;ENABLE_CLUSTERING&t;&bslash;&n;&t;&t;}
 macro_line|#endif
 eof

@@ -6300,12 +6300,14 @@ comma
 id|dev-&gt;name
 )paren
 suffix:semicolon
+macro_line|#if 0
 id|netif_wake_queue
 c_func
 (paren
 id|dev
 )paren
 suffix:semicolon
+macro_line|#endif
 )brace
 )brace
 DECL|function|ace_tasklet

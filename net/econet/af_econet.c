@@ -992,11 +992,10 @@ id|ARPHRD_ECONET
 (brace
 multiline_comment|/* Real hardware Econet.  We&squot;re not worthy etc. */
 macro_line|#ifdef CONFIG_ECONET_NATIVE
-id|atomic_inc
+id|dev_hold
 c_func
 (paren
-op_amp
-id|dev-&gt;refcnt
+id|dev
 )paren
 suffix:semicolon
 id|skb

@@ -492,10 +492,15 @@ id|RTAX_REORDERING
 comma
 DECL|macro|RTAX_REORDERING
 mdefine_line|#define RTAX_REORDERING RTAX_REORDERING
+DECL|enumerator|RTAX_HOPLIMIT
+id|RTAX_HOPLIMIT
+comma
+DECL|macro|RTAX_HOPLIMIT
+mdefine_line|#define RTAX_HOPLIMIT RTAX_HOPLIMIT
 )brace
 suffix:semicolon
 DECL|macro|RTAX_MAX
-mdefine_line|#define RTAX_MAX RTAX_REORDERING
+mdefine_line|#define RTAX_MAX RTAX_HOPLIMIT
 DECL|struct|rta_session
 r_struct
 id|rta_session

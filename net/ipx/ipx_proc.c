@@ -1,12 +1,12 @@
 multiline_comment|/*&n; *&t;IPX proc routines&n; *&n; * &t;Copyright(C) Arnaldo Carvalho de Melo &lt;acme@conectiva.com.br&gt;, 2002&n; */
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#ifdef CONFIG_PROC_FS
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/seq_file.h&gt;
 macro_line|#include &lt;linux/tcp.h&gt;
 macro_line|#include &lt;net/ipx.h&gt;
-macro_line|#ifdef CONFIG_PROC_FS
 DECL|function|ipx_get_interface_idx
 r_static
 id|__inline__
@@ -1632,6 +1632,11 @@ id|ipx_seq_interface_fops
 op_assign
 (brace
 dot
+id|owner
+op_assign
+id|THIS_MODULE
+comma
+dot
 id|open
 op_assign
 id|ipx_seq_interface_open
@@ -1661,6 +1666,11 @@ id|ipx_seq_route_fops
 op_assign
 (brace
 dot
+id|owner
+op_assign
+id|THIS_MODULE
+comma
+dot
 id|open
 op_assign
 id|ipx_seq_route_open
@@ -1689,6 +1699,11 @@ id|file_operations
 id|ipx_seq_socket_fops
 op_assign
 (brace
+dot
+id|owner
+op_assign
+id|THIS_MODULE
+comma
 dot
 id|open
 op_assign

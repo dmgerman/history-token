@@ -7,6 +7,30 @@ macro_line|#include &lt;asm/user.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/system.h&gt;&t;&t;/* for savesegment */
 macro_line|#include &lt;linux/utsname.h&gt;
+DECL|macro|R_386_NONE
+mdefine_line|#define R_386_NONE&t;0
+DECL|macro|R_386_32
+mdefine_line|#define R_386_32&t;1
+DECL|macro|R_386_PC32
+mdefine_line|#define R_386_PC32&t;2
+DECL|macro|R_386_GOT32
+mdefine_line|#define R_386_GOT32&t;3
+DECL|macro|R_386_PLT32
+mdefine_line|#define R_386_PLT32&t;4
+DECL|macro|R_386_COPY
+mdefine_line|#define R_386_COPY&t;5
+DECL|macro|R_386_GLOB_DAT
+mdefine_line|#define R_386_GLOB_DAT&t;6
+DECL|macro|R_386_JMP_SLOT
+mdefine_line|#define R_386_JMP_SLOT&t;7
+DECL|macro|R_386_RELATIVE
+mdefine_line|#define R_386_RELATIVE&t;8
+DECL|macro|R_386_GOTOFF
+mdefine_line|#define R_386_GOTOFF&t;9
+DECL|macro|R_386_GOTPC
+mdefine_line|#define R_386_GOTPC&t;10
+DECL|macro|R_386_NUM
+mdefine_line|#define R_386_NUM&t;11
 DECL|typedef|elf_greg_t
 r_typedef
 r_int

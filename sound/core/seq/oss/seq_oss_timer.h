@@ -114,7 +114,8 @@ r_int
 r_int
 id|cmd
 comma
-r_void
+r_int
+id|__user
 op_star
 id|arg
 )paren

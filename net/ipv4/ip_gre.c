@@ -3727,7 +3727,14 @@ macro_line|#endif
 r_else
 id|iph-&gt;ttl
 op_assign
-id|sysctl_ip_default_ttl
+id|dst_metric
+c_func
+(paren
+op_amp
+id|rt-&gt;u.dst
+comma
+id|RTAX_HOPLIMIT
+)paren
 suffix:semicolon
 )brace
 (paren

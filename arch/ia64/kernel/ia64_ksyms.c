@@ -219,6 +219,13 @@ c_func
 id|__ia64_memset_c_io
 )paren
 suffix:semicolon
+DECL|variable|io_space
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|io_space
+)paren
+suffix:semicolon
 macro_line|#include &lt;asm/semaphore.h&gt;
 DECL|variable|__down
 id|EXPORT_SYMBOL_NOVERS
@@ -256,6 +263,23 @@ c_func
 id|clear_page
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_VIRTUAL_MEM_MAP
+macro_line|#include &lt;asm/pgtable.h&gt;
+DECL|variable|vmalloc_end
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|vmalloc_end
+)paren
+suffix:semicolon
+DECL|variable|ia64_pfn_valid
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|ia64_pfn_valid
+)paren
+suffix:semicolon
+macro_line|#endif
 macro_line|#include &lt;asm/processor.h&gt;
 DECL|variable|cpu_info__per_cpu
 id|EXPORT_SYMBOL
@@ -698,4 +722,35 @@ c_func
 id|unw_access_pr
 )paren
 suffix:semicolon
+macro_line|#if __GNUC__ &lt; 3 || (__GNUC__ == 3 &amp;&amp; __GNUC_MINOR__ &lt; 4)
+r_extern
+r_void
+id|ia64_spinlock_contention_pre3_4
+(paren
+r_void
+)paren
+suffix:semicolon
+DECL|variable|ia64_spinlock_contention_pre3_4
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|ia64_spinlock_contention_pre3_4
+)paren
+suffix:semicolon
+macro_line|#else
+r_extern
+r_void
+id|ia64_spinlock_contention
+(paren
+r_void
+)paren
+suffix:semicolon
+DECL|variable|ia64_spinlock_contention
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|ia64_spinlock_contention
+)paren
+suffix:semicolon
+macro_line|#endif
 eof

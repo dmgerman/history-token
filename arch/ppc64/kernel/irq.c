@@ -2682,7 +2682,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|MAX_PACAS
+id|NR_CPUS
 suffix:semicolon
 op_increment
 id|i

@@ -6186,10 +6186,17 @@ suffix:colon
 id|SX_CHUNK_SIZE
 )paren
 )paren
+(brace
+id|kfree
+(paren
+id|tmp
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|EFAULT
 suffix:semicolon
+)brace
 id|memcpy_toio
 (paren
 (paren

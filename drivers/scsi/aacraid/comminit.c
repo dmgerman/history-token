@@ -9,6 +9,7 @@ macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#include &lt;linux/completion.h&gt;
+macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#include &quot;scsi.h&quot;
 macro_line|#include &quot;hosts.h&quot;
@@ -81,7 +82,6 @@ suffix:semicolon
 id|dma_addr_t
 id|phys
 suffix:semicolon
-multiline_comment|/* FIXME: Adaptec add 128 bytes to this value - WHY ?? */
 id|size
 op_assign
 id|fibsize
@@ -165,20 +165,6 @@ id|phys
 op_plus
 id|fibsize
 suffix:semicolon
-multiline_comment|/*&n;&t; *&t;Cache the upper bits of the virtual mapping for 64bit boxes&n;&t; *&t;FIXME: this crap should be rewritten&n;&t; */
-macro_line|#if BITS_PER_LONG &gt;= 64 
-id|dev-&gt;fib_base_va
-op_assign
-(paren
-(paren
-id|ulong
-)paren
-id|base
-op_amp
-l_int|0xffffffff00000000
-)paren
-suffix:semicolon
-macro_line|#endif
 id|init
 op_assign
 id|dev-&gt;init
@@ -208,6 +194,13 @@ id|dev-&gt;fsrev
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; *&t;Adapter Fibs are the first thing allocated so that they&n;&t; *&t;start page aligned&n;&t; */
+id|dev-&gt;fib_base_va
+op_assign
+(paren
+id|ulong
+)paren
+id|base
+suffix:semicolon
 id|init-&gt;AdapterFibsVirtualAddress
 op_assign
 id|cpu_to_le32
@@ -216,7 +209,10 @@ c_func
 (paren
 id|u32
 )paren
-id|base
+(paren
+id|ulong
+)paren
+id|phys
 )paren
 suffix:semicolon
 id|init-&gt;AdapterFibsPhysicalAddress
@@ -224,6 +220,9 @@ op_assign
 id|cpu_to_le32
 c_func
 (paren
+(paren
+id|u32
+)paren
 id|phys
 )paren
 suffix:semicolon
@@ -247,6 +246,15 @@ id|hw_fib
 )paren
 )paren
 suffix:semicolon
+id|init-&gt;HostPhysMemPages
+op_assign
+id|cpu_to_le32
+c_func
+(paren
+id|num_physpages
+)paren
+suffix:semicolon
+singleline_comment|// number of 4k pages of host physical memory
 multiline_comment|/*&n;&t; * Increment the base address by the amount already used&n;&t; */
 id|base
 op_assign
@@ -262,6 +270,13 @@ id|aac_init
 suffix:semicolon
 id|phys
 op_assign
+(paren
+id|dma_addr_t
+)paren
+(paren
+(paren
+id|ulong
+)paren
 id|phys
 op_plus
 id|fibsize
@@ -270,6 +285,7 @@ r_sizeof
 (paren
 r_struct
 id|aac_init
+)paren
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; *&t;Align the beginning of Headers to commalign&n;&t; */
@@ -311,11 +327,6 @@ multiline_comment|/*&n;&t; *&t;Fill in addresses of the Comm Area Headers and Qu
 op_star
 id|commaddr
 op_assign
-(paren
-r_int
-r_int
-op_star
-)paren
 id|base
 suffix:semicolon
 id|init-&gt;CommHeaderAddress
@@ -323,6 +334,9 @@ op_assign
 id|cpu_to_le32
 c_func
 (paren
+(paren
+id|u32
+)paren
 id|phys
 )paren
 suffix:semicolon
@@ -424,7 +438,7 @@ op_amp
 id|q-&gt;cmdready
 )paren
 suffix:semicolon
-id|INIT_LIST_HEAD
+id|AAC_INIT_LIST_HEAD
 c_func
 (paren
 op_amp
@@ -461,7 +475,9 @@ op_plus
 l_int|1
 suffix:semicolon
 op_star
+(paren
 id|q-&gt;headers.producer
+)paren
 op_assign
 id|cpu_to_le32
 c_func
@@ -470,7 +486,9 @@ id|qsize
 )paren
 suffix:semicolon
 op_star
+(paren
 id|q-&gt;headers.consumer
+)paren
 op_assign
 id|cpu_to_le32
 c_func
@@ -808,16 +826,16 @@ op_star
 )paren
 (paren
 (paren
-r_int
-r_char
-op_star
+(paren
+id|ulong
 )paren
 id|headers
+)paren
 op_plus
 id|hdrsize
 )paren
 suffix:semicolon
-multiline_comment|/* Adapter to Host normal proirity Command queue */
+multiline_comment|/* Adapter to Host normal priority Command queue */
 id|comm-&gt;queue
 (braket
 id|HostNormCmdQueue
@@ -1218,9 +1236,17 @@ id|dev
 OL
 l_int|0
 )paren
+(brace
+id|kfree
+c_func
+(paren
+id|dev-&gt;queues
+)paren
+suffix:semicolon
 r_return
 l_int|NULL
 suffix:semicolon
+)brace
 multiline_comment|/*&n;&t; *&t;Initialize the list of fibs&n;&t; */
 r_if
 c_cond
@@ -1234,6 +1260,12 @@ OL
 l_int|0
 )paren
 (brace
+id|kfree
+c_func
+(paren
+id|dev-&gt;queues
+)paren
+suffix:semicolon
 r_return
 l_int|NULL
 suffix:semicolon

@@ -1518,6 +1518,7 @@ op_star
 comma
 r_struct
 id|flock
+id|__user
 op_star
 )paren
 suffix:semicolon
@@ -1535,6 +1536,7 @@ r_int
 comma
 r_struct
 id|flock
+id|__user
 op_star
 )paren
 suffix:semicolon
@@ -1550,6 +1552,7 @@ op_star
 comma
 r_struct
 id|flock64
+id|__user
 op_star
 )paren
 suffix:semicolon
@@ -1567,6 +1570,7 @@ r_int
 comma
 r_struct
 id|flock64
+id|__user
 op_star
 )paren
 suffix:semicolon
@@ -2407,6 +2411,7 @@ id|count
 suffix:semicolon
 DECL|member|buf
 r_char
+id|__user
 op_star
 id|buf
 suffix:semicolon
@@ -2800,6 +2805,7 @@ comma
 id|read_actor_t
 comma
 r_void
+id|__user
 op_star
 )paren
 suffix:semicolon
@@ -4425,6 +4431,7 @@ c_func
 (paren
 r_const
 r_char
+id|__user
 op_star
 comma
 r_int
@@ -6047,6 +6054,7 @@ id|kiocb
 op_star
 comma
 r_char
+id|__user
 op_star
 comma
 r_int
@@ -6065,6 +6073,7 @@ op_star
 comma
 r_const
 r_char
+id|__user
 op_star
 comma
 r_int
@@ -6181,6 +6190,7 @@ comma
 id|read_actor_t
 comma
 r_void
+id|__user
 op_star
 )paren
 suffix:semicolon
@@ -6647,6 +6657,7 @@ id|vfs_stat
 c_func
 (paren
 r_char
+id|__user
 op_star
 comma
 r_struct
@@ -6660,6 +6671,7 @@ id|vfs_lstat
 c_func
 (paren
 r_char
+id|__user
 op_star
 comma
 r_struct
@@ -6995,6 +7007,7 @@ id|file
 op_star
 comma
 r_char
+id|__user
 op_star
 comma
 r_int

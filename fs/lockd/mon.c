@@ -404,6 +404,11 @@ id|clnt-&gt;cl_oneshot
 op_assign
 l_int|1
 suffix:semicolon
+id|xprt-&gt;resvport
+op_assign
+l_int|1
+suffix:semicolon
+multiline_comment|/* NSM requires a reserved port */
 id|out
 suffix:colon
 r_return

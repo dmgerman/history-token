@@ -1416,12 +1416,6 @@ op_logical_neg
 id|new_fops
 )paren
 (brace
-r_char
-id|mod
-(braket
-l_int|32
-)braket
-suffix:semicolon
 id|spin_unlock
 c_func
 (paren
@@ -1430,11 +1424,9 @@ id|sound_loader_lock
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; *  Please, don&squot;t change this order or code.&n;&t;&t; *  For ALSA slot means soundcard and OSS emulation code&n;&t;&t; *  comes as add-on modules which aren&squot;t depend on&n;&t;&t; *  ALSA toplevel modules for soundcards, thus we need&n;&t;&t; *  load them at first.&t;  [Jaroslav Kysela &lt;perex@jcu.cz&gt;]&n;&t;&t; */
-id|sprintf
+id|request_module
 c_func
 (paren
-id|mod
-comma
 l_string|&quot;sound-slot-%i&quot;
 comma
 id|unit
@@ -1445,14 +1437,6 @@ suffix:semicolon
 id|request_module
 c_func
 (paren
-id|mod
-)paren
-suffix:semicolon
-id|sprintf
-c_func
-(paren
-id|mod
-comma
 l_string|&quot;sound-service-%i-%i&quot;
 comma
 id|unit
@@ -1460,12 +1444,6 @@ op_rshift
 l_int|4
 comma
 id|chain
-)paren
-suffix:semicolon
-id|request_module
-c_func
-(paren
-id|mod
 )paren
 suffix:semicolon
 id|spin_lock

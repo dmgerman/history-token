@@ -6964,7 +6964,7 @@ suffix:semicolon
 )brace
 multiline_comment|/**&n; * fas216_intr - handle interrupts to progress a command&n; * @info: interface to service&n; *&n; * Handle interrupts from the interface to progress a command&n; */
 DECL|function|fas216_intr
-r_void
+id|irqreturn_t
 id|fas216_intr
 c_func
 (paren
@@ -6980,6 +6980,11 @@ comma
 id|ssr
 comma
 id|stat
+suffix:semicolon
+r_int
+id|handled
+op_assign
+id|IRQ_NONE
 suffix:semicolon
 id|fas216_checkmagic
 c_func
@@ -7192,7 +7197,14 @@ comma
 id|stat
 )paren
 suffix:semicolon
+id|handled
+op_assign
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
+r_return
+id|handled
+suffix:semicolon
 )brace
 DECL|function|__fas216_start_command
 r_static

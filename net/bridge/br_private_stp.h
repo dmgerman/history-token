@@ -163,16 +163,6 @@ id|p
 suffix:semicolon
 r_extern
 r_void
-id|br_tick
-c_func
-(paren
-r_int
-r_int
-id|__data
-)paren
-suffix:semicolon
-r_extern
-r_void
 id|br_transmit_config
 c_func
 (paren

@@ -67,7 +67,7 @@ id|MAX_NR_CONSOLES
 )braket
 suffix:semicolon
 r_extern
-r_void
+r_int
 id|set_con2fb_map
 c_func
 (paren

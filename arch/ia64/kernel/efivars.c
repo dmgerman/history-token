@@ -512,11 +512,16 @@ l_int|0
 suffix:semicolon
 id|i
 OL
+(paren
+r_int
+)paren
+(paren
 id|variable_name_size
 op_div
 r_sizeof
 (paren
 id|efi_char16_t
+)paren
 )paren
 suffix:semicolon
 id|i

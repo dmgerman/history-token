@@ -7,6 +7,8 @@ multiline_comment|/*&n; *    These are the defined ARCnet Protocol ID&squot;s.&n
 multiline_comment|/* RFC1201 Protocol ID&squot;s */
 DECL|macro|ARC_P_IP
 mdefine_line|#define ARC_P_IP&t;&t;212&t;/* 0xD4 */
+DECL|macro|ARC_P_IPV6
+mdefine_line|#define ARC_P_IPV6&t;&t;196&t;/* 0xC4: RFC2497 */
 DECL|macro|ARC_P_ARP
 mdefine_line|#define ARC_P_ARP&t;&t;213&t;/* 0xD5 */
 DECL|macro|ARC_P_RARP
@@ -36,6 +38,9 @@ DECL|macro|ARC_P_LANSOFT
 mdefine_line|#define ARC_P_LANSOFT&t;&t;251&t;/* 0xFB - what is this? */
 DECL|macro|ARC_P_ATALK
 mdefine_line|#define ARC_P_ATALK&t;&t;0xDD
+multiline_comment|/* Hardware address length */
+DECL|macro|ARCNET_ALEN
+mdefine_line|#define ARCNET_ALEN&t;1
 multiline_comment|/*&n; * The RFC1201-specific components of an arcnet packet header.&n; */
 DECL|struct|arc_rfc1201
 r_struct

@@ -442,8 +442,18 @@ comma
 r_int
 )paren
 suffix:semicolon
-multiline_comment|/*Extern */
-r_extern
+DECL|variable|SK_Root_Dir_entry
+r_static
+r_const
+r_char
+id|SK_Root_Dir_entry
+(braket
+)braket
+op_assign
+l_string|&quot;sk98lin&quot;
+suffix:semicolon
+DECL|variable|pSkRootDir
+r_static
 r_struct
 id|proc_dir_entry
 op_star
@@ -452,7 +462,7 @@ suffix:semicolon
 singleline_comment|//extern struct proc_dir_entry Our_Proc_Dir;
 r_extern
 r_int
-id|proc_read
+id|sk_proc_read
 c_func
 (paren
 r_char
@@ -588,31 +598,6 @@ comma
 l_int|0x480
 )brace
 suffix:semicolon
-DECL|function|proc_fill_inode
-r_void
-id|proc_fill_inode
-c_func
-(paren
-r_struct
-id|inode
-op_star
-id|inode
-comma
-r_int
-id|fill
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|fill
-)paren
-id|MOD_INC_USE_COUNT
-suffix:semicolon
-r_else
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
-)brace
 multiline_comment|/*****************************************************************************&n; *&n; * &t;skge_probe - find all SK-98xx adapters&n; *&n; * Description:&n; *&t;This function scans the PCI bus for SK-98xx adapters. Resources for&n; *&t;each adapter are allocated and the adapter is brought into Init 1&n; *&t;state.&n; *&n; * Returns:&n; *&t;0, if everything is ok&n; *&t;!=0, on error&n; */
 DECL|function|skge_probe
 r_static
@@ -983,7 +968,7 @@ op_assign
 id|create_proc_entry
 c_func
 (paren
-l_string|&quot;sk98lin&quot;
+id|SK_Root_Dir_entry
 comma
 id|S_IFDIR
 op_or
@@ -1021,7 +1006,7 @@ id|pSkRootDir
 suffix:semicolon
 id|pProcFile-&gt;read_proc
 op_assign
-id|proc_read
+id|sk_proc_read
 suffix:semicolon
 id|pProcFile-&gt;write_proc
 op_assign
@@ -1047,6 +1032,10 @@ r_void
 op_star
 )paren
 id|pProcFile
+suffix:semicolon
+id|pProcFile-&gt;owner
+op_assign
+id|THIS_MODULE
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; * Dummy value.&n;&t;&t; */
 id|dev-&gt;base_addr
@@ -1345,7 +1334,7 @@ id|pSkRootDir
 suffix:semicolon
 id|pProcFile-&gt;read_proc
 op_assign
-id|proc_read
+id|sk_proc_read
 suffix:semicolon
 id|pProcFile-&gt;write_proc
 op_assign
@@ -1371,6 +1360,10 @@ r_void
 op_star
 )paren
 id|pProcFile
+suffix:semicolon
+id|pProcFile-&gt;owner
+op_assign
+id|THIS_MODULE
 suffix:semicolon
 id|memcpy
 c_func

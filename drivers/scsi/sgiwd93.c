@@ -857,13 +857,11 @@ comma
 id|SGI_WD93_0_IRQ
 )paren
 suffix:semicolon
-macro_line|#ifdef MODULE
 id|wd33c93_release
 c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#endif
 id|free_page
 c_func
 (paren
@@ -1072,13 +1070,11 @@ comma
 id|SGI_WD93_1_IRQ
 )paren
 suffix:semicolon
-macro_line|#ifdef MODULE
 id|wd33c93_release
 c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#endif
 id|free_page
 c_func
 (paren
@@ -1108,17 +1104,6 @@ l_int|1
 suffix:semicolon
 multiline_comment|/* Found one. */
 )brace
-DECL|macro|HOSTS_C
-mdefine_line|#define HOSTS_C
-macro_line|#include &quot;sgiwd93.h&quot;
-DECL|variable|driver_template
-r_static
-id|Scsi_Host_Template
-id|driver_template
-op_assign
-id|SGIWD93_SCSI
-suffix:semicolon
-macro_line|#include &quot;scsi_module.c&quot;
 DECL|function|sgiwd93_release
 r_int
 id|sgiwd93_release
@@ -1130,7 +1115,6 @@ op_star
 id|instance
 )paren
 (brace
-macro_line|#ifdef MODULE
 id|free_irq
 c_func
 (paren
@@ -1185,9 +1169,77 @@ c_func
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif
 r_return
 l_int|1
 suffix:semicolon
 )brace
+DECL|variable|driver_template
+r_static
+id|Scsi_Host_Template
+id|driver_template
+op_assign
+(brace
+dot
+id|proc_name
+op_assign
+l_string|&quot;SGIWD93&quot;
+comma
+dot
+id|name
+op_assign
+l_string|&quot;SGI WD93&quot;
+comma
+dot
+id|detect
+op_assign
+id|sgiwd93_detect
+comma
+dot
+id|release
+op_assign
+id|sgiwd93_release
+comma
+dot
+id|queuecommand
+op_assign
+id|wd33c93_queuecommand
+comma
+dot
+m_abort
+op_assign
+id|wd33c93_abort
+comma
+dot
+id|reset
+op_assign
+id|wd33c93_reset
+comma
+dot
+id|can_queue
+op_assign
+id|CAN_QUEUE
+comma
+dot
+id|this_id
+op_assign
+l_int|7
+comma
+dot
+id|sg_tablesize
+op_assign
+id|SG_ALL
+comma
+dot
+id|cmd_per_lun
+op_assign
+id|CMD_PER_LUN
+comma
+dot
+id|use_clustering
+op_assign
+id|DISABLE_CLUSTERING
+comma
+)brace
+suffix:semicolon
+macro_line|#include &quot;scsi_module.c&quot;
 eof

@@ -3753,7 +3753,7 @@ op_logical_neg
 id|inode
 )paren
 (brace
-macro_line|#if CONFIG_NCPFS_DEBUGDENTRY
+macro_line|#ifdef CONFIG_NCPFS_DEBUGDENTRY
 id|PRINTK
 c_func
 (paren

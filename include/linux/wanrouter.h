@@ -1,6 +1,4 @@
 multiline_comment|/*****************************************************************************&n;* wanrouter.h&t;Definitions for the WAN Multiprotocol Router Module.&n;*&t;&t;This module provides API and common services for WAN Link&n;*&t;&t;Drivers and is completely hardware-independent.&n;*&n;* Author: &t;Nenad Corbic &lt;ncorbic@sangoma.com&gt;&n;*&t;&t;Gideon Hack &t;&n;* Additions:&t;Arnaldo Melo&n;*&n;* Copyright:&t;(c) 1995-2000 Sangoma Technologies Inc.&n;*&n;*&t;&t;This program is free software; you can redistribute it and/or&n;*&t;&t;modify it under the terms of the GNU General Public License&n;*&t;&t;as published by the Free Software Foundation; either version&n;*&t;&t;2 of the License, or (at your option) any later version.&n;* ============================================================================&n;* Jul 21, 2000  Nenad Corbic&t;Added WAN_FT1_READY State&n;* Feb 24, 2000  Nenad Corbic    Added support for socket based x25api&n;* Jan 28, 2000  Nenad Corbic    Added support for the ASYNC protocol.&n;* Oct 04, 1999  Nenad Corbic &t;Updated for 2.1.0 release&n;* Jun 02, 1999  Gideon Hack&t;Added support for the S514 adapter.&n;* May 23, 1999&t;Arnaldo Melo&t;Added local_addr to wanif_conf_t&n;*&t;&t;&t;&t;WAN_DISCONNECTING state added&n;* Jul 20, 1998&t;David Fong&t;Added Inverse ARP options to &squot;wanif_conf_t&squot;&n;* Jun 12, 1998&t;David Fong&t;Added Cisco HDLC support.&n;* Dec 16, 1997&t;Jaspreet Singh&t;Moved &squot;enable_IPX&squot; and &squot;network_number&squot; to&n;*&t;&t;&t;&t;&squot;wanif_conf_t&squot;&n;* Dec 05, 1997&t;Jaspreet Singh&t;Added &squot;pap&squot;, &squot;chap&squot; to &squot;wanif_conf_t&squot;&n;*&t;&t;&t;&t;Added &squot;authenticator&squot; to &squot;wan_ppp_conf_t&squot;&n;* Nov 06, 1997&t;Jaspreet Singh&t;Changed Router Driver version to 1.1 from 1.0&n;* Oct 20, 1997&t;Jaspreet Singh&t;Added &squot;cir&squot;,&squot;bc&squot;,&squot;be&squot; and &squot;mc&squot; to &squot;wanif_conf_t&squot;&n;*&t;&t;&t;&t;Added &squot;enable_IPX&squot; and &squot;network_number&squot; to &n;*&t;&t;&t;&t;&squot;wan_device_t&squot;.  Also added defines for&n;*&t;&t;&t;&t;UDP PACKET TYPE, Interrupt test, critical values&n;*&t;&t;&t;&t;for RACE conditions.&n;* Oct 05, 1997&t;Jaspreet Singh&t;Added &squot;dlci_num&squot; and &squot;dlci[100]&squot; to &n;*&t;&t;&t;&t;&squot;wan_fr_conf_t&squot; to configure a list of dlci(s)&n;*&t;&t;&t;&t;for a NODE &n;* Jul 07, 1997&t;Jaspreet Singh&t;Added &squot;ttl&squot; to &squot;wandev_conf_t&squot; &amp; &squot;wan_device_t&squot;&n;* May 29, 1997 &t;Jaspreet Singh&t;Added &squot;tx_int_enabled&squot; to &squot;wan_device_t&squot;&n;* May 21, 1997&t;Jaspreet Singh&t;Added &squot;udp_port&squot; to &squot;wan_device_t&squot;&n;* Apr 25, 1997  Farhan Thawar   Added &squot;udp_port&squot; to &squot;wandev_conf_t&squot;&n;* Jan 16, 1997&t;Gene Kozin&t;router_devlist made public&n;* Jan 02, 1997&t;Gene Kozin&t;Initial version (based on wanpipe.h).&n;*****************************************************************************/
-DECL|macro|netdevice_t
-mdefine_line|#define netdevice_t struct net_device
 macro_line|#include &lt;linux/spinlock.h&gt;       /* Support for SMP Locking */
 macro_line|#ifndef&t;_ROUTER_H
 DECL|macro|_ROUTER_H
@@ -1290,7 +1288,6 @@ macro_line|#include &lt;linux/proc_fs.h&gt;&t;/* proc filesystem pragmatics */
 macro_line|#include &lt;linux/netdevice.h&gt;&t;/* support for network drivers */
 multiline_comment|/*----------------------------------------------------------------------------&n; * WAN device data space.&n; */
 DECL|struct|wan_device
-r_typedef
 r_struct
 id|wan_device
 (brace
@@ -1554,7 +1551,8 @@ id|wan_device
 op_star
 id|wandev
 comma
-id|netdevice_t
+r_struct
+id|net_device
 op_star
 id|dev
 comma
@@ -1575,7 +1573,8 @@ id|wan_device
 op_star
 id|wandev
 comma
-id|netdevice_t
+r_struct
+id|net_device
 op_star
 id|dev
 )paren
@@ -1589,7 +1588,8 @@ id|next
 suffix:semicolon
 multiline_comment|/* -&gt; next device */
 DECL|member|dev
-id|netdevice_t
+r_struct
+id|net_device
 op_star
 id|dev
 suffix:semicolon
@@ -1606,9 +1606,7 @@ op_star
 id|dent
 suffix:semicolon
 multiline_comment|/* proc filesystem entry */
-DECL|typedef|wan_device_t
 )brace
-id|wan_device_t
 suffix:semicolon
 multiline_comment|/* Public functions available for device drivers */
 r_extern
@@ -1616,7 +1614,8 @@ r_int
 id|register_wan_device
 c_func
 (paren
-id|wan_device_t
+r_struct
+id|wan_device
 op_star
 id|wandev
 )paren
@@ -1641,7 +1640,8 @@ id|sk_buff
 op_star
 id|skb
 comma
-id|netdevice_t
+r_struct
+id|net_device
 op_star
 id|dev
 )paren
@@ -1655,7 +1655,8 @@ id|sk_buff
 op_star
 id|skb
 comma
-id|netdevice_t
+r_struct
+id|net_device
 op_star
 id|dev
 comma
@@ -1686,7 +1687,8 @@ r_int
 id|wanrouter_proc_add
 c_func
 (paren
-id|wan_device_t
+r_struct
+id|wan_device
 op_star
 id|wandev
 )paren
@@ -1696,7 +1698,8 @@ r_int
 id|wanrouter_proc_delete
 c_func
 (paren
-id|wan_device_t
+r_struct
+id|wan_device
 op_star
 id|wandev
 )paren
@@ -1757,7 +1760,8 @@ id|smp_flags
 suffix:semicolon
 multiline_comment|/* Public Data */
 r_extern
-id|wan_device_t
+r_struct
+id|wan_device
 op_star
 id|router_devlist
 suffix:semicolon

@@ -350,6 +350,10 @@ l_int|6
 suffix:semicolon
 )brace
 suffix:semicolon
+DECL|macro|COMPAT_RLIM_OLD_INFINITY
+mdefine_line|#define COMPAT_RLIM_OLD_INFINITY       0x7fffffff
+DECL|macro|COMPAT_RLIM_INFINITY
+mdefine_line|#define COMPAT_RLIM_INFINITY           0xffffffff
 DECL|typedef|compat_old_sigset_t
 r_typedef
 id|u32

@@ -34,8 +34,6 @@ op_star
 id|host
 )paren
 suffix:semicolon
-DECL|macro|LASI700_SCSI
-mdefine_line|#define LASI700_SCSI {&t;&t;&t;&t;&bslash;&n;&t;.name&t;&t;= &quot;LASI SCSI 53c700&quot;,&t;&bslash;&n;&t;.proc_name&t;= &quot;lasi700&quot;,&t;&t;&bslash;&n;&t;.detect&t;&t;= lasi700_detect,&t;&t;&bslash;&n;&t;.release&t;= lasi700_release,&t;&bslash;&n;&t;.this_id&t;= 7,&t;&t;&t;&bslash;&n;}
 DECL|macro|LASI_710_SVERSION
 mdefine_line|#define LASI_710_SVERSION&t;0x082
 DECL|macro|LASI_700_SVERSION

@@ -33,7 +33,12 @@ id|page_cluster
 suffix:semicolon
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
+macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
+macro_line|#ifndef MM_VM_SIZE
+DECL|macro|MM_VM_SIZE
+mdefine_line|#define MM_VM_SIZE(mm)&t;TASK_SIZE
+macro_line|#endif
 multiline_comment|/*&n; * Linux kernel virtual memory manager primitives.&n; * The idea being to have a &quot;virtual&quot; mm in the same way&n; * we have a virtual fs - giving a cleaner interface to the&n; * mm details, and allowing different kinds of memory mappings&n; * (from shared memory to executable loading to arbitrary&n; * mmap() functions).&n; */
 multiline_comment|/*&n; * This struct defines a memory VMM memory area. There is one of these&n; * per VM-area/task.  A VM area is any part of the process virtual memory&n; * space that has a special rule for the page-fault handlers (ie a shared&n; * library, the executable area etc).&n; *&n; * This structure is exactly 64 bytes on ia32.  Please think very, very hard&n; * before adding anything to it.&n; */
 DECL|struct|vm_area_struct
@@ -163,12 +168,16 @@ DECL|macro|VM_ACCOUNT
 mdefine_line|#define VM_ACCOUNT&t;0x00100000&t;/* Is a VM accounted object */
 DECL|macro|VM_HUGETLB
 mdefine_line|#define VM_HUGETLB&t;0x00400000&t;/* Huge TLB Page VM */
+macro_line|#ifndef VM_STACK_DEFAULT_FLAGS&t;&t;/* arch can override this */
+DECL|macro|VM_STACK_DEFAULT_FLAGS
+mdefine_line|#define VM_STACK_DEFAULT_FLAGS VM_DATA_DEFAULT_FLAGS
+macro_line|#endif
 macro_line|#ifdef CONFIG_STACK_GROWSUP
 DECL|macro|VM_STACK_FLAGS
-mdefine_line|#define VM_STACK_FLAGS&t;(VM_GROWSUP | VM_DATA_DEFAULT_FLAGS | VM_ACCOUNT)
+mdefine_line|#define VM_STACK_FLAGS&t;(VM_GROWSUP | VM_STACK_DEFAULT_FLAGS | VM_ACCOUNT)
 macro_line|#else
 DECL|macro|VM_STACK_FLAGS
-mdefine_line|#define VM_STACK_FLAGS&t;(VM_GROWSDOWN | VM_DATA_DEFAULT_FLAGS | VM_ACCOUNT)
+mdefine_line|#define VM_STACK_FLAGS&t;(VM_GROWSDOWN | VM_STACK_DEFAULT_FLAGS | VM_ACCOUNT)
 macro_line|#endif
 DECL|macro|VM_READHINTMASK
 mdefine_line|#define VM_READHINTMASK&t;&t;&t;(VM_SEQ_READ | VM_RAND_READ)
@@ -1204,6 +1213,28 @@ comma
 r_int
 r_int
 id|nonblock
+)paren
+suffix:semicolon
+r_void
+id|put_dirty_page
+c_func
+(paren
+r_struct
+id|task_struct
+op_star
+id|tsk
+comma
+r_struct
+id|page
+op_star
+id|page
+comma
+r_int
+r_int
+id|address
+comma
+id|pgprot_t
+id|prot
 )paren
 suffix:semicolon
 r_int

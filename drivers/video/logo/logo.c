@@ -196,7 +196,8 @@ id|logo_parisc_clut224
 suffix:semicolon
 macro_line|#endif
 macro_line|#ifdef CONFIG_LOGO_SGI_CLUT224
-multiline_comment|/* SGI Linux logo on MIPS/MIPS64 */
+multiline_comment|/* SGI Linux logo on MIPS/MIPS64 and VISWS */
+macro_line|#ifndef CONFIG_X86_VISWS
 r_if
 c_cond
 (paren
@@ -204,6 +205,7 @@ id|mips_machgroup
 op_eq
 id|MACH_GROUP_SGI
 )paren
+macro_line|#endif
 id|logo
 op_assign
 op_amp

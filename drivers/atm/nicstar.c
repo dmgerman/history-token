@@ -4041,6 +4041,7 @@ comma
 id|card-&gt;atmdev-&gt;esi
 )paren
 )paren
+(brace
 id|nicstar_read_eprom
 c_func
 (paren
@@ -4053,6 +4054,36 @@ comma
 l_int|6
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|memcmp
+c_func
+(paren
+id|card-&gt;atmdev-&gt;esi
+comma
+l_string|&quot;&bslash;x00&bslash;x00&bslash;x00&bslash;x00&bslash;x00&bslash;x00&quot;
+comma
+l_int|6
+)paren
+op_eq
+l_int|0
+)paren
+(brace
+id|nicstar_read_eprom
+c_func
+(paren
+id|card-&gt;membase
+comma
+id|NICSTAR_EPROM_MAC_ADDR_OFFSET_ALT
+comma
+id|card-&gt;atmdev-&gt;esi
+comma
+l_int|6
+)paren
+suffix:semicolon
+)brace
+)brace
 id|printk
 c_func
 (paren
@@ -7370,7 +7401,7 @@ op_star
 )paren
 id|iovb-&gt;data
 comma
-id|ATM_SKB
+id|NS_SKB
 c_func
 (paren
 id|iovb
@@ -7379,7 +7410,7 @@ op_member_access_from_pointer
 id|iovcnt
 )paren
 suffix:semicolon
-id|ATM_SKB
+id|NS_SKB
 c_func
 (paren
 id|iovb
@@ -7389,7 +7420,7 @@ id|iovcnt
 op_assign
 l_int|0
 suffix:semicolon
-id|ATM_SKB
+id|NS_SKB
 c_func
 (paren
 id|iovb
@@ -8304,13 +8335,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|ATM_SKB
+id|skb_shinfo
 c_func
 (paren
 id|skb
 )paren
 op_member_access_from_pointer
-id|iovcnt
+id|nr_frags
 op_ne
 l_int|0
 )paren
@@ -10446,7 +10477,7 @@ id|vc-&gt;rx_iov
 op_assign
 id|iovb
 suffix:semicolon
-id|ATM_SKB
+id|NS_SKB
 c_func
 (paren
 id|iovb
@@ -10466,7 +10497,7 @@ id|iovb-&gt;data
 op_assign
 id|iovb-&gt;head
 suffix:semicolon
-id|ATM_SKB
+id|NS_SKB
 c_func
 (paren
 id|iovb
@@ -10482,7 +10513,7 @@ r_else
 r_if
 c_cond
 (paren
-id|ATM_SKB
+id|NS_SKB
 c_func
 (paren
 id|iovb
@@ -10523,7 +10554,7 @@ comma
 id|NS_MAX_IOVECS
 )paren
 suffix:semicolon
-id|ATM_SKB
+id|NS_SKB
 c_func
 (paren
 id|iovb
@@ -10543,7 +10574,7 @@ id|iovb-&gt;data
 op_assign
 id|iovb-&gt;head
 suffix:semicolon
-id|ATM_SKB
+id|NS_SKB
 c_func
 (paren
 id|iovb
@@ -10566,7 +10597,7 @@ op_star
 id|iovb-&gt;data
 )paren
 (braket
-id|ATM_SKB
+id|NS_SKB
 c_func
 (paren
 id|iovb
@@ -10601,7 +10632,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|ATM_SKB
+id|NS_SKB
 c_func
 (paren
 id|iovb
@@ -10669,7 +10700,7 @@ suffix:semicolon
 )brace
 )brace
 r_else
-multiline_comment|/* ATM_SKB(iovb)-&gt;iovcnt &gt;= 2 */
+multiline_comment|/* NS_SKB(iovb)-&gt;iovcnt &gt;= 2 */
 (brace
 r_if
 c_cond
@@ -10715,7 +10746,7 @@ op_star
 )paren
 id|iovb-&gt;data
 comma
-id|ATM_SKB
+id|NS_SKB
 c_func
 (paren
 id|iovb
@@ -10884,7 +10915,7 @@ op_star
 )paren
 id|iovb-&gt;data
 comma
-id|ATM_SKB
+id|NS_SKB
 c_func
 (paren
 id|iovb
@@ -10912,7 +10943,7 @@ multiline_comment|/* By this point we (hopefully) have a complete SDU without er
 r_if
 c_cond
 (paren
-id|ATM_SKB
+id|NS_SKB
 c_func
 (paren
 id|iovb
@@ -11036,7 +11067,7 @@ r_else
 r_if
 c_cond
 (paren
-id|ATM_SKB
+id|NS_SKB
 c_func
 (paren
 id|iovb
@@ -11454,7 +11485,7 @@ op_star
 )paren
 id|iovb-&gt;data
 comma
-id|ATM_SKB
+id|NS_SKB
 c_func
 (paren
 id|iovb
@@ -11641,7 +11672,7 @@ id|card
 comma
 id|iov
 comma
-id|ATM_SKB
+id|NS_SKB
 c_func
 (paren
 id|iovb
@@ -11762,7 +11793,7 @@ l_int|1
 suffix:semicolon
 id|j
 OL
-id|ATM_SKB
+id|NS_SKB
 c_func
 (paren
 id|iovb

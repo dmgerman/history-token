@@ -15,6 +15,7 @@ macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &quot;scsi.h&quot;
 macro_line|#include &quot;hosts.h&quot;
 macro_line|#include &lt;scsi/scsi_ioctl.h&gt;&t;/* For the door lock/unlock commands */
+macro_line|#include &quot;scsi_logging.h&quot;
 macro_line|#include &quot;sr.h&quot;
 id|MODULE_PARM
 c_func
@@ -1929,22 +1930,6 @@ l_int|1
 suffix:semicolon
 id|error
 op_assign
-id|scsi_slave_attach
-c_func
-(paren
-id|sdev
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|error
-)paren
-r_return
-id|error
-suffix:semicolon
-id|error
-op_assign
 op_minus
 id|ENOMEM
 suffix:semicolon
@@ -2274,12 +2259,6 @@ id|cd
 suffix:semicolon
 id|fail
 suffix:colon
-id|scsi_slave_detach
-c_func
-(paren
-id|sdev
-)paren
-suffix:semicolon
 r_return
 id|error
 suffix:semicolon
@@ -3354,12 +3333,6 @@ id|sr_devlist_remove
 c_func
 (paren
 id|cd
-)paren
-suffix:semicolon
-id|scsi_slave_detach
-c_func
-(paren
-id|SDp
 )paren
 suffix:semicolon
 id|del_gendisk

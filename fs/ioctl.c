@@ -341,6 +341,7 @@ id|on
 comma
 (paren
 r_int
+id|__user
 op_star
 )paren
 id|arg
@@ -404,6 +405,7 @@ id|on
 comma
 (paren
 r_int
+id|__user
 op_star
 )paren
 id|arg
@@ -531,6 +533,7 @@ c_func
 (paren
 (paren
 id|loff_t
+id|__user
 op_star
 )paren
 id|arg

@@ -662,12 +662,16 @@ r_int
 r_int
 id|max_host_blocked
 suffix:semicolon
-multiline_comment|/* &n;     * Support for driverfs filesystem&n;     */
+multiline_comment|/* &n;     * Support for sysfs&n;     */
 DECL|member|host_gendev
 r_struct
 id|device
-op_star
 id|host_gendev
+suffix:semicolon
+DECL|member|class_dev
+r_struct
+id|class_device
+id|class_dev
 suffix:semicolon
 multiline_comment|/*&n;     * We should ensure that this is aligned, both for better performance&n;     * and also because some compilers (m68k) don&squot;t automatically force&n;     * alignment to a long boundary.&n;     */
 DECL|member|hostdata
@@ -694,8 +698,10 @@ r_int
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|macro|to_scsi_host
-mdefine_line|#define&t;to_scsi_host(d)&t;d-&gt;driver_data&t;/* Major logical breakage, but we compile again... */
+DECL|macro|dev_to_shost
+mdefine_line|#define&t;&t;dev_to_shost(d)&t;&t;&bslash;&n;&t;container_of(d, struct Scsi_Host, host_gendev)
+DECL|macro|class_to_shost
+mdefine_line|#define&t;&t;class_to_shost(d)&t;&bslash;&n;&t;container_of(d, struct Scsi_Host, class_dev)
 multiline_comment|/*&n; * These two functions are used to allocate and free a pseudo device&n; * which will connect to the host adapter itself rather than any&n; * physical device.  You must deallocate when you are done with the&n; * thing.  This physical pseudo-device isn&squot;t real and won&squot;t be available&n; * from any high-level drivers.&n; */
 r_extern
 r_void
@@ -749,6 +755,20 @@ comma
 r_int
 )paren
 suffix:semicolon
+r_extern
+r_void
+id|scsi_report_device_reset
+c_func
+(paren
+r_struct
+id|Scsi_Host
+op_star
+comma
+r_int
+comma
+r_int
+)paren
+suffix:semicolon
 DECL|function|scsi_assign_lock
 r_static
 r_inline
@@ -789,7 +809,7 @@ op_star
 id|dev
 )paren
 (brace
-id|shost-&gt;host_gendev
+id|shost-&gt;host_gendev.parent
 op_assign
 id|dev
 suffix:semicolon
@@ -810,30 +830,9 @@ id|shost
 )paren
 (brace
 r_return
-id|shost-&gt;host_gendev
+id|shost-&gt;host_gendev.parent
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Prototypes for functions/data in scsi_scan.c&n; */
-r_extern
-r_void
-id|scsi_scan_host
-c_func
-(paren
-r_struct
-id|Scsi_Host
-op_star
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|scsi_forget_host
-c_func
-(paren
-r_struct
-id|Scsi_Host
-op_star
-)paren
-suffix:semicolon
 DECL|struct|Scsi_Device_Template
 r_struct
 id|Scsi_Device_Template
@@ -1007,18 +1006,6 @@ r_extern
 r_struct
 id|Scsi_Host
 op_star
-id|scsi_host_get_next
-c_func
-(paren
-r_struct
-id|Scsi_Host
-op_star
-)paren
-suffix:semicolon
-r_extern
-r_struct
-id|Scsi_Host
-op_star
 id|scsi_host_hn_get
 c_func
 (paren
@@ -1033,41 +1020,6 @@ c_func
 (paren
 r_struct
 id|Scsi_Host
-op_star
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|scsi_host_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-multiline_comment|/*&n; * host_busy inc/dec/test functions&n; */
-r_extern
-r_void
-id|scsi_host_busy_inc
-c_func
-(paren
-r_struct
-id|Scsi_Host
-op_star
-comma
-id|Scsi_Device
-op_star
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|scsi_host_busy_dec_and_test
-c_func
-(paren
-r_struct
-id|Scsi_Host
-op_star
-comma
-id|Scsi_Device
 op_star
 )paren
 suffix:semicolon
@@ -1130,32 +1082,5 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * sysfs support&n; */
-r_extern
-r_int
-id|scsi_upper_driver_register
-c_func
-(paren
-r_struct
-id|Scsi_Device_Template
-op_star
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|scsi_upper_driver_unregister
-c_func
-(paren
-r_struct
-id|Scsi_Device_Template
-op_star
-)paren
-suffix:semicolon
-r_extern
-r_struct
-r_class
-id|shost_class
-suffix:semicolon
 macro_line|#endif
-multiline_comment|/*&n; * Overrides for Emacs so that we follow Linus&squot;s tabbing style.&n; * Emacs will notice this stuff at the end of the file and automatically&n; * adjust the settings for this buffer only.  This must remain at the end&n; * of the file.&n; * ---------------------------------------------------------------------------&n; * Local variables:&n; * c-indent-level: 4&n; * c-brace-imaginary-offset: 0&n; * c-brace-offset: -4&n; * c-argdecl-indent: 4&n; * c-label-offset: -4&n; * c-continued-statement-offset: 4&n; * c-continued-brace-offset: 0&n; * indent-tabs-mode: nil&n; * tab-width: 8&n; * End:&n; */
 eof

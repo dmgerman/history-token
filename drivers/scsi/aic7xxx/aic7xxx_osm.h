@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Adaptec AIC7xxx device driver for Linux.&n; *&n; * Copyright (c) 1994 John Aycock&n; *   The University of Calgary Department of Computer Science.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; see the file COPYING.  If not, write to&n; * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.&n; * &n; * Copyright (c) 2000-2003 Adaptec Inc.&n; * All rights reserved.&n; *&n; * Redistribution and use in source and binary forms, with or without&n; * modification, are permitted provided that the following conditions&n; * are met:&n; * 1. Redistributions of source code must retain the above copyright&n; *    notice, this list of conditions, and the following disclaimer,&n; *    without modification.&n; * 2. Redistributions in binary form must reproduce at minimum a disclaimer&n; *    substantially similar to the &quot;NO WARRANTY&quot; disclaimer below&n; *    (&quot;Disclaimer&quot;) and any redistribution must be conditioned upon&n; *    including a substantially similar Disclaimer requirement for further&n; *    binary redistribution.&n; * 3. Neither the names of the above-listed copyright holders nor the names&n; *    of any contributors may be used to endorse or promote products derived&n; *    from this software without specific prior written permission.&n; *&n; * Alternatively, this software may be distributed under the terms of the&n; * GNU General Public License (&quot;GPL&quot;) version 2 as published by the Free&n; * Software Foundation.&n; *&n; * NO WARRANTY&n; * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS&n; * &quot;AS IS&quot; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT&n; * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR&n; * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT&n; * HOLDERS OR CONTRIBUTORS BE LIABLE FOR SPECIAL, EXEMPLARY, OR CONSEQUENTIAL&n; * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS&n; * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)&n; * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,&n; * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING&n; * IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE&n; * POSSIBILITY OF SUCH DAMAGES.&n; *&n; * $Id: //depot/aic7xxx/linux/drivers/scsi/aic7xxx/aic7xxx_osm.h#131 $&n; *&n; */
+multiline_comment|/*&n; * Adaptec AIC7xxx device driver for Linux.&n; *&n; * Copyright (c) 1994 John Aycock&n; *   The University of Calgary Department of Computer Science.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; see the file COPYING.  If not, write to&n; * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.&n; * &n; * Copyright (c) 2000-2003 Adaptec Inc.&n; * All rights reserved.&n; *&n; * Redistribution and use in source and binary forms, with or without&n; * modification, are permitted provided that the following conditions&n; * are met:&n; * 1. Redistributions of source code must retain the above copyright&n; *    notice, this list of conditions, and the following disclaimer,&n; *    without modification.&n; * 2. Redistributions in binary form must reproduce at minimum a disclaimer&n; *    substantially similar to the &quot;NO WARRANTY&quot; disclaimer below&n; *    (&quot;Disclaimer&quot;) and any redistribution must be conditioned upon&n; *    including a substantially similar Disclaimer requirement for further&n; *    binary redistribution.&n; * 3. Neither the names of the above-listed copyright holders nor the names&n; *    of any contributors may be used to endorse or promote products derived&n; *    from this software without specific prior written permission.&n; *&n; * Alternatively, this software may be distributed under the terms of the&n; * GNU General Public License (&quot;GPL&quot;) version 2 as published by the Free&n; * Software Foundation.&n; *&n; * NO WARRANTY&n; * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS&n; * &quot;AS IS&quot; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT&n; * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR&n; * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT&n; * HOLDERS OR CONTRIBUTORS BE LIABLE FOR SPECIAL, EXEMPLARY, OR CONSEQUENTIAL&n; * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS&n; * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)&n; * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,&n; * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING&n; * IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE&n; * POSSIBILITY OF SUCH DAMAGES.&n; *&n; * $Id: //depot/aic7xxx/linux/drivers/scsi/aic7xxx/aic7xxx_osm.h#142 $&n; *&n; */
 macro_line|#ifndef _AIC7XXX_LINUX_H_
 DECL|macro|_AIC7XXX_LINUX_H_
 mdefine_line|#define _AIC7XXX_LINUX_H_
@@ -114,11 +114,11 @@ macro_line|#endif
 macro_line|#endif /* BYTE_ORDER */
 multiline_comment|/************************* Configuration Data *********************************/
 r_extern
-r_int
+id|u_int
 id|aic7xxx_no_probe
 suffix:semicolon
 r_extern
-r_int
+id|u_int
 id|aic7xxx_allow_memio
 suffix:semicolon
 r_extern
@@ -463,7 +463,7 @@ id|timer_list
 id|ahc_timer_t
 suffix:semicolon
 multiline_comment|/********************************** Includes **********************************/
-macro_line|#if CONFIG_AIC7XXX_REG_PRETTY_PRINT
+macro_line|#ifdef CONFIG_AIC7XXX_REG_PRETTY_PRINT
 DECL|macro|AIC_DEBUG_REGISTERS
 mdefine_line|#define AIC_DEBUG_REGISTERS 1
 macro_line|#else
@@ -475,7 +475,7 @@ multiline_comment|/***************************** Timer Facilities **************
 DECL|macro|ahc_timer_init
 mdefine_line|#define ahc_timer_init init_timer
 DECL|macro|ahc_timer_stop
-mdefine_line|#define ahc_timer_stop del_timer
+mdefine_line|#define ahc_timer_stop del_timer_sync
 DECL|typedef|ahc_linux_callback_t
 r_typedef
 r_void
@@ -646,7 +646,7 @@ DECL|macro|AHC_SCSI_HAS_HOST_LOCK
 mdefine_line|#define AHC_SCSI_HAS_HOST_LOCK 0
 macro_line|#endif
 DECL|macro|AIC7XXX_DRIVER_VERSION
-mdefine_line|#define AIC7XXX_DRIVER_VERSION &quot;6.2.31&quot;
+mdefine_line|#define AIC7XXX_DRIVER_VERSION &quot;6.2.33&quot;
 multiline_comment|/**************************** Front End Queues ********************************/
 multiline_comment|/*&n; * Data structure used to cast the Linux struct scsi_cmnd to something&n; * that allows us to use the queue macros.  The linux structure has&n; * plenty of space to hold the links fields as required by the queue&n; * macros, but the queue macors require them to have the correct type.&n; */
 DECL|struct|ahc_cmd_internal
@@ -1049,8 +1049,20 @@ suffix:semicolon
 suffix:semicolon
 multiline_comment|/********************* Definitions Required by the Core ***********************/
 multiline_comment|/*&n; * Number of SG segments we require.  So long as the S/G segments for&n; * a particular transaction are allocated in a physically contiguous&n; * manner and are allocated below 4GB, the number of S/G segments is&n; * unrestricted.&n; */
+macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,5,0)
+multiline_comment|/*&n; * We dynamically adjust the number of segments in pre-2.5 kernels to&n; * avoid fragmentation issues in the SCSI mid-layer&squot;s private memory&n; * allocator.  See aic7xxx_osm.c ahc_linux_size_nseg() for details.&n; */
+r_extern
+id|u_int
+id|ahc_linux_nseg
+suffix:semicolon
 DECL|macro|AHC_NSEG
-mdefine_line|#define        AHC_NSEG 128
+mdefine_line|#define&t;AHC_NSEG ahc_linux_nseg
+DECL|macro|AHC_LINUX_MIN_NSEG
+mdefine_line|#define&t;AHC_LINUX_MIN_NSEG 64
+macro_line|#else
+DECL|macro|AHC_NSEG
+mdefine_line|#define&t;AHC_NSEG 128
+macro_line|#endif
 multiline_comment|/*&n; * Per-SCB OSM storage.&n; */
 r_typedef
 r_enum
@@ -1166,12 +1178,10 @@ r_struct
 id|ahc_completeq
 id|completeq
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,1,93)
 DECL|member|spin_lock
 id|spinlock_t
 id|spin_lock
 suffix:semicolon
-macro_line|#endif
 macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,4,0)
 DECL|member|runq_tasklet
 r_struct
@@ -1858,7 +1868,6 @@ op_star
 id|flags
 )paren
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,1,93)
 r_static
 id|__inline
 r_void
@@ -1958,12 +1967,18 @@ id|flags
 (brace
 multiline_comment|/*&n;&t; * In 2.5.X and some 2.4.X versions, the midlayer takes our&n;&t; * lock just before calling us, so we avoid locking again.&n;&t; * For other kernel versions, the io_request_lock is taken&n;&t; * just before our entry point is called.  In this case, we&n;&t; * trade the io_request_lock for our per-softc lock.&n;&t; */
 macro_line|#if AHC_SCSI_HAS_HOST_LOCK == 0
-id|ahc_lock
+id|spin_unlock
 c_func
 (paren
-id|ahc
-comma
-id|flags
+op_amp
+id|io_request_lock
+)paren
+suffix:semicolon
+id|spin_lock
+c_func
+(paren
+op_amp
+id|ahc-&gt;platform_data-&gt;spin_lock
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -1987,12 +2002,18 @@ id|flags
 )paren
 (brace
 macro_line|#if AHC_SCSI_HAS_HOST_LOCK == 0
-id|ahc_unlock
+id|spin_unlock
 c_func
 (paren
-id|ahc
-comma
-id|flags
+op_amp
+id|ahc-&gt;platform_data-&gt;spin_lock
+)paren
+suffix:semicolon
+id|spin_lock
+c_func
+(paren
+op_amp
+id|io_request_lock
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -2081,6 +2102,7 @@ DECL|function|ahc_list_lockinit
 id|ahc_list_lockinit
 c_func
 (paren
+r_void
 )paren
 (brace
 id|spin_lock_init
@@ -2139,189 +2161,6 @@ id|flags
 )paren
 suffix:semicolon
 )brace
-macro_line|#else /* LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,1,93) */
-r_static
-id|__inline
-r_void
-DECL|function|ahc_lockinit
-id|ahc_lockinit
-c_func
-(paren
-r_struct
-id|ahc_softc
-op_star
-id|ahc
-)paren
-(brace
-)brace
-r_static
-id|__inline
-r_void
-DECL|function|ahc_lock
-id|ahc_lock
-c_func
-(paren
-r_struct
-id|ahc_softc
-op_star
-id|ahc
-comma
-r_int
-r_int
-op_star
-id|flags
-)paren
-(brace
-id|save_flags
-c_func
-(paren
-op_star
-id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
-)paren
-suffix:semicolon
-)brace
-r_static
-id|__inline
-r_void
-DECL|function|ahc_unlock
-id|ahc_unlock
-c_func
-(paren
-r_struct
-id|ahc_softc
-op_star
-id|ahc
-comma
-r_int
-r_int
-op_star
-id|flags
-)paren
-(brace
-id|restore_flags
-c_func
-(paren
-op_star
-id|flags
-)paren
-suffix:semicolon
-)brace
-r_static
-id|__inline
-r_void
-DECL|function|ahc_done_lockinit
-id|ahc_done_lockinit
-c_func
-(paren
-r_struct
-id|ahc_softc
-op_star
-id|ahc
-)paren
-(brace
-)brace
-r_static
-id|__inline
-r_void
-DECL|function|ahc_done_lock
-id|ahc_done_lock
-c_func
-(paren
-r_struct
-id|ahc_softc
-op_star
-id|ahc
-comma
-r_int
-r_int
-op_star
-id|flags
-)paren
-(brace
-multiline_comment|/*&n;&t; * The done lock is always held while&n;&t; * the ahc lock is held so blocking&n;&t; * interrupts again would have no effect.&n;&t; */
-)brace
-r_static
-id|__inline
-r_void
-DECL|function|ahc_done_unlock
-id|ahc_done_unlock
-c_func
-(paren
-r_struct
-id|ahc_softc
-op_star
-id|ahc
-comma
-r_int
-r_int
-op_star
-id|flags
-)paren
-(brace
-)brace
-r_static
-id|__inline
-r_void
-DECL|function|ahc_list_lockinit
-id|ahc_list_lockinit
-c_func
-(paren
-)paren
-(brace
-)brace
-r_static
-id|__inline
-r_void
-DECL|function|ahc_list_lock
-id|ahc_list_lock
-c_func
-(paren
-r_int
-r_int
-op_star
-id|flags
-)paren
-(brace
-id|save_flags
-c_func
-(paren
-op_star
-id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
-)paren
-suffix:semicolon
-)brace
-r_static
-id|__inline
-r_void
-DECL|function|ahc_list_unlock
-id|ahc_list_unlock
-c_func
-(paren
-r_int
-r_int
-op_star
-id|flags
-)paren
-(brace
-id|restore_flags
-c_func
-(paren
-op_star
-id|flags
-)paren
-suffix:semicolon
-)brace
-macro_line|#endif /* LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,1,0) */
 multiline_comment|/******************************* PCI Definitions ******************************/
 multiline_comment|/*&n; * PCIM_xxx: mask to locate subfield in register&n; * PCIR_xxx: config register offset&n; * PCIC_xxx: device class&n; * PCIS_xxx: device subclass&n; * PCIP_xxx: device programming interface&n; * PCIV_xxx: PCI vendor ID (only required to fixup ancient devices)&n; * PCID_xxx: device ID&n; */
 DECL|macro|PCIR_DEVVENDOR
@@ -2447,13 +2286,6 @@ id|irq
 )paren
 suffix:semicolon
 multiline_comment|/******************************* PCI Routines *********************************/
-multiline_comment|/*&n; * We need to use the bios32.h routines if we are kernel version 2.1.92 or less.&n; */
-macro_line|#if LINUX_VERSION_CODE &lt;= KERNEL_VERSION(2,1,92)
-macro_line|#if defined(__sparc_v9__) || defined(__powerpc__)
-macro_line|#error &quot;PPC and Sparc platforms are only supported under 2.1.92 and above&quot;
-macro_line|#endif
-macro_line|#include &lt;linux/bios32.h&gt;
-macro_line|#endif
 r_int
 id|ahc_linux_pci_init
 c_func
@@ -3768,7 +3600,7 @@ r_uint32
 id|status
 )paren
 suffix:semicolon
-id|irqreturn_t
+id|AIC_LINUX_IRQRETURN_T
 id|ahc_linux_isr
 c_func
 (paren
@@ -3877,7 +3709,7 @@ macro_line|#endif
 DECL|macro|bootverbose
 mdefine_line|#define bootverbose aic7xxx_verbose
 r_extern
-r_int
+id|u_int
 id|aic7xxx_verbose
 suffix:semicolon
 macro_line|#endif /* _AIC7XXX_LINUX_H_ */

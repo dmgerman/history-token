@@ -37,8 +37,14 @@ macro_line|#if defined(CONFIG_NETROM) || defined(CONFIG_NETROM_MODULE)
 macro_line|#include &lt;net/netrom.h&gt;
 macro_line|#endif
 macro_line|#endif
-macro_line|#ifdef CONFIG_ATM_CLIP
+macro_line|#if defined(CONFIG_ATM_CLIP) || defined(CONFIG_ATM_CLIP_MODULE)
 macro_line|#include &lt;net/atmclip.h&gt;
+DECL|variable|clip_tbl_hook
+r_struct
+id|neigh_table
+op_star
+id|clip_tbl_hook
+suffix:semicolon
 macro_line|#endif
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
@@ -1526,14 +1532,13 @@ op_assign
 id|__neigh_lookup_errno
 c_func
 (paren
-macro_line|#ifdef CONFIG_ATM_CLIP
+macro_line|#if defined(CONFIG_ATM_CLIP) || defined(CONFIG_ATM_CLIP_MODULE)
 id|dev-&gt;type
 op_eq
 id|ARPHRD_ATM
 ques
 c_cond
-op_amp
-id|clip_tbl
+id|clip_tbl_hook
 suffix:colon
 macro_line|#endif
 op_amp
@@ -5820,6 +5825,11 @@ id|file_operations
 id|arp_seq_fops
 op_assign
 (brace
+dot
+id|owner
+op_assign
+id|THIS_MODULE
+comma
 dot
 id|open
 op_assign

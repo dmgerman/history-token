@@ -121,10 +121,6 @@ DECL|member|rt6i_metric
 id|u32
 id|rt6i_metric
 suffix:semicolon
-DECL|member|rt6i_hoplimit
-id|u8
-id|rt6i_hoplimit
-suffix:semicolon
 DECL|member|rt6i_ref
 id|atomic_t
 id|rt6i_ref
@@ -498,6 +494,10 @@ r_struct
 id|nlmsghdr
 op_star
 id|nlh
+comma
+r_void
+op_star
+id|rtattr
 )paren
 suffix:semicolon
 r_extern
@@ -514,6 +514,10 @@ r_struct
 id|nlmsghdr
 op_star
 id|nlh
+comma
+r_void
+op_star
+id|rtattr
 )paren
 suffix:semicolon
 r_extern

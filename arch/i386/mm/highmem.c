@@ -143,7 +143,7 @@ op_plus
 id|idx
 )paren
 suffix:semicolon
-macro_line|#if CONFIG_DEBUG_HIGHMEM
+macro_line|#ifdef CONFIG_DEBUG_HIGHMEM
 r_if
 c_cond
 (paren
@@ -209,7 +209,7 @@ id|km_type
 id|type
 )paren
 (brace
-macro_line|#if CONFIG_DEBUG_HIGHMEM
+macro_line|#ifdef CONFIG_DEBUG_HIGHMEM
 r_int
 r_int
 id|vaddr

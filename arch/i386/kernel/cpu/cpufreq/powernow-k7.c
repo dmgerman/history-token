@@ -8,6 +8,7 @@ macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;asm/msr.h&gt;
 macro_line|#include &lt;asm/timex.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
+macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &quot;powernow-k7.h&quot;
 DECL|macro|DEBUG
 mdefine_line|#define DEBUG
@@ -16,7 +17,7 @@ DECL|macro|dprintk
 mdefine_line|#define dprintk(msg...) printk(msg)
 macro_line|#else
 DECL|macro|dprintk
-mdefine_line|#define dprintk(msg...) do { } while(0);
+mdefine_line|#define dprintk(msg...) do { } while(0)
 macro_line|#endif
 DECL|macro|PFX
 mdefine_line|#define PFX &quot;powernow: &quot;
@@ -292,7 +293,7 @@ id|have_a0
 suffix:semicolon
 macro_line|#ifndef rdmsrl
 DECL|macro|rdmsrl
-mdefine_line|#define rdmsrl(msr,val) do {unsigned long l__,h__; &bslash;&n;&t;rdmsr (msr, l__, h__);&t;&bslash;&n;&t;val = l__;&t;&bslash;&n;&t;val |= ((u64)h__&lt;&lt;32);&t;&bslash;&n;} while(0);
+mdefine_line|#define rdmsrl(msr,val) do {unsigned long l__,h__; &bslash;&n;&t;rdmsr (msr, l__, h__);&t;&bslash;&n;&t;val = l__;&t;&bslash;&n;&t;val |= ((u64)h__&lt;&lt;32);&t;&bslash;&n;} while(0)
 macro_line|#endif
 macro_line|#ifndef wrmsrl
 DECL|function|wrmsrl
@@ -994,6 +995,15 @@ c_func
 l_string|&quot;&bslash;tcli&bslash;n&quot;
 )paren
 suffix:semicolon
+multiline_comment|/* First change the frequency. */
+r_if
+c_cond
+(paren
+id|fidvidctl.bits.FID
+op_ne
+id|fid
+)paren
+(brace
 id|rdmsrl
 (paren
 id|MSR_K7_FID_VID_CTL
@@ -1014,7 +1024,15 @@ id|fidvidctl.bits.FIDC
 op_assign
 l_int|1
 suffix:semicolon
-multiline_comment|/* Set the voltage lazily. Ie, only do voltage transition&n;&t;   if its changed since last time (Some speeds have the same voltage) */
+id|wrmsrl
+(paren
+id|MSR_K7_FID_VID_CTL
+comma
+id|fidvidctl.val
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/* Now change voltage. */
 r_if
 c_cond
 (paren
@@ -1023,6 +1041,13 @@ op_ne
 id|vid
 )paren
 (brace
+id|rdmsrl
+(paren
+id|MSR_K7_FID_VID_CTL
+comma
+id|fidvidctl.val
+)paren
+suffix:semicolon
 id|fidvidctl.bits.VID
 op_assign
 id|vid
@@ -1031,7 +1056,6 @@ id|fidvidctl.bits.VIDC
 op_assign
 l_int|1
 suffix:semicolon
-)brace
 id|wrmsrl
 (paren
 id|MSR_K7_FID_VID_CTL
@@ -1039,6 +1063,7 @@ comma
 id|fidvidctl.val
 )paren
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -1673,6 +1698,26 @@ id|powernow_init
 r_void
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|dmi_broken
+op_amp
+id|BROKEN_CPUFREQ
+)paren
+(brace
+id|printk
+(paren
+id|KERN_INFO
+id|PFX
+l_string|&quot;Disabled at boot time by DMI,&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|ENODEV
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren

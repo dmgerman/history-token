@@ -328,10 +328,6 @@ comma
 comma
 )brace
 suffix:semicolon
-r_extern
-r_int
-id|sysctl_ip_default_ttl
-suffix:semicolon
 multiline_comment|/* Control parameters for ECHO replies. */
 DECL|variable|sysctl_icmp_echo_ignore_all
 r_int
@@ -1006,10 +1002,6 @@ id|inet-&gt;tos
 op_assign
 id|skb-&gt;nh.iph-&gt;tos
 suffix:semicolon
-id|inet-&gt;ttl
-op_assign
-id|sysctl_ip_default_ttl
-suffix:semicolon
 id|daddr
 op_assign
 id|ipc.addr
@@ -1534,16 +1526,6 @@ op_member_access_from_pointer
 id|tos
 op_assign
 id|tos
-suffix:semicolon
-id|inet_sk
-c_func
-(paren
-id|icmp_socket-&gt;sk
-)paren
-op_member_access_from_pointer
-id|ttl
-op_assign
-id|sysctl_ip_default_ttl
 suffix:semicolon
 id|ipc.addr
 op_assign
@@ -2140,13 +2122,22 @@ op_amp
 id|raw_v4_lock
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; *&t;This can&squot;t change while we are doing it.&n;&t; *&t;Callers have obtained BR_NETPROTO_LOCK so&n;&t; *&t;we are OK.&n;&t; */
+id|rcu_read_lock
+c_func
+(paren
+)paren
+suffix:semicolon
 id|ipprot
 op_assign
 id|inet_protos
 (braket
 id|hash
 )braket
+suffix:semicolon
+id|smp_read_barrier_depends
+c_func
+(paren
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -2163,6 +2154,11 @@ c_func
 id|skb
 comma
 id|info
+)paren
+suffix:semicolon
+id|rcu_read_unlock
+c_func
+(paren
 )paren
 suffix:semicolon
 id|out
@@ -3881,9 +3877,10 @@ op_member_access_from_pointer
 id|sk
 )paren
 suffix:semicolon
-id|inet-&gt;ttl
+id|inet-&gt;uc_ttl
 op_assign
-id|MAXTTL
+op_minus
+l_int|1
 suffix:semicolon
 id|inet-&gt;pmtudisc
 op_assign

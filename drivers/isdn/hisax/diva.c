@@ -3935,7 +3935,7 @@ suffix:semicolon
 )brace
 )brace
 macro_line|#endif
-macro_line|#if CONFIG_PCI
+macro_line|#ifdef CONFIG_PCI
 r_if
 c_cond
 (paren

@@ -237,7 +237,12 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-id|MOD_DEC_USE_COUNT
+multiline_comment|/* It&squot;s safe to call module_put() here because socket still &n;&t; holds refference to this module. */
+id|module_put
+c_func
+(paren
+id|THIS_MODULE
+)paren
 suffix:semicolon
 )brace
 DECL|function|rfcomm_dev_hold
@@ -764,7 +769,12 @@ c_func
 id|dlc
 )paren
 suffix:semicolon
-id|MOD_INC_USE_COUNT
+multiline_comment|/* It&squot;s safe to call __module_get() here because socket already &n;&t; holds refference to this module. */
+id|__module_get
+c_func
+(paren
+id|THIS_MODULE
+)paren
 suffix:semicolon
 id|out
 suffix:colon

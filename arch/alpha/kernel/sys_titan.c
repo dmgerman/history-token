@@ -831,7 +831,7 @@ comma
 )brace
 suffix:semicolon
 r_static
-r_void
+id|irqreturn_t
 DECL|function|titan_intr_nop
 id|titan_intr_nop
 c_func
@@ -850,6 +850,9 @@ id|regs
 )paren
 (brace
 multiline_comment|/*&n;       * This is a NOP interrupt handler for the purposes of&n;       * event counting -- just return.&n;       */
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 r_static
 r_void

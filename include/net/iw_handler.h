@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * This file define the new driver API for Wireless Extensions&n; *&n; * Version :&t;4&t;21.6.02&n; *&n; * Authors :&t;Jean Tourrilhes - HPL - &lt;jt@hpl.hp.com&gt;&n; * Copyright (c) 2001-2002 Jean Tourrilhes, All Rights Reserved.&n; */
+multiline_comment|/*&n; * This file define the new driver API for Wireless Extensions&n; *&n; * Version :&t;5&t;4.12.02&n; *&n; * Authors :&t;Jean Tourrilhes - HPL - &lt;jt@hpl.hp.com&gt;&n; * Copyright (c) 2001-2002 Jean Tourrilhes, All Rights Reserved.&n; */
 macro_line|#ifndef _IW_HANDLER_H
 DECL|macro|_IW_HANDLER_H
 mdefine_line|#define _IW_HANDLER_H
@@ -11,9 +11,14 @@ macro_line|#include &lt;linux/wireless.h&gt;&t;&t;/* IOCTL user space API */
 multiline_comment|/***************************** VERSION *****************************/
 multiline_comment|/*&n; * This constant is used to know which version of the driver API is&n; * available. Hopefully, this will be pretty stable and no changes&n; * will be needed...&n; * I just plan to increment with each new version.&n; */
 DECL|macro|IW_HANDLER_VERSION
-mdefine_line|#define IW_HANDLER_VERSION&t;4
-multiline_comment|/*&n; * Changes :&n; *&n; * V2 to V3&n; * --------&n; *&t;- Move event definition in &lt;linux/wireless.h&gt;&n; *&t;- Add Wireless Event support :&n; *&t;&t;o wireless_send_event() prototype&n; *&t;&t;o iwe_stream_add_event/point() inline functions&n; * V3 to V4&n; * --------&n; *&t;- Reshuffle IW_HEADER_TYPE_XXX to map IW_PRIV_TYPE_XXX changes&n; */
+mdefine_line|#define IW_HANDLER_VERSION&t;5
+multiline_comment|/*&n; * Changes :&n; *&n; * V2 to V3&n; * --------&n; *&t;- Move event definition in &lt;linux/wireless.h&gt;&n; *&t;- Add Wireless Event support :&n; *&t;&t;o wireless_send_event() prototype&n; *&t;&t;o iwe_stream_add_event/point() inline functions&n; * V3 to V4&n; * --------&n; *&t;- Reshuffle IW_HEADER_TYPE_XXX to map IW_PRIV_TYPE_XXX changes&n; *&n; * V4 to V5&n; * --------&n; *&t;- Add new spy support : struct iw_spy_data &amp; prototypes&n; */
 multiline_comment|/**************************** CONSTANTS ****************************/
+multiline_comment|/* Enable enhanced spy support. Disable to reduce footprint */
+DECL|macro|IW_WIRELESS_SPY
+mdefine_line|#define IW_WIRELESS_SPY
+DECL|macro|IW_WIRELESS_THRSPY
+mdefine_line|#define IW_WIRELESS_THRSPY
 multiline_comment|/* Special error message for the driver to indicate that we&n; * should do a commit after return from the iw_handler */
 DECL|macro|EIWCOMMIT
 mdefine_line|#define EIWCOMMIT&t;EINPROGRESS
@@ -139,6 +144,12 @@ id|iw_priv_args
 op_star
 id|private_args
 suffix:semicolon
+multiline_comment|/* Driver enhanced spy support */
+DECL|member|spy_offset
+r_int
+id|spy_offset
+suffix:semicolon
+multiline_comment|/* Spy data offset */
 multiline_comment|/* In the long term, get_wireless_stats will move from&n;&t; * &squot;struct net_device&squot; to here, to minimise bloat. */
 )brace
 suffix:semicolon
@@ -182,6 +193,62 @@ multiline_comment|/* Special handling of the request */
 )brace
 suffix:semicolon
 multiline_comment|/* Need to think of short header translation table. Later. */
+multiline_comment|/* --------------------- ENHANCED SPY SUPPORT --------------------- */
+multiline_comment|/*&n; * In the old days, the driver was handling spy support all by itself.&n; * Now, the driver can delegate this task to Wireless Extensions.&n; * It needs to include this struct in its private part and use the&n; * standard spy iw_handler.&n; */
+multiline_comment|/*&n; * Instance specific spy data, i.e. addresses spied and quality for them.&n; */
+DECL|struct|iw_spy_data
+r_struct
+id|iw_spy_data
+(brace
+macro_line|#ifdef IW_WIRELESS_SPY
+multiline_comment|/* --- Standard spy support --- */
+DECL|member|spy_number
+r_int
+id|spy_number
+suffix:semicolon
+DECL|member|spy_address
+id|u_char
+id|spy_address
+(braket
+id|IW_MAX_SPY
+)braket
+(braket
+id|ETH_ALEN
+)braket
+suffix:semicolon
+DECL|member|spy_stat
+r_struct
+id|iw_quality
+id|spy_stat
+(braket
+id|IW_MAX_SPY
+)braket
+suffix:semicolon
+macro_line|#ifdef IW_WIRELESS_THRSPY
+multiline_comment|/* --- Enhanced spy support (event) */
+DECL|member|spy_thr_low
+r_struct
+id|iw_quality
+id|spy_thr_low
+suffix:semicolon
+multiline_comment|/* Low threshold */
+DECL|member|spy_thr_high
+r_struct
+id|iw_quality
+id|spy_thr_high
+suffix:semicolon
+multiline_comment|/* High threshold */
+DECL|member|spy_thr_under
+id|u_char
+id|spy_thr_under
+(braket
+id|IW_MAX_SPY
+)braket
+suffix:semicolon
+macro_line|#endif /* IW_WIRELESS_THRSPY */
+macro_line|#endif /* IW_WIRELESS_SPY */
+)brace
+suffix:semicolon
 multiline_comment|/**************************** PROTOTYPES ****************************/
 multiline_comment|/*&n; * Functions part of the Wireless Extensions (defined in net/core/wireless.c).&n; * Those may be called only within the kernel.&n; */
 multiline_comment|/* First : function strictly used inside the kernel */
@@ -250,6 +317,132 @@ id|extra
 )paren
 suffix:semicolon
 multiline_comment|/* We may need a function to send a stream of events to user space.&n; * More on that later... */
+multiline_comment|/* Standard handler for SIOCSIWSPY */
+r_extern
+r_int
+id|iw_handler_set_spy
+c_func
+(paren
+r_struct
+id|net_device
+op_star
+id|dev
+comma
+r_struct
+id|iw_request_info
+op_star
+id|info
+comma
+r_union
+id|iwreq_data
+op_star
+id|wrqu
+comma
+r_char
+op_star
+id|extra
+)paren
+suffix:semicolon
+multiline_comment|/* Standard handler for SIOCGIWSPY */
+r_extern
+r_int
+id|iw_handler_get_spy
+c_func
+(paren
+r_struct
+id|net_device
+op_star
+id|dev
+comma
+r_struct
+id|iw_request_info
+op_star
+id|info
+comma
+r_union
+id|iwreq_data
+op_star
+id|wrqu
+comma
+r_char
+op_star
+id|extra
+)paren
+suffix:semicolon
+multiline_comment|/* Standard handler for SIOCSIWTHRSPY */
+r_extern
+r_int
+id|iw_handler_set_thrspy
+c_func
+(paren
+r_struct
+id|net_device
+op_star
+id|dev
+comma
+r_struct
+id|iw_request_info
+op_star
+id|info
+comma
+r_union
+id|iwreq_data
+op_star
+id|wrqu
+comma
+r_char
+op_star
+id|extra
+)paren
+suffix:semicolon
+multiline_comment|/* Standard handler for SIOCGIWTHRSPY */
+r_extern
+r_int
+id|iw_handler_get_thrspy
+c_func
+(paren
+r_struct
+id|net_device
+op_star
+id|dev
+comma
+r_struct
+id|iw_request_info
+op_star
+id|info
+comma
+r_union
+id|iwreq_data
+op_star
+id|wrqu
+comma
+r_char
+op_star
+id|extra
+)paren
+suffix:semicolon
+multiline_comment|/* Driver call to update spy records */
+r_extern
+r_void
+id|wireless_spy_update
+c_func
+(paren
+r_struct
+id|net_device
+op_star
+id|dev
+comma
+r_int
+r_char
+op_star
+id|address
+comma
+r_struct
+id|iw_quality
+op_star
+id|wstats
+)paren
+suffix:semicolon
 multiline_comment|/************************* INLINE FUNTIONS *************************/
 multiline_comment|/*&n; * Function that are so simple that it&squot;s more efficient inlining them&n; */
 multiline_comment|/*------------------------------------------------------------------*/

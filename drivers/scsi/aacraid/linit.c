@@ -1,6 +1,6 @@
 multiline_comment|/*&n; *&t;Adaptec AAC series RAID controller driver&n; *&t;(c) Copyright 2001 Red Hat Inc.&t;&lt;alan@redhat.com&gt;&n; *&n; * based on the old aacraid driver that is..&n; * Adaptec aacraid device driver for Linux.&n; *&n; * Copyright (c) 2000 Adaptec, Inc. (aacraid@adaptec.com)&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; see the file COPYING.  If not, write to&n; * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; * Module Name:&n; *   linit.c&n; *&n; * Abstract: Linux Driver entry module for Adaptec RAID Array Controller&n; *&t;&t;&t;&t;&n; *&t;Provides the following driver entry points:&n; *&t;&t;aac_detect()&n; *&t;&t;aac_release()&n; *&t;&t;aac_queuecommand()&n; *&t;&t;aac_resetcommand()&n; *&t;&t;aac_biosparm()&n; *&t;&n; */
 DECL|macro|AAC_DRIVER_VERSION
-mdefine_line|#define AAC_DRIVER_VERSION&t;&t;&quot;0.9.9ac6-TEST&quot;
+mdefine_line|#define AAC_DRIVER_VERSION&t;&t;&quot;1.1.2&quot;
 DECL|macro|AAC_DRIVER_BUILD_DATE
 mdefine_line|#define AAC_DRIVER_BUILD_DATE&t;&t;__DATE__
 macro_line|#include &lt;linux/module.h&gt;
@@ -31,7 +31,7 @@ suffix:semicolon
 id|MODULE_DESCRIPTION
 c_func
 (paren
-l_string|&quot;Supports Dell PERC2, 2/Si, 3/Si, 3/Di, PERC 320/DC, Adaptec 2120S, 2200S, 5400S, and HP NetRAID-4M devices. http://domsch.com/linux/ or http://linux.adaptec.com&quot;
+l_string|&quot;Supports Dell PERC2, 2/Si, 3/Si, 3/Di, Adaptec Advanced Raid Products, and HP NetRAID-4M devices. http://domsch.com/linux/ or http://linux.adaptec.com&quot;
 )paren
 suffix:semicolon
 id|MODULE_LICENSE
@@ -56,10 +56,32 @@ comma
 l_string|&quot;Control scanning of hba for nondasd devices. 0=off, 1=on&quot;
 )paren
 suffix:semicolon
+id|MODULE_PARM
+c_func
+(paren
+id|paemode
+comma
+l_string|&quot;i&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|paemode
+comma
+l_string|&quot;Control whether dma addressing is using PAE. 0=off, 1=on&quot;
+)paren
+suffix:semicolon
 DECL|variable|nondasd
-r_static
 r_int
 id|nondasd
+op_assign
+op_minus
+l_int|1
+suffix:semicolon
+DECL|variable|paemode
+r_int
+id|paemode
 op_assign
 op_minus
 l_int|1
@@ -88,7 +110,8 @@ op_assign
 op_minus
 l_int|1
 suffix:semicolon
-multiline_comment|/*&n; * Because of the way Linux names scsi devices, the order in this table has&n; * become important.  Check for on-board Raid first, add-in cards second.&n; *&n; * dmb - For now we add the number of channels to this structure.  &n; * In the future we should add a fib that reports the number of channels&n; * for the card.  At that time we can remove the channels from here&n; */
+multiline_comment|/*&n; * Because of the way Linux names scsi devices, the order in this table has&n; * become important.  Check for on-board Raid first, add-in cards second.&n; */
+multiline_comment|/*&n; * dmb - For now we add the number of channels to this structure.  &n; * In the future we should add a fib that reports the number of channels&n; * for the card.  At that time we can remove the channels from here&n; */
 DECL|variable|aac_drivers
 r_static
 r_struct
@@ -397,6 +420,195 @@ l_int|0x9005
 comma
 l_int|0x0285
 comma
+l_int|0x17aa
+comma
+l_int|0x0286
+comma
+id|aac_rx_init
+comma
+l_string|&quot;aacraid&quot;
+comma
+l_string|&quot;Legend  &quot;
+comma
+l_string|&quot;Legend S220     &quot;
+comma
+l_int|1
+)brace
+comma
+multiline_comment|/* Legend S220*/
+(brace
+l_int|0x9005
+comma
+l_int|0x0285
+comma
+l_int|0x17aa
+comma
+l_int|0x0287
+comma
+id|aac_rx_init
+comma
+l_string|&quot;aacraid&quot;
+comma
+l_string|&quot;Legend  &quot;
+comma
+l_string|&quot;Legend S230     &quot;
+comma
+l_int|2
+)brace
+comma
+multiline_comment|/* Legend S230*/
+(brace
+l_int|0x9005
+comma
+l_int|0x0285
+comma
+l_int|0x9005
+comma
+l_int|0x0288
+comma
+id|aac_rx_init
+comma
+l_string|&quot;aacraid&quot;
+comma
+l_string|&quot;ADAPTEC &quot;
+comma
+l_string|&quot;Adaptec 3230S   &quot;
+comma
+l_int|2
+)brace
+comma
+multiline_comment|/* Adaptec 3230S (Harrier)*/
+(brace
+l_int|0x9005
+comma
+l_int|0x0285
+comma
+l_int|0x9005
+comma
+l_int|0x0289
+comma
+id|aac_rx_init
+comma
+l_string|&quot;aacraid&quot;
+comma
+l_string|&quot;ADAPTEC &quot;
+comma
+l_string|&quot;Adaptec 3240S   &quot;
+comma
+l_int|2
+)brace
+comma
+multiline_comment|/* Adaptec 3240S (Tornado)*/
+(brace
+l_int|0x9005
+comma
+l_int|0x0285
+comma
+l_int|0x9005
+comma
+l_int|0x028a
+comma
+id|aac_rx_init
+comma
+l_string|&quot;aacraid&quot;
+comma
+l_string|&quot;ADAPTEC &quot;
+comma
+l_string|&quot;ASR-2020S PCI-X &quot;
+comma
+l_int|2
+)brace
+comma
+multiline_comment|/* ASR-2020S PCI-X ZCR (Skyhawk)*/
+(brace
+l_int|0x9005
+comma
+l_int|0x0285
+comma
+l_int|0x9005
+comma
+l_int|0x028b
+comma
+id|aac_rx_init
+comma
+l_string|&quot;aacraid&quot;
+comma
+l_string|&quot;ADAPTEC &quot;
+comma
+l_string|&quot;ASR-2020S PCI-X &quot;
+comma
+l_int|2
+)brace
+comma
+multiline_comment|/* ASR-2020S SO-DIMM PCI-X ZCR(Terminator)*/
+(brace
+l_int|0x9005
+comma
+l_int|0x0285
+comma
+l_int|0x9005
+comma
+l_int|0x0290
+comma
+id|aac_rx_init
+comma
+l_string|&quot;aacraid&quot;
+comma
+l_string|&quot;ADAPTEC &quot;
+comma
+l_string|&quot;AAR-2410SA SATA &quot;
+comma
+l_int|2
+)brace
+comma
+multiline_comment|/* AAR-2410SA PCI SATA 4ch (Jaguar II)*/
+(brace
+l_int|0x9005
+comma
+l_int|0x0250
+comma
+l_int|0x1014
+comma
+l_int|0x0279
+comma
+id|aac_rx_init
+comma
+l_string|&quot;aacraid&quot;
+comma
+l_string|&quot;ADAPTEC &quot;
+comma
+l_string|&quot;Adaptec         &quot;
+comma
+l_int|2
+)brace
+comma
+multiline_comment|/* (Marco)*/
+(brace
+l_int|0x9005
+comma
+l_int|0x0250
+comma
+l_int|0x1014
+comma
+l_int|0x028c
+comma
+id|aac_rx_init
+comma
+l_string|&quot;aacraid&quot;
+comma
+l_string|&quot;ADAPTEC &quot;
+comma
+l_string|&quot;Adaptec         &quot;
+comma
+l_int|2
+)brace
+comma
+multiline_comment|/* (Sebring)*/
+(brace
+l_int|0x9005
+comma
+l_int|0x0285
+comma
 l_int|0x1028
 comma
 l_int|0x0287
@@ -407,12 +619,12 @@ l_string|&quot;percraid&quot;
 comma
 l_string|&quot;DELL    &quot;
 comma
-l_string|&quot;PERCRAID        &quot;
+l_string|&quot;PERC 320/DC     &quot;
 comma
 l_int|2
 )brace
 comma
-multiline_comment|/* Dell PERC 320/DC */
+multiline_comment|/* Perc 320/DC*/
 (brace
 l_int|0x1011
 comma
@@ -491,7 +703,7 @@ l_string|&quot;hpnraid&quot;
 comma
 l_string|&quot;HP      &quot;
 comma
-l_string|&quot;NetRAID-4M      &quot;
+l_string|&quot;NetRAID         &quot;
 comma
 l_int|4
 )brace
@@ -728,7 +940,8 @@ r_int
 id|aac_slave_configure
 c_func
 (paren
-id|Scsi_Device
+r_struct
+id|scsi_device
 op_star
 )paren
 suffix:semicolon
@@ -787,7 +1000,9 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;Red Hat/Adaptec aacraid driver, %s&bslash;n&quot;
+l_string|&quot;Red Hat/Adaptec aacraid driver (%s %s)&bslash;n&quot;
+comma
+id|AAC_DRIVER_VERSION
 comma
 id|AAC_DRIVER_BUILD_DATE
 )paren
@@ -1003,30 +1218,7 @@ id|aac_dev
 )paren
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|host_ptr
-op_eq
-l_int|NULL
-)paren
-(brace
-r_continue
-suffix:semicolon
-)brace
 multiline_comment|/* &n;&t;&t;&t; * These three parameters can be used to allow for wide SCSI &n;&t;&t;&t; * and for host adapters that support multiple buses.&n;&t;&t;&t; */
-id|host_ptr-&gt;max_id
-op_assign
-l_int|17
-suffix:semicolon
-id|host_ptr-&gt;max_lun
-op_assign
-l_int|8
-suffix:semicolon
-id|host_ptr-&gt;max_channel
-op_assign
-l_int|1
-suffix:semicolon
 id|host_ptr-&gt;irq
 op_assign
 id|dev-&gt;irq
@@ -1105,10 +1297,6 @@ id|aac-&gt;pdev
 op_assign
 id|dev
 suffix:semicolon
-id|aac-&gt;cardtype
-op_assign
-id|index
-suffix:semicolon
 id|aac-&gt;name
 op_assign
 id|aac-&gt;scsi_host_ptr-&gt;hostt-&gt;name
@@ -1116,6 +1304,38 @@ suffix:semicolon
 id|aac-&gt;id
 op_assign
 id|aac-&gt;scsi_host_ptr-&gt;unique_id
+suffix:semicolon
+id|aac-&gt;cardtype
+op_assign
+id|index
+suffix:semicolon
+id|aac-&gt;fibs
+op_assign
+(paren
+r_struct
+id|fib
+op_star
+)paren
+id|kmalloc
+c_func
+(paren
+r_sizeof
+(paren
+r_struct
+id|fib
+)paren
+op_star
+id|AAC_NUM_FIB
+comma
+id|GFP_KERNEL
+)paren
+suffix:semicolon
+id|spin_lock_init
+c_func
+(paren
+op_amp
+id|aac-&gt;fib_lock
+)paren
 suffix:semicolon
 multiline_comment|/* Initialize the ordinal number of the device to -1 */
 id|fsa_dev_ptr
@@ -1223,66 +1443,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|nondasd
-op_ne
-op_minus
-l_int|1
-)paren
-(brace
-multiline_comment|/* someone told us how to set this on the cmdline */
-id|aac-&gt;nondasd_support
-op_assign
-(paren
-id|nondasd
-op_ne
-l_int|0
-)paren
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-id|aac-&gt;nondasd_support
-op_ne
-l_int|0
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;%s%d: Non-DASD support enabled&bslash;n&quot;
-comma
-id|aac-&gt;name
-comma
-id|aac-&gt;id
-)paren
-suffix:semicolon
-)brace
-id|dprintk
-c_func
-(paren
-(paren
-id|KERN_DEBUG
-l_string|&quot;%s:%d options flag %04x.&bslash;n&quot;
-comma
-id|name
-comma
-id|host_ptr-&gt;unique_id
-comma
-id|aac-&gt;adapter_info.options
-)paren
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
 id|aac-&gt;nondasd_support
 op_eq
 l_int|1
 )paren
 (brace
-multiline_comment|/*&n;&t;&t;&t;&t; * max channel will be the physical channels plus 1 virtual channel &n;&t;&t;&t;&t; * all containers are on the virtual channel 0&n;&t;&t;&t;&t; * physical channels are address by their actual physical number+1&n;&t;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * max channel will be the physical channels plus 1 virtual channel &n;&t;&t;&t; * all containers are on the virtual channel 0&n;&t;&t;&t; * physical channels are address by their actual physical number+1&n;&t;&t;&t; */
 id|host_ptr-&gt;max_channel
 op_assign
 id|aac_drivers
@@ -1328,7 +1494,8 @@ l_int|1
 op_assign
 id|aac
 suffix:semicolon
-multiline_comment|/*&n;&t;&t;&t; * dmb - we may need to move these 3 parms somewhere else once&n;&t;&t;&t; * we get a fib that can report the actual numbers&n;&t;&t;&t; */
+singleline_comment|//&t;&t;&t;spin_unlock_irqrestore(&amp;aac-&gt;fib_lock, flags);
+multiline_comment|/*&n;&t;&t;&t; * dmb - we may need to move the setting of these parms somewhere else once&n;&t;&t;&t; * we get a fib that can report the actual numbers&n;&t;&t;&t; */
 id|host_ptr-&gt;max_id
 op_assign
 id|AAC_MAX_TARGET
@@ -1337,22 +1504,6 @@ id|host_ptr-&gt;max_lun
 op_assign
 id|AAC_MAX_LUN
 suffix:semicolon
-multiline_comment|/*&n;&t;&t;&t; *  If we are PAE capable then our future DMA mappings&n;&t;&t;&t; *  (for read/write commands) are 64bit clean and don&squot;t &n;&t;&t;&t; *  need bouncing. This assumes we do no other 32bit only&n;&t;&t;&t; *  allocations (eg fib table expands) after this point.&n;&t;&t;&t; */
-r_if
-c_cond
-(paren
-id|aac-&gt;pae_support
-)paren
-(brace
-id|pci_set_dma_mask
-c_func
-(paren
-id|dev
-comma
-l_int|0xFFFFFFFFFFFFFFFFUL
-)paren
-suffix:semicolon
-)brace
 )brace
 )brace
 r_if
@@ -1531,7 +1682,7 @@ comma
 r_void
 (paren
 op_star
-id|complete
+id|CompletionRoutine
 )paren
 (paren
 id|Scsi_Cmnd
@@ -1544,7 +1695,7 @@ id|ret
 suffix:semicolon
 id|scsi_cmnd_ptr-&gt;scsi_done
 op_assign
-id|complete
+id|CompletionRoutine
 suffix:semicolon
 multiline_comment|/*&n;&t; *&t;aac_scsi_cmd() handles command processing, setting the &n;&t; *&t;result code and calling completion routine. &n;&t; */
 r_if
@@ -1571,6 +1722,9 @@ id|KERN_DEBUG
 l_string|&quot;aac_scsi_cmd failed.&bslash;n&quot;
 )paren
 )paren
+suffix:semicolon
+r_return
+id|FAILED
 suffix:semicolon
 )brace
 r_return
@@ -1632,7 +1786,7 @@ id|devtype
 )braket
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;aac_biosparm&t;-&t;return BIOS parameters for disk&n; *&t;@disk: SCSI disk object to process&n; *&t;@device: Disk in question&n; *&t;@geom: geometry block to fill in&n; *&n; *&t;Return the Heads/Sectors/Cylinders BIOS Disk Parameters for Disk.  &n; *&t;The default disk geometry is 64 heads, 32 sectors, and the appropriate &n; *&t;number of cylinders so as not to exceed drive capacity.  In order for &n; *&t;disks equal to or larger than 1 GB to be addressable by the BIOS&n; *&t;without exceeding the BIOS limitation of 1024 cylinders, Extended &n; *&t;Translation should be enabled.   With Extended Translation enabled, &n; *&t;drives between 1 GB inclusive and 2 GB exclusive are given a disk &n; *&t;geometry of 128 heads and 32 sectors, and drives above 2 GB inclusive &n; *&t;are given a disk geometry of 255 heads and 63 sectors.  However, if &n; *&t;the BIOS detects that the Extended Translation setting does not match &n; *&t;the geometry in the partition table, then the translation inferred &n; *&t;from the partition table will be used by the BIOS, and a warning may &n; *&t;be displayed.&n; */
+multiline_comment|/**&n; *&t;aac_biosparm&t;-&t;return BIOS parameters for disk&n; *&t;@sdev: The scsi device corresponding to the disk&n; *&t;@bdev: the block device corresponding to the disk&n; *&t;@capacity: the sector capacity of the disk&n; *&t;@geom: geometry block to fill in&n; *&n; *&t;Return the Heads/Sectors/Cylinders BIOS Disk Parameters for Disk.  &n; *&t;The default disk geometry is 64 heads, 32 sectors, and the appropriate &n; *&t;number of cylinders so as not to exceed drive capacity.  In order for &n; *&t;disks equal to or larger than 1 GB to be addressable by the BIOS&n; *&t;without exceeding the BIOS limitation of 1024 cylinders, Extended &n; *&t;Translation should be enabled.   With Extended Translation enabled, &n; *&t;drives between 1 GB inclusive and 2 GB exclusive are given a disk &n; *&t;geometry of 128 heads and 32 sectors, and drives above 2 GB inclusive &n; *&t;are given a disk geometry of 255 heads and 63 sectors.  However, if &n; *&t;the BIOS detects that the Extended Translation setting does not match &n; *&t;the geometry in the partition table, then the translation inferred &n; *&t;from the partition table will be used by the BIOS, and a warning may &n; *&t;be displayed.&n; */
 DECL|function|aac_biosparm
 r_static
 r_int
@@ -1669,7 +1823,8 @@ op_star
 )paren
 id|geom
 suffix:semicolon
-id|u8
+r_int
+r_char
 op_star
 id|buf
 suffix:semicolon
@@ -1748,14 +1903,12 @@ c_func
 (paren
 id|capacity
 comma
-(paren
 id|param-&gt;heads
 op_star
 id|param-&gt;sectors
 )paren
-)paren
 suffix:semicolon
-multiline_comment|/*&n;&t; *&t;Read the partition table block&n;&t; */
+multiline_comment|/*&n;&t; *&t;Read the first 1024 bytes from the disk device&n;&t; */
 id|buf
 op_assign
 id|scsi_bios_ptable
@@ -1934,11 +2087,9 @@ c_func
 (paren
 id|capacity
 comma
-(paren
 id|param-&gt;heads
 op_star
 id|param-&gt;sectors
-)paren
 )paren
 suffix:semicolon
 r_if
@@ -2033,14 +2184,15 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;aac_slave_configure&t;-&t;do device specific setup&n; *&t;@dev:&t;SCSI device we are attaching&n; *&n; * &t;Currently, all we do is set the queue depth on the device.&n; */
+multiline_comment|/**&n; *&t;aac_queuedepth&t;&t;-&t;compute queue depths&n; *&t;@host:&t;SCSI host in question&n; *&t;@dev:&t;SCSI device we are considering&n; *&n; *&t;Selects queue depths for each target device based on the host adapter&squot;s&n; *&t;total capacity and the queue depth supported by the target device.&n; *&t;A queue depth of one automatically disables tagged queueing.&n; */
 DECL|function|aac_slave_configure
 r_static
 r_int
 id|aac_slave_configure
 c_func
 (paren
-id|Scsi_Device
+r_struct
+id|scsi_device
 op_star
 id|dev
 )paren
@@ -2104,78 +2256,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;aac_eh_abort&t;-&t;Abort command if possible.&n; *&t;@cmd:&t;SCSI command block to abort&n; *&n; *&t;Called when the midlayer wishes to abort a command. We don&squot;t support&n; *&t;this facility, and our firmware looks after life for us. We just&n; *&t;report this as failing&n; */
-DECL|function|aac_eh_abort
-r_static
-r_int
-id|aac_eh_abort
-c_func
-(paren
-id|Scsi_Cmnd
-op_star
-id|cmd
-)paren
-(brace
-r_return
-id|FAILED
-suffix:semicolon
-)brace
-multiline_comment|/**&n; *&t;aac_eh_device_reset&t;-&t;Reset command handling&n; *&t;@cmd:&t;SCSI command block causing the reset&n; *&n; *&t;Issue a reset of a SCSI device. We are ourselves not truely a SCSI&n; *&t;controller and our firmware will do the work for us anyway. Thus this&n; *&t;is a no-op. We just return FAILED.&n; */
-DECL|function|aac_eh_device_reset
-r_static
-r_int
-id|aac_eh_device_reset
-c_func
-(paren
-id|Scsi_Cmnd
-op_star
-id|cmd
-)paren
-(brace
-r_return
-id|FAILED
-suffix:semicolon
-)brace
-multiline_comment|/**&n; *&t;aac_eh_bus_reset&t;-&t;Reset command handling&n; *&t;@scsi_cmd:&t;SCSI command block causing the reset&n; *&n; *&t;Issue a reset of a SCSI bus. We are ourselves not truely a SCSI&n; *&t;controller and our firmware will do the work for us anyway. Thus this&n; *&t;is a no-op. We just return FAILED.&n; */
-DECL|function|aac_eh_bus_reset
-r_static
-r_int
-id|aac_eh_bus_reset
-c_func
-(paren
-id|Scsi_Cmnd
-op_star
-id|cmd
-)paren
-(brace
-r_return
-id|FAILED
-suffix:semicolon
-)brace
-multiline_comment|/**&n; *&t;aac_eh_hba_reset&t;-&t;Reset command handling&n; *&t;@scsi_cmd:&t;SCSI command block causing the reset&n; *&n; *&t;Issue a reset of a SCSI host. If things get this bad then arguably we should&n; *&t;go take a look at what the host adapter is doing and see if something really&n; *&t;broke (as can occur at least on my Dell QC card if a drive keeps failing spinup)&n; */
-DECL|function|aac_eh_reset
-r_static
-r_int
-id|aac_eh_reset
-c_func
-(paren
-id|Scsi_Cmnd
-op_star
-id|cmd
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;aacraid: Host adapter reset request. SCSI hang ?&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-id|FAILED
-suffix:semicolon
-)brace
-multiline_comment|/**&n; *&t;aac_ioctl &t;-&t;Handle SCSI ioctls&n; *&t;@scsi_dev_ptr: scsi device to operate upon&n; *&t;@cmd: ioctl command to use issue&n; *&t;@arg: ioctl data pointer&n; *&n; *&t;Issue an ioctl on an aacraid device. Returns a standard unix error code or&n; *&t;zero for success&n; */
+multiline_comment|/*------------------------------------------------------------------------------&n;&t;aac_ioctl()&n;&n;&t;&t;Handle SCSI ioctls&n; *----------------------------------------------------------------------------*/
 DECL|function|aac_ioctl
 r_static
 r_int
@@ -2193,6 +2274,7 @@ r_void
 op_star
 id|arg
 )paren
+multiline_comment|/*----------------------------------------------------------------------------*/
 (brace
 r_struct
 id|aac_dev
@@ -2431,7 +2513,7 @@ comma
 dot
 id|cmd_per_lun
 op_assign
-l_int|1
+id|AAC_NUM_IO_FIB
 comma
 dot
 id|eh_abort_handler
@@ -2460,6 +2542,94 @@ id|ENABLE_CLUSTERING
 comma
 )brace
 suffix:semicolon
+multiline_comment|/*===========================================================================&n; * Error Handling routines&n; *===========================================================================&n; */
+multiline_comment|/*&n; *&n; * We don&squot;t support abortting commands.&n; */
+DECL|function|aac_eh_abort
+r_static
+r_int
+id|aac_eh_abort
+c_func
+(paren
+id|Scsi_Cmnd
+op_star
+id|scsicmd
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;aacraid: abort failed&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+id|FAILED
+suffix:semicolon
+)brace
+multiline_comment|/*&n; * We don&squot;t support device resets.&n; */
+DECL|function|aac_eh_device_reset
+r_static
+r_int
+id|aac_eh_device_reset
+c_func
+(paren
+id|Scsi_Cmnd
+op_star
+id|cmd
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;aacraid: device reset failed&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+id|FAILED
+suffix:semicolon
+)brace
+DECL|function|aac_eh_bus_reset
+r_static
+r_int
+id|aac_eh_bus_reset
+c_func
+(paren
+id|Scsi_Cmnd
+op_star
+id|cmd
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;aacraid: bus reset failed&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+id|FAILED
+suffix:semicolon
+)brace
+DECL|function|aac_eh_reset
+r_static
+r_int
+id|aac_eh_reset
+c_func
+(paren
+id|Scsi_Cmnd
+op_star
+id|cmd
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;aacraid: hba reset failed&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+id|FAILED
+suffix:semicolon
+)brace
+multiline_comment|/*===========================================================================&n; * &n; *===========================================================================&n; */
 macro_line|#include &quot;scsi_module.c&quot;
 multiline_comment|/**&n; *&t;aac_procinfo&t;-&t;Implement /proc/scsi/&lt;drivername&gt;/&lt;n&gt;&n; *&t;@proc_buffer: memory buffer for I/O&n; *&t;@start_ptr: pointer to first valid data&n; *&t;@offset: offset into file&n; *&t;@bytes_available: space left&n; *&t;@host_no: scsi host ident&n; *&t;@write: direction of I/O&n; *&n; *&t;Used to export driver statistics and other infos to the world outside &n; *&t;the kernel using the proc file system. Also provides an interface to&n; *&t;feed the driver with information.&n; *&n; *&t;&t;For reads&n; *&t;&t;&t;- if offset &gt; 0 return 0&n; *&t;&t;&t;- if offset == 0 write data to proc_buffer and set the start_ptr to&n; *&t;&t;&t;beginning of proc_buffer, return the number of characters written.&n; *&t;&t;For writes&n; *&t;&t;&t;- writes currently not supported, return 0&n; *&n; *&t;Bugs:&t;Only offset zero is handled&n; */
 DECL|function|aac_procinfo

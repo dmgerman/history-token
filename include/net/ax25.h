@@ -1922,7 +1922,7 @@ r_void
 suffix:semicolon
 macro_line|#else
 DECL|function|ax25_register_sysctl
-r_extern
+r_static
 r_inline
 r_void
 id|ax25_register_sysctl
@@ -1934,7 +1934,7 @@ r_void
 )brace
 suffix:semicolon
 DECL|function|ax25_unregister_sysctl
-r_extern
+r_static
 r_inline
 r_void
 id|ax25_unregister_sysctl

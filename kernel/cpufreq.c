@@ -9,9 +9,9 @@ macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
+macro_line|#include &lt;linux/cpu.h&gt;
 multiline_comment|/**&n; * The &quot;cpufreq driver&quot; - the arch- or hardware-dependend low&n; * level driver of CPUFreq support, and its locking mutex. &n; * cpu_max_freq is in kHz.&n; */
 DECL|variable|cpufreq_driver
-r_static
 r_struct
 id|cpufreq_driver
 op_star
@@ -21,6 +21,14 @@ r_static
 id|DECLARE_MUTEX
 (paren
 id|cpufreq_driver_sem
+)paren
+suffix:semicolon
+multiline_comment|/* required for the proc interface, remove when that goes away */
+DECL|variable|cpufreq_driver
+id|EXPORT_SYMBOL_GPL
+c_func
+(paren
+id|cpufreq_driver
 )paren
 suffix:semicolon
 multiline_comment|/**&n; * Two notifier lists: the &quot;policy&quot; list is involved in the &n; * validation process for a new CPU frequency policy; the &n; * &quot;transition&quot; list for kernel code that needs to handle&n; * changes to devices when the CPU clock speed changes.&n; * The mutex locks both lists. If both cpufreq_driver_sem&n; * and cpufreq_notifier_sem need to be hold, get cpufreq_driver_sem&n; * first.&n; */
@@ -359,6 +367,12 @@ id|class_interface
 id|cpufreq_interface
 op_assign
 (brace
+dot
+r_class
+op_assign
+op_amp
+id|cpu_class
+comma
 dot
 id|add
 op_assign

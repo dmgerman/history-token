@@ -2462,6 +2462,17 @@ suffix:semicolon
 multiline_comment|/* verbose messages */
 multiline_comment|/****************************************************************************&n; *&n; * We&squot;re going to start putting in function declarations so that order of&n; * functions is no longer important.  As needed, they are added here.&n; *&n; ***************************************************************************/
 r_static
+r_int
+id|aic7xxx_release
+c_func
+(paren
+r_struct
+id|Scsi_Host
+op_star
+id|host
+)paren
+suffix:semicolon
+r_static
 r_void
 id|aic7xxx_set_syncrate
 c_func
@@ -30546,6 +30557,7 @@ id|found
 suffix:semicolon
 )brace
 multiline_comment|/*+F*************************************************************************&n; * Function:&n; *   aic7xxx_chip_reset&n; *&n; * Description:&n; *   Perform a chip reset on the aic7xxx SCSI controller.  The controller&n; *   is paused upon return.&n; *-F*************************************************************************/
+r_static
 r_int
 DECL|function|aic7xxx_chip_reset
 id|aic7xxx_chip_reset
@@ -33139,6 +33151,7 @@ r_return
 suffix:semicolon
 )brace
 multiline_comment|/*+F*************************************************************************&n; * Function:&n; *   aic7xxx_detect&n; *&n; * Description:&n; *   Try to detect and register an Adaptec 7770 or 7870 SCSI controller.&n; *&n; * XXX - This should really be called aic7xxx_probe().  A sequence of&n; *       probe(), attach()/detach(), and init() makes more sense than&n; *       one do-it-all function.  This may be useful when (and if) the&n; *       mid-level SCSI code is overhauled.&n; *-F*************************************************************************/
+r_static
 r_int
 DECL|function|aic7xxx_detect
 id|aic7xxx_detect
@@ -38347,6 +38360,7 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/*+F*************************************************************************&n; * Function:&n; *   aic7xxx_queue&n; *&n; * Description:&n; *   Queue a SCB to the controller.&n; *-F*************************************************************************/
+r_static
 r_int
 DECL|function|aic7xxx_queue
 id|aic7xxx_queue
@@ -38577,6 +38591,7 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*+F*************************************************************************&n; * Function:&n; *   aic7xxx_bus_device_reset&n; *&n; * Description:&n; *   Abort or reset the current SCSI command(s).  If the scb has not&n; *   previously been aborted, then we attempt to send a BUS_DEVICE_RESET&n; *   message to the target.  If the scb has previously been unsuccessfully&n; *   aborted, then we will reset the channel and have all devices renegotiate.&n; *   Returns an enumerated type that indicates the status of the operation.&n; *-F*************************************************************************/
+r_static
 r_int
 DECL|function|aic7xxx_bus_device_reset
 id|aic7xxx_bus_device_reset
@@ -39466,6 +39481,7 @@ id|SUCCESS
 suffix:semicolon
 )brace
 multiline_comment|/*+F*************************************************************************&n; * Function:&n; *   aic7xxx_panic_abort&n; *&n; * Description:&n; *   Abort the current SCSI command(s).&n; *-F*************************************************************************/
+r_static
 r_void
 DECL|function|aic7xxx_panic_abort
 id|aic7xxx_panic_abort
@@ -39577,6 +39593,7 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/*+F*************************************************************************&n; * Function:&n; *   aic7xxx_abort&n; *&n; * Description:&n; *   Abort the current SCSI command(s).&n; *-F*************************************************************************/
+r_static
 r_int
 DECL|function|aic7xxx_abort
 id|aic7xxx_abort
@@ -40701,6 +40718,7 @@ id|SUCCESS
 suffix:semicolon
 )brace
 multiline_comment|/*+F*************************************************************************&n; * Function:&n; *   aic7xxx_reset&n; *&n; * Description:&n; *   Resetting the bus always succeeds - is has to, otherwise the&n; *   kernel will panic! Try a surgical technique - sending a BUS&n; *   DEVICE RESET message - on the offending target before pulling&n; *   the SCSI bus reset line.&n; *-F*************************************************************************/
+r_static
 r_int
 DECL|function|aic7xxx_reset
 id|aic7xxx_reset
@@ -41007,6 +41025,7 @@ id|SUCCESS
 suffix:semicolon
 )brace
 multiline_comment|/*+F*************************************************************************&n; * Function:&n; *   aic7xxx_biosparam&n; *&n; * Description:&n; *   Return the disk geometry for the given SCSI device.&n; *&n; * Note:&n; *   This function is broken for today&squot;s really large drives and needs&n; *   fixed.&n; *-F*************************************************************************/
+r_static
 r_int
 DECL|function|aic7xxx_biosparam
 id|aic7xxx_biosparam
@@ -41242,6 +41261,7 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*+F*************************************************************************&n; * Function:&n; *   aic7xxx_release&n; *&n; * Description:&n; *   Free the passed in Scsi_Host memory structures prior to unloading the&n; *   module.&n; *-F*************************************************************************/
+r_static
 r_int
 DECL|function|aic7xxx_release
 id|aic7xxx_release
@@ -42391,13 +42411,99 @@ c_func
 l_string|&quot;Dual BSD/GPL&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* Eventually this will go into an include file, but this will be later */
 DECL|variable|driver_template
 r_static
 id|Scsi_Host_Template
 id|driver_template
 op_assign
-id|AIC7XXX
+(brace
+dot
+id|proc_info
+op_assign
+id|aic7xxx_proc_info
+comma
+dot
+id|detect
+op_assign
+id|aic7xxx_detect
+comma
+dot
+id|release
+op_assign
+id|aic7xxx_release
+comma
+dot
+id|info
+op_assign
+id|aic7xxx_info
+comma
+dot
+id|queuecommand
+op_assign
+id|aic7xxx_queue
+comma
+dot
+id|slave_alloc
+op_assign
+id|aic7xxx_slave_alloc
+comma
+dot
+id|slave_configure
+op_assign
+id|aic7xxx_slave_configure
+comma
+dot
+id|slave_destroy
+op_assign
+id|aic7xxx_slave_destroy
+comma
+dot
+id|bios_param
+op_assign
+id|aic7xxx_biosparam
+comma
+dot
+id|eh_abort_handler
+op_assign
+id|aic7xxx_abort
+comma
+dot
+id|eh_device_reset_handler
+op_assign
+id|aic7xxx_bus_device_reset
+comma
+dot
+id|eh_host_reset_handler
+op_assign
+id|aic7xxx_reset
+comma
+dot
+id|can_queue
+op_assign
+l_int|255
+comma
+dot
+id|this_id
+op_assign
+op_minus
+l_int|1
+comma
+dot
+id|max_sectors
+op_assign
+l_int|2048
+comma
+dot
+id|cmd_per_lun
+op_assign
+l_int|3
+comma
+dot
+id|use_clustering
+op_assign
+id|ENABLE_CLUSTERING
+comma
+)brace
 suffix:semicolon
 macro_line|#include &quot;scsi_module.c&quot;
 multiline_comment|/*&n; * Overrides for Emacs so that we almost follow Linus&squot;s tabbing style.&n; * Emacs will notice this stuff at the end of the file and automatically&n; * adjust the settings for this buffer only.  This must remain at the end&n; * of the file.&n; * ---------------------------------------------------------------------------&n; * Local variables:&n; * c-indent-level: 2&n; * c-brace-imaginary-offset: 0&n; * c-brace-offset: -2&n; * c-argdecl-indent: 2&n; * c-label-offset: -2&n; * c-continued-statement-offset: 2&n; * c-continued-brace-offset: 0&n; * indent-tabs-mode: nil&n; * tab-width: 8&n; * End:&n; */

@@ -1323,11 +1323,10 @@ op_star
 id|data
 suffix:semicolon
 multiline_comment|/* Private to the packet type&t;&t;*/
-DECL|member|next
+DECL|member|list
 r_struct
-id|packet_type
-op_star
-id|next
+id|list_head
+id|list
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -1407,6 +1406,17 @@ suffix:semicolon
 r_extern
 r_void
 id|dev_remove_pack
+c_func
+(paren
+r_struct
+id|packet_type
+op_star
+id|pt
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|__dev_remove_pack
 c_func
 (paren
 r_struct

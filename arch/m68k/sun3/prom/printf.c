@@ -94,7 +94,7 @@ id|bptr
 op_assign
 id|ppbuf
 suffix:semicolon
-macro_line|#if CONFIG_AP1000
+macro_line|#ifdef CONFIG_AP1000
 id|ap_write
 c_func
 (paren

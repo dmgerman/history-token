@@ -64,7 +64,7 @@ op_star
 id|rp
 )paren
 (brace
-macro_line|#if CONFIG_AP1000
+macro_line|#ifdef CONFIG_AP1000
 r_extern
 r_struct
 id|linux_romvec

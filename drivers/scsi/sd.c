@@ -20,6 +20,7 @@ macro_line|#include &quot;scsi.h&quot;
 macro_line|#include &quot;hosts.h&quot;
 macro_line|#include &lt;scsi/scsi_ioctl.h&gt;
 macro_line|#include &lt;scsi/scsicam.h&gt;
+macro_line|#include &quot;scsi_logging.h&quot;
 multiline_comment|/*&n; * Remaining dev_t-handling stuff&n; */
 DECL|macro|SD_MAJORS
 mdefine_line|#define SD_MAJORS&t;16
@@ -2764,7 +2765,7 @@ suffix:semicolon
 id|sector_t
 id|error_sector
 suffix:semicolon
-macro_line|#if CONFIG_SCSI_LOGGING
+macro_line|#ifdef CONFIG_SCSI_LOGGING
 id|SCSI_LOG_HLCOMPLETE
 c_func
 (paren
@@ -3230,11 +3231,13 @@ op_assign
 l_int|0
 suffix:semicolon
 r_int
-id|the_result
-comma
 id|retries
 comma
 id|spintime
+suffix:semicolon
+r_int
+r_int
+id|the_result
 suffix:semicolon
 id|spintime
 op_assign
@@ -3248,13 +3251,7 @@ id|retries
 op_assign
 l_int|0
 suffix:semicolon
-r_while
-c_loop
-(paren
-id|retries
-OL
-l_int|3
-)paren
+r_do
 (brace
 id|cmd
 (braket
@@ -3334,23 +3331,41 @@ suffix:semicolon
 id|retries
 op_increment
 suffix:semicolon
-r_if
-c_cond
+)brace
+r_while
+c_loop
+(paren
+id|retries
+OL
+l_int|3
+op_logical_and
+op_logical_neg
+id|scsi_status_is_good
+c_func
 (paren
 id|the_result
-op_eq
-l_int|0
-op_logical_or
+)paren
+op_logical_and
+(paren
+(paren
+id|driver_byte
+c_func
+(paren
+id|the_result
+)paren
+op_amp
+id|DRIVER_SENSE
+)paren
+op_logical_and
 id|SRpnt-&gt;sr_sense_buffer
 (braket
 l_int|2
 )braket
-op_ne
+op_eq
 id|UNIT_ATTENTION
 )paren
-r_break
+)paren
 suffix:semicolon
-)brace
 multiline_comment|/*&n;&t;&t; * If the drive has indicated to us that it doesn&squot;t have&n;&t;&t; * any media in it, don&squot;t bother with any of the rest of&n;&t;&t; * this crap.&n;&t;&t; */
 r_if
 c_cond
@@ -3368,13 +3383,49 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
+id|driver_byte
+c_func
+(paren
 id|the_result
+)paren
+op_amp
+id|DRIVER_SENSE
+)paren
 op_eq
 l_int|0
 )paren
+(brace
+multiline_comment|/* no sense, TUR either succeeded or failed&n;&t;&t;&t; * with a status error */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|spintime
+op_logical_and
+op_logical_neg
+id|scsi_status_is_good
+c_func
+(paren
+id|the_result
+)paren
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_NOTICE
+l_string|&quot;%s: Unit Not Ready, error = 0x%x&bslash;n&quot;
+comma
+id|diskname
+comma
+id|the_result
+)paren
+suffix:semicolon
+)brace
 r_break
 suffix:semicolon
-multiline_comment|/* all is well now */
+)brace
 multiline_comment|/*&n;&t;&t; * If manual intervention is required, or this is an&n;&t;&t; * absent USB storage device, a spinup is meaningless.&n;&t;&t; */
 r_if
 c_cond
@@ -3401,10 +3452,13 @@ l_int|13
 op_eq
 l_int|3
 )paren
+(brace
 r_break
 suffix:semicolon
 multiline_comment|/* manual intervention required */
 multiline_comment|/*&n;&t;&t; * Issue command to spin up drive when not ready&n;&t;&t; */
+)brace
+r_else
 r_if
 c_cond
 (paren
@@ -3568,6 +3622,37 @@ l_string|&quot;.&quot;
 )paren
 suffix:semicolon
 )brace
+r_else
+(brace
+multiline_comment|/* we don&squot;t understand the sense code, so it&squot;s&n;&t;&t;&t; * probably pointless to loop */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|spintime
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_NOTICE
+l_string|&quot;%s: Unit Not Ready, sense:&bslash;n&quot;
+comma
+id|diskname
+)paren
+suffix:semicolon
+id|print_req_sense
+c_func
+(paren
+l_string|&quot;&quot;
+comma
+id|SRpnt
+)paren
+suffix:semicolon
+)brace
+r_break
+suffix:semicolon
+)brace
 )brace
 r_while
 c_loop
@@ -3596,19 +3681,23 @@ id|spintime
 r_if
 c_cond
 (paren
+id|scsi_status_is_good
+c_func
+(paren
 id|the_result
+)paren
 )paren
 id|printk
 c_func
 (paren
-l_string|&quot;not responding...&bslash;n&quot;
+l_string|&quot;ready&bslash;n&quot;
 )paren
 suffix:semicolon
 r_else
 id|printk
 c_func
 (paren
-l_string|&quot;ready&bslash;n&quot;
+l_string|&quot;not responding...&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -5486,22 +5575,6 @@ id|sdp-&gt;lun
 suffix:semicolon
 id|error
 op_assign
-id|scsi_slave_attach
-c_func
-(paren
-id|sdp
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|error
-)paren
-r_goto
-id|out
-suffix:semicolon
-id|error
-op_assign
 op_minus
 id|ENOMEM
 suffix:semicolon
@@ -5526,7 +5599,7 @@ op_logical_neg
 id|sdkp
 )paren
 r_goto
-id|out_detach
+id|out
 suffix:semicolon
 id|gd
 op_assign
@@ -5802,14 +5875,6 @@ c_func
 id|sdkp
 )paren
 suffix:semicolon
-id|out_detach
-suffix:colon
-id|scsi_slave_detach
-c_func
-(paren
-id|sdp
-)paren
-suffix:semicolon
 id|out
 suffix:colon
 r_return
@@ -5909,12 +5974,6 @@ id|del_gendisk
 c_func
 (paren
 id|sdkp-&gt;disk
-)paren
-suffix:semicolon
-id|scsi_slave_detach
-c_func
-(paren
-id|sdp
 )paren
 suffix:semicolon
 id|spin_lock
@@ -6310,6 +6369,10 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+id|SRpnt-&gt;sr_data_direction
+op_assign
+id|SCSI_DATA_NONE
+suffix:semicolon
 r_for
 c_loop
 (paren

@@ -168,22 +168,6 @@ r_extern
 r_int
 id|smp_threads_ready
 suffix:semicolon
-r_extern
-r_volatile
-r_int
-r_int
-id|smp_msg_data
-suffix:semicolon
-r_extern
-r_volatile
-r_int
-id|smp_src_cpu
-suffix:semicolon
-r_extern
-r_volatile
-r_int
-id|smp_msg_id
-suffix:semicolon
 DECL|macro|MSG_ALL_BUT_SELF
 mdefine_line|#define MSG_ALL_BUT_SELF&t;0x8000&t;/* Assume &lt;32768 CPU&squot;s */
 DECL|macro|MSG_ALL

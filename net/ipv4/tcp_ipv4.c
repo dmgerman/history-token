@@ -21,10 +21,6 @@ r_extern
 r_int
 id|sysctl_ip_dynaddr
 suffix:semicolon
-r_extern
-r_int
-id|sysctl_ip_default_ttl
-suffix:semicolon
 DECL|variable|sysctl_tcp_tw_reuse
 r_int
 id|sysctl_tcp_tw_reuse
@@ -468,7 +464,7 @@ id|head-&gt;lock
 suffix:semicolon
 )brace
 DECL|function|tcp_inherit_port
-id|__inline__
+r_inline
 r_void
 id|tcp_inherit_port
 c_func
@@ -1214,7 +1210,7 @@ id|head-&gt;lock
 suffix:semicolon
 )brace
 DECL|function|tcp_put_port
-id|__inline__
+r_inline
 r_void
 id|tcp_put_port
 c_func
@@ -1843,7 +1839,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* Optimize the common listener case. */
 DECL|function|tcp_v4_lookup_listener
-id|__inline__
+r_inline
 r_struct
 id|sock
 op_star
@@ -2232,7 +2228,7 @@ id|dif
 suffix:semicolon
 )brace
 DECL|function|tcp_v4_lookup
-id|__inline__
+r_inline
 r_struct
 id|sock
 op_star
@@ -2734,12 +2730,6 @@ c_func
 id|tw
 )paren
 suffix:semicolon
-id|tcp_timewait_kill
-c_func
-(paren
-id|tw
-)paren
-suffix:semicolon
 id|NET_INC_STATS_BH
 c_func
 (paren
@@ -3116,12 +3106,6 @@ id|tw
 )paren
 (brace
 id|tcp_tw_deschedule
-c_func
-(paren
-id|tw
-)paren
-suffix:semicolon
-id|tcp_timewait_kill
 c_func
 (paren
 id|tw
@@ -4996,16 +4980,6 @@ id|check
 )paren
 op_div
 l_int|2
-suffix:semicolon
-id|inet_sk
-c_func
-(paren
-id|tcp_socket-&gt;sk
-)paren
-op_member_access_from_pointer
-id|ttl
-op_assign
-id|sysctl_ip_default_ttl
 suffix:semicolon
 id|ip_send_reply
 c_func
@@ -7840,17 +7814,6 @@ id|sk2
 )paren
 (brace
 id|tcp_tw_deschedule
-c_func
-(paren
-(paren
-r_struct
-id|tcp_tw_bucket
-op_star
-)paren
-id|sk
-)paren
-suffix:semicolon
-id|tcp_timewait_kill
 c_func
 (paren
 (paren
@@ -11126,6 +11089,11 @@ id|tcp_seq_fops
 op_assign
 (brace
 dot
+id|owner
+op_assign
+id|THIS_MODULE
+comma
+dot
 id|open
 op_assign
 id|tcp_seq_open
@@ -11359,9 +11327,10 @@ c_func
 id|tcp_socket-&gt;sk
 )paren
 op_member_access_from_pointer
-id|ttl
+id|uc_ttl
 op_assign
-id|MAXTTL
+op_minus
+l_int|1
 suffix:semicolon
 multiline_comment|/* Unhash it so that IP input processing does not even&n;&t; * see it, we do not wish this socket to see incoming&n;&t; * packets.&n;&t; */
 id|tcp_socket-&gt;sk-&gt;prot

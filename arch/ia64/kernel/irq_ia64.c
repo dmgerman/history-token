@@ -344,7 +344,7 @@ suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_SMP
 r_extern
-r_void
+id|irqreturn_t
 id|handle_IPI
 (paren
 r_int

@@ -641,7 +641,8 @@ r_int
 r_int
 id|cmd
 comma
-r_void
+r_int
+id|__user
 op_star
 id|arg
 )paren
@@ -674,10 +675,6 @@ c_func
 (paren
 id|value
 comma
-(paren
-r_int
-op_star
-)paren
 id|arg
 )paren
 )paren
@@ -714,10 +711,6 @@ c_func
 (paren
 id|value
 comma
-(paren
-r_int
-op_star
-)paren
 id|arg
 )paren
 ques
@@ -817,10 +810,6 @@ c_func
 (paren
 id|value
 comma
-(paren
-r_int
-op_star
-)paren
 id|arg
 )paren
 )paren
@@ -856,10 +845,6 @@ c_func
 (paren
 id|value
 comma
-(paren
-r_int
-op_star
-)paren
 id|arg
 )paren
 )paren

@@ -207,7 +207,7 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-macro_line|#if CONFIG_X86_PAE
+macro_line|#ifdef CONFIG_X86_PAE
 id|printk
 c_func
 (paren

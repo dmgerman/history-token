@@ -9190,10 +9190,6 @@ op_assign
 id|data-&gt;BaseAddress
 suffix:semicolon
 r_int
-r_int
-id|command
-suffix:semicolon
-r_int
 id|new_sgtp
 suffix:semicolon
 r_int

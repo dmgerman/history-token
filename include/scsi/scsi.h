@@ -174,10 +174,10 @@ DECL|macro|SAM_STAT_CONDITION_MET
 mdefine_line|#define SAM_STAT_CONDITION_MET   0x04
 DECL|macro|SAM_STAT_BUSY
 mdefine_line|#define SAM_STAT_BUSY            0x08
-DECL|macro|SAM_STAT_IMMEDIATE
-mdefine_line|#define SAM_STAT_IMMEDIATE       0x10
-DECL|macro|SAM_STAT_IMMEDIATE_CONDITION_MET
-mdefine_line|#define SAM_STAT_IMMEDIATE_CONDITION_MET 0x14
+DECL|macro|SAM_STAT_INTERMEDIATE
+mdefine_line|#define SAM_STAT_INTERMEDIATE    0x10
+DECL|macro|SAM_STAT_INTERMEDIATE_CONDITION_MET
+mdefine_line|#define SAM_STAT_INTERMEDIATE_CONDITION_MET 0x14
 DECL|macro|SAM_STAT_RESERVATION_CONFLICT
 mdefine_line|#define SAM_STAT_RESERVATION_CONFLICT 0x18
 DECL|macro|SAM_STAT_COMMAND_TERMINATED
@@ -188,6 +188,52 @@ DECL|macro|SAM_STAT_ACA_ACTIVE
 mdefine_line|#define SAM_STAT_ACA_ACTIVE      0x30
 DECL|macro|SAM_STAT_TASK_ABORTED
 mdefine_line|#define SAM_STAT_TASK_ABORTED    0x40
+multiline_comment|/** scsi_status_is_good - check the status return.&n; *&n; * @status: the status passed up from the driver (including host and&n; *          driver components)&n; *&n; * This returns true for known good conditions that may be treated as&n; * command completed normally&n; */
+DECL|function|scsi_status_is_good
+r_static
+r_inline
+r_int
+id|scsi_status_is_good
+c_func
+(paren
+r_int
+id|status
+)paren
+(brace
+multiline_comment|/* mask out the relevant bits&n;&t; *&n;&t; * FIXME: bit0 is listed as reserved in SCSI-2, but is&n;&t; * significant in SCSI-3.  For now, we follow the SCSI-2&n;&t; * behaviour and ignore reserved bits. */
+id|status
+op_and_assign
+l_int|0xfe
+suffix:semicolon
+r_return
+(paren
+(paren
+id|status
+op_eq
+id|SAM_STAT_GOOD
+)paren
+op_logical_or
+(paren
+id|status
+op_eq
+id|SAM_STAT_INTERMEDIATE
+)paren
+op_logical_or
+(paren
+id|status
+op_eq
+id|SAM_STAT_INTERMEDIATE_CONDITION_MET
+)paren
+multiline_comment|/* FIXME: this is obsolete in SAM-3 */
+op_logical_or
+(paren
+id|status
+op_eq
+id|SAM_STAT_COMMAND_TERMINATED
+)paren
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/*&n; *  Status codes. These are deprecated as they are shifted 1 bit right&n; *  from those found in the SCSI standards. This causes confusion for&n; *  applications that are ported to several OSes. Prefer SAM Status codes&n; *  above.&n; */
 DECL|macro|GOOD
 mdefine_line|#define GOOD                 0x00

@@ -738,10 +738,6 @@ id|x-&gt;u.rt6.rt6i_node
 op_assign
 id|rt0-&gt;rt6i_node
 suffix:semicolon
-id|x-&gt;u.rt6.rt6i_hoplimit
-op_assign
-id|rt0-&gt;rt6i_hoplimit
-suffix:semicolon
 id|x-&gt;u.rt6.rt6i_gateway
 op_assign
 id|rt0-&gt;rt6i_gateway

@@ -1321,13 +1321,6 @@ suffix:semicolon
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_KMOD
-(brace
-r_char
-id|modname
-(braket
-l_int|32
-)braket
-suffix:semicolon
 id|ASSERT
 c_func
 (paren
@@ -1343,23 +1336,14 @@ suffix:semicolon
 )paren
 suffix:semicolon
 multiline_comment|/* Try to load the module needed */
-id|sprintf
+id|request_module
 c_func
 (paren
-id|modname
-comma
 l_string|&quot;irda-dongle-%d&quot;
 comma
 id|type
 )paren
 suffix:semicolon
-id|request_module
-c_func
-(paren
-id|modname
-)paren
-suffix:semicolon
-)brace
 macro_line|#endif
 r_if
 c_cond

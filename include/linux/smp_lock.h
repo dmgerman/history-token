@@ -4,7 +4,7 @@ mdefine_line|#define __LINUX_SMPLOCK_H
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
-macro_line|#if CONFIG_SMP || CONFIG_PREEMPT
+macro_line|#if defined(CONFIG_SMP) || defined(CONFIG_PREEMPT)
 r_extern
 id|spinlock_t
 id|kernel_flag

@@ -485,10 +485,12 @@ c_func
 (paren
 r_const
 id|stack_t
+id|__user
 op_star
 id|uss
 comma
 id|stack_t
+id|__user
 op_star
 id|uoss
 )paren
@@ -1095,6 +1097,7 @@ r_goto
 id|badframe
 suffix:semicolon
 multiline_comment|/* It is more difficult to avoid calling this function than to&n;&t;   call it and ignore errors.  */
+multiline_comment|/*&n;&t; * THIS CANNOT WORK! &quot;&amp;st&quot; is a kernel address, and &quot;do_sigaltstack()&quot;&n;&t; * takes a user address (and verifies that it is a user address). End&n;&t; * result: it does exactly _nothing_.&n;&t; */
 id|do_sigaltstack
 c_func
 (paren

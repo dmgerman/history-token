@@ -228,7 +228,7 @@ id|peer
 suffix:semicolon
 )brace
 DECL|function|unix_release_addr
-r_extern
+r_static
 r_inline
 r_void
 id|unix_release_addr

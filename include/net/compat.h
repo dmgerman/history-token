@@ -74,6 +74,7 @@ op_star
 comma
 r_struct
 id|compat_msghdr
+id|__user
 op_star
 )paren
 suffix:semicolon

@@ -2738,7 +2738,7 @@ id|node
 suffix:semicolon
 )brace
 macro_line|#endif /* CONFIG_NUMA */
-macro_line|#if CONFIG_SMP
+macro_line|#ifdef CONFIG_SMP
 multiline_comment|/*&n; * double_lock_balance - lock the busiest runqueue&n; *&n; * this_rq is locked already. Recalculate nr_running if we have to&n; * drop the runqueue lock.&n; */
 DECL|function|double_lock_balance
 r_static
@@ -4380,7 +4380,7 @@ id|rq-&gt;nr_running
 )paren
 )paren
 (brace
-macro_line|#if CONFIG_SMP
+macro_line|#ifdef CONFIG_SMP
 id|load_balance
 c_func
 (paren
@@ -4867,7 +4867,7 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
-macro_line|#if CONFIG_SMP
+macro_line|#ifdef CONFIG_SMP
 multiline_comment|/**&n; * __wake_up - sync- wake up threads blocked on a waitqueue.&n; * @q: the waitqueue&n; * @mode: which threads&n; * @nr_exclusive: how many wake-one or wake-many threads to wake up&n; *&n; * The sync wakeup differs that the waker knows that it will schedule&n; * away soon, so while the target thread will be woken up, it will not&n; * be migrated to another CPU - ie. the two threads are &squot;synchronized&squot;&n; * with each other. This can prevent needless bouncing between CPUs.&n; */
 DECL|function|__wake_up_sync
 r_void
@@ -7837,7 +7837,7 @@ l_int|0
 suffix:semicolon
 macro_line|#endif
 )brace
-macro_line|#if CONFIG_SMP
+macro_line|#ifdef CONFIG_SMP
 multiline_comment|/*&n; * This is how migration works:&n; *&n; * 1) we queue a migration_req_t structure in the source CPU&squot;s&n; *    runqueue and wake up that CPU&squot;s migration thread.&n; * 2) we down() the locked semaphore =&gt; thread blocks.&n; * 3) migration thread wakes up (implicitly it forces the migrated&n; *    thread off the CPU)&n; * 4) it gets the migration request and checks whether the migrated&n; *    task is still in the wrong runqueue.&n; * 5) if it&squot;s in the wrong runqueue then the migration thread removes&n; *    it and puts it into the right queue.&n; * 6) migration thread up()s the semaphore.&n; * 7) we wake up and the migration is done.&n; */
 r_typedef
 r_struct
@@ -8528,7 +8528,7 @@ l_int|0
 suffix:semicolon
 )brace
 macro_line|#endif
-macro_line|#if CONFIG_SMP || CONFIG_PREEMPT
+macro_line|#if defined(CONFIG_SMP) || defined(CONFIG_PREEMPT)
 multiline_comment|/*&n; * The &squot;big kernel lock&squot;&n; *&n; * This spinlock is taken and released recursively by lock_kernel()&n; * and unlock_kernel().  It is transparently dropped and reaquired&n; * over schedule().  It is used to protect legacy code that hasn&squot;t&n; * been migrated to a proper locking design yet.&n; *&n; * Don&squot;t use in new code.&n; */
 DECL|variable|__cacheline_aligned_in_smp
 id|spinlock_t

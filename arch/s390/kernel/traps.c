@@ -1511,7 +1511,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-macro_line|#if CONFIG_REMOTE_DEBUG
+macro_line|#ifdef CONFIG_REMOTE_DEBUG
 r_if
 c_cond
 (paren

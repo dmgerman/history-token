@@ -7,9 +7,9 @@ c_func
 r_void
 )paren
 suffix:semicolon
-DECL|function|timer_interrupt
 r_static
-r_void
+id|irqreturn_t
+DECL|function|timer_interrupt
 id|timer_interrupt
 c_func
 (paren
@@ -85,6 +85,9 @@ id|state
 suffix:semicolon
 )brace
 )brace
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 multiline_comment|/*&n; * Set up timer interrupt.&n; */
 DECL|function|time_init

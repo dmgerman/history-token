@@ -2260,7 +2260,7 @@ r_int
 id|orig
 )paren
 (brace
-r_int
+id|loff_t
 id|ret
 suffix:semicolon
 id|lock_kernel

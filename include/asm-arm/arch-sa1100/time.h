@@ -163,9 +163,9 @@ id|usec
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * We will be entered with IRQs enabled.&n; *&n; * Loop until we get ahead of the free running timer.&n; * This ensures an exact clock tick count and time accuracy.&n; * IRQs are disabled inside the loop to ensure coherence between&n; * lost_ticks (updated in do_timer()) and the match reg value, so we&n; * can use do_gettimeofday() from interrupt handlers.&n; */
-DECL|function|sa1100_timer_interrupt
 r_static
-r_void
+id|irqreturn_t
+DECL|function|sa1100_timer_interrupt
 id|sa1100_timer_interrupt
 c_func
 (paren
@@ -239,6 +239,9 @@ c_func
 (paren
 id|regs
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 DECL|function|time_init

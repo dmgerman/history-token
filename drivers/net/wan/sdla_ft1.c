@@ -46,7 +46,8 @@ r_struct
 id|chdlc_private_area
 (brace
 DECL|member|slave
-id|netdevice_t
+r_struct
+id|net_device
 op_star
 id|slave
 suffix:semicolon

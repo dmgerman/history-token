@@ -745,15 +745,6 @@ id|ed
 suffix:semicolon
 multiline_comment|/* ASSERT:  any requests/urbs are being unlinked */
 multiline_comment|/* ASSERT:  nobody can be submitting urbs for this any more */
-id|ohci_dbg
-(paren
-id|ohci
-comma
-l_string|&quot;ep %02x disable&bslash;n&quot;
-comma
-id|ep
-)paren
-suffix:semicolon
 id|epnum
 op_lshift_assign
 l_int|1

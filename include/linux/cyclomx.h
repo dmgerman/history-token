@@ -1,7 +1,7 @@
-multiline_comment|/*&n;* cyclomx.h&t;Cyclom 2X WAN Link Driver.&n;*&t;&t;User-level API definitions.&n;*&n;* Author:&t;Arnaldo Carvalho de Melo &lt;acme@conectiva.com.br&gt;&n;*&n;* Copyright:&t;(c) 1998-2000 Arnaldo Carvalho de Melo&n;*&n;* Based on wanpipe.h by Gene Kozin &lt;genek@compuserve.com&gt;&n;*&n;*&t;&t;This program is free software; you can redistribute it and/or&n;*&t;&t;modify it under the terms of the GNU General Public License&n;*&t;&t;as published by the Free Software Foundation; either version&n;*&t;&t;2 of the License, or (at your option) any later version.&n;* ============================================================================&n;* 2000/07/13    acme&t;&t;remove crap #if KERNEL_VERSION &gt; blah&n;* 2000/01/21    acme            rename cyclomx_open to cyclomx_mod_inc_use_count&n;*                               and cyclomx_close to cyclomx_mod_dec_use_count&n;* 1999/05/19&t;acme&t;&t;wait_queue_head_t wait_stats(support for 2.3.*)&n;* 1999/01/03&t;acme&t;&t;judicious use of data types&n;* 1998/12/27&t;acme&t;&t;cleanup: PACKED not needed&n;* 1998/08/08&t;acme&t;&t;Version 0.0.1&n;*/
 macro_line|#ifndef&t;_CYCLOMX_H
 DECL|macro|_CYCLOMX_H
 mdefine_line|#define&t;_CYCLOMX_H
+multiline_comment|/*&n;* cyclomx.h&t;Cyclom 2X WAN Link Driver.&n;*&t;&t;User-level API definitions.&n;*&n;* Author:&t;Arnaldo Carvalho de Melo &lt;acme@conectiva.com.br&gt;&n;*&n;* Copyright:&t;(c) 1998-2003 Arnaldo Carvalho de Melo&n;*&n;* Based on wanpipe.h by Gene Kozin &lt;genek@compuserve.com&gt;&n;*&n;*&t;&t;This program is free software; you can redistribute it and/or&n;*&t;&t;modify it under the terms of the GNU General Public License&n;*&t;&t;as published by the Free Software Foundation; either version&n;*&t;&t;2 of the License, or (at your option) any later version.&n;* ============================================================================&n;* 2000/07/13    acme&t;&t;remove crap #if KERNEL_VERSION &gt; blah&n;* 2000/01/21    acme            rename cyclomx_open to cyclomx_mod_inc_use_count&n;*                               and cyclomx_close to cyclomx_mod_dec_use_count&n;* 1999/05/19&t;acme&t;&t;wait_queue_head_t wait_stats(support for 2.3.*)&n;* 1999/01/03&t;acme&t;&t;judicious use of data types&n;* 1998/12/27&t;acme&t;&t;cleanup: PACKED not needed&n;* 1998/08/08&t;acme&t;&t;Version 0.0.1&n;*/
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/wanrouter.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
@@ -15,10 +15,9 @@ macro_line|#endif
 DECL|macro|is_digit
 mdefine_line|#define&t;is_digit(ch) (((ch)&gt;=(unsigned)&squot;0&squot;&amp;&amp;(ch)&lt;=(unsigned)&squot;9&squot;)?1:0)
 multiline_comment|/* Adapter Data Space.&n; * This structure is needed because we handle multiple cards, otherwise&n; * static data would do it.&n; */
-DECL|struct|cycx
-r_typedef
+DECL|struct|cycx_device
 r_struct
-id|cycx
+id|cycx_device
 (brace
 DECL|member|devname
 r_char
@@ -31,20 +30,17 @@ l_int|1
 suffix:semicolon
 multiline_comment|/* card name */
 DECL|member|hw
-id|cycxhw_t
+r_struct
+id|cycx_hw
 id|hw
 suffix:semicolon
 multiline_comment|/* hardware configuration */
 DECL|member|wandev
-id|wan_device_t
+r_struct
+id|wan_device
 id|wandev
 suffix:semicolon
 multiline_comment|/* WAN device data space */
-DECL|member|open_cnt
-id|u32
-id|open_cnt
-suffix:semicolon
-multiline_comment|/* number of open interfaces */
 DECL|member|state_tick
 id|u32
 id|state_tick
@@ -82,7 +78,7 @@ id|isr
 )paren
 (paren
 r_struct
-id|cycx
+id|cycx_device
 op_star
 id|card
 )paren
@@ -96,7 +92,7 @@ id|exec
 )paren
 (paren
 r_struct
-id|cycx
+id|cycx_device
 op_star
 id|card
 comma
@@ -132,7 +128,8 @@ id|u32
 id|hi_svc
 suffix:semicolon
 DECL|member|stats
-id|TX25Stats
+r_struct
+id|cycx_x25_stats
 id|stats
 suffix:semicolon
 DECL|member|lock
@@ -152,33 +149,15 @@ DECL|member|u
 )brace
 id|u
 suffix:semicolon
-DECL|typedef|cycx_t
 )brace
-id|cycx_t
 suffix:semicolon
 multiline_comment|/* Public Functions */
 r_void
-id|cyclomx_mod_inc_use_count
-(paren
-id|cycx_t
-op_star
-id|card
-)paren
-suffix:semicolon
-multiline_comment|/* cycx_main.c */
-r_void
-id|cyclomx_mod_dec_use_count
-(paren
-id|cycx_t
-op_star
-id|card
-)paren
-suffix:semicolon
-multiline_comment|/* cycx_main.c */
-r_void
 id|cyclomx_set_state
+c_func
 (paren
-id|cycx_t
+r_struct
+id|cycx_device
 op_star
 id|card
 comma
@@ -186,12 +165,13 @@ r_int
 id|state
 )paren
 suffix:semicolon
-multiline_comment|/* cycx_main.c */
 macro_line|#ifdef CONFIG_CYCLOMX_X25
 r_int
 id|cyx_init
+c_func
 (paren
-id|cycx_t
+r_struct
+id|cycx_device
 op_star
 id|card
 comma
@@ -200,7 +180,6 @@ op_star
 id|conf
 )paren
 suffix:semicolon
-multiline_comment|/* cycx_x25.c */
 macro_line|#endif
 macro_line|#endif&t;/* __KERNEL__ */
 macro_line|#endif&t;/* _CYCLOMX_H */

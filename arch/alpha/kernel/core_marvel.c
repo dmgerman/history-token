@@ -2876,7 +2876,7 @@ op_assign
 l_int|0x48
 suffix:semicolon
 multiline_comment|/* PUT_TOY */
-macro_line|#if CONFIG_SMP
+macro_line|#ifdef CONFIG_SMP
 r_if
 c_cond
 (paren

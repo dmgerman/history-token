@@ -180,11 +180,6 @@ id|Scsi_Host
 op_star
 id|shost
 suffix:semicolon
-r_struct
-id|scsi_device
-op_star
-id|sdev
-suffix:semicolon
 r_static
 id|u8
 id|buff

@@ -563,7 +563,7 @@ id|dev
 suffix:semicolon
 multiline_comment|/* Interrupt routines */
 r_static
-r_void
+id|irqreturn_t
 id|netwave_interrupt
 c_func
 (paren
@@ -5295,7 +5295,7 @@ multiline_comment|/* netwave_start_xmit */
 multiline_comment|/*&n; * Function netwave_interrupt (irq, dev_id, regs)&n; *&n; *    This function is the interrupt handler for the Netwave card. This&n; *    routine will be called whenever: &n; *&t;  1. A packet is received.&n; *&t;  2. A packet has successfully been transferred and the unit is&n; *&t;     ready to transmit another packet.&n; *&t;  3. A command has completed execution.&n; */
 DECL|function|netwave_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|netwave_interrupt
 c_func
 (paren
@@ -5359,6 +5359,7 @@ id|dev
 )paren
 )paren
 r_return
+id|IRQ_NONE
 suffix:semicolon
 id|iobase
 op_assign
@@ -5411,7 +5412,7 @@ l_int|0x02
 )paren
 r_break
 suffix:semicolon
-multiline_comment|/* None of the interrupt sources asserted */
+multiline_comment|/* None of the interrupt sources asserted (normal exit) */
 id|status
 op_assign
 id|inb
@@ -5735,6 +5736,14 @@ suffix:semicolon
 multiline_comment|/* TxBA, this would trigger on all error packets received */
 multiline_comment|/* if (status &amp; 0x01) {&n;&t;   DEBUG(4, &quot;Transmit buffers available, %x&bslash;n&quot;, status);&n;&t;   }&n;&t;   */
 )brace
+multiline_comment|/* Handled if we looped at least one time - Jean II */
+r_return
+id|IRQ_RETVAL
+c_func
+(paren
+id|i
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/* netwave_interrupt */
 multiline_comment|/*&n; * Function netwave_watchdog (a)&n; *&n; *    Watchdog : when we start a transmission, we set a timer in the&n; *    kernel.  If the transmission complete, this timer is disabled. If&n; *    it expire, we reset the card.&n; *&n; */

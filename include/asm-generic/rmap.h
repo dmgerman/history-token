@@ -181,7 +181,7 @@ op_plus
 id|low_bits
 suffix:semicolon
 )brace
-macro_line|#if CONFIG_HIGHPTE
+macro_line|#ifdef CONFIG_HIGHPTE
 DECL|function|ptep_to_paddr
 r_static
 r_inline

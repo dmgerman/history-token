@@ -35,10 +35,6 @@ c_func
 id|sigd_sleep
 )paren
 suffix:semicolon
-r_extern
-id|spinlock_t
-id|atm_dev_lock
-suffix:semicolon
 DECL|function|sigd_put_skb
 r_static
 r_void
@@ -381,8 +377,6 @@ id|atomic_sub
 c_func
 (paren
 id|skb-&gt;truesize
-op_plus
-id|ATM_PDU_OVHD
 comma
 op_amp
 id|vcc-&gt;sk-&gt;wmem_alloc
@@ -1064,6 +1058,10 @@ op_star
 id|vcc
 )paren
 (brace
+r_int
+r_int
+id|flags
+suffix:semicolon
 r_struct
 id|atm_dev
 op_star
@@ -1108,13 +1106,8 @@ op_amp
 id|vcc-&gt;sk-&gt;receive_queue
 )paren
 suffix:semicolon
-id|purge_vccs
-c_func
-(paren
-id|nodev_vccs
-)paren
-suffix:semicolon
 id|spin_lock
+c_func
 (paren
 op_amp
 id|atm_dev_lock
@@ -1142,14 +1135,33 @@ comma
 id|dev_list
 )paren
 suffix:semicolon
+id|spin_lock_irqsave
+c_func
+(paren
+op_amp
+id|dev-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
 id|purge_vccs
 c_func
 (paren
 id|dev-&gt;vccs
 )paren
 suffix:semicolon
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|dev-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
 )brace
 id|spin_unlock
+c_func
 (paren
 op_amp
 id|atm_dev_lock
@@ -1181,38 +1193,26 @@ id|atm_dev
 id|sigd_dev
 op_assign
 (brace
+dot
+id|ops
+op_assign
 op_amp
 id|sigd_dev_ops
 comma
-l_int|NULL
-comma
-multiline_comment|/* no PHY */
+dot
+id|type
+op_assign
 l_string|&quot;sig&quot;
 comma
-multiline_comment|/* type */
+dot
+id|number
+op_assign
 l_int|999
 comma
-multiline_comment|/* dummy device number */
-l_int|NULL
-comma
-l_int|NULL
-comma
-multiline_comment|/* pretend not to have any VCCs */
-l_int|NULL
-comma
-l_int|NULL
-comma
-multiline_comment|/* no data */
-l_int|0
-comma
-multiline_comment|/* no flags */
-l_int|NULL
-comma
-multiline_comment|/* no local address */
-(brace
-l_int|0
-)brace
-multiline_comment|/* no ESI, no statistics */
+dot
+id|lock
+op_assign
+id|SPIN_LOCK_UNLOCKED
 )brace
 suffix:semicolon
 DECL|function|sigd_attach

@@ -2,10 +2,14 @@ multiline_comment|/*&n; * Copyright (c) 2002 Silicon Graphics, Inc.  All Rights 
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#ifdef CONFIG_IA64_SGI_SN1
 DECL|macro|MACHVEC_PLATFORM_NAME
-mdefine_line|#define MACHVEC_PLATFORM_NAME&t;sn1
+mdefine_line|#define MACHVEC_PLATFORM_NAME&t;&t;sn1
+DECL|macro|MACHVEC_PLATFORM_HEADER
+mdefine_line|#define MACHVEC_PLATFORM_HEADER&t;&t;&lt;asm/machvec_sn1.h&gt;
 macro_line|#else CONFIG_IA64_SGI_SN1
 DECL|macro|MACHVEC_PLATFORM_NAME
-mdefine_line|#define MACHVEC_PLATFORM_NAME&t;sn2
+mdefine_line|#define MACHVEC_PLATFORM_NAME&t;&t;sn2
+DECL|macro|MACHVEC_PLATFORM_HEADER
+mdefine_line|#define MACHVEC_PLATFORM_HEADER&t;&t;&lt;asm/machvec_sn2.h&gt;
 macro_line|#else
 macro_line|#error &quot;unknown platform&quot;
 macro_line|#endif

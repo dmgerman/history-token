@@ -1,6 +1,6 @@
 multiline_comment|/* $Id: he.c,v 1.18 2003/05/06 22:57:15 chas Exp $ */
 multiline_comment|/*&n;&n;  he.c&n;&n;  ForeRunnerHE ATM Adapter driver for ATM on Linux&n;  Copyright (C) 1999-2001  Naval Research Laboratory&n;&n;  This library is free software; you can redistribute it and/or&n;  modify it under the terms of the GNU Lesser General Public&n;  License as published by the Free Software Foundation; either&n;  version 2.1 of the License, or (at your option) any later version.&n;&n;  This library is distributed in the hope that it will be useful,&n;  but WITHOUT ANY WARRANTY; without even the implied warranty of&n;  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU&n;  Lesser General Public License for more details.&n;&n;  You should have received a copy of the GNU Lesser General Public&n;  License along with this library; if not, write to the Free Software&n;  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n;&n;*/
-multiline_comment|/*&n;&n;  he.c&n;&n;  ForeRunnerHE ATM Adapter driver for ATM on Linux&n;  Copyright (C) 1999-2001  Naval Research Laboratory&n;&n;  Permission to use, copy, modify and distribute this software and its&n;  documentation is hereby granted, provided that both the copyright&n;  notice and this permission notice appear in all copies of the software,&n;  derivative works or modified versions, and any portions thereof, and&n;  that both notices appear in supporting documentation.&n;&n;  NRL ALLOWS FREE USE OF THIS SOFTWARE IN ITS &quot;AS IS&quot; CONDITION AND&n;  DISCLAIMS ANY LIABILITY OF ANY KIND FOR ANY DAMAGES WHATSOEVER&n;  RESULTING FROM THE USE OF THIS SOFTWARE.&n;&n;  This driver was written using the &quot;Programmer&squot;s Reference Manual for&n;  ForeRunnerHE(tm)&quot;, MANU0361-01 - Rev. A, 08/21/98.&n;&n;  AUTHORS:&n;&t;chas williams &lt;chas@cmf.nrl.navy.mil&gt;&n;&t;eric kinzie &lt;ekinzie@cmf.nrl.navy.mil&gt;&n;&n;  NOTES:&n;&t;4096 supported &squot;connections&squot;&n;&t;group 0 is used for all traffic&n;&t;interrupt queue 0 is used for all interrupts&n;&t;aal0 support for receive only&n;&n; */
+multiline_comment|/*&n;&n;  he.c&n;&n;  ForeRunnerHE ATM Adapter driver for ATM on Linux&n;  Copyright (C) 1999-2001  Naval Research Laboratory&n;&n;  Permission to use, copy, modify and distribute this software and its&n;  documentation is hereby granted, provided that both the copyright&n;  notice and this permission notice appear in all copies of the software,&n;  derivative works or modified versions, and any portions thereof, and&n;  that both notices appear in supporting documentation.&n;&n;  NRL ALLOWS FREE USE OF THIS SOFTWARE IN ITS &quot;AS IS&quot; CONDITION AND&n;  DISCLAIMS ANY LIABILITY OF ANY KIND FOR ANY DAMAGES WHATSOEVER&n;  RESULTING FROM THE USE OF THIS SOFTWARE.&n;&n;  This driver was written using the &quot;Programmer&squot;s Reference Manual for&n;  ForeRunnerHE(tm)&quot;, MANU0361-01 - Rev. A, 08/21/98.&n;&n;  AUTHORS:&n;&t;chas williams &lt;chas@cmf.nrl.navy.mil&gt;&n;&t;eric kinzie &lt;ekinzie@cmf.nrl.navy.mil&gt;&n;&n;  NOTES:&n;&t;4096 supported &squot;connections&squot;&n;&t;group 0 is used for all traffic&n;&t;interrupt queue 0 is used for all interrupts&n;&t;aal0 support (based on work from ulrich.u.muller@nokia.com)&n;&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
@@ -64,38 +64,51 @@ macro_line|#undef USE_RBPL_POOL&t;&t;&t;/* if memory is tight try this */
 DECL|macro|USE_TPD_POOL
 mdefine_line|#define USE_TPD_POOL
 multiline_comment|/* #undef CONFIG_ATM_HE_USE_SUNI */
-multiline_comment|/* 2.2 kernel support */
-macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,3,43)
-DECL|macro|dev_kfree_skb_irq
-mdefine_line|#define dev_kfree_skb_irq(skb)&t;&t;dev_kfree_skb(skb)
-DECL|macro|dev_kfree_skb_any
-mdefine_line|#define dev_kfree_skb_any(skb)&t;&t;dev_kfree_skb(skb)
-DECL|macro|USE_TASKLET
-macro_line|#undef USE_TASKLET
+multiline_comment|/* compatibility */
+macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,5,69)
+DECL|typedef|irqreturn_t
+r_typedef
+r_void
+id|irqreturn_t
+suffix:semicolon
+DECL|macro|IRQ_NONE
+mdefine_line|#define IRQ_NONE
+DECL|macro|IRQ_HANDLED
+mdefine_line|#define IRQ_HANDLED
+DECL|macro|IRQ_RETVAL
+mdefine_line|#define IRQ_RETVAL(x)
 macro_line|#endif
-macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,2,18)
-DECL|macro|set_current_state
-mdefine_line|#define set_current_state(x)&t;&t;current-&gt;state = (x);
+macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,4,9)
+DECL|macro|__devexit_p
+mdefine_line|#define __devexit_p(func)&t;&t;func
+macro_line|#endif
+macro_line|#ifndef MODULE_LICENSE
+DECL|macro|MODULE_LICENSE
+mdefine_line|#define MODULE_LICENSE(x)
+macro_line|#endif
+macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,4,3)
+DECL|macro|pci_set_drvdata
+mdefine_line|#define pci_set_drvdata(pci_dev, data)&t;(pci_dev)-&gt;driver_data = (data)
+DECL|macro|pci_get_drvdata
+mdefine_line|#define pci_get_drvdata(pci_dev)&t;(pci_dev)-&gt;driver_data
+macro_line|#endif
+macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,5,44)
+DECL|macro|pci_pool_create
+mdefine_line|#define pci_pool_create(a, b, c, d, e)&t;pci_pool_create(a, b, c, d, e, SLAB_KERNEL)
 macro_line|#endif
 macro_line|#include &quot;he.h&quot;
 macro_line|#include &quot;suni.h&quot;
 macro_line|#include &lt;linux/atm_he.h&gt;
 DECL|macro|hprintk
-mdefine_line|#define hprintk(fmt,args...)&t;printk(DEV_LABEL &quot;%d: &quot; fmt, he_dev-&gt;number, args)
-DECL|macro|hprintk1
-mdefine_line|#define hprintk1(fmt)&t;&t;printk(DEV_LABEL &quot;%d: &quot; fmt, he_dev-&gt;number)
+mdefine_line|#define hprintk(fmt,args...)&t;printk(KERN_ERR DEV_LABEL &quot;%d: &quot; fmt, he_dev-&gt;number , ##args)
 DECL|macro|DEBUG
 macro_line|#undef DEBUG
 macro_line|#ifdef DEBUG
 DECL|macro|HPRINTK
 mdefine_line|#define HPRINTK(fmt,args...)&t;hprintk(fmt,args)
-DECL|macro|HPRINTK1
-mdefine_line|#define HPRINTK1(fmt)&t;&t;hprintk1(fmt)
 macro_line|#else
 DECL|macro|HPRINTK
-mdefine_line|#define HPRINTK(fmt,args...)
-DECL|macro|HPRINTK1
-mdefine_line|#define HPRINTK1(fmt,args...)
+mdefine_line|#define HPRINTK(fmt,args...)&t;do { } while(0)
 macro_line|#endif /* DEBUG */
 multiline_comment|/* version definition */
 DECL|variable|version
@@ -106,9 +119,6 @@ id|version
 op_assign
 l_string|&quot;$Id: he.c,v 1.18 2003/05/06 22:57:15 chas Exp $&quot;
 suffix:semicolon
-multiline_comment|/* defines */
-DECL|macro|ALIGN_ADDRESS
-mdefine_line|#define ALIGN_ADDRESS(addr, alignment) &bslash;&n;&t;((((unsigned long) (addr)) + (((unsigned long) (alignment)) - 1)) &amp; ~(((unsigned long) (alignment)) - 1))
 multiline_comment|/* declarations */
 r_static
 r_int
@@ -192,7 +202,6 @@ op_star
 id|arg
 )paren
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,5,69)
 r_static
 id|irqreturn_t
 id|he_irq_handler
@@ -211,26 +220,6 @@ op_star
 id|regs
 )paren
 suffix:semicolon
-macro_line|#else
-r_static
-r_void
-id|he_irq_handler
-c_func
-(paren
-r_int
-id|irq
-comma
-r_void
-op_star
-id|dev_id
-comma
-r_struct
-id|pt_regs
-op_star
-id|regs
-)paren
-suffix:semicolon
-macro_line|#endif
 r_static
 r_void
 id|he_tasklet
@@ -670,6 +659,10 @@ r_int
 id|cid
 )paren
 (brace
+r_int
+r_int
+id|flags
+suffix:semicolon
 r_struct
 id|atm_vcc
 op_star
@@ -701,6 +694,15 @@ op_minus
 l_int|1
 )paren
 suffix:semicolon
+id|spin_lock_irqsave
+c_func
+(paren
+op_amp
+id|he_dev-&gt;atm_dev-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
 r_for
 c_loop
 (paren
@@ -729,8 +731,28 @@ id|vcc-&gt;qos.rxtp.traffic_class
 op_ne
 id|ATM_NONE
 )paren
+(brace
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|he_dev-&gt;atm_dev-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
 r_return
 id|vcc
+suffix:semicolon
+)brace
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|he_dev-&gt;atm_dev-&gt;lock
+comma
+id|flags
+)paren
 suffix:semicolon
 r_return
 l_int|NULL
@@ -759,11 +781,20 @@ r_struct
 id|atm_dev
 op_star
 id|atm_dev
+op_assign
+l_int|NULL
 suffix:semicolon
 r_struct
 id|he_dev
 op_star
 id|he_dev
+op_assign
+l_int|NULL
+suffix:semicolon
+r_int
+id|err
+op_assign
+l_int|0
 suffix:semicolon
 id|printk
 c_func
@@ -774,7 +805,6 @@ comma
 id|version
 )paren
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &gt; KERNEL_VERSION(2,3,43)
 r_if
 c_cond
 (paren
@@ -788,7 +818,6 @@ r_return
 op_minus
 id|EIO
 suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -810,9 +839,13 @@ id|KERN_WARNING
 l_string|&quot;he: no suitable dma available&bslash;n&quot;
 )paren
 suffix:semicolon
-r_return
+id|err
+op_assign
 op_minus
 id|EIO
+suffix:semicolon
+r_goto
+id|init_one_failure
 suffix:semicolon
 )brace
 id|atm_dev
@@ -837,11 +870,16 @@ c_cond
 op_logical_neg
 id|atm_dev
 )paren
-r_return
+(brace
+id|err
+op_assign
 op_minus
 id|ENODEV
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &gt; KERNEL_VERSION(2,4,3)
+r_goto
+id|init_one_failure
+suffix:semicolon
+)brace
 id|pci_set_drvdata
 c_func
 (paren
@@ -850,12 +888,6 @@ comma
 id|atm_dev
 )paren
 suffix:semicolon
-macro_line|#else
-id|pci_dev-&gt;driver_data
-op_assign
-id|atm_dev
-suffix:semicolon
-macro_line|#endif
 id|he_dev
 op_assign
 (paren
@@ -881,10 +913,16 @@ c_cond
 op_logical_neg
 id|he_dev
 )paren
-r_return
+(brace
+id|err
+op_assign
 op_minus
 id|ENOMEM
 suffix:semicolon
+r_goto
+id|init_one_failure
+suffix:semicolon
+)brace
 id|memset
 c_func
 (paren
@@ -923,7 +961,6 @@ id|he_dev-&gt;number
 op_assign
 id|atm_dev-&gt;number
 suffix:semicolon
-multiline_comment|/* was devs */
 r_if
 c_cond
 (paren
@@ -934,27 +971,19 @@ id|atm_dev
 )paren
 )paren
 (brace
-id|atm_dev_deregister
-c_func
-(paren
-id|atm_dev
-)paren
-suffix:semicolon
 id|he_stop
 c_func
 (paren
 id|he_dev
 )paren
 suffix:semicolon
-id|kfree
-c_func
-(paren
-id|he_dev
-)paren
-suffix:semicolon
-r_return
+id|err
+op_assign
 op_minus
 id|ENODEV
+suffix:semicolon
+r_goto
+id|init_one_failure
 suffix:semicolon
 )brace
 id|he_dev-&gt;next
@@ -976,6 +1005,39 @@ id|he_dev
 suffix:semicolon
 r_return
 l_int|0
+suffix:semicolon
+id|init_one_failure
+suffix:colon
+r_if
+c_cond
+(paren
+id|atm_dev
+)paren
+id|atm_dev_deregister
+c_func
+(paren
+id|atm_dev
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|he_dev
+)paren
+id|kfree
+c_func
+(paren
+id|he_dev
+)paren
+suffix:semicolon
+id|pci_disable_device
+c_func
+(paren
+id|pci_dev
+)paren
+suffix:semicolon
+r_return
+id|err
 suffix:semicolon
 )brace
 r_static
@@ -1000,7 +1062,6 @@ id|he_dev
 op_star
 id|he_dev
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &gt; KERNEL_VERSION(2,4,3)
 id|atm_dev
 op_assign
 id|pci_get_drvdata
@@ -1009,12 +1070,6 @@ c_func
 id|pci_dev
 )paren
 suffix:semicolon
-macro_line|#else
-id|atm_dev
-op_assign
-id|pci_dev-&gt;driver_data
-suffix:semicolon
-macro_line|#endif
 id|he_dev
 op_assign
 id|HE_DEV
@@ -1042,7 +1097,6 @@ c_func
 id|he_dev
 )paren
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &gt; KERNEL_VERSION(2,4,3)
 id|pci_set_drvdata
 c_func
 (paren
@@ -1051,12 +1105,12 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
-macro_line|#else
-id|pci_dev-&gt;driver_data
-op_assign
-l_int|NULL
+id|pci_disable_device
+c_func
+(paren
+id|pci_dev
+)paren
 suffix:semicolon
-macro_line|#endif
 )brace
 r_static
 r_int
@@ -1690,7 +1744,7 @@ op_eq
 l_int|NULL
 )paren
 (brace
-id|hprintk1
+id|hprintk
 c_func
 (paren
 l_string|&quot;failed to alloc tpdrq&bslash;n&quot;
@@ -2836,26 +2890,6 @@ suffix:semicolon
 macro_line|#ifdef USE_RBPS
 multiline_comment|/* small buffer pool */
 macro_line|#ifdef USE_RBPS_POOL
-macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,5,44)
-id|he_dev-&gt;rbps_pool
-op_assign
-id|pci_pool_create
-c_func
-(paren
-l_string|&quot;rbps&quot;
-comma
-id|he_dev-&gt;pci_dev
-comma
-id|CONFIG_RBPS_BUFSIZE
-comma
-l_int|8
-comma
-l_int|0
-comma
-id|SLAB_KERNEL
-)paren
-suffix:semicolon
-macro_line|#else
 id|he_dev-&gt;rbps_pool
 op_assign
 id|pci_pool_create
@@ -2872,7 +2906,6 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -2881,7 +2914,7 @@ op_eq
 l_int|NULL
 )paren
 (brace
-id|hprintk1
+id|hprintk
 c_func
 (paren
 l_string|&quot;unable to create rbps pages&bslash;n&quot;
@@ -2916,7 +2949,7 @@ op_eq
 l_int|NULL
 )paren
 (brace
-id|hprintk1
+id|hprintk
 c_func
 (paren
 l_string|&quot;unable to create rbps page pool&bslash;n&quot;
@@ -2955,7 +2988,7 @@ op_eq
 l_int|NULL
 )paren
 (brace
-id|hprintk1
+id|hprintk
 c_func
 (paren
 l_string|&quot;failed to alloc rbps&bslash;n&quot;
@@ -3277,26 +3310,6 @@ suffix:semicolon
 macro_line|#endif /* USE_RBPS */
 multiline_comment|/* large buffer pool */
 macro_line|#ifdef USE_RBPL_POOL
-macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,5,44)
-id|he_dev-&gt;rbpl_pool
-op_assign
-id|pci_pool_create
-c_func
-(paren
-l_string|&quot;rbpl&quot;
-comma
-id|he_dev-&gt;pci_dev
-comma
-id|CONFIG_RBPL_BUFSIZE
-comma
-l_int|8
-comma
-l_int|0
-comma
-id|SLAB_KERNEL
-)paren
-suffix:semicolon
-macro_line|#else
 id|he_dev-&gt;rbpl_pool
 op_assign
 id|pci_pool_create
@@ -3313,7 +3326,6 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -3322,7 +3334,7 @@ op_eq
 l_int|NULL
 )paren
 (brace
-id|hprintk1
+id|hprintk
 c_func
 (paren
 l_string|&quot;unable to create rbpl pool&bslash;n&quot;
@@ -3361,7 +3373,7 @@ op_eq
 l_int|NULL
 )paren
 (brace
-id|hprintk1
+id|hprintk
 c_func
 (paren
 l_string|&quot;unable to create rbpl pages&bslash;n&quot;
@@ -3400,7 +3412,7 @@ op_eq
 l_int|NULL
 )paren
 (brace
-id|hprintk1
+id|hprintk
 c_func
 (paren
 l_string|&quot;failed to alloc rbpl&bslash;n&quot;
@@ -3670,7 +3682,7 @@ op_eq
 l_int|NULL
 )paren
 (brace
-id|hprintk1
+id|hprintk
 c_func
 (paren
 l_string|&quot;failed to allocate rbrq&bslash;n&quot;
@@ -3767,7 +3779,7 @@ c_cond
 id|irq_coalesce
 )paren
 (brace
-id|hprintk1
+id|hprintk
 c_func
 (paren
 l_string|&quot;coalescing interrupts&bslash;n&quot;
@@ -3855,7 +3867,7 @@ op_eq
 l_int|NULL
 )paren
 (brace
-id|hprintk1
+id|hprintk
 c_func
 (paren
 l_string|&quot;failed to allocate tbrq&bslash;n&quot;
@@ -4004,7 +4016,7 @@ op_eq
 l_int|NULL
 )paren
 (brace
-id|hprintk1
+id|hprintk
 c_func
 (paren
 l_string|&quot;failed to allocate irq&bslash;n&quot;
@@ -4401,7 +4413,6 @@ id|pci_dev
 op_assign
 id|he_dev-&gt;pci_dev
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &gt; KERNEL_VERSION(2,3,3)
 id|he_dev-&gt;membase
 op_assign
 id|pci_dev-&gt;resource
@@ -4411,17 +4422,6 @@ l_int|0
 dot
 id|start
 suffix:semicolon
-macro_line|#else
-id|he_dev-&gt;membase
-op_assign
-id|pci_dev-&gt;base_address
-(braket
-l_int|0
-)braket
-op_amp
-id|PCI_BASE_ADDRESS_MEM_MASK
-suffix:semicolon
-macro_line|#endif
 id|HPRINTK
 c_func
 (paren
@@ -4451,7 +4451,7 @@ op_ne
 l_int|0
 )paren
 (brace
-id|hprintk1
+id|hprintk
 c_func
 (paren
 l_string|&quot;can&squot;t read GEN_CNTL_0&bslash;n&quot;
@@ -4488,7 +4488,7 @@ op_ne
 l_int|0
 )paren
 (brace
-id|hprintk1
+id|hprintk
 c_func
 (paren
 l_string|&quot;can&squot;t write GEN_CNTL_0.&bslash;n&quot;
@@ -4516,7 +4516,7 @@ op_ne
 l_int|0
 )paren
 (brace
-id|hprintk1
+id|hprintk
 c_func
 (paren
 l_string|&quot;can&squot;t read PCI_COMMAND.&bslash;n&quot;
@@ -4553,7 +4553,7 @@ op_ne
 l_int|0
 )paren
 (brace
-id|hprintk1
+id|hprintk
 c_func
 (paren
 l_string|&quot;can&squot;t enable memory.&bslash;n&quot;
@@ -4579,7 +4579,7 @@ id|cache_size
 )paren
 )paren
 (brace
-id|hprintk1
+id|hprintk
 c_func
 (paren
 l_string|&quot;can&squot;t read cache line size?&bslash;n&quot;
@@ -4639,7 +4639,7 @@ id|timer
 )paren
 )paren
 (brace
-id|hprintk1
+id|hprintk
 c_func
 (paren
 l_string|&quot;can&squot;t read latency timer?&bslash;n&quot;
@@ -4718,7 +4718,7 @@ id|HE_REGMAP_SIZE
 )paren
 )paren
 (brace
-id|hprintk1
+id|hprintk
 c_func
 (paren
 l_string|&quot;can&squot;t set up page mapping&bslash;n&quot;
@@ -4781,7 +4781,7 @@ op_eq
 l_int|0
 )paren
 (brace
-id|hprintk1
+id|hprintk
 c_func
 (paren
 l_string|&quot;reset failed&bslash;n&quot;
@@ -4828,7 +4828,7 @@ op_eq
 l_int|1
 )paren
 (brace
-id|hprintk1
+id|hprintk
 c_func
 (paren
 l_string|&quot;disabling 64-bit pci bus transfers&bslash;n&quot;
@@ -4847,7 +4847,7 @@ id|gen_cntl_0
 op_amp
 id|ENBL_64
 )paren
-id|hprintk1
+id|hprintk
 c_func
 (paren
 l_string|&quot;64-bit transfers enabled&bslash;n&quot;
@@ -6398,30 +6398,6 @@ id|he_dev
 )paren
 suffix:semicolon
 macro_line|#ifdef USE_TPD_POOL
-macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,5,44)
-id|he_dev-&gt;tpd_pool
-op_assign
-id|pci_pool_create
-c_func
-(paren
-l_string|&quot;tpd&quot;
-comma
-id|he_dev-&gt;pci_dev
-comma
-r_sizeof
-(paren
-r_struct
-id|he_tpd
-)paren
-comma
-id|TPD_ALIGNMENT
-comma
-l_int|0
-comma
-id|SLAB_KERNEL
-)paren
-suffix:semicolon
-macro_line|#else
 id|he_dev-&gt;tpd_pool
 op_assign
 id|pci_pool_create
@@ -6442,7 +6418,6 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -6451,7 +6426,7 @@ op_eq
 l_int|NULL
 )paren
 (brace
-id|hprintk1
+id|hprintk
 c_func
 (paren
 l_string|&quot;unable to create tpd pci_pool&bslash;n&quot;
@@ -6905,7 +6880,7 @@ op_eq
 l_int|NULL
 )paren
 (brace
-id|hprintk1
+id|hprintk
 c_func
 (paren
 l_string|&quot;failed to allocate host status page&bslash;n&quot;
@@ -7094,7 +7069,7 @@ op_eq
 l_int|NULL
 )paren
 (brace
-id|hprintk1
+id|hprintk
 c_func
 (paren
 l_string|&quot;failed to alloc he_vcc_table&bslash;n&quot;
@@ -8125,7 +8100,7 @@ op_star
 id|he_vcc
 suffix:semicolon
 r_struct
-id|iovec
+id|he_iovec
 op_star
 id|iov
 suffix:semicolon
@@ -8438,11 +8413,6 @@ comma
 id|cid
 )paren
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,3,99)
-op_increment
-id|vcc-&gt;stats-&gt;rx_drop
-suffix:semicolon
-macro_line|#else
 id|atomic_inc
 c_func
 (paren
@@ -8450,17 +8420,12 @@ op_amp
 id|vcc-&gt;stats-&gt;rx_drop
 )paren
 suffix:semicolon
-macro_line|#endif
 r_goto
 id|return_host_buffers
 suffix:semicolon
 )brace
 id|he_vcc-&gt;iov_tail-&gt;iov_base
 op_assign
-(paren
-r_void
-op_star
-)paren
 id|RBRQ_ADDR
 c_func
 (paren
@@ -8516,11 +8481,13 @@ macro_line|#ifdef notdef
 r_if
 c_cond
 (paren
+(paren
 id|he_vcc-&gt;iov_tail
 op_minus
 id|he_vcc-&gt;iov_head
+)paren
 OG
-l_int|32
+id|HE_MAXIOV
 )paren
 (brace
 id|hprintk
@@ -8597,11 +8564,6 @@ comma
 id|vcc-&gt;vci
 )paren
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,3,99)
-op_increment
-id|vcc-&gt;stats-&gt;rx_err
-suffix:semicolon
-macro_line|#else
 id|atomic_inc
 c_func
 (paren
@@ -8609,12 +8571,10 @@ op_amp
 id|vcc-&gt;stats-&gt;rx_err
 )paren
 suffix:semicolon
-macro_line|#endif
 r_goto
 id|return_host_buffers
 suffix:semicolon
 )brace
-macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,3,15)
 id|skb
 op_assign
 id|atm_alloc_charge
@@ -8629,65 +8589,6 @@ comma
 id|GFP_ATOMIC
 )paren
 suffix:semicolon
-macro_line|#else
-r_if
-c_cond
-(paren
-op_logical_neg
-id|atm_charge
-c_func
-(paren
-id|vcc
-comma
-id|atm_pdu2truesize
-c_func
-(paren
-id|he_vcc-&gt;pdu_len
-op_plus
-id|rx_skb_reserve
-)paren
-)paren
-)paren
-id|skb
-op_assign
-l_int|NULL
-suffix:semicolon
-r_else
-(brace
-id|skb
-op_assign
-id|alloc_skb
-c_func
-(paren
-id|he_vcc-&gt;pdu_len
-op_plus
-id|rx_skb_reserve
-comma
-id|GFP_ATOMIC
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|skb
-)paren
-id|atm_return
-c_func
-(paren
-id|vcc
-comma
-id|atm_pdu2truesize
-c_func
-(paren
-id|he_vcc-&gt;pdu_len
-op_plus
-id|rx_skb_reserve
-)paren
-)paren
-suffix:semicolon
-)brace
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -8750,9 +8651,6 @@ macro_line|#ifdef USE_RBPS
 r_if
 c_cond
 (paren
-(paren
-id|u32
-)paren
 id|iov-&gt;iov_base
 op_amp
 id|RBP_SMALLBUF
@@ -8927,11 +8825,6 @@ comma
 id|skb
 )paren
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,3,99)
-op_increment
-id|vcc-&gt;stats-&gt;rx
-suffix:semicolon
-macro_line|#else
 id|atomic_inc
 c_func
 (paren
@@ -8939,7 +8832,6 @@ op_amp
 id|vcc-&gt;stats-&gt;rx
 )paren
 suffix:semicolon
-macro_line|#endif
 id|return_host_buffers
 suffix:colon
 op_increment
@@ -8964,9 +8856,6 @@ macro_line|#ifdef USE_RBPS
 r_if
 c_cond
 (paren
-(paren
-id|u32
-)paren
 id|iov-&gt;iov_base
 op_amp
 id|RBP_SMALLBUF
@@ -10098,7 +9987,7 @@ id|flags
 )paren
 suffix:semicolon
 macro_line|#endif
-id|HPRINTK1
+id|HPRINTK
 c_func
 (paren
 l_string|&quot;phy interrupt&bslash;n&quot;
@@ -10120,7 +10009,7 @@ id|group
 r_case
 id|ITYPE_PARITY
 suffix:colon
-id|hprintk1
+id|hprintk
 c_func
 (paren
 l_string|&quot;parity error&bslash;n&quot;
@@ -10305,13 +10194,8 @@ id|flags
 suffix:semicolon
 macro_line|#endif
 )brace
-macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,5,69)
 r_static
 id|irqreturn_t
-macro_line|#else
-r_static
-r_void
-macro_line|#endif
 DECL|function|he_irq_handler
 id|he_irq_handler
 c_func
@@ -10357,14 +10241,9 @@ id|he_dev
 op_eq
 l_int|NULL
 )paren
-macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,5,69)
 r_return
 id|IRQ_NONE
 suffix:semicolon
-macro_line|#else
-r_return
-suffix:semicolon
-macro_line|#endif
 id|HE_SPIN_LOCK
 c_func
 (paren
@@ -10405,7 +10284,7 @@ op_eq
 id|he_dev-&gt;irq_head
 )paren
 (brace
-id|HPRINTK1
+id|HPRINTK
 c_func
 (paren
 l_string|&quot;tailoffset not updated?&bslash;n&quot;
@@ -10464,7 +10343,7 @@ op_eq
 id|he_dev-&gt;irq_tail
 multiline_comment|/* &amp;&amp; !IRQ_PENDING */
 )paren
-id|hprintk1
+id|hprintk
 c_func
 (paren
 l_string|&quot;spurious (or shared) interrupt?&bslash;n&quot;
@@ -10536,7 +10415,6 @@ comma
 id|flags
 )paren
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,5,69)
 r_return
 id|IRQ_RETVAL
 c_func
@@ -10544,10 +10422,6 @@ c_func
 id|handled
 )paren
 suffix:semicolon
-macro_line|#else
-r_return
-suffix:semicolon
-macro_line|#endif
 )brace
 r_static
 id|__inline__
@@ -10694,11 +10568,6 @@ c_func
 id|tpd-&gt;skb
 )paren
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,3,99)
-op_increment
-id|tpd-&gt;vcc-&gt;stats-&gt;tx_err
-suffix:semicolon
-macro_line|#else
 id|atomic_inc
 c_func
 (paren
@@ -10706,7 +10575,6 @@ op_amp
 id|tpd-&gt;vcc-&gt;stats-&gt;tx_err
 )paren
 suffix:semicolon
-macro_line|#endif
 )brace
 macro_line|#ifdef USE_TPD_POOL
 id|pci_pool_free
@@ -10944,12 +10812,6 @@ comma
 id|vci
 )paren
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,3,1)
-id|vcc-&gt;flags
-op_or_assign
-id|ATM_VF_ADDR
-suffix:semicolon
-macro_line|#else
 id|set_bit
 c_func
 (paren
@@ -10959,7 +10821,6 @@ op_amp
 id|vcc-&gt;flags
 )paren
 suffix:semicolon
-macro_line|#endif
 id|cid
 op_assign
 id|he_mkcid
@@ -10999,7 +10860,7 @@ op_eq
 l_int|NULL
 )paren
 (brace
-id|hprintk1
+id|hprintk
 c_func
 (paren
 l_string|&quot;unable to allocate he_vcc during open&bslash;n&quot;
@@ -11023,22 +10884,6 @@ op_assign
 op_minus
 l_int|1
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,3,1)
-id|init_waitqueue
-c_func
-(paren
-op_amp
-id|he_vcc-&gt;rx_waitq
-)paren
-suffix:semicolon
-id|init_waitqueue
-c_func
-(paren
-op_amp
-id|he_vcc-&gt;tx_waitq
-)paren
-suffix:semicolon
-macro_line|#else
 id|init_waitqueue_head
 c_func
 (paren
@@ -11053,7 +10898,6 @@ op_amp
 id|he_vcc-&gt;tx_waitq
 )paren
 suffix:semicolon
-macro_line|#endif
 id|HE_VCC
 c_func
 (paren
@@ -11944,13 +11788,6 @@ c_func
 id|he_vcc
 )paren
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,3,1)
-id|vcc-&gt;flags
-op_and_assign
-op_complement
-id|ATM_VF_ADDR
-suffix:semicolon
-macro_line|#else
 id|clear_bit
 c_func
 (paren
@@ -11960,16 +11797,8 @@ op_amp
 id|vcc-&gt;flags
 )paren
 suffix:semicolon
-macro_line|#endif
 )brace
 r_else
-(brace
-macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,3,1)
-id|vcc-&gt;flags
-op_or_assign
-id|ATM_VF_READY
-suffix:semicolon
-macro_line|#else
 id|set_bit
 c_func
 (paren
@@ -11979,8 +11808,6 @@ op_amp
 id|vcc-&gt;flags
 )paren
 suffix:semicolon
-macro_line|#endif
-)brace
 r_return
 id|err
 suffix:semicolon
@@ -12001,7 +11828,6 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &gt; KERNEL_VERSION(2,3,1)
 id|DECLARE_WAITQUEUE
 c_func
 (paren
@@ -12010,18 +11836,6 @@ comma
 id|current
 )paren
 suffix:semicolon
-macro_line|#else
-r_struct
-id|wait_queue
-id|wait
-op_assign
-(brace
-id|current
-comma
-l_int|NULL
-)brace
-suffix:semicolon
-macro_line|#endif
 r_struct
 id|he_dev
 op_star
@@ -12077,13 +11891,6 @@ comma
 id|vcc-&gt;vci
 )paren
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,3,1)
-id|vcc-&gt;flags
-op_and_assign
-op_complement
-id|ATM_VF_READY
-suffix:semicolon
-macro_line|#else
 id|clear_bit
 c_func
 (paren
@@ -12093,7 +11900,6 @@ op_amp
 id|vcc-&gt;flags
 )paren
 suffix:semicolon
-macro_line|#endif
 id|cid
 op_assign
 id|he_mkcid
@@ -12766,13 +12572,6 @@ c_func
 id|he_vcc
 )paren
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,3,1)
-id|vcc-&gt;flags
-op_and_assign
-op_complement
-id|ATM_VF_ADDR
-suffix:semicolon
-macro_line|#else
 id|clear_bit
 c_func
 (paren
@@ -12782,7 +12581,6 @@ op_amp
 id|vcc-&gt;flags
 )paren
 suffix:semicolon
-macro_line|#endif
 )brace
 r_static
 r_int
@@ -12939,11 +12737,6 @@ c_func
 id|skb
 )paren
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,3,99)
-op_increment
-id|vcc-&gt;stats-&gt;tx_err
-suffix:semicolon
-macro_line|#else
 id|atomic_inc
 c_func
 (paren
@@ -12951,7 +12744,6 @@ op_amp
 id|vcc-&gt;stats-&gt;tx_err
 )paren
 suffix:semicolon
-macro_line|#endif
 r_return
 op_minus
 id|EINVAL
@@ -12970,7 +12762,7 @@ op_member_access_from_pointer
 id|nr_frags
 )paren
 (brace
-id|hprintk1
+id|hprintk
 c_func
 (paren
 l_string|&quot;no scatter/gather support&bslash;n&quot;
@@ -12998,11 +12790,6 @@ c_func
 id|skb
 )paren
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,3,99)
-op_increment
-id|vcc-&gt;stats-&gt;tx_err
-suffix:semicolon
-macro_line|#else
 id|atomic_inc
 c_func
 (paren
@@ -13010,7 +12797,6 @@ op_amp
 id|vcc-&gt;stats-&gt;tx_err
 )paren
 suffix:semicolon
-macro_line|#endif
 r_return
 op_minus
 id|EINVAL
@@ -13063,11 +12849,6 @@ c_func
 id|skb
 )paren
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,3,99)
-op_increment
-id|vcc-&gt;stats-&gt;tx_err
-suffix:semicolon
-macro_line|#else
 id|atomic_inc
 c_func
 (paren
@@ -13075,7 +12856,6 @@ op_amp
 id|vcc-&gt;stats-&gt;tx_err
 )paren
 suffix:semicolon
-macro_line|#endif
 id|HE_SPIN_UNLOCK
 c_func
 (paren
@@ -13317,11 +13097,6 @@ c_func
 id|skb
 )paren
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,3,99)
-op_increment
-id|vcc-&gt;stats-&gt;tx_err
-suffix:semicolon
-macro_line|#else
 id|atomic_inc
 c_func
 (paren
@@ -13337,7 +13112,6 @@ comma
 id|flags
 )paren
 suffix:semicolon
-macro_line|#endif
 r_return
 op_minus
 id|ENOMEM
@@ -13472,11 +13246,6 @@ comma
 id|flags
 )paren
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,3,99)
-op_increment
-id|vcc-&gt;stats-&gt;tx
-suffix:semicolon
-macro_line|#else
 id|atomic_inc
 c_func
 (paren
@@ -13484,7 +13253,6 @@ op_amp
 id|vcc-&gt;stats-&gt;tx
 )paren
 suffix:semicolon
-macro_line|#endif
 r_return
 l_int|0
 suffix:semicolon
@@ -14719,6 +14487,12 @@ id|byte_read
 )paren
 suffix:semicolon
 )brace
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 id|MODULE_AUTHOR
 c_func
 (paren
@@ -14827,7 +14601,6 @@ comma
 l_string|&quot;use SDH framing (default 0)&quot;
 )paren
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &gt; KERNEL_VERSION(2,3,1)
 DECL|variable|__devinitdata
 r_static
 r_struct
@@ -14877,7 +14650,6 @@ id|probe
 op_assign
 id|he_init_one
 comma
-macro_line|#if LINUX_VERSION_CODE &gt; KERNEL_VERSION(2,4,9)
 dot
 id|remove
 op_assign
@@ -14887,13 +14659,6 @@ c_func
 id|he_remove_one
 )paren
 comma
-macro_line|#else
-dot
-id|remove
-op_assign
-id|he_remove_one
-comma
-macro_line|#endif
 dot
 id|id_table
 op_assign
@@ -14952,166 +14717,4 @@ c_func
 id|he_cleanup
 )paren
 suffix:semicolon
-macro_line|#else
-r_static
-r_int
-id|__init
-DECL|function|he_init
-id|he_init
-c_func
-(paren
-)paren
-(brace
-r_if
-c_cond
-(paren
-op_logical_neg
-id|pci_present
-c_func
-(paren
-)paren
-)paren
-r_return
-op_minus
-id|EIO
-suffix:semicolon
-macro_line|#ifdef CONFIG_ATM_HE_USE_SUNI_MODULE
-multiline_comment|/* request_module(&quot;suni&quot;); */
-macro_line|#endif
-id|pci_dev
-op_assign
-l_int|NULL
-suffix:semicolon
-r_while
-c_loop
-(paren
-(paren
-id|pci_dev
-op_assign
-id|pci_find_device
-c_func
-(paren
-id|PCI_VENDOR_ID_FORE
-comma
-id|PCI_DEVICE_ID_FORE_HE
-comma
-id|pci_dev
-)paren
-)paren
-op_ne
-l_int|NULL
-)paren
-r_if
-c_cond
-(paren
-id|he_init_one
-c_func
-(paren
-id|pci_dev
-comma
-l_int|NULL
-)paren
-op_eq
-l_int|0
-)paren
-op_increment
-id|ndevs
-suffix:semicolon
-r_return
-(paren
-id|ndevs
-ques
-c_cond
-l_int|0
-suffix:colon
-op_minus
-id|ENODEV
-)paren
-suffix:semicolon
-)brace
-r_static
-r_void
-id|__devexit
-DECL|function|he_cleanup
-id|he_cleanup
-c_func
-(paren
-r_void
-)paren
-(brace
-r_while
-c_loop
-(paren
-id|he_devs
-)paren
-(brace
-r_struct
-id|he_dev
-op_star
-id|next
-op_assign
-id|he_devs-&gt;next
-suffix:semicolon
-id|he_stop
-c_func
-(paren
-id|he_devs
-)paren
-suffix:semicolon
-id|atm_dev_deregister
-c_func
-(paren
-id|he_devs-&gt;atm_dev
-)paren
-suffix:semicolon
-id|kfree
-c_func
-(paren
-id|he_devs
-)paren
-suffix:semicolon
-id|he_devs
-op_assign
-id|next
-suffix:semicolon
-)brace
-)brace
-DECL|function|init_module
-r_int
-id|init_module
-c_func
-(paren
-r_void
-)paren
-(brace
-r_return
-id|he_init
-c_func
-(paren
-)paren
-suffix:semicolon
-)brace
-DECL|function|cleanup_module
-r_void
-id|cleanup_module
-c_func
-(paren
-r_void
-)paren
-(brace
-id|he_cleanup
-c_func
-(paren
-)paren
-suffix:semicolon
-)brace
-macro_line|#endif
-macro_line|#if LINUX_VERSION_CODE &gt; KERNEL_VERSION(2,4,7)
-id|MODULE_LICENSE
-c_func
-(paren
-l_string|&quot;GPL&quot;
-)paren
-suffix:semicolon
-macro_line|#endif
 eof

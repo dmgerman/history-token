@@ -4078,12 +4078,14 @@ r_int
 id|max_cpus
 )paren
 (brace
+macro_line|#ifdef CONFIG_X86_IO_APIC
 id|setup_ioapic_dest
 c_func
 (paren
 id|TARGET_CPUS
 )paren
 suffix:semicolon
+macro_line|#endif
 id|zap_low_mappings
 c_func
 (paren
@@ -4096,6 +4098,7 @@ id|__init
 id|smp_intr_init
 c_func
 (paren
+r_void
 )paren
 (brace
 multiline_comment|/*&n;&t; * IRQ0 must be given a fixed assignment and initialized,&n;&t; * because it&squot;s used before the IO-APIC is set up.&n;&t; */

@@ -21,7 +21,7 @@ macro_line|#include &lt;net/bluetooth/bluetooth.h&gt;
 macro_line|#include &lt;net/bluetooth/l2cap.h&gt;
 macro_line|#include &lt;net/bluetooth/rfcomm.h&gt;
 DECL|macro|VERSION
-mdefine_line|#define VERSION &quot;0.3&quot;
+mdefine_line|#define VERSION &quot;1.0&quot;
 macro_line|#ifndef CONFIG_BT_RFCOMM_DEBUG
 DECL|macro|BT_DBG
 macro_line|#undef  BT_DBG
@@ -718,6 +718,10 @@ id|d-&gt;flags
 op_assign
 l_int|0
 suffix:semicolon
+id|d-&gt;mscex
+op_assign
+l_int|0
+suffix:semicolon
 id|d-&gt;mtu
 op_assign
 id|RFCOMM_DEFAULT_MTU
@@ -1231,6 +1235,10 @@ id|s-&gt;initiator
 comma
 id|dlci
 )paren
+suffix:semicolon
+id|d-&gt;priority
+op_assign
+l_int|7
 suffix:semicolon
 id|d-&gt;state
 op_assign
@@ -1992,7 +2000,7 @@ op_amp
 id|session_list
 )paren
 suffix:semicolon
-multiline_comment|/* Do not increment module usage count for listeting sessions.&n;&t; * Otherwise we won&squot;t be able to unload the module. */
+multiline_comment|/* Do not increment module usage count for listeting sessions.&n;&t; * Otherwise we won&squot;t be able to unload the module.&n;&t; * Non listening session are added either by a socket or a TTYs&n;&t; * which means that we already hold refcount to this module.&n;&t; */
 r_if
 c_cond
 (paren
@@ -2000,7 +2008,11 @@ id|state
 op_ne
 id|BT_LISTEN
 )paren
-id|MOD_INC_USE_COUNT
+id|__module_get
+c_func
+(paren
+id|THIS_MODULE
+)paren
 suffix:semicolon
 r_return
 id|s
@@ -2073,7 +2085,11 @@ id|state
 op_ne
 id|BT_LISTEN
 )paren
-id|MOD_DEC_USE_COUNT
+id|module_put
+c_func
+(paren
+id|THIS_MODULE
+)paren
 suffix:semicolon
 )brace
 DECL|function|rfcomm_session_get
@@ -3576,7 +3592,7 @@ id|d-&gt;dlci
 suffix:semicolon
 id|pn-&gt;priority
 op_assign
-l_int|0
+id|d-&gt;priority
 suffix:semicolon
 id|pn-&gt;ack_timer
 op_assign
@@ -5614,14 +5630,6 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
-id|d-&gt;mtu
-op_assign
-id|btohs
-c_func
-(paren
-id|pn-&gt;mtu
-)paren
-suffix:semicolon
 )brace
 r_else
 (brace
@@ -5654,6 +5662,11 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
+)brace
+id|d-&gt;priority
+op_assign
+id|pn-&gt;priority
+suffix:semicolon
 id|d-&gt;mtu
 op_assign
 id|btohs
@@ -5662,7 +5675,6 @@ c_func
 id|pn-&gt;mtu
 )paren
 suffix:semicolon
-)brace
 r_return
 l_int|0
 suffix:semicolon
@@ -6219,7 +6231,7 @@ comma
 id|rpn-&gt;flow_ctrl
 )paren
 suffix:semicolon
-id|rpn-&gt;flow_ctrl
+id|flow_ctrl
 op_assign
 id|RFCOMM_RPN_FLOW_NONE
 suffix:semicolon
@@ -6253,7 +6265,7 @@ comma
 id|rpn-&gt;xon_char
 )paren
 suffix:semicolon
-id|rpn-&gt;xon_char
+id|xon_char
 op_assign
 id|RFCOMM_RPN_XON_CHAR
 suffix:semicolon
@@ -6287,7 +6299,7 @@ comma
 id|rpn-&gt;xoff_char
 )paren
 suffix:semicolon
-id|rpn-&gt;xoff_char
+id|xoff_char
 op_assign
 id|RFCOMM_RPN_XOFF_CHAR
 suffix:semicolon
@@ -6464,15 +6476,6 @@ comma
 id|msc-&gt;v24_sig
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|cr
-)paren
-r_return
-l_int|0
-suffix:semicolon
 id|d
 op_assign
 id|rfcomm_dlc_get
@@ -6486,7 +6489,16 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|d
+)paren
+r_return
+l_int|0
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|cr
 )paren
 (brace
 r_if
@@ -6557,7 +6569,16 @@ comma
 id|msc-&gt;v24_sig
 )paren
 suffix:semicolon
+id|d-&gt;mscex
+op_or_assign
+id|RFCOMM_MSCEX_RX
+suffix:semicolon
 )brace
+r_else
+id|d-&gt;mscex
+op_or_assign
+id|RFCOMM_MSCEX_TX
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -7595,6 +7616,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
 id|d-&gt;state
 op_eq
 id|BT_CONNECTED
@@ -7602,6 +7624,11 @@ op_logical_or
 id|d-&gt;state
 op_eq
 id|BT_DISCONN
+)paren
+op_logical_and
+id|d-&gt;mscex
+op_eq
+id|RFCOMM_MSCEX_OK
 )paren
 id|rfcomm_process_tx
 c_func
@@ -8951,6 +8978,11 @@ id|rfcomm_seq_fops
 op_assign
 (brace
 dot
+id|owner
+op_assign
+id|THIS_MODULE
+comma
+dot
 id|open
 op_assign
 id|rfcomm_seq_open
@@ -9100,6 +9132,11 @@ c_func
 r_void
 )paren
 (brace
+id|l2cap_load
+c_func
+(paren
+)paren
+suffix:semicolon
 id|kernel_thread
 c_func
 (paren

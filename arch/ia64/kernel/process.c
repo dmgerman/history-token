@@ -33,10 +33,9 @@ macro_line|#ifdef CONFIG_PERFMON
 macro_line|# include &lt;asm/perfmon.h&gt;
 macro_line|#endif
 macro_line|#include &quot;sigframe.h&quot;
-r_static
 r_void
-DECL|function|do_show_stack
-id|do_show_stack
+DECL|function|ia64_do_show_stack
+id|ia64_do_show_stack
 (paren
 r_struct
 id|unw_frame_info
@@ -117,7 +116,7 @@ r_sizeof
 id|buf
 )paren
 comma
-l_string|&quot; [&lt;%016lx&gt;] %%s sp=0x%016lx bsp=0x%016lx&bslash;n&quot;
+l_string|&quot; [&lt;%016lx&gt;] %%s&bslash;n&bslash;t&bslash;t&bslash;t&bslash;tsp=%016lx bsp=%016lx&bslash;n&quot;
 comma
 id|ip
 comma
@@ -184,7 +183,7 @@ id|task
 id|unw_init_running
 c_func
 (paren
-id|do_show_stack
+id|ia64_do_show_stack
 comma
 l_int|0
 )paren
@@ -204,7 +203,7 @@ comma
 id|task
 )paren
 suffix:semicolon
-id|do_show_stack
+id|ia64_do_show_stack
 c_func
 (paren
 op_amp
@@ -516,8 +515,6 @@ r_int
 r_int
 id|val
 comma
-id|sof
-comma
 op_star
 id|bsp
 comma
@@ -525,6 +522,8 @@ id|ndirty
 suffix:semicolon
 r_int
 id|i
+comma
+id|sof
 comma
 id|is_nat
 op_assign
@@ -637,7 +636,7 @@ r_else
 id|show_stack
 c_func
 (paren
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 )brace
@@ -1434,6 +1433,11 @@ id|THREAD_FLAGS_TO_CLEAR
 op_or
 id|THREAD_FLAGS_TO_SET
 )paren
+suffix:semicolon
+id|p-&gt;thread.last_fph_cpu
+op_assign
+op_minus
+l_int|1
 suffix:semicolon
 macro_line|#ifdef CONFIG_IA32_SUPPORT
 multiline_comment|/*&n;&t; * If we&squot;re cloning an IA32 task then save the IA32 extra&n;&t; * state from the current task to the new task&n;&t; */

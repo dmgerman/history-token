@@ -7153,7 +7153,7 @@ id|i
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef WIRELESS_SPY
+macro_line|#ifdef IW_WIRELESS_SPY
 multiline_comment|/*------------------------------------------------------------------*/
 multiline_comment|/*&n; * Gather wireless spy statistics:  for each packet, compare the source&n; * address with our list, and if they match, get the statistics.&n; * Sorry, but this function really needs the wireless extensions.&n; */
 DECL|function|wl_spy_gather
@@ -7176,62 +7176,13 @@ id|u8
 op_star
 id|stats
 )paren
-(brace
 multiline_comment|/* Statistics to gather */
-id|net_local
-op_star
-id|lp
-op_assign
-(paren
-id|net_local
-op_star
-)paren
-id|dev-&gt;priv
-suffix:semicolon
-r_int
-id|i
-suffix:semicolon
-multiline_comment|/* Check all addresses. */
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-id|lp-&gt;spy_number
-suffix:semicolon
-id|i
-op_increment
-)paren
-multiline_comment|/* If match */
-r_if
-c_cond
-(paren
-op_logical_neg
-id|memcmp
-c_func
-(paren
-id|mac
-comma
-id|lp-&gt;spy_address
-(braket
-id|i
-)braket
-comma
-id|WAVELAN_ADDR_SIZE
-)paren
-)paren
 (brace
-multiline_comment|/* Update statistics */
-id|lp-&gt;spy_stat
-(braket
-id|i
-)braket
-dot
-id|qual
+r_struct
+id|iw_quality
+id|wstats
+suffix:semicolon
+id|wstats.qual
 op_assign
 id|stats
 (braket
@@ -7240,12 +7191,7 @@ l_int|2
 op_amp
 id|MMR_SGNL_QUAL
 suffix:semicolon
-id|lp-&gt;spy_stat
-(braket
-id|i
-)braket
-dot
-id|level
+id|wstats.level
 op_assign
 id|stats
 (braket
@@ -7254,12 +7200,7 @@ l_int|0
 op_amp
 id|MMR_SIGNAL_LVL
 suffix:semicolon
-id|lp-&gt;spy_stat
-(braket
-id|i
-)braket
-dot
-id|noise
+id|wstats.noise
 op_assign
 id|stats
 (braket
@@ -7268,18 +7209,24 @@ l_int|1
 op_amp
 id|MMR_SILENCE_LVL
 suffix:semicolon
-id|lp-&gt;spy_stat
-(braket
-id|i
-)braket
-dot
-id|updated
+id|wstats.updated
 op_assign
 l_int|0x7
 suffix:semicolon
+multiline_comment|/* Update spy records */
+id|wireless_spy_update
+c_func
+(paren
+id|dev
+comma
+id|mac
+comma
+op_amp
+id|wstats
+)paren
+suffix:semicolon
 )brace
-)brace
-macro_line|#endif&t;&t;&t;&t;/* WIRELESS_SPY */
+macro_line|#endif /* IW_WIRELESS_SPY */
 macro_line|#ifdef HISTOGRAM
 multiline_comment|/*------------------------------------------------------------------*/
 multiline_comment|/*&n; * This function calculates a histogram of the signal level.&n; * As the noise is quite constant, it&squot;s like doing it on the SNR.&n; * We have defined a set of interval (lp-&gt;his_range), and each time&n; * the level goes in that interval, we increment the count (lp-&gt;his_sum).&n; * With this histogram you may detect if one WaveLAN is really weak,&n; * or you may also calculate the mean and standard deviation of the level.&n; */
@@ -7362,7 +7309,7 @@ id|i
 op_increment
 suffix:semicolon
 )brace
-macro_line|#endif&t;&t;&t;&t;/* HISTOGRAM */
+macro_line|#endif /* HISTOGRAM */
 multiline_comment|/*------------------------------------------------------------------*/
 multiline_comment|/*&n; * Wireless Handler : get protocol name&n; */
 DECL|function|wavelan_get_name
@@ -9191,386 +9138,6 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-macro_line|#ifdef WIRELESS_SPY
-multiline_comment|/*------------------------------------------------------------------*/
-multiline_comment|/*&n; * Wireless Handler : set spy list&n; */
-DECL|function|wavelan_set_spy
-r_static
-r_int
-id|wavelan_set_spy
-c_func
-(paren
-r_struct
-id|net_device
-op_star
-id|dev
-comma
-r_struct
-id|iw_request_info
-op_star
-id|info
-comma
-r_union
-id|iwreq_data
-op_star
-id|wrqu
-comma
-r_char
-op_star
-id|extra
-)paren
-(brace
-id|net_local
-op_star
-id|lp
-op_assign
-(paren
-id|net_local
-op_star
-)paren
-id|dev-&gt;priv
-suffix:semicolon
-multiline_comment|/* lp is not unused */
-r_struct
-id|sockaddr
-op_star
-id|address
-op_assign
-(paren
-r_struct
-id|sockaddr
-op_star
-)paren
-id|extra
-suffix:semicolon
-r_int
-id|i
-suffix:semicolon
-r_int
-id|ret
-op_assign
-l_int|0
-suffix:semicolon
-multiline_comment|/* Disable spy while we copy the addresses.&n;&t; * As we don&squot;t disable interrupts, we need to do this */
-id|lp-&gt;spy_number
-op_assign
-l_int|0
-suffix:semicolon
-multiline_comment|/* Are there are addresses to copy? */
-r_if
-c_cond
-(paren
-id|wrqu-&gt;data.length
-OG
-l_int|0
-)paren
-(brace
-multiline_comment|/* Copy addresses to the lp structure. */
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-id|wrqu-&gt;data.length
-suffix:semicolon
-id|i
-op_increment
-)paren
-(brace
-id|memcpy
-c_func
-(paren
-id|lp-&gt;spy_address
-(braket
-id|i
-)braket
-comma
-id|address
-(braket
-id|i
-)braket
-dot
-id|sa_data
-comma
-id|WAVELAN_ADDR_SIZE
-)paren
-suffix:semicolon
-)brace
-multiline_comment|/* Reset structure. */
-id|memset
-c_func
-(paren
-id|lp-&gt;spy_stat
-comma
-l_int|0x00
-comma
-r_sizeof
-(paren
-id|iw_qual
-)paren
-op_star
-id|IW_MAX_SPY
-)paren
-suffix:semicolon
-macro_line|#ifdef DEBUG_IOCTL_INFO
-id|printk
-c_func
-(paren
-id|KERN_DEBUG
-l_string|&quot;SetSpy:  set of new addresses is: &bslash;n&quot;
-)paren
-suffix:semicolon
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-id|wrqu-&gt;data.length
-suffix:semicolon
-id|i
-op_increment
-)paren
-id|printk
-c_func
-(paren
-id|KERN_DEBUG
-l_string|&quot;%02X:%02X:%02X:%02X:%02X:%02X &bslash;n&quot;
-comma
-id|lp-&gt;spy_address
-(braket
-id|i
-)braket
-(braket
-l_int|0
-)braket
-comma
-id|lp-&gt;spy_address
-(braket
-id|i
-)braket
-(braket
-l_int|1
-)braket
-comma
-id|lp-&gt;spy_address
-(braket
-id|i
-)braket
-(braket
-l_int|2
-)braket
-comma
-id|lp-&gt;spy_address
-(braket
-id|i
-)braket
-(braket
-l_int|3
-)braket
-comma
-id|lp-&gt;spy_address
-(braket
-id|i
-)braket
-(braket
-l_int|4
-)braket
-comma
-id|lp-&gt;spy_address
-(braket
-id|i
-)braket
-(braket
-l_int|5
-)braket
-)paren
-suffix:semicolon
-macro_line|#endif&t;&t;&t;/* DEBUG_IOCTL_INFO */
-)brace
-multiline_comment|/* Now we can set the number of addresses */
-id|lp-&gt;spy_number
-op_assign
-id|wrqu-&gt;data.length
-suffix:semicolon
-r_return
-id|ret
-suffix:semicolon
-)brace
-multiline_comment|/*------------------------------------------------------------------*/
-multiline_comment|/*&n; * Wireless Handler : get spy list&n; */
-DECL|function|wavelan_get_spy
-r_static
-r_int
-id|wavelan_get_spy
-c_func
-(paren
-r_struct
-id|net_device
-op_star
-id|dev
-comma
-r_struct
-id|iw_request_info
-op_star
-id|info
-comma
-r_union
-id|iwreq_data
-op_star
-id|wrqu
-comma
-r_char
-op_star
-id|extra
-)paren
-(brace
-id|net_local
-op_star
-id|lp
-op_assign
-(paren
-id|net_local
-op_star
-)paren
-id|dev-&gt;priv
-suffix:semicolon
-multiline_comment|/* lp is not unused */
-r_struct
-id|sockaddr
-op_star
-id|address
-op_assign
-(paren
-r_struct
-id|sockaddr
-op_star
-)paren
-id|extra
-suffix:semicolon
-r_int
-id|i
-suffix:semicolon
-multiline_comment|/* Set the number of addresses */
-id|wrqu-&gt;data.length
-op_assign
-id|lp-&gt;spy_number
-suffix:semicolon
-multiline_comment|/* Copy addresses from the lp structure. */
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-id|lp-&gt;spy_number
-suffix:semicolon
-id|i
-op_increment
-)paren
-(brace
-id|memcpy
-c_func
-(paren
-id|address
-(braket
-id|i
-)braket
-dot
-id|sa_data
-comma
-id|lp-&gt;spy_address
-(braket
-id|i
-)braket
-comma
-id|WAVELAN_ADDR_SIZE
-)paren
-suffix:semicolon
-id|address
-(braket
-id|i
-)braket
-dot
-id|sa_family
-op_assign
-id|AF_UNIX
-suffix:semicolon
-)brace
-multiline_comment|/* Copy stats to the user buffer (just after). */
-r_if
-c_cond
-(paren
-id|lp-&gt;spy_number
-OG
-l_int|0
-)paren
-(brace
-id|memcpy
-c_func
-(paren
-id|extra
-op_plus
-(paren
-r_sizeof
-(paren
-r_struct
-id|sockaddr
-)paren
-op_star
-id|lp-&gt;spy_number
-)paren
-comma
-id|lp-&gt;spy_stat
-comma
-r_sizeof
-(paren
-id|iw_qual
-)paren
-op_star
-id|lp-&gt;spy_number
-)paren
-suffix:semicolon
-)brace
-multiline_comment|/* Reset updated flags. */
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-id|lp-&gt;spy_number
-suffix:semicolon
-id|i
-op_increment
-)paren
-id|lp-&gt;spy_stat
-(braket
-id|i
-)braket
-dot
-id|updated
-op_assign
-l_int|0x0
-suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-)brace
-macro_line|#endif&t;&t;&t;/* WIRELESS_SPY */
 multiline_comment|/*------------------------------------------------------------------*/
 multiline_comment|/*&n; * Wireless Private Handler : set quality threshold&n; */
 DECL|function|wavelan_set_qthr
@@ -10115,27 +9682,18 @@ multiline_comment|/* SIOCSIWSTATS */
 l_int|NULL
 comma
 multiline_comment|/* SIOCGIWSTATS */
-macro_line|#ifdef WIRELESS_SPY
-id|wavelan_set_spy
+id|iw_handler_set_spy
 comma
 multiline_comment|/* SIOCSIWSPY */
-id|wavelan_get_spy
+id|iw_handler_get_spy
 comma
 multiline_comment|/* SIOCGIWSPY */
-macro_line|#else&t;/* WIRELESS_SPY */
-l_int|NULL
+id|iw_handler_set_thrspy
 comma
-multiline_comment|/* SIOCSIWSPY */
-l_int|NULL
+multiline_comment|/* SIOCSIWTHRSPY */
+id|iw_handler_get_thrspy
 comma
-multiline_comment|/* SIOCGIWSPY */
-macro_line|#endif&t;/* WIRELESS_SPY */
-l_int|NULL
-comma
-multiline_comment|/* -- hole -- */
-l_int|NULL
-comma
-multiline_comment|/* -- hole -- */
+multiline_comment|/* SIOCGIWTHRSPY */
 l_int|NULL
 comma
 multiline_comment|/* SIOCSIWAP */
@@ -10376,6 +9934,34 @@ id|iw_priv_args
 op_star
 )paren
 id|wavelan_private_args
+comma
+dot
+id|spy_offset
+op_assign
+(paren
+(paren
+r_void
+op_star
+)paren
+(paren
+op_amp
+(paren
+(paren
+id|net_local
+op_star
+)paren
+l_int|NULL
+)paren
+op_member_access_from_pointer
+id|spy_data
+)paren
+op_minus
+(paren
+r_void
+op_star
+)paren
+l_int|NULL
+)paren
 comma
 )brace
 suffix:semicolon
@@ -10807,19 +10393,18 @@ l_string|&quot;wv_packet_read&quot;
 )paren
 suffix:semicolon
 macro_line|#endif&t;&t;&t;&t;/* DEBUG_RX_INFO */
-multiline_comment|/* Statistics-gathering and associated stuff.&n;&t; * It seem a bit messy with all the define, but it&squot;s really simple... */
-macro_line|#if defined(WIRELESS_SPY) || defined(HISTOGRAM)
+multiline_comment|/* Statistics-gathering and associated stuff.&n;&t; * It seem a bit messy with all the define, but it&squot;s really&n;&t; * simple... */
 r_if
 c_cond
 (paren
-macro_line|#ifdef WIRELESS_SPY
+macro_line|#ifdef IW_WIRELESS_SPY&t;&t;/* defined in iw_handler.h */
 (paren
-id|lp-&gt;spy_number
+id|lp-&gt;spy_data.spy_number
 OG
 l_int|0
 )paren
 op_logical_or
-macro_line|#endif&t;&t;&t;&t;/* WIRELESS_SPY */
+macro_line|#endif /* IW_WIRELESS_SPY */
 macro_line|#ifdef HISTOGRAM
 (paren
 id|lp-&gt;his_number
@@ -10827,7 +10412,7 @@ OG
 l_int|0
 )paren
 op_logical_or
-macro_line|#endif&t;&t;&t;&t;/* HISTOGRAM */
+macro_line|#endif /* HISTOGRAM */
 l_int|0
 )paren
 (brace
@@ -10838,8 +10423,8 @@ l_int|3
 )braket
 suffix:semicolon
 multiline_comment|/* signal level, noise level, signal quality */
-multiline_comment|/* Read signal level, silence level and signal quality bytes. */
-multiline_comment|/* Note: in the PCMCIA hardware, these are part of the frame.  It seems&n;&t;&t; * that for the ISA hardware, it&squot;s nowhere to be found in the frame,&n;&t;&t; * so I&squot;m obliged to do this (it has a side effect on /proc/net/wireless).&n;&t;&t; * Any ideas?&n;&t;&t; */
+multiline_comment|/* Read signal level, silence level and signal quality bytes */
+multiline_comment|/* Note: in the PCMCIA hardware, these are part of the frame.&n;&t;&t; * It seems that for the ISA hardware, it&squot;s nowhere to be&n;&t;&t; * found in the frame, so I&squot;m obliged to do this (it has a&n;&t;&t; * side effect on /proc/net/wireless).&n;&t;&t; * Any ideas?&n;&t;&t; */
 id|mmc_out
 c_func
 (paren
@@ -10923,7 +10508,7 @@ l_int|0x0F
 suffix:semicolon
 macro_line|#endif
 multiline_comment|/* Spying stuff */
-macro_line|#ifdef WIRELESS_SPY
+macro_line|#ifdef IW_WIRELESS_SPY
 id|wl_spy_gather
 c_func
 (paren
@@ -10936,7 +10521,7 @@ comma
 id|stats
 )paren
 suffix:semicolon
-macro_line|#endif&t;&t;&t;&t;/* WIRELESS_SPY */
+macro_line|#endif /* IW_WIRELESS_SPY */
 macro_line|#ifdef HISTOGRAM
 id|wl_his_gather
 c_func
@@ -10946,9 +10531,8 @@ comma
 id|stats
 )paren
 suffix:semicolon
-macro_line|#endif&t;&t;&t;&t;/* HISTOGRAM */
+macro_line|#endif /* HISTOGRAM */
 )brace
-macro_line|#endif&t;&t;&t;&t;/* defined(WIRELESS_SPY) || defined(HISTOGRAM) */
 multiline_comment|/*&n;&t; * Hand the packet to the network module.&n;&t; */
 id|netif_rx
 c_func
@@ -11602,18 +11186,6 @@ id|length
 )paren
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/* Do we need some padding? */
-r_if
-c_cond
-(paren
-id|clen
-OL
-id|ETH_ZLEN
-)paren
-id|clen
-op_assign
-id|ETH_ZLEN
-suffix:semicolon
 id|spin_lock_irqsave
 c_func
 (paren
@@ -12100,35 +11672,6 @@ id|skb
 )paren
 suffix:semicolon
 macro_line|#endif
-r_if
-c_cond
-(paren
-id|skb-&gt;len
-OL
-id|ETH_ZLEN
-)paren
-(brace
-id|skb
-op_assign
-id|skb_padto
-c_func
-(paren
-id|skb
-comma
-id|ETH_ZLEN
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|skb
-op_eq
-l_int|NULL
-)paren
-r_return
-l_int|0
-suffix:semicolon
-)brace
 multiline_comment|/*&n;&t; * Block a timer-based transmit from overlapping.&n;&t; * In other words, prevent reentering this routine.&n;&t; */
 id|netif_stop_queue
 c_func
@@ -12197,6 +11740,37 @@ l_string|&quot;skb has next&bslash;n&quot;
 )paren
 suffix:semicolon
 macro_line|#endif
+multiline_comment|/* Do we need some padding? */
+multiline_comment|/* Note : on wireless the propagation time is in the order of 1us,&n;&t; * and we don&squot;t have the Ethernet specific requirement of beeing&n;&t; * able to detect collisions, therefore in theory we don&squot;t really&n;&t; * need to pad. Jean II */
+r_if
+c_cond
+(paren
+id|skb-&gt;len
+OL
+id|ETH_ZLEN
+)paren
+(brace
+id|skb
+op_assign
+id|skb_padto
+c_func
+(paren
+id|skb
+comma
+id|ETH_ZLEN
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|skb
+op_eq
+l_int|NULL
+)paren
+r_return
+l_int|0
+suffix:semicolon
+)brace
 multiline_comment|/* Write packet on the card */
 r_if
 c_cond

@@ -4,16 +4,12 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/net.h&gt;&t;&t;/* struct socket, struct proto_ops */
 macro_line|#include &lt;linux/atm.h&gt;&t;&t;/* ATM stuff */
 macro_line|#include &lt;linux/atmdev.h&gt;&t;/* ATM devices */
-macro_line|#include &lt;linux/atmclip.h&gt;&t;/* Classical IP over ATM */
 macro_line|#include &lt;linux/errno.h&gt;&t;/* error codes */
 macro_line|#include &lt;linux/kernel.h&gt;&t;/* printk */
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &lt;net/sock.h&gt;&t;&t;/* for sock_no_* */
-macro_line|#ifdef CONFIG_ATM_CLIP
-macro_line|#include &lt;net/atmclip.h&gt;
-macro_line|#endif
 macro_line|#include &quot;resources.h&quot;&t;&t;/* devs and vccs */
 macro_line|#include &quot;common.h&quot;&t;&t;/* common for PVCs and SVCs */
 macro_line|#ifndef NULL
@@ -472,7 +468,6 @@ comma
 suffix:semicolon
 multiline_comment|/*&n; *&t;Initialize the ATM PVC protocol family&n; */
 DECL|function|atmpvc_init
-r_static
 r_int
 id|__init
 id|atmpvc_init
@@ -481,11 +476,7 @@ c_func
 r_void
 )paren
 (brace
-r_int
-id|error
-suffix:semicolon
-id|error
-op_assign
+r_return
 id|sock_register
 c_func
 (paren
@@ -493,65 +484,20 @@ op_amp
 id|pvc_family_ops
 )paren
 suffix:semicolon
-r_if
-c_cond
+)brace
+DECL|function|atmpvc_exit
+r_void
+id|atmpvc_exit
+c_func
 (paren
-id|error
-OL
-l_int|0
+r_void
 )paren
 (brace
-id|printk
+id|sock_unregister
 c_func
 (paren
-id|KERN_ERR
-l_string|&quot;ATMPVC: can&squot;t register (%d)&quot;
-comma
-id|error
+id|PF_ATMPVC
 )paren
-suffix:semicolon
-r_return
-id|error
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_ATM_CLIP
-id|atm_clip_init
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef CONFIG_PROC_FS
-id|error
-op_assign
-id|atm_proc_init
-c_func
-(paren
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|error
-)paren
-id|printk
-c_func
-(paren
-l_string|&quot;atm_proc_init fails with %d&bslash;n&quot;
-comma
-id|error
-)paren
-suffix:semicolon
-macro_line|#endif
-r_return
-l_int|0
-suffix:semicolon
-)brace
-DECL|variable|atmpvc_init
-id|module_init
-c_func
-(paren
-id|atmpvc_init
-)paren
-suffix:semicolon
 eof

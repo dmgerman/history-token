@@ -42,6 +42,9 @@ macro_line|#ifdef CONFIG_INET
 macro_line|#include &lt;linux/ip.h&gt;
 macro_line|#include &lt;net/protocol.h&gt;
 macro_line|#include &lt;net/arp.h&gt;
+macro_line|#if defined(CONFIG_ATM_CLIP) || defined(CONFIG_ATM_CLIP_MODULE)
+macro_line|#include &lt;net/atmclip.h&gt;
+macro_line|#endif
 macro_line|#include &lt;net/ip.h&gt;
 macro_line|#include &lt;net/udp.h&gt;
 macro_line|#include &lt;net/tcp.h&gt;
@@ -880,13 +883,6 @@ id|dev_change_flags
 )paren
 suffix:semicolon
 macro_line|#endif
-DECL|variable|vlan_ioctl_set
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|vlan_ioctl_set
-)paren
-suffix:semicolon
 DECL|variable|scm_detach_fds
 id|EXPORT_SYMBOL
 c_func
@@ -900,13 +896,6 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|br_handle_frame_hook
-)paren
-suffix:semicolon
-DECL|variable|brioctl_set
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|brioctl_set
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -1182,29 +1171,6 @@ c_func
 id|ip_statistics
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_DLCI_MODULE
-r_extern
-r_int
-(paren
-op_star
-id|dlci_ioctl_hook
-)paren
-(paren
-r_int
-r_int
-comma
-r_void
-op_star
-)paren
-suffix:semicolon
-DECL|variable|dlci_ioctl_hook
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|dlci_ioctl_hook
-)paren
-suffix:semicolon
-macro_line|#endif
 DECL|variable|xfrm_user_policy
 id|EXPORT_SYMBOL
 c_func
@@ -1245,13 +1211,6 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|__xfrm_policy_destroy
-)paren
-suffix:semicolon
-DECL|variable|xfrm_policy_lookup
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|xfrm_policy_lookup
 )paren
 suffix:semicolon
 DECL|variable|xfrm_lookup
@@ -1350,6 +1309,13 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|xfrm_state_put_afinfo
+)paren
+suffix:semicolon
+DECL|variable|xfrm_state_delete_tunnel
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|xfrm_state_delete_tunnel
 )paren
 suffix:semicolon
 DECL|variable|xfrm_replay_check
@@ -1711,6 +1677,20 @@ id|skb_to_sgvec
 )paren
 suffix:semicolon
 macro_line|#endif
+DECL|variable|flow_cache_lookup
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|flow_cache_lookup
+)paren
+suffix:semicolon
+DECL|variable|flow_cache_genid
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|flow_cache_genid
+)paren
+suffix:semicolon
 macro_line|#if defined (CONFIG_IPV6_MODULE) || defined (CONFIG_IP_SCTP_MODULE)
 multiline_comment|/* inet functions common to v4 and v6 */
 DECL|variable|inet_release
@@ -2060,13 +2040,6 @@ c_func
 id|tcp_timewait_cachep
 )paren
 suffix:semicolon
-DECL|variable|tcp_timewait_kill
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|tcp_timewait_kill
-)paren
-suffix:semicolon
 DECL|variable|tcp_sendmsg
 id|EXPORT_SYMBOL
 c_func
@@ -2360,6 +2333,13 @@ id|sysctl_max_syn_backlog
 )paren
 suffix:semicolon
 macro_line|#endif
+DECL|variable|ip_generic_getfrag
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|ip_generic_getfrag
+)paren
+suffix:semicolon
 macro_line|#endif
 DECL|variable|tcp_read_sock
 id|EXPORT_SYMBOL
@@ -2648,6 +2628,15 @@ c_func
 id|arp_tbl
 )paren
 suffix:semicolon
+macro_line|#if defined(CONFIG_ATM_CLIP) || defined(CONFIG_ATM_CLIP_MODULE)
+DECL|variable|clip_tbl_hook
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|clip_tbl_hook
+)paren
+suffix:semicolon
+macro_line|#endif
 DECL|variable|arp_find
 id|EXPORT_SYMBOL
 c_func
@@ -2886,6 +2875,13 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|dev_remove_pack
+)paren
+suffix:semicolon
+DECL|variable|__dev_remove_pack
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|__dev_remove_pack
 )paren
 suffix:semicolon
 DECL|variable|dev_get
@@ -3331,39 +3327,47 @@ id|softnet_data
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_NET_RADIO
-multiline_comment|/* Don&squot;t include the whole header mess for a single function */
-r_union
-id|iwreq_data
-suffix:semicolon
-r_extern
-r_void
-id|wireless_send_event
-c_func
-(paren
-r_struct
-id|net_device
-op_star
-id|dev
-comma
-r_int
-r_int
-id|cmd
-comma
-r_union
-id|iwreq_data
-op_star
-id|wrqu
-comma
-r_char
-op_star
-id|extra
-)paren
-suffix:semicolon
+macro_line|#include &lt;net/iw_handler.h&gt;&t;&t;/* Wireless Extensions driver API */
 DECL|variable|wireless_send_event
 id|EXPORT_SYMBOL
 c_func
 (paren
 id|wireless_send_event
+)paren
+suffix:semicolon
+DECL|variable|iw_handler_set_spy
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|iw_handler_set_spy
+)paren
+suffix:semicolon
+DECL|variable|iw_handler_get_spy
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|iw_handler_get_spy
+)paren
+suffix:semicolon
+DECL|variable|iw_handler_set_thrspy
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|iw_handler_set_thrspy
+)paren
+suffix:semicolon
+DECL|variable|iw_handler_get_thrspy
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|iw_handler_get_thrspy
+)paren
+suffix:semicolon
+DECL|variable|wireless_spy_update
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|wireless_spy_update
 )paren
 suffix:semicolon
 macro_line|#endif&t;/* CONFIG_NET_RADIO */

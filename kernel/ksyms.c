@@ -30,7 +30,6 @@ macro_line|#include &lt;linux/mmzone.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/capability.h&gt;
 macro_line|#include &lt;linux/highuid.h&gt;
-macro_line|#include &lt;linux/brlock.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/uio.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
@@ -2285,39 +2284,6 @@ c_func
 id|mod_timer
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_SMP
-multiline_comment|/* Big-Reader lock implementation */
-DECL|variable|__brlock_array
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|__brlock_array
-)paren
-suffix:semicolon
-macro_line|#ifndef __BRLOCK_USE_ATOMICS
-DECL|variable|__br_write_locks
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|__br_write_locks
-)paren
-suffix:semicolon
-macro_line|#endif
-DECL|variable|__br_write_lock
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|__br_write_lock
-)paren
-suffix:semicolon
-DECL|variable|__br_write_unlock
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|__br_write_unlock
-)paren
-suffix:semicolon
-macro_line|#endif
 macro_line|#ifdef HAVE_DISABLE_HLT
 DECL|variable|disable_hlt
 id|EXPORT_SYMBOL
@@ -2413,7 +2379,7 @@ c_func
 id|__wake_up
 )paren
 suffix:semicolon
-macro_line|#if CONFIG_SMP
+macro_line|#ifdef CONFIG_SMP
 DECL|variable|__wake_up_sync
 id|EXPORT_SYMBOL_GPL
 c_func
@@ -2516,7 +2482,7 @@ c_func
 id|idle_cpu
 )paren
 suffix:semicolon
-macro_line|#if CONFIG_SMP
+macro_line|#ifdef CONFIG_SMP
 DECL|variable|set_cpus_allowed
 id|EXPORT_SYMBOL_GPL
 c_func
@@ -2525,7 +2491,7 @@ id|set_cpus_allowed
 )paren
 suffix:semicolon
 macro_line|#endif
-macro_line|#if CONFIG_SMP || CONFIG_PREEMPT
+macro_line|#if defined(CONFIG_SMP) || defined(CONFIG_PREEMPT)
 DECL|variable|kernel_flag
 id|EXPORT_SYMBOL
 c_func

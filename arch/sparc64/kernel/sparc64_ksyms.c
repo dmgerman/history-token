@@ -983,7 +983,7 @@ c_func
 id|request_fast_irq
 )paren
 suffix:semicolon
-macro_line|#if CONFIG_SUN_AUXIO
+macro_line|#ifdef CONFIG_SUN_AUXIO
 DECL|variable|auxio_set_led
 id|EXPORT_SYMBOL
 c_func
@@ -999,7 +999,7 @@ id|auxio_set_lte
 )paren
 suffix:semicolon
 macro_line|#endif
-macro_line|#if CONFIG_SBUS
+macro_line|#ifdef CONFIG_SBUS
 DECL|variable|sbus_root
 id|EXPORT_SYMBOL
 c_func

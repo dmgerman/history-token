@@ -2158,6 +2158,10 @@ c_func
 r_void
 )paren
 (brace
+r_char
+op_star
+id|firmware
+suffix:semicolon
 r_int
 id|i
 comma
@@ -2312,6 +2316,14 @@ id|revision
 op_eq
 id|PCWD_REVISION_C
 )paren
+(brace
+id|firmware
+op_assign
+id|get_firmware
+c_func
+(paren
+)paren
+suffix:semicolon
 id|printk
 c_func
 (paren
@@ -2320,12 +2332,16 @@ l_string|&quot;pcwd: PC Watchdog (REV.C) detected at port 0x%03x (Firmware versi
 comma
 id|current_readport
 comma
-id|get_firmware
-c_func
-(paren
-)paren
+id|firmware
 )paren
 suffix:semicolon
+id|kfree
+c_func
+(paren
+id|firmware
+)paren
+suffix:semicolon
+)brace
 r_else
 (brace
 multiline_comment|/* Should NEVER happen, unless get_revision() fails. */

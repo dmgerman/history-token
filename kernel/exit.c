@@ -2907,7 +2907,7 @@ op_assign
 op_amp
 id|link-&gt;pidptr-&gt;task_list
 suffix:semicolon
-macro_line|#if CONFIG_SMP
+macro_line|#ifdef CONFIG_SMP
 r_if
 c_cond
 (paren

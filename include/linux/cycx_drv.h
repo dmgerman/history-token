@@ -1,4 +1,4 @@
-multiline_comment|/*&n;* cycx_drv.h&t;CYCX Support Module.  Kernel API Definitions.&n;*&n;* Author:&t;Arnaldo Carvalho de Melo &lt;acme@conectiva.com.br&gt;&n;*&n;* Copyright:&t;(c) 1998-2000 Arnaldo Carvalho de Melo&n;*&n;* Based on sdladrv.h by Gene Kozin &lt;genek@compuserve.com&gt;&n;*&n;*&t;&t;This program is free software; you can redistribute it and/or&n;*&t;&t;modify it under the terms of the GNU General Public License&n;*&t;&t;as published by the Free Software Foundation; either version&n;*&t;&t;2 of the License, or (at your option) any later version.&n;* ============================================================================&n;* 1999/10/23&t;acme&t;&t;cycxhw_t cleanup&n;* 1999/01/03&t;acme&t;&t;more judicious use of data types...&n;*&t;&t;&t;&t;uclong, ucchar, etc deleted, the u8, u16, u32&n;*&t;&t;&t;&t;types are the portable way to go.&n;* 1999/01/03&t;acme&t;&t;judicious use of data types... u16, u32, etc&n;* 1998/12/26&t;acme&t; &t;FIXED_BUFFERS, CONF_OFFSET,&n;*                               removal of cy_read{bwl}&n;* 1998/08/08&t;acme&t; &t;Initial version.&n;*/
+multiline_comment|/*&n;* cycx_drv.h&t;CYCX Support Module.  Kernel API Definitions.&n;*&n;* Author:&t;Arnaldo Carvalho de Melo &lt;acme@conectiva.com.br&gt;&n;*&n;* Copyright:&t;(c) 1998-2003 Arnaldo Carvalho de Melo&n;*&n;* Based on sdladrv.h by Gene Kozin &lt;genek@compuserve.com&gt;&n;*&n;*&t;&t;This program is free software; you can redistribute it and/or&n;*&t;&t;modify it under the terms of the GNU General Public License&n;*&t;&t;as published by the Free Software Foundation; either version&n;*&t;&t;2 of the License, or (at your option) any later version.&n;* ============================================================================&n;* 1999/10/23&t;acme&t;&t;cycxhw_t cleanup&n;* 1999/01/03&t;acme&t;&t;more judicious use of data types...&n;*&t;&t;&t;&t;uclong, ucchar, etc deleted, the u8, u16, u32&n;*&t;&t;&t;&t;types are the portable way to go.&n;* 1999/01/03&t;acme&t;&t;judicious use of data types... u16, u32, etc&n;* 1998/12/26&t;acme&t; &t;FIXED_BUFFERS, CONF_OFFSET,&n;*                               removal of cy_read{bwl}&n;* 1998/08/08&t;acme&t; &t;Initial version.&n;*/
 macro_line|#ifndef&t;_CYCX_DRV_H
 DECL|macro|_CYCX_DRV_H
 mdefine_line|#define&t;_CYCX_DRV_H
@@ -26,37 +26,27 @@ DECL|macro|DATA_OFFSET
 mdefine_line|#define&t;DATA_OFFSET&t;0x0100&t;/* For code and data files load */
 DECL|macro|START_OFFSET
 mdefine_line|#define&t;START_OFFSET&t;0x3ff0&t;/* 80186 starts here */
-macro_line|#ifndef MIN
-DECL|macro|MIN
-mdefine_line|#define MIN(a,b)&t;((a) &lt; (b) ? (a) : (b))
-macro_line|#endif
-multiline_comment|/* Data Structures */
-multiline_comment|/* Adapter hardware configuration. Pointer to this structure is passed to all&n; * APIs.  */
-DECL|struct|cycxhw
-r_typedef
+multiline_comment|/**&n; *&t;struct cycx_hw - Adapter hardware configuration&n; *&t;@fwid - firmware ID&n; *&t;@irq - interrupt request level&n; *&t;@dpmbase - dual-port memory base&n; *&t;@dpmsize - dual-port memory size&n; *&t;@reserved - reserved for future use&n; */
+DECL|struct|cycx_hw
 r_struct
-id|cycxhw
+id|cycx_hw
 (brace
 DECL|member|fwid
 id|u32
 id|fwid
 suffix:semicolon
-multiline_comment|/* firmware ID */
 DECL|member|irq
 r_int
 id|irq
 suffix:semicolon
-multiline_comment|/* interrupt request level */
 DECL|member|dpmbase
 id|u32
 id|dpmbase
 suffix:semicolon
-multiline_comment|/* dual-port memory base */
 DECL|member|dpmsize
 id|u32
 id|dpmsize
 suffix:semicolon
-multiline_comment|/* dual-port memory size */
 DECL|member|reserved
 id|u32
 id|reserved
@@ -64,16 +54,16 @@ id|reserved
 l_int|5
 )braket
 suffix:semicolon
-DECL|typedef|cycxhw_t
 )brace
-id|cycxhw_t
 suffix:semicolon
 multiline_comment|/* Function Prototypes */
 r_extern
 r_int
 id|cycx_setup
+c_func
 (paren
-id|cycxhw_t
+r_struct
+id|cycx_hw
 op_star
 id|hw
 comma
@@ -88,8 +78,10 @@ suffix:semicolon
 r_extern
 r_int
 id|cycx_down
+c_func
 (paren
-id|cycxhw_t
+r_struct
+id|cycx_hw
 op_star
 id|hw
 )paren
@@ -97,8 +89,10 @@ suffix:semicolon
 r_extern
 r_int
 id|cycx_peek
+c_func
 (paren
-id|cycxhw_t
+r_struct
+id|cycx_hw
 op_star
 id|hw
 comma
@@ -116,8 +110,10 @@ suffix:semicolon
 r_extern
 r_int
 id|cycx_poke
+c_func
 (paren
-id|cycxhw_t
+r_struct
+id|cycx_hw
 op_star
 id|hw
 comma
@@ -135,6 +131,7 @@ suffix:semicolon
 r_extern
 r_int
 id|cycx_exec
+c_func
 (paren
 id|u32
 id|addr
@@ -143,8 +140,10 @@ suffix:semicolon
 r_extern
 r_void
 id|cycx_inten
+c_func
 (paren
-id|cycxhw_t
+r_struct
+id|cycx_hw
 op_star
 id|hw
 )paren
@@ -152,8 +151,10 @@ suffix:semicolon
 r_extern
 r_void
 id|cycx_intr
+c_func
 (paren
-id|cycxhw_t
+r_struct
+id|cycx_hw
 op_star
 id|hw
 )paren
