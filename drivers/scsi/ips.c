@@ -258,24 +258,18 @@ r_static
 r_int
 r_int
 id|ips_next_controller
-op_assign
-l_int|0
 suffix:semicolon
 DECL|variable|ips_num_controllers
 r_static
 r_int
 r_int
 id|ips_num_controllers
-op_assign
-l_int|0
 suffix:semicolon
 DECL|variable|ips_released_controllers
 r_static
 r_int
 r_int
 id|ips_released_controllers
-op_assign
-l_int|0
 suffix:semicolon
 DECL|variable|ips_hotplug
 r_static
@@ -326,8 +320,6 @@ DECL|variable|ips_cd_boot
 r_static
 r_int
 id|ips_cd_boot
-op_assign
-l_int|0
 suffix:semicolon
 multiline_comment|/* Booting from Manager CD         */
 DECL|variable|ips_FlashData
@@ -343,8 +335,6 @@ DECL|variable|ips_FlashDataInUse
 r_static
 r_int
 id|ips_FlashDataInUse
-op_assign
-l_int|0
 suffix:semicolon
 multiline_comment|/* CD Boot - Flash Data In Use Flag */
 DECL|variable|MaxLiteCmds
@@ -2750,20 +2740,6 @@ l_string|&quot;ERROR: Can&squot;t Allocate Large Buffer for Flashing&bslash;n&qu
 suffix:semicolon
 )brace
 )brace
-r_if
-c_cond
-(paren
-op_logical_neg
-id|pci_present
-c_func
-(paren
-)paren
-)paren
-r_return
-(paren
-l_int|0
-)paren
-suffix:semicolon
 id|SHT-&gt;proc_info
 op_assign
 id|ips_proc_info
@@ -10166,6 +10142,12 @@ multiline_comment|/* Offset 0x1fd after the header (0xc0) */
 )brace
 r_else
 (brace
+id|kfree
+c_func
+(paren
+id|buffer
+)paren
+suffix:semicolon
 r_return
 suffix:semicolon
 )brace
