@@ -313,7 +313,6 @@ op_and_assign
 op_complement
 id|I_DIRTY
 suffix:semicolon
-multiline_comment|/*&n;&t; * smp_rmb(); note: if you remove write_lock below, you must add this.&n;&t; * mark_inode_dirty doesn&squot;t take spinlock, make sure that inode is not&n;&t; * read speculatively by this cpu before &amp;= ~I_DIRTY  -- mikulas&n;&t; */
 id|spin_unlock
 c_func
 (paren
@@ -404,6 +403,13 @@ id|I_FREEING
 r_if
 c_cond
 (paren
+op_logical_neg
+(paren
+id|inode-&gt;i_state
+op_amp
+id|I_DIRTY
+)paren
+op_logical_and
 id|mapping_tagged
 c_func
 (paren
@@ -413,7 +419,22 @@ id|PAGECACHE_TAG_DIRTY
 )paren
 )paren
 (brace
-multiline_comment|/* Redirtied */
+multiline_comment|/*&n;&t;&t;&t; * We didn&squot;t write back all the pages.  Redirty the&n;&t;&t;&t; * inode.  It is still on sb-&gt;s_dirty.&n;&t;&t;&t; */
+r_if
+c_cond
+(paren
+id|wbc-&gt;for_kupdate
+)paren
+(brace
+multiline_comment|/*&n;&t;&t;&t;&t; * For the kupdate function we leave the inode&n;&t;&t;&t;&t; * where it is on sb_dirty so it will get more&n;&t;&t;&t;&t; * writeout as soon as the queue becomes&n;&t;&t;&t;&t; * uncongested.&n;&t;&t;&t;&t; */
+id|inode-&gt;i_state
+op_or_assign
+id|I_DIRTY_PAGES
+suffix:semicolon
+)brace
+r_else
+(brace
+multiline_comment|/*&n;&t;&t;&t;&t; * Otherwise fully redirty the inode so that&n;&t;&t;&t;&t; * other inodes on this superblock will get some&n;&t;&t;&t;&t; * writeout.  Otherwise heavy writing to one&n;&t;&t;&t;&t; * file would indefinitely suspend writeout of&n;&t;&t;&t;&t; * all the other files.&n;&t;&t;&t;&t; */
 id|inode-&gt;i_state
 op_or_assign
 id|I_DIRTY_PAGES
@@ -433,6 +454,7 @@ id|sb-&gt;s_dirty
 )paren
 suffix:semicolon
 )brace
+)brace
 r_else
 r_if
 c_cond
@@ -442,21 +464,7 @@ op_amp
 id|I_DIRTY
 )paren
 (brace
-multiline_comment|/* Redirtied */
-id|inode-&gt;dirtied_when
-op_assign
-id|jiffies
-suffix:semicolon
-id|list_move
-c_func
-(paren
-op_amp
-id|inode-&gt;i_list
-comma
-op_amp
-id|sb-&gt;s_dirty
-)paren
-suffix:semicolon
+multiline_comment|/*&n;&t;&t;&t; * Someone redirtied the inode while were writing back&n;&t;&t;&t; * the pages: nothing to do.&n;&t;&t;&t; */
 )brace
 r_else
 r_if
@@ -470,6 +478,7 @@ id|inode-&gt;i_count
 )paren
 )paren
 (brace
+multiline_comment|/*&n;&t;&t;&t; * The inode is clean, inuse&n;&t;&t;&t; */
 id|list_move
 c_func
 (paren
@@ -483,6 +492,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
+multiline_comment|/*&n;&t;&t;&t; * The inode is clean, unused&n;&t;&t;&t; */
 id|list_move
 c_func
 (paren
