@@ -149,6 +149,13 @@ id|drive
 )paren
 suffix:semicolon
 )brace
+DECL|variable|ata_mask
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|ata_mask
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Check the state of the status register.&n; */
 DECL|function|ata_status
 r_int
@@ -204,6 +211,95 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|ata_status
+)paren
+suffix:semicolon
+multiline_comment|/*&n; * This is used to check for the drive status on the IRQ handling code path.&n; */
+DECL|function|ata_status_irq
+r_int
+id|ata_status_irq
+c_func
+(paren
+r_struct
+id|ata_device
+op_star
+id|drive
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|test_bit
+c_func
+(paren
+id|IDE_DMA
+comma
+id|drive-&gt;channel-&gt;active
+)paren
+)paren
+r_return
+id|udma_irq_status
+c_func
+(paren
+id|drive
+)paren
+suffix:semicolon
+multiline_comment|/* Need to guarantee 400ns since last command was issued?&n;&t; */
+macro_line|#ifdef CONFIG_IDEPCI_SHARE_IRQ
+multiline_comment|/*&n;&t; * We do a passive status test under shared PCI interrupts on cards&n;&t; * that truly share the ATA side interrupt, but may also share an&n;&t; * interrupt with another pci card/device.&n;&t; */
+r_if
+c_cond
+(paren
+id|drive-&gt;channel-&gt;io_ports
+(braket
+id|IDE_CONTROL_OFFSET
+)braket
+)paren
+id|drive-&gt;status
+op_assign
+id|IN_BYTE
+c_func
+(paren
+id|drive-&gt;channel-&gt;io_ports
+(braket
+id|IDE_CONTROL_OFFSET
+)braket
+)paren
+suffix:semicolon
+r_else
+macro_line|#endif
+id|ata_status
+c_func
+(paren
+id|drive
+comma
+l_int|0
+comma
+l_int|0
+)paren
+suffix:semicolon
+multiline_comment|/* Note: this may clear a pending IRQ! */
+r_if
+c_cond
+(paren
+id|drive-&gt;status
+op_amp
+id|BUSY_STAT
+)paren
+r_return
+l_int|0
+suffix:semicolon
+multiline_comment|/* drive busy:  definitely not interrupting */
+r_else
+r_return
+l_int|1
+suffix:semicolon
+multiline_comment|/* drive ready: *might* be interrupting */
+)brace
+DECL|variable|ata_status_irq
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|ata_status_irq
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * Busy-wait for the drive status to be not &quot;busy&quot;.  Check then the status for&n; * all of the &quot;good&quot; bits and none of the &quot;bad&quot; bits, and if all is okay it&n; * returns 0.  All other cases return 1 after invoking error handler -- caller&n; * should just return.&n; */
@@ -700,6 +796,13 @@ id|IDE_HCYL_OFFSET
 )paren
 suffix:semicolon
 )brace
+DECL|variable|ata_out_regfile
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|ata_out_regfile
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Input a complete register file.&n; */
 DECL|function|ata_in_regfile
 r_void

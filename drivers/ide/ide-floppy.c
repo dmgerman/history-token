@@ -18,6 +18,7 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/cdrom.h&gt;
 macro_line|#include &lt;linux/ide.h&gt;
 macro_line|#include &lt;linux/atapi.h&gt;
+macro_line|#include &lt;linux/buffer_head.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
@@ -751,7 +752,7 @@ id|REQ_SPECIAL
 )paren
 )paren
 (brace
-id|__ata_end_request
+id|ata_end_request
 c_func
 (paren
 id|drive
@@ -2396,9 +2397,6 @@ op_star
 id|floppy
 op_assign
 id|drive-&gt;driver_data
-suffix:semicolon
-id|ide_startstop_t
-id|startstop
 suffix:semicolon
 id|atapi_ireason_reg_t
 id|ireason

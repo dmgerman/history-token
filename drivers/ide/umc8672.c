@@ -569,12 +569,15 @@ multiline_comment|/* local CPU only */
 r_if
 c_cond
 (paren
-id|check_region
+op_logical_neg
+id|request_region
 c_func
 (paren
 l_int|0x108
 comma
 l_int|2
+comma
+l_string|&quot;umc8672&quot;
 )paren
 )paren
 (brace
@@ -619,6 +622,14 @@ id|flags
 )paren
 suffix:semicolon
 multiline_comment|/* local CPU only */
+id|release_region
+c_func
+(paren
+l_int|0x108
+comma
+l_int|2
+)paren
+suffix:semicolon
 id|printk
 (paren
 l_string|&quot;umc8672: not found&bslash;n&quot;
@@ -647,16 +658,6 @@ id|flags
 )paren
 suffix:semicolon
 multiline_comment|/* local CPU only */
-id|request_region
-c_func
-(paren
-l_int|0x108
-comma
-l_int|2
-comma
-l_string|&quot;umc8672&quot;
-)paren
-suffix:semicolon
 id|ide_hwifs
 (braket
 l_int|0

@@ -1578,7 +1578,7 @@ id|nsect
 op_le
 l_int|0
 )paren
-id|__ata_end_request
+id|ata_end_request
 c_func
 (paren
 id|drive
@@ -1800,7 +1800,7 @@ id|drive-&gt;name
 )paren
 suffix:semicolon
 macro_line|#endif
-id|__ata_end_request
+id|ata_end_request
 c_func
 (paren
 id|drive
@@ -2342,7 +2342,7 @@ comma
 l_string|&quot;pdc4030 bad flags&quot;
 )paren
 suffix:semicolon
-id|__ata_end_request
+id|ata_end_request
 c_func
 (paren
 id|drive
@@ -2600,7 +2600,7 @@ id|KERN_ERR
 l_string|&quot;pdc4030: command not READ or WRITE! Huh?&bslash;n&quot;
 )paren
 suffix:semicolon
-id|__ata_end_request
+id|ata_end_request
 c_func
 (paren
 id|drive

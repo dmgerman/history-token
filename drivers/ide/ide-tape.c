@@ -24,6 +24,7 @@ macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/completion.h&gt;
 macro_line|#include &lt;linux/ide.h&gt;
 macro_line|#include &lt;linux/atapi.h&gt;
+macro_line|#include &lt;linux/buffer_head.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
@@ -7300,7 +7301,7 @@ comma
 id|rq-&gt;flags
 )paren
 suffix:semicolon
-id|__ata_end_request
+id|ata_end_request
 c_func
 (paren
 id|drive

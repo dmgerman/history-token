@@ -73,7 +73,7 @@ op_logical_neg
 id|dma_stat
 )paren
 (brace
-id|__ata_end_request
+id|ata_end_request
 c_func
 (paren
 id|drive
@@ -2122,7 +2122,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;ATA: UDMA timeout occured %s!&bslash;n&quot;
+l_string|&quot;%s: UDMA timeout!&bslash;n&quot;
 comma
 id|drive-&gt;name
 )paren

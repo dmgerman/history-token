@@ -1053,7 +1053,7 @@ id|uptodate
 op_assign
 l_int|1
 suffix:semicolon
-id|__ata_end_request
+id|ata_end_request
 c_func
 (paren
 id|drive
@@ -2430,7 +2430,7 @@ op_logical_neg
 id|dma_error
 )paren
 (brace
-id|__ata_end_request
+id|ata_end_request
 c_func
 (paren
 id|drive
@@ -4688,7 +4688,7 @@ comma
 l_string|&quot;dma error&quot;
 )paren
 suffix:semicolon
-id|__ata_end_request
+id|ata_end_request
 c_func
 (paren
 id|drive
@@ -6553,7 +6553,7 @@ OG
 l_int|1
 )paren
 (brace
-multiline_comment|/* Cds with CDI tracks only don&squot;t have any TOC entries,&n;&t;&t;   despite of this the returned values are&n;&t;&t;   first_track == last_track = number of CDI tracks + 1,&n;&t;&t;   so that this case is indistinguishable from the same&n;&t;&t;   layout plus an additional audio track.&n;&t;&t;   If we get an error for the regular case, we assume&n;&t;&t;   a CDI without additional audio tracks. In this case&n;&t;&t;   the readable TOC is empty (CDI tracks are not included)&n;&t;&t;   and only holds the Leadout entry. Heiko Ei&#xfffd;feldt */
+multiline_comment|/* Cds with CDI tracks only don&squot;t have any TOC entries,&n;&t;&t;   despite of this the returned values are&n;&t;&t;   first_track == last_track = number of CDI tracks + 1,&n;&t;&t;   so that this case is indistinguishable from the same&n;&t;&t;   layout plus an additional audio track.&n;&t;&t;   If we get an error for the regular case, we assume&n;&t;&t;   a CDI without additional audio tracks. In this case&n;&t;&t;   the readable TOC is empty (CDI tracks are not included)&n;&t;&t;   and only holds the Leadout entry. Heiko Ei&#xfffd;^&#xfffd;feldt */
 id|ntracks
 op_assign
 l_int|0
@@ -10984,6 +10984,7 @@ DECL|function|ide_cdrom_ioctl
 r_static
 r_int
 id|ide_cdrom_ioctl
+c_func
 (paren
 r_struct
 id|ata_device
@@ -11011,6 +11012,7 @@ id|arg
 (brace
 r_return
 id|cdrom_ioctl
+c_func
 (paren
 id|inode
 comma
