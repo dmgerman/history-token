@@ -939,18 +939,6 @@ r_int
 r_char
 id|scsi_type
 suffix:semicolon
-DECL|member|detect
-r_int
-(paren
-op_star
-id|detect
-)paren
-(paren
-id|Scsi_Device
-op_star
-)paren
-suffix:semicolon
-multiline_comment|/* Returns 1 if we can attach this device */
 DECL|member|attach
 r_int
 (paren

@@ -5452,12 +5452,6 @@ id|sdev-&gt;max_device_blocked
 op_assign
 id|SCSI_DEFAULT_DEVICE_BLOCKED
 suffix:semicolon
-id|scsi_detect_device
-c_func
-(paren
-id|sdev
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
