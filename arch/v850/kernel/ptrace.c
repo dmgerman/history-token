@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * arch/v850/kernel/ptrace.c -- `ptrace&squot; system call&n; *&n; *  Copyright (C) 2002,03  NEC Electronics Corporation&n; *  Copyright (C) 2002,03  Miles Bader &lt;miles@gnu.org&gt;&n; *&n; * Derived from arch/mips/kernel/ptrace.c:&n; *&n; *  Copyright (C) 1992 Ross Biro&n; *  Copyright (C) Linus Torvalds&n; *  Copyright (C) 1994, 95, 96, 97, 98, 2000 Ralf Baechle&n; *  Copyright (C) 1996 David S. Miller&n; *  Kevin D. Kissell, kevink@mips.com and Carsten Langgaard, carstenl@mips.com&n; *  Copyright (C) 1999 MIPS Technologies, Inc.&n; *&n; * This file is subject to the terms and conditions of the GNU General&n; * Public License.  See the file COPYING in the main directory of this&n; * archive for more details.&n; */
+multiline_comment|/*&n; * arch/v850/kernel/ptrace.c -- `ptrace&squot; system call&n; *&n; *  Copyright (C) 2002,03,04  NEC Electronics Corporation&n; *  Copyright (C) 2002,03,04  Miles Bader &lt;miles@gnu.org&gt;&n; *&n; * Derived from arch/mips/kernel/ptrace.c:&n; *&n; *  Copyright (C) 1992 Ross Biro&n; *  Copyright (C) Linus Torvalds&n; *  Copyright (C) 1994, 95, 96, 97, 98, 2000 Ralf Baechle&n; *  Copyright (C) 1996 David S. Miller&n; *  Kevin D. Kissell, kevink@mips.com and Carsten Langgaard, carstenl@mips.com&n; *  Copyright (C) 1999 MIPS Technologies, Inc.&n; *&n; * This file is subject to the terms and conditions of the GNU General&n; * Public License.  See the file COPYING in the main directory of this&n; * archive for more details.&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -413,7 +413,7 @@ r_goto
 id|out_tsk
 suffix:semicolon
 )brace
-id|ret
+id|rval
 op_assign
 id|ptrace_check_attach
 c_func
@@ -428,7 +428,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|ret
+id|rval
 OL
 l_int|0
 )paren
