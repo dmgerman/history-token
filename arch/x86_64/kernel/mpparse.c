@@ -3037,12 +3037,6 @@ l_int|0
 )paren
 op_logical_and
 (paren
-id|global_irq
-op_eq
-l_int|2
-)paren
-op_logical_and
-(paren
 id|trigger
 op_eq
 l_int|3
@@ -3147,9 +3141,9 @@ id|mp_irqs
 id|i
 )braket
 dot
-id|mpc_dstapic
+id|mpc_srcbus
 op_eq
-id|intsrc.mpc_dstapic
+id|intsrc.mpc_srcbus
 )paren
 op_logical_and
 (paren
@@ -3158,9 +3152,9 @@ id|mp_irqs
 id|i
 )braket
 dot
-id|mpc_dstirq
+id|mpc_srcbusirq
 op_eq
-id|intsrc.mpc_dstirq
+id|intsrc.mpc_srcbusirq
 )paren
 )paren
 (brace
@@ -3318,14 +3312,8 @@ suffix:semicolon
 multiline_comment|/* Don&squot;t connect IRQ2 */
 id|intsrc.mpc_irqtype
 op_assign
-id|i
-ques
-c_cond
 id|mp_INT
-suffix:colon
-id|mp_ExtINT
 suffix:semicolon
-multiline_comment|/* 8259A to #0 */
 id|intsrc.mpc_srcbusirq
 op_assign
 id|i
