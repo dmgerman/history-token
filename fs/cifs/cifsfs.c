@@ -670,9 +670,42 @@ op_star
 id|nd
 )paren
 (brace
-multiline_comment|/* the server does permission checks, we do not need to do it here */
+r_struct
+id|cifs_sb_info
+op_star
+id|cifs_sb
+suffix:semicolon
+id|cifs_sb
+op_assign
+id|CIFS_SB
+c_func
+(paren
+id|inode-&gt;i_sb
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|cifs_sb-&gt;tcon-&gt;ses-&gt;capabilities
+op_amp
+id|CAP_UNIX
+)paren
+(brace
+multiline_comment|/* the server supports the Unix-like mode bits and does its&n;&t;&t;own permission checks, and therefore we do not allow the file&n;&t;&t;mode to be overriden on these mounts - so do not do perm&n;&t;&t;check on client side */
 r_return
 l_int|0
+suffix:semicolon
+)brace
+r_else
+multiline_comment|/* file mode might have been restricted at mount time &n;&t;&t;on the client (above and beyond ACL on servers) for  &n;&t;&t;servers which do not support setting and viewing mode bits,&n;&t;&t;so allowing client to check permissions is useful */
+r_return
+id|vfs_permission
+c_func
+(paren
+id|inode
+comma
+id|mask
+)paren
 suffix:semicolon
 )brace
 DECL|variable|cifs_inode_cachep

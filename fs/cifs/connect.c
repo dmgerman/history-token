@@ -5252,13 +5252,18 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;UNC: %s ip: %s  &quot;
+l_string|&quot;UNC: %s ip: %s&quot;
 comma
 id|volume_info.UNC
 comma
 id|volume_info.UNCip
 )paren
 )paren
+suffix:semicolon
+multiline_comment|/* success */
+id|rc
+op_assign
+l_int|0
 suffix:semicolon
 )brace
 r_else
