@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * MTD primitives for XIP support&n; *&n; * Author:&t;Nicolas Pitre&n; * Created:&t;Nov 2, 2004&n; * Copyright:&t;(C) 2004 MontaVista Software, Inc.&n; *&n; * This XIP support for MTD has been loosely inspired&n; * by an earlier patch authored by David Woodhouse.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; * $Id: xip.h,v 1.1 2004/11/05 22:41:06 nico Exp $&n; */
+multiline_comment|/*&n; * MTD primitives for XIP support&n; *&n; * Author:&t;Nicolas Pitre&n; * Created:&t;Nov 2, 2004&n; * Copyright:&t;(C) 2004 MontaVista Software, Inc.&n; *&n; * This XIP support for MTD has been loosely inspired&n; * by an earlier patch authored by David Woodhouse.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; * $Id: xip.h,v 1.2 2004/12/01 15:49:10 nico Exp $&n; */
 macro_line|#ifndef __LINUX_MTD_XIP_H__
 DECL|macro|__LINUX_MTD_XIP_H__
 mdefine_line|#define __LINUX_MTD_XIP_H__
@@ -23,7 +23,15 @@ mdefine_line|#define xip_currtime()&t;&t;(OSCR)
 DECL|macro|xip_elapsed_since
 mdefine_line|#define xip_elapsed_since(x)&t;(signed)((OSCR - (x)) / 4)
 macro_line|#else
-macro_line|#error &quot;missing IRQ and timer primitives for XIP MTD support&quot;
+macro_line|#warning &quot;missing IRQ and timer primitives for XIP MTD support&quot;
+macro_line|#warning &quot;some of the XIP MTD support code will be disabled&quot;
+macro_line|#warning &quot;your system will therefore be unresponsive when writing or erasing flash&quot;
+DECL|macro|xip_irqpending
+mdefine_line|#define xip_irqpending()&t;(0)
+DECL|macro|xip_currtime
+mdefine_line|#define xip_currtime()&t;&t;(0)
+DECL|macro|xip_elapsed_since
+mdefine_line|#define xip_elapsed_since(x)&t;(0)
 macro_line|#endif
 multiline_comment|/*&n; * xip_cpu_idle() is used when waiting for a delay equal or larger than&n; * the system timer tick period.  This should put the CPU into idle mode&n; * to save power and to be woken up only when some interrupts are pending.&n; * As above, this should not rely upon standard kernel code.&n; */
 macro_line|#if defined(CONFIG_CPU_XSCALE)
