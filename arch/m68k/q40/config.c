@@ -815,7 +815,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/* no DMA at all, but ide-scsi requires it.. make sure&n;     * all physical RAM fits into the boundary - otherwise &n;     * allocator may play costly and useless tricks */
+multiline_comment|/* no DMA at all, but ide-scsi requires it.. make sure&n;     * all physical RAM fits into the boundary - otherwise&n;     * allocator may play costly and useless tricks */
 id|mach_max_dma_address
 op_assign
 l_int|1024

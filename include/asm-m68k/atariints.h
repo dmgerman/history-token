@@ -53,9 +53,9 @@ mdefine_line|#define IRQ_MFP_BUSY      (8)
 DECL|macro|IRQ_MFP_DCD
 mdefine_line|#define IRQ_MFP_DCD       (9)
 DECL|macro|IRQ_MFP_CTS
-mdefine_line|#define IRQ_MFP_CTS  &t;  (10)
+mdefine_line|#define IRQ_MFP_CTS&t;  (10)
 DECL|macro|IRQ_MFP_GPU
-mdefine_line|#define IRQ_MFP_GPU &t;  (11)
+mdefine_line|#define IRQ_MFP_GPU&t;  (11)
 DECL|macro|IRQ_MFP_TIMD
 mdefine_line|#define IRQ_MFP_TIMD      (12)
 DECL|macro|IRQ_MFP_TIMC
@@ -94,7 +94,7 @@ mdefine_line|#define IRQ_TT_MFP_IO1       (25)
 DECL|macro|IRQ_TT_MFP_SCC
 mdefine_line|#define IRQ_TT_MFP_SCC&t;     (26)
 DECL|macro|IRQ_TT_MFP_RI
-mdefine_line|#define IRQ_TT_MFP_RI &t;     (27)
+mdefine_line|#define IRQ_TT_MFP_RI&t;     (27)
 DECL|macro|IRQ_TT_MFP_TIMD
 mdefine_line|#define IRQ_TT_MFP_TIMD      (28)
 DECL|macro|IRQ_TT_MFP_TIMC

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&t;Mac bong noise generator. Note - we ought to put a boingy noise&n; *&t;here 8)&n; *&t; &n; *&t;----------------------------------------------------------------------&n; *&t;16.11.98:&n; *&t;rewrote some functions, added support for Enhanced ASC (Quadras)&n; *&t;after the NetBSD asc.c console bell patch by Colin Wood/Frederick Bruck&n; *&t;Juergen Mellinger (juergen.mellinger@t-online.de)&n; */
+multiline_comment|/*&n; *&t;Mac bong noise generator. Note - we ought to put a boingy noise&n; *&t;here 8)&n; *&n; *&t;----------------------------------------------------------------------&n; *&t;16.11.98:&n; *&t;rewrote some functions, added support for Enhanced ASC (Quadras)&n; *&t;after the NetBSD asc.c console bell patch by Colin Wood/Frederick Bruck&n; *&t;Juergen Mellinger (juergen.mellinger@t-online.de)&n; */
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;asm/macintosh.h&gt;
@@ -17,7 +17,7 @@ id|mac_asc_wave_tab
 l_int|0x800
 )braket
 suffix:semicolon
-multiline_comment|/*&n; * Alan&squot;s original sine table; needs interpolating to 0x800 &n; * (hint: interpolate or hardwire [0 -&gt; Pi/2[, it&squot;s symmetric) &n; */
+multiline_comment|/*&n; * Alan&squot;s original sine table; needs interpolating to 0x800&n; * (hint: interpolate or hardwire [0 -&gt; Pi/2[, it&squot;s symmetric)&n; */
 DECL|variable|sine_data
 r_static
 r_const
@@ -92,7 +92,7 @@ op_star
 )paren
 l_int|0x50F14000
 suffix:semicolon
-multiline_comment|/* &n; * sample rate; is this a good default value? &n; */
+multiline_comment|/*&n; * sample rate; is this a good default value?&n; */
 DECL|variable|mac_asc_samplespersec
 r_static
 r_int
@@ -119,7 +119,7 @@ r_int
 r_int
 id|mac_bell_phasepersample
 suffix:semicolon
-multiline_comment|/*&n; * some function protos &n; */
+multiline_comment|/*&n; * some function protos&n; */
 r_static
 r_void
 id|mac_init_asc
@@ -224,7 +224,7 @@ r_void
 r_int
 id|i
 suffix:semicolon
-multiline_comment|/* &n;&t; * do some machine specific initialization &n;&t; * BTW:&n;&t; * the NetBSD Quadra patch identifies the Enhanced Apple Sound Chip via&n;&t; * &t;mac_asc_regs[ 0x800 ] &amp; 0xF0 != 0&n;&t; * this makes no sense here, because we have to set the default sample&n;&t; * rate anyway if we want correct frequencies&n;&t; */
+multiline_comment|/*&n;&t; * do some machine specific initialization&n;&t; * BTW:&n;&t; * the NetBSD Quadra patch identifies the Enhanced Apple Sound Chip via&n;&t; *&t;mac_asc_regs[ 0x800 ] &amp; 0xF0 != 0&n;&t; * this makes no sense here, because we have to set the default sample&n;&t; * rate anyway if we want correct frequencies&n;&t; */
 r_switch
 c_cond
 (paren
@@ -245,7 +245,7 @@ l_int|0x50010000
 suffix:semicolon
 r_break
 suffix:semicolon
-multiline_comment|/* &n;&t;&t;&t; * not sure about how correct this list is &n;&t;&t;&t; * machines with the EASC enhanced apple sound chip &n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * not sure about how correct this list is&n;&t;&t;&t; * machines with the EASC enhanced apple sound chip&n;&t;&t;&t; */
 r_case
 id|MAC_MODEL_Q630
 suffix:colon
@@ -268,7 +268,7 @@ suffix:colon
 r_case
 id|MAC_MODEL_Q840
 suffix:colon
-multiline_comment|/*&n;&t;&t;&t; * The Quadra 660AV and 840AV use the &quot;Singer&quot; custom ASIC for sound I/O.&n;&t;&t;&t; * It appears to be similar to the &quot;AWACS&quot; custom ASIC in the Power Mac &n;&t;&t;&t; * [678]100.  Because Singer and AWACS may have a similar hardware &n;&t;&t;&t; * interface, this would imply that the code in drivers/sound/dmasound.c &n;&t;&t;&t; * for AWACS could be used as a basis for Singer support.  All we have to&n;&t;&t;&t; * do is figure out how to do DMA on the 660AV/840AV through the PSC and &n;&t;&t;&t; * figure out where the Singer hardware sits in memory. (I&squot;d look in the&n;&t;&t;&t; * vicinity of the AWACS location in a Power Mac [678]100 first, or the &n;&t;&t;&t; * current location of the Apple Sound Chip--ASC--in other Macs.)  The &n;&t;&t;&t; * Power Mac [678]100 info can be found in MkLinux Mach kernel sources.&n;&t;&t;&t; *&n;&t;&t;&t; * Quoted from Apple&squot;s Tech Info Library, article number 16405:&n;&t;&t;&t; *   &quot;Among desktop Macintosh computers, only the 660AV, 840AV, and Power&n;&t;&t;&t; *   Macintosh models have 16-bit audio input and output capability&n;&t;&t;&t; *   because of the AT&amp;T DSP3210 hardware circuitry and the 16-bit Singer&n;&t;&t;&t; *   codec circuitry in the AVs.  The Audio Waveform Amplifier and&n;&t;&t;&t; *   Converter (AWAC) chip in the Power Macintosh performs the same &n;&t;&t;&t; *   16-bit I/O functionality.  The PowerBook 500 series computers&n;&t;&t;&t; *   support 16-bit stereo output, but only mono input.&quot;&n;&t;&t;&t; *&n;&t;&t;&t; *   http://til.info.apple.com/techinfo.nsf/artnum/n16405&n;&t;&t;&t; *&n;&t;&t;&t; * --David Kilzer&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * The Quadra 660AV and 840AV use the &quot;Singer&quot; custom ASIC for sound I/O.&n;&t;&t;&t; * It appears to be similar to the &quot;AWACS&quot; custom ASIC in the Power Mac&n;&t;&t;&t; * [678]100.  Because Singer and AWACS may have a similar hardware&n;&t;&t;&t; * interface, this would imply that the code in drivers/sound/dmasound.c&n;&t;&t;&t; * for AWACS could be used as a basis for Singer support.  All we have to&n;&t;&t;&t; * do is figure out how to do DMA on the 660AV/840AV through the PSC and&n;&t;&t;&t; * figure out where the Singer hardware sits in memory. (I&squot;d look in the&n;&t;&t;&t; * vicinity of the AWACS location in a Power Mac [678]100 first, or the&n;&t;&t;&t; * current location of the Apple Sound Chip--ASC--in other Macs.)  The&n;&t;&t;&t; * Power Mac [678]100 info can be found in MkLinux Mach kernel sources.&n;&t;&t;&t; *&n;&t;&t;&t; * Quoted from Apple&squot;s Tech Info Library, article number 16405:&n;&t;&t;&t; *   &quot;Among desktop Macintosh computers, only the 660AV, 840AV, and Power&n;&t;&t;&t; *   Macintosh models have 16-bit audio input and output capability&n;&t;&t;&t; *   because of the AT&amp;T DSP3210 hardware circuitry and the 16-bit Singer&n;&t;&t;&t; *   codec circuitry in the AVs.  The Audio Waveform Amplifier and&n;&t;&t;&t; *   Converter (AWAC) chip in the Power Macintosh performs the same&n;&t;&t;&t; *   16-bit I/O functionality.  The PowerBook 500 series computers&n;&t;&t;&t; *   support 16-bit stereo output, but only mono input.&quot;&n;&t;&t;&t; *&n;&t;&t;&t; *   http://til.info.apple.com/techinfo.nsf/artnum/n16405&n;&t;&t;&t; *&n;&t;&t;&t; * --David Kilzer&n;&t;&t;&t; */
 id|mac_special_bell
 op_assign
 id|mac_av_start_bell
@@ -307,7 +307,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-multiline_comment|/* &n;&t; * init the wave table with a simple triangular wave &n;&t; * A sine wave would sure be nicer here ...&n;&t; */
+multiline_comment|/*&n;&t; * init the wave table with a simple triangular wave&n;&t; * A sine wave would sure be nicer here ...&n;&t; */
 r_for
 c_loop
 (paren
@@ -351,7 +351,7 @@ op_assign
 l_int|1
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Called to make noise; current single entry to the boing driver. &n; * Does the job for simple ASC, calls other routines else.&n; * XXX Fixme:&n; * Should be split into asc_mksound, easc_mksound, av_mksound and &n; * function pointer set in mac_init_asc which would be called at &n; * init time. &n; * _This_ is rather ugly ...&n; */
+multiline_comment|/*&n; * Called to make noise; current single entry to the boing driver.&n; * Does the job for simple ASC, calls other routines else.&n; * XXX Fixme:&n; * Should be split into asc_mksound, easc_mksound, av_mksound and&n; * function pointer set in mac_init_asc which would be called at&n; * init time.&n; * _This_ is rather ugly ...&n; */
 DECL|function|mac_mksound
 r_void
 id|mac_mksound
@@ -772,7 +772,7 @@ id|flags
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * EASC &squot;start/continue whining&squot;; I&squot;m not sure why the above function didn&squot;t&n; * already load the wave table, or at least call this one... &n; * This piece keeps reloading the wave table until done.&n; */
+multiline_comment|/*&n; * EASC &squot;start/continue whining&squot;; I&squot;m not sure why the above function didn&squot;t&n; * already load the wave table, or at least call this one...&n; * This piece keeps reloading the wave table until done.&n; */
 DECL|function|mac_quadra_ring_bell
 r_static
 r_void

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * linux/arch/m68k/mac/debug.c&n; *&n; * Shamelessly stolen (SCC code and general framework) from:&n; *&n; * linux/arch/m68k/atari/debug.c&n; *&n; * Atari debugging and serial console stuff&n; *&n; * Assembled of parts of former atari/config.c 97-12-18 by Roman Hodek&n; *  &n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file COPYING in the main directory of this archive&n; * for more details.&n; */
+multiline_comment|/*&n; * linux/arch/m68k/mac/debug.c&n; *&n; * Shamelessly stolen (SCC code and general framework) from:&n; *&n; * linux/arch/m68k/atari/debug.c&n; *&n; * Atari debugging and serial console stuff&n; *&n; * Assembled of parts of former atari/config.c 97-12-18 by Roman Hodek&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file COPYING in the main directory of this archive&n; * for more details.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -54,7 +54,7 @@ DECL|macro|DEBUG_SCREEN
 macro_line|#undef DEBUG_SCREEN
 DECL|macro|DEBUG_SERIAL
 mdefine_line|#define DEBUG_SERIAL
-multiline_comment|/*&n; * These two auxiliary debug functions should go away ASAP. Only usage: &n; * before the console output is up (after head.S come some other crucial&n; * setup routines :-) it permits writing &squot;data&squot; to the screen as bit patterns&n; * (good luck reading those). Helped to figure that the bootinfo contained&n; * garbage data on the amount and size of memory chunks ...&n; *&n; * The &squot;pos&squot; argument now simply means &squot;linefeed after print&squot; ...&n; */
+multiline_comment|/*&n; * These two auxiliary debug functions should go away ASAP. Only usage:&n; * before the console output is up (after head.S come some other crucial&n; * setup routines :-) it permits writing &squot;data&squot; to the screen as bit patterns&n; * (good luck reading those). Helped to figure that the bootinfo contained&n; * garbage data on the amount and size of memory chunks ...&n; *&n; * The &squot;pos&squot; argument now simply means &squot;linefeed after print&squot; ...&n; */
 macro_line|#ifdef DEBUG_SCREEN
 DECL|variable|peng
 DECL|variable|line

@@ -6,9 +6,9 @@ macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/ide.h&gt;
 macro_line|#include &lt;asm/traps.h&gt;
-macro_line|#include &lt;asm/bootinfo.h&gt; 
-macro_line|#include &lt;asm/macintosh.h&gt; 
-macro_line|#include &lt;asm/macints.h&gt; 
+macro_line|#include &lt;asm/bootinfo.h&gt;
+macro_line|#include &lt;asm/macintosh.h&gt;
+macro_line|#include &lt;asm/macints.h&gt;
 macro_line|#include &lt;asm/mac_baboon.h&gt;
 multiline_comment|/* #define DEBUG_BABOON */
 multiline_comment|/* #define DEBUG_IRQS */

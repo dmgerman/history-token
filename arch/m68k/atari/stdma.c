@@ -157,7 +157,7 @@ id|flags
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Function: void stdma_release( void )&n; *&n; * Purpose: Releases the lock on the ST-DMA chip. &n; *&n; * Inputs: none&n; *&n; * Returns: nothing&n; *&n; */
+multiline_comment|/*&n; * Function: void stdma_release( void )&n; *&n; * Purpose: Releases the lock on the ST-DMA chip.&n; *&n; * Inputs: none&n; *&n; * Returns: nothing&n; *&n; */
 DECL|function|stdma_release
 r_void
 id|stdma_release

@@ -1,4 +1,4 @@
-multiline_comment|/* sun3_pgalloc.h --&n; * reorganization around 2.3.39, routines moved from sun3_pgtable.h &n; *&n; *&n; * 02/27/2002 -- Modified to support &quot;highpte&quot; implementation in 2.5.5 (Sam)&n; *&n; * moved 1/26/2000 Sam Creasey&n; */
+multiline_comment|/* sun3_pgalloc.h --&n; * reorganization around 2.3.39, routines moved from sun3_pgtable.h&n; *&n; *&n; * 02/27/2002 -- Modified to support &quot;highpte&quot; implementation in 2.5.5 (Sam)&n; *&n; * moved 1/26/2000 Sam Creasey&n; */
 macro_line|#ifndef _SUN3_PGALLOC_H
 DECL|macro|_SUN3_PGALLOC_H
 mdefine_line|#define _SUN3_PGALLOC_H
