@@ -1273,13 +1273,19 @@ suffix:semicolon
 r_else
 (brace
 multiline_comment|/*&n;&t;&t;&t; * oops, read error:&n;&t;&t;&t; */
+r_char
+id|b
+(braket
+id|BDEVNAME_SIZE
+)braket
+suffix:semicolon
 id|printk
 c_func
 (paren
 id|KERN_ERR
 l_string|&quot;raid1: %s: rescheduling sector %llu&bslash;n&quot;
 comma
-id|bdev_partition_name
+id|bdevname
 c_func
 (paren
 id|conf-&gt;mirrors
@@ -1288,6 +1294,8 @@ id|mirror
 )braket
 dot
 id|rdev-&gt;bdev
+comma
+id|b
 )paren
 comma
 (paren
@@ -2398,6 +2406,12 @@ op_star
 id|rdev
 )paren
 (brace
+r_char
+id|b
+(braket
+id|BDEVNAME_SIZE
+)braket
+suffix:semicolon
 id|conf_t
 op_star
 id|conf
@@ -2463,10 +2477,12 @@ id|KERN_ALERT
 l_string|&quot;raid1: Disk failure on %s, disabling device. &bslash;n&quot;
 l_string|&quot;&t;Operation continuing on %d devices&bslash;n&quot;
 comma
-id|bdev_partition_name
+id|bdevname
 c_func
 (paren
 id|rdev-&gt;bdev
+comma
+id|b
 )paren
 comma
 id|conf-&gt;working_disks
@@ -2538,6 +2554,12 @@ id|i
 op_increment
 )paren
 (brace
+r_char
+id|b
+(braket
+id|BDEVNAME_SIZE
+)braket
+suffix:semicolon
 id|tmp
 op_assign
 id|conf-&gt;mirrors
@@ -2562,10 +2584,12 @@ comma
 op_logical_neg
 id|tmp-&gt;rdev-&gt;faulty
 comma
-id|bdev_partition_name
+id|bdevname
 c_func
 (paren
 id|tmp-&gt;rdev-&gt;bdev
+comma
+id|b
 )paren
 )paren
 suffix:semicolon
@@ -3338,6 +3362,12 @@ id|r1_bio-&gt;state
 )paren
 (brace
 multiline_comment|/*&n;&t;&t; * There is no point trying a read-for-reconstruct as&n;&t;&t; * reconstruct is about to be aborted&n;&t;&t; */
+r_char
+id|b
+(braket
+id|BDEVNAME_SIZE
+)braket
+suffix:semicolon
 id|printk
 c_func
 (paren
@@ -3345,10 +3375,12 @@ id|KERN_ALERT
 l_string|&quot;raid1: %s: unrecoverable I/O read error&quot;
 l_string|&quot; for block %llu&bslash;n&quot;
 comma
-id|bdev_partition_name
+id|bdevname
 c_func
 (paren
 id|bio-&gt;bi_bdev
+comma
+id|b
 )paren
 comma
 (paren
@@ -3757,6 +3789,12 @@ suffix:semicolon
 suffix:semicolon
 )paren
 (brace
+r_char
+id|b
+(braket
+id|BDEVNAME_SIZE
+)braket
+suffix:semicolon
 id|spin_lock_irqsave
 c_func
 (paren
@@ -3868,10 +3906,12 @@ id|KERN_ALERT
 l_string|&quot;raid1: %s: unrecoverable I/O&quot;
 l_string|&quot; read error for block %llu&bslash;n&quot;
 comma
-id|bdev_partition_name
+id|bdevname
 c_func
 (paren
 id|bio-&gt;bi_bdev
+comma
+id|b
 )paren
 comma
 (paren
@@ -3898,10 +3938,12 @@ id|KERN_ERR
 l_string|&quot;raid1: %s: redirecting sector %llu to&quot;
 l_string|&quot; another mirror&bslash;n&quot;
 comma
-id|bdev_partition_name
+id|bdevname
 c_func
 (paren
 id|rdev-&gt;bdev
+comma
+id|b
 )paren
 comma
 (paren

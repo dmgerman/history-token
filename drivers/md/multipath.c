@@ -458,6 +458,12 @@ suffix:semicolon
 r_else
 (brace
 multiline_comment|/*&n;&t;&t; * oops, IO error:&n;&t;&t; */
+r_char
+id|b
+(braket
+id|BDEVNAME_SIZE
+)braket
+suffix:semicolon
 id|md_error
 (paren
 id|mp_bh-&gt;mddev
@@ -471,10 +477,12 @@ c_func
 id|KERN_ERR
 l_string|&quot;multipath: %s: rescheduling sector %llu&bslash;n&quot;
 comma
-id|bdev_partition_name
+id|bdevname
 c_func
 (paren
 id|rdev-&gt;bdev
+comma
+id|b
 )paren
 comma
 (paren
@@ -826,6 +834,12 @@ op_logical_neg
 id|rdev-&gt;faulty
 )paren
 (brace
+r_char
+id|b
+(braket
+id|BDEVNAME_SIZE
+)braket
+suffix:semicolon
 id|rdev-&gt;in_sync
 op_assign
 l_int|0
@@ -849,9 +863,11 @@ l_string|&quot;multipath: IO failure on %s,&quot;
 l_string|&quot; disabling IO path. &bslash;n&t;Operation continuing&quot;
 l_string|&quot; on %d IO paths.&bslash;n&quot;
 comma
-id|bdev_partition_name
+id|bdevname
 (paren
 id|rdev-&gt;bdev
+comma
+id|b
 )paren
 comma
 id|conf-&gt;working_disks
@@ -925,6 +941,12 @@ id|i
 op_increment
 )paren
 (brace
+r_char
+id|b
+(braket
+id|BDEVNAME_SIZE
+)braket
+suffix:semicolon
 id|tmp
 op_assign
 id|conf-&gt;multipaths
@@ -946,10 +968,12 @@ comma
 op_logical_neg
 id|tmp-&gt;rdev-&gt;faulty
 comma
-id|bdev_partition_name
+id|bdevname
 c_func
 (paren
 id|tmp-&gt;rdev-&gt;bdev
+comma
+id|b
 )paren
 )paren
 suffix:semicolon
@@ -1238,6 +1262,12 @@ suffix:semicolon
 suffix:semicolon
 )paren
 (brace
+r_char
+id|b
+(braket
+id|BDEVNAME_SIZE
+)braket
+suffix:semicolon
 id|spin_lock_irqsave
 c_func
 (paren
@@ -1310,10 +1340,12 @@ id|KERN_ALERT
 l_string|&quot;multipath: %s: unrecoverable IO read&quot;
 l_string|&quot; error for block %llu&bslash;n&quot;
 comma
-id|bdev_partition_name
+id|bdevname
 c_func
 (paren
 id|bio-&gt;bi_bdev
+comma
+id|b
 )paren
 comma
 (paren
@@ -1342,10 +1374,12 @@ id|KERN_ERR
 l_string|&quot;multipath: %s: redirecting sector %llu&quot;
 l_string|&quot; to another IO path&bslash;n&quot;
 comma
-id|bdev_partition_name
+id|bdevname
 c_func
 (paren
 id|bio-&gt;bi_bdev
+comma
+id|b
 )paren
 comma
 (paren

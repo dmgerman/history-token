@@ -983,6 +983,12 @@ id|j
 op_increment
 )paren
 (brace
+r_char
+id|b
+(braket
+id|BDEVNAME_SIZE
+)braket
+suffix:semicolon
 id|seq_printf
 c_func
 (paren
@@ -990,7 +996,7 @@ id|seq
 comma
 l_string|&quot;[%s&quot;
 comma
-id|bdev_partition_name
+id|bdevname
 c_func
 (paren
 id|conf-&gt;hash_table
@@ -999,6 +1005,8 @@ id|j
 )braket
 dot
 id|dev0-&gt;rdev-&gt;bdev
+comma
+id|b
 )paren
 )paren
 suffix:semicolon
@@ -1019,7 +1027,7 @@ id|seq
 comma
 l_string|&quot;/%s] &quot;
 comma
-id|bdev_partition_name
+id|bdevname
 c_func
 (paren
 id|conf-&gt;hash_table
@@ -1028,6 +1036,8 @@ id|j
 )braket
 dot
 id|dev1-&gt;rdev-&gt;bdev
+comma
+id|b
 )paren
 )paren
 suffix:semicolon

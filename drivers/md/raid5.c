@@ -2246,6 +2246,12 @@ op_star
 id|rdev
 )paren
 (brace
+r_char
+id|b
+(braket
+id|BDEVNAME_SIZE
+)braket
+suffix:semicolon
 id|raid5_conf_t
 op_star
 id|conf
@@ -2315,10 +2321,12 @@ id|KERN_ALERT
 l_string|&quot;raid5: Disk failure on %s, disabling device.&quot;
 l_string|&quot; Operation continuing on %d devices&bslash;n&quot;
 comma
-id|bdev_partition_name
+id|bdevname
 c_func
 (paren
 id|rdev-&gt;bdev
+comma
+id|b
 )paren
 comma
 id|conf-&gt;working_disks
@@ -7949,6 +7957,12 @@ c_cond
 id|rdev-&gt;in_sync
 )paren
 (brace
+r_char
+id|b
+(braket
+id|BDEVNAME_SIZE
+)braket
+suffix:semicolon
 id|printk
 c_func
 (paren
@@ -7956,10 +7970,12 @@ id|KERN_INFO
 l_string|&quot;raid5: device %s operational as raid&quot;
 l_string|&quot; disk %d&bslash;n&quot;
 comma
-id|bdev_partition_name
+id|bdevname
 c_func
 (paren
 id|rdev-&gt;bdev
+comma
+id|b
 )paren
 comma
 id|raid_disk
@@ -8816,6 +8832,12 @@ id|i
 op_increment
 )paren
 (brace
+r_char
+id|b
+(braket
+id|BDEVNAME_SIZE
+)braket
+suffix:semicolon
 id|tmp
 op_assign
 id|conf-&gt;disks
@@ -8837,10 +8859,12 @@ comma
 op_logical_neg
 id|tmp-&gt;rdev-&gt;faulty
 comma
-id|bdev_partition_name
+id|bdevname
 c_func
 (paren
 id|tmp-&gt;rdev-&gt;bdev
+comma
+id|b
 )paren
 )paren
 suffix:semicolon

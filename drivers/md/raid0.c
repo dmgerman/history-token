@@ -73,6 +73,12 @@ suffix:semicolon
 r_int
 id|cnt
 suffix:semicolon
+r_char
+id|b
+(braket
+id|BDEVNAME_SIZE
+)braket
+suffix:semicolon
 multiline_comment|/*&n;&t; * The number of &squot;same size groups&squot;&n;&t; */
 id|conf-&gt;nr_strip_zones
 op_assign
@@ -93,10 +99,12 @@ c_func
 (paren
 l_string|&quot;raid0: looking at %s&bslash;n&quot;
 comma
-id|bdev_partition_name
+id|bdevname
 c_func
 (paren
 id|rdev1-&gt;bdev
+comma
+id|b
 )paren
 )paren
 suffix:semicolon
@@ -117,12 +125,14 @@ id|tmp2
 id|printk
 c_func
 (paren
-l_string|&quot;raid0:   comparing %s(%llu) with %s(%llu)&bslash;n&quot;
+l_string|&quot;raid0:   comparing %s(%llu)&quot;
 comma
-id|bdev_partition_name
+id|bdevname
 c_func
 (paren
 id|rdev1-&gt;bdev
+comma
+id|b
 )paren
 comma
 (paren
@@ -131,11 +141,19 @@ r_int
 r_int
 )paren
 id|rdev1-&gt;size
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot; with %s(%llu)&bslash;n&quot;
 comma
-id|bdev_partition_name
+id|bdevname
 c_func
 (paren
 id|rdev2-&gt;bdev
+comma
+id|b
 )paren
 comma
 (paren
@@ -524,6 +542,12 @@ id|j
 op_increment
 )paren
 (brace
+r_char
+id|b
+(braket
+id|BDEVNAME_SIZE
+)braket
+suffix:semicolon
 id|rdev
 op_assign
 id|conf-&gt;strip_zone
@@ -541,10 +565,12 @@ c_func
 (paren
 l_string|&quot;raid0: checking %s ...&quot;
 comma
-id|bdev_partition_name
+id|bdevname
 c_func
 (paren
 id|rdev-&gt;bdev
+comma
+id|b
 )paren
 )paren
 suffix:semicolon
@@ -1754,6 +1780,12 @@ id|k
 comma
 id|h
 suffix:semicolon
+r_char
+id|b
+(braket
+id|BDEVNAME_SIZE
+)braket
+suffix:semicolon
 id|raid0_conf_t
 op_star
 id|conf
@@ -1847,7 +1879,7 @@ id|seq
 comma
 l_string|&quot;%s/&quot;
 comma
-id|bdev_partition_name
+id|bdevname
 c_func
 (paren
 id|conf-&gt;strip_zone
@@ -1861,6 +1893,8 @@ id|k
 )braket
 op_member_access_from_pointer
 id|bdev
+comma
+id|b
 )paren
 )paren
 suffix:semicolon
