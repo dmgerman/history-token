@@ -268,6 +268,24 @@ id|nls
 suffix:semicolon
 )brace
 suffix:semicolon
+r_int
+id|w1_create_master_attributes
+c_func
+(paren
+r_struct
+id|w1_master
+op_star
+)paren
+suffix:semicolon
+r_void
+id|w1_destroy_master_attributes
+c_func
+(paren
+r_struct
+id|w1_master
+op_star
+)paren
+suffix:semicolon
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* __W1_H */
 eof
