@@ -40,33 +40,61 @@ id|hwNextED
 suffix:semicolon
 multiline_comment|/* next ED in list */
 multiline_comment|/* rest are purely for the driver&squot;s use */
+DECL|member|dma
+id|dma_addr_t
+id|dma
+suffix:semicolon
+multiline_comment|/* addr of ED */
 DECL|member|ed_prev
 r_struct
 id|ed
 op_star
 id|ed_prev
 suffix:semicolon
+multiline_comment|/* for non-interrupt EDs */
+DECL|member|type
+id|u8
+id|type
+suffix:semicolon
+multiline_comment|/* PIPE_{BULK,...} */
+DECL|member|interval
+id|u8
+id|interval
+suffix:semicolon
+multiline_comment|/* interrupt, isochronous */
+r_union
+(brace
+DECL|struct|intr_info
+r_struct
+id|intr_info
+(brace
+multiline_comment|/* interrupt */
 DECL|member|int_period
-id|__u8
+id|u8
 id|int_period
 suffix:semicolon
 DECL|member|int_branch
-id|__u8
+id|u8
 id|int_branch
 suffix:semicolon
 DECL|member|int_load
-id|__u8
+id|u8
 id|int_load
 suffix:semicolon
-DECL|member|int_interval
-id|__u8
-id|int_interval
+)brace
+suffix:semicolon
+DECL|member|last_iso
+id|u16
+id|last_iso
+suffix:semicolon
+multiline_comment|/* isochronous */
+)brace
 suffix:semicolon
 DECL|member|state
-id|__u8
+id|u8
 id|state
 suffix:semicolon
-singleline_comment|// ED_{NEW,UNLINK,OPER}
+multiline_comment|/* ED_{NEW,UNLINK,OPER} */
 DECL|macro|ED_NEW
 mdefine_line|#define ED_NEW &t;&t;0x00&t;&t;/* unused, no dummy td */
 DECL|macro|ED_UNLINK
@@ -75,13 +103,10 @@ DECL|macro|ED_OPER
 mdefine_line|#define ED_OPER&t;&t;0x02&t;&t;/* dummy td, _is_ linked to hc */
 DECL|macro|ED_URB_DEL
 mdefine_line|#define ED_URB_DEL  &t;0x08&t;&t;/* for unlinking; masked in */
-DECL|member|type
-id|__u8
-id|type
-suffix:semicolon
-DECL|member|last_iso
-id|__u16
-id|last_iso
+multiline_comment|/* HC may see EDs on rm_list until next frame (frame_no == tick) */
+DECL|member|tick
+id|u16
+id|tick
 suffix:semicolon
 DECL|member|ed_rm_list
 r_struct
@@ -89,11 +114,6 @@ id|ed
 op_star
 id|ed_rm_list
 suffix:semicolon
-DECL|member|dma
-id|dma_addr_t
-id|dma
-suffix:semicolon
-multiline_comment|/* addr of ED */
 )brace
 id|__attribute__
 (paren
@@ -750,9 +770,6 @@ r_struct
 id|ed
 op_star
 id|ed_rm_list
-(braket
-l_int|2
-)braket
 suffix:semicolon
 multiline_comment|/* to be removed */
 DECL|member|ed_bulktail
