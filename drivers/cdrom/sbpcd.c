@@ -29465,7 +29465,7 @@ c_func
 (paren
 id|DBG_INF
 comma
-l_string|&quot;You should read linux/Documentation/cdrom/sbpcd&bslash;n&quot;
+l_string|&quot;You should read Documentation/cdrom/sbpcd&bslash;n&quot;
 )paren
 suffix:semicolon
 id|msg

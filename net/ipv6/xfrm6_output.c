@@ -1,6 +1,7 @@
 multiline_comment|/*&n; * xfrm6_output.c - Common IPsec encapsulation code for IPv6.&n; * Copyright (C) 2002 USAGI/WIDE Project&n; * Copyright (c) 2004 Herbert Xu &lt;herbert@gondor.apana.org.au&gt;&n; * &n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License&n; * as published by the Free Software Foundation; either version&n; * 2 of the License, or (at your option) any later version.&n; */
 macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
+macro_line|#include &lt;linux/icmpv6.h&gt;
 macro_line|#include &lt;net/inet_ecn.h&gt;
 macro_line|#include &lt;net/ipv6.h&gt;
 macro_line|#include &lt;net/xfrm.h&gt;
@@ -208,6 +209,89 @@ op_star
 op_amp
 id|x-&gt;id.daddr
 )paren
+suffix:semicolon
+)brace
+DECL|function|xfrm6_tunnel_check_size
+r_static
+r_int
+id|xfrm6_tunnel_check_size
+c_func
+(paren
+r_struct
+id|sk_buff
+op_star
+id|skb
+)paren
+(brace
+r_int
+id|mtu
+comma
+id|ret
+op_assign
+l_int|0
+suffix:semicolon
+r_struct
+id|dst_entry
+op_star
+id|dst
+op_assign
+id|skb-&gt;dst
+suffix:semicolon
+id|mtu
+op_assign
+id|dst_pmtu
+c_func
+(paren
+id|dst
+)paren
+op_minus
+r_sizeof
+(paren
+r_struct
+id|ipv6hdr
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|mtu
+OL
+id|IPV6_MIN_MTU
+)paren
+id|mtu
+op_assign
+id|IPV6_MIN_MTU
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|skb-&gt;len
+OG
+id|mtu
+)paren
+(brace
+id|icmpv6_send
+c_func
+(paren
+id|skb
+comma
+id|ICMPV6_PKT_TOOBIG
+comma
+l_int|0
+comma
+id|mtu
+comma
+id|skb-&gt;dev
+)paren
+suffix:semicolon
+id|ret
+op_assign
+op_minus
+id|EMSGSIZE
+suffix:semicolon
+)brace
+r_return
+id|ret
 suffix:semicolon
 )brace
 DECL|function|xfrm6_output

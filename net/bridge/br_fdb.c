@@ -286,7 +286,7 @@ id|list_del
 c_func
 (paren
 op_amp
-id|f-&gt;age_list
+id|f-&gt;u.age_list
 )paren
 suffix:semicolon
 id|br_fdb_put
@@ -536,6 +536,12 @@ r_struct
 id|net_bridge_fdb_entry
 op_star
 id|f
+suffix:semicolon
+r_int
+r_int
+id|expires
+suffix:semicolon
+id|f
 op_assign
 id|list_entry
 c_func
@@ -545,11 +551,9 @@ comma
 r_struct
 id|net_bridge_fdb_entry
 comma
-id|age_list
+id|u.age_list
 )paren
 suffix:semicolon
-r_int
-r_int
 id|expires
 op_assign
 id|f-&gt;ageing_timer
@@ -949,7 +953,7 @@ comma
 r_struct
 id|net_bridge_fdb_entry
 comma
-id|rcu
+id|u.rcu
 )paren
 suffix:semicolon
 id|kmem_cache_free
@@ -987,7 +991,7 @@ id|call_rcu
 c_func
 (paren
 op_amp
-id|ent-&gt;rcu
+id|ent-&gt;u.rcu
 comma
 id|fdb_rcu_free
 )paren
@@ -1344,7 +1348,7 @@ id|list_del
 c_func
 (paren
 op_amp
-id|fdb-&gt;age_list
+id|fdb-&gt;u.age_list
 )paren
 suffix:semicolon
 r_goto
@@ -1461,7 +1465,7 @@ id|list_add_tail
 c_func
 (paren
 op_amp
-id|fdb-&gt;age_list
+id|fdb-&gt;u.age_list
 comma
 op_amp
 id|br-&gt;age_list

@@ -788,8 +788,6 @@ c_func
 (paren
 id|rq
 comma
-id|hdr-&gt;dxferp
-comma
 id|bio
 comma
 id|hdr-&gt;dxfer_len

@@ -16,6 +16,7 @@ macro_line|#include &lt;linux/root_dev.h&gt;
 macro_line|#include &lt;linux/serial.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;&t;/* for linux/serial_core.h */
 macro_line|#include &lt;linux/serial_core.h&gt;
+macro_line|#include &lt;linux/initrd.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;

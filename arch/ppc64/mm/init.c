@@ -2677,7 +2677,7 @@ op_assign
 id|KERNELBASE
 suffix:semicolon
 id|addr
-op_le
+OL
 (paren
 r_int
 r_int

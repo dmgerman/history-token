@@ -339,7 +339,8 @@ r_void
 id|out_of_memory
 c_func
 (paren
-r_void
+r_int
+id|gfp_mask
 )paren
 suffix:semicolon
 multiline_comment|/* linux/mm/memory.c */

@@ -488,7 +488,7 @@ mdefine_line|#define isa_eth_io_copy_and_sum(a,b,c,d) &bslash;&n;&t;&t;&t;&t;__r
 DECL|macro|isa_check_signature
 mdefine_line|#define isa_check_signature(io,sig,len)&t;(0)
 macro_line|#endif&t;/* __mem_isa */
-multiline_comment|/*&n; * ioremap and friends.&n; *&n; * ioremap takes a PCI memory address, as specified in&n; * linux/Documentation/IO-mapping.txt.&n; */
+multiline_comment|/*&n; * ioremap and friends.&n; *&n; * ioremap takes a PCI memory address, as specified in&n; * Documentation/IO-mapping.txt.&n; */
 r_extern
 r_void
 op_star

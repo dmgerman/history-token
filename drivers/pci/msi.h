@@ -357,11 +357,18 @@ suffix:colon
 l_int|1
 suffix:semicolon
 multiline_comment|/* mask-pending bit supported ?   */
+DECL|member|state
+id|__u8
+id|state
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* {0: free, 1: busy}&t;&t;  */
 DECL|member|reserved
 id|__u8
 id|reserved
 suffix:colon
-l_int|2
+l_int|1
 suffix:semicolon
 multiline_comment|/* reserved&t;&t;&t;  */
 DECL|member|entry_nr
