@@ -935,9 +935,9 @@ op_star
 id|ppos
 suffix:semicolon
 id|ssize_t
-id|read
+id|low_count
 comma
-id|virtr
+id|read
 comma
 id|sz
 suffix:semicolon
@@ -947,10 +947,6 @@ id|kbuf
 suffix:semicolon
 multiline_comment|/* k-addr because vread() takes vmlist_lock rwlock */
 id|read
-op_assign
-l_int|0
-suffix:semicolon
-id|virtr
 op_assign
 l_int|0
 suffix:semicolon
@@ -966,7 +962,7 @@ r_int
 id|high_memory
 )paren
 (brace
-id|read
+id|low_count
 op_assign
 id|count
 suffix:semicolon
@@ -983,7 +979,7 @@ id|high_memory
 op_minus
 id|p
 )paren
-id|read
+id|low_count
 op_assign
 (paren
 r_int
@@ -1015,11 +1011,11 @@ c_cond
 (paren
 id|tmp
 OG
-id|read
+id|low_count
 )paren
 id|tmp
 op_assign
-id|read
+id|low_count
 suffix:semicolon
 r_if
 c_cond
@@ -1045,6 +1041,10 @@ op_add_assign
 id|tmp
 suffix:semicolon
 id|read
+op_add_assign
+id|tmp
+suffix:semicolon
+id|low_count
 op_sub_assign
 id|tmp
 suffix:semicolon
@@ -1057,7 +1057,7 @@ macro_line|#endif
 r_while
 c_loop
 (paren
-id|read
+id|low_count
 OG
 l_int|0
 )paren
@@ -1101,7 +1101,7 @@ r_int
 comma
 id|sz
 comma
-id|count
+id|low_count
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t;&t;&t; * On ia64 if a page has been mapped somewhere as&n;&t;&t;&t; * uncached, then it must also be accessed uncached&n;&t;&t;&t; * by the kernel or data corruption may occur&n;&t;&t;&t; */
@@ -1143,6 +1143,10 @@ op_add_assign
 id|sz
 suffix:semicolon
 id|read
+op_add_assign
+id|sz
+suffix:semicolon
+id|low_count
 op_sub_assign
 id|sz
 suffix:semicolon
@@ -1267,7 +1271,7 @@ id|buf
 op_add_assign
 id|len
 suffix:semicolon
-id|virtr
+id|read
 op_add_assign
 id|len
 suffix:semicolon
@@ -1293,8 +1297,6 @@ op_assign
 id|p
 suffix:semicolon
 r_return
-id|virtr
-op_plus
 id|read
 suffix:semicolon
 )brace
