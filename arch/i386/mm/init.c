@@ -1520,20 +1520,6 @@ c_func
 r_void
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|cpu_has_pse
-)paren
-(brace
-multiline_comment|/* Ok, all PSE-capable CPUs are definitely handling the WP bit right. */
-id|boot_cpu_data.wp_works_ok
-op_assign
-l_int|1
-suffix:semicolon
-r_return
-suffix:semicolon
-)brace
 id|printk
 c_func
 (paren
