@@ -1121,7 +1121,7 @@ id|conf-&gt;mirrors
 id|mirror
 )braket
 dot
-id|rdev-&gt;bdev
+id|rdev
 )paren
 suffix:semicolon
 r_else
@@ -2301,10 +2301,9 @@ id|mddev_t
 op_star
 id|mddev
 comma
-r_struct
-id|block_device
+id|mdk_rdev_t
 op_star
-id|bdev
+id|rdev
 )paren
 (brace
 id|conf_t
@@ -2361,9 +2360,9 @@ id|mirrors
 id|i
 )braket
 dot
-id|rdev-&gt;bdev
+id|rdev
 op_eq
-id|bdev
+id|rdev
 )paren
 r_break
 suffix:semicolon
@@ -3329,7 +3328,7 @@ id|conf-&gt;mirrors
 id|r1_bio-&gt;read_disk
 )braket
 dot
-id|rdev-&gt;bdev
+id|rdev
 )paren
 suffix:semicolon
 r_else
@@ -3457,7 +3456,7 @@ id|conf-&gt;mirrors
 id|mirror
 )braket
 dot
-id|rdev-&gt;bdev
+id|rdev
 )paren
 suffix:semicolon
 id|update_head_pos
@@ -3823,7 +3822,12 @@ suffix:semicolon
 id|md_sync_acct
 c_func
 (paren
-id|mbio-&gt;bi_bdev
+id|conf-&gt;mirrors
+(braket
+id|i
+)braket
+dot
+id|rdev
 comma
 id|mbio-&gt;bi_size
 op_rshift
@@ -4485,7 +4489,7 @@ suffix:semicolon
 id|md_sync_acct
 c_func
 (paren
-id|read_bio-&gt;bi_bdev
+id|mirror-&gt;rdev
 comma
 id|nr_sectors
 )paren

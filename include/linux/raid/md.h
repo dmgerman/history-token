@@ -183,10 +183,9 @@ r_void
 id|md_sync_acct
 c_func
 (paren
-r_struct
-id|block_device
+id|mdk_rdev_t
 op_star
-id|bdev
+id|rdev
 comma
 r_int
 r_int
@@ -201,10 +200,9 @@ id|mddev_t
 op_star
 id|mddev
 comma
-r_struct
-id|block_device
+id|mdk_rdev_t
 op_star
-id|bdev
+id|rdev
 )paren
 suffix:semicolon
 r_extern

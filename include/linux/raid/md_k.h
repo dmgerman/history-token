@@ -783,10 +783,9 @@ id|mddev_t
 op_star
 id|mddev
 comma
-r_struct
-id|block_device
+id|mdk_rdev_t
 op_star
-id|bdev
+id|rdev
 )paren
 suffix:semicolon
 DECL|member|hot_add_disk

@@ -1780,7 +1780,7 @@ id|conf-&gt;disks
 id|i
 )braket
 dot
-id|rdev-&gt;bdev
+id|rdev
 )paren
 suffix:semicolon
 id|clear_bit
@@ -2000,7 +2000,7 @@ id|conf-&gt;disks
 id|i
 )braket
 dot
-id|rdev-&gt;bdev
+id|rdev
 )paren
 suffix:semicolon
 id|clear_bit
@@ -2151,10 +2151,9 @@ id|mddev_t
 op_star
 id|mddev
 comma
-r_struct
-id|block_device
+id|mdk_rdev_t
 op_star
-id|bdev
+id|rdev
 )paren
 (brace
 id|raid5_conf_t
@@ -2208,9 +2207,9 @@ op_increment
 r_if
 c_cond
 (paren
-id|disk-&gt;rdev-&gt;bdev
+id|disk-&gt;rdev
 op_ne
-id|bdev
+id|rdev
 )paren
 r_continue
 suffix:semicolon
@@ -2246,7 +2245,7 @@ comma
 id|bdev_partition_name
 c_func
 (paren
-id|bdev
+id|rdev-&gt;bdev
 )paren
 comma
 id|conf-&gt;working_disks
@@ -2271,9 +2270,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|disk-&gt;rdev-&gt;bdev
+id|disk-&gt;rdev
 op_eq
-id|bdev
+id|rdev
 )paren
 (brace
 id|printk
@@ -2283,7 +2282,7 @@ l_string|&quot;raid5: Disk failure on spare %s&bslash;n&quot;
 comma
 id|bdev_partition_name
 (paren
-id|bdev
+id|rdev-&gt;bdev
 )paren
 )paren
 suffix:semicolon
@@ -5183,7 +5182,7 @@ id|conf-&gt;disks
 id|i
 )braket
 dot
-id|rdev-&gt;bdev
+id|rdev
 comma
 id|STRIPE_SECTORS
 )paren
@@ -6103,7 +6102,7 @@ id|conf-&gt;disks
 id|failed_num
 )braket
 dot
-id|rdev-&gt;bdev
+id|rdev
 comma
 id|STRIPE_SECTORS
 )paren
@@ -6121,7 +6120,7 @@ id|conf-&gt;spare
 id|md_sync_acct
 c_func
 (paren
-id|spare-&gt;rdev-&gt;bdev
+id|spare-&gt;rdev
 comma
 id|STRIPE_SECTORS
 )paren
