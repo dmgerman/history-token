@@ -607,13 +607,6 @@ r_int
 id|size
 )paren
 suffix:semicolon
-r_void
-id|wakeup_bdflush
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 r_struct
 id|buffer_head
 op_star

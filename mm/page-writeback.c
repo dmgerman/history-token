@@ -474,13 +474,22 @@ c_func
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Start heavy writeback of everything.&n; */
+multiline_comment|/*&n; * Start writeback of `nr_pages&squot; pages.  If `nr_pages&squot; is zero, write back&n; * the whole world.  Returns 0 if a pdflush thread was dispatched.  Returns&n; * -1 if all pdflush threads were busy.&n; */
 DECL|function|wakeup_bdflush
-r_void
+r_int
 id|wakeup_bdflush
 c_func
 (paren
-r_void
+r_int
+id|nr_pages
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|nr_pages
+op_eq
+l_int|0
 )paren
 (brace
 r_struct
@@ -494,12 +503,18 @@ op_amp
 id|ps
 )paren
 suffix:semicolon
+id|nr_pages
+op_assign
+id|ps.nr_dirty
+suffix:semicolon
+)brace
+r_return
 id|pdflush_operation
 c_func
 (paren
 id|background_writeout
 comma
-id|ps.nr_dirty
+id|nr_pages
 )paren
 suffix:semicolon
 )brace

@@ -15,7 +15,8 @@ macro_line|#include &lt;linux/quotaops.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/suspend.h&gt;
-macro_line|#include &lt;linux/buffer_head.h&gt;&t;&t;/* for fsync_bdev()/wakeup_bdflush() */
+macro_line|#include &lt;linux/writeback.h&gt;
+macro_line|#include &lt;linux/buffer_head.h&gt;&t;&t;/* for fsync_bdev() */
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;asm/ptrace.h&gt;
 r_extern
@@ -823,6 +824,7 @@ suffix:semicolon
 id|wakeup_bdflush
 c_func
 (paren
+l_int|0
 )paren
 suffix:semicolon
 )brace
@@ -874,6 +876,7 @@ suffix:semicolon
 id|wakeup_bdflush
 c_func
 (paren
+l_int|0
 )paren
 suffix:semicolon
 )brace

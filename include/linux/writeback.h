@@ -175,6 +175,14 @@ id|inode
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * mm/page-writeback.c&n; */
+r_int
+id|wakeup_bdflush
+c_func
+(paren
+r_int
+id|nr_pages
+)paren
+suffix:semicolon
 multiline_comment|/* These 5 are exported to sysctl. */
 r_extern
 r_int
