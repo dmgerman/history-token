@@ -2933,7 +2933,7 @@ multiline_comment|/* send it to out endpoint */
 id|US_DEBUGP
 c_func
 (paren
-l_string|&quot;Bulk command S 0x%x T 0x%x Trg %d LUN %d L %d F %d CL %d&bslash;n&quot;
+l_string|&quot;Bulk Command S 0x%x T 0x%x L %d F %d Trg %d LUN %d CL %d&bslash;n&quot;
 comma
 id|le32_to_cpu
 c_func
@@ -2942,6 +2942,14 @@ id|bcb-&gt;Signature
 )paren
 comma
 id|bcb-&gt;Tag
+comma
+id|le32_to_cpu
+c_func
+(paren
+id|bcb-&gt;DataTransferLength
+)paren
+comma
+id|bcb-&gt;Flags
 comma
 (paren
 id|bcb-&gt;Lun
@@ -2954,14 +2962,6 @@ id|bcb-&gt;Lun
 op_amp
 l_int|0x0F
 )paren
-comma
-id|le32_to_cpu
-c_func
-(paren
-id|bcb-&gt;DataTransferLength
-)paren
-comma
-id|bcb-&gt;Flags
 comma
 id|bcb-&gt;Length
 )paren
@@ -3151,7 +3151,7 @@ multiline_comment|/* check bulk status */
 id|US_DEBUGP
 c_func
 (paren
-l_string|&quot;Bulk status Sig 0x%x T 0x%x R %d Stat 0x%x&bslash;n&quot;
+l_string|&quot;Bulk Status S 0x%x T 0x%x R %d Stat 0x%x&bslash;n&quot;
 comma
 id|le32_to_cpu
 c_func

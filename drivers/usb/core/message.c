@@ -808,7 +808,7 @@ id|io-&gt;status
 op_assign
 id|urb-&gt;status
 suffix:semicolon
-multiline_comment|/* the previous urbs, and this one, completed already.&n;&t;&t; * unlink the later ones so they won&squot;t rx/tx bad data,&n;&t;&t; *&n;&t;&t; * FIXME don&squot;t bother unlinking urbs that haven&squot;t yet been&n;&t;&t; * submitted; those non-error cases shouldn&squot;t be syslogged&n;&t;&t; */
+multiline_comment|/* the previous urbs, and this one, completed already.&n;&t;&t; * unlink pending urbs so they won&squot;t rx/tx bad data.&n;&t;&t; */
 r_for
 c_loop
 (paren
@@ -831,6 +831,17 @@ op_increment
 r_if
 c_cond
 (paren
+op_logical_neg
+id|io-&gt;urbs
+(braket
+id|i
+)braket
+)paren
+r_continue
+suffix:semicolon
+r_if
+c_cond
+(paren
 id|found
 )paren
 (brace
@@ -848,15 +859,23 @@ r_if
 c_cond
 (paren
 id|status
+op_ne
+op_minus
+id|EINPROGRESS
 op_logical_and
 id|status
 op_ne
 op_minus
-id|EINPROGRESS
+id|EBUSY
 )paren
-id|err
+id|dev_err
 (paren
-l_string|&quot;sg_complete, unlink --&gt; %d&quot;
+op_amp
+id|io-&gt;dev-&gt;dev
+comma
+l_string|&quot;%s, unlink --&gt; %d&bslash;n&quot;
+comma
+id|__FUNCTION__
 comma
 id|status
 )paren
@@ -879,6 +898,10 @@ l_int|1
 suffix:semicolon
 )brace
 )brace
+id|urb-&gt;dev
+op_assign
+l_int|0
+suffix:semicolon
 multiline_comment|/* on the last completion, signal usb_sg_wait() */
 id|io-&gt;bytes
 op_add_assign
@@ -1153,7 +1176,7 @@ id|i
 op_member_access_from_pointer
 id|dev
 op_assign
-id|dev
+l_int|0
 suffix:semicolon
 id|io-&gt;urbs
 (braket
@@ -1421,6 +1444,15 @@ op_increment
 r_int
 id|retval
 suffix:semicolon
+id|io-&gt;urbs
+(braket
+id|i
+)braket
+op_member_access_from_pointer
+id|dev
+op_assign
+id|io-&gt;dev
+suffix:semicolon
 id|retval
 op_assign
 id|usb_submit_urb
@@ -1462,6 +1494,15 @@ r_case
 op_minus
 id|ENOMEM
 suffix:colon
+id|io-&gt;urbs
+(braket
+id|i
+)braket
+op_member_access_from_pointer
+id|dev
+op_assign
+l_int|0
+suffix:semicolon
 id|retval
 op_assign
 l_int|0
@@ -1469,7 +1510,6 @@ suffix:semicolon
 id|i
 op_decrement
 suffix:semicolon
-singleline_comment|// FIXME:  should it usb_sg_cancel() on INTERRUPT?
 id|yield
 (paren
 )paren
@@ -1494,13 +1534,27 @@ id|io-&gt;urbs
 id|i
 )braket
 op_member_access_from_pointer
+id|dev
+op_assign
+l_int|0
+suffix:semicolon
+id|io-&gt;urbs
+(braket
+id|i
+)braket
+op_member_access_from_pointer
 id|status
 op_assign
 id|retval
 suffix:semicolon
-id|dbg
+id|dev_dbg
 (paren
-l_string|&quot;usb_sg_msg, submit --&gt; %d&quot;
+op_amp
+id|io-&gt;dev-&gt;dev
+comma
+l_string|&quot;%s, submit --&gt; %d&bslash;n&quot;
+comma
+id|__FUNCTION__
 comma
 id|retval
 )paren
@@ -1639,20 +1693,27 @@ r_if
 c_cond
 (paren
 id|retval
+op_ne
+op_minus
+id|EINPROGRESS
 op_logical_and
 id|retval
 op_ne
 op_minus
-id|EINPROGRESS
+id|EBUSY
 )paren
-id|warn
+id|dev_warn
 (paren
-l_string|&quot;usb_sg_cancel, unlink --&gt; %d&quot;
+op_amp
+id|io-&gt;dev-&gt;dev
+comma
+l_string|&quot;%s, unlink --&gt; %d&bslash;n&quot;
+comma
+id|__FUNCTION__
 comma
 id|retval
 )paren
 suffix:semicolon
-singleline_comment|// FIXME don&squot;t warn on &quot;not yet submitted&quot; error
 )brace
 )brace
 id|spin_unlock_irqrestore

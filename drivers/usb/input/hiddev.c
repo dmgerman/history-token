@@ -3506,15 +3506,13 @@ c_func
 l_string|&quot;usb/hid&quot;
 )paren
 suffix:semicolon
+r_return
 id|usb_register
 c_func
 (paren
 op_amp
 id|hiddev_driver
 )paren
-suffix:semicolon
-r_return
-l_int|0
 suffix:semicolon
 )brace
 DECL|function|hiddev_exit

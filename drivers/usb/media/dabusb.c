@@ -3,7 +3,6 @@ multiline_comment|/*&n; *      dabusb.c  --  dab usb driver.&n; *&n; *      Copy
 multiline_comment|/*****************************************************************************/
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/socket.h&gt;
-macro_line|#include &lt;linux/miscdevice.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/vmalloc.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
@@ -3496,6 +3495,9 @@ r_void
 )paren
 (brace
 r_int
+id|retval
+suffix:semicolon
+r_int
 id|u
 suffix:semicolon
 multiline_comment|/* initialize struct */
@@ -3581,19 +3583,22 @@ id|s-&gt;rec_buff_list
 suffix:semicolon
 )brace
 multiline_comment|/* register misc device */
-r_if
-c_cond
-(paren
+id|retval
+op_assign
 id|usb_register
 c_func
 (paren
 op_amp
 id|dabusb_driver
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|retval
 )paren
-r_return
-op_minus
-l_int|1
+r_goto
+id|out
 suffix:semicolon
 id|dbg
 c_func
@@ -3609,8 +3614,10 @@ l_string|&quot;:&quot;
 id|DRIVER_DESC
 )paren
 suffix:semicolon
+id|out
+suffix:colon
 r_return
-l_int|0
+id|retval
 suffix:semicolon
 )brace
 DECL|function|dabusb_cleanup

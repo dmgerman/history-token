@@ -816,6 +816,8 @@ DECL|macro|SET_NAK_OUT_PACKETS
 mdefine_line|#define     SET_NAK_OUT_PACKETS                                 15
 DECL|macro|SET_EP_HIDE_STATUS_PHASE
 mdefine_line|#define     SET_EP_HIDE_STATUS_PHASE                            14
+DECL|macro|SET_EP_FORCE_CRC_ERROR
+mdefine_line|#define     SET_EP_FORCE_CRC_ERROR                              13
 DECL|macro|SET_INTERRUPT_MODE
 mdefine_line|#define     SET_INTERRUPT_MODE                                  12
 DECL|macro|SET_CONTROL_STATUS_PHASE_HANDSHAKE
@@ -830,6 +832,8 @@ DECL|macro|CLEAR_NAK_OUT_PACKETS
 mdefine_line|#define     CLEAR_NAK_OUT_PACKETS                               7
 DECL|macro|CLEAR_EP_HIDE_STATUS_PHASE
 mdefine_line|#define     CLEAR_EP_HIDE_STATUS_PHASE                          6
+DECL|macro|CLEAR_EP_FORCE_CRC_ERROR
+mdefine_line|#define     CLEAR_EP_FORCE_CRC_ERROR                            5
 DECL|macro|CLEAR_INTERRUPT_MODE
 mdefine_line|#define     CLEAR_INTERRUPT_MODE                                4
 DECL|macro|CLEAR_CONTROL_STATUS_PHASE_HANDSHAKE
@@ -1022,6 +1026,10 @@ DECL|macro|REG_CHIPREV
 mdefine_line|#define REG_CHIPREV&t;&t;0x03&t;/* in bcd */
 DECL|macro|REG_HS_NAK_RATE
 mdefine_line|#define&t;REG_HS_NAK_RATE&t;&t;0x0a&t;/* NAK per N uframes */
+DECL|macro|CHIPREV_1
+mdefine_line|#define&t;CHIPREV_1&t;0x0100
+DECL|macro|CHIPREV_1A
+mdefine_line|#define&t;CHIPREV_1A&t;0x0110
 macro_line|#ifdef&t;__KERNEL__
 multiline_comment|/* ep a-f highspeed and fullspeed maxpacket, addresses&n; * computed from ep-&gt;num&n; */
 DECL|macro|REG_EP_MAXPKT
@@ -1186,77 +1194,6 @@ suffix:semicolon
 id|ep-&gt;stopped
 op_assign
 l_int|1
-suffix:semicolon
-)brace
-DECL|function|set_halt
-r_static
-r_inline
-r_void
-id|set_halt
-(paren
-r_struct
-id|net2280_ep
-op_star
-id|ep
-)paren
-(brace
-multiline_comment|/* ep0 and bulk/intr endpoints */
-id|writel
-(paren
-(paren
-l_int|1
-op_lshift
-id|CLEAR_CONTROL_STATUS_PHASE_HANDSHAKE
-)paren
-multiline_comment|/* set NAK_OUT for erratum 0114 */
-op_or
-(paren
-l_int|1
-op_lshift
-id|SET_NAK_OUT_PACKETS
-)paren
-op_or
-(paren
-l_int|1
-op_lshift
-id|SET_ENDPOINT_HALT
-)paren
-comma
-op_amp
-id|ep-&gt;regs-&gt;ep_rsp
-)paren
-suffix:semicolon
-)brace
-DECL|function|clear_halt
-r_static
-r_inline
-r_void
-id|clear_halt
-(paren
-r_struct
-id|net2280_ep
-op_star
-id|ep
-)paren
-(brace
-multiline_comment|/* bulk/intr endpoints */
-id|writel
-(paren
-(paren
-l_int|1
-op_lshift
-id|CLEAR_ENDPOINT_HALT
-)paren
-op_or
-(paren
-l_int|1
-op_lshift
-id|CLEAR_ENDPOINT_TOGGLE
-)paren
-comma
-op_amp
-id|ep-&gt;regs-&gt;ep_rsp
-)paren
 suffix:semicolon
 )brace
 multiline_comment|/* count (&lt;= 4) bytes in the next fifo write will be valid */
@@ -1442,6 +1379,92 @@ suffix:semicolon
 singleline_comment|// statistics...
 )brace
 suffix:semicolon
+DECL|function|set_halt
+r_static
+r_inline
+r_void
+id|set_halt
+(paren
+r_struct
+id|net2280_ep
+op_star
+id|ep
+)paren
+(brace
+multiline_comment|/* ep0 and bulk/intr endpoints */
+id|writel
+(paren
+(paren
+l_int|1
+op_lshift
+id|CLEAR_CONTROL_STATUS_PHASE_HANDSHAKE
+)paren
+multiline_comment|/* set NAK_OUT for erratum 0114 */
+op_or
+(paren
+(paren
+id|ep-&gt;dev-&gt;chiprev
+op_eq
+id|CHIPREV_1
+)paren
+op_lshift
+id|SET_NAK_OUT_PACKETS
+)paren
+op_or
+(paren
+l_int|1
+op_lshift
+id|SET_ENDPOINT_HALT
+)paren
+comma
+op_amp
+id|ep-&gt;regs-&gt;ep_rsp
+)paren
+suffix:semicolon
+)brace
+DECL|function|clear_halt
+r_static
+r_inline
+r_void
+id|clear_halt
+(paren
+r_struct
+id|net2280_ep
+op_star
+id|ep
+)paren
+(brace
+multiline_comment|/* ep0 and bulk/intr endpoints */
+id|writel
+(paren
+(paren
+l_int|1
+op_lshift
+id|CLEAR_ENDPOINT_HALT
+)paren
+op_or
+(paren
+l_int|1
+op_lshift
+id|CLEAR_ENDPOINT_TOGGLE
+)paren
+multiline_comment|/* unless the gadget driver left a short packet in the&n;&t;&t;     * fifo, this reverses the erratum 0114 workaround.&n;&t;&t;     */
+op_or
+(paren
+(paren
+id|ep-&gt;dev-&gt;chiprev
+op_eq
+id|CHIPREV_1
+)paren
+op_lshift
+id|CLEAR_NAK_OUT_PACKETS
+)paren
+comma
+op_amp
+id|ep-&gt;regs-&gt;ep_rsp
+)paren
+suffix:semicolon
+)brace
 macro_line|#ifdef USE_RDK_LEDS
 DECL|function|net2280_led_init
 r_static

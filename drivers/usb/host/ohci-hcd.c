@@ -1540,7 +1540,7 @@ id|bus
 suffix:semicolon
 id|ohci-&gt;hcd.state
 op_assign
-id|USB_STATE_READY
+id|USB_STATE_RUNNING
 suffix:semicolon
 r_if
 c_cond

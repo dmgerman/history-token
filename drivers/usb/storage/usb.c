@@ -3517,6 +3517,7 @@ suffix:semicolon
 )brace
 multiline_comment|/***********************************************************************&n; * Initialization and registration&n; ***********************************************************************/
 DECL|function|usb_stor_init
+r_static
 r_int
 id|__init
 id|usb_stor_init
@@ -3525,6 +3526,9 @@ c_func
 r_void
 )paren
 (brace
+r_int
+id|retval
+suffix:semicolon
 id|printk
 c_func
 (paren
@@ -3532,22 +3536,23 @@ id|KERN_INFO
 l_string|&quot;Initializing USB Mass Storage driver...&bslash;n&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* register the driver, return -1 if error */
-r_if
-c_cond
-(paren
+multiline_comment|/* register the driver, return usb_register return code if error */
+id|retval
+op_assign
 id|usb_register
 c_func
 (paren
 op_amp
 id|usb_storage_driver
 )paren
-OL
-l_int|0
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|retval
 )paren
-r_return
-op_minus
-l_int|1
+r_goto
+id|out
 suffix:semicolon
 multiline_comment|/* we&squot;re all set */
 id|printk
@@ -3557,11 +3562,14 @@ id|KERN_INFO
 l_string|&quot;USB Mass Storage support registered.&bslash;n&quot;
 )paren
 suffix:semicolon
+id|out
+suffix:colon
 r_return
-l_int|0
+id|retval
 suffix:semicolon
 )brace
 DECL|function|usb_stor_exit
+r_static
 r_void
 id|__exit
 id|usb_stor_exit
