@@ -1430,7 +1430,6 @@ op_logical_neg
 (paren
 id|base_ni-&gt;nr_extents
 op_amp
-op_complement
 l_int|3
 )paren
 )paren
