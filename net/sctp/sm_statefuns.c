@@ -471,7 +471,11 @@ id|new_asoc
 r_goto
 id|nomem
 suffix:semicolon
-multiline_comment|/* FIXME: sctp_process_init can fail, but there is no&n;&t; * status nor handling.&n;&t; */
+multiline_comment|/* The call, sctp_process_init(), can fail on memory allocation.  */
+r_if
+c_cond
+(paren
+op_logical_neg
 id|sctp_process_init
 c_func
 (paren
@@ -493,6 +497,9 @@ id|chunk-&gt;chunk_hdr
 comma
 id|GFP_ATOMIC
 )paren
+)paren
+r_goto
+id|nomem_init
 suffix:semicolon
 id|sctp_add_cmd_sf
 c_func
@@ -635,12 +642,6 @@ id|SCTP_DISPOSITION_DELETE_TCB
 suffix:semicolon
 id|nomem_ack
 suffix:colon
-id|sctp_association_free
-c_func
-(paren
-id|new_asoc
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -650,6 +651,14 @@ id|sctp_free_chunk
 c_func
 (paren
 id|err_chunk
+)paren
+suffix:semicolon
+id|nomem_init
+suffix:colon
+id|sctp_association_free
+c_func
+(paren
+id|new_asoc
 )paren
 suffix:semicolon
 id|nomem
@@ -1408,6 +1417,10 @@ id|chunk-&gt;subh.cookie_hdr-&gt;c.peer_init
 l_int|0
 )braket
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
 id|sctp_process_init
 c_func
 (paren
@@ -1422,6 +1435,9 @@ id|peer_init
 comma
 id|GFP_ATOMIC
 )paren
+)paren
+r_goto
+id|nomem_init
 suffix:semicolon
 id|repl
 op_assign
@@ -1512,6 +1528,8 @@ id|repl
 )paren
 suffix:semicolon
 id|nomem_repl
+suffix:colon
+id|nomem_init
 suffix:colon
 id|sctp_association_free
 c_func
@@ -3098,6 +3116,10 @@ r_goto
 id|nomem
 suffix:semicolon
 multiline_comment|/* In the outbound INIT ACK the endpoint MUST copy its current&n;&t; * Verification Tag and Peers Verification tag into a reserved&n;&t; * place (local tie-tag and per tie-tag) within the state cookie.&n;&t; */
+r_if
+c_cond
+(paren
+op_logical_neg
 id|sctp_process_init
 c_func
 (paren
@@ -3119,7 +3141,16 @@ id|chunk-&gt;chunk_hdr
 comma
 id|GFP_ATOMIC
 )paren
+)paren
+(brace
+id|retval
+op_assign
+id|SCTP_DISPOSITION_NOMEM
 suffix:semicolon
+r_goto
+id|nomem_init
+suffix:semicolon
+)brace
 multiline_comment|/* Make sure no new addresses are being added during the&n;&t; * restart.   Do not do this check for COOKIE-WAIT state,&n;&t; * since there are no peer addresses to check against.&n;&t; * Upon return an ABORT will have been sent if needed.&n;&t; */
 r_if
 c_cond
@@ -3330,6 +3361,8 @@ suffix:semicolon
 r_goto
 id|cleanup
 suffix:semicolon
+id|nomem_init
+suffix:colon
 id|cleanup_asoc
 suffix:colon
 id|sctp_association_free
@@ -3485,6 +3518,10 @@ id|chunk-&gt;subh.cookie_hdr-&gt;c.peer_init
 l_int|0
 )braket
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
 id|sctp_process_init
 c_func
 (paren
@@ -3502,6 +3539,9 @@ id|peer_init
 comma
 id|GFP_ATOMIC
 )paren
+)paren
+r_goto
+id|nomem
 suffix:semicolon
 multiline_comment|/* Make sure no new addresses are being added during the&n;&t; * restart.  Though this is a pretty complicated attack&n;&t; * since you&squot;d have to get inside the cookie.&n;&t; */
 r_if
@@ -3521,12 +3561,6 @@ id|commands
 )paren
 )paren
 (brace
-id|printk
-c_func
-(paren
-l_string|&quot;cookie echo check&bslash;n&quot;
-)paren
-suffix:semicolon
 r_return
 id|SCTP_DISPOSITION_CONSUME
 suffix:semicolon
@@ -3706,6 +3740,10 @@ id|chunk-&gt;subh.cookie_hdr-&gt;c.peer_init
 l_int|0
 )braket
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
 id|sctp_process_init
 c_func
 (paren
@@ -3723,6 +3761,9 @@ id|peer_init
 comma
 id|GFP_ATOMIC
 )paren
+)paren
+r_goto
+id|nomem
 suffix:semicolon
 multiline_comment|/* Update the content of current association.  */
 id|sctp_add_cmd_sf
@@ -9243,7 +9284,7 @@ id|commands
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* &n; * Process the REQUESTHEARTBEAT primitive&n; *&n; * 10.1 ULP-to-SCTP&n; * J) Request Heartbeat&n; *&n; * Format: REQUESTHEARTBEAT(association id, destination transport address)&n; *&n; * -&gt; result&n; *&n; * Instructs the local endpoint to perform a HeartBeat on the specified&n; * destination transport address of the given association. The returned&n; * result should indicate whether the transmission of the HEARTBEAT&n; * chunk to the destination address is successful.&n; *&n; * Mandatory attributes:&n; *&n; * o association id - local handle to the SCTP association&n; *&n; * o destination transport address - the transport address of the&n; *   asociation on which a heartbeat should be issued.&n; */
+multiline_comment|/*&n; * Process the REQUESTHEARTBEAT primitive&n; *&n; * 10.1 ULP-to-SCTP&n; * J) Request Heartbeat&n; *&n; * Format: REQUESTHEARTBEAT(association id, destination transport address)&n; *&n; * -&gt; result&n; *&n; * Instructs the local endpoint to perform a HeartBeat on the specified&n; * destination transport address of the given association. The returned&n; * result should indicate whether the transmission of the HEARTBEAT&n; * chunk to the destination address is successful.&n; *&n; * Mandatory attributes:&n; *&n; * o association id - local handle to the SCTP association&n; *&n; * o destination transport address - the transport address of the&n; *   asociation on which a heartbeat should be issued.&n; */
 DECL|function|sctp_sf_do_prm_requestheartbeat
 id|sctp_disposition_t
 id|sctp_sf_do_prm_requestheartbeat

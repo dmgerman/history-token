@@ -98,7 +98,7 @@ id|chunk
 )paren
 suffix:semicolon
 r_static
-r_void
+r_int
 id|sctp_cmd_process_init
 c_func
 (paren
@@ -942,7 +942,9 @@ suffix:semicolon
 r_case
 id|SCTP_CMD_PEER_INIT
 suffix:colon
-multiline_comment|/* Process a unified INIT from the peer.  */
+multiline_comment|/* Process a unified INIT from the peer.&n;&t;&t;&t; * Note: Only used during INIT-ACK processing.  If&n;&t;&t;&t; * there is an error just return to the outter&n;&t;&t;&t; * layer which will bail.&n;&t;&t;&t; */
+id|error
+op_assign
 id|sctp_cmd_process_init
 c_func
 (paren
@@ -1783,6 +1785,14 @@ r_break
 suffix:semicolon
 )brace
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|error
+)paren
+r_return
+id|error
+suffix:semicolon
 )brace
 r_return
 id|error
@@ -1896,7 +1906,7 @@ op_assign
 id|lowest_tsn
 suffix:semicolon
 )brace
-multiline_comment|/* Always try to quiet the other end.  In case of lost CWR,&n;&t; * resend last_cwr_tsn.  &n;&t; */
+multiline_comment|/* Always try to quiet the other end.  In case of lost CWR,&n;&t; * resend last_cwr_tsn.&n;&t; */
 id|repl
 op_assign
 id|sctp_make_cwr
@@ -3136,10 +3146,10 @@ c_func
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Process an init chunk (may be real INIT/INIT-ACK or an embedded INIT&n; * inside the cookie.&n; */
+multiline_comment|/* Process an init chunk (may be real INIT/INIT-ACK or an embedded INIT&n; * inside the cookie.  In reality, this is only used for INIT-ACK processing&n; * since all other cases use &quot;temporary&quot; associations and can do all&n; * their work in statefuns directly. &n; */
 DECL|function|sctp_cmd_process_init
 r_static
-r_void
+r_int
 id|sctp_cmd_process_init
 c_func
 (paren
@@ -3163,7 +3173,14 @@ r_int
 id|priority
 )paren
 (brace
-multiline_comment|/* The command sequence holds commands assuming that the&n;&t; * processing will happen successfully.  If this is not the&n;&t; * case, rewind the sequence and add appropriate  error handling&n;&t; * to the sequence.&n;&t; */
+r_int
+id|error
+suffix:semicolon
+multiline_comment|/* We only process the init as a sideeffect in a single&n;&t; * case.   This is when we process the INIT-ACK.   If we&n;&t; * fail during INIT processing (due to malloc problems),&n;&t; * just return the error and stop processing the stack.&n;&t; */
+r_if
+c_cond
+(paren
+op_logical_neg
 id|sctp_process_init
 c_func
 (paren
@@ -3181,6 +3198,19 @@ id|peer_init
 comma
 id|priority
 )paren
+)paren
+id|error
+op_assign
+op_minus
+id|ENOMEM
+suffix:semicolon
+r_else
+id|error
+op_assign
+l_int|0
+suffix:semicolon
+r_return
+id|error
 suffix:semicolon
 )brace
 multiline_comment|/* Helper function to break out starting up of heartbeat timers.  */
