@@ -3,6 +3,7 @@ DECL|macro|_ASM_IA64_PROCESSOR_H
 mdefine_line|#define _ASM_IA64_PROCESSOR_H
 multiline_comment|/*&n; * Copyright (C) 1998-2002 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; *&t;Stephane Eranian &lt;eranian@hpl.hp.com&gt;&n; * Copyright (C) 1999 Asit Mallick &lt;asit.k.mallick@intel.com&gt;&n; * Copyright (C) 1999 Don Dugger &lt;don.dugger@intel.com&gt;&n; *&n; * 11/24/98&t;S.Eranian&t;added ia64_set_iva()&n; * 12/03/99&t;D. Mosberger&t;implement thread_saved_pc() via kernel unwind API&n; * 06/16/00&t;A. Mallick&t;added csd/ssd/tssd for ia32 support&n; */
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/compiler.h&gt;
 macro_line|#include &lt;asm/ptrace.h&gt;
 macro_line|#include &lt;asm/kregs.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
@@ -258,6 +259,10 @@ mdefine_line|#define IA64_THREAD_FPEMU_MASK&t;(IA64_THREAD_FPEMU_NOPRINT | IA64_
 multiline_comment|/*&n; * This shift should be large enough to be able to represent&n; * 1000000/itc_freq with good accuracy while being small enough to fit&n; * 1000000&lt;&lt;IA64_USEC_PER_CYC_SHIFT in 64 bits.&n; */
 DECL|macro|IA64_USEC_PER_CYC_SHIFT
 mdefine_line|#define IA64_USEC_PER_CYC_SHIFT&t;41
+DECL|macro|__HAVE_ARCH_PER_CPU
+mdefine_line|#define __HAVE_ARCH_PER_CPU
+DECL|macro|THIS_CPU
+mdefine_line|#define THIS_CPU(var)&t;(var)
 macro_line|#ifndef __ASSEMBLY__
 macro_line|#include &lt;linux/threads.h&gt;
 macro_line|#include &lt;linux/cache.h&gt;
@@ -267,6 +272,18 @@ macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/rse.h&gt;
 macro_line|#include &lt;asm/unwind.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
+r_extern
+r_int
+r_int
+id|__per_cpu_offset
+(braket
+id|NR_CPUS
+)braket
+suffix:semicolon
+DECL|macro|per_cpu
+mdefine_line|#define per_cpu(var, cpu)&t;(*(__typeof__(&amp;(var))) ((void *) &amp;(var) + __per_cpu_offset[cpu]))
+DECL|macro|this_cpu
+mdefine_line|#define this_cpu(var)&t;&t;(var)
 multiline_comment|/* like above but expressed as bitfields for more efficient access: */
 DECL|struct|ia64_psr
 r_struct
@@ -486,6 +503,7 @@ suffix:semicolon
 suffix:semicolon
 multiline_comment|/*&n; * CPU type, hardware bug flags, and per-CPU state.  Frequently used&n; * state comes earlier:&n; */
 DECL|struct|cpuinfo_ia64
+r_extern
 r_struct
 id|cpuinfo_ia64
 (brace
@@ -518,11 +536,6 @@ DECL|member|softirq_pending
 id|__u32
 id|softirq_pending
 suffix:semicolon
-DECL|member|phys_stacked_size_p8
-id|__u32
-id|phys_stacked_size_p8
-suffix:semicolon
-multiline_comment|/* size of physical stacked registers + 8 */
 DECL|member|itm_delta
 id|__u64
 id|itm_delta
@@ -667,70 +680,16 @@ DECL|member|pfm_dcr_pp
 id|__u32
 id|pfm_dcr_pp
 suffix:semicolon
-multiline_comment|/* this is written to by *other* CPUs: */
-DECL|member|____cacheline_aligned
-id|__u64
-id|ipi_operation
-id|____cacheline_aligned
-suffix:semicolon
 macro_line|#endif
-macro_line|#ifdef CONFIG_NUMA
-DECL|member|node_directory
-r_void
-op_star
-id|node_directory
-suffix:semicolon
-DECL|member|numa_node_id
-r_int
-id|numa_node_id
-suffix:semicolon
-DECL|member|cpu_data
-r_struct
-id|cpuinfo_ia64
-op_star
-id|cpu_data
-(braket
-id|NR_CPUS
-)braket
-suffix:semicolon
-macro_line|#endif
-multiline_comment|/* Platform specific word.  MUST BE LAST IN STRUCT */
-DECL|member|platform_specific
-id|__u64
-id|platform_specific
-suffix:semicolon
 )brace
-id|__attribute__
-(paren
-(paren
-id|aligned
-(paren
-id|PAGE_SIZE
-)paren
-)paren
-)paren
+id|cpu_info
+id|__per_cpu_data
 suffix:semicolon
 multiline_comment|/*&n; * The &quot;local&quot; data pointer.  It points to the per-CPU data of the currently executing&n; * CPU, much like &quot;current&quot; points to the per-task data of the currently executing task.&n; */
 DECL|macro|local_cpu_data
-mdefine_line|#define local_cpu_data&t;&t;((struct cpuinfo_ia64 *) PERCPU_ADDR)
-multiline_comment|/*&n; * On NUMA systems, cpu_data for each cpu is allocated during cpu_init() &amp; is allocated on&n; * the node that contains the cpu. This minimizes off-node memory references.  cpu_data&n; * for each cpu contains an array of pointers to the cpu_data structures of each of the&n; * other cpus.&n; *&n; * On non-NUMA systems, cpu_data is a static array allocated at compile time.  References&n; * to the cpu_data of another cpu is done by direct references to the appropriate entry of&n; * the array.&n; */
-macro_line|#ifdef CONFIG_NUMA
+mdefine_line|#define local_cpu_data&t;&t;(&amp;this_cpu(cpu_info))
 DECL|macro|cpu_data
-macro_line|# define cpu_data(cpu)&t;&t;local_cpu_data-&gt;cpu_data[cpu]
-DECL|macro|numa_node_id
-macro_line|# define numa_node_id()&t;&t;(local_cpu_data-&gt;numa_node_id)
-macro_line|#else
-r_extern
-r_struct
-id|cpuinfo_ia64
-id|_cpu_data
-(braket
-id|NR_CPUS
-)braket
-suffix:semicolon
-DECL|macro|cpu_data
-macro_line|# define cpu_data(cpu)&t;&t;(&amp;_cpu_data[cpu])
-macro_line|#endif
+mdefine_line|#define cpu_data(cpu)&t;&t;(&amp;per_cpu(cpu_info, cpu))
 r_extern
 r_void
 id|identify_cpu

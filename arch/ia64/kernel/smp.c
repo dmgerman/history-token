@@ -93,6 +93,14 @@ DECL|macro|IPI_CALL_FUNC
 mdefine_line|#define IPI_CALL_FUNC&t;&t;0
 DECL|macro|IPI_CPU_STOP
 mdefine_line|#define IPI_CPU_STOP&t;&t;1
+multiline_comment|/* This needs to be cacheline aligned because it is written to by *other* CPUs.  */
+DECL|variable|____cacheline_aligned
+r_static
+id|__u64
+id|ipi_operation
+id|__per_cpu_data
+id|____cacheline_aligned
+suffix:semicolon
 r_static
 r_void
 DECL|function|stop_this_cpu
@@ -168,7 +176,7 @@ op_star
 id|pending_ipis
 op_assign
 op_amp
-id|local_cpu_data-&gt;ipi_operation
+id|ipi_operation
 suffix:semicolon
 r_int
 r_int
@@ -389,12 +397,6 @@ c_func
 id|op
 comma
 op_amp
-id|cpu_data
-c_func
-(paren
-id|dest_cpu
-)paren
-op_member_access_from_pointer
 id|ipi_operation
 )paren
 suffix:semicolon
