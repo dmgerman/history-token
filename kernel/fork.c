@@ -725,7 +725,7 @@ id|task_struct
 comma
 l_int|0
 comma
-id|SLAB_HWCACHE_ALIGN
+id|SLAB_MUST_HWCACHE_ALIGN
 comma
 l_int|NULL
 comma
