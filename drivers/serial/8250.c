@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  linux/drivers/char/8250.c&n; *&n; *  Driver for 8250/16550-type serial ports&n; *&n; *  Based on drivers/char/serial.c, by Linus Torvalds, Theodore Ts&squot;o.&n; *&n; *  Copyright (C) 2001 Russell King.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; *  $Id: 8250.c,v 1.90 2002/07/28 10:03:27 rmk Exp $&n; *&n; * A note about mapbase / membase&n; *&n; *  mapbase is the physical address of the IO port.  Currently, we don&squot;t&n; *  support this very well, and it may well be dropped from this driver&n; *  in future.  As such, mapbase should be NULL.&n; *&n; *  membase is an &squot;ioremapped&squot; cookie.  This is compatible with the old&n; *  serial.c driver, and is currently the preferred form.&n; */
+multiline_comment|/*&n; *  linux/drivers/char/8250.c&n; *&n; *  Driver for 8250/16550-type serial ports&n; *&n; *  Based on drivers/char/serial.c, by Linus Torvalds, Theodore Ts&squot;o.&n; *&n; *  Copyright (C) 2001 Russell King.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; *  $Id: 8250.c,v 1.90 2002/07/28 10:03:27 rmk Exp $&n; *&n; * A note about mapbase / membase&n; *&n; *  mapbase is the physical address of the IO port.&n; *  membase is an &squot;ioremapped&squot; cookie.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
@@ -8233,9 +8233,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|port-&gt;type
-op_eq
-id|PORT_UNKNOWN
+op_logical_neg
+id|port-&gt;ops
 )paren
 r_return
 op_minus
