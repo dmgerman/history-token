@@ -84,6 +84,11 @@ comma
 id|GFP_USER
 )paren
 suffix:semicolon
+r_static
+r_struct
+id|super_operations
+id|default_op
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -237,6 +242,11 @@ suffix:semicolon
 id|s-&gt;s_qcop
 op_assign
 id|sb_quotactl_ops
+suffix:semicolon
+id|s-&gt;s_op
+op_assign
+op_amp
+id|default_op
 suffix:semicolon
 )brace
 id|out
@@ -579,12 +589,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sop
-)paren
-(brace
-r_if
-c_cond
-(paren
 id|sop-&gt;write_super
 op_logical_and
 id|sb-&gt;s_dirt
@@ -625,7 +629,6 @@ c_func
 id|sb
 )paren
 suffix:semicolon
-)brace
 multiline_comment|/* Forget any remaining inodes */
 r_if
 c_cond
@@ -994,8 +997,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sb-&gt;s_op
-op_logical_and
 id|sb-&gt;s_root
 op_logical_and
 id|sb-&gt;s_dirt
@@ -1170,14 +1171,6 @@ id|sb-&gt;s_list.next
 )paren
 )paren
 (brace
-r_if
-c_cond
-(paren
-op_logical_neg
-id|sb-&gt;s_op
-)paren
-r_continue
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1756,8 +1749,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sb-&gt;s_op
-op_logical_and
 id|sb-&gt;s_op-&gt;remount_fs
 )paren
 (brace

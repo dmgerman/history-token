@@ -61,8 +61,6 @@ id|I_DIRTY_DATASYNC
 r_if
 c_cond
 (paren
-id|sb-&gt;s_op
-op_logical_and
 id|sb-&gt;s_op-&gt;dirty_inode
 )paren
 id|sb-&gt;s_op
@@ -205,8 +203,6 @@ id|sync
 r_if
 c_cond
 (paren
-id|inode-&gt;i_sb-&gt;s_op
-op_logical_and
 id|inode-&gt;i_sb-&gt;s_op-&gt;write_inode
 op_logical_and
 op_logical_neg

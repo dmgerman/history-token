@@ -676,8 +676,6 @@ c_cond
 (paren
 id|sb-&gt;s_dirt
 op_logical_and
-id|sb-&gt;s_op
-op_logical_and
 id|sb-&gt;s_op-&gt;write_super
 )paren
 id|sb-&gt;s_op
@@ -691,11 +689,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sb-&gt;s_op
-op_logical_and
 id|sb-&gt;s_op-&gt;sync_fs
 )paren
-(brace
 id|sb-&gt;s_op
 op_member_access_from_pointer
 id|sync_fs
@@ -706,7 +701,6 @@ comma
 l_int|1
 )paren
 suffix:semicolon
-)brace
 id|unlock_super
 c_func
 (paren
@@ -909,8 +903,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sb-&gt;s_op
-op_logical_and
 id|sb-&gt;s_op-&gt;write_super
 )paren
 id|sb-&gt;s_op
