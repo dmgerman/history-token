@@ -492,9 +492,16 @@ c_func
 id|dev
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|hcd-&gt;product_desc
+op_eq
+l_int|NULL
+)paren
 id|hcd-&gt;product_desc
 op_assign
-id|dev-&gt;dev.name
+l_string|&quot;USB Host Controller&quot;
 suffix:semicolon
 id|hcd-&gt;self.controller
 op_assign
