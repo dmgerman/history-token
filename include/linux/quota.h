@@ -1010,14 +1010,14 @@ suffix:semicolon
 multiline_comment|/* serialize ops using quota_info struct, pointers from inode to dquots */
 DECL|member|files
 r_struct
-id|file
+id|inode
 op_star
 id|files
 (braket
 id|MAXQUOTAS
 )braket
 suffix:semicolon
-multiline_comment|/* fp&squot;s to quotafiles */
+multiline_comment|/* inodes of quotafiles */
 DECL|member|info
 r_struct
 id|mem_dqinfo

@@ -299,9 +299,9 @@ r_int
 id|dummy_quota_on
 (paren
 r_struct
-id|file
+id|dentry
 op_star
-id|f
+id|dentry
 )paren
 (brace
 r_return
