@@ -7,6 +7,101 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/ptrace.h&gt;
 macro_line|#include &lt;asm/mbus.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
+multiline_comment|/*&n; * Sparc section types&n; */
+DECL|macro|STT_REGISTER
+mdefine_line|#define STT_REGISTER&t;&t;13
+multiline_comment|/*&n; * Sparc ELF relocation types&n; */
+DECL|macro|R_SPARC_NONE
+mdefine_line|#define&t;R_SPARC_NONE&t;&t;0
+DECL|macro|R_SPARC_8
+mdefine_line|#define&t;R_SPARC_8&t;&t;1
+DECL|macro|R_SPARC_16
+mdefine_line|#define&t;R_SPARC_16&t;&t;2
+DECL|macro|R_SPARC_32
+mdefine_line|#define&t;R_SPARC_32&t;&t;3
+DECL|macro|R_SPARC_DISP8
+mdefine_line|#define&t;R_SPARC_DISP8&t;&t;4
+DECL|macro|R_SPARC_DISP16
+mdefine_line|#define&t;R_SPARC_DISP16&t;&t;5
+DECL|macro|R_SPARC_DISP32
+mdefine_line|#define&t;R_SPARC_DISP32&t;&t;6
+DECL|macro|R_SPARC_WDISP30
+mdefine_line|#define&t;R_SPARC_WDISP30&t;&t;7
+DECL|macro|R_SPARC_WDISP22
+mdefine_line|#define&t;R_SPARC_WDISP22&t;&t;8
+DECL|macro|R_SPARC_HI22
+mdefine_line|#define&t;R_SPARC_HI22&t;&t;9
+DECL|macro|R_SPARC_22
+mdefine_line|#define&t;R_SPARC_22&t;&t;10
+DECL|macro|R_SPARC_13
+mdefine_line|#define&t;R_SPARC_13&t;&t;11
+DECL|macro|R_SPARC_LO10
+mdefine_line|#define&t;R_SPARC_LO10&t;&t;12
+DECL|macro|R_SPARC_GOT10
+mdefine_line|#define&t;R_SPARC_GOT10&t;&t;13
+DECL|macro|R_SPARC_GOT13
+mdefine_line|#define&t;R_SPARC_GOT13&t;&t;14
+DECL|macro|R_SPARC_GOT22
+mdefine_line|#define&t;R_SPARC_GOT22&t;&t;15
+DECL|macro|R_SPARC_PC10
+mdefine_line|#define&t;R_SPARC_PC10&t;&t;16
+DECL|macro|R_SPARC_PC22
+mdefine_line|#define&t;R_SPARC_PC22&t;&t;17
+DECL|macro|R_SPARC_WPLT30
+mdefine_line|#define&t;R_SPARC_WPLT30&t;&t;18
+DECL|macro|R_SPARC_COPY
+mdefine_line|#define&t;R_SPARC_COPY&t;&t;19
+DECL|macro|R_SPARC_GLOB_DAT
+mdefine_line|#define&t;R_SPARC_GLOB_DAT&t;20
+DECL|macro|R_SPARC_JMP_SLOT
+mdefine_line|#define&t;R_SPARC_JMP_SLOT&t;21
+DECL|macro|R_SPARC_RELATIVE
+mdefine_line|#define&t;R_SPARC_RELATIVE&t;22
+DECL|macro|R_SPARC_UA32
+mdefine_line|#define&t;R_SPARC_UA32&t;&t;23
+DECL|macro|R_SPARC_PLT32
+mdefine_line|#define R_SPARC_PLT32&t;&t;24
+DECL|macro|R_SPARC_HIPLT22
+mdefine_line|#define R_SPARC_HIPLT22&t;&t;25
+DECL|macro|R_SPARC_LOPLT10
+mdefine_line|#define R_SPARC_LOPLT10&t;&t;26
+DECL|macro|R_SPARC_PCPLT32
+mdefine_line|#define R_SPARC_PCPLT32&t;&t;27
+DECL|macro|R_SPARC_PCPLT22
+mdefine_line|#define R_SPARC_PCPLT22&t;&t;28
+DECL|macro|R_SPARC_PCPLT10
+mdefine_line|#define R_SPARC_PCPLT10&t;&t;29
+DECL|macro|R_SPARC_10
+mdefine_line|#define R_SPARC_10&t;&t;30
+DECL|macro|R_SPARC_11
+mdefine_line|#define R_SPARC_11&t;&t;31
+DECL|macro|R_SPARC_64
+mdefine_line|#define R_SPARC_64&t;&t;32
+DECL|macro|R_SPARC_OLO10
+mdefine_line|#define R_SPARC_OLO10&t;&t;33
+DECL|macro|R_SPARC_WDISP16
+mdefine_line|#define R_SPARC_WDISP16&t;&t;40
+DECL|macro|R_SPARC_WDISP19
+mdefine_line|#define R_SPARC_WDISP19&t;&t;41
+DECL|macro|R_SPARC_7
+mdefine_line|#define R_SPARC_7&t;&t;43
+DECL|macro|R_SPARC_5
+mdefine_line|#define R_SPARC_5&t;&t;44
+DECL|macro|R_SPARC_6
+mdefine_line|#define R_SPARC_6&t;&t;45
+multiline_comment|/* Bits present in AT_HWCAP, primarily for Sparc32.  */
+DECL|macro|HWCAP_SPARC_FLUSH
+mdefine_line|#define HWCAP_SPARC_FLUSH       1    /* CPU supports flush instruction. */
+DECL|macro|HWCAP_SPARC_STBAR
+mdefine_line|#define HWCAP_SPARC_STBAR       2
+DECL|macro|HWCAP_SPARC_SWAP
+mdefine_line|#define HWCAP_SPARC_SWAP        4
+DECL|macro|HWCAP_SPARC_MULDIV
+mdefine_line|#define HWCAP_SPARC_MULDIV      8
+DECL|macro|HWCAP_SPARC_V9
+mdefine_line|#define HWCAP_SPARC_V9&t;&t;16
+DECL|macro|HWCAP_SPARC_ULTRA3
+mdefine_line|#define HWCAP_SPARC_ULTRA3&t;32
 multiline_comment|/* For the most part we present code dumps in the format&n; * Solaris does.&n; */
 DECL|typedef|elf_greg_t
 r_typedef
