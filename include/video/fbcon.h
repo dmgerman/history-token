@@ -540,6 +540,8 @@ DECL|macro|attr_bgcol
 mdefine_line|#define attr_bgcol(p,s)    &bslash;&n;&t;(((s) &gt;&gt; ((p)-&gt;bgshift)) &amp; 0x0f)
 DECL|macro|attr_bgcol_ec
 mdefine_line|#define&t;attr_bgcol_ec(p,conp) &bslash;&n;&t;((conp) ? (((conp)-&gt;vc_video_erase_char &gt;&gt; ((p)-&gt;bgshift)) &amp; 0x0f) : 0)
+DECL|macro|attr_fgcol_ec
+mdefine_line|#define attr_fgcol_ec(p,vc) &bslash;&n;&t;((vc) ? (((vc)-&gt;vc_video_erase_char &gt;&gt; ((p)-&gt;fgshift)) &amp; 0x0f) : 0)
 multiline_comment|/* Monochrome */
 DECL|macro|attr_bold
 mdefine_line|#define attr_bold(p,s) &bslash;&n;&t;((s) &amp; 0x200)
