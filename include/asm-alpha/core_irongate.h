@@ -81,11 +81,11 @@ id|igcsr32
 id|bacsr32
 suffix:semicolon
 multiline_comment|/* 0x44 - base address chip selects */
-DECL|member|bacsr54
+DECL|member|bacsr54_eccms761
 id|igcsr32
-id|bacsr54
+id|bacsr54_eccms761
 suffix:semicolon
-multiline_comment|/* 0x48 - base address chip selects */
+multiline_comment|/* 0x48 - 751: base addr. chip selects&n;&t;&t;&t;&t;&t;&t;  761: ECC, mode/status */
 DECL|member|rsrvd2
 id|igcsr32
 id|rsrvd2
@@ -108,7 +108,7 @@ DECL|member|dramms
 id|igcsr32
 id|dramms
 suffix:semicolon
-multiline_comment|/* 0x58 - ECC, mode/status */
+multiline_comment|/* 0x58 - DRAM mode/status */
 DECL|member|rsrvd3
 id|igcsr32
 id|rsrvd3
@@ -167,10 +167,15 @@ DECL|member|rsrvd6
 id|igcsr32
 id|rsrvd6
 (braket
-l_int|5
+l_int|4
 )braket
 suffix:semicolon
-multiline_comment|/* 0x8C-0x9F reserved */
+multiline_comment|/* 0x8C-0x9B reserved */
+DECL|member|pci_mem
+id|igcsr32
+id|pci_mem
+suffix:semicolon
+multiline_comment|/* 0x9C - PCI top of memory,&n;&t;&t;&t;&t;&t;&t;  761 only */
 multiline_comment|/* AGP (bus 1) control registers */
 DECL|member|agpcap
 id|igcsr32
@@ -281,6 +286,11 @@ multiline_comment|/* 0x3C - interrupt, PCI bridge ctrl */
 DECL|typedef|Irongate1
 )brace
 id|Irongate1
+suffix:semicolon
+r_extern
+id|igcsr32
+op_star
+id|IronECC
 suffix:semicolon
 multiline_comment|/*&n; * Memory spaces:&n; */
 multiline_comment|/* Irongate is consistent with a subset of the Tsunami memory map */
