@@ -2196,6 +2196,14 @@ id|psmouse
 op_assign
 id|dev-&gt;data
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|request
+op_eq
+id|PM_RESUME
+)paren
+(brace
 id|psmouse-&gt;state
 op_assign
 id|PSMOUSE_IGNORE
@@ -2206,6 +2214,7 @@ c_func
 id|psmouse-&gt;serio
 )paren
 suffix:semicolon
+)brace
 r_return
 l_int|0
 suffix:semicolon
