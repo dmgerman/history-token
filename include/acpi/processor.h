@@ -10,8 +10,6 @@ DECL|macro|ACPI_PROCESSOR_MAX_C2_LATENCY
 mdefine_line|#define ACPI_PROCESSOR_MAX_C2_LATENCY&t;100
 DECL|macro|ACPI_PROCESSOR_MAX_C3_LATENCY
 mdefine_line|#define ACPI_PROCESSOR_MAX_C3_LATENCY&t;1000
-DECL|macro|ACPI_PROCESSOR_MAX_PERFORMANCE
-mdefine_line|#define ACPI_PROCESSOR_MAX_PERFORMANCE&t;8
 DECL|macro|ACPI_PROCESSOR_MAX_THROTTLING
 mdefine_line|#define ACPI_PROCESSOR_MAX_THROTTLING&t;16
 DECL|macro|ACPI_PROCESSOR_MAX_THROTTLE
@@ -198,59 +196,49 @@ suffix:semicolon
 multiline_comment|/* success indicator */
 )brace
 suffix:semicolon
+DECL|macro|ACPI_PDC_REVISION_ID
+mdefine_line|#define ACPI_PDC_REVISION_ID                   0x1
 DECL|struct|acpi_processor_performance
 r_struct
 id|acpi_processor_performance
 (brace
 DECL|member|state
 r_int
+r_int
 id|state
 suffix:semicolon
 DECL|member|platform_limit
 r_int
+r_int
 id|platform_limit
 suffix:semicolon
 DECL|member|control_register
-id|u16
+r_struct
+id|acpi_pct_register
 id|control_register
 suffix:semicolon
 DECL|member|status_register
-id|u16
+r_struct
+id|acpi_pct_register
 id|status_register
 suffix:semicolon
-DECL|member|control_register_bit_width
-id|u8
-id|control_register_bit_width
-suffix:semicolon
-DECL|member|status_register_bit_width
-id|u8
-id|status_register_bit_width
-suffix:semicolon
 DECL|member|state_count
+r_int
 r_int
 id|state_count
 suffix:semicolon
 DECL|member|states
 r_struct
 id|acpi_processor_px
-id|states
-(braket
-id|ACPI_PROCESSOR_MAX_PERFORMANCE
-)braket
-suffix:semicolon
-DECL|member|freq_table
-r_struct
-id|cpufreq_frequency_table
-id|freq_table
-(braket
-id|ACPI_PROCESSOR_MAX_PERFORMANCE
-)braket
-suffix:semicolon
-DECL|member|pr
-r_struct
-id|acpi_processor
 op_star
-id|pr
+id|states
+suffix:semicolon
+multiline_comment|/* the _PDC objects passed by the driver, if any */
+DECL|member|pdc
+r_struct
+id|acpi_object_list
+op_star
+id|pdc
 suffix:semicolon
 )brace
 suffix:semicolon
