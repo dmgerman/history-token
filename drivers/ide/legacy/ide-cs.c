@@ -1454,28 +1454,6 @@ id|link-&gt;conf
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* deal with brain dead IDE resource management */
-id|release_region
-c_func
-(paren
-id|link-&gt;io.BasePort1
-comma
-id|link-&gt;io.NumPorts1
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|link-&gt;io.NumPorts2
-)paren
-id|release_region
-c_func
-(paren
-id|link-&gt;io.BasePort2
-comma
-id|link-&gt;io.NumPorts2
-)paren
-suffix:semicolon
 multiline_comment|/* disable drive interrupts during IDE probe */
 id|outb
 c_func

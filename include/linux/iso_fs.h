@@ -1537,6 +1537,7 @@ DECL|function|isonum_721
 r_static
 r_inline
 r_int
+r_int
 id|isonum_721
 c_func
 (paren
@@ -1565,6 +1566,7 @@ DECL|function|isonum_722
 r_static
 r_inline
 r_int
+r_int
 id|isonum_722
 c_func
 (paren
@@ -1592,6 +1594,7 @@ suffix:semicolon
 DECL|function|isonum_723
 r_static
 r_inline
+r_int
 r_int
 id|isonum_723
 c_func
@@ -1622,6 +1625,7 @@ DECL|function|isonum_731
 r_static
 r_inline
 r_int
+r_int
 id|isonum_731
 c_func
 (paren
@@ -1650,6 +1654,7 @@ DECL|function|isonum_732
 r_static
 r_inline
 r_int
+r_int
 id|isonum_732
 c_func
 (paren
@@ -1677,6 +1682,7 @@ suffix:semicolon
 DECL|function|isonum_733
 r_static
 r_inline
+r_int
 r_int
 id|isonum_733
 c_func
