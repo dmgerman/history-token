@@ -7698,6 +7698,8 @@ id|dev_alloc_skb
 c_func
 (paren
 id|rx_buf_sz
+op_plus
+id|NET_IP_ALIGN
 )paren
 suffix:semicolon
 r_if
@@ -7714,7 +7716,7 @@ c_func
 (paren
 id|skb
 comma
-l_int|2
+id|NET_IP_ALIGN
 )paren
 suffix:semicolon
 op_star
@@ -9858,7 +9860,7 @@ c_func
 (paren
 id|pkt_size
 op_plus
-l_int|2
+id|NET_IP_ALIGN
 )paren
 suffix:semicolon
 r_if
@@ -9872,7 +9874,7 @@ c_func
 (paren
 id|skb
 comma
-l_int|2
+id|NET_IP_ALIGN
 )paren
 suffix:semicolon
 id|eth_copy_and_sum
