@@ -1488,20 +1488,7 @@ id|fc-&gt;sid
 suffix:semicolon
 id|SPRINTF
 (paren
-l_string|&quot;&bslash;nAttached devices: %s&bslash;n&quot;
-comma
-op_logical_neg
-id|list_empty
-c_func
-(paren
-op_amp
-id|host-&gt;my_devices
-)paren
-ques
-c_cond
-l_string|&quot;&quot;
-suffix:colon
-l_string|&quot;none&quot;
+l_string|&quot;&bslash;nAttached devices:&bslash;n&quot;
 )paren
 suffix:semicolon
 r_for
