@@ -40,6 +40,17 @@ op_star
 id|psmouse
 )paren
 suffix:semicolon
+r_extern
+r_void
+id|synaptics_reset
+c_func
+(paren
+r_struct
+id|psmouse
+op_star
+id|psmouse
+)paren
+suffix:semicolon
 multiline_comment|/* synaptics queries */
 DECL|macro|SYN_QUE_IDENTIFY
 mdefine_line|#define SYN_QUE_IDENTIFY&t;&t;0x00
