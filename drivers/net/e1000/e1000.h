@@ -123,6 +123,8 @@ DECL|macro|E1000_RX_BUFFER_WRITE
 mdefine_line|#define E1000_RX_BUFFER_WRITE&t;16&t;/* Must be power of 2 */
 DECL|macro|AUTO_ALL_MODES
 mdefine_line|#define AUTO_ALL_MODES       0
+DECL|macro|E1000_EEPROM_82544_APM
+mdefine_line|#define E1000_EEPROM_82544_APM 0x0004
 DECL|macro|E1000_EEPROM_APME
 mdefine_line|#define E1000_EEPROM_APME    0x0400
 macro_line|#ifndef E1000_MASTER_SLAVE
