@@ -86,11 +86,6 @@ op_assign
 id|cs5520_init_setup_dma
 comma
 dot
-id|init_iops
-op_assign
-l_int|NULL
-comma
-dot
 id|init_hwif
 op_assign
 id|init_hwif_cs5520
@@ -114,11 +109,6 @@ dot
 id|bootable
 op_assign
 id|ON_BOARD
-comma
-dot
-id|extra
-op_assign
-l_int|0
 comma
 )brace
 comma
@@ -149,11 +139,6 @@ op_assign
 id|cs5520_init_setup_dma
 comma
 dot
-id|init_iops
-op_assign
-l_int|NULL
-comma
-dot
 id|init_hwif
 op_assign
 id|init_hwif_cs5520
@@ -177,11 +162,6 @@ dot
 id|bootable
 op_assign
 id|ON_BOARD
-comma
-dot
-id|extra
-op_assign
-l_int|0
 comma
 )brace
 )brace
