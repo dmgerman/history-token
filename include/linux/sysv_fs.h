@@ -11,8 +11,7 @@ macro_line|#error I want gcc!
 macro_line|#endif
 macro_line|#include &lt;linux/stat.h&gt;&t;&t;/* declares S_IFLNK etc. */
 macro_line|#include &lt;linux/sched.h&gt;&t;/* declares wake_up() */
-macro_line|#include &lt;linux/sysv_fs_sb.h&gt;&t;/* defines the sv_... shortcuts */
-multiline_comment|/* temporary hack. */
+macro_line|#include &lt;linux/sysv_fs_sb.h&gt;
 macro_line|#include &lt;linux/sysv_fs_i.h&gt;
 DECL|function|SYSV_I
 r_static
@@ -29,7 +28,6 @@ op_star
 id|inode
 )paren
 (brace
-multiline_comment|/* I think list_entry should have a more descriptive name..  --hch */
 r_return
 id|list_entry
 c_func
@@ -43,7 +41,26 @@ id|vfs_inode
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* end temporary hack. */
+DECL|function|SYSV_SB
+r_static
+r_inline
+r_struct
+id|sysv_sb_info
+op_star
+id|SYSV_SB
+c_func
+(paren
+r_struct
+id|super_block
+op_star
+id|sb
+)paren
+(brace
+r_return
+op_amp
+id|sb-&gt;u.sysv_sb
+suffix:semicolon
+)brace
 multiline_comment|/* Layout on disk */
 multiline_comment|/* ============== */
 DECL|function|PDP_swab
@@ -1296,23 +1313,34 @@ op_star
 id|sb
 )paren
 (brace
+r_struct
+id|sysv_sb_info
+op_star
+id|sbi
+op_assign
+id|SYSV_SB
+c_func
+(paren
+id|sb
+)paren
+suffix:semicolon
 id|mark_buffer_dirty
 c_func
 (paren
-id|sb-&gt;sv_bh1
+id|sbi-&gt;s_bh1
 )paren
 suffix:semicolon
 r_if
 c_cond
 (paren
-id|sb-&gt;sv_bh1
+id|sbi-&gt;s_bh1
 op_ne
-id|sb-&gt;sv_bh2
+id|sbi-&gt;s_bh2
 )paren
 id|mark_buffer_dirty
 c_func
 (paren
-id|sb-&gt;sv_bh2
+id|sbi-&gt;s_bh2
 )paren
 suffix:semicolon
 id|sb-&gt;s_dirt
@@ -1328,9 +1356,9 @@ id|fs32_to_cpu
 c_func
 (paren
 r_struct
-id|super_block
+id|sysv_sb_info
 op_star
-id|sb
+id|sbi
 comma
 id|u32
 id|n
@@ -1339,7 +1367,7 @@ id|n
 r_if
 c_cond
 (paren
-id|sb-&gt;sv_bytesex
+id|sbi-&gt;s_bytesex
 op_eq
 id|BYTESEX_PDP
 )paren
@@ -1354,7 +1382,7 @@ r_else
 r_if
 c_cond
 (paren
-id|sb-&gt;sv_bytesex
+id|sbi-&gt;s_bytesex
 op_eq
 id|BYTESEX_LE
 )paren
@@ -1382,9 +1410,9 @@ id|cpu_to_fs32
 c_func
 (paren
 r_struct
-id|super_block
+id|sysv_sb_info
 op_star
-id|sb
+id|sbi
 comma
 id|u32
 id|n
@@ -1393,7 +1421,7 @@ id|n
 r_if
 c_cond
 (paren
-id|sb-&gt;sv_bytesex
+id|sbi-&gt;s_bytesex
 op_eq
 id|BYTESEX_PDP
 )paren
@@ -1408,7 +1436,7 @@ r_else
 r_if
 c_cond
 (paren
-id|sb-&gt;sv_bytesex
+id|sbi-&gt;s_bytesex
 op_eq
 id|BYTESEX_LE
 )paren
@@ -1436,9 +1464,9 @@ id|fs32_add
 c_func
 (paren
 r_struct
-id|super_block
+id|sysv_sb_info
 op_star
-id|sb
+id|sbi
 comma
 id|u32
 op_star
@@ -1451,7 +1479,7 @@ id|d
 r_if
 c_cond
 (paren
-id|sb-&gt;sv_bytesex
+id|sbi-&gt;s_bytesex
 op_eq
 id|BYTESEX_PDP
 )paren
@@ -1476,7 +1504,7 @@ r_else
 r_if
 c_cond
 (paren
-id|sb-&gt;sv_bytesex
+id|sbi-&gt;s_bytesex
 op_eq
 id|BYTESEX_LE
 )paren
@@ -1524,9 +1552,9 @@ id|fs16_to_cpu
 c_func
 (paren
 r_struct
-id|super_block
+id|sysv_sb_info
 op_star
-id|sb
+id|sbi
 comma
 id|u16
 id|n
@@ -1535,7 +1563,7 @@ id|n
 r_if
 c_cond
 (paren
-id|sb-&gt;sv_bytesex
+id|sbi-&gt;s_bytesex
 op_ne
 id|BYTESEX_BE
 )paren
@@ -1563,9 +1591,9 @@ id|cpu_to_fs16
 c_func
 (paren
 r_struct
-id|super_block
+id|sysv_sb_info
 op_star
-id|sb
+id|sbi
 comma
 id|u16
 id|n
@@ -1574,7 +1602,7 @@ id|n
 r_if
 c_cond
 (paren
-id|sb-&gt;sv_bytesex
+id|sbi-&gt;s_bytesex
 op_ne
 id|BYTESEX_BE
 )paren
@@ -1602,9 +1630,9 @@ id|fs16_add
 c_func
 (paren
 r_struct
-id|super_block
+id|sysv_sb_info
 op_star
-id|sb
+id|sbi
 comma
 id|u16
 op_star
@@ -1617,7 +1645,7 @@ id|d
 r_if
 c_cond
 (paren
-id|sb-&gt;sv_bytesex
+id|sbi-&gt;s_bytesex
 op_ne
 id|BYTESEX_BE
 )paren

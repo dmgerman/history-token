@@ -6,6 +6,13 @@ DECL|struct|sysv_sb_info
 r_struct
 id|sysv_sb_info
 (brace
+DECL|member|s_sb
+r_struct
+id|super_block
+op_star
+id|s_sb
+suffix:semicolon
+multiline_comment|/* VFS superblock */
 DECL|member|s_type
 r_int
 id|s_type
@@ -195,70 +202,5 @@ multiline_comment|/* max length of dir entry */
 )brace
 suffix:semicolon
 multiline_comment|/* The field s_toobig_block is currently unused. */
-multiline_comment|/* sv_ == u.sysv_sb.s_ */
-DECL|macro|sv_type
-mdefine_line|#define sv_type&t;&t;&t;&t;&t;u.sysv_sb.s_type
-DECL|macro|sv_bytesex
-mdefine_line|#define sv_bytesex&t;&t;&t;&t;u.sysv_sb.s_bytesex
-DECL|macro|sv_truncate
-mdefine_line|#define sv_truncate&t;&t;&t;&t;u.sysv_sb.s_truncate
-DECL|macro|sv_link_max
-mdefine_line|#define sv_link_max&t;&t;&t;&t;u.sysv_sb.s_link_max
-DECL|macro|sv_inodes_per_block
-mdefine_line|#define sv_inodes_per_block&t;&t;&t;u.sysv_sb.s_inodes_per_block
-DECL|macro|sv_inodes_per_block_1
-mdefine_line|#define sv_inodes_per_block_1&t;&t;&t;u.sysv_sb.s_inodes_per_block_1
-DECL|macro|sv_inodes_per_block_bits
-mdefine_line|#define sv_inodes_per_block_bits&t;&t;u.sysv_sb.s_inodes_per_block_bits
-DECL|macro|sv_ind_per_block
-mdefine_line|#define sv_ind_per_block&t;&t;&t;u.sysv_sb.s_ind_per_block
-DECL|macro|sv_ind_per_block_bits
-mdefine_line|#define sv_ind_per_block_bits&t;&t;&t;u.sysv_sb.s_ind_per_block_bits
-DECL|macro|sv_ind_per_block_2
-mdefine_line|#define sv_ind_per_block_2&t;&t;&t;u.sysv_sb.s_ind_per_block_2
-DECL|macro|sv_toobig_block
-mdefine_line|#define sv_toobig_block&t;&t;&t;&t;u.sysv_sb.s_toobig_block
-DECL|macro|sv_block_base
-mdefine_line|#define sv_block_base&t;&t;&t;&t;u.sysv_sb.s_block_base
-DECL|macro|sv_fic_size
-mdefine_line|#define sv_fic_size&t;&t;&t;&t;u.sysv_sb.s_fic_size
-DECL|macro|sv_flc_size
-mdefine_line|#define sv_flc_size&t;&t;&t;&t;u.sysv_sb.s_flc_size
-DECL|macro|sv_bh1
-mdefine_line|#define sv_bh1&t;&t;&t;&t;&t;u.sysv_sb.s_bh1
-DECL|macro|sv_bh2
-mdefine_line|#define sv_bh2&t;&t;&t;&t;&t;u.sysv_sb.s_bh2
-DECL|macro|sv_sbd1
-mdefine_line|#define sv_sbd1&t;&t;&t;&t;&t;u.sysv_sb.s_sbd1
-DECL|macro|sv_sbd2
-mdefine_line|#define sv_sbd2&t;&t;&t;&t;&t;u.sysv_sb.s_sbd2
-DECL|macro|sv_sb_fic_count
-mdefine_line|#define sv_sb_fic_count&t;&t;&t;&t;u.sysv_sb.s_sb_fic_count
-DECL|macro|sv_sb_fic_inodes
-mdefine_line|#define sv_sb_fic_inodes&t;&t;&t;u.sysv_sb.s_sb_fic_inodes
-DECL|macro|sv_sb_total_free_inodes
-mdefine_line|#define sv_sb_total_free_inodes&t;&t;&t;u.sysv_sb.s_sb_total_free_inodes
-DECL|macro|sv_bcache_count
-mdefine_line|#define sv_bcache_count&t;&t;&t;&t;u.sysv_sb.s_bcache_count
-DECL|macro|sv_bcache
-mdefine_line|#define sv_bcache&t;&t;&t;&t;u.sysv_sb.s_bcache
-DECL|macro|sv_free_blocks
-mdefine_line|#define sv_free_blocks&t;&t;&t;&t;u.sysv_sb.s_free_blocks
-DECL|macro|sv_sb_time
-mdefine_line|#define sv_sb_time&t;&t;&t;&t;u.sysv_sb.s_sb_time
-DECL|macro|sv_sb_state
-mdefine_line|#define sv_sb_state&t;&t;&t;&t;u.sysv_sb.s_sb_state
-DECL|macro|sv_firstinodezone
-mdefine_line|#define sv_firstinodezone&t;&t;&t;u.sysv_sb.s_firstinodezone
-DECL|macro|sv_firstdatazone
-mdefine_line|#define sv_firstdatazone&t;&t;&t;u.sysv_sb.s_firstdatazone
-DECL|macro|sv_ninodes
-mdefine_line|#define sv_ninodes&t;&t;&t;&t;u.sysv_sb.s_ninodes
-DECL|macro|sv_ndatazones
-mdefine_line|#define sv_ndatazones&t;&t;&t;&t;u.sysv_sb.s_ndatazones
-DECL|macro|sv_nzones
-mdefine_line|#define sv_nzones&t;&t;&t;&t;u.sysv_sb.s_nzones
-DECL|macro|sv_namelen
-mdefine_line|#define sv_namelen                              u.sysv_sb.s_namelen
 macro_line|#endif
 eof
