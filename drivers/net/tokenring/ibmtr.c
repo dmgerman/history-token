@@ -55,13 +55,13 @@ l_string|&quot;         v2.4.0   03/01/01 Mike Sullivan &lt;sullivan@us.ibm.com&
 suffix:semicolon
 macro_line|#endif
 multiline_comment|/* this allows displaying full adapter information */
-DECL|variable|__initdata
+DECL|variable|__devinitdata
 r_char
 op_star
 id|channel_def
 (braket
 )braket
-id|__initdata
+id|__devinitdata
 op_assign
 (brace
 l_string|&quot;ISA&quot;
@@ -3790,6 +3790,13 @@ id|spinlock_t
 )paren
 id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
+id|init_timer
+c_func
+(paren
+op_amp
+id|ti-&gt;tr_timer
+)paren
+suffix:semicolon
 id|i
 op_assign
 id|tok_init_card
@@ -4841,7 +4848,7 @@ id|dev-&gt;priv
 suffix:semicolon
 multiline_comment|/* Important for PCMCIA hot unplug, otherwise, we&squot;ll pull the card, */
 multiline_comment|/* unloading the module from memory, and then if a timer pops, ouch */
-id|del_timer
+id|del_timer_sync
 c_func
 (paren
 op_amp

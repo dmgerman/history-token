@@ -87,6 +87,8 @@ id|LLC_DEST_CONN
 id|llc_type_handlers
 (braket
 id|type
+op_minus
+l_int|1
 )braket
 op_assign
 id|handler
@@ -115,6 +117,8 @@ id|LLC_DEST_CONN
 id|llc_type_handlers
 (braket
 id|type
+op_minus
+l_int|1
 )braket
 op_assign
 l_int|NULL

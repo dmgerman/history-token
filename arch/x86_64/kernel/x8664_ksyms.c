@@ -210,6 +210,13 @@ c_func
 id|csum_partial_copy_nocheck
 )paren
 suffix:semicolon
+DECL|variable|ip_compute_csum
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|ip_compute_csum
+)paren
+suffix:semicolon
 multiline_comment|/* Delay loops */
 DECL|variable|__udelay
 id|EXPORT_SYMBOL
@@ -425,6 +432,13 @@ id|mmx_copy_page
 )paren
 suffix:semicolon
 macro_line|#endif
+DECL|variable|cpu_pda
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|cpu_pda
+)paren
+suffix:semicolon
 macro_line|#ifdef CONFIG_SMP
 DECL|variable|cpu_data
 id|EXPORT_SYMBOL

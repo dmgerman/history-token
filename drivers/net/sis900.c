@@ -6263,7 +6263,7 @@ comma
 id|PCI_DMA_TODEVICE
 )paren
 suffix:semicolon
-id|dev_kfree_skb
+id|dev_kfree_skb_irq
 c_func
 (paren
 id|skb

@@ -1774,6 +1774,14 @@ op_ne
 l_int|0
 )paren
 (brace
+id|link-&gt;irq.Attributes
+op_assign
+id|IRQ_TYPE_DYNAMIC_SHARING
+op_or
+id|IRQ_FIRST_SHARED
+op_or
+id|IRQ_HANDLE_PRESENT
+suffix:semicolon
 id|ret
 op_assign
 id|mfc_try_io_port

@@ -863,8 +863,6 @@ op_amp
 id|t-&gt;client
 )paren
 suffix:semicolon
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -971,8 +969,6 @@ c_func
 (paren
 id|t
 )paren
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 r_return
 l_int|0

@@ -730,6 +730,13 @@ c_func
 id|__write_unlock
 )paren
 suffix:semicolon
+DECL|variable|__write_trylock
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|__write_trylock
+)paren
+suffix:semicolon
 macro_line|#endif
 multiline_comment|/* Hard IRQ locking */
 DECL|variable|synchronize_irq

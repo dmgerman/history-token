@@ -1430,6 +1430,11 @@ op_logical_neg
 id|llc-&gt;dev
 )paren
 (brace
+id|rc
+op_assign
+op_minus
+id|ENODEV
+suffix:semicolon
 id|rtnl_lock
 c_func
 (paren

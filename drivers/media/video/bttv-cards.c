@@ -13195,13 +13195,13 @@ l_string|&quot;Temic 4066FY5&quot;
 )brace
 comma
 (brace
-id|TUNER_ABSENT
+id|TUNER_PHILIPS_NTSC
 comma
 l_string|&quot;Philips TD1536&quot;
 )brace
 comma
 (brace
-id|TUNER_ABSENT
+id|TUNER_PHILIPS_NTSC
 comma
 l_string|&quot;Philips TD1536D&quot;
 )brace
