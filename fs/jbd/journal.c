@@ -5775,6 +5775,16 @@ op_eq
 l_int|NULL
 )paren
 (brace
+id|J_ASSERT_JH
+c_func
+(paren
+id|jh
+comma
+id|jh-&gt;b_jlist
+op_eq
+id|BJ_None
+)paren
+suffix:semicolon
 id|J_ASSERT_BH
 c_func
 (paren
