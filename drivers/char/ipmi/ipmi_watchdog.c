@@ -3063,11 +3063,6 @@ comma
 l_int|0
 )brace
 suffix:semicolon
-r_extern
-r_int
-id|panic_timeout
-suffix:semicolon
-multiline_comment|/* Why isn&squot;t this defined anywhere? */
 DECL|function|wdog_panic_handler
 r_static
 r_int

@@ -23,10 +23,6 @@ macro_line|#include &lt;asm/iSeries/mf.h&gt;
 macro_line|#include &quot;pci.h&quot;
 r_extern
 r_int
-id|panic_timeout
-suffix:semicolon
-r_extern
-r_int
 r_int
 id|io_page_mask
 suffix:semicolon
