@@ -433,6 +433,37 @@ id|ops
 )paren
 suffix:semicolon
 multiline_comment|/* ====================================================================== */
+multiline_comment|/* Feature- and status-flags for a net-interface */
+DECL|macro|ISDN_NET_SECURE
+mdefine_line|#define ISDN_NET_SECURE     0x02       /* Accept calls from phonelist only  */
+DECL|macro|ISDN_NET_CALLBACK
+mdefine_line|#define ISDN_NET_CALLBACK   0x04       /* activate callback                 */
+DECL|macro|ISDN_NET_CBHUP
+mdefine_line|#define ISDN_NET_CBHUP      0x08       /* hangup before callback            */
+DECL|macro|ISDN_NET_CBOUT
+mdefine_line|#define ISDN_NET_CBOUT      0x10       /* remote machine does callback      */
+DECL|macro|ISDN_NET_MAGIC
+mdefine_line|#define ISDN_NET_MAGIC      0x49344C02 /* for paranoia-checking             */
+multiline_comment|/* Phone-list-element */
+DECL|struct|isdn_net_phone
+r_struct
+id|isdn_net_phone
+(brace
+DECL|member|list
+r_struct
+id|list_head
+id|list
+suffix:semicolon
+DECL|member|num
+r_char
+id|num
+(braket
+id|ISDN_MSNLEN
+)braket
+suffix:semicolon
+)brace
+suffix:semicolon
+multiline_comment|/*&n;   Principles when extending structures for generic encapsulation protocol&n;   (&quot;concap&quot;) support:&n;   - Stuff which is hardware specific (here i4l-specific) goes in &n;     the netdev -&gt; local structure (here: isdn_net_local)&n;   - Stuff which is encapsulation protocol specific goes in the structure&n;     which holds the linux device structure (here: isdn_net_device)&n;*/
 multiline_comment|/* per network interface data (dev-&gt;priv) */
 DECL|struct|isdn_net_local_s
 r_struct
@@ -616,47 +647,12 @@ id|slcomp
 suffix:semicolon
 macro_line|#endif
 macro_line|#endif
-multiline_comment|/* use an own struct for that in later versions */
-DECL|member|cisco_myseq
-id|ulong
-id|cisco_myseq
+DECL|member|inl_priv
+r_void
+op_star
+id|inl_priv
 suffix:semicolon
-multiline_comment|/* Local keepalive seq. for Cisco   */
-DECL|member|cisco_mineseen
-id|ulong
-id|cisco_mineseen
-suffix:semicolon
-multiline_comment|/* returned keepalive seq. from remote */
-DECL|member|cisco_yourseq
-id|ulong
-id|cisco_yourseq
-suffix:semicolon
-multiline_comment|/* Remote keepalive seq. for Cisco  */
-DECL|member|cisco_keepalive_period
-r_int
-id|cisco_keepalive_period
-suffix:semicolon
-multiline_comment|/* keepalive period */
-DECL|member|cisco_last_slarp_in
-id|ulong
-id|cisco_last_slarp_in
-suffix:semicolon
-multiline_comment|/* jiffie of last keepalive packet we received */
-DECL|member|cisco_line_state
-r_char
-id|cisco_line_state
-suffix:semicolon
-multiline_comment|/* state of line according to keepalive packets */
-DECL|member|cisco_debserint
-r_char
-id|cisco_debserint
-suffix:semicolon
-multiline_comment|/* debugging flag of cisco hdlc with slarp */
-DECL|member|cisco_timer
-r_struct
-id|timer_list
-id|cisco_timer
-suffix:semicolon
+multiline_comment|/* interface types can put their&n;&t;&t;&t;&t;&t;   private data here               */
 DECL|member|ops
 r_struct
 id|isdn_netif_ops

@@ -469,39 +469,6 @@ mdefine_line|#define ISDN_TIMER_SLOW      (ISDN_TIMER_MODEMRING | ISDN_TIMER_CAR
 multiline_comment|/* GLOBAL_FLAGS */
 DECL|macro|ISDN_GLOBAL_STOPPED
 mdefine_line|#define ISDN_GLOBAL_STOPPED 1
-multiline_comment|/*=================== Start of ip-over-ISDN stuff =========================*/
-multiline_comment|/* Feature- and status-flags for a net-interface */
-DECL|macro|ISDN_NET_SECURE
-mdefine_line|#define ISDN_NET_SECURE     0x02       /* Accept calls from phonelist only  */
-DECL|macro|ISDN_NET_CALLBACK
-mdefine_line|#define ISDN_NET_CALLBACK   0x04       /* activate callback                 */
-DECL|macro|ISDN_NET_CBHUP
-mdefine_line|#define ISDN_NET_CBHUP      0x08       /* hangup before callback            */
-DECL|macro|ISDN_NET_CBOUT
-mdefine_line|#define ISDN_NET_CBOUT      0x10       /* remote machine does callback      */
-DECL|macro|ISDN_NET_MAGIC
-mdefine_line|#define ISDN_NET_MAGIC      0x49344C02 /* for paranoia-checking             */
-multiline_comment|/* Phone-list-element */
-DECL|struct|isdn_net_phone
-r_struct
-id|isdn_net_phone
-(brace
-DECL|member|list
-r_struct
-id|list_head
-id|list
-suffix:semicolon
-DECL|member|num
-r_char
-id|num
-(braket
-id|ISDN_MSNLEN
-)braket
-suffix:semicolon
-)brace
-suffix:semicolon
-multiline_comment|/*&n;   Principles when extending structures for generic encapsulation protocol&n;   (&quot;concap&quot;) support:&n;   - Stuff which is hardware specific (here i4l-specific) goes in &n;     the netdev -&gt; local structure (here: isdn_net_local)&n;   - Stuff which is encapsulation protocol specific goes in the structure&n;     which holds the linux device structure (here: isdn_net_device)&n;*/
-multiline_comment|/*===================== End of ip-over-ISDN stuff ===========================*/
 multiline_comment|/*======================= Start of ISDN-tty stuff ===========================*/
 DECL|macro|ISDN_ASYNC_MAGIC
 mdefine_line|#define ISDN_ASYNC_MAGIC          0x49344C01 /* for paranoia-checking        */
