@@ -2948,6 +2948,13 @@ comma
 id|list
 )paren
 suffix:semicolon
+id|wake_up_all
+c_func
+(paren
+op_amp
+id|ds-&gt;wait
+)paren
+suffix:semicolon
 id|list_del_init
 c_func
 (paren
