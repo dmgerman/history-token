@@ -3426,7 +3426,7 @@ c_cond
 id|rc
 )paren
 (brace
-id|cERROR
+id|cFYI
 c_func
 (paren
 l_int|1
@@ -3815,7 +3815,7 @@ c_cond
 id|rc
 )paren
 (brace
-id|cERROR
+id|cFYI
 c_func
 (paren
 l_int|1
