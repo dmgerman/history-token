@@ -13,6 +13,84 @@ macro_line|#include &quot;cifsproto.h&quot;
 macro_line|#include &quot;cifs_unicode.h&quot;
 macro_line|#include &quot;cifs_debug.h&quot;
 macro_line|#include &quot;cifs_fs_sb.h&quot;
+DECL|function|cifs_init_private
+r_static
+r_inline
+r_struct
+id|cifsFileInfo
+op_star
+id|cifs_init_private
+c_func
+(paren
+r_struct
+id|cifsFileInfo
+op_star
+id|private_data
+comma
+r_struct
+id|inode
+op_star
+id|inode
+comma
+r_struct
+id|file
+op_star
+id|file
+comma
+id|__u16
+id|netfid
+)paren
+(brace
+id|memset
+c_func
+(paren
+id|private_data
+comma
+l_int|0
+comma
+r_sizeof
+(paren
+r_struct
+id|cifsFileInfo
+)paren
+)paren
+suffix:semicolon
+id|private_data-&gt;netfid
+op_assign
+id|netfid
+suffix:semicolon
+id|private_data-&gt;pid
+op_assign
+id|current-&gt;tgid
+suffix:semicolon
+id|init_MUTEX
+c_func
+(paren
+op_amp
+id|private_data-&gt;fh_sem
+)paren
+suffix:semicolon
+id|private_data-&gt;pfile
+op_assign
+id|file
+suffix:semicolon
+multiline_comment|/* needed for writepage */
+id|private_data-&gt;pInode
+op_assign
+id|inode
+suffix:semicolon
+id|private_data-&gt;invalidHandle
+op_assign
+id|FALSE
+suffix:semicolon
+id|private_data-&gt;closePend
+op_assign
+id|FALSE
+suffix:semicolon
+r_return
+id|private_data
+suffix:semicolon
+)brace
 DECL|function|cifs_open
 r_int
 id|cifs_open
@@ -115,7 +193,7 @@ op_amp
 id|O_CREAT
 )paren
 (brace
-multiline_comment|/* search inode for this file and fill in file-&gt;private_data = */
+multiline_comment|/* search inode for this file and fill in file-&gt;private_data */
 id|pCifsInode
 op_assign
 id|CIFS_I
@@ -170,11 +248,11 @@ id|current-&gt;tgid
 )paren
 (brace
 multiline_comment|/* mode set in cifs_create */
+multiline_comment|/* needed for writepage */
 id|pCifsFile-&gt;pfile
 op_assign
 id|file
 suffix:semicolon
-multiline_comment|/* needed for writepage */
 id|file-&gt;private_data
 op_assign
 id|pCifsFile
@@ -227,7 +305,8 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;could not find file instance for new file %p &quot;
+l_string|&quot;could not find file instance for &quot;
+l_string|&quot;new file %p &quot;
 comma
 id|file
 )paren
@@ -430,8 +509,8 @@ op_assign
 id|FALSE
 suffix:semicolon
 multiline_comment|/* BB pass O_SYNC flag through on file attributes .. BB */
-multiline_comment|/* Also refresh inode by passing in file_info buf returned by SMBOpen &n;&t;   and calling get_inode_info with returned buf (at least &n;&t;   helps non-Unix server case */
-multiline_comment|/* BB we can not do this if this is the second open of a file &n;&t;and the first handle has writebehind data, we might be &n;&t;able to simply do a filemap_fdatawrite/filemap_fdatawait first */
+multiline_comment|/* Also refresh inode by passing in file_info buf returned by SMBOpen&n;&t;   and calling get_inode_info with returned buf (at least helps&n;&t;   non-Unix server case) */
+multiline_comment|/* BB we can not do this if this is the second open of a file &n;&t;   and the first handle has writebehind data, we might be &n;&t;   able to simply do a filemap_fdatawrite/filemap_fdatawait first */
 id|buf
 op_assign
 id|kmalloc
@@ -448,26 +527,17 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|buf
-op_eq
-l_int|NULL
 )paren
 (brace
-id|kfree
-c_func
-(paren
-id|full_path
-)paren
-suffix:semicolon
-id|FreeXid
-c_func
-(paren
-id|xid
-)paren
-suffix:semicolon
-r_return
+id|rc
+op_assign
 op_minus
 id|ENOMEM
+suffix:semicolon
+r_goto
+id|out
 suffix:semicolon
 )brace
 id|rc
@@ -516,21 +586,10 @@ id|rc
 )paren
 )paren
 suffix:semicolon
-id|cFYI
-c_func
-(paren
-l_int|1
-comma
-(paren
-l_string|&quot;oplock: %d &quot;
-comma
-id|oplock
-)paren
-)paren
+r_goto
+id|out
 suffix:semicolon
 )brace
-r_else
-(brace
 id|file-&gt;private_data
 op_assign
 id|kmalloc
@@ -549,62 +608,32 @@ r_if
 c_cond
 (paren
 id|file-&gt;private_data
+op_eq
+l_int|NULL
 )paren
 (brace
-id|memset
-c_func
-(paren
-id|file-&gt;private_data
-comma
-l_int|0
-comma
-r_sizeof
-(paren
-r_struct
-id|cifsFileInfo
-)paren
-)paren
+id|rc
+op_assign
+op_minus
+id|ENOMEM
 suffix:semicolon
+r_goto
+id|out
+suffix:semicolon
+)brace
 id|pCifsFile
 op_assign
-(paren
-r_struct
-id|cifsFileInfo
-op_star
-)paren
-id|file-&gt;private_data
-suffix:semicolon
-id|pCifsFile-&gt;netfid
-op_assign
-id|netfid
-suffix:semicolon
-id|pCifsFile-&gt;pid
-op_assign
-id|current-&gt;tgid
-suffix:semicolon
-id|init_MUTEX
+id|cifs_init_private
 c_func
 (paren
-op_amp
-id|pCifsFile-&gt;fh_sem
-)paren
-suffix:semicolon
-id|pCifsFile-&gt;pfile
-op_assign
-id|file
-suffix:semicolon
-multiline_comment|/* needed for writepage */
-id|pCifsFile-&gt;pInode
-op_assign
+id|file-&gt;private_data
+comma
 id|inode
-suffix:semicolon
-id|pCifsFile-&gt;invalidHandle
-op_assign
-id|FALSE
-suffix:semicolon
-id|pCifsFile-&gt;closePend
-op_assign
-id|FALSE
+comma
+id|file
+comma
+id|netfid
+)paren
 suffix:semicolon
 id|write_lock
 c_func
@@ -703,7 +732,7 @@ c_cond
 id|pCifsInode-&gt;clientCanCacheRead
 )paren
 (brace
-multiline_comment|/* we have the inode open somewhere else&n;&t;&t;&t;&t;&t;   no need to discard cache data */
+multiline_comment|/* we have the inode open somewhere else&n;&t;&t;&t;   no need to discard cache data */
 )brace
 r_else
 (brace
@@ -714,7 +743,7 @@ id|buf
 )paren
 (brace
 multiline_comment|/* BB need same check in cifs_create too? */
-multiline_comment|/* if not oplocked, invalidate inode pages if mtime &n;&t;&t;&t;&t;&t;   or file size changed */
+multiline_comment|/* if not oplocked, invalidate inode pages if mtime &n;&t;&t;&t;&t;   or file size changed */
 r_struct
 id|timespec
 id|temp
@@ -926,7 +955,7 @@ op_amp
 id|CIFS_CREATE_ACTION
 )paren
 (brace
-multiline_comment|/* time to set mode which we can not set earlier due&n;&t;&t;&t;&t; to problems creating new read-only files */
+multiline_comment|/* time to set mode which we can not set earlier due to&n;&t;&t;   problems creating new read-only files */
 r_if
 c_cond
 (paren
@@ -967,14 +996,11 @@ suffix:semicolon
 )brace
 r_else
 (brace
-multiline_comment|/* BB implement via Windows security descriptors eg */
-multiline_comment|/* CIFSSMBWinSetPerms(xid, pTcon, full_path, mode, -1, -1, local_nls); */
-multiline_comment|/* in the meantime could set r/o dos attribute when perms are eg: */
-multiline_comment|/* mode &amp; 0222 == 0 */
+multiline_comment|/* BB implement via Windows security descriptors eg&n;&t;&t;&t;   CIFSSMBWinSetPerms(xid, pTcon, full_path, mode,&n;&t;&t;&t;&t;&t;      -1, -1, local_nls);&n;&t;&t;&t;   in the meantime could set r/o dos attribute when&n;&t;&t;&t;   perms are eg: mode &amp; 0222 == 0 */
 )brace
 )brace
-)brace
-)brace
+id|out
+suffix:colon
 id|kfree
 c_func
 (paren
@@ -3713,15 +3739,7 @@ c_cond
 (paren
 op_logical_neg
 id|mapping
-)paren
-r_return
-op_minus
-id|EFAULT
-suffix:semicolon
-r_else
-r_if
-c_cond
-(paren
+op_logical_or
 op_logical_neg
 id|mapping-&gt;host
 )paren
