@@ -3708,12 +3708,6 @@ id|err_out3
 suffix:semicolon
 )brace
 )brace
-id|netif_start_queue
-c_func
-(paren
-id|netdev
-)paren
-suffix:semicolon
 multiline_comment|/*&n;&t; * Now that everything should be initialized properly,&n;&t; * Open new IrLAP layer instance to take care of us...&n;&t; * Note : will send immediately a speed change...&n;&t; */
 id|sprintf
 c_func
@@ -3796,6 +3790,12 @@ r_goto
 id|err_out4
 suffix:semicolon
 )brace
+id|netif_start_queue
+c_func
+(paren
+id|netdev
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
