@@ -9503,10 +9503,10 @@ comma
 dot
 id|action
 op_assign
-id|VIA_DXS_ENABLE
+id|VIA_DXS_NO_VRA
 )brace
 comma
-multiline_comment|/* Gigabyte GA-7VAXP */
+multiline_comment|/* Gigabyte GA-7VAXP (FIXME: or DXS_ENABLE?) */
 (brace
 dot
 id|vendor
