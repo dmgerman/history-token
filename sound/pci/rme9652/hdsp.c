@@ -19054,8 +19054,7 @@ op_eq
 id|H9652
 )paren
 (brace
-r_int
-r_int
+id|u32
 id|rms_low
 comma
 id|rms_high
@@ -20913,8 +20912,7 @@ id|__user
 op_star
 id|firmware
 suffix:semicolon
-r_int
-r_int
+id|u32
 id|__user
 op_star
 id|firmware_data
@@ -21008,11 +21006,8 @@ id|firmware_data
 comma
 r_sizeof
 (paren
-r_int
-r_int
+id|hdsp-&gt;firmware_cache
 )paren
-op_star
-l_int|24413
 )paren
 op_ne
 l_int|0

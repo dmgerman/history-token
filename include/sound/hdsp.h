@@ -235,13 +235,12 @@ r_struct
 id|_snd_hdsp_firmware
 (brace
 DECL|member|firmware_data
-r_int
-r_int
+r_void
 id|__user
 op_star
 id|firmware_data
 suffix:semicolon
-multiline_comment|/* 24413 long words */
+multiline_comment|/* 24413 x 4 bytes */
 )brace
 suffix:semicolon
 DECL|macro|SNDRV_HDSP_IOCTL_UPLOAD_FIRMWARE
