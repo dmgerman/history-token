@@ -1968,17 +1968,6 @@ id|sk
 op_assign
 id|sock-&gt;sk
 suffix:semicolon
-r_struct
-id|inet_opt
-op_star
-id|inet
-op_assign
-id|inet_sk
-c_func
-(paren
-id|sk
-)paren
-suffix:semicolon
 r_int
 id|err
 suffix:semicolon
