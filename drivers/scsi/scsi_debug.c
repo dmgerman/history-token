@@ -4206,7 +4206,7 @@ l_int|8
 op_or
 id|cmd
 (braket
-l_int|6
+l_int|8
 )braket
 )paren
 suffix:semicolon
