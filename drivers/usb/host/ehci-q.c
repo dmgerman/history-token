@@ -454,11 +454,17 @@ op_assign
 op_minus
 id|EPROTO
 suffix:semicolon
-id|dbg
+id|ehci_vdbg
 (paren
-l_string|&quot;ep %d-%s qtd token %08x --&gt; status %d&quot;
+id|ehci
 comma
-multiline_comment|/* devpath */
+l_string|&quot;dev%d ep%d%s qtd token %08x --&gt; status %d&bslash;n&quot;
+comma
+id|usb_pipedev
+(paren
+id|urb-&gt;pipe
+)paren
+comma
 id|usb_pipeendpoint
 (paren
 id|urb-&gt;pipe

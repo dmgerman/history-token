@@ -54,23 +54,15 @@ id|PORT_PE
 )paren
 )paren
 (brace
-id|dbg
+id|ehci_dbg
 (paren
-l_string|&quot;%s port %d full speed, give to companion, 0x%x&quot;
+id|ehci
 comma
-id|hcd_to_bus
-(paren
-op_amp
-id|ehci-&gt;hcd
-)paren
-op_member_access_from_pointer
-id|bus_name
+l_string|&quot;port %d full speed --&gt; companion&bslash;n&quot;
 comma
 id|index
 op_plus
 l_int|1
-comma
-id|port_status
 )paren
 suffix:semicolon
 singleline_comment|// what happens if HCS_N_CC(params) == 0 ?
@@ -91,17 +83,11 @@ id|index
 suffix:semicolon
 )brace
 r_else
-id|dbg
+id|ehci_dbg
 (paren
-l_string|&quot;%s port %d high speed&quot;
+id|ehci
 comma
-id|hcd_to_bus
-(paren
-op_amp
-id|ehci-&gt;hcd
-)paren
-op_member_access_from_pointer
-id|bus_name
+l_string|&quot;port %d high speed&bslash;n&quot;
 comma
 id|index
 op_plus
@@ -1065,7 +1051,7 @@ multiline_comment|/* only if wPortChange is interesting */
 macro_line|#endif
 id|dbg_port
 (paren
-id|hcd
+id|ehci
 comma
 l_string|&quot;GetStatus&quot;
 comma
@@ -1233,17 +1219,11 @@ id|temp
 )paren
 )paren
 (brace
-id|dbg
+id|ehci_dbg
 (paren
-l_string|&quot;%s port %d low speed, give to companion&quot;
+id|ehci
 comma
-id|hcd_to_bus
-(paren
-op_amp
-id|ehci-&gt;hcd
-)paren
-op_member_access_from_pointer
-id|bus_name
+l_string|&quot;port %d low speed --&gt; companion&bslash;n&quot;
 comma
 id|wIndex
 op_plus
@@ -1257,17 +1237,11 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|vdbg
+id|ehci_vdbg
 (paren
-l_string|&quot;%s port %d reset&quot;
+id|ehci
 comma
-id|hcd_to_bus
-(paren
-op_amp
-id|ehci-&gt;hcd
-)paren
-op_member_access_from_pointer
-id|bus_name
+l_string|&quot;port %d reset&quot;
 comma
 id|wIndex
 op_plus

@@ -553,7 +553,7 @@ op_amp
 id|ehci-&gt;hcd
 )paren
 suffix:semicolon
-multiline_comment|/* unlink the last qh after it&squot;s idled a while */
+multiline_comment|/* stop async processing after it&squot;s idled a while */
 r_if
 c_cond
 (paren
@@ -683,9 +683,12 @@ l_int|16
 )paren
 )paren
 (brace
-id|info
+id|dev_info
 (paren
-l_string|&quot;BIOS handoff failed (%d, %04x)&quot;
+op_star
+id|ehci-&gt;hcd.controller
+comma
+l_string|&quot;BIOS handoff failed (%d, %04x)&bslash;n&quot;
 comma
 id|where
 comma
@@ -696,18 +699,14 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
-id|dbg
+id|ehci_dbg
 (paren
-l_string|&quot;BIOS handoff succeeded&quot;
+id|ehci
+comma
+l_string|&quot;BIOS handoff succeeded&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
-r_else
-id|dbg
-(paren
-l_string|&quot;BIOS handoff not needed&quot;
-)paren
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -833,9 +832,11 @@ op_amp
 id|cap
 )paren
 suffix:semicolon
-id|dbg
+id|ehci_dbg
 (paren
-l_string|&quot;capability %04x at %02x&quot;
+id|ehci
+comma
+l_string|&quot;capability %04x at %02x&bslash;n&quot;
 comma
 id|cap
 comma
@@ -878,9 +879,12 @@ r_case
 l_int|0
 suffix:colon
 multiline_comment|/* illegal reserved capability */
-id|warn
+id|dev_warn
 (paren
-l_string|&quot;illegal capability!&quot;
+op_star
+id|ehci-&gt;hcd.controller
+comma
+l_string|&quot;illegal capability!&bslash;n&quot;
 )paren
 suffix:semicolon
 id|cap
@@ -1117,9 +1121,12 @@ comma
 l_int|0xffffffffffffffffULL
 )paren
 )paren
-id|info
+id|dev_info
 (paren
-l_string|&quot;enabled 64bit PCI DMA (DAC)&quot;
+op_star
+id|ehci-&gt;hcd.controller
+comma
+l_string|&quot;enabled 64bit PCI DMA (DAC)&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -1299,9 +1306,12 @@ op_amp
 id|ehci-&gt;caps-&gt;hci_version
 )paren
 suffix:semicolon
-id|info
+id|dev_info
 (paren
-l_string|&quot;USB %x.%x support enabled, EHCI rev %x.%02x, %s %s&quot;
+op_star
+id|hcd-&gt;controller
+comma
+l_string|&quot;USB %x.%x enabled, EHCI %x.%02x, driver %s&bslash;n&quot;
 comma
 (paren
 (paren
@@ -1326,8 +1336,6 @@ comma
 id|temp
 op_amp
 l_int|0xff
-comma
-id|hcd_name
 comma
 id|DRIVER_VERSION
 )paren
@@ -1419,16 +1427,11 @@ id|hcd_to_ehci
 id|hcd
 )paren
 suffix:semicolon
-id|dbg
+id|ehci_dbg
 (paren
-l_string|&quot;%s: stop&quot;
+id|ehci
 comma
-id|hcd_to_bus
-(paren
-id|hcd
-)paren
-op_member_access_from_pointer
-id|bus_name
+l_string|&quot;stop&bslash;n&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* no more interrupts ... */
@@ -1452,9 +1455,12 @@ id|in_interrupt
 )paren
 )paren
 multiline_comment|/* should not happen!! */
-id|err
+id|dev_err
 (paren
-l_string|&quot;stopped %s!&quot;
+op_star
+id|hcd-&gt;controller
+comma
+l_string|&quot;stopped %s!&bslash;n&quot;
 comma
 id|RUN_CONTEXT
 )paren
@@ -1507,9 +1513,11 @@ id|ehci
 )paren
 suffix:semicolon
 macro_line|#ifdef&t;EHCI_STATS
-id|dbg
+id|ehci_dbg
 (paren
-l_string|&quot;irq normal %ld err %ld reclaim %ld&quot;
+id|ehci
+comma
+l_string|&quot;irq normal %ld err %ld reclaim %ld&bslash;n&quot;
 comma
 id|ehci-&gt;stats.normal
 comma
@@ -1518,9 +1526,11 @@ comma
 id|ehci-&gt;stats.reclaim
 )paren
 suffix:semicolon
-id|dbg
+id|ehci_dbg
 (paren
-l_string|&quot;complete %ld unlink %ld&quot;
+id|ehci
+comma
+l_string|&quot;complete %ld unlink %ld&bslash;n&quot;
 comma
 id|ehci-&gt;stats.complete
 comma
@@ -2449,16 +2459,11 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-id|dbg
+id|ehci_vdbg
 (paren
-l_string|&quot;%s urb_dequeue %p qh %p state %d&quot;
+id|ehci
 comma
-id|hcd_to_bus
-(paren
-id|hcd
-)paren
-op_member_access_from_pointer
-id|bus_name
+l_string|&quot;urb_dequeue %p qh %p state %d&bslash;n&quot;
 comma
 id|urb
 comma
@@ -3316,11 +3321,6 @@ id|init
 r_void
 )paren
 (brace
-id|dbg
-(paren
-id|DRIVER_INFO
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren

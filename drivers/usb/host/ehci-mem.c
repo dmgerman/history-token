@@ -312,9 +312,11 @@ op_eq
 l_int|0
 )paren
 (brace
-id|dbg
+id|ehci_dbg
 (paren
-l_string|&quot;no dummy td&quot;
+id|ehci
+comma
+l_string|&quot;no dummy td&bslash;n&quot;
 )paren
 suffix:semicolon
 id|pci_pool_free
@@ -351,7 +353,6 @@ op_star
 id|qh
 )paren
 (brace
-singleline_comment|// dbg (&quot;get %p (%d++)&quot;, qh, qh-&gt;refcount.counter);
 id|atomic_inc
 (paren
 op_amp
@@ -378,7 +379,6 @@ op_star
 id|qh
 )paren
 (brace
-singleline_comment|// dbg (&quot;put %p (--%d)&quot;, qh, qh-&gt;refcount.counter);
 r_if
 c_cond
 (paren
@@ -405,9 +405,11 @@ op_logical_or
 id|qh-&gt;qh_next.ptr
 )paren
 (brace
-id|dbg
+id|ehci_dbg
 (paren
-l_string|&quot;unused qh not empty!&quot;
+id|ehci
+comma
+l_string|&quot;unused qh not empty!&bslash;n&quot;
 )paren
 suffix:semicolon
 id|BUG

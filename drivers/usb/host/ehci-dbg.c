@@ -56,9 +56,11 @@ op_amp
 id|ehci-&gt;caps-&gt;hcs_params
 )paren
 suffix:semicolon
-id|dbg
+id|ehci_dbg
 (paren
-l_string|&quot;%s hcs_params 0x%x dbg=%d%s cc=%d pcc=%d%s%s ports=%d&quot;
+id|ehci
+comma
+l_string|&quot;%s hcs_params 0x%x dbg=%d%s cc=%d pcc=%d%s%s ports=%d&bslash;n&quot;
 comma
 id|label
 comma
@@ -225,17 +227,11 @@ id|tmp
 )paren
 suffix:semicolon
 )brace
-id|dbg
+id|ehci_dbg
 (paren
-l_string|&quot;%s: %s portroute %s&quot;
+id|ehci
 comma
-id|hcd_to_bus
-(paren
-op_amp
-id|ehci-&gt;hcd
-)paren
-op_member_access_from_pointer
-id|bus_name
+l_string|&quot;%s portroute %s&bslash;n&quot;
 comma
 id|label
 comma
@@ -292,38 +288,17 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|HCC_EXT_CAPS
-(paren
-id|params
-)paren
-)paren
-(brace
-singleline_comment|// EHCI 0.96 ... could interpret these (legacy?)
-id|dbg
-(paren
-l_string|&quot;%s extended capabilities at pci %2x&quot;
-comma
-id|label
-comma
-id|HCC_EXT_CAPS
-(paren
-id|params
-)paren
-)paren
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
 id|HCC_ISOC_CACHE
 (paren
 id|params
 )paren
 )paren
 (brace
-id|dbg
+id|ehci_dbg
 (paren
-l_string|&quot;%s hcc_params %04x caching frame %s%s%s&quot;
+id|ehci
+comma
+l_string|&quot;%s hcc_params %04x caching frame %s%s%s&bslash;n&quot;
 comma
 id|label
 comma
@@ -363,9 +338,11 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|dbg
+id|ehci_dbg
 (paren
-l_string|&quot;%s hcc_params %04x caching %d uframes %s%s%s&quot;
+id|ehci
+comma
+l_string|&quot;%s hcc_params %04x thresh %d uframes %s%s%s&bslash;n&quot;
 comma
 id|label
 comma
@@ -1366,11 +1343,11 @@ suffix:semicolon
 macro_line|#endif&t;/* DEBUG */
 multiline_comment|/* functions have the &quot;wrong&quot; filename when they&squot;re output... */
 DECL|macro|dbg_status
-mdefine_line|#define dbg_status(ehci, label, status) { &bslash;&n;&t;char _buf [80]; &bslash;&n;&t;dbg_status_buf (_buf, sizeof _buf, label, status); &bslash;&n;&t;dbg (&quot;%s&quot;, _buf); &bslash;&n;}
+mdefine_line|#define dbg_status(ehci, label, status) { &bslash;&n;&t;char _buf [80]; &bslash;&n;&t;dbg_status_buf (_buf, sizeof _buf, label, status); &bslash;&n;&t;ehci_dbg (ehci, &quot;%s&bslash;n&quot;, _buf); &bslash;&n;}
 DECL|macro|dbg_cmd
-mdefine_line|#define dbg_cmd(ehci, label, command) { &bslash;&n;&t;char _buf [80]; &bslash;&n;&t;dbg_command_buf (_buf, sizeof _buf, label, command); &bslash;&n;&t;dbg (&quot;%s&quot;, _buf); &bslash;&n;}
+mdefine_line|#define dbg_cmd(ehci, label, command) { &bslash;&n;&t;char _buf [80]; &bslash;&n;&t;dbg_command_buf (_buf, sizeof _buf, label, command); &bslash;&n;&t;ehci_dbg (ehci, &quot;%s&bslash;n&quot;, _buf); &bslash;&n;}
 DECL|macro|dbg_port
-mdefine_line|#define dbg_port(hcd, label, port, status) { &bslash;&n;&t;char _buf [80]; &bslash;&n;&t;dbg_port_buf (_buf, sizeof _buf, label, port, status); &bslash;&n;&t;dbg (&quot;%s&quot;, _buf); &bslash;&n;}
+mdefine_line|#define dbg_port(ehci, label, port, status) { &bslash;&n;&t;char _buf [80]; &bslash;&n;&t;dbg_port_buf (_buf, sizeof _buf, label, port, status); &bslash;&n;&t;ehci_dbg (ehci, &quot;%s&bslash;n&quot;, _buf); &bslash;&n;}
 multiline_comment|/*-------------------------------------------------------------------------*/
 macro_line|#ifdef STUB_DEBUG_FILES
 DECL|function|create_debug_files
