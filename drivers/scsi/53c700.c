@@ -6051,6 +6051,7 @@ id|DFIFO_REG
 suffix:semicolon
 )brace
 )brace
+multiline_comment|/* The queue lock with interrupts disabled must be held on entry to&n; * this function */
 id|STATIC
 r_int
 DECL|function|NCR_700_start_command
@@ -6089,27 +6090,12 @@ id|SCp-&gt;host-&gt;hostdata
 l_int|0
 )braket
 suffix:semicolon
-r_int
-r_int
-id|flags
-suffix:semicolon
 id|__u16
 id|count
 op_assign
 l_int|1
 suffix:semicolon
 multiline_comment|/* for IDENTIFY message */
-id|save_flags
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -6122,12 +6108,6 @@ multiline_comment|/* keep this inside the lock to close the race window where&n;
 id|slot-&gt;state
 op_assign
 id|NCR_700_SLOT_QUEUED
-suffix:semicolon
-id|restore_flags
-c_func
-(paren
-id|flags
-)paren
 suffix:semicolon
 id|DEBUG
 c_func
@@ -6460,13 +6440,6 @@ comma
 id|SCp-&gt;host
 comma
 id|DSP_REG
-)paren
-suffix:semicolon
-multiline_comment|/* allow interrupts here so that if we&squot;re selected we can take&n;&t; * a selection interrupt.  The script start may not be&n;&t; * effective in this case, but the selection interrupt will&n;&t; * save our command in that case */
-id|restore_flags
-c_func
-(paren
-id|flags
 )paren
 suffix:semicolon
 r_return
