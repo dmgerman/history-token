@@ -12591,6 +12591,17 @@ comma
 id|cmdbuf.bufsz
 )paren
 )paren
+(brace
+id|drm_free
+c_func
+(paren
+id|kbuf
+comma
+id|orig_bufsz
+comma
+id|DRM_MEM_DRIVER
+)paren
+suffix:semicolon
 r_return
 id|DRM_ERR
 c_func
@@ -12598,6 +12609,7 @@ c_func
 id|EFAULT
 )paren
 suffix:semicolon
+)brace
 id|cmdbuf.buf
 op_assign
 id|kbuf
