@@ -2209,6 +2209,10 @@ id|NF_IP_POST_ROUTING
 op_logical_or
 id|hooknum
 op_eq
+id|NF_IP_LOCAL_IN
+op_logical_or
+id|hooknum
+op_eq
 id|NF_IP_LOCAL_OUT
 )paren
 suffix:semicolon
@@ -3526,7 +3530,7 @@ op_amp
 id|ip_conntrack_lock
 )paren
 suffix:semicolon
-id|list_for_each
+id|list_for_each_prev
 c_func
 (paren
 id|cur_item
@@ -3917,6 +3921,7 @@ op_member_access_from_pointer
 id|nfct
 op_minus
 (paren
+(paren
 r_struct
 id|ip_conntrack
 op_star
@@ -3927,6 +3932,9 @@ id|pskb
 )paren
 op_member_access_from_pointer
 id|nfct-&gt;master
+)paren
+op_member_access_from_pointer
+id|infos
 op_eq
 id|IP_CT_RELATED
 op_logical_or
@@ -3938,6 +3946,7 @@ op_member_access_from_pointer
 id|nfct
 op_minus
 (paren
+(paren
 r_struct
 id|ip_conntrack
 op_star
@@ -3948,6 +3957,9 @@ id|pskb
 )paren
 op_member_access_from_pointer
 id|nfct-&gt;master
+)paren
+op_member_access_from_pointer
+id|infos
 op_eq
 id|IP_CT_RELATED
 op_plus

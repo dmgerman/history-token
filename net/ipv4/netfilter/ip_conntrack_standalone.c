@@ -2254,7 +2254,7 @@ c_func
 (paren
 l_string|&quot;ip_conntrack&quot;
 comma
-l_int|0
+l_int|0440
 comma
 id|list_conntracks
 )paren
