@@ -161,6 +161,16 @@ id|drm_radeon_buf_priv_t
 )paren
 comma
 dot
+id|preinit
+op_assign
+id|radeon_driver_preinit
+comma
+dot
+id|postcleanup
+op_assign
+id|radeon_driver_postcleanup
+comma
+dot
 id|prerelease
 op_assign
 id|radeon_driver_prerelease

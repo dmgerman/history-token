@@ -277,6 +277,8 @@ id|preinit
 c_func
 (paren
 id|dev
+comma
+id|ent-&gt;driver_data
 )paren
 )paren
 )paren

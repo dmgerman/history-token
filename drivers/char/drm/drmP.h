@@ -1275,6 +1275,10 @@ id|preinit
 r_struct
 id|drm_device
 op_star
+comma
+r_int
+r_int
+id|flags
 )paren
 suffix:semicolon
 DECL|member|prerelease
