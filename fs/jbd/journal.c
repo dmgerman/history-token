@@ -90,14 +90,13 @@ c_func
 id|journal_dirty_metadata
 )paren
 suffix:semicolon
-macro_line|#if 0
+DECL|variable|journal_release_buffer
 id|EXPORT_SYMBOL
 c_func
 (paren
 id|journal_release_buffer
 )paren
 suffix:semicolon
-macro_line|#endif
 DECL|variable|journal_forget
 id|EXPORT_SYMBOL
 c_func

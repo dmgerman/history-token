@@ -3062,8 +3062,8 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#if 0
 multiline_comment|/* &n; * journal_release_buffer: undo a get_write_access without any buffer&n; * updates, if the update decided in the end that it didn&squot;t need access.&n; *&n; * journal_get_write_access() can block, so it is quite possible for a&n; * journaling component to decide after the write access is returned&n; * that global state has changed and the update is no longer required.  */
+DECL|function|journal_release_buffer
 r_void
 id|journal_release_buffer
 (paren
@@ -3185,7 +3185,6 @@ id|journal
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif
 multiline_comment|/** &n; * void journal_forget() - bforget() for potentially-journaled buffers.&n; * @handle: transaction handle&n; * @bh:     bh to &squot;forget&squot;&n; *&n; * We can only do the bforget if there are no commits pending against the&n; * buffer.  If the buffer is dirty in the current running transaction we&n; * can safely unlink it. &n; *&n; * bh may not be a journalled buffer at all - it may be a non-JBD&n; * buffer which came off the hashtable.  Check for this.&n; *&n; * Decrements bh-&gt;b_count by one.&n; * &n; * Allow this call even if the handle has aborted --- it may be part of&n; * the caller&squot;s cleanup after an abort.&n; */
 DECL|function|journal_forget
 r_void
