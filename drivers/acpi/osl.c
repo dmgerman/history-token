@@ -646,6 +646,11 @@ op_star
 id|context
 )paren
 (brace
+multiline_comment|/*&n;&t; * Ignore the irq from the core, and use the value in our copy of the&n;&t; * FADT. It may not be the same if an interrupt source override exists&n;&t; * for the SCI.&n;&t; */
+id|irq
+op_assign
+id|acpi_fadt.sci_int
+suffix:semicolon
 macro_line|#ifdef CONFIG_IA64
 id|irq
 op_assign
