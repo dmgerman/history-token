@@ -793,7 +793,7 @@ id|eth_port_num
 )paren
 suffix:semicolon
 r_static
-r_int
+r_void
 id|eth_port_start
 c_func
 (paren
