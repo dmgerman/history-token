@@ -6306,21 +6306,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * If we are busy, this is not going to fly.&n;&t; */
-r_if
-c_cond
-(paren
-id|GET_USE_COUNT
-c_func
-(paren
-id|tpnt-&gt;module
-)paren
-op_ne
-l_int|0
-)paren
-r_goto
-id|error_out
-suffix:semicolon
+multiline_comment|/*&n;&t; * If we are busy, this is not going to fly.&n;&t;if (GET_USE_COUNT(tpnt-&gt;module) != 0)&n;&t;&t;goto error_out;&n;&t; */
 id|driver_unregister
 c_func
 (paren
@@ -7278,10 +7264,13 @@ c_cond
 op_logical_neg
 id|sgp-&gt;slab
 )paren
-id|panic
+id|printk
 c_func
 (paren
-l_string|&quot;SCSI: can&squot;t init sg slab&bslash;n&quot;
+id|KERN_ERR
+l_string|&quot;SCSI: can&squot;t init sg slab %s&bslash;n&quot;
+comma
+id|sgp-&gt;name
 )paren
 suffix:semicolon
 id|sgp-&gt;pool
@@ -7304,10 +7293,13 @@ c_cond
 op_logical_neg
 id|sgp-&gt;pool
 )paren
-id|panic
+id|printk
 c_func
 (paren
-l_string|&quot;SCSI: can&squot;t init sg mempool&bslash;n&quot;
+id|KERN_ERR
+l_string|&quot;SCSI: can&squot;t init sg mempool %s&bslash;n&quot;
+comma
+id|sgp-&gt;name
 )paren
 suffix:semicolon
 )brace
@@ -7336,9 +7328,8 @@ id|KERN_ERR
 l_string|&quot;cannot init /proc/scsi&bslash;n&quot;
 )paren
 suffix:semicolon
-r_return
-op_minus
-id|ENOMEM
+r_goto
+id|out_error
 suffix:semicolon
 )brace
 id|generic
@@ -7367,17 +7358,8 @@ id|KERN_ERR
 l_string|&quot;cannot init /proc/scsi/scsi&bslash;n&quot;
 )paren
 suffix:semicolon
-id|remove_proc_entry
-c_func
-(paren
-l_string|&quot;scsi&quot;
-comma
-l_int|0
-)paren
-suffix:semicolon
-r_return
-op_minus
-id|ENOMEM
+r_goto
+id|out_proc_error
 suffix:semicolon
 )brace
 id|generic-&gt;write_proc
@@ -7422,6 +7404,69 @@ l_int|NULL
 suffix:semicolon
 r_return
 l_int|0
+suffix:semicolon
+macro_line|#ifdef CONFIG_PROC_FS
+id|out_proc_error
+suffix:colon
+id|remove_proc_entry
+c_func
+(paren
+l_string|&quot;scsi&quot;
+comma
+l_int|0
+)paren
+suffix:semicolon
+macro_line|#endif
+id|out_error
+suffix:colon
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+id|SG_MEMPOOL_NR
+suffix:semicolon
+id|i
+op_increment
+)paren
+(brace
+r_struct
+id|scsi_host_sg_pool
+op_star
+id|sgp
+op_assign
+id|scsi_sg_pools
+op_plus
+id|i
+suffix:semicolon
+id|mempool_destroy
+c_func
+(paren
+id|sgp-&gt;pool
+)paren
+suffix:semicolon
+id|kmem_cache_destroy
+c_func
+(paren
+id|sgp-&gt;slab
+)paren
+suffix:semicolon
+id|sgp-&gt;pool
+op_assign
+l_int|NULL
+suffix:semicolon
+id|sgp-&gt;slab
+op_assign
+l_int|NULL
+suffix:semicolon
+)brace
+r_return
+op_minus
+id|ENOMEM
 suffix:semicolon
 )brace
 DECL|function|exit_scsi
