@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * arch/arm/mach-iop310/iop310-pci.c&n; *&n; * PCI support for the Intel IOP310 chipset&n; *&n; * Matt Porter &lt;mporter@mvista.com&gt;&n; *&n; * Copyright (C) 2001 MontaVista Software, Inc.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; */
+multiline_comment|/*&n; * arch/arm/mach-iop3xx/iop310-pci.c&n; *&n; * PCI support for the Intel IOP310 chipset&n; *&n; * Matt Porter &lt;mporter@mvista.com&gt;&n; *&n; * Copyright (C) 2001 MontaVista Software, Inc.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
