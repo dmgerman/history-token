@@ -952,12 +952,6 @@ id|cmaj_flt
 comma
 id|cnswap
 suffix:semicolon
-DECL|member|swappable
-r_int
-id|swappable
-suffix:colon
-l_int|1
-suffix:semicolon
 multiline_comment|/* process credentials */
 DECL|member|uid
 DECL|member|euid

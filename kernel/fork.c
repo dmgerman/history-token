@@ -3079,10 +3079,6 @@ id|p-&gt;did_exec
 op_assign
 l_int|0
 suffix:semicolon
-id|p-&gt;swappable
-op_assign
-l_int|0
-suffix:semicolon
 id|p-&gt;state
 op_assign
 id|TASK_UNINTERRUPTIBLE
@@ -3454,10 +3450,6 @@ op_assign
 id|p-&gt;self_exec_id
 suffix:semicolon
 multiline_comment|/* ok, now we should be set up.. */
-id|p-&gt;swappable
-op_assign
-l_int|1
-suffix:semicolon
 r_if
 c_cond
 (paren
