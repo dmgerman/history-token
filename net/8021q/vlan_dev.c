@@ -1286,8 +1286,7 @@ id|stats-&gt;tx_dropped
 op_increment
 suffix:semicolon
 r_return
-op_minus
-id|ENOMEM
+l_int|0
 suffix:semicolon
 )brace
 id|VLAN_DEV_INFO
@@ -1330,8 +1329,7 @@ id|stats-&gt;tx_dropped
 op_increment
 suffix:semicolon
 r_return
-op_minus
-id|ENOMEM
+l_int|0
 suffix:semicolon
 )brace
 )brace
