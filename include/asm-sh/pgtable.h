@@ -1,13 +1,14 @@
 macro_line|#ifndef __ASM_SH_PGTABLE_H
 DECL|macro|__ASM_SH_PGTABLE_H
 mdefine_line|#define __ASM_SH_PGTABLE_H
-multiline_comment|/*&n; * Copyright (C) 1999 Niibe Yutaka&n; * Copyright (C) 2002, 2003 Paul Mundt&n; */
+multiline_comment|/*&n; * Copyright (C) 1999 Niibe Yutaka&n; * Copyright (C) 2002, 2003, 2004 Paul Mundt&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/pgtable-2level.h&gt;
 multiline_comment|/*&n; * This file contains the functions and defines necessary to modify and use&n; * the SuperH page table tree.&n; */
 macro_line|#ifndef __ASSEMBLY__
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/addrspace.h&gt;
+macro_line|#include &lt;asm/fixmap.h&gt;
 macro_line|#include &lt;linux/threads.h&gt;
 r_extern
 id|pgd_t
@@ -56,7 +57,7 @@ multiline_comment|/*&n; * First 1MB map is used by fixed purpose.&n; * Currently
 DECL|macro|VMALLOC_START
 mdefine_line|#define VMALLOC_START&t;(P3SEG+0x00100000)
 DECL|macro|VMALLOC_END
-mdefine_line|#define VMALLOC_END&t;P4SEG
+mdefine_line|#define VMALLOC_END&t;(FIXADDR_START-2*PAGE_SIZE)
 DECL|macro|_PAGE_WT
 mdefine_line|#define&t;_PAGE_WT&t;0x001  /* WT-bit on SH-4, 0 on SH-3 */
 DECL|macro|_PAGE_HW_SHARED
