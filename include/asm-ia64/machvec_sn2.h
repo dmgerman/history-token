@@ -107,10 +107,6 @@ id|ia64_mv_pci_dma_sync_sg
 id|sn_pci_dma_sync_sg
 suffix:semicolon
 r_extern
-id|ia64_mv_pci_dma_address
-id|sn_dma_address
-suffix:semicolon
-r_extern
 id|ia64_mv_pci_dma_supported
 id|sn_pci_dma_supported
 suffix:semicolon
@@ -173,8 +169,6 @@ DECL|macro|platform_pci_dma_sync_single
 mdefine_line|#define platform_pci_dma_sync_single&t;sn_pci_dma_sync_single
 DECL|macro|platform_pci_dma_sync_sg
 mdefine_line|#define platform_pci_dma_sync_sg&t;sn_pci_dma_sync_sg
-DECL|macro|platform_pci_dma_address
-mdefine_line|#define platform_pci_dma_address&t;sn_dma_address
 DECL|macro|platform_pci_dma_supported
 mdefine_line|#define platform_pci_dma_supported&t;sn_pci_dma_supported
 macro_line|#endif /* _ASM_IA64_MACHVEC_SN2_H */
