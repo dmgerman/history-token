@@ -1924,12 +1924,17 @@ id|module_use
 op_star
 id|use
 suffix:semicolon
+r_int
+id|printed_something
+op_assign
+l_int|0
+suffix:semicolon
 id|seq_printf
 c_func
 (paren
 id|m
 comma
-l_string|&quot; %u&quot;
+l_string|&quot; %u &quot;
 comma
 id|module_refcount
 c_func
@@ -1938,6 +1943,7 @@ id|mod
 )paren
 )paren
 suffix:semicolon
+multiline_comment|/* Always include a trailing , so userspace can differentiate&n;           between this and the old multi-field proc format. */
 id|list_for_each_entry
 c_func
 (paren
@@ -1948,29 +1954,41 @@ id|mod-&gt;modules_which_use_me
 comma
 id|list
 )paren
+(brace
+id|printed_something
+op_assign
+l_int|1
+suffix:semicolon
 id|seq_printf
 c_func
 (paren
 id|m
 comma
-l_string|&quot; %s&quot;
+l_string|&quot;%s,&quot;
 comma
 id|use-&gt;module_which_uses-&gt;name
 )paren
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
 id|mod-&gt;unsafe
 )paren
+(brace
+id|printed_something
+op_assign
+l_int|1
+suffix:semicolon
 id|seq_printf
 c_func
 (paren
 id|m
 comma
-l_string|&quot; [unsafe]&quot;
+l_string|&quot;[unsafe],&quot;
 )paren
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -1984,20 +2002,32 @@ m_exit
 op_eq
 id|cleanup_module
 )paren
-id|seq_printf
-c_func
-(paren
-id|m
-comma
-l_string|&quot; [permanent]&quot;
-)paren
+(brace
+id|printed_something
+op_assign
+l_int|1
 suffix:semicolon
 id|seq_printf
 c_func
 (paren
 id|m
 comma
-l_string|&quot;&bslash;n&quot;
+l_string|&quot;[permanent],&quot;
+)paren
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|printed_something
+)paren
+id|seq_printf
+c_func
+(paren
+id|m
+comma
+l_string|&quot;-&quot;
 )paren
 suffix:semicolon
 )brace
@@ -2208,12 +2238,13 @@ op_star
 id|mod
 )paren
 (brace
+multiline_comment|/* We don&squot;t know the usage count, or what modules are using. */
 id|seq_printf
 c_func
 (paren
 id|m
 comma
-l_string|&quot;&bslash;n&quot;
+l_string|&quot; - -&quot;
 )paren
 suffix:semicolon
 )brace
@@ -6937,10 +6968,19 @@ comma
 id|mod
 )paren
 suffix:semicolon
+id|seq_printf
+c_func
+(paren
+id|m
+comma
+l_string|&quot;&bslash;n&quot;
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/* Format: modulename size refcount deps&n;&n;   Where refcount is a number or -, and deps is a comma-separated list&n;   of depends or -.&n;*/
 DECL|variable|modules_op
 r_struct
 id|seq_operations
