@@ -18760,11 +18760,6 @@ op_assign
 id|xfs_bmap
 comma
 dot
-id|vop_strategy
-op_assign
-id|xfs_strategy
-comma
-dot
 id|vop_reclaim
 op_assign
 id|xfs_reclaim

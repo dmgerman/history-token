@@ -823,39 +823,6 @@ comma
 r_int
 comma
 r_struct
-id|cred
-op_star
-comma
-r_struct
-id|page_buf_bmap_s
-op_star
-comma
-r_int
-op_star
-)paren
-suffix:semicolon
-DECL|typedef|vop_strategy_t
-r_typedef
-r_int
-(paren
-op_star
-id|vop_strategy_t
-)paren
-(paren
-id|bhv_desc_t
-op_star
-comma
-id|xfs_off_t
-comma
-id|ssize_t
-comma
-r_int
-comma
-r_struct
-id|cred
-op_star
-comma
-r_struct
 id|page_buf_bmap_s
 op_star
 comma
@@ -1181,10 +1148,6 @@ DECL|member|vop_bmap
 id|vop_bmap_t
 id|vop_bmap
 suffix:semicolon
-DECL|member|vop_strategy
-id|vop_strategy_t
-id|vop_strategy
-suffix:semicolon
 DECL|member|vop_reclaim
 id|vop_reclaim_t
 id|vop_reclaim
@@ -1245,9 +1208,7 @@ mdefine_line|#define VOP_READ(vp,file,iov,segs,offset,cr,rv)&t;&t;&t;&t;&bslash;
 DECL|macro|VOP_WRITE
 mdefine_line|#define VOP_WRITE(vp,file,iov,segs,offset,cr,rv)&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;VN_BHV_READ_LOCK(&amp;(vp)-&gt;v_bh);&t;&t;&t;&t;&t;&bslash;&n;&t;rv = _VOP_(vop_write, vp)((vp)-&gt;v_fbhv,file,iov,segs,offset,cr);&bslash;&n;&t;VN_BHV_READ_UNLOCK(&amp;(vp)-&gt;v_bh);&t;&t;&t;&t;&bslash;&n;}
 DECL|macro|VOP_BMAP
-mdefine_line|#define VOP_BMAP(vp,of,sz,rw,cr,b,n,rv)&t;&t;&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;VN_BHV_READ_LOCK(&amp;(vp)-&gt;v_bh);&t;&t;&t;&t;&t;&bslash;&n;&t;rv = _VOP_(vop_bmap, vp)((vp)-&gt;v_fbhv,of,sz,rw,cr,b,n);&t;&t;&bslash;&n;&t;VN_BHV_READ_UNLOCK(&amp;(vp)-&gt;v_bh);&t;&t;&t;&t;&bslash;&n;}
-DECL|macro|VOP_STRATEGY
-mdefine_line|#define VOP_STRATEGY(vp,of,sz,rw,cr,b,n,rv)&t;&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;VN_BHV_READ_LOCK(&amp;(vp)-&gt;v_bh);&t;&t;&t;&t;&t;&bslash;&n;&t;rv = _VOP_(vop_strategy, vp)((vp)-&gt;v_fbhv,of,sz,rw,cr,b,n);&t;&bslash;&n;&t;VN_BHV_READ_UNLOCK(&amp;(vp)-&gt;v_bh);&t;&t;&t;&t;&bslash;&n;}
+mdefine_line|#define VOP_BMAP(vp,of,sz,rw,b,n,rv)&t;&t;&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;VN_BHV_READ_LOCK(&amp;(vp)-&gt;v_bh);&t;&t;&t;&t;&t;&bslash;&n;&t;rv = _VOP_(vop_bmap, vp)((vp)-&gt;v_fbhv,of,sz,rw,b,n);&t;&t;&bslash;&n;&t;VN_BHV_READ_UNLOCK(&amp;(vp)-&gt;v_bh);&t;&t;&t;&t;&bslash;&n;}
 DECL|macro|VOP_OPEN
 mdefine_line|#define VOP_OPEN(vp, cr, rv)&t;&t;&t;&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;VN_BHV_READ_LOCK(&amp;(vp)-&gt;v_bh);&t;&t;&t;&t;&t;&bslash;&n;&t;rv = _VOP_(vop_open, vp)((vp)-&gt;v_fbhv, cr);&t;&t;&t;&bslash;&n;&t;VN_BHV_READ_UNLOCK(&amp;(vp)-&gt;v_bh);&t;&t;&t;&t;&bslash;&n;}
 DECL|macro|VOP_GETATTR
