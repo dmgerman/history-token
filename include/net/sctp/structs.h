@@ -11,56 +11,6 @@ macro_line|#include &lt;asm/atomic.h&gt;&t;&t;/* This gets us atomic counters.  
 macro_line|#include &lt;linux/skbuff.h&gt;&t;/* We need sk_buff_head. */
 macro_line|#include &lt;linux/workqueue.h&gt;&t;/* We need tq_struct.    */
 macro_line|#include &lt;linux/sctp.h&gt;         /* We need sctp* header structs.  */
-multiline_comment|/*&n; * This is (almost) a direct quote from RFC 2553.&n; */
-multiline_comment|/*&n; * Desired design of maximum size and alignment&n; */
-DECL|macro|_SS_MAXSIZE
-mdefine_line|#define _SS_MAXSIZE    128&t;&t;/* Implementation specific max size */
-DECL|macro|_SS_ALIGNSIZE
-mdefine_line|#define _SS_ALIGNSIZE  (sizeof (__s64))
-multiline_comment|/* Implementation specific desired alignment */
-multiline_comment|/*&n; * Definitions used for sockaddr_storage structure paddings design.&n; */
-DECL|macro|_SS_PAD1SIZE
-mdefine_line|#define _SS_PAD1SIZE   (_SS_ALIGNSIZE - sizeof (sa_family_t))
-DECL|macro|_SS_PAD2SIZE
-mdefine_line|#define _SS_PAD2SIZE   (_SS_MAXSIZE - (sizeof (sa_family_t)+ &bslash;&n;                              _SS_PAD1SIZE + _SS_ALIGNSIZE))
-DECL|struct|sockaddr_storage
-r_struct
-id|sockaddr_storage
-(brace
-DECL|member|__ss_family
-id|sa_family_t
-id|__ss_family
-suffix:semicolon
-multiline_comment|/* address family */
-multiline_comment|/* Following fields are implementation specific */
-DECL|member|__ss_pad1
-r_char
-id|__ss_pad1
-(braket
-id|_SS_PAD1SIZE
-)braket
-suffix:semicolon
-multiline_comment|/* 6 byte pad, to make implementation */
-multiline_comment|/* specific pad up to alignment field that */
-multiline_comment|/* follows explicit in the data structure */
-DECL|member|__ss_align
-id|__s64
-id|__ss_align
-suffix:semicolon
-multiline_comment|/* field to force desired structure */
-multiline_comment|/* storage alignment */
-DECL|member|__ss_pad2
-r_char
-id|__ss_pad2
-(braket
-id|_SS_PAD2SIZE
-)braket
-suffix:semicolon
-multiline_comment|/* 112 byte pad to achieve desired size, */
-multiline_comment|/* _SS_MAXSIZE value minus size of ss_family */
-multiline_comment|/* __ss_pad1, __ss_align fields is 112 */
-)brace
-suffix:semicolon
 multiline_comment|/* A convenience structure for handling sockaddr structures.&n; * We should wean ourselves off this.&n; */
 DECL|union|sctp_addr
 r_union
