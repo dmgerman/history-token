@@ -1900,7 +1900,7 @@ id|pn
 op_assign
 id|rqstp-&gt;rq_resused
 suffix:semicolon
-id|take_page
+id|svc_take_page
 c_func
 (paren
 id|rqstp
@@ -3505,7 +3505,7 @@ op_amp
 l_int|3
 )paren
 (brace
-multiline_comment|/* need to page with tail */
+multiline_comment|/* need to pad the tail */
 id|rqstp-&gt;rq_res.tail
 (braket
 l_int|0
