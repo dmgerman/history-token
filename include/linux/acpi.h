@@ -205,13 +205,13 @@ id|length
 suffix:semicolon
 DECL|typedef|acpi_table_entry_header
 )brace
-id|acpi_table_entry_header
 id|__attribute__
 (paren
 (paren
 id|packed
 )paren
 )paren
+id|acpi_table_entry_header
 suffix:semicolon
 multiline_comment|/* Root System Description Table (RSDT) */
 DECL|struct|acpi_table_rsdt
@@ -390,13 +390,13 @@ l_int|12
 suffix:semicolon
 DECL|typedef|acpi_interrupt_flags
 )brace
-id|acpi_interrupt_flags
 id|__attribute__
 (paren
 (paren
 id|packed
 )paren
 )paren
+id|acpi_interrupt_flags
 suffix:semicolon
 DECL|struct|acpi_table_lapic
 r_struct
@@ -1098,8 +1098,10 @@ id|gpe_bit
 suffix:semicolon
 DECL|member|ec_id
 r_char
-op_star
 id|ec_id
+(braket
+l_int|0
+)braket
 suffix:semicolon
 )brace
 id|__attribute__
