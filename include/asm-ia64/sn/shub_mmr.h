@@ -148,6 +148,25 @@ mdefine_line|#define SH_EVENT_OCCURRED_II_INT1_SHFT           30
 DECL|macro|SH_EVENT_OCCURRED_II_INT1_MASK
 mdefine_line|#define SH_EVENT_OCCURRED_II_INT1_MASK           0x0000000040000000
 multiline_comment|/* ==================================================================== */
+multiline_comment|/*                         LEDS                                         */
+multiline_comment|/* ==================================================================== */
+DECL|macro|SH1_REAL_JUNK_BUS_LED0
+mdefine_line|#define SH1_REAL_JUNK_BUS_LED0&t;&t;&t; 0x7fed00000UL
+DECL|macro|SH1_REAL_JUNK_BUS_LED1
+mdefine_line|#define SH1_REAL_JUNK_BUS_LED1&t;&t;&t; 0x7fed10000UL
+DECL|macro|SH1_REAL_JUNK_BUS_LED2
+mdefine_line|#define SH1_REAL_JUNK_BUS_LED2&t;&t;&t; 0x7fed20000UL
+DECL|macro|SH1_REAL_JUNK_BUS_LED3
+mdefine_line|#define SH1_REAL_JUNK_BUS_LED3&t;&t;&t; 0x7fed30000UL
+DECL|macro|SH2_REAL_JUNK_BUS_LED0
+mdefine_line|#define SH2_REAL_JUNK_BUS_LED0&t;&t;&t; 0xf0000000UL
+DECL|macro|SH2_REAL_JUNK_BUS_LED1
+mdefine_line|#define SH2_REAL_JUNK_BUS_LED1&t;&t;&t; 0xf0010000UL
+DECL|macro|SH2_REAL_JUNK_BUS_LED2
+mdefine_line|#define SH2_REAL_JUNK_BUS_LED2&t;&t;&t; 0xf0020000UL
+DECL|macro|SH2_REAL_JUNK_BUS_LED3
+mdefine_line|#define SH2_REAL_JUNK_BUS_LED3&t;&t;&t; 0xf0030000UL
+multiline_comment|/* ==================================================================== */
 multiline_comment|/*                         Register &quot;SH1_PTC_0&quot;                         */
 multiline_comment|/*       Puge Translation Cache Message Configuration Information       */
 multiline_comment|/* ==================================================================== */
@@ -469,6 +488,8 @@ multiline_comment|/* critical code  or loops - there is a small performance pena
 multiline_comment|/* ==================================================================== */
 DECL|macro|shubmmr
 mdefine_line|#define shubmmr(a,b) &t;&t;(is_shub2() ? a##2_##b : a##1_##b)
+DECL|macro|SH_REAL_JUNK_BUS_LED0
+mdefine_line|#define SH_REAL_JUNK_BUS_LED0&t;shubmmr(SH, REAL_JUNK_BUS_LED0)
 DECL|macro|SH_IPI_INT
 mdefine_line|#define SH_IPI_INT&t;&t;shubmmr(SH, IPI_INT)
 DECL|macro|SH_EVENT_OCCURRED

@@ -32,7 +32,6 @@ macro_line|#include &lt;asm/sn/pda.h&gt;
 macro_line|#include &lt;asm/sn/nodepda.h&gt;
 macro_line|#include &lt;asm/sn/sn_cpuid.h&gt;
 macro_line|#include &lt;asm/sn/simulator.h&gt;
-macro_line|#include &quot;shub.h&quot;
 macro_line|#include &lt;asm/sn/leds.h&gt;
 macro_line|#include &lt;asm/sn/bte.h&gt;
 macro_line|#include &lt;asm/sn/shub_mmr.h&gt;
