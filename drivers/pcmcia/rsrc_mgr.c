@@ -2649,6 +2649,8 @@ op_assign
 id|m-&gt;base
 op_plus
 id|m-&gt;num
+op_minus
+l_int|1
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; * If the lower resources are not available, try aligning&n;&t;&t; * to this entry of the resource database to see if it&squot;ll&n;&t;&t; * fit here.&n;&t;&t; */
 r_if
@@ -2693,6 +2695,8 @@ c_cond
 id|res-&gt;start
 op_plus
 id|size
+op_minus
+l_int|1
 )paren
 op_le
 id|end
@@ -2800,6 +2804,13 @@ op_assign
 op_amp
 id|io_db
 suffix:semicolon
+id|down
+c_func
+(paren
+op_amp
+id|rsrc_sem
+)paren
+suffix:semicolon
 macro_line|#ifdef CONFIG_PCI
 r_if
 c_cond
@@ -2833,14 +2844,6 @@ suffix:semicolon
 )brace
 r_else
 macro_line|#endif
-(brace
-id|down
-c_func
-(paren
-op_amp
-id|rsrc_sem
-)paren
-suffix:semicolon
 id|ret
 op_assign
 id|allocate_resource
@@ -2873,7 +2876,6 @@ op_amp
 id|rsrc_sem
 )paren
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -3044,6 +3046,13 @@ op_star
 id|base
 suffix:semicolon
 )brace
+id|down
+c_func
+(paren
+op_amp
+id|rsrc_sem
+)paren
+suffix:semicolon
 macro_line|#ifdef CONFIG_PCI
 r_if
 c_cond
@@ -3077,14 +3086,6 @@ suffix:semicolon
 )brace
 r_else
 macro_line|#endif
-(brace
-id|down
-c_func
-(paren
-op_amp
-id|rsrc_sem
-)paren
-suffix:semicolon
 id|ret
 op_assign
 id|allocate_resource
@@ -3116,7 +3117,6 @@ op_amp
 id|rsrc_sem
 )paren
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
