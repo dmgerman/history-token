@@ -14,14 +14,6 @@ r_void
 suffix:semicolon
 r_extern
 r_int
-id|arcnet_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_int
 id|scc_enet_init
 c_func
 (paren
@@ -112,14 +104,6 @@ macro_line|#endif&t;
 macro_line|#if defined(CONFIG_SDLA)
 (brace
 id|sdla_c_setup
-comma
-l_int|0
-)brace
-comma
-macro_line|#endif
-macro_line|#if defined(CONFIG_ARCNET)
-(brace
-id|arcnet_init
 comma
 l_int|0
 )brace

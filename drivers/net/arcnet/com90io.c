@@ -481,13 +481,6 @@ r_int
 r_int
 id|airqmask
 suffix:semicolon
-macro_line|#ifndef MODULE
-id|arcnet_init
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
 id|BUGLVL
 c_func
 (paren

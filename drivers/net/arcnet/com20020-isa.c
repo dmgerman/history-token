@@ -42,13 +42,6 @@ id|lp
 op_assign
 id|dev-&gt;priv
 suffix:semicolon
-macro_line|#ifndef MODULE
-id|arcnet_init
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
 id|BUGLVL
 c_func
 (paren

@@ -921,13 +921,6 @@ c_func
 id|VERSION
 )paren
 suffix:semicolon
-macro_line|#ifndef MODULE
-id|arcnet_init
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
 r_return
 id|pci_module_init
 c_func
