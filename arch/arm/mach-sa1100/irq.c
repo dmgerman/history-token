@@ -668,8 +668,10 @@ l_int|0x9005ffff
 comma
 )brace
 suffix:semicolon
+DECL|struct|sa1100irq_state
 r_static
 r_struct
+id|sa1100irq_state
 (brace
 DECL|member|saved
 r_int
@@ -702,15 +704,12 @@ id|sa1100irq_suspend
 c_func
 (paren
 r_struct
-id|device
+id|sys_device
 op_star
 id|dev
 comma
 id|u32
 id|state
-comma
-id|u32
-id|level
 )paren
 (brace
 r_struct
