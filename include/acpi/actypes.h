@@ -611,7 +611,7 @@ DECL|macro|ACPI_TABLE_MAX
 mdefine_line|#define ACPI_TABLE_MAX                  6
 DECL|macro|NUM_ACPI_TABLE_TYPES
 mdefine_line|#define NUM_ACPI_TABLE_TYPES            (ACPI_TABLE_MAX+1)
-multiline_comment|/*&n; * Types associated with ACPI names and objects.  The first group of&n; * values (up to ACPI_TYPE_EXTERNAL_MAX) correspond to the definition&n; * of the ACPI object_type() operator (See the ACPI Spec). Therefore,&n; * only add to the first group if the spec changes.&n; *&n; * Types must be kept in sync with the global acpi_ns_properties&n; * and acpi_ns_type_names arrays.&n; */
+multiline_comment|/*&n; * Types associated with ACPI names and objects.  The first group of&n; * values (up to ACPI_TYPE_EXTERNAL_MAX) correspond to the definition&n; * of the ACPI object_type() operator (See the ACPI Spec). Therefore,&n; * only add to the first group if the spec changes.&n; *&n; * NOTE: Types must be kept in sync with the global acpi_ns_properties&n; * and acpi_ns_type_names arrays.&n; */
 DECL|typedef|acpi_object_type
 r_typedef
 id|u32
@@ -664,28 +664,30 @@ DECL|macro|ACPI_TYPE_LOCAL_REFERENCE
 mdefine_line|#define ACPI_TYPE_LOCAL_REFERENCE       0x14  /* Arg#, Local#, Name, Debug, ref_of, Index */
 DECL|macro|ACPI_TYPE_LOCAL_ALIAS
 mdefine_line|#define ACPI_TYPE_LOCAL_ALIAS           0x15
+DECL|macro|ACPI_TYPE_LOCAL_METHOD_ALIAS
+mdefine_line|#define ACPI_TYPE_LOCAL_METHOD_ALIAS    0x16
 DECL|macro|ACPI_TYPE_LOCAL_NOTIFY
-mdefine_line|#define ACPI_TYPE_LOCAL_NOTIFY          0x16
+mdefine_line|#define ACPI_TYPE_LOCAL_NOTIFY          0x17
 DECL|macro|ACPI_TYPE_LOCAL_ADDRESS_HANDLER
-mdefine_line|#define ACPI_TYPE_LOCAL_ADDRESS_HANDLER 0x17
+mdefine_line|#define ACPI_TYPE_LOCAL_ADDRESS_HANDLER 0x18
 DECL|macro|ACPI_TYPE_LOCAL_RESOURCE
-mdefine_line|#define ACPI_TYPE_LOCAL_RESOURCE        0x18
+mdefine_line|#define ACPI_TYPE_LOCAL_RESOURCE        0x19
 DECL|macro|ACPI_TYPE_LOCAL_RESOURCE_FIELD
-mdefine_line|#define ACPI_TYPE_LOCAL_RESOURCE_FIELD  0x19
+mdefine_line|#define ACPI_TYPE_LOCAL_RESOURCE_FIELD  0x1A
 DECL|macro|ACPI_TYPE_LOCAL_SCOPE
-mdefine_line|#define ACPI_TYPE_LOCAL_SCOPE           0x1A  /* 1 Name, multiple object_list Nodes */
+mdefine_line|#define ACPI_TYPE_LOCAL_SCOPE           0x1B  /* 1 Name, multiple object_list Nodes */
 DECL|macro|ACPI_TYPE_NS_NODE_MAX
-mdefine_line|#define ACPI_TYPE_NS_NODE_MAX           0x1A  /* Last typecode used within a NS Node */
+mdefine_line|#define ACPI_TYPE_NS_NODE_MAX           0x1B  /* Last typecode used within a NS Node */
 multiline_comment|/*&n; * These are special object types that never appear in&n; * a Namespace node, only in an union acpi_operand_object&n; */
 DECL|macro|ACPI_TYPE_LOCAL_EXTRA
-mdefine_line|#define ACPI_TYPE_LOCAL_EXTRA           0x1B
+mdefine_line|#define ACPI_TYPE_LOCAL_EXTRA           0x1C
 DECL|macro|ACPI_TYPE_LOCAL_DATA
-mdefine_line|#define ACPI_TYPE_LOCAL_DATA            0x1C
+mdefine_line|#define ACPI_TYPE_LOCAL_DATA            0x1D
 DECL|macro|ACPI_TYPE_LOCAL_MAX
-mdefine_line|#define ACPI_TYPE_LOCAL_MAX             0x1C
+mdefine_line|#define ACPI_TYPE_LOCAL_MAX             0x1D
 multiline_comment|/* All types above here are invalid */
 DECL|macro|ACPI_TYPE_INVALID
-mdefine_line|#define ACPI_TYPE_INVALID               0x1D
+mdefine_line|#define ACPI_TYPE_INVALID               0x1E
 DECL|macro|ACPI_TYPE_NOT_FOUND
 mdefine_line|#define ACPI_TYPE_NOT_FOUND             0xFF
 multiline_comment|/*&n; * Bitmapped ACPI types.  Used internally only&n; */
@@ -746,7 +748,7 @@ DECL|macro|ACPI_WRITE
 mdefine_line|#define ACPI_WRITE                      1
 DECL|macro|ACPI_IO_MASK
 mdefine_line|#define ACPI_IO_MASK                    1
-multiline_comment|/*&n; * Acpi Event Types: Fixed &amp; General Purpose&n; */
+multiline_comment|/*&n; * Event Types: Fixed &amp; General Purpose&n; */
 DECL|typedef|acpi_event_type
 r_typedef
 id|u32
@@ -767,26 +769,7 @@ DECL|macro|ACPI_EVENT_MAX
 mdefine_line|#define ACPI_EVENT_MAX                  4
 DECL|macro|ACPI_NUM_FIXED_EVENTS
 mdefine_line|#define ACPI_NUM_FIXED_EVENTS           ACPI_EVENT_MAX + 1
-DECL|macro|ACPI_GPE_INVALID
-mdefine_line|#define ACPI_GPE_INVALID                0xFF
-DECL|macro|ACPI_GPE_MAX
-mdefine_line|#define ACPI_GPE_MAX                    0xFF
-DECL|macro|ACPI_NUM_GPE
-mdefine_line|#define ACPI_NUM_GPE                    256
-DECL|macro|ACPI_EVENT_LEVEL_TRIGGERED
-mdefine_line|#define ACPI_EVENT_LEVEL_TRIGGERED      1
-DECL|macro|ACPI_EVENT_EDGE_TRIGGERED
-mdefine_line|#define ACPI_EVENT_EDGE_TRIGGERED       2
-multiline_comment|/*&n; * Flags for GPE and Lock interfaces&n; */
-DECL|macro|ACPI_EVENT_WAKE_ENABLE
-mdefine_line|#define ACPI_EVENT_WAKE_ENABLE          0x2
-DECL|macro|ACPI_EVENT_WAKE_DISABLE
-mdefine_line|#define ACPI_EVENT_WAKE_DISABLE         0x2
-DECL|macro|ACPI_NOT_ISR
-mdefine_line|#define ACPI_NOT_ISR                    0x1
-DECL|macro|ACPI_ISR
-mdefine_line|#define ACPI_ISR                        0x0
-multiline_comment|/*&n; * acpi_event Status:&n; * -------------&n; * The encoding of acpi_event_status is illustrated below.&n; * Note that a set bit (1) indicates the property is TRUE&n; * (e.g. if bit 0 is set then the event is enabled).&n; * +-------------+-+-+-+&n; * |   Bits 31:3 |2|1|0|&n; * +-------------+-+-+-+&n; *          |     | | |&n; *          |     | | +- Enabled?&n; *          |     | +--- Enabled for wake?&n; *          |     +----- Set?&n; *          +----------- &lt;Reserved&gt;&n; */
+multiline_comment|/*&n; * Event Status - Per event&n; * -------------&n; * The encoding of acpi_event_status is illustrated below.&n; * Note that a set bit (1) indicates the property is TRUE&n; * (e.g. if bit 0 is set then the event is enabled).&n; * +-------------+-+-+-+&n; * |   Bits 31:3 |2|1|0|&n; * +-------------+-+-+-+&n; *          |     | | |&n; *          |     | | +- Enabled?&n; *          |     | +--- Enabled for wake?&n; *          |     +----- Set?&n; *          +----------- &lt;Reserved&gt;&n; */
 DECL|typedef|acpi_event_status
 r_typedef
 id|u32
@@ -800,6 +783,41 @@ DECL|macro|ACPI_EVENT_FLAG_WAKE_ENABLED
 mdefine_line|#define ACPI_EVENT_FLAG_WAKE_ENABLED    (acpi_event_status) 0x02
 DECL|macro|ACPI_EVENT_FLAG_SET
 mdefine_line|#define ACPI_EVENT_FLAG_SET             (acpi_event_status) 0x04
+multiline_comment|/*&n; * General Purpose Events (GPE)&n; */
+DECL|macro|ACPI_GPE_INVALID
+mdefine_line|#define ACPI_GPE_INVALID                0xFF
+DECL|macro|ACPI_GPE_MAX
+mdefine_line|#define ACPI_GPE_MAX                    0xFF
+DECL|macro|ACPI_NUM_GPE
+mdefine_line|#define ACPI_NUM_GPE                    256
+multiline_comment|/*&n; * GPE info flags - Per GPE&n; * +---------+-+-+-+&n; * |Bits 8:3 |2|1|0|&n; * +---------+-+-+-+&n; *          | | | |&n; *          | | | +- Edge or Level Triggered&n; *          | | +--- Type: Wake or Runtime&n; *          | +----- Enabled for wake?&n; *          +--------&lt;Reserved&gt;&n; */
+DECL|macro|ACPI_GPE_XRUPT_TYPE_MASK
+mdefine_line|#define ACPI_GPE_XRUPT_TYPE_MASK        (u8) 1
+DECL|macro|ACPI_GPE_LEVEL_TRIGGERED
+mdefine_line|#define ACPI_GPE_LEVEL_TRIGGERED        (u8) 1
+DECL|macro|ACPI_GPE_EDGE_TRIGGERED
+mdefine_line|#define ACPI_GPE_EDGE_TRIGGERED         (u8) 0
+DECL|macro|ACPI_GPE_TYPE_MASK
+mdefine_line|#define ACPI_GPE_TYPE_MASK              (u8) 2
+DECL|macro|ACPI_GPE_TYPE_WAKE
+mdefine_line|#define ACPI_GPE_TYPE_WAKE              (u8) 2
+DECL|macro|ACPI_GPE_TYPE_RUNTIME
+mdefine_line|#define ACPI_GPE_TYPE_RUNTIME           (u8) 0       /* Default */
+DECL|macro|ACPI_GPE_ENABLE_MASK
+mdefine_line|#define ACPI_GPE_ENABLE_MASK            (u8) 4
+DECL|macro|ACPI_GPE_ENABLED
+mdefine_line|#define ACPI_GPE_ENABLED                (u8) 4
+DECL|macro|ACPI_GPE_DISABLED
+mdefine_line|#define ACPI_GPE_DISABLED               (u8) 0       /* Default */
+multiline_comment|/*&n; * Flags for GPE and Lock interfaces&n; */
+DECL|macro|ACPI_EVENT_WAKE_ENABLE
+mdefine_line|#define ACPI_EVENT_WAKE_ENABLE          0x2
+DECL|macro|ACPI_EVENT_WAKE_DISABLE
+mdefine_line|#define ACPI_EVENT_WAKE_DISABLE         0x2
+DECL|macro|ACPI_NOT_ISR
+mdefine_line|#define ACPI_NOT_ISR                    0x1
+DECL|macro|ACPI_ISR
+mdefine_line|#define ACPI_ISR                        0x0
 multiline_comment|/* Notify types */
 DECL|macro|ACPI_SYSTEM_NOTIFY
 mdefine_line|#define ACPI_SYSTEM_NOTIFY              0

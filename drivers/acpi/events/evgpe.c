@@ -120,7 +120,7 @@ l_int|NULL
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * A Non-null gpe_device means this is a GPE Block Device.&n;&t; */
+multiline_comment|/* A Non-NULL gpe_device means this is a GPE Block Device */
 id|obj_desc
 op_assign
 id|acpi_ns_get_attached_object
@@ -648,9 +648,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
 id|local_gpe_event_info.flags
 op_amp
-id|ACPI_EVENT_LEVEL_TRIGGERED
+id|ACPI_GPE_XRUPT_TYPE_MASK
+)paren
+op_eq
+id|ACPI_GPE_LEVEL_TRIGGERED
 )paren
 (brace
 multiline_comment|/*&n;&t;&t; * GPE is level-triggered, we clear the GPE status bit after handling&n;&t;&t; * the event.&n;&t;&t; */
@@ -714,9 +718,13 @@ multiline_comment|/*&n;&t; * If edge-triggered, clear the GPE status bit now.  N
 r_if
 c_cond
 (paren
+(paren
 id|gpe_event_info-&gt;flags
 op_amp
-id|ACPI_EVENT_EDGE_TRIGGERED
+id|ACPI_GPE_XRUPT_TYPE_MASK
+)paren
+op_eq
+id|ACPI_GPE_EDGE_TRIGGERED
 )paren
 (brace
 id|status
@@ -768,9 +776,13 @@ multiline_comment|/* It is now safe to clear level-triggered events. */
 r_if
 c_cond
 (paren
+(paren
 id|gpe_event_info-&gt;flags
 op_amp
-id|ACPI_EVENT_LEVEL_TRIGGERED
+id|ACPI_GPE_XRUPT_TYPE_MASK
+)paren
+op_eq
+id|ACPI_GPE_LEVEL_TRIGGERED
 )paren
 (brace
 id|status

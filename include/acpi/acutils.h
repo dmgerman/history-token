@@ -939,6 +939,8 @@ DECL|macro|METHOD_NAME__CRS
 mdefine_line|#define METHOD_NAME__CRS        &quot;_CRS&quot;
 DECL|macro|METHOD_NAME__PRS
 mdefine_line|#define METHOD_NAME__PRS        &quot;_PRS&quot;
+DECL|macro|METHOD_NAME__PRW
+mdefine_line|#define METHOD_NAME__PRW        &quot;_PRW&quot;
 id|acpi_status
 id|acpi_ut_osi_implementation
 (paren

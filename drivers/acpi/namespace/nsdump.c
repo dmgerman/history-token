@@ -772,6 +772,9 @@ suffix:semicolon
 r_case
 id|ACPI_TYPE_LOCAL_ALIAS
 suffix:colon
+r_case
+id|ACPI_TYPE_LOCAL_METHOD_ALIAS
+suffix:colon
 id|acpi_os_printf
 (paren
 l_string|&quot;Target %4.4s (%p)&bslash;n&quot;

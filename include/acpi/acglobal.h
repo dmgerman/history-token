@@ -50,6 +50,11 @@ id|ACPI_EXTERN
 id|u8
 id|acpi_gbl_all_methods_serialized
 suffix:semicolon
+DECL|variable|acpi_gbl_leave_wake_gpes_disabled
+id|ACPI_EXTERN
+id|u8
+id|acpi_gbl_leave_wake_gpes_disabled
+suffix:semicolon
 multiline_comment|/*****************************************************************************&n; *&n; * ACPI Table globals&n; *&n; ****************************************************************************/
 multiline_comment|/*&n; * Table pointers.&n; * Although these pointers are somewhat redundant with the global acpi_table,&n; * they are convenient because they are typed pointers.&n; *&n; * These tables are single-table only; meaning that there can be at most one&n; * of each in the system.  Each global points to the actual table.&n; *&n; */
 DECL|variable|acpi_gbl_table_flags
@@ -341,6 +346,13 @@ r_struct
 id|acpi_namespace_node
 op_star
 id|acpi_gbl_root_node
+suffix:semicolon
+DECL|variable|acpi_gbl_fadt_gpe_device
+id|ACPI_EXTERN
+r_struct
+id|acpi_namespace_node
+op_star
+id|acpi_gbl_fadt_gpe_device
 suffix:semicolon
 r_extern
 r_const

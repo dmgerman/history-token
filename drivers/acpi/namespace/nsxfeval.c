@@ -2,6 +2,7 @@ multiline_comment|/*************************************************************
 multiline_comment|/*&n; * Copyright (C) 2000 - 2004, R. Byron Moore&n; * All rights reserved.&n; *&n; * Redistribution and use in source and binary forms, with or without&n; * modification, are permitted provided that the following conditions&n; * are met:&n; * 1. Redistributions of source code must retain the above copyright&n; *    notice, this list of conditions, and the following disclaimer,&n; *    without modification.&n; * 2. Redistributions in binary form must reproduce at minimum a disclaimer&n; *    substantially similar to the &quot;NO WARRANTY&quot; disclaimer below&n; *    (&quot;Disclaimer&quot;) and any redistribution must be conditioned upon&n; *    including a substantially similar Disclaimer requirement for further&n; *    binary redistribution.&n; * 3. Neither the names of the above-listed copyright holders nor the names&n; *    of any contributors may be used to endorse or promote products derived&n; *    from this software without specific prior written permission.&n; *&n; * Alternatively, this software may be distributed under the terms of the&n; * GNU General Public License (&quot;GPL&quot;) version 2 as published by the Free&n; * Software Foundation.&n; *&n; * NO WARRANTY&n; * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS&n; * &quot;AS IS&quot; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT&n; * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR&n; * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT&n; * HOLDERS OR CONTRIBUTORS BE LIABLE FOR SPECIAL, EXEMPLARY, OR CONSEQUENTIAL&n; * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS&n; * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)&n; * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,&n; * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING&n; * IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE&n; * POSSIBILITY OF SUCH DAMAGES.&n; */
 macro_line|#include &lt;acpi/acpi.h&gt;
 macro_line|#include &lt;acpi/acnamesp.h&gt;
+macro_line|#include &lt;acpi/acinterp.h&gt;
 DECL|macro|_COMPONENT
 mdefine_line|#define _COMPONENT          ACPI_NAMESPACE
 id|ACPI_MODULE_NAME
@@ -221,7 +222,7 @@ id|AE_TYPE
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_evaluate_object&n; *&n; * PARAMETERS:  Handle              - Object handle (optional)&n; *              *Pathname           - Object pathname (optional)&n; *              **external_params   - List of parameters to pass to method,&n; *                                    terminated by NULL.  May be NULL&n; *                                    if no parameters are being passed.&n; *              *return_buffer      - Where to put method&squot;s return value (if&n; *                                    any).  If NULL, no value is returned.&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Find and evaluate the given object, passing the given&n; *              parameters if necessary.  One of &quot;Handle&quot; or &quot;Pathname&quot; must&n; *              be valid (non-null)&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_evaluate_object&n; *&n; * PARAMETERS:  Handle              - Object handle (optional)&n; *              Pathname            - Object pathname (optional)&n; *              external_params     - List of parameters to pass to method,&n; *                                    terminated by NULL.  May be NULL&n; *                                    if no parameters are being passed.&n; *              return_buffer       - Where to put method&squot;s return value (if&n; *                                    any).  If NULL, no value is returned.&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Find and evaluate the given object, passing the given&n; *              parameters if necessary.  One of &quot;Handle&quot; or &quot;Pathname&quot; must&n; *              be valid (non-null)&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_evaluate_object
 id|acpi_evaluate_object
@@ -245,6 +246,9 @@ id|return_buffer
 (brace
 id|acpi_status
 id|status
+suffix:semicolon
+id|acpi_status
+id|status2
 suffix:semicolon
 r_union
 id|acpi_operand_object
@@ -629,19 +633,39 @@ suffix:semicolon
 )brace
 )brace
 )brace
-multiline_comment|/* Delete the return and parameter objects */
 r_if
 c_cond
 (paren
 id|internal_return_obj
 )paren
 (brace
-multiline_comment|/*&n;&t;&t; * Delete the internal return object. (Or at least&n;&t;&t; * decrement the reference count by one)&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Delete the internal return object.  NOTE: Interpreter&n;&t;&t; * must be locked to avoid race condition.&n;&t;&t; */
+id|status2
+op_assign
+id|acpi_ex_enter_interpreter
+(paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ACPI_SUCCESS
+(paren
+id|status2
+)paren
+)paren
+(brace
+multiline_comment|/*&n;&t;&t;&t; * Delete the internal return object. (Or at least&n;&t;&t;&t; * decrement the reference count by one)&n;&t;&t;&t; */
 id|acpi_ut_remove_reference
 (paren
 id|internal_return_obj
 )paren
 suffix:semicolon
+id|acpi_ex_exit_interpreter
+(paren
+)paren
+suffix:semicolon
+)brace
 )brace
 multiline_comment|/*&n;&t; * Free the input parameter list (if we created one),&n;&t; */
 r_if

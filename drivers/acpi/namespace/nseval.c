@@ -638,6 +638,29 @@ id|AE_BAD_PARAMETER
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/*&n;&t; * For a method alias, we must grab the actual method node&n;&t; * so that proper scoping context will be established&n;&t; * before execution.&n;&t; */
+r_if
+c_cond
+(paren
+id|acpi_ns_get_type
+(paren
+id|node
+)paren
+op_eq
+id|ACPI_TYPE_LOCAL_METHOD_ALIAS
+)paren
+(brace
+id|node
+op_assign
+id|ACPI_CAST_PTR
+(paren
+r_struct
+id|acpi_namespace_node
+comma
+id|node-&gt;object
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/*&n;&t; * Two major cases here:&n;&t; * 1) The object is an actual control method -- execute it.&n;&t; * 2) The object is not a method -- just return it&squot;s current&n;&t; *      value&n;&t; *&n;&t; * In both cases, the namespace is unlocked by the&n;&t; *  acpi_ns* procedure&n;&t; */
 r_if
 c_cond
