@@ -13873,11 +13873,12 @@ c_func
 (paren
 id|i
 comma
-id|PMC_DFL_VAL
-c_func
-(paren
+id|pfm_pmc_desc
+(braket
 id|i
-)paren
+)braket
+dot
+id|default_value
 )paren
 suffix:semicolon
 )brace
