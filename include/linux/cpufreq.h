@@ -569,10 +569,6 @@ DECL|macro|CPUFREQ_STICKY
 mdefine_line|#define CPUFREQ_STICKY&t;&t;0x01&t;/* the driver isn&squot;t removed even if &n;&t;&t;&t;&t;&t; * all -&gt;init() calls failed */
 DECL|macro|CPUFREQ_CONST_LOOPS
 mdefine_line|#define CPUFREQ_CONST_LOOPS &t;0x02&t;/* loops_per_jiffy or other kernel&n;&t;&t;&t;&t;&t; * &quot;constants&quot; aren&squot;t affected by&n;&t;&t;&t;&t;&t; * frequency transitions */
-DECL|macro|CPUFREQ_PANIC_OUTOFSYNC
-mdefine_line|#define CPUFREQ_PANIC_OUTOFSYNC&t;0x04&t;/* panic if cpufreq&squot;s opinion of&n;&t;&t;&t;&t;&t; * current frequency differs from&n;&t;&t;&t;&t;&t; * actual frequency */
-DECL|macro|CPUFREQ_PANIC_RESUME_OUTOFSYNC
-mdefine_line|#define CPUFREQ_PANIC_RESUME_OUTOFSYNC 0x08 /* panic if cpufreq&squot;s opinion of&n;&t;&t;&t;&t;&t; * current frequency differs from&n;&t;&t;&t;&t;&t; * actual frequency on resume&n;&t;&t;&t;&t;&t; * from sleep. */
 r_int
 id|cpufreq_register_driver
 c_func

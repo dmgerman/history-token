@@ -498,19 +498,6 @@ id|cur
 )paren
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|cpufreq_driver-&gt;flags
-op_amp
-id|CPUFREQ_PANIC_OUTOFSYNC
-)paren
-id|panic
-c_func
-(paren
-l_string|&quot;CPU Frequency is out of sync.&quot;
-)paren
-suffix:semicolon
 id|printk
 c_func
 (paren
@@ -2253,19 +2240,6 @@ r_struct
 id|cpufreq_freqs
 id|freqs
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|cpufreq_driver-&gt;flags
-op_amp
-id|CPUFREQ_PANIC_OUTOFSYNC
-)paren
-id|panic
-c_func
-(paren
-l_string|&quot;CPU Frequency is out of sync.&quot;
-)paren
-suffix:semicolon
 id|printk
 c_func
 (paren
@@ -2579,19 +2553,6 @@ id|cpu_policy-&gt;cur
 r_struct
 id|cpufreq_freqs
 id|freqs
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|cpufreq_driver-&gt;flags
-op_amp
-id|CPUFREQ_PANIC_RESUME_OUTOFSYNC
-)paren
-id|panic
-c_func
-(paren
-l_string|&quot;CPU Frequency is out of sync.&quot;
-)paren
 suffix:semicolon
 id|printk
 c_func
