@@ -114,8 +114,8 @@ DECL|macro|pmd_free
 mdefine_line|#define pmd_free(x)&t;&t;&t;do { } while (0)
 DECL|macro|__pmd_free_tlb
 mdefine_line|#define __pmd_free_tlb(tlb,x)&t;&t;do { } while (0)
-DECL|macro|pgd_populate
-mdefine_line|#define pgd_populate(mm, pmd, pte)&t;BUG()
+DECL|macro|pud_populate
+mdefine_line|#define pud_populate(mm, pmd, pte)&t;BUG()
 macro_line|#endif
 DECL|macro|check_pgt_cache
 mdefine_line|#define check_pgt_cache()&t;do { } while (0)

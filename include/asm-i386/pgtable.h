@@ -887,6 +887,8 @@ mdefine_line|#define pmd_large(pmd) &bslash;&n;((pmd_val(pmd) &amp; (_PAGE_PSE|_
 multiline_comment|/*&n; * the pgd page can be thought of an array like this: pgd_t[PTRS_PER_PGD]&n; *&n; * this macro returns the index of the entry in the pgd page which would&n; * control the given virtual address&n; */
 DECL|macro|pgd_index
 mdefine_line|#define pgd_index(address) (((address) &gt;&gt; PGDIR_SHIFT) &amp; (PTRS_PER_PGD-1))
+DECL|macro|pgd_index_k
+mdefine_line|#define pgd_index_k(addr) pgd_index(addr)
 multiline_comment|/*&n; * pgd_offset() returns a (pgd_t *)&n; * pgd_index() is used get the offset into the pgd page&squot;s array of pgd_t&squot;s;&n; */
 DECL|macro|pgd_offset
 mdefine_line|#define pgd_offset(mm, address) ((mm)-&gt;pgd+pgd_index(address))
