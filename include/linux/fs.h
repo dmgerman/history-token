@@ -14,6 +14,7 @@ macro_line|#include &lt;linux/dcache.h&gt;
 macro_line|#include &lt;linux/stat.h&gt;
 macro_line|#include &lt;linux/cache.h&gt;
 macro_line|#include &lt;linux/radix-tree.h&gt;
+macro_line|#include &lt;linux/kobject.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
 r_struct
 id|iovec
@@ -920,7 +921,7 @@ id|inode
 (brace
 DECL|member|i_hash
 r_struct
-id|list_head
+id|hlist_node
 id|i_hash
 suffix:semicolon
 DECL|member|i_list
@@ -2031,7 +2032,7 @@ suffix:semicolon
 multiline_comment|/* parked for writeback */
 DECL|member|s_anon
 r_struct
-id|list_head
+id|hlist_head
 id|s_anon
 suffix:semicolon
 multiline_comment|/* anonymous dentries for (nfs) exporting */
@@ -2065,6 +2066,12 @@ l_int|32
 )braket
 suffix:semicolon
 multiline_comment|/* Informational name */
+DECL|member|kobj
+r_struct
+id|kobject
+id|kobj
+suffix:semicolon
+multiline_comment|/* anchor for sysfs */
 DECL|member|s_fs_info
 r_void
 op_star
@@ -3788,6 +3795,11 @@ r_const
 r_char
 op_star
 id|name
+suffix:semicolon
+DECL|member|subsys
+r_struct
+id|subsystem
+id|subsys
 suffix:semicolon
 DECL|member|fs_flags
 r_int
