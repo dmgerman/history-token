@@ -2289,13 +2289,11 @@ id|entry-&gt;val
 multiline_comment|/* Look it up and read it in.. */
 id|page
 op_assign
-id|find_get_page
+id|lookup_swap_cache
 c_func
 (paren
-op_amp
-id|swapper_space
-comma
-id|entry-&gt;val
+op_star
+id|entry
 )paren
 suffix:semicolon
 r_if
@@ -3284,13 +3282,7 @@ id|list_add_tail
 c_func
 (paren
 op_amp
-id|SHMEM_I
-c_func
-(paren
-id|inode
-)paren
-op_member_access_from_pointer
-id|list
+id|info-&gt;list
 comma
 op_amp
 id|shmem_inodes
@@ -4502,7 +4494,7 @@ id|sbinfo-&gt;stat_lock
 suffix:semicolon
 id|buf-&gt;f_namelen
 op_assign
-l_int|255
+id|NAME_MAX
 suffix:semicolon
 r_return
 l_int|0
