@@ -983,8 +983,9 @@ c_func
 suffix:semicolon
 macro_line|#ifdef CONFIG_MTRR
 multiline_comment|/*&n;&t; * Must be done before calibration delay is computed&n;&t; */
-id|mtrr_init_secondary_cpu
+id|mtrr_init_cpu
 (paren
+id|cpuid
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -2703,13 +2704,6 @@ id|apicid
 comma
 id|cpu
 suffix:semicolon
-macro_line|#ifdef CONFIG_MTRR
-multiline_comment|/*  Must be done before other processors booted  */
-id|mtrr_init_boot_cpu
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/*&n;&t; * Initialize the logical to physical CPU number mapping&n;&t; * and the per-CPU profiling counter/multiplier&n;&t; */
 r_for
 c_loop

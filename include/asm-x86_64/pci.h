@@ -169,6 +169,11 @@ c_func
 r_char
 op_star
 id|opt
+comma
+r_char
+op_star
+op_star
+id|end
 )paren
 suffix:semicolon
 r_extern

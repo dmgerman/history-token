@@ -15,6 +15,7 @@ macro_line|#include &lt;asm/mmu_context.h&gt;
 macro_line|#include &lt;asm/smp.h&gt;
 macro_line|#include &lt;asm/i387.h&gt;
 macro_line|#include &lt;asm/percpu.h&gt;
+macro_line|#include &lt;asm/mtrr.h&gt;
 DECL|variable|__initdata
 r_char
 id|x86_boot_params

@@ -2426,7 +2426,7 @@ suffix:semicolon
 id|Dprintk
 c_func
 (paren
-l_string|&quot;mapped APIC to %08lx (%08lx)&bslash;n&quot;
+l_string|&quot;mapped APIC to %16lx (%16lx)&bslash;n&quot;
 comma
 id|APIC_BASE
 comma
@@ -2532,7 +2532,7 @@ suffix:semicolon
 id|Dprintk
 c_func
 (paren
-l_string|&quot;mapped IOAPIC to %08lx (%08lx)&bslash;n&quot;
+l_string|&quot;mapped IOAPIC to %016lx (%016lx)&bslash;n&quot;
 comma
 id|__fix_to_virt
 c_func
