@@ -762,6 +762,8 @@ c_func
 (paren
 id|tags-&gt;tag_index
 comma
+l_int|0
+comma
 id|depth
 op_star
 r_sizeof
@@ -770,14 +772,14 @@ r_struct
 id|request
 op_star
 )paren
-comma
-l_int|0
 )paren
 suffix:semicolon
 id|memset
 c_func
 (paren
 id|tags-&gt;tag_map
+comma
+l_int|0
 comma
 id|bits
 op_star
@@ -786,8 +788,6 @@ r_sizeof
 r_int
 r_int
 )paren
-comma
-l_int|0
 )paren
 suffix:semicolon
 id|INIT_LIST_HEAD

@@ -2,6 +2,7 @@ multiline_comment|/*&n; * $Id: kernelcapi.h,v 1.8.6.2 2001/02/07 11:31:31 kai Ex
 macro_line|#ifndef __KERNELCAPI_H__
 DECL|macro|__KERNELCAPI_H__
 mdefine_line|#define __KERNELCAPI_H__
+macro_line|#include &lt;linux/list.h&gt;
 DECL|macro|CAPI_MAXAPPL
 mdefine_line|#define CAPI_MAXAPPL&t;128&t;/* maximum number of applications  */
 DECL|macro|CAPI_MAXCONTR
@@ -266,28 +267,10 @@ id|data
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|struct|capi_ncciinfo
-r_struct
-id|capi_ncciinfo
-(brace
-DECL|member|applid
-id|__u16
-id|applid
-suffix:semicolon
-DECL|member|ncci
-id|__u32
-id|ncci
-suffix:semicolon
-)brace
-suffix:semicolon
 DECL|macro|KCI_CONTRUP
 mdefine_line|#define&t;KCI_CONTRUP&t;0&t;/* struct capi_profile */
 DECL|macro|KCI_CONTRDOWN
 mdefine_line|#define&t;KCI_CONTRDOWN&t;1&t;/* NULL */
-DECL|macro|KCI_NCCIUP
-mdefine_line|#define&t;KCI_NCCIUP&t;2&t;/* struct capi_ncciinfo */
-DECL|macro|KCI_NCCIDOWN
-mdefine_line|#define&t;KCI_NCCIDOWN&t;3&t;/* struct capi_ncciinfo */
 DECL|struct|capi_interface_user
 r_struct
 id|capi_interface_user
@@ -319,11 +302,10 @@ id|data
 )paren
 suffix:semicolon
 multiline_comment|/* internal */
-DECL|member|next
+DECL|member|user_list
 r_struct
-id|capi_interface_user
-op_star
-id|next
+id|list_head
+id|user_list
 suffix:semicolon
 )brace
 suffix:semicolon

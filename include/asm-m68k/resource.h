@@ -19,7 +19,7 @@ mdefine_line|#define RLIMIT_NPROC&t;6&t;&t;/* max number of processes */
 DECL|macro|RLIMIT_NOFILE
 mdefine_line|#define RLIMIT_NOFILE&t;7&t;&t;/* max number of open files */
 DECL|macro|RLIMIT_MEMLOCK
-mdefine_line|#define RLIMIT_MEMLOCK&t;8&t;&t;/* max locked-in-memory address space*/
+mdefine_line|#define RLIMIT_MEMLOCK&t;8&t;&t;/* max locked-in-memory address space */
 DECL|macro|RLIMIT_AS
 mdefine_line|#define RLIMIT_AS&t;9&t;&t;/* address space limit */
 DECL|macro|RLIMIT_LOCKS
@@ -31,7 +31,7 @@ DECL|macro|RLIM_INFINITY
 mdefine_line|#define RLIM_INFINITY&t;(~0UL)
 macro_line|#ifdef __KERNEL__
 DECL|macro|INIT_RLIMITS
-mdefine_line|#define INIT_RLIMITS&t;&bslash;&n;{                       &bslash;&n;  {LONG_MAX, LONG_MAX}, &bslash;&n;  {LONG_MAX, LONG_MAX}, &bslash;&n;  {LONG_MAX, LONG_MAX}, &bslash;&n;  {_STK_LIM, LONG_MAX}, &bslash;&n;  {       0, LONG_MAX}, &bslash;&n;  {LONG_MAX, LONG_MAX}, &bslash;&n;  {0, 0},&t;&t;&bslash;&n;  {INR_OPEN, INR_OPEN}, &bslash;&n;  {LONG_MAX, LONG_MAX}, &bslash;&n;  {LONG_MAX, LONG_MAX}, &bslash;&n;  {LONG_MAX, LONG_MAX}  &bslash;&n;}
+mdefine_line|#define INIT_RLIMITS&t;&t;&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;{ RLIM_INFINITY, RLIM_INFINITY },&t;&t;&bslash;&n;&t;{ RLIM_INFINITY, RLIM_INFINITY },&t;&t;&bslash;&n;&t;{ RLIM_INFINITY, RLIM_INFINITY },&t;&t;&bslash;&n;&t;{      _STK_LIM, RLIM_INFINITY },&t;&t;&bslash;&n;&t;{             0, RLIM_INFINITY },&t;&t;&bslash;&n;&t;{ RLIM_INFINITY, RLIM_INFINITY },&t;&t;&bslash;&n;&t;{             0,             0 },&t;&t;&bslash;&n;&t;{      INR_OPEN,     INR_OPEN  },&t;&t;&bslash;&n;&t;{ RLIM_INFINITY, RLIM_INFINITY },&t;&t;&bslash;&n;&t;{ RLIM_INFINITY, RLIM_INFINITY },&t;&t;&bslash;&n;        { RLIM_INFINITY, RLIM_INFINITY },&t;&t;&bslash;&n;}
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* _M68K_RESOURCE_H */
 eof

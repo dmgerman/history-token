@@ -5953,17 +5953,6 @@ op_amp
 id|driver-&gt;serialize
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|driver-&gt;owner
-)paren
-id|__MOD_DEC_USE_COUNT
-c_func
-(paren
-id|driver-&gt;owner
-)paren
-suffix:semicolon
 multiline_comment|/* if driver-&gt;disconnect didn&squot;t release the interface */
 r_if
 c_cond
@@ -5976,6 +5965,18 @@ c_func
 id|driver
 comma
 id|interface
+)paren
+suffix:semicolon
+multiline_comment|/* we don&squot;t need the driver any longer */
+r_if
+c_cond
+(paren
+id|driver-&gt;owner
+)paren
+id|__MOD_DEC_USE_COUNT
+c_func
+(paren
+id|driver-&gt;owner
 )paren
 suffix:semicolon
 )brace

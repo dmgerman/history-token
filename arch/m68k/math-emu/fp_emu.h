@@ -2,7 +2,9 @@ multiline_comment|/*&n; * fp_emu.h&n; *&n; * Copyright Roman Zippel, 1997.  All 
 macro_line|#ifndef _FP_EMU_H
 DECL|macro|_FP_EMU_H
 mdefine_line|#define _FP_EMU_H
+macro_line|#ifdef __ASSEMBLY__
 macro_line|#include &quot;../kernel/m68k_defs.h&quot;
+macro_line|#endif
 macro_line|#include &lt;asm/math-emu.h&gt;
 macro_line|#ifndef __ASSEMBLY__
 DECL|macro|IS_INF

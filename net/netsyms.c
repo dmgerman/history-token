@@ -1188,51 +1188,6 @@ id|dlci_ioctl_hook
 )paren
 suffix:semicolon
 macro_line|#endif
-macro_line|#ifdef CONFIG_IPV6
-DECL|variable|ipv6_addr_type
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|ipv6_addr_type
-)paren
-suffix:semicolon
-DECL|variable|icmpv6_send
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|icmpv6_send
-)paren
-suffix:semicolon
-DECL|variable|ndisc_mc_map
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|ndisc_mc_map
-)paren
-suffix:semicolon
-DECL|variable|register_inet6addr_notifier
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|register_inet6addr_notifier
-)paren
-suffix:semicolon
-DECL|variable|unregister_inet6addr_notifier
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|unregister_inet6addr_notifier
-)paren
-suffix:semicolon
-macro_line|#include &lt;net/ip6_route.h&gt;
-DECL|variable|ip6_route_output
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|ip6_route_output
-)paren
-suffix:semicolon
-macro_line|#endif
 macro_line|#if defined (CONFIG_IPV6_MODULE) || defined (CONFIG_KHTTPD) || defined (CONFIG_KHTTPD_MODULE)
 multiline_comment|/* inet functions common to v4 and v6 */
 DECL|variable|inet_release
@@ -1872,22 +1827,6 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|sysctl_max_syn_backlog
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#if defined (CONFIG_IPV6_MODULE)
-DECL|variable|secure_tcpv6_sequence_number
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|secure_tcpv6_sequence_number
-)paren
-suffix:semicolon
-DECL|variable|secure_ipv6_id
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|secure_ipv6_id
 )paren
 suffix:semicolon
 macro_line|#endif

@@ -2414,25 +2414,21 @@ op_amp
 id|sonypi_device.lock
 )paren
 suffix:semicolon
+multiline_comment|/* Flush input queue on first open */
 r_if
 c_cond
 (paren
+op_logical_neg
 id|sonypi_device.open_count
 )paren
-r_goto
-id|out
-suffix:semicolon
-id|sonypi_device.open_count
-op_increment
-suffix:semicolon
-multiline_comment|/* Flush input queue */
 id|sonypi_initq
 c_func
 (paren
 )paren
 suffix:semicolon
-id|out
-suffix:colon
+id|sonypi_device.open_count
+op_increment
+suffix:semicolon
 id|up
 c_func
 (paren
@@ -3609,7 +3605,8 @@ c_func
 (paren
 id|KERN_INFO
 l_string|&quot;sonypi: detected %s model, &quot;
-l_string|&quot;camera = %s, compat = %s, nojogdial = %s&bslash;n&quot;
+l_string|&quot;verbose = %s, fnkeyinit = %s, camera = %s, &quot;
+l_string|&quot;compat = %s, nojogdial = %s&bslash;n&quot;
 comma
 (paren
 id|sonypi_device.model
@@ -3621,6 +3618,20 @@ c_cond
 l_string|&quot;type1&quot;
 suffix:colon
 l_string|&quot;type2&quot;
+comma
+id|verbose
+ques
+c_cond
+l_string|&quot;on&quot;
+suffix:colon
+l_string|&quot;off&quot;
+comma
+id|fnkeyinit
+ques
+c_cond
+l_string|&quot;on&quot;
+suffix:colon
+l_string|&quot;off&quot;
 comma
 id|camera
 ques
@@ -3877,7 +3888,7 @@ id|str
 r_int
 id|ints
 (braket
-l_int|6
+l_int|7
 )braket
 suffix:semicolon
 id|str

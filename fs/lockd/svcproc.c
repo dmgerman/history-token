@@ -2129,6 +2129,14 @@ suffix:semicolon
 suffix:semicolon
 DECL|macro|PROC
 mdefine_line|#define PROC(name, xargt, xrest, argt, rest, respsize)&t;&bslash;&n; { (svc_procfunc) nlmsvc_proc_##name,&t;&bslash;&n;   (kxdrproc_t) nlmsvc_decode_##xargt,&t;&bslash;&n;   (kxdrproc_t) nlmsvc_encode_##xrest,&t;&bslash;&n;   NULL,&t;&t;&t;&t;&bslash;&n;   sizeof(struct nlm_##argt),&t;&t;&bslash;&n;   sizeof(struct nlm_##rest),&t;&t;&bslash;&n;   0,&t;&t;&t;&t;&t;&bslash;&n;   0,&t;&t;&t;&t;&t;&bslash;&n;   respsize,&t;&t;&t;&t;&bslash;&n; }
+DECL|macro|Ck
+mdefine_line|#define&t;Ck&t;(1+8)&t;/* cookie */
+DECL|macro|St
+mdefine_line|#define&t;St&t;1&t;/* status */
+DECL|macro|No
+mdefine_line|#define&t;No&t;(1+1024/4) /* Net Obj */
+DECL|macro|Rg
+mdefine_line|#define&t;Rg&t;2&t;/* range - offset + size */
 DECL|variable|nlmsvc_procedures
 r_struct
 id|svc_procedure
@@ -2150,7 +2158,7 @@ r_void
 comma
 r_void
 comma
-l_int|0
+l_int|1
 )paren
 comma
 id|PROC
@@ -2166,7 +2174,15 @@ id|args
 comma
 id|res
 comma
-l_int|0
+id|Ck
+op_plus
+id|St
+op_plus
+l_int|2
+op_plus
+id|No
+op_plus
+id|Rg
 )paren
 comma
 id|PROC
@@ -2182,7 +2198,9 @@ id|args
 comma
 id|res
 comma
-l_int|0
+id|Ck
+op_plus
+id|St
 )paren
 comma
 id|PROC
@@ -2198,7 +2216,9 @@ id|args
 comma
 id|res
 comma
-l_int|0
+id|Ck
+op_plus
+id|St
 )paren
 comma
 id|PROC
@@ -2214,7 +2234,9 @@ id|args
 comma
 id|res
 comma
-l_int|0
+id|Ck
+op_plus
+id|St
 )paren
 comma
 id|PROC
@@ -2230,7 +2252,9 @@ id|args
 comma
 id|res
 comma
-l_int|0
+id|Ck
+op_plus
+id|St
 )paren
 comma
 id|PROC
@@ -2246,7 +2270,7 @@ id|args
 comma
 r_void
 comma
-l_int|0
+l_int|1
 )paren
 comma
 id|PROC
@@ -2262,7 +2286,7 @@ id|args
 comma
 r_void
 comma
-l_int|0
+l_int|1
 )paren
 comma
 id|PROC
@@ -2278,7 +2302,7 @@ id|args
 comma
 r_void
 comma
-l_int|0
+l_int|1
 )paren
 comma
 id|PROC
@@ -2294,7 +2318,7 @@ id|args
 comma
 r_void
 comma
-l_int|0
+l_int|1
 )paren
 comma
 id|PROC
@@ -2310,7 +2334,7 @@ id|args
 comma
 r_void
 comma
-l_int|0
+l_int|1
 )paren
 comma
 id|PROC
@@ -2326,7 +2350,7 @@ id|res
 comma
 r_void
 comma
-l_int|0
+l_int|1
 )paren
 comma
 id|PROC
@@ -2342,7 +2366,7 @@ id|res
 comma
 r_void
 comma
-l_int|0
+l_int|1
 )paren
 comma
 id|PROC
@@ -2358,7 +2382,7 @@ id|res
 comma
 r_void
 comma
-l_int|0
+l_int|1
 )paren
 comma
 id|PROC
@@ -2374,7 +2398,7 @@ id|res
 comma
 r_void
 comma
-l_int|0
+l_int|1
 )paren
 comma
 id|PROC
@@ -2390,7 +2414,7 @@ id|res
 comma
 r_void
 comma
-l_int|0
+l_int|1
 )paren
 comma
 multiline_comment|/* statd callback */
@@ -2407,7 +2431,7 @@ id|reboot
 comma
 r_void
 comma
-l_int|0
+l_int|1
 )paren
 comma
 id|PROC
@@ -2423,7 +2447,7 @@ r_void
 comma
 r_void
 comma
-l_int|0
+l_int|1
 )paren
 comma
 id|PROC
@@ -2439,7 +2463,7 @@ r_void
 comma
 r_void
 comma
-l_int|0
+l_int|1
 )paren
 comma
 id|PROC
@@ -2455,7 +2479,7 @@ r_void
 comma
 r_void
 comma
-l_int|0
+l_int|1
 )paren
 comma
 id|PROC
@@ -2471,7 +2495,11 @@ id|args
 comma
 id|res
 comma
-l_int|0
+id|Ck
+op_plus
+id|St
+op_plus
+l_int|1
 )paren
 comma
 id|PROC
@@ -2487,7 +2515,11 @@ id|args
 comma
 id|res
 comma
-l_int|0
+id|Ck
+op_plus
+id|St
+op_plus
+l_int|1
 )paren
 comma
 id|PROC
@@ -2503,7 +2535,9 @@ id|args
 comma
 id|res
 comma
-l_int|0
+id|Ck
+op_plus
+id|St
 )paren
 comma
 id|PROC

@@ -234,6 +234,10 @@ id|instance-&gt;n_io_port
 op_assign
 l_int|255
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
 id|request_region
 (paren
 id|instance-&gt;io_port
@@ -242,6 +246,8 @@ id|instance-&gt;n_io_port
 comma
 l_string|&quot;Oak SCSI&quot;
 )paren
+)paren
+r_break
 suffix:semicolon
 r_if
 c_cond

@@ -1,5 +1,5 @@
 multiline_comment|/*&n; *  Copyright (C) 1995-1998  Linus Torvalds &amp; author (see below)&n; *&n; *  Principal Author:  mlord@pobox.com (Mark Lord)&n; *&n; *  See linux/MAINTAINERS for address of current maintainer.&n; *&n; *  This file provides support for disabling the buggy read-ahead&n; *  mode of the RZ1000 IDE chipset, commonly used on Intel motherboards.&n; *&n; *  Dunno if this fixes both ports, or only the primary port (?).&n; */
-macro_line|#include &lt;linux/config.h&gt; /* for CONFIG_BLK_DEV_IDEPCI */
+macro_line|#include &lt;linux/config.h&gt; /* for CONFIG_PCI */
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
@@ -12,7 +12,7 @@ macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/ide.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
-macro_line|#ifdef CONFIG_BLK_DEV_IDEPCI
+macro_line|#ifdef CONFIG_PCI
 DECL|function|ide_init_rz1000
 r_void
 id|__init
@@ -373,5 +373,5 @@ l_string|&quot;RZ1001&quot;
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif /* CONFIG_BLK_DEV_IDEPCI */
+macro_line|#endif
 eof

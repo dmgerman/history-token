@@ -93,7 +93,7 @@ mdefine_line|#define UDIDETCR1&t;0x7B
 DECL|macro|DTPR1
 mdefine_line|#define DTPR1&t;&t;0x7C
 DECL|macro|DISPLAY_CMD64X_TIMINGS
-mdefine_line|#define DISPLAY_CMD64X_TIMINGS
+macro_line|#undef DISPLAY_CMD64X_TIMINGS
 macro_line|#if defined(DISPLAY_CMD64X_TIMINGS) &amp;&amp; defined(CONFIG_PROC_FS)
 macro_line|#include &lt;linux/stat.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;

@@ -1,5 +1,4 @@
 multiline_comment|/*&n; *  linux/drivers/ide/falconide.c -- Atari Falcon IDE Driver&n; *&n; *     Created 12 Jul 1997 by Geert Uytterhoeven&n; *&n; *  This file is subject to the terms and conditions of the GNU General Public&n; *  License.  See the file COPYING in the main directory of this archive for&n; *  more details.&n; */
-macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;

@@ -1,7 +1,6 @@
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
-multiline_comment|/**&n; * find_exported_dentry - helper routine to implement export_operations-&gt;decode_fh&n; * @sb:&t;&t;The &amp;super_block identifying the filesystem&n; * @obj:&t;An opaque identifier of the object to be found - passed to get_inode&n; * @parent:&t;An optional opqaue identifier of the parent of the object.&n; * @acceptable:&t;A function used to test possible &amp;dentries to see of they are acceptable&n; * @context:&t;A parameter to @acceptable so that it knows on what basis to judge.&n; *&n; * find_exported_dentry is the central helper routine to enable file systems to provide&n; * the decode_fh() export_operation.  It&squot;s main task is to take an &amp;inode, find or create an&n; * appropriate &amp;dentry structure, and possibly splice this into the dcache in the&n; * correct place.&n; *&n; * The decode_fh() operation provided by the filesystem should call find_exported_dentry()&n; * with the same parameters that it received except that instead of the file handle fragment,&n; * pointers to opaque identifiers for the object and optionally its parent are passed.&n; * The default decode_fh routine passes one pointer to the start of the filehandle fragment, and&n; * one 8 bytes into the fragment.  It is expected that most filesystems will take this&n; * approach, though the offset to the parent identifier may well be different.&n; *&n; * find_exported_dentry() will call get_dentry to get an dentry pointer from the file system.  If&n; * any &amp;dentry in the d_alias list is acceptable, it will be returned.  Otherwise&n; * find_exported_dentry() will attempt to splice a new &amp;dentry into the dcache using get_name() and&n; * get_parent() to find the appropriate place.&n; *&n; */
 DECL|variable|export_op_default
 r_struct
 id|export_operations
@@ -10,7 +9,8 @@ suffix:semicolon
 DECL|macro|CALL
 mdefine_line|#define&t;CALL(ops,fun) ((ops-&gt;fun)?(ops-&gt;fun):export_op_default.fun)
 DECL|macro|dprintk
-mdefine_line|#define dprintk(x, a...) do{}while(0)
+mdefine_line|#define dprintk(fmt, args...) do{}while(0)
+multiline_comment|/**&n; * find_exported_dentry - helper routine to implement export_operations-&gt;decode_fh&n; * @sb:&t;&t;The &amp;super_block identifying the filesystem&n; * @obj:&t;An opaque identifier of the object to be found - passed to&n; *&t;&t;get_inode&n; * @parent:&t;An optional opqaue identifier of the parent of the object.&n; * @acceptable:&t;A function used to test possible &amp;dentries to see if they are&n; *&t;&t;acceptable&n; * @context:&t;A parameter to @acceptable so that it knows on what basis to&n; *&t;&t;judge.&n; *&n; * find_exported_dentry is the central helper routine to enable file systems&n; * to provide the decode_fh() export_operation.  It&squot;s main task is to take&n; * an &amp;inode, find or create an appropriate &amp;dentry structure, and possibly&n; * splice this into the dcache in the correct place.&n; *&n; * The decode_fh() operation provided by the filesystem should call&n; * find_exported_dentry() with the same parameters that it received except&n; * that instead of the file handle fragment, pointers to opaque identifiers&n; * for the object and optionally its parent are passed.  The default decode_fh&n; * routine passes one pointer to the start of the filehandle fragment, and&n; * one 8 bytes into the fragment.  It is expected that most filesystems will&n; * take this approach, though the offset to the parent identifier may well be&n; * different.&n; *&n; * find_exported_dentry() will call get_dentry to get an dentry pointer from&n; * the file system.  If any &amp;dentry in the d_alias list is acceptable, it will&n; * be returned.  Otherwise find_exported_dentry() will attempt to splice a new&n; * &amp;dentry into the dcache using get_name() and get_parent() to find the&n; * appropriate place.&n; */
 r_struct
 id|dentry
 op_star
@@ -420,7 +420,7 @@ id|err_result
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * Now we need to make sure that target_dir is properly connected.&n;&t; * It may already be, as the flag isn&squot;t always updated when connection&n;&t; * happens.&n;&t; * So, we walk up parent links until we find a connected directory,&n;&t; * or we run out of directories.  Then we find the parent, find&n;&t; * the name of the child in that parent, and do a lookup.&n;&t; * This should connect the child into the parent&n;&t; * We then repeat.&n;&t; */
-multiline_comment|/* it is possible that a confused file system might not let us complete the&n;&t; * path to the root.  For example, if get_parent returns a directory&n;&t; * in which we cannot find a name for the child.  While this implies a very&n;&t; * sick filesystem we don&squot;t want it to cause knfsd to spin.  Hence the noprogress&n;&t; * counter.  If we go through the loop 10 times (2 is probably enough) without&n;&t; * getting anywhere, we just give up&n;&t; */
+multiline_comment|/* it is possible that a confused file system might not let us complete &n;&t; * the path to the root.  For example, if get_parent returns a directory&n;&t; * in which we cannot find a name for the child.  While this implies a&n;&t; * very sick filesystem we don&squot;t want it to cause knfsd to spin.  Hence&n;&t; * the noprogress counter.  If we go through the loop 10 times (2 is&n;&t; * probably enough) without getting anywhere, we just give up&n;&t; */
 id|lock_kernel
 c_func
 (paren
@@ -540,7 +540,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-multiline_comment|/* we have hit the top of a disconnected path.  Try&n;&t;&t;&t; * to find parent and connect&n;&t;&t;&t; * note: racing with some other process renaming a&n;&t;&t;&t; * directory isn&squot;t much of a problem here.  If someone&n;&t;&t;&t; * renames the directory, it will end up properly connected,&n;&t;&t;&t; * which is what we want&n;&t;&t;&t; */
+multiline_comment|/* we have hit the top of a disconnected path.  Try&n;&t;&t;&t; * to find parent and connect&n;&t;&t;&t; * note: racing with some other process renaming a&n;&t;&t;&t; * directory isn&squot;t much of a problem here.  If someone&n;&t;&t;&t; * renames the directory, it will end up properly&n;&t;&t;&t; * connected, which is what we want&n;&t;&t;&t; */
 r_struct
 id|dentry
 op_star
@@ -670,7 +670,7 @@ op_eq
 op_minus
 id|ENOENT
 )paren
-multiline_comment|/* some race between get_parent and get_name?&n;&t;&t;&t;&t;&t; * just try again&n;&t;&t;&t;&t;&t; */
+multiline_comment|/* some race between get_parent and&n;&t;&t;&t;&t;&t; * get_name?  just try again&n;&t;&t;&t;&t;&t; */
 r_continue
 suffix:semicolon
 id|dput
@@ -802,7 +802,7 @@ id|pd
 )paren
 )paren
 (brace
-multiline_comment|/* something went wrong, we will have to give up */
+multiline_comment|/* something went wrong, we have to give up */
 id|dput
 c_func
 (paren
@@ -1184,7 +1184,7 @@ r_char
 op_star
 id|name
 suffix:semicolon
-multiline_comment|/* name that was found. It already points to a buffer NAME_MAX+1 is size */
+multiline_comment|/* name that was found. It already points to a&n;&t;&t;&t;&t;   buffer NAME_MAX+1 is size */
 DECL|member|ino
 r_int
 r_int
@@ -1519,7 +1519,7 @@ id|__u32
 id|generation
 )paren
 (brace
-multiline_comment|/* iget isn&squot;t really right if the inode is currently unallocated!!&n;&t; * This should really all be done inside each filesystem&n;&t; *&n;&t; * ext2fs&squot; read_inode has been strengthed to return a bad_inode if the inode&n;&t; *   had been deleted.&n;&t; *&n;&t; * Currently we don&squot;t know the generation for parent directory, so a generation&n;&t; * of 0 means &quot;accept any&quot;&n;&t; */
+multiline_comment|/* iget isn&squot;t really right if the inode is currently unallocated!!&n;&t; * This should really all be done inside each filesystem&n;&t; *&n;&t; * ext2fs&squot; read_inode has been strengthed to return a bad_inode if&n;&t; * the inode had been deleted.&n;&t; *&n;&t; * Currently we don&squot;t know the generation for parent directory, so&n;&t; * a generation of 0 means &quot;accept any&quot;&n;&t; */
 r_struct
 id|inode
 op_star
@@ -1717,7 +1717,7 @@ id|generation
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * export_encode_fh - default export_operations-&gt;encode_fh function&n; * dentry:  the dentry to encode&n; * fh:      where to store the file handle fragment&n; * max_len: maximum length to store there&n; * connectable: whether to store parent infomation&n; *&n; * This default encode_fh function assumes that the 32 inode number&n; * is suitable for locating an inode, and that the generation number&n; * can be used to check that it is still valid.  It places them in the&n; * filehandle fragment where export_decode_fh expects to find them.&n; */
+multiline_comment|/**&n; * export_encode_fh - default export_operations-&gt;encode_fh function&n; * @dentry:  the dentry to encode&n; * @fh:      where to store the file handle fragment&n; * @max_len: maximum length to store there&n; * @connectable: whether to store parent infomation&n; *&n; * This default encode_fh function assumes that the 32 inode number&n; * is suitable for locating an inode, and that the generation number&n; * can be used to check that it is still valid.  It places them in the&n; * filehandle fragment where export_decode_fh expects to find them.&n; */
 DECL|function|export_encode_fh
 r_static
 r_int
@@ -1847,7 +1847,7 @@ r_return
 id|type
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * export_decode_fh - default export_operations-&gt;decode_fh function&n; * sb:  The superblock&n; * fh:  pointer to the file handle fragment&n; * fh_len: length of file handle fragment&n; * acceptable: function for testing acceptability of dentrys&n; * context:   context for @acceptable&n; *&n; * This is the default decode_fh() function.&n; * a fileid_type of 1 indicates that the filehandlefragment&n; * just contains an object identifier understood by  get_dentry.&n; * a fileid_type of 2 says that there is also a directory&n; * identifier 8 bytes in to the filehandlefragement.&n; */
+multiline_comment|/**&n; * export_decode_fh - default export_operations-&gt;decode_fh function&n; * @sb:  The superblock&n; * @fh:  pointer to the file handle fragment&n; * @fh_len: length of file handle fragment&n; * @acceptable: function for testing acceptability of dentrys&n; * @context:   context for @acceptable&n; *&n; * This is the default decode_fh() function.&n; * a fileid_type of 1 indicates that the filehandlefragment&n; * just contains an object identifier understood by  get_dentry.&n; * a fileid_type of 2 says that there is also a directory&n; * identifier 8 bytes in to the filehandlefragement.&n; */
 DECL|function|export_decode_fh
 r_static
 r_struct

@@ -1,5 +1,5 @@
 multiline_comment|/*&n; * USB Host-to-Host Links&n; * Copyright (C) 2000-2002 by David Brownell &lt;dbrownell@users.sourceforge.net&gt;&n; */
-multiline_comment|/*&n; * This is used for &quot;USB networking&quot;, connecting USB hosts as peers.&n; *&n; * It can be used with USB &quot;network cables&quot;, for IP-over-USB communications;&n; * Ethernet speeds without the Ethernet.  USB devices (including some PDAs)&n; * can support such links directly, replacing device-specific protocols&n; * with Internet standard ones.&n; *&n; * The links can be bridged using the Ethernet bridging (net/bridge)&n; * support as appropriate.  Devices currently supported include:&n; *&n; *&t;- AnchorChip 2720&n; *&t;- Belkin, eTEK (interops with Win32 drivers)&n; *&t;- GeneSys GL620USB-A&n; *&t;- &quot;Linux Devices&quot; (like iPaq and similar SA-1100 based PDAs)&n; *&t;- NetChip 1080 (interoperates with NetChip Win32 drivers)&n; *&t;- Prolific PL-2301/2302 (replaces &quot;plusb&quot; driver)&n; *&n; * USB devices can implement their side of this protocol at the cost&n; * of two bulk endpoints; it&squot;s not restricted to &quot;cable&quot; applications.&n; * See the LINUXDEV support.&n; *&n; * &n; * TODO:&n; *&n; * This needs to be retested for bulk queuing problems ... earlier versions&n; * seemed to find different types of problems in each HCD.  Once they&squot;re fixed,&n; * re-enable queues to get higher bandwidth utilization (without needing&n; * to tweak MTU for larger packets).&n; *&n; * Add support for more &quot;network cable&quot; chips; interop with their Win32&n; * drivers may be a good thing.  Test the AnchorChip 2720 support..&n; * Figure out the initialization protocol used by the Prolific chips,&n; * for better robustness ... there&squot;s some powerup/reset handshake that&squot;s&n; * needed when only one end reboots.&n; *&n; * Use interrupt on PL230x to detect peer connect/disconnect, and call&n; * netif_carrier_{on,off} (?) appropriately.  For Net1080, detect peer&n; * connect/disconnect with async control messages.&n; *&n; * Find some way to report &quot;peer connected&quot; network hotplug events; it&squot;ll&n; * likely mean updating the networking layer.  (This has been discussed&n; * on the netdev list...)&n; *&n; * Craft smarter hotplug policy scripts ... ones that know how to arrange&n; * bridging with &quot;brctl&quot;, and can handle static and dynamic (&quot;pump&quot;) setups.&n; * Use those &quot;peer connected&quot; events.&n; *&n; *&n; * CHANGELOG:&n; *&n; * 13-sep-2000&t;experimental, new&n; * 10-oct-2000&t;usb_device_id table created. &n; * 28-oct-2000&t;misc fixes; mostly, discard more TTL-mangled rx packets.&n; * 01-nov-2000&t;usb_device_id table and probing api update by&n; *&t;&t;Adam J. Richter &lt;adam@yggdrasil.com&gt;.&n; * 18-dec-2000&t;(db) tx watchdog, &quot;net1080&quot; renaming to &quot;usbnet&quot;, device_info&n; *&t;&t;and prolific support, isolate net1080-specific bits, cleanup.&n; *&t;&t;fix unlink_urbs oops in D3 PM resume code path.&n; *&n; * 02-feb-2001&t;(db) fix tx skb sharing, packet length, match_flags, ...&n; * 08-feb-2001&t;stubbed in &quot;linuxdev&quot;, maybe the SA-1100 folk can use it;&n; *&t;&t;AnchorChips 2720 support (from spec) for testing;&n; *&t;&t;fix bit-ordering problem with ethernet multicast addr&n; * 19-feb-2001  Support for clearing halt conditions. SA1100 UDC support&n; *&t;&t;updates. Oleg Drokin (green@iXcelerator.com)&n; * 25-mar-2001&t;More SA-1100 updates, including workaround for ip problem&n; *&t;&t;expecting cleared skb-&gt;cb and framing change to match latest&n; *&t;&t;handhelds.org version (Oleg).  Enable device IDs from the&n; *&t;&t;Win32 Belkin driver; other cleanups (db).&n; * 16-jul-2001&t;Bugfixes for uhci oops-on-unplug, Belkin support, various&n; *&t;&t;cleanups for problems not yet seen in the field. (db)&n; * 17-oct-2001&t;Handle &quot;Advance USBNET&quot; product, like Belkin/eTEK devices,&n; *&t;&t;from Ioannis Mavroukakis &lt;i.mavroukakis@btinternet.com&gt;;&n; *&t;&t;rx unlinks somehow weren&squot;t async; minor cleanup.&n; * 03-nov-2001&t;Merged GeneSys driver; original code from Jiun-Jie Huang&n; *&t;&t;&lt;huangjj@genesyslogic.com.tw&gt;, updated by Stanislav Brabec&n; *&t;&t;&lt;utx@penguin.cz&gt;.  Made framing options (NetChip/GeneSys)&n; *&t;&t;tie mostly to (sub)driver info.  Workaround some PL-2302&n; *&t;&t;chips that seem to reject SET_INTERFACE requests.&n; *&n; * 06-apr-2002&t;Added ethtool support, based on a patch from Brad Hards.&n; *&t;&t;Level of diagnostics is more configurable; they use device&n; *&t;&t;location (usb_device-&gt;devpath) instead of address (2.5).&n; *&t;&t;For tx_fixup, memflags can&squot;t be NOIO.&n; *&n; *-------------------------------------------------------------------------*/
+multiline_comment|/*&n; * This is used for &quot;USB networking&quot;, connecting USB hosts as peers.&n; *&n; * It can be used with USB &quot;network cables&quot;, for IP-over-USB communications;&n; * Ethernet speeds without the Ethernet.  USB devices (including some PDAs)&n; * can support such links directly, replacing device-specific protocols&n; * with Internet standard ones.&n; *&n; * The links can be bridged using the Ethernet bridging (net/bridge)&n; * support as appropriate.  Devices currently supported include:&n; *&n; *&t;- AnchorChip 2720&n; *&t;- Belkin, eTEK (interops with Win32 drivers)&n; *&t;- GeneSys GL620USB-A&n; *&t;- &quot;Linux Devices&quot; (like iPaq and similar SA-1100 based PDAs)&n; *&t;- NetChip 1080 (interoperates with NetChip Win32 drivers)&n; *&t;- Prolific PL-2301/2302 (replaces &quot;plusb&quot; driver)&n; *&n; * USB devices can implement their side of this protocol at the cost&n; * of two bulk endpoints; it&squot;s not restricted to &quot;cable&quot; applications.&n; * See the LINUXDEV support.&n; *&n; * &n; * TODO:&n; *&n; * This needs to be retested for bulk queuing problems ... earlier versions&n; * seemed to find different types of problems in each HCD.  Once they&squot;re fixed,&n; * re-enable queues to get higher bandwidth utilization (without needing&n; * to tweak MTU for larger packets).&n; *&n; * - AN2720 ... not widely available, but reportedly works well&n; *&n; * - Belkin/eTEK ... no known issues&n; *&n; * - Both GeneSys and PL-230x use interrupt transfers for driver-to-driver&n; *   handshaking; it&squot;d be worth implementing those as &quot;carrier detect&quot;.&n; *   Prefer generic hooks, not minidriver-specific hacks.&n; *&n; * - Linux devices ... the www.handhelds.org SA-1100 support works nicely,&n; *   but the Sharp Zaurus uses an incompatible protocol (extra checksums).&n; *   No reason not to merge the Zaurus protocol here too (got patch? :)&n; *&n; * - For Netchip, use keventd to poll via control requests to detect hardware&n; *   level &quot;carrier detect&quot;. &n; *&n; * - PL-230x ... the initialization protocol doesn&squot;t seem to match chip data&n; *   sheets, sometimes it&squot;s not needed and sometimes it hangs.  Prolific has&n; *   not responded to repeated support/information requests.&n; *&n; * Interop with more Win32 drivers may be a good thing.&n; *&n; * Seems like reporting &quot;peer connected&quot; (carrier present) events may end&n; * up going through the netlink event system, not hotplug ... that may be&n; * awkward in terms of automatic configuration though.&n; *&n; * There are reports that bridging gives lower-than-usual throughput.&n; *&n; * Craft smarter hotplug policy scripts ... ones that know how to arrange&n; * bridging with &quot;brctl&quot;, and can handle static and dynamic (&quot;pump&quot;) setups.&n; * Use those &quot;peer connected&quot; events.&n; *&n; *&n; * CHANGELOG:&n; *&n; * 13-sep-2000&t;experimental, new&n; * 10-oct-2000&t;usb_device_id table created. &n; * 28-oct-2000&t;misc fixes; mostly, discard more TTL-mangled rx packets.&n; * 01-nov-2000&t;usb_device_id table and probing api update by&n; *&t;&t;Adam J. Richter &lt;adam@yggdrasil.com&gt;.&n; * 18-dec-2000&t;(db) tx watchdog, &quot;net1080&quot; renaming to &quot;usbnet&quot;, device_info&n; *&t;&t;and prolific support, isolate net1080-specific bits, cleanup.&n; *&t;&t;fix unlink_urbs oops in D3 PM resume code path.&n; *&n; * 02-feb-2001&t;(db) fix tx skb sharing, packet length, match_flags, ...&n; * 08-feb-2001&t;stubbed in &quot;linuxdev&quot;, maybe the SA-1100 folk can use it;&n; *&t;&t;AnchorChips 2720 support (from spec) for testing;&n; *&t;&t;fix bit-ordering problem with ethernet multicast addr&n; * 19-feb-2001  Support for clearing halt conditions. SA1100 UDC support&n; *&t;&t;updates. Oleg Drokin (green@iXcelerator.com)&n; * 25-mar-2001&t;More SA-1100 updates, including workaround for ip problem&n; *&t;&t;expecting cleared skb-&gt;cb and framing change to match latest&n; *&t;&t;handhelds.org version (Oleg).  Enable device IDs from the&n; *&t;&t;Win32 Belkin driver; other cleanups (db).&n; * 16-jul-2001&t;Bugfixes for uhci oops-on-unplug, Belkin support, various&n; *&t;&t;cleanups for problems not yet seen in the field. (db)&n; * 17-oct-2001&t;Handle &quot;Advance USBNET&quot; product, like Belkin/eTEK devices,&n; *&t;&t;from Ioannis Mavroukakis &lt;i.mavroukakis@btinternet.com&gt;;&n; *&t;&t;rx unlinks somehow weren&squot;t async; minor cleanup.&n; * 03-nov-2001&t;Merged GeneSys driver; original code from Jiun-Jie Huang&n; *&t;&t;&lt;huangjj@genesyslogic.com.tw&gt;, updated by Stanislav Brabec&n; *&t;&t;&lt;utx@penguin.cz&gt;.  Made framing options (NetChip/GeneSys)&n; *&t;&t;tie mostly to (sub)driver info.  Workaround some PL-2302&n; *&t;&t;chips that seem to reject SET_INTERFACE requests.&n; *&n; * 06-apr-2002&t;Added ethtool support, based on a patch from Brad Hards.&n; *&t;&t;Level of diagnostics is more configurable; they use device&n; *&t;&t;location (usb_device-&gt;devpath) instead of address (2.5).&n; *&t;&t;For tx_fixup, memflags can&squot;t be NOIO.&n; * 07-may-2002&t;Generalize/cleanup keventd support, handling rx stalls (mostly&n; *&t;&t;for USB 2.0 TTs) and memory shortages (potential) too. (db)&n; *&t;&t;Use &quot;locally assigned&quot; IEEE802 address space. (Brad Hards)&n; *&n; *-------------------------------------------------------------------------*/
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kmod.h&gt;
@@ -19,6 +19,7 @@ DECL|macro|DEBUG
 macro_line|#   define DEBUG
 macro_line|#endif
 macro_line|#include &lt;linux/usb.h&gt;
+multiline_comment|/* minidrivers _could_ be individually configured */
 DECL|macro|CONFIG_USB_AN2720
 mdefine_line|#define&t;CONFIG_USB_AN2720
 DECL|macro|CONFIG_USB_BELKIN
@@ -32,7 +33,7 @@ mdefine_line|#define&t;CONFIG_USB_NET1080
 DECL|macro|CONFIG_USB_PL2301
 mdefine_line|#define&t;CONFIG_USB_PL2301
 DECL|macro|DRIVER_VERSION
-mdefine_line|#define DRIVER_VERSION&t;&t;&quot;26-Apr-2002&quot;
+mdefine_line|#define DRIVER_VERSION&t;&t;&quot;07-May-2002&quot;
 multiline_comment|/*-------------------------------------------------------------------------*/
 multiline_comment|/*&n; * Nineteen USB 1.1 max size bulk transactions per frame (ms), max.&n; * Several dozen bytes of IPv4 data can fit in two such transactions.&n; * One maximum size Ethernet packet takes twenty four of them.&n; */
 macro_line|#ifdef REALLY_QUEUE
@@ -161,11 +162,22 @@ r_struct
 id|tasklet_struct
 id|bh
 suffix:semicolon
-DECL|member|ctrl_task
+DECL|member|kevent
 r_struct
 id|tq_struct
-id|ctrl_task
+id|kevent
 suffix:semicolon
+DECL|member|flags
+r_int
+r_int
+id|flags
+suffix:semicolon
+DECL|macro|EVENT_TX_HALT
+macro_line|#&t;&t;define EVENT_TX_HALT&t;0
+DECL|macro|EVENT_RX_HALT
+macro_line|#&t;&t;define EVENT_RX_HALT&t;1
+DECL|macro|EVENT_RX_MEMORY
+macro_line|#&t;&t;define EVENT_RX_MEMORY&t;2
 )brace
 suffix:semicolon
 singleline_comment|// device-specific info used by the driver
@@ -3700,6 +3712,59 @@ id|flags
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* some work can&squot;t be done in tasklets, so we use keventd&n; *&n; * NOTE:  annoying asymmetry:  if it&squot;s active, schedule_task() fails,&n; * but tasklet_schedule() doesn&squot;t.  hope the failure is rare.&n; */
+DECL|function|defer_kevent
+r_static
+r_void
+id|defer_kevent
+(paren
+r_struct
+id|usbnet
+op_star
+id|dev
+comma
+r_int
+id|work
+)paren
+(brace
+id|set_bit
+(paren
+id|work
+comma
+op_amp
+id|dev-&gt;flags
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|schedule_task
+(paren
+op_amp
+id|dev-&gt;kevent
+)paren
+)paren
+id|err
+(paren
+l_string|&quot;%s: kevent %d may have been dropped&quot;
+comma
+id|dev-&gt;net.name
+comma
+id|work
+)paren
+suffix:semicolon
+r_else
+id|dbg
+(paren
+l_string|&quot;%s: kevent %d scheduled&quot;
+comma
+id|dev-&gt;net.name
+comma
+id|work
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/*-------------------------------------------------------------------------*/
 r_static
 r_void
@@ -3817,10 +3882,11 @@ id|dbg
 l_string|&quot;no rx skb&quot;
 )paren
 suffix:semicolon
-id|tasklet_schedule
+id|defer_kevent
 (paren
-op_amp
-id|dev-&gt;bh
+id|dev
+comma
+id|EVENT_RX_MEMORY
 )paren
 suffix:semicolon
 id|usb_free_urb
@@ -3912,11 +3978,19 @@ id|netif_running
 op_amp
 id|dev-&gt;net
 )paren
+op_logical_and
+op_logical_neg
+id|test_bit
+(paren
+id|EVENT_RX_HALT
+comma
+op_amp
+id|dev-&gt;flags
+)paren
 )paren
 (brace
-r_if
+r_switch
 c_cond
-(paren
 (paren
 id|retval
 op_assign
@@ -3927,10 +4001,35 @@ comma
 id|GFP_ATOMIC
 )paren
 )paren
-op_ne
-l_int|0
-)paren
 (brace
+r_case
+op_minus
+id|EPIPE
+suffix:colon
+id|defer_kevent
+(paren
+id|dev
+comma
+id|EVENT_RX_HALT
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+op_minus
+id|ENOMEM
+suffix:colon
+id|defer_kevent
+(paren
+id|dev
+comma
+id|EVENT_RX_MEMORY
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_default
+suffix:colon
 id|dbg
 (paren
 l_string|&quot;%s rx submit, %d&quot;
@@ -3946,9 +4045,11 @@ op_amp
 id|dev-&gt;bh
 )paren
 suffix:semicolon
-)brace
-r_else
-(brace
+r_break
+suffix:semicolon
+r_case
+l_int|0
+suffix:colon
 id|__skb_queue_tail
 (paren
 op_amp
@@ -4248,20 +4349,36 @@ suffix:semicolon
 )brace
 r_break
 suffix:semicolon
+singleline_comment|// stalls need manual reset. this is rare ... except that
+singleline_comment|// when going through USB 2.0 TTs, unplug appears this way.
+singleline_comment|// we avoid the highspeed version of the ETIMEOUT/EILSEQ
+singleline_comment|// storm, recovering as needed.
+r_case
+op_minus
+id|EPIPE
+suffix:colon
+id|defer_kevent
+(paren
+id|dev
+comma
+id|EVENT_RX_HALT
+)paren
+suffix:semicolon
+singleline_comment|// FALLTHROUGH
 singleline_comment|// software-driven interface shutdown
 r_case
 op_minus
 id|ECONNRESET
 suffix:colon
-singleline_comment|// usb-ohci, usb-uhci
+singleline_comment|// according to API spec
 r_case
 op_minus
 id|ECONNABORTED
 suffix:colon
-singleline_comment|// uhci ... for usb-uhci, INTR
+singleline_comment|// some (now fixed?) UHCI bugs
 id|dbg
 (paren
-l_string|&quot;%s shutdown, code %d&quot;
+l_string|&quot;%s rx shutdown, code %d&quot;
 comma
 id|dev-&gt;net.name
 comma
@@ -4272,7 +4389,7 @@ id|entry-&gt;state
 op_assign
 id|rx_cleanup
 suffix:semicolon
-singleline_comment|// do urb frees only in the tasklet
+singleline_comment|// do urb frees only in the tasklet (UHCI has oopsed ...)
 id|entry-&gt;urb
 op_assign
 id|urb
@@ -4294,8 +4411,9 @@ suffix:semicolon
 singleline_comment|// FALLTHROUGH
 r_default
 suffix:colon
-singleline_comment|// on unplug we&squot;ll get a burst of ETIMEDOUT/EILSEQ
-singleline_comment|// till the khubd gets and handles its interrupt.
+singleline_comment|// on unplug we get ETIMEDOUT (ohci) or EILSEQ (uhci)
+singleline_comment|// until khubd sees its interrupt and disconnects us.
+singleline_comment|// that can easily be hundreds of passes through here.
 id|entry-&gt;state
 op_assign
 id|rx_cleanup
@@ -4336,6 +4454,15 @@ id|netif_running
 op_amp
 id|dev-&gt;net
 )paren
+op_logical_and
+op_logical_neg
+id|test_bit
+(paren
+id|EVENT_RX_HALT
+comma
+op_amp
+id|dev-&gt;flags
+)paren
 )paren
 (brace
 id|rx_submit
@@ -4350,6 +4477,11 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
+id|usb_free_urb
+(paren
+id|urb
+)paren
+suffix:semicolon
 )brace
 macro_line|#ifdef&t;VERBOSE
 id|dbg
@@ -4461,7 +4593,12 @@ r_if
 c_cond
 (paren
 id|retval
-OL
+op_ne
+op_minus
+id|EINPROGRESS
+op_logical_and
+id|retval
+op_ne
 l_int|0
 )paren
 id|dbg
@@ -5168,11 +5305,11 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/*-------------------------------------------------------------------------*/
-multiline_comment|/* usb_clear_halt cannot be called in interrupt context */
+multiline_comment|/* work that cannot be done in interrupt context uses keventd.&n; *&n; * NOTE:  &quot;uhci&quot; and &quot;usb-uhci&quot; may have trouble with this since they don&squot;t&n; * queue control transfers to individual devices, and other threads could&n; * trigger control requests concurrently.  hope that&squot;s rare.&n; */
 r_static
 r_void
-DECL|function|tx_clear_halt
-id|tx_clear_halt
+DECL|function|kevent
+id|kevent
 (paren
 r_void
 op_star
@@ -5186,6 +5323,30 @@ id|dev
 op_assign
 id|data
 suffix:semicolon
+r_int
+id|status
+suffix:semicolon
+multiline_comment|/* usb_clear_halt() needs a thread context */
+r_if
+c_cond
+(paren
+id|test_bit
+(paren
+id|EVENT_TX_HALT
+comma
+op_amp
+id|dev-&gt;flags
+)paren
+)paren
+(brace
+id|unlink_urbs
+(paren
+op_amp
+id|dev-&gt;txq
+)paren
+suffix:semicolon
+id|status
+op_assign
 id|usb_clear_halt
 (paren
 id|dev-&gt;udev
@@ -5198,10 +5359,198 @@ id|dev-&gt;driver_info-&gt;out
 )paren
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|status
+OL
+l_int|0
+)paren
+id|err
+(paren
+l_string|&quot;%s: can&squot;t clear tx halt, status %d&quot;
+comma
+id|dev-&gt;net.name
+comma
+id|status
+)paren
+suffix:semicolon
+r_else
+(brace
+id|clear_bit
+(paren
+id|EVENT_TX_HALT
+comma
+op_amp
+id|dev-&gt;flags
+)paren
+suffix:semicolon
 id|netif_wake_queue
 (paren
 op_amp
 id|dev-&gt;net
+)paren
+suffix:semicolon
+)brace
+)brace
+r_if
+c_cond
+(paren
+id|test_bit
+(paren
+id|EVENT_RX_HALT
+comma
+op_amp
+id|dev-&gt;flags
+)paren
+)paren
+(brace
+id|unlink_urbs
+(paren
+op_amp
+id|dev-&gt;rxq
+)paren
+suffix:semicolon
+id|status
+op_assign
+id|usb_clear_halt
+(paren
+id|dev-&gt;udev
+comma
+id|usb_rcvbulkpipe
+(paren
+id|dev-&gt;udev
+comma
+id|dev-&gt;driver_info-&gt;in
+)paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|status
+OL
+l_int|0
+)paren
+id|err
+(paren
+l_string|&quot;%s: can&squot;t clear rx halt, status %d&quot;
+comma
+id|dev-&gt;net.name
+comma
+id|status
+)paren
+suffix:semicolon
+r_else
+(brace
+id|clear_bit
+(paren
+id|EVENT_RX_HALT
+comma
+op_amp
+id|dev-&gt;flags
+)paren
+suffix:semicolon
+id|tasklet_schedule
+(paren
+op_amp
+id|dev-&gt;bh
+)paren
+suffix:semicolon
+)brace
+)brace
+multiline_comment|/* tasklet could resubmit itself forever if memory is tight */
+r_if
+c_cond
+(paren
+id|test_bit
+(paren
+id|EVENT_RX_MEMORY
+comma
+op_amp
+id|dev-&gt;flags
+)paren
+)paren
+(brace
+r_struct
+id|urb
+op_star
+id|urb
+op_assign
+l_int|0
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|netif_running
+(paren
+op_amp
+id|dev-&gt;net
+)paren
+)paren
+id|urb
+op_assign
+id|usb_alloc_urb
+(paren
+l_int|0
+comma
+id|GFP_KERNEL
+)paren
+suffix:semicolon
+r_else
+id|clear_bit
+(paren
+id|EVENT_RX_MEMORY
+comma
+op_amp
+id|dev-&gt;flags
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|urb
+op_ne
+l_int|0
+)paren
+(brace
+id|clear_bit
+(paren
+id|EVENT_RX_MEMORY
+comma
+op_amp
+id|dev-&gt;flags
+)paren
+suffix:semicolon
+id|rx_submit
+(paren
+id|dev
+comma
+id|urb
+comma
+id|GFP_KERNEL
+)paren
+suffix:semicolon
+id|tasklet_schedule
+(paren
+op_amp
+id|dev-&gt;bh
+)paren
+suffix:semicolon
+)brace
+)brace
+r_if
+c_cond
+(paren
+id|dev-&gt;flags
+)paren
+id|dbg
+(paren
+l_string|&quot;%s: kevent done, flags = 0x%lx&quot;
+comma
+id|dev-&gt;net.name
+comma
+id|dev-&gt;flags
 )paren
 suffix:semicolon
 )brace
@@ -5256,39 +5605,13 @@ op_eq
 op_minus
 id|EPIPE
 )paren
-(brace
-r_if
-c_cond
+id|defer_kevent
 (paren
-id|dev-&gt;ctrl_task.sync
-op_eq
-l_int|0
-)paren
-(brace
-id|dev-&gt;ctrl_task.routine
-op_assign
-id|tx_clear_halt
-suffix:semicolon
-id|dev-&gt;ctrl_task.data
-op_assign
 id|dev
-suffix:semicolon
-id|schedule_task
-(paren
-op_amp
-id|dev-&gt;ctrl_task
+comma
+id|EVENT_TX_HALT
 )paren
 suffix:semicolon
-)brace
-r_else
-(brace
-id|dbg
-(paren
-l_string|&quot;Cannot clear TX stall&quot;
-)paren
-suffix:semicolon
-)brace
-)brace
 id|urb-&gt;dev
 op_assign
 l_int|0
@@ -5703,7 +6026,7 @@ id|netif_stop_queue
 id|net
 )paren
 suffix:semicolon
-r_if
+r_switch
 c_cond
 (paren
 (paren
@@ -5716,10 +6039,23 @@ comma
 id|GFP_ATOMIC
 )paren
 )paren
-op_ne
-l_int|0
 )paren
 (brace
+r_case
+op_minus
+id|EPIPE
+suffix:colon
+id|defer_kevent
+(paren
+id|dev
+comma
+id|EVENT_TX_HALT
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_default
+suffix:colon
 id|netif_start_queue
 (paren
 id|net
@@ -5734,9 +6070,11 @@ comma
 id|retval
 )paren
 suffix:semicolon
-)brace
-r_else
-(brace
+r_break
+suffix:semicolon
+r_case
+l_int|0
+suffix:colon
 id|net-&gt;trans_start
 op_assign
 id|jiffies
@@ -6009,6 +6347,15 @@ id|netif_running
 op_amp
 id|dev-&gt;net
 )paren
+op_logical_and
+op_logical_neg
+id|test_bit
+(paren
+id|EVENT_RX_HALT
+comma
+op_amp
+id|dev-&gt;flags
+)paren
 )paren
 (brace
 r_int
@@ -6195,6 +6542,11 @@ id|mutex_unlock
 (paren
 op_amp
 id|usbnet_mutex
+)paren
+suffix:semicolon
+singleline_comment|// assuming we used keventd, it must quiesce too
+id|flush_scheduled_tasks
+(paren
 )paren
 suffix:semicolon
 id|kfree
@@ -6440,6 +6792,16 @@ r_int
 r_int
 )paren
 id|dev
+suffix:semicolon
+id|INIT_TQUEUE
+(paren
+op_amp
+id|dev-&gt;kevent
+comma
+id|kevent
+comma
+id|dev
+)paren
 suffix:semicolon
 singleline_comment|// set up network interface records
 id|net
@@ -6909,6 +7271,14 @@ op_and_assign
 l_int|0xfe
 suffix:semicolon
 singleline_comment|// clear multicast bit
+id|node_id
+(braket
+l_int|0
+)braket
+op_or_assign
+l_int|0x02
+suffix:semicolon
+singleline_comment|// set local assignment bit (IEEE802)
 r_if
 c_cond
 (paren

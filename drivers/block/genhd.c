@@ -633,7 +633,7 @@ c_func
 r_void
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_FUSION_BOOT
+macro_line|#ifdef CONFIG_FUSION
 r_extern
 r_int
 id|fusion_init
@@ -716,7 +716,7 @@ c_func
 )paren
 suffix:semicolon
 macro_line|#endif
-macro_line|#ifdef CONFIG_FUSION_BOOT
+macro_line|#ifdef CONFIG_FUSION
 id|fusion_init
 c_func
 (paren

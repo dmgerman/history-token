@@ -1911,8 +1911,10 @@ op_star
 )paren
 id|arg
 comma
-id|suser
+id|capable
+c_func
 (paren
+id|CAP_SYS_ADMIN
 )paren
 )paren
 suffix:semicolon

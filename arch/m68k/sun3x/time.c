@@ -5,6 +5,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/kernel_stat.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
+macro_line|#include &lt;linux/rtc.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
@@ -41,158 +42,6 @@ DECL|macro|BCD_TO_BIN
 mdefine_line|#define BCD_TO_BIN(val) (((val)&amp;15) + ((val)&gt;&gt;4)*10)
 DECL|macro|BIN_TO_BCD
 mdefine_line|#define BIN_TO_BCD(val) (((val/10) &lt;&lt; 4) | (val % 10))
-multiline_comment|/* Read the Mostek */
-DECL|function|sun3x_gettod
-r_void
-id|sun3x_gettod
-(paren
-r_int
-op_star
-id|yearp
-comma
-r_int
-op_star
-id|monp
-comma
-r_int
-op_star
-id|dayp
-comma
-r_int
-op_star
-id|hourp
-comma
-r_int
-op_star
-id|minp
-comma
-r_int
-op_star
-id|secp
-)paren
-(brace
-r_volatile
-r_int
-r_char
-op_star
-id|eeprom
-op_assign
-(paren
-r_int
-r_char
-op_star
-)paren
-id|SUN3X_EEPROM
-suffix:semicolon
-multiline_comment|/* Stop updates */
-op_star
-(paren
-id|eeprom
-op_plus
-id|M_CONTROL
-)paren
-op_or_assign
-id|C_READ
-suffix:semicolon
-multiline_comment|/* Read values */
-op_star
-id|yearp
-op_assign
-id|BCD_TO_BIN
-c_func
-(paren
-op_star
-(paren
-id|eeprom
-op_plus
-id|M_YEAR
-)paren
-)paren
-suffix:semicolon
-op_star
-id|monp
-op_assign
-id|BCD_TO_BIN
-c_func
-(paren
-op_star
-(paren
-id|eeprom
-op_plus
-id|M_MONTH
-)paren
-)paren
-op_plus
-l_int|1
-suffix:semicolon
-op_star
-id|dayp
-op_assign
-id|BCD_TO_BIN
-c_func
-(paren
-op_star
-(paren
-id|eeprom
-op_plus
-id|M_DATE
-)paren
-)paren
-suffix:semicolon
-op_star
-id|hourp
-op_assign
-id|BCD_TO_BIN
-c_func
-(paren
-op_star
-(paren
-id|eeprom
-op_plus
-id|M_HOUR
-)paren
-)paren
-suffix:semicolon
-op_star
-id|minp
-op_assign
-id|BCD_TO_BIN
-c_func
-(paren
-op_star
-(paren
-id|eeprom
-op_plus
-id|M_MIN
-)paren
-)paren
-suffix:semicolon
-op_star
-id|secp
-op_assign
-id|BCD_TO_BIN
-c_func
-(paren
-op_star
-(paren
-id|eeprom
-op_plus
-id|M_SEC
-)paren
-)paren
-suffix:semicolon
-multiline_comment|/* Restart updates */
-op_star
-(paren
-id|eeprom
-op_plus
-id|M_CONTROL
-)paren
-op_and_assign
-op_complement
-id|C_READ
-suffix:semicolon
-)brace
 DECL|function|sun3x_hwclk
 r_int
 id|sun3x_hwclk
@@ -202,7 +51,7 @@ r_int
 id|set
 comma
 r_struct
-id|hwclk_time
+id|rtc_time
 op_star
 id|t
 )paren
@@ -214,8 +63,8 @@ op_star
 id|h
 op_assign
 (paren
-r_int
-r_char
+r_struct
+id|mostek_dt
 op_star
 )paren
 (paren
@@ -249,7 +98,7 @@ op_assign
 id|BIN_TO_BCD
 c_func
 (paren
-id|t-&gt;sec
+id|t-&gt;tm_sec
 )paren
 suffix:semicolon
 id|h-&gt;min
@@ -257,7 +106,7 @@ op_assign
 id|BIN_TO_BCD
 c_func
 (paren
-id|t-&gt;min
+id|t-&gt;tm_min
 )paren
 suffix:semicolon
 id|h-&gt;hour
@@ -265,7 +114,7 @@ op_assign
 id|BIN_TO_BCD
 c_func
 (paren
-id|t-&gt;hour
+id|t-&gt;tm_hour
 )paren
 suffix:semicolon
 id|h-&gt;wday
@@ -273,7 +122,7 @@ op_assign
 id|BIN_TO_BCD
 c_func
 (paren
-id|t-&gt;wday
+id|t-&gt;tm_wday
 )paren
 suffix:semicolon
 id|h-&gt;mday
@@ -281,7 +130,7 @@ op_assign
 id|BIN_TO_BCD
 c_func
 (paren
-id|t-&gt;day
+id|t-&gt;tm_mday
 )paren
 suffix:semicolon
 id|h-&gt;month
@@ -289,7 +138,7 @@ op_assign
 id|BIN_TO_BCD
 c_func
 (paren
-id|t-&gt;mon
+id|t-&gt;tm_mon
 )paren
 suffix:semicolon
 id|h-&gt;year
@@ -297,7 +146,7 @@ op_assign
 id|BIN_TO_BCD
 c_func
 (paren
-id|t-&gt;year
+id|t-&gt;tm_year
 )paren
 suffix:semicolon
 id|h-&gt;csr
@@ -312,7 +161,7 @@ id|h-&gt;csr
 op_or_assign
 id|C_READ
 suffix:semicolon
-id|t-&gt;sec
+id|t-&gt;tm_sec
 op_assign
 id|BCD_TO_BIN
 c_func
@@ -320,7 +169,7 @@ c_func
 id|h-&gt;sec
 )paren
 suffix:semicolon
-id|t-&gt;min
+id|t-&gt;tm_min
 op_assign
 id|BCD_TO_BIN
 c_func
@@ -328,7 +177,7 @@ c_func
 id|h-&gt;min
 )paren
 suffix:semicolon
-id|t-&gt;hour
+id|t-&gt;tm_hour
 op_assign
 id|BCD_TO_BIN
 c_func
@@ -336,7 +185,7 @@ c_func
 id|h-&gt;hour
 )paren
 suffix:semicolon
-id|t-&gt;wday
+id|t-&gt;tm_wday
 op_assign
 id|BCD_TO_BIN
 c_func
@@ -344,7 +193,7 @@ c_func
 id|h-&gt;wday
 )paren
 suffix:semicolon
-id|t-&gt;day
+id|t-&gt;tm_mday
 op_assign
 id|BCD_TO_BIN
 c_func
@@ -352,7 +201,7 @@ c_func
 id|h-&gt;mday
 )paren
 suffix:semicolon
-id|t-&gt;mon
+id|t-&gt;tm_mon
 op_assign
 id|BCD_TO_BIN
 c_func
@@ -360,7 +209,7 @@ c_func
 id|h-&gt;month
 )paren
 suffix:semicolon
-id|t-&gt;year
+id|t-&gt;tm_year
 op_assign
 id|BCD_TO_BIN
 c_func

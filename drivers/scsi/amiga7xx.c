@@ -31,7 +31,8 @@ comma
 r_int
 id|chip
 comma
-id|u32
+r_int
+r_int
 id|base
 comma
 r_int

@@ -369,7 +369,8 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n;     *  Initialization&n;     */
 DECL|function|zorro_init
-r_void
+r_static
+r_int
 id|__init
 id|zorro_init
 c_func
@@ -399,6 +400,7 @@ id|ZORRO
 )paren
 )paren
 r_return
+l_int|0
 suffix:semicolon
 id|printk
 c_func
@@ -680,6 +682,9 @@ id|size
 comma
 l_int|0
 )paren
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 )brace
 DECL|variable|zorro_init

@@ -2742,7 +2742,8 @@ comma
 r_int
 id|chip
 comma
-id|u32
+r_int
+r_int
 id|base
 comma
 r_int
@@ -3139,6 +3140,10 @@ suffix:semicolon
 id|kernel_set_cachemode
 c_func
 (paren
+(paren
+r_void
+op_star
+)paren
 id|instance-&gt;hostdata
 (braket
 l_int|0
@@ -3192,15 +3197,6 @@ id|base
 (brace
 id|instance-&gt;base
 op_assign
-(paren
-r_int
-r_char
-op_star
-)paren
-(paren
-r_int
-r_int
-)paren
 id|base
 suffix:semicolon
 multiline_comment|/* Check for forced I/O mapping */
@@ -3927,6 +3923,10 @@ op_assign
 id|virt_to_bus
 c_func
 (paren
+(paren
+r_void
+op_star
+)paren
 id|host-&gt;base
 )paren
 suffix:semicolon
@@ -10781,7 +10781,8 @@ id|kernel_set_cachemode
 c_func
 (paren
 (paren
-id|u32
+r_void
+op_star
 )paren
 id|addr
 comma
@@ -11060,6 +11061,10 @@ suffix:semicolon
 id|kernel_set_cachemode
 c_func
 (paren
+(paren
+r_void
+op_star
+)paren
 id|real
 comma
 l_int|4096
@@ -22375,7 +22380,8 @@ id|kernel_set_cachemode
 c_func
 (paren
 (paren
-id|u32
+r_void
+op_star
 )paren
 id|hostdata
 comma

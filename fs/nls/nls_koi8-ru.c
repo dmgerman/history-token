@@ -69,7 +69,11 @@ id|uni
 op_eq
 l_int|0x040e
 )paren
-r_return
+id|out
+(braket
+l_int|0
+)braket
+op_assign
 l_int|0xbe
 suffix:semicolon
 r_else
@@ -80,7 +84,11 @@ id|uni
 op_eq
 l_int|0x045e
 )paren
-r_return
+id|out
+(braket
+l_int|0
+)braket
+op_assign
 l_int|0xae
 suffix:semicolon
 r_else
@@ -111,6 +119,9 @@ id|out
 comma
 id|boundlen
 )paren
+suffix:semicolon
+r_return
+l_int|1
 suffix:semicolon
 )brace
 r_else

@@ -385,18 +385,14 @@ l_string|&quot;UDMA133&quot;
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * VIA /proc entry.&n; */
-macro_line|#ifdef CONFIG_PROC_FS
+macro_line|#if 0 &amp;&amp; defined(CONFIG_PROC_FS)
 macro_line|#include &lt;linux/stat.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
-DECL|variable|via_proc
-DECL|variable|via_base
 r_int
 id|via_proc
 comma
 id|via_base
 suffix:semicolon
-DECL|variable|bmide_dev
-DECL|variable|isa_dev
 r_static
 r_struct
 id|pci_dev
@@ -426,7 +422,6 @@ r_int
 )paren
 suffix:semicolon
 multiline_comment|/* ide-proc.c */
-DECL|variable|via_control3
 r_static
 r_char
 op_star
@@ -444,11 +439,8 @@ comma
 l_string|&quot;192&quot;
 )brace
 suffix:semicolon
-DECL|macro|via_print
 mdefine_line|#define via_print(format, arg...) p += sprintf(p, format &quot;&bslash;n&quot; , ## arg)
-DECL|macro|via_print_drive
 mdefine_line|#define via_print_drive(name, format, arg...)&bslash;&n;&t;p += sprintf(p, name); for (i = 0; i &lt; 4; i++) p += sprintf(p, format, ## arg); p += sprintf(p, &quot;&bslash;n&quot;);
-DECL|function|via_get_info
 r_static
 r_int
 id|via_get_info
@@ -3129,7 +3121,7 @@ id|dev-&gt;slot_name
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * Setup /proc/ide/via entry.&n; */
-macro_line|#ifdef CONFIG_PROC_FS
+macro_line|#if 0 &amp;&amp; defined(CONFIG_PROC_FS)
 r_if
 c_cond
 (paren

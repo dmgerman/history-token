@@ -415,6 +415,7 @@ mdefine_line|#define ZORRO_NUM_AUTO&t;&t;16
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
+macro_line|#include &lt;asm/zorro.h&gt;
 r_struct
 id|zorro_dev
 (brace
@@ -458,14 +459,6 @@ id|ZORRO_NUM_AUTO
 )braket
 suffix:semicolon
 multiline_comment|/*&n;     *  Zorro Functions&n;     */
-r_extern
-r_void
-id|zorro_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 r_extern
 r_void
 id|zorro_name_device

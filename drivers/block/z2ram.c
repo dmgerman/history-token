@@ -11,7 +11,6 @@ macro_line|#include &lt;asm/setup.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/amigahw.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
-macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;linux/zorro.h&gt;
 r_extern
 r_int
@@ -163,7 +162,7 @@ c_func
 (paren
 id|KERN_ERR
 id|DEVICE_NAME
-l_string|&quot;: bad access: block=%ld, count=%ld&bslash;n&quot;
+l_string|&quot;: bad access: block=%lu, count=%u&bslash;n&quot;
 comma
 id|CURRENT-&gt;sector
 comma
@@ -183,13 +182,21 @@ r_if
 c_cond
 (paren
 (paren
-id|CURRENT-&gt;cmd
+id|rq_data_dir
+c_func
+(paren
+id|CURRENT
+)paren
 op_ne
 id|READ
 )paren
 op_logical_and
 (paren
-id|CURRENT-&gt;cmd
+id|rq_data_dir
+c_func
+(paren
+id|CURRENT
+)paren
 op_ne
 id|WRITE
 )paren
@@ -200,9 +207,13 @@ c_func
 (paren
 id|KERN_ERR
 id|DEVICE_NAME
-l_string|&quot;: bad command: %d&bslash;n&quot;
+l_string|&quot;: bad command: %ld&bslash;n&quot;
 comma
-id|CURRENT-&gt;cmd
+id|rq_data_dir
+c_func
+(paren
+id|CURRENT
+)paren
 )paren
 suffix:semicolon
 id|end_request
@@ -255,7 +266,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|CURRENT-&gt;cmd
+id|rq_data_dir
+c_func
+(paren
+id|CURRENT
+)paren
 op_eq
 id|READ
 )paren
@@ -669,7 +684,7 @@ op_assign
 r_int
 r_int
 )paren
-id|ioremap
+id|z_remap_nocache_nonser
 c_func
 (paren
 id|paddr
@@ -1187,7 +1202,7 @@ c_func
 id|MAJOR_NR
 )paren
 comma
-id|DEVICE_REQUES
+id|do_z2_request
 comma
 op_amp
 id|z2ram_lock

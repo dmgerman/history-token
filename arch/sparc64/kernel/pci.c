@@ -1205,6 +1205,10 @@ comma
 r_int
 r_int
 id|size
+comma
+r_int
+r_int
+id|align
 )paren
 (brace
 )brace

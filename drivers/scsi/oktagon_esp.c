@@ -359,13 +359,10 @@ id|tq_struct
 id|tq_fake_dma
 op_assign
 (brace
-l_int|NULL
-comma
-l_int|0
-comma
+id|routine
+suffix:colon
 id|dma_commit
 comma
-l_int|NULL
 )brace
 suffix:semicolon
 DECL|macro|DMA_MAXTRANSFER
@@ -2044,4 +2041,10 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 eof
