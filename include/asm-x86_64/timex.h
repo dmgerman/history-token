@@ -6,7 +6,7 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/msr.h&gt;
 macro_line|#include &lt;asm/vsyscall.h&gt;
 DECL|macro|CLOCK_TICK_RATE
-mdefine_line|#define CLOCK_TICK_RATE&t;1193180 /* Underlying HZ */
+mdefine_line|#define CLOCK_TICK_RATE&t;1193182 /* Underlying HZ */
 DECL|macro|CLOCK_TICK_FACTOR
 mdefine_line|#define CLOCK_TICK_FACTOR&t;20&t;/* Factor of both 1000000 and CLOCK_TICK_RATE */
 DECL|macro|FINETUNE
