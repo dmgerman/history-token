@@ -8837,6 +8837,18 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|ip6_dst_ops.kmem_cachep
+)paren
+id|panic
+c_func
+(paren
+l_string|&quot;cannot create ip6_dst_cache&quot;
+)paren
+suffix:semicolon
 id|fib6_init
 c_func
 (paren
