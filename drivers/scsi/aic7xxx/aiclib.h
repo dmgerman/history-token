@@ -1,8 +1,19 @@
-multiline_comment|/*&n; * Largely written by Julian Elischer (julian@tfs.com)&n; * for TRW Financial Systems.&n; *&n; * TRW Financial Systems, in accordance with their agreement with Carnegie&n; * Mellon University, makes this software available to CMU to distribute&n; * or use in any manner that they see fit as long as this message is kept with&n; * the software. For this reason TFS also grants any other persons or&n; * organisations permission to use or modify this software.&n; *&n; * TFS supplies this software to be publicly redistributed&n; * on the understanding that TFS is not responsible for the correct&n; * functioning of this software in any circumstances.&n; *&n; * Ported to run under 386BSD by Julian Elischer (julian@tfs.com) Sept 1992&n; *&n; * $FreeBSD: src/sys/cam/scsi/scsi_all.h,v 1.21 2002/10/08 17:12:44 ken Exp $&n; * $Id$&n; */
-multiline_comment|/*&n; * SCSI general  interface description&n; */
-macro_line|#ifndef&t;_SCSI_SCSI_ALL_H
-DECL|macro|_SCSI_SCSI_ALL_H
-mdefine_line|#define _SCSI_SCSI_ALL_H 1
+multiline_comment|/*&n; * Largely written by Julian Elischer (julian@tfs.com)&n; * for TRW Financial Systems.&n; *&n; * TRW Financial Systems, in accordance with their agreement with Carnegie&n; * Mellon University, makes this software available to CMU to distribute&n; * or use in any manner that they see fit as long as this message is kept with&n; * the software. For this reason TFS also grants any other persons or&n; * organisations permission to use or modify this software.&n; *&n; * TFS supplies this software to be publicly redistributed&n; * on the understanding that TFS is not responsible for the correct&n; * functioning of this software in any circumstances.&n; *&n; * Ported to run under 386BSD by Julian Elischer (julian@tfs.com) Sept 1992&n; *&n; * $FreeBSD: src/sys/cam/scsi/scsi_all.h,v 1.21 2002/10/08 17:12:44 ken Exp $&n; *&n; * Copyright (c) 2003 Adaptec Inc.&n; * All rights reserved.&n; *&n; * Redistribution and use in source and binary forms, with or without&n; * modification, are permitted provided that the following conditions&n; * are met:&n; * 1. Redistributions of source code must retain the above copyright&n; *    notice, this list of conditions, and the following disclaimer,&n; *    without modification.&n; * 2. Redistributions in binary form must reproduce at minimum a disclaimer&n; *    substantially similar to the &quot;NO WARRANTY&quot; disclaimer below&n; *    (&quot;Disclaimer&quot;) and any redistribution must be conditioned upon&n; *    including a substantially similar Disclaimer requirement for further&n; *    binary redistribution.&n; * 3. Neither the names of the above-listed copyright holders nor the names&n; *    of any contributors may be used to endorse or promote products derived&n; *    from this software without specific prior written permission.&n; *&n; * Alternatively, this software may be distributed under the terms of the&n; * GNU General Public License (&quot;GPL&quot;) version 2 as published by the Free&n; * Software Foundation.&n; *&n; * NO WARRANTY&n; * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS&n; * &quot;AS IS&quot; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT&n; * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR&n; * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT&n; * HOLDERS OR CONTRIBUTORS BE LIABLE FOR SPECIAL, EXEMPLARY, OR CONSEQUENTIAL&n; * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS&n; * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)&n; * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,&n; * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING&n; * IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE&n; * POSSIBILITY OF SUCH DAMAGES.&n; *&n; * $Id$&n; */
+macro_line|#ifndef&t;_AICLIB_H
+DECL|macro|_AICLIB_H
+mdefine_line|#define _AICLIB_H
+multiline_comment|/*&n; * Linux Interrupt Support.&n; */
+macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,5,0)
+DECL|macro|AIC_LINUX_IRQRETURN_T
+mdefine_line|#define&t;AIC_LINUX_IRQRETURN_T irqreturn_t
+DECL|macro|AIC_LINUX_IRQRETURN
+mdefine_line|#define&t;AIC_LINUX_IRQRETURN(ours) return (IRQ_RETVAL(ours))
+macro_line|#else
+DECL|macro|AIC_LINUX_IRQRETURN_T
+mdefine_line|#define&t;AIC_LINUX_IRQRETURN_T void
+DECL|macro|AIC_LINUX_IRQRETURN
+mdefine_line|#define&t;AIC_LINUX_IRQRETURN(ours)  return
+macro_line|#endif
 multiline_comment|/*&n; * SCSI command format&n; */
 multiline_comment|/*&n; * Define dome bits that are in ALL (or a lot of) scsi commands&n; */
 DECL|macro|SCSI_CTL_LINK
@@ -3008,5 +3019,5 @@ id|rv
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif /*_SCSI_SCSI_ALL_H*/
+macro_line|#endif /*_AICLIB_H */
 eof
