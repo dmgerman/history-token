@@ -351,7 +351,7 @@ op_assign
 dot
 id|daddr
 op_assign
-id|dest-&gt;addr
+id|cp-&gt;daddr
 comma
 dot
 id|saddr

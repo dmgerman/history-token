@@ -1763,6 +1763,8 @@ id|group_no
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Now search the rest of the groups.  We assume that &n;&t; * i and desc correctly point to the last group visited.&n;&t; */
+id|retry
+suffix:colon
 r_for
 c_loop
 (paren
@@ -1904,23 +1906,13 @@ OL
 l_int|0
 )paren
 (brace
-id|ext2_error
-(paren
-id|sb
-comma
-l_string|&quot;ext2_new_block&quot;
-comma
-l_string|&quot;Free blocks count corrupted for block group %d&quot;
-comma
-id|group_no
-)paren
-suffix:semicolon
+multiline_comment|/*&n;&t;&t; * Someone else grabbed the last free block in this blockgroup&n;&t;&t; * before us.  Retry the scan.&n;&t;&t; */
 id|group_alloc
 op_assign
 l_int|0
 suffix:semicolon
 r_goto
-id|io_error
+id|retry
 suffix:semicolon
 )brace
 id|got_block

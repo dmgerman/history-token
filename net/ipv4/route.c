@@ -27,6 +27,7 @@ macro_line|#include &lt;linux/netfilter_ipv4.h&gt;
 macro_line|#include &lt;linux/random.h&gt;
 macro_line|#include &lt;linux/jhash.h&gt;
 macro_line|#include &lt;linux/rcupdate.h&gt;
+macro_line|#include &lt;linux/times.h&gt;
 macro_line|#include &lt;net/protocol.h&gt;
 macro_line|#include &lt;net/ip.h&gt;
 macro_line|#include &lt;net/route.h&gt;
@@ -10049,9 +10050,13 @@ id|rtattr_failure
 suffix:semicolon
 id|ci.rta_lastuse
 op_assign
+id|jiffies_to_clock_t
+c_func
+(paren
 id|jiffies
 op_minus
 id|rt-&gt;u.dst.lastuse
+)paren
 suffix:semicolon
 id|ci.rta_used
 op_assign
@@ -10073,9 +10078,13 @@ id|rt-&gt;u.dst.expires
 )paren
 id|ci.rta_expires
 op_assign
+id|jiffies_to_clock_t
+c_func
+(paren
 id|rt-&gt;u.dst.expires
 op_minus
 id|jiffies
+)paren
 suffix:semicolon
 r_else
 id|ci.rta_expires

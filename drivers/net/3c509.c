@@ -21,7 +21,9 @@ l_int|10
 suffix:semicolon
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#ifdef CONFIG_MCA
 macro_line|#include &lt;linux/mca.h&gt;
+macro_line|#endif
 macro_line|#include &lt;linux/isapnp.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;

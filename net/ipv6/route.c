@@ -3,6 +3,7 @@ multiline_comment|/*&t;Changes:&n; *&n; *&t;YOSHIFUJI Hideaki @USAGI&n; *&t;&t;r
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
+macro_line|#include &lt;linux/times.h&gt;
 macro_line|#include &lt;linux/socket.h&gt;
 macro_line|#include &lt;linux/sockios.h&gt;
 macro_line|#include &lt;linux/net.h&gt;
@@ -2707,7 +2708,11 @@ l_int|1
 suffix:semicolon
 id|rt-&gt;rt6i_expires
 op_assign
+id|clock_t_to_jiffies
+c_func
+(paren
 id|rtmsg-&gt;rtmsg_info
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -6571,9 +6576,13 @@ id|rt-&gt;rt6i_metric
 suffix:semicolon
 id|ci.rta_lastuse
 op_assign
+id|jiffies_to_clock_t
+c_func
+(paren
 id|jiffies
 op_minus
 id|rt-&gt;u.dst.lastuse
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -6582,9 +6591,13 @@ id|rt-&gt;rt6i_expires
 )paren
 id|ci.rta_expires
 op_assign
+id|jiffies_to_clock_t
+c_func
+(paren
 id|rt-&gt;rt6i_expires
 op_minus
 id|jiffies
+)paren
 suffix:semicolon
 r_else
 id|ci.rta_expires

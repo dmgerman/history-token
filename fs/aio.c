@@ -1492,7 +1492,7 @@ id|aio_nr
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* aio_get_req&n; *&t;Allocate a slot for an aio request.  Increments the users count&n; * of the kioctx so that the kioctx stays around until all requests are&n; * complete.  Returns NULL if no requests are free.&n; */
+multiline_comment|/* aio_get_req&n; *&t;Allocate a slot for an aio request.  Increments the users count&n; * of the kioctx so that the kioctx stays around until all requests are&n; * complete.  Returns NULL if no requests are free.&n; *&n; * Returns with kiocb-&gt;users set to 2.  The io submit code path holds&n; * an extra reference while submitting the i/o.&n; * This prevents races between the aio code path referencing the&n; * req (after submitting it) and aio_complete() freeing the req.&n; */
 r_static
 r_struct
 id|kiocb
@@ -1572,7 +1572,7 @@ id|KIF_LOCKED
 suffix:semicolon
 id|req-&gt;ki_users
 op_assign
-l_int|1
+l_int|2
 suffix:semicolon
 id|req-&gt;ki_key
 op_assign
@@ -4217,6 +4217,7 @@ c_func
 id|ctx
 )paren
 suffix:semicolon
+multiline_comment|/* returns with 2 references to req */
 r_if
 c_cond
 (paren
@@ -4534,6 +4535,13 @@ op_minus
 id|EINVAL
 suffix:semicolon
 )brace
+id|aio_put_req
+c_func
+(paren
+id|req
+)paren
+suffix:semicolon
+multiline_comment|/* drop extra ref to req */
 r_if
 c_cond
 (paren
@@ -4559,6 +4567,7 @@ comma
 l_int|0
 )paren
 suffix:semicolon
+multiline_comment|/* will drop i/o ref to req */
 r_return
 l_int|0
 suffix:semicolon
@@ -4570,6 +4579,14 @@ c_func
 id|req
 )paren
 suffix:semicolon
+multiline_comment|/* drop extra ref to req */
+id|aio_put_req
+c_func
+(paren
+id|req
+)paren
+suffix:semicolon
+multiline_comment|/* drop i/o ref to req */
 r_return
 id|ret
 suffix:semicolon

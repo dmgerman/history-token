@@ -14,6 +14,7 @@ macro_line|#include &lt;linux/percpu.h&gt;
 macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &lt;linux/notifier.h&gt;
 macro_line|#include &lt;linux/cpu.h&gt;
+macro_line|#include &lt;linux/cpumask.h&gt;
 macro_line|#include &lt;net/flow.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
@@ -162,8 +163,7 @@ id|atomic_t
 id|cpuleft
 suffix:semicolon
 DECL|member|cpumap
-r_int
-r_int
+id|cpumask_t
 id|cpumap
 suffix:semicolon
 DECL|member|completion
@@ -198,8 +198,7 @@ id|flow_cache_cpu_sem
 suffix:semicolon
 DECL|variable|flow_cache_cpu_map
 r_static
-r_int
-r_int
+id|cpumask_t
 id|flow_cache_cpu_map
 suffix:semicolon
 DECL|variable|flow_cache_cpu_count
@@ -239,12 +238,11 @@ op_increment
 r_if
 c_cond
 (paren
-id|test_bit
+id|cpu_isset
 c_func
 (paren
 id|i
 comma
-op_amp
 id|flow_cache_cpu_map
 )paren
 )paren
@@ -720,12 +718,11 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|test_bit
+id|cpu_isset
 c_func
 (paren
 id|cpu
 comma
-op_amp
 id|flow_cache_cpu_map
 )paren
 )paren
@@ -1201,12 +1198,11 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|test_bit
+id|cpu_isset
 c_func
 (paren
 id|cpu
 comma
-op_amp
 id|info-&gt;cpumap
 )paren
 )paren
@@ -1316,7 +1312,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|test_bit
+id|cpu_isset
 c_func
 (paren
 id|smp_processor_id
@@ -1324,7 +1320,6 @@ c_func
 (paren
 )paren
 comma
-op_amp
 id|info.cpumap
 )paren
 )paren
@@ -1513,12 +1508,11 @@ op_amp
 id|flow_cache_cpu_sem
 )paren
 suffix:semicolon
-id|set_bit
+id|cpu_set
 c_func
 (paren
 id|cpu
 comma
-op_amp
 id|flow_cache_cpu_map
 )paren
 suffix:semicolon

@@ -1754,7 +1754,7 @@ c_func
 (paren
 id|i
 OG
-l_int|0
+id|start
 op_logical_and
 id|s-&gt;offset
 )paren
@@ -1834,18 +1834,6 @@ id|iommu_page
 op_increment
 suffix:semicolon
 )brace
-id|BUG_ON
-c_func
-(paren
-id|i
-OG
-l_int|0
-op_logical_and
-id|addr
-op_mod
-id|PAGE_SIZE
-)paren
-suffix:semicolon
 )brace
 id|BUG_ON
 c_func

@@ -21,6 +21,7 @@ macro_line|#include &lt;linux/rtnetlink.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/netfilter_decnet.h&gt;
 macro_line|#include &lt;linux/rcupdate.h&gt;
+macro_line|#include &lt;linux/times.h&gt;
 macro_line|#include &lt;asm/errno.h&gt;
 macro_line|#include &lt;net/neighbour.h&gt;
 macro_line|#include &lt;net/dst.h&gt;
@@ -6525,9 +6526,13 @@ id|rtattr_failure
 suffix:semicolon
 id|ci.rta_lastuse
 op_assign
+id|jiffies_to_clock_t
+c_func
+(paren
 id|jiffies
 op_minus
 id|rt-&gt;u.dst.lastuse
+)paren
 suffix:semicolon
 id|ci.rta_used
 op_assign
@@ -6549,9 +6554,13 @@ id|rt-&gt;u.dst.expires
 )paren
 id|ci.rta_expires
 op_assign
+id|jiffies_to_clock_t
+c_func
+(paren
 id|rt-&gt;u.dst.expires
 op_minus
 id|jiffies
+)paren
 suffix:semicolon
 r_else
 id|ci.rta_expires

@@ -298,12 +298,11 @@ DECL|member|addrOfs
 id|u16
 id|addrOfs
 suffix:semicolon
-DECL|variable|__devinitdata
+DECL|variable|board_info
 )brace
 id|board_info
 (braket
 )braket
-id|__devinitdata
 op_assign
 (brace
 (brace

@@ -16,7 +16,7 @@ macro_line|#undef DIRECT_HDMA
 DECL|macro|DRV_NAME
 mdefine_line|#define DRV_NAME&t;&quot;sata_promise&quot;
 DECL|macro|DRV_VERSION
-mdefine_line|#define DRV_VERSION&t;&quot;0.84&quot;
+mdefine_line|#define DRV_VERSION&t;&quot;0.86&quot;
 r_enum
 (brace
 DECL|enumerator|PDC_PRD_TBL
@@ -88,6 +88,11 @@ DECL|enumerator|PDC_20621_SEQMASK
 id|PDC_20621_SEQMASK
 op_assign
 l_int|0x480
+comma
+DECL|enumerator|PDC_20621_GENERAL_CTL
+id|PDC_20621_GENERAL_CTL
+op_assign
+l_int|0x484
 comma
 DECL|enumerator|PDC_20621_PAGE_SIZE
 id|PDC_20621_PAGE_SIZE
@@ -2891,6 +2896,12 @@ id|ap-&gt;private_data
 suffix:semicolon
 r_void
 op_star
+id|mmio
+op_assign
+id|ap-&gt;host_set-&gt;mmio_base
+suffix:semicolon
+r_void
+op_star
 id|dimm_mmio
 op_assign
 id|ap-&gt;host_set-&gt;private_data
@@ -2936,6 +2947,11 @@ l_string|&quot;ata%u: ENTER&bslash;n&quot;
 comma
 id|ap-&gt;id
 )paren
+suffix:semicolon
+multiline_comment|/* hard-code chip #0 */
+id|mmio
+op_add_assign
+id|PDC_CHIP0_OFS
 suffix:semicolon
 multiline_comment|/*&n;&t; * Build S/G table&n;&t; */
 id|last
@@ -3190,6 +3206,24 @@ comma
 id|sgt_len
 )paren
 suffix:semicolon
+multiline_comment|/* force host FIFO dump */
+id|writel
+c_func
+(paren
+l_int|0x00000001
+comma
+id|mmio
+op_plus
+id|PDC_20621_GENERAL_CTL
+)paren
+suffix:semicolon
+id|readl
+c_func
+(paren
+id|dimm_mmio
+)paren
+suffix:semicolon
+multiline_comment|/* MMIO PCI posting flush */
 id|VPRINTK
 c_func
 (paren
@@ -3649,6 +3683,21 @@ l_int|4
 )paren
 )paren
 suffix:semicolon
+id|readl
+c_func
+(paren
+id|mmio
+op_plus
+id|PDC_20621_SEQCTL
+op_plus
+(paren
+id|seq
+op_star
+l_int|4
+)paren
+)paren
+suffix:semicolon
+multiline_comment|/* flush */
 r_if
 c_cond
 (paren
@@ -3681,6 +3730,15 @@ op_plus
 id|PDC_HDMA_PKT_SUBMIT
 )paren
 suffix:semicolon
+id|readl
+c_func
+(paren
+id|mmio
+op_plus
+id|PDC_HDMA_PKT_SUBMIT
+)paren
+suffix:semicolon
+multiline_comment|/* flush */
 macro_line|#endif
 id|VPRINTK
 c_func
@@ -3708,6 +3766,18 @@ id|port_ofs
 op_plus
 id|PDC_DIMM_ATA_PKT
 comma
+(paren
+r_void
+op_star
+)paren
+id|ap-&gt;ioaddr.cmd_addr
+op_plus
+id|PDC_PKT_SUBMIT
+)paren
+suffix:semicolon
+id|readl
+c_func
+(paren
 (paren
 r_void
 op_star
@@ -3908,6 +3978,20 @@ l_int|4
 )paren
 )paren
 suffix:semicolon
+id|readl
+c_func
+(paren
+id|mmio
+op_plus
+id|PDC_20621_SEQCTL
+op_plus
+(paren
+id|seq
+op_star
+l_int|4
+)paren
+)paren
+suffix:semicolon
 macro_line|#ifdef DIRECT_HDMA
 id|pdc20621_push_hdma
 c_func
@@ -3923,6 +4007,14 @@ id|port_ofs
 op_plus
 id|PDC_DIMM_HOST_PKT
 comma
+id|mmio
+op_plus
+id|PDC_HDMA_PKT_SUBMIT
+)paren
+suffix:semicolon
+id|readl
+c_func
+(paren
 id|mmio
 op_plus
 id|PDC_HDMA_PKT_SUBMIT
@@ -3999,6 +4091,20 @@ l_int|4
 )paren
 )paren
 suffix:semicolon
+id|readl
+c_func
+(paren
+id|mmio
+op_plus
+id|PDC_20621_SEQCTL
+op_plus
+(paren
+id|seq
+op_star
+l_int|4
+)paren
+)paren
+suffix:semicolon
 id|writel
 c_func
 (paren
@@ -4006,6 +4112,18 @@ id|port_ofs
 op_plus
 id|PDC_DIMM_ATA_PKT
 comma
+(paren
+r_void
+op_star
+)paren
+id|ap-&gt;ioaddr.cmd_addr
+op_plus
+id|PDC_PKT_SUBMIT
+)paren
+suffix:semicolon
+id|readl
+c_func
+(paren
 (paren
 r_void
 op_star
@@ -4238,7 +4356,7 @@ suffix:semicolon
 )brace
 id|mask
 op_and_assign
-l_int|0xf
+l_int|0xffff
 suffix:semicolon
 multiline_comment|/* only 16 tags possible */
 r_if
@@ -4985,7 +5103,7 @@ suffix:semicolon
 )brace
 id|mask
 op_and_assign
-l_int|0xf
+l_int|0xffff
 suffix:semicolon
 multiline_comment|/* only 16 tags possible */
 r_if
@@ -5202,6 +5320,19 @@ l_int|4
 )paren
 )paren
 suffix:semicolon
+id|readl
+c_func
+(paren
+id|ap-&gt;host_set-&gt;mmio_base
+op_plus
+(paren
+id|seq
+op_star
+l_int|4
+)paren
+)paren
+suffix:semicolon
+multiline_comment|/* flush */
 id|pp-&gt;pkt
 (braket
 l_int|2
@@ -5229,6 +5360,19 @@ op_plus
 id|PDC_PKT_SUBMIT
 )paren
 suffix:semicolon
+id|readl
+c_func
+(paren
+(paren
+r_void
+op_star
+)paren
+id|ap-&gt;ioaddr.cmd_addr
+op_plus
+id|PDC_PKT_SUBMIT
+)paren
+suffix:semicolon
+multiline_comment|/* flush */
 )brace
 DECL|function|pdc_tf_load_mmio
 r_static
@@ -6067,17 +6211,6 @@ op_plus
 l_int|0x200
 )paren
 suffix:semicolon
-id|probe_ent-&gt;port
-(braket
-l_int|0
-)braket
-dot
-id|scr_addr
-op_assign
-id|base
-op_plus
-l_int|0x400
-suffix:semicolon
 id|pdc_sata_setup_port
 c_func
 (paren
@@ -6092,6 +6225,24 @@ op_plus
 l_int|0x280
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|have_20621
+)paren
+(brace
+id|probe_ent-&gt;port
+(braket
+l_int|0
+)braket
+dot
+id|scr_addr
+op_assign
+id|base
+op_plus
+l_int|0x400
+suffix:semicolon
 id|probe_ent-&gt;port
 (braket
 l_int|1
@@ -6103,6 +6254,7 @@ id|base
 op_plus
 l_int|0x500
 suffix:semicolon
+)brace
 multiline_comment|/* notice 4-port boards */
 r_switch
 c_cond
@@ -6134,17 +6286,6 @@ op_plus
 l_int|0x300
 )paren
 suffix:semicolon
-id|probe_ent-&gt;port
-(braket
-l_int|2
-)braket
-dot
-id|scr_addr
-op_assign
-id|base
-op_plus
-l_int|0x600
-suffix:semicolon
 id|pdc_sata_setup_port
 c_func
 (paren
@@ -6159,6 +6300,24 @@ op_plus
 l_int|0x380
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|have_20621
+)paren
+(brace
+id|probe_ent-&gt;port
+(braket
+l_int|2
+)braket
+dot
+id|scr_addr
+op_assign
+id|base
+op_plus
+l_int|0x600
+suffix:semicolon
 id|probe_ent-&gt;port
 (braket
 l_int|3
@@ -6170,6 +6329,7 @@ id|base
 op_plus
 l_int|0x700
 suffix:semicolon
+)brace
 r_break
 suffix:semicolon
 r_case

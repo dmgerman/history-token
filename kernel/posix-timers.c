@@ -3571,6 +3571,21 @@ r_struct
 id|timespec
 id|t
 suffix:semicolon
+r_struct
+id|restart_block
+op_star
+id|restart_block
+op_assign
+op_amp
+(paren
+id|current_thread_info
+c_func
+(paren
+)paren
+op_member_access_from_pointer
+id|restart_block
+)paren
+suffix:semicolon
 r_int
 id|ret
 suffix:semicolon
@@ -3648,6 +3663,15 @@ comma
 op_amp
 id|t
 )paren
+suffix:semicolon
+multiline_comment|/*&n;&t; * Do this here as do_clock_nanosleep does not have the real address&n;&t; */
+id|restart_block-&gt;arg1
+op_assign
+(paren
+r_int
+r_int
+)paren
+id|rmtp
 suffix:semicolon
 r_if
 c_cond
@@ -3784,7 +3808,7 @@ op_eq
 id|clock_nanosleep_restart
 )paren
 (brace
-multiline_comment|/*&n;&t;&t; * Interrupted by a non-delivered signal, pick up remaining&n;&t;&t; * time and continue.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Interrupted by a non-delivered signal, pick up remaining&n;&t;&t; * time and continue.  Remaining time is in arg2 &amp; 3.&n;&t;&t; */
 id|restart_block-&gt;fn
 op_assign
 id|do_no_restart_syscall
@@ -4061,6 +4085,7 @@ op_amp
 id|tsave-&gt;tv_nsec
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t;&t; * Restart works by saving the time remaing in &n;&t;&t; * arg2 &amp; 3 (it is 64-bits of jiffies).  The other&n;&t;&t; * info we need is the clock_id (saved in arg0). &n;&t;&t; * The sys_call interface needs the users &n;&t;&t; * timespec return address which _it_ saves in arg1.&n;&t;&t; * Since we have cast the nanosleep call to a clock_nanosleep&n;&t;&t; * both can be restarted with the same code.&n;&t;&t; */
 id|restart_block-&gt;fn
 op_assign
 id|clock_nanosleep_restart
@@ -4069,14 +4094,7 @@ id|restart_block-&gt;arg0
 op_assign
 id|which_clock
 suffix:semicolon
-id|restart_block-&gt;arg1
-op_assign
-(paren
-r_int
-r_int
-)paren
-id|tsave
-suffix:semicolon
+multiline_comment|/*&n;&t;&t; * Caller sets arg1&n;&t;&t; */
 id|restart_block-&gt;arg2
 op_assign
 id|rq_time
@@ -4098,7 +4116,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * This will restart clock_nanosleep. Incorrectly, btw.&n; */
+multiline_comment|/*&n; * This will restart clock_nanosleep.&n; */
 r_int
 DECL|function|clock_nanosleep_restart
 id|clock_nanosleep_restart
