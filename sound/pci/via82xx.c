@@ -9444,6 +9444,24 @@ comma
 dot
 id|device
 op_assign
+l_int|0xa232
+comma
+dot
+id|action
+op_assign
+id|VIA_DXS_ENABLE
+)brace
+comma
+multiline_comment|/* Shuttle ?? */
+(brace
+dot
+id|vendor
+op_assign
+l_int|0x1297
+comma
+dot
+id|device
+op_assign
 l_int|0xc160
 comma
 dot
