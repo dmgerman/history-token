@@ -3,7 +3,6 @@ DECL|macro|_LINUX_MISCDEVICE_H
 mdefine_line|#define _LINUX_MISCDEVICE_H
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/major.h&gt;
-macro_line|#include &lt;linux/device.h&gt;
 DECL|macro|PSMOUSE_MINOR
 mdefine_line|#define PSMOUSE_MINOR  1
 DECL|macro|MS_BUSMOUSE_MINOR
@@ -54,6 +53,9 @@ DECL|macro|HPET_MINOR
 mdefine_line|#define&t;HPET_MINOR&t;     228
 r_struct
 id|device
+suffix:semicolon
+r_struct
+id|class_device
 suffix:semicolon
 DECL|struct|miscdevice
 r_struct
