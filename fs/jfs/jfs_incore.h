@@ -359,7 +359,7 @@ id|l2niperblk
 suffix:semicolon
 multiline_comment|/* 2: log2 inodes per page&t;*/
 DECL|member|logdev
-id|kdev_t
+id|u32
 id|logdev
 suffix:semicolon
 multiline_comment|/* 2: external log device&t;*/
