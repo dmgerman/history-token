@@ -591,7 +591,7 @@ id|ehci-&gt;hcd.state
 op_assign
 id|USB_STATE_RUNNING
 suffix:semicolon
-multiline_comment|/* make sure tasklet scans these */
+multiline_comment|/* make sure ehci_work scans these */
 id|ehci-&gt;next_uframe
 op_assign
 id|readl
@@ -1706,6 +1706,11 @@ r_struct
 id|ehci_qh
 op_star
 id|qh
+comma
+r_struct
+id|pt_regs
+op_star
+id|regs
 )paren
 (brace
 r_int
@@ -1764,6 +1769,8 @@ id|qh_completions
 id|ehci
 comma
 id|qh
+comma
+id|regs
 )paren
 suffix:semicolon
 r_if
@@ -3263,6 +3270,11 @@ id|itd
 comma
 r_int
 id|uframe
+comma
+r_struct
+id|pt_regs
+op_star
+id|regs
 )paren
 (brace
 r_struct
@@ -3473,7 +3485,7 @@ id|ehci-&gt;hcd
 comma
 id|urb
 comma
-l_int|NULL
+id|regs
 )paren
 suffix:semicolon
 id|spin_lock
@@ -3618,6 +3630,11 @@ r_struct
 id|ehci_hcd
 op_star
 id|ehci
+comma
+r_struct
+id|pt_regs
+op_star
+id|regs
 )paren
 (brace
 r_int
@@ -3707,36 +3724,6 @@ suffix:semicolon
 r_int
 id|uframes
 suffix:semicolon
-multiline_comment|/* keep latencies down: let any irqs in */
-r_if
-c_cond
-(paren
-id|count
-OG
-id|max_completions
-)paren
-(brace
-id|spin_unlock_irq
-(paren
-op_amp
-id|ehci-&gt;lock
-)paren
-suffix:semicolon
-id|cpu_relax
-(paren
-)paren
-suffix:semicolon
-id|count
-op_assign
-l_int|0
-suffix:semicolon
-id|spin_lock_irq
-(paren
-op_amp
-id|ehci-&gt;lock
-)paren
-suffix:semicolon
-)brace
 id|restart
 suffix:colon
 multiline_comment|/* scan schedule to _before_ current frame index */
@@ -3845,6 +3832,8 @@ id|qh_get
 (paren
 id|q.qh
 )paren
+comma
+id|regs
 )paren
 suffix:semicolon
 id|qh_put
@@ -3969,6 +3958,8 @@ comma
 id|temp.itd
 comma
 id|uf
+comma
+id|regs
 )paren
 suffix:semicolon
 r_break

@@ -396,6 +396,11 @@ op_assign
 l_string|&quot;Connect Tech - WhiteHEAT - (prerenumeration)&quot;
 comma
 dot
+id|short_name
+op_assign
+l_string|&quot;whiteheatnofirm&quot;
+comma
+dot
 id|id_table
 op_assign
 id|id_table_prerenumeration
@@ -448,6 +453,11 @@ dot
 id|name
 op_assign
 l_string|&quot;Connect Tech - WhiteHEAT&quot;
+comma
+dot
+id|short_name
+op_assign
+l_string|&quot;whiteheat&quot;
 comma
 dot
 id|id_table
@@ -2194,6 +2204,7 @@ id|urb
 suffix:semicolon
 id|no_rx_urb
 suffix:colon
+suffix:semicolon
 )brace
 id|kfree
 c_func
@@ -2203,6 +2214,7 @@ id|info
 suffix:semicolon
 id|no_private
 suffix:colon
+suffix:semicolon
 )brace
 r_return
 op_minus

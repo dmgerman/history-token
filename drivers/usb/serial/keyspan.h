@@ -2033,6 +2033,11 @@ op_assign
 l_string|&quot;Keyspan - (without firmware)&quot;
 comma
 dot
+id|short_name
+op_assign
+l_string|&quot;keyspan_no_firm&quot;
+comma
+dot
 id|id_table
 op_assign
 id|keyspan_pre_ids
@@ -2080,6 +2085,11 @@ dot
 id|name
 op_assign
 l_string|&quot;Keyspan 1 port adapter&quot;
+comma
+dot
+id|short_name
+op_assign
+l_string|&quot;keyspan_1&quot;
 comma
 dot
 id|id_table
@@ -2186,6 +2196,11 @@ op_assign
 l_string|&quot;Keyspan 2 port adapter&quot;
 comma
 dot
+id|short_name
+op_assign
+l_string|&quot;keyspan_2&quot;
+comma
+dot
 id|id_table
 op_assign
 id|keyspan_2port_ids
@@ -2288,6 +2303,11 @@ dot
 id|name
 op_assign
 l_string|&quot;Keyspan 4 port adapter&quot;
+comma
+dot
+id|short_name
+op_assign
+l_string|&quot;keyspan_4&quot;
 comma
 dot
 id|id_table

@@ -112,12 +112,6 @@ r_int
 id|periodic_sched
 suffix:semicolon
 multiline_comment|/* periodic activity count */
-multiline_comment|/* deferred work from IRQ, etc */
-DECL|member|tasklet
-r_struct
-id|tasklet_struct
-id|tasklet
-suffix:semicolon
 multiline_comment|/* per root hub port */
 DECL|member|reset_done
 r_int

@@ -311,6 +311,11 @@ op_assign
 l_string|&quot;Magic Control Technology USB-RS232&quot;
 comma
 dot
+id|short_name
+op_assign
+l_string|&quot;mct_u232&quot;
+comma
+dot
 id|id_table
 op_assign
 id|id_table_combined
