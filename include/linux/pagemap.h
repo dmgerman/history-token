@@ -6,7 +6,6 @@ macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/highmem.h&gt;
-macro_line|#include &lt;linux/pagemap.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/gfp.h&gt;
 multiline_comment|/*&n; * Bits in mapping-&gt;flags.  The lower __GFP_BITS_SHIFT bits are the page&n; * allocation mode flags.&n; */
