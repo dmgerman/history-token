@@ -12,6 +12,7 @@ macro_line|#include &lt;sys/poll.h&gt;
 macro_line|#include &quot;init.h&quot;
 macro_line|#include &quot;user.h&quot;
 macro_line|#include &quot;kern_util.h&quot;
+macro_line|#include &quot;user_util.h&quot;
 macro_line|#include &quot;sigio.h&quot;
 macro_line|#include &quot;helper.h&quot;
 macro_line|#include &quot;os.h&quot;
@@ -144,10 +145,6 @@ comma
 r_new
 suffix:semicolon
 r_struct
-id|termios
-id|tt
-suffix:semicolon
-r_struct
 id|openpty_arg
 id|pty
 op_assign
@@ -234,64 +231,35 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-multiline_comment|/* XXX These can fail with EINTR */
-r_if
-c_cond
-(paren
-id|tcgetattr
+id|err
+op_assign
+id|__raw
 c_func
 (paren
 id|master
 comma
-op_amp
-id|tt
-)paren
-OL
+l_int|1
+comma
 l_int|0
 )paren
-(brace
-id|panic
-c_func
-(paren
-l_string|&quot;check_sigio : tcgetattr failed, errno = %d&bslash;n&quot;
-comma
-id|errno
-)paren
 suffix:semicolon
-)brace
-id|cfmakeraw
-c_func
-(paren
-op_amp
-id|tt
-)paren
-suffix:semicolon
+singleline_comment|//Not now, but complain so we now where we failed.
 r_if
 c_cond
 (paren
-id|tcsetattr
-c_func
-(paren
-id|master
-comma
-id|TCSADRAIN
-comma
-op_amp
-id|tt
-)paren
+id|err
 OL
 l_int|0
 )paren
-(brace
 id|panic
 c_func
 (paren
-l_string|&quot;check_sigio : tcsetattr failed, errno = %d&bslash;n&quot;
+l_string|&quot;check_sigio : __raw failed, errno = %d&bslash;n&quot;
 comma
-id|errno
+op_minus
+id|err
 )paren
 suffix:semicolon
-)brace
 id|err
 op_assign
 id|os_sigio_async
