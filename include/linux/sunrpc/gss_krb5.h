@@ -52,10 +52,6 @@ DECL|member|seq_send
 id|u32
 id|seq_send
 suffix:semicolon
-DECL|member|seq_recv
-id|u32
-id|seq_recv
-suffix:semicolon
 DECL|member|mech_used
 r_struct
 id|xdr_netobj
@@ -136,8 +132,8 @@ op_assign
 l_int|0x0002
 )brace
 suffix:semicolon
-DECL|macro|RSA_MD5_CKSUM_LENGTH
-mdefine_line|#define RSA_MD5_CKSUM_LENGTH 16
+DECL|macro|KRB5_CKSUM_LENGTH
+mdefine_line|#define KRB5_CKSUM_LENGTH 8
 DECL|macro|CKSUMTYPE_CRC32
 mdefine_line|#define CKSUMTYPE_CRC32&t;&t;&t;0x0001
 DECL|macro|CKSUMTYPE_RSA_MD4
@@ -183,24 +179,6 @@ DECL|macro|KG_EMPTY_CCACHE
 mdefine_line|#define KG_EMPTY_CCACHE                          (39756044L)
 DECL|macro|KG_NO_CTYPES
 mdefine_line|#define KG_NO_CTYPES                             (39756045L)
-DECL|macro|KV5M_PRINCIPAL
-mdefine_line|#define KV5M_PRINCIPAL                           (-1760647423L)
-DECL|macro|KV5M_KEYBLOCK
-mdefine_line|#define KV5M_KEYBLOCK                            (-1760647421L)
-DECL|macro|KV5M_CHECKSUM
-mdefine_line|#define KV5M_CHECKSUM                            (-1760647420L)
-DECL|macro|KV5M_ADDRESS
-mdefine_line|#define KV5M_ADDRESS                             (-1760647390L)
-DECL|macro|KV5M_AUTHENTICATOR
-mdefine_line|#define KV5M_AUTHENTICATOR                       (-1760647410L)
-DECL|macro|KV5M_AUTH_CONTEXT
-mdefine_line|#define KV5M_AUTH_CONTEXT                        (-1760647383L)
-DECL|macro|KV5M_AUTHDATA
-mdefine_line|#define KV5M_AUTHDATA                            (-1760647414L)
-DECL|macro|KV5M_GSS_OID
-mdefine_line|#define KV5M_GSS_OID                             (-1760647372L)
-DECL|macro|KV5M_GSS_QUEUE
-mdefine_line|#define KV5M_GSS_QUEUE                           (-1760647371L)
 multiline_comment|/* per Kerberos v5 protocol spec crypto types from the wire. &n; * these get mapped to linux kernel crypto routines.  &n; */
 DECL|macro|ENCTYPE_NULL
 mdefine_line|#define ENCTYPE_NULL            0x0000
@@ -230,10 +208,16 @@ c_func
 id|s32
 id|cksumtype
 comma
-r_struct
-id|xdr_netobj
+r_char
 op_star
-id|input
+id|header
+comma
+r_char
+op_star
+id|body
+comma
+r_int
+id|body_len
 comma
 r_struct
 id|xdr_netobj
