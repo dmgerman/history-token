@@ -1324,11 +1324,11 @@ r_sizeof
 id|cinfo.name
 )paren
 comma
-l_string|&quot;Rawmidi %d - %s&quot;
-comma
-id|card-&gt;number
+l_string|&quot;%s - Rawmidi %d&quot;
 comma
 id|name
+comma
+id|card-&gt;number
 )paren
 suffix:semicolon
 r_return

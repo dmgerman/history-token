@@ -3728,24 +3728,22 @@ id|runtime-&gt;rate
 )paren
 suffix:semicolon
 )brace
-macro_line|#if 0
 r_if
 c_cond
 (paren
-id|chip-&gt;revision
+id|runtime-&gt;rate
 op_eq
-id|VIA_REV_8233A
+l_int|48000
 )paren
 id|rbits
 op_assign
-l_int|0
+l_int|0xfffff
 suffix:semicolon
 r_else
-macro_line|#endif
 id|rbits
 op_assign
 (paren
-l_int|0xfffff
+l_int|0x100000
 op_div
 l_int|48000
 )paren
@@ -3754,7 +3752,7 @@ id|runtime-&gt;rate
 op_plus
 (paren
 (paren
-l_int|0xfffff
+l_int|0x100000
 op_mod
 l_int|48000
 )paren
@@ -9457,6 +9455,24 @@ multiline_comment|/* ASRock K7VT2 */
 dot
 id|vendor
 op_assign
+l_int|0x1106
+comma
+dot
+id|device
+op_assign
+l_int|0xaa01
+comma
+dot
+id|action
+op_assign
+id|VIA_DXS_NO_VRA
+)brace
+comma
+multiline_comment|/* EPIA MII */
+(brace
+dot
+id|vendor
+op_assign
 l_int|0x1297
 comma
 dot
@@ -9503,10 +9519,10 @@ comma
 dot
 id|action
 op_assign
-id|VIA_DXS_ENABLE
+id|VIA_DXS_NO_VRA
 )brace
 comma
-multiline_comment|/* Gigabyte GA-7VAXP */
+multiline_comment|/* Gigabyte GA-7VAXP (FIXME: or DXS_ENABLE?) */
 (brace
 dot
 id|vendor
@@ -9579,6 +9595,42 @@ id|VIA_DXS_ENABLE
 )brace
 comma
 multiline_comment|/* MSI KT4V */
+(brace
+dot
+id|vendor
+op_assign
+l_int|0x1462
+comma
+dot
+id|device
+op_assign
+l_int|0x5901
+comma
+dot
+id|action
+op_assign
+id|VIA_DXS_NO_VRA
+)brace
+comma
+multiline_comment|/* MSI KT6 Delta-SR */
+(brace
+dot
+id|vendor
+op_assign
+l_int|0x1584
+comma
+dot
+id|device
+op_assign
+l_int|0x8120
+comma
+dot
+id|action
+op_assign
+id|VIA_DXS_ENABLE
+)brace
+comma
+multiline_comment|/* Gericom/Targa/Vobis/Uniwill laptop */
 (brace
 dot
 id|vendor

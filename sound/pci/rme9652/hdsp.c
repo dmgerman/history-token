@@ -15986,7 +15986,7 @@ c_func
 id|channel
 op_ge
 l_int|0
-op_logical_or
+op_logical_and
 id|channel
 OL
 id|hdsp-&gt;max_channels
@@ -16122,6 +16122,9 @@ op_minus
 id|EIO
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
 id|copy_from_user
 c_func
 (paren
@@ -16137,6 +16140,10 @@ id|count
 op_star
 l_int|4
 )paren
+)paren
+r_return
+op_minus
+id|EFAULT
 suffix:semicolon
 r_return
 id|count
@@ -16219,6 +16226,9 @@ op_minus
 id|EIO
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
 id|copy_to_user
 c_func
 (paren
@@ -16234,6 +16244,10 @@ id|count
 op_star
 l_int|4
 )paren
+)paren
+r_return
+op_minus
+id|EFAULT
 suffix:semicolon
 r_return
 id|count

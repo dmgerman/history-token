@@ -14437,13 +14437,14 @@ id|ports
 )braket
 op_assign
 (brace
-l_int|0x200
-comma
 l_int|0x201
+comma
+l_int|0x200
 comma
 l_int|0
 )brace
 suffix:semicolon
+multiline_comment|/* FIXME: majority is 0x201? */
 r_int
 id|i
 suffix:semicolon

@@ -896,6 +896,19 @@ r_int
 id|cur_rate
 suffix:semicolon
 multiline_comment|/* current rate */
+DECL|member|open_mutex
+r_struct
+id|semaphore
+id|open_mutex
+suffix:semicolon
+DECL|member|pcm_reserved
+id|snd_pcm_substream_t
+op_star
+id|pcm_reserved
+(braket
+l_int|4
+)braket
+suffix:semicolon
 DECL|member|akm_codecs
 r_int
 r_int

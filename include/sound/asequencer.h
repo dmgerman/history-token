@@ -1364,6 +1364,8 @@ DECL|macro|SNDRV_SEQ_PORT_TYPE_MIDI_XG
 mdefine_line|#define SNDRV_SEQ_PORT_TYPE_MIDI_XG&t;(1&lt;&lt;4)&t;/* XG compatible device */
 DECL|macro|SNDRV_SEQ_PORT_TYPE_MIDI_MT32
 mdefine_line|#define SNDRV_SEQ_PORT_TYPE_MIDI_MT32&t;(1&lt;&lt;5)&t;/* MT-32 compatible device */
+DECL|macro|SNDRV_SEQ_PORT_TYPE_MIDI_GM2
+mdefine_line|#define SNDRV_SEQ_PORT_TYPE_MIDI_GM2&t;(1&lt;&lt;6)&t;/* General MIDI 2 compatible device */
 multiline_comment|/* other standards...*/
 DECL|macro|SNDRV_SEQ_PORT_TYPE_SYNTH
 mdefine_line|#define SNDRV_SEQ_PORT_TYPE_SYNTH&t;(1&lt;&lt;10)&t;/* Synth device (no MIDI compatible - direct wavetable) */
@@ -1380,7 +1382,7 @@ mdefine_line|#define SNDRV_SEQ_PORT_FLG_GIVEN_PORT&t;(1&lt;&lt;0)
 DECL|macro|SNDRV_SEQ_PORT_FLG_TIMESTAMP
 mdefine_line|#define SNDRV_SEQ_PORT_FLG_TIMESTAMP&t;(1&lt;&lt;1)
 DECL|macro|SNDRV_SEQ_PORT_FLG_TIME_REAL
-mdefine_line|#define SNDRV_SEQ_PORT_FLG_TIME_REAL&t;(1&lt;&lt;1)
+mdefine_line|#define SNDRV_SEQ_PORT_FLG_TIME_REAL&t;(1&lt;&lt;2)
 DECL|struct|sndrv_seq_port_info
 r_struct
 id|sndrv_seq_port_info

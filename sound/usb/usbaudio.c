@@ -6,7 +6,6 @@ macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/usb.h&gt;
-macro_line|#include &lt;linux/usb_ch9.h&gt;
 macro_line|#include &lt;sound/core.h&gt;
 macro_line|#include &lt;sound/info.h&gt;
 macro_line|#include &lt;sound/pcm.h&gt;
@@ -396,14 +395,12 @@ r_int
 id|channels
 suffix:semicolon
 multiline_comment|/* # channels */
-DECL|member|nonaudio
+DECL|member|fmt_type
 r_int
 r_int
-id|nonaudio
-suffix:colon
-l_int|1
+id|fmt_type
 suffix:semicolon
-multiline_comment|/* non-audio (type II) */
+multiline_comment|/* USB audio format type (1-3) */
 DECL|member|frame_size
 r_int
 r_int
@@ -743,14 +740,12 @@ suffix:colon
 l_int|1
 suffix:semicolon
 multiline_comment|/* fill max packet size always */
-DECL|member|nonaudio
+DECL|member|fmt_type
 r_int
 r_int
-id|nonaudio
-suffix:colon
-l_int|1
+id|fmt_type
 suffix:semicolon
-multiline_comment|/* Type II format (MPEG, AC3) */
+multiline_comment|/* USB audio format type (1-3) */
 DECL|member|running
 r_int
 r_int
@@ -882,6 +877,12 @@ DECL|member|pcm_index
 r_int
 id|pcm_index
 suffix:semicolon
+DECL|member|fmt_type
+r_int
+r_int
+id|fmt_type
+suffix:semicolon
+multiline_comment|/* USB audio format type (1-3) */
 DECL|member|substream
 id|snd_usb_substream_t
 id|substream
@@ -2087,7 +2088,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|subs-&gt;nonaudio
+id|subs-&gt;fmt_type
+op_eq
+id|USB_FORMAT_TYPE_II
 )paren
 (brace
 r_if
@@ -4123,7 +4126,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|subs-&gt;nonaudio
+id|subs-&gt;fmt_type
+op_eq
+id|USB_FORMAT_TYPE_II
 )paren
 id|u-&gt;packets
 op_increment
@@ -7650,7 +7655,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|fp-&gt;nonaudio
+id|fp-&gt;fmt_type
+op_eq
+id|USB_FORMAT_TYPE_II
 op_logical_and
 id|fp-&gt;frame_size
 OG
@@ -9218,9 +9225,9 @@ suffix:semicolon
 id|subs-&gt;num_formats
 op_increment
 suffix:semicolon
-id|subs-&gt;nonaudio
+id|subs-&gt;fmt_type
 op_assign
-id|fp-&gt;nonaudio
+id|fp-&gt;fmt_type
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * free a substream&n; */
@@ -9446,6 +9453,15 @@ comma
 id|list
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|as-&gt;fmt_type
+op_ne
+id|fp-&gt;fmt_type
+)paren
+r_continue
+suffix:semicolon
 id|subs
 op_assign
 op_amp
@@ -9460,7 +9476,7 @@ c_cond
 op_logical_neg
 id|subs-&gt;endpoint
 )paren
-r_break
+r_continue
 suffix:semicolon
 r_if
 c_cond
@@ -9470,40 +9486,6 @@ op_eq
 id|fp-&gt;endpoint
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|fp-&gt;nonaudio
-)paren
-(brace
-r_if
-c_cond
-(paren
-op_logical_neg
-id|subs-&gt;nonaudio
-op_logical_or
-id|subs-&gt;formats
-op_ne
-(paren
-l_int|1ULL
-op_lshift
-id|fp-&gt;format
-)paren
-)paren
-r_continue
-suffix:semicolon
-multiline_comment|/* non-linear formats are handled exclusively */
-)brace
-r_else
-(brace
-r_if
-c_cond
-(paren
-id|subs-&gt;nonaudio
-)paren
-r_continue
-suffix:semicolon
-)brace
 id|list_add_tail
 c_func
 (paren
@@ -9549,6 +9531,15 @@ id|snd_usb_stream_t
 comma
 id|list
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|as-&gt;fmt_type
+op_ne
+id|fp-&gt;fmt_type
+)paren
+r_continue
 suffix:semicolon
 id|subs
 op_assign
@@ -9645,6 +9636,10 @@ suffix:semicolon
 id|as-&gt;chip
 op_assign
 id|chip
+suffix:semicolon
+id|as-&gt;fmt_type
+op_assign
+id|fp-&gt;fmt_type
 suffix:semicolon
 id|err
 op_assign
@@ -10610,10 +10605,6 @@ id|fp-&gt;channels
 op_assign
 l_int|1
 suffix:semicolon
-id|fp-&gt;nonaudio
-op_assign
-l_int|1
-suffix:semicolon
 id|brate
 op_assign
 id|combine_word
@@ -10776,6 +10767,13 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
+id|fp-&gt;fmt_type
+op_assign
+id|fmt
+(braket
+l_int|3
+)braket
+suffix:semicolon
 r_if
 c_cond
 (paren
