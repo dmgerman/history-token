@@ -1,6 +1,8 @@
 macro_line|#ifndef _ASM_I386_DMA_MAPPING_H
 DECL|macro|_ASM_I386_DMA_MAPPING_H
 mdefine_line|#define _ASM_I386_DMA_MAPPING_H
+macro_line|#include &lt;linux/device.h&gt;
+macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;asm/cache.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/scatterlist.h&gt;
