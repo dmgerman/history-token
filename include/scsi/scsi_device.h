@@ -444,6 +444,18 @@ suffix:semicolon
 multiline_comment|/* what device_blocked counts down from  */
 DECL|macro|SCSI_DEFAULT_DEVICE_BLOCKED
 mdefine_line|#define SCSI_DEFAULT_DEVICE_BLOCKED&t;3
+DECL|member|iorequest_cnt
+id|atomic_t
+id|iorequest_cnt
+suffix:semicolon
+DECL|member|iodone_cnt
+id|atomic_t
+id|iodone_cnt
+suffix:semicolon
+DECL|member|ioerr_cnt
+id|atomic_t
+id|ioerr_cnt
+suffix:semicolon
 DECL|member|timeout
 r_int
 id|timeout

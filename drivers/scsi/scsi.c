@@ -1540,6 +1540,13 @@ id|DID_NO_CONNECT
 op_lshift
 l_int|16
 suffix:semicolon
+id|atomic_inc
+c_func
+(paren
+op_amp
+id|cmd-&gt;device-&gt;iorequest_cnt
+)paren
+suffix:semicolon
 id|scsi_done
 c_func
 (paren
@@ -1722,6 +1729,13 @@ id|cmd-&gt;owner
 op_assign
 id|SCSI_OWNER_LOWLEVEL
 suffix:semicolon
+id|atomic_inc
+c_func
+(paren
+op_amp
+id|cmd-&gt;device-&gt;iorequest_cnt
+)paren
+suffix:semicolon
 multiline_comment|/*&n;&t; * Before we queue this command, check if the command&n;&t; * length exceeds what the host adapter can handle.&n;&t; */
 r_if
 c_cond
@@ -1834,6 +1848,13 @@ c_cond
 id|rtn
 )paren
 (brace
+id|atomic_inc
+c_func
+(paren
+op_amp
+id|cmd-&gt;device-&gt;iodone_cnt
+)paren
+suffix:semicolon
 id|scsi_queue_insert
 c_func
 (paren
@@ -2150,6 +2171,25 @@ suffix:semicolon
 id|cmd-&gt;owner
 op_assign
 id|SCSI_OWNER_BH_HANDLER
+suffix:semicolon
+id|atomic_inc
+c_func
+(paren
+op_amp
+id|cmd-&gt;device-&gt;iodone_cnt
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|cmd-&gt;result
+)paren
+id|atomic_inc
+c_func
+(paren
+op_amp
+id|cmd-&gt;device-&gt;ioerr_cnt
+)paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Next, enqueue the command into the done queue.&n;&t; * It is a per-CPU queue, so we just disable local interrupts&n;&t; * and need no spinlock.&n;&t; */
 id|local_irq_save
