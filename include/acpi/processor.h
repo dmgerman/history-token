@@ -10,8 +10,6 @@ DECL|macro|ACPI_PROCESSOR_MAX_C2_LATENCY
 mdefine_line|#define ACPI_PROCESSOR_MAX_C2_LATENCY&t;100
 DECL|macro|ACPI_PROCESSOR_MAX_C3_LATENCY
 mdefine_line|#define ACPI_PROCESSOR_MAX_C3_LATENCY&t;1000
-DECL|macro|ACPI_PROCESSOR_MAX_PERFORMANCE
-mdefine_line|#define ACPI_PROCESSOR_MAX_PERFORMANCE&t;8
 DECL|macro|ACPI_PROCESSOR_MAX_THROTTLING
 mdefine_line|#define ACPI_PROCESSOR_MAX_THROTTLING&t;16
 DECL|macro|ACPI_PROCESSOR_MAX_THROTTLE
@@ -232,10 +230,8 @@ suffix:semicolon
 DECL|member|states
 r_struct
 id|acpi_processor_px
+op_star
 id|states
-(braket
-id|ACPI_PROCESSOR_MAX_PERFORMANCE
-)braket
 suffix:semicolon
 multiline_comment|/* the _PDC objects passed by the driver, if any */
 DECL|member|pdc

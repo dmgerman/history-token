@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * acpi_processor.c - ACPI Processor Driver ($Revision: 71 $)&n; *&n; *  Copyright (C) 2001, 2002 Andy Grover &lt;andrew.grover@intel.com&gt;&n; *  Copyright (C) 2001, 2002 Paul Diefenbaugh &lt;paul.s.diefenbaugh@intel.com&gt;&n; *  Copyright (C) 2004       Dominik Brodowski &lt;linux@brodo.de&gt;&n; *&n; * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or (at&n; *  your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful, but&n; *  WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU&n; *  General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License along&n; *  with this program; if not, write to the Free Software Foundation, Inc.,&n; *  59 Temple Place, Suite 330, Boston, MA 02111-1307 USA.&n; *&n; * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~&n; *  TBD:&n; *&t;1. Make # power/performance states dynamic.&n; *&t;2. Support duty_cycle values that span bit 4.&n; *&t;3. Optimize by having scheduler determine business instead of&n; *&t;   having us try to calculate it here.&n; *&t;4. Need C1 timing -- must modify kernel (IRQ handler) to get this.&n; */
+multiline_comment|/*&n; * acpi_processor.c - ACPI Processor Driver ($Revision: 71 $)&n; *&n; *  Copyright (C) 2001, 2002 Andy Grover &lt;andrew.grover@intel.com&gt;&n; *  Copyright (C) 2001, 2002 Paul Diefenbaugh &lt;paul.s.diefenbaugh@intel.com&gt;&n; *  Copyright (C) 2004       Dominik Brodowski &lt;linux@brodo.de&gt;&n; *&n; * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or (at&n; *  your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful, but&n; *  WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU&n; *  General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License along&n; *  with this program; if not, write to the Free Software Foundation, Inc.,&n; *  59 Temple Place, Suite 330, Boston, MA 02111-1307 USA.&n; *&n; * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~&n; *  TBD:&n; *&t;1. Make # power states dynamic.&n; *&t;2. Support duty_cycle values that span bit 4.&n; *&t;3. Optimize by having scheduler determine business instead of&n; *&t;   having us try to calculate it here.&n; *&t;4. Need C1 timing -- must modify kernel (IRQ handler) to get this.&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -3001,36 +3001,42 @@ id|pss-&gt;package.count
 )paren
 )paren
 suffix:semicolon
+id|pr-&gt;performance-&gt;state_count
+op_assign
+id|pss-&gt;package.count
+suffix:semicolon
+id|pr-&gt;performance-&gt;states
+op_assign
+id|kmalloc
+c_func
+(paren
+r_sizeof
+(paren
+r_struct
+id|acpi_processor_px
+)paren
+op_star
+id|pss-&gt;package.count
+comma
+id|GFP_KERNEL
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
-id|pss-&gt;package.count
-OG
-id|ACPI_PROCESSOR_MAX_PERFORMANCE
+op_logical_neg
+id|pr-&gt;performance-&gt;states
 )paren
 (brace
-id|pr-&gt;performance-&gt;state_count
+id|result
 op_assign
-id|ACPI_PROCESSOR_MAX_PERFORMANCE
+op_minus
+id|ENOMEM
 suffix:semicolon
-id|ACPI_DEBUG_PRINT
-c_func
-(paren
-(paren
-id|ACPI_DB_INFO
-comma
-l_string|&quot;Limiting number of states to max (%d)&bslash;n&quot;
-comma
-id|ACPI_PROCESSOR_MAX_PERFORMANCE
-)paren
-)paren
+r_goto
+id|end
 suffix:semicolon
 )brace
-r_else
-id|pr-&gt;performance-&gt;state_count
-op_assign
-id|pss-&gt;package.count
-suffix:semicolon
 r_for
 c_loop
 (paren
@@ -3128,6 +3134,12 @@ op_assign
 op_minus
 id|EFAULT
 suffix:semicolon
+id|kfree
+c_func
+(paren
+id|pr-&gt;performance-&gt;states
+)paren
+suffix:semicolon
 r_goto
 id|end
 suffix:semicolon
@@ -3195,6 +3207,12 @@ id|result
 op_assign
 op_minus
 id|EFAULT
+suffix:semicolon
+id|kfree
+c_func
+(paren
+id|pr-&gt;performance-&gt;states
+)paren
 suffix:semicolon
 r_goto
 id|end
@@ -4273,6 +4291,12 @@ suffix:semicolon
 id|return_VOID
 suffix:semicolon
 )brace
+id|kfree
+c_func
+(paren
+id|pr-&gt;performance-&gt;states
+)paren
+suffix:semicolon
 id|pr-&gt;performance
 op_assign
 l_int|NULL
