@@ -1452,7 +1452,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Map a chunk of memory so that devices can see it.&n; * CPU view of this memory may be inconsistent with&n; * a device view and explicit flushing is necessary.&n; */
 DECL|function|sbus_map_single
-id|u32
+id|dma_addr_t
 id|sbus_map_single
 c_func
 (paren
@@ -1697,7 +1697,7 @@ id|sbus_dev
 op_star
 id|sdev
 comma
-id|u32
+id|dma_addr_t
 id|ba
 comma
 r_int
@@ -1934,7 +1934,7 @@ id|sbus_dev
 op_star
 id|sdev
 comma
-id|u32
+id|dma_addr_t
 id|ba
 comma
 r_int
