@@ -6,8 +6,8 @@ macro_line|#include &lt;linux/sunrpc/svc.h&gt;
 macro_line|#include &lt;linux/nfsd/nfsd.h&gt;
 macro_line|#include &lt;linux/nfsd/cache.h&gt;
 macro_line|#include &lt;linux/nfs4.h&gt;
-macro_line|#include &lt;linux/nfsd/xdr4.h&gt;
 macro_line|#include &lt;linux/nfsd/state.h&gt;
+macro_line|#include &lt;linux/nfsd/xdr4.h&gt;
 DECL|macro|NFSDDBG_FACILITY
 mdefine_line|#define NFSDDBG_FACILITY                NFSDDBG_PROC
 multiline_comment|/* Globals */
@@ -743,7 +743,7 @@ c_cond
 (paren
 id|name.len
 OG
-id|NFSD4_CLIENT_MAXNAME
+id|NFS4_OPAQUE_LIMIT
 )paren
 (brace
 id|printk

@@ -3,24 +3,63 @@ macro_line|#ifndef _NFSD4_STATE_H
 DECL|macro|_NFSD4_STATE_H
 mdefine_line|#define _NFSD4_STATE_H
 macro_line|#include &lt;linux/list.h&gt;
-DECL|macro|NFSD4_CLIENT_MAXNAME
-mdefine_line|#define NFSD4_CLIENT_MAXNAME 1024
-r_extern
-r_int
-id|nfsd4_setclientid
-c_func
-(paren
+DECL|macro|NFS4_OPAQUE_LIMIT
+mdefine_line|#define NFS4_OPAQUE_LIMIT 1024
+r_typedef
 r_struct
-id|svc_rqst
-op_star
-id|rqstp
-comma
-r_struct
-id|nfsd4_setclientid
-op_star
-id|setclid
-)paren
+(brace
+DECL|member|cl_boot
+id|u32
+id|cl_boot
 suffix:semicolon
+DECL|member|cl_id
+id|u32
+id|cl_id
+suffix:semicolon
+DECL|typedef|clientid_t
+)brace
+id|clientid_t
+suffix:semicolon
+r_typedef
+r_struct
+(brace
+DECL|member|so_boot
+id|u32
+id|so_boot
+suffix:semicolon
+DECL|member|so_stateownerid
+id|u32
+id|so_stateownerid
+suffix:semicolon
+DECL|member|so_fileid
+id|u32
+id|so_fileid
+suffix:semicolon
+DECL|typedef|stateid_opaque_t
+)brace
+id|stateid_opaque_t
+suffix:semicolon
+r_typedef
+r_struct
+(brace
+DECL|member|si_generation
+id|u32
+id|si_generation
+suffix:semicolon
+DECL|member|si_opaque
+id|stateid_opaque_t
+id|si_opaque
+suffix:semicolon
+DECL|typedef|stateid_t
+)brace
+id|stateid_t
+suffix:semicolon
+DECL|macro|si_boot
+mdefine_line|#define si_boot           si_opaque.so_boot
+DECL|macro|si_stateownerid
+mdefine_line|#define si_stateownerid   si_opaque.so_stateownerid
+DECL|macro|si_fileid
+mdefine_line|#define si_fileid         si_opaque.so_fileid
 multiline_comment|/*&n; * struct nfs4_client - one per client.  Clientids live here.&n; * &t;o Each nfs4_client is hashed by clientid.&n; *&n; * &t;o Each nfs4_clients is also hashed by name &n; * &t;  (the opaque quantity initially sent by the client to identify itself).&n; */
 DECL|struct|nfs4_client
 r_struct

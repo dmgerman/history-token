@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/sunrpc/svc.h&gt;
 macro_line|#include &lt;linux/nfsd/nfsd.h&gt;
 macro_line|#include &lt;linux/nfsd/cache.h&gt;
 macro_line|#include &lt;linux/nfs4.h&gt;
+macro_line|#include &lt;linux/nfsd/state.h&gt;
 macro_line|#include &lt;linux/nfsd/xdr4.h&gt;
 DECL|macro|NFSDDBG_FACILITY
 mdefine_line|#define NFSDDBG_FACILITY&t;&t;NFSDDBG_PROC
@@ -97,9 +98,9 @@ id|rqstp
 comma
 id|current_fh
 comma
-id|open-&gt;op_name
+id|open-&gt;op_fname.data
 comma
-id|open-&gt;op_namelen
+id|open-&gt;op_fname.len
 comma
 op_amp
 id|open-&gt;op_iattr
@@ -131,9 +132,9 @@ id|rqstp
 comma
 id|current_fh
 comma
-id|open-&gt;op_name
+id|open-&gt;op_fname.data
 comma
-id|open-&gt;op_namelen
+id|open-&gt;op_fname.len
 comma
 op_amp
 id|resfh
