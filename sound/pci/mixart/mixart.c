@@ -4617,6 +4617,12 @@ op_assign
 l_int|NULL
 suffix:semicolon
 )brace
+id|pci_disable_device
+c_func
+(paren
+id|mgr-&gt;pci
+)paren
+suffix:semicolon
 id|kfree
 c_func
 (paren
@@ -5546,6 +5552,12 @@ id|KERN_ERR
 l_string|&quot;architecture does not support 32bit PCI busmaster DMA&bslash;n&quot;
 )paren
 suffix:semicolon
+id|pci_disable_device
+c_func
+(paren
+id|pci
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|ENXIO
@@ -5574,10 +5586,18 @@ c_cond
 op_logical_neg
 id|mgr
 )paren
+(brace
+id|pci_disable_device
+c_func
+(paren
+id|pci
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|ENOMEM
 suffix:semicolon
+)brace
 id|mgr-&gt;pci
 op_assign
 id|pci
@@ -5610,6 +5630,12 @@ id|kfree
 c_func
 (paren
 id|mgr
+)paren
+suffix:semicolon
+id|pci_disable_device
+c_func
+(paren
+id|pci
 )paren
 suffix:semicolon
 r_return

@@ -1008,7 +1008,7 @@ dot
 id|timer
 op_assign
 op_amp
-id|lpd7a40x_timer
+id|lh7a40x_timer
 comma
 id|INIT_MACHINE
 (paren
@@ -1054,7 +1054,7 @@ dot
 id|timer
 op_assign
 op_amp
-id|lpd7a40x_timer
+id|lh7a40x_timer
 comma
 id|INIT_MACHINE
 (paren

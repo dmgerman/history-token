@@ -3424,6 +3424,18 @@ id|now
 comma
 id|elapsed
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|blk_fs_request
+c_func
+(paren
+id|crq-&gt;request
+)paren
+)paren
+r_return
+suffix:semicolon
 multiline_comment|/*&n;&t; * accounted bit is necessary since some drivers will call&n;&t; * elv_next_request() many times for the same request (eg ide)&n;&t; */
 r_if
 c_cond
@@ -3565,6 +3577,14 @@ op_star
 id|cfqd
 op_assign
 id|cfqq-&gt;cfqd
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|crq-&gt;accounted
+)paren
+r_return
 suffix:semicolon
 id|WARN_ON
 c_func

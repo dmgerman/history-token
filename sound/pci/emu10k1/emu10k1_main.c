@@ -2545,6 +2545,12 @@ c_func
 id|emu-&gt;pci
 )paren
 suffix:semicolon
+id|pci_disable_device
+c_func
+(paren
+id|emu-&gt;pci
+)paren
+suffix:semicolon
 id|kfree
 c_func
 (paren
@@ -2693,10 +2699,18 @@ id|emu
 op_eq
 l_int|NULL
 )paren
+(brace
+id|pci_disable_device
+c_func
+(paren
+id|pci
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|ENOMEM
 suffix:semicolon
+)brace
 multiline_comment|/* set the DMA transfer mask */
 id|emu-&gt;dma_mask
 op_assign
@@ -2744,6 +2758,12 @@ id|kfree
 c_func
 (paren
 id|emu
+)paren
+suffix:semicolon
+id|pci_disable_device
+c_func
+(paren
+id|pci
 )paren
 suffix:semicolon
 r_return
@@ -2875,6 +2895,12 @@ id|kfree
 c_func
 (paren
 id|emu
+)paren
+suffix:semicolon
+id|pci_disable_device
+c_func
+(paren
+id|pci
 )paren
 suffix:semicolon
 r_return

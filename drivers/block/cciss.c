@@ -5579,7 +5579,7 @@ r_default
 suffix:colon
 r_return
 op_minus
-id|EBADRQC
+id|ENOTTY
 suffix:semicolon
 )brace
 )brace
