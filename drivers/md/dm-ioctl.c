@@ -3369,6 +3369,8 @@ op_minus
 id|outbuf
 )paren
 suffix:semicolon
+id|outptr
+op_assign
 id|align_ptr
 c_func
 (paren
