@@ -1817,6 +1817,10 @@ id|zone-&gt;nr_inactive
 op_sub_assign
 id|nr_taken
 suffix:semicolon
+id|zone-&gt;pages_scanned
+op_add_assign
+id|nr_scan
+suffix:semicolon
 id|spin_unlock_irq
 c_func
 (paren
