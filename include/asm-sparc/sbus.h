@@ -411,7 +411,25 @@ suffix:semicolon
 multiline_comment|/* Finally, allow explicit synchronization of streamable mappings. */
 r_extern
 r_void
-id|sbus_dma_sync_single
+id|sbus_dma_sync_single_for_cpu
+c_func
+(paren
+r_struct
+id|sbus_dev
+op_star
+comma
+id|dma_addr_t
+comma
+r_int
+comma
+r_int
+)paren
+suffix:semicolon
+DECL|macro|sbus_dma_sync_single
+mdefine_line|#define sbus_dma_sync_single sbus_dma_sync_single_for_cpu
+r_extern
+r_void
+id|sbus_dma_sync_single_for_device
 c_func
 (paren
 r_struct
@@ -427,7 +445,27 @@ r_int
 suffix:semicolon
 r_extern
 r_void
-id|sbus_dma_sync_sg
+id|sbus_dma_sync_sg_for_cpu
+c_func
+(paren
+r_struct
+id|sbus_dev
+op_star
+comma
+r_struct
+id|scatterlist
+op_star
+comma
+r_int
+comma
+r_int
+)paren
+suffix:semicolon
+DECL|macro|sbus_dma_sync_sg
+mdefine_line|#define sbus_dma_sync_sg sbus_dma_sync_sg_for_cpu
+r_extern
+r_void
+id|sbus_dma_sync_sg_for_device
 c_func
 (paren
 r_struct

@@ -6480,7 +6480,7 @@ l_int|2
 )paren
 suffix:semicolon
 multiline_comment|/* 16 byte align the IP header */
-id|pci_dma_sync_single
+id|pci_dma_sync_single_for_cpu
 c_func
 (paren
 id|np-&gt;pdev
@@ -6545,6 +6545,21 @@ id|pkt_len
 )paren
 suffix:semicolon
 macro_line|#endif
+id|pci_dma_sync_single_for_device
+c_func
+(paren
+id|np-&gt;pdev
+comma
+id|np-&gt;rx_skbuff_dma
+(braket
+id|entry
+)braket
+comma
+id|np-&gt;rx_buf_sz
+comma
+id|PCI_DMA_FROMDEVICE
+)paren
+suffix:semicolon
 )brace
 r_else
 (brace

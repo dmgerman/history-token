@@ -3640,7 +3640,7 @@ op_star
 id|m
 suffix:semicolon
 multiline_comment|/*&n;&t; &t; *&t;Ensure this message is seen coherently but cachably by&n;&t;&t; *&t;the processor &n;&t; &t; */
-id|pci_dma_sync_single
+id|pci_dma_sync_single_for_cpu
 c_func
 (paren
 id|c-&gt;pdev

@@ -5890,7 +5890,7 @@ c_func
 id|cpp-&gt;sense_addr
 )paren
 )paren
-id|pci_dma_sync_single
+id|pci_dma_sync_single_for_cpu
 c_func
 (paren
 id|HD
@@ -5921,7 +5921,7 @@ c_cond
 (paren
 id|SCpnt-&gt;use_sg
 )paren
-id|pci_dma_sync_sg
+id|pci_dma_sync_sg_for_cpu
 c_func
 (paren
 id|HD
@@ -5962,7 +5962,7 @@ c_func
 id|cpp-&gt;data_address
 )paren
 )paren
-id|pci_dma_sync_single
+id|pci_dma_sync_single_for_cpu
 c_func
 (paren
 id|HD

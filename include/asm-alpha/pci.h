@@ -179,7 +179,7 @@ comma
 id|dma_addr_t
 )paren
 suffix:semicolon
-multiline_comment|/* Map a single buffer of the indicate size for PCI DMA in streaming&n;   mode.  The 32-bit PCI bus mastering address to use is returned.&n;   Once the device is given the dma address, the device owns this memory&n;   until either pci_unmap_single or pci_dma_sync_single is performed.  */
+multiline_comment|/* Map a single buffer of the indicate size for PCI DMA in streaming&n;   mode.  The 32-bit PCI bus mastering address to use is returned.&n;   Once the device is given the dma address, the device owns this memory&n;   until either pci_unmap_single or pci_dma_sync_single_for_cpu is performed.  */
 r_extern
 id|dma_addr_t
 id|pci_map_single
@@ -303,12 +303,12 @@ comma
 r_int
 )paren
 suffix:semicolon
-multiline_comment|/* Make physical memory consistent for a single streaming mode DMA&n;   translation after a transfer.&n;&n;   If you perform a pci_map_single() but wish to interrogate the&n;   buffer using the cpu, yet do not wish to teardown the PCI dma&n;   mapping, you must call this function before doing so.  At the next&n;   point you give the PCI dma address back to the card, the device&n;   again owns the buffer.  */
+multiline_comment|/* Make physical memory consistent for a single streaming mode DMA&n;   translation after a transfer and device currently has ownership&n;   of the buffer.&n;&n;   If you perform a pci_map_single() but wish to interrogate the&n;   buffer using the cpu, yet do not wish to teardown the PCI dma&n;   mapping, you must call this function before doing so.  At the next&n;   point you give the PCI dma address back to the card, you must first&n;   perform a pci_dma_sync_for_device, and then the device again owns&n;   the buffer.  */
 r_static
 r_inline
 r_void
-DECL|function|pci_dma_sync_single
-id|pci_dma_sync_single
+DECL|function|pci_dma_sync_single_for_cpu
+id|pci_dma_sync_single_for_cpu
 c_func
 (paren
 r_struct
@@ -328,12 +328,62 @@ id|direction
 (brace
 multiline_comment|/* Nothing to do.  */
 )brace
-multiline_comment|/* Make physical memory consistent for a set of streaming mode DMA&n;   translations after a transfer.  The same as pci_dma_sync_single but&n;   for a scatter-gather list, same rules and usage.  */
 r_static
 r_inline
 r_void
-DECL|function|pci_dma_sync_sg
-id|pci_dma_sync_sg
+DECL|function|pci_dma_sync_single_for_device
+id|pci_dma_sync_single_for_device
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+id|dev
+comma
+id|dma_addr_t
+id|dma_addr
+comma
+r_int
+id|size
+comma
+r_int
+id|direction
+)paren
+(brace
+multiline_comment|/* Nothing to do.  */
+)brace
+multiline_comment|/* Make physical memory consistent for a set of streaming mode DMA&n;   translations after a transfer.  The same as pci_dma_sync_single_*&n;   but for a scatter-gather list, same rules and usage.  */
+r_static
+r_inline
+r_void
+DECL|function|pci_dma_sync_sg_for_cpu
+id|pci_dma_sync_sg_for_cpu
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+id|dev
+comma
+r_struct
+id|scatterlist
+op_star
+id|sg
+comma
+r_int
+id|nents
+comma
+r_int
+id|direction
+)paren
+(brace
+multiline_comment|/* Nothing to do.  */
+)brace
+r_static
+r_inline
+r_void
+DECL|function|pci_dma_sync_sg_for_device
+id|pci_dma_sync_sg_for_device
 c_func
 (paren
 r_struct
@@ -433,10 +483,34 @@ id|dma64_addr_t
 )paren
 suffix:semicolon
 r_static
-id|__inline__
+r_inline
 r_void
-DECL|function|pci_dac_dma_sync_single
-id|pci_dac_dma_sync_single
+DECL|function|pci_dac_dma_sync_single_for_cpu
+id|pci_dac_dma_sync_single_for_cpu
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+id|pdev
+comma
+id|dma64_addr_t
+id|dma_addr
+comma
+r_int
+id|len
+comma
+r_int
+id|direction
+)paren
+(brace
+multiline_comment|/* Nothing to do. */
+)brace
+r_static
+r_inline
+r_void
+DECL|function|pci_dac_dma_sync_single_for_device
+id|pci_dac_dma_sync_single_for_device
 c_func
 (paren
 r_struct

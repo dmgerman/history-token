@@ -1060,7 +1060,7 @@ c_cond
 op_logical_neg
 id|dma-&gt;bus_addr
 )paren
-id|pci_dma_sync_sg
+id|pci_dma_sync_sg_for_cpu
 c_func
 (paren
 id|dev

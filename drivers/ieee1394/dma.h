@@ -189,9 +189,28 @@ op_star
 id|dma
 )paren
 suffix:semicolon
-multiline_comment|/* sync the IO bus&squot; view of the buffer with the CPU&squot;s view */
+multiline_comment|/* sync the CPU&squot;s view of the buffer */
 r_void
-id|dma_region_sync
+id|dma_region_sync_for_cpu
+c_func
+(paren
+r_struct
+id|dma_region
+op_star
+id|dma
+comma
+r_int
+r_int
+id|offset
+comma
+r_int
+r_int
+id|len
+)paren
+suffix:semicolon
+multiline_comment|/* sync the IO bus&squot; view of the buffer */
+r_void
+id|dma_region_sync_for_device
 c_func
 (paren
 r_struct

@@ -13305,7 +13305,7 @@ l_int|2
 )paren
 suffix:semicolon
 multiline_comment|/* Align IP on 16 byte boundaries */
-id|pci_dma_sync_single
+id|pci_dma_sync_single_for_cpu
 c_func
 (paren
 id|VORTEX_PCI
@@ -13341,6 +13341,22 @@ op_member_access_from_pointer
 id|tail
 comma
 id|pkt_len
+)paren
+suffix:semicolon
+id|pci_dma_sync_single_for_device
+c_func
+(paren
+id|VORTEX_PCI
+c_func
+(paren
+id|vp
+)paren
+comma
+id|dma
+comma
+id|PKT_BUF_SZ
+comma
+id|PCI_DMA_FROMDEVICE
 )paren
 suffix:semicolon
 id|vp-&gt;rx_copy

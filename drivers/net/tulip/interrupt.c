@@ -722,7 +722,7 @@ l_int|2
 )paren
 suffix:semicolon
 multiline_comment|/* 16 byte align the IP header */
-id|pci_dma_sync_single
+id|pci_dma_sync_single_for_cpu
 c_func
 (paren
 id|tp-&gt;pdev
@@ -788,6 +788,23 @@ id|pkt_len
 )paren
 suffix:semicolon
 macro_line|#endif
+id|pci_dma_sync_single_for_device
+c_func
+(paren
+id|tp-&gt;pdev
+comma
+id|tp-&gt;rx_buffers
+(braket
+id|entry
+)braket
+dot
+id|mapping
+comma
+id|pkt_len
+comma
+id|PCI_DMA_FROMDEVICE
+)paren
+suffix:semicolon
 )brace
 r_else
 (brace
@@ -1574,7 +1591,7 @@ l_int|2
 )paren
 suffix:semicolon
 multiline_comment|/* 16 byte align the IP header */
-id|pci_dma_sync_single
+id|pci_dma_sync_single_for_cpu
 c_func
 (paren
 id|tp-&gt;pdev
@@ -1640,6 +1657,23 @@ id|pkt_len
 )paren
 suffix:semicolon
 macro_line|#endif
+id|pci_dma_sync_single_for_device
+c_func
+(paren
+id|tp-&gt;pdev
+comma
+id|tp-&gt;rx_buffers
+(braket
+id|entry
+)braket
+dot
+id|mapping
+comma
+id|pkt_len
+comma
+id|PCI_DMA_FROMDEVICE
+)paren
+suffix:semicolon
 )brace
 r_else
 (brace

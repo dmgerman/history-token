@@ -4141,7 +4141,7 @@ comma
 id|len
 )paren
 suffix:semicolon
-id|sbus_dma_sync_single
+id|sbus_dma_sync_single_for_cpu
 c_func
 (paren
 id|bp-&gt;bigmac_sdev
@@ -4168,6 +4168,18 @@ comma
 id|len
 comma
 l_int|0
+)paren
+suffix:semicolon
+id|sbus_dma_sync_single_for_device
+c_func
+(paren
+id|bp-&gt;bigmac_sdev
+comma
+id|this-&gt;rx_addr
+comma
+id|len
+comma
+id|SBUS_DMA_FROMDEVICE
 )paren
 suffix:semicolon
 multiline_comment|/* Reuse original ring buffer. */

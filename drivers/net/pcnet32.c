@@ -8174,7 +8174,7 @@ id|pkt_len
 )paren
 suffix:semicolon
 multiline_comment|/* Make room */
-id|pci_dma_sync_single
+id|pci_dma_sync_single_for_cpu
 c_func
 (paren
 id|lp-&gt;pci_dev
@@ -8213,6 +8213,23 @@ comma
 id|pkt_len
 comma
 l_int|0
+)paren
+suffix:semicolon
+id|pci_dma_sync_single_for_device
+c_func
+(paren
+id|lp-&gt;pci_dev
+comma
+id|lp-&gt;rx_dma_addr
+(braket
+id|entry
+)braket
+comma
+id|PKT_BUF_SZ
+op_minus
+l_int|2
+comma
+id|PCI_DMA_FROMDEVICE
 )paren
 suffix:semicolon
 )brace

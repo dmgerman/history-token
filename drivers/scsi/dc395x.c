@@ -7802,7 +7802,7 @@ id|srb-&gt;sg_index
 op_assign
 id|idx
 suffix:semicolon
-id|pci_dma_sync_single
+id|pci_dma_sync_single_for_device
 c_func
 (paren
 id|srb-&gt;dcb
@@ -14371,7 +14371,7 @@ c_cond
 (paren
 id|cmd-&gt;use_sg
 )paren
-id|pci_dma_sync_sg
+id|pci_dma_sync_sg_for_cpu
 c_func
 (paren
 id|acb-&gt;dev
@@ -14396,7 +14396,7 @@ c_cond
 (paren
 id|cmd-&gt;request_buffer
 )paren
-id|pci_dma_sync_single
+id|pci_dma_sync_single_for_cpu
 c_func
 (paren
 id|acb-&gt;dev

@@ -6795,7 +6795,7 @@ c_func
 id|cb_el
 )paren
 suffix:semicolon
-id|pci_dma_sync_single
+id|pci_dma_sync_single_for_device
 c_func
 (paren
 id|nic-&gt;pdev
@@ -6888,7 +6888,7 @@ id|EAGAIN
 suffix:semicolon
 )brace
 multiline_comment|/* Need to sync before taking a peek at cb_complete bit */
-id|pci_dma_sync_single
+id|pci_dma_sync_single_for_cpu
 c_func
 (paren
 id|nic-&gt;pdev
@@ -6986,24 +6986,6 @@ id|rfd
 suffix:semicolon
 )brace
 multiline_comment|/* Get data */
-id|pci_dma_sync_single
-c_func
-(paren
-id|nic-&gt;pdev
-comma
-id|rx-&gt;dma_addr
-comma
-r_sizeof
-(paren
-r_struct
-id|rfd
-)paren
-op_plus
-id|actual_size
-comma
-id|PCI_DMA_FROMDEVICE
-)paren
-suffix:semicolon
 id|pci_unmap_single
 c_func
 (paren

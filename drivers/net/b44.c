@@ -3081,6 +3081,18 @@ id|src_map-&gt;skb
 op_assign
 l_int|NULL
 suffix:semicolon
+id|pci_dma_sync_single_for_device
+c_func
+(paren
+id|bp-&gt;pdev
+comma
+id|src_desc-&gt;addr
+comma
+id|RX_PKT_BUF_SZ
+comma
+id|PCI_DMA_FROMDEVICE
+)paren
+suffix:semicolon
 )brace
 DECL|function|b44_rx
 r_static
@@ -3180,7 +3192,7 @@ suffix:semicolon
 id|u16
 id|len
 suffix:semicolon
-id|pci_dma_sync_single
+id|pci_dma_sync_single_for_cpu
 c_func
 (paren
 id|bp-&gt;pdev

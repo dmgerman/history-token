@@ -14369,7 +14369,7 @@ op_logical_neg
 id|cmd-&gt;use_sg
 )paren
 (brace
-id|sync_scsi_data
+id|sync_scsi_data_for_cpu
 c_func
 (paren
 id|np
@@ -14393,6 +14393,15 @@ op_star
 id|cmd-&gt;request_buffer
 )paren
 suffix:semicolon
+id|sync_scsi_data_for_device
+c_func
+(paren
+id|np
+comma
+id|cmd
+)paren
+suffix:semicolon
+multiline_comment|/* SYNC the data */
 )brace
 id|tp-&gt;bytes
 op_add_assign

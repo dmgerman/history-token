@@ -875,8 +875,10 @@ DECL|macro|hme_dma_map
 mdefine_line|#define hme_dma_map(__hp, __ptr, __size, __dir) &bslash;&n;&t;((__hp)-&gt;dma_map((__hp)-&gt;happy_dev, (__ptr), (__size), (__dir)))
 DECL|macro|hme_dma_unmap
 mdefine_line|#define hme_dma_unmap(__hp, __addr, __size, __dir) &bslash;&n;&t;((__hp)-&gt;dma_unmap((__hp)-&gt;happy_dev, (__addr), (__size), (__dir)))
-DECL|macro|hme_dma_sync
-mdefine_line|#define hme_dma_sync(__hp, __addr, __size, __dir) &bslash;&n;&t;((__hp)-&gt;dma_sync((__hp)-&gt;happy_dev, (__addr), (__size), (__dir)))
+DECL|macro|hme_dma_sync_for_cpu
+mdefine_line|#define hme_dma_sync_for_cpu(__hp, __addr, __size, __dir) &bslash;&n;&t;((__hp)-&gt;dma_sync_for_cpu((__hp)-&gt;happy_dev, (__addr), (__size), (__dir)))
+DECL|macro|hme_dma_sync_for_device
+mdefine_line|#define hme_dma_sync_for_device(__hp, __addr, __size, __dir) &bslash;&n;&t;((__hp)-&gt;dma_sync_for_device((__hp)-&gt;happy_dev, (__addr), (__size), (__dir)))
 macro_line|#else
 macro_line|#ifdef CONFIG_SBUS
 multiline_comment|/* SBUS only compilation */
@@ -894,8 +896,10 @@ DECL|macro|hme_dma_map
 mdefine_line|#define hme_dma_map(__hp, __ptr, __size, __dir) &bslash;&n;&t;sbus_map_single((__hp)-&gt;happy_dev, (__ptr), (__size), (__dir))
 DECL|macro|hme_dma_unmap
 mdefine_line|#define hme_dma_unmap(__hp, __addr, __size, __dir) &bslash;&n;&t;sbus_unmap_single((__hp)-&gt;happy_dev, (__addr), (__size), (__dir))
-DECL|macro|hme_dma_sync
-mdefine_line|#define hme_dma_sync(__hp, __addr, __size, __dir) &bslash;&n;&t;sbus_dma_sync_single((__hp)-&gt;happy_dev, (__addr), (__size), (__dir))
+DECL|macro|hme_dma_sync_for_cpu
+mdefine_line|#define hme_dma_sync_for_cpu(__hp, __addr, __size, __dir) &bslash;&n;&t;sbus_dma_sync_single_for_cpu((__hp)-&gt;happy_dev, (__addr), (__size), (__dir))
+DECL|macro|hme_dma_sync_for_device
+mdefine_line|#define hme_dma_sync_for_device(__hp, __addr, __size, __dir) &bslash;&n;&t;sbus_dma_sync_single_for_device((__hp)-&gt;happy_dev, (__addr), (__size), (__dir))
 macro_line|#else
 multiline_comment|/* PCI only compilation */
 DECL|macro|hme_write32
@@ -912,8 +916,10 @@ DECL|macro|hme_dma_map
 mdefine_line|#define hme_dma_map(__hp, __ptr, __size, __dir) &bslash;&n;&t;pci_map_single((__hp)-&gt;happy_dev, (__ptr), (__size), (__dir))
 DECL|macro|hme_dma_unmap
 mdefine_line|#define hme_dma_unmap(__hp, __addr, __size, __dir) &bslash;&n;&t;pci_unmap_single((__hp)-&gt;happy_dev, (__addr), (__size), (__dir))
-DECL|macro|hme_dma_sync
-mdefine_line|#define hme_dma_sync(__hp, __addr, __size, __dir) &bslash;&n;&t;pci_dma_sync_single((__hp)-&gt;happy_dev, (__addr), (__size), (__dir))
+DECL|macro|hme_dma_sync_for_cpu
+mdefine_line|#define hme_dma_sync_for_cpu(__hp, __addr, __size, __dir) &bslash;&n;&t;pci_dma_sync_single_for_cpu((__hp)-&gt;happy_dev, (__addr), (__size), (__dir))
+DECL|macro|hme_dma_sync_for_device
+mdefine_line|#define hme_dma_sync_for_device(__hp, __addr, __size, __dir) &bslash;&n;&t;pci_dma_sync_single_for_device((__hp)-&gt;happy_dev, (__addr), (__size), (__dir))
 macro_line|#endif
 macro_line|#endif
 macro_line|#ifdef SBUS_DMA_BIDIRECTIONAL
@@ -9423,7 +9429,7 @@ comma
 id|len
 )paren
 suffix:semicolon
-id|hme_dma_sync
+id|hme_dma_sync_for_cpu
 c_func
 (paren
 id|hp
@@ -9443,6 +9449,18 @@ comma
 id|skb-&gt;data
 comma
 id|len
+)paren
+suffix:semicolon
+id|hme_dma_sync_for_device
+c_func
+(paren
+id|hp
+comma
+id|dma_addr
+comma
+id|len
+comma
+id|DMA_FROMDEVICE
 )paren
 suffix:semicolon
 multiline_comment|/* Reuse original ring buffer. */
@@ -13159,7 +13177,7 @@ r_int
 )paren
 id|sbus_unmap_single
 suffix:semicolon
-id|hp-&gt;dma_sync
+id|hp-&gt;dma_sync_for_cpu
 op_assign
 (paren
 r_void
@@ -13177,7 +13195,27 @@ comma
 r_int
 )paren
 )paren
-id|sbus_dma_sync_single
+id|sbus_dma_sync_single_for_cpu
+suffix:semicolon
+id|hp-&gt;dma_sync_for_device
+op_assign
+(paren
+r_void
+(paren
+op_star
+)paren
+(paren
+r_void
+op_star
+comma
+id|u32
+comma
+r_int
+comma
+r_int
+)paren
+)paren
+id|sbus_dma_sync_single_for_device
 suffix:semicolon
 id|hp-&gt;read32
 op_assign
@@ -14808,7 +14846,7 @@ r_int
 )paren
 id|pci_unmap_single
 suffix:semicolon
-id|hp-&gt;dma_sync
+id|hp-&gt;dma_sync_for_cpu
 op_assign
 (paren
 r_void
@@ -14826,7 +14864,27 @@ comma
 r_int
 )paren
 )paren
-id|pci_dma_sync_single
+id|pci_dma_sync_single_for_cpu
+suffix:semicolon
+id|hp-&gt;dma_sync_for_device
+op_assign
+(paren
+r_void
+(paren
+op_star
+)paren
+(paren
+r_void
+op_star
+comma
+id|u32
+comma
+r_int
+comma
+r_int
+)paren
+)paren
+id|pci_dma_sync_single_for_device
 suffix:semicolon
 id|hp-&gt;read32
 op_assign

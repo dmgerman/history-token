@@ -1473,7 +1473,7 @@ id|f-&gt;first_n_descriptors
 )paren
 suffix:semicolon
 multiline_comment|/* make the latest version of this frame visible to the PCI card */
-id|dma_region_sync
+id|dma_region_sync_for_device
 c_func
 (paren
 op_amp
@@ -7467,7 +7467,7 @@ id|video-&gt;current_packet
 )paren
 suffix:semicolon
 multiline_comment|/* make sure we are seeing the latest changes to p */
-id|dma_region_sync
+id|dma_region_sync_for_cpu
 c_func
 (paren
 op_amp

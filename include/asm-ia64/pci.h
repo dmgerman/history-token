@@ -95,8 +95,10 @@ DECL|macro|pci_dac_dma_to_page
 mdefine_line|#define pci_dac_dma_to_page(dev,dma_addr)&t;&t;(virt_to_page(bus_to_virt(dma_addr)))
 DECL|macro|pci_dac_dma_to_offset
 mdefine_line|#define pci_dac_dma_to_offset(dev,dma_addr)&t;&t;offset_in_page(dma_addr)
-DECL|macro|pci_dac_dma_sync_single
-mdefine_line|#define pci_dac_dma_sync_single(dev,dma_addr,len,dir)&t;do { mb(); } while (0)
+DECL|macro|pci_dac_dma_sync_single_for_cpu
+mdefine_line|#define pci_dac_dma_sync_single_for_cpu(dev,dma_addr,len,dir)&t;do { } while (0)
+DECL|macro|pci_dac_dma_sync_single_for_device
+mdefine_line|#define pci_dac_dma_sync_single_for_device(dev,dma_addr,len,dir)&t;do { mb(); } while (0)
 DECL|macro|sg_dma_len
 mdefine_line|#define sg_dma_len(sg)&t;&t;((sg)-&gt;dma_length)
 DECL|macro|sg_dma_address

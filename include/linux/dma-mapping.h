@@ -29,5 +29,10 @@ comma
 )brace
 suffix:semicolon
 macro_line|#include &lt;asm/dma-mapping.h&gt;
+multiline_comment|/* Backwards compat, remove in 2.7.x */
+DECL|macro|dma_sync_single
+mdefine_line|#define dma_sync_single&t;&t;dma_sync_single_for_cpu
+DECL|macro|dma_sync_sg
+mdefine_line|#define dma_sync_sg&t;&t;dma_sync_sg_for_cpu
 macro_line|#endif
 eof

@@ -20,7 +20,7 @@ op_star
 id|dev
 )paren
 suffix:semicolon
-multiline_comment|/* `Grant&squot; to PDEV the memory block at CPU_ADDR, for doing DMA.  The&n;   32-bit PCI bus mastering address to use is returned.  the device owns&n;   this memory until either pci_unmap_single or pci_dma_sync_single is&n;   performed.  */
+multiline_comment|/* `Grant&squot; to PDEV the memory block at CPU_ADDR, for doing DMA.  The&n;   32-bit PCI bus mastering address to use is returned.  the device owns&n;   this memory until either pci_unmap_single or pci_dma_sync_single_for_cpu is&n;   performed.  */
 r_extern
 id|dma_addr_t
 id|pci_map_single
@@ -61,10 +61,29 @@ r_int
 id|dir
 )paren
 suffix:semicolon
-multiline_comment|/* Make physical memory consistent for a single streaming mode DMA&n;   translation after a transfer.&n;&n;   If you perform a pci_map_single() but wish to interrogate the&n;   buffer using the cpu, yet do not wish to teardown the PCI dma&n;   mapping, you must call this function before doing so.  At the next&n;   point you give the PCI dma address back to the card, the device&n;   again owns the buffer.  */
+multiline_comment|/* Make physical memory consistent for a single streaming mode DMA&n;   translation after a transfer.&n;&n;   If you perform a pci_map_single() but wish to interrogate the&n;   buffer using the cpu, yet do not wish to teardown the PCI dma&n;   mapping, you must call this function before doing so.  At the next&n;   point you give the PCI dma address back to the card, you must first&n;   perform a pci_dma_sync_for_device, and then the device again owns&n;   the buffer.  */
 r_extern
 r_void
-id|pci_dma_sync_single
+id|pci_dma_sync_single_for_cpu
+(paren
+r_struct
+id|pci_dev
+op_star
+id|dev
+comma
+id|dma_addr_t
+id|dma_addr
+comma
+r_int
+id|size
+comma
+r_int
+id|dir
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|pci_dma_sync_single_for_device
 (paren
 r_struct
 id|pci_dev

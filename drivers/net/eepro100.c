@@ -6011,7 +6011,7 @@ id|i
 )braket
 )paren
 suffix:semicolon
-id|pci_dma_sync_single
+id|pci_dma_sync_single_for_device
 c_func
 (paren
 id|sp-&gt;pdev
@@ -6068,7 +6068,7 @@ op_lshift
 l_int|16
 )paren
 suffix:semicolon
-id|pci_dma_sync_single
+id|pci_dma_sync_single_for_device
 c_func
 (paren
 id|sp-&gt;pdev
@@ -6110,7 +6110,7 @@ l_int|0xC0000002
 )paren
 suffix:semicolon
 multiline_comment|/* &squot;2&squot; is flag value only. */
-id|pci_dma_sync_single
+id|pci_dma_sync_single_for_device
 c_func
 (paren
 id|sp-&gt;pdev
@@ -8079,7 +8079,7 @@ id|rxf-&gt;rx_buf_addr
 op_assign
 l_int|0xffffffff
 suffix:semicolon
-id|pci_dma_sync_single
+id|pci_dma_sync_single_for_device
 c_func
 (paren
 id|sp-&gt;pdev
@@ -8178,7 +8178,7 @@ op_complement
 l_int|0xC0000000
 )paren
 suffix:semicolon
-id|pci_dma_sync_single
+id|pci_dma_sync_single_for_device
 c_func
 (paren
 id|sp-&gt;pdev
@@ -8596,7 +8596,7 @@ suffix:semicolon
 r_int
 id|pkt_len
 suffix:semicolon
-id|pci_dma_sync_single
+id|pci_dma_sync_single_for_cpu
 c_func
 (paren
 id|sp-&gt;pdev
@@ -8834,7 +8834,7 @@ l_int|2
 suffix:semicolon
 multiline_comment|/* Align IP on 16 byte boundaries */
 multiline_comment|/* &squot;skb_put()&squot; points to the start of sk_buff data area. */
-id|pci_dma_sync_single
+id|pci_dma_sync_single_for_cpu
 c_func
 (paren
 id|sp-&gt;pdev
@@ -8905,6 +8905,27 @@ id|pkt_len
 )paren
 suffix:semicolon
 macro_line|#endif
+id|pci_dma_sync_single_for_device
+c_func
+(paren
+id|sp-&gt;pdev
+comma
+id|sp-&gt;rx_ring_dma
+(braket
+id|entry
+)braket
+comma
+r_sizeof
+(paren
+r_struct
+id|RxFD
+)paren
+op_plus
+id|pkt_len
+comma
+id|PCI_DMA_FROMDEVICE
+)paren
+suffix:semicolon
 id|npkts
 op_increment
 suffix:semicolon
@@ -11246,7 +11267,7 @@ id|TX_RING_SIZE
 )paren
 )paren
 suffix:semicolon
-id|pci_dma_sync_single
+id|pci_dma_sync_single_for_device
 c_func
 (paren
 id|sp-&gt;pdev

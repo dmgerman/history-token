@@ -3346,7 +3346,7 @@ id|rx_in_place
 )paren
 (brace
 multiline_comment|/* 16 byte align the data fields */
-id|dma_sync_single
+id|dma_sync_single_for_cpu
 c_func
 (paren
 id|lp-&gt;dev
@@ -3387,6 +3387,25 @@ comma
 id|rbd-&gt;v_data
 comma
 id|pkt_len
+)paren
+suffix:semicolon
+id|dma_sync_single_for_device
+c_func
+(paren
+id|lp-&gt;dev
+comma
+(paren
+id|dma_addr_t
+)paren
+id|WSWAPchar
+c_func
+(paren
+id|rbd-&gt;b_data
+)paren
+comma
+id|PKT_BUF_SZ
+comma
+id|DMA_FROM_DEVICE
 )paren
 suffix:semicolon
 )brace
