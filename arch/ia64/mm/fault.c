@@ -229,7 +229,7 @@ macro_line|#&t;define VM_WRITE_BIT&t;1
 DECL|macro|VM_EXEC_BIT
 macro_line|#&t;define VM_EXEC_BIT&t;2
 macro_line|#&t;if (((1 &lt;&lt; VM_READ_BIT) != VM_READ || (1 &lt;&lt; VM_WRITE_BIT) != VM_WRITE) &bslash;&n;&t;    || (1 &lt;&lt; VM_EXEC_BIT) != VM_EXEC)
-macro_line|#&t;&t;error File is out of sync with &lt;linux/mm.h&gt;.  Pleaes update.
+macro_line|#&t;&t;error File is out of sync with &lt;linux/mm.h&gt;.  Please update.
 macro_line|#&t;endif
 id|mask
 op_assign
