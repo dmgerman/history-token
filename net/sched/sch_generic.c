@@ -317,9 +317,18 @@ id|NETDEV_TX_LOCKED
 op_logical_and
 id|nolock
 )paren
+(brace
+id|spin_lock
+c_func
+(paren
+op_amp
+id|dev-&gt;queue_lock
+)paren
+suffix:semicolon
 r_goto
 id|collision
 suffix:semicolon
+)brace
 )brace
 multiline_comment|/* NETDEV_TX_BUSY - we need to requeue */
 multiline_comment|/* Release the driver */
