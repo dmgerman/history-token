@@ -1,6 +1,7 @@
 macro_line|#ifndef __ALPHA_IO_H
 DECL|macro|__ALPHA_IO_H
 mdefine_line|#define __ALPHA_IO_H
+macro_line|#ifdef __KERNEL__
 multiline_comment|/* We don&squot;t use IO slowdowns on the Alpha, but.. */
 DECL|macro|__SLOW_DOWN_IO
 mdefine_line|#define __SLOW_DOWN_IO&t;do { } while (0)
@@ -14,7 +15,6 @@ macro_line|#else
 DECL|macro|IDENT_ADDR
 mdefine_line|#define IDENT_ADDR     0xfffffc0000000000UL
 macro_line|#endif
-macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
@@ -348,31 +348,7 @@ suffix:colon
 id|virt
 suffix:semicolon
 )brace
-macro_line|#else /* !__KERNEL__ */
-multiline_comment|/*&n; * Define actual functions in private name-space so it&squot;s easier to&n; * accommodate things like XFree or svgalib that like to define their&n; * own versions of inb etc.&n; */
-r_extern
-r_void
-id|__sethae
-(paren
-r_int
-r_int
-id|addr
-)paren
-suffix:semicolon
-multiline_comment|/* syscall */
-r_extern
-r_void
-id|_sethae
-(paren
-r_int
-r_int
-id|addr
-)paren
-suffix:semicolon
-multiline_comment|/* cached version */
-macro_line|#endif /* !__KERNEL__ */
 multiline_comment|/*&n; * There are different chipsets to interface the Alpha CPUs to the world.&n; */
-macro_line|#ifdef __KERNEL__
 macro_line|#ifdef CONFIG_ALPHA_GENERIC
 multiline_comment|/* In a generic kernel, we always go through the machine vector.  */
 DECL|macro|__inb
@@ -382,31 +358,31 @@ macro_line|# define __inw(p)&t;alpha_mv.mv_inw((unsigned long)(p))
 DECL|macro|__inl
 macro_line|# define __inl(p)&t;alpha_mv.mv_inl((unsigned long)(p))
 DECL|macro|__outb
-macro_line|# define __outb(x,p)&t;alpha_mv.mv_outb((x),(unsigned long)(p))
+macro_line|# define __outb(x,p)&t;alpha_mv.mv_outb(x,(unsigned long)(p))
 DECL|macro|__outw
-macro_line|# define __outw(x,p)&t;alpha_mv.mv_outw((x),(unsigned long)(p))
+macro_line|# define __outw(x,p)&t;alpha_mv.mv_outw(x,(unsigned long)(p))
 DECL|macro|__outl
-macro_line|# define __outl(x,p)&t;alpha_mv.mv_outl((x),(unsigned long)(p))
+macro_line|# define __outl(x,p)&t;alpha_mv.mv_outl(x,(unsigned long)(p))
 DECL|macro|__readb
-macro_line|# define __readb(a)&t;alpha_mv.mv_readb((unsigned long)(a))
+macro_line|# define __readb(a)&t;alpha_mv.mv_readb(a)
 DECL|macro|__readw
-macro_line|# define __readw(a)&t;alpha_mv.mv_readw((unsigned long)(a))
+macro_line|# define __readw(a)&t;alpha_mv.mv_readw(a)
 DECL|macro|__readl
-macro_line|# define __readl(a)&t;alpha_mv.mv_readl((unsigned long)(a))
+macro_line|# define __readl(a)&t;alpha_mv.mv_readl(a)
 DECL|macro|__readq
-macro_line|# define __readq(a)&t;alpha_mv.mv_readq((unsigned long)(a))
+macro_line|# define __readq(a)&t;alpha_mv.mv_readq(a)
 DECL|macro|__writeb
-macro_line|# define __writeb(v,a)&t;alpha_mv.mv_writeb((v),(unsigned long)(a))
+macro_line|# define __writeb(v,a)&t;alpha_mv.mv_writeb(v,a)
 DECL|macro|__writew
-macro_line|# define __writew(v,a)&t;alpha_mv.mv_writew((v),(unsigned long)(a))
+macro_line|# define __writew(v,a)&t;alpha_mv.mv_writew(v,a)
 DECL|macro|__writel
-macro_line|# define __writel(v,a)&t;alpha_mv.mv_writel((v),(unsigned long)(a))
+macro_line|# define __writel(v,a)&t;alpha_mv.mv_writel(v,a)
 DECL|macro|__writeq
-macro_line|# define __writeq(v,a)&t;alpha_mv.mv_writeq((v),(unsigned long)(a))
+macro_line|# define __writeq(v,a)&t;alpha_mv.mv_writeq(v,a)
 DECL|macro|__ioremap
-macro_line|# define __ioremap(a,s)&t;alpha_mv.mv_ioremap((unsigned long)(a),(s))
+macro_line|# define __ioremap(a,s)&t;alpha_mv.mv_ioremap(a,s)
 DECL|macro|__iounmap
-macro_line|# define __iounmap(a)   alpha_mv.mv_iounmap((unsigned long)(a))
+macro_line|# define __iounmap(a)   alpha_mv.mv_iounmap(a)
 DECL|macro|__is_ioaddr
 macro_line|# define __is_ioaddr(a)&t;alpha_mv.mv_is_ioaddr((unsigned long)(a))
 DECL|macro|inb
@@ -471,7 +447,6 @@ macro_line|#endif
 DECL|macro|__WANT_IO_DEF
 macro_line|#undef __WANT_IO_DEF
 macro_line|#endif /* GENERIC */
-macro_line|#endif /* __KERNEL__ */
 multiline_comment|/*&n; * The convention used for inb/outb etc. is that names starting with&n; * two underscores are the inline versions, names starting with a&n; * single underscore are proper functions, and names starting with a&n; * letter are macros that map in some way to inline or proper function&n; * versions.  Not all that pretty, but before you change it, be sure&n; * to convince yourself that it won&squot;t break anything (in particular&n; * module support).&n; */
 r_extern
 id|u8
@@ -541,8 +516,11 @@ id|u8
 id|_readb
 c_func
 (paren
-r_int
-r_int
+r_const
+r_volatile
+r_void
+id|__iomem
+op_star
 id|addr
 )paren
 suffix:semicolon
@@ -551,8 +529,11 @@ id|u16
 id|_readw
 c_func
 (paren
-r_int
-r_int
+r_const
+r_volatile
+r_void
+id|__iomem
+op_star
 id|addr
 )paren
 suffix:semicolon
@@ -561,8 +542,11 @@ id|u32
 id|_readl
 c_func
 (paren
-r_int
-r_int
+r_const
+r_volatile
+r_void
+id|__iomem
+op_star
 id|addr
 )paren
 suffix:semicolon
@@ -571,8 +555,11 @@ id|u64
 id|_readq
 c_func
 (paren
-r_int
-r_int
+r_const
+r_volatile
+r_void
+id|__iomem
+op_star
 id|addr
 )paren
 suffix:semicolon
@@ -584,8 +571,10 @@ c_func
 id|u8
 id|b
 comma
-r_int
-r_int
+r_volatile
+r_void
+id|__iomem
+op_star
 id|addr
 )paren
 suffix:semicolon
@@ -597,8 +586,10 @@ c_func
 id|u16
 id|b
 comma
-r_int
-r_int
+r_volatile
+r_void
+id|__iomem
+op_star
 id|addr
 )paren
 suffix:semicolon
@@ -610,8 +601,10 @@ c_func
 id|u32
 id|b
 comma
-r_int
-r_int
+r_volatile
+r_void
+id|__iomem
+op_star
 id|addr
 )paren
 suffix:semicolon
@@ -623,36 +616,37 @@ c_func
 id|u64
 id|b
 comma
-r_int
-r_int
+r_volatile
+r_void
+id|__iomem
+op_star
 id|addr
 )paren
 suffix:semicolon
-macro_line|#ifdef __KERNEL__
 multiline_comment|/*&n; * The platform header files may define some of these macros to use&n; * the inlined versions where appropriate.  These macros may also be&n; * redefined by userlevel programs.&n; */
 macro_line|#ifndef inb
 DECL|macro|inb
-macro_line|# define inb(p)&t;&t;_inb(p)
+macro_line|# define inb(p)&t;&t;_inb((unsigned long)(p))
 macro_line|#endif
 macro_line|#ifndef inw
 DECL|macro|inw
-macro_line|# define inw(p)&t;&t;_inw(p)
+macro_line|# define inw(p)&t;&t;_inw((unsigned long)(p))
 macro_line|#endif
 macro_line|#ifndef inl
 DECL|macro|inl
-macro_line|# define inl(p)&t;&t;_inl(p)
+macro_line|# define inl(p)&t;&t;_inl((unsigned long)(p))
 macro_line|#endif
 macro_line|#ifndef outb
 DECL|macro|outb
-macro_line|# define outb(b,p)&t;_outb((b),(p))
+macro_line|# define outb(b,p)&t;_outb(b,(unsigned long)(p))
 macro_line|#endif
 macro_line|#ifndef outw
 DECL|macro|outw
-macro_line|# define outw(w,p)&t;_outw((w),(p))
+macro_line|# define outw(w,p)&t;_outw(w,(unsigned long)(p))
 macro_line|#endif
 macro_line|#ifndef outl
 DECL|macro|outl
-macro_line|# define outl(l,p)&t;_outl((l),(p))
+macro_line|# define outl(l,p)&t;_outl(l,(unsigned long)(p))
 macro_line|#endif
 macro_line|#ifndef inb_p
 DECL|macro|inb_p
@@ -680,165 +674,12 @@ macro_line|# define outl_p&t;&t;outl
 macro_line|#endif
 DECL|macro|IO_SPACE_LIMIT
 mdefine_line|#define IO_SPACE_LIMIT 0xffff
-macro_line|#else 
-multiline_comment|/* Userspace declarations.  Kill in 2.5. */
-r_extern
-r_int
-r_int
-id|inb
-c_func
-(paren
-r_int
-r_int
-id|port
-)paren
-suffix:semicolon
-r_extern
-r_int
-r_int
-id|inw
-c_func
-(paren
-r_int
-r_int
-id|port
-)paren
-suffix:semicolon
-r_extern
-r_int
-r_int
-id|inl
-c_func
-(paren
-r_int
-r_int
-id|port
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|outb
-c_func
-(paren
-r_int
-r_char
-id|b
-comma
-r_int
-r_int
-id|port
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|outw
-c_func
-(paren
-r_int
-r_int
-id|w
-comma
-r_int
-r_int
-id|port
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|outl
-c_func
-(paren
-r_int
-r_int
-id|l
-comma
-r_int
-r_int
-id|port
-)paren
-suffix:semicolon
-r_extern
-r_int
-r_int
-id|readb
-c_func
-(paren
-r_int
-r_int
-id|addr
-)paren
-suffix:semicolon
-r_extern
-r_int
-r_int
-id|readw
-c_func
-(paren
-r_int
-r_int
-id|addr
-)paren
-suffix:semicolon
-r_extern
-r_int
-r_int
-id|readl
-c_func
-(paren
-r_int
-r_int
-id|addr
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|writeb
-c_func
-(paren
-r_int
-r_char
-id|b
-comma
-r_int
-r_int
-id|addr
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|writew
-c_func
-(paren
-r_int
-r_int
-id|b
-comma
-r_int
-r_int
-id|addr
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|writel
-c_func
-(paren
-r_int
-r_int
-id|b
-comma
-r_int
-r_int
-id|addr
-)paren
-suffix:semicolon
-macro_line|#endif /* __KERNEL__ */
-macro_line|#ifdef __KERNEL__
 multiline_comment|/*&n; * On Alpha, we have the whole of I/O space mapped at all times, but&n; * at odd and sometimes discontinuous addresses.  Note that the &n; * discontinuities are all across busses, so we need not care for that&n; * for any one device.&n; *&n; * The DRM drivers need to be able to map contiguously a (potentially)&n; * discontiguous set of I/O pages. This set of pages is scatter-gather&n; * mapped contiguously from the perspective of the bus, but we can&squot;t&n; * directly access DMA addresses from the CPU, these addresses need to&n; * have a real ioremap. Therefore, iounmap and the size argument to&n; * ioremap are needed to give the platforms the ability to fully implement&n; * ioremap.&n; *&n; * Map the I/O space address into the kernel&squot;s virtual address space.&n; */
 DECL|function|ioremap
 r_static
 r_inline
 r_void
+id|__iomem
 op_star
 id|ioremap
 c_func
@@ -853,10 +694,6 @@ id|size
 )paren
 (brace
 r_return
-(paren
-r_void
-op_star
-)paren
 id|__ioremap
 c_func
 (paren
@@ -873,7 +710,9 @@ r_void
 id|iounmap
 c_func
 (paren
+r_volatile
 r_void
+id|__iomem
 op_star
 id|addr
 )paren
@@ -889,6 +728,7 @@ DECL|function|ioremap_nocache
 r_static
 r_inline
 r_void
+id|__iomem
 op_star
 id|ioremap_nocache
 c_func
@@ -918,8 +758,11 @@ id|u8
 id|___raw_readb
 c_func
 (paren
-r_int
-r_int
+r_const
+r_volatile
+r_void
+id|__iomem
+op_star
 id|addr
 )paren
 suffix:semicolon
@@ -928,8 +771,11 @@ id|u16
 id|___raw_readw
 c_func
 (paren
-r_int
-r_int
+r_const
+r_volatile
+r_void
+id|__iomem
+op_star
 id|addr
 )paren
 suffix:semicolon
@@ -938,8 +784,11 @@ id|u32
 id|___raw_readl
 c_func
 (paren
-r_int
-r_int
+r_const
+r_volatile
+r_void
+id|__iomem
+op_star
 id|addr
 )paren
 suffix:semicolon
@@ -948,8 +797,11 @@ id|u64
 id|___raw_readq
 c_func
 (paren
-r_int
-r_int
+r_const
+r_volatile
+r_void
+id|__iomem
+op_star
 id|addr
 )paren
 suffix:semicolon
@@ -961,8 +813,10 @@ c_func
 id|u8
 id|b
 comma
-r_int
-r_int
+r_volatile
+r_void
+id|__iomem
+op_star
 id|addr
 )paren
 suffix:semicolon
@@ -974,8 +828,10 @@ c_func
 id|u16
 id|b
 comma
-r_int
-r_int
+r_volatile
+r_void
+id|__iomem
+op_star
 id|addr
 )paren
 suffix:semicolon
@@ -987,8 +843,10 @@ c_func
 id|u32
 id|b
 comma
-r_int
-r_int
+r_volatile
+r_void
+id|__iomem
+op_star
 id|addr
 )paren
 suffix:semicolon
@@ -1000,8 +858,10 @@ c_func
 id|u64
 id|b
 comma
-r_int
-r_int
+r_volatile
+r_void
+id|__iomem
+op_star
 id|addr
 )paren
 suffix:semicolon
@@ -1023,67 +883,67 @@ macro_line|# define readq(a)&t;({ u64 r_ = __raw_readq(a); mb(); r_; })
 macro_line|#endif
 macro_line|#ifdef __raw_writeb
 DECL|macro|writeb
-macro_line|# define writeb(v,a)&t;({ __raw_writeb((v),(a)); mb(); })
+macro_line|# define writeb(v,a)&t;({ __raw_writeb(v,a); mb(); })
 macro_line|#endif
 macro_line|#ifdef __raw_writew
 DECL|macro|writew
-macro_line|# define writew(v,a)&t;({ __raw_writew((v),(a)); mb(); })
+macro_line|# define writew(v,a)&t;({ __raw_writew(v,a); mb(); })
 macro_line|#endif
 macro_line|#ifdef __raw_writel
 DECL|macro|writel
-macro_line|# define writel(v,a)&t;({ __raw_writel((v),(a)); mb(); })
+macro_line|# define writel(v,a)&t;({ __raw_writel(v,a); mb(); })
 macro_line|#endif
 macro_line|#ifdef __raw_writeq
 DECL|macro|writeq
-macro_line|# define writeq(v,a)&t;({ __raw_writeq((v),(a)); mb(); })
+macro_line|# define writeq(v,a)&t;({ __raw_writeq(v,a); mb(); })
 macro_line|#endif
 macro_line|#ifndef __raw_readb
 DECL|macro|__raw_readb
-macro_line|# define __raw_readb(a)&t;___raw_readb((unsigned long)(a))
+macro_line|# define __raw_readb(a)&t;___raw_readb(a)
 macro_line|#endif
 macro_line|#ifndef __raw_readw
 DECL|macro|__raw_readw
-macro_line|# define __raw_readw(a)&t;___raw_readw((unsigned long)(a))
+macro_line|# define __raw_readw(a)&t;___raw_readw(a)
 macro_line|#endif
 macro_line|#ifndef __raw_readl
 DECL|macro|__raw_readl
-macro_line|# define __raw_readl(a)&t;___raw_readl((unsigned long)(a))
+macro_line|# define __raw_readl(a)&t;___raw_readl(a)
 macro_line|#endif
 macro_line|#ifndef __raw_readq
 DECL|macro|__raw_readq
-macro_line|# define __raw_readq(a)&t;___raw_readq((unsigned long)(a))
+macro_line|# define __raw_readq(a)&t;___raw_readq(a)
 macro_line|#endif
 macro_line|#ifndef __raw_writeb
 DECL|macro|__raw_writeb
-macro_line|# define __raw_writeb(v,a)  ___raw_writeb((v),(unsigned long)(a))
+macro_line|# define __raw_writeb(v,a)  ___raw_writeb(v,a)
 macro_line|#endif
 macro_line|#ifndef __raw_writew
 DECL|macro|__raw_writew
-macro_line|# define __raw_writew(v,a)  ___raw_writew((v),(unsigned long)(a))
+macro_line|# define __raw_writew(v,a)  ___raw_writew(v,a)
 macro_line|#endif
 macro_line|#ifndef __raw_writel
 DECL|macro|__raw_writel
-macro_line|# define __raw_writel(v,a)  ___raw_writel((v),(unsigned long)(a))
+macro_line|# define __raw_writel(v,a)  ___raw_writel(v,a)
 macro_line|#endif
 macro_line|#ifndef __raw_writeq
 DECL|macro|__raw_writeq
-macro_line|# define __raw_writeq(v,a)  ___raw_writeq((v),(unsigned long)(a))
+macro_line|# define __raw_writeq(v,a)  ___raw_writeq(v,a)
 macro_line|#endif
 macro_line|#ifndef readb
 DECL|macro|readb
-macro_line|# define readb(a)&t;_readb((unsigned long)(a))
+macro_line|# define readb(a)&t;_readb(a)
 macro_line|#endif
 macro_line|#ifndef readw
 DECL|macro|readw
-macro_line|# define readw(a)&t;_readw((unsigned long)(a))
+macro_line|# define readw(a)&t;_readw(a)
 macro_line|#endif
 macro_line|#ifndef readl
 DECL|macro|readl
-macro_line|# define readl(a)&t;_readl((unsigned long)(a))
+macro_line|# define readl(a)&t;_readl(a)
 macro_line|#endif
 macro_line|#ifndef readq
 DECL|macro|readq
-macro_line|# define readq(a)&t;_readq((unsigned long)(a))
+macro_line|# define readq(a)&t;_readq(a)
 macro_line|#endif
 DECL|macro|readb_relaxed
 mdefine_line|#define readb_relaxed(addr) readb(addr)
@@ -1095,19 +955,19 @@ DECL|macro|readq_relaxed
 mdefine_line|#define readq_relaxed(addr) readq(addr)
 macro_line|#ifndef writeb
 DECL|macro|writeb
-macro_line|# define writeb(v,a)&t;_writeb((v),(unsigned long)(a))
+macro_line|# define writeb(v,a)&t;_writeb(v,a)
 macro_line|#endif
 macro_line|#ifndef writew
 DECL|macro|writew
-macro_line|# define writew(v,a)&t;_writew((v),(unsigned long)(a))
+macro_line|# define writew(v,a)&t;_writew(v,a)
 macro_line|#endif
 macro_line|#ifndef writel
 DECL|macro|writel
-macro_line|# define writel(v,a)&t;_writel((v),(unsigned long)(a))
+macro_line|# define writel(v,a)&t;_writel(v,a)
 macro_line|#endif
 macro_line|#ifndef writeq
 DECL|macro|writeq
-macro_line|# define writeq(v,a)&t;_writeq((v),(unsigned long)(a))
+macro_line|# define writeq(v,a)&t;_writeq(v,a)
 macro_line|#endif
 multiline_comment|/*&n; * String version of IO memory access ops:&n; */
 r_extern
@@ -1118,8 +978,11 @@ c_func
 r_void
 op_star
 comma
-r_int
-r_int
+r_const
+r_volatile
+r_void
+id|__iomem
+op_star
 comma
 r_int
 )paren
@@ -1129,8 +992,10 @@ r_void
 id|_memcpy_toio
 c_func
 (paren
-r_int
-r_int
+r_volatile
+r_void
+id|__iomem
+op_star
 comma
 r_const
 r_void
@@ -1144,8 +1009,10 @@ r_void
 id|_memset_c_io
 c_func
 (paren
-r_int
-r_int
+r_volatile
+r_void
+id|__iomem
+op_star
 comma
 r_int
 r_int
@@ -1154,15 +1021,15 @@ r_int
 )paren
 suffix:semicolon
 DECL|macro|memcpy_fromio
-mdefine_line|#define memcpy_fromio(to,from,len) &bslash;&n;  _memcpy_fromio((to),(unsigned long)(from),(len))
+mdefine_line|#define memcpy_fromio(to,from,len) &bslash;&n;  _memcpy_fromio(to,from,len)
 DECL|macro|memcpy_toio
-mdefine_line|#define memcpy_toio(to,from,len) &bslash;&n;  _memcpy_toio((unsigned long)(to),(from),(len))
+mdefine_line|#define memcpy_toio(to,from,len) &bslash;&n;  _memcpy_toio(to,from,len)
 DECL|macro|memset_io
-mdefine_line|#define memset_io(addr,c,len) &bslash;&n;  _memset_c_io((unsigned long)(addr),0x0101010101010101UL*(u8)(c),(len))
+mdefine_line|#define memset_io(addr,c,len) &bslash;&n;  _memset_c_io(addr,0x0101010101010101UL*(u8)(c),len)
 DECL|macro|__HAVE_ARCH_MEMSETW_IO
 mdefine_line|#define __HAVE_ARCH_MEMSETW_IO
 DECL|macro|memsetw_io
-mdefine_line|#define memsetw_io(addr,c,len) &bslash;&n;  _memset_c_io((unsigned long)(addr),0x0001000100010001UL*(u16)(c),(len))
+mdefine_line|#define memsetw_io(addr,c,len) &bslash;&n;  _memset_c_io(addr,0x0001000100010001UL*(u16)(c),len)
 multiline_comment|/*&n; * String versions of in/out ops:&n; */
 r_extern
 r_void
@@ -1271,9 +1138,9 @@ id|count
 suffix:semicolon
 multiline_comment|/*&n; * XXX - We don&squot;t have csum_partial_copy_fromio() yet, so we cheat here and &n; * just copy it. The net code will then do the checksum later. Presently &n; * only used by some shared memory 8390 Ethernet cards anyway.&n; */
 DECL|macro|eth_io_copy_and_sum
-mdefine_line|#define eth_io_copy_and_sum(skb,src,len,unused) &bslash;&n;  memcpy_fromio((skb)-&gt;data,(src),(len))
+mdefine_line|#define eth_io_copy_and_sum(skb,src,len,unused) &bslash;&n;  memcpy_fromio((skb)-&gt;data,src,len)
 DECL|macro|isa_eth_io_copy_and_sum
-mdefine_line|#define isa_eth_io_copy_and_sum(skb,src,len,unused) &bslash;&n;  isa_memcpy_fromio((skb)-&gt;data,(src),(len))
+mdefine_line|#define isa_eth_io_copy_and_sum(skb,src,len,unused) &bslash;&n;  isa_memcpy_fromio((skb)-&gt;data,src,len)
 r_static
 r_inline
 r_int
@@ -1281,8 +1148,11 @@ DECL|function|check_signature
 id|check_signature
 c_func
 (paren
-r_int
-r_int
+r_const
+r_volatile
+r_void
+id|__iomem
+op_star
 id|io_addr
 comma
 r_const
@@ -1295,11 +1165,6 @@ r_int
 id|length
 )paren
 (brace
-r_int
-id|retval
-op_assign
-l_int|0
-suffix:semicolon
 r_do
 (brace
 r_if
@@ -1314,8 +1179,8 @@ op_ne
 op_star
 id|signature
 )paren
-r_goto
-id|out
+r_return
+l_int|0
 suffix:semicolon
 id|io_addr
 op_increment
@@ -1323,45 +1188,295 @@ suffix:semicolon
 id|signature
 op_increment
 suffix:semicolon
-id|length
-op_decrement
-suffix:semicolon
 )brace
 r_while
 c_loop
 (paren
+op_decrement
 id|length
 )paren
 suffix:semicolon
-id|retval
-op_assign
-l_int|1
-suffix:semicolon
-id|out
-suffix:colon
 r_return
-id|retval
+l_int|1
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * ISA space is mapped to some machine-specific location on Alpha.&n; * Call into the existing hooks to get the address translated.&n; */
-DECL|macro|isa_readb
-mdefine_line|#define isa_readb(a)&t;&t;&t;readb(__ioremap((a),1))
-DECL|macro|isa_readw
-mdefine_line|#define isa_readw(a)&t;&t;&t;readw(__ioremap((a),2))
-DECL|macro|isa_readl
-mdefine_line|#define isa_readl(a)&t;&t;&t;readl(__ioremap((a),4))
-DECL|macro|isa_writeb
-mdefine_line|#define isa_writeb(b,a)&t;&t;&t;writeb((b),__ioremap((a),1))
-DECL|macro|isa_writew
-mdefine_line|#define isa_writew(w,a)&t;&t;&t;writew((w),__ioremap((a),2))
-DECL|macro|isa_writel
-mdefine_line|#define isa_writel(l,a)&t;&t;&t;writel((l),__ioremap((a),4))
-DECL|macro|isa_memset_io
-mdefine_line|#define isa_memset_io(a,b,c)&t;&t;memset_io(__ioremap((a),(c)),(b),(c))
-DECL|macro|isa_memcpy_fromio
-mdefine_line|#define isa_memcpy_fromio(a,b,c)&t;memcpy_fromio((a),__ioremap((b),(c)),(c))
-DECL|macro|isa_memcpy_toio
-mdefine_line|#define isa_memcpy_toio(a,b,c)&t;&t;memcpy_toio(__ioremap((a),(c)),(b),(c))
+r_static
+r_inline
+id|u8
+DECL|function|isa_readb
+id|isa_readb
+c_func
+(paren
+r_int
+r_int
+id|offset
+)paren
+(brace
+r_return
+id|readb
+c_func
+(paren
+id|__ioremap
+c_func
+(paren
+id|offset
+comma
+l_int|1
+)paren
+)paren
+suffix:semicolon
+)brace
+r_static
+r_inline
+id|u16
+DECL|function|isa_readw
+id|isa_readw
+c_func
+(paren
+r_int
+r_int
+id|offset
+)paren
+(brace
+r_return
+id|readw
+c_func
+(paren
+id|__ioremap
+c_func
+(paren
+id|offset
+comma
+l_int|2
+)paren
+)paren
+suffix:semicolon
+)brace
+r_static
+r_inline
+id|u32
+DECL|function|isa_readl
+id|isa_readl
+c_func
+(paren
+r_int
+r_int
+id|offset
+)paren
+(brace
+r_return
+id|readl
+c_func
+(paren
+id|__ioremap
+c_func
+(paren
+id|offset
+comma
+l_int|4
+)paren
+)paren
+suffix:semicolon
+)brace
+r_static
+r_inline
+r_void
+DECL|function|isa_writeb
+id|isa_writeb
+c_func
+(paren
+id|u8
+id|b
+comma
+r_int
+r_int
+id|offset
+)paren
+(brace
+id|writeb
+c_func
+(paren
+id|b
+comma
+id|__ioremap
+c_func
+(paren
+id|offset
+comma
+l_int|1
+)paren
+)paren
+suffix:semicolon
+)brace
+r_static
+r_inline
+r_void
+DECL|function|isa_writew
+id|isa_writew
+c_func
+(paren
+id|u16
+id|w
+comma
+r_int
+r_int
+id|offset
+)paren
+(brace
+id|writew
+c_func
+(paren
+id|w
+comma
+id|__ioremap
+c_func
+(paren
+id|offset
+comma
+l_int|2
+)paren
+)paren
+suffix:semicolon
+)brace
+r_static
+r_inline
+r_void
+DECL|function|isa_writel
+id|isa_writel
+c_func
+(paren
+id|u32
+id|l
+comma
+r_int
+r_int
+id|offset
+)paren
+(brace
+id|writel
+c_func
+(paren
+id|l
+comma
+id|__ioremap
+c_func
+(paren
+id|offset
+comma
+l_int|4
+)paren
+)paren
+suffix:semicolon
+)brace
+r_static
+r_inline
+r_void
+DECL|function|isa_memset_io
+id|isa_memset_io
+c_func
+(paren
+r_int
+r_int
+id|offset
+comma
+id|u8
+id|val
+comma
+r_int
+id|n
+)paren
+(brace
+id|memset_io
+c_func
+(paren
+id|__ioremap
+c_func
+(paren
+id|offset
+comma
+id|n
+)paren
+comma
+id|val
+comma
+id|n
+)paren
+suffix:semicolon
+)brace
+r_static
+r_inline
+r_void
+DECL|function|isa_memcpy_fromio
+id|isa_memcpy_fromio
+c_func
+(paren
+r_void
+op_star
+id|dest
+comma
+r_int
+r_int
+id|offset
+comma
+r_int
+id|n
+)paren
+(brace
+id|memcpy_fromio
+c_func
+(paren
+id|dest
+comma
+id|__ioremap
+c_func
+(paren
+id|offset
+comma
+id|n
+)paren
+comma
+id|n
+)paren
+suffix:semicolon
+)brace
+r_static
+r_inline
+r_void
+DECL|function|isa_memcpy_toio
+id|isa_memcpy_toio
+c_func
+(paren
+r_int
+r_int
+id|offset
+comma
+r_const
+r_void
+op_star
+id|src
+comma
+r_int
+id|n
+)paren
+(brace
+id|memcpy_toio
+c_func
+(paren
+id|__ioremap
+c_func
+(paren
+id|offset
+comma
+id|n
+)paren
+comma
+id|src
+comma
+id|n
+)paren
+suffix:semicolon
+)brace
 r_static
 r_inline
 r_int

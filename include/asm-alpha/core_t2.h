@@ -501,13 +501,15 @@ suffix:semicolon
 multiline_comment|/* size in bytes of logout area. */
 DECL|member|elfl_sbz1
 r_int
+r_int
 id|elfl_sbz1
 suffix:colon
 l_int|31
 suffix:semicolon
 multiline_comment|/* Should be zero. */
 DECL|member|elfl_retry
-r_char
+r_int
+r_int
 id|elfl_retry
 suffix:colon
 l_int|1
@@ -1394,11 +1396,24 @@ id|u8
 id|t2_readb
 c_func
 (paren
+r_const
+r_volatile
+r_void
+id|__iomem
+op_star
+id|xaddr
+)paren
+(brace
 r_int
 r_int
 id|addr
+op_assign
+(paren
+r_int
+r_int
 )paren
-(brace
+id|xaddr
+suffix:semicolon
 r_int
 r_int
 id|result
@@ -1465,11 +1480,24 @@ id|u16
 id|t2_readw
 c_func
 (paren
+r_const
+r_volatile
+r_void
+id|__iomem
+op_star
+id|xaddr
+)paren
+(brace
 r_int
 r_int
 id|addr
+op_assign
+(paren
+r_int
+r_int
 )paren
-(brace
+id|xaddr
+suffix:semicolon
 r_int
 r_int
 id|result
@@ -1537,11 +1565,24 @@ id|u32
 id|t2_readl
 c_func
 (paren
+r_const
+r_volatile
+r_void
+id|__iomem
+op_star
+id|xaddr
+)paren
+(brace
 r_int
 r_int
 id|addr
+op_assign
+(paren
+r_int
+r_int
 )paren
-(brace
+id|xaddr
+suffix:semicolon
 r_int
 r_int
 id|result
@@ -1602,11 +1643,24 @@ id|u64
 id|t2_readq
 c_func
 (paren
+r_const
+r_volatile
+r_void
+id|__iomem
+op_star
+id|xaddr
+)paren
+(brace
 r_int
 r_int
 id|addr
+op_assign
+(paren
+r_int
+r_int
 )paren
-(brace
+id|xaddr
+suffix:semicolon
 r_int
 r_int
 id|r0
@@ -1696,11 +1750,23 @@ c_func
 id|u8
 id|b
 comma
+r_volatile
+r_void
+id|__iomem
+op_star
+id|xaddr
+)paren
+(brace
 r_int
 r_int
 id|addr
+op_assign
+(paren
+r_int
+r_int
 )paren
-(brace
+id|xaddr
+suffix:semicolon
 r_int
 r_int
 id|msb
@@ -1771,11 +1837,23 @@ c_func
 id|u16
 id|b
 comma
+r_volatile
+r_void
+id|__iomem
+op_star
+id|xaddr
+)paren
+(brace
 r_int
 r_int
 id|addr
+op_assign
+(paren
+r_int
+r_int
 )paren
-(brace
+id|xaddr
+suffix:semicolon
 r_int
 r_int
 id|msb
@@ -1847,11 +1925,23 @@ c_func
 id|u32
 id|b
 comma
+r_volatile
+r_void
+id|__iomem
+op_star
+id|xaddr
+)paren
+(brace
 r_int
 r_int
 id|addr
+op_assign
+(paren
+r_int
+r_int
 )paren
-(brace
+id|xaddr
+suffix:semicolon
 r_int
 r_int
 id|msb
@@ -1908,11 +1998,23 @@ c_func
 id|u64
 id|b
 comma
+r_volatile
+r_void
+id|__iomem
+op_star
+id|xaddr
+)paren
+(brace
 r_int
 r_int
 id|addr
+op_assign
+(paren
+r_int
+r_int
 )paren
-(brace
+id|xaddr
+suffix:semicolon
 r_int
 r_int
 id|msb
@@ -1984,8 +2086,9 @@ suffix:semicolon
 )brace
 DECL|function|t2_ioremap
 id|__EXTERN_INLINE
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|t2_ioremap
 c_func
 (paren
@@ -2006,6 +2109,11 @@ id|unused
 )paren
 (brace
 r_return
+(paren
+r_void
+id|__iomem
+op_star
+)paren
 id|addr
 suffix:semicolon
 )brace
@@ -2015,8 +2123,10 @@ r_void
 id|t2_iounmap
 c_func
 (paren
-r_int
-r_int
+r_volatile
+r_void
+id|__iomem
+op_star
 id|addr
 )paren
 (brace
@@ -2055,31 +2165,31 @@ mdefine_line|#define __inw(p)&t;&t;t2_inw((unsigned long)(p))
 DECL|macro|__inl
 mdefine_line|#define __inl(p)&t;&t;t2_inl((unsigned long)(p))
 DECL|macro|__outb
-mdefine_line|#define __outb(x,p)&t;&t;t2_outb((x),(unsigned long)(p))
+mdefine_line|#define __outb(x,p)&t;&t;t2_outb(x,(unsigned long)(p))
 DECL|macro|__outw
-mdefine_line|#define __outw(x,p)&t;&t;t2_outw((x),(unsigned long)(p))
+mdefine_line|#define __outw(x,p)&t;&t;t2_outw(x,(unsigned long)(p))
 DECL|macro|__outl
-mdefine_line|#define __outl(x,p)&t;&t;t2_outl((x),(unsigned long)(p))
+mdefine_line|#define __outl(x,p)&t;&t;t2_outl(x,(unsigned long)(p))
 DECL|macro|__readb
-mdefine_line|#define __readb(a)&t;&t;t2_readb((unsigned long)(a))
+mdefine_line|#define __readb(a)&t;&t;t2_readb(a)
 DECL|macro|__readw
-mdefine_line|#define __readw(a)&t;&t;t2_readw((unsigned long)(a))
+mdefine_line|#define __readw(a)&t;&t;t2_readw(a)
 DECL|macro|__readl
-mdefine_line|#define __readl(a)&t;&t;t2_readl((unsigned long)(a))
+mdefine_line|#define __readl(a)&t;&t;t2_readl(a)
 DECL|macro|__readq
-mdefine_line|#define __readq(a)&t;&t;t2_readq((unsigned long)(a))
+mdefine_line|#define __readq(a)&t;&t;t2_readq(a)
 DECL|macro|__writeb
-mdefine_line|#define __writeb(x,a)&t;&t;t2_writeb((x),(unsigned long)(a))
+mdefine_line|#define __writeb(x,a)&t;&t;t2_writeb(x,a)
 DECL|macro|__writew
-mdefine_line|#define __writew(x,a)&t;&t;t2_writew((x),(unsigned long)(a))
+mdefine_line|#define __writew(x,a)&t;&t;t2_writew(x,a)
 DECL|macro|__writel
-mdefine_line|#define __writel(x,a)&t;&t;t2_writel((x),(unsigned long)(a))
+mdefine_line|#define __writel(x,a)&t;&t;t2_writel(x,a)
 DECL|macro|__writeq
-mdefine_line|#define __writeq(x,a)&t;&t;t2_writeq((x),(unsigned long)(a))
+mdefine_line|#define __writeq(x,a)&t;&t;t2_writeq(x,a)
 DECL|macro|__ioremap
-mdefine_line|#define __ioremap(a,s)&t;&t;t2_ioremap((unsigned long)(a),(s))
+mdefine_line|#define __ioremap(a,s)&t;&t;t2_ioremap(a,s)
 DECL|macro|__iounmap
-mdefine_line|#define __iounmap(a)&t;&t;t2_iounmap((unsigned long)(a))
+mdefine_line|#define __iounmap(a)&t;&t;t2_iounmap(a)
 DECL|macro|__is_ioaddr
 mdefine_line|#define __is_ioaddr(a)&t;&t;t2_is_ioaddr((unsigned long)(a))
 macro_line|#endif /* __WANT_IO_DEF */

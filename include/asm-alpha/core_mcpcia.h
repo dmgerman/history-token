@@ -171,15 +171,15 @@ mdefine_line|#define __IO_EXTERN_INLINE
 macro_line|#endif
 multiline_comment|/*&n; * I/O functions:&n; *&n; * MCPCIA, the RAWHIDE family PCI/memory support chipset for the EV5 (21164)&n; * and EV56 (21164a) processors, can use either a sparse address mapping&n; * scheme, or the so-called byte-word PCI address space, to get at PCI memory&n; * and I/O.&n; *&n; * Unfortunately, we can&squot;t use BWIO with EV5, so for now, we always use SPARSE.&n; */
 DECL|macro|vucp
-mdefine_line|#define vucp&t;volatile unsigned char *
+mdefine_line|#define vucp&t;volatile unsigned char __force *
 DECL|macro|vusp
-mdefine_line|#define vusp&t;volatile unsigned short *
+mdefine_line|#define vusp&t;volatile unsigned short __force *
 DECL|macro|vip
-mdefine_line|#define vip&t;volatile int *
+mdefine_line|#define vip&t;volatile int __force *
 DECL|macro|vuip
-mdefine_line|#define vuip&t;volatile unsigned int *
+mdefine_line|#define vuip&t;volatile unsigned int __force *
 DECL|macro|vulp
-mdefine_line|#define vulp&t;volatile unsigned long *
+mdefine_line|#define vulp&t;volatile unsigned long __force *
 DECL|function|mcpcia_inb
 id|__EXTERN_INLINE
 id|u8
@@ -579,8 +579,9 @@ suffix:semicolon
 multiline_comment|/*&n; * Memory functions.  64-bit and 32-bit accesses are done through&n; * dense memory space, everything else through sparse space.&n; *&n; * For reading and writing 8 and 16 bit quantities we need to&n; * go through one of the three sparse address mapping regions&n; * and use the HAE_MEM CSR to provide some bits of the address.&n; * The following few routines use only sparse address region 1&n; * which gives 1Gbyte of accessible space which relates exactly&n; * to the amount of PCI memory mapping *into* system address space.&n; * See p 6-17 of the specification but it looks something like this:&n; *&n; * 21164 Address:&n; *&n; *          3         2         1&n; * 9876543210987654321098765432109876543210&n; * 1ZZZZ0.PCI.QW.Address............BBLL&n; *&n; * ZZ = SBZ&n; * BB = Byte offset&n; * LL = Transfer length&n; *&n; * PCI Address:&n; *&n; * 3         2         1&n; * 10987654321098765432109876543210&n; * HHH....PCI.QW.Address........ 00&n; *&n; * HHH = 31:29 HAE_MEM CSR&n; *&n; */
 DECL|function|mcpcia_ioremap
 id|__EXTERN_INLINE
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|mcpcia_ioremap
 c_func
 (paren
@@ -601,9 +602,16 @@ id|unused
 )paren
 (brace
 r_return
+(paren
+r_void
+id|__iomem
+op_star
+)paren
+(paren
 id|addr
 op_plus
 id|MCPCIA_MEM_BIAS
+)paren
 suffix:semicolon
 )brace
 DECL|function|mcpcia_iounmap
@@ -612,8 +620,10 @@ r_void
 id|mcpcia_iounmap
 c_func
 (paren
-r_int
-r_int
+r_volatile
+r_void
+id|__iomem
+op_star
 id|addr
 )paren
 (brace
@@ -647,16 +657,23 @@ id|u8
 id|mcpcia_readb
 c_func
 (paren
-r_int
-r_int
-id|in_addr
+r_const
+r_volatile
+r_void
+id|__iomem
+op_star
+id|xaddr
 )paren
 (brace
 r_int
 r_int
 id|addr
 op_assign
-id|in_addr
+(paren
+r_int
+r_int
+)paren
+id|xaddr
 op_amp
 l_int|0xffffffffUL
 suffix:semicolon
@@ -664,7 +681,11 @@ r_int
 r_int
 id|hose
 op_assign
-id|in_addr
+(paren
+r_int
+r_int
+)paren
+id|xaddr
 op_amp
 op_complement
 l_int|0xffffffffUL
@@ -756,16 +777,23 @@ id|u16
 id|mcpcia_readw
 c_func
 (paren
-r_int
-r_int
-id|in_addr
+r_const
+r_volatile
+r_void
+id|__iomem
+op_star
+id|xaddr
 )paren
 (brace
 r_int
 r_int
 id|addr
 op_assign
-id|in_addr
+(paren
+r_int
+r_int
+)paren
+id|xaddr
 op_amp
 l_int|0xffffffffUL
 suffix:semicolon
@@ -773,7 +801,11 @@ r_int
 r_int
 id|hose
 op_assign
-id|in_addr
+(paren
+r_int
+r_int
+)paren
+id|xaddr
 op_amp
 op_complement
 l_int|0xffffffffUL
@@ -868,16 +900,22 @@ c_func
 id|u8
 id|b
 comma
-r_int
-r_int
-id|in_addr
+r_volatile
+r_void
+id|__iomem
+op_star
+id|xaddr
 )paren
 (brace
 r_int
 r_int
 id|addr
 op_assign
-id|in_addr
+(paren
+r_int
+r_int
+)paren
+id|xaddr
 op_amp
 l_int|0xffffffffUL
 suffix:semicolon
@@ -885,7 +923,11 @@ r_int
 r_int
 id|hose
 op_assign
-id|in_addr
+(paren
+r_int
+r_int
+)paren
+id|xaddr
 op_amp
 op_complement
 l_int|0xffffffffUL
@@ -926,7 +968,7 @@ c_func
 (paren
 id|b
 comma
-id|in_addr
+id|addr
 op_amp
 l_int|3
 )paren
@@ -975,16 +1017,22 @@ c_func
 id|u16
 id|b
 comma
-r_int
-r_int
-id|in_addr
+r_volatile
+r_void
+id|__iomem
+op_star
+id|xaddr
 )paren
 (brace
 r_int
 r_int
 id|addr
 op_assign
-id|in_addr
+(paren
+r_int
+r_int
+)paren
+id|xaddr
 op_amp
 l_int|0xffffffffUL
 suffix:semicolon
@@ -992,7 +1040,11 @@ r_int
 r_int
 id|hose
 op_assign
-id|in_addr
+(paren
+r_int
+r_int
+)paren
+id|xaddr
 op_amp
 op_complement
 l_int|0xffffffffUL
@@ -1033,7 +1085,7 @@ c_func
 (paren
 id|b
 comma
-id|in_addr
+id|addr
 op_amp
 l_int|3
 )paren
@@ -1079,21 +1131,20 @@ id|u32
 id|mcpcia_readl
 c_func
 (paren
-r_int
-r_int
+r_const
+r_volatile
+r_void
+id|__iomem
+op_star
 id|addr
 )paren
 (brace
 r_return
-(paren
 op_star
 (paren
 id|vuip
 )paren
 id|addr
-)paren
-op_amp
-l_int|0xffffffff
 suffix:semicolon
 )brace
 DECL|function|mcpcia_readq
@@ -1102,8 +1153,11 @@ id|u64
 id|mcpcia_readq
 c_func
 (paren
-r_int
-r_int
+r_const
+r_volatile
+r_void
+id|__iomem
+op_star
 id|addr
 )paren
 (brace
@@ -1124,8 +1178,10 @@ c_func
 id|u32
 id|b
 comma
-r_int
-r_int
+r_volatile
+r_void
+id|__iomem
+op_star
 id|addr
 )paren
 (brace
@@ -1147,8 +1203,10 @@ c_func
 id|u64
 id|b
 comma
-r_int
-r_int
+r_volatile
+r_void
+id|__iomem
+op_star
 id|addr
 )paren
 (brace
@@ -1179,31 +1237,31 @@ mdefine_line|#define __inw(p)&t;&t;mcpcia_inw((unsigned long)(p))
 DECL|macro|__inl
 mdefine_line|#define __inl(p)&t;&t;mcpcia_inl((unsigned long)(p))
 DECL|macro|__outb
-mdefine_line|#define __outb(x,p)&t;&t;mcpcia_outb((x),(unsigned long)(p))
+mdefine_line|#define __outb(x,p)&t;&t;mcpcia_outb(x,(unsigned long)(p))
 DECL|macro|__outw
-mdefine_line|#define __outw(x,p)&t;&t;mcpcia_outw((x),(unsigned long)(p))
+mdefine_line|#define __outw(x,p)&t;&t;mcpcia_outw(x,(unsigned long)(p))
 DECL|macro|__outl
-mdefine_line|#define __outl(x,p)&t;&t;mcpcia_outl((x),(unsigned long)(p))
+mdefine_line|#define __outl(x,p)&t;&t;mcpcia_outl(x,(unsigned long)(p))
 DECL|macro|__readb
-mdefine_line|#define __readb(a)&t;&t;mcpcia_readb((unsigned long)(a))
+mdefine_line|#define __readb(a)&t;&t;mcpcia_readb(a)
 DECL|macro|__readw
-mdefine_line|#define __readw(a)&t;&t;mcpcia_readw((unsigned long)(a))
+mdefine_line|#define __readw(a)&t;&t;mcpcia_readw(a)
 DECL|macro|__readl
-mdefine_line|#define __readl(a)&t;&t;mcpcia_readl((unsigned long)(a))
+mdefine_line|#define __readl(a)&t;&t;mcpcia_readl(a)
 DECL|macro|__readq
-mdefine_line|#define __readq(a)&t;&t;mcpcia_readq((unsigned long)(a))
+mdefine_line|#define __readq(a)&t;&t;mcpcia_readq(a)
 DECL|macro|__writeb
-mdefine_line|#define __writeb(x,a)&t;&t;mcpcia_writeb((x),(unsigned long)(a))
+mdefine_line|#define __writeb(x,a)&t;&t;mcpcia_writeb(x,a)
 DECL|macro|__writew
-mdefine_line|#define __writew(x,a)&t;&t;mcpcia_writew((x),(unsigned long)(a))
+mdefine_line|#define __writew(x,a)&t;&t;mcpcia_writew(x,a)
 DECL|macro|__writel
-mdefine_line|#define __writel(x,a)&t;&t;mcpcia_writel((x),(unsigned long)(a))
+mdefine_line|#define __writel(x,a)&t;&t;mcpcia_writel(x,a)
 DECL|macro|__writeq
-mdefine_line|#define __writeq(x,a)&t;&t;mcpcia_writeq((x),(unsigned long)(a))
+mdefine_line|#define __writeq(x,a)&t;&t;mcpcia_writeq(x,a)
 DECL|macro|__ioremap
-mdefine_line|#define __ioremap(a,s)&t;&t;mcpcia_ioremap((unsigned long)(a),(s))
+mdefine_line|#define __ioremap(a,s)&t;&t;mcpcia_ioremap(a,s)
 DECL|macro|__iounmap
-mdefine_line|#define __iounmap(a)&t;&t;mcpcia_iounmap((unsigned long)(a))
+mdefine_line|#define __iounmap(a)&t;&t;mcpcia_iounmap(a)
 DECL|macro|__is_ioaddr
 mdefine_line|#define __is_ioaddr(a)&t;&t;mcpcia_is_ioaddr((unsigned long)(a))
 DECL|macro|__raw_readl
@@ -1211,9 +1269,9 @@ mdefine_line|#define __raw_readl(a)&t;&t;__readl(a)
 DECL|macro|__raw_readq
 mdefine_line|#define __raw_readq(a)&t;&t;__readq(a)
 DECL|macro|__raw_writel
-mdefine_line|#define __raw_writel(v,a)&t;__writel((v),(a))
+mdefine_line|#define __raw_writel(v,a)&t;__writel(v,a)
 DECL|macro|__raw_writeq
-mdefine_line|#define __raw_writeq(v,a)&t;__writeq((v),(a))
+mdefine_line|#define __raw_writeq(v,a)&t;__writeq(v,a)
 macro_line|#endif /* __WANT_IO_DEF */
 macro_line|#ifdef __IO_EXTERN_INLINE
 DECL|macro|__EXTERN_INLINE

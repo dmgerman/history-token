@@ -393,15 +393,15 @@ mdefine_line|#define __IO_EXTERN_INLINE
 macro_line|#endif
 multiline_comment|/*&n; * I/O functions:&n; *&n; * CIA (the 2117x PCI/memory support chipset for the EV5 (21164)&n; * series of processors uses a sparse address mapping scheme to&n; * get at PCI memory and I/O.&n; */
 DECL|macro|vucp
-mdefine_line|#define vucp&t;volatile unsigned char *
+mdefine_line|#define vucp&t;volatile unsigned char __force *
 DECL|macro|vusp
-mdefine_line|#define vusp&t;volatile unsigned short *
+mdefine_line|#define vusp&t;volatile unsigned short __force *
 DECL|macro|vip
-mdefine_line|#define vip&t;volatile int *
+mdefine_line|#define vip&t;volatile int __force *
 DECL|macro|vuip
-mdefine_line|#define vuip&t;volatile unsigned int *
+mdefine_line|#define vuip&t;volatile unsigned int __force *
 DECL|macro|vulp
-mdefine_line|#define vulp&t;volatile unsigned long *
+mdefine_line|#define vulp&t;volatile unsigned long __force *
 DECL|function|cia_inb
 id|__EXTERN_INLINE
 id|u8
@@ -850,11 +850,24 @@ id|u8
 id|cia_readb
 c_func
 (paren
+r_const
+r_volatile
+r_void
+id|__iomem
+op_star
+id|xaddr
+)paren
+(brace
 r_int
 r_int
 id|addr
+op_assign
+(paren
+r_int
+r_int
 )paren
-(brace
+id|xaddr
+suffix:semicolon
 r_int
 r_int
 id|result
@@ -899,11 +912,24 @@ id|u16
 id|cia_readw
 c_func
 (paren
+r_const
+r_volatile
+r_void
+id|__iomem
+op_star
+id|xaddr
+)paren
+(brace
 r_int
 r_int
 id|addr
+op_assign
+(paren
+r_int
+r_int
 )paren
-(brace
+id|xaddr
+suffix:semicolon
 r_int
 r_int
 id|result
@@ -951,11 +977,23 @@ c_func
 id|u8
 id|b
 comma
+r_volatile
+r_void
+id|__iomem
+op_star
+id|xaddr
+)paren
+(brace
 r_int
 r_int
 id|addr
+op_assign
+(paren
+r_int
+r_int
 )paren
-(brace
+id|xaddr
+suffix:semicolon
 r_int
 r_int
 id|w
@@ -1004,11 +1042,23 @@ c_func
 id|u16
 id|b
 comma
+r_volatile
+r_void
+id|__iomem
+op_star
+id|xaddr
+)paren
+(brace
 r_int
 r_int
 id|addr
+op_assign
+(paren
+r_int
+r_int
 )paren
-(brace
+id|xaddr
+suffix:semicolon
 r_int
 r_int
 id|w
@@ -1054,8 +1104,11 @@ id|u32
 id|cia_readl
 c_func
 (paren
-r_int
-r_int
+r_const
+r_volatile
+r_void
+id|__iomem
+op_star
 id|addr
 )paren
 (brace
@@ -1073,8 +1126,11 @@ id|u64
 id|cia_readq
 c_func
 (paren
-r_int
-r_int
+r_const
+r_volatile
+r_void
+id|__iomem
+op_star
 id|addr
 )paren
 (brace
@@ -1095,8 +1151,10 @@ c_func
 id|u32
 id|b
 comma
-r_int
-r_int
+r_volatile
+r_void
+id|__iomem
+op_star
 id|addr
 )paren
 (brace
@@ -1118,8 +1176,10 @@ c_func
 id|u64
 id|b
 comma
-r_int
-r_int
+r_volatile
+r_void
+id|__iomem
+op_star
 id|addr
 )paren
 (brace
@@ -1134,8 +1194,9 @@ suffix:semicolon
 )brace
 DECL|function|cia_ioremap
 id|__EXTERN_INLINE
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|cia_ioremap
 c_func
 (paren
@@ -1156,9 +1217,16 @@ id|unused
 )paren
 (brace
 r_return
+(paren
+r_void
+id|__iomem
+op_star
+)paren
+(paren
 id|addr
 op_plus
 id|CIA_DENSE_MEM
+)paren
 suffix:semicolon
 )brace
 DECL|function|cia_iounmap
@@ -1167,8 +1235,10 @@ r_void
 id|cia_iounmap
 c_func
 (paren
-r_int
-r_int
+r_volatile
+r_void
+id|__iomem
+op_star
 id|addr
 )paren
 (brace
@@ -1181,8 +1251,11 @@ id|u8
 id|cia_bwx_readb
 c_func
 (paren
-r_int
-r_int
+r_const
+r_volatile
+r_void
+id|__iomem
+op_star
 id|addr
 )paren
 (brace
@@ -1204,8 +1277,11 @@ id|u16
 id|cia_bwx_readw
 c_func
 (paren
-r_int
-r_int
+r_const
+r_volatile
+r_void
+id|__iomem
+op_star
 id|addr
 )paren
 (brace
@@ -1227,8 +1303,11 @@ id|u32
 id|cia_bwx_readl
 c_func
 (paren
-r_int
-r_int
+r_const
+r_volatile
+r_void
+id|__iomem
+op_star
 id|addr
 )paren
 (brace
@@ -1246,8 +1325,11 @@ id|u64
 id|cia_bwx_readq
 c_func
 (paren
-r_int
-r_int
+r_const
+r_volatile
+r_void
+id|__iomem
+op_star
 id|addr
 )paren
 (brace
@@ -1268,8 +1350,10 @@ c_func
 id|u8
 id|b
 comma
-r_int
-r_int
+r_volatile
+r_void
+id|__iomem
+op_star
 id|addr
 )paren
 (brace
@@ -1295,8 +1379,10 @@ c_func
 id|u16
 id|b
 comma
-r_int
-r_int
+r_volatile
+r_void
+id|__iomem
+op_star
 id|addr
 )paren
 (brace
@@ -1322,8 +1408,10 @@ c_func
 id|u32
 id|b
 comma
-r_int
-r_int
+r_volatile
+r_void
+id|__iomem
+op_star
 id|addr
 )paren
 (brace
@@ -1345,8 +1433,10 @@ c_func
 id|u64
 id|b
 comma
-r_int
-r_int
+r_volatile
+r_void
+id|__iomem
+op_star
 id|addr
 )paren
 (brace
@@ -1361,8 +1451,9 @@ suffix:semicolon
 )brace
 DECL|function|cia_bwx_ioremap
 id|__EXTERN_INLINE
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|cia_bwx_ioremap
 c_func
 (paren
@@ -1376,9 +1467,16 @@ id|size
 )paren
 (brace
 r_return
+(paren
+r_void
+id|__iomem
+op_star
+)paren
+(paren
 id|addr
 op_plus
 id|CIA_BW_MEM
+)paren
 suffix:semicolon
 )brace
 DECL|function|cia_bwx_iounmap
@@ -1387,8 +1485,10 @@ r_void
 id|cia_bwx_iounmap
 c_func
 (paren
-r_int
-r_int
+r_volatile
+r_void
+id|__iomem
+op_star
 id|addr
 )paren
 (brace
@@ -1433,31 +1533,31 @@ macro_line|# define __inw(p)&t;&t;cia_bwx_inw((unsigned long)(p))
 DECL|macro|__inl
 macro_line|# define __inl(p)&t;&t;cia_bwx_inl((unsigned long)(p))
 DECL|macro|__outb
-macro_line|# define __outb(x,p)&t;&t;cia_bwx_outb((x),(unsigned long)(p))
+macro_line|# define __outb(x,p)&t;&t;cia_bwx_outb(x,(unsigned long)(p))
 DECL|macro|__outw
-macro_line|# define __outw(x,p)&t;&t;cia_bwx_outw((x),(unsigned long)(p))
+macro_line|# define __outw(x,p)&t;&t;cia_bwx_outw(x,(unsigned long)(p))
 DECL|macro|__outl
-macro_line|# define __outl(x,p)&t;&t;cia_bwx_outl((x),(unsigned long)(p))
+macro_line|# define __outl(x,p)&t;&t;cia_bwx_outl(x,(unsigned long)(p))
 DECL|macro|__readb
-macro_line|# define __readb(a)&t;&t;cia_bwx_readb((unsigned long)(a))
+macro_line|# define __readb(a)&t;&t;cia_bwx_readb(a)
 DECL|macro|__readw
-macro_line|# define __readw(a)&t;&t;cia_bwx_readw((unsigned long)(a))
+macro_line|# define __readw(a)&t;&t;cia_bwx_readw(a)
 DECL|macro|__readl
-macro_line|# define __readl(a)&t;&t;cia_bwx_readl((unsigned long)(a))
+macro_line|# define __readl(a)&t;&t;cia_bwx_readl(a)
 DECL|macro|__readq
-macro_line|# define __readq(a)&t;&t;cia_bwx_readq((unsigned long)(a))
+macro_line|# define __readq(a)&t;&t;cia_bwx_readq(a)
 DECL|macro|__writeb
-macro_line|# define __writeb(x,a)&t;&t;cia_bwx_writeb((x),(unsigned long)(a))
+macro_line|# define __writeb(x,a)&t;&t;cia_bwx_writeb(x,a)
 DECL|macro|__writew
-macro_line|# define __writew(x,a)&t;&t;cia_bwx_writew((x),(unsigned long)(a))
+macro_line|# define __writew(x,a)&t;&t;cia_bwx_writew(x,a)
 DECL|macro|__writel
-macro_line|# define __writel(x,a)&t;&t;cia_bwx_writel((x),(unsigned long)(a))
+macro_line|# define __writel(x,a)&t;&t;cia_bwx_writel(x,a)
 DECL|macro|__writeq
-macro_line|# define __writeq(x,a)&t;&t;cia_bwx_writeq((x),(unsigned long)(a))
+macro_line|# define __writeq(x,a)&t;&t;cia_bwx_writeq(x,a)
 DECL|macro|__ioremap
-macro_line|# define __ioremap(a,s)&t;&t;cia_bwx_ioremap((unsigned long)(a),(s))
+macro_line|# define __ioremap(a,s)&t;&t;cia_bwx_ioremap(a,s)
 DECL|macro|__iounmap
-macro_line|# define __iounmap(a)           cia_bwx_iounmap((unsigned long)(a))
+macro_line|# define __iounmap(a)           cia_bwx_iounmap(a)
 DECL|macro|inb
 macro_line|# define inb(p)&t;&t;&t;__inb(p)
 DECL|macro|inw
@@ -1465,11 +1565,11 @@ macro_line|# define inw(p)&t;&t;&t;__inw(p)
 DECL|macro|inl
 macro_line|# define inl(p)&t;&t;&t;__inl(p)
 DECL|macro|outb
-macro_line|# define outb(x,p)&t;&t;__outb((x),(p))
+macro_line|# define outb(x,p)&t;&t;__outb(x,p)
 DECL|macro|outw
-macro_line|# define outw(x,p)&t;&t;__outw((x),(p))
+macro_line|# define outw(x,p)&t;&t;__outw(x,p)
 DECL|macro|outl
-macro_line|# define outl(x,p)&t;&t;__outl((x),(p))
+macro_line|# define outl(x,p)&t;&t;__outl(x,p)
 DECL|macro|__raw_readb
 macro_line|# define __raw_readb(a)&t;&t;__readb(a)
 DECL|macro|__raw_readw
@@ -1479,13 +1579,13 @@ macro_line|# define __raw_readl(a)&t;&t;__readl(a)
 DECL|macro|__raw_readq
 macro_line|# define __raw_readq(a)&t;&t;__readq(a)
 DECL|macro|__raw_writeb
-macro_line|# define __raw_writeb(x,a)&t;__writeb((x),(a))
+macro_line|# define __raw_writeb(x,a)&t;__writeb(x,a)
 DECL|macro|__raw_writew
-macro_line|# define __raw_writew(x,a)&t;__writew((x),(a))
+macro_line|# define __raw_writew(x,a)&t;__writew(x,a)
 DECL|macro|__raw_writel
-macro_line|# define __raw_writel(x,a)&t;__writel((x),(a))
+macro_line|# define __raw_writel(x,a)&t;__writel(x,a)
 DECL|macro|__raw_writeq
-macro_line|# define __raw_writeq(x,a)&t;__writeq((x),(a))
+macro_line|# define __raw_writeq(x,a)&t;__writeq(x,a)
 macro_line|#else
 DECL|macro|__inb
 macro_line|# define __inb(p)&t;&t;cia_inb((unsigned long)(p))
@@ -1494,39 +1594,39 @@ macro_line|# define __inw(p)&t;&t;cia_inw((unsigned long)(p))
 DECL|macro|__inl
 macro_line|# define __inl(p)&t;&t;cia_inl((unsigned long)(p))
 DECL|macro|__outb
-macro_line|# define __outb(x,p)&t;&t;cia_outb((x),(unsigned long)(p))
+macro_line|# define __outb(x,p)&t;&t;cia_outb(x,(unsigned long)(p))
 DECL|macro|__outw
-macro_line|# define __outw(x,p)&t;&t;cia_outw((x),(unsigned long)(p))
+macro_line|# define __outw(x,p)&t;&t;cia_outw(x,(unsigned long)(p))
 DECL|macro|__outl
-macro_line|# define __outl(x,p)&t;&t;cia_outl((x),(unsigned long)(p))
+macro_line|# define __outl(x,p)&t;&t;cia_outl(x,(unsigned long)(p))
 DECL|macro|__readb
-macro_line|# define __readb(a)&t;&t;cia_readb((unsigned long)(a))
+macro_line|# define __readb(a)&t;&t;cia_readb(a)
 DECL|macro|__readw
-macro_line|# define __readw(a)&t;&t;cia_readw((unsigned long)(a))
+macro_line|# define __readw(a)&t;&t;cia_readw(a)
 DECL|macro|__readl
-macro_line|# define __readl(a)&t;&t;cia_readl((unsigned long)(a))
+macro_line|# define __readl(a)&t;&t;cia_readl(a)
 DECL|macro|__readq
-macro_line|# define __readq(a)&t;&t;cia_readq((unsigned long)(a))
+macro_line|# define __readq(a)&t;&t;cia_readq(a)
 DECL|macro|__writeb
-macro_line|# define __writeb(x,a)&t;&t;cia_writeb((x),(unsigned long)(a))
+macro_line|# define __writeb(x,a)&t;&t;cia_writeb(x,a)
 DECL|macro|__writew
-macro_line|# define __writew(x,a)&t;&t;cia_writew((x),(unsigned long)(a))
+macro_line|# define __writew(x,a)&t;&t;cia_writew(x,a)
 DECL|macro|__writel
-macro_line|# define __writel(x,a)&t;&t;cia_writel((x),(unsigned long)(a))
+macro_line|# define __writel(x,a)&t;&t;cia_writel(x,a)
 DECL|macro|__writeq
-macro_line|# define __writeq(x,a)&t;&t;cia_writeq((x),(unsigned long)(a))
+macro_line|# define __writeq(x,a)&t;&t;cia_writeq(x,a)
 DECL|macro|__ioremap
-macro_line|# define __ioremap(a,s)&t;&t;cia_ioremap((unsigned long)(a),(s))
+macro_line|# define __ioremap(a,s)&t;&t;cia_ioremap(a,s)
 DECL|macro|__iounmap
-macro_line|# define __iounmap(a)           cia_iounmap((unsigned long)(a))
+macro_line|# define __iounmap(a)           cia_iounmap(a)
 DECL|macro|__raw_readl
 macro_line|# define __raw_readl(a)&t;&t;__readl(a)
 DECL|macro|__raw_readq
 macro_line|# define __raw_readq(a)&t;&t;__readq(a)
 DECL|macro|__raw_writel
-macro_line|# define __raw_writel(v,a)&t;__writel((v),(a))
+macro_line|# define __raw_writel(v,a)&t;__writel(v,a)
 DECL|macro|__raw_writeq
-macro_line|# define __raw_writeq(v,a)&t;__writeq((v),(a))
+macro_line|# define __raw_writeq(v,a)&t;__writeq(v,a)
 macro_line|#endif /* PYXIS */
 DECL|macro|__is_ioaddr
 mdefine_line|#define __is_ioaddr(a)&t;&t;cia_is_ioaddr((unsigned long)(a))

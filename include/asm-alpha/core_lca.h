@@ -356,11 +356,11 @@ mdefine_line|#define __IO_EXTERN_INLINE
 macro_line|#endif
 multiline_comment|/*&n; * I/O functions:&n; *&n; * Unlike Jensen, the Noname machines have no concept of local&n; * I/O---everything goes over the PCI bus.&n; *&n; * There is plenty room for optimization here.  In particular,&n; * the Alpha&squot;s insb/insw/extb/extw should be useful in moving&n; * data to/from the right byte-lanes.&n; */
 DECL|macro|vip
-mdefine_line|#define vip&t;volatile int *
+mdefine_line|#define vip&t;volatile int __force *
 DECL|macro|vuip
-mdefine_line|#define vuip&t;volatile unsigned int *
+mdefine_line|#define vuip&t;volatile unsigned int __force *
 DECL|macro|vulp
-mdefine_line|#define vulp&t;volatile unsigned long *
+mdefine_line|#define vulp&t;volatile unsigned long __force *
 DECL|function|lca_inb
 id|__EXTERN_INLINE
 id|u8
@@ -627,11 +627,24 @@ id|u8
 id|lca_readb
 c_func
 (paren
+r_const
+r_volatile
+r_void
+id|__iomem
+op_star
+id|xaddr
+)paren
+(brace
 r_int
 r_int
 id|addr
+op_assign
+(paren
+r_int
+r_int
 )paren
-(brace
+id|xaddr
+suffix:semicolon
 r_int
 r_int
 id|result
@@ -707,11 +720,24 @@ id|u16
 id|lca_readw
 c_func
 (paren
+r_const
+r_volatile
+r_void
+id|__iomem
+op_star
+id|xaddr
+)paren
+(brace
 r_int
 r_int
 id|addr
+op_assign
+(paren
+r_int
+r_int
 )paren
-(brace
+id|xaddr
+suffix:semicolon
 r_int
 r_int
 id|result
@@ -787,21 +813,20 @@ id|u32
 id|lca_readl
 c_func
 (paren
-r_int
-r_int
+r_const
+r_volatile
+r_void
+id|__iomem
+op_star
 id|addr
 )paren
 (brace
 r_return
-(paren
 op_star
 (paren
 id|vuip
 )paren
 id|addr
-)paren
-op_amp
-l_int|0xffffffff
 suffix:semicolon
 )brace
 DECL|function|lca_readq
@@ -810,8 +835,11 @@ id|u64
 id|lca_readq
 c_func
 (paren
-r_int
-r_int
+r_const
+r_volatile
+r_void
+id|__iomem
+op_star
 id|addr
 )paren
 (brace
@@ -832,11 +860,23 @@ c_func
 id|u8
 id|b
 comma
+r_volatile
+r_void
+id|__iomem
+op_star
+id|xaddr
+)paren
+(brace
 r_int
 r_int
 id|addr
+op_assign
+(paren
+r_int
+r_int
 )paren
-(brace
+id|xaddr
+suffix:semicolon
 r_int
 r_int
 id|msb
@@ -918,11 +958,23 @@ c_func
 id|u16
 id|b
 comma
+r_volatile
+r_void
+id|__iomem
+op_star
+id|xaddr
+)paren
+(brace
 r_int
 r_int
 id|addr
+op_assign
+(paren
+r_int
+r_int
 )paren
-(brace
+id|xaddr
+suffix:semicolon
 r_int
 r_int
 id|msb
@@ -1004,8 +1056,10 @@ c_func
 id|u32
 id|b
 comma
-r_int
-r_int
+r_volatile
+r_void
+id|__iomem
+op_star
 id|addr
 )paren
 (brace
@@ -1027,8 +1081,10 @@ c_func
 id|u64
 id|b
 comma
-r_int
-r_int
+r_volatile
+r_void
+id|__iomem
+op_star
 id|addr
 )paren
 (brace
@@ -1043,8 +1099,9 @@ suffix:semicolon
 )brace
 DECL|function|lca_ioremap
 id|__EXTERN_INLINE
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|lca_ioremap
 c_func
 (paren
@@ -1065,9 +1122,16 @@ id|unused
 )paren
 (brace
 r_return
+(paren
+r_void
+id|__iomem
+op_star
+)paren
+(paren
 id|addr
 op_plus
 id|LCA_DENSE_MEM
+)paren
 suffix:semicolon
 )brace
 DECL|function|lca_iounmap
@@ -1076,8 +1140,10 @@ r_void
 id|lca_iounmap
 c_func
 (paren
-r_int
-r_int
+r_volatile
+r_void
+id|__iomem
+op_star
 id|addr
 )paren
 (brace
@@ -1117,31 +1183,31 @@ mdefine_line|#define __inw(p)&t;&t;lca_inw((unsigned long)(p))
 DECL|macro|__inl
 mdefine_line|#define __inl(p)&t;&t;lca_inl((unsigned long)(p))
 DECL|macro|__outb
-mdefine_line|#define __outb(x,p)&t;&t;lca_outb((x),(unsigned long)(p))
+mdefine_line|#define __outb(x,p)&t;&t;lca_outb(x,(unsigned long)(p))
 DECL|macro|__outw
-mdefine_line|#define __outw(x,p)&t;&t;lca_outw((x),(unsigned long)(p))
+mdefine_line|#define __outw(x,p)&t;&t;lca_outw(x,(unsigned long)(p))
 DECL|macro|__outl
-mdefine_line|#define __outl(x,p)&t;&t;lca_outl((x),(unsigned long)(p))
+mdefine_line|#define __outl(x,p)&t;&t;lca_outl(x,(unsigned long)(p))
 DECL|macro|__readb
-mdefine_line|#define __readb(a)&t;&t;lca_readb((unsigned long)(a))
+mdefine_line|#define __readb(a)&t;&t;lca_readb(a)
 DECL|macro|__readw
-mdefine_line|#define __readw(a)&t;&t;lca_readw((unsigned long)(a))
+mdefine_line|#define __readw(a)&t;&t;lca_readw(a)
 DECL|macro|__readl
-mdefine_line|#define __readl(a)&t;&t;lca_readl((unsigned long)(a))
+mdefine_line|#define __readl(a)&t;&t;lca_readl(a)
 DECL|macro|__readq
-mdefine_line|#define __readq(a)&t;&t;lca_readq((unsigned long)(a))
+mdefine_line|#define __readq(a)&t;&t;lca_readq(a)
 DECL|macro|__writeb
-mdefine_line|#define __writeb(x,a)&t;&t;lca_writeb((x),(unsigned long)(a))
+mdefine_line|#define __writeb(x,a)&t;&t;lca_writeb(x,a)
 DECL|macro|__writew
-mdefine_line|#define __writew(x,a)&t;&t;lca_writew((x),(unsigned long)(a))
+mdefine_line|#define __writew(x,a)&t;&t;lca_writew(x,a)
 DECL|macro|__writel
-mdefine_line|#define __writel(x,a)&t;&t;lca_writel((x),(unsigned long)(a))
+mdefine_line|#define __writel(x,a)&t;&t;lca_writel(x,a)
 DECL|macro|__writeq
-mdefine_line|#define __writeq(x,a)&t;&t;lca_writeq((x),(unsigned long)(a))
+mdefine_line|#define __writeq(x,a)&t;&t;lca_writeq(x,a)
 DECL|macro|__ioremap
-mdefine_line|#define __ioremap(a,s)&t;&t;lca_ioremap((unsigned long)(a),(s))
+mdefine_line|#define __ioremap(a,s)&t;&t;lca_ioremap(a,s)
 DECL|macro|__iounmap
-mdefine_line|#define __iounmap(a)&t;&t;lca_iounmap((unsigned long)(a))
+mdefine_line|#define __iounmap(a)&t;&t;lca_iounmap(a)
 DECL|macro|__is_ioaddr
 mdefine_line|#define __is_ioaddr(a)&t;&t;lca_is_ioaddr((unsigned long)(a))
 DECL|macro|__raw_readl
@@ -1149,9 +1215,9 @@ mdefine_line|#define __raw_readl(a)&t;&t;__readl(a)
 DECL|macro|__raw_readq
 mdefine_line|#define __raw_readq(a)&t;&t;__readq(a)
 DECL|macro|__raw_writel
-mdefine_line|#define __raw_writel(v,a)&t;__writel((v),(a))
+mdefine_line|#define __raw_writel(v,a)&t;__writel(v,a)
 DECL|macro|__raw_writeq
-mdefine_line|#define __raw_writeq(v,a)&t;__writeq((v),(a))
+mdefine_line|#define __raw_writeq(v,a)&t;__writeq(v,a)
 macro_line|#endif /* __WANT_IO_DEF */
 macro_line|#ifdef __IO_EXTERN_INLINE
 DECL|macro|__EXTERN_INLINE

@@ -222,6 +222,7 @@ DECL|member|write_lock
 DECL|member|read_counter
 r_volatile
 r_int
+r_int
 id|write_lock
 suffix:colon
 l_int|1

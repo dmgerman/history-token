@@ -1487,8 +1487,9 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Memory functions.  All accesses through linear space.&n; */
 r_extern
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|marvel_ioremap
 c_func
 (paren
@@ -1506,8 +1507,10 @@ r_void
 id|marvel_iounmap
 c_func
 (paren
-r_int
-r_int
+r_volatile
+r_void
+id|__iomem
+op_star
 id|addr
 )paren
 suffix:semicolon
@@ -1517,40 +1520,14 @@ id|u8
 id|marvel_readb
 c_func
 (paren
-r_int
-r_int
+r_const
+r_volatile
+r_void
+id|__iomem
+op_star
 id|addr
 )paren
 (brace
-r_if
-c_cond
-(paren
-op_logical_neg
-id|marvel_is_ioaddr
-c_func
-(paren
-id|addr
-)paren
-)paren
-(brace
-id|IOBUG
-c_func
-(paren
-(paren
-l_string|&quot;Bad MEM addr %lx - reading -1&bslash;n&quot;
-comma
-id|addr
-)paren
-)paren
-suffix:semicolon
-r_return
-(paren
-id|u8
-)paren
-op_minus
-l_int|1
-suffix:semicolon
-)brace
 r_return
 id|__kernel_ldbu
 c_func
@@ -1569,40 +1546,14 @@ id|u16
 id|marvel_readw
 c_func
 (paren
-r_int
-r_int
+r_const
+r_volatile
+r_void
+id|__iomem
+op_star
 id|addr
 )paren
 (brace
-r_if
-c_cond
-(paren
-op_logical_neg
-id|marvel_is_ioaddr
-c_func
-(paren
-id|addr
-)paren
-)paren
-(brace
-id|IOBUG
-c_func
-(paren
-(paren
-l_string|&quot;Bad MEM addr %lx - reading -1&bslash;n&quot;
-comma
-id|addr
-)paren
-)paren
-suffix:semicolon
-r_return
-(paren
-id|u16
-)paren
-op_minus
-l_int|1
-suffix:semicolon
-)brace
 r_return
 id|__kernel_ldwu
 c_func
@@ -1621,40 +1572,14 @@ id|u32
 id|marvel_readl
 c_func
 (paren
-r_int
-r_int
+r_const
+r_volatile
+r_void
+id|__iomem
+op_star
 id|addr
 )paren
 (brace
-r_if
-c_cond
-(paren
-op_logical_neg
-id|marvel_is_ioaddr
-c_func
-(paren
-id|addr
-)paren
-)paren
-(brace
-id|IOBUG
-c_func
-(paren
-(paren
-l_string|&quot;Bad MEM addr %lx - reading -1&bslash;n&quot;
-comma
-id|addr
-)paren
-)paren
-suffix:semicolon
-r_return
-(paren
-id|u32
-)paren
-op_minus
-l_int|1
-suffix:semicolon
-)brace
 r_return
 op_star
 (paren
@@ -1669,40 +1594,14 @@ id|u64
 id|marvel_readq
 c_func
 (paren
-r_int
-r_int
+r_const
+r_volatile
+r_void
+id|__iomem
+op_star
 id|addr
 )paren
 (brace
-r_if
-c_cond
-(paren
-op_logical_neg
-id|marvel_is_ioaddr
-c_func
-(paren
-id|addr
-)paren
-)paren
-(brace
-id|IOBUG
-c_func
-(paren
-(paren
-l_string|&quot;Bad MEM addr %lx - reading -1&bslash;n&quot;
-comma
-id|addr
-)paren
-)paren
-suffix:semicolon
-r_return
-(paren
-id|u64
-)paren
-op_minus
-l_int|1
-suffix:semicolon
-)brace
 r_return
 op_star
 (paren
@@ -1720,35 +1619,13 @@ c_func
 id|u8
 id|b
 comma
-r_int
-r_int
+r_volatile
+r_void
+id|__iomem
+op_star
 id|addr
 )paren
 (brace
-r_if
-c_cond
-(paren
-op_logical_neg
-id|marvel_is_ioaddr
-c_func
-(paren
-id|addr
-)paren
-)paren
-(brace
-id|IOBUG
-c_func
-(paren
-(paren
-l_string|&quot;Bad MEM addr %lx - dropping store&bslash;n&quot;
-comma
-id|addr
-)paren
-)paren
-suffix:semicolon
-r_return
-suffix:semicolon
-)brace
 id|__kernel_stb
 c_func
 (paren
@@ -1771,35 +1648,13 @@ c_func
 id|u16
 id|w
 comma
-r_int
-r_int
+r_volatile
+r_void
+id|__iomem
+op_star
 id|addr
 )paren
 (brace
-r_if
-c_cond
-(paren
-op_logical_neg
-id|marvel_is_ioaddr
-c_func
-(paren
-id|addr
-)paren
-)paren
-(brace
-id|IOBUG
-c_func
-(paren
-(paren
-l_string|&quot;Bad MEM addr %lx - dropping store&bslash;n&quot;
-comma
-id|addr
-)paren
-)paren
-suffix:semicolon
-r_return
-suffix:semicolon
-)brace
 id|__kernel_stw
 c_func
 (paren
@@ -1822,35 +1677,13 @@ c_func
 id|u32
 id|l
 comma
-r_int
-r_int
+r_volatile
+r_void
+id|__iomem
+op_star
 id|addr
 )paren
 (brace
-r_if
-c_cond
-(paren
-op_logical_neg
-id|marvel_is_ioaddr
-c_func
-(paren
-id|addr
-)paren
-)paren
-(brace
-id|IOBUG
-c_func
-(paren
-(paren
-l_string|&quot;Bad MEM addr %lx - dropping store&bslash;n&quot;
-comma
-id|addr
-)paren
-)paren
-suffix:semicolon
-r_return
-suffix:semicolon
-)brace
 op_star
 (paren
 id|vuip
@@ -1869,35 +1702,13 @@ c_func
 id|u64
 id|q
 comma
-r_int
-r_int
+r_volatile
+r_void
+id|__iomem
+op_star
 id|addr
 )paren
 (brace
-r_if
-c_cond
-(paren
-op_logical_neg
-id|marvel_is_ioaddr
-c_func
-(paren
-id|addr
-)paren
-)paren
-(brace
-id|IOBUG
-c_func
-(paren
-(paren
-l_string|&quot;Bad MEM addr %lx - dropping store&bslash;n&quot;
-comma
-id|addr
-)paren
-)paren
-suffix:semicolon
-r_return
-suffix:semicolon
-)brace
 op_star
 (paren
 id|vulp
@@ -1929,31 +1740,31 @@ mdefine_line|#define __inw(p)&t;&t;marvel_inw((unsigned long)(p))
 DECL|macro|__inl
 mdefine_line|#define __inl(p)&t;&t;marvel_inl((unsigned long)(p))
 DECL|macro|__outb
-mdefine_line|#define __outb(x,p)&t;&t;marvel_outb((x),(unsigned long)(p))
+mdefine_line|#define __outb(x,p)&t;&t;marvel_outb(x,(unsigned long)(p))
 DECL|macro|__outw
-mdefine_line|#define __outw(x,p)&t;&t;marvel_outw((x),(unsigned long)(p))
+mdefine_line|#define __outw(x,p)&t;&t;marvel_outw(x,(unsigned long)(p))
 DECL|macro|__outl
-mdefine_line|#define __outl(x,p)&t;&t;marvel_outl((x),(unsigned long)(p))
+mdefine_line|#define __outl(x,p)&t;&t;marvel_outl(x,(unsigned long)(p))
 DECL|macro|__readb
-mdefine_line|#define __readb(a)&t;&t;marvel_readb((unsigned long)(a))
+mdefine_line|#define __readb(a)&t;&t;marvel_readb(a)
 DECL|macro|__readw
-mdefine_line|#define __readw(a)&t;&t;marvel_readw((unsigned long)(a))
+mdefine_line|#define __readw(a)&t;&t;marvel_readw(a)
 DECL|macro|__readl
-mdefine_line|#define __readl(a)&t;&t;marvel_readl((unsigned long)(a))
+mdefine_line|#define __readl(a)&t;&t;marvel_readl(a)
 DECL|macro|__readq
-mdefine_line|#define __readq(a)&t;&t;marvel_readq((unsigned long)(a))
+mdefine_line|#define __readq(a)&t;&t;marvel_readq(a)
 DECL|macro|__writeb
-mdefine_line|#define __writeb(x,a)&t;&t;marvel_writeb((x),(unsigned long)(a))
+mdefine_line|#define __writeb(x,a)&t;&t;marvel_writeb(x,a)
 DECL|macro|__writew
-mdefine_line|#define __writew(x,a)&t;&t;marvel_writew((x),(unsigned long)(a))
+mdefine_line|#define __writew(x,a)&t;&t;marvel_writew(x,a)
 DECL|macro|__writel
-mdefine_line|#define __writel(x,a)&t;&t;marvel_writel((x),(unsigned long)(a))
+mdefine_line|#define __writel(x,a)&t;&t;marvel_writel(x,a)
 DECL|macro|__writeq
-mdefine_line|#define __writeq(x,a)&t;&t;marvel_writeq((x),(unsigned long)(a))
+mdefine_line|#define __writeq(x,a)&t;&t;marvel_writeq(x,a)
 DECL|macro|__ioremap
-mdefine_line|#define __ioremap(a,s)&t;&t;marvel_ioremap((unsigned long)(a),(s))
+mdefine_line|#define __ioremap(a,s)&t;&t;marvel_ioremap(a,s)
 DECL|macro|__iounmap
-mdefine_line|#define __iounmap(a)&t;&t;marvel_iounmap((unsigned long)(a))
+mdefine_line|#define __iounmap(a)&t;&t;marvel_iounmap(a)
 DECL|macro|__is_ioaddr
 mdefine_line|#define __is_ioaddr(a)&t;&t;marvel_is_ioaddr((unsigned long)(a))
 multiline_comment|/* Disable direct inlining of these calls with the debug checks present.  */

@@ -428,13 +428,13 @@ mdefine_line|#define __IO_EXTERN_INLINE
 macro_line|#endif
 multiline_comment|/*&n; * I/O functions:&n; *&n; * IRONGATE (AMD-751) PCI/memory support chip for the EV6 (21264) and&n; * K7 can only use linear accesses to get at PCI memory and I/O spaces.&n; */
 DECL|macro|vucp
-mdefine_line|#define vucp&t;volatile unsigned char *
+mdefine_line|#define vucp&t;volatile unsigned char __force *
 DECL|macro|vusp
-mdefine_line|#define vusp&t;volatile unsigned short *
+mdefine_line|#define vusp&t;volatile unsigned short __force *
 DECL|macro|vuip
-mdefine_line|#define vuip&t;volatile unsigned int *
+mdefine_line|#define vuip&t;volatile unsigned int __force *
 DECL|macro|vulp
-mdefine_line|#define vulp&t;volatile unsigned long *
+mdefine_line|#define vulp&t;volatile unsigned long __force *
 DECL|function|irongate_inb
 id|__EXTERN_INLINE
 id|u8
@@ -623,8 +623,11 @@ id|u8
 id|irongate_readb
 c_func
 (paren
-r_int
-r_int
+r_const
+r_volatile
+r_void
+id|__iomem
+op_star
 id|addr
 )paren
 (brace
@@ -646,8 +649,11 @@ id|u16
 id|irongate_readw
 c_func
 (paren
-r_int
-r_int
+r_const
+r_volatile
+r_void
+id|__iomem
+op_star
 id|addr
 )paren
 (brace
@@ -669,21 +675,20 @@ id|u32
 id|irongate_readl
 c_func
 (paren
-r_int
-r_int
+r_const
+r_volatile
+r_void
+id|__iomem
+op_star
 id|addr
 )paren
 (brace
 r_return
-(paren
 op_star
 (paren
 id|vuip
 )paren
 id|addr
-)paren
-op_amp
-l_int|0xffffffff
 suffix:semicolon
 )brace
 DECL|function|irongate_readq
@@ -692,8 +697,11 @@ id|u64
 id|irongate_readq
 c_func
 (paren
-r_int
-r_int
+r_const
+r_volatile
+r_void
+id|__iomem
+op_star
 id|addr
 )paren
 (brace
@@ -714,8 +722,10 @@ c_func
 id|u8
 id|b
 comma
-r_int
-r_int
+r_volatile
+r_void
+id|__iomem
+op_star
 id|addr
 )paren
 (brace
@@ -741,8 +751,10 @@ c_func
 id|u16
 id|b
 comma
-r_int
-r_int
+r_volatile
+r_void
+id|__iomem
+op_star
 id|addr
 )paren
 (brace
@@ -768,8 +780,10 @@ c_func
 id|u32
 id|b
 comma
-r_int
-r_int
+r_volatile
+r_void
+id|__iomem
+op_star
 id|addr
 )paren
 (brace
@@ -791,8 +805,10 @@ c_func
 id|u64
 id|b
 comma
-r_int
-r_int
+r_volatile
+r_void
+id|__iomem
+op_star
 id|addr
 )paren
 (brace
@@ -806,8 +822,9 @@ id|b
 suffix:semicolon
 )brace
 r_extern
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|irongate_ioremap
 c_func
 (paren
@@ -825,8 +842,10 @@ r_void
 id|irongate_iounmap
 c_func
 (paren
-r_int
-r_int
+r_volatile
+r_void
+id|__iomem
+op_star
 id|addr
 )paren
 suffix:semicolon
@@ -863,31 +882,31 @@ mdefine_line|#define __inw(p)&t;&t;irongate_inw((unsigned long)(p))
 DECL|macro|__inl
 mdefine_line|#define __inl(p)&t;&t;irongate_inl((unsigned long)(p))
 DECL|macro|__outb
-mdefine_line|#define __outb(x,p)&t;&t;irongate_outb((x),(unsigned long)(p))
+mdefine_line|#define __outb(x,p)&t;&t;irongate_outb(x,(unsigned long)(p))
 DECL|macro|__outw
-mdefine_line|#define __outw(x,p)&t;&t;irongate_outw((x),(unsigned long)(p))
+mdefine_line|#define __outw(x,p)&t;&t;irongate_outw(x,(unsigned long)(p))
 DECL|macro|__outl
-mdefine_line|#define __outl(x,p)&t;&t;irongate_outl((x),(unsigned long)(p))
+mdefine_line|#define __outl(x,p)&t;&t;irongate_outl(x,(unsigned long)(p))
 DECL|macro|__readb
-mdefine_line|#define __readb(a)&t;&t;irongate_readb((unsigned long)(a))
+mdefine_line|#define __readb(a)&t;&t;irongate_readb(a)
 DECL|macro|__readw
-mdefine_line|#define __readw(a)&t;&t;irongate_readw((unsigned long)(a))
+mdefine_line|#define __readw(a)&t;&t;irongate_readw(a)
 DECL|macro|__readl
-mdefine_line|#define __readl(a)&t;&t;irongate_readl((unsigned long)(a))
+mdefine_line|#define __readl(a)&t;&t;irongate_readl(a)
 DECL|macro|__readq
-mdefine_line|#define __readq(a)&t;&t;irongate_readq((unsigned long)(a))
+mdefine_line|#define __readq(a)&t;&t;irongate_readq(a)
 DECL|macro|__writeb
-mdefine_line|#define __writeb(x,a)&t;&t;irongate_writeb((x),(unsigned long)(a))
+mdefine_line|#define __writeb(x,a)&t;&t;irongate_writeb(x,a)
 DECL|macro|__writew
-mdefine_line|#define __writew(x,a)&t;&t;irongate_writew((x),(unsigned long)(a))
+mdefine_line|#define __writew(x,a)&t;&t;irongate_writew(x,a)
 DECL|macro|__writel
-mdefine_line|#define __writel(x,a)&t;&t;irongate_writel((x),(unsigned long)(a))
+mdefine_line|#define __writel(x,a)&t;&t;irongate_writel(x,a)
 DECL|macro|__writeq
-mdefine_line|#define __writeq(x,a)&t;&t;irongate_writeq((x),(unsigned long)(a))
+mdefine_line|#define __writeq(x,a)&t;&t;irongate_writeq(x,a)
 DECL|macro|__ioremap
-mdefine_line|#define __ioremap(a,s)&t;&t;irongate_ioremap((unsigned long)(a),(s))
+mdefine_line|#define __ioremap(a,s)&t;&t;irongate_ioremap(a,s)
 DECL|macro|__iounmap
-mdefine_line|#define __iounmap(a)&t;&t;irongate_iounmap((unsigned long)(a))
+mdefine_line|#define __iounmap(a)&t;&t;irongate_iounmap(a)
 DECL|macro|__is_ioaddr
 mdefine_line|#define __is_ioaddr(a)&t;&t;irongate_is_ioaddr((unsigned long)(a))
 DECL|macro|inb
@@ -897,11 +916,11 @@ mdefine_line|#define inw(p)&t;&t;&t;__inw(p)
 DECL|macro|inl
 mdefine_line|#define inl(p)&t;&t;&t;__inl(p)
 DECL|macro|outb
-mdefine_line|#define outb(x,p)&t;&t;__outb((x),(p))
+mdefine_line|#define outb(x,p)&t;&t;__outb(x,p)
 DECL|macro|outw
-mdefine_line|#define outw(x,p)&t;&t;__outw((x),(p))
+mdefine_line|#define outw(x,p)&t;&t;__outw(x,p)
 DECL|macro|outl
-mdefine_line|#define outl(x,p)&t;&t;__outl((x),(p))
+mdefine_line|#define outl(x,p)&t;&t;__outl(x,p)
 DECL|macro|__raw_readb
 mdefine_line|#define __raw_readb(a)&t;&t;__readb(a)
 DECL|macro|__raw_readw
@@ -911,13 +930,13 @@ mdefine_line|#define __raw_readl(a)&t;&t;__readl(a)
 DECL|macro|__raw_readq
 mdefine_line|#define __raw_readq(a)&t;&t;__readq(a)
 DECL|macro|__raw_writeb
-mdefine_line|#define __raw_writeb(v,a)&t;__writeb((v),(a))
+mdefine_line|#define __raw_writeb(v,a)&t;__writeb(v,a)
 DECL|macro|__raw_writew
-mdefine_line|#define __raw_writew(v,a)&t;__writew((v),(a))
+mdefine_line|#define __raw_writew(v,a)&t;__writew(v,a)
 DECL|macro|__raw_writel
-mdefine_line|#define __raw_writel(v,a)&t;__writel((v),(a))
+mdefine_line|#define __raw_writel(v,a)&t;__writel(v,a)
 DECL|macro|__raw_writeq
-mdefine_line|#define __raw_writeq(v,a)&t;__writeq((v),(a))
+mdefine_line|#define __raw_writeq(v,a)&t;__writeq(v,a)
 macro_line|#endif /* __WANT_IO_DEF */
 macro_line|#ifdef __IO_EXTERN_INLINE
 DECL|macro|__EXTERN_INLINE
