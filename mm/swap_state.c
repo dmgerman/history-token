@@ -84,7 +84,7 @@ id|page
 )paren
 suffix:semicolon
 r_return
-id|generic_writeback_mapping
+id|generic_writepages
 c_func
 (paren
 id|mapping

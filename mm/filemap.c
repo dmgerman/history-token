@@ -1660,7 +1660,7 @@ id|mapping
 )paren
 (brace
 r_return
-id|writeback_mapping
+id|do_writepages
 c_func
 (paren
 id|mapping

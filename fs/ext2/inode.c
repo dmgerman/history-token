@@ -2351,8 +2351,8 @@ suffix:semicolon
 )brace
 r_static
 r_int
-DECL|function|ext2_writeback_mapping
-id|ext2_writeback_mapping
+DECL|function|ext2_writepages
+id|ext2_writepages
 c_func
 (paren
 r_struct
@@ -2381,7 +2381,7 @@ id|mapping
 suffix:semicolon
 id|err
 op_assign
-id|mpage_writeback_mapping
+id|mpage_writepages
 c_func
 (paren
 id|mapping
@@ -2443,9 +2443,9 @@ id|direct_IO
 suffix:colon
 id|ext2_direct_IO
 comma
-id|writeback_mapping
+id|writepages
 suffix:colon
-id|ext2_writeback_mapping
+id|ext2_writepages
 comma
 id|vm_writeback
 suffix:colon

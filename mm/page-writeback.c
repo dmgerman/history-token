@@ -691,7 +691,7 @@ c_cond
 id|inode
 )paren
 (brace
-id|writeback_mapping
+id|do_writepages
 c_func
 (paren
 id|inode-&gt;i_mapping
@@ -775,10 +775,10 @@ c_func
 id|generic_vm_writeback
 )paren
 suffix:semicolon
-multiline_comment|/**&n; * generic_writeback_mapping - walk the list of dirty pages of the given&n; * address space and writepage() all of them.&n; * &n; * @mapping: address space structure to write&n; * @nr_to_write: subtract the number of written pages from *@nr_to_write&n; *&n; * This is a library function, which implements the writeback_mapping()&n; * address_space_operation.&n; *&n; * (The next two paragraphs refer to code which isn&squot;t here yet, but they&n; *  explain the presence of address_space.io_pages)&n; *&n; * Pages can be moved from clean_pages or locked_pages onto dirty_pages&n; * at any time - it&squot;s not possible to lock against that.  So pages which&n; * have already been added to a BIO may magically reappear on the dirty_pages&n; * list.  And generic_writeback_mapping() will again try to lock those pages.&n; * But I/O has not yet been started against the page.  Thus deadlock.&n; *&n; * To avoid this, the entire contents of the dirty_pages list are moved&n; * onto io_pages up-front.  We then walk io_pages, locking the&n; * pages and submitting them for I/O, moving them to locked_pages.&n; *&n; * This has the added benefit of preventing a livelock which would otherwise&n; * occur if pages are being dirtied faster than we can write them out.&n; *&n; * If a page is already under I/O, generic_writeback_mapping() skips it, even&n; * if it&squot;s dirty.  This is desirable behaviour for memory-cleaning writeback,&n; * but it is INCORRECT for data-integrity system calls such as fsync().  fsync()&n; * and msync() need to guarentee that all the data which was dirty at the time&n; * the call was made get new I/O started against them.  The way to do this is&n; * to run filemap_fdatawait() before calling filemap_fdatawrite().&n; *&n; * It&squot;s fairly rare for PageWriteback pages to be on -&gt;dirty_pages.  It&n; * means that someone redirtied the page while it was under I/O.&n; */
-DECL|function|generic_writeback_mapping
+multiline_comment|/**&n; * generic_writepages - walk the list of dirty pages of the given&n; * address space and writepage() all of them.&n; * &n; * @mapping: address space structure to write&n; * @nr_to_write: subtract the number of written pages from *@nr_to_write&n; *&n; * This is a library function, which implements the writepages()&n; * address_space_operation.&n; *&n; * (The next two paragraphs refer to code which isn&squot;t here yet, but they&n; *  explain the presence of address_space.io_pages)&n; *&n; * Pages can be moved from clean_pages or locked_pages onto dirty_pages&n; * at any time - it&squot;s not possible to lock against that.  So pages which&n; * have already been added to a BIO may magically reappear on the dirty_pages&n; * list.  And generic_writepages() will again try to lock those pages.&n; * But I/O has not yet been started against the page.  Thus deadlock.&n; *&n; * To avoid this, the entire contents of the dirty_pages list are moved&n; * onto io_pages up-front.  We then walk io_pages, locking the&n; * pages and submitting them for I/O, moving them to locked_pages.&n; *&n; * This has the added benefit of preventing a livelock which would otherwise&n; * occur if pages are being dirtied faster than we can write them out.&n; *&n; * If a page is already under I/O, generic_writepages() skips it, even&n; * if it&squot;s dirty.  This is desirable behaviour for memory-cleaning writeback,&n; * but it is INCORRECT for data-integrity system calls such as fsync().  fsync()&n; * and msync() need to guarentee that all the data which was dirty at the time&n; * the call was made get new I/O started against them.  The way to do this is&n; * to run filemap_fdatawait() before calling filemap_fdatawrite().&n; *&n; * It&squot;s fairly rare for PageWriteback pages to be on -&gt;dirty_pages.  It&n; * means that someone redirtied the page while it was under I/O.&n; */
+DECL|function|generic_writepages
 r_int
-id|generic_writeback_mapping
+id|generic_writepages
 c_func
 (paren
 r_struct
@@ -1166,16 +1166,16 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-DECL|variable|generic_writeback_mapping
+DECL|variable|generic_writepages
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|generic_writeback_mapping
+id|generic_writepages
 )paren
 suffix:semicolon
-DECL|function|writeback_mapping
+DECL|function|do_writepages
 r_int
-id|writeback_mapping
+id|do_writepages
 c_func
 (paren
 r_struct
@@ -1191,12 +1191,12 @@ id|nr_to_write
 r_if
 c_cond
 (paren
-id|mapping-&gt;a_ops-&gt;writeback_mapping
+id|mapping-&gt;a_ops-&gt;writepages
 )paren
 r_return
 id|mapping-&gt;a_ops
 op_member_access_from_pointer
-id|writeback_mapping
+id|writepages
 c_func
 (paren
 id|mapping
@@ -1205,7 +1205,7 @@ id|nr_to_write
 )paren
 suffix:semicolon
 r_return
-id|generic_writeback_mapping
+id|generic_writepages
 c_func
 (paren
 id|mapping

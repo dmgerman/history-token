@@ -1522,7 +1522,7 @@ r_int
 suffix:semicolon
 multiline_comment|/* mm/page-writeback.c */
 r_int
-id|generic_writeback_mapping
+id|generic_writepages
 c_func
 (paren
 r_struct

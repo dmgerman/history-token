@@ -35,7 +35,7 @@ id|get_block
 )paren
 suffix:semicolon
 r_int
-id|mpage_writeback_mapping
+id|mpage_writepages
 c_func
 (paren
 r_struct

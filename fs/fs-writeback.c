@@ -238,7 +238,7 @@ id|sync
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Write a single inode&squot;s dirty pages and inode data out to disk.&n; * If `sync&squot; is set, wait on the writeout.&n; * If `nr_to_write&squot; is not NULL, subtract the number of written pages&n; * from *nr_to_write.&n; *&n; * Normally it is not legal for a single process to lock more than one&n; * page at a time, due to ab/ba deadlock problems.  But writeback_mapping()&n; * does want to lock a large number of pages, without immediately submitting&n; * I/O against them (starting I/O is a &quot;deferred unlock_page&quot;).&n; *&n; * However it *is* legal to lock multiple pages, if this is only ever performed&n; * by a single process.  We provide that exclusion via locking in the&n; * filesystem&squot;s -&gt;writeback_mapping a_op. This ensures that only a single&n; * process is locking multiple pages against this inode.  And as I/O is&n; * submitted against all those locked pages, there is no deadlock.&n; *&n; * Called under inode_lock.&n; */
+multiline_comment|/*&n; * Write a single inode&squot;s dirty pages and inode data out to disk.&n; * If `sync&squot; is set, wait on the writeout.&n; * If `nr_to_write&squot; is not NULL, subtract the number of written pages&n; * from *nr_to_write.&n; *&n; * Normally it is not legal for a single process to lock more than one&n; * page at a time, due to ab/ba deadlock problems.  But writepages()&n; * does want to lock a large number of pages, without immediately submitting&n; * I/O against them (starting I/O is a &quot;deferred unlock_page&quot;).&n; *&n; * However it *is* legal to lock multiple pages, if this is only ever performed&n; * by a single process.  We provide that exclusion via locking in the&n; * filesystem&squot;s -&gt;writepages a_op. This ensures that only a single&n; * process is locking multiple pages against this inode.  And as I/O is&n; * submitted against all those locked pages, there is no deadlock.&n; *&n; * Called under inode_lock.&n; */
 DECL|function|__sync_single_inode
 r_static
 r_void
@@ -336,7 +336,7 @@ op_amp
 id|inode_lock
 )paren
 suffix:semicolon
-id|writeback_mapping
+id|do_writepages
 c_func
 (paren
 id|mapping

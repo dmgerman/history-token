@@ -472,11 +472,11 @@ op_star
 )paren
 suffix:semicolon
 multiline_comment|/* Write back some dirty pages from this mapping. */
-DECL|member|writeback_mapping
+DECL|member|writepages
 r_int
 (paren
 op_star
-id|writeback_mapping
+id|writepages
 )paren
 (paren
 r_struct

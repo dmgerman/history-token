@@ -1861,10 +1861,10 @@ r_return
 id|bio
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * This is a cut-n-paste of generic_writeback_mapping().  We _could_&n; * generalise that function.  It&squot;d get a bit messy.  We&squot;ll see.&n; */
+multiline_comment|/*&n; * This is a cut-n-paste of generic_writepages().  We _could_&n; * generalise that function.  It&squot;d get a bit messy.  We&squot;ll see.&n; */
 r_int
-DECL|function|mpage_writeback_mapping
-id|mpage_writeback_mapping
+DECL|function|mpage_writepages
+id|mpage_writepages
 c_func
 (paren
 r_struct
@@ -2267,11 +2267,11 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-DECL|variable|mpage_writeback_mapping
+DECL|variable|mpage_writepages
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|mpage_writeback_mapping
+id|mpage_writepages
 )paren
 suffix:semicolon
 eof
