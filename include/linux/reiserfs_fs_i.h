@@ -49,6 +49,11 @@ id|i_priv_object
 op_assign
 l_int|0x0080
 comma
+DECL|enumerator|i_has_xattr_dir
+id|i_has_xattr_dir
+op_assign
+l_int|0x0100
+comma
 DECL|typedef|reiserfs_inode_flags
 )brace
 id|reiserfs_inode_flags
@@ -126,6 +131,11 @@ r_struct
 id|posix_acl
 op_star
 id|i_acl_default
+suffix:semicolon
+DECL|member|xattr_sem
+r_struct
+id|rw_semaphore
+id|xattr_sem
 suffix:semicolon
 DECL|member|vfs_inode
 r_struct
