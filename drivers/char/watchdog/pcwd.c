@@ -20,7 +20,7 @@ macro_line|#include &lt;linux/reboot.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 DECL|macro|WD_VER
-mdefine_line|#define WD_VER                  &quot;1.16 (03/27/2004)&quot;
+mdefine_line|#define WD_VER                  &quot;1.16 (06/12/2004)&quot;
 DECL|macro|PFX
 mdefine_line|#define PFX&t;&t;&t;&quot;pcwd: &quot;
 multiline_comment|/*&n; * It should be noted that PCWD_REVISION_B was removed because A and B&n; * are essentially the same types of card, with the exception that B&n; * has temperature reporting.  Since I didn&squot;t receive a Rev.B card,&n; * the Rev.B card is not supported.  (It&squot;s a good thing too, as they&n; * are no longer in production.)&n; */
@@ -832,7 +832,7 @@ suffix:semicolon
 )brace
 DECL|function|pcwd_keepalive
 r_static
-r_void
+r_int
 id|pcwd_keepalive
 c_func
 (paren
@@ -849,6 +849,9 @@ id|heartbeat
 op_star
 id|HZ
 )paren
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 )brace
 DECL|function|pcwd_set_heartbeat
@@ -1719,13 +1722,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|atomic_inc
-c_func
-(paren
-op_amp
-id|open_allowed
-)paren
-suffix:semicolon
 )brace
 r_else
 (brace
@@ -1746,6 +1742,13 @@ suffix:semicolon
 id|expect_close
 op_assign
 l_int|0
+suffix:semicolon
+id|atomic_inc
+c_func
+(paren
+op_amp
+id|open_allowed
+)paren
 suffix:semicolon
 r_return
 l_int|0
