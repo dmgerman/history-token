@@ -1177,6 +1177,16 @@ id|radeonfb_setup
 )brace
 comma
 macro_line|#endif
+macro_line|#ifdef CONFIG_FB_RADEON_OLD
+(brace
+l_string|&quot;radeonfb_old&quot;
+comma
+id|radeonfb_init
+comma
+id|radeonfb_setup
+)brace
+comma
+macro_line|#endif
 macro_line|#ifdef CONFIG_FB_CONTROL
 (brace
 l_string|&quot;controlfb&quot;
