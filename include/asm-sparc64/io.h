@@ -62,11 +62,11 @@ id|pci_memspace_mask
 suffix:semicolon
 DECL|macro|bus_dvma_to_mem
 mdefine_line|#define bus_dvma_to_mem(__vaddr) ((__vaddr) &amp; pci_memspace_mask)
-DECL|function|inb
+DECL|function|_inb
 r_static
 id|__inline__
 id|u8
-id|inb
+id|_inb
 c_func
 (paren
 r_int
@@ -103,11 +103,11 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-DECL|function|inw
+DECL|function|_inw
 r_static
 id|__inline__
 id|u16
-id|inw
+id|_inw
 c_func
 (paren
 r_int
@@ -144,11 +144,11 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-DECL|function|inl
+DECL|function|_inl
 r_static
 id|__inline__
 id|u32
-id|inl
+id|_inl
 c_func
 (paren
 r_int
@@ -185,11 +185,11 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-DECL|function|outb
+DECL|function|_outb
 r_static
 id|__inline__
 r_void
-id|outb
+id|_outb
 c_func
 (paren
 id|u8
@@ -225,11 +225,11 @@ id|ASI_PHYS_BYPASS_EC_E_L
 )paren
 suffix:semicolon
 )brace
-DECL|function|outw
+DECL|function|_outw
 r_static
 id|__inline__
 r_void
-id|outw
+id|_outw
 c_func
 (paren
 id|u16
@@ -265,11 +265,11 @@ id|ASI_PHYS_BYPASS_EC_E_L
 )paren
 suffix:semicolon
 )brace
-DECL|function|outl
+DECL|function|_outl
 r_static
 id|__inline__
 r_void
-id|outl
+id|_outl
 c_func
 (paren
 id|u32
@@ -305,18 +305,30 @@ id|ASI_PHYS_BYPASS_EC_E_L
 )paren
 suffix:semicolon
 )brace
+DECL|macro|inb
+mdefine_line|#define inb(__addr)&t;&t;(_inb((unsigned long)(__addr)))
+DECL|macro|inw
+mdefine_line|#define inw(__addr)&t;&t;(_inw((unsigned long)(__addr)))
+DECL|macro|inl
+mdefine_line|#define inl(__addr)&t;&t;(_inl((unsigned long)(__addr)))
+DECL|macro|outb
+mdefine_line|#define outb(__b, __addr)&t;(_outb((u8)(__b), (unsigned long)(__addr)))
+DECL|macro|outw
+mdefine_line|#define outw(__w, __addr)&t;(_outw((u16)(__w), (unsigned long)(__addr)))
+DECL|macro|outl
+mdefine_line|#define outl(__l, __addr)&t;(_outl((u32)(__l), (unsigned long)(__addr)))
 DECL|macro|inb_p
-mdefine_line|#define inb_p inb
+mdefine_line|#define inb_p(__addr) &t;&t;inb(__addr)
 DECL|macro|outb_p
-mdefine_line|#define outb_p outb
+mdefine_line|#define outb_p(__b, __addr)&t;outb(__b, __addr)
 DECL|macro|inw_p
-mdefine_line|#define inw_p inw
+mdefine_line|#define inw_p(__addr)&t;&t;inw(__addr)
 DECL|macro|outw_p
-mdefine_line|#define outw_p outw
+mdefine_line|#define outw_p(__w, __addr)&t;outw(__w, __addr)
 DECL|macro|inl_p
-mdefine_line|#define inl_p inl
+mdefine_line|#define inl_p(__addr)&t;&t;inl(__addr)
 DECL|macro|outl_p
-mdefine_line|#define outl_p outl
+mdefine_line|#define outl_p(__l, __addr)&t;outl(__l, __addr)
 r_extern
 r_void
 id|outsb

@@ -3,7 +3,6 @@ macro_line|#ifndef __ARCH_SPARC_ATOMIC__
 DECL|macro|__ARCH_SPARC_ATOMIC__
 mdefine_line|#define __ARCH_SPARC_ATOMIC__
 macro_line|#include &lt;linux/config.h&gt;
-macro_line|#include &lt;linux/spinlock.h&gt;
 DECL|member|counter
 DECL|typedef|atomic_t
 r_typedef
@@ -17,132 +16,30 @@ suffix:semicolon
 id|atomic_t
 suffix:semicolon
 macro_line|#ifdef __KERNEL__
-macro_line|#ifdef CONFIG_SMP
-DECL|macro|ATOMIC_HASH_SIZE
-mdefine_line|#define ATOMIC_HASH_SIZE&t;4
-DECL|macro|ATOMIC_HASH
-mdefine_line|#define ATOMIC_HASH(a)&t;(&amp;__atomic_hash[(((unsigned long)a)&gt;&gt;8) &amp; (ATOMIC_HASH_SIZE-1)])
+DECL|macro|ATOMIC_INIT
+mdefine_line|#define ATOMIC_INIT(i)  { (i) }
 r_extern
-id|spinlock_t
-id|__atomic_hash
-(braket
-id|ATOMIC_HASH_SIZE
-)braket
-suffix:semicolon
-macro_line|#else /* SMP */
-DECL|macro|ATOMIC_HASH_SIZE
-mdefine_line|#define ATOMIC_HASH_SIZE&t;1
-DECL|macro|ATOMIC_HASH
-mdefine_line|#define ATOMIC_HASH(a)&t;&t;0
-macro_line|#endif /* SMP */
-DECL|function|__atomic_add_return
-r_static
-r_inline
 r_int
 id|__atomic_add_return
 c_func
 (paren
 r_int
-id|i
 comma
 id|atomic_t
 op_star
-id|v
-)paren
-(brace
-r_int
-id|ret
-suffix:semicolon
-r_int
-r_int
-id|flags
-suffix:semicolon
-id|spin_lock_irqsave
-c_func
-(paren
-id|ATOMIC_HASH
-c_func
-(paren
-id|v
-)paren
-comma
-id|flags
 )paren
 suffix:semicolon
-id|ret
-op_assign
-(paren
-id|v-&gt;counter
-op_add_assign
-id|i
-)paren
-suffix:semicolon
-id|spin_unlock_irqrestore
-c_func
-(paren
-id|ATOMIC_HASH
-c_func
-(paren
-id|v
-)paren
-comma
-id|flags
-)paren
-suffix:semicolon
-r_return
-id|ret
-suffix:semicolon
-)brace
-DECL|function|atomic_set
-r_static
-r_inline
+r_extern
 r_void
 id|atomic_set
 c_func
 (paren
 id|atomic_t
 op_star
-id|v
 comma
 r_int
-id|i
-)paren
-(brace
-r_int
-r_int
-id|flags
-suffix:semicolon
-id|spin_lock_irqsave
-c_func
-(paren
-id|ATOMIC_HASH
-c_func
-(paren
-id|v
-)paren
-comma
-id|flags
 )paren
 suffix:semicolon
-id|v-&gt;counter
-op_assign
-id|i
-suffix:semicolon
-id|spin_unlock_irqrestore
-c_func
-(paren
-id|ATOMIC_HASH
-c_func
-(paren
-id|v
-)paren
-comma
-id|flags
-)paren
-suffix:semicolon
-)brace
-DECL|macro|ATOMIC_INIT
-mdefine_line|#define ATOMIC_INIT(i)  { (i) }
 DECL|macro|atomic_read
 mdefine_line|#define atomic_read(v)          ((v)-&gt;counter)
 DECL|macro|atomic_add
