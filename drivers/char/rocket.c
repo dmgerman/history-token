@@ -1361,12 +1361,12 @@ r_break
 suffix:semicolon
 id|c
 op_assign
-id|MIN
+id|min
 c_func
 (paren
 id|info-&gt;xmit_fifo_room
 comma
-id|MIN
+id|min
 c_func
 (paren
 id|info-&gt;xmit_cnt
@@ -7342,7 +7342,7 @@ l_int|0
 (brace
 id|c
 op_assign
-id|MIN
+id|min
 c_func
 (paren
 id|count
@@ -7399,7 +7399,7 @@ id|info-&gt;xmit_buf
 suffix:semicolon
 id|c
 op_assign
-id|MIN
+id|min
 c_func
 (paren
 id|c
@@ -7520,12 +7520,12 @@ id|end
 suffix:semicolon
 id|c
 op_assign
-id|MIN
+id|min
 c_func
 (paren
 id|count
 comma
-id|MIN
+id|min
 c_func
 (paren
 id|XMIT_BUF_SIZE
