@@ -512,11 +512,6 @@ id|msg
 comma
 r_int
 id|len
-comma
-r_struct
-id|scm_cookie
-op_star
-id|scm
 )paren
 (brace
 r_struct
@@ -2069,11 +2064,6 @@ id|msg
 comma
 r_int
 id|len
-comma
-r_struct
-id|scm_cookie
-op_star
-id|scm
 )paren
 (brace
 r_struct
@@ -3483,11 +3473,6 @@ id|len
 comma
 r_int
 id|flags
-comma
-r_struct
-id|scm_cookie
-op_star
-id|scm
 )paren
 (brace
 r_struct

@@ -3838,12 +3838,12 @@ r_static
 r_struct
 id|iovec
 op_star
-DECL|function|get_iovec32
-id|get_iovec32
+DECL|function|get_compat_iovec
+id|get_compat_iovec
 c_func
 (paren
 r_struct
-id|iovec32
+id|compat_iovec
 op_star
 id|iov32
 comma
@@ -3921,7 +3921,7 @@ comma
 r_sizeof
 (paren
 r_struct
-id|iovec32
+id|compat_iovec
 )paren
 op_star
 id|count
@@ -4167,7 +4167,7 @@ r_int
 id|fd
 comma
 r_struct
-id|iovec32
+id|compat_iovec
 op_star
 id|vector
 comma
@@ -4204,7 +4204,7 @@ c_cond
 (paren
 id|iov
 op_assign
-id|get_iovec32
+id|get_compat_iovec
 c_func
 (paren
 id|vector
@@ -4276,7 +4276,7 @@ r_int
 id|fd
 comma
 r_struct
-id|iovec32
+id|compat_iovec
 op_star
 id|vector
 comma
@@ -4313,7 +4313,7 @@ c_cond
 (paren
 id|iov
 op_assign
-id|get_iovec32
+id|get_compat_iovec
 c_func
 (paren
 id|vector

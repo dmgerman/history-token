@@ -13,7 +13,6 @@ macro_line|#include &lt;linux/filter.h&gt;
 macro_line|#endif
 macro_line|#include &lt;asm/atomic.h&gt;
 macro_line|#include &lt;net/dst.h&gt;
-macro_line|#include &lt;net/scm.h&gt;
 multiline_comment|/*&n; * This structure really needs to be cleaned up.&n; * Most of it is for TCP, and not used by any of&n; * the other protocols.&n; */
 multiline_comment|/* Sock flags */
 r_enum
@@ -1025,6 +1024,12 @@ id|sock
 op_star
 id|sk
 suffix:semicolon
+DECL|member|scm
+r_struct
+id|scm_cookie
+op_star
+id|scm
+suffix:semicolon
 DECL|member|msg
 DECL|member|async_msg
 r_struct
@@ -1038,15 +1043,6 @@ DECL|member|async_iov
 r_struct
 id|iovec
 id|async_iov
-suffix:semicolon
-DECL|member|scm
-DECL|member|async_scm
-r_struct
-id|scm_cookie
-op_star
-id|scm
-comma
-id|async_scm
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -1690,10 +1686,6 @@ id|msghdr
 op_star
 comma
 r_int
-comma
-r_struct
-id|scm_cookie
-op_star
 )paren
 suffix:semicolon
 r_extern
@@ -1716,10 +1708,6 @@ comma
 r_int
 comma
 r_int
-comma
-r_struct
-id|scm_cookie
-op_star
 )paren
 suffix:semicolon
 r_extern

@@ -1628,11 +1628,6 @@ id|total_len
 comma
 r_int
 id|flags
-comma
-r_struct
-id|scm_cookie
-op_star
-id|scm
 )paren
 (brace
 id|DECLARE_WAITQUEUE
@@ -2196,11 +2191,6 @@ id|m
 comma
 r_int
 id|total_len
-comma
-r_struct
-id|scm_cookie
-op_star
-id|scm
 )paren
 (brace
 id|DECLARE_WAITQUEUE

@@ -40,6 +40,7 @@ multiline_comment|/* for sunos_select */
 macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/personality.h&gt;
 multiline_comment|/* For SOCKET_I */
+macro_line|#include &lt;linux/socket.h&gt;
 macro_line|#include &lt;net/sock.h&gt;
 multiline_comment|/* Use this to get at 32-bit user passed pointers. */
 DECL|macro|A
@@ -6708,28 +6709,6 @@ r_int
 id|optlen
 )paren
 suffix:semicolon
-r_extern
-id|asmlinkage
-r_int
-id|sys32_getsockopt
-c_func
-(paren
-r_int
-id|fd
-comma
-r_int
-id|level
-comma
-r_int
-id|optname
-comma
-id|u32
-id|optval
-comma
-id|u32
-id|optlen
-)paren
-suffix:semicolon
 DECL|function|sunos_setsockopt
 id|asmlinkage
 r_int
@@ -6870,7 +6849,7 @@ suffix:semicolon
 )brace
 id|ret
 op_assign
-id|sys32_getsockopt
+id|compat_sys_getsockopt
 c_func
 (paren
 id|fd
@@ -6879,8 +6858,24 @@ id|level
 comma
 id|tr_opt
 comma
+(paren
+r_void
+op_star
+)paren
+(paren
+r_int
+r_int
+)paren
 id|optval
 comma
+(paren
+r_void
+op_star
+)paren
+(paren
+r_int
+r_int
+)paren
 id|optlen
 )paren
 suffix:semicolon

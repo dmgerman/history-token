@@ -482,21 +482,6 @@ l_int|6
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|struct|iovec32
-r_struct
-id|iovec32
-(brace
-DECL|member|iov_base
-r_int
-r_int
-id|iov_base
-suffix:semicolon
-DECL|member|iov_len
-r_int
-id|iov_len
-suffix:semicolon
-)brace
-suffix:semicolon
 DECL|macro|IA32_PAGE_OFFSET
 mdefine_line|#define IA32_PAGE_OFFSET 0xffffe000
 DECL|macro|IA32_STACK_TOP

@@ -2703,11 +2703,6 @@ id|m
 comma
 r_int
 id|total_len
-comma
-r_struct
-id|scm_cookie
-op_star
-id|scm
 )paren
 (brace
 r_struct
@@ -3379,9 +3374,9 @@ comma
 l_int|NULL
 )brace
 suffix:semicolon
-DECL|function|pppoe_rcvmsg
+DECL|function|pppoe_recvmsg
 r_int
-id|pppoe_rcvmsg
+id|pppoe_recvmsg
 c_func
 (paren
 r_struct
@@ -3404,11 +3399,6 @@ id|total_len
 comma
 r_int
 id|flags
-comma
-r_struct
-id|scm_cookie
-op_star
-id|scm
 )paren
 (brace
 r_struct
@@ -4101,7 +4091,7 @@ comma
 dot
 id|recvmsg
 op_assign
-id|pppoe_rcvmsg
+id|pppoe_recvmsg
 comma
 dot
 id|mmap

@@ -1663,20 +1663,6 @@ l_int|0
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|struct|iovec32
-r_struct
-id|iovec32
-(brace
-DECL|member|iov_base
-id|u32
-id|iov_base
-suffix:semicolon
-DECL|member|iov_len
-id|u32
-id|iov_len
-suffix:semicolon
-)brace
-suffix:semicolon
 DECL|function|iov_from_user32_to_kern
 r_static
 r_inline
@@ -1690,7 +1676,7 @@ op_star
 id|kiov
 comma
 r_struct
-id|iovec32
+id|compat_iovec
 op_star
 id|uiov32
 comma
@@ -1936,10 +1922,10 @@ id|err
 suffix:semicolon
 )brace
 multiline_comment|/* I&squot;ve named the args so it is easy to tell whose space the pointers are in. */
-DECL|function|verify_iovec32
+DECL|function|verify_compat_iovec
 r_static
 r_int
-id|verify_iovec32
+id|verify_compat_iovec
 c_func
 (paren
 r_struct
@@ -2059,7 +2045,7 @@ id|kern_iov
 comma
 (paren
 r_struct
-id|iovec32
+id|compat_iovec
 op_star
 )paren
 id|kern_msg-&gt;msg_iov
@@ -2198,7 +2184,7 @@ suffix:semicolon
 )brace
 id|err
 op_assign
-id|verify_iovec32
+id|verify_compat_iovec
 c_func
 (paren
 op_amp
@@ -2576,7 +2562,7 @@ id|user_msg-&gt;msg_namelen
 suffix:semicolon
 id|err
 op_assign
-id|verify_iovec32
+id|verify_compat_iovec
 c_func
 (paren
 op_amp

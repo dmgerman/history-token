@@ -148,6 +148,23 @@ id|compat_timespec
 op_star
 )paren
 suffix:semicolon
+DECL|struct|compat_iovec
+r_struct
+id|compat_iovec
+(brace
+DECL|member|iov_base
+id|u32
+id|iov_base
+suffix:semicolon
+DECL|member|iov_len
+id|compat_size_t
+id|iov_len
+suffix:semicolon
+)brace
+suffix:semicolon
+macro_line|#else /* no CONFIG_COMPAT */
+DECL|macro|compat_size_t
+mdefine_line|#define compat_size_t&t;size_t
 macro_line|#endif /* CONFIG_COMPAT */
 macro_line|#endif /* _LINUX_COMPAT_H */
 eof

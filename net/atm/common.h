@@ -74,11 +74,6 @@ id|total_len
 comma
 r_int
 id|flags
-comma
-r_struct
-id|scm_cookie
-op_star
-id|scm
 )paren
 suffix:semicolon
 r_int
@@ -102,11 +97,6 @@ id|m
 comma
 r_int
 id|total_len
-comma
-r_struct
-id|scm_cookie
-op_star
-id|scm
 )paren
 suffix:semicolon
 r_int
