@@ -2,7 +2,7 @@ multiline_comment|/*&n; * I2O kernel space accessible structures/APIs&n; *&n; * 
 macro_line|#ifndef _I2O_H
 DECL|macro|_I2O_H
 mdefine_line|#define _I2O_H
-macro_line|#ifdef __KERNEL__ /* This file to be included by kernel only */
+macro_line|#ifdef __KERNEL__&t;&t;/* This file to be included by kernel only */
 macro_line|#include &lt;linux/i2o-dev.h&gt;
 multiline_comment|/* How many different OSM&squot;s are we allowing */
 DECL|macro|I2O_MAX_DRIVERS
@@ -172,7 +172,7 @@ DECL|member|tcntxt
 id|u32
 id|tcntxt
 suffix:semicolon
-multiline_comment|/* Transaction context used at&n;&t;&t;&t;&t;&t;   registration */
+multiline_comment|/* Transaction context used at&n;&t;&t;&t;&t;   registration */
 DECL|member|event_indicator
 id|u32
 id|event_indicator
@@ -571,13 +571,13 @@ r_struct
 id|list_head
 id|context_list
 suffix:semicolon
-multiline_comment|/* list of context id&squot;s&n;&t;&t;&t;&t;&t;&t;    and pointers */
+multiline_comment|/* list of context id&squot;s&n;&t;&t;&t;&t;&t;   and pointers */
 macro_line|#endif
 DECL|member|lock
 id|spinlock_t
 id|lock
 suffix:semicolon
-multiline_comment|/* lock for controller&n;&t;&t;&t;&t;&t;&t;   configuration */
+multiline_comment|/* lock for controller&n;&t;&t;&t;&t;   configuration */
 DECL|member|driver_data
 r_void
 op_star
@@ -1249,7 +1249,6 @@ c_cond
 (paren
 id|drv-&gt;notify
 )paren
-(brace
 id|drv
 op_member_access_from_pointer
 id|notify
@@ -1260,7 +1259,6 @@ comma
 id|data
 )paren
 suffix:semicolon
-)brace
 )brace
 r_extern
 r_void
@@ -1541,7 +1539,6 @@ id|c
 op_ne
 id|I2O_QUEUE_EMPTY
 )paren
-(brace
 op_star
 id|msg
 op_assign
@@ -1549,7 +1546,6 @@ id|c-&gt;in_queue.virt
 op_plus
 id|m
 suffix:semicolon
-)brace
 r_return
 id|m
 suffix:semicolon
@@ -1692,12 +1688,10 @@ c_cond
 op_logical_neg
 id|addr-&gt;virt
 )paren
-(brace
 r_return
 op_minus
 id|ENOMEM
 suffix:semicolon
-)brace
 id|memset
 c_func
 (paren
@@ -1747,7 +1741,6 @@ c_cond
 (paren
 id|addr-&gt;phys
 )paren
-(brace
 id|dma_free_coherent
 c_func
 (paren
@@ -1760,7 +1753,6 @@ comma
 id|addr-&gt;phys
 )paren
 suffix:semicolon
-)brace
 r_else
 id|kfree
 c_func
@@ -1800,19 +1792,16 @@ c_cond
 op_logical_neg
 id|addr-&gt;virt
 )paren
-(brace
 r_return
 op_minus
 id|EFAULT
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
 op_logical_neg
 id|addr-&gt;phys
 )paren
-(brace
 id|addr-&gt;phys
 op_assign
 id|dma_map_single
@@ -1827,19 +1816,16 @@ comma
 id|DMA_BIDIRECTIONAL
 )paren
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
 op_logical_neg
 id|addr-&gt;phys
 )paren
-(brace
 r_return
 op_minus
 id|ENOMEM
 suffix:semicolon
-)brace
 r_return
 l_int|0
 suffix:semicolon
@@ -1870,10 +1856,8 @@ c_cond
 op_logical_neg
 id|addr-&gt;virt
 )paren
-(brace
 r_return
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -2513,6 +2497,6 @@ DECL|macro|I2O_MAX_SEGMENTS
 mdefine_line|#define I2O_MAX_SEGMENTS&t;&t;128
 DECL|macro|I2O_REQ_MEMPOOL_SIZE
 mdefine_line|#define I2O_REQ_MEMPOOL_SIZE&t;&t;32
-macro_line|#endif /* __KERNEL__ */
-macro_line|#endif /* _I2O_H */
+macro_line|#endif&t;&t;&t;&t;/* __KERNEL__ */
+macro_line|#endif&t;&t;&t;&t;/* _I2O_H */
 eof

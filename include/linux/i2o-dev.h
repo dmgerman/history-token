@@ -366,7 +366,7 @@ r_int
 r_int
 id|u32
 suffix:semicolon
-macro_line|#endif /* __KERNEL__ */
+macro_line|#endif&t;&t;&t;&t;/* __KERNEL__ */
 DECL|struct|_i2o_pci_bus
 r_typedef
 r_struct
@@ -1067,5 +1067,5 @@ DECL|macro|ADAPTER_STATE_FAILED
 mdefine_line|#define ADAPTER_STATE_FAILED&t;&t;&t;0x10
 DECL|macro|ADAPTER_STATE_FAULTED
 mdefine_line|#define ADAPTER_STATE_FAULTED&t;&t;&t;0x11
-macro_line|#endif /* _I2O_DEV_H */
+macro_line|#endif&t;&t;&t;&t;/* _I2O_DEV_H */
 eof
