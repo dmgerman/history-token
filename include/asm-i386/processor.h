@@ -1866,6 +1866,8 @@ op_star
 id|c
 )paren
 suffix:semicolon
+DECL|macro|cache_line_size
+mdefine_line|#define cache_line_size() (boot_cpu_data.x86_cache_alignment)
 macro_line|#ifdef CONFIG_SCHED_SMT
 DECL|macro|ARCH_HAS_SCHED_DOMAIN
 mdefine_line|#define ARCH_HAS_SCHED_DOMAIN

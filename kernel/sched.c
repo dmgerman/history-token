@@ -5122,10 +5122,11 @@ r_return
 id|busiest
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Check this_cpu to ensure it is balanced within domain. Attempt to move&n; * tasks if there is an imbalance.&n; *&n; * Called with this_rq unlocked.&n; */
+multiline_comment|/*&n; * Check this_cpu to ensure it is balanced within domain. Attempt to move&n; * tasks if there is an imbalance.&n; *&n; * Called with this_rq unlocked.&n; *&n; * This function is marked noinline to work around a compiler&n; * bug with gcc 3.3.3-hammer on x86-64.&n; */
 DECL|function|load_balance
 r_static
 r_int
+id|noinline
 id|load_balance
 c_func
 (paren

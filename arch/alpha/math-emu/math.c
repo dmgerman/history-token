@@ -330,8 +330,6 @@ suffix:semicolon
 r_int
 id|si_code
 suffix:semicolon
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 id|get_user
 c_func
 (paren
@@ -1383,15 +1381,11 @@ op_assign
 id|FPE_FLTINV
 suffix:semicolon
 )brace
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 r_return
 id|si_code
 suffix:semicolon
 )brace
 multiline_comment|/* We used to write the destination register here, but DEC FORTRAN&n;&t;   requires that the result *always* be written... so we do the write&n;&t;   immediately after the operations above.  */
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -1407,8 +1401,6 @@ id|insn
 comma
 id|pc
 )paren
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 r_return
 op_minus
@@ -1448,8 +1440,6 @@ comma
 id|si_code
 op_assign
 l_int|0
-suffix:semicolon
-id|MOD_INC_USE_COUNT
 suffix:semicolon
 multiline_comment|/*&n;&t; * Turn off the bits corresponding to registers that are the&n;&t; * target of instructions that set bits in the exception&n;&t; * summary register.  We have some slack doing this because a&n;&t; * register that is the target of a trapping instruction can&n;&t; * be written at most once in the trap shadow.&n;&t; *&n;&t; * Branches, jumps, TRAPBs, EXCBs and calls to PALcode all&n;&t; * bound the trap shadow, so we need not look any further than&n;&t; * up to the first occurrence of such an instruction.&n;&t; */
 r_while
@@ -1618,8 +1608,6 @@ suffix:semicolon
 )brace
 id|egress
 suffix:colon
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 r_return
 id|si_code
 suffix:semicolon

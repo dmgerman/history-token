@@ -641,19 +641,10 @@ id|dev-&gt;tx_buff.len
 OG
 l_int|0
 )paren
-(brace
-id|spin_unlock_irqrestore
-c_func
-(paren
-op_amp
-id|dev-&gt;tx_lock
-comma
-id|flags
-)paren
+r_goto
+id|done
 suffix:semicolon
-r_return
-suffix:semicolon
-)brace
+multiline_comment|/* more data to send later */
 )brace
 r_if
 c_cond
@@ -682,8 +673,10 @@ id|dev-&gt;raw_tx
 op_assign
 l_int|0
 suffix:semicolon
-r_return
+r_goto
+id|done
 suffix:semicolon
+multiline_comment|/* no post-frame handling in raw mode */
 )brace
 multiline_comment|/* we have finished now sending this skb.&n;&t; * update statistics and free the skb.&n;&t; * finally we check and trigger a pending speed change, if any.&n;&t; * if not we switch to rx mode and wake the queue for further&n;&t; * packets.&n;&t; * note the scheduled speed request blocks until the lower&n;&t; * client driver and the corresponding hardware has really&n;&t; * finished sending all data (xmit fifo drained f.e.)&n;&t; * before the speed change gets finally done and the queue&n;&t; * re-activated.&n;&t; */
 id|IRDA_DEBUG
@@ -803,6 +796,8 @@ id|dev-&gt;netdev
 )paren
 suffix:semicolon
 )brace
+id|done
+suffix:colon
 id|spin_unlock_irqrestore
 c_func
 (paren

@@ -5315,14 +5315,6 @@ id|block_device
 op_star
 )paren
 suffix:semicolon
-r_extern
-r_void
-id|blk_run_queues
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 multiline_comment|/* fs/char_dev.c */
 r_extern
 r_int

@@ -4,7 +4,7 @@ DECL|macro|ZFCP_DEF_H
 mdefine_line|#define ZFCP_DEF_H
 multiline_comment|/* this drivers version (do not edit !!! generated and updated by cvs) */
 DECL|macro|ZFCP_DEF_REVISION
-mdefine_line|#define ZFCP_DEF_REVISION &quot;$Revision: 1.72 $&quot;
+mdefine_line|#define ZFCP_DEF_REVISION &quot;$Revision: 1.73 $&quot;
 multiline_comment|/*************************** INCLUDES *****************************************/
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/moduleparam.h&gt;
@@ -32,10 +32,6 @@ macro_line|#endif
 multiline_comment|/************************ DEBUG FLAGS *****************************************/
 DECL|macro|ZFCP_PRINT_FLAGS
 mdefine_line|#define&t;ZFCP_PRINT_FLAGS
-DECL|macro|ZFCP_STAT_REQSIZES
-mdefine_line|#define&t;ZFCP_STAT_REQSIZES
-DECL|macro|ZFCP_STAT_QUEUES
-mdefine_line|#define&t;ZFCP_STAT_QUEUES
 multiline_comment|/********************* GENERAL DEFINES *********************************/
 multiline_comment|/* zfcp version number, it consists of major, minor, and patch-level number */
 DECL|macro|ZFCP_VERSION
@@ -3006,80 +3002,8 @@ DECL|member|init_fcp_lun
 id|fcp_lun_t
 id|init_fcp_lun
 suffix:semicolon
-macro_line|#ifdef ZFCP_STAT_REQSIZES                            /* Statistical accounting&n;&t;&t;&t;&t;&t;&t;&t;of processed data */
-DECL|member|read_req_head
-r_struct
-id|list_head
-id|read_req_head
-suffix:semicolon
-DECL|member|write_req_head
-r_struct
-id|list_head
-id|write_req_head
-suffix:semicolon
-DECL|member|read_sg_head
-r_struct
-id|list_head
-id|read_sg_head
-suffix:semicolon
-DECL|member|write_sg_head
-r_struct
-id|list_head
-id|write_sg_head
-suffix:semicolon
-DECL|member|read_sguse_head
-r_struct
-id|list_head
-id|read_sguse_head
-suffix:semicolon
-DECL|member|write_sguse_head
-r_struct
-id|list_head
-id|write_sguse_head
-suffix:semicolon
-DECL|member|stat_errors
-r_int
-r_int
-id|stat_errors
-suffix:semicolon
-DECL|member|stat_lock
-id|rwlock_t
-id|stat_lock
-suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef ZFCP_STAT_QUEUES
-DECL|member|outbound_queue_full
-id|atomic_t
-id|outbound_queue_full
-suffix:semicolon
-DECL|member|outbound_total
-id|atomic_t
-id|outbound_total
-suffix:semicolon
-macro_line|#endif
 )brace
 suffix:semicolon
-macro_line|#ifdef ZFCP_STAT_REQSIZES
-DECL|struct|zfcp_statistics
-r_struct
-id|zfcp_statistics
-(brace
-DECL|member|list
-r_struct
-id|list_head
-id|list
-suffix:semicolon
-DECL|member|num
-id|u32
-id|num
-suffix:semicolon
-DECL|member|occurrence
-id|u32
-id|occurrence
-suffix:semicolon
-)brace
-suffix:semicolon
-macro_line|#endif
 DECL|struct|zfcp_sg_list
 r_struct
 id|zfcp_sg_list

@@ -1495,7 +1495,11 @@ id|dentry-&gt;d_name.name
 suffix:semicolon
 id|fhp-&gt;fh_dentry
 op_assign
+id|dget
+c_func
+(paren
 id|dentry
+)paren
 suffix:semicolon
 multiline_comment|/* our internal copy */
 id|fhp-&gt;fh_export

@@ -531,8 +531,10 @@ DECL|macro|__NR_mq_notify
 mdefine_line|#define __NR_mq_notify&t;&t;266
 DECL|macro|__NR_mq_getsetattr
 mdefine_line|#define __NR_mq_getsetattr&t;267
+DECL|macro|__NR_kexec_load
+mdefine_line|#define __NR_kexec_load&t;&t;268
 DECL|macro|__NR_syscalls
-mdefine_line|#define __NR_syscalls&t;&t;268
+mdefine_line|#define __NR_syscalls&t;&t;269
 DECL|macro|__NR
 mdefine_line|#define __NR(n)&t;#n
 multiline_comment|/* On powerpc a system call basically clobbers the same registers like a&n; * function call, with the exception of LR (which is needed for the&n; * &quot;sc; bnslr&quot; sequence) and CR (where only CR0.SO is clobbered to signal&n; * an error return status).&n; */

@@ -667,9 +667,8 @@ id|AFL_OP_OK
 suffix:semicolon
 )brace
 multiline_comment|/* Wait for PA_OK = drive answers with AFL_PA_OK after receiving parameters*/
-DECL|macro|PA_OK
+macro_line|#if 0
 macro_line|# define PA_OK pa_ok()
-DECL|function|pa_ok
 r_static
 r_void
 id|pa_ok
@@ -722,6 +721,7 @@ id|AFL_PA_OK
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif
 multiline_comment|/* Wait for STEN=Low = handshake signal &squot;AFL_.._OK available or command executed*/
 DECL|macro|STEN_LOW
 macro_line|# define STEN_LOW  sten_low()

@@ -64,6 +64,19 @@ op_assign
 l_int|50
 suffix:semicolon
 multiline_comment|/* default is 50% */
+DECL|variable|sysctl_max_map_count
+r_int
+id|sysctl_max_map_count
+op_assign
+id|DEFAULT_MAX_MAP_COUNT
+suffix:semicolon
+DECL|variable|sysctl_max_map_count
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|sysctl_max_map_count
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Handle all mappings that got truncated by a &quot;truncate()&quot;&n; * system call.&n; *&n; * NOTE! We have to be ready to update the memory sharing&n; * between the file and the memory map for a potential last&n; * incomplete page.  Ugly, but necessary.&n; */
 DECL|function|vmtruncate
 r_int
@@ -1856,8 +1869,7 @@ c_func
 suffix:semicolon
 macro_line|#endif&t;  
 r_return
-op_minus
-id|EINVAL
+l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* Release all mmaps. */

@@ -116,7 +116,7 @@ suffix:semicolon
 multiline_comment|/* Number of block with at least one free entry */
 )brace
 suffix:semicolon
-multiline_comment|/*&n; *  Structure of header of block with quota structures. It is padded to 16 bytes so&n; *  there will be space for exactly 18 quota-entries in a block&n; */
+multiline_comment|/*&n; *  Structure of header of block with quota structures. It is padded to 16 bytes so&n; *  there will be space for exactly 21 quota-entries in a block&n; */
 DECL|struct|v2_disk_dqdbheader
 r_struct
 id|v2_disk_dqdbheader

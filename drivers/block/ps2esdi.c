@@ -724,7 +724,7 @@ suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
-id|track
+id|sect
 comma
 l_string|&quot;i&quot;
 )paren
