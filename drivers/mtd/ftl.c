@@ -4871,7 +4871,7 @@ c_cond
 id|rq_data_dir
 c_func
 (paren
-id|CURRENT
+id|req
 )paren
 )paren
 (brace
