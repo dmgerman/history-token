@@ -9595,6 +9595,12 @@ op_assign
 op_amp
 id|meye.mchip_dev-&gt;dev
 suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|ret
+op_assign
 id|sonypi_camera_command
 c_func
 (paren
@@ -9602,7 +9608,28 @@ id|SONYPI_COMMAND_SETCAMERA
 comma
 l_int|1
 )paren
+)paren
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;meye: unable to power on the camera&bslash;n&quot;
+)paren
 suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;meye: did you enable the camera in &quot;
+l_string|&quot;sonypi using the module options ?&bslash;n&quot;
+)paren
+suffix:semicolon
+r_goto
+id|outsonypienable
+suffix:semicolon
+)brace
 id|ret
 op_assign
 op_minus
@@ -10108,6 +10135,8 @@ comma
 l_int|0
 )paren
 suffix:semicolon
+id|outsonypienable
+suffix:colon
 id|kfifo_free
 c_func
 (paren

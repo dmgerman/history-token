@@ -5,7 +5,7 @@ mdefine_line|#define _MEYE_PRIV_H_
 DECL|macro|MEYE_DRIVER_MAJORVERSION
 mdefine_line|#define MEYE_DRIVER_MAJORVERSION&t; 1
 DECL|macro|MEYE_DRIVER_MINORVERSION
-mdefine_line|#define MEYE_DRIVER_MINORVERSION&t;11
+mdefine_line|#define MEYE_DRIVER_MINORVERSION&t;12
 DECL|macro|MEYE_DRIVER_VERSION
 mdefine_line|#define MEYE_DRIVER_VERSION __stringify(MEYE_DRIVER_MAJORVERSION) &quot;.&quot; &bslash;&n;&t;&t;&t;    __stringify(MEYE_DRIVER_MINORVERSION)
 macro_line|#include &lt;linux/config.h&gt;
