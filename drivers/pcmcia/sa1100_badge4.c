@@ -355,7 +355,7 @@ c_func
 id|BADGE4_5V_PCMCIA_SOCK
 c_func
 (paren
-id|conf-&gt;sock
+id|sock
 )paren
 comma
 id|need5V
