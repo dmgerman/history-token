@@ -1538,12 +1538,6 @@ comma
 id|driver
 )paren
 suffix:semicolon
-id|enable_irq
-c_func
-(paren
-id|driver-&gt;irq
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1563,12 +1557,6 @@ comma
 id|__FUNCTION__
 comma
 id|uctrl_dev.minor
-)paren
-suffix:semicolon
-id|disable_irq
-c_func
-(paren
-id|driver-&gt;irq
 )paren
 suffix:semicolon
 id|free_irq
@@ -1648,13 +1636,6 @@ c_cond
 (paren
 id|driver-&gt;irq
 )paren
-(brace
-id|disable_irq
-c_func
-(paren
-id|driver-&gt;irq
-)paren
-suffix:semicolon
 id|free_irq
 c_func
 (paren
@@ -1663,7 +1644,6 @@ comma
 id|driver
 )paren
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren

@@ -4284,11 +4284,6 @@ l_int|0
 dot
 id|fc.irq
 suffix:semicolon
-id|disable_irq
-(paren
-id|irq
-)paren
-suffix:semicolon
 id|free_irq
 (paren
 id|irq
