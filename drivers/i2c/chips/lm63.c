@@ -363,6 +363,13 @@ comma
 l_int|10
 )paren
 suffix:semicolon
+id|down
+c_func
+(paren
+op_amp
+id|data-&gt;update_lock
+)paren
+suffix:semicolon
 id|data-&gt;fan1_low
 op_assign
 id|FAN_TO_REG
@@ -393,6 +400,13 @@ comma
 id|data-&gt;fan1_low
 op_rshift
 l_int|8
+)paren
+suffix:semicolon
+id|up
+c_func
+(paren
+op_amp
+id|data-&gt;update_lock
 )paren
 suffix:semicolon
 r_return
@@ -532,6 +546,13 @@ comma
 l_int|10
 )paren
 suffix:semicolon
+id|down
+c_func
+(paren
+op_amp
+id|data-&gt;update_lock
+)paren
+suffix:semicolon
 id|data-&gt;pwm1_value
 op_assign
 id|val
@@ -570,6 +591,13 @@ comma
 id|LM63_REG_PWM_VALUE
 comma
 id|data-&gt;pwm1_value
+)paren
+suffix:semicolon
+id|up
+c_func
+(paren
+op_amp
+id|data-&gt;update_lock
 )paren
 suffix:semicolon
 r_return
@@ -669,9 +697,9 @@ id|temp2_crit
 )paren
 suffix:semicolon
 DECL|macro|set_temp8
-mdefine_line|#define set_temp8(value, reg) &bslash;&n;static ssize_t set_##value(struct device *dev, const char *buf, &bslash;&n;&t;size_t count) &bslash;&n;{ &bslash;&n;&t;struct i2c_client *client = to_i2c_client(dev); &bslash;&n;&t;struct lm63_data *data = i2c_get_clientdata(client); &bslash;&n;&t;long val = simple_strtol(buf, NULL, 10); &bslash;&n;&t;data-&gt;value = TEMP8_TO_REG(val); &bslash;&n;&t;i2c_smbus_write_byte_data(client, reg, data-&gt;value); &bslash;&n;&t;return count; &bslash;&n;}
+mdefine_line|#define set_temp8(value, reg) &bslash;&n;static ssize_t set_##value(struct device *dev, const char *buf, &bslash;&n;&t;size_t count) &bslash;&n;{ &bslash;&n;&t;struct i2c_client *client = to_i2c_client(dev); &bslash;&n;&t;struct lm63_data *data = i2c_get_clientdata(client); &bslash;&n;&t;long val = simple_strtol(buf, NULL, 10); &bslash;&n; &bslash;&n;&t;down(&amp;data-&gt;update_lock); &bslash;&n;&t;data-&gt;value = TEMP8_TO_REG(val); &bslash;&n;&t;i2c_smbus_write_byte_data(client, reg, data-&gt;value); &bslash;&n;&t;up(&amp;data-&gt;update_lock); &bslash;&n;&t;return count; &bslash;&n;}
 DECL|macro|set_temp11
-mdefine_line|#define set_temp11(value, reg_msb, reg_lsb) &bslash;&n;static ssize_t set_##value(struct device *dev, const char *buf, &bslash;&n;&t;size_t count) &bslash;&n;{ &bslash;&n;&t;struct i2c_client *client = to_i2c_client(dev); &bslash;&n;&t;struct lm63_data *data = i2c_get_clientdata(client); &bslash;&n;&t;long val = simple_strtol(buf, NULL, 10); &bslash;&n;&t;data-&gt;value = TEMP11_TO_REG(val); &bslash;&n;&t;i2c_smbus_write_byte_data(client, reg_msb, data-&gt;value &gt;&gt; 8); &bslash;&n;&t;i2c_smbus_write_byte_data(client, reg_lsb, data-&gt;value &amp; 0xff); &bslash;&n;&t;return count; &bslash;&n;}
+mdefine_line|#define set_temp11(value, reg_msb, reg_lsb) &bslash;&n;static ssize_t set_##value(struct device *dev, const char *buf, &bslash;&n;&t;size_t count) &bslash;&n;{ &bslash;&n;&t;struct i2c_client *client = to_i2c_client(dev); &bslash;&n;&t;struct lm63_data *data = i2c_get_clientdata(client); &bslash;&n;&t;long val = simple_strtol(buf, NULL, 10); &bslash;&n; &bslash;&n;&t;down(&amp;data-&gt;update_lock); &bslash;&n;&t;data-&gt;value = TEMP11_TO_REG(val); &bslash;&n;&t;i2c_smbus_write_byte_data(client, reg_msb, data-&gt;value &gt;&gt; 8); &bslash;&n;&t;i2c_smbus_write_byte_data(client, reg_lsb, data-&gt;value &amp; 0xff); &bslash;&n;&t;up(&amp;data-&gt;update_lock); &bslash;&n;&t;return count; &bslash;&n;}
 id|set_temp8
 c_func
 (paren
@@ -794,14 +822,8 @@ id|client
 )paren
 suffix:semicolon
 r_int
-id|hyst
+id|val
 op_assign
-id|TEMP8_FROM_REG
-c_func
-(paren
-id|data-&gt;temp2_crit
-)paren
-op_minus
 id|simple_strtol
 c_func
 (paren
@@ -811,6 +833,26 @@ l_int|NULL
 comma
 l_int|10
 )paren
+suffix:semicolon
+r_int
+id|hyst
+suffix:semicolon
+id|down
+c_func
+(paren
+op_amp
+id|data-&gt;update_lock
+)paren
+suffix:semicolon
+id|hyst
+op_assign
+id|TEMP8_FROM_REG
+c_func
+(paren
+id|data-&gt;temp2_crit
+)paren
+op_minus
+id|val
 suffix:semicolon
 id|i2c_smbus_write_byte_data
 c_func
@@ -824,6 +866,13 @@ c_func
 (paren
 id|hyst
 )paren
+)paren
+suffix:semicolon
+id|up
+c_func
+(paren
+op_amp
+id|data-&gt;update_lock
 )paren
 suffix:semicolon
 r_return

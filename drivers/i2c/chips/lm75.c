@@ -265,7 +265,7 @@ id|temp_input
 )paren
 suffix:semicolon
 DECL|macro|set
-mdefine_line|#define set(value, reg)&t;&bslash;&n;static ssize_t set_##value(struct device *dev, const char *buf, size_t count)&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;struct i2c_client *client = to_i2c_client(dev);&t;&t;&bslash;&n;&t;struct lm75_data *data = i2c_get_clientdata(client);&t;&bslash;&n;&t;int temp = simple_strtoul(buf, NULL, 10);&t;&t;&bslash;&n;&t;data-&gt;value = LM75_TEMP_TO_REG(temp);&t;&t;&t;&bslash;&n;&t;lm75_write_value(client, reg, data-&gt;value);&t;&t;&bslash;&n;&t;return count;&t;&t;&t;&t;&t;&t;&bslash;&n;}
+mdefine_line|#define set(value, reg)&t;&bslash;&n;static ssize_t set_##value(struct device *dev, const char *buf, size_t count)&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;struct i2c_client *client = to_i2c_client(dev);&t;&t;&bslash;&n;&t;struct lm75_data *data = i2c_get_clientdata(client);&t;&bslash;&n;&t;int temp = simple_strtoul(buf, NULL, 10);&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;down(&amp;data-&gt;update_lock);&t;&t;&t;&t;&bslash;&n;&t;data-&gt;value = LM75_TEMP_TO_REG(temp);&t;&t;&t;&bslash;&n;&t;lm75_write_value(client, reg, data-&gt;value);&t;&t;&bslash;&n;&t;up(&amp;data-&gt;update_lock);&t;&t;&t;&t;&t;&bslash;&n;&t;return count;&t;&t;&t;&t;&t;&t;&bslash;&n;}
 id|set
 c_func
 (paren

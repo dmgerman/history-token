@@ -380,9 +380,9 @@ id|TEMP1_FROM_REG
 )paren
 suffix:semicolon
 DECL|macro|set_temp1
-mdefine_line|#define set_temp1(value, reg) &bslash;&n;static ssize_t set_##value(struct device *dev, const char *buf, &bslash;&n;&t;size_t count) &bslash;&n;{ &bslash;&n;&t;struct i2c_client *client = to_i2c_client(dev); &bslash;&n;&t;struct lm90_data *data = i2c_get_clientdata(client); &bslash;&n;&t;long val = simple_strtol(buf, NULL, 10); &bslash;&n;&t;if (data-&gt;kind == adt7461) &bslash;&n;&t;&t;data-&gt;value = TEMP1_TO_REG_ADT7461(val); &bslash;&n;&t;else &bslash;&n;&t;&t;data-&gt;value = TEMP1_TO_REG(val); &bslash;&n;&t;i2c_smbus_write_byte_data(client, reg, data-&gt;value); &bslash;&n;&t;return count; &bslash;&n;}
+mdefine_line|#define set_temp1(value, reg) &bslash;&n;static ssize_t set_##value(struct device *dev, const char *buf, &bslash;&n;&t;size_t count) &bslash;&n;{ &bslash;&n;&t;struct i2c_client *client = to_i2c_client(dev); &bslash;&n;&t;struct lm90_data *data = i2c_get_clientdata(client); &bslash;&n;&t;long val = simple_strtol(buf, NULL, 10); &bslash;&n; &bslash;&n;&t;down(&amp;data-&gt;update_lock); &bslash;&n;&t;if (data-&gt;kind == adt7461) &bslash;&n;&t;&t;data-&gt;value = TEMP1_TO_REG_ADT7461(val); &bslash;&n;&t;else &bslash;&n;&t;&t;data-&gt;value = TEMP1_TO_REG(val); &bslash;&n;&t;i2c_smbus_write_byte_data(client, reg, data-&gt;value); &bslash;&n;&t;up(&amp;data-&gt;update_lock); &bslash;&n;&t;return count; &bslash;&n;}
 DECL|macro|set_temp2
-mdefine_line|#define set_temp2(value, regh, regl) &bslash;&n;static ssize_t set_##value(struct device *dev, const char *buf, &bslash;&n;&t;size_t count) &bslash;&n;{ &bslash;&n;&t;struct i2c_client *client = to_i2c_client(dev); &bslash;&n;&t;struct lm90_data *data = i2c_get_clientdata(client); &bslash;&n;&t;long val = simple_strtol(buf, NULL, 10); &bslash;&n;&t;if (data-&gt;kind == adt7461) &bslash;&n;&t;&t;data-&gt;value = TEMP2_TO_REG_ADT7461(val); &bslash;&n;&t;else &bslash;&n;&t;&t;data-&gt;value = TEMP2_TO_REG(val); &bslash;&n;&t;i2c_smbus_write_byte_data(client, regh, data-&gt;value &gt;&gt; 8); &bslash;&n;&t;i2c_smbus_write_byte_data(client, regl, data-&gt;value &amp; 0xff); &bslash;&n;&t;return count; &bslash;&n;}
+mdefine_line|#define set_temp2(value, regh, regl) &bslash;&n;static ssize_t set_##value(struct device *dev, const char *buf, &bslash;&n;&t;size_t count) &bslash;&n;{ &bslash;&n;&t;struct i2c_client *client = to_i2c_client(dev); &bslash;&n;&t;struct lm90_data *data = i2c_get_clientdata(client); &bslash;&n;&t;long val = simple_strtol(buf, NULL, 10); &bslash;&n; &bslash;&n;&t;down(&amp;data-&gt;update_lock); &bslash;&n;&t;if (data-&gt;kind == adt7461) &bslash;&n;&t;&t;data-&gt;value = TEMP2_TO_REG_ADT7461(val); &bslash;&n;&t;else &bslash;&n;&t;&t;data-&gt;value = TEMP2_TO_REG(val); &bslash;&n;&t;i2c_smbus_write_byte_data(client, regh, data-&gt;value &gt;&gt; 8); &bslash;&n;&t;i2c_smbus_write_byte_data(client, regl, data-&gt;value &amp; 0xff); &bslash;&n;&t;up(&amp;data-&gt;update_lock); &bslash;&n;&t;return count; &bslash;&n;}
 id|set_temp1
 c_func
 (paren
@@ -496,14 +496,8 @@ id|client
 )paren
 suffix:semicolon
 r_int
-id|hyst
+id|val
 op_assign
-id|TEMP1_FROM_REG
-c_func
-(paren
-id|data-&gt;temp_crit1
-)paren
-op_minus
 id|simple_strtol
 c_func
 (paren
@@ -513,6 +507,26 @@ l_int|NULL
 comma
 l_int|10
 )paren
+suffix:semicolon
+r_int
+id|hyst
+suffix:semicolon
+id|down
+c_func
+(paren
+op_amp
+id|data-&gt;update_lock
+)paren
+suffix:semicolon
+id|hyst
+op_assign
+id|TEMP1_FROM_REG
+c_func
+(paren
+id|data-&gt;temp_crit1
+)paren
+op_minus
+id|val
 suffix:semicolon
 id|i2c_smbus_write_byte_data
 c_func
@@ -526,6 +540,13 @@ c_func
 (paren
 id|hyst
 )paren
+)paren
+suffix:semicolon
+id|up
+c_func
+(paren
+op_amp
+id|data-&gt;update_lock
 )paren
 suffix:semicolon
 r_return

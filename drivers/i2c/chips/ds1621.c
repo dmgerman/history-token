@@ -460,7 +460,7 @@ id|temp_max
 )paren
 suffix:semicolon
 DECL|macro|set_temp
-mdefine_line|#define set_temp(suffix, value, reg)&t;&t;&t;&t;&t;&bslash;&n;static ssize_t set_temp_##suffix(struct device *dev, const char *buf,&t;&bslash;&n;&t;&t;&t;&t; size_t count)&t;&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;struct i2c_client *client = to_i2c_client(dev);&t;&t;&t;&bslash;&n;&t;struct ds1621_data *data = ds1621_update_client(dev);&t;&t;&bslash;&n;&t;data-&gt;value = LM75_TEMP_TO_REG(simple_strtoul(buf, NULL, 10));&t;&bslash;&n;&t;ds1621_write_value(client, reg, data-&gt;value);&t;&t;&t;&bslash;&n;&t;return count;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;}
+mdefine_line|#define set_temp(suffix, value, reg)&t;&t;&t;&t;&t;&bslash;&n;static ssize_t set_temp_##suffix(struct device *dev, const char *buf,&t;&bslash;&n;&t;&t;&t;&t; size_t count)&t;&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;struct i2c_client *client = to_i2c_client(dev);&t;&t;&t;&bslash;&n;&t;struct ds1621_data *data = ds1621_update_client(dev);&t;&t;&bslash;&n;&t;u16 val = LM75_TEMP_TO_REG(simple_strtoul(buf, NULL, 10));&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;down(&amp;data-&gt;update_lock);&t;&t;&t;&t;&t;&bslash;&n;&t;data-&gt;value = val;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;ds1621_write_value(client, reg, data-&gt;value);&t;&t;&t;&bslash;&n;&t;up(&amp;data-&gt;update_lock);&t;&t;&t;&t;&t;&t;&bslash;&n;&t;return count;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;}
 id|set_temp
 c_func
 (paren
