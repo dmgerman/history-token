@@ -1,10 +1,13 @@
 multiline_comment|/*&n; *  arch/s390/kernel/s390_ksyms.c&n; *&n; *  S390 version&n; */
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/highuid.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/smp.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;asm/checksum.h&gt;
 macro_line|#include &lt;asm/delay.h&gt;
+macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/setup.h&gt;
 macro_line|#if CONFIG_IP_MULTICAST
 macro_line|#include &lt;net/arp.h&gt;
@@ -173,6 +176,98 @@ c_func
 id|strpbrk
 )paren
 suffix:semicolon
+multiline_comment|/*&n; * binfmt_elf loader &n; */
+r_extern
+r_int
+id|dump_fpu
+(paren
+r_struct
+id|pt_regs
+op_star
+id|regs
+comma
+id|s390_fp_regs
+op_star
+id|fpregs
+)paren
+suffix:semicolon
+DECL|variable|dump_fpu
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|dump_fpu
+)paren
+suffix:semicolon
+DECL|variable|overflowuid
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|overflowuid
+)paren
+suffix:semicolon
+DECL|variable|overflowgid
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|overflowgid
+)paren
+suffix:semicolon
+macro_line|#ifdef CONFIG_S390_SUPPORT
+multiline_comment|/*&n; * Dynamically add/remove 31 bit ioctl conversion functions.&n; */
+r_extern
+r_int
+id|register_ioctl32_conversion
+c_func
+(paren
+r_int
+r_int
+id|cmd
+comma
+r_int
+(paren
+op_star
+id|handler
+)paren
+(paren
+r_int
+r_int
+comma
+r_int
+r_int
+comma
+r_int
+r_int
+comma
+r_struct
+id|file
+op_star
+)paren
+)paren
+suffix:semicolon
+r_int
+id|unregister_ioctl32_conversion
+c_func
+(paren
+r_int
+r_int
+id|cmd
+)paren
+suffix:semicolon
+DECL|variable|register_ioctl32_conversion
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|register_ioctl32_conversion
+)paren
+suffix:semicolon
+DECL|variable|unregister_ioctl32_conversion
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|unregister_ioctl32_conversion
+)paren
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/*&n; * misc.&n; */
 DECL|variable|machine_flags
 id|EXPORT_SYMBOL

@@ -66,6 +66,7 @@ op_star
 id|tsk-&gt;thread.ksp
 )paren
 suffix:semicolon
+macro_line|#ifndef CONFIG_ARCH_S390X
 r_return
 op_star
 (paren
@@ -81,6 +82,23 @@ l_int|56
 )paren
 )paren
 suffix:semicolon
+macro_line|#else
+r_return
+op_star
+(paren
+(paren
+r_int
+r_int
+op_star
+)paren
+(paren
+id|bc
+op_plus
+l_int|112
+)paren
+)paren
+suffix:semicolon
+macro_line|#endif
 )brace
 multiline_comment|/*&n; * The idle loop on a S390...&n; */
 DECL|function|default_idle
@@ -128,6 +146,7 @@ id|PSW_MASK_IO
 op_or
 id|PSW_MASK_EXT
 suffix:semicolon
+macro_line|#ifndef CONFIG_ARCH_S390X
 id|asm
 r_volatile
 (paren
@@ -159,6 +178,36 @@ comma
 l_string|&quot;cc&quot;
 )paren
 suffix:semicolon
+macro_line|#else /* CONFIG_ARCH_S390X */
+id|asm
+r_volatile
+(paren
+l_string|&quot;    larl  %0,0f&bslash;n&quot;
+l_string|&quot;    stg   %0,8(%1)&bslash;n&quot;
+l_string|&quot;    lpswe 0(%1)&bslash;n&quot;
+l_string|&quot;0:  larl  %0,1f&bslash;n&quot;
+l_string|&quot;    stg   %0,8(%1)&bslash;n&quot;
+l_string|&quot;    ni    1(%1),0xf9&bslash;n&quot;
+l_string|&quot;    lpswe 0(%1)&bslash;n&quot;
+l_string|&quot;1:&quot;
+suffix:colon
+l_string|&quot;=&amp;a&quot;
+(paren
+id|reg
+)paren
+suffix:colon
+l_string|&quot;a&quot;
+(paren
+op_amp
+id|wait_psw
+)paren
+suffix:colon
+l_string|&quot;memory&quot;
+comma
+l_string|&quot;cc&quot;
+)paren
+suffix:semicolon
+macro_line|#endif /* CONFIG_ARCH_S390X */
 )brace
 DECL|function|cpu_idle
 r_int
@@ -239,18 +288,22 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;Process %s (pid: %d, task: %08lx, ksp: %08x)&bslash;n&quot;
+l_string|&quot;Process %s (pid: %d, task: %p, ksp: %p)&bslash;n&quot;
 comma
 id|current-&gt;comm
 comma
 id|current-&gt;pid
 comma
 (paren
-r_int
-r_int
+r_void
+op_star
 )paren
 id|tsk
 comma
+(paren
+r_void
+op_star
+)paren
 id|tsk-&gt;thread.ksp
 )paren
 suffix:semicolon
@@ -294,6 +347,7 @@ c_func
 r_void
 )paren
 suffix:semicolon
+macro_line|#ifndef CONFIG_ARCH_S390X
 id|__asm__
 c_func
 (paren
@@ -308,6 +362,22 @@ l_string|&quot;    sr    2,2&bslash;n&quot;
 l_string|&quot;    br    11&bslash;n&quot;
 )paren
 suffix:semicolon
+macro_line|#else /* CONFIG_ARCH_S390X */
+id|__asm__
+c_func
+(paren
+l_string|&quot;.align 4&bslash;n&quot;
+l_string|&quot;kernel_thread_starter:&bslash;n&quot;
+l_string|&quot;    lg    15,0(8)&bslash;n&quot;
+l_string|&quot;    sgr   15,7&bslash;n&quot;
+l_string|&quot;    stosm 48(15),3&bslash;n&quot;
+l_string|&quot;    lgr   2,10&bslash;n&quot;
+l_string|&quot;    basr  14,9&bslash;n&quot;
+l_string|&quot;    sgr   2,2&bslash;n&quot;
+l_string|&quot;    br    11&bslash;n&quot;
+)paren
+suffix:semicolon
+macro_line|#endif /* CONFIG_ARCH_S390X */
 DECL|function|kernel_thread
 r_int
 id|kernel_thread
@@ -362,11 +432,12 @@ suffix:semicolon
 id|regs.psw.addr
 op_assign
 (paren
-id|__u32
+r_int
+r_int
 )paren
 id|kernel_thread_starter
 op_or
-id|PSW_ADDR_AMODE31
+id|PSW_ADDR_AMODE
 suffix:semicolon
 id|regs.gprs
 (braket
@@ -677,6 +748,7 @@ r_int
 )paren
 id|frame
 suffix:semicolon
+macro_line|#ifndef CONFIG_ARCH_S390X
 multiline_comment|/*&n;&t; * save fprs to current-&gt;thread.fp_regs to merge them with&n;&t; * the emulated registers and then copy the result to the child.&n;&t; */
 id|save_fp_regs
 c_func
@@ -714,7 +786,119 @@ id|p-&gt;mm-&gt;pgd
 op_or
 id|_SEGMENT_TABLE
 suffix:semicolon
-multiline_comment|/* start process with ar4 pointing to the correct address space */
+multiline_comment|/* Set a new TLS ?  */
+r_if
+c_cond
+(paren
+id|clone_flags
+op_amp
+id|CLONE_SETTLS
+)paren
+id|frame-&gt;childregs.acrs
+(braket
+l_int|0
+)braket
+op_assign
+id|regs-&gt;gprs
+(braket
+l_int|6
+)braket
+suffix:semicolon
+macro_line|#else /* CONFIG_ARCH_S390X */
+multiline_comment|/* Save the fpu registers to new thread structure. */
+id|save_fp_regs
+c_func
+(paren
+op_amp
+id|p-&gt;thread.fp_regs
+)paren
+suffix:semicolon
+id|p-&gt;thread.user_seg
+op_assign
+id|__pa
+c_func
+(paren
+(paren
+r_int
+r_int
+)paren
+id|p-&gt;mm-&gt;pgd
+)paren
+op_or
+id|_REGION_TABLE
+suffix:semicolon
+multiline_comment|/* Set a new TLS ?  */
+r_if
+c_cond
+(paren
+id|clone_flags
+op_amp
+id|CLONE_SETTLS
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|test_thread_flag
+c_func
+(paren
+id|TIF_31BIT
+)paren
+)paren
+(brace
+id|frame-&gt;childregs.acrs
+(braket
+l_int|0
+)braket
+op_assign
+(paren
+r_int
+r_int
+)paren
+id|regs-&gt;gprs
+(braket
+l_int|6
+)braket
+suffix:semicolon
+)brace
+r_else
+(brace
+id|frame-&gt;childregs.acrs
+(braket
+l_int|0
+)braket
+op_assign
+(paren
+r_int
+r_int
+)paren
+(paren
+id|regs-&gt;gprs
+(braket
+l_int|6
+)braket
+op_rshift
+l_int|32
+)paren
+suffix:semicolon
+id|frame-&gt;childregs.acrs
+(braket
+l_int|1
+)braket
+op_assign
+(paren
+r_int
+r_int
+)paren
+id|regs-&gt;gprs
+(braket
+l_int|6
+)braket
+suffix:semicolon
+)brace
+)brace
+macro_line|#endif /* CONFIG_ARCH_S390X */
+multiline_comment|/* start new process with ar4 pointing to the correct address space */
 id|p-&gt;thread.ar4
 op_assign
 id|get_fs
@@ -738,24 +922,6 @@ r_sizeof
 id|p-&gt;thread.per_info
 )paren
 )paren
-suffix:semicolon
-multiline_comment|/* Set a new TLS ?  */
-r_if
-c_cond
-(paren
-id|clone_flags
-op_amp
-id|CLONE_SETTLS
-)paren
-id|frame-&gt;childregs.acrs
-(braket
-l_int|0
-)braket
-op_assign
-id|regs-&gt;gprs
-(braket
-l_int|6
-)braket
 suffix:semicolon
 r_return
 l_int|0
@@ -1136,6 +1302,7 @@ op_star
 id|fpregs
 )paren
 (brace
+macro_line|#ifndef CONFIG_ARCH_S390X
 multiline_comment|/*&n;&t; * save fprs to current-&gt;thread.fp_regs to merge them with&n;&t; * the emulated registers and then copy the result to the dump.&n;&t; */
 id|save_fp_regs
 c_func
@@ -1158,6 +1325,14 @@ id|s390_fp_regs
 )paren
 )paren
 suffix:semicolon
+macro_line|#else /* CONFIG_ARCH_S390X */
+id|save_fp_regs
+c_func
+(paren
+id|fpregs
+)paren
+suffix:semicolon
+macro_line|#endif /* CONFIG_ARCH_S390X */
 r_return
 l_int|1
 suffix:semicolon
@@ -1363,7 +1538,13 @@ id|stack_page
 op_logical_or
 id|r15
 op_ge
-l_int|8188
+id|THREAD_SIZE
+op_minus
+r_sizeof
+(paren
+r_int
+r_int
+)paren
 op_plus
 id|stack_page
 )paren
@@ -1382,7 +1563,7 @@ op_star
 id|r15
 )paren
 op_amp
-l_int|0x7fffffff
+id|PSW_ADDR_INSN
 suffix:semicolon
 r_do
 (brace
@@ -1395,13 +1576,20 @@ id|stack_page
 op_logical_or
 id|bc
 op_ge
-l_int|8188
+id|THREAD_SIZE
+op_minus
+r_sizeof
+(paren
+r_int
+r_int
+)paren
 op_plus
 id|stack_page
 )paren
 r_return
 l_int|0
 suffix:semicolon
+macro_line|#ifndef CONFIG_ARCH_S390X
 id|r14
 op_assign
 (paren
@@ -1418,8 +1606,24 @@ l_int|56
 )paren
 )paren
 op_amp
-l_int|0x7fffffff
+id|PSW_ADDR_INSN
 suffix:semicolon
+macro_line|#else
+id|r14
+op_assign
+op_star
+(paren
+r_int
+r_int
+op_star
+)paren
+(paren
+id|bc
+op_plus
+l_int|112
+)paren
+suffix:semicolon
+macro_line|#endif
 r_if
 c_cond
 (paren
@@ -1446,7 +1650,7 @@ op_star
 id|bc
 )paren
 op_amp
-l_int|0x7fffffff
+id|PSW_ADDR_INSN
 suffix:semicolon
 )brace
 r_while

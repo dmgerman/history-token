@@ -11,10 +11,13 @@ macro_line|#else
 DECL|macro|DEBUGP
 mdefine_line|#define DEBUGP(fmt , ...)
 macro_line|#endif
-DECL|macro|GOT_ENTRY_SIZE
-mdefine_line|#define GOT_ENTRY_SIZE 4
+macro_line|#ifndef CONFIG_ARCH_S390X
 DECL|macro|PLT_ENTRY_SIZE
 mdefine_line|#define PLT_ENTRY_SIZE 12
+macro_line|#else /* CONFIG_ARCH_S390X */
+DECL|macro|PLT_ENTRY_SIZE
+mdefine_line|#define PLT_ENTRY_SIZE 20
+macro_line|#endif /* CONFIG_ARCH_S390X */
 DECL|function|module_alloc
 r_void
 op_star
@@ -75,7 +78,7 @@ DECL|function|check_rela
 id|check_rela
 c_func
 (paren
-id|Elf32_Rela
+id|Elf_Rela
 op_star
 id|rela
 comma
@@ -94,7 +97,7 @@ id|info
 op_assign
 id|me-&gt;arch.syminfo
 op_plus
-id|ELF32_R_SYM
+id|ELF_R_SYM
 (paren
 id|rela-&gt;r_info
 )paren
@@ -102,7 +105,7 @@ suffix:semicolon
 r_switch
 c_cond
 (paren
-id|ELF32_R_TYPE
+id|ELF_R_TYPE
 (paren
 id|rela-&gt;r_info
 )paren
@@ -121,6 +124,10 @@ id|R_390_GOT32
 suffix:colon
 multiline_comment|/* 32 bit GOT offset.  */
 r_case
+id|R_390_GOT64
+suffix:colon
+multiline_comment|/* 64 bit GOT offset.  */
+r_case
 id|R_390_GOTENT
 suffix:colon
 multiline_comment|/* 32 bit PC rel. to GOT entry shifted by 1. */
@@ -136,6 +143,10 @@ r_case
 id|R_390_GOTPLT32
 suffix:colon
 multiline_comment|/* 32 bit offset to jump slot. */
+r_case
+id|R_390_GOTPLT64
+suffix:colon
+multiline_comment|/* 64 bit offset to jump slot.&t;*/
 r_case
 id|R_390_GOTPLTENT
 suffix:colon
@@ -155,7 +166,11 @@ id|me-&gt;arch.got_size
 suffix:semicolon
 id|me-&gt;arch.got_size
 op_add_assign
-id|GOT_ENTRY_SIZE
+r_sizeof
+(paren
+r_void
+op_star
+)paren
 suffix:semicolon
 )brace
 r_break
@@ -173,6 +188,10 @@ id|R_390_PLT32
 suffix:colon
 multiline_comment|/* 32 bit PC relative PLT address.  */
 r_case
+id|R_390_PLT64
+suffix:colon
+multiline_comment|/* 64 bit PC relative PLT address.  */
+r_case
 id|R_390_PLTOFF16
 suffix:colon
 multiline_comment|/* 16 bit offset from GOT to PLT. */
@@ -180,6 +199,10 @@ r_case
 id|R_390_PLTOFF32
 suffix:colon
 multiline_comment|/* 32 bit offset from GOT to PLT. */
+r_case
+id|R_390_PLTOFF64
+suffix:colon
+multiline_comment|/* 16 bit offset from GOT to PLT. */
 r_if
 c_cond
 (paren
@@ -223,11 +246,11 @@ DECL|function|module_frob_arch_sections
 id|module_frob_arch_sections
 c_func
 (paren
-id|Elf32_Ehdr
+id|Elf_Ehdr
 op_star
 id|hdr
 comma
-id|Elf32_Shdr
+id|Elf_Shdr
 op_star
 id|sechdrs
 comma
@@ -241,15 +264,15 @@ op_star
 id|me
 )paren
 (brace
-id|Elf32_Shdr
+id|Elf_Shdr
 op_star
 id|symtab
 suffix:semicolon
-id|Elf32_Sym
+id|Elf_Sym
 op_star
 id|symbols
 suffix:semicolon
-id|Elf32_Rela
+id|Elf_Rela
 op_star
 id|rela
 suffix:semicolon
@@ -334,7 +357,7 @@ id|symtab-&gt;sh_size
 op_div
 r_sizeof
 (paren
-id|Elf32_Sym
+id|Elf_Sym
 )paren
 suffix:semicolon
 id|me-&gt;arch.syminfo
@@ -528,7 +551,7 @@ id|sh_size
 op_div
 r_sizeof
 (paren
-id|Elf32_Rela
+id|Elf_Rela
 )paren
 suffix:semicolon
 id|rela
@@ -651,14 +674,14 @@ DECL|function|apply_rela
 id|apply_rela
 c_func
 (paren
-id|Elf32_Rela
+id|Elf_Rela
 op_star
 id|rela
 comma
-id|Elf32_Addr
+id|Elf_Addr
 id|base
 comma
-id|Elf32_Sym
+id|Elf_Sym
 op_star
 id|symtab
 comma
@@ -673,7 +696,7 @@ id|mod_arch_syminfo
 op_star
 id|info
 suffix:semicolon
-id|Elf32_Addr
+id|Elf_Addr
 id|loc
 comma
 id|val
@@ -693,7 +716,7 @@ suffix:semicolon
 multiline_comment|/* This is the symbol it is referring to.  Note that all&n;&t;   undefined symbols have been resolved.  */
 id|r_sym
 op_assign
-id|ELF32_R_SYM
+id|ELF_R_SYM
 c_func
 (paren
 id|rela-&gt;r_info
@@ -701,7 +724,7 @@ id|rela-&gt;r_info
 suffix:semicolon
 id|r_type
 op_assign
-id|ELF32_R_TYPE
+id|ELF_R_TYPE
 c_func
 (paren
 id|rela-&gt;r_info
@@ -744,6 +767,10 @@ r_case
 id|R_390_32
 suffix:colon
 multiline_comment|/* Direct 32 bit.  */
+r_case
+id|R_390_64
+suffix:colon
+multiline_comment|/* Direct 64 bit.  */
 id|val
 op_add_assign
 id|rela-&gt;r_addend
@@ -835,6 +862,24 @@ id|loc
 op_assign
 id|val
 suffix:semicolon
+r_else
+r_if
+c_cond
+(paren
+id|r_type
+op_eq
+id|R_390_64
+)paren
+op_star
+(paren
+r_int
+r_int
+op_star
+)paren
+id|loc
+op_assign
+id|val
+suffix:semicolon
 r_break
 suffix:semicolon
 r_case
@@ -853,6 +898,10 @@ r_case
 id|R_390_PC32
 suffix:colon
 multiline_comment|/* PC relative 32 bit.  */
+r_case
+id|R_390_PC64
+suffix:colon
+multiline_comment|/* PC relative 64 bit.&t;*/
 id|val
 op_add_assign
 id|rela-&gt;r_addend
@@ -934,6 +983,24 @@ id|loc
 op_assign
 id|val
 suffix:semicolon
+r_else
+r_if
+c_cond
+(paren
+id|r_type
+op_eq
+id|R_390_PC64
+)paren
+op_star
+(paren
+r_int
+r_int
+op_star
+)paren
+id|loc
+op_assign
+id|val
+suffix:semicolon
 r_break
 suffix:semicolon
 r_case
@@ -948,6 +1015,10 @@ r_case
 id|R_390_GOT32
 suffix:colon
 multiline_comment|/* 32 bit GOT offset.  */
+r_case
+id|R_390_GOT64
+suffix:colon
+multiline_comment|/* 64 bit GOT offset.  */
 r_case
 id|R_390_GOTENT
 suffix:colon
@@ -965,6 +1036,10 @@ id|R_390_GOTPLT32
 suffix:colon
 multiline_comment|/* 32 bit offset to jump slot. */
 r_case
+id|R_390_GOTPLT64
+suffix:colon
+multiline_comment|/* 64 bit offset to jump slot.&t;*/
+r_case
 id|R_390_GOTPLTENT
 suffix:colon
 multiline_comment|/* 32 bit rel. offset to jump slot &gt;&gt; 1. */
@@ -976,7 +1051,7 @@ op_eq
 l_int|0
 )paren
 (brace
-id|Elf32_Addr
+id|Elf_Addr
 op_star
 id|gotent
 suffix:semicolon
@@ -1109,6 +1184,28 @@ id|val
 op_rshift
 l_int|1
 suffix:semicolon
+r_else
+r_if
+c_cond
+(paren
+id|r_type
+op_eq
+id|R_390_GOT64
+op_logical_or
+id|r_type
+op_eq
+id|R_390_GOTPLT64
+)paren
+op_star
+(paren
+r_int
+r_int
+op_star
+)paren
+id|loc
+op_assign
+id|val
+suffix:semicolon
 r_break
 suffix:semicolon
 r_case
@@ -1124,6 +1221,10 @@ id|R_390_PLT32
 suffix:colon
 multiline_comment|/* 32 bit PC relative PLT address.  */
 r_case
+id|R_390_PLT64
+suffix:colon
+multiline_comment|/* 64 bit PC relative PLT address.  */
+r_case
 id|R_390_PLTOFF16
 suffix:colon
 multiline_comment|/* 16 bit offset from GOT to PLT. */
@@ -1131,6 +1232,10 @@ r_case
 id|R_390_PLTOFF32
 suffix:colon
 multiline_comment|/* 32 bit offset from GOT to PLT. */
+r_case
+id|R_390_PLTOFF64
+suffix:colon
+multiline_comment|/* 16 bit offset from GOT to PLT. */
 r_if
 c_cond
 (paren
@@ -1152,6 +1257,7 @@ id|me-&gt;arch.plt_offset
 op_plus
 id|info-&gt;plt_offset
 suffix:semicolon
+macro_line|#ifndef CONFIG_ARCH_S390X
 id|ip
 (braket
 l_int|0
@@ -1174,6 +1280,56 @@ l_int|2
 op_assign
 id|val
 suffix:semicolon
+macro_line|#else /* CONFIG_ARCH_S390X */
+id|ip
+(braket
+l_int|0
+)braket
+op_assign
+l_int|0x0d10e310
+suffix:semicolon
+multiline_comment|/* basr 1,0; lg 1,10(1); br 1 */
+id|ip
+(braket
+l_int|1
+)braket
+op_assign
+l_int|0x100a0004
+suffix:semicolon
+id|ip
+(braket
+l_int|2
+)braket
+op_assign
+l_int|0x07f10000
+suffix:semicolon
+id|ip
+(braket
+l_int|3
+)braket
+op_assign
+(paren
+r_int
+r_int
+)paren
+(paren
+id|val
+op_rshift
+l_int|32
+)paren
+suffix:semicolon
+id|ip
+(braket
+l_int|4
+)braket
+op_assign
+(paren
+r_int
+r_int
+)paren
+id|val
+suffix:semicolon
+macro_line|#endif /* CONFIG_ARCH_S390X */
 id|info-&gt;plt_initialized
 op_assign
 l_int|1
@@ -1189,6 +1345,10 @@ op_logical_or
 id|r_type
 op_eq
 id|R_390_PLTOFF32
+op_logical_or
+id|r_type
+op_eq
+id|R_390_PLTOFF64
 )paren
 id|val
 op_assign
@@ -1204,7 +1364,7 @@ r_else
 id|val
 op_assign
 (paren
-id|Elf32_Addr
+id|Elf_Addr
 )paren
 id|me-&gt;module_core
 op_plus
@@ -1295,6 +1455,28 @@ id|loc
 op_assign
 id|val
 suffix:semicolon
+r_else
+r_if
+c_cond
+(paren
+id|r_type
+op_eq
+id|R_390_PLT64
+op_logical_or
+id|r_type
+op_eq
+id|R_390_PLTOFF64
+)paren
+op_star
+(paren
+r_int
+r_int
+op_star
+)paren
+id|loc
+op_assign
+id|val
+suffix:semicolon
 r_break
 suffix:semicolon
 r_case
@@ -1305,6 +1487,10 @@ r_case
 id|R_390_GOTOFF32
 suffix:colon
 multiline_comment|/* 32 bit offset to GOT.  */
+r_case
+id|R_390_GOTOFF64
+suffix:colon
+multiline_comment|/* 64 bit offset to GOT. */
 id|val
 op_assign
 id|val
@@ -1313,7 +1499,7 @@ id|rela-&gt;r_addend
 op_minus
 (paren
 (paren
-id|Elf32_Addr
+id|Elf_Addr
 )paren
 id|me-&gt;module_core
 op_plus
@@ -1344,6 +1530,24 @@ c_cond
 id|r_type
 op_eq
 id|R_390_GOTOFF32
+)paren
+op_star
+(paren
+r_int
+r_int
+op_star
+)paren
+id|loc
+op_assign
+id|val
+suffix:semicolon
+r_else
+r_if
+c_cond
+(paren
+id|r_type
+op_eq
+id|R_390_GOTOFF64
 )paren
 op_star
 (paren
@@ -1368,7 +1572,7 @@ multiline_comment|/* 32 bit PC rel. off. to GOT shifted by 1. */
 id|val
 op_assign
 (paren
-id|Elf32_Addr
+id|Elf_Addr
 )paren
 id|me-&gt;module_core
 op_plus
@@ -1462,7 +1666,7 @@ DECL|function|apply_relocate_add
 id|apply_relocate_add
 c_func
 (paren
-id|Elf32_Shdr
+id|Elf_Shdr
 op_star
 id|sechdrs
 comma
@@ -1485,14 +1689,14 @@ op_star
 id|me
 )paren
 (brace
-id|Elf32_Addr
+id|Elf_Addr
 id|base
 suffix:semicolon
-id|Elf32_Sym
+id|Elf_Sym
 op_star
 id|symtab
 suffix:semicolon
-id|Elf32_Rela
+id|Elf_Rela
 op_star
 id|rela
 suffix:semicolon
@@ -1537,7 +1741,7 @@ suffix:semicolon
 id|symtab
 op_assign
 (paren
-id|Elf32_Sym
+id|Elf_Sym
 op_star
 )paren
 id|sechdrs
@@ -1550,7 +1754,7 @@ suffix:semicolon
 id|rela
 op_assign
 (paren
-id|Elf32_Rela
+id|Elf_Rela
 op_star
 )paren
 id|sechdrs
@@ -1571,7 +1775,7 @@ id|sh_size
 op_div
 r_sizeof
 (paren
-id|Elf32_Rela
+id|Elf_Rela
 )paren
 suffix:semicolon
 r_for

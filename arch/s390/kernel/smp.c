@@ -1019,11 +1019,6 @@ id|ec_bit_sig
 id|sig
 )paren
 (brace
-r_struct
-id|_lowcore
-op_star
-id|lowcore
-suffix:semicolon
 r_int
 id|i
 suffix:semicolon
@@ -1060,13 +1055,6 @@ op_eq
 id|i
 )paren
 r_continue
-suffix:semicolon
-id|lowcore
-op_assign
-id|lowcore_ptr
-(braket
-id|i
-)braket
 suffix:semicolon
 multiline_comment|/*&n;                 * Set signaling bit in lowcore of target cpu and kick it&n;                 */
 id|set_bit
@@ -1109,6 +1097,7 @@ l_int|10
 suffix:semicolon
 )brace
 )brace
+macro_line|#ifndef CONFIG_ARCH_S390X
 multiline_comment|/*&n; * this function sends a &squot;purge tlb&squot; signal to another CPU.&n; */
 DECL|function|smp_ptlb_callback
 r_void
@@ -1147,6 +1136,7 @@ l_int|1
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif /* ! CONFIG_ARCH_S390X */
 multiline_comment|/*&n; * this function sends a &squot;reschedule&squot; IPI to another CPU.&n; * it goes straight through and wastes no time serializing&n; * anything. Worst case is that we lose a reschedule ...&n; */
 DECL|function|smp_send_reschedule
 r_void
@@ -1179,14 +1169,16 @@ id|__u16
 id|end_ctl
 suffix:semicolon
 DECL|member|orvals
-id|__u32
+r_int
+r_int
 id|orvals
 (braket
 l_int|16
 )braket
 suffix:semicolon
 DECL|member|andvals
-id|__u32
+r_int
+r_int
 id|andvals
 (braket
 l_int|16
@@ -1211,7 +1203,8 @@ id|ec_creg_mask_parms
 op_star
 id|pp
 suffix:semicolon
-id|u32
+r_int
+r_int
 id|cregs
 (braket
 l_int|16
@@ -1228,35 +1221,17 @@ op_star
 )paren
 id|info
 suffix:semicolon
-id|asm
-r_volatile
-(paren
-l_string|&quot;   bras  1,0f&bslash;n&quot;
-l_string|&quot;   stctl 0,0,0(%0)&bslash;n&quot;
-l_string|&quot;0: ex    %1,0(1)&bslash;n&quot;
-suffix:colon
-suffix:colon
-l_string|&quot;a&quot;
+id|__ctl_store
+c_func
 (paren
 id|cregs
-op_plus
+(braket
 id|pp-&gt;start_ctl
-)paren
+)braket
 comma
-l_string|&quot;a&quot;
-(paren
-(paren
 id|pp-&gt;start_ctl
-op_lshift
-l_int|4
-)paren
-op_plus
+comma
 id|pp-&gt;end_ctl
-)paren
-suffix:colon
-l_string|&quot;memory&quot;
-comma
-l_string|&quot;1&quot;
 )paren
 suffix:semicolon
 r_for
@@ -1295,38 +1270,18 @@ id|pp-&gt;orvals
 id|i
 )braket
 suffix:semicolon
-id|asm
-r_volatile
-(paren
-l_string|&quot;   bras  1,0f&bslash;n&quot;
-l_string|&quot;   lctl 0,0,0(%0)&bslash;n&quot;
-l_string|&quot;0: ex    %1,0(1)&bslash;n&quot;
-suffix:colon
-suffix:colon
-l_string|&quot;a&quot;
+id|__ctl_load
+c_func
 (paren
 id|cregs
-op_plus
+(braket
 id|pp-&gt;start_ctl
-)paren
+)braket
 comma
-l_string|&quot;a&quot;
-(paren
-(paren
 id|pp-&gt;start_ctl
-op_lshift
-l_int|4
-)paren
-op_plus
+comma
 id|pp-&gt;end_ctl
 )paren
-suffix:colon
-l_string|&quot;memory&quot;
-comma
-l_string|&quot;1&quot;
-)paren
-suffix:semicolon
-r_return
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Set a bit in a control register of all cpus&n; */
@@ -1367,7 +1322,8 @@ id|parms.andvals
 id|cr
 )braket
 op_assign
-l_int|0xFFFFFFFF
+op_minus
+l_int|1L
 suffix:semicolon
 id|preempt_disable
 c_func
@@ -1430,7 +1386,7 @@ id|parms.orvals
 id|cr
 )braket
 op_assign
-l_int|0x00000000
+l_int|0
 suffix:semicolon
 id|parms.andvals
 (braket
@@ -1439,7 +1395,7 @@ id|cr
 op_assign
 op_complement
 (paren
-l_int|1
+l_int|1L
 op_lshift
 id|bit
 )paren
@@ -1785,7 +1741,8 @@ id|signal_processor_p
 c_func
 (paren
 (paren
-id|u32
+r_int
+r_int
 )paren
 (paren
 id|lowcore_ptr
@@ -1890,14 +1847,26 @@ suffix:semicolon
 id|cpu_lowcore-&gt;kernel_stack
 op_assign
 (paren
-id|__u32
+r_int
+r_int
 )paren
 id|idle-&gt;thread_info
 op_plus
 (paren
-l_int|2
-op_star
-id|PAGE_SIZE
+id|THREAD_SIZE
+)paren
+suffix:semicolon
+id|__ctl_store
+c_func
+(paren
+id|cpu_lowcore-&gt;cregs_save_area
+(braket
+l_int|0
+)braket
+comma
+l_int|0
+comma
+l_int|15
 )paren
 suffix:semicolon
 id|__asm__
@@ -1905,18 +1874,8 @@ id|__volatile__
 c_func
 (paren
 l_string|&quot;la    1,%0&bslash;n&bslash;t&quot;
-l_string|&quot;stctl 0,15,0(1)&bslash;n&bslash;t&quot;
-l_string|&quot;la    1,%1&bslash;n&bslash;t&quot;
 l_string|&quot;stam  0,15,0(1)&quot;
 suffix:colon
-l_string|&quot;=m&quot;
-(paren
-id|cpu_lowcore-&gt;cregs_save_area
-(braket
-l_int|0
-)braket
-)paren
-comma
 l_string|&quot;=m&quot;
 (paren
 id|cpu_lowcore-&gt;access_regs_save_area
@@ -2062,12 +2021,25 @@ r_struct
 id|_lowcore
 op_star
 )paren
-id|__get_free_page
+id|__get_free_pages
 c_func
 (paren
 id|GFP_KERNEL
 op_or
 id|GFP_DMA
+comma
+r_sizeof
+(paren
+r_void
+op_star
+)paren
+op_eq
+l_int|8
+ques
+c_cond
+l_int|1
+suffix:colon
+l_int|0
 )paren
 suffix:semicolon
 id|async_stack
@@ -2077,7 +2049,7 @@ c_func
 (paren
 id|GFP_KERNEL
 comma
-l_int|1
+id|ASYNC_ORDER
 )paren
 suffix:semicolon
 r_if
@@ -2092,7 +2064,7 @@ l_int|NULL
 op_logical_or
 id|async_stack
 op_eq
-l_int|0UL
+l_int|0ULL
 )paren
 id|panic
 c_func
@@ -2128,9 +2100,7 @@ op_assign
 id|async_stack
 op_plus
 (paren
-l_int|2
-op_star
-id|PAGE_SIZE
+id|ASYNC_SIZE
 )paren
 suffix:semicolon
 )brace
@@ -2139,6 +2109,10 @@ c_func
 (paren
 (paren
 id|u32
+)paren
+(paren
+r_int
+r_int
 )paren
 id|lowcore_ptr
 (braket

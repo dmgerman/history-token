@@ -1214,6 +1214,7 @@ op_assign
 l_int|1
 suffix:semicolon
 multiline_comment|/*&n;         * print what head.S has found out about the machine &n;         */
+macro_line|#ifndef CONFIG_ARCH_S390X
 id|printk
 c_func
 (paren
@@ -1240,6 +1241,21 @@ suffix:colon
 l_string|&quot;This machine has no IEEE fpu&bslash;n&quot;
 )paren
 suffix:semicolon
+macro_line|#else /* CONFIG_ARCH_S390X */
+id|printk
+c_func
+(paren
+(paren
+id|MACHINE_IS_VM
+)paren
+ques
+c_cond
+l_string|&quot;We are running under VM (64 bit mode)&bslash;n&quot;
+suffix:colon
+l_string|&quot;We are running native (64 bit mode)&bslash;n&quot;
+)paren
+suffix:semicolon
+macro_line|#endif /* CONFIG_ARCH_S390X */
 id|ROOT_DEV
 op_assign
 id|Root_RAM0
@@ -1254,6 +1270,7 @@ op_amp
 id|_end
 suffix:semicolon
 multiline_comment|/* fixit if use $CODELO etc*/
+macro_line|#ifndef CONFIG_ARCH_S390X
 id|memory_end
 op_assign
 id|memory_size
@@ -1282,6 +1299,16 @@ l_int|1024
 op_star
 l_int|1024
 suffix:semicolon
+macro_line|#else /* CONFIG_ARCH_S390X */
+id|memory_end
+op_assign
+id|memory_size
+op_amp
+op_complement
+l_int|0x200000UL
+suffix:semicolon
+multiline_comment|/* detected in head.s */
+macro_line|#endif /* CONFIG_ARCH_S390X */
 id|init_mm.start_code
 op_assign
 id|PAGE_OFFSET
@@ -1893,6 +1920,7 @@ suffix:semicolon
 )brace
 macro_line|#endif
 multiline_comment|/*&n;         * Setup lowcore for boot cpu&n;         */
+macro_line|#ifndef CONFIG_ARCH_S390X
 id|lc
 op_assign
 (paren
@@ -1920,16 +1948,52 @@ comma
 id|PAGE_SIZE
 )paren
 suffix:semicolon
+macro_line|#else /* CONFIG_ARCH_S390X */
+id|lc
+op_assign
+(paren
+r_struct
+id|_lowcore
+op_star
+)paren
+id|__alloc_bootmem
+c_func
+(paren
+l_int|2
+op_star
+id|PAGE_SIZE
+comma
+l_int|2
+op_star
+id|PAGE_SIZE
+comma
+l_int|0
+)paren
+suffix:semicolon
+id|memset
+c_func
+(paren
+id|lc
+comma
+l_int|0
+comma
+l_int|2
+op_star
+id|PAGE_SIZE
+)paren
+suffix:semicolon
+macro_line|#endif /* CONFIG_ARCH_S390X */
 id|lc-&gt;restart_psw.mask
 op_assign
 id|PSW_BASE_BITS
 suffix:semicolon
 id|lc-&gt;restart_psw.addr
 op_assign
-id|PSW_ADDR_AMODE31
+id|PSW_ADDR_AMODE
 op_plus
 (paren
-id|__u32
+r_int
+r_int
 )paren
 id|restart_int_handler
 suffix:semicolon
@@ -1939,10 +2003,11 @@ id|PSW_KERNEL_BITS
 suffix:semicolon
 id|lc-&gt;external_new_psw.addr
 op_assign
-id|PSW_ADDR_AMODE31
+id|PSW_ADDR_AMODE
 op_plus
 (paren
-id|__u32
+r_int
+r_int
 )paren
 id|ext_int_handler
 suffix:semicolon
@@ -1952,10 +2017,11 @@ id|PSW_KERNEL_BITS
 suffix:semicolon
 id|lc-&gt;svc_new_psw.addr
 op_assign
-id|PSW_ADDR_AMODE31
+id|PSW_ADDR_AMODE
 op_plus
 (paren
-id|__u32
+r_int
+r_int
 )paren
 id|system_call
 suffix:semicolon
@@ -1965,10 +2031,11 @@ id|PSW_KERNEL_BITS
 suffix:semicolon
 id|lc-&gt;program_new_psw.addr
 op_assign
-id|PSW_ADDR_AMODE31
+id|PSW_ADDR_AMODE
 op_plus
 (paren
-id|__u32
+r_int
+r_int
 )paren
 id|pgm_check_handler
 suffix:semicolon
@@ -1978,10 +2045,11 @@ id|PSW_KERNEL_BITS
 suffix:semicolon
 id|lc-&gt;mcck_new_psw.addr
 op_assign
-id|PSW_ADDR_AMODE31
+id|PSW_ADDR_AMODE
 op_plus
 (paren
-id|__u32
+r_int
+r_int
 )paren
 id|mcck_int_handler
 suffix:semicolon
@@ -1991,10 +2059,11 @@ id|PSW_KERNEL_BITS
 suffix:semicolon
 id|lc-&gt;io_new_psw.addr
 op_assign
-id|PSW_ADDR_AMODE31
+id|PSW_ADDR_AMODE
 op_plus
 (paren
-id|__u32
+r_int
+r_int
 )paren
 id|io_int_handler
 suffix:semicolon
@@ -2002,6 +2071,12 @@ id|lc-&gt;ipl_device
 op_assign
 id|S390_lowcore.ipl_device
 suffix:semicolon
+id|lc-&gt;jiffy_timer
+op_assign
+op_minus
+l_int|1LL
+suffix:semicolon
+macro_line|#ifndef CONFIG_ARCH_S390X
 id|lc-&gt;kernel_stack
 op_assign
 (paren
@@ -2035,11 +2110,6 @@ l_int|0
 op_plus
 l_int|8192
 suffix:semicolon
-id|lc-&gt;jiffy_timer
-op_assign
-op_minus
-l_int|1LL
-suffix:semicolon
 id|set_prefix
 c_func
 (paren
@@ -2049,6 +2119,67 @@ id|__u32
 id|lc
 )paren
 suffix:semicolon
+macro_line|#else /* CONFIG_ARCH_S390X */
+id|lc-&gt;kernel_stack
+op_assign
+(paren
+(paren
+id|__u64
+)paren
+op_amp
+id|init_thread_union
+)paren
+op_plus
+l_int|16384
+suffix:semicolon
+id|lc-&gt;async_stack
+op_assign
+(paren
+id|__u64
+)paren
+id|__alloc_bootmem
+c_func
+(paren
+l_int|4
+op_star
+id|PAGE_SIZE
+comma
+l_int|4
+op_star
+id|PAGE_SIZE
+comma
+l_int|0
+)paren
+op_plus
+l_int|16384
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|MACHINE_HAS_DIAG44
+)paren
+id|lc-&gt;diag44_opcode
+op_assign
+l_int|0x83000044
+suffix:semicolon
+r_else
+id|lc-&gt;diag44_opcode
+op_assign
+l_int|0x07000700
+suffix:semicolon
+id|set_prefix
+c_func
+(paren
+(paren
+id|__u32
+)paren
+(paren
+id|__u64
+)paren
+id|lc
+)paren
+suffix:semicolon
+macro_line|#endif /* CONFIG_ARCH_S390X */
 id|cpu_init
 c_func
 (paren
