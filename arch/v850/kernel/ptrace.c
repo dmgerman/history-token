@@ -391,7 +391,7 @@ l_int|1
 )paren
 multiline_comment|/* you may not mess with init */
 r_goto
-id|out
+id|out_tsk
 suffix:semicolon
 r_if
 c_cond
