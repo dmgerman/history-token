@@ -481,6 +481,27 @@ op_star
 id|dev
 )paren
 suffix:semicolon
+r_extern
+r_int
+id|tc_classify
+c_func
+(paren
+r_struct
+id|sk_buff
+op_star
+id|skb
+comma
+r_struct
+id|tcf_proto
+op_star
+id|tp
+comma
+r_struct
+id|tcf_result
+op_star
+id|res
+)paren
+suffix:semicolon
 multiline_comment|/* Calculate maximal size of packet seen by hard_start_xmit&n;   routine of this device.&n; */
 DECL|function|psched_mtu
 r_static
