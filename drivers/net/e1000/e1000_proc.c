@@ -6,7 +6,11 @@ macro_line|#include &lt;linux/proc_fs.h&gt;
 DECL|macro|ADAPTERS_PROC_DIR
 mdefine_line|#define ADAPTERS_PROC_DIR           &quot;PRO_LAN_Adapters&quot;
 DECL|macro|TAG_MAX_LENGTH
-mdefine_line|#define TAG_MAX_LENGTH              36
+mdefine_line|#define TAG_MAX_LENGTH              32
+DECL|macro|LINE_MAX_LENGTH
+mdefine_line|#define LINE_MAX_LENGTH             80
+DECL|macro|FIELD_MAX_LENGTH
+mdefine_line|#define FIELD_MAX_LENGTH            LINE_MAX_LENGTH - TAG_MAX_LENGTH - 3
 r_extern
 r_char
 id|e1000_driver_name
@@ -35,6 +39,8 @@ r_char
 id|tag
 (braket
 id|TAG_MAX_LENGTH
+op_plus
+l_int|1
 )braket
 suffix:semicolon
 multiline_comment|/* attribute name */
@@ -223,7 +229,9 @@ suffix:semicolon
 r_char
 id|buf
 (braket
-l_int|64
+id|FIELD_MAX_LENGTH
+op_plus
+l_int|1
 )braket
 suffix:semicolon
 id|list_for_each
@@ -250,13 +258,25 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|p
+op_minus
+id|page
+op_plus
+id|LINE_MAX_LENGTH
+op_ge
+id|PAGE_SIZE
+)paren
+r_break
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
 id|strlen
 c_func
 (paren
 id|elem-&gt;tag
 )paren
-op_eq
-l_int|0
 )paren
 (brace
 id|p
@@ -278,9 +298,15 @@ c_func
 (paren
 id|p
 comma
-l_string|&quot;%-32s %s&bslash;n&quot;
+l_string|&quot;%-*.*s %.*s&bslash;n&quot;
+comma
+id|TAG_MAX_LENGTH
+comma
+id|TAG_MAX_LENGTH
 comma
 id|elem-&gt;tag
+comma
+id|FIELD_MAX_LENGTH
 comma
 id|elem
 op_member_access_from_pointer
@@ -359,7 +385,9 @@ c_func
 (paren
 id|page
 comma
-l_string|&quot;%s&quot;
+l_string|&quot;%.*s&quot;
+comma
+id|FIELD_MAX_LENGTH
 comma
 id|elem
 op_member_access_from_pointer
@@ -458,7 +486,7 @@ id|ADAPTERS_PROC_DIR
 )paren
 )paren
 op_logical_and
-(paren
+op_logical_neg
 id|memcmp
 c_func
 (paren
@@ -471,9 +499,6 @@ c_func
 (paren
 id|ADAPTERS_PROC_DIR
 )paren
-)paren
-op_eq
-l_int|0
 )paren
 )paren
 (brace
@@ -664,8 +689,6 @@ id|proc_net
 )paren
 suffix:semicolon
 )brace
-r_return
-suffix:semicolon
 )brace
 r_static
 r_int
@@ -724,13 +747,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|strlen
 c_func
 (paren
 id|elem-&gt;tag
 )paren
-op_eq
-l_int|0
 )paren
 (brace
 r_continue
@@ -779,12 +801,16 @@ l_int|1
 suffix:semicolon
 )brace
 r_static
-r_int
+r_void
 id|__devinit
 DECL|function|e1000_proc_dirs_create
 id|e1000_proc_dirs_create
 c_func
 (paren
+r_void
+op_star
+id|data
+comma
 r_char
 op_star
 id|name
@@ -849,7 +875,7 @@ id|ADAPTERS_PROC_DIR
 )paren
 )paren
 op_logical_and
-(paren
+op_logical_neg
 id|memcmp
 c_func
 (paren
@@ -862,9 +888,6 @@ c_func
 (paren
 id|ADAPTERS_PROC_DIR
 )paren
-)paren
-op_eq
-l_int|0
 )paren
 )paren
 (brace
@@ -898,7 +921,6 @@ id|proc_net
 )paren
 (brace
 r_return
-l_int|0
 suffix:semicolon
 )brace
 r_if
@@ -921,7 +943,6 @@ id|intel_proc_dir
 )paren
 (brace
 r_return
-l_int|0
 suffix:semicolon
 )brace
 id|SET_MODULE_OWNER
@@ -944,7 +965,6 @@ id|proc_list_head
 )paren
 (brace
 r_return
-l_int|0
 suffix:semicolon
 )brace
 id|strcpy
@@ -983,7 +1003,6 @@ id|intel_proc_dir
 )paren
 (brace
 r_return
-l_int|0
 suffix:semicolon
 )brace
 id|SET_MODULE_OWNER
@@ -999,9 +1018,6 @@ suffix:semicolon
 id|info_entry-&gt;data
 op_assign
 id|proc_list_head
-suffix:semicolon
-r_return
-l_int|1
 suffix:semicolon
 )brace
 r_static
@@ -1117,8 +1133,6 @@ comma
 id|proc_list_head
 )paren
 suffix:semicolon
-r_return
-suffix:semicolon
 )brace
 r_static
 r_void
@@ -1176,8 +1190,6 @@ id|elem
 )paren
 suffix:semicolon
 )brace
-r_return
-suffix:semicolon
 )brace
 multiline_comment|/*&n; * General purpose formating functions&n; */
 r_static
@@ -3142,8 +3154,6 @@ id|e1000_proc_rx_status
 )paren
 suffix:semicolon
 )brace
-r_return
-suffix:semicolon
 )brace
 multiline_comment|/*&n; * e1000_proc_dev_setup - create proc fs nodes and link list&n; * @adapter: board private structure&n; */
 r_void
@@ -3167,13 +3177,13 @@ suffix:semicolon
 id|e1000_proc_dirs_create
 c_func
 (paren
+id|adapter
+comma
 id|adapter-&gt;netdev-&gt;name
 comma
 op_amp
 id|adapter-&gt;proc_list_head
 )paren
-suffix:semicolon
-r_return
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * e1000_proc_dev_free - free proc fs nodes and link list&n; * @adapter: board private structure&n; */
@@ -3204,8 +3214,6 @@ c_func
 op_amp
 id|adapter-&gt;proc_list_head
 )paren
-suffix:semicolon
-r_return
 suffix:semicolon
 )brace
 macro_line|#else /* CONFIG_PROC_FS */
