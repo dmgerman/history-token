@@ -104,6 +104,8 @@ comma
 id|cpu
 comma
 id|cpunid
+comma
+id|pxm
 suffix:semicolon
 id|u8
 id|cslit
@@ -135,6 +137,14 @@ r_int
 id|node_flip
 (braket
 id|NR_NODES
+)braket
+id|__initdata
+suffix:semicolon
+r_static
+r_int
+id|old_nid_map
+(braket
+id|NR_CPUS
 )braket
 id|__initdata
 suffix:semicolon
@@ -338,7 +348,7 @@ op_eq
 id|i
 )paren
 (brace
-multiline_comment|/* For nodes not being reassigned just fix the cpu&squot;s nid. */
+multiline_comment|/*&n;&t;&t;&t;&t; * For nodes not being reassigned just&n;&t;&t;&t;&t; * fix the cpu&squot;s nid and reverse pxm map&n;&t;&t;&t;&t; */
 r_if
 c_cond
 (paren
@@ -347,6 +357,18 @@ OL
 id|numnodes
 )paren
 (brace
+id|pxm
+op_assign
+id|nid_to_pxm_map
+(braket
+id|i
+)braket
+suffix:semicolon
+id|pxm_to_nid_map
+(braket
+id|pxm
+)braket
+op_assign
 id|node_cpuid
 (braket
 id|cpu
@@ -441,6 +463,19 @@ id|cslit
 suffix:semicolon
 )brace
 )brace
+multiline_comment|/* save old nid map so we can update the pxm */
+id|old_nid_map
+(braket
+id|cpu
+)braket
+op_assign
+id|node_cpuid
+(braket
+id|cpu
+)braket
+dot
+id|nid
+suffix:semicolon
 id|node_cpuid
 (braket
 id|cpu
@@ -483,6 +518,22 @@ op_plus
 id|numnodes
 )paren
 )paren
+(brace
+id|pxm
+op_assign
+id|nid_to_pxm_map
+(braket
+id|old_nid_map
+(braket
+id|cpu
+)braket
+)braket
+suffix:semicolon
+id|pxm_to_nid_map
+(braket
+id|pxm
+)braket
+op_assign
 id|node_cpuid
 (braket
 id|cpu
@@ -494,7 +545,9 @@ id|nnode
 op_minus
 l_int|1
 suffix:semicolon
+)brace
 r_else
+(brace
 r_for
 c_loop
 (paren
@@ -509,6 +562,7 @@ suffix:semicolon
 id|i
 op_increment
 )paren
+(brace
 r_if
 c_cond
 (paren
@@ -516,7 +570,7 @@ id|node_flip
 (braket
 id|i
 )braket
-op_eq
+op_ne
 (paren
 id|node_cpuid
 (braket
@@ -528,7 +582,23 @@ op_minus
 id|numnodes
 )paren
 )paren
-(brace
+r_continue
+suffix:semicolon
+id|pxm
+op_assign
+id|nid_to_pxm_map
+(braket
+id|old_nid_map
+(braket
+id|cpu
+)braket
+)braket
+suffix:semicolon
+id|pxm_to_nid_map
+(braket
+id|pxm
+)braket
+op_assign
 id|node_cpuid
 (braket
 id|cpu
@@ -540,6 +610,7 @@ id|i
 suffix:semicolon
 r_break
 suffix:semicolon
+)brace
 )brace
 multiline_comment|/*&n;&t; * Fix numa_slit by compressing from larger&n;&t; * nid array to reduced nid array.&n;&t; */
 r_for
