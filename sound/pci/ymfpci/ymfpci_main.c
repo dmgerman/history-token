@@ -1458,8 +1458,8 @@ id|ypcm-&gt;last_pos
 op_assign
 id|pos
 suffix:semicolon
-r_while
-c_loop
+r_if
+c_cond
 (paren
 id|ypcm-&gt;period_pos
 op_ge
@@ -1467,6 +1467,10 @@ id|ypcm-&gt;period_size
 )paren
 (brace
 singleline_comment|// printk(&quot;done - active_bank = 0x%x, start = 0x%x&bslash;n&quot;, chip-&gt;active_bank, voice-&gt;bank[chip-&gt;active_bank].start);
+id|ypcm-&gt;period_pos
+op_mod_assign
+id|ypcm-&gt;period_size
+suffix:semicolon
 id|spin_unlock
 c_func
 (paren
@@ -1486,10 +1490,6 @@ c_func
 op_amp
 id|chip-&gt;reg_lock
 )paren
-suffix:semicolon
-id|ypcm-&gt;period_pos
-op_sub_assign
-id|ypcm-&gt;period_size
 suffix:semicolon
 )brace
 )brace
@@ -1606,8 +1606,8 @@ id|ypcm-&gt;last_pos
 op_assign
 id|pos
 suffix:semicolon
-r_while
-c_loop
+r_if
+c_cond
 (paren
 id|ypcm-&gt;period_pos
 op_ge
@@ -1615,8 +1615,8 @@ id|ypcm-&gt;period_size
 )paren
 (brace
 id|ypcm-&gt;period_pos
-op_assign
-l_int|0
+op_mod_assign
+id|ypcm-&gt;period_size
 suffix:semicolon
 singleline_comment|// printk(&quot;done - active_bank = 0x%x, start = 0x%x&bslash;n&quot;, chip-&gt;active_bank, voice-&gt;bank[chip-&gt;active_bank].start);
 id|spin_unlock

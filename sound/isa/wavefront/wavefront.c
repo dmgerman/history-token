@@ -244,12 +244,20 @@ id|SNDRV_CARDS
 l_string|&quot;i&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM_SYNTAX
+id|MODULE_PARM_DESC
 c_func
 (paren
 id|snd_index
 comma
 l_string|&quot;Index value for WaveFront soundcard.&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_SYNTAX
+c_func
+(paren
+id|snd_index
+comma
+id|SNDRV_INDEX_DESC
 )paren
 suffix:semicolon
 id|MODULE_PARM
@@ -645,7 +653,8 @@ c_func
 id|snd_use_cs4232_midi
 comma
 id|SNDRV_ENABLED
-l_string|&quot;,allows use of CS4323 MPU-401 interface&quot;
+l_string|&quot;,&quot;
+id|SNDRV_BOOLEAN_FALSE_DESC
 )paren
 suffix:semicolon
 DECL|variable|snd_wavefront_cards
@@ -3471,8 +3480,6 @@ id|id
 r_static
 r_int
 id|dev
-op_assign
-l_int|0
 suffix:semicolon
 r_int
 id|res

@@ -562,6 +562,7 @@ id|snd_rawmidi_substream_t
 op_star
 id|substream
 comma
+r_const
 r_int
 r_char
 op_star

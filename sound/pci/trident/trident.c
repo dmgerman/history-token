@@ -382,8 +382,6 @@ id|id
 r_static
 r_int
 id|dev
-op_assign
-l_int|0
 suffix:semicolon
 id|snd_card_t
 op_star
@@ -687,6 +685,12 @@ id|err
 suffix:semicolon
 )brace
 macro_line|#endif
+id|snd_trident_gameport
+c_func
+(paren
+id|trident
+)paren
+suffix:semicolon
 r_switch
 c_cond
 (paren

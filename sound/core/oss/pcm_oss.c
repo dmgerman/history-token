@@ -67,8 +67,6 @@ DECL|variable|snd_nonblock_open
 r_static
 r_int
 id|snd_nonblock_open
-op_assign
-l_int|0
 suffix:semicolon
 id|MODULE_AUTHOR
 c_func
@@ -8660,6 +8658,7 @@ id|EFAULT
 suffix:colon
 l_int|0
 suffix:semicolon
+macro_line|#if defined(CONFIG_SND_MIXER_OSS) || (defined(MODULE) &amp;&amp; defined(CONFIG_SND_MIXER_OSS_MODULE))
 r_if
 c_cond
 (paren
@@ -8676,7 +8675,7 @@ op_eq
 l_char|&squot;M&squot;
 )paren
 (brace
-multiline_comment|/* mixer ioctl - for OSS (grrr) compatibility */
+multiline_comment|/* mixer ioctl - for OSS compatibility */
 id|snd_pcm_substream_t
 op_star
 id|substream
@@ -8740,6 +8739,7 @@ id|arg
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif
 r_if
 c_cond
 (paren

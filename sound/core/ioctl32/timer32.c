@@ -123,6 +123,38 @@ suffix:semicolon
 multiline_comment|/*&n; */
 DECL|macro|AP
 mdefine_line|#define AP(x) snd_ioctl32_##x
+r_enum
+(brace
+DECL|enumerator|SNDRV_TIMER_IOCTL_INFO32
+id|SNDRV_TIMER_IOCTL_INFO32
+op_assign
+id|_IOR
+c_func
+(paren
+l_char|&squot;T&squot;
+comma
+l_int|0x11
+comma
+r_struct
+id|sndrv_timer_info32
+)paren
+comma
+DECL|enumerator|SNDRV_TIMER_IOCTL_STATUS32
+id|SNDRV_TIMER_IOCTL_STATUS32
+op_assign
+id|_IOW
+c_func
+(paren
+l_char|&squot;T&squot;
+comma
+l_int|0x14
+comma
+r_struct
+id|sndrv_timer_status32
+)paren
+comma
+)brace
+suffix:semicolon
 DECL|variable|timer_mappers
 r_struct
 id|ioctl32_mapper
@@ -150,7 +182,7 @@ l_int|NULL
 )brace
 comma
 (brace
-id|SNDRV_TIMER_IOCTL_INFO
+id|SNDRV_TIMER_IOCTL_INFO32
 comma
 id|AP
 c_func
@@ -166,7 +198,7 @@ l_int|NULL
 )brace
 comma
 (brace
-id|SNDRV_TIMER_IOCTL_STATUS
+id|SNDRV_TIMER_IOCTL_STATUS32
 comma
 id|AP
 c_func

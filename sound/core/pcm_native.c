@@ -13,10 +13,11 @@ macro_line|#include &lt;sound/pcm.h&gt;
 macro_line|#include &lt;sound/pcm_params.h&gt;
 macro_line|#include &lt;sound/minors.h&gt;
 DECL|variable|pcm_link_lock
-id|spinlock_t
+r_static
+id|rwlock_t
 id|pcm_link_lock
 op_assign
-id|SPIN_LOCK_UNLOCKED
+id|RW_LOCK_UNLOCKED
 suffix:semicolon
 DECL|function|snd_enter_user
 r_static
@@ -2856,7 +2857,7 @@ l_int|NULL
 suffix:semicolon
 )brace
 DECL|macro|_SND_PCM_ACTION
-mdefine_line|#define _SND_PCM_ACTION(aname, substream, state, res, check_master) { &bslash;&n;&t;snd_pcm_substream_t *s; &bslash;&n;&t;res = 0; &bslash;&n;&t;spin_lock(&amp;pcm_link_lock); &bslash;&n;&t;s = substream; &bslash;&n;&t;do { &bslash;&n;&t;&t;if (s != substream) &bslash;&n;&t;&t;&t;spin_lock(&amp;s-&gt;runtime-&gt;lock); &bslash;&n;&t;&t;res = snd_pcm_pre_##aname(s, state); &bslash;&n;&t;&t;if (res &lt; 0) &bslash;&n;&t;&t;&t;break; &bslash;&n;&t;&t;s = s-&gt;link_next; &bslash;&n;&t;} while (s != substream); &bslash;&n;&t;if (res &lt; 0) { &bslash;&n;&t;&t;/* Clean all spin_lock */ &bslash;&n;&t;&t;while (s != substream) { &bslash;&n;&t;&t;&t;spin_unlock(&amp;s-&gt;runtime-&gt;lock); &bslash;&n;&t;&t;&t;s = s-&gt;link_prev; &bslash;&n;&t;&t;} &bslash;&n;&t;&t;goto _end; &bslash;&n;&t;} &bslash;&n;&t;s = substream; &bslash;&n;&t;do { &bslash;&n;&t;&t;snd_pcm_runtime_t *runtime = s-&gt;runtime; &bslash;&n;&t;&t;int err; &bslash;&n;&t;&t;if (check_master &amp;&amp; runtime-&gt;trigger_master != s) &bslash;&n;&t;&t;&t;goto _done; &bslash;&n;&t;&t;err = snd_pcm_do_##aname(s, state); &bslash;&n;&t;&t;if (err &lt; 0) { &bslash;&n;&t;&t;&t;if (res == 0) &bslash;&n;&t;&t;&t;&t;res = err; &bslash;&n;&t;&t;} else { &bslash;&n;&t;&t;&t;_done: &bslash;&n;&t;&t;&t;snd_pcm_post_##aname(s, state); &bslash;&n;&t;&t;} &bslash;&n;&t;&t;if (s != substream) &bslash;&n;&t;&t;&t;spin_unlock(&amp;runtime-&gt;lock); &bslash;&n;&t;&t;s = s-&gt;link_next; &bslash;&n;&t;} while (s != substream); &bslash;&n; _end: &bslash;&n;&t;spin_unlock(&amp;pcm_link_lock); &bslash;&n;}
+mdefine_line|#define _SND_PCM_ACTION(aname, substream, state, res, check_master) { &bslash;&n;&t;snd_pcm_substream_t *s; &bslash;&n;&t;res = 0; &bslash;&n;&t;read_lock(&amp;pcm_link_lock); &bslash;&n;&t;s = substream; &bslash;&n;&t;do { &bslash;&n;&t;&t;if (s != substream) &bslash;&n;&t;&t;&t;spin_lock(&amp;s-&gt;runtime-&gt;lock); &bslash;&n;&t;&t;res = snd_pcm_pre_##aname(s, state); &bslash;&n;&t;&t;if (res &lt; 0) &bslash;&n;&t;&t;&t;break; &bslash;&n;&t;&t;s = s-&gt;link_next; &bslash;&n;&t;} while (s != substream); &bslash;&n;&t;if (res &lt; 0) { &bslash;&n;&t;&t;/* Clean all spin_lock */ &bslash;&n;&t;&t;while (s != substream) { &bslash;&n;&t;&t;&t;spin_unlock(&amp;s-&gt;runtime-&gt;lock); &bslash;&n;&t;&t;&t;s = s-&gt;link_prev; &bslash;&n;&t;&t;} &bslash;&n;&t;&t;goto _end; &bslash;&n;&t;} &bslash;&n;&t;s = substream; &bslash;&n;&t;do { &bslash;&n;&t;&t;snd_pcm_runtime_t *runtime = s-&gt;runtime; &bslash;&n;&t;&t;int err; &bslash;&n;&t;&t;if (check_master &amp;&amp; runtime-&gt;trigger_master != s) &bslash;&n;&t;&t;&t;goto _done; &bslash;&n;&t;&t;err = snd_pcm_do_##aname(s, state); &bslash;&n;&t;&t;if (err &lt; 0) { &bslash;&n;&t;&t;&t;if (res == 0) &bslash;&n;&t;&t;&t;&t;res = err; &bslash;&n;&t;&t;} else { &bslash;&n;&t;&t;&t;_done: &bslash;&n;&t;&t;&t;snd_pcm_post_##aname(s, state); &bslash;&n;&t;&t;} &bslash;&n;&t;&t;if (s != substream) &bslash;&n;&t;&t;&t;spin_unlock(&amp;runtime-&gt;lock); &bslash;&n;&t;&t;s = s-&gt;link_next; &bslash;&n;&t;} while (s != substream); &bslash;&n; _end: &bslash;&n;&t;read_unlock(&amp;pcm_link_lock); &bslash;&n;}
 DECL|macro|SND_PCM_ACTION
 mdefine_line|#define SND_PCM_ACTION(aname, substream, state) { &bslash;&n;&t;int res; &bslash;&n;&t;_SND_PCM_ACTION(aname, substream, state, res, 1); &bslash;&n;&t;return res; &bslash;&n;}
 DECL|function|snd_pcm_pre_start
@@ -4462,7 +4463,7 @@ id|snd_pcm_substream_t
 op_star
 id|s
 suffix:semicolon
-id|spin_lock
+id|read_lock
 c_func
 (paren
 op_amp
@@ -4536,7 +4537,7 @@ op_ne
 id|substream
 )paren
 suffix:semicolon
-id|spin_unlock
+id|read_unlock
 c_func
 (paren
 op_amp
@@ -5876,7 +5877,7 @@ id|substream1
 op_assign
 id|pcm_file-&gt;substream
 suffix:semicolon
-id|spin_lock_irq
+id|write_lock_irq
 c_func
 (paren
 op_amp
@@ -5954,7 +5955,7 @@ id|substream
 suffix:semicolon
 id|_end
 suffix:colon
-id|spin_unlock_irq
+id|write_unlock_irq
 c_func
 (paren
 op_amp
@@ -5982,7 +5983,7 @@ op_star
 id|substream
 )paren
 (brace
-id|spin_lock_irq
+id|write_lock_irq
 c_func
 (paren
 op_amp
@@ -6005,7 +6006,7 @@ id|substream-&gt;link_next
 op_assign
 id|substream
 suffix:semicolon
-id|spin_unlock_irq
+id|write_unlock_irq
 c_func
 (paren
 op_amp
