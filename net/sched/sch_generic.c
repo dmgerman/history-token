@@ -896,7 +896,7 @@ r_if
 c_cond
 (paren
 id|list-&gt;qlen
-op_le
+OL
 id|qdisc-&gt;dev-&gt;tx_queue_len
 )paren
 (brace

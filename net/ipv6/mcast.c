@@ -4997,17 +4997,17 @@ multiline_comment|/* MLDv1 router present */
 multiline_comment|/* Translate milliseconds to jiffies */
 id|max_delay
 op_assign
+(paren
 id|ntohs
 c_func
 (paren
 id|hdr-&gt;icmp6_maxdelay
 )paren
 op_star
-(paren
 id|HZ
-op_div
-l_int|10
 )paren
+op_div
+l_int|1000
 suffix:semicolon
 id|switchback
 op_assign
@@ -5065,6 +5065,7 @@ l_int|28
 (brace
 id|max_delay
 op_assign
+(paren
 id|MLDV2_MRC
 c_func
 (paren
@@ -5075,11 +5076,10 @@ id|mlh2-&gt;mrc
 )paren
 )paren
 op_star
-(paren
 id|HZ
-op_div
-l_int|10
 )paren
+op_div
+l_int|1000
 suffix:semicolon
 r_if
 c_cond
