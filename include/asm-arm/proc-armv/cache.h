@@ -30,9 +30,7 @@ mdefine_line|#define flush_page_to_ram(page)&t;do { } while (0)
 multiline_comment|/*&n; * flush_dcache_page is used when the kernel has written to the page&n; * cache page at virtual address page-&gt;virtual.&n; *&n; * If this page isn&squot;t mapped (ie, page-&gt;mapping = NULL), or it has&n; * userspace mappings (page-&gt;mapping-&gt;i_mmap or page-&gt;mapping-&gt;i_mmap_shared)&n; * then we _must_ always clean + invalidate the dcache entries associated&n; * with the kernel mapping.&n; *&n; * Otherwise we can defer the operation, and clean the cache when we are&n; * about to change to user space.  This is the same method as used on SPARC64.&n; * See update_mmu_cache for the user space part.&n; */
 DECL|macro|mapping_mapped
 mdefine_line|#define mapping_mapped(map)&t;(!list_empty(&amp;(map)-&gt;i_mmap) || &bslash;&n;&t;&t;&t;&t; !list_empty(&amp;(map)-&gt;i_mmap_shared))
-DECL|function|__flush_dcache_page
-r_static
-r_inline
+r_extern
 r_void
 id|__flush_dcache_page
 c_func
@@ -40,36 +38,8 @@ c_func
 r_struct
 id|page
 op_star
-id|page
-)paren
-(brace
-r_int
-r_int
-id|virt
-op_assign
-(paren
-r_int
-r_int
-)paren
-id|page_address
-c_func
-(paren
-id|page
 )paren
 suffix:semicolon
-id|cpu_cache_clean_invalidate_range
-c_func
-(paren
-id|virt
-comma
-id|virt
-op_plus
-id|PAGE_SIZE
-comma
-l_int|0
-)paren
-suffix:semicolon
-)brace
 DECL|function|flush_dcache_page
 r_static
 r_inline
@@ -117,8 +87,6 @@ mdefine_line|#define flush_icache_user_range(vma,page,addr,len) &bslash;&n;&t;fl
 multiline_comment|/*&n; * We don&squot;t appear to need to do anything here.  In fact, if we did, we&squot;d&n; * duplicate cache flushing elsewhere performed by flush_dcache_page().&n; */
 DECL|macro|flush_icache_page
 mdefine_line|#define flush_icache_page(vma,page)&t;do { } while (0)
-DECL|macro|clean_dcache_entry
-mdefine_line|#define clean_dcache_entry(_s)&t;&t;cpu_dcache_clean_entry((unsigned long)(_s))
 multiline_comment|/*&n; * I cache coherency stuff.&n; *&n; * This *is not* just icache.  It is to make data written to memory&n; * consistent such that instructions fetched from the region are what&n; * we expect.&n; *&n; * This generally means that we have to clean out the Dcache and write&n; * buffers, and maybe flush the Icache in the specified range.&n; */
 DECL|macro|flush_icache_range
 mdefine_line|#define flush_icache_range(_s,_e)&t;&t;&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;cpu_icache_invalidate_range((_s), (_e));&t;&t;&bslash;&n;&t;} while (0)
