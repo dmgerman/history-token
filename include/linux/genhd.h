@@ -232,18 +232,19 @@ DECL|member|first_minor
 r_int
 id|first_minor
 suffix:semicolon
-DECL|member|major_name
-r_const
-r_char
-op_star
-id|major_name
-suffix:semicolon
-multiline_comment|/* name of major driver */
 DECL|member|minor_shift
 r_int
 id|minor_shift
 suffix:semicolon
 multiline_comment|/* number of times minor is shifted to&n;&t;&t;&t;&t;&t;   get real minor */
+DECL|member|disk_name
+r_char
+id|disk_name
+(braket
+l_int|16
+)braket
+suffix:semicolon
+multiline_comment|/* name of major driver */
 DECL|member|part
 r_struct
 id|hd_struct
@@ -251,12 +252,6 @@ op_star
 id|part
 suffix:semicolon
 multiline_comment|/* [indexed by minor] */
-DECL|member|next
-r_struct
-id|gendisk
-op_star
-id|next
-suffix:semicolon
 DECL|member|fops
 r_struct
 id|block_device_operations
@@ -271,6 +266,11 @@ DECL|member|list
 r_struct
 id|list_head
 id|list
+suffix:semicolon
+DECL|member|full_list
+r_struct
+id|list_head
+id|full_list
 suffix:semicolon
 DECL|member|flags
 r_int
@@ -345,8 +345,12 @@ op_star
 id|get_gendisk
 c_func
 (paren
-id|kdev_t
+id|dev_t
 id|dev
+comma
+r_int
+op_star
+id|part
 )paren
 suffix:semicolon
 DECL|function|get_start_sect
@@ -996,6 +1000,27 @@ r_int
 id|part
 )paren
 suffix:semicolon
+r_extern
+r_struct
+id|gendisk
+op_star
+id|alloc_disk
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|put_disk
+c_func
+(paren
+r_struct
+id|gendisk
+op_star
+id|disk
+)paren
+suffix:semicolon
 multiline_comment|/* will go away */
 r_extern
 r_void
@@ -1027,6 +1052,9 @@ id|kdev_t
 id|dev
 )paren
 (brace
+r_int
+id|part
+suffix:semicolon
 r_struct
 id|gendisk
 op_star
@@ -1035,7 +1063,14 @@ op_assign
 id|get_gendisk
 c_func
 (paren
+id|kdev_t_to_nr
+c_func
+(paren
 id|dev
+)paren
+comma
+op_amp
+id|part
 )paren
 suffix:semicolon
 r_return

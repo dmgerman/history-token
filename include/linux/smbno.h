@@ -578,5 +578,54 @@ DECL|macro|SMB_FLAGS2_32_BIT_ERROR_CODES
 mdefine_line|#define SMB_FLAGS2_32_BIT_ERROR_CODES&t;&t;0x4000 
 DECL|macro|SMB_FLAGS2_UNICODE_STRINGS
 mdefine_line|#define SMB_FLAGS2_UNICODE_STRINGS&t;&t;0x8000
+multiline_comment|/*&n; * UNIX stuff  (from samba trans2.h)&n; */
+DECL|macro|MIN_UNIX_INFO_LEVEL
+mdefine_line|#define MIN_UNIX_INFO_LEVEL&t;&t;0x200
+DECL|macro|MAX_UNIX_INFO_LEVEL
+mdefine_line|#define MAX_UNIX_INFO_LEVEL&t;&t;0x2FF
+DECL|macro|SMB_FIND_FILE_UNIX
+mdefine_line|#define SMB_FIND_FILE_UNIX&t;&t;0x202
+DECL|macro|SMB_QUERY_FILE_UNIX_BASIC
+mdefine_line|#define SMB_QUERY_FILE_UNIX_BASIC&t;0x200
+DECL|macro|SMB_QUERY_FILE_UNIX_LINK
+mdefine_line|#define SMB_QUERY_FILE_UNIX_LINK&t;0x201
+DECL|macro|SMB_QUERY_FILE_UNIX_HLINK
+mdefine_line|#define SMB_QUERY_FILE_UNIX_HLINK&t;0x202
+DECL|macro|SMB_SET_FILE_UNIX_BASIC
+mdefine_line|#define SMB_SET_FILE_UNIX_BASIC&t;&t;0x200
+DECL|macro|SMB_SET_FILE_UNIX_LINK
+mdefine_line|#define SMB_SET_FILE_UNIX_LINK&t;&t;0x201
+DECL|macro|SMB_SET_FILE_UNIX_HLINK
+mdefine_line|#define SMB_SET_FILE_UNIX_HLINK&t;&t;0x203
+DECL|macro|SMB_QUERY_CIFS_UNIX_INFO
+mdefine_line|#define SMB_QUERY_CIFS_UNIX_INFO&t;0x200
+multiline_comment|/* values which means &quot;don&squot;t change it&quot; */
+DECL|macro|SMB_MODE_NO_CHANGE
+mdefine_line|#define SMB_MODE_NO_CHANGE&t;&t;0xFFFFFFFF
+DECL|macro|SMB_UID_NO_CHANGE
+mdefine_line|#define SMB_UID_NO_CHANGE&t;&t;0xFFFFFFFF
+DECL|macro|SMB_GID_NO_CHANGE
+mdefine_line|#define SMB_GID_NO_CHANGE&t;&t;0xFFFFFFFF
+DECL|macro|SMB_TIME_NO_CHANGE
+mdefine_line|#define SMB_TIME_NO_CHANGE&t;&t;0xFFFFFFFFFFFFFFFF
+DECL|macro|SMB_SIZE_NO_CHANGE
+mdefine_line|#define SMB_SIZE_NO_CHANGE&t;&t;0xFFFFFFFFFFFFFFFF
+multiline_comment|/* UNIX filetype mappings. */
+DECL|macro|UNIX_TYPE_FILE
+mdefine_line|#define UNIX_TYPE_FILE&t;&t;0
+DECL|macro|UNIX_TYPE_DIR
+mdefine_line|#define UNIX_TYPE_DIR&t;&t;1
+DECL|macro|UNIX_TYPE_SYMLINK
+mdefine_line|#define UNIX_TYPE_SYMLINK&t;2
+DECL|macro|UNIX_TYPE_CHARDEV
+mdefine_line|#define UNIX_TYPE_CHARDEV&t;3
+DECL|macro|UNIX_TYPE_BLKDEV
+mdefine_line|#define UNIX_TYPE_BLKDEV&t;4
+DECL|macro|UNIX_TYPE_FIFO
+mdefine_line|#define UNIX_TYPE_FIFO&t;&t;5
+DECL|macro|UNIX_TYPE_SOCKET
+mdefine_line|#define UNIX_TYPE_SOCKET&t;6
+DECL|macro|UNIX_TYPE_UNKNOWN
+mdefine_line|#define UNIX_TYPE_UNKNOWN&t;0xFFFFFFFF
 macro_line|#endif /* _SMBNO_H_ */
 eof

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&t;X.25 Packet Layer release 002&n; *&n; *&t;This is ALPHA test software. This code may break your machine, randomly fail to work with new &n; *&t;releases, misbehave and/or generally screw up. It might even work. &n; *&n; *&t;This code REQUIRES 2.1.15 or higher&n; *&n; *&t;This module:&n; *&t;&t;This module is free software; you can redistribute it and/or&n; *&t;&t;modify it under the terms of the GNU General Public License&n; *&t;&t;as published by the Free Software Foundation; either version&n; *&t;&t;2 of the License, or (at your option) any later version.&n; *&n; *&t;History&n; *&t;X.25 001&t;Jonathan Naylor&t;Started coding.&n; *&t;X.25 002&t;Jonathan Naylor&t;New timer architecture.&n; *&t;2000-09-04&t;Henner Eisen&t;Prevented x25_output() skb leakage.&n; *&t;2000-10-27&t;Henner Eisen&t;MSG_DONTWAIT for fragment allocation.&n; *&t;2000-11-10&t;Henner Eisen&t;x25_send_iframe(): re-queued frames&n; *&t;&t;&t;&t;&t;needed cleaned seq-number fields.&n; */
+multiline_comment|/*&n; *&t;X.25 Packet Layer release 002&n; *&n; *&t;This is ALPHA test software. This code may break your machine,&n; *&t;randomly fail to work with new releases, misbehave and/or generally&n; *&t;screw up. It might even work. &n; *&n; *&t;This code REQUIRES 2.1.15 or higher&n; *&n; *&t;This module:&n; *&t;&t;This module is free software; you can redistribute it and/or&n; *&t;&t;modify it under the terms of the GNU General Public License&n; *&t;&t;as published by the Free Software Foundation; either version&n; *&t;&t;2 of the License, or (at your option) any later version.&n; *&n; *&t;History&n; *&t;X.25 001&t;Jonathan Naylor&t;Started coding.&n; *&t;X.25 002&t;Jonathan Naylor&t;New timer architecture.&n; *&t;2000-09-04&t;Henner Eisen&t;Prevented x25_output() skb leakage.&n; *&t;2000-10-27&t;Henner Eisen&t;MSG_DONTWAIT for fragment allocation.&n; *&t;2000-11-10&t;Henner Eisen&t;x25_send_iframe(): re-queued frames&n; *&t;&t;&t;&t;&t;needed cleaned seq-number fields.&n; */
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/socket.h&gt;
@@ -37,9 +37,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|pacsize
-op_eq
-l_int|0
 )paren
 r_return
 l_int|128
@@ -113,7 +112,8 @@ id|flags
 op_amp
 id|MSG_DONTWAIT
 suffix:semicolon
-id|x25_cb
+r_struct
+id|x25_opt
 op_star
 id|x25
 op_assign
@@ -238,7 +238,9 @@ c_func
 (paren
 id|sk
 comma
-l_string|&quot;x25_output: fragment allocation failed, err=%d, %d bytes sent&bslash;n&quot;
+l_string|&quot;x25_output: fragment alloc&quot;
+l_string|&quot; failed, err=%d, %d bytes &quot;
+l_string|&quot;sent&bslash;n&quot;
 comma
 id|err
 comma
@@ -259,11 +261,9 @@ id|frontlen
 suffix:semicolon
 id|len
 op_assign
-(paren
 id|max_len
 OG
 id|skb-&gt;len
-)paren
 ques
 c_cond
 id|skb-&gt;len
@@ -404,7 +404,8 @@ op_star
 id|skb
 )paren
 (brace
-id|x25_cb
+r_struct
+id|x25_opt
 op_star
 id|x25
 op_assign
@@ -417,9 +418,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|skb
-op_eq
-l_int|NULL
 )paren
 r_return
 suffix:semicolon
@@ -536,7 +536,8 @@ suffix:semicolon
 r_int
 id|modulus
 suffix:semicolon
-id|x25_cb
+r_struct
+id|x25_opt
 op_star
 id|x25
 op_assign
@@ -619,9 +620,7 @@ r_return
 suffix:semicolon
 id|modulus
 op_assign
-(paren
 id|x25-&gt;neighbour-&gt;extended
-)paren
 ques
 c_cond
 id|X25_EMODULUS
@@ -630,21 +629,17 @@ id|X25_SMODULUS
 suffix:semicolon
 id|start
 op_assign
-(paren
 id|skb_peek
 c_func
 (paren
 op_amp
 id|x25-&gt;ack_queue
 )paren
-op_eq
-l_int|NULL
-)paren
 ques
 c_cond
-id|x25-&gt;va
-suffix:colon
 id|x25-&gt;vs
+suffix:colon
+id|x25-&gt;va
 suffix:semicolon
 id|end
 op_assign
@@ -798,7 +793,8 @@ op_star
 id|sk
 )paren
 (brace
-id|x25_cb
+r_struct
+id|x25_opt
 op_star
 id|x25
 op_assign

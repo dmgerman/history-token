@@ -10,7 +10,6 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
-macro_line|#include &quot;pcipool.h&quot;
 multiline_comment|/*&n; * Pool allocator ... wraps the pci_alloc_consistent page allocator, so&n; * small blocks are easily used by drivers for bus mastering controllers.&n; * This should probably be sharing the guts of the slab allocator.&n; */
 DECL|struct|pci_pool
 r_struct
@@ -33,10 +32,6 @@ suffix:semicolon
 DECL|member|size
 r_int
 id|size
-suffix:semicolon
-DECL|member|flags
-r_int
-id|flags
 suffix:semicolon
 DECL|member|dev
 r_struct
@@ -95,7 +90,59 @@ mdefine_line|#define&t;POOL_TIMEOUT_JIFFIES&t;((100 /* msec */ * HZ) / 1000)
 DECL|macro|POOL_POISON_BYTE
 mdefine_line|#define&t;POOL_POISON_BYTE&t;0xa7
 singleline_comment|// #define CONFIG_PCIPOOL_DEBUG
-multiline_comment|/**&n; * pci_pool_create - Creates a pool of pci consistent memory blocks, for dma.&n; * @name: name of pool, for diagnostics&n; * @pdev: pci device that will be doing the DMA&n; * @size: size of the blocks in this pool.&n; * @align: alignment requirement for blocks; must be a power of two&n; * @allocation: returned blocks won&squot;t cross this boundary (or zero)&n; * @flags: SLAB_* flags (not all are supported).&n; *&n; * Returns a pci allocation pool with the requested characteristics, or&n; * null if one can&squot;t be created.  Given one of these pools, pci_pool_alloc()&n; * may be used to allocate memory.  Such memory will all have &quot;consistent&quot;&n; * DMA mappings, accessible by the device and its driver without using&n; * cache flushing primitives.  The actual size of blocks allocated may be&n; * larger than requested because of alignment.&n; *&n; * If allocation is nonzero, objects returned from pci_pool_alloc() won&squot;t&n; * cross that size boundary.  This is useful for devices which have&n; * addressing restrictions on individual DMA transfers, such as not crossing&n; * boundaries of 4KBytes.&n; */
+DECL|function|slot_name
+r_static
+r_inline
+r_const
+r_char
+op_star
+id|slot_name
+c_func
+(paren
+r_const
+r_struct
+id|pci_pool
+op_star
+id|pool
+)paren
+(brace
+r_const
+r_struct
+id|pci_dev
+op_star
+id|pdev
+op_assign
+id|pool-&gt;dev
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|pdev
+op_eq
+l_int|0
+)paren
+r_return
+l_string|&quot;[0]&quot;
+suffix:semicolon
+r_else
+r_if
+c_cond
+(paren
+id|dev_is_sa1111
+c_func
+(paren
+id|pdev
+)paren
+)paren
+r_return
+l_string|&quot;[SA-1111]&quot;
+suffix:semicolon
+r_else
+r_return
+id|pdev-&gt;slot_name
+suffix:semicolon
+)brace
+multiline_comment|/**&n; * pci_pool_create - Creates a pool of pci consistent memory blocks, for dma.&n; * @name: name of pool, for diagnostics&n; * @pdev: pci device that will be doing the DMA&n; * @size: size of the blocks in this pool.&n; * @align: alignment requirement for blocks; must be a power of two&n; * @allocation: returned blocks won&squot;t cross this boundary (or zero)&n; * @mem_flags: SLAB_* flags.&n; *&n; * Returns a pci allocation pool with the requested characteristics, or&n; * null if one can&squot;t be created.  Given one of these pools, pci_pool_alloc()&n; * may be used to allocate memory.  Such memory will all have &quot;consistent&quot;&n; * DMA mappings, accessible by the device and its driver without using&n; * cache flushing primitives.  The actual size of blocks allocated may be&n; * larger than requested because of alignment.&n; *&n; * If allocation is nonzero, objects returned from pci_pool_alloc() won&squot;t&n; * cross that size boundary.  This is useful for devices which have&n; * addressing restrictions on individual DMA transfers, such as not crossing&n; * boundaries of 4KBytes.&n; */
 r_struct
 id|pci_pool
 op_star
@@ -122,7 +169,7 @@ r_int
 id|allocation
 comma
 r_int
-id|flags
+id|mem_flags
 )paren
 (brace
 r_struct
@@ -242,19 +289,13 @@ r_sizeof
 op_star
 id|retval
 comma
-id|flags
+id|mem_flags
 )paren
 )paren
 )paren
 r_return
 id|retval
 suffix:semicolon
-macro_line|#ifdef&t;CONFIG_PCIPOOL_DEBUG
-id|flags
-op_or_assign
-id|SLAB_POISON
-suffix:semicolon
-macro_line|#endif
 id|strncpy
 (paren
 id|retval-&gt;name
@@ -295,10 +336,6 @@ id|retval-&gt;size
 op_assign
 id|size
 suffix:semicolon
-id|retval-&gt;flags
-op_assign
-id|flags
-suffix:semicolon
 id|retval-&gt;allocation
 op_assign
 id|allocation
@@ -321,12 +358,11 @@ id|printk
 id|KERN_DEBUG
 l_string|&quot;pcipool create %s/%s size %d, %d/page (%d alloc)&bslash;n&quot;
 comma
-id|pdev
-ques
-c_cond
-id|pdev-&gt;slot_name
-suffix:colon
-l_int|NULL
+id|slot_name
+c_func
+(paren
+id|retval
+)paren
 comma
 id|retval-&gt;name
 comma
@@ -444,13 +480,7 @@ id|mapsize
 )paren
 suffix:semicolon
 singleline_comment|// bit set == free
-r_if
-c_cond
-(paren
-id|pool-&gt;flags
-op_amp
-id|SLAB_POISON
-)paren
+macro_line|#ifdef&t;CONFIG_DEBUG_SLAB
 id|memset
 (paren
 id|page-&gt;vaddr
@@ -460,6 +490,7 @@ comma
 id|pool-&gt;allocation
 )paren
 suffix:semicolon
+macro_line|#endif
 id|list_add
 (paren
 op_amp
@@ -552,13 +583,7 @@ id|dma
 op_assign
 id|page-&gt;dma
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|pool-&gt;flags
-op_amp
-id|SLAB_POISON
-)paren
+macro_line|#ifdef&t;CONFIG_DEBUG_SLAB
 id|memset
 (paren
 id|page-&gt;vaddr
@@ -568,6 +593,7 @@ comma
 id|pool-&gt;allocation
 )paren
 suffix:semicolon
+macro_line|#endif
 id|pci_free_consistent
 (paren
 id|pool-&gt;dev
@@ -612,12 +638,11 @@ id|printk
 id|KERN_DEBUG
 l_string|&quot;pcipool destroy %s/%s&bslash;n&quot;
 comma
-id|pool-&gt;dev
-ques
-c_cond
-id|pool-&gt;dev-&gt;slot_name
-suffix:colon
-l_int|NULL
+id|slot_name
+c_func
+(paren
+id|pool
+)paren
 comma
 id|pool-&gt;name
 )paren
@@ -675,12 +700,11 @@ id|printk
 id|KERN_ERR
 l_string|&quot;pci_pool_destroy %s/%s, %p busy&bslash;n&quot;
 comma
-id|pool-&gt;dev
-ques
-c_cond
-id|pool-&gt;dev-&gt;slot_name
-suffix:colon
-l_int|NULL
+id|slot_name
+c_func
+(paren
+id|pool
+)paren
 comma
 id|pool-&gt;name
 comma
@@ -1169,7 +1193,7 @@ l_int|0
 id|printk
 (paren
 id|KERN_ERR
-l_string|&quot;pci_pool_free %s/%s, %p/%x (bad dma)&bslash;n&quot;
+l_string|&quot;pci_pool_free %s/%s, %p/%lx (bad dma)&bslash;n&quot;
 comma
 id|pool-&gt;dev
 ques
@@ -1182,13 +1206,37 @@ id|pool-&gt;name
 comma
 id|vaddr
 comma
+(paren
+r_int
+r_int
+)paren
 id|dma
 )paren
 suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-macro_line|#ifdef&t;CONFIG_PCIPOOL_DEBUG
+id|block
+op_assign
+id|dma
+op_minus
+id|page-&gt;dma
+suffix:semicolon
+id|block
+op_div_assign
+id|pool-&gt;size
+suffix:semicolon
+id|map
+op_assign
+id|block
+op_div
+id|BITS_PER_LONG
+suffix:semicolon
+id|block
+op_mod_assign
+id|BITS_PER_LONG
+suffix:semicolon
+macro_line|#ifdef&t;CONFIG_DEBUG_SLAB
 r_if
 c_cond
 (paren
@@ -1212,7 +1260,7 @@ id|vaddr
 id|printk
 (paren
 id|KERN_ERR
-l_string|&quot;pci_pool_free %s/%s, %p (bad vaddr)/%x&bslash;n&quot;
+l_string|&quot;pci_pool_free %s/%s, %p (bad vaddr)/%lx&bslash;n&quot;
 comma
 id|pool-&gt;dev
 ques
@@ -1225,34 +1273,16 @@ id|pool-&gt;name
 comma
 id|vaddr
 comma
+(paren
+r_int
+r_int
+)paren
 id|dma
 )paren
 suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-macro_line|#endif
-id|block
-op_assign
-id|dma
-op_minus
-id|page-&gt;dma
-suffix:semicolon
-id|block
-op_div_assign
-id|pool-&gt;size
-suffix:semicolon
-id|map
-op_assign
-id|block
-op_div
-id|BITS_PER_LONG
-suffix:semicolon
-id|block
-op_mod_assign
-id|BITS_PER_LONG
-suffix:semicolon
-macro_line|#ifdef&t;CONFIG_PCIPOOL_DEBUG
 r_if
 c_cond
 (paren
@@ -1288,14 +1318,6 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-macro_line|#endif
-r_if
-c_cond
-(paren
-id|pool-&gt;flags
-op_amp
-id|SLAB_POISON
-)paren
 id|memset
 (paren
 id|vaddr
@@ -1305,6 +1327,7 @@ comma
 id|pool-&gt;size
 )paren
 suffix:semicolon
+macro_line|#endif
 id|spin_lock_irqsave
 (paren
 op_amp
@@ -1371,6 +1394,37 @@ DECL|variable|pci_pool_free
 id|EXPORT_SYMBOL
 (paren
 id|pci_pool_free
+)paren
+suffix:semicolon
+multiline_comment|/* **************************************** */
+DECL|function|pcipool_init
+r_static
+r_int
+id|__init
+id|pcipool_init
+c_func
+(paren
+r_void
+)paren
+(brace
+id|MOD_INC_USE_COUNT
+suffix:semicolon
+multiline_comment|/* never unload */
+r_return
+l_int|0
+suffix:semicolon
+)brace
+DECL|variable|pcipool_init
+id|module_init
+c_func
+(paren
+id|pcipool_init
+)paren
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
 eof

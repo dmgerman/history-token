@@ -5101,13 +5101,6 @@ id|N_TTY
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * Make sure that the tty&squot;s task queue isn&squot;t activated. &n;&t; */
-id|run_task_queue
-c_func
-(paren
-op_amp
-id|tq_timer
-)paren
-suffix:semicolon
 id|flush_scheduled_tasks
 c_func
 (paren
@@ -7924,7 +7917,7 @@ id|tasklist_lock
 suffix:semicolon
 macro_line|#endif
 )brace
-multiline_comment|/*&n; * The tq handling here is a little racy - tty-&gt;SAK_tq may already be queued.&n; * But there&squot;s no mechanism to fix that without futzing with tqueue_lock.&n; * Fortunately we don&squot;t need to worry, because if -&gt;SAK_tq is already queued,&n; * the values which we write to it will be identical to the values which it&n; * already has. --akpm&n; */
+multiline_comment|/*&n; * The tq handling here is a little racy - tty-&gt;SAK_tq may already be queued.&n; * Fortunately we don&squot;t need to worry, because if -&gt;SAK_tq is already queued,&n; * the values which we write to it will be identical to the values which it&n; * already has. --akpm&n; */
 DECL|function|do_SAK
 r_void
 id|do_SAK
@@ -8016,14 +8009,11 @@ id|tty-&gt;flags
 )paren
 )paren
 (brace
-id|queue_task
+id|schedule_task
 c_func
 (paren
 op_amp
 id|tty-&gt;flip.tqueue
-comma
-op_amp
-id|tq_timer
 )paren
 suffix:semicolon
 r_return
@@ -8362,14 +8352,11 @@ id|tty
 )paren
 suffix:semicolon
 r_else
-id|queue_task
+id|schedule_task
 c_func
 (paren
 op_amp
 id|tty-&gt;flip.tqueue
-comma
-op_amp
-id|tq_timer
 )paren
 suffix:semicolon
 )brace

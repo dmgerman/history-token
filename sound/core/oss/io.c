@@ -5,6 +5,7 @@ macro_line|#include &lt;sound/driver.h&gt;
 macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;sound/core.h&gt;
 macro_line|#include &lt;sound/pcm.h&gt;
+macro_line|#include &lt;sound/pcm_params.h&gt;
 macro_line|#include &quot;pcm_plugin.h&quot;
 DECL|macro|pcm_write
 mdefine_line|#define pcm_write(plug,buf,count) snd_pcm_oss_write3(plug,buf,count,1)

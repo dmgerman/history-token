@@ -119,7 +119,7 @@ r_extern
 r_void
 (paren
 op_star
-id|init_timers
+id|sparc_init_timers
 )paren
 (paren
 r_void

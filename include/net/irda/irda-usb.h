@@ -143,12 +143,13 @@ op_star
 id|usbdev
 suffix:semicolon
 multiline_comment|/* init: probe_irda */
-DECL|member|ifnum
-r_int
-r_int
-id|ifnum
+DECL|member|usbintf
+r_struct
+id|usb_interface
+op_star
+id|usbintf
 suffix:semicolon
-multiline_comment|/* Interface number of the USB dev. */
+multiline_comment|/* init: probe_irda */
 DECL|member|netopen
 r_int
 id|netopen

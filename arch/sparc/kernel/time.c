@@ -1701,7 +1701,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|init_timers
+id|sparc_init_timers
 c_func
 (paren
 id|timer_interrupt

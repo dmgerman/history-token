@@ -23,5 +23,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|macro|CLOCK_TICK_RATE
+mdefine_line|#define CLOCK_TICK_RATE (HZ)
 macro_line|#endif
 eof

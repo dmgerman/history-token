@@ -1934,10 +1934,14 @@ id|SRMMU_NOCACHE_VADDR
 id|printk
 c_func
 (paren
-l_string|&quot;Vaddr %x is smaller than nocache base 0x%x&bslash;n&quot;
+l_string|&quot;Vaddr %lx is smaller than nocache base 0x%lx&bslash;n&quot;
 comma
 id|vaddr
 comma
+(paren
+r_int
+r_int
+)paren
 id|SRMMU_NOCACHE_VADDR
 )paren
 suffix:semicolon
@@ -1958,10 +1962,14 @@ id|SRMMU_NOCACHE_END
 id|printk
 c_func
 (paren
-l_string|&quot;Vaddr %x is bigger than nocache end 0x%x&bslash;n&quot;
+l_string|&quot;Vaddr %lx is bigger than nocache end 0x%lx&bslash;n&quot;
 comma
 id|vaddr
 comma
+(paren
+r_int
+r_int
+)paren
 id|SRMMU_NOCACHE_END
 )paren
 suffix:semicolon
@@ -2034,7 +2042,7 @@ l_int|1
 id|printk
 c_func
 (paren
-l_string|&quot;Vaddr 0x%x is not aligned to size 0x%x&bslash;n&quot;
+l_string|&quot;Vaddr %lx is not aligned to size 0x%x&bslash;n&quot;
 comma
 id|vaddr
 comma
@@ -6107,7 +6115,8 @@ l_int|15
 suffix:semicolon
 op_star
 (paren
-id|ulong
+r_int
+r_int
 op_star
 )paren
 id|__nocache_fix

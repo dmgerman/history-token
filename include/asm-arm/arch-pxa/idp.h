@@ -3,8 +3,10 @@ multiline_comment|/*&n; * Note: this file must be safe to include in assembly fi
 multiline_comment|/* comment out following if you have a rev01 board */
 DECL|macro|PXA_IDP_REV02
 mdefine_line|#define PXA_IDP_REV02&t;1
-singleline_comment|//#undef PXA_IDP_REV02
 macro_line|#ifdef PXA_IDP_REV02
+singleline_comment|//Use this as well for 0017-x004 and greater pcb&squot;s:
+DECL|macro|PXA_IDP_REV04
+mdefine_line|#define PXA_IDP_REV04 1
 DECL|macro|IDP_FLASH_PHYS
 mdefine_line|#define IDP_FLASH_PHYS&t;&t;(PXA_CS0_PHYS)
 DECL|macro|IDP_ALT_FLASH_PHYS
@@ -24,6 +26,8 @@ DECL|macro|IDP_IDE_BASE
 mdefine_line|#define IDP_IDE_BASE&t;&t;(0xf0000000)
 DECL|macro|IDP_IDE_SIZE
 mdefine_line|#define IDP_IDE_SIZE&t;&t;(1*1024*1024)
+DECL|macro|IDE_REG_STRIDE
+mdefine_line|#define IDE_REG_STRIDE&t;&t;4
 DECL|macro|IDP_ETH_BASE
 mdefine_line|#define IDP_ETH_BASE&t;&t;(IDP_IDE_BASE + IDP_IDE_SIZE)
 DECL|macro|IDP_ETH_SIZE
@@ -128,6 +132,52 @@ mdefine_line|#define IDP_CPLD_PCCARD1_STATUS&t;        __CPLD_REG(_IDP_CPLD_PCCA
 DECL|macro|IDP_CPLD_MISC_STATUS
 mdefine_line|#define IDP_CPLD_MISC_STATUS&t;&t;__CPLD_REG(_IDP_CPLD_MISC_STATUS)
 multiline_comment|/*&n; * Bit masks for various registers&n; */
+singleline_comment|// IDP_CPLD_PCCARD_PWR
+DECL|macro|PCC0_PWR0
+mdefine_line|#define PCC0_PWR0&t;(1 &lt;&lt; 0)
+DECL|macro|PCC0_PWR1
+mdefine_line|#define PCC0_PWR1&t;(1 &lt;&lt; 1)
+DECL|macro|PCC0_PWR2
+mdefine_line|#define PCC0_PWR2&t;(1 &lt;&lt; 2)
+DECL|macro|PCC0_PWR3
+mdefine_line|#define PCC0_PWR3&t;(1 &lt;&lt; 3)
+DECL|macro|PCC1_PWR0
+mdefine_line|#define PCC1_PWR0&t;(1 &lt;&lt; 4)
+DECL|macro|PCC1_PWR1
+mdefine_line|#define PCC1_PWR1&t;(1 &lt;&lt; 5)
+DECL|macro|PCC1_PWR2
+mdefine_line|#define PCC1_PWR2&t;(1 &lt;&lt; 6)
+DECL|macro|PCC1_PWR3
+mdefine_line|#define PCC1_PWR3&t;(1 &lt;&lt; 7)
+singleline_comment|// IDP_CPLD_PCCARD_EN
+DECL|macro|PCC0_RESET
+mdefine_line|#define PCC0_RESET&t;(1 &lt;&lt; 6)
+DECL|macro|PCC1_RESET
+mdefine_line|#define PCC1_RESET&t;(1 &lt;&lt; 7)
+DECL|macro|PCC0_ENABLE
+mdefine_line|#define PCC0_ENABLE&t;(1 &lt;&lt; 0)
+DECL|macro|PCC1_ENABLE
+mdefine_line|#define PCC1_ENABLE&t;(1 &lt;&lt; 1)
+singleline_comment|// IDP_CPLD_PCCARDx_STATUS
+DECL|macro|_PCC_WRPROT
+mdefine_line|#define _PCC_WRPROT&t;(1 &lt;&lt; 7) 
+singleline_comment|// 7-4 read as low true
+DECL|macro|_PCC_RESET
+mdefine_line|#define _PCC_RESET&t;(1 &lt;&lt; 6)
+DECL|macro|_PCC_IRQ
+mdefine_line|#define _PCC_IRQ&t;(1 &lt;&lt; 5)
+DECL|macro|_PCC_INPACK
+mdefine_line|#define _PCC_INPACK&t;(1 &lt;&lt; 4)
+DECL|macro|PCC_BVD2
+mdefine_line|#define PCC_BVD2&t;(1 &lt;&lt; 3)
+DECL|macro|PCC_BVD1
+mdefine_line|#define PCC_BVD1&t;(1 &lt;&lt; 2)
+DECL|macro|PCC_VS2
+mdefine_line|#define PCC_VS2&t;&t;(1 &lt;&lt; 1)
+DECL|macro|PCC_VS1
+mdefine_line|#define PCC_VS1&t;&t;(1 &lt;&lt; 0)
+DECL|macro|PCC_DETECT
+mdefine_line|#define PCC_DETECT(x)&t;(GPLR(7 + (x)) &amp; GPIO_bit(7 + (x)))
 multiline_comment|/*&n; * Macros for LCD Driver&n; */
 macro_line|#ifdef CONFIG_FB_PXA
 DECL|macro|FB_BACKLIGHT_ON
@@ -143,6 +193,38 @@ mdefine_line|#define FB_VLCD_ON()&t;&t;(IDP_CPLD_LCD |= (1&lt;&lt;2))
 DECL|macro|FB_VLCD_OFF
 mdefine_line|#define FB_VLCD_OFF() &t;&t;(IDP_CPLD_LCD &amp;= ~(1&lt;&lt;2))
 macro_line|#endif
+multiline_comment|/* A listing of interrupts used by external hardware devices */
+macro_line|#ifdef PXA_IDP_REV04
+DECL|macro|TOUCH_PANEL_IRQ
+mdefine_line|#define TOUCH_PANEL_IRQ&t;&t;&t;IRQ_GPIO(5)
+DECL|macro|IDE_IRQ
+mdefine_line|#define IDE_IRQ&t;&t;&t;&t;IRQ_GPIO(21)
+macro_line|#else
+DECL|macro|TOUCH_PANEL_IRQ
+mdefine_line|#define TOUCH_PANEL_IRQ&t;&t;&t;IRQ_GPIO(21)
+DECL|macro|IDE_IRQ
+mdefine_line|#define IDE_IRQ&t;&t;&t;&t;IRQ_GPIO(5)
+macro_line|#endif
+DECL|macro|TOUCH_PANEL_IRQ_EDGE
+mdefine_line|#define TOUCH_PANEL_IRQ_EDGE&t;&t;IRQT_FALLING
+DECL|macro|ETHERNET_IRQ
+mdefine_line|#define ETHERNET_IRQ&t;&t;&t;IRQ_GPIO(4)
+DECL|macro|ETHERNET_IRQ_EDGE
+mdefine_line|#define ETHERNET_IRQ_EDGE&t;&t;IRQT_RISING
+DECL|macro|IDE_IRQ_EDGE
+mdefine_line|#define IDE_IRQ_EDGE&t;&t;&t;IRQT_RISING
+DECL|macro|PCMCIA_S0_CD_VALID
+mdefine_line|#define PCMCIA_S0_CD_VALID&t;&t;IRQ_GPIO(7)
+DECL|macro|PCMCIA_S0_CD_VALID_EDGE
+mdefine_line|#define PCMCIA_S0_CD_VALID_EDGE&t;&t;IRQT_BOTHEDGE
+DECL|macro|PCMCIA_S1_CD_VALID
+mdefine_line|#define PCMCIA_S1_CD_VALID&t;&t;IRQ_GPIO(8)
+DECL|macro|PCMCIA_S1_CD_VALID_EDGE
+mdefine_line|#define PCMCIA_S1_CD_VALID_EDGE&t;&t;IRQT_BOTHEDGE
+DECL|macro|PCMCIA_S0_RDYINT
+mdefine_line|#define PCMCIA_S0_RDYINT&t;&t;IRQ_GPIO(19)
+DECL|macro|PCMCIA_S1_RDYINT
+mdefine_line|#define PCMCIA_S1_RDYINT&t;&t;IRQ_GPIO(22)
 multiline_comment|/*&n; * Macros for LED Driver&n; */
 multiline_comment|/* leds 0 = ON */
 DECL|macro|IDP_HB_LED
@@ -175,15 +257,6 @@ DECL|macro|KEYBD_MATRIX_SET_OUTPUTS
 mdefine_line|#define KEYBD_MATRIX_SET_OUTPUTS(outputs) &bslash;&n;{&bslash;&n;&t;IDP_CPLD_KB_COL_LOW = outputs;&bslash;&n;&t;IDP_CPLD_KB_COL_HIGH = outputs &gt;&gt; 7;&bslash;&n;}
 DECL|macro|KEYBD_MATRIX_GET_INPUTS
 mdefine_line|#define KEYBD_MATRIX_GET_INPUTS(inputs) &bslash;&n;{&bslash;&n;&t;inputs = (IDP_CPLD_KB_ROW &amp; 0x7f);&bslash;&n;}
-multiline_comment|/* A listing of interrupts used by external hardware devices */
-DECL|macro|TOUCH_PANEL_IRQ
-mdefine_line|#define TOUCH_PANEL_IRQ&t;&t;&t;IRQ_GPIO(21)
-DECL|macro|TOUCH_PANEL_IRQ_EGDE
-mdefine_line|#define TOUCH_PANEL_IRQ_EGDE&t;&t;GPIO_FALLING_EDGE
-DECL|macro|ETHERNET_IRQ
-mdefine_line|#define ETHERNET_IRQ&t;&t;&t;IRQ_GPIO(4)
-DECL|macro|ETHERNET_IRQ_EDGE
-mdefine_line|#define ETHERNET_IRQ_EDGE&t;&t;GPIO_RISING_EDGE
 macro_line|#else
 multiline_comment|/*&n; * following is for rev01 boards only&n; */
 DECL|macro|IDP_FLASH_PHYS
@@ -350,7 +423,7 @@ id|idp_control_port_shadow
 suffix:semicolon
 multiline_comment|/*&n; * macros to write to write only register&n; *&n; * none of these macros are protected from&n; * multiple drivers using them in interrupt context.&n; */
 DECL|macro|WRITE_IDP_CPLD_LED_CONTROL
-mdefine_line|#define WRITE_IDP_CPLD_LED_CONTROL(value, mask) &bslash;&n;{&bslash;&n;&t;idp_cpld_led_control_shadow = ((value &amp; mask) | (idp_cpld_led_control_shadow &amp; ~mask));&bslash;&n;&t;IDP_CPLD_LED_CONTROL = idp_cpld_led_control_shadow;&bslash;&n;}
+mdefine_line|#define WRITE_IDP_CPLD_LED_CONTROL(value, mask) &bslash;&n;{&bslash;&n;&t;idp_cpld_led_control_shadow = (((value &amp; mask) | (idp_cpld_led_control_shadow &amp; ~mask)));&bslash;&n;&t;IDP_CPLD_LED_CONTROL = idp_cpld_led_control_shadow;&bslash;&n;}
 DECL|macro|WRITE_IDP_CPLD_PERIPH_PWR
 mdefine_line|#define WRITE_IDP_CPLD_PERIPH_PWR(value, mask) &bslash;&n;{&bslash;&n;&t;idp_cpld_periph_pwr_shadow = ((value &amp; mask) | (idp_cpld_periph_pwr_shadow &amp; ~mask));&bslash;&n;&t;IDP_CPLD_PERIPH_PWR = idp_cpld_periph_pwr_shadow;&bslash;&n;}
 DECL|macro|WRITE_IDP_CPLD_CIR
@@ -376,11 +449,11 @@ multiline_comment|/* A listing of interrupts used by external hardware devices *
 DECL|macro|TOUCH_PANEL_IRQ
 mdefine_line|#define TOUCH_PANEL_IRQ&t;&t;&t;IRQ_GPIO(21)
 DECL|macro|TOUCH_PANEL_IRQ_EGDE
-mdefine_line|#define TOUCH_PANEL_IRQ_EGDE&t;&t;GPIO_FALLING_EDGE
+mdefine_line|#define TOUCH_PANEL_IRQ_EGDE&t;&t;IRQT_FALLING
 DECL|macro|ETHERNET_IRQ
 mdefine_line|#define ETHERNET_IRQ&t;&t;&t;IRQ_GPIO(4)
 DECL|macro|ETHERNET_IRQ_EDGE
-mdefine_line|#define ETHERNET_IRQ_EDGE&t;&t;GPIO_RISING_EDGE
+mdefine_line|#define ETHERNET_IRQ_EDGE&t;&t;IRQT_RISING
 multiline_comment|/*&n; * Bit masks for various registers&n; */
 multiline_comment|/* control port */
 DECL|macro|IDP_CONTROL_PORT_PCSLOT0_0

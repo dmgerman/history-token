@@ -553,7 +553,7 @@ id|major
 suffix:colon
 id|MAJOR_NR
 comma
-id|major_name
+id|disk_name
 suffix:colon
 l_string|&quot;eda&quot;
 comma
@@ -581,7 +581,7 @@ id|first_minor
 suffix:colon
 l_int|64
 comma
-id|major_name
+id|disk_name
 suffix:colon
 l_string|&quot;edb&quot;
 comma

@@ -314,15 +314,6 @@ id|gendisk
 id|NWD
 )braket
 suffix:semicolon
-DECL|member|names
-r_char
-id|names
-(braket
-l_int|12
-op_star
-id|NWD
-)braket
-suffix:semicolon
 macro_line|#ifdef CONFIG_CISS_SCSI_TAPE
 DECL|member|scsi_ctlr
 r_void

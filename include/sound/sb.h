@@ -39,6 +39,10 @@ DECL|enumerator|SB_HW_ALS4000
 id|SB_HW_ALS4000
 comma
 multiline_comment|/* Avance Logic ALS4000 chip */
+DECL|enumerator|SB_HW_DT019X
+id|SB_HW_DT019X
+comma
+multiline_comment|/* Diamond Tech. DT-019X / Avance Logic ALS-007 */
 )brace
 suffix:semicolon
 DECL|macro|SB_OPEN_PCM
@@ -459,6 +463,37 @@ DECL|macro|SB_DSP4_MPUSETUP
 mdefine_line|#define SB_DSP4_MPUSETUP&t;0x84
 DECL|macro|SB_DSP4_3DSE
 mdefine_line|#define SB_DSP4_3DSE&t;&t;0x90
+multiline_comment|/* Registers for DT-019x / ALS-007 mixer */
+DECL|macro|SB_DT019X_MASTER_DEV
+mdefine_line|#define SB_DT019X_MASTER_DEV&t;0x62
+DECL|macro|SB_DT019X_PCM_DEV
+mdefine_line|#define SB_DT019X_PCM_DEV&t;0x64
+DECL|macro|SB_DT019X_SYNTH_DEV
+mdefine_line|#define SB_DT019X_SYNTH_DEV&t;0x66
+DECL|macro|SB_DT019X_CD_DEV
+mdefine_line|#define SB_DT019X_CD_DEV&t;0x68
+DECL|macro|SB_DT019X_MIC_DEV
+mdefine_line|#define SB_DT019X_MIC_DEV&t;0x6a
+DECL|macro|SB_DT019X_SPKR_DEV
+mdefine_line|#define SB_DT019X_SPKR_DEV&t;0x6a
+DECL|macro|SB_DT019X_LINE_DEV
+mdefine_line|#define SB_DT019X_LINE_DEV&t;0x6e
+DECL|macro|SB_DT019X_OUTPUT_SW1
+mdefine_line|#define SB_DT019X_OUTPUT_SW1&t;0x3c
+DECL|macro|SB_DT019X_OUTPUT_SW2
+mdefine_line|#define SB_DT019X_OUTPUT_SW2&t;0x4c
+DECL|macro|SB_DT019X_CAPTURE_SW
+mdefine_line|#define SB_DT019X_CAPTURE_SW&t;0x6c
+DECL|macro|SB_DT019X_CAP_CD
+mdefine_line|#define SB_DT019X_CAP_CD&t;0x02
+DECL|macro|SB_DT019X_CAP_MIC
+mdefine_line|#define SB_DT019X_CAP_MIC&t;0x04
+DECL|macro|SB_DT019X_CAP_LINE
+mdefine_line|#define SB_DT019X_CAP_LINE&t;0x06
+DECL|macro|SB_DT019X_CAP_SYNTH
+mdefine_line|#define SB_DT019X_CAP_SYNTH&t;0x07
+DECL|macro|SB_DT019X_CAP_MAIN
+mdefine_line|#define SB_DT019X_CAP_MAIN&t;0x07
 multiline_comment|/* IRQ setting bitmap */
 DECL|macro|SB_IRQSETUP_IRQ9
 mdefine_line|#define SB_IRQSETUP_IRQ9&t;0x01

@@ -3133,9 +3133,11 @@ id|info-&gt;lba_to_pba
 op_eq
 l_int|NULL
 op_logical_or
-id|jiffies
-OG
+id|time_after
+c_func
 (paren
+id|jiffies
+comma
 id|info-&gt;last_access
 op_plus
 id|HZ

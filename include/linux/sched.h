@@ -340,14 +340,6 @@ r_void
 )paren
 suffix:semicolon
 r_extern
-r_void
-id|flush_scheduled_tasks
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
 r_int
 id|start_context_thread
 c_func
@@ -553,6 +545,7 @@ id|task_t
 op_star
 id|curr_target
 suffix:semicolon
+multiline_comment|/* shared signal handling: */
 DECL|member|shared_pending
 r_struct
 id|sigpending
@@ -1104,11 +1097,6 @@ op_star
 r_namespace
 suffix:semicolon
 multiline_comment|/* signal handlers */
-DECL|member|sigmask_lock
-id|spinlock_t
-id|sigmask_lock
-suffix:semicolon
-multiline_comment|/* Protects signal and blocked */
 DECL|member|sig
 r_struct
 id|signal_struct
@@ -2591,22 +2579,6 @@ op_star
 suffix:semicolon
 r_extern
 r_void
-id|remove_thread_group
-c_func
-(paren
-r_struct
-id|task_struct
-op_star
-id|tsk
-comma
-r_struct
-id|signal_struct
-op_star
-id|sig
-)paren
-suffix:semicolon
-r_extern
-r_void
 id|reparent_to_init
 c_func
 (paren
@@ -2756,6 +2728,12 @@ DECL|macro|wait_event
 mdefine_line|#define wait_event(wq, condition) &t;&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (condition)&t; &t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;break;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__wait_event(wq, condition);&t;&t;&t;&t;&t;&bslash;&n;} while (0)
 DECL|macro|__wait_event_interruptible
 mdefine_line|#define __wait_event_interruptible(wq, condition, ret)&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;wait_queue_t __wait;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;init_waitqueue_entry(&amp;__wait, current);&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;add_wait_queue(&amp;wq, &amp;__wait);&t;&t;&t;&t;&t;&bslash;&n;&t;for (;;) {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;set_current_state(TASK_INTERRUPTIBLE);&t;&t;&t;&bslash;&n;&t;&t;if (condition)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;break;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;if (!signal_pending(current)) {&t;&t;&t;&t;&bslash;&n;&t;&t;&t;schedule();&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;continue;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;}&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;ret = -ERESTARTSYS;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;break;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;current-&gt;state = TASK_RUNNING;&t;&t;&t;&t;&t;&bslash;&n;&t;remove_wait_queue(&amp;wq, &amp;__wait);&t;&t;&t;&t;&bslash;&n;} while (0)
+DECL|macro|wait_event_interruptible
+mdefine_line|#define wait_event_interruptible(wq, condition)&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;int __ret = 0;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (!(condition))&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__wait_event_interruptible(wq, condition, __ret);&t;&bslash;&n;&t;__ret;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
+DECL|macro|__wait_event_interruptible_timeout
+mdefine_line|#define __wait_event_interruptible_timeout(wq, condition, ret)&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;wait_queue_t __wait;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;init_waitqueue_entry(&amp;__wait, current);&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;add_wait_queue(&amp;wq, &amp;__wait);&t;&t;&t;&t;&t;&bslash;&n;&t;for (;;) {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;set_current_state(TASK_INTERRUPTIBLE);&t;&t;&t;&bslash;&n;&t;&t;if (condition)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;break;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;if (!signal_pending(current)) {&t;&t;&t;&t;&bslash;&n;&t;&t;&t;ret = schedule_timeout(ret);&t;&t;&t;&bslash;&n;&t;&t;&t;if (!ret)&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;break;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;continue;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;}&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;ret = -ERESTARTSYS;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;break;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;current-&gt;state = TASK_RUNNING;&t;&t;&t;&t;&t;&bslash;&n;&t;remove_wait_queue(&amp;wq, &amp;__wait);&t;&t;&t;&t;&bslash;&n;} while (0)
+DECL|macro|wait_event_interruptible_timeout
+mdefine_line|#define wait_event_interruptible_timeout(wq, condition, timeout)&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;long __ret = timeout;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (!(condition))&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__wait_event_interruptible_timeout(wq, condition, __ret); &bslash;&n;&t;__ret;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
 multiline_comment|/*&n; * Must be called with the spinlock in the wait_queue_head_t held.&n; */
 DECL|function|add_wait_queue_exclusive_locked
 r_static
@@ -2812,8 +2790,6 @@ id|wait
 )paren
 suffix:semicolon
 )brace
-DECL|macro|wait_event_interruptible
-mdefine_line|#define wait_event_interruptible(wq, condition)&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;int __ret = 0;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (!(condition))&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__wait_event_interruptible(wq, condition, __ret);&t;&bslash;&n;&t;__ret;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
 DECL|macro|remove_parent
 mdefine_line|#define remove_parent(p)&t;list_del_init(&amp;(p)-&gt;sibling)
 DECL|macro|add_parent
@@ -3592,7 +3568,7 @@ id|lock
 (brace
 )brace
 macro_line|#endif
-multiline_comment|/* Reevaluate whether the task has signals pending delivery.&n;   This is required every time the blocked sigset_t changes.&n;   Athread cathreaders should have t-&gt;sigmask_lock.  */
+multiline_comment|/* Reevaluate whether the task has signals pending delivery.&n;   This is required every time the blocked sigset_t changes.&n;   callers must hold sig-&gt;siglock.  */
 r_extern
 id|FASTCALL
 c_func

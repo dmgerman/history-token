@@ -162,5 +162,14 @@ DECL|macro|MSR_VIA_LONGHAUL
 mdefine_line|#define MSR_VIA_LONGHAUL&t;&t;0x110a
 DECL|macro|MSR_VIA_BCR2
 mdefine_line|#define MSR_VIA_BCR2&t;&t;&t;0x1147
+multiline_comment|/* Transmeta defined MSRs */
+DECL|macro|MSR_TMTA_LONGRUN_CTRL
+mdefine_line|#define MSR_TMTA_LONGRUN_CTRL&t;&t;0x80868010
+DECL|macro|MSR_TMTA_LONGRUN_FLAGS
+mdefine_line|#define MSR_TMTA_LONGRUN_FLAGS&t;&t;0x80868011
+DECL|macro|MSR_TMTA_LRTI_READOUT
+mdefine_line|#define MSR_TMTA_LRTI_READOUT&t;&t;0x80868018
+DECL|macro|MSR_TMTA_LRTI_VOLT_MHZ
+mdefine_line|#define MSR_TMTA_LRTI_VOLT_MHZ&t;&t;0x8086801a
 macro_line|#endif /* __ASM_MSR_H */
 eof

@@ -30105,9 +30105,13 @@ op_assign
 op_amp
 id|sbpcd_bdops
 suffix:semicolon
-id|disk-&gt;major_name
-op_assign
+id|strcpy
+c_func
+(paren
+id|disk-&gt;disk_name
+comma
 id|sbpcd_infop-&gt;name
+)paren
 suffix:semicolon
 id|disk-&gt;flags
 op_assign

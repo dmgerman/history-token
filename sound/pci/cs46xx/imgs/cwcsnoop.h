@@ -1,0 +1,231 @@
+multiline_comment|/* generated from cwcsnoop.osp DO NOT MODIFY */
+macro_line|#ifndef __HEADER_cwcsnoop_H__
+DECL|macro|__HEADER_cwcsnoop_H__
+mdefine_line|#define __HEADER_cwcsnoop_H__
+DECL|variable|cwcsnoop_symbols
+r_static
+id|symbol_entry_t
+id|cwcsnoop_symbols
+(braket
+)braket
+op_assign
+(brace
+(brace
+l_int|0x0500
+comma
+l_string|&quot;OVERLAYBEGINADDRESS&quot;
+comma
+l_int|0x00
+)brace
+comma
+(brace
+l_int|0x0500
+comma
+l_string|&quot;OUTPUTSNOOP&quot;
+comma
+l_int|0x03
+)brace
+comma
+(brace
+l_int|0x051f
+comma
+l_string|&quot;#CODE_END&quot;
+comma
+l_int|0x00
+)brace
+comma
+)brace
+suffix:semicolon
+multiline_comment|/* cwcsnoop symbols */
+DECL|variable|cwcsnoop_code
+r_static
+id|u32
+id|cwcsnoop_code
+(braket
+)braket
+op_assign
+(brace
+multiline_comment|/* 0000 */
+l_int|0x0007bfb0
+comma
+l_int|0x000b4e40
+comma
+l_int|0x0007c088
+comma
+l_int|0x000c0617
+comma
+multiline_comment|/* 0002 */
+l_int|0x00049705
+comma
+l_int|0x00000000
+comma
+l_int|0x00080630
+comma
+l_int|0x00001028
+comma
+multiline_comment|/* 0004 */
+l_int|0x00076408
+comma
+l_int|0x000efb84
+comma
+l_int|0x00066008
+comma
+l_int|0x00000000
+comma
+multiline_comment|/* 0006 */
+l_int|0x0007c908
+comma
+l_int|0x000c0000
+comma
+l_int|0x00046725
+comma
+l_int|0x000efa44
+comma
+multiline_comment|/* 0008 */
+l_int|0x0005f708
+comma
+l_int|0x00000000
+comma
+l_int|0x0001d402
+comma
+l_int|0x000b2e00
+comma
+multiline_comment|/* 000A */
+l_int|0x0003d418
+comma
+l_int|0x00001000
+comma
+l_int|0x0008d574
+comma
+l_int|0x000c4293
+comma
+multiline_comment|/* 000C */
+l_int|0x00065625
+comma
+l_int|0x000ea30e
+comma
+l_int|0x00096c01
+comma
+l_int|0x000c6f92
+comma
+multiline_comment|/* 000E */
+l_int|0x0006a58a
+comma
+l_int|0x000f6085
+comma
+l_int|0x00002f43
+comma
+l_int|0x00000000
+comma
+multiline_comment|/* 0010 */
+l_int|0x000a83a0
+comma
+l_int|0x00001028
+comma
+l_int|0x0005e608
+comma
+l_int|0x000c0000
+comma
+multiline_comment|/* 0012 */
+l_int|0x00000000
+comma
+l_int|0x00000000
+comma
+l_int|0x000ca108
+comma
+l_int|0x000dcca1
+comma
+multiline_comment|/* 0014 */
+l_int|0x00003bac
+comma
+l_int|0x000fb205
+comma
+l_int|0x00073843
+comma
+l_int|0x00000000
+comma
+multiline_comment|/* 0016 */
+l_int|0x000d8730
+comma
+l_int|0x00001028
+comma
+l_int|0x0006600a
+comma
+l_int|0x000c0000
+comma
+multiline_comment|/* 0018 */
+l_int|0x00057488
+comma
+l_int|0x00000000
+comma
+l_int|0x00000000
+comma
+l_int|0x000e5084
+comma
+multiline_comment|/* 001A */
+l_int|0x00000000
+comma
+l_int|0x000eba44
+comma
+l_int|0x00087401
+comma
+l_int|0x000e4782
+comma
+multiline_comment|/* 001C */
+l_int|0x00000734
+comma
+l_int|0x00001000
+comma
+l_int|0x00010705
+comma
+l_int|0x000a6880
+comma
+multiline_comment|/* 001E */
+l_int|0x00006a88
+comma
+l_int|0x000c75c4
+)brace
+suffix:semicolon
+multiline_comment|/* #CODE_END */
+DECL|variable|cwcsnoop_segments
+r_static
+id|segment_desc_t
+id|cwcsnoop_segments
+(braket
+)braket
+op_assign
+(brace
+(brace
+id|SEGTYPE_SP_PROGRAM
+comma
+l_int|0x00000000
+comma
+l_int|0x0000003e
+comma
+id|cwcsnoop_code
+)brace
+comma
+)brace
+suffix:semicolon
+DECL|variable|cwcsnoop_module
+r_static
+id|dsp_module_desc_t
+id|cwcsnoop_module
+op_assign
+(brace
+l_string|&quot;cwcsnoop&quot;
+comma
+(brace
+l_int|3
+comma
+id|cwcsnoop_symbols
+)brace
+comma
+l_int|1
+comma
+id|cwcsnoop_segments
+comma
+)brace
+suffix:semicolon
+macro_line|#endif /* __HEADER_cwcsnoop_H__ */
+eof

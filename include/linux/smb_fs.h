@@ -219,31 +219,33 @@ DECL|macro|SMB_F_LOCALWRITE
 mdefine_line|#define SMB_F_LOCALWRITE&t;0x02&t;/* file modified locally */
 multiline_comment|/* NT1 protocol capability bits */
 DECL|macro|SMB_CAP_RAW_MODE
-mdefine_line|#define SMB_CAP_RAW_MODE         0x0001
+mdefine_line|#define SMB_CAP_RAW_MODE         0x00000001
 DECL|macro|SMB_CAP_MPX_MODE
-mdefine_line|#define SMB_CAP_MPX_MODE         0x0002
+mdefine_line|#define SMB_CAP_MPX_MODE         0x00000002
 DECL|macro|SMB_CAP_UNICODE
-mdefine_line|#define SMB_CAP_UNICODE          0x0004
+mdefine_line|#define SMB_CAP_UNICODE          0x00000004
 DECL|macro|SMB_CAP_LARGE_FILES
-mdefine_line|#define SMB_CAP_LARGE_FILES      0x0008
+mdefine_line|#define SMB_CAP_LARGE_FILES      0x00000008
 DECL|macro|SMB_CAP_NT_SMBS
-mdefine_line|#define SMB_CAP_NT_SMBS          0x0010
+mdefine_line|#define SMB_CAP_NT_SMBS          0x00000010
 DECL|macro|SMB_CAP_RPC_REMOTE_APIS
-mdefine_line|#define SMB_CAP_RPC_REMOTE_APIS  0x0020
+mdefine_line|#define SMB_CAP_RPC_REMOTE_APIS  0x00000020
 DECL|macro|SMB_CAP_STATUS32
-mdefine_line|#define SMB_CAP_STATUS32         0x0040
+mdefine_line|#define SMB_CAP_STATUS32         0x00000040
 DECL|macro|SMB_CAP_LEVEL_II_OPLOCKS
-mdefine_line|#define SMB_CAP_LEVEL_II_OPLOCKS 0x0080
+mdefine_line|#define SMB_CAP_LEVEL_II_OPLOCKS 0x00000080
 DECL|macro|SMB_CAP_LOCK_AND_READ
-mdefine_line|#define SMB_CAP_LOCK_AND_READ    0x0100
+mdefine_line|#define SMB_CAP_LOCK_AND_READ    0x00000100
 DECL|macro|SMB_CAP_NT_FIND
-mdefine_line|#define SMB_CAP_NT_FIND          0x0200
+mdefine_line|#define SMB_CAP_NT_FIND          0x00000200
 DECL|macro|SMB_CAP_DFS
-mdefine_line|#define SMB_CAP_DFS              0x1000
+mdefine_line|#define SMB_CAP_DFS              0x00001000
 DECL|macro|SMB_CAP_LARGE_READX
-mdefine_line|#define SMB_CAP_LARGE_READX      0x4000
+mdefine_line|#define SMB_CAP_LARGE_READX      0x00004000
 DECL|macro|SMB_CAP_LARGE_WRITEX
-mdefine_line|#define SMB_CAP_LARGE_WRITEX     0x8000
+mdefine_line|#define SMB_CAP_LARGE_WRITEX     0x00008000
+DECL|macro|SMB_CAP_UNIX
+mdefine_line|#define SMB_CAP_UNIX             0x00800000&t;/* unofficial ... */
 multiline_comment|/*&n; * This is the time we allow an inode, dentry or dir cache to live. It is bad&n; * for performance to have shorter ttl on an inode than on the cache. It can&n; * cause refresh on each inode for a dir listing ... one-by-one&n; */
 DECL|macro|SMB_MAX_AGE
 mdefine_line|#define SMB_MAX_AGE(server) (((server)-&gt;mnt-&gt;ttl * HZ) / 1000)

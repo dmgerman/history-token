@@ -34,7 +34,5 @@ DECL|macro|__virt_to_bus
 mdefine_line|#define __virt_to_bus(x)&t; __virt_to_phys(x)
 DECL|macro|__bus_to_virt
 mdefine_line|#define __bus_to_virt(x)&t; __phys_to_virt(x)
-DECL|macro|PHYS_TO_NID
-mdefine_line|#define&t;PHYS_TO_NID(x)&t;&t;0
 macro_line|#endif
 eof

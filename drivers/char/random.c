@@ -1258,7 +1258,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Changes to the entropy data is put into a queue rather than being added to&n; * the entropy counts directly.  This is presumably to avoid doing heavy&n; * hashing calculations during an interrupt in add_timer_randomness().&n; * Instead, the entropy is only added to the pool once per timer tick.&n; */
+multiline_comment|/*&n; * Changes to the entropy data is put into a queue rather than being added to&n; * the entropy counts directly.  This is presumably to avoid doing heavy&n; * hashing calculations during an interrupt in add_timer_randomness().&n; * Instead, the entropy is only added to the pool by keventd.&n; */
 DECL|function|batch_entropy_store
 r_void
 id|batch_entropy_store
@@ -1336,14 +1336,12 @@ op_ne
 id|batch_tail
 )paren
 (brace
-id|queue_task
+singleline_comment|// FIXME: is this correct?
+id|schedule_task
 c_func
 (paren
 op_amp
 id|batch_tqueue
-comma
-op_amp
-id|tq_timer
 )paren
 suffix:semicolon
 id|batch_head

@@ -693,7 +693,7 @@ id|ret
 suffix:semicolon
 )brace
 DECL|variable|sa1100_dram_init
-id|__initcall
+id|core_initcall
 c_func
 (paren
 id|sa1100_dram_init

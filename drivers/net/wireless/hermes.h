@@ -509,6 +509,37 @@ id|packed
 )paren
 )paren
 suffix:semicolon
+DECL|macro|HERMES_LINKSTATUS_NOT_CONNECTED
+mdefine_line|#define HERMES_LINKSTATUS_NOT_CONNECTED   (0x0000)  
+DECL|macro|HERMES_LINKSTATUS_CONNECTED
+mdefine_line|#define HERMES_LINKSTATUS_CONNECTED       (0x0001)
+DECL|macro|HERMES_LINKSTATUS_DISCONNECTED
+mdefine_line|#define HERMES_LINKSTATUS_DISCONNECTED    (0x0002)
+DECL|macro|HERMES_LINKSTATUS_AP_CHANGE
+mdefine_line|#define HERMES_LINKSTATUS_AP_CHANGE       (0x0003)
+DECL|macro|HERMES_LINKSTATUS_AP_OUT_OF_RANGE
+mdefine_line|#define HERMES_LINKSTATUS_AP_OUT_OF_RANGE (0x0004)
+DECL|macro|HERMES_LINKSTATUS_AP_IN_RANGE
+mdefine_line|#define HERMES_LINKSTATUS_AP_IN_RANGE     (0x0005)
+DECL|macro|HERMES_LINKSTATUS_ASSOC_FAILED
+mdefine_line|#define HERMES_LINKSTATUS_ASSOC_FAILED    (0x0006)
+DECL|struct|hermes_linkstatus
+r_struct
+id|hermes_linkstatus
+(brace
+DECL|member|linkstatus
+id|u16
+id|linkstatus
+suffix:semicolon
+multiline_comment|/* Link status */
+)brace
+id|__attribute__
+(paren
+(paren
+id|packed
+)paren
+)paren
+suffix:semicolon
 singleline_comment|// #define HERMES_DEBUG_BUFFER 1
 DECL|macro|HERMES_DEBUG_BUFSIZE
 mdefine_line|#define HERMES_DEBUG_BUFSIZE 4096

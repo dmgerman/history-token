@@ -6397,7 +6397,9 @@ id|sh-&gt;sector
 suffix:semicolon
 id|bi-&gt;bi_flags
 op_assign
-l_int|0
+l_int|1
+op_lshift
+id|BIO_UPTODATE
 suffix:semicolon
 id|bi-&gt;bi_vcnt
 op_assign

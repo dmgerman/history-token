@@ -24,6 +24,7 @@ r_void
 id|lapb_clear_queues
 c_func
 (paren
+r_struct
 id|lapb_cb
 op_star
 id|lapb
@@ -50,6 +51,7 @@ r_void
 id|lapb_frames_acked
 c_func
 (paren
+r_struct
 id|lapb_cb
 op_star
 id|lapb
@@ -88,7 +90,6 @@ id|lapb-&gt;va
 op_ne
 id|nr
 )paren
-(brace
 r_while
 c_loop
 (paren
@@ -98,8 +99,6 @@ c_func
 op_amp
 id|lapb-&gt;ack_queue
 )paren
-op_ne
-l_int|NULL
 op_logical_and
 id|lapb-&gt;va
 op_ne
@@ -133,12 +132,12 @@ id|modulus
 suffix:semicolon
 )brace
 )brace
-)brace
 DECL|function|lapb_requeue_frames
 r_void
 id|lapb_requeue_frames
 c_func
 (paren
+r_struct
 id|lapb_cb
 op_star
 id|lapb
@@ -175,9 +174,8 @@ l_int|NULL
 r_if
 c_cond
 (paren
+op_logical_neg
 id|skb_prev
-op_eq
-l_int|NULL
 )paren
 id|skb_queue_head
 c_func
@@ -209,6 +207,7 @@ r_int
 id|lapb_validate_nr
 c_func
 (paren
+r_struct
 id|lapb_cb
 op_star
 id|lapb
@@ -269,18 +268,10 @@ op_mod
 id|modulus
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
+r_return
 id|nr
 op_eq
 id|lapb-&gt;vs
-)paren
-r_return
-l_int|1
-suffix:semicolon
-r_return
-l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; *&t;This routine is the centralised routine for parsing the control&n; *&t;information for the different frame formats.&n; */
@@ -289,6 +280,7 @@ r_void
 id|lapb_decode
 c_func
 (paren
+r_struct
 id|lapb_cb
 op_star
 id|lapb
@@ -503,6 +495,7 @@ id|LAPB_EXTENDED
 r_if
 c_cond
 (paren
+op_logical_neg
 (paren
 id|skb-&gt;data
 (braket
@@ -511,15 +504,13 @@ l_int|0
 op_amp
 id|LAPB_S
 )paren
-op_eq
-l_int|0
 )paren
 (brace
+multiline_comment|/*&n;&t;&t;&t; * I frame - carries NR/NS/PF&n;&t;&t;&t; */
 id|frame-&gt;type
 op_assign
 id|LAPB_I
 suffix:semicolon
-multiline_comment|/* I frame - carries NR/NS/PF */
 id|frame-&gt;ns
 op_assign
 (paren
@@ -600,7 +591,7 @@ op_eq
 l_int|1
 )paren
 (brace
-multiline_comment|/* S frame - take out PF/NR */
+multiline_comment|/*&n;&t;&t;&t; * S frame - take out PF/NR&n;&t;&t;&t; */
 id|frame-&gt;type
 op_assign
 id|skb-&gt;data
@@ -677,7 +668,7 @@ op_eq
 l_int|3
 )paren
 (brace
-multiline_comment|/* U frame - take out PF */
+multiline_comment|/*&n;&t;&t;&t; * U frame - take out PF&n;&t;&t;&t; */
 id|frame-&gt;type
 op_assign
 id|skb-&gt;data
@@ -729,6 +720,7 @@ r_else
 r_if
 c_cond
 (paren
+op_logical_neg
 (paren
 id|skb-&gt;data
 (braket
@@ -737,15 +729,13 @@ l_int|0
 op_amp
 id|LAPB_S
 )paren
-op_eq
-l_int|0
 )paren
 (brace
+multiline_comment|/*&n;&t;&t;&t; * I frame - carries NR/NS/PF&n;&t;&t;&t; */
 id|frame-&gt;type
 op_assign
 id|LAPB_I
 suffix:semicolon
-multiline_comment|/* I frame - carries NR/NS/PF */
 id|frame-&gt;ns
 op_assign
 (paren
@@ -798,7 +788,7 @@ op_eq
 l_int|1
 )paren
 (brace
-multiline_comment|/* S frame - take out PF/NR */
+multiline_comment|/*&n;&t;&t;&t; * S frame - take out PF/NR&n;&t;&t;&t; */
 id|frame-&gt;type
 op_assign
 id|skb-&gt;data
@@ -847,7 +837,7 @@ op_eq
 l_int|3
 )paren
 (brace
-multiline_comment|/* U frame - take out PF */
+multiline_comment|/*&n;&t;&t;&t; * U frame - take out PF&n;&t;&t;&t; */
 id|frame-&gt;type
 op_assign
 id|skb-&gt;data
@@ -894,6 +884,7 @@ r_void
 id|lapb_send_control
 c_func
 (paren
+r_struct
 id|lapb_cb
 op_star
 id|lapb
@@ -987,9 +978,7 @@ suffix:semicolon
 op_star
 id|dptr
 op_or_assign
-(paren
 id|poll_bit
-)paren
 ques
 c_cond
 id|LAPB_SPF
@@ -1032,9 +1021,7 @@ id|dptr
 l_int|1
 )braket
 op_or_assign
-(paren
 id|poll_bit
-)paren
 ques
 c_cond
 id|LAPB_EPF
@@ -1063,9 +1050,7 @@ suffix:semicolon
 op_star
 id|dptr
 op_or_assign
-(paren
 id|poll_bit
-)paren
 ques
 c_cond
 id|LAPB_SPF
@@ -1111,6 +1096,7 @@ r_void
 id|lapb_transmit_frmr
 c_func
 (paren
+r_struct
 id|lapb_cb
 op_star
 id|lapb

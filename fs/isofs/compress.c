@@ -1467,8 +1467,9 @@ id|address_space_operations
 id|zisofs_aops
 op_assign
 (brace
+dot
 id|readpage
-suffix:colon
+op_assign
 id|zisofs_readpage
 comma
 multiline_comment|/* No sync_page operation supported? */

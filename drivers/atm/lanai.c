@@ -6865,9 +6865,12 @@ id|vcc
 op_assign
 id|lvcc-&gt;rx.atmvcc
 suffix:semicolon
+id|do_gettimeofday
+c_func
+(paren
+op_amp
 id|skb-&gt;stamp
-op_assign
-id|xtime
+)paren
 suffix:semicolon
 id|vcc_rx_memcpy
 c_func

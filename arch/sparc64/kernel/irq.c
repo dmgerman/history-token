@@ -3898,9 +3898,9 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* This is gets the master TICK_INT timer going. */
-DECL|function|init_timers
+DECL|function|sparc64_init_timers
 r_void
-id|init_timers
+id|sparc64_init_timers
 c_func
 (paren
 r_void

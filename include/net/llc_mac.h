@@ -2,18 +2,6 @@ macro_line|#ifndef LLC_MAC_H
 DECL|macro|LLC_MAC_H
 mdefine_line|#define LLC_MAC_H
 multiline_comment|/*&n; * Copyright (c) 1997 by Procom Technology, Inc.&n; * &t;&t; 2001, 2002 by Arnaldo Carvalho de Melo &lt;acme@conectiva.com.br&gt;&n; *&n; * This program can be redistributed or modified under the terms of the&n; * GNU General Public License as published by the Free Software Foundation.&n; * This program is distributed without any warranty or implied warranty&n; * of merchantability or fitness for a particular purpose.&n; *&n; * See the GNU General Public License for more details.&n; */
-multiline_comment|/* Defines MAC-layer interface to LLC layer */
-r_extern
-r_int
-id|mac_send_pdu
-c_func
-(paren
-r_struct
-id|sk_buff
-op_star
-id|skb
-)paren
-suffix:semicolon
 r_extern
 r_int
 id|llc_rcv

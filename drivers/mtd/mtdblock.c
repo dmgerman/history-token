@@ -126,13 +126,6 @@ r_struct
 id|gendisk
 id|disk
 suffix:semicolon
-DECL|member|name
-r_char
-id|name
-(braket
-l_int|7
-)braket
-suffix:semicolon
 DECL|variable|mtdblks
 )brace
 op_star
@@ -1219,14 +1212,10 @@ op_assign
 op_amp
 id|mtd_fops
 suffix:semicolon
-id|mtdblk-&gt;disk.major_name
-op_assign
-id|mtdblk-&gt;name
-suffix:semicolon
 id|sprintf
 c_func
 (paren
-id|mtdblk-&gt;name
+id|mtdblk-&gt;disk.disk_name
 comma
 l_string|&quot;mtd%d&quot;
 comma
@@ -1858,7 +1847,7 @@ id|spin_lock_irq
 c_func
 (paren
 op_amp
-id|tsk-&gt;sigmask_lock
+id|tsk-&gt;sig-&gt;siglock
 )paren
 suffix:semicolon
 id|sigfillset
@@ -1877,7 +1866,7 @@ id|spin_unlock_irq
 c_func
 (paren
 op_amp
-id|tsk-&gt;sigmask_lock
+id|tsk-&gt;sig-&gt;siglock
 )paren
 suffix:semicolon
 id|daemonize

@@ -14,11 +14,18 @@ macro_line|#include &lt;linux/kmod.h&gt;
 macro_line|#ifdef CONFIG_KERNELD
 macro_line|#include &lt;linux/kerneld.h&gt;
 macro_line|#endif
+macro_line|#if !defined(CONFIG_SND_RTCTIMER) &amp;&amp; !defined(CONFIG_SND_RTCTIMER_MODULE)
+DECL|macro|DEFAULT_TIMER_LIMIT
+mdefine_line|#define DEFAULT_TIMER_LIMIT 1
+macro_line|#else
+DECL|macro|DEFAULT_TIMER_LIMIT
+mdefine_line|#define DEFAULT_TIMER_LIMIT 2
+macro_line|#endif
 DECL|variable|snd_timer_limit
 r_int
 id|snd_timer_limit
 op_assign
-l_int|1
+id|DEFAULT_TIMER_LIMIT
 suffix:semicolon
 id|MODULE_AUTHOR
 c_func
@@ -57,7 +64,7 @@ c_func
 (paren
 id|snd_timer_limit
 comma
-l_string|&quot;Maximum global timers in system. (1 by default)&quot;
+l_string|&quot;Maximum global timers in system.&quot;
 )paren
 suffix:semicolon
 r_typedef
@@ -506,6 +513,15 @@ id|tid-&gt;dev_class
 r_case
 id|SNDRV_TIMER_CLASS_GLOBAL
 suffix:colon
+r_if
+c_cond
+(paren
+id|tid-&gt;device
+op_ge
+id|snd_timer_limit
+)paren
+r_return
+suffix:semicolon
 id|sprintf
 c_func
 (paren
@@ -524,6 +540,15 @@ suffix:colon
 r_case
 id|SNDRV_TIMER_CLASS_PCM
 suffix:colon
+r_if
+c_cond
+(paren
+id|tid-&gt;card
+op_ge
+id|snd_ecards_limit
+)paren
+r_return
+suffix:semicolon
 id|sprintf
 c_func
 (paren
@@ -3970,7 +3995,7 @@ c_func
 (paren
 id|buffer
 comma
-l_string|&quot; %lu.%luus (%lu ticks)&quot;
+l_string|&quot; %lu.%03luus (%lu ticks)&quot;
 comma
 id|timer-&gt;hw.resolution
 op_div
@@ -6177,9 +6202,17 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
 id|file-&gt;f_flags
 op_amp
 id|O_NONBLOCK
+)paren
+op_ne
+l_int|0
+op_logical_or
+id|result
+OG
+l_int|0
 )paren
 (brace
 id|spin_unlock_irq
@@ -6249,6 +6282,12 @@ id|tu-&gt;qchange_sleep
 comma
 op_amp
 id|wait
+)paren
+suffix:semicolon
+id|set_current_state
+c_func
+(paren
+id|TASK_RUNNING
 )paren
 suffix:semicolon
 r_if
@@ -6353,12 +6392,14 @@ id|snd_timer_read_t
 suffix:semicolon
 )brace
 r_return
-id|err
+id|result
+OG
+l_int|0
 ques
 c_cond
-id|err
-suffix:colon
 id|result
+suffix:colon
+id|err
 suffix:semicolon
 )brace
 DECL|function|snd_timer_user_poll

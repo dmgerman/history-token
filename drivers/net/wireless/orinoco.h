@@ -2,6 +2,11 @@ multiline_comment|/* orinoco.h&n; * &n; * Common definitions to all pieces of th
 macro_line|#ifndef _ORINOCO_H
 DECL|macro|_ORINOCO_H
 mdefine_line|#define _ORINOCO_H
+macro_line|#include &lt;linux/types.h&gt;
+macro_line|#include &lt;linux/spinlock.h&gt;
+macro_line|#include &lt;linux/netdevice.h&gt;
+macro_line|#include &lt;linux/wireless.h&gt;
+macro_line|#include &lt;linux/tqueue.h&gt;
 macro_line|#include &quot;hermes.h&quot;
 multiline_comment|/* To enable debug messages */
 singleline_comment|//#define ORINOCO_DEBUG&t;&t;3

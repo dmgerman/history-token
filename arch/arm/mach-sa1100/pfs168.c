@@ -59,7 +59,7 @@ id|IRQ_GPIO25
 suffix:semicolon
 )brace
 DECL|variable|pfs168_init
-id|__initcall
+id|arch_initcall
 c_func
 (paren
 id|pfs168_init

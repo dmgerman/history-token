@@ -142,21 +142,5 @@ op_star
 id|skb
 )paren
 suffix:semicolon
-r_extern
-r_void
-id|llc_sap_send_pdu
-c_func
-(paren
-r_struct
-id|llc_sap
-op_star
-id|sap
-comma
-r_struct
-id|sk_buff
-op_star
-id|skb
-)paren
-suffix:semicolon
 macro_line|#endif /* LLC_SAP_H */
 eof

@@ -88,11 +88,11 @@ DECL|macro|BAD_FAT
 mdefine_line|#define BAD_FAT(s) (MSDOS_SB(s)-&gt;fat_bits == 32 ? BAD_FAT32 : &bslash;&n;&t;MSDOS_SB(s)-&gt;fat_bits == 16 ? BAD_FAT16 : BAD_FAT12)
 multiline_comment|/* standard EOF */
 DECL|macro|EOF_FAT12
-mdefine_line|#define EOF_FAT12 0xFF8
+mdefine_line|#define EOF_FAT12 0xFFF
 DECL|macro|EOF_FAT16
-mdefine_line|#define EOF_FAT16 0xFFF8
+mdefine_line|#define EOF_FAT16 0xFFFF
 DECL|macro|EOF_FAT32
-mdefine_line|#define EOF_FAT32 0xFFFFFF8
+mdefine_line|#define EOF_FAT32 0xFFFFFFF
 DECL|macro|EOF_FAT
 mdefine_line|#define EOF_FAT(s) (MSDOS_SB(s)-&gt;fat_bits == 32 ? EOF_FAT32 : &bslash;&n;&t;MSDOS_SB(s)-&gt;fat_bits == 16 ? EOF_FAT16 : EOF_FAT12)
 DECL|macro|FAT_ENT_FREE

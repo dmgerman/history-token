@@ -1,5 +1,6 @@
 multiline_comment|/*&n; * sound/gus2_midi.c&n; *&n; * The low level driver for the GUS Midi Interface.&n; *&n; *&n; * Copyright (C) by Hannu Savolainen 1993-1997&n; *&n; * OSS/Free for Linux is distributed under the GNU GENERAL PUBLIC LICENSE (GPL)&n; * Version 2 (June 1991). See the &quot;COPYING&quot; file distributed with this software&n; * for more info.&n; *&n; * Changes:&n; * 11-10-2000&t;Bartlomiej Zolnierkiewicz &lt;bkz@linux-ide.org&gt;&n; *&t;&t;Added __init to gus_midi_init()&n; */
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &quot;sound_config.h&quot;
 macro_line|#include &quot;gus.h&quot;
 macro_line|#include &quot;gus_hw.h&quot;
@@ -33,6 +34,13 @@ r_volatile
 r_int
 r_char
 id|gus_midi_control
+suffix:semicolon
+DECL|variable|lock
+r_static
+id|spinlock_t
+id|lock
+op_assign
+id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
 DECL|variable|midi_input_intr
 r_static
@@ -265,15 +273,13 @@ id|output_used
 op_assign
 l_int|1
 suffix:semicolon
-id|save_flags
+id|spin_lock_irqsave
 c_func
 (paren
+op_amp
+id|lock
+comma
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 r_if
@@ -320,9 +326,12 @@ id|u_MidiControl
 )paren
 suffix:semicolon
 )brace
-id|restore_flags
+id|spin_unlock_irqrestore
 c_func
 (paren
+op_amp
+id|lock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -375,15 +384,13 @@ r_int
 id|flags
 suffix:semicolon
 multiline_comment|/*&n;&t; * Drain the local queue first&n;&t; */
-id|save_flags
+id|spin_lock_irqsave
 c_func
 (paren
+op_amp
+id|lock
+comma
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 r_while
@@ -408,9 +415,12 @@ id|qhead
 op_increment
 suffix:semicolon
 )brace
-id|restore_flags
+id|spin_unlock_irqrestore
 c_func
 (paren
+op_amp
+id|lock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -446,15 +456,13 @@ r_return
 l_int|0
 suffix:semicolon
 multiline_comment|/*&n;&t;&t;&t;&t; * Local queue full&n;&t;&t;&t;&t; */
-id|save_flags
+id|spin_lock_irqsave
 c_func
 (paren
+op_amp
+id|lock
+comma
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 id|tmp_queue
@@ -470,9 +478,12 @@ suffix:semicolon
 id|qtail
 op_increment
 suffix:semicolon
-id|restore_flags
+id|spin_unlock_irqrestore
 c_func
 (paren
+op_amp
+id|lock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -542,15 +553,13 @@ id|output_used
 r_return
 l_int|0
 suffix:semicolon
-id|save_flags
+id|spin_lock_irqsave
 c_func
 (paren
+op_amp
+id|lock
+comma
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 r_if
@@ -575,9 +584,12 @@ id|qhead
 op_increment
 suffix:semicolon
 )brace
-id|restore_flags
+id|spin_unlock_irqrestore
 c_func
 (paren
+op_amp
+id|lock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -763,23 +775,15 @@ comma
 id|data
 suffix:semicolon
 r_int
-r_int
-id|flags
-suffix:semicolon
-r_int
 id|timeout
 op_assign
 l_int|10
 suffix:semicolon
-id|save_flags
+id|spin_lock
 c_func
 (paren
-id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
+op_amp
+id|lock
 )paren
 suffix:semicolon
 r_while
@@ -902,10 +906,11 @@ suffix:semicolon
 )brace
 )brace
 )brace
-id|restore_flags
+id|spin_unlock
 c_func
 (paren
-id|flags
+op_amp
+id|lock
 )paren
 suffix:semicolon
 )brace

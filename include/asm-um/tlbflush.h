@@ -79,6 +79,16 @@ r_int
 id|end
 )paren
 suffix:semicolon
+r_extern
+r_void
+id|__flush_tlb_one
+c_func
+(paren
+r_int
+r_int
+id|addr
+)paren
+suffix:semicolon
 DECL|function|flush_tlb_pgtables
 r_static
 r_inline

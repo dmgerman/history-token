@@ -1860,13 +1860,6 @@ c_func
 id|ioctl_by_bdev
 )paren
 suffix:semicolon
-DECL|variable|register_disk
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|register_disk
-)paren
-suffix:semicolon
 DECL|variable|read_dev_sector
 id|EXPORT_SYMBOL
 c_func
@@ -2257,29 +2250,7 @@ c_func
 id|mod_timer
 )paren
 suffix:semicolon
-DECL|variable|tq_timer
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|tq_timer
-)paren
-suffix:semicolon
-DECL|variable|tq_immediate
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|tq_immediate
-)paren
-suffix:semicolon
 macro_line|#ifdef CONFIG_SMP
-multiline_comment|/* Various random spinlocks we want to export */
-DECL|variable|tqueue_lock
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|tqueue_lock
-)paren
-suffix:semicolon
 multiline_comment|/* Big-Reader lock implementation */
 DECL|variable|__brlock_array
 id|EXPORT_SYMBOL
@@ -3129,27 +3100,6 @@ id|strsep
 )paren
 suffix:semicolon
 multiline_comment|/* software interrupts */
-DECL|variable|bh_task_vec
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|bh_task_vec
-)paren
-suffix:semicolon
-DECL|variable|init_bh
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|init_bh
-)paren
-suffix:semicolon
-DECL|variable|remove_bh
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|remove_bh
-)paren
-suffix:semicolon
 DECL|variable|tasklet_init
 id|EXPORT_SYMBOL
 c_func
@@ -3162,13 +3112,6 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|tasklet_kill
-)paren
-suffix:semicolon
-DECL|variable|__run_task_queue
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|__run_task_queue
 )paren
 suffix:semicolon
 DECL|variable|do_softirq

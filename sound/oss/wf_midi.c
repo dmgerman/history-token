@@ -1,6 +1,7 @@
 multiline_comment|/*&n; * sound/wf_midi.c&n; *&n; * The low level driver for the WaveFront ICS2115 MIDI interface(s)&n; * Note that there is also an MPU-401 emulation (actually, a UART-401&n; * emulation) on the CS4232 on the Tropez Plus. This code has nothing&n; * to do with that interface at all.&n; *&n; * The interface is essentially just a UART-401, but is has the&n; * interesting property of supporting what Turtle Beach called&n; * &quot;Virtual MIDI&quot; mode. In this mode, there are effectively *two*&n; * MIDI buses accessible via the interface, one that is routed&n; * solely to/from the external WaveFront synthesizer and the other&n; * corresponding to the pin/socket connector used to link external&n; * MIDI devices to the board.&n; *&n; * This driver fully supports this mode, allowing two distinct&n; * midi devices (/dev/midiNN and /dev/midiNN+1) to be used&n; * completely independently, giving 32 channels of MIDI routing,&n; * 16 to the WaveFront synth and 16 to the external MIDI bus.&n; *&n; * Switching between the two is accomplished externally by the driver&n; * using the two otherwise unused MIDI bytes. See the code for more details.&n; *&n; * NOTE: VIRTUAL MIDI MODE IS ON BY DEFAULT (see wavefront.c)&n; *&n; * The main reason to turn off Virtual MIDI mode is when you want to&n; * tightly couple the WaveFront synth with an external MIDI&n; * device. You won&squot;t be able to distinguish the source of any MIDI&n; * data except via SysEx ID, but thats probably OK, since for the most&n; * part, the WaveFront won&squot;t be sending any MIDI data at all.&n; *  &n; * The main reason to turn on Virtual MIDI Mode is to provide two&n; * completely independent 16-channel MIDI buses, one to the&n; * WaveFront and one to any external MIDI devices. Given the 32&n; * voice nature of the WaveFront, its pretty easy to find a use&n; * for all 16 channels driving just that synth.&n; *&n; */
 multiline_comment|/*&n; * Copyright (C) by Paul Barton-Davis 1998&n; * Some portions of this file are derived from work that is:&n; *&n; *    CopyriGht (C) by Hannu Savolainen 1993-1996&n; *&n; * USS/Lite for Linux is distributed under the GNU GENERAL PUBLIC LICENSE (GPL)&n; * Version 2 (June 1991). See the &quot;COPYING&quot; file distributed with this software&n; * for more info.&n; */
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &quot;sound_config.h&quot;
 macro_line|#include &lt;linux/wavefront.h&gt;
 macro_line|#ifdef MODULE
@@ -105,6 +106,13 @@ id|start_uart_mode
 (paren
 r_void
 )paren
+suffix:semicolon
+DECL|variable|lock
+r_static
+id|spinlock_t
+id|lock
+op_assign
+id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
 DECL|macro|OUTPUT_READY
 mdefine_line|#define&t;OUTPUT_READY&t;0x40
@@ -944,13 +952,16 @@ id|mi-&gt;m_busy
 )paren
 r_return
 suffix:semicolon
+id|spin_lock
+c_func
+(paren
+op_amp
+id|lock
+)paren
+suffix:semicolon
 id|mi-&gt;m_busy
 op_assign
 l_int|1
-suffix:semicolon
-id|sti
-(paren
-)paren
 suffix:semicolon
 r_if
 c_cond
@@ -1085,6 +1096,13 @@ suffix:semicolon
 id|mi-&gt;m_busy
 op_assign
 l_int|0
+suffix:semicolon
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|lock
+)paren
 suffix:semicolon
 )brace
 r_static
@@ -1425,13 +1443,13 @@ id|timeout
 op_decrement
 )paren
 suffix:semicolon
-id|save_flags
+id|spin_lock_irqsave
+c_func
 (paren
+op_amp
+id|lock
+comma
 id|flags
-)paren
-suffix:semicolon
-id|cli
-(paren
 )paren
 suffix:semicolon
 r_if
@@ -1450,8 +1468,12 @@ l_string|&quot;WF-MPU: Send switch &quot;
 l_string|&quot;byte timeout&bslash;n&quot;
 )paren
 suffix:semicolon
-id|restore_flags
+id|spin_unlock_irqrestore
+c_func
 (paren
+op_amp
+id|lock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -1464,8 +1486,12 @@ id|write_data
 id|switchch
 )paren
 suffix:semicolon
-id|restore_flags
+id|spin_unlock_irqrestore
+c_func
 (paren
+op_amp
+id|lock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -1496,13 +1522,13 @@ id|timeout
 op_decrement
 )paren
 suffix:semicolon
-id|save_flags
+id|spin_lock_irqsave
+c_func
 (paren
+op_amp
+id|lock
+comma
 id|flags
-)paren
-suffix:semicolon
-id|cli
-(paren
 )paren
 suffix:semicolon
 r_if
@@ -1514,15 +1540,19 @@ id|output_ready
 )paren
 )paren
 (brace
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|lock
+comma
+id|flags
+)paren
+suffix:semicolon
 id|printk
 (paren
 id|KERN_WARNING
 l_string|&quot;WF-MPU: Send data timeout&bslash;n&quot;
-)paren
-suffix:semicolon
-id|restore_flags
-(paren
-id|flags
 )paren
 suffix:semicolon
 r_return
@@ -1534,8 +1564,12 @@ id|write_data
 id|midi_byte
 )paren
 suffix:semicolon
-id|restore_flags
+id|spin_unlock_irqrestore
+c_func
 (paren
+op_amp
+id|lock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -2546,14 +2580,13 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-id|save_flags
-(paren
-id|flags
-)paren
-suffix:semicolon
-id|cli
+id|spin_lock_irqsave
 c_func
 (paren
+op_amp
+id|lock
+comma
+id|flags
 )paren
 suffix:semicolon
 id|wf_mpu_close
@@ -2566,8 +2599,12 @@ id|phys_dev-&gt;isvirtual
 op_assign
 l_int|0
 suffix:semicolon
-id|restore_flags
+id|spin_unlock_irqrestore
+c_func
 (paren
+op_amp
+id|lock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -2805,13 +2842,13 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-id|save_flags
+id|spin_lock_irqsave
+c_func
 (paren
+op_amp
+id|lock
+comma
 id|flags
-)paren
-suffix:semicolon
-id|cli
-(paren
 )paren
 suffix:semicolon
 multiline_comment|/* XXX fix me */
@@ -2893,8 +2930,12 @@ suffix:semicolon
 )brace
 )brace
 )brace
-id|restore_flags
+id|spin_unlock_irqrestore
+c_func
 (paren
+op_amp
+id|lock
+comma
 id|flags
 )paren
 suffix:semicolon

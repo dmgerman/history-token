@@ -208,7 +208,7 @@ comma
 suffix:semicolon
 multiline_comment|/*****************************************************************************&n; *                                                                           *&n; *             Digital Audio (PCM) interface - /dev/snd/pcm??                *&n; *                                                                           *&n; *****************************************************************************/
 DECL|macro|SNDRV_PCM_VERSION
-mdefine_line|#define SNDRV_PCM_VERSION&t;&t;SNDRV_PROTOCOL_VERSION(2, 0, 1)
+mdefine_line|#define SNDRV_PCM_VERSION&t;&t;SNDRV_PROTOCOL_VERSION(2, 0, 2)
 DECL|typedef|sndrv_pcm_uframes_t
 r_typedef
 r_int
@@ -420,10 +420,60 @@ id|SNDRV_PCM_FORMAT_SPECIAL
 op_assign
 l_int|31
 comma
+DECL|enumerator|SNDRV_PCM_FORMAT_S24_3LE
+id|SNDRV_PCM_FORMAT_S24_3LE
+op_assign
+l_int|32
+comma
+multiline_comment|/* in three bytes */
+DECL|enumerator|SNDRV_PCM_FORMAT_S24_3BE
+id|SNDRV_PCM_FORMAT_S24_3BE
+comma
+multiline_comment|/* in three bytes */
+DECL|enumerator|SNDRV_PCM_FORMAT_U24_3LE
+id|SNDRV_PCM_FORMAT_U24_3LE
+comma
+multiline_comment|/* in three bytes */
+DECL|enumerator|SNDRV_PCM_FORMAT_U24_3BE
+id|SNDRV_PCM_FORMAT_U24_3BE
+comma
+multiline_comment|/* in three bytes */
+DECL|enumerator|SNDRV_PCM_FORMAT_S20_3LE
+id|SNDRV_PCM_FORMAT_S20_3LE
+comma
+multiline_comment|/* in three bytes */
+DECL|enumerator|SNDRV_PCM_FORMAT_S20_3BE
+id|SNDRV_PCM_FORMAT_S20_3BE
+comma
+multiline_comment|/* in three bytes */
+DECL|enumerator|SNDRV_PCM_FORMAT_U20_3LE
+id|SNDRV_PCM_FORMAT_U20_3LE
+comma
+multiline_comment|/* in three bytes */
+DECL|enumerator|SNDRV_PCM_FORMAT_U20_3BE
+id|SNDRV_PCM_FORMAT_U20_3BE
+comma
+multiline_comment|/* in three bytes */
+DECL|enumerator|SNDRV_PCM_FORMAT_S18_3LE
+id|SNDRV_PCM_FORMAT_S18_3LE
+comma
+multiline_comment|/* in three bytes */
+DECL|enumerator|SNDRV_PCM_FORMAT_S18_3BE
+id|SNDRV_PCM_FORMAT_S18_3BE
+comma
+multiline_comment|/* in three bytes */
+DECL|enumerator|SNDRV_PCM_FORMAT_U18_3LE
+id|SNDRV_PCM_FORMAT_U18_3LE
+comma
+multiline_comment|/* in three bytes */
+DECL|enumerator|SNDRV_PCM_FORMAT_U18_3BE
+id|SNDRV_PCM_FORMAT_U18_3BE
+comma
+multiline_comment|/* in three bytes */
 DECL|enumerator|SNDRV_PCM_FORMAT_LAST
 id|SNDRV_PCM_FORMAT_LAST
 op_assign
-l_int|31
+id|SNDRV_PCM_FORMAT_U18_3BE
 comma
 macro_line|#ifdef SNDRV_LITTLE_ENDIAN
 DECL|enumerator|SNDRV_PCM_FORMAT_S16
@@ -782,6 +832,8 @@ id|SNDRV_PCM_HW_PARAM_SUBFORMAT
 comma
 DECL|enumerator|SNDRV_PCM_HW_PARAM_SAMPLE_BITS
 id|SNDRV_PCM_HW_PARAM_SAMPLE_BITS
+op_assign
+l_int|8
 comma
 multiline_comment|/* Bits per sample */
 DECL|enumerator|SNDRV_PCM_HW_PARAM_FIRST_INTERVAL
@@ -837,12 +889,6 @@ DECL|enumerator|SNDRV_PCM_HW_PARAM_LAST_INTERVAL
 id|SNDRV_PCM_HW_PARAM_LAST_INTERVAL
 op_assign
 id|SNDRV_PCM_HW_PARAM_TICK_TIME
-comma
-DECL|enumerator|SNDRV_PCM_HW_PARAM_LAST
-id|SNDRV_PCM_HW_PARAM_LAST
-op_assign
-id|SNDRV_PCM_HW_PARAM_LAST_INTERVAL
-comma
 )brace
 suffix:semicolon
 DECL|macro|SNDRV_PCM_HW_PARAMS_RUNTIME
@@ -883,6 +929,27 @@ l_int|1
 suffix:semicolon
 )brace
 suffix:semicolon
+DECL|macro|SNDRV_MASK_MAX
+mdefine_line|#define SNDRV_MASK_MAX&t;256
+DECL|struct|sndrv_mask
+r_struct
+id|sndrv_mask
+(brace
+DECL|member|bits
+id|u_int32_t
+id|bits
+(braket
+(paren
+id|SNDRV_MASK_MAX
+op_plus
+l_int|31
+)paren
+op_div
+l_int|32
+)braket
+suffix:semicolon
+)brace
+suffix:semicolon
 DECL|struct|sndrv_pcm_hw_params
 r_struct
 id|sndrv_pcm_hw_params
@@ -893,8 +960,8 @@ r_int
 id|flags
 suffix:semicolon
 DECL|member|masks
-r_int
-r_int
+r_struct
+id|sndrv_mask
 id|masks
 (braket
 id|SNDRV_PCM_HW_PARAM_LAST_MASK
@@ -904,6 +971,15 @@ op_plus
 l_int|1
 )braket
 suffix:semicolon
+DECL|member|mres
+r_struct
+id|sndrv_mask
+id|mres
+(braket
+l_int|5
+)braket
+suffix:semicolon
+multiline_comment|/* reserved masks */
 DECL|member|intervals
 r_struct
 id|sndrv_interval
@@ -916,16 +992,27 @@ op_plus
 l_int|1
 )braket
 suffix:semicolon
+DECL|member|ires
+r_struct
+id|sndrv_interval
+id|ires
+(braket
+l_int|9
+)braket
+suffix:semicolon
+multiline_comment|/* reserved intervals */
 DECL|member|rmask
 r_int
 r_int
 id|rmask
 suffix:semicolon
+multiline_comment|/* W: requested masks */
 DECL|member|cmask
 r_int
 r_int
 id|cmask
 suffix:semicolon
+multiline_comment|/* R: changed masks */
 DECL|member|info
 r_int
 r_int
@@ -963,6 +1050,7 @@ id|reserved
 l_int|64
 )braket
 suffix:semicolon
+multiline_comment|/* reserved for future */
 )brace
 suffix:semicolon
 DECL|enum|sndrv_pcm_tstamp
@@ -1048,6 +1136,7 @@ id|reserved
 l_int|64
 )braket
 suffix:semicolon
+multiline_comment|/* reserved for future */
 )brace
 suffix:semicolon
 DECL|struct|sndrv_pcm_channel_info

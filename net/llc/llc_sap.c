@@ -390,36 +390,6 @@ op_assign
 id|LLC_IND
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;llc_sap_send_pdu - Sends a frame to MAC layer for transmition&n; *&t;@sap: pointer to SAP&n; *&t;@skb: pdu that must be sent&n; */
-DECL|function|llc_sap_send_pdu
-r_void
-id|llc_sap_send_pdu
-c_func
-(paren
-r_struct
-id|llc_sap
-op_star
-id|sap
-comma
-r_struct
-id|sk_buff
-op_star
-id|skb
-)paren
-(brace
-id|mac_send_pdu
-c_func
-(paren
-id|skb
-)paren
-suffix:semicolon
-id|kfree_skb
-c_func
-(paren
-id|skb
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/**&n; *&t;llc_sap_next_state - finds transition, execs actions &amp; change SAP state&n; *&t;@sap: pointer to SAP&n; *&t;@skb: happened event&n; *&n; *&t;This function finds transition that matches with happened event, then&n; *&t;executes related actions and finally changes state of SAP. It returns&n; *&t;0 on success and 1 for failure.&n; */
 DECL|function|llc_sap_next_state
 r_static

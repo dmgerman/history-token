@@ -1967,7 +1967,7 @@ c_func
 op_amp
 id|regs-&gt;HostCtrl
 )paren
-op_and_assign
+op_amp
 op_complement
 id|MASK_INTS
 comma

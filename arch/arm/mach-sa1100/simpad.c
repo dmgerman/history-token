@@ -478,7 +478,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|variable|cs3_init
-id|__initcall
+id|arch_initcall
 c_func
 (paren
 id|cs3_init

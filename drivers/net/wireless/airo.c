@@ -177,6 +177,10 @@ singleline_comment|// enable Cisco extensions
 macro_line|#ifdef CISCO_EXT
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#endif
+multiline_comment|/* Support Cisco MIC feature */
+multiline_comment|/* As this feature requires the AES encryption algorithm, it is not included&n;   in the kernel tree. If you want to enable it, you need to download the&n;   aes.h, aestab.h and mic.h files from the CVS at&n;   http://sf.net/projects/airo-linux/ Put the files in the same directory&n;   as airo.c and compile normally */
+DECL|macro|MICSUPPORT
+macro_line|#undef MICSUPPORT
 multiline_comment|/* Hack to do some power saving */
 DECL|macro|POWER_ON_DOWN
 mdefine_line|#define POWER_ON_DOWN
@@ -759,77 +763,75 @@ DECL|macro|NO_PACKET
 mdefine_line|#define NO_PACKET -2
 multiline_comment|/* Commands */
 DECL|macro|NOP2
-mdefine_line|#define NOP2 0x00    
+mdefine_line|#define NOP2&t;&t;0x0000
 DECL|macro|MAC_ENABLE
-mdefine_line|#define MAC_ENABLE 0x01
-DECL|macro|MAC_ENABLETX
-mdefine_line|#define MAC_ENABLETX 0x101
-DECL|macro|CMD_ENABLEAUX
-mdefine_line|#define CMD_ENABLEAUX 0x111
-DECL|macro|MAC_ENABLERX
-mdefine_line|#define MAC_ENABLERX 0x201   
+mdefine_line|#define MAC_ENABLE&t;0x0001
 DECL|macro|MAC_DISABLE
-mdefine_line|#define MAC_DISABLE 0x02    
+mdefine_line|#define MAC_DISABLE&t;0x0002
 DECL|macro|CMD_LOSE_SYNC
-mdefine_line|#define CMD_LOSE_SYNC 0x03    
-DECL|macro|CMD_LOSE_SYNC_BSS
-mdefine_line|#define CMD_LOSE_SYNC_BSS 0x103
+mdefine_line|#define CMD_LOSE_SYNC&t;0x0003 /* Not sure what this does... */
 DECL|macro|CMD_SOFTRESET
-mdefine_line|#define CMD_SOFTRESET 0x04    
+mdefine_line|#define CMD_SOFTRESET&t;0x0004
 DECL|macro|HOSTSLEEP
-mdefine_line|#define HOSTSLEEP 0x05    
-DECL|macro|CMD_MAGICPACKET
-mdefine_line|#define CMD_MAGICPACKET 0x06
+mdefine_line|#define HOSTSLEEP&t;0x0005
+DECL|macro|CMD_MAGIC_PKT
+mdefine_line|#define CMD_MAGIC_PKT&t;0x0006
 DECL|macro|CMD_SETWAKEMASK
-mdefine_line|#define CMD_SETWAKEMASK 0x07
-DECL|macro|CMD_SAVECONFIG
-mdefine_line|#define CMD_SAVECONFIG 0x108   
-DECL|macro|CMD_READCONFIG
-mdefine_line|#define CMD_READCONFIG 0x08
+mdefine_line|#define CMD_SETWAKEMASK&t;0x0007
+DECL|macro|CMD_READCFG
+mdefine_line|#define CMD_READCFG&t;0x0008
 DECL|macro|CMD_SETMODE
-mdefine_line|#define CMD_SETMODE 0x09    
+mdefine_line|#define CMD_SETMODE&t;0x0009
 DECL|macro|CMD_ALLOCATETX
-mdefine_line|#define CMD_ALLOCATETX 0x0A
+mdefine_line|#define CMD_ALLOCATETX&t;0x000a
 DECL|macro|CMD_TRANSMIT
-mdefine_line|#define CMD_TRANSMIT 0x0B    
-DECL|macro|CMD_DEALLOC
-mdefine_line|#define CMD_DEALLOC 0x0C
-DECL|macro|CMD_LISTBSS
-mdefine_line|#define CMD_LISTBSS 0x103
+mdefine_line|#define CMD_TRANSMIT&t;0x000b
+DECL|macro|CMD_DEALLOCATETX
+mdefine_line|#define CMD_DEALLOCATETX 0x000c
 DECL|macro|NOP
-mdefine_line|#define NOP 0x10    
+mdefine_line|#define NOP&t;&t;0x0010
 DECL|macro|CMD_WORKAROUND
-mdefine_line|#define CMD_WORKAROUND 0x11
+mdefine_line|#define CMD_WORKAROUND&t;0x0011
 DECL|macro|CMD_ACCESS
-mdefine_line|#define CMD_ACCESS 0x21
-DECL|macro|CMD_WRITERID
-mdefine_line|#define CMD_WRITERID 0x121
+mdefine_line|#define CMD_ACCESS&t;0x0021
 DECL|macro|CMD_PCIBAP
-mdefine_line|#define CMD_PCIBAP 0x22
+mdefine_line|#define CMD_PCIBAP&t;0x0022
 DECL|macro|CMD_PCIAUX
-mdefine_line|#define CMD_PCIAUX 0x23
-DECL|macro|CMD_ALLOCTLV
-mdefine_line|#define CMD_ALLOCTLV 0x28
+mdefine_line|#define CMD_PCIAUX&t;0x0023
+DECL|macro|CMD_ALLOCBUF
+mdefine_line|#define CMD_ALLOCBUF&t;0x0028
 DECL|macro|CMD_GETTLV
-mdefine_line|#define CMD_GETTLV 0x29
+mdefine_line|#define CMD_GETTLV&t;0x0029
 DECL|macro|CMD_PUTTLV
-mdefine_line|#define CMD_PUTTLV 0x2A
+mdefine_line|#define CMD_PUTTLV&t;0x002a
 DECL|macro|CMD_DELTLV
-mdefine_line|#define CMD_DELTLV 0x2B    
+mdefine_line|#define CMD_DELTLV&t;0x002b
 DECL|macro|CMD_FINDNEXTTLV
-mdefine_line|#define CMD_FINDNEXTTLV 0x2C    
-DECL|macro|CMD_SETPHYREG
-mdefine_line|#define CMD_SETPHYREG 0x3E
-DECL|macro|CMD_TXTEST
-mdefine_line|#define CMD_TXTEST 0x3F    
-DECL|macro|CMD_NOPSPNODES
-mdefine_line|#define CMD_NOPSPNODES 0x30    
-DECL|macro|CMD_USEPSPNODES
-mdefine_line|#define CMD_USEPSPNODES 0x130
+mdefine_line|#define CMD_FINDNEXTTLV&t;0x002c
+DECL|macro|CMD_PSPNODES
+mdefine_line|#define CMD_PSPNODES&t;0x0030
 DECL|macro|CMD_SETCW
-mdefine_line|#define CMD_SETCW 0x31    
+mdefine_line|#define CMD_SETCW&t;0x0031    
 DECL|macro|CMD_SETPCF
-mdefine_line|#define CMD_SETPCF 0x32    
+mdefine_line|#define CMD_SETPCF&t;0x0032    
+DECL|macro|CMD_SETPHYREG
+mdefine_line|#define CMD_SETPHYREG&t;0x003e
+DECL|macro|CMD_TXTEST
+mdefine_line|#define CMD_TXTEST&t;0x003f
+DECL|macro|MAC_ENABLETX
+mdefine_line|#define MAC_ENABLETX&t;0x0101
+DECL|macro|CMD_LISTBSS
+mdefine_line|#define CMD_LISTBSS&t;0x0103
+DECL|macro|CMD_SAVECFG
+mdefine_line|#define CMD_SAVECFG&t;0x0108
+DECL|macro|CMD_ENABLEAUX
+mdefine_line|#define CMD_ENABLEAUX&t;0x0111
+DECL|macro|CMD_WRITERID
+mdefine_line|#define CMD_WRITERID&t;0x0121
+DECL|macro|CMD_USEPSPNODES
+mdefine_line|#define CMD_USEPSPNODES&t;0x0130
+DECL|macro|MAC_ENABLERX
+mdefine_line|#define MAC_ENABLERX&t;0x0201
 multiline_comment|/* Command errors */
 DECL|macro|ERROR_QUALIF
 mdefine_line|#define ERROR_QUALIF 0x00
@@ -987,10 +989,10 @@ mdefine_line|#define EV_UNKNOWN 0x800
 DECL|macro|EV_MIC
 mdefine_line|#define EV_MIC 0x1000 /* Message Integrity Check Interrupt */
 DECL|macro|STATUS_INTS
-mdefine_line|#define STATUS_INTS ( EV_AWAKE | EV_LINK | EV_TXEXC | EV_TX | EV_RX)
+mdefine_line|#define STATUS_INTS ( EV_AWAKE | EV_LINK | EV_TXEXC | EV_TX | EV_RX | EV_MIC )
 macro_line|#ifdef CHECK_UNKNOWN_INTS
 DECL|macro|IGNORE_INTS
-mdefine_line|#define IGNORE_INTS ( EV_MIC | EV_CMD | EV_UNKNOWN)
+mdefine_line|#define IGNORE_INTS ( EV_CMD | EV_UNKNOWN)
 macro_line|#else
 DECL|macro|IGNORE_INTS
 mdefine_line|#define IGNORE_INTS (~STATUS_INTS)
@@ -1048,6 +1050,8 @@ DECL|macro|RID_UNKNOWN55
 mdefine_line|#define RID_UNKNOWN55  0xFF55
 DECL|macro|RID_UNKNOWN56
 mdefine_line|#define RID_UNKNOWN56  0xFF56
+DECL|macro|RID_MIC
+mdefine_line|#define RID_MIC        0xFF57
 DECL|macro|RID_STATS16
 mdefine_line|#define RID_STATS16    0xFF60
 DECL|macro|RID_STATS16DELTA
@@ -1246,6 +1250,8 @@ DECL|macro|MODE_LEAF_NODE
 mdefine_line|#define MODE_LEAF_NODE (1&lt;&lt;13) /* enable leaf node bridge */
 DECL|macro|MODE_CF_POLLABLE
 mdefine_line|#define MODE_CF_POLLABLE (1&lt;&lt;14) /* enable CF pollable */
+DECL|macro|MODE_MIC
+mdefine_line|#define MODE_MIC (1&lt;&lt;15) /* enable MIC */
 DECL|member|rmode
 id|u16
 id|rmode
@@ -1906,6 +1912,10 @@ DECL|member|requiredHard
 id|u16
 id|requiredHard
 suffix:semicolon
+DECL|member|extSoftCap
+id|u16
+id|extSoftCap
+suffix:semicolon
 DECL|typedef|CapabilityRid
 )brace
 id|CapabilityRid
@@ -2055,6 +2065,128 @@ DECL|typedef|tdsRssiRid
 )brace
 id|tdsRssiRid
 suffix:semicolon
+r_typedef
+r_struct
+(brace
+DECL|member|len
+id|u16
+id|len
+suffix:semicolon
+DECL|member|state
+id|u16
+id|state
+suffix:semicolon
+DECL|member|multicastValid
+id|u16
+id|multicastValid
+suffix:semicolon
+DECL|member|multicast
+id|u8
+id|multicast
+(braket
+l_int|16
+)braket
+suffix:semicolon
+DECL|member|unicastValid
+id|u16
+id|unicastValid
+suffix:semicolon
+DECL|member|unicast
+id|u8
+id|unicast
+(braket
+l_int|16
+)braket
+suffix:semicolon
+DECL|typedef|MICRid
+)brace
+id|MICRid
+suffix:semicolon
+r_typedef
+r_struct
+(brace
+DECL|member|typelen
+id|u16
+id|typelen
+suffix:semicolon
+r_union
+(brace
+DECL|member|snap
+id|u8
+id|snap
+(braket
+l_int|8
+)braket
+suffix:semicolon
+r_struct
+(brace
+DECL|member|dsap
+id|u8
+id|dsap
+suffix:semicolon
+DECL|member|ssap
+id|u8
+id|ssap
+suffix:semicolon
+DECL|member|control
+id|u8
+id|control
+suffix:semicolon
+DECL|member|orgcode
+id|u8
+id|orgcode
+(braket
+l_int|3
+)braket
+suffix:semicolon
+DECL|member|fieldtype
+id|u8
+id|fieldtype
+(braket
+l_int|2
+)braket
+suffix:semicolon
+DECL|member|llc
+)brace
+id|llc
+suffix:semicolon
+DECL|member|u
+)brace
+id|u
+suffix:semicolon
+DECL|member|mic
+id|u32
+id|mic
+suffix:semicolon
+DECL|member|seq
+id|u32
+id|seq
+suffix:semicolon
+DECL|typedef|MICBuffer
+)brace
+id|MICBuffer
+suffix:semicolon
+r_typedef
+r_struct
+(brace
+DECL|member|da
+id|u8
+id|da
+(braket
+id|ETH_ALEN
+)braket
+suffix:semicolon
+DECL|member|sa
+id|u8
+id|sa
+(braket
+id|ETH_ALEN
+)braket
+suffix:semicolon
+DECL|typedef|etherHead
+)brace
+id|etherHead
+suffix:semicolon
 macro_line|#pragma pack()
 DECL|macro|TXCTL_TXOK
 mdefine_line|#define TXCTL_TXOK (1&lt;&lt;1) /* report if tx is ok */
@@ -2123,9 +2255,15 @@ DECL|macro|AIROGSTATSC32
 mdefine_line|#define AIROGSTATSC32&t;&t;9
 DECL|macro|AIROGSTATSD32
 mdefine_line|#define AIROGSTATSD32&t;&t;10
+DECL|macro|AIROGMICRID
+mdefine_line|#define AIROGMICRID&t;&t;11
+DECL|macro|AIROGMICSTATS
+mdefine_line|#define AIROGMICSTATS&t;&t;12
+DECL|macro|AIROGFLAGS
+mdefine_line|#define AIROGFLAGS&t;&t;13
 multiline_comment|/* Leave gap of 40 commands after AIROGSTATSD32 for future */
 DECL|macro|AIROPCAP
-mdefine_line|#define AIROPCAP&t;&t;AIROGSTATSD32 + 40
+mdefine_line|#define AIROPCAP               &t;AIROGSTATSD32 + 40
 DECL|macro|AIROPVLIST
 mdefine_line|#define AIROPVLIST              AIROPCAP      + 1
 DECL|macro|AIROPSLIST
@@ -2194,6 +2332,167 @@ DECL|typedef|aironet_ioctl
 id|aironet_ioctl
 suffix:semicolon
 macro_line|#endif /* CISCO_EXT */
+DECL|macro|NUM_MODULES
+mdefine_line|#define NUM_MODULES       2
+DECL|macro|MIC_MSGLEN_MAX
+mdefine_line|#define MIC_MSGLEN_MAX    2400
+DECL|macro|EMMH32_MSGLEN_MAX
+mdefine_line|#define EMMH32_MSGLEN_MAX MIC_MSGLEN_MAX
+r_typedef
+r_struct
+(brace
+DECL|member|size
+id|u32
+id|size
+suffix:semicolon
+singleline_comment|// size
+DECL|member|enabled
+id|u8
+id|enabled
+suffix:semicolon
+singleline_comment|// MIC enabled or not
+DECL|member|rxSuccess
+id|u32
+id|rxSuccess
+suffix:semicolon
+singleline_comment|// successful packets received
+DECL|member|rxIncorrectMIC
+id|u32
+id|rxIncorrectMIC
+suffix:semicolon
+singleline_comment|// pkts dropped due to incorrect MIC comparison
+DECL|member|rxNotMICed
+id|u32
+id|rxNotMICed
+suffix:semicolon
+singleline_comment|// pkts dropped due to not being MIC&squot;d
+DECL|member|rxMICPlummed
+id|u32
+id|rxMICPlummed
+suffix:semicolon
+singleline_comment|// pkts dropped due to not having a MIC plummed
+DECL|member|rxWrongSequence
+id|u32
+id|rxWrongSequence
+suffix:semicolon
+singleline_comment|// pkts dropped due to sequence number violation
+DECL|member|reserve
+id|u32
+id|reserve
+(braket
+l_int|32
+)braket
+suffix:semicolon
+DECL|typedef|mic_statistics
+)brace
+id|mic_statistics
+suffix:semicolon
+r_typedef
+r_struct
+(brace
+DECL|member|coeff
+id|u32
+id|coeff
+(braket
+(paren
+(paren
+id|EMMH32_MSGLEN_MAX
+)paren
+op_plus
+l_int|3
+)paren
+op_rshift
+l_int|2
+)braket
+suffix:semicolon
+DECL|member|accum
+id|u64
+id|accum
+suffix:semicolon
+singleline_comment|// accumulated mic, reduced to u32 in final()
+DECL|member|position
+r_int
+id|position
+suffix:semicolon
+singleline_comment|// current position (byte offset) in message
+r_union
+(brace
+DECL|member|d8
+id|u8
+id|d8
+(braket
+l_int|4
+)braket
+suffix:semicolon
+DECL|member|d32
+id|u32
+id|d32
+suffix:semicolon
+DECL|member|part
+)brace
+id|part
+suffix:semicolon
+singleline_comment|// saves partial message word across update() calls
+DECL|typedef|emmh32_context
+)brace
+id|emmh32_context
+suffix:semicolon
+r_typedef
+r_struct
+(brace
+DECL|member|seed
+id|emmh32_context
+id|seed
+suffix:semicolon
+singleline_comment|// Context - the seed
+DECL|member|rx
+id|u32
+id|rx
+suffix:semicolon
+singleline_comment|// Received sequence number
+DECL|member|tx
+id|u32
+id|tx
+suffix:semicolon
+singleline_comment|// Tx sequence number
+DECL|member|window
+id|u32
+id|window
+suffix:semicolon
+singleline_comment|// Start of window
+DECL|member|valid
+id|u8
+id|valid
+suffix:semicolon
+singleline_comment|// Flag to say if context is valid or not
+DECL|member|key
+id|u8
+id|key
+(braket
+l_int|16
+)braket
+suffix:semicolon
+DECL|typedef|miccntx
+)brace
+id|miccntx
+suffix:semicolon
+r_typedef
+r_struct
+(brace
+DECL|member|mCtx
+id|miccntx
+id|mCtx
+suffix:semicolon
+singleline_comment|// Multicast context
+DECL|member|uCtx
+id|miccntx
+id|uCtx
+suffix:semicolon
+singleline_comment|// Unicast context
+DECL|typedef|mic_module
+)brace
+id|mic_module
+suffix:semicolon
 macro_line|#ifdef WIRELESS_EXT
 singleline_comment|// Frequency list (map channels to frequencies)
 DECL|variable|frequency_list
@@ -2296,7 +2595,7 @@ id|version
 (braket
 )braket
 op_assign
-l_string|&quot;airo.c 0.5 (Ben Reed &amp; Javier Achirica)&quot;
+l_string|&quot;airo.c 0.6 (Ben Reed &amp; Javier Achirica)&quot;
 suffix:semicolon
 r_struct
 id|airo_info
@@ -2760,6 +3059,78 @@ id|comp
 )paren
 suffix:semicolon
 macro_line|#endif /* CISCO_EXT */
+macro_line|#ifdef MICSUPPORT
+r_static
+r_void
+id|micinit
+c_func
+(paren
+r_struct
+id|airo_info
+op_star
+id|ai
+comma
+id|MICRid
+op_star
+id|micr
+)paren
+suffix:semicolon
+r_static
+r_void
+id|micsetup
+c_func
+(paren
+r_struct
+id|airo_info
+op_star
+id|ai
+)paren
+suffix:semicolon
+r_static
+r_int
+id|encapsulate
+c_func
+(paren
+r_struct
+id|airo_info
+op_star
+id|ai
+comma
+id|etherHead
+op_star
+id|pPacket
+comma
+id|MICBuffer
+op_star
+id|buffer
+comma
+r_int
+id|len
+)paren
+suffix:semicolon
+r_static
+r_int
+id|decapsulate
+c_func
+(paren
+r_struct
+id|airo_info
+op_star
+id|ai
+comma
+id|MICBuffer
+op_star
+id|mic
+comma
+id|etherHead
+op_star
+id|pPacket
+comma
+id|u16
+id|payLen
+)paren
+suffix:semicolon
+macro_line|#endif
 DECL|struct|airo_info
 r_struct
 id|airo_info
@@ -2848,6 +3219,14 @@ DECL|macro|FLAG_LOCKED
 mdefine_line|#define FLAG_LOCKED    2&t;&t;/* 0x04 - use as a bit offset */
 DECL|macro|FLAG_FLASHING
 mdefine_line|#define FLAG_FLASHING  0x10
+DECL|macro|FLAG_ADHOC
+mdefine_line|#define FLAG_ADHOC        0x01 /* Needed by MIC */
+DECL|macro|FLAG_MIC_CAPABLE
+mdefine_line|#define FLAG_MIC_CAPABLE  0x20
+DECL|macro|FLAG_UPDATE_MULTI
+mdefine_line|#define FLAG_UPDATE_MULTI 0x40
+DECL|macro|FLAG_UPDATE_UNI
+mdefine_line|#define FLAG_UPDATE_UNI   0x80
 DECL|macro|FLAG_802_11
 mdefine_line|#define FLAG_802_11    0x200
 DECL|member|bap_read
@@ -2972,6 +3351,23 @@ id|IW_MAX_SPY
 suffix:semicolon
 macro_line|#endif /* WIRELESS_SPY */
 macro_line|#endif /* WIRELESS_EXT */
+multiline_comment|/* MIC stuff */
+DECL|member|mod
+id|mic_module
+id|mod
+(braket
+l_int|2
+)braket
+suffix:semicolon
+DECL|member|micstats
+id|mic_statistics
+id|micstats
+suffix:semicolon
+DECL|member|mic_task
+r_struct
+id|tq_struct
+id|mic_task
+suffix:semicolon
 )brace
 suffix:semicolon
 DECL|function|bap_read
@@ -3045,6 +3441,9 @@ op_star
 id|apriv
 )paren
 suffix:semicolon
+macro_line|#ifdef MICSUPPORT
+macro_line|#include &quot;mic.h&quot;
+macro_line|#endif
 DECL|function|readBSSListRid
 r_static
 r_int
@@ -3905,6 +4304,27 @@ c_func
 (paren
 id|ai
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|cfgr.opmode
+op_amp
+l_int|0xFF
+)paren
+op_eq
+id|MODE_STA_IBSS
+)paren
+id|ai-&gt;flags
+op_or_assign
+id|FLAG_ADHOC
+suffix:semicolon
+r_else
+id|ai-&gt;flags
+op_and_assign
+op_complement
+id|FLAG_ADHOC
 suffix:semicolon
 id|cfgr
 op_assign
@@ -7456,6 +7876,119 @@ suffix:semicolon
 )brace
 )brace
 macro_line|#endif
+DECL|function|airo_read_mic
+r_static
+r_void
+id|airo_read_mic
+c_func
+(paren
+r_struct
+id|airo_info
+op_star
+id|ai
+)paren
+(brace
+id|MICRid
+id|mic_rid
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|down_trylock
+c_func
+(paren
+op_amp
+id|ai-&gt;sem
+)paren
+op_eq
+l_int|0
+)paren
+(brace
+id|__set_bit
+c_func
+(paren
+id|FLAG_LOCKED
+comma
+op_amp
+id|ai-&gt;flags
+)paren
+suffix:semicolon
+id|PC4500_readrid
+c_func
+(paren
+id|ai
+comma
+id|RID_MIC
+comma
+op_amp
+id|mic_rid
+comma
+r_sizeof
+(paren
+id|mic_rid
+)paren
+)paren
+suffix:semicolon
+id|clear_bit
+c_func
+(paren
+id|FLAG_LOCKED
+comma
+op_amp
+id|ai-&gt;flags
+)paren
+suffix:semicolon
+id|up
+c_func
+(paren
+op_amp
+id|ai-&gt;sem
+)paren
+suffix:semicolon
+macro_line|#ifdef MICSUPPORT
+id|micinit
+(paren
+id|ai
+comma
+op_amp
+id|mic_rid
+)paren
+suffix:semicolon
+macro_line|#endif
+)brace
+r_else
+(brace
+id|ai-&gt;mic_task.routine
+op_assign
+(paren
+r_void
+(paren
+op_star
+)paren
+(paren
+r_void
+op_star
+)paren
+)paren
+id|airo_read_mic
+suffix:semicolon
+id|ai-&gt;mic_task.data
+op_assign
+(paren
+r_void
+op_star
+)paren
+id|ai
+suffix:semicolon
+id|schedule_task
+c_func
+(paren
+op_amp
+id|ai-&gt;mic_task
+)paren
+suffix:semicolon
+)brace
+)brace
 DECL|function|airo_interrupt
 r_static
 r_void
@@ -7611,6 +8144,31 @@ c_cond
 (paren
 id|status
 op_amp
+id|EV_MIC
+)paren
+(brace
+id|OUT4500
+c_func
+(paren
+id|apriv
+comma
+id|EVACK
+comma
+id|EV_MIC
+)paren
+suffix:semicolon
+id|airo_read_mic
+c_func
+(paren
+id|apriv
+)paren
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|status
+op_amp
 id|EV_LINK
 )paren
 (brace
@@ -7742,6 +8300,12 @@ id|wake_up_process
 (paren
 id|task
 )paren
+suffix:semicolon
+id|apriv-&gt;flags
+op_or_assign
+id|FLAG_UPDATE_UNI
+op_or
+id|FLAG_UPDATE_MULTI
 suffix:semicolon
 )brace
 macro_line|#if WIRELESS_EXT &gt; 13
@@ -8314,19 +8878,147 @@ suffix:semicolon
 )brace
 r_else
 (brace
+id|MICBuffer
+id|micbuf
+suffix:semicolon
 id|bap_read
 (paren
 id|apriv
 comma
 id|buffer
 comma
-id|len
-op_plus
-id|hdrlen
+id|ETH_ALEN
+op_star
+l_int|2
 comma
 id|BAP0
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|apriv-&gt;micstats.enabled
+)paren
+(brace
+id|bap_read
+(paren
+id|apriv
+comma
+(paren
+id|u16
+op_star
+)paren
+op_amp
+id|micbuf
+comma
+r_sizeof
+(paren
+id|micbuf
+)paren
+comma
+id|BAP0
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ntohs
+c_func
+(paren
+id|micbuf.typelen
+)paren
+OG
+l_int|0x05DC
+)paren
+id|bap_setup
+(paren
+id|apriv
+comma
+id|fid
+comma
+l_int|0x44
+comma
+id|BAP0
+)paren
+suffix:semicolon
+r_else
+(brace
+id|len
+op_sub_assign
+r_sizeof
+(paren
+id|micbuf
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|len
+OL
+l_int|48
+)paren
+id|len
+op_assign
+l_int|48
+suffix:semicolon
+id|skb_trim
+(paren
+id|skb
+comma
+id|len
+op_plus
+id|hdrlen
+)paren
+suffix:semicolon
+)brace
+)brace
+id|bap_read
+c_func
+(paren
+id|apriv
+comma
+id|buffer
+op_plus
+id|ETH_ALEN
+comma
+id|len
+comma
+id|BAP0
+)paren
+suffix:semicolon
+macro_line|#ifdef MICSUPPORT
+r_if
+c_cond
+(paren
+id|decapsulate
+c_func
+(paren
+id|apriv
+comma
+op_amp
+id|micbuf
+comma
+(paren
+id|etherHead
+op_star
+)paren
+id|buffer
+comma
+id|len
+)paren
+)paren
+(brace
+id|dev_kfree_skb_irq
+(paren
+id|skb
+)paren
+suffix:semicolon
+id|len
+op_assign
+l_int|0
+suffix:semicolon
+)brace
+macro_line|#endif
 )brace
 )brace
 r_if
@@ -9498,6 +10190,9 @@ l_int|0
 id|tdsRssiRid
 id|rssi_rid
 suffix:semicolon
+id|CapabilityRid
+id|cap_rid
+suffix:semicolon
 singleline_comment|// general configuration (read/modify/write)
 id|status
 op_assign
@@ -9505,6 +10200,27 @@ id|readConfigRid
 c_func
 (paren
 id|ai
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|status
+op_ne
+id|SUCCESS
+)paren
+r_return
+id|ERROR
+suffix:semicolon
+id|status
+op_assign
+id|readCapabilityRid
+c_func
+(paren
+id|ai
+comma
+op_amp
+id|cap_rid
 )paren
 suffix:semicolon
 r_if
@@ -9582,9 +10298,6 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|CapabilityRid
-id|cap_rid
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -9602,31 +10315,12 @@ op_assign
 l_int|NULL
 suffix:semicolon
 )brace
-id|status
-op_assign
-id|readCapabilityRid
-c_func
-(paren
-id|ai
-comma
-op_amp
-id|cap_rid
-)paren
-suffix:semicolon
 r_if
 c_cond
-(paren
-(paren
-id|status
-op_eq
-id|SUCCESS
-)paren
-op_logical_and
 (paren
 id|cap_rid.softCap
 op_amp
 l_int|8
-)paren
 )paren
 id|ai-&gt;config.rmode
 op_or_assign
@@ -9650,6 +10344,42 @@ id|MODE_STA_IBSS
 suffix:colon
 id|MODE_STA_ESS
 suffix:semicolon
+macro_line|#ifdef MICSUPPORT
+r_if
+c_cond
+(paren
+(paren
+id|cap_rid.len
+op_eq
+r_sizeof
+(paren
+id|cap_rid
+)paren
+)paren
+op_logical_and
+(paren
+id|cap_rid.extSoftCap
+op_amp
+l_int|1
+)paren
+)paren
+(brace
+id|ai-&gt;config.opmode
+op_or_assign
+id|MODE_MIC
+suffix:semicolon
+id|ai-&gt;flags
+op_or_assign
+id|FLAG_MIC_CAPABLE
+suffix:semicolon
+id|micsetup
+c_func
+(paren
+id|ai
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif
 multiline_comment|/* Save off the MAC */
 r_for
 c_loop
@@ -9796,15 +10526,6 @@ suffix:semicolon
 )brace
 )brace
 )brace
-r_if
-c_cond
-(paren
-id|auto_wep
-)paren
-id|ai-&gt;config.authType
-op_assign
-id|AUTH_SHAREDKEY
-suffix:semicolon
 id|ai-&gt;need_commit
 op_assign
 l_int|1
@@ -11877,10 +12598,18 @@ suffix:semicolon
 id|Resp
 id|rsp
 suffix:semicolon
+r_int
+id|miclen
+op_assign
+l_int|0
+suffix:semicolon
 id|u16
 id|txFid
 op_assign
 id|len
+suffix:semicolon
+id|MICBuffer
+id|pMic
 suffix:semicolon
 id|len
 op_rshift_assign
@@ -11909,6 +12638,78 @@ r_return
 id|ERROR
 suffix:semicolon
 )brace
+id|len
+op_sub_assign
+id|ETH_ALEN
+op_star
+l_int|2
+suffix:semicolon
+macro_line|#ifdef MICSUPPORT
+r_if
+c_cond
+(paren
+(paren
+id|ai-&gt;flags
+op_amp
+id|FLAG_MIC_CAPABLE
+)paren
+op_logical_and
+id|ai-&gt;micstats.enabled
+op_logical_and
+(paren
+id|ntohs
+c_func
+(paren
+(paren
+(paren
+id|u16
+op_star
+)paren
+id|pPacket
+)paren
+(braket
+l_int|6
+)braket
+)paren
+op_ne
+l_int|0x888E
+)paren
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|encapsulate
+c_func
+(paren
+id|ai
+comma
+(paren
+id|etherHead
+op_star
+)paren
+id|pPacket
+comma
+op_amp
+id|pMic
+comma
+id|len
+)paren
+op_ne
+id|SUCCESS
+)paren
+r_return
+id|ERROR
+suffix:semicolon
+id|miclen
+op_assign
+r_sizeof
+(paren
+id|pMic
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif
 singleline_comment|// packet is destination[6], source[6], payload[len-12]
 singleline_comment|// write the payload length and dst/src/payload
 r_if
@@ -11938,8 +12739,8 @@ id|cpu_to_le16
 c_func
 (paren
 id|len
-op_minus
-l_int|12
+op_plus
+id|miclen
 )paren
 suffix:semicolon
 id|bap_write
@@ -11969,6 +12770,56 @@ id|u16
 op_star
 )paren
 id|pPacket
+comma
+r_sizeof
+(paren
+id|etherHead
+)paren
+comma
+id|BAP1
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|miclen
+)paren
+id|bap_write
+c_func
+(paren
+id|ai
+comma
+(paren
+r_const
+id|u16
+op_star
+)paren
+op_amp
+id|pMic
+comma
+id|miclen
+comma
+id|BAP1
+)paren
+suffix:semicolon
+id|bap_write
+c_func
+(paren
+id|ai
+comma
+(paren
+r_const
+id|u16
+op_star
+)paren
+(paren
+id|pPacket
+op_plus
+r_sizeof
+(paren
+id|etherHead
+)paren
+)paren
 comma
 id|len
 comma
@@ -14480,6 +15331,10 @@ op_and_assign
 op_complement
 id|FLAG_802_11
 suffix:semicolon
+id|ai-&gt;config.opmode
+op_and_assign
+l_int|0xFF00
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -14492,14 +15347,14 @@ l_char|&squot;a&squot;
 )paren
 (brace
 id|ai-&gt;config.opmode
-op_assign
+op_or_assign
 l_int|0
 suffix:semicolon
 )brace
 r_else
 (brace
 id|ai-&gt;config.opmode
-op_assign
+op_or_assign
 l_int|1
 suffix:semicolon
 r_if
@@ -16129,14 +16984,22 @@ l_string|&quot;DataRates: %d %d %d %d %d %d %d %d&bslash;n&quot;
 l_string|&quot;Channel: %d&bslash;n&quot;
 l_string|&quot;XmitPower: %d&bslash;n&quot;
 comma
+(paren
 id|ai-&gt;config.opmode
+op_amp
+l_int|0xFF
+)paren
 op_eq
 l_int|0
 ques
 c_cond
 l_string|&quot;adhoc&quot;
 suffix:colon
+(paren
 id|ai-&gt;config.opmode
+op_amp
+l_int|0xFF
+)paren
 op_eq
 l_int|1
 ques
@@ -16147,14 +17010,22 @@ c_func
 id|ai-&gt;config.rmode
 )paren
 suffix:colon
+(paren
 id|ai-&gt;config.opmode
+op_amp
+l_int|0xFF
+)paren
 op_eq
 l_int|2
 ques
 c_cond
 l_string|&quot;AP&quot;
 suffix:colon
+(paren
 id|ai-&gt;config.opmode
+op_amp
+l_int|0xFF
+)paren
 op_eq
 l_int|3
 ques
@@ -21644,7 +22515,11 @@ r_case
 id|IW_MODE_ADHOC
 suffix:colon
 id|local-&gt;config.opmode
-op_assign
+op_and_assign
+l_int|0xFF00
+suffix:semicolon
+id|local-&gt;config.opmode
+op_or_assign
 id|MODE_STA_IBSS
 suffix:semicolon
 r_break
@@ -21653,7 +22528,11 @@ r_case
 id|IW_MODE_INFRA
 suffix:colon
 id|local-&gt;config.opmode
-op_assign
+op_and_assign
+l_int|0xFF00
+suffix:semicolon
+id|local-&gt;config.opmode
+op_or_assign
 id|MODE_STA_ESS
 suffix:semicolon
 r_break
@@ -21662,7 +22541,11 @@ r_case
 id|IW_MODE_MASTER
 suffix:colon
 id|local-&gt;config.opmode
-op_assign
+op_and_assign
+l_int|0xFF00
+suffix:semicolon
+id|local-&gt;config.opmode
+op_or_assign
 id|MODE_AP
 suffix:semicolon
 r_break
@@ -21671,7 +22554,11 @@ r_case
 id|IW_MODE_REPEAT
 suffix:colon
 id|local-&gt;config.opmode
-op_assign
+op_and_assign
+l_int|0xFF00
+suffix:semicolon
+id|local-&gt;config.opmode
+op_or_assign
 id|MODE_AP_RPTR
 suffix:semicolon
 r_break
@@ -27225,7 +28112,7 @@ c_cond
 (paren
 id|com.command
 op_le
-id|AIROGSTATSD32
+id|AIROGMICSTATS
 )paren
 id|rc
 op_assign
@@ -27566,23 +28453,9 @@ suffix:semicolon
 r_case
 id|AIROGCFG
 suffix:colon
-id|ridcode
-op_assign
-id|RID_CONFIG
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-id|AIROPCFG
-suffix:colon
 id|writeConfigRid
 (paren
-(paren
-r_struct
-id|airo_info
-op_star
-)paren
-id|dev-&gt;priv
+id|ai
 )paren
 suffix:semicolon
 id|ridcode
@@ -27702,6 +28575,45 @@ id|RID_STATS
 suffix:semicolon
 r_break
 suffix:semicolon
+r_case
+id|AIROGMICSTATS
+suffix:colon
+r_if
+c_cond
+(paren
+id|copy_to_user
+c_func
+(paren
+id|comp-&gt;data
+comma
+op_amp
+id|ai-&gt;micstats
+comma
+id|min
+c_func
+(paren
+(paren
+r_int
+)paren
+id|comp-&gt;len
+comma
+(paren
+r_int
+)paren
+r_sizeof
+(paren
+id|ai-&gt;micstats
+)paren
+)paren
+)paren
+)paren
+r_return
+op_minus
+id|EFAULT
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
 r_default
 suffix:colon
 r_return
@@ -27714,12 +28626,7 @@ suffix:semicolon
 id|PC4500_readrid
 c_func
 (paren
-(paren
-r_struct
-id|airo_info
-op_star
-)paren
-id|dev-&gt;priv
+id|ai
 comma
 id|ridcode
 comma
@@ -27794,6 +28701,8 @@ id|dev-&gt;priv
 suffix:semicolon
 r_int
 id|ridcode
+comma
+id|enabled
 suffix:semicolon
 id|Resp
 id|rsp
@@ -27896,16 +28805,7 @@ suffix:semicolon
 r_case
 id|AIROPCFG
 suffix:colon
-(paren
-(paren
-r_struct
-id|airo_info
-op_star
-)paren
-id|dev-&gt;priv
-)paren
-op_member_access_from_pointer
-id|config.len
+id|ai-&gt;config.len
 op_assign
 l_int|0
 suffix:semicolon
@@ -27965,7 +28865,7 @@ c_cond
 id|enable_MAC
 c_func
 (paren
-id|dev-&gt;priv
+id|ai
 comma
 op_amp
 id|rsp
@@ -27987,7 +28887,7 @@ suffix:colon
 id|disable_MAC
 c_func
 (paren
-id|dev-&gt;priv
+id|ai
 )paren
 suffix:semicolon
 r_return
@@ -27997,16 +28897,12 @@ multiline_comment|/* This command merely clears the counts does not actually sto
 r_case
 id|AIROPSTCLR
 suffix:colon
-id|ridcode
-op_assign
-id|RID_STATSDELTACLEAR
-suffix:semicolon
 id|PC4500_readrid
 c_func
 (paren
-id|dev-&gt;priv
+id|ai
 comma
-id|ridcode
+id|RID_STATSDELTACLEAR
 comma
 id|iobuf
 comma
@@ -28015,6 +28911,28 @@ r_sizeof
 id|iobuf
 )paren
 )paren
+suffix:semicolon
+id|enabled
+op_assign
+id|ai-&gt;micstats.enabled
+suffix:semicolon
+id|memset
+c_func
+(paren
+op_amp
+id|ai-&gt;micstats
+comma
+l_int|0
+comma
+r_sizeof
+(paren
+id|ai-&gt;micstats
+)paren
+)paren
+suffix:semicolon
+id|ai-&gt;micstats.enabled
+op_assign
+id|enabled
 suffix:semicolon
 r_if
 c_cond
@@ -28095,17 +29013,63 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|comp-&gt;command
+op_eq
+id|AIROPCFG
+)paren
+(brace
+id|ConfigRid
+op_star
+id|cfg
+op_assign
+(paren
+id|ConfigRid
+op_star
+)paren
+id|iobuf
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ai-&gt;flags
+op_amp
+id|FLAG_MIC_CAPABLE
+)paren
+id|cfg-&gt;opmode
+op_or_assign
+id|MODE_MIC
+suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|cfg-&gt;opmode
+op_amp
+l_int|0xFF
+)paren
+op_eq
+id|MODE_STA_IBSS
+)paren
+id|ai-&gt;flags
+op_or_assign
+id|FLAG_ADHOC
+suffix:semicolon
+r_else
+id|ai-&gt;flags
+op_and_assign
+op_complement
+id|FLAG_ADHOC
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
 (paren
 op_star
 id|writer
 )paren
 (paren
-(paren
-r_struct
-id|airo_info
-op_star
-)paren
-id|dev-&gt;priv
+id|ai
 comma
 id|ridcode
 comma

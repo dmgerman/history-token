@@ -2,6 +2,15 @@ multiline_comment|/*&n; *   32bit -&gt; 64bit ioctl helpers&n; *   Copyright (c)
 macro_line|#ifndef __ALSA_IOCTL32_H
 DECL|macro|__ALSA_IOCTL32_H
 mdefine_line|#define __ALSA_IOCTL32_H
+macro_line|#ifndef A
+macro_line|#ifdef CONFIG_PPC64
+macro_line|#include &lt;asm/ppc32.h&gt;
+macro_line|#else
+multiline_comment|/* x86-64, sparc64 */
+DECL|macro|A
+mdefine_line|#define A(__x) ((void *)(unsigned long)(__x))
+macro_line|#endif
+macro_line|#endif
 DECL|macro|TO_PTR
 mdefine_line|#define TO_PTR(x)  A(x)
 DECL|macro|COPY
@@ -13,7 +22,9 @@ mdefine_line|#define convert_from_32(type, dstp, srcp)&bslash;&n;{&bslash;&n;&t;
 DECL|macro|convert_to_32
 mdefine_line|#define convert_to_32(type, dstp, srcp)&bslash;&n;{&bslash;&n;&t;struct sndrv_##type *src = srcp;&bslash;&n;&t;struct sndrv_##type##32 *dst = dstp;&bslash;&n;&t;CVT_##sndrv_##type();&bslash;&n;}
 DECL|macro|DEFINE_ALSA_IOCTL
-mdefine_line|#define DEFINE_ALSA_IOCTL(type) &bslash;&n;static int snd_ioctl32_##type(unsigned int fd, unsigned int cmd, unsigned long arg, struct file *file)&bslash;&n;{&bslash;&n;&t;struct sndrv_##type##32 data32;&bslash;&n;&t;struct sndrv_##type data;&bslash;&n;&t;int err;&bslash;&n;&t;if (copy_from_user(&amp;data32, (void*)arg, sizeof(data32)))&bslash;&n;&t;&t;return -EFAULT;&bslash;&n;&t;memset(&amp;data, 0, sizeof(data));&bslash;&n;&t;convert_from_32(type, &amp;data, &amp;data32);&bslash;&n;&t;err = file-&gt;f_op-&gt;ioctl(file-&gt;f_dentry-&gt;d_inode, file, cmd, (unsigned long)&amp;data);&bslash;&n;&t;if (err &lt; 0)&bslash;&n;&t;&t;return err;&bslash;&n;&t;if (cmd &amp; (_IOC_READ &lt;&lt; _IOC_DIRSHIFT)) {&bslash;&n;&t;&t;convert_to_32(type, &amp;data32, &amp;data);&bslash;&n;&t;&t;if (copy_to_user((void*)arg, &amp;data32, sizeof(data32)))&bslash;&n;&t;&t;&t;return -EFAULT;&bslash;&n;&t;}&bslash;&n;&t;return err;&bslash;&n;}
+mdefine_line|#define DEFINE_ALSA_IOCTL(type) &bslash;&n;static int _snd_ioctl32_##type(unsigned int fd, unsigned int cmd, unsigned long arg, struct file *file, unsigned int native_ctl)&bslash;&n;{&bslash;&n;&t;struct sndrv_##type##32 data32;&bslash;&n;&t;struct sndrv_##type data;&bslash;&n;&t;mm_segment_t oldseg = get_fs();&bslash;&n;&t;int err;&bslash;&n;&t;set_fs(KERNEL_DS);&bslash;&n;&t;if (copy_from_user(&amp;data32, (void*)arg, sizeof(data32))) {&bslash;&n;&t;&t;err = -EFAULT;&bslash;&n;&t;&t;goto __err;&bslash;&n;&t;}&bslash;&n;&t;memset(&amp;data, 0, sizeof(data));&bslash;&n;&t;convert_from_32(type, &amp;data, &amp;data32);&bslash;&n;&t;err = file-&gt;f_op-&gt;ioctl(file-&gt;f_dentry-&gt;d_inode, file, native_ctl, (unsigned long)&amp;data);&bslash;&n;&t;if (err &lt; 0) &bslash;&n;&t;&t;goto __err;&bslash;&n;&t;if (native_ctl &amp; (_IOC_READ &lt;&lt; _IOC_DIRSHIFT)) {&bslash;&n;&t;&t;convert_to_32(type, &amp;data32, &amp;data);&bslash;&n;&t;&t;if (copy_to_user((void*)arg, &amp;data32, sizeof(data32))) {&bslash;&n;&t;&t;&t;err = -EFAULT;&bslash;&n;&t;&t;&t;goto __err;&bslash;&n;&t;&t;}&bslash;&n;&t;}&bslash;&n; __err: set_fs(oldseg);&bslash;&n;&t;return err;&bslash;&n;}
+DECL|macro|DEFINE_ALSA_IOCTL_ENTRY
+mdefine_line|#define DEFINE_ALSA_IOCTL_ENTRY(name,type,native_ctl) &bslash;&n;static int snd_ioctl32_##name(unsigned int fd, unsigned int cmd, unsigned long arg, struct file *file) {&bslash;&n;&t;return _snd_ioctl32_##type(fd, cmd, arg, file, native_ctl);&bslash;&n;}
 DECL|struct|ioctl32_mapper
 r_struct
 id|ioctl32_mapper

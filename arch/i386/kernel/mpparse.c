@@ -4273,6 +4273,10 @@ id|status
 (brace
 id|madt_end
 op_assign
+(paren
+r_int
+r_int
+)paren
 id|madt
 op_plus
 id|madt-&gt;header.length

@@ -41,6 +41,7 @@ r_void
 id|lapb_start_t1timer
 c_func
 (paren
+r_struct
 id|lapb_cb
 op_star
 id|lapb
@@ -85,6 +86,7 @@ r_void
 id|lapb_start_t2timer
 c_func
 (paren
+r_struct
 id|lapb_cb
 op_star
 id|lapb
@@ -129,6 +131,7 @@ r_void
 id|lapb_stop_t1timer
 c_func
 (paren
+r_struct
 id|lapb_cb
 op_star
 id|lapb
@@ -147,6 +150,7 @@ r_void
 id|lapb_stop_t2timer
 c_func
 (paren
+r_struct
 id|lapb_cb
 op_star
 id|lapb
@@ -165,6 +169,7 @@ r_int
 id|lapb_t1timer_running
 c_func
 (paren
+r_struct
 id|lapb_cb
 op_star
 id|lapb
@@ -190,11 +195,13 @@ r_int
 id|param
 )paren
 (brace
+r_struct
 id|lapb_cb
 op_star
 id|lapb
 op_assign
 (paren
+r_struct
 id|lapb_cb
 op_star
 )paren
@@ -232,11 +239,13 @@ r_int
 id|param
 )paren
 (brace
+r_struct
 id|lapb_cb
 op_star
 id|lapb
 op_assign
 (paren
+r_struct
 id|lapb_cb
 op_star
 )paren

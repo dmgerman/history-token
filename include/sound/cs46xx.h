@@ -5,6 +5,7 @@ multiline_comment|/*&n; *  Copyright (c) by Jaroslav Kysela &lt;perex@suse.cz&gt
 macro_line|#include &quot;pcm.h&quot;
 macro_line|#include &quot;rawmidi.h&quot;
 macro_line|#include &quot;ac97_codec.h&quot;
+macro_line|#include &quot;cs46xx_dsp_spos.h&quot;
 macro_line|#ifndef PCI_VENDOR_ID_CIRRUS
 DECL|macro|PCI_VENDOR_ID_CIRRUS
 mdefine_line|#define PCI_VENDOR_ID_CIRRUS            0x1013
@@ -298,6 +299,139 @@ DECL|macro|BA1_FRSC
 mdefine_line|#define BA1_FRSC                                0x00030038
 DECL|macro|BA1_OMNI_MEM
 mdefine_line|#define BA1_OMNI_MEM                            0x000E0000
+multiline_comment|/*&n; * The following define the offsets of the AC97 shadow registers, which appear&n; * as a virtual extension to the base address register zero memory range.&n; */
+DECL|macro|AC97_REG_OFFSET_MASK
+mdefine_line|#define AC97_REG_OFFSET_MASK                    0x0000007EL
+DECL|macro|AC97_CODEC_NUMBER_MASK
+mdefine_line|#define AC97_CODEC_NUMBER_MASK                  0x00003000L
+DECL|macro|BA0_AC97_RESET
+mdefine_line|#define BA0_AC97_RESET                          0x00001000L
+DECL|macro|BA0_AC97_MASTER_VOLUME
+mdefine_line|#define BA0_AC97_MASTER_VOLUME                  0x00001002L
+DECL|macro|BA0_AC97_HEADPHONE_VOLUME
+mdefine_line|#define BA0_AC97_HEADPHONE_VOLUME               0x00001004L
+DECL|macro|BA0_AC97_MASTER_VOLUME_MONO
+mdefine_line|#define BA0_AC97_MASTER_VOLUME_MONO             0x00001006L
+DECL|macro|BA0_AC97_MASTER_TONE
+mdefine_line|#define BA0_AC97_MASTER_TONE                    0x00001008L
+DECL|macro|BA0_AC97_PC_BEEP_VOLUME
+mdefine_line|#define BA0_AC97_PC_BEEP_VOLUME                 0x0000100AL
+DECL|macro|BA0_AC97_PHONE_VOLUME
+mdefine_line|#define BA0_AC97_PHONE_VOLUME                   0x0000100CL
+DECL|macro|BA0_AC97_MIC_VOLUME
+mdefine_line|#define BA0_AC97_MIC_VOLUME                     0x0000100EL
+DECL|macro|BA0_AC97_LINE_IN_VOLUME
+mdefine_line|#define BA0_AC97_LINE_IN_VOLUME                 0x00001010L
+DECL|macro|BA0_AC97_CD_VOLUME
+mdefine_line|#define BA0_AC97_CD_VOLUME                      0x00001012L
+DECL|macro|BA0_AC97_VIDEO_VOLUME
+mdefine_line|#define BA0_AC97_VIDEO_VOLUME                   0x00001014L
+DECL|macro|BA0_AC97_AUX_VOLUME
+mdefine_line|#define BA0_AC97_AUX_VOLUME                     0x00001016L
+DECL|macro|BA0_AC97_PCM_OUT_VOLUME
+mdefine_line|#define BA0_AC97_PCM_OUT_VOLUME                 0x00001018L
+DECL|macro|BA0_AC97_RECORD_SELECT
+mdefine_line|#define BA0_AC97_RECORD_SELECT                  0x0000101AL
+DECL|macro|BA0_AC97_RECORD_GAIN
+mdefine_line|#define BA0_AC97_RECORD_GAIN                    0x0000101CL
+DECL|macro|BA0_AC97_RECORD_GAIN_MIC
+mdefine_line|#define BA0_AC97_RECORD_GAIN_MIC                0x0000101EL
+DECL|macro|BA0_AC97_GENERAL_PURPOSE
+mdefine_line|#define BA0_AC97_GENERAL_PURPOSE                0x00001020L
+DECL|macro|BA0_AC97_3D_CONTROL
+mdefine_line|#define BA0_AC97_3D_CONTROL                     0x00001022L
+DECL|macro|BA0_AC97_MODEM_RATE
+mdefine_line|#define BA0_AC97_MODEM_RATE                     0x00001024L
+DECL|macro|BA0_AC97_POWERDOWN
+mdefine_line|#define BA0_AC97_POWERDOWN                      0x00001026L
+DECL|macro|BA0_AC97_EXT_AUDIO_ID
+mdefine_line|#define BA0_AC97_EXT_AUDIO_ID                   0x00001028L
+DECL|macro|BA0_AC97_EXT_AUDIO_POWER
+mdefine_line|#define BA0_AC97_EXT_AUDIO_POWER                0x0000102AL
+DECL|macro|BA0_AC97_PCM_FRONT_DAC_RATE
+mdefine_line|#define BA0_AC97_PCM_FRONT_DAC_RATE             0x0000102CL
+DECL|macro|BA0_AC97_PCM_SURR_DAC_RATE
+mdefine_line|#define BA0_AC97_PCM_SURR_DAC_RATE              0x0000102EL
+DECL|macro|BA0_AC97_PCM_LFE_DAC_RATE
+mdefine_line|#define BA0_AC97_PCM_LFE_DAC_RATE               0x00001030L
+DECL|macro|BA0_AC97_PCM_LR_ADC_RATE
+mdefine_line|#define BA0_AC97_PCM_LR_ADC_RATE                0x00001032L
+DECL|macro|BA0_AC97_MIC_ADC_RATE
+mdefine_line|#define BA0_AC97_MIC_ADC_RATE                   0x00001034L
+DECL|macro|BA0_AC97_6CH_VOL_C_LFE
+mdefine_line|#define BA0_AC97_6CH_VOL_C_LFE                  0x00001036L
+DECL|macro|BA0_AC97_6CH_VOL_SURROUND
+mdefine_line|#define BA0_AC97_6CH_VOL_SURROUND               0x00001038L
+DECL|macro|BA0_AC97_RESERVED_3A
+mdefine_line|#define BA0_AC97_RESERVED_3A                    0x0000103AL
+DECL|macro|BA0_AC97_EXT_MODEM_ID
+mdefine_line|#define BA0_AC97_EXT_MODEM_ID                   0x0000103CL
+DECL|macro|BA0_AC97_EXT_MODEM_POWER
+mdefine_line|#define BA0_AC97_EXT_MODEM_POWER                0x0000103EL
+DECL|macro|BA0_AC97_LINE1_CODEC_RATE
+mdefine_line|#define BA0_AC97_LINE1_CODEC_RATE               0x00001040L
+DECL|macro|BA0_AC97_LINE2_CODEC_RATE
+mdefine_line|#define BA0_AC97_LINE2_CODEC_RATE               0x00001042L
+DECL|macro|BA0_AC97_HANDSET_CODEC_RATE
+mdefine_line|#define BA0_AC97_HANDSET_CODEC_RATE             0x00001044L
+DECL|macro|BA0_AC97_LINE1_CODEC_LEVEL
+mdefine_line|#define BA0_AC97_LINE1_CODEC_LEVEL              0x00001046L
+DECL|macro|BA0_AC97_LINE2_CODEC_LEVEL
+mdefine_line|#define BA0_AC97_LINE2_CODEC_LEVEL              0x00001048L
+DECL|macro|BA0_AC97_HANDSET_CODEC_LEVEL
+mdefine_line|#define BA0_AC97_HANDSET_CODEC_LEVEL            0x0000104AL
+DECL|macro|BA0_AC97_GPIO_PIN_CONFIG
+mdefine_line|#define BA0_AC97_GPIO_PIN_CONFIG                0x0000104CL
+DECL|macro|BA0_AC97_GPIO_PIN_TYPE
+mdefine_line|#define BA0_AC97_GPIO_PIN_TYPE                  0x0000104EL
+DECL|macro|BA0_AC97_GPIO_PIN_STICKY
+mdefine_line|#define BA0_AC97_GPIO_PIN_STICKY                0x00001050L
+DECL|macro|BA0_AC97_GPIO_PIN_WAKEUP
+mdefine_line|#define BA0_AC97_GPIO_PIN_WAKEUP                0x00001052L
+DECL|macro|BA0_AC97_GPIO_PIN_STATUS
+mdefine_line|#define BA0_AC97_GPIO_PIN_STATUS                0x00001054L
+DECL|macro|BA0_AC97_MISC_MODEM_AFE_STAT
+mdefine_line|#define BA0_AC97_MISC_MODEM_AFE_STAT            0x00001056L
+DECL|macro|BA0_AC97_RESERVED_58
+mdefine_line|#define BA0_AC97_RESERVED_58                    0x00001058L
+DECL|macro|BA0_AC97_CRYSTAL_REV_N_FAB_ID
+mdefine_line|#define BA0_AC97_CRYSTAL_REV_N_FAB_ID           0x0000105AL
+DECL|macro|BA0_AC97_TEST_AND_MISC_CTRL
+mdefine_line|#define BA0_AC97_TEST_AND_MISC_CTRL             0x0000105CL
+DECL|macro|BA0_AC97_AC_MODE
+mdefine_line|#define BA0_AC97_AC_MODE                        0x0000105EL
+DECL|macro|BA0_AC97_MISC_CRYSTAL_CONTROL
+mdefine_line|#define BA0_AC97_MISC_CRYSTAL_CONTROL           0x00001060L
+DECL|macro|BA0_AC97_LINE1_HYPRID_CTRL
+mdefine_line|#define BA0_AC97_LINE1_HYPRID_CTRL              0x00001062L
+DECL|macro|BA0_AC97_VENDOR_RESERVED_64
+mdefine_line|#define BA0_AC97_VENDOR_RESERVED_64             0x00001064L
+DECL|macro|BA0_AC97_VENDOR_RESERVED_66
+mdefine_line|#define BA0_AC97_VENDOR_RESERVED_66             0x00001066L
+DECL|macro|BA0_AC97_SPDIF_CONTROL
+mdefine_line|#define BA0_AC97_SPDIF_CONTROL                  0x00001068L
+DECL|macro|BA0_AC97_VENDOR_RESERVED_6A
+mdefine_line|#define BA0_AC97_VENDOR_RESERVED_6A             0x0000106AL
+DECL|macro|BA0_AC97_VENDOR_RESERVED_6C
+mdefine_line|#define BA0_AC97_VENDOR_RESERVED_6C             0x0000106CL
+DECL|macro|BA0_AC97_VENDOR_RESERVED_6E
+mdefine_line|#define BA0_AC97_VENDOR_RESERVED_6E             0x0000106EL
+DECL|macro|BA0_AC97_VENDOR_RESERVED_70
+mdefine_line|#define BA0_AC97_VENDOR_RESERVED_70             0x00001070L
+DECL|macro|BA0_AC97_VENDOR_RESERVED_72
+mdefine_line|#define BA0_AC97_VENDOR_RESERVED_72             0x00001072L
+DECL|macro|BA0_AC97_VENDOR_RESERVED_74
+mdefine_line|#define BA0_AC97_VENDOR_RESERVED_74             0x00001074L
+DECL|macro|BA0_AC97_CAL_ADDRESS
+mdefine_line|#define BA0_AC97_CAL_ADDRESS                    0x00001076L
+DECL|macro|BA0_AC97_CAL_DATA
+mdefine_line|#define BA0_AC97_CAL_DATA                       0x00001078L
+DECL|macro|BA0_AC97_VENDOR_RESERVED_7A
+mdefine_line|#define BA0_AC97_VENDOR_RESERVED_7A             0x0000107AL
+DECL|macro|BA0_AC97_VENDOR_ID1
+mdefine_line|#define BA0_AC97_VENDOR_ID1                     0x0000107CL
+DECL|macro|BA0_AC97_VENDOR_ID2
+mdefine_line|#define BA0_AC97_VENDOR_ID2                     0x0000107EL
 multiline_comment|/*&n; *  The following defines are for the flags in the host interrupt status&n; *  register.&n; */
 DECL|macro|HISR_VC_MASK
 mdefine_line|#define HISR_VC_MASK                            0x0000FFFF
@@ -1225,11 +1359,13 @@ mdefine_line|#define SERACC_CHIP_TYPE_1_03                  0x00000000
 DECL|macro|SERACC_CHIP_TYPE_2_0
 mdefine_line|#define SERACC_CHIP_TYPE_2_0                   0x00000001
 DECL|macro|SERACC_TWO_CODECS
-mdefine_line|#define SERACC_TWO_CODECS                       0x00000002
+mdefine_line|#define SERACC_TWO_CODECS                      0x00000002
 DECL|macro|SERACC_MDM
-mdefine_line|#define SERACC_MDM                              0x00000004
+mdefine_line|#define SERACC_MDM                             0x00000004
 DECL|macro|SERACC_HSP
-mdefine_line|#define SERACC_HSP                              0x00000008
+mdefine_line|#define SERACC_HSP                             0x00000008
+DECL|macro|SERACC_ODT
+mdefine_line|#define SERACC_ODT                             0x00000010 /* only CS4630 */
 macro_line|#endif
 multiline_comment|/*&n; *  The following defines are for the flags in the AC97 control register 2.&n; */
 macro_line|#ifndef NO_CS4612
@@ -2204,12 +2340,112 @@ DECL|macro|SAVE_REG_MAX
 mdefine_line|#define SAVE_REG_MAX             0x10
 DECL|macro|POWER_DOWN_ALL
 mdefine_line|#define POWER_DOWN_ALL         0x7f0f
+multiline_comment|/* maxinum number of AC97 codecs connected, AC97 2.0 defined 4 */
+DECL|macro|MAX_NR_AC97
+mdefine_line|#define MAX_NR_AC97&t;&t;&t;&t;            4
+DECL|macro|CS46XX_PRIMARY_CODEC_INDEX
+mdefine_line|#define CS46XX_PRIMARY_CODEC_INDEX          0
+DECL|macro|CS46XX_SECONDARY_CODEC_INDEX
+mdefine_line|#define CS46XX_SECONDARY_CODEC_INDEX&t;&t;1
+DECL|macro|CS46XX_SECONDARY_CODEC_OFFSET
+mdefine_line|#define CS46XX_SECONDARY_CODEC_OFFSET&t;&t;0x80
+DECL|macro|CS46XX_DSP_CAPTURE_CHANNEL
+mdefine_line|#define CS46XX_DSP_CAPTURE_CHANNEL          1
 multiline_comment|/*&n; *&n; */
 DECL|typedef|cs46xx_t
 r_typedef
 r_struct
 id|_snd_cs46xx
 id|cs46xx_t
+suffix:semicolon
+DECL|struct|_snd_cs46xx_pcm_t
+r_typedef
+r_struct
+id|_snd_cs46xx_pcm_t
+(brace
+DECL|member|hw_area
+r_int
+r_char
+op_star
+id|hw_area
+suffix:semicolon
+DECL|member|hw_addr
+id|dma_addr_t
+id|hw_addr
+suffix:semicolon
+multiline_comment|/* PCI bus address, not accessible */
+DECL|member|hw_size
+r_int
+r_int
+id|hw_size
+suffix:semicolon
+DECL|member|ctl
+r_int
+r_int
+id|ctl
+suffix:semicolon
+DECL|member|shift
+r_int
+r_int
+id|shift
+suffix:semicolon
+multiline_comment|/* Shift count to trasform frames in bytes */
+DECL|member|sw_bufsize
+r_int
+r_int
+id|sw_bufsize
+suffix:semicolon
+DECL|member|sw_data
+r_int
+r_int
+id|sw_data
+suffix:semicolon
+multiline_comment|/* Offset to next dst (or src) in sw ring buffer */
+DECL|member|sw_io
+r_int
+r_int
+id|sw_io
+suffix:semicolon
+DECL|member|sw_ready
+r_int
+id|sw_ready
+suffix:semicolon
+multiline_comment|/* Bytes ready to be transferred to/from hw */
+DECL|member|hw_data
+r_int
+r_int
+id|hw_data
+suffix:semicolon
+multiline_comment|/* Offset to next dst (or src) in hw ring buffer */
+DECL|member|hw_io
+r_int
+r_int
+id|hw_io
+suffix:semicolon
+multiline_comment|/* Ring buffer hw pointer */
+DECL|member|hw_ready
+r_int
+id|hw_ready
+suffix:semicolon
+multiline_comment|/* Bytes ready for play (or captured) in hw ring buffer */
+DECL|member|appl_ptr
+r_int
+id|appl_ptr
+suffix:semicolon
+multiline_comment|/* Last seen appl_ptr */
+DECL|member|substream
+id|snd_pcm_substream_t
+op_star
+id|substream
+suffix:semicolon
+DECL|member|pcm_channel
+id|pcm_channel_descriptor_t
+op_star
+id|pcm_channel
+suffix:semicolon
+DECL|typedef|cs46xx_pcm_t
+)brace
+id|cs46xx_pcm_t
 suffix:semicolon
 r_typedef
 r_struct
@@ -2390,17 +2626,21 @@ id|snd_pcm_substream_t
 op_star
 id|substream
 suffix:semicolon
-DECL|member|play
 DECL|member|capt
 )brace
-id|play
-comma
 id|capt
+suffix:semicolon
+DECL|member|nr_ac97_codecs
+r_int
+id|nr_ac97_codecs
 suffix:semicolon
 DECL|member|ac97
 id|ac97_t
 op_star
 id|ac97
+(braket
+id|MAX_NR_AC97
+)braket
 suffix:semicolon
 DECL|member|pci
 r_struct
@@ -2515,6 +2755,24 @@ r_struct
 id|pm_dev
 op_star
 id|pm_dev
+suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef CONFIG_SND_CS46XX_NEW_DSP
+DECL|member|dsp_spos_instance
+id|dsp_spos_instance_t
+op_star
+id|dsp_spos_instance
+suffix:semicolon
+macro_line|#else /* for compatibility */
+DECL|member|playback_pcm
+id|cs46xx_pcm_t
+op_star
+id|playback_pcm
+suffix:semicolon
+DECL|member|play_ctl
+r_int
+r_int
+id|play_ctl
 suffix:semicolon
 macro_line|#endif
 )brace

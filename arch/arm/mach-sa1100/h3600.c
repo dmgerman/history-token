@@ -252,7 +252,7 @@ c_func
 id|flags
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;if ( x != IPAQ_EGPIO_VPP_ON ) {&n;&t;&t;printk(__FUNCTION__ &quot; : type=%d (%s) gpio=0x%x (0x%x) egpio=0x%x (0x%x) setp=%d&bslash;n&quot;,&n;&t;&t;       x, egpio_names[x], GPLR, gpio, h3600_egpio, egpio, setp );&n;&t;}&n;&t;*/
+multiline_comment|/*&n;&t;if ( x != IPAQ_EGPIO_VPP_ON ) {&n;&t;&t;printk(&quot;%s: type=%d (%s) gpio=0x%x (0x%x) egpio=0x%x (0x%x) setp=%d&bslash;n&quot;,&n;&t;&t;       __FUNCTION__,&n;&t;&t;       x, egpio_names[x], GPLR, gpio, h3600_egpio, egpio, setp );&n;&t;}&n;&t;*/
 )brace
 DECL|function|h3100_read_egpio
 r_static

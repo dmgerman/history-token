@@ -16,13 +16,6 @@ macro_line|#include &quot;fpopcode.h&quot;
 macro_line|#include &quot;fpmodule.h&quot;
 macro_line|#include &quot;fpa11.inl&quot;
 multiline_comment|/* kernel symbols required for signal handling */
-DECL|typedef|PTASK
-r_typedef
-r_struct
-id|task_struct
-op_star
-id|PTASK
-suffix:semicolon
 macro_line|#ifdef MODULE
 r_void
 id|fp_send_sig
@@ -32,7 +25,9 @@ r_int
 r_int
 id|sig
 comma
-id|PTASK
+r_struct
+id|task_struct
+op_star
 id|p
 comma
 r_int
@@ -84,6 +79,18 @@ id|kern_fp_enter
 r_void
 )paren
 suffix:semicolon
+r_extern
+r_void
+(paren
+op_star
+id|fp_init
+)paren
+(paren
+r_union
+id|fp_state
+op_star
+)paren
+suffix:semicolon
 multiline_comment|/* Original value of fp_enter from kernel before patched by fpe_init. */
 DECL|variable|orig_fp_enter
 r_static
@@ -94,6 +101,19 @@ id|orig_fp_enter
 )paren
 (paren
 r_void
+)paren
+suffix:semicolon
+DECL|variable|orig_fp_init
+r_static
+r_void
+(paren
+op_star
+id|orig_fp_init
+)paren
+(paren
+r_union
+id|fp_state
+op_star
 )paren
 suffix:semicolon
 multiline_comment|/* forward declarations */
@@ -247,9 +267,17 @@ id|orig_fp_enter
 op_assign
 id|kern_fp_enter
 suffix:semicolon
+id|orig_fp_init
+op_assign
+id|fp_init
+suffix:semicolon
 id|kern_fp_enter
 op_assign
 id|nwfpe_enter
+suffix:semicolon
+id|fp_init
+op_assign
+id|nwfpe_init
 suffix:semicolon
 r_return
 l_int|0
@@ -269,6 +297,10 @@ multiline_comment|/* Restore the values we saved earlier. */
 id|kern_fp_enter
 op_assign
 id|orig_fp_enter
+suffix:semicolon
+id|fp_init
+op_assign
+id|orig_fp_init
 suffix:semicolon
 )brace
 multiline_comment|/*&n;ScottB:  November 4, 1998&n;&n;Moved this function out of softfloat-specialize into fpmodule.c.&n;This effectively isolates all the changes required for integrating with the&n;Linux kernel into fpmodule.c.  Porting to NetBSD should only require modifying&n;fpmodule.c to integrate with the NetBSD kernel (I hope!).&n;&n;[1/1/99: Not quite true any more unfortunately.  There is Linux-specific&n;code to access data in user space in some other source files at the &n;moment (grep for get_user / put_user calls).  --philb]&n;&n;float_exception_flags is a global variable in SoftFloat.&n;&n;This function is called by the SoftFloat routines to raise a floating&n;point exception.  We check the trap enable byte in the FPSR, and raise&n;a SIGFPE exception if necessary.  If not the relevant bits in the &n;cumulative exceptions flag byte are set and we return.&n;*/

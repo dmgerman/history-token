@@ -937,9 +937,13 @@ id|disk-&gt;first_minor
 op_assign
 id|unit
 suffix:semicolon
-id|disk-&gt;major_name
-op_assign
+id|strcpy
+c_func
+(paren
+id|disk-&gt;disk_name
+comma
 id|pf-&gt;name
+)paren
 suffix:semicolon
 id|disk-&gt;minor_shift
 op_assign

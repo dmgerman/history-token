@@ -129,6 +129,12 @@ r_struct
 id|sndrv_pcm_mmap_control
 id|snd_pcm_mmap_control_t
 suffix:semicolon
+DECL|typedef|snd_mask_t
+r_typedef
+r_struct
+id|sndrv_mask
+id|snd_mask_t
+suffix:semicolon
 DECL|macro|_snd_pcm_substream_chip
 mdefine_line|#define _snd_pcm_substream_chip(substream) ((substream)-&gt;pcm-&gt;private_data)
 DECL|macro|snd_pcm_substream_chip
@@ -165,8 +171,7 @@ id|info
 suffix:semicolon
 multiline_comment|/* SNDRV_PCM_INFO_* */
 DECL|member|formats
-r_int
-r_int
+id|u64
 id|formats
 suffix:semicolon
 multiline_comment|/* SNDRV_PCM_FMTBIT_* */
@@ -398,6 +403,23 @@ id|snd_pcm_uframes_t
 id|count
 )paren
 suffix:semicolon
+DECL|member|page
+r_void
+op_star
+(paren
+op_star
+id|page
+)paren
+(paren
+id|snd_pcm_substream_t
+op_star
+id|substream
+comma
+r_int
+r_int
+id|offset
+)paren
+suffix:semicolon
 DECL|typedef|snd_pcm_ops_t
 )brace
 id|snd_pcm_ops_t
@@ -435,6 +457,8 @@ DECL|macro|SNDRV_PCM_DMA_TYPE_ISA
 mdefine_line|#define SNDRV_PCM_DMA_TYPE_ISA&t;&t;1&t;/* ISA continuous */
 DECL|macro|SNDRV_PCM_DMA_TYPE_PCI
 mdefine_line|#define SNDRV_PCM_DMA_TYPE_PCI&t;&t;2&t;/* PCI continuous */
+DECL|macro|SNDRV_PCM_DMA_TYPE_SBUS
+mdefine_line|#define SNDRV_PCM_DMA_TYPE_SBUS&t;&t;3&t;/* SBUS continuous */
 multiline_comment|/* If you change this don&squot;t forget to changed snd_pcm_rates table in pcm_lib.c */
 DECL|macro|SNDRV_PCM_RATE_5512
 mdefine_line|#define SNDRV_PCM_RATE_5512&t;&t;(1&lt;&lt;0)&t;&t;/* 5512Hz */
@@ -475,57 +499,81 @@ mdefine_line|#define SNDRV_PCM_RATE_8000_96000&t;(SNDRV_PCM_RATE_8000_48000|SNDR
 DECL|macro|SNDRV_PCM_RATE_8000_192000
 mdefine_line|#define SNDRV_PCM_RATE_8000_192000&t;(SNDRV_PCM_RATE_8000_96000|SNDRV_PCM_RATE_176400|&bslash;&n;&t;&t;&t;&t;&t; SNDRV_PCM_RATE_192000)
 DECL|macro|SNDRV_PCM_FMTBIT_S8
-mdefine_line|#define SNDRV_PCM_FMTBIT_S8&t;&t;(1 &lt;&lt; SNDRV_PCM_FORMAT_S8)
+mdefine_line|#define SNDRV_PCM_FMTBIT_S8&t;&t;(1ULL &lt;&lt; SNDRV_PCM_FORMAT_S8)
 DECL|macro|SNDRV_PCM_FMTBIT_U8
-mdefine_line|#define SNDRV_PCM_FMTBIT_U8&t;&t;(1 &lt;&lt; SNDRV_PCM_FORMAT_U8)
+mdefine_line|#define SNDRV_PCM_FMTBIT_U8&t;&t;(1ULL &lt;&lt; SNDRV_PCM_FORMAT_U8)
 DECL|macro|SNDRV_PCM_FMTBIT_S16_LE
-mdefine_line|#define SNDRV_PCM_FMTBIT_S16_LE&t;&t;(1 &lt;&lt; SNDRV_PCM_FORMAT_S16_LE)
+mdefine_line|#define SNDRV_PCM_FMTBIT_S16_LE&t;&t;(1ULL &lt;&lt; SNDRV_PCM_FORMAT_S16_LE)
 DECL|macro|SNDRV_PCM_FMTBIT_S16_BE
-mdefine_line|#define SNDRV_PCM_FMTBIT_S16_BE&t;&t;(1 &lt;&lt; SNDRV_PCM_FORMAT_S16_BE)
+mdefine_line|#define SNDRV_PCM_FMTBIT_S16_BE&t;&t;(1ULL &lt;&lt; SNDRV_PCM_FORMAT_S16_BE)
 DECL|macro|SNDRV_PCM_FMTBIT_U16_LE
-mdefine_line|#define SNDRV_PCM_FMTBIT_U16_LE&t;&t;(1 &lt;&lt; SNDRV_PCM_FORMAT_U16_LE)
+mdefine_line|#define SNDRV_PCM_FMTBIT_U16_LE&t;&t;(1ULL &lt;&lt; SNDRV_PCM_FORMAT_U16_LE)
 DECL|macro|SNDRV_PCM_FMTBIT_U16_BE
-mdefine_line|#define SNDRV_PCM_FMTBIT_U16_BE&t;&t;(1 &lt;&lt; SNDRV_PCM_FORMAT_U16_BE)
+mdefine_line|#define SNDRV_PCM_FMTBIT_U16_BE&t;&t;(1ULL &lt;&lt; SNDRV_PCM_FORMAT_U16_BE)
 DECL|macro|SNDRV_PCM_FMTBIT_S24_LE
-mdefine_line|#define SNDRV_PCM_FMTBIT_S24_LE&t;&t;(1 &lt;&lt; SNDRV_PCM_FORMAT_S24_LE)
+mdefine_line|#define SNDRV_PCM_FMTBIT_S24_LE&t;&t;(1ULL &lt;&lt; SNDRV_PCM_FORMAT_S24_LE)
 DECL|macro|SNDRV_PCM_FMTBIT_S24_BE
-mdefine_line|#define SNDRV_PCM_FMTBIT_S24_BE&t;&t;(1 &lt;&lt; SNDRV_PCM_FORMAT_S24_BE)
+mdefine_line|#define SNDRV_PCM_FMTBIT_S24_BE&t;&t;(1ULL &lt;&lt; SNDRV_PCM_FORMAT_S24_BE)
 DECL|macro|SNDRV_PCM_FMTBIT_U24_LE
-mdefine_line|#define SNDRV_PCM_FMTBIT_U24_LE&t;&t;(1 &lt;&lt; SNDRV_PCM_FORMAT_U24_LE)
+mdefine_line|#define SNDRV_PCM_FMTBIT_U24_LE&t;&t;(1ULL &lt;&lt; SNDRV_PCM_FORMAT_U24_LE)
 DECL|macro|SNDRV_PCM_FMTBIT_U24_BE
-mdefine_line|#define SNDRV_PCM_FMTBIT_U24_BE&t;&t;(1 &lt;&lt; SNDRV_PCM_FORMAT_U24_BE)
+mdefine_line|#define SNDRV_PCM_FMTBIT_U24_BE&t;&t;(1ULL &lt;&lt; SNDRV_PCM_FORMAT_U24_BE)
 DECL|macro|SNDRV_PCM_FMTBIT_S32_LE
-mdefine_line|#define SNDRV_PCM_FMTBIT_S32_LE&t;&t;(1 &lt;&lt; SNDRV_PCM_FORMAT_S32_LE)
+mdefine_line|#define SNDRV_PCM_FMTBIT_S32_LE&t;&t;(1ULL &lt;&lt; SNDRV_PCM_FORMAT_S32_LE)
 DECL|macro|SNDRV_PCM_FMTBIT_S32_BE
-mdefine_line|#define SNDRV_PCM_FMTBIT_S32_BE&t;&t;(1 &lt;&lt; SNDRV_PCM_FORMAT_S32_BE)
+mdefine_line|#define SNDRV_PCM_FMTBIT_S32_BE&t;&t;(1ULL &lt;&lt; SNDRV_PCM_FORMAT_S32_BE)
 DECL|macro|SNDRV_PCM_FMTBIT_U32_LE
-mdefine_line|#define SNDRV_PCM_FMTBIT_U32_LE&t;&t;(1 &lt;&lt; SNDRV_PCM_FORMAT_U32_LE)
+mdefine_line|#define SNDRV_PCM_FMTBIT_U32_LE&t;&t;(1ULL &lt;&lt; SNDRV_PCM_FORMAT_U32_LE)
 DECL|macro|SNDRV_PCM_FMTBIT_U32_BE
-mdefine_line|#define SNDRV_PCM_FMTBIT_U32_BE&t;&t;(1 &lt;&lt; SNDRV_PCM_FORMAT_U32_BE)
+mdefine_line|#define SNDRV_PCM_FMTBIT_U32_BE&t;&t;(1ULL &lt;&lt; SNDRV_PCM_FORMAT_U32_BE)
 DECL|macro|SNDRV_PCM_FMTBIT_FLOAT_LE
-mdefine_line|#define SNDRV_PCM_FMTBIT_FLOAT_LE&t;(1 &lt;&lt; SNDRV_PCM_FORMAT_FLOAT_LE)
+mdefine_line|#define SNDRV_PCM_FMTBIT_FLOAT_LE&t;(1ULL &lt;&lt; SNDRV_PCM_FORMAT_FLOAT_LE)
 DECL|macro|SNDRV_PCM_FMTBIT_FLOAT_BE
-mdefine_line|#define SNDRV_PCM_FMTBIT_FLOAT_BE&t;(1 &lt;&lt; SNDRV_PCM_FORMAT_FLOAT_BE)
+mdefine_line|#define SNDRV_PCM_FMTBIT_FLOAT_BE&t;(1ULL &lt;&lt; SNDRV_PCM_FORMAT_FLOAT_BE)
 DECL|macro|SNDRV_PCM_FMTBIT_FLOAT64_LE
-mdefine_line|#define SNDRV_PCM_FMTBIT_FLOAT64_LE&t;(1 &lt;&lt; SNDRV_PCM_FORMAT_FLOAT64_LE)
+mdefine_line|#define SNDRV_PCM_FMTBIT_FLOAT64_LE&t;(1ULL &lt;&lt; SNDRV_PCM_FORMAT_FLOAT64_LE)
 DECL|macro|SNDRV_PCM_FMTBIT_FLOAT64_BE
-mdefine_line|#define SNDRV_PCM_FMTBIT_FLOAT64_BE&t;(1 &lt;&lt; SNDRV_PCM_FORMAT_FLOAT64_BE)
+mdefine_line|#define SNDRV_PCM_FMTBIT_FLOAT64_BE&t;(1ULL &lt;&lt; SNDRV_PCM_FORMAT_FLOAT64_BE)
 DECL|macro|SNDRV_PCM_FMTBIT_IEC958_SUBFRAME_LE
-mdefine_line|#define SNDRV_PCM_FMTBIT_IEC958_SUBFRAME_LE (1 &lt;&lt; SNDRV_PCM_FORMAT_IEC958_SUBFRAME_LE)
+mdefine_line|#define SNDRV_PCM_FMTBIT_IEC958_SUBFRAME_LE (1ULL &lt;&lt; SNDRV_PCM_FORMAT_IEC958_SUBFRAME_LE)
 DECL|macro|SNDRV_PCM_FMTBIT_IEC958_SUBFRAME_BE
-mdefine_line|#define SNDRV_PCM_FMTBIT_IEC958_SUBFRAME_BE (1 &lt;&lt; SNDRV_PCM_FORMAT_IEC958_SUBFRAME_BE)
+mdefine_line|#define SNDRV_PCM_FMTBIT_IEC958_SUBFRAME_BE (1ULL &lt;&lt; SNDRV_PCM_FORMAT_IEC958_SUBFRAME_BE)
 DECL|macro|SNDRV_PCM_FMTBIT_MU_LAW
-mdefine_line|#define SNDRV_PCM_FMTBIT_MU_LAW&t;&t;(1 &lt;&lt; SNDRV_PCM_FORMAT_MU_LAW)
+mdefine_line|#define SNDRV_PCM_FMTBIT_MU_LAW&t;&t;(1ULL &lt;&lt; SNDRV_PCM_FORMAT_MU_LAW)
 DECL|macro|SNDRV_PCM_FMTBIT_A_LAW
-mdefine_line|#define SNDRV_PCM_FMTBIT_A_LAW&t;&t;(1 &lt;&lt; SNDRV_PCM_FORMAT_A_LAW)
+mdefine_line|#define SNDRV_PCM_FMTBIT_A_LAW&t;&t;(1ULL &lt;&lt; SNDRV_PCM_FORMAT_A_LAW)
 DECL|macro|SNDRV_PCM_FMTBIT_IMA_ADPCM
-mdefine_line|#define SNDRV_PCM_FMTBIT_IMA_ADPCM&t;(1 &lt;&lt; SNDRV_PCM_FORMAT_IMA_ADPCM)
+mdefine_line|#define SNDRV_PCM_FMTBIT_IMA_ADPCM&t;(1ULL &lt;&lt; SNDRV_PCM_FORMAT_IMA_ADPCM)
 DECL|macro|SNDRV_PCM_FMTBIT_MPEG
-mdefine_line|#define SNDRV_PCM_FMTBIT_MPEG&t;&t;(1 &lt;&lt; SNDRV_PCM_FORMAT_MPEG)
+mdefine_line|#define SNDRV_PCM_FMTBIT_MPEG&t;&t;(1ULL &lt;&lt; SNDRV_PCM_FORMAT_MPEG)
 DECL|macro|SNDRV_PCM_FMTBIT_GSM
-mdefine_line|#define SNDRV_PCM_FMTBIT_GSM&t;&t;(1 &lt;&lt; SNDRV_PCM_FORMAT_GSM)
+mdefine_line|#define SNDRV_PCM_FMTBIT_GSM&t;&t;(1ULL &lt;&lt; SNDRV_PCM_FORMAT_GSM)
 DECL|macro|SNDRV_PCM_FMTBIT_SPECIAL
-mdefine_line|#define SNDRV_PCM_FMTBIT_SPECIAL&t;(1 &lt;&lt; SNDRV_PCM_FORMAT_SPECIAL)
+mdefine_line|#define SNDRV_PCM_FMTBIT_SPECIAL&t;(1ULL &lt;&lt; SNDRV_PCM_FORMAT_SPECIAL)
+DECL|macro|SNDRV_PCM_FMTBIT_S24_3LE
+mdefine_line|#define SNDRV_PCM_FMTBIT_S24_3LE&t;(1ULL &lt;&lt; SNDRV_PCM_FORMAT_S24_3LE)
+DECL|macro|SNDRV_PCM_FMTBIT_U24_3LE
+mdefine_line|#define SNDRV_PCM_FMTBIT_U24_3LE&t;(1ULL &lt;&lt; SNDRV_PCM_FORMAT_U24_3LE)
+DECL|macro|SNDRV_PCM_FMTBIT_S24_3BE
+mdefine_line|#define SNDRV_PCM_FMTBIT_S24_3BE&t;(1ULL &lt;&lt; SNDRV_PCM_FORMAT_S24_3BE)
+DECL|macro|SNDRV_PCM_FMTBIT_U24_3BE
+mdefine_line|#define SNDRV_PCM_FMTBIT_U24_3BE&t;(1ULL &lt;&lt; SNDRV_PCM_FORMAT_U24_3BE)
+DECL|macro|SNDRV_PCM_FMTBIT_S20_3LE
+mdefine_line|#define SNDRV_PCM_FMTBIT_S20_3LE&t;(1ULL &lt;&lt; SNDRV_PCM_FORMAT_S20_3LE)
+DECL|macro|SNDRV_PCM_FMTBIT_U20_3LE
+mdefine_line|#define SNDRV_PCM_FMTBIT_U20_3LE&t;(1ULL &lt;&lt; SNDRV_PCM_FORMAT_U20_3LE)
+DECL|macro|SNDRV_PCM_FMTBIT_S20_3BE
+mdefine_line|#define SNDRV_PCM_FMTBIT_S20_3BE&t;(1ULL &lt;&lt; SNDRV_PCM_FORMAT_S20_3BE)
+DECL|macro|SNDRV_PCM_FMTBIT_U20_3BE
+mdefine_line|#define SNDRV_PCM_FMTBIT_U20_3BE&t;(1ULL &lt;&lt; SNDRV_PCM_FORMAT_U20_3BE)
+DECL|macro|SNDRV_PCM_FMTBIT_S18_3LE
+mdefine_line|#define SNDRV_PCM_FMTBIT_S18_3LE&t;(1ULL &lt;&lt; SNDRV_PCM_FORMAT_S18_3LE)
+DECL|macro|SNDRV_PCM_FMTBIT_U18_3LE
+mdefine_line|#define SNDRV_PCM_FMTBIT_U18_3LE&t;(1ULL &lt;&lt; SNDRV_PCM_FORMAT_U18_3LE)
+DECL|macro|SNDRV_PCM_FMTBIT_S18_3BE
+mdefine_line|#define SNDRV_PCM_FMTBIT_S18_3BE&t;(1ULL &lt;&lt; SNDRV_PCM_FORMAT_S18_3BE)
+DECL|macro|SNDRV_PCM_FMTBIT_U18_3BE
+mdefine_line|#define SNDRV_PCM_FMTBIT_U18_3BE&t;(1ULL &lt;&lt; SNDRV_PCM_FORMAT_U18_3BE)
 macro_line|#ifdef SNDRV_LITTLE_ENDIAN
 DECL|macro|SNDRV_PCM_FMTBIT_S16
 mdefine_line|#define SNDRV_PCM_FMTBIT_S16&t;&t;SNDRV_PCM_FMTBIT_S16_LE
@@ -643,8 +691,7 @@ r_struct
 id|_snd_pcm_hw_constraints
 (brace
 DECL|member|masks
-r_int
-r_int
+id|snd_mask_t
 id|masks
 (braket
 id|SNDRV_PCM_HW_PARAM_LAST_MASK
@@ -687,8 +734,7 @@ suffix:semicolon
 DECL|function|constrs_mask
 r_static
 r_inline
-r_int
-r_int
+id|snd_mask_t
 op_star
 id|constrs_mask
 c_func
@@ -2612,14 +2658,6 @@ op_le
 id|SNDRV_PCM_HW_PARAM_LAST_INTERVAL
 suffix:semicolon
 )brace
-DECL|typedef|snd_mask_t
-r_typedef
-r_int
-r_int
-id|snd_mask_t
-suffix:semicolon
-DECL|macro|SND_MASK_MAX
-mdefine_line|#define SND_MASK_MAX 32
 DECL|function|hw_param_mask
 r_static
 r_inline
@@ -2637,10 +2675,6 @@ id|var
 )paren
 (brace
 r_return
-(paren
-id|snd_mask_t
-op_star
-)paren
 op_amp
 id|params-&gt;masks
 (braket
@@ -2751,11 +2785,11 @@ id|var
 suffix:semicolon
 )brace
 DECL|macro|params_access
-mdefine_line|#define params_access(p) (ffs(*hw_param_mask((p), SNDRV_PCM_HW_PARAM_ACCESS)) - 1)
+mdefine_line|#define params_access(p) snd_mask_min(hw_param_mask((p), SNDRV_PCM_HW_PARAM_ACCESS))
 DECL|macro|params_format
-mdefine_line|#define params_format(p) (ffs(*hw_param_mask((p), SNDRV_PCM_HW_PARAM_FORMAT)) - 1)
+mdefine_line|#define params_format(p) snd_mask_min(hw_param_mask((p), SNDRV_PCM_HW_PARAM_FORMAT))
 DECL|macro|params_subformat
-mdefine_line|#define params_subformat(p) (ffs(*hw_param_mask((p), SNDRV_PCM_HW_PARAM_SUBFORMAT)) - 1)
+mdefine_line|#define params_subformat(p) snd_mask_min(hw_param_mask((p), SNDRV_PCM_HW_PARAM_SUBFORMAT))
 DECL|macro|params_channels
 mdefine_line|#define params_channels(p) hw_param_interval((p), SNDRV_PCM_HW_PARAM_CHANNELS)-&gt;min
 DECL|macro|params_rate
@@ -3167,8 +3201,22 @@ comma
 id|snd_pcm_hw_param_t
 id|var
 comma
+id|u_int32_t
+id|mask
+)paren
+suffix:semicolon
 r_int
-r_int
+id|snd_pcm_hw_constraint_mask64
+c_func
+(paren
+id|snd_pcm_runtime_t
+op_star
+id|runtime
+comma
+id|snd_pcm_hw_param_t
+id|var
+comma
+id|u_int64_t
 id|mask
 )paren
 suffix:semicolon
@@ -3303,6 +3351,22 @@ comma
 r_int
 r_int
 id|step
+)paren
+suffix:semicolon
+r_int
+id|snd_pcm_hw_constraint_pow2
+c_func
+(paren
+id|snd_pcm_runtime_t
+op_star
+id|runtime
+comma
+r_int
+r_int
+id|cond
+comma
+id|snd_pcm_hw_param_t
+id|var
 )paren
 suffix:semicolon
 r_int
@@ -3904,6 +3968,48 @@ r_struct
 id|pci_dev
 op_star
 id|pci
+comma
+id|snd_pcm_t
+op_star
+id|pcm
+comma
+r_int
+id|size
+comma
+r_int
+id|max
+)paren
+suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef CONFIG_SBUS
+r_int
+id|snd_pcm_lib_preallocate_sbus_pages
+c_func
+(paren
+r_struct
+id|sbus_dev
+op_star
+id|sdev
+comma
+id|snd_pcm_substream_t
+op_star
+id|substream
+comma
+r_int
+id|size
+comma
+r_int
+id|max
+)paren
+suffix:semicolon
+r_int
+id|snd_pcm_lib_preallocate_sbus_pages_for_all
+c_func
+(paren
+r_struct
+id|sbus_dev
+op_star
+id|sdev
 comma
 id|snd_pcm_t
 op_star

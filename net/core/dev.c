@@ -3648,12 +3648,6 @@ r_int
 id|last
 )paren
 (brace
-r_static
-id|spinlock_t
-id|net_bh_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
-suffix:semicolon
 r_int
 id|ret
 op_assign
@@ -3706,24 +3700,21 @@ id|GFP_ATOMIC
 r_goto
 id|out_kfree
 suffix:semicolon
-multiline_comment|/* The assumption (correct one) is that old protocols&n;&t;   did not depened on BHs different of NET_BH and TIMER_BH.&n;&t; */
-multiline_comment|/* Emulate NET_BH with special spinlock */
-id|spin_lock
+macro_line|#if CONFIG_SMP
+multiline_comment|/* Old protocols did not depened on BHs different of NET_BH and&n;&t;   TIMER_BH - they need to be fixed for the new assumptions.&n;&t; */
+id|print_symbol
 c_func
 (paren
-op_amp
-id|net_bh_lock
-)paren
-suffix:semicolon
-multiline_comment|/* Disable timers and wait for all timers completion */
-id|tasklet_disable
-c_func
+l_string|&quot;fix old protocol handler %s!&bslash;n&quot;
+comma
 (paren
-id|bh_task_vec
-op_plus
-id|TIMER_BH
+r_int
+r_int
+)paren
+id|pt-&gt;func
 )paren
 suffix:semicolon
+macro_line|#endif
 id|ret
 op_assign
 id|pt
@@ -3736,21 +3727,6 @@ comma
 id|skb-&gt;dev
 comma
 id|pt
-)paren
-suffix:semicolon
-id|tasklet_hi_enable
-c_func
-(paren
-id|bh_task_vec
-op_plus
-id|TIMER_BH
-)paren
-suffix:semicolon
-id|spin_unlock
-c_func
-(paren
-op_amp
-id|net_bh_lock
 )paren
 suffix:semicolon
 id|out

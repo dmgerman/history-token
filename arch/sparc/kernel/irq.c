@@ -64,11 +64,11 @@ c_func
 )paren
 suffix:semicolon
 )brace
-DECL|variable|init_timers
+DECL|variable|sparc_init_timers
 r_void
 (paren
 op_star
-id|init_timers
+id|sparc_init_timers
 )paren
 (paren
 r_void

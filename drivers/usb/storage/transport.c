@@ -2283,6 +2283,11 @@ op_star
 id|us
 )paren
 (brace
+r_struct
+id|Scsi_Host
+op_star
+id|host
+suffix:semicolon
 r_int
 id|state
 op_assign
@@ -2324,10 +2329,14 @@ comma
 id|US_STATE_ABORTING
 )paren
 suffix:semicolon
+id|host
+op_assign
+id|us-&gt;srb-&gt;host
+suffix:semicolon
 id|scsi_unlock
 c_func
 (paren
-id|us-&gt;srb-&gt;host
+id|host
 )paren
 suffix:semicolon
 multiline_comment|/* If the state machine is blocked waiting for an URB or an IRQ,&n;&t; * let&squot;s wake it up */
@@ -2393,11 +2402,11 @@ op_amp
 id|us-&gt;notify
 )paren
 suffix:semicolon
-multiline_comment|/* Reacquire the lock */
+multiline_comment|/* Reacquire the lock: note that us-&gt;srb is now NULL */
 id|scsi_lock
 c_func
 (paren
-id|us-&gt;srb-&gt;host
+id|host
 )paren
 suffix:semicolon
 )brace

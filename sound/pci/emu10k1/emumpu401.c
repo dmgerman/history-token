@@ -196,6 +196,7 @@ l_int|0
 id|snd_printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;cmd: clear rx timeout (status = 0x%x)&bslash;n&quot;
 comma
 id|mpu401_read_stat
@@ -643,6 +644,7 @@ id|ok
 id|snd_printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;midi_cmd: 0x%x failed at 0x%lx (status = 0x%x, data = 0x%x)!!!&bslash;n&quot;
 comma
 id|cmd

@@ -109,6 +109,11 @@ id|start_vm
 suffix:semicolon
 r_extern
 r_int
+r_int
+id|highmem
+suffix:semicolon
+r_extern
+r_int
 id|tracing_pid
 suffix:semicolon
 r_extern

@@ -276,16 +276,6 @@ id|i2o_disk
 id|MAX_I2OB
 )braket
 suffix:semicolon
-DECL|variable|i2o_names
-r_static
-r_char
-id|i2o_names
-(braket
-id|MAX_I2OB
-op_star
-l_int|8
-)braket
-suffix:semicolon
 multiline_comment|/*&n; * Mutex and spin lock for event handling synchronization&n; * evt_msg contains the last event.&n; */
 r_static
 id|DECLARE_MUTEX_LOCKED
@@ -4413,7 +4403,7 @@ op_rshift
 l_int|4
 )braket
 dot
-id|major_name
+id|disk_name
 )paren
 suffix:semicolon
 id|printk
@@ -6452,18 +6442,10 @@ op_assign
 op_amp
 id|i2ob_fops
 suffix:semicolon
-id|disk-&gt;major_name
-op_assign
-id|i2o_names
-op_plus
-id|i
-op_star
-l_int|8
-suffix:semicolon
 id|sprintf
 c_func
 (paren
-id|disk-&gt;major_name
+id|disk-&gt;disk_name
 comma
 l_string|&quot;i2o/hd%c&quot;
 comma

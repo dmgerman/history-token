@@ -912,7 +912,7 @@ id|len
 comma
 l_string|&quot; is %-7s&quot;
 comma
-id|gdp-&gt;major_name
+id|gdp-&gt;disk_name
 )paren
 suffix:semicolon
 multiline_comment|/* Print devices features. */

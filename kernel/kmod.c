@@ -309,7 +309,7 @@ id|spin_lock_irq
 c_func
 (paren
 op_amp
-id|curtask-&gt;sigmask_lock
+id|curtask-&gt;sig-&gt;siglock
 )paren
 suffix:semicolon
 id|sigemptyset
@@ -340,7 +340,7 @@ id|spin_unlock_irq
 c_func
 (paren
 op_amp
-id|curtask-&gt;sigmask_lock
+id|curtask-&gt;sig-&gt;siglock
 )paren
 suffix:semicolon
 r_for
@@ -810,7 +810,7 @@ id|spin_lock_irq
 c_func
 (paren
 op_amp
-id|current-&gt;sigmask_lock
+id|current-&gt;sig-&gt;siglock
 )paren
 suffix:semicolon
 id|tmpsig
@@ -845,7 +845,7 @@ id|spin_unlock_irq
 c_func
 (paren
 op_amp
-id|current-&gt;sigmask_lock
+id|current-&gt;sig-&gt;siglock
 )paren
 suffix:semicolon
 id|waitpid_result
@@ -872,7 +872,7 @@ id|spin_lock_irq
 c_func
 (paren
 op_amp
-id|current-&gt;sigmask_lock
+id|current-&gt;sig-&gt;siglock
 )paren
 suffix:semicolon
 id|current-&gt;blocked
@@ -888,7 +888,7 @@ id|spin_unlock_irq
 c_func
 (paren
 op_amp
-id|current-&gt;sigmask_lock
+id|current-&gt;sig-&gt;siglock
 )paren
 suffix:semicolon
 r_if

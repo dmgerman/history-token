@@ -1370,6 +1370,8 @@ r_int
 )paren
 id|x
 )paren
+op_plus
+l_int|1
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * fls: find last (most-significant) bit set.&n; * Note fls(0) = 0, fls(1) = 1, fls(0x80000000) = 32.&n; */

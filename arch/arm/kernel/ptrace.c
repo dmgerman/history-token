@@ -1369,7 +1369,7 @@ id|res
 suffix:semicolon
 )brace
 DECL|function|ptrace_set_bpt
-r_int
+r_void
 id|ptrace_set_bpt
 c_func
 (paren
@@ -1427,8 +1427,6 @@ l_string|&quot;ptrace: can&squot;t handle thumb mode&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
-op_minus
-id|EINVAL
 suffix:semicolon
 )brace
 id|res
@@ -1526,9 +1524,6 @@ l_int|4
 )paren
 suffix:semicolon
 )brace
-r_return
-id|res
-suffix:semicolon
 )brace
 multiline_comment|/*&n; * Ensure no single-step breakpoint is pending.  Returns non-zero&n; * value if child was being single-stepped.&n; */
 DECL|function|__ptrace_cancel_bpt

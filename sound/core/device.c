@@ -4,6 +4,7 @@ mdefine_line|#define __NO_VERSION__
 macro_line|#include &lt;sound/driver.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/time.h&gt;
+macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;sound/core.h&gt;
 DECL|function|snd_device_new
 r_int

@@ -35,8 +35,6 @@ DECL|macro|GFP_HIGHUSER
 mdefine_line|#define GFP_HIGHUSER&t;(             __GFP_WAIT | __GFP_IO | __GFP_HIGHIO | __GFP_FS | __GFP_HIGHMEM)
 DECL|macro|GFP_KERNEL
 mdefine_line|#define GFP_KERNEL&t;(             __GFP_WAIT | __GFP_IO | __GFP_HIGHIO | __GFP_FS)
-DECL|macro|GFP_NFS
-mdefine_line|#define GFP_NFS&t;&t;(             __GFP_WAIT | __GFP_IO | __GFP_HIGHIO | __GFP_FS)
 DECL|macro|GFP_KSWAPD
 mdefine_line|#define GFP_KSWAPD&t;(             __GFP_WAIT | __GFP_IO | __GFP_HIGHIO | __GFP_FS)
 multiline_comment|/* Flag - indicates that the buffer will be suitable for DMA.  Ignored on some&n;   platforms, used as appropriate on others */

@@ -25,12 +25,6 @@ DECL|struct|llc_opt
 r_struct
 id|llc_opt
 (brace
-DECL|member|node
-r_struct
-id|list_head
-id|node
-suffix:semicolon
-multiline_comment|/* entry in sap-&gt;sk_list.list */
 DECL|member|sk
 r_struct
 id|sock

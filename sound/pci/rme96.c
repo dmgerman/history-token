@@ -9,6 +9,7 @@ macro_line|#include &lt;sound/core.h&gt;
 macro_line|#include &lt;sound/info.h&gt;
 macro_line|#include &lt;sound/control.h&gt;
 macro_line|#include &lt;sound/pcm.h&gt;
+macro_line|#include &lt;sound/pcm_params.h&gt;
 macro_line|#include &lt;sound/asoundef.h&gt;
 DECL|macro|SNDRV_GET_ID
 mdefine_line|#define SNDRV_GET_ID
@@ -1199,7 +1200,11 @@ id|SNDRV_PCM_INFO_PAUSE
 comma
 id|formats
 suffix:colon
+(paren
 id|SNDRV_PCM_FMTBIT_S16_LE
+op_or
+id|SNDRV_PCM_FMTBIT_S32_LE
+)paren
 comma
 id|rates
 suffix:colon
@@ -1276,7 +1281,11 @@ id|SNDRV_PCM_INFO_PAUSE
 comma
 id|formats
 suffix:colon
+(paren
 id|SNDRV_PCM_FMTBIT_S16_LE
+op_or
+id|SNDRV_PCM_FMTBIT_S32_LE
+)paren
 comma
 id|rates
 suffix:colon

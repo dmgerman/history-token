@@ -5,10 +5,6 @@ macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/wait.h&gt;
 macro_line|#include &lt;linux/vt_kern.h&gt;
-r_extern
-id|spinlock_t
-id|timerlist_lock
-suffix:semicolon
 DECL|function|bust_spinlocks
 r_void
 id|bust_spinlocks
@@ -18,13 +14,6 @@ r_int
 id|yes
 )paren
 (brace
-id|spin_lock_init
-c_func
-(paren
-op_amp
-id|timerlist_lock
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren

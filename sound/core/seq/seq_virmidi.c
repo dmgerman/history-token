@@ -160,32 +160,6 @@ suffix:semicolon
 r_int
 id|len
 suffix:semicolon
-id|snd_assert
-c_func
-(paren
-id|rdev
-op_ne
-l_int|NULL
-comma
-r_return
-op_minus
-id|EINVAL
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-(paren
-id|rdev-&gt;flags
-op_amp
-id|SNDRV_VIRMIDI_USE
-)paren
-)paren
-r_return
-l_int|0
-suffix:semicolon
-multiline_comment|/* ignored */
 id|read_lock
 c_func
 (paren
@@ -306,10 +280,55 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * event_input callback from sequencer&n; */
+multiline_comment|/*&n; * receive an event from the remote virmidi port&n; *&n; * for rawmidi inputs, you can call this function from the event&n; * handler of a remote port which is attached to the virmidi via&n; * SNDRV_VIRMIDI_SEQ_ATTACH.&n; */
+multiline_comment|/* exported */
 DECL|function|snd_virmidi_receive
 r_int
 id|snd_virmidi_receive
+c_func
+(paren
+id|snd_rawmidi_t
+op_star
+id|rmidi
+comma
+id|snd_seq_event_t
+op_star
+id|ev
+)paren
+(brace
+id|snd_virmidi_dev_t
+op_star
+id|rdev
+suffix:semicolon
+id|rdev
+op_assign
+id|snd_magic_cast
+c_func
+(paren
+id|snd_virmidi_dev_t
+comma
+id|rmidi-&gt;private_data
+comma
+r_return
+op_minus
+id|EINVAL
+)paren
+suffix:semicolon
+r_return
+id|snd_virmidi_dev_receive_event
+c_func
+(paren
+id|rdev
+comma
+id|ev
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/*&n; * event handler of virmidi port&n; */
+DECL|function|snd_virmidi_event_input
+r_static
+r_int
+id|snd_virmidi_event_input
 c_func
 (paren
 id|snd_seq_event_t
@@ -348,6 +367,20 @@ op_minus
 id|EINVAL
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|rdev-&gt;flags
+op_amp
+id|SNDRV_VIRMIDI_USE
+)paren
+)paren
+r_return
+l_int|0
+suffix:semicolon
+multiline_comment|/* ignored */
 r_return
 id|snd_virmidi_dev_receive_event
 c_func
@@ -1522,7 +1555,7 @@ id|snd_virmidi_unuse
 suffix:semicolon
 id|pcallbacks.event_input
 op_assign
-id|snd_virmidi_receive
+id|snd_virmidi_event_input
 suffix:semicolon
 id|pinfo.kernel
 op_assign
@@ -1799,7 +1832,8 @@ id|rdev
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * create a new device&n; */
+multiline_comment|/*&n; * create a new device&n; *&n; */
+multiline_comment|/* exported */
 DECL|function|snd_virmidi_new
 r_int
 id|snd_virmidi_new
@@ -2033,6 +2067,13 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|snd_virmidi_new
+)paren
+suffix:semicolon
+DECL|variable|EXPORT_SYMBOL
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|snd_virmidi_receive
 )paren
 suffix:semicolon
 eof

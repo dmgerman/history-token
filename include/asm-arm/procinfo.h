@@ -101,6 +101,11 @@ id|user
 suffix:semicolon
 )brace
 suffix:semicolon
+r_extern
+r_int
+r_int
+id|elf_hwcap
+suffix:semicolon
 macro_line|#endif&t;/* __ASSEMBLY__ */
 DECL|macro|PROC_INFO_SZ
 mdefine_line|#define PROC_INFO_SZ&t;44

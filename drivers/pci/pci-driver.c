@@ -2,6 +2,7 @@ multiline_comment|/*&n; * drivers/pci/pci-driver.c&n; *&n; */
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &quot;pci.h&quot;
 multiline_comment|/*&n; *  Registration of PCI drivers and handling of hot-pluggable devices.&n; */
 multiline_comment|/**&n; * pci_match_device - Tell if a PCI device structure has a matching PCI device id structure&n; * @ids: array of PCI device id structures to search in&n; * @dev: the PCI device structure to match against&n; * &n; * Used by a driver to check whether a PCI device present in the&n; * system is in its list of supported devices.Returns the matching&n; * pci_device_id structure or %NULL if there is no match.&n; */
 r_const
@@ -718,6 +719,10 @@ comma
 id|match
 suffix:colon
 id|pci_bus_match
+comma
+id|hotplug
+suffix:colon
+id|pci_hotplug
 comma
 )brace
 suffix:semicolon

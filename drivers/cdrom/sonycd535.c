@@ -5479,7 +5479,7 @@ op_amp
 id|cdu_fops
 comma
 dot
-id|major_name
+id|disk_name
 op_assign
 l_string|&quot;cdu&quot;
 comma

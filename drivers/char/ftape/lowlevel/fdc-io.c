@@ -1408,7 +1408,7 @@ id|spin_lock_irq
 c_func
 (paren
 op_amp
-id|current-&gt;sigmask_lock
+id|current-&gt;sig-&gt;siglock
 )paren
 suffix:semicolon
 id|old_sigmask
@@ -1431,7 +1431,7 @@ id|spin_unlock_irq
 c_func
 (paren
 op_amp
-id|current-&gt;sigmask_lock
+id|current-&gt;sig-&gt;siglock
 )paren
 suffix:semicolon
 id|current-&gt;state
@@ -1474,7 +1474,7 @@ id|spin_lock_irq
 c_func
 (paren
 op_amp
-id|current-&gt;sigmask_lock
+id|current-&gt;sig-&gt;siglock
 )paren
 suffix:semicolon
 id|current-&gt;blocked
@@ -1490,7 +1490,7 @@ id|spin_unlock_irq
 c_func
 (paren
 op_amp
-id|current-&gt;sigmask_lock
+id|current-&gt;sig-&gt;siglock
 )paren
 suffix:semicolon
 id|remove_wait_queue

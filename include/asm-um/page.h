@@ -76,6 +76,30 @@ mdefine_line|#define __pa(virt) region_pa((void *) (virt))
 DECL|macro|__va
 mdefine_line|#define __va(phys) region_va((unsigned long) (phys))
 r_extern
+r_int
+r_int
+id|page_to_pfn
+c_func
+(paren
+r_struct
+id|page
+op_star
+id|page
+)paren
+suffix:semicolon
+r_extern
+r_struct
+id|page
+op_star
+id|pfn_to_page
+c_func
+(paren
+r_int
+r_int
+id|pfn
+)paren
+suffix:semicolon
+r_extern
 r_struct
 id|page
 op_star
@@ -87,10 +111,6 @@ r_int
 id|phys
 )paren
 suffix:semicolon
-DECL|macro|pfn_to_page
-mdefine_line|#define pfn_to_page(pfn) (phys_to_page(pfn &lt;&lt; PAGE_SHIFT))
-DECL|macro|page_to_pfn
-mdefine_line|#define page_to_pfn(page) (page_to_phys(page) &gt;&gt; PAGE_SHIFT)
 DECL|macro|virt_to_page
 mdefine_line|#define virt_to_page(v) (phys_to_page(__pa(v)))
 r_extern

@@ -214,7 +214,7 @@ r_int
 suffix:semicolon
 r_extern
 r_void
-id|init_timers
+id|sparc64_init_timers
 c_func
 (paren
 r_void
