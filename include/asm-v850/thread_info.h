@@ -38,10 +38,15 @@ DECL|member|preempt_count
 r_int
 id|preempt_count
 suffix:semicolon
+DECL|member|restart_block
+r_struct
+id|restart_block
+id|restart_block
+suffix:semicolon
 )brace
 suffix:semicolon
 DECL|macro|INIT_THREAD_INFO
-mdefine_line|#define INIT_THREAD_INFO(tsk)&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&bslash;&n;&t;.task =&t;&t;&amp;tsk,&t;&t;&t;&bslash;&n;&t;.exec_domain =&t;&amp;default_exec_domain,&t;&bslash;&n;&t;.flags =&t;0,&t;&t;&t;&bslash;&n;&t;.cpu =&t;&t;0,&t;&t;&t;&bslash;&n;&t;.preempt_count = 1&t;&t;&t;&bslash;&n;}
+mdefine_line|#define INIT_THREAD_INFO(tsk)&t;&t;&t;&t;&t;&t;      &bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;      &bslash;&n;&t;.task =&t;&t;&amp;tsk,&t;&t;&t;&t;&t;&t;      &bslash;&n;&t;.exec_domain =&t;&amp;default_exec_domain,&t;&t;&t;&t;      &bslash;&n;&t;.flags =&t;0,&t;&t;&t;&t;&t;&t;      &bslash;&n;&t;.cpu =&t;&t;0,&t;&t;&t;&t;&t;&t;      &bslash;&n;&t;.preempt_count = 1,&t;&t;&t;&t;&t;&t;      &bslash;&n;&t;.restart_block = {&t;&t;&t;&t;&t;&t;      &bslash;&n;&t;&t;.fn = do_no_restart_syscall,&t;&t;&t;&t;      &bslash;&n;&t;},&t;&t;&t;&t;&t;&t;&t;&t;      &bslash;&n;}
 DECL|macro|init_thread_info
 mdefine_line|#define init_thread_info&t;(init_thread_union.thread_info)
 DECL|macro|init_stack
@@ -68,10 +73,6 @@ DECL|macro|TI_CPU
 mdefine_line|#define TI_CPU&t;&t;12
 DECL|macro|TI_PREEMPT
 mdefine_line|#define TI_PREEMPT&t;16
-DECL|macro|TI_SOFTIRQ
-mdefine_line|#define TI_SOFTIRQ&t;20
-DECL|macro|TI_HARDIRQ
-mdefine_line|#define TI_HARDIRQ&t;24
 DECL|macro|PREEMPT_ACTIVE
 mdefine_line|#define PREEMPT_ACTIVE&t;&t;0x4000000
 multiline_comment|/*&n; * thread information flag bit numbers&n; */
