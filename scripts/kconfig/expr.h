@@ -291,6 +291,12 @@ DECL|macro|SYMBOL_NEW
 mdefine_line|#define SYMBOL_NEW&t;&t;0x0800
 DECL|macro|SYMBOL_AUTO
 mdefine_line|#define SYMBOL_AUTO&t;&t;0x1000
+DECL|macro|SYMBOL_CHECKED
+mdefine_line|#define SYMBOL_CHECKED&t;&t;0x2000
+DECL|macro|SYMBOL_CHECK_DONE
+mdefine_line|#define SYMBOL_CHECK_DONE&t;0x4000
+DECL|macro|SYMBOL_WARNED
+mdefine_line|#define SYMBOL_WARNED&t;&t;0x8000
 DECL|macro|SYMBOL_MAXLENGTH
 mdefine_line|#define SYMBOL_MAXLENGTH&t;256
 DECL|macro|SYMBOL_HASHSIZE
