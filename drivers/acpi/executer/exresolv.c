@@ -827,6 +827,23 @@ op_star
 id|obj_desc-&gt;reference.where
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|obj_desc
+)paren
+(brace
+multiline_comment|/* NULL package elements are allowed */
+id|type
+op_assign
+l_int|0
+suffix:semicolon
+multiline_comment|/* Uninitialized */
+r_goto
+m_exit
+suffix:semicolon
+)brace
 r_break
 suffix:semicolon
 r_case

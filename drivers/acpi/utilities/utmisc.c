@@ -704,6 +704,8 @@ id|ret_integer
 (brace
 id|u32
 id|this_digit
+op_assign
+l_int|0
 suffix:semicolon
 id|acpi_integer
 id|return_value
@@ -920,6 +922,19 @@ suffix:semicolon
 )brace
 r_else
 (brace
+r_if
+c_cond
+(paren
+id|base
+op_eq
+l_int|10
+)paren
+(brace
+multiline_comment|/* Digit is out of range */
+r_goto
+id|error_exit
+suffix:semicolon
+)brace
 id|this_digit
 op_assign
 (paren
@@ -934,7 +949,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|ACPI_IS_UPPER
+id|ACPI_IS_XDIGIT
 (paren
 (paren
 r_char
@@ -955,23 +970,10 @@ suffix:semicolon
 )brace
 r_else
 (brace
-r_goto
-id|error_exit
+multiline_comment|/*&n;&t;&t;&t;&t; * We allow non-hex chars, just stop now, same as end-of-string.&n;&t;&t;&t;&t; * See ACPI spec, string-to-integer conversion.&n;&t;&t;&t;&t; */
+r_break
 suffix:semicolon
 )brace
-)brace
-multiline_comment|/* Check to see if digit is out of range */
-r_if
-c_cond
-(paren
-id|this_digit
-op_ge
-id|base
-)paren
-(brace
-r_goto
-id|error_exit
-suffix:semicolon
 )brace
 multiline_comment|/* Divide the digit into the correct position */
 (paren
@@ -1020,6 +1022,7 @@ id|string
 op_increment
 suffix:semicolon
 )brace
+multiline_comment|/* All done, normal exit */
 op_star
 id|ret_integer
 op_assign
