@@ -7087,6 +7087,10 @@ id|data-&gt;flags
 op_amp
 id|NFS_MOUNT_FLAGMASK
 suffix:semicolon
+id|server-&gt;caps
+op_assign
+id|NFS_CAP_ATOMIC_OPEN
+suffix:semicolon
 id|server-&gt;acregmin
 op_assign
 id|data-&gt;acregmin
