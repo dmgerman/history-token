@@ -16,6 +16,7 @@ id|__sysctl_args
 (brace
 DECL|member|name
 r_int
+id|__user
 op_star
 id|name
 suffix:semicolon
@@ -25,16 +26,19 @@ id|nlen
 suffix:semicolon
 DECL|member|oldval
 r_void
+id|__user
 op_star
 id|oldval
 suffix:semicolon
 DECL|member|oldlenp
 r_int
+id|__user
 op_star
 id|oldlenp
 suffix:semicolon
 DECL|member|newval
 r_void
+id|__user
 op_star
 id|newval
 suffix:semicolon
@@ -2449,6 +2453,7 @@ c_func
 (paren
 r_struct
 id|__sysctl_args
+id|__user
 op_star
 )paren
 suffix:semicolon
@@ -2476,6 +2481,7 @@ op_star
 id|table
 comma
 r_int
+id|__user
 op_star
 id|name
 comma
@@ -2524,6 +2530,7 @@ op_star
 id|filp
 comma
 r_void
+id|__user
 op_star
 id|buffer
 comma
@@ -2547,6 +2554,7 @@ id|file
 op_star
 comma
 r_void
+id|__user
 op_star
 comma
 r_int
@@ -2568,6 +2576,7 @@ id|file
 op_star
 comma
 r_void
+id|__user
 op_star
 comma
 r_int
@@ -2589,6 +2598,7 @@ id|file
 op_star
 comma
 r_void
+id|__user
 op_star
 comma
 r_int
@@ -2610,6 +2620,7 @@ id|file
 op_star
 comma
 r_void
+id|__user
 op_star
 comma
 r_int
@@ -2631,6 +2642,7 @@ id|file
 op_star
 comma
 r_void
+id|__user
 op_star
 comma
 r_int
@@ -2652,6 +2664,7 @@ id|file
 op_star
 comma
 r_void
+id|__user
 op_star
 comma
 r_int
@@ -2674,6 +2687,7 @@ id|file
 op_star
 comma
 r_void
+id|__user
 op_star
 comma
 r_int
@@ -2685,6 +2699,7 @@ r_int
 id|do_sysctl
 (paren
 r_int
+id|__user
 op_star
 id|name
 comma
@@ -2692,14 +2707,17 @@ r_int
 id|nlen
 comma
 r_void
+id|__user
 op_star
 id|oldval
 comma
 r_int
+id|__user
 op_star
 id|oldlenp
 comma
 r_void
+id|__user
 op_star
 id|newval
 comma
@@ -2716,6 +2734,7 @@ op_star
 id|table
 comma
 r_int
+id|__user
 op_star
 id|name
 comma
