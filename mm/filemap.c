@@ -8573,6 +8573,12 @@ comma
 id|bytes
 )paren
 suffix:semicolon
+id|flush_dcache_page
+c_func
+(paren
+id|page
+)paren
+suffix:semicolon
 id|status
 op_assign
 id|a_ops
