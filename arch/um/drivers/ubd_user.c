@@ -1811,6 +1811,11 @@ comma
 id|errno
 )paren
 suffix:semicolon
+id|err
+op_assign
+op_minus
+id|errno
+suffix:semicolon
 r_goto
 id|out_close
 suffix:semicolon
