@@ -7645,10 +7645,6 @@ op_amp
 id|port-&gt;lock
 )paren
 suffix:semicolon
-id|port-&gt;type
-op_assign
-id|PORT_UNKNOWN
-suffix:semicolon
 id|port-&gt;cons
 op_assign
 id|drv-&gt;cons
@@ -7692,6 +7688,11 @@ id|port-&gt;flags
 op_amp
 id|UPF_BOOT_AUTOCONF
 )paren
+(brace
+id|port-&gt;type
+op_assign
+id|PORT_UNKNOWN
+suffix:semicolon
 id|port-&gt;ops
 op_member_access_from_pointer
 id|config_port
@@ -7702,6 +7703,7 @@ comma
 id|flags
 )paren
 suffix:semicolon
+)brace
 multiline_comment|/*&n;&t; * Register the port whether it&squot;s detected or not.  This allows&n;&t; * setserial to be used to alter this ports parameters.&n;&t; */
 id|tty_register_devfs
 c_func
