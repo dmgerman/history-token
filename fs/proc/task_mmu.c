@@ -176,9 +176,6 @@ suffix:semicolon
 op_star
 id|text
 op_assign
-id|mm-&gt;exec_vm
-op_minus
-(paren
 (paren
 id|mm-&gt;end_code
 op_minus
@@ -186,7 +183,6 @@ id|mm-&gt;start_code
 )paren
 op_rshift
 id|PAGE_SHIFT
-)paren
 suffix:semicolon
 op_star
 id|data
@@ -194,6 +190,9 @@ op_assign
 id|mm-&gt;total_vm
 op_minus
 id|mm-&gt;shared_vm
+op_minus
+op_star
+id|text
 suffix:semicolon
 op_star
 id|resident
