@@ -1766,7 +1766,11 @@ id|device
 op_star
 id|dev
 op_assign
-id|sh-&gt;host_driverfs_dev.parent
+id|scsi_get_device
+c_func
+(paren
+id|sh
+)paren
 suffix:semicolon
 id|u64
 id|bounce_limit

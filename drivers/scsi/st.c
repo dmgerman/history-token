@@ -19724,7 +19724,11 @@ id|device
 op_star
 id|dev
 op_assign
-id|SDp-&gt;host-&gt;host_driverfs_dev.parent
+id|scsi_get_device
+c_func
+(paren
+id|SDp-&gt;host
+)paren
 suffix:semicolon
 r_if
 c_cond
