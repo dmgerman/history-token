@@ -126,6 +126,8 @@ DECL|macro|UART_CAP_SLEEP
 mdefine_line|#define UART_CAP_SLEEP&t;(1 &lt;&lt; 10)&t;/* UART has IER sleep */
 DECL|macro|UART_CAP_AFE
 mdefine_line|#define UART_CAP_AFE&t;(1 &lt;&lt; 11)&t;/* MCR-based hw flow control */
+DECL|macro|UART_CAP_UUE
+mdefine_line|#define UART_CAP_UUE&t;(1 &lt;&lt; 12)&t;/* UART needs IER bit 6 set (Xscale) */
 DECL|macro|SERIAL_DEBUG_PCI
 macro_line|#undef SERIAL_DEBUG_PCI
 macro_line|#if defined(__i386__) &amp;&amp; (defined(CONFIG_M386) || defined(CONFIG_M486))

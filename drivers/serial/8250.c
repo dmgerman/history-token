@@ -737,6 +737,8 @@ dot
 id|flags
 op_assign
 id|UART_CAP_FIFO
+op_or
+id|UART_CAP_UUE
 comma
 )brace
 comma
@@ -2889,6 +2891,10 @@ suffix:semicolon
 id|up-&gt;port.type
 op_assign
 id|PORT_XSCALE
+suffix:semicolon
+id|up-&gt;capabilities
+op_or_assign
+id|UART_CAP_UUE
 suffix:semicolon
 r_return
 suffix:semicolon
@@ -7046,9 +7052,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|up-&gt;port.type
-op_eq
-id|PORT_XSCALE
+id|up-&gt;capabilities
+op_amp
+id|UART_CAP_UUE
 )paren
 id|up-&gt;ier
 op_or_assign
@@ -8627,9 +8633,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|up-&gt;port.type
-op_eq
-id|PORT_XSCALE
+id|up-&gt;capabilities
+op_amp
+id|UART_CAP_UUE
 )paren
 id|serial_out
 c_func
