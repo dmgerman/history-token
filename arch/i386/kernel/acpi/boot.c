@@ -2312,7 +2312,7 @@ r_if
 c_cond
 (paren
 id|count
-op_eq
+op_ge
 l_int|1
 )paren
 (brace
