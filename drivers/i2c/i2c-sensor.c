@@ -73,7 +73,7 @@ op_assign
 id|is_isa
 ques
 c_cond
-id|SENSORS_ISA_BUS
+id|ANY_I2C_ISA_BUS
 suffix:colon
 id|i2c_adapter_id
 c_func
@@ -201,7 +201,7 @@ id|this_force-&gt;force
 id|j
 )braket
 op_ne
-id|SENSORS_I2C_END
+id|I2C_CLIENT_END
 )paren
 suffix:semicolon
 id|j
@@ -229,7 +229,7 @@ id|this_force-&gt;force
 id|j
 )braket
 op_eq
-id|SENSORS_ANY_I2C_BUS
+id|ANY_I2C_BUS
 )paren
 op_logical_and
 op_logical_neg
@@ -313,7 +313,7 @@ id|address_data-&gt;ignore
 id|i
 )braket
 op_ne
-id|SENSORS_I2C_END
+id|I2C_CLIENT_END
 )paren
 suffix:semicolon
 id|i
@@ -341,7 +341,7 @@ id|address_data-&gt;ignore
 id|i
 )braket
 op_eq
-id|SENSORS_ANY_I2C_BUS
+id|ANY_I2C_BUS
 )paren
 op_logical_and
 op_logical_neg
@@ -396,7 +396,7 @@ id|address_data-&gt;ignore_range
 id|i
 )braket
 op_ne
-id|SENSORS_I2C_END
+id|I2C_CLIENT_END
 )paren
 suffix:semicolon
 id|i
@@ -426,7 +426,7 @@ id|ignore_range
 id|i
 )braket
 op_eq
-id|SENSORS_ANY_I2C_BUS
+id|ANY_I2C_BUS
 )paren
 op_amp
 op_logical_neg
@@ -506,7 +506,7 @@ id|address_data-&gt;normal_isa
 id|i
 )braket
 op_ne
-id|SENSORS_ISA_END
+id|I2C_CLIENT_ISA_END
 )paren
 suffix:semicolon
 id|i
@@ -560,7 +560,7 @@ id|address_data-&gt;normal_isa_range
 id|i
 )braket
 op_ne
-id|SENSORS_ISA_END
+id|I2C_CLIENT_ISA_END
 )paren
 suffix:semicolon
 id|i
@@ -650,7 +650,7 @@ id|address_data-&gt;normal_i2c
 id|i
 )braket
 op_ne
-id|SENSORS_I2C_END
+id|I2C_CLIENT_END
 )paren
 suffix:semicolon
 id|i
@@ -704,7 +704,7 @@ id|address_data-&gt;normal_i2c_range
 id|i
 )braket
 op_ne
-id|SENSORS_I2C_END
+id|I2C_CLIENT_END
 )paren
 suffix:semicolon
 id|i
@@ -772,7 +772,7 @@ id|address_data-&gt;probe
 id|i
 )braket
 op_ne
-id|SENSORS_I2C_END
+id|I2C_CLIENT_END
 )paren
 suffix:semicolon
 id|i
@@ -802,7 +802,7 @@ id|probe
 id|i
 )braket
 op_eq
-id|SENSORS_ANY_I2C_BUS
+id|ANY_I2C_BUS
 )paren
 op_amp
 op_logical_neg
@@ -857,7 +857,7 @@ id|address_data-&gt;probe_range
 id|i
 )braket
 op_ne
-id|SENSORS_I2C_END
+id|I2C_CLIENT_END
 )paren
 suffix:semicolon
 id|i
@@ -885,7 +885,7 @@ id|address_data-&gt;probe_range
 id|i
 )braket
 op_eq
-id|SENSORS_ANY_I2C_BUS
+id|ANY_I2C_BUS
 )paren
 op_amp
 op_logical_neg
