@@ -9831,7 +9831,7 @@ op_minus
 id|EPIPE
 suffix:semicolon
 r_goto
-id|_end
+id|_end_unlock
 suffix:semicolon
 )brace
 id|snd_assert
