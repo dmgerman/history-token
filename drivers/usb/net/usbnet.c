@@ -4031,6 +4031,14 @@ OL
 l_int|0
 )paren
 (brace
+id|usb_set_intfdata
+c_func
+(paren
+id|info-&gt;data
+comma
+l_int|NULL
+)paren
+suffix:semicolon
 id|usb_driver_release_interface
 (paren
 op_amp
