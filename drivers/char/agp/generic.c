@@ -1652,7 +1652,7 @@ id|AGPSTAT3_8X
 )paren
 op_star
 id|cmd
-op_assign
+op_and_assign
 op_complement
 (paren
 id|AGPSTAT3_4X
@@ -1670,7 +1670,7 @@ id|AGPSTAT3_4X
 )paren
 op_star
 id|cmd
-op_assign
+op_and_assign
 op_complement
 (paren
 id|AGPSTAT3_8X
