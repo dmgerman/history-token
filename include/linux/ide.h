@@ -4047,15 +4047,6 @@ comma
 id|u8
 )paren
 suffix:semicolon
-r_extern
-r_void
-id|try_to_flush_leftover_data
-c_func
-(paren
-id|ide_drive_t
-op_star
-)paren
-suffix:semicolon
 multiline_comment|/*&n; * Issue ATA command and wait for completion.&n; * Use for implementing commands in kernel&n; *&n; *  (ide_drive_t *drive, u8 cmd, u8 nsect, u8 feature, u8 sectors, u8 *buf)&n; */
 r_extern
 r_int

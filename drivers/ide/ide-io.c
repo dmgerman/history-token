@@ -1820,6 +1820,7 @@ id|ide_end_drive_cmd
 suffix:semicolon
 multiline_comment|/**&n; *&t;try_to_flush_leftover_data&t;-&t;flush junk&n; *&t;@drive: drive to flush&n; *&n; *&t;try_to_flush_leftover_data() is invoked in response to a drive&n; *&t;unexpectedly having its DRQ_STAT bit set.  As an alternative to&n; *&t;resetting the drive, this routine tries to clear the condition&n; *&t;by read a sector&squot;s worth of data from the drive.  Of course,&n; *&t;this may not help if the drive is *waiting* for data from *us*.&n; */
 DECL|function|try_to_flush_leftover_data
+r_static
 r_void
 id|try_to_flush_leftover_data
 (paren
@@ -1901,13 +1902,6 @@ id|wcount
 suffix:semicolon
 )brace
 )brace
-DECL|variable|try_to_flush_leftover_data
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|try_to_flush_leftover_data
-)paren
-suffix:semicolon
 DECL|function|ide_ata_error
 r_static
 id|ide_startstop_t
