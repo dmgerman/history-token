@@ -105,10 +105,10 @@ DECL|macro|DEBUG
 macro_line|#undef DEBUG
 macro_line|#ifdef DEBUG
 DECL|macro|HPRINTK
-mdefine_line|#define HPRINTK(fmt,args...)&t;hprintk(fmt,args)
+mdefine_line|#define HPRINTK(fmt,args...)&t;printk(KERN_DEBUG DEV_LABEL &quot;%d: &quot; fmt, he_dev-&gt;number , ##args)
 macro_line|#else
 DECL|macro|HPRINTK
-mdefine_line|#define HPRINTK(fmt,args...)&t;do { } while(0)
+mdefine_line|#define HPRINTK(fmt,args...)&t;do { } while (0)
 macro_line|#endif /* DEBUG */
 multiline_comment|/* version definition */
 DECL|variable|version
@@ -408,11 +408,9 @@ id|proc_read
 suffix:colon
 id|he_proc_read
 comma
-macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,4,1)
 id|owner
 suffix:colon
 id|THIS_MODULE
-macro_line|#endif
 )brace
 suffix:semicolon
 multiline_comment|/* see the comments in he.h about global_lock */
@@ -421,7 +419,7 @@ mdefine_line|#define HE_SPIN_LOCK(dev, flags)&t;spin_lock_irqsave(&amp;(dev)-&gt
 DECL|macro|HE_SPIN_UNLOCK
 mdefine_line|#define HE_SPIN_UNLOCK(dev, flags)&t;spin_unlock_irqrestore(&amp;(dev)-&gt;global_lock, flags)
 DECL|macro|he_writel
-mdefine_line|#define he_writel(dev, val, reg)&t;do { writel(val, (dev)-&gt;membase + (reg)); wmb(); } while(0)
+mdefine_line|#define he_writel(dev, val, reg)&t;do { writel(val, (dev)-&gt;membase + (reg)); wmb(); } while (0)
 DECL|macro|he_readl
 mdefine_line|#define he_readl(dev, reg)&t;&t;readl((dev)-&gt;membase + (reg))
 multiline_comment|/* section 2.12 connection memory access */
@@ -501,9 +499,7 @@ id|CON_CTL
 op_amp
 id|CON_CTL_BUSY
 )paren
-(brace
 suffix:semicolon
-)brace
 )brace
 DECL|macro|he_writel_rcm
 mdefine_line|#define he_writel_rcm(dev, val, reg) &t;&t;&t;&t;&bslash;&n;&t;&t;&t;he_writel_internal(dev, val, reg, CON_CTL_RCM)
@@ -560,9 +556,7 @@ id|CON_CTL
 op_amp
 id|CON_CTL_BUSY
 )paren
-(brace
 suffix:semicolon
-)brace
 r_return
 id|he_readl
 c_func
@@ -1853,7 +1847,6 @@ suffix:semicolon
 op_increment
 id|reg
 )paren
-(brace
 id|he_writel_mbox
 c_func
 (paren
@@ -1866,7 +1859,6 @@ op_plus
 id|reg
 )paren
 suffix:semicolon
-)brace
 multiline_comment|/* rate grid timer reload values */
 id|clock
 op_assign
@@ -2379,7 +2371,6 @@ suffix:semicolon
 op_increment
 id|reg
 )paren
-(brace
 id|he_writel_mbox
 c_func
 (paren
@@ -2392,7 +2383,6 @@ op_plus
 id|reg
 )paren
 suffix:semicolon
-)brace
 )brace
 r_static
 r_void
@@ -4066,7 +4056,6 @@ suffix:semicolon
 op_increment
 id|i
 )paren
-(brace
 id|he_dev-&gt;irq_base
 (braket
 id|i
@@ -4076,7 +4065,6 @@ id|isw
 op_assign
 id|ITYPE_INVALID
 suffix:semicolon
-)brace
 id|he_writel
 c_func
 (paren
@@ -4878,7 +4866,6 @@ suffix:semicolon
 op_increment
 id|i
 )paren
-(brace
 id|he_dev-&gt;prod_id
 (braket
 id|i
@@ -4894,7 +4881,6 @@ op_plus
 id|i
 )paren
 suffix:semicolon
-)brace
 id|he_dev-&gt;media
 op_assign
 id|read_prom_byte
@@ -4919,7 +4905,6 @@ suffix:semicolon
 op_increment
 id|i
 )paren
-(brace
 id|dev-&gt;esi
 (braket
 id|i
@@ -4935,7 +4920,6 @@ op_plus
 id|i
 )paren
 suffix:semicolon
-)brace
 id|hprintk
 c_func
 (paren
@@ -5790,7 +5774,6 @@ suffix:semicolon
 op_increment
 id|i
 )paren
-(brace
 id|he_writel_tcm
 c_func
 (paren
@@ -5801,7 +5784,6 @@ comma
 id|i
 )paren
 suffix:semicolon
-)brace
 r_for
 c_loop
 (paren
@@ -5816,7 +5798,6 @@ suffix:semicolon
 op_increment
 id|i
 )paren
-(brace
 id|he_writel_rcm
 c_func
 (paren
@@ -5827,7 +5808,6 @@ comma
 id|i
 )paren
 suffix:semicolon
-)brace
 multiline_comment|/*&n;&t; *&t;transmit connection memory map&n;&t; *&n;&t; *                  tx memory&n;&t; *          0x0 ___________________&n;&t; *             |                   |&n;&t; *             |                   |&n;&t; *             |       TSRa        |&n;&t; *             |                   |&n;&t; *             |                   |&n;&t; *       0x8000|___________________|&n;&t; *             |                   |&n;&t; *             |       TSRb        |&n;&t; *       0xc000|___________________|&n;&t; *             |                   |&n;&t; *             |       TSRc        |&n;&t; *       0xe000|___________________|&n;&t; *             |       TSRd        |&n;&t; *       0xf000|___________________|&n;&t; *             |       tmABR       |&n;&t; *      0x10000|___________________|&n;&t; *             |                   |&n;&t; *             |       tmTPD       |&n;&t; *             |___________________|&n;&t; *             |                   |&n;&t; *                      ....&n;&t; *      0x1ffff|___________________|&n;&t; *&n;&t; *&n;&t; */
 id|he_writel
 c_func
@@ -9322,8 +9302,8 @@ c_cond
 (paren
 id|tpd-&gt;skb
 )paren
-multiline_comment|/* &amp;&amp; !TBRQ_MULTIPLE(he_dev-&gt;tbrq_head) */
 (brace
+multiline_comment|/* &amp;&amp; !TBRQ_MULTIPLE(he_dev-&gt;tbrq_head) */
 r_if
 c_cond
 (paren
@@ -13033,8 +13013,8 @@ id|slot
 op_eq
 id|TPD_MAXIOV
 )paren
-multiline_comment|/* send tpd; start new tpd */
 (brace
+multiline_comment|/* queue tpd; start new tpd */
 id|tpd-&gt;vcc
 op_assign
 id|vcc
@@ -13492,7 +13472,8 @@ id|arg
 )paren
 suffix:semicolon
 macro_line|#else /* CONFIG_ATM_HE_USE_SUNI */
-r_return
+id|err
+op_assign
 op_minus
 id|EINVAL
 suffix:semicolon
