@@ -4,6 +4,7 @@ macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
+macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/i2c.h&gt;
 macro_line|#include &lt;linux/i2c-sensor.h&gt;
 multiline_comment|/* Addresses to scan */
@@ -138,6 +139,11 @@ id|EEPROM_SIZE
 )braket
 suffix:semicolon
 multiline_comment|/* Register values */
+DECL|member|nature
+r_enum
+id|eeprom_nature
+id|nature
+suffix:semicolon
 )brace
 suffix:semicolon
 r_static
@@ -516,6 +522,73 @@ id|EEPROM_SIZE
 op_minus
 id|off
 suffix:semicolon
+multiline_comment|/* Hide Vaio security settings to regular users (16 first bytes) */
+r_if
+c_cond
+(paren
+id|data-&gt;nature
+op_eq
+id|VAIO
+op_logical_and
+id|off
+OL
+l_int|16
+op_logical_and
+op_logical_neg
+id|capable
+c_func
+(paren
+id|CAP_SYS_ADMIN
+)paren
+)paren
+(brace
+r_int
+id|in_row1
+op_assign
+l_int|16
+op_minus
+id|off
+suffix:semicolon
+id|memset
+c_func
+(paren
+id|buf
+comma
+l_int|0
+comma
+id|in_row1
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|count
+op_minus
+id|in_row1
+OG
+l_int|0
+)paren
+id|memcpy
+c_func
+(paren
+id|buf
+op_plus
+id|in_row1
+comma
+op_amp
+id|data-&gt;data
+(braket
+l_int|16
+)braket
+comma
+id|count
+op_minus
+id|in_row1
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
 id|memcpy
 c_func
 (paren
@@ -530,6 +603,7 @@ comma
 id|count
 )paren
 suffix:semicolon
+)brace
 r_return
 id|count
 suffix:semicolon
@@ -626,12 +700,6 @@ r_struct
 id|eeprom_data
 op_star
 id|data
-suffix:semicolon
-r_enum
-id|eeprom_nature
-id|nature
-op_assign
-id|UNKNOWN
 suffix:semicolon
 r_int
 id|err
@@ -848,6 +916,10 @@ r_goto
 id|exit_kfree
 suffix:semicolon
 )brace
+id|data-&gt;nature
+op_assign
+id|UNKNOWN
+suffix:semicolon
 multiline_comment|/* Detect the Vaio nature of EEPROMs.&n;&t;   We use the &quot;PCG-&quot; prefix as the signature. */
 r_if
 c_cond
@@ -900,32 +972,9 @@ l_int|0x83
 op_eq
 l_char|&squot;-&squot;
 )paren
-id|nature
+id|data-&gt;nature
 op_assign
 id|VAIO
-suffix:semicolon
-)brace
-multiline_comment|/* If this is a VIAO, then we only allow root to read from this file,&n;&t;   as BIOS passwords can be present here in plaintext */
-r_switch
-c_cond
-(paren
-id|nature
-)paren
-(brace
-r_case
-id|VAIO
-suffix:colon
-id|eeprom_attr.attr.mode
-op_assign
-id|S_IRUSR
-suffix:semicolon
-r_break
-suffix:semicolon
-r_default
-suffix:colon
-id|eeprom_attr.attr.mode
-op_assign
-id|S_IRUGO
 suffix:semicolon
 )brace
 multiline_comment|/* Fill in the remaining client fields */
