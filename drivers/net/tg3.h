@@ -29,10 +29,6 @@ DECL|macro|RX_STD_MAX_SIZE
 mdefine_line|#define RX_STD_MAX_SIZE&t;&t;&t;1536
 DECL|macro|RX_JUMBO_MAX_SIZE
 mdefine_line|#define RX_JUMBO_MAX_SIZE&t;&t;0xdeadbeef /* XXX */
-macro_line|#if TG3_MINI_RING_WORKS
-DECL|macro|RX_MINI_MAX_SIZE
-mdefine_line|#define RX_MINI_MAX_SIZE&t;&t;256
-macro_line|#endif
 multiline_comment|/* First 256 bytes are a mirror of PCI config space. */
 DECL|macro|TG3PCI_VENDOR
 mdefine_line|#define TG3PCI_VENDOR&t;&t;&t;0x00000000
@@ -2415,10 +2411,8 @@ DECL|macro|NIC_SRAM_MAC_ADDR_HIGH_MBOX
 mdefine_line|#define NIC_SRAM_MAC_ADDR_HIGH_MBOX&t;0x00000c14
 DECL|macro|NIC_SRAM_MAC_ADDR_LOW_MBOX
 mdefine_line|#define NIC_SRAM_MAC_ADDR_LOW_MBOX&t;0x00000c18
-macro_line|#if TG3_MINI_RING_WORKS
 DECL|macro|NIC_SRAM_RX_MINI_BUFFER_DESC
 mdefine_line|#define NIC_SRAM_RX_MINI_BUFFER_DESC&t;0x00001000
-macro_line|#endif
 DECL|macro|NIC_SRAM_DMA_DESC_POOL_BASE
 mdefine_line|#define NIC_SRAM_DMA_DESC_POOL_BASE&t;0x00002000
 DECL|macro|NIC_SRAM_DMA_DESC_POOL_SIZE
@@ -2612,10 +2606,8 @@ DECL|macro|RXD_FLAGS_SHIFT
 mdefine_line|#define RXD_FLAGS_SHIFT&t;0
 DECL|macro|RXD_FLAG_END
 mdefine_line|#define RXD_FLAG_END&t;&t;&t;0x0004
-macro_line|#if TG3_MINI_RING_WORKS
 DECL|macro|RXD_FLAG_MINI
 mdefine_line|#define RXD_FLAG_MINI&t;&t;&t;0x0800
-macro_line|#endif
 DECL|macro|RXD_FLAG_JUMBO
 mdefine_line|#define RXD_FLAG_JUMBO&t;&t;&t;0x0020
 DECL|macro|RXD_FLAG_VLAN
@@ -2682,10 +2674,8 @@ DECL|macro|RXD_OPAQUE_RING_STD
 mdefine_line|#define RXD_OPAQUE_RING_STD&t;&t;0x00010000
 DECL|macro|RXD_OPAQUE_RING_JUMBO
 mdefine_line|#define RXD_OPAQUE_RING_JUMBO&t;&t;0x00020000
-macro_line|#if TG3_MINI_RING_WORKS
 DECL|macro|RXD_OPAQUE_RING_MINI
 mdefine_line|#define RXD_OPAQUE_RING_MINI&t;&t;0x00040000
-macro_line|#endif
 DECL|macro|RXD_OPAQUE_RING_MASK
 mdefine_line|#define RXD_OPAQUE_RING_MASK&t;&t;0x00070000
 )brace
@@ -3404,15 +3394,48 @@ DECL|struct|tg3
 r_struct
 id|tg3
 (brace
+multiline_comment|/* begin &quot;general, frequently-used members&quot; cacheline section */
 multiline_comment|/* SMP locking strategy:&n;&t; *&n;&t; * lock: Held during all operations except TX packet&n;&t; *       processing.&n;&t; *&n;&t; * tx_lock: Held during tg3_start_xmit{,_4gbug} and tg3_tx&n;&t; *&n;&t; * If you want to shut up all asynchronous processing you must&n;&t; * acquire both locks, &squot;lock&squot; taken before &squot;tx_lock&squot;.  IRQs must&n;&t; * be disabled to take &squot;lock&squot; but only softirq disabling is&n;&t; * necessary for acquisition of &squot;tx_lock&squot;.&n;&t; */
 DECL|member|lock
 id|spinlock_t
 id|lock
 suffix:semicolon
-DECL|member|tx_lock
+DECL|member|indirect_lock
 id|spinlock_t
-id|tx_lock
+id|indirect_lock
 suffix:semicolon
+DECL|member|regs
+r_int
+r_int
+id|regs
+suffix:semicolon
+DECL|member|dev
+r_struct
+id|net_device
+op_star
+id|dev
+suffix:semicolon
+DECL|member|pdev
+r_struct
+id|pci_dev
+op_star
+id|pdev
+suffix:semicolon
+DECL|member|hw_status
+r_struct
+id|tg3_hw_status
+op_star
+id|hw_status
+suffix:semicolon
+DECL|member|status_mapping
+id|dma_addr_t
+id|status_mapping
+suffix:semicolon
+DECL|member|msg_enable
+id|u32
+id|msg_enable
+suffix:semicolon
+multiline_comment|/* begin &quot;tx thread&quot; cacheline section */
 DECL|member|tx_prod
 id|u32
 id|tx_prod
@@ -3421,6 +3444,32 @@ DECL|member|tx_cons
 id|u32
 id|tx_cons
 suffix:semicolon
+DECL|member|tx_pending
+id|u32
+id|tx_pending
+suffix:semicolon
+DECL|member|tx_lock
+id|spinlock_t
+id|tx_lock
+suffix:semicolon
+multiline_comment|/* TX descs are only used if TG3_FLAG_HOST_TXDS is set. */
+DECL|member|tx_ring
+r_struct
+id|tg3_tx_buffer_desc
+op_star
+id|tx_ring
+suffix:semicolon
+DECL|member|tx_buffers
+r_struct
+id|tx_ring_info
+op_star
+id|tx_buffers
+suffix:semicolon
+DECL|member|tx_desc_mapping
+id|dma_addr_t
+id|tx_desc_mapping
+suffix:semicolon
+multiline_comment|/* begin &quot;rx thread&quot; cacheline section */
 DECL|member|rx_rcb_ptr
 id|u32
 id|rx_rcb_ptr
@@ -3433,16 +3482,65 @@ DECL|member|rx_jumbo_ptr
 id|u32
 id|rx_jumbo_ptr
 suffix:semicolon
-macro_line|#if TG3_MINI_RING_WORKS
-DECL|member|rx_mini_ptr
+DECL|member|rx_pending
 id|u32
-id|rx_mini_ptr
+id|rx_pending
+suffix:semicolon
+DECL|member|rx_jumbo_pending
+id|u32
+id|rx_jumbo_pending
+suffix:semicolon
+macro_line|#if TG3_VLAN_TAG_USED
+DECL|member|vlgrp
+r_struct
+id|vlan_group
+op_star
+id|vlgrp
 suffix:semicolon
 macro_line|#endif
-DECL|member|indirect_lock
-id|spinlock_t
-id|indirect_lock
+DECL|member|rx_std
+r_struct
+id|tg3_rx_buffer_desc
+op_star
+id|rx_std
 suffix:semicolon
+DECL|member|rx_std_buffers
+r_struct
+id|ring_info
+op_star
+id|rx_std_buffers
+suffix:semicolon
+DECL|member|rx_std_mapping
+id|dma_addr_t
+id|rx_std_mapping
+suffix:semicolon
+DECL|member|rx_jumbo
+r_struct
+id|tg3_rx_buffer_desc
+op_star
+id|rx_jumbo
+suffix:semicolon
+DECL|member|rx_jumbo_buffers
+r_struct
+id|ring_info
+op_star
+id|rx_jumbo_buffers
+suffix:semicolon
+DECL|member|rx_jumbo_mapping
+id|dma_addr_t
+id|rx_jumbo_mapping
+suffix:semicolon
+DECL|member|rx_rcb
+r_struct
+id|tg3_rx_buffer_desc
+op_star
+id|rx_rcb
+suffix:semicolon
+DECL|member|rx_rcb_mapping
+id|dma_addr_t
+id|rx_rcb_mapping
+suffix:semicolon
+multiline_comment|/* begin &quot;everything else&quot; cacheline(s) section */
 DECL|member|net_stats
 r_struct
 id|net_device_stats
@@ -3528,10 +3626,6 @@ DECL|macro|TG3_FLAG_SPLIT_MODE
 mdefine_line|#define TG3_FLAG_SPLIT_MODE&t;&t;0x40000000
 DECL|macro|TG3_FLAG_INIT_COMPLETE
 mdefine_line|#define TG3_FLAG_INIT_COMPLETE&t;&t;0x80000000
-DECL|member|msg_enable
-id|u32
-id|msg_enable
-suffix:semicolon
 DECL|member|split_mode_max_reqs
 id|u32
 id|split_mode_max_reqs
@@ -3572,24 +3666,6 @@ DECL|member|bufmgr_config
 r_struct
 id|tg3_bufmgr_config
 id|bufmgr_config
-suffix:semicolon
-DECL|member|rx_pending
-id|u32
-id|rx_pending
-suffix:semicolon
-macro_line|#if TG3_MINI_RING_WORKS
-DECL|member|rx_mini_pending
-id|u32
-id|rx_mini_pending
-suffix:semicolon
-macro_line|#endif
-DECL|member|rx_jumbo_pending
-id|u32
-id|rx_jumbo_pending
-suffix:semicolon
-DECL|member|tx_pending
-id|u32
-id|tx_pending
 suffix:semicolon
 multiline_comment|/* cache h/w values, often passed straight to h/w */
 DECL|member|rx_mode
@@ -3715,118 +3791,6 @@ suffix:semicolon
 multiline_comment|/* This macro assumes the passed PHY ID is already masked&n;&t; * with PHY_ID_MASK.&n;&t; */
 DECL|macro|KNOWN_PHY_ID
 mdefine_line|#define KNOWN_PHY_ID(X)&t;&t;&bslash;&n;&t;((X) == PHY_ID_BCM5400 || (X) == PHY_ID_BCM5401 || &bslash;&n;&t; (X) == PHY_ID_BCM5411 || (X) == PHY_ID_BCM5701 || &bslash;&n;&t; (X) == PHY_ID_BCM5703 || (X) == PHY_ID_BCM5704 || &bslash;&n;&t; (X) == PHY_ID_BCM8002 || (X) == PHY_ID_SERDES)
-DECL|member|regs
-r_int
-r_int
-id|regs
-suffix:semicolon
-DECL|member|pdev
-r_struct
-id|pci_dev
-op_star
-id|pdev
-suffix:semicolon
-DECL|member|dev
-r_struct
-id|net_device
-op_star
-id|dev
-suffix:semicolon
-macro_line|#if TG3_VLAN_TAG_USED
-DECL|member|vlgrp
-r_struct
-id|vlan_group
-op_star
-id|vlgrp
-suffix:semicolon
-macro_line|#endif
-DECL|member|rx_std
-r_struct
-id|tg3_rx_buffer_desc
-op_star
-id|rx_std
-suffix:semicolon
-DECL|member|rx_std_buffers
-r_struct
-id|ring_info
-op_star
-id|rx_std_buffers
-suffix:semicolon
-DECL|member|rx_std_mapping
-id|dma_addr_t
-id|rx_std_mapping
-suffix:semicolon
-macro_line|#if TG3_MINI_RING_WORKS
-DECL|member|rx_mini
-r_struct
-id|tg3_rx_buffer_desc
-op_star
-id|rx_mini
-suffix:semicolon
-DECL|member|rx_mini_buffers
-r_struct
-id|ring_info
-op_star
-id|rx_mini_buffers
-suffix:semicolon
-DECL|member|rx_mini_mapping
-id|dma_addr_t
-id|rx_mini_mapping
-suffix:semicolon
-macro_line|#endif
-DECL|member|rx_jumbo
-r_struct
-id|tg3_rx_buffer_desc
-op_star
-id|rx_jumbo
-suffix:semicolon
-DECL|member|rx_jumbo_buffers
-r_struct
-id|ring_info
-op_star
-id|rx_jumbo_buffers
-suffix:semicolon
-DECL|member|rx_jumbo_mapping
-id|dma_addr_t
-id|rx_jumbo_mapping
-suffix:semicolon
-DECL|member|rx_rcb
-r_struct
-id|tg3_rx_buffer_desc
-op_star
-id|rx_rcb
-suffix:semicolon
-DECL|member|rx_rcb_mapping
-id|dma_addr_t
-id|rx_rcb_mapping
-suffix:semicolon
-multiline_comment|/* TX descs are only used if TG3_FLAG_HOST_TXDS is set. */
-DECL|member|tx_ring
-r_struct
-id|tg3_tx_buffer_desc
-op_star
-id|tx_ring
-suffix:semicolon
-DECL|member|tx_buffers
-r_struct
-id|tx_ring_info
-op_star
-id|tx_buffers
-suffix:semicolon
-DECL|member|tx_desc_mapping
-id|dma_addr_t
-id|tx_desc_mapping
-suffix:semicolon
-DECL|member|hw_status
-r_struct
-id|tg3_hw_status
-op_star
-id|hw_status
-suffix:semicolon
-DECL|member|status_mapping
-id|dma_addr_t
-id|status_mapping
-suffix:semicolon
 DECL|member|hw_stats
 r_struct
 id|tg3_hw_stats
