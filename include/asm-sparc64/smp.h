@@ -17,11 +17,6 @@ multiline_comment|/*&n; *&t;Private routines/data&n; */
 macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
 r_extern
-r_int
-r_char
-id|boot_cpu_id
-suffix:semicolon
-r_extern
 id|cpumask_t
 id|phys_cpu_present_map
 suffix:semicolon
