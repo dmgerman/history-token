@@ -202,6 +202,14 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|image-&gt;depth
+op_eq
+l_int|1
+)paren
+(brace
+r_if
+c_cond
+(paren
 id|p-&gt;fix.visual
 op_eq
 id|FB_VISUAL_TRUECOLOR
@@ -453,6 +461,7 @@ id|dst1
 op_add_assign
 id|p-&gt;fix.line_length
 suffix:semicolon
+)brace
 )brace
 )brace
 eof
