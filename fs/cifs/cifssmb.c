@@ -11424,9 +11424,8 @@ r_return
 id|rc
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_CIFS_EXPERIMENTAL  /* function unused at present */
+macro_line|#if 0  /* function unused at present */
 r_int
-DECL|function|CIFSFindSingle
 id|CIFSFindSingle
 c_func
 (paren
@@ -11835,7 +11834,7 @@ r_return
 id|rc
 suffix:semicolon
 )brace
-macro_line|#endif /* CIFS_EXPERIMENTAL */
+macro_line|#endif /* end unused (temporarily) function */
 multiline_comment|/* xid, tcon, searchName and codepage are input parms, rest are returned */
 r_int
 DECL|function|CIFSFindFirst

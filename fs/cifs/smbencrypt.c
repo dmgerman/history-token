@@ -8,6 +8,7 @@ macro_line|#include &quot;cifs_unicode.h&quot;
 macro_line|#include &quot;cifspdu.h&quot;
 macro_line|#include &quot;md5.h&quot;
 macro_line|#include &quot;cifs_debug.h&quot;
+macro_line|#include &quot;cifsencrypt.h&quot;
 macro_line|#ifndef FALSE
 DECL|macro|FALSE
 mdefine_line|#define FALSE 0
@@ -23,164 +24,6 @@ DECL|macro|SSVALX
 mdefine_line|#define SSVALX(buf,pos,val) (CVAL(buf,pos)=(val)&amp;0xFF,CVAL(buf,pos+1)=(val)&gt;&gt;8)
 DECL|macro|SSVAL
 mdefine_line|#define SSVAL(buf,pos,val) SSVALX((buf),(pos),((__u16)(val)))
-multiline_comment|/*The following definitions come from  lib/md4.c  */
-r_void
-id|mdfour
-c_func
-(paren
-r_int
-r_char
-op_star
-id|out
-comma
-r_int
-r_char
-op_star
-id|in
-comma
-r_int
-id|n
-)paren
-suffix:semicolon
-multiline_comment|/*The following definitions come from  libsmb/smbdes.c  */
-r_void
-id|E_P16
-c_func
-(paren
-r_int
-r_char
-op_star
-id|p14
-comma
-r_int
-r_char
-op_star
-id|p16
-)paren
-suffix:semicolon
-r_void
-id|E_P24
-c_func
-(paren
-r_int
-r_char
-op_star
-id|p21
-comma
-r_int
-r_char
-op_star
-id|c8
-comma
-r_int
-r_char
-op_star
-id|p24
-)paren
-suffix:semicolon
-r_void
-id|D_P16
-c_func
-(paren
-r_int
-r_char
-op_star
-id|p14
-comma
-r_int
-r_char
-op_star
-id|in
-comma
-r_int
-r_char
-op_star
-id|out
-)paren
-suffix:semicolon
-r_void
-id|E_old_pw_hash
-c_func
-(paren
-r_int
-r_char
-op_star
-id|p14
-comma
-r_int
-r_char
-op_star
-id|in
-comma
-r_int
-r_char
-op_star
-id|out
-)paren
-suffix:semicolon
-r_void
-id|cred_hash1
-c_func
-(paren
-r_int
-r_char
-op_star
-id|out
-comma
-r_int
-r_char
-op_star
-id|in
-comma
-r_int
-r_char
-op_star
-id|key
-)paren
-suffix:semicolon
-r_void
-id|cred_hash2
-c_func
-(paren
-r_int
-r_char
-op_star
-id|out
-comma
-r_int
-r_char
-op_star
-id|in
-comma
-r_int
-r_char
-op_star
-id|key
-)paren
-suffix:semicolon
-r_void
-id|cred_hash3
-c_func
-(paren
-r_int
-r_char
-op_star
-id|out
-comma
-r_int
-r_char
-op_star
-id|in
-comma
-r_int
-r_char
-op_star
-id|key
-comma
-r_int
-id|forw
-)paren
-suffix:semicolon
 multiline_comment|/*The following definitions come from  libsmb/smbencrypt.c  */
 r_void
 id|SMBencrypt
@@ -241,6 +84,7 @@ l_int|16
 )braket
 )paren
 suffix:semicolon
+r_static
 r_void
 id|SMBOWFencrypt
 c_func
@@ -996,6 +840,7 @@ suffix:semicolon
 )brace
 macro_line|#endif 
 multiline_comment|/* Does the des encryption from the NT or LM MD4 hash. */
+r_static
 r_void
 DECL|function|SMBOWFencrypt
 id|SMBOWFencrypt
@@ -1194,8 +1039,10 @@ id|p24
 suffix:semicolon
 )brace
 multiline_comment|/* Does the md5 encryption from the NT hash for NTLMv2. */
+multiline_comment|/* These routines will be needed later */
+macro_line|#if 0
+r_static
 r_void
-DECL|function|SMBOWFencrypt_ntv2
 id|SMBOWFencrypt_ntv2
 c_func
 (paren
@@ -1274,8 +1121,8 @@ id|ctx
 )paren
 suffix:semicolon
 )brace
+r_static
 r_void
-DECL|function|SMBsesskeygen_ntv2
 id|SMBsesskeygen_ntv2
 c_func
 (paren
@@ -1341,8 +1188,8 @@ id|ctx
 )paren
 suffix:semicolon
 )brace
+r_static
 r_void
-DECL|function|SMBsesskeygen_ntv1
 id|SMBsesskeygen_ntv1
 c_func
 (paren
@@ -1388,4 +1235,5 @@ l_int|16
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif
 eof

@@ -1,6 +1,7 @@
 multiline_comment|/* &n;   Unix SMB/Netbios implementation.&n;   Version 1.9.&n;&n;   a partial implementation of DES designed for use in the &n;   SMB authentication protocol&n;&n;   Copyright (C) Andrew Tridgell 1998&n;   Modified by Steve French (sfrench@us.ibm.com) 2002,2004&n;   &n;   This program is free software; you can redistribute it and/or modify&n;   it under the terms of the GNU General Public License as published by&n;   the Free Software Foundation; either version 2 of the License, or&n;   (at your option) any later version.&n;   &n;   This program is distributed in the hope that it will be useful,&n;   but WITHOUT ANY WARRANTY; without even the implied warranty of&n;   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;   GNU General Public License for more details.&n;   &n;   You should have received a copy of the GNU General Public License&n;   along with this program; if not, write to the Free Software&n;   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n;*/
 multiline_comment|/* NOTES: &n;&n;   This code makes no attempt to be fast! In fact, it is a very&n;   slow implementation &n;&n;   This code is NOT a complete DES implementation. It implements only&n;   the minimum necessary for SMB authentication, as used by all SMB&n;   products (including every copy of Microsoft Windows95 ever sold)&n;&n;   In particular, it can only do a unchained forward DES pass. This&n;   means it is not possible to use this code for encryption/decryption&n;   of data, instead it is only useful as a &quot;hash&quot; algorithm.&n;&n;   There is no entry point into this code that allows normal DES operation.&n;&n;   I believe this means that this code does not come under ITAR&n;   regulations but this is NOT a legal opinion. If you are concerned&n;   about the applicability of ITAR regulations to this code then you&n;   should confirm it for yourself (and maybe let me know if you come&n;   up with a different answer to the one above)&n;*/
 macro_line|#include &lt;linux/slab.h&gt;
+macro_line|#include &quot;cifsencrypt.h&quot;
 DECL|macro|uchar
 mdefine_line|#define uchar unsigned char
 DECL|variable|perm1
@@ -3626,8 +3627,9 @@ l_int|1
 )paren
 suffix:semicolon
 )brace
+macro_line|#if 0
+multiline_comment|/* these routines are currently unneeded, but may be&n;&t;needed later */
 r_void
-DECL|function|cred_hash1
 id|cred_hash1
 c_func
 (paren
@@ -3682,7 +3684,6 @@ l_int|1
 suffix:semicolon
 )brace
 r_void
-DECL|function|cred_hash2
 id|cred_hash2
 c_func
 (paren
@@ -3753,7 +3754,6 @@ l_int|1
 suffix:semicolon
 )brace
 r_void
-DECL|function|cred_hash3
 id|cred_hash3
 c_func
 (paren
@@ -3823,4 +3823,5 @@ id|forw
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif /* unneeded routines */
 eof
