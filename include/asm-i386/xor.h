@@ -1,9 +1,5 @@
 multiline_comment|/*&n; * include/asm-i386/xor.h&n; *&n; * Optimized RAID-5 checksumming functions for MMX and SSE.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * You should have received a copy of the GNU General Public License&n; * (for example /usr/src/linux/COPYING); if not, write to the Free&n; * Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
 multiline_comment|/*&n; * High-speed RAID5 checksumming functions utilizing MMX instructions.&n; * Copyright (C) 1998 Ingo Molnar.&n; */
-DECL|macro|FPU_SAVE
-mdefine_line|#define FPU_SAVE&t;&t;&t;&t;&t;&t;&t;&bslash;&n;  do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;preempt_disable();&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (!test_thread_flag(TIF_USEDFPU))&t;&t;&t;&t;&bslash;&n;&t;&t;__asm__ __volatile__ (&quot; clts;&bslash;n&quot;);&t;&t;&t;&bslash;&n;&t;__asm__ __volatile__ (&quot;fsave %0; fwait&quot;: &quot;=m&quot;(fpu_save[0]));&t;&bslash;&n;  } while (0)
-DECL|macro|FPU_RESTORE
-mdefine_line|#define FPU_RESTORE&t;&t;&t;&t;&t;&t;&t;&bslash;&n;  do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__asm__ __volatile__ (&quot;frstor %0&quot;: : &quot;m&quot;(fpu_save[0]));&t;&t;&bslash;&n;&t;if (!test_thread_flag(TIF_USEDFPU))&t;&t;&t;&t;&bslash;&n;&t;&t;stts();&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;preempt_enable();&t;&t;&t;&t;&t;&t;&bslash;&n;  } while (0)
 DECL|macro|LD
 mdefine_line|#define LD(x,y)&t;&t;&quot;       movq   8*(&quot;#x&quot;)(%1), %%mm&quot;#y&quot;   ;&bslash;n&quot;
 DECL|macro|ST
@@ -45,13 +41,10 @@ id|bytes
 op_rshift
 l_int|7
 suffix:semicolon
-r_char
-id|fpu_save
-(braket
-l_int|108
-)braket
-suffix:semicolon
-id|FPU_SAVE
+id|kernel_fpu_begin
+c_func
+(paren
+)paren
 suffix:semicolon
 id|__asm__
 id|__volatile__
@@ -106,7 +99,10 @@ suffix:colon
 l_string|&quot;memory&quot;
 )paren
 suffix:semicolon
-id|FPU_RESTORE
+id|kernel_fpu_end
+c_func
+(paren
+)paren
 suffix:semicolon
 )brace
 r_static
@@ -143,13 +139,10 @@ id|bytes
 op_rshift
 l_int|7
 suffix:semicolon
-r_char
-id|fpu_save
-(braket
-l_int|108
-)braket
-suffix:semicolon
-id|FPU_SAVE
+id|kernel_fpu_begin
+c_func
+(paren
+)paren
 suffix:semicolon
 id|__asm__
 id|__volatile__
@@ -210,7 +203,10 @@ suffix:colon
 l_string|&quot;memory&quot;
 )paren
 suffix:semicolon
-id|FPU_RESTORE
+id|kernel_fpu_end
+c_func
+(paren
+)paren
 suffix:semicolon
 )brace
 r_static
@@ -252,13 +248,10 @@ id|bytes
 op_rshift
 l_int|7
 suffix:semicolon
-r_char
-id|fpu_save
-(braket
-l_int|108
-)braket
-suffix:semicolon
-id|FPU_SAVE
+id|kernel_fpu_begin
+c_func
+(paren
+)paren
 suffix:semicolon
 id|__asm__
 id|__volatile__
@@ -325,7 +318,10 @@ suffix:colon
 l_string|&quot;memory&quot;
 )paren
 suffix:semicolon
-id|FPU_RESTORE
+id|kernel_fpu_end
+c_func
+(paren
+)paren
 suffix:semicolon
 )brace
 r_static
@@ -372,13 +368,10 @@ id|bytes
 op_rshift
 l_int|7
 suffix:semicolon
-r_char
-id|fpu_save
-(braket
-l_int|108
-)braket
-suffix:semicolon
-id|FPU_SAVE
+id|kernel_fpu_begin
+c_func
+(paren
+)paren
 suffix:semicolon
 multiline_comment|/* need to save/restore p4/p5 manually otherwise gcc&squot;s 10 argument&n;&t;   limit gets exceeded (+ counts as two arguments) */
 id|__asm__
@@ -455,7 +448,10 @@ suffix:colon
 l_string|&quot;memory&quot;
 )paren
 suffix:semicolon
-id|FPU_RESTORE
+id|kernel_fpu_end
+c_func
+(paren
+)paren
 suffix:semicolon
 )brace
 DECL|macro|LD
@@ -501,13 +497,10 @@ id|bytes
 op_rshift
 l_int|6
 suffix:semicolon
-r_char
-id|fpu_save
-(braket
-l_int|108
-)braket
-suffix:semicolon
-id|FPU_SAVE
+id|kernel_fpu_begin
+c_func
+(paren
+)paren
 suffix:semicolon
 id|__asm__
 id|__volatile__
@@ -562,7 +555,10 @@ suffix:colon
 l_string|&quot;memory&quot;
 )paren
 suffix:semicolon
-id|FPU_RESTORE
+id|kernel_fpu_end
+c_func
+(paren
+)paren
 suffix:semicolon
 )brace
 r_static
@@ -599,13 +595,10 @@ id|bytes
 op_rshift
 l_int|6
 suffix:semicolon
-r_char
-id|fpu_save
-(braket
-l_int|108
-)braket
-suffix:semicolon
-id|FPU_SAVE
+id|kernel_fpu_begin
+c_func
+(paren
+)paren
 suffix:semicolon
 id|__asm__
 id|__volatile__
@@ -674,7 +667,10 @@ suffix:colon
 l_string|&quot;memory&quot;
 )paren
 suffix:semicolon
-id|FPU_RESTORE
+id|kernel_fpu_end
+c_func
+(paren
+)paren
 suffix:semicolon
 )brace
 r_static
@@ -716,13 +712,10 @@ id|bytes
 op_rshift
 l_int|6
 suffix:semicolon
-r_char
-id|fpu_save
-(braket
-l_int|108
-)braket
-suffix:semicolon
-id|FPU_SAVE
+id|kernel_fpu_begin
+c_func
+(paren
+)paren
 suffix:semicolon
 id|__asm__
 id|__volatile__
@@ -805,7 +798,10 @@ suffix:colon
 l_string|&quot;memory&quot;
 )paren
 suffix:semicolon
-id|FPU_RESTORE
+id|kernel_fpu_end
+c_func
+(paren
+)paren
 suffix:semicolon
 )brace
 r_static
@@ -852,13 +848,10 @@ id|bytes
 op_rshift
 l_int|6
 suffix:semicolon
-r_char
-id|fpu_save
-(braket
-l_int|108
-)braket
-suffix:semicolon
-id|FPU_SAVE
+id|kernel_fpu_begin
+c_func
+(paren
+)paren
 suffix:semicolon
 multiline_comment|/* need to save p4/p5 manually to not exceed gcc&squot;s 10 argument limit */
 id|__asm__
@@ -959,7 +952,10 @@ suffix:colon
 l_string|&quot;memory&quot;
 )paren
 suffix:semicolon
-id|FPU_RESTORE
+id|kernel_fpu_end
+c_func
+(paren
+)paren
 suffix:semicolon
 )brace
 DECL|variable|xor_block_pII_mmx
@@ -1030,10 +1026,6 @@ id|xor_p5_mmx_5
 comma
 )brace
 suffix:semicolon
-DECL|macro|FPU_SAVE
-macro_line|#undef FPU_SAVE
-DECL|macro|FPU_RESTORE
-macro_line|#undef FPU_RESTORE
 multiline_comment|/*&n; * Cache avoiding checksumming functions utilizing KNI instructions&n; * Copyright (C) 1999 Zach Brown (with obvious credit due Ingo)&n; */
 DECL|macro|XMMS_SAVE
 mdefine_line|#define XMMS_SAVE do {&t;&t;&t;&t;&bslash;&n;&t;preempt_disable();&t;&t;&t;&bslash;&n;&t;__asm__ __volatile__ ( &t;&t;&t;&bslash;&n;&t;&t;&quot;movl %%cr0,%0&t;&t;;&bslash;n&bslash;t&quot;&t;&bslash;&n;&t;&t;&quot;clts&t;&t;&t;;&bslash;n&bslash;t&quot;&t;&bslash;&n;&t;&t;&quot;movups %%xmm0,(%1)&t;;&bslash;n&bslash;t&quot;&t;&bslash;&n;&t;&t;&quot;movups %%xmm1,0x10(%1)&t;;&bslash;n&bslash;t&quot;&t;&bslash;&n;&t;&t;&quot;movups %%xmm2,0x20(%1)&t;;&bslash;n&bslash;t&quot;&t;&bslash;&n;&t;&t;&quot;movups %%xmm3,0x30(%1)&t;;&bslash;n&bslash;t&quot;&t;&bslash;&n;&t;&t;: &quot;=&amp;r&quot; (cr0)&t;&t;&t;&bslash;&n;&t;&t;: &quot;r&quot; (xmm_save) &t;&t;&bslash;&n;&t;&t;: &quot;memory&quot;);&t;&t;&t;&bslash;&n;} while(0)
