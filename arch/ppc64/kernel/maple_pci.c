@@ -1332,7 +1332,6 @@ op_assign
 id|pci_alloc_pci_controller
 c_func
 (paren
-id|phb_type_apple
 )paren
 suffix:semicolon
 r_if

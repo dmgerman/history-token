@@ -16,9 +16,7 @@ op_star
 id|pci_alloc_pci_controller
 c_func
 (paren
-r_enum
-id|phb_types
-id|controller_type
+r_void
 )paren
 suffix:semicolon
 r_extern
@@ -28,9 +26,7 @@ op_star
 id|pci_alloc_phb_dynamic
 c_func
 (paren
-r_enum
-id|phb_types
-id|controller_type
+r_void
 )paren
 suffix:semicolon
 r_extern
@@ -214,7 +210,13 @@ op_star
 suffix:semicolon
 r_extern
 r_int
+r_int
 id|pci_probe_only
+suffix:semicolon
+r_extern
+r_int
+r_int
+id|pci_assign_all_buses
 suffix:semicolon
 r_extern
 r_int
