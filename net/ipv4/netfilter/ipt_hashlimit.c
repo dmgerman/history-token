@@ -280,7 +280,7 @@ comma
 id|dst-&gt;dst_port
 op_lshift
 l_int|16
-op_amp
+op_or
 id|dst-&gt;src_port
 )paren
 comma
