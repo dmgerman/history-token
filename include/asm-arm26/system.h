@@ -330,6 +330,8 @@ l_int|0
 suffix:semicolon
 )brace
 macro_line|#endif /* __ASSEMBLY__ */
+DECL|macro|arch_align_stack
+mdefine_line|#define arch_align_stack(x) (x)
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif
 eof

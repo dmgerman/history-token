@@ -793,6 +793,8 @@ suffix:semicolon
 )brace
 DECL|macro|cmpxchg
 mdefine_line|#define cmpxchg(ptr,o,n)&t;&t;&t;&t;&t;&t; &bslash;&n;  ({&t;&t;&t;&t;&t;&t;&t;&t;&t; &bslash;&n;     __typeof__(*(ptr)) _o_ = (o);&t;&t;&t;&t;&t; &bslash;&n;     __typeof__(*(ptr)) _n_ = (n);&t;&t;&t;&t;&t; &bslash;&n;     (__typeof__(*(ptr))) __cmpxchg((ptr), (unsigned long)_o_,&t;&t; &bslash;&n;&t;&t;&t;&t;    (unsigned long)_n_, sizeof(*(ptr))); &bslash;&n;  })
+DECL|macro|arch_align_stack
+mdefine_line|#define arch_align_stack(x) (x)
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* __PPC_SYSTEM_H */
 eof

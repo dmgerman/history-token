@@ -452,32 +452,15 @@ id|k_platform
 op_plus
 l_int|1
 suffix:semicolon
-macro_line|#ifdef CONFIG_X86_HT
-multiline_comment|/*&n;&t;&t; * In some cases (e.g. Hyper-Threading), we want to avoid L1&n;&t;&t; * evictions by the processes running on the same package. One&n;&t;&t; * thing we can do is to shuffle the initial stack for them.&n;&t;&t; *&n;&t;&t; * The conditionals here are unneeded, but kept in to make the&n;&t;&t; * code behaviour the same as pre change unless we have&n;&t;&t; * hyperthreaded processors. This should be cleaned up&n;&t;&t; * before 2.6&n;&t;&t; */
-r_if
-c_cond
-(paren
-id|smp_num_siblings
-OG
-l_int|1
-)paren
-id|STACK_ALLOC
+multiline_comment|/*&n;&t;&t; * In some cases (e.g. Hyper-Threading), we want to avoid L1&n;&t;&t; * evictions by the processes running on the same package. One&n;&t;&t; * thing we can do is to shuffle the initial stack for them.&n;&t;&t; */
+id|p
+op_assign
+id|arch_align_stack
 c_func
 (paren
 id|p
-comma
-(paren
-(paren
-id|current-&gt;pid
-op_mod
-l_int|64
-)paren
-op_lshift
-l_int|7
-)paren
 )paren
 suffix:semicolon
-macro_line|#endif
 id|u_platform
 op_assign
 (paren
