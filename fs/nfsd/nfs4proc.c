@@ -2275,6 +2275,8 @@ op_amp
 id|count
 comma
 id|verify-&gt;ve_bmval
+comma
+id|rqstp
 )paren
 suffix:semicolon
 multiline_comment|/* this means that nfsd4_encode_fattr() ran out of space */

@@ -9,7 +9,6 @@ macro_line|#include &lt;linux/sunrpc/gss_err.h&gt;
 macro_line|#include &lt;linux/sunrpc/sched.h&gt;
 macro_line|#include &lt;linux/sunrpc/gss_api.h&gt;
 macro_line|#include &lt;linux/sunrpc/clnt.h&gt;
-macro_line|#include &lt;linux/sunrpc/name_lookup.h&gt;
 macro_line|#ifdef RPC_DEBUG
 DECL|macro|RPCDBG_FACILITY
 macro_line|# define RPCDBG_FACILITY        RPCDBG_AUTH

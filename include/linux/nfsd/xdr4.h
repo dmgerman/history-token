@@ -1290,6 +1290,12 @@ DECL|member|to_free
 op_star
 id|to_free
 suffix:semicolon
+DECL|member|rqstp
+r_struct
+id|svc_rqst
+op_star
+id|rqstp
+suffix:semicolon
 DECL|member|taglen
 id|u32
 id|taglen
@@ -1527,6 +1533,10 @@ comma
 id|u32
 op_star
 id|bmval
+comma
+r_struct
+id|svc_rqst
+op_star
 )paren
 suffix:semicolon
 r_extern
