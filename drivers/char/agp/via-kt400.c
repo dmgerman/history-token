@@ -620,7 +620,6 @@ suffix:semicolon
 DECL|function|via_kt400_enable
 r_static
 r_void
-id|__init
 id|via_kt400_enable
 c_func
 (paren
