@@ -203,6 +203,10 @@ DECL|member|intr
 r_int
 id|intr
 suffix:semicolon
+DECL|member|interrupts_enabled
+r_int
+id|interrupts_enabled
+suffix:semicolon
 DECL|member|max_commands
 r_int
 id|max_commands
@@ -441,6 +445,10 @@ id|val
 )paren
 (brace
 multiline_comment|/* Turn interrupts on */
+id|h-&gt;interrupts_enabled
+op_assign
+l_int|1
+suffix:semicolon
 id|writel
 c_func
 (paren
@@ -455,6 +463,10 @@ suffix:semicolon
 r_else
 multiline_comment|/* Turn them off */
 (brace
+id|h-&gt;interrupts_enabled
+op_assign
+l_int|0
+suffix:semicolon
 id|writel
 c_func
 (paren
@@ -490,6 +502,10 @@ id|val
 )paren
 (brace
 multiline_comment|/* Turn interrupts on */
+id|h-&gt;interrupts_enabled
+op_assign
+l_int|1
+suffix:semicolon
 id|writel
 c_func
 (paren
@@ -504,6 +520,10 @@ suffix:semicolon
 r_else
 multiline_comment|/* Turn them off */
 (brace
+id|h-&gt;interrupts_enabled
+op_assign
+l_int|0
+suffix:semicolon
 id|writel
 c_func
 (paren

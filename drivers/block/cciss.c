@@ -9251,6 +9251,7 @@ multiline_comment|/* Is this interrupt for us? */
 r_if
 c_cond
 (paren
+(paren
 id|h-&gt;access
 dot
 id|intr_pending
@@ -9260,6 +9261,13 @@ id|h
 )paren
 op_eq
 l_int|0
+)paren
+op_logical_or
+(paren
+id|h-&gt;interrupts_enabled
+op_eq
+l_int|0
+)paren
 )paren
 r_return
 id|IRQ_NONE
