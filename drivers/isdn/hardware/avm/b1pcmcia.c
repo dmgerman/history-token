@@ -825,8 +825,6 @@ c_func
 r_void
 )paren
 (brace
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 id|b1_set_revision
 c_func
 (paren
@@ -842,8 +840,6 @@ c_func
 op_amp
 id|b1pcmcia_driver
 )paren
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 r_return
 l_int|0
