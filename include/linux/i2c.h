@@ -921,13 +921,17 @@ mdefine_line|#define I2C_CLIENT_TEN&t;0x10&t;&t;&t;/* we have a ten bit chip add
 multiline_comment|/* Must equal I2C_M_TEN below */
 multiline_comment|/* i2c adapter classes (bitmask) */
 DECL|macro|I2C_ADAP_CLASS_SMBUS
-mdefine_line|#define I2C_ADAP_CLASS_SMBUS      (1&lt;&lt;0)        /* lm_sensors, ... */
+mdefine_line|#define I2C_ADAP_CLASS_SMBUS&t;&t;(1&lt;&lt;0)&t;/* lm_sensors, ... */
 DECL|macro|I2C_ADAP_CLASS_TV_ANALOG
-mdefine_line|#define I2C_ADAP_CLASS_TV_ANALOG  (1&lt;&lt;1)        /* bttv + friends */
-DECL|macro|I2C_ADAP_CLASS_TV_DIGINAL
-mdefine_line|#define I2C_ADAP_CLASS_TV_DIGINAL (1&lt;&lt;2)        /* dbv cards */
+mdefine_line|#define I2C_ADAP_CLASS_TV_ANALOG&t;(1&lt;&lt;1)&t;/* bttv + friends */
+DECL|macro|I2C_ADAP_CLASS_TV_DIGITAL
+mdefine_line|#define I2C_ADAP_CLASS_TV_DIGITAL&t;(1&lt;&lt;2)&t;/* dbv cards */
 DECL|macro|I2C_ADAP_CLASS_DDC
-mdefine_line|#define I2C_ADAP_CLASS_DDC        (1&lt;&lt;3)        /* i2c-matroxfb ? */
+mdefine_line|#define I2C_ADAP_CLASS_DDC&t;&t;(1&lt;&lt;3)&t;/* i2c-matroxfb ? */
+DECL|macro|I2C_ADAP_CLASS_CAM_ANALOG
+mdefine_line|#define I2C_ADAP_CLASS_CAM_ANALOG&t;(1&lt;&lt;4)&t;/* camera with analog CCD */
+DECL|macro|I2C_ADAP_CLASS_CAM_DIGITAL
+mdefine_line|#define I2C_ADAP_CLASS_CAM_DIGITAL&t;(1&lt;&lt;5)&t;/* most webcams */
 multiline_comment|/* i2c_client_address_data is the struct for holding default client&n; * addresses for a driver and for the parameters supplied on the&n; * command line&n; */
 DECL|struct|i2c_client_address_data
 r_struct
