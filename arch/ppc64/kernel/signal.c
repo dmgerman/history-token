@@ -680,7 +680,7 @@ op_star
 id|rt_sf
 suffix:semicolon
 r_struct
-id|sigcontext_struct
+id|sigcontext
 id|sigctx
 suffix:semicolon
 r_struct
@@ -1319,7 +1319,7 @@ id|regs
 )paren
 (brace
 r_struct
-id|sigcontext_struct
+id|sigcontext
 op_star
 id|sc
 comma
@@ -1341,7 +1341,7 @@ id|sc
 op_assign
 (paren
 r_struct
-id|sigcontext_struct
+id|sigcontext
 op_star
 )paren
 (paren
@@ -1584,13 +1584,13 @@ r_int
 id|temp_ptr
 suffix:semicolon
 r_struct
-id|sigcontext_struct
+id|sigcontext
 op_star
 id|sc
 op_assign
 (paren
 r_struct
-id|sigcontext_struct
+id|sigcontext
 op_star
 )paren
 id|newsp
@@ -1889,7 +1889,7 @@ id|frame
 )paren
 (brace
 r_struct
-id|sigcontext_struct
+id|sigcontext
 op_star
 id|sc
 suffix:semicolon
@@ -2158,7 +2158,7 @@ id|sc
 op_assign
 (paren
 r_struct
-id|sigcontext_struct
+id|sigcontext
 op_star
 )paren
 op_star
