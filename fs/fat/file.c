@@ -214,7 +214,8 @@ r_int
 r_int
 )paren
 id|iblock
-op_mod
+op_amp
+(paren
 id|MSDOS_SB
 c_func
 (paren
@@ -222,6 +223,9 @@ id|sb
 )paren
 op_member_access_from_pointer
 id|sec_per_clus
+op_minus
+l_int|1
+)paren
 )paren
 )paren
 (brace
