@@ -3531,10 +3531,14 @@ DECL|enum|pci_fixup_pass
 r_enum
 id|pci_fixup_pass
 (brace
+DECL|enumerator|pci_fixup_early
+id|pci_fixup_early
+comma
+multiline_comment|/* Before probing BARs */
 DECL|enumerator|pci_fixup_header
 id|pci_fixup_header
 comma
-multiline_comment|/* Called immediately after reading configuration header */
+multiline_comment|/* After reading configuration header */
 DECL|enumerator|pci_fixup_final
 id|pci_fixup_final
 comma
@@ -3546,12 +3550,16 @@ multiline_comment|/* pci_enable_device() time */
 )brace
 suffix:semicolon
 multiline_comment|/* Anonymous variables would be nice... */
+DECL|macro|DECLARE_PCI_FIXUP_SECTION
+mdefine_line|#define DECLARE_PCI_FIXUP_SECTION(section, name, vendor, device, hook)&t;&bslash;&n;&t;static struct pci_fixup __pci_fixup_##name __attribute_used__&t;&bslash;&n;&t;__attribute__((__section__(#section))) = { vendor, device, hook };
+DECL|macro|DECLARE_PCI_FIXUP_EARLY
+mdefine_line|#define DECLARE_PCI_FIXUP_EARLY(vendor, device, hook)&t;&t;&t;&bslash;&n;&t;DECLARE_PCI_FIXUP_SECTION(.pci_fixup_early,&t;&t;&t;&bslash;&n;&t;&t;&t;vendor##device##hook, vendor, device, hook)
 DECL|macro|DECLARE_PCI_FIXUP_HEADER
-mdefine_line|#define DECLARE_PCI_FIXUP_HEADER(vendor, device, hook)&t;&t;&t;&t;&t;&bslash;&n;&t;static struct pci_fixup __pci_fixup_##vendor##device##hook __attribute_used__&t;&bslash;&n;&t;__attribute__((__section__(&quot;.pci_fixup_header&quot;))) = {&t;&t;&t;&t;&bslash;&n;&t;&t;vendor, device, hook };
+mdefine_line|#define DECLARE_PCI_FIXUP_HEADER(vendor, device, hook)&t;&t;&t;&bslash;&n;&t;DECLARE_PCI_FIXUP_SECTION(.pci_fixup_header,&t;&t;&t;&bslash;&n;&t;&t;&t;vendor##device##hook, vendor, device, hook)
 DECL|macro|DECLARE_PCI_FIXUP_FINAL
-mdefine_line|#define DECLARE_PCI_FIXUP_FINAL(vendor, device, hook)&t;&t;&t;&t;&bslash;&n;&t;static struct pci_fixup __pci_fixup_##vendor##device##hook __attribute_used__&t;&bslash;&n;&t;__attribute__((__section__(&quot;.pci_fixup_final&quot;))) = {&t;&t;&t;&t;&bslash;&n;&t;&t;vendor, device, hook };
+mdefine_line|#define DECLARE_PCI_FIXUP_FINAL(vendor, device, hook)&t;&t;&t;&bslash;&n;&t;DECLARE_PCI_FIXUP_SECTION(.pci_fixup_final,&t;&t;&t;&bslash;&n;&t;&t;&t;vendor##device##hook, vendor, device, hook)
 DECL|macro|DECLARE_PCI_FIXUP_ENABLE
-mdefine_line|#define DECLARE_PCI_FIXUP_ENABLE(vendor, device, hook)&t;&t;&t;&t;&bslash;&n;&t;static struct pci_fixup __pci_fixup_##vendor##device##hook __attribute_used__&t;&bslash;&n;&t;__attribute__((__section__(&quot;.pci_fixup_enable&quot;))) = {&t;&t;&t;&t;&bslash;&n;&t;&t;vendor, device, hook };
+mdefine_line|#define DECLARE_PCI_FIXUP_ENABLE(vendor, device, hook)&t;&t;&t;&bslash;&n;&t;DECLARE_PCI_FIXUP_SECTION(.pci_fixup_enable,&t;&t;&t;&bslash;&n;&t;&t;&t;vendor##device##hook, vendor, device, hook)
 r_void
 id|pci_fixup_device
 c_func

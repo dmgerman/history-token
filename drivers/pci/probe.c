@@ -2258,6 +2258,15 @@ id|dev-&gt;current_state
 op_assign
 l_int|4
 suffix:semicolon
+multiline_comment|/* Early fixups, before probing the BARs */
+id|pci_fixup_device
+c_func
+(paren
+id|pci_fixup_early
+comma
+id|dev
+)paren
+suffix:semicolon
 r_switch
 c_cond
 (paren
