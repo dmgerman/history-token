@@ -7012,6 +7012,10 @@ comma
 id|zholes_size
 )paren
 suffix:semicolon
+id|mem_map
+op_assign
+id|contig_page_data.node_mem_map
+suffix:semicolon
 )brace
 multiline_comment|/* P3: easy to fix, todo. Current code is utterly broken, though. */
 r_if

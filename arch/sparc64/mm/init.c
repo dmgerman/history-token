@@ -7805,6 +7805,10 @@ comma
 id|zholes_size
 )paren
 suffix:semicolon
+id|mem_map
+op_assign
+id|contig_page_data.node_mem_map
+suffix:semicolon
 )brace
 id|device_scan
 c_func

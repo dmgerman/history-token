@@ -2,6 +2,7 @@ multiline_comment|/* $Id: esp.h,v 1.29 2001/12/11 04:55:47 davem Exp $&n; * esp.
 macro_line|#ifndef _SPARC_ESP_H
 DECL|macro|_SPARC_ESP_H
 mdefine_line|#define _SPARC_ESP_H
+macro_line|#include &lt;linux/config.h&gt;
 multiline_comment|/* For dvma controller register definitions. */
 macro_line|#include &lt;asm/dma.h&gt;
 multiline_comment|/* The ESP SCSI controllers have their register sets in three&n; * &quot;classes&quot;:&n; *&n; * 1) Registers which are both read and write.&n; * 2) Registers which are read only.&n; * 3) Registers which are write only.&n; *&n; * Yet, they all live within the same IO space.&n; */
@@ -907,8 +908,14 @@ op_star
 id|SDptr
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_SPARC64
 DECL|macro|SCSI_SPARC_ESP
 mdefine_line|#define SCSI_SPARC_ESP {                                        &bslash;&n;&t;&t;proc_name:      &quot;esp&quot;,&t;&t;&t;&t;&bslash;&n;&t;&t;proc_info:      &amp;esp_proc_info,&t;&t;&t;&bslash;&n;&t;&t;name:           &quot;Sun ESP 100/100a/200&quot;,&t;&t;&bslash;&n;&t;&t;detect:         esp_detect,&t;&t;&t;&bslash;&n;&t;&t;revoke:&t;&t;esp_revoke,&t;&t;&t;&bslash;&n;&t;&t;info:           esp_info,&t;&t;&t;&bslash;&n;&t;&t;command:        esp_command,&t;&t;&t;&bslash;&n;&t;&t;queuecommand:   esp_queue,&t;&t;&t;&bslash;&n;&t;&t;abort:          esp_abort,&t;&t;&t;&bslash;&n;&t;&t;reset:          esp_reset,&t;&t;&t;&bslash;&n;&t;&t;can_queue:      7,&t;&t;&t;&t;&bslash;&n;&t;&t;this_id:        7,&t;&t;&t;&t;&bslash;&n;&t;&t;sg_tablesize:   SG_ALL,&t;&t;&t;&t;&bslash;&n;&t;&t;cmd_per_lun:    1,&t;&t;&t;&t;&bslash;&n;&t;&t;use_clustering: ENABLE_CLUSTERING,&t;&t;&bslash;&n;&t;&t;highmem_io:&t;1,&t;&t;&t;&t;&bslash;&n;}
+macro_line|#else
+multiline_comment|/* Sparc32&squot;s iommu code cannot handle highmem pages yet. */
+DECL|macro|SCSI_SPARC_ESP
+mdefine_line|#define SCSI_SPARC_ESP {                                        &bslash;&n;&t;&t;proc_name:      &quot;esp&quot;,&t;&t;&t;&t;&bslash;&n;&t;&t;proc_info:      &amp;esp_proc_info,&t;&t;&t;&bslash;&n;&t;&t;name:           &quot;Sun ESP 100/100a/200&quot;,&t;&t;&bslash;&n;&t;&t;detect:         esp_detect,&t;&t;&t;&bslash;&n;&t;&t;revoke:&t;&t;esp_revoke,&t;&t;&t;&bslash;&n;&t;&t;info:           esp_info,&t;&t;&t;&bslash;&n;&t;&t;command:        esp_command,&t;&t;&t;&bslash;&n;&t;&t;queuecommand:   esp_queue,&t;&t;&t;&bslash;&n;&t;&t;abort:          esp_abort,&t;&t;&t;&bslash;&n;&t;&t;reset:          esp_reset,&t;&t;&t;&bslash;&n;&t;&t;can_queue:      7,&t;&t;&t;&t;&bslash;&n;&t;&t;this_id:        7,&t;&t;&t;&t;&bslash;&n;&t;&t;sg_tablesize:   SG_ALL,&t;&t;&t;&t;&bslash;&n;&t;&t;cmd_per_lun:    1,&t;&t;&t;&t;&bslash;&n;&t;&t;use_clustering: ENABLE_CLUSTERING,&t;&t;&bslash;&n;}
+macro_line|#endif
 multiline_comment|/* For our interrupt engine. */
 DECL|macro|for_each_esp
 mdefine_line|#define for_each_esp(esp) &bslash;&n;        for((esp) = espchain; (esp); (esp) = (esp)-&gt;next)
