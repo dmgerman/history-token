@@ -286,10 +286,6 @@ id|nonblock
 suffix:semicolon
 )brace
 suffix:semicolon
-multiline_comment|/* forward declaration; pte_chain is meant to be internal to rmap.c */
-r_struct
-id|pte_chain
-suffix:semicolon
 r_struct
 id|mmu_gather
 suffix:semicolon
@@ -310,7 +306,7 @@ r_int
 id|page_flags_t
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/*&n; * Each physical page in the system has a struct page associated with&n; * it to keep track of whatever it is we are using the page for at the&n; * moment. Note that we have no way to track which tasks are using&n; * a page.&n; *&n; * Try to keep the most commonly accessed fields in single cache lines&n; * here (16 bytes or greater).  This ordering should be particularly&n; * beneficial on 32-bit processors.&n; *&n; * The first line is data used in page cache lookup, the second line&n; * is used for linear searches (eg. clock algorithm scans). &n; *&n; * TODO: make this structure smaller, it could be as small as 32 bytes.&n; */
+multiline_comment|/*&n; * Each physical page in the system has a struct page associated with&n; * it to keep track of whatever it is we are using the page for at the&n; * moment. Note that we have no way to track which tasks are using&n; * a page.&n; *&n; * Try to keep the most commonly accessed fields in single cache lines&n; * here (16 bytes or greater).  This ordering should be particularly&n; * beneficial on 32-bit processors.&n; *&n; * The first line is data used in page cache lookup, the second line&n; * is used for linear searches (eg. clock algorithm scans). &n; */
 DECL|struct|page
 r_struct
 id|page
@@ -319,12 +315,24 @@ DECL|member|flags
 id|page_flags_t
 id|flags
 suffix:semicolon
-multiline_comment|/* atomic flags, some possibly&n;&t;&t;&t;&t;&t;   updated asynchronously */
+multiline_comment|/* Atomic flags, some possibly&n;&t;&t;&t;&t;&t; * updated asynchronously */
 DECL|member|_count
 id|atomic_t
 id|_count
 suffix:semicolon
 multiline_comment|/* Usage count, see below. */
+DECL|member|mapcount
+r_int
+r_int
+id|mapcount
+suffix:semicolon
+multiline_comment|/* Count of ptes mapped in mms,&n;&t;&t;&t;&t;&t; * to show when page is mapped&n;&t;&t;&t;&t;&t; * &amp; limit reverse map searches,&n;&t;&t;&t;&t;&t; * protected by PG_maplock.&n;&t;&t;&t;&t;&t; */
+DECL|member|private
+r_int
+r_int
+r_private
+suffix:semicolon
+multiline_comment|/* Mapping-private opaque data:&n;&t;&t;&t;&t;&t; * usually used for buffer_heads&n;&t;&t;&t;&t;&t; * if PagePrivate set; used for&n;&t;&t;&t;&t;&t; * swp_entry_t if PageSwapCache&n;&t;&t;&t;&t;&t; */
 DECL|member|mapping
 r_struct
 id|address_space
@@ -342,36 +350,7 @@ r_struct
 id|list_head
 id|lru
 suffix:semicolon
-multiline_comment|/* Pageout list, eg. active_list;&n;&t;&t;&t;&t;&t;   protected by zone-&gt;lru_lock !! */
-r_union
-(brace
-DECL|member|chain
-r_struct
-id|pte_chain
-op_star
-id|chain
-suffix:semicolon
-multiline_comment|/* Reverse pte mapping pointer.&n;&t;&t;&t;&t;&t; * protected by PG_chainlock */
-DECL|member|direct
-id|pte_addr_t
-id|direct
-suffix:semicolon
-DECL|member|mapcount
-r_int
-r_int
-id|mapcount
-suffix:semicolon
-multiline_comment|/* Count ptes mapped into mms */
-DECL|member|pte
-)brace
-id|pte
-suffix:semicolon
-DECL|member|private
-r_int
-r_int
-r_private
-suffix:semicolon
-multiline_comment|/* Mapping-private opaque data:&n;&t;&t;&t;&t;&t; * usually used for buffer_heads&n;&t;&t;&t;&t;&t; * if PagePrivate set; used for&n;&t;&t;&t;&t;&t; * swp_entry_t if PageSwapCache&n;&t;&t;&t;&t;&t; */
+multiline_comment|/* Pageout list, eg. active_list&n;&t;&t;&t;&t;&t; * protected by zone-&gt;lru_lock !&n;&t;&t;&t;&t;&t; */
 multiline_comment|/*&n;&t; * On machines where all RAM is mapped into kernel address space,&n;&t; * we can simply calculate the virtual address. On machines with&n;&t; * highmem some memory is mapped into kernel virtual memory&n;&t; * dynamically, so we need a place to store that address.&n;&t; * Note that this field could be 16 bits on x86 ... ;)&n;&t; *&n;&t; * Architectures with slow multiplication can define&n;&t; * WANT_PAGE_VIRTUAL in asm/page.h&n;&t; */
 macro_line|#if defined(WANT_PAGE_VIRTUAL)
 DECL|member|virtual
@@ -904,7 +883,7 @@ r_return
 id|page-&gt;index
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Return true if this page is mapped into pagetables.  Subtle: test pte.direct&n; * rather than pte.chain.  Because sometimes pte.direct is 64-bit, and .chain&n; * is only 32-bit.&n; */
+multiline_comment|/*&n; * Return true if this page is mapped into pagetables.&n; */
 DECL|function|page_mapped
 r_static
 r_inline
@@ -919,7 +898,7 @@ id|page
 )paren
 (brace
 r_return
-id|page-&gt;pte.direct
+id|page-&gt;mapcount
 op_ne
 l_int|0
 suffix:semicolon

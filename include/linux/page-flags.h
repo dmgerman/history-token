@@ -39,8 +39,8 @@ DECL|macro|PG_nosave
 mdefine_line|#define PG_nosave&t;&t;14&t;/* Used for system suspend/resume */
 DECL|macro|PG_maplock
 mdefine_line|#define PG_maplock&t;&t;15&t;/* Lock bit for rmap to ptes */
-DECL|macro|PG_direct
-mdefine_line|#define PG_direct&t;&t;16&t;/* -&gt;pte_chain points directly at pte */
+DECL|macro|PG_swapcache
+mdefine_line|#define PG_swapcache&t;&t;16&t;/* Swap page: swp_entry_t in private */
 DECL|macro|PG_mappedtodisk
 mdefine_line|#define PG_mappedtodisk&t;&t;17&t;/* Has blocks allocated on-disk */
 DECL|macro|PG_reclaim
@@ -48,9 +48,7 @@ mdefine_line|#define PG_reclaim&t;&t;18&t;/* To be reclaimed asap */
 DECL|macro|PG_compound
 mdefine_line|#define PG_compound&t;&t;19&t;/* Part of a compound page */
 DECL|macro|PG_anon
-mdefine_line|#define PG_anon&t;&t;&t;20&t;/* Anonymous page: anon_vma in mapping*/
-DECL|macro|PG_swapcache
-mdefine_line|#define PG_swapcache&t;&t;21&t;/* Swap page: swp_entry_t in private */
+mdefine_line|#define PG_anon&t;&t;&t;20&t;/* Anonymous page: anonmm in mapping */
 multiline_comment|/*&n; * Global page accounting.  One instance per CPU.  Only unsigned longs are&n; * allowed.&n; */
 DECL|struct|page_state
 r_struct
@@ -436,16 +434,6 @@ DECL|macro|ClearPageNosave
 mdefine_line|#define ClearPageNosave(page)&t;&t;clear_bit(PG_nosave, &amp;(page)-&gt;flags)
 DECL|macro|TestClearPageNosave
 mdefine_line|#define TestClearPageNosave(page)&t;test_and_clear_bit(PG_nosave, &amp;(page)-&gt;flags)
-DECL|macro|PageDirect
-mdefine_line|#define PageDirect(page)&t;test_bit(PG_direct, &amp;(page)-&gt;flags)
-DECL|macro|SetPageDirect
-mdefine_line|#define SetPageDirect(page)&t;set_bit(PG_direct, &amp;(page)-&gt;flags)
-DECL|macro|TestSetPageDirect
-mdefine_line|#define TestSetPageDirect(page)&t;test_and_set_bit(PG_direct, &amp;(page)-&gt;flags)
-DECL|macro|ClearPageDirect
-mdefine_line|#define ClearPageDirect(page)&t;&t;clear_bit(PG_direct, &amp;(page)-&gt;flags)
-DECL|macro|TestClearPageDirect
-mdefine_line|#define TestClearPageDirect(page)&t;test_and_clear_bit(PG_direct, &amp;(page)-&gt;flags)
 DECL|macro|PageMappedToDisk
 mdefine_line|#define PageMappedToDisk(page)&t;test_bit(PG_mappedtodisk, &amp;(page)-&gt;flags)
 DECL|macro|SetPageMappedToDisk

@@ -144,14 +144,6 @@ r_void
 suffix:semicolon
 r_extern
 r_void
-id|pte_chain_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_void
 id|radix_tree_init
 c_func
 (paren
@@ -1563,11 +1555,6 @@ c_func
 )paren
 suffix:semicolon
 id|pgtable_cache_init
-c_func
-(paren
-)paren
-suffix:semicolon
-id|pte_chain_init
 c_func
 (paren
 )paren

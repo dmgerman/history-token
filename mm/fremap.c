@@ -144,8 +144,6 @@ id|page_remove_rmap
 c_func
 (paren
 id|page
-comma
-id|ptep
 )paren
 suffix:semicolon
 id|page_cache_release
