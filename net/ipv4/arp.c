@@ -4608,6 +4608,8 @@ r_struct
 id|neighbour
 op_star
 id|n
+op_assign
+l_int|NULL
 suffix:semicolon
 id|state-&gt;is_pneigh
 op_assign
