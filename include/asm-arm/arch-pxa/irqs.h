@@ -1,8 +1,10 @@
 multiline_comment|/*&n; *  linux/include/asm-arm/arch-pxa/irqs.h&n; *&n; *  Author:&t;Nicolas Pitre&n; *  Created:&t;Jun 15, 2001&n; *  Copyright:&t;MontaVista Software Inc.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; */
 DECL|macro|PXA_IRQ_SKIP
-mdefine_line|#define PXA_IRQ_SKIP&t;8&t;/* The first 8 IRQs are reserved */
+mdefine_line|#define PXA_IRQ_SKIP&t;7&t;/* The first 7 IRQs are not yet used */
 DECL|macro|PXA_IRQ
 mdefine_line|#define PXA_IRQ(x)&t;&t;((x) - PXA_IRQ_SKIP)
+DECL|macro|IRQ_HWUART
+mdefine_line|#define IRQ_HWUART&t;PXA_IRQ(7)&t;/* HWUART Transmit/Receive/Error */
 DECL|macro|IRQ_GPIO0
 mdefine_line|#define&t;IRQ_GPIO0&t;PXA_IRQ(8)&t;/* GPIO0 Edge Detect */
 DECL|macro|IRQ_GPIO1
@@ -17,6 +19,10 @@ DECL|macro|IRQ_I2S
 mdefine_line|#define&t;IRQ_I2S&t;&t;PXA_IRQ(13)&t;/* I2S Interrupt */
 DECL|macro|IRQ_AC97
 mdefine_line|#define&t;IRQ_AC97&t;PXA_IRQ(14)&t;/* AC97 Interrupt */
+DECL|macro|IRQ_ASSP
+mdefine_line|#define IRQ_ASSP&t;PXA_IRQ(15)&t;/* Audio SSP Service Request */
+DECL|macro|IRQ_NSSP
+mdefine_line|#define IRQ_NSSP&t;PXA_IRQ(16)&t;/* Network SSP Service Request */
 DECL|macro|IRQ_LCD
 mdefine_line|#define&t;IRQ_LCD&t;&t;PXA_IRQ(17)&t;/* LCD Controller Service Request */
 DECL|macro|IRQ_I2C
