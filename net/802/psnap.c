@@ -299,6 +299,17 @@ c_func
 id|unregister_snap_client
 )paren
 suffix:semicolon
+DECL|variable|__initdata
+r_static
+r_char
+id|snap_err_msg
+(braket
+)braket
+id|__initdata
+op_assign
+id|KERN_CRIT
+l_string|&quot;SNAP - unable to register with 802.2&bslash;n&quot;
+suffix:semicolon
 DECL|function|snap_init
 r_static
 r_int
@@ -328,8 +339,7 @@ id|snap_sap
 id|printk
 c_func
 (paren
-id|KERN_CRIT
-l_string|&quot;SNAP - unable to register with 802.2&bslash;n&quot;
+id|snap_err_msg
 )paren
 suffix:semicolon
 r_return
