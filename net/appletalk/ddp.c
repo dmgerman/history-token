@@ -3674,6 +3674,14 @@ comma
 id|sk
 )paren
 suffix:semicolon
+id|sk_set_owner
+c_func
+(paren
+id|sk
+comma
+id|THIS_MODULE
+)paren
+suffix:semicolon
 multiline_comment|/* Checksums on by default */
 id|sk-&gt;sk_zapped
 op_assign
