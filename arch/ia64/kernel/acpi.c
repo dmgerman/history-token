@@ -386,6 +386,16 @@ op_plus
 op_star
 id|offset
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|res-&gt;length
+op_le
+l_int|0
+)paren
+r_return
+l_int|NULL
+suffix:semicolon
 op_star
 id|offset
 op_add_assign
