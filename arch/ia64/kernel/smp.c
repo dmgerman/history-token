@@ -135,7 +135,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|__cli
+id|local_irq_disable
 c_func
 (paren
 )paren

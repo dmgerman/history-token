@@ -840,7 +840,7 @@ suffix:semicolon
 r_int
 id|entry
 suffix:semicolon
-id|__save_and_cli
+id|local_irq_save
 c_func
 (paren
 id|flags
@@ -922,7 +922,7 @@ c_func
 id|old_ctx
 )paren
 suffix:semicolon
-id|__restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -952,7 +952,7 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-id|__save_and_cli
+id|local_irq_save
 c_func
 (paren
 id|flags
@@ -981,7 +981,7 @@ op_amp
 l_int|0xff
 )paren
 suffix:semicolon
-id|__restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -1023,7 +1023,7 @@ suffix:semicolon
 r_int
 id|size
 suffix:semicolon
-id|__save_and_cli
+id|local_irq_save
 c_func
 (paren
 id|flags
@@ -1236,7 +1236,7 @@ l_int|0xff
 suffix:semicolon
 )brace
 )brace
-id|__restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -1294,7 +1294,7 @@ op_lshift
 l_int|1
 )paren
 suffix:semicolon
-id|__save_and_cli
+id|local_irq_save
 c_func
 (paren
 id|flags
@@ -1382,7 +1382,7 @@ c_func
 id|oldpid
 )paren
 suffix:semicolon
-id|__restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -1596,7 +1596,7 @@ c_func
 op_amp
 l_int|0xff
 suffix:semicolon
-id|__save_and_cli
+id|local_irq_save
 c_func
 (paren
 id|flags
@@ -1739,7 +1739,7 @@ id|pid
 suffix:semicolon
 id|BARRIER
 suffix:semicolon
-id|__restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -2019,7 +2019,7 @@ r_int
 r_int
 id|old_ctx
 suffix:semicolon
-id|__save_and_cli
+id|local_irq_save
 c_func
 (paren
 id|flags
@@ -2115,7 +2115,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|__restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -2173,7 +2173,7 @@ r_int
 r_int
 id|old_ctx
 suffix:semicolon
-id|__save_and_cli
+id|local_irq_save
 c_func
 (paren
 id|flags
@@ -2284,7 +2284,7 @@ id|old_pagemask
 suffix:semicolon
 id|out
 suffix:colon
-id|__restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags

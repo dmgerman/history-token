@@ -3490,10 +3490,6 @@ id|error
 op_assign
 op_minus
 id|EBUSY
-comma
-id|rehash
-op_assign
-l_int|0
 suffix:semicolon
 id|dfprintk
 c_func

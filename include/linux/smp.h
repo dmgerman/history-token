@@ -170,8 +170,10 @@ DECL|macro|this_cpu
 mdefine_line|#define this_cpu(var)&t;&t;&t;&t;var
 macro_line|#endif /* !SMP */
 DECL|macro|get_cpu
-mdefine_line|#define get_cpu()&t;({ preempt_disable(); smp_processor_id(); })
+mdefine_line|#define get_cpu()&t;&t;({ preempt_disable(); smp_processor_id(); })
 DECL|macro|put_cpu
-mdefine_line|#define put_cpu()&t;preempt_enable()
+mdefine_line|#define put_cpu()&t;&t;preempt_enable()
+DECL|macro|put_cpu_no_resched
+mdefine_line|#define put_cpu_no_resched()&t;preempt_enable_no_resched()
 macro_line|#endif /* __LINUX_SMP_H */
 eof

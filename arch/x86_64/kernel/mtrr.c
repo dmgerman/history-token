@@ -145,13 +145,13 @@ id|u64
 id|cr0
 suffix:semicolon
 multiline_comment|/* Disable interrupts locally */
-id|__save_flags
+id|local_save_flags
 c_func
 (paren
 id|ctxt-&gt;flags
 )paren
 suffix:semicolon
-id|__cli
+id|local_irq_disable
 c_func
 (paren
 )paren
@@ -287,7 +287,7 @@ id|ctxt-&gt;cr4val
 )paren
 suffix:semicolon
 multiline_comment|/*  Re-enable interrupts locally (if enabled previously)  */
-id|__restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|ctxt-&gt;flags

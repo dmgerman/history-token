@@ -370,7 +370,7 @@ suffix:semicolon
 r_int
 id|index
 suffix:semicolon
-id|__save_and_cli
+id|local_irq_save
 c_func
 (paren
 id|flags
@@ -421,7 +421,7 @@ c_func
 id|oldpid
 )paren
 suffix:semicolon
-id|__restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
