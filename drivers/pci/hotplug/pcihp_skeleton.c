@@ -260,6 +260,7 @@ DECL|function|enable_slot
 r_static
 r_int
 id|enable_slot
+c_func
 (paren
 r_struct
 id|hotplug_slot
@@ -282,6 +283,7 @@ op_assign
 l_int|0
 suffix:semicolon
 id|dbg
+c_func
 (paren
 l_string|&quot;%s - physical_slot = %s&bslash;n&quot;
 comma
@@ -299,6 +301,7 @@ DECL|function|disable_slot
 r_static
 r_int
 id|disable_slot
+c_func
 (paren
 r_struct
 id|hotplug_slot
@@ -321,6 +324,7 @@ op_assign
 l_int|0
 suffix:semicolon
 id|dbg
+c_func
 (paren
 l_string|&quot;%s - physical_slot = %s&bslash;n&quot;
 comma
@@ -338,6 +342,7 @@ DECL|function|set_attention_status
 r_static
 r_int
 id|set_attention_status
+c_func
 (paren
 r_struct
 id|hotplug_slot
@@ -363,6 +368,7 @@ op_assign
 l_int|0
 suffix:semicolon
 id|dbg
+c_func
 (paren
 l_string|&quot;%s - physical_slot = %s&bslash;n&quot;
 comma
@@ -400,6 +406,7 @@ DECL|function|hardware_test
 r_static
 r_int
 id|hardware_test
+c_func
 (paren
 r_struct
 id|hotplug_slot
@@ -425,6 +432,7 @@ op_assign
 l_int|0
 suffix:semicolon
 id|dbg
+c_func
 (paren
 l_string|&quot;%s - physical_slot = %s&bslash;n&quot;
 comma
@@ -433,17 +441,12 @@ comma
 id|hotplug_slot-&gt;name
 )paren
 suffix:semicolon
-id|err
-(paren
-l_string|&quot;No hardware tests are defined for this driver&quot;
-)paren
-suffix:semicolon
 id|retval
 op_assign
 op_minus
 id|ENODEV
 suffix:semicolon
-multiline_comment|/* Or you can specify a test if you want to */
+multiline_comment|/* Or specify a test if you have one */
 r_return
 id|retval
 suffix:semicolon
@@ -452,6 +455,7 @@ DECL|function|get_power_status
 r_static
 r_int
 id|get_power_status
+c_func
 (paren
 r_struct
 id|hotplug_slot
@@ -496,6 +500,7 @@ DECL|function|get_attention_status
 r_static
 r_int
 id|get_attention_status
+c_func
 (paren
 r_struct
 id|hotplug_slot
@@ -540,6 +545,7 @@ DECL|function|get_latch_status
 r_static
 r_int
 id|get_latch_status
+c_func
 (paren
 r_struct
 id|hotplug_slot
@@ -584,6 +590,7 @@ DECL|function|get_adapter_status
 r_static
 r_int
 id|get_adapter_status
+c_func
 (paren
 r_struct
 id|hotplug_slot
@@ -691,6 +698,7 @@ DECL|function|make_slot_name
 r_static
 r_void
 id|make_slot_name
+c_func
 (paren
 r_struct
 id|slot
@@ -715,6 +723,7 @@ DECL|function|init_slots
 r_static
 r_int
 id|init_slots
+c_func
 (paren
 r_void
 )paren
@@ -765,6 +774,7 @@ id|i
 id|slot
 op_assign
 id|kmalloc
+c_func
 (paren
 r_sizeof
 (paren
@@ -802,6 +812,7 @@ suffix:semicolon
 id|hotplug_slot
 op_assign
 id|kmalloc
+c_func
 (paren
 r_sizeof
 (paren
@@ -850,6 +861,7 @@ suffix:semicolon
 id|info
 op_assign
 id|kmalloc
+c_func
 (paren
 r_sizeof
 (paren
@@ -903,6 +915,7 @@ suffix:semicolon
 id|name
 op_assign
 id|kmalloc
+c_func
 (paren
 id|SLOT_NAME_SIZE
 comma
@@ -956,6 +969,7 @@ op_amp
 id|release_slot
 suffix:semicolon
 id|make_slot_name
+c_func
 (paren
 id|slot
 )paren
@@ -999,6 +1013,7 @@ id|slot
 )paren
 suffix:semicolon
 id|dbg
+c_func
 (paren
 l_string|&quot;registering slot %d&bslash;n&quot;
 comma
@@ -1008,6 +1023,7 @@ suffix:semicolon
 id|retval
 op_assign
 id|pci_hp_register
+c_func
 (paren
 id|slot-&gt;hotplug_slot
 )paren
@@ -1019,6 +1035,7 @@ id|retval
 )paren
 (brace
 id|err
+c_func
 (paren
 l_string|&quot;pci_hp_register failed with error %d&bslash;n&quot;
 comma
@@ -1102,6 +1119,7 @@ id|slot_list
 id|slot
 op_assign
 id|list_entry
+c_func
 (paren
 id|tmp
 comma
@@ -1118,6 +1136,7 @@ id|slot-&gt;slot_list
 )paren
 suffix:semicolon
 id|pci_hp_deregister
+c_func
 (paren
 id|slot-&gt;hotplug_slot
 )paren
