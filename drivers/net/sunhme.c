@@ -1990,9 +1990,11 @@ r_if
 c_cond
 (paren
 op_logical_neg
+(paren
 id|hp-&gt;happy_flags
 op_amp
 id|HFLAG_FENABLE
+)paren
 )paren
 r_return
 id|happy_meal_bb_write
