@@ -316,65 +316,6 @@ mdefine_line|#define MAKE_WORD(W,HB,LB)&t;((W)=((HB&lt;&lt;8)+LB))
 macro_line|#endif
 DECL|macro|BUSCLOCK
 mdefine_line|#define BUSCLOCK(D)&t;&bslash;&n;&t;((struct chipset_bus_clock_list_entry *) pci_get_drvdata((D)))
-macro_line|#if defined(DISPLAY_AEC62XX_TIMINGS) &amp;&amp; defined(CONFIG_PROC_FS)
-macro_line|#include &lt;linux/stat.h&gt;
-macro_line|#include &lt;linux/proc_fs.h&gt;
-DECL|variable|aec62xx_proc
-r_static
-id|u8
-id|aec62xx_proc
-suffix:semicolon
-r_static
-r_int
-id|aec62xx_get_info
-c_func
-(paren
-r_char
-op_star
-comma
-r_char
-op_star
-op_star
-comma
-id|off_t
-comma
-r_int
-)paren
-suffix:semicolon
-DECL|variable|aec62xx_procs
-r_static
-id|ide_pci_host_proc_t
-id|aec62xx_procs
-(braket
-)braket
-op_assign
-(brace
-(brace
-dot
-id|name
-op_assign
-l_string|&quot;aec62xx&quot;
-comma
-dot
-id|set
-op_assign
-l_int|1
-comma
-dot
-id|get_info
-op_assign
-id|aec62xx_get_info
-comma
-dot
-id|parent
-op_assign
-l_int|NULL
-comma
-)brace
-comma
-)brace
-suffix:semicolon
-macro_line|#endif /* DISPLAY_AEC62XX_TIMINGS &amp;&amp; CONFIG_PROC_FS */
 r_static
 r_void
 id|init_setup_aec6x80

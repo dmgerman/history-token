@@ -871,11 +871,12 @@ id|name
 )paren
 (brace
 macro_line|#ifdef CONFIG_PROC_FS
-id|ide_pci_register_host_proc
+id|ide_pci_create_host_proc
 c_func
 (paren
-op_amp
-id|triflex_proc
+l_string|&quot;triflex&quot;
+comma
+id|triflex_get_info
 )paren
 suffix:semicolon
 macro_line|#endif

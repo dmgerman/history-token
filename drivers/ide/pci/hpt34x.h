@@ -12,65 +12,6 @@ mdefine_line|#define SPLIT_BYTE(B,H,L)&t;((H)=(B&gt;&gt;4), (L)=(B-((B&gt;&gt;4)
 macro_line|#endif
 DECL|macro|DISPLAY_HPT34X_TIMINGS
 macro_line|#undef DISPLAY_HPT34X_TIMINGS
-macro_line|#if defined(DISPLAY_HPT34X_TIMINGS) &amp;&amp; defined(CONFIG_PROC_FS)
-macro_line|#include &lt;linux/stat.h&gt;
-macro_line|#include &lt;linux/proc_fs.h&gt;
-DECL|variable|hpt34x_proc
-r_static
-id|u8
-id|hpt34x_proc
-suffix:semicolon
-r_static
-r_int
-id|hpt34x_get_info
-c_func
-(paren
-r_char
-op_star
-comma
-r_char
-op_star
-op_star
-comma
-id|off_t
-comma
-r_int
-)paren
-suffix:semicolon
-DECL|variable|hpt34x_procs
-r_static
-id|ide_pci_host_proc_t
-id|hpt34x_procs
-(braket
-)braket
-op_assign
-(brace
-(brace
-dot
-id|name
-op_assign
-l_string|&quot;hpt34x&quot;
-comma
-dot
-id|set
-op_assign
-l_int|1
-comma
-dot
-id|get_info
-op_assign
-id|hpt34x_get_info
-comma
-dot
-id|parent
-op_assign
-l_int|NULL
-comma
-)brace
-comma
-)brace
-suffix:semicolon
-macro_line|#endif  /* defined(DISPLAY_HPT34X_TIMINGS) &amp;&amp; defined(CONFIG_PROC_FS) */
 r_static
 r_int
 r_int

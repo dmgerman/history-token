@@ -8,65 +8,6 @@ DECL|macro|PIIX_DEBUG_DRIVE_INFO
 mdefine_line|#define PIIX_DEBUG_DRIVE_INFO&t;&t;0
 DECL|macro|DISPLAY_PIIX_TIMINGS
 mdefine_line|#define DISPLAY_PIIX_TIMINGS
-macro_line|#if defined(DISPLAY_PIIX_TIMINGS) &amp;&amp; defined(CONFIG_PROC_FS)
-macro_line|#include &lt;linux/stat.h&gt;
-macro_line|#include &lt;linux/proc_fs.h&gt;
-DECL|variable|piix_proc
-r_static
-id|u8
-id|piix_proc
-suffix:semicolon
-r_static
-r_int
-id|piix_get_info
-c_func
-(paren
-r_char
-op_star
-comma
-r_char
-op_star
-op_star
-comma
-id|off_t
-comma
-r_int
-)paren
-suffix:semicolon
-DECL|variable|piix_procs
-r_static
-id|ide_pci_host_proc_t
-id|piix_procs
-(braket
-)braket
-op_assign
-(brace
-(brace
-dot
-id|name
-op_assign
-l_string|&quot;piix&quot;
-comma
-dot
-id|set
-op_assign
-l_int|1
-comma
-dot
-id|get_info
-op_assign
-id|piix_get_info
-comma
-dot
-id|parent
-op_assign
-l_int|NULL
-comma
-)brace
-comma
-)brace
-suffix:semicolon
-macro_line|#endif  /* defined(DISPLAY_PIIX_TIMINGS) &amp;&amp; defined(CONFIG_PROC_FS) */
 r_static
 r_void
 id|init_setup_piix

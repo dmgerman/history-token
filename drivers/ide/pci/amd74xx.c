@@ -279,6 +279,11 @@ multiline_comment|/*&n; * AMD /proc entry.&n; */
 macro_line|#ifdef CONFIG_PROC_FS
 macro_line|#include &lt;linux/stat.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
+DECL|variable|amd74xx_proc
+r_static
+id|u8
+id|amd74xx_proc
+suffix:semicolon
 DECL|variable|amd_udma2cyc
 r_static
 r_int
@@ -2614,14 +2619,12 @@ id|bmide_dev
 op_assign
 id|dev
 suffix:semicolon
-id|ide_pci_register_host_proc
+id|ide_pci_create_host_proc
 c_func
 (paren
-op_amp
-id|amd74xx_procs
-(braket
-l_int|0
-)braket
+l_string|&quot;amd74xx&quot;
+comma
+id|amd74xx_get_info
 )paren
 suffix:semicolon
 id|amd74xx_proc

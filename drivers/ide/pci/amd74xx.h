@@ -6,65 +6,6 @@ macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/ide.h&gt;
 DECL|macro|DISPLAY_AMD_TIMINGS
 mdefine_line|#define DISPLAY_AMD_TIMINGS
-macro_line|#if defined(DISPLAY_AMD_TIMINGS) &amp;&amp; defined(CONFIG_PROC_FS)
-macro_line|#include &lt;linux/stat.h&gt;
-macro_line|#include &lt;linux/proc_fs.h&gt;
-DECL|variable|amd74xx_proc
-r_static
-id|u8
-id|amd74xx_proc
-suffix:semicolon
-r_static
-r_int
-id|amd74xx_get_info
-c_func
-(paren
-r_char
-op_star
-comma
-r_char
-op_star
-op_star
-comma
-id|off_t
-comma
-r_int
-)paren
-suffix:semicolon
-DECL|variable|amd74xx_procs
-r_static
-id|ide_pci_host_proc_t
-id|amd74xx_procs
-(braket
-)braket
-op_assign
-(brace
-(brace
-dot
-id|name
-op_assign
-l_string|&quot;amd74xx&quot;
-comma
-dot
-id|set
-op_assign
-l_int|1
-comma
-dot
-id|get_info
-op_assign
-id|amd74xx_get_info
-comma
-dot
-id|parent
-op_assign
-l_int|NULL
-comma
-)brace
-comma
-)brace
-suffix:semicolon
-macro_line|#endif  /* defined(DISPLAY_AMD_TIMINGS) &amp;&amp; defined(CONFIG_PROC_FS) */
 r_static
 r_int
 r_int

@@ -1621,6 +1621,12 @@ id|show_driver
 )brace
 suffix:semicolon
 macro_line|#ifdef CONFIG_PROC_FS
+DECL|variable|proc_ide_root
+r_struct
+id|proc_dir_entry
+op_star
+id|proc_ide_root
+suffix:semicolon
 DECL|variable|generic_subdriver_entries
 id|ide_proc_entry_t
 id|generic_subdriver_entries
@@ -10195,6 +10201,18 @@ c_func
 (paren
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_PROC_FS
+id|proc_ide_root
+op_assign
+id|proc_mkdir
+c_func
+(paren
+l_string|&quot;ide&quot;
+comma
+l_int|0
+)paren
+suffix:semicolon
+macro_line|#endif
 macro_line|#ifdef CONFIG_BLK_DEV_ALI14XX
 r_if
 c_cond
