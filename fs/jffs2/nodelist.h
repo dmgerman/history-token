@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2001-2003 Red Hat, Inc.&n; *&n; * Created by David Woodhouse &lt;dwmw2@infradead.org&gt;&n; *&n; * For licensing information, see the file &squot;LICENCE&squot; in this directory.&n; *&n; * $Id: nodelist.h,v 1.123 2004/11/16 20:36:11 dwmw2 Exp $&n; *&n; */
+multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2001-2003 Red Hat, Inc.&n; *&n; * Created by David Woodhouse &lt;dwmw2@infradead.org&gt;&n; *&n; * For licensing information, see the file &squot;LICENCE&squot; in this directory.&n; *&n; * $Id: nodelist.h,v 1.124 2004/11/17 09:30:02 dedekind Exp $&n; *&n; */
 macro_line|#ifndef __JFFS2_NODELIST_H__
 DECL|macro|__JFFS2_NODELIST_H__
 mdefine_line|#define __JFFS2_NODELIST_H__
@@ -195,33 +195,6 @@ DECL|macro|INO_STATE_READING
 mdefine_line|#define INO_STATE_READING&t;5&t;/* In read_inode() */
 DECL|macro|INOCACHE_HASHSIZE
 mdefine_line|#define INOCACHE_HASHSIZE 128
-DECL|struct|jffs2_scan_info
-r_struct
-id|jffs2_scan_info
-(brace
-DECL|member|dents
-r_struct
-id|jffs2_full_dirent
-op_star
-id|dents
-suffix:semicolon
-DECL|member|tmpnodes
-r_struct
-id|jffs2_tmp_dnode_info
-op_star
-id|tmpnodes
-suffix:semicolon
-multiline_comment|/* Latest i_size info */
-DECL|member|version
-r_uint32
-id|version
-suffix:semicolon
-DECL|member|isize
-r_uint32
-id|isize
-suffix:semicolon
-)brace
-suffix:semicolon
 multiline_comment|/*&n;  Larger representation of a raw node, kept in-core only when the &n;  struct inode for this particular ino is instantiated.&n;*/
 DECL|struct|jffs2_full_dnode
 r_struct
