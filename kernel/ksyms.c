@@ -1860,13 +1860,6 @@ c_func
 id|ioctl_by_bdev
 )paren
 suffix:semicolon
-DECL|variable|register_disk
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|register_disk
-)paren
-suffix:semicolon
 DECL|variable|read_dev_sector
 id|EXPORT_SYMBOL
 c_func

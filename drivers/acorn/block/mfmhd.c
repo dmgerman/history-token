@@ -3312,7 +3312,7 @@ op_assign
 l_int|0
 comma
 dot
-id|major_name
+id|disk_name
 op_assign
 l_string|&quot;mfma&quot;
 comma
@@ -3335,7 +3335,7 @@ op_assign
 l_int|64
 comma
 dot
-id|major_name
+id|disk_name
 op_assign
 l_string|&quot;mfmb&quot;
 comma
@@ -3897,7 +3897,7 @@ id|printk
 (paren
 l_string|&quot;%s: %dMB CHS=%d/%d/%d LCC=%d RECOMP=%d&bslash;n&quot;
 comma
-id|disk-&gt;major_name
+id|disk-&gt;disk_name
 comma
 id|p-&gt;cylinders
 op_star

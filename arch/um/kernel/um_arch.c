@@ -1,5 +1,6 @@
 multiline_comment|/* &n; * Copyright (C) 2000, 2002 Jeff Dike (jdike@karaya.com)&n; * Licensed under the GPL&n; */
 macro_line|#include &quot;linux/config.h&quot;
+macro_line|#include &quot;linux/kernel.h&quot;
 macro_line|#include &quot;linux/sched.h&quot;
 macro_line|#include &quot;linux/notifier.h&quot;
 macro_line|#include &quot;linux/mm.h&quot;
@@ -357,11 +358,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-r_extern
-r_int
-r_int
-id|high_physmem
-suffix:semicolon
 macro_line|#ifdef CONFIG_HOST_2G_2G
 DECL|macro|TOP
 mdefine_line|#define TOP 0x80000000
@@ -971,6 +967,8 @@ r_struct
 id|vm_reserved
 id|kernel_vm_reserved
 suffix:semicolon
+DECL|macro|MIN_VMALLOC
+mdefine_line|#define MIN_VMALLOC (32 * 1024 * 1024)
 DECL|function|linux_main
 r_int
 id|linux_main
@@ -992,6 +990,8 @@ suffix:semicolon
 r_int
 r_int
 id|virtmem_size
+comma
+id|max_physmem
 suffix:semicolon
 r_int
 r_int
@@ -1102,6 +1102,8 @@ c_cond
 (paren
 op_logical_neg
 id|jail
+op_logical_or
+id|debug
 )paren
 (brace
 id|remap_data
@@ -1237,6 +1239,40 @@ c_func
 )paren
 )paren
 suffix:semicolon
+id|highmem
+op_assign
+l_int|0
+suffix:semicolon
+id|max_physmem
+op_assign
+id|get_kmem_end
+c_func
+(paren
+)paren
+op_minus
+id|uml_physmem
+op_minus
+id|MIN_VMALLOC
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|physmem_size
+OG
+id|max_physmem
+)paren
+(brace
+id|highmem
+op_assign
+id|physmem_size
+op_minus
+id|max_physmem
+suffix:semicolon
+id|physmem_size
+op_sub_assign
+id|highmem
+suffix:semicolon
+)brace
 id|high_physmem
 op_assign
 id|uml_physmem
@@ -1251,6 +1287,10 @@ op_star
 )paren
 id|high_physmem
 suffix:semicolon
+id|start_vm
+op_assign
+id|VMALLOC_START
+suffix:semicolon
 id|setup_physmem
 c_func
 (paren
@@ -1261,30 +1301,6 @@ comma
 id|physmem_size
 )paren
 suffix:semicolon
-multiline_comment|/* Kernel vm starts after physical memory and is either the size&n;&t; * of physical memory or the remaining space left in the kernel&n;&t; * area of the address space, whichever is smaller.&n;&t; */
-id|start_vm
-op_assign
-id|VMALLOC_START
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|start_vm
-op_ge
-id|get_kmem_end
-c_func
-(paren
-)paren
-)paren
-(brace
-id|panic
-c_func
-(paren
-l_string|&quot;Physical memory too large to allow any kernel &quot;
-l_string|&quot;virtual memory&quot;
-)paren
-suffix:semicolon
-)brace
 id|virtmem_size
 op_assign
 id|physmem_size

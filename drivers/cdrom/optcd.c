@@ -8175,7 +8175,7 @@ op_amp
 id|opt_fops
 comma
 dot
-id|major_name
+id|disk_name
 op_assign
 l_string|&quot;optcd&quot;
 )brace

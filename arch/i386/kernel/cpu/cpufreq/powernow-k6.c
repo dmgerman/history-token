@@ -893,7 +893,7 @@ op_star
 r_sizeof
 (paren
 r_struct
-id|cpufreq_freqs
+id|cpufreq_policy
 )paren
 comma
 id|GFP_KERNEL

@@ -6456,7 +6456,7 @@ op_amp
 id|azt_fops
 comma
 dot
-id|major_name
+id|disk_name
 op_assign
 l_string|&quot;aztcd&quot;
 )brace

@@ -12047,7 +12047,7 @@ op_assign
 l_int|0
 comma
 dot
-id|major_name
+id|disk_name
 op_assign
 l_string|&quot;cdu31a&quot;
 comma

@@ -298,7 +298,7 @@ op_assign
 l_int|0
 comma
 dot
-id|major_name
+id|disk_name
 op_assign
 l_string|&quot;xda&quot;
 comma
@@ -327,7 +327,7 @@ op_assign
 l_int|64
 comma
 dot
-id|major_name
+id|disk_name
 op_assign
 l_string|&quot;xdb&quot;
 comma
