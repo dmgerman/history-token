@@ -7193,20 +7193,8 @@ comma
 l_int|0
 )paren
 comma
-id|AC97_SINGLE
-c_func
-(paren
-l_string|&quot;IEC958 Input Monitor&quot;
-comma
-id|AC97_ALC650_MULTICH
-comma
-l_int|13
-comma
-l_int|1
-comma
-l_int|0
-)paren
-comma
+multiline_comment|/* disable this controls since it doesn&squot;t work as expected */
+multiline_comment|/* AC97_SINGLE(&quot;IEC958 Input Monitor&quot;, AC97_ALC650_MULTICH, 13, 1, 0), */
 )brace
 suffix:semicolon
 DECL|function|patch_alc650_specific
@@ -8005,22 +7993,8 @@ comma
 l_int|0
 )paren
 comma
-id|AC97_PAGE_SINGLE
-c_func
-(paren
-l_string|&quot;IEC958 Input Monitor&quot;
-comma
-id|AC97_ALC650_MULTICH
-comma
-l_int|14
-comma
-l_int|1
-comma
-l_int|0
-comma
-l_int|0
-)paren
-comma
+multiline_comment|/* disable this controls since it doesn&squot;t work as expected */
+multiline_comment|/* AC97_PAGE_SINGLE(&quot;IEC958 Input Monitor&quot;, AC97_ALC650_MULTICH, 14, 1, 0, 0), */
 (brace
 dot
 id|iface
