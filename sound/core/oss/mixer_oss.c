@@ -9,6 +9,8 @@ macro_line|#include &lt;sound/control.h&gt;
 macro_line|#include &lt;sound/info.h&gt;
 macro_line|#include &lt;sound/mixer_oss.h&gt;
 macro_line|#include &lt;linux/soundcard.h&gt;
+DECL|macro|OSS_ALSAEMULVER
+mdefine_line|#define OSS_ALSAEMULVER         _SIOR (&squot;M&squot;, 249, int)
 id|MODULE_AUTHOR
 c_func
 (paren
@@ -1678,12 +1680,6 @@ op_star
 )paren
 id|arg
 )paren
-ques
-c_cond
-op_minus
-id|EFAULT
-suffix:colon
-l_int|0
 suffix:semicolon
 r_case
 id|OSS_GETVERSION
@@ -1693,6 +1689,22 @@ id|put_user
 c_func
 (paren
 id|SNDRV_OSS_VERSION
+comma
+(paren
+r_int
+op_star
+)paren
+id|arg
+)paren
+suffix:semicolon
+r_case
+id|OSS_ALSAEMULVER
+suffix:colon
+r_return
+id|put_user
+c_func
+(paren
+l_int|1
 comma
 (paren
 r_int
@@ -1734,12 +1746,6 @@ op_star
 )paren
 id|arg
 )paren
-ques
-c_cond
-op_minus
-id|EFAULT
-suffix:colon
-l_int|0
 suffix:semicolon
 r_case
 id|SOUND_MIXER_READ_STEREODEVS
@@ -1774,12 +1780,6 @@ op_star
 )paren
 id|arg
 )paren
-ques
-c_cond
-op_minus
-id|EFAULT
-suffix:colon
-l_int|0
 suffix:semicolon
 r_case
 id|SOUND_MIXER_READ_RECMASK
@@ -1814,12 +1814,6 @@ op_star
 )paren
 id|arg
 )paren
-ques
-c_cond
-op_minus
-id|EFAULT
-suffix:colon
-l_int|0
 suffix:semicolon
 r_case
 id|SOUND_MIXER_READ_CAPS
@@ -1854,12 +1848,6 @@ op_star
 )paren
 id|arg
 )paren
-ques
-c_cond
-op_minus
-id|EFAULT
-suffix:colon
-l_int|0
 suffix:semicolon
 r_case
 id|SOUND_MIXER_READ_RECSRC
@@ -1894,12 +1882,6 @@ op_star
 )paren
 id|arg
 )paren
-ques
-c_cond
-op_minus
-id|EFAULT
-suffix:colon
-l_int|0
 suffix:semicolon
 )brace
 )brace
@@ -1966,12 +1948,6 @@ op_star
 )paren
 id|arg
 )paren
-ques
-c_cond
-op_minus
-id|EFAULT
-suffix:colon
-l_int|0
 suffix:semicolon
 )brace
 r_else
@@ -2017,12 +1993,6 @@ op_star
 )paren
 id|arg
 )paren
-ques
-c_cond
-op_minus
-id|EFAULT
-suffix:colon
-l_int|0
 suffix:semicolon
 )brace
 r_return
