@@ -1064,10 +1064,10 @@ r_goto
 id|return_error
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * ntfs_file_read_compressed_block - read a compressed block into the page cache&n; * @page:&t;locked page in the compression block(s) we need to read&n; *&n; * When we are called the page has already been verified to be locked and the&n; * attribute is known to be non-resident, not encrypted, but compressed.&n; *&n; * 1. Determine which compression block(s) @page is in.&n; * 2. Get hold of all pages corresponding to this/these compression block(s).&n; * 3. Read the (first) compression block.&n; * 4. Decompress it into the corresponding pages.&n; * 5. Throw the compressed data away and proceed to 3. for the next compression&n; *    block or return success if no more compression blocks left.&n; *&n; * Warning: We have to be careful what we do about existing pages. They might&n; * have been written to so that we would lose data if we were to just overwrite&n; * them with the out-of-date uncompressed data.&n; *&n; * FIXME: For PAGE_CACHE_SIZE &gt; cb_size we are not doing the Right Thing(TM) at&n; * the end of the file I think. We need to detect this case and zero the out&n; * of bounds remainder of the page in question and mark it as handled. At the&n; * moment we would just return -EIO on such a page. This bug will only become&n; * apparent if pages are above 8kiB and the NTFS volume only uses 512 byte&n; * clusters so is probably not going to be seen by anyone. Still this should&n; * be fixed. (AIA)&n; *&n; * FIXME: Again for PAGE_CACHE_SIZE &gt; cb_size we are screwing up both in&n; * handling sparse and compressed cbs. (AIA)&n; *&n; * FIXME: At the moment we don&squot;t do any zeroing out in the case that&n; * initialized_size is less than data_size. This should be safe because of the&n; * nature of the compression algorithm used. Just in case we check and output&n; * an error message in read inode if the two sizes are not equal for a&n; * compressed file.&n; */
-DECL|function|ntfs_file_read_compressed_block
+multiline_comment|/**&n; * ntfs_read_compressed_block - read a compressed block into the page cache&n; * @page:&t;locked page in the compression block(s) we need to read&n; *&n; * When we are called the page has already been verified to be locked and the&n; * attribute is known to be non-resident, not encrypted, but compressed.&n; *&n; * 1. Determine which compression block(s) @page is in.&n; * 2. Get hold of all pages corresponding to this/these compression block(s).&n; * 3. Read the (first) compression block.&n; * 4. Decompress it into the corresponding pages.&n; * 5. Throw the compressed data away and proceed to 3. for the next compression&n; *    block or return success if no more compression blocks left.&n; *&n; * Warning: We have to be careful what we do about existing pages. They might&n; * have been written to so that we would lose data if we were to just overwrite&n; * them with the out-of-date uncompressed data.&n; *&n; * FIXME: For PAGE_CACHE_SIZE &gt; cb_size we are not doing the Right Thing(TM) at&n; * the end of the file I think. We need to detect this case and zero the out&n; * of bounds remainder of the page in question and mark it as handled. At the&n; * moment we would just return -EIO on such a page. This bug will only become&n; * apparent if pages are above 8kiB and the NTFS volume only uses 512 byte&n; * clusters so is probably not going to be seen by anyone. Still this should&n; * be fixed. (AIA)&n; *&n; * FIXME: Again for PAGE_CACHE_SIZE &gt; cb_size we are screwing up both in&n; * handling sparse and compressed cbs. (AIA)&n; *&n; * FIXME: At the moment we don&squot;t do any zeroing out in the case that&n; * initialized_size is less than data_size. This should be safe because of the&n; * nature of the compression algorithm used. Just in case we check and output&n; * an error message in read inode if the two sizes are not equal for a&n; * compressed file. (AIA)&n; */
+DECL|function|ntfs_read_compressed_block
 r_int
-id|ntfs_file_read_compressed_block
+id|ntfs_read_compressed_block
 c_func
 (paren
 r_struct
@@ -1105,6 +1105,10 @@ op_star
 id|sb
 op_assign
 id|vol-&gt;sb
+suffix:semicolon
+id|run_list_element
+op_star
+id|rl
 suffix:semicolon
 r_int
 r_int
@@ -1612,6 +1616,10 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* Read all cb buffer heads one cluster at a time. */
+id|rl
+op_assign
+l_int|NULL
+suffix:semicolon
 r_for
 c_loop
 (paren
@@ -1636,9 +1644,15 @@ id|is_retry
 op_assign
 id|FALSE
 suffix:semicolon
-id|retry_remap
+r_if
+c_cond
+(paren
+op_logical_neg
+id|rl
+)paren
+(brace
+id|lock_retry_remap
 suffix:colon
-multiline_comment|/* Find lcn of vcn and convert it into blocks. */
 id|down_read
 c_func
 (paren
@@ -1646,22 +1660,59 @@ op_amp
 id|ni-&gt;run_list.lock
 )paren
 suffix:semicolon
+id|rl
+op_assign
+id|ni-&gt;run_list.rl
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|likely
+c_func
+(paren
+id|rl
+op_ne
+l_int|NULL
+)paren
+)paren
+(brace
+multiline_comment|/* Seek to element containing target vcn. */
+r_while
+c_loop
+(paren
+id|rl-&gt;length
+op_logical_and
+id|rl
+(braket
+l_int|1
+)braket
+dot
+id|vcn
+op_le
+id|vcn
+)paren
+id|rl
+op_increment
+suffix:semicolon
 id|lcn
 op_assign
 id|vcn_to_lcn
 c_func
 (paren
-id|ni-&gt;run_list.rl
+id|rl
 comma
 id|vcn
 )paren
 suffix:semicolon
-id|up_read
-c_func
+)brace
+r_else
+id|lcn
+op_assign
 (paren
-op_amp
-id|ni-&gt;run_list.lock
+id|LCN
 )paren
+id|LCN_RL_NOT_MAPPED
 suffix:semicolon
 id|ntfs_debug
 c_func
@@ -1715,7 +1766,14 @@ id|is_retry
 op_assign
 id|TRUE
 suffix:semicolon
-multiline_comment|/* Map run list of current extent and retry. */
+multiline_comment|/*&n;&t;&t;&t; * Attempt to map run list, dropping lock for the&n;&t;&t;&t; * duration.&n;&t;&t;&t; */
+id|up_read
+c_func
+(paren
+op_amp
+id|ni-&gt;run_list.lock
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1729,7 +1787,7 @@ id|vcn
 )paren
 )paren
 r_goto
-id|retry_remap
+id|lock_retry_remap
 suffix:semicolon
 r_goto
 id|map_rl_err
@@ -1804,6 +1862,19 @@ id|max_block
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* Release the lock if we took it. */
+r_if
+c_cond
+(paren
+id|rl
+)paren
+id|up_read
+c_func
+(paren
+op_amp
+id|ni-&gt;run_list.lock
+)paren
+suffix:semicolon
 multiline_comment|/* Setup and initiate io on all buffer heads. */
 r_for
 c_loop
@@ -2960,6 +3031,13 @@ id|err_out
 suffix:semicolon
 id|rl_err
 suffix:colon
+id|up_read
+c_func
+(paren
+op_amp
+id|ni-&gt;run_list.lock
+)paren
+suffix:semicolon
 id|ntfs_error
 c_func
 (paren
@@ -2974,6 +3052,13 @@ id|err_out
 suffix:semicolon
 id|getblk_err
 suffix:colon
+id|up_read
+c_func
+(paren
+op_amp
+id|ni-&gt;run_list.lock
+)paren
+suffix:semicolon
 id|ntfs_error
 c_func
 (paren

@@ -279,7 +279,7 @@ multiline_comment|/* Declarations of functions and global variables. */
 multiline_comment|/* From fs/ntfs/compress.c */
 r_extern
 r_int
-id|ntfs_file_read_compressed_block
+id|ntfs_read_compressed_block
 c_func
 (paren
 r_struct

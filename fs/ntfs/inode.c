@@ -3835,19 +3835,15 @@ c_func
 (paren
 id|vi-&gt;i_sb
 comma
-l_string|&quot;Compressed &quot;
-l_string|&quot;file with data_size &quot;
-l_string|&quot;unequal to &quot;
-l_string|&quot;initialized size &quot;
-l_string|&quot;found. This will &quot;
-l_string|&quot;probably cause &quot;
-l_string|&quot;problems when trying &quot;
-l_string|&quot;to access the file. &quot;
-l_string|&quot;Please notify &quot;
-l_string|&quot;linux-ntfs-dev@&quot;
-l_string|&quot;lists.sf.net that you&quot;
-l_string|&quot;saw this message.&quot;
-l_string|&quot;Thanks!&quot;
+l_string|&quot;BUG: Found &quot;
+l_string|&quot;compressed file with &quot;
+l_string|&quot;data_size not equal to &quot;
+l_string|&quot;initialized_size. This will &quot;
+l_string|&quot;probably cause problems when &quot;
+l_string|&quot;trying to access the file. &quot;
+l_string|&quot;Please notify linux-ntfs-dev@&quot;
+l_string|&quot;lists.sf.net that you saw &quot;
+l_string|&quot;this message. Thanks!&quot;
 )paren
 suffix:semicolon
 )brace
