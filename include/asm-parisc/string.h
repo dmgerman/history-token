@@ -1,3 +1,6 @@
+macro_line|#ifndef _PA_STRING_H_
+DECL|macro|_PA_STRING_H_
+mdefine_line|#define _PA_STRING_H_
 DECL|macro|__HAVE_ARCH_MEMSET
 mdefine_line|#define __HAVE_ARCH_MEMSET
 r_extern
@@ -14,4 +17,44 @@ comma
 r_int
 )paren
 suffix:semicolon
+DECL|macro|__HAVE_ARCH_MEMCPY
+mdefine_line|#define __HAVE_ARCH_MEMCPY
+r_void
+op_star
+id|memcpy
+c_func
+(paren
+r_void
+op_star
+id|dest
+comma
+r_const
+r_void
+op_star
+id|src
+comma
+r_int
+id|count
+)paren
+suffix:semicolon
+DECL|macro|__HAVE_ARCH_BCOPY
+mdefine_line|#define __HAVE_ARCH_BCOPY
+r_void
+id|bcopy
+c_func
+(paren
+r_const
+r_void
+op_star
+id|srcp
+comma
+r_void
+op_star
+id|destp
+comma
+r_int
+id|count
+)paren
+suffix:semicolon
+macro_line|#endif
 eof

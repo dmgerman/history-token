@@ -263,18 +263,73 @@ DECL|macro|clear_user
 mdefine_line|#define clear_user lclear_user
 DECL|macro|__clear_user
 mdefine_line|#define __clear_user lclear_user
-DECL|macro|copy_from_user
-mdefine_line|#define copy_from_user lcopy_from_user
-DECL|macro|__copy_from_user
-mdefine_line|#define __copy_from_user lcopy_from_user
-DECL|macro|copy_to_user
-mdefine_line|#define copy_to_user lcopy_to_user
+r_int
+r_int
+id|copy_to_user
+c_func
+(paren
+r_void
+id|__user
+op_star
+id|dst
+comma
+r_const
+r_void
+op_star
+id|src
+comma
+r_int
+r_int
+id|len
+)paren
+suffix:semicolon
 DECL|macro|__copy_to_user
-mdefine_line|#define __copy_to_user lcopy_to_user
-DECL|macro|copy_in_user
-mdefine_line|#define copy_in_user lcopy_in_user
+mdefine_line|#define __copy_to_user copy_to_user
+r_int
+r_int
+id|copy_from_user
+c_func
+(paren
+r_void
+op_star
+id|dst
+comma
+r_const
+r_void
+id|__user
+op_star
+id|src
+comma
+r_int
+r_int
+id|len
+)paren
+suffix:semicolon
+DECL|macro|__copy_from_user
+mdefine_line|#define __copy_from_user copy_from_user
+r_int
+r_int
+id|copy_in_user
+c_func
+(paren
+r_void
+id|__user
+op_star
+id|dst
+comma
+r_const
+r_void
+id|__user
+op_star
+id|src
+comma
+r_int
+r_int
+id|len
+)paren
+suffix:semicolon
 DECL|macro|__copy_in_user
-mdefine_line|#define __copy_in_user lcopy_in_user
+mdefine_line|#define __copy_in_user copy_in_user
 DECL|macro|__copy_to_user_inatomic
 mdefine_line|#define __copy_to_user_inatomic __copy_to_user
 DECL|macro|__copy_from_user_inatomic
