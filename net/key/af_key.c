@@ -13828,7 +13828,7 @@ r_uint64
 suffix:semicolon
 id|addr-&gt;sadb_address_exttype
 op_assign
-id|SADB_EXT_ADDRESS_SRC
+id|SADB_EXT_ADDRESS_DST
 suffix:semicolon
 id|addr-&gt;sadb_address_proto
 op_assign
