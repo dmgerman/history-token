@@ -11516,7 +11516,7 @@ suffix:semicolon
 )brace
 DECL|function|ia_int
 r_static
-r_void
+id|irqreturn_t
 id|ia_int
 c_func
 (paren
@@ -11545,6 +11545,11 @@ suffix:semicolon
 r_int
 r_int
 id|status
+suffix:semicolon
+r_int
+id|handled
+op_assign
+l_int|0
 suffix:semicolon
 id|dev
 op_assign
@@ -11576,6 +11581,10 @@ l_int|0x7f
 )paren
 )paren
 (brace
+id|handled
+op_assign
+l_int|1
+suffix:semicolon
 id|IF_EVENT
 c_func
 (paren
@@ -11728,6 +11737,13 @@ id|iadev
 suffix:semicolon
 )brace
 )brace
+r_return
+id|IRQ_RETVAL
+c_func
+(paren
+id|handled
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/*----------------------------- entries --------------------------------*/
 DECL|function|get_esi

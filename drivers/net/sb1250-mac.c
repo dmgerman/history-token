@@ -731,7 +731,7 @@ id|ptr
 )paren
 suffix:semicolon
 r_static
-r_void
+id|irqreturn_t
 id|sbmac_intr
 c_func
 (paren
@@ -4516,6 +4516,11 @@ suffix:semicolon
 r_uint64
 id|isr
 suffix:semicolon
+r_int
+id|handled
+op_assign
+l_int|0
+suffix:semicolon
 r_for
 c_loop
 (paren
@@ -4540,6 +4545,10 @@ op_eq
 l_int|0
 )paren
 r_break
+suffix:semicolon
+id|handled
+op_assign
+l_int|1
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; * Transmits on channel 0&n;&t;&t; */
 r_if
@@ -4592,6 +4601,13 @@ id|sc-&gt;sbm_rxdma
 suffix:semicolon
 )brace
 )brace
+r_return
+id|IRQ_RETVAL
+c_func
+(paren
+id|handled
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/**********************************************************************&n; *  SBMAC_START_TX(skb,dev)&n; *  &n; *  Start output on the specified interface.  Basically, we &n; *  queue as many buffers as we can until the ring fills up, or&n; *  we run off the end of the queue, whichever comes first.&n; *  &n; *  Input parameters: &n; *  &t;   &n; *  &t;   &n; *  Return value:&n; *  &t;   nothing&n; ********************************************************************* */
 DECL|function|sbmac_start_tx

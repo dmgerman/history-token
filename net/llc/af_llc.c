@@ -1,6 +1,7 @@
-multiline_comment|/*&n; * af_llc.c - LLC User Interface SAPs&n; * Description:&n; *   Functions in this module are implementation of socket based llc&n; *   communications for the Linux operating system. Support of llc class&n; *   one and class two is provided via SOCK_DGRAM and SOCK_STREAM&n; *   respectively.&n; *&n; *   An llc2 connection is (mac + sap), only one llc2 sap connection&n; *   is allowed per mac. Though one sap may have multiple mac + sap&n; *   connections.&n; *&n; * Copyright (c) 2001 by Jay Schulist &lt;jschlst@samba.org&gt;&n; *&t;&t; 2002 by Arnaldo Carvalho de Melo &lt;acme@conectiva.com.br&gt;&n; *&n; * This program can be redistributed or modified under the terms of the&n; * GNU General Public License as published by the Free Software Foundation.&n; * This program is distributed without any warranty or implied warranty&n; * of merchantability or fitness for a particular purpose.&n; *&n; * See the GNU General Public License for more details.&n; */
+multiline_comment|/*&n; * af_llc.c - LLC User Interface SAPs&n; * Description:&n; *   Functions in this module are implementation of socket based llc&n; *   communications for the Linux operating system. Support of llc class&n; *   one and class two is provided via SOCK_DGRAM and SOCK_STREAM&n; *   respectively.&n; *&n; *   An llc2 connection is (mac + sap), only one llc2 sap connection&n; *   is allowed per mac. Though one sap may have multiple mac + sap&n; *   connections.&n; *&n; * Copyright (c) 2001 by Jay Schulist &lt;jschlst@samba.org&gt;&n; *&t;&t; 2002-2003 by Arnaldo Carvalho de Melo &lt;acme@conectiva.com.br&gt;&n; *&n; * This program can be redistributed or modified under the terms of the&n; * GNU General Public License as published by the Free Software Foundation.&n; * This program is distributed without any warranty or implied warranty&n; * of merchantability or fitness for a particular purpose.&n; *&n; * See the GNU General Public License for more details.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/tcp.h&gt;
 macro_line|#include &lt;net/llc_sap.h&gt;
 macro_line|#include &lt;net/llc_pdu.h&gt;
@@ -578,7 +579,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;llc_ui_autoport - provide dynamicly allocate SAP number&n; *&n; *&t;Provide the caller with a dynamicly allocated SAP number according&n; *&t;to the rules that are set in this function. Returns: 0, upon failure,&n; *&t;SAP number otherwise.&n; */
+multiline_comment|/**&n; *&t;llc_ui_autoport - provide dynamically allocate SAP number&n; *&n; *&t;Provide the caller with a dynamically allocated SAP number according&n; *&t;to the rules that are set in this function. Returns: 0, upon failure,&n; *&t;SAP number otherwise.&n; */
 DECL|function|llc_ui_autoport
 r_static
 r_int
@@ -2746,7 +2747,8 @@ id|rc
 id|dprintk
 c_func
 (paren
-l_string|&quot;%s: llc_ui_wait_for_data failed recv in %02X from %02X&bslash;n&quot;
+l_string|&quot;%s: llc_ui_wait_for_data failed recv &quot;
+l_string|&quot;in %02X from %02X&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
@@ -4225,6 +4227,11 @@ id|create
 op_assign
 id|llc_ui_create
 comma
+dot
+id|owner
+op_assign
+id|THIS_MODULE
+comma
 )brace
 suffix:semicolon
 DECL|variable|llc_ui_ops
@@ -4330,7 +4337,8 @@ id|llc_ui_banner
 id|__initdata
 op_assign
 id|KERN_INFO
-l_string|&quot;NET4.0 IEEE 802.2 BSD sockets, Jay Schulist, 2001, Arnaldo C. Melo, 2002&bslash;n&quot;
+l_string|&quot;NET4.0 IEEE 802.2 BSD sockets, Jay Schulist, 2001, &quot;
+l_string|&quot;Arnaldo C. Melo, 2002-2003&bslash;n&quot;
 suffix:semicolon
 DECL|function|llc_ui_init
 r_int

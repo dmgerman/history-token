@@ -1402,6 +1402,23 @@ r_int
 id|timeout
 )paren
 suffix:semicolon
+r_extern
+r_void
+id|blk_rq_bio_prep
+c_func
+(paren
+id|request_queue_t
+op_star
+comma
+r_struct
+id|request
+op_star
+comma
+r_struct
+id|bio
+op_star
+)paren
+suffix:semicolon
 DECL|macro|MAX_PHYS_SEGMENTS
 mdefine_line|#define MAX_PHYS_SEGMENTS 128
 DECL|macro|MAX_HW_SEGMENTS

@@ -18,7 +18,6 @@ macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
 macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
-macro_line|#include &lt;linux/wrapper.h&gt;
 macro_line|#include &lt;linux/vmalloc.h&gt;
 macro_line|#include &lt;linux/timex.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
@@ -289,14 +288,11 @@ r_int
 id|l
 )paren
 suffix:semicolon
-DECL|variable|hl_handle
+DECL|variable|video1394_highlevel
 r_static
 r_struct
 id|hpsb_highlevel
-op_star
-id|hl_handle
-op_assign
-l_int|NULL
+id|video1394_highlevel
 suffix:semicolon
 DECL|function|free_dma_iso_ctx
 r_static
@@ -5902,7 +5898,8 @@ op_assign
 id|hpsb_get_hostinfo_bykey
 c_func
 (paren
-id|hl_handle
+op_amp
+id|video1394_highlevel
 comma
 id|i
 )paren
@@ -6285,11 +6282,6 @@ r_struct
 id|hpsb_host
 op_star
 id|host
-comma
-r_struct
-id|hpsb_highlevel
-op_star
-id|hl
 )paren
 (brace
 r_struct
@@ -6336,7 +6328,8 @@ op_logical_neg
 id|hpsb_create_hostinfo
 c_func
 (paren
-id|hl
+op_amp
+id|video1394_highlevel
 comma
 id|host
 comma
@@ -6360,7 +6353,8 @@ suffix:semicolon
 id|hpsb_set_hostinfo
 c_func
 (paren
-id|hl
+op_amp
+id|video1394_highlevel
 comma
 id|host
 comma
@@ -6370,7 +6364,8 @@ suffix:semicolon
 id|hpsb_set_hostinfo_key
 c_func
 (paren
-id|hl
+op_amp
+id|video1394_highlevel
 comma
 id|host
 comma
@@ -6444,7 +6439,8 @@ op_assign
 id|hpsb_get_hostinfo
 c_func
 (paren
-id|hl_handle
+op_amp
+id|video1394_highlevel
 comma
 id|host
 )paren
@@ -6467,13 +6463,18 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-DECL|variable|hl_ops
+DECL|variable|video1394_highlevel
 r_static
 r_struct
-id|hpsb_highlevel_ops
-id|hl_ops
+id|hpsb_highlevel
+id|video1394_highlevel
 op_assign
 (brace
+dot
+id|name
+op_assign
+id|VIDEO1394_DRIVER_NAME
+comma
 dot
 id|add_host
 op_assign
@@ -7087,8 +7088,10 @@ id|video1394_driver
 )paren
 suffix:semicolon
 id|hpsb_unregister_highlevel
+c_func
 (paren
-id|hl_handle
+op_amp
+id|video1394_highlevel
 )paren
 suffix:semicolon
 id|devfs_remove
@@ -7164,49 +7167,13 @@ c_func
 id|VIDEO1394_DRIVER_NAME
 )paren
 suffix:semicolon
-id|hl_handle
-op_assign
 id|hpsb_register_highlevel
+c_func
 (paren
-id|VIDEO1394_DRIVER_NAME
-comma
 op_amp
-id|hl_ops
+id|video1394_highlevel
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|hl_handle
-op_eq
-l_int|NULL
-)paren
-(brace
-id|PRINT_G
-c_func
-(paren
-id|KERN_ERR
-comma
-l_string|&quot;No more memory for driver&bslash;n&quot;
-)paren
-suffix:semicolon
-id|devfs_remove
-c_func
-(paren
-id|VIDEO1394_DRIVER_NAME
-)paren
-suffix:semicolon
-id|ieee1394_unregister_chardev
-c_func
-(paren
-id|IEEE1394_MINOR_BLOCK_VIDEO1394
-)paren
-suffix:semicolon
-r_return
-op_minus
-id|ENOMEM
-suffix:semicolon
-)brace
 id|hpsb_register_protocol
 c_func
 (paren

@@ -241,7 +241,7 @@ op_star
 suffix:semicolon
 DECL|function|atp870u_intr_handle
 r_static
-r_void
+id|irqreturn_t
 id|atp870u_intr_handle
 c_func
 (paren
@@ -372,6 +372,7 @@ op_assign
 l_int|0
 suffix:semicolon
 r_return
+id|IRQ_NONE
 suffix:semicolon
 )brace
 id|tmpcip
@@ -669,7 +670,8 @@ id|dev-&gt;in_int
 op_assign
 l_int|0
 suffix:semicolon
-r_return
+r_goto
+id|out
 suffix:semicolon
 )brace
 r_if
@@ -688,7 +690,8 @@ id|dev-&gt;in_int
 op_assign
 l_int|0
 suffix:semicolon
-r_return
+r_goto
+id|out
 suffix:semicolon
 )brace
 r_if
@@ -842,7 +845,8 @@ id|dev-&gt;in_int
 op_assign
 l_int|0
 suffix:semicolon
-r_return
+r_goto
+id|out
 suffix:semicolon
 )brace
 r_if
@@ -1045,7 +1049,8 @@ id|dev-&gt;in_int
 op_assign
 l_int|0
 suffix:semicolon
-r_return
+r_goto
+id|out
 suffix:semicolon
 )brace
 r_else
@@ -1114,7 +1119,8 @@ id|dev-&gt;in_int
 op_assign
 l_int|0
 suffix:semicolon
-r_return
+r_goto
+id|out
 suffix:semicolon
 )brace
 )brace
@@ -1661,7 +1667,8 @@ id|dev-&gt;in_int
 op_assign
 l_int|0
 suffix:semicolon
-r_return
+r_goto
+id|out
 suffix:semicolon
 )brace
 id|prd
@@ -1904,7 +1911,8 @@ id|dev-&gt;in_int
 op_assign
 l_int|0
 suffix:semicolon
-r_return
+r_goto
+id|out
 suffix:semicolon
 )brace
 id|outb
@@ -1927,7 +1935,8 @@ id|dev-&gt;in_int
 op_assign
 l_int|0
 suffix:semicolon
-r_return
+r_goto
+id|out
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t;&t; *      Current scsi request on this target&n;&t;&t; */
@@ -2203,7 +2212,8 @@ id|dev-&gt;in_int
 op_assign
 l_int|0
 suffix:semicolon
-r_return
+r_goto
+id|out
 suffix:semicolon
 )brace
 r_if
@@ -2342,7 +2352,8 @@ id|dev-&gt;in_int
 op_assign
 l_int|0
 suffix:semicolon
-r_return
+r_goto
+id|out
 suffix:semicolon
 )brace
 r_if
@@ -2471,7 +2482,8 @@ id|dev-&gt;in_int
 op_assign
 l_int|0
 suffix:semicolon
-r_return
+r_goto
+id|out
 suffix:semicolon
 )brace
 id|tmport
@@ -2562,7 +2574,8 @@ id|dev-&gt;in_int
 op_assign
 l_int|0
 suffix:semicolon
-r_return
+r_goto
+id|out
 suffix:semicolon
 )brace
 r_else
@@ -2574,9 +2587,12 @@ id|dev-&gt;in_int
 op_assign
 l_int|0
 suffix:semicolon
-r_return
-suffix:semicolon
 )brace
+id|out
+suffix:colon
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 DECL|function|atp870u_queuecommand
 r_static

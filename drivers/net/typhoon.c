@@ -9453,7 +9453,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#if CONFIG_PM
+macro_line|#ifdef CONFIG_PM
 r_static
 r_int
 DECL|function|typhoon_resume
@@ -11051,7 +11051,7 @@ c_func
 id|typhoon_remove_one
 )paren
 comma
-macro_line|#if CONFIG_PM
+macro_line|#ifdef CONFIG_PM
 dot
 id|suspend
 op_assign

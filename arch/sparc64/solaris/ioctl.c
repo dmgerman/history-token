@@ -10,6 +10,7 @@ macro_line|#include &lt;linux/file.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/mtio.h&gt;
 macro_line|#include &lt;linux/time.h&gt;
+macro_line|#include &lt;linux/compat.h&gt;
 macro_line|#include &lt;net/sock.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/termios.h&gt;
@@ -38,7 +39,7 @@ suffix:semicolon
 r_extern
 id|asmlinkage
 r_int
-id|sys32_ioctl
+id|compat_sys_ioctl
 c_func
 (paren
 r_int
@@ -3807,7 +3808,7 @@ l_int|10
 suffix:colon
 multiline_comment|/* SIOCADDRT */
 r_return
-id|sys32_ioctl
+id|compat_sys_ioctl
 c_func
 (paren
 id|fd
@@ -3822,7 +3823,7 @@ l_int|11
 suffix:colon
 multiline_comment|/* SIOCDELRT */
 r_return
-id|sys32_ioctl
+id|compat_sys_ioctl
 c_func
 (paren
 id|fd
@@ -3870,7 +3871,7 @@ l_int|12
 suffix:colon
 multiline_comment|/* SIOCSIFADDR */
 r_return
-id|sys32_ioctl
+id|compat_sys_ioctl
 c_func
 (paren
 id|fd
@@ -3885,7 +3886,7 @@ l_int|13
 suffix:colon
 multiline_comment|/* SIOCGIFADDR */
 r_return
-id|sys32_ioctl
+id|compat_sys_ioctl
 c_func
 (paren
 id|fd
@@ -3900,7 +3901,7 @@ l_int|14
 suffix:colon
 multiline_comment|/* SIOCSIFDSTADDR */
 r_return
-id|sys32_ioctl
+id|compat_sys_ioctl
 c_func
 (paren
 id|fd
@@ -3915,7 +3916,7 @@ l_int|15
 suffix:colon
 multiline_comment|/* SIOCGIFDSTADDR */
 r_return
-id|sys32_ioctl
+id|compat_sys_ioctl
 c_func
 (paren
 id|fd
@@ -3930,7 +3931,7 @@ l_int|16
 suffix:colon
 multiline_comment|/* SIOCSIFFLAGS */
 r_return
-id|sys32_ioctl
+id|compat_sys_ioctl
 c_func
 (paren
 id|fd
@@ -3945,7 +3946,7 @@ l_int|17
 suffix:colon
 multiline_comment|/* SIOCGIFFLAGS */
 r_return
-id|sys32_ioctl
+id|compat_sys_ioctl
 c_func
 (paren
 id|fd
@@ -3960,7 +3961,7 @@ l_int|18
 suffix:colon
 multiline_comment|/* SIOCSIFMEM */
 r_return
-id|sys32_ioctl
+id|compat_sys_ioctl
 c_func
 (paren
 id|fd
@@ -3975,7 +3976,7 @@ l_int|19
 suffix:colon
 multiline_comment|/* SIOCGIFMEM */
 r_return
-id|sys32_ioctl
+id|compat_sys_ioctl
 c_func
 (paren
 id|fd
@@ -3990,7 +3991,7 @@ l_int|20
 suffix:colon
 multiline_comment|/* SIOCGIFCONF */
 r_return
-id|sys32_ioctl
+id|compat_sys_ioctl
 c_func
 (paren
 id|fd
@@ -4005,7 +4006,7 @@ l_int|21
 suffix:colon
 multiline_comment|/* SIOCSIFMTU */
 r_return
-id|sys32_ioctl
+id|compat_sys_ioctl
 c_func
 (paren
 id|fd
@@ -4020,7 +4021,7 @@ l_int|22
 suffix:colon
 multiline_comment|/* SIOCGIFMTU */
 r_return
-id|sys32_ioctl
+id|compat_sys_ioctl
 c_func
 (paren
 id|fd
@@ -4035,7 +4036,7 @@ l_int|23
 suffix:colon
 multiline_comment|/* SIOCGIFBRDADDR */
 r_return
-id|sys32_ioctl
+id|compat_sys_ioctl
 c_func
 (paren
 id|fd
@@ -4050,7 +4051,7 @@ l_int|24
 suffix:colon
 multiline_comment|/* SIOCSIFBRDADDR */
 r_return
-id|sys32_ioctl
+id|compat_sys_ioctl
 c_func
 (paren
 id|fd
@@ -4065,7 +4066,7 @@ l_int|25
 suffix:colon
 multiline_comment|/* SIOCGIFNETMASK */
 r_return
-id|sys32_ioctl
+id|compat_sys_ioctl
 c_func
 (paren
 id|fd
@@ -4080,7 +4081,7 @@ l_int|26
 suffix:colon
 multiline_comment|/* SIOCSIFNETMASK */
 r_return
-id|sys32_ioctl
+id|compat_sys_ioctl
 c_func
 (paren
 id|fd
@@ -4095,7 +4096,7 @@ l_int|27
 suffix:colon
 multiline_comment|/* SIOCGIFMETRIC */
 r_return
-id|sys32_ioctl
+id|compat_sys_ioctl
 c_func
 (paren
 id|fd
@@ -4110,7 +4111,7 @@ l_int|28
 suffix:colon
 multiline_comment|/* SIOCSIFMETRIC */
 r_return
-id|sys32_ioctl
+id|compat_sys_ioctl
 c_func
 (paren
 id|fd
@@ -4125,7 +4126,7 @@ l_int|30
 suffix:colon
 multiline_comment|/* SIOCSARP */
 r_return
-id|sys32_ioctl
+id|compat_sys_ioctl
 c_func
 (paren
 id|fd
@@ -4140,7 +4141,7 @@ l_int|31
 suffix:colon
 multiline_comment|/* SIOCGARP */
 r_return
-id|sys32_ioctl
+id|compat_sys_ioctl
 c_func
 (paren
 id|fd
@@ -4155,7 +4156,7 @@ l_int|32
 suffix:colon
 multiline_comment|/* SIOCDARP */
 r_return
-id|sys32_ioctl
+id|compat_sys_ioctl
 c_func
 (paren
 id|fd

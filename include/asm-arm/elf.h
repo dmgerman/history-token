@@ -3,6 +3,7 @@ DECL|macro|__ASMARM_ELF_H
 mdefine_line|#define __ASMARM_ELF_H
 multiline_comment|/*&n; * ELF register definitions..&n; */
 macro_line|#include &lt;asm/ptrace.h&gt;
+macro_line|#include &lt;asm/user.h&gt;
 macro_line|#include &lt;asm/proc/elf.h&gt;
 macro_line|#include &lt;asm/procinfo.h&gt;
 DECL|typedef|elf_greg_t
@@ -34,16 +35,10 @@ id|elf_gregset_t
 id|ELF_NGREG
 )braket
 suffix:semicolon
-DECL|member|null
 DECL|typedef|elf_fpregset_t
 r_typedef
 r_struct
-(brace
-r_void
-op_star
-id|null
-suffix:semicolon
-)brace
+id|user_fp
 id|elf_fpregset_t
 suffix:semicolon
 multiline_comment|/*&n; * This is used to ensure we don&squot;t load something for the wrong architecture.&n; */

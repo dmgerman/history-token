@@ -245,7 +245,7 @@ multiline_comment|/* Max length: 44 &quot;LEN=65535 TC=255 HOPLIMIT=255 FLOWLBL=
 id|printk
 c_func
 (paren
-l_string|&quot;LEN=%u TC=%u HOPLIMIT=%u FLOWLBL=%u &quot;
+l_string|&quot;LEN=%Zu TC=%u HOPLIMIT=%u FLOWLBL=%u &quot;
 comma
 id|ntohs
 c_func

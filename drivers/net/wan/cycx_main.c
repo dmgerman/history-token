@@ -102,7 +102,7 @@ id|arg
 suffix:semicolon
 multiline_comment|/* Miscellaneous functions */
 r_static
-r_void
+id|irqreturn_t
 id|cycx_isr
 (paren
 r_int
@@ -912,7 +912,7 @@ multiline_comment|/* Miscellaneous */
 multiline_comment|/*&n; * Cyclom 2X Interrupt Service Routine.&n; * o acknowledge Cyclom 2X hardware interrupt.&n; * o call protocol-specific interrupt service routine, if any.&n; */
 DECL|function|cycx_isr
 r_static
-r_void
+id|irqreturn_t
 id|cycx_isr
 (paren
 r_int
@@ -985,9 +985,13 @@ c_func
 id|card
 )paren
 suffix:semicolon
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 id|out
 suffix:colon
 r_return
+id|IRQ_NONE
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * This routine is called by the protocol-specific modules when network&n; * interface is being open.  The only reason we need this, is because we&n; * have to call MOD_INC_USE_COUNT, but cannot include &squot;module.h&squot; where it&squot;s&n; * defined more than once into the same kernel module.&n; */

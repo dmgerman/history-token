@@ -3,6 +3,7 @@ macro_line|#ifndef __ASMARM_TLB_H
 DECL|macro|__ASMARM_TLB_H
 mdefine_line|#define __ASMARM_TLB_H
 macro_line|#include &lt;asm/tlbflush.h&gt;
+macro_line|#include &lt;asm/cacheflush.h&gt;
 multiline_comment|/*&n; * TLB handling.  This allows us to remove pages from the page&n; * tables, and efficiently handle the TLB issues.&n; */
 DECL|struct|mmu_gather
 r_struct
@@ -18,6 +19,11 @@ DECL|member|freed
 r_int
 r_int
 id|freed
+suffix:semicolon
+DECL|member|fullmm
+r_int
+r_int
+id|fullmm
 suffix:semicolon
 DECL|member|flushes
 r_int
@@ -84,6 +90,10 @@ suffix:semicolon
 id|tlb-&gt;freed
 op_assign
 l_int|0
+suffix:semicolon
+id|tlb-&gt;fullmm
+op_assign
+id|full_mm_flush
 suffix:semicolon
 r_return
 id|tlb
@@ -177,7 +187,7 @@ suffix:semicolon
 DECL|macro|tlb_remove_tlb_entry
 mdefine_line|#define tlb_remove_tlb_entry(tlb,ptep,address)&t;do { } while (0)
 DECL|macro|tlb_start_vma
-mdefine_line|#define tlb_start_vma(tlb,vma)&t;&t;&t;do { } while (0)
+mdefine_line|#define tlb_start_vma(tlb,vma)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;if (!tlb-&gt;fullmm)&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;flush_cache_range(vma, vma-&gt;vm_start, vma-&gt;vm_end); &bslash;&n;&t;} while (0)
 DECL|macro|tlb_end_vma
 mdefine_line|#define tlb_end_vma(tlb,vma)&t;&t;&t;do { } while (0)
 DECL|macro|tlb_remove_page

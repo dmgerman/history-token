@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * SMP support for power macintosh.&n; *&n; * We support both the old &quot;powersurge&quot; SMP architecture&n; * and the current Core99 (G4 PowerMac) machines.&n; *&n; * Support Macintosh G4 SMP by Troy Benjegerdes (hozer@drgw.net)&n; * and Ben Herrenschmidt &lt;benh@kernel.crashing.org&gt;.&n; *&n; * Support for DayStar quad CPU cards&n; * Copyright (C) XLR8, Inc. 1994-2000&n; *&n; *  This program is free software; you can redistribute it and/or&n; *  modify it under the terms of the GNU General Public License&n; *  as published by the Free Software Foundation; either version&n; *  2 of the License, or (at your option) any later version.&n; */
+multiline_comment|/*&n; * SMP support for power macintosh.&n; *&n; * We support both the old &quot;powersurge&quot; SMP architecture&n; * and the current Core99 (G4 PowerMac) machines.&n; * &n; * Note that we don&squot;t support the very first rev. of&n; * Apple/DayStar 2 CPUs board, the one with the funky&n; * watchdog. Hopefully, none of these should be there except&n; * maybe internally to Apple. I should probably still add some&n; * code to detect this card though and disable SMP. --BenH.&n; *&n; * Support Macintosh G4 SMP by Troy Benjegerdes (hozer@drgw.net)&n; * and Ben Herrenschmidt &lt;benh@kernel.crashing.org&gt;.&n; *&n; * Support for DayStar quad CPU cards&n; * Copyright (C) XLR8, Inc. 1994-2000&n; *&n; *  This program is free software; you can redistribute it and/or&n; *  modify it under the terms of the GNU General Public License&n; *  as published by the Free Software Foundation; either version&n; *  2 of the License, or (at your option) any later version.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -136,13 +136,9 @@ id|u32
 op_star
 id|psurge_start
 suffix:semicolon
-multiline_comment|/* what sort of powersurge board we have */
-DECL|variable|psurge_type
-r_static
-r_int
-id|psurge_type
-suffix:semicolon
 multiline_comment|/* values for psurge_type */
+DECL|macro|PSURGE_NONE
+mdefine_line|#define PSURGE_NONE&t;&t;-1
 DECL|macro|PSURGE_DUAL
 mdefine_line|#define PSURGE_DUAL&t;&t;0
 DECL|macro|PSURGE_QUAD_OKEE
@@ -151,6 +147,14 @@ DECL|macro|PSURGE_QUAD_COTTON
 mdefine_line|#define PSURGE_QUAD_COTTON&t;2
 DECL|macro|PSURGE_QUAD_ICEGRASS
 mdefine_line|#define PSURGE_QUAD_ICEGRASS&t;3
+multiline_comment|/* what sort of powersurge board we have */
+DECL|variable|psurge_type
+r_static
+r_int
+id|psurge_type
+op_assign
+id|PSURGE_NONE
+suffix:semicolon
 DECL|variable|core99_l2_cache
 r_volatile
 r_static
@@ -176,7 +180,6 @@ r_int
 id|cpu
 )paren
 (brace
-multiline_comment|/* Check cache presence on cpu 0, we assume all CPUs have&n;&t; * same features here. We also assume that if we don&squot;t have&n;&t; * L2CR, we don&squot;t have L3CR neither&n;&t; */
 r_if
 c_cond
 (paren
@@ -351,6 +354,15 @@ id|cpu
 r_if
 c_cond
 (paren
+id|psurge_type
+op_eq
+id|PSURGE_NONE
+)paren
+r_return
+suffix:semicolon
+r_if
+c_cond
+(paren
 id|cpu
 op_eq
 l_int|0
@@ -408,13 +420,15 @@ OG
 l_int|0
 )paren
 (brace
-r_if
+r_switch
 c_cond
 (paren
 id|psurge_type
-op_eq
-id|PSURGE_DUAL
 )paren
+(brace
+r_case
+id|PSURGE_DUAL
+suffix:colon
 id|out_8
 c_func
 (paren
@@ -424,7 +438,13 @@ op_complement
 l_int|0
 )paren
 suffix:semicolon
-r_else
+r_case
+id|PSURGE_NONE
+suffix:colon
+r_break
+suffix:semicolon
+r_default
+suffix:colon
 id|PSURGE_QUAD_OUT
 c_func
 (paren
@@ -435,6 +455,7 @@ op_lshift
 id|cpu
 )paren
 suffix:semicolon
+)brace
 )brace
 )brace
 multiline_comment|/*&n; * On powersurge (old SMP powermac architecture) we don&squot;t have&n; * separate IPIs for separate messages like openpic does.  Instead&n; * we have a bitmap for each processor, where a 1 bit means that&n; * the corresponding message is pending for that processor.&n; * Ideally each cpu&squot;s entry would be in a different cache line.&n; *  -- paulus.&n; */
@@ -528,7 +549,7 @@ id|regs
 )paren
 suffix:semicolon
 )brace
-r_void
+id|irqreturn_t
 id|__pmac
 DECL|function|psurge_primary_intr
 id|psurge_primary_intr
@@ -552,6 +573,9 @@ c_func
 (paren
 id|regs
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 r_static
@@ -1169,6 +1193,10 @@ op_star
 )paren
 id|hhead_base
 )paren
+suffix:semicolon
+id|psurge_type
+op_assign
+id|PSURGE_NONE
 suffix:semicolon
 r_return
 l_int|1

@@ -5,7 +5,6 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/vmalloc.h&gt;
 macro_line|#include &lt;linux/miscdevice.h&gt;
-macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;asm/msr.h&gt;
@@ -225,6 +224,11 @@ op_assign
 l_string|&quot;microcode&quot;
 comma
 dot
+id|devfs_name
+op_assign
+l_string|&quot;cpu/microcode&quot;
+comma
+dot
 id|fops
 op_assign
 op_amp
@@ -259,26 +263,8 @@ c_cond
 (paren
 id|error
 )paren
-r_goto
-id|fail
-suffix:semicolon
+r_return
 id|error
-op_assign
-id|devfs_mk_symlink
-c_func
-(paren
-l_string|&quot;cpu/microcode&quot;
-comma
-l_string|&quot;../misc/microcode&quot;
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|error
-)paren
-r_goto
-id|fail_deregister
 suffix:semicolon
 id|printk
 c_func
@@ -291,20 +277,6 @@ id|MICROCODE_VERSION
 suffix:semicolon
 r_return
 l_int|0
-suffix:semicolon
-id|fail_deregister
-suffix:colon
-id|misc_deregister
-c_func
-(paren
-op_amp
-id|microcode_dev
-)paren
-suffix:semicolon
-id|fail
-suffix:colon
-r_return
-id|error
 suffix:semicolon
 )brace
 DECL|function|microcode_exit
@@ -322,12 +294,6 @@ c_func
 (paren
 op_amp
 id|microcode_dev
-)paren
-suffix:semicolon
-id|devfs_remove
-c_func
-(paren
-l_string|&quot;cpu/microcode&quot;
 )paren
 suffix:semicolon
 id|kfree

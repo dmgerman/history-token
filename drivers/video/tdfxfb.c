@@ -6941,10 +6941,6 @@ l_int|0
 suffix:colon
 l_int|1
 suffix:semicolon
-id|info-&gt;node
-op_assign
-id|NODEV
-suffix:semicolon
 id|info-&gt;fbops
 op_assign
 op_amp

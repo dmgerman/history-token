@@ -953,7 +953,7 @@ id|dev
 )paren
 suffix:semicolon
 r_static
-r_void
+id|irqreturn_t
 id|tc35815_interrupt
 c_func
 (paren
@@ -4090,7 +4090,7 @@ suffix:semicolon
 multiline_comment|/*&n; * The typical workload of the driver:&n; *   Handle the network interface interrupts.&n; */
 DECL|function|tc35815_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|tc35815_interrupt
 c_func
 (paren
@@ -4131,6 +4131,11 @@ id|boguscount
 op_assign
 l_int|0
 suffix:semicolon
+r_int
+id|handled
+op_assign
+l_int|0
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -4151,6 +4156,7 @@ id|irq
 )paren
 suffix:semicolon
 r_return
+id|IRQ_NONE
 suffix:semicolon
 )brace
 id|tr
@@ -4190,6 +4196,10 @@ op_eq
 l_int|0
 )paren
 r_break
+suffix:semicolon
+id|handled
+op_assign
+l_int|1
 suffix:semicolon
 id|tc_writel
 c_func
@@ -4376,6 +4386,11 @@ l_int|20
 )paren
 suffix:semicolon
 r_return
+id|IRQ_RETVAL
+c_func
+(paren
+id|handled
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/* We have a good packet(s), get it/them out of the buffers. */

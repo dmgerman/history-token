@@ -379,7 +379,7 @@ op_star
 id|dev
 )paren
 suffix:semicolon
-r_void
+id|irqreturn_t
 id|tok_interrupt
 c_func
 (paren
@@ -746,6 +746,10 @@ id|i
 comma
 id|j
 suffix:semicolon
+r_int
+r_int
+id|jif
+suffix:semicolon
 r_void
 op_star
 id|ram_mapped
@@ -955,7 +959,7 @@ suffix:semicolon
 r_for
 c_loop
 (paren
-id|i
+id|jif
 op_assign
 id|jiffies
 op_plus
@@ -966,7 +970,7 @@ c_func
 (paren
 id|jiffies
 comma
-id|i
+id|jif
 )paren
 suffix:semicolon
 )paren
@@ -1102,7 +1106,7 @@ suffix:semicolon
 r_for
 c_loop
 (paren
-id|i
+id|jif
 op_assign
 id|jiffies
 op_plus
@@ -1113,7 +1117,7 @@ c_func
 (paren
 id|jiffies
 comma
-id|i
+id|jif
 )paren
 suffix:semicolon
 )paren
@@ -5511,7 +5515,7 @@ suffix:semicolon
 )brace
 multiline_comment|/******************************************************************************/
 DECL|function|tok_interrupt
-r_void
+id|irqreturn_t
 id|tok_interrupt
 c_func
 (paren
@@ -5584,6 +5588,7 @@ op_amp
 l_int|1
 )paren
 r_return
+id|IRQ_NONE
 suffix:semicolon
 multiline_comment|/* PCMCIA card extraction flag */
 id|spin_lock
@@ -5693,6 +5698,7 @@ id|ti-&gt;lock
 )paren
 suffix:semicolon
 r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 multiline_comment|/*  Begin interrupt handler HERE inline to avoid the extra&n;&t;    levels of logic and call depth for the original solution. */
@@ -5932,6 +5938,7 @@ id|ti-&gt;lock
 )paren
 suffix:semicolon
 r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 r_if
@@ -6064,6 +6071,7 @@ id|ti-&gt;lock
 )paren
 suffix:semicolon
 r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 r_if
@@ -7294,6 +7302,9 @@ op_amp
 id|ti-&gt;lock
 )paren
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 multiline_comment|/*tok_interrupt */

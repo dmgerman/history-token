@@ -2433,7 +2433,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_IP_NF_NAT_NEEDED
 DECL|variable|ip_ftp_lock
 id|EXPORT_SYMBOL
 c_func
@@ -2441,7 +2440,6 @@ c_func
 id|ip_ftp_lock
 )paren
 suffix:semicolon
-macro_line|#endif
 id|MODULE_LICENSE
 c_func
 (paren

@@ -1132,8 +1132,9 @@ op_logical_neg
 id|peer_pid
 )paren
 r_goto
-id|err_out_unlock
+id|err_out_free_nskb
 suffix:semicolon
+multiline_comment|/* netlink_unicast will either free the nskb or attach it to a socket */
 id|status
 op_assign
 id|netlink_unicast
@@ -1185,6 +1186,14 @@ id|queue_lock
 suffix:semicolon
 r_return
 id|status
+suffix:semicolon
+id|err_out_free_nskb
+suffix:colon
+id|kfree_skb
+c_func
+(paren
+id|nskb
+)paren
 suffix:semicolon
 id|err_out_unlock
 suffix:colon

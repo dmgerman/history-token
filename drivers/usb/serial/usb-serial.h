@@ -601,6 +601,50 @@ op_star
 id|port
 )paren
 suffix:semicolon
+DECL|member|tiocmget
+r_int
+(paren
+op_star
+id|tiocmget
+)paren
+(paren
+r_struct
+id|usb_serial_port
+op_star
+id|port
+comma
+r_struct
+id|file
+op_star
+id|file
+)paren
+suffix:semicolon
+DECL|member|tiocmset
+r_int
+(paren
+op_star
+id|tiocmset
+)paren
+(paren
+r_struct
+id|usb_serial_port
+op_star
+id|port
+comma
+r_struct
+id|file
+op_star
+id|file
+comma
+r_int
+r_int
+id|set
+comma
+r_int
+r_int
+id|clear
+)paren
+suffix:semicolon
 DECL|member|read_int_callback
 r_void
 (paren
@@ -1277,6 +1321,6 @@ multiline_comment|/* Use our own dbg macro */
 DECL|macro|dbg
 macro_line|#undef dbg
 DECL|macro|dbg
-mdefine_line|#define dbg(format, arg...) do { if (debug) printk(KERN_DEBUG __FILE__ &quot;: &quot; format &quot;&bslash;n&quot; , ## arg); } while (0)
+mdefine_line|#define dbg(format, arg...) do { if (debug) printk(KERN_DEBUG &quot;%s: &quot; format &quot;&bslash;n&quot; , __FILE__ , ## arg); } while (0)
 macro_line|#endif&t;/* ifdef __LINUX_USB_SERIAL_H */
 eof

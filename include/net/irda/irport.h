@@ -125,7 +125,7 @@ id|speed
 )paren
 suffix:semicolon
 DECL|member|interrupt
-r_void
+r_int
 (paren
 op_star
 id|interrupt

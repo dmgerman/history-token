@@ -389,11 +389,6 @@ r_int
 id|r7
 )paren
 (brace
-multiline_comment|/* This should be fixed properly in kernel/resource.c */
-id|iomem_resource.end
-op_assign
-id|MEM_SPACE_LIMIT
-suffix:semicolon
 macro_line|#ifdef CONFIG_XMON_DEFAULT
 id|debugger
 op_assign

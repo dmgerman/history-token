@@ -355,17 +355,11 @@ suffix:semicolon
 multiline_comment|/* partition in use? Incomplete check for now. */
 id|bdevp
 op_assign
-id|bdget
+id|bdget_disk
 c_func
 (paren
-id|MKDEV
-c_func
-(paren
-id|disk-&gt;major
+id|disk
 comma
-id|disk-&gt;first_minor
-)paren
-op_plus
 id|part
 )paren
 suffix:semicolon

@@ -447,22 +447,29 @@ op_star
 id|s_info
 suffix:semicolon
 multiline_comment|/* socket_info_t */
+DECL|member|class_dev
+r_struct
+id|class_device
+id|class_dev
+suffix:semicolon
+multiline_comment|/* generic class structure */
 )brace
 suffix:semicolon
 r_extern
 r_struct
-id|device_class
+r_class
 id|pcmcia_socket_class
 suffix:semicolon
 multiline_comment|/* socket drivers are expected to use these callbacks in their .drv struct */
+r_extern
 r_int
 id|pcmcia_socket_dev_suspend
 c_func
 (paren
 r_struct
-id|device
+id|pcmcia_socket_class_data
 op_star
-id|dev
+id|cls_d
 comma
 id|u32
 id|state
@@ -471,14 +478,15 @@ id|u32
 id|level
 )paren
 suffix:semicolon
+r_extern
 r_int
 id|pcmcia_socket_dev_resume
 c_func
 (paren
 r_struct
-id|device
+id|pcmcia_socket_class_data
 op_star
-id|dev
+id|cls_d
 comma
 id|u32
 id|level

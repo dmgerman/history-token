@@ -1613,10 +1613,6 @@ id|p-&gt;var
 op_assign
 id|chipsfb_var
 suffix:semicolon
-id|p-&gt;node
-op_assign
-id|NODEV
-suffix:semicolon
 id|p-&gt;fbops
 op_assign
 op_amp
@@ -1665,11 +1661,7 @@ c_func
 id|KERN_INFO
 l_string|&quot;fb%d: Chips 65550 frame buffer (%dK RAM detected)&bslash;n&quot;
 comma
-id|minor
-c_func
-(paren
 id|p-&gt;node
-)paren
 comma
 id|p-&gt;fix.smem_len
 op_div

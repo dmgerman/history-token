@@ -162,7 +162,7 @@ r_void
 )paren
 suffix:semicolon
 r_static
-r_void
+id|irqreturn_t
 id|macio_adb_interrupt
 c_func
 (paren
@@ -872,7 +872,7 @@ suffix:semicolon
 )brace
 DECL|function|macio_adb_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|macio_adb_interrupt
 c_func
 (paren
@@ -923,6 +923,11 @@ id|autopoll
 op_assign
 l_int|0
 suffix:semicolon
+r_int
+id|handled
+op_assign
+l_int|0
+suffix:semicolon
 id|spin_lock
 c_func
 (paren
@@ -943,6 +948,10 @@ op_amp
 id|TAG
 )paren
 (brace
+id|handled
+op_assign
+l_int|1
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1085,6 +1094,10 @@ op_amp
 id|DFB
 )paren
 (brace
+id|handled
+op_assign
+l_int|1
+suffix:semicolon
 id|err
 op_assign
 id|in_8
@@ -1346,6 +1359,13 @@ comma
 id|regs
 comma
 id|autopoll
+)paren
+suffix:semicolon
+r_return
+id|IRQ_RETVAL
+c_func
+(paren
+id|handled
 )paren
 suffix:semicolon
 )brace

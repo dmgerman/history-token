@@ -165,6 +165,22 @@ DECL|macro|SPRN_DBAT3L
 mdefine_line|#define&t;SPRN_DBAT3L&t;0x21F&t;/* Data BAT 3 Lower Register */
 DECL|macro|SPRN_DBAT3U
 mdefine_line|#define&t;SPRN_DBAT3U&t;0x21E&t;/* Data BAT 3 Upper Register */
+DECL|macro|SPRN_DBAT4L
+mdefine_line|#define&t;SPRN_DBAT4L&t;0x239&t;/* Data BAT 4 Lower Register */
+DECL|macro|SPRN_DBAT4U
+mdefine_line|#define&t;SPRN_DBAT4U&t;0x238&t;/* Data BAT 4 Upper Register */
+DECL|macro|SPRN_DBAT5L
+mdefine_line|#define&t;SPRN_DBAT5L&t;0x23B&t;/* Data BAT 5 Lower Register */
+DECL|macro|SPRN_DBAT5U
+mdefine_line|#define&t;SPRN_DBAT5U&t;0x23A&t;/* Data BAT 5 Upper Register */
+DECL|macro|SPRN_DBAT6L
+mdefine_line|#define&t;SPRN_DBAT6L&t;0x23D&t;/* Data BAT 6 Lower Register */
+DECL|macro|SPRN_DBAT6U
+mdefine_line|#define&t;SPRN_DBAT6U&t;0x23C&t;/* Data BAT 6 Upper Register */
+DECL|macro|SPRN_DBAT7L
+mdefine_line|#define&t;SPRN_DBAT7L&t;0x23F&t;/* Data BAT 7 Lower Register */
+DECL|macro|SPRN_DBAT7U
+mdefine_line|#define&t;SPRN_DBAT7U&t;0x23E&t;/* Data BAT 7 Upper Register */
 DECL|macro|SPRN_DBCR
 mdefine_line|#define&t;SPRN_DBCR&t;0x3F2&t;/* Debug Control Regsiter */
 DECL|macro|DBCR_EDM
@@ -489,6 +505,22 @@ DECL|macro|SPRN_IBAT3L
 mdefine_line|#define&t;SPRN_IBAT3L&t;0x217&t;/* Instruction BAT 3 Lower Register */
 DECL|macro|SPRN_IBAT3U
 mdefine_line|#define&t;SPRN_IBAT3U&t;0x216&t;/* Instruction BAT 3 Upper Register */
+DECL|macro|SPRN_IBAT4L
+mdefine_line|#define&t;SPRN_IBAT4L&t;0x231&t;/* Instruction BAT 4 Lower Register */
+DECL|macro|SPRN_IBAT4U
+mdefine_line|#define&t;SPRN_IBAT4U&t;0x230&t;/* Instruction BAT 4 Upper Register */
+DECL|macro|SPRN_IBAT5L
+mdefine_line|#define&t;SPRN_IBAT5L&t;0x233&t;/* Instruction BAT 5 Lower Register */
+DECL|macro|SPRN_IBAT5U
+mdefine_line|#define&t;SPRN_IBAT5U&t;0x232&t;/* Instruction BAT 5 Upper Register */
+DECL|macro|SPRN_IBAT6L
+mdefine_line|#define&t;SPRN_IBAT6L&t;0x235&t;/* Instruction BAT 6 Lower Register */
+DECL|macro|SPRN_IBAT6U
+mdefine_line|#define&t;SPRN_IBAT6U&t;0x234&t;/* Instruction BAT 6 Upper Register */
+DECL|macro|SPRN_IBAT7L
+mdefine_line|#define&t;SPRN_IBAT7L&t;0x237&t;/* Instruction BAT 7 Lower Register */
+DECL|macro|SPRN_IBAT7U
+mdefine_line|#define&t;SPRN_IBAT7U&t;0x236&t;/* Instruction BAT 7 Upper Register */
 DECL|macro|SPRN_ICCR
 mdefine_line|#define&t;SPRN_ICCR&t;0x3FB&t;/* Instruction Cache Cacheability Register */
 DECL|macro|ICCR_NOCACHE
@@ -845,6 +877,22 @@ DECL|macro|DBAT3L
 mdefine_line|#define&t;DBAT3L&t;SPRN_DBAT3L&t;/* Data BAT 3 Lower Register */
 DECL|macro|DBAT3U
 mdefine_line|#define&t;DBAT3U&t;SPRN_DBAT3U&t;/* Data BAT 3 Upper Register */
+DECL|macro|DBAT4L
+mdefine_line|#define&t;DBAT4L&t;SPRN_DBAT4L&t;/* Data BAT 4 Lower Register */
+DECL|macro|DBAT4U
+mdefine_line|#define&t;DBAT4U&t;SPRN_DBAT4U&t;/* Data BAT 4 Upper Register */
+DECL|macro|DBAT5L
+mdefine_line|#define&t;DBAT5L&t;SPRN_DBAT5L&t;/* Data BAT 5 Lower Register */
+DECL|macro|DBAT5U
+mdefine_line|#define&t;DBAT5U&t;SPRN_DBAT5U&t;/* Data BAT 5 Upper Register */
+DECL|macro|DBAT6L
+mdefine_line|#define&t;DBAT6L&t;SPRN_DBAT6L&t;/* Data BAT 6 Lower Register */
+DECL|macro|DBAT6U
+mdefine_line|#define&t;DBAT6U&t;SPRN_DBAT6U&t;/* Data BAT 6 Upper Register */
+DECL|macro|DBAT7L
+mdefine_line|#define&t;DBAT7L&t;SPRN_DBAT7L&t;/* Data BAT 7 Lower Register */
+DECL|macro|DBAT7U
+mdefine_line|#define&t;DBAT7U&t;SPRN_DBAT7U&t;/* Data BAT 7 Upper Register */
 DECL|macro|DCMP
 mdefine_line|#define&t;DCMP&t;SPRN_DCMP      &t;/* Data TLB Compare Register */
 DECL|macro|DEC
@@ -881,6 +929,22 @@ DECL|macro|IBAT3L
 mdefine_line|#define&t;IBAT3L&t;SPRN_IBAT3L&t;/* Instruction BAT 3 Lower Register */
 DECL|macro|IBAT3U
 mdefine_line|#define&t;IBAT3U&t;SPRN_IBAT3U&t;/* Instruction BAT 3 Upper Register */
+DECL|macro|IBAT4L
+mdefine_line|#define&t;IBAT4L&t;SPRN_IBAT4L&t;/* Instruction BAT 4 Lower Register */
+DECL|macro|IBAT4U
+mdefine_line|#define&t;IBAT4U&t;SPRN_IBAT4U&t;/* Instruction BAT 4 Upper Register */
+DECL|macro|IBAT5L
+mdefine_line|#define&t;IBAT5L&t;SPRN_IBAT5L&t;/* Instruction BAT 5 Lower Register */
+DECL|macro|IBAT5U
+mdefine_line|#define&t;IBAT5U&t;SPRN_IBAT5U&t;/* Instruction BAT 5 Upper Register */
+DECL|macro|IBAT6L
+mdefine_line|#define&t;IBAT6L&t;SPRN_IBAT6L&t;/* Instruction BAT 6 Lower Register */
+DECL|macro|IBAT6U
+mdefine_line|#define&t;IBAT6U&t;SPRN_IBAT6U&t;/* Instruction BAT 6 Upper Register */
+DECL|macro|IBAT7L
+mdefine_line|#define&t;IBAT7L&t;SPRN_IBAT7L&t;/* Instruction BAT 7 Lower Register */
+DECL|macro|IBAT7U
+mdefine_line|#define&t;IBAT7U&t;SPRN_IBAT7U&t;/* Instruction BAT 7 Upper Register */
 DECL|macro|ICMP
 mdefine_line|#define&t;ICMP&t;SPRN_ICMP&t;/* Instruction TLB Compare Register */
 DECL|macro|IMISS

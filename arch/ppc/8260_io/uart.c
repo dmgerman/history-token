@@ -1627,7 +1627,7 @@ macro_line|#endif
 multiline_comment|/*&n; * This is the serial driver&squot;s interrupt routine for a single port&n; */
 DECL|function|rs_8xx_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|rs_8xx_interrupt
 c_func
 (paren
@@ -1806,6 +1806,9 @@ l_string|&quot;end.&bslash;n&quot;
 )paren
 suffix:semicolon
 macro_line|#endif
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 multiline_comment|/*&n; * -------------------------------------------------------------------&n; * Here ends the serial interrupt routines.&n; * -------------------------------------------------------------------&n; */
 multiline_comment|/*&n; * This routine is used to handle the &quot;bottom half&quot; processing for the&n; * serial driver, known also the &quot;software interrupt&quot; processing.&n; * This processing is done at the kernel interrupt level, after the&n; * rs_interrupt() has returned, BUT WITH INTERRUPTS TURNED ON.  This&n; * is where time-consuming activities which can not be done in the&n; * interrupt driver proper are done; the interrupt driver schedules&n; * them using rs_sched_event(), and they get done here.&n; */
@@ -8839,16 +8842,14 @@ op_star
 id|c
 )paren
 (brace
-r_return
-id|mk_kdev
-c_func
-(paren
-id|TTY_MAJOR
-comma
-l_int|64
-op_plus
+op_star
+id|index
+op_assign
 id|c-&gt;index
-)paren
+suffix:semicolon
+r_return
+op_amp
+id|serial_driver
 suffix:semicolon
 )brace
 DECL|variable|sercons

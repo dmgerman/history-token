@@ -29,6 +29,7 @@ op_star
 id|integers
 )paren
 suffix:semicolon
+macro_line|#ifdef MODULE
 DECL|variable|xd
 r_static
 r_int
@@ -52,6 +53,7 @@ l_int|1
 comma
 )brace
 suffix:semicolon
+macro_line|#endif
 DECL|macro|XD_DONT_USE_DMA
 mdefine_line|#define XD_DONT_USE_DMA&t;&t;0  /* Initial value. may be overriden using&n;&t;&t;&t;&t;      &quot;nodma&quot; module option */
 DECL|macro|XD_INIT_DISK_DELAY
@@ -439,11 +441,6 @@ id|i
 comma
 id|controller
 suffix:semicolon
-id|u_char
-id|count
-op_assign
-l_int|0
-suffix:semicolon
 r_int
 r_int
 id|address
@@ -452,6 +449,12 @@ r_int
 id|err
 suffix:semicolon
 macro_line|#ifdef MODULE
+(brace
+id|u_char
+id|count
+op_assign
+l_int|0
+suffix:semicolon
 r_for
 c_loop
 (paren
@@ -512,6 +515,7 @@ c_func
 id|xd
 )paren
 suffix:semicolon
+)brace
 macro_line|#endif
 id|init_timer
 (paren
@@ -2343,7 +2347,7 @@ suffix:semicolon
 multiline_comment|/* xd_interrupt_handler: interrupt service routine */
 DECL|function|xd_interrupt_handler
 r_static
-r_void
+id|irqreturn_t
 id|xd_interrupt_handler
 c_func
 (paren
@@ -2398,6 +2402,9 @@ id|xd_wait_int
 )paren
 suffix:semicolon
 multiline_comment|/* and wake up sleeping processes */
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 r_else
 id|printk
@@ -2405,6 +2412,9 @@ c_func
 (paren
 l_string|&quot;xd: unexpected interrupt&bslash;n&quot;
 )paren
+suffix:semicolon
+r_return
+id|IRQ_NONE
 suffix:semicolon
 )brace
 multiline_comment|/* xd_setup_dma: set up the DMA controller for a data transfer */

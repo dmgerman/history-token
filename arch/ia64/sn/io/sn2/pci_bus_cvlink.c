@@ -1090,15 +1090,6 @@ id|ioport_resource.end
 op_assign
 l_int|0xcfffffffffffffff
 suffix:semicolon
-multiline_comment|/*&n;&t; * Set the root start and end for Mem Resource.&n;&t; */
-id|iomem_resource.start
-op_assign
-l_int|0
-suffix:semicolon
-id|iomem_resource.end
-op_assign
-l_int|0xffffffffffffffff
-suffix:semicolon
 multiline_comment|/*&n;&t; * Initialize the device vertex in the pci_dev struct.&n;&t; */
 id|pci_for_each_dev
 c_func

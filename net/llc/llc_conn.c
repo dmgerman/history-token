@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * llc_conn.c - Driver routines for connection component.&n; *&n; * Copyright (c) 1997 by Procom Technology, Inc.&n; *&t;&t; 2001 by Arnaldo Carvalho de Melo &lt;acme@conectiva.com.br&gt;&n; *&n; * This program can be redistributed or modified under the terms of the&n; * GNU General Public License as published by the Free Software Foundation.&n; * This program is distributed without any warranty or implied warranty&n; * of merchantability or fitness for a particular purpose.&n; *&n; * See the GNU General Public License for more details.&n; */
+multiline_comment|/*&n; * llc_conn.c - Driver routines for connection component.&n; *&n; * Copyright (c) 1997 by Procom Technology, Inc.&n; *&t;&t; 2001-2003 by Arnaldo Carvalho de Melo &lt;acme@conectiva.com.br&gt;&n; *&n; * This program can be redistributed or modified under the terms of the&n; * GNU General Public License as published by the Free Software Foundation.&n; * This program is distributed without any warranty or implied warranty&n; * of merchantability or fitness for a particular purpose.&n; *&n; * See the GNU General Public License for more details.&n; */
 macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -1289,7 +1289,7 @@ r_return
 id|nbr_acked
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;llc_conn_send_pdus - Sends queued PDUs&n; *&t;@sk: active connection&n; *&n; *&t;Sends queued pdus to MAC layer for transmition.&n; */
+multiline_comment|/**&n; *&t;llc_conn_send_pdus - Sends queued PDUs&n; *&t;@sk: active connection&n; *&n; *&t;Sends queued pdus to MAC layer for transmission.&n; */
 DECL|function|llc_conn_send_pdus
 r_static
 r_void

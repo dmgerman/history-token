@@ -530,6 +530,13 @@ c_func
 r_void
 )paren
 (brace
+multiline_comment|/*&n;&t; * oom_lock protects out_of_memory()&squot;s static variables.&n;&t; * It&squot;s a global lock; this is not performance-critical.&n;&t; */
+r_static
+id|spinlock_t
+id|oom_lock
+op_assign
+id|SPIN_LOCK_UNLOCKED
+suffix:semicolon
 r_static
 r_int
 r_int
@@ -556,6 +563,13 @@ OG
 l_int|0
 )paren
 r_return
+suffix:semicolon
+id|spin_lock
+c_func
+(paren
+op_amp
+id|oom_lock
+)paren
 suffix:semicolon
 id|now
 op_assign
@@ -602,7 +616,8 @@ id|since
 OL
 id|HZ
 )paren
-r_return
+r_goto
+id|out_unlock
 suffix:semicolon
 multiline_comment|/*&n;&t; * If we have gotten only a few failures,&n;&t; * we&squot;re not really oom. &n;&t; */
 r_if
@@ -613,7 +628,8 @@ id|count
 OL
 l_int|10
 )paren
-r_return
+r_goto
+id|out_unlock
 suffix:semicolon
 multiline_comment|/*&n;&t; * If we just killed a process, wait a while&n;&t; * to give that task a chance to exit. This&n;&t; * avoids killing multiple processes needlessly.&n;&t; */
 id|since
@@ -631,20 +647,48 @@ id|HZ
 op_star
 l_int|5
 )paren
-r_return
+r_goto
+id|out_unlock
 suffix:semicolon
 multiline_comment|/*&n;&t; * Ok, really out of memory. Kill something.&n;&t; */
 id|lastkill
 op_assign
 id|now
 suffix:semicolon
+multiline_comment|/* oom_kill() sleeps */
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|oom_lock
+)paren
+suffix:semicolon
 id|oom_kill
 c_func
 (paren
 )paren
 suffix:semicolon
+id|spin_lock
+c_func
+(paren
+op_amp
+id|oom_lock
+)paren
+suffix:semicolon
 id|reset
 suffix:colon
+multiline_comment|/*&n;&t; * We dropped the lock above, so check to be sure the variable&n;&t; * first only ever increases to prevent false OOM&squot;s.&n;&t; */
+r_if
+c_cond
+(paren
+id|time_after
+c_func
+(paren
+id|now
+comma
+id|first
+)paren
+)paren
 id|first
 op_assign
 id|now
@@ -652,6 +696,15 @@ suffix:semicolon
 id|count
 op_assign
 l_int|0
+suffix:semicolon
+id|out_unlock
+suffix:colon
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|oom_lock
+)paren
 suffix:semicolon
 )brace
 eof

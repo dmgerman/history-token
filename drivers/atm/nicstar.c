@@ -226,7 +226,7 @@ id|addr2
 )paren
 suffix:semicolon
 r_static
-r_void
+id|irqreturn_t
 id|ns_irq_handler
 c_func
 (paren
@@ -5416,7 +5416,7 @@ suffix:semicolon
 )brace
 DECL|function|ns_irq_handler
 r_static
-r_void
+id|irqreturn_t
 id|ns_irq_handler
 c_func
 (paren
@@ -6250,6 +6250,9 @@ l_string|&quot;nicstar%d: end of interrupt service&bslash;n&quot;
 comma
 id|card-&gt;index
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 DECL|function|ns_open

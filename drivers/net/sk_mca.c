@@ -2507,7 +2507,7 @@ suffix:semicolon
 multiline_comment|/* general interrupt entry */
 DECL|function|irq_handler
 r_static
-r_void
+id|irqreturn_t
 id|irq_handler
 c_func
 (paren
@@ -2563,6 +2563,7 @@ op_eq
 l_int|0
 )paren
 r_return
+id|IRQ_NONE
 suffix:semicolon
 macro_line|#if (LINUX_VERSION_CODE &gt;= 0x02032a)
 macro_line|#if 0
@@ -2770,6 +2771,9 @@ op_assign
 l_int|0
 suffix:semicolon
 macro_line|#endif
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 multiline_comment|/* ------------------------------------------------------------------------&n; * driver methods&n; * ------------------------------------------------------------------------ */
 multiline_comment|/* MCA info */

@@ -21,7 +21,6 @@ macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
-macro_line|#include &lt;linux/wrapper.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/vmalloc.h&gt;
 macro_line|#include &lt;linux/i2c-old.h&gt;
@@ -12324,7 +12323,7 @@ multiline_comment|/********** End RESTART code ***********/
 )brace
 DECL|function|zoran_irq
 r_static
-r_void
+id|irqreturn_t
 id|zoran_irq
 c_func
 (paren
@@ -12357,6 +12356,11 @@ suffix:semicolon
 r_int
 r_int
 id|flags
+suffix:semicolon
+r_int
+id|handled
+op_assign
+l_int|0
 suffix:semicolon
 id|zr
 op_assign
@@ -12453,6 +12457,7 @@ id|flags
 )paren
 suffix:semicolon
 r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 id|spin_lock_irqsave
@@ -12495,6 +12500,10 @@ id|astat
 r_break
 suffix:semicolon
 )brace
+id|handled
+op_assign
+l_int|1
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -13154,6 +13163,13 @@ op_amp
 id|zr-&gt;lock
 comma
 id|flags
+)paren
+suffix:semicolon
+r_return
+id|IRQ_RETVAL
+c_func
+(paren
+id|handled
 )paren
 suffix:semicolon
 )brace

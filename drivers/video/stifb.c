@@ -4718,10 +4718,6 @@ comma
 l_string|&quot;stifb&quot;
 )paren
 suffix:semicolon
-id|info-&gt;node
-op_assign
-id|NODEV
-suffix:semicolon
 id|info-&gt;fbops
 op_assign
 op_amp
@@ -4858,11 +4854,7 @@ c_func
 id|KERN_INFO
 l_string|&quot;fb%d: %s %dx%d-%d frame buffer device, id: %04x, mmio: 0x%04lx&bslash;n&quot;
 comma
-id|minor
-c_func
-(paren
 id|fb-&gt;info.node
-)paren
 comma
 id|fix-&gt;id
 comma

@@ -2830,9 +2830,9 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* the handler for the board interrupt */
-DECL|function|ltpc_interrupt
 r_static
-r_void
+id|irqreturn_t
+DECL|function|ltpc_interrupt
 id|ltpc_interrupt
 c_func
 (paren
@@ -2871,6 +2871,7 @@ l_string|&quot;ltpc_interrupt: unknown device.&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
+id|IRQ_NONE
 suffix:semicolon
 )brace
 id|inb_p
@@ -2891,6 +2892,7 @@ suffix:semicolon
 multiline_comment|/* handle whatever is coming in */
 multiline_comment|/* idle re-enables interrupts from board */
 r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 multiline_comment|/***&n; *&n; *    The ioctls that the driver responds to are:&n; *&n; *    SIOCSIFADDR -- do probe using the passed node hint.&n; *    SIOCGIFADDR -- return net, node.&n; *&n; *    some of this stuff should be done elsewhere.&n; *&n; ***/
@@ -5145,6 +5147,7 @@ c_func
 r_void
 )paren
 (brace
+r_int
 r_int
 id|timeout
 suffix:semicolon

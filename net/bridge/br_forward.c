@@ -13,11 +13,13 @@ r_int
 id|should_deliver
 c_func
 (paren
+r_const
 r_struct
 id|net_bridge_port
 op_star
 id|p
 comma
+r_const
 r_struct
 id|sk_buff
 op_star
@@ -128,6 +130,7 @@ r_void
 id|__br_deliver
 c_func
 (paren
+r_const
 r_struct
 id|net_bridge_port
 op_star
@@ -172,6 +175,7 @@ r_void
 id|__br_forward
 c_func
 (paren
+r_const
 r_struct
 id|net_bridge_port
 op_star
@@ -213,12 +217,13 @@ id|br_forward_finish
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* called under bridge lock */
+multiline_comment|/* called with rcu_read_lock */
 DECL|function|br_deliver
 r_void
 id|br_deliver
 c_func
 (paren
+r_const
 r_struct
 id|net_bridge_port
 op_star
@@ -260,12 +265,13 @@ id|skb
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* called under bridge lock */
+multiline_comment|/* called with rcu_read_lock */
 DECL|function|br_forward
 r_void
 id|br_forward
 c_func
 (paren
+r_const
 r_struct
 id|net_bridge_port
 op_star
@@ -333,6 +339,7 @@ op_star
 id|__packet_hook
 )paren
 (paren
+r_const
 r_struct
 id|net_bridge_port
 op_star
@@ -399,16 +406,15 @@ id|prev
 op_assign
 l_int|NULL
 suffix:semicolon
-id|p
-op_assign
-id|br-&gt;port_list
-suffix:semicolon
-r_while
-c_loop
+id|list_for_each_entry_rcu
+c_func
 (paren
 id|p
-op_ne
-l_int|NULL
+comma
+op_amp
+id|br-&gt;port_list
+comma
+id|list
 )paren
 (brace
 r_if
@@ -480,10 +486,6 @@ op_assign
 id|p
 suffix:semicolon
 )brace
-id|p
-op_assign
-id|p-&gt;next
-suffix:semicolon
 )brace
 r_if
 c_cond
@@ -511,7 +513,7 @@ id|skb
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* called under bridge lock */
+multiline_comment|/* called with rcu_read_lock */
 DECL|function|br_flood_deliver
 r_void
 id|br_flood_deliver

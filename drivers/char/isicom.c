@@ -2618,7 +2618,7 @@ suffix:semicolon
 multiline_comment|/* main interrupt handler routine */
 DECL|function|isicom_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|isicom_interrupt
 c_func
 (paren
@@ -2766,6 +2766,7 @@ id|FIRMWARE_LOADED
 (brace
 multiline_comment|/*&t;&t;printk(KERN_DEBUG &quot;ISICOM: interrupt: not handling irq%d!.&bslash;n&quot;, irq);*/
 r_return
+id|IRQ_NONE
 suffix:semicolon
 )brace
 id|base
@@ -2893,6 +2894,7 @@ l_int|0x04
 suffix:semicolon
 multiline_comment|/* enable interrupts */
 r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 id|port
@@ -2936,6 +2938,7 @@ l_int|0x04
 suffix:semicolon
 multiline_comment|/* enable interrupts */
 r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 id|tty
@@ -3503,6 +3506,7 @@ l_int|0x04
 suffix:semicolon
 multiline_comment|/* enable interrupts */
 r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 multiline_comment|/* called with interrupts disabled */

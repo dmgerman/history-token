@@ -537,16 +537,12 @@ op_amp
 id|sk-&gt;flags
 )paren
 )paren
-(brace
 id|sock_put
 c_func
 (paren
 id|sk
 )paren
 suffix:semicolon
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
-)brace
 r_else
 (brace
 id|sk-&gt;timer.expires
@@ -618,16 +614,12 @@ op_amp
 id|sk-&gt;flags
 )paren
 )paren
-(brace
 id|sock_put
 c_func
 (paren
 id|sk
 )paren
 suffix:semicolon
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
-)brace
 r_else
 (brace
 id|init_timer
@@ -767,8 +759,6 @@ id|dev-&gt;atalk_ptr
 op_assign
 l_int|NULL
 suffix:semicolon
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 )brace
 r_else
 id|iface
@@ -808,10 +798,6 @@ r_struct
 id|atalk_iface
 op_star
 id|iface
-suffix:semicolon
-id|MOD_INC_USE_COUNT
-suffix:semicolon
-id|iface
 op_assign
 id|kmalloc
 c_func
@@ -832,7 +818,7 @@ op_logical_neg
 id|iface
 )paren
 r_goto
-id|out_mem
+id|out
 suffix:semicolon
 id|iface-&gt;dev
 op_assign
@@ -877,13 +863,6 @@ id|out
 suffix:colon
 r_return
 id|iface
-suffix:semicolon
-id|out_mem
-suffix:colon
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
-r_goto
-id|out
 suffix:semicolon
 )brace
 multiline_comment|/* Perform phase 2 AARP probing on our tentative address */
@@ -3623,8 +3602,6 @@ op_assign
 op_minus
 id|ESOCKTNOSUPPORT
 suffix:semicolon
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 multiline_comment|/*&n;&t; * We permit SOCK_DGRAM and RAW is an extension. It is trivial to do&n;&t; * and gives you the full ELAP frame. Should be handy for CAP 8) &n;&t; */
 r_if
 c_cond
@@ -3638,7 +3615,7 @@ op_ne
 id|SOCK_DGRAM
 )paren
 r_goto
-id|decmod
+id|out
 suffix:semicolon
 id|rc
 op_assign
@@ -3666,7 +3643,7 @@ op_logical_neg
 id|sk
 )paren
 r_goto
-id|decmod
+id|out
 suffix:semicolon
 id|at
 op_assign
@@ -3731,10 +3708,6 @@ c_func
 (paren
 id|sk
 )paren
-suffix:semicolon
-id|decmod
-suffix:colon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 r_goto
 id|out
@@ -6872,6 +6845,11 @@ dot
 id|create
 op_assign
 id|atalk_create
+comma
+dot
+id|owner
+op_assign
+id|THIS_MODULE
 comma
 )brace
 suffix:semicolon

@@ -1267,7 +1267,7 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; *  LAP connection allready active, just bounce back! Since we&n;&t;&t; *  don&squot;t know which LSAP that tried to do this, we have to&n;&t;&t; *  notify all LSAPs using this LAP, but that should be safe to&n;&t;&t; *  do anyway.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; *  LAP connection already active, just bounce back! Since we&n;&t;&t; *  don&squot;t know which LSAP that tried to do this, we have to&n;&t;&t; *  notify all LSAPs using this LAP, but that should be safe to&n;&t;&t; *  do anyway.&n;&t;&t; */
 id|irlmp_do_all_lsap_event
 c_func
 (paren

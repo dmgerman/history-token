@@ -155,6 +155,14 @@ DECL|member|sLine
 r_int
 id|sLine
 suffix:semicolon
+DECL|member|nr_registered_attrs
+r_int
+id|nr_registered_attrs
+suffix:semicolon
+DECL|member|device_registered
+r_int
+id|device_registered
+suffix:semicolon
 DECL|typedef|MWAVE_DEVICE_DATA
 DECL|typedef|pMWAVE_DEVICE_DATA
 )brace

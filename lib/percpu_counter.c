@@ -1,4 +1,5 @@
 macro_line|#include &lt;linux/percpu_counter.h&gt;
+macro_line|#include &lt;linux/sched.h&gt;
 DECL|function|percpu_counter_mod
 r_void
 id|percpu_counter_mod

@@ -20,11 +20,24 @@ r_extern
 r_int
 id|initrd_below_start_ok
 suffix:semicolon
+multiline_comment|/* free_initrd_mem always gets called with the next two as arguments.. */
 r_extern
 r_int
 r_int
 id|initrd_start
 comma
 id|initrd_end
+suffix:semicolon
+r_extern
+r_void
+id|free_initrd_mem
+c_func
+(paren
+r_int
+r_int
+comma
+r_int
+r_int
+)paren
 suffix:semicolon
 eof

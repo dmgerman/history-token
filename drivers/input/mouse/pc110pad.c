@@ -172,6 +172,7 @@ OL
 l_int|3
 )paren
 r_return
+id|IRQ_HANDLED
 suffix:semicolon
 id|input_regs
 c_func

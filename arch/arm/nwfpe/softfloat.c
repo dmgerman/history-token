@@ -1,7 +1,7 @@
 multiline_comment|/*&n;===============================================================================&n;&n;This C source file is part of the SoftFloat IEC/IEEE Floating-point&n;Arithmetic Package, Release 2.&n;&n;Written by John R. Hauser.  This work was made possible in part by the&n;International Computer Science Institute, located at Suite 600, 1947 Center&n;Street, Berkeley, California 94704.  Funding was partially provided by the&n;National Science Foundation under grant MIP-9311980.  The original version&n;of this code was written as part of a project to build a fixed-point vector&n;processor in collaboration with the University of California at Berkeley,&n;overseen by Profs. Nelson Morgan and John Wawrzynek.  More information&n;is available through the web page `http://HTTP.CS.Berkeley.EDU/~jhauser/&n;arithmetic/softfloat.html&squot;.&n;&n;THIS SOFTWARE IS DISTRIBUTED AS IS, FOR FREE.  Although reasonable effort&n;has been made to avoid it, THIS SOFTWARE MAY CONTAIN FAULTS THAT WILL AT&n;TIMES RESULT IN INCORRECT BEHAVIOR.  USE OF THIS SOFTWARE IS RESTRICTED TO&n;PERSONS AND ORGANIZATIONS WHO CAN AND WILL TAKE FULL RESPONSIBILITY FOR ANY&n;AND ALL LOSSES, COSTS, OR OTHER PROBLEMS ARISING FROM ITS USE.&n;&n;Derivative works are acceptable, even for commercial purposes, so long as&n;(1) they include prominent notice that the work is derivative, and (2) they&n;include prominent notice akin to these three paragraphs for those parts of&n;this code that are retained.&n;&n;===============================================================================&n;*/
 macro_line|#include &quot;fpa11.h&quot;
-macro_line|#include &quot;milieu.h&quot;
-macro_line|#include &quot;softfloat.h&quot;
+singleline_comment|//#include &quot;milieu.h&quot;
+singleline_comment|//#include &quot;softfloat.h&quot;
 multiline_comment|/*&n;-------------------------------------------------------------------------------&n;Floating-point rounding mode, extended double-precision rounding precision,&n;and exception flags.&n;-------------------------------------------------------------------------------&n;*/
 DECL|variable|float_rounding_mode
 id|int8
@@ -263,7 +263,7 @@ l_int|0xFF
 suffix:semicolon
 )brace
 multiline_comment|/*&n;-------------------------------------------------------------------------------&n;Returns the sign bit of the single-precision floating-point value `a&squot;.&n;-------------------------------------------------------------------------------&n;*/
-DECL|function|extractFloat32Sign
+macro_line|#if 0&t;/* in softfloat.h */
 id|INLINE
 id|flag
 id|extractFloat32Sign
@@ -279,6 +279,7 @@ op_rshift
 l_int|31
 suffix:semicolon
 )brace
+macro_line|#endif
 multiline_comment|/*&n;-------------------------------------------------------------------------------&n;Normalizes the subnormal single-precision floating-point value represented&n;by the denormalized significand `aSig&squot;.  The normalized exponent and&n;significand are stored at the locations pointed to by `zExpPtr&squot; and&n;`zSigPtr&squot;, respectively.&n;-------------------------------------------------------------------------------&n;*/
 r_static
 r_void
@@ -350,7 +351,7 @@ suffix:semicolon
 id|__asm__
 c_func
 (paren
-l_string|&quot;@ packFloat32;&t;&t;&bslash;n&bslash;&n;   &t;    mov %0, %1, asl #31;&t;&bslash;n&bslash;&n;   &t;    orr %0, %2, asl #23;&t;&bslash;n&bslash;&n;   &t;    orr %0, %3&quot;
+l_string|&quot;@ packFloat32&t;&t;&t;&t;&bslash;n&bslash;&n;   &t;    mov %0, %1, asl #31&t;&t;&t;&t;&bslash;n&bslash;&n;   &t;    orr %0, %2, asl #23&t;&t;&t;&t;&bslash;n&bslash;&n;   &t;    orr %0, %3&quot;
 suffix:colon
 multiline_comment|/* no outputs */
 suffix:colon
@@ -805,7 +806,7 @@ l_int|0x7FF
 suffix:semicolon
 )brace
 multiline_comment|/*&n;-------------------------------------------------------------------------------&n;Returns the sign bit of the double-precision floating-point value `a&squot;.&n;-------------------------------------------------------------------------------&n;*/
-DECL|function|extractFloat64Sign
+macro_line|#if 0&t;/* in softfloat.h */
 id|INLINE
 id|flag
 id|extractFloat64Sign
@@ -821,6 +822,7 @@ op_rshift
 l_int|63
 suffix:semicolon
 )brace
+macro_line|#endif
 multiline_comment|/*&n;-------------------------------------------------------------------------------&n;Normalizes the subnormal double-precision floating-point value represented&n;by the denormalized significand `aSig&squot;.  The normalized exponent and&n;significand are stored at the locations pointed to by `zExpPtr&squot; and&n;`zSigPtr&squot;, respectively.&n;-------------------------------------------------------------------------------&n;*/
 r_static
 r_void

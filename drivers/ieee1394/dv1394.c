@@ -25,7 +25,6 @@ macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
-macro_line|#include &lt;linux/wrapper.h&gt;
 macro_line|#include &lt;linux/vmalloc.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/ioctl32.h&gt;
@@ -130,14 +129,6 @@ id|dv1394_cards_lock
 op_assign
 id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
-DECL|variable|hl_handle
-r_static
-r_struct
-id|hpsb_highlevel
-op_star
-id|hl_handle
-suffix:semicolon
-multiline_comment|/* = NULL; */
 multiline_comment|/* translate from a struct file* to the corresponding struct video_card* */
 DECL|function|file_to_video_card
 r_static
@@ -10520,11 +10511,6 @@ r_struct
 id|hpsb_host
 op_star
 id|host
-comma
-r_struct
-id|hpsb_highlevel
-op_star
-id|hl
 )paren
 (brace
 r_struct
@@ -11172,13 +11158,18 @@ id|video-&gt;waitq
 )paren
 suffix:semicolon
 )brace
-DECL|variable|hl_ops
+DECL|variable|dv1394_highlevel
 r_static
 r_struct
-id|hpsb_highlevel_ops
-id|hl_ops
+id|hpsb_highlevel
+id|dv1394_highlevel
 op_assign
 (brace
+dot
+id|name
+op_assign
+l_string|&quot;dv1394&quot;
+comma
 dot
 id|add_host
 op_assign
@@ -11707,8 +11698,10 @@ id|dv1394_driver
 )paren
 suffix:semicolon
 id|hpsb_unregister_highlevel
+c_func
 (paren
-id|hl_handle
+op_amp
+id|dv1394_highlevel
 )paren
 suffix:semicolon
 id|ieee1394_unregister_chardev
@@ -11834,58 +11827,13 @@ id|ENOMEM
 suffix:semicolon
 )brace
 macro_line|#endif
-id|hl_handle
-op_assign
 id|hpsb_register_highlevel
+c_func
 (paren
-l_string|&quot;dv1394&quot;
-comma
 op_amp
-id|hl_ops
+id|dv1394_highlevel
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|hl_handle
-op_eq
-l_int|NULL
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;dv1394: hpsb_register_highlevel failed&bslash;n&quot;
-)paren
-suffix:semicolon
-id|ieee1394_unregister_chardev
-c_func
-(paren
-id|IEEE1394_MINOR_BLOCK_DV1394
-)paren
-suffix:semicolon
-macro_line|#ifdef CONFIG_DEVFS_FS
-id|devfs_remove
-c_func
-(paren
-l_string|&quot;ieee1394/dv&quot;
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef CONFIG_PROC_FS
-id|dv1394_procfs_del
-c_func
-(paren
-l_string|&quot;dv&quot;
-)paren
-suffix:semicolon
-macro_line|#endif
-r_return
-op_minus
-id|ENOMEM
-suffix:semicolon
-)brace
 id|hpsb_register_protocol
 c_func
 (paren

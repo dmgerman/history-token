@@ -599,7 +599,7 @@ suffix:semicolon
 multiline_comment|/* The interrupt handler. When the cm260 generates an interrupt, very&n;   much care has to be taken in reading out the registers in the right&n;   order; in case of a receive_buffer_full interrupt, first the&n;   uart_receive must be read, and then the line status again to&n;   de-assert the interrupt line. It took me a couple of hours to find&n;   this out:-( &n;&n;   The function reset_cm206 appears to cause an interrupt, because&n;   pulling up the INIT line clears both the uart-write-buffer /and/&n;   the uart-write-buffer-empty mask. We call this a `lost interrupt,&squot;&n;   as there seems so reason for this to happen.&n;*/
 DECL|function|cm206_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|cm206_interrupt
 c_func
 (paren
@@ -615,7 +615,6 @@ id|pt_regs
 op_star
 id|regs
 )paren
-multiline_comment|/* you rang? */
 (brace
 r_volatile
 id|ush
@@ -1056,6 +1055,9 @@ c_func
 (paren
 id|interrupt
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 multiline_comment|/* we have put the address of the wait queue in who */

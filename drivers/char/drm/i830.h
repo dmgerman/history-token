@@ -45,14 +45,16 @@ multiline_comment|/* Driver customization:&n; */
 DECL|macro|__HAVE_RELEASE
 mdefine_line|#define __HAVE_RELEASE&t;&t;1
 DECL|macro|DRIVER_RELEASE
-mdefine_line|#define DRIVER_RELEASE() do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;i830_reclaim_buffers( filp );&t;&t;&t;&t;&bslash;&n;} while (0)
+mdefine_line|#define DRIVER_RELEASE() do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;i830_reclaim_buffers( filp );&t;&t;&t;&t;&t;&bslash;&n;} while (0)
+DECL|macro|DRIVER_PRETAKEDOWN
+mdefine_line|#define DRIVER_PRETAKEDOWN() do {&t;&t;&t;&t;&t;&bslash;&n;&t;i830_dma_cleanup( dev );&t;&t;&t;&t;&t;&bslash;&n;} while (0)
 multiline_comment|/* DMA customization:&n; */
 DECL|macro|__HAVE_DMA
 mdefine_line|#define __HAVE_DMA&t;&t;1
 DECL|macro|__HAVE_DMA_QUEUE
 mdefine_line|#define __HAVE_DMA_QUEUE&t;1
 DECL|macro|__HAVE_DMA_WAITLIST
-mdefine_line|#define __HAVE_DMA_WAITLIST&t;1
+mdefine_line|#define __HAVE_DMA_WAITLIST&t;0
 DECL|macro|__HAVE_DMA_RECLAIM
 mdefine_line|#define __HAVE_DMA_RECLAIM&t;1
 DECL|macro|__HAVE_DMA_QUIESCENT
@@ -60,6 +62,7 @@ mdefine_line|#define __HAVE_DMA_QUIESCENT&t;1
 DECL|macro|DRIVER_DMA_QUIESCENT
 mdefine_line|#define DRIVER_DMA_QUIESCENT() do {&t;&t;&t;&t;&t;&bslash;&n;&t;i830_dma_quiescent( dev );&t;&t;&t;&t;&t;&bslash;&n;} while (0)
 multiline_comment|/* Driver will work either way: IRQ&squot;s save cpu time when waiting for&n; * the card, but are subject to subtle interactions between bios,&n; * hardware and the driver.&n; */
+multiline_comment|/* XXX: Add vblank support? */
 DECL|macro|USE_IRQS
 mdefine_line|#define USE_IRQS 0
 macro_line|#if USE_IRQS
@@ -67,13 +70,6 @@ DECL|macro|__HAVE_DMA_IRQ
 mdefine_line|#define __HAVE_DMA_IRQ&t;&t;1
 DECL|macro|__HAVE_SHARED_IRQ
 mdefine_line|#define __HAVE_SHARED_IRQ&t;1
-DECL|macro|DRIVER_PREINSTALL
-mdefine_line|#define DRIVER_PREINSTALL() do {&t;&t;&t;&bslash;&n;&t;drm_i830_private_t *dev_priv =&t;&t;&t;&bslash;&n;&t;&t;(drm_i830_private_t *)dev-&gt;dev_private;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;   &t;I830_WRITE16( I830REG_HWSTAM, 0xffff );&t;&bslash;&n;        I830_WRITE16( I830REG_INT_MASK_R, 0x0 );&t;&bslash;&n;      &t;I830_WRITE16( I830REG_INT_ENABLE_R, 0x0 );&t;&bslash;&n;} while (0)
-DECL|macro|DRIVER_POSTINSTALL
-mdefine_line|#define DRIVER_POSTINSTALL() do {&t;&t;&t;&t;&bslash;&n;&t;drm_i830_private_t *dev_priv =&t;&t;&t;&t;&bslash;&n;&t;&t;(drm_i830_private_t *)dev-&gt;dev_private;&t;&t;&bslash;&n;   &t;I830_WRITE16( I830REG_INT_ENABLE_R, 0x2 );&t;&t;&bslash;&n;   &t;atomic_set(&amp;dev_priv-&gt;irq_received, 0);&t;&t;&t;&bslash;&n;   &t;atomic_set(&amp;dev_priv-&gt;irq_emitted, 0);&t;&t;&t;&bslash;&n;&t;init_waitqueue_head(&amp;dev_priv-&gt;irq_queue);&t;&t;&bslash;&n;} while (0)
-multiline_comment|/* This gets called too late to be useful: dev_priv has already been&n; * freed.&n; */
-DECL|macro|DRIVER_UNINSTALL
-mdefine_line|#define DRIVER_UNINSTALL() do {&t;&t;&t;&t;&t;&bslash;&n;} while (0)
 macro_line|#else
 DECL|macro|__HAVE_DMA_IRQ
 mdefine_line|#define __HAVE_DMA_IRQ          0

@@ -15,7 +15,6 @@ macro_line|#include &lt;linux/poll.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/ac97_codec.h&gt;
-macro_line|#include &lt;linux/wrapper.h&gt;
 macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
@@ -26,7 +25,7 @@ macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/hardirq.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/dma.h&gt;
-macro_line|#if defined CONFIG_ALPHA_NAUTILUS || CONFIG_ALPHA_GENERIC
+macro_line|#if defined(CONFIG_ALPHA_NAUTILUS) || defined(CONFIG_ALPHA_GENERIC)
 macro_line|#include &lt;asm/hwrpb.h&gt;
 macro_line|#endif
 macro_line|#include &quot;trident.h&quot;
@@ -20689,7 +20688,7 @@ c_func
 suffix:semicolon
 )brace
 multiline_comment|/* edited by HMSEO for GT sound */
-macro_line|#if defined CONFIG_ALPHA_NAUTILUS || CONFIG_ALPHA_GENERIC
+macro_line|#if defined(CONFIG_ALPHA_NAUTILUS) || defined(CONFIG_ALPHA_GENERIC)
 (brace
 id|u16
 id|ac97_data

@@ -87,8 +87,6 @@ c_func
 id|ax25
 )paren
 suffix:semicolon
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 )brace
 DECL|function|ax25_free_sock
 r_static
@@ -1913,8 +1911,6 @@ l_int|NULL
 )paren
 r_return
 l_int|NULL
-suffix:semicolon
-id|MOD_INC_USE_COUNT
 suffix:semicolon
 id|memset
 c_func
@@ -7849,6 +7845,11 @@ dot
 id|create
 op_assign
 id|ax25_create
+comma
+dot
+id|owner
+op_assign
+id|THIS_MODULE
 comma
 )brace
 suffix:semicolon

@@ -1807,7 +1807,7 @@ comma
 id|printk
 c_func
 (paren
-l_string|&quot;use_sg is %d&bslash;n &quot;
+l_string|&quot;use_sg is %d&bslash;n&quot;
 comma
 id|cmd-&gt;use_sg
 )paren

@@ -942,6 +942,7 @@ id|cdi
 )paren
 (brace
 r_int
+r_int
 id|retry_count
 suffix:semicolon
 id|reset_drive
@@ -1186,7 +1187,7 @@ suffix:semicolon
 )brace
 DECL|function|cdu31a_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|cdu31a_interrupt
 c_func
 (paren
@@ -1328,6 +1329,9 @@ l_string|&quot;CDU31A: Got an interrupt but nothing was waiting&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 multiline_comment|/*&n; * give more verbose error messages&n; */
 DECL|function|translate_error
@@ -12207,6 +12211,7 @@ op_star
 id|res_size
 )paren
 (brace
+r_int
 r_int
 id|retry_count
 suffix:semicolon

@@ -2589,7 +2589,7 @@ id|ddl
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * This doesn&squot;t go via the dn_nsp_send() fucntion since we need&n;&t; * to be able to send disc packets out which have no socket&n;&t; * associations.&n;&t; */
+multiline_comment|/*&n;&t; * This doesn&squot;t go via the dn_nsp_send() function since we need&n;&t; * to be able to send disc packets out which have no socket&n;&t; * associations.&n;&t; */
 id|skb-&gt;dst
 op_assign
 id|dst_clone

@@ -16,6 +16,9 @@ macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
+macro_line|#ifdef __arm__
+macro_line|#include &lt;asm/mach-types.h&gt;
+macro_line|#endif
 macro_line|#include &quot;cyber2000fb.h&quot;
 DECL|struct|cfb_info
 r_struct
@@ -5254,10 +5257,6 @@ suffix:semicolon
 id|cfb-&gt;fb.flags
 op_assign
 id|FBINFO_FLAG_DEFAULT
-suffix:semicolon
-id|cfb-&gt;fb.node
-op_assign
-id|NODEV
 suffix:semicolon
 id|cfb-&gt;fb.pseudo_palette
 op_assign

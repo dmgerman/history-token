@@ -3,6 +3,7 @@ macro_line|#ifndef __LINUX_TMS380TR_H
 DECL|macro|__LINUX_TMS380TR_H
 mdefine_line|#define __LINUX_TMS380TR_H
 macro_line|#ifdef __KERNEL__
+macro_line|#include &lt;linux/interrupt.h&gt;
 multiline_comment|/* module prototypes */
 r_int
 id|tms380tr_open
@@ -24,7 +25,7 @@ op_star
 id|dev
 )paren
 suffix:semicolon
-r_void
+id|irqreturn_t
 id|tms380tr_interrupt
 c_func
 (paren

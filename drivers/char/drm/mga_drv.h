@@ -459,7 +459,7 @@ id|dev_priv
 )paren
 suffix:semicolon
 DECL|macro|mga_flush_write_combine
-mdefine_line|#define mga_flush_write_combine()&t;DRM_WRITEMEMORYBARRIER(dev_priv-&gt;primary)
+mdefine_line|#define mga_flush_write_combine()&t;DRM_WRITEMEMORYBARRIER()
 macro_line|#if defined(__linux__) &amp;&amp; defined(__alpha__)
 DECL|macro|MGA_BASE
 mdefine_line|#define MGA_BASE( reg )&t;&t;((unsigned long)(dev_priv-&gt;mmio-&gt;handle))
@@ -474,9 +474,9 @@ mdefine_line|#define MGA_READ( reg )&t;&t;(_MGA_READ((u32 *)MGA_ADDR(reg)))
 DECL|macro|MGA_READ8
 mdefine_line|#define MGA_READ8( reg )&t;(_MGA_READ((u8 *)MGA_ADDR(reg)))
 DECL|macro|MGA_WRITE
-mdefine_line|#define MGA_WRITE( reg, val )&t;do { DRM_WRITEMEMORYBARRIER(dev_priv-&gt;mmio); MGA_DEREF( reg ) = val; } while (0)
+mdefine_line|#define MGA_WRITE( reg, val )&t;do { DRM_WRITEMEMORYBARRIER(); MGA_DEREF( reg ) = val; } while (0)
 DECL|macro|MGA_WRITE8
-mdefine_line|#define MGA_WRITE8( reg, val )  do { DRM_WRITEMEMORYBARRIER(dev_priv-&gt;mmio); MGA_DEREF8( reg ) = val; } while (0)
+mdefine_line|#define MGA_WRITE8( reg, val )  do { DRM_WRITEMEMORYBARRIER(); MGA_DEREF8( reg ) = val; } while (0)
 DECL|function|_MGA_READ
 r_static
 r_inline
@@ -489,10 +489,9 @@ op_star
 id|addr
 )paren
 (brace
-id|DRM_READMEMORYBARRIER
+id|DRM_MEMORYBARRIER
 c_func
 (paren
-id|dev_priv-&gt;mmio
 )paren
 suffix:semicolon
 r_return

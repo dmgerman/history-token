@@ -835,6 +835,11 @@ op_assign
 id|ip6t_hook
 comma
 dot
+id|owner
+op_assign
+id|THIS_MODULE
+comma
+dot
 id|pf
 op_assign
 id|PF_INET6
@@ -858,6 +863,11 @@ op_assign
 id|ip6t_hook
 comma
 dot
+id|owner
+op_assign
+id|THIS_MODULE
+comma
+dot
 id|pf
 op_assign
 id|PF_INET6
@@ -879,6 +889,11 @@ dot
 id|hook
 op_assign
 id|ip6t_local_out_hook
+comma
+dot
+id|owner
+op_assign
+id|THIS_MODULE
 comma
 dot
 id|pf

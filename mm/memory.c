@@ -1089,6 +1089,19 @@ suffix:semicolon
 multiline_comment|/* the pte points outside of valid memory, the&n;&t;&t;&t;&t; * mapping is assumed to be good, meaningful&n;&t;&t;&t;&t; * and not mapped via rmap - duplicate the&n;&t;&t;&t;&t; * mapping as is.&n;&t;&t;&t;&t; */
 id|page
 op_assign
+l_int|NULL
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|pfn_valid
+c_func
+(paren
+id|pfn
+)paren
+)paren
+id|page
+op_assign
 id|pfn_to_page
 c_func
 (paren
@@ -1099,11 +1112,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|pfn_valid
-c_func
-(paren
-id|pfn
-)paren
+id|page
 op_logical_or
 id|PageReserved
 c_func

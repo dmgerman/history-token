@@ -793,6 +793,11 @@ op_assign
 id|ipt_hook
 comma
 dot
+id|owner
+op_assign
+id|THIS_MODULE
+comma
+dot
 id|pf
 op_assign
 id|PF_INET
@@ -816,6 +821,11 @@ op_assign
 id|ipt_hook
 comma
 dot
+id|owner
+op_assign
+id|THIS_MODULE
+comma
+dot
 id|pf
 op_assign
 id|PF_INET
@@ -837,6 +847,11 @@ dot
 id|hook
 op_assign
 id|ipt_local_out_hook
+comma
+dot
+id|owner
+op_assign
+id|THIS_MODULE
 comma
 dot
 id|pf

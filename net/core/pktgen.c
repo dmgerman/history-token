@@ -350,15 +350,11 @@ DECL|variable|ipg_d
 r_static
 r_int
 id|ipg_d
-op_assign
-l_int|0
 suffix:semicolon
 DECL|variable|clone_skb_d
 r_static
 r_int
 id|clone_skb_d
-op_assign
-l_int|0
 suffix:semicolon
 DECL|macro|MAX_PKTGEN
 mdefine_line|#define MAX_PKTGEN 8
@@ -447,8 +443,6 @@ r_struct
 id|proc_dir_entry
 op_star
 id|proc_dir
-op_assign
-l_int|0
 suffix:semicolon
 DECL|function|setup_inject
 r_static

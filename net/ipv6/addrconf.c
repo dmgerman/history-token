@@ -314,36 +314,56 @@ id|ipv6_devconf
 id|ipv6_devconf
 op_assign
 (brace
+dot
+id|forwarding
+op_assign
 l_int|0
 comma
-multiline_comment|/* forwarding&t;&t;*/
+dot
+id|hop_limit
+op_assign
 id|IPV6_DEFAULT_HOPLIMIT
 comma
-multiline_comment|/* hop limit&t;&t;*/
+dot
+id|mtu6
+op_assign
 id|IPV6_MIN_MTU
 comma
-multiline_comment|/* mtu&t;&t;&t;*/
+dot
+id|accept_ra
+op_assign
 l_int|1
 comma
-multiline_comment|/* accept RAs&t;&t;*/
+dot
+id|accept_redirects
+op_assign
 l_int|1
 comma
-multiline_comment|/* accept redirects&t;*/
+dot
+id|autoconf
+op_assign
 l_int|1
 comma
-multiline_comment|/* autoconfiguration&t;*/
+dot
+id|dad_transmits
+op_assign
 l_int|1
 comma
-multiline_comment|/* dad transmits&t;*/
+dot
+id|rtr_solicits
+op_assign
 id|MAX_RTR_SOLICITATIONS
 comma
-multiline_comment|/* router solicits&t;*/
+dot
+id|rtr_solicit_interval
+op_assign
 id|RTR_SOLICITATION_INTERVAL
 comma
-multiline_comment|/* rtr solicit interval&t;*/
+dot
+id|rtr_solicit_delay
+op_assign
 id|MAX_RTR_SOLICITATION_DELAY
 comma
-multiline_comment|/* rtr solicit delay&t;*/
 macro_line|#ifdef CONFIG_IPV6_PRIVACY
 dot
 id|use_tempaddr
@@ -380,36 +400,56 @@ id|ipv6_devconf
 id|ipv6_devconf_dflt
 op_assign
 (brace
+dot
+id|forwarding
+op_assign
 l_int|0
 comma
-multiline_comment|/* forwarding&t;&t;*/
+dot
+id|hop_limit
+op_assign
 id|IPV6_DEFAULT_HOPLIMIT
 comma
-multiline_comment|/* hop limit&t;&t;*/
+dot
+id|mtu6
+op_assign
 id|IPV6_MIN_MTU
 comma
-multiline_comment|/* mtu&t;&t;&t;*/
+dot
+id|accept_ra
+op_assign
 l_int|1
 comma
-multiline_comment|/* accept RAs&t;&t;*/
+dot
+id|accept_redirects
+op_assign
 l_int|1
 comma
-multiline_comment|/* accept redirects&t;*/
+dot
+id|autoconf
+op_assign
 l_int|1
 comma
-multiline_comment|/* autoconfiguration&t;*/
+dot
+id|dad_transmits
+op_assign
 l_int|1
 comma
-multiline_comment|/* dad transmits&t;*/
+dot
+id|rtr_solicits
+op_assign
 id|MAX_RTR_SOLICITATIONS
 comma
-multiline_comment|/* router solicits&t;*/
+dot
+id|rtr_solicit_interval
+op_assign
 id|RTR_SOLICITATION_INTERVAL
 comma
-multiline_comment|/* rtr solicit interval&t;*/
+dot
+id|rtr_solicit_delay
+op_assign
 id|MAX_RTR_SOLICITATION_DELAY
 comma
-multiline_comment|/* rtr solicit delay&t;*/
 macro_line|#ifdef CONFIG_IPV6_PRIVACY
 dot
 id|use_tempaddr
@@ -1075,6 +1115,12 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
+id|snmp6_unregister_dev
+c_func
+(paren
+id|idev
+)paren
+suffix:semicolon
 id|inet6_dev_count
 op_decrement
 suffix:semicolon
@@ -1223,6 +1269,50 @@ c_func
 id|dev
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|snmp6_register_dev
+c_func
+(paren
+id|ndev
+)paren
+OL
+l_int|0
+)paren
+(brace
+id|ADBG
+c_func
+(paren
+(paren
+id|KERN_WARNING
+l_string|&quot;%s(): cannot create /proc/net/dev_snmp6/%s&bslash;n&quot;
+comma
+id|__FUNCTION__
+comma
+id|dev-&gt;name
+)paren
+)paren
+suffix:semicolon
+id|neigh_parms_release
+c_func
+(paren
+op_amp
+id|nd_tbl
+comma
+id|ndev-&gt;nd_parms
+)paren
+suffix:semicolon
+id|in6_dev_finish_destroy
+c_func
+(paren
+id|ndev
+)paren
+suffix:semicolon
+r_return
+l_int|NULL
+suffix:semicolon
+)brace
 macro_line|#ifdef CONFIG_IPV6_PRIVACY
 id|get_random_bytes
 c_func
@@ -3168,7 +3258,7 @@ id|ret
 suffix:semicolon
 )brace
 macro_line|#endif
-multiline_comment|/*&n; *&t;Choose an apropriate source address&n; *&t;should do:&n; *&t;i)&t;get an address with an apropriate scope&n; *&t;ii)&t;see if there is a specific route for the destination and use&n; *&t;&t;an address of the attached interface &n; *&t;iii)&t;don&squot;t use deprecated addresses&n; */
+multiline_comment|/*&n; *&t;Choose an appropriate source address&n; *&t;should do:&n; *&t;i)&t;get an address with an appropriate scope&n; *&t;ii)&t;see if there is a specific route for the destination and use&n; *&t;&t;an address of the attached interface &n; *&t;iii)&t;don&squot;t use deprecated addresses&n; */
 DECL|function|ipv6_saddr_pref
 r_static
 r_int

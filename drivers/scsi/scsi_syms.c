@@ -357,13 +357,6 @@ id|scsi_reset_provider
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * These are here only while I debug the rest of the scsi stuff.&n; */
-DECL|variable|scsi_host_get_next
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|scsi_host_get_next
-)paren
-suffix:semicolon
 DECL|variable|scsi_host_hn_get
 id|EXPORT_SYMBOL
 c_func
@@ -440,11 +433,11 @@ id|scsi_delete_timer
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * sysfs support&n; */
-DECL|variable|shost_devclass
+DECL|variable|shost_class
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|shost_devclass
+id|shost_class
 )paren
 suffix:semicolon
 eof

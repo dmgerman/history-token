@@ -23,7 +23,7 @@ id|e1000_driver_version
 (braket
 )braket
 op_assign
-l_string|&quot;5.0.43-k2&quot;
+l_string|&quot;5.0.43-k3&quot;
 suffix:semicolon
 DECL|variable|e1000_copyright
 r_char
@@ -2269,6 +2269,7 @@ op_assign
 id|NETIF_F_SG
 suffix:semicolon
 )brace
+macro_line|#ifdef NETIF_F_TSO
 r_if
 c_cond
 (paren
@@ -2290,6 +2291,7 @@ op_or_assign
 id|NETIF_F_TSO
 suffix:semicolon
 )brace
+macro_line|#endif
 r_if
 c_cond
 (paren
@@ -6010,6 +6012,7 @@ r_int
 id|tx_flags
 )paren
 (brace
+macro_line|#ifdef NETIF_F_TSO
 r_struct
 id|e1000_context_desc
 op_star
@@ -6261,6 +6264,7 @@ r_return
 id|TRUE
 suffix:semicolon
 )brace
+macro_line|#endif
 r_return
 id|FALSE
 suffix:semicolon
@@ -6433,6 +6437,7 @@ l_int|0
 comma
 id|i
 suffix:semicolon
+macro_line|#ifdef NETIF_F_TSO
 r_int
 id|tso
 op_assign
@@ -6444,6 +6449,7 @@ id|skb
 op_member_access_from_pointer
 id|tso_size
 suffix:semicolon
+macro_line|#endif
 r_int
 id|nr_frags
 op_assign
@@ -6482,6 +6488,7 @@ comma
 id|E1000_MAX_DATA_PER_TXD
 )paren
 suffix:semicolon
+macro_line|#ifdef NETIF_F_TSO
 multiline_comment|/* Workaround for premature desc write-backs&n;&t;&t; * in TSO mode.  Append 4-byte sentinel desc */
 r_if
 c_cond
@@ -6505,6 +6512,7 @@ op_sub_assign
 l_int|4
 suffix:semicolon
 )brace
+macro_line|#endif
 id|tx_ring-&gt;buffer_info
 (braket
 id|i
@@ -6628,6 +6636,7 @@ comma
 id|E1000_MAX_DATA_PER_TXD
 )paren
 suffix:semicolon
+macro_line|#ifdef NETIF_F_TSO
 multiline_comment|/* Workaround for premature desc write-backs&n;&t;&t;&t; * in TSO mode.  Append 4-byte sentinel desc */
 r_if
 c_cond
@@ -6656,6 +6665,7 @@ op_sub_assign
 l_int|4
 suffix:semicolon
 )brace
+macro_line|#endif
 id|tx_ring-&gt;buffer_info
 (braket
 id|i

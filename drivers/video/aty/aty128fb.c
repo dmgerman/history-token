@@ -6753,10 +6753,6 @@ op_assign
 id|ent-&gt;driver_data
 suffix:semicolon
 multiline_comment|/* fill in info */
-id|info-&gt;node
-op_assign
-id|NODEV
-suffix:semicolon
 id|info-&gt;fbops
 op_assign
 op_amp
@@ -7161,11 +7157,7 @@ c_func
 id|KERN_INFO
 l_string|&quot;fb%d: %s frame buffer device on %s&bslash;n&quot;
 comma
-id|minor
-c_func
-(paren
 id|info-&gt;node
-)paren
 comma
 id|info-&gt;fix.id
 comma

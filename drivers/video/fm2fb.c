@@ -842,10 +842,6 @@ id|fm2fb_mode
 op_assign
 id|FM2FB_MODE_PAL
 suffix:semicolon
-id|fb_info.node
-op_assign
-id|NODEV
-suffix:semicolon
 id|fb_info.fbops
 op_assign
 op_amp
@@ -911,11 +907,7 @@ c_func
 (paren
 l_string|&quot;fb%d: %s frame buffer device&bslash;n&quot;
 comma
-id|minor
-c_func
-(paren
 id|fb_info.node
-)paren
 comma
 id|fb_fix.id
 )paren

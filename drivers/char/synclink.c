@@ -5583,7 +5583,7 @@ multiline_comment|/* end of mgsl_isr_transmit_dma() */
 multiline_comment|/* mgsl_interrupt()&n; * &n; * &t;Interrupt service routine entry point.&n; * &t;&n; * Arguments:&n; * &n; * &t;irq&t;&t;interrupt number that caused interrupt&n; * &t;dev_id&t;&t;device ID supplied during interrupt registration&n; * &t;regs&t;&t;interrupted processor context&n; * &t;&n; * Return Value: None&n; */
 DECL|function|mgsl_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|mgsl_interrupt
 c_func
 (paren
@@ -5646,6 +5646,7 @@ op_logical_neg
 id|info
 )paren
 r_return
+id|IRQ_NONE
 suffix:semicolon
 id|spin_lock
 c_func
@@ -5872,6 +5873,9 @@ id|__LINE__
 comma
 id|irq
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 multiline_comment|/* end of mgsl_interrupt() */

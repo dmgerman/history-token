@@ -1684,11 +1684,6 @@ op_assign
 op_complement
 l_int|0UL
 suffix:semicolon
-id|iomem_resource.end
-op_assign
-op_complement
-l_int|0UL
-suffix:semicolon
 multiline_comment|/* PCI DMA Direct Mapping is 1GB at 2GB.  */
 id|__direct_map_base
 op_assign

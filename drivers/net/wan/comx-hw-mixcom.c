@@ -1816,7 +1816,7 @@ suffix:semicolon
 )brace
 DECL|function|MIXCOM_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|MIXCOM_interrupt
 c_func
 (paren
@@ -1888,6 +1888,7 @@ id|irq
 )paren
 suffix:semicolon
 r_return
+id|IRQ_NONE
 suffix:semicolon
 )brace
 id|ch
@@ -2178,6 +2179,7 @@ id|flags
 )paren
 suffix:semicolon
 r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 DECL|function|MIXCOM_open

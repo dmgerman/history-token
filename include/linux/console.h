@@ -545,7 +545,9 @@ r_int
 )paren
 suffix:semicolon
 DECL|member|device
-id|kdev_t
+r_struct
+id|tty_driver
+op_star
 (paren
 op_star
 id|device
@@ -553,6 +555,9 @@ id|device
 (paren
 r_struct
 id|console
+op_star
+comma
+r_int
 op_star
 )paren
 suffix:semicolon
@@ -592,6 +597,11 @@ suffix:semicolon
 DECL|member|cflag
 r_int
 id|cflag
+suffix:semicolon
+DECL|member|data
+r_void
+op_star
+id|data
 suffix:semicolon
 DECL|member|next
 r_struct

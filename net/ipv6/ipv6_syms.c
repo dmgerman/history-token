@@ -182,6 +182,13 @@ c_func
 id|in6addr_loopback
 )paren
 suffix:semicolon
+DECL|variable|in6_dev_finish_destroy
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|in6_dev_finish_destroy
+)paren
+suffix:semicolon
 DECL|variable|xfrm6_rcv
 id|EXPORT_SYMBOL
 c_func

@@ -10529,7 +10529,7 @@ suffix:semicolon
 multiline_comment|/*&n;  BusLogic_InterruptHandler handles hardware interrupts from BusLogic Host&n;  Adapters.&n;*/
 DECL|function|BusLogic_InterruptHandler
 r_static
-r_void
+id|irqreturn_t
 id|BusLogic_InterruptHandler
 c_func
 (paren
@@ -10745,6 +10745,9 @@ comma
 op_amp
 id|ProcessorFlags
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 multiline_comment|/*&n;  BusLogic_WriteOutgoingMailbox places CCB and Action Code into an Outgoing&n;  Mailbox for execution by Host Adapter.  The Host Adapter&squot;s Lock should&n;  already have been acquired by the caller.&n;*/
@@ -13572,8 +13575,12 @@ suffix:semicolon
 r_int
 r_char
 id|PartitionEntryEndHead
+op_assign
+l_int|0
 comma
 id|PartitionEntryEndSector
+op_assign
+l_int|0
 suffix:semicolon
 r_for
 c_loop

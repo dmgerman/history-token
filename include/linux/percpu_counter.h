@@ -2,7 +2,7 @@ multiline_comment|/*&n; * A simple &quot;approximate counter&quot; for use in ex
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/smp.h&gt;
-macro_line|#include &lt;linux/preempt.h&gt;
+macro_line|#include &lt;linux/threads.h&gt;
 macro_line|#ifdef CONFIG_SMP
 DECL|struct|__percpu_counter
 r_struct

@@ -6997,10 +6997,6 @@ id|fb_info-&gt;changevar
 op_assign
 l_int|NULL
 suffix:semicolon
-id|fb_info-&gt;node
-op_assign
-id|NODEV
-suffix:semicolon
 id|fb_info-&gt;fbops
 op_assign
 op_amp
@@ -7143,11 +7139,7 @@ id|KERN_INFO
 l_string|&quot;fb%d: %s frame buffer device, using %ldK of &quot;
 l_string|&quot;video memory&bslash;n&quot;
 comma
-id|minor
-c_func
-(paren
 id|fb_info-&gt;node
-)paren
 comma
 id|fb_info-&gt;modename
 comma

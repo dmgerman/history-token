@@ -2244,7 +2244,7 @@ id|cp
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Set packet type for incomming connection */
+multiline_comment|/* Set packet type for incoming connection */
 r_if
 c_cond
 (paren

@@ -10,13 +10,14 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/completion.h&gt;
+macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#include &quot;scsi.h&quot;
 macro_line|#include &quot;hosts.h&quot;
 macro_line|#include &quot;aacraid.h&quot;
 DECL|function|aac_sa_intr
 r_static
-r_void
+id|irqreturn_t
 id|aac_sa_intr
 c_func
 (paren
@@ -231,7 +232,13 @@ id|DOORBELL_4
 )paren
 suffix:semicolon
 )brace
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
+r_return
+id|IRQ_NONE
+suffix:semicolon
 )brace
 multiline_comment|/**&n; *&t;aac_sa_enable_interrupt&t;-&t;enable an interrupt event&n; *&t;@dev: Which adapter to enable.&n; *&t;@event: Which adapter event.&n; *&n; *&t;This routine will enable the corresponding adapter event to cause an interrupt on &n; * &t;the host.&n; */
 DECL|function|aac_sa_enable_interrupt

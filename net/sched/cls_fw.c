@@ -570,9 +570,8 @@ id|f
 op_eq
 l_int|NULL
 )paren
-r_return
-op_minus
-id|EINVAL
+r_goto
+id|out
 suffix:semicolon
 r_for
 c_loop
@@ -684,6 +683,8 @@ l_int|0
 suffix:semicolon
 )brace
 )brace
+id|out
+suffix:colon
 r_return
 op_minus
 id|EINVAL

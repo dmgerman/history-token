@@ -101,11 +101,11 @@ c_func
 id|input_event
 )paren
 suffix:semicolon
-DECL|variable|input_devclass
+DECL|variable|input_class
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|input_devclass
+id|input_class
 )paren
 suffix:semicolon
 DECL|macro|INPUT_MAJOR
@@ -3145,10 +3145,10 @@ id|count
 suffix:semicolon
 )brace
 macro_line|#endif
-DECL|variable|input_devclass
+DECL|variable|input_class
 r_struct
-id|device_class
-id|input_devclass
+r_class
+id|input_class
 op_assign
 (brace
 dot
@@ -3173,11 +3173,11 @@ id|proc_dir_entry
 op_star
 id|entry
 suffix:semicolon
-id|devclass_register
+id|class_register
 c_func
 (paren
 op_amp
-id|input_devclass
+id|input_class
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_PROC_FS
@@ -3341,11 +3341,11 @@ comma
 id|INPUT_MAJOR
 )paren
 suffix:semicolon
-id|devclass_unregister
+id|class_unregister
 c_func
 (paren
 op_amp
-id|input_devclass
+id|input_class
 )paren
 suffix:semicolon
 )brace

@@ -618,7 +618,7 @@ id|rt-&gt;u.dst
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; *&t;Routing Table&n; *&n; *&t;return the apropriate node for a routing tree &quot;add&quot; operation&n; *&t;by either creating and inserting or by returning an existing&n; *&t;node.&n; */
+multiline_comment|/*&n; *&t;Routing Table&n; *&n; *&t;return the appropriate node for a routing tree &quot;add&quot; operation&n; *&t;by either creating and inserting or by returning an existing&n; *&t;node.&n; */
 DECL|function|fib6_add_1
 r_static
 r_struct
@@ -2127,7 +2127,7 @@ r_return
 id|fn
 suffix:semicolon
 )brace
-multiline_comment|/*&n; *&t;Get node with sepciafied destination prefix (and source prefix,&n; *&t;if subtrees are used)&n; */
+multiline_comment|/*&n; *&t;Get node with specified destination prefix (and source prefix,&n; *&t;if subtrees are used)&n; */
 DECL|function|fib6_locate_1
 r_static
 r_struct

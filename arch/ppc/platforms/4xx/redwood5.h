@@ -89,9 +89,8 @@ DECL|macro|_ISA_MEM_BASE
 mdefine_line|#define _ISA_MEM_BASE&t;0
 DECL|macro|PCI_DRAM_OFFSET
 mdefine_line|#define PCI_DRAM_OFFSET&t;0
-multiline_comment|/* serail defines moved from ppc4xx_serial.h *&n; */
 DECL|macro|BASE_BAUD
-mdefine_line|#define BASE_BAUD&t;&t;1267200
+mdefine_line|#define BASE_BAUD&t;&t;(378000000 / 18 / 16)
 DECL|macro|PPC4xx_MACHINE_NAME
 mdefine_line|#define PPC4xx_MACHINE_NAME&t;&quot;IBM Redwood5&quot;
 macro_line|#endif /* __ASM_REDWOOD5_H__ */

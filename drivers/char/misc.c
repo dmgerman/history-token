@@ -719,7 +719,6 @@ op_amp
 l_int|7
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * please use it if you want to do fancy things with your&n;&t; * name...&n;&t; */
 r_if
 c_cond
 (paren
@@ -731,7 +730,6 @@ op_eq
 l_char|&squot;&bslash;0&squot;
 )paren
 (brace
-multiline_comment|/* yuck, yet another stupid special-casing.&n;&t;&t;   whos actually using this?  Please switch over&n;&t;&t;   to -&gt;devfs_name ASAP */
 id|snprintf
 c_func
 (paren
@@ -742,17 +740,6 @@ r_sizeof
 id|misc-&gt;devfs_name
 )paren
 comma
-id|strchr
-c_func
-(paren
-id|misc-&gt;name
-comma
-l_char|&squot;/&squot;
-)paren
-ques
-c_cond
-l_string|&quot;%s&quot;
-suffix:colon
 l_string|&quot;misc/%s&quot;
 comma
 id|misc-&gt;name

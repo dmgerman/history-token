@@ -449,6 +449,12 @@ mdefine_line|#define MSR_IDT_MCR_CTRL&t;&t;0x120
 multiline_comment|/* VIA Cyrix defined MSRs*/
 DECL|macro|MSR_VIA_FCR
 mdefine_line|#define MSR_VIA_FCR&t;&t;&t;0x1107
+DECL|macro|MSR_VIA_LONGHAUL
+mdefine_line|#define MSR_VIA_LONGHAUL&t;&t;0x110a
+DECL|macro|MSR_VIA_RNG
+mdefine_line|#define MSR_VIA_RNG&t;&t;&t;0x110b
+DECL|macro|MSR_VIA_BCR2
+mdefine_line|#define MSR_VIA_BCR2&t;&t;&t;0x1147
 multiline_comment|/* Intel defined MSRs. */
 DECL|macro|MSR_IA32_P5_MC_ADDR
 mdefine_line|#define MSR_IA32_P5_MC_ADDR&t;&t;0

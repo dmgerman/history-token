@@ -1322,6 +1322,11 @@ id|bt_sock_family_ops
 op_assign
 (brace
 dot
+id|owner
+op_assign
+id|THIS_MODULE
+comma
+dot
 id|family
 op_assign
 id|PF_BLUETOOTH

@@ -3,45 +3,6 @@ multiline_comment|/* Do *NOT* add other headers here, you are guaranteed to be w
 macro_line|#include &quot;wavelan_cs.p.h&quot;&t;&t;/* Private header */
 multiline_comment|/************************* MISC SUBROUTINES **************************/
 multiline_comment|/*&n; * Subroutines which won&squot;t fit in one of the following category&n; * (wavelan modem or i82593)&n; */
-multiline_comment|/*------------------------------------------------------------------*/
-multiline_comment|/*&n; * Wrapper for reporting error to cardservices&n; */
-DECL|function|cs_error
-r_static
-r_void
-id|cs_error
-c_func
-(paren
-id|client_handle_t
-id|handle
-comma
-r_int
-id|func
-comma
-r_int
-id|ret
-)paren
-(brace
-id|error_info_t
-id|err
-op_assign
-(brace
-id|func
-comma
-id|ret
-)brace
-suffix:semicolon
-id|CardServices
-c_func
-(paren
-id|ReportError
-comma
-id|handle
-comma
-op_amp
-id|err
-)paren
-suffix:semicolon
-)brace
 macro_line|#ifdef STRUCT_CHECK
 multiline_comment|/*------------------------------------------------------------------*/
 multiline_comment|/*&n; * Sanity routine to verify the sizes of the various WaveLAN interface&n; * structures.&n; */

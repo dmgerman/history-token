@@ -1640,7 +1640,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*      Control signal change interrupt event&n; */
 r_static
-r_void
+id|irqreturn_t
 DECL|function|fst_intr_ctlchg
 id|fst_intr_ctlchg
 (paren
@@ -1750,6 +1750,9 @@ id|port
 suffix:semicolon
 )brace
 )brace
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 multiline_comment|/*      Rx complete interrupt&n; */
 r_static
@@ -2265,7 +2268,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; *      The interrupt service routine&n; *      Dev_id is our fst_card_info pointer&n; */
 r_static
-r_void
+id|irqreturn_t
 DECL|function|fst_intr
 id|fst_intr
 (paren
@@ -2328,6 +2331,7 @@ id|irq
 )paren
 suffix:semicolon
 r_return
+id|IRQ_NONE
 suffix:semicolon
 )brace
 id|dbg
@@ -2693,6 +2697,9 @@ id|spin_unlock
 op_amp
 id|card-&gt;card_lock
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 multiline_comment|/*      Check that the shared memory configuration is one that we can handle&n; *      and that some basic parameters are correct&n; */

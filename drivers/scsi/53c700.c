@@ -23,6 +23,7 @@ macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
+macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &quot;scsi.h&quot;
 macro_line|#include &quot;hosts.h&quot;
 macro_line|#include &quot;53c700.h&quot;
@@ -6388,7 +6389,7 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
-r_void
+id|irqreturn_t
 DECL|function|NCR_700_intr
 id|NCR_700_intr
 c_func
@@ -6454,6 +6455,11 @@ r_int
 r_int
 id|flags
 suffix:semicolon
+r_int
+id|handled
+op_assign
+l_int|0
+suffix:semicolon
 multiline_comment|/* Use the host lock to serialise acess to the 53c700&n;&t; * hardware.  Note: In future, we may need to take the queue&n;&t; * lock to enter the done routines.  When that happens, we&n;&t; * need to ensure that for this driver, the host lock and the&n;&t; * queue lock point to the same thing. */
 id|spin_lock_irqsave
 c_func
@@ -6509,6 +6515,10 @@ suffix:semicolon
 r_enum
 id|NCR_700_Host_State
 id|state
+suffix:semicolon
+id|handled
+op_assign
+l_int|1
 suffix:semicolon
 id|state
 op_assign
@@ -7796,6 +7806,13 @@ c_func
 id|host-&gt;host_lock
 comma
 id|flags
+)paren
+suffix:semicolon
+r_return
+id|IRQ_RETVAL
+c_func
+(paren
+id|handled
 )paren
 suffix:semicolon
 )brace

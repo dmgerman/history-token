@@ -6061,9 +6061,11 @@ op_star
 id|file
 comma
 r_int
+r_int
 op_star
 id|count
 comma
+r_int
 r_int
 op_star
 id|size
@@ -15163,7 +15165,7 @@ suffix:semicolon
 )brace
 DECL|function|bttv_irq
 r_static
-r_void
+id|irqreturn_t
 id|bttv_irq
 c_func
 (paren
@@ -15195,6 +15197,11 @@ r_struct
 id|bttv
 op_star
 id|btv
+suffix:semicolon
+r_int
+id|handled
+op_assign
+l_int|0
 suffix:semicolon
 id|btv
 op_assign
@@ -15240,7 +15247,11 @@ c_cond
 op_logical_neg
 id|astat
 )paren
-r_return
+r_break
+suffix:semicolon
+id|handled
+op_assign
+l_int|1
 suffix:semicolon
 id|btwrite
 c_func
@@ -15587,6 +15598,13 @@ id|btv-&gt;nr
 suffix:semicolon
 )brace
 )brace
+r_return
+id|IRQ_RETVAL
+c_func
+(paren
+id|handled
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/* ----------------------------------------------------------------------- */
 multiline_comment|/* initialitation                                                          */

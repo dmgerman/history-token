@@ -2791,7 +2791,7 @@ l_int|1
 suffix:semicolon
 )brace
 id|STATIC
-r_void
+id|irqreturn_t
 DECL|function|toshoboe_probeinterrupt
 id|toshoboe_probeinterrupt
 (paren
@@ -2837,6 +2837,7 @@ id|irq
 )paren
 )paren
 r_return
+id|IRQ_NONE
 suffix:semicolon
 id|irqstat
 op_assign
@@ -2857,6 +2858,7 @@ id|OBOE_INT_MASK
 )paren
 )paren
 r_return
+id|IRQ_NONE
 suffix:semicolon
 multiline_comment|/* Ack all the interrupts */
 id|OUTB
@@ -3002,6 +3004,9 @@ l_string|&quot;I&quot;
 )paren
 suffix:semicolon
 )brace
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 id|STATIC
 r_int

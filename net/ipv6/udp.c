@@ -1725,7 +1725,7 @@ comma
 id|fl.fl6_dst
 )paren
 suffix:semicolon
-multiline_comment|/* get the source adddress used in the apropriate device */
+multiline_comment|/* get the source address used in the appropriate device */
 id|err
 op_assign
 id|ipv6_get_saddr

@@ -8768,6 +8768,9 @@ suffix:semicolon
 r_else
 (brace
 macro_line|#if LINUX_VERSION_CODE &gt;= 0x020400
+id|dma_addr_t
+id|dma_addr
+suffix:semicolon
 id|ret_val
 op_assign
 id|pci_alloc_consistent
@@ -8777,8 +8780,17 @@ id|ha-&gt;pdev
 comma
 id|size
 comma
-id|paddr
+op_amp
+id|dma_addr
 )paren
+suffix:semicolon
+op_star
+id|paddr
+op_assign
+(paren
+id|ulong32
+)paren
+id|dma_addr
 suffix:semicolon
 macro_line|#else
 id|ret_val

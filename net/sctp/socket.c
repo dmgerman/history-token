@@ -9896,7 +9896,7 @@ r_return
 id|pp
 suffix:semicolon
 )brace
-multiline_comment|/* FIXME: Commments! */
+multiline_comment|/* FIXME: Comments! */
 DECL|function|__sctp_put_port
 r_static
 id|__inline__
