@@ -428,6 +428,11 @@ id|timespec
 id|xtime
 suffix:semicolon
 r_extern
+r_struct
+id|timespec
+id|wall_to_monotonic
+suffix:semicolon
+r_extern
 id|seqlock_t
 id|xtime_lock
 suffix:semicolon
@@ -602,6 +607,10 @@ DECL|macro|CLOCK_MONOTONIC_HR
 mdefine_line|#define CLOCK_MONOTONIC_HR&t;  5
 DECL|macro|MAX_CLOCKS
 mdefine_line|#define MAX_CLOCKS 6
+DECL|macro|CLOCKS_MASK
+mdefine_line|#define CLOCKS_MASK  (CLOCK_REALTIME | CLOCK_MONOTONIC | &bslash;&n;                     CLOCK_REALTIME_HR | CLOCK_MONOTONIC_HR)
+DECL|macro|CLOCKS_MONO
+mdefine_line|#define CLOCKS_MONO (CLOCK_MONOTONIC &amp; CLOCK_MONOTONIC_HR)
 multiline_comment|/*&n; * The various flags for setting POSIX.1b interval timers.&n; */
 DECL|macro|TIMER_ABSTIME
 mdefine_line|#define TIMER_ABSTIME 0x01
