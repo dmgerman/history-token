@@ -4005,6 +4005,14 @@ c_func
 id|dev
 )paren
 suffix:semicolon
+multiline_comment|/* we don&squot;t want a dying socket registered */
+id|pcmcia_unregister_socket
+c_func
+(paren
+op_amp
+id|sock-&gt;socket
+)paren
+suffix:semicolon
 multiline_comment|/* Disable all events so we don&squot;t die in an IRQ storm */
 id|cb_writel
 c_func
@@ -4062,13 +4070,6 @@ id|yenta_free_resources
 c_func
 (paren
 id|sock
-)paren
-suffix:semicolon
-id|pcmcia_unregister_socket
-c_func
-(paren
-op_amp
-id|sock-&gt;socket
 )paren
 suffix:semicolon
 id|pci_set_drvdata
