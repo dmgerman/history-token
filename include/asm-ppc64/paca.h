@@ -9,7 +9,6 @@ multiline_comment|/*------------------------------------------------------------
 macro_line|#include&t;&lt;asm/iSeries/ItLpPaca.h&gt;
 macro_line|#include&t;&lt;asm/iSeries/ItLpRegSave.h&gt;
 macro_line|#include&t;&lt;asm/iSeries/ItLpQueue.h&gt;
-macro_line|#include&t;&lt;asm/rtas.h&gt;
 macro_line|#include&t;&lt;asm/mmu.h&gt;
 macro_line|#include&t;&lt;asm/processor.h&gt;
 r_extern
@@ -237,12 +236,6 @@ id|xRegSav
 suffix:semicolon
 multiline_comment|/* Register save for proc */
 multiline_comment|/*=====================================================================================&n; * CACHE_LINE_17-18 0x0800 - 0x08FF Reserved&n; *=====================================================================================&n; */
-DECL|member|xRtas
-r_struct
-id|rtas_args
-id|xRtas
-suffix:semicolon
-multiline_comment|/* Per processor RTAS struct */
 DECL|member|xR1
 id|u64
 id|xR1
@@ -260,12 +253,6 @@ id|rsvd5
 l_int|256
 op_minus
 l_int|16
-op_minus
-r_sizeof
-(paren
-r_struct
-id|rtas_args
-)paren
 )braket
 suffix:semicolon
 multiline_comment|/*=====================================================================================&n; * CACHE_LINE_19-30 0x0900 - 0x0EFF Reserved&n; *=====================================================================================&n; */

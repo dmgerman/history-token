@@ -35,6 +35,7 @@ macro_line|#include &lt;asm/machdep.h&gt;
 macro_line|#include &lt;asm/xics.h&gt;
 macro_line|#include &lt;asm/cputable.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
+macro_line|#include &lt;asm/rtas.h&gt;
 DECL|variable|smp_threads_ready
 r_int
 id|smp_threads_ready

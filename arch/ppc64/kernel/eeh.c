@@ -13,6 +13,7 @@ macro_line|#include &lt;asm/naca.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
+macro_line|#include &lt;asm/rtas.h&gt;
 macro_line|#include &quot;pci.h&quot;
 DECL|macro|DEBUG
 macro_line|#undef DEBUG

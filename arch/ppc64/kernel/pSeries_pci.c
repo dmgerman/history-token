@@ -15,6 +15,7 @@ macro_line|#include &lt;asm/pci-bridge.h&gt;
 macro_line|#include &lt;asm/ppcdebug.h&gt;
 macro_line|#include &lt;asm/naca.h&gt;
 macro_line|#include &lt;asm/iommu.h&gt;
+macro_line|#include &lt;asm/rtas.h&gt;
 macro_line|#include &quot;open_pic.h&quot;
 macro_line|#include &quot;pci.h&quot;
 multiline_comment|/* legal IO pages under MAX_ISA_PORT.  This is to ensure we don&squot;t touch&n;   devices we don&squot;t have access to. */

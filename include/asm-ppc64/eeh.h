@@ -7,6 +7,9 @@ macro_line|#include &lt;linux/init.h&gt;
 r_struct
 id|pci_dev
 suffix:semicolon
+r_struct
+id|device_node
+suffix:semicolon
 multiline_comment|/* I/O addresses are converted to EEH &quot;tokens&quot; such that a driver will cause&n; * a bad page fault if the address is used directly (i.e. these addresses are&n; * never actually mapped.  Translation between IO &lt;-&gt; EEH region is 1 to 1.&n; */
 DECL|macro|IO_TOKEN_TO_ADDR
 mdefine_line|#define IO_TOKEN_TO_ADDR(token) &bslash;&n;&t;(((unsigned long)(token) &amp; ~(0xfUL &lt;&lt; REGION_SHIFT)) | &bslash;&n;&t;(IO_REGION_ID &lt;&lt; REGION_SHIFT))

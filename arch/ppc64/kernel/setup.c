@@ -35,6 +35,7 @@ macro_line|#include &lt;asm/btext.h&gt;
 macro_line|#include &lt;asm/nvram.h&gt;
 macro_line|#include &lt;asm/setup.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
+macro_line|#include &lt;asm/rtas.h&gt;
 r_extern
 r_int
 r_int
@@ -796,6 +797,16 @@ id|r7
 suffix:semicolon
 )brace
 macro_line|#endif /* CONFIG_PPC_PMAC */
+macro_line|#if defined(CONFIG_HOTPLUG_CPU) &amp;&amp;  !defined(CONFIG_PPC_PMAC)
+id|rtas_stop_self_args.token
+op_assign
+id|rtas_token
+c_func
+(paren
+l_string|&quot;stop-self&quot;
+)paren
+suffix:semicolon
+macro_line|#endif /* CONFIG_HOTPLUG_CPU &amp;&amp; !CONFIG_PPC_PMAC */
 multiline_comment|/* Finish initializing the hash table (do the dynamic&n;&t; * patching for the fast-path hashtable.S code)&n;&t; */
 id|htab_finish_init
 c_func
