@@ -3780,6 +3780,27 @@ c_func
 l_string|&quot;There is no association yet.&bslash;n&quot;
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|sinfo_flags
+op_amp
+(paren
+id|MSG_EOF
+op_or
+id|MSG_ABORT
+)paren
+)paren
+(brace
+id|err
+op_assign
+op_minus
+id|EINVAL
+suffix:semicolon
+r_goto
+id|out_unlock
+suffix:semicolon
+)brace
 multiline_comment|/* Check for invalid stream against the stream counts,&n;&t;&t; * either the default or the user specified stream counts.&n;&t;&t; */
 r_if
 c_cond
