@@ -897,7 +897,7 @@ suffix:semicolon
 id|memset
 c_func
 (paren
-id|data
+id|data-&gt;data
 comma
 l_int|0xff
 comma
