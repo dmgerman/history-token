@@ -11,6 +11,7 @@ macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
+macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/fb.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -4155,7 +4156,7 @@ id|rinfo-&gt;lvds_timer
 comma
 id|jiffies
 op_plus
-id|MS_TO_HZ
+id|msecs_to_jiffies
 c_func
 (paren
 id|rinfo-&gt;panel_info.pwr_delay
@@ -8132,7 +8133,7 @@ id|rinfo-&gt;lvds_timer
 comma
 id|jiffies
 op_plus
-id|MS_TO_HZ
+id|msecs_to_jiffies
 c_func
 (paren
 id|rinfo-&gt;panel_info.pwr_delay
