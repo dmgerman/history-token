@@ -5432,6 +5432,11 @@ id|inode-&gt;i_size
 op_assign
 id|pos
 suffix:semicolon
+id|cond_resched
+c_func
+(paren
+)paren
+suffix:semicolon
 )brace
 r_while
 c_loop
@@ -5785,6 +5790,11 @@ op_logical_neg
 id|desc-&gt;count
 )paren
 r_break
+suffix:semicolon
+id|cond_resched
+c_func
+(paren
+)paren
 suffix:semicolon
 )brace
 op_star
