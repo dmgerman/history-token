@@ -2225,7 +2225,7 @@ c_func
 op_amp
 id|agp_amd64_pci_driver
 )paren
-op_eq
+OG
 l_int|0
 )paren
 (brace
