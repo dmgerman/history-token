@@ -7383,7 +7383,7 @@ c_cond
 (paren
 id|disk-&gt;flags
 op_amp
-id|GENDH_FL_UP
+id|GENHD_FL_UP
 )paren
 id|del_gendisk
 c_func
