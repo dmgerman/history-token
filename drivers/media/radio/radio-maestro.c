@@ -1233,7 +1233,6 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-r_inline
 r_static
 id|__u16
 id|radio_install
@@ -1601,7 +1600,6 @@ id|dev
 suffix:semicolon
 )brace
 DECL|function|radio_install
-r_inline
 r_static
 id|__u16
 id|radio_install
