@@ -1735,6 +1735,13 @@ r_return
 id|ret
 suffix:semicolon
 )brace
+DECL|variable|set_page_dirty_lock
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|set_page_dirty_lock
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Clear a page&squot;s dirty flag, while caring for dirty memory accounting. &n; * Returns true if the page was previously dirty.&n; */
 DECL|function|test_clear_page_dirty
 r_int
