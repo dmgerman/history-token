@@ -1933,7 +1933,7 @@ id|mpf
 op_assign
 id|mpf_found
 suffix:semicolon
-multiline_comment|/*&n; &t; * ACPI may be used to obtain the entire SMP configuration or just to &n; &t; * enumerate/configure processors (CONFIG_ACPI_HT_ONLY).  Note that &n; &t; * ACPI supports both logical (e.g. Hyper-Threading) and physical &n; &t; * processors, where MPS only supports physical.&n; &t; */
+multiline_comment|/*&n; &t; * ACPI may be used to obtain the entire SMP configuration or just to &n; &t; * enumerate/configure processors (CONFIG_ACPI_BOOT).  Note that &n; &t; * ACPI supports both logical (e.g. Hyper-Threading) and physical &n; &t; * processors, where MPS only supports physical.&n; &t; */
 r_if
 c_cond
 (paren
