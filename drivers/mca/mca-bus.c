@@ -551,8 +551,11 @@ id|mca_dev-&gt;dma_mask
 op_assign
 id|mca_bus-&gt;default_dma_mask
 suffix:semicolon
-multiline_comment|/* FIXME: uncomment this when we get a global idea of where&n;&t; * dma_mask goes */
-singleline_comment|//mca_dev-&gt;dev.dma_mask = &amp;mca_dev-&gt;dma_mask;
+id|mca_dev-&gt;dev.dma_mask
+op_assign
+op_amp
+id|mca_dev-&gt;dma_mask
+suffix:semicolon
 r_if
 c_cond
 (paren
