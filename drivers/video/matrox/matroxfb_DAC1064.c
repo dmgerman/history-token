@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&n; * Hardware accelerated Matrox Millennium I, II, Mystique, G100, G200, G400 and G450.&n; *&n; * (c) 1998-2001 Petr Vandrovec &lt;vandrove@vc.cvut.cz&gt;&n; *&n; * Portions Copyright (c) 2001 Matrox Graphics Inc.&n; *&n; * Version: 1.62 2001/11/29&n; *&n; * See matroxfb_base.c for contributors.&n; *&n; */
+multiline_comment|/*&n; *&n; * Hardware accelerated Matrox Millennium I, II, Mystique, G100, G200, G400 and G450.&n; *&n; * (c) 1998-2002 Petr Vandrovec &lt;vandrove@vc.cvut.cz&gt;&n; *&n; * Portions Copyright (c) 2001 Matrox Graphics Inc.&n; *&n; * Version: 1.65 2002/08/14&n; *&n; * See matroxfb_base.c for contributors.&n; *&n; */
 multiline_comment|/* make checkconfig does not walk through include tree :-( */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &quot;matroxfb_DAC1064.h&quot;
@@ -823,11 +823,7 @@ r_int
 id|DAC1064_selhwcursor
 c_func
 (paren
-id|WPMINFO
-r_struct
-id|display
-op_star
-id|p
+id|WPMINFO2
 )paren
 (brace
 id|ACCESS_FBINFO
@@ -2707,11 +2703,6 @@ r_struct
 id|my_timming
 op_star
 id|m
-comma
-r_struct
-id|display
-op_star
-id|p
 )paren
 (brace
 r_struct
@@ -2747,7 +2738,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|p-&gt;type
+id|ACCESS_FBINFO
+c_func
+(paren
+id|fbcon
+)paren
+dot
+id|fix.type
 op_eq
 id|FB_TYPE_TEXT
 )paren
@@ -2774,7 +2771,13 @@ r_else
 r_switch
 c_cond
 (paren
-id|p-&gt;var.bits_per_pixel
+id|ACCESS_FBINFO
+c_func
+(paren
+id|fbcon
+)paren
+dot
+id|var.bits_per_pixel
 )paren
 (brace
 multiline_comment|/* case 4: not supported by MGA1064 DAC */
@@ -2798,7 +2801,13 @@ suffix:colon
 r_if
 c_cond
 (paren
-id|p-&gt;var.green.length
+id|ACCESS_FBINFO
+c_func
+(paren
+id|fbcon
+)paren
+dot
+id|var.green.length
 op_eq
 l_int|5
 )paren
@@ -2941,11 +2950,6 @@ r_struct
 id|my_timming
 op_star
 id|m
-comma
-r_struct
-id|display
-op_star
-id|p
 )paren
 (brace
 r_struct
@@ -2968,7 +2972,13 @@ l_string|&quot;DAC1064_init_2&quot;
 r_if
 c_cond
 (paren
-id|p-&gt;var.bits_per_pixel
+id|ACCESS_FBINFO
+c_func
+(paren
+id|fbcon
+)paren
+dot
+id|var.bits_per_pixel
 OG
 l_int|16
 )paren
@@ -3031,7 +3041,13 @@ r_else
 r_if
 c_cond
 (paren
-id|p-&gt;var.bits_per_pixel
+id|ACCESS_FBINFO
+c_func
+(paren
+id|fbcon
+)paren
+dot
+id|var.bits_per_pixel
 OG
 l_int|8
 )paren
@@ -3039,7 +3055,13 @@ l_int|8
 r_if
 c_cond
 (paren
-id|p-&gt;var.green.length
+id|ACCESS_FBINFO
+c_func
+(paren
+id|fbcon
+)paren
+dot
+id|var.green.length
 op_eq
 l_int|5
 )paren
@@ -3840,8 +3862,6 @@ c_func
 (paren
 id|PMINFO
 id|m
-comma
-id|p
 )paren
 )paren
 r_return
@@ -3913,8 +3933,6 @@ c_func
 (paren
 id|PMINFO
 id|m
-comma
-id|p
 )paren
 )paren
 r_return
@@ -3969,8 +3987,6 @@ c_func
 (paren
 id|PMINFO
 id|m
-comma
-id|p
 )paren
 )paren
 r_return
@@ -4047,8 +4063,6 @@ c_func
 (paren
 id|PMINFO
 id|m
-comma
-id|p
 )paren
 )paren
 r_return
