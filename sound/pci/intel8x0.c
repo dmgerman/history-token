@@ -6847,12 +6847,14 @@ id|device
 op_assign
 id|pcm
 suffix:semicolon
-id|snd_pcm_lib_preallocate_pci_pages_for_all
+id|snd_pcm_lib_preallocate_pages_for_all
 c_func
 (paren
-id|chip-&gt;pci
-comma
 id|pcm
+comma
+id|SNDRV_DMA_TYPE_PCI
+comma
+id|chip-&gt;pci
 comma
 id|rec-&gt;prealloc_size
 comma
@@ -10364,7 +10366,7 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-id|snd_free_pci_pages
+id|pci_free_consistent
 c_func
 (paren
 id|chip-&gt;pci
@@ -12617,7 +12619,7 @@ op_assign
 id|u32
 op_star
 )paren
-id|snd_malloc_pci_pages
+id|pci_alloc_consistent
 c_func
 (paren
 id|pci
@@ -12649,6 +12651,13 @@ id|snd_intel8x0_free
 c_func
 (paren
 id|chip
+)paren
+suffix:semicolon
+id|snd_printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;intel8x0: cannot allocate buffer descriptors&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
