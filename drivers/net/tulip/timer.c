@@ -440,11 +440,21 @@ multiline_comment|/* Bogus Znyx board. */
 r_goto
 id|actually_mii
 suffix:semicolon
-multiline_comment|/* netif_carrier_on(dev); */
+id|netif_carrier_on
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-multiline_comment|/* netif_carrier_off(dev); */
+id|netif_carrier_off
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -577,18 +587,34 @@ OL
 l_int|0
 )paren
 (brace
-multiline_comment|/* netif_carrier_off(dev); */
+id|netif_carrier_off
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
+id|next_tick
+op_assign
+l_int|3
+op_star
+id|HZ
+suffix:semicolon
 )brace
 r_else
 (brace
-multiline_comment|/* netif_carrier_on(dev); */
-)brace
+id|netif_carrier_on
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
 id|next_tick
 op_assign
 l_int|60
 op_star
 id|HZ
 suffix:semicolon
+)brace
 r_break
 suffix:semicolon
 r_case
