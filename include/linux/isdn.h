@@ -720,6 +720,33 @@ op_star
 suffix:semicolon
 )brace
 suffix:semicolon
+r_typedef
+r_struct
+(brace
+DECL|member|seqerrs
+r_int
+r_int
+id|seqerrs
+suffix:semicolon
+DECL|member|frame_drops
+r_int
+r_int
+id|frame_drops
+suffix:semicolon
+DECL|member|overflows
+r_int
+r_int
+id|overflows
+suffix:semicolon
+DECL|member|max_queue_len
+r_int
+r_int
+id|max_queue_len
+suffix:semicolon
+DECL|typedef|isdn_mppp_stats
+)brace
+id|isdn_mppp_stats
+suffix:semicolon
 multiline_comment|/* Local interface-data */
 DECL|struct|isdn_net_local_s
 r_typedef
@@ -858,15 +885,26 @@ suffix:semicolon
 multiline_comment|/* callbacks used by encapsulator   */
 macro_line|#endif
 macro_line|#ifdef CONFIG_ISDN_PPP
-DECL|member|mpppcfg
+DECL|member|mp_cfg
 r_int
 r_int
-id|mpppcfg
+id|mp_cfg
 suffix:semicolon
-DECL|member|mp_seqno
-r_int
-id|mp_seqno
+DECL|member|mp_txseq
+id|u32
+id|mp_txseq
 suffix:semicolon
+DECL|member|mp_frags
+r_struct
+id|sk_buff_head
+id|mp_frags
+suffix:semicolon
+multiline_comment|/* fragments sl list */
+DECL|member|mp_rxseq
+id|u32
+id|mp_rxseq
+suffix:semicolon
+multiline_comment|/* last processed packet seq #: any &n;&t;&t;&t;&t;&t;  packets with smaller seq # will &n;&t;&t;&t;&t;&t;  be dropped unconditionally       */
 DECL|member|ccp
 r_struct
 id|ippp_ccp
@@ -1127,12 +1165,11 @@ r_int
 r_int
 id|pppcfg
 suffix:semicolon
-DECL|member|pppseq
-r_int
-r_int
-id|pppseq
+DECL|member|mp_rxseq
+id|u32
+id|mp_rxseq
 suffix:semicolon
-multiline_comment|/* last seq no seen                 */
+multiline_comment|/* last seq no seen on this channel */
 DECL|member|ccp
 r_struct
 id|ippp_ccp
