@@ -1,7 +1,8 @@
-multiline_comment|/*&n; *  drivers/mtd/nand_ecc.c&n; *&n; *  Copyright (C) 2000 Steven J. Hill (sjhill@realitydiluted.com)&n; *                     Toshiba America Electronics Components, Inc.&n; *&n; * $Id: nand_ecc.c,v 1.9 2003/02/20 13:34:19 sjhill Exp $&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU Lesser General Public License&n; * version 2.1 as published by the Free Software Foundation.&n; *&n; * This file contains an ECC algorithm from Toshiba that detects and&n; * corrects 1 bit errors in a 256 byte block of data.&n; */
+multiline_comment|/*&n; * This file contains an ECC algorithm from Toshiba that detects and&n; * corrects 1 bit errors in a 256 byte block of data.&n; *&n; * drivers/mtd/nand/nand_ecc.c&n; *&n; * Copyright (C) 2000-2004 Steven J. Hill (sjhill@realitydiluted.com)&n; *                         Toshiba America Electronics Components, Inc.&n; *&n; * $Id: nand_ecc.c,v 1.14 2004/06/16 15:34:37 gleixner Exp $&n; *&n; * This file is free software; you can redistribute it and/or modify it&n; * under the terms of the GNU General Public License as published by the&n; * Free Software Foundation; either version 2 or (at your option) any&n; * later version.&n; * &n; * This file is distributed in the hope that it will be useful, but WITHOUT&n; * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or&n; * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License&n; * for more details.&n; * &n; * You should have received a copy of the GNU General Public License along&n; * with this file; if not, write to the Free Software Foundation, Inc.,&n; * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA.&n; * &n; * As a special exception, if other files instantiate templates or use&n; * macros or inline functions from these files, or you compile these&n; * files and link them with other works to produce a work based on these&n; * files, these files do not by themselves cause the resulting work to be&n; * covered by the GNU General Public License. However the source code for&n; * these files must still be made available in accordance with section (3)&n; * of the GNU General Public License.&n; * &n; * This exception does not invalidate any other reasons why a work based on&n; * this file might be covered by the GNU General Public License.&n; */
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/mtd/nand_ecc.h&gt;
 multiline_comment|/*&n; * Pre-calculated 256-way 1 byte column parity&n; */
 DECL|variable|nand_ecc_precalc_table
 r_static
@@ -525,7 +526,7 @@ comma
 l_int|0x00
 )brace
 suffix:semicolon
-multiline_comment|/*&n; * Creates non-inverted ECC code from line parity&n; */
+multiline_comment|/**&n; * nand_trans_result - [GENERIC] create non-inverted ECC&n; * @reg2:&t;line parity reg 2&n; * @reg3:&t;line parity reg 3&n; * @ecc_code:&t;ecc &n; *&n; * Creates non-inverted ECC code from line parity&n; */
 DECL|function|nand_trans_result
 r_static
 r_void
@@ -693,11 +694,17 @@ op_assign
 id|tmp2
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Calculate 3 byte ECC code for 256 byte block&n; */
+multiline_comment|/**&n; * nand_calculate_ecc - [NAND Interface] Calculate 3 byte ECC code for 256 byte block&n; * @mtd:&t;MTD block structure&n; * @dat:&t;raw data&n; * @ecc_code:&t;buffer for ECC&n; */
 DECL|function|nand_calculate_ecc
-r_void
+r_int
 id|nand_calculate_ecc
+c_func
 (paren
+r_struct
+id|mtd_info
+op_star
+id|mtd
+comma
 r_const
 id|u_char
 op_star
@@ -859,12 +866,21 @@ l_int|2
 op_or
 l_int|0x03
 suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
 )brace
-multiline_comment|/*&n; * Detect and correct a 1 bit error for 256 byte block&n; */
+multiline_comment|/**&n; * nand_correct_data - [NAND Interface] Detect and correct bit error(s)&n; * @mtd:&t;MTD block structure&n; * @dat:&t;raw data read from the chip&n; * @read_ecc:&t;ECC from the chip&n; * @calc_ecc:&t;the ECC calculated from raw data&n; *&n; * Detect and correct a 1 bit error for 256 byte block&n; */
 DECL|function|nand_correct_data
 r_int
 id|nand_correct_data
+c_func
 (paren
+r_struct
+id|mtd_info
+op_star
+id|mtd
+comma
 id|u_char
 op_star
 id|dat
