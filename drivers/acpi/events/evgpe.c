@@ -782,9 +782,11 @@ id|block_address-&gt;address
 )paren
 )paren
 suffix:semicolon
-id|ACPI_REPORT_INFO
+id|ACPI_DEBUG_PRINT
 (paren
 (paren
+id|ACPI_DB_INFO
+comma
 l_string|&quot;GPE Block%d defined as GPE%d to GPE%d&bslash;n&quot;
 comma
 (paren
@@ -884,8 +886,10 @@ id|return_value
 id|u32
 id|gpe_number
 suffix:semicolon
-id|u32
-id|gpe_number_index
+r_struct
+id|acpi_gpe_number_info
+op_star
+id|gpe_number_info
 suffix:semicolon
 r_char
 id|name
@@ -1022,9 +1026,9 @@ id|AE_OK
 suffix:semicolon
 )brace
 multiline_comment|/* Get GPE index and ensure that we have a valid GPE number */
-id|gpe_number_index
+id|gpe_number_info
 op_assign
-id|acpi_ev_get_gpe_number_index
+id|acpi_ev_get_gpe_number_info
 (paren
 id|gpe_number
 )paren
@@ -1032,34 +1036,34 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|gpe_number_index
-op_eq
-id|ACPI_GPE_INVALID
+op_logical_neg
+id|gpe_number_info
 )paren
 (brace
 multiline_comment|/* Not valid, all we can do here is ignore it */
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_ERROR
+comma
+l_string|&quot;GPE number associated with method is not valid %s&bslash;n&quot;
+comma
+id|name
+)paren
+)paren
+suffix:semicolon
 r_return
 (paren
 id|AE_OK
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * Now we can add this information to the gpe_info block&n;&t; * for use during dispatch of this GPE.&n;&t; */
-id|acpi_gbl_gpe_number_info
-(braket
-id|gpe_number_index
-)braket
-dot
-id|type
+multiline_comment|/*&n;&t; * Now we can add this information to the gpe_number_info block&n;&t; * for use during dispatch of this GPE.&n;&t; */
+id|gpe_number_info-&gt;type
 op_assign
 id|type
 suffix:semicolon
-id|acpi_gbl_gpe_number_info
-(braket
-id|gpe_number_index
-)braket
-dot
-id|method_node
+id|gpe_number_info-&gt;method_node
 op_assign
 (paren
 r_struct
@@ -1443,7 +1447,7 @@ id|gpe_number_index
 suffix:semicolon
 r_struct
 id|acpi_gpe_number_info
-id|gpe_info
+id|gpe_number_info
 suffix:semicolon
 id|acpi_status
 id|status
@@ -1491,7 +1495,7 @@ id|status
 id|return_VOID
 suffix:semicolon
 )brace
-id|gpe_info
+id|gpe_number_info
 op_assign
 id|acpi_gbl_gpe_number_info
 (braket
@@ -1520,7 +1524,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|gpe_info.method_node
+id|gpe_number_info.method_node
 )paren
 (brace
 multiline_comment|/*&n;&t;&t; * Invoke the GPE Method (_Lxx, _Exx):&n;&t;&t; * (Evaluate the _Lxx/_Exx control method that corresponds to this GPE.)&n;&t;&t; */
@@ -1528,7 +1532,7 @@ id|status
 op_assign
 id|acpi_ns_evaluate_by_handle
 (paren
-id|gpe_info.method_node
+id|gpe_number_info.method_node
 comma
 l_int|NULL
 comma
@@ -1554,7 +1558,7 @@ id|acpi_format_exception
 id|status
 )paren
 comma
-id|gpe_info.method_node-&gt;name.ascii
+id|gpe_number_info.method_node-&gt;name.ascii
 comma
 id|gpe_number
 )paren
@@ -1565,7 +1569,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|gpe_info.type
+id|gpe_number_info.type
 op_amp
 id|ACPI_EVENT_LEVEL_TRIGGERED
 )paren
@@ -1612,13 +1616,10 @@ id|u32
 id|gpe_number
 )paren
 (brace
-id|u32
-id|gpe_number_index
-suffix:semicolon
 r_struct
 id|acpi_gpe_number_info
 op_star
-id|gpe_info
+id|gpe_number_info
 suffix:semicolon
 id|acpi_status
 id|status
@@ -1628,9 +1629,10 @@ id|ACPI_FUNCTION_TRACE
 l_string|&quot;ev_gpe_dispatch&quot;
 )paren
 suffix:semicolon
-id|gpe_number_index
+multiline_comment|/*&n;&t; * We don&squot;t have to worry about mutex on gpe_number_info because we are&n;&t; * executing at interrupt level.&n;&t; */
+id|gpe_number_info
 op_assign
-id|acpi_ev_get_gpe_number_index
+id|acpi_ev_get_gpe_number_info
 (paren
 id|gpe_number
 )paren
@@ -1638,9 +1640,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|gpe_number_index
-op_eq
-id|ACPI_GPE_INVALID
+op_logical_neg
+id|gpe_number_info
 )paren
 (brace
 id|ACPI_DEBUG_PRINT
@@ -1660,20 +1661,11 @@ id|ACPI_INTERRUPT_NOT_HANDLED
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * We don&squot;t have to worry about mutex on gpe_info because we are&n;&t; * executing at interrupt level.&n;&t; */
-id|gpe_info
-op_assign
-op_amp
-id|acpi_gbl_gpe_number_info
-(braket
-id|gpe_number_index
-)braket
-suffix:semicolon
 multiline_comment|/*&n;&t; * If edge-triggered, clear the GPE status bit now.  Note that&n;&t; * level-triggered events are cleared after the GPE is serviced.&n;&t; */
 r_if
 c_cond
 (paren
-id|gpe_info-&gt;type
+id|gpe_number_info-&gt;type
 op_amp
 id|ACPI_EVENT_EDGE_TRIGGERED
 )paren
@@ -1714,13 +1706,13 @@ multiline_comment|/*&n;&t; * Dispatch the GPE to either an installed handler, or
 r_if
 c_cond
 (paren
-id|gpe_info-&gt;handler
+id|gpe_number_info-&gt;handler
 )paren
 (brace
 multiline_comment|/* Invoke the installed handler (at interrupt level) */
-id|gpe_info-&gt;handler
+id|gpe_number_info-&gt;handler
 (paren
-id|gpe_info-&gt;context
+id|gpe_number_info-&gt;context
 )paren
 suffix:semicolon
 )brace
@@ -1728,7 +1720,7 @@ r_else
 r_if
 c_cond
 (paren
-id|gpe_info-&gt;method_node
+id|gpe_number_info-&gt;method_node
 )paren
 (brace
 multiline_comment|/*&n;&t;&t; * Disable GPE, so it doesn&squot;t keep firing before the method has a&n;&t;&t; * chance to run.&n;&t;&t; */
@@ -1843,7 +1835,7 @@ multiline_comment|/*&n;&t; * It is now safe to clear level-triggered evnets.&n;&
 r_if
 c_cond
 (paren
-id|gpe_info-&gt;type
+id|gpe_number_info-&gt;type
 op_amp
 id|ACPI_EVENT_LEVEL_TRIGGERED
 )paren
