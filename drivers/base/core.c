@@ -1072,13 +1072,6 @@ id|list_del_init
 c_func
 (paren
 op_amp
-id|dev-&gt;bus_list
-)paren
-suffix:semicolon
-id|list_del_init
-c_func
-(paren
-op_amp
 id|dev-&gt;driver_list
 )paren
 suffix:semicolon
