@@ -867,7 +867,7 @@ op_star
 id|rq
 )paren
 (brace
-id|cdrom_prepare_request
+id|ide_init_drive_cmd
 c_func
 (paren
 id|rq
