@@ -1931,6 +1931,7 @@ suffix:semicolon
 DECL|function|longhaul_cpu_exit
 r_static
 r_int
+id|__exit
 id|longhaul_cpu_exit
 c_func
 (paren
