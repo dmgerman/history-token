@@ -604,10 +604,10 @@ id|irq
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Attempt to re-trigger the interrupt.  The SA1111 contains a register&n; * (INTSET) which claims to do this.  However, in practice no amount of&n; * manipulation of INTEN and INTSET guarantees that the interrupt will&n; * be triggered.  In fact, its very difficult, if not impossible to get&n; * INTSET to re-trigger the interrupt.&n; */
-DECL|function|sa1111_rerun_lowirq
+DECL|function|sa1111_retrigger_lowirq
 r_static
-r_void
-id|sa1111_rerun_lowirq
+r_int
+id|sa1111_retrigger_lowirq
 c_func
 (paren
 r_int
@@ -677,6 +677,17 @@ l_string|&quot;re-trigger IRQ%d&bslash;n&quot;
 comma
 id|irq
 )paren
+suffix:semicolon
+r_return
+id|i
+op_eq
+l_int|8
+ques
+c_cond
+op_minus
+l_int|1
+suffix:colon
+l_int|0
 suffix:semicolon
 )brace
 DECL|function|sa1111_type_lowirq
@@ -831,9 +842,9 @@ op_assign
 id|sa1111_unmask_lowirq
 comma
 dot
-id|rerun
+id|retrigger
 op_assign
-id|sa1111_rerun_lowirq
+id|sa1111_retrigger_lowirq
 comma
 dot
 id|type
@@ -889,10 +900,10 @@ id|irq
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Attempt to re-trigger the interrupt.  The SA1111 contains a register&n; * (INTSET) which claims to do this.  However, in practice no amount of&n; * manipulation of INTEN and INTSET guarantees that the interrupt will&n; * be triggered.  In fact, its very difficult, if not impossible to get&n; * INTSET to re-trigger the interrupt.&n; */
-DECL|function|sa1111_rerun_highirq
+DECL|function|sa1111_retrigger_highirq
 r_static
-r_void
-id|sa1111_rerun_highirq
+r_int
+id|sa1111_retrigger_highirq
 c_func
 (paren
 r_int
@@ -962,6 +973,17 @@ l_string|&quot;re-trigger IRQ%d&bslash;n&quot;
 comma
 id|irq
 )paren
+suffix:semicolon
+r_return
+id|i
+op_eq
+l_int|8
+ques
+c_cond
+op_minus
+l_int|1
+suffix:colon
+l_int|0
 suffix:semicolon
 )brace
 DECL|function|sa1111_type_highirq
@@ -1116,9 +1138,9 @@ op_assign
 id|sa1111_unmask_highirq
 comma
 dot
-id|rerun
+id|retrigger
 op_assign
-id|sa1111_rerun_highirq
+id|sa1111_retrigger_highirq
 comma
 dot
 id|type

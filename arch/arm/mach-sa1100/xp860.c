@@ -10,8 +10,8 @@ macro_line|#include &lt;asm/setup.h&gt;
 macro_line|#include &lt;asm/mach/arch.h&gt;
 macro_line|#include &lt;asm/mach/map.h&gt;
 macro_line|#include &lt;asm/mach/serial_sa1100.h&gt;
+macro_line|#include &lt;asm/hardware/sa1111.h&gt;
 macro_line|#include &quot;generic.h&quot;
-macro_line|#include &quot;sa1111.h&quot;
 DECL|function|xp860_power_off
 r_static
 r_void
