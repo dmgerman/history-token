@@ -2794,11 +2794,10 @@ id|acm-&gt;writeurb-&gt;transfer_flags
 op_or_assign
 id|USB_NO_FSBR
 suffix:semicolon
-id|printk
+id|info
 c_func
 (paren
-id|KERN_INFO
-l_string|&quot;ttyACM%d: USB ACM device&bslash;n&quot;
+l_string|&quot;ttyACM%d: USB ACM device&quot;
 comma
 id|minor
 )paren

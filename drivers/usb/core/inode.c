@@ -1469,7 +1469,7 @@ id|inode
 id|dbg
 c_func
 (paren
-l_string|&quot;%s: could not get inode!&bslash;n&quot;
+l_string|&quot;%s: could not get inode!&quot;
 comma
 id|__FUNCTION__
 )paren
@@ -1497,7 +1497,7 @@ id|root
 id|dbg
 c_func
 (paren
-l_string|&quot;%s: could not get root dentry!&bslash;n&quot;
+l_string|&quot;%s: could not get root dentry!&quot;
 comma
 id|__FUNCTION__
 )paren
@@ -1593,7 +1593,7 @@ id|parent
 id|dbg
 c_func
 (paren
-l_string|&quot;Ah! can not find a parent!&bslash;n&quot;
+l_string|&quot;Ah! can not find a parent!&quot;
 )paren
 suffix:semicolon
 r_return
@@ -1723,7 +1723,7 @@ suffix:colon
 id|err
 c_func
 (paren
-l_string|&quot;cannot create special files&bslash;n&quot;
+l_string|&quot;cannot create special files&quot;
 )paren
 suffix:semicolon
 )brace
@@ -1797,7 +1797,7 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
-l_string|&quot;creating file &squot;%s&squot;&bslash;n&quot;
+l_string|&quot;creating file &squot;%s&squot;&quot;
 comma
 id|name
 )paren
@@ -2188,7 +2188,7 @@ suffix:colon
 id|dbg
 c_func
 (paren
-l_string|&quot;mount_count = %d&bslash;n&quot;
+l_string|&quot;mount_count = %d&quot;
 comma
 id|mount_count
 )paren
@@ -2248,7 +2248,7 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
-l_string|&quot;mount_count = %d&bslash;n&quot;
+l_string|&quot;mount_count = %d&quot;
 comma
 id|mount_count
 )paren
