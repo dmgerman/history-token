@@ -509,7 +509,7 @@ id|cs-&gt;lock
 suffix:semicolon
 id|val
 op_assign
-id|READHSCX
+id|hscx_read
 c_func
 (paren
 id|cs
@@ -561,7 +561,7 @@ id|val
 suffix:semicolon
 id|val
 op_assign
-id|READHSCX
+id|hscx_read
 c_func
 (paren
 id|cs

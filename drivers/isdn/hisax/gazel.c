@@ -1421,8 +1421,6 @@ l_int|0x20
 (brace
 id|val
 op_assign
-l_int|0xfe
-op_amp
 id|isac_read
 c_func
 (paren
@@ -1430,6 +1428,8 @@ id|cs
 comma
 id|ISAC_ISTA
 )paren
+op_amp
+l_int|0xfe
 suffix:semicolon
 r_if
 c_cond
@@ -3489,9 +3489,7 @@ r_break
 suffix:semicolon
 )brace
 r_return
-(paren
 l_int|1
-)paren
 suffix:semicolon
 )brace
 eof
