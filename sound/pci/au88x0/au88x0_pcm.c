@@ -1981,11 +1981,6 @@ comma
 comma
 (brace
 dot
-id|iface
-op_assign
-id|SNDRV_CTL_ELEM_IFACE_MIXER
-comma
-dot
 id|access
 op_assign
 id|SNDRV_CTL_ELEM_ACCESS_READ
