@@ -4531,8 +4531,15 @@ id|acpi_fadt.sci_int
 op_eq
 id|irq
 )paren
+(brace
+id|entry-&gt;irq
+op_assign
+id|irq
+suffix:semicolon
+multiline_comment|/*we still need to set entry&squot;s irq*/
 r_continue
 suffix:semicolon
+)brace
 id|ioapic
 op_assign
 id|mp_find_ioapic
