@@ -1941,10 +1941,6 @@ id|chip-&gt;pcm_substream
 )paren
 r_return
 suffix:semicolon
-(paren
-r_int
-r_int
-)paren
 id|rdp
 op_assign
 id|inw
@@ -1955,10 +1951,6 @@ op_plus
 id|PDAUDIOCF_REG_RDP
 )paren
 suffix:semicolon
-(paren
-r_int
-r_int
-)paren
 id|wdp
 op_assign
 id|inw
