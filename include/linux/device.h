@@ -1567,18 +1567,20 @@ op_star
 )paren
 suffix:semicolon
 multiline_comment|/* debugging and troubleshooting/diagnostic helpers. */
+DECL|macro|dev_printk
+mdefine_line|#define dev_printk(sev, dev, format, arg...)&t;&bslash;&n;&t;printk(sev &quot;%s %s: &quot; format , (dev).driver-&gt;name , (dev).bus_id , ## arg)
 macro_line|#ifdef DEBUG
 DECL|macro|dev_dbg
-mdefine_line|#define dev_dbg(dev, format, arg...)&t;&t;&bslash;&n;&t;printk (KERN_DEBUG &quot;%s %s: &quot; format ,&t;&bslash;&n;&t;&t;(dev).driver-&gt;name , (dev).bus_id , ## arg)
+mdefine_line|#define dev_dbg(dev, format, arg...)&t;&t;&bslash;&n;&t;dev_printk(KERN_DEBUG , (dev) , format , ## arg)
 macro_line|#else
 DECL|macro|dev_dbg
 mdefine_line|#define dev_dbg(dev, format, arg...) do {} while (0)
 macro_line|#endif
 DECL|macro|dev_err
-mdefine_line|#define dev_err(dev, format, arg...)&t;&t;&bslash;&n;&t;printk (KERN_ERR &quot;%s %s: &quot; format ,&t;&bslash;&n;&t;&t;(dev).driver-&gt;name , (dev).bus_id , ## arg)
+mdefine_line|#define dev_err(dev, format, arg...)&t;&t;&bslash;&n;&t;dev_printk(KERN_ERR , (dev) , format , ## arg)
 DECL|macro|dev_info
-mdefine_line|#define dev_info(dev, format, arg...)&t;&t;&bslash;&n;&t;printk (KERN_INFO &quot;%s %s: &quot; format ,&t;&bslash;&n;&t;&t;(dev).driver-&gt;name , (dev).bus_id , ## arg)
+mdefine_line|#define dev_info(dev, format, arg...)&t;&t;&bslash;&n;&t;dev_printk(KERN_INFO , (dev) , format , ## arg)
 DECL|macro|dev_warn
-mdefine_line|#define dev_warn(dev, format, arg...)&t;&t;&bslash;&n;&t;printk (KERN_WARNING &quot;%s %s: &quot; format ,&t;&bslash;&n;&t;&t;(dev).driver-&gt;name , (dev).bus_id , ## arg)
+mdefine_line|#define dev_warn(dev, format, arg...)&t;&t;&bslash;&n;&t;dev_printk(KERN_WARNING , (dev) , format , ## arg)
 macro_line|#endif /* _DEVICE_H_ */
 eof
