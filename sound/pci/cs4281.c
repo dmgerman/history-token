@@ -4249,7 +4249,12 @@ op_star
 id|buf
 comma
 r_int
+r_int
 id|count
+comma
+r_int
+r_int
+id|pos
 )paren
 (brace
 r_int
@@ -4278,7 +4283,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|file-&gt;f_pos
+id|pos
 op_plus
 id|size
 OG
@@ -4291,7 +4296,7 @@ r_int
 )paren
 id|CS4281_BA0_SIZE
 op_minus
-id|file-&gt;f_pos
+id|pos
 suffix:semicolon
 r_if
 c_cond
@@ -4311,7 +4316,7 @@ id|buf
 comma
 id|chip-&gt;ba0
 op_plus
-id|file-&gt;f_pos
+id|pos
 comma
 id|size
 )paren
@@ -4319,10 +4324,6 @@ id|size
 r_return
 op_minus
 id|EFAULT
-suffix:semicolon
-id|file-&gt;f_pos
-op_add_assign
-id|size
 suffix:semicolon
 )brace
 r_return
@@ -4354,7 +4355,12 @@ op_star
 id|buf
 comma
 r_int
+r_int
 id|count
+comma
+r_int
+r_int
+id|pos
 )paren
 (brace
 r_int
@@ -4383,7 +4389,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|file-&gt;f_pos
+id|pos
 op_plus
 id|size
 OG
@@ -4396,7 +4402,7 @@ r_int
 )paren
 id|CS4281_BA1_SIZE
 op_minus
-id|file-&gt;f_pos
+id|pos
 suffix:semicolon
 r_if
 c_cond
@@ -4416,7 +4422,7 @@ id|buf
 comma
 id|chip-&gt;ba1
 op_plus
-id|file-&gt;f_pos
+id|pos
 comma
 id|size
 )paren
@@ -4424,10 +4430,6 @@ id|size
 r_return
 op_minus
 id|EFAULT
-suffix:semicolon
-id|file-&gt;f_pos
-op_add_assign
-id|size
 suffix:semicolon
 )brace
 r_return

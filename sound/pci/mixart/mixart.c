@@ -4878,7 +4878,12 @@ op_star
 id|buf
 comma
 r_int
+r_int
 id|count
+comma
+r_int
+r_int
+id|pos
 )paren
 (brace
 id|mixart_mgr_t
@@ -4920,7 +4925,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|file-&gt;f_pos
+id|pos
 op_plus
 id|count
 OG
@@ -4935,7 +4940,7 @@ r_int
 (paren
 id|MIXART_BA0_SIZE
 op_minus
-id|file-&gt;f_pos
+id|pos
 )paren
 suffix:semicolon
 )brace
@@ -4952,7 +4957,7 @@ c_func
 (paren
 id|mgr
 comma
-id|file-&gt;f_pos
+id|pos
 )paren
 comma
 id|count
@@ -4964,10 +4969,6 @@ op_minus
 id|EFAULT
 suffix:semicolon
 )brace
-id|file-&gt;f_pos
-op_add_assign
-id|count
-suffix:semicolon
 r_return
 id|count
 suffix:semicolon
@@ -4998,7 +4999,12 @@ op_star
 id|buf
 comma
 r_int
+r_int
 id|count
+comma
+r_int
+r_int
+id|pos
 )paren
 (brace
 id|mixart_mgr_t
@@ -5040,7 +5046,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|file-&gt;f_pos
+id|pos
 op_plus
 id|count
 OG
@@ -5055,7 +5061,7 @@ r_int
 (paren
 id|MIXART_BA1_SIZE
 op_minus
-id|file-&gt;f_pos
+id|pos
 )paren
 suffix:semicolon
 )brace
@@ -5072,7 +5078,7 @@ c_func
 (paren
 id|mgr
 comma
-id|file-&gt;f_pos
+id|pos
 )paren
 comma
 id|count
@@ -5084,10 +5090,6 @@ op_minus
 id|EFAULT
 suffix:semicolon
 )brace
-id|file-&gt;f_pos
-op_add_assign
-id|count
-suffix:semicolon
 r_return
 id|count
 suffix:semicolon

@@ -1014,7 +1014,8 @@ r_return
 op_minus
 id|EFAULT
 suffix:semicolon
-id|file-&gt;f_pos
+op_star
+id|off
 op_add_assign
 id|len
 suffix:semicolon

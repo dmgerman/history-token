@@ -176,7 +176,12 @@ op_star
 id|buf
 comma
 r_int
+r_int
 id|count
+comma
+r_int
+r_int
+id|pos
 )paren
 suffix:semicolon
 DECL|member|write
@@ -206,7 +211,12 @@ op_star
 id|buf
 comma
 r_int
+r_int
 id|count
+comma
+r_int
+r_int
+id|pos
 )paren
 suffix:semicolon
 DECL|member|llseek
