@@ -27,7 +27,7 @@ DECL|macro|DEBUG_TASKFILE
 mdefine_line|#define DEBUG_TASKFILE&t;0&t;/* unset when fixed */
 macro_line|#if DEBUG_TASKFILE
 DECL|macro|DTF
-mdefine_line|#define DTF(x...) printk(x)
+mdefine_line|#define DTF(x...) printk(##x)
 macro_line|#else
 DECL|macro|DTF
 mdefine_line|#define DTF(x...)
@@ -3626,7 +3626,7 @@ id|rq
 suffix:semicolon
 r_struct
 id|ata_request
-id|ar
+id|star
 suffix:semicolon
 id|ata_ar_init
 c_func
@@ -3634,8 +3634,13 @@ c_func
 id|drive
 comma
 op_amp
-id|ar
+id|star
 )paren
+suffix:semicolon
+multiline_comment|/* Don&squot;t put this request on free_req list after usage.&n;&t; */
+id|star.ar_flags
+op_or_assign
+id|ATA_AR_STATIC
 suffix:semicolon
 id|init_taskfile_request
 c_func
@@ -3652,7 +3657,7 @@ id|memcpy
 c_func
 (paren
 op_amp
-id|ar.ar_task
+id|star.ar_task
 comma
 id|args
 comma
@@ -3685,7 +3690,7 @@ suffix:semicolon
 id|rq.special
 op_assign
 op_amp
-id|ar
+id|star
 suffix:semicolon
 r_return
 id|ide_do_drive_cmd

@@ -47,7 +47,7 @@ id|speed
 suffix:semicolon
 r_static
 r_int
-id|it8172_config_drive_for_dma
+id|it8172_config_chipset_for_dma
 (paren
 id|ide_drive_t
 op_star
@@ -97,10 +97,10 @@ r_int
 id|flags
 suffix:semicolon
 id|u16
-id|master_data
+id|drive_enables
 suffix:semicolon
 id|u32
-id|slave_data
+id|drive_timing
 suffix:semicolon
 r_int
 id|is_slave
@@ -114,16 +114,6 @@ l_int|1
 op_eq
 id|drive
 )paren
-suffix:semicolon
-r_int
-id|master_port
-op_assign
-l_int|0x40
-suffix:semicolon
-r_int
-id|slave_port
-op_assign
-l_int|0x44
 suffix:semicolon
 r_if
 c_cond
@@ -181,16 +171,21 @@ op_amp
 id|slave_data
 )paren
 suffix:semicolon
-multiline_comment|/*&n;     * FIX! The DIOR/DIOW pulse width and recovery times in port 0x44&n;     * are being left at the default values of 8 PCI clocks (242 nsec&n;     * for a 33 MHz clock). These can be safely shortened at higher&n;     * PIO modes.&n;     */
+multiline_comment|/*&n;     * FIX! The DIOR/DIOW pulse width and recovery times in port 0x44&n;     * are being left at the default values of 8 PCI clocks (242 nsec&n;     * for a 33 MHz clock). These can be safely shortened at higher&n;     * PIO modes. The DIOR/DIOW pulse width and recovery times only&n;     * apply to PIO modes, not to the DMA modes.&n;     */
+multiline_comment|/*&n;     * Enable port 0x44. The IT8172G spec is confused; it calls&n;     * this register the &quot;Slave IDE Timing Register&quot;, but in fact,&n;     * it controls timing for both master and slave drives.&n;     */
+id|drive_enables
+op_or_assign
+l_int|0x4000
+suffix:semicolon
 r_if
 c_cond
 (paren
 id|is_slave
 )paren
 (brace
-id|master_data
-op_or_assign
-l_int|0x4000
+id|drive_enables
+op_and_assign
+l_int|0xc006
 suffix:semicolon
 r_if
 c_cond
@@ -199,15 +194,15 @@ id|pio
 OG
 l_int|1
 )paren
-multiline_comment|/* enable PPE and IE */
-id|master_data
+multiline_comment|/* enable prefetch and IORDY sample-point */
+id|drive_enables
 op_or_assign
 l_int|0x0060
 suffix:semicolon
 )brace
 r_else
 (brace
-id|master_data
+id|drive_enables
 op_and_assign
 l_int|0xc060
 suffix:semicolon
@@ -218,8 +213,8 @@ id|pio
 OG
 l_int|1
 )paren
-multiline_comment|/* enable PPE and IE */
-id|master_data
+multiline_comment|/* enable prefetch and IORDY sample-point */
+id|drive_enables
 op_or_assign
 l_int|0x0006
 suffix:semicolon
@@ -467,6 +462,9 @@ r_case
 id|XFER_MW_DMA_1
 suffix:colon
 r_case
+id|XFER_MW_DMA_0
+suffix:colon
+r_case
 id|XFER_SW_DMA_2
 suffix:colon
 r_break
@@ -585,10 +583,10 @@ r_return
 id|err
 suffix:semicolon
 )brace
-DECL|function|it8172_config_drive_for_dma
+DECL|function|it8172_config_chipset_for_dma
 r_static
 r_int
-id|it8172_config_drive_for_dma
+id|it8172_config_chipset_for_dma
 c_func
 (paren
 id|ide_drive_t
@@ -726,7 +724,7 @@ c_func
 (paren
 id|ide_dma_action_t
 )paren
-id|it8172_config_drive_for_dma
+id|it8172_config_chipset_for_dma
 c_func
 (paren
 id|drive

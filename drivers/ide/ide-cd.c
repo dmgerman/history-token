@@ -100,13 +100,9 @@ id|packet_command
 op_star
 id|failed_command
 op_assign
-(paren
-r_struct
-id|packet_command
-op_star
-)paren
-id|pc-&gt;sense
+id|pc-&gt;failed_command
 suffix:semicolon
+multiline_comment|/* Decode sense data from drive */
 r_struct
 id|request_sense
 op_star
@@ -914,8 +910,8 @@ l_int|0
 comma
 r_sizeof
 (paren
-r_struct
-id|packet_command
+op_star
+id|pc
 )paren
 )paren
 suffix:semicolon
@@ -931,13 +927,8 @@ id|pc-&gt;buflen
 op_assign
 l_int|18
 suffix:semicolon
-id|pc-&gt;sense
+id|pc-&gt;failed_command
 op_assign
-(paren
-r_struct
-id|request_sense
-op_star
-)paren
 id|failed_command
 suffix:semicolon
 multiline_comment|/* stuff the sense request in front of our current request */
@@ -1357,6 +1348,7 @@ comma
 l_int|1
 )paren
 suffix:semicolon
+multiline_comment|/* FIXME: this is the only place where pc-&gt;sense get&squot;s used.&n;&t;&t; * Think hard about how to get rid of it...&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -1716,7 +1708,6 @@ id|info-&gt;cmd
 op_eq
 id|READ
 )paren
-(brace
 id|info-&gt;dma
 op_assign
 op_logical_neg
@@ -1730,7 +1721,6 @@ comma
 id|drive
 )paren
 suffix:semicolon
-)brace
 r_else
 r_if
 c_cond
@@ -1739,7 +1729,6 @@ id|info-&gt;cmd
 op_eq
 id|WRITE
 )paren
-(brace
 id|info-&gt;dma
 op_assign
 op_logical_neg
@@ -1753,9 +1742,7 @@ comma
 id|drive
 )paren
 suffix:semicolon
-)brace
 r_else
-(brace
 id|printk
 c_func
 (paren
@@ -1763,9 +1750,9 @@ l_string|&quot;ide-cd: DMA set, but not allowed&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
-)brace
 multiline_comment|/* Set up the controller registers. */
 id|OUT_BYTE
+c_func
 (paren
 id|info-&gt;dma
 comma
@@ -1773,6 +1760,7 @@ id|IDE_FEATURE_REG
 )paren
 suffix:semicolon
 id|OUT_BYTE
+c_func
 (paren
 l_int|0
 comma
@@ -1780,6 +1768,7 @@ id|IDE_NSECTOR_REG
 )paren
 suffix:semicolon
 id|OUT_BYTE
+c_func
 (paren
 l_int|0
 comma
@@ -1787,6 +1776,7 @@ id|IDE_SECTOR_REG
 )paren
 suffix:semicolon
 id|OUT_BYTE
+c_func
 (paren
 id|xferlen
 op_amp
@@ -1796,6 +1786,7 @@ id|IDE_LCYL_REG
 )paren
 suffix:semicolon
 id|OUT_BYTE
+c_func
 (paren
 id|xferlen
 op_rshift
@@ -1820,9 +1811,6 @@ r_if
 c_cond
 (paren
 id|info-&gt;dma
-)paren
-(paren
-r_void
 )paren
 id|drive-&gt;channel
 op_member_access_from_pointer
@@ -4244,15 +4232,16 @@ op_star
 id|cmd
 comma
 r_struct
+id|request_sense
+op_star
+id|sense
+comma
+r_struct
 id|packet_command
 op_star
 id|pc
 )paren
 (brace
-r_struct
-id|request_sense
-id|sense
-suffix:semicolon
 r_struct
 id|request
 id|rq
@@ -4271,18 +4260,6 @@ id|cmd
 comma
 id|CDROM_PACKET_SIZE
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|pc-&gt;sense
-op_eq
-l_int|NULL
-)paren
-id|pc-&gt;sense
-op_assign
-op_amp
-id|sense
 suffix:semicolon
 multiline_comment|/* Start of retry loop. */
 r_do
@@ -4341,6 +4318,14 @@ l_int|1
 )paren
 suffix:semicolon
 multiline_comment|/* FIXME: we should probably abort/retry or something */
+r_if
+c_cond
+(paren
+id|sense
+)paren
+(brace
+multiline_comment|/* Decode the error here at least for error&n;&t;&t;&t;&t; * reporting to upper layers.!&n;&t;&t;&t;&t; */
+)brace
 )brace
 r_if
 c_cond
@@ -4351,17 +4336,12 @@ l_int|0
 )paren
 (brace
 multiline_comment|/* The request failed.  Retry if it was due to a unit&n;&t;&t;&t;   attention status&n;&t;&t;&t;   (usually means media was changed). */
-r_struct
-id|request_sense
-op_star
-id|reqbuf
-op_assign
-id|pc-&gt;sense
-suffix:semicolon
 r_if
 c_cond
 (paren
-id|reqbuf-&gt;sense_key
+id|sense
+op_logical_and
+id|sense-&gt;sense_key
 op_eq
 id|UNIT_ATTENTION
 )paren
@@ -4374,15 +4354,17 @@ r_else
 r_if
 c_cond
 (paren
-id|reqbuf-&gt;sense_key
+id|sense
+op_logical_and
+id|sense-&gt;sense_key
 op_eq
 id|NOT_READY
 op_logical_and
-id|reqbuf-&gt;asc
+id|sense-&gt;asc
 op_eq
 l_int|4
 op_logical_and
-id|reqbuf-&gt;ascq
+id|sense-&gt;ascq
 op_ne
 l_int|4
 )paren
@@ -5681,6 +5663,8 @@ id|drive
 comma
 id|cmd
 comma
+id|sense
+comma
 op_amp
 id|pc
 )paren
@@ -5785,6 +5769,8 @@ c_func
 id|drive
 comma
 id|cmd
+comma
+id|sense
 comma
 op_amp
 id|pc
@@ -5987,6 +5973,8 @@ id|drive
 comma
 id|cmd
 comma
+id|sense
+comma
 op_amp
 id|pc
 )paren
@@ -6087,6 +6075,8 @@ c_func
 id|drive
 comma
 id|cmd
+comma
+id|sense
 comma
 op_amp
 id|pc
@@ -6253,6 +6243,8 @@ c_func
 id|drive
 comma
 id|cmd
+comma
+id|sense
 comma
 op_amp
 id|pc
@@ -7107,6 +7099,8 @@ id|drive
 comma
 id|cmd
 comma
+id|sense
+comma
 op_amp
 id|pc
 )paren
@@ -7271,6 +7265,8 @@ id|drive
 comma
 id|cmd
 comma
+id|sense
+comma
 op_amp
 id|pc
 )paren
@@ -7391,6 +7387,9 @@ c_func
 id|drive
 comma
 id|cmd
+comma
+op_amp
+id|sense
 comma
 op_amp
 id|pc
@@ -7601,6 +7600,8 @@ c_func
 id|drive
 comma
 id|cgc-&gt;cmd
+comma
+id|cgc-&gt;sense
 comma
 op_amp
 id|pc

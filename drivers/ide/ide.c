@@ -6944,10 +6944,11 @@ r_if
 c_cond
 (paren
 id|hwif-&gt;irq
-op_eq
+op_ne
 id|irq
 )paren
-(brace
+r_continue
+suffix:semicolon
 id|stat
 op_assign
 id|IN_BYTE
@@ -6979,7 +6980,9 @@ r_static
 r_int
 r_int
 id|last_msgtime
-comma
+suffix:semicolon
+r_static
+r_int
 id|count
 suffix:semicolon
 op_increment
@@ -6988,20 +6991,14 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-l_int|0
-OL
-(paren
-r_int
-r_int
-)paren
+id|time_after
+c_func
 (paren
 id|jiffies
-op_minus
-(paren
+comma
 id|last_msgtime
 op_plus
 id|HZ
-)paren
 )paren
 )paren
 (brace
@@ -7012,7 +7009,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;%s%s: unexpected interrupt, status=0x%02x, count=%ld&bslash;n&quot;
+l_string|&quot;%s%s: unexpected interrupt, status=0x%02x, count=%d&bslash;n&quot;
 comma
 id|hwif-&gt;name
 comma
@@ -7034,16 +7031,15 @@ id|count
 suffix:semicolon
 )brace
 )brace
-)brace
+id|hwif
+op_assign
+id|hwif-&gt;next
+suffix:semicolon
 )brace
 r_while
 c_loop
 (paren
-(paren
 id|hwif
-op_assign
-id|hwif-&gt;next
-)paren
 op_ne
 id|hwgroup-&gt;hwif
 )paren
@@ -7143,7 +7139,12 @@ l_int|0
 id|printk
 c_func
 (paren
-l_string|&quot;ide: unexpected interrupt&bslash;n&quot;
+id|KERN_INFO
+l_string|&quot;ide: unexpected interrupt %d %d&bslash;n&quot;
+comma
+id|hwif-&gt;unit
+comma
+id|irq
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; * Not expecting an interrupt from this drive.&n;&t;&t; * That means this could be:&n;&t;&t; *&t;(1) an interrupt from another PCI device&n;&t;&t; *&t;sharing the same PCI INT# as us.&n;&t;&t; * or&t;(2) a drive just entered sleep or standby mode,&n;&t;&t; *&t;and is interrupting to let us know.&n;&t;&t; * or&t;(3) a spurious interrupt of unknown origin.&n;&t;&t; *&n;&t;&t; * For PCI, we cannot tell the difference,&n;&t;&t; * so in that case we just ignore it and hope it goes away.&n;&t;&t; */

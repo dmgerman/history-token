@@ -284,6 +284,13 @@ id|request_sense
 op_star
 id|sense
 suffix:semicolon
+multiline_comment|/* This is currently used to pass failed commands through the request&n;&t; * queue.  Is this for asynchronos error reporting?&n;&t; *&n;&t; * Can we always be sure that this didn&squot;t valish from stack beneath us&n;&t; * - we can&squot;t!&n;&t; */
+DECL|member|failed_command
+r_struct
+id|packet_command
+op_star
+id|failed_command
+suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/* Structure of a MSF cdrom address. */

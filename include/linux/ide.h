@@ -3244,6 +3244,8 @@ DECL|macro|ATA_AR_SETUP
 mdefine_line|#define ATA_AR_SETUP&t;2
 DECL|macro|ATA_AR_RETURN
 mdefine_line|#define ATA_AR_RETURN&t;4
+DECL|macro|ATA_AR_STATIC
+mdefine_line|#define ATA_AR_STATIC&t;8
 multiline_comment|/*&n; * if turn-around time is longer than this, halve queue depth&n; */
 DECL|macro|ATA_AR_MAX_TURNAROUND
 mdefine_line|#define ATA_AR_MAX_TURNAROUND&t;(3 * HZ)
@@ -3396,6 +3398,16 @@ op_star
 id|ar
 )paren
 (brace
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|ar-&gt;ar_flags
+op_amp
+id|ATA_AR_STATIC
+)paren
+)paren
 id|list_add
 c_func
 (paren
