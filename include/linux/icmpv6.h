@@ -220,8 +220,20 @@ DECL|macro|ICMPV6_MGM_REPORT
 mdefine_line|#define ICMPV6_MGM_REPORT       &t;131
 DECL|macro|ICMPV6_MGM_REDUCTION
 mdefine_line|#define ICMPV6_MGM_REDUCTION    &t;132
+DECL|macro|ICMPV6_NI_QUERY
+mdefine_line|#define ICMPV6_NI_QUERY&t;&t;&t;139
+DECL|macro|ICMPV6_NI_REPLY
+mdefine_line|#define ICMPV6_NI_REPLY&t;&t;&t;140
 DECL|macro|ICMPV6_MLD2_REPORT
 mdefine_line|#define ICMPV6_MLD2_REPORT&t;&t;143
+DECL|macro|ICMPV6_DHAAD_REQUEST
+mdefine_line|#define ICMPV6_DHAAD_REQUEST&t;&t;144
+DECL|macro|ICMPV6_DHAAD_REPLY
+mdefine_line|#define ICMPV6_DHAAD_REPLY&t;&t;145
+DECL|macro|ICMPV6_MOBILE_PREFIX_SOL
+mdefine_line|#define ICMPV6_MOBILE_PREFIX_SOL&t;146
+DECL|macro|ICMPV6_MOBILE_PREFIX_ADV
+mdefine_line|#define ICMPV6_MOBILE_PREFIX_ADV&t;147
 multiline_comment|/*&n; *&t;Codes for Destination Unreachable&n; */
 DECL|macro|ICMPV6_NOROUTE
 mdefine_line|#define ICMPV6_NOROUTE&t;&t;&t;0
