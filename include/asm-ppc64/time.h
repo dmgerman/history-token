@@ -189,6 +189,7 @@ r_int
 id|val
 )paren
 (brace
+macro_line|#ifdef CONFIG_PPC_ISERIES
 r_struct
 id|paca_struct
 op_star
@@ -233,7 +234,7 @@ c_func
 suffix:semicolon
 )brace
 r_else
-(brace
+macro_line|#else
 id|mtspr
 c_func
 (paren
@@ -242,7 +243,7 @@ comma
 id|val
 )paren
 suffix:semicolon
-)brace
+macro_line|#endif
 )brace
 DECL|function|tb_ticks_since
 r_extern
