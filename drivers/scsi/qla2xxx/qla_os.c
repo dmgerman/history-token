@@ -1760,6 +1760,9 @@ suffix:semicolon
 r_int
 id|reading
 suffix:semicolon
+r_uint32
+id|dump_size
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1864,6 +1867,33 @@ id|ha-&gt;fw_dump_reading
 op_assign
 l_int|1
 suffix:semicolon
+id|dump_size
+op_assign
+id|FW_DUMP_SIZE_1M
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ha-&gt;fw_memory_size
+OL
+l_int|0x20000
+)paren
+id|dump_size
+op_assign
+id|FW_DUMP_SIZE_128K
+suffix:semicolon
+r_else
+r_if
+c_cond
+(paren
+id|ha-&gt;fw_memory_size
+OL
+l_int|0x80000
+)paren
+id|dump_size
+op_assign
+id|FW_DUMP_SIZE_512K
+suffix:semicolon
 id|ha-&gt;fw_dump_buffer
 op_assign
 (paren
@@ -1873,7 +1903,7 @@ op_star
 id|vmalloc
 c_func
 (paren
-id|FW_DUMP_SIZE
+id|dump_size
 )paren
 suffix:semicolon
 r_if
@@ -1894,7 +1924,7 @@ comma
 l_string|&quot;Unable to allocate memory for firmware &quot;
 l_string|&quot;dump buffer (%d).&bslash;n&quot;
 comma
-id|FW_DUMP_SIZE
+id|dump_size
 )paren
 suffix:semicolon
 id|ha-&gt;fw_dump_reading
@@ -1926,7 +1956,7 @@ id|ha-&gt;fw_dump_buffer
 comma
 l_int|0
 comma
-id|FW_DUMP_SIZE
+id|dump_size
 )paren
 suffix:semicolon
 r_if

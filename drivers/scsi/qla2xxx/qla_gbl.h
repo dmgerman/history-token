@@ -647,6 +647,9 @@ op_star
 comma
 r_uint16
 op_star
+comma
+r_uint32
+op_star
 )paren
 suffix:semicolon
 r_extern

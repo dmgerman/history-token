@@ -5698,6 +5698,10 @@ DECL|member|fw_attributes
 r_uint16
 id|fw_attributes
 suffix:semicolon
+DECL|member|fw_memory_size
+r_uint32
+id|fw_memory_size
+suffix:semicolon
 DECL|member|fw_transfer_size
 r_uint32
 id|fw_transfer_size
