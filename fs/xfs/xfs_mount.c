@@ -1241,7 +1241,7 @@ id|BBSHIFT
 )paren
 )paren
 OG
-id|INT_MAX
+id|UINT_MAX
 op_logical_or
 (paren
 id|sbp-&gt;sb_rblocks
@@ -1256,7 +1256,7 @@ id|BBSHIFT
 )paren
 )paren
 OG
-id|INT_MAX
+id|UINT_MAX
 )paren
 )paren
 (brace
