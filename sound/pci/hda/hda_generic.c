@@ -1075,6 +1075,26 @@ op_eq
 id|AC_WID_AUD_OUT
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|node-&gt;wid_caps
+op_amp
+id|AC_WCAP_DIGITAL
+)paren
+(brace
+id|snd_printdd
+c_func
+(paren
+l_string|&quot;Skip Digital OUT node %x&bslash;n&quot;
+comma
+id|node-&gt;nid
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
 id|snd_printdd
 c_func
 (paren
@@ -1378,6 +1398,16 @@ id|node
 )paren
 r_continue
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|node-&gt;wid_caps
+op_amp
+id|AC_WCAP_DIGITAL
+)paren
+r_continue
+suffix:semicolon
+multiline_comment|/* skip SPDIF */
 )brace
 r_else
 (brace
@@ -2052,6 +2082,17 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|node-&gt;wid_caps
+op_amp
+id|AC_WCAP_DIGITAL
+)paren
+r_return
+l_int|0
+suffix:semicolon
+multiline_comment|/* skip SPDIF */
+r_if
+c_cond
+(paren
 id|spec-&gt;input_mux.num_items
 op_ge
 id|HDA_MAX_NUM_INPUTS
@@ -2494,6 +2535,16 @@ comma
 id|list
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|node-&gt;wid_caps
+op_amp
+id|AC_WCAP_DIGITAL
+)paren
+r_continue
+suffix:semicolon
+multiline_comment|/* skip SPDIF */
 r_if
 c_cond
 (paren
