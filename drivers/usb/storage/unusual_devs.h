@@ -2222,6 +2222,8 @@ id|US_PR_BULK
 comma
 l_int|NULL
 comma
+id|US_FL_NEED_OVERRIDE
+op_or
 id|US_FL_MODE_XLATE
 )paren
 comma
