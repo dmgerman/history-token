@@ -7807,11 +7807,6 @@ suffix:semicolon
 id|size
 op_assign
 (paren
-id|fb_display
-(braket
-id|con
-)braket
-dot
 id|var.bits_per_pixel
 op_le
 l_int|8
