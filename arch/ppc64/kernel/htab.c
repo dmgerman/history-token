@@ -25,9 +25,7 @@ macro_line|#include &lt;asm/machdep.h&gt;
 macro_line|#include &lt;asm/lmb.h&gt;
 macro_line|#include &lt;asm/abs_addr.h&gt;
 macro_line|#include &lt;asm/tlbflush.h&gt;
-macro_line|#ifdef CONFIG_PPC_EEH
 macro_line|#include &lt;asm/eeh.h&gt;
-macro_line|#endif
 multiline_comment|/*&n; * Note:  pte   --&gt; Linux PTE&n; *        HPTE  --&gt; PowerPC Hashed Page Table Entry&n; */
 DECL|variable|htab_data
 id|HTAB
@@ -1381,7 +1379,6 @@ id|ea
 suffix:semicolon
 r_break
 suffix:semicolon
-macro_line|#ifdef CONFIG_PPC_EEH
 r_case
 id|IO_UNMAPPED_REGION_ID
 suffix:colon
@@ -1408,7 +1405,6 @@ id|ea
 suffix:semicolon
 r_break
 suffix:semicolon
-macro_line|#endif
 r_case
 id|KERNEL_REGION_ID
 suffix:colon
