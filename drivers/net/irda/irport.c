@@ -425,8 +425,9 @@ c_func
 (paren
 l_int|4
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 r_for
@@ -502,10 +503,11 @@ suffix:semicolon
 id|IRDA_DEBUG
 c_func
 (paren
-l_int|0
+l_int|1
+comma
+l_string|&quot;%s()&bslash;n&quot;
 comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; *  Allocate new instance of the driver&n;&t; */
@@ -533,9 +535,10 @@ id|self
 id|ERROR
 c_func
 (paren
-id|__FUNCTION__
-l_string|&quot;(), can&squot;t allocate memory for &quot;
+l_string|&quot;%s(), can&squot;t allocate memory for &quot;
 l_string|&quot;control block!&bslash;n&quot;
+comma
+id|__FUNCTION__
 )paren
 suffix:semicolon
 r_return
@@ -621,8 +624,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s(), can&squot;t get iobase of 0x%03x&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), can&squot;t get iobase of 0x%03x&bslash;n&quot;
 comma
 id|self-&gt;io.sir_base
 )paren
@@ -813,8 +817,9 @@ id|err
 id|ERROR
 c_func
 (paren
+l_string|&quot;%s(), dev_alloc() failed!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), dev_alloc() failed!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -912,8 +917,9 @@ id|err
 id|ERROR
 c_func
 (paren
+l_string|&quot;%s(), register_netdev() failed!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), register_netdev() failed!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -1002,8 +1008,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s(), Releasing Region %03x&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), Releasing Region %03x&bslash;n&quot;
 comma
 id|self-&gt;io.sir_base
 )paren
@@ -1068,10 +1075,6 @@ id|self
 )paren
 (brace
 r_int
-r_int
-id|flags
-suffix:semicolon
-r_int
 id|iobase
 suffix:semicolon
 id|iobase
@@ -1084,15 +1087,7 @@ c_func
 id|self
 )paren
 suffix:semicolon
-id|spin_lock_irqsave
-c_func
-(paren
-op_amp
-id|self-&gt;lock
-comma
-id|flags
-)paren
-suffix:semicolon
+multiline_comment|/* We can&squot;t lock, we may be called from a FIR driver - Jean II */
 multiline_comment|/* Initialize UART */
 id|outb
 c_func
@@ -1136,15 +1131,6 @@ op_plus
 id|UART_IER
 )paren
 suffix:semicolon
-id|spin_unlock_irqrestore
-c_func
-(paren
-op_amp
-id|self-&gt;lock
-comma
-id|flags
-)paren
-suffix:semicolon
 )brace
 DECL|function|irport_stop
 r_void
@@ -1158,25 +1144,13 @@ id|self
 )paren
 (brace
 r_int
-r_int
-id|flags
-suffix:semicolon
-r_int
 id|iobase
 suffix:semicolon
 id|iobase
 op_assign
 id|self-&gt;io.sir_base
 suffix:semicolon
-id|spin_lock_irqsave
-c_func
-(paren
-op_amp
-id|self-&gt;lock
-comma
-id|flags
-)paren
-suffix:semicolon
+multiline_comment|/* We can&squot;t lock, we may be called from a FIR driver - Jean II */
 multiline_comment|/* Reset UART */
 id|outb
 c_func
@@ -1199,15 +1173,6 @@ op_plus
 id|UART_IER
 )paren
 suffix:semicolon
-id|spin_unlock_irqrestore
-c_func
-(paren
-op_amp
-id|self-&gt;lock
-comma
-id|flags
-)paren
-suffix:semicolon
 )brace
 multiline_comment|/*&n; * Function irport_probe (void)&n; *&n; *    Start IO port &n; *&n; */
 DECL|function|irport_probe
@@ -1224,8 +1189,9 @@ c_func
 (paren
 l_int|4
 comma
+l_string|&quot;%s(), iobase=%#x&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), iobase=%#x&bslash;n&quot;
 comma
 id|iobase
 )paren
@@ -1234,7 +1200,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Function irport_change_speed (self, speed)&n; *&n; *    Set speed of IrDA port to specified baudrate&n; *&n; */
+multiline_comment|/*&n; * Function irport_change_speed (self, speed)&n; *&n; *    Set speed of IrDA port to specified baudrate&n; *&n; * This function should be called with irq off and spin-lock.&n; */
 DECL|function|irport_change_speed
 r_void
 id|irport_change_speed
@@ -1261,10 +1227,6 @@ op_star
 id|priv
 suffix:semicolon
 r_int
-r_int
-id|flags
-suffix:semicolon
-r_int
 id|iobase
 suffix:semicolon
 r_int
@@ -1278,17 +1240,6 @@ multiline_comment|/* Line control reg */
 r_int
 id|divisor
 suffix:semicolon
-id|IRDA_DEBUG
-c_func
-(paren
-l_int|0
-comma
-id|__FUNCTION__
-l_string|&quot;(), Setting speed to: %d&bslash;n&quot;
-comma
-id|speed
-)paren
-suffix:semicolon
 id|ASSERT
 c_func
 (paren
@@ -1300,6 +1251,21 @@ r_return
 suffix:semicolon
 )paren
 suffix:semicolon
+id|IRDA_DEBUG
+c_func
+(paren
+l_int|1
+comma
+l_string|&quot;%s(), Setting speed to: %d - iobase=%#x&bslash;n&quot;
+comma
+id|__FUNCTION__
+comma
+id|speed
+comma
+id|self-&gt;io.sir_base
+)paren
+suffix:semicolon
+multiline_comment|/* We can&squot;t lock, we may be called from a FIR driver - Jean II */
 id|iobase
 op_assign
 id|self-&gt;io.sir_base
@@ -1308,15 +1274,6 @@ multiline_comment|/* Update accounting for new speed */
 id|self-&gt;io.speed
 op_assign
 id|speed
-suffix:semicolon
-id|spin_lock_irqsave
-c_func
-(paren
-op_amp
-id|self-&gt;lock
-comma
-id|flags
-)paren
 suffix:semicolon
 multiline_comment|/* Turn off interrupts */
 id|outb
@@ -1422,29 +1379,10 @@ id|UART_FCR
 suffix:semicolon
 multiline_comment|/* Enable FIFO&squot;s */
 multiline_comment|/* Turn on interrups */
-id|outb
-c_func
-(paren
-multiline_comment|/*UART_IER_RLSI|*/
-id|UART_IER_RDI
-multiline_comment|/*|UART_IER_THRI*/
-comma
-id|iobase
-op_plus
-id|UART_IER
-)paren
-suffix:semicolon
-id|spin_unlock_irqrestore
-c_func
-(paren
-op_amp
-id|self-&gt;lock
-comma
-id|flags
-)paren
-suffix:semicolon
+multiline_comment|/* This will generate a fata interrupt storm.&n;&t; * People calling us will do that properly - Jean II */
+singleline_comment|//outb(/*UART_IER_RLSI|*/UART_IER_RDI/*|UART_IER_THRI*/, iobase+UART_IER);
 )brace
-multiline_comment|/*&n; * Function __irport_change_speed (instance, state, param)&n; *&n; *    State machine for changing speed of the device. We do it this way since&n; *    we cannot use schedule_timeout() when we are in interrupt context&n; */
+multiline_comment|/*&n; * Function __irport_change_speed (instance, state, param)&n; *&n; *    State machine for changing speed of the device. We do it this way since&n; *    we cannot use schedule_timeout() when we are in interrupt context&n; *&n; */
 DECL|function|__irport_change_speed
 r_int
 id|__irport_change_speed
@@ -1470,6 +1408,17 @@ id|__u32
 id|task-&gt;param
 suffix:semicolon
 r_int
+r_int
+id|flags
+op_assign
+l_int|0
+suffix:semicolon
+r_int
+id|wasunlocked
+op_assign
+l_int|0
+suffix:semicolon
+r_int
 id|ret
 op_assign
 l_int|0
@@ -1479,8 +1428,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), &lt;%ld&gt;&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), &lt;%ld&gt;&bslash;n&quot;
 comma
 id|jiffies
 )paren
@@ -1507,6 +1457,33 @@ l_int|1
 suffix:semicolon
 )paren
 suffix:semicolon
+multiline_comment|/* Locking notes : this function may be called from irq context with&n;&t; * spinlock, via irport_write_wakeup(), or from non-interrupt without&n;&t; * spinlock (from the task timer). Yuck !&n;&t; * This is ugly, and unsafe is the spinlock is not already aquired.&n;&t; * This will be fixed when irda-task get rewritten.&n;&t; * Jean II */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|spin_is_locked
+c_func
+(paren
+op_amp
+id|self-&gt;lock
+)paren
+)paren
+(brace
+id|spin_lock_irqsave
+c_func
+(paren
+op_amp
+id|self-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
+id|wasunlocked
+op_assign
+l_int|1
+suffix:semicolon
+)brace
 r_switch
 c_cond
 (paren
@@ -1642,8 +1619,9 @@ suffix:colon
 id|WARNING
 c_func
 (paren
+l_string|&quot;%s(), changing speed of dongle timed out!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), changing speed of dongle timed out!&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ret
@@ -1682,8 +1660,9 @@ suffix:colon
 id|ERROR
 c_func
 (paren
+l_string|&quot;%s(), unknown state %d&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), unknown state %d&bslash;n&quot;
 comma
 id|task-&gt;state
 )paren
@@ -1702,6 +1681,23 @@ op_minus
 l_int|1
 suffix:semicolon
 r_break
+suffix:semicolon
+)brace
+multiline_comment|/* Put stuff in the sate we found them - Jean II */
+r_if
+c_cond
+(paren
+id|wasunlocked
+)paren
+(brace
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|self-&gt;lock
+comma
+id|flags
+)paren
 suffix:semicolon
 )brace
 r_return
@@ -1748,8 +1744,9 @@ c_func
 (paren
 l_int|4
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 id|iobase
@@ -1788,6 +1785,17 @@ id|self-&gt;tx_buff.len
 op_sub_assign
 id|actual
 suffix:semicolon
+multiline_comment|/* Turn on transmit finished interrupt. */
+id|outb
+c_func
+(paren
+id|UART_IER_THRI
+comma
+id|iobase
+op_plus
+id|UART_IER
+)paren
+suffix:semicolon
 )brace
 r_else
 (brace
@@ -1803,8 +1811,9 @@ c_func
 (paren
 l_int|5
 comma
+l_string|&quot;%s(), Changing speed!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), Changing speed!&bslash;n&quot;
 )paren
 suffix:semicolon
 id|irda_task_execute
@@ -1828,6 +1837,16 @@ suffix:semicolon
 id|self-&gt;new_speed
 op_assign
 l_int|0
+suffix:semicolon
+id|IRDA_DEBUG
+c_func
+(paren
+l_int|5
+comma
+l_string|&quot;%s(), Speed changed!&bslash;n&quot;
+comma
+id|__FUNCTION__
+)paren
 suffix:semicolon
 )brace
 r_else
@@ -1938,8 +1957,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s(), failed, fifo not empty!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), failed, fifo not empty!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -2007,10 +2027,11 @@ suffix:semicolon
 id|IRDA_DEBUG
 c_func
 (paren
-l_int|0
+l_int|1
+comma
+l_string|&quot;%s()&bslash;n&quot;
 comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 id|self
@@ -2081,6 +2102,10 @@ suffix:semicolon
 r_int
 id|iobase
 suffix:semicolon
+r_int
+r_int
+id|flags
+suffix:semicolon
 id|self
 op_assign
 (paren
@@ -2102,6 +2127,15 @@ comma
 id|dev-&gt;name
 )paren
 suffix:semicolon
+id|spin_lock_irqsave
+c_func
+(paren
+op_amp
+id|self-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
 id|irport_start
 c_func
 (paren
@@ -2116,6 +2150,28 @@ c_func
 id|self-&gt;priv
 comma
 id|self-&gt;io.speed
+)paren
+suffix:semicolon
+multiline_comment|/* This will re-enable irqs */
+id|outb
+c_func
+(paren
+multiline_comment|/*UART_IER_RLSI|*/
+id|UART_IER_RDI
+multiline_comment|/*|UART_IER_THRI*/
+comma
+id|iobase
+op_plus
+id|UART_IER
+)paren
+suffix:semicolon
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|self-&gt;lock
+comma
+id|flags
 )paren
 suffix:semicolon
 id|dev-&gt;trans_start
@@ -2164,10 +2220,11 @@ suffix:semicolon
 id|IRDA_DEBUG
 c_func
 (paren
-l_int|0
+l_int|1
+comma
+l_string|&quot;%s()&bslash;n&quot;
 comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ASSERT
@@ -2213,6 +2270,16 @@ c_func
 id|dev
 )paren
 suffix:semicolon
+multiline_comment|/* Make sure tests *&amp; speed change are atomic */
+id|spin_lock_irqsave
+c_func
+(paren
+op_amp
+id|self-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
 multiline_comment|/* Check if we need to change the speed */
 id|speed
 op_assign
@@ -2247,6 +2314,7 @@ op_logical_neg
 id|skb-&gt;len
 )paren
 (brace
+multiline_comment|/* Better go there already locked - Jean II */
 id|irda_task_execute
 c_func
 (paren
@@ -2265,6 +2333,15 @@ op_star
 id|speed
 )paren
 suffix:semicolon
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|self-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
 id|dev_kfree_skb
 c_func
 (paren
@@ -2281,15 +2358,6 @@ op_assign
 id|speed
 suffix:semicolon
 )brace
-id|spin_lock_irqsave
-c_func
-(paren
-op_amp
-id|self-&gt;lock
-comma
-id|flags
-)paren
-suffix:semicolon
 multiline_comment|/* Init tx buffer */
 id|self-&gt;tx_buff.data
 op_assign
@@ -2416,8 +2484,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), breaking!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), breaking!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_break
@@ -2498,8 +2567,9 @@ id|dev
 id|WARNING
 c_func
 (paren
+l_string|&quot;%s() irq %d for unknown device.&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;() irq %d for unknown device.&bslash;n&quot;
 comma
 id|irq
 )paren
@@ -2561,8 +2631,9 @@ c_func
 (paren
 l_int|4
 comma
+l_string|&quot;%s(), iir=%02x, lsr=%02x, iobase=%#x&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), iir=%02x, lsr=%02x, iobase=%#x&bslash;n&quot;
 comma
 id|iir
 comma
@@ -2585,8 +2656,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), RLSI&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), RLSI&bslash;n&quot;
 )paren
 suffix:semicolon
 r_break
@@ -2629,8 +2701,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s(), unhandled IIR=%#x&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), unhandled IIR=%#x&bslash;n&quot;
 comma
 id|iir
 )paren
@@ -2720,13 +2793,18 @@ id|hwname
 l_int|16
 )braket
 suffix:semicolon
+r_int
+r_int
+id|flags
+suffix:semicolon
 id|IRDA_DEBUG
 c_func
 (paren
-l_int|0
+l_int|1
+comma
+l_string|&quot;%s()&bslash;n&quot;
 comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ASSERT
@@ -2782,8 +2860,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s(), unable to allocate irq=%d&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), unable to allocate irq=%d&bslash;n&quot;
 comma
 id|self-&gt;io.irq
 )paren
@@ -2793,10 +2872,28 @@ op_minus
 id|EAGAIN
 suffix:semicolon
 )brace
+id|spin_lock_irqsave
+c_func
+(paren
+op_amp
+id|self-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
 id|irport_start
 c_func
 (paren
 id|self
+)paren
+suffix:semicolon
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|self-&gt;lock
+comma
+id|flags
 )paren
 suffix:semicolon
 multiline_comment|/* Give self a hardware name */
@@ -2858,13 +2955,18 @@ suffix:semicolon
 r_int
 id|iobase
 suffix:semicolon
+r_int
+r_int
+id|flags
+suffix:semicolon
 id|IRDA_DEBUG
 c_func
 (paren
 l_int|4
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ASSERT
@@ -2929,10 +3031,28 @@ id|self-&gt;irlap
 op_assign
 l_int|NULL
 suffix:semicolon
+id|spin_lock_irqsave
+c_func
+(paren
+op_amp
+id|self-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
 id|irport_stop
 c_func
 (paren
 id|self
+)paren
+suffix:semicolon
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|self-&gt;lock
+comma
+id|flags
 )paren
 suffix:semicolon
 id|free_irq
@@ -2991,8 +3111,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), waiting!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), waiting!&bslash;n&quot;
 )paren
 suffix:semicolon
 id|current-&gt;state
@@ -3194,8 +3315,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s(), failed, fifo not empty!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), failed, fifo not empty!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -3320,24 +3442,13 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), %s, (cmd=0x%X)&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), %s, (cmd=0x%X)&bslash;n&quot;
 comma
 id|dev-&gt;name
 comma
 id|cmd
-)paren
-suffix:semicolon
-multiline_comment|/* Disable interrupts &amp; save flags */
-id|save_flags
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 r_switch
@@ -3444,10 +3555,6 @@ id|dongle-&gt;set_dtr_rts
 op_assign
 id|irport_set_dtr_rts
 suffix:semicolon
-id|self-&gt;dongle
-op_assign
-id|dongle
-suffix:semicolon
 multiline_comment|/* Now initialize the dongle!  */
 id|dongle-&gt;issue
 op_member_access_from_pointer
@@ -3474,6 +3581,11 @@ l_int|NULL
 comma
 l_int|NULL
 )paren
+suffix:semicolon
+multiline_comment|/* Make dongle available to driver only now to avoid&n;&t;&t; * race conditions - Jean II */
+id|self-&gt;dongle
+op_assign
+id|dongle
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -3546,6 +3658,16 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
+multiline_comment|/* No real need to lock... */
+id|spin_lock_irqsave
+c_func
+(paren
+op_amp
+id|self-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
 id|irport_set_dtr_rts
 c_func
 (paren
@@ -3554,6 +3676,15 @@ comma
 id|irq-&gt;ifr_dtr
 comma
 id|irq-&gt;ifr_rts
+)paren
+suffix:semicolon
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|self-&gt;lock
+comma
+id|flags
 )paren
 suffix:semicolon
 r_break
@@ -3566,12 +3697,6 @@ op_minus
 id|EOPNOTSUPP
 suffix:semicolon
 )brace
-id|restore_flags
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
 r_return
 id|ret
 suffix:semicolon

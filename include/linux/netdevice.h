@@ -2535,6 +2535,16 @@ id|NETIF_MSG_PKTDATA
 op_assign
 l_int|0x1000
 comma
+DECL|enumerator|NETIF_MSG_HW
+id|NETIF_MSG_HW
+op_assign
+l_int|0x2000
+comma
+DECL|enumerator|NETIF_MSG_WOL
+id|NETIF_MSG_WOL
+op_assign
+l_int|0x4000
+comma
 )brace
 suffix:semicolon
 DECL|macro|netif_msg_drv
@@ -2563,6 +2573,10 @@ DECL|macro|netif_msg_rx_status
 mdefine_line|#define netif_msg_rx_status(p)&t;((p)-&gt;msg_enable &amp; NETIF_MSG_RX_STATUS)
 DECL|macro|netif_msg_pktdata
 mdefine_line|#define netif_msg_pktdata(p)&t;((p)-&gt;msg_enable &amp; NETIF_MSG_PKTDATA)
+DECL|macro|netif_msg_hw
+mdefine_line|#define netif_msg_hw(p)&t;&t;((p)-&gt;msg_enable &amp; NETIF_MSG_HW)
+DECL|macro|netif_msg_wol
+mdefine_line|#define netif_msg_wol(p)&t;((p)-&gt;msg_enable &amp; NETIF_MSG_WOL)
 multiline_comment|/* Schedule rx intr now? */
 DECL|function|netif_rx_schedule_prep
 r_static
