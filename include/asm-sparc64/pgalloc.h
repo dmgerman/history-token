@@ -8,15 +8,6 @@ macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/spitfire.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
-DECL|macro|VPTE_BASE_SPITFIRE
-mdefine_line|#define VPTE_BASE_SPITFIRE&t;0xfffffffe00000000
-macro_line|#if 1
-DECL|macro|VPTE_BASE_CHEETAH
-mdefine_line|#define VPTE_BASE_CHEETAH&t;VPTE_BASE_SPITFIRE
-macro_line|#else
-DECL|macro|VPTE_BASE_CHEETAH
-mdefine_line|#define VPTE_BASE_CHEETAH&t;0xffe0000000000000
-macro_line|#endif
 DECL|function|flush_tlb_pgtables
 r_static
 id|__inline__
@@ -137,10 +128,6 @@ l_int|3
 suffix:semicolon
 )brace
 )brace
-DECL|macro|VPTE_BASE_SPITFIRE
-macro_line|#undef VPTE_BASE_SPITFIRE
-DECL|macro|VPTE_BASE_CHEETAH
-macro_line|#undef VPTE_BASE_CHEETAH
 multiline_comment|/* Page table allocation/freeing. */
 macro_line|#ifdef CONFIG_SMP
 multiline_comment|/* Sliiiicck */
