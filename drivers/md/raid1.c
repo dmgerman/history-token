@@ -3407,9 +3407,14 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|conf-&gt;mirrors
+(braket
 id|i
+)braket
+dot
+id|rdev-&gt;bdev
 op_eq
-id|conf-&gt;last_used
+id|bio-&gt;bi_bdev
 )paren
 multiline_comment|/*&n;&t;&t;&t; * we read from here, no need to write&n;&t;&t;&t; */
 r_continue
