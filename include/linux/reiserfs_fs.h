@@ -4880,9 +4880,7 @@ op_star
 id|key
 )paren
 suffix:semicolon
-r_struct
-id|inode
-op_star
+r_int
 id|reiserfs_new_inode
 (paren
 r_struct
@@ -4903,8 +4901,8 @@ r_char
 op_star
 id|symname
 comma
-r_int
-id|item_len
+id|loff_t
+id|i_size
 comma
 r_struct
 id|dentry
@@ -4915,10 +4913,6 @@ r_struct
 id|inode
 op_star
 id|inode
-comma
-r_int
-op_star
-id|err
 )paren
 suffix:semicolon
 r_int
