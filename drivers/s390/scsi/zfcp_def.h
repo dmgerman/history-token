@@ -2,9 +2,8 @@ multiline_comment|/* &n; * &n; * linux/drivers/s390/scsi/zfcp_def.h&n; * &n; * F
 macro_line|#ifndef ZFCP_DEF_H
 DECL|macro|ZFCP_DEF_H
 mdefine_line|#define ZFCP_DEF_H
-multiline_comment|/* this drivers version (do not edit !!! generated and updated by cvs) */
 DECL|macro|ZFCP_DEF_REVISION
-mdefine_line|#define ZFCP_DEF_REVISION &quot;$Revision: 1.110 $&quot;
+mdefine_line|#define ZFCP_DEF_REVISION &quot;$Revision: 1.111 $&quot;
 multiline_comment|/*************************** INCLUDES *****************************************/
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/moduleparam.h&gt;
@@ -34,6 +33,7 @@ multiline_comment|/************************ DEBUG FLAGS ************************
 DECL|macro|ZFCP_PRINT_FLAGS
 mdefine_line|#define&t;ZFCP_PRINT_FLAGS
 multiline_comment|/********************* GENERAL DEFINES *********************************/
+multiline_comment|/* zfcp version number, it consists of major, minor, and patch-level number */
 DECL|macro|ZFCP_VERSION
 mdefine_line|#define ZFCP_VERSION&t;&t;&quot;4.2.0&quot;
 multiline_comment|/**&n; * zfcp_sg_to_address - determine kernel address from struct scatterlist&n; * @list: struct scatterlist&n; * Return: kernel address&n; */

@@ -1237,7 +1237,7 @@ id|mem_busaddr
 suffix:semicolon
 multiline_comment|/* Mem Base Addr */
 DECL|member|hw_dma_mask
-id|dma_addr_t
+r_uint64
 id|hw_dma_mask
 suffix:semicolon
 DECL|member|flags

@@ -2017,6 +2017,10 @@ DECL|macro|AAC_OPT_ALARM
 mdefine_line|#define AAC_OPT_ALARM&t;&t;&t;cpu_to_le32(1&lt;&lt;11)
 DECL|macro|AAC_OPT_NONDASD
 mdefine_line|#define AAC_OPT_NONDASD&t;&t;&t;cpu_to_le32(1&lt;&lt;12)
+DECL|macro|AAC_OPT_SCSI_MANAGED
+mdefine_line|#define AAC_OPT_SCSI_MANAGED    &t;cpu_to_le32(1&lt;&lt;13)
+DECL|macro|AAC_OPT_RAID_SCSI_MODE
+mdefine_line|#define AAC_OPT_RAID_SCSI_MODE&t;&t;cpu_to_le32(1&lt;&lt;14)
 DECL|struct|aac_dev
 r_struct
 id|aac_dev
@@ -2223,6 +2227,10 @@ suffix:semicolon
 DECL|member|dac_support
 id|u8
 id|dac_support
+suffix:semicolon
+DECL|member|raid_scsi_mode
+id|u8
+id|raid_scsi_mode
 suffix:semicolon
 )brace
 suffix:semicolon
