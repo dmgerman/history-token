@@ -10,7 +10,7 @@ r_struct
 id|mb_cache_op
 (brace
 DECL|member|free
-r_void
+r_int
 (paren
 op_star
 id|free
@@ -19,6 +19,8 @@ id|free
 r_struct
 id|mb_cache_entry
 op_star
+comma
+r_int
 )paren
 suffix:semicolon
 )brace
