@@ -18097,7 +18097,7 @@ id|OV511_ENDPOINT_ADDRESS
 suffix:semicolon
 id|urb-&gt;transfer_flags
 op_assign
-id|USB_ISO_ASAP
+id|URB_ISO_ASAP
 suffix:semicolon
 id|urb-&gt;transfer_buffer
 op_assign
@@ -27691,7 +27691,7 @@ id|endpoint
 l_int|0
 )braket
 dot
-id|wMaxPacketSize
+id|desc.wMaxPacketSize
 suffix:semicolon
 multiline_comment|/* Some OV518s have packet numbering by default, some don&squot;t */
 r_if
@@ -28013,6 +28013,8 @@ id|intf-&gt;altsetting
 (braket
 l_int|0
 )braket
+dot
+id|desc
 suffix:semicolon
 multiline_comment|/* Checking vendor/product should be enough, but what the hell */
 r_if

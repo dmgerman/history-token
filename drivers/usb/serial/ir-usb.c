@@ -1509,7 +1509,7 @@ id|port
 suffix:semicolon
 id|port-&gt;write_urb-&gt;transfer_flags
 op_assign
-id|USB_ZERO_PACKET
+id|URB_ZERO_PACKET
 suffix:semicolon
 id|result
 op_assign
@@ -2178,7 +2178,7 @@ id|port
 suffix:semicolon
 id|port-&gt;write_urb-&gt;transfer_flags
 op_assign
-id|USB_ZERO_PACKET
+id|URB_ZERO_PACKET
 suffix:semicolon
 id|result
 op_assign

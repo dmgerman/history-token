@@ -363,7 +363,7 @@ id|schedule_work
 c_func
 (paren
 op_amp
-id|bcs-&gt;tqueue
+id|bcs-&gt;work
 )paren
 suffix:semicolon
 )brace

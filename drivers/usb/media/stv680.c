@@ -7966,7 +7966,7 @@ id|intf
 )paren
 suffix:semicolon
 r_struct
-id|usb_interface_descriptor
+id|usb_host_interface
 op_star
 id|interface
 suffix:semicolon

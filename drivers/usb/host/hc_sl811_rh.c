@@ -1879,7 +1879,7 @@ c_cond
 (paren
 id|urb-&gt;transfer_flags
 op_amp
-id|USB_ASYNC_UNLINK
+id|URB_ASYNC_UNLINK
 )paren
 (brace
 id|urb-&gt;status

@@ -516,7 +516,7 @@ suffix:semicolon
 multiline_comment|/* enforce simple/standard policy */
 id|allowed
 op_assign
-id|USB_ASYNC_UNLINK
+id|URB_ASYNC_UNLINK
 suffix:semicolon
 singleline_comment|// affects later unlinks
 id|allowed
@@ -543,7 +543,7 @@ id|is_out
 )paren
 id|allowed
 op_or_assign
-id|USB_ZERO_PACKET
+id|URB_ZERO_PACKET
 suffix:semicolon
 multiline_comment|/* FALLTHROUGH */
 r_case
@@ -551,7 +551,7 @@ id|PIPE_CONTROL
 suffix:colon
 id|allowed
 op_or_assign
-id|USB_NO_FSBR
+id|URB_NO_FSBR
 suffix:semicolon
 multiline_comment|/* only affects UHCI */
 multiline_comment|/* FALLTHROUGH */
@@ -577,7 +577,7 @@ id|PIPE_ISOCHRONOUS
 suffix:colon
 id|allowed
 op_or_assign
-id|USB_ISO_ASAP
+id|URB_ISO_ASAP
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -760,7 +760,7 @@ id|mem_flags
 suffix:semicolon
 )brace
 multiline_comment|/*-------------------------------------------------------------------*/
-multiline_comment|/**&n; * usb_unlink_urb - abort/cancel a transfer request for an endpoint&n; * @urb: pointer to urb describing a previously submitted request&n; *&n; * This routine cancels an in-progress request.  The requests&squot;s&n; * completion handler will be called with a status code indicating&n; * that the request has been canceled, and that control of the URB&n; * has been returned to that device driver.&n; *&n; * When the USB_ASYNC_UNLINK transfer flag for the URB is clear, this&n; * request is synchronous.  Success is indicated by returning zero,&n; * at which time the urb will have been unlinked,&n; * and the completion function will see status -ENOENT.  Failure is&n; * indicated by any other return value.  This mode may not be used&n; * when unlinking an urb from an interrupt context, such as a bottom&n; * half or a completion handler,&n; *&n; * When the USB_ASYNC_UNLINK transfer flag for the URB is set, this&n; * request is asynchronous.  Success is indicated by returning -EINPROGRESS,&n; * at which time the urb will normally not have been unlinked,&n; * and the completion function will see status -ECONNRESET.  Failure is&n; * indicated by any other return value.&n; */
+multiline_comment|/**&n; * usb_unlink_urb - abort/cancel a transfer request for an endpoint&n; * @urb: pointer to urb describing a previously submitted request&n; *&n; * This routine cancels an in-progress request.  The requests&squot;s&n; * completion handler will be called with a status code indicating&n; * that the request has been canceled, and that control of the URB&n; * has been returned to that device driver.&n; *&n; * When the URB_ASYNC_UNLINK transfer flag for the URB is clear, this&n; * request is synchronous.  Success is indicated by returning zero,&n; * at which time the urb will have been unlinked,&n; * and the completion function will see status -ENOENT.  Failure is&n; * indicated by any other return value.  This mode may not be used&n; * when unlinking an urb from an interrupt context, such as a bottom&n; * half or a completion handler,&n; *&n; * When the URB_ASYNC_UNLINK transfer flag for the URB is set, this&n; * request is asynchronous.  Success is indicated by returning -EINPROGRESS,&n; * at which time the urb will normally not have been unlinked,&n; * and the completion function will see status -ECONNRESET.  Failure is&n; * indicated by any other return value.&n; */
 DECL|function|usb_unlink_urb
 r_int
 id|usb_unlink_urb

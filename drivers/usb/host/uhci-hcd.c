@@ -2861,7 +2861,7 @@ op_logical_neg
 (paren
 id|urb-&gt;transfer_flags
 op_amp
-id|USB_NO_FSBR
+id|URB_NO_FSBR
 )paren
 )paren
 op_logical_and
@@ -2954,7 +2954,7 @@ op_logical_neg
 (paren
 id|urb-&gt;transfer_flags
 op_amp
-id|USB_NO_FSBR
+id|URB_NO_FSBR
 )paren
 )paren
 op_logical_and
@@ -4503,7 +4503,7 @@ OG
 l_int|0
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * USB_ZERO_PACKET means adding a 0-length packet, if direction&n;&t; * is OUT and the transfer_length was an exact multiple of maxsze,&n;&t; * hence (len = transfer_length - N * maxsze) == 0&n;&t; * however, if transfer_length == 0, the zero packet was already&n;&t; * prepared above.&n;&t; */
+multiline_comment|/*&n;&t; * URB_ZERO_PACKET means adding a 0-length packet, if direction&n;&t; * is OUT and the transfer_length was an exact multiple of maxsze,&n;&t; * hence (len = transfer_length - N * maxsze) == 0&n;&t; * however, if transfer_length == 0, the zero packet was already&n;&t; * prepared above.&n;&t; */
 r_if
 c_cond
 (paren
@@ -4516,7 +4516,7 @@ op_logical_and
 (paren
 id|urb-&gt;transfer_flags
 op_amp
-id|USB_ZERO_PACKET
+id|URB_ZERO_PACKET
 )paren
 op_logical_and
 op_logical_neg
@@ -5344,7 +5344,7 @@ c_cond
 (paren
 id|urb-&gt;transfer_flags
 op_amp
-id|USB_ISO_ASAP
+id|URB_ISO_ASAP
 )paren
 (brace
 r_if
@@ -7368,7 +7368,7 @@ id|tmp-&gt;next
 suffix:semicolon
 id|u-&gt;transfer_flags
 op_or_assign
-id|USB_TIMEOUT_KILLED
+id|URB_TIMEOUT_KILLED
 suffix:semicolon
 id|uhci_urb_dequeue
 c_func

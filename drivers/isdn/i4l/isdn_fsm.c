@@ -1,10 +1,10 @@
-multiline_comment|/* $Id: fsm.c,v 1.14.6.4 2001/09/23 22:24:47 kai Exp $&n; *&n; * Finite state machine&n; *&n; * Author       Karsten Keil&n; * Copyright    by Karsten Keil      &lt;keil@isdn4linux.de&gt;&n; *              by Kai Germaschewski &lt;kai.germaschewski@gmx.de&gt;&n; * &n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; * Thanks to    Jan den Ouden&n; *              Fritz Elfert&n; *&n; */
+multiline_comment|/* Linux ISDN subsystem, finite state machine&n; *&n; * Author       Karsten Keil&n; * Copyright              by Karsten Keil      &lt;keil@isdn4linux.de&gt;&n; *              2001-2002 by Kai Germaschewski &lt;kai@germaschewski.name&gt;&n; * &n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; * Thanks to    Jan den Ouden&n; *              Fritz Elfert&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
-macro_line|#include &quot;isdn_fsm.h&quot;
+macro_line|#include &lt;linux/isdn/fsm.h&gt;
 r_int
 DECL|function|fsm_new
 id|fsm_new

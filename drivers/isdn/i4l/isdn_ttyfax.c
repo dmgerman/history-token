@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: isdn_ttyfax.c,v 1.7.6.2 2001/09/23 22:24:32 kai Exp $&n; *&n; * Linux ISDN subsystem, tty_fax AT-command emulator (linklevel).&n; *&n; * Copyright 1999    by Armin Schindler (mac@melware.de)&n; * Copyright 1999    by Ralf Spachmann (mel@melware.de)&n; * Copyright 1999    by Cytronics &amp; Melware&n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; */
+multiline_comment|/* Linux ISDN subsystem, tty_fax AT-command emulator&n; *&n; * Copyright 1999    by Armin Schindler (mac@melware.de)&n; * Copyright 1999    by Ralf Spachmann (mel@melware.de)&n; * Copyright 1999    by Cytronics &amp; Melware&n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; */
 DECL|macro|ISDN_TTY_FAX_STAT_DEBUG
 macro_line|#undef ISDN_TTY_FAX_STAT_DEBUG
 DECL|macro|ISDN_TTY_FAX_CMD_DEBUG
@@ -7,85 +7,8 @@ macro_line|#include &lt;linux/isdn.h&gt;
 macro_line|#include &quot;isdn_common.h&quot;
 macro_line|#include &quot;isdn_tty.h&quot;
 macro_line|#include &quot;isdn_ttyfax.h&quot;
-DECL|variable|isdn_tty_fax_revision
-r_static
-r_char
-op_star
-id|isdn_tty_fax_revision
-op_assign
-l_string|&quot;$Revision: 1.7.6.2 $&quot;
-suffix:semicolon
 DECL|macro|PARSE_ERROR1
 mdefine_line|#define PARSE_ERROR1 { isdn_tty_fax_modem_result(1, info); return 1; }
-r_static
-r_char
-op_star
-DECL|function|isdn_getrev
-id|isdn_getrev
-c_func
-(paren
-r_const
-r_char
-op_star
-id|revision
-)paren
-(brace
-r_char
-op_star
-id|rev
-suffix:semicolon
-r_char
-op_star
-id|p
-suffix:semicolon
-r_if
-c_cond
-(paren
-(paren
-id|p
-op_assign
-id|strchr
-c_func
-(paren
-id|revision
-comma
-l_char|&squot;:&squot;
-)paren
-)paren
-)paren
-(brace
-id|rev
-op_assign
-id|p
-op_plus
-l_int|2
-suffix:semicolon
-id|p
-op_assign
-id|strchr
-c_func
-(paren
-id|rev
-comma
-l_char|&squot;$&squot;
-)paren
-suffix:semicolon
-op_star
-op_decrement
-id|p
-op_assign
-l_int|0
-suffix:semicolon
-)brace
-r_else
-id|rev
-op_assign
-l_string|&quot;???&quot;
-suffix:semicolon
-r_return
-id|rev
-suffix:semicolon
-)brace
 multiline_comment|/*&n; * Fax Class 2 Modem results&n; *&n; */
 r_static
 r_void
@@ -239,11 +162,7 @@ op_logical_and
 (paren
 op_logical_neg
 (paren
-id|isdn_slot_usage
-c_func
-(paren
-id|info-&gt;isdn_slot
-)paren
+id|info-&gt;isdn_slot-&gt;usage
 op_amp
 id|ISDN_USAGE_OUTGOING
 )paren
@@ -1502,8 +1421,11 @@ id|c
 suffix:semicolon
 r_int
 id|par
-comma
-id|i
+suffix:semicolon
+r_struct
+id|isdn_slot
+op_star
+id|slot
 suffix:semicolon
 r_int
 id|flags
@@ -1709,9 +1631,8 @@ macro_line|#endif
 r_if
 c_cond
 (paren
+op_logical_neg
 id|info-&gt;isdn_slot
-OL
-l_int|0
 )paren
 (brace
 id|save_flags
@@ -1751,7 +1672,7 @@ id|PARSE_ERROR1
 suffix:semicolon
 )brace
 multiline_comment|/* get a temporary connection to the first free fax driver */
-id|i
+id|slot
 op_assign
 id|isdn_get_free_slot
 c_func
@@ -1774,9 +1695,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|i
-OL
-l_int|0
+op_logical_neg
+id|slot
 )paren
 (brace
 id|restore_flags
@@ -1790,20 +1710,12 @@ suffix:semicolon
 )brace
 id|info-&gt;isdn_slot
 op_assign
-id|i
-suffix:semicolon
-id|isdn_slot_set_m_idx
-c_func
-(paren
-id|i
-comma
-id|info-&gt;line
-)paren
+id|slot
 suffix:semicolon
 id|isdn_slot_command
 c_func
 (paren
-id|info-&gt;isdn_slot
+id|slot
 comma
 id|ISDN_CMD_FAXCMD
 comma
@@ -1814,22 +1726,12 @@ suffix:semicolon
 id|isdn_slot_free
 c_func
 (paren
-id|info-&gt;isdn_slot
-)paren
-suffix:semicolon
-id|isdn_slot_set_m_idx
-c_func
-(paren
-id|i
-comma
-op_minus
-l_int|1
+id|slot
 )paren
 suffix:semicolon
 id|info-&gt;isdn_slot
 op_assign
-op_minus
-l_int|1
+l_int|NULL
 suffix:semicolon
 id|restore_flags
 c_func
@@ -5900,26 +5802,12 @@ l_string|&quot;isdn_tty: FREV?&bslash;n&quot;
 )paren
 suffix:semicolon
 macro_line|#endif
-id|strcpy
-c_func
-(paren
-id|rss
-comma
-id|isdn_tty_fax_revision
-)paren
-suffix:semicolon
 id|sprintf
 c_func
 (paren
 id|rs
 comma
-l_string|&quot;&bslash;r&bslash;nRev: %s&quot;
-comma
-id|isdn_getrev
-c_func
-(paren
-id|rss
-)paren
+l_string|&quot;&bslash;r&bslash;nRev: 1.0&quot;
 )paren
 suffix:semicolon
 id|isdn_tty_at_cout

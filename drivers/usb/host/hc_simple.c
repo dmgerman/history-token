@@ -607,9 +607,9 @@ c_cond
 id|urb-&gt;transfer_flags
 op_amp
 (paren
-id|USB_ASYNC_UNLINK
+id|URB_ASYNC_UNLINK
 op_or
-id|USB_TIMEOUT_KILLED
+id|URB_TIMEOUT_KILLED
 )paren
 )paren
 (brace
@@ -738,7 +738,7 @@ op_logical_and
 (paren
 id|urb-&gt;transfer_flags
 op_amp
-id|USB_ASYNC_UNLINK
+id|URB_ASYNC_UNLINK
 )paren
 )paren
 (brace
@@ -1025,7 +1025,7 @@ l_string|&quot;enter qu_urb_timeout&bslash;n&quot;
 suffix:semicolon
 id|urb-&gt;transfer_flags
 op_or_assign
-id|USB_TIMEOUT_KILLED
+id|URB_TIMEOUT_KILLED
 suffix:semicolon
 id|hci_unlink_urb
 (paren
@@ -1209,7 +1209,7 @@ c_cond
 (paren
 id|urb-&gt;transfer_flags
 op_amp
-id|USB_ZERO_PACKET
+id|URB_ZERO_PACKET
 )paren
 op_logical_and
 id|urb-&gt;transfer_buffer_length
@@ -1373,7 +1373,7 @@ id|urb-&gt;pipe
 op_logical_and
 id|urb-&gt;transfer_flags
 op_amp
-id|USB_ISO_ASAP
+id|URB_ISO_ASAP
 )paren
 (brace
 id|urb-&gt;start_frame

@@ -298,7 +298,7 @@ suffix:semicolon
 id|goon
 suffix:colon
 singleline_comment|// Prep the USB to wait for another frame
-id|FILL_BULK_URB
+id|usb_fill_bulk_urb
 c_func
 (paren
 id|ether_dev-&gt;rx_urb
@@ -655,7 +655,7 @@ suffix:semicolon
 singleline_comment|// Tear the waiting frame off the list
 id|ether_dev-&gt;tx_urb-&gt;transfer_flags
 op_or_assign
-id|USB_ASYNC_UNLINK
+id|URB_ASYNC_UNLINK
 suffix:semicolon
 id|usb_unlink_urb
 c_func
@@ -750,7 +750,7 @@ id|skb-&gt;len
 )paren
 suffix:semicolon
 singleline_comment|// Fill in the URB for shipping it out.
-id|FILL_BULK_URB
+id|usb_fill_bulk_urb
 c_func
 (paren
 id|ether_dev-&gt;tx_urb
@@ -931,7 +931,7 @@ id|EIO
 suffix:semicolon
 )brace
 singleline_comment|// Prep a receive URB
-id|FILL_BULK_URB
+id|usb_fill_bulk_urb
 c_func
 (paren
 id|ether_dev-&gt;rx_urb
@@ -2269,7 +2269,7 @@ id|ether_dev
 )paren
 (brace
 r_struct
-id|usb_config_descriptor
+id|usb_host_config
 op_star
 id|conf
 op_assign
@@ -2283,7 +2283,7 @@ op_assign
 l_int|NULL
 suffix:semicolon
 r_struct
-id|usb_interface_descriptor
+id|usb_host_interface
 op_star
 id|comm_intf
 op_assign
@@ -2422,7 +2422,7 @@ id|ether_dev
 )paren
 (brace
 r_struct
-id|usb_config_descriptor
+id|usb_host_config
 op_star
 id|conf
 op_assign
@@ -2436,7 +2436,7 @@ op_assign
 l_int|NULL
 suffix:semicolon
 r_struct
-id|usb_interface_descriptor
+id|usb_host_interface
 op_star
 id|data_intf
 op_assign
@@ -2491,7 +2491,7 @@ id|data_intf-&gt;endpoint
 l_int|0
 )braket
 dot
-id|bmAttributes
+id|desc.bmAttributes
 op_ne
 l_int|0x02
 )paren
@@ -2509,7 +2509,7 @@ id|data_intf-&gt;endpoint
 l_int|1
 )braket
 dot
-id|bmAttributes
+id|desc.bmAttributes
 op_ne
 l_int|0x02
 )paren
@@ -2528,7 +2528,7 @@ id|data_intf-&gt;endpoint
 l_int|0
 )braket
 dot
-id|bEndpointAddress
+id|desc.bEndpointAddress
 op_amp
 l_int|0x80
 )paren
@@ -2541,7 +2541,7 @@ id|data_intf-&gt;endpoint
 l_int|0
 )braket
 dot
-id|bEndpointAddress
+id|desc.bEndpointAddress
 op_amp
 l_int|0x7F
 suffix:semicolon
@@ -2556,7 +2556,7 @@ id|data_intf-&gt;endpoint
 l_int|0
 )braket
 dot
-id|bEndpointAddress
+id|desc.bEndpointAddress
 op_amp
 l_int|0x7F
 suffix:semicolon
@@ -2567,7 +2567,7 @@ id|data_intf-&gt;endpoint
 l_int|0
 )braket
 dot
-id|wMaxPacketSize
+id|desc.wMaxPacketSize
 suffix:semicolon
 )brace
 singleline_comment|// Check the second endpoint to see if it is IN or OUT
@@ -2579,7 +2579,7 @@ id|data_intf-&gt;endpoint
 l_int|1
 )braket
 dot
-id|bEndpointAddress
+id|desc.bEndpointAddress
 op_amp
 l_int|0x80
 )paren
@@ -2592,7 +2592,7 @@ id|data_intf-&gt;endpoint
 l_int|1
 )braket
 dot
-id|bEndpointAddress
+id|desc.bEndpointAddress
 op_amp
 l_int|0x7F
 suffix:semicolon
@@ -2607,7 +2607,7 @@ id|data_intf-&gt;endpoint
 l_int|1
 )braket
 dot
-id|bEndpointAddress
+id|desc.bEndpointAddress
 op_amp
 l_int|0x7F
 suffix:semicolon
@@ -2618,7 +2618,7 @@ id|data_intf-&gt;endpoint
 l_int|1
 )braket
 dot
-id|wMaxPacketSize
+id|desc.wMaxPacketSize
 suffix:semicolon
 )brace
 singleline_comment|// Now make sure we got both an IN and an OUT
@@ -2665,7 +2665,7 @@ id|ether_dev
 )paren
 (brace
 r_struct
-id|usb_config_descriptor
+id|usb_host_config
 op_star
 id|conf
 op_assign
@@ -2767,6 +2767,8 @@ id|data_intf_group-&gt;altsetting
 (braket
 id|altset_num
 )braket
+dot
+id|desc
 )paren
 suffix:semicolon
 singleline_comment|// Is this a data interface we like?
@@ -2892,7 +2894,7 @@ id|ether_dev
 )paren
 (brace
 r_struct
-id|usb_config_descriptor
+id|usb_host_config
 op_star
 id|conf
 op_assign
@@ -2942,7 +2944,7 @@ l_int|0
 suffix:semicolon
 id|intf_num
 OL
-id|conf-&gt;bNumInterfaces
+id|conf-&gt;desc.bNumInterfaces
 suffix:semicolon
 id|intf_num
 op_increment
@@ -2983,6 +2985,8 @@ id|comm_intf_group-&gt;altsetting
 (braket
 id|altset_num
 )braket
+dot
+id|desc
 )paren
 suffix:semicolon
 singleline_comment|// Is this a communication class of interface of the
@@ -3126,7 +3130,7 @@ id|ether_dev
 )paren
 (brace
 r_struct
-id|usb_config_descriptor
+id|usb_host_config
 op_star
 id|conf
 op_assign
@@ -3168,7 +3172,7 @@ singleline_comment|// Our first requirement : 2 interfaces
 r_if
 c_cond
 (paren
-id|conf-&gt;bNumInterfaces
+id|conf-&gt;desc.bNumInterfaces
 op_ne
 l_int|2
 )paren
@@ -3186,7 +3190,7 @@ id|conf_num
 suffix:semicolon
 id|ether_dev-&gt;bConfigurationValue
 op_assign
-id|conf-&gt;bConfigurationValue
+id|conf-&gt;desc.bConfigurationValue
 suffix:semicolon
 singleline_comment|// Now run it through the ringers and see what comes
 singleline_comment|// out the other side.
@@ -3231,7 +3235,7 @@ id|check_for_claimed_interfaces
 c_func
 (paren
 r_struct
-id|usb_config_descriptor
+id|usb_host_config
 op_star
 id|config
 )paren
@@ -3255,7 +3259,7 @@ l_int|0
 suffix:semicolon
 id|intf_num
 OL
-id|config-&gt;bNumInterfaces
+id|config-&gt;desc.bNumInterfaces
 suffix:semicolon
 id|intf_num
 op_increment

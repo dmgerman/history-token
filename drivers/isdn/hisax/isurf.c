@@ -584,9 +584,6 @@ id|u_char
 id|chips
 )paren
 (brace
-r_int
-id|flags
-suffix:semicolon
 id|printk
 c_func
 (paren
@@ -603,17 +600,6 @@ id|chips
 )paren
 suffix:semicolon
 multiline_comment|/* Reset On */
-id|save_flags
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
-id|sti
-c_func
-(paren
-)paren
-suffix:semicolon
 id|set_current_state
 c_func
 (paren
@@ -657,12 +643,6 @@ id|HZ
 )paren
 op_div
 l_int|1000
-)paren
-suffix:semicolon
-id|restore_flags
-c_func
-(paren
-id|flags
 )paren
 suffix:semicolon
 )brace

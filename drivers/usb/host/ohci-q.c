@@ -2025,7 +2025,7 @@ c_cond
 (paren
 id|urb-&gt;transfer_flags
 op_amp
-id|USB_ZERO_PACKET
+id|URB_ZERO_PACKET
 )paren
 op_logical_and
 id|cnt
@@ -2694,11 +2694,12 @@ id|wmb
 (paren
 )paren
 suffix:semicolon
-id|td-&gt;ed-&gt;hwHeadP
+id|ed-&gt;hwHeadP
 op_and_assign
 op_complement
 id|ED_H
 suffix:semicolon
+multiline_comment|/* put any later tds from this urb onto the donelist, after &squot;td&squot;,&n;&t; * order won&squot;t matter here: no errors, and nothing was transferred.&n;&t; * also patch the ed so it looks as if those tds completed normally.&n;&t; */
 r_while
 c_loop
 (paren
@@ -2712,6 +2713,9 @@ r_struct
 id|td
 op_star
 id|next
+suffix:semicolon
+id|u32
+id|info
 suffix:semicolon
 id|next
 op_assign
@@ -2729,16 +2733,16 @@ id|tmp
 op_assign
 id|next-&gt;td_list.next
 suffix:semicolon
-multiline_comment|/* move other tds from this urb to the donelist, after &squot;td&squot;.&n;&t;&t; * order won&squot;t matter here: no errors, nothing transferred.&n;&t;&t; *&n;&t;&t; * NOTE: this &quot;knows&quot; short control reads won&squot;t need fixup:&n;&t;&t; * hc went from the (one) data TD to the status td. that&squot;ll&n;&t;&t; * change if multi-td control DATA segments are supported,&n;&t;&t; * and we want to send the status packet.&n;&t;&t; */
 r_if
 c_cond
 (paren
 id|next-&gt;urb
-op_eq
+op_ne
 id|urb
 )paren
-(brace
-id|u32
+r_break
+suffix:semicolon
+multiline_comment|/* NOTE: if multi-td control DATA segments get supported,&n;&t;&t; * this urb had one of them, this td wasn&squot;t the last td&n;&t;&t; * in that segment (TD_R clear), this ed halted because&n;&t;&t; * of a short read, _and_ URB_SHORT_NOT_OK is clear ...&n;&t;&t; * then we need to leave the control STATUS packet queued&n;&t;&t; * and clear ED_SKIP.&n;&t;&t; */
 id|info
 op_assign
 id|next-&gt;hwINFO
@@ -2770,41 +2774,13 @@ id|rev
 op_assign
 id|next
 suffix:semicolon
-r_continue
-suffix:semicolon
-)brace
-multiline_comment|/* restart ed with first td of this next urb */
 id|ed-&gt;hwHeadP
 op_assign
-id|cpu_to_le32
-(paren
-id|next-&gt;td_dma
-)paren
+id|next-&gt;hwNextTD
 op_or
 id|toggle
 suffix:semicolon
-id|tmp
-op_assign
-l_int|0
-suffix:semicolon
-r_break
-suffix:semicolon
 )brace
-multiline_comment|/* no urbs queued? then ED is empty. */
-r_if
-c_cond
-(paren
-id|tmp
-)paren
-id|ed-&gt;hwHeadP
-op_assign
-id|cpu_to_le32
-(paren
-id|ed-&gt;dummy-&gt;td_dma
-)paren
-op_or
-id|toggle
-suffix:semicolon
 multiline_comment|/* help for troubleshooting: */
 id|dbg
 (paren

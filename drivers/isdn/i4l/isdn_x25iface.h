@@ -1,10 +1,11 @@
-multiline_comment|/* $Id: isdn_x25iface.h,v 1.3.6.1 2001/09/23 22:24:32 kai Exp $&n; *&n; * header for Linux ISDN subsystem, x.25 related functions&n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; */
+multiline_comment|/* Linux ISDN subsystem, x.25 related functions&n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; */
 macro_line|#ifndef _LINUX_ISDN_X25IFACE_H
 DECL|macro|_LINUX_ISDN_X25IFACE_H
 mdefine_line|#define _LINUX_ISDN_X25IFACE_H
 DECL|macro|ISDN_X25IFACE_MAGIC
 mdefine_line|#define ISDN_X25IFACE_MAGIC 0x1e75a2b9
-multiline_comment|/* #define DEBUG_ISDN_X25 if you want isdn_x25 debugging messages */
+DECL|macro|DEBUG_ISDN_X25
+macro_line|#undef DEBUG_ISDN_X25
 macro_line|#ifdef DEBUG_ISDN_X25
 DECL|macro|IX25DEBUG
 macro_line|#   define IX25DEBUG(fmt,args...) printk(KERN_DEBUG fmt , ## args)

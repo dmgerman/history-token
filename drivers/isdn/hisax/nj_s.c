@@ -16,6 +16,13 @@ id|NETjet_S_revision
 op_assign
 l_string|&quot;$Revision: 2.7.6.6 $&quot;
 suffix:semicolon
+DECL|variable|nj_s_lock
+r_static
+id|spinlock_t
+id|nj_s_lock
+op_assign
+id|SPIN_LOCK_UNLOCKED
+suffix:semicolon
 DECL|function|dummyrr
 r_static
 id|u_char
@@ -91,6 +98,7 @@ id|val
 comma
 id|sval
 suffix:semicolon
+r_int
 r_int
 id|flags
 suffix:semicolon
@@ -197,15 +205,13 @@ l_int|0x0
 suffix:semicolon
 )brace
 )brace
-id|save_flags
+id|spin_lock_irqsave
 c_func
 (paren
+op_amp
+id|nj_s_lock
+comma
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 multiline_comment|/* start new code 13/07/00 GE */
@@ -296,9 +302,12 @@ id|cs-&gt;HW_Flags
 )paren
 )paren
 (brace
-id|restore_flags
+id|spin_unlock_irqrestore
 c_func
 (paren
+op_amp
+id|nj_s_lock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -309,9 +318,12 @@ id|cs-&gt;hw.njet.irqstat0
 op_assign
 id|sval
 suffix:semicolon
-id|restore_flags
+id|spin_unlock_irqrestore
 c_func
 (paren
+op_amp
+id|nj_s_lock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -371,9 +383,12 @@ id|cs-&gt;HW_Flags
 suffix:semicolon
 )brace
 r_else
-id|restore_flags
+id|spin_unlock_irqrestore
 c_func
 (paren
+op_amp
+id|nj_s_lock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -653,6 +668,7 @@ id|tmp
 l_int|64
 )braket
 suffix:semicolon
+r_int
 r_int
 id|flags
 suffix:semicolon

@@ -3271,7 +3271,7 @@ id|usblp-&gt;wait
 suffix:semicolon
 id|usblp-&gt;ifnum
 op_assign
-id|intf-&gt;altsetting-&gt;bInterfaceNumber
+id|intf-&gt;altsetting-&gt;desc.bInterfaceNumber
 suffix:semicolon
 id|retval
 op_assign
@@ -3671,7 +3671,7 @@ op_star
 id|if_alt
 suffix:semicolon
 r_struct
-id|usb_interface_descriptor
+id|usb_host_interface
 op_star
 id|ifd
 suffix:semicolon
@@ -3752,11 +3752,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|ifd-&gt;bInterfaceClass
+id|ifd-&gt;desc.bInterfaceClass
 op_ne
 l_int|7
 op_logical_or
-id|ifd-&gt;bInterfaceSubClass
+id|ifd-&gt;desc.bInterfaceSubClass
 op_ne
 l_int|1
 )paren
@@ -3765,7 +3765,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|ifd-&gt;bInterfaceProtocol
+id|ifd-&gt;desc.bInterfaceProtocol
 template_param
 id|USBLP_LAST_PROTOCOL
 )paren
@@ -3787,7 +3787,7 @@ l_int|0
 suffix:semicolon
 id|e
 OL
-id|ifd-&gt;bNumEndpoints
+id|ifd-&gt;desc.bNumEndpoints
 suffix:semicolon
 id|e
 op_increment
@@ -3800,6 +3800,8 @@ id|ifd-&gt;endpoint
 (braket
 id|e
 )braket
+dot
+id|desc
 suffix:semicolon
 r_if
 c_cond
@@ -3858,7 +3860,7 @@ op_logical_neg
 id|epwrite
 op_logical_or
 (paren
-id|ifd-&gt;bInterfaceProtocol
+id|ifd-&gt;desc.bInterfaceProtocol
 OG
 l_int|1
 op_logical_and
@@ -3872,7 +3874,7 @@ multiline_comment|/* Turn off reads for 7/1/1 (unidirectional) interfaces&n;&t;&
 r_if
 c_cond
 (paren
-id|ifd-&gt;bInterfaceProtocol
+id|ifd-&gt;desc.bInterfaceProtocol
 op_eq
 l_int|1
 )paren
@@ -3907,7 +3909,7 @@ suffix:semicolon
 )brace
 id|usblp-&gt;protocol
 (braket
-id|ifd-&gt;bInterfaceProtocol
+id|ifd-&gt;desc.bInterfaceProtocol
 )braket
 dot
 id|alt_setting
@@ -3916,7 +3918,7 @@ id|i
 suffix:semicolon
 id|usblp-&gt;protocol
 (braket
-id|ifd-&gt;bInterfaceProtocol
+id|ifd-&gt;desc.bInterfaceProtocol
 )braket
 dot
 id|epwrite
@@ -3925,7 +3927,7 @@ id|epwrite
 suffix:semicolon
 id|usblp-&gt;protocol
 (braket
-id|ifd-&gt;bInterfaceProtocol
+id|ifd-&gt;desc.bInterfaceProtocol
 )braket
 dot
 id|epread
@@ -4098,7 +4100,7 @@ r_return
 id|r
 suffix:semicolon
 )brace
-id|FILL_BULK_URB
+id|usb_fill_bulk_urb
 c_func
 (paren
 id|usblp-&gt;writeurb
@@ -4145,7 +4147,7 @@ c_cond
 (paren
 id|usblp-&gt;bidir
 )paren
-id|FILL_BULK_URB
+id|usb_fill_bulk_urb
 c_func
 (paren
 id|usblp-&gt;readurb

@@ -2743,7 +2743,7 @@ op_logical_neg
 (paren
 id|urb-&gt;transfer_flags
 op_amp
-id|USB_ISO_ASAP
+id|URB_ISO_ASAP
 )paren
 )paren
 (brace

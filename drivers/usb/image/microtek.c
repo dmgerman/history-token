@@ -1490,7 +1490,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|FILL_BULK_URB
+id|usb_fill_bulk_urb
 c_func
 (paren
 id|transfer
@@ -2467,7 +2467,7 @@ r_goto
 id|out
 suffix:semicolon
 )brace
-id|FILL_BULK_URB
+id|usb_fill_bulk_urb
 c_func
 (paren
 id|desc-&gt;urb
@@ -2986,7 +2986,7 @@ id|intf
 suffix:semicolon
 multiline_comment|/* the altsettting 0 on the interface we&squot;re probing */
 r_struct
-id|usb_interface_descriptor
+id|usb_host_interface
 op_star
 id|altsetting
 suffix:semicolon
@@ -3080,7 +3080,7 @@ multiline_comment|/* Check if the config is sane */
 r_if
 c_cond
 (paren
-id|altsetting-&gt;bNumEndpoints
+id|altsetting-&gt;desc.bNumEndpoints
 op_ne
 id|MTS_EP_TOTAL
 )paren
@@ -3098,7 +3098,7 @@ comma
 (paren
 r_int
 )paren
-id|altsetting-&gt;bNumEndpoints
+id|altsetting-&gt;desc.bNumEndpoints
 )paren
 suffix:semicolon
 r_return
@@ -3115,7 +3115,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|altsetting-&gt;bNumEndpoints
+id|altsetting-&gt;desc.bNumEndpoints
 suffix:semicolon
 id|i
 op_increment
@@ -3130,7 +3130,7 @@ id|altsetting-&gt;endpoint
 id|i
 )braket
 dot
-id|bmAttributes
+id|desc.bmAttributes
 op_amp
 id|USB_ENDPOINT_XFERTYPE_MASK
 )paren
@@ -3151,7 +3151,7 @@ id|altsetting-&gt;endpoint
 id|i
 )braket
 dot
-id|bEndpointAddress
+id|desc.bEndpointAddress
 )paren
 suffix:semicolon
 )brace
@@ -3165,7 +3165,7 @@ id|altsetting-&gt;endpoint
 id|i
 )braket
 dot
-id|bEndpointAddress
+id|desc.bEndpointAddress
 op_amp
 id|USB_DIR_IN
 )paren
@@ -3178,7 +3178,7 @@ id|altsetting-&gt;endpoint
 id|i
 )braket
 dot
-id|bEndpointAddress
+id|desc.bEndpointAddress
 op_amp
 id|USB_ENDPOINT_NUMBER_MASK
 suffix:semicolon
@@ -3211,7 +3211,7 @@ id|altsetting-&gt;endpoint
 id|i
 )braket
 dot
-id|bEndpointAddress
+id|desc.bEndpointAddress
 op_amp
 id|USB_ENDPOINT_NUMBER_MASK
 suffix:semicolon
@@ -3245,7 +3245,7 @@ c_func
 (paren
 id|dev
 comma
-id|altsetting-&gt;bInterfaceNumber
+id|altsetting-&gt;desc.bInterfaceNumber
 comma
 l_int|0
 )paren

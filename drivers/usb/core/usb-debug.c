@@ -19,7 +19,7 @@ id|usb_show_endpoint
 c_func
 (paren
 r_struct
-id|usb_endpoint_descriptor
+id|usb_host_endpoint
 op_star
 id|endpoint
 )paren
@@ -27,7 +27,8 @@ id|endpoint
 id|usb_show_endpoint_descriptor
 c_func
 (paren
-id|endpoint
+op_amp
+id|endpoint-&gt;desc
 )paren
 suffix:semicolon
 )brace
@@ -38,7 +39,7 @@ id|usb_show_interface
 c_func
 (paren
 r_struct
-id|usb_interface_descriptor
+id|usb_host_interface
 op_star
 id|altsetting
 )paren
@@ -49,7 +50,8 @@ suffix:semicolon
 id|usb_show_interface_descriptor
 c_func
 (paren
-id|altsetting
+op_amp
+id|altsetting-&gt;desc
 )paren
 suffix:semicolon
 r_for
@@ -61,7 +63,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|altsetting-&gt;bNumEndpoints
+id|altsetting-&gt;desc.bNumEndpoints
 suffix:semicolon
 id|i
 op_increment
@@ -82,7 +84,7 @@ id|usb_show_config
 c_func
 (paren
 r_struct
-id|usb_config_descriptor
+id|usb_host_config
 op_star
 id|config
 )paren
@@ -100,7 +102,8 @@ suffix:semicolon
 id|usb_show_config_descriptor
 c_func
 (paren
-id|config
+op_amp
+id|config-&gt;desc
 )paren
 suffix:semicolon
 r_for
@@ -112,7 +115,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|config-&gt;bNumInterfaces
+id|config-&gt;desc.bNumInterfaces
 suffix:semicolon
 id|i
 op_increment
@@ -516,9 +519,9 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;  MaxPower            = %4dmA&bslash;n&quot;
+l_string|&quot;  bMaxPower            = %4dmA&bslash;n&quot;
 comma
-id|desc-&gt;MaxPower
+id|desc-&gt;bMaxPower
 op_star
 l_int|2
 )paren
