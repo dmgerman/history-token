@@ -9,6 +9,11 @@ macro_line|#include &quot;av7110.h&quot;
 DECL|macro|UP_TIMEOUT
 mdefine_line|#define UP_TIMEOUT (HZ/4)
 multiline_comment|/* enable ir debugging by or&squot;ing av7110_debug with 16 */
+DECL|variable|ir_initialized
+r_static
+r_int
+id|ir_initialized
+suffix:semicolon
 DECL|variable|input_dev
 r_static
 r_struct
@@ -1141,6 +1146,14 @@ c_func
 r_void
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|ir_initialized
+)paren
+r_return
+l_int|0
+suffix:semicolon
 r_static
 r_struct
 id|proc_dir_entry
@@ -1247,6 +1260,10 @@ id|u16
 )paren
 suffix:semicolon
 )brace
+id|ir_initialized
+op_assign
+l_int|1
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -1260,6 +1277,15 @@ c_func
 r_void
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|ir_initialized
+op_eq
+l_int|0
+)paren
+r_return
+suffix:semicolon
 id|del_timer_sync
 c_func
 (paren
@@ -1287,6 +1313,10 @@ c_func
 op_amp
 id|input_dev
 )paren
+suffix:semicolon
+id|ir_initialized
+op_assign
+l_int|0
 suffix:semicolon
 )brace
 singleline_comment|//MODULE_AUTHOR(&quot;Holger Waechtler &lt;holger@convergence.de&gt;&quot;);
