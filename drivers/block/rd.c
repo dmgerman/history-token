@@ -1109,6 +1109,15 @@ id|i
 )braket
 )paren
 suffix:semicolon
+id|blk_cleanup_queue
+c_func
+(paren
+id|rd_queue
+(braket
+id|i
+)braket
+)paren
+suffix:semicolon
 )brace
 id|devfs_remove
 c_func
