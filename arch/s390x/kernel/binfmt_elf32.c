@@ -42,7 +42,7 @@ DECL|macro|ELF_PLATFORM
 mdefine_line|#define ELF_PLATFORM (NULL)
 macro_line|#ifdef __KERNEL__
 DECL|macro|SET_PERSONALITY
-mdefine_line|#define SET_PERSONALITY(ex, ibcs2) set_personality((ibcs2)?PER_SVR4:PER_LINUX)
+mdefine_line|#define SET_PERSONALITY(ex, ibcs2)&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (ibcs2)                                      &bslash;&n;&t;&t;set_personality(PER_SVR4);              &bslash;&n;&t;else if (current-&gt;personality != PER_LINUX32)   &bslash;&n;&t;&t;set_personality(PER_LINUX);             &bslash;&n;} while (0)
 macro_line|#endif 
 macro_line|#include &quot;linux32.h&quot;
 DECL|typedef|elf_fpregset_t
@@ -88,6 +88,7 @@ macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/elfcore.h&gt;
+macro_line|#include &lt;linux/binfmts.h&gt;
 r_int
 id|setup_arg_pages32
 c_func

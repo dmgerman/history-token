@@ -11,7 +11,9 @@ macro_line|#include &lt;linux/wait.h&gt;
 macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;linux/unistd.h&gt;
 macro_line|#include &lt;linux/stddef.h&gt;
+macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/personality.h&gt;
+macro_line|#include &lt;linux/binfmts.h&gt;
 macro_line|#include &lt;asm/ucontext.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 DECL|macro|_BLOCKABLE
@@ -1189,16 +1191,31 @@ id|sig
 r_if
 c_cond
 (paren
-id|current-&gt;exec_domain
+id|current_thread_info
+c_func
+(paren
+)paren
+op_member_access_from_pointer
+id|exec_domain
 op_logical_and
-id|current-&gt;exec_domain-&gt;signal_invmap
+id|current_thread_info
+c_func
+(paren
+)paren
+op_member_access_from_pointer
+id|exec_domain-&gt;signal_invmap
 op_logical_and
 id|sig
 OL
 l_int|32
 )paren
 r_return
-id|current-&gt;exec_domain-&gt;signal_invmap
+id|current_thread_info
+c_func
+(paren
+)paren
+op_member_access_from_pointer
+id|exec_domain-&gt;signal_invmap
 (braket
 id|sig
 )braket
@@ -1375,6 +1392,28 @@ r_goto
 id|give_sigsegv
 suffix:semicolon
 )brace
+multiline_comment|/* Set up backchain. */
+r_if
+c_cond
+(paren
+id|__put_user
+c_func
+(paren
+id|regs-&gt;gprs
+(braket
+l_int|15
+)braket
+comma
+(paren
+id|addr_t
+op_star
+)paren
+id|frame
+)paren
+)paren
+r_goto
+id|give_sigsegv
+suffix:semicolon
 multiline_comment|/* Set up registers for signal handler */
 id|regs-&gt;gprs
 (braket
@@ -1572,6 +1611,10 @@ op_or_assign
 id|__put_user
 c_func
 (paren
+(paren
+r_void
+op_star
+)paren
 id|current-&gt;sas_ss_sp
 comma
 op_amp
@@ -1696,6 +1739,28 @@ id|frame-&gt;retcode
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* Set up backchain. */
+r_if
+c_cond
+(paren
+id|__put_user
+c_func
+(paren
+id|regs-&gt;gprs
+(braket
+l_int|15
+)braket
+comma
+(paren
+id|addr_t
+op_star
+)paren
+id|frame
+)paren
+)paren
+r_goto
+id|give_sigsegv
+suffix:semicolon
 multiline_comment|/* Set up registers for signal handler */
 id|regs-&gt;gprs
 (braket
