@@ -368,10 +368,10 @@ r_static
 id|LIST_HEAD
 c_func
 (paren
-id|global_drivers
+id|sysdev_drivers
 )paren
 suffix:semicolon
-multiline_comment|/**&n; *&t;sysdev_driver_register - Register auxillary driver&n; * &t;@cls:&t;Device class driver belongs to.&n; *&t;@drv:&t;Driver.&n; *&n; *&t;If @cls is valid, then @drv is inserted into @cls-&gt;drivers to be&n; *&t;called on each operation on devices of that class. The refcount&n; *&t;of @cls is incremented.&n; *&t;Otherwise, @drv is inserted into global_drivers, and called for&n; *&t;each device.&n; */
+multiline_comment|/**&n; *&t;sysdev_driver_register - Register auxillary driver&n; * &t;@cls:&t;Device class driver belongs to.&n; *&t;@drv:&t;Driver.&n; *&n; *&t;If @cls is valid, then @drv is inserted into @cls-&gt;drivers to be&n; *&t;called on each operation on devices of that class. The refcount&n; *&t;of @cls is incremented.&n; *&t;Otherwise, @drv is inserted into sysdev_drivers, and called for&n; *&t;each device.&n; */
 DECL|function|sysdev_driver_register
 r_int
 id|sysdev_driver_register
@@ -458,7 +458,7 @@ op_amp
 id|drv-&gt;entry
 comma
 op_amp
-id|global_drivers
+id|sysdev_drivers
 )paren
 suffix:semicolon
 id|up_write
@@ -691,7 +691,7 @@ c_func
 id|drv
 comma
 op_amp
-id|global_drivers
+id|sysdev_drivers
 comma
 id|entry
 )paren
@@ -777,7 +777,7 @@ c_func
 id|drv
 comma
 op_amp
-id|global_drivers
+id|sysdev_drivers
 comma
 id|entry
 )paren
@@ -928,7 +928,7 @@ c_func
 id|drv
 comma
 op_amp
-id|global_drivers
+id|sysdev_drivers
 comma
 id|entry
 )paren
@@ -1083,7 +1083,7 @@ c_func
 id|drv
 comma
 op_amp
-id|global_drivers
+id|sysdev_drivers
 comma
 id|entry
 )paren
@@ -1279,7 +1279,7 @@ c_func
 id|drv
 comma
 op_amp
-id|global_drivers
+id|sysdev_drivers
 comma
 id|entry
 )paren
