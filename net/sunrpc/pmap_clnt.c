@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * linux/net/sunrpc/pmap.c&n; *&n; * Portmapper client.&n; *&n; * FIXME: In a secure environment, we may want to use an authentication&n; * flavor other than AUTH_NULL.&n; *&n; * Copyright (C) 1996, Olaf Kirch &lt;okir@monad.swb.de&gt;&n; */
+multiline_comment|/*&n; * linux/net/sunrpc/pmap.c&n; *&n; * Portmapper client.&n; *&n; * Copyright (C) 1996, Olaf Kirch &lt;okir@monad.swb.de&gt;&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/socket.h&gt;
@@ -873,7 +873,7 @@ id|pmap_program
 comma
 id|RPC_PMAP_VERSION
 comma
-id|RPC_AUTH_NULL
+id|RPC_AUTH_UNIX
 )paren
 suffix:semicolon
 r_if
