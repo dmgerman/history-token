@@ -320,6 +320,49 @@ macro_line|#ifndef pgoff_t
 DECL|macro|pgoff_t
 mdefine_line|#define pgoff_t unsigned long
 macro_line|#endif
+macro_line|#ifdef __CHECKER__
+DECL|macro|__bitwise
+mdefine_line|#define __bitwise __attribute__((bitwise))
+macro_line|#else
+DECL|macro|__bitwise
+mdefine_line|#define __bitwise
+macro_line|#endif
+DECL|typedef|__le16
+r_typedef
+id|__u16
+id|__bitwise
+id|__le16
+suffix:semicolon
+DECL|typedef|__be16
+r_typedef
+id|__u16
+id|__bitwise
+id|__be16
+suffix:semicolon
+DECL|typedef|__le32
+r_typedef
+id|__u32
+id|__bitwise
+id|__le32
+suffix:semicolon
+DECL|typedef|__be32
+r_typedef
+id|__u32
+id|__bitwise
+id|__be32
+suffix:semicolon
+DECL|typedef|__le64
+r_typedef
+id|__u64
+id|__bitwise
+id|__le64
+suffix:semicolon
+DECL|typedef|__be64
+r_typedef
+id|__u64
+id|__bitwise
+id|__be64
+suffix:semicolon
 macro_line|#endif /* __KERNEL_STRICT_NAMES */
 multiline_comment|/*&n; * Below are truly Linux-specific types that should never collide with&n; * any application/library that wants linux/types.h.&n; */
 DECL|struct|ustat
