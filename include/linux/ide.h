@@ -235,13 +235,6 @@ DECL|macro|PRD_BYTES
 mdefine_line|#define PRD_BYTES       8
 DECL|macro|PRD_ENTRIES
 mdefine_line|#define PRD_ENTRIES     (PAGE_SIZE / (2 * PRD_BYTES))
-multiline_comment|/*&n; * sector count bits&n; */
-DECL|macro|NSEC_CD
-mdefine_line|#define NSEC_CD&t;&t;&t;0x01
-DECL|macro|NSEC_IO
-mdefine_line|#define NSEC_IO&t;&t;&t;0x02
-DECL|macro|NSEC_REL
-mdefine_line|#define NSEC_REL&t;&t;0x04
 multiline_comment|/*&n; * Our Physical Region Descriptor (PRD) table should be large enough&n; * to handle the biggest I/O request we are likely to see.  Since requests&n; * can have no more than 256 sectors, and since the typical blocksize is&n; * two or more sectors, we could get by with a limit of 128 entries here for&n; * the usual worst case.  Most requests seem to include some contiguous blocks,&n; * further reducing the number of table entries required.&n; *&n; * The driver reverts to PIO mode for individual requests that exceed&n; * this limit (possible with 512 byte blocksizes, eg. MSDOS f/s), so handling&n; * 100% of all crazy scenarios here is not necessary.&n; *&n; * As it turns out though, we must allocate a full 4KB page for this,&n; * so the two PRD tables (ide0 &amp; ide1) will each get half of that,&n; * allowing each to have about 256 entries (8 bytes each) from this.&n; */
 DECL|macro|PRD_BYTES
 mdefine_line|#define PRD_BYTES&t;8
@@ -1520,6 +1513,26 @@ DECL|typedef|atapi_select_t
 )brace
 id|atapi_select_t
 suffix:semicolon
+multiline_comment|/*&n; * Status returned from various ide_ functions&n; */
+r_typedef
+r_enum
+(brace
+DECL|enumerator|ide_stopped
+id|ide_stopped
+comma
+multiline_comment|/* no drive operation was started */
+DECL|enumerator|ide_started
+id|ide_started
+comma
+multiline_comment|/* a drive operation was started, handler was set */
+DECL|enumerator|ide_released
+id|ide_released
+comma
+multiline_comment|/* as ide_started, but bus also released */
+DECL|typedef|ide_startstop_t
+)brace
+id|ide_startstop_t
+suffix:semicolon
 r_struct
 id|ide_driver_s
 suffix:semicolon
@@ -1818,6 +1831,12 @@ suffix:colon
 l_int|1
 suffix:semicolon
 multiline_comment|/* 1=powermanagment told us not to do anything, so sleep nicely */
+DECL|member|queue_setup
+r_int
+id|queue_setup
+suffix:colon
+l_int|1
+suffix:semicolon
 DECL|member|addressing
 r_int
 id|addressing
@@ -1933,6 +1952,11 @@ id|u8
 id|bios_sect
 suffix:semicolon
 multiline_comment|/* BIOS/fdisk/LILO sectors per track */
+DECL|member|queue_depth
+id|u8
+id|queue_depth
+suffix:semicolon
+multiline_comment|/* max queue depth */
 DECL|member|bios_cyl
 r_int
 r_int
@@ -2302,6 +2326,67 @@ r_int
 (paren
 op_star
 id|ide_dma_timeout
+)paren
+(paren
+id|ide_drive_t
+op_star
+id|drive
+)paren
+suffix:semicolon
+multiline_comment|/* dma queued operations */
+DECL|member|ide_dma_queued_on
+r_int
+(paren
+op_star
+id|ide_dma_queued_on
+)paren
+(paren
+id|ide_drive_t
+op_star
+id|drive
+)paren
+suffix:semicolon
+DECL|member|ide_dma_queued_off
+r_int
+(paren
+op_star
+id|ide_dma_queued_off
+)paren
+(paren
+id|ide_drive_t
+op_star
+id|drive
+)paren
+suffix:semicolon
+DECL|member|ide_dma_queued_read
+id|ide_startstop_t
+(paren
+op_star
+id|ide_dma_queued_read
+)paren
+(paren
+id|ide_drive_t
+op_star
+id|drive
+)paren
+suffix:semicolon
+DECL|member|ide_dma_queued_write
+id|ide_startstop_t
+(paren
+op_star
+id|ide_dma_queued_write
+)paren
+(paren
+id|ide_drive_t
+op_star
+id|drive
+)paren
+suffix:semicolon
+DECL|member|ide_dma_queued_start
+id|ide_startstop_t
+(paren
+op_star
+id|ide_dma_queued_start
 )paren
 (paren
 id|ide_drive_t
@@ -2994,6 +3079,67 @@ op_star
 id|drive
 )paren
 suffix:semicolon
+multiline_comment|/* dma queued operations */
+DECL|member|ide_dma_queued_on
+r_int
+(paren
+op_star
+id|ide_dma_queued_on
+)paren
+(paren
+id|ide_drive_t
+op_star
+id|drive
+)paren
+suffix:semicolon
+DECL|member|ide_dma_queued_off
+r_int
+(paren
+op_star
+id|ide_dma_queued_off
+)paren
+(paren
+id|ide_drive_t
+op_star
+id|drive
+)paren
+suffix:semicolon
+DECL|member|ide_dma_queued_read
+id|ide_startstop_t
+(paren
+op_star
+id|ide_dma_queued_read
+)paren
+(paren
+id|ide_drive_t
+op_star
+id|drive
+)paren
+suffix:semicolon
+DECL|member|ide_dma_queued_write
+id|ide_startstop_t
+(paren
+op_star
+id|ide_dma_queued_write
+)paren
+(paren
+id|ide_drive_t
+op_star
+id|drive
+)paren
+suffix:semicolon
+DECL|member|ide_dma_queued_start
+id|ide_startstop_t
+(paren
+op_star
+id|ide_dma_queued_start
+)paren
+(paren
+id|ide_drive_t
+op_star
+id|drive
+)paren
+suffix:semicolon
 macro_line|#endif
 macro_line|#if 0
 id|ide_io_ops_t
@@ -3330,13 +3476,6 @@ suffix:colon
 l_int|1
 suffix:semicolon
 multiline_comment|/* 1=ATA-66 capable, 0=default */
-DECL|member|highmem
-r_int
-id|highmem
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* can do full 32-bit dma */
 DECL|member|no_dsc
 r_int
 id|no_dsc
@@ -3344,6 +3483,13 @@ suffix:colon
 l_int|1
 suffix:semicolon
 multiline_comment|/* 0 default, 1 dsc_overlap disabled */
+DECL|member|auto_poll
+r_int
+id|auto_poll
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* supports nop auto-poll */
 DECL|member|gendev
 r_struct
 id|device
@@ -3355,24 +3501,13 @@ op_star
 id|hwif_data
 suffix:semicolon
 multiline_comment|/* extra hwif data */
+DECL|member|dma
+r_int
+id|dma
+suffix:semicolon
 DECL|typedef|ide_hwif_t
 )brace
 id|ide_hwif_t
-suffix:semicolon
-multiline_comment|/*&n; * Status returned from various ide_ functions&n; */
-r_typedef
-r_enum
-(brace
-DECL|enumerator|ide_stopped
-id|ide_stopped
-comma
-multiline_comment|/* no drive operation was started */
-DECL|enumerator|ide_started
-id|ide_started
-multiline_comment|/* a drive operation was started, handler was set */
-DECL|typedef|ide_startstop_t
-)brace
-id|ide_startstop_t
 suffix:semicolon
 multiline_comment|/*&n; *  internal ide interrupt handler type&n; */
 DECL|typedef|ide_pre_handler_t
@@ -3530,6 +3665,14 @@ multiline_comment|/* ide_system_bus_speed */
 DECL|member|pio_clock
 r_int
 id|pio_clock
+suffix:semicolon
+DECL|member|cmd_buf
+r_int
+r_char
+id|cmd_buf
+(braket
+l_int|4
+)braket
 suffix:semicolon
 DECL|typedef|ide_hwgroup_t
 )brace
@@ -5987,6 +6130,20 @@ r_int
 suffix:semicolon
 r_extern
 r_int
+id|ide_start_dma
+c_func
+(paren
+id|ide_hwif_t
+op_star
+comma
+id|ide_drive_t
+op_star
+comma
+r_int
+)paren
+suffix:semicolon
+r_extern
+r_int
 id|__ide_dma_host_off
 c_func
 (paren
@@ -6147,6 +6304,91 @@ id|ide_drive_t
 op_star
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_BLK_DEV_IDE_TCQ
+r_extern
+r_int
+id|__ide_dma_queued_on
+c_func
+(paren
+id|ide_drive_t
+op_star
+id|drive
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|__ide_dma_queued_off
+c_func
+(paren
+id|ide_drive_t
+op_star
+id|drive
+)paren
+suffix:semicolon
+r_extern
+id|ide_startstop_t
+id|__ide_dma_queued_read
+c_func
+(paren
+id|ide_drive_t
+op_star
+id|drive
+)paren
+suffix:semicolon
+r_extern
+id|ide_startstop_t
+id|__ide_dma_queued_write
+c_func
+(paren
+id|ide_drive_t
+op_star
+id|drive
+)paren
+suffix:semicolon
+r_extern
+id|ide_startstop_t
+id|__ide_dma_queued_start
+c_func
+(paren
+id|ide_drive_t
+op_star
+id|drive
+)paren
+suffix:semicolon
+macro_line|#else
+DECL|function|__ide_dma_queued_on
+r_static
+r_inline
+r_int
+id|__ide_dma_queued_on
+c_func
+(paren
+id|ide_drive_t
+op_star
+id|drive
+)paren
+(brace
+r_return
+l_int|1
+suffix:semicolon
+)brace
+DECL|function|__ide_dma_queued_off
+r_static
+r_inline
+r_int
+id|__ide_dma_queued_off
+c_func
+(paren
+id|ide_drive_t
+op_star
+id|drive
+)paren
+(brace
+r_return
+l_int|1
+suffix:semicolon
+)brace
+macro_line|#endif
 r_extern
 r_void
 id|hwif_unregister
@@ -6284,6 +6526,73 @@ id|ide_lock
 suffix:semicolon
 DECL|macro|local_irq_set
 mdefine_line|#define local_irq_set(flags)&t;do { local_save_flags((flags)); local_irq_enable(); } while (0)
+DECL|macro|IDE_MAX_TAG
+mdefine_line|#define IDE_MAX_TAG&t;32
+macro_line|#ifdef CONFIG_BLK_DEV_IDE_TCQ
+DECL|function|ata_pending_commands
+r_static
+r_inline
+r_int
+id|ata_pending_commands
+c_func
+(paren
+id|ide_drive_t
+op_star
+id|drive
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|drive-&gt;using_tcq
+)paren
+r_return
+id|blk_queue_tag_depth
+c_func
+(paren
+op_amp
+id|drive-&gt;queue
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+DECL|function|ata_can_queue
+r_static
+r_inline
+r_int
+id|ata_can_queue
+c_func
+(paren
+id|ide_drive_t
+op_star
+id|drive
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|drive-&gt;using_tcq
+)paren
+r_return
+id|blk_queue_tag_queue
+c_func
+(paren
+op_amp
+id|drive-&gt;queue
+)paren
+suffix:semicolon
+r_return
+l_int|1
+suffix:semicolon
+)brace
+macro_line|#else
+DECL|macro|ata_pending_commands
+mdefine_line|#define ata_pending_commands(drive)&t;(0)
+DECL|macro|ata_can_queue
+mdefine_line|#define ata_can_queue(drive)&t;&t;(1)
+macro_line|#endif
 r_extern
 r_struct
 id|bus_type
