@@ -3,6 +3,7 @@ macro_line|#ifndef __LINUX_USB_SERIAL_H
 DECL|macro|__LINUX_USB_SERIAL_H
 mdefine_line|#define __LINUX_USB_SERIAL_H
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/kref.h&gt;
 DECL|macro|SERIAL_TTY_MAJOR
 mdefine_line|#define SERIAL_TTY_MAJOR&t;188&t;/* Nice legal number now */
 DECL|macro|SERIAL_TTY_MINORS
@@ -236,10 +237,10 @@ id|port
 id|MAX_NUM_PORTS
 )braket
 suffix:semicolon
-DECL|member|kobj
+DECL|member|kref
 r_struct
-id|kobject
-id|kobj
+id|kref
+id|kref
 suffix:semicolon
 DECL|member|private
 r_void
@@ -249,7 +250,7 @@ suffix:semicolon
 )brace
 suffix:semicolon
 DECL|macro|to_usb_serial
-mdefine_line|#define to_usb_serial(d) container_of(d, struct usb_serial, kobj)
+mdefine_line|#define to_usb_serial(d) container_of(d, struct usb_serial, kref)
 DECL|macro|NUM_DONT_CARE
 mdefine_line|#define NUM_DONT_CARE&t;(-1)
 multiline_comment|/* get and set the serial private data pointer helper functions */
