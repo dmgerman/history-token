@@ -474,8 +474,15 @@ id|pdev-&gt;dev.bus_id
 suffix:semicolon
 id|p
 op_assign
-l_int|NULL
+id|r-&gt;parent
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|p
+)paren
+(brace
 r_if
 c_cond
 (paren
@@ -501,6 +508,7 @@ op_assign
 op_amp
 id|ioport_resource
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
