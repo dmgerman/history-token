@@ -4423,15 +4423,12 @@ id|fl.oif
 op_assign
 id|np-&gt;mcast_oif
 suffix:semicolon
-id|err
+id|dst
 op_assign
 id|ip6_dst_lookup
 c_func
 (paren
 id|sk
-comma
-op_amp
-id|dst
 comma
 op_amp
 id|fl
@@ -4440,7 +4437,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|err
+id|dst-&gt;error
 )paren
 r_goto
 id|out
