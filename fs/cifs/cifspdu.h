@@ -1963,15 +1963,15 @@ id|__u16
 id|Tid2
 suffix:semicolon
 DECL|member|OpenFunction
-id|__u16
+id|__le16
 id|OpenFunction
 suffix:semicolon
 DECL|member|Flags
-id|__u16
+id|__le16
 id|Flags
 suffix:semicolon
 DECL|member|ByteCount
-id|__u16
+id|__le16
 id|ByteCount
 suffix:semicolon
 DECL|member|BufferFormat
@@ -2005,7 +2005,7 @@ id|hdr
 suffix:semicolon
 multiline_comment|/* wct = 1 */
 DECL|member|CopyCount
-id|__u16
+id|__le16
 id|CopyCount
 suffix:semicolon
 multiline_comment|/* number of files copied */

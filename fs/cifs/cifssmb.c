@@ -5142,6 +5142,9 @@ id|name_len
 comma
 id|name_len2
 suffix:semicolon
+id|__u16
+id|count
+suffix:semicolon
 id|cFYI
 c_func
 (paren
@@ -5198,25 +5201,14 @@ id|pSMB-&gt;Tid2
 op_assign
 id|target_tid
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|flags
-op_amp
-id|COPY_TREE
-)paren
-(brace
-id|pSMB-&gt;Flags
-op_or_assign
-id|COPY_TREE
-suffix:semicolon
-)brace
 id|pSMB-&gt;Flags
 op_assign
 id|cpu_to_le16
 c_func
 (paren
-id|pSMB-&gt;Flags
+id|flags
+op_amp
+id|COPY_TREE
 )paren
 suffix:semicolon
 r_if
@@ -5386,7 +5378,7 @@ op_increment
 suffix:semicolon
 multiline_comment|/* signature byte */
 )brace
-id|pSMB-&gt;ByteCount
+id|count
 op_assign
 l_int|1
 multiline_comment|/* 1st signature byte */
@@ -5397,14 +5389,14 @@ id|name_len2
 suffix:semicolon
 id|pSMB-&gt;hdr.smb_buf_length
 op_add_assign
-id|pSMB-&gt;ByteCount
+id|count
 suffix:semicolon
 id|pSMB-&gt;ByteCount
 op_assign
 id|cpu_to_le16
 c_func
 (paren
-id|pSMB-&gt;ByteCount
+id|count
 )paren
 suffix:semicolon
 id|rc
@@ -5452,7 +5444,11 @@ l_string|&quot;Send error in copy = %d with %d files copied&quot;
 comma
 id|rc
 comma
+id|le16_to_cpu
+c_func
+(paren
 id|pSMBr-&gt;CopyCount
+)paren
 )paren
 )paren
 suffix:semicolon
