@@ -30,13 +30,21 @@ macro_line|#include &quot;munich32x.h&quot;
 macro_line|#include &quot;falc-lh.h&quot;
 macro_line|#endif
 id|MODULE_AUTHOR
+c_func
 (paren
 l_string|&quot;Bartok Istvan &lt;bartoki@itc.hu&gt;, Gergely Madarasz &lt;gorgo@itc.hu&gt;, Szilard Pasztor &lt;don@itc.hu&gt;&quot;
 )paren
 suffix:semicolon
 id|MODULE_DESCRIPTION
+c_func
 (paren
 l_string|&quot;Hardware-level driver for the SliceCOM and PciCOM (WelCOM) adapters&quot;
+)paren
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
 multiline_comment|/*&n; *&t;TODO: az ilyenek a comxhw.h -ban szoktak lenni, idovel menjenek majd oda:&n; */
@@ -4907,12 +4915,6 @@ multiline_comment|/* es nem torlom a STAT-ot, ezert ujra visszajon ide a rendsze
 multiline_comment|/* jon interrupt, de nincs mit feldolgozni, akkor torlom a STAT-ot.     */
 multiline_comment|/* &squot;needs a rewrite&squot;, de elso megoldasnak jo lesz                       */
 singleline_comment|//              {
-id|udelay
-c_func
-(paren
-l_int|10000
-)paren
-suffix:semicolon
 id|int_info
 op_assign
 id|board-&gt;tiq
@@ -13016,14 +13018,6 @@ op_star
 )paren
 id|dev-&gt;priv
 suffix:semicolon
-r_struct
-id|slicecom_privdata
-op_star
-id|hw
-op_assign
-id|ch-&gt;HW_privdata
-suffix:semicolon
-singleline_comment|//    munich_board_t *board;
 multiline_comment|/* Free private data area */
 singleline_comment|//    board = hw-&gt;boardnum + (ch-&gt;hardware == &amp;pcicomhw ? pcicom_boards : slicecom_boards);
 id|kfree
