@@ -2778,6 +2778,22 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|dentry-&gt;d_sb-&gt;s_flags
+op_amp
+id|MS_ACTIVE
+)paren
+)paren
+(brace
+multiline_comment|/* Unhash it, so that ancestors of killed async unlink&n;&t;&t; * files will be cleaned up during umount */
+r_return
+l_int|1
+suffix:semicolon
+)brace
 r_return
 l_int|0
 suffix:semicolon
