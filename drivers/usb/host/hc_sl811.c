@@ -3334,7 +3334,7 @@ id|usb_deregister_bus
 id|hci-&gt;bus
 )paren
 suffix:semicolon
-id|usb_free_bus
+id|usb_put_bus
 (paren
 id|hci-&gt;bus
 )paren

@@ -16,6 +16,39 @@ macro_line|#include &lt;linux/usb.h&gt;
 macro_line|#include &quot;hcd.h&quot;
 multiline_comment|/* PCI-based HCs are normal, but custom bus glue should be ok */
 multiline_comment|/*-------------------------------------------------------------------------*/
+DECL|function|hcd_pci_release
+r_static
+r_void
+id|hcd_pci_release
+c_func
+(paren
+r_struct
+id|usb_bus
+op_star
+id|bus
+)paren
+(brace
+r_struct
+id|usb_hcd
+op_star
+id|hcd
+op_assign
+id|bus-&gt;hcpriv
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|hcd
+)paren
+id|hcd-&gt;driver
+op_member_access_from_pointer
+id|hcd_free
+c_func
+(paren
+id|hcd
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/* configure so an HC device and id are always provided */
 multiline_comment|/* always called with process context; sleeping is OK */
 multiline_comment|/**&n; * usb_hcd_pci_probe - initialize PCI-based HCDs&n; * @dev: USB Host Controller being probed&n; * @id: pci hotplug id connecting controller to HCD framework&n; * Context: !in_interrupt()&n; *&n; * Allocates basic PCI resources for this USB host controller, and&n; * then invokes the start() method for the HCD associated with it&n; * through the hotplug entry&squot;s driver_data.&n; *&n; * Store this function in the HCD&squot;s struct pci_driver as probe().&n; */
@@ -598,6 +631,11 @@ op_star
 )paren
 id|hcd
 suffix:semicolon
+id|hcd-&gt;self.release
+op_assign
+op_amp
+id|hcd_pci_release
+suffix:semicolon
 id|INIT_LIST_HEAD
 (paren
 op_amp
@@ -802,41 +840,6 @@ id|usb_deregister_bus
 (paren
 op_amp
 id|hcd-&gt;self
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|atomic_read
-(paren
-op_amp
-id|hcd-&gt;self.refcnt
-)paren
-op_ne
-l_int|1
-)paren
-(brace
-id|dev_warn
-(paren
-id|hcd-&gt;controller
-comma
-l_string|&quot;dangling refs (%d) to bus %d!&bslash;n&quot;
-comma
-id|atomic_read
-(paren
-op_amp
-id|hcd-&gt;self.refcnt
-)paren
-op_minus
-l_int|1
-comma
-id|hcd-&gt;self.busnum
-)paren
-suffix:semicolon
-)brace
-id|hcd-&gt;driver-&gt;hcd_free
-(paren
-id|hcd
 )paren
 suffix:semicolon
 )brace

@@ -414,12 +414,30 @@ op_star
 id|usbdevfs_dentry
 suffix:semicolon
 multiline_comment|/* usbdevfs dentry entry for the bus */
-DECL|member|refcnt
-id|atomic_t
-id|refcnt
+DECL|member|class_dev
+r_struct
+id|class_device
+id|class_dev
 suffix:semicolon
+multiline_comment|/* class device for this bus */
+DECL|member|release
+r_void
+(paren
+op_star
+id|release
+)paren
+(paren
+r_struct
+id|usb_bus
+op_star
+id|bus
+)paren
+suffix:semicolon
+multiline_comment|/* function to destroy this bus&squot;s memory */
 )brace
 suffix:semicolon
+DECL|macro|to_usb_bus
+mdefine_line|#define&t;to_usb_bus(d) container_of(d, struct usb_bus, class_dev)
 multiline_comment|/* -------------------------------------------------------------------------- */
 multiline_comment|/* This is arbitrary.&n; * From USB 2.0 spec Table 11-13, offset 7, a hub can&n; * have up to 255 ports. The most yet reported is 10.&n; */
 DECL|macro|USB_MAXCHILDREN
