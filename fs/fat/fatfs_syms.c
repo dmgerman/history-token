@@ -234,7 +234,7 @@ c_func
 r_void
 )paren
 (brace
-id|fat_destory_inodecache
+id|fat_destroy_inodecache
 c_func
 (paren
 )paren
