@@ -787,7 +787,9 @@ id|th
 comma
 id|s
 comma
-id|len
+id|JOURNAL_PER_BALANCE_CNT
+op_star
+l_int|6
 )paren
 suffix:semicolon
 id|reiserfs_update_inode_transaction
