@@ -7118,18 +7118,24 @@ id|udev
 op_assign
 id|serial-&gt;dev
 suffix:semicolon
+multiline_comment|/* XXX I&squot;ve no idea if the original SIO supports the event_char&n;&t; * sysfs parameter, so I&squot;m playing it safe.  */
 r_if
 c_cond
 (paren
 id|priv-&gt;chip_type
-op_eq
-id|FT232BM
+op_ne
+id|SIO
 )paren
 (brace
 id|dbg
 c_func
 (paren
-l_string|&quot;sysfs attributes for FT232BM&quot;
+l_string|&quot;sysfs attributes for %s&quot;
+comma
+id|ftdi_chip_name
+(braket
+id|priv-&gt;chip_type
+)braket
 )paren
 suffix:semicolon
 id|device_create_file
@@ -7142,6 +7148,18 @@ op_amp
 id|dev_attr_event_char
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|priv-&gt;chip_type
+op_eq
+id|FT232BM
+op_logical_or
+id|priv-&gt;chip_type
+op_eq
+id|FT2232C
+)paren
+(brace
 id|device_create_file
 c_func
 (paren
@@ -7152,6 +7170,7 @@ op_amp
 id|dev_attr_latency_timer
 )paren
 suffix:semicolon
+)brace
 )brace
 )brace
 DECL|function|remove_sysfs_attrs
@@ -7199,12 +7218,13 @@ id|udev
 op_assign
 id|serial-&gt;dev
 suffix:semicolon
+multiline_comment|/* XXX see create_sysfs_attrs */
 r_if
 c_cond
 (paren
 id|priv-&gt;chip_type
-op_eq
-id|FT232BM
+op_ne
+id|SIO
 )paren
 (brace
 id|device_remove_file
@@ -7217,6 +7237,18 @@ op_amp
 id|dev_attr_event_char
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|priv-&gt;chip_type
+op_eq
+id|FT232BM
+op_logical_or
+id|priv-&gt;chip_type
+op_eq
+id|FT2232C
+)paren
+(brace
 id|device_remove_file
 c_func
 (paren
@@ -7227,6 +7259,7 @@ op_amp
 id|dev_attr_latency_timer
 )paren
 suffix:semicolon
+)brace
 )brace
 )brace
 multiline_comment|/*&n; * ***************************************************************************&n; * FTDI driver specific functions&n; * ***************************************************************************&n; */
@@ -7595,6 +7628,12 @@ op_div
 l_int|2
 suffix:semicolon
 multiline_comment|/* Would be / 16, but FTDI supports 0.125, 0.25 and 0.5 divisor fractions! */
+id|create_sysfs_attrs
+c_func
+(paren
+id|serial
+)paren
+suffix:semicolon
 r_return
 (paren
 l_int|0
@@ -7784,6 +7823,12 @@ op_div
 l_int|2
 suffix:semicolon
 multiline_comment|/* Would be / 16, but FT2232C supports multiple of 0.125 divisor fractions! */
+id|create_sysfs_attrs
+c_func
+(paren
+id|serial
+)paren
+suffix:semicolon
 r_return
 (paren
 l_int|0
