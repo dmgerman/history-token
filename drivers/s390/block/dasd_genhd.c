@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * File...........: linux/drivers/s390/block/dasd_genhd.c&n; * Author(s)......: Holger Smolinski &lt;Holger.Smolinski@de.ibm.com&gt;&n; *&t;&t;    Horst Hummel &lt;Horst.Hummel@de.ibm.com&gt;&n; *&t;&t;    Carsten Otte &lt;Cotte@de.ibm.com&gt;&n; *&t;&t;    Martin Schwidefsky &lt;schwidefsky@de.ibm.com&gt;&n; * Bugreports.to..: &lt;Linux390@de.ibm.com&gt;&n; * (C) IBM Corporation, IBM Deutschland Entwicklung GmbH, 1999-2001&n; *&n; * Dealing with devices registered to multiple major numbers.&n; *&n; * $Revision: 1.23 $&n; *&n; * History of changes&n; * 05/04/02 split from dasd.c, code restructuring.&n; */
+multiline_comment|/*&n; * File...........: linux/drivers/s390/block/dasd_genhd.c&n; * Author(s)......: Holger Smolinski &lt;Holger.Smolinski@de.ibm.com&gt;&n; *&t;&t;    Horst Hummel &lt;Horst.Hummel@de.ibm.com&gt;&n; *&t;&t;    Carsten Otte &lt;Cotte@de.ibm.com&gt;&n; *&t;&t;    Martin Schwidefsky &lt;schwidefsky@de.ibm.com&gt;&n; * Bugreports.to..: &lt;Linux390@de.ibm.com&gt;&n; * (C) IBM Corporation, IBM Deutschland Entwicklung GmbH, 1999-2001&n; *&n; * Dealing with devices registered to multiple major numbers.&n; *&n; * $Revision: 1.24 $&n; *&n; * History of changes&n; * 05/04/02 split from dasd.c, code restructuring.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
@@ -273,11 +273,6 @@ id|devindex
 )paren
 (brace
 r_struct
-id|list_head
-op_star
-id|l
-suffix:semicolon
-r_struct
 id|major_info
 op_star
 id|mi
@@ -316,28 +311,17 @@ id|index
 op_assign
 id|devindex
 suffix:semicolon
-id|list_for_each
+id|list_for_each_entry
 c_func
 (paren
-id|l
+id|mi
 comma
 op_amp
 id|dasd_major_info
-)paren
-(brace
-id|mi
-op_assign
-id|list_entry
-c_func
-(paren
-id|l
-comma
-r_struct
-id|major_info
 comma
 id|list
 )paren
-suffix:semicolon
+(brace
 r_if
 c_cond
 (paren
@@ -440,6 +424,10 @@ id|gdp-&gt;fops
 op_assign
 op_amp
 id|dasd_device_operations
+suffix:semicolon
+id|gdp-&gt;flags
+op_or_assign
+id|GENHD_FL_DEVFS
 suffix:semicolon
 multiline_comment|/*&n;&t; * Set device name.&n;&t; *   dasda - dasdz : 26 devices&n;&t; *   dasdaa - dasdzz : 676 devices, added up = 702&n;&t; *   dasdaaa - dasdzzz : 17576 devices, added up = 18278&n;&t; */
 id|len
@@ -654,11 +642,6 @@ id|devindex
 )paren
 (brace
 r_struct
-id|list_head
-op_star
-id|l
-suffix:semicolon
-r_struct
 id|major_info
 op_star
 id|mi
@@ -678,28 +661,17 @@ op_assign
 op_minus
 id|ENODEV
 suffix:semicolon
-id|list_for_each
+id|list_for_each_entry
 c_func
 (paren
-id|l
+id|mi
 comma
 op_amp
 id|dasd_major_info
-)paren
-(brace
-id|mi
-op_assign
-id|list_entry
-c_func
-(paren
-id|l
-comma
-r_struct
-id|major_info
 comma
 id|list
 )paren
-suffix:semicolon
+(brace
 r_if
 c_cond
 (paren
@@ -789,6 +761,12 @@ id|device
 )paren
 (brace
 id|del_gendisk
+c_func
+(paren
+id|device-&gt;gdp
+)paren
+suffix:semicolon
+id|put_disk
 c_func
 (paren
 id|device-&gt;gdp

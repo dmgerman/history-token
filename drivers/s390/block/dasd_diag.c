@@ -1,4 +1,4 @@
-multiline_comment|/* &n; * File...........: linux/drivers/s390/block/dasd_diag.c&n; * Author(s)......: Holger Smolinski &lt;Holger.Smolinski@de.ibm.com&gt;&n; * Based on.......: linux/drivers/s390/block/mdisk.c&n; * ...............: by Hartmunt Penner &lt;hpenner@de.ibm.com&gt;&n; * Bugreports.to..: &lt;Linux390@de.ibm.com&gt;&n; * (C) IBM Corporation, IBM Deutschland Entwicklung GmbH, 1999,2000&n; *&n; * $Revision: 1.27 $&n; *&n; * History of changes&n; * 07/13/00 Added fixup sections for diagnoses ans saved some registers&n; * 07/14/00 fixed constraints in newly generated inline asm&n; * 10/05/00 adapted to &squot;new&squot; DASD driver&n; *&t;    fixed return codes of dia250()&n; *&t;    fixed partition handling and HDIO_GETGEO&n; * 2002/01/04 Created 2.4-2.5 compatibility mode&n; * 05/04/02 code restructuring.&n; */
+multiline_comment|/* &n; * File...........: linux/drivers/s390/block/dasd_diag.c&n; * Author(s)......: Holger Smolinski &lt;Holger.Smolinski@de.ibm.com&gt;&n; * Based on.......: linux/drivers/s390/block/mdisk.c&n; * ...............: by Hartmunt Penner &lt;hpenner@de.ibm.com&gt;&n; * Bugreports.to..: &lt;Linux390@de.ibm.com&gt;&n; * (C) IBM Corporation, IBM Deutschland Entwicklung GmbH, 1999,2000&n; *&n; * $Revision: 1.28 $&n; *&n; * History of changes&n; * 07/13/00 Added fixup sections for diagnoses ans saved some registers&n; * 07/14/00 fixed constraints in newly generated inline asm&n; * 10/05/00 adapted to &squot;new&squot; DASD driver&n; *&t;    fixed return codes of dia250()&n; *&t;    fixed partition handling and HDIO_GETGEO&n; * 2002/01/04 Created 2.4-2.5 compatibility mode&n; * 05/04/02 code restructuring.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/stddef.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -212,7 +212,11 @@ id|diag_init_io_t
 suffix:semicolon
 id|iib-&gt;dev_nr
 op_assign
-id|device-&gt;devno
+id|_ccw_device_get_device_number
+c_func
+(paren
+id|device-&gt;cdev
+)paren
 suffix:semicolon
 id|iib-&gt;block_size
 op_assign
@@ -301,7 +305,11 @@ id|diag_init_io_t
 suffix:semicolon
 id|iib-&gt;dev_nr
 op_assign
-id|device-&gt;devno
+id|_ccw_device_get_device_number
+c_func
+(paren
+id|device-&gt;cdev
+)paren
 suffix:semicolon
 id|rc
 op_assign
@@ -371,7 +379,11 @@ r_private
 op_member_access_from_pointer
 id|iob.dev_nr
 op_assign
-id|device-&gt;devno
+id|_ccw_device_get_device_number
+c_func
+(paren
+id|device-&gt;cdev
+)paren
 suffix:semicolon
 r_private
 op_member_access_from_pointer
@@ -938,7 +950,11 @@ id|rdc_data
 suffix:semicolon
 id|rdc_data-&gt;dev_nr
 op_assign
-id|device-&gt;devno
+id|_ccw_device_get_device_number
+c_func
+(paren
+id|device-&gt;cdev
+)paren
 suffix:semicolon
 id|rdc_data-&gt;rdc_len
 op_assign

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * File...........: linux/drivers/s390/block/dasd_proc.c&n; * Author(s)......: Holger Smolinski &lt;Holger.Smolinski@de.ibm.com&gt;&n; *&t;&t;    Horst Hummel &lt;Horst.Hummel@de.ibm.com&gt;&n; *&t;&t;    Carsten Otte &lt;Cotte@de.ibm.com&gt;&n; *&t;&t;    Martin Schwidefsky &lt;schwidefsky@de.ibm.com&gt;&n; * Bugreports.to..: &lt;Linux390@de.ibm.com&gt;&n; * (C) IBM Corporation, IBM Deutschland Entwicklung GmbH, 1999-2002&n; *&n; * /proc interface for the dasd driver.&n; *&n; * $Revision: 1.17 $&n; *&n; * History of changes&n; * 05/04/02 split from dasd.c, code restructuring.&n; */
+multiline_comment|/*&n; * File...........: linux/drivers/s390/block/dasd_proc.c&n; * Author(s)......: Holger Smolinski &lt;Holger.Smolinski@de.ibm.com&gt;&n; *&t;&t;    Horst Hummel &lt;Horst.Hummel@de.ibm.com&gt;&n; *&t;&t;    Carsten Otte &lt;Cotte@de.ibm.com&gt;&n; *&t;&t;    Martin Schwidefsky &lt;schwidefsky@de.ibm.com&gt;&n; * Bugreports.to..: &lt;Linux390@de.ibm.com&gt;&n; * (C) IBM Corporation, IBM Deutschland Entwicklung GmbH, 1999-2002&n; *&n; * /proc interface for the dasd driver.&n; *&n; * $Revision: 1.18 $&n; *&n; * History of changes&n; * 05/04/02 split from dasd.c, code restructuring.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/ctype.h&gt;
@@ -166,10 +166,6 @@ op_star
 id|v
 )paren
 (brace
-id|dasd_devmap_t
-op_star
-id|devmap
-suffix:semicolon
 id|dasd_device_t
 op_star
 id|device
@@ -178,9 +174,9 @@ r_char
 op_star
 id|substr
 suffix:semicolon
-id|devmap
+id|device
 op_assign
-id|dasd_devmap_from_devindex
+id|dasd_device_from_devindex
 c_func
 (paren
 (paren
@@ -190,28 +186,6 @@ r_int
 id|v
 op_minus
 l_int|1
-)paren
-suffix:semicolon
-id|device
-op_assign
-(paren
-id|devmap
-op_ne
-l_int|NULL
-)paren
-ques
-c_cond
-id|dasd_get_device
-c_func
-(paren
-id|devmap
-)paren
-suffix:colon
-id|ERR_PTR
-c_func
-(paren
-op_minus
-id|ENODEV
 )paren
 suffix:semicolon
 r_if
@@ -234,7 +208,11 @@ id|m
 comma
 l_string|&quot;%04x&quot;
 comma
-id|devmap-&gt;devno
+id|_ccw_device_get_device_number
+c_func
+(paren
+id|device-&gt;cdev
+)paren
 )paren
 suffix:semicolon
 multiline_comment|/* Print discipline string. */
@@ -469,7 +447,7 @@ suffix:semicolon
 id|dasd_put_device
 c_func
 (paren
-id|devmap
+id|device
 )paren
 suffix:semicolon
 r_if

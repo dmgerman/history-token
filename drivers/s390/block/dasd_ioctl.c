@@ -1,6 +1,5 @@
 multiline_comment|/*&n; * File...........: linux/drivers/s390/block/dasd_ioctl.c&n; * Author(s)......: Holger Smolinski &lt;Holger.Smolinski@de.ibm.com&gt;&n; *&t;&t;    Horst Hummel &lt;Horst.Hummel@de.ibm.com&gt;&n; *&t;&t;    Carsten Otte &lt;Cotte@de.ibm.com&gt;&n; *&t;&t;    Martin Schwidefsky &lt;schwidefsky@de.ibm.com&gt;&n; * Bugreports.to..: &lt;Linux390@de.ibm.com&gt;&n; * (C) IBM Corporation, IBM Deutschland Entwicklung GmbH, 1999-2001&n; *&n; * i/o controls for the dasd driver.&n; *&n; * 05/04/02 split from dasd.c, code restructuring.&n; */
 macro_line|#include &lt;linux/config.h&gt;
-macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/major.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
@@ -1317,7 +1316,11 @@ id|device-&gt;cdev
 suffix:semicolon
 id|dasd_info-&gt;devno
 op_assign
-id|device-&gt;devno
+id|_ccw_device_get_device_number
+c_func
+(paren
+id|device-&gt;cdev
+)paren
 suffix:semicolon
 id|dasd_info-&gt;schid
 op_assign

@@ -1,4 +1,4 @@
-multiline_comment|/* &n; * File...........: linux/drivers/s390/block/dasd_fba.c&n; * Author(s)......: Holger Smolinski &lt;Holger.Smolinski@de.ibm.com&gt;&n; * Bugreports.to..: &lt;Linux390@de.ibm.com&gt;&n; * (C) IBM Corporation, IBM Deutschland Entwicklung GmbH, 1999,2000&n; *&n; * $Revision: 1.25 $&n; *&n; * History of changes&n; *&t;    fixed partition handling and HDIO_GETGEO&n; * 2002/01/04 Created 2.4-2.5 compatibility mode&n; * 05/04/02 code restructuring.&n; */
+multiline_comment|/* &n; * File...........: linux/drivers/s390/block/dasd_fba.c&n; * Author(s)......: Holger Smolinski &lt;Holger.Smolinski@de.ibm.com&gt;&n; * Bugreports.to..: &lt;Linux390@de.ibm.com&gt;&n; * (C) IBM Corporation, IBM Deutschland Entwicklung GmbH, 1999,2000&n; *&n; * $Revision: 1.27 $&n; *&n; * History of changes&n; *&t;    fixed partition handling and HDIO_GETGEO&n; * 2002/01/04 Created 2.4-2.5 compatibility mode&n; * 05/04/02 code restructuring.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/stddef.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -1827,6 +1827,9 @@ c_func
 r_void
 )paren
 (brace
+r_int
+id|ret
+suffix:semicolon
 id|ASCEBC
 c_func
 (paren
@@ -1835,13 +1838,32 @@ comma
 l_int|4
 )paren
 suffix:semicolon
-r_return
+id|ret
+op_assign
 id|ccw_driver_register
 c_func
 (paren
 op_amp
 id|dasd_fba_driver
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ret
+)paren
+r_return
+id|ret
+suffix:semicolon
+id|dasd_generic_auto_online
+c_func
+(paren
+op_amp
+id|dasd_fba_driver
+)paren
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 )brace
 r_static
