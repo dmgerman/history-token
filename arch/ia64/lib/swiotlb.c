@@ -1860,6 +1860,18 @@ id|dir
 )paren
 suffix:semicolon
 )brace
+r_int
+DECL|function|swiotlb_dma_mapping_error
+id|swiotlb_dma_mapping_error
+(paren
+id|dma_addr_t
+id|dma_addr
+)paren
+(brace
+r_return
+l_int|0
+suffix:semicolon
+)brace
 multiline_comment|/*&n; * Return whether the given PCI device DMA address mask can be supported properly.  For&n; * example, if your device can only drive the low 24-bits during PCI bus mastering, then&n; * you would pass 0x00ffffff as the mask to this function.&n; */
 r_int
 DECL|function|swiotlb_dma_supported
@@ -1939,6 +1951,13 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|swiotlb_sync_sg_for_device
+)paren
+suffix:semicolon
+DECL|variable|swiotlb_dma_mapping_error
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|swiotlb_dma_mapping_error
 )paren
 suffix:semicolon
 DECL|variable|swiotlb_alloc_coherent
