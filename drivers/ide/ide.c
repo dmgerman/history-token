@@ -2328,13 +2328,9 @@ id|hwif-&gt;dma_setup
 op_assign
 id|tmp_hwif-&gt;dma_setup
 suffix:semicolon
-id|hwif-&gt;ide_dma_read
+id|hwif-&gt;dma_exec_cmd
 op_assign
-id|tmp_hwif-&gt;ide_dma_read
-suffix:semicolon
-id|hwif-&gt;ide_dma_write
-op_assign
-id|tmp_hwif-&gt;ide_dma_write
+id|tmp_hwif-&gt;dma_exec_cmd
 suffix:semicolon
 id|hwif-&gt;ide_dma_begin
 op_assign
