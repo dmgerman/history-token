@@ -34,6 +34,7 @@ macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/arch_hooks.h&gt;
 macro_line|#include &lt;linux/irq.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &quot;mach_traps.h&quot;
 id|asmlinkage
 r_int
 id|system_call
@@ -96,6 +97,13 @@ comma
 l_int|0
 )brace
 )brace
+suffix:semicolon
+multiline_comment|/* Do we ignore FPU interrupts ? */
+DECL|variable|ignore_fpu_irq
+r_char
+id|ignore_fpu_irq
+op_assign
+l_int|0
 suffix:semicolon
 multiline_comment|/*&n; * The IDT has to be page-aligned to simplify the Pentium&n; * F0 0F bug workaround.. We have a special link segment&n; * for this.&n; */
 DECL|variable|idt_table
@@ -1696,22 +1704,10 @@ l_string|&quot;You probably have a hardware problem with your RAM chips&bslash;n
 )paren
 suffix:semicolon
 multiline_comment|/* Clear and disable the memory parity error line. */
-id|reason
-op_assign
-(paren
-id|reason
-op_amp
-l_int|0xf
-)paren
-op_or
-l_int|4
-suffix:semicolon
-id|outb
+id|clear_mem_error
 c_func
 (paren
 id|reason
-comma
-l_int|0x61
 )paren
 suffix:semicolon
 )brace
@@ -1871,10 +1867,9 @@ r_int
 r_char
 id|reason
 op_assign
-id|inb
+id|get_nmi_reason
 c_func
 (paren
-l_int|0x61
 )paren
 suffix:semicolon
 r_if
@@ -1948,36 +1943,11 @@ id|regs
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Reassert NMI in case it became active meanwhile&n;&t; * as it&squot;s edge-triggered.&n;&t; */
-id|outb
+id|reassert_nmi
 c_func
 (paren
-l_int|0x8f
-comma
-l_int|0x70
 )paren
 suffix:semicolon
-id|inb
-c_func
-(paren
-l_int|0x71
-)paren
-suffix:semicolon
-multiline_comment|/* dummy */
-id|outb
-c_func
-(paren
-l_int|0x0f
-comma
-l_int|0x70
-)paren
-suffix:semicolon
-id|inb
-c_func
-(paren
-l_int|0x71
-)paren
-suffix:semicolon
-multiline_comment|/* dummy */
 )brace
 DECL|function|dummy_nmi_callback
 r_static
@@ -2549,7 +2519,7 @@ r_int
 id|error_code
 )paren
 (brace
-id|ignore_irq13
+id|ignore_fpu_irq
 op_assign
 l_int|1
 suffix:semicolon
@@ -2747,7 +2717,7 @@ id|cpu_has_xmm
 )paren
 (brace
 multiline_comment|/* Handle SIMD FPU exceptions on PIII+ processors. */
-id|ignore_irq13
+id|ignore_fpu_irq
 op_assign
 l_int|1
 suffix:semicolon
