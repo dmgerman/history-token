@@ -5,40 +5,6 @@ macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/times.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &quot;br_private.h&quot;
-multiline_comment|/* Report time remaining in user HZ  */
-DECL|function|timer_residue
-r_static
-r_int
-r_int
-id|timer_residue
-c_func
-(paren
-r_const
-r_struct
-id|timer_list
-op_star
-id|timer
-)paren
-(brace
-r_return
-id|timer_pending
-c_func
-(paren
-id|timer
-)paren
-ques
-c_cond
-id|jiffies_to_clock_t
-c_func
-(paren
-id|timer-&gt;expires
-op_minus
-id|jiffies
-)paren
-suffix:colon
-l_int|0
-suffix:semicolon
-)brace
 multiline_comment|/* called with RTNL */
 DECL|function|get_bridge_ifindices
 r_static
@@ -585,7 +551,7 @@ id|br-&gt;ageing_time
 suffix:semicolon
 id|b.hello_timer_value
 op_assign
-id|timer_residue
+id|br_timer_value
 c_func
 (paren
 op_amp
@@ -594,7 +560,7 @@ id|br-&gt;hello_timer
 suffix:semicolon
 id|b.tcn_timer_value
 op_assign
-id|timer_residue
+id|br_timer_value
 c_func
 (paren
 op_amp
@@ -603,7 +569,7 @@ id|br-&gt;tcn_timer
 suffix:semicolon
 id|b.topology_change_timer_value
 op_assign
-id|timer_residue
+id|br_timer_value
 c_func
 (paren
 op_amp
@@ -612,7 +578,7 @@ id|br-&gt;topology_change_timer
 suffix:semicolon
 id|b.gc_timer_value
 op_assign
-id|timer_residue
+id|br_timer_value
 c_func
 (paren
 op_amp
@@ -1120,7 +1086,7 @@ id|pt-&gt;config_pending
 suffix:semicolon
 id|p.message_age_timer_value
 op_assign
-id|timer_residue
+id|br_timer_value
 c_func
 (paren
 op_amp
@@ -1129,7 +1095,7 @@ id|pt-&gt;message_age_timer
 suffix:semicolon
 id|p.forward_delay_timer_value
 op_assign
-id|timer_residue
+id|br_timer_value
 c_func
 (paren
 op_amp
@@ -1138,7 +1104,7 @@ id|pt-&gt;forward_delay_timer
 suffix:semicolon
 id|p.hold_timer_value
 op_assign
-id|timer_residue
+id|br_timer_value
 c_func
 (paren
 op_amp
