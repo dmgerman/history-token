@@ -4310,8 +4310,6 @@ r_void
 op_star
 )paren
 suffix:semicolon
-DECL|macro|kern_umount
-mdefine_line|#define kern_umount mntput
 r_extern
 r_int
 id|vfs_statfs
