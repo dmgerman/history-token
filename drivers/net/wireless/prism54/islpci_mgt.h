@@ -109,7 +109,7 @@ mdefine_line|#define CARD_DEFAULT_WEP                        0
 DECL|macro|CARD_DEFAULT_FILTER
 mdefine_line|#define CARD_DEFAULT_FILTER                     0
 DECL|macro|CARD_DEFAULT_WDS
-macro_line|# define CARD_DEFAULT_WDS                        0
+mdefine_line|#define CARD_DEFAULT_WDS                        0
 DECL|macro|CARD_DEFAULT_AUTHEN
 mdefine_line|#define&t;CARD_DEFAULT_AUTHEN                     DOT11_AUTH_OS
 DECL|macro|CARD_DEFAULT_DOT1X
@@ -118,6 +118,10 @@ DECL|macro|CARD_DEFAULT_MLME_MODE
 mdefine_line|#define CARD_DEFAULT_MLME_MODE&t;&t;&t;DOT11_MLME_AUTO
 DECL|macro|CARD_DEFAULT_CONFORMANCE
 mdefine_line|#define CARD_DEFAULT_CONFORMANCE                OID_INL_CONFORMANCE_NONE
+DECL|macro|CARD_DEFAULT_PROFILE
+mdefine_line|#define CARD_DEFAULT_PROFILE&t;&t;&t;DOT11_PROFILE_MIXED_G_WIFI
+DECL|macro|CARD_DEFAULT_MAXFRAMEBURST
+mdefine_line|#define CARD_DEFAULT_MAXFRAMEBURST&t;&t;DOT11_MAXFRAMEBURST_MIXED_SAFE
 multiline_comment|/* PIMFOR package definitions */
 DECL|macro|PIMFOR_ETHERTYPE
 mdefine_line|#define PIMFOR_ETHERTYPE                        0x8828

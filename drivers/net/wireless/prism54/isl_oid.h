@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  $Id: isl_oid.h,v 1.2 2004/01/30 16:24:00 ajfa Exp $&n; *  &n; *  Copyright (C) 2003 Herbert Valerio Riedel &lt;hvr@gnu.org&gt;&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; *&n; */
+multiline_comment|/*&n; *  $Id: isl_oid.h,v 1.3 2004/03/09 09:05:27 mcgrof Exp $&n; *  &n; *  Copyright (C) 2003 Herbert Valerio Riedel &lt;hvr@gnu.org&gt;&n; *  Copyright (C) 2004 Luis R. Rodriguez &lt;mcgrof@ruslug.rutgers.edu&gt;&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; *&n; */
 macro_line|#if !defined(_ISL_OID_H)
 DECL|macro|_ISL_OID_H
 mdefine_line|#define _ISL_OID_H
@@ -506,6 +506,180 @@ op_assign
 l_int|1
 )brace
 suffix:semicolon
+multiline_comment|/* Prism &quot;Nitro&quot; / Frameburst / &quot;Packet Frame Grouping&quot;&n; * Value is in microseconds. Represents the # microseconds&n; * the firmware will take to group frames before sending out then out &n; * together with a CSMA contention. Without this all frames are&n; * sent with a CSMA contention. &n; * Bibliography: &n; * http://www.hpl.hp.com/personal/Jean_Tourrilhes/Papers/Packet.Frame.Grouping.html&n; */
+DECL|enum|dot11_maxframeburst_t
+r_enum
+id|dot11_maxframeburst_t
+(brace
+multiline_comment|/* Values for DOT11_OID_MAXFRAMEBURST */
+DECL|enumerator|DOT11_MAXFRAMEBURST_OFF
+id|DOT11_MAXFRAMEBURST_OFF
+op_assign
+l_int|0
+comma
+multiline_comment|/* Card firmware default */
+DECL|enumerator|DOT11_MAXFRAMEBURST_MIXED_SAFE
+id|DOT11_MAXFRAMEBURST_MIXED_SAFE
+op_assign
+l_int|650
+comma
+multiline_comment|/* 802.11 a,b,g safe */
+DECL|enumerator|DOT11_MAXFRAMEBURST_IDEAL
+id|DOT11_MAXFRAMEBURST_IDEAL
+op_assign
+l_int|1300
+comma
+multiline_comment|/* Theoretical ideal level */
+DECL|enumerator|DOT11_MAXFRAMEBURST_MAX
+id|DOT11_MAXFRAMEBURST_MAX
+op_assign
+l_int|5000
+comma
+multiline_comment|/* Use this as max,&n;&t;&t;* Note: firmware allows for greater values. This is a&n;&t;&t;* recommended max. I&squot;ll update this as I find&n;&t;&t;* out what the real MAX is. Also note that you don&squot;t necessarily&n;&t;&t;* get better results with a greater value here.&n;&t;&t;*/
+)brace
+suffix:semicolon
+multiline_comment|/* Support for 802.11 long and short frame preambles.&n; * Long&t; preamble uses 128-bit sync field, 8-bit  CRC&n; * Short preamble uses 56-bit  sync field, 16-bit CRC&n; * &n; * 802.11a -- not sure, both optionally ?&n; * 802.11b supports long and optionally short &n; * 802.11g supports both */
+DECL|enum|dot11_preamblesettings_t
+r_enum
+id|dot11_preamblesettings_t
+(brace
+DECL|enumerator|DOT11_PREAMBLESETTING_LONG
+id|DOT11_PREAMBLESETTING_LONG
+op_assign
+l_int|0
+comma
+multiline_comment|/* Allows *only* long 802.11 preambles */
+DECL|enumerator|DOT11_PREAMBLESETTING_SHORT
+id|DOT11_PREAMBLESETTING_SHORT
+op_assign
+l_int|1
+comma
+multiline_comment|/* Allows *only* short 802.11 preambles */
+DECL|enumerator|DOT11_PREAMBLESETTING_DYNAMIC
+id|DOT11_PREAMBLESETTING_DYNAMIC
+op_assign
+l_int|2
+multiline_comment|/* AutomatiGically set */
+)brace
+suffix:semicolon
+multiline_comment|/* Support for 802.11 slot timing (time between packets).&n; *&n; * Long uses 802.11a slot timing  (9 usec ?)&n; * Short uses 802.11b slot timing (20 use ?) */
+DECL|enum|dot11_slotsettings_t
+r_enum
+id|dot11_slotsettings_t
+(brace
+DECL|enumerator|DOT11_SLOTSETTINGS_LONG
+id|DOT11_SLOTSETTINGS_LONG
+op_assign
+l_int|0
+comma
+multiline_comment|/* Allows *only* long 802.11b slot timing */
+DECL|enumerator|DOT11_SLOTSETTINGS_SHORT
+id|DOT11_SLOTSETTINGS_SHORT
+op_assign
+l_int|1
+comma
+multiline_comment|/* Allows *only* long 802.11a slot timing */
+DECL|enumerator|DOT11_SLOTSETTINGS_DYNAMIC
+id|DOT11_SLOTSETTINGS_DYNAMIC
+op_assign
+l_int|2
+multiline_comment|/* AutomatiGically set */
+)brace
+suffix:semicolon
+multiline_comment|/* All you need to know, ERP is &quot;Extended Rate PHY&quot;.&n; * An Extended Rate PHY (ERP) STA or AP shall support three different &n; * preamble and header formats:&n; * Long  preamble (refer to above)&n; * Short preamble (refer to above)&n; * OFDM  preamble ( ? )&n; *&n; * I&squot;m assuming here Protection tells the AP&n; * to be careful, a STA which cannot handle the long pre-amble&n; * has joined.&n; */
+DECL|enum|do11_nonerpstatus_t
+r_enum
+id|do11_nonerpstatus_t
+(brace
+DECL|enumerator|DOT11_ERPSTAT_NONEPRESENT
+id|DOT11_ERPSTAT_NONEPRESENT
+op_assign
+l_int|0
+comma
+DECL|enumerator|DOT11_ERPSTAT_USEPROTECTION
+id|DOT11_ERPSTAT_USEPROTECTION
+op_assign
+l_int|1
+)brace
+suffix:semicolon
+multiline_comment|/* (ERP is &quot;Extended Rate PHY&quot;) Way to read NONERP is NON-ERP-*&n; * The key here is DOT11 NON ERP NEVER protects against&n; * NON ERP STA&squot;s. You *don&squot;t* want this unless&n; * you know what you are doing. It means you will only &n; * get Extended Rate capabilities */
+DECL|enum|dot11_nonerpprotection_t
+r_enum
+id|dot11_nonerpprotection_t
+(brace
+DECL|enumerator|DOT11_NONERP_NEVER
+id|DOT11_NONERP_NEVER
+op_assign
+l_int|0
+comma
+DECL|enumerator|DOT11_NONERP_ALWAYS
+id|DOT11_NONERP_ALWAYS
+op_assign
+l_int|1
+comma
+DECL|enumerator|DOT11_NONERP_DYNAMIC
+id|DOT11_NONERP_DYNAMIC
+op_assign
+l_int|2
+)brace
+suffix:semicolon
+multiline_comment|/* Preset OID configuration for 802.11 modes &n; * Note: DOT11_OID_CW[MIN|MAX] hold the values of the &n; * DCS MIN|MAX backoff used */
+DECL|enum|dot11_profile_t
+r_enum
+id|dot11_profile_t
+(brace
+multiline_comment|/* And set/allowed values */
+multiline_comment|/* Allowed values for DOT11_OID_PROFILES */
+DECL|enumerator|DOT11_PROFILE_B_ONLY
+id|DOT11_PROFILE_B_ONLY
+op_assign
+l_int|0
+comma
+multiline_comment|/* DOT11_OID_RATES: 1, 2, 5.5, 11Mbps &n;&t;&t; * DOT11_OID_PREAMBLESETTINGS: DOT11_PREAMBLESETTING_DYNAMIC&n;&t;&t; * DOT11_OID_CWMIN: 31&n;&t;&t; * DOT11_OID_NONEPROTECTION: DOT11_NOERP_DYNAMIC&n;&t;&t; * DOT11_OID_SLOTSETTINGS: DOT11_SLOTSETTINGS_LONG&n;&t;&t; */
+DECL|enumerator|DOT11_PROFILE_MIXED_G_WIFI
+id|DOT11_PROFILE_MIXED_G_WIFI
+op_assign
+l_int|1
+comma
+multiline_comment|/* DOT11_OID_RATES: 1, 2, 5.5, 11, 6, 9, 12, 18, 24, 36, 48, 54Mbs&n;&t;&t; * DOT11_OID_PREAMBLESETTINGS: DOT11_PREAMBLESETTING_DYNAMIC&n;&t;&t; * DOT11_OID_CWMIN: 15&n;&t;&t; * DOT11_OID_NONEPROTECTION: DOT11_NOERP_DYNAMIC&n;&t;&t; * DOT11_OID_SLOTSETTINGS: DOT11_SLOTSETTINGS_DYNAMIC&n;&t;&t; */
+DECL|enumerator|DOT11_PROFILE_MIXED_LONG
+id|DOT11_PROFILE_MIXED_LONG
+op_assign
+l_int|2
+comma
+multiline_comment|/* &quot;Long range&quot; */
+multiline_comment|/* Same as Profile MIXED_G_WIFI */
+DECL|enumerator|DOT11_PROFILE_G_ONLY
+id|DOT11_PROFILE_G_ONLY
+op_assign
+l_int|3
+comma
+multiline_comment|/* Same as Profile MIXED_G_WIFI */
+DECL|enumerator|DOT11_PROFILE_TEST
+id|DOT11_PROFILE_TEST
+op_assign
+l_int|4
+comma
+multiline_comment|/* Same as Profile MIXED_G_WIFI except:&n;&t;&t; * DOT11_OID_PREAMBLESETTINGS: DOT11_PREAMBLESETTING_SHORT&n;&t;&t; * DOT11_OID_NONEPROTECTION: DOT11_NOERP_NEVER&n;&t;&t; * DOT11_OID_SLOTSETTINGS: DOT11_SLOTSETTINGS_SHORT&n;&t;&t; */
+DECL|enumerator|DOT11_PROFILE_B_WIFI
+id|DOT11_PROFILE_B_WIFI
+op_assign
+l_int|5
+comma
+multiline_comment|/* Same as Profile B_ONLY */
+DECL|enumerator|DOT11_PROFILE_A_ONLY
+id|DOT11_PROFILE_A_ONLY
+op_assign
+l_int|6
+comma
+multiline_comment|/* Same as Profile MIXED_G_WIFI except:&n;&t;&t; * DOT11_OID_RATES: 6, 9, 12, 18, 24, 36, 48, 54Mbs&n;&t;&t; */
+DECL|enumerator|DOT11_PROFILE_MIXED_SHORT
+id|DOT11_PROFILE_MIXED_SHORT
+op_assign
+l_int|7
+multiline_comment|/* Same as MIXED_G_WIFI */
+)brace
+suffix:semicolon
 multiline_comment|/* The dot11d conformance level configures the 802.11d conformance levels.&n; * The following conformance levels exist:*/
 DECL|enum|oid_inl_conformance_t
 r_enum
@@ -528,7 +702,7 @@ id|OID_INL_CONFORMANCE_FLEXIBLE
 op_assign
 l_int|2
 comma
-multiline_comment|/* Use passed 802.11d info to&n;&t;&t;&t;&t;&t;&t; * determine channel AND/OR just make &n;&t;&t;&t;&t;&t;&t; * assumption that active &n;&t;&t;&t;&t;&t;&t; * channels are valid  channels */
+multiline_comment|/* Use passed 802.11d info to&n;&t;&t;* determine channel AND/OR just make assumption that active &n;&t;&t;* channels are valid  channels */
 )brace
 suffix:semicolon
 DECL|enum|oid_inl_mode_t
@@ -868,9 +1042,11 @@ comma
 DECL|enumerator|DOT11_OID_CWMIN
 id|DOT11_OID_CWMIN
 comma
+multiline_comment|/* MIN DCS backoff */
 DECL|enumerator|DOT11_OID_CWMAX
 id|DOT11_OID_CWMAX
 comma
+multiline_comment|/* MAX DCS backoff */
 DECL|enumerator|DOT11_OID_ACKWINDOW
 id|DOT11_OID_ACKWINDOW
 comma

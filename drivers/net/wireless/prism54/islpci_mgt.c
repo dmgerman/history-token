@@ -3,6 +3,7 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
+macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;linux/if_arp.h&gt;
@@ -18,12 +19,14 @@ id|pc_debug
 op_assign
 id|VERBOSE
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|pc_debug
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 multiline_comment|/******************************************************************************&n;    Driver general functions&n;******************************************************************************/
@@ -251,7 +254,11 @@ id|islpci_private
 op_star
 id|priv
 op_assign
-id|ndev-&gt;priv
+id|netdev_priv
+c_func
+(paren
+id|ndev
+)paren
 suffix:semicolon
 id|isl38xx_control_block
 op_star
@@ -485,7 +492,11 @@ id|islpci_private
 op_star
 id|priv
 op_assign
-id|ndev-&gt;priv
+id|netdev_priv
+c_func
+(paren
+id|ndev
+)paren
 suffix:semicolon
 id|isl38xx_control_block
 op_star
@@ -910,7 +921,11 @@ id|islpci_private
 op_star
 id|priv
 op_assign
-id|ndev-&gt;priv
+id|netdev_priv
+c_func
+(paren
+id|ndev
+)paren
 suffix:semicolon
 id|isl38xx_control_block
 op_star
@@ -1406,7 +1421,11 @@ id|islpci_private
 op_star
 id|priv
 op_assign
-id|ndev-&gt;priv
+id|netdev_priv
+c_func
+(paren
+id|ndev
+)paren
 suffix:semicolon
 id|isl38xx_control_block
 op_star
@@ -1547,7 +1566,11 @@ id|islpci_private
 op_star
 id|priv
 op_assign
-id|ndev-&gt;priv
+id|netdev_priv
+c_func
+(paren
+id|ndev
+)paren
 suffix:semicolon
 r_const
 r_int
