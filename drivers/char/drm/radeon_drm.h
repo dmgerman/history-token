@@ -1391,6 +1391,8 @@ DECL|macro|RADEON_PARAM_SAREA_HANDLE
 mdefine_line|#define RADEON_PARAM_SAREA_HANDLE          9
 DECL|macro|RADEON_PARAM_GART_TEX_HANDLE
 mdefine_line|#define RADEON_PARAM_GART_TEX_HANDLE       10
+DECL|macro|RADEON_PARAM_SCRATCH_OFFSET
+mdefine_line|#define RADEON_PARAM_SCRATCH_OFFSET        11
 DECL|struct|drm_radeon_getparam
 r_typedef
 r_struct
