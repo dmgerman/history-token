@@ -48,8 +48,9 @@ DECL|macro|VIDEO1394_IOC_TALK_CHANNEL
 mdefine_line|#define VIDEO1394_IOC_TALK_CHANNEL&t;&t;&bslash;&n;&t;_IOWR(&squot;#&squot;, 0x14, struct video1394_mmap)
 DECL|macro|VIDEO1394_IOC_UNTALK_CHANNEL
 mdefine_line|#define VIDEO1394_IOC_UNTALK_CHANNEL&t;&t;&bslash;&n;&t;_IOW (&squot;#&squot;, 0x15, int)
+multiline_comment|/*&n; * This one is broken: it really wanted&n; * &quot;sizeof (struct video1394_wait) + sizeof (struct video1394_queue_variable)&quot;&n; * but got just a &quot;size_t&quot;&n; */
 DECL|macro|VIDEO1394_IOC_TALK_QUEUE_BUFFER
-mdefine_line|#define VIDEO1394_IOC_TALK_QUEUE_BUFFER &t;&bslash;&n;&t;_IOW (&squot;#&squot;, 0x16, sizeof (struct video1394_wait) + &bslash;&n;&t;&t;sizeof (struct video1394_queue_variable))
+mdefine_line|#define VIDEO1394_IOC_TALK_QUEUE_BUFFER &t;&bslash;&n;&t;_IOW (&squot;#&squot;, 0x16, size_t)
 DECL|macro|VIDEO1394_IOC_TALK_WAIT_BUFFER
 mdefine_line|#define VIDEO1394_IOC_TALK_WAIT_BUFFER&t;&t;&bslash;&n;&t;_IOW (&squot;#&squot;, 0x17, struct video1394_wait)
 DECL|macro|VIDEO1394_IOC_LISTEN_POLL_BUFFER
