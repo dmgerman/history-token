@@ -575,6 +575,7 @@ c_cond
 op_logical_neg
 id|log-&gt;l_grant_trace
 )paren
+(brace
 id|log-&gt;l_grant_trace
 op_assign
 id|ktrace_alloc
@@ -582,9 +583,18 @@ c_func
 (paren
 l_int|1024
 comma
-id|KM_SLEEP
+id|KM_NOSLEEP
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|log-&gt;l_grant_trace
+)paren
+r_return
+suffix:semicolon
+)brace
 id|ktrace_enter
 c_func
 (paren
