@@ -717,6 +717,7 @@ id|GRC_LCLCTRL_SETINT
 )paren
 suffix:semicolon
 )brace
+macro_line|#if 0
 id|tr32
 c_func
 (paren
@@ -725,6 +726,7 @@ op_plus
 id|TG3_64BIT_REG_LOW
 )paren
 suffix:semicolon
+macro_line|#endif
 )brace
 DECL|function|tg3_switch_clocks
 r_static
