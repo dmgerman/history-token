@@ -3,10 +3,6 @@ DECL|macro|DEBUG_VARIABLE
 mdefine_line|#define DEBUG_VARIABLE debug
 macro_line|#include &lt;media/saa7146_vv.h&gt;
 macro_line|#include &lt;linux/video_decoder.h&gt;&t;/* for saa7111a */
-macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,5,51)
-DECL|macro|KBUILD_MODNAME
-mdefine_line|#define KBUILD_MODNAME dpc7146
-macro_line|#endif
 DECL|macro|I2C_SAA7111A
 mdefine_line|#define I2C_SAA7111A            0x24
 multiline_comment|/* All unused bytes are reserverd. */
@@ -1331,6 +1327,14 @@ l_int|0
 comma
 )brace
 )brace
+suffix:semicolon
+id|MODULE_DEVICE_TABLE
+c_func
+(paren
+id|pci
+comma
+id|pci_tbl
+)paren
 suffix:semicolon
 r_static
 DECL|variable|vv_data

@@ -1,4 +1,6 @@
+macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &quot;dvb_filter.h&quot;
 DECL|variable|bitrates
 r_int
@@ -116,7 +118,7 @@ l_int|0
 )brace
 suffix:semicolon
 DECL|variable|freq
-r_uint32
+id|u32
 id|freq
 (braket
 l_int|4
@@ -207,7 +209,7 @@ l_int|0
 )brace
 suffix:semicolon
 DECL|variable|ac3_freq
-r_uint32
+id|u32
 id|ac3_freq
 (braket
 l_int|4
@@ -224,7 +226,7 @@ l_int|0
 )brace
 suffix:semicolon
 DECL|variable|ac3_frames
-r_uint32
+id|u32
 id|ac3_frames
 (braket
 l_int|3
@@ -665,10 +667,11 @@ r_int
 id|read_picture_header
 c_func
 (paren
-r_uint8
+id|u8
 op_star
 id|headr
 comma
+r_struct
 id|mpg_picture
 op_star
 id|pic
@@ -680,7 +683,7 @@ r_int
 id|pr
 )paren
 (brace
-r_uint8
+id|u8
 id|pct
 suffix:semicolon
 r_if
@@ -925,10 +928,11 @@ r_int
 id|read_gop_header
 c_func
 (paren
-r_uint8
+id|u8
 op_star
 id|headr
 comma
+r_struct
 id|mpg_picture
 op_star
 id|pic
@@ -1156,11 +1160,12 @@ r_int
 id|read_sequence_header
 c_func
 (paren
-r_uint8
+id|u8
 op_star
 id|headr
 comma
-id|VideoInfo
+r_struct
+id|dvb_video_info
 op_star
 id|vi
 comma
@@ -1692,14 +1697,15 @@ r_int
 id|get_vinfo
 c_func
 (paren
-r_uint8
+id|u8
 op_star
 id|mbuf
 comma
 r_int
 id|count
 comma
-id|VideoInfo
+r_struct
+id|dvb_video_info
 op_star
 id|vi
 comma
@@ -1707,7 +1713,7 @@ r_int
 id|pr
 )paren
 (brace
-r_uint8
+id|u8
 op_star
 id|headr
 suffix:semicolon
@@ -1735,7 +1741,7 @@ OL
 id|count
 )paren
 (brace
-r_uint8
+id|u8
 op_star
 id|b
 suffix:semicolon
@@ -1856,14 +1862,15 @@ r_int
 id|get_ainfo
 c_func
 (paren
-r_uint8
+id|u8
 op_star
 id|mbuf
 comma
 r_int
 id|count
 comma
-id|AudioInfo
+r_struct
+id|dvb_audio_info
 op_star
 id|ai
 comma
@@ -1871,7 +1878,7 @@ r_int
 id|pr
 )paren
 (brace
-r_uint8
+id|u8
 op_star
 id|headr
 suffix:semicolon
@@ -1902,7 +1909,7 @@ OL
 id|count
 )paren
 (brace
-r_uint8
+id|u8
 id|b
 (braket
 l_int|2
@@ -2142,14 +2149,15 @@ r_int
 id|dvb_filter_get_ac3info
 c_func
 (paren
-r_uint8
+id|u8
 op_star
 id|mbuf
 comma
 r_int
 id|count
 comma
-id|AudioInfo
+r_struct
+id|dvb_audio_info
 op_star
 id|ai
 comma
@@ -2157,7 +2165,7 @@ r_int
 id|pr
 )paren
 (brace
-r_uint8
+id|u8
 op_star
 id|headr
 suffix:semicolon
@@ -2171,7 +2179,7 @@ id|c
 op_assign
 l_int|0
 suffix:semicolon
-r_uint8
+id|u8
 id|frame
 op_assign
 l_int|0
@@ -2192,7 +2200,7 @@ OL
 id|count
 )paren
 (brace
-r_uint8
+id|u8
 op_star
 id|b
 op_assign
@@ -2311,6 +2319,9 @@ c_func
 (paren
 l_string|&quot;  BRate: %d kb/s&quot;
 comma
+(paren
+r_int
+)paren
 id|ai-&gt;bit_rate
 op_div
 l_int|1000
@@ -2360,6 +2371,9 @@ id|printk
 (paren
 l_string|&quot;  Freq: %d Hz&bslash;n&quot;
 comma
+(paren
+r_int
+)paren
 id|ai-&gt;frequency
 )paren
 suffix:semicolon
@@ -2408,6 +2422,9 @@ id|printk
 (paren
 l_string|&quot;  Framesize %d&bslash;n&quot;
 comma
+(paren
+r_int
+)paren
 id|ai-&gt;framesize
 )paren
 suffix:semicolon
@@ -2417,31 +2434,31 @@ suffix:semicolon
 )brace
 macro_line|#if 0
 r_static
-r_uint8
+id|u8
 op_star
 id|skip_pes_header
 c_func
 (paren
-r_uint8
+id|u8
 op_star
 op_star
 id|bufp
 )paren
 (brace
-r_uint8
+id|u8
 op_star
 id|inbuf
 op_assign
 op_star
 id|bufp
 suffix:semicolon
-r_uint8
+id|u8
 op_star
 id|buf
 op_assign
 id|inbuf
 suffix:semicolon
-r_uint8
+id|u8
 op_star
 id|pts
 op_assign
@@ -2651,7 +2668,7 @@ r_void
 id|initialize_quant_matrix
 c_func
 (paren
-r_uint32
+id|u32
 op_star
 id|matrix
 )paren
@@ -2800,6 +2817,7 @@ r_void
 id|initialize_mpg_picture
 c_func
 (paren
+r_struct
 id|mpg_picture
 op_star
 id|pic
@@ -2905,6 +2923,7 @@ c_func
 r_int32
 id|field_type
 comma
+r_struct
 id|mpg_picture
 op_star
 id|pic
@@ -3058,6 +3077,7 @@ r_void
 id|init_mpg_picture
 c_func
 (paren
+r_struct
 id|mpg_picture
 op_star
 id|pic
@@ -3166,7 +3186,8 @@ r_void
 id|dvb_filter_pes2ts_init
 c_func
 (paren
-id|dvb_filter_pes2ts_t
+r_struct
+id|dvb_filter_pes2ts
 op_star
 id|p2ts
 comma
@@ -3235,7 +3256,8 @@ r_int
 id|dvb_filter_pes2ts
 c_func
 (paren
-id|dvb_filter_pes2ts_t
+r_struct
+id|dvb_filter_pes2ts
 op_star
 id|p2ts
 comma

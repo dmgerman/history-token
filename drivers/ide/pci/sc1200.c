@@ -18,65 +18,6 @@ macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &quot;ide_modes.h&quot;
 macro_line|#include &quot;sc1200.h&quot;
-DECL|macro|DISPLAY_SC1200_TIMINGS
-mdefine_line|#define DISPLAY_SC1200_TIMINGS
-macro_line|#if defined(DISPLAY_SC1200_TIMINGS) &amp;&amp; defined(CONFIG_PROC_FS)
-macro_line|#include &lt;linux/stat.h&gt;
-macro_line|#include &lt;linux/proc_fs.h&gt;
-r_static
-r_int
-id|sc1200_get_info
-c_func
-(paren
-r_char
-op_star
-comma
-r_char
-op_star
-op_star
-comma
-id|off_t
-comma
-r_int
-)paren
-suffix:semicolon
-r_extern
-r_int
-(paren
-op_star
-id|sc1200_display_info
-)paren
-(paren
-r_char
-op_star
-comma
-r_char
-op_star
-op_star
-comma
-id|off_t
-comma
-r_int
-)paren
-suffix:semicolon
-multiline_comment|/* ide-proc.c */
-r_extern
-r_char
-op_star
-id|ide_media_verbose
-c_func
-(paren
-id|ide_drive_t
-op_star
-)paren
-suffix:semicolon
-DECL|variable|sc1200_proc
-r_static
-id|u8
-id|sc1200_proc
-op_assign
-l_int|0
-suffix:semicolon
 DECL|macro|SC1200_REV_A
 mdefine_line|#define SC1200_REV_A&t;0x00
 DECL|macro|SC1200_REV_B1
@@ -182,6 +123,65 @@ r_return
 id|pci_clock
 suffix:semicolon
 )brace
+DECL|macro|DISPLAY_SC1200_TIMINGS
+mdefine_line|#define DISPLAY_SC1200_TIMINGS
+macro_line|#if defined(DISPLAY_SC1200_TIMINGS) &amp;&amp; defined(CONFIG_PROC_FS)
+macro_line|#include &lt;linux/stat.h&gt;
+macro_line|#include &lt;linux/proc_fs.h&gt;
+r_static
+r_int
+id|sc1200_get_info
+c_func
+(paren
+r_char
+op_star
+comma
+r_char
+op_star
+op_star
+comma
+id|off_t
+comma
+r_int
+)paren
+suffix:semicolon
+r_extern
+r_int
+(paren
+op_star
+id|sc1200_display_info
+)paren
+(paren
+r_char
+op_star
+comma
+r_char
+op_star
+op_star
+comma
+id|off_t
+comma
+r_int
+)paren
+suffix:semicolon
+multiline_comment|/* ide-proc.c */
+r_extern
+r_char
+op_star
+id|ide_media_verbose
+c_func
+(paren
+id|ide_drive_t
+op_star
+)paren
+suffix:semicolon
+DECL|variable|sc1200_proc
+r_static
+id|u8
+id|sc1200_proc
+op_assign
+l_int|0
+suffix:semicolon
 DECL|variable|bmide_dev
 r_static
 r_struct

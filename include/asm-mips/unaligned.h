@@ -20,7 +20,7 @@ r_void
 suffix:semicolon
 multiline_comment|/*&n; * Load double unaligned.&n; *&n; * This could have been implemented in plain C like IA64 but egcs 1.0.3a&n; * inflates this to 23 instructions ...&n; */
 DECL|function|__ldq_u
-r_extern
+r_static
 r_inline
 r_int
 r_int
@@ -65,7 +65,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Load word unaligned.&n; */
 DECL|function|__ldl_u
-r_extern
+r_static
 r_inline
 r_int
 r_int
@@ -106,7 +106,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Load halfword unaligned.&n; */
 DECL|function|__ldw_u
-r_extern
+r_static
 r_inline
 r_int
 r_int
@@ -147,7 +147,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Store doubleword ununaligned.&n; */
 DECL|function|__stq_u
-r_extern
+r_static
 r_inline
 r_void
 id|__stq_u
@@ -185,7 +185,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Store long ununaligned.&n; */
 DECL|function|__stl_u
-r_extern
+r_static
 r_inline
 r_void
 id|__stl_u
@@ -221,7 +221,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Store word ununaligned.&n; */
 DECL|function|__stw_u
-r_extern
+r_static
 r_inline
 r_void
 id|__stw_u
@@ -255,10 +255,10 @@ id|__val
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * get_unaligned - get value from possibly mis-aligned location&n; * @ptr: pointer to value&n; *&n; * This macro should be used for accessing values larger in size than &n; * single bytes at locations that are expected to be improperly aligned, &n; * e.g. retrieving a u16 value from a location not u16-aligned.&n; *&n; * Note that unaligned accesses can be very expensive on some architectures.&n; */
+multiline_comment|/*&n; * get_unaligned - get value from possibly mis-aligned location&n; * @ptr: pointer to value&n; *&n; * This macro should be used for accessing values larger in size than&n; * single bytes at locations that are expected to be improperly aligned,&n; * e.g. retrieving a u16 value from a location not u16-aligned.&n; *&n; * Note that unaligned accesses can be very expensive on some architectures.&n; */
 DECL|macro|get_unaligned
 mdefine_line|#define get_unaligned(ptr)&t;&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__typeof__(*(ptr)) __val;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;switch (sizeof(*(ptr))) {&t;&t;&t;&t;&t;&bslash;&n;&t;case 1:&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__val = *(const unsigned char *)ptr;&t;&t;&t;&bslash;&n;&t;&t;break;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;case 2:&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__val = __ldw_u((const unsigned short *)ptr);&t;&t;&bslash;&n;&t;&t;break;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;case 4:&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__val = __ldl_u((const unsigned int *)ptr);&t;&t;&bslash;&n;&t;&t;break;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;case 8:&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__val = __ldq_u((const unsigned long long *)ptr);&t;&bslash;&n;&t;&t;break;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;default:&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__get_unaligned_bad_length();&t;&t;&t;&t;&bslash;&n;&t;&t;break;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__val;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
-multiline_comment|/*&n; * put_unaligned - put value to a possibly mis-aligned location&n; * @val: value to place&n; * @ptr: pointer to location&n; *&n; * This macro should be used for placing values larger in size than &n; * single bytes at locations that are expected to be improperly aligned, &n; * e.g. writing a u16 value to a location not u16-aligned.&n; *&n; * Note that unaligned accesses can be very expensive on some architectures.&n; */
+multiline_comment|/*&n; * put_unaligned - put value to a possibly mis-aligned location&n; * @val: value to place&n; * @ptr: pointer to location&n; *&n; * This macro should be used for placing values larger in size than&n; * single bytes at locations that are expected to be improperly aligned,&n; * e.g. writing a u16 value to a location not u16-aligned.&n; *&n; * Note that unaligned accesses can be very expensive on some architectures.&n; */
 DECL|macro|put_unaligned
 mdefine_line|#define put_unaligned(val,ptr)&t;&t;&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;switch (sizeof(*(ptr))) {&t;&t;&t;&t;&t;&bslash;&n;&t;case 1:&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;*(unsigned char *)(ptr) = (val);&t;&t;&t;&bslash;&n;&t;&t;break;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;case 2:&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__stw_u(val, (unsigned short *)(ptr));&t;&t;&t;&bslash;&n;&t;&t;break;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;case 4:&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__stl_u(val, (unsigned int *)(ptr));&t;&t;&t;&bslash;&n;&t;&t;break;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;case 8:&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__stq_u(val, (unsigned long long *)(ptr));&t;&t;&bslash;&n;&t;&t;break;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;default:&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__put_unaligned_bad_length();&t;&t;&t;&t;&bslash;&n;&t;&t;break;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;} while(0)
 macro_line|#endif /* _ASM_UNALIGNED_H */

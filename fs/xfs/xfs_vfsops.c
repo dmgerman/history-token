@@ -2123,6 +2123,8 @@ id|error
 )paren
 suffix:semicolon
 )brace
+DECL|macro|REMOUNT_READONLY_FLAGS
+mdefine_line|#define REMOUNT_READONLY_FLAGS&t;(SYNC_REMOUNT|SYNC_ATTR|SYNC_WAIT)
 id|STATIC
 r_int
 DECL|function|xfs_mntupdate
@@ -2248,9 +2250,7 @@ c_func
 (paren
 id|vfsp
 comma
-id|SYNC_ATTR
-op_or
-id|SYNC_WAIT
+id|REMOUNT_READONLY_FLAGS
 comma
 l_int|NULL
 comma
@@ -4708,6 +4708,13 @@ multiline_comment|/*&n;&t; * Now check to see if the log needs a &quot;dummy&quo
 r_if
 c_cond
 (paren
+op_logical_neg
+(paren
+id|flags
+op_amp
+id|SYNC_REMOUNT
+)paren
+op_logical_and
 id|xfs_log_need_covered
 c_func
 (paren
@@ -5300,7 +5307,6 @@ id|MNTOPT_LOGBUFS
 )paren
 suffix:semicolon
 r_return
-op_minus
 id|EINVAL
 suffix:semicolon
 )brace
@@ -5359,7 +5365,6 @@ id|MNTOPT_LOGBSIZE
 )paren
 suffix:semicolon
 r_return
-op_minus
 id|EINVAL
 suffix:semicolon
 )brace
@@ -5460,7 +5465,6 @@ id|MNTOPT_LOGDEV
 )paren
 suffix:semicolon
 r_return
-op_minus
 id|EINVAL
 suffix:semicolon
 )brace
@@ -5509,7 +5513,6 @@ id|MNTOPT_MTPT
 )paren
 suffix:semicolon
 r_return
-op_minus
 id|EINVAL
 suffix:semicolon
 )brace
@@ -5558,7 +5561,6 @@ id|MNTOPT_RTDEV
 )paren
 suffix:semicolon
 r_return
-op_minus
 id|EINVAL
 suffix:semicolon
 )brace
@@ -5607,7 +5609,6 @@ id|MNTOPT_BIOSIZE
 )paren
 suffix:semicolon
 r_return
-op_minus
 id|EINVAL
 suffix:semicolon
 )brace
@@ -5721,7 +5722,6 @@ id|MNTOPT_INO64
 )paren
 suffix:semicolon
 r_return
-op_minus
 id|EINVAL
 suffix:semicolon
 macro_line|#endif
@@ -5779,7 +5779,6 @@ id|MNTOPT_SUNIT
 )paren
 suffix:semicolon
 r_return
-op_minus
 id|EINVAL
 suffix:semicolon
 )brace
@@ -5831,7 +5830,6 @@ id|MNTOPT_SWIDTH
 )paren
 suffix:semicolon
 r_return
-op_minus
 id|EINVAL
 suffix:semicolon
 )brace
@@ -5941,7 +5939,6 @@ id|this_char
 )paren
 suffix:semicolon
 r_return
-op_minus
 id|EINVAL
 suffix:semicolon
 )brace
@@ -5973,7 +5970,6 @@ l_string|&quot;XFS: no-recovery mounts must be read-only.&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
-op_minus
 id|EINVAL
 suffix:semicolon
 )brace
@@ -6001,7 +5997,6 @@ l_string|&quot;XFS: sunit and swidth options incompatible with the noalign optio
 )paren
 suffix:semicolon
 r_return
-op_minus
 id|EINVAL
 suffix:semicolon
 )brace
@@ -6030,7 +6025,6 @@ l_string|&quot;XFS: sunit and swidth must be specified together&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
-op_minus
 id|EINVAL
 suffix:semicolon
 )brace
@@ -6059,7 +6053,6 @@ id|dsunit
 )paren
 suffix:semicolon
 r_return
-op_minus
 id|EINVAL
 suffix:semicolon
 )brace

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Carsten Langgaard, carstenl@mips.com&n; * Copyright (C) 1999,2000 MIPS Technologies, Inc.  All rights reserved.&n; *&n; * ########################################################################&n; *&n; *  This program is free software; you can distribute it and/or modify it&n; *  under the terms of the GNU General Public License (Version 2) as&n; *  published by the Free Software Foundation.&n; *&n; *  This program is distributed in the hope it will be useful, but WITHOUT&n; *  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or&n; *  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License&n; *  for more details.&n; *&n; *  You should have received a copy of the GNU General Public License along&n; *  with this program; if not, write to the Free Software Foundation, Inc.,&n; *  59 Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * ########################################################################&n; *&n; * PROM library functions for acquiring/using memory descriptors given to &n; * us from the YAMON.&n; * &n; */
+multiline_comment|/*&n; * Carsten Langgaard, carstenl@mips.com&n; * Copyright (C) 1999,2000 MIPS Technologies, Inc.  All rights reserved.&n; *&n; *  This program is free software; you can distribute it and/or modify it&n; *  under the terms of the GNU General Public License (Version 2) as&n; *  published by the Free Software Foundation.&n; *&n; *  This program is distributed in the hope it will be useful, but WITHOUT&n; *  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or&n; *  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License&n; *  for more details.&n; *&n; *  You should have received a copy of the GNU General Public License along&n; *  with this program; if not, write to the Free Software Foundation, Inc.,&n; *  59 Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * PROM library functions for acquiring/using memory descriptors given to&n; * us from the YAMON.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
@@ -195,7 +195,7 @@ op_assign
 l_int|0x000ef000
 suffix:semicolon
 macro_line|#if (CONFIG_MIPS_MALTA)
-multiline_comment|/* &n;&t; * The area 0x000f0000-0x000fffff is allocated for BIOS memory by the&n;&t; * south bridge and PCI access always forwarded to the ISA Bus and &n;&t; * BIOSCS# is always generated.&n;&t; * This mean that this area can&squot;t be used as DMA memory for PCI &n;&t; * devices.&n;&t; */
+multiline_comment|/*&n;&t; * The area 0x000f0000-0x000fffff is allocated for BIOS memory by the&n;&t; * south bridge and PCI access always forwarded to the ISA Bus and&n;&t; * BIOSCS# is always generated.&n;&t; * This mean that this area can&squot;t be used as DMA memory for PCI&n;&t; * devices.&n;&t; */
 id|mdesc
 (braket
 l_int|2
@@ -612,6 +612,10 @@ suffix:semicolon
 id|free_page
 c_func
 (paren
+(paren
+r_int
+r_int
+)paren
 id|__va
 c_func
 (paren

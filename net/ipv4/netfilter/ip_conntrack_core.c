@@ -549,6 +549,7 @@ comma
 id|atomic_read
 c_func
 (paren
+op_amp
 id|exp-&gt;use
 )paren
 )paren
@@ -559,6 +560,7 @@ c_func
 id|atomic_read
 c_func
 (paren
+op_amp
 id|exp-&gt;use
 )paren
 )paren
@@ -888,27 +890,17 @@ comma
 id|ct
 )paren
 suffix:semicolon
-r_for
-c_loop
+id|list_for_each_safe
+c_func
 (paren
 id|exp_entry
-op_assign
-id|ct-&gt;sibling_list.next
-suffix:semicolon
-id|exp_entry
-op_ne
+comma
+id|next
+comma
 op_amp
 id|ct-&gt;sibling_list
-suffix:semicolon
-id|exp_entry
-op_assign
-id|next
 )paren
 (brace
-id|next
-op_assign
-id|exp_entry-&gt;next
-suffix:semicolon
 id|exp
 op_assign
 id|list_entry
@@ -1126,27 +1118,6 @@ id|ct-&gt;timeout
 )paren
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|ct-&gt;master
-op_logical_and
-id|master_ct
-c_func
-(paren
-id|ct
-)paren
-)paren
-id|ip_conntrack_put
-c_func
-(paren
-id|master_ct
-c_func
-(paren
-id|ct
-)paren
-)paren
-suffix:semicolon
 multiline_comment|/* To make sure we don&squot;t get any weird locking issues here:&n;&t; * destroy_conntrack() MUST NOT be called with a write lock&n;&t; * to ip_conntrack_lock!!! -HW */
 id|proto
 op_assign
@@ -1209,7 +1180,13 @@ c_cond
 id|ct-&gt;master
 )paren
 (brace
-multiline_comment|/* can&squot;t call __unexpect_related here,&n;&t;&t; * since it would screw up expect_list */
+r_if
+c_cond
+(paren
+id|ct-&gt;master-&gt;expectant
+)paren
+(brace
+multiline_comment|/* can&squot;t call __unexpect_related here,&n;&t;&t;&t; * since it would screw up expect_list */
 id|list_del
 c_func
 (paren
@@ -1217,6 +1194,13 @@ op_amp
 id|ct-&gt;master-&gt;expected_list
 )paren
 suffix:semicolon
+id|ip_conntrack_put
+c_func
+(paren
+id|ct-&gt;master-&gt;expectant
+)paren
+suffix:semicolon
+)brace
 id|kfree
 c_func
 (paren
@@ -2279,7 +2263,7 @@ id|ip_conntrack_lock
 suffix:semicolon
 id|h
 op_assign
-id|LIST_FIND
+id|LIST_FIND_B
 c_func
 (paren
 id|chain
@@ -2780,16 +2764,6 @@ op_amp
 id|conntrack-&gt;sibling_list
 )paren
 suffix:semicolon
-multiline_comment|/* Mark clearly that it&squot;s not in the hash table. */
-id|conntrack-&gt;tuplehash
-(braket
-id|IP_CT_DIR_ORIGINAL
-)braket
-dot
-id|list.next
-op_assign
-l_int|NULL
-suffix:semicolon
 id|WRITE_LOCK
 c_func
 (paren
@@ -2829,6 +2803,23 @@ op_amp
 id|ip_conntrack_expect_tuple_lock
 )paren
 suffix:semicolon
+multiline_comment|/* If master is not in hash table yet (ie. packet hasn&squot;t left&n;&t;   this machine yet), how can other end know about expected?&n;&t;   Hence these are not the droids you are looking for (if&n;&t;   master ct never got confirmed, we&squot;d hold a reference to it&n;&t;   and weird things would happen to future packets). */
+r_if
+c_cond
+(paren
+id|expected
+op_logical_and
+op_logical_neg
+id|is_confirmed
+c_func
+(paren
+id|expected-&gt;expectant
+)paren
+)paren
+id|expected
+op_assign
+l_int|NULL
+suffix:semicolon
 multiline_comment|/* Look up the conntrack helper for master connections only */
 r_if
 c_cond
@@ -2865,17 +2856,10 @@ id|expected
 op_assign
 l_int|NULL
 suffix:semicolon
-multiline_comment|/* If master is not in hash table yet (ie. packet hasn&squot;t left&n;&t;   this machine yet), how can other end know about expected?&n;&t;   Hence these are not the droids you are looking for (if&n;&t;   master ct never got confirmed, we&squot;d hold a reference to it&n;&t;   and weird things would happen to future packets). */
 r_if
 c_cond
 (paren
 id|expected
-op_logical_and
-id|is_confirmed
-c_func
-(paren
-id|expected-&gt;expectant
-)paren
 )paren
 (brace
 id|DEBUGP
@@ -4427,7 +4411,6 @@ op_minus
 id|ENOMEM
 suffix:semicolon
 )brace
-multiline_comment|/* Zero out the new structure, then fill out it with the data */
 id|DEBUGP
 c_func
 (paren
@@ -4436,38 +4419,6 @@ comma
 r_new
 comma
 id|related_to
-)paren
-suffix:semicolon
-id|memset
-c_func
-(paren
-r_new
-comma
-l_int|0
-comma
-r_sizeof
-(paren
-op_star
-id|expect
-)paren
-)paren
-suffix:semicolon
-id|INIT_LIST_HEAD
-c_func
-(paren
-op_amp
-r_new
-op_member_access_from_pointer
-id|list
-)paren
-suffix:semicolon
-id|INIT_LIST_HEAD
-c_func
-(paren
-op_amp
-r_new
-op_member_access_from_pointer
-id|expected_list
 )paren
 suffix:semicolon
 id|memcpy
@@ -4496,14 +4447,15 @@ id|sibling
 op_assign
 l_int|NULL
 suffix:semicolon
-multiline_comment|/* increase usage count. This sucks. The memset above overwrites&n;&t; * old usage count [if still present] and we increase to one.  Only&n;&t; * works because everything is done under ip_conntrack_lock() */
-id|atomic_inc
+id|atomic_set
 c_func
 (paren
 op_amp
 r_new
 op_member_access_from_pointer
 id|use
+comma
+l_int|1
 )paren
 suffix:semicolon
 multiline_comment|/* add to expected list for this connection */
@@ -5678,7 +5630,12 @@ op_assign
 id|inet-&gt;rcv_saddr
 comma
 (brace
+dot
+id|tcp
+op_assign
+(brace
 id|inet-&gt;sport
+)brace
 )brace
 )brace
 comma
@@ -5686,7 +5643,12 @@ comma
 id|inet-&gt;daddr
 comma
 (brace
+dot
+id|tcp
+op_assign
+(brace
 id|inet-&gt;dport
+)brace
 )brace
 comma
 id|IPPROTO_TCP
@@ -6481,6 +6443,7 @@ suffix:semicolon
 r_return
 id|ret
 suffix:semicolon
+macro_line|#ifdef CONFIG_SYSCTL
 id|err_free_ct_cachep
 suffix:colon
 id|kmem_cache_destroy
@@ -6489,6 +6452,7 @@ c_func
 id|ip_conntrack_cachep
 )paren
 suffix:semicolon
+macro_line|#endif /*CONFIG_SYSCTL*/
 id|err_free_hash
 suffix:colon
 id|vfree

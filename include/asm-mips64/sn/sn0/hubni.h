@@ -2,7 +2,7 @@ multiline_comment|/*&n; * This file is subject to the terms and conditions of th
 macro_line|#ifndef _ASM_SGI_SN0_HUBNI_H
 DECL|macro|_ASM_SGI_SN0_HUBNI_H
 mdefine_line|#define _ASM_SGI_SN0_HUBNI_H
-macro_line|#ifdef _LANGUAGE_C
+macro_line|#ifndef __ASSEMBLY__
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#endif
 multiline_comment|/*&n; * Hub Network Interface registers&n; *&n; * All registers in this file are subject to change until Hub chip tapeout.&n; */
@@ -295,7 +295,7 @@ mdefine_line|#define NMT_EXIT_PORT_MASK (UINT64_CAST 0xf)
 multiline_comment|/* NI_LOCAL_TABLE mask and shift definitions */
 DECL|macro|NLT_EXIT_PORT_MASK
 mdefine_line|#define NLT_EXIT_PORT_MASK (UINT64_CAST 0xf)
-macro_line|#ifdef _LANGUAGE_C
+macro_line|#ifndef __ASSEMBLY__
 DECL|union|hubni_port_error_u
 r_typedef
 r_union
@@ -394,6 +394,6 @@ DECL|macro|NI_LLP_CB_MAX
 mdefine_line|#define NI_LLP_CB_MAX&t;&t;0xff
 DECL|macro|NI_LLP_SN_MAX
 mdefine_line|#define NI_LLP_SN_MAX&t;&t;0xff
-macro_line|#endif /* LANGUAGE_C */
+macro_line|#endif /* !__ASSEMBLY__ */
 macro_line|#endif /* _ASM_SGI_SN0_HUBNI_H */
 eof

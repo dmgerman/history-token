@@ -2,14 +2,10 @@ multiline_comment|/* demux.h &n; *&n; * Copyright (c) 2002 Convergence GmbH&n; *
 macro_line|#ifndef __DEMUX_H 
 DECL|macro|__DEMUX_H
 mdefine_line|#define __DEMUX_H 
-macro_line|#ifndef __KERNEL__ 
-DECL|macro|__KERNEL__
-mdefine_line|#define __KERNEL__ 
-macro_line|#endif 
 macro_line|#include &lt;linux/types.h&gt;
+macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/list.h&gt; 
 macro_line|#include &lt;linux/time.h&gt; 
-macro_line|#include &lt;linux/errno.h&gt;
 multiline_comment|/*--------------------------------------------------------------------------*/
 multiline_comment|/* Common definitions */
 multiline_comment|/*--------------------------------------------------------------------------*/
@@ -18,9 +14,10 @@ macro_line|#ifndef DMX_MAX_FILTER_SIZE
 DECL|macro|DMX_MAX_FILTER_SIZE
 mdefine_line|#define DMX_MAX_FILTER_SIZE 18
 macro_line|#endif 
-multiline_comment|/*&n; * dmx_success_t: Success codes for the Demux Callback API. &n; */
-r_typedef
+multiline_comment|/*&n; * enum dmx_success: Success codes for the Demux Callback API. &n; */
+DECL|enum|dmx_success
 r_enum
+id|dmx_success
 (brace
 DECL|enumerator|DMX_OK
 id|DMX_OK
@@ -51,9 +48,7 @@ multiline_comment|/* Receiver FIFO overrun */
 DECL|enumerator|DMX_MISSED_ERROR
 id|DMX_MISSED_ERROR
 multiline_comment|/* Receiver missed packet */
-DECL|typedef|dmx_success_t
 )brace
-id|dmx_success_t
 suffix:semicolon
 multiline_comment|/*--------------------------------------------------------------------------*/
 multiline_comment|/* TS packet reception */
@@ -67,8 +62,9 @@ DECL|macro|TS_DECODER
 mdefine_line|#define TS_DECODER      4   /* send stream to built-in decoder (if present) */
 multiline_comment|/* PES type for filters which write to built-in decoder */
 multiline_comment|/* these should be kept identical to the types in dmx.h */
-r_typedef
+DECL|enum|dmx_ts_pes
 r_enum
+id|dmx_ts_pes
 (brace
 multiline_comment|/* also send packets to decoder (if it exists) */
 DECL|enumerator|DMX_TS_PES_AUDIO0
@@ -133,9 +129,7 @@ id|DMX_TS_PES_PCR3
 comma
 DECL|enumerator|DMX_TS_PES_OTHER
 id|DMX_TS_PES_OTHER
-DECL|typedef|dmx_ts_pes_t
 )brace
-id|dmx_ts_pes_t
 suffix:semicolon
 DECL|macro|DMX_TS_PES_AUDIO
 mdefine_line|#define DMX_TS_PES_AUDIO    DMX_TS_PES_AUDIO0
@@ -147,9 +141,9 @@ DECL|macro|DMX_TS_PES_SUBTITLE
 mdefine_line|#define DMX_TS_PES_SUBTITLE DMX_TS_PES_SUBTITLE0
 DECL|macro|DMX_TS_PES_PCR
 mdefine_line|#define DMX_TS_PES_PCR      DMX_TS_PES_PCR0
-DECL|struct|dmx_ts_feed_s
+DECL|struct|dmx_ts_feed
 r_struct
-id|dmx_ts_feed_s
+id|dmx_ts_feed
 (brace
 DECL|member|is_filtering
 r_int
@@ -158,7 +152,7 @@ suffix:semicolon
 multiline_comment|/* Set to non-zero when filtering in progress */
 DECL|member|parent
 r_struct
-id|dmx_demux_s
+id|dmx_demux
 op_star
 id|parent
 suffix:semicolon
@@ -177,17 +171,18 @@ id|set
 )paren
 (paren
 r_struct
-id|dmx_ts_feed_s
+id|dmx_ts_feed
 op_star
 id|feed
 comma
-r_uint16
+id|u16
 id|pid
 comma
 r_int
 id|type
 comma
-id|dmx_ts_pes_t
+r_enum
+id|dmx_ts_pes
 id|pes_type
 comma
 r_int
@@ -212,7 +207,7 @@ id|start_filtering
 )paren
 (paren
 r_struct
-id|dmx_ts_feed_s
+id|dmx_ts_feed
 op_star
 id|feed
 )paren
@@ -225,41 +220,36 @@ id|stop_filtering
 )paren
 (paren
 r_struct
-id|dmx_ts_feed_s
+id|dmx_ts_feed
 op_star
 id|feed
 )paren
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|typedef|dmx_ts_feed_t
-r_typedef
-r_struct
-id|dmx_ts_feed_s
-id|dmx_ts_feed_t
-suffix:semicolon
 multiline_comment|/*--------------------------------------------------------------------------*/
 multiline_comment|/* Section reception */
 multiline_comment|/*--------------------------------------------------------------------------*/
-r_typedef
+DECL|struct|dmx_section_filter
 r_struct
+id|dmx_section_filter
 (brace
 DECL|member|filter_value
-id|__u8
+id|u8
 id|filter_value
 (braket
 id|DMX_MAX_FILTER_SIZE
 )braket
 suffix:semicolon
 DECL|member|filter_mask
-id|__u8
+id|u8
 id|filter_mask
 (braket
 id|DMX_MAX_FILTER_SIZE
 )braket
 suffix:semicolon
 DECL|member|filter_mode
-id|__u8
+id|u8
 id|filter_mode
 (braket
 id|DMX_MAX_FILTER_SIZE
@@ -267,7 +257,7 @@ id|DMX_MAX_FILTER_SIZE
 suffix:semicolon
 DECL|member|parent
 r_struct
-id|dmx_section_feed_s
+id|dmx_section_feed
 op_star
 id|parent
 suffix:semicolon
@@ -278,13 +268,11 @@ op_star
 id|priv
 suffix:semicolon
 multiline_comment|/* Pointer to private data of the API client */
-DECL|typedef|dmx_section_filter_t
 )brace
-id|dmx_section_filter_t
 suffix:semicolon
-DECL|struct|dmx_section_feed_s
+DECL|struct|dmx_section_feed
 r_struct
-id|dmx_section_feed_s
+id|dmx_section_feed
 (brace
 DECL|member|is_filtering
 r_int
@@ -293,7 +281,7 @@ suffix:semicolon
 multiline_comment|/* Set to non-zero when filtering in progress */
 DECL|member|parent
 r_struct
-id|dmx_demux_s
+id|dmx_demux
 op_star
 id|parent
 suffix:semicolon
@@ -335,11 +323,11 @@ id|set
 )paren
 (paren
 r_struct
-id|dmx_section_feed_s
+id|dmx_section_feed
 op_star
 id|feed
 comma
-id|__u16
+id|u16
 id|pid
 comma
 r_int
@@ -360,11 +348,12 @@ id|allocate_filter
 )paren
 (paren
 r_struct
-id|dmx_section_feed_s
+id|dmx_section_feed
 op_star
 id|feed
 comma
-id|dmx_section_filter_t
+r_struct
+id|dmx_section_filter
 op_star
 op_star
 id|filter
@@ -378,11 +367,12 @@ id|release_filter
 )paren
 (paren
 r_struct
-id|dmx_section_feed_s
+id|dmx_section_feed
 op_star
 id|feed
 comma
-id|dmx_section_filter_t
+r_struct
+id|dmx_section_filter
 op_star
 id|filter
 )paren
@@ -395,7 +385,7 @@ id|start_filtering
 )paren
 (paren
 r_struct
-id|dmx_section_feed_s
+id|dmx_section_feed
 op_star
 id|feed
 )paren
@@ -408,18 +398,12 @@ id|stop_filtering
 )paren
 (paren
 r_struct
-id|dmx_section_feed_s
+id|dmx_section_feed
 op_star
 id|feed
 )paren
 suffix:semicolon
 )brace
-suffix:semicolon
-DECL|typedef|dmx_section_feed_t
-r_typedef
-r_struct
-id|dmx_section_feed_s
-id|dmx_section_feed_t
 suffix:semicolon
 multiline_comment|/*--------------------------------------------------------------------------*/
 multiline_comment|/* Callback functions */
@@ -448,11 +432,13 @@ comma
 r_int
 id|buffer2_length
 comma
-id|dmx_ts_feed_t
+r_struct
+id|dmx_ts_feed
 op_star
 id|source
 comma
-id|dmx_success_t
+r_enum
+id|dmx_success
 id|success
 )paren
 suffix:semicolon
@@ -480,19 +466,22 @@ comma
 r_int
 id|buffer2_len
 comma
-id|dmx_section_filter_t
+r_struct
+id|dmx_section_filter
 op_star
 id|source
 comma
-id|dmx_success_t
+r_enum
+id|dmx_success
 id|success
 )paren
 suffix:semicolon
 multiline_comment|/*--------------------------------------------------------------------------*/
 multiline_comment|/* DVB Front-End */
 multiline_comment|/*--------------------------------------------------------------------------*/
-r_typedef
+DECL|enum|dmx_frontend_source
 r_enum
+id|dmx_frontend_source
 (brace
 DECL|enumerator|DMX_MEMORY_FE
 id|DMX_MEMORY_FE
@@ -521,32 +510,12 @@ id|DMX_STREAM_2
 comma
 DECL|enumerator|DMX_STREAM_3
 id|DMX_STREAM_3
-DECL|typedef|dmx_frontend_source_t
 )brace
-id|dmx_frontend_source_t
 suffix:semicolon
-r_typedef
+DECL|struct|dmx_frontend
 r_struct
+id|dmx_frontend
 (brace
-multiline_comment|/* The following char* fields point to NULL terminated strings */
-DECL|member|id
-r_char
-op_star
-id|id
-suffix:semicolon
-multiline_comment|/* Unique front-end identifier */
-DECL|member|vendor
-r_char
-op_star
-id|vendor
-suffix:semicolon
-multiline_comment|/* Name of the front-end vendor */
-DECL|member|model
-r_char
-op_star
-id|model
-suffix:semicolon
-multiline_comment|/* Name of the front-end model */
 DECL|member|connectivity_list
 r_struct
 id|list_head
@@ -560,17 +529,16 @@ id|priv
 suffix:semicolon
 multiline_comment|/* Pointer to private data of the API client */
 DECL|member|source
-id|dmx_frontend_source_t
+r_enum
+id|dmx_frontend_source
 id|source
 suffix:semicolon
-DECL|typedef|dmx_frontend_t
 )brace
-id|dmx_frontend_t
 suffix:semicolon
 multiline_comment|/*--------------------------------------------------------------------------*/
 multiline_comment|/* MPEG-2 TS Demux */
 multiline_comment|/*--------------------------------------------------------------------------*/
-multiline_comment|/* &n; * Flags OR&squot;ed in the capabilites field of struct dmx_demux_s. &n; */
+multiline_comment|/* &n; * Flags OR&squot;ed in the capabilites field of struct dmx_demux. &n; */
 DECL|macro|DMX_TS_FILTERING
 mdefine_line|#define DMX_TS_FILTERING                        1 
 DECL|macro|DMX_PES_FILTERING
@@ -588,39 +556,21 @@ mdefine_line|#define DMX_SECTION_PAYLOAD_DESCRAMBLING        64
 DECL|macro|DMX_MAC_ADDRESS_DESCRAMBLING
 mdefine_line|#define DMX_MAC_ADDRESS_DESCRAMBLING            128 
 multiline_comment|/* &n; * Demux resource type identifier. &n;*/
-multiline_comment|/* &n; * DMX_FE_ENTRY(): Casts elements in the list of registered &n; * front-ends from the generic type struct list_head&n; * to the type * dmx_frontend_t&n; *. &n;*/
+multiline_comment|/* &n; * DMX_FE_ENTRY(): Casts elements in the list of registered &n; * front-ends from the generic type struct list_head&n; * to the type * struct dmx_frontend&n; *. &n;*/
 DECL|macro|DMX_FE_ENTRY
-mdefine_line|#define DMX_FE_ENTRY(list) list_entry(list, dmx_frontend_t, connectivity_list) 
-DECL|struct|dmx_demux_s
+mdefine_line|#define DMX_FE_ENTRY(list) list_entry(list, struct dmx_frontend, connectivity_list) 
+DECL|struct|dmx_demux
 r_struct
-id|dmx_demux_s
+id|dmx_demux
 (brace
-multiline_comment|/* The following char* fields point to NULL terminated strings */
-DECL|member|id
-r_char
-op_star
-id|id
-suffix:semicolon
-multiline_comment|/* Unique demux identifier */
-DECL|member|vendor
-r_char
-op_star
-id|vendor
-suffix:semicolon
-multiline_comment|/* Name of the demux vendor */
-DECL|member|model
-r_char
-op_star
-id|model
-suffix:semicolon
-multiline_comment|/* Name of the demux model */
 DECL|member|capabilities
-id|__u32
+id|u32
 id|capabilities
 suffix:semicolon
 multiline_comment|/* Bitfield of capability flags */
 DECL|member|frontend
-id|dmx_frontend_t
+r_struct
+id|dmx_frontend
 op_star
 id|frontend
 suffix:semicolon
@@ -650,7 +600,7 @@ id|open
 )paren
 (paren
 r_struct
-id|dmx_demux_s
+id|dmx_demux
 op_star
 id|demux
 )paren
@@ -663,7 +613,7 @@ id|close
 )paren
 (paren
 r_struct
-id|dmx_demux_s
+id|dmx_demux
 op_star
 id|demux
 )paren
@@ -676,7 +626,7 @@ id|write
 )paren
 (paren
 r_struct
-id|dmx_demux_s
+id|dmx_demux
 op_star
 id|demux
 comma
@@ -697,11 +647,12 @@ id|allocate_ts_feed
 )paren
 (paren
 r_struct
-id|dmx_demux_s
+id|dmx_demux
 op_star
 id|demux
 comma
-id|dmx_ts_feed_t
+r_struct
+id|dmx_ts_feed
 op_star
 op_star
 id|feed
@@ -718,11 +669,12 @@ id|release_ts_feed
 )paren
 (paren
 r_struct
-id|dmx_demux_s
+id|dmx_demux
 op_star
 id|demux
 comma
-id|dmx_ts_feed_t
+r_struct
+id|dmx_ts_feed
 op_star
 id|feed
 )paren
@@ -735,11 +687,12 @@ id|allocate_section_feed
 )paren
 (paren
 r_struct
-id|dmx_demux_s
+id|dmx_demux
 op_star
 id|demux
 comma
-id|dmx_section_feed_t
+r_struct
+id|dmx_section_feed
 op_star
 op_star
 id|feed
@@ -756,11 +709,12 @@ id|release_section_feed
 )paren
 (paren
 r_struct
-id|dmx_demux_s
+id|dmx_demux
 op_star
 id|demux
 comma
-id|dmx_section_feed_t
+r_struct
+id|dmx_section_feed
 op_star
 id|feed
 )paren
@@ -773,25 +727,25 @@ id|descramble_mac_address
 )paren
 (paren
 r_struct
-id|dmx_demux_s
+id|dmx_demux
 op_star
 id|demux
 comma
-id|__u8
+id|u8
 op_star
 id|buffer1
 comma
 r_int
 id|buffer1_length
 comma
-id|__u8
+id|u8
 op_star
 id|buffer2
 comma
 r_int
 id|buffer2_length
 comma
-id|__u16
+id|u16
 id|pid
 )paren
 suffix:semicolon
@@ -803,25 +757,25 @@ id|descramble_section_payload
 )paren
 (paren
 r_struct
-id|dmx_demux_s
+id|dmx_demux
 op_star
 id|demux
 comma
-id|__u8
+id|u8
 op_star
 id|buffer1
 comma
 r_int
 id|buffer1_length
 comma
-id|__u8
+id|u8
 op_star
 id|buffer2
 comma
 r_int
 id|buffer2_length
 comma
-id|__u16
+id|u16
 id|pid
 )paren
 suffix:semicolon
@@ -833,11 +787,12 @@ id|add_frontend
 )paren
 (paren
 r_struct
-id|dmx_demux_s
+id|dmx_demux
 op_star
 id|demux
 comma
-id|dmx_frontend_t
+r_struct
+id|dmx_frontend
 op_star
 id|frontend
 )paren
@@ -850,11 +805,12 @@ id|remove_frontend
 )paren
 (paren
 r_struct
-id|dmx_demux_s
+id|dmx_demux
 op_star
 id|demux
 comma
-id|dmx_frontend_t
+r_struct
+id|dmx_frontend
 op_star
 id|frontend
 )paren
@@ -869,7 +825,7 @@ id|get_frontends
 )paren
 (paren
 r_struct
-id|dmx_demux_s
+id|dmx_demux
 op_star
 id|demux
 )paren
@@ -882,11 +838,12 @@ id|connect_frontend
 )paren
 (paren
 r_struct
-id|dmx_demux_s
+id|dmx_demux
 op_star
 id|demux
 comma
-id|dmx_frontend_t
+r_struct
+id|dmx_frontend
 op_star
 id|frontend
 )paren
@@ -899,7 +856,7 @@ id|disconnect_frontend
 )paren
 (paren
 r_struct
-id|dmx_demux_s
+id|dmx_demux
 op_star
 id|demux
 )paren
@@ -912,11 +869,11 @@ id|get_pes_pids
 )paren
 (paren
 r_struct
-id|dmx_demux_s
+id|dmx_demux
 op_star
 id|demux
 comma
-id|__u16
+id|u16
 op_star
 id|pids
 )paren
@@ -929,7 +886,7 @@ id|get_stc
 )paren
 (paren
 r_struct
-id|dmx_demux_s
+id|dmx_demux
 op_star
 id|demux
 comma
@@ -937,7 +894,7 @@ r_int
 r_int
 id|num
 comma
-r_uint64
+id|u64
 op_star
 id|stc
 comma
@@ -949,22 +906,17 @@ id|base
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|typedef|dmx_demux_t
-r_typedef
-r_struct
-id|dmx_demux_s
-id|dmx_demux_t
-suffix:semicolon
 multiline_comment|/*--------------------------------------------------------------------------*/
 multiline_comment|/* Demux directory */
 multiline_comment|/*--------------------------------------------------------------------------*/
-multiline_comment|/* &n; * DMX_DIR_ENTRY(): Casts elements in the list of registered &n; * demuxes from the generic type struct list_head* to the type dmx_demux_t&n; *. &n; */
+multiline_comment|/* &n; * DMX_DIR_ENTRY(): Casts elements in the list of registered &n; * demuxes from the generic type struct list_head* to the type struct dmx_demux&n; *. &n; */
 DECL|macro|DMX_DIR_ENTRY
-mdefine_line|#define DMX_DIR_ENTRY(list) list_entry(list, dmx_demux_t, reg_list)
+mdefine_line|#define DMX_DIR_ENTRY(list) list_entry(list, struct dmx_demux, reg_list)
 r_int
 id|dmx_register_demux
 (paren
-id|dmx_demux_t
+r_struct
+id|dmx_demux
 op_star
 id|demux
 )paren
@@ -972,7 +924,8 @@ suffix:semicolon
 r_int
 id|dmx_unregister_demux
 (paren
-id|dmx_demux_t
+r_struct
+id|dmx_demux
 op_star
 id|demux
 )paren

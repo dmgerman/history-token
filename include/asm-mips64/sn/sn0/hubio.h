@@ -3,7 +3,7 @@ macro_line|#ifndef&t;_ASM_SGI_SN_SN0_HUBIO_H
 DECL|macro|_ASM_SGI_SN_SN0_HUBIO_H
 mdefine_line|#define&t;_ASM_SGI_SN_SN0_HUBIO_H
 multiline_comment|/*&n; * Hub I/O interface registers&n; *&n; * All registers in this file are subject to change until Hub chip tapeout.&n; * In general, the longer software name should be used when available.&n; */
-multiline_comment|/* &n; * Slightly friendlier names for some common registers.&n; * The hardware definitions follow.&n; */
+multiline_comment|/*&n; * Slightly friendlier names for some common registers.&n; * The hardware definitions follow.&n; */
 DECL|macro|IIO_WIDGET
 mdefine_line|#define IIO_WIDGET&t;&t;IIO_WID      /* Widget identification */
 DECL|macro|IIO_WIDGET_STAT
@@ -13,7 +13,7 @@ mdefine_line|#define IIO_WIDGET_CTRL&t;&t;IIO_WCR&t;     /* Widget control regis
 DECL|macro|IIO_WIDGET_TOUT
 mdefine_line|#define IIO_WIDGET_TOUT&t;&t;IIO_WRTO     /* Widget request timeout */
 DECL|macro|IIO_WIDGET_FLUSH
-mdefine_line|#define IIO_WIDGET_FLUSH&t;IIO_WTFR     /* Widget target flush */ 
+mdefine_line|#define IIO_WIDGET_FLUSH&t;IIO_WTFR     /* Widget target flush */
 DECL|macro|IIO_PROTECT
 mdefine_line|#define IIO_PROTECT&t;&t;IIO_ILAPR    /* IO interface protection */
 DECL|macro|IIO_PROTECT_OVRRD
@@ -75,7 +75,7 @@ DECL|macro|BTEOFF_NOTIFY
 mdefine_line|#define BTEOFF_NOTIFY&t;&t;(IIO_BTE_NOTIFY_0 - IIO_BTE_STAT_0)
 DECL|macro|BTEOFF_INT
 mdefine_line|#define BTEOFF_INT&t;&t;(IIO_BTE_INT_0 - IIO_BTE_STAT_0)
-multiline_comment|/*&n; * The following definitions use the names defined in the IO interface&n; * document for ease of reference.  When possible, software should &n; * generally use the longer but clearer names defined above.&n; */
+multiline_comment|/*&n; * The following definitions use the names defined in the IO interface&n; * document for ease of reference.  When possible, software should&n; * generally use the longer but clearer names defined above.&n; */
 DECL|macro|IIO_BASE
 mdefine_line|#define IIO_BASE&t;0x400000
 DECL|macro|IIO_BASE_BTE0
@@ -212,7 +212,7 @@ mdefine_line|#define SWIN0_BIGWIN&t;&t;HUB_NUM_BIG_WINDOW
 DECL|macro|ILCSR_WARM_RESET
 mdefine_line|#define ILCSR_WARM_RESET&t;0x100
 multiline_comment|/*&n; * The IO LLP control status register and widget control register&n; */
-macro_line|#ifdef _LANGUAGE_C
+macro_line|#ifndef __ASSEMBLY__
 DECL|union|hubii_wid_u
 r_typedef
 r_union
@@ -705,7 +705,7 @@ DECL|typedef|io_perf_cnt_t
 )brace
 id|io_perf_cnt_t
 suffix:semicolon
-macro_line|#endif
+macro_line|#endif /* !__ASSEMBLY__ */
 DECL|macro|LNK_STAT_WORKING
 mdefine_line|#define LNK_STAT_WORKING&t;0x2
 DECL|macro|IIO_LLP_CB_MAX
@@ -714,7 +714,7 @@ DECL|macro|IIO_LLP_SN_MAX
 mdefine_line|#define IIO_LLP_SN_MAX&t;0xffff
 multiline_comment|/* IO PRB Entries */
 DECL|macro|IIO_NUM_IPRBS
-mdefine_line|#define&t;IIO_NUM_IPRBS&t;(9)&t;&t;
+mdefine_line|#define&t;IIO_NUM_IPRBS&t;(9)
 DECL|macro|IIO_IOPRB_0
 mdefine_line|#define IIO_IOPRB_0&t;0x400198&t;/* PRB entry 0 */
 DECL|macro|IIO_IOPRB_8
@@ -745,7 +745,7 @@ DECL|macro|IIO_IECLR
 mdefine_line|#define IIO_IECLR&t;0x4001f8&t;/* IO error clear */
 DECL|macro|IIO_IBCN
 mdefine_line|#define IIO_IBCN        0x400200        /* IO BTE CRB count */
-multiline_comment|/* &n; * IIO_IMEM Register fields.&n; */
+multiline_comment|/*&n; * IIO_IMEM Register fields.&n; */
 DECL|macro|IIO_IMEM_W0ESD
 mdefine_line|#define IIO_IMEM_W0ESD  0x1             /* Widget 0 shut down due to error */
 DECL|macro|IIO_IMEM_B0ESD
@@ -808,13 +808,13 @@ DECL|macro|IIO_ICMR_CLR_RPPD
 mdefine_line|#define IIO_ICMR_CLR_RPPD&t;(1UL &lt;&lt; 13)
 DECL|macro|IIO_ICMR_CLR_RQPD
 mdefine_line|#define IIO_ICMR_CLR_RQPD&t;(1UL &lt;&lt; 12)
-multiline_comment|/* &n; * IIO PIO Deallocation register field masks : (IIO_IPDR)&n; */
+multiline_comment|/*&n; * IIO PIO Deallocation register field masks : (IIO_IPDR)&n; */
 DECL|macro|IIO_IPDR_PND
 mdefine_line|#define&t;IIO_IPDR_PND&t;(1 &lt;&lt; 4)
 multiline_comment|/*&n; * IIO CRB deallocation register field masks: (IIO_ICDR)&n; */
 DECL|macro|IIO_ICDR_PND
 mdefine_line|#define&t;IIO_ICDR_PND&t;(1 &lt;&lt; 4)
-multiline_comment|/*&n; * IIO CRB control register Fields: IIO_ICCR &n; */
+multiline_comment|/*&n; * IIO CRB control register Fields: IIO_ICCR&n; */
 DECL|macro|IIO_ICCR_PENDING
 mdefine_line|#define&t;IIO_ICCR_PENDING&t;(0x10000)
 DECL|macro|IIO_ICCR_CMD_MASK
@@ -828,7 +828,7 @@ mdefine_line|#define&t;IIO_ICCR_CMD_WAKE&t;(0x100) /* Reactivate CRB entry and p
 DECL|macro|IIO_ICCR_CMD_TIMEOUT
 mdefine_line|#define&t;IIO_ICCR_CMD_TIMEOUT&t;(0x200)&t;/* Make CRB timeout &amp; mark invalid */
 DECL|macro|IIO_ICCR_CMD_EJECT
-mdefine_line|#define&t;IIO_ICCR_CMD_EJECT&t;(0x400)&t;/* Contents of entry written to memory &n;&t;&t;&t;&t;&t; * via a WB&n;&t;&t;&t;&t;&t; */
+mdefine_line|#define&t;IIO_ICCR_CMD_EJECT&t;(0x400)&t;/* Contents of entry written to memory&n;&t;&t;&t;&t;&t; * via a WB&n;&t;&t;&t;&t;&t; */
 DECL|macro|IIO_ICCR_CMD_FLUSH
 mdefine_line|#define&t;IIO_ICCR_CMD_FLUSH&t;(0x800)
 multiline_comment|/*&n; * CRB manipulation macros&n; *&t;The CRB macros are slightly complicated, since there are up to&n; * &t;four registers associated with each CRB entry.&n; */
@@ -852,9 +852,9 @@ mdefine_line|#define IIO_ICRB_C(_x)&t;(IIO_ICRB_A(_x) + 2*IIO_ICRB_OFFSET)
 DECL|macro|IIO_ICRB_D
 mdefine_line|#define IIO_ICRB_D(_x)  (IIO_ICRB_A(_x) + 3*IIO_ICRB_OFFSET)
 multiline_comment|/* XXX - IBUE register coming for Hub 2 */
-multiline_comment|/*&n; *&n; * CRB Register description.&n; *&n; * WARNING * WARNING * WARNING * WARNING * WARNING * WARNING * WARNING&n; * WARNING * WARNING * WARNING * WARNING * WARNING * WARNING * WARNING&n; * WARNING * WARNING * WARNING * WARNING * WARNING * WARNING * WARNING&n; * WARNING * WARNING * WARNING * WARNING * WARNING * WARNING * WARNING&n; * WARNING * WARNING * WARNING * WARNING * WARNING * WARNING * WARNING&n; *&n; * Many of the fields in CRB are status bits used by hardware&n; * for implementation of the protocol. It&squot;s very dangerous to&n; * mess around with the CRB registers. &n; * &n; * It&squot;s OK to read the CRB registers and try to make sense out of the&n; * fields in CRB. &n; *&n; * Updating CRB requires all activities in Hub IIO to be quiesced. &n; * otherwise, a write to CRB could corrupt other CRB entries.&n; * CRBs are here only as a back door peek to hub IIO&squot;s status.&n; * Quiescing implies  no dmas no PIOs &n; * either directly from the cpu or from sn0net.&n; * this is not something that can be done easily. So, AVOID updating&n; * CRBs.&n; */
+multiline_comment|/*&n; *&n; * CRB Register description.&n; *&n; * WARNING * WARNING * WARNING * WARNING * WARNING * WARNING * WARNING&n; * WARNING * WARNING * WARNING * WARNING * WARNING * WARNING * WARNING&n; * WARNING * WARNING * WARNING * WARNING * WARNING * WARNING * WARNING&n; * WARNING * WARNING * WARNING * WARNING * WARNING * WARNING * WARNING&n; * WARNING * WARNING * WARNING * WARNING * WARNING * WARNING * WARNING&n; *&n; * Many of the fields in CRB are status bits used by hardware&n; * for implementation of the protocol. It&squot;s very dangerous to&n; * mess around with the CRB registers.&n; *&n; * It&squot;s OK to read the CRB registers and try to make sense out of the&n; * fields in CRB.&n; *&n; * Updating CRB requires all activities in Hub IIO to be quiesced.&n; * otherwise, a write to CRB could corrupt other CRB entries.&n; * CRBs are here only as a back door peek to hub IIO&squot;s status.&n; * Quiescing implies  no dmas no PIOs&n; * either directly from the cpu or from sn0net.&n; * this is not something that can be done easily. So, AVOID updating&n; * CRBs.&n; */
 multiline_comment|/*&n; * Fields in CRB Register A&n; */
-macro_line|#ifdef _LANGUAGE_C
+macro_line|#ifndef __ASSEMBLY__
 DECL|union|icrba_u
 r_typedef
 r_union
@@ -1070,16 +1070,16 @@ DECL|macro|a_valid
 mdefine_line|#define&t;a_valid&t;&t;icrba_fields_s.valid
 DECL|macro|a_iow
 mdefine_line|#define&t;a_iow&t;&t;icrba_fields_s.iow
-macro_line|#endif /* LANGUAGE_C */
+macro_line|#endif /* !__ASSEMBLY__ */
 DECL|macro|IIO_ICRB_ADDR_SHFT
 mdefine_line|#define&t;IIO_ICRB_ADDR_SHFT&t;2&t;/* Shift to get proper address */
-multiline_comment|/*&n; * values for &quot;ecode&quot; field &n; */
+multiline_comment|/*&n; * values for &quot;ecode&quot; field&n; */
 DECL|macro|IIO_ICRB_ECODE_DERR
 mdefine_line|#define&t;IIO_ICRB_ECODE_DERR&t;0&t;/* Directory error due to IIO access */
 DECL|macro|IIO_ICRB_ECODE_PERR
 mdefine_line|#define&t;IIO_ICRB_ECODE_PERR&t;1&t;/* Poison error on IO access */
 DECL|macro|IIO_ICRB_ECODE_WERR
-mdefine_line|#define&t;IIO_ICRB_ECODE_WERR&t;2&t;/* Write error by IIO access &n;&t;&t;&t;&t;&t; * e.g. WINV to a Read only line.&n;&t;&t;&t;&t;&t; */
+mdefine_line|#define&t;IIO_ICRB_ECODE_WERR&t;2&t;/* Write error by IIO access&n;&t;&t;&t;&t;&t; * e.g. WINV to a Read only line.&n;&t;&t;&t;&t;&t; */
 DECL|macro|IIO_ICRB_ECODE_AERR
 mdefine_line|#define&t;IIO_ICRB_ECODE_AERR&t;3&t;/* Access error caused by IIO access */
 DECL|macro|IIO_ICRB_ECODE_PWERR
@@ -1091,7 +1091,7 @@ mdefine_line|#define&t;IIO_ICRB_ECODE_TOUT&t;6&t;/* CRB timeout before deallocat
 DECL|macro|IIO_ICRB_ECODE_XTERR
 mdefine_line|#define&t;IIO_ICRB_ECODE_XTERR&t;7&t;/* Incoming xtalk pkt had error bit */
 multiline_comment|/*&n; * Fields in CRB Register B&n; */
-macro_line|#ifdef _LANGUAGE_C
+macro_line|#ifndef __ASSEMBLY__
 DECL|union|icrbb_u
 r_typedef
 r_union
@@ -1138,7 +1138,7 @@ id|srcinit
 suffix:colon
 l_int|2
 comma
-multiline_comment|/* Source Initiator: &n;&t;&t;&t;&t; * See below for field values.&n;&t;&t;&t;&t; */
+multiline_comment|/* Source Initiator:&n;&t;&t;&t;&t; * See below for field values.&n;&t;&t;&t;&t; */
 DECL|member|useold
 id|useold
 suffix:colon
@@ -1150,7 +1150,7 @@ id|imsgtype
 suffix:colon
 l_int|2
 comma
-multiline_comment|/* Incoming message type&n;&t;&t;&t;&t; * see below for field values &n;&t;&t;&t;&t; */
+multiline_comment|/* Incoming message type&n;&t;&t;&t;&t; * see below for field values&n;&t;&t;&t;&t; */
 DECL|member|imsg
 id|imsg
 suffix:colon
@@ -1162,7 +1162,7 @@ id|initator
 suffix:colon
 l_int|3
 comma
-multiline_comment|/* Initiator of original request &n;&t;&t;&t;&t; * See below for field values.&n;&t;&t;&t;&t; */
+multiline_comment|/* Initiator of original request&n;&t;&t;&t;&t; * See below for field values.&n;&t;&t;&t;&t; */
 DECL|member|reqtype
 id|reqtype
 suffix:colon
@@ -1277,7 +1277,7 @@ id|srcinit
 suffix:colon
 l_int|2
 comma
-multiline_comment|/* Source Initiator: &n;&t;&t;&t;&t;&t; * See below for field values.&n;&t;&t;&t;&t;&t; */
+multiline_comment|/* Source Initiator:&n;&t;&t;&t;&t;&t; * See below for field values.&n;&t;&t;&t;&t;&t; */
 DECL|member|useold
 id|useold
 suffix:colon
@@ -1289,7 +1289,7 @@ id|imsgtype
 suffix:colon
 l_int|2
 comma
-multiline_comment|/* Incoming message type&n;&t;&t;&t;&t;&t; * see below for field values &n;&t;&t;&t;&t;&t; */
+multiline_comment|/* Incoming message type&n;&t;&t;&t;&t;&t; * see below for field values&n;&t;&t;&t;&t;&t; */
 DECL|member|imsg
 id|imsg
 suffix:colon
@@ -1301,7 +1301,7 @@ id|initator
 suffix:colon
 l_int|3
 comma
-multiline_comment|/* Initiator of original request &n;&t;&t;&t;&t;&t; * See below for field values.&n;&t;&t;&t;&t;&t; */
+multiline_comment|/* Initiator of original request&n;&t;&t;&t;&t;&t; * See below for field values.&n;&t;&t;&t;&t;&t; */
 DECL|member|rsvd2
 id|rsvd2
 suffix:colon
@@ -1423,7 +1423,7 @@ DECL|macro|b_imsg
 mdefine_line|#define&t;b_imsg&t;&t;icrbb_field_s.imsg
 DECL|macro|b_initiator
 mdefine_line|#define&t;b_initiator&t;icrbb_field_s.initiator
-macro_line|#endif /* LANGUAGE_C */
+macro_line|#endif /* !__ASSEMBLY__ */
 multiline_comment|/*&n; * values for field xtsize&n; */
 DECL|macro|IIO_ICRB_XTSIZE_DW
 mdefine_line|#define&t;IIO_ICRB_XTSIZE_DW&t;0&t;/* Xtalk operation size is 8 bytes  */
@@ -1492,8 +1492,8 @@ DECL|macro|IIO_ICRB_REQ_WB
 mdefine_line|#define&t;IIO_ICRB_REQ_WB&t;&t;16&t;/* Request is Write back&t;*/
 DECL|macro|IIO_ICRB_REQ_DEX
 mdefine_line|#define&t;IIO_ICRB_REQ_DEX&t;17&t;/* Retained DEX Cache line&t;*/
-multiline_comment|/* &n; * Fields in CRB Register C &n; */
-macro_line|#ifdef _LANGUAGE_C
+multiline_comment|/*&n; * Fields in CRB Register C&n; */
+macro_line|#ifndef __ASSEMBLY__
 DECL|union|icrbc_s
 r_typedef
 r_union
@@ -1539,7 +1539,7 @@ id|push_be
 suffix:colon
 l_int|34
 comma
-multiline_comment|/* Push address Byte enable &n;&t;&t;&t;&t;&t; * Holds push addr, if CRB is for BTE&n;&t;&t;&t;&t;&t; * If CRB belongs to Partial cache,&n;&t;&t;&t;&t;&t; * this contains byte enables bits&n;&t;&t;&t;&t;&t; * ([47:46] = 0)&n;&t;&t;&t;&t;&t; */
+multiline_comment|/* Push address Byte enable&n;&t;&t;&t;&t;&t; * Holds push addr, if CRB is for BTE&n;&t;&t;&t;&t;&t; * If CRB belongs to Partial cache,&n;&t;&t;&t;&t;&t; * this contains byte enables bits&n;&t;&t;&t;&t;&t; * ([47:46] = 0)&n;&t;&t;&t;&t;&t; */
 DECL|member|suppl
 id|suppl
 suffix:colon
@@ -1590,9 +1590,9 @@ DECL|macro|c_doresp
 mdefine_line|#define&t;c_doresp&t;icrbc_field_s.doresp
 DECL|macro|c_gbr
 mdefine_line|#define&t;c_gbr&t;icrbc_field_s.gbr
-macro_line|#endif /* LANGUAGE_C */
+macro_line|#endif /* !__ASSEMBLY__ */
 multiline_comment|/*&n; * Fields in CRB Register D&n; */
-macro_line|#ifdef _LANGUAGE_C
+macro_line|#ifndef __ASSEMBLY__
 DECL|union|icrbd_s
 r_typedef
 r_union
@@ -1693,7 +1693,7 @@ DECL|typedef|hubii_ifdr_t
 )brace
 id|hubii_ifdr_t
 suffix:semicolon
-macro_line|#endif /* LANGUAGE_C */
+macro_line|#endif /* !__ASSEMBLY__ */
 multiline_comment|/*&n; * Hardware designed names for the BTE control registers.&n; */
 DECL|macro|IIO_IBLS_0
 mdefine_line|#define IIO_IBLS_0&t;0x410000&t;/* BTE length/status 0 */
@@ -1708,7 +1708,7 @@ mdefine_line|#define IIO_IBNA_0&t;0x410020&t;/* BTE notification address 0 */
 DECL|macro|IIO_IBNR_0
 mdefine_line|#define IIO_IBNR_0&t;IIO_IBNA_0
 DECL|macro|IIO_IBIA_0
-mdefine_line|#define IIO_IBIA_0&t;0x410028&t;/* BTE interrupt address 0 */&t;
+mdefine_line|#define IIO_IBIA_0&t;0x410028&t;/* BTE interrupt address 0 */
 DECL|macro|IIO_IBLS_1
 mdefine_line|#define IIO_IBLS_1&t;0x420000&t;/* BTE length/status 1 */
 DECL|macro|IIO_IBSA_1
@@ -1722,7 +1722,7 @@ mdefine_line|#define IIO_IBNA_1&t;0x420020&t;/* BTE notification address 1 */
 DECL|macro|IIO_IBNR_1
 mdefine_line|#define IIO_IBNR_1&t;IIO_IBNA_1
 DECL|macro|IIO_IBIA_1
-mdefine_line|#define IIO_IBIA_1&t;0x420028&t;/* BTE interrupt address 1 */&t;
+mdefine_line|#define IIO_IBIA_1&t;0x420028&t;/* BTE interrupt address 1 */
 multiline_comment|/*&n; * More miscellaneous registers&n; */
 DECL|macro|IIO_IPCR
 mdefine_line|#define IIO_IPCR&t;0x430000&t;/* Performance Control */
@@ -1753,8 +1753,8 @@ DECL|macro|IECLR_PRB_8
 mdefine_line|#define IECLR_PRB_8&t;&t;(1 &lt;&lt; 8)   /* clear err bit in PRB_8 reg */
 DECL|macro|IECLR_PRB_0
 mdefine_line|#define IECLR_PRB_0&t;&t;(1 &lt;&lt; 0)   /* clear err bit in PRB_0 reg */
-multiline_comment|/*&n; * IO PIO Read Table Entry format &n; */
-macro_line|#ifdef&t;_LANGUAGE_C
+multiline_comment|/*&n; * IO PIO Read Table Entry format&n; */
+macro_line|#ifndef __ASSEMBLY__
 DECL|union|iprte_a
 r_typedef
 r_union
@@ -1830,12 +1830,12 @@ DECL|macro|iprte_init
 mdefine_line|#define&t;iprte_init&t;iprte_fields.initiator
 DECL|macro|iprte_addr
 mdefine_line|#define&t;iprte_addr&t;iprte_fields.addr
-macro_line|#endif /* _LANGUAGE_C */
+macro_line|#endif /* !__ASSEMBLY__ */
 DECL|macro|IPRTE_ADDRSHFT
 mdefine_line|#define&t;IPRTE_ADDRSHFT&t;3
 multiline_comment|/*&n; * Hub IIO PRB Register format.&n; */
-macro_line|#ifdef&t;_LANGUAGE_C
-multiline_comment|/*&n; * Note: Fields bnakctr, anakctr, xtalkctrmode, ovflow fields are &n; * &quot;Status&quot; fields, and should only be used in case of clean up after errors.&n; */
+macro_line|#ifndef __ASSEMBLY__
+multiline_comment|/*&n; * Note: Fields bnakctr, anakctr, xtalkctrmode, ovflow fields are&n; * &quot;Status&quot; fields, and should only be used in case of clean up after errors.&n; */
 DECL|union|iprb_u
 r_typedef
 r_union
@@ -1926,7 +1926,7 @@ DECL|macro|iprb_anakctr
 mdefine_line|#define&t;iprb_anakctr&t;iprb_fields_s.anakctr
 DECL|macro|iprb_xtalkctr
 mdefine_line|#define&t;iprb_xtalkctr&t;iprb_fields_s.xtalkctr
-macro_line|#endif&t;/* _LANGUAGE_C */
+macro_line|#endif /* !__ASSEMBLY__ */
 multiline_comment|/*&n; * values for mode field in iprb_t.&n; * For details of the meanings of NAK and Accept, refer the PIO flow&n; * document&n; */
 DECL|macro|IPRB_MODE_NORMAL
 mdefine_line|#define&t;IPRB_MODE_NORMAL&t;(0)
@@ -1937,7 +1937,7 @@ mdefine_line|#define&t;IPRB_MODE_SERVICE_A&t;(2)&t;/* NAK B and Accept A */
 DECL|macro|IPRB_MODE_SERVICE_B
 mdefine_line|#define&t;IPRB_MODE_SERVICE_B&t;(3)&t;/* NAK A and Accept B */
 multiline_comment|/*&n; * IO CRB entry C_A to E_A : Partial (cache) CRBS&n; */
-macro_line|#ifdef _LANGUAGE_C
+macro_line|#ifndef __ASSEMBLY__
 DECL|union|icrbp_a
 r_typedef
 r_union
@@ -2121,13 +2121,13 @@ DECL|typedef|icrbp_a_t
 )brace
 id|icrbp_a_t
 suffix:semicolon
-macro_line|#endif /* _LANGUAGE_C */
+macro_line|#endif /* !__ASSEMBLY__ */
 multiline_comment|/*&n; * A couple of defines to go with the above structure.&n; */
 DECL|macro|ICRBP_A_CERR_SHFT
 mdefine_line|#define ICRBP_A_CERR_SHFT&t;54
 DECL|macro|ICRBP_A_ERR_MASK
 mdefine_line|#define ICRBP_A_ERR_MASK&t;0x3ff
-macro_line|#ifdef _LANGUAGE_C
+macro_line|#ifndef __ASSEMBLY__
 DECL|union|hubii_idsr
 r_typedef
 r_union
@@ -2188,8 +2188,8 @@ DECL|typedef|hubii_idsr_t
 )brace
 id|hubii_idsr_t
 suffix:semicolon
-macro_line|#endif /* LANGUAGE_C */
-multiline_comment|/* &n; * IO BTE Length/Status (IIO_IBLS) register bit field definitions&n; */
+macro_line|#endif /* !__ASSEMBLY__ */
+multiline_comment|/*&n; * IO BTE Length/Status (IIO_IBLS) register bit field definitions&n; */
 DECL|macro|IBLS_BUSY
 mdefine_line|#define IBLS_BUSY&t;&t;(0x1 &lt;&lt; 20)
 DECL|macro|IBLS_ERROR_SHFT
@@ -2223,15 +2223,15 @@ mdefine_line|#define HUB_WIDGET_ID_MIN&t;0x8
 DECL|macro|HUB_WIDGET_ID_MAX
 mdefine_line|#define HUB_WIDGET_ID_MAX&t;0xf
 DECL|macro|HUB_WIDGET_PART_NUM
-mdefine_line|#define HUB_WIDGET_PART_NUM&t;0xc101&t;
+mdefine_line|#define HUB_WIDGET_PART_NUM&t;0xc101
 DECL|macro|MAX_HUBS_PER_XBOW
 mdefine_line|#define MAX_HUBS_PER_XBOW&t;2
-multiline_comment|/* &n; * Get a hub&squot;s widget id from widget control register &n; */
+multiline_comment|/*&n; * Get a hub&squot;s widget id from widget control register&n; */
 DECL|macro|IIO_WCR_WID_GET
-mdefine_line|#define IIO_WCR_WID_GET(nasid)&t;(REMOTE_HUB_L(nasid, III_WCR) &amp; 0xf) 
+mdefine_line|#define IIO_WCR_WID_GET(nasid)&t;(REMOTE_HUB_L(nasid, III_WCR) &amp; 0xf)
 DECL|macro|IIO_WST_ERROR_MASK
 mdefine_line|#define IIO_WST_ERROR_MASK&t;(UINT64_CAST 1 &lt;&lt; 32) /* Widget status error */
-multiline_comment|/*&n; * Number of credits Hub widget has while sending req/response to&n; * xbow. &n; * Value of 3 is required by Xbow 1.1&n; * We may be able to increase this to 4 with Xbow 1.2.&n; */
+multiline_comment|/*&n; * Number of credits Hub widget has while sending req/response to&n; * xbow.&n; * Value of 3 is required by Xbow 1.1&n; * We may be able to increase this to 4 with Xbow 1.2.&n; */
 DECL|macro|HUBII_XBOW_CREDIT
 mdefine_line|#define       HUBII_XBOW_CREDIT       3
 DECL|macro|HUBII_XBOW_REV2_CREDIT

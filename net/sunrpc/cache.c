@@ -14,6 +14,7 @@ macro_line|#include &lt;linux/poll.h&gt;
 macro_line|#include &lt;linux/seq_file.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/net.h&gt;
+macro_line|#include &lt;linux/workqueue.h&gt;
 macro_line|#include &lt;asm/ioctls.h&gt;
 macro_line|#include &lt;linux/sunrpc/types.h&gt;
 macro_line|#include &lt;linux/sunrpc/cache.h&gt;
@@ -516,6 +517,27 @@ r_struct
 id|file_operations
 id|cache_flush_operations
 suffix:semicolon
+r_static
+r_void
+id|do_cache_clean
+c_func
+(paren
+r_void
+op_star
+id|data
+)paren
+suffix:semicolon
+r_static
+id|DECLARE_WORK
+c_func
+(paren
+id|cache_cleaner
+comma
+id|do_cache_clean
+comma
+l_int|NULL
+)paren
+suffix:semicolon
 DECL|function|cache_register
 r_void
 id|cache_register
@@ -736,6 +758,14 @@ op_amp
 id|cache_list_lock
 )paren
 suffix:semicolon
+multiline_comment|/* start the cleaning process */
+id|schedule_work
+c_func
+(paren
+op_amp
+id|cache_cleaner
+)paren
+suffix:semicolon
 )brace
 DECL|function|cache_unregister
 r_int
@@ -848,6 +878,31 @@ c_func
 id|cd-&gt;name
 comma
 id|proc_net_rpc
+)paren
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|list_empty
+c_func
+(paren
+op_amp
+id|cache_list
+)paren
+)paren
+(brace
+multiline_comment|/* module must be being unloaded so its safe to kill the worker */
+id|cancel_delayed_work
+c_func
+(paren
+op_amp
+id|cache_cleaner
+)paren
+suffix:semicolon
+id|flush_scheduled_work
+c_func
+(paren
 )paren
 suffix:semicolon
 )brace
@@ -1222,6 +1277,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|atomic_read
 c_func
 (paren
@@ -1229,7 +1285,7 @@ op_amp
 id|ch-&gt;refcnt
 )paren
 )paren
-r_continue
+r_break
 suffix:semicolon
 )brace
 r_if
@@ -1306,6 +1362,69 @@ id|cache_list_lock
 suffix:semicolon
 r_return
 id|rv
+suffix:semicolon
+)brace
+multiline_comment|/*&n; * We want to regularly clean the cache, so we need to schedule some work ...&n; */
+DECL|function|do_cache_clean
+r_static
+r_void
+id|do_cache_clean
+c_func
+(paren
+r_void
+op_star
+id|data
+)paren
+(brace
+r_int
+id|delay
+op_assign
+l_int|5
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|cache_clean
+c_func
+(paren
+)paren
+op_eq
+op_minus
+l_int|1
+)paren
+id|delay
+op_assign
+l_int|30
+op_star
+id|HZ
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|list_empty
+c_func
+(paren
+op_amp
+id|cache_list
+)paren
+)paren
+id|delay
+op_assign
+l_int|0
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|delay
+)paren
+id|schedule_delayed_work
+c_func
+(paren
+op_amp
+id|cache_cleaner
+comma
+id|delay
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/* &n; * Clean all caches promptly.  This just calls cache_clean&n; * repeatedly until we are sure that every cache has had a chance to &n; * be fully cleaned&n; */
@@ -4896,6 +5015,28 @@ comma
 id|pbuf
 )paren
 suffix:semicolon
+id|ifdebug
+c_func
+(paren
+id|CACHE
+)paren
+id|seq_printf
+c_func
+(paren
+id|m
+comma
+l_string|&quot;# expiry=%ld refcnt=%d&bslash;n&quot;
+comma
+id|cp-&gt;expiry_time
+comma
+id|atomic_read
+c_func
+(paren
+op_amp
+id|cp-&gt;refcnt
+)paren
+)paren
+suffix:semicolon
 id|cache_get
 c_func
 (paren
@@ -4915,9 +5056,16 @@ comma
 l_int|NULL
 )paren
 )paren
-r_return
-l_int|0
+multiline_comment|/* cache_check does a cache_put on failure */
+id|seq_printf
+c_func
+(paren
+id|m
+comma
+l_string|&quot;# &quot;
+)paren
 suffix:semicolon
+r_else
 id|cache_put
 c_func
 (paren

@@ -1,15 +1,18 @@
 multiline_comment|/*&n; * Copyright 2001 MontaVista Software Inc.&n; * Author: Jun Sun, jsun@mvista.com or jsun@junsun.net&n; *&n; *  arch/mips/ddb5xxx/ddb5477/irq.c&n; *     The irq setup and misc routines for DDB5476.&n; *&n; * This program is free software; you can redistribute  it and/or modify it&n; * under  the terms of  the GNU General  Public License as published by the&n; * Free Software Foundation;  either version 2 of the  License, or (at your&n; * option) any later version.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/irq.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/ptrace.h&gt;
+macro_line|#include &lt;asm/i8259.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/mipsregs.h&gt;
+macro_line|#include &lt;asm/debug.h&gt;
+macro_line|#include &lt;asm/addrspace.h&gt;
+macro_line|#include &lt;asm/bootinfo.h&gt;
 macro_line|#include &lt;asm/ddb5xxx/ddb5xxx.h&gt;
-multiline_comment|/* [jsun] sooner or later we should move this debug stuff to MIPS common */
-macro_line|#include &lt;asm/ddb5xxx/debug.h&gt;
-multiline_comment|/*&n; * IRQ mapping&n; *&n; *  0-7: 8 CPU interrupts&n; *&t;0 -&t;software interrupt 0&n; *&t;1 - &t;software interrupt 1&n; *&t;2 - &t;most Vrc5477 interrupts are routed to this pin&n; *&t;3 - &t;(optional) some other interrupts routed to this pin for debugg&n; *&t;4 - &t;not used&n; *&t;5 - &t;not used&n; *&t;6 - &t;not used&n; *&t;7 - &t;cpu timer (used by default)&n; *&n; *  8-39: 32 Vrc5477 interrupt sources&n; *&t;(refer to the Vrc5477 manual)&t;&n; */
+multiline_comment|/*&n; * IRQ mapping&n; *&n; *  0-7: 8 CPU interrupts&n; *&t;0 -&t;software interrupt 0&n; *&t;1 - &t;software interrupt 1&n; *&t;2 - &t;most Vrc5477 interrupts are routed to this pin&n; *&t;3 - &t;(optional) some other interrupts routed to this pin for debugg&n; *&t;4 - &t;not used&n; *&t;5 - &t;not used&n; *&t;6 - &t;not used&n; *&t;7 - &t;cpu timer (used by default)&n; *&n; *  8-39: 32 Vrc5477 interrupt sources&n; *&t;(refer to the Vrc5477 manual)&n; */
 DECL|macro|PCI0
 mdefine_line|#define&t;PCI0&t;&t;&t;DDB_INTPPES0
 DECL|macro|PCI1
@@ -131,6 +134,41 @@ c_func
 r_void
 )paren
 suffix:semicolon
+r_extern
+r_int
+id|setup_irq
+c_func
+(paren
+r_int
+r_int
+id|irq
+comma
+r_struct
+id|irqaction
+op_star
+id|irqaction
+)paren
+suffix:semicolon
+DECL|variable|irq_cascade
+r_static
+r_struct
+id|irqaction
+id|irq_cascade
+op_assign
+(brace
+id|no_action
+comma
+l_int|0
+comma
+l_int|0
+comma
+l_string|&quot;cascade&quot;
+comma
+l_int|NULL
+comma
+l_int|NULL
+)brace
+suffix:semicolon
 r_void
 DECL|function|ddb5477_irq_setup
 id|ddb5477_irq_setup
@@ -139,7 +177,7 @@ c_func
 r_void
 )paren
 (brace
-id|MIPS_DEBUG
+id|db_run
 c_func
 (paren
 id|printk
@@ -149,7 +187,7 @@ l_string|&quot;ddb5477_irq_setup invoked.&bslash;n&quot;
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* by default, we disable all interrupts and route all vrc5477 &n;&t; * interrupts to pin 0 (irq 2) */
+multiline_comment|/* by default, we disable all interrupts and route all vrc5477&n;&t; * interrupts to pin 0 (irq 2) */
 id|ddb_out32
 c_func
 (paren
@@ -182,13 +220,13 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-id|clear_cp0_status
+id|clear_c0_status
 c_func
 (paren
 l_int|0xff00
 )paren
 suffix:semicolon
-id|set_cp0_status
+id|set_c0_status
 c_func
 (paren
 l_int|0x0400
@@ -219,6 +257,26 @@ comma
 id|LEVEL_SENSE
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|mips_machtype
+op_eq
+id|MACH_NEC_ROCKHOPPERII
+)paren
+id|set_pci_int_attr
+c_func
+(paren
+id|PCI0
+comma
+id|INTC
+comma
+id|ACTIVE_HIGH
+comma
+id|LEVEL_SENSE
+)paren
+suffix:semicolon
+r_else
 id|set_pci_int_attr
 c_func
 (paren
@@ -315,7 +373,7 @@ comma
 id|LEVEL_SENSE
 )paren
 suffix:semicolon
-multiline_comment|/* &n;&t; * for debugging purpose, we enable several error interrupts&n;&t; * and route them to pin 1. (IP3) &n;&t; */
+multiline_comment|/*&n;&t; * for debugging purpose, we enable several error interrupts&n;&t; * and route them to pin 1. (IP3)&n;&t; */
 multiline_comment|/* cpu parity check - 0 */
 id|ll_vrc5477_irq_route
 c_func
@@ -422,16 +480,44 @@ l_int|31
 )paren
 suffix:semicolon
 multiline_comment|/* init all controllers */
+id|init_i8259_irqs
+c_func
+(paren
+)paren
+suffix:semicolon
 id|mips_cpu_irq_init
 c_func
 (paren
-l_int|0
+id|CPU_IRQ_BASE
 )paren
 suffix:semicolon
 id|vrc5477_irq_init
 c_func
 (paren
-l_int|8
+id|VRC5477_IRQ_BASE
+)paren
+suffix:semicolon
+multiline_comment|/* setup cascade interrupts */
+id|setup_irq
+c_func
+(paren
+id|VRC5477_IRQ_BASE
+op_plus
+id|VRC5477_I8259_CASCADE
+comma
+op_amp
+id|irq_cascade
+)paren
+suffix:semicolon
+id|setup_irq
+c_func
+(paren
+id|CPU_IRQ_BASE
+op_plus
+id|CPU_VRC5477_CASCADE
+comma
+op_amp
+id|irq_cascade
 )paren
 suffix:semicolon
 multiline_comment|/* hook up the first-level interrupt handler */
@@ -442,6 +528,70 @@ l_int|0
 comma
 id|ddb5477_handle_int
 )paren
+suffix:semicolon
+)brace
+DECL|function|i8259_interrupt_ack
+id|u8
+id|i8259_interrupt_ack
+c_func
+(paren
+r_void
+)paren
+(brace
+id|u8
+id|irq
+suffix:semicolon
+id|u32
+id|reg
+suffix:semicolon
+multiline_comment|/* Set window 0 for interrupt acknowledge */
+id|reg
+op_assign
+id|ddb_in32
+c_func
+(paren
+id|DDB_PCIINIT10
+)paren
+suffix:semicolon
+id|ddb_set_pmr
+c_func
+(paren
+id|DDB_PCIINIT10
+comma
+id|DDB_PCICMD_IACK
+comma
+l_int|0
+comma
+id|DDB_PCI_ACCESS_32
+)paren
+suffix:semicolon
+id|irq
+op_assign
+op_star
+(paren
+r_volatile
+id|u8
+op_star
+)paren
+id|KSEG1ADDR
+c_func
+(paren
+id|DDB_PCI_IACK_BASE
+)paren
+suffix:semicolon
+id|ddb_out32
+c_func
+(paren
+id|DDB_PCIINIT10
+comma
+id|reg
+)paren
+suffix:semicolon
+multiline_comment|/* i8259.c set the base vector to be 0x0 */
+r_return
+id|irq
+op_plus
+id|I8259_IRQ_BASE
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * the first level int-handler will jump here if it is a vrc5477 irq&n; */
@@ -459,21 +609,6 @@ op_star
 id|regs
 )paren
 (brace
-r_extern
-r_int
-r_int
-id|do_IRQ
-c_func
-(paren
-r_int
-id|irq
-comma
-r_struct
-id|pt_regs
-op_star
-id|regs
-)paren
-suffix:semicolon
 id|u32
 id|intStatus
 suffix:semicolon
@@ -483,7 +618,7 @@ suffix:semicolon
 id|u32
 id|i
 suffix:semicolon
-id|MIPS_ASSERT
+id|db_assert
 c_func
 (paren
 id|ddb_in32
@@ -495,7 +630,7 @@ op_eq
 l_int|0
 )paren
 suffix:semicolon
-id|MIPS_ASSERT
+id|db_assert
 c_func
 (paren
 id|ddb_in32
@@ -507,7 +642,7 @@ op_eq
 l_int|0
 )paren
 suffix:semicolon
-id|MIPS_ASSERT
+id|db_assert
 c_func
 (paren
 id|ddb_in32
@@ -519,7 +654,7 @@ op_eq
 l_int|0
 )paren
 suffix:semicolon
-id|MIPS_ASSERT
+id|db_assert
 c_func
 (paren
 id|ddb_in32
@@ -543,7 +678,7 @@ op_ne
 l_int|0
 )paren
 (brace
-macro_line|#if defined(CONFIG_LL_DEBUG)
+macro_line|#if defined(CONFIG_RUNTIME_DEBUG)
 id|vrc5477_show_int_regs
 c_func
 (paren
@@ -553,7 +688,7 @@ macro_line|#endif
 id|panic
 c_func
 (paren
-l_string|&quot;error interrupt has happened.&bslash;n&quot;
+l_string|&quot;error interrupt has happened.&quot;
 )paren
 suffix:semicolon
 )brace
@@ -565,6 +700,49 @@ c_func
 id|DDB_INT0STAT
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|mips_machtype
+op_eq
+id|MACH_NEC_ROCKHOPPERII
+)paren
+(brace
+multiline_comment|/* check for i8259 interrupts */
+r_if
+c_cond
+(paren
+id|intStatus
+op_amp
+(paren
+l_int|1
+op_lshift
+id|VRC5477_I8259_CASCADE
+)paren
+)paren
+(brace
+r_int
+id|i8259_irq
+op_assign
+id|i8259_interrupt_ack
+c_func
+(paren
+)paren
+suffix:semicolon
+id|do_IRQ
+c_func
+(paren
+id|I8259_IRQ_BASE
+op_plus
+id|i8259_irq
+comma
+id|regs
+)paren
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
+)brace
 r_for
 c_loop
 (paren
@@ -600,12 +778,14 @@ id|bitmask
 id|do_IRQ
 c_func
 (paren
-l_int|8
+id|VRC5477_IRQ_BASE
 op_plus
 id|i
 comma
 id|regs
 )paren
+suffix:semicolon
+r_return
 suffix:semicolon
 )brace
 )brace

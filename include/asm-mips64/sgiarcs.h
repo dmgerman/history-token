@@ -1,8 +1,9 @@
-multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * ARC firmware interface defines.&n; *&n; * Copyright (C) 1996 David S. Miller (dm@engr.sgi.com)&n; * Copyright (C) 1999 Ralf Baechle (ralf@gnu.org)&n; * Copyright (C) 1999 Silicon Graphics, Inc.&n; */
+multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * ARC firmware interface defines.&n; *&n; * Copyright (C) 1996 David S. Miller (dm@engr.sgi.com)&n; * Copyright (C) 1999, 2001 Ralf Baechle (ralf@gnu.org)&n; * Copyright (C) 1999 Silicon Graphics, Inc.&n; */
 macro_line|#ifndef _ASM_SGIARCS_H
 DECL|macro|_ASM_SGIARCS_H
 mdefine_line|#define _ASM_SGIARCS_H
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;asm/types.h&gt;
 macro_line|#include &lt;asm/arc/types.h&gt;
 multiline_comment|/* Various ARCS error codes. */
 DECL|macro|PROM_ESUCCESS
@@ -562,20 +563,18 @@ id|linux_bigint
 (brace
 macro_line|#ifdef __MIPSEL__
 DECL|member|lo
-r_int
-r_int
+id|u32
 id|lo
 suffix:semicolon
 DECL|member|hi
-r_int
+id|s32
 id|hi
 suffix:semicolon
 macro_line|#else /* !(__MIPSEL__) */
-r_int
+id|s32
 id|hi
 suffix:semicolon
-r_int
-r_int
+id|u32
 id|lo
 suffix:semicolon
 macro_line|#endif
@@ -1276,23 +1275,23 @@ multiline_comment|/* Max # of symbols. */
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * Macros for calling a 32-bit ARC implementation from 64-bit code&n; */
-macro_line|#ifdef CONFIG_ARC32
+macro_line|#if defined(CONFIG_MIPS64) &amp;&amp; defined(CONFIG_ARC32)
 DECL|macro|__arc_clobbers
-mdefine_line|#define __arc_clobbers&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;$2&quot;,&quot;$3&quot;,&quot;$4&quot;,&quot;$5&quot;,&quot;$6&quot;,&quot;$7&quot;,&quot;$8&quot;,&quot;$9&quot;,&quot;$10&quot;,&quot;$11&quot;,&t;&t;&bslash;&n;&t;&quot;$12&quot;,&quot;$13&quot;,&quot;$14&quot;,&quot;$15&quot;,&quot;$16&quot;,&quot;$24&quot;,&quot;25&quot;,&quot;$31&quot;
+mdefine_line|#define __arc_clobbers&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;$2&quot;,&quot;$3&quot; /* ... */, &quot;$8&quot;,&quot;$9&quot;,&quot;$10&quot;,&quot;$11&quot;,&t;&t;&t;&bslash;&n;&t;&quot;$12&quot;,&quot;$13&quot;,&quot;$14&quot;,&quot;$15&quot;,&quot;$16&quot;,&quot;$24&quot;,&quot;25&quot;,&quot;$31&quot;
 DECL|macro|ARC_CALL0
-mdefine_line|#define ARC_CALL0(dest)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;({&t;long __res;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;long __vec = (long) romvec-&gt;dest;&t;&t;&t;&t;&bslash;&n;&t;__asm__ __volatile__(&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;dsubu&bslash;t$29, 32&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;jalr&bslash;t%1&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;daddu&bslash;t$29, 32&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;move&bslash;t%0, $2&quot;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;: &quot;=r&quot; (__res), &quot;=r&quot; (__vec)&t;&t;&t;&t;&t;&bslash;&n;&t;: &quot;1&quot; (__vec)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;: __arc_clobbers);&t;&t;&t;&t;&t;&t;&bslash;&n;&t;(unsigned long) __res;&t;&t;&t;&t;&t;&t;&bslash;&n;})
+mdefine_line|#define ARC_CALL0(dest)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;({&t;long __res;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;long __vec = (long) romvec-&gt;dest;&t;&t;&t;&t;&bslash;&n;&t;__asm__ __volatile__(&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;dsubu&bslash;t$29, 32&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;jalr&bslash;t%1&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;daddu&bslash;t$29, 32&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;move&bslash;t%0, $2&quot;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;: &quot;=r&quot; (__res), &quot;=r&quot; (__vec)&t;&t;&t;&t;&t;&bslash;&n;&t;: &quot;1&quot; (__vec)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;: __arc_clobbers, &quot;$4&quot;,&quot;$5&quot;,&quot;$6&quot;,&quot;$7&quot;);&t;&t;&t;&t;&bslash;&n;&t;(unsigned long) __res;&t;&t;&t;&t;&t;&t;&bslash;&n;})
 DECL|macro|ARC_CALL1
-mdefine_line|#define ARC_CALL1(dest,a1)&t;&t;&t;&t;&t;&t;&bslash;&n;({&t;long __res;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;register signed int __a1 __asm__(&quot;$4&quot;) = (int) (long) (a1);&t;&bslash;&n;&t;long __vec = (long) romvec-&gt;dest;&t;&t;&t;&t;&bslash;&n;&t;__asm__ __volatile__(&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;dsubu&bslash;t$29, 32&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;jalr&bslash;t%1&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;daddu&bslash;t$29, 32&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;move&bslash;t%0, $2&quot;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;: &quot;=r&quot; (__res), &quot;=r&quot; (__vec)&t;&t;&t;&t;&t;&bslash;&n;&t;: &quot;1&quot; (__vec), &quot;r&quot; (__a1)&t;&t;&t;&t;&t;&bslash;&n;&t;: __arc_clobbers);&t;&t;&t;&t;&t;&t;&bslash;&n;&t;(unsigned long) __res;&t;&t;&t;&t;&t;&t;&bslash;&n;})
+mdefine_line|#define ARC_CALL1(dest,a1)&t;&t;&t;&t;&t;&t;&bslash;&n;({&t;long __res;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;register signed int __a1 __asm__(&quot;$4&quot;) = (int) (long) (a1);&t;&bslash;&n;&t;long __vec = (long) romvec-&gt;dest;&t;&t;&t;&t;&bslash;&n;&t;__asm__ __volatile__(&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;dsubu&bslash;t$29, 32&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;jalr&bslash;t%1&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;daddu&bslash;t$29, 32&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;move&bslash;t%0, $2&quot;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;: &quot;=r&quot; (__res), &quot;=r&quot; (__vec)&t;&t;&t;&t;&t;&bslash;&n;&t;: &quot;1&quot; (__vec), &quot;r&quot; (__a1)&t;&t;&t;&t;&t;&bslash;&n;&t;: __arc_clobbers, &quot;$5&quot;,&quot;$6&quot;,&quot;$7&quot;);&t;&t;&t;&t;&bslash;&n;&t;(unsigned long) __res;&t;&t;&t;&t;&t;&t;&bslash;&n;})
 DECL|macro|ARC_CALL2
-mdefine_line|#define ARC_CALL2(dest,a1,a2)&t;&t;&t;&t;&t;&t;&bslash;&n;({&t;long __res;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;register signed int __a1 __asm__(&quot;$4&quot;) = (int) (long) (a1);&t;&bslash;&n;&t;register signed int __a2 __asm__(&quot;$5&quot;) = (int) (long) (a2);&t;&bslash;&n;&t;long __vec = (long) romvec-&gt;dest;&t;&t;&t;&t;&bslash;&n;&t;__asm__ __volatile__(&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;dsubu&bslash;t$29, 32&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;jalr&bslash;t%1&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;daddu&bslash;t$29, 32&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;move&bslash;t%0, $2&quot;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;: &quot;=r&quot; (__res), &quot;=r&quot; (__vec)&t;&t;&t;&t;&t;&bslash;&n;&t;: &quot;1&quot; (__vec), &quot;r&quot; (__a1), &quot;r&quot; (__a2)&t;&t;&t;&t;&bslash;&n;&t;: __arc_clobbers);&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__res;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
+mdefine_line|#define ARC_CALL2(dest,a1,a2)&t;&t;&t;&t;&t;&t;&bslash;&n;({&t;long __res;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;register signed int __a1 __asm__(&quot;$4&quot;) = (int) (long) (a1);&t;&bslash;&n;&t;register signed int __a2 __asm__(&quot;$5&quot;) = (int) (long) (a2);&t;&bslash;&n;&t;long __vec = (long) romvec-&gt;dest;&t;&t;&t;&t;&bslash;&n;&t;__asm__ __volatile__(&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;dsubu&bslash;t$29, 32&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;jalr&bslash;t%1&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;daddu&bslash;t$29, 32&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;move&bslash;t%0, $2&quot;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;: &quot;=r&quot; (__res), &quot;=r&quot; (__vec)&t;&t;&t;&t;&t;&bslash;&n;&t;: &quot;1&quot; (__vec), &quot;r&quot; (__a1), &quot;r&quot; (__a2)&t;&t;&t;&t;&bslash;&n;&t;: __arc_clobbers, &quot;$6&quot;,&quot;$7&quot;);&t;&t;&t;&t;&t;&bslash;&n;&t;__res;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
 DECL|macro|ARC_CALL3
-mdefine_line|#define ARC_CALL3(dest,a1,a2,a3)&t;&t;&t;&t;&t;&bslash;&n;({&t;long __res;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;register signed int __a1 __asm__(&quot;$4&quot;) = (int) (long) (a1);&t;&bslash;&n;&t;register signed int __a2 __asm__(&quot;$5&quot;) = (int) (long) (a2);&t;&bslash;&n;&t;register signed int __a3 __asm__(&quot;$6&quot;) = (int) (long) (a3);&t;&bslash;&n;&t;long __vec = (long) romvec-&gt;dest;&t;&t;&t;&t;&bslash;&n;&t;__asm__ __volatile__(&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;dsubu&bslash;t$29, 32&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;jalr&bslash;t%1&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;daddu&bslash;t$29, 32&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;move&bslash;t%0, $2&quot;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;: &quot;=r&quot; (__res), &quot;=r&quot; (__vec)&t;&t;&t;&t;&t;&bslash;&n;&t;: &quot;1&quot; (__vec), &quot;r&quot; (__a1), &quot;r&quot; (__a2), &quot;r&quot; (__a3)&t;&t;&bslash;&n;&t;: __arc_clobbers);&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__res;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
+mdefine_line|#define ARC_CALL3(dest,a1,a2,a3)&t;&t;&t;&t;&t;&bslash;&n;({&t;long __res;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;register signed int __a1 __asm__(&quot;$4&quot;) = (int) (long) (a1);&t;&bslash;&n;&t;register signed int __a2 __asm__(&quot;$5&quot;) = (int) (long) (a2);&t;&bslash;&n;&t;register signed int __a3 __asm__(&quot;$6&quot;) = (int) (long) (a3);&t;&bslash;&n;&t;long __vec = (long) romvec-&gt;dest;&t;&t;&t;&t;&bslash;&n;&t;__asm__ __volatile__(&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;dsubu&bslash;t$29, 32&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;jalr&bslash;t%1&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;daddu&bslash;t$29, 32&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;move&bslash;t%0, $2&quot;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;: &quot;=r&quot; (__res), &quot;=r&quot; (__vec)&t;&t;&t;&t;&t;&bslash;&n;&t;: &quot;1&quot; (__vec), &quot;r&quot; (__a1), &quot;r&quot; (__a2), &quot;r&quot; (__a3)&t;&t;&bslash;&n;&t;: __arc_clobbers, &quot;$7&quot;);&t;&t;&t;&t;&t;&bslash;&n;&t;__res;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
 DECL|macro|ARC_CALL4
 mdefine_line|#define ARC_CALL4(dest,a1,a2,a3,a4)&t;&t;&t;&t;&t;&bslash;&n;({&t;long __res;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;register signed int __a1 __asm__(&quot;$4&quot;) = (int) (long) (a1);&t;&bslash;&n;&t;register signed int __a2 __asm__(&quot;$5&quot;) = (int) (long) (a2);&t;&bslash;&n;&t;register signed int __a3 __asm__(&quot;$6&quot;) = (int) (long) (a3);&t;&bslash;&n;&t;register signed int __a4 __asm__(&quot;$7&quot;) = (int) (long) (a4);&t;&bslash;&n;&t;long __vec = (long) romvec-&gt;dest;&t;&t;&t;&t;&bslash;&n;&t;__asm__ __volatile__(&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;dsubu&bslash;t$29, 32&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;jalr&bslash;t%1&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;daddu&bslash;t$29, 32&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;move&bslash;t%0, $2&quot;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;: &quot;=r&quot; (__res), &quot;=r&quot; (__vec)&t;&t;&t;&t;&t;&bslash;&n;&t;: &quot;1&quot; (__vec), &quot;r&quot; (__a1), &quot;r&quot; (__a2), &quot;r&quot; (__a3), &t;&t;&bslash;&n;&t;  &quot;r&quot; (__a4)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;: __arc_clobbers);&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__res;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
 DECL|macro|ARC_CALL5
 mdefine_line|#define ARC_CALL5(dest,a1,a2,a3,a4,a5)&t;&t;&t;&t;&t;&bslash;&n;({&t;long __res;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;register signed int __a1 __asm__(&quot;$4&quot;) = (int) (long) (a1);&t;&bslash;&n;&t;register signed int __a2 __asm__(&quot;$5&quot;) = (int) (long) (a2);&t;&bslash;&n;&t;register signed int __a3 __asm__(&quot;$6&quot;) = (int) (long) (a3);&t;&bslash;&n;&t;register signed int __a4 __asm__(&quot;$7&quot;) = (int) (long) (a4);&t;&bslash;&n;&t;register signed int __a5 = (a5);&t;&t;&t;&t;&bslash;&n;&t;long __vec = (long) romvec-&gt;dest;&t;&t;&t;&t;&bslash;&n;&t;__asm__ __volatile__(&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;dsubu&bslash;t$29, 32&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;sw&bslash;t%6, 16($29)&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;jalr&bslash;t%1&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;daddu&bslash;t$29, 32&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;move&bslash;t%0, $2&quot;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;: &quot;=r&quot; (__res), &quot;=r&quot; (__vec)&t;&t;&t;&t;&t;&bslash;&n;&t;: &quot;1&quot; (__vec),&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;  &quot;r&quot; (__a1), &quot;r&quot; (__a2), &quot;r&quot; (__a3), &quot;r&quot; (__a4),&t;&t;&bslash;&n;&t;  &quot;r&quot; (__a5)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;: __arc_clobbers);&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__res;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
-macro_line|#endif /* CONFIG_ARC32 */
-macro_line|#ifdef CONFIG_ARC64
+macro_line|#endif /* defined(CONFIG_MIPS64) &amp;&amp; defined(CONFIG_ARC32) */
+macro_line|#if (defined(CONFIG_MIPS32) &amp;&amp; defined(CONFIG_ARC32)) ||&t;&t;&bslash;&n;    (defined(CONFIG_MIPS64) &amp;&amp; defined(CONFIG_ARC64))
 DECL|macro|ARC_CALL0
 mdefine_line|#define ARC_CALL0(dest)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;({&t;long __res;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;long (*__vec)(void) = (void *) romvec-&gt;dest;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__res = __vec();&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__res;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
 DECL|macro|ARC_CALL1
@@ -1305,6 +1304,6 @@ DECL|macro|ARC_CALL4
 mdefine_line|#define ARC_CALL4(dest,a1,a2,a3,a4)&t;&t;&t;&t;&t;&bslash;&n;({&t;long __res;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;long __a1 = (long) (a1);&t;&t;&t;&t;&t;&bslash;&n;&t;long __a2 = (long) (a2);&t;&t;&t;&t;&t;&bslash;&n;&t;long __a3 = (long) (a3);&t;&t;&t;&t;&t;&bslash;&n;&t;long __a4 = (long) (a4);&t;&t;&t;&t;&t;&bslash;&n;&t;long (*__vec)(long, long, long, long) = (void *) romvec-&gt;dest;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__res = __vec(__a1, __a2, __a3, __a4);&t;&t;&t;&t;&bslash;&n;&t;__res;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
 DECL|macro|ARC_CALL5
 mdefine_line|#define ARC_CALL5(dest,a1,a2,a3,a4,a5)&t;&t;&t;&t;&t;&bslash;&n;({&t;long __res;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;long __a1 = (long) (a1);&t;&t;&t;&t;&t;&bslash;&n;&t;long __a2 = (long) (a2);&t;&t;&t;&t;&t;&bslash;&n;&t;long __a3 = (long) (a3);&t;&t;&t;&t;&t;&bslash;&n;&t;long __a4 = (long) (a4);&t;&t;&t;&t;&t;&bslash;&n;&t;long __a5 = (long) (a5);&t;&t;&t;&t;&t;&bslash;&n;&t;long (*__vec)(long, long, long, long, long);&t;&t;&t;&bslash;&n;&t;__vec = (void *) romvec-&gt;dest;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__res = __vec(__a1, __a2, __a3, __a4, __a5);&t;&t;&t;&bslash;&n;&t;__res;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
-macro_line|#endif /* CONFIG_ARC64 */
+macro_line|#endif /* both kernel and ARC either 32-bit or 64-bit */
 macro_line|#endif /* _ASM_SGIARCS_H */
 eof

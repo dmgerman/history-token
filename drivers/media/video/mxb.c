@@ -3,10 +3,6 @@ DECL|macro|DEBUG_VARIABLE
 mdefine_line|#define DEBUG_VARIABLE debug
 macro_line|#include &lt;media/saa7146_vv.h&gt;
 macro_line|#include &lt;linux/video_decoder.h&gt;&t;/* for saa7111a */
-macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,5,51)
-DECL|macro|KBUILD_MODNAME
-mdefine_line|#define KBUILD_MODNAME mxb
-macro_line|#endif
 macro_line|#include &quot;mxb.h&quot;
 macro_line|#include &quot;tea6415c.h&quot;
 macro_line|#include &quot;tea6420.h&quot;

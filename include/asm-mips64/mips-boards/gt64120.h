@@ -52,7 +52,7 @@ mdefine_line|#define GT_PCI1M1LD_OFS&t;&t;    0x0b0
 DECL|macro|GT_PCI1M1HD_OFS
 mdefine_line|#define GT_PCI1M1HD_OFS&t;&t;    0x0b8
 DECL|macro|GT_SCS0LD_OFS
-mdefine_line|#define GT_SCS0LD_OFS&t;&t;    0x400&t;
+mdefine_line|#define GT_SCS0LD_OFS&t;&t;    0x400
 DECL|macro|GT_SCS0HD_OFS
 mdefine_line|#define GT_SCS0HD_OFS&t;&t;    0x404
 DECL|macro|GT_SCS1LD_OFS

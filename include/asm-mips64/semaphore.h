@@ -1,7 +1,8 @@
-multiline_comment|/*&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1996  Linus Torvalds&n; * Copyright (C) 1998, 1999, 2000, 2001  Ralf Baechle&n; * Copyright (C) 1999, 2000, 2001  Silicon Graphics, Inc.&n; */
+multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1996  Linus Torvalds&n; * Copyright (C) 1998, 99, 2000, 01  Ralf Baechle&n; * Copyright (C) 1999, 2000, 01  Silicon Graphics, Inc.&n; * Copyright (C) 2000, 01 MIPS Technologies, Inc.&n; */
 macro_line|#ifndef _ASM_SEMAPHORE_H
 DECL|macro|_ASM_SEMAPHORE_H
 mdefine_line|#define _ASM_SEMAPHORE_H
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
@@ -39,6 +40,17 @@ id|__magic
 suffix:semicolon
 macro_line|#endif
 )brace
+id|__attribute__
+c_func
+(paren
+(paren
+id|aligned
+c_func
+(paren
+l_int|8
+)paren
+)paren
+)paren
 suffix:semicolon
 macro_line|#if WAITQUEUE_DEBUG
 DECL|macro|__SEM_DEBUG_INIT
@@ -239,6 +251,7 @@ id|sem
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * Interruptible try to acquire a semaphore.  If we obtained&n; * it, return zero.  If we were interrupted, returns -EINTR&n; */
 DECL|function|down_interruptible
 r_static
 r_inline
@@ -289,7 +302,52 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * down_trylock returns 0 on success, 1 if we failed to get the lock.&n; *&n; * We must manipulate count and waking simultaneously and atomically.&n; * Here, we this by using ll/sc on the pair of 32-bit words.&n; *&n; * Pseudocode:&n; *&n; *   Decrement(sem-&gt;count)&n; *   If(sem-&gt;count &gt;=0) {&n; *&t;Return(SUCCESS)&t;&t;&t;// resource is free&n; *   } else {&n; *&t;If(sem-&gt;waking &lt;= 0) {&t;&t;// if no wakeup pending&n; *&t;   Increment(sem-&gt;count)&t;// undo decrement&n; *&t;   Return(FAILURE)&n; *      } else {&n; *&t;   Decrement(sem-&gt;waking)&t;// otherwise &quot;steal&quot; wakeup&n; *&t;   Return(SUCCESS)&n; *&t;}&n; *   }&n; */
+macro_line|#ifndef CONFIG_CPU_HAS_LLDSCD
+multiline_comment|/*&n; * Non-blockingly attempt to down() a semaphore.&n; * Returns zero if we acquired it&n; */
+DECL|function|down_trylock
+r_static
+r_inline
+r_int
+id|down_trylock
+c_func
+(paren
+r_struct
+id|semaphore
+op_star
+id|sem
+)paren
+(brace
+r_int
+id|ret
+op_assign
+l_int|0
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|atomic_dec_return
+c_func
+(paren
+op_amp
+id|sem-&gt;count
+)paren
+OL
+l_int|0
+)paren
+id|ret
+op_assign
+id|__down_trylock
+c_func
+(paren
+id|sem
+)paren
+suffix:semicolon
+r_return
+id|ret
+suffix:semicolon
+)brace
+macro_line|#else
+multiline_comment|/*&n; * down_trylock returns 0 on success, 1 if we failed to get the lock.&n; *&n; * We must manipulate count and waking simultaneously and atomically.&n; * Here, we do this by using lld/scd on the pair of 32-bit words.&n; *&n; * Pseudocode:&n; *&n; *   Decrement(sem-&gt;count)&n; *   If(sem-&gt;count &gt;=0) {&n; *&t;Return(SUCCESS)&t;&t;&t;// resource is free&n; *   } else {&n; *&t;If(sem-&gt;waking &lt;= 0) {&t;&t;// if no wakeup pending&n; *&t;   Increment(sem-&gt;count)&t;// undo decrement&n; *&t;   Return(FAILURE)&n; *      } else {&n; *&t;   Decrement(sem-&gt;waking)&t;// otherwise &quot;steal&quot; wakeup&n; *&t;   Return(SUCCESS)&n; *&t;}&n; *   }&n; */
 DECL|function|down_trylock
 r_static
 r_inline
@@ -326,19 +384,19 @@ c_func
 (paren
 l_string|&quot;.set&bslash;tmips3&bslash;t&bslash;t&bslash;t# down_trylock&bslash;n&quot;
 l_string|&quot;0:&bslash;tlld&bslash;t%1, %4&bslash;n&bslash;t&quot;
-l_string|&quot;&bslash;tdli&bslash;t%3, 0x0000000100000000&bslash;n&bslash;t&quot;
-l_string|&quot;&bslash;tdsubu&bslash;t%1, %3&bslash;n&bslash;t&quot;
-l_string|&quot;&bslash;tli&bslash;t%0, 0&bslash;n&bslash;t&quot;
-l_string|&quot;&bslash;tbgez&bslash;t%1, 2f&bslash;n&bslash;t&quot;
-l_string|&quot;&bslash;tsll&bslash;t%2, %1, 0&bslash;n&bslash;t&quot;
-l_string|&quot;&bslash;tblez&bslash;t%2, 1f&bslash;n&bslash;t&quot;
-l_string|&quot;&bslash;tdaddiu&bslash;t%1, %1, -1&bslash;n&bslash;t&quot;
-l_string|&quot;&bslash;tb&bslash;t2f&bslash;n&quot;
+l_string|&quot;dli&bslash;t%3, 0x0000000100000000&bslash;n&bslash;t&quot;
+l_string|&quot;dsubu&bslash;t%1, %3&bslash;n&bslash;t&quot;
+l_string|&quot;li&bslash;t%0, 0&bslash;n&bslash;t&quot;
+l_string|&quot;bgez&bslash;t%1, 2f&bslash;n&bslash;t&quot;
+l_string|&quot;sll&bslash;t%2, %1, 0&bslash;n&bslash;t&quot;
+l_string|&quot;blez&bslash;t%2, 1f&bslash;n&bslash;t&quot;
+l_string|&quot;daddiu&bslash;t%1, %1, -1&bslash;n&bslash;t&quot;
+l_string|&quot;b&bslash;t2f&bslash;n&quot;
 l_string|&quot;1:&bslash;tdaddu&bslash;t%1, %1, %3&bslash;n&bslash;t&quot;
-l_string|&quot;&bslash;tli&bslash;t%0, 1&bslash;n&quot;
+l_string|&quot;li&bslash;t%0, 1&bslash;n&quot;
 l_string|&quot;2:&bslash;tscd&bslash;t%1, %4&bslash;n&bslash;t&quot;
-l_string|&quot;&bslash;tbeqz&bslash;t%1, 0b&bslash;n&bslash;t&quot;
-l_string|&quot;&bslash;t.set&bslash;tmips0&quot;
+l_string|&quot;beqz&bslash;t%1, 0b&bslash;n&bslash;t&quot;
+l_string|&quot;.set&bslash;tmips0&quot;
 suffix:colon
 l_string|&quot;=&amp;r&quot;
 (paren
@@ -373,6 +431,7 @@ r_return
 id|ret
 suffix:semicolon
 )brace
+macro_line|#endif /* CONFIG_CPU_HAS_LLDSCD */
 multiline_comment|/*&n; * Note! This is subtle. We jump to wake people up only if&n; * the semaphore was negative (== somebody was waiting on it).&n; */
 DECL|function|up
 r_static

@@ -731,7 +731,7 @@ l_int|0
 suffix:semicolon
 id|tdevice
 OL
-l_int|0x100
+l_int|0xFF
 suffix:semicolon
 id|tdevice
 op_increment
@@ -807,7 +807,7 @@ l_int|0
 suffix:semicolon
 id|tdevice
 OL
-l_int|0x100
+l_int|0xFF
 suffix:semicolon
 id|tdevice
 op_increment

@@ -1986,13 +1986,26 @@ c_func
 (paren
 id|KERN_WARNING
 l_string|&quot;%u.%u.%u.%u sent an invalid ICMP &quot;
-l_string|&quot;error to a broadcast.&bslash;n&quot;
+l_string|&quot;type %u, code %u &quot;
+l_string|&quot;error to a broadcast: %u.%u.%u.%u on %s&bslash;n&quot;
 comma
 id|NIPQUAD
 c_func
 (paren
-id|skb-&gt;nh.iph-&gt;saddr
+id|iph-&gt;saddr
 )paren
+comma
+id|icmph-&gt;type
+comma
+id|icmph-&gt;code
+comma
+id|NIPQUAD
+c_func
+(paren
+id|iph-&gt;daddr
+)paren
+comma
+id|skb-&gt;dev-&gt;name
 )paren
 suffix:semicolon
 r_goto

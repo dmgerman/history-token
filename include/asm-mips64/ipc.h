@@ -1,7 +1,7 @@
 macro_line|#ifndef _ASM_IPC_H
 DECL|macro|_ASM_IPC_H
 mdefine_line|#define _ASM_IPC_H
-multiline_comment|/* &n; * These are used to wrap system calls on MIPS32.&n; *&n; * See arch/mips/kernel/sysmips.c for ugly details..&n; * FIXME: split up into ordinary syscalls ...&n; */
+multiline_comment|/*&n; * These are used to wrap system calls on MIPS32.&n; *&n; * See arch/mips/kernel/sysmips.c for ugly details..&n; * FIXME: split up into ordinary syscalls ...&n; */
 DECL|struct|ipc_kludge
 r_struct
 id|ipc_kludge
@@ -24,6 +24,8 @@ DECL|macro|SEMGET
 mdefine_line|#define SEMGET&t;&t; 2
 DECL|macro|SEMCTL
 mdefine_line|#define SEMCTL&t;&t; 3
+DECL|macro|SEMTIMEDOP
+mdefine_line|#define SEMTIMEDOP&t; 4
 DECL|macro|MSGSND
 mdefine_line|#define MSGSND&t;&t;11
 DECL|macro|MSGRCV

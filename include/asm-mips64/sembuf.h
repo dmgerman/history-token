@@ -1,7 +1,7 @@
 macro_line|#ifndef _ASM_SEMBUF_H
 DECL|macro|_ASM_SEMBUF_H
 mdefine_line|#define _ASM_SEMBUF_H
-multiline_comment|/* &n; * The semid64_ds structure for the MIPS architecture.&n; * Note extra padding because this structure is passed back and forth&n; * between kernel and user space.&n; *&n; * Pad space is left for:&n; * - 2 miscellaneous 64-bit values&n; */
+multiline_comment|/*&n; * The semid64_ds structure for the MIPS architecture.&n; * Note extra padding because this structure is passed back and forth&n; * between kernel and user space.&n; *&n; * Pad space is left for:&n; * - 2 miscellaneous 64-bit values&n; */
 DECL|struct|semid64_ds
 r_struct
 id|semid64_ds

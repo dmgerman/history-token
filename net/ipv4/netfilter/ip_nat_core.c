@@ -3227,6 +3227,17 @@ id|pskb
 op_member_access_from_pointer
 id|nh.iph-&gt;protocol
 suffix:semicolon
+multiline_comment|/* Skip everything and don&squot;t call helpers if there are no&n;&t; * manips for this connection */
+r_if
+c_cond
+(paren
+id|info-&gt;num_manips
+op_eq
+l_int|0
+)paren
+r_return
+id|NF_ACCEPT
+suffix:semicolon
 multiline_comment|/* Need nat lock to protect against modification, but neither&n;&t;   conntrack (referenced) and helper (deleted with&n;&t;   synchronize_bh()) can vanish. */
 id|READ_LOCK
 c_func
@@ -3394,6 +3405,11 @@ id|ret
 op_assign
 id|NF_ACCEPT
 suffix:semicolon
+r_int
+id|helper_called
+op_assign
+l_int|0
+suffix:semicolon
 id|DEBUGP
 c_func
 (paren
@@ -3476,7 +3492,7 @@ id|pskb
 )paren
 )paren
 (brace
-multiline_comment|/* FIXME: May be true multiple times in the case of UDP!! */
+multiline_comment|/* FIXME: May be true multiple times in the&n;&t;&t;&t;&t; * case of UDP!! */
 id|DEBUGP
 c_func
 (paren
@@ -3524,14 +3540,18 @@ r_return
 id|ret
 suffix:semicolon
 )brace
+id|helper_called
+op_assign
+l_int|1
+suffix:semicolon
 )brace
 )brace
-multiline_comment|/* Helper might want to manip the packet even when there is no expectation */
+multiline_comment|/* Helper might want to manip the packet even when there is no&n;&t;&t; * matching expectation for this packet */
 r_if
 c_cond
 (paren
 op_logical_neg
-id|exp
+id|helper_called
 op_logical_and
 id|helper-&gt;flags
 op_amp

@@ -2,6 +2,11 @@ multiline_comment|/*&n; *  Registers for the SGS-Thomson M48T35 Timekeeper RAM c
 macro_line|#ifndef _ASM_M48T35_H
 DECL|macro|_ASM_M48T35_H
 mdefine_line|#define _ASM_M48T35_H
+macro_line|#include &lt;linux/spinlock.h&gt;
+r_extern
+id|spinlock_t
+id|rtc_lock
+suffix:semicolon
 DECL|struct|m48t35_rtc
 r_struct
 id|m48t35_rtc
@@ -58,10 +63,10 @@ suffix:semicolon
 )brace
 suffix:semicolon
 DECL|macro|M48T35_RTC_SET
-mdefine_line|#define M48T35_RTC_SET      0x80
+mdefine_line|#define M48T35_RTC_SET&t;&t;0x80
 DECL|macro|M48T35_RTC_STOPPED
-mdefine_line|#define M48T35_RTC_STOPPED  0x80
+mdefine_line|#define M48T35_RTC_STOPPED&t;0x80
 DECL|macro|M48T35_RTC_READ
-mdefine_line|#define M48T35_RTC_READ     0x40
-macro_line|#endif
+mdefine_line|#define M48T35_RTC_READ&t;&t;0x40
+macro_line|#endif /* _ASM_M48T35_H */
 eof

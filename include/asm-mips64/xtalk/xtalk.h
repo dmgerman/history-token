@@ -2,7 +2,7 @@ multiline_comment|/*&n; * This file is subject to the terms and conditions of th
 macro_line|#ifndef _ASM_XTALK_XTALK_H
 DECL|macro|_ASM_XTALK_XTALK_H
 mdefine_line|#define _ASM_XTALK_XTALK_H
-macro_line|#if defined(_LANGUAGE_C) || defined(_LANGUAGE_C_PLUS_PLUS)
+macro_line|#ifndef __ASSEMBLY__
 multiline_comment|/*&n; * User-level device driver visible types&n; */
 DECL|typedef|xwidgetnum_t
 r_typedef
@@ -60,6 +60,6 @@ DECL|macro|XIO_PORT
 mdefine_line|#define&t;XIO_PORT(x)&t;((xwidgetnum_t)(((x)&amp;XIO_PORT_BITS) &gt;&gt; XIO_PORT_SHIFT))
 DECL|macro|XIO_PACK
 mdefine_line|#define&t;XIO_PACK(p,o)&t;((((uint64_t)(p))&lt;&lt;XIO_PORT_SHIFT) | ((o)&amp;XIO_ADDR_BITS))
-macro_line|#endif /* _LANGUAGE_C */
+macro_line|#endif /* !__ASSEMBLY__ */
 macro_line|#endif /* _ASM_XTALK_XTALK_H */
 eof

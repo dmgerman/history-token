@@ -1684,6 +1684,7 @@ id|error
 )paren
 suffix:semicolon
 r_return
+op_minus
 id|error
 suffix:semicolon
 )brace
@@ -1776,6 +1777,7 @@ id|args
 )paren
 suffix:semicolon
 r_return
+op_minus
 id|error
 suffix:semicolon
 )brace

@@ -48,11 +48,6 @@ r_int
 r_int
 id|sc_status
 suffix:semicolon
-DECL|member|sc_ownedfp
-r_int
-r_int
-id|sc_ownedfp
-suffix:semicolon
 DECL|member|sc_fpc_csr
 r_int
 r_int
@@ -62,6 +57,11 @@ DECL|member|sc_fpc_eir
 r_int
 r_int
 id|sc_fpc_eir
+suffix:semicolon
+DECL|member|sc_used_math
+r_int
+r_int
+id|sc_used_math
 suffix:semicolon
 DECL|member|sc_cause
 r_int

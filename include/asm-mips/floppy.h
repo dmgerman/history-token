@@ -2,9 +2,6 @@ multiline_comment|/*&n; * Architecture specific parts of the Floppy driver&n; *&
 macro_line|#ifndef _ASM_FLOPPY_H
 DECL|macro|_ASM_FLOPPY_H
 mdefine_line|#define _ASM_FLOPPY_H
-macro_line|#include &lt;asm/bootinfo.h&gt;
-macro_line|#include &lt;asm/jazz.h&gt;
-macro_line|#include &lt;asm/jazzdma.h&gt;
 DECL|struct|fd_ops
 r_struct
 id|fd_ops
@@ -248,7 +245,7 @@ mdefine_line|#define fd_clear_dma_ff()&t;fd_ops-&gt;fd_clear_dma_ff(FLOPPY_DMA)
 DECL|macro|fd_set_dma_mode
 mdefine_line|#define fd_set_dma_mode(mode)&t;fd_ops-&gt;fd_set_dma_mode(FLOPPY_DMA, mode)
 DECL|macro|fd_set_dma_addr
-mdefine_line|#define fd_set_dma_addr(addr)&t;fd_ops-&gt;fd_set_dma_addr(FLOPPY_DMA, &bslash;&n;&t;&t;&t;&t;                       virt_to_bus(addr))
+mdefine_line|#define fd_set_dma_addr(addr)&t;fd_ops-&gt;fd_set_dma_addr(FLOPPY_DMA, &bslash;&n;&t;&t;&t;&t;                       isa_virt_to_bus(addr))
 DECL|macro|fd_set_dma_count
 mdefine_line|#define fd_set_dma_count(count)&t;fd_ops-&gt;fd_set_dma_count(FLOPPY_DMA,count)
 DECL|macro|fd_get_dma_residue
@@ -268,7 +265,7 @@ mdefine_line|#define fd_dma_mem_free(mem,size) fd_ops-&gt;fd_dma_mem_free(mem,si
 DECL|macro|fd_drive_type
 mdefine_line|#define fd_drive_type(n)&t;fd_ops-&gt;fd_drive_type(n)
 DECL|macro|fd_cacheflush
-mdefine_line|#define fd_cacheflush(addr,size) dma_cache_wback_inv(addr,size)
+mdefine_line|#define fd_cacheflush(addr,size)&t;&bslash;&n;&t;&t;&t;dma_cache_wback_inv((unsigned long)(addr),(size))
 DECL|macro|MAX_BUFFER_SECTORS
 mdefine_line|#define MAX_BUFFER_SECTORS 24
 multiline_comment|/*&n; * And on Mips&squot;s the CMOS info fails also ...&n; *&n; * FIXME: This information should come from the ARC configuration tree&n; *        or whereever a particular machine has stored this ...&n; */

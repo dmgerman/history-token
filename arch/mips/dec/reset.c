@@ -1,25 +1,8 @@
-multiline_comment|/*&n; *  $Id: $&n; *&n; *  Reset a DECstation machine.&n; *&n; */
-DECL|variable|back_to_prom
-r_void
-(paren
-op_star
-id|back_to_prom
-)paren
-(paren
-r_void
-)paren
-op_assign
-(paren
-r_void
-(paren
-op_star
-)paren
-(paren
-r_void
-)paren
-)paren
-l_int|0xBFC00000
-suffix:semicolon
+multiline_comment|/*&n; * Reset a DECstation machine.&n; *&n; * Copyright (C) 199x  the Anonymous&n; * Copyright (C) 2001, 2002, 2003  Maciej W. Rozycki&n; */
+macro_line|#include &lt;asm/addrspace.h&gt;
+macro_line|#include &lt;asm/ptrace.h&gt;
+DECL|macro|back_to_prom
+mdefine_line|#define back_to_prom()&t;(((void (*)(void))KSEG1ADDR(0x1fc00000))())
 DECL|function|dec_machine_restart
 r_void
 id|dec_machine_restart

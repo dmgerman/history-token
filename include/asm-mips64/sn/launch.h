@@ -41,7 +41,7 @@ mdefine_line|#define LAUNCH_STATE_SENT&t;1
 DECL|macro|LAUNCH_STATE_RECD
 mdefine_line|#define LAUNCH_STATE_RECD&t;2
 multiline_comment|/*&n; * The launch routine is called only if the complement address is correct.&n; *&n; * Before control is transferred to a routine, the complement address&n; * is zeroed (invalidated) to prevent an accidental call from a spurious&n; * interrupt.&n; *&n; * The slave_launch routine turns on the BUSY flag, and the slave loop&n; * clears the BUSY flag after control is returned to it.&n; */
-macro_line|#ifdef _LANGUAGE_C
+macro_line|#ifndef __ASSEMBLY__
 DECL|typedef|launch_state_t
 r_typedef
 r_int
@@ -153,85 +153,6 @@ DECL|macro|LAUNCH_LOOP
 mdefine_line|#define LAUNCH_LOOP&t;(*(void (*)(void)) &bslash;&n;&t;&t;&t; IP27PROM_SLAVELOOP)
 DECL|macro|LAUNCH_FLASH
 mdefine_line|#define LAUNCH_FLASH&t;(*(void (*)(void)) &bslash;&n;&t;&t;&t; IP27PROM_FLASHLEDS)
-macro_line|#ifdef _STANDALONE
-id|launch_t
-op_star
-id|launch_get
-c_func
-(paren
-r_int
-id|nasid
-comma
-r_int
-id|cpu
-)paren
-suffix:semicolon
-id|launch_t
-op_star
-id|launch_get_current
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_void
-id|launch_loop
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_void
-id|launch_slave
-c_func
-(paren
-r_int
-id|nasid
-comma
-r_int
-id|cpu
-comma
-id|launch_proc_t
-id|call_addr
-comma
-id|__int64_t
-id|call_parm
-comma
-r_void
-op_star
-id|stack_addr
-comma
-r_void
-op_star
-id|gp_addr
-)paren
-suffix:semicolon
-r_int
-id|launch_wait
-c_func
-(paren
-r_int
-id|nasid
-comma
-r_int
-id|cpu
-comma
-r_int
-id|timeout_msec
-)paren
-suffix:semicolon
-id|launch_state_t
-id|launch_poll
-c_func
-(paren
-r_int
-id|nasid
-comma
-r_int
-id|cpu
-)paren
-suffix:semicolon
-macro_line|#endif /* _STANDALONE */
-macro_line|#endif /* _LANGUAGE_C */
+macro_line|#endif /* !__ASSEMBLY__ */
 macro_line|#endif /* _ASM_SN_LAUNCH_H */
 eof

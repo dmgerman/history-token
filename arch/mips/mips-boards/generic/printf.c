@@ -1,25 +1,21 @@
-multiline_comment|/*&n; * Carsten Langgaard, carstenl@mips.com&n; * Copyright (C) 1999,2000 MIPS Technologies, Inc.  All rights reserved.&n; *&n; * ########################################################################&n; *&n; *  This program is free software; you can distribute it and/or modify it&n; *  under the terms of the GNU General Public License (Version 2) as&n; *  published by the Free Software Foundation.&n; *&n; *  This program is distributed in the hope it will be useful, but WITHOUT&n; *  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or&n; *  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License&n; *  for more details.&n; *&n; *  You should have received a copy of the GNU General Public License along&n; *  with this program; if not, write to the Free Software Foundation, Inc.,&n; *  59 Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * ########################################################################&n; *&n; * Putting things on the screen/serial line using YAMONs facilities.&n; *&n; */
+multiline_comment|/*&n; * Carsten Langgaard, carstenl@mips.com&n; * Copyright (C) 1999,2000 MIPS Technologies, Inc.  All rights reserved.&n; *&n; *  This program is free software; you can distribute it and/or modify it&n; *  under the terms of the GNU General Public License (Version 2) as&n; *  published by the Free Software Foundation.&n; *&n; *  This program is distributed in the hope it will be useful, but WITHOUT&n; *  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or&n; *  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License&n; *  for more details.&n; *&n; *  You should have received a copy of the GNU General Public License along&n; *  with this program; if not, write to the Free Software Foundation, Inc.,&n; *  59 Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Putting things on the screen/serial line using YAMONs facilities.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
-macro_line|#include &lt;linux/serialP.h&gt;
 macro_line|#include &lt;linux/serial_reg.h&gt;
-macro_line|#include &lt;asm/system.h&gt;
+macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
-macro_line|#include &lt;asm/serial.h&gt;
-macro_line|#ifdef CONFIG_MIPS_ATLAS 
-multiline_comment|/* &n; * Atlas registers are memory mapped on 64-bit aligned boundaries and &n; * only word access are allowed.&n; * When reading the UART 8 bit registers only the LSB are valid.&n; */
-DECL|function|atlas_serial_in
+macro_line|#ifdef CONFIG_MIPS_ATLAS
+macro_line|#include &lt;asm/mips-boards/atlas.h&gt;
+multiline_comment|/*&n; * Atlas registers are memory mapped on 64-bit aligned boundaries and&n; * only word access are allowed.&n; * When reading the UART 8 bit registers only the LSB are valid.&n; */
+DECL|function|serial_in
+r_static
+r_inline
 r_int
 r_int
-id|atlas_serial_in
+id|serial_in
 c_func
 (paren
-r_struct
-id|async_struct
-op_star
-id|info
-comma
 r_int
 id|offset
 )paren
@@ -34,9 +30,9 @@ r_int
 op_star
 )paren
 (paren
-id|info-&gt;port
-op_plus
 id|mips_io_port_base
+op_plus
+id|ATLAS_UART_REGS_BASE
 op_plus
 id|offset
 op_star
@@ -47,16 +43,13 @@ l_int|0xff
 )paren
 suffix:semicolon
 )brace
-DECL|function|atlas_serial_out
+DECL|function|serial_out
+r_static
+r_inline
 r_void
-id|atlas_serial_out
+id|serial_out
 c_func
 (paren
-r_struct
-id|async_struct
-op_star
-id|info
-comma
 r_int
 id|offset
 comma
@@ -72,9 +65,9 @@ r_int
 op_star
 )paren
 (paren
-id|info-&gt;port
-op_plus
 id|mips_io_port_base
+op_plus
+id|ATLAS_UART_REGS_BASE
 op_plus
 id|offset
 op_star
@@ -84,23 +77,87 @@ op_assign
 id|value
 suffix:semicolon
 )brace
-DECL|macro|serial_in
-mdefine_line|#define serial_in  atlas_serial_in
-DECL|macro|serial_out
-mdefine_line|#define serial_out atlas_serial_out
-macro_line|#else
+macro_line|#elif defined(CONFIG_MIPS_SEAD)
+macro_line|#include &lt;asm/mips-boards/sead.h&gt;
+multiline_comment|/*&n; * SEAD registers are just like Atlas registers.&n; */
 DECL|function|serial_in
 r_static
+r_inline
 r_int
 r_int
 id|serial_in
 c_func
 (paren
-r_struct
-id|async_struct
+r_int
+id|offset
+)paren
+(brace
+r_return
+(paren
 op_star
-id|info
+(paren
+r_volatile
+r_int
+r_int
+op_star
+)paren
+(paren
+id|mips_io_port_base
+op_plus
+id|SEAD_UART0_REGS_BASE
+op_plus
+id|offset
+op_star
+l_int|8
+)paren
+op_amp
+l_int|0xff
+)paren
+suffix:semicolon
+)brace
+DECL|function|serial_out
+r_static
+r_inline
+r_void
+id|serial_out
+c_func
+(paren
+r_int
+id|offset
 comma
+r_int
+id|value
+)paren
+(brace
+op_star
+(paren
+r_volatile
+r_int
+r_int
+op_star
+)paren
+(paren
+id|mips_io_port_base
+op_plus
+id|SEAD_UART0_REGS_BASE
+op_plus
+id|offset
+op_star
+l_int|8
+)paren
+op_assign
+id|value
+suffix:semicolon
+)brace
+macro_line|#else
+DECL|function|serial_in
+r_static
+r_inline
+r_int
+r_int
+id|serial_in
+c_func
+(paren
 r_int
 id|offset
 )paren
@@ -109,7 +166,7 @@ r_return
 id|inb
 c_func
 (paren
-id|info-&gt;port
+l_int|0x3f8
 op_plus
 id|offset
 )paren
@@ -117,15 +174,11 @@ suffix:semicolon
 )brace
 DECL|function|serial_out
 r_static
+r_inline
 r_void
 id|serial_out
 c_func
 (paren
-r_struct
-id|async_struct
-op_star
-id|info
-comma
 r_int
 id|offset
 comma
@@ -138,76 +191,13 @@ c_func
 (paren
 id|value
 comma
-id|info-&gt;port
+l_int|0x3f8
 op_plus
 id|offset
 )paren
 suffix:semicolon
 )brace
 macro_line|#endif
-DECL|variable|rs_table
-r_static
-r_struct
-id|serial_state
-id|rs_table
-(braket
-)braket
-op_assign
-(brace
-id|SERIAL_PORT_DFNS
-multiline_comment|/* Defined in serial.h */
-)brace
-suffix:semicolon
-multiline_comment|/*&n; * Hooks to fake &quot;prom&quot; console I/O before devices &n; * are fully initialized. &n; */
-DECL|variable|prom_port_info
-r_static
-r_struct
-id|async_struct
-id|prom_port_info
-op_assign
-(brace
-l_int|0
-)brace
-suffix:semicolon
-DECL|function|setup_prom_printf
-r_void
-id|__init
-id|setup_prom_printf
-c_func
-(paren
-r_int
-id|tty_no
-)paren
-(brace
-r_struct
-id|serial_state
-op_star
-id|ser
-op_assign
-op_amp
-id|rs_table
-(braket
-id|tty_no
-)braket
-suffix:semicolon
-id|prom_port_info.state
-op_assign
-id|ser
-suffix:semicolon
-id|prom_port_info.magic
-op_assign
-id|SERIAL_MAGIC
-suffix:semicolon
-id|prom_port_info.port
-op_assign
-id|ser-&gt;port
-suffix:semicolon
-id|prom_port_info.flags
-op_assign
-id|ser-&gt;flags
-suffix:semicolon
-multiline_comment|/* No setup of UART - assume YAMON left in sane state */
-)brace
 DECL|function|putPromChar
 r_int
 id|putPromChar
@@ -217,18 +207,6 @@ r_char
 id|c
 )paren
 (brace
-r_if
-c_cond
-(paren
-op_logical_neg
-id|prom_port_info.state
-)paren
-(brace
-multiline_comment|/* need to init device first */
-r_return
-l_int|0
-suffix:semicolon
-)brace
 r_while
 c_loop
 (paren
@@ -236,9 +214,6 @@ c_loop
 id|serial_in
 c_func
 (paren
-op_amp
-id|prom_port_info
-comma
 id|UART_LSR
 )paren
 op_amp
@@ -251,9 +226,6 @@ suffix:semicolon
 id|serial_out
 c_func
 (paren
-op_amp
-id|prom_port_info
-comma
 id|UART_TX
 comma
 id|c
@@ -271,18 +243,6 @@ c_func
 r_void
 )paren
 (brace
-r_if
-c_cond
-(paren
-op_logical_neg
-id|prom_port_info.state
-)paren
-(brace
-multiline_comment|/* need to init device first */
-r_return
-l_int|0
-suffix:semicolon
-)brace
 r_while
 c_loop
 (paren
@@ -291,9 +251,6 @@ op_logical_neg
 id|serial_in
 c_func
 (paren
-op_amp
-id|prom_port_info
-comma
 id|UART_LSR
 )paren
 op_amp
@@ -305,13 +262,17 @@ r_return
 id|serial_in
 c_func
 (paren
-op_amp
-id|prom_port_info
-comma
 id|UART_RX
 )paren
 suffix:semicolon
 )brace
+DECL|variable|con_lock
+r_static
+id|spinlock_t
+id|con_lock
+op_assign
+id|SPIN_LOCK_UNLOCKED
+suffix:semicolon
 DECL|variable|buf
 r_static
 r_char
@@ -358,10 +319,11 @@ c_func
 r_char
 )paren
 suffix:semicolon
-multiline_comment|/* Low level, brute force, not SMP safe... */
-id|save_and_cli
+id|spin_lock_irqsave
 c_func
 (paren
+id|con_lock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -422,14 +384,12 @@ id|p
 op_eq
 l_char|&squot;&bslash;n&squot;
 )paren
-(brace
 id|putPromChar
 c_func
 (paren
 l_char|&squot;&bslash;r&squot;
 )paren
 suffix:semicolon
-)brace
 id|putPromChar
 c_func
 (paren
@@ -438,9 +398,11 @@ id|p
 )paren
 suffix:semicolon
 )brace
-id|restore_flags
+id|spin_unlock_irqrestore
 c_func
 (paren
+id|con_lock
+comma
 id|flags
 )paren
 suffix:semicolon

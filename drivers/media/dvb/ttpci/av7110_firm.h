@@ -1,4 +1,4 @@
-macro_line|#include &lt;asm/types.h&gt;
+macro_line|#include &lt;linux/types.h&gt;
 DECL|variable|__initdata
 id|u8
 id|Dpram

@@ -3,7 +3,6 @@ macro_line|#include &lt;linux/hdreg.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/ide.h&gt;
 macro_line|#include &lt;asm/hdreg.h&gt;
-macro_line|#include &lt;asm/ptrace.h&gt;
 DECL|function|no_ide_default_irq
 r_static
 r_int

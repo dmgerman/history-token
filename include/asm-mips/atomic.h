@@ -43,24 +43,20 @@ id|v
 )paren
 (brace
 r_int
+r_int
 id|flags
 suffix:semicolon
-id|save_flags
+id|local_irq_save
 c_func
 (paren
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 id|v-&gt;counter
 op_add_assign
 id|i
 suffix:semicolon
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -84,24 +80,20 @@ id|v
 )paren
 (brace
 r_int
+r_int
 id|flags
 suffix:semicolon
-id|save_flags
+id|local_irq_save
 c_func
 (paren
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 id|v-&gt;counter
 op_sub_assign
 id|i
 suffix:semicolon
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -124,19 +116,16 @@ id|v
 )paren
 (brace
 r_int
+r_int
+id|flags
+suffix:semicolon
+r_int
 id|temp
-comma
-id|flags
 suffix:semicolon
-id|save_flags
+id|local_irq_save
 c_func
 (paren
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 id|temp
@@ -151,7 +140,7 @@ id|v-&gt;counter
 op_assign
 id|temp
 suffix:semicolon
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -177,19 +166,16 @@ id|v
 )paren
 (brace
 r_int
+r_int
+id|flags
+suffix:semicolon
+r_int
 id|temp
-comma
-id|flags
 suffix:semicolon
-id|save_flags
+id|local_irq_save
 c_func
 (paren
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 id|temp
@@ -204,7 +190,7 @@ id|v-&gt;counter
 op_assign
 id|temp
 suffix:semicolon
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -351,6 +337,7 @@ l_string|&quot;     addu    %0, %1, %3                    &bslash;n&quot;
 l_string|&quot;     sc      %0, %2                        &bslash;n&quot;
 l_string|&quot;     beqz    %0, 1b                        &bslash;n&quot;
 l_string|&quot;     addu    %0, %1, %3                    &bslash;n&quot;
+l_string|&quot;     sync                                  &bslash;n&quot;
 l_string|&quot;.set pop                                   &bslash;n&quot;
 suffix:colon
 l_string|&quot;=&amp;r&quot;
@@ -417,6 +404,7 @@ l_string|&quot;     subu  %0, %1, %3                       &bslash;n&quot;
 l_string|&quot;     sc    %0, %2                           &bslash;n&quot;
 l_string|&quot;     beqz  %0, 1b                           &bslash;n&quot;
 l_string|&quot;     subu  %0, %1, %3                       &bslash;n&quot;
+l_string|&quot;     sync                                   &bslash;n&quot;
 l_string|&quot;.set pop                                    &bslash;n&quot;
 suffix:colon
 l_string|&quot;=&amp;r&quot;
@@ -461,7 +449,7 @@ DECL|macro|atomic_sub_and_test
 mdefine_line|#define atomic_sub_and_test(i,v) (atomic_sub_return((i), (v)) == 0)
 multiline_comment|/*&n; * atomic_inc_and_test - increment and test&n; * @v: pointer of type atomic_t&n; *&n; * Atomically increments @v by 1&n; * and returns true if the result is zero, or false for all&n; * other cases.  Note that the guaranteed&n; * useful range of an atomic_t is only 24 bits.&n; */
 DECL|macro|atomic_inc_and_test
-mdefine_line|#define atomic_inc_and_test(v) (atomic_inc_return(1, (v)) == 0)
+mdefine_line|#define atomic_inc_and_test(v) (atomic_inc_return(v) == 0)
 multiline_comment|/*&n; * atomic_dec_and_test - decrement by 1 and test&n; * @v: pointer of type atomic_t&n; *&n; * Atomically decrements @v by 1 and&n; * returns true if the result is 0, or false for all other&n; * cases.  Note that the guaranteed&n; * useful range of an atomic_t is only 24 bits.&n; */
 DECL|macro|atomic_dec_and_test
 mdefine_line|#define atomic_dec_and_test(v) (atomic_sub_return(1, (v)) == 0)
@@ -471,16 +459,18 @@ mdefine_line|#define atomic_inc(v) atomic_add(1,(v))
 multiline_comment|/*&n; * atomic_dec - decrement and test&n; * @v: pointer of type atomic_t&n; *&n; * Atomically decrements @v by 1.  Note that the guaranteed&n; * useful range of an atomic_t is only 24 bits.&n; */
 DECL|macro|atomic_dec
 mdefine_line|#define atomic_dec(v) atomic_sub(1,(v))
-multiline_comment|/*&n; * atomic_add_negative - add and test if negative&n; * @v: pointer of type atomic_t&n; * @i: integer value to add&n; *&n; * Atomically adds @i to @v and returns true&n; * if the result is negative, or false when&n; * result is greater than or equal to zero.  Note that the guaranteed&n; * useful range of an atomic_t is only 24 bits.&n; *&n; * Currently not implemented for MIPS.&n; */
+multiline_comment|/*&n; * atomic_add_negative - add and test if negative&n; * @v: pointer of type atomic_t&n; * @i: integer value to add&n; *&n; * Atomically adds @i to @v and returns true&n; * if the result is negative, or false when&n; * result is greater than or equal to zero.  Note that the guaranteed&n; * useful range of an atomic_t is only 24 bits.&n; */
+DECL|macro|atomic_add_negative
+mdefine_line|#define atomic_add_negative(i,v) (atomic_add_return(i, (v)) &lt; 0)
 multiline_comment|/* Atomic operations are already serializing */
 DECL|macro|smp_mb__before_atomic_dec
-mdefine_line|#define smp_mb__before_atomic_dec()&t;barrier()
+mdefine_line|#define smp_mb__before_atomic_dec()&t;smp_mb()
 DECL|macro|smp_mb__after_atomic_dec
-mdefine_line|#define smp_mb__after_atomic_dec()&t;barrier()
+mdefine_line|#define smp_mb__after_atomic_dec()&t;smp_mb()
 DECL|macro|smp_mb__before_atomic_inc
-mdefine_line|#define smp_mb__before_atomic_inc()&t;barrier()
+mdefine_line|#define smp_mb__before_atomic_inc()&t;smp_mb()
 DECL|macro|smp_mb__after_atomic_inc
-mdefine_line|#define smp_mb__after_atomic_inc()&t;barrier()
+mdefine_line|#define smp_mb__after_atomic_inc()&t;smp_mb()
 macro_line|#endif /* defined(__KERNEL__) */
 macro_line|#endif /* __ASM_ATOMIC_H */
 eof

@@ -16,12 +16,19 @@ mdefine_line|#define dma_outb&t;outb
 macro_line|#endif
 DECL|macro|dma_inb
 mdefine_line|#define dma_inb&t;&t;inb
-multiline_comment|/*&n; * NOTES about DMA transfers:&n; *&n; *  controller 1: channels 0-3, byte operations, ports 00-1F&n; *  controller 2: channels 4-7, word operations, ports C0-DF&n; *&n; *  - ALL registers are 8 bits only, regardless of transfer size&n; *  - channel 4 is not used - cascades 1 into 2.&n; *  - channels 0-3 are byte - addresses/counts are for physical bytes&n; *  - channels 5-7 are word - addresses/counts are for physical words&n; *  - transfers must not cross physical 64K (0-3) or 128K (5-7) boundaries&n; *  - transfer count loaded to registers is 1 less than actual count&n; *  - controller 2 offsets are all even (2x offsets for controller 1)&n; *  - page registers for 5-7 don&squot;t use data bit 0, represent 128K pages&n; *  - page registers for 0-3 use bit 0, represent 64K pages&n; *&n; * DMA transfers are limited to the lower 16MB of _physical_ memory.  &n; * Note that addresses loaded into registers must be _physical_ addresses,&n; * not logical addresses (which may differ if paging is active).&n; *&n; *  Address mapping for channels 0-3:&n; *&n; *   A23 ... A16 A15 ... A8  A7 ... A0    (Physical addresses)&n; *    |  ...  |   |  ... |   |  ... |&n; *    |  ...  |   |  ... |   |  ... |&n; *    |  ...  |   |  ... |   |  ... |&n; *   P7  ...  P0  A7 ... A0  A7 ... A0   &n; * |    Page    | Addr MSB | Addr LSB |   (DMA registers)&n; *&n; *  Address mapping for channels 5-7:&n; *&n; *   A23 ... A17 A16 A15 ... A9 A8 A7 ... A1 A0    (Physical addresses)&n; *    |  ...  |   &bslash;   &bslash;   ... &bslash;  &bslash;  &bslash;  ... &bslash;  &bslash;&n; *    |  ...  |    &bslash;   &bslash;   ... &bslash;  &bslash;  &bslash;  ... &bslash;  (not used)&n; *    |  ...  |     &bslash;   &bslash;   ... &bslash;  &bslash;  &bslash;  ... &bslash;&n; *   P7  ...  P1 (0) A7 A6  ... A0 A7 A6 ... A0   &n; * |      Page      |  Addr MSB   |  Addr LSB  |   (DMA registers)&n; *&n; * Again, channels 5-7 transfer _physical_ words (16 bits), so addresses&n; * and counts _must_ be word-aligned (the lowest address bit is _ignored_ at&n; * the hardware level, so odd-byte transfers aren&squot;t possible).&n; *&n; * Transfer count (_not # bytes_) is limited to 64K, represented as actual&n; * count - 1 : 64K =&gt; 0xFFFF, 1 =&gt; 0x0000.  Thus, count is always 1 or more,&n; * and up to 128K bytes may be transferred on channels 5-7 in one operation. &n; *&n; */
+multiline_comment|/*&n; * NOTES about DMA transfers:&n; *&n; *  controller 1: channels 0-3, byte operations, ports 00-1F&n; *  controller 2: channels 4-7, word operations, ports C0-DF&n; *&n; *  - ALL registers are 8 bits only, regardless of transfer size&n; *  - channel 4 is not used - cascades 1 into 2.&n; *  - channels 0-3 are byte - addresses/counts are for physical bytes&n; *  - channels 5-7 are word - addresses/counts are for physical words&n; *  - transfers must not cross physical 64K (0-3) or 128K (5-7) boundaries&n; *  - transfer count loaded to registers is 1 less than actual count&n; *  - controller 2 offsets are all even (2x offsets for controller 1)&n; *  - page registers for 5-7 don&squot;t use data bit 0, represent 128K pages&n; *  - page registers for 0-3 use bit 0, represent 64K pages&n; *&n; * DMA transfers are limited to the lower 16MB of _physical_ memory.&n; * Note that addresses loaded into registers must be _physical_ addresses,&n; * not logical addresses (which may differ if paging is active).&n; *&n; *  Address mapping for channels 0-3:&n; *&n; *   A23 ... A16 A15 ... A8  A7 ... A0    (Physical addresses)&n; *    |  ...  |   |  ... |   |  ... |&n; *    |  ...  |   |  ... |   |  ... |&n; *    |  ...  |   |  ... |   |  ... |&n; *   P7  ...  P0  A7 ... A0  A7 ... A0&n; * |    Page    | Addr MSB | Addr LSB |   (DMA registers)&n; *&n; *  Address mapping for channels 5-7:&n; *&n; *   A23 ... A17 A16 A15 ... A9 A8 A7 ... A1 A0    (Physical addresses)&n; *    |  ...  |   &bslash;   &bslash;   ... &bslash;  &bslash;  &bslash;  ... &bslash;  &bslash;&n; *    |  ...  |    &bslash;   &bslash;   ... &bslash;  &bslash;  &bslash;  ... &bslash;  (not used)&n; *    |  ...  |     &bslash;   &bslash;   ... &bslash;  &bslash;  &bslash;  ... &bslash;&n; *   P7  ...  P1 (0) A7 A6  ... A0 A7 A6 ... A0&n; * |      Page      |  Addr MSB   |  Addr LSB  |   (DMA registers)&n; *&n; * Again, channels 5-7 transfer _physical_ words (16 bits), so addresses&n; * and counts _must_ be word-aligned (the lowest address bit is _ignored_ at&n; * the hardware level, so odd-byte transfers aren&squot;t possible).&n; *&n; * Transfer count (_not # bytes_) is limited to 64K, represented as actual&n; * count - 1 : 64K =&gt; 0xFFFF, 1 =&gt; 0x0000.  Thus, count is always 1 or more,&n; * and up to 128K bytes may be transferred on channels 5-7 in one operation.&n; *&n; */
 DECL|macro|MAX_DMA_CHANNELS
 mdefine_line|#define MAX_DMA_CHANNELS&t;8
 multiline_comment|/*&n; * The maximum address in KSEG0 that we can perform a DMA transfer to on this&n; * platform.  This describes only the PC style part of the DMA logic like on&n; * Deskstations or Acer PICA but not the much more versatile DMA logic used&n; * for the local devices on Acer PICA or Magnums.&n; */
+macro_line|#ifdef CONFIG_SGI_IP22
+multiline_comment|/* Horrible hack to have a correct DMA window on IP22 */
+macro_line|#include &lt;asm/sgi/mc.h&gt;
+DECL|macro|MAX_DMA_ADDRESS
+mdefine_line|#define MAX_DMA_ADDRESS&t;&t;(PAGE_OFFSET + SGIMC_SEG0_BADDR + 0x01000000)
+macro_line|#else
 DECL|macro|MAX_DMA_ADDRESS
 mdefine_line|#define MAX_DMA_ADDRESS&t;&t;(PAGE_OFFSET + 0x01000000)
+macro_line|#endif
 multiline_comment|/* 8237 DMA controllers */
 DECL|macro|IO_DMA1_BASE
 mdefine_line|#define IO_DMA1_BASE&t;0x00&t;/* 8 bit slave DMA, channels 0..3 */
@@ -120,6 +127,8 @@ DECL|macro|DMA_MODE_WRITE
 mdefine_line|#define DMA_MODE_WRITE&t;0x48&t;/* memory to I/O, no autoinit, increment, single mode */
 DECL|macro|DMA_MODE_CASCADE
 mdefine_line|#define DMA_MODE_CASCADE 0xC0   /* pass thru DREQ-&gt;HRQ, DACK&lt;-HLDA only */
+DECL|macro|DMA_AUTOINIT
+mdefine_line|#define DMA_AUTOINIT&t;0x10
 r_extern
 id|spinlock_t
 id|dma_spin_lock
@@ -599,7 +608,7 @@ id|IO_DMA2_BASE
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/* Set transfer size (max 64k for DMA1..3, 128k for DMA5..7) for&n; * a specific DMA channel.&n; * You must ensure the parameters are valid.&n; * NOTE: from a manual: &quot;the number of transfers is one more&n; * than the initial word count&quot;! This is taken into account.&n; * Assumes dma flip-flop is clear.&n; * NOTE 2: &quot;count&quot; represents _bytes_ and must be even for channels 5-7.&n; */
+multiline_comment|/* Set transfer size (max 64k for DMA0..3, 128k for DMA5..7) for&n; * a specific DMA channel.&n; * You must ensure the parameters are valid.&n; * NOTE: from a manual: &quot;the number of transfers is one more&n; * than the initial word count&quot;! This is taken into account.&n; * Assumes dma flip-flop is clear.&n; * NOTE 2: &quot;count&quot; represents _bytes_ and must be even for channels 5-7.&n; */
 DECL|function|set_dma_count
 r_static
 id|__inline__

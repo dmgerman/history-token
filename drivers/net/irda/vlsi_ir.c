@@ -1,4 +1,4 @@
-multiline_comment|/*********************************************************************&n; *&n; *&t;vlsi_ir.c:&t;VLSI82C147 PCI IrDA controller driver for Linux&n; *&n; *&t;Copyright (c) 2001-2002 Martin Diehl&n; *&n; *&t;This program is free software; you can redistribute it and/or &n; *&t;modify it under the terms of the GNU General Public License as &n; *&t;published by the Free Software Foundation; either version 2 of &n; *&t;the License, or (at your option) any later version.&n; *&n; *&t;This program is distributed in the hope that it will be useful,&n; *&t;but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *&t;MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the&n; *&t;GNU General Public License for more details.&n; *&n; *&t;You should have received a copy of the GNU General Public License &n; *&t;along with this program; if not, write to the Free Software &n; *&t;Foundation, Inc., 59 Temple Place, Suite 330, Boston, &n; *&t;MA 02111-1307 USA&n; *&n; ********************************************************************/
+multiline_comment|/*********************************************************************&n; *&n; *&t;vlsi_ir.c:&t;VLSI82C147 PCI IrDA controller driver for Linux&n; *&n; *&t;Copyright (c) 2001-2003 Martin Diehl&n; *&n; *&t;This program is free software; you can redistribute it and/or &n; *&t;modify it under the terms of the GNU General Public License as &n; *&t;published by the Free Software Foundation; either version 2 of &n; *&t;the License, or (at your option) any later version.&n; *&n; *&t;This program is distributed in the hope that it will be useful,&n; *&t;but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *&t;MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the&n; *&t;GNU General Public License for more details.&n; *&n; *&t;You should have received a copy of the GNU General Public License &n; *&t;along with this program; if not, write to the Free Software &n; *&t;Foundation, Inc., 59 Temple Place, Suite 330, Boston, &n; *&t;MA 02111-1307 USA&n; *&n; ********************************************************************/
 macro_line|#include &lt;linux/module.h&gt;
 id|MODULE_DESCRIPTION
 c_func
@@ -21,7 +21,7 @@ suffix:semicolon
 DECL|macro|DRIVER_NAME
 mdefine_line|#define DRIVER_NAME &quot;vlsi_ir&quot;
 DECL|macro|DRIVER_VERSION
-mdefine_line|#define DRIVER_VERSION &quot;v0.4&quot;
+mdefine_line|#define DRIVER_VERSION &quot;v0.4a&quot;
 multiline_comment|/********************************************************/
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -428,6 +428,16 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/********************************************************/
+multiline_comment|/* needed regardless of CONFIG_PROC_FS */
+DECL|variable|vlsi_proc_root
+r_static
+r_struct
+id|proc_dir_entry
+op_star
+id|vlsi_proc_root
+op_assign
+l_int|NULL
+suffix:semicolon
 macro_line|#ifdef CONFIG_PROC_FS
 DECL|function|vlsi_proc_pdev
 r_static
@@ -2508,15 +2518,6 @@ op_minus
 id|buf
 suffix:semicolon
 )brace
-DECL|variable|vlsi_proc_root
-r_static
-r_struct
-id|proc_dir_entry
-op_star
-id|vlsi_proc_root
-op_assign
-l_int|NULL
-suffix:semicolon
 DECL|struct|vlsi_proc_data
 r_struct
 id|vlsi_proc_data
@@ -2954,6 +2955,12 @@ id|file_operations
 id|vlsi_proc_fops
 op_assign
 (brace
+multiline_comment|/* protect individual procdir file entry against rmmod */
+dot
+id|owner
+op_assign
+id|THIS_MODULE
+comma
 dot
 id|open
 op_assign
@@ -2976,6 +2983,11 @@ id|vlsi_proc_release
 comma
 )brace
 suffix:semicolon
+DECL|macro|VLSI_PROC_FOPS
+mdefine_line|#define VLSI_PROC_FOPS&t;&t;(&amp;vlsi_proc_fops)
+macro_line|#else&t;/* CONFIG_PROC_FS */
+DECL|macro|VLSI_PROC_FOPS
+mdefine_line|#define VLSI_PROC_FOPS&t;&t;NULL
 macro_line|#endif
 multiline_comment|/********************************************************/
 DECL|function|vlsi_alloc_ring
@@ -8688,7 +8700,13 @@ r_goto
 id|out_freedev
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_PROC_FS
+r_if
+c_cond
+(paren
+id|vlsi_proc_root
+op_ne
+l_int|NULL
+)paren
 (brace
 r_struct
 id|proc_dir_entry
@@ -8735,8 +8753,7 @@ id|ndev
 suffix:semicolon
 id|ent-&gt;proc_fops
 op_assign
-op_amp
-id|vlsi_proc_fops
+id|VLSI_PROC_FOPS
 suffix:semicolon
 id|ent-&gt;size
 op_assign
@@ -8747,7 +8764,11 @@ op_assign
 id|ent
 suffix:semicolon
 )brace
-macro_line|#endif
+r_else
+id|idev-&gt;proc_entry
+op_assign
+l_int|NULL
+suffix:semicolon
 id|printk
 c_func
 (paren
@@ -8905,7 +8926,6 @@ c_func
 id|pdev
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_PROC_FS
 r_if
 c_cond
 (paren
@@ -8925,7 +8945,6 @@ op_assign
 l_int|NULL
 suffix:semicolon
 )brace
-macro_line|#endif
 id|up
 c_func
 (paren
@@ -9442,10 +9461,8 @@ comma
 macro_line|#endif
 )brace
 suffix:semicolon
-macro_line|#ifdef CONFIG_PROC_FS
 DECL|macro|PROC_DIR
 mdefine_line|#define PROC_DIR (&quot;driver/&quot; DRIVER_NAME)
-macro_line|#endif
 DECL|function|vlsi_mod_init
 r_static
 r_int
@@ -9574,7 +9591,7 @@ op_logical_neg
 op_logical_neg
 id|sirpulse
 suffix:semicolon
-macro_line|#ifdef CONFIG_PROC_FS
+multiline_comment|/* create_proc_entry returns NULL if !CONFIG_PROC_FS.&n;&t; * Failure to create the procfs entry is handled like running&n;&t; * without procfs - it&squot;s not required for the driver to work.&n;&t; */
 id|vlsi_proc_root
 op_assign
 id|create_proc_entry
@@ -9590,14 +9607,15 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
 id|vlsi_proc_root
 )paren
-r_return
-op_minus
-id|ENOMEM
+(brace
+multiline_comment|/* protect registered procdir against module removal.&n;&t;&t; * Because we are in the module init path there&squot;s no race&n;&t;&t; * window after create_proc_entry (and no barrier needed).&n;&t;&t; */
+id|vlsi_proc_root-&gt;owner
+op_assign
+id|THIS_MODULE
 suffix:semicolon
-macro_line|#endif
+)brace
 id|ret
 op_assign
 id|pci_module_init
@@ -9607,11 +9625,12 @@ op_amp
 id|vlsi_irda_driver
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_PROC_FS
 r_if
 c_cond
 (paren
 id|ret
+op_logical_and
+id|vlsi_proc_root
 )paren
 id|remove_proc_entry
 c_func
@@ -9621,7 +9640,6 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-macro_line|#endif
 r_return
 id|ret
 suffix:semicolon
@@ -9643,6 +9661,11 @@ op_amp
 id|vlsi_irda_driver
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|vlsi_proc_root
+)paren
 id|remove_proc_entry
 c_func
 (paren

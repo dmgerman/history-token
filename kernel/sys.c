@@ -504,6 +504,11 @@ id|sys_recv
 id|cond_syscall
 c_func
 (paren
+id|sys_socket
+)paren
+id|cond_syscall
+c_func
+(paren
 id|sys_setsockopt
 )paren
 id|cond_syscall

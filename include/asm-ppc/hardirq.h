@@ -118,17 +118,6 @@ id|irq
 )paren
 suffix:semicolon
 macro_line|#endif /* CONFIG_SMP */
-r_extern
-r_void
-id|show_stack
-c_func
-(paren
-r_int
-r_int
-op_star
-id|sp
-)paren
-suffix:semicolon
 macro_line|#endif /* __ASM_HARDIRQ_H */
 macro_line|#endif /* __KERNEL__ */
 eof

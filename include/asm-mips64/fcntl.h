@@ -28,9 +28,9 @@ mdefine_line|#define O_NOCTTY&t;0x0800&t;/* not fcntl */
 DECL|macro|FASYNC
 mdefine_line|#define FASYNC&t;&t;0x1000&t;/* fcntl, for BSD compatibility */
 DECL|macro|O_LARGEFILE
-mdefine_line|#define O_LARGEFILE&t;0x2000&t;/* allow large file opens - currently ignored */
+mdefine_line|#define O_LARGEFILE&t;0x2000&t;/* allow large file opens */
 DECL|macro|O_DIRECT
-mdefine_line|#define O_DIRECT&t;0x8000&t;/* direct disk access hint - currently ignored */
+mdefine_line|#define O_DIRECT&t;0x8000&t;/* direct disk access hint */
 DECL|macro|O_DIRECTORY
 mdefine_line|#define O_DIRECTORY&t;0x10000&t;/* must be a directory */
 DECL|macro|O_NOFOLLOW
@@ -93,7 +93,7 @@ mdefine_line|#define LOCK_SH&t;&t;1&t;/* shared lock */
 DECL|macro|LOCK_EX
 mdefine_line|#define LOCK_EX&t;&t;2&t;/* exclusive lock */
 DECL|macro|LOCK_NB
-mdefine_line|#define LOCK_NB&t;&t;4&t;/* or&squot;d with one of the above to prevent&t;&t;XXXXXXXXXXXXXXXXXX&n;&t;&t;&t;&t;   blocking */
+mdefine_line|#define LOCK_NB&t;&t;4&t;/* or&squot;d with one of the above to prevent&n;&t;&t;&t;&t;   blocking */
 DECL|macro|LOCK_UN
 mdefine_line|#define LOCK_UN&t;&t;8&t;/* remove lock */
 DECL|macro|LOCK_MAND
@@ -125,23 +125,10 @@ DECL|member|l_len
 id|__kernel_off_t
 id|l_len
 suffix:semicolon
-DECL|member|l_sysid
-r_int
-id|l_sysid
-suffix:semicolon
-multiline_comment|/* XXXXXXXXXXXXXXXXXXXXXXXXX */
 DECL|member|l_pid
 id|__kernel_pid_t
 id|l_pid
 suffix:semicolon
-DECL|member|pad
-r_int
-id|pad
-(braket
-l_int|4
-)braket
-suffix:semicolon
-multiline_comment|/* ZZZZZZZZZZZZZZZZZZZZZZZZZZ */
 DECL|typedef|flock_t
 )brace
 id|flock_t

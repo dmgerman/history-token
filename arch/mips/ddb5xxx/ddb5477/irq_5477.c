@@ -1,11 +1,10 @@
-multiline_comment|/***********************************************************************&n; * Copyright 2001 MontaVista Software Inc.&n; * Author: Jun Sun, jsun@mvista.com or jsun@junsun.net&n; *&n; *  arch/mips/ddb5xxx/ddb5477/irq_5477.c&n; *     This file defines the irq handler for Vrc5477.&n; *&n; * This program is free software; you can redistribute  it and/or modify it&n; * under  the terms of  the GNU General  Public License as published by the&n; * Free Software Foundation;  either version 2 of the  License, or (at your&n; * option) any later version.&n; ***********************************************************************&n; */
+multiline_comment|/*&n; * Copyright 2001 MontaVista Software Inc.&n; * Author: Jun Sun, jsun@mvista.com or jsun@junsun.net&n; *&n; *  arch/mips/ddb5xxx/ddb5477/irq_5477.c&n; *     This file defines the irq handler for Vrc5477.&n; *&n; * This program is free software; you can redistribute  it and/or modify it&n; * under  the terms of  the GNU General  Public License as published by the&n; * Free Software Foundation;  either version 2 of the  License, or (at your&n; * option) any later version.&n; *&n; */
 multiline_comment|/*&n; * Vrc5477 defines 32 IRQs.&n; *&n; * This file exports one function:&n; *&t;vrc5477_irq_init(u32 irq_base);&n; */
-macro_line|#include &lt;linux/irq.h&gt;
+macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/ptrace.h&gt;
+macro_line|#include &lt;asm/debug.h&gt;
 macro_line|#include &lt;asm/ddb5xxx/ddb5xxx.h&gt;
-multiline_comment|/* [jsun] sooner or later we should move this debug stuff to MIPS common */
-macro_line|#include &lt;asm/ddb5xxx/debug.h&gt;
 multiline_comment|/* number of total irqs supported by Vrc5477 */
 DECL|macro|NUM_5477_IRQ
 mdefine_line|#define&t;NUM_5477_IRQ&t;&t;32
@@ -28,7 +27,7 @@ r_int
 id|irq
 )paren
 (brace
-id|MIPS_ASSERT
+id|db_assert
 c_func
 (paren
 id|vrc5477_irq_base
@@ -37,7 +36,7 @@ op_minus
 l_int|1
 )paren
 suffix:semicolon
-id|MIPS_ASSERT
+id|db_assert
 c_func
 (paren
 id|irq
@@ -45,7 +44,7 @@ op_ge
 id|vrc5477_irq_base
 )paren
 suffix:semicolon
-id|MIPS_ASSERT
+id|db_assert
 c_func
 (paren
 id|irq
@@ -75,7 +74,7 @@ r_int
 id|irq
 )paren
 (brace
-id|MIPS_ASSERT
+id|db_assert
 c_func
 (paren
 id|vrc5477_irq_base
@@ -84,7 +83,7 @@ op_minus
 l_int|1
 )paren
 suffix:semicolon
-id|MIPS_ASSERT
+id|db_assert
 c_func
 (paren
 id|irq
@@ -92,7 +91,7 @@ op_ge
 id|vrc5477_irq_base
 )paren
 suffix:semicolon
-id|MIPS_ASSERT
+id|db_assert
 c_func
 (paren
 id|irq
@@ -146,7 +145,7 @@ r_int
 id|irq
 )paren
 (brace
-id|MIPS_ASSERT
+id|db_assert
 c_func
 (paren
 id|vrc5477_irq_base
@@ -155,7 +154,7 @@ op_minus
 l_int|1
 )paren
 suffix:semicolon
-id|MIPS_ASSERT
+id|db_assert
 c_func
 (paren
 id|irq
@@ -163,7 +162,7 @@ op_ge
 id|vrc5477_irq_base
 )paren
 suffix:semicolon
-id|MIPS_ASSERT
+id|db_assert
 c_func
 (paren
 id|irq
@@ -210,7 +209,7 @@ r_int
 id|irq
 )paren
 (brace
-id|MIPS_ASSERT
+id|db_assert
 c_func
 (paren
 id|vrc5477_irq_base
@@ -219,7 +218,7 @@ op_minus
 l_int|1
 )paren
 suffix:semicolon
-id|MIPS_ASSERT
+id|db_assert
 c_func
 (paren
 id|irq
@@ -227,7 +226,7 @@ op_ge
 id|vrc5477_irq_base
 )paren
 suffix:semicolon
-id|MIPS_ASSERT
+id|db_assert
 c_func
 (paren
 id|irq
@@ -237,6 +236,26 @@ op_plus
 id|NUM_5477_IRQ
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|irq_desc
+(braket
+id|irq
+)braket
+dot
+id|status
+op_amp
+(paren
+id|IRQ_DISABLED
+op_or
+id|IRQ_INPROGRESS
+)paren
+)paren
+)paren
+(brace
 id|ll_vrc5477_irq_enable
 c_func
 (paren
@@ -245,6 +264,7 @@ op_minus
 id|vrc5477_irq_base
 )paren
 suffix:semicolon
+)brace
 )brace
 DECL|variable|vrc5477_irq_controller
 id|hw_irq_controller
@@ -347,37 +367,6 @@ op_assign
 id|irq_base
 suffix:semicolon
 )brace
-DECL|function|vrc5477_irq_to_irq
-r_int
-id|vrc5477_irq_to_irq
-c_func
-(paren
-r_int
-id|irq
-)paren
-(brace
-id|MIPS_ASSERT
-c_func
-(paren
-id|irq
-op_ge
-l_int|0
-)paren
-suffix:semicolon
-id|MIPS_ASSERT
-c_func
-(paren
-id|irq
-OL
-id|NUM_5477_IRQ
-)paren
-suffix:semicolon
-r_return
-id|irq
-op_plus
-id|vrc5477_irq_base
-suffix:semicolon
-)brace
 DECL|function|ll_vrc5477_irq_route
 r_void
 id|ll_vrc5477_irq_route
@@ -399,7 +388,7 @@ suffix:semicolon
 id|u32
 id|reg_index
 suffix:semicolon
-id|MIPS_ASSERT
+id|db_assert
 c_func
 (paren
 id|vrc5477_irq
@@ -407,7 +396,7 @@ op_ge
 l_int|0
 )paren
 suffix:semicolon
-id|MIPS_ASSERT
+id|db_assert
 c_func
 (paren
 id|vrc5477_irq
@@ -415,7 +404,7 @@ OL
 id|NUM_5477_IRQ
 )paren
 suffix:semicolon
-id|MIPS_ASSERT
+id|db_assert
 c_func
 (paren
 id|ip
@@ -423,7 +412,7 @@ op_ge
 l_int|0
 )paren
 suffix:semicolon
-id|MIPS_ASSERT
+id|db_assert
 c_func
 (paren
 (paren
@@ -513,7 +502,7 @@ suffix:semicolon
 id|u32
 id|reg_index
 suffix:semicolon
-id|MIPS_ASSERT
+id|db_assert
 c_func
 (paren
 id|vrc5477_irq
@@ -521,7 +510,7 @@ op_ge
 l_int|0
 )paren
 suffix:semicolon
-id|MIPS_ASSERT
+id|db_assert
 c_func
 (paren
 id|vrc5477_irq
@@ -559,7 +548,7 @@ op_star
 l_int|4
 )paren
 suffix:semicolon
-id|MIPS_ASSERT
+id|db_assert
 c_func
 (paren
 (paren
@@ -600,7 +589,7 @@ suffix:semicolon
 id|u32
 id|reg_index
 suffix:semicolon
-id|MIPS_ASSERT
+id|db_assert
 c_func
 (paren
 id|vrc5477_irq
@@ -608,7 +597,7 @@ op_ge
 l_int|0
 )paren
 suffix:semicolon
-id|MIPS_ASSERT
+id|db_assert
 c_func
 (paren
 id|vrc5477_irq
@@ -647,7 +636,7 @@ l_int|4
 )paren
 suffix:semicolon
 multiline_comment|/* we assert that the interrupt is enabled (perhaps over-zealous) */
-id|MIPS_ASSERT
+id|db_assert
 c_func
 (paren
 (paren

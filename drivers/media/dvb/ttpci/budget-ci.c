@@ -1,17 +1,10 @@
 multiline_comment|/*&n; * budget-ci.c: driver for the SAA7146 based Budget DVB cards &n; *&n; * Compiled from various sources by Michael Hunold &lt;michael@mihu.de&gt; &n; *&n; *     msp430 IR support contributed by Jack Thomasson &lt;jkt@Helius.COM&gt;&n; *     partially based on the Siemens DVB driver by Ralph+Marcus Metzler&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License&n; * as published by the Free Software Foundation; either version 2&n; * of the License, or (at your option) any later version.&n; * &n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; * &n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.&n; * Or, point your browser to http://www.gnu.org/copyleft/gpl.html&n; * &n; *&n; * the project&squot;s page is at http://www.linuxtv.org/dvb/&n; */
 macro_line|#include &quot;budget.h&quot;
-macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,5,51)
-DECL|macro|KBUILD_MODNAME
-mdefine_line|#define KBUILD_MODNAME budget
-macro_line|#endif
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/input.h&gt;
-macro_line|#if (LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,5,0))
-macro_line|#include &quot;input_fake.h&quot;
-macro_line|#endif
 DECL|struct|budget_ci
 r_struct
 id|budget_ci
@@ -121,8 +114,8 @@ id|value
 )paren
 suffix:semicolon
 )brace
-r_static
 DECL|function|wait_for_debi_done
+r_static
 r_int
 id|wait_for_debi_done
 c_func
@@ -253,8 +246,8 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-r_static
 DECL|function|debiread
+r_static
 id|u32
 id|debiread
 (paren
@@ -390,9 +383,9 @@ id|result
 suffix:semicolon
 )brace
 multiline_comment|/* DEBI during interrupt */
+DECL|function|irdebi
 r_static
 r_inline
-DECL|function|irdebi
 id|u32
 id|irdebi
 c_func
@@ -438,8 +431,8 @@ suffix:semicolon
 )brace
 macro_line|#endif
 multiline_comment|/* from reading the following remotes:&n;   Zenith Universal 7 / TV Mode 807 / VCR Mode 837&n;   Hauppauge (from NOVA-CI-s box product)&n;   i&squot;ve taken a &quot;middle of the road&quot; approach and note the differences&n;*/
-r_static
 DECL|variable|key_map
+r_static
 id|u16
 id|key_map
 (braket
@@ -591,8 +584,8 @@ l_int|0
 comma
 )brace
 suffix:semicolon
-r_static
 DECL|function|msp430_ir_debounce
+r_static
 r_void
 id|msp430_ir_debounce
 (paren
@@ -693,8 +686,8 @@ l_int|2
 suffix:semicolon
 multiline_comment|/* REPEAT */
 )brace
-r_static
 DECL|function|msp430_ir_interrupt
+r_static
 r_void
 id|msp430_ir_interrupt
 (paren
@@ -888,8 +881,8 @@ id|dev-&gt;timer
 suffix:semicolon
 )brace
 )brace
-r_static
 DECL|function|msp430_ir_init
+r_static
 r_int
 id|msp430_ir_init
 (paren
@@ -1021,8 +1014,8 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-r_static
 DECL|function|msp430_ir_deinit
+r_static
 r_void
 id|msp430_ir_deinit
 (paren
@@ -1120,8 +1113,8 @@ id|dev
 )paren
 suffix:semicolon
 )brace
-r_static
 DECL|function|budget_ci_irq
+r_static
 r_void
 id|budget_ci_irq
 (paren
@@ -1189,8 +1182,8 @@ id|isr
 )paren
 suffix:semicolon
 )brace
-r_static
 DECL|function|budget_ci_attach
+r_static
 r_int
 id|budget_ci_attach
 (paren
@@ -1300,8 +1293,8 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-r_static
 DECL|function|budget_ci_detach
+r_static
 r_int
 id|budget_ci_detach
 (paren
@@ -1370,8 +1363,8 @@ comma
 id|BUDGET_TT_HW_DISEQC
 )paren
 suffix:semicolon
-r_static
 DECL|variable|pci_tbl
+r_static
 r_struct
 id|pci_device_id
 id|pci_tbl
@@ -1408,8 +1401,16 @@ comma
 )brace
 )brace
 suffix:semicolon
-r_static
+id|MODULE_DEVICE_TABLE
+c_func
+(paren
+id|pci
+comma
+id|pci_tbl
+)paren
+suffix:semicolon
 DECL|variable|budget_extension
+r_static
 r_struct
 id|saa7146_extension
 id|budget_extension
@@ -1468,8 +1469,8 @@ id|budget_ci_irq
 comma
 )brace
 suffix:semicolon
-r_static
 DECL|function|budget_ci_init
+r_static
 r_int
 id|__init
 id|budget_ci_init
@@ -1496,8 +1497,8 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-r_static
 DECL|function|budget_ci_exit
+r_static
 r_void
 id|__exit
 id|budget_ci_exit

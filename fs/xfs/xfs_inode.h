@@ -350,15 +350,13 @@ id|xfs_daddr_t
 id|chl_blkno
 suffix:semicolon
 multiline_comment|/* starting block number of&n;&t;&t;&t;&t;&t;&t; * the cluster */
-macro_line|#ifdef DEBUG
 DECL|member|chl_buf
 r_struct
 id|xfs_buf
 op_star
 id|chl_buf
 suffix:semicolon
-multiline_comment|/* debug: the inode buffer */
-macro_line|#endif
+multiline_comment|/* the inode buffer */
 DECL|typedef|xfs_chashlist_t
 )brace
 id|xfs_chashlist_t
@@ -872,6 +870,8 @@ DECL|macro|XFS_IQUIESCE
 mdefine_line|#define XFS_IQUIESCE    0x0004  /* we have started quiescing for this inode */
 DECL|macro|XFS_IRECLAIM
 mdefine_line|#define XFS_IRECLAIM    0x0008  /* we have started reclaiming this inode    */
+DECL|macro|XFS_IRECLAIMABLE
+mdefine_line|#define XFS_IRECLAIMABLE 0x0010 /* inode can be reclaimed */
 multiline_comment|/*&n; * Flags for inode locking.&n; */
 DECL|macro|XFS_IOLOCK_EXCL
 mdefine_line|#define&t;XFS_IOLOCK_EXCL&t;&t;0x001

@@ -40,8 +40,12 @@ r_int
 id|lo_refcnt
 suffix:semicolon
 DECL|member|lo_offset
-r_int
+id|loff_t
 id|lo_offset
+suffix:semicolon
+DECL|member|lo_sizelimit
+id|loff_t
+id|lo_sizelimit
 suffix:semicolon
 DECL|member|lo_flags
 r_int
@@ -209,36 +213,6 @@ id|lo_queue
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|typedef|transfer_proc_t
-r_typedef
-r_int
-(paren
-op_star
-id|transfer_proc_t
-)paren
-(paren
-r_struct
-id|loop_device
-op_star
-comma
-r_int
-id|cmd
-comma
-r_char
-op_star
-id|raw_buf
-comma
-r_char
-op_star
-id|loop_buf
-comma
-r_int
-id|size
-comma
-r_int
-id|real_block
-)paren
-suffix:semicolon
 macro_line|#endif /* __KERNEL__ */
 multiline_comment|/*&n; * Loop flags&n; */
 DECL|macro|LO_FLAGS_DO_BMAP
@@ -347,6 +321,11 @@ DECL|member|lo_offset
 id|__u64
 id|lo_offset
 suffix:semicolon
+DECL|member|lo_sizelimit
+id|__u64
+id|lo_sizelimit
+suffix:semicolon
+multiline_comment|/* bytes, 0 == max available */
 DECL|member|lo_number
 id|__u32
 id|lo_number
@@ -392,25 +371,27 @@ suffix:semicolon
 suffix:semicolon
 multiline_comment|/*&n; * Loop filter types&n; */
 DECL|macro|LO_CRYPT_NONE
-mdefine_line|#define LO_CRYPT_NONE&t;  0
+mdefine_line|#define LO_CRYPT_NONE&t;&t;0
 DECL|macro|LO_CRYPT_XOR
-mdefine_line|#define LO_CRYPT_XOR&t;  1
+mdefine_line|#define LO_CRYPT_XOR&t;&t;1
 DECL|macro|LO_CRYPT_DES
-mdefine_line|#define LO_CRYPT_DES&t;  2
+mdefine_line|#define LO_CRYPT_DES&t;&t;2
 DECL|macro|LO_CRYPT_FISH2
-mdefine_line|#define LO_CRYPT_FISH2    3    /* Brand new Twofish encryption */
+mdefine_line|#define LO_CRYPT_FISH2&t;&t;3    /* Twofish encryption */
 DECL|macro|LO_CRYPT_BLOW
-mdefine_line|#define LO_CRYPT_BLOW     4
+mdefine_line|#define LO_CRYPT_BLOW&t;&t;4
 DECL|macro|LO_CRYPT_CAST128
-mdefine_line|#define LO_CRYPT_CAST128  5
+mdefine_line|#define LO_CRYPT_CAST128&t;5
 DECL|macro|LO_CRYPT_IDEA
-mdefine_line|#define LO_CRYPT_IDEA     6
+mdefine_line|#define LO_CRYPT_IDEA&t;&t;6
 DECL|macro|LO_CRYPT_DUMMY
-mdefine_line|#define LO_CRYPT_DUMMY    9
+mdefine_line|#define LO_CRYPT_DUMMY&t;&t;9
 DECL|macro|LO_CRYPT_SKIPJACK
-mdefine_line|#define LO_CRYPT_SKIPJACK 10
+mdefine_line|#define LO_CRYPT_SKIPJACK&t;10
+DECL|macro|LO_CRYPT_CRYPTOAPI
+mdefine_line|#define LO_CRYPT_CRYPTOAPI&t;18
 DECL|macro|MAX_LO_CRYPT
-mdefine_line|#define MAX_LO_CRYPT&t;20
+mdefine_line|#define MAX_LO_CRYPT&t;&t;20
 macro_line|#ifdef __KERNEL__
 multiline_comment|/* Support for loadable transfer modules */
 DECL|struct|loop_func_table

@@ -1934,6 +1934,33 @@ comma
 id|US_FL_FIX_INQUIRY
 )paren
 comma
+multiline_comment|/* Pentax Optio S digital camera&n; * adapted from http://www2.goldfisch.at/knowledge/233&n; * (Peter Pilsl &lt;pilsl@goldfisch.at&gt;)&n; * by Christoph Weidemann &lt;cweidema@indiana.edu&gt; */
+id|UNUSUAL_DEV
+c_func
+(paren
+l_int|0x0a17
+comma
+l_int|0x0006
+comma
+l_int|0x0000
+comma
+l_int|0xffff
+comma
+l_string|&quot;Pentax&quot;
+comma
+l_string|&quot;Optio S&quot;
+comma
+id|US_SC_8070
+comma
+id|US_PR_CB
+comma
+l_int|NULL
+comma
+id|US_FL_MODE_XLATE
+op_or
+id|US_FL_FIX_INQUIRY
+)paren
+comma
 macro_line|#ifdef CONFIG_USB_STORAGE_ISD200
 id|UNUSUAL_DEV
 c_func
@@ -1985,6 +2012,31 @@ comma
 id|US_FL_MODE_XLATE
 op_or
 id|US_FL_FIX_INQUIRY
+)paren
+comma
+multiline_comment|/* Reported by Kevin Cernekee &lt;kpc-usbdev@gelato.uiuc.edu&gt;&n; * Tested on hardware version 1.10.&n; * Entry is needed only for the initializer function override.&n; */
+id|UNUSUAL_DEV
+c_func
+(paren
+l_int|0x1019
+comma
+l_int|0x0c55
+comma
+l_int|0x0000
+comma
+l_int|0x9999
+comma
+l_string|&quot;Desknote&quot;
+comma
+l_string|&quot;UCR-61S2B&quot;
+comma
+id|US_SC_DEVICE
+comma
+id|US_PR_DEVICE
+comma
+id|usb_stor_ucr61s2b_init
+comma
+l_int|0
 )paren
 comma
 multiline_comment|/* Reported by Dan Pilone &lt;pilone@slac.com&gt;&n; * The device needs the flags only.&n; * Also reported by Brian Hall &lt;brihall@pcisys.net&gt;, again for flags.&n; * I also suspect this device may have a broken serial number.&n; */

@@ -3,17 +3,9 @@ macro_line|#ifndef _ASM_SN_IO_H
 DECL|macro|_ASM_SN_IO_H
 mdefine_line|#define _ASM_SN_IO_H
 macro_line|#include &lt;linux/config.h&gt;
-macro_line|#if !defined(CONFIG_SGI_IO)
-macro_line|#include &lt;asm/sn/sn0/addrs.h&gt;
-DECL|macro|IO_SPACE_BASE
-mdefine_line|#define IO_SPACE_BASE IO_BASE
-multiline_comment|/* Because we only have PCI I/O ports.  */
-DECL|macro|IO_SPACE_LIMIT
-mdefine_line|#define IO_SPACE_LIMIT 0xffffffff
-multiline_comment|/* No isa_* versions, the Origin doesn&squot;t have ISA / EISA bridges.  */
-macro_line|#else&t;/* CONFIG_SGI_IO */
+macro_line|#ifdef CONFIG_SGI_IO
 DECL|macro|IIO_ITTE_BASE
-mdefine_line|#define IIO_ITTE_BASE&t;0x400160&t;/* base of translation table entries */
+mdefine_line|#define IIO_ITTE_BASE&t;&t;0x400160 /* base of translation table entries */
 DECL|macro|IIO_ITTE
 mdefine_line|#define IIO_ITTE(bigwin)&t;(IIO_ITTE_BASE + 8*(bigwin))
 DECL|macro|IIO_ITTE_OFFSET_BITS
@@ -46,12 +38,20 @@ DECL|macro|IIO_ITTE_DISABLE
 mdefine_line|#define IIO_ITTE_DISABLE(nasid, bigwin) &bslash;&n;&t;IIO_ITTE_PUT((nasid), HUB_PIO_MAP_TO_MEM, &bslash;&n;&t;&t;     (bigwin), IIO_ITTE_INVALID_WIDGET, 0)
 DECL|macro|IIO_ITTE_GET
 mdefine_line|#define IIO_ITTE_GET(nasid, bigwin) REMOTE_HUB_ADDR((nasid), IIO_ITTE(bigwin))
-multiline_comment|/*&n; * Macro which takes the widget number, and returns the &n; * IO PRB address of that widget.&n; * value _x is expected to be a widget number in the range &n; * 0, 8 - 0xF&n; */
+multiline_comment|/*&n; * Macro which takes the widget number, and returns the&n; * IO PRB address of that widget.&n; * value _x is expected to be a widget number in the range&n; * 0, 8 - 0xF&n; */
 DECL|macro|IIO_IOPRB
 mdefine_line|#define&t;IIO_IOPRB(_x)&t;(IIO_IOPRB_0 + ( ( (_x) &lt; HUB_WIDGET_ID_MIN ? &bslash;&n;&t;&t;&t;(_x) : &bslash;&n;&t;&t;&t;(_x) - (HUB_WIDGET_ID_MIN-1)) &lt;&lt; 3) )
 macro_line|#if defined (CONFIG_SGI_IP27)
 macro_line|#include &lt;asm/sn/sn0/hubio.h&gt;
 macro_line|#endif
+macro_line|#else /* CONFIG_SGI_IO */
+macro_line|#include &lt;asm/sn/sn0/addrs.h&gt;
+DECL|macro|IO_SPACE_BASE
+mdefine_line|#define IO_SPACE_BASE IO_BASE
+multiline_comment|/* Because we only have PCI I/O ports.  */
+DECL|macro|IO_SPACE_LIMIT
+mdefine_line|#define IO_SPACE_LIMIT 0xffffffff
+multiline_comment|/* No isa_* versions, the Origin doesn&squot;t have ISA / EISA bridges.  */
 macro_line|#endif&t;/* CONFIG_SGI_IO */
 macro_line|#endif /* _ASM_SN_IO_H */
 eof

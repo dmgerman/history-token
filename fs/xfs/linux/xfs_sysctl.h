@@ -11,11 +11,6 @@ r_typedef
 r_struct
 id|xfs_param
 (brace
-DECL|member|stats_clear
-id|ulong
-id|stats_clear
-suffix:semicolon
-multiline_comment|/* Reset all XFS statistics to zero.     */
 DECL|member|restrict_chown
 id|ulong
 id|restrict_chown
@@ -47,6 +42,11 @@ id|ulong
 id|sync_interval
 suffix:semicolon
 multiline_comment|/* time between sync calls&t;&t; */
+DECL|member|stats_clear
+id|ulong
+id|stats_clear
+suffix:semicolon
+multiline_comment|/* Reset all XFS statistics to zero.     */
 DECL|typedef|xfs_param_t
 )brace
 id|xfs_param_t
@@ -54,38 +54,38 @@ suffix:semicolon
 multiline_comment|/*&n; * xfs_error_level:&n; *&n; * How much error reporting will be done when internal problems are&n; * encountered.  These problems normally return an EFSCORRUPTED to their&n; * caller, with no other information reported.&n; *&n; * 0&t;No error reports&n; * 1&t;Report EFSCORRUPTED errors that will cause a filesystem shutdown&n; * 5&t;Report all EFSCORRUPTED errors (all of the above errors, plus any&n; *&t;additional errors that are known to not cause shutdowns)&n; *&n; * xfs_panic_mask bit 0x8 turns the error reports into panics&n; */
 r_enum
 (brace
-DECL|enumerator|XFS_STATS_CLEAR
-id|XFS_STATS_CLEAR
-op_assign
-l_int|1
-comma
 DECL|enumerator|XFS_RESTRICT_CHOWN
 id|XFS_RESTRICT_CHOWN
 op_assign
-l_int|2
+l_int|1
 comma
 DECL|enumerator|XFS_SGID_INHERIT
 id|XFS_SGID_INHERIT
 op_assign
-l_int|3
+l_int|2
 comma
 DECL|enumerator|XFS_SYMLINK_MODE
 id|XFS_SYMLINK_MODE
 op_assign
-l_int|4
+l_int|3
 comma
 DECL|enumerator|XFS_PANIC_MASK
 id|XFS_PANIC_MASK
 op_assign
-l_int|5
+l_int|4
 comma
 DECL|enumerator|XFS_ERRLEVEL
 id|XFS_ERRLEVEL
 op_assign
-l_int|6
+l_int|5
 comma
 DECL|enumerator|XFS_SYNC_INTERVAL
 id|XFS_SYNC_INTERVAL
+op_assign
+l_int|6
+comma
+DECL|enumerator|XFS_STATS_CLEAR
+id|XFS_STATS_CLEAR
 op_assign
 l_int|7
 comma

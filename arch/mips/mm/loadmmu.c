@@ -1,9 +1,10 @@
-multiline_comment|/*&n; * loadmmu.c: Setup cpu/cache specific function ptrs at boot time.&n; *&n; * Copyright (C) 1996 David S. Miller (dm@engr.sgi.com)&n; * Kevin D. Kissell, kevink@mips.com and Carsten Langgaard, carstenl@mips.com&n; * Copyright (C) 2000 MIPS Technologies, Inc.  All rights reserved.&n; */
+multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1996 David S. Miller (dm@engr.sgi.com)&n; * Copyright (C) 1997, 1999, 2000, 2001, 2002, 2003 Ralf Baechle (ralf@gnu.org)&n; * Copyright (C) 1999 Silicon Graphics, Inc.&n; * Kevin D. Kissell, kevink@mips.com and Carsten Langgaard, carstenl@mips.com&n; * Copyright (C) 2000 MIPS Technologies, Inc.  All rights reserved.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/bootinfo.h&gt;
 macro_line|#include &lt;asm/cpu.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
@@ -39,31 +40,31 @@ id|from
 )paren
 suffix:semicolon
 multiline_comment|/* Cache operations. */
-DECL|variable|_flush_cache_all
+DECL|variable|flush_cache_all
 r_void
 (paren
 op_star
-id|_flush_cache_all
+id|flush_cache_all
 )paren
 (paren
 r_void
 )paren
 suffix:semicolon
-DECL|variable|___flush_cache_all
+DECL|variable|__flush_cache_all
 r_void
 (paren
 op_star
-id|___flush_cache_all
+id|__flush_cache_all
 )paren
 (paren
 r_void
 )paren
 suffix:semicolon
-DECL|variable|_flush_cache_mm
+DECL|variable|flush_cache_mm
 r_void
 (paren
 op_star
-id|_flush_cache_mm
+id|flush_cache_mm
 )paren
 (paren
 r_struct
@@ -72,11 +73,11 @@ op_star
 id|mm
 )paren
 suffix:semicolon
-DECL|variable|_flush_cache_range
+DECL|variable|flush_cache_range
 r_void
 (paren
 op_star
-id|_flush_cache_range
+id|flush_cache_range
 )paren
 (paren
 r_struct
@@ -93,11 +94,11 @@ r_int
 id|end
 )paren
 suffix:semicolon
-DECL|variable|_flush_cache_page
+DECL|variable|flush_cache_page
 r_void
 (paren
 op_star
-id|_flush_cache_page
+id|flush_cache_page
 )paren
 (paren
 r_struct
@@ -110,11 +111,46 @@ r_int
 id|page
 )paren
 suffix:semicolon
-DECL|variable|_flush_cache_sigtramp
+DECL|variable|flush_icache_range
 r_void
 (paren
 op_star
-id|_flush_cache_sigtramp
+id|flush_icache_range
+)paren
+(paren
+r_int
+r_int
+id|start
+comma
+r_int
+r_int
+id|end
+)paren
+suffix:semicolon
+DECL|variable|flush_icache_page
+r_void
+(paren
+op_star
+id|flush_icache_page
+)paren
+(paren
+r_struct
+id|vm_area_struct
+op_star
+id|vma
+comma
+r_struct
+id|page
+op_star
+id|page
+)paren
+suffix:semicolon
+multiline_comment|/* MIPS specific cache operations */
+DECL|variable|flush_cache_sigtramp
+r_void
+(paren
+op_star
+id|flush_cache_sigtramp
 )paren
 (paren
 r_int
@@ -122,53 +158,29 @@ r_int
 id|addr
 )paren
 suffix:semicolon
-DECL|variable|_flush_page_to_ram
+DECL|variable|flush_data_cache_page
 r_void
 (paren
 op_star
-id|_flush_page_to_ram
+id|flush_data_cache_page
 )paren
 (paren
-r_struct
-id|page
-op_star
-id|page
+r_int
+r_int
+id|addr
 )paren
 suffix:semicolon
-DECL|variable|_flush_icache_range
+DECL|variable|flush_icache_all
 r_void
 (paren
 op_star
-id|_flush_icache_range
+id|flush_icache_all
 )paren
 (paren
-r_int
-r_int
-id|start
-comma
-r_int
-r_int
-id|end
-)paren
-suffix:semicolon
-DECL|variable|_flush_icache_page
 r_void
-(paren
-op_star
-id|_flush_icache_page
-)paren
-(paren
-r_struct
-id|vm_area_struct
-op_star
-id|vma
-comma
-r_struct
-id|page
-op_star
-id|page
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_NONCOHERENT_IO
 multiline_comment|/* DMA cache operations. */
 DECL|variable|_dma_cache_wback_inv
 r_void
@@ -218,6 +230,28 @@ r_int
 id|size
 )paren
 suffix:semicolon
+DECL|variable|_dma_cache_wback_inv
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|_dma_cache_wback_inv
+)paren
+suffix:semicolon
+DECL|variable|_dma_cache_wback
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|_dma_cache_wback
+)paren
+suffix:semicolon
+DECL|variable|_dma_cache_inv
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|_dma_cache_inv
+)paren
+suffix:semicolon
+macro_line|#endif /* CONFIG_NONCOHERENT_IO */
 r_extern
 r_void
 id|ld_mmu_r23000
@@ -236,7 +270,7 @@ r_void
 suffix:semicolon
 r_extern
 r_void
-id|ld_mmu_r5432
+id|ld_mmu_tx39
 c_func
 (paren
 r_void
@@ -245,14 +279,6 @@ suffix:semicolon
 r_extern
 r_void
 id|ld_mmu_r6000
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|ld_mmu_rm7k
 c_func
 (paren
 r_void
@@ -284,16 +310,40 @@ r_void
 suffix:semicolon
 r_extern
 r_void
-id|ld_mmu_mips32
+id|sb1_tlb_init
 c_func
 (paren
 r_void
 )paren
 suffix:semicolon
-DECL|function|loadmmu
+r_extern
+r_void
+id|r3k_tlb_init
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|r4k_tlb_init
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|sb1_tlb_init
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+DECL|function|load_mmu
 r_void
 id|__init
-id|loadmmu
+id|load_mmu
 c_func
 (paren
 r_void
@@ -302,58 +352,16 @@ r_void
 r_if
 c_cond
 (paren
-id|mips_cpu.options
-op_amp
-id|MIPS_CPU_4KTLB
+id|cpu_has_4ktlb
 )paren
 (brace
-macro_line|#if defined(CONFIG_CPU_R4X00) || defined(CONFIG_CPU_VR41XX) || &bslash;&n;    defined(CONFIG_CPU_R4300) || defined(CONFIG_CPU_R5000) || &bslash;&n;    defined(CONFIG_CPU_NEVADA)
-id|printk
-c_func
-(paren
-l_string|&quot;Loading R4000 MMU routines.&bslash;n&quot;
-)paren
-suffix:semicolon
+macro_line|#if defined(CONFIG_CPU_R4X00)  || defined(CONFIG_CPU_VR41XX) || &bslash;&n;    defined(CONFIG_CPU_R4300)  || defined(CONFIG_CPU_R5000)  || &bslash;&n;    defined(CONFIG_CPU_NEVADA) || defined(CONFIG_CPU_R5432)  || &bslash;&n;    defined(CONFIG_CPU_R5500)  || defined(CONFIG_CPU_MIPS32) || &bslash;&n;    defined(CONFIG_CPU_MIPS64) || defined(CONFIG_CPU_TX49XX) || &bslash;&n;    defined(CONFIG_CPU_RM7000)
 id|ld_mmu_r4xx0
 c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#endif
-macro_line|#if defined(CONFIG_CPU_RM7000)
-id|printk
-c_func
-(paren
-l_string|&quot;Loading RM7000 MMU routines.&bslash;n&quot;
-)paren
-suffix:semicolon
-id|ld_mmu_rm7k
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#if defined(CONFIG_CPU_R5432)
-id|printk
-c_func
-(paren
-l_string|&quot;Loading R5432 MMU routines.&bslash;n&quot;
-)paren
-suffix:semicolon
-id|ld_mmu_r5432
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#if defined(CONFIG_CPU_MIPS32) || defined(CONFIG_CPU_MIPS64)
-id|printk
-c_func
-(paren
-l_string|&quot;Loading MIPS32 MMU routines.&bslash;n&quot;
-)paren
-suffix:semicolon
-id|ld_mmu_mips32
+id|r4k_tlb_init
 c_func
 (paren
 )paren
@@ -364,7 +372,7 @@ r_else
 r_switch
 c_cond
 (paren
-id|mips_cpu.cputype
+id|current_cpu_data.cputype
 )paren
 (brace
 macro_line|#ifdef CONFIG_CPU_R3000
@@ -378,6 +386,23 @@ r_case
 id|CPU_R3000A
 suffix:colon
 r_case
+id|CPU_R3081E
+suffix:colon
+id|ld_mmu_r23000
+c_func
+(paren
+)paren
+suffix:semicolon
+id|r3k_tlb_init
+c_func
+(paren
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef CONFIG_CPU_TX39XX
+r_case
 id|CPU_TX3912
 suffix:colon
 r_case
@@ -386,16 +411,12 @@ suffix:colon
 r_case
 id|CPU_TX3927
 suffix:colon
-r_case
-id|CPU_R3081E
-suffix:colon
-id|printk
+id|ld_mmu_tx39
 c_func
 (paren
-l_string|&quot;Loading R[23]000 MMU routines.&bslash;n&quot;
 )paren
 suffix:semicolon
-id|ld_mmu_r23000
+id|r3k_tlb_init
 c_func
 (paren
 )paren
@@ -407,13 +428,15 @@ macro_line|#ifdef CONFIG_CPU_R10000
 r_case
 id|CPU_R10000
 suffix:colon
-id|printk
+r_case
+id|CPU_R12000
+suffix:colon
+id|ld_mmu_r4xx0
 c_func
 (paren
-l_string|&quot;Loading R10000 MMU routines.&bslash;n&quot;
 )paren
 suffix:semicolon
-id|ld_mmu_andes
+id|andes_tlb_init
 c_func
 (paren
 )paren
@@ -425,13 +448,12 @@ macro_line|#ifdef CONFIG_CPU_SB1
 r_case
 id|CPU_SB1
 suffix:colon
-id|printk
+id|ld_mmu_sb1
 c_func
 (paren
-l_string|&quot;Loading SB1 MMU routines.&bslash;n&quot;
 )paren
 suffix:semicolon
-id|ld_mmu_sb1
+id|sb1_tlb_init
 c_func
 (paren
 )paren
@@ -439,6 +461,17 @@ suffix:semicolon
 r_break
 suffix:semicolon
 macro_line|#endif
+r_case
+id|CPU_R8000
+suffix:colon
+id|panic
+c_func
+(paren
+l_string|&quot;R8000 is unsupported&quot;
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
 r_default
 suffix:colon
 id|panic

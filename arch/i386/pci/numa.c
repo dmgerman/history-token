@@ -9,7 +9,7 @@ mdefine_line|#define BUS2LOCAL(global) (mp_bus_id_to_local[global])
 DECL|macro|QUADLOCAL2BUS
 mdefine_line|#define QUADLOCAL2BUS(quad,local) (quad_local_to_mp_bus_id[quad][local])
 DECL|macro|PCI_CONF1_MQ_ADDRESS
-mdefine_line|#define PCI_CONF1_MQ_ADDRESS(bus, dev, fn, reg) &bslash;&n;&t;(0x80000000 | (BUS2LOCAL(bus) &lt;&lt; 16) | (dev &lt;&lt; 11) | (fn &lt;&lt; 8) | (reg &amp; ~3))
+mdefine_line|#define PCI_CONF1_MQ_ADDRESS(bus, devfn, reg) &bslash;&n;&t;(0x80000000 | (BUS2LOCAL(bus) &lt;&lt; 16) | (devfn &lt;&lt; 8) | (reg &amp; ~3))
 DECL|function|pci_conf1_mq_read
 r_static
 r_int
@@ -22,10 +22,7 @@ r_int
 id|bus
 comma
 r_int
-id|dev
-comma
-r_int
-id|fn
+id|devfn
 comma
 r_int
 id|reg
@@ -55,15 +52,9 @@ id|MAX_MP_BUSSES
 )paren
 op_logical_or
 (paren
-id|dev
+id|devfn
 OG
-l_int|31
-)paren
-op_logical_or
-(paren
-id|fn
-OG
-l_int|7
+l_int|255
 )paren
 op_logical_or
 (paren
@@ -93,9 +84,7 @@ c_func
 (paren
 id|bus
 comma
-id|dev
-comma
-id|fn
+id|devfn
 comma
 id|reg
 )paren
@@ -213,10 +202,7 @@ r_int
 id|bus
 comma
 r_int
-id|dev
-comma
-r_int
-id|fn
+id|devfn
 comma
 r_int
 id|reg
@@ -242,15 +228,9 @@ id|MAX_MP_BUSSES
 )paren
 op_logical_or
 (paren
-id|dev
+id|devfn
 OG
-l_int|31
-)paren
-op_logical_or
-(paren
-id|fn
-OG
-l_int|7
+l_int|255
 )paren
 op_logical_or
 (paren
@@ -280,9 +260,7 @@ c_func
 (paren
 id|bus
 comma
-id|dev
-comma
-id|fn
+id|devfn
 comma
 id|reg
 )paren

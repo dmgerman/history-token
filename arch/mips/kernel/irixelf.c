@@ -73,14 +73,6 @@ op_star
 id|file
 )paren
 suffix:semicolon
-r_extern
-r_int
-id|dump_fpu
-(paren
-id|elf_fpregset_t
-op_star
-)paren
-suffix:semicolon
 DECL|variable|irix_format
 r_static
 r_struct
@@ -2639,7 +2631,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * IRIX maps a page at 0x200000 that holds information about the &n; * process and the system, here we map the page and fill the&n; * structure&n; */
+multiline_comment|/*&n; * IRIX maps a page at 0x200000 that holds information about the&n; * process and the system, here we map the page and fill the&n; * structure&n; */
 DECL|function|irix_map_prda_page
 r_void
 id|irix_map_prda_page
@@ -2689,9 +2681,9 @@ id|current-&gt;pid
 suffix:semicolon
 id|pp-&gt;prda_sys.t_prid
 op_assign
-id|read_32bit_cp0_register
+id|read_c0_prid
+c_func
 (paren
-id|CP0_PRID
 )paren
 suffix:semicolon
 id|pp-&gt;prda_sys.t_rpid
@@ -5144,7 +5136,7 @@ id|psinfo.pr_ppid
 op_assign
 id|prstatus.pr_ppid
 op_assign
-id|current-&gt;p_pptr-&gt;pid
+id|current-&gt;parent-&gt;pid
 suffix:semicolon
 id|psinfo.pr_pgrp
 op_assign
@@ -5163,7 +5155,7 @@ op_assign
 id|CT_TO_SECS
 c_func
 (paren
-id|current-&gt;times.tms_utime
+id|current-&gt;utime
 )paren
 suffix:semicolon
 id|prstatus.pr_utime.tv_usec
@@ -5171,7 +5163,7 @@ op_assign
 id|CT_TO_USECS
 c_func
 (paren
-id|current-&gt;times.tms_utime
+id|current-&gt;utime
 )paren
 suffix:semicolon
 id|prstatus.pr_stime.tv_sec
@@ -5179,7 +5171,7 @@ op_assign
 id|CT_TO_SECS
 c_func
 (paren
-id|current-&gt;times.tms_stime
+id|current-&gt;stime
 )paren
 suffix:semicolon
 id|prstatus.pr_stime.tv_usec
@@ -5187,7 +5179,7 @@ op_assign
 id|CT_TO_USECS
 c_func
 (paren
-id|current-&gt;times.tms_stime
+id|current-&gt;stime
 )paren
 suffix:semicolon
 id|prstatus.pr_cutime.tv_sec
@@ -5195,7 +5187,7 @@ op_assign
 id|CT_TO_SECS
 c_func
 (paren
-id|current-&gt;times.tms_cutime
+id|current-&gt;cutime
 )paren
 suffix:semicolon
 id|prstatus.pr_cutime.tv_usec
@@ -5203,7 +5195,7 @@ op_assign
 id|CT_TO_USECS
 c_func
 (paren
-id|current-&gt;times.tms_cutime
+id|current-&gt;cutime
 )paren
 suffix:semicolon
 id|prstatus.pr_cstime.tv_sec
@@ -5211,7 +5203,7 @@ op_assign
 id|CT_TO_SECS
 c_func
 (paren
-id|current-&gt;times.tms_cstime
+id|current-&gt;cstime
 )paren
 suffix:semicolon
 id|prstatus.pr_cstime.tv_usec
@@ -5219,7 +5211,7 @@ op_assign
 id|CT_TO_USECS
 c_func
 (paren
-id|current-&gt;times.tms_cstime
+id|current-&gt;cstime
 )paren
 suffix:semicolon
 r_if
@@ -5355,7 +5347,11 @@ l_char|&squot;Z&squot;
 suffix:semicolon
 id|psinfo.pr_nice
 op_assign
-id|current-&gt;nice
+id|task_nice
+c_func
+(paren
+id|current
+)paren
 suffix:semicolon
 id|psinfo.pr_flag
 op_assign
@@ -5517,6 +5513,8 @@ id|prstatus.pr_fpvalid
 op_assign
 id|dump_fpu
 (paren
+id|regs
+comma
 op_amp
 id|fpu
 )paren

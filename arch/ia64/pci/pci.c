@@ -40,7 +40,7 @@ l_int|1
 suffix:semicolon
 multiline_comment|/*&n; * Low-level SAL-based PCI configuration access functions. Note that SAL&n; * calls are already serialized (via sal_lock), so we don&squot;t need another&n; * synchronization mechanism here.&n; */
 DECL|macro|PCI_SAL_ADDRESS
-mdefine_line|#define PCI_SAL_ADDRESS(seg, bus, dev, fn, reg) &bslash;&n;&t;((u64)(seg &lt;&lt; 24) | (u64)(bus &lt;&lt; 16) | &bslash;&n;&t; (u64)(dev &lt;&lt; 11) | (u64)(fn &lt;&lt; 8) | (u64)(reg))
+mdefine_line|#define PCI_SAL_ADDRESS(seg, bus, devfn, reg) &bslash;&n;&t;((u64)(seg &lt;&lt; 24) | (u64)(bus &lt;&lt; 16) | &bslash;&n;&t; (u64)(devfn &lt;&lt; 8) | (u64)(reg))
 r_static
 r_int
 DECL|function|pci_sal_read
@@ -53,10 +53,7 @@ r_int
 id|bus
 comma
 r_int
-id|dev
-comma
-r_int
-id|fn
+id|devfn
 comma
 r_int
 id|reg
@@ -98,15 +95,9 @@ l_int|255
 )paren
 op_logical_or
 (paren
-id|dev
+id|devfn
 OG
-l_int|31
-)paren
-op_logical_or
-(paren
-id|fn
-OG
-l_int|7
+l_int|255
 )paren
 op_logical_or
 (paren
@@ -131,9 +122,7 @@ id|seg
 comma
 id|bus
 comma
-id|dev
-comma
-id|fn
+id|devfn
 comma
 id|reg
 )paren
@@ -168,10 +157,7 @@ r_int
 id|bus
 comma
 r_int
-id|dev
-comma
-r_int
-id|fn
+id|devfn
 comma
 r_int
 id|reg
@@ -199,15 +185,9 @@ l_int|255
 )paren
 op_logical_or
 (paren
-id|dev
+id|devfn
 OG
-l_int|31
-)paren
-op_logical_or
-(paren
-id|fn
-OG
-l_int|7
+l_int|255
 )paren
 op_logical_or
 (paren
@@ -231,9 +211,7 @@ id|seg
 comma
 id|bus
 comma
-id|dev
-comma
-id|fn
+id|devfn
 comma
 id|reg
 )paren
@@ -310,17 +288,7 @@ id|bus
 comma
 id|bus-&gt;number
 comma
-id|PCI_SLOT
-c_func
-(paren
 id|devfn
-)paren
-comma
-id|PCI_FUNC
-c_func
-(paren
-id|devfn
-)paren
 comma
 id|where
 comma
@@ -368,17 +336,7 @@ id|bus
 comma
 id|bus-&gt;number
 comma
-id|PCI_SLOT
-c_func
-(paren
 id|devfn
-)paren
-comma
-id|PCI_FUNC
-c_func
-(paren
-id|devfn
-)paren
 comma
 id|where
 comma
@@ -1600,7 +1558,6 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-macro_line|#warning pcibios_update_resource() is now a generic implementation - please check
 r_void
 id|__devinit
 DECL|function|pcibios_update_irq

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Support the inventory interface for IRIX binaries&n; * This is invoked before the mm layer is working, so we do not&n; * use the linked lists for the inventory yet. &n; *&n; * Miguel de Icaza, 1997.&n; *&n; * $Id: irixinv.c,v 1.3 1998/04/05 11:23:51 ralf Exp $&n; */
+multiline_comment|/*&n; * Support the inventory interface for IRIX binaries&n; * This is invoked before the mm layer is working, so we do not&n; * use the linked lists for the inventory yet.&n; *&n; * Miguel de Icaza, 1997.&n; */
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
@@ -20,8 +20,8 @@ id|inventory
 id|MAX_INVENTORY
 )braket
 suffix:semicolon
-r_void
 DECL|function|add_to_inventory
+r_void
 id|add_to_inventory
 (paren
 r_int
@@ -87,8 +87,8 @@ id|inventory_items
 op_increment
 suffix:semicolon
 )brace
-r_int
 DECL|function|dump_inventory_to_user
+r_int
 id|dump_inventory_to_user
 (paren
 r_void
@@ -186,14 +186,16 @@ id|inventory_t
 suffix:semicolon
 )brace
 DECL|function|init_inventory
-r_void
+r_static
+r_int
 id|__init
 id|init_inventory
+c_func
 (paren
 r_void
 )paren
 (brace
-multiline_comment|/* gross hack while we put the right bits all over the kernel&n;&t; * most likely this will not let just anyone run the X server&n;&t; * until we put the right values all over the place&n;&t; */
+multiline_comment|/*&n;&t; * gross hack while we put the right bits all over the kernel&n;&t; * most likely this will not let just anyone run the X server&n;&t; * until we put the right values all over the place&n;&t; */
 id|add_to_inventory
 (paren
 l_int|10
@@ -429,5 +431,15 @@ comma
 l_int|6
 )paren
 suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
 )brace
+DECL|variable|init_inventory
+id|module_init
+c_func
+(paren
+id|init_inventory
+)paren
+suffix:semicolon
 eof

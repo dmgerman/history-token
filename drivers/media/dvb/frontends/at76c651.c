@@ -1,14 +1,15 @@
 multiline_comment|/*&n; * at76c651.c&n; * &n; * Atmel DVB-C Frontend Driver (at76c651/dat7021)&n; *&n; * Copyright (C) 2001 fnbrd &lt;fnbrd@gmx.de&gt;&n; *             &amp; 2002 Andreas Oberritter &lt;andreas@oberritter.de&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; */
-macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
-macro_line|#include &lt;linux/delay.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/kernel.h&gt;
+macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
-macro_line|#include &lt;linux/i2c.h&gt;
 macro_line|#if defined(__powerpc__)
 macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#endif
 macro_line|#include &quot;dvb_frontend.h&quot;
 macro_line|#include &quot;dvb_i2c.h&quot;
+macro_line|#include &quot;dvb_functions.h&quot;
 DECL|variable|debug
 r_static
 r_int
@@ -107,15 +108,20 @@ op_or
 id|FE_CAN_QAM_128
 op_or
 id|FE_CAN_QAM_256
-comma
-multiline_comment|/* FE_CAN_QAM_512 | FE_CAN_QAM_1024 |  */
+multiline_comment|/* | FE_CAN_QAM_512 | FE_CAN_QAM_1024 */
+op_or
+id|FE_CAN_RECOVER
+op_or
+id|FE_CAN_CLEAN_SETUP
+op_or
+id|FE_CAN_MUTE_TS
 )brace
 suffix:semicolon
 macro_line|#if ! defined(__powerpc__)
+DECL|function|__ilog2
 r_static
 id|__inline__
 r_int
-DECL|function|__ilog2
 id|__ilog2
 c_func
 (paren
@@ -163,9 +169,9 @@ l_int|1
 suffix:semicolon
 )brace
 macro_line|#endif
+DECL|function|at76c651_writereg
 r_static
 r_int
-DECL|function|at76c651_writereg
 id|at76c651_writereg
 c_func
 (paren
@@ -200,22 +206,26 @@ id|i2c_msg
 id|msg
 op_assign
 (brace
+dot
 id|addr
-suffix:colon
+op_assign
 l_int|0x1a
 op_rshift
 l_int|1
 comma
+dot
 id|flags
-suffix:colon
+op_assign
 l_int|0
 comma
+dot
 id|buf
-suffix:colon
+op_assign
 id|buf
 comma
+dot
 id|len
-suffix:colon
+op_assign
 l_int|2
 )brace
 suffix:semicolon
@@ -256,7 +266,7 @@ comma
 id|ret
 )paren
 suffix:semicolon
-id|mdelay
+id|dvb_delay
 c_func
 (paren
 l_int|10
@@ -276,9 +286,9 @@ suffix:colon
 l_int|0
 suffix:semicolon
 )brace
+DECL|function|at76c651_readreg
 r_static
 id|u8
-DECL|function|at76c651_readreg
 id|at76c651_readreg
 c_func
 (paren
@@ -320,42 +330,50 @@ id|msg
 op_assign
 (brace
 (brace
+dot
 id|addr
-suffix:colon
+op_assign
 l_int|0x1a
 op_rshift
 l_int|1
 comma
+dot
 id|flags
-suffix:colon
+op_assign
 l_int|0
 comma
+dot
 id|buf
-suffix:colon
+op_assign
 id|b0
 comma
+dot
 id|len
-suffix:colon
+op_assign
 l_int|1
 )brace
 comma
 (brace
+dot
 id|addr
-suffix:colon
+op_assign
 l_int|0x1a
 op_rshift
 l_int|1
 comma
+dot
 id|flags
-suffix:colon
+op_assign
 id|I2C_M_RD
 comma
+dot
 id|buf
-suffix:colon
+op_assign
 id|b1
 comma
+dot
 id|len
-suffix:colon
+op_assign
 l_int|1
 )brace
 )brace
@@ -398,9 +416,9 @@ l_int|0
 )braket
 suffix:semicolon
 )brace
+DECL|function|at76c651_set_auto_config
 r_static
 r_int
-DECL|function|at76c651_set_auto_config
 id|at76c651_set_auto_config
 c_func
 (paren
@@ -475,9 +493,9 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|function|at76c651_set_bbfreq
 r_static
 r_int
-DECL|function|at76c651_set_bbfreq
 id|at76c651_set_bbfreq
 c_func
 (paren
@@ -511,9 +529,9 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|function|at76c651_reset
 r_static
 r_int
-DECL|function|at76c651_reset
 id|at76c651_reset
 c_func
 (paren
@@ -535,9 +553,9 @@ l_int|0x01
 )paren
 suffix:semicolon
 )brace
+DECL|function|at76c651_disable_interrupts
 r_static
 r_int
-DECL|function|at76c651_disable_interrupts
 id|at76c651_disable_interrupts
 c_func
 (paren
@@ -559,9 +577,9 @@ l_int|0x00
 )paren
 suffix:semicolon
 )brace
+DECL|function|at76c651_switch_tuner_i2c
 r_static
 r_int
-DECL|function|at76c651_switch_tuner_i2c
 id|at76c651_switch_tuner_i2c
 c_func
 (paren
@@ -605,9 +623,9 @@ l_int|0xc2
 )paren
 suffix:semicolon
 )brace
+DECL|function|dat7021_write
 r_static
 r_int
-DECL|function|dat7021_write
 id|dat7021_write
 c_func
 (paren
@@ -628,18 +646,21 @@ id|i2c_msg
 id|msg
 op_assign
 (brace
+dot
 id|addr
-suffix:colon
+op_assign
 l_int|0xc2
 op_rshift
 l_int|1
 comma
+dot
 id|flags
-suffix:colon
+op_assign
 l_int|0
 comma
+dot
 id|buf
-suffix:colon
+op_assign
 (paren
 id|u8
 op_star
@@ -647,8 +668,9 @@ op_star
 op_amp
 id|tw
 comma
+dot
 id|len
-suffix:colon
+op_assign
 r_sizeof
 (paren
 id|tw
@@ -707,9 +729,9 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|function|dat7021_set_tv_freq
 r_static
 r_int
-DECL|function|dat7021_set_tv_freq
 id|dat7021_set_tv_freq
 c_func
 (paren
@@ -797,9 +819,9 @@ id|dw
 )paren
 suffix:semicolon
 )brace
+DECL|function|at76c651_set_symbolrate
 r_static
 r_int
-DECL|function|at76c651_set_symbolrate
 id|at76c651_set_symbolrate
 c_func
 (paren
@@ -910,9 +932,9 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|function|at76c651_set_qam
 r_static
 r_int
-DECL|function|at76c651_set_qam
 id|at76c651_set_qam
 c_func
 (paren
@@ -1029,9 +1051,9 @@ id|qamsel
 )paren
 suffix:semicolon
 )brace
+DECL|function|at76c651_set_inversion
 r_static
 r_int
-DECL|function|at76c651_set_inversion
 id|at76c651_set_inversion
 c_func
 (paren
@@ -1111,9 +1133,9 @@ id|feciqinv
 )paren
 suffix:semicolon
 )brace
+DECL|function|at76c651_set_parameters
 r_static
 r_int
-DECL|function|at76c651_set_parameters
 id|at76c651_set_parameters
 c_func
 (paren
@@ -1162,9 +1184,9 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|function|at76c651_set_defaults
 r_static
 r_int
-DECL|function|at76c651_set_defaults
 id|at76c651_set_defaults
 c_func
 (paren
@@ -1212,9 +1234,9 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|function|at76c651_ioctl
 r_static
 r_int
-DECL|function|at76c651_ioctl
 id|at76c651_ioctl
 c_func
 (paren
@@ -1582,9 +1604,9 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|function|at76c651_attach
 r_static
 r_int
-DECL|function|at76c651_attach
 id|at76c651_attach
 c_func
 (paren
@@ -1700,9 +1722,9 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|function|at76c651_detach
 r_static
 r_void
-DECL|function|at76c651_detach
 id|at76c651_detach
 c_func
 (paren
@@ -1727,10 +1749,10 @@ id|i2c
 )paren
 suffix:semicolon
 )brace
+DECL|function|at76c651_init
 r_static
 r_int
 id|__init
-DECL|function|at76c651_init
 id|at76c651_init
 c_func
 (paren
@@ -1749,10 +1771,10 @@ id|at76c651_detach
 )paren
 suffix:semicolon
 )brace
+DECL|function|at76c651_exit
 r_static
 r_void
 id|__exit
-DECL|function|at76c651_exit
 id|at76c651_exit
 c_func
 (paren

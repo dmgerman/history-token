@@ -1,39 +1,8 @@
 multiline_comment|/*&n; * budget.c: driver for the SAA7146 based Budget DVB cards &n; *&n; * Compiled from various sources by Michael Hunold &lt;michael@mihu.de&gt; &n; *&n; * Copyright (C) 2002 Ralph Metzler &lt;rjkm@metzlerbros.de&gt;&n; *&n; * Copyright (C) 1999-2002 Ralph  Metzler &n; *                       &amp; Marcus Metzler for convergence integrated media GmbH&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License&n; * as published by the Free Software Foundation; either version 2&n; * of the License, or (at your option) any later version.&n; * &n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; * &n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.&n; * Or, point your browser to http://www.gnu.org/copyleft/gpl.html&n; * &n; *&n; * the project&squot;s page is at http://www.linuxtv.org/dvb/&n; */
 macro_line|#include &quot;budget.h&quot;
-macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,5,51)
-DECL|macro|KBUILD_MODNAME
-mdefine_line|#define KBUILD_MODNAME budget
-macro_line|#endif
-DECL|function|ddelay
-r_static
-r_inline
-r_void
-id|ddelay
-c_func
-(paren
-r_int
-id|i
-)paren
-(brace
-id|current-&gt;state
-op_assign
-id|TASK_INTERRUPTIBLE
-suffix:semicolon
-id|schedule_timeout
-c_func
-(paren
-(paren
-id|HZ
-op_star
-id|i
-)paren
-op_div
-l_int|100
-)paren
-suffix:semicolon
-)brace
-r_static
+macro_line|#include &quot;dvb_functions.h&quot;
 DECL|function|Set22K
+r_static
 r_void
 id|Set22K
 (paren
@@ -83,8 +52,8 @@ suffix:semicolon
 )brace
 multiline_comment|/* Diseqc functions only for TT Budget card */
 multiline_comment|/* taken from the Skyvision DVB driver by&n;   Ralph Metzler &lt;rjkm@metzlerbros.de&gt; */
-r_static
 DECL|function|DiseqcSendBit
+r_static
 r_void
 id|DiseqcSendBit
 (paren
@@ -157,8 +126,8 @@ l_int|500
 )paren
 suffix:semicolon
 )brace
-r_static
 DECL|function|DiseqcSendByte
+r_static
 r_void
 id|DiseqcSendByte
 (paren
@@ -237,8 +206,8 @@ id|par
 )paren
 suffix:semicolon
 )brace
-r_static
 DECL|function|SendDiSEqCMsg
+r_static
 r_int
 id|SendDiSEqCMsg
 (paren
@@ -254,6 +223,7 @@ id|u8
 op_star
 id|msg
 comma
+r_int
 r_int
 id|burst
 )paren
@@ -376,10 +346,10 @@ id|SAA7146_GPIO_OUTLO
 )paren
 suffix:semicolon
 )brace
-id|ddelay
+id|dvb_delay
 c_func
 (paren
-l_int|2
+l_int|20
 )paren
 suffix:semicolon
 )brace
@@ -512,6 +482,7 @@ l_int|NULL
 comma
 (paren
 r_int
+r_int
 )paren
 id|arg
 )paren
@@ -530,8 +501,8 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-r_static
 DECL|function|budget_attach
+r_static
 r_int
 id|budget_attach
 (paren
@@ -550,18 +521,16 @@ r_struct
 id|budget
 op_star
 id|budget
+op_assign
+l_int|NULL
 suffix:semicolon
 r_int
 id|err
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-(paren
 id|budget
 op_assign
 id|kmalloc
+c_func
 (paren
 r_sizeof
 (paren
@@ -571,17 +540,29 @@ id|budget
 comma
 id|GFP_KERNEL
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+l_int|NULL
+op_eq
+id|budget
 )paren
-)paren
+(brace
 r_return
 op_minus
 id|ENOMEM
 suffix:semicolon
+)brace
 id|DEB_EE
 c_func
 (paren
 (paren
-l_string|&quot;budget: %p&bslash;n&quot;
+l_string|&quot;dev:%p, info:%p, budget:%p&bslash;n&quot;
+comma
+id|dev
+comma
+id|info
 comma
 id|budget
 )paren
@@ -604,6 +585,12 @@ id|info
 )paren
 )paren
 (brace
+id|printk
+c_func
+(paren
+l_string|&quot;==&gt; failed&bslash;n&quot;
+)paren
+suffix:semicolon
 id|kfree
 (paren
 id|budget
@@ -632,8 +619,8 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-r_static
 DECL|function|budget_detach
+r_static
 r_int
 id|budget_detach
 (paren
@@ -678,6 +665,10 @@ id|kfree
 (paren
 id|budget
 )paren
+suffix:semicolon
+id|dev-&gt;ext_priv
+op_assign
+l_int|NULL
 suffix:semicolon
 r_return
 id|err
@@ -731,8 +722,8 @@ id|BUDGET_TT_HW_DISEQC
 suffix:semicolon
 multiline_comment|/* Uncomment for Budget Patch */
 multiline_comment|/*MAKE_BUDGET_INFO(fs_1_3,&quot;Siemens/Technotrend/Hauppauge PCI rev1.3+Budget_Patch&quot;, BUDGET_PATCH);*/
-r_static
 DECL|variable|pci_tbl
+r_static
 r_struct
 id|pci_device_id
 id|pci_tbl
@@ -791,8 +782,16 @@ comma
 )brace
 )brace
 suffix:semicolon
-r_static
+id|MODULE_DEVICE_TABLE
+c_func
+(paren
+id|pci
+comma
+id|pci_tbl
+)paren
+suffix:semicolon
 DECL|variable|budget_extension
+r_static
 r_struct
 id|saa7146_extension
 id|budget_extension
@@ -845,8 +844,8 @@ id|ttpci_budget_irq10_handler
 comma
 )brace
 suffix:semicolon
-r_static
 DECL|function|budget_init
+r_static
 r_int
 id|__init
 id|budget_init
@@ -873,8 +872,8 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-r_static
 DECL|function|budget_exit
+r_static
 r_void
 id|__exit
 id|budget_exit

@@ -1,8 +1,8 @@
-multiline_comment|/* &n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992 - 1997 Silicon Graphics, Inc.&n; */
+multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992 - 1997 Silicon Graphics, Inc.&n; */
 macro_line|#ifndef __ASM_SN_NMI_H
 DECL|macro|__ASM_SN_NMI_H
 mdefine_line|#define __ASM_SN_NMI_H
-macro_line|#ident &quot;$Revision: 1.2 $&quot;
+macro_line|#ident &quot;$Revision: 1.5 $&quot;
 macro_line|#include &lt;asm/sn/addrs.h&gt;
 multiline_comment|/*&n; * The launch data structure resides at a fixed place in each node&squot;s memory&n; * and is used to communicate between the master processor and the slave&n; * processors.&n; *&n; * The master stores launch parameters in the launch structure&n; * corresponding to a target processor that is in a slave loop, then sends&n; * an interrupt to the slave processor.  The slave calls the desired&n; * function, followed by an optional rendezvous function, then returns to&n; * the slave loop.  The master does not wait for the slaves before&n; * returning.&n; *&n; * There is an array of launch structures, one per CPU on the node.  One&n; * interrupt level is used per CPU.&n; */
 DECL|macro|NMI_MAGIC
@@ -22,7 +22,7 @@ mdefine_line|#define NMI_OFF_CALLPARM&t;0x20
 DECL|macro|NMI_OFF_GMASTER
 mdefine_line|#define NMI_OFF_GMASTER&t;&t;0x28
 multiline_comment|/*&n; * The NMI routine is called only if the complement address is&n; * correct.&n; *&n; * Before control is transferred to a routine, the complement address&n; * is zeroed (invalidated) to prevent an accidental call from a spurious&n; * interrupt.&n; *&n; */
-macro_line|#ifdef _LANGUAGE_C
+macro_line|#ifndef __ASSEMBLY__
 DECL|struct|nmi_s
 r_typedef
 r_struct
@@ -74,9 +74,9 @@ DECL|typedef|nmi_t
 )brace
 id|nmi_t
 suffix:semicolon
-macro_line|#endif /* _LANGUAGE_C */
+macro_line|#endif /* !__ASSEMBLY__ */
 multiline_comment|/* Following definitions are needed both in the prom &amp; the kernel&n; * to identify the format of the nmi cpu register save area in the&n; * low memory on each node.&n; */
-macro_line|#ifdef _LANGUAGE_C
+macro_line|#ifndef __ASSEMBLY__
 DECL|struct|reg_struct
 r_struct
 id|reg_struct
@@ -126,7 +126,7 @@ id|nmi_sr
 suffix:semicolon
 )brace
 suffix:semicolon
-macro_line|#endif /* _LANGUAGE_C */
+macro_line|#endif /* !__ASSEMBLY__ */
 multiline_comment|/* These are the assembly language offsets into the reg_struct structure */
 DECL|macro|R0_OFF
 mdefine_line|#define R0_OFF&t;&t;0x0

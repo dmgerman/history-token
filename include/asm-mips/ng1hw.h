@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: ng1hw.h,v 1.4 1999/08/04 06:01:51 ulfc Exp $&n; * &n; * ng1hw.h: Tweaks the newport.h structures and definitions to be compatible&n; * &t;    with IRIX.  Quite ugly, but it works.&n; *&n; * Copyright (C) 1999 Ulf Carlsson (ulfc@thepuffingroup.com)&n; *&n; */
+multiline_comment|/*&n; * ng1hw.h: Tweaks the newport.h structures and definitions to be compatible&n; * &t;    with IRIX.  Quite ugly, but it works.&n; *&n; * Copyright (C) 1999 Ulf Carlsson (ulfc@thepuffingroup.com)&n; */
 macro_line|#ifndef _SGI_NG1HW_H
 DECL|macro|_SGI_NG1HW_H
 mdefine_line|#define _SGI_NG1HW_H
@@ -164,7 +164,7 @@ mdefine_line|#define DM0_CICLAMP&t;&t;NPORT_DMODE0_CLAMP
 DECL|macro|DM0_ENDPTFILTER
 mdefine_line|#define DM0_ENDPTFILTER&t;&t;NPORT_DMODE0_ENDPF
 DECL|macro|DM0_YSTRIDE
-mdefine_line|#define&t;DM0_YSTRIDE&t;&t;NPORT_DMODE0_YSTR 
+mdefine_line|#define&t;DM0_YSTRIDE&t;&t;NPORT_DMODE0_YSTR
 DECL|macro|DM1_PLANES_SHIFT
 mdefine_line|#define DM1_PLANES_SHIFT&t;0
 multiline_comment|/* The rest of the DM1 planes defines are in newport.h */
@@ -231,7 +231,7 @@ mdefine_line|#define DM1_SF_SHIFT&t;&t;19
 DECL|macro|DM1_SF_MASK
 mdefine_line|#define DM1_SF_MASK   &t;&t;NPORT_DMODE1_SFMASK
 DECL|macro|DM1_SF
-mdefine_line|#define DM1_SF&t;&t;&t;NPORT_DMODE1_SFMASK 
+mdefine_line|#define DM1_SF&t;&t;&t;NPORT_DMODE1_SFMASK
 DECL|macro|DM1_SF_ZERO
 mdefine_line|#define DM1_SF_ZERO&t;&t;NPORT_DMODE1_SF0
 DECL|macro|DM1_SF_ONE
@@ -247,9 +247,9 @@ mdefine_line|#define DM1_SF_MSA&t;&t;NPORT_DMODE1_SFMSA
 DECL|macro|DM1_DF_SHIFT
 mdefine_line|#define DM1_DF_SHIFT&t;&t;22&t;/* dfactor(2:0)&t;*/
 DECL|macro|DM1_DF_MASK
-mdefine_line|#define DM1_DF_MASK&t;&t;NPORT_DMODE1_DFMASK 
+mdefine_line|#define DM1_DF_MASK&t;&t;NPORT_DMODE1_DFMASK
 DECL|macro|DM1_DF
-mdefine_line|#define DM1_DF&t;&t;&t;NPORT_DMODE1_DFMASK 
+mdefine_line|#define DM1_DF&t;&t;&t;NPORT_DMODE1_DFMASK
 DECL|macro|DM1_DF_ZERO
 mdefine_line|#define DM1_DF_ZERO&t;&t;NPORT_DMODE1_DF0
 DECL|macro|DM1_DF_ONE
@@ -335,21 +335,21 @@ mdefine_line|#define VIDEOINT        &t;NPORT_STAT_VIDINT
 DECL|macro|GFIFO_LEVEL_SHIFT
 mdefine_line|#define GFIFO_LEVEL_SHIFT       7
 DECL|macro|GFIFO_LEVEL_MASK
-mdefine_line|#define GFIFO_LEVEL_MASK        NPORT_STAT_GLMSK 
+mdefine_line|#define GFIFO_LEVEL_MASK        NPORT_STAT_GLMSK
 DECL|macro|BFIFO_LEVEL_SHIFT
 mdefine_line|#define BFIFO_LEVEL_SHIFT       13
 DECL|macro|BFIFO_LEVEL_MASK
-mdefine_line|#define BFIFO_LEVEL_MASK        NPORT_STAT_BLMSK 
+mdefine_line|#define BFIFO_LEVEL_MASK        NPORT_STAT_BLMSK
 DECL|macro|BFIFO_INT
 mdefine_line|#define BFIFO_INT        &t;NPORT_STAT_BFIRQ
 DECL|macro|GFIFO_INT
 mdefine_line|#define GFIFO_INT        &t;NPORT_STAT_GFIRQ
 DECL|macro|GIO32MODE
-mdefine_line|#define GIO32MODE&t;&t;NPORT_CFG_G32MD 
+mdefine_line|#define GIO32MODE&t;&t;NPORT_CFG_G32MD
 DECL|macro|BUSWIDTH
 mdefine_line|#define BUSWIDTH&t;&t;NPORT_CFG_BWIDTH
 DECL|macro|EXTREGXCVR
-mdefine_line|#define EXTREGXCVR&t;&t;NPORT_CFG_ERCVR 
+mdefine_line|#define EXTREGXCVR&t;&t;NPORT_CFG_ERCVR
 DECL|macro|BFIFODEPTH_SHIFT
 mdefine_line|#define BFIFODEPTH_SHIFT&t;3
 DECL|macro|BFIFODEPTH_MASK
@@ -359,13 +359,13 @@ mdefine_line|#define BFIFOABOVEINT&t;&t;NPORT_CFG_BFAINT
 DECL|macro|GFIFODEPTH_SHIFT
 mdefine_line|#define GFIFODEPTH_SHIFT        8
 DECL|macro|GFIFODEPTH_MASK
-mdefine_line|#define GFIFODEPTH_MASK&t;&t;NPORT_CFG_GDMSK 
+mdefine_line|#define GFIFODEPTH_MASK&t;&t;NPORT_CFG_GDMSK
 DECL|macro|GFIFOABOVEINT
 mdefine_line|#define GFIFOABOVEINT&t;&t;NPORT_CFG_GFAINT
 DECL|macro|TIMEOUT_SHIFT
 mdefine_line|#define TIMEOUT_SHIFT&t;&t;14
 DECL|macro|TIMEOUT_MASK
-mdefine_line|#define TIMEOUT_MASK&t;&t;NPORT_CFG_TOMSK 
+mdefine_line|#define TIMEOUT_MASK&t;&t;NPORT_CFG_TOMSK
 DECL|macro|VREFRESH_SHIFT
 mdefine_line|#define VREFRESH_SHIFT&t;&t;17
 DECL|macro|VREFRESH_MASK

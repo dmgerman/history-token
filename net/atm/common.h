@@ -6,7 +6,7 @@ mdefine_line|#define NET_ATM_COMMON_H
 macro_line|#include &lt;linux/net.h&gt;
 macro_line|#include &lt;linux/poll.h&gt; /* for poll_table */
 r_int
-id|atm_create
+id|vcc_create
 c_func
 (paren
 r_struct
@@ -22,7 +22,7 @@ id|family
 )paren
 suffix:semicolon
 r_int
-id|atm_release
+id|vcc_release
 c_func
 (paren
 r_struct
@@ -182,19 +182,6 @@ comma
 r_int
 op_star
 id|optlen
-)paren
-suffix:semicolon
-r_void
-id|atm_release_vcc_sk
-c_func
-(paren
-r_struct
-id|sock
-op_star
-id|sk
-comma
-r_int
-id|free_sk
 )paren
 suffix:semicolon
 r_void

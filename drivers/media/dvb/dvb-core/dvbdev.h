@@ -3,8 +3,8 @@ macro_line|#ifndef _DVBDEV_H_
 DECL|macro|_DVBDEV_H_
 mdefine_line|#define _DVBDEV_H_
 macro_line|#include &lt;linux/types.h&gt;
-macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/poll.h&gt;
+macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
 DECL|macro|DVB_MAJOR
@@ -240,54 +240,6 @@ comma
 r_int
 r_int
 id|arg
-)paren
-suffix:semicolon
-r_int
-id|dvb_usercopy
-c_func
-(paren
-r_struct
-id|inode
-op_star
-id|inode
-comma
-r_struct
-id|file
-op_star
-id|file
-comma
-r_int
-r_int
-id|cmd
-comma
-r_int
-r_int
-id|arg
-comma
-r_int
-(paren
-op_star
-id|func
-)paren
-(paren
-r_struct
-id|inode
-op_star
-id|inode
-comma
-r_struct
-id|file
-op_star
-id|file
-comma
-r_int
-r_int
-id|cmd
-comma
-r_void
-op_star
-id|arg
-)paren
 )paren
 suffix:semicolon
 macro_line|#endif /* #ifndef _DVBDEV_H_ */

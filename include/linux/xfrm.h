@@ -280,8 +280,10 @@ DECL|macro|XFRM_MSG_EXPIRE
 mdefine_line|#define XFRM_MSG_EXPIRE&t;&t;(XFRM_MSG_BASE + 8)
 DECL|macro|XFRM_MSG_UPDPOLICY
 mdefine_line|#define XFRM_MSG_UPDPOLICY&t;(XFRM_MSG_BASE + 9)
+DECL|macro|XFRM_MSG_UPDSA
+mdefine_line|#define XFRM_MSG_UPDSA&t;&t;(XFRM_MSG_BASE + 10)
 DECL|macro|XFRM_MSG_MAX
-mdefine_line|#define XFRM_MSG_MAX&t;&t;(XFRM_MSG_UPDPOLICY+1)
+mdefine_line|#define XFRM_MSG_MAX&t;&t;(XFRM_MSG_UPDSA+1)
 DECL|struct|xfrm_user_tmpl
 r_struct
 id|xfrm_user_tmpl
@@ -340,6 +342,10 @@ suffix:semicolon
 DECL|member|encap_dport
 id|__u16
 id|encap_dport
+suffix:semicolon
+DECL|member|encap_oa
+id|xfrm_address_t
+id|encap_oa
 suffix:semicolon
 )brace
 suffix:semicolon

@@ -1,7 +1,7 @@
-multiline_comment|/*&n; * Definitions for the statfs(2) call.&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1995 by Ralf Baechle&n; */
-macro_line|#ifndef __ASM_MIPS_STATFS_H
-DECL|macro|__ASM_MIPS_STATFS_H
-mdefine_line|#define __ASM_MIPS_STATFS_H
+multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1995, 1999 by Ralf Baechle&n; */
+macro_line|#ifndef _ASM_STATFS_H
+DECL|macro|_ASM_STATFS_H
+mdefine_line|#define _ASM_STATFS_H
 macro_line|#include &lt;linux/posix_types.h&gt;
 macro_line|#ifndef __KERNEL_STRICT_NAMES
 macro_line|#include &lt;linux/types.h&gt;
@@ -68,5 +68,59 @@ l_int|6
 suffix:semicolon
 )brace
 suffix:semicolon
-macro_line|#endif /* __ASM_MIPS_STATFS_H */
+multiline_comment|/*&n; * Unlike the 32-bit version the 64-bit version has none of the ABI baggage.&n; */
+DECL|struct|statfs64
+r_struct
+id|statfs64
+(brace
+DECL|member|f_type
+id|__u32
+id|f_type
+suffix:semicolon
+DECL|member|f_bsize
+id|__u32
+id|f_bsize
+suffix:semicolon
+DECL|member|f_blocks
+id|__u64
+id|f_blocks
+suffix:semicolon
+DECL|member|f_bfree
+id|__u64
+id|f_bfree
+suffix:semicolon
+DECL|member|f_bavail
+id|__u64
+id|f_bavail
+suffix:semicolon
+DECL|member|f_files
+id|__u64
+id|f_files
+suffix:semicolon
+DECL|member|f_ffree
+id|__u64
+id|f_ffree
+suffix:semicolon
+DECL|member|f_fsid
+id|__kernel_fsid_t
+id|f_fsid
+suffix:semicolon
+DECL|member|f_namelen
+id|__u32
+id|f_namelen
+suffix:semicolon
+DECL|member|f_frsize
+id|__u32
+id|f_frsize
+suffix:semicolon
+DECL|member|f_spare
+id|__u32
+id|f_spare
+(braket
+l_int|5
+)braket
+suffix:semicolon
+)brace
+suffix:semicolon
+macro_line|#endif /* _ASM_STATFS_H */
 eof

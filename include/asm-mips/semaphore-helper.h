@@ -1,8 +1,9 @@
-multiline_comment|/*&n; * SMP- and interrupt-safe semaphores helper functions.&n; *&n; * Copyright (C) 1996 Linus Torvalds&n; * Copyright (C) 1999 Andrea Arcangeli&n; * Copyright (C) 1999 Ralf Baechle&n; * Copyright (C) 1999 Silicon Graphics, Inc.&n; * Copyright (C) 2000 MIPS Technologies, Inc.&n; */
+multiline_comment|/*&n; * SMP- and interrupt-safe semaphores helper functions.&n; *&n; * Copyright (C) 1996 Linus Torvalds&n; * Copyright (C) 1999 Andrea Arcangeli&n; * Copyright (C) 1999, 2001, 2002 Ralf Baechle&n; * Copyright (C) 1999, 2001 Silicon Graphics, Inc.&n; * Copyright (C) 2000 MIPS Technologies, Inc.&n; */
 macro_line|#ifndef _ASM_SEMAPHORE_HELPER_H
 DECL|macro|_ASM_SEMAPHORE_HELPER_H
 mdefine_line|#define _ASM_SEMAPHORE_HELPER_H
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/errno.h&gt;
 DECL|macro|sem_read
 mdefine_line|#define sem_read(a) ((a)-&gt;counter)
 DECL|macro|sem_inc
@@ -32,10 +33,10 @@ id|sem-&gt;waking
 suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_CPU_HAS_LLSC
+DECL|function|waking_non_zero
 r_static
 r_inline
 r_int
-DECL|function|waking_non_zero
 id|waking_non_zero
 c_func
 (paren
@@ -54,11 +55,11 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-l_string|&quot;1:&bslash;tll&bslash;t%1, %2&bslash;n&bslash;t&quot;
+l_string|&quot;1:&bslash;tll&bslash;t%1, %2&bslash;t&bslash;t&bslash;t# waking_non_zero&bslash;n&bslash;t&quot;
 l_string|&quot;blez&bslash;t%1, 2f&bslash;n&bslash;t&quot;
 l_string|&quot;subu&bslash;t%0, %1, 1&bslash;n&bslash;t&quot;
 l_string|&quot;sc&bslash;t%0, %2&bslash;n&bslash;t&quot;
-l_string|&quot;beqz&bslash;t%0, 1b&bslash;n&bslash;t&quot;
+l_string|&quot;beqz&bslash;t%0, 1b&bslash;n&quot;
 l_string|&quot;2:&quot;
 suffix:colon
 l_string|&quot;=r&quot;
@@ -71,7 +72,7 @@ l_string|&quot;=r&quot;
 id|tmp
 )paren
 comma
-l_string|&quot;=m&quot;
+l_string|&quot;+m&quot;
 (paren
 id|sem-&gt;waking
 )paren
@@ -110,7 +111,7 @@ id|ret
 op_assign
 l_int|0
 suffix:semicolon
-id|save_and_cli
+id|local_irq_save
 c_func
 (paren
 id|flags
@@ -141,7 +142,7 @@ op_assign
 l_int|1
 suffix:semicolon
 )brace
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -153,7 +154,7 @@ suffix:semicolon
 )brace
 macro_line|#endif /* !CONFIG_CPU_HAS_LLSC */
 macro_line|#ifdef CONFIG_CPU_HAS_LLDSCD
-multiline_comment|/*&n; * waking_non_zero_interruptible:&n; *&t;1&t;got the lock&n; *&t;0&t;go to sleep&n; *&t;-EINTR&t;interrupted&n; *&n; * We must undo the sem-&gt;count down_interruptible decrement&n; * simultaneously and atomicly with the sem-&gt;waking adjustment,&n; * otherwise we can race with wake_one_more.&n; *&n; * This is accomplished by doing a 64-bit ll/sc on the 2 32-bit words.&n; *&n; * This is crazy.  Normally it stricly forbidden to use 64-bit operations&n; * in the 32-bit MIPS kernel.  In this case it&squot;s however ok because if an&n; * interrupt has destroyed the upper half of registers sc will fail.&n; * Note also that this will not work for MIPS32 CPUS!&n; *&n; * Pseudocode:&n; *&n; * If(sem-&gt;waking &gt; 0) {&n; *&t;Decrement(sem-&gt;waking)&n; *&t;Return(SUCCESS)&n; * } else If(segnal_pending(tsk)) {&n; *&t;Increment(sem-&gt;count)&n; *&t;Return(-EINTR)&n; * } else {&n; *&t;Return(SLEEP)&n; * }&n; */
+multiline_comment|/*&n; * waking_non_zero_interruptible:&n; *&t;1&t;got the lock&n; *&t;0&t;go to sleep&n; *&t;-EINTR&t;interrupted&n; *&n; * We must undo the sem-&gt;count down_interruptible decrement&n; * simultaneously and atomically with the sem-&gt;waking adjustment,&n; * otherwise we can race with wake_one_more.&n; *&n; * This is accomplished by doing a 64-bit lld/scd on the 2 32-bit words.&n; *&n; * This is crazy.  Normally it&squot;s strictly forbidden to use 64-bit operations&n; * in the 32-bit MIPS kernel.  In this case it&squot;s however ok because if an&n; * interrupt has destroyed the upper half of registers sc will fail.&n; * Note also that this will not work for MIPS32 CPUs!&n; *&n; * Pseudocode:&n; *&n; * If(sem-&gt;waking &gt; 0) {&n; *&t;Decrement(sem-&gt;waking)&n; *&t;Return(SUCCESS)&n; * } else If(signal_pending(tsk)) {&n; *&t;Increment(sem-&gt;count)&n; *&t;Return(-EINTR)&n; * } else {&n; *&t;Return(SLEEP)&n; * }&n; */
 r_static
 r_inline
 r_int
@@ -181,7 +182,7 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-l_string|&quot;.set&bslash;tpush&bslash;n&bslash;t&quot;
+l_string|&quot;.set&bslash;tpush&bslash;t&bslash;t&bslash;t# waking_non_zero_interruptible&bslash;n&bslash;t&quot;
 l_string|&quot;.set&bslash;tmips3&bslash;n&bslash;t&quot;
 l_string|&quot;.set&bslash;tnoat&bslash;n&quot;
 l_string|&quot;0:&bslash;tlld&bslash;t%1, %2&bslash;n&bslash;t&quot;
@@ -235,11 +236,11 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * waking_non_zero_trylock is unused.  we do everything in &n; * down_trylock and let non-ll/sc hosts bounce around.&n; */
+multiline_comment|/*&n; * waking_non_zero_trylock is unused.  we do everything in&n; * down_trylock and let non-ll/sc hosts bounce around.&n; */
+DECL|function|waking_non_zero_trylock
 r_static
 r_inline
 r_int
-DECL|function|waking_non_zero_trylock
 id|waking_non_zero_trylock
 c_func
 (paren
@@ -289,7 +290,7 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-id|save_and_cli
+id|local_irq_save
 c_func
 (paren
 id|flags
@@ -344,7 +345,7 @@ op_minus
 id|EINTR
 suffix:semicolon
 )brace
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -376,7 +377,7 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-id|save_and_cli
+id|local_irq_save
 c_func
 (paren
 id|flags
@@ -415,7 +416,7 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags

@@ -1,10 +1,6 @@
 macro_line|#include &lt;media/saa7146_vv.h&gt;
-macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,5,51)
-DECL|macro|KBUILD_MODNAME
-mdefine_line|#define KBUILD_MODNAME saa7146
-macro_line|#endif
-r_static
 DECL|variable|memory
+r_static
 r_int
 id|memory
 op_assign
@@ -27,8 +23,8 @@ l_string|&quot;maximum memory usage for capture buffers (default: 32Mb)&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* format descriptions for capture and preview */
-r_static
 DECL|variable|formats
+r_static
 r_struct
 id|saa7146_format
 id|formats
@@ -256,8 +252,8 @@ comma
 )brace
 suffix:semicolon
 multiline_comment|/* unfortunately, the saa7146 contains a bug which prevents it from doing on-the-fly byte swaps.&n;   due to this, it&squot;s impossible to provide additional *packed* formats, which are simply byte swapped&n;   (like V4L2_PIX_FMT_YUYV) ... 8-( */
-r_static
 DECL|variable|NUM_FORMATS
+r_static
 r_int
 id|NUM_FORMATS
 op_assign
@@ -349,8 +345,8 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
-r_static
 DECL|function|g_fmt
+r_static
 r_int
 id|g_fmt
 c_func
@@ -441,8 +437,8 @@ id|EINVAL
 suffix:semicolon
 )brace
 )brace
-r_static
 DECL|function|try_win
+r_static
 r_int
 id|try_win
 c_func
@@ -688,8 +684,8 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-r_static
 DECL|function|try_fmt
+r_static
 r_int
 id|try_fmt
 c_func
@@ -964,8 +960,8 @@ id|EINVAL
 suffix:semicolon
 )brace
 )brace
-r_static
 DECL|function|start_preview
+r_static
 r_int
 id|start_preview
 c_func
@@ -1157,8 +1153,8 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-r_static
 DECL|function|stop_preview
+r_static
 r_int
 id|stop_preview
 c_func
@@ -1251,8 +1247,8 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-r_static
 DECL|function|s_fmt
+r_static
 r_int
 id|s_fmt
 c_func
@@ -1551,8 +1547,8 @@ suffix:semicolon
 )brace
 multiline_comment|/********************************************************************************/
 multiline_comment|/* device controls */
-r_static
 DECL|variable|controls
+r_static
 r_struct
 id|v4l2_queryctrl
 id|controls
@@ -1701,8 +1697,8 @@ comma
 comma
 )brace
 suffix:semicolon
-r_static
 DECL|variable|NUM_CONTROLS
+r_static
 r_int
 id|NUM_CONTROLS
 op_assign
@@ -1719,8 +1715,8 @@ id|v4l2_queryctrl
 suffix:semicolon
 DECL|macro|V4L2_CID_PRIVATE_LASTP1
 mdefine_line|#define V4L2_CID_PRIVATE_LASTP1      (V4L2_CID_PRIVATE_BASE + 0)
-r_static
 DECL|function|ctrl_by_id
+r_static
 r_struct
 id|v4l2_queryctrl
 op_star
@@ -1769,8 +1765,8 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
-r_static
 DECL|function|get_control
+r_static
 r_int
 id|get_control
 c_func
@@ -1859,6 +1855,16 @@ op_rshift
 l_int|24
 )paren
 suffix:semicolon
+id|DEB_D
+c_func
+(paren
+(paren
+l_string|&quot;V4L2_CID_BRIGHTNESS: %d&bslash;n&quot;
+comma
+id|c-&gt;value
+)paren
+)paren
+suffix:semicolon
 r_break
 suffix:semicolon
 r_case
@@ -1882,6 +1888,16 @@ op_amp
 id|value
 op_rshift
 l_int|16
+)paren
+suffix:semicolon
+id|DEB_D
+c_func
+(paren
+(paren
+l_string|&quot;V4L2_CID_CONTRAST: %d&bslash;n&quot;
+comma
+id|c-&gt;value
+)paren
 )paren
 suffix:semicolon
 r_break
@@ -1909,6 +1925,16 @@ op_rshift
 l_int|0
 )paren
 suffix:semicolon
+id|DEB_D
+c_func
+(paren
+(paren
+l_string|&quot;V4L2_CID_SATURATION: %d&bslash;n&quot;
+comma
+id|c-&gt;value
+)paren
+)paren
+suffix:semicolon
 r_break
 suffix:semicolon
 r_case
@@ -1918,6 +1944,16 @@ id|c-&gt;value
 op_assign
 id|vv-&gt;vflip
 suffix:semicolon
+id|DEB_D
+c_func
+(paren
+(paren
+l_string|&quot;V4L2_CID_VFLIP: %d&bslash;n&quot;
+comma
+id|c-&gt;value
+)paren
+)paren
+suffix:semicolon
 r_break
 suffix:semicolon
 r_case
@@ -1926,6 +1962,16 @@ suffix:colon
 id|c-&gt;value
 op_assign
 id|vv-&gt;hflip
+suffix:semicolon
+id|DEB_D
+c_func
+(paren
+(paren
+l_string|&quot;V4L2_CID_HFLIP: %d&bslash;n&quot;
+comma
+id|c-&gt;value
+)paren
+)paren
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -1940,8 +1986,8 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-r_static
 DECL|function|set_control
+r_static
 r_int
 id|set_control
 c_func
@@ -2367,8 +2413,8 @@ suffix:semicolon
 )brace
 multiline_comment|/********************************************************************************/
 multiline_comment|/* common pagetable functions */
-r_static
 DECL|function|saa7146_pgtable_build
+r_static
 r_int
 id|saa7146_pgtable_build
 c_func
@@ -2999,8 +3045,8 @@ suffix:semicolon
 )brace
 multiline_comment|/********************************************************************************/
 multiline_comment|/* file operations */
-r_static
 DECL|function|video_begin
+r_static
 r_int
 id|video_begin
 c_func
@@ -3129,8 +3175,8 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-r_static
 DECL|function|video_end
+r_static
 r_int
 id|video_end
 c_func
@@ -3841,7 +3887,7 @@ id|DEB_EE
 c_func
 (paren
 (paren
-l_string|&quot;VIDIOC_ENUMSTD: type:%d, index:%d&bslash;n&quot;
+l_string|&quot;VIDIOC_ENUM_FMT: type:%d, index:%d&bslash;n&quot;
 comma
 id|f-&gt;type
 comma
@@ -4270,6 +4316,14 @@ op_star
 id|ov_fh
 op_assign
 l_int|NULL
+suffix:semicolon
+id|DEB_EE
+c_func
+(paren
+(paren
+l_string|&quot;VIDIOC_S_STD&bslash;n&quot;
+)paren
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -4965,8 +5019,8 @@ suffix:semicolon
 )brace
 multiline_comment|/*********************************************************************************/
 multiline_comment|/* buffer handling functions                                                  */
-r_static
 DECL|function|buffer_activate
+r_static
 r_int
 id|buffer_activate
 (paren
@@ -5022,8 +5076,8 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-r_static
 DECL|function|buffer_prepare
+r_static
 r_int
 id|buffer_prepare
 c_func
@@ -5426,8 +5480,8 @@ r_return
 id|err
 suffix:semicolon
 )brace
-r_static
 DECL|function|buffer_setup
+r_static
 r_int
 id|buffer_setup
 c_func
@@ -5528,8 +5582,8 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-r_static
 DECL|function|buffer_queue
+r_static
 r_void
 id|buffer_queue
 c_func
@@ -5600,8 +5654,8 @@ id|buf
 )paren
 suffix:semicolon
 )brace
-r_static
 DECL|function|buffer_release
+r_static
 r_void
 id|buffer_release
 c_func
@@ -5662,8 +5716,8 @@ id|buf
 )paren
 suffix:semicolon
 )brace
-r_static
 DECL|variable|video_qops
+r_static
 r_struct
 id|videobuf_queue_ops
 id|video_qops
@@ -5693,8 +5747,8 @@ comma
 suffix:semicolon
 multiline_comment|/********************************************************************************/
 multiline_comment|/* file operations */
-r_static
 DECL|function|video_init
+r_static
 r_void
 id|video_init
 c_func
@@ -5762,8 +5816,8 @@ op_assign
 id|SAA7146_HPS_SYNC_PORT_A
 suffix:semicolon
 )brace
-r_static
 DECL|function|video_open
+r_static
 r_void
 id|video_open
 c_func
@@ -5855,8 +5909,8 @@ id|fh-&gt;video_q.lock
 )paren
 suffix:semicolon
 )brace
-r_static
 DECL|function|video_close
+r_static
 r_void
 id|video_close
 c_func
@@ -5955,8 +6009,8 @@ id|fh-&gt;video_q
 )paren
 suffix:semicolon
 )brace
-r_static
 DECL|function|video_irq_done
+r_static
 r_void
 id|video_irq_done
 c_func
@@ -6039,8 +6093,8 @@ id|dev-&gt;slock
 )paren
 suffix:semicolon
 )brace
-r_static
 DECL|function|video_read
+r_static
 id|ssize_t
 id|video_read
 c_func

@@ -5,11 +5,15 @@ macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;asm/bootinfo.h&gt;
 macro_line|#include &lt;asm/cachectl.h&gt;
+macro_line|#include &lt;asm/cpu.h&gt;
 macro_line|#include &lt;asm/mipsregs.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
-DECL|macro|mips_tlb_entries
-mdefine_line|#define mips_tlb_entries 64
+r_extern
+r_int
+id|r3k_have_wired_reg
+suffix:semicolon
+multiline_comment|/* defined in tlb-r3k.c */
 r_void
 DECL|function|dump_tlb
 id|dump_tlb
@@ -37,7 +41,7 @@ id|entrylo0
 suffix:semicolon
 id|asid
 op_assign
-id|get_entryhi
+id|read_c0_entryhi
 c_func
 (paren
 )paren
@@ -59,11 +63,9 @@ id|i
 op_increment
 )paren
 (brace
-id|write_32bit_cp0_register
+id|write_c0_index
 c_func
 (paren
-id|CP0_INDEX
-comma
 id|i
 op_lshift
 l_int|8
@@ -81,18 +83,16 @@ l_string|&quot;.set&bslash;treorder&quot;
 suffix:semicolon
 id|entryhi
 op_assign
-id|read_32bit_cp0_register
+id|read_c0_entryhi
 c_func
 (paren
-id|CP0_ENTRYHI
 )paren
 suffix:semicolon
 id|entrylo0
 op_assign
-id|read_32bit_cp0_register
+id|read_c0_entrylo0
 c_func
 (paren
-id|CP0_ENTRYLO0
 )paren
 suffix:semicolon
 multiline_comment|/* Unused entries have a virtual address of KSEG0.  */
@@ -214,7 +214,7 @@ c_func
 l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
-id|set_entryhi
+id|write_c0_entryhi
 c_func
 (paren
 id|asid
@@ -234,7 +234,7 @@ c_func
 (paren
 l_int|0
 comma
-id|mips_tlb_entries
+id|current_cpu_data.tlbsize
 op_minus
 l_int|1
 )paren
@@ -251,7 +251,15 @@ r_void
 r_int
 id|wired
 op_assign
-l_int|7
+id|r3k_have_wired_reg
+ques
+c_cond
+id|read_c0_wired
+c_func
+(paren
+)paren
+suffix:colon
+l_int|8
 suffix:semicolon
 id|printk
 c_func
@@ -266,11 +274,9 @@ c_func
 (paren
 l_int|0
 comma
-id|read_32bit_cp0_register
-c_func
-(paren
-id|CP0_WIRED
-)paren
+id|wired
+op_minus
+l_int|1
 )paren
 suffix:semicolon
 )brace
@@ -301,14 +307,14 @@ id|flags
 suffix:semicolon
 id|oldpid
 op_assign
-id|get_entryhi
+id|read_c0_entryhi
 c_func
 (paren
 )paren
 op_amp
 l_int|0xff
 suffix:semicolon
-id|set_entryhi
+id|write_c0_entryhi
 c_func
 (paren
 (paren
@@ -327,12 +333,12 @@ c_func
 suffix:semicolon
 id|index
 op_assign
-id|get_index
+id|read_c0_index
 c_func
 (paren
 )paren
 suffix:semicolon
-id|set_entryhi
+id|write_c0_entryhi
 c_func
 (paren
 id|oldpid
@@ -390,12 +396,25 @@ c_func
 r_void
 )paren
 (brace
+r_int
+id|wired
+op_assign
+id|r3k_have_wired_reg
+ques
+c_cond
+id|read_c0_wired
+c_func
+(paren
+)paren
+suffix:colon
+l_int|8
+suffix:semicolon
 id|dump_tlb
 c_func
 (paren
-l_int|8
+id|wired
 comma
-id|mips_tlb_entries
+id|current_cpu_data.tlbsize
 op_minus
 l_int|1
 )paren

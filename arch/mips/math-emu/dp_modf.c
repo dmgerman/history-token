@@ -111,7 +111,7 @@ id|xs
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* generate ipart mantissa by clearing bottom bits &n;&t; */
+multiline_comment|/* generate ipart mantissa by clearing bottom bits&n;&t; */
 op_star
 id|ip
 op_assign

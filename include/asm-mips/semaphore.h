@@ -1,12 +1,12 @@
-multiline_comment|/*&n; * SMP- and interrupt-safe semaphores..&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * (C) Copyright 1996  Linus Torvalds&n; * (C) Copyright 1998, 99, 2000, 01  Ralf Baechle&n; * (C) Copyright 1999, 2000  Silicon Graphics, Inc.&n; * Copyright (C) 2000, 01 MIPS Technologies, Inc.  All rights reserved.&n; */
+multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1996  Linus Torvalds&n; * Copyright (C) 1998, 99, 2000, 01  Ralf Baechle&n; * Copyright (C) 1999, 2000, 01  Silicon Graphics, Inc.&n; * Copyright (C) 2000, 01 MIPS Technologies, Inc.&n; */
 macro_line|#ifndef _ASM_SEMAPHORE_H
 DECL|macro|_ASM_SEMAPHORE_H
 mdefine_line|#define _ASM_SEMAPHORE_H
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/wait.h&gt;
-macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/rwsem.h&gt;
 DECL|struct|semaphore
 r_struct
@@ -251,6 +251,7 @@ id|sem
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * Interruptible try to acquire a semaphore.  If we obtained&n; * it, return zero.  If we were interrupted, returns -EINTR&n; */
 DECL|function|down_interruptible
 r_static
 r_inline
@@ -302,6 +303,7 @@ id|ret
 suffix:semicolon
 )brace
 macro_line|#ifndef CONFIG_CPU_HAS_LLDSCD
+multiline_comment|/*&n; * Non-blockingly attempt to down() a semaphore.&n; * Returns zero if we acquired it&n; */
 DECL|function|down_trylock
 r_static
 r_inline
@@ -345,7 +347,7 @@ id|ret
 suffix:semicolon
 )brace
 macro_line|#else
-multiline_comment|/*&n; * down_trylock returns 0 on success, 1 if we failed to get the lock.&n; *&n; * We must manipulate count and waking simultaneously and atomically.&n; * Here, we this by using ll/sc on the pair of 32-bit words.  This&n; * won&squot;t work on MIPS32 platforms, however, and must be rewritten.&n; *&n; * Pseudocode:&n; *&n; *   Decrement(sem-&gt;count)&n; *   If(sem-&gt;count &gt;=0) {&n; *&t;Return(SUCCESS)&t;&t;&t;// resource is free&n; *   } else {&n; *&t;If(sem-&gt;waking &lt;= 0) {&t;&t;// if no wakeup pending&n; *&t;   Increment(sem-&gt;count)&t;// undo decrement&n; *&t;   Return(FAILURE)&n; *      } else {&n; *&t;   Decrement(sem-&gt;waking)&t;// otherwise &quot;steal&quot; wakeup&n; *&t;   Return(SUCCESS)&n; *&t;}&n; *   }&n; */
+multiline_comment|/*&n; * down_trylock returns 0 on success, 1 if we failed to get the lock.&n; *&n; * We must manipulate count and waking simultaneously and atomically.&n; * Here, we do this by using lld/scd on the pair of 32-bit words.&n; *&n; * Pseudocode:&n; *&n; *   Decrement(sem-&gt;count)&n; *   If(sem-&gt;count &gt;=0) {&n; *&t;Return(SUCCESS)&t;&t;&t;// resource is free&n; *   } else {&n; *&t;If(sem-&gt;waking &lt;= 0) {&t;&t;// if no wakeup pending&n; *&t;   Increment(sem-&gt;count)&t;// undo decrement&n; *&t;   Return(FAILURE)&n; *      } else {&n; *&t;   Decrement(sem-&gt;waking)&t;// otherwise &quot;steal&quot; wakeup&n; *&t;   Return(SUCCESS)&n; *&t;}&n; *   }&n; */
 DECL|function|down_trylock
 r_static
 r_inline
@@ -389,12 +391,12 @@ l_string|&quot;bgez&bslash;t%1, 2f&bslash;n&bslash;t&quot;
 l_string|&quot;sll&bslash;t%2, %1, 0&bslash;n&bslash;t&quot;
 l_string|&quot;blez&bslash;t%2, 1f&bslash;n&bslash;t&quot;
 l_string|&quot;daddiu&bslash;t%1, %1, -1&bslash;n&bslash;t&quot;
-l_string|&quot;b&bslash;t2f&bslash;n&bslash;t&quot;
-l_string|&quot;1:&bslash;tdaddu&bslash;t%1, %1, %3&bslash;n&quot;
+l_string|&quot;b&bslash;t2f&bslash;n&quot;
+l_string|&quot;1:&bslash;tdaddu&bslash;t%1, %1, %3&bslash;n&bslash;t&quot;
 l_string|&quot;li&bslash;t%0, 1&bslash;n&quot;
 l_string|&quot;2:&bslash;tscd&bslash;t%1, %4&bslash;n&bslash;t&quot;
 l_string|&quot;beqz&bslash;t%1, 0b&bslash;n&bslash;t&quot;
-l_string|&quot;.set&t;mips0&quot;
+l_string|&quot;.set&bslash;tmips0&quot;
 suffix:colon
 l_string|&quot;=&amp;r&quot;
 (paren

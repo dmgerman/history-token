@@ -3,6 +3,7 @@ macro_line|#ifndef _ASM_DELAY_H
 DECL|macro|_ASM_DELAY_H
 mdefine_line|#define _ASM_DELAY_H
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/param.h&gt;
 r_extern
 r_int
 r_int
@@ -61,11 +62,33 @@ r_int
 r_int
 id|lo
 suffix:semicolon
+multiline_comment|/*&n;&t; * The common rates of 1000 and 128 are rounded wrongly by the&n;&t; * catchall case.  Excessive precission?  Probably ...&n;&t; */
+macro_line|#if (HZ == 128)
 id|usecs
 op_mul_assign
-l_int|0x00068db8bac710cbUL
+l_int|0x0008637bd05af6c7UL
 suffix:semicolon
 multiline_comment|/* 2**64 / (1000000 / HZ) */
+macro_line|#elif (HZ == 1000)
+id|usecs
+op_mul_assign
+l_int|0x004189374BC6A7f0UL
+suffix:semicolon
+multiline_comment|/* 2**64 / (1000000 / HZ) */
+macro_line|#else
+id|usecs
+op_mul_assign
+(paren
+l_int|0x8000000000000000UL
+op_div
+(paren
+l_int|500000
+op_div
+id|HZ
+)paren
+)paren
+suffix:semicolon
+macro_line|#endif
 id|__asm__
 c_func
 (paren

@@ -6,7 +6,7 @@ macro_line|#include &lt;asm/ioctl.h&gt;
 DECL|macro|TCGETA
 mdefine_line|#define TCGETA&t;&t;0x5401
 DECL|macro|TCSETA
-mdefine_line|#define TCSETA&t;&t;0x5402
+mdefine_line|#define TCSETA&t;&t;0x5402&t;/* Clashes with SNDCTL_TMR_START sound ioctl */
 DECL|macro|TCSETAW
 mdefine_line|#define TCSETAW&t;&t;0x5403
 DECL|macro|TCSETAF
@@ -71,7 +71,7 @@ mdefine_line|#define TIOCGETD&t;0x7400
 DECL|macro|FIOCLEX
 mdefine_line|#define FIOCLEX&t;&t;0x6601
 DECL|macro|FIONCLEX
-mdefine_line|#define FIONCLEX&t;0x6602&t;&t;/* these numbers need to be adjusted. */
+mdefine_line|#define FIONCLEX&t;0x6602
 DECL|macro|FIOASYNC
 mdefine_line|#define FIOASYNC&t;0x667d
 DECL|macro|FIONBIO

@@ -25,11 +25,11 @@ mdefine_line|#define spin_is_locked(x)&t;((x)-&gt;lock != 0)
 DECL|macro|spin_unlock_wait
 mdefine_line|#define spin_unlock_wait(x)&t;do { barrier(); } while ((x)-&gt;lock)
 multiline_comment|/*&n; * Simple spin lock operations.  There are two variants, one clears IRQ&squot;s&n; * on the local processor, one does not.&n; *&n; * We make no fairness assumptions.  They have a cost.&n; */
-DECL|function|spin_lock
+DECL|function|_raw_spin_lock
 r_static
 r_inline
 r_void
-id|spin_lock
+id|_raw_spin_lock
 c_func
 (paren
 id|spinlock_t
@@ -54,7 +54,7 @@ l_string|&quot;beqz&bslash;t%1, 1b&bslash;n&bslash;t&quot;
 l_string|&quot; sync&bslash;n&bslash;t&quot;
 l_string|&quot;.set&bslash;treorder&quot;
 suffix:colon
-l_string|&quot;=o&quot;
+l_string|&quot;=m&quot;
 (paren
 id|lock-&gt;lock
 )paren
@@ -64,7 +64,7 @@ l_string|&quot;=&amp;r&quot;
 id|tmp
 )paren
 suffix:colon
-l_string|&quot;o&quot;
+l_string|&quot;m&quot;
 (paren
 id|lock-&gt;lock
 )paren
@@ -73,11 +73,11 @@ l_string|&quot;memory&quot;
 )paren
 suffix:semicolon
 )brace
-DECL|function|spin_unlock
+DECL|function|_raw_spin_unlock
 r_static
 r_inline
 r_void
-id|spin_unlock
+id|_raw_spin_unlock
 c_func
 (paren
 id|spinlock_t
@@ -94,12 +94,12 @@ l_string|&quot;sync&bslash;n&bslash;t&quot;
 l_string|&quot;sw&bslash;t$0, %0&bslash;n&bslash;t&quot;
 l_string|&quot;.set&bslash;treorder&quot;
 suffix:colon
-l_string|&quot;=o&quot;
+l_string|&quot;=m&quot;
 (paren
 id|lock-&gt;lock
 )paren
 suffix:colon
-l_string|&quot;o&quot;
+l_string|&quot;m&quot;
 (paren
 id|lock-&gt;lock
 )paren
@@ -108,12 +108,12 @@ l_string|&quot;memory&quot;
 )paren
 suffix:semicolon
 )brace
-DECL|function|spin_trylock
+DECL|function|_raw_spin_trylock
 r_static
 r_inline
 r_int
 r_int
-id|spin_trylock
+id|_raw_spin_trylock
 c_func
 (paren
 id|spinlock_t
@@ -132,11 +132,11 @@ id|__volatile__
 c_func
 (paren
 l_string|&quot;.set&bslash;tnoreorder&bslash;t&bslash;t&bslash;t# spin_trylock&bslash;n&bslash;t&quot;
-l_string|&quot;1:&bslash;tll&bslash;t%0, %1&bslash;n&bslash;t&quot;
-l_string|&quot;or&bslash;t%2, %0, %3&bslash;n&bslash;t&quot;
+l_string|&quot;1:&bslash;tll&bslash;t%0, %3&bslash;n&bslash;t&quot;
+l_string|&quot;ori&bslash;t%2, %0, 1&bslash;n&bslash;t&quot;
 l_string|&quot;sc&bslash;t%2, %1&bslash;n&bslash;t&quot;
 l_string|&quot;beqz&bslash;t%2, 1b&bslash;n&bslash;t&quot;
-l_string|&quot; and&bslash;t%2, %0, %3&bslash;n&bslash;t&quot;
+l_string|&quot; andi&bslash;t%2, %0, 1&bslash;n&bslash;t&quot;
 l_string|&quot;.set&bslash;treorder&quot;
 suffix:colon
 l_string|&quot;=&amp;r&quot;
@@ -154,11 +154,6 @@ l_string|&quot;=&amp;r&quot;
 id|res
 )paren
 suffix:colon
-l_string|&quot;r&quot;
-(paren
-l_int|1
-)paren
-comma
 l_string|&quot;m&quot;
 (paren
 id|lock-&gt;lock
@@ -189,11 +184,15 @@ id|rwlock_t
 suffix:semicolon
 DECL|macro|RW_LOCK_UNLOCKED
 mdefine_line|#define RW_LOCK_UNLOCKED (rwlock_t) { 0 }
-DECL|function|read_lock
+DECL|macro|rwlock_init
+mdefine_line|#define rwlock_init(x)  do { *(x) = RW_LOCK_UNLOCKED; } while(0)
+DECL|macro|rwlock_is_locked
+mdefine_line|#define rwlock_is_locked(x) ((x)-&gt;lock)
+DECL|function|_raw_read_lock
 r_static
 r_inline
 r_void
-id|read_lock
+id|_raw_read_lock
 c_func
 (paren
 id|rwlock_t
@@ -218,7 +217,7 @@ l_string|&quot;beqz&bslash;t%1, 1b&bslash;n&bslash;t&quot;
 l_string|&quot; sync&bslash;n&bslash;t&quot;
 l_string|&quot;.set&bslash;treorder&quot;
 suffix:colon
-l_string|&quot;=o&quot;
+l_string|&quot;=m&quot;
 (paren
 id|rw-&gt;lock
 )paren
@@ -228,7 +227,7 @@ l_string|&quot;=&amp;r&quot;
 id|tmp
 )paren
 suffix:colon
-l_string|&quot;o&quot;
+l_string|&quot;m&quot;
 (paren
 id|rw-&gt;lock
 )paren
@@ -238,11 +237,11 @@ l_string|&quot;memory&quot;
 suffix:semicolon
 )brace
 multiline_comment|/* Note the use of sub, not subu which will make the kernel die with an&n;   overflow exception if we ever try to unlock an rwlock that is already&n;   unlocked or is being held by a writer.  */
-DECL|function|read_unlock
+DECL|function|_raw_read_unlock
 r_static
 r_inline
 r_void
-id|read_unlock
+id|_raw_read_unlock
 c_func
 (paren
 id|rwlock_t
@@ -263,10 +262,10 @@ l_string|&quot;1:&bslash;tll&bslash;t%1, %2&bslash;n&bslash;t&quot;
 l_string|&quot;sub&bslash;t%1, 1&bslash;n&bslash;t&quot;
 l_string|&quot;sc&bslash;t%1, %0&bslash;n&bslash;t&quot;
 l_string|&quot;beqz&bslash;t%1, 1b&bslash;n&bslash;t&quot;
-l_string|&quot;sync&bslash;n&bslash;t&quot;
+l_string|&quot; sync&bslash;n&bslash;t&quot;
 l_string|&quot;.set&bslash;treorder&quot;
 suffix:colon
-l_string|&quot;=o&quot;
+l_string|&quot;=m&quot;
 (paren
 id|rw-&gt;lock
 )paren
@@ -276,7 +275,7 @@ l_string|&quot;=&amp;r&quot;
 id|tmp
 )paren
 suffix:colon
-l_string|&quot;o&quot;
+l_string|&quot;m&quot;
 (paren
 id|rw-&gt;lock
 )paren
@@ -285,11 +284,11 @@ l_string|&quot;memory&quot;
 )paren
 suffix:semicolon
 )brace
-DECL|function|write_lock
+DECL|function|_raw_write_lock
 r_static
 r_inline
 r_void
-id|write_lock
+id|_raw_write_lock
 c_func
 (paren
 id|rwlock_t
@@ -314,7 +313,7 @@ l_string|&quot;beqz&bslash;t%1, 1b&bslash;n&bslash;t&quot;
 l_string|&quot; sync&bslash;n&bslash;t&quot;
 l_string|&quot;.set&bslash;treorder&quot;
 suffix:colon
-l_string|&quot;=o&quot;
+l_string|&quot;=m&quot;
 (paren
 id|rw-&gt;lock
 )paren
@@ -324,7 +323,7 @@ l_string|&quot;=&amp;r&quot;
 id|tmp
 )paren
 suffix:colon
-l_string|&quot;o&quot;
+l_string|&quot;m&quot;
 (paren
 id|rw-&gt;lock
 )paren
@@ -333,11 +332,11 @@ l_string|&quot;memory&quot;
 )paren
 suffix:semicolon
 )brace
-DECL|function|write_unlock
+DECL|function|_raw_write_unlock
 r_static
 r_inline
 r_void
-id|write_unlock
+id|_raw_write_unlock
 c_func
 (paren
 id|rwlock_t
@@ -354,12 +353,12 @@ l_string|&quot;sync&bslash;n&bslash;t&quot;
 l_string|&quot;sw&bslash;t$0, %0&bslash;n&bslash;t&quot;
 l_string|&quot;.set&bslash;treorder&quot;
 suffix:colon
-l_string|&quot;=o&quot;
+l_string|&quot;=m&quot;
 (paren
 id|rw-&gt;lock
 )paren
 suffix:colon
-l_string|&quot;o&quot;
+l_string|&quot;m&quot;
 (paren
 id|rw-&gt;lock
 )paren

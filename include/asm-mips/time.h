@@ -1,12 +1,12 @@
-multiline_comment|/*&n; * Copyright 2001 MontaVista Software Inc.&n; * Author: Jun Sun, jsun@mvista.com or jsun@junsun.net&n; *&n; * include/asm-mips/time.h&n; *     header file for the new style time.c file and time services.&n; *&n; * This program is free software; you can redistribute  it and/or modify it&n; * under  the terms of  the GNU General  Public License as published by the&n; * Free Software Foundation;  either version 2 of the  License, or (at your&n; * option) any later version.&n; *&n; */
-multiline_comment|/*&n; * Please refer to Documentation/MIPS/time.README.&n; */
+multiline_comment|/*&n; * Copyright 2001 MontaVista Software Inc.&n; * Author: Jun Sun, jsun@mvista.com or jsun@junsun.net&n; *&n; * include/asm-mips/time.h&n; *     header file for the new style time.c file and time services.&n; *&n; * This program is free software; you can redistribute  it and/or modify it&n; * under  the terms of  the GNU General  Public License as published by the&n; * Free Software Foundation;  either version 2 of the  License, or (at your&n; * option) any later version.&n; *&n; * Please refer to Documentation/mips/time.README.&n; */
 macro_line|#ifndef _ASM_TIME_H
 DECL|macro|_ASM_TIME_H
 mdefine_line|#define _ASM_TIME_H
-macro_line|#include &lt;linux/ptrace.h&gt;               /* for struct pt_regs */
-macro_line|#include &lt;linux/linkage.h&gt;              /* for asmlinkage */
-macro_line|#include &lt;linux/rtc.h&gt;                  /* for struct rtc_time */
-multiline_comment|/* &n; * RTC ops.  By default, they point a no-RTC functions.&n; *&t;rtc_get_time - mktime(year, mon, day, hour, min, sec) in seconds.&n; *&t;rtc_set_time - reverse the above translation and set time to RTC.&n; */
+macro_line|#include &lt;linux/interrupt.h&gt;
+macro_line|#include &lt;linux/linkage.h&gt;
+macro_line|#include &lt;linux/ptrace.h&gt;
+macro_line|#include &lt;linux/rtc.h&gt;
+multiline_comment|/*&n; * RTC ops.  By default, they point a no-RTC functions.&n; *&t;rtc_get_time - mktime(year, mon, day, hour, min, sec) in seconds.&n; *&t;rtc_set_time - reverse the above translation and set time to RTC.&n; */
 r_extern
 r_int
 r_int
@@ -45,7 +45,7 @@ op_star
 id|tm
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * do_gettimeoffset(). By default, this func pointer points to &n; * do_null_gettimeoffset(), which leads to the same resolution as HZ.&n; * Higher resolution versions are vailable, which gives ~1us resolution.&n; */
+multiline_comment|/*&n; * do_gettimeoffset(). By default, this func pointer points to&n; * do_null_gettimeoffset(), which leads to the same resolution as HZ.&n; * Higher resolution versions are vailable, which gives ~1us resolution.&n; */
 r_extern
 r_int
 r_int
@@ -95,7 +95,7 @@ r_void
 suffix:semicolon
 multiline_comment|/*&n; * high-level timer interrupt routines.&n; */
 r_extern
-r_void
+id|irqreturn_t
 id|timer_interrupt
 c_func
 (paren

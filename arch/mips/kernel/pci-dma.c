@@ -2,6 +2,7 @@ multiline_comment|/*&n; * This file is subject to the terms and conditions of th
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
@@ -33,6 +34,14 @@ id|gfp
 op_assign
 id|GFP_ATOMIC
 suffix:semicolon
+r_struct
+id|pci_bus
+op_star
+id|bus
+op_assign
+l_int|NULL
+suffix:semicolon
+macro_line|#ifdef CONFIG_ISA
 r_if
 c_cond
 (paren
@@ -48,6 +57,7 @@ id|gfp
 op_or_assign
 id|GFP_DMA
 suffix:semicolon
+macro_line|#endif
 id|ret
 op_assign
 (paren
@@ -84,7 +94,31 @@ comma
 id|size
 )paren
 suffix:semicolon
-macro_line|#ifndef CONFIG_COHERENT_IO
+r_if
+c_cond
+(paren
+id|hwdev
+)paren
+id|bus
+op_assign
+id|hwdev-&gt;bus
+suffix:semicolon
+op_star
+id|dma_handle
+op_assign
+id|bus_to_baddr
+c_func
+(paren
+id|bus
+comma
+id|__pa
+c_func
+(paren
+id|ret
+)paren
+)paren
+suffix:semicolon
+macro_line|#ifdef CONFIG_NONCOHERENT_IO
 id|dma_cache_wback_inv
 c_func
 (paren
@@ -99,22 +133,13 @@ id|size
 suffix:semicolon
 id|ret
 op_assign
-id|KSEG1ADDR
+id|UNCAC_ADDR
 c_func
 (paren
 id|ret
 )paren
 suffix:semicolon
 macro_line|#endif
-op_star
-id|dma_handle
-op_assign
-id|virt_to_bus
-c_func
-(paren
-id|ret
-)paren
-suffix:semicolon
 )brace
 r_return
 id|ret
@@ -151,10 +176,10 @@ r_int
 )paren
 id|vaddr
 suffix:semicolon
-macro_line|#ifndef CONFIG_COHERENT_IO
+macro_line|#ifdef CONFIG_NONCOHERENT_IO
 id|addr
 op_assign
-id|KSEG0ADDR
+id|CAC_ADDR
 c_func
 (paren
 id|addr
@@ -174,4 +199,18 @@ id|size
 )paren
 suffix:semicolon
 )brace
+DECL|variable|pci_alloc_consistent
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|pci_alloc_consistent
+)paren
+suffix:semicolon
+DECL|variable|pci_free_consistent
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|pci_free_consistent
+)paren
+suffix:semicolon
 eof

@@ -1,7 +1,10 @@
-multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * RTC routines for DECstation style attached Dallas chip.&n; *&n; * Copyright (C) 1998, 2001 by Ralf Baechle&n; * Copyright (C) 1998 by Harald Koerfgen&n; */
+multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * RTC routines for DECstation style attached Dallas DS1287 chip.&n; *&n; * Copyright (C) 1998, 2001 by Ralf Baechle&n; * Copyright (C) 1998 by Harald Koerfgen&n; * Copyright (C) 2002  Maciej W. Rozycki&n; */
 macro_line|#include &lt;linux/mc146818rtc.h&gt;
-r_extern
-r_char
+macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/types.h&gt;
+DECL|variable|dec_rtc_base
+r_volatile
+id|u8
 op_star
 id|dec_rtc_base
 suffix:semicolon
@@ -18,14 +21,12 @@ id|addr
 )paren
 (brace
 r_return
-(paren
 id|dec_rtc_base
 (braket
 id|addr
 op_star
 l_int|4
 )braket
-)paren
 suffix:semicolon
 )brace
 DECL|function|dec_rtc_write_data
@@ -81,5 +82,12 @@ comma
 op_amp
 id|dec_rtc_bcd_mode
 )brace
+suffix:semicolon
+DECL|variable|dec_rtc_base
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|dec_rtc_base
+)paren
 suffix:semicolon
 eof

@@ -2,11 +2,7 @@ multiline_comment|/*&n; * frontend.h&n; *&n; * Copyright (C) 2000 Marcus Metzler
 macro_line|#ifndef _DVBFRONTEND_H_
 DECL|macro|_DVBFRONTEND_H_
 mdefine_line|#define _DVBFRONTEND_H_
-macro_line|#ifdef __KERNEL__
-macro_line|#include &lt;linux/types.h&gt;
-macro_line|#else
-macro_line|#include &lt;stdint.h&gt;
-macro_line|#endif
+macro_line|#include &lt;asm/types.h&gt;
 DECL|enum|fe_type
 r_typedef
 r_enum
@@ -173,36 +169,36 @@ id|fe_type_t
 id|type
 suffix:semicolon
 DECL|member|frequency_min
-r_uint32
+id|__u32
 id|frequency_min
 suffix:semicolon
 DECL|member|frequency_max
-r_uint32
+id|__u32
 id|frequency_max
 suffix:semicolon
 DECL|member|frequency_stepsize
-r_uint32
+id|__u32
 id|frequency_stepsize
 suffix:semicolon
 DECL|member|frequency_tolerance
-r_uint32
+id|__u32
 id|frequency_tolerance
 suffix:semicolon
 DECL|member|symbol_rate_min
-r_uint32
+id|__u32
 id|symbol_rate_min
 suffix:semicolon
 DECL|member|symbol_rate_max
-r_uint32
+id|__u32
 id|symbol_rate_max
 suffix:semicolon
 DECL|member|symbol_rate_tolerance
-r_uint32
+id|__u32
 id|symbol_rate_tolerance
 suffix:semicolon
 multiline_comment|/* ppm */
 DECL|member|notifier_delay
-r_uint32
+id|__u32
 id|notifier_delay
 suffix:semicolon
 multiline_comment|/* ms */
@@ -218,7 +214,7 @@ r_struct
 id|dvb_diseqc_master_cmd
 (brace
 DECL|member|msg
-r_uint8
+id|__u8
 id|msg
 (braket
 l_int|6
@@ -226,7 +222,7 @@ l_int|6
 suffix:semicolon
 multiline_comment|/*  { framing, address, command, data [3] } */
 DECL|member|msg_len
-r_uint8
+id|__u8
 id|msg_len
 suffix:semicolon
 multiline_comment|/*  valid values are 3...6  */
@@ -237,7 +233,7 @@ r_struct
 id|dvb_diseqc_slave_reply
 (brace
 DECL|member|msg
-r_uint8
+id|__u8
 id|msg
 (braket
 l_int|4
@@ -245,7 +241,7 @@ l_int|4
 suffix:semicolon
 multiline_comment|/*  { framing, data [3] } */
 DECL|member|msg_len
-r_uint8
+id|__u8
 id|msg_len
 suffix:semicolon
 multiline_comment|/*  valid values are 0...4, 0 means no msg  */
@@ -267,6 +263,9 @@ id|SEC_VOLTAGE_13
 comma
 DECL|enumerator|SEC_VOLTAGE_18
 id|SEC_VOLTAGE_18
+comma
+DECL|enumerator|SEC_VOLTAGE_OFF
+id|SEC_VOLTAGE_OFF
 DECL|typedef|fe_sec_voltage_t
 )brace
 id|fe_sec_voltage_t
@@ -525,7 +524,7 @@ r_struct
 id|dvb_qpsk_parameters
 (brace
 DECL|member|symbol_rate
-r_uint32
+id|__u32
 id|symbol_rate
 suffix:semicolon
 multiline_comment|/* symbol rate in Symbols per second */
@@ -541,7 +540,7 @@ r_struct
 id|dvb_qam_parameters
 (brace
 DECL|member|symbol_rate
-r_uint32
+id|__u32
 id|symbol_rate
 suffix:semicolon
 multiline_comment|/* symbol rate in Symbols per second */
@@ -599,7 +598,7 @@ r_struct
 id|dvb_frontend_parameters
 (brace
 DECL|member|frequency
-r_uint32
+id|__u32
 id|frequency
 suffix:semicolon
 multiline_comment|/* (absolute) frequency in Hz for QAM/OFDM */
@@ -665,13 +664,13 @@ mdefine_line|#define FE_ENABLE_HIGH_LNB_VOLTAGE _IO(&squot;o&squot;, 68)  /* int
 DECL|macro|FE_READ_STATUS
 mdefine_line|#define FE_READ_STATUS             _IOR(&squot;o&squot;, 69, fe_status_t)
 DECL|macro|FE_READ_BER
-mdefine_line|#define FE_READ_BER                _IOR(&squot;o&squot;, 70, uint32_t)
+mdefine_line|#define FE_READ_BER                _IOR(&squot;o&squot;, 70, __u32)
 DECL|macro|FE_READ_SIGNAL_STRENGTH
-mdefine_line|#define FE_READ_SIGNAL_STRENGTH    _IOR(&squot;o&squot;, 71, uint16_t)
+mdefine_line|#define FE_READ_SIGNAL_STRENGTH    _IOR(&squot;o&squot;, 71, __u16)
 DECL|macro|FE_READ_SNR
-mdefine_line|#define FE_READ_SNR                _IOR(&squot;o&squot;, 72, uint16_t)
+mdefine_line|#define FE_READ_SNR                _IOR(&squot;o&squot;, 72, __u16)
 DECL|macro|FE_READ_UNCORRECTED_BLOCKS
-mdefine_line|#define FE_READ_UNCORRECTED_BLOCKS _IOR(&squot;o&squot;, 73, uint32_t)
+mdefine_line|#define FE_READ_UNCORRECTED_BLOCKS _IOR(&squot;o&squot;, 73, __u32)
 DECL|macro|FE_SET_FRONTEND
 mdefine_line|#define FE_SET_FRONTEND            _IOW(&squot;o&squot;, 76, struct dvb_frontend_parameters)
 DECL|macro|FE_GET_FRONTEND

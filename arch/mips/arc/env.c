@@ -1,7 +1,8 @@
-multiline_comment|/*&n; * env.c: ARCS environment variable routines.&n; *&n; * Copyright (C) 1996 David S. Miller (dm@engr.sgi.com)&n; *&n; * $Id: env.c,v 1.2 1999/10/09 00:00:57 ralf Exp $&n; */
+multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * env.c: ARCS environment variable routines.&n; *&n; * Copyright (C) 1996 David S. Miller (dm@engr.sgi.com)&n; */
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
+macro_line|#include &lt;asm/arc/types.h&gt;
 macro_line|#include &lt;asm/sgialib.h&gt;
 id|PCHAR
 id|__init
@@ -15,11 +16,15 @@ id|name
 )paren
 (brace
 r_return
-id|romvec
-op_member_access_from_pointer
-id|get_evar
+(paren
+id|CHAR
+op_star
+)paren
+id|ARC_CALL1
 c_func
 (paren
+id|get_evar
+comma
 id|name
 )paren
 suffix:semicolon
@@ -38,11 +43,11 @@ id|value
 )paren
 (brace
 r_return
-id|romvec
-op_member_access_from_pointer
-id|set_evar
+id|ARC_CALL2
 c_func
 (paren
+id|set_evar
+comma
 id|name
 comma
 id|value

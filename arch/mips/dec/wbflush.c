@@ -1,6 +1,8 @@
-multiline_comment|/*&n; * Setup the right wbflush routine for the different DECstations.&n; *&n; * Created with information from:&n; *      DECstation 3100 Desktop Workstation Functional Specification&n; *      DECstation 5000/200 KN02 System Module Functional Specification&n; *      mipsel-linux-objdump --disassemble vmunix | grep &quot;wbflush&quot; :-)&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1998 Harald Koerfgen&n; */
-macro_line|#include &lt;asm/bootinfo.h&gt;
+multiline_comment|/*&n; * Setup the right wbflush routine for the different DECstations.&n; *&n; * Created with information from:&n; *      DECstation 3100 Desktop Workstation Functional Specification&n; *      DECstation 5000/200 KN02 System Module Functional Specification&n; *      mipsel-linux-objdump --disassemble vmunix | grep &quot;wbflush&quot; :-)&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1998 Harald Koerfgen&n; * Copyright (C) 2002 Maciej W. Rozycki&n; */
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;asm/bootinfo.h&gt;
+macro_line|#include &lt;asm/system.h&gt;
+macro_line|#include &lt;asm/wbflush.h&gt;
 r_static
 r_void
 id|wbflush_kn01
@@ -19,15 +21,7 @@ r_void
 suffix:semicolon
 r_static
 r_void
-id|wbflush_kn02ba
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_static
-r_void
-id|wbflush_kn03
+id|wbflush_mips
 c_func
 (paren
 r_void
@@ -61,22 +55,6 @@ id|mips_machtype
 r_case
 id|MACH_DS23100
 suffix:colon
-id|__wbflush
-op_assign
-id|wbflush_kn01
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-id|MACH_DS5100
-suffix:colon
-multiline_comment|/*  DS5100 MIPSMATE */
-id|__wbflush
-op_assign
-id|wbflush_kn210
-suffix:semicolon
-r_break
-suffix:semicolon
 r_case
 id|MACH_DS5000_200
 suffix:colon
@@ -88,38 +66,42 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|MACH_DS5000_1XX
+id|MACH_DS5100
 suffix:colon
-multiline_comment|/* DS5000/100 3min */
+multiline_comment|/* DS5100 MIPSMATE */
 id|__wbflush
 op_assign
-id|wbflush_kn02ba
+id|wbflush_kn210
 suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|MACH_DS5000_2X0
+id|MACH_DS5000_1XX
 suffix:colon
-multiline_comment|/* DS5000/240 3max+ */
-id|__wbflush
-op_assign
-id|wbflush_kn03
-suffix:semicolon
-r_break
-suffix:semicolon
+multiline_comment|/* DS5000/100 3min */
 r_case
 id|MACH_DS5000_XX
 suffix:colon
 multiline_comment|/* Personal DS5000/2x */
+r_case
+id|MACH_DS5000_2X0
+suffix:colon
+multiline_comment|/* DS5000/240 3max+ */
+r_case
+id|MACH_DS5900
+suffix:colon
+multiline_comment|/* DS5900 bigmax */
+r_default
+suffix:colon
 id|__wbflush
 op_assign
-id|wbflush_kn02ba
+id|wbflush_mips
 suffix:semicolon
 r_break
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n; * For the DS3100 and DS5000/200 the writeback buffer functions&n; * as part of Coprocessor 0.&n; */
+multiline_comment|/*&n; * For the DS3100 and DS5000/200 the R2020/R3220 writeback buffer functions&n; * as part of Coprocessor 0.&n; */
 DECL|function|wbflush_kn01
 r_static
 r_void
@@ -174,44 +156,21 @@ l_string|&quot;$3&quot;
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Looks like some magic with the System Interrupt Mask Register&n; * in the famous IOASIC for kmins and maxines.&n; */
-DECL|function|wbflush_kn02ba
+multiline_comment|/*&n; * I/O ASIC systems use a standard writeback buffer that gets flushed&n; * upon an uncached read.&n; */
+DECL|function|wbflush_mips
 r_static
 r_void
-id|wbflush_kn02ba
+id|wbflush_mips
 c_func
 (paren
 r_void
 )paren
 (brace
-id|asm
+id|__fast_iob
 c_func
 (paren
-l_string|&quot;.set&bslash;tpush&bslash;n&bslash;t&quot;
-l_string|&quot;.set&bslash;tnoreorder&bslash;n&bslash;t&quot;
-l_string|&quot;lui&bslash;t$2,0xbc04&bslash;n&bslash;t&quot;
-l_string|&quot;lw&bslash;t$3,0x120($2)&bslash;n&bslash;t&quot;
-l_string|&quot;lw&bslash;t$3,0x120($2)&bslash;n&bslash;t&quot;
-l_string|&quot;.set&bslash;tpop&quot;
-suffix:colon
-suffix:colon
-suffix:colon
-l_string|&quot;$2&quot;
-comma
-l_string|&quot;$3&quot;
 )paren
 suffix:semicolon
-)brace
-multiline_comment|/*&n; * The DS500/2x0 doesn&squot;t need to write back the WB.&n; */
-DECL|function|wbflush_kn03
-r_static
-r_void
-id|wbflush_kn03
-c_func
-(paren
-r_void
-)paren
-(brace
 )brace
 macro_line|#include &lt;linux/module.h&gt;
 DECL|variable|__wbflush

@@ -1,14 +1,8 @@
-multiline_comment|/*&n; * sgialib.h: SGI ARCS firmware interface library for the Linux kernel.&n; *&n; * Copyright (C) 1996 David S. Miller (dm@engr.sgi.com)&n; */
+multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * SGI ARCS firmware interface library for the Linux kernel.&n; *&n; * Copyright (C) 1996 David S. Miller (dm@engr.sgi.com)&n; * Copyright (C) 2001, 2002 Ralf Baechle (ralf@gnu.org)&n; */
 macro_line|#ifndef _ASM_SGIALIB_H
 DECL|macro|_ASM_SGIALIB_H
 mdefine_line|#define _ASM_SGIALIB_H
 macro_line|#include &lt;asm/sgiarcs.h&gt;
-r_extern
-r_struct
-id|linux_promblock
-op_star
-id|sgi_pblock
-suffix:semicolon
 r_extern
 r_struct
 id|linux_romvec
@@ -20,22 +14,27 @@ r_int
 id|prom_argc
 suffix:semicolon
 r_extern
-r_char
+id|LONG
 op_star
-op_star
-id|prom_argv
+id|_prom_argv
 comma
 op_star
-op_star
-id|prom_envp
+id|_prom_envp
 suffix:semicolon
+multiline_comment|/* A 32-bit ARC PROM pass arguments and environment as 32-bit pointer.&n;   These macros take care of sign extension.  */
+DECL|macro|prom_argv
+mdefine_line|#define prom_argv(index) ((char *) (long) _prom_argv[(index)])
+DECL|macro|prom_argc
+mdefine_line|#define prom_argc(index) ((char *) (long) _prom_argc[(index)])
 r_extern
 r_int
 id|prom_flags
 suffix:semicolon
 DECL|macro|PROM_FLAG_ARCS
-mdefine_line|#define PROM_FLAG_ARCS  1
-multiline_comment|/*&n; * Init the PROM library and it&squot;s internal data structures.  Called&n; * at boot time from head.S before start_kernel is invoked.&n; */
+mdefine_line|#define PROM_FLAG_ARCS&t;&t;&t;1
+DECL|macro|PROM_FLAG_USE_AS_CONSOLE
+mdefine_line|#define PROM_FLAG_USE_AS_CONSOLE&t;2
+multiline_comment|/* Init the PROM library and it&squot;s internal data structures. */
 r_extern
 r_void
 id|prom_init
@@ -92,6 +91,44 @@ dot
 dot
 )paren
 suffix:semicolon
+multiline_comment|/* Memory descriptor management. */
+DECL|macro|PROM_MAX_PMEMBLOCKS
+mdefine_line|#define PROM_MAX_PMEMBLOCKS    32
+DECL|struct|prom_pmemblock
+r_struct
+id|prom_pmemblock
+(brace
+DECL|member|base
+id|LONG
+id|base
+suffix:semicolon
+multiline_comment|/* Within KSEG0 or XKPHYS. */
+DECL|member|size
+id|ULONG
+id|size
+suffix:semicolon
+multiline_comment|/* In bytes. */
+DECL|member|type
+id|ULONG
+id|type
+suffix:semicolon
+multiline_comment|/* free or prom memory */
+)brace
+suffix:semicolon
+multiline_comment|/* Get next memory descriptor after CURR, returns first descriptor&n; * in chain is CURR is NULL.&n; */
+r_extern
+r_struct
+id|linux_mdesc
+op_star
+id|prom_getmdesc
+c_func
+(paren
+r_struct
+id|linux_mdesc
+op_star
+id|curr
+)paren
+suffix:semicolon
 DECL|macro|PROM_NULL_MDESC
 mdefine_line|#define PROM_NULL_MDESC   ((struct linux_mdesc *) 0)
 multiline_comment|/* Called by prom_init to setup the physical memory pmemblock&n; * array.&n; */
@@ -103,6 +140,20 @@ c_func
 r_void
 )paren
 suffix:semicolon
+r_extern
+r_void
+id|prom_fixup_mem_map
+c_func
+(paren
+r_int
+r_int
+id|start_mem
+comma
+r_int
+r_int
+id|end_mem
+)paren
+suffix:semicolon
 multiline_comment|/* PROM device tree library routines. */
 DECL|macro|PROM_NULL_COMPONENT
 mdefine_line|#define PROM_NULL_COMPONENT ((pcomponent *) 0)
@@ -110,7 +161,7 @@ multiline_comment|/* Get sibling component of THIS. */
 r_extern
 id|pcomponent
 op_star
-id|prom_getsibling
+id|ArcGetPeer
 c_func
 (paren
 id|pcomponent
@@ -122,7 +173,7 @@ multiline_comment|/* Get child component of THIS. */
 r_extern
 id|pcomponent
 op_star
-id|prom_getchild
+id|ArcGetChild
 c_func
 (paren
 id|pcomponent
@@ -213,8 +264,7 @@ id|PCHAR
 id|ArcGetEnvironmentVariable
 c_func
 (paren
-id|CHAR
-op_star
+id|PCHAR
 id|name
 )paren
 suffix:semicolon
@@ -323,25 +373,20 @@ id|fd
 )paren
 suffix:semicolon
 r_extern
-r_int
-id|prom_read
+id|LONG
+id|ArcRead
 c_func
 (paren
-r_int
-r_int
+id|ULONG
 id|fd
 comma
-r_void
-op_star
+id|PVOID
 id|buf
 comma
-r_int
-r_int
+id|ULONG
 id|num
 comma
-r_int
-r_int
-op_star
+id|PULONG
 id|cnt
 )paren
 suffix:semicolon
@@ -356,25 +401,20 @@ id|fd
 )paren
 suffix:semicolon
 r_extern
-r_int
-id|prom_write
+id|LONG
+id|ArcWrite
 c_func
 (paren
-r_int
-r_int
+id|ULONG
 id|fd
 comma
-r_void
-op_star
+id|PVOID
 id|buf
 comma
-r_int
-r_int
+id|ULONG
 id|num
 comma
-r_int
-r_int
-op_star
+id|PULONG
 id|cnt
 )paren
 suffix:semicolon
@@ -521,11 +561,11 @@ id|envp
 suffix:semicolon
 multiline_comment|/* Misc. routines. */
 r_extern
-r_void
+id|VOID
 id|prom_halt
 c_func
 (paren
-r_void
+id|VOID
 )paren
 id|__attribute__
 c_func
@@ -536,11 +576,11 @@ id|noreturn
 )paren
 suffix:semicolon
 r_extern
-r_void
+id|VOID
 id|prom_powerdown
 c_func
 (paren
-r_void
+id|VOID
 )paren
 id|__attribute__
 c_func
@@ -551,11 +591,11 @@ id|noreturn
 )paren
 suffix:semicolon
 r_extern
-r_void
+id|VOID
 id|prom_restart
 c_func
 (paren
-r_void
+id|VOID
 )paren
 id|__attribute__
 c_func
@@ -566,11 +606,11 @@ id|noreturn
 )paren
 suffix:semicolon
 r_extern
-r_void
-id|prom_reboot
+id|VOID
+id|ArcReboot
 c_func
 (paren
-r_void
+id|VOID
 )paren
 id|__attribute__
 c_func
@@ -581,11 +621,11 @@ id|noreturn
 )paren
 suffix:semicolon
 r_extern
-r_void
+id|VOID
 id|ArcEnterInteractiveMode
 c_func
 (paren
-r_void
+id|VOID
 )paren
 id|__attribute__
 c_func
@@ -600,7 +640,7 @@ r_int
 id|prom_cfgsave
 c_func
 (paren
-r_void
+id|VOID
 )paren
 suffix:semicolon
 r_extern
@@ -610,15 +650,15 @@ op_star
 id|prom_getsysid
 c_func
 (paren
-r_void
+id|VOID
 )paren
 suffix:semicolon
 r_extern
-r_void
-id|prom_cacheflush
+id|VOID
+id|ArcFlushAllCaches
 c_func
 (paren
-r_void
+id|VOID
 )paren
 suffix:semicolon
 macro_line|#endif /* _ASM_SGIALIB_H */

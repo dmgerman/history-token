@@ -42,8 +42,6 @@ r_struct
 id|proc_dir_entry
 op_star
 id|efi_dir
-op_assign
-l_int|NULL
 suffix:semicolon
 macro_line|#endif
 DECL|variable|mem_limit

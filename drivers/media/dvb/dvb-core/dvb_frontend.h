@@ -2,15 +2,12 @@ multiline_comment|/* &n; * dvb-core.h&n; *&n; * Copyright (C) 2001 Ralph  Metzle
 macro_line|#ifndef _DVB_FRONTEND_H_
 DECL|macro|_DVB_FRONTEND_H_
 mdefine_line|#define _DVB_FRONTEND_H_
-macro_line|#include &lt;asm/types.h&gt;
+macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/ioctl.h&gt;
 macro_line|#include &lt;linux/i2c.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
-macro_line|#ifndef MODULE_LICENSE
-DECL|macro|MODULE_LICENSE
-mdefine_line|#define MODULE_LICENSE(x)
-macro_line|#endif
+macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/dvb/frontend.h&gt;
 macro_line|#include &quot;dvb_i2c.h&quot;
 macro_line|#include &quot;dvbdev.h&quot;

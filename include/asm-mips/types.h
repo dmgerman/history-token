@@ -1,7 +1,8 @@
-multiline_comment|/* $Id: types.h,v 1.3 1999/08/18 23:37:50 ralf Exp $&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1994, 1995, 1996, 1999 by Ralf Baechle&n; * Copyright (C) 1999 Silicon Graphics, Inc.&n; */
+multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1994, 1995, 1996, 1999 by Ralf Baechle&n; * Copyright (C) 1999 Silicon Graphics, Inc.&n; */
 macro_line|#ifndef _ASM_TYPES_H
 DECL|macro|_ASM_TYPES_H
 mdefine_line|#define _ASM_TYPES_H
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#ifndef __ASSEMBLY__
 DECL|typedef|umode_t
 r_typedef
@@ -150,12 +151,49 @@ id|u64
 suffix:semicolon
 macro_line|#endif
 macro_line|#endif
+macro_line|#if defined(CONFIG_HIGHMEM) &amp;&amp; defined(CONFIG_64BIT_PHYS_ADDR)
 DECL|typedef|dma_addr_t
+r_typedef
+id|u64
+id|dma_addr_t
+suffix:semicolon
+macro_line|#else
+DECL|typedef|dma_addr_t
+r_typedef
+id|u32
+id|dma_addr_t
+suffix:semicolon
+macro_line|#endif
+DECL|typedef|dma64_addr_t
+r_typedef
+id|u64
+id|dma64_addr_t
+suffix:semicolon
+macro_line|#ifdef CONFIG_64BIT_PHYS_ADDR
+DECL|typedef|phys_t
 r_typedef
 r_int
 r_int
-id|dma_addr_t
+r_int
+id|phys_t
 suffix:semicolon
+macro_line|#else
+DECL|typedef|phys_t
+r_typedef
+r_int
+r_int
+id|phys_t
+suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef CONFIG_LBD
+DECL|typedef|sector_t
+r_typedef
+id|u64
+id|sector_t
+suffix:semicolon
+DECL|macro|HAVE_SECTOR_T
+mdefine_line|#define HAVE_SECTOR_T
+macro_line|#endif
 macro_line|#endif /* __ASSEMBLY__ */
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* _ASM_TYPES_H */

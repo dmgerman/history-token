@@ -1,7 +1,10 @@
-multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Branch and jump emulation.&n; *&n; * Copyright (C) 1996, 1997, 1998, 1999 by Ralf Baechle&n; */
+multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1996, 1997, 1998, 2001 by Ralf Baechle&n; */
+macro_line|#ifndef _ASM_BRANCH_H
+DECL|macro|_ASM_BRANCH_H
+mdefine_line|#define _ASM_BRANCH_H
 macro_line|#include &lt;asm/ptrace.h&gt;
 DECL|function|delay_slot
-r_extern
+r_static
 r_inline
 r_int
 id|delay_slot
@@ -19,6 +22,39 @@ op_amp
 id|CAUSEF_BD
 suffix:semicolon
 )brace
+DECL|function|exception_epc
+r_static
+r_inline
+r_int
+r_int
+id|exception_epc
+c_func
+(paren
+r_struct
+id|pt_regs
+op_star
+id|regs
+)paren
+(brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|delay_slot
+c_func
+(paren
+id|regs
+)paren
+)paren
+r_return
+id|regs-&gt;cp0_epc
+suffix:semicolon
+r_return
+id|regs-&gt;cp0_epc
+op_plus
+l_int|4
+suffix:semicolon
+)brace
 r_extern
 r_int
 id|__compute_return_epc
@@ -31,7 +67,7 @@ id|regs
 )paren
 suffix:semicolon
 DECL|function|compute_return_epc
-r_extern
+r_static
 r_inline
 r_int
 id|compute_return_epc
@@ -70,4 +106,5 @@ id|regs
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif /* _ASM_BRANCH_H */
 eof

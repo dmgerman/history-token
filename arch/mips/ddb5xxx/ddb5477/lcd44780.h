@@ -1,0 +1,19 @@
+multiline_comment|/*&n; * lcd44780.h&n; * Simple &quot;driver&quot; for a memory-mapped 44780-style LCD display.&n; *&n; * Copyright 2001 Bradley D. LaRonde &lt;brad@ltc.com&gt;&n; *&n; * This program is free software; you can redistribute  it and/or modify it&n; * under  the terms of  the GNU General  Public License as published by the&n; * Free Software Foundation;  either version 2 of the  License, or (at your&n; * option) any later version.&n; *&n; */
+r_void
+id|lcd44780_puts
+c_func
+(paren
+r_const
+r_char
+op_star
+id|s
+)paren
+suffix:semicolon
+r_void
+id|lcd44780_init
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+eof

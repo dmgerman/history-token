@@ -1,16 +1,19 @@
-multiline_comment|/*&n; * Linux/MIPS memory manager definitions&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1995 by Ralf Baechle&n; */
-macro_line|#ifndef __ASM_MIPS_MMAN_H
-DECL|macro|__ASM_MIPS_MMAN_H
-mdefine_line|#define __ASM_MIPS_MMAN_H
+multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1995, 1999, 2002 by Ralf Baechle&n; */
+macro_line|#ifndef _ASM_MMAN_H
+DECL|macro|_ASM_MMAN_H
+mdefine_line|#define _ASM_MMAN_H
 multiline_comment|/*&n; * Protections are chosen from these bits, OR&squot;d together.  The&n; * implementation does not necessarily support PROT_EXEC or PROT_WRITE&n; * without PROT_READ.  The only guarantees are that no writing will be&n; * allowed without PROT_WRITE and no access will be allowed for PROT_NONE.&n; */
 DECL|macro|PROT_NONE
-mdefine_line|#define PROT_NONE&t;0x0&t;&t;/* page can not be accessed */
+mdefine_line|#define PROT_NONE&t;0x00&t;&t;/* page can not be accessed */
 DECL|macro|PROT_READ
-mdefine_line|#define PROT_READ&t;0x1&t;&t;/* page can be read */
+mdefine_line|#define PROT_READ&t;0x01&t;&t;/* page can be read */
 DECL|macro|PROT_WRITE
-mdefine_line|#define PROT_WRITE&t;0x2&t;&t;/* page can be written */
+mdefine_line|#define PROT_WRITE&t;0x02&t;&t;/* page can be written */
 DECL|macro|PROT_EXEC
-mdefine_line|#define PROT_EXEC&t;0x4&t;&t;/* page can be executed */
+mdefine_line|#define PROT_EXEC&t;0x04&t;&t;/* page can be executed */
+multiline_comment|/*&t;&t;&t;0x08&t;&t;   reserved for PROT_EXEC_NOFLUSH */
+DECL|macro|PROT_SEM
+mdefine_line|#define PROT_SEM&t;0x10&t;&t;/* page may be used for atomic ops */
 multiline_comment|/*&n; * Flags for mmap&n; */
 DECL|macro|MAP_SHARED
 mdefine_line|#define MAP_SHARED&t;0x001&t;&t;/* Share changes */
@@ -42,6 +45,10 @@ DECL|macro|MAP_EXECUTABLE
 mdefine_line|#define MAP_EXECUTABLE&t;0x4000&t;&t;/* mark it as an executable */
 DECL|macro|MAP_LOCKED
 mdefine_line|#define MAP_LOCKED&t;0x8000&t;&t;/* pages are locked */
+DECL|macro|MAP_POPULATE
+mdefine_line|#define MAP_POPULATE&t;0x10000&t;&t;/* populate (prefault) pagetables */
+DECL|macro|MAP_NONBLOCK
+mdefine_line|#define MAP_NONBLOCK&t;0x20000&t;&t;/* do not block on IO */
 multiline_comment|/*&n; * Flags for msync&n; */
 DECL|macro|MS_ASYNC
 mdefine_line|#define MS_ASYNC&t;0x0001&t;&t;/* sync memory asynchronously */
@@ -69,5 +76,5 @@ DECL|macro|MAP_ANON
 mdefine_line|#define MAP_ANON       MAP_ANONYMOUS
 DECL|macro|MAP_FILE
 mdefine_line|#define MAP_FILE       0
-macro_line|#endif /* __ASM_MIPS_MMAN_H */
+macro_line|#endif /* _ASM_MMAN_H */
 eof

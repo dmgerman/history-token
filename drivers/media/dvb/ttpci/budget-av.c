@@ -1,10 +1,7 @@
 multiline_comment|/*&n; * budget-av.c: driver for the SAA7146 based Budget DVB cards&n; *              with analog video in &n; *&n; * Compiled from various sources by Michael Hunold &lt;michael@mihu.de&gt; &n; *&n; * Copyright (C) 2002 Ralph Metzler &lt;rjkm@metzlerbros.de&gt;&n; *&n; * Copyright (C) 1999-2002 Ralph  Metzler &n; *                       &amp; Marcus Metzler for convergence integrated media GmbH&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License&n; * as published by the Free Software Foundation; either version 2&n; * of the License, or (at your option) any later version.&n; * &n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; * &n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.&n; * Or, point your browser to http://www.gnu.org/copyleft/gpl.html&n; * &n; *&n; * the project&squot;s page is at http://www.linuxtv.org/dvb/&n; */
-macro_line|#include &quot;budget.h&quot;
 macro_line|#include &lt;media/saa7146_vv.h&gt;
-macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,5,51)
-DECL|macro|KBUILD_MODNAME
-mdefine_line|#define KBUILD_MODNAME budget_av
-macro_line|#endif
+macro_line|#include &quot;budget.h&quot;
+macro_line|#include &quot;dvb_functions.h&quot;
 DECL|struct|budget_av
 r_struct
 id|budget_av
@@ -26,36 +23,8 @@ suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/****************************************************************************&n; * INITIALIZATION&n; ****************************************************************************/
-r_static
-r_inline
-DECL|function|ddelay
-r_void
-id|ddelay
-c_func
-(paren
-r_int
-id|i
-)paren
-(brace
-id|current-&gt;state
-op_assign
-id|TASK_INTERRUPTIBLE
-suffix:semicolon
-id|schedule_timeout
-c_func
-(paren
-(paren
-id|HZ
-op_star
-id|i
-)paren
-op_div
-l_int|100
-)paren
-suffix:semicolon
-)brace
-r_static
 DECL|function|i2c_readreg
+r_static
 id|u8
 id|i2c_readreg
 (paren
@@ -194,8 +163,8 @@ l_int|0
 )braket
 suffix:semicolon
 )brace
-r_static
 DECL|function|i2c_writereg
+r_static
 r_int
 id|i2c_writereg
 (paren
@@ -256,9 +225,9 @@ l_int|1
 )paren
 suffix:semicolon
 )brace
+DECL|variable|saa7113_tab
 r_static
 r_const
-DECL|variable|saa7113_tab
 id|u8
 id|saa7113_tab
 (braket
@@ -384,8 +353,8 @@ comma
 l_int|0xff
 )brace
 suffix:semicolon
-r_static
 DECL|function|saa7113_init
+r_static
 r_int
 id|saa7113_init
 (paren
@@ -502,8 +471,8 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-r_static
 DECL|function|saa7113_setinput
+r_static
 r_int
 id|saa7113_setinput
 (paren
@@ -604,8 +573,8 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-r_static
 DECL|function|budget_av_detach
+r_static
 r_int
 id|budget_av_detach
 (paren
@@ -650,10 +619,10 @@ comma
 id|SAA7146_GPIO_OUTLO
 )paren
 suffix:semicolon
-id|ddelay
+id|dvb_delay
 c_func
 (paren
-l_int|20
+l_int|200
 )paren
 suffix:semicolon
 id|saa7146_unregister_device
@@ -681,8 +650,8 @@ r_return
 id|err
 suffix:semicolon
 )brace
-r_static
 DECL|function|budget_av_attach
+r_static
 r_int
 id|budget_av_attach
 (paren
@@ -854,10 +823,10 @@ comma
 id|SAA7146_GPIO_OUTHI
 )paren
 suffix:semicolon
-id|ddelay
+id|dvb_delay
 c_func
 (paren
-l_int|50
+l_int|500
 )paren
 suffix:semicolon
 r_if
@@ -947,13 +916,7 @@ l_int|0
 )paren
 suffix:semicolon
 multiline_comment|/* what is this? since we don&squot;t support open()/close()&n;&t;   notifications, we simply put this into the release handler... */
-singleline_comment|//&t;saa7146_setgpio(dev, 0, SAA7146_GPIO_OUTLO);
-id|ddelay
-c_func
-(paren
-l_int|20
-)paren
-suffix:semicolon
+multiline_comment|/*&n;&t;saa7146_setgpio(dev, 0, SAA7146_GPIO_OUTLO);&n;&t;set_current_state(TASK_INTERRUPTIBLE);&n;&t;schedule_timeout (20);&n;*/
 multiline_comment|/* fixme: find some sane values here... */
 id|saa7146_write
 c_func
@@ -1019,8 +982,8 @@ l_int|0
 comma
 )brace
 suffix:semicolon
-r_static
 DECL|variable|ioctls
+r_static
 r_struct
 id|saa7146_extension_ioctls
 id|ioctls
@@ -1053,8 +1016,8 @@ l_int|0
 )brace
 )brace
 suffix:semicolon
-r_static
 DECL|function|av_ioctl
+r_static
 r_int
 id|av_ioctl
 c_func
@@ -1231,8 +1194,8 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-r_static
 DECL|variable|standard
+r_static
 r_struct
 id|saa7146_standard
 id|standard
@@ -1258,8 +1221,8 @@ id|SAA7146_NTSC_VALUES
 comma
 )brace
 suffix:semicolon
-r_static
 DECL|variable|vv_data
+r_static
 r_struct
 id|saa7146_ext_vv
 id|vv_data
@@ -1336,8 +1299,8 @@ comma
 id|BUDGET_KNC1
 )paren
 suffix:semicolon
-r_static
 DECL|variable|pci_tbl
+r_static
 r_struct
 id|pci_device_id
 id|pci_tbl
@@ -1364,8 +1327,16 @@ comma
 )brace
 )brace
 suffix:semicolon
-r_static
+id|MODULE_DEVICE_TABLE
+c_func
+(paren
+id|pci
+comma
+id|pci_tbl
+)paren
+suffix:semicolon
 DECL|variable|budget_extension
+r_static
 r_struct
 id|saa7146_extension
 id|budget_extension
@@ -1414,8 +1385,8 @@ id|ttpci_budget_irq10_handler
 comma
 )brace
 suffix:semicolon
-r_static
 DECL|function|budget_av_init
+r_static
 r_int
 id|__init
 id|budget_av_init
@@ -1450,8 +1421,8 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-r_static
 DECL|function|budget_av_exit
+r_static
 r_void
 id|__exit
 id|budget_av_exit

@@ -1,35 +1,11 @@
-multiline_comment|/*&n; * Wrap-around code for a console using the&n; * DECstation PROM io-routines.&n; *&n; * Copyright (c) 1998 Harald Koerfgen &n; */
+multiline_comment|/*&n; * Wrap-around code for a console using the&n; * DECstation PROM io-routines.&n; *&n; * Copyright (c) 1998 Harald Koerfgen&n; */
 macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/major.h&gt;
 macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/console.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
-r_extern
-r_int
-(paren
-op_star
-id|prom_getchar
-)paren
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_int
-(paren
-op_star
-id|prom_printf
-)paren
-(paren
-r_char
-op_star
-comma
-dot
-dot
-dot
-)paren
-suffix:semicolon
+macro_line|#include &lt;asm/dec/prom.h&gt;
 DECL|function|prom_console_write
 r_static
 r_void
@@ -53,7 +29,7 @@ id|count
 r_int
 id|i
 suffix:semicolon
-multiline_comment|/*&n;     *    Now, do each character&n;     */
+multiline_comment|/*&n;&t; *    Now, do each character&n;&t; */
 r_for
 c_loop
 (paren
@@ -118,30 +94,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|prom_console_device
-r_static
-id|kdev_t
-id|prom_console_device
-c_func
-(paren
-r_struct
-id|console
-op_star
-id|c
-)paren
-(brace
-r_return
-id|MKDEV
-c_func
-(paren
-id|TTY_MAJOR
-comma
-l_int|64
-op_plus
-id|c-&gt;index
-)paren
-suffix:semicolon
-)brace
 DECL|variable|sercons
 r_static
 r_struct
@@ -158,11 +110,6 @@ dot
 id|write
 op_assign
 id|prom_console_write
-comma
-dot
-id|device
-op_assign
-id|prom_console_device
 comma
 dot
 id|setup
@@ -184,16 +131,13 @@ comma
 suffix:semicolon
 multiline_comment|/*&n; *    Register console.&n; */
 DECL|function|prom_console_init
+r_static
 r_int
 id|__init
 id|prom_console_init
 c_func
 (paren
-r_int
-id|kmem_start
-comma
-r_int
-id|kmem_end
+r_void
 )paren
 (brace
 id|register_console
@@ -204,7 +148,14 @@ id|sercons
 )paren
 suffix:semicolon
 r_return
-id|kmem_start
+l_int|0
 suffix:semicolon
 )brace
+DECL|variable|prom_console_init
+id|console_initcall
+c_func
+(paren
+id|prom_console_init
+)paren
+suffix:semicolon
 eof

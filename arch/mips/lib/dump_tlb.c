@@ -1,17 +1,95 @@
 multiline_comment|/*&n; * Dump R4x00 TLB for debugging purposes.&n; *&n; * Copyright (C) 1994, 1995 by Waldorf Electronics, written by Ralf Baechle.&n; * Copyright (C) 1999 by Silicon Graphics, Inc.&n; */
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;asm/bootinfo.h&gt;
+macro_line|#include &lt;asm/cpu.h&gt;
 macro_line|#include &lt;asm/cachectl.h&gt;
 macro_line|#include &lt;asm/mipsregs.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
-DECL|macro|mips_tlb_entries
-mdefine_line|#define mips_tlb_entries 48
-r_void
+DECL|function|msg2str
+r_static
+r_inline
+r_const
+r_char
+op_star
+id|msg2str
+c_func
+(paren
+r_int
+r_int
+id|mask
+)paren
+(brace
+r_switch
+c_cond
+(paren
+id|mask
+)paren
+(brace
+r_case
+id|PM_4K
+suffix:colon
+r_return
+l_string|&quot;4kb&quot;
+suffix:semicolon
+r_case
+id|PM_16K
+suffix:colon
+r_return
+l_string|&quot;16kb&quot;
+suffix:semicolon
+r_case
+id|PM_64K
+suffix:colon
+r_return
+l_string|&quot;64kb&quot;
+suffix:semicolon
+r_case
+id|PM_256K
+suffix:colon
+r_return
+l_string|&quot;256kb&quot;
+suffix:semicolon
+macro_line|#ifndef CONFIG_CPU_VR41XX
+r_case
+id|PM_1M
+suffix:colon
+r_return
+l_string|&quot;1Mb&quot;
+suffix:semicolon
+r_case
+id|PM_4M
+suffix:colon
+r_return
+l_string|&quot;4Mb&quot;
+suffix:semicolon
+r_case
+id|PM_16M
+suffix:colon
+r_return
+l_string|&quot;16Mb&quot;
+suffix:semicolon
+r_case
+id|PM_64M
+suffix:colon
+r_return
+l_string|&quot;64Mb&quot;
+suffix:semicolon
+r_case
+id|PM_256M
+suffix:colon
+r_return
+l_string|&quot;256Mb&quot;
+suffix:semicolon
+macro_line|#endif
+)brace
+)brace
 DECL|function|dump_tlb
+r_void
 id|dump_tlb
 c_func
 (paren
@@ -37,20 +115,29 @@ id|asid
 suffix:semicolon
 r_int
 r_int
-id|entryhi
-comma
+r_int
 id|entrylo0
 comma
 id|entrylo1
 suffix:semicolon
+r_int
+r_int
+id|entryhi
+suffix:semicolon
 id|asid
 op_assign
-id|get_entryhi
+id|read_c0_entryhi
 c_func
 (paren
 )paren
 op_amp
 l_int|0xff
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;&bslash;n&quot;
+)paren
 suffix:semicolon
 r_for
 c_loop
@@ -67,11 +154,9 @@ id|i
 op_increment
 )paren
 (brace
-id|write_32bit_cp0_register
+id|write_c0_index
 c_func
 (paren
-id|CP0_INDEX
-comma
 id|i
 )paren
 suffix:semicolon
@@ -90,44 +175,40 @@ l_string|&quot;.set&bslash;tmips0&bslash;n&bslash;t&quot;
 suffix:semicolon
 id|pagemask
 op_assign
-id|read_32bit_cp0_register
+id|read_c0_pagemask
 c_func
 (paren
-id|CP0_PAGEMASK
 )paren
 suffix:semicolon
 id|entryhi
 op_assign
-id|read_32bit_cp0_register
+id|read_c0_entryhi
 c_func
 (paren
-id|CP0_ENTRYHI
 )paren
 suffix:semicolon
 id|entrylo0
 op_assign
-id|read_32bit_cp0_register
+id|read_c0_entrylo0
 c_func
 (paren
-id|CP0_ENTRYLO0
 )paren
 suffix:semicolon
 id|entrylo1
 op_assign
-id|read_32bit_cp0_register
+id|read_c0_entrylo1
 c_func
 (paren
-id|CP0_ENTRYLO1
 )paren
 suffix:semicolon
-multiline_comment|/* Unused entries have a virtual address of KSEG0.  */
+multiline_comment|/* Unused entries have a virtual address in KSEG0.  */
 r_if
 c_cond
 (paren
 (paren
 id|entryhi
 op_amp
-l_int|0xffffe000
+l_int|0xf0000000
 )paren
 op_ne
 l_int|0x80000000
@@ -145,11 +226,15 @@ multiline_comment|/*&n;&t;&t;&t; * Only print entries in use&n;&t;&t;&t; */
 id|printk
 c_func
 (paren
-l_string|&quot;Index: %2d pgmask=%08x &quot;
+l_string|&quot;Index: %2d pgmask=%s &quot;
 comma
 id|i
 comma
+id|msg2str
+c_func
+(paren
 id|pagemask
+)paren
 )paren
 suffix:semicolon
 id|c0
@@ -175,9 +260,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;va=%08lx asid=%08lx&quot;
-l_string|&quot;  [pa=%06lx c=%d d=%d v=%d g=%ld]&quot;
-l_string|&quot;  [pa=%06lx c=%d d=%d v=%d g=%ld]&quot;
+l_string|&quot;va=%08lx asid=%02lx&bslash;n&quot;
 comma
 (paren
 id|entryhi
@@ -185,11 +268,23 @@ op_amp
 l_int|0xffffe000
 )paren
 comma
+(paren
 id|entryhi
 op_amp
 l_int|0xff
+)paren
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;&bslash;t&bslash;t&bslash;t[pa=%08Lx c=%d d=%d v=%d g=%Ld]&bslash;n&quot;
 comma
+(paren
 id|entrylo0
+op_lshift
+l_int|6
+)paren
 op_amp
 id|PAGE_MASK
 comma
@@ -222,8 +317,18 @@ id|entrylo0
 op_amp
 l_int|1
 )paren
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;&bslash;t&bslash;t&bslash;t[pa=%08Lx c=%d d=%d v=%d g=%Ld]&bslash;n&quot;
 comma
+(paren
 id|entrylo1
+op_lshift
+l_int|6
+)paren
 op_amp
 id|PAGE_MASK
 comma
@@ -258,23 +363,23 @@ l_int|1
 )paren
 )paren
 suffix:semicolon
-)brace
-)brace
 id|printk
 c_func
 (paren
 l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
-id|set_entryhi
+)brace
+)brace
+id|write_c0_entryhi
 c_func
 (paren
 id|asid
 )paren
 suffix:semicolon
 )brace
-r_void
 DECL|function|dump_tlb_all
+r_void
 id|dump_tlb_all
 c_func
 (paren
@@ -286,14 +391,14 @@ c_func
 (paren
 l_int|0
 comma
-id|mips_tlb_entries
+id|current_cpu_data.tlbsize
 op_minus
 l_int|1
 )paren
 suffix:semicolon
 )brace
-r_void
 DECL|function|dump_tlb_wired
+r_void
 id|dump_tlb_wired
 c_func
 (paren
@@ -305,10 +410,9 @@ id|wired
 suffix:semicolon
 id|wired
 op_assign
-id|read_32bit_cp0_register
+id|read_c0_wired
 c_func
 (paren
-id|CP0_WIRED
 )paren
 suffix:semicolon
 id|printk
@@ -324,10 +428,9 @@ c_func
 (paren
 l_int|0
 comma
-id|read_32bit_cp0_register
+id|read_c0_wired
 c_func
 (paren
-id|CP0_WIRED
 )paren
 )paren
 suffix:semicolon
@@ -361,7 +464,7 @@ id|flags
 suffix:semicolon
 id|oldpid
 op_assign
-id|get_entryhi
+id|read_c0_entryhi
 c_func
 (paren
 )paren
@@ -370,7 +473,7 @@ l_int|0xff
 suffix:semicolon
 id|BARRIER
 suffix:semicolon
-id|set_entryhi
+id|write_c0_entryhi
 c_func
 (paren
 (paren
@@ -393,12 +496,12 @@ id|BARRIER
 suffix:semicolon
 id|index
 op_assign
-id|get_index
+id|read_c0_index
 c_func
 (paren
 )paren
 suffix:semicolon
-id|set_entryhi
+id|write_c0_entryhi
 c_func
 (paren
 id|oldpid
@@ -459,13 +562,12 @@ r_void
 id|dump_tlb
 c_func
 (paren
-id|read_32bit_cp0_register
+id|read_c0_wired
 c_func
 (paren
-id|CP0_WIRED
 )paren
 comma
-id|mips_tlb_entries
+id|current_cpu_data.tlbsize
 op_minus
 l_int|1
 )paren
@@ -530,15 +632,36 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;tasks-&gt;mm.pgd        == %08x&bslash;n&quot;
+l_string|&quot;task                 == %8p&bslash;n&quot;
 comma
-(paren
-r_int
-r_int
-)paren
-id|t-&gt;mm-&gt;pgd
+id|t
 )paren
 suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;task-&gt;mm             == %8p&bslash;n&quot;
+comma
+id|t-&gt;mm
+)paren
+suffix:semicolon
+singleline_comment|//printk(&quot;tasks-&gt;mm.pgd        == %08x&bslash;n&quot;, (unsigned int) t-&gt;mm-&gt;pgd);
+r_if
+c_cond
+(paren
+id|addr
+OG
+id|KSEG0
+)paren
+id|page_dir
+op_assign
+id|pgd_offset_k
+c_func
+(paren
+l_int|0
+)paren
+suffix:semicolon
+r_else
 id|page_dir
 op_assign
 id|pgd_offset
@@ -561,6 +684,22 @@ r_int
 id|page_dir
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|addr
+OG
+id|KSEG0
+)paren
+id|pgd
+op_assign
+id|pgd_offset_k
+c_func
+(paren
+id|addr
+)paren
+suffix:semicolon
+r_else
 id|pgd
 op_assign
 id|pgd_offset
@@ -632,15 +771,12 @@ op_assign
 op_star
 id|pte
 suffix:semicolon
+macro_line|#ifdef CONFIG_64BIT_PHYS_ADDR
 id|printk
 c_func
 (paren
-l_string|&quot;page == %08x&bslash;n&quot;
+l_string|&quot;page == %08Lx&bslash;n&quot;
 comma
-(paren
-r_int
-r_int
-)paren
 id|pte_val
 c_func
 (paren
@@ -648,6 +784,20 @@ id|page
 )paren
 )paren
 suffix:semicolon
+macro_line|#else
+id|printk
+c_func
+(paren
+l_string|&quot;page == %08lx&bslash;n&quot;
+comma
+id|pte_val
+c_func
+(paren
+id|page
+)paren
+)paren
+suffix:semicolon
+macro_line|#endif
 id|val
 op_assign
 id|pte_val
@@ -917,42 +1067,30 @@ op_increment
 id|printk
 c_func
 (paren
-l_string|&quot;*%08lx == %08lx, &quot;
+l_string|&quot;*%8p = %08lx, &quot;
 comma
-(paren
-r_int
-r_int
-)paren
 id|p
 comma
-(paren
-r_int
-r_int
-)paren
 op_star
 id|p
-op_increment
 )paren
+suffix:semicolon
+id|p
+op_increment
 suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;*%08lx == %08lx&bslash;n&quot;
+l_string|&quot;*%8p = %08lx&bslash;n&quot;
 comma
-(paren
-r_int
-r_int
-)paren
 id|p
 comma
-(paren
-r_int
-r_int
-)paren
 op_star
 id|p
-op_increment
 )paren
+suffix:semicolon
+id|p
+op_increment
 suffix:semicolon
 )brace
 )brace

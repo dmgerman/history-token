@@ -1,6 +1,8 @@
 multiline_comment|/*&n; * sysirix.c: IRIX system call emulation.&n; *&n; * Copyright (C) 1996 David S. Miller&n; * Copyright (C) 1997 Miguel de Icaza&n; * Copyright (C) 1997, 1998, 1999, 2000 Ralf Baechle&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
+macro_line|#include &lt;linux/binfmts.h&gt;
+macro_line|#include &lt;linux/highuid.h&gt;
 macro_line|#include &lt;linux/pagemap.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/mman.h&gt;
@@ -18,6 +20,8 @@ macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/utsname.h&gt;
 macro_line|#include &lt;linux/file.h&gt;
 macro_line|#include &lt;linux/vfs.h&gt;
+macro_line|#include &lt;linux/namei.h&gt;
+macro_line|#include &lt;linux/socket.h&gt;
 macro_line|#include &lt;asm/ptrace.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
@@ -109,7 +113,10 @@ id|MP_NAPROCS
 suffix:colon
 id|error
 op_assign
-id|smp_num_cpus
+id|num_online_cpus
+c_func
+(paren
+)paren
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -2407,7 +2414,7 @@ id|regs-&gt;regs
 l_int|3
 )braket
 op_assign
-id|current-&gt;p_opptr-&gt;pid
+id|current-&gt;real_parent-&gt;pid
 suffix:semicolon
 r_return
 id|current-&gt;pid
@@ -2494,17 +2501,26 @@ id|xtime.tv_sec
 op_assign
 id|value
 suffix:semicolon
-id|xtime.tv_usec
+id|xtime.tv_nsec
 op_assign
 l_int|0
 suffix:semicolon
+id|time_adjust
+op_assign
+l_int|0
+suffix:semicolon
+multiline_comment|/* stop active adjtime() */
+id|time_status
+op_or_assign
+id|STA_UNSYNC
+suffix:semicolon
 id|time_maxerror
 op_assign
-id|MAXPHASE
+id|NTP_PHASE_LIMIT
 suffix:semicolon
 id|time_esterror
 op_assign
-id|MAXPHASE
+id|NTP_PHASE_LIMIT
 suffix:semicolon
 id|write_sequnlock_irq
 c_func
@@ -3502,7 +3518,7 @@ op_or_assign
 id|__put_user
 c_func
 (paren
-id|current-&gt;times.tms_utime
+id|current-&gt;utime
 comma
 op_amp
 id|tbuf-&gt;tms_utime
@@ -3513,7 +3529,7 @@ op_or_assign
 id|__put_user
 c_func
 (paren
-id|current-&gt;times.tms_stime
+id|current-&gt;stime
 comma
 op_amp
 id|tbuf-&gt;tms_stime
@@ -3524,7 +3540,7 @@ op_or_assign
 id|__put_user
 c_func
 (paren
-id|current-&gt;times.tms_cutime
+id|current-&gt;cutime
 comma
 op_amp
 id|tbuf-&gt;tms_cutime
@@ -3535,7 +3551,7 @@ op_or_assign
 id|__put_user
 c_func
 (paren
-id|current-&gt;times.tms_cstime
+id|current-&gt;cstime
 comma
 op_amp
 id|tbuf-&gt;tms_cstime
@@ -4719,27 +4735,99 @@ op_star
 id|tv
 )paren
 (brace
-r_return
-id|copy_to_user
+id|time_t
+id|sec
+suffix:semicolon
+r_int
+id|nsec
+comma
+id|seq
+suffix:semicolon
+r_int
+id|err
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|verify_area
 c_func
 (paren
-id|tv
+id|VERIFY_WRITE
 comma
-op_amp
-id|xtime
+id|tv
 comma
 r_sizeof
 (paren
-op_star
-id|tv
+r_struct
+id|timeval
 )paren
 )paren
-ques
-c_cond
+)paren
+r_return
 op_minus
 id|EFAULT
-suffix:colon
-l_int|0
+suffix:semicolon
+r_do
+(brace
+id|seq
+op_assign
+id|read_seqbegin
+c_func
+(paren
+op_amp
+id|xtime_lock
+)paren
+suffix:semicolon
+id|sec
+op_assign
+id|xtime.tv_sec
+suffix:semicolon
+id|nsec
+op_assign
+id|xtime.tv_nsec
+suffix:semicolon
+)brace
+r_while
+c_loop
+(paren
+id|read_seqretry
+c_func
+(paren
+op_amp
+id|xtime_lock
+comma
+id|seq
+)paren
+)paren
+suffix:semicolon
+id|err
+op_assign
+id|__put_user
+c_func
+(paren
+id|sec
+comma
+op_amp
+id|tv-&gt;tv_sec
+)paren
+suffix:semicolon
+id|err
+op_or_assign
+id|__put_user
+c_func
+(paren
+(paren
+id|nsec
+op_div
+l_int|1000
+)paren
+comma
+op_amp
+id|tv-&gt;tv_usec
+)paren
+suffix:semicolon
+r_return
+id|err
 suffix:semicolon
 )brace
 DECL|macro|IRIX_MAP_AUTOGROW
@@ -5507,34 +5595,34 @@ r_return
 op_minus
 id|EOVERFLOW
 suffix:semicolon
-macro_line|#endif&t;
+macro_line|#endif
 id|ub.st_size
 op_assign
 id|stat-&gt;size
 suffix:semicolon
 id|ub.st_atime0
 op_assign
-id|stat-&gt;atime
+id|stat-&gt;atime.tv_sec
 suffix:semicolon
 id|ub.st_atime1
 op_assign
-l_int|0
+id|stat-&gt;atime.tv_nsec
 suffix:semicolon
 id|ub.st_mtime0
 op_assign
-id|stat-&gt;mtime
+id|stat-&gt;mtime.tv_sec
 suffix:semicolon
 id|ub.st_mtime1
 op_assign
-l_int|0
+id|stat-&gt;atime.tv_nsec
 suffix:semicolon
 id|ub.st_ctime0
 op_assign
-id|stat-&gt;ctime
+id|stat-&gt;ctime.tv_sec
 suffix:semicolon
 id|ub.st_ctime1
 op_assign
-l_int|0
+id|stat-&gt;atime.tv_nsec
 suffix:semicolon
 id|ub.st_blksize
 op_assign
@@ -5770,33 +5858,35 @@ op_assign
 (paren
 id|s32
 )paren
-id|stat-&gt;atime
+id|stat-&gt;atime.tv_sec
 suffix:semicolon
 id|ks.st_atime.tv_nsec
 op_assign
-l_int|0
+id|stat-&gt;atime.tv_nsec
 suffix:semicolon
 id|ks.st_mtime.tv_sec
 op_assign
 (paren
 id|s32
 )paren
-id|stat-&gt;atime
+id|stat-&gt;mtime.tv_sec
 suffix:semicolon
 id|ks.st_mtime.tv_nsec
 op_assign
-l_int|0
+id|stat-&gt;mtime.tv_nsec
+suffix:semicolon
 suffix:semicolon
 id|ks.st_ctime.tv_sec
 op_assign
 (paren
 id|s32
 )paren
-id|stat-&gt;atime
+id|stat-&gt;ctime.tv_sec
 suffix:semicolon
 id|ks.st_ctime.tv_nsec
 op_assign
-l_int|0
+id|stat-&gt;ctime.tv_nsec
+suffix:semicolon
 suffix:semicolon
 id|ks.st_blksize
 op_assign
@@ -9138,6 +9228,7 @@ l_int|0
 (brace
 id|error
 op_assign
+op_minus
 id|EFAULT
 suffix:semicolon
 r_goto

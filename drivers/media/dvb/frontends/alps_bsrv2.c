@@ -1,6 +1,9 @@
 multiline_comment|/* &n;    Driver for Alps BSRV2 QPSK Frontend&n;&n;    Copyright (C) 1999 Convergence Integrated Media GmbH &lt;ralph@convergence.de&gt;&n;&n;    This program is free software; you can redistribute it and/or modify&n;    it under the terms of the GNU General Public License as published by&n;    the Free Software Foundation; either version 2 of the License, or&n;    (at your option) any later version.&n;&n;    This program is distributed in the hope that it will be useful,&n;    but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;&n;    GNU General Public License for more details.&n;&n;    You should have received a copy of the GNU General Public License&n;    along with this program; if not, write to the Free Software&n;    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n;&n;*/
+macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/string.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &quot;dvb_frontend.h&quot;
 DECL|variable|debug
 r_static
@@ -11,54 +14,64 @@ l_int|0
 suffix:semicolon
 DECL|macro|dprintk
 mdefine_line|#define dprintk&t;if (debug) printk
-r_static
 DECL|variable|bsrv2_info
+r_static
 r_struct
 id|dvb_frontend_info
 id|bsrv2_info
 op_assign
 (brace
+dot
 id|name
-suffix:colon
+op_assign
 l_string|&quot;Alps BSRV2&quot;
 comma
+dot
 id|type
-suffix:colon
+op_assign
 id|FE_QPSK
 comma
+dot
 id|frequency_min
-suffix:colon
+op_assign
 l_int|950000
 comma
+dot
 id|frequency_max
-suffix:colon
+op_assign
 l_int|2150000
 comma
+dot
 id|frequency_stepsize
-suffix:colon
+op_assign
 l_int|250
 comma
 multiline_comment|/* kHz for QPSK frontends */
+dot
 id|frequency_tolerance
-suffix:colon
+op_assign
 l_int|29500
 comma
+dot
 id|symbol_rate_min
-suffix:colon
+op_assign
 l_int|1000000
 comma
+dot
 id|symbol_rate_max
-suffix:colon
+op_assign
 l_int|45000000
 comma
-multiline_comment|/*      symbol_rate_tolerance: ???,*/
+multiline_comment|/*     . symbol_rate_tolerance&t;= &t;???,*/
+dot
 id|notifier_delay
-suffix:colon
+op_assign
 l_int|50
 comma
 multiline_comment|/* 1/20 s */
+dot
 id|caps
-suffix:colon
+op_assign
 id|FE_CAN_INVERSION_AUTO
 op_or
 id|FE_CAN_FEC_1_2
@@ -76,8 +89,8 @@ op_or
 id|FE_CAN_QPSK
 )brace
 suffix:semicolon
-r_static
 DECL|variable|init_1893_tab
+r_static
 id|u8
 id|init_1893_tab
 (braket
@@ -193,8 +206,8 @@ comma
 l_int|0x00
 )brace
 suffix:semicolon
-r_static
 DECL|variable|init_1893_wtab
+r_static
 id|u8
 id|init_1893_wtab
 (braket
@@ -310,8 +323,8 @@ comma
 l_int|1
 )brace
 suffix:semicolon
-r_static
 DECL|function|ves1893_writereg
+r_static
 r_int
 id|ves1893_writereg
 (paren
@@ -345,20 +358,24 @@ id|i2c_msg
 id|msg
 op_assign
 (brace
+dot
 id|addr
-suffix:colon
+op_assign
 l_int|0x08
 comma
+dot
 id|flags
-suffix:colon
+op_assign
 l_int|0
 comma
+dot
 id|buf
-suffix:colon
+op_assign
 id|buf
 comma
+dot
 id|len
-suffix:colon
+op_assign
 l_int|3
 )brace
 suffix:semicolon
@@ -407,8 +424,8 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-r_static
 DECL|function|ves1893_readreg
+r_static
 id|u8
 id|ves1893_readreg
 (paren
@@ -452,38 +469,46 @@ id|msg
 op_assign
 (brace
 (brace
+dot
 id|addr
-suffix:colon
+op_assign
 l_int|0x08
 comma
+dot
 id|flags
-suffix:colon
+op_assign
 l_int|0
 comma
+dot
 id|buf
-suffix:colon
+op_assign
 id|b0
 comma
+dot
 id|len
-suffix:colon
+op_assign
 l_int|2
 )brace
 comma
 (brace
+dot
 id|addr
-suffix:colon
+op_assign
 l_int|0x08
 comma
+dot
 id|flags
-suffix:colon
+op_assign
 id|I2C_M_RD
 comma
+dot
 id|buf
-suffix:colon
+op_assign
 id|b1
 comma
+dot
 id|len
-suffix:colon
+op_assign
 l_int|1
 )brace
 )brace
@@ -523,8 +548,8 @@ l_int|0
 )braket
 suffix:semicolon
 )brace
-r_static
 DECL|function|sp5659_write
+r_static
 r_int
 id|sp5659_write
 (paren
@@ -548,20 +573,24 @@ id|i2c_msg
 id|msg
 op_assign
 (brace
+dot
 id|addr
-suffix:colon
+op_assign
 l_int|0x61
 comma
+dot
 id|flags
-suffix:colon
+op_assign
 l_int|0
 comma
+dot
 id|buf
-suffix:colon
+op_assign
 id|data
 comma
+dot
 id|len
-suffix:colon
+op_assign
 l_int|4
 )brace
 suffix:semicolon
@@ -609,8 +638,8 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/**&n; *   set up the downconverter frequency divisor for a&n; *   reference clock comparision frequency of 125 kHz.&n; */
-r_static
 DECL|function|sp5659_set_tv_freq
+r_static
 r_int
 id|sp5659_set_tv_freq
 (paren
@@ -676,8 +705,8 @@ id|buf
 )paren
 suffix:semicolon
 )brace
-r_static
 DECL|function|ves1893_init
+r_static
 r_int
 id|ves1893_init
 (paren
@@ -736,8 +765,8 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-r_static
 DECL|function|ves1893_clr_bit
+r_static
 r_int
 id|ves1893_clr_bit
 (paren
@@ -796,8 +825,8 @@ l_int|3
 )paren
 suffix:semicolon
 )brace
-r_static
 DECL|function|ves1893_set_inversion
+r_static
 r_int
 id|ves1893_set_inversion
 (paren
@@ -873,8 +902,8 @@ id|val
 )paren
 suffix:semicolon
 )brace
-r_static
 DECL|function|ves1893_set_fec
+r_static
 r_int
 id|ves1893_set_fec
 (paren
@@ -930,8 +959,8 @@ id|FEC_1_2
 )paren
 suffix:semicolon
 )brace
-r_static
 DECL|function|ves1893_get_fec
+r_static
 id|fe_code_rate_t
 id|ves1893_get_fec
 (paren
@@ -960,8 +989,8 @@ l_int|0x7
 )paren
 suffix:semicolon
 )brace
-r_static
 DECL|function|ves1893_set_symbolrate
+r_static
 r_int
 id|ves1893_set_symbolrate
 (paren
@@ -996,10 +1025,14 @@ suffix:semicolon
 id|dprintk
 c_func
 (paren
-l_string|&quot;%s: srate == %d&bslash;n&quot;
+l_string|&quot;%s: srate == %ud&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
+(paren
+r_int
+r_int
+)paren
 id|srate
 )paren
 suffix:semicolon
@@ -1352,6 +1385,10 @@ c_func
 (paren
 l_string|&quot;ratio= %08x&bslash;n&quot;
 comma
+(paren
+r_int
+r_int
+)paren
 id|ratio
 )paren
 suffix:semicolon
@@ -1360,6 +1397,10 @@ c_func
 (paren
 l_string|&quot;BDR= %08x&bslash;n&quot;
 comma
+(paren
+r_int
+r_int
+)paren
 id|BDR
 )paren
 suffix:semicolon
@@ -1368,6 +1409,10 @@ c_func
 (paren
 l_string|&quot;BDRI= %02x&bslash;n&quot;
 comma
+(paren
+r_int
+r_int
+)paren
 id|BDRI
 )paren
 suffix:semicolon
@@ -1513,8 +1558,8 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-r_static
 DECL|function|ves1893_set_voltage
+r_static
 r_int
 id|ves1893_set_voltage
 (paren
@@ -1559,6 +1604,19 @@ comma
 l_int|0x30
 )paren
 suffix:semicolon
+r_case
+id|SEC_VOLTAGE_OFF
+suffix:colon
+r_return
+id|ves1893_writereg
+(paren
+id|i2c
+comma
+l_int|0x1f
+comma
+l_int|0x00
+)paren
+suffix:semicolon
 r_default
 suffix:colon
 r_return
@@ -1567,8 +1625,8 @@ id|EINVAL
 suffix:semicolon
 )brace
 )brace
-r_static
 DECL|function|bsrv2_ioctl
+r_static
 r_int
 id|bsrv2_ioctl
 (paren
@@ -1963,7 +2021,7 @@ id|p
 op_assign
 id|arg
 suffix:semicolon
-id|s32
+r_int
 id|afc
 suffix:semicolon
 id|afc
@@ -2002,6 +2060,8 @@ r_int
 (paren
 id|p-&gt;u.qpsk.symbol_rate
 op_div
+l_int|1000
+op_div
 l_int|8
 )paren
 )paren
@@ -2009,7 +2069,7 @@ op_div
 l_int|16
 suffix:semicolon
 id|p-&gt;frequency
-op_add_assign
+op_sub_assign
 id|afc
 suffix:semicolon
 id|p-&gt;inversion
@@ -2118,8 +2178,8 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-r_static
 DECL|function|bsrv2_attach
+r_static
 r_int
 id|bsrv2_attach
 (paren
@@ -2165,8 +2225,8 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-r_static
 DECL|function|bsrv2_detach
+r_static
 r_void
 id|bsrv2_detach
 (paren
@@ -2184,8 +2244,8 @@ id|i2c
 )paren
 suffix:semicolon
 )brace
-r_static
 DECL|function|init_bsrv2
+r_static
 r_int
 id|__init
 id|init_bsrv2
@@ -2204,8 +2264,8 @@ id|bsrv2_detach
 )paren
 suffix:semicolon
 )brace
-r_static
 DECL|function|exit_bsrv2
+r_static
 r_void
 id|__exit
 id|exit_bsrv2

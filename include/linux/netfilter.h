@@ -23,11 +23,11 @@ DECL|macro|NF_REPEAT
 mdefine_line|#define NF_REPEAT 4
 DECL|macro|NF_MAX_VERDICT
 mdefine_line|#define NF_MAX_VERDICT NF_REPEAT
-multiline_comment|/* Generic cache responses from hook functions. */
-DECL|macro|NFC_ALTERED
-mdefine_line|#define NFC_ALTERED 0x8000
+multiline_comment|/* Generic cache responses from hook functions.&n;   &lt;= 0x2000 is used for protocol-flags. */
 DECL|macro|NFC_UNKNOWN
 mdefine_line|#define NFC_UNKNOWN 0x4000
+DECL|macro|NFC_ALTERED
+mdefine_line|#define NFC_ALTERED 0x8000
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#ifdef CONFIG_NETFILTER

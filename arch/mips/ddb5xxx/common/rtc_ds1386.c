@@ -5,7 +5,8 @@ macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/bcd.h&gt;
 macro_line|#include &lt;asm/time.h&gt;
 macro_line|#include &lt;asm/addrspace.h&gt;
-macro_line|#include &lt;asm/ddb5xxx/debug.h&gt;
+macro_line|#include &lt;asm/mc146818rtc.h&gt;
+macro_line|#include &lt;asm/debug.h&gt;
 DECL|macro|EPOCH
 mdefine_line|#define&t;EPOCH&t;&t;2000
 DECL|macro|READ_RTC
@@ -332,8 +333,11 @@ id|BIN2BCD
 c_func
 (paren
 id|tm.tm_mon
+op_plus
+l_int|1
 )paren
 suffix:semicolon
+multiline_comment|/* tm_mon starts from 0 to 11 */
 r_if
 c_cond
 (paren
@@ -563,7 +567,7 @@ id|rtc_base
 op_assign
 id|base
 suffix:semicolon
-id|MIPS_ASSERT
+id|db_assert
 c_func
 (paren
 (paren

@@ -38,7 +38,7 @@ l_string|&quot;SNaN&quot;
 comma
 )brace
 suffix:semicolon
-multiline_comment|/* the control status register &n;*/
+multiline_comment|/* the control status register&n;*/
 DECL|variable|ieee754_csr
 r_struct
 id|ieee754_csr
@@ -201,9 +201,9 @@ l_int|1
 op_plus
 id|DP_EBIAS
 comma
-l_int|0x40000
+l_int|0x7FFFF
 comma
-l_int|0
+l_int|0xFFFFFFFF
 )paren
 comma
 multiline_comment|/* + indef quiet Nan */
@@ -461,7 +461,7 @@ l_int|1
 op_plus
 id|SP_EBIAS
 comma
-l_int|0x200000
+l_int|0x3FFFFF
 )paren
 comma
 multiline_comment|/* + indef quiet Nan  */
@@ -641,13 +641,11 @@ id|ax.rv.si
 suffix:semicolon
 )brace
 DECL|function|ieee754di_xcpt
-r_int
-r_int
+id|s64
 id|ieee754di_xcpt
 c_func
 (paren
-r_int
-r_int
+id|s64
 id|r
 comma
 r_const

@@ -1,11 +1,10 @@
-multiline_comment|/***********************************************************************&n; *&n; * Copyright 2001 MontaVista Software Inc.&n; * Author: jsun@mvista.com or jsun@junsun.net&n; *&n; * Copyright (C) 2000 Geert Uytterhoeven &lt;geert@sonycom.com&gt;&n; *                    Sony Software Development Center Europe (SDCE), Brussels&n; *&n; * include/asm-mips/ddb5xxx/ddb5xxx.h&n; *     Common header for all NEC DDB 5xxx boards, including 5074, 5476, 5477.&n; *&n; * This program is free software; you can redistribute  it and/or modify it&n; * under  the terms of  the GNU General  Public License as published by the&n; * Free Software Foundation;  either version 2 of the  License, or (at your&n; * option) any later version.&n; *&n; ***********************************************************************&n; */
+multiline_comment|/*&n; * Copyright 2001 MontaVista Software Inc.&n; * Author: jsun@mvista.com or jsun@junsun.net&n; *&n; * Copyright (C) 2000 Geert Uytterhoeven &lt;geert@sonycom.com&gt;&n; *                    Sony Software Development Center Europe (SDCE), Brussels&n; *&n; * include/asm-mips/ddb5xxx/ddb5xxx.h&n; *     Common header for all NEC DDB 5xxx boards, including 5074, 5476, 5477.&n; *&n; * This program is free software; you can redistribute  it and/or modify it&n; * under  the terms of  the GNU General  Public License as published by the&n; * Free Software Foundation;  either version 2 of the  License, or (at your&n; * option) any later version.&n; *&n; */
 macro_line|#ifndef __ASM_DDB5XXX_DDB5XXX_H
 DECL|macro|__ASM_DDB5XXX_DDB5XXX_H
 mdefine_line|#define __ASM_DDB5XXX_DDB5XXX_H
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
-macro_line|#include &lt;asm/ddb5xxx/debug.h&gt;
-multiline_comment|/*&n; *  This file is based on the following documentation:&n; *&n; *&t;NEC Vrc 5074 System Controller Data Sheet, June 1998&n; *&n; * [jsun] It is modified so that this file only contains the macros&n; * that are true for all DDB 5xxx boards.  The modification is based on&n; *&n; *&t;uPD31577(VRC5477) VR5432-SDRAM/PCI Bridge (Luke)&n; *&t;Preliminary Specification Document, Rev 1.1, 27 Dec, 2000&n; *  &n; */
+multiline_comment|/*&n; *  This file is based on the following documentation:&n; *&n; *&t;NEC Vrc 5074 System Controller Data Sheet, June 1998&n; *&n; * [jsun] It is modified so that this file only contains the macros&n; * that are true for all DDB 5xxx boards.  The modification is based on&n; *&n; *&t;uPD31577(VRC5477) VR5432-SDRAM/PCI Bridge (Luke)&n; *&t;Preliminary Specification Decoment, Rev 1.1, 27 Dec, 2000&n; *&n; */
 DECL|macro|DDB_BASE
 mdefine_line|#define DDB_BASE&t;&t;0xbfa00000
 DECL|macro|DDB_SIZE
@@ -15,18 +14,20 @@ DECL|macro|DDB_SDRAM0
 mdefine_line|#define DDB_SDRAM0&t;0x0000&t;/* SDRAM Bank 0 [R/W] */
 DECL|macro|DDB_SDRAM1
 mdefine_line|#define DDB_SDRAM1&t;0x0008&t;/* SDRAM Bank 1 [R/W] */
-DECL|macro|DDB_LDCS0
-mdefine_line|#define DDB_LDCS0&t;0x0010&t;/* Device Chip-Select 0 [R/W] */
-DECL|macro|DDB_LDCS1
-mdefine_line|#define DDB_LDCS1&t;0x0018&t;/* Device Chip-Select 1 [R/W] */
-DECL|macro|DDB_LDCS2
-mdefine_line|#define DDB_LDCS2&t;0x0020&t;/* Device Chip-Select 2 [R/W] */
-DECL|macro|DDB_LDCS3
-mdefine_line|#define DDB_LDCS3&t;0x0028&t;/* Device Chip-Select 3 [R/W] */
-DECL|macro|DDB_LDCS4
-mdefine_line|#define DDB_LDCS4&t;0x0030&t;/* Device Chip-Select 4 [R/W] */
-DECL|macro|DDB_LDCS5
-mdefine_line|#define DDB_LDCS5&t;0x0038&t;/* Device Chip-Select 5 [R/W] */
+DECL|macro|DDB_DCS2
+mdefine_line|#define DDB_DCS2&t;0x0010&t;/* Device Chip-Select 2 [R/W] */
+DECL|macro|DDB_DCS3
+mdefine_line|#define DDB_DCS3&t;0x0018&t;/* Device Chip-Select 3 [R/W] */
+DECL|macro|DDB_DCS4
+mdefine_line|#define DDB_DCS4&t;0x0020&t;/* Device Chip-Select 4 [R/W] */
+DECL|macro|DDB_DCS5
+mdefine_line|#define DDB_DCS5&t;0x0028&t;/* Device Chip-Select 5 [R/W] */
+DECL|macro|DDB_DCS6
+mdefine_line|#define DDB_DCS6&t;0x0030&t;/* Device Chip-Select 6 [R/W] */
+DECL|macro|DDB_DCS7
+mdefine_line|#define DDB_DCS7&t;0x0038&t;/* Device Chip-Select 7 [R/W] */
+DECL|macro|DDB_DCS8
+mdefine_line|#define DDB_DCS8&t;0x0040&t;/* Device Chip-Select 8 [R/W] */
 DECL|macro|DDB_PCIW0
 mdefine_line|#define DDB_PCIW0&t;0x0060&t;/* PCI Address Window 0 [R/W] */
 DECL|macro|DDB_PCIW1
@@ -197,6 +198,8 @@ c_func
 r_void
 )paren
 (brace
+multiline_comment|/* The DDB5074 doesn&squot;t seem to like these accesses. They kill the board on&n; * interrupt load&n; */
+macro_line|#ifndef CONFIG_DDB5074
 r_volatile
 id|u32
 op_star
@@ -217,6 +220,7 @@ op_star
 id|p
 )paren
 suffix:semicolon
+macro_line|#endif
 )brace
 DECL|function|ddb_out32
 r_static

@@ -1,10 +1,10 @@
 multiline_comment|/* single and double precision fp ops&n; * missing extended precision.&n;*/
 multiline_comment|/*&n; * MIPS floating point support&n; * Copyright (C) 1994-2000 Algorithmics Ltd.  All rights reserved.&n; * http://www.algor.co.uk&n; *&n; * ########################################################################&n; *&n; *  This program is free software; you can distribute it and/or modify it&n; *  under the terms of the GNU General Public License (Version 2) as&n; *  published by the Free Software Foundation.&n; *&n; *  This program is distributed in the hope it will be useful, but WITHOUT&n; *  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or&n; *  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License&n; *  for more details.&n; *&n; *  You should have received a copy of the GNU General Public License along&n; *  with this program; if not, write to the Free Software Foundation, Inc.,&n; *  59 Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * ########################################################################&n; */
-multiline_comment|/**************************************************************************&n; *  Nov 7, 2000&n; *  Modification to allow integration with Linux kernel &n; *&n; *  Kevin D. Kissell, kevink@mips.com and Carsten Langgard, carstenl@mips.com&n; *  Copyright (C) 2000 MIPS Technologies, Inc. All rights reserved.&n; *************************************************************************/
+multiline_comment|/**************************************************************************&n; *  Nov 7, 2000&n; *  Modification to allow integration with Linux kernel&n; *&n; *  Kevin D. Kissell, kevink@mips.com and Carsten Langgard, carstenl@mips.com&n; *  Copyright (C) 2000 MIPS Technologies, Inc. All rights reserved.&n; *************************************************************************/
 macro_line|#ifdef __KERNEL__
 multiline_comment|/* Going from Algorithmics to Linux native environment, add this */
 macro_line|#include &lt;linux/types.h&gt;
-multiline_comment|/* &n; * Not very pretty, but the Linux kernel&squot;s normal va_list definition &n; * does not allow it to be used as a structure element, as it is here.&n; */
+multiline_comment|/*&n; * Not very pretty, but the Linux kernel&squot;s normal va_list definition&n; * does not allow it to be used as a structure element, as it is here.&n; */
 macro_line|#ifndef _STDARG_H
 macro_line|#include &lt;stdarg.h&gt;
 macro_line|#endif
@@ -83,9 +83,7 @@ suffix:semicolon
 r_struct
 (brace
 DECL|member|mant
-r_int
-r_int
-r_int
+id|u64
 id|mant
 suffix:colon
 l_int|52
@@ -109,9 +107,7 @@ DECL|member|parts
 id|parts
 suffix:semicolon
 DECL|member|bits
-r_int
-r_int
-r_int
+id|u64
 id|bits
 suffix:semicolon
 DECL|member|d
@@ -137,8 +133,7 @@ r_float
 id|f
 suffix:semicolon
 DECL|member|bits
-r_int
-r_int
+id|u32
 id|bits
 suffix:semicolon
 DECL|typedef|ieee754sp
@@ -204,9 +199,7 @@ suffix:colon
 l_int|11
 suffix:semicolon
 DECL|member|mant
-r_int
-r_int
-r_int
+id|u64
 id|mant
 suffix:colon
 l_int|52
@@ -220,9 +213,7 @@ r_float
 id|d
 suffix:semicolon
 DECL|member|bits
-r_int
-r_int
-r_int
+id|u64
 id|bits
 suffix:semicolon
 DECL|typedef|ieee754dp
@@ -268,8 +259,7 @@ r_float
 id|f
 suffix:semicolon
 DECL|member|bits
-r_int
-r_int
+id|u32
 id|bits
 suffix:semicolon
 DECL|typedef|ieee754sp
@@ -404,8 +394,7 @@ id|ieee754sp
 id|ieee754sp_flong
 c_func
 (paren
-r_int
-r_int
+id|s64
 id|x
 )paren
 suffix:semicolon
@@ -413,9 +402,7 @@ id|ieee754sp
 id|ieee754sp_fulong
 c_func
 (paren
-r_int
-r_int
-r_int
+id|u64
 id|x
 )paren
 suffix:semicolon
@@ -444,8 +431,7 @@ id|ieee754sp
 id|x
 )paren
 suffix:semicolon
-r_int
-r_int
+id|s64
 id|ieee754sp_tlong
 c_func
 (paren
@@ -453,9 +439,7 @@ id|ieee754sp
 id|x
 )paren
 suffix:semicolon
-r_int
-r_int
-r_int
+id|u64
 id|ieee754sp_tulong
 c_func
 (paren
@@ -475,6 +459,9 @@ id|y
 comma
 r_int
 id|cop
+comma
+r_int
+id|sig
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * basic sp math&n; */
@@ -644,7 +631,7 @@ comma
 r_int
 )paren
 suffix:semicolon
-multiline_comment|/* return exponent as integer in floating point format &n; */
+multiline_comment|/* return exponent as integer in floating point format&n; */
 id|ieee754dp
 id|ieee754dp_logb
 c_func
@@ -673,8 +660,7 @@ id|ieee754dp
 id|ieee754dp_flong
 c_func
 (paren
-r_int
-r_int
+id|s64
 id|x
 )paren
 suffix:semicolon
@@ -682,9 +668,7 @@ id|ieee754dp
 id|ieee754dp_fulong
 c_func
 (paren
-r_int
-r_int
-r_int
+id|u64
 id|x
 )paren
 suffix:semicolon
@@ -737,8 +721,7 @@ id|ieee754dp
 id|x
 )paren
 suffix:semicolon
-r_int
-r_int
+id|s64
 id|ieee754dp_tlong
 c_func
 (paren
@@ -746,9 +729,7 @@ id|ieee754dp
 id|x
 )paren
 suffix:semicolon
-r_int
-r_int
-r_int
+id|u64
 id|ieee754dp_tulong
 c_func
 (paren
@@ -768,6 +749,9 @@ id|y
 comma
 r_int
 id|cop
+comma
+r_int
+id|sig
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * basic sp math&n; */
@@ -838,7 +822,7 @@ id|ieee754dp
 id|x
 )paren
 suffix:semicolon
-multiline_comment|/* 5 types of floating point number &n;*/
+multiline_comment|/* 5 types of floating point number&n;*/
 DECL|macro|IEEE754_CLASS_NORM
 mdefine_line|#define IEEE754_CLASS_NORM&t;0x00
 DECL|macro|IEEE754_CLASS_ZERO
@@ -880,7 +864,7 @@ DECL|macro|IEEE754_CGT
 mdefine_line|#define IEEE754_CGT&t;0x04
 DECL|macro|IEEE754_CUN
 mdefine_line|#define IEEE754_CUN&t;0x08
-multiline_comment|/* rounding mode &n;*/
+multiline_comment|/* rounding mode&n;*/
 DECL|macro|IEEE754_RN
 mdefine_line|#define IEEE754_RN&t;0&t;/* round to nearest */
 DECL|macro|IEEE754_RZ
@@ -918,6 +902,8 @@ comma
 id|y
 comma
 id|IEEE754_CEQ
+comma
+l_int|0
 )paren
 suffix:semicolon
 )brace
@@ -948,6 +934,8 @@ op_or
 id|IEEE754_CGT
 op_or
 id|IEEE754_CUN
+comma
+l_int|0
 )paren
 suffix:semicolon
 )brace
@@ -974,6 +962,8 @@ comma
 id|y
 comma
 id|IEEE754_CLT
+comma
+l_int|0
 )paren
 suffix:semicolon
 )brace
@@ -1002,6 +992,8 @@ comma
 id|IEEE754_CLT
 op_or
 id|IEEE754_CEQ
+comma
+l_int|0
 )paren
 suffix:semicolon
 )brace
@@ -1028,6 +1020,8 @@ comma
 id|y
 comma
 id|IEEE754_CGT
+comma
+l_int|0
 )paren
 suffix:semicolon
 )brace
@@ -1056,6 +1050,8 @@ comma
 id|IEEE754_CGT
 op_or
 id|IEEE754_CEQ
+comma
+l_int|0
 )paren
 suffix:semicolon
 )brace
@@ -1082,6 +1078,8 @@ comma
 id|y
 comma
 id|IEEE754_CEQ
+comma
+l_int|0
 )paren
 suffix:semicolon
 )brace
@@ -1112,6 +1110,8 @@ op_or
 id|IEEE754_CGT
 op_or
 id|IEEE754_CUN
+comma
+l_int|0
 )paren
 suffix:semicolon
 )brace
@@ -1138,6 +1138,8 @@ comma
 id|y
 comma
 id|IEEE754_CLT
+comma
+l_int|0
 )paren
 suffix:semicolon
 )brace
@@ -1166,6 +1168,8 @@ comma
 id|IEEE754_CLT
 op_or
 id|IEEE754_CEQ
+comma
+l_int|0
 )paren
 suffix:semicolon
 )brace
@@ -1192,6 +1196,8 @@ comma
 id|y
 comma
 id|IEEE754_CGT
+comma
+l_int|0
 )paren
 suffix:semicolon
 )brace
@@ -1220,6 +1226,8 @@ comma
 id|IEEE754_CGT
 op_or
 id|IEEE754_CEQ
+comma
+l_int|0
 )paren
 suffix:semicolon
 )brace
@@ -1257,7 +1265,7 @@ r_int
 id|af
 )paren
 suffix:semicolon
-multiline_comment|/* the control status register &n;*/
+multiline_comment|/* the control status register&n;*/
 DECL|struct|ieee754_csr
 r_struct
 id|ieee754_csr
@@ -1268,13 +1276,6 @@ id|pad
 suffix:colon
 l_int|13
 suffix:semicolon
-DECL|member|noq
-r_int
-id|noq
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* set 1 for no quiet NaN&squot;s */
 DECL|member|nod
 r_int
 id|nod
@@ -1369,7 +1370,7 @@ id|ieee754_csr.cx
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* test for current exception condition &n; */
+multiline_comment|/* test for current exception condition&n; */
 DECL|function|ieee754_cxtest
 r_static
 id|__inline
@@ -1425,7 +1426,7 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* test for sticky exception condition &n; */
+multiline_comment|/* test for sticky exception condition&n; */
 DECL|function|ieee754_sxtest
 r_static
 id|__inline
@@ -1565,15 +1566,15 @@ DECL|macro|ieee754sp_1e31
 mdefine_line|#define ieee754sp_1e31() &bslash;&n;  (ieee754sp_spcvals[IEEE754_SPCVAL_P1E31])
 DECL|macro|ieee754sp_1e63
 mdefine_line|#define ieee754sp_1e63() &bslash;&n;  (ieee754sp_spcvals[IEEE754_SPCVAL_P1E63])
-multiline_comment|/* indefinite integer value &n;*/
+multiline_comment|/* indefinite integer value&n;*/
 DECL|macro|ieee754si_indef
-mdefine_line|#define ieee754si_indef()&t;INT_MIN
-macro_line|#ifdef LONG_LONG_MIN
+mdefine_line|#define ieee754si_indef()&t;INT_MAX
+macro_line|#ifdef LONG_LONG_MAX
 DECL|macro|ieee754di_indef
-mdefine_line|#define ieee754di_indef()&t;LONG_LONG_MIN
+mdefine_line|#define ieee754di_indef()&t;LONG_LONG_MAX
 macro_line|#else
 DECL|macro|ieee754di_indef
-mdefine_line|#define ieee754di_indef()&t;(-9223372036854775807LL-1)
+mdefine_line|#define ieee754di_indef()&t;((s64)(~0ULL&gt;&gt;1))
 macro_line|#endif
 multiline_comment|/* IEEE exception context, passed to handler */
 DECL|struct|ieee754xctx
@@ -1617,8 +1618,7 @@ id|si
 suffix:semicolon
 multiline_comment|/* standard signed integer (32bits) */
 DECL|member|di
-r_int
-r_int
+id|s64
 id|di
 suffix:semicolon
 multiline_comment|/* extended signed integer (64bits) */

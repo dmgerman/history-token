@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: baget.c,v 1.1 1999/01/17 03:49:37 ralf Exp $&n; *&n; * baget.c: Baget low level stuff&n; *&n; * Copyright (C) 1998 Gleb Raiko &amp; Vladimir Roganov&n; *&n; */
+multiline_comment|/*&n; * baget.c: Baget low level stuff&n; *&n; * Copyright (C) 1998 Gleb Raiko &amp; Vladimir Roganov&n; *&n; */
 macro_line|#include &lt;stdarg.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
@@ -88,7 +88,7 @@ c_func
 l_string|&quot;kseg2_alloc_io: page already exists&bslash;n&quot;
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; *  For MIPS looks pretty to have transparent mapping&n;&t;&t; *  for KSEG2 areas  -- user can&squot;t access one, and no &n;&t;&t; *  problems with  virtual &lt;--&gt; physical  translation.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; *  For MIPS looks pretty to have transparent mapping&n;&t;&t; *  for KSEG2 areas  -- user can&squot;t access one, and no&n;&t;&t; *  problems with  virtual &lt;--&gt; physical  translation.&n;&t;&t; */
 id|page
 op_assign
 id|ioaddr

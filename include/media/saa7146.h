@@ -12,8 +12,11 @@ macro_line|#include &lt;linux/kmod.h&gt;&t;&t;/* for kernel module loader */
 macro_line|#include &lt;linux/i2c.h&gt;&t;&t;/* for i2c subsystem */
 macro_line|#include &lt;asm/io.h&gt;&t;&t;/* for accessing devices */
 macro_line|#include &lt;linux/stringify.h&gt;
+macro_line|#include &lt;linux/vmalloc.h&gt;&t;/* for vmalloc() */
+macro_line|#include &lt;linux/mm.h&gt;&t;&t;/* for vmalloc_to_page() */
+multiline_comment|/* ugly, but necessary to build the dvb stuff under 2.4. */
 macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,5,51)
-macro_line|#include &quot;compat.h&quot;
+macro_line|#include &quot;dvb_functions.h&quot;
 macro_line|#endif
 DECL|macro|SAA7146_VERSION_CODE
 mdefine_line|#define SAA7146_VERSION_CODE KERNEL_VERSION(0,5,0)
@@ -31,8 +34,19 @@ macro_line|#ifndef DEBUG_VARIABLE
 DECL|macro|DEBUG_VARIABLE
 mdefine_line|#define DEBUG_VARIABLE saa7146_debug
 macro_line|#endif
+macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,5,51)
+DECL|macro|DEBUG_PROLOG
+mdefine_line|#define DEBUG_PROLOG printk(&quot;%s: %s(): &quot;,__stringify(KBUILD_BASENAME),__FUNCTION__)
+DECL|macro|INFO
+mdefine_line|#define INFO(x) { printk(&quot;%s: &quot;,__stringify(KBUILD_BASENAME)); printk x; }
+macro_line|#else
 DECL|macro|DEBUG_PROLOG
 mdefine_line|#define DEBUG_PROLOG printk(&quot;%s: %s(): &quot;,__stringify(KBUILD_MODNAME),__FUNCTION__)
+DECL|macro|INFO
+mdefine_line|#define INFO(x) { printk(&quot;%s: &quot;,__stringify(KBUILD_MODNAME)); printk x; }
+macro_line|#endif
+DECL|macro|ERR
+mdefine_line|#define ERR(x) { DEBUG_PROLOG; printk x; }
 DECL|macro|DEB_S
 mdefine_line|#define DEB_S(x)    if (0!=(DEBUG_VARIABLE&amp;0x01)) { DEBUG_PROLOG; printk x; } /* simple debug messages */
 DECL|macro|DEB_D
@@ -47,10 +61,6 @@ DECL|macro|DEB_INT
 mdefine_line|#define DEB_INT(x)  if (0!=(DEBUG_VARIABLE&amp;0x20)) { DEBUG_PROLOG; printk x; } /* interrupt debug messages */
 DECL|macro|DEB_CAP
 mdefine_line|#define DEB_CAP(x)  if (0!=(DEBUG_VARIABLE&amp;0x40)) { DEBUG_PROLOG; printk x; } /* capture debug messages */
-DECL|macro|ERR
-mdefine_line|#define ERR(x) { DEBUG_PROLOG; printk x; }
-DECL|macro|INFO
-mdefine_line|#define INFO(x) { printk(&quot;%s: &quot;,__stringify(KBUILD_MODNAME)); printk x; }
 DECL|macro|IER_DISABLE
 mdefine_line|#define IER_DISABLE(x,y) &bslash;&n;&t;saa7146_write(x, IER, saa7146_read(x, IER) &amp; ~(y));
 DECL|macro|IER_ENABLE
@@ -217,6 +227,21 @@ id|irq_mask
 suffix:semicolon
 )brace
 suffix:semicolon
+DECL|struct|saa7146_dma
+r_struct
+id|saa7146_dma
+(brace
+DECL|member|dma_handle
+id|dma_addr_t
+id|dma_handle
+suffix:semicolon
+DECL|member|cpu_addr
+id|u32
+op_star
+id|cpu_addr
+suffix:semicolon
+)brace
+suffix:semicolon
 DECL|struct|saa7146_dev
 r_struct
 id|saa7146_dev
@@ -324,10 +349,10 @@ DECL|member|i2c_bitrate
 id|u32
 id|i2c_bitrate
 suffix:semicolon
-DECL|member|i2c_mem
-id|u32
-op_star
-id|i2c_mem
+DECL|member|d_i2c
+r_struct
+id|saa7146_dma
+id|d_i2c
 suffix:semicolon
 multiline_comment|/* pointer to i2c memory */
 DECL|member|i2c_wq
@@ -339,15 +364,15 @@ r_int
 id|i2c_op
 suffix:semicolon
 multiline_comment|/* memories */
-DECL|member|rps0
-id|u32
-op_star
-id|rps0
+DECL|member|d_rps0
+r_struct
+id|saa7146_dma
+id|d_rps0
 suffix:semicolon
-DECL|member|rps1
-id|u32
-op_star
-id|rps1
+DECL|member|d_rps1
+r_struct
+id|saa7146_dma
+id|d_rps1
 suffix:semicolon
 )brace
 suffix:semicolon

@@ -411,7 +411,7 @@ mdefine_line|#define __NR_SVR4_reserved63&t;&t;(__NR_SVR4 + 200)
 DECL|macro|__NR_SVR4_aread
 mdefine_line|#define __NR_SVR4_aread&t;&t;&t;(__NR_SVR4 + 201)
 DECL|macro|__NR_SVR4_awrite
-mdefine_line|#define __NR_SVR4_awrite&t;&t;(__NR_SVR4 + 202)&t;
+mdefine_line|#define __NR_SVR4_awrite&t;&t;(__NR_SVR4 + 202)
 DECL|macro|__NR_SVR4_listio
 mdefine_line|#define __NR_SVR4_listio&t;&t;(__NR_SVR4 + 203)
 DECL|macro|__NR_SVR4_mips_acancel

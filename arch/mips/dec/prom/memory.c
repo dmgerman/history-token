@@ -1,63 +1,16 @@
-multiline_comment|/*&n; * memory.c: memory initialisation code.&n; *&n; * Copyright (C) 1998 Harald Koerfgen, Frieder Streffer and Paul M. Antoine&n; * Copyright (C) 2000 Maciej W. Rozycki&n; *&n; * $Id: memory.c,v 1.3 1999/10/09 00:00:58 ralf Exp $&n; */
-macro_line|#include &lt;linux/init.h&gt;
+multiline_comment|/*&n; * memory.c: memory initialisation code.&n; *&n; * Copyright (C) 1998 Harald Koerfgen, Frieder Streffer and Paul M. Antoine&n; * Copyright (C) 2000, 2002  Maciej W. Rozycki&n; */
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/bootmem.h&gt;
+macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;asm/addrspace.h&gt;
-macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/bootinfo.h&gt;
 macro_line|#include &lt;asm/dec/machtype.h&gt;
-macro_line|#include &quot;prom.h&quot;
-r_typedef
-r_struct
-(brace
-DECL|member|pagesize
-r_int
-id|pagesize
-suffix:semicolon
-DECL|member|bitmap
-r_int
-r_char
-id|bitmap
-(braket
-l_int|0
-)braket
-suffix:semicolon
-DECL|typedef|memmap
-)brace
-id|memmap
-suffix:semicolon
-r_extern
-r_int
-(paren
-op_star
-id|rex_getbitmap
-)paren
-(paren
-id|memmap
-op_star
-)paren
-suffix:semicolon
-DECL|macro|PROM_DEBUG
-macro_line|#undef PROM_DEBUG
-macro_line|#ifdef PROM_DEBUG
-r_extern
-r_int
-(paren
-op_star
-id|prom_printf
-)paren
-(paren
-r_char
-op_star
-comma
-dot
-dot
-dot
-)paren
-suffix:semicolon
-macro_line|#endif
+macro_line|#include &lt;asm/dec/prom.h&gt;
+macro_line|#include &lt;asm/page.h&gt;
+macro_line|#include &lt;asm/sections.h&gt;
 DECL|variable|mem_err
 r_volatile
 r_int
@@ -72,8 +25,8 @@ DECL|macro|CHUNK_SIZE
 mdefine_line|#define CHUNK_SIZE 0x400000
 DECL|function|pmax_setup_memory_region
 r_static
+r_inline
 r_void
-id|__init
 id|pmax_setup_memory_region
 c_func
 (paren
@@ -225,8 +178,8 @@ suffix:semicolon
 multiline_comment|/*&n; * Use the REX prom calls to get hold of the memory bitmap, and thence&n; * determine memory size.&n; */
 DECL|function|rex_setup_memory_region
 r_static
+r_inline
 r_void
-id|__init
 id|rex_setup_memory_region
 c_func
 (paren
@@ -259,7 +212,11 @@ op_assign
 id|memmap
 op_star
 )paren
-l_int|0x80028000
+id|KSEG0ADDR
+c_func
+(paren
+l_int|0x28000
+)paren
 suffix:semicolon
 id|bitmap_size
 op_assign
@@ -368,17 +325,19 @@ id|__init
 id|prom_meminit
 c_func
 (paren
-r_int
-r_int
+id|u32
 id|magic
 )paren
 (brace
 r_if
 c_cond
 (paren
+op_logical_neg
+id|prom_is_rex
+c_func
+(paren
 id|magic
-op_ne
-id|REX_PROM_MAGIC
+)paren
 )paren
 id|pmax_setup_memory_region
 c_func
@@ -406,12 +365,8 @@ id|addr
 comma
 id|end
 suffix:semicolon
-r_extern
-r_char
-id|_ftext
-suffix:semicolon
 multiline_comment|/*&n;&t; * Free everything below the kernel itself but leave&n;&t; * the first page reserved for the exception handlers.&n;&t; */
-macro_line|#ifdef CONFIG_DECLANCE
+macro_line|#if defined(CONFIG_DECLANCE) || defined(CONFIG_DECLANCE_MODULE)
 multiline_comment|/*&n;&t; * Leave 128 KB reserved for Lance memory for&n;&t; * IOASIC DECstations.&n;&t; *&n;&t; * XXX: save this address for use in dec_lance.c?&n;&t; */
 r_if
 c_cond
@@ -424,7 +379,7 @@ id|__pa
 c_func
 (paren
 op_amp
-id|_ftext
+id|_text
 )paren
 op_minus
 l_int|0x00020000
@@ -437,7 +392,7 @@ id|__pa
 c_func
 (paren
 op_amp
-id|_ftext
+id|_text
 )paren
 suffix:semicolon
 id|addr

@@ -118,7 +118,7 @@ mdefine_line|#define WIDGET_LLP_MAXBURST&t;&t;0x000003ff
 DECL|macro|WIDGET_LLP_MAXBURST_SHFT
 mdefine_line|#define WIDGET_LLP_MAXBURST_SHFT&t;0
 multiline_comment|/*&n; * according to the crosstalk spec, only 32-bits access to the widget&n; * configuration registers is allowed.  some widgets may allow 64-bits&n; * access but software should not depend on it.  registers beyond the&n; * widget target flush register are widget dependent thus will not be&n; * defined here&n; */
-macro_line|#if _LANGUAGE_C
+macro_line|#ifndef __ASSEMBLY__
 DECL|typedef|widgetreg_t
 r_typedef
 id|u32
@@ -366,6 +366,6 @@ suffix:semicolon
 multiline_comment|/*&n; * Returns 1 if a driver that handles devices described by hwid1 is able&n; * to manage a device with hardwareid hwid2.  NOTE: We don&squot;t check rev&n; * numbers at all.&n; */
 DECL|macro|XWIDGET_HARDWARE_ID_MATCH
 mdefine_line|#define XWIDGET_HARDWARE_ID_MATCH(hwid1, hwid2) &bslash;&n;&t;(((hwid1)-&gt;part_num == (hwid2)-&gt;part_num) &amp;&amp; &bslash;&n;&t;(((hwid1)-&gt;mfg_num == XWIDGET_MFG_NUM_NONE) || &bslash;&n;&t;((hwid2)-&gt;mfg_num == XWIDGET_MFG_NUM_NONE) || &bslash;&n;&t;((hwid1)-&gt;mfg_num == (hwid2)-&gt;mfg_num)))
-macro_line|#endif&t;&t;&t;&t;/* _LANGUAGE_C */
+macro_line|#endif /* !__ASSEMBLY__ */
 macro_line|#endif /* _ASM_XTALK_XWIDGET_H */
 eof

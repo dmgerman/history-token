@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: irix5sys.h,v 1.2 1998/08/17 10:16:25 ralf Exp $&n; *&n; * irix5sys.h: 32-bit IRIX5 ABI system call table.&n; *&n; * Copyright (C) 1996 David S. Miller (dm@engr.sgi.com)&n; */
+multiline_comment|/*&n; * irix5sys.h: 32-bit IRIX5 ABI system call table.&n; *&n; * Copyright (C) 1996 David S. Miller (dm@engr.sgi.com)&n; */
 multiline_comment|/* This file is being included twice - once to build a list of all&n; * syscalls and once to build a table of how many arguments each syscall&n; * accepts.  Syscalls that receive a pointer to the saved registers are&n; * marked as having zero arguments.&n; */
 multiline_comment|/* Keys:&n; *         V == Valid and should work as expected for most cases.&n; *        HV == Half Valid, some things will work, some likely will not&n; *        IV == InValid, certainly will not work at all yet&n; *        ?V == ?&squot;ably Valid, I have not done enough looking into it&n; *        DC == Don&squot;t Care, a rats ass we couldn&squot;t give&n; */
 id|SYS
