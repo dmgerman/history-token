@@ -134,6 +134,42 @@ l_string|&quot;HPET&quot;
 comma
 )brace
 suffix:semicolon
+DECL|variable|mps_inti_flags_polarity
+r_static
+r_char
+op_star
+id|mps_inti_flags_polarity
+(braket
+)braket
+op_assign
+(brace
+l_string|&quot;dfl&quot;
+comma
+l_string|&quot;high&quot;
+comma
+l_string|&quot;res&quot;
+comma
+l_string|&quot;low&quot;
+)brace
+suffix:semicolon
+DECL|variable|mps_inti_flags_trigger
+r_static
+r_char
+op_star
+id|mps_inti_flags_trigger
+(braket
+)braket
+op_assign
+(brace
+l_string|&quot;dfl&quot;
+comma
+l_string|&quot;edge&quot;
+comma
+l_string|&quot;res&quot;
+comma
+l_string|&quot;level&quot;
+)brace
+suffix:semicolon
 multiline_comment|/* System Description Table (RSDT/XSDT) */
 DECL|struct|acpi_table_sdt
 r_struct
@@ -426,7 +462,7 @@ c_func
 (paren
 id|KERN_INFO
 id|PREFIX
-l_string|&quot;INT_SRC_OVR (bus[%d] irq[0x%x] global_irq[0x%x] polarity[0x%x] trigger[0x%x])&bslash;n&quot;
+l_string|&quot;INT_SRC_OVR (bus %d bus_irq %d global_irq %d %s %s)&bslash;n&quot;
 comma
 id|p-&gt;bus
 comma
@@ -434,11 +470,34 @@ id|p-&gt;bus_irq
 comma
 id|p-&gt;global_irq
 comma
+id|mps_inti_flags_polarity
+(braket
 id|p-&gt;flags.polarity
+)braket
 comma
+id|mps_inti_flags_trigger
+(braket
 id|p-&gt;flags.trigger
+)braket
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|p-&gt;flags.reserved
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_INFO
+id|PREFIX
+l_string|&quot;INT_SRC_OVR unexpected reserved flags: 0x%x&bslash;n&quot;
+comma
+id|p-&gt;flags.reserved
+)paren
+suffix:semicolon
+)brace
 )brace
 r_break
 suffix:semicolon
@@ -463,11 +522,17 @@ c_func
 (paren
 id|KERN_INFO
 id|PREFIX
-l_string|&quot;NMI_SRC (polarity[0x%x] trigger[0x%x] global_irq[0x%x])&bslash;n&quot;
+l_string|&quot;NMI_SRC (%s %s global_irq %d)&bslash;n&quot;
 comma
+id|mps_inti_flags_polarity
+(braket
 id|p-&gt;flags.polarity
+)braket
 comma
+id|mps_inti_flags_trigger
+(braket
 id|p-&gt;flags.trigger
+)braket
 comma
 id|p-&gt;global_irq
 )paren
@@ -496,13 +561,19 @@ c_func
 (paren
 id|KERN_INFO
 id|PREFIX
-l_string|&quot;LAPIC_NMI (acpi_id[0x%02x] polarity[0x%x] trigger[0x%x] lint[0x%x])&bslash;n&quot;
+l_string|&quot;LAPIC_NMI (acpi_id[0x%02x] %s %s lint[0x%x])&bslash;n&quot;
 comma
 id|p-&gt;acpi_id
 comma
+id|mps_inti_flags_polarity
+(braket
 id|p-&gt;flags.polarity
+)braket
 comma
+id|mps_inti_flags_trigger
+(braket
 id|p-&gt;flags.trigger
+)braket
 comma
 id|p-&gt;lint
 )paren
@@ -649,11 +720,17 @@ c_func
 (paren
 id|KERN_INFO
 id|PREFIX
-l_string|&quot;PLAT_INT_SRC (polarity[0x%x] trigger[0x%x] type[0x%x] id[0x%04x] eid[0x%x] iosapic_vector[0x%x] global_irq[0x%x]&bslash;n&quot;
+l_string|&quot;PLAT_INT_SRC (%s %s type[0x%x] id[0x%04x] eid[0x%x] iosapic_vector[0x%x] global_irq[0x%x]&bslash;n&quot;
 comma
+id|mps_inti_flags_polarity
+(braket
 id|p-&gt;flags.polarity
+)braket
 comma
+id|mps_inti_flags_trigger
+(braket
 id|p-&gt;flags.trigger
+)braket
 comma
 id|p-&gt;type
 comma

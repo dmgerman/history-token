@@ -4421,6 +4421,7 @@ id|ioapic
 dot
 id|irq_start
 suffix:semicolon
+multiline_comment|/*&n;&t; * MPS INTI flags:&n;&t; *  trigger: 0=default, 1=edge, 3=level&n;&t; *  polarity: 0=default, 1=high, 3=low&n;&t; * Per ACPI spec, default for SCI means level/low.&n;&t; */
 id|io_apic_set_pci_routing
 c_func
 (paren
@@ -4432,13 +4433,23 @@ id|irq
 comma
 (paren
 id|flags.trigger
-op_rshift
+op_eq
+l_int|1
+ques
+c_cond
+l_int|0
+suffix:colon
 l_int|1
 )paren
 comma
 (paren
 id|flags.polarity
-op_rshift
+op_eq
+l_int|1
+ques
+c_cond
+l_int|0
+suffix:colon
 l_int|1
 )paren
 )paren
