@@ -74,6 +74,11 @@ r_int
 id|nr_mapped
 suffix:semicolon
 multiline_comment|/* From page_state */
+multiline_comment|/* How many pages shrink_cache() should reclaim */
+DECL|member|nr_to_reclaim
+r_int
+id|nr_to_reclaim
+suffix:semicolon
 multiline_comment|/* Ask shrink_caches, or shrink_zone to scan at this priority */
 DECL|member|priority
 r_int
@@ -1932,6 +1937,10 @@ comma
 id|nr_freed
 )paren
 suffix:semicolon
+id|sc-&gt;nr_to_reclaim
+op_sub_assign
+id|nr_freed
+suffix:semicolon
 id|spin_lock_irq
 c_func
 (paren
@@ -2896,6 +2905,10 @@ id|nr_inactive
 op_assign
 l_int|0
 suffix:semicolon
+id|sc-&gt;nr_to_reclaim
+op_assign
+id|SWAP_CLUSTER_MAX
+suffix:semicolon
 r_while
 c_loop
 (paren
@@ -2968,6 +2981,15 @@ id|zone
 comma
 id|sc
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|sc-&gt;nr_to_reclaim
+op_le
+l_int|0
+)paren
+r_break
 suffix:semicolon
 )brace
 )brace
