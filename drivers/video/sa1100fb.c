@@ -56,24 +56,6 @@ r_int
 id|on
 )paren
 suffix:semicolon
-DECL|variable|sa1100fb_blank_helper
-r_void
-(paren
-op_star
-id|sa1100fb_blank_helper
-)paren
-(paren
-r_int
-id|blank
-)paren
-suffix:semicolon
-DECL|variable|sa1100fb_blank_helper
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|sa1100fb_blank_helper
-)paren
-suffix:semicolon
 multiline_comment|/*&n; * IMHO this looks wrong.  In 8BPP, length should be 8.&n; */
 DECL|variable|rgb_8
 r_static
@@ -353,7 +335,7 @@ comma
 suffix:semicolon
 macro_line|#endif
 macro_line|#endif
-macro_line|#ifdef CONFIG_SA1100_H3XXX
+macro_line|#ifdef CONFIG_SA1100_H3800
 DECL|variable|__initdata
 r_static
 r_struct
@@ -420,14 +402,22 @@ id|LCCR0_Act
 comma
 id|lccr3
 suffix:colon
-id|LCCR3_ACBsCntOff
+id|LCCR3_ACBsDiv
+c_func
+(paren
+l_int|2
+)paren
 op_or
-id|LCCR3_PixFlEdg
+id|LCCR3_PixRsEdg
 op_or
 id|LCCR3_OutEnH
+op_or
+id|LCCR3_ACBsCntOff
 comma
 )brace
 suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef CONFIG_SA1100_H3600
 DECL|variable|__initdata
 r_static
 r_struct
@@ -494,11 +484,17 @@ id|LCCR0_Act
 comma
 id|lccr3
 suffix:colon
-id|LCCR3_ACBsCntOff
+id|LCCR3_ACBsDiv
+c_func
+(paren
+l_int|2
+)paren
+op_or
+id|LCCR3_PixRsEdg
 op_or
 id|LCCR3_OutEnH
 op_or
-id|LCCR3_PixFlEdg
+id|LCCR3_ACBsCntOff
 comma
 )brace
 suffix:semicolon
@@ -563,6 +559,8 @@ comma
 comma
 )brace
 suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef CONFIG_SA1100_H3100
 DECL|variable|__initdata
 r_static
 r_struct
@@ -2332,7 +2330,24 @@ suffix:semicolon
 macro_line|#endif
 )brace
 macro_line|#endif
-macro_line|#ifdef CONFIG_SA1100_H3XXX
+macro_line|#ifdef CONFIG_SA1100_H3100
+r_if
+c_cond
+(paren
+id|machine_is_h3100
+c_func
+(paren
+)paren
+)paren
+(brace
+id|inf
+op_assign
+op_amp
+id|h3100_info
+suffix:semicolon
+)brace
+macro_line|#endif
+macro_line|#ifdef CONFIG_SA1100_H3600
 r_if
 c_cond
 (paren
@@ -2356,21 +2371,8 @@ op_amp
 id|h3600_rgb_16
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-id|machine_is_h3100
-c_func
-(paren
-)paren
-)paren
-(brace
-id|inf
-op_assign
-op_amp
-id|h3100_info
-suffix:semicolon
-)brace
+macro_line|#endif
+macro_line|#ifdef CONFIG_SA1100_H3800
 r_if
 c_cond
 (paren
@@ -4691,33 +4693,11 @@ comma
 id|C_DISABLE
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|sa1100fb_blank_helper
-)paren
-id|sa1100fb_blank_helper
-c_func
-(paren
-id|blank
-)paren
-suffix:semicolon
 r_break
 suffix:semicolon
 r_case
 id|VESA_NO_BLANKING
 suffix:colon
-r_if
-c_cond
-(paren
-id|sa1100fb_blank_helper
-)paren
-id|sa1100fb_blank_helper
-c_func
-(paren
-id|blank
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
