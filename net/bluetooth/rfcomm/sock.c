@@ -280,34 +280,6 @@ id|sk
 )paren
 suffix:semicolon
 )brace
-DECL|function|rfcomm_sk_modem_status
-r_static
-r_void
-id|rfcomm_sk_modem_status
-c_func
-(paren
-r_struct
-id|rfcomm_dlc
-op_star
-id|d
-comma
-r_int
-id|v24_sig
-)paren
-(brace
-id|BT_DBG
-c_func
-(paren
-l_string|&quot;dlc %p v24_sig 0x%02x&quot;
-comma
-id|d
-comma
-id|v24_sig
-)paren
-suffix:semicolon
-r_return
-suffix:semicolon
-)brace
 multiline_comment|/* ---- Socket functions ---- */
 DECL|function|__rfcomm_get_sock_by_addr
 r_static
@@ -1021,10 +993,6 @@ suffix:semicolon
 id|d-&gt;state_change
 op_assign
 id|rfcomm_sk_state_change
-suffix:semicolon
-id|d-&gt;modem_status
-op_assign
-id|rfcomm_sk_modem_status
 suffix:semicolon
 id|rfcomm_pi
 c_func
