@@ -722,6 +722,7 @@ r_int
 id|cmd
 comma
 r_void
+id|__user
 op_star
 id|arg
 )paren
@@ -768,10 +769,6 @@ c_func
 op_amp
 id|ci
 comma
-(paren
-r_void
-op_star
-)paren
 id|arg
 comma
 r_sizeof

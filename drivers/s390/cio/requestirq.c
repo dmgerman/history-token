@@ -1,69 +1,10 @@
-multiline_comment|/*&n; *  drivers/s390/cio/requestirq.c&n; *   S/390 common I/O routines -- enabling and disabling of devices&n; *   $Revision: 1.45 $&n; *&n; *    Copyright (C) 1999-2002 IBM Deutschland Entwicklung GmbH,&n; *&t;&t;&t;      IBM Corporation&n; *    Author(s): Ingo Adlung (adlung@de.ibm.com)&n; *&t;&t; Cornelia Huck (cohuck@de.ibm.com)&n; *&t;&t; Arnd Bergmann (arndb@de.ibm.com)&n; */
+multiline_comment|/*&n; *  drivers/s390/cio/requestirq.c&n; *   S/390 common I/O routines -- enabling and disabling of devices&n; *   $Revision: 1.46 $&n; *&n; *    Copyright (C) 1999-2002 IBM Deutschland Entwicklung GmbH,&n; *&t;&t;&t;      IBM Corporation&n; *    Author(s): Ingo Adlung (adlung@de.ibm.com)&n; *&t;&t; Cornelia Huck (cohuck@de.ibm.com)&n; *&t;&t; Arnd Bergmann (arndb@de.ibm.com)&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/lowcore.h&gt;
 macro_line|#include &quot;css.h&quot;
-multiline_comment|/* for compatiblity only... */
-r_int
-DECL|function|request_irq
-id|request_irq
-(paren
-r_int
-r_int
-id|irq
-comma
-r_void
-(paren
-op_star
-id|handler
-)paren
-(paren
-r_int
-comma
-r_void
-op_star
-comma
-r_struct
-id|pt_regs
-op_star
-)paren
-comma
-r_int
-r_int
-id|irqflags
-comma
-r_const
-r_char
-op_star
-id|devname
-comma
-r_void
-op_star
-id|dev_id
-)paren
-(brace
-r_return
-op_minus
-id|EINVAL
-suffix:semicolon
-)brace
-multiline_comment|/* for compatiblity only... */
-r_void
-DECL|function|free_irq
-id|free_irq
-(paren
-r_int
-r_int
-id|irq
-comma
-r_void
-op_star
-id|dev_id
-)paren
-(brace
-)brace
 DECL|variable|global_pgid
 r_struct
 id|pgid

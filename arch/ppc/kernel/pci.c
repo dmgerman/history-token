@@ -564,9 +564,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
-id|res-&gt;start
-op_logical_or
 id|res-&gt;end
 op_eq
 l_int|0xffffffff
@@ -1364,6 +1361,17 @@ id|bus-&gt;resource
 (braket
 id|i
 )braket
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|res
+op_eq
+l_int|NULL
+)paren
+r_return
+op_minus
+l_int|1
 suffix:semicolon
 id|pr
 op_assign
@@ -3143,14 +3151,21 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;Can&squot;t get bus-range for %s&bslash;n&quot;
+l_string|&quot;Can&squot;t get bus-range for %s, &quot;
+l_string|&quot;assuming it starts at 0&bslash;n&quot;
 comma
 id|node-&gt;full_name
 )paren
 suffix:semicolon
-r_return
+id|pci_to_OF_bus_map
+(braket
+id|pci_bus
+)braket
+op_assign
+l_int|0
 suffix:semicolon
 )brace
+r_else
 id|pci_to_OF_bus_map
 (braket
 id|pci_bus
@@ -5126,6 +5141,18 @@ r_struct
 id|resource
 id|res
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|bus-&gt;resource
+(braket
+l_int|0
+)braket
+op_eq
+l_int|NULL
+)paren
+r_return
+suffix:semicolon
 id|res
 op_assign
 op_star
@@ -5593,6 +5620,11 @@ op_increment
 r_if
 c_cond
 (paren
+id|bus-&gt;resource
+(braket
+id|parent_io
+)braket
+op_logical_and
 id|bus-&gt;resource
 (braket
 id|parent_io

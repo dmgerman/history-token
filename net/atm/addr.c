@@ -605,8 +605,9 @@ id|dev
 comma
 r_struct
 id|sockaddr_atmsvc
+id|__user
 op_star
-id|u_buf
+id|buf
 comma
 r_int
 id|size
@@ -755,7 +756,7 @@ c_cond
 id|copy_to_user
 c_func
 (paren
-id|u_buf
+id|buf
 comma
 id|tmp_buf
 comma

@@ -2502,6 +2502,7 @@ op_star
 id|eeprom
 comma
 r_void
+id|__user
 op_star
 id|user_data
 )paren
@@ -2952,6 +2953,7 @@ op_assign
 id|netdev-&gt;priv
 suffix:semicolon
 r_void
+id|__user
 op_star
 id|addr
 op_assign
@@ -2970,6 +2972,7 @@ id|cmd
 comma
 (paren
 r_uint32
+id|__user
 op_star
 )paren
 id|addr

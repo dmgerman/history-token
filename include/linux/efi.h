@@ -1171,14 +1171,5 @@ id|packed
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * efi_dir is allocated in arch/ia64/kernel/efi.c.&n; */
-macro_line|#ifdef CONFIG_PROC_FS
-r_extern
-r_struct
-id|proc_dir_entry
-op_star
-id|efi_dir
-suffix:semicolon
-macro_line|#endif
 macro_line|#endif /* _LINUX_EFI_H */
 eof

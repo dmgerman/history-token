@@ -202,6 +202,7 @@ id|wiinst
 op_star
 comma
 id|u8
+id|__user
 op_star
 comma
 id|u32

@@ -552,6 +552,7 @@ multiline_comment|/* The old entries&squot; counters. */
 DECL|member|counters
 r_struct
 id|ipt_counters
+id|__user
 op_star
 id|counters
 suffix:semicolon

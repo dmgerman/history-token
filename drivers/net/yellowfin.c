@@ -7139,6 +7139,7 @@ op_star
 id|dev
 comma
 r_void
+id|__user
 op_star
 id|useraddr
 )paren
@@ -7311,10 +7312,6 @@ c_func
 (paren
 id|dev
 comma
-(paren
-r_void
-op_star
-)paren
 id|rq-&gt;ifr_data
 )paren
 suffix:semicolon

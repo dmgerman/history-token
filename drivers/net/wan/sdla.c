@@ -5145,6 +5145,7 @@ id|dev
 comma
 r_struct
 id|frad_conf
+id|__user
 op_star
 id|conf
 comma
@@ -5677,6 +5678,7 @@ id|dev
 comma
 r_struct
 id|sdla_mem
+id|__user
 op_star
 id|info
 comma
@@ -6098,11 +6100,6 @@ c_func
 (paren
 id|dev
 comma
-(paren
-r_struct
-id|frad_conf
-op_star
-)paren
 id|ifr-&gt;ifr_data
 comma
 id|cmd
@@ -6191,11 +6188,6 @@ c_func
 (paren
 id|dev
 comma
-(paren
-r_struct
-id|sdla_mem
-op_star
-)paren
 id|ifr-&gt;ifr_data
 comma
 id|cmd

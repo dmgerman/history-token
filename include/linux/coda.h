@@ -1998,13 +1998,19 @@ r_struct
 id|ViceIoctl
 (brace
 DECL|member|in
-DECL|member|out
-id|caddr_t
+r_void
+id|__user
+op_star
 id|in
-comma
+suffix:semicolon
+multiline_comment|/* Data to be transferred in */
+DECL|member|out
+r_void
+id|__user
+op_star
 id|out
 suffix:semicolon
-multiline_comment|/* Data to be transferred in, or out */
+multiline_comment|/* Data to be transferred out */
 DECL|member|in_size
 r_int
 id|in_size
@@ -2024,6 +2030,7 @@ id|PioctlData
 DECL|member|path
 r_const
 r_char
+id|__user
 op_star
 id|path
 suffix:semicolon

@@ -519,6 +519,7 @@ r_int
 id|cmd
 comma
 r_void
+id|__user
 op_star
 id|arg
 )paren
@@ -13306,6 +13307,7 @@ r_int
 id|cmd
 comma
 r_void
+id|__user
 op_star
 id|arg
 )paren
@@ -13349,6 +13351,7 @@ op_amp
 (paren
 (paren
 id|pool_levels
+id|__user
 op_star
 )paren
 id|arg
@@ -13487,6 +13490,7 @@ c_func
 (paren
 (paren
 id|pool_levels
+id|__user
 op_star
 )paren
 id|arg
@@ -13541,6 +13545,7 @@ id|pl
 comma
 (paren
 id|pool_levels
+id|__user
 op_star
 )paren
 id|arg

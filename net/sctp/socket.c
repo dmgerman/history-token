@@ -9422,11 +9422,9 @@ id|params
 comma
 id|optval
 comma
-op_star
-id|optlen
+id|len
 )paren
 )paren
-multiline_comment|/* XXXXXX */
 r_return
 op_minus
 id|EFAULT
@@ -10190,6 +10188,7 @@ op_star
 id|from
 suffix:semicolon
 r_void
+id|__user
 op_star
 id|to
 suffix:semicolon
@@ -10310,10 +10309,6 @@ suffix:semicolon
 )brace
 id|to
 op_assign
-(paren
-r_void
-op_star
-)paren
 id|getaddrs.addrs
 suffix:semicolon
 id|list_for_each

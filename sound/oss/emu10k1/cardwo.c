@@ -1885,6 +1885,7 @@ id|u32
 id|str
 comma
 id|u8
+id|__user
 op_star
 id|src
 comma
@@ -2057,6 +2058,7 @@ id|u32
 id|str
 comma
 id|u8
+id|__user
 op_star
 id|src
 comma
@@ -2431,6 +2433,7 @@ op_star
 id|woinst
 comma
 id|u8
+id|__user
 op_star
 id|data
 comma

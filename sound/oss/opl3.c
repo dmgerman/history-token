@@ -3937,6 +3937,7 @@ id|format
 comma
 r_const
 r_char
+id|__user
 op_star
 id|addr
 comma
@@ -3977,6 +3978,7 @@ op_minus
 id|EINVAL
 suffix:semicolon
 )brace
+multiline_comment|/*&n;&t; * What the fuck is going on here?  We leave junk in the beginning&n;&t; * of ins and then check the field pretty close to that beginning?&n;&t; */
 r_if
 c_cond
 (paren
@@ -3996,13 +3998,9 @@ id|ins
 id|offs
 )braket
 comma
-op_amp
-(paren
 id|addr
-)paren
-(braket
+op_plus
 id|offs
-)braket
 comma
 r_sizeof
 (paren

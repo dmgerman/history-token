@@ -483,6 +483,7 @@ id|length
 suffix:semicolon
 DECL|member|arg
 r_void
+id|__user
 op_star
 id|arg
 suffix:semicolon

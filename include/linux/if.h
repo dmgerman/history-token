@@ -274,7 +274,7 @@ id|IFNAMSIZ
 )braket
 suffix:semicolon
 DECL|member|ifru_data
-r_char
+r_void
 id|__user
 op_star
 id|ifru_data
@@ -338,12 +338,14 @@ r_union
 (brace
 DECL|member|ifcu_buf
 r_char
+id|__user
 op_star
 id|ifcu_buf
 suffix:semicolon
 DECL|member|ifcu_req
 r_struct
 id|ifreq
+id|__user
 op_star
 id|ifcu_req
 suffix:semicolon

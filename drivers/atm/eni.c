@@ -11422,6 +11422,7 @@ r_int
 id|cmd
 comma
 r_void
+id|__user
 op_star
 id|arg
 )paren
@@ -11516,10 +11517,6 @@ c_func
 op_amp
 id|mult
 comma
-(paren
-r_void
-op_star
-)paren
 id|arg
 comma
 r_sizeof
@@ -11607,10 +11604,6 @@ c_func
 op_amp
 id|ci
 comma
-(paren
-r_void
-op_star
-)paren
 id|arg
 comma
 r_sizeof
@@ -11697,6 +11690,7 @@ r_int
 id|optname
 comma
 r_void
+id|__user
 op_star
 id|optval
 comma
@@ -11727,6 +11721,7 @@ r_int
 id|optname
 comma
 r_void
+id|__user
 op_star
 id|optval
 comma

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  drivers/s390/cio/ccwgroup.c&n; *  bus driver for ccwgroup&n; *   $Revision: 1.27 $&n; *&n; *    Copyright (C) 2002 IBM Deutschland Entwicklung GmbH,&n; *                       IBM Corporation&n; *    Author(s): Arnd Bergmann (arndb@de.ibm.com)&n; *               Cornelia Huck (cohuck@de.ibm.com)&n; */
+multiline_comment|/*&n; *  drivers/s390/cio/ccwgroup.c&n; *  bus driver for ccwgroup&n; *   $Revision: 1.28 $&n; *&n; *    Copyright (C) 2002 IBM Deutschland Entwicklung GmbH,&n; *                       IBM Corporation&n; *    Author(s): Arnd Bergmann (arndb@de.ibm.com)&n; *               Cornelia Huck (cohuck@de.ibm.com)&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
@@ -756,7 +756,7 @@ op_minus
 id|EINVAL
 suffix:semicolon
 r_goto
-id|error
+id|free_dev
 suffix:semicolon
 )brace
 multiline_comment|/* Don&squot;t allow a device to belong to more than one group. */
@@ -777,7 +777,7 @@ op_minus
 id|EINVAL
 suffix:semicolon
 r_goto
-id|error
+id|free_dev
 suffix:semicolon
 )brace
 )brace
@@ -881,7 +881,14 @@ c_cond
 id|rc
 )paren
 r_goto
-id|error
+id|free_dev
+suffix:semicolon
+id|get_device
+c_func
+(paren
+op_amp
+id|gdev-&gt;dev
+)paren
 suffix:semicolon
 id|rc
 op_assign
@@ -926,9 +933,18 @@ c_cond
 op_logical_neg
 id|rc
 )paren
+(brace
+id|put_device
+c_func
+(paren
+op_amp
+id|gdev-&gt;dev
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
+)brace
 id|device_remove_file
 c_func
 (paren
@@ -947,6 +963,63 @@ id|gdev-&gt;dev
 )paren
 suffix:semicolon
 id|error
+suffix:colon
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+id|argc
+suffix:semicolon
+id|i
+op_increment
+)paren
+r_if
+c_cond
+(paren
+id|gdev-&gt;cdev
+(braket
+id|i
+)braket
+)paren
+(brace
+id|put_device
+c_func
+(paren
+op_amp
+id|gdev-&gt;cdev
+(braket
+id|i
+)braket
+op_member_access_from_pointer
+id|dev
+)paren
+suffix:semicolon
+id|gdev-&gt;cdev
+(braket
+id|i
+)braket
+op_member_access_from_pointer
+id|dev.driver_data
+op_assign
+l_int|NULL
+suffix:semicolon
+)brace
+id|put_device
+c_func
+(paren
+op_amp
+id|gdev-&gt;dev
+)paren
+suffix:semicolon
+r_return
+id|rc
+suffix:semicolon
+id|free_dev
 suffix:colon
 r_for
 c_loop

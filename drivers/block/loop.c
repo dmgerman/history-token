@@ -1241,6 +1241,12 @@ op_minus
 id|EINVAL
 suffix:semicolon
 )brace
+id|flush_dcache_page
+c_func
+(paren
+id|p-&gt;page
+)paren
+suffix:semicolon
 id|desc-&gt;count
 op_assign
 id|count

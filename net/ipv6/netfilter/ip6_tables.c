@@ -4308,6 +4308,7 @@ op_star
 id|table
 comma
 r_void
+id|__user
 op_star
 id|userptr
 )paren
