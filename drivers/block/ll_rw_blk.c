@@ -3274,6 +3274,7 @@ c_func
 )paren
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t; * don&squot;t plug a stopped queue, it must be paired with blk_start_queue()&n;&t; * which will restart the queueing&n;&t; */
 r_if
 c_cond
 (paren
@@ -3282,6 +3283,16 @@ id|blk_queue_plugged
 c_func
 (paren
 id|q
+)paren
+op_logical_and
+op_logical_neg
+id|test_bit
+c_func
+(paren
+id|QUEUE_FLAG_STOPPED
+comma
+op_amp
+id|q-&gt;queue_flags
 )paren
 )paren
 (brace
