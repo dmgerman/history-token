@@ -36,11 +36,6 @@ macro_line|#include &lt;pcmcia/cs.h&gt;
 macro_line|#include &lt;pcmcia/cistpl.h&gt;
 macro_line|#include &lt;pcmcia/cisreg.h&gt;
 macro_line|#include &lt;pcmcia/ciscode.h&gt;
-macro_line|#if LINUX_VERSION_CODE &lt; 0x20300
-macro_line|#ifdef MODULE
-macro_line|#include &lt;pcmcia/k_compat.h&gt;
-macro_line|#endif
-macro_line|#endif
 macro_line|#include &lt;pcmcia/ds.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
