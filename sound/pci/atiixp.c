@@ -3232,13 +3232,6 @@ id|CMD
 comma
 id|ATI_REG_CMD_INTERLEAVE_SPDF
 comma
-id|substream-&gt;runtime-&gt;format
-op_eq
-id|SNDRV_PCM_FORMAT_S16_LE
-ques
-c_cond
-id|ATI_REG_CMD_INTERLEAVE_SPDF
-suffix:colon
 l_int|0
 )paren
 suffix:semicolon
@@ -3955,18 +3948,10 @@ suffix:semicolon
 )brace
 r_else
 (brace
-multiline_comment|/* SPDIF */
-id|runtime-&gt;hw.rates
+multiline_comment|/* direct SPDIF */
+id|runtime-&gt;hw.formats
 op_assign
-id|SNDRV_PCM_RATE_48000
-op_or
-id|SNDRV_PCM_RATE_44100
-op_or
-id|SNDRV_PCM_RATE_32000
-suffix:semicolon
-id|runtime-&gt;hw.rate_min
-op_assign
-l_int|32000
+id|SNDRV_PCM_FMTBIT_IEC958_SUBFRAME_LE
 suffix:semicolon
 )brace
 r_if
@@ -5226,12 +5211,26 @@ id|pcm-&gt;private_data
 op_assign
 id|chip
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|chip-&gt;spdif_over_aclink
+)paren
 id|strcpy
 c_func
 (paren
 id|pcm-&gt;name
 comma
-l_string|&quot;ATI IXP IEC958&quot;
+l_string|&quot;ATI IXP IEC958 (AC97)&quot;
+)paren
+suffix:semicolon
+r_else
+id|strcpy
+c_func
+(paren
+id|pcm-&gt;name
+comma
+l_string|&quot;ATI IXP IEC958 (Direct)&quot;
 )paren
 suffix:semicolon
 id|chip-&gt;pcmdevs
@@ -6756,7 +6755,15 @@ c_func
 (paren
 id|card-&gt;driver
 comma
+id|spdif_aclink
+(braket
+id|dev
+)braket
+ques
+c_cond
 l_string|&quot;ATIIXP&quot;
+suffix:colon
+l_string|&quot;ATIIXP-SPDMA&quot;
 )paren
 suffix:semicolon
 id|strcpy
