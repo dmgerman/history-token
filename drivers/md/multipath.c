@@ -785,6 +785,10 @@ op_assign
 op_star
 id|bio
 suffix:semicolon
+id|mp_bh-&gt;bio.bi_sector
+op_add_assign
+id|multipath-&gt;rdev-&gt;data_offset
+suffix:semicolon
 id|mp_bh-&gt;bio.bi_bdev
 op_assign
 id|multipath-&gt;rdev-&gt;bdev
@@ -1734,6 +1738,15 @@ op_star
 (paren
 id|mp_bh-&gt;master_bio
 )paren
+suffix:semicolon
+id|bio-&gt;bi_sector
+op_add_assign
+id|conf-&gt;multipaths
+(braket
+id|mp_bh-&gt;path
+)braket
+dot
+id|rdev-&gt;data_offset
 suffix:semicolon
 id|bio-&gt;bi_bdev
 op_assign

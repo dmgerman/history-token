@@ -4834,6 +4834,15 @@ op_rshift
 l_int|9
 )paren
 suffix:semicolon
+id|tbio-&gt;bi_sector
+op_add_assign
+id|conf-&gt;mirrors
+(braket
+id|d
+)braket
+dot
+id|rdev-&gt;data_offset
+suffix:semicolon
 id|generic_make_request
 c_func
 (paren
