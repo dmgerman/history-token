@@ -6546,7 +6546,11 @@ id|reiserfs_free_block
 (paren
 id|tb-&gt;transaction_handle
 comma
+l_int|NULL
+comma
 id|blocknr
+comma
+l_int|0
 )paren
 suffix:semicolon
 )brace
@@ -6602,7 +6606,6 @@ c_func
 id|bh
 )paren
 suffix:semicolon
-multiline_comment|/* reiserfs_free_block is no longer schedule safe &n;    reiserfs_free_block (tb-&gt;transaction_handle, tb-&gt;tb_sb, bh-&gt;b_blocknr);&n;    */
 id|store_thrown
 (paren
 id|tb

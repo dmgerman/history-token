@@ -438,6 +438,8 @@ id|reiserfs_delete_solid_item
 op_amp
 id|th
 comma
+l_int|NULL
+comma
 id|key
 )paren
 suffix:semicolon
@@ -1228,7 +1230,7 @@ id|inode
 op_member_access_from_pointer
 id|k_dir_id
 suffix:semicolon
-multiline_comment|/* put &quot;save&quot; link inot tree */
+multiline_comment|/* put &quot;save&quot; link inot tree, don&squot;t charge quota to anyone */
 id|retval
 op_assign
 id|reiserfs_insert_item
@@ -1243,6 +1245,8 @@ id|key
 comma
 op_amp
 id|ih
+comma
+l_int|NULL
 comma
 (paren
 r_char
@@ -1448,10 +1452,13 @@ id|i_link_saved_unlink_mask
 )paren
 )paren
 (brace
+multiline_comment|/* don&squot;t take quota bytes from anywhere */
 id|reiserfs_delete_solid_item
 (paren
 op_amp
 id|th
+comma
+l_int|NULL
 comma
 op_amp
 id|key
@@ -3233,6 +3240,30 @@ comma
 l_string|&quot;commit&quot;
 comma
 l_char|&squot;c&squot;
+comma
+l_int|0
+comma
+l_int|0
+comma
+l_int|0
+)brace
+comma
+(brace
+l_string|&quot;usrquota&quot;
+comma
+l_int|0
+comma
+l_int|0
+comma
+l_int|0
+comma
+l_int|0
+)brace
+comma
+(brace
+l_string|&quot;grpquota&quot;
+comma
+l_int|0
 comma
 l_int|0
 comma

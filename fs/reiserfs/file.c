@@ -9,6 +9,7 @@ macro_line|#include &lt;linux/pagemap.h&gt;
 macro_line|#include &lt;linux/writeback.h&gt;
 macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/buffer_head.h&gt;
+macro_line|#include &lt;linux/quotaops.h&gt;
 multiline_comment|/*&n;** We pack the tails of files on file close, not at the time they are written.&n;** This implies an unnecessary copy of the tail and an unnecessary indirect item&n;** insertion/balancing, for files that are written in one write.&n;** It avoids unnecessary tail packings (balances) for files that are written in&n;** multiple writes and are small enough to have tails.&n;** &n;** file_release is called by the VFS layer when the file is closed.  If&n;** this is the last open file descriptor, and the file&n;** small enough to have a tail, and the tail is currently in an&n;** unformatted node, the tail is converted back into a direct item.&n;** &n;** We use reiserfs_truncate_file to pack the tail, since it already has&n;** all the conditions coded.  &n;*/
 DECL|function|reiserfs_file_release
 r_static
@@ -1084,6 +1085,8 @@ comma
 op_amp
 id|key
 comma
+id|inode
+comma
 (paren
 r_char
 op_star
@@ -1241,6 +1244,8 @@ id|key
 comma
 op_amp
 id|ins_ih
+comma
+id|inode
 comma
 (paren
 r_char
@@ -1842,6 +1847,8 @@ comma
 op_amp
 id|key
 comma
+id|inode
+comma
 (paren
 r_char
 op_star
@@ -2006,6 +2013,8 @@ comma
 op_amp
 id|ins_ih
 comma
+id|inode
+comma
 (paren
 r_char
 op_star
@@ -2037,16 +2046,6 @@ singleline_comment|// the caller is responsible for closing the transaction
 singleline_comment|// unless we return an error, they are also responsible for logging
 singleline_comment|// the inode.
 singleline_comment|//
-id|inode-&gt;i_blocks
-op_add_assign
-id|blocks_to_allocate
-op_lshift
-(paren
-id|inode-&gt;i_blkbits
-op_minus
-l_int|9
-)paren
-suffix:semicolon
 id|pathrelse
 c_func
 (paren
@@ -2291,6 +2290,8 @@ c_func
 (paren
 id|th
 comma
+id|inode
+comma
 id|le32_to_cpu
 c_func
 (paren
@@ -2299,6 +2300,8 @@ id|allocated_blocks
 id|i
 )braket
 )paren
+comma
+l_int|1
 )paren
 suffix:semicolon
 )brace

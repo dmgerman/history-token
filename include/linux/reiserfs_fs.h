@@ -395,6 +395,8 @@ DECL|macro|NO_BALANCING_NEEDED
 mdefine_line|#define NO_BALANCING_NEEDED  (-4)
 DECL|macro|NO_MORE_UNUSED_CONTIGUOUS_BLOCKS
 mdefine_line|#define NO_MORE_UNUSED_CONTIGUOUS_BLOCKS (-5)
+DECL|macro|QUOTA_EXCEEDED
+mdefine_line|#define QUOTA_EXCEEDED -6
 DECL|typedef|b_blocknr_t
 r_typedef
 id|__u32
@@ -4733,6 +4735,11 @@ id|item_head
 op_star
 id|ih
 comma
+r_struct
+id|inode
+op_star
+id|inode
+comma
 r_const
 r_char
 op_star
@@ -4757,6 +4764,11 @@ r_struct
 id|cpu_key
 op_star
 id|key
+comma
+r_struct
+id|inode
+op_star
+id|inode
 comma
 r_const
 r_char
@@ -4836,6 +4848,11 @@ r_struct
 id|reiserfs_transaction_handle
 op_star
 id|th
+comma
+r_struct
+id|inode
+op_star
+id|inode
 comma
 r_struct
 id|key
@@ -5210,7 +5227,28 @@ id|inode
 )paren
 suffix:semicolon
 r_void
+id|reiserfs_update_sd_size
+(paren
+r_struct
+id|reiserfs_transaction_handle
+op_star
+id|th
+comma
+r_struct
+id|inode
+op_star
+id|inode
+comma
+id|loff_t
+id|size
+)paren
+suffix:semicolon
+DECL|function|reiserfs_update_sd
+r_static
+r_inline
+r_void
 id|reiserfs_update_sd
+c_func
 (paren
 r_struct
 id|reiserfs_transaction_handle
@@ -5222,7 +5260,18 @@ id|inode
 op_star
 id|inode
 )paren
+(brace
+id|reiserfs_update_sd_size
+c_func
+(paren
+id|th
+comma
+id|inode
+comma
+id|inode-&gt;i_size
+)paren
 suffix:semicolon
+)brace
 r_void
 id|sd_attrs_to_i_attrs
 c_func
@@ -6349,7 +6398,14 @@ id|reiserfs_transaction_handle
 op_star
 id|th
 comma
+r_struct
+id|inode
+op_star
+comma
 id|b_blocknr_t
+comma
+r_int
+id|for_unformatted
 )paren
 suffix:semicolon
 r_int

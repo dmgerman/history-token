@@ -3052,6 +3052,7 @@ multiline_comment|/* If we have enough already then there is nothing to do. */
 r_return
 id|CARRY_ON
 suffix:semicolon
+multiline_comment|/* No need to check quota - is not allocated for blocks used for formatted nodes */
 r_if
 c_cond
 (paren
@@ -10866,7 +10867,11 @@ id|reiserfs_free_block
 (paren
 id|tb-&gt;transaction_handle
 comma
+l_int|NULL
+comma
 id|blocknr
+comma
+l_int|0
 )paren
 suffix:semicolon
 )brace

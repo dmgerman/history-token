@@ -236,6 +236,8 @@ comma
 op_amp
 id|ind_ih
 comma
+id|inode
+comma
 (paren
 r_char
 op_star
@@ -259,6 +261,8 @@ id|path
 comma
 op_amp
 id|end_key
+comma
+id|inode
 comma
 (paren
 r_char
@@ -1157,6 +1161,8 @@ comma
 op_amp
 id|s_ih
 comma
+id|p_s_inode
+comma
 id|tail
 ques
 c_cond
@@ -1196,18 +1202,19 @@ comma
 id|pos1
 )paren
 suffix:semicolon
+multiline_comment|/* make sure to get the i_blocks changes from reiserfs_insert_item */
+id|reiserfs_update_sd
+c_func
+(paren
+id|th
+comma
+id|p_s_inode
+)paren
+suffix:semicolon
 singleline_comment|// note: we have now the same as in above direct2indirect
 singleline_comment|// conversion: there are two keys which have matching first three
 singleline_comment|// key components. They only differ by the fouhth one.
 multiline_comment|/* We have inserted new direct item and must remove last&n;       unformatted node. */
-id|p_s_inode-&gt;i_blocks
-op_add_assign
-(paren
-id|p_s_sb-&gt;s_blocksize
-op_div
-l_int|512
-)paren
-suffix:semicolon
 op_star
 id|p_c_mode
 op_assign
