@@ -7456,15 +7456,6 @@ comma
 id|flags
 )paren
 suffix:semicolon
-id|scsi_set_device
-c_func
-(paren
-id|instance
-comma
-op_amp
-id|dev-&gt;pdev-&gt;dev
-)paren
-suffix:semicolon
 multiline_comment|/*&n;&t; *  Now let the generic SCSI driver&n;&t; *  look for the SCSI devices on the bus ..&n;&t; */
 id|scsi_add_host
 c_func
@@ -7473,6 +7464,13 @@ id|instance
 comma
 op_amp
 id|dev-&gt;pdev-&gt;dev
+)paren
+suffix:semicolon
+multiline_comment|/* XXX: handle failure */
+id|scsi_scan_host
+c_func
+(paren
+id|instance
 )paren
 suffix:semicolon
 r_return
