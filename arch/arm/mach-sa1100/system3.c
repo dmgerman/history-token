@@ -1173,10 +1173,14 @@ suffix:semicolon
 multiline_comment|/*&n;&t; * Probe for a SA1111.&n;&t; */
 id|ret
 op_assign
-id|sa1111_probe
+id|sa1111_init
 c_func
 (paren
+l_int|NULL
+comma
 id|PT_SA1111_BASE
+comma
+id|IRQ_SYSTEM3_SA1111
 )paren
 suffix:semicolon
 r_if
@@ -1198,53 +1202,6 @@ r_goto
 id|DONE
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * We found it.  Wake the chip up.&n;&t; */
-id|sa1111_wake
-c_func
-(paren
-)paren
-suffix:semicolon
-multiline_comment|/*&n;&t; * The SDRAM configuration of the SA1110 and the SA1111 must&n;&t; * match.  This is very important to ensure that SA1111 accesses&n;&t; * don&squot;t corrupt the SDRAM.  Note that this ungates the SA1111&squot;s&n;&t; * MBGNT signal, so we must have called sa1110_mb_disable()&n;&t; * beforehand.&n;&t; */
-id|sa1111_configure_smc
-c_func
-(paren
-l_int|1
-comma
-id|FExtr
-c_func
-(paren
-id|MDCNFG
-comma
-id|MDCNFG_SA1110_DRAC0
-)paren
-comma
-id|FExtr
-c_func
-(paren
-id|MDCNFG
-comma
-id|MDCNFG_SA1110_TDL0
-)paren
-)paren
-suffix:semicolon
-multiline_comment|/*&n;&t; * We only need to turn on DCLK whenever we want to use the&n;&t; * DMA.  It can otherwise be held firmly in the off position.&n;&t; */
-id|SKPCR
-op_or_assign
-id|SKPCR_DCLKEN
-suffix:semicolon
-multiline_comment|/*&n;&t; * Enable the SA1110 memory bus request and grant signals.&n;&t; */
-id|sa1110_mb_enable
-c_func
-(paren
-)paren
-suffix:semicolon
-multiline_comment|/*&n;&t; * Initialise SA1111 IRQs&n;&t; */
-id|sa1111_init_irq
-c_func
-(paren
-id|IRQ_SYSTEM3_SA1111
-)paren
-suffix:semicolon
 macro_line|#if defined( CONFIG_CPU_FREQ )
 id|ret
 op_assign

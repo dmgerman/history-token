@@ -3,8 +3,10 @@ macro_line|#ifndef __ASM_ARCH_SYSTEM_H
 DECL|macro|__ASM_ARCH_SYSTEM_H
 mdefine_line|#define __ASM_ARCH_SYSTEM_H
 macro_line|#include &lt;asm/hardware/iomd.h&gt;
+macro_line|#include &lt;asm/io.h&gt;
 DECL|function|arch_idle
 r_static
+r_inline
 r_void
 id|arch_idle
 c_func
@@ -12,18 +14,6 @@ c_func
 r_void
 )paren
 (brace
-r_while
-c_loop
-(paren
-op_logical_neg
-id|need_resched
-c_func
-(paren
-)paren
-op_logical_and
-op_logical_neg
-id|hlt_counter
-)paren
 id|iomd_writeb
 c_func
 (paren

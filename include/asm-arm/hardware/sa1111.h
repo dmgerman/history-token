@@ -12,13 +12,8 @@ mdefine_line|#define SA1111_p2v( x )         ((x) - SA1111_BASE + SA1111_VBASE)
 DECL|macro|SA1111_v2p
 mdefine_line|#define SA1111_v2p( x )         ((x) - SA1111_VBASE + SA1111_BASE)
 macro_line|#ifndef __ASSEMBLY__
-r_extern
-r_struct
-id|resource
-id|sa1111_resource
-suffix:semicolon
 DECL|macro|_SA1111
-mdefine_line|#define _SA1111(x)&t;((x) + sa1111_resource.start)
+mdefine_line|#define _SA1111(x)&t;((x) + sa1111-&gt;resource.start)
 macro_line|#endif
 multiline_comment|/*&n; * 26 bits of the SA-1110 address bus are available to the SA-1111.&n; * Use these when feeding target addresses to the DMA engines.&n; */
 DECL|macro|SA1111_ADDR_WIDTH
@@ -33,7 +28,7 @@ mdefine_line|#define SA1111_SAC_DMA_MIN_XFER&t;(0x800)
 multiline_comment|/*&n; * SA1111 register definitions.&n; */
 DECL|macro|__CCREG
 mdefine_line|#define __CCREG(x)&t;__REGP(SA1111_VBASE + (x))
-multiline_comment|/* System Bus Interface (SBI)&n; *&n; * Registers&n; *    SKCR&t;Control Register&n; *    SMCR&t;Shared Memory Controller Register&n; *    SKID&t;ID Register&n; */
+multiline_comment|/*&n; * System Bus Interface (SBI)&n; *&n; * Registers&n; *    SKCR&t;Control Register&n; *    SMCR&t;Shared Memory Controller Register&n; *    SKID&t;ID Register&n; */
 DECL|macro|SA1111_SKCR
 mdefine_line|#define SA1111_SKCR&t;0x0000
 DECL|macro|SA1111_SMCR
@@ -104,43 +99,61 @@ mdefine_line|#define SKID_ID_MASK&t;(0xffffff00)
 DECL|macro|SKID_SA1111_ID
 mdefine_line|#define SKID_SA1111_ID&t;(0x690cc200)
 multiline_comment|/*&n; * System Controller&n; *&n; * Registers&n; *    SKPCR&t;Power Control Register&n; *    SKCDR&t;Clock Divider Register&n; *    SKAUD&t;Audio Clock Divider Register&n; *    SKPMC&t;PS/2 Mouse Clock Divider Register&n; *    SKPTC&t;PS/2 Track Pad Clock Divider Register&n; *    SKPEN0&t;PWM0 Enable Register&n; *    SKPWM0&t;PWM0 Clock Register&n; *    SKPEN1&t;PWM1 Enable Register&n; *    SKPWM1&t;PWM1 Clock Register&n; */
+DECL|macro|SA1111_SKPCR
+mdefine_line|#define SA1111_SKPCR&t;0x0200
+DECL|macro|SA1111_SKCDR
+mdefine_line|#define SA1111_SKCDR&t;0x0204
+DECL|macro|SA1111_SKAUD
+mdefine_line|#define SA1111_SKAUD&t;0x0208
+DECL|macro|SA1111_SKPMC
+mdefine_line|#define SA1111_SKPMC&t;0x020c
+DECL|macro|SA1111_SKPTC
+mdefine_line|#define SA1111_SKPTC&t;0x0210
+DECL|macro|SA1111_SKPEN0
+mdefine_line|#define SA1111_SKPEN0&t;0x0214
+DECL|macro|SA1111_SKPWN0
+mdefine_line|#define SA1111_SKPWN0&t;0x0218
+DECL|macro|SA1111_SKPEN1
+mdefine_line|#define SA1111_SKPEN1&t;0x021c
+DECL|macro|SA1111_SKPWM1
+mdefine_line|#define SA1111_SKPWM1&t;0x0220
 DECL|macro|_SKPCR
-mdefine_line|#define _SKPCR&t;&t;_SA1111(0x0200)
+mdefine_line|#define _SKPCR&t;&t;_SA1111(SA1111_SKPCR)
 DECL|macro|_SKCDR
-mdefine_line|#define _SKCDR&t;&t;_SA1111(0x0204)
+mdefine_line|#define _SKCDR&t;&t;_SA1111(SA1111_SKCDR)
 DECL|macro|_SKAUD
-mdefine_line|#define _SKAUD&t;&t;_SA1111(0x0208)
+mdefine_line|#define _SKAUD&t;&t;_SA1111(SA1111_SKAUD)
 DECL|macro|_SKPMC
-mdefine_line|#define _SKPMC&t;&t;_SA1111(0x020c)
+mdefine_line|#define _SKPMC&t;&t;_SA1111(SA1111_SKPMC)
 DECL|macro|_SKPTC
-mdefine_line|#define _SKPTC&t;&t;_SA1111(0x0210)
+mdefine_line|#define _SKPTC&t;&t;_SA1111(SA1111_SKPTC)
 DECL|macro|_SKPEN0
-mdefine_line|#define _SKPEN0&t;&t;_SA1111(0x0214)
+mdefine_line|#define _SKPEN0&t;&t;_SA1111(SA1111_SKPEN0)
 DECL|macro|_SKPWM0
-mdefine_line|#define _SKPWM0&t;&t;_SA1111(0x0218)
+mdefine_line|#define _SKPWM0&t;&t;_SA1111(SA1111_SKPWM0)
 DECL|macro|_SKPEN1
-mdefine_line|#define _SKPEN1&t;&t;_SA1111(0x021c)
+mdefine_line|#define _SKPEN1&t;&t;_SA1111(SA1111_SKPEN1)
 DECL|macro|_SKPWM1
-mdefine_line|#define _SKPWM1&t;&t;_SA1111(0x0220)
+mdefine_line|#define _SKPWM1&t;&t;_SA1111(SA1111_SKPWM1)
 macro_line|#if LANGUAGE == C
 DECL|macro|SKPCR
-mdefine_line|#define SKPCR&t;&t;__CCREG(0x0200)
+mdefine_line|#define SKPCR&t;&t;__CCREG(SA1111_SKPCR)
 DECL|macro|SKCDR
-mdefine_line|#define SKCDR&t;&t;__CCREG(0x0204)
+mdefine_line|#define SKCDR&t;&t;__CCREG(SA1111_SKCDR)
 DECL|macro|SKAUD
-mdefine_line|#define SKAUD&t;&t;__CCREG(0x0208)
+mdefine_line|#define SKAUD&t;&t;__CCREG(SA1111_SKAUD)
 DECL|macro|SKPMC
-mdefine_line|#define SKPMC&t;&t;__CCREG(0x020c)
+mdefine_line|#define SKPMC&t;&t;__CCREG(SA1111_SKPMC)
 DECL|macro|SKPTC
-mdefine_line|#define SKPTC&t;&t;__CCREG(0x0210)
+mdefine_line|#define SKPTC&t;&t;__CCREG(SA1111_SKPTC)
 DECL|macro|SKPEN0
-mdefine_line|#define SKPEN0&t;&t;__CCREG(0x0214)
+mdefine_line|#define SKPEN0&t;&t;__CCREG(SA1111_SKPEN0)
 DECL|macro|SKPWM0
-mdefine_line|#define SKPWM0&t;&t;__CCREG(0x0218)
+mdefine_line|#define SKPWM0&t;&t;__CCREG(SA1111_SKPWM0)
 DECL|macro|SKPEN1
-mdefine_line|#define SKPEN1&t;&t;__CCREG(0x021c)
+mdefine_line|#define SKPEN1&t;&t;__CCREG(SA1111_SKPEN1)
 DECL|macro|SKPWM1
-mdefine_line|#define SKPWM1&t;&t;__CCREG(0x0220)
+mdefine_line|#define SKPWM1&t;&t;__CCREG(SA1111_SKPWM1)
 macro_line|#endif  /* LANGUAGE == C */
 DECL|macro|SKPCR_UCLKEN
 mdefine_line|#define SKPCR_UCLKEN&t;(1&lt;&lt;0)
@@ -870,5 +883,32 @@ DECL|macro|PCSSR_S0_SLEEP
 mdefine_line|#define PCSSR_S0_SLEEP&t;(1&lt;&lt;0)
 DECL|macro|PCSSR_S1_SLEEP
 mdefine_line|#define PCSSR_S1_SLEEP&t;(1&lt;&lt;1)
+DECL|struct|sa1111_device
+r_struct
+id|sa1111_device
+(brace
+DECL|member|dev
+r_struct
+id|device
+id|dev
+suffix:semicolon
+DECL|member|resource
+r_struct
+id|resource
+id|resource
+suffix:semicolon
+DECL|member|base
+r_void
+op_star
+id|base
+suffix:semicolon
+)brace
+suffix:semicolon
+r_extern
+r_struct
+id|sa1111_device
+op_star
+id|sa1111
+suffix:semicolon
 macro_line|#endif  /* _ASM_ARCH_SA1111 */
 eof
