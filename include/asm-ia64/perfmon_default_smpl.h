@@ -65,18 +65,18 @@ r_int
 id|hdr_count
 suffix:semicolon
 multiline_comment|/* how many valid entries */
-DECL|member|hdr_cur_pos
-r_void
-op_star
-id|hdr_cur_pos
+DECL|member|hdr_cur_offs
+r_int
+r_int
+id|hdr_cur_offs
 suffix:semicolon
-multiline_comment|/* current position in the buffer */
-DECL|member|hdr_last_pos
-r_void
-op_star
-id|hdr_last_pos
+multiline_comment|/* current offset from top of buffer */
+DECL|member|hdr_reserved2
+r_int
+r_int
+id|hdr_reserved2
 suffix:semicolon
-multiline_comment|/* first byte beyond buffer */
+multiline_comment|/* reserved for future use */
 DECL|member|hdr_overflows
 r_int
 r_int
