@@ -2364,7 +2364,7 @@ c_func
 l_string|&quot;Call trace:&quot;
 )paren
 suffix:semicolon
-macro_line|#if CONFIG_KALLSYMS
+macro_line|#ifdef CONFIG_KALLSYMS
 id|printk
 c_func
 (paren
@@ -2413,7 +2413,7 @@ comma
 id|ret
 )paren
 suffix:semicolon
-macro_line|#if CONFIG_KALLSYMS
+macro_line|#ifdef CONFIG_KALLSYMS
 id|print_symbol
 c_func
 (paren

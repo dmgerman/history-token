@@ -2481,7 +2481,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#if CONFIG_SMP
+macro_line|#ifdef CONFIG_SMP
 r_if
 c_cond
 (paren
@@ -2831,7 +2831,7 @@ id|ret
 op_assign
 l_int|0
 suffix:semicolon
-macro_line|#if CONFIG_SMP
+macro_line|#ifdef CONFIG_SMP
 r_if
 c_cond
 (paren

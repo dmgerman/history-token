@@ -14,7 +14,7 @@ id|eicon_pci_revision
 op_assign
 l_string|&quot;$Revision: 1.1.4.1.2.3 $&quot;
 suffix:semicolon
-macro_line|#if CONFIG_PCI&t;         /* intire stuff is only for PCI */
+macro_line|#ifdef CONFIG_PCI&t;         /* entire stuff is only for PCI */
 macro_line|#ifdef CONFIG_ISDN_DRV_EICON_PCI
 DECL|function|eicon_pci_find_card
 r_int

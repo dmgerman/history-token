@@ -9,7 +9,7 @@ macro_line|#include &lt;asm/checksum.h&gt;
 macro_line|#include &lt;asm/delay.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/setup.h&gt;
-macro_line|#if CONFIG_IP_MULTICAST
+macro_line|#ifdef CONFIG_IP_MULTICAST
 macro_line|#include &lt;net/arp.h&gt;
 macro_line|#endif
 multiline_comment|/*&n; * memory management&n; */

@@ -463,7 +463,7 @@ id|timer_list
 id|ahc_timer_t
 suffix:semicolon
 multiline_comment|/********************************** Includes **********************************/
-macro_line|#if CONFIG_AIC7XXX_REG_PRETTY_PRINT
+macro_line|#ifdef CONFIG_AIC7XXX_REG_PRETTY_PRINT
 DECL|macro|AIC_DEBUG_REGISTERS
 mdefine_line|#define AIC_DEBUG_REGISTERS 1
 macro_line|#else

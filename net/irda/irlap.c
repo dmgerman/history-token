@@ -3667,7 +3667,7 @@ comma
 id|self-&gt;window
 )paren
 suffix:semicolon
-macro_line|#if CONFIG_IRDA_DYNAMIC_WINDOW
+macro_line|#ifdef CONFIG_IRDA_DYNAMIC_WINDOW
 id|len
 op_add_assign
 id|sprintf

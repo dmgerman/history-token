@@ -2416,7 +2416,7 @@ id|highmem_pages
 op_assign
 l_int|0
 suffix:semicolon
-macro_line|#if CONFIG_HIGHMEM
+macro_line|#ifdef CONFIG_HIGHMEM
 r_if
 c_cond
 (paren

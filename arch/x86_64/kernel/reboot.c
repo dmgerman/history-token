@@ -254,7 +254,7 @@ op_star
 id|__unused
 )paren
 (brace
-macro_line|#if CONFIG_SMP
+macro_line|#ifdef CONFIG_SMP
 r_int
 id|cpuid
 suffix:semicolon

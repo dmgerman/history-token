@@ -3042,7 +3042,7 @@ id|pid
 op_assign
 id|parent-&gt;tgid
 suffix:semicolon
-macro_line|#if CONFIG_SMP
+macro_line|#ifdef CONFIG_SMP
 (brace
 r_struct
 id|task_struct

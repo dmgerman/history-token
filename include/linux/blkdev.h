@@ -751,7 +751,7 @@ DECL|macro|BLK_BOUNCE_ANY
 mdefine_line|#define BLK_BOUNCE_ANY&t;&t;((u64)blk_max_pfn &lt;&lt; PAGE_SHIFT)
 DECL|macro|BLK_BOUNCE_ISA
 mdefine_line|#define BLK_BOUNCE_ISA&t;&t;(ISA_DMA_THRESHOLD)
-macro_line|#if CONFIG_MMU
+macro_line|#ifdef CONFIG_MMU
 r_extern
 r_int
 id|init_emergency_isa_pool

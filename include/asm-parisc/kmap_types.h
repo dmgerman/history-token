@@ -2,7 +2,7 @@ macro_line|#ifndef _ASM_KMAP_TYPES_H
 DECL|macro|_ASM_KMAP_TYPES_H
 mdefine_line|#define _ASM_KMAP_TYPES_H
 macro_line|#include &lt;linux/config.h&gt;
-macro_line|#if CONFIG_DEBUG_HIGHMEM
+macro_line|#ifdef CONFIG_DEBUG_HIGHMEM
 DECL|macro|D
 macro_line|# define D(n) __KM_FENCE_##n ,
 macro_line|#else

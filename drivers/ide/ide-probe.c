@@ -2928,7 +2928,7 @@ op_logical_neg
 id|hwif-&gt;mate-&gt;present
 )paren
 op_logical_and
-macro_line|#if CONFIG_BLK_DEV_PDC4030
+macro_line|#ifdef CONFIG_BLK_DEV_PDC4030
 (paren
 id|hwif-&gt;chipset
 op_ne

@@ -16,7 +16,7 @@ r_int
 id|lock
 multiline_comment|/*__attribute__((aligned(32))) */
 suffix:semicolon
-macro_line|#if CONFIG_DEBUG_SPINLOCK
+macro_line|#ifdef CONFIG_DEBUG_SPINLOCK
 DECL|member|on_cpu
 r_int
 id|on_cpu
@@ -47,7 +47,7 @@ DECL|typedef|spinlock_t
 )brace
 id|spinlock_t
 suffix:semicolon
-macro_line|#if CONFIG_DEBUG_SPINLOCK
+macro_line|#ifdef CONFIG_DEBUG_SPINLOCK
 DECL|macro|SPIN_LOCK_UNLOCKED
 mdefine_line|#define SPIN_LOCK_UNLOCKED (spinlock_t) {0, -1, 0, 0, 0, 0}
 DECL|macro|spin_lock_init
@@ -62,7 +62,7 @@ DECL|macro|spin_is_locked
 mdefine_line|#define spin_is_locked(x)&t;((x)-&gt;lock != 0)
 DECL|macro|spin_unlock_wait
 mdefine_line|#define spin_unlock_wait(x)&t;({ do { barrier(); } while ((x)-&gt;lock); })
-macro_line|#if CONFIG_DEBUG_SPINLOCK
+macro_line|#ifdef CONFIG_DEBUG_SPINLOCK
 r_extern
 r_void
 id|_raw_spin_unlock
@@ -239,7 +239,7 @@ DECL|macro|rwlock_init
 mdefine_line|#define rwlock_init(x)&t;do { *(x) = RW_LOCK_UNLOCKED; } while(0)
 DECL|macro|rwlock_is_locked
 mdefine_line|#define rwlock_is_locked(x)&t;(*(volatile int *)(x) != 0)
-macro_line|#if CONFIG_DEBUG_RWLOCK
+macro_line|#ifdef CONFIG_DEBUG_RWLOCK
 r_extern
 r_void
 id|_raw_write_lock

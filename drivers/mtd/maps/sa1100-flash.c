@@ -1142,7 +1142,7 @@ id|freebird_partitions
 )braket
 op_assign
 (brace
-macro_line|#if CONFIG_SA1100_FREEBIRD_NEW
+macro_line|#ifdef CONFIG_SA1100_FREEBIRD_NEW
 (brace
 dot
 id|name

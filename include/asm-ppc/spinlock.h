@@ -32,7 +32,7 @@ DECL|typedef|spinlock_t
 id|spinlock_t
 suffix:semicolon
 macro_line|#ifdef __KERNEL__
-macro_line|#if CONFIG_DEBUG_SPINLOCK
+macro_line|#ifdef CONFIG_DEBUG_SPINLOCK
 DECL|macro|SPINLOCK_DEBUG_INIT
 mdefine_line|#define SPINLOCK_DEBUG_INIT     , 0, 0
 macro_line|#else
@@ -198,7 +198,7 @@ DECL|typedef|rwlock_t
 )brace
 id|rwlock_t
 suffix:semicolon
-macro_line|#if CONFIG_DEBUG_SPINLOCK
+macro_line|#ifdef CONFIG_DEBUG_SPINLOCK
 DECL|macro|RWLOCK_DEBUG_INIT
 mdefine_line|#define RWLOCK_DEBUG_INIT     , 0
 macro_line|#else

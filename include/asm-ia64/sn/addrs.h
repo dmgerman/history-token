@@ -164,7 +164,7 @@ mdefine_line|#define LOCAL_HUB_ADDR(_x)&t;(HUBREG_CAST (IALIAS_BASE + (_x)))
 DECL|macro|REMOTE_HUB_ADDR
 mdefine_line|#define REMOTE_HUB_ADDR(_n, _x)&t;(HUBREG_CAST (NODE_SWIN_BASE(_n, 1) +&t;&bslash;&n;&t;&t;&t;&t;&t;      0x800000 + (_x)))
 macro_line|#endif
-macro_line|#if CONFIG_IA64_SGI_SN1
+macro_line|#ifdef CONFIG_IA64_SGI_SN1
 DECL|macro|REMOTE_HUB_PI_ADDR
 mdefine_line|#define REMOTE_HUB_PI_ADDR(_n, _sn, _x)&t;(HUBREG_CAST (NODE_SWIN_BASE(_n, 1) +&t;&bslash;&n;&t;&t;&t;&t;&t;      0x800000 + PIREG(_x, _sn)))
 macro_line|#endif

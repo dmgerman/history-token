@@ -1841,7 +1841,7 @@ id|rc
 op_assign
 l_int|0
 suffix:semicolon
-macro_line|#if CONFIG_PROC_FS
+macro_line|#ifdef CONFIG_PROC_FS
 id|cifs_proc_init
 c_func
 (paren
@@ -2030,7 +2030,7 @@ c_func
 )paren
 suffix:semicolon
 )brace
-macro_line|#if CONFIG_PROC_FS
+macro_line|#ifdef CONFIG_PROC_FS
 id|cifs_proc_clean
 c_func
 (paren
@@ -2061,7 +2061,7 @@ l_string|&quot;In unregister ie exit_cifs&quot;
 )paren
 )paren
 suffix:semicolon
-macro_line|#if CONFIG_PROC_FS
+macro_line|#ifdef CONFIG_PROC_FS
 id|cifs_proc_clean
 c_func
 (paren
