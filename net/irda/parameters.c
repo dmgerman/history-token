@@ -775,6 +775,10 @@ op_assign
 l_int|0
 suffix:semicolon
 r_int
+id|extract_len
+suffix:semicolon
+multiline_comment|/* Real lenght we extract */
+r_int
 id|err
 suffix:semicolon
 id|p.pi
@@ -795,6 +799,11 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* Clear value */
+id|extract_len
+op_assign
+id|p.pl
+suffix:semicolon
+multiline_comment|/* Default : extract all */
 multiline_comment|/* Check if buffer is long enough for parsing */
 r_if
 c_cond
@@ -826,7 +835,7 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * Check that the integer length is what we expect it to be. If the&n;&t; * handler want a 16 bits integer then a 32 bits is not good enough&n;&t; */
+multiline_comment|/*&n;&t; * Check that the integer length is what we expect it to be. If the&n;&t; * handler want a 16 bits integer then a 32 bits is not good enough&n;&t; * PV_INTEGER means that the handler is flexible.&n;&t; */
 r_if
 c_cond
 (paren
@@ -866,6 +875,27 @@ comma
 id|p.pl
 )paren
 suffix:semicolon
+multiline_comment|/* Most parameters are bit/byte fields or little endian,&n;&t;&t; * so it&squot;s ok to only extract a subset of it (the subset&n;&t;&t; * that the handler expect). This is necessary, as some&n;&t;&t; * broken implementations seems to add extra undefined bits.&n;&t;&t; * If the parameter is shorter than we expect or is big&n;&t;&t; * endian, we can&squot;t play those tricks. Jean II */
+r_if
+c_cond
+(paren
+(paren
+id|p.pl
+OL
+(paren
+id|type
+op_amp
+id|PV_MASK
+)paren
+)paren
+op_logical_or
+(paren
+id|type
+op_amp
+id|PV_BIG_ENDIAN
+)paren
+)paren
+(brace
 multiline_comment|/* Skip parameter */
 r_return
 id|p.pl
@@ -873,10 +903,21 @@ op_plus
 l_int|2
 suffix:semicolon
 )brace
+r_else
+(brace
+multiline_comment|/* Extract subset of it, fallthrough */
+id|extract_len
+op_assign
+id|type
+op_amp
+id|PV_MASK
+suffix:semicolon
+)brace
+)brace
 r_switch
 c_cond
 (paren
-id|p.pl
+id|extract_len
 )paren
 (brace
 r_case
