@@ -3145,13 +3145,9 @@ suffix:semicolon
 op_star
 id|imbalance
 op_assign
-(paren
 id|max_load
 op_minus
 id|nr_running
-)paren
-op_div
-l_int|2
 suffix:semicolon
 multiline_comment|/* It needs an at least ~25% imbalance to trigger balancing. */
 r_if
@@ -3161,16 +3157,14 @@ op_logical_neg
 id|idle
 op_logical_and
 (paren
+(paren
 op_star
 id|imbalance
-OL
-(paren
-id|max_load
-op_plus
-l_int|3
 )paren
-op_div
+op_star
 l_int|4
+OL
+id|max_load
 )paren
 )paren
 (brace
@@ -3205,8 +3199,6 @@ c_cond
 id|busiest-&gt;nr_running
 op_le
 id|nr_running
-op_plus
-l_int|1
 )paren
 (brace
 id|spin_unlock
@@ -3396,6 +3388,11 @@ id|sched_clock
 c_func
 (paren
 )paren
+suffix:semicolon
+multiline_comment|/*&n;&t; * We only want to steal a number of tasks equal to 1/2 the imbalance,&n;&t; * otherwise we&squot;ll just shift the imbalance to the new queue:&n;&t; */
+id|imbalance
+op_div_assign
+l_int|2
 suffix:semicolon
 multiline_comment|/*&n;&t; * We first consider expired tasks. Those will likely not be&n;&t; * executed in the near future, and they are most likely to&n;&t; * be cache-cold, thus switching CPUs has the least effect&n;&t; * on them.&n;&t; */
 r_if
