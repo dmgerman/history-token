@@ -9272,7 +9272,7 @@ op_minus
 id|ENOMEM
 suffix:semicolon
 r_goto
-id|clean1
+id|clean
 suffix:semicolon
 )brace
 id|memset
@@ -9368,7 +9368,7 @@ c_cond
 id|error
 )paren
 r_goto
-id|clean2
+id|clean
 suffix:semicolon
 op_increment
 id|scsi_debug_add_host
@@ -9376,7 +9376,7 @@ suffix:semicolon
 r_return
 id|error
 suffix:semicolon
-id|clean2
+id|clean
 suffix:colon
 id|list_for_each_safe
 c_func
@@ -9416,8 +9416,6 @@ id|sdbg_devinfo
 )paren
 suffix:semicolon
 )brace
-id|clean1
-suffix:colon
 id|kfree
 c_func
 (paren
