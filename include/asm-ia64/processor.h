@@ -460,14 +460,6 @@ DECL|member|prof_multiplier
 id|__u64
 id|prof_multiplier
 suffix:semicolon
-DECL|member|pfm_syst_wide
-id|__u32
-id|pfm_syst_wide
-suffix:semicolon
-DECL|member|pfm_dcr_pp
-id|__u32
-id|pfm_dcr_pp
-suffix:semicolon
 macro_line|#endif
 )brace
 id|cpu_info
