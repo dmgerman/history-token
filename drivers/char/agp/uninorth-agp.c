@@ -1310,16 +1310,6 @@ op_assign
 id|agp_generic_destroy_page
 comma
 dot
-id|suspend
-op_assign
-id|agp_generic_suspend
-comma
-dot
-id|resume
-op_assign
-id|agp_generic_resume
-comma
-dot
 id|cant_use_aperture
 op_assign
 l_int|1
