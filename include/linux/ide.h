@@ -2367,9 +2367,6 @@ id|flags
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * must be addressed with 48-bit lba&n; */
-DECL|macro|rq_lba48
-mdefine_line|#define rq_lba48(rq)&t;&bslash;&n;&t;(((rq)-&gt;sector + (rq)-&gt;nr_sectors) &gt; 0xfffffff || rq-&gt;nr_sectors &gt; 256)
 DECL|macro|IDE_CHIPSET_PCI_MASK
 mdefine_line|#define IDE_CHIPSET_PCI_MASK&t;&bslash;&n;    ((1&lt;&lt;ide_pci)|(1&lt;&lt;ide_cmd646)|(1&lt;&lt;ide_ali14xx))
 DECL|macro|IDE_CHIPSET_IS_PCI
@@ -4701,11 +4698,6 @@ DECL|member|command_type
 r_int
 id|command_type
 suffix:semicolon
-DECL|member|addressing
-r_int
-id|addressing
-suffix:semicolon
-multiline_comment|/* 1 for 48-bit */
 DECL|member|prehandler
 id|ide_pre_handler_t
 op_star

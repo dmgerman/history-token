@@ -554,7 +554,7 @@ id|u8
 id|HIHI
 op_assign
 (paren
-id|task-&gt;addressing
+id|drive-&gt;addressing
 op_eq
 l_int|1
 )paren
@@ -605,7 +605,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|task-&gt;addressing
+id|drive-&gt;addressing
 op_eq
 l_int|1
 )paren
@@ -1139,7 +1139,7 @@ l_int|0x0400
 )paren
 op_logical_and
 (paren
-id|args-&gt;addressing
+id|drive-&gt;addressing
 op_eq
 l_int|1
 )paren
@@ -5527,11 +5527,6 @@ id|args.command_type
 op_assign
 id|req_task-&gt;req_cmd
 suffix:semicolon
-multiline_comment|/*&n;&t; * this forces 48-bit commands if the drive is configured to do so.&n;&t; * it would also be possible to lookup the command type based on the&n;&t; * opcode, but this is way simpler.&n;&t; */
-id|args.addressing
-op_assign
-id|drive-&gt;addressing
-suffix:semicolon
 macro_line|#ifdef CONFIG_IDE_TASK_IOCTL_DEBUG
 id|DTF
 c_func
@@ -7298,7 +7293,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|task-&gt;addressing
+id|drive-&gt;addressing
 op_eq
 l_int|1
 )paren
@@ -7326,7 +7321,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|task-&gt;addressing
+id|drive-&gt;addressing
 op_eq
 l_int|1
 )paren

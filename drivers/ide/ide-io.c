@@ -771,7 +771,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|args-&gt;addressing
+id|drive-&gt;addressing
 op_eq
 l_int|1
 )paren
