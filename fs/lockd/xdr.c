@@ -2898,7 +2898,7 @@ multiline_comment|/*&n; * For NLM, a void procedure really returns nothing&n; */
 DECL|macro|nlmclt_decode_norep
 mdefine_line|#define nlmclt_decode_norep&t;NULL
 DECL|macro|PROC
-mdefine_line|#define PROC(proc, argtype, restype)&t;&bslash;&n;    { &quot;nlm_&quot; #proc,&t;&t;&t;&t;&t;&t;&bslash;&n;      (kxdrproc_t) nlmclt_encode_##argtype,&t;&t;&t;&bslash;&n;      (kxdrproc_t) nlmclt_decode_##restype,&t;&t;&t;&bslash;&n;      MAX(NLM_##argtype##_sz, NLM_##restype##_sz) &lt;&lt; 2,&t;&t;&bslash;&n;      0&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;    }
+mdefine_line|#define PROC(proc, argtype, restype)&t;&bslash;&n;    { .p_procname  = &quot;nlm_&quot; #proc,&t;&t;&t;&t;&t;&bslash;&n;      .p_encode    = (kxdrproc_t) nlmclt_encode_##argtype,&t;&t;&bslash;&n;      .p_decode    = (kxdrproc_t) nlmclt_decode_##restype,&t;&t;&bslash;&n;      .p_bufsiz    = MAX(NLM_##argtype##_sz, NLM_##restype##_sz) &lt;&lt; 2&t;&bslash;&n;    }
 DECL|variable|nlm_procedures
 r_static
 r_struct

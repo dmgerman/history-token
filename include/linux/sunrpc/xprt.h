@@ -144,14 +144,15 @@ id|u32
 id|rq_bytes_sent
 suffix:semicolon
 multiline_comment|/* Bytes we have sent */
-macro_line|#ifdef RPC_PROFILE
 DECL|member|rq_xtime
-r_int
 r_int
 id|rq_xtime
 suffix:semicolon
 multiline_comment|/* when transmitted */
-macro_line|#endif
+DECL|member|rq_nresend
+r_int
+id|rq_nresend
+suffix:semicolon
 )brace
 suffix:semicolon
 DECL|macro|rq_svec

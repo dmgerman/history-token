@@ -388,6 +388,15 @@ id|clnt-&gt;cl_autobind
 op_assign
 l_int|1
 suffix:semicolon
+id|rpc_init_rtt
+c_func
+(paren
+op_amp
+id|clnt-&gt;cl_rtt
+comma
+id|xprt-&gt;timeout.to_initval
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren

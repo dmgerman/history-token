@@ -4688,7 +4688,7 @@ DECL|macro|MAX
 macro_line|# define MAX(a, b)&t;(((a) &gt; (b))? (a) : (b))
 macro_line|#endif
 DECL|macro|PROC
-mdefine_line|#define PROC(proc, argtype, restype)&t;&t;&t;&t;&bslash;&n;    { &quot;nfs3_&quot; #proc,&t;&t;&t;&t;&t;&t;&bslash;&n;      (kxdrproc_t) nfs3_xdr_##argtype,&t;&t;&t;&t;&bslash;&n;      (kxdrproc_t) nfs3_xdr_##restype,&t;&t;&t;&t;&bslash;&n;      MAX(NFS3_##argtype##_sz,NFS3_##restype##_sz) &lt;&lt; 2,&t;&bslash;&n;      0&t;&t;&t;&t;&t;&t;&t;&bslash;&n;    }
+mdefine_line|#define PROC(proc, argtype, restype, timer)&t;&t;&t;&t;&bslash;&n;    { .p_procname  = &quot;nfs3_&quot; #proc,&t;&t;&t;&t;&t;&bslash;&n;      .p_encode    = (kxdrproc_t) nfs3_xdr_##argtype,&t;&t;&t;&bslash;&n;      .p_decode    = (kxdrproc_t) nfs3_xdr_##restype,&t;&t;&t;&bslash;&n;      .p_bufsiz    = MAX(NFS3_##argtype##_sz,NFS3_##restype##_sz) &lt;&lt; 2,&t;&bslash;&n;      .p_timer     = timer&t;&t;&t;&t;&t;&t;&bslash;&n;    }
 DECL|variable|nfs3_procedures
 r_static
 r_struct
@@ -4707,6 +4707,8 @@ comma
 id|enc_void
 comma
 id|dec_void
+comma
+l_int|0
 )paren
 comma
 id|PROC
@@ -4717,6 +4719,8 @@ comma
 id|fhandle
 comma
 id|attrstat
+comma
+l_int|1
 )paren
 comma
 id|PROC
@@ -4727,6 +4731,8 @@ comma
 id|sattrargs
 comma
 id|wccstat
+comma
+l_int|0
 )paren
 comma
 id|PROC
@@ -4737,6 +4743,8 @@ comma
 id|diropargs
 comma
 id|lookupres
+comma
+l_int|2
 )paren
 comma
 id|PROC
@@ -4747,6 +4755,8 @@ comma
 id|accessargs
 comma
 id|accessres
+comma
+l_int|1
 )paren
 comma
 id|PROC
@@ -4757,6 +4767,8 @@ comma
 id|readlinkargs
 comma
 id|readlinkres
+comma
+l_int|3
 )paren
 comma
 id|PROC
@@ -4767,6 +4779,8 @@ comma
 id|readargs
 comma
 id|readres
+comma
+l_int|3
 )paren
 comma
 id|PROC
@@ -4777,6 +4791,8 @@ comma
 id|writeargs
 comma
 id|writeres
+comma
+l_int|4
 )paren
 comma
 id|PROC
@@ -4787,6 +4803,8 @@ comma
 id|createargs
 comma
 id|createres
+comma
+l_int|0
 )paren
 comma
 id|PROC
@@ -4797,6 +4815,8 @@ comma
 id|mkdirargs
 comma
 id|createres
+comma
+l_int|0
 )paren
 comma
 id|PROC
@@ -4807,6 +4827,8 @@ comma
 id|symlinkargs
 comma
 id|createres
+comma
+l_int|0
 )paren
 comma
 id|PROC
@@ -4817,6 +4839,8 @@ comma
 id|mknodargs
 comma
 id|createres
+comma
+l_int|0
 )paren
 comma
 id|PROC
@@ -4827,6 +4851,8 @@ comma
 id|diropargs
 comma
 id|wccstat
+comma
+l_int|0
 )paren
 comma
 id|PROC
@@ -4837,6 +4863,8 @@ comma
 id|diropargs
 comma
 id|wccstat
+comma
+l_int|0
 )paren
 comma
 id|PROC
@@ -4847,6 +4875,8 @@ comma
 id|renameargs
 comma
 id|renameres
+comma
+l_int|0
 )paren
 comma
 id|PROC
@@ -4857,6 +4887,8 @@ comma
 id|linkargs
 comma
 id|linkres
+comma
+l_int|0
 )paren
 comma
 id|PROC
@@ -4867,6 +4899,8 @@ comma
 id|readdirargs
 comma
 id|readdirres
+comma
+l_int|3
 )paren
 comma
 id|PROC
@@ -4877,6 +4911,8 @@ comma
 id|readdirargs
 comma
 id|readdirres
+comma
+l_int|3
 )paren
 comma
 id|PROC
@@ -4887,6 +4923,8 @@ comma
 id|fhandle
 comma
 id|fsstatres
+comma
+l_int|0
 )paren
 comma
 id|PROC
@@ -4897,6 +4935,8 @@ comma
 id|fhandle
 comma
 id|fsinfores
+comma
+l_int|0
 )paren
 comma
 id|PROC
@@ -4907,6 +4947,8 @@ comma
 id|fhandle
 comma
 id|pathconfres
+comma
+l_int|0
 )paren
 comma
 id|PROC
@@ -4917,6 +4959,8 @@ comma
 id|commitargs
 comma
 id|commitres
+comma
+l_int|5
 )paren
 comma
 )brace
