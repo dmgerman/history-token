@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/cpufreq.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
+macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;asm/ist.h&gt;
 macro_line|#include &quot;speedstep-lib.h&quot;
 DECL|macro|PFX
@@ -72,6 +73,9 @@ DECL|macro|SET_SPEEDSTEP_STATE
 mdefine_line|#define SET_SPEEDSTEP_STATE 2
 DECL|macro|GET_SPEEDSTEP_FREQS
 mdefine_line|#define GET_SPEEDSTEP_FREQS 4
+multiline_comment|/* how often shall the SMI call be tried if it failed, e.g. because&n; * of DMA activity going on? */
+DECL|macro|SMI_TRIES
+mdefine_line|#define SMI_TRIES 5
 multiline_comment|/* DEBUG&n; *   Define it if you want verbose debug output, e.g. for bug reporting&n; */
 singleline_comment|//#define SPEEDSTEP_DEBUG
 macro_line|#ifdef SPEEDSTEP_DEBUG
@@ -429,6 +433,8 @@ r_int
 id|old_state
 comma
 id|result
+op_assign
+l_int|0
 comma
 id|command
 comma
@@ -447,6 +453,12 @@ r_int
 id|function
 op_assign
 id|SET_SPEEDSTEP_STATE
+suffix:semicolon
+r_int
+r_int
+id|retry
+op_assign
+l_int|0
 suffix:semicolon
 r_if
 c_cond
@@ -533,6 +545,37 @@ op_amp
 l_int|0xff
 )paren
 suffix:semicolon
+r_do
+(brace
+r_if
+c_cond
+(paren
+id|retry
+)paren
+(brace
+id|dprintk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;cpufreq: retry %u, previous result %u&bslash;n&quot;
+comma
+id|retry
+comma
+id|result
+)paren
+suffix:semicolon
+id|mdelay
+c_func
+(paren
+id|retry
+op_star
+l_int|50
+)paren
+suffix:semicolon
+)brace
+id|retry
+op_increment
+suffix:semicolon
 id|__asm__
 id|__volatile__
 c_func
@@ -576,6 +619,23 @@ l_int|0
 )paren
 )paren
 suffix:semicolon
+)brace
+r_while
+c_loop
+(paren
+(paren
+id|new_state
+op_ne
+id|state
+)paren
+op_logical_and
+(paren
+id|retry
+op_le
+id|SMI_TRIES
+)paren
+)paren
+suffix:semicolon
 multiline_comment|/* enable IRQs */
 id|local_irq_restore
 c_func
@@ -595,7 +655,7 @@ id|dprintk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;cpufreq: change to %u MHz succeeded&bslash;n&quot;
+l_string|&quot;cpufreq: change to %u MHz succeeded after %u tries with result %u&bslash;n&quot;
 comma
 (paren
 id|freqs
@@ -604,6 +664,10 @@ r_new
 op_div
 l_int|1000
 )paren
+comma
+id|retry
+comma
+id|result
 )paren
 suffix:semicolon
 )brace
@@ -613,7 +677,11 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;cpufreq: change failed&bslash;n&quot;
+l_string|&quot;cpufreq: change failed with new_state %u and result %u&bslash;n&quot;
+comma
+id|new_state
+comma
+id|result
 )paren
 suffix:semicolon
 )brace
