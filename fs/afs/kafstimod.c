@@ -281,10 +281,6 @@ suffix:semicolon
 )brace
 r_else
 (brace
-r_int
-r_int
-id|tmo
-suffix:semicolon
 id|timer
 op_assign
 id|list_entry
@@ -297,7 +293,7 @@ comma
 id|link
 )paren
 suffix:semicolon
-id|tmo
+id|timeout
 op_assign
 id|timer-&gt;timo_jif
 suffix:semicolon
@@ -311,7 +307,11 @@ c_cond
 id|time_before_eq
 c_func
 (paren
-id|tmo
+(paren
+r_int
+r_int
+)paren
+id|timeout
 comma
 id|jif
 )paren
@@ -319,18 +319,21 @@ id|jif
 r_goto
 id|immediate
 suffix:semicolon
+r_else
+(brace
 id|timeout
 op_assign
 (paren
 r_int
 )paren
-id|tmo
+id|timeout
 op_minus
 (paren
 r_int
 )paren
 id|jiffies
 suffix:semicolon
+)brace
 )brace
 id|spin_unlock
 c_func
@@ -536,7 +539,7 @@ l_string|&quot;&quot;
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* end afs_kafstimod_queue_vlocation() */
+multiline_comment|/* end afs_kafstimod_add_timer() */
 multiline_comment|/*****************************************************************************/
 multiline_comment|/*&n; * dequeue a timer&n; * - returns 0 if the timer was deleted or -ENOENT if it wasn&squot;t queued&n; */
 DECL|function|afs_kafstimod_del_timer

@@ -5,10 +5,41 @@ mdefine_line|#define _LINUX_AFS_VNODE_H
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &quot;server.h&quot;
 macro_line|#include &quot;kafstimod.h&quot;
+macro_line|#include &quot;cache.h&quot;
 macro_line|#ifdef __KERNEL__
 r_struct
 id|afs_rxfs_fetch_descriptor
 suffix:semicolon
+multiline_comment|/*****************************************************************************/
+multiline_comment|/*&n; * vnode catalogue entry&n; */
+DECL|struct|afs_cache_vnode
+r_struct
+id|afs_cache_vnode
+(brace
+DECL|member|vnode_id
+id|afs_vnodeid_t
+id|vnode_id
+suffix:semicolon
+multiline_comment|/* vnode ID */
+DECL|member|vnode_unique
+r_int
+id|vnode_unique
+suffix:semicolon
+multiline_comment|/* vnode ID uniquifier */
+DECL|member|data_version
+id|afs_dataversion_t
+id|data_version
+suffix:semicolon
+multiline_comment|/* data version */
+)brace
+suffix:semicolon
+macro_line|#ifdef AFS_CACHING_SUPPORT
+r_extern
+r_struct
+id|cachefs_index_def
+id|afs_vnode_cache_index_def
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/*****************************************************************************/
 multiline_comment|/*&n; * AFS inode private data&n; */
 DECL|struct|afs_vnode
@@ -22,26 +53,33 @@ id|vfs_inode
 suffix:semicolon
 multiline_comment|/* the VFS&squot;s inode record */
 DECL|member|volume
-id|afs_volume_t
+r_struct
+id|afs_volume
 op_star
 id|volume
 suffix:semicolon
 multiline_comment|/* volume on which vnode resides */
 DECL|member|fid
-id|afs_fid_t
+r_struct
+id|afs_fid
 id|fid
 suffix:semicolon
 multiline_comment|/* the file identifier for this inode */
 DECL|member|status
-id|afs_file_status_t
+r_struct
+id|afs_file_status
 id|status
 suffix:semicolon
 multiline_comment|/* AFS status info for this file */
-DECL|member|nix
-r_int
-id|nix
+macro_line|#ifdef AFS_CACHING_SUPPORT
+DECL|member|cache
+r_struct
+id|cachefs_cookie
+op_star
+id|cache
 suffix:semicolon
-multiline_comment|/* vnode index in cache */
+multiline_comment|/* caching cookie */
+macro_line|#endif
 DECL|member|update_waitq
 id|wait_queue_head_t
 id|update_waitq
@@ -69,7 +107,8 @@ DECL|macro|AFS_VNODE_MOUNTPOINT
 mdefine_line|#define AFS_VNODE_MOUNTPOINT&t;0x00000004&t;/* set if vnode is a mountpoint symlink */
 multiline_comment|/* outstanding callback notification on this file */
 DECL|member|cb_server
-id|afs_server_t
+r_struct
+id|afs_server
 op_star
 id|cb_server
 suffix:semicolon
@@ -87,7 +126,8 @@ id|cb_hash_link
 suffix:semicolon
 multiline_comment|/* link in master callback hash */
 DECL|member|cb_timeout
-id|afs_timer_t
+r_struct
+id|afs_timer
 id|cb_timeout
 suffix:semicolon
 multiline_comment|/* timeout on promise */

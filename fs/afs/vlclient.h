@@ -178,9 +178,9 @@ multiline_comment|/* malloc/realloc failed to alloc enough memory */
 )brace
 suffix:semicolon
 multiline_comment|/* maps to &quot;struct vldbentry&quot; in vvl-spec.pdf */
-DECL|struct|afsvl_dbentry
+DECL|struct|afs_vldbentry
 r_struct
-id|afsvl_dbentry
+id|afs_vldbentry
 (brace
 DECL|member|name
 r_char
@@ -287,7 +287,11 @@ r_char
 op_star
 id|volname
 comma
-id|afsc_vldb_record_t
+r_int
+id|volnamesz
+comma
+r_struct
+id|afs_cache_vlocation
 op_star
 id|entry
 )paren
@@ -308,7 +312,8 @@ comma
 id|afs_voltype_t
 id|voltype
 comma
-id|afsc_vldb_record_t
+r_struct
+id|afs_cache_vlocation
 op_star
 id|entry
 )paren
@@ -338,7 +343,8 @@ id|afs_async_op_t
 op_star
 id|op
 comma
-id|afsc_vldb_record_t
+r_struct
+id|afs_cache_vlocation
 op_star
 id|entry
 )paren

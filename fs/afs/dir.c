@@ -32,6 +32,7 @@ comma
 r_struct
 id|nameidata
 op_star
+id|nd
 )paren
 suffix:semicolon
 r_static
@@ -81,6 +82,7 @@ comma
 r_struct
 id|nameidata
 op_star
+id|nd
 )paren
 suffix:semicolon
 r_static
@@ -269,9 +271,9 @@ l_int|4
 )braket
 suffix:semicolon
 multiline_comment|/* if any char of the name (inc NUL) reaches here, consume&n;&t;&t;&t;&t;&t; * the next dirent too */
-DECL|member|parts
+DECL|member|u
 )brace
-id|parts
+id|u
 suffix:semicolon
 DECL|member|extended_name
 id|u8
@@ -1073,7 +1075,7 @@ op_assign
 id|strnlen
 c_func
 (paren
-id|dire-&gt;parts.name
+id|dire-&gt;u.name
 comma
 r_sizeof
 (paren
@@ -1265,7 +1267,7 @@ c_func
 (paren
 id|cookie
 comma
-id|dire-&gt;parts.name
+id|dire-&gt;u.name
 comma
 id|nlen
 comma
@@ -1281,7 +1283,7 @@ comma
 id|ntohl
 c_func
 (paren
-id|dire-&gt;parts.vnode
+id|dire-&gt;u.vnode
 )paren
 comma
 id|filldir
@@ -1289,7 +1291,7 @@ op_eq
 id|afs_dir_lookup_filldir
 ques
 c_cond
-id|dire-&gt;parts.unique
+id|dire-&gt;u.unique
 suffix:colon
 id|DT_UNKNOWN
 )paren
@@ -1868,16 +1870,18 @@ suffix:semicolon
 id|_enter
 c_func
 (paren
-l_string|&quot;{%lu},{%s}&quot;
+l_string|&quot;{%lu},%p{%s}&quot;
 comma
 id|dir-&gt;i_ino
+comma
+id|dentry
 comma
 id|dentry-&gt;d_name.name
 )paren
 suffix:semicolon
 multiline_comment|/* insanity checks first */
-r_if
-c_cond
+id|BUG_ON
+c_func
 (paren
 r_sizeof
 (paren
@@ -1886,13 +1890,9 @@ id|afs_dir_block_t
 op_ne
 l_int|2048
 )paren
-id|BUG
-c_func
-(paren
-)paren
 suffix:semicolon
-r_if
-c_cond
+id|BUG_ON
+c_func
 (paren
 r_sizeof
 (paren
@@ -1900,10 +1900,6 @@ id|afs_dirent_t
 )paren
 op_ne
 l_int|32
-)paren
-id|BUG
-c_func
-(paren
 )paren
 suffix:semicolon
 r_if
@@ -2181,19 +2177,20 @@ suffix:semicolon
 id|_enter
 c_func
 (paren
-l_string|&quot;%s,%p&quot;
+l_string|&quot;{sb=%p n=%s},&quot;
+comma
+id|dentry-&gt;d_sb
 comma
 id|dentry-&gt;d_name.name
-comma
-id|nd
 )paren
 suffix:semicolon
+multiline_comment|/* lock down the parent dentry so we can peer at it */
 id|parent
 op_assign
 id|dget_parent
 c_func
 (paren
-id|dentry
+id|dentry-&gt;d_parent
 )paren
 suffix:semicolon
 id|dir
