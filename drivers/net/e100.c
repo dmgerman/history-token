@@ -20,7 +20,7 @@ macro_line|#include &lt;asm/unaligned.h&gt;
 DECL|macro|DRV_NAME
 mdefine_line|#define DRV_NAME&t;&t;&quot;e100&quot;
 DECL|macro|DRV_VERSION
-mdefine_line|#define DRV_VERSION&t;&t;&quot;3.0.16&quot;
+mdefine_line|#define DRV_VERSION&t;&t;&quot;3.0.17&quot;
 DECL|macro|DRV_DESCRIPTION
 mdefine_line|#define DRV_DESCRIPTION&t;&t;&quot;Intel(R) PRO/100 Network Driver&quot;
 DECL|macro|DRV_COPYRIGHT
@@ -6261,6 +6261,10 @@ c_func
 id|cb-&gt;skb
 )paren
 suffix:semicolon
+id|cb-&gt;skb
+op_assign
+l_int|NULL
+suffix:semicolon
 id|tx_cleaned
 op_assign
 l_int|1
@@ -6589,6 +6593,10 @@ r_struct
 id|cb
 )paren
 )paren
+suffix:semicolon
+id|cb-&gt;skb
+op_assign
+l_int|NULL
 suffix:semicolon
 )brace
 id|nic-&gt;cb_to_use
