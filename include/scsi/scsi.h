@@ -162,6 +162,9 @@ DECL|macro|WRITE_16
 mdefine_line|#define WRITE_16              0x8a
 DECL|macro|SERVICE_ACTION_IN
 mdefine_line|#define SERVICE_ACTION_IN     0x9e
+multiline_comment|/* values for service action in */
+DECL|macro|SAI_READ_CAPACITY_16
+mdefine_line|#define&t;SAI_READ_CAPACITY_16  0x10
 multiline_comment|/*&n; *  Status codes&n; */
 DECL|macro|GOOD
 mdefine_line|#define GOOD                 0x00
