@@ -175,6 +175,11 @@ DECL|member|nr
 r_int
 id|nr
 suffix:semicolon
+DECL|member|res
+r_struct
+id|resource
+id|res
+suffix:semicolon
 DECL|member|cs_state
 id|socket_state_t
 id|cs_state
