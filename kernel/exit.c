@@ -2285,16 +2285,6 @@ id|tsk-&gt;flags
 op_or_assign
 id|PF_EXITING
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|timer_pending
-c_func
-(paren
-op_amp
-id|tsk-&gt;real_timer
-)paren
-)paren
 id|del_timer_sync
 c_func
 (paren
