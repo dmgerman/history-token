@@ -192,9 +192,7 @@ id|target-&gt;cap_effective
 suffix:semicolon
 id|ret
 op_assign
-id|security_ops
-op_member_access_from_pointer
-id|capget
+id|security_capget
 c_func
 (paren
 id|target
@@ -299,9 +297,7 @@ id|pgrp
 )paren
 r_continue
 suffix:semicolon
-id|security_ops
-op_member_access_from_pointer
-id|capset_set
+id|security_capset_set
 c_func
 (paren
 id|target
@@ -372,9 +368,7 @@ l_int|1
 )paren
 r_continue
 suffix:semicolon
-id|security_ops
-op_member_access_from_pointer
-id|capset_set
+id|security_capset_set
 c_func
 (paren
 id|target
@@ -624,9 +618,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|security_ops
-op_member_access_from_pointer
-id|capset_check
+id|security_capset_check
 c_func
 (paren
 id|target
@@ -759,9 +751,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|security_ops
-op_member_access_from_pointer
-id|capset_set
+id|security_capset_set
 c_func
 (paren
 id|target

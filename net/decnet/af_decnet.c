@@ -2831,9 +2831,7 @@ multiline_comment|/*&n;&t; * Maybe put the default actions in the default securi
 r_if
 c_cond
 (paren
-id|security_ops
-op_member_access_from_pointer
-id|dn_prot_sock
+id|security_dn_prot_sock
 c_func
 (paren
 id|saddr

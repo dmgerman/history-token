@@ -428,9 +428,7 @@ id|curtask-&gt;fsgid
 op_assign
 l_int|0
 suffix:semicolon
-id|security_ops
-op_member_access_from_pointer
-id|task_kmod_set_label
+id|security_task_kmod_set_label
 c_func
 (paren
 )paren
