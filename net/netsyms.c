@@ -51,6 +51,12 @@ macro_line|#include &lt;linux/inet.h&gt;
 macro_line|#include &lt;linux/mroute.h&gt;
 macro_line|#include &lt;linux/igmp.h&gt;
 macro_line|#include &lt;net/xfrm.h&gt;
+macro_line|#if defined(CONFIG_INET_AH) || defined(CONFIG_INET_AH_MODULE) || defined(CONFIG_INET6_AH) || defined(CONFIG_INET6_AH_MODULE)
+macro_line|#include &lt;net/ah.h&gt;
+macro_line|#endif
+macro_line|#if defined(CONFIG_INET_ESP) || defined(CONFIG_INET_ESP_MODULE) || defined(CONFIG_INET6_ESP) || defined(CONFIG_INET6_ESP_MODULE)
+macro_line|#include &lt;net/esp.h&gt;
+macro_line|#endif
 r_extern
 r_struct
 id|net_proto_family
