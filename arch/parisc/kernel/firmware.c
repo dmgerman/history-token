@@ -4397,15 +4397,6 @@ r_extern
 r_struct
 id|wide_stack
 id|real64_stack
-id|__attribute__
-(paren
-(paren
-id|alias
-(paren
-l_string|&quot;real_stack&quot;
-)paren
-)paren
-)paren
 suffix:semicolon
 r_extern
 r_int
