@@ -862,7 +862,11 @@ op_star
 (paren
 id|hcd-&gt;regs
 op_plus
+id|readb
+(paren
+op_amp
 id|ehci-&gt;caps-&gt;length
+)paren
 )paren
 suffix:semicolon
 id|dbg_hcs_params
