@@ -10,6 +10,7 @@ r_void
 id|compaq_nvram_init
 (paren
 r_void
+id|__iomem
 op_star
 id|rom_start
 )paren
@@ -24,6 +25,7 @@ r_int
 id|compaq_nvram_load
 (paren
 r_void
+id|__iomem
 op_star
 id|rom_start
 comma
@@ -44,6 +46,7 @@ r_int
 id|compaq_nvram_store
 (paren
 r_void
+id|__iomem
 op_star
 id|rom_start
 )paren
@@ -58,6 +61,7 @@ r_void
 id|compaq_nvram_init
 (paren
 r_void
+id|__iomem
 op_star
 id|rom_start
 )paren
@@ -67,6 +71,7 @@ r_int
 id|compaq_nvram_load
 (paren
 r_void
+id|__iomem
 op_star
 id|rom_start
 comma
@@ -81,6 +86,7 @@ r_int
 id|compaq_nvram_store
 (paren
 r_void
+id|__iomem
 op_star
 id|rom_start
 )paren
