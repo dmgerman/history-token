@@ -813,7 +813,7 @@ suffix:semicolon
 macro_line|#ifdef CONFIG_PERFMON
 r_extern
 r_void
-id|perfmon_init_percpu
+id|pfm_init_percpu
 c_func
 (paren
 r_void
@@ -915,7 +915,7 @@ suffix:semicolon
 multiline_comment|/* For post-failure MCA error logging */
 macro_line|#endif
 macro_line|#ifdef CONFIG_PERFMON
-id|perfmon_init_percpu
+id|pfm_init_percpu
 c_func
 (paren
 )paren
