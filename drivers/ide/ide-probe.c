@@ -3117,6 +3117,14 @@ comma
 id|PRD_ENTRIES
 )paren
 suffix:semicolon
+id|ide_toggle_bounce
+c_func
+(paren
+id|drive
+comma
+l_int|1
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/*&n; * This routine sets up the irq for an ide interface, and creates a new&n; * hwgroup for the irq/hwif if none was previously assigned.&n; *&n; * Much of the code is for correctly detecting/handling irq sharing&n; * and irq serialization situations.  This is somewhat complex because&n; * it handles static as well as dynamic (PCMCIA) IDE interfaces.&n; *&n; * The SA_INTERRUPT in sa_flags means ide_intr() is always entered with&n; * interrupts completely disabled.  This can be bad for interrupt latency,&n; * but anything else has led to problems on some machines.  We re-enable&n; * interrupts as much as we can safely do in most places.&n; */
 DECL|function|init_irq
