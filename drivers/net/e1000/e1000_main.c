@@ -1797,6 +1797,18 @@ op_amp
 id|adapter-&gt;hw
 )paren
 suffix:semicolon
+multiline_comment|/* Enable h/w to recognize an 802.1Q VLAN Ethernet packet */
+id|E1000_WRITE_REG
+c_func
+(paren
+op_amp
+id|adapter-&gt;hw
+comma
+id|VET
+comma
+id|ETHERNET_IEEE_VLAN_TYPE
+)paren
+suffix:semicolon
 id|e1000_reset_adaptive
 c_func
 (paren
@@ -10858,17 +10870,6 @@ id|grp
 )paren
 (brace
 multiline_comment|/* enable VLAN tag insert/strip */
-id|E1000_WRITE_REG
-c_func
-(paren
-op_amp
-id|adapter-&gt;hw
-comma
-id|VET
-comma
-id|ETHERNET_IEEE_VLAN_TYPE
-)paren
-suffix:semicolon
 id|ctrl
 op_assign
 id|E1000_READ_REG
