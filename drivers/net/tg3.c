@@ -24535,6 +24535,7 @@ op_or
 id|RX_MODE_KEEP_VLAN_TAG
 )paren
 suffix:semicolon
+macro_line|#if TG3_VLAN_TAG_USED
 r_if
 c_cond
 (paren
@@ -24545,6 +24546,13 @@ id|rx_mode
 op_or_assign
 id|RX_MODE_KEEP_VLAN_TAG
 suffix:semicolon
+macro_line|#else
+multiline_comment|/* By definition, VLAN is disabled always in this&n;&t; * case.&n;&t; */
+id|rx_mode
+op_or_assign
+id|RX_MODE_KEEP_VLAN_TAG
+suffix:semicolon
+macro_line|#endif
 r_if
 c_cond
 (paren
