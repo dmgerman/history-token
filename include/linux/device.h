@@ -456,5 +456,35 @@ op_star
 id|dev
 )paren
 suffix:semicolon
+multiline_comment|/* drivers/base/power.c */
+r_extern
+r_int
+id|device_suspend
+c_func
+(paren
+id|u32
+id|state
+comma
+id|u32
+id|level
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|device_resume
+c_func
+(paren
+id|u32
+id|level
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|device_shutdown
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 macro_line|#endif /* _DEVICE_H_ */
 eof
