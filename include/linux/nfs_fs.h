@@ -143,6 +143,11 @@ r_int
 r_int
 id|attrtimeo_timestamp
 suffix:semicolon
+DECL|member|change_attr
+id|__u64
+id|change_attr
+suffix:semicolon
+multiline_comment|/* v4 only */
 multiline_comment|/*&n;&t; * Timestamp that dates the change made to read_cache_mtime.&n;&t; * This is of use for dentry revalidation&n;&t; */
 DECL|member|cache_mtime_jiffies
 r_int
@@ -282,6 +287,8 @@ DECL|macro|NFS_CACHE_MTIME
 mdefine_line|#define NFS_CACHE_MTIME(inode)&t;&t;(NFS_I(inode)-&gt;read_cache_mtime)
 DECL|macro|NFS_CACHE_ISIZE
 mdefine_line|#define NFS_CACHE_ISIZE(inode)&t;&t;(NFS_I(inode)-&gt;read_cache_isize)
+DECL|macro|NFS_CHANGE_ATTR
+mdefine_line|#define NFS_CHANGE_ATTR(inode)&t;&t;(NFS_I(inode)-&gt;change_attr)
 DECL|macro|NFS_NEXTSCAN
 mdefine_line|#define NFS_NEXTSCAN(inode)&t;&t;(NFS_I(inode)-&gt;nextscan)
 DECL|macro|NFS_CACHEINV

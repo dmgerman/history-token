@@ -128,6 +128,16 @@ DECL|member|ctime
 id|__u64
 id|ctime
 suffix:semicolon
+DECL|member|change_attr
+id|__u64
+id|change_attr
+suffix:semicolon
+multiline_comment|/* NFSv4 change attribute */
+DECL|member|pre_change_attr
+id|__u64
+id|pre_change_attr
+suffix:semicolon
+multiline_comment|/* pre-op NFSv4 change attribute */
 DECL|member|timestamp
 r_int
 r_int
@@ -141,6 +151,10 @@ DECL|macro|NFS_ATTR_FATTR
 mdefine_line|#define NFS_ATTR_FATTR&t;&t;0x0002&t;&t;/* post-op attributes */
 DECL|macro|NFS_ATTR_FATTR_V3
 mdefine_line|#define NFS_ATTR_FATTR_V3&t;0x0004&t;&t;/* NFSv3 attributes */
+DECL|macro|NFS_ATTR_FATTR_V4
+mdefine_line|#define NFS_ATTR_FATTR_V4&t;0x0008
+DECL|macro|NFS_ATTR_PRE_CHANGE
+mdefine_line|#define NFS_ATTR_PRE_CHANGE&t;0x0010
 multiline_comment|/*&n; * Info on the file system&n; */
 DECL|struct|nfs_fsinfo
 r_struct
