@@ -6163,7 +6163,11 @@ c_cond
 (paren
 id|last
 OG
-id|TASK_SIZE
+id|MM_VM_SIZE
+c_func
+(paren
+id|mm
+)paren
 op_logical_or
 id|last
 OL
@@ -6171,7 +6175,11 @@ id|end
 )paren
 id|last
 op_assign
-id|TASK_SIZE
+id|MM_VM_SIZE
+c_func
+(paren
+id|mm
+)paren
 suffix:semicolon
 r_if
 c_cond
