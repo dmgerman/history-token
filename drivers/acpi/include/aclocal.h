@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Name: aclocal.h - Internal data types used across the ACPI subsystem&n; *       $Revision: 168 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Name: aclocal.h - Internal data types used across the ACPI subsystem&n; *       $Revision: 173 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#ifndef __ACLOCAL_H__
 DECL|macro|__ACLOCAL_H__
@@ -1039,13 +1039,13 @@ r_typedef
 r_struct
 id|acpi_opcode_info
 (brace
-macro_line|#ifdef _OPCODE_NAMES
+macro_line|#if defined(ACPI_DISASSEMBLER) || defined(ACPI_DEBUG)
 DECL|member|name
 id|NATIVE_CHAR
 op_star
 id|name
 suffix:semicolon
-multiline_comment|/* Opcode name (debug only) */
+multiline_comment|/* Opcode name (disassembler/debug only) */
 macro_line|#endif
 DECL|member|parse_args
 id|u32
@@ -1146,8 +1146,20 @@ DECL|typedef|acpi_parse_value
 id|acpi_parse_value
 suffix:semicolon
 DECL|macro|ACPI_PARSE_COMMON
-mdefine_line|#define ACPI_PARSE_COMMON &bslash;&n;&t;u8                      data_type;      /* To differentiate various internal objs */&bslash;&n;&t;u8                      flags;          /* Type of Op */&bslash;&n;&t;u16                     aml_opcode;     /* AML opcode */&bslash;&n;&t;u32                     aml_offset;     /* offset of declaration in AML */&bslash;&n;&t;union acpi_parse_obj    *parent;        /* parent op */&bslash;&n;&t;union acpi_parse_obj    *next;          /* next op */&bslash;&n;&t;ACPI_DEBUG_ONLY_MEMBERS (&bslash;&n;&t;NATIVE_CHAR             aml_op_name[16]) /* op name (debug only) */&bslash;&n;&t;&t;&t;  /* NON-DEBUG members below: */&bslash;&n;&t;acpi_namespace_node     *node;          /* for use by interpreter */&bslash;&n;&t;acpi_parse_value        value;          /* Value or args associated with the opcode */&bslash;&n;
-multiline_comment|/*&n; * generic operation (eg. If, While, Store)&n; */
+mdefine_line|#define ACPI_PARSE_COMMON &bslash;&n;&t;u8                      data_type;      /* To differentiate various internal objs */&bslash;&n;&t;u8                      flags;          /* Type of Op */&bslash;&n;&t;u16                     aml_opcode;     /* AML opcode */&bslash;&n;&t;u32                     aml_offset;     /* offset of declaration in AML */&bslash;&n;&t;union acpi_parse_obj    *parent;        /* parent op */&bslash;&n;&t;union acpi_parse_obj    *next;          /* next op */&bslash;&n;&t;ACPI_DISASM_ONLY_MEMBERS (&bslash;&n;&t;u8                      disasm_flags;   /* Used during AML disassembly */&bslash;&n;&t;u8                      disasm_opcode;  /* Subtype used for disassembly */&bslash;&n;&t;NATIVE_CHAR             aml_op_name[16]) /* op name (debug only) */&bslash;&n;&t;&t;&t;  /* NON-DEBUG members below: */&bslash;&n;&t;acpi_namespace_node     *node;          /* for use by interpreter */&bslash;&n;&t;acpi_parse_value        value;          /* Value or args associated with the opcode */&bslash;&n;
+DECL|macro|ACPI_DASM_BUFFER
+mdefine_line|#define ACPI_DASM_BUFFER        0x00
+DECL|macro|ACPI_DASM_RESOURCE
+mdefine_line|#define ACPI_DASM_RESOURCE      0x01
+DECL|macro|ACPI_DASM_STRING
+mdefine_line|#define ACPI_DASM_STRING        0x02
+DECL|macro|ACPI_DASM_UNICODE
+mdefine_line|#define ACPI_DASM_UNICODE       0x03
+DECL|macro|ACPI_DASM_EISAID
+mdefine_line|#define ACPI_DASM_EISAID        0x04
+DECL|macro|ACPI_DASM_MATCHOP
+mdefine_line|#define ACPI_DASM_MATCHOP       0x05
+multiline_comment|/*&n; * generic operation (for example:  If, While, Store)&n; */
 DECL|struct|acpi_parseobj_common
 r_typedef
 r_struct
@@ -1165,6 +1177,11 @@ r_struct
 id|acpi_parseobj_named
 (brace
 id|ACPI_PARSE_COMMON
+DECL|member|path
+id|u8
+op_star
+id|path
+suffix:semicolon
 DECL|member|data
 id|u8
 op_star
@@ -1247,10 +1264,6 @@ DECL|member|end_logical_line
 id|u32
 id|end_logical_line
 suffix:semicolon
-DECL|member|parse_opcode
-id|u16
-id|parse_opcode
-suffix:semicolon
 DECL|member|acpi_btype
 id|u32
 id|acpi_btype
@@ -1271,6 +1284,14 @@ DECL|member|final_aml_offset
 id|u32
 id|final_aml_offset
 suffix:semicolon
+DECL|member|parse_opcode
+id|u16
+id|parse_opcode
+suffix:semicolon
+DECL|member|compile_flags
+id|u16
+id|compile_flags
+suffix:semicolon
 DECL|member|aml_opcode_length
 id|u8
 id|aml_opcode_length
@@ -1278,10 +1299,6 @@ suffix:semicolon
 DECL|member|aml_pkg_len_bytes
 id|u8
 id|aml_pkg_len_bytes
-suffix:semicolon
-DECL|member|compile_flags
-id|u16
-id|compile_flags
 suffix:semicolon
 DECL|member|extra
 id|u8
@@ -1400,6 +1417,15 @@ DECL|macro|ACPI_PARSEOP_BYTELIST
 mdefine_line|#define ACPI_PARSEOP_BYTELIST                   0x08
 DECL|macro|ACPI_PARSEOP_IN_CACHE
 mdefine_line|#define ACPI_PARSEOP_IN_CACHE                   0x80
+multiline_comment|/* Parse object Disasm_flags */
+DECL|macro|ACPI_PARSEOP_IGNORE
+mdefine_line|#define ACPI_PARSEOP_IGNORE                     0x01
+DECL|macro|ACPI_PARSEOP_PARAMLIST
+mdefine_line|#define ACPI_PARSEOP_PARAMLIST                  0x02
+DECL|macro|ACPI_PARSEOP_EMPTY_TERMLIST
+mdefine_line|#define ACPI_PARSEOP_EMPTY_TERMLIST             0x04
+DECL|macro|ACPI_PARSEOP_SPECIAL
+mdefine_line|#define ACPI_PARSEOP_SPECIAL                    0x10
 multiline_comment|/*****************************************************************************&n; *&n; * Hardware (ACPI registers) and PNP&n; *&n; ****************************************************************************/
 DECL|macro|PCI_ROOT_HID_STRING
 mdefine_line|#define PCI_ROOT_HID_STRING         &quot;PNP0A03&quot;

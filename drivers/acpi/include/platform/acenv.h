@@ -1,20 +1,22 @@
-multiline_comment|/******************************************************************************&n; *&n; * Name: acenv.h - Generation environment specific items&n; *       $Revision: 95 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Name: acenv.h - Generation environment specific items&n; *       $Revision: 99 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#ifndef __ACENV_H__
 DECL|macro|__ACENV_H__
 mdefine_line|#define __ACENV_H__
 multiline_comment|/*&n; * Configuration for ACPI tools and utilities&n; */
 macro_line|#ifdef _ACPI_DUMP_APP
+macro_line|#ifndef MSDOS
 DECL|macro|ACPI_DEBUG
 mdefine_line|#define ACPI_DEBUG
+macro_line|#endif
 DECL|macro|ACPI_APPLICATION
 mdefine_line|#define ACPI_APPLICATION
-DECL|macro|ENABLE_DEBUGGER
-mdefine_line|#define ENABLE_DEBUGGER
+DECL|macro|ACPI_DISASSEMBLER
+mdefine_line|#define ACPI_DISASSEMBLER
+DECL|macro|ACPI_NO_METHOD_EXECUTION
+mdefine_line|#define ACPI_NO_METHOD_EXECUTION
 DECL|macro|ACPI_USE_SYSTEM_CLIBRARY
 mdefine_line|#define ACPI_USE_SYSTEM_CLIBRARY
-DECL|macro|PARSER_ONLY
-mdefine_line|#define PARSER_ONLY
 macro_line|#endif
 macro_line|#ifdef _ACPI_EXEC_APP
 DECL|macro|DEBUGGER_THREADING
@@ -27,6 +29,8 @@ DECL|macro|ACPI_APPLICATION
 mdefine_line|#define ACPI_APPLICATION
 DECL|macro|ENABLE_DEBUGGER
 mdefine_line|#define ENABLE_DEBUGGER
+DECL|macro|ACPI_DISASSEMBLER
+mdefine_line|#define ACPI_DISASSEMBLER
 DECL|macro|ACPI_USE_SYSTEM_CLIBRARY
 mdefine_line|#define ACPI_USE_SYSTEM_CLIBRARY
 macro_line|#endif
@@ -35,7 +39,10 @@ DECL|macro|ACPI_DEBUG
 mdefine_line|#define ACPI_DEBUG
 DECL|macro|ACPI_APPLICATION
 mdefine_line|#define ACPI_APPLICATION
-multiline_comment|/* #define ENABLE_DEBUGGER */
+DECL|macro|ACPI_DISASSEMBLER
+mdefine_line|#define ACPI_DISASSEMBLER
+DECL|macro|ACPI_CONSTANT_EVAL_ONLY
+mdefine_line|#define ACPI_CONSTANT_EVAL_ONLY
 DECL|macro|ACPI_USE_SYSTEM_CLIBRARY
 mdefine_line|#define ACPI_USE_SYSTEM_CLIBRARY
 macro_line|#endif
@@ -94,7 +101,7 @@ mdefine_line|#define DEBUGGER_THREADING          DEBUGGER_MULTI_THREADED
 macro_line|#endif
 multiline_comment|/******************************************************************************&n; *&n; * C library configuration&n; *&n; *****************************************************************************/
 macro_line|#ifdef ACPI_USE_SYSTEM_CLIBRARY
-multiline_comment|/*&n; * Use the standard C library headers.&n; * We want to keep these to a minimum.&n; *&n; */
+multiline_comment|/*&n; * Use the standard C library headers.&n; * We want to keep these to a minimum.&n; */
 macro_line|#ifdef ACPI_USE_STANDARD_HEADERS
 multiline_comment|/*&n; * Use the standard headers from the standard locations&n; */
 macro_line|#include &lt;stdarg.h&gt;
@@ -139,6 +146,12 @@ DECL|macro|ACPI_IS_SPACE
 mdefine_line|#define ACPI_IS_SPACE           isspace
 DECL|macro|ACPI_IS_UPPER
 mdefine_line|#define ACPI_IS_UPPER           isupper
+DECL|macro|ACPI_IS_PRINT
+mdefine_line|#define ACPI_IS_PRINT           isprint
+DECL|macro|ACPI_IS_ALPHA
+mdefine_line|#define ACPI_IS_ALPHA           isalpha
+DECL|macro|ACPI_IS_ASCII
+mdefine_line|#define ACPI_IS_ASCII           isascii
 multiline_comment|/******************************************************************************&n; *&n; * Not using native C library, use local implementations&n; *&n; *****************************************************************************/
 macro_line|#else
 multiline_comment|/*&n; * Use local definitions of C library macros and functions&n; * NOTE: The function implementations may not be as efficient&n; * as an inline or assembly code implementation provided by a&n; * native C library.&n; */

@@ -2865,16 +2865,7 @@ id|dev-&gt;name
 )paren
 suffix:semicolon
 macro_line|#endif
-id|save_flags
-(paren
-id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
-)paren
-suffix:semicolon
+multiline_comment|/*&n;&t;&t; * FIXME!!! Use the proper locking for dev-&gt;waiting,&n;&t;&t; * and make this use the &quot;wait_event_interruptible()&quot;&n;&t;&t; * interfaces. The cli/sti that used to be here&n;&t;&t; * did nothing.&n;&t;&t; *&n;&t;&t; * See also parport_release()&n;&t;&t; */
 multiline_comment|/* If dev-&gt;waiting is clear now, an interrupt&n;&t;&t;   gave us the port and we would deadlock if we slept.  */
 r_if
 c_cond
@@ -2897,11 +2888,6 @@ id|current
 )paren
 )paren
 (brace
-id|restore_flags
-(paren
-id|flags
-)paren
-suffix:semicolon
 r_return
 op_minus
 id|EINTR
@@ -2930,12 +2916,6 @@ id|dev-&gt;name
 suffix:semicolon
 macro_line|#endif
 )brace
-id|restore_flags
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
 macro_line|#ifdef PARPORT_DEBUG_SHARING
 r_if
 c_cond

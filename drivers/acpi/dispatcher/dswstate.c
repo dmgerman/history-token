@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: dswstate - Dispatcher parse tree walk management routines&n; *              $Revision: 65 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: dswstate - Dispatcher parse tree walk management routines&n; *              $Revision: 67 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acparser.h&quot;
@@ -1793,7 +1793,7 @@ op_assign
 id|thread
 suffix:semicolon
 multiline_comment|/* Init the method args/local */
-macro_line|#ifndef _ACPI_ASL_COMPILER
+macro_line|#if (!defined (ACPI_NO_METHOD_EXECUTION) &amp;&amp; !defined (ACPI_CONSTANT_EVAL_ONLY))
 id|acpi_ds_method_data_init
 (paren
 id|walk_state
@@ -1844,7 +1844,6 @@ id|walk_state
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifndef _ACPI_ASL_COMPILER
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ds_init_aml_walk&n; *&n; * PARAMETERS:  Walk_state      - New state to be initialized&n; *&n; * RETURN:      None&n; *&n; * DESCRIPTION: Initialize a walk state for a pass 1 or 2 parse tree walk&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ds_init_aml_walk
@@ -2087,7 +2086,6 @@ id|status
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ds_delete_walk_state&n; *&n; * PARAMETERS:  Walk_state      - State to delete&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Delete a walk state including all internal data structures&n; *&n; ******************************************************************************/
 r_void
 DECL|function|acpi_ds_delete_walk_state

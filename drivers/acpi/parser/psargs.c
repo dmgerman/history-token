@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: psargs - Parse AML opcode arguments&n; *              $Revision: 61 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: psargs - Parse AML opcode arguments&n; *              $Revision: 62 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acparser.h&quot;
@@ -633,11 +633,9 @@ suffix:semicolon
 id|acpi_status
 id|status
 suffix:semicolon
-id|acpi_namespace_node
+id|acpi_operand_object
 op_star
-id|method_node
-op_assign
-l_int|NULL
+id|method_desc
 suffix:semicolon
 id|acpi_namespace_node
 op_star
@@ -744,18 +742,23 @@ op_eq
 id|ACPI_TYPE_METHOD
 )paren
 (brace
-id|method_node
+id|method_desc
 op_assign
+id|acpi_ns_get_attached_object
+(paren
 id|node
+)paren
 suffix:semicolon
 id|ACPI_DEBUG_PRINT
 (paren
 (paren
 id|ACPI_DB_PARSE
 comma
-l_string|&quot;method - %p Path=%p&bslash;n&quot;
+l_string|&quot;Control Method - %p Desc %p Path=%p&bslash;n&quot;
 comma
-id|method_node
+id|node
+comma
+id|method_desc
 comma
 id|path
 )paren
@@ -771,9 +774,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|name_op
 )paren
 (brace
+id|return_VOID
+suffix:semicolon
+)brace
 multiline_comment|/* Change arg into a METHOD CALL and attach name to it */
 id|acpi_ps_init_op
 (paren
@@ -789,7 +796,7 @@ suffix:semicolon
 multiline_comment|/* Point METHODCALL/NAME to the METHOD Node */
 id|name_op-&gt;common.node
 op_assign
-id|method_node
+id|node
 suffix:semicolon
 id|acpi_ps_append_arg
 (paren
@@ -802,28 +809,41 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|acpi_ns_get_attached_object
-(paren
-id|method_node
-)paren
+id|method_desc
 )paren
 (brace
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_PARSE
+comma
+l_string|&quot;Control Method - %p has no attached object&bslash;n&quot;
+comma
+id|node
+)paren
+)paren
+suffix:semicolon
 id|return_VOID
 suffix:semicolon
 )brace
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_PARSE
+comma
+l_string|&quot;Control Method - %p Args %X&bslash;n&quot;
+comma
+id|node
+comma
+id|method_desc-&gt;method.param_count
+)paren
+)paren
+suffix:semicolon
 op_star
 id|arg_count
 op_assign
-(paren
-id|acpi_ns_get_attached_object
-(paren
-id|method_node
-)paren
-)paren
-op_member_access_from_pointer
-id|method.param_count
+id|method_desc-&gt;method.param_count
 suffix:semicolon
-)brace
 id|return_VOID
 suffix:semicolon
 )brace

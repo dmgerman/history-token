@@ -1,8 +1,8 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: aslresource.h - ASL resource descriptors&n; *              $Revision: 19 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: amlresrc.h - AML resource descriptors&n; *              $Revision: 20 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
-macro_line|#ifndef __ASLRESOURCE_H
-DECL|macro|__ASLRESOURCE_H
-mdefine_line|#define __ASLRESOURCE_H
+macro_line|#ifndef __AMLRESRC_H
+DECL|macro|__AMLRESRC_H
+mdefine_line|#define __AMLRESRC_H
 DECL|macro|ASL_RESNAME_ADDRESS
 mdefine_line|#define ASL_RESNAME_ADDRESS                     &quot;_ADR&quot;
 DECL|macro|ASL_RESNAME_ALIGNMENT
@@ -98,7 +98,7 @@ DECL|typedef|ASL_RESOURCE_NODE
 )brace
 id|ASL_RESOURCE_NODE
 suffix:semicolon
-multiline_comment|/*&n; * Resource descriptors defined in the ACPI specification&n; */
+multiline_comment|/*&n; * Resource descriptors defined in the ACPI specification.&n; *&n; * Alignment must be BYTE because these descriptors&n; * are used to overlay the AML byte stream.&n; */
 macro_line|#pragma pack(1)
 DECL|struct|asl_irq_format_desc
 r_typedef
@@ -121,7 +121,6 @@ DECL|typedef|ASL_IRQ_FORMAT_DESC
 )brace
 id|ASL_IRQ_FORMAT_DESC
 suffix:semicolon
-macro_line|#pragma pack(1)
 DECL|struct|asl_irq_noflags_desc
 r_typedef
 r_struct
@@ -139,7 +138,6 @@ DECL|typedef|ASL_IRQ_NOFLAGS_DESC
 )brace
 id|ASL_IRQ_NOFLAGS_DESC
 suffix:semicolon
-macro_line|#pragma pack(1)
 DECL|struct|asl_dma_format_desc
 r_typedef
 r_struct
@@ -161,7 +159,6 @@ DECL|typedef|ASL_DMA_FORMAT_DESC
 )brace
 id|ASL_DMA_FORMAT_DESC
 suffix:semicolon
-macro_line|#pragma pack(1)
 DECL|struct|asl_start_dependent_desc
 r_typedef
 r_struct
@@ -179,7 +176,6 @@ DECL|typedef|ASL_START_DEPENDENT_DESC
 )brace
 id|ASL_START_DEPENDENT_DESC
 suffix:semicolon
-macro_line|#pragma pack(1)
 DECL|struct|asl_start_dependent_noprio_desc
 r_typedef
 r_struct
@@ -193,7 +189,6 @@ DECL|typedef|ASL_START_DEPENDENT_NOPRIO_DESC
 )brace
 id|ASL_START_DEPENDENT_NOPRIO_DESC
 suffix:semicolon
-macro_line|#pragma pack(1)
 DECL|struct|asl_end_dependent_desc
 r_typedef
 r_struct
@@ -207,7 +202,6 @@ DECL|typedef|ASL_END_DEPENDENT_DESC
 )brace
 id|ASL_END_DEPENDENT_DESC
 suffix:semicolon
-macro_line|#pragma pack(1)
 DECL|struct|asl_io_port_desc
 r_typedef
 r_struct
@@ -241,7 +235,6 @@ DECL|typedef|ASL_IO_PORT_DESC
 )brace
 id|ASL_IO_PORT_DESC
 suffix:semicolon
-macro_line|#pragma pack(1)
 DECL|struct|asl_fixed_io_port_desc
 r_typedef
 r_struct
@@ -263,7 +256,6 @@ DECL|typedef|ASL_FIXED_IO_PORT_DESC
 )brace
 id|ASL_FIXED_IO_PORT_DESC
 suffix:semicolon
-macro_line|#pragma pack(1)
 DECL|struct|asl_small_vendor_desc
 r_typedef
 r_struct
@@ -284,7 +276,6 @@ DECL|typedef|ASL_SMALL_VENDOR_DESC
 )brace
 id|ASL_SMALL_VENDOR_DESC
 suffix:semicolon
-macro_line|#pragma pack(1)
 DECL|struct|asl_end_tag_desc
 r_typedef
 r_struct
@@ -303,7 +294,6 @@ DECL|typedef|ASL_END_TAG_DESC
 id|ASL_END_TAG_DESC
 suffix:semicolon
 multiline_comment|/* LARGE descriptors */
-macro_line|#pragma pack(1)
 DECL|struct|asl_memory_24_desc
 r_typedef
 r_struct
@@ -341,7 +331,6 @@ DECL|typedef|ASL_MEMORY_24_DESC
 )brace
 id|ASL_MEMORY_24_DESC
 suffix:semicolon
-macro_line|#pragma pack(1)
 DECL|struct|asl_large_vendor_desc
 r_typedef
 r_struct
@@ -366,7 +355,6 @@ DECL|typedef|ASL_LARGE_VENDOR_DESC
 )brace
 id|ASL_LARGE_VENDOR_DESC
 suffix:semicolon
-macro_line|#pragma pack(1)
 DECL|struct|asl_memory_32_desc
 r_typedef
 r_struct
@@ -404,7 +392,6 @@ DECL|typedef|ASL_MEMORY_32_DESC
 )brace
 id|ASL_MEMORY_32_DESC
 suffix:semicolon
-macro_line|#pragma pack(1)
 DECL|struct|asl_fixed_memory_32_desc
 r_typedef
 r_struct
@@ -434,7 +421,6 @@ DECL|typedef|ASL_FIXED_MEMORY_32_DESC
 )brace
 id|ASL_FIXED_MEMORY_32_DESC
 suffix:semicolon
-macro_line|#pragma pack(1)
 DECL|struct|asl_qword_address_desc
 r_typedef
 r_struct
@@ -491,7 +477,6 @@ DECL|typedef|ASL_QWORD_ADDRESS_DESC
 )brace
 id|ASL_QWORD_ADDRESS_DESC
 suffix:semicolon
-macro_line|#pragma pack(1)
 DECL|struct|asl_dword_address_desc
 r_typedef
 r_struct
@@ -548,7 +533,6 @@ DECL|typedef|ASL_DWORD_ADDRESS_DESC
 )brace
 id|ASL_DWORD_ADDRESS_DESC
 suffix:semicolon
-macro_line|#pragma pack(1)
 DECL|struct|asl_word_address_desc
 r_typedef
 r_struct
@@ -605,7 +589,6 @@ DECL|typedef|ASL_WORD_ADDRESS_DESC
 )brace
 id|ASL_WORD_ADDRESS_DESC
 suffix:semicolon
-macro_line|#pragma pack(1)
 DECL|struct|asl_extended_xrupt_desc
 r_typedef
 r_struct
@@ -639,7 +622,6 @@ DECL|typedef|ASL_EXTENDED_XRUPT_DESC
 )brace
 id|ASL_EXTENDED_XRUPT_DESC
 suffix:semicolon
-macro_line|#pragma pack(1)
 DECL|struct|asl_general_register_desc
 r_typedef
 r_struct
@@ -677,6 +659,8 @@ DECL|typedef|ASL_GENERAL_REGISTER_DESC
 )brace
 id|ASL_GENERAL_REGISTER_DESC
 suffix:semicolon
+multiline_comment|/* restore default alignment */
+macro_line|#pragma pack()
 multiline_comment|/* Union of all resource descriptors, sow we can allocate the worst case */
 DECL|union|asl_resource_desc
 r_typedef

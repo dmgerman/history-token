@@ -2,46 +2,32 @@ macro_line|#ifndef __ARCH_DESC_H
 DECL|macro|__ARCH_DESC_H
 mdefine_line|#define __ARCH_DESC_H
 macro_line|#include &lt;asm/ldt.h&gt;
-multiline_comment|/*&n; * The layout of the GDT under Linux:&n; *&n; *   0 - null&n; *   1 - not used&n; *   2 - kernel code segment&n; *   3 - kernel data segment&n; *   4 - user code segment                  &lt;-- new cacheline &n; *   5 - user data segment&n; *   6 - not used&n; *   7 - not used&n; *   8 - APM BIOS support                   &lt;-- new cacheline &n; *   9 - APM BIOS support&n; *  10 - APM BIOS support&n; *  11 - APM BIOS support&n; *  12 - PNPBIOS support&n; *  13 - PNPBIOS support&n; *  14 - PNPBIOS support&n; *  15 - PNPBIOS support&n; *  16 - PNPBIOS support&n; *  17 - not used&n; *  18 - not used&n; *  19 - not used&n; *&n; * The TSS+LDT descriptors are spread out a bit so that every CPU&n; * has an exclusive cacheline for the per-CPU TSS and LDT:&n; *&n; *  20 - CPU#0 TSS                          &lt;-- new cacheline &n; *  21 - CPU#0 LDT&n; *  22 - not used &n; *  23 - not used &n; *  24 - CPU#1 TSS                          &lt;-- new cacheline &n; *  25 - CPU#1 LDT&n; *  26 - not used &n; *  27 - not used &n; *  ... NR_CPUS per-CPU TSS+LDT&squot;s if on SMP&n; *&n; * Entry into gdt where to find first TSS.&n; */
-DECL|macro|__FIRST_TSS_ENTRY
-mdefine_line|#define __FIRST_TSS_ENTRY 20
-DECL|macro|__FIRST_LDT_ENTRY
-mdefine_line|#define __FIRST_LDT_ENTRY (__FIRST_TSS_ENTRY+1)
-DECL|macro|__TSS
-mdefine_line|#define __TSS(n) (((n)&lt;&lt;2) + __FIRST_TSS_ENTRY)
-DECL|macro|__LDT
-mdefine_line|#define __LDT(n) (((n)&lt;&lt;2) + __FIRST_LDT_ENTRY)
+multiline_comment|/*&n; * The layout of the per-CPU GDT under Linux:&n; *&n; *   0 - null&n; *   1 - Thread-Local Storage (TLS) segment&n; *   2 - kernel code segment&n; *   3 - kernel data segment&n; *   4 - user code segment&t;&t;&lt;==== new cacheline&n; *   5 - user data segment&n; *   6 - TSS&n; *   7 - LDT&n; *   8 - APM BIOS support&t;&t;&lt;==== new cacheline&n; *   9 - APM BIOS support&n; *  10 - APM BIOS support&n; *  11 - APM BIOS support&n; *  12 - PNPBIOS support&t;&t;&lt;==== new cacheline&n; *  13 - PNPBIOS support&n; *  14 - PNPBIOS support&n; *  15 - PNPBIOS support&n; *  16 - PNPBIOS support&t;&t;&lt;==== new cacheline&n; *  17 - not used&n; *  18 - not used&n; *  19 - not used&n; */
+DECL|macro|TLS_ENTRY
+mdefine_line|#define TLS_ENTRY 1
+DECL|macro|TSS_ENTRY
+mdefine_line|#define TSS_ENTRY 6
+DECL|macro|LDT_ENTRY
+mdefine_line|#define LDT_ENTRY 7
+multiline_comment|/*&n; * The interrupt descriptor table has room for 256 idt&squot;s,&n; * the global descriptor table is dependent on the number&n; * of tasks we can have..&n; *&n; * We pad the GDT to cacheline boundary.&n; */
+DECL|macro|IDT_ENTRIES
+mdefine_line|#define IDT_ENTRIES 256
+DECL|macro|GDT_ENTRIES
+mdefine_line|#define GDT_ENTRIES 20
 macro_line|#ifndef __ASSEMBLY__
 macro_line|#include &lt;asm/mmu.h&gt;
-DECL|struct|desc_struct
-r_struct
-id|desc_struct
-(brace
-DECL|member|a
-DECL|member|b
-r_int
-r_int
-id|a
-comma
-id|b
-suffix:semicolon
-)brace
-suffix:semicolon
+DECL|macro|GDT_SIZE
+mdefine_line|#define GDT_SIZE (GDT_ENTRIES*sizeof(struct desc_struct))
 r_extern
 r_struct
 id|desc_struct
-id|gdt_table
+id|cpu_gdt_table
 (braket
+id|NR_CPUS
 )braket
-suffix:semicolon
-r_extern
-r_struct
-id|desc_struct
-op_star
-id|idt
-comma
-op_star
-id|gdt
+(braket
+id|GDT_ENTRIES
+)braket
 suffix:semicolon
 DECL|struct|Xgt_desc_struct
 r_struct
@@ -65,15 +51,27 @@ id|packed
 )paren
 suffix:semicolon
 )brace
+id|__attribute__
+(paren
+(paren
+id|packed
+)paren
+)paren
 suffix:semicolon
-DECL|macro|idt_descr
-mdefine_line|#define idt_descr (*(struct Xgt_desc_struct *)((char *)&amp;idt - 2))
-DECL|macro|gdt_descr
-mdefine_line|#define gdt_descr (*(struct Xgt_desc_struct *)((char *)&amp;gdt - 2))
-DECL|macro|load_TR
-mdefine_line|#define load_TR(n) __asm__ __volatile__(&quot;ltr %%ax&quot;::&quot;a&quot; (__TSS(n)&lt;&lt;3))
-DECL|macro|__load_LDT
-mdefine_line|#define __load_LDT(n) __asm__ __volatile__(&quot;lldt %%ax&quot;::&quot;a&quot; (__LDT(n)&lt;&lt;3))
+r_extern
+r_struct
+id|Xgt_desc_struct
+id|idt_descr
+comma
+id|cpu_gdt_descr
+(braket
+id|NR_CPUS
+)braket
+suffix:semicolon
+DECL|macro|load_TR_desc
+mdefine_line|#define load_TR_desc() __asm__ __volatile__(&quot;ltr %%ax&quot;::&quot;a&quot; (TSS_ENTRY&lt;&lt;3))
+DECL|macro|load_LDT_desc
+mdefine_line|#define load_LDT_desc() __asm__ __volatile__(&quot;lldt %%ax&quot;::&quot;a&quot; (LDT_ENTRY&lt;&lt;3))
 multiline_comment|/*&n; * This is the ldt that every process will get unless we need&n; * something other than this.&n; */
 r_extern
 r_struct
@@ -96,14 +94,57 @@ op_star
 id|addr
 )paren
 suffix:semicolon
-r_extern
+DECL|macro|_set_tssldt_desc
+mdefine_line|#define _set_tssldt_desc(n,addr,limit,type) &bslash;&n;__asm__ __volatile__ (&quot;movw %w3,0(%2)&bslash;n&bslash;t&quot; &bslash;&n;&t;&quot;movw %%ax,2(%2)&bslash;n&bslash;t&quot; &bslash;&n;&t;&quot;rorl $16,%%eax&bslash;n&bslash;t&quot; &bslash;&n;&t;&quot;movb %%al,4(%2)&bslash;n&bslash;t&quot; &bslash;&n;&t;&quot;movb %4,5(%2)&bslash;n&bslash;t&quot; &bslash;&n;&t;&quot;movb $0,6(%2)&bslash;n&bslash;t&quot; &bslash;&n;&t;&quot;movb %%ah,7(%2)&bslash;n&bslash;t&quot; &bslash;&n;&t;&quot;rorl $16,%%eax&quot; &bslash;&n;&t;: &quot;=m&quot;(*(n)) : &quot;a&quot; (addr), &quot;r&quot;(n), &quot;ir&quot;(limit), &quot;i&quot;(type))
+DECL|function|set_tss_desc
+r_static
+r_inline
+r_void
+id|set_tss_desc
+c_func
+(paren
+r_int
+r_int
+id|cpu
+comma
+r_void
+op_star
+id|addr
+)paren
+(brace
+id|_set_tssldt_desc
+c_func
+(paren
+op_amp
+id|cpu_gdt_table
+(braket
+id|cpu
+)braket
+(braket
+id|TSS_ENTRY
+)braket
+comma
+(paren
+r_int
+)paren
+id|addr
+comma
+l_int|235
+comma
+l_int|0x89
+)paren
+suffix:semicolon
+)brace
+DECL|function|set_ldt_desc
+r_static
+r_inline
 r_void
 id|set_ldt_desc
 c_func
 (paren
 r_int
 r_int
-id|n
+id|cpu
 comma
 r_void
 op_star
@@ -113,21 +154,74 @@ r_int
 r_int
 id|size
 )paren
-suffix:semicolon
-r_extern
-r_void
-id|set_tss_desc
+(brace
+id|_set_tssldt_desc
 c_func
 (paren
-r_int
-r_int
-id|n
+op_amp
+id|cpu_gdt_table
+(braket
+id|cpu
+)braket
+(braket
+id|LDT_ENTRY
+)braket
 comma
-r_void
-op_star
+(paren
+r_int
+)paren
 id|addr
+comma
+(paren
+(paren
+id|size
+op_lshift
+l_int|3
+)paren
+op_minus
+l_int|1
+)paren
+comma
+l_int|0x82
 )paren
 suffix:semicolon
+)brace
+DECL|macro|TLS_FLAGS_MASK
+mdefine_line|#define TLS_FLAGS_MASK&t;&t;&t;0x00000007
+DECL|macro|TLS_FLAG_LIMIT_IN_PAGES
+mdefine_line|#define TLS_FLAG_LIMIT_IN_PAGES&t;&t;0x00000001
+DECL|macro|TLS_FLAG_WRITABLE
+mdefine_line|#define TLS_FLAG_WRITABLE&t;&t;0x00000002
+DECL|macro|TLS_FLAG_CLEAR
+mdefine_line|#define TLS_FLAG_CLEAR&t;&t;&t;0x00000004
+DECL|function|load_TLS_desc
+r_static
+r_inline
+r_void
+id|load_TLS_desc
+c_func
+(paren
+r_struct
+id|thread_struct
+op_star
+id|t
+comma
+r_int
+r_int
+id|cpu
+)paren
+(brace
+id|cpu_gdt_table
+(braket
+id|cpu
+)braket
+(braket
+id|TLS_ENTRY
+)braket
+op_assign
+id|t-&gt;tls_desc
+suffix:semicolon
+)brace
 DECL|function|clear_LDT
 r_static
 r_inline
@@ -138,18 +232,13 @@ c_func
 r_void
 )paren
 (brace
-r_int
-id|cpu
-op_assign
+id|set_ldt_desc
+c_func
+(paren
 id|smp_processor_id
 c_func
 (paren
 )paren
-suffix:semicolon
-id|set_ldt_desc
-c_func
-(paren
-id|cpu
 comma
 op_amp
 id|default_ldt
@@ -160,10 +249,9 @@ comma
 l_int|5
 )paren
 suffix:semicolon
-id|__load_LDT
+id|load_LDT_desc
 c_func
 (paren
-id|cpu
 )paren
 suffix:semicolon
 )brace
@@ -179,14 +267,6 @@ op_star
 id|pc
 )paren
 (brace
-r_int
-id|cpu
-op_assign
-id|smp_processor_id
-c_func
-(paren
-)paren
-suffix:semicolon
 r_void
 op_star
 id|segments
@@ -201,8 +281,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|likely
+c_func
+(paren
 op_logical_neg
 id|count
+)paren
 )paren
 (brace
 id|segments
@@ -221,17 +305,19 @@ suffix:semicolon
 id|set_ldt_desc
 c_func
 (paren
-id|cpu
+id|smp_processor_id
+c_func
+(paren
+)paren
 comma
 id|segments
 comma
 id|count
 )paren
 suffix:semicolon
-id|__load_LDT
+id|load_LDT_desc
 c_func
 (paren
-id|cpu
 )paren
 suffix:semicolon
 )brace
