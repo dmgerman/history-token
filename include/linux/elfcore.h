@@ -4,7 +4,6 @@ mdefine_line|#define _LINUX_ELFCORE_H
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/signal.h&gt;
 macro_line|#include &lt;linux/time.h&gt;
-macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;linux/user.h&gt;
 DECL|struct|elf_siginfo
 r_struct

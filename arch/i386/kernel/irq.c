@@ -1,7 +1,6 @@
 multiline_comment|/*&n; *&t;linux/arch/i386/kernel/irq.c&n; *&n; *&t;Copyright (C) 1992, 1998 Linus Torvalds, Ingo Molnar&n; *&n; * This file contains the code used by various IRQ handling routines:&n; * asking for different IRQ&squot;s should be done through these routines&n; * instead of just grabbing them. Thus setups with different IRQ numbers&n; * shouldn&squot;t result in any weird surprises, and installing new handlers&n; * should be easier.&n; */
 multiline_comment|/*&n; * (mostly architecture independent, will move to kernel/irq.c in 2.5.)&n; *&n; * IRQs are in fact implemented a bit like signal handlers for the kernel.&n; * Naturally it&squot;s not a 1:1 relation, but there are similarities.&n; */
 macro_line|#include &lt;linux/config.h&gt;
-macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/signal.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;

@@ -13,7 +13,6 @@ macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/types.h&gt;&t;&t;  
 macro_line|#include &lt;linux/fcntl.h&gt;&t;&t;  
 macro_line|#include &lt;linux/interrupt.h&gt;&t;&t;  
-macro_line|#include &lt;linux/ptrace.h&gt;&t;&t;  
 macro_line|#include &lt;linux/ioport.h&gt;&t;&t;  
 macro_line|#include &lt;linux/in.h&gt;&t;&t;  
 macro_line|#include &lt;linux/slab.h&gt;&t;&t;  
