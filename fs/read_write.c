@@ -9,6 +9,7 @@ macro_line|#include &lt;linux/dnotify.h&gt;
 macro_line|#include &lt;linux/security.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
+macro_line|#include &lt;asm/unistd.h&gt;
 DECL|variable|generic_ro_fops
 r_struct
 id|file_operations
@@ -583,7 +584,7 @@ c_func
 id|sys_lseek
 )paren
 suffix:semicolon
-macro_line|#if !defined(__alpha__)
+macro_line|#ifdef __ARCH_WANT_SYS_LLSEEK
 DECL|function|sys_llseek
 id|asmlinkage
 r_int

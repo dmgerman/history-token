@@ -32,6 +32,7 @@ macro_line|#include &lt;linux/writeback.h&gt;
 macro_line|#include &lt;linux/cpu.h&gt;
 macro_line|#include &lt;linux/efi.h&gt;
 macro_line|#include &lt;linux/unistd.h&gt;
+macro_line|#include &lt;linux/rmap.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/bugs.h&gt;
 multiline_comment|/*&n; * This is one of the first .c files built. Error out early&n; * if we have compiler trouble..&n; */
@@ -144,7 +145,7 @@ r_void
 suffix:semicolon
 r_extern
 r_void
-id|pte_chain_init
+id|prio_tree_init
 c_func
 (paren
 r_void
@@ -1567,7 +1568,12 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|pte_chain_init
+id|prio_tree_init
+c_func
+(paren
+)paren
+suffix:semicolon
+id|anon_vma_init
 c_func
 (paren
 )paren

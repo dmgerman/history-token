@@ -15,8 +15,6 @@ DECL|macro|flush_cache_range
 mdefine_line|#define flush_cache_range(vma,start,end)        do { } while (0)
 DECL|macro|flush_cache_page
 mdefine_line|#define flush_cache_page(vma,vmaddr)            do { } while (0)
-DECL|macro|flush_page_to_ram
-mdefine_line|#define flush_page_to_ram(page)                 do { } while (0)
 DECL|macro|flush_cache_vmap
 mdefine_line|#define flush_cache_vmap(start, end)&t;&t;do { } while (0)
 DECL|macro|flush_cache_vunmap
@@ -29,6 +27,10 @@ DECL|macro|flush_dcache_range
 mdefine_line|#define flush_dcache_range(start,end)           do { } while (0)
 DECL|macro|flush_dcache_page
 mdefine_line|#define flush_dcache_page(page)                 do { } while (0)
+DECL|macro|flush_dcache_mmap_lock
+mdefine_line|#define flush_dcache_mmap_lock(mapping)&t;&t;do { } while (0)
+DECL|macro|flush_dcache_mmap_unlock
+mdefine_line|#define flush_dcache_mmap_unlock(mapping)&t;do { } while (0)
 DECL|macro|clean_dcache_entry
 mdefine_line|#define clean_dcache_entry(_s)                  do { } while (0)
 DECL|macro|clean_cache_entry

@@ -4626,7 +4626,13 @@ id|oldstate
 )paren
 (brace
 r_case
+id|SDEV_CREATED
+suffix:colon
+r_case
 id|SDEV_RUNNING
+suffix:colon
+r_case
+id|SDEV_OFFLINE
 suffix:colon
 r_break
 suffix:semicolon
@@ -4648,13 +4654,7 @@ id|oldstate
 )paren
 (brace
 r_case
-id|SDEV_CREATED
-suffix:colon
-r_case
 id|SDEV_CANCEL
-suffix:colon
-r_case
-id|SDEV_OFFLINE
 suffix:colon
 r_break
 suffix:semicolon

@@ -10,6 +10,7 @@ macro_line|#include &lt;linux/vmalloc.h&gt;
 macro_line|#include &lt;linux/completion.h&gt;
 macro_line|#include &lt;linux/namespace.h&gt;
 macro_line|#include &lt;linux/personality.h&gt;
+macro_line|#include &lt;linux/mempolicy.h&gt;
 macro_line|#include &lt;linux/sem.h&gt;
 macro_line|#include &lt;linux/file.h&gt;
 macro_line|#include &lt;linux/binfmts.h&gt;
@@ -23,6 +24,7 @@ macro_line|#include &lt;linux/futex.h&gt;
 macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;linux/mount.h&gt;
 macro_line|#include &lt;linux/audit.h&gt;
+macro_line|#include &lt;linux/rmap.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
@@ -711,23 +713,11 @@ id|task_struct
 comma
 id|ARCH_MIN_TASKALIGN
 comma
-l_int|0
+id|SLAB_PANIC
 comma
 l_int|NULL
 comma
 l_int|NULL
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|task_struct_cachep
-)paren
-id|panic
-c_func
-(paren
-l_string|&quot;fork_init(): cannot create task_struct SLAB cache&quot;
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -935,6 +925,11 @@ id|charge
 op_assign
 l_int|0
 suffix:semicolon
+r_struct
+id|mempolicy
+op_star
+id|pol
+suffix:semicolon
 id|down_write
 c_func
 (paren
@@ -1116,6 +1111,46 @@ op_assign
 op_star
 id|mpnt
 suffix:semicolon
+id|pol
+op_assign
+id|mpol_copy
+c_func
+(paren
+id|vma_policy
+c_func
+(paren
+id|mpnt
+)paren
+)paren
+suffix:semicolon
+id|retval
+op_assign
+id|PTR_ERR
+c_func
+(paren
+id|pol
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|IS_ERR
+c_func
+(paren
+id|pol
+)paren
+)paren
+r_goto
+id|fail_nomem_policy
+suffix:semicolon
+id|vma_set_policy
+c_func
+(paren
+id|tmp
+comma
+id|pol
+)paren
+suffix:semicolon
 id|tmp-&gt;vm_flags
 op_and_assign
 op_complement
@@ -1129,16 +1164,21 @@ id|tmp-&gt;vm_next
 op_assign
 l_int|NULL
 suffix:semicolon
+id|anon_vma_link
+c_func
+(paren
+id|tmp
+)paren
+suffix:semicolon
+id|vma_prio_tree_init
+c_func
+(paren
+id|tmp
+)paren
+suffix:semicolon
 id|file
 op_assign
 id|tmp-&gt;vm_file
-suffix:semicolon
-id|INIT_LIST_HEAD
-c_func
-(paren
-op_amp
-id|tmp-&gt;shared
-)paren
 suffix:semicolon
 r_if
 c_cond
@@ -1174,28 +1214,38 @@ id|inode-&gt;i_writecount
 )paren
 suffix:semicolon
 multiline_comment|/* insert tmp into the share list, just after mpnt */
-id|down
+id|spin_lock
 c_func
 (paren
 op_amp
-id|file-&gt;f_mapping-&gt;i_shared_sem
+id|file-&gt;f_mapping-&gt;i_mmap_lock
 )paren
 suffix:semicolon
-id|list_add
+id|flush_dcache_mmap_lock
 c_func
 (paren
-op_amp
-id|tmp-&gt;shared
+id|file-&gt;f_mapping
+)paren
+suffix:semicolon
+id|vma_prio_tree_add
+c_func
+(paren
+id|tmp
 comma
-op_amp
-id|mpnt-&gt;shared
+id|mpnt
 )paren
 suffix:semicolon
-id|up
+id|flush_dcache_mmap_unlock
+c_func
+(paren
+id|file-&gt;f_mapping
+)paren
+suffix:semicolon
+id|spin_unlock
 c_func
 (paren
 op_amp
-id|file-&gt;f_mapping-&gt;i_shared_sem
+id|file-&gt;f_mapping-&gt;i_mmap_lock
 )paren
 suffix:semicolon
 )brace
@@ -1306,6 +1356,16 @@ id|oldmm-&gt;mmap_sem
 suffix:semicolon
 r_return
 id|retval
+suffix:semicolon
+id|fail_nomem_policy
+suffix:colon
+id|kmem_cache_free
+c_func
+(paren
+id|vm_area_cachep
+comma
+id|tmp
+)paren
 suffix:semicolon
 id|fail_nomem
 suffix:colon
@@ -1559,7 +1619,8 @@ id|mm
 )paren
 )paren
 suffix:semicolon
-r_return
+id|mm
+op_assign
 id|mm_init
 c_func
 (paren
@@ -1568,7 +1629,7 @@ id|mm
 suffix:semicolon
 )brace
 r_return
-l_int|NULL
+id|mm
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Called when the last reference to the mm&n; * is dropped: either by a lazy thread or by&n; * mmput. Free the page directory and the mm.&n; */
@@ -3722,6 +3783,42 @@ id|p-&gt;audit_context
 op_assign
 l_int|NULL
 suffix:semicolon
+macro_line|#ifdef CONFIG_NUMA
+id|p-&gt;mempolicy
+op_assign
+id|mpol_copy
+c_func
+(paren
+id|p-&gt;mempolicy
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|IS_ERR
+c_func
+(paren
+id|p-&gt;mempolicy
+)paren
+)paren
+(brace
+id|retval
+op_assign
+id|PTR_ERR
+c_func
+(paren
+id|p-&gt;mempolicy
+)paren
+suffix:semicolon
+id|p-&gt;mempolicy
+op_assign
+l_int|NULL
+suffix:semicolon
+r_goto
+id|bad_fork_cleanup
+suffix:semicolon
+)brace
+macro_line|#endif
 id|retval
 op_assign
 op_minus
@@ -3741,7 +3838,7 @@ id|p
 )paren
 )paren
 r_goto
-id|bad_fork_cleanup
+id|bad_fork_cleanup_policy
 suffix:semicolon
 r_if
 c_cond
@@ -4370,6 +4467,16 @@ c_func
 id|p
 )paren
 suffix:semicolon
+id|bad_fork_cleanup_policy
+suffix:colon
+macro_line|#ifdef CONFIG_NUMA
+id|mpol_free
+c_func
+(paren
+id|p-&gt;mempolicy
+)paren
+suffix:semicolon
+macro_line|#endif
 id|bad_fork_cleanup
 suffix:colon
 r_if
@@ -4913,22 +5020,12 @@ comma
 l_int|0
 comma
 id|SLAB_HWCACHE_ALIGN
+op_or
+id|SLAB_PANIC
 comma
 l_int|NULL
 comma
 l_int|NULL
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|sighand_cachep
-)paren
-id|panic
-c_func
-(paren
-l_string|&quot;Cannot create sighand SLAB cache&quot;
 )paren
 suffix:semicolon
 id|signal_cachep
@@ -4947,22 +5044,12 @@ comma
 l_int|0
 comma
 id|SLAB_HWCACHE_ALIGN
+op_or
+id|SLAB_PANIC
 comma
 l_int|NULL
 comma
 l_int|NULL
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|signal_cachep
-)paren
-id|panic
-c_func
-(paren
-l_string|&quot;Cannot create signal SLAB cache&quot;
 )paren
 suffix:semicolon
 id|files_cachep
@@ -4981,22 +5068,12 @@ comma
 l_int|0
 comma
 id|SLAB_HWCACHE_ALIGN
+op_or
+id|SLAB_PANIC
 comma
 l_int|NULL
 comma
 l_int|NULL
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|files_cachep
-)paren
-id|panic
-c_func
-(paren
-l_string|&quot;Cannot create files SLAB cache&quot;
 )paren
 suffix:semicolon
 id|fs_cachep
@@ -5015,22 +5092,12 @@ comma
 l_int|0
 comma
 id|SLAB_HWCACHE_ALIGN
+op_or
+id|SLAB_PANIC
 comma
 l_int|NULL
 comma
 l_int|NULL
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|fs_cachep
-)paren
-id|panic
-c_func
-(paren
-l_string|&quot;Cannot create fs_struct SLAB cache&quot;
 )paren
 suffix:semicolon
 id|vm_area_cachep
@@ -5048,27 +5115,13 @@ id|vm_area_struct
 comma
 l_int|0
 comma
-l_int|0
+id|SLAB_PANIC
 comma
 l_int|NULL
 comma
 l_int|NULL
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|vm_area_cachep
-)paren
-(brace
-id|panic
-c_func
-(paren
-l_string|&quot;vma_init: Cannot alloc vm_area_struct SLAB cache&quot;
-)paren
-suffix:semicolon
-)brace
 id|mm_cachep
 op_assign
 id|kmem_cache_create
@@ -5085,25 +5138,13 @@ comma
 l_int|0
 comma
 id|SLAB_HWCACHE_ALIGN
+op_or
+id|SLAB_PANIC
 comma
 l_int|NULL
 comma
 l_int|NULL
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|mm_cachep
-)paren
-(brace
-id|panic
-c_func
-(paren
-l_string|&quot;vma_init: Cannot alloc mm_struct SLAB cache&quot;
-)paren
-suffix:semicolon
-)brace
 )brace
 eof

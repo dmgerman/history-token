@@ -5710,6 +5710,8 @@ suffix:semicolon
 id|vma-&gt;vm_flags
 op_or_assign
 id|VM_DONTEXPAND
+op_or
+id|VM_RESERVED
 suffix:semicolon
 id|vma-&gt;vm_flags
 op_and_assign

@@ -730,6 +730,28 @@ mdefine_line|#define _syscall5(type,name,type1,arg1,type2,arg2,type3,arg3,type4,
 DECL|macro|_syscall6
 mdefine_line|#define _syscall6(type,name,type1,arg1,type2,arg2,type3,arg3,type4,arg4, &bslash;&n;&t;  type5,arg5,type6,arg6)&t;&t;&t;&t;&t; &bslash;&n;type name (type1 arg1,type2 arg2,type3 arg3,type4 arg4,type5 arg5, type6 arg6)&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;long _sc_ret, _sc_err;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;{&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;register long _sc_0 __asm__(&quot;$0&quot;);&t;&t;&t;&bslash;&n;&t;&t;register long _sc_16 __asm__(&quot;$16&quot;);&t;&t;&t;&bslash;&n;&t;&t;register long _sc_17 __asm__(&quot;$17&quot;);&t;&t;&t;&bslash;&n;&t;&t;register long _sc_18 __asm__(&quot;$18&quot;);&t;&t;&t;&bslash;&n;&t;&t;register long _sc_19 __asm__(&quot;$19&quot;);&t;&t;&t;&bslash;&n;&t;&t;register long _sc_20 __asm__(&quot;$20&quot;);&t;&t;&t;&bslash;&n;&t;&t;register long _sc_21 __asm__(&quot;$21&quot;);&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;_sc_0 = __NR_##name;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;_sc_16 = (long) (arg1);&t;&t;&t;&t;&t;&bslash;&n;&t;&t;_sc_17 = (long) (arg2);&t;&t;&t;&t;&t;&bslash;&n;&t;&t;_sc_18 = (long) (arg3);&t;&t;&t;&t;&t;&bslash;&n;&t;&t;_sc_19 = (long) (arg4);&t;&t;&t;&t;&t;&bslash;&n;&t;&t;_sc_20 = (long) (arg5);&t;&t;&t;&t;&t;&bslash;&n;&t;&t;_sc_21 = (long) (arg6);&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__asm__(&quot;callsys # %0 %1 %2 %3 %4 %5 %6 %7 %8&quot;&t;&t;&bslash;&n;&t;&t;&t;: &quot;=r&quot;(_sc_0), &quot;=r&quot;(_sc_19)&t;&t;&t;&bslash;&n;&t;&t;&t;: &quot;0&quot;(_sc_0), &quot;r&quot;(_sc_16), &quot;r&quot;(_sc_17),&t;&t;&bslash;&n;&t;&t;&t;  &quot;r&quot;(_sc_18), &quot;1&quot;(_sc_19), &quot;r&quot;(_sc_20), &quot;r&quot;(_sc_21) &bslash;&n;&t;&t;&t;: _syscall_clobbers);&t;&t;&t;&t;&bslash;&n;&t;&t;_sc_ret = _sc_0, _sc_err = _sc_19;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;_syscall_return(type);&t;&t;&t;&t;&t;&t;&bslash;&n;}
 macro_line|#endif /* __LIBRARY__ &amp;&amp; __GNUC__ */
+macro_line|#ifdef __KERNEL__
+DECL|macro|__ARCH_WANT_IPC_PARSE_VERSION
+mdefine_line|#define __ARCH_WANT_IPC_PARSE_VERSION
+DECL|macro|__ARCH_WANT_OLD_READDIR
+mdefine_line|#define __ARCH_WANT_OLD_READDIR
+DECL|macro|__ARCH_WANT_STAT64
+mdefine_line|#define __ARCH_WANT_STAT64
+DECL|macro|__ARCH_WANT_SYS_GETHOSTNAME
+mdefine_line|#define __ARCH_WANT_SYS_GETHOSTNAME
+DECL|macro|__ARCH_WANT_SYS_SOCKETCALL
+mdefine_line|#define __ARCH_WANT_SYS_SOCKETCALL
+DECL|macro|__ARCH_WANT_SYS_FADVISE64
+mdefine_line|#define __ARCH_WANT_SYS_FADVISE64
+DECL|macro|__ARCH_WANT_SYS_GETPGRP
+mdefine_line|#define __ARCH_WANT_SYS_GETPGRP
+DECL|macro|__ARCH_WANT_SYS_OLD_GETRLIMIT
+mdefine_line|#define __ARCH_WANT_SYS_OLD_GETRLIMIT
+DECL|macro|__ARCH_WANT_SYS_OLDUMOUNT
+mdefine_line|#define __ARCH_WANT_SYS_OLDUMOUNT
+DECL|macro|__ARCH_WANT_SYS_SIGPENDING
+mdefine_line|#define __ARCH_WANT_SYS_SIGPENDING
+macro_line|#endif
 macro_line|#ifdef __KERNEL_SYSCALLS__
 macro_line|#include &lt;linux/compiler.h&gt;
 macro_line|#include &lt;linux/types.h&gt;

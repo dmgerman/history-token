@@ -49,7 +49,6 @@ macro_line|#include &lt;asm/atomic.h&gt;
 macro_line|#include &lt;asm/iommu.h&gt;
 macro_line|#include &lt;asm/vio.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
-macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/seq_file.h&gt;
 macro_line|#include &quot;ibmveth.h&quot;
 DECL|macro|DEBUG

@@ -528,11 +528,11 @@ op_amp
 id|inode-&gt;i_data.tree_lock
 )paren
 suffix:semicolon
-id|init_MUTEX
+id|spin_lock_init
 c_func
 (paren
 op_amp
-id|inode-&gt;i_data.i_shared_sem
+id|inode-&gt;i_data.i_mmap_lock
 )paren
 suffix:semicolon
 id|atomic_set
@@ -558,7 +558,7 @@ op_amp
 id|inode-&gt;i_data.private_lock
 )paren
 suffix:semicolon
-id|INIT_LIST_HEAD
+id|INIT_PRIO_TREE_ROOT
 c_func
 (paren
 op_amp
@@ -569,7 +569,7 @@ id|INIT_LIST_HEAD
 c_func
 (paren
 op_amp
-id|inode-&gt;i_data.i_mmap_shared
+id|inode-&gt;i_data.i_mmap_nonlinear
 )paren
 suffix:semicolon
 id|spin_lock_init
@@ -4975,22 +4975,12 @@ comma
 l_int|0
 comma
 id|SLAB_HWCACHE_ALIGN
+op_or
+id|SLAB_PANIC
 comma
 id|init_once
 comma
 l_int|NULL
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|inode_cachep
-)paren
-id|panic
-c_func
-(paren
-l_string|&quot;cannot create inode slab cache&quot;
 )paren
 suffix:semicolon
 id|set_shrinker

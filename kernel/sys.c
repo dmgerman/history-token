@@ -733,6 +733,21 @@ c_func
 (paren
 id|compat_sys_mq_getsetattr
 )paren
+id|cond_syscall
+c_func
+(paren
+id|sys_mbind
+)paren
+id|cond_syscall
+c_func
+(paren
+id|sys_get_mempolicy
+)paren
+id|cond_syscall
+c_func
+(paren
+id|sys_set_mempolicy
+)paren
 multiline_comment|/* arch-specific weak syscall entries */
 id|cond_syscall
 c_func
@@ -4110,6 +4125,7 @@ id|retval
 suffix:semicolon
 )brace
 )brace
+macro_line|#ifdef __ARCH_WANT_SYS_GETPGRP
 DECL|function|sys_getpgrp
 id|asmlinkage
 r_int
@@ -4128,6 +4144,7 @@ id|current
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif
 DECL|function|sys_getsid
 id|asmlinkage
 r_int
@@ -5649,6 +5666,7 @@ r_return
 id|errno
 suffix:semicolon
 )brace
+macro_line|#ifdef __ARCH_WANT_SYS_GETHOSTNAME
 DECL|function|sys_gethostname
 id|asmlinkage
 r_int
@@ -5741,6 +5759,7 @@ r_return
 id|errno
 suffix:semicolon
 )brace
+macro_line|#endif
 multiline_comment|/*&n; * Only setdomainname; getdomainname can be implemented by calling&n; * uname()&n; */
 DECL|function|sys_setdomainname
 id|asmlinkage
@@ -5904,7 +5923,7 @@ suffix:colon
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#if defined(COMPAT_RLIM_OLD_INFINITY) || !(defined(CONFIG_IA64) || defined(CONFIG_V850))
+macro_line|#ifdef __ARCH_WANT_SYS_OLD_GETRLIMIT
 multiline_comment|/*&n; *&t;Back compatibility for getrlimit. Needed for some apps.&n; */
 DECL|function|sys_old_getrlimit
 id|asmlinkage

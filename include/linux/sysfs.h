@@ -356,7 +356,7 @@ suffix:semicolon
 DECL|function|sysfs_rename_dir
 r_static
 r_inline
-r_void
+r_int
 id|sysfs_rename_dir
 c_func
 (paren
@@ -371,6 +371,8 @@ op_star
 id|new_name
 )paren
 (brace
+r_return
+l_int|0
 suffix:semicolon
 )brace
 DECL|function|sysfs_create_file

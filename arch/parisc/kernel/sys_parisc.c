@@ -155,59 +155,7 @@ suffix:semicolon
 )brace
 DECL|macro|DCACHE_ALIGN
 mdefine_line|#define DCACHE_ALIGN(addr) (((addr) + (SHMLBA - 1)) &amp;~ (SHMLBA - 1))
-multiline_comment|/*&n; * We need to know the offset to use.  Old scheme was to look for&n; * existing mapping and use the same offset.  New scheme is to use the&n; * address of the kernel data structure as the seed for the offset.&n; * We&squot;ll see how that works...&n; */
-macro_line|#if 0
-r_static
-r_int
-id|get_offset
-c_func
-(paren
-r_struct
-id|address_space
-op_star
-id|mapping
-)paren
-(brace
-r_struct
-id|vm_area_struct
-op_star
-id|vma
-op_assign
-id|list_entry
-c_func
-(paren
-id|mapping-&gt;i_mmap_shared.next
-comma
-r_struct
-id|vm_area_struct
-comma
-id|shared
-)paren
-suffix:semicolon
-r_return
-(paren
-id|vma-&gt;vm_start
-op_plus
-(paren
-(paren
-id|pgoff
-op_minus
-id|vma-&gt;vm_pgoff
-)paren
-op_lshift
-id|PAGE_SHIFT
-)paren
-)paren
-op_amp
-(paren
-id|SHMLBA
-op_minus
-l_int|1
-)paren
-suffix:semicolon
-)brace
-macro_line|#else
-multiline_comment|/* The mapping is cacheline aligned, so there&squot;s no information in the bottom&n; * few bits of the address.  We&squot;re looking for 10 bits (4MB / 4k), so let&squot;s&n; * drop the bottom 8 bits and use bits 8-17.  &n; */
+multiline_comment|/*&n; * We need to know the offset to use.  Old scheme was to look for&n; * existing mapping and use the same offset.  New scheme is to use the&n; * address of the kernel data structure as the seed for the offset.&n; * We&squot;ll see how that works...&n; *&n; * The mapping is cacheline aligned, so there&squot;s no information in the bottom&n; * few bits of the address.  We&squot;re looking for 10 bits (4MB / 4k), so let&squot;s&n; * drop the bottom 8 bits and use bits 8-17.  &n; */
 DECL|function|get_offset
 r_static
 r_int
@@ -241,7 +189,6 @@ op_amp
 l_int|0x3FF000
 suffix:semicolon
 )brace
-macro_line|#endif
 DECL|function|get_shared_area
 r_static
 r_int

@@ -37,9 +37,7 @@ suffix:semicolon
 id|DPRINTK
 c_func
 (paren
-(paren
-l_string|&quot;autofs: entering catatonic mode&bslash;n&quot;
-)paren
+l_string|&quot;entering catatonic mode&quot;
 )paren
 suffix:semicolon
 id|sbi-&gt;catatonic
@@ -316,8 +314,7 @@ suffix:semicolon
 id|DPRINTK
 c_func
 (paren
-(paren
-l_string|&quot;autofs4_notify_daemon: wait id = 0x%08lx, name = %.*s, type=%d&bslash;n&quot;
+l_string|&quot;wait id = 0x%08lx, name = %.*s, type=%d&quot;
 comma
 id|wq-&gt;wait_queue_token
 comma
@@ -326,7 +323,6 @@ comma
 id|wq-&gt;name
 comma
 id|type
-)paren
 )paren
 suffix:semicolon
 id|memset
@@ -935,8 +931,7 @@ suffix:semicolon
 id|DPRINTK
 c_func
 (paren
-(paren
-l_string|&quot;autofs4_wait: new wait id = 0x%08lx, name = %.*s, nfy=%d&bslash;n&quot;
+l_string|&quot;new wait id = 0x%08lx, name = %.*s, nfy=%d&quot;
 comma
 (paren
 r_int
@@ -949,7 +944,6 @@ comma
 id|wq-&gt;name
 comma
 id|notify
-)paren
 )paren
 suffix:semicolon
 multiline_comment|/* autofs4_notify_daemon() may block */
@@ -999,8 +993,7 @@ suffix:semicolon
 id|DPRINTK
 c_func
 (paren
-(paren
-l_string|&quot;autofs4_wait: existing wait id = 0x%08lx, name = %.*s, nfy=%d&bslash;n&quot;
+l_string|&quot;existing wait id = 0x%08lx, name = %.*s, nfy=%d&quot;
 comma
 (paren
 r_int
@@ -1013,7 +1006,6 @@ comma
 id|wq-&gt;name
 comma
 id|notify
-)paren
 )paren
 suffix:semicolon
 )brace
@@ -1147,9 +1139,7 @@ r_else
 id|DPRINTK
 c_func
 (paren
-(paren
-l_string|&quot;autofs4_wait: skipped sleeping&bslash;n&quot;
-)paren
+l_string|&quot;skipped sleeping&quot;
 )paren
 suffix:semicolon
 )brace

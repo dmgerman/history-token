@@ -469,12 +469,12 @@ DECL|macro|__NR_fstatfs64
 mdefine_line|#define __NR_fstatfs64&t;&t;&t;1257
 DECL|macro|__NR_statfs64
 mdefine_line|#define __NR_statfs64&t;&t;&t;1258
-DECL|macro|__NR_reserved1
-mdefine_line|#define __NR_reserved1&t;&t;&t;1259&t;/* reserved for NUMA interface */
-DECL|macro|__NR_reserved2
-mdefine_line|#define __NR_reserved2&t;&t;&t;1260&t;/* reserved for NUMA interface */
-DECL|macro|__NR_reserved3
-mdefine_line|#define __NR_reserved3&t;&t;&t;1261&t;/* reserved for NUMA interface */
+DECL|macro|__NR_mbind
+mdefine_line|#define __NR_mbind&t;&t;&t;1259
+DECL|macro|__NR_get_mempolicy
+mdefine_line|#define __NR_get_mempolicy&t;&t;1260
+DECL|macro|__NR_set_mempolicy
+mdefine_line|#define __NR_set_mempolicy&t;&t;1261
 DECL|macro|__NR_mq_open
 mdefine_line|#define __NR_mq_open&t;&t;&t;1262
 DECL|macro|__NR_mq_unlink
@@ -490,8 +490,27 @@ mdefine_line|#define __NR_mq_getsetattr&t;&t;1267
 DECL|macro|__NR_kexec_load
 mdefine_line|#define __NR_kexec_load&t;&t;&t;1268
 macro_line|#ifdef __KERNEL__
+macro_line|#include &lt;linux/config.h&gt;
 DECL|macro|NR_syscalls
 mdefine_line|#define NR_syscalls&t;&t;&t;256 /* length of syscall table */
+macro_line|#ifdef CONFIG_IA32_SUPPORT
+DECL|macro|__ARCH_WANT_SYS_FADVISE64
+macro_line|# define __ARCH_WANT_SYS_FADVISE64
+DECL|macro|__ARCH_WANT_SYS_GETPGRP
+macro_line|# define __ARCH_WANT_SYS_GETPGRP
+DECL|macro|__ARCH_WANT_SYS_LLSEEK
+macro_line|# define __ARCH_WANT_SYS_LLSEEK
+DECL|macro|__ARCH_WANT_SYS_NICE
+macro_line|# define __ARCH_WANT_SYS_NICE
+DECL|macro|__ARCH_WANT_SYS_OLD_GETRLIMIT
+macro_line|# define __ARCH_WANT_SYS_OLD_GETRLIMIT
+DECL|macro|__ARCH_WANT_SYS_OLDUMOUNT
+macro_line|# define __ARCH_WANT_SYS_OLDUMOUNT
+DECL|macro|__ARCH_WANT_SYS_SIGPENDING
+macro_line|# define __ARCH_WANT_SYS_SIGPENDING
+DECL|macro|__ARCH_WANT_SYS_SIGPROCMASK
+macro_line|# define __ARCH_WANT_SYS_SIGPROCMASK
+macro_line|#endif
 macro_line|#if !defined(__ASSEMBLY__) &amp;&amp; !defined(ASSEMBLER)
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/linkage.h&gt;

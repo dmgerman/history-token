@@ -590,6 +590,18 @@ id|nopage
 op_assign
 id|shmem_nopage
 comma
+macro_line|#ifdef CONFIG_NUMA
+dot
+id|set_policy
+op_assign
+id|shmem_set_policy
+comma
+dot
+id|get_policy
+op_assign
+id|shmem_get_policy
+comma
+macro_line|#endif
 )brace
 suffix:semicolon
 DECL|function|newseg

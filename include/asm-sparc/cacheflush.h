@@ -285,6 +285,10 @@ id|page
 suffix:semicolon
 DECL|macro|flush_dcache_page
 mdefine_line|#define flush_dcache_page(page)&t;&t;&t;sparc_flush_page_to_ram(page)
+DECL|macro|flush_dcache_mmap_lock
+mdefine_line|#define flush_dcache_mmap_lock(mapping)&t;&t;do { } while (0)
+DECL|macro|flush_dcache_mmap_unlock
+mdefine_line|#define flush_dcache_mmap_unlock(mapping)&t;do { } while (0)
 DECL|macro|flush_cache_vmap
 mdefine_line|#define flush_cache_vmap(start, end)&t;&t;flush_cache_all()
 DECL|macro|flush_cache_vunmap

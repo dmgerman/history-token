@@ -17,7 +17,9 @@ macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;linux/profile.h&gt;
 macro_line|#include &lt;linux/mount.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
+macro_line|#include &lt;linux/mempolicy.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
+macro_line|#include &lt;asm/unistd.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/mmu_context.h&gt;
 r_extern
@@ -3050,6 +3052,14 @@ c_func
 (paren
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_NUMA
+id|mpol_free
+c_func
+(paren
+id|tsk-&gt;mempolicy
+)paren
+suffix:semicolon
+macro_line|#endif
 r_if
 c_cond
 (paren
@@ -4522,7 +4532,7 @@ r_return
 id|retval
 suffix:semicolon
 )brace
-macro_line|#if !defined(__alpha__) &amp;&amp; !defined(__ia64__) &amp;&amp; &bslash;&n;    !defined(__arm__) &amp;&amp; !defined(__s390__)
+macro_line|#ifdef __ARCH_WANT_SYS_WAITPID
 multiline_comment|/*&n; * sys_waitpid() remains for compatibility. waitpid() should be&n; * implemented by calling sys_wait4() from libc.a.&n; */
 DECL|function|sys_waitpid
 id|asmlinkage
