@@ -83,17 +83,9 @@ DECL|macro|local_irq_save
 mdefine_line|#define local_irq_save(flags)&t;&t;((flags) = read_pil_and_cli())
 DECL|macro|local_irq_restore
 mdefine_line|#define local_irq_restore(flags)&t;&t;setipl((flags))
-multiline_comment|/*&n; * Compatibility macros - they will be removed after some time.&n; */
-macro_line|#ifndef CONFIG_SMP
-DECL|macro|cli
-mdefine_line|#define cli() local_irq_disable()
-DECL|macro|sti
-mdefine_line|#define sti() local_irq_enable()
-DECL|macro|save_flags
-mdefine_line|#define save_flags(x) local_save_flags(x)
-DECL|macro|restore_flags
-mdefine_line|#define restore_flags(x) local_irq_restore(x)
-macro_line|#endif
+multiline_comment|/* On sparc64 IRQ flags are the PIL register.  A value of zero&n; * means all interrupt levels are enabled, any other value means&n; * only IRQ levels greater than that value will be received.&n; * Consequently this means that the lowest IRQ level is one.&n; */
+DECL|macro|irqs_disabled
+mdefine_line|#define irqs_disabled()&t;&t;&bslash;&n;({&t;unsigned long flags;&t;&bslash;&n;&t;local_save_flags(flags);&bslash;&n;&t;(flags &gt; 0);&t;&t;&bslash;&n;})
 DECL|macro|nop
 mdefine_line|#define nop() &t;&t;__asm__ __volatile__ (&quot;nop&quot;)
 DECL|macro|membar
