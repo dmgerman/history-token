@@ -4691,6 +4691,11 @@ op_amp
 id|FBINFO_MISC_MODECHANGEUSER
 )paren
 (brace
+id|info-&gt;flags
+op_and_assign
+op_complement
+id|FBINFO_MISC_MODECHANGEUSER
+suffix:semicolon
 id|notifier_call_chain
 c_func
 (paren
@@ -4701,11 +4706,6 @@ id|FB_EVENT_MODE_CHANGE
 comma
 id|info
 )paren
-suffix:semicolon
-id|info-&gt;flags
-op_and_assign
-op_complement
-id|FBINFO_MISC_MODECHANGEUSER
 suffix:semicolon
 )brace
 )brace
