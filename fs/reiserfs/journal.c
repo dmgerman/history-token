@@ -7945,7 +7945,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n;** read and replay the log&n;** on a clean unmount, the journal header&squot;s next unflushed pointer will be to an invalid&n;** transaction.  This tests that before finding all the transactions in the log, whic makes normal mount times fast.&n;**&n;** After a crash, this starts with the next unflushed transaction, and replays until it finds one too old, or invalid.&n;**&n;** On exit, it sets things up so the first transaction will work correctly.&n;*/
+multiline_comment|/* This function reads blocks starting from block and to max_block of bufsize&n;   size (but no more than BUFNR blocks at a time). This proved to improve&n;   mounting speed on self-rebuilding raid5 arrays at least.&n;   Right now it is only used from journal code. But later we might use it&n;   from other places.&n;   Note: Do not use journal_getblk/sb_getblk functions here! */
 DECL|function|reiserfs_breada
 r_struct
 id|buffer_head
@@ -7953,12 +7953,15 @@ op_star
 id|reiserfs_breada
 (paren
 r_struct
-id|super_block
+id|block_device
 op_star
-id|sb
+id|dev
 comma
 r_int
 id|block
+comma
+r_int
+id|bufsize
 comma
 r_int
 r_int
@@ -7991,11 +7994,13 @@ id|j
 suffix:semicolon
 id|bh
 op_assign
-id|sb_getblk
+id|__getblk
 (paren
-id|sb
+id|dev
 comma
 id|block
+comma
+id|bufsize
 )paren
 suffix:semicolon
 r_if
@@ -8056,13 +8061,15 @@ op_increment
 (brace
 id|bh
 op_assign
-id|sb_getblk
+id|__getblk
 (paren
-id|sb
+id|dev
 comma
 id|block
 op_plus
 id|i
+comma
+id|bufsize
 )paren
 suffix:semicolon
 r_if
@@ -8157,6 +8164,7 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
+multiline_comment|/*&n;** read and replay the log&n;** on a clean unmount, the journal header&squot;s next unflushed pointer will be to an invalid&n;** transaction.  This tests that before finding all the transactions in the log, whic makes normal mount times fast.&n;**&n;** After a crash, this starts with the next unflushed transaction, and replays until it finds one too old, or invalid.&n;**&n;** On exit, it sets things up so the first transaction will work correctly.&n;*/
 DECL|function|journal_read
 r_static
 r_int
@@ -8513,14 +8521,23 @@ id|p_s_sb
 )paren
 )paren
 (brace
+multiline_comment|/* Note that it is required for blocksize of primary fs device and journal&n;       device to be the same */
 id|d_bh
 op_assign
 id|reiserfs_breada
 c_func
 (paren
+id|SB_JOURNAL
+c_func
+(paren
 id|p_s_sb
+)paren
+op_member_access_from_pointer
+id|j_dev_bd
 comma
 id|cur_dblock
+comma
+id|p_s_sb-&gt;s_blocksize
 comma
 id|SB_ONDISK_JOURNAL_1st_BLOCK
 c_func
