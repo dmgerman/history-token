@@ -25,6 +25,23 @@ r_int
 r_int
 id|ntfs_nr_compression_users
 suffix:semicolon
+multiline_comment|/* A global default upcase table and a corresponding reference count. */
+DECL|variable|default_upcase
+r_static
+id|ntfschar
+op_star
+id|default_upcase
+op_assign
+l_int|NULL
+suffix:semicolon
+DECL|variable|ntfs_nr_upcase_users
+r_static
+r_int
+r_int
+id|ntfs_nr_upcase_users
+op_assign
+l_int|0
+suffix:semicolon
 multiline_comment|/* Error constants/strings used in inode.c::ntfs_show_options(). */
 r_typedef
 r_enum
@@ -8851,6 +8868,7 @@ suffix:semicolon
 )brace
 multiline_comment|/**&n; * The complete super operations.&n; */
 DECL|variable|ntfs_sops
+r_static
 r_struct
 id|super_operations
 id|ntfs_sops
@@ -10128,21 +10146,6 @@ DECL|variable|ntfs_index_ctx_cache
 id|kmem_cache_t
 op_star
 id|ntfs_index_ctx_cache
-suffix:semicolon
-multiline_comment|/* A global default upcase table and a corresponding reference count. */
-DECL|variable|default_upcase
-id|ntfschar
-op_star
-id|default_upcase
-op_assign
-l_int|NULL
-suffix:semicolon
-DECL|variable|ntfs_nr_upcase_users
-r_int
-r_int
-id|ntfs_nr_upcase_users
-op_assign
-l_int|0
 suffix:semicolon
 multiline_comment|/* Driver wide semaphore. */
 DECL|variable|ntfs_lock
