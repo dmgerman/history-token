@@ -3078,6 +3078,16 @@ comma
 id|acard-&gt;fm_res
 op_ne
 l_int|NULL
+op_logical_or
+id|fm_port
+(braket
+id|dev
+)braket
+op_eq
+id|port
+(braket
+id|dev
+)braket
 comma
 op_amp
 id|opl3
