@@ -11,6 +11,7 @@ macro_line|#include &lt;linux/pmu.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/cpufreq.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/sysdev.h&gt;
 macro_line|#include &lt;asm/prom.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
@@ -20,6 +21,7 @@ macro_line|#include &lt;asm/mmu_context.h&gt;
 macro_line|#include &lt;asm/sections.h&gt;
 macro_line|#include &lt;asm/cputable.h&gt;
 macro_line|#include &lt;asm/time.h&gt;
+multiline_comment|/* WARNING !!! This will cause calibrate_delay() to be called,&n; * but this is an __init function ! So you MUST go edit&n; * init/main.c to make it non-init before enabling DEBUG_FREQ&n; */
 DECL|macro|DEBUG_FREQ
 macro_line|#undef DEBUG_FREQ
 r_extern
@@ -41,18 +43,27 @@ r_void
 suffix:semicolon
 r_extern
 r_void
-id|openpic_sleep_save_intrs
+id|openpic_suspend
 c_func
 (paren
-r_void
+r_struct
+id|sys_device
+op_star
+id|sysdev
+comma
+id|u32
+id|state
 )paren
 suffix:semicolon
 r_extern
 r_void
-id|openpic_sleep_restore_intrs
+id|openpic_resume
 c_func
 (paren
-r_void
+r_struct
+id|sys_device
+op_star
+id|sysdev
 )paren
 suffix:semicolon
 r_extern
@@ -298,15 +309,12 @@ id|SPRN_HID1
 suffix:semicolon
 macro_line|#endif
 multiline_comment|/* Disable all interrupt sources on openpic */
-id|openpic_sleep_save_intrs
+id|openpic_suspend
 c_func
 (paren
-)paren
-suffix:semicolon
-multiline_comment|/* Make sure the PMU is idle */
-id|pmu_suspend
-c_func
-(paren
+l_int|NULL
+comma
+l_int|1
 )paren
 suffix:semicolon
 multiline_comment|/* Make sure the decrementer won&squot;t interrupt us */
@@ -469,6 +477,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
+multiline_comment|/* Prepare the northbridge for the speed transition */
 id|pmac_call_feature
 c_func
 (paren
@@ -481,11 +490,13 @@ comma
 l_int|1
 )paren
 suffix:semicolon
+multiline_comment|/* Call low level code to backup CPU state and recover from&n;&t; * hardware reset&n;&t; */
 id|low_sleep_handler
 c_func
 (paren
 )paren
 suffix:semicolon
+multiline_comment|/* Restore the northbridge */
 id|pmac_call_feature
 c_func
 (paren
@@ -566,6 +577,12 @@ id|SPRN_HID1
 )paren
 suffix:semicolon
 macro_line|#endif
+multiline_comment|/* Restore low level PMU operations */
+id|pmu_unlock
+c_func
+(paren
+)paren
+suffix:semicolon
 multiline_comment|/* Restore decrementer */
 id|wakeup_decrementer
 c_func
@@ -573,14 +590,10 @@ c_func
 )paren
 suffix:semicolon
 multiline_comment|/* Restore interrupts */
-id|openpic_sleep_restore_intrs
+id|openpic_resume
 c_func
 (paren
-)paren
-suffix:semicolon
-id|pmu_resume
-c_func
-(paren
+l_int|NULL
 )paren
 suffix:semicolon
 multiline_comment|/* Let interrupts flow again ... */
@@ -643,6 +656,18 @@ id|smp_processor_id
 c_func
 (paren
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|freqs.old
+op_eq
+id|freqs
+dot
+r_new
+)paren
+r_return
+l_int|0
 suffix:semicolon
 id|cpufreq_notify_transition
 c_func
@@ -922,6 +947,20 @@ suffix:semicolon
 r_int
 id|has_freq_ctl
 op_assign
+l_int|0
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|strstr
+c_func
+(paren
+id|cmd_line
+comma
+l_string|&quot;nocpufreq&quot;
+)paren
+)paren
+r_return
 l_int|0
 suffix:semicolon
 multiline_comment|/* Assume only one CPU */
