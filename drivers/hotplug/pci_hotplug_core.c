@@ -12,7 +12,6 @@ macro_line|#include &lt;linux/mount.h&gt;
 macro_line|#include &lt;linux/namei.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/dnotify.h&gt;
-macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/kobject.h&gt;
 macro_line|#include &lt;linux/sysfs.h&gt;
@@ -325,32 +324,6 @@ comma
 multiline_comment|/* 0x13 */
 )brace
 suffix:semicolon
-macro_line|#ifdef CONFIG_PROC_FS&t;&t;
-r_extern
-r_struct
-id|proc_dir_entry
-op_star
-id|proc_bus_pci_dir
-suffix:semicolon
-DECL|variable|slotdir
-r_static
-r_struct
-id|proc_dir_entry
-op_star
-id|slotdir
-op_assign
-l_int|NULL
-suffix:semicolon
-DECL|variable|slotdir_name
-r_static
-r_const
-r_char
-op_star
-id|slotdir_name
-op_assign
-l_string|&quot;slots&quot;
-suffix:semicolon
-macro_line|#endif
 macro_line|#ifdef CONFIG_HOTPLUG_PCI_CPCI
 r_extern
 r_int
@@ -2141,19 +2114,6 @@ r_goto
 id|err_subsys
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_PROC_FS
-multiline_comment|/* create mount point for pcihpfs */
-id|slotdir
-op_assign
-id|proc_mkdir
-c_func
-(paren
-id|slotdir_name
-comma
-id|proc_bus_pci_dir
-)paren
-suffix:semicolon
-macro_line|#endif
 id|info
 (paren
 id|DRIVER_DESC
@@ -2189,21 +2149,6 @@ id|pci_hotplug_exit
 r_void
 )paren
 (brace
-macro_line|#ifdef CONFIG_PROC_FS
-r_if
-c_cond
-(paren
-id|slotdir
-)paren
-id|remove_proc_entry
-c_func
-(paren
-id|slotdir_name
-comma
-id|proc_bus_pci_dir
-)paren
-suffix:semicolon
-macro_line|#endif
 id|cpci_hotplug_exit
 c_func
 (paren
