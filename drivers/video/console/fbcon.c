@@ -4722,7 +4722,7 @@ c_func
 (paren
 id|size
 comma
-id|GFP_KERNEL
+id|GFP_ATOMIC
 )paren
 suffix:semicolon
 id|mask
@@ -4732,7 +4732,7 @@ c_func
 (paren
 id|size
 comma
-id|GFP_KERNEL
+id|GFP_ATOMIC
 )paren
 suffix:semicolon
 r_if
