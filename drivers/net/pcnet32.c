@@ -138,22 +138,22 @@ id|rx_copybreak
 op_assign
 l_int|200
 suffix:semicolon
-DECL|macro|PORT_AUI
-mdefine_line|#define PORT_AUI      0x00
-DECL|macro|PORT_10BT
-mdefine_line|#define PORT_10BT     0x01
-DECL|macro|PORT_GPSI
-mdefine_line|#define PORT_GPSI     0x02
-DECL|macro|PORT_MII
-mdefine_line|#define PORT_MII      0x03
-DECL|macro|PORT_PORTSEL
-mdefine_line|#define PORT_PORTSEL  0x03
-DECL|macro|PORT_ASEL
-mdefine_line|#define PORT_ASEL     0x04
-DECL|macro|PORT_100
-mdefine_line|#define PORT_100      0x40
-DECL|macro|PORT_FD
-mdefine_line|#define PORT_FD&t;      0x80
+DECL|macro|PCNET32_PORT_AUI
+mdefine_line|#define PCNET32_PORT_AUI      0x00
+DECL|macro|PCNET32_PORT_10BT
+mdefine_line|#define PCNET32_PORT_10BT     0x01
+DECL|macro|PCNET32_PORT_GPSI
+mdefine_line|#define PCNET32_PORT_GPSI     0x02
+DECL|macro|PCNET32_PORT_MII
+mdefine_line|#define PCNET32_PORT_MII      0x03
+DECL|macro|PCNET32_PORT_PORTSEL
+mdefine_line|#define PCNET32_PORT_PORTSEL  0x03
+DECL|macro|PCNET32_PORT_ASEL
+mdefine_line|#define PCNET32_PORT_ASEL     0x04
+DECL|macro|PCNET32_PORT_100
+mdefine_line|#define PCNET32_PORT_100      0x40
+DECL|macro|PCNET32_PORT_FD
+mdefine_line|#define PCNET32_PORT_FD&t;      0x80
 DECL|macro|PCNET32_DMA_MASK
 mdefine_line|#define PCNET32_DMA_MASK 0xffffffff
 multiline_comment|/*&n; * table to translate option values from tulip&n; * to internal options&n; */
@@ -166,62 +166,62 @@ id|options_mapping
 )braket
 op_assign
 (brace
-id|PORT_ASEL
+id|PCNET32_PORT_ASEL
 comma
 multiline_comment|/*  0 Auto-select&t;  */
-id|PORT_AUI
+id|PCNET32_PORT_AUI
 comma
 multiline_comment|/*  1 BNC/AUI&t;  */
-id|PORT_AUI
+id|PCNET32_PORT_AUI
 comma
 multiline_comment|/*  2 AUI/BNC&t;  */
-id|PORT_ASEL
+id|PCNET32_PORT_ASEL
 comma
 multiline_comment|/*  3 not supported&t;  */
-id|PORT_10BT
+id|PCNET32_PORT_10BT
 op_or
-id|PORT_FD
+id|PCNET32_PORT_FD
 comma
 multiline_comment|/*  4 10baseT-FD&t;  */
-id|PORT_ASEL
+id|PCNET32_PORT_ASEL
 comma
 multiline_comment|/*  5 not supported&t;  */
-id|PORT_ASEL
+id|PCNET32_PORT_ASEL
 comma
 multiline_comment|/*  6 not supported&t;  */
-id|PORT_ASEL
+id|PCNET32_PORT_ASEL
 comma
 multiline_comment|/*  7 not supported&t;  */
-id|PORT_ASEL
+id|PCNET32_PORT_ASEL
 comma
 multiline_comment|/*  8 not supported&t;  */
-id|PORT_MII
+id|PCNET32_PORT_MII
 comma
 multiline_comment|/*  9 MII 10baseT&t;  */
-id|PORT_MII
+id|PCNET32_PORT_MII
 op_or
-id|PORT_FD
+id|PCNET32_PORT_FD
 comma
 multiline_comment|/* 10 MII 10baseT-FD&t;  */
-id|PORT_MII
+id|PCNET32_PORT_MII
 comma
 multiline_comment|/* 11 MII (autosel)&t;  */
-id|PORT_10BT
+id|PCNET32_PORT_10BT
 comma
 multiline_comment|/* 12 10BaseT&t;  */
-id|PORT_MII
+id|PCNET32_PORT_MII
 op_or
-id|PORT_100
+id|PCNET32_PORT_100
 comma
 multiline_comment|/* 13 MII 100BaseTx&t;  */
-id|PORT_MII
+id|PCNET32_PORT_MII
 op_or
-id|PORT_100
+id|PCNET32_PORT_100
 op_or
-id|PORT_FD
+id|PCNET32_PORT_FD
 comma
 multiline_comment|/* 14 MII 100BaseTx-FD */
-id|PORT_ASEL
+id|PCNET32_PORT_ASEL
 multiline_comment|/* 15 not supported&t;  */
 )brace
 suffix:semicolon
@@ -2939,7 +2939,7 @@ id|options_mapping
 )paren
 id|lp-&gt;options
 op_assign
-id|PORT_ASEL
+id|PCNET32_PORT_ASEL
 suffix:semicolon
 r_else
 id|lp-&gt;options
@@ -2961,7 +2961,7 @@ op_logical_neg
 (paren
 id|lp-&gt;options
 op_amp
-id|PORT_ASEL
+id|PCNET32_PORT_ASEL
 )paren
 op_logical_and
 id|full_duplex
@@ -2971,7 +2971,7 @@ id|card_idx
 )paren
 id|lp-&gt;options
 op_or_assign
-id|PORT_FD
+id|PCNET32_PORT_FD
 suffix:semicolon
 r_if
 c_cond
@@ -3047,9 +3047,9 @@ l_int|0x75
 )paren
 id|lp-&gt;options
 op_assign
-id|PORT_FD
+id|PCNET32_PORT_FD
 op_or
-id|PORT_GPSI
+id|PCNET32_PORT_GPSI
 suffix:semicolon
 id|lp-&gt;init_block.mode
 op_assign
@@ -3570,7 +3570,7 @@ c_cond
 (paren
 id|lp-&gt;options
 op_amp
-id|PORT_ASEL
+id|PCNET32_PORT_ASEL
 )paren
 id|val
 op_or_assign
@@ -3609,7 +3609,7 @@ c_cond
 (paren
 id|lp-&gt;options
 op_amp
-id|PORT_FD
+id|PCNET32_PORT_FD
 )paren
 (brace
 id|val
@@ -3622,9 +3622,9 @@ c_cond
 id|lp-&gt;options
 op_eq
 (paren
-id|PORT_FD
+id|PCNET32_PORT_FD
 op_or
-id|PORT_AUI
+id|PCNET32_PORT_AUI
 )paren
 )paren
 id|val
@@ -3661,10 +3661,10 @@ c_cond
 (paren
 id|lp-&gt;options
 op_amp
-id|PORT_PORTSEL
+id|PCNET32_PORT_PORTSEL
 )paren
 op_eq
-id|PORT_GPSI
+id|PCNET32_PORT_GPSI
 )paren
 id|val
 op_or_assign
@@ -3688,7 +3688,7 @@ op_logical_neg
 (paren
 id|lp-&gt;options
 op_amp
-id|PORT_ASEL
+id|PCNET32_PORT_ASEL
 )paren
 )paren
 (brace
@@ -3710,7 +3710,7 @@ c_cond
 (paren
 id|lp-&gt;options
 op_amp
-id|PORT_FD
+id|PCNET32_PORT_FD
 )paren
 id|val
 op_or_assign
@@ -3721,7 +3721,7 @@ c_cond
 (paren
 id|lp-&gt;options
 op_amp
-id|PORT_100
+id|PCNET32_PORT_100
 )paren
 id|val
 op_or_assign
@@ -3744,7 +3744,7 @@ c_cond
 (paren
 id|lp-&gt;options
 op_amp
-id|PORT_ASEL
+id|PCNET32_PORT_ASEL
 )paren
 (brace
 multiline_comment|/* enable auto negotiate, setup, disable fd */
@@ -3855,7 +3855,7 @@ c_func
 (paren
 id|lp-&gt;options
 op_amp
-id|PORT_PORTSEL
+id|PCNET32_PORT_PORTSEL
 )paren
 op_lshift
 l_int|7
@@ -6749,7 +6749,7 @@ op_or
 (paren
 id|lp-&gt;options
 op_amp
-id|PORT_PORTSEL
+id|PCNET32_PORT_PORTSEL
 )paren
 op_lshift
 l_int|7
@@ -6766,7 +6766,7 @@ c_func
 (paren
 id|lp-&gt;options
 op_amp
-id|PORT_PORTSEL
+id|PCNET32_PORT_PORTSEL
 )paren
 op_lshift
 l_int|7
