@@ -268,14 +268,22 @@ op_assign
 op_minus
 id|ENODEV
 suffix:semicolon
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|zalon
 op_assign
+id|ioremap
+c_func
+(paren
 id|dev-&gt;hpa
+comma
+l_int|4096
+)paren
 suffix:semicolon
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|io_port
 op_assign
 id|zalon
@@ -323,6 +331,10 @@ op_amp
 id|IOSTATUS_RY
 )paren
 )paren
+id|cpu_relax
+c_func
+(paren
+)paren
 suffix:semicolon
 id|__raw_writel
 c_func
@@ -341,19 +353,19 @@ suffix:semicolon
 multiline_comment|/* XXX: Save the Zalon version for bug workarounds? */
 id|zalon_vers
 op_assign
+(paren
 id|__raw_readl
 c_func
 (paren
-id|dev-&gt;hpa
+id|zalon
 op_plus
 id|IO_MODULE_II_CDATA
 )paren
-op_amp
-l_int|0x07000000
-suffix:semicolon
-id|zalon_vers
-op_rshift_assign
+op_rshift
 l_int|24
+)paren
+op_amp
+l_int|0x07
 suffix:semicolon
 multiline_comment|/* Setup the interrupts first.&n;&t;** Later on request_irq() will register the handler.&n;&t;*/
 id|dev-&gt;irq
@@ -368,7 +380,8 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;%s: Zalon vers field is 0x%x, IRQ %d&bslash;n&quot;
+id|KERN_INFO
+l_string|&quot;%s: Zalon version %d, IRQ %d&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
@@ -384,7 +397,7 @@ id|gsc_irq.txn_addr
 op_or
 id|gsc_irq.txn_data
 comma
-id|dev-&gt;hpa
+id|zalon
 op_plus
 id|IO_MODULE_EIM
 )paren
@@ -421,7 +434,7 @@ id|ncr_device
 )paren
 suffix:semicolon
 multiline_comment|/* The following three are needed before any other access. */
-id|writeb
+id|__raw_writeb
 c_func
 (paren
 l_int|0x20
@@ -432,7 +445,7 @@ l_int|0x38
 )paren
 suffix:semicolon
 multiline_comment|/* DCNTL_REG,  EA  */
-id|writeb
+id|__raw_writeb
 c_func
 (paren
 l_int|0x04
@@ -443,7 +456,7 @@ l_int|0x1b
 )paren
 suffix:semicolon
 multiline_comment|/* CTEST0_REG, EHP */
-id|writeb
+id|__raw_writeb
 c_func
 (paren
 l_int|0x80
@@ -470,16 +483,12 @@ id|dev-&gt;dev
 suffix:semicolon
 id|device.slot.base
 op_assign
-(paren
-id|u_long
-)paren
-id|io_port
+id|dev-&gt;hpa
+op_plus
+id|GSC_SCSI_ZALON_OFFSET
 suffix:semicolon
-id|device.slot.base_c
+id|device.slot.base_v
 op_assign
-(paren
-id|u_long
-)paren
 id|io_port
 suffix:semicolon
 id|device.slot.irq
