@@ -510,6 +510,17 @@ id|ei_status.word16
 op_assign
 l_int|1
 suffix:semicolon
+macro_line|#ifdef __LITTLE_ENDIAN__ 
+id|ei_status.bigendian
+op_assign
+l_int|0
+suffix:semicolon
+macro_line|#else
+id|ei_status.bigendian
+op_assign
+l_int|1
+suffix:semicolon
+macro_line|#endif
 id|ei_status.tx_start_page
 op_assign
 id|START_PG

@@ -384,5 +384,14 @@ DECL|macro|atomic_clear_mask
 mdefine_line|#define atomic_clear_mask(mask, addr) &bslash;&n;__asm__ __volatile__(LOCK &quot;andl %0,%1&quot; &bslash;&n;: : &quot;r&quot; (~(mask)),&quot;m&quot; (*addr) : &quot;memory&quot;)
 DECL|macro|atomic_set_mask
 mdefine_line|#define atomic_set_mask(mask, addr) &bslash;&n;__asm__ __volatile__(LOCK &quot;orl %0,%1&quot; &bslash;&n;: : &quot;r&quot; (mask),&quot;m&quot; (*addr) : &quot;memory&quot;)
+multiline_comment|/* Atomic operations are already serializing on x86 */
+DECL|macro|smp_mb__before_atomic_dec
+mdefine_line|#define smp_mb__before_atomic_dec()&t;barrier()
+DECL|macro|smp_mb__after_atomic_dec
+mdefine_line|#define smp_mb__after_atomic_dec()&t;barrier()
+DECL|macro|smp_mb__before_atomic_inc
+mdefine_line|#define smp_mb__before_atomic_inc()&t;barrier()
+DECL|macro|smp_mb__after_atomic_inc
+mdefine_line|#define smp_mb__after_atomic_inc()&t;barrier()
 macro_line|#endif
 eof

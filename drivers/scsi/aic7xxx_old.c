@@ -19497,7 +19497,7 @@ c_func
 (paren
 id|WARN_LEAD
 l_string|&quot;invalid scb during SEQ_SG_FIXUP flags:0x%x &quot;
-l_string|&quot;scb-&gt;cmd:0x%x&bslash;n&quot;
+l_string|&quot;scb-&gt;cmd:0x%p&bslash;n&quot;
 comma
 id|p-&gt;host_no
 comma
@@ -19509,10 +19509,6 @@ id|scb
 comma
 id|scb-&gt;flags
 comma
-(paren
-r_int
-r_int
-)paren
 id|scb-&gt;cmd
 )paren
 suffix:semicolon

@@ -2666,13 +2666,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_PRINTER
-id|lp_init
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
 macro_line|#ifdef CONFIG_M68K_PRINTER
 id|lp_m68k_init
 c_func

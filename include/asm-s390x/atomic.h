@@ -649,5 +649,13 @@ suffix:semicolon
 )brace
 DECL|macro|atomic_compare_and_swap_debug
 mdefine_line|#define atomic_compare_and_swap_debug(where,from,to) &bslash;&n;if (atomic_compare_and_swap ((from), (to), (where))) {&bslash;&n;&t;printk (KERN_WARNING&quot;%s/%d atomic counter:%s couldn&squot;t be changed from %d(%s) to %d(%s), was %d&bslash;n&quot;,&bslash;&n;&t;&t;__FILE__,__LINE__,#where,(from),#from,(to),#to,atomic_read (where));&bslash;&n;        atomic_set(where,(to));&bslash;&n;}
+DECL|macro|smp_mb__before_atomic_dec
+mdefine_line|#define smp_mb__before_atomic_dec()&t;smp_mb()
+DECL|macro|smp_mb__after_atomic_dec
+mdefine_line|#define smp_mb__after_atomic_dec()&t;smp_mb()
+DECL|macro|smp_mb__before_atomic_inc
+mdefine_line|#define smp_mb__before_atomic_inc()&t;smp_mb()
+DECL|macro|smp_mb__after_atomic_inc
+mdefine_line|#define smp_mb__after_atomic_inc()&t;smp_mb()
 macro_line|#endif                                 /* __ARCH_S390_ATOMIC __            */
 eof

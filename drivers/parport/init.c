@@ -53,7 +53,7 @@ dot
 id|PARPORT_MAX
 )braket
 op_assign
-l_int|0
+id|PARPORT_IOHI_AUTO
 )brace
 suffix:semicolon
 macro_line|#endif

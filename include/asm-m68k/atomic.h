@@ -216,5 +216,14 @@ DECL|macro|atomic_clear_mask
 mdefine_line|#define atomic_clear_mask(mask, v) &bslash;&n;&t;__asm__ __volatile__(&quot;andl %1,%0&quot; : &quot;=m&quot; (*v) : &quot;id&quot; (~(mask)),&quot;0&quot;(*v))
 DECL|macro|atomic_set_mask
 mdefine_line|#define atomic_set_mask(mask, v) &bslash;&n;&t;__asm__ __volatile__(&quot;orl %1,%0&quot; : &quot;=m&quot; (*v) : &quot;id&quot; (mask),&quot;0&quot;(*v))
+multiline_comment|/* Atomic operations are already serializing */
+DECL|macro|smp_mb__before_atomic_dec
+mdefine_line|#define smp_mb__before_atomic_dec()&t;barrier()
+DECL|macro|smp_mb__after_atomic_dec
+mdefine_line|#define smp_mb__after_atomic_dec()&t;barrier()
+DECL|macro|smp_mb__before_atomic_inc
+mdefine_line|#define smp_mb__before_atomic_inc()&t;barrier()
+DECL|macro|smp_mb__after_atomic_inc
+mdefine_line|#define smp_mb__after_atomic_inc()&t;barrier()
 macro_line|#endif /* __ARCH_M68K_ATOMIC __ */
 eof

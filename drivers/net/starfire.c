@@ -1,11 +1,11 @@
 multiline_comment|/* starfire.c: Linux device driver for the Adaptec Starfire network adapter. */
-multiline_comment|/*&n;&t;Written 1998-2000 by Donald Becker.&n;&n;&t;Current maintainer is Ion Badulescu &lt;ionut@cs.columbia.edu&gt;. Please&n;&t;send all bug reports to me, and not to Donald Becker, as this code&n;&t;has been modified quite a bit from Donald&squot;s original version.&n;&n;&t;This software may be used and distributed according to the terms of&n;&t;the GNU General Public License (GPL), incorporated herein by reference.&n;&t;Drivers based on or derived from this code fall under the GPL and must&n;&t;retain the authorship, copyright and license notice.  This file is not&n;&t;a complete program and may only be used when the entire operating&n;&t;system is licensed under the GPL.&n;&n;&t;The author may be reached as becker@scyld.com, or C/O&n;&t;Scyld Computing Corporation&n;&t;410 Severn Ave., Suite 210&n;&t;Annapolis MD 21403&n;&n;&t;Support and updates available at&n;&t;http://www.scyld.com/network/starfire.html&n;&n;&t;-----------------------------------------------------------&n;&n;&t;Linux kernel-specific changes:&n;&n;&t;LK1.1.1 (jgarzik):&n;&t;- Use PCI driver interface&n;&t;- Fix MOD_xxx races&n;&t;- softnet fixups&n;&n;&t;LK1.1.2 (jgarzik):&n;&t;- Merge Becker version 0.15&n;&n;&t;LK1.1.3 (Andrew Morton)&n;&t;- Timer cleanups&n;&n;&t;LK1.1.4 (jgarzik):&n;&t;- Merge Becker version 1.03&n;&n;&t;LK1.2.1 (Ion Badulescu &lt;ionut@cs.columbia.edu&gt;)&n;&t;- Support hardware Rx/Tx checksumming&n;&t;- Use the GFP firmware taken from Adaptec&squot;s Netware driver&n;&n;&t;LK1.2.2 (Ion Badulescu)&n;&t;- Backported to 2.2.x&n;&n;&t;LK1.2.3 (Ion Badulescu)&n;&t;- Fix the flaky mdio interface&n;&t;- More compat clean-ups&n;&n;&t;LK1.2.4 (Ion Badulescu)&n;&t;- More 2.2.x initialization fixes&n;&n;&t;LK1.2.5 (Ion Badulescu)&n;&t;- Several fixes from Manfred Spraul&n;&n;&t;LK1.2.6 (Ion Badulescu)&n;&t;- Fixed ifup/ifdown/ifup problem in 2.4.x&n;&n;&t;LK1.2.7 (Ion Badulescu)&n;&t;- Removed unused code&n;&t;- Made more functions static and __init&n;&n;&t;LK1.2.8 (Ion Badulescu)&n;&t;- Quell bogus error messages, inform about the Tx threshold&n;&t;- Removed #ifdef CONFIG_PCI, this driver is PCI only&n;&n;&t;LK1.2.9 (Ion Badulescu)&n;&t;- Merged Jeff Garzik&squot;s changes from 2.4.4-pre5&n;&t;- Added 2.2.x compatibility stuff required by the above changes&n;&n;&t;LK1.2.9a (Ion Badulescu)&n;&t;- More updates from Jeff Garzik&n;&n;&t;LK1.3.0 (Ion Badulescu)&n;&t;- Merged zerocopy support&n;&n;&t;LK1.3.1 (Ion Badulescu)&n;&t;- Added ethtool support&n;&t;- Added GPIO (media change) interrupt support&n;&n;&t;LK1.3.2 (Ion Badulescu)&n;&t;- Fixed 2.2.x compatibility issues introduced in 1.3.1&n;&t;- Fixed ethtool ioctl returning uninitialized memory&n;&n;TODO:&n;&t;- implement tx_timeout() properly&n;*/
+multiline_comment|/*&n;&t;Written 1998-2000 by Donald Becker.&n;&n;&t;Current maintainer is Ion Badulescu &lt;ionut@cs.columbia.edu&gt;. Please&n;&t;send all bug reports to me, and not to Donald Becker, as this code&n;&t;has been modified quite a bit from Donald&squot;s original version.&n;&n;&t;This software may be used and distributed according to the terms of&n;&t;the GNU General Public License (GPL), incorporated herein by reference.&n;&t;Drivers based on or derived from this code fall under the GPL and must&n;&t;retain the authorship, copyright and license notice.  This file is not&n;&t;a complete program and may only be used when the entire operating&n;&t;system is licensed under the GPL.&n;&n;&t;The author may be reached as becker@scyld.com, or C/O&n;&t;Scyld Computing Corporation&n;&t;410 Severn Ave., Suite 210&n;&t;Annapolis MD 21403&n;&n;&t;Support and updates available at&n;&t;http://www.scyld.com/network/starfire.html&n;&n;&t;-----------------------------------------------------------&n;&n;&t;Linux kernel-specific changes:&n;&n;&t;LK1.1.1 (jgarzik):&n;&t;- Use PCI driver interface&n;&t;- Fix MOD_xxx races&n;&t;- softnet fixups&n;&n;&t;LK1.1.2 (jgarzik):&n;&t;- Merge Becker version 0.15&n;&n;&t;LK1.1.3 (Andrew Morton)&n;&t;- Timer cleanups&n;&n;&t;LK1.1.4 (jgarzik):&n;&t;- Merge Becker version 1.03&n;&n;&t;LK1.2.1 (Ion Badulescu &lt;ionut@cs.columbia.edu&gt;)&n;&t;- Support hardware Rx/Tx checksumming&n;&t;- Use the GFP firmware taken from Adaptec&squot;s Netware driver&n;&n;&t;LK1.2.2 (Ion Badulescu)&n;&t;- Backported to 2.2.x&n;&n;&t;LK1.2.3 (Ion Badulescu)&n;&t;- Fix the flaky mdio interface&n;&t;- More compat clean-ups&n;&n;&t;LK1.2.4 (Ion Badulescu)&n;&t;- More 2.2.x initialization fixes&n;&n;&t;LK1.2.5 (Ion Badulescu)&n;&t;- Several fixes from Manfred Spraul&n;&n;&t;LK1.2.6 (Ion Badulescu)&n;&t;- Fixed ifup/ifdown/ifup problem in 2.4.x&n;&n;&t;LK1.2.7 (Ion Badulescu)&n;&t;- Removed unused code&n;&t;- Made more functions static and __init&n;&n;&t;LK1.2.8 (Ion Badulescu)&n;&t;- Quell bogus error messages, inform about the Tx threshold&n;&t;- Removed #ifdef CONFIG_PCI, this driver is PCI only&n;&n;&t;LK1.2.9 (Ion Badulescu)&n;&t;- Merged Jeff Garzik&squot;s changes from 2.4.4-pre5&n;&t;- Added 2.2.x compatibility stuff required by the above changes&n;&n;&t;LK1.2.9a (Ion Badulescu)&n;&t;- More updates from Jeff Garzik&n;&n;&t;LK1.3.0 (Ion Badulescu)&n;&t;- Merged zerocopy support&n;&n;&t;LK1.3.1 (Ion Badulescu)&n;&t;- Added ethtool support&n;&t;- Added GPIO (media change) interrupt support&n;&n;&t;LK1.3.2 (Ion Badulescu)&n;&t;- Fixed 2.2.x compatibility issues introduced in 1.3.1&n;&t;- Fixed ethtool ioctl returning uninitialized memory&n;&n;&t;LK1.3.3 (Ion Badulescu)&n;&t;- Initialize the TxMode register properly&n;&t;- Set the MII registers _after_ resetting it&n;&t;- Don&squot;t dereference dev-&gt;priv after unregister_netdev() has freed it&n;&n;TODO:&n;&t;- implement tx_timeout() properly&n;*/
 DECL|macro|DRV_NAME
 mdefine_line|#define DRV_NAME&t;&quot;starfire&quot;
 DECL|macro|DRV_VERSION
-mdefine_line|#define DRV_VERSION&t;&quot;1.03+LK1.3.2&quot;
+mdefine_line|#define DRV_VERSION&t;&quot;1.03+LK1.3.3&quot;
 DECL|macro|DRV_RELDATE
-mdefine_line|#define DRV_RELDATE&t;&quot;June 04, 2001&quot;
+mdefine_line|#define DRV_RELDATE&t;&quot;July 05, 2001&quot;
 multiline_comment|/*&n; * Adaptec&squot;s license for their Novell drivers (which is where I got the&n; * firmware files) does not allow one to redistribute them. Thus, we can&squot;t&n; * include the firmware with this driver.&n; *&n; * However, an end-user is allowed to download and use it, after&n; * converting it to C header files using starfire_firmware.pl.&n; * Once that&squot;s done, the #undef below must be changed into a #define&n; * for this driver to really use the firmware. Note that Rx/Tx&n; * hardware TCP checksumming is not possible without the firmware.&n; *&n; * I&squot;m currently [Feb 2001] talking to Adaptec about this redistribution&n; * issue. Stay tuned...&n; */
 DECL|macro|HAS_FIRMWARE
 macro_line|#undef HAS_FIRMWARE
@@ -131,11 +131,6 @@ macro_line|#else  /* not ZEROCOPY */
 DECL|macro|skb_first_frag_len
 mdefine_line|#define skb_first_frag_len(skb)&t;(skb-&gt;len)
 macro_line|#endif /* not ZEROCOPY */
-macro_line|#if !defined(__OPTIMIZE__)
-macro_line|#warning  You must compile this file with the correct options!
-macro_line|#warning  See the last lines of the source file.
-macro_line|#error You must compile this driver with &quot;-O&quot;.
-macro_line|#endif
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -146,7 +141,6 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;&t;&t;/* Processor type for cache alignment. */
 macro_line|#include &lt;asm/uaccess.h&gt;
-macro_line|#include &lt;asm/io.h&gt;
 macro_line|#ifdef HAS_FIRMWARE
 macro_line|#include &quot;starfire_firmware.h&quot;
 macro_line|#endif /* HAS_FIRMWARE */
@@ -1369,7 +1363,7 @@ suffix:colon
 l_int|1
 comma
 multiline_comment|/* The Tx queue is full. */
-multiline_comment|/* These values are keep track of the transceiver/media in use. */
+multiline_comment|/* These values keep track of the transceiver/media in use. */
 DECL|member|autoneg
 id|autoneg
 suffix:colon
@@ -1642,7 +1636,6 @@ op_star
 id|dev
 )paren
 suffix:semicolon
-"&f;"
 DECL|function|starfire_init_one
 r_static
 r_int
@@ -1742,6 +1735,7 @@ suffix:semicolon
 id|ioaddr
 op_assign
 id|pci_resource_start
+c_func
 (paren
 id|pdev
 comma
@@ -1751,6 +1745,7 @@ suffix:semicolon
 id|io_size
 op_assign
 id|pci_resource_len
+c_func
 (paren
 id|pdev
 comma
@@ -1766,6 +1761,7 @@ op_logical_or
 (paren
 (paren
 id|pci_resource_flags
+c_func
 (paren
 id|pdev
 comma
@@ -2577,11 +2573,13 @@ suffix:semicolon
 id|err_out_free_netdev
 suffix:colon
 id|unregister_netdev
+c_func
 (paren
 id|dev
 )paren
 suffix:semicolon
 id|kfree
+c_func
 (paren
 id|dev
 )paren
@@ -2591,7 +2589,6 @@ op_minus
 id|ENODEV
 suffix:semicolon
 )brace
-"&f;"
 multiline_comment|/* Read the MII Management Data I/O (MDIO) interfaces. */
 DECL|function|mdio_read
 r_static
@@ -2746,7 +2743,6 @@ multiline_comment|/* The busy-wait will occur before a read. */
 r_return
 suffix:semicolon
 )brace
-"&f;"
 DECL|function|netdev_open
 r_static
 r_int
@@ -3430,6 +3426,28 @@ op_assign
 l_int|0x0C04
 suffix:semicolon
 multiline_comment|/* modified when link is up. */
+id|writel
+c_func
+(paren
+l_int|0x8000
+op_or
+id|np-&gt;tx_mode
+comma
+id|ioaddr
+op_plus
+id|TxMode
+)paren
+suffix:semicolon
+id|writel
+c_func
+(paren
+id|np-&gt;tx_mode
+comma
+id|ioaddr
+op_plus
+id|TxMode
+)paren
+suffix:semicolon
 id|np-&gt;tx_threshold
 op_assign
 l_int|4
@@ -3729,21 +3747,6 @@ id|np-&gt;phys
 l_int|0
 )braket
 comma
-id|MII_ADVERTISE
-comma
-id|np-&gt;advertising
-)paren
-suffix:semicolon
-id|mdio_write
-c_func
-(paren
-id|dev
-comma
-id|np-&gt;phys
-(braket
-l_int|0
-)braket
-comma
 id|MII_BMCR
 comma
 id|BMCR_RESET
@@ -3787,6 +3790,21 @@ l_int|0
 )braket
 comma
 id|MII_BMCR
+)paren
+suffix:semicolon
+id|mdio_write
+c_func
+(paren
+id|dev
+comma
+id|np-&gt;phys
+(braket
+l_int|0
+)braket
+comma
+id|MII_ADVERTISE
+comma
+id|np-&gt;advertising
 )paren
 suffix:semicolon
 r_if
@@ -5988,10 +6006,6 @@ macro_line|#endif
 )brace
 r_else
 (brace
-r_char
-op_star
-id|temp
-suffix:semicolon
 id|pci_unmap_single
 c_func
 (paren
@@ -6018,8 +6032,6 @@ id|entry
 dot
 id|skb
 suffix:semicolon
-id|temp
-op_assign
 id|skb_put
 c_func
 (paren
@@ -8241,7 +8253,11 @@ c_cond
 (paren
 id|value
 op_amp
-l_int|0x9000
+(paren
+id|BMCR_RESET
+op_or
+id|BMCR_ANENABLE
+)paren
 )paren
 multiline_comment|/* Autonegotiation. */
 id|np-&gt;autoneg
@@ -8255,7 +8271,7 @@ op_assign
 (paren
 id|value
 op_amp
-l_int|0x0100
+id|BMCR_FULLDPLX
 )paren
 ques
 c_cond
@@ -8865,28 +8881,6 @@ id|np
 op_assign
 id|dev-&gt;priv
 suffix:semicolon
-id|unregister_netdev
-c_func
-(paren
-id|dev
-)paren
-suffix:semicolon
-id|iounmap
-c_func
-(paren
-(paren
-r_char
-op_star
-)paren
-id|dev-&gt;base_addr
-)paren
-suffix:semicolon
-id|pci_release_regions
-c_func
-(paren
-id|pdev
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -8895,7 +8889,7 @@ id|np-&gt;tx_done_q
 id|pci_free_consistent
 c_func
 (paren
-id|np-&gt;pci_dev
+id|pdev
 comma
 id|PAGE_SIZE
 comma
@@ -8912,9 +8906,15 @@ id|np-&gt;rx_done_q
 id|pci_free_consistent
 c_func
 (paren
-id|np-&gt;pci_dev
+id|pdev
 comma
-id|PAGE_SIZE
+r_sizeof
+(paren
+r_struct
+id|rx_done_desc
+)paren
+op_star
+id|DONE_Q_SIZE
 comma
 id|np-&gt;rx_done_q
 comma
@@ -8929,7 +8929,7 @@ id|np-&gt;tx_ring
 id|pci_free_consistent
 c_func
 (paren
-id|np-&gt;pci_dev
+id|pdev
 comma
 id|PAGE_SIZE
 comma
@@ -8946,7 +8946,7 @@ id|np-&gt;rx_ring
 id|pci_free_consistent
 c_func
 (paren
-id|np-&gt;pci_dev
+id|pdev
 comma
 id|PAGE_SIZE
 comma
@@ -8955,10 +8955,27 @@ comma
 id|np-&gt;rx_ring_dma
 )paren
 suffix:semicolon
-id|kfree
+id|unregister_netdev
 c_func
 (paren
 id|dev
+)paren
+suffix:semicolon
+multiline_comment|/* Will also free np!! */
+id|iounmap
+c_func
+(paren
+(paren
+r_char
+op_star
+)paren
+id|dev-&gt;base_addr
+)paren
+suffix:semicolon
+id|pci_release_regions
+c_func
+(paren
+id|pdev
 )paren
 suffix:semicolon
 id|pci_set_drvdata
@@ -8967,6 +8984,12 @@ c_func
 id|pdev
 comma
 l_int|NULL
+)paren
+suffix:semicolon
+id|kfree
+c_func
+(paren
+id|dev
 )paren
 suffix:semicolon
 )brace

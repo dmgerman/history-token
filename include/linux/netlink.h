@@ -85,7 +85,7 @@ mdefine_line|#define NLM_F_REQUEST&t;&t;1&t;/* It is request message. &t;*/
 DECL|macro|NLM_F_MULTI
 mdefine_line|#define NLM_F_MULTI&t;&t;2&t;/* Multipart message, terminated by NLMSG_DONE */
 DECL|macro|NLM_F_ACK
-mdefine_line|#define NLM_F_ACK&t;&t;4&t;/* If succeed, reply with ack&t;*/
+mdefine_line|#define NLM_F_ACK&t;&t;4&t;/* Reply with ack, with zero or error code */
 DECL|macro|NLM_F_ECHO
 mdefine_line|#define NLM_F_ECHO&t;&t;8&t;/* Echo this request &t;&t;*/
 multiline_comment|/* Modifiers to GET request */

@@ -1714,6 +1714,7 @@ id|ps2esdi_gendisk.nr_real
 op_assign
 id|ps2esdi_drives
 suffix:semicolon
+multiline_comment|/* 128 was old default, maybe maxsect=255 is ok too? - Paul G. */
 r_for
 c_loop
 (paren
@@ -1732,6 +1733,14 @@ suffix:semicolon
 id|i
 op_increment
 )paren
+(brace
+id|ps2esdi_maxsect
+(braket
+id|i
+)braket
+op_assign
+l_int|128
+suffix:semicolon
 id|ps2esdi_blocksizes
 (braket
 id|i
@@ -1739,6 +1748,7 @@ id|i
 op_assign
 l_int|1024
 suffix:semicolon
+)brace
 id|request_dma
 c_func
 (paren

@@ -472,6 +472,15 @@ multiline_comment|/*&n; * atomic_dec - decrement and test&n; * @v: pointer of ty
 DECL|macro|atomic_dec
 mdefine_line|#define atomic_dec(v) atomic_sub(1,(v))
 multiline_comment|/*&n; * atomic_add_negative - add and test if negative&n; * @v: pointer of type atomic_t&n; * @i: integer value to add&n; *&n; * Atomically adds @i to @v and returns true&n; * if the result is negative, or false when&n; * result is greater than or equal to zero.  Note that the guaranteed&n; * useful range of an atomic_t is only 24 bits.&n; *&n; * Currently not implemented for MIPS.&n; */
+multiline_comment|/* Atomic operations are already serializing */
+DECL|macro|smp_mb__before_atomic_dec
+mdefine_line|#define smp_mb__before_atomic_dec()&t;barrier()
+DECL|macro|smp_mb__after_atomic_dec
+mdefine_line|#define smp_mb__after_atomic_dec()&t;barrier()
+DECL|macro|smp_mb__before_atomic_inc
+mdefine_line|#define smp_mb__before_atomic_inc()&t;barrier()
+DECL|macro|smp_mb__after_atomic_inc
+mdefine_line|#define smp_mb__after_atomic_inc()&t;barrier()
 macro_line|#endif /* defined(__KERNEL__) */
 macro_line|#endif /* __ASM_ATOMIC_H */
 eof

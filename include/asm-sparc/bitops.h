@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: bitops.h,v 1.61 2000/09/23 02:11:22 davem Exp $&n; * bitops.h: Bit string operations on the Sparc.&n; *&n; * Copyright 1995 David S. Miller (davem@caip.rutgers.edu)&n; * Copyright 1996 Eddie C. Dost   (ecd@skynet.be)&n; */
+multiline_comment|/* $Id: bitops.h,v 1.62 2001/07/07 10:58:22 davem Exp $&n; * bitops.h: Bit string operations on the Sparc.&n; *&n; * Copyright 1995 David S. Miller (davem@caip.rutgers.edu)&n; * Copyright 1996 Eddie C. Dost   (ecd@skynet.be)&n; */
 macro_line|#ifndef _SPARC_BITOPS_H
 DECL|macro|_SPARC_BITOPS_H
 mdefine_line|#define _SPARC_BITOPS_H
@@ -677,11 +677,13 @@ id|addr
 )paren
 suffix:semicolon
 )brace
-DECL|function|test_and_change_bit
+DECL|macro|test_and_change_bit
+mdefine_line|#define test_and_change_bit(n, a) __test_and_change_bit(n, a)
+DECL|function|__test_and_change_bit
 r_extern
 id|__inline__
 r_int
-id|test_and_change_bit
+id|__test_and_change_bit
 c_func
 (paren
 r_int
@@ -803,11 +805,13 @@ op_ne
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|change_bit
+DECL|macro|change_bit
+mdefine_line|#define change_bit(n, a) __change_bit(n, a)
+DECL|function|__change_bit
 r_extern
 id|__inline__
 r_void
-id|change_bit
+id|__change_bit
 c_func
 (paren
 r_int

@@ -876,34 +876,6 @@ c_func
 id|up
 )paren
 suffix:semicolon
-DECL|variable|down_read
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|down_read
-)paren
-suffix:semicolon
-DECL|variable|down_write
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|down_write
-)paren
-suffix:semicolon
-DECL|variable|up_read
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|up_read
-)paren
-suffix:semicolon
-DECL|variable|up_write
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|up_write
-)paren
-suffix:semicolon
 multiline_comment|/* &n; * SMP-specific symbols.&n; */
 macro_line|#ifdef CONFIG_SMP
 DECL|variable|kernel_flag

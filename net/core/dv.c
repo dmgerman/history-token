@@ -163,6 +163,12 @@ id|divert_blk
 )paren
 suffix:semicolon
 )brace
+id|dev_hold
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
 )brace
 r_else
 (brace
@@ -211,6 +217,12 @@ suffix:semicolon
 id|dev-&gt;divert
 op_assign
 l_int|NULL
+suffix:semicolon
+id|dev_put
+c_func
+(paren
+id|dev
+)paren
 suffix:semicolon
 id|printk
 c_func
@@ -451,6 +463,9 @@ id|devname
 l_int|32
 )braket
 suffix:semicolon
+r_int
+id|ret
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -518,6 +533,10 @@ r_return
 op_minus
 id|EINVAL
 suffix:semicolon
+id|ret
+op_assign
+l_int|0
+suffix:semicolon
 multiline_comment|/* user issuing the ioctl must be a super one :) */
 r_if
 c_cond
@@ -529,10 +548,16 @@ c_func
 id|CAP_SYS_ADMIN
 )paren
 )paren
-r_return
+(brace
+id|ret
+op_assign
 op_minus
 id|EPERM
 suffix:semicolon
+r_goto
+id|out
+suffix:semicolon
+)brace
 multiline_comment|/* Device must have a divert_blk member NOT null */
 r_if
 c_cond
@@ -546,12 +571,22 @@ id|divert
 op_eq
 l_int|NULL
 )paren
-r_return
+id|ret
+op_assign
 op_minus
-id|EFAULT
+id|EINVAL
+suffix:semicolon
+id|out
+suffix:colon
+id|dev_put
+c_func
+(paren
+op_star
+id|dev
+)paren
 suffix:semicolon
 r_return
-l_int|0
+id|ret
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * control function of the diverter&n; */

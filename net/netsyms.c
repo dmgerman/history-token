@@ -494,6 +494,13 @@ c_func
 id|skb_copy_and_csum_bits
 )paren
 suffix:semicolon
+DECL|variable|skb_copy_and_csum_dev
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|skb_copy_and_csum_dev
+)paren
+suffix:semicolon
 DECL|variable|skb_copy_expand
 id|EXPORT_SYMBOL
 c_func

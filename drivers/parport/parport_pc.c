@@ -13462,9 +13462,12 @@ r_do
 r_if
 c_cond
 (paren
-op_logical_neg
+(paren
 op_star
 id|io_hi
+)paren
+op_eq
+id|PARPORT_IOHI_AUTO
 )paren
 op_star
 id|io_hi
@@ -13603,7 +13606,7 @@ dot
 id|PARPORT_PC_MAX_PORTS
 )braket
 op_assign
-l_int|0
+id|PARPORT_IOHI_AUTO
 )brace
 suffix:semicolon
 DECL|variable|dmaval

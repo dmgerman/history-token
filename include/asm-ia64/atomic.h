@@ -214,5 +214,14 @@ DECL|macro|atomic_inc
 mdefine_line|#define atomic_inc(v)&t;&t;&t;atomic_add(1, (v))
 DECL|macro|atomic_dec
 mdefine_line|#define atomic_dec(v)&t;&t;&t;atomic_sub(1, (v))
+multiline_comment|/* Atomic operations are already serializing */
+DECL|macro|smp_mb__before_atomic_dec
+mdefine_line|#define smp_mb__before_atomic_dec()&t;barrier()
+DECL|macro|smp_mb__after_atomic_dec
+mdefine_line|#define smp_mb__after_atomic_dec()&t;barrier()
+DECL|macro|smp_mb__before_atomic_inc
+mdefine_line|#define smp_mb__before_atomic_inc()&t;barrier()
+DECL|macro|smp_mb__after_atomic_inc
+mdefine_line|#define smp_mb__after_atomic_inc()&t;barrier()
 macro_line|#endif /* _ASM_IA64_ATOMIC_H */
 eof

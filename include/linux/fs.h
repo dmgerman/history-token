@@ -4389,6 +4389,20 @@ op_star
 id|buf
 )paren
 suffix:semicolon
+r_extern
+r_void
+id|end_buffer_io_sync
+c_func
+(paren
+r_struct
+id|buffer_head
+op_star
+id|bh
+comma
+r_int
+id|uptodate
+)paren
+suffix:semicolon
 multiline_comment|/* reiserfs_writepage needs this */
 r_extern
 r_void

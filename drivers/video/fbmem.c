@@ -662,10 +662,19 @@ op_star
 suffix:semicolon
 r_extern
 r_int
-id|dcfb_init
+id|pvr2fb_init
 c_func
 (paren
 r_void
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|pvr2fb_setup
+c_func
+(paren
+r_char
+op_star
 )paren
 suffix:semicolon
 r_static
@@ -1100,13 +1109,13 @@ id|e1355fb_setup
 )brace
 comma
 macro_line|#endif
-macro_line|#ifdef CONFIG_FB_DC
+macro_line|#ifdef CONFIG_FB_PVR2
 (brace
-l_string|&quot;dcfb&quot;
+l_string|&quot;pvr2&quot;
 comma
-id|dcfb_init
+id|pvr2fb_init
 comma
-l_int|NULL
+id|pvr2fb_setup
 )brace
 comma
 macro_line|#endif

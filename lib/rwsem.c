@@ -373,7 +373,8 @@ id|rwsem_waiter
 op_star
 id|waiter
 comma
-id|__s32
+r_int
+r_int
 id|adjustment
 )paren
 (brace

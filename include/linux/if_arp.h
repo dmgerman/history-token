@@ -22,14 +22,14 @@ DECL|macro|ARPHRD_ARCNET
 mdefine_line|#define&t;ARPHRD_ARCNET&t;7&t;&t;/* ARCnet&t;&t;&t;*/
 DECL|macro|ARPHRD_APPLETLK
 mdefine_line|#define&t;ARPHRD_APPLETLK&t;8&t;&t;/* APPLEtalk&t;&t;&t;*/
-DECL|macro|ARPHRD_IEEE1394
-mdefine_line|#define&t;ARPHRD_IEEE1394&t;9&t;&t;/* IEEE 1394 IPv4 - RFC 2734&t;*/
 DECL|macro|ARPHRD_DLCI
 mdefine_line|#define ARPHRD_DLCI&t;15&t;&t;/* Frame Relay DLCI&t;&t;*/
 DECL|macro|ARPHRD_ATM
 mdefine_line|#define ARPHRD_ATM&t;19&t;&t;/* ATM &t;&t;&t;&t;*/
 DECL|macro|ARPHRD_METRICOM
 mdefine_line|#define ARPHRD_METRICOM&t;23&t;&t;/* Metricom STRIP (new IANA id)&t;*/
+DECL|macro|ARPHRD_IEEE1394
+mdefine_line|#define&t;ARPHRD_IEEE1394&t;24&t;&t;/* IEEE 1394 IPv4 - RFC 2734&t;*/
 multiline_comment|/* Dummy types for non ARP hardware */
 DECL|macro|ARPHRD_SLIP
 mdefine_line|#define ARPHRD_SLIP&t;256
