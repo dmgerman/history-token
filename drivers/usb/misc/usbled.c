@@ -230,9 +230,7 @@ id|buffer
 comma
 l_int|8
 comma
-l_int|2
-op_star
-id|HZ
+l_int|2000
 )paren
 suffix:semicolon
 r_if

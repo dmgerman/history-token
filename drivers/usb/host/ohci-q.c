@@ -1942,10 +1942,16 @@ op_amp
 l_int|0xFFFFF000
 )paren
 suffix:semicolon
-id|td-&gt;hwPSW
-(braket
+op_star
+id|ohci_hwPSWp
+c_func
+(paren
+id|ohci
+comma
+id|td
+comma
 l_int|0
-)braket
+)paren
 op_assign
 id|cpu_to_hc16
 (paren
@@ -2666,14 +2672,13 @@ id|TD_ISO
 id|u16
 id|tdPSW
 op_assign
-id|hc16_to_cpu
+id|ohci_hwPSW
 (paren
 id|ohci
 comma
-id|td-&gt;hwPSW
-(braket
+id|td
+comma
 l_int|0
-)braket
 )paren
 suffix:semicolon
 r_int
@@ -2681,7 +2686,7 @@ id|dlen
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* NOTE:  assumes FC in tdINFO == 0 (and MAXPSW == 1) */
+multiline_comment|/* NOTE:  assumes FC in tdINFO == 0, and that&n;&t;&t; * only the first of 0..MAXPSW psws is used.&n;&t;&t; */
 id|cc
 op_assign
 (paren

@@ -4567,7 +4567,7 @@ id|cp
 comma
 id|size
 comma
-id|HZ
+l_int|1000
 )paren
 suffix:semicolon
 id|status
@@ -6912,9 +6912,7 @@ comma
 op_amp
 id|actual_length
 comma
-id|HZ
-op_star
-l_int|10
+l_int|10000
 )paren
 suffix:semicolon
 r_if

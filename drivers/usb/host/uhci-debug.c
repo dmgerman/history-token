@@ -5,6 +5,15 @@ macro_line|#include &lt;linux/debugfs.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &quot;uhci-hcd.h&quot;
+DECL|variable|uhci_debugfs_root
+r_static
+r_struct
+id|dentry
+op_star
+id|uhci_debugfs_root
+op_assign
+l_int|NULL
+suffix:semicolon
 multiline_comment|/* Handle REALLY large printk&squot;s so we don&squot;t overflow buffers */
 DECL|function|lprintk
 r_static
@@ -2961,15 +2970,6 @@ suffix:semicolon
 )brace
 DECL|macro|MAX_OUTPUT
 mdefine_line|#define MAX_OUTPUT&t;(64 * 1024)
-DECL|variable|uhci_debugfs_root
-r_static
-r_struct
-id|dentry
-op_star
-id|uhci_debugfs_root
-op_assign
-l_int|NULL
-suffix:semicolon
 DECL|struct|uhci_debug
 r_struct
 id|uhci_debug
@@ -3324,5 +3324,8 @@ id|uhci_debug_release
 comma
 )brace
 suffix:semicolon
+macro_line|#else&t;/* CONFIG_DEBUG_FS */
+DECL|macro|uhci_debug_operations
+mdefine_line|#define uhci_debug_operations (* (struct file_operations *) NULL)
 macro_line|#endif
 eof

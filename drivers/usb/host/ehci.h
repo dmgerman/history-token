@@ -184,13 +184,13 @@ DECL|member|command
 id|u32
 id|command
 suffix:semicolon
-DECL|member|is_arc_rh_tt
+DECL|member|is_tdi_rh_tt
 r_int
-id|is_arc_rh_tt
+id|is_tdi_rh_tt
 suffix:colon
 l_int|1
 suffix:semicolon
-multiline_comment|/* ARC roothub with TT */
+multiline_comment|/* TDI roothub with TT */
 multiline_comment|/* glue to PCI and HCD framework */
 DECL|member|caps
 r_struct
@@ -1508,8 +1508,8 @@ suffix:semicolon
 multiline_comment|/*-------------------------------------------------------------------------*/
 macro_line|#ifdef CONFIG_USB_EHCI_ROOT_HUB_TT
 multiline_comment|/*&n; * Some EHCI controllers have a Transaction Translator built into the&n; * root hub. This is a non-standard feature.  Each controller will need&n; * to add code to the following inline functions, and call them as&n; * needed (mostly in root hub code).&n; */
-DECL|macro|ehci_is_ARC
-mdefine_line|#define&t;ehci_is_ARC(e)&t;&t;&t;((e)-&gt;is_arc_rh_tt)
+DECL|macro|ehci_is_TDI
+mdefine_line|#define&t;ehci_is_TDI(e)&t;&t;&t;((e)-&gt;is_tdi_rh_tt)
 multiline_comment|/* Returns the speed of a device attached to a port on the root hub. */
 r_static
 r_inline
@@ -1532,7 +1532,7 @@ id|portsc
 r_if
 c_cond
 (paren
-id|ehci_is_ARC
+id|ehci_is_TDI
 c_func
 (paren
 id|ehci
@@ -1590,8 +1590,8 @@ id|USB_PORT_FEAT_HIGHSPEED
 suffix:semicolon
 )brace
 macro_line|#else
-DECL|macro|ehci_is_ARC
-mdefine_line|#define&t;ehci_is_ARC(e)&t;&t;&t;(0)
+DECL|macro|ehci_is_TDI
+mdefine_line|#define&t;ehci_is_TDI(e)&t;&t;&t;(0)
 DECL|macro|ehci_port_speed
 mdefine_line|#define&t;ehci_port_speed(ehci, portsc)&t;(1&lt;&lt;USB_PORT_FEAT_HIGHSPEED)
 macro_line|#endif

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * omap_udc.c -- for OMAP full speed udc; most chips support OTG.&n; *&n; * Copyright (C) 2004 Texas Instruments, Inc.&n; * Copyright (C) 2004 David Brownell&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/*&n; * omap_udc.c -- for OMAP full speed udc; most chips support OTG.&n; *&n; * Copyright (C) 2004 Texas Instruments, Inc.&n; * Copyright (C) 2004-2005 David Brownell&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 DECL|macro|DEBUG
 macro_line|#undef&t;DEBUG
 DECL|macro|VERBOSE
@@ -8438,10 +8438,16 @@ id|udc
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* boards that don&squot;t have VBUS sensing can&squot;t autogate 48MHz;&n;&t; * can&squot;t enter deep sleep while a gadget driver is active.&n;&t; */
 r_if
 c_cond
 (paren
 id|machine_is_omap_innovator
+c_func
+(paren
+)paren
+op_logical_or
+id|machine_is_omap_osk
 c_func
 (paren
 )paren
@@ -8516,6 +8522,11 @@ r_if
 c_cond
 (paren
 id|machine_is_omap_innovator
+c_func
+(paren
+)paren
+op_logical_or
+id|machine_is_omap_osk
 c_func
 (paren
 )paren
@@ -9038,6 +9049,9 @@ c_func
 (paren
 r_int
 id|m
+comma
+r_int
+id|enabled
 )paren
 (brace
 r_switch
@@ -9047,13 +9061,15 @@ id|m
 )paren
 (brace
 r_case
-l_int|3
-suffix:colon
-r_case
 l_int|0
 suffix:colon
 r_return
-l_string|&quot;6wire&quot;
+id|enabled
+ques
+c_cond
+l_string|&quot;*6wire&quot;
+suffix:colon
+l_string|&quot;unused&quot;
 suffix:semicolon
 r_case
 l_int|1
@@ -9066,6 +9082,12 @@ l_int|2
 suffix:colon
 r_return
 l_string|&quot;3wire&quot;
+suffix:semicolon
+r_case
+l_int|3
+suffix:colon
+r_return
+l_string|&quot;6wire&quot;
 suffix:semicolon
 r_default
 suffix:colon
@@ -9089,16 +9111,23 @@ id|s
 id|u32
 id|tmp
 suffix:semicolon
+id|u32
+id|trans
+suffix:semicolon
 id|tmp
 op_assign
 id|OTG_REV_REG
+suffix:semicolon
+id|trans
+op_assign
+id|USB_TRANSCEIVER_CTRL_REG
 suffix:semicolon
 id|seq_printf
 c_func
 (paren
 id|s
 comma
-l_string|&quot;OTG rev %d.%d, transceiver_ctrl %08x&bslash;n&quot;
+l_string|&quot;OTG rev %d.%d, transceiver_ctrl %03x&bslash;n&quot;
 comma
 id|tmp
 op_rshift
@@ -9108,7 +9137,7 @@ id|tmp
 op_amp
 l_int|0xf
 comma
-id|USB_TRANSCEIVER_CTRL_REG
+id|trans
 )paren
 suffix:semicolon
 id|tmp
@@ -9134,6 +9163,10 @@ c_func
 (paren
 id|tmp
 )paren
+comma
+id|trans
+op_amp
+id|CONF_USB2_UNI_R
 )paren
 comma
 id|trx_mode
@@ -9144,8 +9177,25 @@ c_func
 (paren
 id|tmp
 )paren
+comma
+id|trans
+op_amp
+id|CONF_USB1_UNI_R
 )paren
 comma
+(paren
+id|USB0_TRX_MODE
+c_func
+(paren
+id|tmp
+)paren
+op_eq
+l_int|0
+)paren
+ques
+c_cond
+l_string|&quot;internal&quot;
+suffix:colon
 id|trx_mode
 c_func
 (paren
@@ -9154,6 +9204,8 @@ c_func
 (paren
 id|tmp
 )paren
+comma
+l_int|1
 )paren
 comma
 (paren

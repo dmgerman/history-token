@@ -159,7 +159,7 @@ id|priv-&gt;reg
 comma
 l_int|7
 comma
-id|HZ
+l_int|1000
 )paren
 suffix:semicolon
 r_if
@@ -417,7 +417,7 @@ l_int|NULL
 comma
 l_int|0
 comma
-id|HZ
+l_int|1000
 )paren
 suffix:semicolon
 r_if
@@ -1819,9 +1819,7 @@ comma
 op_amp
 id|rlen
 comma
-id|HZ
-op_star
-l_int|20
+l_int|20000
 )paren
 suffix:semicolon
 r_if
@@ -2194,9 +2192,7 @@ comma
 op_amp
 id|rlen
 comma
-id|HZ
-op_star
-l_int|20
+l_int|20000
 )paren
 suffix:semicolon
 r_if
@@ -2316,9 +2312,7 @@ comma
 op_amp
 id|rlen
 comma
-id|HZ
-op_star
-l_int|20
+l_int|20000
 )paren
 suffix:semicolon
 r_if
@@ -2533,9 +2527,7 @@ comma
 op_amp
 id|rlen
 comma
-id|HZ
-op_star
-l_int|20
+l_int|20000
 )paren
 suffix:semicolon
 r_if

@@ -7587,7 +7587,7 @@ id|data
 comma
 id|size
 comma
-id|HZ
+l_int|1000
 )paren
 suffix:semicolon
 r_if
@@ -7681,7 +7681,7 @@ id|data
 comma
 id|size
 comma
-id|HZ
+l_int|1000
 )paren
 suffix:semicolon
 r_if
@@ -8167,7 +8167,7 @@ comma
 op_amp
 id|done
 comma
-id|HZ
+l_int|1000
 )paren
 suffix:semicolon
 r_if

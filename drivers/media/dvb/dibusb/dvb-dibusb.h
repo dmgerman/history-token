@@ -762,7 +762,7 @@ id|onoff
 suffix:semicolon
 multiline_comment|/* i2c and transfer stuff */
 DECL|macro|DIBUSB_I2C_TIMEOUT
-mdefine_line|#define DIBUSB_I2C_TIMEOUT&t;&t;&t;&t;HZ*5
+mdefine_line|#define DIBUSB_I2C_TIMEOUT&t;&t;&t;&t;5000
 multiline_comment|/* &n; * protocol of all dibusb related devices&n; */
 multiline_comment|/* &n; * bulk msg to/from endpoint 0x01&n; *&n; * general structure:&n; * request_byte parameter_bytes&n; */
 DECL|macro|DIBUSB_REQ_START_READ

@@ -168,7 +168,11 @@ id|timer.expires
 op_assign
 id|jiffies
 op_plus
+id|msecs_to_jiffies
+c_func
+(paren
 id|timeout
+)paren
 suffix:semicolon
 id|timer.data
 op_assign
@@ -212,13 +216,13 @@ op_minus
 id|ECONNRESET
 )paren
 (brace
-id|dev_warn
+id|dev_dbg
 c_func
 (paren
 op_amp
 id|urb-&gt;dev-&gt;dev
 comma
-l_string|&quot;%s timed out on ep%d%s&bslash;n&quot;
+l_string|&quot;%s timed out on ep%d%s len=%d/%d&bslash;n&quot;
 comma
 id|current-&gt;comm
 comma
@@ -238,8 +242,24 @@ c_cond
 l_string|&quot;in&quot;
 suffix:colon
 l_string|&quot;out&quot;
+comma
+id|urb-&gt;actual_length
+comma
+id|urb-&gt;transfer_buffer_length
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|urb-&gt;actual_length
+OG
+l_int|0
+)paren
+id|status
+op_assign
+l_int|0
+suffix:semicolon
+r_else
 id|status
 op_assign
 op_minus
@@ -397,7 +417,7 @@ r_return
 id|length
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;usb_control_msg - Builds a control urb, sends it off and waits for completion&n; *&t;@dev: pointer to the usb device to send the message to&n; *&t;@pipe: endpoint &quot;pipe&quot; to send the message to&n; *&t;@request: USB message request value&n; *&t;@requesttype: USB message request type value&n; *&t;@value: USB message value&n; *&t;@index: USB message index value&n; *&t;@data: pointer to the data to send&n; *&t;@size: length in bytes of the data to send&n; *&t;@timeout: time in jiffies to wait for the message to complete before&n; *&t;&t;timing out (if 0 the wait is forever)&n; *&t;Context: !in_interrupt ()&n; *&n; *&t;This function sends a simple control message to a specified endpoint&n; *&t;and waits for the message to complete, or timeout.&n; *&t;&n; *&t;If successful, it returns the number of bytes transferred, otherwise a negative error number.&n; *&n; *&t;Don&squot;t use this function from within an interrupt context, like a&n; *&t;bottom half handler.  If you need an asynchronous message, or need to send&n; *&t;a message from within interrupt context, use usb_submit_urb()&n; *      If a thread in your driver uses this call, make sure your disconnect()&n; *      method can wait for it to complete.  Since you don&squot;t have a handle on&n; *      the URB used, you can&squot;t cancel the request.&n; */
+multiline_comment|/**&n; *&t;usb_control_msg - Builds a control urb, sends it off and waits for completion&n; *&t;@dev: pointer to the usb device to send the message to&n; *&t;@pipe: endpoint &quot;pipe&quot; to send the message to&n; *&t;@request: USB message request value&n; *&t;@requesttype: USB message request type value&n; *&t;@value: USB message value&n; *&t;@index: USB message index value&n; *&t;@data: pointer to the data to send&n; *&t;@size: length in bytes of the data to send&n; *&t;@timeout: time in msecs to wait for the message to complete before&n; *&t;&t;timing out (if 0 the wait is forever)&n; *&t;Context: !in_interrupt ()&n; *&n; *&t;This function sends a simple control message to a specified endpoint&n; *&t;and waits for the message to complete, or timeout.&n; *&t;&n; *&t;If successful, it returns the number of bytes transferred, otherwise a negative error number.&n; *&n; *&t;Don&squot;t use this function from within an interrupt context, like a&n; *&t;bottom half handler.  If you need an asynchronous message, or need to send&n; *&t;a message from within interrupt context, use usb_submit_urb()&n; *      If a thread in your driver uses this call, make sure your disconnect()&n; *      method can wait for it to complete.  Since you don&squot;t have a handle on&n; *      the URB used, you can&squot;t cancel the request.&n; */
 DECL|function|usb_control_msg
 r_int
 id|usb_control_msg
@@ -529,7 +549,7 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;usb_bulk_msg - Builds a bulk urb, sends it off and waits for completion&n; *&t;@usb_dev: pointer to the usb device to send the message to&n; *&t;@pipe: endpoint &quot;pipe&quot; to send the message to&n; *&t;@data: pointer to the data to send&n; *&t;@len: length in bytes of the data to send&n; *&t;@actual_length: pointer to a location to put the actual length transferred in bytes&n; *&t;@timeout: time in jiffies to wait for the message to complete before&n; *&t;&t;timing out (if 0 the wait is forever)&n; *&t;Context: !in_interrupt ()&n; *&n; *&t;This function sends a simple bulk message to a specified endpoint&n; *&t;and waits for the message to complete, or timeout.&n; *&t;&n; *&t;If successful, it returns 0, otherwise a negative error number.&n; *&t;The number of actual bytes transferred will be stored in the &n; *&t;actual_length paramater.&n; *&n; *&t;Don&squot;t use this function from within an interrupt context, like a&n; *&t;bottom half handler.  If you need an asynchronous message, or need to&n; *&t;send a message from within interrupt context, use usb_submit_urb()&n; *      If a thread in your driver uses this call, make sure your disconnect()&n; *      method can wait for it to complete.  Since you don&squot;t have a handle on&n; *      the URB used, you can&squot;t cancel the request.&n; */
+multiline_comment|/**&n; *&t;usb_bulk_msg - Builds a bulk urb, sends it off and waits for completion&n; *&t;@usb_dev: pointer to the usb device to send the message to&n; *&t;@pipe: endpoint &quot;pipe&quot; to send the message to&n; *&t;@data: pointer to the data to send&n; *&t;@len: length in bytes of the data to send&n; *&t;@actual_length: pointer to a location to put the actual length transferred in bytes&n; *&t;@timeout: time in msecs to wait for the message to complete before&n; *&t;&t;timing out (if 0 the wait is forever)&n; *&t;Context: !in_interrupt ()&n; *&n; *&t;This function sends a simple bulk message to a specified endpoint&n; *&t;and waits for the message to complete, or timeout.&n; *&t;&n; *&t;If successful, it returns 0, otherwise a negative error number.&n; *&t;The number of actual bytes transferred will be stored in the &n; *&t;actual_length paramater.&n; *&n; *&t;Don&squot;t use this function from within an interrupt context, like a&n; *&t;bottom half handler.  If you need an asynchronous message, or need to&n; *&t;send a message from within interrupt context, use usb_submit_urb()&n; *      If a thread in your driver uses this call, make sure your disconnect()&n; *      method can wait for it to complete.  Since you don&squot;t have a handle on&n; *      the URB used, you can&squot;t cancel the request.&n; */
 DECL|function|usb_bulk_msg
 r_int
 id|usb_bulk_msg
@@ -1855,8 +1875,6 @@ id|buf
 comma
 id|size
 comma
-id|HZ
-op_star
 id|USB_CTRL_GET_TIMEOUT
 )paren
 suffix:semicolon
@@ -1992,8 +2010,6 @@ id|buf
 comma
 id|size
 comma
-id|HZ
-op_star
 id|USB_CTRL_GET_TIMEOUT
 )paren
 suffix:semicolon
@@ -2817,8 +2833,6 @@ op_star
 id|status
 )paren
 comma
-id|HZ
-op_star
 id|USB_CTRL_GET_TIMEOUT
 )paren
 suffix:semicolon
@@ -2909,8 +2923,6 @@ l_int|NULL
 comma
 l_int|0
 comma
-id|HZ
-op_star
 id|USB_CTRL_SET_TIMEOUT
 )paren
 suffix:semicolon
@@ -3241,6 +3253,16 @@ c_func
 (paren
 id|interface
 )paren
+suffix:semicolon
+id|kfree
+c_func
+(paren
+id|interface-&gt;cur_altsetting-&gt;string
+)paren
+suffix:semicolon
+id|interface-&gt;cur_altsetting-&gt;string
+op_assign
+l_int|NULL
 suffix:semicolon
 id|device_del
 (paren
@@ -3609,9 +3631,7 @@ l_int|NULL
 comma
 l_int|0
 comma
-id|HZ
-op_star
-l_int|5
+l_int|5000
 )paren
 suffix:semicolon
 multiline_comment|/* 9.4.10 says devices don&squot;t need this and are free to STALL the&n;&t; * request if the interface only has one alternate setting.&n;&t; */
@@ -3667,11 +3687,23 @@ comma
 id|iface
 )paren
 suffix:semicolon
+multiline_comment|/* 9.1.1.5 says:&n;&t; *&n;&t; *&t;Configuring a device or changing an alternate setting&n;&t; *&t;causes all of the status and configuration values&n;&t; *&t;associated with endpoints in the affected interfaces to&n;&t; *&t;be set to their default values. This includes setting&n;&t; *&t;the data toggle of any endpoint using data toggles to&n;&t; *&t;the value DATA0.&n;&t; *&n;&t; * Some devices take this too literally and don&squot;t reset the data&n;&t; * toggles if the new altsetting is the same as the old one (the&n;&t; * command isn&squot;t &quot;changing&quot; an alternate setting).  We will manually&n;&t; * reset the toggles when the new and old altsettings are the same.&n;&t; * Most devices won&squot;t need this, but fortunately it doesn&squot;t happen&n;&t; * often.&n;&t; */
+r_if
+c_cond
+(paren
+id|iface-&gt;cur_altsetting
+op_eq
+id|alt
+)paren
+id|manual
+op_assign
+l_int|1
+suffix:semicolon
 id|iface-&gt;cur_altsetting
 op_assign
 id|alt
 suffix:semicolon
-multiline_comment|/* If the interface only has one altsetting and the device didn&squot;t&n;&t; * accept the request, we attempt to carry out the equivalent action&n;&t; * by manually clearing the HALT feature for each endpoint in the&n;&t; * new altsetting.&n;&t; */
+multiline_comment|/* If the interface only has one altsetting and the device didn&squot;t&n;&t; * accept the request (or whenever the old altsetting is the same&n;&t; * as the new one), we attempt to carry out the equivalent action&n;&t; * by manually clearing the HALT feature for each endpoint in the&n;&t; * new altsetting.&n;&t; */
 r_if
 c_cond
 (paren
@@ -3856,8 +3888,6 @@ l_int|NULL
 comma
 l_int|0
 comma
-id|HZ
-op_star
 id|USB_CTRL_SET_TIMEOUT
 )paren
 suffix:semicolon
@@ -4327,8 +4357,6 @@ l_int|NULL
 comma
 l_int|0
 comma
-id|HZ
-op_star
 id|USB_CTRL_SET_TIMEOUT
 )paren
 )paren
@@ -4536,6 +4564,48 @@ c_func
 id|new_interfaces
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|cp-&gt;desc.iConfiguration
+)paren
+op_logical_and
+(paren
+id|cp-&gt;string
+op_eq
+l_int|NULL
+)paren
+)paren
+(brace
+id|cp-&gt;string
+op_assign
+id|kmalloc
+c_func
+(paren
+l_int|256
+comma
+id|GFP_KERNEL
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|cp-&gt;string
+)paren
+id|usb_string
+c_func
+(paren
+id|dev
+comma
+id|cp-&gt;desc.iConfiguration
+comma
+id|cp-&gt;string
+comma
+l_int|256
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/* Now that all the interfaces are set up, register them&n;&t;&t; * to trigger binding of drivers to interfaces.  probe()&n;&t;&t; * routines may install different altsettings and may&n;&t;&t; * claim() any interfaces not yet bound.  Many class drivers&n;&t;&t; * need that: CDC, audio, video, etc.&n;&t;&t; */
 r_for
 c_loop
@@ -4621,6 +4691,48 @@ id|ret
 )paren
 suffix:semicolon
 r_continue
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+(paren
+id|intf-&gt;cur_altsetting-&gt;desc.iInterface
+)paren
+op_logical_and
+(paren
+id|intf-&gt;cur_altsetting-&gt;string
+op_eq
+l_int|NULL
+)paren
+)paren
+(brace
+id|intf-&gt;cur_altsetting-&gt;string
+op_assign
+id|kmalloc
+c_func
+(paren
+l_int|256
+comma
+id|GFP_KERNEL
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|intf-&gt;cur_altsetting-&gt;string
+)paren
+id|usb_string
+c_func
+(paren
+id|dev
+comma
+id|intf-&gt;cur_altsetting-&gt;desc.iInterface
+comma
+id|intf-&gt;cur_altsetting-&gt;string
+comma
+l_int|256
+)paren
 suffix:semicolon
 )brace
 id|usb_create_sysfs_intf_files

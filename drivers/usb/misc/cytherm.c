@@ -210,8 +210,6 @@ id|buf
 comma
 id|size
 comma
-id|HZ
-op_star
 id|USB_CTRL_GET_TIMEOUT
 )paren
 suffix:semicolon

@@ -14,9 +14,10 @@ macro_line|#include &lt;linux/tty_flip.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
-macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/usb.h&gt;
 macro_line|#include &lt;linux/serial.h&gt;
+macro_line|#include &lt;linux/delay.h&gt;
+macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &quot;usb-serial.h&quot;
 macro_line|#include &quot;cypress_m8.h&quot;
 macro_line|#ifdef CONFIG_USB_SERIAL_DEBUG
@@ -4889,20 +4890,10 @@ comma
 id|CYPRESS_SET_CONFIG
 )paren
 suffix:semicolon
-id|set_current_state
-c_func
-(paren
-id|TASK_INTERRUPTIBLE
-)paren
-suffix:semicolon
-id|schedule_timeout
+id|msleep
 c_func
 (paren
 l_int|50
-op_star
-id|HZ
-op_div
-l_int|1000
 )paren
 suffix:semicolon
 multiline_comment|/* give some time between change and read (50ms) */

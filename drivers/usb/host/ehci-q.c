@@ -745,7 +745,7 @@ l_int|0
 op_logical_and
 (paren
 op_logical_neg
-id|ehci_is_ARC
+id|ehci_is_TDI
 c_func
 (paren
 id|ehci
@@ -2691,12 +2691,12 @@ id|urb-&gt;dev-&gt;ttport
 op_lshift
 l_int|23
 suffix:semicolon
-multiline_comment|/* set the address of the TT; for ARC&squot;s integrated&n;&t;&t; * root hub tt, leave it zeroed.&n;&t;&t; */
+multiline_comment|/* set the address of the TT; for TDI&squot;s integrated&n;&t;&t; * root hub tt, leave it zeroed.&n;&t;&t; */
 r_if
 c_cond
 (paren
 op_logical_neg
-id|ehci_is_ARC
+id|ehci_is_TDI
 c_func
 (paren
 id|ehci

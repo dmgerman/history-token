@@ -427,7 +427,7 @@ suffix:semicolon
 suffix:semicolon
 multiline_comment|/*&n; * ***************************************************************************&n; * Belkin USB Serial Adapter F5U103 specific driver functions&n; * ***************************************************************************&n; */
 DECL|macro|WDR_TIMEOUT
-mdefine_line|#define WDR_TIMEOUT (HZ * 5 ) /* default urb timeout */
+mdefine_line|#define WDR_TIMEOUT 5000 /* default urb timeout */
 multiline_comment|/* assumes that struct usb_serial *serial is available */
 DECL|macro|BSA_USB_CMD
 mdefine_line|#define BSA_USB_CMD(c,v) usb_control_msg(serial-&gt;dev, usb_sndctrlpipe(serial-&gt;dev, 0), &bslash;&n;&t;&t;&t;&t;&t;    (c), BELKIN_SA_SET_REQUEST_TYPE, &bslash;&n;&t;&t;&t;&t;&t;    (v), 0, NULL, 0, WDR_TIMEOUT)

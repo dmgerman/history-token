@@ -133,9 +133,7 @@ id|transfer_buffer
 comma
 id|length
 comma
-l_int|3
-op_star
-id|HZ
+l_int|3000
 )paren
 suffix:semicolon
 id|kfree

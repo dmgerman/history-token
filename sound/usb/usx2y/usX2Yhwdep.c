@@ -1091,9 +1091,7 @@ comma
 op_amp
 id|lret
 comma
-l_int|6
-op_star
-id|HZ
+l_int|6000
 )paren
 suffix:semicolon
 id|kfree

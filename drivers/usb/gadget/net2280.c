@@ -1,5 +1,5 @@
-multiline_comment|/*&n; * Driver for the NetChip 2280 USB device controller.&n; * Specs and errata are available from &lt;http://www.netchip.com&gt;.&n; *&n; * NetChip Technology Inc. supported the development of this driver.&n; *&n; *&n; * CODE STATUS HIGHLIGHTS&n; *&n; * This driver should work well with most &quot;gadget&quot; drivers, including&n; * the File Storage, Serial, and Ethernet/RNDIS gadget drivers&n; * as well as Gadget Zero and Gadgetfs.&n; *&n; * DMA is enabled by default.  Drivers using transfer queues might use&n; * DMA chaining to remove IRQ latencies between transfers.  (Except when&n; * short OUT transfers happen.)  Drivers can use the req-&gt;no_interrupt&n; * hint to completely eliminate some IRQs, if a later IRQ is guaranteed&n; * and DMA chaining is enabled.&n; *&n; * Note that almost all the errata workarounds here are only needed for&n; * rev1 chips.  Rev1a silicon (0110) fixes almost all of them.&n; */
-multiline_comment|/*&n; * Copyright (C) 2003 David Brownell&n; * Copyright (C) 2003 NetChip Technologies&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/*&n; * Driver for the PLX NET2280 USB device controller.&n; * Specs and errata are available from &lt;http://www.plxtech.com&gt;.&n; *&n; * PLX Technology Inc. (formerly NetChip Technology) supported the &n; * development of this driver.&n; *&n; *&n; * CODE STATUS HIGHLIGHTS&n; *&n; * This driver should work well with most &quot;gadget&quot; drivers, including&n; * the File Storage, Serial, and Ethernet/RNDIS gadget drivers&n; * as well as Gadget Zero and Gadgetfs.&n; *&n; * DMA is enabled by default.  Drivers using transfer queues might use&n; * DMA chaining to remove IRQ latencies between transfers.  (Except when&n; * short OUT transfers happen.)  Drivers can use the req-&gt;no_interrupt&n; * hint to completely eliminate some IRQs, if a later IRQ is guaranteed&n; * and DMA chaining is enabled.&n; *&n; * Note that almost all the errata workarounds here are only needed for&n; * rev1 chips.  Rev1a silicon (0110) fixes almost all of them.&n; */
+multiline_comment|/*&n; * Copyright (C) 2003 David Brownell&n; * Copyright (C) 2003-2005 PLX Technology, Inc.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 DECL|macro|DEBUG
 macro_line|#undef&t;DEBUG&t;&t;/* messages on error and most fault paths */
 DECL|macro|VERBOSE
@@ -28,9 +28,9 @@ macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/unaligned.h&gt;
 DECL|macro|DRIVER_DESC
-mdefine_line|#define&t;DRIVER_DESC&t;&t;&quot;NetChip 2280 USB Peripheral Controller&quot;
+mdefine_line|#define&t;DRIVER_DESC&t;&t;&quot;PLX NET2280 USB Peripheral Controller&quot;
 DECL|macro|DRIVER_VERSION
-mdefine_line|#define&t;DRIVER_VERSION&t;&t;&quot;2004 Jan 14&quot;
+mdefine_line|#define&t;DRIVER_VERSION&t;&t;&quot;2005 Feb 03&quot;
 DECL|macro|DMA_ADDR_INVALID
 mdefine_line|#define&t;DMA_ADDR_INVALID&t;(~(dma_addr_t)0)
 DECL|macro|EP_DONTUSE
@@ -143,6 +143,24 @@ comma
 id|ushort
 comma
 l_int|0644
+)paren
+suffix:semicolon
+multiline_comment|/* enable_suspend -- When enabled, the driver will respond to&n; * USB suspend requests by powering down the NET2280.  Otherwise,&n; * USB suspend requests will be ignored.  This is acceptible for&n; * self-powered devices, and helps avoid some quirks.&n; */
+DECL|variable|enable_suspend
+r_static
+r_int
+id|enable_suspend
+op_assign
+l_int|0
+suffix:semicolon
+multiline_comment|/* &quot;modprobe net2280 enable_suspend=1&quot; etc */
+id|module_param
+(paren
+id|enable_suspend
+comma
+r_bool
+comma
+id|S_IRUGO
 )paren
 suffix:semicolon
 DECL|macro|DIR_STRING
@@ -10684,6 +10702,21 @@ id|dev-&gt;driver-&gt;suspend
 (paren
 op_amp
 id|dev-&gt;gadget
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|enable_suspend
+)paren
+id|stat
+op_and_assign
+op_complement
+(paren
+l_int|1
+op_lshift
+id|SUSPEND_REQUEST_INTERRUPT
 )paren
 suffix:semicolon
 )brace

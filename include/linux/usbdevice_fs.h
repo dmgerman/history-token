@@ -5,6 +5,7 @@ macro_line|#ifndef _LINUX_USBDEVICE_FS_H
 DECL|macro|_LINUX_USBDEVICE_FS_H
 mdefine_line|#define _LINUX_USBDEVICE_FS_H
 macro_line|#include &lt;linux/types.h&gt;
+macro_line|#include &lt;linux/compat.h&gt;
 multiline_comment|/* --------------------------------------------------------------------- */
 DECL|macro|USBDEVICE_SUPER_MAGIC
 mdefine_line|#define USBDEVICE_SUPER_MAGIC 0x9fa2
@@ -292,6 +293,73 @@ suffix:semicolon
 multiline_comment|/* e.g. port 3 connects to device 27 */
 )brace
 suffix:semicolon
+macro_line|#ifdef CONFIG_COMPAT
+DECL|struct|usbdevfs_urb32
+r_struct
+id|usbdevfs_urb32
+(brace
+DECL|member|type
+r_int
+r_char
+id|type
+suffix:semicolon
+DECL|member|endpoint
+r_int
+r_char
+id|endpoint
+suffix:semicolon
+DECL|member|status
+id|compat_int_t
+id|status
+suffix:semicolon
+DECL|member|flags
+id|compat_uint_t
+id|flags
+suffix:semicolon
+DECL|member|buffer
+id|compat_caddr_t
+id|buffer
+suffix:semicolon
+DECL|member|buffer_length
+id|compat_int_t
+id|buffer_length
+suffix:semicolon
+DECL|member|actual_length
+id|compat_int_t
+id|actual_length
+suffix:semicolon
+DECL|member|start_frame
+id|compat_int_t
+id|start_frame
+suffix:semicolon
+DECL|member|number_of_packets
+id|compat_int_t
+id|number_of_packets
+suffix:semicolon
+DECL|member|error_count
+id|compat_int_t
+id|error_count
+suffix:semicolon
+DECL|member|signr
+id|compat_uint_t
+id|signr
+suffix:semicolon
+DECL|member|usercontext
+id|compat_caddr_t
+id|usercontext
+suffix:semicolon
+multiline_comment|/* unused */
+DECL|member|iso_frame_desc
+r_struct
+id|usbdevfs_iso_packet_desc
+id|iso_frame_desc
+(braket
+l_int|0
+)braket
+suffix:semicolon
+)brace
+suffix:semicolon
+macro_line|#endif
 DECL|macro|USBDEVFS_CONTROL
 mdefine_line|#define USBDEVFS_CONTROL           _IOWR(&squot;U&squot;, 0, struct usbdevfs_ctrltransfer)
 DECL|macro|USBDEVFS_BULK
@@ -306,12 +374,18 @@ DECL|macro|USBDEVFS_GETDRIVER
 mdefine_line|#define USBDEVFS_GETDRIVER         _IOW(&squot;U&squot;, 8, struct usbdevfs_getdriver)
 DECL|macro|USBDEVFS_SUBMITURB
 mdefine_line|#define USBDEVFS_SUBMITURB         _IOR(&squot;U&squot;, 10, struct usbdevfs_urb)
+DECL|macro|USBDEVFS_SUBMITURB32
+mdefine_line|#define USBDEVFS_SUBMITURB32       _IOR(&squot;U&squot;, 10, struct usbdevfs_urb32)
 DECL|macro|USBDEVFS_DISCARDURB
 mdefine_line|#define USBDEVFS_DISCARDURB        _IO(&squot;U&squot;, 11)
 DECL|macro|USBDEVFS_REAPURB
 mdefine_line|#define USBDEVFS_REAPURB           _IOW(&squot;U&squot;, 12, void *)
+DECL|macro|USBDEVFS_REAPURB32
+mdefine_line|#define USBDEVFS_REAPURB32         _IOW(&squot;U&squot;, 12, u32)
 DECL|macro|USBDEVFS_REAPURBNDELAY
 mdefine_line|#define USBDEVFS_REAPURBNDELAY     _IOW(&squot;U&squot;, 13, void *)
+DECL|macro|USBDEVFS_REAPURBNDELAY32
+mdefine_line|#define USBDEVFS_REAPURBNDELAY32   _IOW(&squot;U&squot;, 13, u32)
 DECL|macro|USBDEVFS_DISCSIGNAL
 mdefine_line|#define USBDEVFS_DISCSIGNAL        _IOR(&squot;U&squot;, 14, struct usbdevfs_disconnectsignal)
 DECL|macro|USBDEVFS_CLAIMINTERFACE

@@ -4042,11 +4042,7 @@ op_star
 id|desc
 )paren
 comma
-id|msecs_to_jiffies
-c_func
-(paren
 l_int|500
-)paren
 )paren
 suffix:semicolon
 id|IRDA_DEBUG

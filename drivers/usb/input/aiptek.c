@@ -179,26 +179,6 @@ l_int|1
 )braket
 suffix:semicolon
 multiline_comment|/* input device path              */
-DECL|member|manuName
-r_char
-id|manuName
-(braket
-l_int|64
-op_plus
-l_int|1
-)braket
-suffix:semicolon
-multiline_comment|/* manufacturer name              */
-DECL|member|prodName
-r_char
-id|prodName
-(braket
-l_int|64
-op_plus
-l_int|1
-)braket
-suffix:semicolon
-multiline_comment|/* product name                   */
 )brace
 suffix:semicolon
 DECL|struct|aiptek_settings
@@ -2729,9 +2709,7 @@ id|buffer
 comma
 id|size
 comma
-l_int|5
-op_star
-id|HZ
+l_int|5000
 )paren
 suffix:semicolon
 )brace
@@ -2798,9 +2776,7 @@ id|buffer
 comma
 id|size
 comma
-l_int|5
-op_star
-id|HZ
+l_int|5000
 )paren
 suffix:semicolon
 )brace
@@ -3780,7 +3756,7 @@ id|PAGE_SIZE
 comma
 l_string|&quot;%s&bslash;n&quot;
 comma
-id|aiptek-&gt;features.manuName
+id|aiptek-&gt;usbdev-&gt;manufacturer
 )paren
 suffix:semicolon
 r_return
@@ -3852,7 +3828,7 @@ id|PAGE_SIZE
 comma
 l_string|&quot;%s&bslash;n&quot;
 comma
-id|aiptek-&gt;features.prodName
+id|aiptek-&gt;usbdev-&gt;product
 )paren
 suffix:semicolon
 r_return
@@ -8494,37 +8470,6 @@ c_func
 (paren
 op_amp
 id|aiptek-&gt;inputdev
-)paren
-suffix:semicolon
-multiline_comment|/* Go and decode the USB representation of the tablet&squot;s manufacturer&n;&t; * name and product name. They only change once every hotplug event,&n;&t; * which is why we put it here instead of in the sysfs interface.&n;&t; */
-id|usb_string
-c_func
-(paren
-id|usbdev
-comma
-id|usbdev-&gt;descriptor.iManufacturer
-comma
-id|aiptek-&gt;features.manuName
-comma
-r_sizeof
-(paren
-id|aiptek-&gt;features.manuName
-)paren
-)paren
-suffix:semicolon
-id|usb_string
-c_func
-(paren
-id|usbdev
-comma
-id|usbdev-&gt;descriptor.iProduct
-comma
-id|aiptek-&gt;features.prodName
-comma
-r_sizeof
-(paren
-id|aiptek-&gt;features.prodName
-)paren
 )paren
 suffix:semicolon
 multiline_comment|/* We now will look for the evdev device which is mapped to&n;&t; * the tablet. The partial name is kept in the link list of&n;&t; * input_handles associated with this input device.&n;&t; * What identifies an evdev input_handler is that it begins&n;&t; * with &squot;event&squot;, continues with a digit, and that in turn&n;&t; * is mapped to /{devfs}/input/eventN.&n;&t; */
