@@ -187,11 +187,11 @@ suffix:semicolon
 )brace
 id|vxres
 op_assign
-id|info-&gt;var.xres
+id|info-&gt;var.xres_virtual
 suffix:semicolon
 id|vyres
 op_assign
-id|info-&gt;var.yres
+id|info-&gt;var.yres_virtual
 suffix:semicolon
 id|memcpy
 c_func
@@ -581,11 +581,11 @@ suffix:semicolon
 )brace
 id|vxres
 op_assign
-id|info-&gt;var.xres
+id|info-&gt;var.xres_virtual
 suffix:semicolon
 id|vyres
 op_assign
-id|info-&gt;var.yres
+id|info-&gt;var.yres_virtual
 suffix:semicolon
 r_if
 c_cond
