@@ -3,11 +3,11 @@ macro_line|#ifndef _ASM_MMZONE_H_
 DECL|macro|_ASM_MMZONE_H_
 mdefine_line|#define _ASM_MMZONE_H_
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;asm/smp.h&gt;
 macro_line|#ifdef CONFIG_DISCONTIGMEM
 r_extern
 r_struct
 id|pglist_data
-op_star
 id|node_data
 (braket
 )braket
@@ -31,8 +31,6 @@ id|numa_memory_lookup_table
 (braket
 )braket
 suffix:semicolon
-DECL|macro|MAX_NUMNODES
-mdefine_line|#define MAX_NUMNODES 16
 DECL|macro|MAX_MEMORY
 mdefine_line|#define MAX_MEMORY (1UL &lt;&lt; 41)
 multiline_comment|/* 256MB regions */
@@ -41,7 +39,7 @@ mdefine_line|#define MEMORY_INCREMENT_SHIFT 28
 DECL|macro|MEMORY_INCREMENT
 mdefine_line|#define MEMORY_INCREMENT (1UL &lt;&lt; MEMORY_INCREMENT_SHIFT)
 DECL|macro|DEBUG_NUMA
-macro_line|#undef DEBUG_NUMA
+mdefine_line|#define DEBUG_NUMA
 DECL|function|pa_to_nid
 r_static
 r_inline
@@ -98,12 +96,13 @@ suffix:semicolon
 )brace
 DECL|macro|pfn_to_nid
 mdefine_line|#define pfn_to_nid(pfn)&t;&t;pa_to_nid((pfn) &lt;&lt; PAGE_SHIFT)
-DECL|macro|node_startnr
-mdefine_line|#define node_startnr(nid)&t;(node_data[nid]-&gt;node_start_mapnr)
+multiline_comment|/*&n; * Return a pointer to the node data for node n.&n; */
+DECL|macro|NODE_DATA
+mdefine_line|#define NODE_DATA(nid)&t;&t;(&amp;node_data[nid])
 DECL|macro|node_size
-mdefine_line|#define node_size(nid)&t;&t;(node_data[nid]-&gt;node_size)
+mdefine_line|#define node_size(nid)&t;&t;(NODE_DATA(nid)-&gt;node_size)
 DECL|macro|node_localnr
-mdefine_line|#define node_localnr(pfn, nid)&t;((pfn) - node_data[nid]-&gt;node_start_pfn)
+mdefine_line|#define node_localnr(pfn, nid)&t;((pfn) - NODE_DATA(nid)-&gt;node_start_pfn)
 macro_line|#ifdef CONFIG_NUMA
 DECL|function|__cpu_to_node
 r_static
@@ -152,13 +151,12 @@ multiline_comment|/*&n; * Following are macros that each numa implmentation must
 multiline_comment|/*&n; * Given a kernel address, find the home node of the underlying memory.&n; */
 DECL|macro|kvaddr_to_nid
 mdefine_line|#define kvaddr_to_nid(kaddr)&t;pa_to_nid(__pa(kaddr))
-multiline_comment|/*&n; * Return a pointer to the node data for node n.&n; */
-DECL|macro|NODE_DATA
-mdefine_line|#define NODE_DATA(nid)&t;&t;(node_data[nid])
 DECL|macro|node_mem_map
 mdefine_line|#define node_mem_map(nid)&t;(NODE_DATA(nid)-&gt;node_mem_map)
 DECL|macro|node_start_pfn
 mdefine_line|#define node_start_pfn(nid)&t;(NODE_DATA(nid)-&gt;node_start_pfn)
+DECL|macro|node_end_pfn
+mdefine_line|#define node_end_pfn(nid)&t;(NODE_DATA(nid)-&gt;node_end_pfn)
 DECL|macro|local_mapnr
 mdefine_line|#define local_mapnr(kvaddr) &bslash;&n;&t;( (__pa(kvaddr) &gt;&gt; PAGE_SHIFT) - node_start_pfn(kvaddr_to_nid(kvaddr)) 
 macro_line|#if 0
@@ -169,7 +167,10 @@ multiline_comment|/* Written this way to avoid evaluating arguments twice */
 DECL|macro|discontigmem_pfn_to_page
 mdefine_line|#define discontigmem_pfn_to_page(pfn) &bslash;&n;({ &bslash;&n;&t;unsigned long __tmp = pfn; &bslash;&n;&t;(node_mem_map(pfn_to_nid(__tmp)) + &bslash;&n;&t; node_localnr(__tmp, pfn_to_nid(__tmp))); &bslash;&n;})
 DECL|macro|discontigmem_page_to_pfn
-mdefine_line|#define discontigmem_page_to_pfn(p)&t;&bslash;&n;({ &bslash;&n;&t;struct page *__tmp = p; &bslash;&n;&t;(((__tmp) - page_zone(__tmp)-&gt;zone_mem_map) + &bslash;&n;&t; page_zone(__tmp)-&gt;zone_start_pfn); &bslash;&n;})
+mdefine_line|#define discontigmem_page_to_pfn(p) &bslash;&n;({ &bslash;&n;&t;struct page *__tmp = p; &bslash;&n;&t;(((__tmp) - page_zone(__tmp)-&gt;zone_mem_map) + &bslash;&n;&t; page_zone(__tmp)-&gt;zone_start_pfn); &bslash;&n;})
+multiline_comment|/* XXX fix for discontiguous physical memory */
+DECL|macro|discontigmem_pfn_valid
+mdefine_line|#define discontigmem_pfn_valid(pfn)&t;&t;((pfn) &lt; num_physpages)
 macro_line|#endif /* CONFIG_DISCONTIGMEM */
 macro_line|#endif /* _ASM_MMZONE_H_ */
 eof

@@ -21,6 +21,9 @@ op_star
 id|tlb
 )paren
 suffix:semicolon
+multiline_comment|/* Avoid pulling in another include just for this */
+DECL|macro|check_pgt_cache
+mdefine_line|#define check_pgt_cache()&t;do { } while (0)
 multiline_comment|/* Get the generic bits... */
 macro_line|#include &lt;asm-generic/tlb.h&gt;
 multiline_comment|/* Nothing needed here in fact... */
@@ -162,26 +165,6 @@ op_amp
 id|_PAGE_HASHPTE
 )paren
 (brace
-r_int
-id|local
-op_assign
-l_int|0
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|tlb-&gt;mm-&gt;cpu_vm_mask
-op_eq
-(paren
-l_int|1
-op_lshift
-id|cpu
-)paren
-)paren
-id|local
-op_assign
-l_int|1
-suffix:semicolon
 id|batch-&gt;pte
 (braket
 id|i
@@ -207,6 +190,26 @@ op_eq
 id|PPC64_TLB_BATCH_NR
 )paren
 (brace
+r_int
+id|local
+op_assign
+l_int|0
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|tlb-&gt;mm-&gt;cpu_vm_mask
+op_eq
+(paren
+l_int|1
+op_lshift
+id|cpu
+)paren
+)paren
+id|local
+op_assign
+l_int|1
+suffix:semicolon
 id|flush_hash_range
 c_func
 (paren

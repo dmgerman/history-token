@@ -418,16 +418,18 @@ DECL|macro|page_to_pfn
 mdefine_line|#define page_to_pfn(page)&t;discontigmem_page_to_pfn(page)
 DECL|macro|pfn_to_page
 mdefine_line|#define pfn_to_page(pfn)&t;discontigmem_pfn_to_page(pfn)
+DECL|macro|pfn_valid
+mdefine_line|#define pfn_valid(pfn)&t;&t;discontigmem_pfn_valid(pfn)
 macro_line|#else
 DECL|macro|pfn_to_page
 mdefine_line|#define pfn_to_page(pfn)&t;(mem_map + (pfn))
 DECL|macro|page_to_pfn
 mdefine_line|#define page_to_pfn(page)&t;((unsigned long)((page) - mem_map))
+DECL|macro|pfn_valid
+mdefine_line|#define pfn_valid(pfn)&t;&t;((pfn) &lt; max_mapnr)
 macro_line|#endif
 DECL|macro|virt_to_page
 mdefine_line|#define virt_to_page(kaddr)&t;pfn_to_page(__pa(kaddr) &gt;&gt; PAGE_SHIFT)
-DECL|macro|pfn_valid
-mdefine_line|#define pfn_valid(pfn)&t;&t;((pfn) &lt; max_mapnr)
 DECL|macro|virt_addr_valid
 mdefine_line|#define virt_addr_valid(kaddr)&t;pfn_valid(__pa(kaddr) &gt;&gt; PAGE_SHIFT)
 DECL|macro|VM_DATA_DEFAULT_FLAGS

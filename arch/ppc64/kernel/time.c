@@ -1466,13 +1466,6 @@ comma
 id|flags
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_PPC_ISERIES
-multiline_comment|/* HACK HACK This allows the iSeries profiling to use /proc/profile */
-id|prof_shift
-op_assign
-l_int|0
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/* Not exact, but the timer interrupt takes care of this */
 id|set_dec
 c_func

@@ -3677,6 +3677,11 @@ suffix:colon
 l_int|1
 suffix:semicolon
 multiline_comment|/* 0 default, 1 dsc_overlap disabled */
+DECL|member|gendev
+r_struct
+id|device
+id|gendev
+suffix:semicolon
 DECL|member|hwif_data
 r_void
 op_star
@@ -6612,5 +6617,10 @@ id|ide_lock
 suffix:semicolon
 DECL|macro|local_irq_set
 mdefine_line|#define local_irq_set(flags)&t;do { local_save_flags((flags)); local_irq_enable(); } while (0)
+r_extern
+r_struct
+id|bus_type
+id|ide_bus_type
+suffix:semicolon
 macro_line|#endif /* _IDE_H */
 eof

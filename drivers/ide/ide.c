@@ -30,6 +30,7 @@ macro_line|#include &lt;linux/completion.h&gt;
 macro_line|#include &lt;linux/reboot.h&gt;
 macro_line|#include &lt;linux/cdrom.h&gt;
 macro_line|#include &lt;linux/seq_file.h&gt;
+macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
@@ -15617,6 +15618,19 @@ comma
 l_int|5
 )brace
 suffix:semicolon
+DECL|variable|ide_bus_type
+r_struct
+id|bus_type
+id|ide_bus_type
+op_assign
+(brace
+dot
+id|name
+op_assign
+l_string|&quot;ide&quot;
+comma
+)brace
+suffix:semicolon
 multiline_comment|/*&n; * This is gets invoked once during initialization, to set *everything* up&n; */
 DECL|function|ide_init
 r_int
@@ -15670,6 +15684,13 @@ op_assign
 l_int|1
 suffix:semicolon
 )brace
+id|bus_register
+c_func
+(paren
+op_amp
+id|ide_bus_type
+)paren
+suffix:semicolon
 id|init_ide_data
 c_func
 (paren
@@ -15906,6 +15927,13 @@ macro_line|#endif
 id|devfs_unregister
 (paren
 id|ide_devfs_handle
+)paren
+suffix:semicolon
+id|bus_unregister
+c_func
+(paren
+op_amp
+id|ide_bus_type
 )paren
 suffix:semicolon
 )brace

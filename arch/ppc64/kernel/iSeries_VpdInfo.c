@@ -33,7 +33,6 @@ macro_line|#include &lt;asm/iSeries/HvCallPci.h&gt;
 macro_line|#include &lt;asm/iSeries/HvTypes.h&gt;
 macro_line|#include &lt;asm/iSeries/mf.h&gt;
 macro_line|#include &lt;asm/iSeries/LparData.h&gt;
-macro_line|#include &lt;asm/iSeries/HvCallPci.h&gt;
 singleline_comment|//#include &lt;asm/iSeries/iSeries_VpdInfo.h&gt;
 macro_line|#include &lt;asm/iSeries/iSeries_pci.h&gt;
 macro_line|#include &quot;pci.h&quot;
