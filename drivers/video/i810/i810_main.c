@@ -9262,26 +9262,6 @@ r_void
 r_if
 c_cond
 (paren
-id|agp_init
-c_func
-(paren
-)paren
-)paren
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot;i810fb_init: cannot initialize agpgart&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-op_minus
-id|ENODEV
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
 id|agp_intel_init
 c_func
 (paren
