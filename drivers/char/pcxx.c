@@ -283,8 +283,6 @@ r_sizeof
 id|pcxx_bios
 )paren
 suffix:semicolon
-DECL|macro|MIN
-mdefine_line|#define MIN(a,b)&t;((a) &lt; (b) ? (a) : (b))
 DECL|macro|pcxxassert
 mdefine_line|#define pcxxassert(x, msg)  if(!(x)) pcxx_error(__LINE__, msg)
 DECL|macro|FEPTIMEOUT
@@ -2808,7 +2806,7 @@ l_int|1
 suffix:semicolon
 id|count
 op_assign
-id|MIN
+id|min
 c_func
 (paren
 id|stlen
@@ -2954,7 +2952,7 @@ suffix:semicolon
 )brace
 id|count
 op_assign
-id|MIN
+id|min
 c_func
 (paren
 id|remain
@@ -2978,7 +2976,7 @@ l_int|0
 (brace
 id|stlen
 op_assign
-id|MIN
+id|min
 c_func
 (paren
 id|count
