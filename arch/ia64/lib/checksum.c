@@ -1,4 +1,5 @@
-multiline_comment|/*&n; * Network checksum routines&n; *&n; * Copyright (C) 1999 Hewlett-Packard Co&n; * Copyright (C) 1999 Stephane Eranian &lt;eranian@hpl.hp.com&gt;&n; *&n; * Most of the code coming from arch/alpha/lib/checksum.c&n; *&n; * This file contains network checksum routines that are better done&n; * in an architecture-specific manner due to speed..&n; */
+multiline_comment|/*&n; * Network checksum routines&n; *&n; * Copyright (C) 1999, 2003 Hewlett-Packard Co&n; *&t;Stephane Eranian &lt;eranian@hpl.hp.com&gt;&n; *&n; * Most of the code coming from arch/alpha/lib/checksum.c&n; *&n; * This file contains network checksum routines that are better done&n; * in an architecture-specific manner due to speed..&n; */
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
 r_static
@@ -142,6 +143,13 @@ l_int|8
 )paren
 suffix:semicolon
 )brace
+DECL|variable|csum_tcpudp_magic
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|csum_tcpudp_magic
+)paren
+suffix:semicolon
 r_int
 r_int
 DECL|function|csum_tcpudp_nofold
@@ -310,6 +318,13 @@ r_return
 id|result
 suffix:semicolon
 )brace
+DECL|variable|csum_partial
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|csum_partial
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * this routine is used for miscellaneous IP-like checksums, mainly&n; * in icmp.c&n; */
 r_int
 r_int
@@ -336,4 +351,11 @@ id|len
 )paren
 suffix:semicolon
 )brace
+DECL|variable|ip_compute_csum
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|ip_compute_csum
+)paren
+suffix:semicolon
 eof

@@ -1,4 +1,5 @@
-multiline_comment|/*&n; * Network Checksum &amp; Copy routine&n; *&n; * Copyright (C) 1999 Hewlett-Packard Co&n; * Copyright (C) 1999 Stephane Eranian &lt;eranian@hpl.hp.com&gt;&n; *&n; * Most of the code has been imported from Linux/Alpha&n; */
+multiline_comment|/*&n; * Network Checksum &amp; Copy routine&n; *&n; * Copyright (C) 1999, 2003 Hewlett-Packard Co&n; *&t;Stephane Eranian &lt;eranian@hpl.hp.com&gt;&n; *&n; * Most of the code has been imported from Linux/Alpha&n; */
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
@@ -651,4 +652,11 @@ l_int|NULL
 )paren
 suffix:semicolon
 )brace
+DECL|variable|csum_partial_copy_nocheck
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|csum_partial_copy_nocheck
+)paren
+suffix:semicolon
 eof

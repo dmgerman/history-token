@@ -166,30 +166,7 @@ c_func
 id|probe_irq_mask
 )paren
 suffix:semicolon
-macro_line|#include &lt;linux/in6.h&gt;
 macro_line|#include &lt;asm/checksum.h&gt;
-multiline_comment|/* not coded yet?? EXPORT_SYMBOL(csum_ipv6_magic); */
-DECL|variable|csum_partial_copy_nocheck
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|csum_partial_copy_nocheck
-)paren
-suffix:semicolon
-DECL|variable|csum_tcpudp_magic
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|csum_tcpudp_magic
-)paren
-suffix:semicolon
-DECL|variable|ip_compute_csum
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|ip_compute_csum
-)paren
-suffix:semicolon
 DECL|variable|ip_fast_csum
 id|EXPORT_SYMBOL
 c_func
@@ -197,6 +174,7 @@ c_func
 id|ip_fast_csum
 )paren
 suffix:semicolon
+multiline_comment|/* hand-coded assembly */
 macro_line|#include &lt;asm/io.h&gt;
 DECL|variable|__ia64_memcpy_fromio
 id|EXPORT_SYMBOL
@@ -264,6 +242,7 @@ id|clear_page
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_VIRTUAL_MEM_MAP
+macro_line|#include &lt;linux/bootmem.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 DECL|variable|vmalloc_end
 id|EXPORT_SYMBOL
@@ -279,6 +258,14 @@ c_func
 id|ia64_pfn_valid
 )paren
 suffix:semicolon
+DECL|variable|max_low_pfn
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|max_low_pfn
+)paren
+suffix:semicolon
+multiline_comment|/* defined by bootmem.c, but not exported by generic code */
 macro_line|#endif
 macro_line|#include &lt;asm/processor.h&gt;
 DECL|variable|per_cpu__cpu_info
