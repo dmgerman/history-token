@@ -12,10 +12,13 @@ macro_line|#include &lt;linux/major.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
+macro_line|#include &lt;linux/sysctl.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;linux/devpts_fs.h&gt;
+macro_line|#if defined(CONFIG_LEGACY_PTYS) || defined(CONFIG_UNIX98_PTYS)
+macro_line|#ifdef CONFIG_LEGACY_PTYS
 DECL|variable|pty_driver
 DECL|variable|pty_slave_driver
 r_static
@@ -27,8 +30,9 @@ comma
 op_star
 id|pty_slave_driver
 suffix:semicolon
-macro_line|#ifdef CONFIG_UNIX98_PTYS
+macro_line|#endif
 multiline_comment|/* These are global because they are accessed in tty_io.c */
+macro_line|#ifdef CONFIG_UNIX98_PTYS
 DECL|variable|ptm_driver
 r_struct
 id|tty_driver
@@ -741,6 +745,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_LEGACY_PTYS
 DECL|function|pty_bsd_ioctl
 r_static
 r_int
@@ -813,6 +818,7 @@ op_minus
 id|ENOIOCTLCMD
 suffix:semicolon
 )brace
+macro_line|#endif
 macro_line|#ifdef CONFIG_UNIX98_PTYS
 DECL|function|pty_unix98_ioctl
 r_static
@@ -864,6 +870,23 @@ id|cmd
 )paren
 (brace
 r_case
+id|TIOCSPTLCK
+suffix:colon
+multiline_comment|/* Set PT Lock (disallow slave open) */
+r_return
+id|pty_set_lock
+c_func
+(paren
+id|tty
+comma
+(paren
+r_int
+op_star
+)paren
+id|arg
+)paren
+suffix:semicolon
+r_case
 id|TIOCGPTN
 suffix:colon
 multiline_comment|/* Get PT Number */
@@ -883,17 +906,8 @@ id|arg
 suffix:semicolon
 )brace
 r_return
-id|pty_bsd_ioctl
-c_func
-(paren
-id|tty
-comma
-id|file
-comma
-id|cmd
-comma
-id|arg
-)paren
+op_minus
+id|ENOIOCTLCMD
 suffix:semicolon
 )brace
 macro_line|#endif
@@ -1157,6 +1171,133 @@ id|pty_set_termios
 comma
 )brace
 suffix:semicolon
+multiline_comment|/* sysctl support for setting limits on the number of Unix98 ptys allocated.&n;   Otherwise one can eat up all kernel memory by opening /dev/ptmx repeatedly. */
+macro_line|#ifdef CONFIG_UNIX98_PTYS
+DECL|variable|pty_limit
+r_int
+id|pty_limit
+op_assign
+id|NR_UNIX98_PTY_DEFAULT
+suffix:semicolon
+DECL|variable|pty_limit_min
+r_static
+r_int
+id|pty_limit_min
+op_assign
+l_int|0
+suffix:semicolon
+DECL|variable|pty_limit_max
+r_static
+r_int
+id|pty_limit_max
+op_assign
+id|NR_UNIX98_PTY_MAX
+suffix:semicolon
+DECL|variable|pty_table
+id|ctl_table
+id|pty_table
+(braket
+)braket
+op_assign
+(brace
+(brace
+dot
+id|ctl_name
+op_assign
+id|PTY_MAX
+comma
+dot
+id|procname
+op_assign
+l_string|&quot;max&quot;
+comma
+dot
+id|maxlen
+op_assign
+r_sizeof
+(paren
+r_int
+)paren
+comma
+dot
+id|mode
+op_assign
+l_int|0644
+comma
+dot
+id|data
+op_assign
+op_amp
+id|pty_limit
+comma
+dot
+id|proc_handler
+op_assign
+op_amp
+id|proc_dointvec_minmax
+comma
+dot
+id|strategy
+op_assign
+op_amp
+id|sysctl_intvec
+comma
+dot
+id|extra1
+op_assign
+op_amp
+id|pty_limit_min
+comma
+dot
+id|extra2
+op_assign
+op_amp
+id|pty_limit_max
+comma
+)brace
+comma
+(brace
+dot
+id|ctl_name
+op_assign
+id|PTY_NR
+comma
+dot
+id|procname
+op_assign
+l_string|&quot;nr&quot;
+comma
+dot
+id|maxlen
+op_assign
+r_sizeof
+(paren
+r_int
+)paren
+comma
+dot
+id|mode
+op_assign
+l_int|0444
+comma
+dot
+id|proc_handler
+op_assign
+op_amp
+id|proc_dointvec
+comma
+)brace
+comma
+(brace
+dot
+id|ctl_name
+op_assign
+l_int|0
+)brace
+)brace
+suffix:semicolon
+macro_line|#endif
+multiline_comment|/* Initialization */
 DECL|function|pty_init
 r_static
 r_int
@@ -1167,6 +1308,7 @@ c_func
 r_void
 )paren
 (brace
+macro_line|#ifdef CONFIG_LEGACY_PTYS
 multiline_comment|/* Traditional BSD devices */
 id|pty_driver
 op_assign
@@ -1380,22 +1522,13 @@ c_func
 l_string|&quot;Couldn&squot;t register pty slave driver&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* Unix98 devices */
+macro_line|#endif /* CONFIG_LEGACY_PTYS */
 macro_line|#ifdef CONFIG_UNIX98_PTYS
+multiline_comment|/* Unix98 devices */
 id|devfs_mk_dir
 c_func
 (paren
 l_string|&quot;pts&quot;
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;pty: %d Unix98 ptys configured&bslash;n&quot;
-comma
-id|UNIX98_NR_MAJORS
-op_star
-id|NR_PTYS
 )paren
 suffix:semicolon
 id|ptm_driver
@@ -1403,9 +1536,7 @@ op_assign
 id|alloc_tty_driver
 c_func
 (paren
-id|UNIX98_NR_MAJORS
-op_star
-id|NR_PTYS
+id|NR_UNIX98_PTY_MAX
 )paren
 suffix:semicolon
 r_if
@@ -1425,9 +1556,7 @@ op_assign
 id|alloc_tty_driver
 c_func
 (paren
-id|UNIX98_NR_MAJORS
-op_star
-id|NR_PTYS
+id|NR_UNIX98_PTY_MAX
 )paren
 suffix:semicolon
 r_if
@@ -1501,6 +1630,8 @@ op_or
 id|TTY_DRIVER_REAL_RAW
 op_or
 id|TTY_DRIVER_NO_DEVFS
+op_or
+id|TTY_DRIVER_DEVPTS_MEM
 suffix:semicolon
 id|ptm_driver-&gt;other
 op_assign
@@ -1566,6 +1697,8 @@ op_or
 id|TTY_DRIVER_REAL_RAW
 op_or
 id|TTY_DRIVER_NO_DEVFS
+op_or
+id|TTY_DRIVER_DEVPTS_MEM
 suffix:semicolon
 id|pts_driver-&gt;other
 op_assign
@@ -1610,7 +1743,17 @@ c_func
 l_string|&quot;Couldn&squot;t register Unix98 pts driver&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
+id|pty_table
+(braket
+l_int|1
+)braket
+dot
+id|data
+op_assign
+op_amp
+id|ptm_driver-&gt;refcount
+suffix:semicolon
+macro_line|#endif /* CONFIG_UNIX98_PTYS */
 r_return
 l_int|0
 suffix:semicolon
@@ -1622,4 +1765,5 @@ c_func
 id|pty_init
 )paren
 suffix:semicolon
+macro_line|#endif /* CONFIG_LEGACY_PTYS || CONFIG_UNIX98_PTYS */
 eof

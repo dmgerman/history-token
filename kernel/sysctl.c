@@ -371,6 +371,14 @@ id|random_table
 (braket
 )braket
 suffix:semicolon
+macro_line|#ifdef CONFIG_UNIX98_PTYS
+r_extern
+id|ctl_table
+id|pty_table
+(braket
+)braket
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/* /proc declarations: */
 macro_line|#ifdef CONFIG_PROC_FS
 r_static
@@ -2055,6 +2063,31 @@ id|random_table
 comma
 )brace
 comma
+macro_line|#ifdef CONFIG_UNIX98_PTYS
+(brace
+dot
+id|ctl_name
+op_assign
+id|KERN_PTY
+comma
+dot
+id|procname
+op_assign
+l_string|&quot;pty&quot;
+comma
+dot
+id|mode
+op_assign
+l_int|0555
+comma
+dot
+id|child
+op_assign
+id|pty_table
+comma
+)brace
+comma
+macro_line|#endif
 (brace
 dot
 id|ctl_name

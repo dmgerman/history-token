@@ -450,6 +450,12 @@ op_assign
 l_int|61
 comma
 multiline_comment|/* int: tune printk ratelimiting */
+DECL|enumerator|KERN_PTY
+id|KERN_PTY
+op_assign
+l_int|62
+comma
+multiline_comment|/* dir: pty driver */
 )brace
 suffix:semicolon
 multiline_comment|/* CTL_VM names: */
@@ -705,6 +711,20 @@ DECL|enumerator|RANDOM_UUID
 id|RANDOM_UUID
 op_assign
 l_int|6
+)brace
+suffix:semicolon
+multiline_comment|/* /proc/sys/kernel/pty */
+r_enum
+(brace
+DECL|enumerator|PTY_MAX
+id|PTY_MAX
+op_assign
+l_int|1
+comma
+DECL|enumerator|PTY_NR
+id|PTY_NR
+op_assign
+l_int|2
 )brace
 suffix:semicolon
 multiline_comment|/* /proc/sys/bus/isa */
