@@ -52,7 +52,7 @@ DECL|macro|LINVFS_SET_VFS
 mdefine_line|#define LINVFS_SET_VFS(s, vfsp) &bslash;&n;&t;((s)-&gt;s_fs_info = vfsp)
 r_extern
 r_void
-id|linvfs_set_inode_ops
+id|xfs_set_inodeops
 c_func
 (paren
 r_struct

@@ -28,6 +28,7 @@ macro_line|#include &lt;linux/xfs_iops.h&gt;
 macro_line|#include &lt;linux/xfs_super.h&gt;
 macro_line|#include &lt;linux/xfs_globals.h&gt;
 macro_line|#include &lt;linux/xfs_fs_subr.h&gt;
+macro_line|#include &lt;linux/xfs_lrw.h&gt;
 macro_line|#include &lt;pagebuf/page_buf.h&gt;
 macro_line|#ifndef STATIC
 DECL|macro|STATIC

@@ -5239,7 +5239,7 @@ id|I_NEW
 )paren
 )paren
 (brace
-id|linvfs_set_inode_ops
+id|xfs_set_inodeops
 c_func
 (paren
 id|inode
