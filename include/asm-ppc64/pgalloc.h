@@ -241,7 +241,7 @@ suffix:semicolon
 )brace
 suffix:semicolon
 DECL|macro|PTE_FREELIST_SIZE
-mdefine_line|#define PTE_FREELIST_SIZE&t;((PAGE_SIZE - sizeof(struct pte_freelist_batch) / &bslash;&n;&t;&t;&t;&t;  sizeof(struct page *)))
+mdefine_line|#define PTE_FREELIST_SIZE&t;((PAGE_SIZE - sizeof(struct pte_freelist_batch)) / &bslash;&n;&t;&t;&t;&t;  sizeof(struct page *))
 r_extern
 r_void
 id|pte_free_now
