@@ -2,6 +2,7 @@ multiline_comment|/*&n;   Copyright 2003-2004 Red Hat, Inc.  All rights reserved
 macro_line|#ifndef __LINUX_ATA_H__
 DECL|macro|__LINUX_ATA_H__
 mdefine_line|#define __LINUX_ATA_H__
+macro_line|#include &lt;linux/types.h&gt;
 multiline_comment|/* defines only for the constants which don&squot;t work well as enums */
 DECL|macro|ATA_DMA_BOUNDARY
 mdefine_line|#define ATA_DMA_BOUNDARY&t;0xffffUL
@@ -642,7 +643,6 @@ id|XFER_PIO_0
 op_assign
 l_int|0x08
 comma
-multiline_comment|/* legacy IDE &squot;stuff&squot; */
 DECL|enumerator|XFER_SW_DMA_2
 id|XFER_SW_DMA_2
 op_assign
