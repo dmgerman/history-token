@@ -186,22 +186,6 @@ op_star
 id|tsk
 )paren
 (brace
-macro_line|#ifdef CONFIG_ALTIVEC
-id|asm
-r_volatile
-(paren
-id|BEGIN_FTR_SECTION
-l_string|&quot;dssall;&bslash;n&quot;
-id|END_FTR_SECTION_IFSET
-c_func
-(paren
-id|CPU_FTR_ALTIVEC
-)paren
-suffix:colon
-suffix:colon
-)paren
-suffix:semicolon
-macro_line|#endif /* CONFIG_ALTIVEC */
 r_if
 c_cond
 (paren
@@ -238,6 +222,21 @@ id|next
 )paren
 r_return
 suffix:semicolon
+macro_line|#ifdef CONFIG_ALTIVEC
+r_if
+c_cond
+(paren
+id|cur_cpu_spec-&gt;cpu_features
+op_amp
+id|CPU_FTR_ALTIVEC
+)paren
+id|asm
+r_volatile
+(paren
+l_string|&quot;dssall&quot;
+)paren
+suffix:semicolon
+macro_line|#endif /* CONFIG_ALTIVEC */
 r_if
 c_cond
 (paren
