@@ -44,7 +44,6 @@ r_while
 c_loop
 (paren
 id|size
-op_decrement
 )paren
 (brace
 r_if
@@ -66,6 +65,9 @@ op_increment
 suffix:semicolon
 id|src
 op_increment
+suffix:semicolon
+id|size
+op_decrement
 suffix:semicolon
 )brace
 r_if
@@ -126,7 +128,6 @@ r_while
 c_loop
 (paren
 id|size
-op_decrement
 )paren
 (brace
 r_if
@@ -148,6 +149,9 @@ op_increment
 suffix:semicolon
 id|src
 op_increment
+suffix:semicolon
+id|size
+op_decrement
 suffix:semicolon
 )brace
 r_return
@@ -193,7 +197,6 @@ r_while
 c_loop
 (paren
 id|size
-op_decrement
 )paren
 (brace
 r_char
@@ -230,6 +233,9 @@ op_increment
 suffix:semicolon
 id|src
 op_increment
+suffix:semicolon
+id|size
+op_decrement
 suffix:semicolon
 )brace
 r_return
