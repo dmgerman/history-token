@@ -142,13 +142,6 @@ id|MptDeviceDriverHandlers
 id|MPT_MAX_PROTOCOL_DRIVERS
 )braket
 suffix:semicolon
-DECL|variable|FusionInitCalled
-r_static
-r_int
-id|FusionInitCalled
-op_assign
-l_int|0
-suffix:semicolon
 DECL|variable|mpt_base_index
 r_static
 r_int
@@ -2137,36 +2130,6 @@ op_assign
 op_minus
 l_int|1
 suffix:semicolon
-macro_line|#ifndef MODULE
-multiline_comment|/*&n;&t; *  Handle possibility of the mptscsih_detect() routine getting&n;&t; *  called *before* fusion_init!&n;&t; */
-r_if
-c_cond
-(paren
-op_logical_neg
-id|FusionInitCalled
-)paren
-(brace
-id|dprintk
-c_func
-(paren
-(paren
-id|KERN_INFO
-id|MYNAM
-l_string|&quot;: Hmmm, calling fusion_init from mpt_register!&bslash;n&quot;
-)paren
-)paren
-suffix:semicolon
-multiline_comment|/*&n;&t;&t; *  NOTE! We&squot;ll get recursion here, as fusion_init()&n;&t;&t; *  calls mpt_register()!&n;&t;&t; */
-id|fusion_init
-c_func
-(paren
-)paren
-suffix:semicolon
-id|FusionInitCalled
-op_increment
-suffix:semicolon
-)brace
-macro_line|#endif
 multiline_comment|/*&n;&t; *  Search for empty callback slot in this order: {N,...,7,6,5,...,1}&n;&t; *  (slot/handle 0 is reserved!)&n;&t; */
 r_for
 c_loop
@@ -22589,27 +22552,6 @@ suffix:semicolon
 r_int
 id|r
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|FusionInitCalled
-op_increment
-)paren
-(brace
-id|dprintk
-c_func
-(paren
-(paren
-id|KERN_INFO
-id|MYNAM
-l_string|&quot;: INFO - Driver late-init entry point called&bslash;n&quot;
-)paren
-)paren
-suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-)brace
 id|show_mptmod_ver
 c_func
 (paren
