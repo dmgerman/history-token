@@ -310,11 +310,15 @@ l_int|0x7F000001
 )paren
 suffix:semicolon
 r_else
-multiline_comment|/* Grab first address on interface. */
-id|newdst
+(brace
+r_struct
+id|in_device
+op_star
+id|indev
+suffix:semicolon
+multiline_comment|/* Device might not have an associated in_device. */
+id|indev
 op_assign
-(paren
-(paren
 (paren
 r_struct
 id|in_device
@@ -326,11 +330,23 @@ id|pskb
 )paren
 op_member_access_from_pointer
 id|dev-&gt;ip_ptr
-)paren
-op_member_access_from_pointer
-id|ifa_list-&gt;ifa_local
-)paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|indev
+op_eq
+l_int|NULL
+)paren
+r_return
+id|NF_DROP
+suffix:semicolon
+multiline_comment|/* Grab first address on interface. */
+id|newdst
+op_assign
+id|indev-&gt;ifa_list-&gt;ifa_local
+suffix:semicolon
+)brace
 multiline_comment|/* Transfer from original range. */
 id|newrange
 op_assign

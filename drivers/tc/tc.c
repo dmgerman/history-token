@@ -1082,6 +1082,13 @@ l_int|1
 suffix:semicolon
 )brace
 )brace
+DECL|variable|tc_init
+id|subsys_initcall
+c_func
+(paren
+id|tc_init
+)paren
+suffix:semicolon
 DECL|variable|search_tc_card
 id|EXPORT_SYMBOL
 c_func

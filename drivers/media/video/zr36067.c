@@ -11619,7 +11619,7 @@ id|zr-&gt;jpg_gbuf
 id|frame
 )braket
 suffix:semicolon
-id|get_fast_time
+id|do_gettimeofday
 c_func
 (paren
 op_amp

@@ -196,6 +196,7 @@ multiline_comment|/* /proc/se401/videoX */
 DECL|member|readurb
 r_struct
 id|urb
+op_star
 id|readurb
 suffix:semicolon
 )brace

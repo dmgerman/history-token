@@ -951,6 +951,13 @@ c_func
 suffix:semicolon
 macro_line|#endif
 )brace
+DECL|variable|mca_init
+id|subsys_initcall
+c_func
+(paren
+id|mca_init
+)paren
+suffix:semicolon
 multiline_comment|/*--------------------------------------------------------------------*/
 DECL|function|mca_handle_nmi_slot
 r_static

@@ -1003,6 +1003,13 @@ id|ipt_table_info
 op_star
 r_private
 suffix:semicolon
+multiline_comment|/* Set this to THIS_MODULE if you are a module, otherwise NULL */
+DECL|member|me
+r_struct
+id|module
+op_star
+id|me
+suffix:semicolon
 )brace
 suffix:semicolon
 r_extern

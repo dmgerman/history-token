@@ -3087,7 +3087,7 @@ id|i
 op_assign
 id|VIDEO1394_BUFFER_READY
 suffix:semicolon
-id|get_fast_time
+id|do_gettimeofday
 c_func
 (paren
 op_amp

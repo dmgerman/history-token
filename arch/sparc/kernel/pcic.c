@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: pcic.c,v 1.22 2001/02/13 01:16:43 davem Exp $&n; * pcic.c: Sparc/PCI controller support&n; *&n; * Copyright (C) 1998 V. Roganov and G. Raiko&n; *&n; * Code is derived from Ultra/PCI PSYCHO controller support, see that&n; * for author info.&n; *&n; * Support for diverse IIep based platforms by Pete Zaitcev.&n; * CP-1200 by Eric Brower.&n; */
+multiline_comment|/* $Id: pcic.c,v 1.23 2002/01/23 14:33:55 davem Exp $&n; * pcic.c: Sparc/PCI controller support&n; *&n; * Copyright (C) 1998 V. Roganov and G. Raiko&n; *&n; * Code is derived from Ultra/PCI PSYCHO controller support, see that&n; * for author info.&n; *&n; * Support for diverse IIep based platforms by Pete Zaitcev.&n; * CP-1200 by Eric Brower.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -3281,10 +3281,6 @@ r_int
 id|timer_irq
 comma
 id|irq
-suffix:semicolon
-id|do_get_fast_time
-op_assign
-id|pci_do_gettimeofday
 suffix:semicolon
 multiline_comment|/* A hack until do_gettimeofday prototype is moved to arch specific headers&n;&t;   and btfixupped. Patch do_gettimeofday with ba pci_do_gettimeofday; nop */
 (paren

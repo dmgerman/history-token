@@ -1,20 +1,11 @@
-multiline_comment|/* $Id: irq.h,v 1.20 2001/03/09 01:31:40 davem Exp $&n; * irq.h: IRQ registers on the 64-bit Sparc.&n; *&n; * Copyright (C) 1996 David S. Miller (davem@caip.rutgers.edu)&n; * Copyright (C) 1998 Jakub Jelinek (jj@ultra.linux.cz)&n; */
+multiline_comment|/* $Id: irq.h,v 1.21 2002/01/23 11:27:36 davem Exp $&n; * irq.h: IRQ registers on the 64-bit Sparc.&n; *&n; * Copyright (C) 1996 David S. Miller (davem@caip.rutgers.edu)&n; * Copyright (C) 1998 Jakub Jelinek (jj@ultra.linux.cz)&n; */
 macro_line|#ifndef _SPARC64_IRQ_H
 DECL|macro|_SPARC64_IRQ_H
 mdefine_line|#define _SPARC64_IRQ_H
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/linkage.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
-DECL|struct|devid_cookie
-r_struct
-id|devid_cookie
-(brace
-DECL|member|dummy
-r_int
-id|dummy
-suffix:semicolon
-)brace
-suffix:semicolon
+macro_line|#include &lt;asm/pil.h&gt;
 multiline_comment|/* You should not mess with this directly. That&squot;s the job of irq.c.&n; *&n; * If you make changes here, please update hand coded assembler of&n; * SBUS/floppy interrupt handler in entry.S -DaveM&n; *&n; * This is currently one DCACHE line, two buckets per L2 cache&n; * line.  Keep this in mind please.&n; */
 DECL|struct|ino_bucket
 r_struct

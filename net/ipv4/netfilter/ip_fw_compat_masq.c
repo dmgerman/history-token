@@ -590,7 +590,12 @@ id|IP_NF_ASSERT
 c_func
 (paren
 (paren
-id|skb-&gt;nh.iph-&gt;frag_off
+(paren
+op_star
+id|pskb
+)paren
+op_member_access_from_pointer
+id|nh.iph-&gt;frag_off
 op_amp
 id|htons
 c_func

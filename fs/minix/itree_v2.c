@@ -73,7 +73,13 @@ r_return
 id|block_t
 op_star
 )paren
-id|inode-&gt;u.minix_i.u.i2_data
+id|minix_i
+c_func
+(paren
+id|inode
+)paren
+op_member_access_from_pointer
+id|u.i2_data
 suffix:semicolon
 )brace
 DECL|function|block_to_path

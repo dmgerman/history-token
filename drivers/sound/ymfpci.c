@@ -3753,8 +3753,9 @@ suffix:semicolon
 r_int
 id|nbank
 suffix:semicolon
+multiline_comment|/*&n;&t; * The gain is a floating point number. According to the manual,&n;&t; * bit 31 indicates a sign bit, bit 30 indicates an integer part,&n;&t; * and bits [29:15] indicate a decimal fraction part. Thus,&n;&t; * for a gain of 1.0 the constant of 0x40000000 is loaded.&n;&t; */
 r_int
-id|le_0x40000000
+id|default_gain
 op_assign
 id|cpu_to_le32
 c_func
@@ -3862,7 +3863,7 @@ l_int|0
 suffix:semicolon
 id|bank-&gt;eg_gain_end
 op_assign
-id|le_0x40000000
+id|default_gain
 suffix:semicolon
 id|bank-&gt;lpfQ
 op_assign
@@ -3914,7 +3915,7 @@ id|lpfK
 suffix:semicolon
 id|bank-&gt;eg_gain
 op_assign
-id|le_0x40000000
+id|default_gain
 suffix:semicolon
 id|bank-&gt;lpfD1
 op_assign
@@ -3966,7 +3967,7 @@ id|bank-&gt;left_gain_end
 op_assign
 id|bank-&gt;right_gain_end
 op_assign
-id|le_0x40000000
+id|default_gain
 suffix:semicolon
 )brace
 r_else
@@ -3979,7 +3980,7 @@ id|bank-&gt;eff3_gain
 op_assign
 id|bank-&gt;eff3_gain_end
 op_assign
-id|le_0x40000000
+id|default_gain
 suffix:semicolon
 )brace
 )brace
@@ -4008,7 +4009,7 @@ id|bank-&gt;left_gain
 op_assign
 id|bank-&gt;left_gain_end
 op_assign
-id|le_0x40000000
+id|default_gain
 suffix:semicolon
 )brace
 r_else
@@ -4025,7 +4026,7 @@ id|bank-&gt;right_gain
 op_assign
 id|bank-&gt;right_gain_end
 op_assign
-id|le_0x40000000
+id|default_gain
 suffix:semicolon
 )brace
 )brace
@@ -4047,7 +4048,7 @@ id|bank-&gt;eff2_gain
 op_assign
 id|bank-&gt;eff2_gain_end
 op_assign
-id|le_0x40000000
+id|default_gain
 suffix:semicolon
 )brace
 r_else
@@ -4064,7 +4065,7 @@ id|bank-&gt;eff3_gain
 op_assign
 id|bank-&gt;eff3_gain_end
 op_assign
-id|le_0x40000000
+id|default_gain
 suffix:semicolon
 )brace
 )brace

@@ -1077,10 +1077,6 @@ id|tz
 )paren
 suffix:semicolon
 )brace
-id|do_get_fast_time
-op_assign
-id|do_gettimeofday
-suffix:semicolon
 )brace
 DECL|macro|TICK_SIZE
 mdefine_line|#define TICK_SIZE tick

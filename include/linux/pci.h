@@ -458,6 +458,7 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
+macro_line|#include &lt;linux/device.h&gt;
 multiline_comment|/* File state for mmap()s on /proc/bus/pci/X/Y */
 DECL|enum|pci_mmap_state
 r_enum
@@ -604,6 +605,12 @@ id|u32
 id|current_state
 suffix:semicolon
 multiline_comment|/* Current operating state. In ACPI-speak,&n;&t;&t;&t;&t;&t;   this is D0-D3, D0 being fully functional,&n;&t;&t;&t;&t;&t;   and D3 being off. */
+DECL|member|dev
+r_struct
+id|device
+id|dev
+suffix:semicolon
+multiline_comment|/* Generic device interface */
 multiline_comment|/* device is compatible with these IDs */
 DECL|member|vendor_compatible
 r_int
@@ -875,6 +882,12 @@ r_int
 r_char
 id|pad1
 suffix:semicolon
+DECL|member|iobus
+r_struct
+id|iobus
+id|iobus
+suffix:semicolon
+multiline_comment|/* Generic device interface */
 )brace
 suffix:semicolon
 DECL|macro|pci_bus_b
@@ -1493,13 +1506,6 @@ id|dev_fn
 )paren
 suffix:semicolon
 multiline_comment|/* Generic PCI functions used internally */
-r_void
-id|pci_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 r_int
 id|pci_bus_exists
 c_func

@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: sungem.c,v 1.48 2002/01/15 06:26:37 davem Exp $&n; * sungem.c: Sun GEM ethernet driver.&n; *&n; * Copyright (C) 2000, 2001 David S. Miller (davem@redhat.com)&n; * &n; * Support for Apple GMAC and assorted PHYs by&n; * Benjamin Herrenscmidt (benh@kernel.crashing.org)&n; * &n; * TODO: &n; *  - Get rid of all those nasty mdelay&squot;s and replace them&n; * with schedule_timeout.&n; *  - Implement WOL&n; */
+multiline_comment|/* $Id: sungem.c,v 1.49 2002/01/23 15:40:45 davem Exp $&n; * sungem.c: Sun GEM ethernet driver.&n; *&n; * Copyright (C) 2000, 2001 David S. Miller (davem@redhat.com)&n; * &n; * Support for Apple GMAC and assorted PHYs by&n; * Benjamin Herrenscmidt (benh@kernel.crashing.org)&n; * &n; * TODO: &n; *  - Get rid of all those nasty mdelay&squot;s and replace them&n; * with schedule_timeout.&n; *  - Implement WOL&n; *  - Currently, forced Gb mode is only supported on bcm54xx&n; *    PHY for which I use the SPD2 bit of the control register.&n; *    On m1011 PHY, I can&squot;t force as I don&squot;t have the specs, but&n; *    I can at least detect gigabit with autoneg.&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -149,7 +149,7 @@ comma
 multiline_comment|/* 2 : 100bt half duplex */
 id|BMCR_SPD2
 comma
-multiline_comment|/* verify this */
+multiline_comment|/* bcm54xx only */
 multiline_comment|/* 3 : 1000bt half duplex */
 id|BMCR_FULLDPLX
 comma
@@ -4422,6 +4422,49 @@ id|spd
 op_assign
 l_int|100
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|gp-&gt;phy_mod
+op_eq
+id|phymod_m1011
+)paren
+(brace
+id|val
+op_assign
+id|phy_read
+c_func
+(paren
+id|gp
+comma
+l_int|0x0a
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|val
+op_amp
+l_int|0xc00
+)paren
+op_star
+id|spd
+op_assign
+l_int|1000
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|val
+op_amp
+l_int|0x800
+)paren
+op_star
+id|fd
+op_assign
+l_int|1
+suffix:semicolon
+)brace
 )brace
 )brace
 multiline_comment|/* A link-up condition has occurred, initialize and enable the&n; * rest of the chip.&n; */
@@ -7173,6 +7216,25 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
+l_int|0x1410c60
+suffix:colon
+id|printk
+c_func
+(paren
+l_string|&quot;M1011 (Marvel ?)&bslash;n&quot;
+)paren
+suffix:semicolon
+id|gp-&gt;phy_mod
+op_assign
+id|phymod_m1011
+suffix:semicolon
+id|gp-&gt;gigabit_capable
+op_assign
+l_int|1
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
 l_int|0x18074c0
 suffix:colon
 id|printk
@@ -7207,7 +7269,7 @@ suffix:colon
 id|printk
 c_func
 (paren
-l_string|&quot;Unknown&bslash;n&quot;
+l_string|&quot;Unknown (Using generic mode)&bslash;n&quot;
 )paren
 suffix:semicolon
 id|gp-&gt;phy_mod
@@ -7525,6 +7587,27 @@ op_assign
 l_int|1
 suffix:semicolon
 )brace
+multiline_comment|/* BMCR_SPD2 is a broadcom 54xx specific thing afaik */
+r_if
+c_cond
+(paren
+id|gp-&gt;phy_mod
+op_ne
+id|phymod_bcm5400
+op_logical_and
+id|gp-&gt;phy_mod
+op_ne
+id|phymod_bcm5401
+op_logical_and
+id|gp-&gt;phy_mod
+op_ne
+id|phymod_bcm5411
+)paren
+id|gp-&gt;link_cntl
+op_and_assign
+op_complement
+id|BMCR_SPD2
+suffix:semicolon
 )brace
 DECL|function|gem_init_dma
 r_static
@@ -8715,7 +8798,7 @@ suffix:semicolon
 id|u32
 id|mif_cfg
 suffix:semicolon
-multiline_comment|/* On Apple&squot;s sungem, we can&squot;t rely on registers as the chip&n;&t; * was been powered down by the firmware. We do the PHY lookup&n;&t; * when the interface is opened and we configure the driver&n;&t; * with known values.&n;&t; */
+multiline_comment|/* On Apple&squot;s sungem, we can&squot;t rely on registers as the chip&n;&t; * was been powered down by the firmware. The PHY is looked&n;&t; * up later on.&n;&t; */
 r_if
 c_cond
 (paren
@@ -9224,10 +9307,20 @@ comma
 l_int|1
 )paren
 suffix:semicolon
-id|udelay
+id|current-&gt;state
+op_assign
+id|TASK_UNINTERRUPTIBLE
+suffix:semicolon
+id|schedule_timeout
 c_func
 (paren
-l_int|100
+(paren
+l_int|21
+op_star
+id|HZ
+)paren
+op_div
+l_int|1000
 )paren
 suffix:semicolon
 id|pci_read_config_word
@@ -9624,6 +9717,24 @@ id|MII_BCM5201_MULTIPHY_SUPERISOLATE
 )paren
 suffix:semicolon
 )brace
+r_else
+r_if
+c_cond
+(paren
+id|gp-&gt;phy_mod
+op_eq
+id|phymod_m1011
+)paren
+id|phy_write
+c_func
+(paren
+id|gp
+comma
+id|MII_BMCR
+comma
+id|BMCR_PDOWN
+)paren
+suffix:semicolon
 multiline_comment|/* According to Apple, we must set the MDIO pins to this begnign&n;&t;&t; * state or we may 1) eat more current, 2) damage some PHYs&n;&t;&t; */
 id|writel
 c_func

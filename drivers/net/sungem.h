@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: sungem.h,v 1.11 2002/01/12 07:19:55 davem Exp $&n; * sungem.h: Definitions for Sun GEM ethernet driver.&n; *&n; * Copyright (C) 2000 David S. Miller (davem@redhat.com)&n; */
+multiline_comment|/* $Id: sungem.h,v 1.12 2002/01/23 15:40:45 davem Exp $&n; * sungem.h: Definitions for Sun GEM ethernet driver.&n; *&n; * Copyright (C) 2000 David S. Miller (davem@redhat.com)&n; */
 macro_line|#ifndef _SUNGEM_H
 DECL|macro|_SUNGEM_H
 mdefine_line|#define _SUNGEM_H
@@ -974,6 +974,9 @@ id|phymod_bcm5401
 comma
 DECL|enumerator|phymod_bcm5411
 id|phymod_bcm5411
+comma
+DECL|enumerator|phymod_m1011
+id|phymod_m1011
 comma
 )brace
 suffix:semicolon

@@ -589,6 +589,8 @@ comma
 id|RW_LOCK_UNLOCKED
 comma
 l_int|NULL
+comma
+id|THIS_MODULE
 )brace
 suffix:semicolon
 DECL|variable|nat_expect_list

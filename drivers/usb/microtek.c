@@ -960,7 +960,6 @@ suffix:semicolon
 id|usb_unlink_urb
 c_func
 (paren
-op_amp
 id|desc-&gt;urb
 )paren
 suffix:semicolon
@@ -1102,6 +1101,12 @@ suffix:semicolon
 id|unlock_kernel
 c_func
 (paren
+)paren
+suffix:semicolon
+id|usb_free_urb
+c_func
+(paren
+id|to_remove-&gt;urb
 )paren
 suffix:semicolon
 id|kfree
@@ -2416,7 +2421,6 @@ suffix:semicolon
 id|FILL_BULK_URB
 c_func
 (paren
-op_amp
 id|desc-&gt;urb
 comma
 id|desc-&gt;usb_dev
@@ -2456,7 +2460,6 @@ op_assign
 id|usb_submit_urb
 c_func
 (paren
-op_amp
 id|desc-&gt;urb
 )paren
 suffix:semicolon
@@ -3269,7 +3272,6 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
-multiline_comment|/* As done by usb_alloc_urb */
 id|memset
 c_func
 (paren
@@ -3284,13 +3286,31 @@ id|new_desc
 )paren
 )paren
 suffix:semicolon
-id|spin_lock_init
+id|new_desc-&gt;urb
+op_assign
+id|usb_alloc_urb
 c_func
 (paren
-op_amp
-id|new_desc-&gt;urb.lock
+l_int|0
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|new_desc-&gt;urb
+)paren
+(brace
+id|kfree
+c_func
+(paren
+id|new_desc
+)paren
+suffix:semicolon
+r_return
+l_int|NULL
+suffix:semicolon
+)brace
 multiline_comment|/* initialising that descriptor */
 id|new_desc-&gt;usb_dev
 op_assign

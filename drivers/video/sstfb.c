@@ -8057,8 +8057,7 @@ id|fb_info.video.vbase
 suffix:semicolon
 id|fb_info.info.node
 op_assign
-op_minus
-l_int|1
+id|NODEV
 suffix:semicolon
 id|fb_info.info.flags
 op_assign

@@ -185,6 +185,7 @@ suffix:semicolon
 )brace
 suffix:semicolon
 macro_line|#ifdef __KERNEL__
+macro_line|#include &lt;linux/minix_fs_i.h&gt;
 multiline_comment|/*&n; * change the define below to 0 if you want names &gt; info-&gt;s_namelen chars to be&n; * truncated. Else they will be disallowed (ENAMETOOLONG).&n; */
 DECL|macro|NO_TRUNCATE
 mdefine_line|#define NO_TRUNCATE 1
@@ -547,6 +548,34 @@ r_struct
 id|dentry_operations
 id|minix_dentry_operations
 suffix:semicolon
+DECL|function|minix_i
+r_static
+r_inline
+r_struct
+id|minix_inode_info
+op_star
+id|minix_i
+c_func
+(paren
+r_struct
+id|inode
+op_star
+id|inode
+)paren
+(brace
+r_return
+id|list_entry
+c_func
+(paren
+id|inode
+comma
+r_struct
+id|minix_inode_info
+comma
+id|vfs_inode
+)paren
+suffix:semicolon
+)brace
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif
 eof

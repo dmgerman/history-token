@@ -1285,6 +1285,7 @@ multiline_comment|/* devfs device */
 DECL|member|scn_irq
 r_struct
 id|urb
+op_star
 id|scn_irq
 suffix:semicolon
 DECL|member|ifnum

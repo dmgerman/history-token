@@ -10716,8 +10716,7 @@ id|fontname
 suffix:semicolon
 id|p-&gt;info.node
 op_assign
-op_minus
-l_int|1
+id|NODEV
 suffix:semicolon
 id|p-&gt;info.fbops
 op_assign

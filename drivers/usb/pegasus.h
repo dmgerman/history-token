@@ -243,12 +243,16 @@ DECL|member|tx_urb
 DECL|member|intr_urb
 r_struct
 id|urb
+op_star
 id|ctrl_urb
 comma
+op_star
 id|rx_urb
 comma
+op_star
 id|tx_urb
 comma
+op_star
 id|intr_urb
 suffix:semicolon
 DECL|member|dr
@@ -377,6 +381,8 @@ DECL|macro|VENDOR_SMC
 mdefine_line|#define&t;VENDOR_SMC&t;&t;0x0707
 DECL|macro|VENDOR_SOHOWARE
 mdefine_line|#define&t;VENDOR_SOHOWARE&t;&t;0x15e8
+DECL|macro|VENDOR_SIEMENS
+mdefine_line|#define&t;VENDOR_SIEMENS&t;&t;0x067c
 macro_line|#else&t;/* PEGASUS_DEV */
 id|PEGASUS_DEV
 c_func
@@ -527,6 +533,17 @@ comma
 id|VENDOR_ACCTON
 comma
 l_int|0x1046
+comma
+id|DEFAULT_GPIO_RESET
+)paren
+id|PEGASUS_DEV
+c_func
+(paren
+l_string|&quot;SpeedStream USB 10/100 Ethernet&quot;
+comma
+id|VENDOR_ACCTON
+comma
+l_int|0x5046
 comma
 id|DEFAULT_GPIO_RESET
 )paren
@@ -946,6 +963,17 @@ comma
 id|VENDOR_SOHOWARE
 comma
 l_int|0x9100
+comma
+id|DEFAULT_GPIO_RESET
+)paren
+id|PEGASUS_DEV
+c_func
+(paren
+l_string|&quot;SpeedStream USB 10/100 Ethernet&quot;
+comma
+id|VENDOR_SIEMENS
+comma
+l_int|0x1001
 comma
 id|DEFAULT_GPIO_RESET
 )paren

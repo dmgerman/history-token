@@ -2881,6 +2881,8 @@ id|i
 op_assign
 id|tmp
 suffix:semicolon
+id|MOD_DEC_USE_COUNT
+suffix:semicolon
 )brace
 r_return
 l_int|0
@@ -3037,8 +3039,8 @@ id|rule-&gt;branch
 id|rule-&gt;branch-&gt;refcount
 op_increment
 suffix:semicolon
-r_return
-l_int|0
+r_goto
+id|append_successful
 suffix:semicolon
 )brace
 multiline_comment|/* Find the rule before the end of the chain */
@@ -3067,6 +3069,10 @@ id|rule-&gt;branch
 )paren
 id|rule-&gt;branch-&gt;refcount
 op_increment
+suffix:semicolon
+id|append_successful
+suffix:colon
+id|MOD_INC_USE_COUNT
 suffix:semicolon
 r_return
 l_int|0
@@ -3131,8 +3137,8 @@ id|chainptr-&gt;chain
 op_assign
 id|frwl
 suffix:semicolon
-r_return
-l_int|0
+r_goto
+id|insert_successful
 suffix:semicolon
 )brace
 id|position
@@ -3177,6 +3183,10 @@ suffix:semicolon
 id|f-&gt;next
 op_assign
 id|frwl
+suffix:semicolon
+id|insert_successful
+suffix:colon
+id|MOD_INC_USE_COUNT
 suffix:semicolon
 r_return
 l_int|0
@@ -3306,6 +3316,8 @@ id|tmp
 )paren
 suffix:semicolon
 )brace
+id|MOD_DEC_USE_COUNT
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -3687,6 +3699,8 @@ c_func
 id|ftmp
 )paren
 suffix:semicolon
+id|MOD_DEC_USE_COUNT
+suffix:semicolon
 r_break
 suffix:semicolon
 )brace
@@ -3821,6 +3835,8 @@ c_func
 (paren
 id|tmp2
 )paren
+suffix:semicolon
+id|MOD_DEC_USE_COUNT
 suffix:semicolon
 r_return
 l_int|0
@@ -4048,6 +4064,8 @@ id|FW_SKIP
 )paren
 suffix:semicolon
 multiline_comment|/* refcount is&n;&t;&t;&t;&t;&t;      * zero since this is a&n;&t;&t;&t;&t;&t;      * user defined chain *&n;&t;&t;&t;&t;&t;      * and therefore can be&n;&t;&t;&t;&t;&t;      * deleted */
+id|MOD_INC_USE_COUNT
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon

@@ -731,10 +731,5 @@ op_amp
 id|xtime
 )paren
 suffix:semicolon
-multiline_comment|/* Set do_get_fast_time function pointer.  */
-id|do_get_fast_time
-op_assign
-id|do_gettimeofday
-suffix:semicolon
 )brace
 eof

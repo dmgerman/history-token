@@ -157,6 +157,24 @@ DECL|macro|FB_ACCEL_IGS_CYBER5000
 mdefine_line|#define FB_ACCEL_IGS_CYBER5000&t;35&t;/* CyberPro 5000&t;&t;*/
 DECL|macro|FB_ACCEL_SIS_GLAMOUR
 mdefine_line|#define FB_ACCEL_SIS_GLAMOUR    36&t;/* SiS 300/630/540              */
+DECL|macro|FB_ACCEL_NEOMAGIC_NM2070
+mdefine_line|#define FB_ACCEL_NEOMAGIC_NM2070 90&t;/* NeoMagic NM2070              */
+DECL|macro|FB_ACCEL_NEOMAGIC_NM2090
+mdefine_line|#define FB_ACCEL_NEOMAGIC_NM2090 91&t;/* NeoMagic NM2090              */
+DECL|macro|FB_ACCEL_NEOMAGIC_NM2093
+mdefine_line|#define FB_ACCEL_NEOMAGIC_NM2093 92&t;/* NeoMagic NM2093              */
+DECL|macro|FB_ACCEL_NEOMAGIC_NM2097
+mdefine_line|#define FB_ACCEL_NEOMAGIC_NM2097 93&t;/* NeoMagic NM2097              */
+DECL|macro|FB_ACCEL_NEOMAGIC_NM2160
+mdefine_line|#define FB_ACCEL_NEOMAGIC_NM2160 94&t;/* NeoMagic NM2160              */
+DECL|macro|FB_ACCEL_NEOMAGIC_NM2200
+mdefine_line|#define FB_ACCEL_NEOMAGIC_NM2200 95&t;/* NeoMagic NM2200              */
+DECL|macro|FB_ACCEL_NEOMAGIC_NM2230
+mdefine_line|#define FB_ACCEL_NEOMAGIC_NM2230 96&t;/* NeoMagic NM2230              */
+DECL|macro|FB_ACCEL_NEOMAGIC_NM2360
+mdefine_line|#define FB_ACCEL_NEOMAGIC_NM2360 97&t;/* NeoMagic NM2360              */
+DECL|macro|FB_ACCEL_NEOMAGIC_NM2380
+mdefine_line|#define FB_ACCEL_NEOMAGIC_NM2380 98&t;/* NeoMagic NM2380              */
 DECL|struct|fb_fix_screeninfo
 r_struct
 id|fb_fix_screeninfo

@@ -1,4 +1,4 @@
-multiline_comment|/* &n; * Universal Host Controller Interface driver for USB (take II).&n; *&n; * (c) 1999-2001 Georg Acher, acher@in.tum.de (executive slave) (base guitar)&n; *               Deti Fliegl, deti@fliegl.de (executive slave) (lead voice)&n; *               Thomas Sailer, sailer@ife.ee.ethz.ch (chief consultant) (cheer leader)&n; *               Roman Weissgaerber, weissg@vienna.at (virt root hub) (studio porter)&n; * (c) 2000      Yggdrasil Computing, Inc. (port of new PCI interface support&n; *               from usb-ohci.c by Adam Richter, adam@yggdrasil.com).&n; * (C) 2000      David Brownell, david-b@pacbell.net (usb-ohci.c)&n; *          &n; * HW-initalization based on material of&n; *&n; * (C) Copyright 1999 Linus Torvalds&n; * (C) Copyright 1999 Johannes Erdfelt&n; * (C) Copyright 1999 Randy Dunlap&n; * (C) Copyright 1999 Gregory P. Smith&n; *&n; * $Id: usb-uhci.c,v 1.268 2001/08/29 14:08:43 acher Exp $&n; */
+multiline_comment|/* &n; * Universal Host Controller Interface driver for USB (take II).&n; *&n; * (c) 1999-2001 Georg Acher, acher@in.tum.de (executive slave) (base guitar)&n; *               Deti Fliegl, deti@fliegl.de (executive slave) (lead voice)&n; *               Thomas Sailer, sailer@ife.ee.ethz.ch (chief consultant) (cheer leader)&n; *               Roman Weissgaerber, weissg@vienna.at (virt root hub) (studio porter)&n; * (c) 2000      Yggdrasil Computing, Inc. (port of new PCI interface support&n; *               from usb-ohci.c by Adam Richter, adam@yggdrasil.com).&n; * (C) 2000      David Brownell, david-b@pacbell.net (usb-ohci.c)&n; *          &n; * HW-initalization based on material of&n; *&n; * (C) Copyright 1999 Linus Torvalds&n; * (C) Copyright 1999 Johannes Erdfelt&n; * (C) Copyright 1999 Randy Dunlap&n; * (C) Copyright 1999 Gregory P. Smith&n; *&n; * $Id: usb-uhci.c,v 1.275 2002/01/19 20:57:33 acher Exp $&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
@@ -14,6 +14,7 @@ macro_line|#include &lt;linux/interrupt.h&gt;&t;/* for in_interrupt() */
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/pm.h&gt;
+macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
@@ -29,13 +30,13 @@ multiline_comment|/* This enables an extra UHCI slab for memory debugging */
 DECL|macro|DEBUG_SLAB
 mdefine_line|#define DEBUG_SLAB
 DECL|macro|VERSTR
-mdefine_line|#define VERSTR &quot;$Revision: 1.268 $ time &quot; __TIME__ &quot; &quot; __DATE__
+mdefine_line|#define VERSTR &quot;$Revision: 1.275 $ time &quot; __TIME__ &quot; &quot; __DATE__
 macro_line|#include &lt;linux/usb.h&gt;
 macro_line|#include &quot;usb-uhci.h&quot;
 macro_line|#include &quot;usb-uhci-debug.h&quot;
 multiline_comment|/*&n; * Version Information&n; */
 DECL|macro|DRIVER_VERSION
-mdefine_line|#define DRIVER_VERSION &quot;v1.268&quot;
+mdefine_line|#define DRIVER_VERSION &quot;v1.275&quot;
 DECL|macro|DRIVER_AUTHOR
 mdefine_line|#define DRIVER_AUTHOR &quot;Georg Acher, Deti Fliegl, Thomas Sailer, Roman Weissgaerber&quot;
 DECL|macro|DRIVER_DESC
@@ -51,6 +52,10 @@ mdefine_line|#define DEBUG_SYMBOLS
 macro_line|#ifdef DEBUG_SYMBOLS
 DECL|macro|_static
 mdefine_line|#define _static
+macro_line|#ifndef EXPORT_SYMTAB
+DECL|macro|EXPORT_SYMTAB
+mdefine_line|#define EXPORT_SYMTAB
+macro_line|#endif
 macro_line|#else
 DECL|macro|_static
 mdefine_line|#define _static static
@@ -5416,6 +5421,9 @@ id|urb-&gt;pipe
 )paren
 (brace
 r_case
+id|PIPE_INTERRUPT
+suffix:colon
+r_case
 id|PIPE_ISOCHRONOUS
 suffix:colon
 id|uhci_wait_ms
@@ -8275,14 +8283,14 @@ c_cond
 (paren
 id|urb-&gt;timeout
 op_logical_and
+id|time_after
+c_func
 (paren
-(paren
+id|jiffies
+comma
 id|hcpriv-&gt;started
 op_plus
 id|urb-&gt;timeout
-)paren
-OL
-id|jiffies
 )paren
 )paren
 (brace
@@ -8334,14 +8342,14 @@ op_logical_and
 id|hcpriv-&gt;use_loop
 )paren
 op_logical_and
+id|time_after
+c_func
 (paren
-(paren
+id|jiffies
+comma
 id|hcpriv-&gt;started
 op_plus
 id|IDLE_TIMEOUT
-)paren
-OL
-id|jiffies
 )paren
 )paren
 id|disable_desc_loop
@@ -11245,12 +11253,14 @@ r_if
 c_cond
 (paren
 op_logical_neg
+(paren
 id|desc-&gt;hw.td.status
 op_amp
 id|cpu_to_le32
 c_func
 (paren
 id|TD_CTRL_IOC
+)paren
 )paren
 )paren
 (brace
@@ -11600,6 +11610,22 @@ comma
 id|urb
 comma
 id|UNLINK_ASYNC_STORE_URB
+)paren
+suffix:semicolon
+singleline_comment|// correct toggle after unlink
+id|usb_dotoggle
+(paren
+id|urb-&gt;dev
+comma
+id|usb_pipeendpoint
+(paren
+id|urb-&gt;pipe
+)paren
+comma
+id|usb_pipeout
+(paren
+id|urb-&gt;pipe
+)paren
 )paren
 suffix:semicolon
 id|clr_td_ioc
@@ -12633,11 +12659,13 @@ singleline_comment|// Avoid too much error messages at a time
 r_if
 c_cond
 (paren
+id|time_after
+c_func
 (paren
 id|jiffies
-op_minus
+comma
 id|s-&gt;last_error_time
-OG
+op_plus
 id|ERROR_SUPPRESSION_TIME
 )paren
 )paren
@@ -12792,16 +12820,18 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|time_after
+c_func
 (paren
 id|jiffies
-op_minus
+comma
 id|s-&gt;timeout_check
-)paren
-OG
+op_plus
 (paren
 id|HZ
 op_div
 l_int|30
+)paren
 )paren
 )paren
 id|uhci_check_timeouts
@@ -12918,7 +12948,7 @@ suffix:semicolon
 r_int
 id|timeout
 op_assign
-l_int|1000
+l_int|10
 suffix:semicolon
 multiline_comment|/*&n;&t; * Reset the HC - this will force us to get a&n;&t; * new notification of any already connected&n;&t; * ports due to the virtual disconnect that it&n;&t; * implies.&n;&t; */
 id|outw
@@ -12960,6 +12990,12 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
+id|udelay
+c_func
+(paren
+l_int|1
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/* Turn on all interrupts */
 id|outw
@@ -13019,9 +13055,9 @@ op_assign
 l_int|1
 suffix:semicolon
 )brace
+multiline_comment|/* No  __devexit, since it maybe called from alloc_uhci() */
 id|_static
 r_void
-id|__devexit
 DECL|function|uhci_pci_remove
 id|uhci_pci_remove
 (paren

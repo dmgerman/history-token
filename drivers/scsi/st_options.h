@@ -1,4 +1,4 @@
-multiline_comment|/*&n;   The compile-time configurable defaults for the Linux SCSI tape driver.&n;&n;   Copyright 1995-2000 Kai Makisara.&n;&n;   Last modified: Sat Apr 22 14:47:02 2000 by makisara@kai.makisara.local&n;*/
+multiline_comment|/*&n;   The compile-time configurable defaults for the Linux SCSI tape driver.&n;&n;   Copyright 1995-2000 Kai Makisara.&n;&n;   Last modified: Tue Jan 22 21:52:34 2002 by makisara&n;*/
 macro_line|#ifndef _ST_OPTIONS_H
 DECL|macro|_ST_OPTIONS_H
 mdefine_line|#define _ST_OPTIONS_H
@@ -57,5 +57,8 @@ mdefine_line|#define ST_SCSI2LOGICAL 0
 multiline_comment|/* If ST_SYSV is non-zero, the tape behaves according to the SYS V semantics.&n;   The default is BSD semantics. */
 DECL|macro|ST_SYSV
 mdefine_line|#define ST_SYSV 0
+multiline_comment|/* Time to wait for the drive to become ready if blocking open */
+DECL|macro|ST_BLOCK_SECONDS
+mdefine_line|#define ST_BLOCK_SECONDS     120
 macro_line|#endif
 eof

@@ -150,7 +150,7 @@ c_loop
 id|list
 )paren
 (brace
-id|get_fast_time
+id|do_gettimeofday
 c_func
 (paren
 op_amp

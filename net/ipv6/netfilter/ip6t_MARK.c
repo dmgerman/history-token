@@ -226,7 +226,7 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;registreing ipv6 mark target&bslash;n&quot;
+l_string|&quot;registering ipv6 mark target&bslash;n&quot;
 )paren
 suffix:semicolon
 r_if

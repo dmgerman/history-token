@@ -183,10 +183,13 @@ DECL|member|tx_urb
 DECL|member|intr_urb
 r_struct
 id|urb
+op_star
 id|rx_urb
 comma
+op_star
 id|tx_urb
 comma
+op_star
 id|intr_urb
 suffix:semicolon
 r_int

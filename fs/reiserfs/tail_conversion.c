@@ -474,7 +474,13 @@ id|total_tail
 )paren
 suffix:semicolon
 )brace
-id|inode-&gt;u.reiserfs_i.i_first_direct_byte
+id|REISERFS_I
+c_func
+(paren
+id|inode
+)paren
+op_member_access_from_pointer
+id|i_first_direct_byte
 op_assign
 id|U32_MAX
 suffix:semicolon
@@ -1101,7 +1107,13 @@ id|M_CUT
 suffix:semicolon
 multiline_comment|/* we store position of first direct item in the in-core inode */
 singleline_comment|//mark_file_with_tail (p_s_inode, pos1 + 1);
-id|p_s_inode-&gt;u.reiserfs_i.i_first_direct_byte
+id|REISERFS_I
+c_func
+(paren
+id|p_s_inode
+)paren
+op_member_access_from_pointer
+id|i_first_direct_byte
 op_assign
 id|pos1
 op_plus

@@ -1803,10 +1803,6 @@ op_assign
 id|do_fast_gettimeoffset
 suffix:semicolon
 macro_line|#endif
-id|do_get_fast_time
-op_assign
-id|do_gettimeofday
-suffix:semicolon
 multiline_comment|/* report CPU clock rate in Hz.&n;&t;&t;&t; * The formula is (10^6 * 2^32) / (2^32 * 1 / (clocks/us)) =&n;&t;&t;&t; * clock/second. Our precision is about 100 ppm.&n;&t;&t;&t; */
 (brace
 r_int

@@ -5,6 +5,7 @@ mdefine_line|#define _LINUX_NCP_FS_H
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/in.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
+macro_line|#include &lt;linux/ncp_fs_i.h&gt;
 macro_line|#include &lt;linux/ipx.h&gt;
 macro_line|#include &lt;linux/ncp_no.h&gt;
 multiline_comment|/*&n; * ioctl commands&n; */
@@ -415,8 +416,34 @@ DECL|macro|NCP_SBP
 mdefine_line|#define NCP_SBP(sb)&t;&t;(&amp;((sb)-&gt;u.ncpfs_sb))
 DECL|macro|NCP_SERVER
 mdefine_line|#define NCP_SERVER(inode)&t;NCP_SBP((inode)-&gt;i_sb)
-DECL|macro|NCP_FINFO
-mdefine_line|#define NCP_FINFO(inode)&t;(&amp;((inode)-&gt;u.ncpfs_i))
+DECL|function|NCP_FINFO
+r_static
+r_inline
+r_struct
+id|ncp_inode_info
+op_star
+id|NCP_FINFO
+c_func
+(paren
+r_struct
+id|inode
+op_star
+id|inode
+)paren
+(brace
+r_return
+id|list_entry
+c_func
+(paren
+id|inode
+comma
+r_struct
+id|ncp_inode_info
+comma
+id|vfs_inode
+)paren
+suffix:semicolon
+)brace
 macro_line|#ifdef DEBUG_NCP_MALLOC
 macro_line|#include &lt;linux/slab.h&gt;
 r_extern

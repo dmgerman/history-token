@@ -1416,10 +1416,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|do_get_fast_time
-op_assign
-id|do_gettimeofday
-suffix:semicolon
 multiline_comment|/*&n;&t; * If we had wanted SRM console printk echoing early, undo it now.&n;&t; *&n;&t; * &quot;srmcons&quot; specified in the boot command arguments allows us to&n;&t; * see kernel messages during the period of time before the true&n;&t; * console device is &quot;registered&quot; during console_init(). As of this&n;&t; * version (2.4.10), time_init() is the last Alpha-specific code&n;&t; * called before console_init(), so we put this &quot;unregister&quot; code&n;&t; * here to prevent schizophrenic console behavior later... ;-}&n;&t; */
 r_if
 c_cond

@@ -1224,6 +1224,14 @@ c_func
 id|unregister_inet6addr_notifier
 )paren
 suffix:semicolon
+macro_line|#include &lt;net/ip6_route.h&gt;
+DECL|variable|ip6_route_output
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|ip6_route_output
+)paren
+suffix:semicolon
 macro_line|#endif
 macro_line|#if defined (CONFIG_IPV6_MODULE) || defined (CONFIG_KHTTPD) || defined (CONFIG_KHTTPD_MODULE)
 multiline_comment|/* inet functions common to v4 and v6 */
@@ -2454,6 +2462,15 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|hippi_type_trans
+)paren
+suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef CONFIG_NET_FASTROUTE
+DECL|variable|netdev_fastroute
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|netdev_fastroute
 )paren
 suffix:semicolon
 macro_line|#endif

@@ -7630,7 +7630,7 @@ id|file
 r_int
 id|minor
 op_assign
-id|MINOR
+id|minor
 c_func
 (paren
 id|inode-&gt;i_rdev
@@ -12252,7 +12252,7 @@ id|file
 r_int
 id|minor
 op_assign
-id|MINOR
+id|minor
 c_func
 (paren
 id|inode-&gt;i_rdev
@@ -13697,7 +13697,7 @@ id|file
 r_int
 id|minor
 op_assign
-id|MINOR
+id|minor
 c_func
 (paren
 id|inode-&gt;i_rdev
@@ -15320,7 +15320,7 @@ id|file
 r_int
 id|minor
 op_assign
-id|MINOR
+id|minor
 c_func
 (paren
 id|inode-&gt;i_rdev
@@ -16287,12 +16287,14 @@ id|i
 comma
 id|val
 suffix:semicolon
+macro_line|#if defined(CONFIG_SOUND_CMPCI_MIDI) || defined(CONFIG_SOUND_CMPCI_FM)
 r_int
 r_char
 id|reg_mask
 op_assign
 l_int|0
 suffix:semicolon
+macro_line|#endif
 r_struct
 (brace
 r_int

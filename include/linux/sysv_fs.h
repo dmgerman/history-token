@@ -12,6 +12,38 @@ macro_line|#endif
 macro_line|#include &lt;linux/stat.h&gt;&t;&t;/* declares S_IFLNK etc. */
 macro_line|#include &lt;linux/sched.h&gt;&t;/* declares wake_up() */
 macro_line|#include &lt;linux/sysv_fs_sb.h&gt;&t;/* defines the sv_... shortcuts */
+multiline_comment|/* temporary hack. */
+macro_line|#include &lt;linux/sysv_fs_i.h&gt;
+DECL|function|SYSV_I
+r_static
+r_inline
+r_struct
+id|sysv_inode_info
+op_star
+id|SYSV_I
+c_func
+(paren
+r_struct
+id|inode
+op_star
+id|inode
+)paren
+(brace
+multiline_comment|/* I think list_entry should have a more descriptive name..  --hch */
+r_return
+id|list_entry
+c_func
+(paren
+id|inode
+comma
+r_struct
+id|sysv_inode_info
+comma
+id|vfs_inode
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/* end temporary hack. */
 multiline_comment|/* Layout on disk */
 multiline_comment|/* ============== */
 DECL|function|PDP_swab

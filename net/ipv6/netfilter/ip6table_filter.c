@@ -627,6 +627,8 @@ comma
 id|RW_LOCK_UNLOCKED
 comma
 l_int|NULL
+comma
+id|THIS_MODULE
 )brace
 suffix:semicolon
 multiline_comment|/* The work comes in here from netfilter.c. */

@@ -24,6 +24,11 @@ DECL|member|i_dir_start_lookup
 id|u32
 id|i_dir_start_lookup
 suffix:semicolon
+DECL|member|vfs_inode
+r_struct
+id|inode
+id|vfs_inode
+suffix:semicolon
 )brace
 suffix:semicolon
 macro_line|#endif

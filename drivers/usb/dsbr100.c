@@ -119,15 +119,7 @@ l_string|&quot;i&quot;
 suffix:semicolon
 r_typedef
 r_struct
-DECL|member|readurb
-DECL|member|writeurb
 (brace
-r_struct
-id|urb
-id|readurb
-comma
-id|writeurb
-suffix:semicolon
 DECL|member|dev
 r_struct
 id|usb_device

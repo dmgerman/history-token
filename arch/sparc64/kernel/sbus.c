@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: sbus.c,v 1.18 2001/12/17 07:05:09 davem Exp $&n; * sbus.c: UltraSparc SBUS controller support.&n; *&n; * Copyright (C) 1999 David S. Miller (davem@redhat.com)&n; */
+multiline_comment|/* $Id: sbus.c,v 1.19 2002/01/23 11:27:32 davem Exp $&n; * sbus.c: UltraSparc SBUS controller support.&n; *&n; * Copyright (C) 1999 David S. Miller (davem@redhat.com)&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
@@ -3013,7 +3013,7 @@ op_assign
 (brace
 l_int|0
 comma
-l_int|1
+l_int|2
 comma
 l_int|2
 comma
@@ -3030,7 +3030,7 @@ comma
 multiline_comment|/* SBUS slot 0 */
 l_int|0
 comma
-l_int|1
+l_int|2
 comma
 l_int|2
 comma
@@ -3047,7 +3047,7 @@ comma
 multiline_comment|/* SBUS slot 1 */
 l_int|0
 comma
-l_int|1
+l_int|2
 comma
 l_int|2
 comma
@@ -3064,7 +3064,7 @@ comma
 multiline_comment|/* SBUS slot 2 */
 l_int|0
 comma
-l_int|1
+l_int|2
 comma
 l_int|2
 comma
@@ -3453,6 +3453,20 @@ l_string|&quot;Bad SYSIO IRQ translations...&quot;
 )paren
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|PIL_RESERVED
+c_func
+(paren
+id|pil
+)paren
+)paren
+id|BUG
+c_func
+(paren
+)paren
+suffix:semicolon
 id|imap
 op_assign
 id|sysio_irq_offsets

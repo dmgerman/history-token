@@ -2546,8 +2546,7 @@ id|igafb_name
 suffix:semicolon
 id|info-&gt;fb_info.node
 op_assign
-op_minus
-l_int|1
+id|NODEV
 suffix:semicolon
 id|info-&gt;fb_info.fbops
 op_assign

@@ -303,6 +303,12 @@ r_char
 id|use_pf
 suffix:semicolon
 multiline_comment|/* Set Page Format bit in all mode selects? */
+DECL|member|c_algo
+r_int
+r_char
+id|c_algo
+suffix:semicolon
+multiline_comment|/* compression algorithm */
 DECL|member|tape_type
 r_int
 id|tape_type

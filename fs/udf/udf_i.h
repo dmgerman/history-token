@@ -1,8 +1,35 @@
 macro_line|#ifndef __LINUX_UDF_I_H
 DECL|macro|__LINUX_UDF_I_H
 mdefine_line|#define __LINUX_UDF_I_H
-DECL|macro|UDF_I
-mdefine_line|#define UDF_I(X)&t;&t;&t;(&amp;((X)-&gt;u.udf_i))
+macro_line|#include &lt;linux/udf_fs_i.h&gt;
+DECL|function|UDF_I
+r_static
+r_inline
+r_struct
+id|udf_inode_info
+op_star
+id|UDF_I
+c_func
+(paren
+r_struct
+id|inode
+op_star
+id|inode
+)paren
+(brace
+r_return
+id|list_entry
+c_func
+(paren
+id|inode
+comma
+r_struct
+id|udf_inode_info
+comma
+id|vfs_inode
+)paren
+suffix:semicolon
+)brace
 DECL|macro|UDF_I_LOCATION
 mdefine_line|#define UDF_I_LOCATION(X)&t;( UDF_I(X)-&gt;i_location )
 DECL|macro|UDF_I_LENEATTR

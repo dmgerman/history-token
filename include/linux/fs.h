@@ -569,20 +569,15 @@ suffix:semicolon
 DECL|macro|touch_buffer
 mdefine_line|#define touch_buffer(bh)&t;mark_page_accessed(bh-&gt;b_page)
 macro_line|#include &lt;linux/pipe_fs_i.h&gt;
-macro_line|#include &lt;linux/minix_fs_i.h&gt;
 macro_line|#include &lt;linux/ntfs_fs_i.h&gt;
 macro_line|#include &lt;linux/msdos_fs_i.h&gt;
-macro_line|#include &lt;linux/umsdos_fs_i.h&gt;
+multiline_comment|/* #include &lt;linux/umsdos_fs_i.h&gt; */
 macro_line|#include &lt;linux/iso_fs_i.h&gt;
-macro_line|#include &lt;linux/sysv_fs_i.h&gt;
 macro_line|#include &lt;linux/romfs_fs_i.h&gt;
 macro_line|#include &lt;linux/smb_fs_i.h&gt;
 macro_line|#include &lt;linux/hfs_fs_i.h&gt;
 macro_line|#include &lt;linux/adfs_fs_i.h&gt;
-macro_line|#include &lt;linux/reiserfs_fs_i.h&gt;
 macro_line|#include &lt;linux/bfs_fs_i.h&gt;
-macro_line|#include &lt;linux/udf_fs_i.h&gt;
-macro_line|#include &lt;linux/ncp_fs_i.h&gt;
 macro_line|#include &lt;linux/proc_fs_i.h&gt;
 macro_line|#include &lt;linux/jffs2_fs_i.h&gt;
 macro_line|#include &lt;linux/cramfs_fs_sb.h&gt;
@@ -1202,11 +1197,6 @@ id|i_generation
 suffix:semicolon
 r_union
 (brace
-DECL|member|minix_i
-r_struct
-id|minix_inode_info
-id|minix_i
-suffix:semicolon
 DECL|member|ntfs_i
 r_struct
 id|ntfs_inode_info
@@ -1217,20 +1207,11 @@ r_struct
 id|msdos_inode_info
 id|msdos_i
 suffix:semicolon
-DECL|member|umsdos_i
-r_struct
-id|umsdos_inode_info
-id|umsdos_i
-suffix:semicolon
+multiline_comment|/* struct umsdos_inode_info&t;umsdos_i; */
 DECL|member|isofs_i
 r_struct
 id|iso_inode_info
 id|isofs_i
-suffix:semicolon
-DECL|member|sysv_i
-r_struct
-id|sysv_inode_info
-id|sysv_i
 suffix:semicolon
 DECL|member|romfs_i
 r_struct
@@ -1252,25 +1233,10 @@ r_struct
 id|adfs_inode_info
 id|adfs_i
 suffix:semicolon
-DECL|member|reiserfs_i
-r_struct
-id|reiserfs_inode_info
-id|reiserfs_i
-suffix:semicolon
 DECL|member|bfs_i
 r_struct
 id|bfs_inode_info
 id|bfs_i
-suffix:semicolon
-DECL|member|udf_i
-r_struct
-id|udf_inode_info
-id|udf_i
-suffix:semicolon
-DECL|member|ncpfs_i
-r_struct
-id|ncp_inode_info
-id|ncpfs_i
 suffix:semicolon
 DECL|member|proc_i
 r_struct

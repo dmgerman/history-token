@@ -4336,6 +4336,10 @@ id|inet6_ifaddr
 op_star
 id|ifp
 suffix:semicolon
+r_int
+r_int
+id|payload_len
+suffix:semicolon
 id|__skb_push
 c_func
 (paren
@@ -4403,6 +4407,14 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* XXX: RFC2461 Validation of [all ndisc messages]:&n;&t; *&t;All included ndisc options MUST be of non-zero length&n;&t; *&t;(Some checking in ndisc_find_option)&n;&t; */
+id|payload_len
+op_assign
+id|ntohs
+c_func
+(paren
+id|skb-&gt;nh.ipv6h-&gt;payload_len
+)paren
+suffix:semicolon
 r_switch
 c_cond
 (paren
@@ -4416,7 +4428,7 @@ multiline_comment|/* XXX: import nd_neighbor_solicit from glibc netinet/icmp6.h 
 r_if
 c_cond
 (paren
-id|skb-&gt;nh.ipv6h-&gt;payload_len
+id|payload_len
 OL
 l_int|8
 op_plus
@@ -5010,7 +5022,7 @@ multiline_comment|/* XXX: import nd_neighbor_advert from glibc netinet/icmp6.h *
 r_if
 c_cond
 (paren
-id|skb-&gt;nh.ipv6h-&gt;payload_len
+id|payload_len
 OL
 l_int|16
 op_plus
@@ -5259,7 +5271,7 @@ multiline_comment|/* XXX: import nd_router_advert from glibc netinet/icmp6.h */
 r_if
 c_cond
 (paren
-id|skb-&gt;nh.ipv6h-&gt;payload_len
+id|payload_len
 OL
 l_int|8
 op_plus
@@ -5302,7 +5314,7 @@ multiline_comment|/* XXX: import nd_redirect from glibc netinet/icmp6.h */
 r_if
 c_cond
 (paren
-id|skb-&gt;nh.ipv6h-&gt;payload_len
+id|payload_len
 OL
 l_int|8
 op_plus
@@ -5346,7 +5358,7 @@ multiline_comment|/* XXX: import nd_router_solicit from glibc netinet/icmp6.h */
 r_if
 c_cond
 (paren
-id|skb-&gt;nh.ipv6h-&gt;payload_len
+id|payload_len
 OL
 l_int|8
 )paren

@@ -2347,4 +2347,11 @@ suffix:semicolon
 )brace
 macro_line|#endif
 )brace
+DECL|variable|sbus_init
+id|subsys_initcall
+c_func
+(paren
+id|sbus_init
+)paren
+suffix:semicolon
 eof

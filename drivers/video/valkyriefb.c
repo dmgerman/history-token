@@ -3729,10 +3729,8 @@ id|p-&gt;fix.id
 suffix:semicolon
 id|info-&gt;node
 op_assign
-op_minus
-l_int|1
+id|NODEV
 suffix:semicolon
-multiline_comment|/* ??? danj */
 id|info-&gt;fbops
 op_assign
 op_amp

@@ -7078,8 +7078,7 @@ l_int|NULL
 suffix:semicolon
 id|fb_info-&gt;node
 op_assign
-op_minus
-l_int|1
+id|NODEV
 suffix:semicolon
 id|fb_info-&gt;fbops
 op_assign

@@ -5724,7 +5724,13 @@ op_logical_or
 op_logical_neg
 id|page
 op_logical_or
-id|p_s_inode-&gt;u.reiserfs_i.nopack
+id|REISERFS_I
+c_func
+(paren
+id|p_s_inode
+)paren
+op_member_access_from_pointer
+id|nopack
 )paren
 (brace
 singleline_comment|// leave tail in an unformatted node&t;
@@ -6468,7 +6474,13 @@ l_int|1
 (brace
 multiline_comment|/* we delete first part of tail which was stored in direct&n;               item(s) */
 singleline_comment|// FIXME: this is to keep 3.5 happy
-id|p_s_inode-&gt;u.reiserfs_i.i_first_direct_byte
+id|REISERFS_I
+c_func
+(paren
+id|p_s_inode
+)paren
+op_member_access_from_pointer
+id|i_first_direct_byte
 op_assign
 id|U32_MAX
 suffix:semicolon
@@ -6598,7 +6610,13 @@ id|n_is_inode_locked
 )paren
 (brace
 multiline_comment|/* we&squot;ve done an indirect-&gt;direct conversion.  when the data block &n;&t;** was freed, it was removed from the list of blocks that must &n;&t;** be flushed before the transaction commits, so we don&squot;t need to &n;&t;** deal with it here.&n;&t;*/
-id|p_s_inode-&gt;u.reiserfs_i.i_pack_on_close
+id|REISERFS_I
+c_func
+(paren
+id|p_s_inode
+)paren
+op_member_access_from_pointer
+id|i_pack_on_close
 op_assign
 l_int|0
 suffix:semicolon

@@ -11,6 +11,7 @@ macro_line|#include &lt;linux/tqueue.h&gt;
 macro_line|#include &lt;asm/unaligned.h&gt;
 macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
+macro_line|#include &lt;linux/reiserfs_fs_i.h&gt;
 macro_line|#endif
 multiline_comment|/*&n; *  include/linux/reiser_fs.h&n; *&n; *  Reiser File System constants and structures&n; *&n; */
 multiline_comment|/* in reading the #defines, it may help to understand that they employ&n;   the following abbreviations:&n;&n;   B = Buffer&n;   I = Item header&n;   H = Height within the tree (should be changed to LEV)&n;   N = Number of the item in the node&n;   STAT = stat data&n;   DEH = Directory Entry Header&n;   EC = Entry Count&n;   E = Entry number&n;   UL = Unsigned Long&n;   BLKH = BLocK Header&n;   UNFM = UNForMatted node&n;   DC = Disk Child&n;   P = Path&n;&n;   These #defines are named by concatenating these abbreviations,&n;   where first comes the arguments, and last comes the return value,&n;   of the macro.&n;&n;*/
@@ -188,10 +189,38 @@ suffix:semicolon
 multiline_comment|/* when reiserfs_file_write is called with a byte count &gt;= MIN_PACK_ON_CLOSE,&n;** it sets the inode to pack on close, and when extending the file, will only&n;** use unformatted nodes.&n;**&n;** This is a big speed up for the journal, which is badly hurt by direct-&gt;indirect&n;** conversions (they must be logged).&n;*/
 DECL|macro|MIN_PACK_ON_CLOSE
 mdefine_line|#define MIN_PACK_ON_CLOSE&t;&t;512
+DECL|function|REISERFS_I
+r_static
+r_inline
+r_struct
+id|reiserfs_inode_info
+op_star
+id|REISERFS_I
+c_func
+(paren
+r_struct
+id|inode
+op_star
+id|inode
+)paren
+(brace
+r_return
+id|list_entry
+c_func
+(paren
+id|inode
+comma
+r_struct
+id|reiserfs_inode_info
+comma
+id|vfs_inode
+)paren
+suffix:semicolon
+)brace
 singleline_comment|// this says about version of all items (but stat data) the object
 singleline_comment|// consists of
 DECL|macro|inode_items_version
-mdefine_line|#define inode_items_version(inode) ((inode)-&gt;u.reiserfs_i.i_version)
+mdefine_line|#define inode_items_version(inode) (REISERFS_I(inode)-&gt;i_version)
 multiline_comment|/* This is an aggressive tail suppression policy, I am hoping it&n;     improves our benchmarks. The principle behind it is that&n;     percentage space saving is what matters, not absolute space&n;     saving.  This is non-intuitive, but it helps to understand it if&n;     you consider that the cost to access 4 blocks is not much more&n;     than the cost to access 1 block, if you have to do a seek and&n;     rotate.  A tail risks a non-linear disk access that is&n;     significant as a percentage of total time cost for a 4 block file&n;     and saves an amount of space that is less significant as a&n;     percentage of space, or so goes the hypothesis.  -Hans */
 DECL|macro|STORE_TAIL_IN_UNFM
 mdefine_line|#define STORE_TAIL_IN_UNFM(n_file_size,n_tail_size,n_block_size) &bslash;&n;(&bslash;&n;  (!(n_tail_size)) || &bslash;&n;  (((n_tail_size) &gt; MAX_DIRECT_ITEM_LEN(n_block_size)) || &bslash;&n;   ( (n_file_size) &gt;= (n_block_size) * 4 ) || &bslash;&n;   ( ( (n_file_size) &gt;= (n_block_size) * 3 ) &amp;&amp; &bslash;&n;     ( (n_tail_size) &gt;=   (MAX_DIRECT_ITEM_LEN(n_block_size))/4) ) || &bslash;&n;   ( ( (n_file_size) &gt;= (n_block_size) * 2 ) &amp;&amp; &bslash;&n;     ( (n_tail_size) &gt;=   (MAX_DIRECT_ITEM_LEN(n_block_size))/2) ) || &bslash;&n;   ( ( (n_file_size) &gt;= (n_block_size) ) &amp;&amp; &bslash;&n;     ( (n_tail_size) &gt;=   (MAX_DIRECT_ITEM_LEN(n_block_size) * 3)/4) ) ) &bslash;&n;)
@@ -2690,10 +2719,10 @@ DECL|macro|UNFM_P_SIZE
 mdefine_line|#define UNFM_P_SIZE (sizeof(unp_t))
 singleline_comment|// in in-core inode key is stored on le form
 DECL|macro|INODE_PKEY
-mdefine_line|#define INODE_PKEY(inode) ((struct key *)((inode)-&gt;u.reiserfs_i.i_key))
-singleline_comment|//#define mark_tail_converted(inode) (atomic_set(&amp;((inode)-&gt;u.reiserfs_i.i_converted),1))
-singleline_comment|//#define unmark_tail_converted(inode) (atomic_set(&amp;((inode)-&gt;u.reiserfs_i.i_converted), 0))
-singleline_comment|//#define is_tail_converted(inode) (atomic_read(&amp;((inode)-&gt;u.reiserfs_i.i_converted)))
+mdefine_line|#define INODE_PKEY(inode) ((struct key *)(REISERFS_I(inode)-&gt;i_key))
+singleline_comment|//#define mark_tail_converted(inode) (atomic_set(&amp;(REISERFS_I(inode)-&gt;i_converted),1))
+singleline_comment|//#define unmark_tail_converted(inode) (REISERFS_I(inode)-&gt;i_converted), 0))
+singleline_comment|//#define is_tail_converted(inode) (REISERFS_I(inode)-&gt;i_converted)))
 DECL|macro|MAX_UL_INT
 mdefine_line|#define MAX_UL_INT 0xffffffff
 DECL|macro|MAX_INT
@@ -2710,7 +2739,6 @@ r_inline
 id|loff_t
 id|max_reiserfs_offset
 (paren
-r_const
 r_struct
 id|inode
 op_star
@@ -4860,7 +4888,6 @@ id|cpu_key
 op_star
 id|cpu_key
 comma
-r_const
 r_struct
 id|inode
 op_star
@@ -5069,7 +5096,6 @@ id|reiserfs_transaction_handle
 op_star
 id|th
 comma
-r_const
 r_struct
 id|inode
 op_star

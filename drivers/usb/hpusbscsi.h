@@ -98,11 +98,13 @@ suffix:semicolon
 DECL|member|dataurb
 r_struct
 id|urb
+op_star
 id|dataurb
 suffix:semicolon
 DECL|member|controlurb
 r_struct
 id|urb
+op_star
 id|controlurb
 suffix:semicolon
 DECL|member|fragment

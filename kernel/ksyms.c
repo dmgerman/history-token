@@ -1458,6 +1458,20 @@ c_func
 id|dcache_readdir
 )paren
 suffix:semicolon
+DECL|variable|fd_install
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|fd_install
+)paren
+suffix:semicolon
+DECL|variable|put_unused_fd
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|put_unused_fd
+)paren
+suffix:semicolon
 multiline_comment|/* for stackable file systems (lofs, wrapfs, cryptfs, etc.) */
 DECL|variable|default_llseek
 id|EXPORT_SYMBOL
@@ -2839,14 +2853,6 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|get_write_access
-)paren
-suffix:semicolon
-multiline_comment|/* time */
-DECL|variable|get_fast_time
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|get_fast_time
 )paren
 suffix:semicolon
 multiline_comment|/* library functions */

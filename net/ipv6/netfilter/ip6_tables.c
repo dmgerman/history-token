@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Packet matching code.&n; *&n; * Copyright (C) 1999 Paul `Rusty&squot; Russell &amp; Michael J. Neuling&n; */
+multiline_comment|/*&n; * Packet matching code.&n; *&n; * Copyright (C) 1999 Paul `Rusty&squot; Russell &amp; Michael J. Neuling&n; * Copyright (C) 2000-2002 Netfilter core team &lt;coreteam@netfilter.org&gt;&n; *&n; * 19 Jan 2002 Harald Welte &lt;laforge@gnumonks.org&gt;&n; * &t;- increase module usage count as soon as we have rules inside&n; * &t;  a table&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;linux/kmod.h&gt;
@@ -79,6 +79,12 @@ DECL|member|number
 r_int
 r_int
 id|number
+suffix:semicolon
+multiline_comment|/* Initial number of entries. Needed for module usage count */
+DECL|member|initial_entries
+r_int
+r_int
+id|initial_entries
 suffix:semicolon
 multiline_comment|/* Entry points and underflows */
 DECL|member|hook_entry
@@ -4043,6 +4049,10 @@ r_private
 op_assign
 id|newinfo
 suffix:semicolon
+id|newinfo-&gt;initial_entries
+op_assign
+id|oldinfo-&gt;initial_entries
+suffix:semicolon
 id|write_unlock_bh
 c_func
 (paren
@@ -4985,6 +4995,66 @@ id|oldinfo
 )paren
 r_goto
 id|free_newinfo_counters_untrans_unlock
+suffix:semicolon
+multiline_comment|/* Update module usage count based on number of rules */
+id|duprintf
+c_func
+(paren
+l_string|&quot;do_replace: oldnum=%u, initnum=%u, newnum=%u&bslash;n&quot;
+comma
+id|oldinfo-&gt;number
+comma
+id|oldinfo-&gt;initial_entries
+comma
+id|newinfo-&gt;number
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|t-&gt;me
+op_logical_and
+(paren
+id|oldinfo-&gt;number
+op_le
+id|oldinfo-&gt;initial_entries
+)paren
+op_logical_and
+(paren
+id|newinfo-&gt;number
+OG
+id|oldinfo-&gt;initial_entries
+)paren
+)paren
+id|__MOD_INC_USE_COUNT
+c_func
+(paren
+id|t-&gt;me
+)paren
+suffix:semicolon
+r_else
+r_if
+c_cond
+(paren
+id|t-&gt;me
+op_logical_and
+(paren
+id|oldinfo-&gt;number
+OG
+id|oldinfo-&gt;initial_entries
+)paren
+op_logical_and
+(paren
+id|newinfo-&gt;number
+op_le
+id|oldinfo-&gt;initial_entries
+)paren
+)paren
+id|__MOD_DEC_USE_COUNT
+c_func
+(paren
+id|t-&gt;me
+)paren
 suffix:semicolon
 multiline_comment|/* Get the old counters. */
 id|get_counters
@@ -6181,6 +6251,8 @@ id|ip6t_table_info
 id|bootstrap
 op_assign
 (brace
+l_int|0
+comma
 l_int|0
 comma
 l_int|0
@@ -7971,7 +8043,7 @@ macro_line|#endif
 id|printk
 c_func
 (paren
-l_string|&quot;ip6_tables: (c)2000 Netfilter core team&bslash;n&quot;
+l_string|&quot;ip6_tables: (C) 2000-2002 Netfilter core team&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return

@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: pci_sabre.c,v 1.41 2001/11/14 13:17:56 davem Exp $&n; * pci_sabre.c: Sabre specific PCI controller support.&n; *&n; * Copyright (C) 1997, 1998, 1999 David S. Miller (davem@caipfs.rutgers.edu)&n; * Copyright (C) 1998, 1999 Eddie C. Dost   (ecd@skynet.be)&n; * Copyright (C) 1999 Jakub Jelinek   (jakub@redhat.com)&n; */
+multiline_comment|/* $Id: pci_sabre.c,v 1.42 2002/01/23 11:27:32 davem Exp $&n; * pci_sabre.c: Sabre specific PCI controller support.&n; *&n; * Copyright (C) 1997, 1998, 1999 David S. Miller (davem@caipfs.rutgers.edu)&n; * Copyright (C) 1998, 1999 Eddie C. Dost   (ecd@skynet.be)&n; * Copyright (C) 1999 Jakub Jelinek   (jakub@redhat.com)&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
@@ -2186,7 +2186,7 @@ l_int|15
 comma
 multiline_comment|/* PCI Bus B Error&t;&t;*/
 multiline_comment|/*0x32*/
-l_int|1
+l_int|15
 comma
 multiline_comment|/* Power Management&t;&t;*/
 )brace
@@ -2248,7 +2248,7 @@ l_int|NULL
 (brace
 id|ret
 op_assign
-l_int|1
+l_int|2
 suffix:semicolon
 )brace
 r_else
@@ -2323,7 +2323,7 @@ r_default
 suffix:colon
 id|ret
 op_assign
-l_int|1
+l_int|2
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -2453,6 +2453,20 @@ c_func
 id|pdev
 comma
 id|ino
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|PIL_RESERVED
+c_func
+(paren
+id|pil
+)paren
+)paren
+id|BUG
+c_func
+(paren
 )paren
 suffix:semicolon
 id|imap

@@ -128,6 +128,7 @@ suffix:semicolon
 DECL|member|urb
 r_struct
 id|urb
+op_star
 id|urb
 suffix:semicolon
 DECL|member|context

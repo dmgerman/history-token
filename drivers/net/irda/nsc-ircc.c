@@ -4698,7 +4698,7 @@ id|mtt
 )paren
 (brace
 multiline_comment|/* Check how much time we have used already */
-id|get_fast_time
+id|do_gettimeofday
 c_func
 (paren
 op_amp
@@ -6016,7 +6016,7 @@ multiline_comment|/* I&squot;ll be back! */
 )brace
 )brace
 multiline_comment|/* &n;&t;&t;&t; * Remember the time we received this frame, so we can&n;&t;&t;&t; * reduce the min turn time a bit since we will know&n;&t;&t;&t; * how much time we have used for protocol processing&n;&t;&t;&t; */
-id|get_fast_time
+id|do_gettimeofday
 c_func
 (paren
 op_amp

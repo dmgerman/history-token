@@ -1019,7 +1019,7 @@ op_minus
 r_sizeof
 (paren
 r_struct
-id|iphdr
+id|icmphdr
 )paren
 comma
 l_int|0

@@ -1437,8 +1437,7 @@ l_int|NULL
 suffix:semicolon
 id|ip-&gt;info.node
 op_assign
-op_minus
-l_int|1
+id|NODEV
 suffix:semicolon
 id|ip-&gt;info.fbops
 op_assign

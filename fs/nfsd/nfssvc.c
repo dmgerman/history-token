@@ -259,7 +259,7 @@ r_goto
 id|failure
 suffix:semicolon
 macro_line|#endif
-id|get_fast_time
+id|do_gettimeofday
 c_func
 (paren
 op_amp

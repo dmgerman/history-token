@@ -14,7 +14,7 @@ macro_line|#if defined(CONFIG_NETLINK_DEV) || defined(CONFIG_NETLINK_DEV_MODULE)
 DECL|macro|CONFIG_IP_FIREWALL_NETLINK
 mdefine_line|#define CONFIG_IP_FIREWALL_NETLINK
 macro_line|#endif
-multiline_comment|/*&n; *&t;IP firewalling code. This is taken from 4.4BSD. Please note the&n; *&t;copyright message below. As per the GPL it must be maintained&n; *&t;and the licenses thus do not conflict. While this port is subject&n; *&t;to the GPL I also place my modifications under the original&n; *&t;license in recognition of the original copyright.&n; *&t;&t;&t;&t;-- Alan Cox.&n; *&n; *&t;$Id: ipfwadm_core.c,v 1.9 2001/09/18 22:29:10 davem Exp $&n; *&n; *&t;Ported from BSD to Linux,&n; *&t;&t;Alan Cox 22/Nov/1994.&n; *&t;Zeroing /proc and other additions&n; *&t;&t;Jos Vos 4/Feb/1995.&n; *&t;Merged and included the FreeBSD-Current changes at Ugen&squot;s request&n; *&t;(but hey it&squot;s a lot cleaner now). Ugen would prefer in some ways&n; *&t;we waited for his final product but since Linux 1.2.0 is about to&n; *&t;appear it&squot;s not practical - Read: It works, it&squot;s not clean but please&n; *&t;don&squot;t consider it to be his standard of finished work.&n; *&t;&t;Alan Cox 12/Feb/1995&n; *&t;Porting bidirectional entries from BSD, fixing accounting issues,&n; *&t;adding struct ip_fwpkt for checking packets with interface address&n; *&t;&t;Jos Vos 5/Mar/1995.&n; *&t;Established connections (ACK check), ACK check on bidirectional rules,&n; *&t;ICMP type check.&n; *&t;&t;Wilfred Mollenvanger 7/7/1995.&n; *&t;TCP attack protection.&n; *&t;&t;Alan Cox 25/8/95, based on information from bugtraq.&n; *&t;ICMP type printk, IP_FW_F_APPEND&n; *&t;&t;Bernd Eckenfels 1996-01-31&n; *&t;Split blocking chain into input and output chains, add new &quot;insert&quot; and&n; *&t;&quot;append&quot; commands to replace semi-intelligent &quot;add&quot; command, let &quot;delete&quot;.&n; *&t;only delete the first matching entry, use 0xFFFF (0xFF) as ports (ICMP&n; *&t;types) when counting packets being 2nd and further fragments.&n; *&t;&t;Jos Vos &lt;jos@xos.nl&gt; 8/2/1996.&n; *&t;Add support for matching on device names.&n; *&t;&t;Jos Vos &lt;jos@xos.nl&gt; 15/2/1996.&n; *&t;Transparent proxying support.&n; *&t;&t;Willy Konynenberg &lt;willy@xos.nl&gt; 10/5/96.&n; *&t;Make separate accounting on incoming and outgoing packets possible.&n; *&t;&t;Jos Vos &lt;jos@xos.nl&gt; 18/5/1996.&n; *&t;Added trap out of bad frames.&n; *&t;&t;Alan Cox &lt;alan@cymru.net&gt; 17/11/1996&n; *&n; *&n; * Masquerading functionality&n; *&n; * Copyright (c) 1994 Pauline Middelink&n; *&n; * The pieces which added masquerading functionality are totally&n; * my responsibility and have nothing to with the original authors&n; * copyright or doing.&n; *&n; * Parts distributed under GPL.&n; *&n; * Fixes:&n; *&t;Pauline Middelink&t;:&t;Added masquerading.&n; *&t;Alan Cox&t;&t;:&t;Fixed an error in the merge.&n; *&t;Thomas Quinot&t;&t;:&t;Fixed port spoofing.&n; *&t;Alan Cox&t;&t;:&t;Cleaned up retransmits in spoofing.&n; *&t;Alan Cox&t;&t;:&t;Cleaned up length setting.&n; *&t;Wouter Gadeyne&t;&t;:&t;Fixed masquerading support of ftp PORT commands&n; *&n; *&t;Juan Jose Ciarlante&t;:&t;Masquerading code moved to ip_masq.c&n; *&t;Andi Kleen :&t;&t;Print frag_offsets and the ip flags properly.&n; *&n; *&t;All the real work was done by .....&n; *&n; */
+multiline_comment|/*&n; *&t;IP firewalling code. This is taken from 4.4BSD. Please note the&n; *&t;copyright message below. As per the GPL it must be maintained&n; *&t;and the licenses thus do not conflict. While this port is subject&n; *&t;to the GPL I also place my modifications under the original&n; *&t;license in recognition of the original copyright.&n; *&t;&t;&t;&t;-- Alan Cox.&n; *&n; *&t;$Id: ipfwadm_core.c,v 1.10 2002/01/23 13:20:54 davem Exp $&n; *&n; *&t;Ported from BSD to Linux,&n; *&t;&t;Alan Cox 22/Nov/1994.&n; *&t;Zeroing /proc and other additions&n; *&t;&t;Jos Vos 4/Feb/1995.&n; *&t;Merged and included the FreeBSD-Current changes at Ugen&squot;s request&n; *&t;(but hey it&squot;s a lot cleaner now). Ugen would prefer in some ways&n; *&t;we waited for his final product but since Linux 1.2.0 is about to&n; *&t;appear it&squot;s not practical - Read: It works, it&squot;s not clean but please&n; *&t;don&squot;t consider it to be his standard of finished work.&n; *&t;&t;Alan Cox 12/Feb/1995&n; *&t;Porting bidirectional entries from BSD, fixing accounting issues,&n; *&t;adding struct ip_fwpkt for checking packets with interface address&n; *&t;&t;Jos Vos 5/Mar/1995.&n; *&t;Established connections (ACK check), ACK check on bidirectional rules,&n; *&t;ICMP type check.&n; *&t;&t;Wilfred Mollenvanger 7/7/1995.&n; *&t;TCP attack protection.&n; *&t;&t;Alan Cox 25/8/95, based on information from bugtraq.&n; *&t;ICMP type printk, IP_FW_F_APPEND&n; *&t;&t;Bernd Eckenfels 1996-01-31&n; *&t;Split blocking chain into input and output chains, add new &quot;insert&quot; and&n; *&t;&quot;append&quot; commands to replace semi-intelligent &quot;add&quot; command, let &quot;delete&quot;.&n; *&t;only delete the first matching entry, use 0xFFFF (0xFF) as ports (ICMP&n; *&t;types) when counting packets being 2nd and further fragments.&n; *&t;&t;Jos Vos &lt;jos@xos.nl&gt; 8/2/1996.&n; *&t;Add support for matching on device names.&n; *&t;&t;Jos Vos &lt;jos@xos.nl&gt; 15/2/1996.&n; *&t;Transparent proxying support.&n; *&t;&t;Willy Konynenberg &lt;willy@xos.nl&gt; 10/5/96.&n; *&t;Make separate accounting on incoming and outgoing packets possible.&n; *&t;&t;Jos Vos &lt;jos@xos.nl&gt; 18/5/1996.&n; *&t;Added trap out of bad frames.&n; *&t;&t;Alan Cox &lt;alan@cymru.net&gt; 17/11/1996&n; *&n; *&n; * Masquerading functionality&n; *&n; * Copyright (c) 1994 Pauline Middelink&n; *&n; * The pieces which added masquerading functionality are totally&n; * my responsibility and have nothing to with the original authors&n; * copyright or doing.&n; *&n; * Parts distributed under GPL.&n; *&n; * Fixes:&n; *&t;Pauline Middelink&t;:&t;Added masquerading.&n; *&t;Alan Cox&t;&t;:&t;Fixed an error in the merge.&n; *&t;Thomas Quinot&t;&t;:&t;Fixed port spoofing.&n; *&t;Alan Cox&t;&t;:&t;Cleaned up retransmits in spoofing.&n; *&t;Alan Cox&t;&t;:&t;Cleaned up length setting.&n; *&t;Wouter Gadeyne&t;&t;:&t;Fixed masquerading support of ftp PORT commands&n; *&n; *&t;Juan Jose Ciarlante&t;:&t;Masquerading code moved to ip_masq.c&n; *&t;Andi Kleen :&t;&t;Print frag_offsets and the ip flags properly.&n; *&n; *&t;All the real work was done by .....&n; *&n; */
 multiline_comment|/*&n; * Copyright (c) 1993 Daniel Boulet&n; * Copyright (c) 1994 Ugen J.S.Antsilevich&n; *&n; * Redistribution and use in source forms, with and without modification,&n; * are permitted provided that this entire comment appears intact.&n; *&n; * Redistribution in binary form may occur without any restrictions.&n; * Obviously, it would be nice if you gave credit where credit is due&n; * but requiring it would be too onerous.&n; *&n; * This software is provided ``AS IS&squot;&squot; without any warranties of any kind.&n; */
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
@@ -23,6 +23,7 @@ macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/socket.h&gt;
 macro_line|#include &lt;linux/sockios.h&gt;
 macro_line|#include &lt;linux/in.h&gt;
@@ -2124,6 +2125,11 @@ c_func
 id|ftmp
 )paren
 suffix:semicolon
+id|MOD_DEC_USE_COUNT
+c_func
+(paren
+)paren
+suffix:semicolon
 )brace
 id|restore_flags
 c_func
@@ -2291,6 +2297,11 @@ id|restore_flags
 c_func
 (paren
 id|flags
+)paren
+suffix:semicolon
+id|MOD_INC_USE_COUNT
+c_func
+(paren
 )paren
 suffix:semicolon
 r_return
@@ -2503,6 +2514,11 @@ id|restore_flags
 c_func
 (paren
 id|flags
+)paren
+suffix:semicolon
+id|MOD_INC_USE_COUNT
+c_func
+(paren
 )paren
 suffix:semicolon
 r_return
@@ -2808,9 +2824,16 @@ c_cond
 (paren
 id|was_found
 )paren
+(brace
+id|MOD_DEC_USE_COUNT
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
+)brace
 r_else
 r_return
 id|EINVAL

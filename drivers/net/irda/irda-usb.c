@@ -1265,7 +1265,7 @@ id|mtt
 r_int
 id|diff
 suffix:semicolon
-id|get_fast_time
+id|do_gettimeofday
 c_func
 (paren
 op_amp
@@ -2315,7 +2315,7 @@ id|done
 suffix:semicolon
 )brace
 multiline_comment|/*  &n;&t; * Remember the time we received this frame, so we can&n;&t; * reduce the min turn time a bit since we will know&n;&t; * how much time we have used for protocol processing&n;&t; */
-id|get_fast_time
+id|do_gettimeofday
 c_func
 (paren
 op_amp

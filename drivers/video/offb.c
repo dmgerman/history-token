@@ -2863,8 +2863,7 @@ id|info-&gt;info.modename
 suffix:semicolon
 id|info-&gt;info.node
 op_assign
-op_minus
-l_int|1
+id|NODEV
 suffix:semicolon
 id|info-&gt;info.fbops
 op_assign
