@@ -648,11 +648,11 @@ suffix:semicolon
 multiline_comment|/* Must be NULL otherwise we get called twice */
 id|olympic_priv-&gt;olympic_card_name
 op_assign
+id|pci_name
+c_func
 (paren
-r_char
-op_star
+id|pdev
 )paren
-id|pdev-&gt;dev.name
 suffix:semicolon
 id|olympic_priv-&gt;olympic_mmio
 op_assign
@@ -686,6 +686,7 @@ comma
 l_int|2048
 )paren
 suffix:semicolon
+macro_line|#warning check ioremap return value
 id|olympic_priv-&gt;pdev
 op_assign
 id|pdev

@@ -47,5 +47,14 @@ DECL|macro|PR_FP_EXC_ASYNC
 macro_line|# define PR_FP_EXC_ASYNC&t;2&t;/* async recoverable exception mode */
 DECL|macro|PR_FP_EXC_PRECISE
 macro_line|# define PR_FP_EXC_PRECISE&t;3&t;/* precise exception mode */
+multiline_comment|/* Get/set whether we use statistical process timing or accurate timestamp&n; * based process timing */
+DECL|macro|PR_GET_TIMING
+mdefine_line|#define PR_GET_TIMING   13
+DECL|macro|PR_SET_TIMING
+mdefine_line|#define PR_SET_TIMING   14
+DECL|macro|PR_TIMING_STATISTICAL
+macro_line|# define PR_TIMING_STATISTICAL  0       /* Normal, traditional,&n;                                                   statistical process timing */
+DECL|macro|PR_TIMING_TIMESTAMP
+macro_line|# define PR_TIMING_TIMESTAMP    1       /* Accurate timestamp based&n;                                                   process timing */
 macro_line|#endif /* _LINUX_PRCTL_H */
 eof

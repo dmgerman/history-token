@@ -6698,7 +6698,7 @@ suffix:semicolon
 id|strcpy
 c_func
 (paren
-id|new_client-&gt;dev.name
+id|new_client-&gt;name
 comma
 l_string|&quot;maven client&quot;
 )paren

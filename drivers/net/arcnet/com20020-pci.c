@@ -313,7 +313,7 @@ id|node
 suffix:semicolon
 id|lp-&gt;card_name
 op_assign
-id|pdev-&gt;dev.name
+l_string|&quot;PCI COM20020&quot;
 suffix:semicolon
 id|lp-&gt;card_flags
 op_assign
@@ -346,12 +346,15 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|check_region
+op_logical_neg
+id|request_region
 c_func
 (paren
 id|ioaddr
 comma
 id|ARCNET_TOTAL_SIZE
+comma
+l_string|&quot;com20020-pci&quot;
 )paren
 )paren
 (brace
@@ -430,6 +433,14 @@ r_goto
 id|out_priv
 suffix:semicolon
 )brace
+id|release_region
+c_func
+(paren
+id|ioaddr
+comma
+id|ARCNET_TOTAL_SIZE
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
