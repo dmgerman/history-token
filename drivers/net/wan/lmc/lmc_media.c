@@ -2,7 +2,6 @@ multiline_comment|/* $Id: lmc_media.c,v 1.13 2000/04/11 05:25:26 asj Exp $ */
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
-macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/ptrace.h&gt;
@@ -11,24 +10,22 @@ macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
-singleline_comment|//#include &lt;asm/smp.h&gt;
 macro_line|#if LINUX_VERSION_CODE &lt; 0x20155
 macro_line|#include &lt;linux/bios32.h&gt;
 macro_line|#endif
 macro_line|#include &lt;linux/in.h&gt;
 macro_line|#include &lt;linux/if_arp.h&gt;
+macro_line|#include &lt;linux/netdevice.h&gt;
+macro_line|#include &lt;linux/etherdevice.h&gt;
+macro_line|#include &lt;linux/skbuff.h&gt;
+macro_line|#include &lt;linux/inet.h&gt;
+macro_line|#include &lt;net/syncppp.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;             /* Processor type for cache alignment. */
 macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/dma.h&gt;
-macro_line|#include &lt;linux/netdevice.h&gt;
-macro_line|#include &lt;linux/etherdevice.h&gt;
-macro_line|#include &lt;linux/skbuff.h&gt;
-macro_line|#include &lt;net/syncppp.h&gt;
-macro_line|#include &lt;linux/inet.h&gt;
 macro_line|#if LINUX_VERSION_CODE &gt;= 0x20200
 macro_line|#include &lt;asm/uaccess.h&gt;
-singleline_comment|//#include &lt;asm/spinlock.h&gt;
 macro_line|#endif
 macro_line|#include &quot;lmc_ver.h&quot;
 macro_line|#include &quot;lmc.h&quot;
