@@ -1486,7 +1486,7 @@ c_func
 (paren
 id|amd756_adapter.name
 comma
-id|DEVICE_NAME_SIZE
+id|I2C_NAME_SIZE
 comma
 l_string|&quot;SMBus AMD75x adapter at %04x&quot;
 comma

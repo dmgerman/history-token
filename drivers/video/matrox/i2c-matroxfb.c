@@ -439,7 +439,7 @@ c_func
 (paren
 id|b-&gt;adapter.name
 comma
-id|DEVICE_NAME_SIZE
+id|I2C_NAME_SIZE
 comma
 id|name
 comma

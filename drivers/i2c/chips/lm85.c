@@ -3407,7 +3407,7 @@ id|new_client-&gt;name
 comma
 l_string|&quot;Generic LM85&quot;
 comma
-id|DEVICE_NAME_SIZE
+id|I2C_NAME_SIZE
 )paren
 suffix:semicolon
 )brace
@@ -3431,7 +3431,7 @@ id|new_client-&gt;name
 comma
 l_string|&quot;National LM85-B&quot;
 comma
-id|DEVICE_NAME_SIZE
+id|I2C_NAME_SIZE
 )paren
 suffix:semicolon
 )brace
@@ -3455,7 +3455,7 @@ id|new_client-&gt;name
 comma
 l_string|&quot;National LM85-C&quot;
 comma
-id|DEVICE_NAME_SIZE
+id|I2C_NAME_SIZE
 )paren
 suffix:semicolon
 )brace
@@ -3479,7 +3479,7 @@ id|new_client-&gt;name
 comma
 l_string|&quot;Analog Devices ADM1027&quot;
 comma
-id|DEVICE_NAME_SIZE
+id|I2C_NAME_SIZE
 )paren
 suffix:semicolon
 )brace
@@ -3503,7 +3503,7 @@ id|new_client-&gt;name
 comma
 l_string|&quot;Analog Devices ADT7463&quot;
 comma
-id|DEVICE_NAME_SIZE
+id|I2C_NAME_SIZE
 )paren
 suffix:semicolon
 )brace

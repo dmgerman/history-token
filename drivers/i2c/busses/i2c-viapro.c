@@ -1562,7 +1562,7 @@ c_func
 (paren
 id|vt596_adapter.name
 comma
-id|DEVICE_NAME_SIZE
+id|I2C_NAME_SIZE
 comma
 l_string|&quot;SMBus Via Pro adapter at %04x&quot;
 comma
