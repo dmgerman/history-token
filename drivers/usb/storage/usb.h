@@ -175,6 +175,13 @@ op_star
 id|pusb_intf
 suffix:semicolon
 multiline_comment|/* this interface */
+DECL|member|unusual_dev
+r_struct
+id|us_unusual_dev
+op_star
+id|unusual_dev
+suffix:semicolon
+multiline_comment|/* device-filter entry     */
 DECL|member|flags
 r_int
 r_int
@@ -309,12 +316,12 @@ id|urb
 op_star
 id|current_urb
 suffix:semicolon
-multiline_comment|/* non-int USB requests */
-DECL|member|dr
+multiline_comment|/* USB requests&t; */
+DECL|member|cr
 r_struct
 id|usb_ctrlrequest
 op_star
-id|dr
+id|cr
 suffix:semicolon
 multiline_comment|/* control requests&t; */
 DECL|member|current_sg
@@ -322,7 +329,7 @@ r_struct
 id|usb_sg_request
 id|current_sg
 suffix:semicolon
-multiline_comment|/* scatter-gather USB   */
+multiline_comment|/* scatter-gather req.  */
 DECL|member|iobuf
 r_int
 r_char
@@ -330,27 +337,20 @@ op_star
 id|iobuf
 suffix:semicolon
 multiline_comment|/* I/O buffer&t;&t; */
-multiline_comment|/* the semaphore for sleeping the control thread */
+multiline_comment|/* mutual exclusion structures */
 DECL|member|sema
 r_struct
 id|semaphore
 id|sema
 suffix:semicolon
 multiline_comment|/* to sleep thread on   */
-multiline_comment|/* mutual exclusion structures */
 DECL|member|notify
 r_struct
 id|completion
 id|notify
 suffix:semicolon
 multiline_comment|/* thread begin/end&t;    */
-DECL|member|unusual_dev
-r_struct
-id|us_unusual_dev
-op_star
-id|unusual_dev
-suffix:semicolon
-multiline_comment|/* If unusual device       */
+multiline_comment|/* subdriver information */
 DECL|member|extra
 r_void
 op_star

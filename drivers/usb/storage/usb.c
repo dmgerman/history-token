@@ -1785,7 +1785,7 @@ c_cond
 (paren
 id|unusual_dev-&gt;vendorName
 )paren
-id|strncpy
+id|strlcpy
 c_func
 (paren
 id|us-&gt;vendor
@@ -1796,8 +1796,6 @@ r_sizeof
 (paren
 id|us-&gt;vendor
 )paren
-op_minus
-l_int|1
 )paren
 suffix:semicolon
 r_else
@@ -1827,7 +1825,7 @@ c_cond
 (paren
 id|unusual_dev-&gt;productName
 )paren
-id|strncpy
+id|strlcpy
 c_func
 (paren
 id|us-&gt;product
@@ -1838,8 +1836,6 @@ r_sizeof
 (paren
 id|us-&gt;product
 )paren
-op_minus
-l_int|1
 )paren
 suffix:semicolon
 r_else
@@ -2553,7 +2549,7 @@ r_int
 id|p
 suffix:semicolon
 multiline_comment|/* Allocate the USB control blocks */
-id|us-&gt;dr
+id|us-&gt;cr
 op_assign
 id|kmalloc
 c_func
@@ -2561,7 +2557,7 @@ c_func
 r_sizeof
 (paren
 op_star
-id|us-&gt;dr
+id|us-&gt;cr
 )paren
 comma
 id|GFP_KERNEL
@@ -2571,7 +2567,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|us-&gt;dr
+id|us-&gt;cr
 )paren
 (brace
 id|US_DEBUGP
@@ -2991,12 +2987,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|us-&gt;dr
+id|us-&gt;cr
 )paren
 id|kfree
 c_func
 (paren
-id|us-&gt;dr
+id|us-&gt;cr
 )paren
 suffix:semicolon
 multiline_comment|/* Free the structure itself */

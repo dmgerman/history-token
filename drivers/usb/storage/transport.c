@@ -375,15 +375,15 @@ id|size
 )paren
 suffix:semicolon
 multiline_comment|/* fill in the devrequest structure */
-id|us-&gt;dr-&gt;bRequestType
+id|us-&gt;cr-&gt;bRequestType
 op_assign
 id|requesttype
 suffix:semicolon
-id|us-&gt;dr-&gt;bRequest
+id|us-&gt;cr-&gt;bRequest
 op_assign
 id|request
 suffix:semicolon
-id|us-&gt;dr-&gt;wValue
+id|us-&gt;cr-&gt;wValue
 op_assign
 id|cpu_to_le16
 c_func
@@ -391,7 +391,7 @@ c_func
 id|value
 )paren
 suffix:semicolon
-id|us-&gt;dr-&gt;wIndex
+id|us-&gt;cr-&gt;wIndex
 op_assign
 id|cpu_to_le16
 c_func
@@ -399,7 +399,7 @@ c_func
 id|index
 )paren
 suffix:semicolon
-id|us-&gt;dr-&gt;wLength
+id|us-&gt;cr-&gt;wLength
 op_assign
 id|cpu_to_le16
 c_func
@@ -422,7 +422,7 @@ r_int
 r_char
 op_star
 )paren
-id|us-&gt;dr
+id|us-&gt;cr
 comma
 id|data
 comma
@@ -850,15 +850,15 @@ id|size
 )paren
 suffix:semicolon
 multiline_comment|/* fill in the devrequest structure */
-id|us-&gt;dr-&gt;bRequestType
+id|us-&gt;cr-&gt;bRequestType
 op_assign
 id|requesttype
 suffix:semicolon
-id|us-&gt;dr-&gt;bRequest
+id|us-&gt;cr-&gt;bRequest
 op_assign
 id|request
 suffix:semicolon
-id|us-&gt;dr-&gt;wValue
+id|us-&gt;cr-&gt;wValue
 op_assign
 id|cpu_to_le16
 c_func
@@ -866,7 +866,7 @@ c_func
 id|value
 )paren
 suffix:semicolon
-id|us-&gt;dr-&gt;wIndex
+id|us-&gt;cr-&gt;wIndex
 op_assign
 id|cpu_to_le16
 c_func
@@ -874,7 +874,7 @@ c_func
 id|index
 )paren
 suffix:semicolon
-id|us-&gt;dr-&gt;wLength
+id|us-&gt;cr-&gt;wLength
 op_assign
 id|cpu_to_le16
 c_func
@@ -897,7 +897,7 @@ r_int
 r_char
 op_star
 )paren
-id|us-&gt;dr
+id|us-&gt;cr
 comma
 id|data
 comma
