@@ -165,7 +165,6 @@ r_int
 id|size
 )paren
 suffix:semicolon
-multiline_comment|/* XXX should zero destination if fault happened */
 r_static
 r_inline
 r_int
