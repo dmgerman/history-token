@@ -610,6 +610,19 @@ id|b
 r_return
 l_int|1
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|strong_try_module_get
+c_func
+(paren
+id|b
+)paren
+)paren
+r_return
+l_int|0
+suffix:semicolon
 id|DEBUGP
 c_func
 (paren
@@ -647,6 +660,12 @@ comma
 id|a-&gt;name
 )paren
 suffix:semicolon
+id|module_put
+c_func
+(paren
+id|b
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -665,13 +684,6 @@ op_amp
 id|b-&gt;modules_which_use_me
 )paren
 suffix:semicolon
-id|try_module_get
-c_func
-(paren
-id|b
-)paren
-suffix:semicolon
-multiline_comment|/* Can&squot;t fail */
 r_return
 l_int|1
 suffix:semicolon
@@ -7184,6 +7196,13 @@ id|ret
 suffix:semicolon
 )brace
 multiline_comment|/* Now it&squot;s a first class citizen! */
+id|down
+c_func
+(paren
+op_amp
+id|module_mutex
+)paren
+suffix:semicolon
 id|mod-&gt;state
 op_assign
 id|MODULE_STATE_LIVE
@@ -7203,6 +7222,13 @@ suffix:semicolon
 id|mod-&gt;init_size
 op_assign
 l_int|0
+suffix:semicolon
+id|up
+c_func
+(paren
+op_amp
+id|module_mutex
+)paren
 suffix:semicolon
 r_return
 l_int|0
