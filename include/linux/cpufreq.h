@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  linux/include/linux/cpufreq.h&n; *&n; *  Copyright (C) 2001 Russell King&n; *            (C) 2002 Dominik Brodowski &lt;linux@brodo.de&gt;&n; *            &n; *&n; * $Id: cpufreq.h,v 1.27 2002/10/08 14:54:23 db Exp $&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; */
+multiline_comment|/*&n; *  linux/include/linux/cpufreq.h&n; *&n; *  Copyright (C) 2001 Russell King&n; *            (C) 2002 Dominik Brodowski &lt;linux@brodo.de&gt;&n; *            &n; *&n; * $Id: cpufreq.h,v 1.29 2002/11/11 15:35:47 db Exp $&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; */
 macro_line|#ifndef _LINUX_CPUFREQ_H
 DECL|macro|_LINUX_CPUFREQ_H
 mdefine_line|#define _LINUX_CPUFREQ_H
@@ -187,7 +187,7 @@ macro_line|#endif /* CONFIG_CPU_FREQ_DYNAMIC */
 multiline_comment|/*********************************************************************&n; *                      CPUFREQ DRIVER INTERFACE                     *&n; *********************************************************************/
 DECL|typedef|cpufreq_policy_t
 r_typedef
-r_void
+r_int
 (paren
 op_star
 id|cpufreq_policy_t
@@ -227,6 +227,9 @@ DECL|member|cpu_min_freq
 r_int
 r_int
 id|cpu_min_freq
+(braket
+id|NR_CPUS
+)braket
 suffix:semicolon
 DECL|member|cpu_cur_freq
 r_int
@@ -609,13 +612,13 @@ comma
 )brace
 suffix:semicolon
 DECL|macro|CTL_CPU_VARS_SPEED_MAX
-mdefine_line|#define CTL_CPU_VARS_SPEED_MAX { &bslash;&n;                .ctl_name&t;= CPU_NR_FREQ_MAX, &bslash;&n;                .data&t;&t;= &amp;cpu_max_freq, &bslash;&n;                .procname&t;= &quot;speed-max&quot;, &bslash;&n;                .maxlen&t;&t;= sizeof(cpu_max_freq),&bslash;&n;                .mode&t;&t;= 0444, &bslash;&n;                .proc_handler&t;= proc_dointvec, }
+mdefine_line|#define CTL_CPU_VARS_SPEED_MAX(cpunr) { &bslash;&n;                .ctl_name&t;= CPU_NR_FREQ_MAX, &bslash;&n;                .data&t;&t;= &amp;cpu_max_freq[cpunr], &bslash;&n;                .procname&t;= &quot;speed-max&quot;, &bslash;&n;                .maxlen&t;&t;= sizeof(cpu_max_freq[cpunr]),&bslash;&n;                .mode&t;&t;= 0444, &bslash;&n;                .proc_handler&t;= proc_dointvec, }
 DECL|macro|CTL_CPU_VARS_SPEED_MIN
-mdefine_line|#define CTL_CPU_VARS_SPEED_MIN { &bslash;&n;                .ctl_name&t;= CPU_NR_FREQ_MIN, &bslash;&n;                .data&t;&t;= &amp;cpu_min_freq, &bslash;&n;                .procname&t;= &quot;speed-min&quot;, &bslash;&n;                .maxlen&t;&t;= sizeof(cpu_min_freq),&bslash;&n;                .mode&t;&t;= 0444, &bslash;&n;                .proc_handler&t;= proc_dointvec, }
+mdefine_line|#define CTL_CPU_VARS_SPEED_MIN(cpunr) { &bslash;&n;                .ctl_name&t;= CPU_NR_FREQ_MIN, &bslash;&n;                .data&t;&t;= &amp;cpu_min_freq[cpunr], &bslash;&n;                .procname&t;= &quot;speed-min&quot;, &bslash;&n;                .maxlen&t;&t;= sizeof(cpu_min_freq[cpunr]),&bslash;&n;                .mode&t;&t;= 0444, &bslash;&n;                .proc_handler&t;= proc_dointvec, }
 DECL|macro|CTL_CPU_VARS_SPEED
 mdefine_line|#define CTL_CPU_VARS_SPEED(cpunr) { &bslash;&n;                .ctl_name&t;= CPU_NR_FREQ, &bslash;&n;                .procname&t;= &quot;speed&quot;, &bslash;&n;                .mode&t;&t;= 0644, &bslash;&n;                .proc_handler&t;= cpufreq_procctl, &bslash;&n;                .strategy&t;= cpufreq_sysctl, &bslash;&n;                .extra1&t;&t;= (void*) (cpunr), }
 DECL|macro|CTL_TABLE_CPU_VARS
-mdefine_line|#define CTL_TABLE_CPU_VARS(cpunr) static ctl_table ctl_cpu_vars_##cpunr[] = {&bslash;&n;                CTL_CPU_VARS_SPEED_MAX, &bslash;&n;                CTL_CPU_VARS_SPEED_MIN, &bslash;&n;                CTL_CPU_VARS_SPEED(cpunr),  &bslash;&n;                { .ctl_name = 0, }, }
+mdefine_line|#define CTL_TABLE_CPU_VARS(cpunr) static ctl_table ctl_cpu_vars_##cpunr[] = {&bslash;&n;                CTL_CPU_VARS_SPEED_MAX(cpunr), &bslash;&n;                CTL_CPU_VARS_SPEED_MIN(cpunr), &bslash;&n;                CTL_CPU_VARS_SPEED(cpunr),  &bslash;&n;                { .ctl_name = 0, }, }
 multiline_comment|/* the ctl_table entry for each CPU */
 DECL|macro|CPU_ENUM
 mdefine_line|#define CPU_ENUM(s) { &bslash;&n;                .ctl_name&t;= (CPU_NR + s), &bslash;&n;                .procname&t;= #s, &bslash;&n;                .mode&t;&t;= 0555, &bslash;&n;                .child&t;&t;= ctl_cpu_vars_##s }

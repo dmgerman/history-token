@@ -1348,13 +1348,13 @@ id|n
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * Update the bridge resources of the bridge to accommodate devices&n;&t; * behind it.&n;&t; */
-id|pbus_size_bridges
+id|pci_bus_size_bridges
 c_func
 (paren
 id|child
 )paren
 suffix:semicolon
-id|pbus_assign_resources
+id|pci_bus_assign_resources
 c_func
 (paren
 id|child

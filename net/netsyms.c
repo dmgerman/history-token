@@ -266,6 +266,13 @@ c_func
 id|sk_free
 )paren
 suffix:semicolon
+DECL|variable|sk_send_sigurg
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|sk_send_sigurg
+)paren
+suffix:semicolon
 DECL|variable|sock_wake_async
 id|EXPORT_SYMBOL
 c_func
