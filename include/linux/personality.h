@@ -232,6 +232,12 @@ id|STICKY_TIMEOUTS
 op_or
 id|MMAP_PAGE_ZERO
 comma
+DECL|enumerator|PER_OSF4
+id|PER_OSF4
+op_assign
+l_int|0x000f
+comma
+multiline_comment|/* OSF/1 v4 */
 DECL|enumerator|PER_MASK
 id|PER_MASK
 op_assign
