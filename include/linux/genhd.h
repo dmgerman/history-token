@@ -898,7 +898,7 @@ multiline_comment|/* check against BSD src/sys/sys/disklabel.h for consistency *
 DECL|macro|BSD_DISKMAGIC
 mdefine_line|#define BSD_DISKMAGIC&t;(0x82564557UL)&t;/* The disk magic number */
 DECL|macro|BSD_MAXPARTITIONS
-mdefine_line|#define BSD_MAXPARTITIONS&t;8
+mdefine_line|#define BSD_MAXPARTITIONS&t;16
 DECL|macro|OPENBSD_MAXPARTITIONS
 mdefine_line|#define OPENBSD_MAXPARTITIONS&t;16
 DECL|macro|BSD_FS_UNUSED
