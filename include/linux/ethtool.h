@@ -650,6 +650,8 @@ DECL|macro|SUPPORTED_FIBRE
 mdefine_line|#define SUPPORTED_FIBRE&t;&t;&t;(1 &lt;&lt; 10)
 DECL|macro|SUPPORTED_BNC
 mdefine_line|#define SUPPORTED_BNC&t;&t;&t;(1 &lt;&lt; 11)
+DECL|macro|SUPPORTED_10000baseT_Full
+mdefine_line|#define SUPPORTED_10000baseT_Full&t;(1 &lt;&lt; 12)
 multiline_comment|/* Indicates what features are advertised by the interface. */
 DECL|macro|ADVERTISED_10baseT_Half
 mdefine_line|#define ADVERTISED_10baseT_Half&t;&t;(1 &lt;&lt; 0)
@@ -675,14 +677,18 @@ DECL|macro|ADVERTISED_FIBRE
 mdefine_line|#define ADVERTISED_FIBRE&t;&t;(1 &lt;&lt; 10)
 DECL|macro|ADVERTISED_BNC
 mdefine_line|#define ADVERTISED_BNC&t;&t;&t;(1 &lt;&lt; 11)
+DECL|macro|ADVERTISED_10000baseT_Full
+mdefine_line|#define ADVERTISED_10000baseT_Full&t;(1 &lt;&lt; 12)
 multiline_comment|/* The following are all involved in forcing a particular link&n; * mode for the device for setting things.  When getting the&n; * devices settings, these indicate the current mode and whether&n; * it was foced up into this mode or autonegotiated.&n; */
-multiline_comment|/* The forced speed, 10Mb, 100Mb, gigabit. */
+multiline_comment|/* The forced speed, 10Mb, 100Mb, gigabit, 10GbE. */
 DECL|macro|SPEED_10
 mdefine_line|#define SPEED_10&t;&t;10
 DECL|macro|SPEED_100
 mdefine_line|#define SPEED_100&t;&t;100
 DECL|macro|SPEED_1000
 mdefine_line|#define SPEED_1000&t;&t;1000
+DECL|macro|SPEED_10000
+mdefine_line|#define SPEED_10000&t;&t;10000
 multiline_comment|/* Duplex, half or full. */
 DECL|macro|DUPLEX_HALF
 mdefine_line|#define DUPLEX_HALF&t;&t;0x00
