@@ -21,9 +21,9 @@ DECL|macro|bzero
 mdefine_line|#define bzero(d, n)&t;memset((d), 0, (n))
 macro_line|#endif
 multiline_comment|/*&n; *  General driver includes.&n; */
-macro_line|#include &quot;sym_misc.h&quot;
 macro_line|#include &quot;sym_conf.h&quot;
 macro_line|#include &quot;sym_defs.h&quot;
+macro_line|#include &quot;sym_misc.h&quot;
 multiline_comment|/*&n; * Configuration addendum for Linux.&n; */
 DECL|macro|SYM_CONF_TIMER_INTERVAL
 mdefine_line|#define&t;SYM_CONF_TIMER_INTERVAL&t;&t;((HZ+1)/2)
@@ -63,6 +63,11 @@ DECL|macro|sym_udelay
 mdefine_line|#define sym_udelay(us)&t;udelay(us)
 DECL|macro|sym_mdelay
 mdefine_line|#define sym_mdelay(ms)&t;mdelay(ms)
+multiline_comment|/*&n; *  A &squot;read barrier&squot; flushes any data that have been prefetched &n; *  by the processor due to out of order execution. Such a barrier &n; *  must notably be inserted prior to looking at data that have &n; *  been DMAed, assuming that program does memory READs in proper &n; *  order and that the device ensured proper ordering of WRITEs.&n; *&n; *  A &squot;write barrier&squot; prevents any previous WRITEs to pass further &n; *  WRITEs. Such barriers must be inserted each time another agent &n; *  relies on ordering of WRITEs.&n; *&n; *  Note that, due to posting of PCI memory writes, we also must &n; *  insert dummy PCI read transactions when some ordering involving &n; *  both directions over the PCI does matter. PCI transactions are &n; *  fully ordered in each direction.&n; */
+DECL|macro|MEMORY_READ_BARRIER
+mdefine_line|#define MEMORY_READ_BARRIER()&t;rmb()
+DECL|macro|MEMORY_WRITE_BARRIER
+mdefine_line|#define MEMORY_WRITE_BARRIER()&t;wmb()
 multiline_comment|/*&n; *  Let the compiler know about driver data structure names.&n; */
 DECL|typedef|tcb_p
 r_typedef
@@ -464,6 +469,9 @@ l_int|16
 suffix:semicolon
 )brace
 suffix:semicolon
+r_struct
+id|sym_nvram
+suffix:semicolon
 DECL|struct|sym_device
 r_struct
 id|sym_device
@@ -498,20 +506,7 @@ DECL|member|host_id
 id|u_char
 id|host_id
 suffix:semicolon
-macro_line|#ifdef&t;SYM_CONF_PQS_PDS_SUPPORT
-DECL|member|pqs_pds
-id|u_char
-id|pqs_pds
-suffix:semicolon
-macro_line|#endif
 )brace
-suffix:semicolon
-DECL|typedef|sdev_p
-r_typedef
-r_struct
-id|sym_device
-op_star
-id|sdev_p
 suffix:semicolon
 multiline_comment|/*&n; *  The driver definitions (sym_hipd.h) must know about a &n; *  couple of things related to the memory allocator.&n; */
 DECL|typedef|m_addr_t

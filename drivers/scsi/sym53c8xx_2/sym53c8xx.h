@@ -10,11 +10,6 @@ macro_line|#endif
 multiline_comment|/*&n; *  DMA addressing mode.&n; *&n; *  0 : 32 bit addressing for all chips.&n; *  1 : 40 bit addressing when supported by chip.&n; *  2 : 64 bit addressing when supported by chip,&n; *      limited to 16 segments of 4 GB -&gt; 64 GB max.&n; */
 DECL|macro|SYM_CONF_DMA_ADDRESSING_MODE
 mdefine_line|#define&t;SYM_CONF_DMA_ADDRESSING_MODE CONFIG_SCSI_SYM53C8XX_DMA_ADDRESSING_MODE
-multiline_comment|/*&n; *  NCR PQS/PDS special device support.&n; */
-macro_line|#if 1
-DECL|macro|SYM_CONF_PQS_PDS_SUPPORT
-mdefine_line|#define SYM_CONF_PQS_PDS_SUPPORT
-macro_line|#endif
 multiline_comment|/*&n; *  NVRAM support.&n; */
 macro_line|#if 1
 DECL|macro|SYM_CONF_NVRAM_SUPPORT

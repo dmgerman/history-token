@@ -197,7 +197,9 @@ DECL|function|sym_fw1_patch
 id|sym_fw1_patch
 c_func
 (paren
-id|hcb_p
+r_struct
+id|sym_hcb
+op_star
 id|np
 )paren
 (brace
@@ -338,7 +340,9 @@ DECL|function|sym_fw2_patch
 id|sym_fw2_patch
 c_func
 (paren
-id|hcb_p
+r_struct
+id|sym_hcb
+op_star
 id|np
 )paren
 (brace
@@ -760,7 +764,9 @@ DECL|function|sym_fw_setup_bus_addresses
 id|sym_fw_setup_bus_addresses
 c_func
 (paren
-id|hcb_p
+r_struct
+id|sym_hcb
+op_star
 id|np
 comma
 r_struct
@@ -945,7 +951,9 @@ DECL|function|sym_fw1_setup
 id|sym_fw1_setup
 c_func
 (paren
-id|hcb_p
+r_struct
+id|sym_hcb
+op_star
 id|np
 comma
 r_struct
@@ -1009,7 +1017,9 @@ DECL|function|sym_fw2_setup
 id|sym_fw2_setup
 c_func
 (paren
-id|hcb_p
+r_struct
+id|sym_hcb
+op_star
 id|np
 comma
 r_struct
@@ -1153,8 +1163,11 @@ multiline_comment|/*&n; *  Bind a script to physical addresses.&n; */
 DECL|function|sym_fw_bind_script
 r_void
 id|sym_fw_bind_script
+c_func
 (paren
-id|hcb_p
+r_struct
+id|sym_hcb
+op_star
 id|np
 comma
 id|u32
