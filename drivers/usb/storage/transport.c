@@ -1261,7 +1261,7 @@ id|US_DEBUGP
 c_func
 (paren
 l_string|&quot;usb_stor_ctrl_transfer(): rq=%02x rqtype=%02x &quot;
-l_string|&quot;value=%04x index=%02x len=%d&bslash;n&quot;
+l_string|&quot;value=%04x index=%02x len=%u&bslash;n&quot;
 comma
 id|request
 comma
@@ -1389,7 +1389,7 @@ r_int
 r_int
 id|pipe
 comma
-r_char
+r_void
 op_star
 id|buf
 comma
@@ -1407,13 +1407,14 @@ r_int
 id|result
 suffix:semicolon
 r_int
+r_int
 id|partial
 suffix:semicolon
 multiline_comment|/* transfer the data */
 id|US_DEBUGP
 c_func
 (paren
-l_string|&quot;usb_stor_bulk_transfer_buf(): xfer %d bytes&bslash;n&quot;
+l_string|&quot;usb_stor_bulk_transfer_buf(): xfer %u bytes&bslash;n&quot;
 comma
 id|length
 )paren
@@ -1438,7 +1439,7 @@ suffix:semicolon
 id|US_DEBUGP
 c_func
 (paren
-l_string|&quot;usb_stor_bulk_msg() returned %d xferred %d/%d&bslash;n&quot;
+l_string|&quot;usb_stor_bulk_msg() returned %d xferred %u/%u&bslash;n&quot;
 comma
 id|result
 comma
@@ -1471,7 +1472,7 @@ id|US_DEBUGP
 c_func
 (paren
 l_string|&quot;clearing endpoint halt for pipe 0x%x,&quot;
-l_string|&quot; stalled at %d bytes&bslash;n&quot;
+l_string|&quot; stalled at %u bytes&bslash;n&quot;
 comma
 id|pipe
 comma
@@ -1558,7 +1559,7 @@ multiline_comment|/* no error code, so we must have transferred some data, &n;&t
 id|US_DEBUGP
 c_func
 (paren
-l_string|&quot;-- transferred only %d bytes&bslash;n&quot;
+l_string|&quot;-- transferred only %u bytes&bslash;n&quot;
 comma
 id|partial
 )paren
@@ -1610,7 +1611,7 @@ multiline_comment|/* initialize the scatter-gather request block */
 id|US_DEBUGP
 c_func
 (paren
-l_string|&quot;usb_stor_bulk_transfer_sglist(): xfer %d bytes, &quot;
+l_string|&quot;usb_stor_bulk_transfer_sglist(): xfer %u bytes, &quot;
 l_string|&quot;%d entries&bslash;n&quot;
 comma
 id|length
@@ -1737,7 +1738,7 @@ suffix:semicolon
 id|US_DEBUGP
 c_func
 (paren
-l_string|&quot;usb_sg_wait() returned %d xferred %d/%d&bslash;n&quot;
+l_string|&quot;usb_sg_wait() returned %d xferred %u/%u&bslash;n&quot;
 comma
 id|result
 comma
@@ -1770,7 +1771,7 @@ id|US_DEBUGP
 c_func
 (paren
 l_string|&quot;clearing endpoint halt for pipe 0x%x, &quot;
-l_string|&quot;stalled at %d bytes&bslash;n&quot;
+l_string|&quot;stalled at %u bytes&bslash;n&quot;
 comma
 id|pipe
 comma
@@ -1857,7 +1858,7 @@ multiline_comment|/* no error code, so we must have transferred some data,&n;&t;
 id|US_DEBUGP
 c_func
 (paren
-l_string|&quot;-- transferred only %d bytes&bslash;n&quot;
+l_string|&quot;-- transferred only %u bytes&bslash;n&quot;
 comma
 id|partial
 )paren
@@ -1866,7 +1867,7 @@ r_return
 id|USB_STOR_XFER_SHORT
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Transfer an entire SCSI command&squot;s worth of data payload over the bulk&n; * pipe.&n; *&n; * Nore that this uses usb_stor_bulk_transfer_buf() and&n; * usb_stor_bulk_transfer_sglist() to achieve its goals --&n; * this function simply determines whether we&squot;re going to use&n; * scatter-gather or not, and acts appropriately.&n; */
+multiline_comment|/*&n; * Transfer an entire SCSI command&squot;s worth of data payload over the bulk&n; * pipe.&n; *&n; * Note that this uses usb_stor_bulk_transfer_buf() and&n; * usb_stor_bulk_transfer_sglist() to achieve its goals --&n; * this function simply determines whether we&squot;re going to use&n; * scatter-gather or not, and acts appropriately.&n; */
 DECL|function|usb_stor_bulk_transfer_sg
 r_int
 id|usb_stor_bulk_transfer_sg
@@ -1881,7 +1882,7 @@ r_int
 r_int
 id|pipe
 comma
-r_char
+r_void
 op_star
 id|buf
 comma
@@ -3831,10 +3832,6 @@ id|us
 comma
 id|us-&gt;send_bulk_pipe
 comma
-(paren
-r_char
-op_star
-)paren
 op_amp
 id|bcb
 comma
@@ -3932,10 +3929,6 @@ id|us
 comma
 id|us-&gt;recv_bulk_pipe
 comma
-(paren
-r_char
-op_star
-)paren
 op_amp
 id|bcs
 comma
@@ -3969,10 +3962,6 @@ id|us
 comma
 id|us-&gt;recv_bulk_pipe
 comma
-(paren
-r_char
-op_star
-)paren
 op_amp
 id|bcs
 comma
