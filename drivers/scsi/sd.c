@@ -3339,13 +3339,14 @@ id|retries
 OL
 l_int|3
 op_logical_and
+(paren
 op_logical_neg
 id|scsi_status_is_good
 c_func
 (paren
 id|the_result
 )paren
-op_logical_and
+op_logical_or
 (paren
 (paren
 id|driver_byte
@@ -3363,6 +3364,7 @@ l_int|2
 )braket
 op_eq
 id|UNIT_ATTENTION
+)paren
 )paren
 )paren
 suffix:semicolon
