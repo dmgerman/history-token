@@ -200,17 +200,15 @@ suffix:semicolon
 multiline_comment|/*&n;&t; * Force CPSR to something logical...&n;&t; */
 id|regs-&gt;ARM_cpsr
 op_and_assign
-(paren
-id|PSR_V_BIT
+id|PSR_f
 op_or
-id|PSR_C_BIT
+id|PSR_s
 op_or
-id|PSR_Z_BIT
+id|PSR_x
 op_or
-id|PSR_N_BIT
+id|PSR_T_BIT
 op_or
 id|MODE32_BIT
-)paren
 suffix:semicolon
 r_return
 l_int|0

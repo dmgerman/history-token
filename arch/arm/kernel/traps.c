@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  linux/arch/arm/kernel/traps.c&n; *&n; *  Copyright (C) 1995, 1996 Russell King&n; *  Fragments that appear the same as linux/arch/i386/kernel/traps.c (C) Linus Torvalds&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; *  &squot;traps.c&squot; handles hardware exceptions after we have saved some state in&n; *  &squot;linux/arch/arm/lib/traps.S&squot;.  Mostly a debugging aid, but will probably&n; *  kill the offending process.&n; */
+multiline_comment|/*&n; *  linux/arch/arm/kernel/traps.c&n; *&n; *  Copyright (C) 1995-2002 Russell King&n; *  Fragments that appear the same as linux/arch/i386/kernel/traps.c (C) Linus Torvalds&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; *  &squot;traps.c&squot; handles hardware exceptions after we have saved some state in&n; *  &squot;linux/arch/arm/lib/traps.S&squot;.  Mostly a debugging aid, but will probably&n; *  kill the offending process.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -210,8 +210,25 @@ op_amp
 op_complement
 l_int|31
 suffix:semicolon
+id|mm_segment_t
+id|fs
+suffix:semicolon
 r_int
 id|i
+suffix:semicolon
+multiline_comment|/*&n;&t; * We need to switch to kernel mode so that we can use __get_user&n;&t; * to safely read from kernel space.  Note that we now dump the&n;&t; * code first, just in case the backtrace kills us.&n;&t; */
+id|fs
+op_assign
+id|get_fs
+c_func
+(paren
+)paren
+suffix:semicolon
+id|set_fs
+c_func
+(paren
+id|KERNEL_DS
+)paren
 suffix:semicolon
 id|printk
 c_func
@@ -328,6 +345,12 @@ l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
+id|set_fs
+c_func
+(paren
+id|fs
+)paren
+suffix:semicolon
 )brace
 DECL|function|dump_instr
 r_static
@@ -372,8 +395,25 @@ l_int|4
 suffix:colon
 l_int|8
 suffix:semicolon
+id|mm_segment_t
+id|fs
+suffix:semicolon
 r_int
 id|i
+suffix:semicolon
+multiline_comment|/*&n;&t; * We need to switch to kernel mode so that we can use __get_user&n;&t; * to safely read from kernel space.  Note that we now dump the&n;&t; * code first, just in case the backtrace kills us.&n;&t; */
+id|fs
+op_assign
+id|get_fs
+c_func
+(paren
+)paren
+suffix:semicolon
+id|set_fs
+c_func
+(paren
+id|KERNEL_DS
+)paren
 suffix:semicolon
 id|printk
 c_func
@@ -488,6 +528,12 @@ id|printk
 c_func
 (paren
 l_string|&quot;&bslash;n&quot;
+)paren
+suffix:semicolon
+id|set_fs
+c_func
+(paren
+id|fs
 )paren
 suffix:semicolon
 )brace
@@ -791,23 +837,6 @@ c_func
 )paren
 )paren
 (brace
-id|mm_segment_t
-id|fs
-suffix:semicolon
-multiline_comment|/*&n;&t;&t; * We need to switch to kernel mode so that we can&n;&t;&t; * use __get_user to safely read from kernel space.&n;&t;&t; * Note that we now dump the code first, just in case&n;&t;&t; * the backtrace kills us.&n;&t;&t; */
-id|fs
-op_assign
-id|get_fs
-c_func
-(paren
-)paren
-suffix:semicolon
-id|set_fs
-c_func
-(paren
-id|KERNEL_DS
-)paren
-suffix:semicolon
 id|dump_stack
 c_func
 (paren
@@ -836,12 +865,6 @@ id|dump_instr
 c_func
 (paren
 id|regs
-)paren
-suffix:semicolon
-id|set_fs
-c_func
-(paren
-id|fs
 )paren
 suffix:semicolon
 )brace
@@ -1022,6 +1045,7 @@ id|do_excpt
 c_func
 (paren
 r_int
+r_int
 id|address
 comma
 r_struct
@@ -1166,9 +1190,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|mm_segment_t
-id|fs
-suffix:semicolon
 id|console_verbose
 c_func
 (paren
@@ -1189,20 +1210,6 @@ id|processor_modes
 (braket
 id|proc_mode
 )braket
-)paren
-suffix:semicolon
-multiline_comment|/*&n;&t; * We need to switch to kernel mode so that we can use __get_user&n;&t; * to safely read from kernel space.  Note that we now dump the&n;&t; * code first, just in case the backtrace kills us.&n;&t; */
-id|fs
-op_assign
-id|get_fs
-c_func
-(paren
-)paren
-suffix:semicolon
-id|set_fs
-c_func
-(paren
-id|KERNEL_DS
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Dump out the vectors and stub routines.  Maybe a better solution&n;&t; * would be to dump them out only if we detect that they are corrupted.&n;&t; */
@@ -1234,12 +1241,6 @@ op_plus
 l_int|0x4b8
 )paren
 suffix:semicolon
-id|set_fs
-c_func
-(paren
-id|fs
-)paren
-suffix:semicolon
 id|die
 c_func
 (paren
@@ -1250,7 +1251,7 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-id|cli
+id|local_irq_disable
 c_func
 (paren
 )paren
@@ -1290,7 +1291,6 @@ suffix:semicolon
 id|siginfo_t
 id|info
 suffix:semicolon
-multiline_comment|/* You might think just testing `handler&squot; would be enough, but PER_LINUX&n;&t; * points it to no_lcall7 to catch undercover SVr4 binaries.  Gutted.&n;&t; */
 r_if
 c_cond
 (paren
@@ -1301,7 +1301,6 @@ op_logical_and
 id|thread-&gt;exec_domain-&gt;handler
 )paren
 (brace
-multiline_comment|/* Hand it off to iBCS.  The extra parameter and consequent type &n;&t;&t; * forcing is necessary because of the weird ARM calling convention.&n;&t;&t; */
 id|thread-&gt;exec_domain
 op_member_access_from_pointer
 id|handler
@@ -1693,7 +1692,7 @@ suffix:semicolon
 id|regs-&gt;ARM_cpsr
 op_and_assign
 op_complement
-l_int|0x10
+id|MODE32_BIT
 suffix:semicolon
 r_return
 id|regs-&gt;ARM_r0
@@ -1719,7 +1718,7 @@ r_break
 suffix:semicolon
 id|regs-&gt;ARM_cpsr
 op_or_assign
-l_int|0x10
+id|MODE32_BIT
 suffix:semicolon
 r_return
 id|regs-&gt;ARM_r0
