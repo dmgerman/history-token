@@ -200,7 +200,7 @@ mdefine_line|#define TO_STATE_TX(len)&t;cpu_to_le32(((len) &amp; TxSizeMax) &lt;
 DECL|macro|TO_STATE_RX
 mdefine_line|#define TO_STATE_RX(len)&t;cpu_to_le32((RX_MAX(len) % RxSizeMax) &lt;&lt; 16)
 DECL|macro|RX_MAX
-mdefine_line|#define RX_MAX(len)&t;&t;((((len) &gt;&gt; 5) + 1) &lt;&lt; 5)
+mdefine_line|#define RX_MAX(len)&t;&t;((((len) &gt;&gt; 5) + 1) &lt;&lt; 5)&t;/* Cf RLCR */
 DECL|macro|SCC_REG_START
 mdefine_line|#define SCC_REG_START(dpriv)&t;(SCC_START+(dpriv-&gt;dev_id)*SCC_OFFSET)
 DECL|struct|dscc4_pci_priv
@@ -4906,7 +4906,7 @@ op_amp
 l_int|0x00000001
 )paren
 )paren
-multiline_comment|/* Clock mode 6b */
+multiline_comment|/* ?b mode mask =&gt; clock mode 6b */
 id|divider
 op_lshift_assign
 l_int|4
