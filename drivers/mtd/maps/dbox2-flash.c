@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * $Id: dbox2-flash.c,v 1.12 2004/09/16 23:27:12 gleixner Exp $&n; *&n; * D-Box 2 flash driver&n; */
+multiline_comment|/*&n; * $Id: dbox2-flash.c,v 1.13 2004/11/04 13:24:14 gleixner Exp $&n; *&n; * D-Box 2 flash driver&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -225,11 +225,6 @@ id|WINDOW_ADDR
 suffix:semicolon
 id|dbox2_flash_map.virt
 op_assign
-(paren
-r_void
-id|__iomem
-op_star
-)paren
 id|ioremap
 c_func
 (paren

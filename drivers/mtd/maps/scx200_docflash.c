@@ -1,4 +1,4 @@
-multiline_comment|/* linux/drivers/mtd/maps/scx200_docflash.c &n;&n;   Copyright (c) 2001,2002 Christer Weinigel &lt;wingel@nano-system.com&gt;&n;&n;   $Id: scx200_docflash.c,v 1.7 2004/09/16 23:27:14 gleixner Exp $ &n;&n;   National Semiconductor SCx200 flash mapped with DOCCS&n;*/
+multiline_comment|/* linux/drivers/mtd/maps/scx200_docflash.c &n;&n;   Copyright (c) 2001,2002 Christer Weinigel &lt;wingel@nano-system.com&gt;&n;&n;   $Id: scx200_docflash.c,v 1.8 2004/11/04 13:24:15 gleixner Exp $ &n;&n;   National Semiconductor SCx200 flash mapped with DOCCS&n;*/
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -757,11 +757,6 @@ id|docmem.start
 suffix:semicolon
 id|scx200_docflash_map.virt
 op_assign
-(paren
-r_void
-id|__iomem
-op_star
-)paren
 id|ioremap
 c_func
 (paren

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Flash memory access on Alchemy Pb1xxx boards&n; * &n; * (C) 2001 Pete Popov &lt;ppopov@mvista.com&gt;&n; * &n; * $Id: pb1xxx-flash.c,v 1.13 2004/09/26 07:33:01 ppopov Exp $&n; */
+multiline_comment|/*&n; * Flash memory access on Alchemy Pb1xxx boards&n; * &n; * (C) 2001 Pete Popov &lt;ppopov@mvista.com&gt;&n; * &n; * $Id: pb1xxx-flash.c,v 1.14 2004/11/04 13:24:15 gleixner Exp $&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -409,11 +409,6 @@ l_int|8
 suffix:semicolon
 id|pb1xxx_mtd_map.virt
 op_assign
-(paren
-r_void
-id|__iomem
-op_star
-)paren
 id|ioremap
 c_func
 (paren
