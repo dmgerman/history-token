@@ -4898,6 +4898,15 @@ id|i
 dot
 id|size
 suffix:semicolon
+multiline_comment|/*&n;&t;&t; * Since &quot;last&quot; is at most 4GB, we know we&squot;ll&n;&t;&t; * fit in 32 bits if this condition is true&n;&t;&t; */
+r_if
+c_cond
+(paren
+id|last
+OG
+id|end
+)paren
+(brace
 r_int
 r_int
 id|gap
@@ -4934,6 +4943,14 @@ op_complement
 l_int|0xfffff
 suffix:semicolon
 )brace
+)brace
+r_if
+c_cond
+(paren
+id|start
+OL
+id|last
+)paren
 id|last
 op_assign
 id|start
