@@ -87,13 +87,6 @@ id|neigh_table
 op_star
 id|neigh_tables
 suffix:semicolon
-macro_line|#if defined(__i386__) &amp;&amp; defined(CONFIG_SMP)
-DECL|macro|ASSERT_WL
-mdefine_line|#define ASSERT_WL(n) if ((int)((n)-&gt;lock.lock) &gt; 0) { printk(&quot;WL assertion failed at &quot; __FILE__ &quot;(%d):&quot; __FUNCTION__ &quot;&bslash;n&quot;, __LINE__); }
-macro_line|#else
-DECL|macro|ASSERT_WL
-mdefine_line|#define ASSERT_WL(n) do { } while(0)
-macro_line|#endif
 multiline_comment|/*&n;   Neighbour hash table buckets are protected with rwlock tbl-&gt;lock.&n;&n;   - All the scans/updates to hash buckets MUST be made under this lock.&n;   - NOTHING clever should be made under this lock: no callbacks&n;     to protocol backends, no attempts to send something to network.&n;     It will result in deadlocks, if backend/driver wants to use neighbour&n;     cache.&n;   - If the entry requires some non-trivial actions, increase&n;     its reference count and release table lock.&n; &n;   Neighbour entries are protected:&n;   - with reference count.&n;   - with rwlock neigh-&gt;lock&n;&n;   Reference count prevents destruction.&n;&n;   neigh-&gt;lock mainly serializes ll address data and its validity state.&n;   However, the same lock is used to protect another entry fields:&n;    - timer&n;    - resolution queue&n;&n;   Again, nothing clever shall be made under neigh-&gt;lock,&n;   the most complicated procedure, which we allow is dev-&gt;hard_header.&n;   It is supposed, that dev-&gt;hard_header is simplistic and does&n;   not make callbacks to neighbour tables.&n;&n;   The last lock is neigh_tbl_lock. It is pure SMP lock, protecting&n;   list of neighbour tables. This list is used only in process context,&n; */
 DECL|variable|neigh_tbl_lock
 r_static
@@ -1941,12 +1934,6 @@ comma
 id|neigh
 )paren
 suffix:semicolon
-id|ASSERT_WL
-c_func
-(paren
-id|neigh
-)paren
-suffix:semicolon
 id|neigh-&gt;output
 op_assign
 id|neigh-&gt;ops-&gt;output
@@ -1995,12 +1982,6 @@ comma
 id|neigh
 )paren
 suffix:semicolon
-id|ASSERT_WL
-c_func
-(paren
-id|neigh
-)paren
-suffix:semicolon
 id|neigh-&gt;output
 op_assign
 id|neigh-&gt;ops-&gt;connected_output
@@ -2046,12 +2027,6 @@ id|u8
 id|state
 op_assign
 id|n-&gt;nud_state
-suffix:semicolon
-id|ASSERT_WL
-c_func
-(paren
-id|n
-)paren
 suffix:semicolon
 r_if
 c_cond
