@@ -35,17 +35,17 @@ op_star
 id|sk
 )paren
 (brace
-id|sk-&gt;timer.expires
+id|sk-&gt;sk_timer.expires
 op_assign
 id|jiffies
 op_plus
 id|SLOW_INTERVAL
 suffix:semicolon
-id|sk-&gt;timer.function
+id|sk-&gt;sk_timer.function
 op_assign
 id|dn_slow_timer
 suffix:semicolon
-id|sk-&gt;timer.data
+id|sk-&gt;sk_timer.data
 op_assign
 (paren
 r_int
@@ -57,7 +57,7 @@ id|add_timer
 c_func
 (paren
 op_amp
-id|sk-&gt;timer
+id|sk-&gt;sk_timer
 )paren
 suffix:semicolon
 )brace
@@ -76,7 +76,7 @@ id|del_timer
 c_func
 (paren
 op_amp
-id|sk-&gt;timer
+id|sk-&gt;sk_timer
 )paren
 suffix:semicolon
 )brace
@@ -136,7 +136,7 @@ id|sk
 )paren
 )paren
 (brace
-id|sk-&gt;timer.expires
+id|sk-&gt;sk_timer.expires
 op_assign
 id|jiffies
 op_plus
@@ -148,7 +148,7 @@ id|add_timer
 c_func
 (paren
 op_amp
-id|sk-&gt;timer
+id|sk-&gt;sk_timer
 )paren
 suffix:semicolon
 r_goto
@@ -234,7 +234,7 @@ id|sk
 )paren
 suffix:semicolon
 )brace
-id|sk-&gt;timer.expires
+id|sk-&gt;sk_timer.expires
 op_assign
 id|jiffies
 op_plus
@@ -244,7 +244,7 @@ id|add_timer
 c_func
 (paren
 op_amp
-id|sk-&gt;timer
+id|sk-&gt;sk_timer
 )paren
 suffix:semicolon
 id|out

@@ -52,10 +52,10 @@ id|del_timer
 c_func
 (paren
 op_amp
-id|sk-&gt;timer
+id|sk-&gt;sk_timer
 )paren
 suffix:semicolon
-id|sk-&gt;timer.data
+id|sk-&gt;sk_timer.data
 op_assign
 (paren
 r_int
@@ -63,12 +63,12 @@ r_int
 )paren
 id|sk
 suffix:semicolon
-id|sk-&gt;timer.function
+id|sk-&gt;sk_timer.function
 op_assign
 op_amp
 id|x25_heartbeat_expiry
 suffix:semicolon
-id|sk-&gt;timer.expires
+id|sk-&gt;sk_timer.expires
 op_assign
 id|jiffies
 op_plus
@@ -80,7 +80,7 @@ id|add_timer
 c_func
 (paren
 op_amp
-id|sk-&gt;timer
+id|sk-&gt;sk_timer
 )paren
 suffix:semicolon
 )brace
@@ -99,7 +99,7 @@ id|del_timer
 c_func
 (paren
 op_amp
-id|sk-&gt;timer
+id|sk-&gt;sk_timer
 )paren
 suffix:semicolon
 )brace
@@ -465,7 +465,7 @@ id|SOCK_DESTROY
 )paren
 op_logical_or
 (paren
-id|sk-&gt;state
+id|sk-&gt;sk_state
 op_eq
 id|TCP_LISTEN
 op_logical_and

@@ -531,7 +531,7 @@ suffix:semicolon
 suffix:semicolon
 multiline_comment|/* ----- L2CAP channel and socket info ----- */
 DECL|macro|l2cap_pi
-mdefine_line|#define l2cap_pi(sk)   ((struct l2cap_pinfo *) sk-&gt;protinfo)
+mdefine_line|#define l2cap_pi(sk)   ((struct l2cap_pinfo *)sk-&gt;sk_protinfo)
 DECL|struct|l2cap_pinfo
 r_struct
 id|l2cap_pinfo

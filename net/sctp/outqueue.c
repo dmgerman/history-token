@@ -1551,7 +1551,7 @@ c_cond
 (paren
 id|error
 )paren
-id|q-&gt;asoc-&gt;base.sk-&gt;err
+id|q-&gt;asoc-&gt;base.sk-&gt;sk_err
 op_assign
 op_minus
 id|error

@@ -1696,14 +1696,14 @@ id|spin_lock_bh
 c_func
 (paren
 op_amp
-id|sk-&gt;lock.slock
+id|sk-&gt;sk_lock.slock
 )paren
 suffix:semicolon
 id|old_fp
 op_assign
-id|sk-&gt;filter
+id|sk-&gt;sk_filter
 suffix:semicolon
-id|sk-&gt;filter
+id|sk-&gt;sk_filter
 op_assign
 id|fp
 suffix:semicolon
@@ -1711,7 +1711,7 @@ id|spin_unlock_bh
 c_func
 (paren
 op_amp
-id|sk-&gt;lock.slock
+id|sk-&gt;sk_lock.slock
 )paren
 suffix:semicolon
 id|fp

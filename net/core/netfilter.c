@@ -2842,7 +2842,7 @@ op_star
 id|pskb
 )paren
 op_member_access_from_pointer
-id|sk-&gt;bound_dev_if
+id|sk-&gt;sk_bound_dev_if
 suffix:colon
 l_int|0
 comma
@@ -2931,7 +2931,7 @@ op_star
 id|pskb
 )paren
 op_member_access_from_pointer
-id|sk-&gt;bound_dev_if
+id|sk-&gt;sk_bound_dev_if
 suffix:colon
 l_int|0
 comma

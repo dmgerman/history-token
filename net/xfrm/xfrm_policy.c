@@ -1,6 +1,7 @@
 multiline_comment|/* &n; * xfrm_policy.c&n; *&n; * Changes:&n; *&t;Mitsuru KANDA @USAGI&n; * &t;Kazunori MIYAZAWA @USAGI&n; * &t;Kunihiro Ishiguro&n; * &t;&t;IPv6 support&n; * &t;Kazunori MIYAZAWA @USAGI&n; * &t;YOSHIFUJI Hideaki&n; * &t;&t;Split up af-specific portion&n; *&t;Derek Atkins &lt;derek@ihtfp.com&gt;&t;&t;Add the post_input processor&n; * &t;&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
+macro_line|#include &lt;linux/kmod.h&gt;
 macro_line|#include &lt;net/xfrm.h&gt;
 macro_line|#include &lt;net/ip.h&gt;
 DECL|variable|xfrm_cfg_sem
@@ -298,6 +299,11 @@ id|xfrm_type
 op_star
 id|type
 suffix:semicolon
+r_int
+id|modload_attempted
+op_assign
+l_int|0
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -316,6 +322,8 @@ id|typemap
 op_assign
 id|afinfo-&gt;type_map
 suffix:semicolon
+id|retry
+suffix:colon
 id|read_lock
 c_func
 (paren
@@ -357,6 +365,40 @@ op_amp
 id|typemap-&gt;lock
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|type
+op_logical_and
+op_logical_neg
+id|modload_attempted
+)paren
+(brace
+id|request_module
+c_func
+(paren
+l_string|&quot;xfrm-type-%d-%d&quot;
+comma
+(paren
+r_int
+)paren
+id|family
+comma
+(paren
+r_int
+)paren
+id|proto
+)paren
+suffix:semicolon
+id|modload_attempted
+op_assign
+l_int|1
+suffix:semicolon
+r_goto
+id|retry
+suffix:semicolon
+)brace
 id|xfrm_policy_put_afinfo
 c_func
 (paren
@@ -1965,7 +2007,7 @@ c_cond
 (paren
 id|pol
 op_assign
-id|sk-&gt;policy
+id|sk-&gt;sk_policy
 (braket
 id|dir
 )braket
@@ -1976,8 +2018,6 @@ l_int|NULL
 (brace
 r_int
 id|match
-suffix:semicolon
-id|match
 op_assign
 id|xfrm_selector_match
 c_func
@@ -1987,7 +2027,7 @@ id|pol-&gt;selector
 comma
 id|fl
 comma
-id|sk-&gt;family
+id|sk-&gt;sk_family
 )paren
 suffix:semicolon
 r_if
@@ -2165,12 +2205,12 @@ id|xfrm_policy_lock
 suffix:semicolon
 id|old_pol
 op_assign
-id|sk-&gt;policy
+id|sk-&gt;sk_policy
 (braket
 id|dir
 )braket
 suffix:semicolon
-id|sk-&gt;policy
+id|sk-&gt;sk_policy
 (braket
 id|dir
 )braket
@@ -2373,32 +2413,26 @@ r_struct
 id|xfrm_policy
 op_star
 id|p0
-comma
-op_star
-id|p1
-suffix:semicolon
-id|p0
 op_assign
-id|sk-&gt;policy
+id|sk-&gt;sk_policy
 (braket
 l_int|0
 )braket
-suffix:semicolon
+comma
+op_star
 id|p1
 op_assign
-id|sk-&gt;policy
+id|sk-&gt;sk_policy
 (braket
 l_int|1
 )braket
 suffix:semicolon
-id|sk-&gt;policy
+id|sk-&gt;sk_policy
 (braket
 l_int|0
 )braket
 op_assign
-l_int|NULL
-suffix:semicolon
-id|sk-&gt;policy
+id|sk-&gt;sk_policy
 (braket
 l_int|1
 )braket
@@ -2411,7 +2445,7 @@ c_cond
 id|p0
 op_logical_and
 (paren
-id|sk-&gt;policy
+id|sk-&gt;sk_policy
 (braket
 l_int|0
 )braket
@@ -2437,7 +2471,7 @@ c_cond
 id|p1
 op_logical_and
 (paren
-id|sk-&gt;policy
+id|sk-&gt;sk_policy
 (braket
 l_int|1
 )braket
@@ -3129,7 +3163,7 @@ c_cond
 (paren
 id|sk
 op_logical_and
-id|sk-&gt;policy
+id|sk-&gt;sk_policy
 (braket
 l_int|1
 )braket
@@ -4016,7 +4050,7 @@ c_cond
 (paren
 id|sk
 op_logical_and
-id|sk-&gt;policy
+id|sk-&gt;sk_policy
 (braket
 id|dir
 )braket

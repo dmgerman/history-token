@@ -342,7 +342,7 @@ id|rt-&gt;rt_src
 suffix:semicolon
 id|iph-&gt;protocol
 op_assign
-id|sk-&gt;protocol
+id|sk-&gt;sk_protocol
 suffix:semicolon
 id|iph-&gt;tot_len
 op_assign
@@ -404,7 +404,7 @@ id|iph
 suffix:semicolon
 id|skb-&gt;priority
 op_assign
-id|sk-&gt;priority
+id|sk-&gt;sk_priority
 suffix:semicolon
 multiline_comment|/* Send it out. */
 r_return
@@ -1129,7 +1129,7 @@ op_assign
 dot
 id|oif
 op_assign
-id|sk-&gt;bound_dev_if
+id|sk-&gt;sk_bound_dev_if
 comma
 dot
 id|nl_u
@@ -1163,7 +1163,7 @@ comma
 dot
 id|proto
 op_assign
-id|sk-&gt;protocol
+id|sk-&gt;sk_protocol
 comma
 dot
 id|uli_u
@@ -1361,7 +1361,7 @@ id|rt-&gt;u.dst
 suffix:semicolon
 id|iph-&gt;protocol
 op_assign
-id|sk-&gt;protocol
+id|sk-&gt;sk_protocol
 suffix:semicolon
 id|iph-&gt;saddr
 op_assign
@@ -1422,7 +1422,7 @@ OG
 id|mtu
 op_logical_and
 (paren
-id|sk-&gt;route_caps
+id|sk-&gt;sk_route_caps
 op_amp
 id|NETIF_F_TSO
 )paren
@@ -1524,7 +1524,7 @@ id|iph
 suffix:semicolon
 id|skb-&gt;priority
 op_assign
-id|sk-&gt;priority
+id|sk-&gt;sk_priority
 suffix:semicolon
 r_return
 id|NF_HOOK
@@ -2943,7 +2943,7 @@ id|skb_queue_empty
 c_func
 (paren
 op_amp
-id|sk-&gt;write_queue
+id|sk-&gt;sk_write_queue
 )paren
 )paren
 (brace
@@ -2978,7 +2978,7 @@ id|ip_options
 op_plus
 l_int|40
 comma
-id|sk-&gt;allocation
+id|sk-&gt;sk_allocation
 )paren
 suffix:semicolon
 id|memcpy
@@ -3209,7 +3209,7 @@ id|skb_peek_tail
 c_func
 (paren
 op_amp
-id|sk-&gt;write_queue
+id|sk-&gt;sk_write_queue
 )paren
 )paren
 op_eq
@@ -3371,12 +3371,12 @@ id|atomic_read
 c_func
 (paren
 op_amp
-id|sk-&gt;wmem_alloc
+id|sk-&gt;sk_wmem_alloc
 )paren
 op_le
 l_int|2
 op_star
-id|sk-&gt;sndbuf
+id|sk-&gt;sk_sndbuf
 )paren
 id|skb
 op_assign
@@ -3393,7 +3393,7 @@ l_int|15
 comma
 l_int|1
 comma
-id|sk-&gt;allocation
+id|sk-&gt;sk_allocation
 )paren
 suffix:semicolon
 r_if
@@ -3541,7 +3541,7 @@ id|__skb_queue_tail
 c_func
 (paren
 op_amp
-id|sk-&gt;write_queue
+id|sk-&gt;sk_write_queue
 comma
 id|skb
 )paren
@@ -3785,7 +3785,7 @@ op_assign
 id|alloc_pages
 c_func
 (paren
-id|sk-&gt;allocation
+id|sk-&gt;sk_allocation
 comma
 l_int|0
 )paren
@@ -3853,7 +3853,7 @@ c_func
 id|PAGE_SIZE
 comma
 op_amp
-id|sk-&gt;wmem_alloc
+id|sk-&gt;sk_wmem_alloc
 )paren
 suffix:semicolon
 )brace
@@ -4049,7 +4049,7 @@ id|skb_queue_empty
 c_func
 (paren
 op_amp
-id|sk-&gt;write_queue
+id|sk-&gt;sk_write_queue
 )paren
 )paren
 r_return
@@ -4170,7 +4170,7 @@ id|skb_peek_tail
 c_func
 (paren
 op_amp
-id|sk-&gt;write_queue
+id|sk-&gt;sk_write_queue
 )paren
 )paren
 op_eq
@@ -4241,7 +4241,7 @@ l_int|15
 comma
 l_int|1
 comma
-id|sk-&gt;allocation
+id|sk-&gt;sk_allocation
 )paren
 suffix:semicolon
 r_if
@@ -4316,7 +4316,7 @@ id|__skb_queue_tail
 c_func
 (paren
 op_amp
-id|sk-&gt;write_queue
+id|sk-&gt;sk_write_queue
 comma
 id|skb
 )paren
@@ -4572,7 +4572,7 @@ id|__skb_dequeue
 c_func
 (paren
 op_amp
-id|sk-&gt;write_queue
+id|sk-&gt;sk_write_queue
 )paren
 )paren
 op_eq
@@ -4622,7 +4622,7 @@ id|__skb_dequeue
 c_func
 (paren
 op_amp
-id|sk-&gt;write_queue
+id|sk-&gt;sk_write_queue
 )paren
 )paren
 op_ne
@@ -4859,7 +4859,7 @@ id|ttl
 suffix:semicolon
 id|iph-&gt;protocol
 op_assign
-id|sk-&gt;protocol
+id|sk-&gt;sk_protocol
 suffix:semicolon
 id|iph-&gt;saddr
 op_assign
@@ -4877,7 +4877,7 @@ id|iph
 suffix:semicolon
 id|skb-&gt;priority
 op_assign
-id|sk-&gt;priority
+id|sk-&gt;sk_priority
 suffix:semicolon
 id|skb-&gt;dst
 op_assign
@@ -5019,7 +5019,7 @@ id|__skb_dequeue_tail
 c_func
 (paren
 op_amp
-id|sk-&gt;write_queue
+id|sk-&gt;sk_write_queue
 )paren
 )paren
 op_ne
@@ -5312,7 +5312,7 @@ comma
 dot
 id|proto
 op_assign
-id|sk-&gt;protocol
+id|sk-&gt;sk_protocol
 )brace
 suffix:semicolon
 r_if
@@ -5342,11 +5342,11 @@ id|inet-&gt;tos
 op_assign
 id|skb-&gt;nh.iph-&gt;tos
 suffix:semicolon
-id|sk-&gt;priority
+id|sk-&gt;sk_priority
 op_assign
 id|skb-&gt;priority
 suffix:semicolon
-id|sk-&gt;protocol
+id|sk-&gt;sk_protocol
 op_assign
 id|skb-&gt;nh.iph-&gt;protocol
 suffix:semicolon
@@ -5381,7 +5381,7 @@ id|skb_peek
 c_func
 (paren
 op_amp
-id|sk-&gt;write_queue
+id|sk-&gt;sk_write_queue
 )paren
 )paren
 op_ne

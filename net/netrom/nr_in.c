@@ -303,7 +303,7 @@ id|skb-&gt;data
 l_int|20
 )braket
 suffix:semicolon
-id|sk-&gt;state
+id|sk-&gt;sk_state
 op_assign
 id|TCP_ESTABLISHED
 suffix:semicolon
@@ -321,7 +321,7 @@ id|SOCK_DEAD
 )paren
 id|sk
 op_member_access_from_pointer
-id|state_change
+id|sk_state_change
 c_func
 (paren
 id|sk

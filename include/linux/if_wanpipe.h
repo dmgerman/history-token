@@ -69,10 +69,10 @@ r_int
 r_char
 id|free
 suffix:semicolon
-DECL|member|sk_state
+DECL|member|state_sk
 r_int
 r_char
-id|sk_state
+id|state_sk
 suffix:semicolon
 DECL|member|rcvbuf
 r_int
@@ -296,7 +296,7 @@ suffix:semicolon
 )brace
 suffix:semicolon
 DECL|macro|wp_sk
-mdefine_line|#define wp_sk(__sk) ((struct wanpipe_opt *)(__sk)-&gt;protinfo)
+mdefine_line|#define wp_sk(__sk) ((struct wanpipe_opt *)(__sk)-&gt;sk_protinfo)
 macro_line|#endif
 macro_line|#endif
 eof
