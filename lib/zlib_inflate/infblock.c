@@ -379,6 +379,8 @@ comma
 op_amp
 id|td
 comma
+id|s-&gt;hufts
+comma
 id|z
 )paren
 suffix:semicolon

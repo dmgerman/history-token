@@ -139,6 +139,10 @@ op_star
 op_star
 comma
 multiline_comment|/* distance tree result */
+id|inflate_huft
+op_star
+comma
+multiline_comment|/* space for trees */
 id|z_streamp
 )paren
 suffix:semicolon
