@@ -8676,7 +8676,7 @@ id|u32
 op_star
 )paren
 op_amp
-id|rq-&gt;ifr_data
+id|rq-&gt;ifr_ifru
 suffix:semicolon
 multiline_comment|/* Should add this check here or an ordinary user can do nasty&n;&t;&t; * things. -KDU&n;&t;&t; *&n;&t;&t; * TODO: Shut down the Rx and Tx engines while doing this.&n;&t;&t; */
 r_if
