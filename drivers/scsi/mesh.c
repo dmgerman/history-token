@@ -89,7 +89,7 @@ id|init_reset_delay
 op_assign
 id|CONFIG_SCSI_MESH_RESET_DELAY_MS
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|sync_rate
@@ -107,7 +107,7 @@ comma
 l_string|&quot;Synchronous rate (0..10, 0=async)&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|sync_targets
@@ -125,7 +125,7 @@ comma
 l_string|&quot;Bitmask of targets allowed to set synchronous&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|resel_targets
@@ -143,7 +143,7 @@ comma
 l_string|&quot;Bitmask of targets allowed to set disconnect&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|debug_targets
@@ -161,7 +161,7 @@ comma
 l_string|&quot;Bitmask of debugged targets&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|init_reset_delay
