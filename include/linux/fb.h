@@ -889,6 +889,7 @@ id|__u32
 id|flags
 suffix:semicolon
 multiline_comment|/* see FB_PIXMAP_*               */
+multiline_comment|/* access methods                */
 DECL|member|outbuf
 r_void
 (paren
@@ -897,14 +898,18 @@ id|outbuf
 )paren
 (paren
 id|u8
+op_star
 id|dst
 comma
 id|u8
 op_star
 id|addr
+comma
+r_int
+r_int
+id|size
 )paren
 suffix:semicolon
-multiline_comment|/* access methods                */
 DECL|member|inbuf
 id|u8
 (paren

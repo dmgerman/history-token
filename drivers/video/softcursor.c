@@ -230,7 +230,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|size
+id|dsize
 suffix:semicolon
 id|i
 op_increment
@@ -268,7 +268,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|size
+id|dsize
 suffix:semicolon
 id|i
 op_increment
@@ -300,7 +300,7 @@ id|src
 comma
 id|cursor-&gt;image.data
 comma
-id|size
+id|dsize
 )paren
 suffix:semicolon
 id|move_buf_aligned

@@ -1924,6 +1924,7 @@ id|regindex
 )paren
 (brace
 macro_line|#ifdef __powerpc__
+r_return
 id|in_le32
 c_func
 (paren
