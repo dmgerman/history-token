@@ -327,16 +327,13 @@ op_star
 id|HZ
 suffix:semicolon
 multiline_comment|/* Set up the default send/receive buffer space.  */
-multiline_comment|/* FIXME - Should the min and max window size be configurable&n;&t; * sysctl parameters as opposed to be constants?&n;&t; */
 id|sk-&gt;sk_rcvbuf
 op_assign
-id|SCTP_DEFAULT_MAXWINDOW
+id|sctp_rmem
 suffix:semicolon
 id|sk-&gt;sk_sndbuf
 op_assign
-id|SCTP_DEFAULT_MAXWINDOW
-op_star
-l_int|2
+id|sctp_wmem
 suffix:semicolon
 multiline_comment|/* Use SCTP specific send buffer space queues.  */
 id|sk-&gt;sk_write_space
