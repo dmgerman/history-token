@@ -21,35 +21,6 @@ macro_line|#ifdef I2C_FUNC_SMBUS_BLOCK_DATA_PEC
 DECL|macro|HAVE_PEC
 mdefine_line|#define HAVE_PEC
 macro_line|#endif
-macro_line|#ifndef PCI_DEVICE_ID_INTEL_82801CA_SMBUS
-DECL|macro|PCI_DEVICE_ID_INTEL_82801CA_SMBUS
-mdefine_line|#define PCI_DEVICE_ID_INTEL_82801CA_SMBUS&t;0x2483
-macro_line|#endif
-macro_line|#ifndef PCI_DEVICE_ID_INTEL_82801DB_SMBUS
-DECL|macro|PCI_DEVICE_ID_INTEL_82801DB_SMBUS
-mdefine_line|#define PCI_DEVICE_ID_INTEL_82801DB_SMBUS&t;0x24C3
-macro_line|#endif
-DECL|variable|supported
-r_static
-r_int
-id|supported
-(braket
-)braket
-op_assign
-(brace
-id|PCI_DEVICE_ID_INTEL_82801AA_3
-comma
-id|PCI_DEVICE_ID_INTEL_82801AB_3
-comma
-id|PCI_DEVICE_ID_INTEL_82801BA_2
-comma
-id|PCI_DEVICE_ID_INTEL_82801CA_SMBUS
-comma
-id|PCI_DEVICE_ID_INTEL_82801DB_SMBUS
-comma
-l_int|0
-)brace
-suffix:semicolon
 multiline_comment|/* I801 SMBus address offsets */
 DECL|macro|SMBHSTSTS
 mdefine_line|#define SMBHSTSTS (0 + i801_smba)
@@ -210,12 +181,6 @@ op_assign
 l_int|0
 suffix:semicolon
 r_int
-op_star
-id|num
-op_assign
-id|supported
-suffix:semicolon
-r_int
 r_char
 id|temp
 suffix:semicolon
@@ -241,12 +206,21 @@ id|I801_dev
 op_assign
 id|dev
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|dev-&gt;device
+op_eq
+id|PCI_DEVICE_ID_INTEL_82801DB_3
+)paren
 id|isich4
 op_assign
-op_star
-id|num
-op_eq
-id|PCI_DEVICE_ID_INTEL_82801DB_SMBUS
+l_int|1
+suffix:semicolon
+r_else
+id|isich4
+op_assign
+l_int|0
 suffix:semicolon
 multiline_comment|/* Determine the address of the SMBus areas */
 r_if
@@ -1038,7 +1012,7 @@ c_func
 op_amp
 id|I801_dev-&gt;dev
 comma
-l_string|&quot;I2C_SMBUS_I2C_BLOCK_READ not supported!&bslash;n&quot;
+l_string|&quot;I2C_SMBUS_I2C_BLOCK_READ not DB!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -2620,7 +2594,7 @@ comma
 dot
 id|device
 op_assign
-id|PCI_DEVICE_ID_INTEL_82801CA_SMBUS
+id|PCI_DEVICE_ID_INTEL_82801CA_3
 comma
 dot
 id|subvendor
@@ -2643,7 +2617,7 @@ comma
 dot
 id|device
 op_assign
-id|PCI_DEVICE_ID_INTEL_82801DB_SMBUS
+id|PCI_DEVICE_ID_INTEL_82801DB_3
 comma
 dot
 id|subvendor
