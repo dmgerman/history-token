@@ -1,5 +1,5 @@
-multiline_comment|/****************************************************************&n; *&n; *     kaweth.c - driver for KL5KUSB101 based USB-&gt;Ethernet&n; *&n; *     (c) 2000 Interlan Communications&n; *     (c) 2000 Stephane Alnet&n; *     (C) 2001 Brad Hards&n; *&n; *     Original author: The Zapman &lt;zapman@interlan.net&gt;&n; *     Inspired by, and much credit goes to Michael Rothwell &n; *     &lt;rothwell@interlan.net&gt; for the test equipment, help, and patience&n; *     Based off of (and with thanks to) Petko Manolov&squot;s pegaus.c driver.&n; *     Also many thanks to Joel Silverman and Ed Surprenant at Kawasaki &n; *     for providing the firmware and driver resources.&n; *&n; *     This program is free software; you can redistribute it and/or&n; *     modify it under the terms of the GNU General Public License as&n; *     published by the Free Software Foundation; either version 2, or &n; *     (at your option) any later version.&n; *&n; *     This program is distributed in the hope that it will be useful,&n; *     but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *     GNU General Public License for more details.&n; *&n; *     You should have received a copy of the GNU General Public License&n; *     along with this program; if not, write to the Free Software Foundation,&n; *     Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA. &n; *&n; ****************************************************************/
-multiline_comment|/* TODO:&n; * Fix in_interrupt() problem&n; * Develop test procedures for USB net interfaces&n; * Run test procedures&n; * Fix bugs from previous two steps&n; * Snoop other OSs for any tricks we&squot;re not doing&n; * SMP locking&n; * Reduce arbitrary timeouts &n; * Smart multicast support &n; * Temporary MAC change support&n; * Tunable SOFs parameter - ioctl()?&n; * Ethernet stats collection&n; * Code formatting improvements&n; */
+multiline_comment|/****************************************************************&n; *&n; *     kaweth.c - driver for KL5KUSB101 based USB-&gt;Ethernet&n; *&n; *     (c) 2000 Interlan Communications&n; *     (c) 2000 Stephane Alnet&n; *     (C) 2001 Brad Hards&n; *     (C) 2002 Oliver Neukum&n; *&n; *     Original author: The Zapman &lt;zapman@interlan.net&gt;&n; *     Inspired by, and much credit goes to Michael Rothwell&n; *     &lt;rothwell@interlan.net&gt; for the test equipment, help, and patience&n; *     Based off of (and with thanks to) Petko Manolov&squot;s pegaus.c driver.&n; *     Also many thanks to Joel Silverman and Ed Surprenant at Kawasaki&n; *     for providing the firmware and driver resources.&n; *&n; *     This program is free software; you can redistribute it and/or&n; *     modify it under the terms of the GNU General Public License as&n; *     published by the Free Software Foundation; either version 2, or&n; *     (at your option) any later version.&n; *&n; *     This program is distributed in the hope that it will be useful,&n; *     but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *     GNU General Public License for more details.&n; *&n; *     You should have received a copy of the GNU General Public License&n; *     along with this program; if not, write to the Free Software Foundation,&n; *     Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.&n; *&n; ****************************************************************/
+multiline_comment|/* TODO:&n; * Fix in_interrupt() problem&n; * Develop test procedures for USB net interfaces&n; * Run test procedures&n; * Fix bugs from previous two steps&n; * Snoop other OSs for any tricks we&squot;re not doing&n; * SMP locking&n; * Reduce arbitrary timeouts&n; * Smart multicast support&n; * Temporary MAC change support&n; * Tunable SOFs parameter - ioctl()?&n; * Ethernet stats collection&n; * Code formatting improvements&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
@@ -632,6 +632,14 @@ DECL|member|status
 id|__u32
 id|status
 suffix:semicolon
+DECL|member|end
+r_int
+id|end
+suffix:semicolon
+DECL|member|removed
+r_int
+id|removed
+suffix:semicolon
 DECL|member|dev
 r_struct
 id|usb_device
@@ -644,9 +652,9 @@ id|net_device
 op_star
 id|net
 suffix:semicolon
-DECL|member|control_wait
+DECL|member|term_wait
 id|wait_queue_head_t
-id|control_wait
+id|term_wait
 suffix:semicolon
 DECL|member|rx_urb
 r_struct
@@ -1679,6 +1687,39 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|unlikely
+c_func
+(paren
+id|urb-&gt;status
+op_eq
+op_minus
+id|ECONNRESET
+op_logical_or
+id|urb-&gt;status
+op_eq
+op_minus
+id|ECONNABORTED
+)paren
+)paren
+multiline_comment|/* we are killed - set a flag and wake the disconnect handler */
+(brace
+id|kaweth-&gt;end
+op_assign
+l_int|1
+suffix:semicolon
+id|wake_up
+c_func
+(paren
+op_amp
+id|kaweth-&gt;term_wait
+)paren
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
 id|urb-&gt;status
 op_logical_and
 id|urb-&gt;status
@@ -2103,6 +2144,30 @@ op_amp
 id|kaweth-&gt;device_lock
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|kaweth-&gt;removed
+)paren
+(brace
+multiline_comment|/* our device is undergoing disconnection - we bail out */
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|kaweth-&gt;device_lock
+)paren
+suffix:semicolon
+id|dev_kfree_skb
+c_func
+(paren
+id|skb
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
 id|kaweth_async_set_rx_mode
 c_func
 (paren
@@ -2181,6 +2246,14 @@ id|kaweth_usb_transmit_complete
 comma
 id|kaweth
 )paren
+suffix:semicolon
+id|kaweth-&gt;end
+op_assign
+l_int|0
+suffix:semicolon
+id|kaweth-&gt;tx_urb-&gt;transfer_flags
+op_or_assign
+id|USB_ASYNC_UNLINK
 suffix:semicolon
 r_if
 c_cond
@@ -2666,6 +2739,13 @@ c_func
 (paren
 op_amp
 id|kaweth-&gt;device_lock
+)paren
+suffix:semicolon
+id|init_waitqueue_head
+c_func
+(paren
+op_amp
+id|kaweth-&gt;term_wait
 )paren
 suffix:semicolon
 id|kaweth_dbg
@@ -3371,11 +3451,9 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-id|usb_unlink_urb
-c_func
-(paren
-id|kaweth-&gt;tx_urb
-)paren
+id|kaweth-&gt;removed
+op_assign
+l_int|1
 suffix:semicolon
 id|usb_unlink_urb
 c_func
@@ -3383,6 +3461,53 @@ c_func
 id|kaweth-&gt;rx_urb
 )paren
 suffix:semicolon
+multiline_comment|/* we need to wait for the urb to be cancelled, if it is active */
+id|spin_lock
+c_func
+(paren
+op_amp
+id|kaweth-&gt;device_lock
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|usb_unlink_urb
+c_func
+(paren
+id|kaweth-&gt;tx_urb
+)paren
+op_eq
+op_minus
+id|EINPROGRESS
+)paren
+(brace
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|kaweth-&gt;device_lock
+)paren
+suffix:semicolon
+id|wait_event
+c_func
+(paren
+id|kaweth-&gt;term_wait
+comma
+id|kaweth-&gt;end
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|kaweth-&gt;device_lock
+)paren
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -3443,7 +3568,7 @@ id|kaweth
 suffix:semicolon
 )brace
 singleline_comment|// FIXME this completion stuff is a modified clone of
-singleline_comment|// an OLD version of some stuff in usb.c ... 
+singleline_comment|// an OLD version of some stuff in usb.c ...
 DECL|struct|usb_api_data
 r_struct
 id|usb_api_data
@@ -3744,7 +3869,7 @@ c_func
 (paren
 l_int|0
 comma
-id|GFP_KERNEL
+id|GFP_NOIO
 )paren
 suffix:semicolon
 r_if
