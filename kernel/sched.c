@@ -175,7 +175,7 @@ DECL|macro|cpu_curr
 mdefine_line|#define cpu_curr(cpu)&t;&t;(cpu_rq(cpu)-&gt;curr)
 DECL|macro|rt_task
 mdefine_line|#define rt_task(p)&t;&t;((p)-&gt;prio &lt; MAX_RT_PRIO)
-multiline_comment|/*&n; * task_rq_lock - lock the runqueue a given task resides on and disable&n; * interrupts.  Note the ordering: we can safely lookup the task_rq without&n; * explicitly disabling preemption.&n; *&n; * WARNING: to squeeze out a few more cycles we do not disable preemption&n; * explicitly (or implicitly), we just keep interrupts disabled. This means&n; * that within task_rq_lock/unlock sections you must be careful&n; * about locking/unlocking spinlocks, since they could cause an unexpected&n; * preemption.&n; */
+multiline_comment|/*&n; * task_rq_lock - lock the runqueue a given task resides on and disable&n; * interrupts.  Note the ordering: we can safely lookup the task_rq without&n; * explicitly disabling preemption.&n; */
 DECL|function|task_rq_lock
 r_static
 r_inline
@@ -216,7 +216,7 @@ c_func
 id|p
 )paren
 suffix:semicolon
-id|_raw_spin_lock
+id|spin_lock
 c_func
 (paren
 op_amp
@@ -239,7 +239,7 @@ id|p
 )paren
 )paren
 (brace
-id|_raw_spin_unlock_irqrestore
+id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
@@ -274,7 +274,7 @@ op_star
 id|flags
 )paren
 (brace
-id|_raw_spin_unlock_irqrestore
+id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
@@ -282,11 +282,6 @@ id|rq-&gt;lock
 comma
 op_star
 id|flags
-)paren
-suffix:semicolon
-id|preempt_check_resched
-c_func
-(paren
 )paren
 suffix:semicolon
 )brace
@@ -713,14 +708,13 @@ c_func
 )paren
 )paren
 )paren
-multiline_comment|/*&n;&t;&t; * NOTE: smp_send_reschedule() can be called from&n;&t;&t; * spinlocked sections which do not have an elevated&n;&t;&t; * preemption count. So the code either has to avoid&n;&t; &t; * spinlocks, or has to put preempt_disable() and&n;&t;&t; * preempt_enable_no_resched() around the code.&n;&t;&t; */
 id|smp_send_reschedule
 c_func
 (paren
 id|p-&gt;thread_info-&gt;cpu
 )paren
 suffix:semicolon
-id|preempt_enable_no_resched
+id|preempt_enable
 c_func
 (paren
 )paren
@@ -876,19 +870,12 @@ id|p
 op_member_access_from_pointer
 id|curr
 )paren
-(brace
 id|resched_task
 c_func
 (paren
 id|p
 )paren
 suffix:semicolon
-id|preempt_check_resched
-c_func
-(paren
-)paren
-suffix:semicolon
-)brace
 )brace
 macro_line|#endif
 multiline_comment|/*&n; * Wake up a process. Put it on the run-queue if it&squot;s not&n; * already there.  The &quot;current&quot; process is always on the&n; * run-queue (except when the actual re-schedule is in&n; * progress), and as such you&squot;re allowed to do the simpler&n; * &quot;current-&gt;state = TASK_RUNNING&quot; to mark yourself runnable&n; * without the overhead of this.&n; */
@@ -1225,19 +1212,24 @@ r_void
 id|schedule_tail
 c_func
 (paren
-r_void
+id|task_t
+op_star
+id|prev
 )paren
 (brace
-id|spin_unlock_irq
+id|finish_arch_switch
 c_func
 (paren
-op_amp
 id|this_rq
 c_func
 (paren
 )paren
-op_member_access_from_pointer
-id|lock
+)paren
+suffix:semicolon
+id|finish_arch_schedule
+c_func
+(paren
+id|prev
 )paren
 suffix:semicolon
 )brace
@@ -1245,7 +1237,8 @@ macro_line|#endif
 DECL|function|context_switch
 r_static
 r_inline
-r_void
+id|task_t
+op_star
 id|context_switch
 c_func
 (paren
@@ -1271,11 +1264,6 @@ op_star
 id|oldmm
 op_assign
 id|prev-&gt;active_mm
-suffix:semicolon
-id|prepare_to_switch
-c_func
-(paren
-)paren
 suffix:semicolon
 r_if
 c_cond
@@ -1358,7 +1346,12 @@ c_func
 id|prev
 comma
 id|next
+comma
+id|prev
 )paren
+suffix:semicolon
+r_return
+id|prev
 suffix:semicolon
 )brace
 DECL|function|nr_running
@@ -2587,6 +2580,12 @@ c_func
 )paren
 )paren
 suffix:semicolon
+id|prepare_arch_schedule
+c_func
+(paren
+id|prev
+)paren
+suffix:semicolon
 id|prev-&gt;sleep_timestamp
 op_assign
 id|jiffies
@@ -2796,6 +2795,14 @@ id|rq-&gt;curr
 op_assign
 id|next
 suffix:semicolon
+id|prepare_arch_switch
+c_func
+(paren
+id|rq
+)paren
+suffix:semicolon
+id|prev
+op_assign
 id|context_switch
 c_func
 (paren
@@ -2804,8 +2811,7 @@ comma
 id|next
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * The runqueue pointer might be from another CPU&n;&t;&t; * if the new task was last running on a different&n;&t;&t; * CPU - thus re-load it.&n;&t;&t; */
-id|mb
+id|barrier
 c_func
 (paren
 )paren
@@ -2817,12 +2823,25 @@ c_func
 (paren
 )paren
 suffix:semicolon
+id|finish_arch_switch
+c_func
+(paren
+id|rq
+)paren
+suffix:semicolon
 )brace
+r_else
 id|spin_unlock_irq
 c_func
 (paren
 op_amp
 id|rq-&gt;lock
+)paren
+suffix:semicolon
+id|finish_arch_schedule
+c_func
+(paren
+id|prev
 )paren
 suffix:semicolon
 id|reacquire_kernel_lock
@@ -2847,8 +2866,6 @@ id|TIF_NEED_RESCHED
 )paren
 r_goto
 id|need_resched
-suffix:semicolon
-r_return
 suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_PREEMPT
