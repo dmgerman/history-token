@@ -1232,13 +1232,11 @@ r_if
 c_cond
 (paren
 id|drive-&gt;type
-op_ne
+op_eq
 id|ATA_DISK
 )paren
-r_return
-l_int|0
-suffix:semicolon
-id|ide_set_handler
+(brace
+id|ata_set_handler
 c_func
 (paren
 id|drive
@@ -1268,6 +1266,7 @@ comma
 id|IDE_COMMAND_REG
 )paren
 suffix:semicolon
+)brace
 r_return
 l_int|0
 suffix:semicolon

@@ -347,10 +347,10 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * This should get invoked any time we exit the driver to&n; * wait for an interrupt response from a drive.  handler() points&n; * at the appropriate code to handle the next interrupt, and a&n; * timer is started to prevent us from waiting forever in case&n; * something goes wrong (see the ide_timer_expiry() handler later on).&n; */
-DECL|function|ide_set_handler
+multiline_comment|/*&n; * This should get invoked any time we exit the driver to&n; * wait for an interrupt response from a drive.  handler() points&n; * at the appropriate code to handle the next interrupt, and a&n; * timer is started to prevent us from waiting forever in case&n; * something goes wrong (see the ide_timer_expiry() handler later on).&n; *&n; * Channel lock should be held.&n; */
+DECL|function|ata_set_handler
 r_void
-id|ide_set_handler
+id|ata_set_handler
 c_func
 (paren
 r_struct
@@ -369,10 +369,6 @@ id|ata_expiry_t
 id|expiry
 )paren
 (brace
-r_int
-r_int
-id|flags
-suffix:semicolon
 r_struct
 id|ata_channel
 op_star
@@ -380,28 +376,19 @@ id|ch
 op_assign
 id|drive-&gt;channel
 suffix:semicolon
-id|spin_lock_irqsave
-c_func
-(paren
-id|ch-&gt;lock
-comma
-id|flags
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
 id|ch-&gt;handler
-op_ne
-l_int|NULL
 )paren
-(brace
 id|printk
 c_func
 (paren
-l_string|&quot;%s: ide_set_handler: handler not null; old=%p, new=%p, from %p&bslash;n&quot;
+l_string|&quot;%s: %s: handler not null; old=%p, new=%p, from %p&bslash;n&quot;
 comma
 id|drive-&gt;name
+comma
+id|__FUNCTION__
 comma
 id|ch-&gt;handler
 comma
@@ -414,7 +401,6 @@ l_int|0
 )paren
 )paren
 suffix:semicolon
-)brace
 id|ch-&gt;handler
 op_assign
 id|handler
@@ -434,14 +420,6 @@ c_func
 (paren
 op_amp
 id|ch-&gt;timer
-)paren
-suffix:semicolon
-id|spin_unlock_irqrestore
-c_func
-(paren
-id|ch-&gt;lock
-comma
-id|flags
 )paren
 suffix:semicolon
 )brace
@@ -716,12 +694,21 @@ op_star
 id|__rq
 )paren
 (brace
+r_int
+r_int
+id|flags
+suffix:semicolon
 r_struct
 id|ata_channel
 op_star
 id|ch
 op_assign
 id|drive-&gt;channel
+suffix:semicolon
+r_int
+id|ret
+op_assign
+id|ide_stopped
 suffix:semicolon
 id|ata_select
 c_func
@@ -734,6 +721,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|ata_status
 c_func
 (paren
@@ -744,15 +732,6 @@ comma
 id|BUSY_STAT
 )paren
 )paren
-id|printk
-c_func
-(paren
-l_string|&quot;%s: ATAPI reset complete&bslash;n&quot;
-comma
-id|drive-&gt;name
-)paren
-suffix:semicolon
-r_else
 (brace
 r_if
 c_cond
@@ -766,7 +745,16 @@ id|ch-&gt;poll_timeout
 )paren
 )paren
 (brace
-id|ide_set_handler
+id|spin_lock_irqsave
+c_func
+(paren
+id|ch-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
+id|ata_set_handler
+c_func
 (paren
 id|drive
 comma
@@ -779,11 +767,22 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
-r_return
+id|spin_unlock_irqrestore
+c_func
+(paren
+id|ch-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
+id|ret
+op_assign
 id|ide_started
 suffix:semicolon
 multiline_comment|/* continue polling */
 )brace
+r_else
+(brace
 id|ch-&gt;poll_timeout
 op_assign
 l_int|0
@@ -799,7 +798,8 @@ comma
 id|drive-&gt;status
 )paren
 suffix:semicolon
-r_return
+id|ret
+op_assign
 id|do_reset1
 c_func
 (paren
@@ -810,13 +810,25 @@ l_int|1
 suffix:semicolon
 multiline_comment|/* do it the old fashioned way */
 )brace
+)brace
+r_else
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;%s: ATAPI reset complete&bslash;n&quot;
+comma
+id|drive-&gt;name
+)paren
+suffix:semicolon
 id|ch-&gt;poll_timeout
 op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* done polling */
+)brace
 r_return
-id|ide_stopped
+id|ret
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Poll the interface for completion every 50ms during an ata reset operation.&n; * If the drives have not yet responded, and we have not yet hit our maximum&n; * waiting time, then the timer is restarted for another 50ms.&n; */
@@ -871,7 +883,19 @@ id|ch-&gt;poll_timeout
 )paren
 )paren
 (brace
-id|ide_set_handler
+r_int
+r_int
+id|flags
+suffix:semicolon
+id|spin_lock_irqsave
+c_func
+(paren
+id|ch-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
+id|ata_set_handler
 c_func
 (paren
 id|drive
@@ -883,6 +907,14 @@ op_div
 l_int|20
 comma
 l_int|NULL
+)paren
+suffix:semicolon
+id|spin_unlock_irqrestore
+c_func
+(paren
+id|ch-&gt;lock
+comma
+id|flags
 )paren
 suffix:semicolon
 r_return
@@ -900,8 +932,8 @@ comma
 id|drive-&gt;status
 )paren
 suffix:semicolon
-id|drive-&gt;failures
 op_increment
+id|drive-&gt;failures
 suffix:semicolon
 )brace
 r_else
@@ -945,15 +977,19 @@ suffix:semicolon
 )brace
 r_else
 (brace
+r_const
 r_char
 op_star
 id|msg
+op_assign
+l_string|&quot;&quot;
 suffix:semicolon
 macro_line|#if FANCY_STATUS_DUMPS
 id|u8
 id|val
 suffix:semicolon
 r_static
+r_const
 r_char
 op_star
 id|messages
@@ -1005,11 +1041,6 @@ op_minus
 l_int|1
 )braket
 suffix:semicolon
-r_else
-id|msg
-op_assign
-l_string|&quot;&quot;
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1027,6 +1058,7 @@ macro_line|#endif
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;%s error [%02x]&bslash;n&quot;
 comma
 id|msg
@@ -1034,8 +1066,8 @@ comma
 id|stat
 )paren
 suffix:semicolon
-id|drive-&gt;failures
 op_increment
+id|drive-&gt;failures
 suffix:semicolon
 )brace
 )brace
@@ -1048,7 +1080,7 @@ r_return
 id|ide_stopped
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Attempt to recover a confused drive by resetting it.  Unfortunately,&n; * resetting a disk drive actually resets all devices on the same interface, so&n; * it can really be thought of as resetting the interface rather than resetting&n; * the drive.&n; *&n; * ATAPI devices have their own reset mechanism which allows them to be&n; * individually reset without clobbering other devices on the same interface.&n; *&n; * Unfortunately, the IDE interface does not generate an interrupt to let us&n; * know when the reset operation has finished, so we must poll for this.&n; * Equally poor, though, is the fact that this may a very long time to&n; * complete, (up to 30 seconds worst case).  So, instead of busy-waiting here&n; * for it, we set a timer to poll at 50ms intervals.&n; */
+multiline_comment|/*&n; * Attempt to recover a confused drive by resetting it.  Unfortunately,&n; * resetting a disk drive actually resets all devices on the same interface, so&n; * it can really be thought of as resetting the interface rather than resetting&n; * the drive.&n; *&n; * ATAPI devices have their own reset mechanism which allows them to be&n; * individually reset without clobbering other devices on the same interface.&n; *&n; * Unfortunately, the IDE interface does not generate an interrupt to let us&n; * know when the reset operation has finished, so we must poll for this.&n; * Equally poor, though, is the fact that this may a very long time to&n; * complete, (up to 30 seconds worst case).  So, instead of busy-waiting here&n; * for it, we set a timer to poll at 50ms intervals.&n; *&n; * Channel lock should be held.&n; */
 DECL|function|do_reset1
 r_static
 id|ide_startstop_t
@@ -1132,7 +1164,7 @@ id|jiffies
 op_plus
 id|WAIT_WORSTCASE
 suffix:semicolon
-id|ide_set_handler
+id|ata_set_handler
 c_func
 (paren
 id|drive
@@ -1183,6 +1215,7 @@ id|unit
 )paren
 suffix:semicolon
 id|__restore_flags
+c_func
 (paren
 id|flags
 )paren
@@ -2031,7 +2064,7 @@ suffix:colon
 id|ide_started
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Take action based on the error returned by the drive.&n; */
+multiline_comment|/*&n; * Take action based on the error returned by the drive.&n; *&n; * FIXME: Channel lock should be held.&n; */
 DECL|function|ata_error
 id|ide_startstop_t
 id|ata_error
@@ -2387,7 +2420,7 @@ r_return
 id|ide_stopped
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Busy-wait for the drive status to be not &quot;busy&quot;.  Check then the status for&n; * all of the &quot;good&quot; bits and none of the &quot;bad&quot; bits, and if all is okay it&n; * returns 0.  All other cases return 1 after invoking error handler -- caller&n; * should just return.&n; *&n; * This routine should get fixed to not hog the cpu during extra long waits..&n; * That could be done by busy-waiting for the first jiffy or two, and then&n; * setting a timer to wake up at half second intervals thereafter, until&n; * timeout is achieved, before timing out.&n; */
+multiline_comment|/*&n; * Busy-wait for the drive status to be not &quot;busy&quot;.  Check then the status for&n; * all of the &quot;good&quot; bits and none of the &quot;bad&quot; bits, and if all is okay it&n; * returns 0.  All other cases return 1 after invoking error handler -- caller&n; * should just return.&n; *&n; * This routine should get fixed to not hog the cpu during extra long waits..&n; * That could be done by busy-waiting for the first jiffy or two, and then&n; * setting a timer to wake up at half second intervals thereafter, until&n; * timeout is achieved, before timing out.&n; *&n; * FIXME: Channel lock should be held.&n; */
 DECL|function|ide_wait_stat
 r_int
 id|ide_wait_stat
@@ -2787,6 +2820,13 @@ id|rq-&gt;flags
 op_amp
 id|REQ_SPECIAL
 )paren
+r_if
+c_cond
+(paren
+id|drive-&gt;type
+op_eq
+id|ATA_DISK
+)paren
 r_return
 id|ata_taskfile
 c_func
@@ -2938,6 +2978,9 @@ r_int
 r_int
 id|flags
 suffix:semicolon
+r_int
+id|ret
+suffix:semicolon
 id|spin_lock_irqsave
 c_func
 (paren
@@ -2965,7 +3008,9 @@ comma
 id|flags
 )paren
 suffix:semicolon
-r_return
+multiline_comment|/* FIXME make start_request do the unlock itself and&n;&t; * push this locking further down. */
+id|ret
+op_assign
 id|start_request
 c_func
 (paren
@@ -2973,6 +3018,9 @@ id|drive
 comma
 id|drive-&gt;rq
 )paren
+suffix:semicolon
+r_return
+id|ret
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * This is used by a drive to give excess bandwidth back by sleeping for&n; * timeout jiffies.&n; */
@@ -3287,7 +3335,9 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;ide_set_handler: timer already active&bslash;n&quot;
+l_string|&quot;%s: timer already active&bslash;n&quot;
+comma
+id|__FUNCTION__
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -3312,12 +3362,13 @@ multiline_comment|/* we purposely leave hwgroup busy while sleeping */
 )brace
 r_else
 (brace
+multiline_comment|/* FIXME: use queue plugging instead of active to&n;&t;&t; * block upper layers from stomping on us */
 multiline_comment|/* Ugly, but how can we sleep for the lock otherwise? */
 id|ide_release_lock
 c_func
 (paren
 op_amp
-id|irq_lock
+id|ide_irq_lock
 )paren
 suffix:semicolon
 multiline_comment|/* for atari only */
@@ -3542,6 +3593,7 @@ id|drive-&gt;rq
 op_assign
 id|rq
 suffix:semicolon
+multiline_comment|/* FIXME: push this locaing further down */
 id|spin_unlock
 c_func
 (paren
@@ -3618,11 +3670,11 @@ id|ide_get_lock
 c_func
 (paren
 op_amp
-id|irq_lock
+id|ide_irq_lock
 comma
 id|ata_irq_request
 comma
-id|hwgroup
+id|channel
 )paren
 suffix:semicolon
 multiline_comment|/* for atari only: POSSIBLY BROKEN HERE(?) */
@@ -4193,7 +4245,7 @@ id|flags
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * There&squot;s nothing really useful we can do with an unexpected interrupt,&n; * other than reading the status register (to clear it), and logging it.&n; * There should be no way that an irq can happen before we&squot;re ready for it,&n; * so we needn&squot;t worry much about losing an &quot;important&quot; interrupt here.&n; *&n; * On laptops (and &quot;green&quot; PCs), an unexpected interrupt occurs whenever the&n; * drive enters &quot;idle&quot;, &quot;standby&quot;, or &quot;sleep&quot; mode, so if the status looks&n; * &quot;good&quot;, we just ignore the interrupt completely.&n; *&n; * This routine assumes __cli() is in effect when called.&n; *&n; * If an unexpected interrupt happens on irq15 while we are handling irq14&n; * and if the two interfaces are &quot;serialized&quot; (CMD640), then it looks like&n; * we could screw up by interfering with a new request being set up for irq15.&n; *&n; * In reality, this is a non-issue.  The new command is not sent unless the&n; * drive is ready to accept one, in which case we know the drive is not&n; * trying to interrupt us.  And ide_set_handler() is always invoked before&n; * completing the issuance of any new drive command, so we will not be&n; * accidentally invoked as a result of any valid command completion interrupt.&n; *&n; */
+multiline_comment|/*&n; * There&squot;s nothing really useful we can do with an unexpected interrupt,&n; * other than reading the status register (to clear it), and logging it.&n; * There should be no way that an irq can happen before we&squot;re ready for it,&n; * so we needn&squot;t worry much about losing an &quot;important&quot; interrupt here.&n; *&n; * On laptops (and &quot;green&quot; PCs), an unexpected interrupt occurs whenever the&n; * drive enters &quot;idle&quot;, &quot;standby&quot;, or &quot;sleep&quot; mode, so if the status looks&n; * &quot;good&quot;, we just ignore the interrupt completely.&n; *&n; * This routine assumes __cli() is in effect when called.&n; *&n; * If an unexpected interrupt happens on irq15 while we are handling irq14&n; * and if the two interfaces are &quot;serialized&quot; (CMD640), then it looks like&n; * we could screw up by interfering with a new request being set up for irq15.&n; *&n; * In reality, this is a non-issue.  The new command is not sent unless the&n; * drive is ready to accept one, in which case we know the drive is not&n; * trying to interrupt us.  And ata_set_handler() is always invoked before&n; * completing the issuance of any new drive command, so we will not be&n; * accidentally invoked as a result of any valid command completion interrupt.&n; *&n; */
 DECL|function|unexpected_irq
 r_static
 r_void
@@ -5168,11 +5220,11 @@ c_func
 id|do_ide_request
 )paren
 suffix:semicolon
-DECL|variable|ide_set_handler
+DECL|variable|ata_set_handler
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|ide_set_handler
+id|ata_set_handler
 )paren
 suffix:semicolon
 DECL|variable|ata_dump

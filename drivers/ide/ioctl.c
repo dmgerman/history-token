@@ -58,7 +58,7 @@ id|args
 suffix:semicolon
 r_struct
 id|request
-id|rq
+id|req
 suffix:semicolon
 multiline_comment|/* Second phase.&n;&t; */
 r_if
@@ -86,17 +86,17 @@ id|memset
 c_func
 (paren
 op_amp
-id|rq
+id|req
 comma
 l_int|0
 comma
 r_sizeof
 (paren
-id|rq
+id|req
 )paren
 )paren
 suffix:semicolon
-id|rq.flags
+id|req.flags
 op_assign
 id|REQ_SPECIAL
 suffix:semicolon
@@ -252,13 +252,13 @@ id|args.handler
 op_assign
 id|ata_special_intr
 suffix:semicolon
-id|rq.buffer
+id|req.buffer
 op_assign
 id|argbuf
 op_plus
 l_int|4
 suffix:semicolon
-id|rq.special
+id|req.special
 op_assign
 op_amp
 id|args
@@ -271,7 +271,7 @@ c_func
 id|drive
 comma
 op_amp
-id|rq
+id|req
 comma
 id|ide_wait
 )paren

@@ -7,7 +7,7 @@ macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
-macro_line|#ifdef SPINLOCK_DEBUG
+macro_line|#ifdef CONFIG_DEBUG_SPINLOCK
 DECL|macro|INIT_STUCK
 macro_line|#undef INIT_STUCK
 DECL|macro|INIT_STUCK

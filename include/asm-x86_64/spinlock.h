@@ -33,14 +33,6 @@ l_int|2
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* It seems that people are forgetting to&n; * initialize their spinlocks properly, tsk tsk.&n; * Remember to turn this off in 2.4. -ben&n; */
-macro_line|#if defined(CONFIG_DEBUG_SPINLOCK)
-DECL|macro|SPINLOCK_DEBUG
-mdefine_line|#define SPINLOCK_DEBUG&t;1
-macro_line|#else
-DECL|macro|SPINLOCK_DEBUG
-mdefine_line|#define SPINLOCK_DEBUG&t;0
-macro_line|#endif
 multiline_comment|/*&n; * Your basic SMP spinlocks, allowing only a single CPU anywhere&n; */
 r_typedef
 r_struct
@@ -51,7 +43,7 @@ r_int
 r_int
 id|lock
 suffix:semicolon
-macro_line|#if SPINLOCK_DEBUG
+macro_line|#ifdef CONFIG_DEBUG_SPINLOCK
 DECL|member|magic
 r_int
 id|magic
@@ -63,7 +55,7 @@ id|spinlock_t
 suffix:semicolon
 DECL|macro|SPINLOCK_MAGIC
 mdefine_line|#define SPINLOCK_MAGIC&t;0xdead4ead
-macro_line|#if SPINLOCK_DEBUG
+macro_line|#ifdef CONFIG_DEBUG_SPINLOCK
 DECL|macro|SPINLOCK_MAGIC_INIT
 mdefine_line|#define SPINLOCK_MAGIC_INIT&t;, SPINLOCK_MAGIC
 macro_line|#else
@@ -141,7 +133,7 @@ op_star
 id|lock
 )paren
 (brace
-macro_line|#if SPINLOCK_DEBUG
+macro_line|#ifdef CONFIG_DEBUG_SPINLOCK
 id|__label__
 id|here
 suffix:semicolon
@@ -199,7 +191,7 @@ op_star
 id|lock
 )paren
 (brace
-macro_line|#if SPINLOCK_DEBUG
+macro_line|#ifdef CONFIG_DEBUG_SPINLOCK
 r_if
 c_cond
 (paren
@@ -254,7 +246,7 @@ r_int
 r_int
 id|lock
 suffix:semicolon
-macro_line|#if SPINLOCK_DEBUG
+macro_line|#ifdef CONFIG_DEBUG_SPINLOCK
 DECL|member|magic
 r_int
 id|magic
@@ -266,7 +258,7 @@ id|rwlock_t
 suffix:semicolon
 DECL|macro|RWLOCK_MAGIC
 mdefine_line|#define RWLOCK_MAGIC&t;0xdeaf1eed
-macro_line|#if SPINLOCK_DEBUG
+macro_line|#ifdef CONFIG_DEBUG_SPINLOCK
 DECL|macro|RWLOCK_MAGIC_INIT
 mdefine_line|#define RWLOCK_MAGIC_INIT&t;, RWLOCK_MAGIC
 macro_line|#else
@@ -291,7 +283,7 @@ op_star
 id|rw
 )paren
 (brace
-macro_line|#if SPINLOCK_DEBUG
+macro_line|#ifdef CONFIG_DEBUG_SPINLOCK
 r_if
 c_cond
 (paren
@@ -326,7 +318,7 @@ op_star
 id|rw
 )paren
 (brace
-macro_line|#if SPINLOCK_DEBUG
+macro_line|#ifdef CONFIG_DEBUG_SPINLOCK
 r_if
 c_cond
 (paren

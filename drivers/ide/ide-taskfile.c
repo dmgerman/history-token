@@ -682,8 +682,28 @@ c_cond
 id|ar-&gt;handler
 )paren
 (brace
+r_int
+r_int
+id|flags
+suffix:semicolon
+r_struct
+id|ata_channel
+op_star
+id|ch
+op_assign
+id|drive-&gt;channel
+suffix:semicolon
 multiline_comment|/* This is apparently supposed to reset the wait timeout for&n;&t;&t; * the interrupt to accur.&n;&t;&t; */
-id|ide_set_handler
+multiline_comment|/* FIXME: this locking should encompass the above register&n;&t;&t; * file access too.&n;&t;&t; */
+id|spin_lock_irqsave
+c_func
+(paren
+id|ch-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
+id|ata_set_handler
 c_func
 (paren
 id|drive
@@ -701,6 +721,14 @@ c_func
 id|ar-&gt;cmd
 comma
 id|IDE_COMMAND_REG
+)paren
+suffix:semicolon
+id|spin_unlock_irqrestore
+c_func
+(paren
+id|ch-&gt;lock
+comma
+id|flags
 )paren
 suffix:semicolon
 multiline_comment|/* FIXME: Warning check for race between handler and prehandler&n;&t;&t; * for writing first block of data.  however since we are well&n;&t;&t; * inside the boundaries of the seek, we should be okay.&n;&t;&t; *&n;&t;&t; * FIXME: Replace the switch by using a proper command_type.&n;&t;&t; */
@@ -1258,12 +1286,24 @@ id|ret
 op_assign
 id|ide_stopped
 suffix:semicolon
+r_int
+r_int
+id|flags
+suffix:semicolon
 id|ide__sti
 c_func
 (paren
 )paren
 suffix:semicolon
 multiline_comment|/* local CPU only */
+id|spin_lock_irqsave
+c_func
+(paren
+id|drive-&gt;channel-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1462,6 +1502,14 @@ id|end_that_request_last
 c_func
 (paren
 id|rq
+)paren
+suffix:semicolon
+id|spin_unlock_irqrestore
+c_func
+(paren
+id|drive-&gt;channel-&gt;lock
+comma
+id|flags
 )paren
 suffix:semicolon
 r_return

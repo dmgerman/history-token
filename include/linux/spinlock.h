@@ -57,14 +57,11 @@ mdefine_line|#define LOCK_SECTION_END&t;&t;&t;&bslash;&n;&t;&quot;.previous&bsla
 macro_line|#ifdef CONFIG_SMP
 macro_line|#include &lt;asm/spinlock.h&gt;
 macro_line|#elif !defined(spin_lock_init) /* !SMP and spin_lock_init not previously&n;                                  defined (e.g. by including asm/spinlock.h */
-DECL|macro|DEBUG_SPINLOCKS
-mdefine_line|#define DEBUG_SPINLOCKS&t;0&t;/* 0 == no debugging, 1 == maintain lock state, 2 == full debug */
-macro_line|#if (DEBUG_SPINLOCKS &lt; 1)
 macro_line|#ifndef CONFIG_PREEMPT
 DECL|macro|atomic_dec_and_lock
-mdefine_line|#define atomic_dec_and_lock(atomic,lock) atomic_dec_and_test(atomic)
+macro_line|# define atomic_dec_and_lock(atomic,lock) atomic_dec_and_test(atomic)
 DECL|macro|ATOMIC_DEC_AND_LOCK
-mdefine_line|#define ATOMIC_DEC_AND_LOCK
+macro_line|# define ATOMIC_DEC_AND_LOCK
 macro_line|#endif
 multiline_comment|/*&n; * Your basic spinlocks, allowing only a single CPU anywhere&n; *&n; * Most gcc versions have a nasty bug with empty initializers.&n; */
 macro_line|#if (__GNUC__ &gt; 2)
@@ -76,7 +73,7 @@ r_struct
 id|spinlock_t
 suffix:semicolon
 DECL|macro|SPIN_LOCK_UNLOCKED
-mdefine_line|#define SPIN_LOCK_UNLOCKED (spinlock_t) { }
+macro_line|# define SPIN_LOCK_UNLOCKED (spinlock_t) { }
 macro_line|#else
 DECL|member|gcc_is_buggy
 DECL|typedef|spinlock_t
@@ -90,7 +87,7 @@ suffix:semicolon
 id|spinlock_t
 suffix:semicolon
 DECL|macro|SPIN_LOCK_UNLOCKED
-mdefine_line|#define SPIN_LOCK_UNLOCKED (spinlock_t) { 0 }
+macro_line|# define SPIN_LOCK_UNLOCKED (spinlock_t) { 0 }
 macro_line|#endif
 DECL|macro|spin_lock_init
 mdefine_line|#define spin_lock_init(lock)&t;do { (void)(lock); } while(0)
@@ -104,76 +101,6 @@ DECL|macro|spin_unlock_wait
 mdefine_line|#define spin_unlock_wait(lock)&t;do { (void)(lock); } while(0)
 DECL|macro|_raw_spin_unlock
 mdefine_line|#define _raw_spin_unlock(lock)&t;do { (void)(lock); } while(0)
-macro_line|#elif (DEBUG_SPINLOCKS &lt; 2)
-r_typedef
-r_struct
-(brace
-DECL|member|lock
-r_volatile
-r_int
-r_int
-id|lock
-suffix:semicolon
-DECL|typedef|spinlock_t
-)brace
-id|spinlock_t
-suffix:semicolon
-DECL|macro|SPIN_LOCK_UNLOCKED
-mdefine_line|#define SPIN_LOCK_UNLOCKED (spinlock_t) { 0 }
-DECL|macro|spin_lock_init
-mdefine_line|#define spin_lock_init(x)&t;do { (x)-&gt;lock = 0; } while (0)
-DECL|macro|spin_is_locked
-mdefine_line|#define spin_is_locked(lock)&t;(test_bit(0,(lock)))
-DECL|macro|spin_trylock
-mdefine_line|#define spin_trylock(lock)&t;(!test_and_set_bit(0,(lock)))
-DECL|macro|spin_lock
-mdefine_line|#define spin_lock(x)&t;&t;do { (x)-&gt;lock = 1; } while (0)
-DECL|macro|spin_unlock_wait
-mdefine_line|#define spin_unlock_wait(x)&t;do { } while (0)
-DECL|macro|spin_unlock
-mdefine_line|#define spin_unlock(x)&t;&t;do { (x)-&gt;lock = 0; } while (0)
-macro_line|#else /* (DEBUG_SPINLOCKS &gt;= 2) */
-r_typedef
-r_struct
-(brace
-DECL|member|lock
-r_volatile
-r_int
-r_int
-id|lock
-suffix:semicolon
-DECL|member|babble
-r_volatile
-r_int
-r_int
-id|babble
-suffix:semicolon
-DECL|member|module
-r_const
-r_char
-op_star
-id|module
-suffix:semicolon
-DECL|typedef|spinlock_t
-)brace
-id|spinlock_t
-suffix:semicolon
-DECL|macro|SPIN_LOCK_UNLOCKED
-mdefine_line|#define SPIN_LOCK_UNLOCKED (spinlock_t) { 0, 25, __BASE_FILE__ }
-macro_line|#include &lt;linux/kernel.h&gt;
-DECL|macro|spin_lock_init
-mdefine_line|#define spin_lock_init(x)&t;do { (x)-&gt;lock = 0; } while (0)
-DECL|macro|spin_is_locked
-mdefine_line|#define spin_is_locked(lock)&t;(test_bit(0,(lock)))
-DECL|macro|spin_trylock
-mdefine_line|#define spin_trylock(lock)&t;(!test_and_set_bit(0,(lock)))
-DECL|macro|spin_lock
-mdefine_line|#define spin_lock(x)&t;&t;do {unsigned long __spinflags; save_flags(__spinflags); cli(); if ((x)-&gt;lock&amp;&amp;(x)-&gt;babble) {printk(&quot;%s:%d: spin_lock(%s:%p) already locked&bslash;n&quot;, __BASE_FILE__,__LINE__, (x)-&gt;module, (x));(x)-&gt;babble--;} (x)-&gt;lock = 1; restore_flags(__spinflags);} while (0)
-DECL|macro|spin_unlock_wait
-mdefine_line|#define spin_unlock_wait(x)&t;do {unsigned long __spinflags; save_flags(__spinflags); cli(); if ((x)-&gt;lock&amp;&amp;(x)-&gt;babble) {printk(&quot;%s:%d: spin_unlock_wait(%s:%p) deadlock&bslash;n&quot;, __BASE_FILE__,__LINE__, (x)-&gt;module, (x));(x)-&gt;babble--;} restore_flags(__spinflags);} while (0)
-DECL|macro|spin_unlock
-mdefine_line|#define spin_unlock(x)&t;&t;do {unsigned long __spinflags; save_flags(__spinflags); cli(); if (!(x)-&gt;lock&amp;&amp;(x)-&gt;babble) {printk(&quot;%s:%d: spin_unlock(%s:%p) not locked&bslash;n&quot;, __BASE_FILE__,__LINE__, (x)-&gt;module, (x));(x)-&gt;babble--;} (x)-&gt;lock = 0; restore_flags(__spinflags);} while (0)
-macro_line|#endif&t;/* DEBUG_SPINLOCKS */
 multiline_comment|/*&n; * Read-write spinlocks, allowing multiple readers&n; * but only one writer.&n; *&n; * NOTE! it is quite common to have readers in interrupts&n; * but no interrupt writers. For those circumstances we&n; * can &quot;mix&quot; irq-safe locks - any writer needs to get a&n; * irq-safe write-lock, but readers can get non-irqsafe&n; * read-locks.&n; *&n; * Most gcc versions have a nasty bug with empty initializers.&n; */
 macro_line|#if (__GNUC__ &gt; 2)
 DECL|typedef|rwlock_t
