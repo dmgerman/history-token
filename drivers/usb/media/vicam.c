@@ -10,14 +10,6 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &quot;usbvideo.h&quot;
 singleline_comment|// #define VICAM_DEBUG
-macro_line|#ifndef MODULE_LICENSE
-DECL|macro|MODULE_LICENSE
-mdefine_line|#define MODULE_LICENSE(a)
-macro_line|#endif
-macro_line|#ifndef bool
-DECL|macro|bool
-mdefine_line|#define bool int
-macro_line|#endif
 macro_line|#ifdef VICAM_DEBUG
 DECL|macro|ADBG
 mdefine_line|#define ADBG(lineno,fmt,args...) printk(fmt, jiffies, __FUNCTION__, lineno, ##args)
@@ -4492,7 +4484,7 @@ id|busy_lock
 suffix:semicolon
 singleline_comment|// guard against SMP multithreading
 DECL|member|is_initialized
-r_bool
+r_int
 id|is_initialized
 suffix:semicolon
 DECL|member|open_count
@@ -4504,7 +4496,7 @@ id|u8
 id|bulkEndpoint
 suffix:semicolon
 DECL|member|needsDummyRead
-r_bool
+r_int
 id|needsDummyRead
 suffix:semicolon
 macro_line|#if defined(CONFIG_VIDEO_PROC_FS)
@@ -6304,6 +6296,7 @@ singleline_comment|//
 singleline_comment|//   Copyright (C) 2002 Monroe Williams (monroe@pobox.com)
 singleline_comment|// --------------------------------------------------------------------------------
 DECL|function|vicam_decode_color
+r_static
 r_void
 id|vicam_decode_color
 c_func
@@ -7473,6 +7466,7 @@ op_assign
 l_int|NULL
 suffix:semicolon
 DECL|function|vicam_read_helper
+r_static
 r_int
 id|vicam_read_helper
 c_func
@@ -7572,6 +7566,7 @@ id|len
 suffix:semicolon
 )brace
 DECL|function|vicam_read_proc_shutter
+r_static
 r_int
 id|vicam_read_proc_shutter
 c_func
@@ -7628,6 +7623,7 @@ id|shutter_speed
 suffix:semicolon
 )brace
 DECL|function|vicam_read_proc_gain
+r_static
 r_int
 id|vicam_read_proc_gain
 c_func
@@ -7684,6 +7680,7 @@ id|gain
 suffix:semicolon
 )brace
 DECL|function|vicam_write_proc_shutter
+r_static
 r_int
 id|vicam_write_proc_shutter
 c_func
@@ -7736,6 +7733,7 @@ id|count
 suffix:semicolon
 )brace
 DECL|function|vicam_write_proc_gain
+r_static
 r_int
 id|vicam_write_proc_gain
 c_func
@@ -7787,6 +7785,7 @@ r_return
 id|count
 suffix:semicolon
 )brace
+r_static
 r_void
 DECL|function|vicam_create_proc_root
 id|vicam_create_proc_root
@@ -7825,6 +7824,7 @@ l_string|&quot;could not create /proc entry for vicam!&quot;
 )paren
 suffix:semicolon
 )brace
+r_static
 r_void
 DECL|function|vicam_destroy_proc_root
 id|vicam_destroy_proc_root
@@ -7847,6 +7847,7 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
+r_static
 r_void
 DECL|function|vicam_create_proc_entry
 id|vicam_create_proc_entry
@@ -8016,6 +8017,7 @@ l_int|64
 suffix:semicolon
 )brace
 )brace
+r_static
 r_void
 DECL|function|vicam_destroy_proc_entry
 id|vicam_destroy_proc_entry
@@ -8090,6 +8092,56 @@ id|cam-&gt;proc_dir
 op_assign
 l_int|NULL
 suffix:semicolon
+)brace
+macro_line|#else
+DECL|function|vicam_create_proc_root
+r_static
+r_inline
+r_void
+id|vicam_create_proc_root
+c_func
+(paren
+r_void
+)paren
+(brace
+)brace
+DECL|function|vicam_destroy_proc_root
+r_static
+r_inline
+r_void
+id|vicam_destroy_proc_root
+c_func
+(paren
+r_void
+)paren
+(brace
+)brace
+DECL|function|vicam_create_proc_entry
+r_static
+r_inline
+r_void
+id|vicam_create_proc_entry
+c_func
+(paren
+r_struct
+id|vicam_camera
+op_star
+id|cam
+)paren
+(brace
+)brace
+DECL|function|vicam_destroy_proc_entry
+r_static
+r_inline
+r_void
+id|vicam_destroy_proc_entry
+c_func
+(paren
+r_void
+op_star
+id|ptr
+)paren
+(brace
 )brace
 macro_line|#endif
 DECL|variable|vicam_fops
@@ -8584,14 +8636,12 @@ op_amp
 id|cam-&gt;vdev
 )paren
 suffix:semicolon
-macro_line|#if defined(CONFIG_VIDEO_PROC_FS)
 id|vicam_destroy_proc_entry
 c_func
 (paren
 id|cam
 )paren
 suffix:semicolon
-macro_line|#endif
 id|kfree
 c_func
 (paren
@@ -8624,13 +8674,11 @@ id|KERN_INFO
 l_string|&quot;ViCam-based WebCam driver startup&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#if defined(CONFIG_VIDEO_PROC_FS)
 id|vicam_create_proc_root
 c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -8678,13 +8726,11 @@ op_amp
 id|vicam_driver
 )paren
 suffix:semicolon
-macro_line|#if defined(CONFIG_VIDEO_PROC_FS)
 id|vicam_destroy_proc_root
 c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#endif
 )brace
 DECL|variable|usb_vicam_init
 id|module_init
