@@ -520,6 +520,7 @@ multiline_comment|/* queue for buffers to be grabbed */
 DECL|member|video_dev
 r_struct
 id|video_device
+op_star
 id|video_dev
 suffix:semicolon
 multiline_comment|/* video device parameters */
