@@ -47,11 +47,11 @@ mdefine_line|#define ICMP_INC_STATS_BH(field)&t;SNMP_INC_STATS_BH(icmp_statistic
 DECL|macro|ICMP_INC_STATS_USER
 mdefine_line|#define ICMP_INC_STATS_USER(field) &t;SNMP_INC_STATS_USER(icmp_statistics, field)
 DECL|macro|ICMP_INC_STATS_FIELD
-mdefine_line|#define ICMP_INC_STATS_FIELD(offt)&t;&t;&t;&t;&t;&bslash;&n;&t;(*((unsigned long *) ((void *)&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;     per_cpu_ptr(icmp_statistics[!in_softirq()],&bslash;&n;&t;&t;&t;&t;&t; smp_processor_id())) + offt))++;
+mdefine_line|#define ICMP_INC_STATS_FIELD(offt)&t;&t;&t;&t;&t;&bslash;&n;&t;(*((unsigned long *) ((void *)&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;     per_cpu_ptr(icmp_statistics[!in_softirq()],&bslash;&n;&t;&t;&t;&t;&t; smp_processor_id()) + offt)))++
 DECL|macro|ICMP_INC_STATS_BH_FIELD
-mdefine_line|#define ICMP_INC_STATS_BH_FIELD(offt)&t;&t;&t;&t;&t;&bslash;&n;&t;(*((unsigned long *) ((void *)&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;     per_cpu_ptr(icmp_statistics[0],&t;&t;&bslash;&n;&t;&t;&t;&t;&t; smp_processor_id())) + offt))++;
+mdefine_line|#define ICMP_INC_STATS_BH_FIELD(offt)&t;&t;&t;&t;&t;&bslash;&n;&t;(*((unsigned long *) ((void *)&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;     per_cpu_ptr(icmp_statistics[0],&t;&t;&bslash;&n;&t;&t;&t;&t;&t; smp_processor_id()) + offt)))++
 DECL|macro|ICMP_INC_STATS_USER_FIELD
-mdefine_line|#define ICMP_INC_STATS_USER_FIELD(offt)&t;&t;&t;&t;&t;&bslash;&n;&t;(*((unsigned long *) ((void *)&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;     per_cpu_ptr(icmp_statistics[1],&t;&t;&bslash;&n;&t;&t;&t;&t;&t; smp_processor_id())) + offt))++;
+mdefine_line|#define ICMP_INC_STATS_USER_FIELD(offt)&t;&t;&t;&t;&t;&bslash;&n;&t;(*((unsigned long *) ((void *)&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;     per_cpu_ptr(icmp_statistics[1],&t;&t;&bslash;&n;&t;&t;&t;&t;&t; smp_processor_id()) + offt)))++
 r_extern
 r_void
 id|icmp_send

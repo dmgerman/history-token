@@ -951,9 +951,9 @@ id|skb
 )paren
 op_member_access_from_pointer
 id|shapeclock
-op_minus
-id|jiffies
 comma
+id|jiffies
+op_plus
 id|SHAPER_BURST
 )paren
 )paren
