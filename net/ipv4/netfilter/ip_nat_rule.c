@@ -99,10 +99,9 @@ r_struct
 id|ipt_error
 id|term
 suffix:semicolon
-DECL|variable|__initdata
+DECL|variable|nat_initial_table
 )brace
 id|nat_initial_table
-id|__initdata
 op_assign
 (brace
 (brace
