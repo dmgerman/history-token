@@ -7,6 +7,8 @@ DECL|macro|esr_disable
 mdefine_line|#define esr_disable (1)
 DECL|macro|NO_BALANCE_IRQ
 mdefine_line|#define NO_BALANCE_IRQ (0)
+DECL|macro|NO_IOAPIC_CHECK
+mdefine_line|#define NO_IOAPIC_CHECK (1)&t;/* Don&squot;t check I/O APIC ID for xAPIC */
 multiline_comment|/* In clustered mode, the high nibble of APIC ID is a cluster number.&n; * The low nibble is a 4-bit bitmap. */
 DECL|macro|XAPIC_DEST_CPUS_SHIFT
 mdefine_line|#define XAPIC_DEST_CPUS_SHIFT&t;4

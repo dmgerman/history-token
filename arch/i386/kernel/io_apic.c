@@ -7293,6 +7293,14 @@ op_assign
 id|reg_00.bits.ID
 suffix:semicolon
 )brace
+multiline_comment|/* Don&squot;t check I/O APIC IDs for some xAPIC systems.  They have&n;&t;&t; * no meaning without the serial APIC bus. */
+r_if
+c_cond
+(paren
+id|NO_IOAPIC_CHECK
+)paren
+r_continue
+suffix:semicolon
 multiline_comment|/*&n;&t;&t; * Sanity check, is the ID really free? Every APIC in a&n;&t;&t; * system must have a unique ID or we get lots of nice&n;&t;&t; * &squot;stuck on smp_invalidate_needed IPI wait&squot; messages.&n;&t;&t; */
 r_if
 c_cond
