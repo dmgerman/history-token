@@ -5097,6 +5097,14 @@ id|ide_drive_t
 op_star
 )paren
 suffix:semicolon
+id|ide_startstop_t
+id|ide_dma_intr
+c_func
+(paren
+id|ide_drive_t
+op_star
+)paren
+suffix:semicolon
 macro_line|#ifdef CONFIG_BLK_DEV_IDEDMA_PCI
 r_extern
 r_int
@@ -5127,15 +5135,6 @@ suffix:semicolon
 r_extern
 r_void
 id|ide_destroy_dmatable
-c_func
-(paren
-id|ide_drive_t
-op_star
-)paren
-suffix:semicolon
-r_extern
-id|ide_startstop_t
-id|ide_dma_intr
 c_func
 (paren
 id|ide_drive_t
