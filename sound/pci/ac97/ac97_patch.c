@@ -3981,7 +3981,7 @@ id|ac97
 comma
 l_string|&quot;Headphone Playback Volume&quot;
 comma
-l_string|&quot;Headphone Playback Volume&quot;
+l_string|&quot;Master Playback Volume&quot;
 )paren
 suffix:semicolon
 r_return
