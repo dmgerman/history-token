@@ -36,6 +36,7 @@ macro_line|#endif
 DECL|variable|wdt_is_open
 r_static
 r_int
+r_int
 id|wdt_is_open
 suffix:semicolon
 multiline_comment|/*&n; *&t;You must set these - there is no sane way to probe for this board.&n; *&t;You can use wdt=x,y to set these now.&n; */

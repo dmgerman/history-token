@@ -871,12 +871,12 @@ id|memset
 (paren
 id|b
 comma
+l_int|0
+comma
 r_sizeof
 (paren
 id|buff_t
 )paren
-comma
-l_int|0
 )paren
 suffix:semicolon
 id|b-&gt;s

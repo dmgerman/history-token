@@ -22,6 +22,7 @@ macro_line|#include &lt;linux/init.h&gt;
 DECL|variable|wdt_is_open
 r_static
 r_int
+r_int
 id|wdt_is_open
 suffix:semicolon
 multiline_comment|/*&n; *&t;You must set these - there is no sane way to probe for this board.&n; *&t;You can use wdt=x,y to set these now.&n; */
@@ -927,7 +928,14 @@ suffix:colon
 r_if
 c_cond
 (paren
+id|test_and_set_bit
+c_func
+(paren
+l_int|0
+comma
+op_amp
 id|wdt_is_open
+)paren
 )paren
 (brace
 r_return
@@ -936,10 +944,6 @@ id|EBUSY
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t;&t;&t; *&t;Activate &n;&t;&t;&t; */
-id|wdt_is_open
-op_assign
-l_int|1
-suffix:semicolon
 id|inb_p
 c_func
 (paren
@@ -1071,9 +1075,14 @@ l_int|0
 suffix:semicolon
 multiline_comment|/* 0 length reset pulses now */
 macro_line|#endif&t;&t;
-id|wdt_is_open
-op_assign
+id|clear_bit
+c_func
+(paren
 l_int|0
+comma
+op_amp
+id|wdt_is_open
+)paren
 suffix:semicolon
 )brace
 r_return

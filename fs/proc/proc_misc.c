@@ -1595,10 +1595,8 @@ id|pos
 )paren
 (brace
 r_return
-(paren
-r_void
-op_star
-)paren
+l_int|NULL
+op_plus
 (paren
 op_star
 id|pos
@@ -3024,7 +3022,6 @@ op_amp
 id|proc_cpuinfo_operations
 )paren
 suffix:semicolon
-macro_line|#if defined(CONFIG_ARCH_S390) || defined(CONFIG_X86) || defined(CONFIG_ARCH_MIPS)
 id|create_seq_entry
 c_func
 (paren
@@ -3036,7 +3033,6 @@ op_amp
 id|proc_interrupts_operations
 )paren
 suffix:semicolon
-macro_line|#endif
 macro_line|#ifdef CONFIG_MODULES
 id|create_seq_entry
 c_func

@@ -164,14 +164,12 @@ DECL|macro|bio_iovec
 mdefine_line|#define bio_iovec(bio)&t;&t;bio_iovec_idx((bio), (bio)-&gt;bi_idx)
 DECL|macro|bio_page
 mdefine_line|#define bio_page(bio)&t;&t;bio_iovec((bio))-&gt;bv_page
-DECL|macro|bio_size
-mdefine_line|#define bio_size(bio)&t;&t;((bio)-&gt;bi_size)
 DECL|macro|__bio_offset
 mdefine_line|#define __bio_offset(bio, idx)&t;bio_iovec_idx((bio), (idx))-&gt;bv_offset
 DECL|macro|bio_offset
 mdefine_line|#define bio_offset(bio)&t;&t;bio_iovec((bio))-&gt;bv_offset
 DECL|macro|bio_sectors
-mdefine_line|#define bio_sectors(bio)&t;(bio_size((bio)) &gt;&gt; 9)
+mdefine_line|#define bio_sectors(bio)&t;((bio)-&gt;bi_size &gt;&gt; 9)
 DECL|macro|bio_data
 mdefine_line|#define bio_data(bio)&t;&t;(page_address(bio_page((bio))) + bio_offset((bio)))
 DECL|macro|bio_barrier
@@ -181,9 +179,6 @@ DECL|macro|bio_to_phys
 mdefine_line|#define bio_to_phys(bio)&t;(page_to_phys(bio_page((bio))) + bio_offset((bio)))
 DECL|macro|bvec_to_phys
 mdefine_line|#define bvec_to_phys(bv)&t;(page_to_phys((bv)-&gt;bv_page) + (bv)-&gt;bv_offset)
-multiline_comment|/*&n; * hack to avoid doing 64-bit calculations on 32-bit archs, instead use a&n; * pseudo-pfn check to do segment coalescing&n; */
-DECL|macro|bio_sec_pfn
-mdefine_line|#define bio_sec_pfn(bio) &bslash;&n;&t;((((bio_page(bio) - bio_page(bio)-&gt;zone-&gt;zone_mem_map) &lt;&lt; PAGE_SHIFT) / bio_size(bio)) + (bio_offset(bio) &gt;&gt; 9))
 multiline_comment|/*&n; * queues that have highmem support enabled may still need to revert to&n; * PIO transfers occasionally and thus map high pages temporarily. For&n; * permanent PIO fall back, user is probably better off disabling highmem&n; * I/O completely on that queue (see ide-dma for example)&n; */
 DECL|macro|__bio_kmap
 mdefine_line|#define __bio_kmap(bio, idx) (kmap(bio_iovec_idx((bio), (idx))-&gt;bv_page) + bio_iovec_idx((bio), (idx))-&gt;bv_offset)
@@ -193,12 +188,15 @@ DECL|macro|__bio_kunmap
 mdefine_line|#define __bio_kunmap(bio, idx)&t;kunmap(bio_iovec_idx((bio), (idx))-&gt;bv_page)
 DECL|macro|bio_kunmap
 mdefine_line|#define bio_kunmap(bio)&t;&t;__bio_kunmap((bio), (bio)-&gt;bi_idx)
+multiline_comment|/*&n; * merge helpers etc&n; */
+DECL|macro|__BVEC_END
+mdefine_line|#define __BVEC_END(bio) bio_iovec_idx((bio), (bio)-&gt;bi_idx - 1)
 DECL|macro|BIO_CONTIG
-mdefine_line|#define BIO_CONTIG(bio, nxt) &bslash;&n;&t;(bio_to_phys((bio)) + bio_size((bio)) == bio_to_phys((nxt)))
+mdefine_line|#define BIO_CONTIG(bio, nxt) &bslash;&n;&t;(bvec_to_phys(__BVEC_END((bio)) + (bio)-&gt;bi_size) ==bio_to_phys((nxt)))
 DECL|macro|__BIO_SEG_BOUNDARY
 mdefine_line|#define __BIO_SEG_BOUNDARY(addr1, addr2, mask) &bslash;&n;&t;(((addr1) | (mask)) == (((addr2) - 1) | (mask)))
 DECL|macro|BIO_SEG_BOUNDARY
-mdefine_line|#define BIO_SEG_BOUNDARY(q, b1, b2) &bslash;&n;&t;__BIO_SEG_BOUNDARY(bvec_to_phys(bio_iovec_idx((b1), (b1)-&gt;bi_cnt - 1)), bio_to_phys((b2)) + bio_size((b2)), (q)-&gt;seg_boundary_mask)
+mdefine_line|#define BIO_SEG_BOUNDARY(q, b1, b2) &bslash;&n;&t;__BIO_SEG_BOUNDARY(bvec_to_phys(__BVEC_END((b1))), bio_to_phys((b2)) + (b2)-&gt;bi_size, (q)-&gt;seg_boundary_mask)
 DECL|typedef|bio_end_io_t
 r_typedef
 r_int

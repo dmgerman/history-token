@@ -3087,6 +3087,8 @@ r_goto
 id|out3
 suffix:semicolon
 )brace
+macro_line|#if !defined(CONFIG_ACPI)
+multiline_comment|/* Enable ACPI mode to get Fn key events */
 r_if
 c_cond
 (paren
@@ -3100,6 +3102,7 @@ comma
 l_int|0xb2
 )paren
 suffix:semicolon
+macro_line|#endif
 r_if
 c_cond
 (paren
@@ -3299,6 +3302,22 @@ c_func
 (paren
 )paren
 suffix:semicolon
+macro_line|#if !defined(CONFIG_ACPI)
+multiline_comment|/* disable ACPI mode */
+r_if
+c_cond
+(paren
+id|fnkeyinit
+)paren
+id|outb
+c_func
+(paren
+l_int|0xf1
+comma
+l_int|0xb2
+)paren
+suffix:semicolon
+macro_line|#endif
 id|free_irq
 c_func
 (paren

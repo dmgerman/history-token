@@ -259,21 +259,6 @@ id|id_table
 suffix:colon
 id|id_table
 comma
-id|needs_interrupt_in
-suffix:colon
-id|MUST_HAVE_NOT
-comma
-multiline_comment|/* must not have an interrupt in endpoint */
-id|needs_bulk_in
-suffix:colon
-id|MUST_HAVE
-comma
-multiline_comment|/* must have a bulk in endpoint */
-id|needs_bulk_out
-suffix:colon
-id|MUST_HAVE
-comma
-multiline_comment|/* must have a bulk out endpoint */
 id|num_interrupt_in
 suffix:colon
 l_int|0

@@ -217,16 +217,6 @@ suffix:semicolon
 multiline_comment|/* data private to the specific driver */
 )brace
 suffix:semicolon
-DECL|macro|MUST_HAVE_NOT
-mdefine_line|#define MUST_HAVE_NOT&t;0x01
-DECL|macro|MUST_HAVE
-mdefine_line|#define MUST_HAVE&t;0x02
-DECL|macro|DONT_CARE
-mdefine_line|#define DONT_CARE&t;0x03
-DECL|macro|HAS
-mdefine_line|#define&t;HAS&t;&t;0x02
-DECL|macro|HAS_NOT
-mdefine_line|#define HAS_NOT&t;&t;0x01
 DECL|macro|NUM_DONT_CARE
 mdefine_line|#define NUM_DONT_CARE&t;(-1)
 multiline_comment|/* This structure defines the individual serial converter. */
@@ -245,18 +235,6 @@ r_struct
 id|usb_device_id
 op_star
 id|id_table
-suffix:semicolon
-DECL|member|needs_interrupt_in
-r_char
-id|needs_interrupt_in
-suffix:semicolon
-DECL|member|needs_bulk_in
-r_char
-id|needs_bulk_in
-suffix:semicolon
-DECL|member|needs_bulk_out
-r_char
-id|needs_bulk_out
 suffix:semicolon
 DECL|member|num_interrupt_in
 r_char

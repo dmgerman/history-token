@@ -1316,8 +1316,6 @@ c_func
 (paren
 op_amp
 id|kbd_controller_lock
-comma
-id|flags
 )paren
 suffix:semicolon
 )brace
@@ -1350,6 +1348,7 @@ id|scancode
 )paren
 (brace
 macro_line|#ifdef CONFIG_PSMOUSE
+r_int
 r_int
 id|flags
 suffix:semicolon
@@ -3609,6 +3608,7 @@ id|file
 )paren
 (brace
 r_int
+r_int
 id|flags
 suffix:semicolon
 id|fasync_aux
@@ -3626,7 +3626,7 @@ id|spin_lock_irqsave
 c_func
 (paren
 op_amp
-id|aux_count
+id|aux_count_lock
 comma
 id|flags
 )paren
@@ -3643,6 +3643,8 @@ c_func
 (paren
 op_amp
 id|aux_count_lock
+comma
+id|flags
 )paren
 suffix:semicolon
 r_return
@@ -3700,6 +3702,7 @@ id|file
 )paren
 (brace
 r_int
+r_int
 id|flags
 suffix:semicolon
 id|spin_lock_irqsave
@@ -3723,6 +3726,8 @@ c_func
 (paren
 op_amp
 id|aux_count_lock
+comma
+id|flags
 )paren
 suffix:semicolon
 r_return

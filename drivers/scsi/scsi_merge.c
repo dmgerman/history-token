@@ -252,11 +252,7 @@ c_cond
 (paren
 id|reqsize
 op_plus
-id|bio_size
-c_func
-(paren
-id|bio
-)paren
+id|bio-&gt;bi_size
 OG
 id|PAGE_SIZE
 )paren
@@ -286,11 +282,7 @@ op_increment
 suffix:semicolon
 id|reqsize
 op_add_assign
-id|bio_size
-c_func
-(paren
-id|bio
-)paren
+id|bio-&gt;bi_size
 suffix:semicolon
 )brace
 r_if
@@ -359,7 +351,7 @@ l_int|NULL
 suffix:semicolon
 )brace
 DECL|macro|MERGEABLE_BUFFERS
-mdefine_line|#define MERGEABLE_BUFFERS(X,Y) &bslash;&n;(((((long)bio_to_phys((X))+bio_size((X)))|((long)bio_to_phys((Y)))) &amp; &bslash;&n;  (DMA_CHUNK_SIZE - 1)) == 0)
+mdefine_line|#define MERGEABLE_BUFFERS(X,Y) &bslash;&n;(((((long)bio_to_phys((X))+(X)-&gt;bi_size)|((long)bio_to_phys((Y)))) &amp; &bslash;&n;  (DMA_CHUNK_SIZE - 1)) == 0)
 macro_line|#ifdef DMA_CHUNK_SIZE
 DECL|function|scsi_new_mergeable
 r_static
@@ -1727,11 +1719,7 @@ c_func
 id|bio
 )paren
 op_plus
-id|bio_size
-c_func
-(paren
-id|bio
-)paren
+id|bio-&gt;bi_size
 op_minus
 l_int|1
 OG

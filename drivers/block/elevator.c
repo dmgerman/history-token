@@ -180,10 +180,6 @@ op_logical_neg
 id|rq-&gt;special
 op_logical_and
 id|rq-&gt;inactive
-op_logical_and
-id|rq-&gt;q
-op_eq
-id|q
 )paren
 r_return
 l_int|1

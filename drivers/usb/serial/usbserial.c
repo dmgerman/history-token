@@ -187,21 +187,6 @@ id|id_table
 suffix:colon
 id|generic_device_ids
 comma
-id|needs_interrupt_in
-suffix:colon
-id|DONT_CARE
-comma
-multiline_comment|/* don&squot;t have to have an interrupt in endpoint */
-id|needs_bulk_in
-suffix:colon
-id|DONT_CARE
-comma
-multiline_comment|/* don&squot;t have to have a bulk in endpoint */
-id|needs_bulk_out
-suffix:colon
-id|DONT_CARE
-comma
-multiline_comment|/* don&squot;t have to have a bulk out endpoint */
 id|num_interrupt_in
 suffix:colon
 id|NUM_DONT_CARE
@@ -3295,15 +3280,6 @@ suffix:semicolon
 r_int
 id|i
 suffix:semicolon
-r_char
-id|interrupt_pipe
-suffix:semicolon
-r_char
-id|bulk_in_pipe
-suffix:semicolon
-r_char
-id|bulk_out_pipe
-suffix:semicolon
 r_int
 id|num_interrupt_in
 op_assign
@@ -3420,14 +3396,6 @@ l_int|NULL
 suffix:semicolon
 )brace
 multiline_comment|/* descriptor matches, let&squot;s find the endpoints needed */
-id|interrupt_pipe
-op_assign
-id|bulk_in_pipe
-op_assign
-id|bulk_out_pipe
-op_assign
-id|HAS_NOT
-suffix:semicolon
 multiline_comment|/* check out the endpoints */
 id|iface_desc
 op_assign
@@ -3487,10 +3455,6 @@ c_func
 l_string|&quot;found bulk in&quot;
 )paren
 suffix:semicolon
-id|bulk_in_pipe
-op_assign
-id|HAS
-suffix:semicolon
 id|bulk_in_endpoint
 (braket
 id|num_bulk_in
@@ -3533,10 +3497,6 @@ c_func
 l_string|&quot;found bulk out&quot;
 )paren
 suffix:semicolon
-id|bulk_out_pipe
-op_assign
-id|HAS
-suffix:semicolon
 id|bulk_out_endpoint
 (braket
 id|num_bulk_out
@@ -3574,10 +3534,6 @@ c_func
 (paren
 l_string|&quot;found interrupt in&quot;
 )paren
-suffix:semicolon
-id|interrupt_pipe
-op_assign
-id|HAS
 suffix:semicolon
 id|interrupt_in_endpoint
 (braket
@@ -3703,10 +3659,6 @@ c_func
 l_string|&quot;found interrupt in for Prolific device on separate interface&quot;
 )paren
 suffix:semicolon
-id|interrupt_pipe
-op_assign
-id|HAS
-suffix:semicolon
 id|interrupt_in_endpoint
 (braket
 id|num_interrupt_in
@@ -3723,43 +3675,6 @@ suffix:semicolon
 )brace
 multiline_comment|/* END HORRIBLE HACK FOR PL2303 */
 macro_line|#endif
-multiline_comment|/* verify that we found all of the endpoints that we need */
-r_if
-c_cond
-(paren
-op_logical_neg
-(paren
-(paren
-id|interrupt_pipe
-op_amp
-id|type-&gt;needs_interrupt_in
-)paren
-op_logical_and
-(paren
-id|bulk_in_pipe
-op_amp
-id|type-&gt;needs_bulk_in
-)paren
-op_logical_and
-(paren
-id|bulk_out_pipe
-op_amp
-id|type-&gt;needs_bulk_out
-)paren
-)paren
-)paren
-(brace
-multiline_comment|/* nope, they don&squot;t match what we expected */
-id|info
-c_func
-(paren
-l_string|&quot;descriptors matched, but endpoints did not&quot;
-)paren
-suffix:semicolon
-r_return
-l_int|NULL
-suffix:semicolon
-)brace
 multiline_comment|/* found all that we need */
 id|info
 c_func

@@ -302,21 +302,6 @@ id|id_table
 suffix:colon
 id|id_table
 comma
-id|needs_interrupt_in
-suffix:colon
-id|DONT_CARE
-comma
-multiline_comment|/* this device must have an interrupt in endpoint */
-id|needs_bulk_in
-suffix:colon
-id|MUST_HAVE
-comma
-multiline_comment|/* this device must have a bulk in endpoint */
-id|needs_bulk_out
-suffix:colon
-id|MUST_HAVE
-comma
-multiline_comment|/* this device must have a bulk out endpoint */
 id|num_interrupt_in
 suffix:colon
 id|NUM_DONT_CARE

@@ -25,6 +25,10 @@ r_void
 id|create_bounce
 c_func
 (paren
+r_int
+r_int
+id|pfn
+comma
 r_struct
 id|bio
 op_star

@@ -591,11 +591,7 @@ c_func
 id|bio
 )paren
 comma
-id|bio_size
-c_func
-(paren
-id|bio
-)paren
+id|bio-&gt;bi_size
 comma
 id|bio-&gt;bi_next
 op_eq
@@ -832,11 +828,7 @@ c_func
 id|bio
 )paren
 comma
-id|bio_size
-c_func
-(paren
-id|bio
-)paren
+id|bio-&gt;bi_size
 comma
 id|MSG_WAITALL
 )paren
