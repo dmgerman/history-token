@@ -23,6 +23,13 @@ mdefine_line|#define IRCOMM_TTY_HDR_UNINITIALISED&t;16
 multiline_comment|/* Same for payload size. See qos.c for the smallest max data size */
 DECL|macro|IRCOMM_TTY_DATA_UNINITIALISED
 mdefine_line|#define IRCOMM_TTY_DATA_UNINITIALISED&t;(64 - IRCOMM_TTY_HDR_UNINITIALISED)
+multiline_comment|/* Those are really defined in include/linux/serial.h - Jean II */
+DECL|macro|ASYNC_B_INITIALIZED
+mdefine_line|#define ASYNC_B_INITIALIZED&t;31&t;/* Serial port was initialized */
+DECL|macro|ASYNC_B_NORMAL_ACTIVE
+mdefine_line|#define ASYNC_B_NORMAL_ACTIVE&t;29&t;/* Normal device is active */
+DECL|macro|ASYNC_B_CLOSING
+mdefine_line|#define ASYNC_B_CLOSING&t;&t;27&t;/* Serial port is closing */
 multiline_comment|/*&n; * IrCOMM TTY driver state&n; */
 DECL|struct|ircomm_tty_cb
 r_struct
@@ -95,7 +102,9 @@ r_int
 id|line
 suffix:semicolon
 DECL|member|flags
-id|__u32
+r_volatile
+r_int
+r_int
 id|flags
 suffix:semicolon
 DECL|member|dlsap_sel

@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/termios.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
+macro_line|#include &lt;linux/device.h&gt;&t;&t;/* for MODULE_ALIAS_CHARDEV_MAJOR */
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;net/irda/irda.h&gt;
 macro_line|#include &lt;net/irda/irmod.h&gt;
@@ -678,6 +679,9 @@ id|notify
 suffix:semicolon
 r_int
 id|ret
+op_assign
+op_minus
+id|ENODEV
 suffix:semicolon
 id|IRDA_DEBUG
 c_func
@@ -715,13 +719,18 @@ l_int|1
 suffix:semicolon
 )paren
 suffix:semicolon
-multiline_comment|/* Already open */
+multiline_comment|/* Check if already open */
 r_if
 c_cond
 (paren
-id|self-&gt;flags
+id|test_and_set_bit
+c_func
+(paren
+id|ASYNC_B_INITIALIZED
+comma
 op_amp
-id|ASYNC_INITIALIZED
+id|self-&gt;flags
+)paren
 )paren
 (brace
 id|IRDA_DEBUG
@@ -816,9 +825,8 @@ c_cond
 op_logical_neg
 id|self-&gt;ircomm
 )paren
-r_return
-op_minus
-id|ENODEV
+r_goto
+id|err
 suffix:semicolon
 id|self-&gt;slsap_sel
 op_assign
@@ -849,16 +857,26 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
-r_return
-id|ret
+r_goto
+id|err
 suffix:semicolon
 )brace
-id|self-&gt;flags
-op_or_assign
-id|ASYNC_INITIALIZED
-suffix:semicolon
 r_return
 l_int|0
+suffix:semicolon
+id|err
+suffix:colon
+id|clear_bit
+c_func
+(paren
+id|ASYNC_B_INITIALIZED
+comma
+op_amp
+id|self-&gt;flags
+)paren
+suffix:semicolon
+r_return
+id|ret
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Function ircomm_block_til_ready (self, filp)&n; *&n; *    &n; *&n; */
@@ -1099,10 +1117,13 @@ id|filp
 )paren
 op_logical_or
 op_logical_neg
+id|test_bit
+c_func
 (paren
-id|self-&gt;flags
+id|ASYNC_B_INITIALIZED
+comma
 op_amp
-id|ASYNC_INITIALIZED
+id|self-&gt;flags
 )paren
 )paren
 (brace
@@ -1129,10 +1150,13 @@ r_if
 c_cond
 (paren
 op_logical_neg
+id|test_bit
+c_func
 (paren
-id|self-&gt;flags
+id|ASYNC_B_CLOSING
+comma
 op_amp
-id|ASYNC_CLOSING
+id|self-&gt;flags
 )paren
 op_logical_and
 (paren
@@ -1581,10 +1605,13 @@ c_func
 id|filp
 )paren
 op_logical_or
+id|test_bit
+c_func
 (paren
-id|self-&gt;flags
+id|ASYNC_B_CLOSING
+comma
 op_amp
-id|ASYNC_CLOSING
+id|self-&gt;flags
 )paren
 )paren
 (brace
@@ -1598,10 +1625,13 @@ c_func
 id|self-&gt;close_wait
 comma
 op_logical_neg
+id|test_bit
+c_func
 (paren
-id|self-&gt;flags
+id|ASYNC_B_CLOSING
+comma
 op_amp
-id|ASYNC_CLOSING
+id|self-&gt;flags
 )paren
 )paren
 )paren
@@ -1964,11 +1994,17 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
+multiline_comment|/* Hum... Should be test_and_set_bit ??? - Jean II */
+id|set_bit
+c_func
+(paren
+id|ASYNC_B_CLOSING
+comma
+op_amp
 id|self-&gt;flags
-op_or_assign
-id|ASYNC_CLOSING
+)paren
 suffix:semicolon
-multiline_comment|/* We need to unlock here (we were unlocking at the end of this&n;&t; * function), because tty_wait_until_sent() may schedule.&n;&t; * I don&squot;t know if the rest should be locked somehow,&n;&t; * so someone should check. - Jean II */
+multiline_comment|/* We need to unlock here (we were unlocking at the end of this&n;&t; * function), because tty_wait_until_sent() may schedule.&n;&t; * I don&squot;t know if the rest should be protected somehow,&n;&t; * so someone should check. - Jean II */
 id|spin_unlock_irqrestore
 c_func
 (paren
@@ -3462,13 +3498,22 @@ r_if
 c_cond
 (paren
 op_logical_neg
+id|test_and_clear_bit
+c_func
 (paren
-id|self-&gt;flags
+id|ASYNC_B_INITIALIZED
+comma
 op_amp
-id|ASYNC_INITIALIZED
+id|self-&gt;flags
 )paren
 )paren
 r_return
+suffix:semicolon
+id|ircomm_tty_detach_cable
+c_func
+(paren
+id|self
+)paren
 suffix:semicolon
 id|spin_lock_irqsave
 c_func
@@ -3522,12 +3567,6 @@ op_assign
 l_int|NULL
 suffix:semicolon
 )brace
-id|ircomm_tty_detach_cable
-c_func
-(paren
-id|self
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -3545,11 +3584,6 @@ op_assign
 l_int|NULL
 suffix:semicolon
 )brace
-id|self-&gt;flags
-op_and_assign
-op_complement
-id|ASYNC_INITIALIZED
-suffix:semicolon
 id|spin_unlock_irqrestore
 c_func
 (paren
@@ -5503,6 +5537,13 @@ id|MODULE_LICENSE
 c_func
 (paren
 l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
+DECL|variable|IRCOMM_TTY_MAJOR
+id|MODULE_ALIAS_CHARDEV_MAJOR
+c_func
+(paren
+id|IRCOMM_TTY_MAJOR
 )paren
 suffix:semicolon
 DECL|variable|ircomm_tty_init

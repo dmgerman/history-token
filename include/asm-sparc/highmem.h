@@ -4,10 +4,10 @@ DECL|macro|_ASM_HIGHMEM_H
 mdefine_line|#define _ASM_HIGHMEM_H
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/interrupt.h&gt;
+macro_line|#include &lt;asm/fixmap.h&gt;
+macro_line|#include &lt;asm/vaddrs.h&gt;
 macro_line|#include &lt;asm/kmap_types.h&gt;
-multiline_comment|/* undef for production */
-DECL|macro|HIGHMEM_DEBUG
-mdefine_line|#define HIGHMEM_DEBUG 1
+macro_line|#include &lt;asm/pgtsrmmu.h&gt;
 multiline_comment|/* declarations for highmem.c */
 r_extern
 r_int
@@ -30,18 +30,6 @@ id|pte_t
 op_star
 id|pkmap_page_table
 suffix:semicolon
-multiline_comment|/* This gets set in {srmmu,sun4c}_paging_init() */
-r_extern
-r_int
-r_int
-id|fix_kmap_begin
-suffix:semicolon
-multiline_comment|/* Only used and set with srmmu? */
-r_extern
-r_int
-r_int
-id|pkmap_base
-suffix:semicolon
 r_extern
 r_void
 id|kmap_init
@@ -52,14 +40,18 @@ r_void
 id|__init
 suffix:semicolon
 multiline_comment|/*&n; * Right now we initialize only a single pte table. It can be extended&n; * easily, subsequent pte tables have to be allocated in one physical&n; * chunk of RAM.&n; */
+DECL|macro|PKMAP_BASE
+mdefine_line|#define PKMAP_BASE (SRMMU_NOCACHE_VADDR + (SRMMU_MAX_NOCACHE_PAGES &lt;&lt; PAGE_SHIFT))
 DECL|macro|LAST_PKMAP
 mdefine_line|#define LAST_PKMAP 1024
 DECL|macro|LAST_PKMAP_MASK
 mdefine_line|#define LAST_PKMAP_MASK (LAST_PKMAP - 1)
 DECL|macro|PKMAP_NR
-mdefine_line|#define PKMAP_NR(virt)  ((virt - pkmap_base) &gt;&gt; PAGE_SHIFT)
+mdefine_line|#define PKMAP_NR(virt)  ((virt - PKMAP_BASE) &gt;&gt; PAGE_SHIFT)
 DECL|macro|PKMAP_ADDR
-mdefine_line|#define PKMAP_ADDR(nr)  (pkmap_base + ((nr) &lt;&lt; PAGE_SHIFT))
+mdefine_line|#define PKMAP_ADDR(nr)  (PKMAP_BASE + ((nr) &lt;&lt; PAGE_SHIFT))
+DECL|macro|PKMAP_END
+mdefine_line|#define PKMAP_END (PKMAP_ADDR(LAST_PKMAP))
 r_extern
 r_void
 op_star
@@ -97,17 +89,13 @@ op_star
 id|page
 )paren
 (brace
-r_if
-c_cond
+id|BUG_ON
+c_func
 (paren
 id|in_interrupt
 c_func
 (paren
 )paren
-)paren
-id|BUG
-c_func
-(paren
 )paren
 suffix:semicolon
 r_if
@@ -145,17 +133,13 @@ op_star
 id|page
 )paren
 (brace
-r_if
-c_cond
+id|BUG_ON
+c_func
 (paren
 id|in_interrupt
 c_func
 (paren
 )paren
-)paren
-id|BUG
-c_func
-(paren
 )paren
 suffix:semicolon
 r_if
@@ -204,9 +188,7 @@ id|km_type
 id|type
 )paren
 suffix:semicolon
-DECL|function|kmap_atomic_to_page
-r_static
-r_inline
+r_extern
 r_struct
 id|page
 op_star
@@ -215,66 +197,9 @@ c_func
 (paren
 r_void
 op_star
-id|ptr
-)paren
-(brace
-r_int
-r_int
-id|idx
-comma
 id|vaddr
-op_assign
-(paren
-r_int
-r_int
-)paren
-id|ptr
-suffix:semicolon
-id|pte_t
-op_star
-id|pte
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|vaddr
-OL
-id|fix_kmap_begin
-)paren
-r_return
-id|virt_to_page
-c_func
-(paren
-id|ptr
 )paren
 suffix:semicolon
-id|idx
-op_assign
-(paren
-(paren
-id|vaddr
-op_minus
-id|fix_kmap_begin
-)paren
-op_rshift
-id|PAGE_SHIFT
-)paren
-suffix:semicolon
-id|pte
-op_assign
-id|kmap_pte
-op_plus
-id|idx
-suffix:semicolon
-r_return
-id|pte_page
-c_func
-(paren
-op_star
-id|pte
-)paren
-suffix:semicolon
-)brace
 DECL|macro|flush_cache_kmaps
 mdefine_line|#define flush_cache_kmaps()&t;flush_cache_all()
 macro_line|#endif /* __KERNEL__ */

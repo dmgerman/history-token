@@ -43,7 +43,7 @@ mdefine_line|#define HTB_QLOCK(S) spin_lock_bh(&amp;(S)-&gt;dev-&gt;queue_lock)
 DECL|macro|HTB_QUNLOCK
 mdefine_line|#define HTB_QUNLOCK(S) spin_unlock_bh(&amp;(S)-&gt;dev-&gt;queue_lock)
 DECL|macro|HTB_VER
-mdefine_line|#define HTB_VER 0x3000e&t;/* major must be matched with number suplied by TC as version */
+mdefine_line|#define HTB_VER 0x3000f&t;/* major must be matched with number suplied by TC as version */
 macro_line|#if HTB_VER &gt;&gt; 16 != TC_HTB_PROTOVER
 macro_line|#error &quot;Mismatched sch_htb.c and pkt_sch.h&quot;
 macro_line|#endif
@@ -793,6 +793,10 @@ id|sch
 )paren
 op_ne
 l_int|NULL
+op_logical_and
+id|cl-&gt;level
+op_eq
+l_int|0
 )paren
 r_return
 id|cl

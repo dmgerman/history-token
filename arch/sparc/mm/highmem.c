@@ -5,6 +5,7 @@ macro_line|#include &lt;linux/highmem.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/cacheflush.h&gt;
 macro_line|#include &lt;asm/tlbflush.h&gt;
+macro_line|#include &lt;asm/fixmap.h&gt;
 DECL|function|kmap_atomic
 r_void
 op_star
@@ -62,11 +63,13 @@ c_func
 suffix:semicolon
 id|vaddr
 op_assign
-id|fix_kmap_begin
+id|__fix_to_virt
+c_func
+(paren
+id|FIX_KMAP_BEGIN
 op_plus
 id|idx
-op_star
-id|PAGE_SIZE
+)paren
 suffix:semicolon
 multiline_comment|/* XXX Fix - Anton */
 macro_line|#if 0
@@ -83,9 +86,9 @@ c_func
 )paren
 suffix:semicolon
 macro_line|#endif
-macro_line|#if HIGHMEM_DEBUG
-r_if
-c_cond
+macro_line|#ifdef CONFIG_DEBUG_HIGHMEM
+id|BUG_ON
+c_func
 (paren
 op_logical_neg
 id|pte_none
@@ -94,14 +97,10 @@ c_func
 op_star
 (paren
 id|kmap_pte
-op_plus
+op_minus
 id|idx
 )paren
 )paren
-)paren
-id|BUG
-c_func
-(paren
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -109,7 +108,7 @@ id|set_pte
 c_func
 (paren
 id|kmap_pte
-op_plus
+op_minus
 id|idx
 comma
 id|mk_pte
@@ -158,6 +157,7 @@ id|km_type
 id|type
 )paren
 (brace
+macro_line|#ifdef CONFIG_DEBUG_HIGHMEM
 r_int
 r_int
 id|vaddr
@@ -167,6 +167,8 @@ r_int
 r_int
 )paren
 id|kvaddr
+op_amp
+id|PAGE_MASK
 suffix:semicolon
 r_int
 r_int
@@ -186,7 +188,7 @@ c_cond
 (paren
 id|vaddr
 OL
-id|fix_kmap_begin
+id|FIXADDR_START
 )paren
 (brace
 singleline_comment|// FIXME
@@ -203,20 +205,18 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-r_if
-c_cond
+id|BUG_ON
+c_func
 (paren
 id|vaddr
 op_ne
-id|fix_kmap_begin
-op_plus
-id|idx
-op_star
-id|PAGE_SIZE
-)paren
-id|BUG
+id|__fix_to_virt
 c_func
 (paren
+id|FIX_KMAP_BEGIN
+op_plus
+id|idx
+)paren
 )paren
 suffix:semicolon
 multiline_comment|/* XXX Fix - Anton */
@@ -234,13 +234,12 @@ c_func
 )paren
 suffix:semicolon
 macro_line|#endif
-macro_line|#ifdef HIGHMEM_DEBUG
 multiline_comment|/*&n;&t; * force other mappings to Oops if they&squot;ll try to access&n;&t; * this pte without first remap it&n;&t; */
 id|pte_clear
 c_func
 (paren
 id|kmap_pte
-op_plus
+op_minus
 id|idx
 )paren
 suffix:semicolon
@@ -268,6 +267,112 @@ suffix:semicolon
 id|preempt_check_resched
 c_func
 (paren
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/* We may be fed a pagetable here by ptep_to_xxx and others. */
+DECL|function|kmap_atomic_to_page
+r_struct
+id|page
+op_star
+id|kmap_atomic_to_page
+c_func
+(paren
+r_void
+op_star
+id|ptr
+)paren
+(brace
+r_int
+r_int
+id|idx
+comma
+id|vaddr
+op_assign
+(paren
+r_int
+r_int
+)paren
+id|ptr
+suffix:semicolon
+id|pte_t
+op_star
+id|pte
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|vaddr
+OL
+id|SRMMU_NOCACHE_VADDR
+)paren
+r_return
+id|virt_to_page
+c_func
+(paren
+id|ptr
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|vaddr
+OL
+id|PKMAP_BASE
+)paren
+r_return
+id|pfn_to_page
+c_func
+(paren
+id|__nocache_pa
+c_func
+(paren
+id|vaddr
+)paren
+op_rshift
+id|PAGE_SHIFT
+)paren
+suffix:semicolon
+id|BUG_ON
+c_func
+(paren
+id|vaddr
+OL
+id|FIXADDR_START
+)paren
+suffix:semicolon
+id|BUG_ON
+c_func
+(paren
+id|vaddr
+OG
+id|FIXADDR_TOP
+)paren
+suffix:semicolon
+id|idx
+op_assign
+id|virt_to_fix
+c_func
+(paren
+id|vaddr
+)paren
+suffix:semicolon
+id|pte
+op_assign
+id|kmap_pte
+op_minus
+(paren
+id|idx
+op_minus
+id|FIX_KMAP_BEGIN
+)paren
+suffix:semicolon
+r_return
+id|pte_page
+c_func
+(paren
+op_star
+id|pte
 )paren
 suffix:semicolon
 )brace

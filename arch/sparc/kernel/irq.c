@@ -35,6 +35,13 @@ macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/hardirq.h&gt;
 macro_line|#include &lt;asm/pcic.h&gt;
 macro_line|#include &lt;asm/cacheflush.h&gt;
+multiline_comment|/* Used to protect the IRQ action lists */
+DECL|variable|irq_action_lock
+id|spinlock_t
+id|irq_action_lock
+op_assign
+id|SPIN_LOCK_UNLOCKED
+suffix:semicolon
 multiline_comment|/*&n; * Dave Redman (djhr@tadpole.co.uk)&n; *&n; * IRQ numbers.. These are no longer restricted to 15..&n; *&n; * this is done to enable SBUS cards and onboard IO to be masked&n; * correctly. using the interrupt level isn&squot;t good enough.&n; *&n; * For example:&n; *   A device interrupting at sbus level6 and the Floppy both come in&n; *   at IRQ11, but enabling and disabling them requires writing to&n; *   different bits in the SLAVIO/SEC.&n; *&n; * As a result of these changes sun4m machines could now support&n; * directed CPU interrupts using the existing enable/disable irq code&n; * with tweaks.&n; *&n; */
 DECL|function|irq_panic
 r_static
@@ -1921,9 +1928,12 @@ op_minus
 id|EBUSY
 suffix:semicolon
 )brace
-id|save_and_cli
+id|spin_lock_irqsave
 c_func
 (paren
+op_amp
+id|irq_action_lock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -1987,7 +1997,7 @@ r_struct
 id|irqaction
 )paren
 comma
-id|GFP_KERNEL
+id|GFP_ATOMIC
 )paren
 suffix:semicolon
 r_if
@@ -1997,9 +2007,12 @@ op_logical_neg
 id|action
 )paren
 (brace
-id|restore_flags
+id|spin_unlock_irqrestore
 c_func
 (paren
+op_amp
+id|irq_action_lock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -2095,9 +2108,12 @@ c_func
 id|irq
 )paren
 suffix:semicolon
-id|restore_flags
+id|spin_unlock_irqrestore
 c_func
 (paren
+op_amp
+id|irq_action_lock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -2341,9 +2357,12 @@ l_int|NULL
 suffix:semicolon
 multiline_comment|/* Or else! */
 )brace
-id|save_and_cli
+id|spin_lock_irqsave
 c_func
 (paren
+op_amp
+id|irq_action_lock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -2407,7 +2426,7 @@ r_struct
 id|irqaction
 )paren
 comma
-id|GFP_KERNEL
+id|GFP_ATOMIC
 )paren
 suffix:semicolon
 r_if
@@ -2417,9 +2436,12 @@ op_logical_neg
 id|action
 )paren
 (brace
-id|restore_flags
+id|spin_unlock_irqrestore
 c_func
 (paren
+op_amp
+id|irq_action_lock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -2477,9 +2499,12 @@ c_func
 id|irq
 )paren
 suffix:semicolon
-id|restore_flags
+id|spin_unlock_irqrestore
 c_func
 (paren
+op_amp
+id|irq_action_lock
+comma
 id|flags
 )paren
 suffix:semicolon

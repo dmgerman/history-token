@@ -1826,9 +1826,13 @@ op_amp
 id|flags
 )paren
 suffix:semicolon
+id|BUG_ON
+c_func
+(paren
 id|p-&gt;state
-op_assign
+op_ne
 id|TASK_RUNNING
+)paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * We decrease the sleep average of forking parents&n;&t; * and children as well, to keep max-interactive tasks&n;&t; * from forking tasks that are max-interactive.&n;&t; */
 id|current-&gt;sleep_avg
