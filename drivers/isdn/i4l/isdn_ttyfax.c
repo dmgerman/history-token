@@ -1428,6 +1428,7 @@ op_star
 id|slot
 suffix:semicolon
 r_int
+r_int
 id|flags
 suffix:semicolon
 r_for
