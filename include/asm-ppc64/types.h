@@ -152,6 +152,28 @@ r_typedef
 id|u64
 id|dma64_addr_t
 suffix:semicolon
+r_typedef
+r_struct
+(brace
+DECL|member|entry
+r_int
+r_int
+id|entry
+suffix:semicolon
+DECL|member|toc
+r_int
+r_int
+id|toc
+suffix:semicolon
+DECL|member|env
+r_int
+r_int
+id|env
+suffix:semicolon
+DECL|typedef|func_descr_t
+)brace
+id|func_descr_t
+suffix:semicolon
 macro_line|#endif /* __ASSEMBLY__ */
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* _PPC64_TYPES_H */

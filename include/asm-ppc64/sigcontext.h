@@ -3,6 +3,7 @@ DECL|macro|_ASM_PPC64_SIGCONTEXT_H
 mdefine_line|#define _ASM_PPC64_SIGCONTEXT_H
 multiline_comment|/*&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License&n; * as published by the Free Software Foundation; either version&n; * 2 of the License, or (at your option) any later version.&n; */
 macro_line|#include &lt;asm/ptrace.h&gt;
+macro_line|#include &lt;asm/elf.h&gt;
 DECL|struct|sigcontext
 r_struct
 id|sigcontext
@@ -38,6 +39,14 @@ r_struct
 id|pt_regs
 op_star
 id|regs
+suffix:semicolon
+DECL|member|gp_regs
+id|elf_gregset_t
+id|gp_regs
+suffix:semicolon
+DECL|member|fp_regs
+id|elf_fpregset_t
+id|fp_regs
 suffix:semicolon
 )brace
 suffix:semicolon

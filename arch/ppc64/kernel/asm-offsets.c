@@ -187,7 +187,7 @@ comma
 m_offsetof
 (paren
 r_struct
-id|naca_struct
+id|systemcfg
 comma
 id|dCacheL1LineSize
 )paren
@@ -229,7 +229,7 @@ comma
 m_offsetof
 (paren
 r_struct
-id|naca_struct
+id|systemcfg
 comma
 id|iCacheL1LineSize
 )paren
@@ -285,7 +285,7 @@ comma
 m_offsetof
 (paren
 r_struct
-id|naca_struct
+id|systemcfg
 comma
 id|platform
 )paren
