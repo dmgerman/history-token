@@ -1000,7 +1000,7 @@ l_int|0
 suffix:semicolon
 id|err
 op_assign
-id|user_write
+id|os_write_file
 c_func
 (paren
 id|to-&gt;thread.switch_pipe
@@ -1070,7 +1070,7 @@ suffix:semicolon
 )brace
 id|err
 op_assign
-id|user_read
+id|os_read_file
 c_func
 (paren
 id|from-&gt;thread.switch_pipe

@@ -289,6 +289,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/* XXX Needs to be moved under sys-i386 */
 DECL|function|__delay
 r_void
 id|__delay

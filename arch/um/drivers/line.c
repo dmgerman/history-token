@@ -1804,11 +1804,6 @@ id|driver-&gt;init_termios
 op_assign
 id|tty_std_termios
 suffix:semicolon
-id|driver-&gt;refcount
-op_assign
-op_amp
-id|set-&gt;refcount
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2330,12 +2325,6 @@ id|list
 )paren
 suffix:semicolon
 id|close
-c_func
-(paren
-id|winch-&gt;fd
-)paren
-suffix:semicolon
-id|free_irq_by_fd
 c_func
 (paren
 id|winch-&gt;fd

@@ -19,6 +19,7 @@ macro_line|#include &quot;wait.h&quot;
 macro_line|#include &quot;user_util.h&quot;
 macro_line|#include &quot;user.h&quot;
 macro_line|#include &quot;os.h&quot;
+macro_line|#include &quot;tempfile.h&quot;
 DECL|function|debugger_wait
 r_static
 r_int

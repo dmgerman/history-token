@@ -245,6 +245,7 @@ id|old
 )paren
 suffix:semicolon
 r_return
+op_logical_neg
 id|sigismember
 c_func
 (paren

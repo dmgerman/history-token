@@ -464,7 +464,7 @@ l_char|&squot;&bslash;0&squot;
 id|printk
 c_func
 (paren
-l_string|&quot;set_tty_log_dir - strtoul failed on &squot;%s&squot;&bslash;n&quot;
+l_string|&quot;set_tty_log_fd - strtoul failed on &squot;%s&squot;&bslash;n&quot;
 comma
 id|name
 )paren
