@@ -4,6 +4,7 @@ macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/vmalloc.h&gt;
+macro_line|#include &lt;linux/byteorder/generic.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/i2c.h&gt;
@@ -3019,7 +3020,11 @@ id|zr-&gt;stat_com
 id|i
 )braket
 op_assign
+id|cpu_to_le32
+c_func
+(paren
 l_int|1
+)paren
 suffix:semicolon
 multiline_comment|/* mark as unavailable to zr36057 */
 )brace
@@ -4721,7 +4726,11 @@ id|zr-&gt;stat_com
 id|i
 )braket
 op_amp
+id|cpu_to_le32
+c_func
+(paren
 l_int|1
+)paren
 )paren
 )paren
 r_break
@@ -4731,12 +4740,16 @@ id|zr-&gt;stat_com
 id|i
 )braket
 op_assign
+id|cpu_to_le32
+c_func
+(paren
 id|zr-&gt;jpg_buffers.buffer
 (braket
 id|frame
 )braket
 dot
 id|frag_tab_bus
+)paren
 suffix:semicolon
 )brace
 r_else
@@ -4766,7 +4779,11 @@ id|zr-&gt;stat_com
 id|i
 )braket
 op_amp
+id|cpu_to_le32
+c_func
+(paren
 l_int|1
+)paren
 )paren
 )paren
 r_break
@@ -4776,12 +4793,16 @@ id|zr-&gt;stat_com
 id|i
 )braket
 op_assign
+id|cpu_to_le32
+c_func
+(paren
 id|zr-&gt;jpg_buffers.buffer
 (braket
 id|frame
 )braket
 dot
 id|frag_tab_bus
+)paren
 suffix:semicolon
 id|zr-&gt;stat_com
 (braket
@@ -4790,12 +4811,16 @@ op_plus
 l_int|1
 )braket
 op_assign
+id|cpu_to_le32
+c_func
+(paren
 id|zr-&gt;jpg_buffers.buffer
 (braket
 id|frame
 )braket
 dot
 id|frag_tab_bus
+)paren
 suffix:semicolon
 )brace
 id|zr-&gt;jpg_buffers.buffer
@@ -4914,10 +4939,14 @@ l_int|1
 suffix:semicolon
 id|stat_com
 op_assign
+id|le32_to_cpu
+c_func
+(paren
 id|zr-&gt;stat_com
 (braket
 id|i
 )braket
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -5305,10 +5334,14 @@ op_increment
 r_if
 c_cond
 (paren
+id|le32_to_cpu
+c_func
+(paren
 id|zr-&gt;stat_com
 (braket
 id|j
 )braket
+)paren
 op_eq
 id|zr-&gt;jpg_buffers
 dot
@@ -5392,7 +5425,11 @@ id|zr-&gt;stat_com
 id|i
 )braket
 op_or_assign
+id|cpu_to_le32
+c_func
+(paren
 l_int|1
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -5408,7 +5445,11 @@ op_plus
 l_int|1
 )braket
 op_or_assign
+id|cpu_to_le32
+c_func
+(paren
 l_int|1
+)paren
 suffix:semicolon
 multiline_comment|/* Refill */
 id|zoran_reap_stat_com
@@ -5480,6 +5521,7 @@ id|bus_addr
 id|BUZ_NUM_STAT_COM
 )braket
 suffix:semicolon
+multiline_comment|/* Here we are copying the stat_com array, which&n;&t;&t;&t;&t; * is already in little endian format, so&n;&t;&t;&t;&t; * no endian conversions here&n;&t;&t;&t;&t; */
 id|memcpy
 c_func
 (paren
@@ -6292,10 +6334,14 @@ op_increment
 r_if
 c_cond
 (paren
+id|le32_to_cpu
+c_func
+(paren
 id|zr-&gt;stat_com
 (braket
 id|i
 )braket
+)paren
 op_amp
 l_int|1
 )paren
@@ -6415,10 +6461,14 @@ c_func
 (paren
 l_string|&quot; %08x&quot;
 comma
+id|le32_to_cpu
+c_func
+(paren
 id|zr-&gt;stat_com
 (braket
 id|i
 )braket
+)paren
 )paren
 suffix:semicolon
 )brace
