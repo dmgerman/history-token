@@ -224,6 +224,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
+id|APIC_INTEGRATED
+c_func
+(paren
+id|version
+)paren
+op_logical_or
 id|version
 op_ge
 l_int|0x14
