@@ -46,6 +46,14 @@ r_extern
 id|spinlock_t
 id|rtc_lock
 suffix:semicolon
+multiline_comment|/* This is definitely a GPL-only symbol */
+DECL|variable|cpu_gdt_table
+id|EXPORT_SYMBOL_GPL
+c_func
+(paren
+id|cpu_gdt_table
+)paren
+suffix:semicolon
 macro_line|#if defined(CONFIG_APM_MODULE)
 r_extern
 r_void

@@ -2,6 +2,7 @@ multiline_comment|/*&n; * File...........: linux/drivers/s390/block/dasd_proc.c&
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/ctype.h&gt;
+macro_line|#include &lt;linux/vmalloc.h&gt;
 macro_line|#include &lt;asm/debug.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
@@ -618,12 +619,8 @@ r_if
 c_cond
 (paren
 id|from
-OL
-l_int|0
-op_logical_or
-id|to
-OL
-l_int|0
+template_param
+l_int|65536
 op_logical_or
 id|features
 OL
@@ -776,22 +773,13 @@ id|dasd_device_t
 op_star
 id|device
 suffix:semicolon
-r_struct
-id|gendisk
-op_star
-id|gdp
-suffix:semicolon
-r_char
-id|buffer
-(braket
-l_int|7
-)braket
-suffix:semicolon
 r_char
 op_star
 id|substr
 suffix:semicolon
 r_int
+id|major
+comma
 id|minor
 suffix:semicolon
 r_int
@@ -870,19 +858,21 @@ l_string|&quot;(none)&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Print kdev. */
-id|gdp
+id|major
 op_assign
-id|dasd_gendisk_from_devindex
+id|MAJOR
 c_func
 (paren
-id|devmap-&gt;devindex
+id|device-&gt;bdev-&gt;bd_dev
 )paren
 suffix:semicolon
 id|minor
 op_assign
-id|devmap-&gt;devindex
-op_mod
-id|DASD_PER_MAJOR
+id|MINOR
+c_func
+(paren
+id|device-&gt;bdev-&gt;bd_dev
+)paren
 suffix:semicolon
 id|len
 op_add_assign
@@ -895,7 +885,7 @@ id|len
 comma
 l_string|&quot; at (%3d:%3d)&quot;
 comma
-id|gdp-&gt;major
+id|major
 comma
 id|minor
 )paren
@@ -912,7 +902,7 @@ id|len
 comma
 l_string|&quot; is %-7s&quot;
 comma
-id|gdp-&gt;disk_name
+id|device-&gt;name
 )paren
 suffix:semicolon
 multiline_comment|/* Print devices features. */

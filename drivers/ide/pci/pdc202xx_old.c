@@ -2430,6 +2430,15 @@ suffix:semicolon
 macro_line|#endif /* PDC202_DEBUG_CABLE */
 r_break
 suffix:semicolon
+r_case
+id|PCI_DEVICE_ID_PROMISE_20246
+suffix:colon
+id|ultra_66
+op_assign
+l_int|0
+suffix:semicolon
+r_break
+suffix:semicolon
 r_default
 suffix:colon
 id|BUG
@@ -3216,23 +3225,12 @@ c_func
 id|drive
 )paren
 suffix:semicolon
-r_struct
-id|pci_dev
-op_star
-id|dev
-op_assign
-id|hwif-&gt;pci_dev
-suffix:semicolon
+singleline_comment|//&t;&t;struct pci_dev *dev&t;= hwif-&gt;pci_dev;
+singleline_comment|//&t;&t;u32 high_16&t;= pci_resource_start(dev, 4);
 id|u32
 id|high_16
 op_assign
-id|pci_resource_start
-c_func
-(paren
-id|dev
-comma
-l_int|4
-)paren
+id|hwif-&gt;dma_master
 suffix:semicolon
 id|u32
 id|atapi_reg
@@ -3298,7 +3296,11 @@ suffix:semicolon
 id|word_count
 op_assign
 (paren
-id|rq-&gt;cmd
+id|rq_data_dir
+c_func
+(paren
+id|rq
+)paren
 op_eq
 id|READ
 )paren
@@ -3360,16 +3362,11 @@ c_func
 id|drive
 )paren
 suffix:semicolon
+singleline_comment|//&t;&t;u32 high_16&t;= pci_resource_start(hwif-&gt;pci_dev, 4);
 id|u32
 id|high_16
 op_assign
-id|pci_resource_start
-c_func
-(paren
-id|hwif-&gt;pci_dev
-comma
-l_int|4
-)paren
+id|hwif-&gt;dma_master
 suffix:semicolon
 id|u32
 id|atapi_reg
@@ -3465,24 +3462,12 @@ c_func
 id|drive
 )paren
 suffix:semicolon
-r_struct
-id|pci_dev
-op_star
-id|dev
-op_assign
-id|hwif-&gt;pci_dev
-suffix:semicolon
-r_int
-r_int
+singleline_comment|//&t;struct pci_dev *dev&t;= hwif-&gt;pci_dev;
+singleline_comment|//&t;unsigned long high_16&t;= pci_resource_start(dev, 4);
+id|u32
 id|high_16
 op_assign
-id|pci_resource_start
-c_func
-(paren
-id|dev
-comma
-l_int|4
-)paren
+id|hwif-&gt;dma_master
 suffix:semicolon
 id|u8
 id|dma_stat
@@ -5365,6 +5350,8 @@ id|dev
 comma
 id|d
 )paren
+suffix:semicolon
+id|MOD_INC_USE_COUNT
 suffix:semicolon
 r_return
 l_int|0

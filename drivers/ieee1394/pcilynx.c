@@ -4011,12 +4011,9 @@ suffix:semicolon
 r_int
 id|alignfix
 suffix:semicolon
-r_int
+id|loff_t
 id|off
 op_assign
-(paren
-r_int
-)paren
 op_star
 id|offset
 suffix:semicolon
@@ -4040,6 +4037,7 @@ multiline_comment|/* Check for EOF before we trust wrap */
 r_return
 l_int|0
 suffix:semicolon
+multiline_comment|/* FIXME: Signed wrap is undefined in C - wants fixing up */
 r_if
 c_cond
 (paren

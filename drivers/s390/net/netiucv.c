@@ -106,7 +106,7 @@ id|tx_time
 suffix:semicolon
 DECL|member|send_stamp
 r_struct
-id|timeval
+id|timespec
 id|send_stamp
 suffix:semicolon
 DECL|typedef|connection_profile

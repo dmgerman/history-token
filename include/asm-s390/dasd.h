@@ -1,4 +1,4 @@
-multiline_comment|/* &n; * File...........: linux/drivers/s390/block/dasd.c&n; * Author(s)......: Holger Smolinski &lt;Holger.Smolinski@de.ibm.com&gt;&n; * Bugreports.to..: &lt;Linux390@de.ibm.com&gt;&n; * (C) IBM Corporation, IBM Deutschland Entwicklung GmbH, 1999,2000&n; *&n; * This file is the interface of the DASD device driver, which is exported to user space&n; * any future changes wrt the API will result in a change of the APIVERSION reported&n; * to userspace by the DASDAPIVER-ioctl&n; *&n; * History of changes (starts July 2000)&n; * 05/04/01 created by moving the kernel interface to drivers/s390/block/dasd_int.h&n; * 12/06/01 DASD_API_VERSION 2 - binary compatible to 0 (new BIODASDINFO2)&n; * 01/23/02 DASD_API_VERSION 3 - added BIODASDPSRD (and BIODASDENAPAV) IOCTL&n; * 02/15/02 DASD_API_VERSION 4 - added BIODASDSATTR IOCTL&n; *         &n; */
+multiline_comment|/* &n; * File...........: linux/drivers/s390/block/dasd.c&n; * Author(s)......: Holger Smolinski &lt;Holger.Smolinski@de.ibm.com&gt;&n; * Bugreports.to..: &lt;Linux390@de.ibm.com&gt;&n; * (C) IBM Corporation, IBM Deutschland Entwicklung GmbH, 1999,2000&n; *&n; * This file is the interface of the DASD device driver, which is exported to user space&n; * any future changes wrt the API will result in a change of the APIVERSION reported&n; * to userspace by the DASDAPIVER-ioctl&n; *&n; * History of changes (starts July 2000)&n; * 05/04/01 created by moving the kernel interface to drivers/s390/block/dasd_int.h&n; * 12/06/01 DASD_API_VERSION 2 - binary compatible to 0 (new BIODASDINFO2)&n; * 01/23/02 DASD_API_VERSION 3 - added BIODASDPSRD (and BIODASDENAPAV) IOCTL&n; * 02/15/02 DASD_API_VERSION 4 - added BIODASDSATTR IOCTL&n; * ##/##/## DASD_API_VERSION 5 - added boxed dasd support TOBEDONE&n; * 21/06/02 DASD_API_VERSION 6 - fixed HDIO_GETGEO: geo.start is in sectors!&n; *         &n; */
 macro_line|#ifndef DASD_H
 DECL|macro|DASD_H
 mdefine_line|#define DASD_H
@@ -6,7 +6,7 @@ macro_line|#include &lt;linux/ioctl.h&gt;
 DECL|macro|DASD_IOCTL_LETTER
 mdefine_line|#define DASD_IOCTL_LETTER &squot;D&squot;
 DECL|macro|DASD_API_VERSION
-mdefine_line|#define DASD_API_VERSION 4
+mdefine_line|#define DASD_API_VERSION 6
 multiline_comment|/* &n; * struct dasd_information2_t&n; * represents any data about the device, which is visible to userspace.&n; *  including foramt and featueres.&n; */
 DECL|struct|dasd_information2_t
 r_typedef

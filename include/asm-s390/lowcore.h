@@ -72,55 +72,11 @@ DECL|macro|__LC_PANIC_MAGIC
 mdefine_line|#define __LC_PANIC_MAGIC                0xE00
 DECL|macro|__LC_PFAULT_INTPARM
 mdefine_line|#define __LC_PFAULT_INTPARM             0x080
-multiline_comment|/* interrupt handler start with all io, external and mcck interrupt disabled */
-DECL|macro|_RESTART_PSW_MASK
-mdefine_line|#define _RESTART_PSW_MASK    0x00080000
-DECL|macro|_EXT_PSW_MASK
-mdefine_line|#define _EXT_PSW_MASK        0x04080000
-DECL|macro|_PGM_PSW_MASK
-mdefine_line|#define _PGM_PSW_MASK        0x04080000
-DECL|macro|_SVC_PSW_MASK
-mdefine_line|#define _SVC_PSW_MASK        0x04080000
-DECL|macro|_MCCK_PSW_MASK
-mdefine_line|#define _MCCK_PSW_MASK       0x04080000
-DECL|macro|_IO_PSW_MASK
-mdefine_line|#define _IO_PSW_MASK         0x04080000
-DECL|macro|_USER_PSW_MASK
-mdefine_line|#define _USER_PSW_MASK       0x070DC000/* DAT, IO, EXT, Home-space         */
-DECL|macro|_WAIT_PSW_MASK
-mdefine_line|#define _WAIT_PSW_MASK       0x070E0000/* DAT, IO, EXT, Wait, Home-space   */
-DECL|macro|_DW_PSW_MASK
-mdefine_line|#define _DW_PSW_MASK         0x000A0000/* disabled wait PSW mask           */
-DECL|macro|_PRIMARY_MASK
-mdefine_line|#define _PRIMARY_MASK        0x0000    /* MASK for SACF                    */
-DECL|macro|_SECONDARY_MASK
-mdefine_line|#define _SECONDARY_MASK      0x0100    /* MASK for SACF                    */
-DECL|macro|_ACCESS_MASK
-mdefine_line|#define _ACCESS_MASK         0x0200    /* MASK for SACF                    */
-DECL|macro|_HOME_MASK
-mdefine_line|#define _HOME_MASK           0x0300    /* MASK for SACF                    */
-DECL|macro|_PSW_PRIM_SPACE_MODE
-mdefine_line|#define _PSW_PRIM_SPACE_MODE 0x00000000
-DECL|macro|_PSW_SEC_SPACE_MODE
-mdefine_line|#define _PSW_SEC_SPACE_MODE  0x00008000
-DECL|macro|_PSW_ACC_REG_MODE
-mdefine_line|#define _PSW_ACC_REG_MODE    0x00004000
-DECL|macro|_PSW_HOME_SPACE_MODE
-mdefine_line|#define _PSW_HOME_SPACE_MODE 0x0000C000
-DECL|macro|_PSW_WAIT_MASK_BIT
-mdefine_line|#define _PSW_WAIT_MASK_BIT   0x00020000 /* Wait bit */
-DECL|macro|_PSW_IO_MASK_BIT
-mdefine_line|#define _PSW_IO_MASK_BIT     0x02000000 /* IO bit */
-DECL|macro|_PSW_IO_WAIT
-mdefine_line|#define _PSW_IO_WAIT         0x02020000 /* IO &amp; Wait bit */
-multiline_comment|/* we run in 31 Bit mode */
-DECL|macro|_ADDR_31
-mdefine_line|#define _ADDR_31             0x80000000
 macro_line|#ifndef __ASSEMBLY__
 macro_line|#include &lt;linux/config.h&gt;
-macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
+macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/sigp.h&gt;
 r_void
 id|restart_int_handler
@@ -577,6 +533,16 @@ id|packed
 )paren
 suffix:semicolon
 multiline_comment|/* End structure*/
+DECL|macro|S390_lowcore
+mdefine_line|#define S390_lowcore (*((struct _lowcore *) 0))
+r_extern
+r_struct
+id|_lowcore
+op_star
+id|lowcore_ptr
+(braket
+)braket
+suffix:semicolon
 DECL|function|set_prefix
 r_extern
 id|__inline__
@@ -603,29 +569,8 @@ l_string|&quot;memory&quot;
 )paren
 suffix:semicolon
 )brace
-DECL|macro|S390_lowcore
-mdefine_line|#define S390_lowcore (*((struct _lowcore *) 0))
-r_extern
-r_struct
-id|_lowcore
-op_star
-id|lowcore_ptr
-(braket
-)braket
-suffix:semicolon
-macro_line|#ifndef CONFIG_SMP
-DECL|macro|get_cpu_lowcore
-mdefine_line|#define get_cpu_lowcore(cpu)      (&amp;S390_lowcore)
-DECL|macro|safe_get_cpu_lowcore
-mdefine_line|#define safe_get_cpu_lowcore(cpu) (&amp;S390_lowcore)
-macro_line|#else
-DECL|macro|get_cpu_lowcore
-mdefine_line|#define get_cpu_lowcore(cpu)      (lowcore_ptr[(cpu)])
-DECL|macro|safe_get_cpu_lowcore
-mdefine_line|#define safe_get_cpu_lowcore(cpu) &bslash;&n;        ((cpu) == smp_processor_id() ? &amp;S390_lowcore : lowcore_ptr[(cpu)])
-macro_line|#endif
-macro_line|#endif /* __ASSEMBLY__ */
 DECL|macro|__PANIC_MAGIC
 mdefine_line|#define __PANIC_MAGIC           0xDEADC0DE
+macro_line|#endif
 macro_line|#endif
 eof

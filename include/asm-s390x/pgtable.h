@@ -120,6 +120,8 @@ DECL|macro|_REGION_TABLE
 mdefine_line|#define _REGION_TABLE       (_REGION_THIRD|_REGION_THIRD_LEN|0x40|0x100)
 DECL|macro|_KERN_REGION_TABLE
 mdefine_line|#define _KERN_REGION_TABLE  (_REGION_THIRD|_REGION_THIRD_LEN)
+DECL|macro|USER_STD_MASK
+mdefine_line|#define USER_STD_MASK           0x0000000000000080UL
 multiline_comment|/* Bits in the storage key */
 DECL|macro|_PAGE_CHANGED
 mdefine_line|#define _PAGE_CHANGED    0x02          /* HW changed bit                   */
