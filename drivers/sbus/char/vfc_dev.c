@@ -1062,7 +1062,7 @@ id|inout.addr
 op_amp
 l_int|0xff
 comma
-id|inout.buffer
+id|buffer
 comma
 id|inout.len
 )paren
@@ -2922,11 +2922,6 @@ id|vfc_mmap
 c_func
 (paren
 r_struct
-id|inode
-op_star
-id|inode
-comma
-r_struct
 id|file
 op_star
 id|file
@@ -2958,7 +2953,7 @@ c_func
 id|iminor
 c_func
 (paren
-id|inode
+id|file-&gt;f_dentry-&gt;d_inode
 )paren
 )paren
 suffix:semicolon
