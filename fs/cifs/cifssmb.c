@@ -3600,7 +3600,7 @@ id|pSMB-&gt;OldFileName
 id|name_len
 )braket
 op_assign
-l_int|0
+l_int|0x04
 suffix:semicolon
 multiline_comment|/* pad */
 multiline_comment|/* protocol requires ASCII signature byte on Unicode string */
@@ -3611,7 +3611,7 @@ op_plus
 l_int|1
 )braket
 op_assign
-l_int|0x04
+l_int|0x00
 suffix:semicolon
 id|name_len2
 op_assign
