@@ -2232,6 +2232,9 @@ id|ice-&gt;eeprom.subvendor
 )paren
 (brace
 r_case
+id|ICE1712_SUBDEVICE_DELTA1010LT
+suffix:colon
+r_case
 id|ICE1712_SUBDEVICE_AUDIOPHILE
 suffix:colon
 r_case

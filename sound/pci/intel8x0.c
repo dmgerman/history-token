@@ -426,7 +426,7 @@ l_int|0x20
 )paren
 suffix:semicolon
 multiline_comment|/* Mic in */
-multiline_comment|/* ICH4 busmater blocks */
+multiline_comment|/* ICH4 busmaster blocks */
 id|DEFINE_REGSET
 c_func
 (paren
