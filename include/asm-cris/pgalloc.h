@@ -40,8 +40,8 @@ DECL|macro|pmd_populate
 mdefine_line|#define pmd_populate(mm, pmd, pte) pmd_set(pmd, pte)
 multiline_comment|/*&n; * Allocate and free page tables.&n; */
 DECL|function|get_pgd_slow
-r_extern
-id|__inline__
+r_static
+r_inline
 id|pgd_t
 op_star
 id|get_pgd_slow
@@ -114,8 +114,8 @@ id|ret
 suffix:semicolon
 )brace
 DECL|function|free_pgd_slow
-r_extern
-id|__inline__
+r_static
+r_inline
 r_void
 id|free_pgd_slow
 c_func
@@ -137,8 +137,8 @@ id|pgd
 suffix:semicolon
 )brace
 DECL|function|get_pgd_fast
-r_extern
-id|__inline__
+r_static
+r_inline
 id|pgd_t
 op_star
 id|get_pgd_fast
@@ -209,8 +209,8 @@ id|ret
 suffix:semicolon
 )brace
 DECL|function|free_pgd_fast
-r_extern
-id|__inline__
+r_static
+r_inline
 r_void
 id|free_pgd_fast
 c_func

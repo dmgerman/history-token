@@ -211,7 +211,8 @@ op_star
 id|data
 suffix:semicolon
 DECL|member|urb
-id|urb_t
+r_struct
+id|urb
 op_star
 id|urb
 suffix:semicolon

@@ -44,6 +44,14 @@ r_void
 suffix:semicolon
 r_extern
 r_void
+id|__Udiv
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
 id|__ashrdi3
 c_func
 (paren
@@ -60,7 +68,7 @@ op_star
 id|addr
 )paren
 suffix:semicolon
-multiline_comment|/* platform dependent support */
+multiline_comment|/* Platform dependent support */
 DECL|variable|dump_thread
 id|EXPORT_SYMBOL
 c_func
@@ -96,6 +104,28 @@ c_func
 id|get_cmos_time
 )paren
 suffix:semicolon
+DECL|variable|loops_per_usec
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|loops_per_usec
+)paren
+suffix:semicolon
+multiline_comment|/* String functions */
+DECL|variable|memcmp
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|memcmp
+)paren
+suffix:semicolon
+DECL|variable|memmove
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|memmove
+)paren
+suffix:semicolon
 DECL|variable|strtok
 id|EXPORT_SYMBOL
 c_func
@@ -122,6 +152,13 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|strstr
+)paren
+suffix:semicolon
+DECL|variable|strcpy
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|strcpy
 )paren
 suffix:semicolon
 DECL|variable|strchr
@@ -159,6 +196,14 @@ c_func
 id|strncmp
 )paren
 suffix:semicolon
+multiline_comment|/* Math functions */
+DECL|variable|__Udiv
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|__Udiv
+)paren
+suffix:semicolon
 DECL|variable|__ashrdi3
 id|EXPORT_SYMBOL
 c_func
@@ -166,6 +211,7 @@ c_func
 id|__ashrdi3
 )paren
 suffix:semicolon
+multiline_comment|/* Memory functions */
 DECL|variable|__ioremap
 id|EXPORT_SYMBOL
 c_func
@@ -180,7 +226,22 @@ c_func
 id|iounmap
 )paren
 suffix:semicolon
-multiline_comment|/* export shadow registers for the CPU I/O pins */
+multiline_comment|/* Semaphore functions */
+DECL|variable|__up
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|__up
+)paren
+suffix:semicolon
+DECL|variable|__down
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|__down
+)paren
+suffix:semicolon
+multiline_comment|/* Export shadow registers for the CPU I/O pins */
 DECL|variable|genconfig_shadow
 id|EXPORT_SYMBOL
 c_func
@@ -230,7 +291,7 @@ c_func
 id|port_g_data_shadow
 )paren
 suffix:semicolon
-multiline_comment|/* other stuff */
+multiline_comment|/* Userspace access functions */
 DECL|variable|strncpy_from_user
 id|EXPORT_SYMBOL
 c_func

@@ -541,7 +541,13 @@ r_char
 op_star
 )paren
 op_amp
-id|inode-&gt;u.ufs_i.i_u1.i_data
+id|UFS_I
+c_func
+(paren
+id|inode
+)paren
+op_member_access_from_pointer
+id|i_u1.i_data
 comma
 id|symname
 comma

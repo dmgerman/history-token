@@ -906,15 +906,41 @@ suffix:semicolon
 macro_line|#ifdef __KERNEL__
 DECL|macro|EXT3_SB
 mdefine_line|#define EXT3_SB(sb)&t;(&amp;((sb)-&gt;u.ext3_sb))
-DECL|macro|EXT3_I
-mdefine_line|#define EXT3_I(inode)&t;(&amp;((inode)-&gt;u.ext3_i))
+DECL|function|EXT3_I
+r_static
+r_inline
+r_struct
+id|ext3_inode_info
+op_star
+id|EXT3_I
+c_func
+(paren
+r_struct
+id|inode
+op_star
+id|inode
+)paren
+(brace
+r_return
+id|list_entry
+c_func
+(paren
+id|inode
+comma
+r_struct
+id|ext3_inode_info
+comma
+id|vfs_inode
+)paren
+suffix:semicolon
+)brace
 macro_line|#else
 multiline_comment|/* Assume that user mode programs are passing in an ext3fs superblock, not&n; * a kernel struct super_block.  This will allow us to call the feature-test&n; * macros from user land. */
 DECL|macro|EXT3_SB
 mdefine_line|#define EXT3_SB(sb)&t;(sb)
 macro_line|#endif
 DECL|macro|NEXT_ORPHAN
-mdefine_line|#define NEXT_ORPHAN(inode) (inode)-&gt;u.ext3_i.i_dtime
+mdefine_line|#define NEXT_ORPHAN(inode) EXT3_I(inode)-&gt;i_dtime
 multiline_comment|/*&n; * Codes for operating systems&n; */
 DECL|macro|EXT3_OS_LINUX
 mdefine_line|#define EXT3_OS_LINUX&t;&t;0
@@ -1284,7 +1310,6 @@ id|ext3_new_inode
 id|handle_t
 op_star
 comma
-r_const
 r_struct
 id|inode
 op_star

@@ -3,6 +3,7 @@ singleline_comment|//#define DBG
 singleline_comment|//#define DEBUG_LOCKS
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/hpfs_fs.h&gt;
+macro_line|#include &lt;linux/hpfs_fs_i.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -2160,6 +2161,34 @@ id|dentry
 op_star
 )paren
 suffix:semicolon
+DECL|function|hpfs_i
+r_static
+r_inline
+r_struct
+id|hpfs_inode_info
+op_star
+id|hpfs_i
+c_func
+(paren
+r_struct
+id|inode
+op_star
+id|inode
+)paren
+(brace
+r_return
+id|list_entry
+c_func
+(paren
+id|inode
+comma
+r_struct
+id|hpfs_inode_info
+comma
+id|vfs_inode
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/* super.c */
 r_void
 id|hpfs_error

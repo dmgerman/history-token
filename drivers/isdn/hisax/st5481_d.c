@@ -1012,7 +1012,8 @@ id|sk_buff
 op_star
 id|skb
 suffix:semicolon
-id|iso_packet_descriptor_t
+r_struct
+id|usb_iso_packet_descriptor
 op_star
 id|desc
 suffix:semicolon

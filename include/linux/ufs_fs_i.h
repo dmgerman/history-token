@@ -60,6 +60,11 @@ DECL|member|i_lastfrag
 id|__u32
 id|i_lastfrag
 suffix:semicolon
+DECL|member|vfs_inode
+r_struct
+id|inode
+id|vfs_inode
+suffix:semicolon
 )brace
 suffix:semicolon
 macro_line|#endif /* _LINUX_UFS_FS_I_H */

@@ -5,6 +5,7 @@ macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,3,0)
 macro_line|#include &quot;linux22compat.h&quot;
@@ -19,6 +20,16 @@ DECL|macro|INIT_TQ_LINK
 mdefine_line|#define INIT_TQ_LINK(tq) INIT_LIST_HEAD(&amp;(tq).list)
 DECL|macro|INIT_TQ_HEAD
 mdefine_line|#define INIT_TQ_HEAD(tq) INIT_LIST_HEAD(&amp;(tq))
+macro_line|#endif
+multiline_comment|/* The great kdev_t changeover in 2.5.x */
+macro_line|#include &lt;linux/kdev_t.h&gt;
+macro_line|#ifndef minor
+DECL|macro|minor
+mdefine_line|#define minor(dev) MINOR(dev)
+macro_line|#endif
+macro_line|#ifndef __devexit_p
+DECL|macro|__devexit_p
+mdefine_line|#define __devexit_p(x) x
 macro_line|#endif
 multiline_comment|/* This showed up around this time */
 macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,4,12)

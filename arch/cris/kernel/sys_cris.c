@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: sys_cris.c,v 1.10 2001/06/27 21:16:15 hp Exp $&n; *&n; * linux/arch/cris/kernel/sys_cris.c&n; *&n; * This file contains various random system calls that&n; * have a non-standard calling sequence on some platforms.&n; * Since we don&squot;t have to do any backwards compatibility, our&n; * versions are done in the most &quot;normal&quot; way possible.&n; *&n; */
+multiline_comment|/* $Id: sys_cris.c,v 1.1.1.1 2001/12/17 13:59:27 bjornw Exp $&n; *&n; * linux/arch/cris/kernel/sys_cris.c&n; *&n; * This file contains various random system calls that&n; * have a non-standard calling sequence on some platforms.&n; * Since we don&squot;t have to do any backwards compatibility, our&n; * versions are done in the most &quot;normal&quot; way possible.&n; *&n; */
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;

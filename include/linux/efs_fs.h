@@ -38,17 +38,36 @@ macro_line|#ifndef MAX
 DECL|macro|MAX
 mdefine_line|#define MAX(a, b) (((a) &gt; (b)) ? (a) : (b))
 macro_line|#endif
-macro_line|#ifdef _EFS_USE_GENERIC
-DECL|macro|INODE_INFO
-mdefine_line|#define INODE_INFO(i) (struct efs_inode_info *)&t;&amp;((i)-&gt;u.generic_ip)
-DECL|macro|SUPER_INFO
-mdefine_line|#define SUPER_INFO(s) (struct efs_sb_info *)&t;&amp;((s)-&gt;u.generic_sbp)
-macro_line|#else
-DECL|macro|INODE_INFO
-mdefine_line|#define INODE_INFO(i)&t;&t;&t;&t;&amp;((i)-&gt;u.efs_i)
+DECL|function|INODE_INFO
+r_static
+r_inline
+r_struct
+id|efs_inode_info
+op_star
+id|INODE_INFO
+c_func
+(paren
+r_struct
+id|inode
+op_star
+id|inode
+)paren
+(brace
+r_return
+id|list_entry
+c_func
+(paren
+id|inode
+comma
+r_struct
+id|efs_inode_info
+comma
+id|vfs_inode
+)paren
+suffix:semicolon
+)brace
 DECL|macro|SUPER_INFO
 mdefine_line|#define SUPER_INFO(s)&t;&t;&t;&t;&amp;((s)-&gt;u.efs_sb)
-macro_line|#endif
 r_extern
 r_struct
 id|inode_operations

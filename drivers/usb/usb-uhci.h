@@ -342,13 +342,15 @@ r_int
 id|started
 suffix:semicolon
 DECL|member|next_queued_urb
-id|urb_t
+r_struct
+id|urb
 op_star
 id|next_queued_urb
 suffix:semicolon
 singleline_comment|// next queued urb for this EP
 DECL|member|prev_queued_urb
-id|urb_t
+r_struct
+id|urb
 op_star
 id|prev_queued_urb
 suffix:semicolon

@@ -814,7 +814,8 @@ r_void
 id|usb_stor_blocking_completion
 c_func
 (paren
-id|urb_t
+r_struct
+id|urb
 op_star
 id|urb
 )paren

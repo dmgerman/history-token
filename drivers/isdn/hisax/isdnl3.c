@@ -548,7 +548,7 @@ op_star
 id|t
 )paren
 (brace
-id|t-&gt;pc-&gt;st-&gt;lli
+id|t-&gt;pc-&gt;st-&gt;l3
 dot
 id|l4l3
 c_func
@@ -1429,7 +1429,7 @@ comma
 l_string|&quot;L3DC &quot;
 )paren
 suffix:semicolon
-id|st-&gt;lli.l4l3_proto
+id|st-&gt;l3.l4l3_proto
 op_assign
 id|no_l3_proto_spec
 suffix:semicolon
@@ -1495,11 +1495,11 @@ op_eq
 id|ISDN_PTYPE_LEASED
 )paren
 (brace
-id|st-&gt;lli.l4l3
+id|st-&gt;l3.l4l3
 op_assign
 id|no_l3_proto
 suffix:semicolon
-id|st-&gt;l2.l2l3
+id|st-&gt;l3.l2l3
 op_assign
 id|no_l3_proto
 suffix:semicolon
@@ -1517,11 +1517,11 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|st-&gt;lli.l4l3
+id|st-&gt;l3.l4l3
 op_assign
 id|no_l3_proto
 suffix:semicolon
-id|st-&gt;l2.l2l3
+id|st-&gt;l3.l2l3
 op_assign
 id|no_l3_proto
 suffix:semicolon
@@ -1600,9 +1600,7 @@ op_star
 id|arg
 )paren
 (brace
-id|st-&gt;l3
-dot
-id|l3l2
+id|L3L2
 c_func
 (paren
 id|st
@@ -1739,7 +1737,7 @@ comma
 l_string|&quot;L3BC &quot;
 )paren
 suffix:semicolon
-id|st-&gt;lli.l4l3
+id|st-&gt;l3.l4l3
 op_assign
 id|isdnl3_trans
 suffix:semicolon
@@ -1780,9 +1778,7 @@ comma
 id|ST_L3_LC_ESTAB_WAIT
 )paren
 suffix:semicolon
-id|st-&gt;l3
-dot
-id|l3l2
+id|L3L2
 c_func
 (paren
 id|st
@@ -1856,9 +1852,7 @@ id|st-&gt;l3.squeue
 )paren
 )paren
 (brace
-id|st-&gt;l3
-dot
-id|l3l2
+id|L3L2
 c_func
 (paren
 id|st
@@ -1992,9 +1986,7 @@ id|st-&gt;l3.squeue
 )paren
 )paren
 (brace
-id|st-&gt;l3
-dot
-id|l3l2
+id|L3L2
 c_func
 (paren
 id|st
@@ -2246,9 +2238,7 @@ comma
 id|ST_L3_LC_REL_WAIT
 )paren
 suffix:semicolon
-id|st-&gt;l3
-dot
-id|l3l2
+id|L3L2
 c_func
 (paren
 id|st
@@ -2534,9 +2524,7 @@ op_eq
 id|ST_L3_LC_ESTAB
 )paren
 (brace
-id|st-&gt;l3
-dot
-id|l3l2
+id|L3L2
 c_func
 (paren
 id|st

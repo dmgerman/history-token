@@ -960,9 +960,7 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-id|chanp-&gt;b_st-&gt;lli
-dot
-id|l4l3
+id|L4L3
 c_func
 (paren
 id|chanp-&gt;b_st
@@ -1073,9 +1071,7 @@ comma
 id|ST_OUT_DIAL
 )paren
 suffix:semicolon
-id|chanp-&gt;d_st-&gt;lli
-dot
-id|l4l3
+id|L4L3
 c_func
 (paren
 id|chanp-&gt;d_st
@@ -1187,9 +1183,7 @@ comma
 id|ST_OUT_DIAL
 )paren
 suffix:semicolon
-id|chanp-&gt;d_st-&gt;lli
-dot
-id|l4l3
+id|L4L3
 c_func
 (paren
 id|chanp-&gt;d_st
@@ -1517,9 +1511,7 @@ comma
 id|ST_IN_ALERT_SENT
 )paren
 suffix:semicolon
-id|chanp-&gt;d_st-&gt;lli
-dot
-id|l4l3
+id|L4L3
 c_func
 (paren
 id|chanp-&gt;d_st
@@ -1558,9 +1550,7 @@ comma
 id|ST_IN_PROCEED_SEND
 )paren
 suffix:semicolon
-id|chanp-&gt;d_st-&gt;lli
-dot
-id|l4l3
+id|L4L3
 c_func
 (paren
 id|chanp-&gt;d_st
@@ -1595,9 +1585,7 @@ id|setup_parm
 )paren
 )paren
 suffix:semicolon
-id|chanp-&gt;d_st-&gt;lli
-dot
-id|l4l3
+id|L4L3
 c_func
 (paren
 id|chanp-&gt;d_st
@@ -1631,9 +1619,7 @@ comma
 l_int|61
 )paren
 suffix:semicolon
-id|chanp-&gt;d_st-&gt;lli
-dot
-id|l4l3
+id|L4L3
 c_func
 (paren
 id|chanp-&gt;d_st
@@ -1654,9 +1640,7 @@ multiline_comment|/* OK, nobody likes this call */
 r_default
 suffix:colon
 multiline_comment|/* statcallb problems */
-id|chanp-&gt;d_st-&gt;lli
-dot
-id|l4l3
+id|L4L3
 c_func
 (paren
 id|chanp-&gt;d_st
@@ -1701,9 +1685,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|chanp-&gt;d_st-&gt;lli
-dot
-id|l4l3
+id|L4L3
 c_func
 (paren
 id|chanp-&gt;d_st
@@ -1770,9 +1752,7 @@ comma
 id|ST_IN_WAIT_CONN_ACK
 )paren
 suffix:semicolon
-id|chanp-&gt;d_st-&gt;lli
-dot
-id|l4l3
+id|L4L3
 c_func
 (paren
 id|chanp-&gt;d_st
@@ -1819,9 +1799,7 @@ comma
 id|ST_IN_ALERT_SENT
 )paren
 suffix:semicolon
-id|chanp-&gt;d_st-&gt;lli
-dot
-id|l4l3
+id|L4L3
 c_func
 (paren
 id|chanp-&gt;d_st
@@ -1860,9 +1838,7 @@ id|chanp
 op_assign
 id|fi-&gt;userdata
 suffix:semicolon
-id|chanp-&gt;d_st-&gt;lli
-dot
-id|l4l3
+id|L4L3
 c_func
 (paren
 id|chanp-&gt;d_st
@@ -1952,9 +1928,7 @@ op_logical_neg
 l_int|0
 )paren
 suffix:semicolon
-id|chanp-&gt;b_st-&gt;lli
-dot
-id|l4l3
+id|L4L3
 c_func
 (paren
 id|chanp-&gt;b_st
@@ -2021,9 +1995,7 @@ id|ST_IN_WAIT_CONN_ACK
 )paren
 suffix:semicolon
 macro_line|#ifdef WANT_ALERT
-id|chanp-&gt;d_st-&gt;lli
-dot
-id|l4l3
+id|L4L3
 c_func
 (paren
 id|chanp-&gt;d_st
@@ -2036,9 +2008,7 @@ id|chanp-&gt;proc
 )paren
 suffix:semicolon
 macro_line|#endif
-id|chanp-&gt;d_st-&gt;lli
-dot
-id|l4l3
+id|L4L3
 c_func
 (paren
 id|chanp-&gt;d_st
@@ -2079,9 +2049,7 @@ id|chanp
 op_assign
 id|fi-&gt;userdata
 suffix:semicolon
-id|chanp-&gt;d_st-&gt;lli
-dot
-id|l4l3
+id|L4L3
 c_func
 (paren
 id|chanp-&gt;d_st
@@ -2237,9 +2205,7 @@ op_assign
 l_int|0x10
 suffix:semicolon
 multiline_comment|/* Normal Call Clearing */
-id|chanp-&gt;d_st-&gt;lli
-dot
-id|l4l3
+id|L4L3
 c_func
 (paren
 id|chanp-&gt;d_st
@@ -2314,9 +2280,7 @@ op_assign
 l_int|0x15
 suffix:semicolon
 multiline_comment|/* Call Rejected */
-id|chanp-&gt;d_st-&gt;lli
-dot
-id|l4l3
+id|L4L3
 c_func
 (paren
 id|chanp-&gt;d_st
@@ -2466,9 +2430,7 @@ op_assign
 l_int|0x15
 suffix:semicolon
 multiline_comment|/* Call Rejected */
-id|chanp-&gt;d_st-&gt;lli
-dot
-id|l4l3
+id|L4L3
 c_func
 (paren
 id|chanp-&gt;d_st
@@ -2514,9 +2476,7 @@ comma
 id|ST_IN_ALERT_SENT
 )paren
 suffix:semicolon
-id|chanp-&gt;d_st-&gt;lli
-dot
-id|l4l3
+id|L4L3
 c_func
 (paren
 id|chanp-&gt;d_st
@@ -2568,9 +2528,7 @@ comma
 id|ST_WAIT_BRELEASE
 )paren
 suffix:semicolon
-id|chanp-&gt;b_st-&gt;lli
-dot
-id|l4l3
+id|L4L3
 c_func
 (paren
 id|chanp-&gt;b_st
@@ -2851,9 +2809,7 @@ comma
 id|ST_WAIT_BREL_DISC
 )paren
 suffix:semicolon
-id|chanp-&gt;b_st-&gt;lli
-dot
-id|l4l3
+id|L4L3
 c_func
 (paren
 id|chanp-&gt;b_st
@@ -3001,9 +2957,7 @@ id|chanp-&gt;data_open
 op_assign
 l_int|0
 suffix:semicolon
-id|chanp-&gt;b_st-&gt;lli
-dot
-id|l4l3
+id|L4L3
 c_func
 (paren
 id|chanp-&gt;b_st
@@ -3077,9 +3031,7 @@ comma
 id|ST_WAIT_D_REL_CNF
 )paren
 suffix:semicolon
-id|chanp-&gt;d_st-&gt;lli
-dot
-id|l4l3
+id|L4L3
 c_func
 (paren
 id|chanp-&gt;d_st
@@ -3636,9 +3588,7 @@ id|chanp-&gt;data_open
 op_assign
 l_int|0
 suffix:semicolon
-id|chanp-&gt;b_st-&gt;lli
-dot
-id|l4l3
+id|L4L3
 c_func
 (paren
 id|chanp-&gt;b_st
@@ -4630,9 +4580,7 @@ op_assign
 l_int|0x11
 suffix:semicolon
 multiline_comment|/* User busy */
-id|pc-&gt;st-&gt;lli
-dot
-id|l4l3
+id|L4L3
 c_func
 (paren
 id|pc-&gt;st
@@ -5130,15 +5078,6 @@ op_star
 id|stp
 )paren
 op_member_access_from_pointer
-id|l1.l1l2
-op_assign
-id|dummy_pstack
-suffix:semicolon
-(paren
-op_star
-id|stp
-)paren
-op_member_access_from_pointer
 id|l1.l1hw
 op_assign
 id|dummy_pstack
@@ -5157,6 +5096,24 @@ op_star
 id|stp
 )paren
 op_member_access_from_pointer
+id|l1.l2l1
+op_assign
+id|dummy_pstack
+suffix:semicolon
+(paren
+op_star
+id|stp
+)paren
+op_member_access_from_pointer
+id|l2.l1l2
+op_assign
+id|dummy_pstack
+suffix:semicolon
+(paren
+op_star
+id|stp
+)paren
+op_member_access_from_pointer
 id|l2.l2tei
 op_assign
 id|dummy_pstack
@@ -5166,7 +5123,7 @@ op_star
 id|stp
 )paren
 op_member_access_from_pointer
-id|l2.l2l1
+id|l2.l3l2
 op_assign
 id|dummy_pstack
 suffix:semicolon
@@ -5175,16 +5132,7 @@ op_star
 id|stp
 )paren
 op_member_access_from_pointer
-id|l2.l2l3
-op_assign
-id|dummy_pstack
-suffix:semicolon
-(paren
-op_star
-id|stp
-)paren
-op_member_access_from_pointer
-id|l3.l3l2
+id|l3.l2l3
 op_assign
 id|dummy_pstack
 suffix:semicolon
@@ -5202,7 +5150,7 @@ op_star
 id|stp
 )paren
 op_member_access_from_pointer
-id|l3.l3l4
+id|l3.l4l3
 op_assign
 id|dummy_pstack
 suffix:semicolon
@@ -5211,7 +5159,7 @@ op_star
 id|stp
 )paren
 op_member_access_from_pointer
-id|lli.l4l3
+id|lli.l3l4
 op_assign
 id|dummy_pstack
 suffix:semicolon
@@ -5420,7 +5368,7 @@ id|st-&gt;lli.l2writewakeup
 op_assign
 l_int|NULL
 suffix:semicolon
-id|st-&gt;l3.l3l4
+id|st-&gt;lli.l3l4
 op_assign
 id|dchan_l3l4
 suffix:semicolon
@@ -5800,9 +5748,7 @@ id|KERN_INFO
 l_string|&quot;LAYER2 WATCHING ESTABLISH&bslash;n&quot;
 )paren
 suffix:semicolon
-id|csta-&gt;channel-&gt;d_st-&gt;lli
-dot
-id|l4l3
+id|L4L3
 c_func
 (paren
 id|csta-&gt;channel-&gt;d_st
@@ -6711,7 +6657,7 @@ comma
 id|chanp
 )paren
 suffix:semicolon
-id|st-&gt;l2.l2l3
+id|st-&gt;l3.l2l3
 op_assign
 id|lldata_handler
 suffix:semicolon
@@ -6766,7 +6712,7 @@ r_case
 id|ISDN_PROTO_L2_FAX
 )paren
 suffix:colon
-id|st-&gt;l1.l1l2
+id|st-&gt;l2.l1l2
 op_assign
 id|lltrans_handler
 suffix:semicolon
@@ -6886,9 +6832,7 @@ op_or
 id|REQUEST
 )paren
 suffix:colon
-id|st-&gt;l2
-dot
-id|l2l1
+id|L2L1
 c_func
 (paren
 id|st
@@ -8664,17 +8608,15 @@ op_plus
 l_int|1
 )paren
 suffix:semicolon
-id|chanp-&gt;d_st-&gt;l1.l1l2
+id|chanp-&gt;d_st-&gt;l2.l1l2
 op_assign
 id|leased_l1l2
 suffix:semicolon
-id|chanp-&gt;d_st-&gt;lli.l4l3
+id|chanp-&gt;d_st-&gt;l3.l4l3
 op_assign
 id|leased_l4l3
 suffix:semicolon
-id|chanp-&gt;d_st-&gt;lli
-dot
-id|l4l3
+id|L4L3
 c_func
 (paren
 id|chanp-&gt;d_st
@@ -8710,7 +8652,7 @@ c_cond
 (paren
 id|csta-&gt;stlist
 )paren
-id|csta-&gt;stlist-&gt;l2
+id|csta-&gt;stlist-&gt;l1
 dot
 id|l2l1
 c_func
@@ -8838,14 +8780,7 @@ id|KERN_INFO
 l_string|&quot;LAYER2 WATCHING ESTABLISH&bslash;n&quot;
 )paren
 suffix:semicolon
-id|csta-&gt;channel
-(braket
-l_int|0
-)braket
-dot
-id|d_st-&gt;lli
-dot
-id|l4l3
+id|L4L3
 c_func
 (paren
 id|csta-&gt;channel
@@ -9022,9 +8957,7 @@ id|num
 )paren
 suffix:semicolon
 )brace
-id|chanp-&gt;d_st-&gt;lli
-dot
-id|l4l3
+id|L4L3
 c_func
 (paren
 id|chanp-&gt;d_st
@@ -9435,7 +9368,7 @@ l_int|0xFF
 )paren
 )paren
 r_return
-id|st-&gt;lli
+id|st-&gt;l3
 dot
 id|l4l3_proto
 c_func
@@ -9736,9 +9669,7 @@ id|chanp-&gt;l2_active_protocol
 op_eq
 id|ISDN_PROTO_L2_X75I
 )paren
-id|st-&gt;l3
-dot
-id|l3l2
+id|L3L2
 c_func
 (paren
 id|st
@@ -9756,7 +9687,7 @@ id|chanp-&gt;bcs-&gt;tx_cnt
 op_add_assign
 id|len
 suffix:semicolon
-id|st-&gt;l2
+id|st-&gt;l1
 dot
 id|l2l1
 c_func

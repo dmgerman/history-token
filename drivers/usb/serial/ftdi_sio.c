@@ -89,6 +89,16 @@ id|FTDI_8U232AM_PID
 )brace
 comma
 (brace
+id|USB_DEVICE
+c_func
+(paren
+id|FTDI_NF_RIC_VID
+comma
+id|FTDI_NF_RIC_PID
+)paren
+)brace
+comma
+(brace
 )brace
 multiline_comment|/* Terminating entry */
 )brace
@@ -120,6 +130,16 @@ c_func
 id|FTDI_VID
 comma
 id|FTDI_8U232AM_PID
+)paren
+)brace
+comma
+(brace
+id|USB_DEVICE
+c_func
+(paren
+id|FTDI_NF_RIC_VID
+comma
+id|FTDI_NF_RIC_PID
 )paren
 )brace
 comma

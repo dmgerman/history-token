@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: gpio.c,v 1.11 2001/10/30 14:39:12 johana Exp $&n; *&n; * Etrax general port I/O device&n; *&n; * Copyright (c) 1999, 2000, 2001 Axis Communications AB&n; *&n; * Authors:    Bjorn Wesen      (initial version)&n; *             Ola Knutsson     (LED handling)&n; *             Johan Adolfsson  (read/set directions, write)&n; *&n; * $Log: gpio.c,v $&n; * Revision 1.11  2001/10/30 14:39:12  johana&n; * Added D() around gpio_write printk.&n; *&n; * Revision 1.10  2001/10/25 10:24:42  johana&n; * Added IO_CFG_WRITE_MODE ioctl and write method that can do fast&n; * bittoggling in the kernel. (This speeds up programming an FPGA with 450kB&n; * from ~60 seconds to 4 seconds).&n; * Added save_flags/cli/restore_flags in ioctl.&n; *&n; * Revision 1.9  2001/05/04 14:16:07  matsfg&n; * Corrected spelling error&n; *&n; * Revision 1.8  2001/04/27 13:55:26  matsfg&n; * Moved initioremap.&n; * Turns off all LEDS on init.&n; * Added support for shutdown and powerbutton.&n; *&n; * Revision 1.7  2001/04/04 13:30:08  matsfg&n; * Added bitset and bitclear for leds. Calls init_ioremap to set up memmapping&n; *&n; * Revision 1.6  2001/03/26 16:03:06  bjornw&n; * Needs linux/config.h&n; *&n; * Revision 1.5  2001/03/26 14:22:03  bjornw&n; * Namechange of some config options&n; *&n; * Revision 1.4  2001/02/27 13:52:48  bjornw&n; * malloc.h -&gt; slab.h&n; *&n; * Revision 1.3  2001/01/24 15:06:48  bjornw&n; * gpio_wq correct type&n; *&n; * Revision 1.2  2001/01/18 16:07:30  bjornw&n; * 2.4 port&n; *&n; * Revision 1.1  2001/01/18 15:55:16  bjornw&n; * Verbatim copy of etraxgpio.c from elinux 2.0 added&n; *&n; *&n; */
+multiline_comment|/* $Id: gpio.c,v 1.2 2001/12/18 13:35:15 bjornw Exp $&n; *&n; * Etrax general port I/O device&n; *&n; * Copyright (c) 1999, 2000, 2001 Axis Communications AB&n; *&n; * Authors:    Bjorn Wesen      (initial version)&n; *             Ola Knutsson     (LED handling)&n; *             Johan Adolfsson  (read/set directions, write)&n; *&n; * $Log: gpio.c,v $&n; * Revision 1.2  2001/12/18 13:35:15  bjornw&n; * Applied the 2.4.13-&gt;2.4.16 CRIS patch to 2.5.1 (is a copy of 2.4.15).&n; *&n; * Revision 1.12  2001/11/12 19:42:15  pkj&n; * * Corrected return values from gpio_leds_ioctl().&n; * * Fixed compiler warnings.&n; *&n; * Revision 1.11  2001/10/30 14:39:12  johana&n; * Added D() around gpio_write printk.&n; *&n; * Revision 1.10  2001/10/25 10:24:42  johana&n; * Added IO_CFG_WRITE_MODE ioctl and write method that can do fast&n; * bittoggling in the kernel. (This speeds up programming an FPGA with 450kB&n; * from ~60 seconds to 4 seconds).&n; * Added save_flags/cli/restore_flags in ioctl.&n; *&n; * Revision 1.9  2001/05/04 14:16:07  matsfg&n; * Corrected spelling error&n; *&n; * Revision 1.8  2001/04/27 13:55:26  matsfg&n; * Moved initioremap.&n; * Turns off all LEDS on init.&n; * Added support for shutdown and powerbutton.&n; *&n; * Revision 1.7  2001/04/04 13:30:08  matsfg&n; * Added bitset and bitclear for leds. Calls init_ioremap to set up memmapping&n; *&n; * Revision 1.6  2001/03/26 16:03:06  bjornw&n; * Needs linux/config.h&n; *&n; * Revision 1.5  2001/03/26 14:22:03  bjornw&n; * Namechange of some config options&n; *&n; * Revision 1.4  2001/02/27 13:52:48  bjornw&n; * malloc.h -&gt; slab.h&n; *&n; * Revision 1.3  2001/01/24 15:06:48  bjornw&n; * gpio_wq correct type&n; *&n; * Revision 1.2  2001/01/18 16:07:30  bjornw&n; * 2.4 port&n; *&n; * Revision 1.1  2001/01/18 15:55:16  bjornw&n; * Verbatim copy of etraxgpio.c from elinux 2.0 added&n; *&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -27,12 +27,13 @@ id|gpio_name
 op_assign
 l_string|&quot;etrax gpio&quot;
 suffix:semicolon
-DECL|variable|gpio_wq
+macro_line|#if 0
 r_static
 id|wait_queue_head_t
 op_star
 id|gpio_wq
 suffix:semicolon
+macro_line|#endif
 r_static
 r_int
 id|gpio_ioctl
@@ -755,12 +756,10 @@ id|p
 op_ne
 id|LEDS
 )paren
-(brace
 r_return
 op_minus
 id|EINVAL
 suffix:semicolon
-)brace
 id|priv
 op_assign
 (paren
@@ -786,12 +785,10 @@ c_cond
 op_logical_neg
 id|priv
 )paren
-(brace
 r_return
 op_minus
 id|ENOMEM
 suffix:semicolon
-)brace
 id|priv-&gt;minor
 op_assign
 id|p
@@ -941,12 +938,10 @@ id|p-&gt;next
 op_ne
 id|todel
 )paren
-(brace
 id|p
 op_assign
 id|p-&gt;next
 suffix:semicolon
-)brace
 id|p-&gt;next
 op_assign
 id|todel-&gt;next
@@ -1397,7 +1392,6 @@ id|priv-&gt;minor
 op_eq
 id|LEDS
 )paren
-(brace
 r_return
 id|gpio_leds_ioctl
 c_func
@@ -1407,7 +1401,6 @@ comma
 id|arg
 )paren
 suffix:semicolon
-)brace
 r_else
 r_return
 op_minus
@@ -1516,6 +1509,8 @@ c_func
 id|arg
 )paren
 suffix:semicolon
+r_break
+suffix:semicolon
 r_default
 suffix:colon
 r_return
@@ -1523,6 +1518,9 @@ op_minus
 id|EINVAL
 suffix:semicolon
 )brace
+r_return
+l_int|0
+suffix:semicolon
 )brace
 DECL|variable|gpio_fops
 r_struct
@@ -1567,11 +1565,22 @@ c_func
 r_void
 )paren
 (brace
+r_extern
+r_void
+id|init_ioremap
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 r_int
 id|res
-comma
+suffix:semicolon
+macro_line|#if defined (CONFIG_ETRAX_CSP0_LEDS)
+r_int
 id|i
 suffix:semicolon
+macro_line|#endif
 multiline_comment|/* do the formalities */
 id|res
 op_assign
@@ -1606,7 +1615,7 @@ id|res
 suffix:semicolon
 )brace
 multiline_comment|/* Clear all leds */
-macro_line|#if defined (CONFIG_ETRAX_CSP0_LEDS) ||  defined (CONFIG_ETRAX_PA_LEDS)         || defined (CONFIG_ETRAX_PB_LEDS) 
+macro_line|#if defined (CONFIG_ETRAX_CSP0_LEDS) ||  defined (CONFIG_ETRAX_PA_LEDS) || defined (CONFIG_ETRAX_PB_LEDS) 
 id|init_ioremap
 c_func
 (paren

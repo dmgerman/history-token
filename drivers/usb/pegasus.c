@@ -159,7 +159,8 @@ r_void
 id|ctrl_callback
 c_func
 (paren
-id|urb_t
+r_struct
+id|urb
 op_star
 id|urb
 )paren

@@ -8404,7 +8404,8 @@ id|status
 op_assign
 l_int|0
 suffix:semicolon
-id|urb_t
+r_struct
+id|urb
 op_star
 id|urb
 suffix:semicolon

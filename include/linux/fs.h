@@ -570,25 +570,15 @@ DECL|macro|touch_buffer
 mdefine_line|#define touch_buffer(bh)&t;mark_page_accessed(bh-&gt;b_page)
 macro_line|#include &lt;linux/pipe_fs_i.h&gt;
 macro_line|#include &lt;linux/minix_fs_i.h&gt;
-macro_line|#include &lt;linux/ext2_fs_i.h&gt;
-macro_line|#include &lt;linux/ext3_fs_i.h&gt;
-macro_line|#include &lt;linux/hpfs_fs_i.h&gt;
 macro_line|#include &lt;linux/ntfs_fs_i.h&gt;
 macro_line|#include &lt;linux/msdos_fs_i.h&gt;
 macro_line|#include &lt;linux/umsdos_fs_i.h&gt;
 macro_line|#include &lt;linux/iso_fs_i.h&gt;
-macro_line|#include &lt;linux/nfs_fs_i.h&gt;
 macro_line|#include &lt;linux/sysv_fs_i.h&gt;
-macro_line|#include &lt;linux/affs_fs_i.h&gt;
-macro_line|#include &lt;linux/ufs_fs_i.h&gt;
-macro_line|#include &lt;linux/efs_fs_i.h&gt;
-macro_line|#include &lt;linux/coda_fs_i.h&gt;
 macro_line|#include &lt;linux/romfs_fs_i.h&gt;
-macro_line|#include &lt;linux/shmem_fs.h&gt;
 macro_line|#include &lt;linux/smb_fs_i.h&gt;
 macro_line|#include &lt;linux/hfs_fs_i.h&gt;
 macro_line|#include &lt;linux/adfs_fs_i.h&gt;
-macro_line|#include &lt;linux/qnx4_fs_i.h&gt;
 macro_line|#include &lt;linux/reiserfs_fs_i.h&gt;
 macro_line|#include &lt;linux/bfs_fs_i.h&gt;
 macro_line|#include &lt;linux/udf_fs_i.h&gt;
@@ -1217,21 +1207,6 @@ r_struct
 id|minix_inode_info
 id|minix_i
 suffix:semicolon
-DECL|member|ext2_i
-r_struct
-id|ext2_inode_info
-id|ext2_i
-suffix:semicolon
-DECL|member|ext3_i
-r_struct
-id|ext3_inode_info
-id|ext3_i
-suffix:semicolon
-DECL|member|hpfs_i
-r_struct
-id|hpfs_inode_info
-id|hpfs_i
-suffix:semicolon
 DECL|member|ntfs_i
 r_struct
 id|ntfs_inode_info
@@ -1252,45 +1227,15 @@ r_struct
 id|iso_inode_info
 id|isofs_i
 suffix:semicolon
-DECL|member|nfs_i
-r_struct
-id|nfs_inode_info
-id|nfs_i
-suffix:semicolon
 DECL|member|sysv_i
 r_struct
 id|sysv_inode_info
 id|sysv_i
 suffix:semicolon
-DECL|member|affs_i
-r_struct
-id|affs_inode_info
-id|affs_i
-suffix:semicolon
-DECL|member|ufs_i
-r_struct
-id|ufs_inode_info
-id|ufs_i
-suffix:semicolon
-DECL|member|efs_i
-r_struct
-id|efs_inode_info
-id|efs_i
-suffix:semicolon
 DECL|member|romfs_i
 r_struct
 id|romfs_inode_info
 id|romfs_i
-suffix:semicolon
-DECL|member|shmem_i
-r_struct
-id|shmem_inode_info
-id|shmem_i
-suffix:semicolon
-DECL|member|coda_i
-r_struct
-id|coda_inode_info
-id|coda_i
 suffix:semicolon
 DECL|member|smbfs_i
 r_struct
@@ -1306,11 +1251,6 @@ DECL|member|adfs_i
 r_struct
 id|adfs_inode_info
 id|adfs_i
-suffix:semicolon
-DECL|member|qnx4_i
-r_struct
-id|qnx4_inode_info
-id|qnx4_i
 suffix:semicolon
 DECL|member|reiserfs_i
 r_struct
@@ -1358,6 +1298,11 @@ id|u
 suffix:semicolon
 )brace
 suffix:semicolon
+macro_line|#include &lt;linux/shmem_fs.h&gt;
+multiline_comment|/* will die */
+macro_line|#include &lt;linux/coda_fs_i.h&gt;
+macro_line|#include &lt;linux/ext3_fs_i.h&gt;
+macro_line|#include &lt;linux/efs_fs_i.h&gt;
 DECL|struct|fown_struct
 r_struct
 id|fown_struct
@@ -1534,6 +1479,8 @@ id|files_struct
 op_star
 id|fl_owner_t
 suffix:semicolon
+multiline_comment|/* that will die - we need it for nfs_lock_info */
+macro_line|#include &lt;linux/nfs_fs_i.h&gt;
 DECL|struct|file_lock
 r_struct
 id|file_lock

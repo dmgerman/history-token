@@ -1301,6 +1301,11 @@ c_func
 (paren
 )paren
 suffix:semicolon
+id|init_idle
+c_func
+(paren
+)paren
+suffix:semicolon
 id|smp_callin
 c_func
 (paren
@@ -1328,7 +1333,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|init_idle
+id|idle_startup_done
 c_func
 (paren
 )paren

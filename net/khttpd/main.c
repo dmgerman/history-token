@@ -1349,4 +1349,10 @@ c_func
 (paren
 id|khttpd_cleanup
 )paren
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 eof

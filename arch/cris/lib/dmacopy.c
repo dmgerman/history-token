@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: dmacopy.c,v 1.1 2000/07/10 16:25:21 bjornw Exp $ &n; *&n; * memcpy for large blocks, using memory-memory DMA channels 6 and 7 in Etrax&n; */
+multiline_comment|/* $Id: dmacopy.c,v 1.1.1.1 2001/12/17 13:59:27 bjornw Exp $ &n; *&n; * memcpy for large blocks, using memory-memory DMA channels 6 and 7 in Etrax&n; */
 macro_line|#include &lt;asm/svinto.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 DECL|macro|D

@@ -1814,7 +1814,7 @@ c_func
 op_amp
 id|ps2esdi_gendisk
 comma
-id|MKDEV
+id|mk_kdev
 c_func
 (paren
 id|MAJOR_NR
@@ -2028,7 +2028,7 @@ id|DEVICE_NAME
 comma
 id|CURRENT_DEV
 comma
-id|MINOR
+id|minor
 c_func
 (paren
 id|CURRENT-&gt;rq_dev
@@ -2098,7 +2098,7 @@ id|CURRENT-&gt;current_nr_sectors
 op_le
 id|ps2esdi
 (braket
-id|MINOR
+id|minor
 c_func
 (paren
 id|CURRENT-&gt;rq_dev
@@ -2123,7 +2123,7 @@ id|DEVICE_NAME
 comma
 id|CURRENT_DEV
 comma
-id|MINOR
+id|minor
 c_func
 (paren
 id|CURRENT-&gt;rq_dev
@@ -2224,7 +2224,7 @@ id|CURRENT-&gt;sector
 comma
 id|ps2esdi
 (braket
-id|MINOR
+id|minor
 c_func
 (paren
 id|CURRENT-&gt;rq_dev
@@ -4055,7 +4055,11 @@ comma
 id|CURRENT-&gt;current_nr_sectors
 comma
 (paren
-id|CURRENT-&gt;cmd
+id|rq_data_dir
+c_func
+(paren
+id|CURRENT
+)paren
 op_eq
 id|READ
 )paren

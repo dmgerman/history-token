@@ -1604,9 +1604,7 @@ id|pc-&gt;redir_result
 op_assign
 id|pc-&gt;prot.ni1.remote_result
 suffix:semicolon
-id|st-&gt;l3
-dot
-id|l3l4
+id|L3L4
 c_func
 (paren
 id|st
@@ -1836,9 +1834,7 @@ id|pc-&gt;redir_result
 op_assign
 id|pc-&gt;prot.ni1.remote_result
 suffix:semicolon
-id|st-&gt;l3
-dot
-id|l3l4
+id|L3L4
 c_func
 (paren
 id|st
@@ -4745,9 +4741,7 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-id|pc-&gt;st-&gt;l3
-dot
-id|l3l4
+id|L3L4
 c_func
 (paren
 id|pc-&gt;st
@@ -6398,9 +6392,7 @@ comma
 id|ret
 )paren
 suffix:semicolon
-id|pc-&gt;st-&gt;l3
-dot
-id|l3l4
+id|L3L4
 c_func
 (paren
 id|pc-&gt;st
@@ -6646,9 +6638,7 @@ comma
 id|ret
 )paren
 suffix:semicolon
-id|pc-&gt;st-&gt;l3
-dot
-id|l3l4
+id|L3L4
 c_func
 (paren
 id|pc-&gt;st
@@ -6867,9 +6857,7 @@ l_int|11
 op_ne
 id|ret
 )paren
-id|pc-&gt;st-&gt;l3
-dot
-id|l3l4
+id|L3L4
 c_func
 (paren
 id|pc-&gt;st
@@ -7021,9 +7009,7 @@ comma
 id|ret
 )paren
 suffix:semicolon
-id|pc-&gt;st-&gt;l3
-dot
-id|l3l4
+id|L3L4
 c_func
 (paren
 id|pc-&gt;st
@@ -7125,9 +7111,7 @@ comma
 id|ret
 )paren
 suffix:semicolon
-id|pc-&gt;st-&gt;l3
-dot
-id|l3l4
+id|L3L4
 c_func
 (paren
 id|pc-&gt;st
@@ -8058,9 +8042,7 @@ comma
 id|err
 )paren
 suffix:semicolon
-id|pc-&gt;st-&gt;l3
-dot
-id|l3l4
+id|L3L4
 c_func
 (paren
 id|pc-&gt;st
@@ -8520,9 +8502,7 @@ comma
 id|ret
 )paren
 suffix:semicolon
-id|pc-&gt;st-&gt;l3
-dot
-id|l3l4
+id|L3L4
 c_func
 (paren
 id|pc-&gt;st
@@ -8676,9 +8656,7 @@ comma
 id|skb
 )paren
 suffix:semicolon
-id|pc-&gt;st-&gt;l3
-dot
-id|l3l4
+id|L3L4
 c_func
 (paren
 id|pc-&gt;st
@@ -8926,9 +8904,7 @@ comma
 id|MT_RELEASE_COMPLETE
 )paren
 suffix:semicolon
-id|pc-&gt;st-&gt;l3
-dot
-id|l3l4
+id|L3L4
 c_func
 (paren
 id|pc-&gt;st
@@ -9044,9 +9020,7 @@ comma
 id|MT_CALL_PROCEEDING
 )paren
 suffix:semicolon
-id|pc-&gt;st-&gt;l3
-dot
-id|l3l4
+id|L3L4
 c_func
 (paren
 id|pc-&gt;st
@@ -9491,9 +9465,7 @@ id|ERR_IE_COMPREHENSION
 op_ne
 id|err
 )paren
-id|pc-&gt;st-&gt;l3
-dot
-id|l3l4
+id|L3L4
 c_func
 (paren
 id|pc-&gt;st
@@ -9698,9 +9670,7 @@ id|ERR_IE_COMPREHENSION
 op_ne
 id|err
 )paren
-id|pc-&gt;st-&gt;l3
-dot
-id|l3l4
+id|L3L4
 c_func
 (paren
 id|pc-&gt;st
@@ -9900,9 +9870,7 @@ comma
 id|tmp
 )paren
 suffix:semicolon
-id|pc-&gt;st-&gt;l3
-dot
-id|l3l4
+id|L3L4
 c_func
 (paren
 id|pc-&gt;st
@@ -11122,9 +11090,7 @@ l_int|0
 )paren
 (brace
 multiline_comment|/* ETS 300-104 7.6.1, 8.6.1, 10.6.1... and 16.1&n;&t;&t; * set down layer 3 without sending any message&n;&t;&t; */
-id|pc-&gt;st-&gt;l3
-dot
-id|l3l4
+id|L3L4
 c_func
 (paren
 id|pc-&gt;st
@@ -11153,9 +11119,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|pc-&gt;st-&gt;l3
-dot
-id|l3l4
+id|L3L4
 c_func
 (paren
 id|pc-&gt;st
@@ -11234,9 +11198,7 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
-id|pc-&gt;st-&gt;l3
-dot
-id|l3l4
+id|L3L4
 c_func
 (paren
 id|pc-&gt;st
@@ -11314,9 +11276,7 @@ comma
 l_int|102
 )paren
 suffix:semicolon
-id|pc-&gt;st-&gt;l3
-dot
-id|l3l4
+id|L3L4
 c_func
 (paren
 id|pc-&gt;st
@@ -11378,9 +11338,7 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
-id|pc-&gt;st-&gt;l3
-dot
-id|l3l4
+id|L3L4
 c_func
 (paren
 id|pc-&gt;st
@@ -11603,9 +11561,7 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
-id|pc-&gt;st-&gt;l3
-dot
-id|l3l4
+id|L3L4
 c_func
 (paren
 id|pc-&gt;st
@@ -11660,9 +11616,7 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
-id|pc-&gt;st-&gt;l3
-dot
-id|l3l4
+id|L3L4
 c_func
 (paren
 id|pc-&gt;st
@@ -11753,9 +11707,7 @@ op_amp
 id|pc-&gt;timer
 )paren
 suffix:semicolon
-id|pc-&gt;st-&gt;l3
-dot
-id|l3l4
+id|L3L4
 c_func
 (paren
 id|pc-&gt;st
@@ -11808,9 +11760,7 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* local */
-id|pc-&gt;st-&gt;l3
-dot
-id|l3l4
+id|L3L4
 c_func
 (paren
 id|pc-&gt;st
@@ -11884,9 +11834,7 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* local */
-id|pc-&gt;st-&gt;l3
-dot
-id|l3l4
+id|L3L4
 c_func
 (paren
 id|pc-&gt;st
@@ -11931,9 +11879,7 @@ op_amp
 id|pc-&gt;timer
 )paren
 suffix:semicolon
-id|pc-&gt;st-&gt;l3
-dot
-id|l3l4
+id|L3L4
 c_func
 (paren
 id|pc-&gt;st
@@ -12250,9 +12196,7 @@ l_int|0
 )paren
 (brace
 multiline_comment|/* ETS 300-104 7.6.1, 8.6.1, 10.6.1...&n;&t;&t; * if received MT_STATUS with cause == 111 and call&n;&t;&t; * state == 0, then we must set down layer 3&n;&t;&t; */
-id|pc-&gt;st-&gt;l3
-dot
-id|l3l4
+id|L3L4
 c_func
 (paren
 id|pc-&gt;st
@@ -12616,9 +12560,7 @@ id|pc-&gt;para.cause
 op_assign
 id|NO_CAUSE
 suffix:semicolon
-id|pc-&gt;st-&gt;l3
-dot
-id|l3l4
+id|L3L4
 c_func
 (paren
 id|pc-&gt;st
@@ -12801,9 +12743,7 @@ op_amp
 id|pc-&gt;timer
 )paren
 suffix:semicolon
-id|pc-&gt;st-&gt;l3
-dot
-id|l3l4
+id|L3L4
 c_func
 (paren
 id|pc-&gt;st
@@ -13230,9 +13170,7 @@ op_amp
 id|pc-&gt;timer
 )paren
 suffix:semicolon
-id|pc-&gt;st-&gt;l3
-dot
-id|l3l4
+id|L3L4
 c_func
 (paren
 id|pc-&gt;st
@@ -13396,9 +13334,7 @@ op_amp
 id|pc-&gt;timer
 )paren
 suffix:semicolon
-id|pc-&gt;st-&gt;l3
-dot
-id|l3l4
+id|L3L4
 c_func
 (paren
 id|pc-&gt;st
@@ -13649,9 +13585,7 @@ l_int|7
 op_eq
 l_int|7
 )paren
-id|up-&gt;st-&gt;lli
-dot
-id|l4l3
+id|L4L3
 c_func
 (paren
 id|up-&gt;st
@@ -13671,9 +13605,7 @@ id|up-&gt;para.bchannel
 op_eq
 id|chan
 )paren
-id|up-&gt;st-&gt;lli
-dot
-id|l4l3
+id|L4L3
 c_func
 (paren
 id|up-&gt;st
@@ -13847,9 +13779,7 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
-id|pc-&gt;st-&gt;l3
-dot
-id|l3l4
+id|L3L4
 c_func
 (paren
 id|pc-&gt;st
@@ -13896,9 +13826,7 @@ id|pc-&gt;para.loc
 op_assign
 l_int|0
 suffix:semicolon
-id|pc-&gt;st-&gt;l3
-dot
-id|l3l4
+id|L3L4
 c_func
 (paren
 id|pc-&gt;st
@@ -14095,9 +14023,7 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-id|pc-&gt;st-&gt;l3
-dot
-id|l3l2
+id|L3L2
 c_func
 (paren
 id|pc-&gt;st
@@ -14230,9 +14156,7 @@ comma
 id|CC_TSPID
 )paren
 suffix:semicolon
-id|pc-&gt;st-&gt;l3
-dot
-id|l3l2
+id|L3L2
 c_func
 (paren
 id|pc-&gt;st
@@ -14428,9 +14352,7 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-id|pc-&gt;st-&gt;l3
-dot
-id|l3l2
+id|L3L2
 c_func
 (paren
 id|pc-&gt;st
@@ -17636,15 +17558,15 @@ suffix:semicolon
 r_int
 id|i
 suffix:semicolon
-id|st-&gt;lli.l4l3
+id|st-&gt;l3.l4l3
 op_assign
 id|ni1down
 suffix:semicolon
-id|st-&gt;lli.l4l3_proto
+id|st-&gt;l3.l4l3_proto
 op_assign
 id|l3ni1_cmd_global
 suffix:semicolon
-id|st-&gt;l2.l2l3
+id|st-&gt;l3.l2l3
 op_assign
 id|ni1up
 suffix:semicolon

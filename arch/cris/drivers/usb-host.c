@@ -424,7 +424,8 @@ l_int|4
 suffix:semicolon
 DECL|variable|URB_List
 r_static
-id|urb_t
+r_struct
+id|urb
 op_star
 id|URB_List
 (braket
@@ -466,7 +467,8 @@ r_static
 r_int
 id|etrax_rh_unlink_urb
 (paren
-id|urb_t
+r_struct
+id|urb
 op_star
 id|urb
 )paren
@@ -476,7 +478,8 @@ r_void
 id|etrax_rh_send_irq
 c_func
 (paren
-id|urb_t
+r_struct
+id|urb
 op_star
 id|urb
 )paren
@@ -486,7 +489,8 @@ r_void
 id|etrax_rh_init_int_timer
 c_func
 (paren
-id|urb_t
+r_struct
+id|urb
 op_star
 id|urb
 )paren
@@ -573,7 +577,8 @@ r_int
 id|etrax_usb_do_ctrl_hw_add
 c_func
 (paren
-id|urb_t
+r_struct
+id|urb
 op_star
 id|urb
 comma
@@ -589,7 +594,8 @@ r_int
 id|etrax_usb_do_bulk_hw_add
 c_func
 (paren
-id|urb_t
+r_struct
+id|urb
 op_star
 id|urb
 comma
@@ -605,7 +611,8 @@ r_int
 id|etrax_usb_submit_ctrl_urb
 c_func
 (paren
-id|urb_t
+r_struct
+id|urb
 op_star
 id|urb
 )paren
@@ -615,7 +622,8 @@ r_int
 id|etrax_usb_submit_urb
 c_func
 (paren
-id|urb_t
+r_struct
+id|urb
 op_star
 id|urb
 )paren
@@ -625,7 +633,8 @@ r_int
 id|etrax_usb_unlink_urb
 c_func
 (paren
-id|urb_t
+r_struct
+id|urb
 op_star
 id|urb
 )paren
@@ -721,7 +730,8 @@ r_static
 r_int
 id|etrax_rh_submit_urb
 (paren
-id|urb_t
+r_struct
+id|urb
 op_star
 id|urb
 )paren
@@ -1980,7 +1990,8 @@ r_int
 id|etrax_usb_unlink_intr_urb
 c_func
 (paren
-id|urb_t
+r_struct
+id|urb
 op_star
 id|urb
 )paren
@@ -2410,7 +2421,8 @@ r_int
 id|etrax_usb_submit_intr_urb
 c_func
 (paren
-id|urb_t
+r_struct
+id|urb
 op_star
 id|urb
 )paren
@@ -3053,7 +3065,8 @@ r_int
 id|status
 )paren
 (brace
-id|urb_t
+r_struct
+id|urb
 op_star
 id|old_urb
 suffix:semicolon
@@ -3259,7 +3272,8 @@ r_static
 r_int
 id|etrax_rh_unlink_urb
 (paren
-id|urb_t
+r_struct
+id|urb
 op_star
 id|urb
 )paren
@@ -3306,7 +3320,8 @@ r_void
 id|etrax_rh_send_irq
 c_func
 (paren
-id|urb_t
+r_struct
+id|urb
 op_star
 id|urb
 )paren
@@ -3422,7 +3437,8 @@ r_void
 id|etrax_rh_init_int_timer
 c_func
 (paren
-id|urb_t
+r_struct
+id|urb
 op_star
 id|urb
 )paren
@@ -3493,7 +3509,8 @@ r_int
 id|ptr
 )paren
 (brace
-id|urb_t
+r_struct
+id|urb
 op_star
 id|urb
 suffix:semicolon
@@ -3505,7 +3522,8 @@ multiline_comment|/*&t;DBFENTER; */
 id|urb
 op_assign
 (paren
-id|urb_t
+r_struct
+id|urb
 op_star
 )paren
 id|ptr
@@ -4144,7 +4162,8 @@ r_int
 id|etrax_usb_submit_bulk_urb
 c_func
 (paren
-id|urb_t
+r_struct
+id|urb
 op_star
 id|urb
 )paren
@@ -4164,7 +4183,8 @@ suffix:semicolon
 r_char
 id|slow
 suffix:semicolon
-id|urb_t
+r_struct
+id|urb
 op_star
 id|tmp_urb
 suffix:semicolon
@@ -4384,7 +4404,8 @@ r_int
 id|etrax_usb_do_bulk_hw_add
 c_func
 (paren
-id|urb_t
+r_struct
+id|urb
 op_star
 id|urb
 comma
@@ -5014,7 +5035,8 @@ r_int
 id|status
 )paren
 (brace
-id|urb_t
+r_struct
+id|urb
 op_star
 id|old_urb
 suffix:semicolon
@@ -5379,7 +5401,8 @@ r_int
 id|etrax_usb_submit_ctrl_urb
 c_func
 (paren
-id|urb_t
+r_struct
+id|urb
 op_star
 id|urb
 )paren
@@ -5399,7 +5422,8 @@ suffix:semicolon
 r_char
 id|slow
 suffix:semicolon
-id|urb_t
+r_struct
+id|urb
 op_star
 id|tmp_urb
 suffix:semicolon
@@ -5619,7 +5643,8 @@ r_int
 id|etrax_usb_do_ctrl_hw_add
 c_func
 (paren
-id|urb_t
+r_struct
+id|urb
 op_star
 id|urb
 comma
@@ -6371,7 +6396,8 @@ r_int
 id|etrax_usb_submit_urb
 c_func
 (paren
-id|urb_t
+r_struct
+id|urb
 op_star
 id|urb
 )paren
@@ -6580,7 +6606,8 @@ r_int
 id|etrax_usb_unlink_urb
 c_func
 (paren
-id|urb_t
+r_struct
+id|urb
 op_star
 id|urb
 )paren
@@ -6803,7 +6830,8 @@ id|epid
 op_increment
 )paren
 (brace
-id|urb_t
+r_struct
+id|urb
 op_star
 id|u
 op_assign
@@ -7000,7 +7028,8 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|urb_t
+r_struct
+id|urb
 op_star
 id|up
 suffix:semicolon
@@ -7181,7 +7210,8 @@ suffix:semicolon
 r_char
 id|eol
 suffix:semicolon
-id|urb_t
+r_struct
+id|urb
 op_star
 id|urb
 suffix:semicolon
@@ -7362,7 +7392,8 @@ id|epid
 op_assign
 l_int|0
 suffix:semicolon
-id|urb_t
+r_struct
+id|urb
 op_star
 id|urb
 suffix:semicolon
@@ -7792,7 +7823,8 @@ r_int
 id|status
 )paren
 (brace
-id|urb_t
+r_struct
+id|urb
 op_star
 id|old_urb
 suffix:semicolon
@@ -8048,7 +8080,8 @@ op_star
 )paren
 id|data
 suffix:semicolon
-id|urb_t
+r_struct
+id|urb
 op_star
 id|old_urb
 suffix:semicolon
@@ -9425,7 +9458,8 @@ r_int
 id|etrax_rh_submit_urb
 c_func
 (paren
-id|urb_t
+r_struct
+id|urb
 op_star
 id|urb
 )paren

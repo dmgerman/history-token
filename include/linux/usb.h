@@ -1169,8 +1169,9 @@ mdefine_line|#define URB_NO_INTERRUPT&t;0x0080&t;/* HINT: no non-error interrupt
 multiline_comment|/* ... less overhead for QUEUE_BULK */
 DECL|macro|USB_TIMEOUT_KILLED
 mdefine_line|#define USB_TIMEOUT_KILLED&t;0x1000&t;/* only set by HCD! */
-r_typedef
+DECL|struct|usb_iso_packet_descriptor
 r_struct
+id|usb_iso_packet_descriptor
 (brace
 DECL|member|offset
 r_int
@@ -1193,9 +1194,7 @@ r_int
 r_int
 id|status
 suffix:semicolon
-DECL|typedef|iso_packet_descriptor_t
 )brace
-id|iso_packet_descriptor_t
 suffix:semicolon
 r_struct
 id|urb
@@ -1331,7 +1330,8 @@ id|complete
 suffix:semicolon
 multiline_comment|/* (in) completion routine */
 DECL|member|iso_frame_desc
-id|iso_packet_descriptor_t
+r_struct
+id|usb_iso_packet_descriptor
 id|iso_frame_desc
 (braket
 l_int|0
@@ -1339,12 +1339,6 @@ l_int|0
 suffix:semicolon
 multiline_comment|/* (in) ISO ONLY */
 )brace
-suffix:semicolon
-DECL|typedef|urb_t
-r_typedef
-r_struct
-id|urb
-id|urb_t
 suffix:semicolon
 multiline_comment|/**&n; * usb_fill_control_urb - initializes a control urb&n; * @urb: pointer to the urb to initialize.&n; * @dev: pointer to the struct usb_device for this urb.&n; * @pipe: the endpoint pipe&n; * @setup_packet: pointer to the setup_packet buffer&n; * @transfer_buffer: pointer to the transfer buffer&n; * @buffer_length: length of the transfer buffer&n; * @complete: pointer to the usb_complete_t function&n; * @context: what to set the urb context to.&n; *&n; * Initializes a control urb with the proper information needed to submit&n; * it to a device.&n; */
 DECL|function|usb_fill_control_urb

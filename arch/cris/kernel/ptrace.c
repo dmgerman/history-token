@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  linux/arch/cris/kernel/ptrace.c&n; *&n; * Parts taken from the m68k port.&n; * &n; * Copyright (c) 2000, 2001 Axis Communications AB&n; *&n; * Authors:   Bjorn Wesen&n; *&n; * $Log: ptrace.c,v $&n; * Revision 1.7  2001/09/26 11:53:49  bjornw&n; * PTRACE_DETACH works more simple in 2.4.10&n; *&n; * Revision 1.6  2001/07/25 16:08:47  bjornw&n; * PTRACE_ATTACH bulk moved into arch-independant code in 2.4.7&n; *&n; * Revision 1.5  2001/03/26 14:24:28  orjanf&n; * * Changed loop condition.&n; * * Added comment documenting non-standard ptrace behaviour.&n; *&n; * Revision 1.4  2001/03/20 19:44:41  bjornw&n; * Use the user_regs macro instead of thread.esp0&n; *&n; * Revision 1.3  2000/12/18 23:45:25  bjornw&n; * Linux/CRIS first version&n; *&n; *&n; */
+multiline_comment|/*&n; *  linux/arch/cris/kernel/ptrace.c&n; *&n; * Parts taken from the m68k port.&n; * &n; * Copyright (c) 2000, 2001 Axis Communications AB&n; *&n; * Authors:   Bjorn Wesen&n; *&n; * $Log: ptrace.c,v $&n; * Revision 1.2  2001/12/18 13:35:20  bjornw&n; * Applied the 2.4.13-&gt;2.4.16 CRIS patch to 2.5.1 (is a copy of 2.4.15).&n; *&n; * Revision 1.8  2001/11/12 18:26:21  pkj&n; * Fixed compiler warnings.&n; *&n; * Revision 1.7  2001/09/26 11:53:49  bjornw&n; * PTRACE_DETACH works more simple in 2.4.10&n; *&n; * Revision 1.6  2001/07/25 16:08:47  bjornw&n; * PTRACE_ATTACH bulk moved into arch-independant code in 2.4.7&n; *&n; * Revision 1.5  2001/03/26 14:24:28  orjanf&n; * * Changed loop condition.&n; * * Added comment documenting non-standard ptrace behaviour.&n; *&n; * Revision 1.4  2001/03/20 19:44:41  bjornw&n; * Use the user_regs macro instead of thread.esp0&n; *&n; * Revision 1.3  2000/12/18 23:45:25  bjornw&n; * Linux/CRIS first version&n; *&n; *&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
@@ -98,11 +98,6 @@ r_int
 id|data
 )paren
 (brace
-r_int
-r_int
-op_star
-id|addr
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -681,11 +676,7 @@ multiline_comment|/* continue and stop at next (return from) syscall */
 r_case
 id|PTRACE_CONT
 suffix:colon
-(brace
 multiline_comment|/* restart after signal. */
-r_int
-id|tmp
-suffix:semicolon
 id|ret
 op_assign
 op_minus
@@ -738,15 +729,10 @@ l_int|0
 suffix:semicolon
 r_break
 suffix:semicolon
-)brace
 multiline_comment|/*&n; * make the child exit.  Best I can do is send it a sigkill. &n; * perhaps it should be put in the status that it wants to &n; * exit.&n; */
 r_case
 id|PTRACE_KILL
 suffix:colon
-(brace
-r_int
-id|tmp
-suffix:semicolon
 id|ret
 op_assign
 l_int|0
@@ -774,15 +760,10 @@ id|child
 suffix:semicolon
 r_break
 suffix:semicolon
-)brace
 r_case
 id|PTRACE_SINGLESTEP
 suffix:colon
-(brace
 multiline_comment|/* set the trap flag. */
-r_int
-id|tmp
-suffix:semicolon
 id|ret
 op_assign
 op_minus
@@ -824,7 +805,6 @@ l_int|0
 suffix:semicolon
 r_break
 suffix:semicolon
-)brace
 r_case
 id|PTRACE_DETACH
 suffix:colon

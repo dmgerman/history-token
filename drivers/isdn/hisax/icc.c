@@ -363,9 +363,7 @@ op_ne
 l_int|NULL
 )paren
 (brace
-id|stptr-&gt;l1
-dot
-id|l1l2
+id|L1L2
 c_func
 (paren
 id|stptr
@@ -2913,9 +2911,7 @@ op_amp
 id|st-&gt;l1.Flags
 )paren
 suffix:semicolon
-id|st-&gt;l1
-dot
-id|l1l2
+id|L1L2
 c_func
 (paren
 id|st
@@ -3470,9 +3466,7 @@ op_ne
 l_int|NULL
 )paren
 (brace
-id|stptr-&gt;l1
-dot
-id|l1l2
+id|L1L2
 c_func
 (paren
 id|stptr

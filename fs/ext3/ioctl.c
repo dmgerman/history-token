@@ -28,6 +28,17 @@ r_int
 id|arg
 )paren
 (brace
+r_struct
+id|ext3_inode_info
+op_star
+id|ei
+op_assign
+id|EXT3_I
+c_func
+(paren
+id|inode
+)paren
+suffix:semicolon
 r_int
 r_int
 id|flags
@@ -52,7 +63,7 @@ id|EXT3_IOC_GETFLAGS
 suffix:colon
 id|flags
 op_assign
-id|inode-&gt;u.ext3_i.i_flags
+id|ei-&gt;i_flags
 op_amp
 id|EXT3_FL_USER_VISIBLE
 suffix:semicolon
@@ -148,7 +159,7 @@ id|EFAULT
 suffix:semicolon
 id|oldflags
 op_assign
-id|inode-&gt;u.ext3_i.i_flags
+id|ei-&gt;i_flags
 suffix:semicolon
 multiline_comment|/* The JOURNAL_DATA flag is modifiable only by root */
 id|jflag
@@ -292,7 +303,7 @@ op_amp
 op_complement
 id|EXT3_FL_USER_MODIFIABLE
 suffix:semicolon
-id|inode-&gt;u.ext3_i.i_flags
+id|ei-&gt;i_flags
 op_assign
 id|flags
 suffix:semicolon

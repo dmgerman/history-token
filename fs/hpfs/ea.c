@@ -2457,7 +2457,13 @@ id|pos
 suffix:semicolon
 id|ret
 suffix:colon
-id|inode-&gt;i_hpfs_ea_size
+id|hpfs_i
+c_func
+(paren
+id|inode
+)paren
+op_member_access_from_pointer
+id|i_ea_size
 op_add_assign
 l_int|5
 op_plus

@@ -283,7 +283,18 @@ c_cond
 id|inode
 )paren
 (brace
-id|inode-&gt;i_hpfs_file_sec
+r_struct
+id|hpfs_inode_info
+op_star
+id|hpfs_inode
+op_assign
+id|hpfs_i
+c_func
+(paren
+id|inode
+)paren
+suffix:semicolon
+id|hpfs_inode-&gt;i_file_sec
 op_assign
 id|btree-&gt;u.external
 (braket
@@ -292,7 +303,7 @@ id|i
 dot
 id|file_secno
 suffix:semicolon
-id|inode-&gt;i_hpfs_disk_sec
+id|hpfs_inode-&gt;i_disk_sec
 op_assign
 id|btree-&gt;u.external
 (braket
@@ -301,7 +312,7 @@ id|i
 dot
 id|disk_secno
 suffix:semicolon
-id|inode-&gt;i_hpfs_n_secs
+id|hpfs_inode-&gt;i_n_secs
 op_assign
 id|btree-&gt;u.external
 (braket

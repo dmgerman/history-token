@@ -291,7 +291,8 @@ op_star
 id|next_dl_td
 suffix:semicolon
 DECL|member|urb
-id|urb_t
+r_struct
+id|urb
 op_star
 id|urb
 suffix:semicolon
@@ -1130,7 +1131,8 @@ comma
 r_int
 id|len
 comma
-id|urb_t
+r_struct
+id|urb
 op_star
 id|urb
 comma
@@ -1143,7 +1145,8 @@ r_void
 id|td_submit_urb
 c_func
 (paren
-id|urb_t
+r_struct
+id|urb
 op_star
 id|urb
 )paren
@@ -1154,7 +1157,8 @@ r_int
 id|rh_submit_urb
 c_func
 (paren
-id|urb_t
+r_struct
+id|urb
 op_star
 id|urb
 )paren
@@ -1164,7 +1168,8 @@ r_int
 id|rh_unlink_urb
 c_func
 (paren
-id|urb_t
+r_struct
+id|urb
 op_star
 id|urb
 )paren
@@ -1174,7 +1179,8 @@ r_int
 id|rh_init_int_timer
 c_func
 (paren
-id|urb_t
+r_struct
+id|urb
 op_star
 id|urb
 )paren

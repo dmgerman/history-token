@@ -8039,7 +8039,8 @@ id|uvd_t
 op_star
 id|uvd
 comma
-id|urb_t
+r_struct
+id|urb
 op_star
 id|urb
 )paren
@@ -8537,7 +8538,8 @@ id|j
 comma
 id|k
 suffix:semicolon
-id|urb_t
+r_struct
+id|urb
 op_star
 id|urb
 op_assign

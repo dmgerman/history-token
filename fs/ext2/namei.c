@@ -1,6 +1,5 @@
 multiline_comment|/*&n; * linux/fs/ext2/namei.c&n; *&n; * Rewrite to pagecache. Almost all code had been changed, so blame me&n; * if the things go wrong. Please, send bug reports to viro@math.psu.edu&n; *&n; * Stuff here is basically a glue between the VFS and generic UNIXish&n; * filesystem that keeps everything in pagecache. All knowledge of the&n; * directory layout is in fs/ext2/dir.c - it turned out to be easily separatable&n; * and it&squot;s easier to debug that way. In principle we might want to&n; * generalize that a bit and turn it into a library. Or not.&n; *&n; * The only non-static object here is ext2_dir_inode_operations.&n; *&n; * TODO: get rid of kmap() use, add readahead.&n; *&n; * Copyright (C) 1992, 1993, 1994, 1995&n; * Remy Card (card@masi.ibp.fr)&n; * Laboratoire MASI - Institut Blaise Pascal&n; * Universite Pierre et Marie Curie (Paris VI)&n; *&n; *  from&n; *&n; *  linux/fs/minix/namei.c&n; *&n; *  Copyright (C) 1991, 1992  Linus Torvalds&n; *&n; *  Big-endian to little-endian byte-swapping/bitmaps by&n; *        David S. Miller (davem@caip.rutgers.edu), 1995&n; */
-macro_line|#include &lt;linux/fs.h&gt;
-macro_line|#include &lt;linux/ext2_fs.h&gt;
+macro_line|#include &quot;ext2.h&quot;
 macro_line|#include &lt;linux/pagemap.h&gt;
 multiline_comment|/*&n; * Couple of helper functions - make the code slightly cleaner.&n; */
 DECL|function|ext2_inc_count
@@ -484,7 +483,13 @@ id|l
 OG
 r_sizeof
 (paren
-id|inode-&gt;u.ext2_i.i_data
+id|EXT2_I
+c_func
+(paren
+id|inode
+)paren
+op_member_access_from_pointer
+id|i_data
 )paren
 )paren
 (brace
@@ -535,8 +540,15 @@ c_func
 r_char
 op_star
 )paren
-op_amp
-id|inode-&gt;u.ext2_i.i_data
+(paren
+id|EXT2_I
+c_func
+(paren
+id|inode
+)paren
+op_member_access_from_pointer
+id|i_data
+)paren
 comma
 id|symname
 comma

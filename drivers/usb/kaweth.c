@@ -3431,7 +3431,8 @@ r_void
 id|usb_api_blocking_completion
 c_func
 (paren
-id|urb_t
+r_struct
+id|urb
 op_star
 id|urb
 )paren
@@ -3468,7 +3469,8 @@ r_int
 id|usb_start_wait_urb
 c_func
 (paren
-id|urb_t
+r_struct
+id|urb
 op_star
 id|urb
 comma
@@ -3688,7 +3690,8 @@ r_int
 id|timeout
 )paren
 (brace
-id|urb_t
+r_struct
+id|urb
 op_star
 id|urb
 suffix:semicolon

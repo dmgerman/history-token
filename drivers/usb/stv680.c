@@ -3609,7 +3609,8 @@ op_star
 id|stv680
 )paren
 (brace
-id|urb_t
+r_struct
+id|urb
 op_star
 id|urb
 suffix:semicolon

@@ -3110,9 +3110,7 @@ op_amp
 id|st-&gt;l1.Flags
 )paren
 suffix:semicolon
-id|st-&gt;l1
-dot
-id|l1l2
+id|L1L2
 c_func
 (paren
 id|st
@@ -3229,9 +3227,7 @@ comma
 id|st-&gt;l1.bc
 )paren
 suffix:semicolon
-id|st-&gt;l1
-dot
-id|l1l2
+id|L1L2
 c_func
 (paren
 id|st
@@ -3446,7 +3442,7 @@ id|st-&gt;l1.bcs
 op_assign
 id|bcs
 suffix:semicolon
-id|st-&gt;l2.l2l1
+id|st-&gt;l1.l2l1
 op_assign
 id|hfc_l2l1
 suffix:semicolon

@@ -415,7 +415,8 @@ id|fbuf
 suffix:semicolon
 multiline_comment|/* Videodev buffer area */
 DECL|member|urb
-id|urb_t
+r_struct
+id|urb
 op_star
 id|urb
 (braket
@@ -423,7 +424,8 @@ id|SE401_NUMSBUF
 )braket
 suffix:semicolon
 DECL|member|inturb
-id|urb_t
+r_struct
+id|urb
 op_star
 id|inturb
 suffix:semicolon

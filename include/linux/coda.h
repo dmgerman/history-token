@@ -93,6 +93,7 @@ suffix:semicolon
 macro_line|#endif /* !KERNEL */
 macro_line|#endif /* !DJGPP */
 macro_line|#if defined(__linux__)
+macro_line|#include &lt;linux/time.h&gt;
 DECL|macro|cdev_t
 mdefine_line|#define cdev_t u_quad_t
 macro_line|#ifndef __KERNEL__

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * misc.c&n; *&n; * $Id: misc.c,v 1.6 2001/04/09 10:00:21 starvik Exp $&n; * &n; * This is a collection of several routines from gzip-1.0.3 &n; * adapted for Linux.&n; *&n; * malloc by Hannu Savolainen 1993 and Matthias Urlichs 1994&n; * puts by Nick Holloway 1993, better puts by Martin Mares 1995&n; * adoptation for Linux/CRIS Axis Communications AB, 1999&n; * &n; */
+multiline_comment|/*&n; * misc.c&n; *&n; * $Id: misc.c,v 1.1.1.1 2001/12/17 13:59:27 bjornw Exp $&n; * &n; * This is a collection of several routines from gzip-1.0.3 &n; * adapted for Linux.&n; *&n; * malloc by Hannu Savolainen 1993 and Matthias Urlichs 1994&n; * puts by Nick Holloway 1993, better puts by Martin Mares 1995&n; * adoptation for Linux/CRIS Axis Communications AB, 1999&n; * &n; */
 multiline_comment|/* where the piggybacked kernel image expects itself to live.&n; * it is the same adress we use when we network load an uncompressed&n; * image into DRAM, and it is the address the kernel is linked to live&n; * at by etrax100.ld.&n; */
 DECL|macro|KERNEL_LOAD_ADR
 mdefine_line|#define KERNEL_LOAD_ADR 0x40004000

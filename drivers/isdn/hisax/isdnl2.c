@@ -42,27 +42,35 @@ r_enum
 DECL|enumerator|ST_L2_1
 id|ST_L2_1
 comma
+multiline_comment|/* TEI unassigned */
 DECL|enumerator|ST_L2_2
 id|ST_L2_2
 comma
+multiline_comment|/* Assign awaiting TEI */
 DECL|enumerator|ST_L2_3
 id|ST_L2_3
 comma
+multiline_comment|/* Establish awaiting TEI */
 DECL|enumerator|ST_L2_4
 id|ST_L2_4
 comma
+multiline_comment|/* TEI assigned */
 DECL|enumerator|ST_L2_5
 id|ST_L2_5
 comma
+multiline_comment|/* Awaiting establishment */
 DECL|enumerator|ST_L2_6
 id|ST_L2_6
 comma
+multiline_comment|/* Awaiting release */
 DECL|enumerator|ST_L2_7
 id|ST_L2_7
 comma
+multiline_comment|/* Multiple frame established */
 DECL|enumerator|ST_L2_8
 id|ST_L2_8
 comma
+multiline_comment|/* Timer recovery */
 )brace
 suffix:semicolon
 DECL|macro|L2_STATE_COUNT
@@ -843,9 +851,7 @@ id|st-&gt;l1.bcs-&gt;tx_cnt
 op_add_assign
 id|skb-&gt;len
 suffix:semicolon
-id|st-&gt;l2
-dot
-id|l2l1
+id|L2L1
 c_func
 (paren
 id|st
@@ -2314,9 +2320,7 @@ id|DL_RELEASE
 op_or
 id|INDICATION
 suffix:semicolon
-id|st-&gt;l2
-dot
-id|l2l3
+id|L2L3
 c_func
 (paren
 id|st
@@ -2354,9 +2358,7 @@ op_amp
 id|st-&gt;l2.flag
 )paren
 )paren
-id|st-&gt;l2
-dot
-id|l2l1
+id|L2L1
 c_func
 (paren
 id|st
@@ -2368,9 +2370,7 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
-id|st-&gt;l2
-dot
-id|l2l3
+id|L2L3
 c_func
 (paren
 id|st
@@ -3139,9 +3139,7 @@ l_int|1
 )paren
 )paren
 suffix:semicolon
-id|st-&gt;l2
-dot
-id|l2l3
+id|L2L3
 c_func
 (paren
 id|st
@@ -3324,9 +3322,7 @@ id|st
 op_assign
 id|fi-&gt;userdata
 suffix:semicolon
-id|st-&gt;l2
-dot
-id|l2l3
+id|L2L3
 c_func
 (paren
 id|st
@@ -3553,9 +3549,7 @@ comma
 l_int|3
 )paren
 suffix:semicolon
-id|st-&gt;l2
-dot
-id|l2l3
+id|L2L3
 c_func
 (paren
 id|st
@@ -3831,9 +3825,7 @@ c_cond
 (paren
 id|est
 )paren
-id|st-&gt;l2
-dot
-id|l2l3
+id|L2L3
 c_func
 (paren
 id|st
@@ -3876,9 +3868,7 @@ c_func
 id|st
 )paren
 )paren
-id|st-&gt;l2
-dot
-id|l2l1
+id|L2L1
 c_func
 (paren
 id|st
@@ -4180,9 +4170,7 @@ op_ne
 op_minus
 l_int|1
 )paren
-id|st-&gt;l2
-dot
-id|l2l3
+id|L2L3
 c_func
 (paren
 id|st
@@ -4208,9 +4196,7 @@ c_func
 id|st
 )paren
 )paren
-id|st-&gt;l2
-dot
-id|l2l1
+id|L2L1
 c_func
 (paren
 id|st
@@ -4461,9 +4447,7 @@ op_amp
 id|st-&gt;l2.flag
 )paren
 )paren
-id|st-&gt;l2
-dot
-id|l2l1
+id|L2L1
 c_func
 (paren
 id|st
@@ -5070,9 +5054,7 @@ op_assign
 l_int|NULL
 suffix:semicolon
 )brace
-id|st-&gt;l2
-dot
-id|l2l1
+id|L2L1
 c_func
 (paren
 id|st
@@ -5516,9 +5498,7 @@ op_eq
 id|RR
 )paren
 )paren
-id|st-&gt;l2
-dot
-id|l2l1
+id|L2L1
 c_func
 (paren
 id|st
@@ -5694,9 +5674,7 @@ comma
 id|skb
 )paren
 suffix:semicolon
-id|st-&gt;l2
-dot
-id|l2l1
+id|L2L1
 c_func
 (paren
 id|st
@@ -6048,9 +6026,7 @@ l_int|0
 )paren
 )paren
 suffix:semicolon
-id|st-&gt;l2
-dot
-id|l2l3
+id|L2L3
 c_func
 (paren
 id|st
@@ -6239,9 +6215,7 @@ op_eq
 id|ST_L2_7
 )paren
 )paren
-id|st-&gt;l2
-dot
-id|l2l1
+id|L2L1
 c_func
 (paren
 id|st
@@ -6488,9 +6462,7 @@ op_amp
 id|st-&gt;l2.flag
 )paren
 )paren
-id|st-&gt;l2
-dot
-id|l2l1
+id|L2L1
 c_func
 (paren
 id|st
@@ -7395,9 +7367,7 @@ id|oskb
 )paren
 suffix:semicolon
 )brace
-id|st-&gt;l2
-dot
-id|l2l1
+id|L2L1
 c_func
 (paren
 id|st
@@ -7473,9 +7443,7 @@ c_func
 id|st
 )paren
 )paren
-id|st-&gt;l2
-dot
-id|l2l1
+id|L2L1
 c_func
 (paren
 id|st
@@ -7778,9 +7746,7 @@ c_func
 id|st
 )paren
 )paren
-id|st-&gt;l2
-dot
-id|l2l1
+id|L2L1
 c_func
 (paren
 id|st
@@ -8063,9 +8029,7 @@ op_assign
 op_minus
 l_int|1
 suffix:semicolon
-id|st-&gt;l2
-dot
-id|l2l3
+id|L2L3
 c_func
 (paren
 id|st
@@ -8206,9 +8170,7 @@ comma
 l_int|18
 )paren
 suffix:semicolon
-id|st-&gt;l2
-dot
-id|l2l3
+id|L2L3
 c_func
 (paren
 id|st
@@ -8297,9 +8259,7 @@ comma
 l_int|19
 )paren
 suffix:semicolon
-id|st-&gt;l2
-dot
-id|l2l3
+id|L2L3
 c_func
 (paren
 id|st
@@ -8372,9 +8332,7 @@ op_amp
 id|st-&gt;l2.flag
 )paren
 )paren
-id|st-&gt;l2
-dot
-id|l2l3
+id|L2L3
 c_func
 (paren
 id|st
@@ -8497,9 +8455,7 @@ comma
 l_int|20
 )paren
 suffix:semicolon
-id|st-&gt;l2
-dot
-id|l2l3
+id|L2L3
 c_func
 (paren
 id|st
@@ -8583,9 +8539,7 @@ comma
 l_int|19
 )paren
 suffix:semicolon
-id|st-&gt;l2
-dot
-id|l2l3
+id|L2L3
 c_func
 (paren
 id|st
@@ -10430,9 +10384,7 @@ id|st-&gt;l2.flag
 )paren
 suffix:semicolon
 )brace
-id|st-&gt;l2
-dot
-id|l2l1
+id|L2L1
 c_func
 (paren
 id|st
@@ -10465,9 +10417,7 @@ id|st-&gt;l2.flag
 )paren
 )paren
 (brace
-id|st-&gt;l2
-dot
-id|l2l1
+id|L2L1
 c_func
 (paren
 id|st
@@ -10676,11 +10626,11 @@ op_star
 id|debug_id
 )paren
 (brace
-id|st-&gt;l1.l1l2
+id|st-&gt;l2.l1l2
 op_assign
 id|isdnl2_l1l2
 suffix:semicolon
-id|st-&gt;l3.l3l2
+id|st-&gt;l2.l3l2
 op_assign
 id|isdnl2_l3l2
 suffix:semicolon
@@ -10819,9 +10769,7 @@ op_or
 id|REQUEST
 )paren
 suffix:colon
-id|st-&gt;l2
-dot
-id|l2l1
+id|L2L1
 c_func
 (paren
 id|st
@@ -10842,9 +10790,7 @@ op_or
 id|REQUEST
 )paren
 suffix:colon
-id|st-&gt;l2
-dot
-id|l2l1
+id|L2L1
 c_func
 (paren
 id|st
@@ -10865,9 +10811,7 @@ op_or
 id|REQUEST
 )paren
 suffix:colon
-id|st-&gt;l2
-dot
-id|l2l1
+id|L2L1
 c_func
 (paren
 id|st
@@ -10894,7 +10838,7 @@ op_star
 id|st
 )paren
 (brace
-id|st-&gt;l3.l3l2
+id|st-&gt;l2.l3l2
 op_assign
 id|transl2_l3l2
 suffix:semicolon

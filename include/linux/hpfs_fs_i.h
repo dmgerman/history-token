@@ -96,39 +96,12 @@ op_star
 op_star
 id|i_rddir_off
 suffix:semicolon
+DECL|member|vfs_inode
+r_struct
+id|inode
+id|vfs_inode
+suffix:semicolon
 )brace
 suffix:semicolon
-DECL|macro|i_hpfs_dno
-mdefine_line|#define i_hpfs_dno u.hpfs_i.i_dno
-DECL|macro|i_hpfs_parent_dir
-mdefine_line|#define i_hpfs_parent_dir u.hpfs_i.i_parent_dir
-DECL|macro|i_hpfs_n_secs
-mdefine_line|#define i_hpfs_n_secs u.hpfs_i.i_n_secs
-DECL|macro|i_hpfs_file_sec
-mdefine_line|#define i_hpfs_file_sec u.hpfs_i.i_file_sec
-DECL|macro|i_hpfs_disk_sec
-mdefine_line|#define i_hpfs_disk_sec u.hpfs_i.i_disk_sec
-DECL|macro|i_hpfs_dpos
-mdefine_line|#define i_hpfs_dpos u.hpfs_i.i_dpos
-DECL|macro|i_hpfs_dsubdno
-mdefine_line|#define i_hpfs_dsubdno u.hpfs_i.i_dsubdno
-DECL|macro|i_hpfs_ea_size
-mdefine_line|#define i_hpfs_ea_size u.hpfs_i.i_ea_size
-DECL|macro|i_hpfs_conv
-mdefine_line|#define i_hpfs_conv u.hpfs_i.i_conv
-DECL|macro|i_hpfs_ea_mode
-mdefine_line|#define i_hpfs_ea_mode u.hpfs_i.i_ea_mode
-DECL|macro|i_hpfs_ea_uid
-mdefine_line|#define i_hpfs_ea_uid u.hpfs_i.i_ea_uid
-DECL|macro|i_hpfs_ea_gid
-mdefine_line|#define i_hpfs_ea_gid u.hpfs_i.i_ea_gid
-multiline_comment|/*#define i_hpfs_lock u.hpfs_i.i_lock*/
-multiline_comment|/*#define i_hpfs_queue u.hpfs_i.i_queue*/
-DECL|macro|i_hpfs_sem
-mdefine_line|#define i_hpfs_sem u.hpfs_i.i_sem
-DECL|macro|i_hpfs_rddir_off
-mdefine_line|#define i_hpfs_rddir_off u.hpfs_i.i_rddir_off
-DECL|macro|i_hpfs_dirty
-mdefine_line|#define i_hpfs_dirty u.hpfs_i.i_dirty
 macro_line|#endif
 eof

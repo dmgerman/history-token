@@ -53,6 +53,11 @@ r_int
 id|c_cached_perm
 suffix:semicolon
 multiline_comment|/* cached access permissions */
+DECL|member|vfs_inode
+r_struct
+id|inode
+id|vfs_inode
+suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/* flags */

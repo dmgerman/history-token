@@ -163,9 +163,12 @@ mdefine_line|#define __va(x)                 ((void *)((unsigned long)(x) | 0x80
 macro_line|#endif
 multiline_comment|/* to index into the page map. our pages all start at physical addr PAGE_OFFSET so&n; * we can let the map start there. notice that we subtract PAGE_OFFSET because&n; * we start our mem_map there - in other ports they map mem_map physically and&n; * use __pa instead. in our system both the physical and virtual address of DRAM&n; * is too high to let mem_map start at 0, so we do it this way instead (similar&n; * to arm and m68k I think)&n; */
 DECL|macro|virt_to_page
-mdefine_line|#define virt_to_page(kaddr)    (mem_map + (((unsigned long)kaddr - PAGE_OFFSET) &gt;&gt; PAGE_SHIFT))
+mdefine_line|#define virt_to_page(kaddr)    (mem_map + (((unsigned long)(kaddr) - PAGE_OFFSET) &gt;&gt; PAGE_SHIFT))
 DECL|macro|VALID_PAGE
-mdefine_line|#define VALID_PAGE(page)       ((page - mem_map) &lt; max_mapnr)
+mdefine_line|#define VALID_PAGE(page)       (((page) - mem_map) &lt; max_mapnr)
+multiline_comment|/* convert a page (based on mem_map and forward) to a physical address&n; * do this by figuring out the virtual address and then use __pa&n; */
+DECL|macro|page_to_phys
+mdefine_line|#define page_to_phys(page)     __pa((((page) - mem_map) &lt;&lt; PAGE_SHIFT) + PAGE_OFFSET)
 multiline_comment|/* from linker script */
 r_extern
 r_int

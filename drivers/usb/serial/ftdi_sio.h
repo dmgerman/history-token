@@ -5,6 +5,10 @@ DECL|macro|FTDI_SIO_PID
 mdefine_line|#define FTDI_SIO_PID&t;0x8372&t;/* Product Id SIO application of 8U100AX  */
 DECL|macro|FTDI_8U232AM_PID
 mdefine_line|#define FTDI_8U232AM_PID 0x6001 /* Similar device to SIO above */
+DECL|macro|FTDI_NF_RIC_VID
+mdefine_line|#define FTDI_NF_RIC_VID&t;0x0DCD&t;/* Vendor Id */
+DECL|macro|FTDI_NF_RIC_PID
+mdefine_line|#define FTDI_NF_RIC_PID&t;0x0001&t;/* Product Id */
 DECL|macro|FTDI_SIO_RESET
 mdefine_line|#define FTDI_SIO_RESET &t;&t;0 /* Reset the port */
 DECL|macro|FTDI_SIO_MODEM_CTRL

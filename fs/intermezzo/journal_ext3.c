@@ -561,7 +561,13 @@ id|inode
 )paren
 (brace
 macro_line|#ifdef EXT3_JOURNAL_DATA_FL
-id|inode-&gt;u.ext3_i.i_flags
+id|EXT3_I
+c_func
+(paren
+id|inode
+)paren
+op_member_access_from_pointer
+id|i_flags
 op_or_assign
 id|EXT3_JOURNAL_DATA_FL
 suffix:semicolon

@@ -38,6 +38,17 @@ id|inode
 )paren
 (brace
 r_struct
+id|ufs_inode_info
+op_star
+id|ufsi
+op_assign
+id|UFS_I
+c_func
+(paren
+id|inode
+)paren
+suffix:semicolon
+r_struct
 id|super_block
 op_star
 id|sb
@@ -124,7 +135,7 @@ id|u32
 comma
 id|UFS_NDIR_FRAGMENT
 comma
-id|inode-&gt;u.ufs_i.i_lastfrag
+id|ufsi-&gt;i_lastfrag
 )paren
 suffix:semicolon
 id|frag2
@@ -238,7 +249,7 @@ suffix:semicolon
 multiline_comment|/*&n;&t; * Free first free fragments&n;&t; */
 id|p
 op_assign
-id|inode-&gt;u.ufs_i.i_u1.i_data
+id|ufsi-&gt;i_u1.i_data
 op_plus
 id|ufs_fragstoblks
 (paren
@@ -410,7 +421,7 @@ op_increment
 (brace
 id|p
 op_assign
-id|inode-&gt;u.ufs_i.i_u1.i_data
+id|ufsi-&gt;i_u1.i_data
 op_plus
 id|i
 suffix:semicolon
@@ -607,7 +618,7 @@ suffix:semicolon
 multiline_comment|/*&n;&t; * Free last free fragments&n;&t; */
 id|p
 op_assign
-id|inode-&gt;u.ufs_i.i_u1.i_data
+id|ufsi-&gt;i_u1.i_data
 op_plus
 id|ufs_fragstoblks
 (paren
@@ -1685,6 +1696,17 @@ id|inode
 )paren
 (brace
 r_struct
+id|ufs_inode_info
+op_star
+id|ufsi
+op_assign
+id|UFS_I
+c_func
+(paren
+id|inode
+)paren
+suffix:semicolon
+r_struct
 id|super_block
 op_star
 id|sb
@@ -1768,7 +1790,7 @@ l_int|0
 suffix:semicolon
 id|p
 op_assign
-id|inode-&gt;u.ufs_i.i_u1.i_data
+id|ufsi-&gt;i_u1.i_data
 op_plus
 id|UFS_TIND_BLOCK
 suffix:semicolon
@@ -2058,6 +2080,17 @@ id|inode
 )paren
 (brace
 r_struct
+id|ufs_inode_info
+op_star
+id|ufsi
+op_assign
+id|UFS_I
+c_func
+(paren
+id|inode
+)paren
+suffix:semicolon
+r_struct
 id|super_block
 op_star
 id|sb
@@ -2165,7 +2198,7 @@ id|u32
 op_star
 )paren
 op_amp
-id|inode-&gt;u.ufs_i.i_u1.i_data
+id|ufsi-&gt;i_u1.i_data
 (braket
 id|UFS_IND_BLOCK
 )braket
@@ -2186,7 +2219,7 @@ id|u32
 op_star
 )paren
 op_amp
-id|inode-&gt;u.ufs_i.i_u1.i_data
+id|ufsi-&gt;i_u1.i_data
 (braket
 id|UFS_DIND_BLOCK
 )braket
@@ -2305,7 +2338,7 @@ id|inode-&gt;i_ctime
 op_assign
 id|CURRENT_TIME
 suffix:semicolon
-id|inode-&gt;u.ufs_i.i_lastfrag
+id|ufsi-&gt;i_lastfrag
 op_assign
 id|DIRECT_FRAGMENT
 suffix:semicolon

@@ -100,15 +100,36 @@ suffix:semicolon
 multiline_comment|/* FIXME: quick hack for memory alignment */
 )brace
 suffix:semicolon
+multiline_comment|/* identify whether a DMA context is asynchronous or isochronous */
+DECL|enum|context_type
+DECL|enumerator|DMA_CTX_ASYNC_REQ
+DECL|enumerator|DMA_CTX_ASYNC_RESP
+DECL|enumerator|DMA_CTX_ISO
+r_enum
+id|context_type
+(brace
+id|DMA_CTX_ASYNC_REQ
+comma
+id|DMA_CTX_ASYNC_RESP
+comma
+id|DMA_CTX_ISO
+)brace
+suffix:semicolon
 multiline_comment|/* DMA receive context */
 DECL|struct|dma_rcv_ctx
 r_struct
 id|dma_rcv_ctx
 (brace
 DECL|member|ohci
-r_void
+r_struct
+id|ti_ohci
 op_star
 id|ohci
+suffix:semicolon
+DECL|member|type
+r_enum
+id|context_type
+id|type
 suffix:semicolon
 DECL|member|ctx
 r_int
@@ -198,9 +219,15 @@ r_struct
 id|dma_trm_ctx
 (brace
 DECL|member|ohci
-r_void
+r_struct
+id|ti_ohci
 op_star
 id|ohci
+suffix:semicolon
+DECL|member|type
+r_enum
+id|context_type
+id|type
 suffix:semicolon
 DECL|member|ctx
 r_int
@@ -292,30 +319,6 @@ id|cmdPtr
 suffix:semicolon
 )brace
 suffix:semicolon
-multiline_comment|/* video device template */
-DECL|struct|video_template
-r_struct
-id|video_template
-(brace
-DECL|member|irq_handler
-r_void
-(paren
-op_star
-id|irq_handler
-)paren
-(paren
-r_int
-id|card
-comma
-id|quadlet_t
-id|isoRecvEvent
-comma
-id|quadlet_t
-id|isoXmitEvent
-)paren
-suffix:semicolon
-)brace
-suffix:semicolon
 DECL|struct|ti_ohci
 r_struct
 id|ti_ohci
@@ -325,11 +328,6 @@ r_int
 id|id
 suffix:semicolon
 multiline_comment|/* sequential card number */
-DECL|member|list
-r_struct
-id|list_head
-id|list
-suffix:semicolon
 DECL|member|dev
 r_struct
 id|pci_dev
@@ -416,6 +414,12 @@ DECL|member|nb_iso_rcv_ctx
 r_int
 id|nb_iso_rcv_ctx
 suffix:semicolon
+DECL|member|ir_ctx_usage
+r_int
+r_int
+id|ir_ctx_usage
+suffix:semicolon
+multiline_comment|/* use test_and_set_bit() for atomicity */
 multiline_comment|/* iso transmit */
 DECL|member|it_context
 r_struct
@@ -427,6 +431,12 @@ DECL|member|nb_iso_xmit_ctx
 r_int
 id|nb_iso_xmit_ctx
 suffix:semicolon
+DECL|member|it_ctx_usage
+r_int
+r_int
+id|it_ctx_usage
+suffix:semicolon
+multiline_comment|/* use test_and_set_bit() for atomicity */
 DECL|member|ISO_channel_usage
 id|u64
 id|ISO_channel_usage
@@ -457,12 +467,45 @@ DECL|member|self_id_errors
 r_int
 id|self_id_errors
 suffix:semicolon
-multiline_comment|/* video device */
-DECL|member|video_tmpl
+multiline_comment|/* IRQ hooks, for video1394 and dv1394 */
+DECL|macro|OHCI1394_MAX_IRQ_HOOKS
+mdefine_line|#define OHCI1394_MAX_IRQ_HOOKS 4
+DECL|struct|ohci1394_irq_hook
 r_struct
-id|video_template
+id|ohci1394_irq_hook
+(brace
+DECL|member|irq_handler
+r_void
+(paren
 op_star
-id|video_tmpl
+id|irq_handler
+)paren
+(paren
+r_int
+id|card
+comma
+id|quadlet_t
+id|isoRecvEvent
+comma
+id|quadlet_t
+id|isoXmitEvent
+comma
+r_void
+op_star
+id|data
+)paren
+suffix:semicolon
+DECL|member|data
+r_void
+op_star
+id|data
+suffix:semicolon
+DECL|member|irq_hooks
+)brace
+id|irq_hooks
+(braket
+id|OHCI1394_MAX_IRQ_HOOKS
+)braket
 suffix:semicolon
 multiline_comment|/* Swap the selfid buffer? */
 DECL|member|selfid_swap
@@ -606,6 +649,13 @@ suffix:semicolon
 multiline_comment|/* 2 KiloBytes of register space */
 DECL|macro|OHCI1394_REGISTER_SIZE
 mdefine_line|#define OHCI1394_REGISTER_SIZE                0x800       
+multiline_comment|/* Offsets relative to context bases defined below */
+DECL|macro|OHCI1394_ContextControlSet
+mdefine_line|#define OHCI1394_ContextControlSet            0x000
+DECL|macro|OHCI1394_ContextControlClear
+mdefine_line|#define OHCI1394_ContextControlClear          0x004
+DECL|macro|OHCI1394_ContextCommandPtr
+mdefine_line|#define OHCI1394_ContextCommandPtr            0x00C
 multiline_comment|/* register map */
 DECL|macro|OHCI1394_Version
 mdefine_line|#define OHCI1394_Version                      0x000
@@ -707,24 +757,32 @@ DECL|macro|OHCI1394_PhyReqFilterLoClear
 mdefine_line|#define OHCI1394_PhyReqFilterLoClear          0x11C
 DECL|macro|OHCI1394_PhyUpperBound
 mdefine_line|#define OHCI1394_PhyUpperBound                0x120
+DECL|macro|OHCI1394_AsReqTrContextBase
+mdefine_line|#define OHCI1394_AsReqTrContextBase           0x180
 DECL|macro|OHCI1394_AsReqTrContextControlSet
 mdefine_line|#define OHCI1394_AsReqTrContextControlSet     0x180
 DECL|macro|OHCI1394_AsReqTrContextControlClear
 mdefine_line|#define OHCI1394_AsReqTrContextControlClear   0x184
 DECL|macro|OHCI1394_AsReqTrCommandPtr
 mdefine_line|#define OHCI1394_AsReqTrCommandPtr            0x18C
+DECL|macro|OHCI1394_AsRspTrContextBase
+mdefine_line|#define OHCI1394_AsRspTrContextBase           0x1A0
 DECL|macro|OHCI1394_AsRspTrContextControlSet
 mdefine_line|#define OHCI1394_AsRspTrContextControlSet     0x1A0
 DECL|macro|OHCI1394_AsRspTrContextControlClear
 mdefine_line|#define OHCI1394_AsRspTrContextControlClear   0x1A4
 DECL|macro|OHCI1394_AsRspTrCommandPtr
 mdefine_line|#define OHCI1394_AsRspTrCommandPtr            0x1AC
+DECL|macro|OHCI1394_AsReqRcvContextBase
+mdefine_line|#define OHCI1394_AsReqRcvContextBase          0x1C0
 DECL|macro|OHCI1394_AsReqRcvContextControlSet
 mdefine_line|#define OHCI1394_AsReqRcvContextControlSet    0x1C0
 DECL|macro|OHCI1394_AsReqRcvContextControlClear
 mdefine_line|#define OHCI1394_AsReqRcvContextControlClear  0x1C4
 DECL|macro|OHCI1394_AsReqRcvCommandPtr
 mdefine_line|#define OHCI1394_AsReqRcvCommandPtr           0x1CC
+DECL|macro|OHCI1394_AsRspRcvContextBase
+mdefine_line|#define OHCI1394_AsRspRcvContextBase          0x1E0
 DECL|macro|OHCI1394_AsRspRcvContextControlSet
 mdefine_line|#define OHCI1394_AsRspRcvContextControlSet    0x1E0
 DECL|macro|OHCI1394_AsRspRcvContextControlClear
@@ -733,6 +791,8 @@ DECL|macro|OHCI1394_AsRspRcvCommandPtr
 mdefine_line|#define OHCI1394_AsRspRcvCommandPtr           0x1EC
 multiline_comment|/* Isochronous transmit registers */
 multiline_comment|/* Add (32 * n) for context n */
+DECL|macro|OHCI1394_IsoXmitContextBase
+mdefine_line|#define OHCI1394_IsoXmitContextBase           0x200
 DECL|macro|OHCI1394_IsoXmitContextControlSet
 mdefine_line|#define OHCI1394_IsoXmitContextControlSet     0x200
 DECL|macro|OHCI1394_IsoXmitContextControlClear
@@ -741,6 +801,8 @@ DECL|macro|OHCI1394_IsoXmitCommandPtr
 mdefine_line|#define OHCI1394_IsoXmitCommandPtr            0x20C
 multiline_comment|/* Isochronous receive registers */
 multiline_comment|/* Add (32 * n) for context n */
+DECL|macro|OHCI1394_IsoRcvContextBase
+mdefine_line|#define OHCI1394_IsoRcvContextBase            0x400
 DECL|macro|OHCI1394_IsoRcvContextControlSet
 mdefine_line|#define OHCI1394_IsoRcvContextControlSet      0x400
 DECL|macro|OHCI1394_IsoRcvContextControlClear
@@ -841,7 +903,7 @@ id|card_num
 )paren
 suffix:semicolon
 r_int
-id|ohci1394_register_video
+id|ohci1394_hook_irq
 c_func
 (paren
 r_struct
@@ -849,14 +911,29 @@ id|ti_ohci
 op_star
 id|ohci
 comma
-r_struct
-id|video_template
+r_void
+(paren
 op_star
-id|tmpl
+id|irq_handler
+)paren
+(paren
+r_int
+comma
+id|quadlet_t
+comma
+id|quadlet_t
+comma
+r_void
+op_star
+)paren
+comma
+r_void
+op_star
+id|data
 )paren
 suffix:semicolon
 r_void
-id|ohci1394_unregister_video
+id|ohci1394_unhook_irq
 c_func
 (paren
 r_struct
@@ -864,10 +941,25 @@ id|ti_ohci
 op_star
 id|ohci
 comma
-r_struct
-id|video_template
+r_void
+(paren
 op_star
-id|tmpl
+id|irq_handler
+)paren
+(paren
+r_int
+comma
+id|quadlet_t
+comma
+id|quadlet_t
+comma
+r_void
+op_star
+)paren
+comma
+r_void
+op_star
+id|data
 )paren
 suffix:semicolon
 macro_line|#endif

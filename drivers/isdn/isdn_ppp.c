@@ -1,5 +1,5 @@
 multiline_comment|/* $Id: isdn_ppp.c,v 1.85.6.9 2001/11/06 20:58:28 kai Exp $&n; *&n; * Linux ISDN subsystem, functions for synchronous PPP (linklevel).&n; *&n; * Copyright 1995,96 by Michael Hipp (Michael.Hipp@student.uni-tuebingen.de)&n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; */
-macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/isdn.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/poll.h&gt;
@@ -1201,6 +1201,7 @@ l_int|1
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * isdn_ppp_open&n; */
+r_static
 r_int
 DECL|function|isdn_ppp_open
 id|isdn_ppp_open
@@ -1412,6 +1413,7 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * release ippp device&n; */
+r_static
 r_int
 DECL|function|isdn_ppp_release
 id|isdn_ppp_release
@@ -1818,6 +1820,7 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * ippp device ioctl&n; */
+r_static
 r_int
 DECL|function|isdn_ppp_ioctl
 id|isdn_ppp_ioctl
@@ -2833,6 +2836,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+r_static
 r_int
 r_int
 DECL|function|isdn_ppp_poll
@@ -3285,6 +3289,7 @@ id|len
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * read() .. non-blocking: ipppd calls it only after select()&n; *           reports, that there is data&n; */
+r_static
 r_int
 DECL|function|isdn_ppp_read
 id|isdn_ppp_read
@@ -3491,6 +3496,7 @@ id|retval
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * ipppd wanna write a packet to the card .. non-blocking&n; */
+r_static
 r_int
 DECL|function|isdn_ppp_write
 id|isdn_ppp_write
@@ -3853,6 +3859,46 @@ r_return
 id|retval
 suffix:semicolon
 )brace
+DECL|variable|isdn_ppp_fops
+r_struct
+id|file_operations
+id|isdn_ppp_fops
+op_assign
+(brace
+id|owner
+suffix:colon
+id|THIS_MODULE
+comma
+id|llseek
+suffix:colon
+id|no_llseek
+comma
+id|read
+suffix:colon
+id|isdn_ppp_read
+comma
+id|write
+suffix:colon
+id|isdn_ppp_write
+comma
+id|poll
+suffix:colon
+id|isdn_ppp_poll
+comma
+id|ioctl
+suffix:colon
+id|isdn_ppp_ioctl
+comma
+id|open
+suffix:colon
+id|isdn_ppp_open
+comma
+id|release
+suffix:colon
+id|isdn_ppp_release
+comma
+)brace
+suffix:semicolon
 multiline_comment|/*&n; * init memory, structures etc.&n; */
 r_int
 DECL|function|isdn_ppp_init

@@ -3063,9 +3063,7 @@ op_or
 id|REQUEST
 )paren
 suffix:colon
-id|st-&gt;l1
-dot
-id|l1l2
+id|L1L2
 c_func
 (paren
 id|st
@@ -3339,7 +3337,7 @@ id|cs-&gt;hw.hfcsx.nt_timer
 op_assign
 l_int|0
 suffix:semicolon
-id|cs-&gt;stlist-&gt;l2.l2l1
+id|cs-&gt;stlist-&gt;l1.l2l1
 op_assign
 id|dch_nt_l2l1
 suffix:semicolon
@@ -5223,9 +5221,7 @@ op_amp
 id|st-&gt;l1.Flags
 )paren
 suffix:semicolon
-id|st-&gt;l1
-dot
-id|l1l2
+id|L1L2
 c_func
 (paren
 id|st
@@ -6443,9 +6439,7 @@ op_amp
 id|st-&gt;l1.Flags
 )paren
 suffix:semicolon
-id|st-&gt;l1
-dot
-id|l1l2
+id|L1L2
 c_func
 (paren
 id|st
@@ -6562,9 +6556,7 @@ comma
 id|st-&gt;l1.bc
 )paren
 suffix:semicolon
-id|st-&gt;l1
-dot
-id|l1l2
+id|L1L2
 c_func
 (paren
 id|st
@@ -6781,7 +6773,7 @@ id|st-&gt;l1.bcs
 op_assign
 id|bcs
 suffix:semicolon
-id|st-&gt;l2.l2l1
+id|st-&gt;l1.l2l1
 op_assign
 id|hfcsx_l2l1
 suffix:semicolon

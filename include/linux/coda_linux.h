@@ -364,8 +364,34 @@ mdefine_line|#define CODA_ALLOC(ptr, cast, size)                                
 DECL|macro|CODA_FREE
 mdefine_line|#define CODA_FREE(ptr,size) do {if (size &lt; PAGE_SIZE) { kfree((ptr)); CDEBUG(D_MALLOC, &quot;kfreed: %lx at %p.&bslash;n&quot;, (long) size, ptr); } else { vfree((ptr)); CDEBUG(D_MALLOC, &quot;vfreed: %lx at %p.&bslash;n&quot;, (long) size, ptr);} } while (0)
 multiline_comment|/* inode to cnode access functions */
-DECL|macro|ITOC
-mdefine_line|#define ITOC(inode) (&amp;((inode)-&gt;u.coda_i))
+DECL|function|ITOC
+r_static
+r_inline
+r_struct
+id|coda_inode_info
+op_star
+id|ITOC
+c_func
+(paren
+r_struct
+id|inode
+op_star
+id|inode
+)paren
+(brace
+r_return
+id|list_entry
+c_func
+(paren
+id|inode
+comma
+r_struct
+id|coda_inode_info
+comma
+id|vfs_inode
+)paren
+suffix:semicolon
+)brace
 DECL|function|coda_i2f
 r_static
 id|__inline__

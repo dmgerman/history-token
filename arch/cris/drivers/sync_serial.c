@@ -4182,6 +4182,8 @@ op_or
 id|d_eol
 op_or
 id|d_eop
+op_or
+id|d_wait
 suffix:semicolon
 id|port-&gt;out_descr.sw_len
 op_assign

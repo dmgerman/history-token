@@ -41,75 +41,6 @@ mdefine_line|#define NFS_LOOKUP_CACHE_SIZE&t;&t;64
 multiline_comment|/*&n; * superblock magic number for NFS&n; */
 DECL|macro|NFS_SUPER_MAGIC
 mdefine_line|#define NFS_SUPER_MAGIC&t;&t;&t;0x6969
-DECL|function|NFS_I
-r_static
-r_inline
-r_struct
-id|nfs_inode_info
-op_star
-id|NFS_I
-c_func
-(paren
-r_struct
-id|inode
-op_star
-id|inode
-)paren
-(brace
-r_return
-op_amp
-id|inode-&gt;u.nfs_i
-suffix:semicolon
-)brace
-DECL|macro|NFS_FH
-mdefine_line|#define NFS_FH(inode)&t;&t;&t;(&amp;(inode)-&gt;u.nfs_i.fh)
-DECL|macro|NFS_SERVER
-mdefine_line|#define NFS_SERVER(inode)&t;&t;(&amp;(inode)-&gt;i_sb-&gt;u.nfs_sb.s_server)
-DECL|macro|NFS_CLIENT
-mdefine_line|#define NFS_CLIENT(inode)&t;&t;(NFS_SERVER(inode)-&gt;client)
-DECL|macro|NFS_PROTO
-mdefine_line|#define NFS_PROTO(inode)&t;&t;(NFS_SERVER(inode)-&gt;rpc_ops)
-DECL|macro|NFS_REQUESTLIST
-mdefine_line|#define NFS_REQUESTLIST(inode)&t;&t;(NFS_SERVER(inode)-&gt;rw_requests)
-DECL|macro|NFS_ADDR
-mdefine_line|#define NFS_ADDR(inode)&t;&t;&t;(RPC_PEERADDR(NFS_CLIENT(inode)))
-DECL|macro|NFS_CONGESTED
-mdefine_line|#define NFS_CONGESTED(inode)&t;&t;(RPC_CONGESTED(NFS_CLIENT(inode)))
-DECL|macro|NFS_COOKIEVERF
-mdefine_line|#define NFS_COOKIEVERF(inode)&t;&t;((inode)-&gt;u.nfs_i.cookieverf)
-DECL|macro|NFS_READTIME
-mdefine_line|#define NFS_READTIME(inode)&t;&t;((inode)-&gt;u.nfs_i.read_cache_jiffies)
-DECL|macro|NFS_CACHE_CTIME
-mdefine_line|#define NFS_CACHE_CTIME(inode)&t;&t;((inode)-&gt;u.nfs_i.read_cache_ctime)
-DECL|macro|NFS_CACHE_MTIME
-mdefine_line|#define NFS_CACHE_MTIME(inode)&t;&t;((inode)-&gt;u.nfs_i.read_cache_mtime)
-DECL|macro|NFS_CACHE_ISIZE
-mdefine_line|#define NFS_CACHE_ISIZE(inode)&t;&t;((inode)-&gt;u.nfs_i.read_cache_isize)
-DECL|macro|NFS_NEXTSCAN
-mdefine_line|#define NFS_NEXTSCAN(inode)&t;&t;((inode)-&gt;u.nfs_i.nextscan)
-DECL|macro|NFS_CACHEINV
-mdefine_line|#define NFS_CACHEINV(inode) &bslash;&n;do { &bslash;&n;&t;NFS_READTIME(inode) = jiffies - NFS_MAXATTRTIMEO(inode) - 1; &bslash;&n;} while (0)
-DECL|macro|NFS_ATTRTIMEO
-mdefine_line|#define NFS_ATTRTIMEO(inode)&t;&t;((inode)-&gt;u.nfs_i.attrtimeo)
-DECL|macro|NFS_MINATTRTIMEO
-mdefine_line|#define NFS_MINATTRTIMEO(inode) &bslash;&n;&t;(S_ISDIR(inode-&gt;i_mode)? NFS_SERVER(inode)-&gt;acdirmin &bslash;&n;&t;&t;&t;       : NFS_SERVER(inode)-&gt;acregmin)
-DECL|macro|NFS_MAXATTRTIMEO
-mdefine_line|#define NFS_MAXATTRTIMEO(inode) &bslash;&n;&t;(S_ISDIR(inode-&gt;i_mode)? NFS_SERVER(inode)-&gt;acdirmax &bslash;&n;&t;&t;&t;       : NFS_SERVER(inode)-&gt;acregmax)
-DECL|macro|NFS_ATTRTIMEO_UPDATE
-mdefine_line|#define NFS_ATTRTIMEO_UPDATE(inode)&t;((inode)-&gt;u.nfs_i.attrtimeo_timestamp)
-DECL|macro|NFS_FLAGS
-mdefine_line|#define NFS_FLAGS(inode)&t;&t;((inode)-&gt;u.nfs_i.flags)
-DECL|macro|NFS_REVALIDATING
-mdefine_line|#define NFS_REVALIDATING(inode)&t;&t;(NFS_FLAGS(inode) &amp; NFS_INO_REVALIDATING)
-DECL|macro|NFS_STALE
-mdefine_line|#define NFS_STALE(inode)&t;&t;(NFS_FLAGS(inode) &amp; NFS_INO_STALE)
-DECL|macro|NFS_FILEID
-mdefine_line|#define NFS_FILEID(inode)&t;&t;((inode)-&gt;u.nfs_i.fileid)
-DECL|macro|NFS_FSID
-mdefine_line|#define NFS_FSID(inode)&t;&t;&t;((inode)-&gt;u.nfs_i.fsid)
-multiline_comment|/* Inode Flags */
-DECL|macro|NFS_USE_READDIRPLUS
-mdefine_line|#define NFS_USE_READDIRPLUS(inode)&t;((NFS_FLAGS(inode) &amp; NFS_INO_ADVISE_RDPLUS) ? 1 : 0)
 multiline_comment|/*&n; * These are the default flags for swap requests&n; */
 DECL|macro|NFS_RPC_SWAPFLAGS
 mdefine_line|#define NFS_RPC_SWAPFLAGS&t;&t;(RPC_TASK_SWAPPER|RPC_TASK_ROOTCREDS)
@@ -129,6 +60,226 @@ DECL|macro|FLUSH_WAIT
 mdefine_line|#define FLUSH_WAIT&t;&t;2&t;/* wait for completion */
 DECL|macro|FLUSH_STABLE
 mdefine_line|#define FLUSH_STABLE&t;&t;4&t;/* commit to stable storage */
+macro_line|#ifdef __KERNEL__
+multiline_comment|/*&n; * nfs fs inode data in memory&n; */
+DECL|struct|nfs_inode
+r_struct
+id|nfs_inode
+(brace
+multiline_comment|/*&n;&t; * The 64bit &squot;inode number&squot;&n;&t; */
+DECL|member|fsid
+id|__u64
+id|fsid
+suffix:semicolon
+DECL|member|fileid
+id|__u64
+id|fileid
+suffix:semicolon
+multiline_comment|/*&n;&t; * NFS file handle&n;&t; */
+DECL|member|fh
+r_struct
+id|nfs_fh
+id|fh
+suffix:semicolon
+multiline_comment|/*&n;&t; * Various flags&n;&t; */
+DECL|member|flags
+r_int
+r_int
+id|flags
+suffix:semicolon
+multiline_comment|/*&n;&t; * read_cache_jiffies is when we started read-caching this inode,&n;&t; * and read_cache_mtime is the mtime of the inode at that time.&n;&t; * attrtimeo is for how long the cached information is assumed&n;&t; * to be valid. A successful attribute revalidation doubles&n;&t; * attrtimeo (up to acregmax/acdirmax), a failure resets it to&n;&t; * acregmin/acdirmin.&n;&t; *&n;&t; * We need to revalidate the cached attrs for this inode if&n;&t; *&n;&t; *&t;jiffies - read_cache_jiffies &gt; attrtimeo&n;&t; *&n;&t; * and invalidate any cached data/flush out any dirty pages if&n;&t; * we find that&n;&t; *&n;&t; *&t;mtime != read_cache_mtime&n;&t; */
+DECL|member|read_cache_jiffies
+r_int
+r_int
+id|read_cache_jiffies
+suffix:semicolon
+DECL|member|read_cache_ctime
+id|__u64
+id|read_cache_ctime
+suffix:semicolon
+DECL|member|read_cache_mtime
+id|__u64
+id|read_cache_mtime
+suffix:semicolon
+DECL|member|read_cache_isize
+id|__u64
+id|read_cache_isize
+suffix:semicolon
+DECL|member|attrtimeo
+r_int
+r_int
+id|attrtimeo
+suffix:semicolon
+DECL|member|attrtimeo_timestamp
+r_int
+r_int
+id|attrtimeo_timestamp
+suffix:semicolon
+multiline_comment|/*&n;&t; * This is the cookie verifier used for NFSv3 readdir&n;&t; * operations&n;&t; */
+DECL|member|cookieverf
+id|__u32
+id|cookieverf
+(braket
+l_int|2
+)braket
+suffix:semicolon
+multiline_comment|/*&n;&t; * This is the list of dirty unwritten pages.&n;&t; */
+DECL|member|read
+r_struct
+id|list_head
+id|read
+suffix:semicolon
+DECL|member|dirty
+r_struct
+id|list_head
+id|dirty
+suffix:semicolon
+DECL|member|commit
+r_struct
+id|list_head
+id|commit
+suffix:semicolon
+DECL|member|writeback
+r_struct
+id|list_head
+id|writeback
+suffix:semicolon
+DECL|member|nread
+r_int
+r_int
+id|nread
+comma
+DECL|member|ndirty
+id|ndirty
+comma
+DECL|member|ncommit
+id|ncommit
+comma
+DECL|member|npages
+id|npages
+suffix:semicolon
+multiline_comment|/* Flush daemon info */
+DECL|member|hash_next
+r_struct
+id|inode
+op_star
+id|hash_next
+comma
+DECL|member|hash_prev
+op_star
+id|hash_prev
+suffix:semicolon
+DECL|member|nextscan
+r_int
+r_int
+id|nextscan
+suffix:semicolon
+multiline_comment|/* Credentials for shared mmap */
+DECL|member|mm_cred
+r_struct
+id|rpc_cred
+op_star
+id|mm_cred
+suffix:semicolon
+DECL|member|vfs_inode
+r_struct
+id|inode
+id|vfs_inode
+suffix:semicolon
+)brace
+suffix:semicolon
+multiline_comment|/*&n; * Legal inode flag values&n; */
+DECL|macro|NFS_INO_STALE
+mdefine_line|#define NFS_INO_STALE&t;&t;0x0001&t;&t;/* possible stale inode */
+DECL|macro|NFS_INO_ADVISE_RDPLUS
+mdefine_line|#define NFS_INO_ADVISE_RDPLUS   0x0002          /* advise readdirplus */
+DECL|macro|NFS_INO_REVALIDATING
+mdefine_line|#define NFS_INO_REVALIDATING&t;0x0004&t;&t;/* revalidating attrs */
+DECL|macro|NFS_IS_SNAPSHOT
+mdefine_line|#define NFS_IS_SNAPSHOT&t;&t;0x0010&t;&t;/* a snapshot file */
+DECL|macro|NFS_INO_FLUSH
+mdefine_line|#define NFS_INO_FLUSH&t;&t;0x0020&t;&t;/* inode is due for flushing */
+DECL|macro|NFS_INO_NEW
+mdefine_line|#define NFS_INO_NEW&t;&t;0x0040&t;&t;/* hadn&squot;t been filled yet */
+DECL|function|NFS_I
+r_static
+r_inline
+r_struct
+id|nfs_inode
+op_star
+id|NFS_I
+c_func
+(paren
+r_struct
+id|inode
+op_star
+id|inode
+)paren
+(brace
+r_return
+id|list_entry
+c_func
+(paren
+id|inode
+comma
+r_struct
+id|nfs_inode
+comma
+id|vfs_inode
+)paren
+suffix:semicolon
+)brace
+DECL|macro|NFS_FH
+mdefine_line|#define NFS_FH(inode)&t;&t;&t;(&amp;NFS_I(inode)-&gt;fh)
+DECL|macro|NFS_SERVER
+mdefine_line|#define NFS_SERVER(inode)&t;&t;(&amp;(inode)-&gt;i_sb-&gt;u.nfs_sb.s_server)
+DECL|macro|NFS_CLIENT
+mdefine_line|#define NFS_CLIENT(inode)&t;&t;(NFS_SERVER(inode)-&gt;client)
+DECL|macro|NFS_PROTO
+mdefine_line|#define NFS_PROTO(inode)&t;&t;(NFS_SERVER(inode)-&gt;rpc_ops)
+DECL|macro|NFS_REQUESTLIST
+mdefine_line|#define NFS_REQUESTLIST(inode)&t;&t;(NFS_SERVER(inode)-&gt;rw_requests)
+DECL|macro|NFS_ADDR
+mdefine_line|#define NFS_ADDR(inode)&t;&t;&t;(RPC_PEERADDR(NFS_CLIENT(inode)))
+DECL|macro|NFS_CONGESTED
+mdefine_line|#define NFS_CONGESTED(inode)&t;&t;(RPC_CONGESTED(NFS_CLIENT(inode)))
+DECL|macro|NFS_COOKIEVERF
+mdefine_line|#define NFS_COOKIEVERF(inode)&t;&t;(NFS_I(inode)-&gt;cookieverf)
+DECL|macro|NFS_READTIME
+mdefine_line|#define NFS_READTIME(inode)&t;&t;(NFS_I(inode)-&gt;read_cache_jiffies)
+DECL|macro|NFS_CACHE_CTIME
+mdefine_line|#define NFS_CACHE_CTIME(inode)&t;&t;(NFS_I(inode)-&gt;read_cache_ctime)
+DECL|macro|NFS_CACHE_MTIME
+mdefine_line|#define NFS_CACHE_MTIME(inode)&t;&t;(NFS_I(inode)-&gt;read_cache_mtime)
+DECL|macro|NFS_CACHE_ISIZE
+mdefine_line|#define NFS_CACHE_ISIZE(inode)&t;&t;(NFS_I(inode)-&gt;read_cache_isize)
+DECL|macro|NFS_NEXTSCAN
+mdefine_line|#define NFS_NEXTSCAN(inode)&t;&t;(NFS_I(inode)-&gt;nextscan)
+DECL|macro|NFS_CACHEINV
+mdefine_line|#define NFS_CACHEINV(inode) &bslash;&n;do { &bslash;&n;&t;NFS_READTIME(inode) = jiffies - NFS_MAXATTRTIMEO(inode) - 1; &bslash;&n;} while (0)
+DECL|macro|NFS_ATTRTIMEO
+mdefine_line|#define NFS_ATTRTIMEO(inode)&t;&t;(NFS_I(inode)-&gt;attrtimeo)
+DECL|macro|NFS_MINATTRTIMEO
+mdefine_line|#define NFS_MINATTRTIMEO(inode) &bslash;&n;&t;(S_ISDIR(inode-&gt;i_mode)? NFS_SERVER(inode)-&gt;acdirmin &bslash;&n;&t;&t;&t;       : NFS_SERVER(inode)-&gt;acregmin)
+DECL|macro|NFS_MAXATTRTIMEO
+mdefine_line|#define NFS_MAXATTRTIMEO(inode) &bslash;&n;&t;(S_ISDIR(inode-&gt;i_mode)? NFS_SERVER(inode)-&gt;acdirmax &bslash;&n;&t;&t;&t;       : NFS_SERVER(inode)-&gt;acregmax)
+DECL|macro|NFS_ATTRTIMEO_UPDATE
+mdefine_line|#define NFS_ATTRTIMEO_UPDATE(inode)&t;(NFS_I(inode)-&gt;attrtimeo_timestamp)
+DECL|macro|NFS_FLAGS
+mdefine_line|#define NFS_FLAGS(inode)&t;&t;(NFS_I(inode)-&gt;flags)
+DECL|macro|NFS_REVALIDATING
+mdefine_line|#define NFS_REVALIDATING(inode)&t;&t;(NFS_FLAGS(inode) &amp; NFS_INO_REVALIDATING)
+DECL|macro|NFS_STALE
+mdefine_line|#define NFS_STALE(inode)&t;&t;(NFS_FLAGS(inode) &amp; NFS_INO_STALE)
+DECL|macro|NFS_NEW
+mdefine_line|#define NFS_NEW(inode)&t;&t;&t;(NFS_FLAGS(inode) &amp; NFS_INO_NEW)
+DECL|macro|NFS_FILEID
+mdefine_line|#define NFS_FILEID(inode)&t;&t;(NFS_I(inode)-&gt;fileid)
+DECL|macro|NFS_FSID
+mdefine_line|#define NFS_FSID(inode)&t;&t;&t;(NFS_I(inode)-&gt;fsid)
+multiline_comment|/* Inode Flags */
+DECL|macro|NFS_USE_READDIRPLUS
+mdefine_line|#define NFS_USE_READDIRPLUS(inode)&t;((NFS_FLAGS(inode) &amp; NFS_INO_ADVISE_RDPLUS) ? 1 : 0)
 r_static
 r_inline
 DECL|function|page_offset
@@ -171,7 +322,6 @@ r_return
 id|page-&gt;index
 suffix:semicolon
 )brace
-macro_line|#ifdef __KERNEL__
 multiline_comment|/*&n; * linux/fs/nfs/inode.c&n; */
 r_extern
 r_struct
@@ -672,7 +822,13 @@ id|list_empty
 c_func
 (paren
 op_amp
-id|inode-&gt;u.nfs_i.read
+id|NFS_I
+c_func
+(paren
+id|inode
+)paren
+op_member_access_from_pointer
+id|read
 )paren
 suffix:semicolon
 )brace
@@ -695,7 +851,13 @@ id|list_empty
 c_func
 (paren
 op_amp
-id|inode-&gt;u.nfs_i.writeback
+id|NFS_I
+c_func
+(paren
+id|inode
+)paren
+op_member_access_from_pointer
+id|writeback
 )paren
 suffix:semicolon
 )brace

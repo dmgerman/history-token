@@ -327,7 +327,8 @@ r_static
 r_void
 id|urb_rm_priv_locked
 (paren
-id|urb_t
+r_struct
+id|urb
 op_star
 id|urb
 )paren
@@ -446,7 +447,8 @@ r_static
 r_void
 id|urb_rm_priv
 (paren
-id|urb_t
+r_struct
+id|urb
 op_star
 id|urb
 )paren
@@ -495,7 +497,8 @@ r_static
 r_void
 id|urb_print
 (paren
-id|urb_t
+r_struct
+id|urb
 op_star
 id|urb
 comma
@@ -1862,7 +1865,8 @@ id|ohci
 op_star
 id|hc
 comma
-id|urb_t
+r_struct
+id|urb
 op_star
 id|urb
 )paren
@@ -1873,7 +1877,8 @@ id|urb_priv
 op_assign
 id|urb-&gt;hcpriv
 suffix:semicolon
-id|urb_t
+r_struct
+id|urb
 op_star
 id|urbt
 suffix:semicolon
@@ -2179,7 +2184,8 @@ r_static
 r_int
 id|sohci_submit_urb
 (paren
-id|urb_t
+r_struct
+id|urb
 op_star
 id|urb
 )paren
@@ -2966,7 +2972,8 @@ r_static
 r_int
 id|sohci_unlink_urb
 (paren
-id|urb_t
+r_struct
+id|urb
 op_star
 id|urb
 )paren
@@ -5519,7 +5526,8 @@ comma
 r_int
 id|len
 comma
-id|urb_t
+r_struct
+id|urb
 op_star
 id|urb
 comma
@@ -5722,7 +5730,8 @@ r_static
 r_void
 id|td_submit_urb
 (paren
-id|urb_t
+r_struct
+id|urb
 op_star
 id|urb
 )paren
@@ -6352,7 +6361,8 @@ suffix:semicolon
 id|__u16
 id|tdPSW
 suffix:semicolon
-id|urb_t
+r_struct
+id|urb
 op_star
 id|urb
 op_assign
@@ -6583,7 +6593,8 @@ r_static
 r_void
 id|dl_del_urb
 (paren
-id|urb_t
+r_struct
+id|urb
 op_star
 id|urb
 )paren
@@ -7018,7 +7029,8 @@ op_assign
 id|td_next
 )paren
 (brace
-id|urb_t
+r_struct
+id|urb
 op_star
 id|urb
 op_assign
@@ -7455,7 +7467,8 @@ id|cc
 op_assign
 l_int|0
 suffix:semicolon
-id|urb_t
+r_struct
+id|urb
 op_star
 id|urb
 suffix:semicolon
@@ -8128,12 +8141,14 @@ id|ptr
 r_int
 id|len
 suffix:semicolon
-id|urb_t
+r_struct
+id|urb
 op_star
 id|urb
 op_assign
 (paren
-id|urb_t
+r_struct
+id|urb
 op_star
 )paren
 id|ptr
@@ -8236,7 +8251,8 @@ r_static
 r_int
 id|rh_init_int_timer
 (paren
-id|urb_t
+r_struct
+id|urb
 op_star
 id|urb
 )paren
@@ -8317,7 +8333,8 @@ r_static
 r_int
 id|rh_submit_urb
 (paren
-id|urb_t
+r_struct
+id|urb
 op_star
 id|urb
 )paren
@@ -9406,7 +9423,8 @@ r_static
 r_int
 id|rh_unlink_urb
 (paren
-id|urb_t
+r_struct
+id|urb
 op_star
 id|urb
 )paren

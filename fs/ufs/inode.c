@@ -309,6 +309,17 @@ id|frag
 )paren
 (brace
 r_struct
+id|ufs_inode_info
+op_star
+id|ufsi
+op_assign
+id|UFS_I
+c_func
+(paren
+id|inode
+)paren
+suffix:semicolon
+r_struct
 id|super_block
 op_star
 id|sb
@@ -389,7 +400,7 @@ c_func
 suffix:semicolon
 id|block
 op_assign
-id|inode-&gt;u.ufs_i.i_u1.i_data
+id|ufsi-&gt;i_u1.i_data
 (braket
 op_star
 id|p
@@ -557,6 +568,17 @@ r_new
 )paren
 (brace
 r_struct
+id|ufs_inode_info
+op_star
+id|ufsi
+op_assign
+id|UFS_I
+c_func
+(paren
+id|inode
+)paren
+suffix:semicolon
+r_struct
 id|super_block
 op_star
 id|sb
@@ -633,7 +655,7 @@ id|fragment
 suffix:semicolon
 id|p
 op_assign
-id|inode-&gt;u.ufs_i.i_u1.i_data
+id|ufsi-&gt;i_u1.i_data
 op_plus
 id|block
 suffix:semicolon
@@ -656,7 +678,7 @@ id|p
 suffix:semicolon
 id|lastfrag
 op_assign
-id|inode-&gt;u.ufs_i.i_lastfrag
+id|ufsi-&gt;i_lastfrag
 suffix:semicolon
 r_if
 c_cond
@@ -771,7 +793,7 @@ id|lastblockoff
 (brace
 id|p2
 op_assign
-id|inode-&gt;u.ufs_i.i_u1.i_data
+id|ufsi-&gt;i_u1.i_data
 op_plus
 id|lastblock
 suffix:semicolon
@@ -813,7 +835,7 @@ c_cond
 (paren
 id|lastfrag
 op_ne
-id|inode-&gt;u.ufs_i.i_lastfrag
+id|ufsi-&gt;i_lastfrag
 )paren
 r_goto
 id|repeat
@@ -825,7 +847,7 @@ suffix:semicolon
 )brace
 id|lastfrag
 op_assign
-id|inode-&gt;u.ufs_i.i_lastfrag
+id|ufsi-&gt;i_lastfrag
 suffix:semicolon
 )brace
 id|goal
@@ -835,7 +857,7 @@ c_func
 (paren
 id|sb
 comma
-id|inode-&gt;u.ufs_i.i_u1.i_data
+id|ufsi-&gt;i_u1.i_data
 (braket
 id|lastblock
 )braket
@@ -929,7 +951,7 @@ c_func
 (paren
 id|sb
 comma
-id|inode-&gt;u.ufs_i.i_u1.i_data
+id|ufsi-&gt;i_u1.i_data
 (braket
 id|lastblock
 op_minus
@@ -987,7 +1009,7 @@ id|blockoff
 op_logical_and
 id|lastfrag
 op_ne
-id|inode-&gt;u.ufs_i.i_lastfrag
+id|ufsi-&gt;i_lastfrag
 )paren
 )paren
 r_goto
@@ -2337,6 +2359,17 @@ id|inode
 )paren
 (brace
 r_struct
+id|ufs_inode_info
+op_star
+id|ufsi
+op_assign
+id|UFS_I
+c_func
+(paren
+id|inode
+)paren
+suffix:semicolon
+r_struct
 id|super_block
 op_star
 id|sb
@@ -2591,7 +2624,7 @@ op_assign
 op_increment
 id|event
 suffix:semicolon
-id|inode-&gt;u.ufs_i.i_flags
+id|ufsi-&gt;i_flags
 op_assign
 id|fs32_to_cpu
 c_func
@@ -2601,7 +2634,7 @@ comma
 id|ufs_inode-&gt;ui_flags
 )paren
 suffix:semicolon
-id|inode-&gt;u.ufs_i.i_gen
+id|ufsi-&gt;i_gen
 op_assign
 id|fs32_to_cpu
 c_func
@@ -2611,7 +2644,7 @@ comma
 id|ufs_inode-&gt;ui_gen
 )paren
 suffix:semicolon
-id|inode-&gt;u.ufs_i.i_shadow
+id|ufsi-&gt;i_shadow
 op_assign
 id|fs32_to_cpu
 c_func
@@ -2621,7 +2654,7 @@ comma
 id|ufs_inode-&gt;ui_u3.ui_sun.ui_shadow
 )paren
 suffix:semicolon
-id|inode-&gt;u.ufs_i.i_oeftflag
+id|ufsi-&gt;i_oeftflag
 op_assign
 id|fs32_to_cpu
 c_func
@@ -2631,7 +2664,7 @@ comma
 id|ufs_inode-&gt;ui_u3.ui_sun.ui_oeftflag
 )paren
 suffix:semicolon
-id|inode-&gt;u.ufs_i.i_lastfrag
+id|ufsi-&gt;i_lastfrag
 op_assign
 (paren
 id|inode-&gt;i_size
@@ -2684,7 +2717,7 @@ suffix:semicolon
 id|i
 op_increment
 )paren
-id|inode-&gt;u.ufs_i.i_u1.i_data
+id|ufsi-&gt;i_u1.i_data
 (braket
 id|i
 )braket
@@ -2717,7 +2750,7 @@ suffix:semicolon
 id|i
 op_increment
 )paren
-id|inode-&gt;u.ufs_i.i_u1.i_symlink
+id|ufsi-&gt;i_u1.i_symlink
 (braket
 id|i
 )braket
@@ -2728,6 +2761,10 @@ id|i
 )braket
 suffix:semicolon
 )brace
+id|ufsi-&gt;i_osync
+op_assign
+l_int|0
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2872,6 +2909,17 @@ r_int
 id|do_sync
 )paren
 (brace
+r_struct
+id|ufs_inode_info
+op_star
+id|ufsi
+op_assign
+id|UFS_I
+c_func
+(paren
+id|inode
+)paren
+suffix:semicolon
 r_struct
 id|super_block
 op_star
@@ -3116,7 +3164,7 @@ c_func
 (paren
 id|sb
 comma
-id|inode-&gt;u.ufs_i.i_flags
+id|ufsi-&gt;i_flags
 )paren
 suffix:semicolon
 id|ufs_inode-&gt;ui_gen
@@ -3126,7 +3174,7 @@ c_func
 (paren
 id|sb
 comma
-id|inode-&gt;u.ufs_i.i_gen
+id|ufsi-&gt;i_gen
 )paren
 suffix:semicolon
 r_if
@@ -3148,7 +3196,7 @@ c_func
 (paren
 id|sb
 comma
-id|inode-&gt;u.ufs_i.i_shadow
+id|ufsi-&gt;i_shadow
 )paren
 suffix:semicolon
 id|ufs_inode-&gt;ui_u3.ui_sun.ui_oeftflag
@@ -3158,7 +3206,7 @@ c_func
 (paren
 id|sb
 comma
-id|inode-&gt;u.ufs_i.i_oeftflag
+id|ufsi-&gt;i_oeftflag
 )paren
 suffix:semicolon
 )brace
@@ -3224,7 +3272,7 @@ id|ufs_inode-&gt;ui_u2.ui_addr.ui_db
 id|i
 )braket
 op_assign
-id|inode-&gt;u.ufs_i.i_u1.i_data
+id|ufsi-&gt;i_u1.i_data
 (braket
 id|i
 )braket
@@ -3257,7 +3305,7 @@ id|ufs_inode-&gt;ui_u2.ui_symlink
 id|i
 )braket
 op_assign
-id|inode-&gt;u.ufs_i.i_u1.i_symlink
+id|ufsi-&gt;i_u1.i_symlink
 (braket
 id|i
 )braket
@@ -3386,7 +3434,7 @@ op_star
 id|inode
 )paren
 (brace
-multiline_comment|/*inode-&gt;u.ufs_i.i_dtime = CURRENT_TIME;*/
+multiline_comment|/*UFS_I(inode)-&gt;i_dtime = CURRENT_TIME;*/
 id|lock_kernel
 c_func
 (paren

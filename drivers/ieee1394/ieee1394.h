@@ -62,13 +62,13 @@ DECL|macro|ACK_TYPE_ERROR
 mdefine_line|#define ACK_TYPE_ERROR           0xe 
 multiline_comment|/* Non-standard &quot;ACK codes&quot; for internal use */
 DECL|macro|ACKX_NONE
-mdefine_line|#define ACKX_NONE                -1
+mdefine_line|#define ACKX_NONE                (-1)
 DECL|macro|ACKX_SEND_ERROR
-mdefine_line|#define ACKX_SEND_ERROR          -2
+mdefine_line|#define ACKX_SEND_ERROR          (-2)
 DECL|macro|ACKX_ABORTED
-mdefine_line|#define ACKX_ABORTED             -3
+mdefine_line|#define ACKX_ABORTED             (-3)
 DECL|macro|ACKX_TIMEOUT
-mdefine_line|#define ACKX_TIMEOUT             -4
+mdefine_line|#define ACKX_TIMEOUT             (-4)
 DECL|macro|SPEED_100
 mdefine_line|#define SPEED_100                0x0
 DECL|macro|SPEED_200
@@ -321,7 +321,7 @@ id|packed
 )paren
 suffix:semicolon
 macro_line|#elif defined __LITTLE_ENDIAN_BITFIELD /* __BIG_ENDIAN_BITFIELD */
-multiline_comment|/*&n; * Note: these mean to be bit fields of a big endian SelfID as seen on a little&n; * endian machine.&n; */
+multiline_comment|/*&n; * Note: these mean to be bit fields of a big endian SelfID as seen on a little&n; * endian machine.  Without swapping.&n; */
 DECL|struct|selfid
 r_struct
 id|selfid

@@ -212,7 +212,8 @@ id|chain
 suffix:semicolon
 multiline_comment|/* pointer to the chain to which this element belongs */
 DECL|member|urbp
-id|urb_t
+r_struct
+id|urb
 op_star
 id|urbp
 suffix:semicolon
@@ -313,7 +314,8 @@ id|dr
 suffix:semicolon
 multiline_comment|/* for setup data in control messages */
 DECL|member|urbp
-id|urb_t
+r_struct
+id|urb
 op_star
 id|urbp
 suffix:semicolon
@@ -490,7 +492,8 @@ id|maxControlLength
 suffix:semicolon
 multiline_comment|/* max. Length of control paket (without header) */
 DECL|member|inturbp
-id|urb_t
+r_struct
+id|urb
 op_star
 id|inturbp
 suffix:semicolon
@@ -634,7 +637,8 @@ r_static
 r_void
 id|auerswald_ctrlread_complete
 (paren
-id|urb_t
+r_struct
+id|urb
 op_star
 id|urb
 )paren
@@ -659,7 +663,8 @@ r_static
 r_void
 id|auerchain_complete
 (paren
-id|urb_t
+r_struct
+id|urb
 op_star
 id|urb
 )paren
@@ -870,7 +875,8 @@ id|auerchain_submit_urb_list
 id|pauerchain_t
 id|acp
 comma
-id|urb_t
+r_struct
+id|urb
 op_star
 id|urb
 comma
@@ -1142,7 +1148,8 @@ id|auerchain_submit_urb
 id|pauerchain_t
 id|acp
 comma
-id|urb_t
+r_struct
+id|urb
 op_star
 id|urb
 )paren
@@ -1167,7 +1174,8 @@ id|auerchain_unlink_urb
 id|pauerchain_t
 id|acp
 comma
-id|urb_t
+r_struct
+id|urb
 op_star
 id|urb
 )paren
@@ -1176,7 +1184,8 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-id|urb_t
+r_struct
+id|urb
 op_star
 id|urbp
 suffix:semicolon
@@ -1350,7 +1359,8 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-id|urb_t
+r_struct
+id|urb
 op_star
 id|urbp
 suffix:semicolon
@@ -1781,7 +1791,8 @@ r_static
 r_void
 id|auerchain_blocking_completion
 (paren
-id|urb_t
+r_struct
+id|urb
 op_star
 id|urb
 )paren
@@ -1811,7 +1822,8 @@ id|auerchain_start_wait_urb
 id|pauerchain_t
 id|acp
 comma
-id|urb_t
+r_struct
+id|urb
 op_star
 id|urb
 comma
@@ -2042,7 +2054,8 @@ id|usb_ctrlrequest
 op_star
 id|dr
 suffix:semicolon
-id|urb_t
+r_struct
+id|urb
 op_star
 id|urb
 suffix:semicolon
@@ -2716,7 +2729,8 @@ r_static
 r_void
 id|auerchar_ctrlwrite_complete
 (paren
-id|urb_t
+r_struct
+id|urb
 op_star
 id|urb
 )paren
@@ -2788,7 +2802,8 @@ r_static
 r_void
 id|auerswald_ctrlread_wretcomplete
 (paren
-id|urb_t
+r_struct
+id|urb
 op_star
 id|urb
 )paren
@@ -2990,7 +3005,8 @@ r_static
 r_void
 id|auerswald_ctrlread_complete
 (paren
-id|urb_t
+r_struct
+id|urb
 op_star
 id|urb
 )paren
@@ -3283,7 +3299,8 @@ r_static
 r_void
 id|auerswald_int_complete
 (paren
-id|urb_t
+r_struct
+id|urb
 op_star
 id|urb
 )paren

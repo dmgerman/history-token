@@ -1,8 +1,8 @@
 multiline_comment|/*&n; *&t;Wavelan Pcmcia driver&n; *&n; *&t;&t;Jean II - HPLB &squot;96&n; *&n; * Reorganization and extension of the driver.&n; * Original copyright follow. See wavelan_cs.h for details.&n; *&n; * This file contain the declarations of the Wavelan hardware. Note that&n; * the Pcmcia Wavelan include a i82593 controller (see definitions in&n; * file i82593.h).&n; *&n; * The main difference between the pcmcia hardware and the ISA one is&n; * the Ethernet Controller (i82593 instead of i82586). The i82593 allow&n; * only one send buffer. The PSA (Parameter Storage Area : EEprom for&n; * permanent storage of various info) is memory mapped, but not the&n; * MMI (Modem Management Interface).&n; */
 multiline_comment|/*&n; * Definitions for the AT&amp;T GIS (formerly NCR) WaveLAN PCMCIA card: &n; *   An Ethernet-like radio transceiver controlled by an Intel 82593&n; *   coprocessor.&n; *&n; *&n; ****************************************************************************&n; *   Copyright 1995&n; *   Anthony D. Joseph&n; *   Massachusetts Institute of Technology&n; *&n; *   Permission to use, copy, modify, and distribute this program&n; *   for any purpose and without fee is hereby granted, provided&n; *   that this copyright and permission notice appear on all copies&n; *   and supporting documentation, the name of M.I.T. not be used&n; *   in advertising or publicity pertaining to distribution of the&n; *   program without specific prior permission, and notice be given&n; *   in supporting documentation that copying and distribution is&n; *   by permission of M.I.T.  M.I.T. makes no representations about&n; *   the suitability of this software for any purpose.  It is pro-&n; *   vided &quot;as is&quot; without express or implied warranty.         &n; ****************************************************************************&n; *&n; *&n; * Credits:&n; *     Special thanks to Jan Hoogendoorn of AT&amp;T GIS Utrecht for&n; *       providing extremely useful information about WaveLAN PCMCIA hardware&n; *&n; *     This driver is based upon several other drivers, in particular:&n; *       David Hinds&squot; Linux driver for the PCMCIA 3c589 ethernet adapter&n; *       Bruce Janson&squot;s Linux driver for the AT-bus WaveLAN adapter&n; *&t; Anders Klemets&squot; PCMCIA WaveLAN adapter driver&n; *       Robert Morris&squot; BSDI driver for the PCMCIA WaveLAN adapter&n; */
-macro_line|#ifndef _WAVELAN_H
-DECL|macro|_WAVELAN_H
-mdefine_line|#define&t;_WAVELAN_H
+macro_line|#ifndef _WAVELAN_CS_H
+DECL|macro|_WAVELAN_CS_H
+mdefine_line|#define&t;_WAVELAN_CS_H
 multiline_comment|/************************** MAGIC NUMBERS ***************************/
 multiline_comment|/* The detection of the wavelan card is made by reading the MAC address&n; * from the card and checking it. If you have a non AT&amp;T product (OEM,&n; * like DEC RoamAbout, or Digital Ocean, Epson, ...), you must modify this&n; * part to accomodate your hardware...&n; */
 DECL|variable|MAC_ADDRESSES
@@ -959,5 +959,5 @@ DECL|typedef|mm_t
 )brace
 id|mm_t
 suffix:semicolon
-macro_line|#endif /* _WAVELAN_H */
+macro_line|#endif /* _WAVELAN_CS_H */
 eof

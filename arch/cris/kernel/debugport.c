@@ -1,4 +1,4 @@
-multiline_comment|/* Serialport functions for debugging&n; *&n; * Copyright (c) 2000 Axis Communications AB&n; *&n; * Authors:  Bjorn Wesen&n; *&n; * Exports:&n; *    console_print_etrax(char *buf)&n; *    int getDebugChar()&n; *    putDebugChar(int)&n; *    enableDebugIRQ()&n; *    init_etrax_debug()&n; *&n; * $Log: debugport.c,v $&n; * Revision 1.6  2001/04/17 13:58:39  orjanf&n; * * Renamed CONFIG_KGDB to CONFIG_ETRAX_KGDB.&n; *&n; * Revision 1.5  2001/03/26 14:22:05  bjornw&n; * Namechange of some config options&n; *&n; * Revision 1.4  2000/10/06 12:37:26  bjornw&n; * Use physical addresses when talking to DMA&n; *&n; *&n; */
+multiline_comment|/* Serialport functions for debugging&n; *&n; * Copyright (c) 2000 Axis Communications AB&n; *&n; * Authors:  Bjorn Wesen&n; *&n; * Exports:&n; *    console_print_etrax(char *buf)&n; *    int getDebugChar()&n; *    putDebugChar(int)&n; *    enableDebugIRQ()&n; *    init_etrax_debug()&n; *&n; * $Log: debugport.c,v $&n; * Revision 1.2  2002/01/21 15:21:50  bjornw&n; * Update for kdev_t changes&n; *&n; * Revision 1.6  2001/04/17 13:58:39  orjanf&n; * * Renamed CONFIG_KGDB to CONFIG_ETRAX_KGDB.&n; *&n; * Revision 1.5  2001/03/26 14:22:05  bjornw&n; * Namechange of some config options&n; *&n; * Revision 1.4  2000/10/06 12:37:26  bjornw&n; * Use physical addresses when talking to DMA&n; *&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/console.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -478,7 +478,7 @@ id|c
 )paren
 (brace
 r_return
-id|MKDEV
+id|mk_kdev
 c_func
 (paren
 id|TTY_MAJOR
@@ -517,26 +517,44 @@ id|console
 id|sercons
 op_assign
 (brace
+id|name
+suffix:colon
 l_string|&quot;ttyS&quot;
 comma
+id|write
+suffix:colon
 id|console_write
 comma
+id|read
+suffix:colon
 l_int|NULL
 comma
+id|device
+suffix:colon
 id|console_device
 comma
+id|unblank
+suffix:colon
 l_int|NULL
 comma
-l_int|NULL
-comma
+id|setup
+suffix:colon
 id|console_setup
 comma
+id|flags
+suffix:colon
 id|CON_PRINTBUFFER
 comma
+id|index
+suffix:colon
 id|DEBUG_PORT_IDX
 comma
+id|cflag
+suffix:colon
 l_int|0
 comma
+id|next
+suffix:colon
 l_int|NULL
 )brace
 suffix:semicolon

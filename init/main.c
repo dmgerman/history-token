@@ -952,11 +952,6 @@ c_func
 r_void
 )paren
 suffix:semicolon
-DECL|variable|wait_init_idle
-r_int
-r_int
-id|wait_init_idle
-suffix:semicolon
 macro_line|#ifndef CONFIG_SMP
 macro_line|#ifdef CONFIG_X86_LOCAL_APIC
 DECL|function|smp_init
@@ -980,6 +975,52 @@ DECL|macro|smp_init
 mdefine_line|#define smp_init()&t;do { } while (0)
 macro_line|#endif
 macro_line|#else
+DECL|variable|wait_init_idle
+r_static
+r_int
+r_int
+id|__initdata
+id|wait_init_idle
+suffix:semicolon
+DECL|function|idle_startup_done
+r_void
+id|__init
+id|idle_startup_done
+c_func
+(paren
+r_void
+)paren
+(brace
+id|clear_bit
+c_func
+(paren
+id|smp_processor_id
+c_func
+(paren
+)paren
+comma
+op_amp
+id|wait_init_idle
+)paren
+suffix:semicolon
+r_while
+c_loop
+(paren
+id|wait_init_idle
+)paren
+(brace
+id|cpu_relax
+c_func
+(paren
+)paren
+suffix:semicolon
+id|barrier
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
+)brace
 multiline_comment|/* Called by boot processor to activate the rest. */
 DECL|function|smp_init
 r_static
@@ -1006,6 +1047,11 @@ op_assign
 l_int|1
 suffix:semicolon
 id|smp_commence
+c_func
+(paren
+)paren
+suffix:semicolon
+id|idle_startup_done
 c_func
 (paren
 )paren
@@ -1338,14 +1384,13 @@ c_func
 l_string|&quot;POSIX conformance testing by UNIFIX&bslash;n&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* &n;&t; *&t;We count on the initial thread going ok &n;&t; *&t;Like idlers init is an unlocked kernel thread, which will&n;&t; *&t;make syscalls (and thus be locked).&n;&t; */
-id|smp_init
+id|init_idle
 c_func
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Finally, we wait for all other CPU&squot;s, and initialize this&n;&t; * thread that will become the idle thread for the boot CPU.&n;&t; * After this, the scheduler is fully initialized, and we can&n;&t; * start creating and running new threads.&n;&t; */
-id|init_idle
+multiline_comment|/* &n;&t; *&t;We count on the initial thread going ok &n;&t; *&t;Like idlers init is an unlocked kernel thread, which will&n;&t; *&t;make syscalls (and thus be locked).&n;&t; */
+id|smp_init
 c_func
 (paren
 )paren

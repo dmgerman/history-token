@@ -1,23 +1,23 @@
-multiline_comment|/*&n; * This file define a set of standard wireless extensions&n; *&n; * Version :&t;12&t;5.10.01&n; *&n; * Authors :&t;Jean Tourrilhes - HPL - &lt;jt@hpl.hp.com&gt;&n; */
+multiline_comment|/*&n; * This file define a set of standard wireless extensions&n; *&n; * Version :&t;13&t;6.12.01&n; *&n; * Authors :&t;Jean Tourrilhes - HPL - &lt;jt@hpl.hp.com&gt;&n; * Copyright (c) 1997-2001 Jean Tourrilhes, All Rights Reserved.&n; */
 macro_line|#ifndef _LINUX_WIRELESS_H
 DECL|macro|_LINUX_WIRELESS_H
 mdefine_line|#define _LINUX_WIRELESS_H
 multiline_comment|/************************** DOCUMENTATION **************************/
-multiline_comment|/*&n; * Basically, the wireless extensions are for now a set of standard ioctl&n; * call + /proc/net/wireless&n; *&n; * The entry /proc/net/wireless give statistics and information on the&n; * driver.&n; * This is better than having each driver having its entry because&n; * its centralised and we may remove the driver module safely.&n; *&n; * Ioctl are used to configure the driver and issue commands.  This is&n; * better than command line options of insmod because we may want to&n; * change dynamically (while the driver is running) some parameters.&n; *&n; * The ioctl mechanimsm are copied from standard devices ioctl.&n; * We have the list of command plus a structure descibing the&n; * data exchanged...&n; * Note that to add these ioctl, I was obliged to modify :&n; *&t;net/core/dev.c (two place + add include)&n; *&t;net/ipv4/af_inet.c (one place + add include)&n; *&n; * /proc/net/wireless is a copy of /proc/net/dev.&n; * We have a structure for data passed from the driver to /proc/net/wireless&n; * Too add this, I&squot;ve modified :&n; *&t;net/core/dev.c (two other places)&n; *&t;include/linux/netdevice.h (one place)&n; *&t;include/linux/proc_fs.h (one place)&n; *&n; * Do not add here things that are redundant with other mechanisms&n; * (drivers init, ifconfig, /proc/net/dev, ...) and with are not&n; * wireless specific.&n; *&n; * These wireless extensions are not magic : each driver has to provide&n; * support for them...&n; *&n; * IMPORTANT NOTE : As everything in the kernel, this is very much a&n; * work in progress. Contact me if you have ideas of improvements...&n; */
+multiline_comment|/*&n; * Initial APIs (1996 -&gt; onward) :&n; * -----------------------------&n; * Basically, the wireless extensions are for now a set of standard ioctl&n; * call + /proc/net/wireless&n; *&n; * The entry /proc/net/wireless give statistics and information on the&n; * driver.&n; * This is better than having each driver having its entry because&n; * its centralised and we may remove the driver module safely.&n; *&n; * Ioctl are used to configure the driver and issue commands.  This is&n; * better than command line options of insmod because we may want to&n; * change dynamically (while the driver is running) some parameters.&n; *&n; * The ioctl mechanimsm are copied from standard devices ioctl.&n; * We have the list of command plus a structure descibing the&n; * data exchanged...&n; * Note that to add these ioctl, I was obliged to modify :&n; *&t;# net/core/dev.c (two place + add include)&n; *&t;# net/ipv4/af_inet.c (one place + add include)&n; *&n; * /proc/net/wireless is a copy of /proc/net/dev.&n; * We have a structure for data passed from the driver to /proc/net/wireless&n; * Too add this, I&squot;ve modified :&n; *&t;# net/core/dev.c (two other places)&n; *&t;# include/linux/netdevice.h (one place)&n; *&t;# include/linux/proc_fs.h (one place)&n; *&n; * New driver API (2001 -&gt; onward) :&n; * -------------------------------&n; * This file is only concerned with the user space API and common definitions.&n; * The new driver API is defined and documented in :&n; *&t;# include/net/iw_handler.h&n; *&n; * Note as well that /proc/net/wireless implementation has now moved in :&n; *&t;# include/linux/wireless.c&n; *&n; * Other comments :&n; * --------------&n; * Do not add here things that are redundant with other mechanisms&n; * (drivers init, ifconfig, /proc/net/dev, ...) and with are not&n; * wireless specific.&n; *&n; * These wireless extensions are not magic : each driver has to provide&n; * support for them...&n; *&n; * IMPORTANT NOTE : As everything in the kernel, this is very much a&n; * work in progress. Contact me if you have ideas of improvements...&n; */
 multiline_comment|/***************************** INCLUDES *****************************/
 macro_line|#include &lt;linux/types.h&gt;&t;&t;/* for &quot;caddr_t&quot; et al&t;&t;*/
 macro_line|#include &lt;linux/socket.h&gt;&t;&t;/* for &quot;struct sockaddr&quot; et al&t;*/
 macro_line|#include &lt;linux/if.h&gt;&t;&t;&t;/* for IFNAMSIZ and co... */
-multiline_comment|/**************************** CONSTANTS ****************************/
-multiline_comment|/* --------------------------- VERSION --------------------------- */
+multiline_comment|/***************************** VERSION *****************************/
 multiline_comment|/*&n; * This constant is used to know the availability of the wireless&n; * extensions and to know which version of wireless extensions it is&n; * (there is some stuff that will be added in the future...)&n; * I just plan to increment with each new version.&n; */
 DECL|macro|WIRELESS_EXT
-mdefine_line|#define WIRELESS_EXT&t;12
-multiline_comment|/*&n; * Changes :&n; *&n; * V2 to V3&n; * --------&n; *&t;Alan Cox start some incompatibles changes. I&squot;ve integrated a bit more.&n; *&t;- Encryption renamed to Encode to avoid US regulation problems&n; *&t;- Frequency changed from float to struct to avoid problems on old 386&n; *&n; * V3 to V4&n; * --------&n; *&t;- Add sensitivity&n; *&n; * V4 to V5&n; * --------&n; *&t;- Missing encoding definitions in range&n; *&t;- Access points stuff&n; *&n; * V5 to V6&n; * --------&n; *&t;- 802.11 support (ESSID ioctls)&n; *&n; * V6 to V7&n; * --------&n; *&t;- define IW_ESSID_MAX_SIZE and IW_MAX_AP&n; *&n; * V7 to V8&n; * --------&n; *&t;- Changed my e-mail address&n; *&t;- More 802.11 support (nickname, rate, rts, frag)&n; *&t;- List index in frequencies&n; *&n; * V8 to V9&n; * --------&n; *&t;- Support for &squot;mode of operation&squot; (ad-hoc, managed...)&n; *&t;- Support for unicast and multicast power saving&n; *&t;- Change encoding to support larger tokens (&gt;64 bits)&n; *&t;- Updated iw_params (disable, flags) and use it for NWID&n; *&t;- Extracted iw_point from iwreq for clarity&n; *&n; * V9 to V10&n; * ---------&n; *&t;- Add PM capability to range structure&n; *&t;- Add PM modifier : MAX/MIN/RELATIVE&n; *&t;- Add encoding option : IW_ENCODE_NOKEY&n; *&t;- Add TxPower ioctls (work like TxRate)&n; *&n; * V10 to V11&n; * ----------&n; *&t;- Add WE version in range (help backward/forward compatibility)&n; *&t;- Add retry ioctls (work like PM)&n; *&n; * V11 to V12&n; * ----------&n; *&t;- Add SIOCSIWSTATS to get /proc/net/wireless programatically&n; *&t;- Add DEV PRIVATE IOCTL to avoid collisions in SIOCDEVPRIVATE space&n; *&t;- Add new statistics (frag, retry, beacon)&n; *&t;- Add average quality (for user space calibration)&n; */
+mdefine_line|#define WIRELESS_EXT&t;13
+multiline_comment|/*&n; * Changes :&n; *&n; * V2 to V3&n; * --------&n; *&t;Alan Cox start some incompatibles changes. I&squot;ve integrated a bit more.&n; *&t;- Encryption renamed to Encode to avoid US regulation problems&n; *&t;- Frequency changed from float to struct to avoid problems on old 386&n; *&n; * V3 to V4&n; * --------&n; *&t;- Add sensitivity&n; *&n; * V4 to V5&n; * --------&n; *&t;- Missing encoding definitions in range&n; *&t;- Access points stuff&n; *&n; * V5 to V6&n; * --------&n; *&t;- 802.11 support (ESSID ioctls)&n; *&n; * V6 to V7&n; * --------&n; *&t;- define IW_ESSID_MAX_SIZE and IW_MAX_AP&n; *&n; * V7 to V8&n; * --------&n; *&t;- Changed my e-mail address&n; *&t;- More 802.11 support (nickname, rate, rts, frag)&n; *&t;- List index in frequencies&n; *&n; * V8 to V9&n; * --------&n; *&t;- Support for &squot;mode of operation&squot; (ad-hoc, managed...)&n; *&t;- Support for unicast and multicast power saving&n; *&t;- Change encoding to support larger tokens (&gt;64 bits)&n; *&t;- Updated iw_params (disable, flags) and use it for NWID&n; *&t;- Extracted iw_point from iwreq for clarity&n; *&n; * V9 to V10&n; * ---------&n; *&t;- Add PM capability to range structure&n; *&t;- Add PM modifier : MAX/MIN/RELATIVE&n; *&t;- Add encoding option : IW_ENCODE_NOKEY&n; *&t;- Add TxPower ioctls (work like TxRate)&n; *&n; * V10 to V11&n; * ----------&n; *&t;- Add WE version in range (help backward/forward compatibility)&n; *&t;- Add retry ioctls (work like PM)&n; *&n; * V11 to V12&n; * ----------&n; *&t;- Add SIOCSIWSTATS to get /proc/net/wireless programatically&n; *&t;- Add DEV PRIVATE IOCTL to avoid collisions in SIOCDEVPRIVATE space&n; *&t;- Add new statistics (frag, retry, beacon)&n; *&t;- Add average quality (for user space calibration)&n; *&n; * V12 to V13&n; * ----------&n; *&t;- Document creation of new driver API.&n; *&t;- Extract union iwreq_data from struct iwreq (for new driver API).&n; *&t;- Rename SIOCSIWNAME as SIOCSIWCOMMIT&n; */
+multiline_comment|/**************************** CONSTANTS ****************************/
 multiline_comment|/* -------------------------- IOCTL LIST -------------------------- */
 multiline_comment|/* Basic operations */
-DECL|macro|SIOCSIWNAME
-mdefine_line|#define SIOCSIWNAME&t;0x8B00&t;&t;/* Unused */
+DECL|macro|SIOCSIWCOMMIT
+mdefine_line|#define SIOCSIWCOMMIT&t;0x8B00&t;&t;/* Commit pending changes to driver */
 DECL|macro|SIOCGIWNAME
 mdefine_line|#define SIOCGIWNAME&t;0x8B01&t;&t;/* get name == wireless protocol */
 DECL|macro|SIOCSIWNWID
@@ -422,27 +422,10 @@ multiline_comment|/* Packet missed counts */
 )brace
 suffix:semicolon
 multiline_comment|/* ------------------------ IOCTL REQUEST ------------------------ */
-multiline_comment|/*&n; * The structure to exchange data for ioctl.&n; * This structure is the same as &squot;struct ifreq&squot;, but (re)defined for&n; * convenience...&n; *&n; * Note that it should fit on the same memory footprint !&n; * You should check this when increasing the above structures (16 octets)&n; * 16 octets = 128 bits. Warning, pointers might be 64 bits wide...&n; */
-DECL|struct|iwreq
-r_struct
-id|iwreq
-(brace
+multiline_comment|/*&n; * This structure defines the payload of an ioctl, and is used &n; * below.&n; *&n; * Note that this structure should fit on the memory footprint&n; * of iwreq (which is the same as ifreq), which mean a max size of&n; * 16 octets = 128 bits. Warning, pointers might be 64 bits wide...&n; * You should check this when increasing the structures defined&n; * above in this file...&n; */
+DECL|union|iwreq_data
 r_union
-(brace
-DECL|member|ifrn_name
-r_char
-id|ifrn_name
-(braket
-id|IFNAMSIZ
-)braket
-suffix:semicolon
-multiline_comment|/* if name, e.g. &quot;eth0&quot; */
-DECL|member|ifr_ifrn
-)brace
-id|ifr_ifrn
-suffix:semicolon
-multiline_comment|/* Data part */
-r_union
+id|iwreq_data
 (brace
 multiline_comment|/* Config - generic */
 DECL|member|name
@@ -452,7 +435,7 @@ id|name
 id|IFNAMSIZ
 )braket
 suffix:semicolon
-multiline_comment|/* Name : used to verify the presence of  wireless extensions.&n;&t;&t; * Name of the protocol/provider... */
+multiline_comment|/* Name : used to verify the presence of  wireless extensions.&n;&t; * Name of the protocol/provider... */
 DECL|member|essid
 r_struct
 id|iw_point
@@ -536,8 +519,31 @@ id|iw_point
 id|data
 suffix:semicolon
 multiline_comment|/* Other large parameters */
-DECL|member|u
 )brace
+suffix:semicolon
+multiline_comment|/*&n; * The structure to exchange data for ioctl.&n; * This structure is the same as &squot;struct ifreq&squot;, but (re)defined for&n; * convenience...&n; * Do I need to remind you about structure size (32 octets) ?&n; */
+DECL|struct|iwreq
+r_struct
+id|iwreq
+(brace
+r_union
+(brace
+DECL|member|ifrn_name
+r_char
+id|ifrn_name
+(braket
+id|IFNAMSIZ
+)braket
+suffix:semicolon
+multiline_comment|/* if name, e.g. &quot;eth0&quot; */
+DECL|member|ifr_ifrn
+)brace
+id|ifr_ifrn
+suffix:semicolon
+multiline_comment|/* Data part (defined just above) */
+DECL|member|u
+r_union
+id|iwreq_data
 id|u
 suffix:semicolon
 )brace

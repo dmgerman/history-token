@@ -383,7 +383,13 @@ multiline_comment|/* only patch if needed (because we get called even for lookup
 r_if
 c_cond
 (paren
-id|dentry-&gt;d_inode-&gt;u.umsdos_i.i_patched
+id|UMSDOS_I
+c_func
+(paren
+id|dentry-&gt;d_inode
+)paren
+op_member_access_from_pointer
+id|i_patched
 op_eq
 l_int|0
 )paren

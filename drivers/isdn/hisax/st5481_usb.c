@@ -881,7 +881,8 @@ suffix:semicolon
 r_int
 id|status
 suffix:semicolon
-id|urb_t
+r_struct
+id|urb
 op_star
 id|urb
 suffix:semicolon
@@ -2269,7 +2270,8 @@ op_star
 id|urb
 )paren
 (brace
-id|iso_packet_descriptor_t
+r_struct
+id|usb_iso_packet_descriptor
 op_star
 id|pipd
 comma

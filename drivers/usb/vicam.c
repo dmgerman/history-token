@@ -1586,8 +1586,6 @@ c_func
 l_string|&quot;vicam_v4l_open&quot;
 )paren
 suffix:semicolon
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 id|down
 c_func
 (paren
@@ -1595,19 +1593,6 @@ op_amp
 id|vicam-&gt;sem
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|vicam-&gt;open_count
-)paren
-multiline_comment|/* Maybe not needed? */
-id|err
-op_assign
-op_minus
-id|EBUSY
-suffix:semicolon
-r_else
-(brace
 id|vicam-&gt;fbuf
 op_assign
 id|rvmalloc
@@ -1675,20 +1660,12 @@ l_int|0
 )paren
 suffix:semicolon
 macro_line|#endif
-)brace
 id|up
 c_func
 (paren
 op_amp
 id|vicam-&gt;sem
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|err
-)paren
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 r_return
 id|err
@@ -1782,8 +1759,6 @@ id|vicam-&gt;sem
 suffix:semicolon
 multiline_comment|/* Why does se401.c have a usbdevice check here? */
 multiline_comment|/* If device is unplugged while open, I guess we only may unregister now */
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 )brace
 DECL|function|vicam_v4l_read
 r_static
@@ -2782,6 +2757,10 @@ id|video_device
 id|vicam_template
 op_assign
 (brace
+id|owner
+suffix:colon
+id|THIS_MODULE
+comma
 id|name
 suffix:colon
 l_string|&quot;vicam USB camera&quot;
@@ -3859,6 +3838,10 @@ id|usb_driver
 id|vicam_driver
 op_assign
 (brace
+id|owner
+suffix:colon
+id|THIS_MODULE
+comma
 id|name
 suffix:colon
 l_string|&quot;vicam&quot;

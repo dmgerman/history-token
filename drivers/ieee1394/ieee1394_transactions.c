@@ -900,7 +900,8 @@ suffix:semicolon
 id|HPSB_PANIC
 c_func
 (paren
-l_string|&quot;reached unreachable code 1 in &quot;
+l_string|&quot;reached unreachable code 1 in %s&quot;
+comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
@@ -1038,7 +1039,8 @@ suffix:semicolon
 id|HPSB_PANIC
 c_func
 (paren
-l_string|&quot;reached unreachable code 2 in &quot;
+l_string|&quot;reached unreachable code 2 in %s&quot;
+comma
 id|__FUNCTION__
 )paren
 suffix:semicolon

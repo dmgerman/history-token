@@ -2053,6 +2053,23 @@ comma
 id|list
 )paren
 suffix:semicolon
+id|usb_settoggle
+c_func
+(paren
+id|urb-&gt;dev
+comma
+id|usb_pipeendpoint
+c_func
+(paren
+id|urb-&gt;pipe
+)paren
+comma
+id|usb_pipeout
+c_func
+(paren
+id|urb-&gt;pipe
+)paren
+comma
 id|uhci_fixup_toggle
 c_func
 (paren
@@ -2065,6 +2082,7 @@ id|lltd-&gt;info
 )paren
 op_xor
 l_int|1
+)paren
 )paren
 suffix:semicolon
 multiline_comment|/* All qh&squot;s in the queue need to link to the next queue */
@@ -2206,6 +2224,7 @@ c_cond
 op_logical_neg
 id|urbp-&gt;queued
 )paren
+multiline_comment|/* We set the toggle when we unlink */
 id|toggle
 op_assign
 id|usb_gettoggle
@@ -7295,6 +7314,7 @@ multiline_comment|/* is safe for all types */
 r_if
 c_cond
 (paren
+(paren
 op_logical_neg
 (paren
 id|td-&gt;status
@@ -7313,6 +7333,7 @@ id|uhci_expected_length
 c_func
 (paren
 id|td-&gt;info
+)paren
 )paren
 op_logical_or
 id|tmp

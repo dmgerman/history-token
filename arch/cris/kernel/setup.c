@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: setup.c,v 1.22 2001/10/23 17:42:58 pkj Exp $&n; *&n; *  linux/arch/cris/kernel/setup.c&n; *&n; *  Copyright (C) 1995  Linus Torvalds&n; *  Copyright (c) 2001  Axis Communications AB&n; */
+multiline_comment|/* $Id: setup.c,v 1.2 2001/12/18 13:35:20 bjornw Exp $&n; *&n; *  linux/arch/cris/kernel/setup.c&n; *&n; *  Copyright (C) 1995  Linus Torvalds&n; *  Copyright (c) 2001  Axis Communications AB&n; */
 multiline_comment|/*&n; * This file handles the architecture-dependent parts of initialization&n; */
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -16,9 +16,11 @@ macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/bootmem.h&gt;
+macro_line|#include &lt;linux/seq_file.h&gt;
 macro_line|#include &lt;asm/segment.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/smp.h&gt;
+macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/types.h&gt;
 macro_line|#include &lt;asm/svinto.h&gt;
 multiline_comment|/*&n; * Setup options&n; */
@@ -113,6 +115,14 @@ op_star
 id|cmdline_p
 )paren
 (brace
+r_extern
+r_void
+id|init_etrax_debug
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 r_int
 r_int
 id|bootmap_size
@@ -126,17 +136,6 @@ suffix:semicolon
 r_int
 r_int
 id|memory_start
-suffix:semicolon
-r_extern
-r_void
-id|console_print_etrax
-c_func
-(paren
-r_const
-r_char
-op_star
-id|b
-)paren
 suffix:semicolon
 multiline_comment|/* register an initial console printing routine for printk&squot;s */
 id|init_etrax_debug
@@ -159,7 +158,7 @@ op_logical_neg
 id|romfs_length
 )paren
 (brace
-multiline_comment|/* if we have the romfs in flash, or if there is no rom filesystem,&n;&t;&t; * our free area starts directly after the BSS &n;&t;&t; */
+multiline_comment|/* if we have the romfs in flash, or if there is no rom filesystem,&n;&t;&t; * our free area starts directly after the BSS&n;&t;&t; */
 id|memory_start
 op_assign
 (paren
@@ -176,7 +175,7 @@ multiline_comment|/* otherwise the free area starts after the ROM filesystem */
 id|printk
 c_func
 (paren
-l_string|&quot;ROM fs in RAM, size %d bytes&bslash;n&quot;
+l_string|&quot;ROM fs in RAM, size %lu bytes&bslash;n&quot;
 comma
 id|romfs_length
 )paren
@@ -405,7 +404,7 @@ mdefine_line|#define HAS_USB&t;&t;0x0040
 DECL|macro|HAS_IRQ_BUG
 mdefine_line|#define HAS_IRQ_BUG&t;0x0080
 DECL|macro|HAS_MMU_BUG
-mdefine_line|#define HAS_MMU_BUG     0x0100
+mdefine_line|#define HAS_MMU_BUG&t;0x0100
 DECL|struct|cpu_info
 r_static
 r_struct
@@ -574,21 +573,23 @@ l_int|0
 multiline_comment|/* This entry MUST be the last */
 )brace
 suffix:semicolon
-multiline_comment|/*&n; * get_cpuinfo - Get information on one CPU for use by the procfs.&n; *&n; *&t;Prints info on the next CPU into buffer.  Beware, doesn&squot;t check for&n; *&t;buffer overflow.  Current implementation of procfs assumes that the&n; *&t;resulting data is &lt;= 1K.&n; *&n; *&t;BUFFER is PAGE_SIZE - 1K bytes long.&n; *&n; * Args:&n; *&t;buffer&t;-- you guessed it, the data buffer&n; *&t;cpu_np&t;-- Input: next cpu to get (start at 0).  Output: Updated.&n; *&n; *&t;Returns number of bytes written to buffer.&n; */
-DECL|function|get_cpuinfo
+DECL|function|show_cpuinfo
+r_static
 r_int
-id|get_cpuinfo
+id|show_cpuinfo
 c_func
 (paren
-r_char
+r_struct
+id|seq_file
 op_star
-id|buffer
+id|m
 comma
-r_int
+r_void
 op_star
-id|cpu_np
+id|v
 )paren
 (brace
+r_int
 r_int
 id|revision
 suffix:semicolon
@@ -596,9 +597,6 @@ r_struct
 id|cpu_info
 op_star
 id|info
-suffix:semicolon
-r_int
-id|n
 suffix:semicolon
 multiline_comment|/* read the version register in the CPU and print some stuff */
 id|revision
@@ -612,10 +610,6 @@ r_if
 c_cond
 (paren
 id|revision
-OL
-l_int|0
-op_logical_or
-id|revision
 op_ge
 r_sizeof
 id|cpu_info
@@ -624,7 +618,6 @@ r_sizeof
 op_star
 id|cpu_info
 )paren
-(brace
 id|info
 op_assign
 op_amp
@@ -640,7 +633,6 @@ op_minus
 l_int|1
 )braket
 suffix:semicolon
-)brace
 r_else
 id|info
 op_assign
@@ -650,39 +642,14 @@ id|cpu_info
 id|revision
 )braket
 suffix:semicolon
-multiline_comment|/* No SMP at the moment, so just toggle 0/1 */
-id|n
-op_assign
-op_star
-id|cpu_np
-suffix:semicolon
-op_star
-id|cpu_np
-op_assign
-l_int|1
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|n
-op_ne
-l_int|0
-)paren
-(brace
 r_return
-(paren
-l_int|0
-)paren
-suffix:semicolon
-)brace
-r_return
-id|sprintf
+id|seq_printf
 c_func
 (paren
-id|buffer
+id|m
 comma
 l_string|&quot;cpu&bslash;t&bslash;t: CRIS&bslash;n&quot;
-l_string|&quot;cpu revision&bslash;t: %d&bslash;n&quot;
+l_string|&quot;cpu revision&bslash;t: %lu&bslash;n&quot;
 l_string|&quot;cpu model&bslash;t: %s&bslash;n&quot;
 l_string|&quot;cache size&bslash;t: %d kB&bslash;n&quot;
 l_string|&quot;fpu&bslash;t&bslash;t: %s&bslash;n&quot;
@@ -799,5 +766,109 @@ l_int|100
 )paren
 suffix:semicolon
 )brace
+DECL|function|c_start
+r_static
+r_void
+op_star
+id|c_start
+c_func
+(paren
+r_struct
+id|seq_file
+op_star
+id|m
+comma
+id|loff_t
+op_star
+id|pos
+)paren
+(brace
+multiline_comment|/* We only got one CPU... */
+r_return
+op_star
+id|pos
+OL
+l_int|1
+ques
+c_cond
+(paren
+r_void
+op_star
+)paren
+l_int|1
+suffix:colon
+l_int|NULL
+suffix:semicolon
+)brace
+DECL|function|c_next
+r_static
+r_void
+op_star
+id|c_next
+c_func
+(paren
+r_struct
+id|seq_file
+op_star
+id|m
+comma
+r_void
+op_star
+id|v
+comma
+id|loff_t
+op_star
+id|pos
+)paren
+(brace
+op_increment
+op_star
+id|pos
+suffix:semicolon
+r_return
+l_int|NULL
+suffix:semicolon
+)brace
+DECL|function|c_stop
+r_static
+r_void
+id|c_stop
+c_func
+(paren
+r_struct
+id|seq_file
+op_star
+id|m
+comma
+r_void
+op_star
+id|v
+)paren
+(brace
+)brace
+DECL|variable|cpuinfo_op
+r_struct
+id|seq_operations
+id|cpuinfo_op
+op_assign
+(brace
+id|start
+suffix:colon
+id|c_start
+comma
+id|next
+suffix:colon
+id|c_next
+comma
+id|stop
+suffix:colon
+id|c_stop
+comma
+id|show
+suffix:colon
+id|show_cpuinfo
+comma
+)brace
+suffix:semicolon
 macro_line|#endif /* CONFIG_PROC_FS */
 eof

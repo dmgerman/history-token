@@ -2,6 +2,66 @@ multiline_comment|/*&n; * Copyright (C) 2000&t;Andreas E. Bombe&n; *            
 macro_line|#ifndef _IEEE1394_NODEMGR_H
 DECL|macro|_IEEE1394_NODEMGR_H
 mdefine_line|#define _IEEE1394_NODEMGR_H
+DECL|macro|CONFIG_ROM_BUS_INFO_LENGTH
+mdefine_line|#define CONFIG_ROM_BUS_INFO_LENGTH(q)&t;&t;((q) &gt;&gt; 24)
+DECL|macro|CONFIG_ROM_BUS_CRC_LENGTH
+mdefine_line|#define CONFIG_ROM_BUS_CRC_LENGTH(q)&t;&t;(((q) &gt;&gt; 16) &amp; 0xff)
+DECL|macro|CONFIG_ROM_BUS_CRC
+mdefine_line|#define CONFIG_ROM_BUS_CRC(q)&t;&t;&t;((q) &amp; 0xffff)
+DECL|macro|CONFIG_ROM_ROOT_LENGTH
+mdefine_line|#define CONFIG_ROM_ROOT_LENGTH(q)&t;&t;((q) &gt;&gt; 16)
+DECL|macro|CONFIG_ROM_ROOT_CRC
+mdefine_line|#define CONFIG_ROM_ROOT_CRC(q)&t;&t;&t;((q) &amp; 0xffff)
+DECL|macro|CONFIG_ROM_DIRECTORY_LENGTH
+mdefine_line|#define CONFIG_ROM_DIRECTORY_LENGTH(q)&t;&t;((q) &gt;&gt; 16)
+DECL|macro|CONFIG_ROM_DIRECTORY_CRC
+mdefine_line|#define CONFIG_ROM_DIRECTORY_CRC(q)&t;&t;((q) &amp; 0xffff)
+DECL|macro|CONFIG_ROM_LEAF_LENGTH
+mdefine_line|#define CONFIG_ROM_LEAF_LENGTH(q)&t;&t;((q) &gt;&gt; 16)
+DECL|macro|CONFIG_ROM_LEAF_CRC
+mdefine_line|#define CONFIG_ROM_LEAF_CRC(q)&t;&t;&t;((q) &amp; 0xffff)
+DECL|macro|CONFIG_ROM_DESCRIPTOR_TYPE
+mdefine_line|#define CONFIG_ROM_DESCRIPTOR_TYPE(q)&t;&t;((q) &gt;&gt; 24)
+DECL|macro|CONFIG_ROM_DESCRIPTOR_SPECIFIER_ID
+mdefine_line|#define CONFIG_ROM_DESCRIPTOR_SPECIFIER_ID(q)&t;((q) &amp; 0xffffff)
+DECL|macro|CONFIG_ROM_DESCRIPTOR_WIDTH
+mdefine_line|#define CONFIG_ROM_DESCRIPTOR_WIDTH(q)&t;&t;((q) &gt;&gt; 28)
+DECL|macro|CONFIG_ROM_DESCRIPTOR_CHAR_SET
+mdefine_line|#define CONFIG_ROM_DESCRIPTOR_CHAR_SET(q)&t;(((q) &gt;&gt; 16) &amp; 0xfff)
+DECL|macro|CONFIG_ROM_DESCRIPTOR_LANG
+mdefine_line|#define CONFIG_ROM_DESCRIPTOR_LANG(q)&t;&t;((q) &amp; 0xffff)
+DECL|macro|CONFIG_ROM_KEY_ID_MASK
+mdefine_line|#define CONFIG_ROM_KEY_ID_MASK&t;&t;&t;0x3f
+DECL|macro|CONFIG_ROM_KEY_TYPE_MASK
+mdefine_line|#define CONFIG_ROM_KEY_TYPE_MASK&t;&t;0xc0
+DECL|macro|CONFIG_ROM_KEY_TYPE_IMMEDIATE
+mdefine_line|#define CONFIG_ROM_KEY_TYPE_IMMEDIATE&t;&t;0x00
+DECL|macro|CONFIG_ROM_KEY_TYPE_OFFSET
+mdefine_line|#define CONFIG_ROM_KEY_TYPE_OFFSET&t;&t;0x40
+DECL|macro|CONFIG_ROM_KEY_TYPE_LEAF
+mdefine_line|#define CONFIG_ROM_KEY_TYPE_LEAF&t;&t;0x80
+DECL|macro|CONFIG_ROM_KEY_TYPE_DIRECTORY
+mdefine_line|#define CONFIG_ROM_KEY_TYPE_DIRECTORY&t;&t;0xc0
+DECL|macro|CONFIG_ROM_KEY
+mdefine_line|#define CONFIG_ROM_KEY(q)&t;&t;&t;((q) &gt;&gt; 24)
+DECL|macro|CONFIG_ROM_VALUE
+mdefine_line|#define CONFIG_ROM_VALUE(q)&t;&t;&t;((q) &amp; 0xffffff)
+DECL|macro|CONFIG_ROM_VENDOR_ID
+mdefine_line|#define CONFIG_ROM_VENDOR_ID&t;&t;&t;0x03
+DECL|macro|CONFIG_ROM_MODEL_ID
+mdefine_line|#define CONFIG_ROM_MODEL_ID&t;&t;&t;0x17
+DECL|macro|CONFIG_ROM_NODE_CAPABILITES
+mdefine_line|#define CONFIG_ROM_NODE_CAPABILITES&t;&t;0x0C
+DECL|macro|CONFIG_ROM_UNIT_DIRECTORY
+mdefine_line|#define CONFIG_ROM_UNIT_DIRECTORY&t;&t;0xd1
+DECL|macro|CONFIG_ROM_SPECIFIER_ID
+mdefine_line|#define CONFIG_ROM_SPECIFIER_ID&t;&t;&t;0x12 
+DECL|macro|CONFIG_ROM_UNIT_SW_VERSION
+mdefine_line|#define CONFIG_ROM_UNIT_SW_VERSION&t;&t;0x13
+DECL|macro|CONFIG_ROM_DESCRIPTOR_LEAF
+mdefine_line|#define CONFIG_ROM_DESCRIPTOR_LEAF&t;&t;0x81
+DECL|macro|CONFIG_ROM_DESCRIPTOR_DIRECTORY
+mdefine_line|#define CONFIG_ROM_DESCRIPTOR_DIRECTORY&t;&t;0xc1
 multiline_comment|/* &squot;1&squot; &squot;3&squot; &squot;9&squot; &squot;4&squot; in ASCII */
 DECL|macro|IEEE1394_BUSID_MAGIC
 mdefine_line|#define IEEE1394_BUSID_MAGIC&t;0x31333934
@@ -65,6 +125,10 @@ DECL|macro|UNIT_DIRECTORY_SPECIFIER_ID
 mdefine_line|#define UNIT_DIRECTORY_SPECIFIER_ID&t;0x04
 DECL|macro|UNIT_DIRECTORY_VERSION
 mdefine_line|#define UNIT_DIRECTORY_VERSION&t;&t;0x08
+DECL|macro|UNIT_DIRECTORY_VENDOR_TEXT
+mdefine_line|#define UNIT_DIRECTORY_VENDOR_TEXT&t;0x10
+DECL|macro|UNIT_DIRECTORY_MODEL_TEXT
+mdefine_line|#define UNIT_DIRECTORY_MODEL_TEXT&t;0x20
 multiline_comment|/*&n; * A unit directory corresponds to a protocol supported by the&n; * node. If a node supports eg. IP/1394 and AV/C, its config rom has a&n; * unit directory for each of these protocols.&n; * &n; * Unit directories appear on two types of lists: for each node we&n; * maintain a list of the unit directories found in its config rom and&n; * for each driver we maintain a list of the unit directories&n; * (ie. devices) the driver manages.&n; */
 DECL|struct|unit_directory
 r_struct
@@ -92,18 +156,28 @@ id|quadlet_t
 id|vendor_id
 suffix:semicolon
 DECL|member|vendor_name
+r_const
 r_char
 op_star
 id|vendor_name
+suffix:semicolon
+DECL|member|vendor_name_size
+r_int
+id|vendor_name_size
 suffix:semicolon
 DECL|member|model_id
 id|quadlet_t
 id|model_id
 suffix:semicolon
 DECL|member|model_name
+r_const
 r_char
 op_star
 id|model_name
+suffix:semicolon
+DECL|member|model_name_size
+r_int
+id|model_name_size
 suffix:semicolon
 DECL|member|specifier_id
 id|quadlet_t
@@ -113,28 +187,6 @@ DECL|member|version
 id|quadlet_t
 id|version
 suffix:semicolon
-multiline_comment|/* Groupings for arbitrary key/value pairs */
-DECL|member|arb_count
-r_int
-id|arb_count
-suffix:semicolon
-multiline_comment|/* Number of arbitrary key/values */
-DECL|member|arb_keys
-r_char
-id|arb_keys
-(braket
-l_int|16
-)braket
-suffix:semicolon
-multiline_comment|/* Up to 16 keys */
-DECL|member|arb_values
-id|quadlet_t
-id|arb_values
-(braket
-l_int|16
-)braket
-suffix:semicolon
-multiline_comment|/* Same for values */
 DECL|member|driver
 r_struct
 id|hpsb_protocol_driver
@@ -157,6 +209,18 @@ DECL|member|node_list
 r_struct
 id|list_head
 id|node_list
+suffix:semicolon
+DECL|member|count
+r_int
+id|count
+suffix:semicolon
+multiline_comment|/* Number of quadlets */
+DECL|member|quadlets
+id|quadlet_t
+id|quadlets
+(braket
+l_int|0
+)braket
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -210,6 +274,19 @@ DECL|member|unit_directories
 r_struct
 id|list_head
 id|unit_directories
+suffix:semicolon
+DECL|member|vendor_name
+r_const
+r_char
+op_star
+id|vendor_name
+suffix:semicolon
+DECL|member|quadlets
+id|quadlet_t
+id|quadlets
+(braket
+l_int|0
+)braket
 suffix:semicolon
 )brace
 suffix:semicolon

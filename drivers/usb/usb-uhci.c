@@ -94,7 +94,8 @@ id|_static
 r_int
 id|rh_submit_urb
 (paren
-id|urb_t
+r_struct
+id|urb
 op_star
 id|urb
 )paren
@@ -103,7 +104,8 @@ id|_static
 r_int
 id|rh_unlink_urb
 (paren
-id|urb_t
+r_struct
+id|urb
 op_star
 id|urb
 )paren
@@ -129,7 +131,8 @@ id|uhci_t
 op_star
 id|s
 comma
-id|urb_t
+r_struct
+id|urb
 op_star
 id|urb
 comma
@@ -145,7 +148,8 @@ id|uhci_t
 op_star
 id|s
 comma
-id|urb_t
+r_struct
+id|urb
 op_star
 id|urb
 )paren
@@ -158,7 +162,8 @@ id|uhci_t
 op_star
 id|s
 comma
-id|urb_t
+r_struct
+id|urb
 op_star
 id|urb
 comma
@@ -356,7 +361,8 @@ id|uhci_t
 op_star
 id|s
 comma
-id|urb_t
+r_struct
+id|urb
 op_star
 id|urb
 )paren
@@ -430,7 +436,8 @@ id|uhci_t
 op_star
 id|s
 comma
-id|urb_t
+r_struct
+id|urb
 op_star
 id|urb
 )paren
@@ -526,7 +533,8 @@ id|uhci_t
 op_star
 id|s
 comma
-id|urb_t
+r_struct
+id|urb
 op_star
 id|urb
 )paren
@@ -626,7 +634,8 @@ id|uhci_t
 op_star
 id|s
 comma
-id|urb_t
+r_struct
+id|urb
 op_star
 id|urb
 )paren
@@ -672,7 +681,8 @@ id|uhci_t
 op_star
 id|s
 comma
-id|urb_t
+r_struct
+id|urb
 op_star
 id|urb
 )paren
@@ -2969,7 +2979,8 @@ id|_static
 r_int
 id|uhci_submit_control_urb
 (paren
-id|urb_t
+r_struct
+id|urb
 op_star
 id|urb
 )paren
@@ -3526,11 +3537,13 @@ id|_static
 r_int
 id|uhci_submit_bulk_urb
 (paren
-id|urb_t
+r_struct
+id|urb
 op_star
 id|urb
 comma
-id|urb_t
+r_struct
+id|urb
 op_star
 id|bulk_urb
 )paren
@@ -4393,7 +4406,8 @@ id|uhci_t
 op_star
 id|s
 comma
-id|urb_t
+r_struct
+id|urb
 op_star
 id|urb
 comma
@@ -4676,7 +4690,8 @@ id|CLEAN_TRANSFER_DELETION_MARK
 )paren
 (brace
 singleline_comment|// no work for cleanup at unlink-completion
-id|urb_t
+r_struct
+id|urb
 op_star
 id|nurb
 suffix:semicolon
@@ -4870,7 +4885,8 @@ r_void
 id|uhci_release_bandwidth
 c_func
 (paren
-id|urb_t
+r_struct
+id|urb
 op_star
 id|urb
 )paren
@@ -4936,7 +4952,8 @@ id|uhci_t
 op_star
 id|s
 comma
-id|urb_t
+r_struct
+id|urb
 op_star
 id|urb
 comma
@@ -5003,7 +5020,8 @@ id|uhci_t
 op_star
 id|s
 comma
-id|urb_t
+r_struct
+id|urb
 op_star
 id|urb
 comma
@@ -5083,7 +5101,8 @@ id|uhci_t
 op_star
 id|s
 comma
-id|urb_t
+r_struct
+id|urb
 op_star
 id|urb
 comma
@@ -5315,7 +5334,8 @@ id|uhci_t
 op_star
 id|s
 comma
-id|urb_t
+r_struct
+id|urb
 op_star
 id|urb
 )paren
@@ -5555,7 +5575,8 @@ id|list_head
 op_star
 id|q
 suffix:semicolon
-id|urb_t
+r_struct
+id|urb
 op_star
 id|urb
 suffix:semicolon
@@ -5600,7 +5621,8 @@ id|list_entry
 (paren
 id|q
 comma
-id|urb_t
+r_struct
+id|urb
 comma
 id|urb_list
 )paren
@@ -5890,7 +5912,8 @@ id|_static
 r_int
 id|uhci_unlink_urb
 (paren
-id|urb_t
+r_struct
+id|urb
 op_star
 id|urb
 )paren
@@ -6030,7 +6053,8 @@ id|_static
 r_int
 id|find_iso_limits
 (paren
-id|urb_t
+r_struct
+id|urb
 op_star
 id|urb
 comma
@@ -6045,7 +6069,8 @@ op_star
 id|end
 )paren
 (brace
-id|urb_t
+r_struct
+id|urb
 op_star
 id|u
 comma
@@ -6111,7 +6136,8 @@ id|list_entry
 (paren
 id|p
 comma
-id|urb_t
+r_struct
+id|urb
 comma
 id|urb_list
 )paren
@@ -6200,7 +6226,8 @@ id|_static
 r_int
 id|iso_find_start
 (paren
-id|urb_t
+r_struct
+id|urb
 op_star
 id|urb
 )paren
@@ -6477,7 +6504,8 @@ id|_static
 r_int
 id|uhci_submit_int_urb
 (paren
-id|urb_t
+r_struct
+id|urb
 op_star
 id|urb
 )paren
@@ -6802,7 +6830,8 @@ id|_static
 r_int
 id|uhci_submit_iso_urb
 (paren
-id|urb_t
+r_struct
+id|urb
 op_star
 id|urb
 )paren
@@ -7287,7 +7316,8 @@ multiline_comment|/*------------------------------------------------------------
 singleline_comment|// returns: 0 (no transfer queued), urb* (this urb already queued)
 DECL|function|search_dev_ep
 id|_static
-id|urb_t
+r_struct
+id|urb
 op_star
 id|search_dev_ep
 (paren
@@ -7295,7 +7325,8 @@ id|uhci_t
 op_star
 id|s
 comma
-id|urb_t
+r_struct
+id|urb
 op_star
 id|urb
 )paren
@@ -7305,7 +7336,8 @@ id|list_head
 op_star
 id|p
 suffix:semicolon
-id|urb_t
+r_struct
+id|urb
 op_star
 id|tmp
 suffix:semicolon
@@ -7360,7 +7392,8 @@ id|list_entry
 (paren
 id|p
 comma
-id|urb_t
+r_struct
+id|urb
 comma
 id|urb_list
 )paren
@@ -7427,7 +7460,8 @@ id|_static
 r_int
 id|uhci_submit_urb
 (paren
-id|urb_t
+r_struct
+id|urb
 op_star
 id|urb
 )paren
@@ -7451,7 +7485,8 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-id|urb_t
+r_struct
+id|urb
 op_star
 id|queued_urb
 op_assign
@@ -8175,7 +8210,8 @@ comma
 op_star
 id|p2
 suffix:semicolon
-id|urb_t
+r_struct
+id|urb
 op_star
 id|urb
 suffix:semicolon
@@ -8213,7 +8249,8 @@ id|list_entry
 (paren
 id|p2
 comma
-id|urb_t
+r_struct
+id|urb
 comma
 id|urb_list
 )paren
@@ -8509,7 +8546,8 @@ id|_static
 r_int
 id|rh_send_irq
 (paren
-id|urb_t
+r_struct
+id|urb
 op_star
 id|urb
 )paren
@@ -8675,7 +8713,8 @@ id|_static
 r_int
 id|rh_init_int_timer
 (paren
-id|urb_t
+r_struct
+id|urb
 op_star
 id|urb
 )paren
@@ -8693,12 +8732,14 @@ id|ptr
 r_int
 id|len
 suffix:semicolon
-id|urb_t
+r_struct
+id|urb
 op_star
 id|urb
 op_assign
 (paren
-id|urb_t
+r_struct
+id|urb
 op_star
 )paren
 id|ptr
@@ -8759,7 +8800,8 @@ id|_static
 r_int
 id|rh_init_int_timer
 (paren
-id|urb_t
+r_struct
+id|urb
 op_star
 id|urb
 )paren
@@ -8828,7 +8870,8 @@ id|_static
 r_int
 id|rh_submit_urb
 (paren
-id|urb_t
+r_struct
+id|urb
 op_star
 id|urb
 )paren
@@ -9886,7 +9929,8 @@ id|_static
 r_int
 id|rh_unlink_urb
 (paren
-id|urb_t
+r_struct
+id|urb
 op_star
 id|urb
 )paren
@@ -10098,7 +10142,8 @@ id|list_head
 op_star
 id|p2
 suffix:semicolon
-id|urb_t
+r_struct
+id|urb
 op_star
 id|urb
 suffix:semicolon
@@ -10137,7 +10182,8 @@ id|list_entry
 (paren
 id|p2
 comma
-id|urb_t
+r_struct
+id|urb
 comma
 id|urb_list
 )paren
@@ -10318,7 +10364,8 @@ r_void
 id|correct_data_toggles
 c_func
 (paren
-id|urb_t
+r_struct
+id|urb
 op_star
 id|urb
 )paren
@@ -10450,7 +10497,8 @@ id|uhci_t
 op_star
 id|s
 comma
-id|urb_t
+r_struct
+id|urb
 op_star
 id|urb
 comma
@@ -10942,7 +10990,8 @@ op_star
 )paren
 id|urb-&gt;hcpriv
 suffix:semicolon
-id|urb_t
+r_struct
+id|urb
 op_star
 id|next_queued_urb
 op_assign
@@ -11096,7 +11145,8 @@ id|uhci_t
 op_star
 id|s
 comma
-id|urb_t
+r_struct
+id|urb
 op_star
 id|urb
 )paren
@@ -11577,7 +11627,8 @@ id|uhci_t
 op_star
 id|s
 comma
-id|urb_t
+r_struct
+id|urb
 op_star
 id|urb
 comma
@@ -11978,7 +12029,8 @@ id|ret
 op_assign
 l_int|0
 suffix:semicolon
-id|urb_t
+r_struct
+id|urb
 op_star
 id|urb
 suffix:semicolon
@@ -11988,7 +12040,8 @@ id|list_entry
 (paren
 id|p
 comma
-id|urb_t
+r_struct
+id|urb
 comma
 id|urb_list
 )paren
@@ -12208,7 +12261,8 @@ id|PIPE_INTERRUPT
 )paren
 (brace
 singleline_comment|// process_interrupt does completion on its own&t;&t;
-id|urb_t
+r_struct
+id|urb
 op_star
 id|next_urb
 op_assign

@@ -1,6 +1,5 @@
 multiline_comment|/*&n; *  linux/fs/ext2/dir.c&n; *&n; * Copyright (C) 1992, 1993, 1994, 1995&n; * Remy Card (card@masi.ibp.fr)&n; * Laboratoire MASI - Institut Blaise Pascal&n; * Universite Pierre et Marie Curie (Paris VI)&n; *&n; *  from&n; *&n; *  linux/fs/minix/dir.c&n; *&n; *  Copyright (C) 1991, 1992  Linus Torvalds&n; *&n; *  ext2 directory handling functions&n; *&n; *  Big-endian to little-endian byte-swapping/bitmaps by&n; *        David S. Miller (davem@caip.rutgers.edu), 1995&n; *&n; * All code that works with directory layout had been switched to pagecache&n; * and moved here. AV&n; */
-macro_line|#include &lt;linux/fs.h&gt;
-macro_line|#include &lt;linux/ext2_fs.h&gt;
+macro_line|#include &quot;ext2.h&quot;
 macro_line|#include &lt;linux/pagemap.h&gt;
 DECL|typedef|ext2_dirent
 r_typedef
@@ -1510,6 +1509,17 @@ id|page
 op_assign
 l_int|NULL
 suffix:semicolon
+r_struct
+id|ext2_inode_info
+op_star
+id|ei
+op_assign
+id|EXT2_I
+c_func
+(paren
+id|dir
+)paren
+suffix:semicolon
 id|ext2_dirent
 op_star
 id|de
@@ -1522,7 +1532,7 @@ l_int|NULL
 suffix:semicolon
 id|start
 op_assign
-id|dir-&gt;u.ext2_i.i_dir_start_lookup
+id|ei-&gt;i_dir_start_lookup
 suffix:semicolon
 r_if
 c_cond
@@ -1662,7 +1672,7 @@ id|res_page
 op_assign
 id|page
 suffix:semicolon
-id|dir-&gt;u.ext2_i.i_dir_start_lookup
+id|ei-&gt;i_dir_start_lookup
 op_assign
 id|n
 suffix:semicolon

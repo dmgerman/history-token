@@ -1,4 +1,5 @@
 multiline_comment|/*&n; * Directory notification for Linux&n; *&n; * Copyright 2000 (C) Stephen Rothwell&n; */
+macro_line|#include &lt;linux/fs.h&gt;
 DECL|struct|dnotify_struct
 r_struct
 id|dnotify_struct

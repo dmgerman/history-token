@@ -3014,9 +3014,6 @@ comma
 l_int|1
 )paren
 suffix:semicolon
-DECL|macro|RUN_CHILD_FIRST
-mdefine_line|#define RUN_CHILD_FIRST 1
-macro_line|#if RUN_CHILD_FIRST
 id|wake_up_forked_process
 c_func
 (paren
@@ -3024,15 +3021,6 @@ id|p
 )paren
 suffix:semicolon
 multiline_comment|/* do this last */
-macro_line|#else
-id|wake_up_process
-c_func
-(paren
-id|p
-)paren
-suffix:semicolon
-multiline_comment|/* do this last */
-macro_line|#endif
 op_increment
 id|total_forks
 suffix:semicolon
@@ -3050,14 +3038,12 @@ op_amp
 id|vfork
 )paren
 suffix:semicolon
-macro_line|#if RUN_CHILD_FIRST
 r_else
 multiline_comment|/*&n;&t;&t; * Let the child process run first, to avoid most of the&n;&t;&t; * COW overhead when the child exec()s afterwards.&n;&t;&t; */
 id|current-&gt;need_resched
 op_assign
 l_int|1
 suffix:semicolon
-macro_line|#endif
 id|fork_out
 suffix:colon
 r_return

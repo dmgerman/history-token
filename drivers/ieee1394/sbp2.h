@@ -2,6 +2,18 @@ multiline_comment|/*&n; * sbp2.h - Defines and prototypes for sbp2.c&n; *&n; * C
 macro_line|#ifndef SBP2_H
 DECL|macro|SBP2_H
 mdefine_line|#define SBP2_H
+multiline_comment|/* Some compatibility code */
+macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,5,0)
+DECL|macro|SCSI_REGISTER_HOST
+mdefine_line|#define SCSI_REGISTER_HOST(tmpl)&t;scsi_register_module(MODULE_SCSI_HA, tmpl)
+DECL|macro|SCSI_UNREGISTER_HOST
+mdefine_line|#define SCSI_UNREGISTER_HOST(tmpl)&t;scsi_unregister_module(MODULE_SCSI_HA, tmpl)
+macro_line|#else
+DECL|macro|SCSI_REGISTER_HOST
+mdefine_line|#define SCSI_REGISTER_HOST(tmpl)&t;scsi_register_host(tmpl)
+DECL|macro|SCSI_UNREGISTER_HOST
+mdefine_line|#define SCSI_UNREGISTER_HOST(tmpl)&t;scsi_unregister_host(tmpl)
+macro_line|#endif
 DECL|macro|SBP2_DEVICE_NAME
 mdefine_line|#define SBP2_DEVICE_NAME&t;&t;&quot;sbp2&quot;
 DECL|macro|SBP2_DEVICE_NAME_SIZE
@@ -17,6 +29,8 @@ DECL|macro|ORB_DIRECTION_READ_FROM_MEDIA
 mdefine_line|#define ORB_DIRECTION_READ_FROM_MEDIA   0x1
 DECL|macro|ORB_DIRECTION_NO_DATA_TRANSFER
 mdefine_line|#define ORB_DIRECTION_NO_DATA_TRANSFER  0x2
+DECL|macro|ORB_SET_NULL_PTR
+mdefine_line|#define ORB_SET_NULL_PTR(value)&t;&t;&t;((value &amp; 0x1) &lt;&lt; 31)
 DECL|macro|ORB_SET_NOTIFY
 mdefine_line|#define ORB_SET_NOTIFY(value)                   ((value &amp; 0x1) &lt;&lt; 31)
 DECL|macro|ORB_SET_RQ_FMT
@@ -409,6 +423,10 @@ DECL|macro|SBP2_DEVICE_TYPE_AND_LUN_KEY
 mdefine_line|#define SBP2_DEVICE_TYPE_AND_LUN_KEY&t;&t;&t;&t;0x14
 DECL|macro|SBP2_FIRMWARE_REVISION_KEY
 mdefine_line|#define SBP2_FIRMWARE_REVISION_KEY&t;&t;&t;&t;0x3c
+DECL|macro|SBP2_DEVICE_TYPE
+mdefine_line|#define SBP2_DEVICE_TYPE(q)&t;&t;&t;(((q) &gt;&gt; 16) &amp; 0x1f)
+DECL|macro|SBP2_DEVICE_LUN
+mdefine_line|#define SBP2_DEVICE_LUN(q)&t;&t;&t;((q) &amp; 0xffff)
 DECL|macro|SBP2_AGENT_STATE_OFFSET
 mdefine_line|#define SBP2_AGENT_STATE_OFFSET&t;&t;&t;&t;&t;0x00ULL
 DECL|macro|SBP2_AGENT_RESET_OFFSET
@@ -432,15 +450,6 @@ DECL|macro|SBP2_UNIT_SPEC_ID_ENTRY
 mdefine_line|#define SBP2_UNIT_SPEC_ID_ENTRY&t;&t;&t;&t;&t;0x0000609e
 DECL|macro|SBP2_SW_VERSION_ENTRY
 mdefine_line|#define SBP2_SW_VERSION_ENTRY&t;&t;&t;&t;&t;0x00010483
-multiline_comment|/*&n; * Miscellaneous general config rom related defines&n; */
-DECL|macro|CONFIG_ROM_INITIAL_MEMORY_SPACE
-mdefine_line|#define CONFIG_ROM_INITIAL_MEMORY_SPACE &t;&t;&t;0xfffff0000000ULL
-DECL|macro|CONFIG_ROM_BASE_ADDRESS
-mdefine_line|#define CONFIG_ROM_BASE_ADDRESS&t;&t;&t;&t;&t;0xfffff0000400ULL
-DECL|macro|CONFIG_ROM_ROOT_DIR_BASE
-mdefine_line|#define CONFIG_ROM_ROOT_DIR_BASE&t;&t;&t;&t;0xfffff0000414ULL
-DECL|macro|CONFIG_ROM_UNIT_DIRECTORY_OFFSET
-mdefine_line|#define CONFIG_ROM_UNIT_DIRECTORY_OFFSET&t;&t;&t;0xfffff0000424ULL
 DECL|macro|SBP2_128KB_BROKEN_FIRMWARE
 mdefine_line|#define SBP2_128KB_BROKEN_FIRMWARE&t;&t;&t;&t;0xa0b800
 DECL|macro|SBP2_BROKEN_FIRMWARE_MAX_TRANSFER
@@ -465,7 +474,7 @@ macro_line|#ifndef TYPE_SDAD
 DECL|macro|TYPE_SDAD
 mdefine_line|#define TYPE_SDAD&t;&t;&t;0x0e&t;/* simplified direct access device */
 macro_line|#endif
-multiline_comment|/*&n; * SCSI direction table... since the scsi stack doesn&squot;t specify direction...   =(&n; *&n; * DIN = IN data direction&n; * DOU = OUT data direction&n; * DNO = No data transfer&n; * DUN = Unknown data direction&n; *&n; * Opcode 0xec (Teac specific &quot;opc execute&quot;) possibly should be DNO,&n; * but we&squot;ll change it when somebody reports a problem with this.&n; */
+multiline_comment|/*&n; * SCSI direction table... &n; * (now used as a back-up in case the direction passed down from above is &quot;unknown&quot;)&n; *&n; * DIN = IN data direction&n; * DOU = OUT data direction&n; * DNO = No data transfer&n; * DUN = Unknown data direction&n; *&n; * Opcode 0xec (Teac specific &quot;opc execute&quot;) possibly should be DNO,&n; * but we&squot;ll change it when somebody reports a problem with this.&n; */
 DECL|macro|DIN
 mdefine_line|#define DIN&t;&t;&t;&t;ORB_DIRECTION_READ_FROM_MEDIA
 DECL|macro|DOU
@@ -1029,6 +1038,13 @@ id|hi_context
 suffix:semicolon
 )brace
 suffix:semicolon
+multiline_comment|/* This is the two dma types we use for cmd_dma below */
+DECL|macro|CMD_DMA_NONE
+mdefine_line|#define CMD_DMA_NONE   0x0
+DECL|macro|CMD_DMA_PAGE
+mdefine_line|#define CMD_DMA_PAGE   0x1
+DECL|macro|CMD_DMA_SINGLE
+mdefine_line|#define CMD_DMA_SINGLE 0x2
 multiline_comment|/* &n; * Encapsulates all the info necessary for an outstanding command. &n; */
 DECL|struct|sbp2_command_info
 r_struct
@@ -1039,14 +1055,16 @@ r_struct
 id|list_head
 id|list
 suffix:semicolon
-DECL|member|command_orb
+DECL|member|____cacheline_aligned
 r_struct
 id|sbp2_command_orb
 id|command_orb
+id|____cacheline_aligned
 suffix:semicolon
-DECL|member|command_orb_dma
+DECL|member|____cacheline_aligned
 id|dma_addr_t
 id|command_orb_dma
+id|____cacheline_aligned
 suffix:semicolon
 DECL|member|Current_SCpnt
 id|Scsi_Cmnd
@@ -1070,17 +1088,19 @@ r_int
 id|linked
 suffix:semicolon
 multiline_comment|/* Also need s/g structure for each sbp2 command */
-DECL|member|scatter_gather_element
+DECL|member|____cacheline_aligned
 r_struct
 id|sbp2_unrestricted_page_table
 id|scatter_gather_element
 (braket
 id|SBP2_MAX_SG_ELEMENTS
 )braket
+id|____cacheline_aligned
 suffix:semicolon
-DECL|member|sge_dma
+DECL|member|____cacheline_aligned
 id|dma_addr_t
 id|sge_dma
+id|____cacheline_aligned
 suffix:semicolon
 DECL|member|sge_buffer
 r_void
@@ -1122,6 +1142,10 @@ r_struct
 id|sbp2_command_orb
 op_star
 id|last_orb
+suffix:semicolon
+DECL|member|last_orb_dma
+id|dma_addr_t
+id|last_orb_dma
 suffix:semicolon
 DECL|member|login_orb
 r_struct
@@ -1270,6 +1294,13 @@ suffix:semicolon
 DECL|member|sbp2_request_packet_lock
 id|spinlock_t
 id|sbp2_request_packet_lock
+suffix:semicolon
+multiline_comment|/*&n;&t; * This is the scsi host we register with the scsi mid level.&n;&t; * We keep a reference to it here, so we can unregister it&n;&t; * when the hpsb_host is removed.&n;&t; */
+DECL|member|scsi_host
+r_struct
+id|Scsi_Host
+op_star
+id|scsi_host
 suffix:semicolon
 multiline_comment|/*&n;&t; * Lists keeping track of inuse/free sbp2_request_packets. These structures are&n;&t; * used for sending out sbp2 command and agent reset packets. We initially create&n;&t; * a pool of request packets so that we don&squot;t have to do any kmallocs while in critical&n;&t; * I/O paths.&n;&t; */
 DECL|member|sbp2_req_inuse
@@ -1724,7 +1755,8 @@ op_star
 id|scsi_request_buffer
 comma
 r_int
-id|dma_dir
+r_char
+id|scsi_dir
 )paren
 suffix:semicolon
 r_static
@@ -1898,6 +1930,15 @@ id|scsi_id
 suffix:semicolon
 multiline_comment|/*&n; * Scsi interface related prototypes&n; */
 r_static
+r_int
+id|sbp2scsi_detect
+(paren
+id|Scsi_Host_Template
+op_star
+id|tpnt
+)paren
+suffix:semicolon
+r_static
 r_const
 r_char
 op_star
@@ -1907,15 +1948,6 @@ r_struct
 id|Scsi_Host
 op_star
 id|host
-)paren
-suffix:semicolon
-r_static
-r_int
-id|sbp2scsi_detect
-(paren
-id|Scsi_Host_Template
-op_star
-id|tpnt
 )paren
 suffix:semicolon
 r_void
@@ -1964,10 +1996,6 @@ id|sbp2scsi_reset
 id|Scsi_Cmnd
 op_star
 id|SCpnt
-comma
-r_int
-r_int
-id|reset_flags
 )paren
 suffix:semicolon
 r_static
@@ -2039,17 +2067,6 @@ id|done
 id|Scsi_Cmnd
 op_star
 )paren
-)paren
-suffix:semicolon
-r_static
-r_void
-id|sbp2scsi_register_scsi_host
-c_func
-(paren
-r_struct
-id|sbp2scsi_host_info
-op_star
-id|hi
 )paren
 suffix:semicolon
 macro_line|#endif /* SBP2_H */

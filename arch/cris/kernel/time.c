@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: time.c,v 1.9 2001/10/25 10:26:37 johana Exp $&n; *&n; *  linux/arch/cris/kernel/time.c&n; *&n; *  Copyright (C) 1991, 1992, 1995  Linus Torvalds&n; *  Copyright (C) 1999, 2000, 2001 Axis Communications AB&n; *&n; * 1994-07-02    Alan Modra&n; *&t;fixed set_rtc_mmss, fixed time.year for &gt;= 2000, new mktime&n; * 1995-03-26    Markus Kuhn&n; *      fixed 500 ms bug at call to set_rtc_mmss, fixed DS12887&n; *      precision CMOS clock update&n; * 1996-05-03    Ingo Molnar&n; *      fixed time warps in do_[slow|fast]_gettimeoffset()&n; * 1997-09-10&t;Updated NTP code according to technical memorandum Jan &squot;96&n; *&t;&t;&quot;A Kernel Model for Precision Timekeeping&quot; by Dave Mills&n; *&n; * Linux/CRIS specific code:&n; *&n; * Authors:    Bjorn Wesen&n; *&n; */
+multiline_comment|/* $Id: time.c,v 1.2 2001/12/18 13:35:20 bjornw Exp $&n; *&n; *  linux/arch/cris/kernel/time.c&n; *&n; *  Copyright (C) 1991, 1992, 1995  Linus Torvalds&n; *  Copyright (C) 1999, 2000, 2001 Axis Communications AB&n; *&n; * 1994-07-02    Alan Modra&n; *&t;fixed set_rtc_mmss, fixed time.year for &gt;= 2000, new mktime&n; * 1995-03-26    Markus Kuhn&n; *      fixed 500 ms bug at call to set_rtc_mmss, fixed DS12887&n; *      precision CMOS clock update&n; * 1996-05-03    Ingo Molnar&n; *      fixed time warps in do_[slow|fast]_gettimeoffset()&n; * 1997-09-10&t;Updated NTP code according to technical memorandum Jan &squot;96&n; *&t;&t;&quot;A Kernel Model for Precision Timekeeping&quot; by Dave Mills&n; *&n; * Linux/CRIS specific code:&n; *&n; * Authors:    Bjorn Wesen&n; *             Johan Adolfsson  &n; *&n; */
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -66,6 +66,12 @@ r_int
 r_int
 id|count
 suffix:semicolon
+r_int
+r_int
+id|usec_count
+op_assign
+l_int|0
+suffix:semicolon
 r_static
 r_int
 r_int
@@ -121,6 +127,19 @@ OG
 id|count_p
 )paren
 (brace
+multiline_comment|/* Timer wrapped */
+id|count
+op_assign
+id|count_p
+suffix:semicolon
+id|usec_count
+op_assign
+l_int|1000000
+op_div
+id|CLOCK_TICK_RATE
+op_div
+l_int|2
+suffix:semicolon
 )brace
 )brace
 r_else
@@ -132,6 +151,15 @@ id|count_p
 op_assign
 id|count
 suffix:semicolon
+multiline_comment|/* Convert timer value to usec using table lookup */
+id|usec_count
+op_add_assign
+id|cris_timer0_value_us
+(braket
+id|count
+)braket
+suffix:semicolon
+macro_line|#if 0
 id|count
 op_assign
 (paren
@@ -158,8 +186,9 @@ l_int|2
 op_div
 id|LATCH
 suffix:semicolon
+macro_line|#endif
 r_return
-id|count
+id|usec_count
 suffix:semicolon
 )brace
 DECL|variable|do_gettimeoffset
@@ -335,16 +364,10 @@ id|real_minutes
 comma
 id|cmos_minutes
 suffix:semicolon
-r_int
-r_char
-id|save_control
-comma
-id|save_freq_select
-suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;set_rtc_mmss(%d)&bslash;n&quot;
+l_string|&quot;set_rtc_mmss(%lu)&bslash;n&quot;
 comma
 id|nowtime
 )paren
@@ -487,6 +510,7 @@ multiline_comment|/* Excerpt from the Etrax100 HSDD about the built-in watchdog:
 multiline_comment|/* right now, starting the watchdog is the same as resetting it */
 DECL|macro|start_watchdog
 mdefine_line|#define start_watchdog reset_watchdog
+macro_line|#if defined(CONFIG_ETRAX_WATCHDOG) &amp;&amp; !defined(CONFIG_SVINTO_SIM)
 DECL|variable|watchdog_key
 r_static
 r_int
@@ -495,6 +519,7 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* arbitrary number */
+macro_line|#endif
 multiline_comment|/* number of pages to consider &quot;out of memory&quot;. it is normal that the memory&n; * is used though, so put this really low.&n; */
 DECL|macro|WATCHDOG_MIN_FREE_PAGES
 mdefine_line|#define WATCHDOG_MIN_FREE_PAGES 8
@@ -774,6 +799,7 @@ op_rshift
 l_int|1
 )paren
 )paren
+(brace
 r_if
 c_cond
 (paren
@@ -796,6 +822,7 @@ id|xtime.tv_sec
 op_minus
 l_int|600
 suffix:semicolon
+)brace
 )brace
 macro_line|#if 0
 multiline_comment|/* some old debug code for testing the microsecond timing of packets */
@@ -900,9 +927,6 @@ comma
 id|min
 comma
 id|sec
-suffix:semicolon
-r_int
-id|i
 suffix:semicolon
 id|sec
 op_assign

@@ -676,6 +676,27 @@ r_int
 comma
 id|options
 )paren
+r_static
+r_inline
+id|_syscall3
+c_func
+(paren
+id|off_t
+comma
+id|lseek
+comma
+r_int
+comma
+id|fd
+comma
+id|off_t
+comma
+id|offset
+comma
+r_int
+comma
+id|count
+)paren
 multiline_comment|/* the following are just while developing the elinux port! */
 r_static
 r_inline

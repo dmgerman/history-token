@@ -353,7 +353,13 @@ r_int
 r_int
 op_star
 )paren
-id|inode-&gt;u.qnx4_i.i_first_xtnt.xtnt_blk
+id|qnx4_raw_inode
+c_func
+(paren
+id|inode
+)paren
+op_member_access_from_pointer
+id|di_first_xtnt.xtnt_blk
 op_plus
 id|i
 comma

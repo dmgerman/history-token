@@ -228,7 +228,7 @@ r_return
 id|points
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Simple selection loop. We chose the process with the highest&n; * number of &squot;points&squot;. We need the locks to make sure that the&n; * list of task structs doesn&squot;t change while we look the other way.&n; *&n; * (not docbooked, we don&squot;t want this one cluttering up the manual)&n; */
+multiline_comment|/*&n; * Simple selection loop. We chose the process with the highest&n; * number of &squot;points&squot;. We expect the caller will lock the tasklist.&n; *&n; * (not docbooked, we don&squot;t want this one cluttering up the manual)&n; */
 DECL|function|select_bad_process
 r_static
 r_struct
@@ -258,13 +258,6 @@ op_star
 id|chosen
 op_assign
 l_int|NULL
-suffix:semicolon
-id|read_lock
-c_func
-(paren
-op_amp
-id|tasklist_lock
-)paren
 suffix:semicolon
 id|for_each_task
 c_func
@@ -306,13 +299,6 @@ suffix:semicolon
 )brace
 )brace
 )brace
-id|read_unlock
-c_func
-(paren
-op_amp
-id|tasklist_lock
-)paren
-suffix:semicolon
 r_return
 id|chosen
 suffix:semicolon
@@ -405,14 +391,23 @@ r_struct
 id|task_struct
 op_star
 id|p
+comma
+op_star
+id|q
+suffix:semicolon
+id|read_lock
+c_func
+(paren
+op_amp
+id|tasklist_lock
+)paren
+suffix:semicolon
+id|p
 op_assign
 id|select_bad_process
 c_func
 (paren
 )paren
-comma
-op_star
-id|q
 suffix:semicolon
 multiline_comment|/* Found nothing?!?! Either we hang forever, or we panic. */
 r_if
@@ -429,13 +424,6 @@ l_string|&quot;Out of memory and no killable processes...&bslash;n&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* kill all processes that share the -&gt;mm (i.e. all threads) */
-id|read_lock
-c_func
-(paren
-op_amp
-id|tasklist_lock
-)paren
-suffix:semicolon
 id|for_each_task
 c_func
 (paren
@@ -491,6 +479,8 @@ comma
 id|last
 comma
 id|count
+comma
+id|lastkill
 suffix:semicolon
 r_int
 r_int
@@ -566,7 +556,29 @@ l_int|10
 )paren
 r_return
 suffix:semicolon
+multiline_comment|/*&n;&t; * If we just killed a process, wait a while&n;&t; * to give that task a chance to exit. This&n;&t; * avoids killing multiple processes needlessly.&n;&t; */
+id|since
+op_assign
+id|now
+op_minus
+id|lastkill
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|since
+OL
+id|HZ
+op_star
+l_int|5
+)paren
+r_return
+suffix:semicolon
 multiline_comment|/*&n;&t; * Ok, really out of memory. Kill something.&n;&t; */
+id|lastkill
+op_assign
+id|now
+suffix:semicolon
 id|oom_kill
 c_func
 (paren

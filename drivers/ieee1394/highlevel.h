@@ -316,16 +316,6 @@ id|host
 )paren
 suffix:semicolon
 r_void
-id|highlevel_add_one_host
-c_func
-(paren
-r_struct
-id|hpsb_host
-op_star
-id|host
-)paren
-suffix:semicolon
-r_void
 id|highlevel_remove_host
 c_func
 (paren

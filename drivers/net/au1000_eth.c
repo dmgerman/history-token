@@ -5282,6 +5282,20 @@ op_plus
 l_int|2
 suffix:colon
 multiline_comment|/* Write the specified MII register */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|capable
+c_func
+(paren
+id|CAP_NET_ADMIN
+)paren
+)paren
+r_return
+op_minus
+id|EPERM
+suffix:semicolon
 singleline_comment|//mdio_write(ioaddr, data[0], data[1], data[2]);
 r_return
 l_int|0

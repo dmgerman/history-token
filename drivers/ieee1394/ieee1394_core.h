@@ -3,6 +3,8 @@ DECL|macro|_IEEE1394_CORE_H
 mdefine_line|#define _IEEE1394_CORE_H
 macro_line|#include &lt;linux/tqueue.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
+macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
+macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#include &quot;hosts.h&quot;
 DECL|struct|hpsb_packet
@@ -342,6 +344,91 @@ comma
 r_int
 id|write_acked
 )paren
+suffix:semicolon
+multiline_comment|/*&n; * CHARACTER DEVICE DISPATCHING&n; *&n; * All ieee1394 character device drivers share the same major number&n; * (major 171).  The 256 minor numbers are allocated to the various&n; * task-specific interfaces (raw1394, video1394, dv1394, etc) in&n; * blocks of 16.&n; *&n; * The core ieee1394.o modules handles the initial open() for all&n; * character devices on major 171; it then dispatches to the&n; * appropriate task-specific driver.&n; *&n; * Minor device number block allocations:&n; *&n; * Block 0  (  0- 15)  raw1394&n; * Block 1  ( 16- 31)  video1394&n; * Block 2  ( 32- 47)  dv1394&n; *&n; * Blocks 3-14 free for future allocation&n; *&n; * Block 15 (240-255)  reserved for drivers under development, etc.&n; */
+DECL|macro|IEEE1394_MAJOR
+mdefine_line|#define IEEE1394_MAJOR               171
+DECL|macro|IEEE1394_MINOR_BLOCK_RAW1394
+mdefine_line|#define IEEE1394_MINOR_BLOCK_RAW1394       0
+DECL|macro|IEEE1394_MINOR_BLOCK_VIDEO1394
+mdefine_line|#define IEEE1394_MINOR_BLOCK_VIDEO1394     1
+DECL|macro|IEEE1394_MINOR_BLOCK_DV1394
+mdefine_line|#define IEEE1394_MINOR_BLOCK_DV1394        2
+DECL|macro|IEEE1394_MINOR_BLOCK_EXPERIMENTAL
+mdefine_line|#define IEEE1394_MINOR_BLOCK_EXPERIMENTAL 15
+multiline_comment|/* return the index (within a minor number block) of a file */
+DECL|function|ieee1394_file_to_instance
+r_static
+r_inline
+r_int
+r_char
+id|ieee1394_file_to_instance
+c_func
+(paren
+r_struct
+id|file
+op_star
+id|file
+)paren
+(brace
+r_int
+r_char
+id|minor
+op_assign
+id|minor
+c_func
+(paren
+id|file-&gt;f_dentry-&gt;d_inode-&gt;i_rdev
+)paren
+suffix:semicolon
+multiline_comment|/* return lower 4 bits */
+r_return
+id|minor
+op_amp
+l_int|0xF
+suffix:semicolon
+)brace
+multiline_comment|/* &n; * Task-specific drivers should call ieee1394_register_chardev() to&n; * request a block of 16 minor numbers.&n; *&n; * Returns 0 if the request was successful, -EBUSY if the block was&n; * already taken.&n; */
+r_int
+id|ieee1394_register_chardev
+c_func
+(paren
+r_int
+id|blocknum
+comma
+multiline_comment|/* 0-15 */
+r_struct
+id|module
+op_star
+id|module
+comma
+multiline_comment|/* THIS_MODULE */
+r_struct
+id|file_operations
+op_star
+id|file_ops
+)paren
+suffix:semicolon
+multiline_comment|/* release a block of minor numbers */
+r_void
+id|ieee1394_unregister_chardev
+c_func
+(paren
+r_int
+id|blocknum
+)paren
+suffix:semicolon
+multiline_comment|/* the devfs handle for /dev/ieee1394; NULL if devfs is not in use */
+r_extern
+id|devfs_handle_t
+id|ieee1394_devfs_handle
+suffix:semicolon
+multiline_comment|/* the proc_fs entry for /proc/ieee1394 */
+r_extern
+r_struct
+id|proc_dir_entry
+op_star
+id|ieee1394_procfs_entry
 suffix:semicolon
 macro_line|#endif /* _IEEE1394_CORE_H */
 eof

@@ -1,6 +1,5 @@
 multiline_comment|/*&n; * linux/fs/ext2/ioctl.c&n; *&n; * Copyright (C) 1993, 1994, 1995&n; * Remy Card (card@masi.ibp.fr)&n; * Laboratoire MASI - Institut Blaise Pascal&n; * Universite Pierre et Marie Curie (Paris VI)&n; */
-macro_line|#include &lt;linux/fs.h&gt;
-macro_line|#include &lt;linux/ext2_fs.h&gt;
+macro_line|#include &quot;ext2.h&quot;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 DECL|function|ext2_ioctl
@@ -26,6 +25,17 @@ r_int
 id|arg
 )paren
 (brace
+r_struct
+id|ext2_inode_info
+op_star
+id|ei
+op_assign
+id|EXT2_I
+c_func
+(paren
+id|inode
+)paren
+suffix:semicolon
 r_int
 r_int
 id|flags
@@ -50,7 +60,7 @@ id|EXT2_IOC_GETFLAGS
 suffix:colon
 id|flags
 op_assign
-id|inode-&gt;u.ext2_i.i_flags
+id|ei-&gt;i_flags
 op_amp
 id|EXT2_FL_USER_VISIBLE
 suffix:semicolon
@@ -129,7 +139,7 @@ id|EFAULT
 suffix:semicolon
 id|oldflags
 op_assign
-id|inode-&gt;u.ext2_i.i_flags
+id|ei-&gt;i_flags
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; * The IMMUTABLE and APPEND_ONLY flags can only be changed by&n;&t;&t; * the relevant capability.&n;&t;&t; *&n;&t;&t; * This test looks nicer. Thanks to Pauline Middelink&n;&t;&t; */
 r_if
@@ -176,7 +186,7 @@ op_amp
 op_complement
 id|EXT2_FL_USER_MODIFIABLE
 suffix:semicolon
-id|inode-&gt;u.ext2_i.i_flags
+id|ei-&gt;i_flags
 op_assign
 id|flags
 suffix:semicolon

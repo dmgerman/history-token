@@ -17743,7 +17743,8 @@ id|usb_ov511
 op_star
 id|ov511
 comma
-id|urb_t
+r_struct
+id|urb
 op_star
 id|urb
 )paren
@@ -18892,7 +18893,8 @@ id|usb_ov511
 op_star
 id|ov511
 comma
-id|urb_t
+r_struct
+id|urb
 op_star
 id|urb
 )paren
@@ -20104,7 +20106,8 @@ op_star
 id|ov511
 )paren
 (brace
-id|urb_t
+r_struct
+id|urb
 op_star
 id|urb
 suffix:semicolon

@@ -3191,7 +3191,8 @@ suffix:semicolon
 multiline_comment|/* ---------------------------------------------------------------------- &n; * New USB Core Functions&n; * ----------------------------------------------------------------------*/
 multiline_comment|/**&n; *&t;usb_alloc_urb - creates a new urb for a USB driver to use&n; *&t;@iso_packets: number of iso packets for this urb&n; *&n; *&t;Creates an urb for the USB driver to use and returns a pointer to it.&n; *&t;If no memory is available, NULL is returned.&n; *&n; *&t;If the driver want to use this urb for interrupt, control, or bulk&n; *&t;endpoints, pass &squot;0&squot; as the number of iso packets.&n; *&n; *&t;The driver should call usb_free_urb() when it is finished with the urb.&n; */
 DECL|function|usb_alloc_urb
-id|urb_t
+r_struct
+id|urb
 op_star
 id|usb_alloc_urb
 c_func
@@ -3200,14 +3201,16 @@ r_int
 id|iso_packets
 )paren
 (brace
-id|urb_t
+r_struct
+id|urb
 op_star
 id|urb
 suffix:semicolon
 id|urb
 op_assign
 (paren
-id|urb_t
+r_struct
+id|urb
 op_star
 )paren
 id|kmalloc
@@ -3215,14 +3218,16 @@ c_func
 (paren
 r_sizeof
 (paren
-id|urb_t
+r_struct
+id|urb
 )paren
 op_plus
 id|iso_packets
 op_star
 r_sizeof
 (paren
-id|iso_packet_descriptor_t
+r_struct
+id|usb_iso_packet_descriptor
 )paren
 comma
 id|in_interrupt
@@ -3284,7 +3289,8 @@ r_void
 id|usb_free_urb
 c_func
 (paren
-id|urb_t
+r_struct
+id|urb
 op_star
 id|urb
 )paren
@@ -3308,7 +3314,8 @@ r_int
 id|usb_submit_urb
 c_func
 (paren
-id|urb_t
+r_struct
+id|urb
 op_star
 id|urb
 )paren
@@ -3346,7 +3353,8 @@ r_int
 id|usb_unlink_urb
 c_func
 (paren
-id|urb_t
+r_struct
+id|urb
 op_star
 id|urb
 )paren
@@ -3398,7 +3406,8 @@ r_void
 id|usb_api_blocking_completion
 c_func
 (paren
-id|urb_t
+r_struct
+id|urb
 op_star
 id|urb
 )paren
@@ -3439,7 +3448,8 @@ r_int
 id|usb_start_wait_urb
 c_func
 (paren
-id|urb_t
+r_struct
+id|urb
 op_star
 id|urb
 comma
@@ -3702,7 +3712,8 @@ r_int
 id|timeout
 )paren
 (brace
-id|urb_t
+r_struct
+id|urb
 op_star
 id|urb
 suffix:semicolon
@@ -3945,7 +3956,8 @@ r_int
 id|timeout
 )paren
 (brace
-id|urb_t
+r_struct
+id|urb
 op_star
 id|urb
 suffix:semicolon

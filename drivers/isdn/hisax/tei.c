@@ -391,9 +391,7 @@ l_int|1
 op_or
 l_int|1
 suffix:semicolon
-id|st-&gt;l2
-dot
-id|l2l1
+id|L2L1
 c_func
 (paren
 id|st
@@ -699,9 +697,7 @@ comma
 id|ST_TEI_NOP
 )paren
 suffix:semicolon
-id|st-&gt;l3
-dot
-id|l3l2
+id|L3L2
 c_func
 (paren
 id|st
@@ -1210,9 +1206,7 @@ comma
 id|ST_TEI_NOP
 )paren
 suffix:semicolon
-id|st-&gt;l3
-dot
-id|l3l2
+id|L3L2
 c_func
 (paren
 id|st
@@ -1442,9 +1436,7 @@ comma
 l_string|&quot;assign req failed&quot;
 )paren
 suffix:semicolon
-id|st-&gt;l3
-dot
-id|l3l2
+id|L3L2
 c_func
 (paren
 id|st
@@ -1592,9 +1584,7 @@ comma
 id|st-&gt;l2.tei
 )paren
 suffix:semicolon
-id|st-&gt;l3
-dot
-id|l3l2
+id|L3L2
 c_func
 (paren
 id|st
@@ -2073,9 +2063,7 @@ comma
 id|st-&gt;l2.tei
 )paren
 suffix:semicolon
-id|st-&gt;l3
-dot
-id|l3l2
+id|L3L2
 c_func
 (paren
 id|st

@@ -98,6 +98,11 @@ r_struct
 id|rw_semaphore
 id|truncate_sem
 suffix:semicolon
+DECL|member|vfs_inode
+r_struct
+id|inode
+id|vfs_inode
+suffix:semicolon
 )brace
 suffix:semicolon
 macro_line|#endif&t;/* _LINUX_EXT3_FS_I */

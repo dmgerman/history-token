@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: i2c.h,v 1.3 2001/03/19 12:43:01 markusl Exp $ */
+multiline_comment|/* $Id: i2c.h,v 1.1.1.1 2001/12/17 13:59:27 bjornw Exp $ */
 multiline_comment|/* High level I2C actions */
 r_int
 id|i2c_writereg

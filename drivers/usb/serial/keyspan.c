@@ -64,7 +64,8 @@ op_star
 id|device_details
 suffix:semicolon
 DECL|member|instat_urb
-id|urb_t
+r_struct
+id|urb
 op_star
 id|instat_urb
 suffix:semicolon
@@ -77,7 +78,8 @@ id|INSTAT_BUFLEN
 suffix:semicolon
 multiline_comment|/* XXX this one probably will need a lock */
 DECL|member|glocont_urb
-id|urb_t
+r_struct
+id|urb
 op_star
 id|glocont_urb
 suffix:semicolon
@@ -112,7 +114,8 @@ id|device_details
 suffix:semicolon
 multiline_comment|/* Input endpoints and buffer for this port */
 DECL|member|in_urbs
-id|urb_t
+r_struct
+id|urb
 op_star
 id|in_urbs
 (braket
@@ -131,7 +134,8 @@ l_int|64
 suffix:semicolon
 multiline_comment|/* Output endpoints and buffer for this port */
 DECL|member|out_urbs
-id|urb_t
+r_struct
+id|urb
 op_star
 id|out_urbs
 (braket
@@ -150,7 +154,8 @@ l_int|64
 suffix:semicolon
 multiline_comment|/* Input ack endpoint */
 DECL|member|inack_urb
-id|urb_t
+r_struct
+id|urb
 op_star
 id|inack_urb
 suffix:semicolon
@@ -163,7 +168,8 @@ l_int|1
 suffix:semicolon
 multiline_comment|/* Output control endpoint */
 DECL|member|outcont_urb
-id|urb_t
+r_struct
+id|urb
 op_star
 id|outcont_urb
 suffix:semicolon
@@ -961,7 +967,8 @@ id|left
 comma
 id|todo
 suffix:semicolon
-id|urb_t
+r_struct
+id|urb
 op_star
 id|this_urb
 suffix:semicolon
@@ -3381,7 +3388,8 @@ id|already_active
 comma
 id|err
 suffix:semicolon
-id|urb_t
+r_struct
+id|urb
 op_star
 id|urb
 suffix:semicolon
@@ -3558,7 +3566,8 @@ r_void
 id|stop_urb
 c_func
 (paren
-id|urb_t
+r_struct
+id|urb
 op_star
 id|urb
 )paren
@@ -4118,7 +4127,8 @@ suffix:semicolon
 multiline_comment|/* Helper functions used by keyspan_setup_urbs */
 DECL|function|keyspan_setup_urb
 r_static
-id|urb_t
+r_struct
+id|urb
 op_star
 id|keyspan_setup_urb
 c_func
@@ -4151,12 +4161,14 @@ op_star
 id|callback
 )paren
 (paren
-id|urb_t
+r_struct
+id|urb
 op_star
 )paren
 )paren
 (brace
-id|urb_t
+r_struct
+id|urb
 op_star
 id|urb
 suffix:semicolon
@@ -4252,7 +4264,8 @@ op_star
 id|instat_callback
 )paren
 (paren
-id|urb_t
+r_struct
+id|urb
 op_star
 )paren
 suffix:semicolon
@@ -4263,7 +4276,8 @@ op_star
 id|glocont_callback
 )paren
 (paren
-id|urb_t
+r_struct
+id|urb
 op_star
 )paren
 suffix:semicolon
@@ -4274,7 +4288,8 @@ op_star
 id|indat_callback
 )paren
 (paren
-id|urb_t
+r_struct
+id|urb
 op_star
 )paren
 suffix:semicolon
@@ -4285,7 +4300,8 @@ op_star
 id|outdat_callback
 )paren
 (paren
-id|urb_t
+r_struct
+id|urb
 op_star
 )paren
 suffix:semicolon
@@ -4296,7 +4312,8 @@ op_star
 id|inack_callback
 )paren
 (paren
-id|urb_t
+r_struct
+id|urb
 op_star
 )paren
 suffix:semicolon
@@ -4307,7 +4324,8 @@ op_star
 id|outcont_callback
 )paren
 (paren
-id|urb_t
+r_struct
+id|urb
 op_star
 )paren
 suffix:semicolon
@@ -5254,7 +5272,8 @@ suffix:semicolon
 r_int
 id|outcont_urb
 suffix:semicolon
-id|urb_t
+r_struct
+id|urb
 op_star
 id|this_urb
 suffix:semicolon
@@ -5793,7 +5812,8 @@ id|keyspan_device_details
 op_star
 id|d_details
 suffix:semicolon
-id|urb_t
+r_struct
+id|urb
 op_star
 id|this_urb
 suffix:semicolon
@@ -6138,7 +6158,8 @@ suffix:semicolon
 r_int
 id|glocont_urb
 suffix:semicolon
-id|urb_t
+r_struct
+id|urb
 op_star
 id|this_urb
 suffix:semicolon

@@ -36,6 +36,7 @@ comma
 DECL|enumerator|VIDEO1394_LISTEN_WAIT_BUFFER
 id|VIDEO1394_LISTEN_WAIT_BUFFER
 comma
+singleline_comment|// wait until buffer is ready
 DECL|enumerator|VIDEO1394_TALK_CHANNEL
 id|VIDEO1394_TALK_CHANNEL
 comma
@@ -47,6 +48,10 @@ id|VIDEO1394_TALK_QUEUE_BUFFER
 comma
 DECL|enumerator|VIDEO1394_TALK_WAIT_BUFFER
 id|VIDEO1394_TALK_WAIT_BUFFER
+comma
+DECL|enumerator|VIDEO1394_LISTEN_POLL_BUFFER
+id|VIDEO1394_LISTEN_POLL_BUFFER
+singleline_comment|// return immediately with -EINTR if not ready
 )brace
 suffix:semicolon
 DECL|macro|VIDEO1394_SYNC_FRAMES
@@ -61,9 +66,9 @@ id|video1394_mmap
 (brace
 DECL|member|channel
 r_int
-r_int
 id|channel
 suffix:semicolon
+multiline_comment|/* -1 to find an open channel in LISTEN/TALK */
 DECL|member|sync_tag
 r_int
 r_int
@@ -140,6 +145,12 @@ r_int
 r_int
 id|buffer
 suffix:semicolon
+DECL|member|filltime
+r_struct
+id|timeval
+id|filltime
+suffix:semicolon
+multiline_comment|/* time of buffer full */
 )brace
 suffix:semicolon
 macro_line|#endif

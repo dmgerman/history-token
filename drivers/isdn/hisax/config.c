@@ -7744,7 +7744,7 @@ id|cs-&gt;channel
 l_int|0
 )braket
 dot
-id|d_st-&gt;l2.l2l1
+id|d_st-&gt;l1.l2l1
 op_assign
 id|hisax_d_l2l1
 suffix:semicolon
@@ -8005,9 +8005,7 @@ id|st
 op_assign
 id|st-&gt;next
 )paren
-id|st-&gt;l1
-dot
-id|l1l2
+id|L1L2
 c_func
 (paren
 id|st
@@ -8344,9 +8342,7 @@ id|st-&gt;l1.Flags
 )paren
 )paren
 (brace
-id|st-&gt;l1
-dot
-id|l1l2
+id|L1L2
 c_func
 (paren
 id|st
@@ -8464,9 +8460,7 @@ id|PH_ACTIVATE
 op_or
 id|INDICATION
 suffix:colon
-id|st-&gt;l1
-dot
-id|l1l2
+id|L1L2
 c_func
 (paren
 id|st
@@ -8483,9 +8477,7 @@ id|PH_DEACTIVATE
 op_or
 id|INDICATION
 suffix:colon
-id|st-&gt;l1
-dot
-id|l1l2
+id|L1L2
 c_func
 (paren
 id|st
@@ -8607,9 +8599,7 @@ id|st-&gt;l1.Flags
 )paren
 )paren
 (brace
-id|st-&gt;l1
-dot
-id|l1l2
+id|L1L2
 c_func
 (paren
 id|st
@@ -8796,9 +8786,7 @@ op_amp
 id|cs-&gt;HW_Flags
 )paren
 )paren
-id|st-&gt;l1
-dot
-id|l1l2
+id|L1L2
 c_func
 (paren
 id|st
@@ -8991,9 +8979,7 @@ op_amp
 id|bcs-&gt;Flag
 )paren
 )paren
-id|st-&gt;l1
-dot
-id|l1l2
+id|L1L2
 c_func
 (paren
 id|st
@@ -9088,7 +9074,7 @@ id|st-&gt;l1.bcs
 op_assign
 id|bcs
 suffix:semicolon
-id|st-&gt;l2.l2l1
+id|st-&gt;l1.l2l1
 op_assign
 id|hisax_b_l2l1
 suffix:semicolon

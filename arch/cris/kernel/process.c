@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: process.c,v 1.20 2001/10/03 08:21:39 jonashg Exp $&n; * &n; *  linux/arch/cris/kernel/process.c&n; *&n; *  Copyright (C) 1995  Linus Torvalds&n; *  Copyright (C) 2000, 2001  Axis Communications AB&n; *&n; *  Authors:   Bjorn Wesen (bjornw@axis.com)&n; *&n; *  $Log: process.c,v $&n; *  Revision 1.20  2001/10/03 08:21:39  jonashg&n; *  cause_of_death does not exist if CONFIG_SVINTO_SIM is defined.&n; *&n; *  Revision 1.19  2001/09/26 11:52:54  bjornw&n; *  INIT_MMAP is gone in 2.4.10&n; *&n; *  Revision 1.18  2001/08/21 21:43:51  hp&n; *  Move last watchdog fix inside #ifdef CONFIG_ETRAX_WATCHDOG&n; *&n; *  Revision 1.17  2001/08/21 13:48:01  jonashg&n; *  Added fix by HP to avoid oops when doing a hard_reset_now.&n; *&n; *  Revision 1.16  2001/06/21 02:00:40  hp&n; *  &t;* entry.S: Include asm/unistd.h.&n; *  &t;(_sys_call_table): Use section .rodata, not .data.&n; *  &t;(_kernel_thread): Move from...&n; *  &t;* process.c: ... here.&n; *  &t;* entryoffsets.c (VAL): Break out from...&n; *  &t;(OF): Use VAL.&n; *  &t;(LCLONE_VM): New asmified value from CLONE_VM.&n; *&n; *  Revision 1.15  2001/06/20 16:31:57  hp&n; *  Add comments to describe empty functions according to review.&n; *&n; *  Revision 1.14  2001/05/29 11:27:59  markusl&n; *  Fixed so that hard_reset_now will do reset even if watchdog wasn&squot;t enabled&n; *&n; *  Revision 1.13  2001/03/20 19:44:06  bjornw&n; *  Use the 7th syscall argument for regs instead of current_regs&n; *&n; */
+multiline_comment|/* $Id: process.c,v 1.3 2002/01/21 15:22:49 bjornw Exp $&n; * &n; *  linux/arch/cris/kernel/process.c&n; *&n; *  Copyright (C) 1995  Linus Torvalds&n; *  Copyright (C) 2000, 2001  Axis Communications AB&n; *&n; *  Authors:   Bjorn Wesen (bjornw@axis.com)&n; *&n; *  $Log: process.c,v $&n; *  Revision 1.3  2002/01/21 15:22:49  bjornw&n; *  current-&gt;counter is gone&n; *&n; *  Revision 1.22  2001/11/13 09:40:43  orjanf&n; *  Added dump_fpu (needed for core dumps).&n; *&n; *  Revision 1.21  2001/11/12 18:26:21  pkj&n; *  Fixed compiler warnings.&n; *&n; *  Revision 1.20  2001/10/03 08:21:39  jonashg&n; *  cause_of_death does not exist if CONFIG_SVINTO_SIM is defined.&n; *&n; *  Revision 1.19  2001/09/26 11:52:54  bjornw&n; *  INIT_MMAP is gone in 2.4.10&n; *&n; *  Revision 1.18  2001/08/21 21:43:51  hp&n; *  Move last watchdog fix inside #ifdef CONFIG_ETRAX_WATCHDOG&n; *&n; *  Revision 1.17  2001/08/21 13:48:01  jonashg&n; *  Added fix by HP to avoid oops when doing a hard_reset_now.&n; *&n; *  Revision 1.16  2001/06/21 02:00:40  hp&n; *  &t;* entry.S: Include asm/unistd.h.&n; *  &t;(_sys_call_table): Use section .rodata, not .data.&n; *  &t;(_kernel_thread): Move from...&n; *  &t;* process.c: ... here.&n; *  &t;* entryoffsets.c (VAL): Break out from...&n; *  &t;(OF): Use VAL.&n; *  &t;(LCLONE_VM): New asmified value from CLONE_VM.&n; *&n; *  Revision 1.15  2001/06/20 16:31:57  hp&n; *  Add comments to describe empty functions according to review.&n; *&n; *  Revision 1.14  2001/05/29 11:27:59  markusl&n; *  Fixed so that hard_reset_now will do reset even if watchdog wasn&squot;t enabled&n; *&n; *  Revision 1.13  2001/03/20 19:44:06  bjornw&n; *  Use the 7th syscall argument for regs instead of current_regs&n; *&n; */
 multiline_comment|/*&n; * This file handles the architecture-dependent parts of process handling..&n; */
 DECL|macro|__KERNEL_SYSCALLS__
 mdefine_line|#define __KERNEL_SYSCALLS__
@@ -13,6 +13,7 @@ macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/user.h&gt;
 macro_line|#include &lt;linux/a.out.h&gt;
+macro_line|#include &lt;linux/elfcore.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
@@ -23,14 +24,6 @@ macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;linux/smp.h&gt;
 singleline_comment|//#define DEBUG
 multiline_comment|/*&n; * Initial task structure. Make this a per-architecture thing,&n; * because different architectures tend to have different&n; * alignment requirements and potentially different initial&n; * setup.&n; */
-DECL|variable|init_mmap
-r_static
-r_struct
-id|vm_area_struct
-id|init_mmap
-op_assign
-id|INIT_MMAP
-suffix:semicolon
 DECL|variable|init_fs
 r_static
 r_struct
@@ -155,10 +148,12 @@ r_void
 )paren
 (brace
 multiline_comment|/*&n;&t; * Don&squot;t declare this variable elsewhere.  We don&squot;t want any other&n;&t; * code to know about it than the watchdog handler in entry.S and&n;&t; * this code, implementing hard reset through the watchdog.&n;&t; */
+macro_line|#if defined(CONFIG_ETRAX_WATCHDOG) &amp;&amp; !defined(CONFIG_SVINTO_SIM)
 r_extern
 r_int
 id|cause_of_death
 suffix:semicolon
+macro_line|#endif
 id|printk
 c_func
 (paren
@@ -405,10 +400,10 @@ op_star
 id|dump
 )paren
 (brace
+macro_line|#if 0
 r_int
 id|i
 suffix:semicolon
-macro_line|#if 0
 multiline_comment|/* changed the size calculations - should hopefully work better. lbt */
 id|dump-&gt;magic
 op_assign
@@ -532,6 +527,26 @@ id|dump-&gt;i387
 )paren
 suffix:semicolon
 macro_line|#endif 
+)brace
+multiline_comment|/* Fill in the fpu structure for a core dump. */
+DECL|function|dump_fpu
+r_int
+id|dump_fpu
+c_func
+(paren
+r_struct
+id|pt_regs
+op_star
+id|regs
+comma
+id|elf_fpregset_t
+op_star
+id|fpu
+)paren
+(brace
+r_return
+l_int|0
+suffix:semicolon
 )brace
 multiline_comment|/* &n; * Be aware of the &quot;magic&quot; 7th argument in the four system-calls below.&n; * They need the latest stackframe, which is put as the 7th argument by&n; * entry.S. The previous arguments are dummies or actually used, but need&n; * to be defined to reach the 7th argument.&n; *&n; * N.B.: Another method to get the stackframe is to use current_regs(). But&n; * it returns the latest stack-frame stacked when going from _user mode_ and&n; * some of these (at least sys_clone) are called from kernel-mode sometimes&n; * (for example during kernel_thread, above) and thus cannot use it. Thus,&n; * to be sure not to get any surprises, we use the method for the other calls&n; * as well.&n; */
 DECL|function|sys_fork

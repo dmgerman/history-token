@@ -2,8 +2,6 @@ macro_line|#ifndef _AFFS_FS_I
 DECL|macro|_AFFS_FS_I
 mdefine_line|#define _AFFS_FS_I
 macro_line|#include &lt;linux/a.out.h&gt;
-singleline_comment|// move this to linux/coda.h!!!
-macro_line|#include &lt;linux/time.h&gt;
 DECL|macro|AFFS_CACHE_SIZE
 mdefine_line|#define AFFS_CACHE_SIZE&t;&t;PAGE_SIZE
 singleline_comment|//#define AFFS_CACHE_SIZE&t;&t;(4*4)
@@ -151,12 +149,41 @@ id|i_parent
 suffix:semicolon
 multiline_comment|/* parent ino */
 macro_line|#endif
+DECL|member|vfs_inode
+r_struct
+id|inode
+id|vfs_inode
+suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/* short cut to get to the affs specific inode data */
-DECL|macro|AFFS_INODE
-mdefine_line|#define AFFS_INODE&t;(&amp;inode-&gt;u.affs_i)
-DECL|macro|AFFS_DIR
-mdefine_line|#define AFFS_DIR&t;(&amp;dir-&gt;u.affs_i)
+DECL|function|AFFS_I
+r_static
+r_inline
+r_struct
+id|affs_inode_info
+op_star
+id|AFFS_I
+c_func
+(paren
+r_struct
+id|inode
+op_star
+id|inode
+)paren
+(brace
+r_return
+id|list_entry
+c_func
+(paren
+id|inode
+comma
+r_struct
+id|affs_inode_info
+comma
+id|vfs_inode
+)paren
+suffix:semicolon
+)brace
 macro_line|#endif
 eof

@@ -48,7 +48,8 @@ op_star
 id|userurb
 suffix:semicolon
 DECL|member|urb
-id|urb_t
+r_struct
+id|urb
 id|urb
 suffix:semicolon
 )brace
@@ -571,7 +572,8 @@ id|numisoframes
 op_star
 r_sizeof
 (paren
-id|iso_packet_descriptor_t
+r_struct
+id|usb_iso_packet_descriptor
 )paren
 suffix:semicolon
 r_struct

@@ -3013,9 +3013,7 @@ op_amp
 id|st-&gt;l1.bcs-&gt;Flag
 )paren
 suffix:semicolon
-id|st-&gt;l1
-dot
-id|l1l2
+id|L1L2
 c_func
 (paren
 id|st
@@ -3172,7 +3170,7 @@ op_minus
 l_int|1
 )paren
 suffix:semicolon
-id|st-&gt;l2.l2l1
+id|st-&gt;l1.l2l1
 op_assign
 id|hscx_l2l1
 suffix:semicolon
@@ -3247,7 +3245,7 @@ id|bcs-&gt;cs-&gt;hw.elsa.bcs
 op_assign
 id|bcs
 suffix:semicolon
-id|st-&gt;l2.l2l1
+id|st-&gt;l1.l2l1
 op_assign
 id|modem_l2l1
 suffix:semicolon

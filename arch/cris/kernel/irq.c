@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: irq.c,v 1.17 2001/07/25 16:08:01 bjornw Exp $&n; *&n; *&t;linux/arch/cris/kernel/irq.c&n; *&n; *      Copyright (c) 2000,2001 Axis Communications AB&n; *&n; *      Authors: Bjorn Wesen (bjornw@axis.com)&n; *&n; * This file contains the code used by various IRQ handling routines:&n; * asking for different IRQ&squot;s should be done through these routines&n; * instead of just grabbing them. Thus setups with different IRQ numbers&n; * shouldn&squot;t result in any weird surprises, and installing new handlers&n; * should be easier.&n; *&n; * Notice Linux/CRIS: these routines do not care about SMP&n; *&n; */
+multiline_comment|/* $Id: irq.c,v 1.2 2001/12/18 13:35:20 bjornw Exp $&n; *&n; *&t;linux/arch/cris/kernel/irq.c&n; *&n; *      Copyright (c) 2000,2001 Axis Communications AB&n; *&n; *      Authors: Bjorn Wesen (bjornw@axis.com)&n; *&n; * This file contains the code used by various IRQ handling routines:&n; * asking for different IRQ&squot;s should be done through these routines&n; * instead of just grabbing them. Thus setups with different IRQ numbers&n; * shouldn&squot;t result in any weird surprises, and installing new handlers&n; * should be easier.&n; *&n; * Notice Linux/CRIS: these routines do not care about SMP&n; *&n; */
 multiline_comment|/*&n; * IRQ&squot;s are in fact implemented a bit like signal handlers for the kernel.&n; * Naturally it&squot;s not a 1:1 relation, but there are similarities.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/ptrace.h&gt;
@@ -292,14 +292,14 @@ c_func
 r_void
 )paren
 suffix:semicolon
-id|BUILD_IRQ
+id|BUILD_TIMER_IRQ
 c_func
 (paren
 l_int|2
 comma
 l_int|0x04
 )paren
-multiline_comment|/* the timer interrupt */
+multiline_comment|/* the timer interrupt is somewhat special */
 id|BUILD_IRQ
 c_func
 (paren

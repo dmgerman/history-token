@@ -8,6 +8,8 @@ macro_line|#include &lt;asm/termios.h&gt;
 multiline_comment|/* Software state per channel */
 macro_line|#ifdef __KERNEL__
 multiline_comment|/*&n; * This is our internal structure for each serial port&squot;s state.&n; * &n; * Many fields are paralleled by the structure used by the serial_struct&n; * structure.&n; *&n; * For definitions of the flags field, see tty.h&n; */
+DECL|macro|SERIAL_RECV_DESCRIPTORS
+mdefine_line|#define SERIAL_RECV_DESCRIPTORS 8
 DECL|struct|e100_serial
 r_struct
 id|e100_serial
@@ -28,27 +30,28 @@ id|u32
 id|irq
 suffix:semicolon
 multiline_comment|/* bitnr in R_IRQ_MASK2 for dmaX_descr */
+multiline_comment|/* Output registers */
 DECL|member|oclrintradr
 r_volatile
 id|u8
 op_star
 id|oclrintradr
 suffix:semicolon
-multiline_comment|/* adr to R_DMA_CHx_CLR_INTR, output */
+multiline_comment|/* adr to R_DMA_CHx_CLR_INTR */
 DECL|member|ofirstadr
 r_volatile
 id|u32
 op_star
 id|ofirstadr
 suffix:semicolon
-multiline_comment|/* adr to R_DMA_CHx_FIRST, output */
+multiline_comment|/* adr to R_DMA_CHx_FIRST */
 DECL|member|ocmdadr
 r_volatile
 id|u8
 op_star
 id|ocmdadr
 suffix:semicolon
-multiline_comment|/* adr to R_DMA_CHx_CMD, output */
+multiline_comment|/* adr to R_DMA_CHx_CMD */
 DECL|member|ostatusadr
 r_const
 r_volatile
@@ -56,35 +59,43 @@ id|u8
 op_star
 id|ostatusadr
 suffix:semicolon
-multiline_comment|/* adr to R_DMA_CHx_STATUS, output */
+multiline_comment|/* adr to R_DMA_CHx_STATUS */
 DECL|member|ohwswadr
 r_volatile
 id|u32
 op_star
 id|ohwswadr
 suffix:semicolon
-multiline_comment|/* adr to R_DMA_CHx_HWSW, output */
+multiline_comment|/* adr to R_DMA_CHx_HWSW */
+DECL|member|odescradr
+r_volatile
+id|u32
+op_star
+id|odescradr
+suffix:semicolon
+multiline_comment|/* adr to R_DMA_CHx_DESCR */
+multiline_comment|/* Input registers */
 DECL|member|iclrintradr
 r_volatile
 id|u8
 op_star
 id|iclrintradr
 suffix:semicolon
-multiline_comment|/* adr to R_DMA_CHx_CLR_INTR, input */
+multiline_comment|/* adr to R_DMA_CHx_CLR_INTR */
 DECL|member|ifirstadr
 r_volatile
 id|u32
 op_star
 id|ifirstadr
 suffix:semicolon
-multiline_comment|/* adr to R_DMA_CHx_FIRST, input */
+multiline_comment|/* adr to R_DMA_CHx_FIRST */
 DECL|member|icmdadr
 r_volatile
 id|u8
 op_star
 id|icmdadr
 suffix:semicolon
-multiline_comment|/* adr to R_DMA_CHx_CMD, input */
+multiline_comment|/* adr to R_DMA_CHx_CMD */
 DECL|member|istatusadr
 r_const
 r_volatile
@@ -92,14 +103,21 @@ id|u8
 op_star
 id|istatusadr
 suffix:semicolon
-multiline_comment|/* adr to R_DMA_CHx_STATUS, input */
+multiline_comment|/* adr to R_DMA_CHx_STATUS */
 DECL|member|ihwswadr
 r_volatile
 id|u32
 op_star
 id|ihwswadr
 suffix:semicolon
-multiline_comment|/* adr to R_DMA_CHx_HWSW, input */
+multiline_comment|/* adr to R_DMA_CHx_HWSW */
+DECL|member|idescradr
+r_volatile
+id|u32
+op_star
+id|idescradr
+suffix:semicolon
+multiline_comment|/* adr to R_DMA_CHx_DESCR */
 DECL|member|flags
 r_int
 id|flags
@@ -131,25 +149,29 @@ r_int
 id|uses_dma
 suffix:semicolon
 multiline_comment|/* Set to 1 if DMA should be used */
-DECL|member|fifo_didmagic
+DECL|member|forced_eop
 r_int
 r_char
-id|fifo_didmagic
+id|forced_eop
 suffix:semicolon
 multiline_comment|/* a fifo eop has been forced */
 DECL|member|tr_descr
-DECL|member|rec_descr
 r_struct
 id|etrax_dma_descr
 id|tr_descr
-comma
+suffix:semicolon
+DECL|member|rec_descr
+r_struct
+id|etrax_dma_descr
 id|rec_descr
+(braket
+id|SERIAL_RECV_DESCRIPTORS
+)braket
 suffix:semicolon
-DECL|member|fifo_magic
+DECL|member|cur_rec_descr
 r_int
-id|fifo_magic
+id|cur_rec_descr
 suffix:semicolon
-multiline_comment|/* fifo amount - bytes left in dma buffer */
 DECL|member|tr_running
 r_volatile
 r_int
@@ -233,6 +255,17 @@ r_struct
 id|circ_buf
 id|xmit
 suffix:semicolon
+DECL|member|recv
+r_struct
+id|circ_buf
+id|recv
+suffix:semicolon
+DECL|member|flag_buf
+r_int
+r_char
+op_star
+id|flag_buf
+suffix:semicolon
 DECL|member|tqueue
 r_struct
 id|tq_struct
@@ -263,7 +296,7 @@ DECL|member|close_wait
 id|wait_queue_head_t
 id|close_wait
 suffix:semicolon
-macro_line|#else   
+macro_line|#else
 DECL|member|open_wait
 r_struct
 id|wait_queue
@@ -332,5 +365,5 @@ multiline_comment|/*&n; * Events are used to schedule things to happen at timer-
 DECL|macro|RS_EVENT_WRITE_WAKEUP
 mdefine_line|#define RS_EVENT_WRITE_WAKEUP&t;0
 macro_line|#endif /* __KERNEL__ */
-macro_line|#endif /* !(_ETRAX_SERIAL_H) */
+macro_line|#endif /* !_ETRAX_SERIAL_H */
 eof

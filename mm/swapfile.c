@@ -1393,6 +1393,10 @@ c_func
 (paren
 id|page
 )paren
+op_minus
+op_logical_neg
+op_logical_neg
+id|page-&gt;buffers
 op_eq
 l_int|2
 op_logical_or
