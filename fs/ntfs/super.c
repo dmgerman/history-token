@@ -6725,8 +6725,12 @@ multiline_comment|/* VFS: Called just before&n;&t;&t;&t;&t;&t;&t;     the inode 
 macro_line|#ifdef NTFS_RW
 singleline_comment|//.dirty_inode&t;= NULL,&t;&t;&t;/* VFS: Called from
 singleline_comment|//&t;&t;&t;&t;&t;   __mark_inode_dirty(). */
-singleline_comment|//.write_inode&t;= NULL,&t;&t;&t;/* VFS: Write dirty inode to
-singleline_comment|//&t;&t;&t;&t;&t;   disk. */
+dot
+id|write_inode
+op_assign
+id|ntfs_write_inode
+comma
+multiline_comment|/* VFS: Write dirty inode to&n;&t;&t;&t;&t;&t;&t;   disk. */
 singleline_comment|//.drop_inode&t;= NULL,&t;&t;&t;/* VFS: Called just after the
 singleline_comment|//&t;&t;&t;&t;&t;   inode reference count has
 singleline_comment|//&t;&t;&t;&t;&t;   been decreased to zero.
