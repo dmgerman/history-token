@@ -98,11 +98,6 @@ id|flag
 comma
 id|status
 suffix:semicolon
-r_int
-id|handled
-op_assign
-id|IRQ_NONE
-suffix:semicolon
 id|status
 op_assign
 id|sa1111_readl
@@ -212,13 +207,9 @@ op_plus
 id|SA1111_PS2STAT
 )paren
 suffix:semicolon
-id|handled
-op_assign
-id|IRQ_HANDLED
-suffix:semicolon
 )brace
 r_return
-id|handled
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Completion of ps2 write&n; */

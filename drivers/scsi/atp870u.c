@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: atp870u.c,v 1.0 1997/05/07 15:22:00 root Exp root $&n; *  linux/kernel/atp870u.c&n; *&n; *  Copyright (C) 1997&t;Wu Ching Chen&n; *  2.1.x update (C) 1998  Krzysztof G. Baranowski&n; *  2.5.x update (C) 2002  Red Hat &lt;alan@redhat.com&gt;&n; *&n; * Marcelo Tosatti &lt;marcelo@conectiva.com.br&gt; : SMP fixes&n; *&n; * Wu Ching Chen : NULL pointer fixes  2000/06/02&n; *&t;&t;   support atp876 chip&n; *&t;&t;   enable 32 bit fifo transfer&n; *&t;&t;   support cdrom &amp; remove device run ultra speed&n; *&t;&t;   fix disconnect bug  2000/12/21&n; *&t;&t;   support atp880 chip lvd u160 2001/05/15&n; *&t;&t;   fix prd table bug 2001/09/12 (7.1)&n; */
+multiline_comment|/* $Id: atp870u.c,v 1.0 1997/05/07 15:22:00 root Exp root $&n; *  linux/kernel/atp870u.c&n; *&n; *  Copyright (C) 1997&t;Wu Ching Chen&n; *  2.1.x update (C) 1998  Krzysztof G. Baranowski&n; *  2.5.x update (C) 2002  Red Hat &lt;alan@redhat.com&gt;&n; *  2.6.x update (C) 2004  Red Hat &lt;alan@redhat.com&gt;&n; *&n; * Marcelo Tosatti &lt;marcelo@conectiva.com.br&gt; : SMP fixes&n; *&n; * Wu Ching Chen : NULL pointer fixes  2000/06/02&n; *&t;&t;   support atp876 chip&n; *&t;&t;   enable 32 bit fifo transfer&n; *&t;&t;   support cdrom &amp; remove device run ultra speed&n; *&t;&t;   fix disconnect bug  2000/12/21&n; *&t;&t;   support atp880 chip lvd u160 2001/05/15&n; *&t;&t;   fix prd table bug 2001/09/12 (7.1)&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
@@ -420,6 +420,14 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/*&n;&t;&t;&t; *      Issue more commands&n;&t;&t;&t; */
+id|spin_lock_irqsave
+c_func
+(paren
+id|dev-&gt;host-&gt;host_lock
+comma
+id|flags
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -451,6 +459,14 @@ id|host
 )paren
 suffix:semicolon
 )brace
+id|spin_unlock_irqrestore
+c_func
+(paren
+id|dev-&gt;host-&gt;host_lock
+comma
+id|flags
+)paren
+suffix:semicolon
 multiline_comment|/*&n;&t;&t;&t; *      Done&n;&t;&t;&t; */
 id|dev-&gt;in_int
 op_assign
@@ -1963,6 +1979,14 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/*&n;&t;&t;&t; *      If there is stuff to send and nothing going then send it&n;&t;&t;&t; */
+id|spin_lock_irqsave
+c_func
+(paren
+id|dev-&gt;host-&gt;host_lock
+comma
+id|flags
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1994,6 +2018,14 @@ id|host
 )paren
 suffix:semicolon
 )brace
+id|spin_unlock_irqrestore
+c_func
+(paren
+id|dev-&gt;host-&gt;host_lock
+comma
+id|flags
+)paren
+suffix:semicolon
 id|dev-&gt;in_int
 op_assign
 l_int|0
@@ -2380,6 +2412,7 @@ r_return
 id|IRQ_HANDLED
 suffix:semicolon
 )brace
+multiline_comment|/**&n; *&t;atp870u_queuecommand&t;-&t;Queue SCSI command&n; *&t;@req_p: request block&n; *&t;@done: completion function&n; *&n; *&t;Queue a command to the ATP queue. Called with the host lock held.&n; */
 DECL|function|atp870u_queuecommand
 r_static
 r_int
@@ -2401,10 +2434,6 @@ op_star
 )paren
 )paren
 (brace
-r_int
-r_int
-id|flags
-suffix:semicolon
 r_int
 r_int
 r_int
@@ -2533,14 +2562,6 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; *      Count new command&n;&t; */
-id|spin_lock_irqsave
-c_func
-(paren
-id|host-&gt;host_lock
-comma
-id|flags
-)paren
-suffix:semicolon
 id|dev-&gt;quendu
 op_increment
 suffix:semicolon
@@ -2586,14 +2607,6 @@ id|req_p-&gt;result
 op_assign
 l_int|0x00020000
 suffix:semicolon
-id|spin_unlock_irqrestore
-c_func
-(paren
-id|host-&gt;host_lock
-comma
-id|flags
-)paren
-suffix:semicolon
 id|done
 c_func
 (paren
@@ -2616,14 +2629,6 @@ op_assign
 id|dev-&gt;ioport
 op_plus
 l_int|0x1c
-suffix:semicolon
-id|spin_unlock_irqrestore
-c_func
-(paren
-id|host-&gt;host_lock
-comma
-id|flags
-)paren
 suffix:semicolon
 r_if
 c_cond
@@ -2662,6 +2667,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/**&n; *&t;send_s870&t;-&t;send a command to the controller&n; *&t;@host: host&n; *&n; *&t;On entry there is work queued to be done. We move some of that work to the&n; *&t;controller itself. &n; *&n; *&t;Caller holds the host lock.&n; */
 DECL|function|send_s870
 r_static
 r_void
@@ -2681,10 +2687,6 @@ suffix:semicolon
 id|Scsi_Cmnd
 op_star
 id|workrequ
-suffix:semicolon
-r_int
-r_int
-id|flags
 suffix:semicolon
 r_int
 r_int
@@ -2740,14 +2742,6 @@ suffix:semicolon
 r_int
 id|sg_count
 suffix:semicolon
-id|spin_lock_irqsave
-c_func
-(paren
-id|host-&gt;host_lock
-comma
-id|flags
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2756,14 +2750,6 @@ op_ne
 l_int|0
 )paren
 (brace
-id|spin_unlock_irqrestore
-c_func
-(paren
-id|host-&gt;host_lock
-comma
-id|flags
-)paren
-suffix:semicolon
 r_return
 suffix:semicolon
 )brace
@@ -2833,14 +2819,6 @@ id|dev-&gt;in_snd
 op_assign
 l_int|0
 suffix:semicolon
-id|spin_unlock_irqrestore
-c_func
-(paren
-id|dev-&gt;host-&gt;host_lock
-comma
-id|flags
-)paren
-suffix:semicolon
 r_return
 suffix:semicolon
 )brace
@@ -2864,14 +2842,6 @@ l_int|0
 id|dev-&gt;in_snd
 op_assign
 l_int|0
-suffix:semicolon
-id|spin_unlock_irqrestore
-c_func
-(paren
-id|dev-&gt;host-&gt;host_lock
-comma
-id|flags
-)paren
 suffix:semicolon
 r_return
 suffix:semicolon
@@ -2947,14 +2917,6 @@ id|dev-&gt;in_snd
 op_assign
 l_int|0
 suffix:semicolon
-id|spin_unlock_irqrestore
-c_func
-(paren
-id|host-&gt;host_lock
-comma
-id|flags
-)paren
-suffix:semicolon
 r_return
 suffix:semicolon
 id|cmd_subp
@@ -3020,14 +2982,6 @@ suffix:semicolon
 id|dev-&gt;in_snd
 op_assign
 l_int|0
-suffix:semicolon
-id|spin_unlock_irqrestore
-c_func
-(paren
-id|dev-&gt;host-&gt;host_lock
-comma
-id|flags
-)paren
 suffix:semicolon
 r_return
 suffix:semicolon
@@ -3645,14 +3599,6 @@ suffix:semicolon
 id|dev-&gt;in_snd
 op_assign
 l_int|0
-suffix:semicolon
-id|spin_unlock_irqrestore
-c_func
-(paren
-id|host-&gt;host_lock
-comma
-id|flags
-)paren
 suffix:semicolon
 r_return
 suffix:semicolon
@@ -4399,14 +4345,6 @@ id|dev-&gt;in_snd
 op_assign
 l_int|0
 suffix:semicolon
-id|spin_unlock_irqrestore
-c_func
-(paren
-id|host-&gt;host_lock
-comma
-id|flags
-)paren
-suffix:semicolon
 r_return
 suffix:semicolon
 )brace
@@ -4455,16 +4393,6 @@ suffix:semicolon
 id|dev-&gt;in_snd
 op_assign
 l_int|0
-suffix:semicolon
-id|spin_unlock_irqrestore
-c_func
-(paren
-id|host-&gt;host_lock
-comma
-id|flags
-)paren
-suffix:semicolon
-r_return
 suffix:semicolon
 )brace
 DECL|function|fun_scam

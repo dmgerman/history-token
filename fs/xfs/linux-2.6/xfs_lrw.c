@@ -3691,10 +3691,7 @@ id|tp
 comma
 l_int|0
 comma
-(paren
-id|xfs_lsn_t
-)paren
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 id|xfs_iunlock

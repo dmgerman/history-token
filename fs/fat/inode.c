@@ -6188,7 +6188,7 @@ c_func
 (paren
 id|KERN_ERR
 l_string|&quot;FAT: unable to read inode block &quot;
-l_string|&quot;for updating (i_pos %lld)&quot;
+l_string|&quot;for updating (i_pos %lld)&bslash;n&quot;
 comma
 id|i_pos
 )paren

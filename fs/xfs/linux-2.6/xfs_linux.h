@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Copyright (c) 2000-2003 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.  Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information: Silicon Graphics, Inc., 1600 Amphitheatre Pkwy,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/SGIGPLNoticeExplan/&n; */
+multiline_comment|/*&n; * Copyright (c) 2000-2004 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.  Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information: Silicon Graphics, Inc., 1600 Amphitheatre Pkwy,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/SGIGPLNoticeExplan/&n; */
 macro_line|#ifndef __XFS_LINUX__
 DECL|macro|__XFS_LINUX__
 mdefine_line|#define __XFS_LINUX__
@@ -102,10 +102,6 @@ op_assign
 id|linvfs_unwritten_done
 suffix:semicolon
 )brace
-DECL|macro|xfs_refcache_size
-mdefine_line|#define xfs_refcache_size&t;xfs_params.refcache_size.val
-DECL|macro|xfs_refcache_purge_count
-mdefine_line|#define xfs_refcache_purge_count xfs_params.refcache_purge.val
 DECL|macro|restricted_chown
 mdefine_line|#define restricted_chown&t;xfs_params.restrict_chown.val
 DECL|macro|irix_sgid_inherit
@@ -116,8 +112,8 @@ DECL|macro|xfs_panic_mask
 mdefine_line|#define xfs_panic_mask&t;&t;xfs_params.panic_mask.val
 DECL|macro|xfs_error_level
 mdefine_line|#define xfs_error_level&t;&t;xfs_params.error_level.val
-DECL|macro|xfs_syncd_interval
-mdefine_line|#define xfs_syncd_interval&t;(xfs_params.sync_interval.val * HZ / USER_HZ)
+DECL|macro|xfs_syncd_centisecs
+mdefine_line|#define xfs_syncd_centisecs&t;xfs_params.syncd_timer.val
 DECL|macro|xfs_stats_clear
 mdefine_line|#define xfs_stats_clear&t;&t;xfs_params.stats_clear.val
 DECL|macro|xfs_inherit_sync
@@ -126,10 +122,10 @@ DECL|macro|xfs_inherit_nodump
 mdefine_line|#define xfs_inherit_nodump&t;xfs_params.inherit_nodump.val
 DECL|macro|xfs_inherit_noatime
 mdefine_line|#define xfs_inherit_noatime&t;xfs_params.inherit_noatim.val
-DECL|macro|xfs_flush_interval
-mdefine_line|#define xfs_flush_interval&t;(xfs_params.flush_interval.val * HZ / USER_HZ)
-DECL|macro|xfs_age_buffer
-mdefine_line|#define xfs_age_buffer&t;&t;(xfs_params.age_buffer.val * HZ / USER_HZ)
+DECL|macro|xfs_buf_timer_centisecs
+mdefine_line|#define xfs_buf_timer_centisecs&t;xfs_params.xfs_buf_timer.val
+DECL|macro|xfs_buf_age_centisecs
+mdefine_line|#define xfs_buf_age_centisecs&t;xfs_params.xfs_buf_age.val
 DECL|macro|current_cpu
 mdefine_line|#define current_cpu()&t;&t;smp_processor_id()
 DECL|macro|current_pid

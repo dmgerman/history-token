@@ -547,9 +547,9 @@ multiline_comment|/*&n; * After we have set current-&gt;mm to a new value, this 
 DECL|macro|activate_mm
 mdefine_line|#define activate_mm(active_mm, mm) &bslash;&n;&t;switch_mm(active_mm, mm, current);
 DECL|macro|VSID_RANDOMIZER
-mdefine_line|#define VSID_RANDOMIZER 42470972311
+mdefine_line|#define VSID_RANDOMIZER 42470972311UL
 DECL|macro|VSID_MASK
-mdefine_line|#define VSID_MASK&t;0xfffffffff
+mdefine_line|#define VSID_MASK&t;0xfffffffffUL
 multiline_comment|/* This is only valid for kernel (including vmalloc, imalloc and bolted) EA&squot;s&n; */
 r_static
 r_inline

@@ -250,6 +250,8 @@ DECL|macro|ATTR_REPLACE
 mdefine_line|#define ATTR_REPLACE&t;0x0020&t;/* pure set: fail if attr does not exist */
 DECL|macro|ATTR_SYSTEM
 mdefine_line|#define ATTR_SYSTEM&t;0x0100&t;/* use attrs in system (pseudo) namespace */
+DECL|macro|ATTR_KERNACCESS
+mdefine_line|#define ATTR_KERNACCESS&t;0x0400&t;/* [kernel] iaccess, inode held io-locked */
 DECL|macro|ATTR_KERNOTIME
 mdefine_line|#define ATTR_KERNOTIME&t;0x1000&t;/* [kernel] don&squot;t update inode timestamps */
 DECL|macro|ATTR_KERNOVAL
@@ -552,10 +554,19 @@ comma
 r_char
 op_star
 comma
+r_int
+comma
 r_char
 op_star
 comma
 r_int
+op_star
+comma
+r_int
+comma
+r_struct
+id|cred
+op_star
 )paren
 suffix:semicolon
 macro_line|#endif&t;/* __XFS_ATTR_H__ */

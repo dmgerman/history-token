@@ -5191,11 +5191,6 @@ op_star
 id|mp
 comma
 multiline_comment|/* mount point for filesystem */
-id|xfs_trans_t
-op_star
-id|tp
-comma
-multiline_comment|/* transaction pointer */
 id|xfs_ino_t
 id|ino
 comma
@@ -5337,7 +5332,7 @@ c_func
 (paren
 id|mp
 comma
-id|tp
+l_int|NULL
 comma
 id|ino
 comma
@@ -5674,8 +5669,6 @@ id|xfs_bulkstat
 c_func
 (paren
 id|mp
-comma
-l_int|NULL
 comma
 op_amp
 id|lastino

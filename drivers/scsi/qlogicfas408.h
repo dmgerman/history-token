@@ -215,6 +215,7 @@ op_star
 id|cmd
 )paren
 suffix:semicolon
+r_const
 r_char
 op_star
 id|qlogicfas408_info

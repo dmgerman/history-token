@@ -2824,6 +2824,10 @@ c_cond
 id|irq
 op_eq
 id|XICS_IPI
+op_logical_or
+id|irq
+op_eq
+id|NO_IRQ
 )paren
 r_return
 suffix:semicolon

@@ -3881,7 +3881,7 @@ id|addr
 comma
 id|len
 comma
-id|prot
+l_int|0
 comma
 id|pgoff
 comma

@@ -12,9 +12,9 @@ macro_line|#include &lt;linux/kdb.h&gt;
 macro_line|#endif
 multiline_comment|/*&n; * Literals&n; */
 DECL|macro|IPR_DRIVER_VERSION
-mdefine_line|#define IPR_DRIVER_VERSION &quot;2.0.6&quot;
+mdefine_line|#define IPR_DRIVER_VERSION &quot;2.0.7&quot;
 DECL|macro|IPR_DRIVER_DATE
-mdefine_line|#define IPR_DRIVER_DATE &quot;(May 3, 2004)&quot;
+mdefine_line|#define IPR_DRIVER_DATE &quot;(May 21, 2004)&quot;
 multiline_comment|/*&n; * IPR_DBG_TRACE: Setting this to 1 will turn on some general function tracing&n; *&t;&t;&t;resulting in a bunch of extra debugging printks to the console&n; *&n; * IPR_DEBUG:&t;Setting this to 1 will turn on some error path tracing.&n; *&t;&t;&t;Enables the ipr_trace macro.&n; */
 macro_line|#ifdef IPR_DEBUG_ALL
 DECL|macro|IPR_DEBUG
@@ -897,13 +897,13 @@ DECL|struct|ipr_ioasa_gpdd
 r_struct
 id|ipr_ioasa_gpdd
 (brace
-DECL|member|device_end_state
+DECL|member|end_state
 id|u8
-id|device_end_state
+id|end_state
 suffix:semicolon
-DECL|member|device_bus_phase
+DECL|member|bus_phase
 id|u8
-id|device_bus_phase
+id|bus_phase
 suffix:semicolon
 DECL|member|reserved
 id|u16
@@ -1040,7 +1040,9 @@ r_struct
 id|ipr_ioasa_raw
 id|raw
 suffix:semicolon
+DECL|member|u
 )brace
+id|u
 suffix:semicolon
 )brace
 id|__attribute__
@@ -1858,7 +1860,9 @@ r_struct
 id|ipr_hostrcb_type_04_error
 id|type_04_error
 suffix:semicolon
+DECL|member|u
 )brace
+id|u
 suffix:semicolon
 )brace
 id|__attribute__
@@ -1908,9 +1912,9 @@ l_int|4
 )paren
 )paren
 suffix:semicolon
-DECL|struct|ipr_hostrcb
+DECL|struct|ipr_hcam
 r_struct
-id|ipr_hostrcb
+id|ipr_hcam
 (brace
 DECL|member|op_code
 id|u8
@@ -2006,17 +2010,9 @@ r_struct
 id|ipr_hostrcb_raw
 id|raw
 suffix:semicolon
+DECL|member|u
 )brace
-suffix:semicolon
-multiline_comment|/* Driver added data */
-DECL|member|hostrcb_dma
-id|u32
-id|hostrcb_dma
-suffix:semicolon
-DECL|member|queue
-r_struct
-id|list_head
-id|queue
+id|u
 suffix:semicolon
 )brace
 id|__attribute__
@@ -2032,8 +2028,26 @@ l_int|4
 )paren
 )paren
 suffix:semicolon
-DECL|macro|IPR_HOSTRCB_SZ
-mdefine_line|#define IPR_HOSTRCB_SZ offsetof(struct ipr_hostrcb, hostrcb_dma)
+DECL|struct|ipr_hostrcb
+r_struct
+id|ipr_hostrcb
+(brace
+DECL|member|hcam
+r_struct
+id|ipr_hcam
+id|hcam
+suffix:semicolon
+DECL|member|hostrcb_dma
+id|u32
+id|hostrcb_dma
+suffix:semicolon
+DECL|member|queue
+r_struct
+id|list_head
+id|queue
+suffix:semicolon
+)brace
+suffix:semicolon
 multiline_comment|/* IPR smart dump table structures */
 DECL|struct|ipr_sdt_entry
 r_struct
@@ -2469,7 +2483,9 @@ DECL|member|res_addr
 id|u32
 id|res_addr
 suffix:semicolon
+DECL|member|u
 )brace
+id|u
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -3054,7 +3070,15 @@ id|ipr_cmnd
 op_star
 id|sibling
 suffix:semicolon
+DECL|member|sdev
+r_struct
+id|scsi_device
+op_star
+id|sdev
+suffix:semicolon
+DECL|member|u
 )brace
+id|u
 suffix:semicolon
 DECL|member|ioa_cfg
 r_struct

@@ -3053,7 +3053,16 @@ l_int|0
 dot
 id|src
 op_assign
-id|MATROXFB_SRC_CRTC1
+id|ACCESS_FBINFO
+c_func
+(paren
+id|outputs
+(braket
+l_int|0
+)braket
+)paren
+dot
+id|default_src
 suffix:semicolon
 id|ACCESS_FBINFO
 c_func

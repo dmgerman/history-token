@@ -1033,7 +1033,8 @@ id|wraperr
 suffix:semicolon
 )brace
 multiline_comment|/* return 1 to fail the driver inialization&n;&t; * and give real driver change to load */
-r_return
+id|err
+op_assign
 l_int|1
 suffix:semicolon
 id|wraperr

@@ -184,10 +184,12 @@ id|dev-&gt;fsrev
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; *&t;Adapter Fibs are the first thing allocated so that they&n;&t; *&t;start page aligned&n;&t; */
-id|dev-&gt;fib_base_va
+id|dev-&gt;aif_base_va
 op_assign
 (paren
-id|ulong
+r_struct
+id|hw_fib
+op_star
 )paren
 id|base
 suffix:semicolon
@@ -196,13 +198,7 @@ op_assign
 id|cpu_to_le32
 c_func
 (paren
-(paren
-id|u32
-)paren
-(paren
-id|ulong
-)paren
-id|phys
+l_int|0
 )paren
 suffix:semicolon
 id|init-&gt;AdapterFibsPhysicalAddress
@@ -236,7 +232,7 @@ id|hw_fib
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* &n;&t; * number of 4k pages of host physical memory. The aacraid fw needs&n;&t; * this number to be less than 4gb worth of pages. num_physpages is in&n;&t; * system page units. New firmware doesn&squot;t have any issues with the&n;&t; * mapping system, but older Firmware did, and had *troubles* dealing&n;&t; * with the math overloading past 32 bits, thus we must limit this&n;&t; * field.&n;&t; */
+multiline_comment|/* &n;&t; * number of 4k pages of host physical memory. The aacraid fw needs&n;&t; * this number to be less than 4gb worth of pages. num_physpages is in&n;&t; * system page units. New firmware doesn&squot;t have any issues with the&n;&t; * mapping system, but older Firmware did, and had *troubles* dealing&n;&t; * with the math overloading past 32 bits, thus we must limit this&n;&t; * field.&n;&t; *&n;&t; * FIXME: this assumes the memory is mapped zero-&gt;n, which isnt&n;&t; * always true on real computers.&n;&t; */
 r_if
 c_cond
 (paren
@@ -462,7 +458,7 @@ op_amp
 id|q-&gt;cmdready
 )paren
 suffix:semicolon
-id|AAC_INIT_LIST_HEAD
+id|INIT_LIST_HEAD
 c_func
 (paren
 op_amp

@@ -428,7 +428,6 @@ id|__psint_t
 id|ptr
 )paren
 suffix:semicolon
-macro_line|#ifdef XFSDEBUG
 id|STATIC
 r_void
 id|xlog_verify_disk_cycle_no
@@ -443,7 +442,6 @@ op_star
 id|iclog
 )paren
 suffix:semicolon
-macro_line|#endif
 id|STATIC
 r_void
 id|xlog_verify_grant_head
@@ -1253,7 +1251,7 @@ id|rval
 suffix:semicolon
 )brace
 multiline_comment|/* xfs_log_force */
-multiline_comment|/*&n; * This function will take a log sequence number and check to see if that&n; * lsn has been flushed to disk.  If it has, then the callback function is&n; * called with the callback argument.  If the relevant in-core log has not&n; * been synced to disk, we add the callback to the callback list of the&n; * in-core log.&n; */
+multiline_comment|/*&n; * Attaches a new iclog I/O completion callback routine during&n; * transaction commit.  If the log is in error state, a non-zero&n; * return code is handed back and the caller is responsible for&n; * executing the callback at an appropriate time.&n; */
 r_int
 DECL|function|xfs_log_notify
 id|xfs_log_notify
@@ -1380,25 +1378,8 @@ comma
 id|spl
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|abortflg
-)paren
-(brace
-id|cb
-op_member_access_from_pointer
-id|cb_func
-c_func
-(paren
-id|cb-&gt;cb_arg
-comma
-id|abortflg
-)paren
-suffix:semicolon
-)brace
 r_return
-l_int|0
+id|abortflg
 suffix:semicolon
 )brace
 multiline_comment|/* xfs_log_notify */
@@ -1845,7 +1826,9 @@ c_func
 (paren
 id|CE_WARN
 comma
-l_string|&quot;XFS: log mount/recovery failed&quot;
+l_string|&quot;XFS: log mount/recovery failed: error %d&quot;
+comma
+id|error
 )paren
 suffix:semicolon
 id|xlog_unalloc_log
@@ -6111,12 +6094,6 @@ id|contwr
 suffix:semicolon
 multiline_comment|/* continued write of in-core log? */
 r_int
-id|firstwr
-op_assign
-l_int|0
-suffix:semicolon
-multiline_comment|/* first write of transaction */
-r_int
 id|error
 suffix:semicolon
 r_int
@@ -6431,11 +6408,6 @@ op_complement
 id|XLOG_TIC_INITED
 suffix:semicolon
 multiline_comment|/* clear bit */
-id|firstwr
-op_assign
-l_int|1
-suffix:semicolon
-multiline_comment|/* increment log ops below */
 id|record_cnt
 op_increment
 suffix:semicolon
@@ -6737,10 +6709,6 @@ ques
 c_cond
 id|copy_len
 suffix:colon
-l_int|0
-suffix:semicolon
-id|firstwr
-op_assign
 l_int|0
 suffix:semicolon
 r_if
@@ -11415,7 +11383,7 @@ l_string|&quot;xlog_verify_dest_ptr: invalid ptr&quot;
 suffix:semicolon
 )brace
 multiline_comment|/* xlog_verify_dest_ptr */
-macro_line|#ifdef XFSDEBUG
+macro_line|#ifdef DEBUG
 multiline_comment|/* check split LR write */
 id|STATIC
 r_void

@@ -38,6 +38,7 @@ suffix:semicolon
 )brace
 )brace
 suffix:semicolon
+r_static
 id|UCHAR
 DECL|function|dc390_StartSCSI
 id|dc390_StartSCSI
@@ -1151,10 +1152,8 @@ id|UCHAR
 id|dstatus
 suffix:semicolon
 macro_line|#endif
-id|DC390_AFLAGS
 id|DC390_IFLAGS
 suffix:semicolon
-singleline_comment|//DC390_DFLAGS
 id|pACB
 op_assign
 (paren
@@ -1200,7 +1199,6 @@ r_return
 id|IRQ_NONE
 suffix:semicolon
 )brace
-singleline_comment|//DC390_LOCK_DRV;
 id|sstatus
 op_assign
 id|DC390_read8
@@ -1219,12 +1217,10 @@ id|INTERRUPT
 )paren
 )paren
 (brace
-multiline_comment|/*DC390_UNLOCK_DRV;*/
 r_return
 id|IRQ_NONE
 suffix:semicolon
 )brace
-suffix:semicolon
 id|DEBUG1
 c_func
 (paren
@@ -1244,16 +1240,12 @@ c_func
 id|pACB-&gt;pScsiHost
 )paren
 suffix:semicolon
-id|DC390_LOCK_ACB
-suffix:semicolon
 id|dstatus
 op_assign
 id|dc390_dma_intr
 (paren
 id|pACB
 )paren
-suffix:semicolon
-id|DC390_UNLOCK_ACB
 suffix:semicolon
 id|DC390_UNLOCK_IO
 c_func
@@ -1294,7 +1286,6 @@ l_string|&quot;DC390 Int w/o SCSI actions (only DMA?)&bslash;n&quot;
 )paren
 )paren
 suffix:semicolon
-singleline_comment|//DC390_UNLOCK_DRV;
 r_return
 id|IRQ_NONE
 suffix:semicolon
@@ -1311,9 +1302,6 @@ c_func
 id|pACB-&gt;pScsiHost
 )paren
 suffix:semicolon
-id|DC390_LOCK_ACB
-suffix:semicolon
-singleline_comment|//DC390_UNLOCK_DRV_NI; /* Allow _other_ CPUs to process IRQ (useful for shared IRQs) */
 id|istate
 op_assign
 id|DC390_read8
@@ -1652,21 +1640,18 @@ suffix:semicolon
 )brace
 id|unlock
 suffix:colon
-singleline_comment|//DC390_LOCK_DRV_NI;
-id|DC390_UNLOCK_ACB
-suffix:semicolon
 id|DC390_UNLOCK_IO
 c_func
 (paren
 id|pACB-&gt;pScsiHost
 )paren
 suffix:semicolon
-singleline_comment|//DC390_UNLOCK_DRV; /* Restore initial flags */
 r_return
 id|IRQ_HANDLED
 suffix:semicolon
 )brace
 DECL|function|do_DC390_Interrupt
+r_static
 id|irqreturn_t
 id|do_DC390_Interrupt
 c_func
@@ -1725,6 +1710,7 @@ r_return
 id|ret
 suffix:semicolon
 )brace
+r_static
 r_void
 DECL|function|dc390_DataOut_0
 id|dc390_DataOut_0
@@ -2013,6 +1999,7 @@ id|CLEAR_FIFO_CMD
 suffix:semicolon
 )brace
 )brace
+r_static
 r_void
 DECL|function|dc390_DataIn_0
 id|dc390_DataIn_0
@@ -3584,7 +3571,11 @@ op_plus
 (paren
 id|ULONG
 )paren
-id|psgl-&gt;length
+id|sg_dma_len
+c_func
+(paren
+id|psgl
+)paren
 OL
 id|pSRB-&gt;Saved_Ptr
 )paren
@@ -3594,7 +3585,11 @@ op_add_assign
 (paren
 id|ULONG
 )paren
-id|psgl-&gt;length
+id|sg_dma_len
+c_func
+(paren
+id|psgl
+)paren
 suffix:semicolon
 id|pSRB-&gt;SGIndex
 op_increment
@@ -3686,7 +3681,12 @@ id|pcmd-&gt;request_buffer
 )paren
 (brace
 singleline_comment|//dc390_pci_sync(pSRB);
-id|pSRB-&gt;Segmentx.length
+id|sg_dma_len
+c_func
+(paren
+op_amp
+id|pSRB-&gt;Segmentx
+)paren
 op_assign
 id|pcmd-&gt;request_bufflen
 op_minus
@@ -4084,6 +4084,7 @@ id|MSG_ACCEPTED_CMD
 suffix:semicolon
 singleline_comment|//DC390_write8 (DMA_Cmd, DMA_IDLE_CMD);
 )brace
+r_static
 r_void
 DECL|function|dc390_DataIO_Comm
 id|dc390_DataIO_Comm
@@ -4139,6 +4140,10 @@ id|printk
 id|KERN_ERR
 l_string|&quot;DC390: pSRB == pTmpSRB! (TagQ Error?) (DCB 0!)&bslash;n&quot;
 )paren
+suffix:semicolon
+id|pSRB-&gt;pSRBDCB
+op_assign
+id|pDCB
 suffix:semicolon
 id|dc390_EnableMsgOut_Abort
 (paren
@@ -5335,11 +5340,6 @@ suffix:semicolon
 id|pDCB-&gt;pGoingSRB
 op_assign
 l_int|0
-suffix:semicolon
-id|dc390_Query_to_Waiting
-(paren
-id|pACB
-)paren
 suffix:semicolon
 id|dc390_Waiting_process
 (paren
@@ -6872,7 +6872,11 @@ op_increment
 (brace
 id|swlval
 op_add_assign
-id|ptr2-&gt;length
+id|sg_dma_len
+c_func
+(paren
+id|ptr2
+)paren
 suffix:semicolon
 id|ptr2
 op_increment
@@ -7648,14 +7652,12 @@ suffix:semicolon
 )brace
 )brace
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &gt; KERNEL_VERSION(2,3,30)
 id|pcmd-&gt;resid
 op_assign
 id|pcmd-&gt;request_bufflen
 op_minus
 id|pSRB-&gt;TotalXferredLen
 suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -7689,18 +7691,9 @@ id|pcmd-&gt;pid
 )paren
 )paren
 suffix:semicolon
-id|DC390_UNLOCK_ACB_NI
-suffix:semicolon
 id|pcmd-&gt;scsi_done
 (paren
 id|pcmd
-)paren
-suffix:semicolon
-id|DC390_LOCK_ACB_NI
-suffix:semicolon
-id|dc390_Query_to_Waiting
-(paren
-id|pACB
 )paren
 suffix:semicolon
 id|dc390_Waiting_process
@@ -7843,8 +7836,6 @@ id|pcmd-&gt;pid
 )paren
 )paren
 suffix:semicolon
-id|DC390_UNLOCK_ACB_NI
-suffix:semicolon
 id|pcmd
 op_member_access_from_pointer
 id|scsi_done
@@ -7852,8 +7843,6 @@ c_func
 (paren
 id|pcmd
 )paren
-suffix:semicolon
-id|DC390_LOCK_ACB_NI
 suffix:semicolon
 macro_line|#endif&t;
 id|psrb
@@ -7888,11 +7877,6 @@ id|pDCB
 (brace
 suffix:semicolon
 )brace
-id|dc390_Query_to_Waiting
-(paren
-id|pACB
-)paren
-suffix:semicolon
 )brace
 r_static
 r_void

@@ -16,11 +16,6 @@ id|xfs_mount
 op_star
 id|mp
 comma
-r_struct
-id|xfs_trans
-op_star
-id|tp
-comma
 id|xfs_ino_t
 id|ino
 comma
@@ -76,11 +71,6 @@ op_star
 id|mp
 comma
 multiline_comment|/* mount point for filesystem */
-id|xfs_trans_t
-op_star
-id|tp
-comma
-multiline_comment|/* transaction pointer */
 id|xfs_ino_t
 op_star
 id|lastino
@@ -146,10 +136,6 @@ id|xfs_mount_t
 op_star
 id|mp
 comma
-id|xfs_trans_t
-op_star
-id|tp
-comma
 id|xfs_ino_t
 id|ino
 comma
@@ -190,11 +176,6 @@ op_star
 id|mp
 comma
 multiline_comment|/* mount point for filesystem */
-id|xfs_trans_t
-op_star
-id|tp
-comma
-multiline_comment|/* transaction pointer */
 id|xfs_ino_t
 op_star
 id|last

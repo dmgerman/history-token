@@ -9,6 +9,7 @@ macro_line|#include &lt;linux/mtd/map.h&gt;
 macro_line|#include &lt;linux/mtd/mtd.h&gt;
 macro_line|#include &lt;linux/mtd/cfi.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
 DECL|macro|CMD_RESET
 mdefine_line|#define CMD_RESET&t;&t;0xffffffff
 DECL|macro|CMD_READ_ID

@@ -2551,7 +2551,7 @@ r_case
 id|SENSOR_NOT_EXIST
 suffix:colon
 r_return
-l_string|&quot;(non existant)&quot;
+l_string|&quot;(non existent)&quot;
 suffix:semicolon
 r_case
 id|SENSOR_DR_ENTITY
@@ -3515,7 +3515,7 @@ id|buf
 op_plus
 id|n
 comma
-l_string|&quot;Unkown sensor (type %d), ignoring it&bslash;n&quot;
+l_string|&quot;Unknown sensor (type %d), ignoring it&bslash;n&quot;
 comma
 id|s.token
 )paren

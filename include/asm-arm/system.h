@@ -260,9 +260,24 @@ DECL|macro|set_wmb
 mdefine_line|#define set_wmb(var, value) do { var = value; wmb(); } while (0)
 DECL|macro|nop
 mdefine_line|#define nop() __asm__ __volatile__(&quot;mov&bslash;tr0,r0&bslash;t@ nop&bslash;n&bslash;t&quot;);
-DECL|macro|prepare_to_switch
-mdefine_line|#define prepare_to_switch()    do { } while(0)
-multiline_comment|/*&n; * switch_to(prev, next) should switch from task `prev&squot; to `next&squot;&n; * `prev&squot; will never be the same as `next&squot;.&n; * The `mb&squot; is to tell GCC not to cache `current&squot; across this call.&n; */
+macro_line|#ifdef CONFIG_SMP
+multiline_comment|/*&n; * Define our own context switch locking.  This allows us to enable&n; * interrupts over the context switch, otherwise we end up with high&n; * interrupt latency.  The real problem area is switch_mm() which may&n; * do a full cache flush.&n; */
+DECL|macro|prepare_arch_switch
+mdefine_line|#define prepare_arch_switch(rq,next)&t;&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;spin_lock(&amp;(next)-&gt;switch_lock);&t;&t;&t;&t;&bslash;&n;&t;spin_unlock_irq(&amp;(rq)-&gt;lock);&t;&t;&t;&t;&t;&bslash;&n;} while (0)
+DECL|macro|finish_arch_switch
+mdefine_line|#define finish_arch_switch(rq,prev)&t;&t;&t;&t;&t;&bslash;&n;&t;spin_unlock(&amp;(prev)-&gt;switch_lock)
+DECL|macro|task_running
+mdefine_line|#define task_running(rq,p)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;((rq)-&gt;curr == (p) || spin_is_locked(&amp;(p)-&gt;switch_lock))
+macro_line|#else
+multiline_comment|/*&n; * Our UP-case is more simple, but we assume knowledge of how&n; * spin_unlock_irq() and friends are implemented.  This avoids&n; * us needlessly decrementing and incrementing the preempt count.&n; */
+DECL|macro|prepare_arch_switch
+mdefine_line|#define prepare_arch_switch(rq,next)&t;local_irq_enable()
+DECL|macro|finish_arch_switch
+mdefine_line|#define finish_arch_switch(rq,prev)&t;spin_unlock(&amp;(rq)-&gt;lock)
+DECL|macro|task_running
+mdefine_line|#define task_running(rq,p)&t;&t;((rq)-&gt;curr == (p))
+macro_line|#endif
+multiline_comment|/*&n; * switch_to(prev, next) should switch from task `prev&squot; to `next&squot;&n; * `prev&squot; will never be the same as `next&squot;.  schedule() itself&n; * contains the memory barrier to tell GCC not to cache `current&squot;.&n; */
 r_struct
 id|thread_info
 suffix:semicolon
@@ -290,7 +305,7 @@ op_star
 )paren
 suffix:semicolon
 DECL|macro|switch_to
-mdefine_line|#define switch_to(prev,next,last)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;last = __switch_to(prev,prev-&gt;thread_info,next-&gt;thread_info);&t;&bslash;&n;&t;&t;mb();&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;} while (0)
+mdefine_line|#define switch_to(prev,next,last)&t;&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;last = __switch_to(prev,prev-&gt;thread_info,next-&gt;thread_info);&t;&bslash;&n;} while (0)
 multiline_comment|/*&n; * CPU interrupt mask handling.&n; */
 macro_line|#if __LINUX_ARM_ARCH__ &gt;= 6
 DECL|macro|local_irq_save

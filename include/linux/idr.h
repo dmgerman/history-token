@@ -7,12 +7,12 @@ macro_line|#if BITS_PER_LONG == 32
 DECL|macro|IDR_BITS
 macro_line|# define IDR_BITS 5
 DECL|macro|IDR_FULL
-macro_line|# define IDR_FULL 0xffffffff
+macro_line|# define IDR_FULL 0xfffffffful
 macro_line|#elif BITS_PER_LONG == 64
 DECL|macro|IDR_BITS
 macro_line|# define IDR_BITS 6
 DECL|macro|IDR_FULL
-macro_line|# define IDR_FULL 0xffffffffffffffff
+macro_line|# define IDR_FULL 0xfffffffffffffffful
 macro_line|#else
 macro_line|# error &quot;BITS_PER_LONG is not 32 or 64&quot;
 macro_line|#endif

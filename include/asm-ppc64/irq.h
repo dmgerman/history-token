@@ -3,6 +3,7 @@ macro_line|#ifndef _ASM_IRQ_H
 DECL|macro|_ASM_IRQ_H
 mdefine_line|#define _ASM_IRQ_H
 multiline_comment|/*&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License&n; * as published by the Free Software Foundation; either version&n; * 2 of the License, or (at your option) any later version.&n; */
+macro_line|#include &lt;linux/threads.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
 multiline_comment|/*&n; * Maximum number of interrupt sources that we can handle.&n; */
 DECL|macro|NR_IRQS
@@ -165,10 +166,9 @@ r_struct
 id|pt_regs
 suffix:semicolon
 r_int
-id|handle_IRQ_event
+id|handle_irq_event
 c_func
 (paren
-r_int
 r_int
 comma
 r_struct
@@ -180,6 +180,75 @@ id|irqaction
 op_star
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_IRQSTACKS
+multiline_comment|/*&n; * Per-cpu stacks for handling hard and soft interrupts.&n; */
+r_extern
+r_struct
+id|thread_info
+op_star
+id|hardirq_ctx
+(braket
+id|NR_CPUS
+)braket
+suffix:semicolon
+r_extern
+r_struct
+id|thread_info
+op_star
+id|softirq_ctx
+(braket
+id|NR_CPUS
+)braket
+suffix:semicolon
+r_extern
+r_void
+id|irq_ctx_init
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|call_do_softirq
+c_func
+(paren
+r_struct
+id|thread_info
+op_star
+id|tp
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|call_handle_irq_event
+c_func
+(paren
+r_int
+id|irq
+comma
+r_struct
+id|pt_regs
+op_star
+id|regs
+comma
+r_struct
+id|irqaction
+op_star
+id|action
+comma
+r_struct
+id|thread_info
+op_star
+id|tp
+)paren
+suffix:semicolon
+DECL|macro|__ARCH_HAS_DO_SOFTIRQ
+mdefine_line|#define __ARCH_HAS_DO_SOFTIRQ
+macro_line|#else
+DECL|macro|irq_ctx_init
+mdefine_line|#define irq_ctx_init()
+macro_line|#endif /* CONFIG_IRQSTACKS */
 macro_line|#endif /* _ASM_IRQ_H */
 macro_line|#endif /* __KERNEL__ */
 eof

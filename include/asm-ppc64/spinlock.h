@@ -221,7 +221,7 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-l_string|&quot;b&t;&t;2f&t;&t;# spin_lock&bslash;n&bslash;&n;1:&t;mfmsr&t;&t;%1&bslash;n&bslash;&n;&t;mtmsrd&t;&t;%3,1&bslash;n&bslash;&n;2:&quot;
+l_string|&quot;b&t;&t;3f&t;&t;# spin_lock&bslash;n&bslash;&n;1:&t;mfmsr&t;&t;%1&bslash;n&bslash;&n;&t;mtmsrd&t;&t;%3,1&bslash;n&bslash;&n;2:&quot;
 id|HMT_LOW
 l_string|&quot;&t;lwzx&t;&t;%0,0,%2&bslash;n&bslash;&n;&t;cmpwi&t;&t;0,%0,0&bslash;n&bslash;&n;&t;bne+&t;&t;2b&bslash;n&quot;
 id|HMT_MEDIUM

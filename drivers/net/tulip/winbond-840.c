@@ -8174,15 +8174,12 @@ c_func
 r_void
 )paren
 (brace
-multiline_comment|/* when a module, this is printed whether or not devices are found in probe */
-macro_line|#ifdef MODULE
 id|printk
 c_func
 (paren
 id|version
 )paren
 suffix:semicolon
-macro_line|#endif
 r_return
 id|pci_module_init
 c_func

@@ -461,7 +461,7 @@ DECL|macro|inb_p
 mdefine_line|#define inb_p(_p)&t;inb(_p)
 DECL|macro|outb_p
 mdefine_line|#define outb_p(_v,_p)&t;outb(_v,_p)
-macro_line|#elif defined(CONFIG_NET_CBUS) || defined(CONFIG_NE_H8300)
+macro_line|#elif defined(CONFIG_NET_CBUS) || defined(CONFIG_NE_H8300) || defined(CONFIG_NE_H8300_MODULE)
 DECL|macro|EI_SHIFT
 mdefine_line|#define EI_SHIFT(x)&t;(ei_local-&gt;reg_offset[x])
 macro_line|#else

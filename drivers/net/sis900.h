@@ -412,7 +412,7 @@ op_assign
 l_int|0x00000001
 )brace
 suffix:semicolon
-multiline_comment|/* maximum dma burst fro transmission and receive*/
+multiline_comment|/* maximum dma burst for transmission and receive */
 DECL|macro|MAX_DMA_RANGE
 mdefine_line|#define MAX_DMA_RANGE&t;7&t;/* actually 0 means MAXIMUM !! */
 DECL|macro|TxMXDMA_shift
@@ -434,7 +434,7 @@ op_assign
 l_int|5
 )brace
 suffix:semicolon
-multiline_comment|/* transmit FIFO threshholds */
+multiline_comment|/* transmit FIFO thresholds */
 DECL|macro|TX_FILL_THRESH
 mdefine_line|#define TX_FILL_THRESH   16&t;/* 1/4 FIFO size */
 DECL|macro|TxFILLT_shift
@@ -675,7 +675,7 @@ op_assign
 l_int|0x00000100
 )brace
 suffix:semicolon
-multiline_comment|/* Manamgement Data I/O (mdio) frame */
+multiline_comment|/* Management Data I/O (mdio) frame */
 DECL|macro|MIIread
 mdefine_line|#define MIIread         0x6000
 DECL|macro|MIIwrite

@@ -513,36 +513,6 @@ DECL|macro|GPIO_C6
 mdefine_line|#define GPIO_C6&t;&t;(1 &lt;&lt; 22)
 DECL|macro|GPIO_C7
 mdefine_line|#define GPIO_C7&t;&t;(1 &lt;&lt; 23)
-DECL|macro|PA_DDR
-mdefine_line|#define PA_DDR&t;&t;__CCREG(0x1000)
-DECL|macro|PA_DRR
-mdefine_line|#define PA_DRR&t;&t;__CCREG(0x1004)
-DECL|macro|PA_DWR
-mdefine_line|#define PA_DWR&t;&t;__CCREG(0x1004)
-DECL|macro|PA_SDR
-mdefine_line|#define PA_SDR&t;&t;__CCREG(0x1008)
-DECL|macro|PA_SSR
-mdefine_line|#define PA_SSR&t;&t;__CCREG(0x100c)
-DECL|macro|PB_DDR
-mdefine_line|#define PB_DDR&t;&t;__CCREG(0x1010)
-DECL|macro|PB_DRR
-mdefine_line|#define PB_DRR&t;&t;__CCREG(0x1014)
-DECL|macro|PB_DWR
-mdefine_line|#define PB_DWR&t;&t;__CCREG(0x1014)
-DECL|macro|PB_SDR
-mdefine_line|#define PB_SDR&t;&t;__CCREG(0x1018)
-DECL|macro|PB_SSR
-mdefine_line|#define PB_SSR&t;&t;__CCREG(0x101c)
-DECL|macro|PC_DDR
-mdefine_line|#define PC_DDR&t;&t;__CCREG(0x1020)
-DECL|macro|PC_DRR
-mdefine_line|#define PC_DRR&t;&t;__CCREG(0x1024)
-DECL|macro|PC_DWR
-mdefine_line|#define PC_DWR&t;&t;__CCREG(0x1024)
-DECL|macro|PC_SDR
-mdefine_line|#define PC_SDR&t;&t;__CCREG(0x1028)
-DECL|macro|PC_SSR
-mdefine_line|#define PC_SSR&t;&t;__CCREG(0x102c)
 multiline_comment|/*&n; * Interrupt Controller&n; *&n; * Registers&n; *    INTTEST0&t;&t;Test register 0&n; *    INTTEST1&t;&t;Test register 1&n; *    INTEN0&t;&t;Interrupt Enable register 0&n; *    INTEN1&t;&t;Interrupt Enable register 1&n; *    INTPOL0&t;&t;Interrupt Polarity selection 0&n; *    INTPOL1&t;&t;Interrupt Polarity selection 1&n; *    INTTSTSEL&t;&t;Interrupt source selection&n; *    INTSTATCLR0&t;Interrupt Status/Clear 0&n; *    INTSTATCLR1&t;Interrupt Status/Clear 1&n; *    INTSET0&t;&t;Interrupt source set 0&n; *    INTSET1&t;&t;Interrupt source set 1&n; *    WAKE_EN0&t;&t;Wake-up source enable 0&n; *    WAKE_EN1&t;&t;Wake-up source enable 1&n; *    WAKE_POL0&t;&t;Wake-up polarity selection 0&n; *    WAKE_POL1&t;&t;Wake-up polarity selection 1&n; */
 DECL|macro|SA1111_INTC
 mdefine_line|#define SA1111_INTC&t;&t;0x1600

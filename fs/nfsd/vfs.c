@@ -4856,7 +4856,6 @@ c_func
 id|fhp
 )paren
 suffix:semicolon
-multiline_comment|/* Compose the fh so the dentry will be freed ... */
 id|cerr
 op_assign
 id|fh_compose
@@ -4869,6 +4868,12 @@ comma
 id|dnew
 comma
 id|fhp
+)paren
+suffix:semicolon
+id|dput
+c_func
+(paren
+id|dnew
 )paren
 suffix:semicolon
 r_if

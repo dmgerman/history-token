@@ -145,8 +145,13 @@ op_minus
 l_int|1
 suffix:semicolon
 multiline_comment|/*&n; * Receive ring size &n; * Warning: 64K ring has hardware issues and may lock up.&n; */
+macro_line|#if defined(CONFIG_SH_DREAMCAST) || defined(CONFIG_EMBEDDED)
+DECL|macro|RX_BUF_IDX
+mdefine_line|#define RX_BUF_IDX&t;1&t;/* 16K ring */
+macro_line|#else
 DECL|macro|RX_BUF_IDX
 mdefine_line|#define RX_BUF_IDX&t;2&t;/* 32K ring */
+macro_line|#endif
 DECL|macro|RX_BUF_LEN
 mdefine_line|#define RX_BUF_LEN&t;(8192 &lt;&lt; RX_BUF_IDX)
 DECL|macro|RX_BUF_PAD

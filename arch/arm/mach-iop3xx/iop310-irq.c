@@ -5,7 +5,6 @@ macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;asm/mach/irq.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/hardware.h&gt;
-macro_line|#include &lt;asm/mach-types.h&gt;
 r_extern
 r_void
 id|xs80200_irq_mask

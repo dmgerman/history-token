@@ -2485,6 +2485,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; *&t;Return info string&n; */
 DECL|function|qlogicfas408_info
+r_const
 r_char
 op_star
 id|qlogicfas408_info

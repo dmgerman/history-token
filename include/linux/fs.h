@@ -9,15 +9,12 @@ macro_line|#include &lt;linux/wait.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kdev_t.h&gt;
 macro_line|#include &lt;linux/ioctl.h&gt;
-macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/dcache.h&gt;
 macro_line|#include &lt;linux/stat.h&gt;
 macro_line|#include &lt;linux/cache.h&gt;
-macro_line|#include &lt;linux/radix-tree.h&gt;
 macro_line|#include &lt;linux/prio_tree.h&gt;
 macro_line|#include &lt;linux/kobject.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
-macro_line|#include &lt;linux/audit.h&gt;
 r_struct
 id|iovec
 suffix:semicolon
@@ -302,6 +299,9 @@ mdefine_line|#define FIBMAP&t;   _IO(0x00,1)&t;/* bmap access */
 DECL|macro|FIGETBSZ
 mdefine_line|#define FIGETBSZ   _IO(0x00,2)&t;/* get the block size used for bmap */
 macro_line|#ifdef __KERNEL__
+macro_line|#include &lt;linux/list.h&gt;
+macro_line|#include &lt;linux/radix-tree.h&gt;
+macro_line|#include &lt;linux/audit.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
 multiline_comment|/* Used to be a macro which just called the function, now just a function */
@@ -1485,16 +1485,16 @@ comma
 id|euid
 suffix:semicolon
 multiline_comment|/* uid/euid of process setting the owner */
-DECL|member|signum
-r_int
-id|signum
-suffix:semicolon
-multiline_comment|/* posix.1b rt signal to be delivered on IO */
 DECL|member|security
 r_void
 op_star
 id|security
 suffix:semicolon
+DECL|member|signum
+r_int
+id|signum
+suffix:semicolon
+multiline_comment|/* posix.1b rt signal to be delivered on IO */
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * Track a single file&squot;s readahead state&n; */
@@ -1608,6 +1608,10 @@ DECL|member|f_mode
 id|mode_t
 id|f_mode
 suffix:semicolon
+DECL|member|f_error
+r_int
+id|f_error
+suffix:semicolon
 DECL|member|f_pos
 id|loff_t
 id|f_pos
@@ -1624,10 +1628,6 @@ r_int
 id|f_uid
 comma
 id|f_gid
-suffix:semicolon
-DECL|member|f_error
-r_int
-id|f_error
 suffix:semicolon
 DECL|member|f_ra
 r_struct

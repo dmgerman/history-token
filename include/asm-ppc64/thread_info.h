@@ -76,9 +76,6 @@ DECL|macro|get_thread_info
 mdefine_line|#define get_thread_info(ti)&t;get_task_struct((ti)-&gt;task)
 DECL|macro|put_thread_info
 mdefine_line|#define put_thread_info(ti)&t;put_task_struct((ti)-&gt;task)
-macro_line|#if THREAD_SIZE != (4*PAGE_SIZE)
-macro_line|#error update vmlinux.lds and current_thread_info to match
-macro_line|#endif
 multiline_comment|/* how to get the thread information struct from C */
 DECL|function|current_thread_info
 r_static

@@ -1099,7 +1099,7 @@ op_add_assign
 id|freed
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Unlock each item pointed to by a descriptor in the given chunk.&n; * Stamp the commit lsn into each item if necessary.&n; * Free descriptors pointing to items which are not dirty if freeing_chunk&n; * is zero. If freeing_chunk is non-zero, then we need to unlock all&n; * items in the chunk including those with XFS_LID_SYNC_UNLOCK set.&n; * Return the number of descriptors freed.&n; */
+multiline_comment|/*&n; * Unlock each item pointed to by a descriptor in the given chunk.&n; * Stamp the commit lsn into each item if necessary.&n; * Free descriptors pointing to items which are not dirty if freeing_chunk&n; * is zero. If freeing_chunk is non-zero, then we need to unlock all&n; * items in the chunk.&n; * &n; * Return the number of descriptors freed.&n; */
 id|STATIC
 r_int
 DECL|function|xfs_trans_unlock_chunk
@@ -1198,7 +1198,6 @@ comma
 id|commit_lsn
 )paren
 suffix:semicolon
-multiline_comment|/* XXXsup */
 r_if
 c_cond
 (paren
@@ -1208,29 +1207,12 @@ id|lip-&gt;li_flags
 op_or_assign
 id|XFS_LI_ABORTED
 suffix:semicolon
-multiline_comment|/* if (abort) {&n;&t;&t;&t;IOP_ABORT(lip);&n;&t;&t;} else */
-r_if
-c_cond
-(paren
-op_logical_neg
-(paren
-id|lidp-&gt;lid_flags
-op_amp
-id|XFS_LID_SYNC_UNLOCK
-)paren
-op_logical_or
-id|freeing_chunk
-op_logical_or
-m_abort
-)paren
-(brace
 id|IOP_UNLOCK
 c_func
 (paren
 id|lip
 )paren
 suffix:semicolon
-)brace
 multiline_comment|/*&n;&t;&t; * Free the descriptor if the item is not dirty&n;&t;&t; * within this transaction and the caller is not&n;&t;&t; * going to just free the entire thing regardless.&n;&t;&t; */
 r_if
 c_cond

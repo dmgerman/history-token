@@ -1,4 +1,4 @@
-multiline_comment|/*******************************************************************************&n;&n;  &n;  Copyright(c) 1999 - 2003 Intel Corporation. All rights reserved.&n;  &n;  This program is free software; you can redistribute it and/or modify it &n;  under the terms of the GNU General Public License as published by the Free &n;  Software Foundation; either version 2 of the License, or (at your option) &n;  any later version.&n;  &n;  This program is distributed in the hope that it will be useful, but WITHOUT &n;  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or &n;  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for &n;  more details.&n;  &n;  You should have received a copy of the GNU General Public License along with&n;  this program; if not, write to the Free Software Foundation, Inc., 59 &n;  Temple Place - Suite 330, Boston, MA  02111-1307, USA.&n;  &n;  The full GNU General Public License is included in this distribution in the&n;  file called LICENSE.&n;  &n;  Contact Information:&n;  Linux NICS &lt;linux.nics@intel.com&gt;&n;  Intel Corporation, 5200 N.E. Elam Young Parkway, Hillsboro, OR 97124-6497&n;*******************************************************************************/
+multiline_comment|/*******************************************************************************&n;&n;  &n;  Copyright(c) 1999 - 2004 Intel Corporation. All rights reserved.&n;  &n;  This program is free software; you can redistribute it and/or modify it &n;  under the terms of the GNU General Public License as published by the Free &n;  Software Foundation; either version 2 of the License, or (at your option) &n;  any later version.&n;  &n;  This program is distributed in the hope that it will be useful, but WITHOUT &n;  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or &n;  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for &n;  more details.&n;  &n;  You should have received a copy of the GNU General Public License along with&n;  this program; if not, write to the Free Software Foundation, Inc., 59 &n;  Temple Place - Suite 330, Boston, MA  02111-1307, USA.&n;  &n;  The full GNU General Public License is included in this distribution in the&n;  file called LICENSE.&n;  &n;  Contact Information:&n;  Linux NICS &lt;linux.nics@intel.com&gt;&n;  Intel Corporation, 5200 N.E. Elam Young Parkway, Hillsboro, OR 97124-6497&n;&n;*******************************************************************************/
 macro_line|#ifndef _IXGB_HW_H_
 DECL|macro|_IXGB_HW_H_
 mdefine_line|#define _IXGB_HW_H_
@@ -20,6 +20,47 @@ id|ixgb_num_macs
 DECL|typedef|ixgb_mac_type
 )brace
 id|ixgb_mac_type
+suffix:semicolon
+multiline_comment|/* Types of physical layer modules */
+r_typedef
+r_enum
+(brace
+DECL|enumerator|ixgb_phy_type_unknown
+id|ixgb_phy_type_unknown
+op_assign
+l_int|0
+comma
+DECL|enumerator|ixgb_phy_type_g6005
+id|ixgb_phy_type_g6005
+comma
+multiline_comment|/* 850nm, MM fiber, XPAK transceiver */
+DECL|enumerator|ixgb_phy_type_g6104
+id|ixgb_phy_type_g6104
+comma
+multiline_comment|/* 1310nm, SM fiber, XPAK transceiver */
+DECL|enumerator|ixgb_phy_type_txn17201
+id|ixgb_phy_type_txn17201
+comma
+multiline_comment|/* 850nm, MM fiber, XPAK transceiver */
+DECL|enumerator|ixgb_phy_type_txn17401
+id|ixgb_phy_type_txn17401
+multiline_comment|/* 1310nm, SM fiber, XENPAK transceiver */
+DECL|typedef|ixgb_phy_type
+)brace
+id|ixgb_phy_type
+suffix:semicolon
+multiline_comment|/* XPAK transceiver vendors, for the SR adapters */
+r_typedef
+r_enum
+(brace
+DECL|enumerator|ixgb_xpak_vendor_intel
+id|ixgb_xpak_vendor_intel
+comma
+DECL|enumerator|ixgb_xpak_vendor_infineon
+id|ixgb_xpak_vendor_infineon
+DECL|typedef|ixgb_xpak_vendor
+)brace
+id|ixgb_xpak_vendor
 suffix:semicolon
 multiline_comment|/* Media Types */
 r_typedef
@@ -144,6 +185,10 @@ DECL|macro|SPEED_10000
 mdefine_line|#define SPEED_10000  10000
 DECL|macro|FULL_DUPLEX
 mdefine_line|#define FULL_DUPLEX  2
+DECL|macro|MIN_NUMBER_OF_DESCRIPTORS
+mdefine_line|#define MIN_NUMBER_OF_DESCRIPTORS       8
+DECL|macro|MAX_NUMBER_OF_DESCRIPTORS
+mdefine_line|#define MAX_NUMBER_OF_DESCRIPTORS  0xFFF8&t;/* 13 bits in RDLEN/TDLEN, 128B aligned     */
 DECL|macro|IXGB_DELAY_BEFORE_RESET
 mdefine_line|#define IXGB_DELAY_BEFORE_RESET        10&t;/* allow 10ms after idling rx/tx units      */
 DECL|macro|IXGB_DELAY_AFTER_RESET
@@ -399,6 +444,12 @@ DECL|macro|IXGB_CTRL0_LRST
 mdefine_line|#define IXGB_CTRL0_LRST     0x00000008
 DECL|macro|IXGB_CTRL0_JFE
 mdefine_line|#define IXGB_CTRL0_JFE      0x00000010
+DECL|macro|IXGB_CTRL0_XLE
+mdefine_line|#define IXGB_CTRL0_XLE      0x00000020
+DECL|macro|IXGB_CTRL0_MDCS
+mdefine_line|#define IXGB_CTRL0_MDCS     0x00000040
+DECL|macro|IXGB_CTRL0_CMDC
+mdefine_line|#define IXGB_CTRL0_CMDC     0x00000080
 DECL|macro|IXGB_CTRL0_SDP0
 mdefine_line|#define IXGB_CTRL0_SDP0     0x00040000
 DECL|macro|IXGB_CTRL0_SDP1
@@ -424,13 +475,63 @@ mdefine_line|#define IXGB_CTRL0_TPE      0x10000000
 DECL|macro|IXGB_CTRL0_VME
 mdefine_line|#define IXGB_CTRL0_VME      0x40000000
 multiline_comment|/* CTRL1 Bit Masks */
+DECL|macro|IXGB_CTRL1_GPI0_EN
+mdefine_line|#define IXGB_CTRL1_GPI0_EN     0x00000001
+DECL|macro|IXGB_CTRL1_GPI1_EN
+mdefine_line|#define IXGB_CTRL1_GPI1_EN     0x00000002
+DECL|macro|IXGB_CTRL1_GPI2_EN
+mdefine_line|#define IXGB_CTRL1_GPI2_EN     0x00000004
+DECL|macro|IXGB_CTRL1_GPI3_EN
+mdefine_line|#define IXGB_CTRL1_GPI3_EN     0x00000008
+DECL|macro|IXGB_CTRL1_SDP4
+mdefine_line|#define IXGB_CTRL1_SDP4        0x00000010
+DECL|macro|IXGB_CTRL1_SDP5
+mdefine_line|#define IXGB_CTRL1_SDP5        0x00000020
+DECL|macro|IXGB_CTRL1_SDP6
+mdefine_line|#define IXGB_CTRL1_SDP6        0x00000040
+DECL|macro|IXGB_CTRL1_SDP7
+mdefine_line|#define IXGB_CTRL1_SDP7        0x00000080
+DECL|macro|IXGB_CTRL1_SDP4_DIR
+mdefine_line|#define IXGB_CTRL1_SDP4_DIR    0x00000100
+DECL|macro|IXGB_CTRL1_SDP5_DIR
+mdefine_line|#define IXGB_CTRL1_SDP5_DIR    0x00000200
+DECL|macro|IXGB_CTRL1_SDP6_DIR
+mdefine_line|#define IXGB_CTRL1_SDP6_DIR    0x00000400
+DECL|macro|IXGB_CTRL1_SDP7_DIR
+mdefine_line|#define IXGB_CTRL1_SDP7_DIR    0x00000800
 DECL|macro|IXGB_CTRL1_EE_RST
 mdefine_line|#define IXGB_CTRL1_EE_RST      0x00002000
+DECL|macro|IXGB_CTRL1_RO_DIS
+mdefine_line|#define IXGB_CTRL1_RO_DIS      0x00020000
+DECL|macro|IXGB_CTRL1_PCIXHM_MASK
+mdefine_line|#define IXGB_CTRL1_PCIXHM_MASK 0x00C00000
+DECL|macro|IXGB_CTRL1_PCIXHM_1_2
+mdefine_line|#define IXGB_CTRL1_PCIXHM_1_2  0x00000000
+DECL|macro|IXGB_CTRL1_PCIXHM_5_8
+mdefine_line|#define IXGB_CTRL1_PCIXHM_5_8  0x00400000
+DECL|macro|IXGB_CTRL1_PCIXHM_3_4
+mdefine_line|#define IXGB_CTRL1_PCIXHM_3_4  0x00800000
+DECL|macro|IXGB_CTRL1_PCIXHM_7_8
+mdefine_line|#define IXGB_CTRL1_PCIXHM_7_8  0x00C00000
 multiline_comment|/* STATUS Bit Masks */
 DECL|macro|IXGB_STATUS_LU
 mdefine_line|#define IXGB_STATUS_LU            0x00000002
+DECL|macro|IXGB_STATUS_AIP
+mdefine_line|#define IXGB_STATUS_AIP           0x00000004
 DECL|macro|IXGB_STATUS_TXOFF
 mdefine_line|#define IXGB_STATUS_TXOFF         0x00000010
+DECL|macro|IXGB_STATUS_XAUIME
+mdefine_line|#define IXGB_STATUS_XAUIME        0x00000020
+DECL|macro|IXGB_STATUS_RES
+mdefine_line|#define IXGB_STATUS_RES           0x00000040
+DECL|macro|IXGB_STATUS_RIS
+mdefine_line|#define IXGB_STATUS_RIS           0x00000080
+DECL|macro|IXGB_STATUS_RIE
+mdefine_line|#define IXGB_STATUS_RIE           0x00000100
+DECL|macro|IXGB_STATUS_RLF
+mdefine_line|#define IXGB_STATUS_RLF           0x00000200
+DECL|macro|IXGB_STATUS_RRF
+mdefine_line|#define IXGB_STATUS_RRF           0x00000400
 DECL|macro|IXGB_STATUS_PCI_SPD
 mdefine_line|#define IXGB_STATUS_PCI_SPD       0x00000800
 DECL|macro|IXGB_STATUS_BUS64
@@ -445,6 +546,10 @@ DECL|macro|IXGB_STATUS_PCIX_SPD_100
 mdefine_line|#define IXGB_STATUS_PCIX_SPD_100  0x00004000
 DECL|macro|IXGB_STATUS_PCIX_SPD_133
 mdefine_line|#define IXGB_STATUS_PCIX_SPD_133  0x00008000
+DECL|macro|IXGB_STATUS_REV_ID_MASK
+mdefine_line|#define IXGB_STATUS_REV_ID_MASK   0x000F0000
+DECL|macro|IXGB_STATUS_REV_ID_SHIFT
+mdefine_line|#define IXGB_STATUS_REV_ID_SHIFT  16
 multiline_comment|/* EECD Bit Masks */
 DECL|macro|IXGB_EECD_SK
 mdefine_line|#define IXGB_EECD_SK       0x00000001
@@ -454,12 +559,20 @@ DECL|macro|IXGB_EECD_DI
 mdefine_line|#define IXGB_EECD_DI       0x00000004
 DECL|macro|IXGB_EECD_DO
 mdefine_line|#define IXGB_EECD_DO       0x00000008
+DECL|macro|IXGB_EECD_FWE_MASK
+mdefine_line|#define IXGB_EECD_FWE_MASK 0x00000030
+DECL|macro|IXGB_EECD_FWE_DIS
+mdefine_line|#define IXGB_EECD_FWE_DIS  0x00000010
+DECL|macro|IXGB_EECD_FWE_EN
+mdefine_line|#define IXGB_EECD_FWE_EN   0x00000020
 multiline_comment|/* MFS */
 DECL|macro|IXGB_MFS_SHIFT
 mdefine_line|#define IXGB_MFS_SHIFT 16
 multiline_comment|/* Interrupt Register Bit Masks (used for ICR, ICS, IMS, and IMC) */
 DECL|macro|IXGB_INT_TXDW
 mdefine_line|#define IXGB_INT_TXDW     0x00000001
+DECL|macro|IXGB_INT_TXQE
+mdefine_line|#define IXGB_INT_TXQE     0x00000002
 DECL|macro|IXGB_INT_LSC
 mdefine_line|#define IXGB_INT_LSC      0x00000004
 DECL|macro|IXGB_INT_RXSEQ
@@ -470,19 +583,49 @@ DECL|macro|IXGB_INT_RXO
 mdefine_line|#define IXGB_INT_RXO      0x00000040
 DECL|macro|IXGB_INT_RXT0
 mdefine_line|#define IXGB_INT_RXT0     0x00000080
+DECL|macro|IXGB_INT_AUTOSCAN
+mdefine_line|#define IXGB_INT_AUTOSCAN 0x00000200
+DECL|macro|IXGB_INT_GPI0
+mdefine_line|#define IXGB_INT_GPI0     0x00000800
+DECL|macro|IXGB_INT_GPI1
+mdefine_line|#define IXGB_INT_GPI1     0x00001000
+DECL|macro|IXGB_INT_GPI2
+mdefine_line|#define IXGB_INT_GPI2     0x00002000
+DECL|macro|IXGB_INT_GPI3
+mdefine_line|#define IXGB_INT_GPI3     0x00004000
 multiline_comment|/* RCTL Bit Masks */
 DECL|macro|IXGB_RCTL_RXEN
 mdefine_line|#define IXGB_RCTL_RXEN        0x00000002
+DECL|macro|IXGB_RCTL_SBP
+mdefine_line|#define IXGB_RCTL_SBP         0x00000004
 DECL|macro|IXGB_RCTL_UPE
 mdefine_line|#define IXGB_RCTL_UPE         0x00000008
 DECL|macro|IXGB_RCTL_MPE
 mdefine_line|#define IXGB_RCTL_MPE         0x00000010
+DECL|macro|IXGB_RCTL_RDMTS_MASK
+mdefine_line|#define IXGB_RCTL_RDMTS_MASK  0x00000300
 DECL|macro|IXGB_RCTL_RDMTS_1_2
 mdefine_line|#define IXGB_RCTL_RDMTS_1_2   0x00000000
+DECL|macro|IXGB_RCTL_RDMTS_1_4
+mdefine_line|#define IXGB_RCTL_RDMTS_1_4   0x00000100
+DECL|macro|IXGB_RCTL_RDMTS_1_8
+mdefine_line|#define IXGB_RCTL_RDMTS_1_8   0x00000200
+DECL|macro|IXGB_RCTL_MO_MASK
+mdefine_line|#define IXGB_RCTL_MO_MASK     0x00003000
+DECL|macro|IXGB_RCTL_MO_47_36
+mdefine_line|#define IXGB_RCTL_MO_47_36    0x00000000
+DECL|macro|IXGB_RCTL_MO_46_35
+mdefine_line|#define IXGB_RCTL_MO_46_35    0x00001000
+DECL|macro|IXGB_RCTL_MO_45_34
+mdefine_line|#define IXGB_RCTL_MO_45_34    0x00002000
+DECL|macro|IXGB_RCTL_MO_43_32
+mdefine_line|#define IXGB_RCTL_MO_43_32    0x00003000
 DECL|macro|IXGB_RCTL_MO_SHIFT
 mdefine_line|#define IXGB_RCTL_MO_SHIFT    12
 DECL|macro|IXGB_RCTL_BAM
 mdefine_line|#define IXGB_RCTL_BAM         0x00008000
+DECL|macro|IXGB_RCTL_BSIZE_MASK
+mdefine_line|#define IXGB_RCTL_BSIZE_MASK  0x00030000
 DECL|macro|IXGB_RCTL_BSIZE_2048
 mdefine_line|#define IXGB_RCTL_BSIZE_2048  0x00000000
 DECL|macro|IXGB_RCTL_BSIZE_4096
@@ -497,33 +640,71 @@ DECL|macro|IXGB_RCTL_CFIEN
 mdefine_line|#define IXGB_RCTL_CFIEN       0x00080000
 DECL|macro|IXGB_RCTL_CFI
 mdefine_line|#define IXGB_RCTL_CFI         0x00100000
+DECL|macro|IXGB_RCTL_RPDA_MASK
+mdefine_line|#define IXGB_RCTL_RPDA_MASK   0x00600000
+DECL|macro|IXGB_RCTL_RPDA_MC_MAC
+mdefine_line|#define IXGB_RCTL_RPDA_MC_MAC 0x00000000
+DECL|macro|IXGB_RCTL_MC_ONLY
+mdefine_line|#define IXGB_RCTL_MC_ONLY     0x00400000
 DECL|macro|IXGB_RCTL_CFF
 mdefine_line|#define IXGB_RCTL_CFF         0x00800000
 DECL|macro|IXGB_RCTL_SECRC
 mdefine_line|#define IXGB_RCTL_SECRC       0x04000000
+DECL|macro|IXGB_RDT_FPDB
+mdefine_line|#define IXGB_RDT_FPDB         0x80000000
+DECL|macro|IXGB_RCTL_IDLE_RX_UNIT
+mdefine_line|#define IXGB_RCTL_IDLE_RX_UNIT 0
 multiline_comment|/* FCRTL Bit Masks */
 DECL|macro|IXGB_FCRTL_XONE
 mdefine_line|#define IXGB_FCRTL_XONE       0x80000000
 multiline_comment|/* RXDCTL Bit Masks */
+DECL|macro|IXGB_RXDCTL_PTHRESH_MASK
+mdefine_line|#define IXGB_RXDCTL_PTHRESH_MASK  0x000001FF
 DECL|macro|IXGB_RXDCTL_PTHRESH_SHIFT
 mdefine_line|#define IXGB_RXDCTL_PTHRESH_SHIFT 0
+DECL|macro|IXGB_RXDCTL_HTHRESH_MASK
+mdefine_line|#define IXGB_RXDCTL_HTHRESH_MASK  0x0003FE00
 DECL|macro|IXGB_RXDCTL_HTHRESH_SHIFT
 mdefine_line|#define IXGB_RXDCTL_HTHRESH_SHIFT 9
+DECL|macro|IXGB_RXDCTL_WTHRESH_MASK
+mdefine_line|#define IXGB_RXDCTL_WTHRESH_MASK  0x07FC0000
 DECL|macro|IXGB_RXDCTL_WTHRESH_SHIFT
 mdefine_line|#define IXGB_RXDCTL_WTHRESH_SHIFT 18
 multiline_comment|/* RAIDC Bit Masks */
+DECL|macro|IXGB_RAIDC_HIGHTHRS_MASK
+mdefine_line|#define IXGB_RAIDC_HIGHTHRS_MASK 0x0000003F
+DECL|macro|IXGB_RAIDC_DELAY_MASK
+mdefine_line|#define IXGB_RAIDC_DELAY_MASK    0x000FF800
 DECL|macro|IXGB_RAIDC_DELAY_SHIFT
 mdefine_line|#define IXGB_RAIDC_DELAY_SHIFT   11
+DECL|macro|IXGB_RAIDC_POLL_MASK
+mdefine_line|#define IXGB_RAIDC_POLL_MASK     0x1FF00000
 DECL|macro|IXGB_RAIDC_POLL_SHIFT
 mdefine_line|#define IXGB_RAIDC_POLL_SHIFT    20
 DECL|macro|IXGB_RAIDC_RXT_GATE
 mdefine_line|#define IXGB_RAIDC_RXT_GATE      0x40000000
 DECL|macro|IXGB_RAIDC_EN
 mdefine_line|#define IXGB_RAIDC_EN            0x80000000
+DECL|macro|IXGB_RAIDC_POLL_1000_INTERRUPTS_PER_SECOND
+mdefine_line|#define IXGB_RAIDC_POLL_1000_INTERRUPTS_PER_SECOND      1220
+DECL|macro|IXGB_RAIDC_POLL_5000_INTERRUPTS_PER_SECOND
+mdefine_line|#define IXGB_RAIDC_POLL_5000_INTERRUPTS_PER_SECOND      244
+DECL|macro|IXGB_RAIDC_POLL_10000_INTERRUPTS_PER_SECOND
+mdefine_line|#define IXGB_RAIDC_POLL_10000_INTERRUPTS_PER_SECOND     122
+DECL|macro|IXGB_RAIDC_POLL_20000_INTERRUPTS_PER_SECOND
+mdefine_line|#define IXGB_RAIDC_POLL_20000_INTERRUPTS_PER_SECOND     61
 multiline_comment|/* RXCSUM Bit Masks */
+DECL|macro|IXGB_RXCSUM_IPOFL
+mdefine_line|#define IXGB_RXCSUM_IPOFL 0x00000100
 DECL|macro|IXGB_RXCSUM_TUOFL
 mdefine_line|#define IXGB_RXCSUM_TUOFL 0x00000200
 multiline_comment|/* RAH Bit Masks */
+DECL|macro|IXGB_RAH_ASEL_MASK
+mdefine_line|#define IXGB_RAH_ASEL_MASK 0x00030000
+DECL|macro|IXGB_RAH_ASEL_DEST
+mdefine_line|#define IXGB_RAH_ASEL_DEST 0x00000000
+DECL|macro|IXGB_RAH_ASEL_SRC
+mdefine_line|#define IXGB_RAH_ASEL_SRC  0x00010000
 DECL|macro|IXGB_RAH_AV
 mdefine_line|#define IXGB_RAH_AV        0x80000000
 multiline_comment|/* TCTL Bit Masks */
@@ -533,58 +714,198 @@ DECL|macro|IXGB_TCTL_TXEN
 mdefine_line|#define IXGB_TCTL_TXEN 0x00000002
 DECL|macro|IXGB_TCTL_TPDE
 mdefine_line|#define IXGB_TCTL_TPDE 0x00000004
+DECL|macro|IXGB_TCTL_IDLE_TX_UNIT
+mdefine_line|#define IXGB_TCTL_IDLE_TX_UNIT  0
 multiline_comment|/* TXDCTL Bit Masks */
+DECL|macro|IXGB_TXDCTL_PTHRESH_MASK
+mdefine_line|#define IXGB_TXDCTL_PTHRESH_MASK  0x0000007F
+DECL|macro|IXGB_TXDCTL_HTHRESH_MASK
+mdefine_line|#define IXGB_TXDCTL_HTHRESH_MASK  0x00007F00
 DECL|macro|IXGB_TXDCTL_HTHRESH_SHIFT
 mdefine_line|#define IXGB_TXDCTL_HTHRESH_SHIFT 8
+DECL|macro|IXGB_TXDCTL_WTHRESH_MASK
+mdefine_line|#define IXGB_TXDCTL_WTHRESH_MASK  0x007F0000
+DECL|macro|IXGB_TXDCTL_WTHRESH_SHIFT
+mdefine_line|#define IXGB_TXDCTL_WTHRESH_SHIFT 16
 multiline_comment|/* TSPMT Bit Masks */
+DECL|macro|IXGB_TSPMT_TSMT_MASK
+mdefine_line|#define IXGB_TSPMT_TSMT_MASK   0x0000FFFF
+DECL|macro|IXGB_TSPMT_TSPBP_MASK
+mdefine_line|#define IXGB_TSPMT_TSPBP_MASK  0xFFFF0000
+DECL|macro|IXGB_TSPMT_TSPBP_SHIFT
+mdefine_line|#define IXGB_TSPMT_TSPBP_SHIFT 16
 multiline_comment|/* PAP Bit Masks */
+DECL|macro|IXGB_PAP_TXPC_MASK
+mdefine_line|#define IXGB_PAP_TXPC_MASK 0x0000FFFF
+DECL|macro|IXGB_PAP_TXPV_MASK
+mdefine_line|#define IXGB_PAP_TXPV_MASK 0x000F0000
+DECL|macro|IXGB_PAP_TXPV_10G
+mdefine_line|#define IXGB_PAP_TXPV_10G  0x00000000
+DECL|macro|IXGB_PAP_TXPV_1G
+mdefine_line|#define IXGB_PAP_TXPV_1G   0x00010000
+DECL|macro|IXGB_PAP_TXPV_2G
+mdefine_line|#define IXGB_PAP_TXPV_2G   0x00020000
+DECL|macro|IXGB_PAP_TXPV_3G
+mdefine_line|#define IXGB_PAP_TXPV_3G   0x00030000
+DECL|macro|IXGB_PAP_TXPV_4G
+mdefine_line|#define IXGB_PAP_TXPV_4G   0x00040000
+DECL|macro|IXGB_PAP_TXPV_5G
+mdefine_line|#define IXGB_PAP_TXPV_5G   0x00050000
+DECL|macro|IXGB_PAP_TXPV_6G
+mdefine_line|#define IXGB_PAP_TXPV_6G   0x00060000
+DECL|macro|IXGB_PAP_TXPV_7G
+mdefine_line|#define IXGB_PAP_TXPV_7G   0x00070000
+DECL|macro|IXGB_PAP_TXPV_8G
+mdefine_line|#define IXGB_PAP_TXPV_8G   0x00080000
+DECL|macro|IXGB_PAP_TXPV_9G
+mdefine_line|#define IXGB_PAP_TXPV_9G   0x00090000
+DECL|macro|IXGB_PAP_TXPV_WAN
+mdefine_line|#define IXGB_PAP_TXPV_WAN  0x000F0000
 multiline_comment|/* PCSC1 Bit Masks */
+DECL|macro|IXGB_PCSC1_LOOPBACK
+mdefine_line|#define IXGB_PCSC1_LOOPBACK 0x00004000
 multiline_comment|/* PCSC2 Bit Masks */
+DECL|macro|IXGB_PCSC2_PCS_TYPE_MASK
+mdefine_line|#define IXGB_PCSC2_PCS_TYPE_MASK  0x00000003
+DECL|macro|IXGB_PCSC2_PCS_TYPE_10GBX
+mdefine_line|#define IXGB_PCSC2_PCS_TYPE_10GBX 0x00000001
 multiline_comment|/* PCSS1 Bit Masks */
+DECL|macro|IXGB_PCSS1_LOCAL_FAULT
+mdefine_line|#define IXGB_PCSS1_LOCAL_FAULT    0x00000080
+DECL|macro|IXGB_PCSS1_RX_LINK_STATUS
+mdefine_line|#define IXGB_PCSS1_RX_LINK_STATUS 0x00000004
 multiline_comment|/* PCSS2 Bit Masks */
+DECL|macro|IXGB_PCSS2_DEV_PRES_MASK
+mdefine_line|#define IXGB_PCSS2_DEV_PRES_MASK 0x0000C000
+DECL|macro|IXGB_PCSS2_DEV_PRES
+mdefine_line|#define IXGB_PCSS2_DEV_PRES      0x00004000
+DECL|macro|IXGB_PCSS2_TX_LF
+mdefine_line|#define IXGB_PCSS2_TX_LF         0x00000800
+DECL|macro|IXGB_PCSS2_RX_LF
+mdefine_line|#define IXGB_PCSS2_RX_LF         0x00000400
+DECL|macro|IXGB_PCSS2_10GBW
+mdefine_line|#define IXGB_PCSS2_10GBW         0x00000004
+DECL|macro|IXGB_PCSS2_10GBX
+mdefine_line|#define IXGB_PCSS2_10GBX         0x00000002
+DECL|macro|IXGB_PCSS2_10GBR
+mdefine_line|#define IXGB_PCSS2_10GBR         0x00000001
 multiline_comment|/* XPCSS Bit Masks */
 DECL|macro|IXGB_XPCSS_ALIGN_STATUS
 mdefine_line|#define IXGB_XPCSS_ALIGN_STATUS 0x00001000
+DECL|macro|IXGB_XPCSS_PATTERN_TEST
+mdefine_line|#define IXGB_XPCSS_PATTERN_TEST 0x00000800
+DECL|macro|IXGB_XPCSS_LANE_3_SYNC
+mdefine_line|#define IXGB_XPCSS_LANE_3_SYNC  0x00000008
+DECL|macro|IXGB_XPCSS_LANE_2_SYNC
+mdefine_line|#define IXGB_XPCSS_LANE_2_SYNC  0x00000004
+DECL|macro|IXGB_XPCSS_LANE_1_SYNC
+mdefine_line|#define IXGB_XPCSS_LANE_1_SYNC  0x00000002
+DECL|macro|IXGB_XPCSS_LANE_0_SYNC
+mdefine_line|#define IXGB_XPCSS_LANE_0_SYNC  0x00000001
 multiline_comment|/* XPCSTC Bit Masks */
+DECL|macro|IXGB_XPCSTC_BERT_TRIG
+mdefine_line|#define IXGB_XPCSTC_BERT_TRIG       0x00200000
+DECL|macro|IXGB_XPCSTC_BERT_SST
+mdefine_line|#define IXGB_XPCSTC_BERT_SST        0x00100000
+DECL|macro|IXGB_XPCSTC_BERT_PSZ_MASK
+mdefine_line|#define IXGB_XPCSTC_BERT_PSZ_MASK   0x000C0000
+DECL|macro|IXGB_XPCSTC_BERT_PSZ_SHIFT
+mdefine_line|#define IXGB_XPCSTC_BERT_PSZ_SHIFT  17
+DECL|macro|IXGB_XPCSTC_BERT_PSZ_INF
+mdefine_line|#define IXGB_XPCSTC_BERT_PSZ_INF    0x00000003
+DECL|macro|IXGB_XPCSTC_BERT_PSZ_68
+mdefine_line|#define IXGB_XPCSTC_BERT_PSZ_68     0x00000001
+DECL|macro|IXGB_XPCSTC_BERT_PSZ_1028
+mdefine_line|#define IXGB_XPCSTC_BERT_PSZ_1028   0x00000000
 multiline_comment|/* MSCA bit Masks */
 multiline_comment|/* New Protocol Address */
+DECL|macro|IXGB_MSCA_NP_ADDR_MASK
+mdefine_line|#define IXGB_MSCA_NP_ADDR_MASK      0x0000FFFF
 DECL|macro|IXGB_MSCA_NP_ADDR_SHIFT
 mdefine_line|#define IXGB_MSCA_NP_ADDR_SHIFT     0
 multiline_comment|/* Either Device Type or Register Address,depending on ST_CODE */
+DECL|macro|IXGB_MSCA_DEV_TYPE_MASK
+mdefine_line|#define IXGB_MSCA_DEV_TYPE_MASK     0x001F0000
 DECL|macro|IXGB_MSCA_DEV_TYPE_SHIFT
 mdefine_line|#define IXGB_MSCA_DEV_TYPE_SHIFT    16
+DECL|macro|IXGB_MSCA_PHY_ADDR_MASK
+mdefine_line|#define IXGB_MSCA_PHY_ADDR_MASK     0x03E00000
 DECL|macro|IXGB_MSCA_PHY_ADDR_SHIFT
 mdefine_line|#define IXGB_MSCA_PHY_ADDR_SHIFT    21
+DECL|macro|IXGB_MSCA_OP_CODE_MASK
+mdefine_line|#define IXGB_MSCA_OP_CODE_MASK      0x0C000000
+multiline_comment|/* OP_CODE == 00, Address cycle, New Protocol           */
+multiline_comment|/* OP_CODE == 01, Write operation                       */
+multiline_comment|/* OP_CODE == 10, Read operation                        */
+multiline_comment|/* OP_CODE == 11, Read, auto increment, New Protocol    */
 DECL|macro|IXGB_MSCA_ADDR_CYCLE
 mdefine_line|#define IXGB_MSCA_ADDR_CYCLE        0x00000000
 DECL|macro|IXGB_MSCA_WRITE
 mdefine_line|#define IXGB_MSCA_WRITE             0x04000000
 DECL|macro|IXGB_MSCA_READ
 mdefine_line|#define IXGB_MSCA_READ              0x08000000
+DECL|macro|IXGB_MSCA_READ_AUTOINC
+mdefine_line|#define IXGB_MSCA_READ_AUTOINC      0x0C000000
+DECL|macro|IXGB_MSCA_OP_CODE_SHIFT
+mdefine_line|#define IXGB_MSCA_OP_CODE_SHIFT     26
+DECL|macro|IXGB_MSCA_ST_CODE_MASK
+mdefine_line|#define IXGB_MSCA_ST_CODE_MASK      0x30000000
+multiline_comment|/* ST_CODE == 00, New Protocol  */
+multiline_comment|/* ST_CODE == 01, Old Protocol  */
+DECL|macro|IXGB_MSCA_NEW_PROTOCOL
+mdefine_line|#define IXGB_MSCA_NEW_PROTOCOL      0x00000000
+DECL|macro|IXGB_MSCA_OLD_PROTOCOL
+mdefine_line|#define IXGB_MSCA_OLD_PROTOCOL      0x10000000
+DECL|macro|IXGB_MSCA_ST_CODE_SHIFT
+mdefine_line|#define IXGB_MSCA_ST_CODE_SHIFT     28
 multiline_comment|/* Initiate command, self-clearing when command completes */
 DECL|macro|IXGB_MSCA_MDI_COMMAND
 mdefine_line|#define IXGB_MSCA_MDI_COMMAND       0x40000000
 multiline_comment|/*MDI In Progress Enable. */
+DECL|macro|IXGB_MSCA_MDI_IN_PROG_EN
+mdefine_line|#define IXGB_MSCA_MDI_IN_PROG_EN    0x80000000
 multiline_comment|/* MSRWD bit masks */
+DECL|macro|IXGB_MSRWD_WRITE_DATA_MASK
+mdefine_line|#define IXGB_MSRWD_WRITE_DATA_MASK  0x0000FFFF
+DECL|macro|IXGB_MSRWD_WRITE_DATA_SHIFT
+mdefine_line|#define IXGB_MSRWD_WRITE_DATA_SHIFT 0
+DECL|macro|IXGB_MSRWD_READ_DATA_MASK
+mdefine_line|#define IXGB_MSRWD_READ_DATA_MASK   0xFFFF0000
 DECL|macro|IXGB_MSRWD_READ_DATA_SHIFT
 mdefine_line|#define IXGB_MSRWD_READ_DATA_SHIFT  16
-multiline_comment|/* Definitions for the TXN17401 devices on the MDIO bus. */
+multiline_comment|/* Definitions for the optics devices on the MDIO bus. */
 DECL|macro|IXGB_PHY_ADDRESS
 mdefine_line|#define IXGB_PHY_ADDRESS             0x0&t;/* Single PHY, multiple &quot;Devices&quot; */
-multiline_comment|/* Five bit Device IDs */
-DECL|macro|TXN17401_PMA_PMD_DID
-mdefine_line|#define TXN17401_PMA_PMD_DID    0x01
-DECL|macro|TXN17401_PCS_DID
-mdefine_line|#define TXN17401_PCS_DID        0x03
-DECL|macro|TXN17401_XGXS_DID
-mdefine_line|#define TXN17401_XGXS_DID       0x04
-multiline_comment|/* PMA/PMD registers and bit definitions. */
+multiline_comment|/* Standard five-bit Device IDs.  See IEEE 802.3ae, clause 45 */
+DECL|macro|MDIO_PMA_PMD_DID
+mdefine_line|#define MDIO_PMA_PMD_DID        0x01
+DECL|macro|MDIO_WIS_DID
+mdefine_line|#define MDIO_WIS_DID            0x02
+DECL|macro|MDIO_PCS_DID
+mdefine_line|#define MDIO_PCS_DID            0x03
+DECL|macro|MDIO_XGXS_DID
+mdefine_line|#define MDIO_XGXS_DID           0x04
+multiline_comment|/* Standard PMA/PMD registers and bit definitions. */
 multiline_comment|/* Note: This is a very limited set of definitions,      */
 multiline_comment|/* only implemented features are defined.                */
-DECL|macro|TXN17401_PMA_PMD_CR1
-mdefine_line|#define TXN17401_PMA_PMD_CR1        0x0000
-DECL|macro|TXN17401_PMA_PMD_CR1_RESET
-mdefine_line|#define TXN17401_PMA_PMD_CR1_RESET  0x8000
+DECL|macro|MDIO_PMA_PMD_CR1
+mdefine_line|#define MDIO_PMA_PMD_CR1        0x0000
+DECL|macro|MDIO_PMA_PMD_CR1_RESET
+mdefine_line|#define MDIO_PMA_PMD_CR1_RESET  0x8000
+DECL|macro|MDIO_PMA_PMD_XPAK_VENDOR_NAME
+mdefine_line|#define MDIO_PMA_PMD_XPAK_VENDOR_NAME       0x803A&t;/* XPAK/XENPAK devices only */
+multiline_comment|/* Vendor-specific MDIO registers */
+DECL|macro|G6XXX_PMA_PMD_VS1
+mdefine_line|#define G6XXX_PMA_PMD_VS1                   0xC001&t;/* Vendor-specific register */
+DECL|macro|G6XXX_XGXS_XAUI_VS2
+mdefine_line|#define G6XXX_XGXS_XAUI_VS2                 0x18&t;/* Vendor-specific register */
+DECL|macro|G6XXX_PMA_PMD_VS1_PLL_RESET
+mdefine_line|#define G6XXX_PMA_PMD_VS1_PLL_RESET         0x80
+DECL|macro|G6XXX_PMA_PMD_VS1_REMOVE_PLL_RESET
+mdefine_line|#define G6XXX_PMA_PMD_VS1_REMOVE_PLL_RESET  0x00
+DECL|macro|G6XXX_XGXS_XAUI_VS2_INPUT_MASK
+mdefine_line|#define G6XXX_XGXS_XAUI_VS2_INPUT_MASK      0x0F&t;/* XAUI lanes synchronized */
+multiline_comment|/* Layout of a single receive descriptor.  The controller assumes that this&n; * structure is packed into 16 bytes, which is a safe assumption with most&n; * compilers.  However, some compilers may insert padding between the fields,&n; * in which case the structure must be packed in some compiler-specific&n; * manner. */
 DECL|struct|ixgb_rx_desc
 r_struct
 id|ixgb_rx_desc
@@ -594,23 +915,23 @@ r_uint64
 id|buff_addr
 suffix:semicolon
 DECL|member|length
-id|u16
+r_uint16
 id|length
 suffix:semicolon
 DECL|member|reserved
-id|u16
+r_uint16
 id|reserved
 suffix:semicolon
 DECL|member|status
-id|u8
+r_uint8
 id|status
 suffix:semicolon
 DECL|member|errors
-id|u8
+r_uint8
 id|errors
 suffix:semicolon
 DECL|member|special
-id|u16
+r_uint16
 id|special
 suffix:semicolon
 )brace
@@ -625,6 +946,10 @@ DECL|macro|IXGB_RX_DESC_STATUS_VP
 mdefine_line|#define IXGB_RX_DESC_STATUS_VP    0x08
 DECL|macro|IXGB_RX_DESC_STATUS_TCPCS
 mdefine_line|#define IXGB_RX_DESC_STATUS_TCPCS 0x20
+DECL|macro|IXGB_RX_DESC_STATUS_IPCS
+mdefine_line|#define IXGB_RX_DESC_STATUS_IPCS  0x40
+DECL|macro|IXGB_RX_DESC_STATUS_PIF
+mdefine_line|#define IXGB_RX_DESC_STATUS_PIF   0x80
 DECL|macro|IXGB_RX_DESC_ERRORS_CE
 mdefine_line|#define IXGB_RX_DESC_ERRORS_CE   0x01
 DECL|macro|IXGB_RX_DESC_ERRORS_SE
@@ -633,10 +958,17 @@ DECL|macro|IXGB_RX_DESC_ERRORS_P
 mdefine_line|#define IXGB_RX_DESC_ERRORS_P    0x08
 DECL|macro|IXGB_RX_DESC_ERRORS_TCPE
 mdefine_line|#define IXGB_RX_DESC_ERRORS_TCPE 0x20
+DECL|macro|IXGB_RX_DESC_ERRORS_IPE
+mdefine_line|#define IXGB_RX_DESC_ERRORS_IPE  0x40
 DECL|macro|IXGB_RX_DESC_ERRORS_RXE
 mdefine_line|#define IXGB_RX_DESC_ERRORS_RXE  0x80
 DECL|macro|IXGB_RX_DESC_SPECIAL_VLAN_MASK
 mdefine_line|#define IXGB_RX_DESC_SPECIAL_VLAN_MASK  0x0FFF&t;/* VLAN ID is in lower 12 bits */
+DECL|macro|IXGB_RX_DESC_SPECIAL_PRI_MASK
+mdefine_line|#define IXGB_RX_DESC_SPECIAL_PRI_MASK   0xE000&t;/* Priority is in upper 3 bits */
+DECL|macro|IXGB_RX_DESC_SPECIAL_PRI_SHIFT
+mdefine_line|#define IXGB_RX_DESC_SPECIAL_PRI_SHIFT  0x000D&t;/* Priority is in upper 3 of 16 */
+multiline_comment|/* Layout of a single transmit descriptor.  The controller assumes that this&n; * structure is packed into 16 bytes, which is a safe assumption with most&n; * compilers.  However, some compilers may insert padding between the fields,&n; * in which case the structure must be packed in some compiler-specific&n; * manner. */
 DECL|struct|ixgb_tx_desc
 r_struct
 id|ixgb_tx_desc
@@ -646,23 +978,33 @@ r_uint64
 id|buff_addr
 suffix:semicolon
 DECL|member|cmd_type_len
-id|u32
+r_uint32
 id|cmd_type_len
 suffix:semicolon
 DECL|member|status
-id|u8
+r_uint8
 id|status
 suffix:semicolon
 DECL|member|popts
-id|u8
+r_uint8
 id|popts
 suffix:semicolon
 DECL|member|vlan
-id|u16
+r_uint16
 id|vlan
 suffix:semicolon
 )brace
 suffix:semicolon
+DECL|macro|IXGB_TX_DESC_LENGTH_MASK
+mdefine_line|#define IXGB_TX_DESC_LENGTH_MASK    0x000FFFFF
+DECL|macro|IXGB_TX_DESC_TYPE_MASK
+mdefine_line|#define IXGB_TX_DESC_TYPE_MASK      0x00F00000
+DECL|macro|IXGB_TX_DESC_TYPE_SHIFT
+mdefine_line|#define IXGB_TX_DESC_TYPE_SHIFT     20
+DECL|macro|IXGB_TX_DESC_CMD_MASK
+mdefine_line|#define IXGB_TX_DESC_CMD_MASK       0xFF000000
+DECL|macro|IXGB_TX_DESC_CMD_SHIFT
+mdefine_line|#define IXGB_TX_DESC_CMD_SHIFT      24
 DECL|macro|IXGB_TX_DESC_CMD_EOP
 mdefine_line|#define IXGB_TX_DESC_CMD_EOP        0x01000000
 DECL|macro|IXGB_TX_DESC_CMD_TSE
@@ -681,48 +1023,50 @@ DECL|macro|IXGB_TX_DESC_POPTS_IXSM
 mdefine_line|#define IXGB_TX_DESC_POPTS_IXSM 0x01
 DECL|macro|IXGB_TX_DESC_POPTS_TXSM
 mdefine_line|#define IXGB_TX_DESC_POPTS_TXSM 0x02
+DECL|macro|IXGB_TX_DESC_SPECIAL_PRI_SHIFT
+mdefine_line|#define IXGB_TX_DESC_SPECIAL_PRI_SHIFT  IXGB_RX_DESC_SPECIAL_PRI_SHIFT&t;/* Priority is in upper 3 of 16 */
 DECL|struct|ixgb_context_desc
 r_struct
 id|ixgb_context_desc
 (brace
 DECL|member|ipcss
-id|u8
+r_uint8
 id|ipcss
 suffix:semicolon
 DECL|member|ipcso
-id|u8
+r_uint8
 id|ipcso
 suffix:semicolon
 DECL|member|ipcse
-id|u16
+r_uint16
 id|ipcse
 suffix:semicolon
 DECL|member|tucss
-id|u8
+r_uint8
 id|tucss
 suffix:semicolon
 DECL|member|tucso
-id|u8
+r_uint8
 id|tucso
 suffix:semicolon
 DECL|member|tucse
-id|u16
+r_uint16
 id|tucse
 suffix:semicolon
 DECL|member|cmd_type_len
-id|u32
+r_uint32
 id|cmd_type_len
 suffix:semicolon
 DECL|member|status
-id|u8
+r_uint8
 id|status
 suffix:semicolon
 DECL|member|hdr_len
-id|u8
+r_uint8
 id|hdr_len
 suffix:semicolon
 DECL|member|mss
-id|u16
+r_uint16
 id|mss
 suffix:semicolon
 )brace
@@ -739,6 +1083,8 @@ DECL|macro|IXGB_CONTEXT_DESC_CMD_IDE
 mdefine_line|#define IXGB_CONTEXT_DESC_CMD_IDE 0x80000000
 DECL|macro|IXGB_CONTEXT_DESC_TYPE
 mdefine_line|#define IXGB_CONTEXT_DESC_TYPE 0x00000000
+DECL|macro|IXGB_CONTEXT_DESC_STATUS_DD
+mdefine_line|#define IXGB_CONTEXT_DESC_STATUS_DD 0x01
 multiline_comment|/* Filters */
 DECL|macro|IXGB_RAR_ENTRIES
 mdefine_line|#define IXGB_RAR_ENTRIES          16&t;/* Number of entries in Rx Address array */
@@ -746,6 +1092,8 @@ DECL|macro|IXGB_MC_TBL_SIZE
 mdefine_line|#define IXGB_MC_TBL_SIZE          128&t;/* Multicast Filter Table (4096 bits) */
 DECL|macro|IXGB_VLAN_FILTER_TBL_SIZE
 mdefine_line|#define IXGB_VLAN_FILTER_TBL_SIZE 128&t;/* VLAN Filter Table (4096 bits) */
+DECL|macro|IXGB_MEMORY_REGISTER_BASE_ADDRESS
+mdefine_line|#define IXGB_MEMORY_REGISTER_BASE_ADDRESS   0
 DECL|macro|ENET_HEADER_SIZE
 mdefine_line|#define ENET_HEADER_SIZE            14
 DECL|macro|ENET_FCS_LENGTH
@@ -759,29 +1107,79 @@ mdefine_line|#define IXGB_MAX_ENET_FRAME_SIZE_WITHOUT_FCS    1514
 DECL|macro|IXGB_MAX_JUMBO_FRAME_SIZE
 mdefine_line|#define IXGB_MAX_JUMBO_FRAME_SIZE       0x3F00
 multiline_comment|/* Phy Addresses */
+DECL|macro|IXGB_OPTICAL_PHY_ADDR
+mdefine_line|#define IXGB_OPTICAL_PHY_ADDR 0x0&t;/* Optical Module phy address */
+DECL|macro|IXGB_XAUII_PHY_ADDR
+mdefine_line|#define IXGB_XAUII_PHY_ADDR   0x1&t;/* Xauii transceiver phy address */
+DECL|macro|IXGB_DIAG_PHY_ADDR
+mdefine_line|#define IXGB_DIAG_PHY_ADDR    0x1F&t;/* Diagnostic Device phy address */
+multiline_comment|/* This structure takes a 64k flash and maps it for identification commands */
+DECL|struct|ixgb_flash_buffer
+r_struct
+id|ixgb_flash_buffer
+(brace
+DECL|member|manufacturer_id
+r_uint8
+id|manufacturer_id
+suffix:semicolon
+DECL|member|device_id
+r_uint8
+id|device_id
+suffix:semicolon
+DECL|member|filler1
+r_uint8
+id|filler1
+(braket
+l_int|0x2AA8
+)braket
+suffix:semicolon
+DECL|member|cmd2
+r_uint8
+id|cmd2
+suffix:semicolon
+DECL|member|filler2
+r_uint8
+id|filler2
+(braket
+l_int|0x2AAA
+)braket
+suffix:semicolon
+DECL|member|cmd1
+r_uint8
+id|cmd1
+suffix:semicolon
+DECL|member|filler3
+r_uint8
+id|filler3
+(braket
+l_int|0xAAAA
+)braket
+suffix:semicolon
+)brace
+suffix:semicolon
 multiline_comment|/*&n; * This is a little-endian specific check.&n; */
 DECL|macro|IS_MULTICAST
-mdefine_line|#define IS_MULTICAST(Address) &bslash;&n;    (boolean_t)(((u8 *)(Address))[0] &amp; ((u8)0x01))
+mdefine_line|#define IS_MULTICAST(Address) &bslash;&n;    (boolean_t)(((uint8_t *)(Address))[0] &amp; ((uint8_t)0x01))
 multiline_comment|/*&n; * Check whether an address is broadcast.&n; */
 DECL|macro|IS_BROADCAST
-mdefine_line|#define IS_BROADCAST(Address)               &bslash;&n;    ((((u8 *)(Address))[0] == ((u8)0xff)) &amp;&amp; (((u8 *)(Address))[1] == ((u8)0xff)))
+mdefine_line|#define IS_BROADCAST(Address)               &bslash;&n;    ((((uint8_t *)(Address))[0] == ((uint8_t)0xff)) &amp;&amp; (((uint8_t *)(Address))[1] == ((uint8_t)0xff)))
 multiline_comment|/* Flow control parameters */
 DECL|struct|ixgb_fc
 r_struct
 id|ixgb_fc
 (brace
 DECL|member|high_water
-id|u32
+r_uint32
 id|high_water
 suffix:semicolon
 multiline_comment|/* Flow Control High-water          */
 DECL|member|low_water
-id|u32
+r_uint32
 id|low_water
 suffix:semicolon
 multiline_comment|/* Flow Control Low-water           */
 DECL|member|pause_time
-id|u16
+r_uint16
 id|pause_time
 suffix:semicolon
 multiline_comment|/* Flow Control Pause timer         */
@@ -798,6 +1196,12 @@ multiline_comment|/* Type of flow control             */
 )brace
 suffix:semicolon
 multiline_comment|/* The historical defaults for the flow control values are given below. */
+DECL|macro|FC_DEFAULT_HI_THRESH
+mdefine_line|#define FC_DEFAULT_HI_THRESH        (0x8000)&t;/* 32KB */
+DECL|macro|FC_DEFAULT_LO_THRESH
+mdefine_line|#define FC_DEFAULT_LO_THRESH        (0x4000)&t;/* 16KB */
+DECL|macro|FC_DEFAULT_TX_TIMER
+mdefine_line|#define FC_DEFAULT_TX_TIMER         (0x100)&t;/* ~130 us */
 multiline_comment|/* Phy definitions */
 DECL|macro|IXGB_MAX_PHY_REG_ADDRESS
 mdefine_line|#define IXGB_MAX_PHY_REG_ADDRESS    0xFFFF
@@ -829,7 +1233,7 @@ r_struct
 id|ixgb_hw
 (brace
 DECL|member|hw_addr
-id|u8
+r_uint8
 op_star
 id|hw_addr
 suffix:semicolon
@@ -853,12 +1257,12 @@ id|bus
 suffix:semicolon
 multiline_comment|/* Bus parameters                   */
 DECL|member|phy_id
-id|u32
+r_uint32
 id|phy_id
 suffix:semicolon
 multiline_comment|/* Phy Identifier                   */
 DECL|member|phy_addr
-id|u32
+r_uint32
 id|phy_addr
 suffix:semicolon
 multiline_comment|/* XGMII address of Phy             */
@@ -867,23 +1271,28 @@ id|ixgb_mac_type
 id|mac_type
 suffix:semicolon
 multiline_comment|/* Identifier for MAC controller    */
+DECL|member|phy_type
+id|ixgb_phy_type
+id|phy_type
+suffix:semicolon
+multiline_comment|/* Transceiver/phy identifier       */
 DECL|member|max_frame_size
-id|u32
+r_uint32
 id|max_frame_size
 suffix:semicolon
 multiline_comment|/* Maximum frame size supported     */
 DECL|member|mc_filter_type
-id|u32
+r_uint32
 id|mc_filter_type
 suffix:semicolon
 multiline_comment|/* Multicast filter hash type       */
 DECL|member|num_mc_addrs
-id|u32
+r_uint32
 id|num_mc_addrs
 suffix:semicolon
 multiline_comment|/* Number of current Multicast addrs */
 DECL|member|curr_mac_addr
-id|u8
+r_uint8
 id|curr_mac_addr
 (braket
 id|IXGB_ETH_LENGTH_OF_ADDRESS
@@ -891,17 +1300,17 @@ id|IXGB_ETH_LENGTH_OF_ADDRESS
 suffix:semicolon
 multiline_comment|/* Individual address currently programmed in MAC */
 DECL|member|num_tx_desc
-id|u32
+r_uint32
 id|num_tx_desc
 suffix:semicolon
 multiline_comment|/* Number of Transmit descriptors   */
 DECL|member|num_rx_desc
-id|u32
+r_uint32
 id|num_rx_desc
 suffix:semicolon
 multiline_comment|/* Number of Receive descriptors    */
 DECL|member|rx_buffer_size
-id|u32
+r_uint32
 id|rx_buffer_size
 suffix:semicolon
 multiline_comment|/* Size of Receive buffer           */
@@ -916,27 +1325,54 @@ id|adapter_stopped
 suffix:semicolon
 multiline_comment|/* State of adapter                 */
 DECL|member|device_id
-id|u16
+r_uint16
 id|device_id
 suffix:semicolon
 multiline_comment|/* device id from PCI configuration space */
 DECL|member|vendor_id
-id|u16
+r_uint16
 id|vendor_id
 suffix:semicolon
 multiline_comment|/* vendor id from PCI configuration space */
+DECL|member|revision_id
+r_uint8
+id|revision_id
+suffix:semicolon
+multiline_comment|/* revision id from PCI configuration space */
 DECL|member|subsystem_vendor_id
-id|u16
+r_uint16
 id|subsystem_vendor_id
 suffix:semicolon
 multiline_comment|/* subsystem vendor id from PCI configuration space */
 DECL|member|subsystem_id
-id|u16
+r_uint16
 id|subsystem_id
 suffix:semicolon
 multiline_comment|/* subsystem id from PCI configuration space */
+DECL|member|bar0
+r_uint32
+id|bar0
+suffix:semicolon
+multiline_comment|/* Base Address registers           */
+DECL|member|bar1
+r_uint32
+id|bar1
+suffix:semicolon
+DECL|member|bar2
+r_uint32
+id|bar2
+suffix:semicolon
+DECL|member|bar3
+r_uint32
+id|bar3
+suffix:semicolon
+DECL|member|pci_cmd_word
+r_uint16
+id|pci_cmd_word
+suffix:semicolon
+multiline_comment|/* PCI command register id from PCI configuration space */
 DECL|member|eeprom
-id|u16
+r_uint16
 id|eeprom
 (braket
 id|IXGB_EEPROM_SIZE
@@ -944,20 +1380,22 @@ id|IXGB_EEPROM_SIZE
 suffix:semicolon
 multiline_comment|/* EEPROM contents read at init time  */
 DECL|member|io_base
-r_uint64
+r_int
+r_int
 id|io_base
 suffix:semicolon
 multiline_comment|/* Our I/O mapped location */
 DECL|member|lastLFC
-id|u32
+r_uint32
 id|lastLFC
 suffix:semicolon
 DECL|member|lastRFC
-id|u32
+r_uint32
 id|lastRFC
 suffix:semicolon
 )brace
 suffix:semicolon
+multiline_comment|/* Statistics reported by the hardware */
 DECL|struct|ixgb_hw_stats
 r_struct
 id|ixgb_hw_stats
@@ -1298,13 +1736,13 @@ id|boolean_t
 id|mac_addr_valid
 c_func
 (paren
-id|u8
+r_uint8
 op_star
 id|mac_addr
 )paren
 suffix:semicolon
 r_extern
-id|u16
+r_uint16
 id|ixgb_read_phy_reg
 c_func
 (paren
@@ -1313,13 +1751,13 @@ id|ixgb_hw
 op_star
 id|hw
 comma
-id|u32
+r_uint32
 id|reg_addr
 comma
-id|u32
+r_uint32
 id|phy_addr
 comma
-id|u32
+r_uint32
 id|device_type
 )paren
 suffix:semicolon
@@ -1333,16 +1771,16 @@ id|ixgb_hw
 op_star
 id|hw
 comma
-id|u32
+r_uint32
 id|reg_addr
 comma
-id|u32
+r_uint32
 id|phy_addr
 comma
-id|u32
+r_uint32
 id|device_type
 comma
-id|u16
+r_uint16
 id|data
 )paren
 suffix:semicolon
@@ -1356,11 +1794,11 @@ id|ixgb_hw
 op_star
 id|hw
 comma
-id|u8
+r_uint8
 op_star
 id|addr
 comma
-id|u32
+r_uint32
 id|index
 )paren
 suffix:semicolon
@@ -1375,14 +1813,14 @@ id|ixgb_hw
 op_star
 id|hw
 comma
-id|u8
+r_uint8
 op_star
 id|mc_addr_list
 comma
-id|u32
+r_uint32
 id|mc_addr_count
 comma
-id|u32
+r_uint32
 id|pad
 )paren
 suffix:semicolon
@@ -1397,10 +1835,10 @@ id|ixgb_hw
 op_star
 id|hw
 comma
-id|u32
+r_uint32
 id|offset
 comma
-id|u32
+r_uint32
 id|value
 )paren
 suffix:semicolon
@@ -1425,12 +1863,12 @@ id|ixgb_hw
 op_star
 id|hw
 comma
-id|u8
+r_uint8
 op_star
 id|mac_addr
 )paren
 suffix:semicolon
-id|u16
+r_uint16
 id|ixgb_get_ee_compatibility
 c_func
 (paren
@@ -1440,7 +1878,7 @@ op_star
 id|hw
 )paren
 suffix:semicolon
-id|u32
+r_uint32
 id|ixgb_get_ee_pba_number
 c_func
 (paren
@@ -1450,7 +1888,7 @@ op_star
 id|hw
 )paren
 suffix:semicolon
-id|u16
+r_uint16
 id|ixgb_get_ee_init_ctrl_reg_1
 c_func
 (paren
@@ -1460,7 +1898,7 @@ op_star
 id|hw
 )paren
 suffix:semicolon
-id|u16
+r_uint16
 id|ixgb_get_ee_init_ctrl_reg_2
 c_func
 (paren
@@ -1470,7 +1908,7 @@ op_star
 id|hw
 )paren
 suffix:semicolon
-id|u16
+r_uint16
 id|ixgb_get_ee_subsystem_id
 c_func
 (paren
@@ -1480,7 +1918,7 @@ op_star
 id|hw
 )paren
 suffix:semicolon
-id|u16
+r_uint16
 id|ixgb_get_ee_subvendor_id
 c_func
 (paren
@@ -1490,7 +1928,7 @@ op_star
 id|hw
 )paren
 suffix:semicolon
-id|u16
+r_uint16
 id|ixgb_get_ee_device_id
 c_func
 (paren
@@ -1500,7 +1938,7 @@ op_star
 id|hw
 )paren
 suffix:semicolon
-id|u16
+r_uint16
 id|ixgb_get_ee_vendor_id
 c_func
 (paren
@@ -1510,7 +1948,7 @@ op_star
 id|hw
 )paren
 suffix:semicolon
-id|u16
+r_uint16
 id|ixgb_get_ee_swdpins_reg
 c_func
 (paren
@@ -1520,7 +1958,7 @@ op_star
 id|hw
 )paren
 suffix:semicolon
-id|u8
+r_uint8
 id|ixgb_get_ee_d3_power
 c_func
 (paren
@@ -1530,7 +1968,7 @@ op_star
 id|hw
 )paren
 suffix:semicolon
-id|u8
+r_uint8
 id|ixgb_get_ee_d0_power
 c_func
 (paren
@@ -1548,6 +1986,19 @@ r_struct
 id|ixgb_hw
 op_star
 id|hw
+)paren
+suffix:semicolon
+r_uint16
+id|ixgb_get_eeprom_word
+c_func
+(paren
+r_struct
+id|ixgb_hw
+op_star
+id|hw
+comma
+r_uint16
+id|index
 )paren
 suffix:semicolon
 multiline_comment|/* Everything else */
@@ -1580,10 +2031,10 @@ id|ixgb_hw
 op_star
 id|hw
 comma
-id|u32
+r_uint32
 id|reg
 comma
-id|u16
+r_uint16
 op_star
 id|value
 )paren

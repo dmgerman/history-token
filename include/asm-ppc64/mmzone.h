@@ -36,8 +36,6 @@ id|nr_cpus_in_node
 (braket
 )braket
 suffix:semicolon
-DECL|macro|MAX_MEMORY
-mdefine_line|#define MAX_MEMORY (1UL &lt;&lt; 41)
 multiline_comment|/* 16MB regions */
 DECL|macro|MEMORY_INCREMENT_SHIFT
 mdefine_line|#define MEMORY_INCREMENT_SHIFT 24

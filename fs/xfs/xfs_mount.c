@@ -2927,6 +2927,22 @@ r_goto
 id|error1
 suffix:semicolon
 )brace
+id|xfs_fs_cmn_err
+c_func
+(paren
+id|CE_WARN
+comma
+id|mp
+comma
+l_string|&quot;stripe alignment turned off: sunit(%d)/swidth(%d) incompatible with agsize(%d)&quot;
+comma
+id|mp-&gt;m_dalign
+comma
+id|mp-&gt;m_swidth
+comma
+id|sbp-&gt;sb_agblocks
+)paren
+suffix:semicolon
 id|mp-&gt;m_dalign
 op_assign
 l_int|0
@@ -2964,12 +2980,20 @@ op_amp
 id|XFS_MOUNT_RETERR
 )paren
 (brace
-id|cmn_err
+id|xfs_fs_cmn_err
 c_func
 (paren
 id|CE_WARN
 comma
-l_string|&quot;XFS: alignment check 3 failed&quot;
+id|mp
+comma
+l_string|&quot;stripe alignment turned off: sunit(%d) less than bsize(%d)&quot;
+comma
+id|mp-&gt;m_dalign
+comma
+id|mp-&gt;m_blockmask
+op_plus
+l_int|1
 )paren
 suffix:semicolon
 id|error

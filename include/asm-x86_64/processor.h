@@ -895,24 +895,6 @@ suffix:semicolon
 multiline_comment|/* &squot;6&squot; because it used to be for P6 only (but now covers Pentium 4 as well) */
 DECL|macro|MICROCODE_IOCFREE
 mdefine_line|#define MICROCODE_IOCFREE&t;_IO(&squot;6&squot;,0)
-multiline_comment|/* generic versions from gas */
-DECL|macro|GENERIC_NOP1
-mdefine_line|#define GENERIC_NOP1&t;&quot;.byte 0x90&bslash;n&quot;
-DECL|macro|GENERIC_NOP2
-mdefine_line|#define GENERIC_NOP2    &t;&quot;.byte 0x89,0xf6&bslash;n&quot;
-DECL|macro|GENERIC_NOP3
-mdefine_line|#define GENERIC_NOP3        &quot;.byte 0x8d,0x76,0x00&bslash;n&quot;
-DECL|macro|GENERIC_NOP4
-mdefine_line|#define GENERIC_NOP4        &quot;.byte 0x8d,0x74,0x26,0x00&bslash;n&quot;
-DECL|macro|GENERIC_NOP5
-mdefine_line|#define GENERIC_NOP5        GENERIC_NOP1 GENERIC_NOP4
-DECL|macro|GENERIC_NOP6
-mdefine_line|#define GENERIC_NOP6&t;&quot;.byte 0x8d,0xb6,0x00,0x00,0x00,0x00&bslash;n&quot;
-DECL|macro|GENERIC_NOP7
-mdefine_line|#define GENERIC_NOP7&t;&quot;.byte 0x8d,0xb4,0x26,0x00,0x00,0x00,0x00&bslash;n&quot;
-DECL|macro|GENERIC_NOP8
-mdefine_line|#define GENERIC_NOP8&t;GENERIC_NOP1 GENERIC_NOP7
-macro_line|#ifdef CONFIG_MK8
 DECL|macro|ASM_NOP1
 mdefine_line|#define ASM_NOP1 K8_NOP1
 DECL|macro|ASM_NOP2
@@ -929,24 +911,6 @@ DECL|macro|ASM_NOP7
 mdefine_line|#define ASM_NOP7 K8_NOP7
 DECL|macro|ASM_NOP8
 mdefine_line|#define ASM_NOP8 K8_NOP8
-macro_line|#else
-DECL|macro|ASM_NOP1
-mdefine_line|#define ASM_NOP1 GENERIC_NOP1
-DECL|macro|ASM_NOP2
-mdefine_line|#define ASM_NOP2 GENERIC_NOP2
-DECL|macro|ASM_NOP3
-mdefine_line|#define ASM_NOP3 GENERIC_NOP3
-DECL|macro|ASM_NOP4
-mdefine_line|#define ASM_NOP4 GENERIC_NOP4
-DECL|macro|ASM_NOP5
-mdefine_line|#define ASM_NOP5 GENERIC_NOP5
-DECL|macro|ASM_NOP6
-mdefine_line|#define ASM_NOP6 GENERIC_NOP6
-DECL|macro|ASM_NOP7
-mdefine_line|#define ASM_NOP7 GENERIC_NOP7
-DECL|macro|ASM_NOP8
-mdefine_line|#define ASM_NOP8 GENERIC_NOP8
-macro_line|#endif
 multiline_comment|/* Opteron nops */
 DECL|macro|K8_NOP1
 mdefine_line|#define K8_NOP1 &quot;.byte 0x90&bslash;n&quot;

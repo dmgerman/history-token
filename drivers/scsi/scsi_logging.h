@@ -52,7 +52,7 @@ macro_line|#ifdef CONFIG_SCSI_LOGGING
 DECL|macro|SCSI_LOG_LEVEL
 mdefine_line|#define SCSI_LOG_LEVEL(SHIFT, BITS)&t;&t;&t;&t;&bslash;&n;        ((scsi_logging_level &gt;&gt; (SHIFT)) &amp; ((1 &lt;&lt; (BITS)) - 1))
 DECL|macro|SCSI_CHECK_LOGGING
-mdefine_line|#define SCSI_CHECK_LOGGING(SHIFT, BITS, LEVEL, CMD)&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;        if ((SCSI_LOG_LEVEL(SHIFT, BITS)) &gt; (LEVEL))&t;&t;&bslash;&n;&t;&t;(CMD);&t;&t;&t;&t;&t;&t;&bslash;&n;}
+mdefine_line|#define SCSI_CHECK_LOGGING(SHIFT, BITS, LEVEL, CMD)&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;        if (unlikely((SCSI_LOG_LEVEL(SHIFT, BITS)) &gt; (LEVEL)))&t;&bslash;&n;&t;&t;(CMD);&t;&t;&t;&t;&t;&t;&bslash;&n;}
 macro_line|#else
 DECL|macro|SCSI_CHECK_LOGGING
 mdefine_line|#define SCSI_CHECK_LOGGING(SHIFT, BITS, LEVEL, CMD)

@@ -411,7 +411,7 @@ id|len
 comma
 l_string|&quot;debug %u&bslash;n&quot;
 comma
-macro_line|#if defined(XFSDEBUG)
+macro_line|#if defined(DEBUG)
 l_int|1
 )paren
 suffix:semicolon

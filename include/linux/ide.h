@@ -5010,14 +5010,6 @@ r_int
 )paren
 suffix:semicolon
 r_extern
-r_void
-id|ide_delay_50ms
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
 r_int
 id|system_bus_clock
 c_func

@@ -7,7 +7,6 @@ macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/mach/map.h&gt;
-macro_line|#include &lt;asm/mach-types.h&gt;
 macro_line|#ifdef CONFIG_IOP310_MU
 macro_line|#include &quot;message.h&quot;
 macro_line|#endif

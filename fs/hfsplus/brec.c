@@ -133,6 +133,8 @@ id|HFS_TREE_VARIDXKEYS
 id|retval
 op_assign
 id|node-&gt;tree-&gt;max_key_len
+op_plus
+l_int|2
 suffix:semicolon
 )brace
 r_else
@@ -745,7 +747,11 @@ r_else
 (brace
 id|fd-&gt;search_key-&gt;key_len
 op_assign
+id|cpu_to_be16
+c_func
+(paren
 id|tree-&gt;max_key_len
+)paren
 suffix:semicolon
 id|key_len
 op_assign

@@ -5,7 +5,7 @@ multiline_comment|/*&n; * Flags for SCSI devices that need special treatment&n; 
 DECL|macro|BLIST_NOLUN
 mdefine_line|#define BLIST_NOLUN     &t;0x001&t;/* Only scan LUN 0 */
 DECL|macro|BLIST_FORCELUN
-mdefine_line|#define BLIST_FORCELUN  &t;0x002&t;/* Known to have LUNs, force scanning */
+mdefine_line|#define BLIST_FORCELUN  &t;0x002&t;/* Known to have LUNs, force scanning,&n;&t;&t;&t;&t;&t;   deprecated: Use max_luns=N */
 DECL|macro|BLIST_BORKEN
 mdefine_line|#define BLIST_BORKEN    &t;0x004&t;/* Flag for broken handshaking */
 DECL|macro|BLIST_KEY
@@ -36,5 +36,9 @@ DECL|macro|BLIST_USE_10_BYTE_MS
 mdefine_line|#define BLIST_USE_10_BYTE_MS&t;0x8000&t;/* use 10 byte ms before 6 byte ms */
 DECL|macro|BLIST_MS_192_BYTES_FOR_3F
 mdefine_line|#define BLIST_MS_192_BYTES_FOR_3F&t;0x10000&t;/*  192 byte ms page 0x3f request */
+DECL|macro|BLIST_REPORTLUN2
+mdefine_line|#define BLIST_REPORTLUN2&t;0x20000&t;/* try REPORT_LUNS even for SCSI-2 devs&n; &t;&t;&t;&t;&t;   (if HBA supports more than 8 LUNs) */
+DECL|macro|BLIST_NOREPORTLUN
+mdefine_line|#define BLIST_NOREPORTLUN&t;0x40000&t;/* don&squot;t try REPORT_LUNS scan (SCSI-3 devs) */
 macro_line|#endif
 eof

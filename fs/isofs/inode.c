@@ -5009,8 +5009,6 @@ r_int
 id|offset
 suffix:semicolon
 r_int
-id|volume_seq_no
-comma
 id|i
 suffix:semicolon
 r_struct
@@ -5588,14 +5586,6 @@ id|sbi-&gt;s_gid
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* get the volume sequence number */
-id|volume_seq_no
-op_assign
-id|isonum_723
-(paren
-id|de-&gt;volume_sequence_number
-)paren
-suffix:semicolon
 multiline_comment|/* Install the inode operations vector */
 r_if
 c_cond

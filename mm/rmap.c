@@ -2010,13 +2010,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * objrmap doesn&squot;t work for nonlinear VMAs because the assumption that&n; * offset-into-file correlates with offset-into-virtual-addresses does not hold.&n; * Consequently, given a particular page and its -&gt;index, we cannot locate the&n; * ptes which are mapping that page without an exhaustive linear search.&n; *&n; * So what this code does is a mini &quot;virtual scan&quot; of each nonlinear VMA which&n; * maps the file to which the target page belongs.  The -&gt;vm_private_data field&n; * holds the current cursor into that scan.  Successive searches will circulate&n; * around the vma&squot;s virtual address space.&n; *&n; * So as more replacement pressure is applied to the pages in a nonlinear VMA,&n; * more scanning pressure is placed against them as well.   Eventually pages&n; * will become fully unmapped and are eligible for eviction.&n; *&n; * For very sparsely populated VMAs this is a little inefficient - chances are&n; * there there won&squot;t be many ptes located within the scan cluster.  In this case&n; * maybe we could scan further - to the end of the pte page, perhaps.&n; */
 DECL|macro|CLUSTER_SIZE
-mdefine_line|#define CLUSTER_SIZE&t;(32 * PAGE_SIZE)
-macro_line|#if     CLUSTER_SIZE  &gt;&t;PMD_SIZE
-DECL|macro|CLUSTER_SIZE
-macro_line|#undef  CLUSTER_SIZE
-DECL|macro|CLUSTER_SIZE
-mdefine_line|#define CLUSTER_SIZE&t;PMD_SIZE
-macro_line|#endif
+mdefine_line|#define CLUSTER_SIZE&t;min(32*PAGE_SIZE, PMD_SIZE)
 DECL|macro|CLUSTER_MASK
 mdefine_line|#define CLUSTER_MASK&t;(~(CLUSTER_SIZE - 1))
 DECL|function|try_to_unmap_cluster

@@ -336,18 +336,6 @@ id|flist
 )paren
 suffix:semicolon
 multiline_comment|/* free list to clean up */
-multiline_comment|/*&n; * Routine to check if a specified inode is swap capable.&n; */
-r_int
-id|xfs_bmap_check_swappable
-c_func
-(paren
-r_struct
-id|xfs_inode
-op_star
-id|ip
-)paren
-suffix:semicolon
-multiline_comment|/* incore inode */
 multiline_comment|/*&n; * Compute and fill in the value of the maximum depth of a bmap btree&n; * in this filesystem.  Done once, during mount.&n; */
 r_void
 id|xfs_bmap_compute_maxlevels

@@ -1120,7 +1120,7 @@ id|SA_prom
 id|i
 )braket
 op_assign
-id|inb
+id|inb_p
 c_func
 (paren
 id|ioaddr
@@ -1128,7 +1128,7 @@ op_plus
 id|NE_DATAPORT
 )paren
 suffix:semicolon
-id|inb
+id|inb_p
 c_func
 (paren
 id|ioaddr
@@ -2698,7 +2698,7 @@ suffix:semicolon
 "&f;"
 macro_line|#ifdef MODULE
 DECL|macro|MAX_NE_CARDS
-mdefine_line|#define MAX_NE_CARDS&t;4&t;/* Max number of NE cards per module */
+mdefine_line|#define MAX_NE_CARDS&t;1&t;/* Max number of NE cards per module */
 DECL|variable|dev_ne
 r_static
 r_struct
@@ -2781,7 +2781,7 @@ c_func
 (paren
 id|io
 comma
-l_string|&quot;I/O base address(es),required&quot;
+l_string|&quot;I/O base address(es)&quot;
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -2820,6 +2820,9 @@ id|found
 op_assign
 l_int|0
 suffix:semicolon
+r_int
+id|err
+suffix:semicolon
 r_for
 c_loop
 (paren
@@ -2853,6 +2856,15 @@ id|dev
 )paren
 r_break
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|io
+(braket
+id|this_dev
+)braket
+)paren
+(brace
 id|dev-&gt;irq
 op_assign
 id|irq
@@ -2874,6 +2886,41 @@ id|io
 id|this_dev
 )braket
 suffix:semicolon
+)brace
+r_else
+(brace
+id|dev-&gt;base_addr
+op_assign
+id|h8300_ne_base
+(braket
+id|this_dev
+)braket
+suffix:semicolon
+id|dev-&gt;irq
+op_assign
+id|h8300_ne_irq
+(braket
+id|this_dev
+)braket
+suffix:semicolon
+)brace
+id|err
+op_assign
+id|init_reg_offset
+c_func
+(paren
+id|dev
+comma
+id|dev-&gt;base_addr
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|err
+)paren
+(brace
 r_if
 c_cond
 (paren
@@ -2916,6 +2963,7 @@ id|dev
 )paren
 suffix:semicolon
 )brace
+)brace
 id|free_netdev
 c_func
 (paren
@@ -2945,10 +2993,7 @@ c_func
 id|KERN_WARNING
 l_string|&quot;ne.c: No NE*000 card found at i/o = %#x&bslash;n&quot;
 comma
-id|io
-(braket
-id|this_dev
-)braket
+id|dev-&gt;base_addr
 )paren
 suffix:semicolon
 r_else

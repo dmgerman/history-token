@@ -1224,7 +1224,7 @@ suffix:semicolon
 id|flush_dcache_mmap_lock
 c_func
 (paren
-id|mapping
+id|file-&gt;f_mapping
 )paren
 suffix:semicolon
 id|vma_prio_tree_add
@@ -1238,7 +1238,7 @@ suffix:semicolon
 id|flush_dcache_mmap_unlock
 c_func
 (paren
-id|mapping
+id|file-&gt;f_mapping
 )paren
 suffix:semicolon
 id|spin_unlock

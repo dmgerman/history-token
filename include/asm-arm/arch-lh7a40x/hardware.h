@@ -2,7 +2,6 @@ multiline_comment|/* include/asm-arm/arch-lh7a40x/hardware.h&n; *&n; *  Copyrigh
 macro_line|#ifndef __ASM_ARCH_HARDWARE_H
 DECL|macro|__ASM_ARCH_HARDWARE_H
 mdefine_line|#define __ASM_ARCH_HARDWARE_H
-macro_line|#include &lt;asm/mach-types.h&gt;
 DECL|macro|io_p2v
 mdefine_line|#define io_p2v(x) (0xf0000000 | (((x) &amp; 0xfff00000) &gt;&gt; 4) | ((x) &amp; 0x0000ffff))
 DECL|macro|io_v2p

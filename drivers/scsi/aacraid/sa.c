@@ -1358,6 +1358,26 @@ comma
 l_int|0
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|dev-&gt;thread_pid
+OL
+l_int|0
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;aacraid: Unable to create command thread.&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+op_minus
+l_int|1
+suffix:semicolon
+)brace
 multiline_comment|/*&n;&t; *&t;Tell the adapter that all is configure, and it can start &n;&t; *&t;accepting requests&n;&t; */
 id|dprintk
 c_func

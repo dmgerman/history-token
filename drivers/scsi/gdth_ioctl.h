@@ -1,7 +1,7 @@
 macro_line|#ifndef _GDTH_IOCTL_H
 DECL|macro|_GDTH_IOCTL_H
 mdefine_line|#define _GDTH_IOCTL_H
-multiline_comment|/* gdth_ioctl.h&n; * $Id: gdth_ioctl.h,v 1.11 2003/02/27 14:59:03 achim Exp $&n; */
+multiline_comment|/* gdth_ioctl.h&n; * $Id: gdth_ioctl.h,v 1.14 2004/02/19 15:43:15 achim Exp $&n; */
 multiline_comment|/* IOCTLs */
 DECL|macro|GDTIOCTL_MASK
 mdefine_line|#define GDTIOCTL_MASK       (&squot;J&squot;&lt;&lt;8)
@@ -32,9 +32,9 @@ mdefine_line|#define GDTIOCTL_RESCAN     (GDTIOCTL_MASK |11) /* rescan host driv
 DECL|macro|GDTIOCTL_RESET_DRV
 mdefine_line|#define GDTIOCTL_RESET_DRV  (GDTIOCTL_MASK |12) /* reset (remote) drv. res. */
 DECL|macro|GDTIOCTL_MAGIC
-mdefine_line|#define GDTIOCTL_MAGIC      0xaffe0004
+mdefine_line|#define GDTIOCTL_MAGIC  0xaffe0004
 DECL|macro|EVENT_SIZE
-mdefine_line|#define EVENT_SIZE          294 
+mdefine_line|#define EVENT_SIZE      294 
 DECL|macro|GDTH_MAXSG
 mdefine_line|#define GDTH_MAXSG      32                      /* max. s/g elements */
 DECL|macro|MAX_LDRIVES
@@ -52,6 +52,11 @@ DECL|typedef|ulong32
 r_typedef
 id|u32
 id|ulong32
+suffix:semicolon
+DECL|typedef|ulong64
+r_typedef
+id|u64
+id|ulong64
 suffix:semicolon
 macro_line|#endif
 DECL|macro|PACKED
@@ -74,6 +79,25 @@ DECL|typedef|gdth_sg_str
 )brace
 id|PACKED
 id|gdth_sg_str
+suffix:semicolon
+multiline_comment|/* scatter/gather element - 64bit addresses */
+r_typedef
+r_struct
+(brace
+DECL|member|sg_ptr
+id|ulong64
+id|sg_ptr
+suffix:semicolon
+multiline_comment|/* address */
+DECL|member|sg_len
+id|ulong32
+id|sg_len
+suffix:semicolon
+multiline_comment|/* length */
+DECL|typedef|gdth_sg64_str
+)brace
+id|PACKED
+id|gdth_sg64_str
 suffix:semicolon
 multiline_comment|/* command structure */
 r_typedef
@@ -139,6 +163,47 @@ suffix:semicolon
 multiline_comment|/* cache service cmd. str. */
 r_struct
 (brace
+DECL|member|DeviceNo
+id|ushort
+id|DeviceNo
+suffix:semicolon
+multiline_comment|/* number of cache drive */
+DECL|member|BlockNo
+id|ulong64
+id|BlockNo
+suffix:semicolon
+multiline_comment|/* block number */
+DECL|member|BlockCnt
+id|ulong32
+id|BlockCnt
+suffix:semicolon
+multiline_comment|/* block count */
+DECL|member|DestAddr
+id|ulong64
+id|DestAddr
+suffix:semicolon
+multiline_comment|/* dest. addr. (if s/g: -1) */
+DECL|member|sg_canz
+id|ulong32
+id|sg_canz
+suffix:semicolon
+multiline_comment|/* s/g element count */
+DECL|member|sg_lst
+id|gdth_sg64_str
+id|sg_lst
+(braket
+id|GDTH_MAXSG
+)braket
+suffix:semicolon
+multiline_comment|/* s/g list */
+DECL|member|cache64
+)brace
+id|PACKED
+id|cache64
+suffix:semicolon
+multiline_comment|/* cache service cmd. str. */
+r_struct
+(brace
 DECL|member|param_size
 id|ushort
 id|param_size
@@ -155,7 +220,7 @@ id|channel
 suffix:semicolon
 multiline_comment|/* device */
 DECL|member|p_param
-id|ulong32
+id|ulong64
 id|p_param
 suffix:semicolon
 multiline_comment|/* buffer */
@@ -181,7 +246,7 @@ id|msg_handle
 suffix:semicolon
 multiline_comment|/* message handle */
 DECL|member|msg_addr
-id|ulong32
+id|ulong64
 id|msg_addr
 suffix:semicolon
 multiline_comment|/* message buffer address */
@@ -304,6 +369,99 @@ DECL|member|raw
 )brace
 id|PACKED
 id|raw
+suffix:semicolon
+multiline_comment|/* raw service cmd. struct. */
+r_struct
+(brace
+DECL|member|reserved
+id|ushort
+id|reserved
+suffix:semicolon
+DECL|member|direction
+id|ulong32
+id|direction
+suffix:semicolon
+multiline_comment|/* data direction */
+DECL|member|mdisc_time
+id|ulong32
+id|mdisc_time
+suffix:semicolon
+multiline_comment|/* disc. time (0: no timeout)*/
+DECL|member|mcon_time
+id|ulong32
+id|mcon_time
+suffix:semicolon
+multiline_comment|/* connect time(0: no to.) */
+DECL|member|sdata
+id|ulong64
+id|sdata
+suffix:semicolon
+multiline_comment|/* dest. addr. (if s/g: -1) */
+DECL|member|sdlen
+id|ulong32
+id|sdlen
+suffix:semicolon
+multiline_comment|/* data length (bytes) */
+DECL|member|clen
+id|ulong32
+id|clen
+suffix:semicolon
+multiline_comment|/* SCSI cmd. length(6,..,16) */
+DECL|member|cmd
+id|unchar
+id|cmd
+(braket
+l_int|16
+)braket
+suffix:semicolon
+multiline_comment|/* SCSI command */
+DECL|member|target
+id|unchar
+id|target
+suffix:semicolon
+multiline_comment|/* target ID */
+DECL|member|lun
+id|unchar
+id|lun
+suffix:semicolon
+multiline_comment|/* LUN */
+DECL|member|bus
+id|unchar
+id|bus
+suffix:semicolon
+multiline_comment|/* SCSI bus number */
+DECL|member|priority
+id|unchar
+id|priority
+suffix:semicolon
+multiline_comment|/* only 0 used */
+DECL|member|sense_len
+id|ulong32
+id|sense_len
+suffix:semicolon
+multiline_comment|/* sense data length */
+DECL|member|sense_data
+id|ulong64
+id|sense_data
+suffix:semicolon
+multiline_comment|/* sense data addr. */
+DECL|member|sg_ranz
+id|ulong32
+id|sg_ranz
+suffix:semicolon
+multiline_comment|/* s/g element count */
+DECL|member|sg_lst
+id|gdth_sg64_str
+id|sg_lst
+(braket
+id|GDTH_MAXSG
+)braket
+suffix:semicolon
+multiline_comment|/* s/g list */
+DECL|member|raw64
+)brace
+id|PACKED
+id|raw64
 suffix:semicolon
 multiline_comment|/* raw service cmd. struct. */
 DECL|member|u
@@ -885,7 +1043,6 @@ DECL|typedef|gdth_iord_str
 id|gdth_iord_str
 suffix:semicolon
 macro_line|#endif
-macro_line|#ifdef GDTH_IOCTL_CHRDEV
 multiline_comment|/* GDTIOCTL_GENERAL */
 r_typedef
 r_struct
@@ -1161,6 +1318,5 @@ DECL|typedef|gdth_ioctl_reset
 )brace
 id|gdth_ioctl_reset
 suffix:semicolon
-macro_line|#endif
 macro_line|#endif
 eof

@@ -3549,15 +3549,6 @@ id|f-&gt;f_mapping
 op_assign
 id|inode-&gt;i_mapping
 suffix:semicolon
-id|file_ra_state_init
-c_func
-(paren
-op_amp
-id|f-&gt;f_ra
-comma
-id|f-&gt;f_mapping
-)paren
-suffix:semicolon
 id|f-&gt;f_dentry
 op_assign
 id|dentry
@@ -3629,6 +3620,15 @@ op_or
 id|O_TRUNC
 )paren
 suffix:semicolon
+id|file_ra_state_init
+c_func
+(paren
+op_amp
+id|f-&gt;f_ra
+comma
+id|f-&gt;f_mapping-&gt;host-&gt;i_mapping
+)paren
+suffix:semicolon
 multiline_comment|/* NB: we&squot;re sure to have correct a_ops only after f_op-&gt;open */
 r_if
 c_cond
@@ -3641,9 +3641,6 @@ id|O_DIRECT
 r_if
 c_cond
 (paren
-op_logical_neg
-id|f-&gt;f_mapping
-op_logical_or
 op_logical_neg
 id|f-&gt;f_mapping-&gt;a_ops
 op_logical_or

@@ -601,6 +601,11 @@ id|DM_VERSION
 id|COMPATIBLE_IOCTL
 c_func
 (paren
+id|DM_REMOVE_ALL
+)paren
+id|COMPATIBLE_IOCTL
+c_func
+(paren
 id|DM_LIST_DEVICES
 )paren
 id|COMPATIBLE_IOCTL

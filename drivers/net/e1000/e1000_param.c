@@ -258,6 +258,11 @@ r_struct
 id|e1000_option
 op_star
 id|opt
+comma
+r_struct
+id|e1000_adapter
+op_star
+id|adapter
 )paren
 (brace
 r_if
@@ -297,10 +302,13 @@ id|value
 r_case
 id|OPTION_ENABLED
 suffix:colon
-id|printk
+id|DPRINTK
 c_func
 (paren
-id|KERN_INFO
+id|PROBE
+comma
+id|INFO
+comma
 l_string|&quot;%s Enabled&bslash;n&quot;
 comma
 id|opt-&gt;name
@@ -312,10 +320,13 @@ suffix:semicolon
 r_case
 id|OPTION_DISABLED
 suffix:colon
-id|printk
+id|DPRINTK
 c_func
 (paren
-id|KERN_INFO
+id|PROBE
+comma
+id|INFO
+comma
 l_string|&quot;%s Disabled&bslash;n&quot;
 comma
 id|opt-&gt;name
@@ -344,10 +355,13 @@ op_le
 id|opt-&gt;arg.r.max
 )paren
 (brace
-id|printk
+id|DPRINTK
 c_func
 (paren
-id|KERN_INFO
+id|PROBE
+comma
+id|INFO
+comma
 l_string|&quot;%s set to %i&bslash;n&quot;
 comma
 id|opt-&gt;name
@@ -417,10 +431,13 @@ op_ne
 l_char|&squot;&bslash;0&squot;
 )paren
 (brace
-id|printk
+id|DPRINTK
 c_func
 (paren
-id|KERN_INFO
+id|PROBE
+comma
+id|INFO
+comma
 l_string|&quot;%s&bslash;n&quot;
 comma
 id|ent-&gt;str
@@ -443,10 +460,13 @@ c_func
 )paren
 suffix:semicolon
 )brace
-id|printk
+id|DPRINTK
 c_func
 (paren
-id|KERN_INFO
+id|PROBE
+comma
+id|INFO
+comma
 l_string|&quot;Invalid %s specified (%i) %s&bslash;n&quot;
 comma
 id|opt-&gt;name
@@ -515,19 +535,25 @@ op_ge
 id|E1000_MAX_NIC
 )paren
 (brace
-id|printk
+id|DPRINTK
 c_func
 (paren
-id|KERN_NOTICE
+id|PROBE
+comma
+id|NOTICE
+comma
 l_string|&quot;Warning: no configuration for board #%i&bslash;n&quot;
 comma
 id|bd
 )paren
 suffix:semicolon
-id|printk
+id|DPRINTK
 c_func
 (paren
-id|KERN_NOTICE
+id|PROBE
+comma
+id|NOTICE
+comma
 l_string|&quot;Using defaults for all values&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -623,6 +649,8 @@ id|tx_ring-&gt;count
 comma
 op_amp
 id|opt
+comma
+id|adapter
 )paren
 suffix:semicolon
 id|E1000_ROUNDUP
@@ -721,6 +749,8 @@ id|rx_ring-&gt;count
 comma
 op_amp
 id|opt
+comma
+id|adapter
 )paren
 suffix:semicolon
 id|E1000_ROUNDUP
@@ -776,6 +806,8 @@ id|rx_csum
 comma
 op_amp
 id|opt
+comma
+id|adapter
 )paren
 suffix:semicolon
 id|adapter-&gt;rx_csum
@@ -889,6 +921,8 @@ id|fc
 comma
 op_amp
 id|opt
+comma
+id|adapter
 )paren
 suffix:semicolon
 id|adapter-&gt;hw.fc
@@ -966,6 +1000,8 @@ id|adapter-&gt;tx_int_delay
 comma
 op_amp
 id|opt
+comma
+id|adapter
 )paren
 suffix:semicolon
 )brace
@@ -1037,6 +1073,8 @@ id|adapter-&gt;tx_abs_int_delay
 comma
 op_amp
 id|opt
+comma
+id|adapter
 )paren
 suffix:semicolon
 )brace
@@ -1108,6 +1146,8 @@ id|adapter-&gt;rx_int_delay
 comma
 op_amp
 id|opt
+comma
+id|adapter
 )paren
 suffix:semicolon
 )brace
@@ -1179,6 +1219,8 @@ id|adapter-&gt;rx_abs_int_delay
 comma
 op_amp
 id|opt
+comma
+id|adapter
 )paren
 suffix:semicolon
 )brace
@@ -1261,10 +1303,13 @@ suffix:semicolon
 r_case
 l_int|0
 suffix:colon
-id|printk
+id|DPRINTK
 c_func
 (paren
-id|KERN_INFO
+id|PROBE
+comma
+id|INFO
+comma
 l_string|&quot;%s turned off&bslash;n&quot;
 comma
 id|opt.name
@@ -1275,10 +1320,13 @@ suffix:semicolon
 r_case
 l_int|1
 suffix:colon
-id|printk
+id|DPRINTK
 c_func
 (paren
-id|KERN_INFO
+id|PROBE
+comma
+id|INFO
+comma
 l_string|&quot;%s set to dynamic mode&bslash;n&quot;
 comma
 id|opt.name
@@ -1296,6 +1344,8 @@ id|adapter-&gt;itr
 comma
 op_amp
 id|opt
+comma
+id|adapter
 )paren
 suffix:semicolon
 r_break
@@ -1385,10 +1435,13 @@ id|OPTION_UNSET
 )paren
 )paren
 (brace
-id|printk
+id|DPRINTK
 c_func
 (paren
-id|KERN_INFO
+id|PROBE
+comma
+id|INFO
+comma
 l_string|&quot;Speed not valid for fiber adapters, &quot;
 l_string|&quot;parameter ignored&bslash;n&quot;
 )paren
@@ -1407,10 +1460,13 @@ id|OPTION_UNSET
 )paren
 )paren
 (brace
-id|printk
+id|DPRINTK
 c_func
 (paren
-id|KERN_INFO
+id|PROBE
+comma
+id|INFO
+comma
 l_string|&quot;Duplex not valid for fiber adapters, &quot;
 l_string|&quot;parameter ignored&bslash;n&quot;
 )paren
@@ -1438,10 +1494,13 @@ l_int|0x20
 )paren
 )paren
 (brace
-id|printk
+id|DPRINTK
 c_func
 (paren
-id|KERN_INFO
+id|PROBE
+comma
+id|INFO
+comma
 l_string|&quot;AutoNeg other than Full/1000 is &quot;
 l_string|&quot;not valid for fiber adapters, parameter ignored&bslash;n&quot;
 )paren
@@ -1582,6 +1641,8 @@ id|speed
 comma
 op_amp
 id|opt
+comma
+id|adapter
 )paren
 suffix:semicolon
 )brace
@@ -1678,6 +1739,8 @@ id|dplx
 comma
 op_amp
 id|opt
+comma
+id|adapter
 )paren
 suffix:semicolon
 )brace
@@ -1702,10 +1765,13 @@ l_int|0
 )paren
 )paren
 (brace
-id|printk
+id|DPRINTK
 c_func
 (paren
-id|KERN_INFO
+id|PROBE
+comma
+id|INFO
+comma
 l_string|&quot;AutoNeg specified along with Speed or Duplex, &quot;
 l_string|&quot;parameter ignored&bslash;n&quot;
 )paren
@@ -2011,6 +2077,8 @@ id|an
 comma
 op_amp
 id|opt
+comma
+id|adapter
 )paren
 suffix:semicolon
 id|adapter-&gt;hw.autoneg_advertised
@@ -2053,10 +2121,13 @@ op_ne
 id|OPTION_UNSET
 )paren
 (brace
-id|printk
+id|DPRINTK
 c_func
 (paren
-id|KERN_INFO
+id|PROBE
+comma
+id|INFO
+comma
 l_string|&quot;Speed and duplex autonegotiation enabled&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -2066,17 +2137,23 @@ suffix:semicolon
 r_case
 id|HALF_DUPLEX
 suffix:colon
-id|printk
+id|DPRINTK
 c_func
 (paren
-id|KERN_INFO
+id|PROBE
+comma
+id|INFO
+comma
 l_string|&quot;Half Duplex specified without Speed&bslash;n&quot;
 )paren
 suffix:semicolon
-id|printk
+id|DPRINTK
 c_func
 (paren
-id|KERN_INFO
+id|PROBE
+comma
+id|INFO
+comma
 l_string|&quot;Using Autonegotiation at Half Duplex only&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -2097,17 +2174,23 @@ suffix:semicolon
 r_case
 id|FULL_DUPLEX
 suffix:colon
-id|printk
+id|DPRINTK
 c_func
 (paren
-id|KERN_INFO
+id|PROBE
+comma
+id|INFO
+comma
 l_string|&quot;Full Duplex specified without Speed&bslash;n&quot;
 )paren
 suffix:semicolon
-id|printk
+id|DPRINTK
 c_func
 (paren
-id|KERN_INFO
+id|PROBE
+comma
+id|INFO
+comma
 l_string|&quot;Using Autonegotiation at Full Duplex only&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -2130,17 +2213,23 @@ suffix:semicolon
 r_case
 id|SPEED_10
 suffix:colon
-id|printk
+id|DPRINTK
 c_func
 (paren
-id|KERN_INFO
+id|PROBE
+comma
+id|INFO
+comma
 l_string|&quot;10 Mbps Speed specified without Duplex&bslash;n&quot;
 )paren
 suffix:semicolon
-id|printk
+id|DPRINTK
 c_func
 (paren
-id|KERN_INFO
+id|PROBE
+comma
+id|INFO
+comma
 l_string|&quot;Using Autonegotiation at 10 Mbps only&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -2163,10 +2252,13 @@ id|SPEED_10
 op_plus
 id|HALF_DUPLEX
 suffix:colon
-id|printk
+id|DPRINTK
 c_func
 (paren
-id|KERN_INFO
+id|PROBE
+comma
+id|INFO
+comma
 l_string|&quot;Forcing to 10 Mbps Half Duplex&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -2191,10 +2283,13 @@ id|SPEED_10
 op_plus
 id|FULL_DUPLEX
 suffix:colon
-id|printk
+id|DPRINTK
 c_func
 (paren
-id|KERN_INFO
+id|PROBE
+comma
+id|INFO
+comma
 l_string|&quot;Forcing to 10 Mbps Full Duplex&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -2217,17 +2312,23 @@ suffix:semicolon
 r_case
 id|SPEED_100
 suffix:colon
-id|printk
+id|DPRINTK
 c_func
 (paren
-id|KERN_INFO
+id|PROBE
+comma
+id|INFO
+comma
 l_string|&quot;100 Mbps Speed specified without Duplex&bslash;n&quot;
 )paren
 suffix:semicolon
-id|printk
+id|DPRINTK
 c_func
 (paren
-id|KERN_INFO
+id|PROBE
+comma
+id|INFO
+comma
 l_string|&quot;Using Autonegotiation at 100 Mbps only&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -2250,10 +2351,13 @@ id|SPEED_100
 op_plus
 id|HALF_DUPLEX
 suffix:colon
-id|printk
+id|DPRINTK
 c_func
 (paren
-id|KERN_INFO
+id|PROBE
+comma
+id|INFO
+comma
 l_string|&quot;Forcing to 100 Mbps Half Duplex&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -2278,10 +2382,13 @@ id|SPEED_100
 op_plus
 id|FULL_DUPLEX
 suffix:colon
-id|printk
+id|DPRINTK
 c_func
 (paren
-id|KERN_INFO
+id|PROBE
+comma
+id|INFO
+comma
 l_string|&quot;Forcing to 100 Mbps Full Duplex&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -2304,17 +2411,23 @@ suffix:semicolon
 r_case
 id|SPEED_1000
 suffix:colon
-id|printk
+id|DPRINTK
 c_func
 (paren
-id|KERN_INFO
+id|PROBE
+comma
+id|INFO
+comma
 l_string|&quot;1000 Mbps Speed specified without Duplex&bslash;n&quot;
 )paren
 suffix:semicolon
-id|printk
+id|DPRINTK
 c_func
 (paren
-id|KERN_INFO
+id|PROBE
+comma
+id|INFO
+comma
 l_string|&quot;Using Autonegotiation at 1000 Mbps Full Duplex only&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -2335,17 +2448,23 @@ id|SPEED_1000
 op_plus
 id|HALF_DUPLEX
 suffix:colon
-id|printk
+id|DPRINTK
 c_func
 (paren
-id|KERN_INFO
+id|PROBE
+comma
+id|INFO
+comma
 l_string|&quot;Half Duplex is not supported at 1000 Mbps&bslash;n&quot;
 )paren
 suffix:semicolon
-id|printk
+id|DPRINTK
 c_func
 (paren
-id|KERN_INFO
+id|PROBE
+comma
+id|INFO
+comma
 l_string|&quot;Using Autonegotiation at 1000 Mbps Full Duplex only&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -2366,10 +2485,13 @@ id|SPEED_1000
 op_plus
 id|FULL_DUPLEX
 suffix:colon
-id|printk
+id|DPRINTK
 c_func
 (paren
-id|KERN_INFO
+id|PROBE
+comma
+id|INFO
+comma
 l_string|&quot;Using Autonegotiation at 1000 Mbps Full Duplex only&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -2409,10 +2531,13 @@ OL
 l_int|0
 )paren
 (brace
-id|printk
+id|DPRINTK
 c_func
 (paren
-id|KERN_INFO
+id|PROBE
+comma
+id|INFO
+comma
 l_string|&quot;Speed, AutoNeg and MDI-X specifications are &quot;
 l_string|&quot;incompatible. Setting MDI-X to a compatible value.&bslash;n&quot;
 )paren

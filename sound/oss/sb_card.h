@@ -1455,6 +1455,32 @@ comma
 )brace
 )brace
 comma
+multiline_comment|/* Sound Blaster 16 (Virtual PC 2004) */
+(brace
+dot
+id|id
+op_assign
+l_string|&quot;tBA03b0&quot;
+comma
+dot
+id|driver_data
+op_assign
+l_int|0
+comma
+dot
+id|devs
+op_assign
+(brace
+(brace
+dot
+id|id
+op_assign
+l_string|&quot;PNPb003&quot;
+)brace
+comma
+)brace
+)brace
+comma
 multiline_comment|/* -end- */
 (brace
 dot

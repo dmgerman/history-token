@@ -1,4 +1,4 @@
-multiline_comment|/*******************************************************************************&n;&n;  &n;  Copyright(c) 1999 - 2003 Intel Corporation. All rights reserved.&n;  &n;  This program is free software; you can redistribute it and/or modify it &n;  under the terms of the GNU General Public License as published by the Free &n;  Software Foundation; either version 2 of the License, or (at your option) &n;  any later version.&n;  &n;  This program is distributed in the hope that it will be useful, but WITHOUT &n;  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or &n;  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for &n;  more details.&n;  &n;  You should have received a copy of the GNU General Public License along with&n;  this program; if not, write to the Free Software Foundation, Inc., 59 &n;  Temple Place - Suite 330, Boston, MA  02111-1307, USA.&n;  &n;  The full GNU General Public License is included in this distribution in the&n;  file called LICENSE.&n;  &n;  Contact Information:&n;  Linux NICS &lt;linux.nics@intel.com&gt;&n;  Intel Corporation, 5200 N.E. Elam Young Parkway, Hillsboro, OR 97124-6497&n;*******************************************************************************/
+multiline_comment|/*******************************************************************************&n;&n;  &n;  Copyright(c) 1999 - 2004 Intel Corporation. All rights reserved.&n;  &n;  This program is free software; you can redistribute it and/or modify it &n;  under the terms of the GNU General Public License as published by the Free &n;  Software Foundation; either version 2 of the License, or (at your option) &n;  any later version.&n;  &n;  This program is distributed in the hope that it will be useful, but WITHOUT &n;  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or &n;  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for &n;  more details.&n;  &n;  You should have received a copy of the GNU General Public License along with&n;  this program; if not, write to the Free Software Foundation, Inc., 59 &n;  Temple Place - Suite 330, Boston, MA  02111-1307, USA.&n;  &n;  The full GNU General Public License is included in this distribution in the&n;  file called LICENSE.&n;  &n;  Contact Information:&n;  Linux NICS &lt;linux.nics@intel.com&gt;&n;  Intel Corporation, 5200 N.E. Elam Young Parkway, Hillsboro, OR 97124-6497&n;&n;*******************************************************************************/
 macro_line|#ifndef _IXGB_EE_H_
 DECL|macro|_IXGB_EE_H_
 mdefine_line|#define _IXGB_EE_H_
@@ -8,11 +8,11 @@ DECL|macro|IXGB_ETH_LENGTH_OF_ADDRESS
 mdefine_line|#define IXGB_ETH_LENGTH_OF_ADDRESS   6
 multiline_comment|/* EEPROM Commands */
 DECL|macro|EEPROM_READ_OPCODE
-mdefine_line|#define EEPROM_READ_OPCODE  0x6&t;&t;/* EERPOM read opcode */
+mdefine_line|#define EEPROM_READ_OPCODE  0x6&t;/* EERPOM read opcode */
 DECL|macro|EEPROM_WRITE_OPCODE
-mdefine_line|#define EEPROM_WRITE_OPCODE 0x5&t;&t;/* EERPOM write opcode */
+mdefine_line|#define EEPROM_WRITE_OPCODE 0x5&t;/* EERPOM write opcode */
 DECL|macro|EEPROM_ERASE_OPCODE
-mdefine_line|#define EEPROM_ERASE_OPCODE 0x7&t;&t;/* EERPOM erase opcode */
+mdefine_line|#define EEPROM_ERASE_OPCODE 0x7&t;/* EERPOM erase opcode */
 DECL|macro|EEPROM_EWEN_OPCODE
 mdefine_line|#define EEPROM_EWEN_OPCODE  0x13&t;/* EERPOM erase/write enable */
 DECL|macro|EEPROM_EWDS_OPCODE
@@ -70,89 +70,89 @@ r_struct
 id|ixgb_ee_map_type
 (brace
 DECL|member|mac_addr
-id|u8
+r_uint8
 id|mac_addr
 (braket
 id|IXGB_ETH_LENGTH_OF_ADDRESS
 )braket
 suffix:semicolon
 DECL|member|compatibility
-id|u16
+r_uint16
 id|compatibility
 suffix:semicolon
 DECL|member|reserved1
-id|u16
+r_uint16
 id|reserved1
 (braket
 l_int|4
 )braket
 suffix:semicolon
 DECL|member|pba_number
-id|u32
+r_uint32
 id|pba_number
 suffix:semicolon
 DECL|member|init_ctrl_reg_1
-id|u16
+r_uint16
 id|init_ctrl_reg_1
 suffix:semicolon
 DECL|member|subsystem_id
-id|u16
+r_uint16
 id|subsystem_id
 suffix:semicolon
 DECL|member|subvendor_id
-id|u16
+r_uint16
 id|subvendor_id
 suffix:semicolon
 DECL|member|device_id
-id|u16
+r_uint16
 id|device_id
 suffix:semicolon
 DECL|member|vendor_id
-id|u16
+r_uint16
 id|vendor_id
 suffix:semicolon
 DECL|member|init_ctrl_reg_2
-id|u16
+r_uint16
 id|init_ctrl_reg_2
 suffix:semicolon
 DECL|member|oem_reserved
-id|u16
+r_uint16
 id|oem_reserved
 (braket
 l_int|16
 )braket
 suffix:semicolon
 DECL|member|swdpins_reg
-id|u16
+r_uint16
 id|swdpins_reg
 suffix:semicolon
 DECL|member|circuit_ctrl_reg
-id|u16
+r_uint16
 id|circuit_ctrl_reg
 suffix:semicolon
 DECL|member|d3_power
-id|u8
+r_uint8
 id|d3_power
 suffix:semicolon
 DECL|member|d0_power
-id|u8
+r_uint8
 id|d0_power
 suffix:semicolon
 DECL|member|reserved2
-id|u16
+r_uint16
 id|reserved2
 (braket
 l_int|28
 )braket
 suffix:semicolon
 DECL|member|checksum
-id|u16
+r_uint16
 id|checksum
 suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/* EEPROM Functions */
-id|u16
+r_uint16
 id|ixgb_read_eeprom
 c_func
 (paren
@@ -161,7 +161,7 @@ id|ixgb_hw
 op_star
 id|hw
 comma
-id|u16
+r_uint16
 id|reg
 )paren
 suffix:semicolon
@@ -194,10 +194,10 @@ id|ixgb_hw
 op_star
 id|hw
 comma
-id|u16
+r_uint16
 id|reg
 comma
-id|u16
+r_uint16
 id|data
 )paren
 suffix:semicolon

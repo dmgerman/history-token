@@ -744,7 +744,7 @@ r_return
 (paren
 id|vsid
 op_amp
-l_int|0x7fffffffff
+l_int|0x7fffffffffUL
 )paren
 op_xor
 id|page

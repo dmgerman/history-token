@@ -1596,6 +1596,23 @@ l_string|&quot;CTL0022&quot;
 )brace
 comma
 macro_line|#endif /* SNDRV_SBAWE */
+multiline_comment|/* Sound Blaster 16 PnP (Virtual PC 2004)*/
+(brace
+dot
+id|id
+op_assign
+l_string|&quot;tBA03b0&quot;
+comma
+dot
+id|devs
+op_assign
+(brace
+(brace
+l_string|&quot;PNPb003&quot;
+)brace
+)brace
+)brace
+comma
 (brace
 dot
 id|id

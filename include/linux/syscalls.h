@@ -1968,6 +1968,7 @@ r_int
 id|new_addr
 )paren
 suffix:semicolon
+id|asmlinkage
 r_int
 id|sys_remap_file_pages
 c_func

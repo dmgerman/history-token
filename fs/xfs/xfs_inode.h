@@ -1396,6 +1396,17 @@ comma
 id|xfs_arch_t
 )paren
 suffix:semicolon
+id|uint
+id|xfs_dic2xflags
+c_func
+(paren
+r_struct
+id|xfs_dinode_core
+op_star
+comma
+id|xfs_arch_t
+)paren
+suffix:semicolon
 r_int
 id|xfs_ifree
 c_func

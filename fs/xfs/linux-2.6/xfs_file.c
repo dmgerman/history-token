@@ -956,8 +956,8 @@ c_func
 id|filp-&gt;f_dentry-&gt;d_inode
 )paren
 suffix:semicolon
-r_int
-id|error
+id|ssize_t
+id|rval
 suffix:semicolon
 id|VOP_SENDFILE
 c_func
@@ -978,11 +978,11 @@ id|target
 comma
 l_int|NULL
 comma
-id|error
+id|rval
 )paren
 suffix:semicolon
 r_return
-id|error
+id|rval
 suffix:semicolon
 )brace
 id|STATIC

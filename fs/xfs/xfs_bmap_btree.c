@@ -3847,7 +3847,7 @@ r_return
 id|error
 suffix:semicolon
 )brace
-macro_line|#ifdef XFSDEBUG
+macro_line|#ifdef DEBUG
 multiline_comment|/*&n; * Get the data from the pointed-to record.&n; */
 r_int
 DECL|function|xfs_bmbt_get_rec

@@ -10230,6 +10230,8 @@ op_minus
 l_int|1
 )braket
 comma
+id|sel.family
+op_assign
 id|pfkey_sadb_addr2xfrm_addr
 c_func
 (paren

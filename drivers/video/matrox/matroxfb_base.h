@@ -1673,6 +1673,11 @@ r_int
 r_int
 id|mode
 suffix:semicolon
+DECL|member|default_src
+r_int
+r_int
+id|default_src
+suffix:semicolon
 DECL|member|outputs
 )brace
 id|outputs

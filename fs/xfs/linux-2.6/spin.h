@@ -4,102 +4,25 @@ DECL|macro|__XFS_SUPPORT_SPIN_H__
 mdefine_line|#define __XFS_SUPPORT_SPIN_H__
 macro_line|#include &lt;linux/sched.h&gt;&t;/* preempt needs this */
 macro_line|#include &lt;linux/spinlock.h&gt;
-multiline_comment|/*&n; * Map lock_t from IRIX to Linux spinlocks.&n; *&n; * Note that linux turns on/off spinlocks depending on CONFIG_SMP.&n; * We don&squot;t need to worry about SMP or not here.&n; */
-DECL|macro|SPLDECL
-mdefine_line|#define SPLDECL(s)&t;&t;unsigned long s
+multiline_comment|/*&n; * Map lock_t from IRIX to Linux spinlocks.&n; *&n; * We do not make use of lock_t from interrupt context, so we do not&n; * have to worry about disabling interrupts at all (unlike IRIX).&n; */
 DECL|typedef|lock_t
 r_typedef
 id|spinlock_t
 id|lock_t
 suffix:semicolon
+DECL|macro|SPLDECL
+mdefine_line|#define SPLDECL(s)&t;&t;&t;unsigned long s
 DECL|macro|spinlock_init
 mdefine_line|#define spinlock_init(lock, name)&t;spin_lock_init(lock)
 DECL|macro|spinlock_destroy
 mdefine_line|#define&t;spinlock_destroy(lock)
-DECL|function|mutex_spinlock
-r_static
-r_inline
-r_int
-r_int
-id|mutex_spinlock
-c_func
-(paren
-id|lock_t
-op_star
-id|lock
-)paren
-(brace
-id|spin_lock
-c_func
-(paren
-id|lock
-)paren
-suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-)brace
-multiline_comment|/*ARGSUSED*/
-DECL|function|mutex_spinunlock
-r_static
-r_inline
-r_void
-id|mutex_spinunlock
-c_func
-(paren
-id|lock_t
-op_star
-id|lock
-comma
-r_int
-r_int
-id|s
-)paren
-(brace
-id|spin_unlock
-c_func
-(paren
-id|lock
-)paren
-suffix:semicolon
-)brace
-DECL|function|nested_spinlock
-r_static
-r_inline
-r_void
-id|nested_spinlock
-c_func
-(paren
-id|lock_t
-op_star
-id|lock
-)paren
-(brace
-id|spin_lock
-c_func
-(paren
-id|lock
-)paren
-suffix:semicolon
-)brace
-DECL|function|nested_spinunlock
-r_static
-r_inline
-r_void
-id|nested_spinunlock
-c_func
-(paren
-id|lock_t
-op_star
-id|lock
-)paren
-(brace
-id|spin_unlock
-c_func
-(paren
-id|lock
-)paren
-suffix:semicolon
-)brace
+DECL|macro|mutex_spinlock
+mdefine_line|#define mutex_spinlock(lock)&t;&t;({ spin_lock(lock); 0; })
+DECL|macro|mutex_spinunlock
+mdefine_line|#define mutex_spinunlock(lock, s)&t;do { spin_unlock(lock); (void)s; } while (0)
+DECL|macro|nested_spinlock
+mdefine_line|#define nested_spinlock(lock)&t;&t;spin_lock(lock)
+DECL|macro|nested_spinunlock
+mdefine_line|#define nested_spinunlock(lock)&t;&t;spin_unlock(lock)
 macro_line|#endif /* __XFS_SUPPORT_SPIN_H__ */
 eof
