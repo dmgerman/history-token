@@ -1044,8 +1044,8 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|ali14xx_release
+r_static
 r_void
-id|__init
 id|ali14xx_release
 (paren
 r_void

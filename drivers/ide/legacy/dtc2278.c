@@ -446,8 +446,8 @@ l_int|1
 suffix:semicolon
 )brace
 DECL|function|dtc2278_release
+r_static
 r_void
-id|__init
 id|dtc2278_release
 (paren
 r_void

@@ -775,8 +775,8 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|umc8672_release
+r_static
 r_void
-id|__init
 id|umc8672_release
 (paren
 r_void

@@ -1054,23 +1054,15 @@ l_int|0
 suffix:semicolon
 )brace
 )brace
-macro_line|#ifndef MODULE
 DECL|function|ide_probe_for_pdc4030
-r_void
+r_static
+r_int
 id|__init
 id|ide_probe_for_pdc4030
 c_func
 (paren
 r_void
 )paren
-macro_line|#else
-r_int
-id|ide_probe_for_pdc4030
-c_func
-(paren
-r_void
-)paren
-macro_line|#endif
 (brace
 r_int
 r_int
