@@ -355,6 +355,7 @@ id|ireg
 comma
 (paren
 r_int
+id|__user
 op_star
 )paren
 id|arg
@@ -417,6 +418,7 @@ id|regs
 comma
 (paren
 r_int
+id|__user
 op_star
 )paren
 id|arg

@@ -1773,6 +1773,7 @@ r_int
 id|minor
 comma
 r_char
+id|__user
 op_star
 id|c
 comma
@@ -2079,6 +2080,7 @@ r_int
 id|minor
 comma
 r_char
+id|__user
 op_star
 id|c
 comma
@@ -2552,6 +2554,7 @@ op_star
 id|f
 comma
 r_char
+id|__user
 op_star
 id|c
 comma
@@ -2839,6 +2842,7 @@ id|minor
 comma
 r_const
 r_char
+id|__user
 op_star
 id|c
 comma
@@ -2997,6 +3001,7 @@ id|minor
 comma
 r_const
 r_char
+id|__user
 op_star
 id|c
 comma
@@ -3228,6 +3233,7 @@ id|f
 comma
 r_const
 r_char
+id|__user
 op_star
 id|c
 comma
