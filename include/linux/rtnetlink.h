@@ -1093,6 +1093,16 @@ comma
 multiline_comment|/* Protocol specific information for a link */
 DECL|macro|IFLA_PROTINFO
 mdefine_line|#define IFLA_PROTINFO IFLA_PROTINFO
+DECL|enumerator|IFLA_TXQLEN
+id|IFLA_TXQLEN
+comma
+DECL|macro|IFLA_TXQLEN
+mdefine_line|#define IFLA_TXQLEN IFLA_TXQLEN
+DECL|enumerator|IFLA_MAP
+id|IFLA_MAP
+comma
+DECL|macro|IFLA_MAP
+mdefine_line|#define IFLA_MAP IFLA_MAP
 DECL|enumerator|__IFLA_MAX
 id|__IFLA_MAX
 )brace
