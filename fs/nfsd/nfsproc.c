@@ -2508,6 +2508,13 @@ id|ENOMEM
 )brace
 comma
 (brace
+id|nfserr_badname
+comma
+op_minus
+id|ESRCH
+)brace
+comma
+(brace
 op_minus
 l_int|1
 comma
