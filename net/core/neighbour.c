@@ -2428,11 +2428,20 @@ op_assign
 id|n-&gt;parms
 suffix:semicolon
 r_return
+(paren
+id|n-&gt;nud_state
+op_amp
+id|NUD_PROBE
+ques
+c_cond
+id|p-&gt;ucast_probes
+suffix:colon
 id|p-&gt;ucast_probes
 op_plus
 id|p-&gt;app_probes
 op_plus
 id|p-&gt;mcast_probes
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/* Called when a timer expires for a neighbour entry. */
