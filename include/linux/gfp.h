@@ -31,6 +31,10 @@ DECL|macro|__GFP_NORETRY
 mdefine_line|#define __GFP_NORETRY&t;0x1000&t;/* Do not retry.  Might fail */
 DECL|macro|__GFP_NO_GROW
 mdefine_line|#define __GFP_NO_GROW&t;0x2000&t;/* Slab internal usage */
+DECL|macro|__GFP_BITS_SHIFT
+mdefine_line|#define __GFP_BITS_SHIFT 16&t;/* Room for 16 __GFP_FOO bits */
+DECL|macro|__GFP_BITS_MASK
+mdefine_line|#define __GFP_BITS_MASK ((1 &lt;&lt; __GFP_BITS_SHIFT) - 1)
 DECL|macro|GFP_ATOMIC
 mdefine_line|#define GFP_ATOMIC&t;(__GFP_HIGH)
 DECL|macro|GFP_NOIO

@@ -2,6 +2,7 @@ multiline_comment|/*&n; *   Copyright (c) International Business Machines Corp.,
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/mpage.h&gt;
 macro_line|#include &lt;linux/buffer_head.h&gt;
+macro_line|#include &lt;linux/pagemap.h&gt;
 macro_line|#include &quot;jfs_incore.h&quot;
 macro_line|#include &quot;jfs_filsys.h&quot;
 macro_line|#include &quot;jfs_imap.h&quot;
@@ -130,9 +131,13 @@ op_assign
 op_amp
 id|jfs_aops
 suffix:semicolon
-id|inode-&gt;i_mapping-&gt;gfp_mask
-op_assign
+id|mapping_set_gfp_mask
+c_func
+(paren
+id|inode-&gt;i_mapping
+comma
 id|GFP_NOFS
+)paren
 suffix:semicolon
 )brace
 r_else

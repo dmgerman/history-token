@@ -16,6 +16,7 @@ macro_line|#include &lt;linux/mount.h&gt;
 macro_line|#include &lt;linux/vfs.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
+macro_line|#include &lt;linux/pagemap.h&gt;
 DECL|function|vfs_statfs
 r_int
 id|vfs_statfs
@@ -4173,23 +4174,39 @@ op_assign
 id|err
 suffix:semicolon
 )brace
-id|err
+r_if
+c_cond
+(paren
+id|test_and_clear_bit
+c_func
+(paren
+id|AS_ENOSPC
+comma
+op_amp
+id|mapping-&gt;flags
+)paren
+)paren
+id|retval
 op_assign
-id|mapping-&gt;error
+op_minus
+id|ENOSPC
 suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
-id|retval
+id|test_and_clear_bit
+c_func
+(paren
+id|AS_EIO
+comma
+op_amp
+id|mapping-&gt;flags
+)paren
 )paren
 id|retval
 op_assign
-id|err
-suffix:semicolon
-id|mapping-&gt;error
-op_assign
-l_int|0
+op_minus
+id|EIO
 suffix:semicolon
 r_if
 c_cond

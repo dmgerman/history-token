@@ -817,11 +817,12 @@ r_int
 id|dirtied_when
 suffix:semicolon
 multiline_comment|/* jiffies of first page dirtying */
-DECL|member|gfp_mask
+DECL|member|flags
 r_int
-id|gfp_mask
+r_int
+id|flags
 suffix:semicolon
-multiline_comment|/* how to allocate the pages */
+multiline_comment|/* error bits/gfp mask */
 DECL|member|backing_dev_info
 r_struct
 id|backing_dev_info
@@ -847,11 +848,6 @@ op_star
 id|assoc_mapping
 suffix:semicolon
 multiline_comment|/* ditto */
-DECL|member|error
-r_int
-id|error
-suffix:semicolon
-multiline_comment|/* write error for fsync */
 )brace
 suffix:semicolon
 DECL|struct|block_device

@@ -13,6 +13,7 @@ macro_line|#include &lt;linux/wait.h&gt;
 macro_line|#include &lt;linux/hash.h&gt;
 macro_line|#include &lt;linux/swap.h&gt;
 macro_line|#include &lt;linux/security.h&gt;
+macro_line|#include &lt;linux/pagemap.h&gt;
 macro_line|#include &lt;linux/cdev.h&gt;
 multiline_comment|/*&n; * This is needed for the following functions:&n; *  - inode_has_buffers&n; *  - invalidate_inode_buffers&n; *  - fsync_bdev&n; *  - invalidate_bdev&n; *&n; * FIXME: remove all knowledge of the buffer layer from this file&n; */
 macro_line|#include &lt;linux/buffer_head.h&gt;
@@ -315,9 +316,17 @@ id|mapping-&gt;host
 op_assign
 id|inode
 suffix:semicolon
-id|mapping-&gt;gfp_mask
+id|mapping-&gt;flags
 op_assign
+l_int|0
+suffix:semicolon
+id|mapping_set_gfp_mask
+c_func
+(paren
+id|mapping
+comma
 id|GFP_HIGHUSER
+)paren
 suffix:semicolon
 id|mapping-&gt;dirtied_when
 op_assign
@@ -331,10 +340,6 @@ id|mapping-&gt;backing_dev_info
 op_assign
 op_amp
 id|default_backing_dev_info
-suffix:semicolon
-id|mapping-&gt;error
-op_assign
-l_int|0
 suffix:semicolon
 r_if
 c_cond

@@ -914,9 +914,13 @@ op_assign
 op_amp
 id|jfs_aops
 suffix:semicolon
-id|ip-&gt;i_mapping-&gt;gfp_mask
-op_assign
+id|mapping_set_gfp_mask
+c_func
+(paren
+id|ip-&gt;i_mapping
+comma
 id|GFP_NOFS
+)paren
 suffix:semicolon
 id|insert_inode_hash
 c_func
