@@ -2737,7 +2737,7 @@ multiline_comment|/*&n; *&t;Serverworks CSB5 IDE does not fully support native m
 DECL|function|quirk_svwks_csb5ide
 r_static
 r_void
-id|__init
+id|__devinit
 id|quirk_svwks_csb5ide
 c_func
 (paren
