@@ -2148,7 +2148,7 @@ c_func
 id|printk
 c_func
 (paren
-id|KERN_DEBUG
+id|KERN_CRIT
 l_string|&quot;protocol %04x is &quot;
 l_string|&quot;buggy, dev %s&bslash;n&quot;
 comma
@@ -2738,7 +2738,7 @@ c_func
 id|printk
 c_func
 (paren
-id|KERN_DEBUG
+id|KERN_CRIT
 l_string|&quot;Virtual device %s asks to &quot;
 l_string|&quot;queue packet!&bslash;n&quot;
 comma
@@ -2763,7 +2763,7 @@ c_func
 id|printk
 c_func
 (paren
-id|KERN_DEBUG
+id|KERN_CRIT
 l_string|&quot;Dead loop on virtual device &quot;
 l_string|&quot;%s, fix it urgently!&bslash;n&quot;
 comma
