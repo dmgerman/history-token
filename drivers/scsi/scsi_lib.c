@@ -2029,10 +2029,8 @@ c_cond
 (paren
 id|sense_valid
 op_logical_and
-(paren
 op_logical_neg
 id|sense_deferred
-)paren
 )paren
 (brace
 r_switch
