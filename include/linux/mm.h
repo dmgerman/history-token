@@ -382,6 +382,8 @@ DECL|macro|PG_arch_1
 mdefine_line|#define PG_arch_1&t;&t;13
 DECL|macro|PG_reserved
 mdefine_line|#define PG_reserved&t;&t;14
+DECL|macro|PG_launder
+mdefine_line|#define PG_launder&t;&t;15&t;/* written out by VM pressure.. */
 multiline_comment|/* Make it prettier to test the above... */
 DECL|macro|Page_Uptodate
 mdefine_line|#define Page_Uptodate(page)&t;test_bit(PG_uptodate, &amp;(page)-&gt;flags)
@@ -405,6 +407,10 @@ DECL|macro|PageChecked
 mdefine_line|#define PageChecked(page)&t;test_bit(PG_checked, &amp;(page)-&gt;flags)
 DECL|macro|SetPageChecked
 mdefine_line|#define SetPageChecked(page)&t;set_bit(PG_checked, &amp;(page)-&gt;flags)
+DECL|macro|PageLaunder
+mdefine_line|#define PageLaunder(page)&t;test_bit(PG_launder, &amp;(page)-&gt;flags)
+DECL|macro|SetPageLaunder
+mdefine_line|#define SetPageLaunder(page)&t;set_bit(PG_launder, &amp;(page)-&gt;flags)
 r_extern
 r_void
 id|__set_page_dirty
@@ -450,7 +456,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * The first mb is necessary to safely close the critical section opened by the&n; * TryLockPage(), the second mb is necessary to enforce ordering between&n; * the clear_bit and the read of the waitqueue (to avoid SMP races with a&n; * parallel wait_on_page).&n; */
 DECL|macro|UnlockPage
-mdefine_line|#define UnlockPage(page)&t;do { &bslash;&n;&t;&t;&t;&t;&t;smp_mb__before_clear_bit(); &bslash;&n;&t;&t;&t;&t;&t;if (!test_and_clear_bit(PG_locked, &amp;(page)-&gt;flags)) BUG(); &bslash;&n;&t;&t;&t;&t;&t;smp_mb__after_clear_bit(); &bslash;&n;&t;&t;&t;&t;&t;if (waitqueue_active(&amp;(page)-&gt;wait)) &bslash;&n;&t;&t;&t;&t;&t;&t;wake_up(&amp;(page)-&gt;wait); &bslash;&n;&t;&t;&t;&t;} while (0)
+mdefine_line|#define UnlockPage(page)&t;do { &bslash;&n;&t;&t;&t;&t;&t;clear_bit(PG_launder, &amp;(page)-&gt;flags); &bslash;&n;&t;&t;&t;&t;&t;smp_mb__before_clear_bit(); &bslash;&n;&t;&t;&t;&t;&t;if (!test_and_clear_bit(PG_locked, &amp;(page)-&gt;flags)) BUG(); &bslash;&n;&t;&t;&t;&t;&t;smp_mb__after_clear_bit(); &bslash;&n;&t;&t;&t;&t;&t;if (waitqueue_active(&amp;(page)-&gt;wait)) &bslash;&n;&t;&t;&t;&t;&t;&t;wake_up(&amp;(page)-&gt;wait); &bslash;&n;&t;&t;&t;&t;} while (0)
 DECL|macro|PageError
 mdefine_line|#define PageError(page)&t;&t;test_bit(PG_error, &amp;(page)-&gt;flags)
 DECL|macro|SetPageError
@@ -1762,26 +1768,24 @@ DECL|macro|__GFP_HIGHIO
 mdefine_line|#define __GFP_HIGHIO&t;0x80&t;/* Can start high mem physical IO? */
 DECL|macro|__GFP_FS
 mdefine_line|#define __GFP_FS&t;0x100&t;/* Can call down to low-level FS? */
-DECL|macro|__GFP_WAITBUF
-mdefine_line|#define __GFP_WAITBUF&t;0x200&t;/* Can we wait for buffers to complete? */
 DECL|macro|GFP_NOHIGHIO
 mdefine_line|#define GFP_NOHIGHIO&t;(__GFP_HIGH | __GFP_WAIT | __GFP_IO)
 DECL|macro|GFP_NOIO
 mdefine_line|#define GFP_NOIO&t;(__GFP_HIGH | __GFP_WAIT)
 DECL|macro|GFP_NOFS
-mdefine_line|#define GFP_NOFS&t;(__GFP_HIGH | __GFP_WAIT | __GFP_IO | __GFP_HIGHIO | __GFP_WAITBUF)
+mdefine_line|#define GFP_NOFS&t;(__GFP_HIGH | __GFP_WAIT | __GFP_IO | __GFP_HIGHIO)
 DECL|macro|GFP_ATOMIC
 mdefine_line|#define GFP_ATOMIC&t;(__GFP_HIGH)
 DECL|macro|GFP_USER
-mdefine_line|#define GFP_USER&t;(             __GFP_WAIT | __GFP_IO | __GFP_HIGHIO | __GFP_WAITBUF | __GFP_FS)
+mdefine_line|#define GFP_USER&t;(             __GFP_WAIT | __GFP_IO | __GFP_HIGHIO | __GFP_FS)
 DECL|macro|GFP_HIGHUSER
-mdefine_line|#define GFP_HIGHUSER&t;(             __GFP_WAIT | __GFP_IO | __GFP_HIGHIO | __GFP_WAITBUF | __GFP_FS | __GFP_HIGHMEM)
+mdefine_line|#define GFP_HIGHUSER&t;(             __GFP_WAIT | __GFP_IO | __GFP_HIGHIO | __GFP_FS | __GFP_HIGHMEM)
 DECL|macro|GFP_KERNEL
-mdefine_line|#define GFP_KERNEL&t;(__GFP_HIGH | __GFP_WAIT | __GFP_IO | __GFP_HIGHIO | __GFP_WAITBUF | __GFP_FS)
+mdefine_line|#define GFP_KERNEL&t;(__GFP_HIGH | __GFP_WAIT | __GFP_IO | __GFP_HIGHIO | __GFP_FS)
 DECL|macro|GFP_NFS
-mdefine_line|#define GFP_NFS&t;&t;(__GFP_HIGH | __GFP_WAIT | __GFP_IO | __GFP_HIGHIO | __GFP_WAITBUF | __GFP_FS)
+mdefine_line|#define GFP_NFS&t;&t;(__GFP_HIGH | __GFP_WAIT | __GFP_IO | __GFP_HIGHIO | __GFP_FS)
 DECL|macro|GFP_KSWAPD
-mdefine_line|#define GFP_KSWAPD&t;(             __GFP_WAIT | __GFP_IO | __GFP_HIGHIO | __GFP_WAITBUF | __GFP_FS)
+mdefine_line|#define GFP_KSWAPD&t;(             __GFP_WAIT | __GFP_IO | __GFP_HIGHIO | __GFP_FS)
 multiline_comment|/* Flag - indicates that the buffer will be suitable for DMA.  Ignored on some&n;   platforms, used as appropriate on others */
 DECL|macro|GFP_DMA
 mdefine_line|#define GFP_DMA&t;&t;__GFP_DMA

@@ -334,6 +334,10 @@ multiline_comment|/* 1 if the buffer is under end_buffer_io_async I/O */
 DECL|enumerator|BH_Wait_IO
 id|BH_Wait_IO
 comma
+multiline_comment|/* 1 if we should write out this buffer */
+DECL|enumerator|BH_launder
+id|BH_launder
+comma
 multiline_comment|/* 1 if we should throttle on this buffer */
 DECL|enumerator|BH_PrivateStart
 id|BH_PrivateStart

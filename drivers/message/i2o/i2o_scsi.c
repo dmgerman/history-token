@@ -9,6 +9,7 @@ macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
+macro_line|#include &lt;linux/prefetch.h&gt;
 macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
@@ -393,6 +394,13 @@ id|ds
 comma
 id|st
 suffix:semicolon
+id|spin_lock_prefetch
+c_func
+(paren
+op_amp
+id|io_request_lock
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -712,6 +720,13 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
+id|prefetchw
+c_func
+(paren
+op_amp
+id|queue_depth
+)paren
+suffix:semicolon
 multiline_comment|/*&n;&t; *&t;Low byte is device status, next is adapter status,&n;&t; *&t;(then one byte reserved), then request status.&n;&t; */
 id|ds
 op_assign
@@ -2194,6 +2209,23 @@ op_star
 )paren
 id|host-&gt;hostdata
 suffix:semicolon
+id|c
+op_assign
+id|hostdata-&gt;controller
+suffix:semicolon
+id|prefetch
+c_func
+(paren
+id|c
+)paren
+suffix:semicolon
+id|prefetchw
+c_func
+(paren
+op_amp
+id|queue_depth
+)paren
+suffix:semicolon
 id|SCpnt-&gt;scsi_done
 op_assign
 id|done
@@ -2283,10 +2315,6 @@ c_func
 l_string|&quot;Real scsi messages.&bslash;n&quot;
 )paren
 )paren
-suffix:semicolon
-id|c
-op_assign
-id|hostdata-&gt;controller
 suffix:semicolon
 multiline_comment|/*&n;&t; *&t;Obtain an I2O message. Right now we _have_ to obtain one&n;&t; *&t;until the scsi layer stuff is cleaned up.&n;&t; */
 r_do
@@ -3575,6 +3603,12 @@ id|MODULE_AUTHOR
 c_func
 (paren
 l_string|&quot;Red Hat Software&quot;
+)paren
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
 DECL|variable|driver_template

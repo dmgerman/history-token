@@ -5798,6 +5798,12 @@ c_func
 l_string|&quot;Linux NTFS driver&quot;
 )paren
 suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 macro_line|#ifdef DEBUG
 id|MODULE_PARM
 c_func

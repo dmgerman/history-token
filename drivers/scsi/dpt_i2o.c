@@ -82,12 +82,12 @@ id|PROC_PENTIUM
 op_or
 id|PROC_SEXIUM
 comma
-macro_line|#elif defined __ia64__
+macro_line|#elif defined(__ia64__)
 id|PROC_INTEL
 comma
 id|PROC_IA64
 comma
-macro_line|#elif define __sparc__
+macro_line|#elif defined(__sparc__)
 id|PROC_ULTRASPARC
 comma
 macro_line|#elif defined(__alpha__)
@@ -4896,9 +4896,11 @@ op_logical_neg
 id|timeout
 )paren
 (brace
-id|current-&gt;state
-op_assign
+id|set_current_state
+c_func
+(paren
 id|TASK_INTERRUPTIBLE
+)paren
 suffix:semicolon
 id|spin_unlock_irq
 c_func
@@ -4922,9 +4924,11 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|current-&gt;state
-op_assign
+id|set_current_state
+c_func
+(paren
 id|TASK_INTERRUPTIBLE
+)paren
 suffix:semicolon
 id|spin_unlock_irq
 c_func
@@ -8154,7 +8158,7 @@ op_amp
 id|si
 )paren
 suffix:semicolon
-macro_line|#elif defined __ia64__
+macro_line|#elif defined (__ia64__)
 id|adpt_ia64_info
 c_func
 (paren
@@ -8162,7 +8166,7 @@ op_amp
 id|si
 )paren
 suffix:semicolon
-macro_line|#elif define __sparc__
+macro_line|#elif defined(__sparc__)
 id|adpt_sparc_info
 c_func
 (paren
@@ -8170,7 +8174,7 @@ op_amp
 id|si
 )paren
 suffix:semicolon
-macro_line|#elif defined __alpha__ 
+macro_line|#elif defined (__alpha__)
 id|adpt_alpha_info
 c_func
 (paren

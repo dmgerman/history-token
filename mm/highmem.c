@@ -1156,8 +1156,6 @@ id|page
 op_star
 id|page
 suffix:semicolon
-id|repeat_alloc
-suffix:colon
 id|page
 op_assign
 id|alloc_page
@@ -1180,6 +1178,8 @@ c_func
 (paren
 )paren
 suffix:semicolon
+id|repeat_alloc
+suffix:colon
 multiline_comment|/*&n;&t; * Try to allocate from the emergency pool.&n;&t; */
 id|tmp
 op_assign
@@ -1288,8 +1288,6 @@ id|buffer_head
 op_star
 id|bh
 suffix:semicolon
-id|repeat_alloc
-suffix:colon
 id|bh
 op_assign
 id|kmem_cache_alloc
@@ -1314,6 +1312,8 @@ c_func
 (paren
 )paren
 suffix:semicolon
+id|repeat_alloc
+suffix:colon
 multiline_comment|/*&n;&t; * Try to allocate from the emergency pool.&n;&t; */
 id|tmp
 op_assign

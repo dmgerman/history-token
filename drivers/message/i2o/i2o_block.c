@@ -4,6 +4,7 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/stat.h&gt;
+macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/file.h&gt;
 macro_line|#include &lt;linux/ioctl.h&gt;
@@ -12,6 +13,7 @@ macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/blkpg.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/hdreg.h&gt;
+macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/notifier.h&gt;
 macro_line|#include &lt;linux/reboot.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
@@ -33,10 +35,10 @@ mdefine_line|#define MAX_I2OB_RETRIES 4
 singleline_comment|//#define DRIVERDEBUG
 macro_line|#ifdef DRIVERDEBUG
 DECL|macro|DEBUG
-mdefine_line|#define DEBUG( s )
+mdefine_line|#define DEBUG( s ) printk( s )
 macro_line|#else
 DECL|macro|DEBUG
-mdefine_line|#define DEBUG( s ) printk( s ) 
+mdefine_line|#define DEBUG( s )
 macro_line|#endif
 multiline_comment|/*&n; * Events that this OSM is interested in&n; */
 DECL|macro|I2OB_EVENT_MASK
@@ -1806,6 +1808,14 @@ op_amp
 l_int|0xF0
 )paren
 )braket
+suffix:semicolon
+multiline_comment|/*&n;&t; *&t;Pull the lock over ready&n;&t; */
+id|spin_lock_prefetch
+c_func
+(paren
+op_amp
+id|io_request_lock
+)paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * FAILed message&n;&t; */
 r_if
@@ -3880,7 +3890,6 @@ id|nr_sects
 comma
 (paren
 r_int
-r_int
 op_star
 )paren
 id|arg
@@ -4119,6 +4128,13 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/* Sync the device so we don&squot;t get errors */
+id|fsync_dev
+c_func
+(paren
+id|inode-&gt;i_rdev
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -6472,31 +6488,6 @@ comma
 id|flags
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Sync the device...this will force all outstanding I/Os&n;&t; * to attempt to complete, thus causing error messages.&n;&t; * We have to do this as the user could immediatelly create&n;&t; * a new volume that gets assigned the same minor number.&n;&t; * If there are still outstanding writes to the device,&n;&t; * that could cause data corruption on the new volume!&n;&t; *&n;&t; * The truth is that deleting a volume that you are currently&n;&t; * accessing will do _bad things_ to your system.  This &n;&t; * handler will keep it from crashing, but must probably &n;&t; * you&squot;ll have to do a &squot;reboot&squot; to get the system running&n;&t; * properly.  Deleting disks you are using is dumb.  &n;&t; * Umount them first and all will be good!&n;&t; *&n;&t; * It&squot;s not this driver&squot;s job to protect the system from&n;&t; * dumb user mistakes :)&n;&t; */
-r_if
-c_cond
-(paren
-id|i2ob_dev
-(braket
-id|unit
-)braket
-dot
-id|refcnt
-)paren
-(brace
-id|fsync_dev
-c_func
-(paren
-id|MKDEV
-c_func
-(paren
-id|MAJOR_NR
-comma
-id|unit
-)paren
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/*&n;&t; * Decrease usage count for module&n;&t; */
 r_while
 c_loop
@@ -7342,6 +7333,12 @@ c_func
 l_string|&quot;I2O Block Device OSM&quot;
 )paren
 suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 DECL|function|cleanup_module
 r_void
 id|cleanup_module
@@ -7350,11 +7347,6 @@ c_func
 r_void
 )paren
 (brace
-r_struct
-id|gendisk
-op_star
-id|gdp
-suffix:semicolon
 r_int
 id|i
 suffix:semicolon

@@ -1706,7 +1706,7 @@ id|off_t
 id|offset
 comma
 r_int
-id|len
+id|count
 comma
 r_int
 op_star
@@ -1743,9 +1743,8 @@ id|u32
 id|bus
 suffix:semicolon
 r_int
-id|count
-suffix:semicolon
-r_int
+id|len
+comma
 id|i
 suffix:semicolon
 id|spin_lock
@@ -1788,15 +1787,11 @@ r_return
 id|len
 suffix:semicolon
 )brace
-id|count
-op_assign
-id|hrt-&gt;num_entries
-suffix:semicolon
 r_if
 c_cond
 (paren
 (paren
-id|count
+id|hrt-&gt;num_entries
 op_star
 id|hrt-&gt;entry_len
 op_plus
@@ -1847,7 +1842,7 @@ id|len
 comma
 l_string|&quot;HRT has %d entries of %d bytes each.&bslash;n&quot;
 comma
-id|count
+id|hrt-&gt;num_entries
 comma
 id|hrt-&gt;entry_len
 op_lshift
@@ -1862,6 +1857,10 @@ op_assign
 l_int|0
 suffix:semicolon
 id|i
+OL
+id|hrt-&gt;num_entries
+op_logical_and
+id|len
 OL
 id|count
 suffix:semicolon
@@ -19231,7 +19230,6 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-comma
 l_string|&quot;Deleting device %d from iop%d&bslash;n&quot;
 comma
 id|d-&gt;lct_data.tid
@@ -19494,6 +19492,12 @@ id|MODULE_DESCRIPTION
 c_func
 (paren
 l_string|&quot;I2O procfs Handler&quot;
+)paren
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
 DECL|function|i2o_proc_exit

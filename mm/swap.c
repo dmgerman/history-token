@@ -43,6 +43,8 @@ multiline_comment|/* do swap I/O in clusters of this size */
 suffix:semicolon
 multiline_comment|/**&n; * (de)activate_page - move pages from/to active and inactive lists&n; * @page: the page we want to move&n; * @nolock - are we already holding the pagemap_lru_lock?&n; *&n; * Deactivate_page will move an active page to the right&n; * inactive list, while activate_page will move a page back&n; * from one of the inactive lists to the active list. If&n; * called on a page which is not on any of the lists, the&n; * page is left alone.&n; */
 DECL|function|deactivate_page_nolock
+r_static
+r_inline
 r_void
 id|deactivate_page_nolock
 c_func
@@ -111,6 +113,8 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Move an inactive page to the active list.&n; */
 DECL|function|activate_page_nolock
+r_static
+r_inline
 r_void
 id|activate_page_nolock
 c_func

@@ -84,6 +84,9 @@ suffix:semicolon
 )brace
 r_extern
 r_void
+id|FASTCALL
+c_func
+(paren
 id|unlock_buffer
 c_func
 (paren
@@ -91,6 +94,7 @@ r_struct
 id|buffer_head
 op_star
 id|bh
+)paren
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * super-block locking. Again, interrupts may only unlock&n; * a super-block (although even this isn&squot;t done right now.&n; * nfs may need it).&n; */

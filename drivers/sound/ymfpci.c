@@ -17,12 +17,13 @@ macro_line|# include &quot;sound_config.h&quot;
 macro_line|# include &quot;mpu401.h&quot;
 macro_line|#endif
 macro_line|#include &quot;ymfpci.h&quot;
-multiline_comment|/*&n; * I do not believe in debug levels as I never can guess what&n; * part of the code is going to be problematic in the future.&n; * Don&squot;t forget to run your klogd with -c 8.&n; */
-multiline_comment|/* #define YMFDBG(fmt, arg...)  do{ printk(KERN_DEBUG fmt, ##arg); }while(0) */
+multiline_comment|/*&n; * I do not believe in debug levels as I never can guess what&n; * part of the code is going to be problematic in the future.&n; * Don&squot;t forget to run your klogd with -c 8.&n; *&n; * Example (do not remove):&n; * #define YMFDBG(fmt, arg...)  do{ printk(KERN_DEBUG fmt, ##arg); }while(0)&n; */
 DECL|macro|YMFDBGW
-mdefine_line|#define YMFDBGW(fmt, arg...)  /* */
+mdefine_line|#define YMFDBGW(fmt, arg...)  /* */&t;/* write counts */
 DECL|macro|YMFDBGI
-mdefine_line|#define YMFDBGI(fmt, arg...)  /* */
+mdefine_line|#define YMFDBGI(fmt, arg...)  /* */&t;/* interrupts */
+DECL|macro|YMFDBGX
+mdefine_line|#define YMFDBGX(fmt, arg...)  /* */&t;/* ioctl */
 r_static
 r_int
 id|ymf_playback_trigger
@@ -1413,6 +1414,8 @@ id|flags
 suffix:semicolon
 r_int
 id|redzone
+comma
+id|redfrags
 suffix:semicolon
 r_int
 id|ret
@@ -1500,7 +1503,7 @@ id|PAGE_SIZE
 op_lshift
 id|dmabuf-&gt;buforder
 suffix:semicolon
-multiline_comment|/* lets hand out reasonable big ass buffers by default */
+multiline_comment|/* By default we give 4 big buffers. */
 id|dmabuf-&gt;fragshift
 op_assign
 (paren
@@ -1523,39 +1526,22 @@ OL
 id|dmabuf-&gt;fragshift
 )paren
 (brace
+multiline_comment|/* If OSS set smaller fragments, give more smaller buffers. */
 id|dmabuf-&gt;fragshift
 op_assign
 id|dmabuf-&gt;ossfragshift
-suffix:semicolon
-)brace
-id|dmabuf-&gt;numfrag
-op_assign
-id|bufsize
-op_rshift
-id|dmabuf-&gt;fragshift
-suffix:semicolon
-r_while
-c_loop
-(paren
-id|dmabuf-&gt;numfrag
-template_param
-l_int|3
-)paren
-(brace
-id|dmabuf-&gt;fragshift
-op_decrement
-suffix:semicolon
-id|dmabuf-&gt;numfrag
-op_assign
-id|bufsize
-op_rshift
-id|dmabuf-&gt;fragshift
 suffix:semicolon
 )brace
 id|dmabuf-&gt;fragsize
 op_assign
 l_int|1
 op_lshift
+id|dmabuf-&gt;fragshift
+suffix:semicolon
+id|dmabuf-&gt;numfrag
+op_assign
+id|bufsize
+op_rshift
 id|dmabuf-&gt;fragshift
 suffix:semicolon
 id|dmabuf-&gt;dmasize
@@ -1570,22 +1556,8 @@ c_cond
 id|dmabuf-&gt;ossmaxfrags
 op_ge
 l_int|2
-op_logical_and
-id|dmabuf-&gt;ossmaxfrags
-OL
-id|dmabuf-&gt;numfrag
 )paren
 (brace
-id|dmabuf-&gt;numfrag
-op_assign
-id|dmabuf-&gt;ossmaxfrags
-suffix:semicolon
-id|dmabuf-&gt;dmasize
-op_assign
-id|dmabuf-&gt;numfrag
-op_lshift
-id|dmabuf-&gt;fragshift
-suffix:semicolon
 id|redzone
 op_assign
 id|ymf_calc_lend
@@ -1596,30 +1568,45 @@ id|state-&gt;format.rate
 suffix:semicolon
 id|redzone
 op_lshift_assign
-(paren
 id|state-&gt;format.shift
+suffix:semicolon
+id|redzone
+op_mul_assign
+l_int|3
+suffix:semicolon
+id|redfrags
+op_assign
+(paren
+id|redzone
 op_plus
+id|dmabuf-&gt;fragsize
+op_minus
 l_int|1
 )paren
+op_rshift
+id|dmabuf-&gt;fragshift
 suffix:semicolon
 r_if
 c_cond
 (paren
-id|dmabuf-&gt;dmasize
+id|dmabuf-&gt;ossmaxfrags
+op_plus
+id|redfrags
 OL
-id|redzone
-op_star
-l_int|3
+id|dmabuf-&gt;numfrag
 )paren
 (brace
-multiline_comment|/*&n;&t;&t;&t; * The driver works correctly with minimum dmasize&n;&t;&t;&t; * of redzone*2, but it produces stoppage and clicks.&n;&t;&t;&t; * So, make it little larger for smoother sound.&n;&t;&t;&t; * XXX Make dmasize a wholy divisible by fragsize.&n;&t;&t;&t; */
-singleline_comment|//&t;&t;&t;printk(KERN_ERR &quot;ymfpci: dmasize=%d &lt; redzone=%d * 3&bslash;n&quot;,
-singleline_comment|//&t;&t;&t;    dmabuf-&gt;dmasize, redzone);
+id|dmabuf-&gt;numfrag
+op_assign
+id|dmabuf-&gt;ossmaxfrags
+op_plus
+id|redfrags
+suffix:semicolon
 id|dmabuf-&gt;dmasize
 op_assign
-id|redzone
-op_star
-l_int|3
+id|dmabuf-&gt;numfrag
+op_lshift
+id|dmabuf-&gt;fragshift
 suffix:semicolon
 )brace
 )brace
@@ -6336,7 +6323,9 @@ suffix:semicolon
 id|YMFDBGW
 c_func
 (paren
-l_string|&quot;ymf_write: dmabuf.count %d&bslash;n&quot;
+l_string|&quot;ymf_write: ret %d dmabuf.count %d&bslash;n&quot;
+comma
+id|ret
 comma
 id|dmabuf-&gt;count
 )paren
@@ -8296,6 +8285,14 @@ suffix:colon
 r_case
 id|SOUND_PCM_READ_FILTER
 suffix:colon
+id|YMFDBGX
+c_func
+(paren
+l_string|&quot;ymf_ioctl: cmd 0x%x unsupported&bslash;n&quot;
+comma
+id|cmd
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|ENOTTY
@@ -8303,6 +8300,14 @@ suffix:semicolon
 r_default
 suffix:colon
 multiline_comment|/*&n;&t;&t; * Some programs mix up audio devices and ioctls&n;&t;&t; * or perhaps they expect &quot;universal&quot; ioctls,&n;&t;&t; * for instance we get SNDCTL_TMR_CONTINUE here.&n;&t;&t; */
+id|YMFDBGX
+c_func
+(paren
+l_string|&quot;ymf_ioctl: cmd 0x%x unknown&bslash;n&quot;
+comma
+id|cmd
+)paren
+suffix:semicolon
 r_break
 suffix:semicolon
 )brace
