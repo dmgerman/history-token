@@ -9865,6 +9865,11 @@ op_amp
 id|rq-&gt;lock
 )paren
 suffix:semicolon
+id|local_irq_enable
+c_func
+(paren
+)paren
+suffix:semicolon
 id|preempt_enable_no_resched
 c_func
 (paren
