@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
+macro_line|#include &lt;linux/hash.h&gt;
 macro_line|#include &lt;linux/cache.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/mount.h&gt;
@@ -2536,10 +2537,14 @@ id|hash
 id|hash
 op_add_assign
 (paren
+(paren
 r_int
 r_int
 )paren
 id|parent
+op_xor
+id|GOLDEN_RATIO_PRIME
+)paren
 op_div
 id|L1_CACHE_BYTES
 suffix:semicolon
@@ -2548,7 +2553,11 @@ op_assign
 id|hash
 op_xor
 (paren
+(paren
 id|hash
+op_xor
+id|GOLDEN_RATIO_PRIME
+)paren
 op_rshift
 id|D_HASHBITS
 )paren
