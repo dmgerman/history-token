@@ -10839,11 +10839,10 @@ c_func
 id|uhci_up_cachep
 )paren
 )paren
-id|printk
+id|warn
 c_func
 (paren
-id|KERN_WARN
-l_string|&quot;uhci: not all urb_priv&squot;s were freed!&bslash;n&quot;
+l_string|&quot;not all urb_priv&squot;s were freed!&quot;
 )paren
 suffix:semicolon
 id|up_failed
@@ -10903,11 +10902,10 @@ c_func
 id|uhci_up_cachep
 )paren
 )paren
-id|printk
+id|warn
 c_func
 (paren
-id|KERN_WARN
-l_string|&quot;uhci: not all urb_priv&squot;s were freed!&bslash;n&quot;
+l_string|&quot;not all urb_priv&squot;s were freed!&quot;
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_PROC_FS
