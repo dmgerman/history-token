@@ -46,7 +46,7 @@ c_func
 (paren
 id|regs
 comma
-l_int|1
+l_int|0
 )paren
 suffix:semicolon
 id|result
@@ -102,7 +102,7 @@ c_func
 (paren
 id|regs
 comma
-l_int|0
+l_int|1
 )paren
 suffix:semicolon
 id|record_syscall_end

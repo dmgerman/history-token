@@ -9527,11 +9527,6 @@ op_assign
 op_amp
 id|info-&gt;var
 suffix:semicolon
-id|info-&gt;currcon
-op_assign
-op_minus
-l_int|1
-suffix:semicolon
 id|info-&gt;par
 op_assign
 id|cinfo

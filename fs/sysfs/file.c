@@ -1148,6 +1148,13 @@ id|filp-&gt;f_dentry
 )paren
 suffix:semicolon
 r_struct
+id|module
+op_star
+id|owner
+op_assign
+id|attr-&gt;owner
+suffix:semicolon
+r_struct
 id|sysfs_buffer
 op_star
 id|buffer
@@ -1165,10 +1172,11 @@ c_func
 id|kobj
 )paren
 suffix:semicolon
+multiline_comment|/* After this point, attr should not be accessed. */
 id|module_put
 c_func
 (paren
-id|attr-&gt;owner
+id|owner
 )paren
 suffix:semicolon
 r_if

@@ -87,8 +87,15 @@ id|nousb
 suffix:semicolon
 multiline_comment|/* Disable USB when built into kernel image */
 multiline_comment|/* Not honored on modular build */
-r_static
+DECL|variable|usb_all_devices_rwsem
 id|DECLARE_RWSEM
+c_func
+(paren
+id|usb_all_devices_rwsem
+)paren
+suffix:semicolon
+DECL|variable|usb_all_devices_rwsem
+id|EXPORT_SYMBOL
 c_func
 (paren
 id|usb_all_devices_rwsem
@@ -229,6 +236,7 @@ id|driver-&gt;probe
 r_return
 id|error
 suffix:semicolon
+multiline_comment|/* FIXME we&squot;d much prefer to just resume it ... */
 r_if
 c_cond
 (paren
@@ -3568,6 +3576,15 @@ r_struct
 id|usb_driver
 op_star
 id|driver
+suffix:semicolon
+multiline_comment|/* there&squot;s only one USB suspend state */
+r_if
+c_cond
+(paren
+id|dev-&gt;power.power_state
+)paren
+r_return
+l_int|0
 suffix:semicolon
 r_if
 c_cond

@@ -784,7 +784,9 @@ id|ixp4xx_timer_irq
 )paren
 suffix:semicolon
 )brace
+DECL|variable|ixp4xx_timer
 r_struct
+id|sys_timer
 id|ixp4xx_timer
 op_assign
 (brace

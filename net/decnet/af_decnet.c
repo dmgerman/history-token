@@ -7636,8 +7636,11 @@ id|current
 (brace
 id|rv
 op_assign
-op_minus
-id|ERESTARTSYS
+id|sock_intr_errno
+c_func
+(paren
+id|timeo
+)paren
 suffix:semicolon
 r_goto
 id|out
@@ -8720,8 +8723,11 @@ id|current
 (brace
 id|err
 op_assign
-op_minus
-id|ERESTARTSYS
+id|sock_intr_errno
+c_func
+(paren
+id|timeo
+)paren
 suffix:semicolon
 r_goto
 id|out
@@ -8822,6 +8828,8 @@ comma
 id|flags
 op_amp
 id|MSG_DONTWAIT
+comma
+id|timeo
 comma
 op_amp
 id|err

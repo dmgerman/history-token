@@ -2362,7 +2362,7 @@ id|cpuinfo_x86
 op_star
 )paren
 suffix:semicolon
-multiline_comment|/* Disabled by DMI scan or kernel option? */
+multiline_comment|/* Disabled by kernel option? */
 r_if
 c_cond
 (paren
@@ -2425,19 +2425,9 @@ id|boot_cpu_data.x86
 op_eq
 l_int|6
 op_logical_or
-(paren
 id|boot_cpu_data.x86
 op_eq
 l_int|15
-op_logical_and
-(paren
-id|cpu_has_apic
-op_logical_or
-id|enable_local_apic
-OG
-l_int|0
-)paren
-)paren
 op_logical_or
 (paren
 id|boot_cpu_data.x86
@@ -2465,18 +2455,30 @@ op_logical_neg
 id|cpu_has_apic
 )paren
 (brace
-multiline_comment|/*&n;&t;&t; * Over-ride BIOS and try to enable LAPIC&n;&t;&t; * only if &quot;lapic&quot; specified&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Over-ride BIOS and try to enable the local&n;&t;&t; * APIC only if &quot;lapic&quot; specified.&n;&t;&t; */
 r_if
 c_cond
 (paren
 id|enable_local_apic
-op_ne
-l_int|1
+op_le
+l_int|0
 )paren
-r_goto
-id|no_apic
+(brace
+id|apic_printk
+c_func
+(paren
+id|APIC_VERBOSE
+comma
+l_string|&quot;Local APIC disabled by BIOS -- &quot;
+l_string|&quot;you can enable it with &bslash;&quot;lapic&bslash;&quot;&bslash;n&quot;
+)paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * Some BIOSes disable the local APIC in the&n;&t;&t; * APIC_BASE MSR. This can only be done in&n;&t;&t; * software for Intel P6 and AMD K7 (Model &gt; 1).&n;&t;&t; */
+r_return
+op_minus
+l_int|1
+suffix:semicolon
+)brace
+multiline_comment|/*&n;&t;&t; * Some BIOSes disable the local APIC in the&n;&t;&t; * APIC_BASE MSR. This can only be done in&n;&t;&t; * software for Intel P6 or later and AMD K7&n;&t;&t; * (Model &gt; 1) or later.&n;&t;&t; */
 id|rdmsr
 c_func
 (paren

@@ -174,6 +174,14 @@ dot
 )paren
 (brace
 )brace
+multiline_comment|/* ia64 and ppc64 use function descriptors, which contain the real address */
+macro_line|#if defined(CONFIG_IA64) || defined(CONFIG_PPC64)
+DECL|macro|print_fn_descriptor_symbol
+mdefine_line|#define print_fn_descriptor_symbol(fmt, addr)&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;unsigned long *__faddr = (unsigned long*) addr;&t;&t;&bslash;&n;&t;print_symbol(fmt, __faddr[0]);&t;&t;&bslash;&n;} while (0)
+macro_line|#else
+DECL|macro|print_fn_descriptor_symbol
+mdefine_line|#define print_fn_descriptor_symbol(fmt, addr) print_symbol(fmt, addr)
+macro_line|#endif
 DECL|macro|print_symbol
 mdefine_line|#define print_symbol(fmt, addr)&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__check_printsym_format(fmt, &quot;&quot;);&t;&bslash;&n;&t;__print_symbol(fmt, addr);&t;&t;&bslash;&n;} while(0)
 macro_line|#endif /*_LINUX_KALLSYMS_H*/

@@ -1446,6 +1446,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Changes to the entropy data is put into a queue rather than being added to&n; * the entropy counts directly.  This is presumably to avoid doing heavy&n; * hashing calculations during an interrupt in add_timer_randomness().&n; * Instead, the entropy is only added to the pool by keventd.&n; */
 DECL|function|batch_entropy_store
+r_static
 r_void
 id|batch_entropy_store
 c_func
@@ -1598,13 +1599,6 @@ id|flags
 )paren
 suffix:semicolon
 )brace
-DECL|variable|batch_entropy_store
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|batch_entropy_store
-)paren
-suffix:semicolon
 multiline_comment|/*&n; * Flush out the accumulated entropy operations, adding entropy to the passed&n; * store (normally random_state).  If that store has enough entropy, alternate&n; * between randomizing the data of the primary and secondary stores.&n; */
 DECL|function|batch_entropy_process
 r_static
@@ -2102,13 +2096,6 @@ id|scancode
 suffix:semicolon
 )brace
 )brace
-DECL|variable|add_keyboard_randomness
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|add_keyboard_randomness
-)paren
-suffix:semicolon
 DECL|function|add_mouse_randomness
 r_void
 id|add_mouse_randomness
@@ -2174,13 +2161,6 @@ id|irq
 )paren
 suffix:semicolon
 )brace
-DECL|variable|add_interrupt_randomness
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|add_interrupt_randomness
-)paren
-suffix:semicolon
 DECL|function|add_disk_randomness
 r_void
 id|add_disk_randomness

@@ -17,7 +17,7 @@ multiline_comment|/* The OCP structure is fixed by code below, before OCP initia
 macro_line|#ifdef CONFIG_MPC10X_OPENPIC
 macro_line|#ifdef CONFIG_EPIC_SERIAL_MODE
 DECL|macro|EPIC_IRQ_BASE
-mdefine_line|#define EPIC_IRQ_BASE 16
+mdefine_line|#define EPIC_IRQ_BASE (epic_serial_mode ? 16 : 5)
 macro_line|#else
 DECL|macro|EPIC_IRQ_BASE
 mdefine_line|#define EPIC_IRQ_BASE 5
@@ -88,11 +88,6 @@ op_assign
 l_int|0
 comma
 dot
-id|irq
-op_assign
-id|MPC10X_I2C_IRQ
-comma
-dot
 id|additions
 op_assign
 op_amp
@@ -124,11 +119,6 @@ dot
 id|index
 op_assign
 l_int|0
-comma
-dot
-id|irq
-op_assign
-id|MPC10X_DMA0_IRQ
 )brace
 comma
 (brace
@@ -146,11 +136,6 @@ dot
 id|index
 op_assign
 l_int|1
-comma
-dot
-id|irq
-op_assign
-id|MPC10X_DMA1_IRQ
 )brace
 )brace
 suffix:semicolon
@@ -819,6 +804,10 @@ id|phys_eumb_base
 op_plus
 id|MPC10X_EUMB_I2C_OFFSET
 suffix:semicolon
+id|mpc10x_i2c_ocp.irq
+op_assign
+id|MPC10X_I2C_IRQ
+suffix:semicolon
 id|ocp_add_one_device
 c_func
 (paren
@@ -838,6 +827,15 @@ op_plus
 id|MPC10X_EUMB_DMA_OFFSET
 op_plus
 l_int|0x100
+suffix:semicolon
+id|mpc10x_dma_ocp
+(braket
+l_int|0
+)braket
+dot
+id|irq
+op_assign
+id|MPC10X_DMA0_IRQ
 suffix:semicolon
 id|ocp_add_one_device
 c_func
@@ -861,6 +859,15 @@ op_plus
 id|MPC10X_EUMB_DMA_OFFSET
 op_plus
 l_int|0x200
+suffix:semicolon
+id|mpc10x_dma_ocp
+(braket
+l_int|1
+)braket
+dot
+id|irq
+op_assign
+id|MPC10X_DMA1_IRQ
 suffix:semicolon
 id|ocp_add_one_device
 c_func

@@ -1,4 +1,4 @@
-multiline_comment|/* &n; * Copyright (C) 2002 Jeff Dike (jdike@karaya.com)&n; * Licensed under the GPL&n; */
+multiline_comment|/*&n; * Copyright (C) 2002 Jeff Dike (jdike@karaya.com)&n; * Licensed under the GPL&n; */
 macro_line|#ifndef __TT_MMU_H
 DECL|macro|__TT_MMU_H
 mdefine_line|#define __TT_MMU_H

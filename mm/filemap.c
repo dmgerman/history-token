@@ -1227,13 +1227,6 @@ c_func
 id|unlock_page
 )paren
 suffix:semicolon
-DECL|variable|lock_page
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|lock_page
-)paren
-suffix:semicolon
 multiline_comment|/*&n; * End writeback against a page.&n; */
 DECL|function|end_page_writeback
 r_void
@@ -1278,12 +1271,12 @@ c_func
 (paren
 )paren
 suffix:semicolon
+)brace
 id|smp_mb__after_clear_bit
 c_func
 (paren
 )paren
 suffix:semicolon
-)brace
 id|wake_up_page
 c_func
 (paren

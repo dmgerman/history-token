@@ -636,42 +636,10 @@ id|bh-&gt;b_state
 )paren
 suffix:semicolon
 )brace
-DECL|macro|HAVE_JOURNAL_CALLBACK_STATUS
-mdefine_line|#define HAVE_JOURNAL_CALLBACK_STATUS
-multiline_comment|/**&n; *   struct journal_callback - Base structure for callback information.&n; *   @jcb_list: list information for other callbacks attached to the same handle.&n; *   @jcb_func: Function to call with this callback structure. &n; *&n; *   This struct is a &squot;seed&squot; structure for a using with your own callback&n; *   structs. If you are using callbacks you must allocate one of these&n; *   or another struct of your own definition which has this struct &n; *   as it&squot;s first element and pass it to journal_callback_set().&n; *&n; *   This is used internally by jbd to maintain callback information.&n; *&n; *   See journal_callback_set for more information.&n; **/
-DECL|struct|journal_callback
-r_struct
-id|journal_callback
-(brace
-DECL|member|jcb_list
-r_struct
-id|list_head
-id|jcb_list
-suffix:semicolon
-multiline_comment|/* t_jcb_lock */
-DECL|member|jcb_func
-r_void
-(paren
-op_star
-id|jcb_func
-)paren
-(paren
-r_struct
-id|journal_callback
-op_star
-id|jcb
-comma
-r_int
-id|error
-)paren
-suffix:semicolon
-multiline_comment|/* user data goes here */
-)brace
-suffix:semicolon
 r_struct
 id|jbd_revoke_table_s
 suffix:semicolon
-multiline_comment|/**&n; * struct handle_s - The handle_s type is the concrete type associated with&n; *     handle_t.&n; * @h_transaction: Which compound transaction is this update a part of?&n; * @h_buffer_credits: Number of remaining buffers we are allowed to dirty.&n; * @h_ref: Reference count on this handle&n; * @h_jcb: List of application registered callbacks for this handle.&n; * @h_err: Field for caller&squot;s use to track errors through large fs operations&n; * @h_sync: flag for sync-on-close&n; * @h_jdata: flag to force data journaling&n; * @h_aborted: flag indicating fatal error on handle&n; **/
+multiline_comment|/**&n; * struct handle_s - The handle_s type is the concrete type associated with&n; *     handle_t.&n; * @h_transaction: Which compound transaction is this update a part of?&n; * @h_buffer_credits: Number of remaining buffers we are allowed to dirty.&n; * @h_ref: Reference count on this handle&n; * @h_err: Field for caller&squot;s use to track errors through large fs operations&n; * @h_sync: flag for sync-on-close&n; * @h_jdata: flag to force data journaling&n; * @h_aborted: flag indicating fatal error on handle&n; **/
 multiline_comment|/* Docbook can&squot;t yet cope with the bit fields, but will leave the documentation&n; * in so it can be fixed later. &n; */
 DECL|struct|handle_s
 r_struct
@@ -698,12 +666,6 @@ multiline_comment|/* operations */
 DECL|member|h_err
 r_int
 id|h_err
-suffix:semicolon
-multiline_comment|/*&n;&t; * List of application registered callbacks for this handle. The&n;&t; * function(s) will be called after the transaction that this handle is&n;&t; * part of has been committed to disk. [t_jcb_lock]&n;&t; */
-DECL|member|h_jcb
-r_struct
-id|list_head
-id|h_jcb
 suffix:semicolon
 multiline_comment|/* Flags [no locking] */
 DECL|member|h_sync
@@ -733,7 +695,7 @@ multiline_comment|/* fatal error on handle */
 )brace
 suffix:semicolon
 multiline_comment|/* The transaction_t type is the guts of the journaling mechanism.  It&n; * tracks a compound transaction through its various states:&n; *&n; * RUNNING:&t;accepting new updates&n; * LOCKED:&t;Updates still running but we don&squot;t accept new ones&n; * RUNDOWN:&t;Updates are tidying up but have finished requesting&n; *&t;&t;new buffers to modify (state not used for now)&n; * FLUSH:       All updates complete, but we are still writing to disk&n; * COMMIT:      All data on disk, writing commit record&n; * FINISHED:&t;We still have to keep the transaction for checkpointing.&n; *&n; * The transaction keeps track of all of the buffers modified by a&n; * running transaction, and all of the buffers committed but not yet&n; * flushed to home for finished transactions.&n; */
-multiline_comment|/*&n; * Lock ranking:&n; *&n; *    j_list_lock&n; *      -&gt;jbd_lock_bh_journal_head()&t;(This is &quot;innermost&quot;)&n; *&n; *    j_state_lock&n; *    -&gt;jbd_lock_bh_state()&n; *&n; *    jbd_lock_bh_state()&n; *    -&gt;j_list_lock&n; *&n; *    j_state_lock&n; *    -&gt;t_handle_lock&n; *&n; *    j_state_lock&n; *    -&gt;j_list_lock&t;&t;&t;(journal_unmap_buffer)&n; *&n; *    t_handle_lock&n; *    -&gt;t_jcb_lock&n; */
+multiline_comment|/*&n; * Lock ranking:&n; *&n; *    j_list_lock&n; *      -&gt;jbd_lock_bh_journal_head()&t;(This is &quot;innermost&quot;)&n; *&n; *    j_state_lock&n; *    -&gt;jbd_lock_bh_state()&n; *&n; *    jbd_lock_bh_state()&n; *    -&gt;j_list_lock&n; *&n; *    j_state_lock&n; *    -&gt;t_handle_lock&n; *&n; *    j_state_lock&n; *    -&gt;j_list_lock&t;&t;&t;(journal_unmap_buffer)&n; *&n; */
 DECL|struct|transaction_s
 r_struct
 id|transaction_s
@@ -882,17 +844,6 @@ multiline_comment|/*&n;&t; * How many handles used this transaction? [t_handle_l
 DECL|member|t_handle_count
 r_int
 id|t_handle_count
-suffix:semicolon
-multiline_comment|/*&n;&t; * Protects the callback list&n;&t; */
-DECL|member|t_jcb_lock
-id|spinlock_t
-id|t_jcb_lock
-suffix:semicolon
-multiline_comment|/*&n;&t; * List of registered callback functions for this transaction.&n;&t; * Called when the transaction is committed. [t_jcb_lock]&n;&t; */
-DECL|member|t_jcb
-r_struct
-id|list_head
-id|t_jcb
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -1567,34 +1518,6 @@ id|journal_flush
 (paren
 id|journal_t
 op_star
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|journal_callback_set
-c_func
-(paren
-id|handle_t
-op_star
-id|handle
-comma
-r_void
-(paren
-op_star
-id|fn
-)paren
-(paren
-r_struct
-id|journal_callback
-op_star
-comma
-r_int
-)paren
-comma
-r_struct
-id|journal_callback
-op_star
-id|jcb
 )paren
 suffix:semicolon
 r_extern

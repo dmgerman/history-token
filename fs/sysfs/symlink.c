@@ -4,29 +4,6 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kobject.h&gt;
 macro_line|#include &lt;linux/namei.h&gt;
 macro_line|#include &quot;sysfs.h&quot;
-DECL|variable|sysfs_symlink_inode_operations
-r_struct
-id|inode_operations
-id|sysfs_symlink_inode_operations
-op_assign
-(brace
-dot
-id|readlink
-op_assign
-id|generic_readlink
-comma
-dot
-id|follow_link
-op_assign
-id|sysfs_follow_link
-comma
-dot
-id|put_link
-op_assign
-id|sysfs_put_link
-comma
-)brace
-suffix:semicolon
 DECL|function|object_depth
 r_static
 r_int
@@ -705,6 +682,7 @@ id|error
 suffix:semicolon
 )brace
 DECL|function|sysfs_follow_link
+r_static
 r_int
 id|sysfs_follow_link
 c_func
@@ -781,6 +759,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|sysfs_put_link
+r_static
 r_void
 id|sysfs_put_link
 c_func
@@ -827,6 +806,29 @@ id|page
 )paren
 suffix:semicolon
 )brace
+DECL|variable|sysfs_symlink_inode_operations
+r_struct
+id|inode_operations
+id|sysfs_symlink_inode_operations
+op_assign
+(brace
+dot
+id|readlink
+op_assign
+id|generic_readlink
+comma
+dot
+id|follow_link
+op_assign
+id|sysfs_follow_link
+comma
+dot
+id|put_link
+op_assign
+id|sysfs_put_link
+comma
+)brace
+suffix:semicolon
 DECL|variable|sysfs_create_link
 id|EXPORT_SYMBOL_GPL
 c_func

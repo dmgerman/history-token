@@ -5,6 +5,7 @@ multiline_comment|/*&n; *&t;Video for Linux Two&n; *&n; *&t;Header file for v4l 
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/time.h&gt; /* need struct timeval */
 macro_line|#endif
+macro_line|#include &lt;linux/compiler.h&gt; /* need __user */
 multiline_comment|/*&n; *&t;M I S C E L L A N E O U S&n; */
 multiline_comment|/*  Four-character-code (FOURCC) */
 DECL|macro|v4l2_fourcc

@@ -579,11 +579,6 @@ id|hcd_alloc
 op_assign
 id|ohci_hcd_alloc
 comma
-dot
-id|hcd_free
-op_assign
-id|ohci_hcd_free
-comma
 multiline_comment|/*&n;&t; * managing i/o requests and associated device resources&n;&t; */
 dot
 id|urb_enqueue
