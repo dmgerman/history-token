@@ -17,38 +17,6 @@ macro_line|#include &lt;asm/gpio.h&gt;
 macro_line|#include &lt;asm/hardirq.h&gt;
 macro_line|#include &lt;asm/regs267x.h&gt;
 macro_line|#include &lt;asm/errno.h&gt;
-DECL|macro|EXT_IRQ0
-mdefine_line|#define EXT_IRQ0 16
-DECL|macro|EXT_IRQ1
-mdefine_line|#define EXT_IRQ1 17
-DECL|macro|EXT_IRQ2
-mdefine_line|#define EXT_IRQ2 18
-DECL|macro|EXT_IRQ3
-mdefine_line|#define EXT_IRQ3 19
-DECL|macro|EXT_IRQ4
-mdefine_line|#define EXT_IRQ4 20
-DECL|macro|EXT_IRQ5
-mdefine_line|#define EXT_IRQ5 21
-DECL|macro|EXT_IRQ6
-mdefine_line|#define EXT_IRQ6 22
-DECL|macro|EXT_IRQ7
-mdefine_line|#define EXT_IRQ7 23
-DECL|macro|EXT_IRQ8
-mdefine_line|#define EXT_IRQ8 24
-DECL|macro|EXT_IRQ9
-mdefine_line|#define EXT_IRQ9 25
-DECL|macro|EXT_IRQ10
-mdefine_line|#define EXT_IRQ10 26
-DECL|macro|EXT_IRQ11
-mdefine_line|#define EXT_IRQ11 27
-DECL|macro|EXT_IRQ12
-mdefine_line|#define EXT_IRQ12 28
-DECL|macro|EXT_IRQ13
-mdefine_line|#define EXT_IRQ13 29
-DECL|macro|EXT_IRQ14
-mdefine_line|#define EXT_IRQ14 30
-DECL|macro|EXT_IRQ15
-mdefine_line|#define EXT_IRQ15 31
 multiline_comment|/*&n; * This structure has only 4 elements for speed reasons&n; */
 DECL|struct|irq_handler
 r_typedef
@@ -1409,7 +1377,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|variable|enable_kmalloc
-id|__initcall
+id|core_initcall
 c_func
 (paren
 id|enable_kmalloc

@@ -16,22 +16,6 @@ macro_line|#include &lt;asm/gpio.h&gt;
 macro_line|#include &lt;asm/hardirq.h&gt;
 macro_line|#include &lt;asm/regs306x.h&gt;
 macro_line|#include &lt;asm/errno.h&gt;
-DECL|macro|EXT_IRQ0
-mdefine_line|#define EXT_IRQ0 12
-DECL|macro|EXT_IRQ1
-mdefine_line|#define EXT_IRQ1 13
-DECL|macro|EXT_IRQ2
-mdefine_line|#define EXT_IRQ2 14
-DECL|macro|EXT_IRQ3
-mdefine_line|#define EXT_IRQ3 15
-DECL|macro|EXT_IRQ4
-mdefine_line|#define EXT_IRQ4 16
-DECL|macro|EXT_IRQ5
-mdefine_line|#define EXT_IRQ5 17
-DECL|macro|EXT_IRQ6
-mdefine_line|#define EXT_IRQ6 18
-DECL|macro|EXT_IRQ7
-mdefine_line|#define EXT_IRQ7 19
 multiline_comment|/*&n; * This structure has only 4 elements for speed reasons&n; */
 DECL|struct|irq_handler
 r_typedef
@@ -795,6 +779,10 @@ r_if
 c_cond
 (paren
 (paren
+(paren
+r_int
+r_int
+)paren
 id|irq_list
 (braket
 id|irq
@@ -1178,7 +1166,7 @@ r_void
 )brace
 DECL|function|enable_kmalloc
 r_static
-r_void
+r_int
 id|__init
 id|enable_kmalloc
 c_func
@@ -1190,9 +1178,12 @@ id|use_kmalloc
 op_assign
 l_int|1
 suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
 )brace
 DECL|variable|enable_kmalloc
-id|__initcall
+id|core_initcall
 c_func
 (paren
 id|enable_kmalloc
