@@ -510,6 +510,7 @@ id|pci_dev
 op_star
 id|dev
 suffix:semicolon
+macro_line|#ifdef CONFIG_PROC_FS
 multiline_comment|/* procfs */
 DECL|member|num
 r_int
@@ -521,6 +522,7 @@ id|proc_dir_entry
 op_star
 id|proc_entry
 suffix:semicolon
+macro_line|#endif
 multiline_comment|/* Grabbed from PCI */
 DECL|member|irq
 r_int
@@ -535,11 +537,6 @@ DECL|member|io_size
 r_int
 r_int
 id|io_size
-suffix:semicolon
-DECL|member|uhci_list
-r_struct
-id|list_head
-id|uhci_list
 suffix:semicolon
 DECL|member|qh_pool
 r_struct
