@@ -4272,8 +4272,10 @@ op_ne
 l_int|1
 op_logical_or
 id|nr_mirrors
-OL
-l_int|2
+template_param
+id|KCOPYD_MAX_REGIONS
+op_plus
+l_int|1
 )paren
 (brace
 id|ti-&gt;error
