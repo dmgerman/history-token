@@ -181,10 +181,10 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-l_string|&quot;1:&bslash;tlduw&t;[%2], %%g5&bslash;n&bslash;t&quot;
-l_string|&quot;add&t;&t;%%g5, %1, %%g7&bslash;n&bslash;t&quot;
-l_string|&quot;cas&t;&t;[%2], %%g5, %%g7&bslash;n&bslash;t&quot;
-l_string|&quot;cmp&t;&t;%%g5, %%g7&bslash;n&bslash;t&quot;
+l_string|&quot;1:&bslash;tlduw&t;[%2], %%g1&bslash;n&bslash;t&quot;
+l_string|&quot;add&t;&t;%%g1, %1, %%g7&bslash;n&bslash;t&quot;
+l_string|&quot;cas&t;&t;[%2], %%g1, %%g7&bslash;n&bslash;t&quot;
+l_string|&quot;cmp&t;&t;%%g1, %%g7&bslash;n&bslash;t&quot;
 l_string|&quot;bne,pn&t;&t;%%icc, 1b&bslash;n&bslash;t&quot;
 l_string|&quot; membar&t;#StoreLoad | #StoreStore&bslash;n&bslash;t&quot;
 l_string|&quot;mov&t;&t;%%g7, %0&bslash;n&bslash;t&quot;
@@ -204,7 +204,7 @@ l_string|&quot;r&quot;
 id|sem
 )paren
 suffix:colon
-l_string|&quot;g5&quot;
+l_string|&quot;g1&quot;
 comma
 l_string|&quot;g7&quot;
 comma

@@ -86,10 +86,10 @@ id|__volatile__
 c_func
 (paren
 l_string|&quot;! beginning __down_read&bslash;n&quot;
-l_string|&quot;1:&bslash;tlduw&t;[%0], %%g5&bslash;n&bslash;t&quot;
-l_string|&quot;add&t;&t;%%g5, 1, %%g7&bslash;n&bslash;t&quot;
-l_string|&quot;cas&t;&t;[%0], %%g5, %%g7&bslash;n&bslash;t&quot;
-l_string|&quot;cmp&t;&t;%%g5, %%g7&bslash;n&bslash;t&quot;
+l_string|&quot;1:&bslash;tlduw&t;[%0], %%g1&bslash;n&bslash;t&quot;
+l_string|&quot;add&t;&t;%%g1, 1, %%g7&bslash;n&bslash;t&quot;
+l_string|&quot;cas&t;&t;[%0], %%g1, %%g7&bslash;n&bslash;t&quot;
+l_string|&quot;cmp&t;&t;%%g1, %%g7&bslash;n&bslash;t&quot;
 l_string|&quot;bne,pn&t;&t;%%icc, 1b&bslash;n&bslash;t&quot;
 l_string|&quot; add&t;&t;%%g7, 1, %%g7&bslash;n&bslash;t&quot;
 l_string|&quot;cmp&t;&t;%%g7, 0&bslash;n&bslash;t&quot;
@@ -97,17 +97,12 @@ l_string|&quot;bl,pn&t;&t;%%icc, 3f&bslash;n&bslash;t&quot;
 l_string|&quot; membar&t;#StoreLoad | #StoreStore&bslash;n&quot;
 l_string|&quot;2:&bslash;n&bslash;t&quot;
 l_string|&quot;.subsection&t;2&bslash;n&quot;
-l_string|&quot;3:&bslash;tmov&t;%0, %%g5&bslash;n&bslash;t&quot;
+l_string|&quot;3:&bslash;tmov&t;%0, %%g1&bslash;n&bslash;t&quot;
 l_string|&quot;save&t;&t;%%sp, -160, %%sp&bslash;n&bslash;t&quot;
-l_string|&quot;mov&t;&t;%%g1, %%l1&bslash;n&bslash;t&quot;
-l_string|&quot;mov&t;&t;%%g2, %%l2&bslash;n&bslash;t&quot;
-l_string|&quot;mov&t;&t;%%g3, %%l3&bslash;n&bslash;t&quot;
 l_string|&quot;call&t;&t;%1&bslash;n&bslash;t&quot;
-l_string|&quot; mov&t;&t;%%g5, %%o0&bslash;n&bslash;t&quot;
-l_string|&quot;mov&t;&t;%%l1, %%g1&bslash;n&bslash;t&quot;
-l_string|&quot;mov&t;&t;%%l2, %%g2&bslash;n&bslash;t&quot;
+l_string|&quot; mov&t;&t;%%g1, %%o0&bslash;n&bslash;t&quot;
 l_string|&quot;ba,pt&t;&t;%%xcc, 2b&bslash;n&bslash;t&quot;
-l_string|&quot; restore&t;%%l3, %%g0, %%g3&bslash;n&bslash;t&quot;
+l_string|&quot; restore&bslash;n&bslash;t&quot;
 l_string|&quot;.previous&bslash;n&bslash;t&quot;
 l_string|&quot;! ending __down_read&quot;
 suffix:colon
@@ -122,6 +117,12 @@ l_string|&quot;i&quot;
 id|rwsem_down_read_failed
 )paren
 suffix:colon
+l_string|&quot;g1&quot;
+comma
+l_string|&quot;g2&quot;
+comma
+l_string|&quot;g3&quot;
+comma
 l_string|&quot;g5&quot;
 comma
 l_string|&quot;g7&quot;
@@ -158,13 +159,13 @@ id|__volatile__
 c_func
 (paren
 l_string|&quot;! beginning __down_read_trylock&bslash;n&quot;
-l_string|&quot;1:&bslash;tlduw&t;[%1], %%g5&bslash;n&bslash;t&quot;
-l_string|&quot;add&t;&t;%%g5, 1, %%g7&bslash;n&bslash;t&quot;
+l_string|&quot;1:&bslash;tlduw&t;[%1], %%g1&bslash;n&bslash;t&quot;
+l_string|&quot;add&t;&t;%%g1, 1, %%g7&bslash;n&bslash;t&quot;
 l_string|&quot;cmp&t;&t;%%g7, 0&bslash;n&bslash;t&quot;
 l_string|&quot;bl,pn&t;&t;%%icc, 2f&bslash;n&bslash;t&quot;
 l_string|&quot; mov&t;&t;0, %0&bslash;n&bslash;t&quot;
-l_string|&quot;cas&t;&t;[%1], %%g5, %%g7&bslash;n&bslash;t&quot;
-l_string|&quot;cmp&t;&t;%%g5, %%g7&bslash;n&bslash;t&quot;
+l_string|&quot;cas&t;&t;[%1], %%g1, %%g7&bslash;n&bslash;t&quot;
+l_string|&quot;cmp&t;&t;%%g1, %%g7&bslash;n&bslash;t&quot;
 l_string|&quot;bne,pn&t;&t;%%icc, 1b&bslash;n&bslash;t&quot;
 l_string|&quot; mov&t;&t;1, %0&bslash;n&bslash;t&quot;
 l_string|&quot;membar&t;&t;#StoreLoad | #StoreStore&bslash;n&quot;
@@ -181,7 +182,7 @@ l_string|&quot;r&quot;
 id|sem
 )paren
 suffix:colon
-l_string|&quot;g5&quot;
+l_string|&quot;g1&quot;
 comma
 l_string|&quot;g7&quot;
 comma
@@ -220,25 +221,22 @@ c_func
 l_string|&quot;! beginning __down_write&bslash;n&bslash;t&quot;
 l_string|&quot;sethi&t;&t;%%hi(%2), %%g1&bslash;n&bslash;t&quot;
 l_string|&quot;or&t;&t;%%g1, %%lo(%2), %%g1&bslash;n&quot;
-l_string|&quot;1:&bslash;tlduw&t;[%0], %%g5&bslash;n&bslash;t&quot;
-l_string|&quot;add&t;&t;%%g5, %%g1, %%g7&bslash;n&bslash;t&quot;
-l_string|&quot;cas&t;&t;[%0], %%g5, %%g7&bslash;n&bslash;t&quot;
-l_string|&quot;cmp&t;&t;%%g5, %%g7&bslash;n&bslash;t&quot;
+l_string|&quot;1:&bslash;tlduw&t;[%0], %%g3&bslash;n&bslash;t&quot;
+l_string|&quot;add&t;&t;%%g3, %%g1, %%g7&bslash;n&bslash;t&quot;
+l_string|&quot;cas&t;&t;[%0], %%g3, %%g7&bslash;n&bslash;t&quot;
+l_string|&quot;cmp&t;&t;%%g3, %%g7&bslash;n&bslash;t&quot;
 l_string|&quot;bne,pn&t;&t;%%icc, 1b&bslash;n&bslash;t&quot;
 l_string|&quot; cmp&t;&t;%%g7, 0&bslash;n&bslash;t&quot;
 l_string|&quot;bne,pn&t;&t;%%icc, 3f&bslash;n&bslash;t&quot;
 l_string|&quot; membar&t;#StoreLoad | #StoreStore&bslash;n&quot;
 l_string|&quot;2:&bslash;n&bslash;t&quot;
 l_string|&quot;.subsection&t;2&bslash;n&quot;
-l_string|&quot;3:&bslash;tmov&t;%0, %%g5&bslash;n&bslash;t&quot;
+l_string|&quot;3:&bslash;tmov&t;%0, %%g1&bslash;n&bslash;t&quot;
 l_string|&quot;save&t;&t;%%sp, -160, %%sp&bslash;n&bslash;t&quot;
-l_string|&quot;mov&t;&t;%%g2, %%l2&bslash;n&bslash;t&quot;
-l_string|&quot;mov&t;&t;%%g3, %%l3&bslash;n&bslash;t&quot;
 l_string|&quot;call&t;&t;%1&bslash;n&bslash;t&quot;
-l_string|&quot; mov&t;&t;%%g5, %%o0&bslash;n&bslash;t&quot;
-l_string|&quot;mov&t;&t;%%l2, %%g2&bslash;n&bslash;t&quot;
+l_string|&quot; mov&t;&t;%%g1, %%o0&bslash;n&bslash;t&quot;
 l_string|&quot;ba,pt&t;&t;%%xcc, 2b&bslash;n&bslash;t&quot;
-l_string|&quot; restore&t;%%l3, %%g0, %%g3&bslash;n&bslash;t&quot;
+l_string|&quot; restore&bslash;n&bslash;t&quot;
 l_string|&quot;.previous&bslash;n&bslash;t&quot;
 l_string|&quot;! ending __down_write&quot;
 suffix:colon
@@ -259,6 +257,10 @@ id|RWSEM_ACTIVE_WRITE_BIAS
 )paren
 suffix:colon
 l_string|&quot;g1&quot;
+comma
+l_string|&quot;g2&quot;
+comma
+l_string|&quot;g3&quot;
 comma
 l_string|&quot;g5&quot;
 comma
@@ -298,13 +300,13 @@ c_func
 l_string|&quot;! beginning __down_write_trylock&bslash;n&bslash;t&quot;
 l_string|&quot;sethi&t;&t;%%hi(%2), %%g1&bslash;n&bslash;t&quot;
 l_string|&quot;or&t;&t;%%g1, %%lo(%2), %%g1&bslash;n&quot;
-l_string|&quot;1:&bslash;tlduw&t;[%1], %%g5&bslash;n&bslash;t&quot;
-l_string|&quot;cmp&t;&t;%%g5, 0&bslash;n&bslash;t&quot;
+l_string|&quot;1:&bslash;tlduw&t;[%1], %%g3&bslash;n&bslash;t&quot;
+l_string|&quot;cmp&t;&t;%%g3, 0&bslash;n&bslash;t&quot;
 l_string|&quot;bne,pn&t;&t;%%icc, 2f&bslash;n&bslash;t&quot;
 l_string|&quot; mov&t;&t;0, %0&bslash;n&bslash;t&quot;
-l_string|&quot;add&t;&t;%%g5, %%g1, %%g7&bslash;n&bslash;t&quot;
-l_string|&quot;cas&t;&t;[%1], %%g5, %%g7&bslash;n&bslash;t&quot;
-l_string|&quot;cmp&t;&t;%%g5, %%g7&bslash;n&bslash;t&quot;
+l_string|&quot;add&t;&t;%%g3, %%g1, %%g7&bslash;n&bslash;t&quot;
+l_string|&quot;cas&t;&t;[%1], %%g3, %%g7&bslash;n&bslash;t&quot;
+l_string|&quot;cmp&t;&t;%%g3, %%g7&bslash;n&bslash;t&quot;
 l_string|&quot;bne,pn&t;&t;%%icc, 1b&bslash;n&bslash;t&quot;
 l_string|&quot; mov&t;&t;1, %0&bslash;n&bslash;t&quot;
 l_string|&quot;membar&t;&t;#StoreLoad | #StoreStore&bslash;n&quot;
@@ -328,7 +330,7 @@ id|RWSEM_ACTIVE_WRITE_BIAS
 suffix:colon
 l_string|&quot;g1&quot;
 comma
-l_string|&quot;g5&quot;
+l_string|&quot;g3&quot;
 comma
 l_string|&quot;g7&quot;
 comma
@@ -364,10 +366,10 @@ id|__volatile__
 c_func
 (paren
 l_string|&quot;! beginning __up_read&bslash;n&bslash;t&quot;
-l_string|&quot;1:&bslash;tlduw&t;[%0], %%g5&bslash;n&bslash;t&quot;
-l_string|&quot;sub&t;&t;%%g5, 1, %%g7&bslash;n&bslash;t&quot;
-l_string|&quot;cas&t;&t;[%0], %%g5, %%g7&bslash;n&bslash;t&quot;
-l_string|&quot;cmp&t;&t;%%g5, %%g7&bslash;n&bslash;t&quot;
+l_string|&quot;1:&bslash;tlduw&t;[%0], %%g1&bslash;n&bslash;t&quot;
+l_string|&quot;sub&t;&t;%%g1, 1, %%g7&bslash;n&bslash;t&quot;
+l_string|&quot;cas&t;&t;[%0], %%g1, %%g7&bslash;n&bslash;t&quot;
+l_string|&quot;cmp&t;&t;%%g1, %%g7&bslash;n&bslash;t&quot;
 l_string|&quot;bne,pn&t;&t;%%icc, 1b&bslash;n&bslash;t&quot;
 l_string|&quot; cmp&t;&t;%%g7, 0&bslash;n&bslash;t&quot;
 l_string|&quot;bl,pn&t;&t;%%icc, 3f&bslash;n&bslash;t&quot;
@@ -379,15 +381,12 @@ l_string|&quot;sub&t;&t;%%g7, 1, %%g7&bslash;n&bslash;t&quot;
 l_string|&quot;or&t;&t;%%g1, %%lo(%2), %%g1&bslash;n&bslash;t&quot;
 l_string|&quot;andcc&t;&t;%%g7, %%g1, %%g0&bslash;n&bslash;t&quot;
 l_string|&quot;bne,pn&t;&t;%%icc, 2b&bslash;n&bslash;t&quot;
-l_string|&quot; mov&t;&t;%0, %%g5&bslash;n&bslash;t&quot;
+l_string|&quot; mov&t;&t;%0, %%g1&bslash;n&bslash;t&quot;
 l_string|&quot;save&t;&t;%%sp, -160, %%sp&bslash;n&bslash;t&quot;
-l_string|&quot;mov&t;&t;%%g2, %%l2&bslash;n&bslash;t&quot;
-l_string|&quot;mov&t;&t;%%g3, %%l3&bslash;n&bslash;t&quot;
 l_string|&quot;call&t;&t;%1&bslash;n&bslash;t&quot;
-l_string|&quot; mov&t;&t;%%g5, %%o0&bslash;n&bslash;t&quot;
-l_string|&quot;mov&t;&t;%%l2, %%g2&bslash;n&bslash;t&quot;
+l_string|&quot; mov&t;&t;%%g1, %%o0&bslash;n&bslash;t&quot;
 l_string|&quot;ba,pt&t;&t;%%xcc, 2b&bslash;n&bslash;t&quot;
-l_string|&quot; restore&t;%%l3, %%g0, %%g3&bslash;n&bslash;t&quot;
+l_string|&quot; restore&bslash;n&bslash;t&quot;
 l_string|&quot;.previous&bslash;n&bslash;t&quot;
 l_string|&quot;! ending __up_read&quot;
 suffix:colon
@@ -408,6 +407,10 @@ id|RWSEM_ACTIVE_MASK
 )paren
 suffix:colon
 l_string|&quot;g1&quot;
+comma
+l_string|&quot;g2&quot;
+comma
+l_string|&quot;g3&quot;
 comma
 l_string|&quot;g5&quot;
 comma
@@ -444,10 +447,10 @@ c_func
 l_string|&quot;! beginning __up_write&bslash;n&bslash;t&quot;
 l_string|&quot;sethi&t;&t;%%hi(%2), %%g1&bslash;n&bslash;t&quot;
 l_string|&quot;or&t;&t;%%g1, %%lo(%2), %%g1&bslash;n&quot;
-l_string|&quot;1:&bslash;tlduw&t;[%0], %%g5&bslash;n&bslash;t&quot;
-l_string|&quot;sub&t;&t;%%g5, %%g1, %%g7&bslash;n&bslash;t&quot;
-l_string|&quot;cas&t;&t;[%0], %%g5, %%g7&bslash;n&bslash;t&quot;
-l_string|&quot;cmp&t;&t;%%g5, %%g7&bslash;n&bslash;t&quot;
+l_string|&quot;1:&bslash;tlduw&t;[%0], %%g3&bslash;n&bslash;t&quot;
+l_string|&quot;sub&t;&t;%%g3, %%g1, %%g7&bslash;n&bslash;t&quot;
+l_string|&quot;cas&t;&t;[%0], %%g3, %%g7&bslash;n&bslash;t&quot;
+l_string|&quot;cmp&t;&t;%%g3, %%g7&bslash;n&bslash;t&quot;
 l_string|&quot;bne,pn&t;&t;%%icc, 1b&bslash;n&bslash;t&quot;
 l_string|&quot; sub&t;&t;%%g7, %%g1, %%g7&bslash;n&bslash;t&quot;
 l_string|&quot;cmp&t;&t;%%g7, 0&bslash;n&bslash;t&quot;
@@ -455,15 +458,12 @@ l_string|&quot;bl,pn&t;&t;%%icc, 3f&bslash;n&bslash;t&quot;
 l_string|&quot; membar&t;#StoreLoad | #StoreStore&bslash;n&quot;
 l_string|&quot;2:&bslash;n&bslash;t&quot;
 l_string|&quot;.subsection 2&bslash;n&quot;
-l_string|&quot;3:&bslash;tmov&t;%0, %%g5&bslash;n&bslash;t&quot;
+l_string|&quot;3:&bslash;tmov&t;%0, %%g1&bslash;n&bslash;t&quot;
 l_string|&quot;save&t;&t;%%sp, -160, %%sp&bslash;n&bslash;t&quot;
-l_string|&quot;mov&t;&t;%%g2, %%l2&bslash;n&bslash;t&quot;
-l_string|&quot;mov&t;&t;%%g3, %%l3&bslash;n&bslash;t&quot;
 l_string|&quot;call&t;&t;%1&bslash;n&bslash;t&quot;
-l_string|&quot; mov&t;&t;%%g5, %%o0&bslash;n&bslash;t&quot;
-l_string|&quot;mov&t;&t;%%l2, %%g2&bslash;n&bslash;t&quot;
+l_string|&quot; mov&t;&t;%%g1, %%o0&bslash;n&bslash;t&quot;
 l_string|&quot;ba,pt&t;&t;%%xcc, 2b&bslash;n&bslash;t&quot;
-l_string|&quot; restore&t;%%l3, %%g0, %%g3&bslash;n&bslash;t&quot;
+l_string|&quot; restore&bslash;n&bslash;t&quot;
 l_string|&quot;.previous&bslash;n&bslash;t&quot;
 l_string|&quot;! ending __up_write&quot;
 suffix:colon
@@ -484,6 +484,10 @@ id|RWSEM_ACTIVE_WRITE_BIAS
 )paren
 suffix:colon
 l_string|&quot;g1&quot;
+comma
+l_string|&quot;g2&quot;
+comma
+l_string|&quot;g3&quot;
 comma
 l_string|&quot;g5&quot;
 comma
@@ -520,10 +524,10 @@ c_func
 l_string|&quot;! beginning __downgrade_write&bslash;n&bslash;t&quot;
 l_string|&quot;sethi&t;&t;%%hi(%2), %%g1&bslash;n&bslash;t&quot;
 l_string|&quot;or&t;&t;%%g1, %%lo(%2), %%g1&bslash;n&quot;
-l_string|&quot;1:&bslash;tlduw&t;[%0], %%g5&bslash;n&bslash;t&quot;
-l_string|&quot;sub&t;&t;%%g5, %%g1, %%g7&bslash;n&bslash;t&quot;
-l_string|&quot;cas&t;&t;[%0], %%g5, %%g7&bslash;n&bslash;t&quot;
-l_string|&quot;cmp&t;&t;%%g5, %%g7&bslash;n&bslash;t&quot;
+l_string|&quot;1:&bslash;tlduw&t;[%0], %%g3&bslash;n&bslash;t&quot;
+l_string|&quot;sub&t;&t;%%g3, %%g1, %%g7&bslash;n&bslash;t&quot;
+l_string|&quot;cas&t;&t;[%0], %%g3, %%g7&bslash;n&bslash;t&quot;
+l_string|&quot;cmp&t;&t;%%g3, %%g7&bslash;n&bslash;t&quot;
 l_string|&quot;bne,pn&t;&t;%%icc, 1b&bslash;n&bslash;t&quot;
 l_string|&quot; sub&t;&t;%%g7, %%g1, %%g7&bslash;n&bslash;t&quot;
 l_string|&quot;cmp&t;&t;%%g7, 0&bslash;n&bslash;t&quot;
@@ -531,15 +535,12 @@ l_string|&quot;bl,pn&t;&t;%%icc, 3f&bslash;n&bslash;t&quot;
 l_string|&quot; membar&t;#StoreLoad | #StoreStore&bslash;n&quot;
 l_string|&quot;2:&bslash;n&bslash;t&quot;
 l_string|&quot;.subsection 2&bslash;n&quot;
-l_string|&quot;3:&bslash;tmov&t;%0, %%g5&bslash;n&bslash;t&quot;
+l_string|&quot;3:&bslash;tmov&t;%0, %%g1&bslash;n&bslash;t&quot;
 l_string|&quot;save&t;&t;%%sp, -160, %%sp&bslash;n&bslash;t&quot;
-l_string|&quot;mov&t;&t;%%g2, %%l2&bslash;n&bslash;t&quot;
-l_string|&quot;mov&t;&t;%%g3, %%l3&bslash;n&bslash;t&quot;
 l_string|&quot;call&t;&t;%1&bslash;n&bslash;t&quot;
-l_string|&quot; mov&t;&t;%%g5, %%o0&bslash;n&bslash;t&quot;
-l_string|&quot;mov&t;&t;%%l2, %%g2&bslash;n&bslash;t&quot;
+l_string|&quot; mov&t;&t;%%g1, %%o0&bslash;n&bslash;t&quot;
 l_string|&quot;ba,pt&t;&t;%%xcc, 2b&bslash;n&bslash;t&quot;
-l_string|&quot; restore&t;%%l3, %%g0, %%g3&bslash;n&bslash;t&quot;
+l_string|&quot; restore&bslash;n&bslash;t&quot;
 l_string|&quot;.previous&bslash;n&bslash;t&quot;
 l_string|&quot;! ending __up_write&quot;
 suffix:colon
@@ -560,6 +561,10 @@ id|RWSEM_WAITING_BIAS
 )paren
 suffix:colon
 l_string|&quot;g1&quot;
+comma
+l_string|&quot;g2&quot;
+comma
+l_string|&quot;g3&quot;
 comma
 l_string|&quot;g5&quot;
 comma
