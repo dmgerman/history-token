@@ -3,6 +3,100 @@ DECL|macro|_linux_POSIX_TIMERS_H
 mdefine_line|#define _linux_POSIX_TIMERS_H
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
+multiline_comment|/* POSIX.1b interval timer structure. */
+DECL|struct|k_itimer
+r_struct
+id|k_itimer
+(brace
+DECL|member|list
+r_struct
+id|list_head
+id|list
+suffix:semicolon
+multiline_comment|/* free/ allocate list */
+DECL|member|it_lock
+id|spinlock_t
+id|it_lock
+suffix:semicolon
+DECL|member|it_clock
+id|clockid_t
+id|it_clock
+suffix:semicolon
+multiline_comment|/* which timer type */
+DECL|member|it_id
+id|timer_t
+id|it_id
+suffix:semicolon
+multiline_comment|/* timer id */
+DECL|member|it_overrun
+r_int
+id|it_overrun
+suffix:semicolon
+multiline_comment|/* overrun on pending signal  */
+DECL|member|it_overrun_last
+r_int
+id|it_overrun_last
+suffix:semicolon
+multiline_comment|/* overrun on last delivered signal */
+DECL|member|it_requeue_pending
+r_int
+id|it_requeue_pending
+suffix:semicolon
+multiline_comment|/* waiting to requeue this timer */
+DECL|member|it_sigev_notify
+r_int
+id|it_sigev_notify
+suffix:semicolon
+multiline_comment|/* notify word of sigevent struct */
+DECL|member|it_sigev_signo
+r_int
+id|it_sigev_signo
+suffix:semicolon
+multiline_comment|/* signo word of sigevent struct */
+DECL|member|it_sigev_value
+id|sigval_t
+id|it_sigev_value
+suffix:semicolon
+multiline_comment|/* value word of sigevent struct */
+DECL|member|it_incr
+r_int
+r_int
+id|it_incr
+suffix:semicolon
+multiline_comment|/* interval specified in jiffies */
+DECL|member|it_process
+r_struct
+id|task_struct
+op_star
+id|it_process
+suffix:semicolon
+multiline_comment|/* process to send signal to */
+DECL|member|it_timer
+r_struct
+id|timer_list
+id|it_timer
+suffix:semicolon
+DECL|member|sigq
+r_struct
+id|sigqueue
+op_star
+id|sigq
+suffix:semicolon
+multiline_comment|/* signal queue entry. */
+DECL|member|abs_timer_entry
+r_struct
+id|list_head
+id|abs_timer_entry
+suffix:semicolon
+multiline_comment|/* clock abs_timer_list */
+DECL|member|wall_to_prev
+r_struct
+id|timespec
+id|wall_to_prev
+suffix:semicolon
+multiline_comment|/* wall_to_monotonic used when set */
+)brace
+suffix:semicolon
 DECL|struct|k_clock_abs
 r_struct
 id|k_clock_abs
