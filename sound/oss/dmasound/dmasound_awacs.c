@@ -1097,22 +1097,6 @@ multiline_comment|/* Balance factor for expanding (not volume!) */
 multiline_comment|/*** Low level stuff *********************************************************/
 r_static
 r_void
-id|PMacOpen
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_static
-r_void
-id|PMacRelease
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_static
-r_void
 op_star
 id|PMacAlloc
 c_func
@@ -2320,30 +2304,6 @@ suffix:semicolon
 multiline_comment|/*** AE - TUMBLER END *********************************************************/
 multiline_comment|/*** Low level stuff *********************************************************/
 multiline_comment|/*&n; * PCI PowerMac, with AWACS, Screamer, Burgundy, DACA or Tumbler and DBDMA.&n; */
-DECL|function|PMacOpen
-r_static
-r_void
-id|PMacOpen
-c_func
-(paren
-r_void
-)paren
-(brace
-id|MOD_INC_USE_COUNT
-suffix:semicolon
-)brace
-DECL|function|PMacRelease
-r_static
-r_void
-id|PMacRelease
-c_func
-(paren
-r_void
-)paren
-(brace
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
-)brace
 DECL|function|PMacAlloc
 r_static
 r_void
@@ -11624,14 +11584,9 @@ op_assign
 l_string|&quot;PowerMac Built-in Sound&quot;
 comma
 dot
-id|open
+id|owner
 op_assign
-id|PMacOpen
-comma
-dot
-id|release
-op_assign
-id|PMacRelease
+id|THIS_MODULE
 comma
 dot
 id|dma_alloc
