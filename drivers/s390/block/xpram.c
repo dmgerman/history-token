@@ -1831,7 +1831,7 @@ c_func
 l_string|&quot;slram&quot;
 )paren
 suffix:semicolon
-id|sys_device_unregister
+id|sysdev_unregister
 c_func
 (paren
 op_amp
@@ -1940,7 +1940,7 @@ id|rc
 suffix:semicolon
 id|rc
 op_assign
-id|sys_device_register
+id|sysdev_register
 c_func
 (paren
 op_amp
@@ -1976,7 +1976,7 @@ c_cond
 (paren
 id|rc
 )paren
-id|sys_device_unregister
+id|sysdev_unregister
 c_func
 (paren
 op_amp
