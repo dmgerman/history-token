@@ -2919,6 +2919,10 @@ suffix:semicolon
 multiline_comment|/* PathInfo/FileInfo infolevels */
 DECL|macro|SMB_INFO_STANDARD
 mdefine_line|#define SMB_INFO_STANDARD                   1
+DECL|macro|SMB_SET_FILE_EA
+mdefine_line|#define SMB_SET_FILE_EA                     2
+DECL|macro|SMB_QUERY_FILE_EA_SIZE
+mdefine_line|#define SMB_QUERY_FILE_EA_SIZE              2
 DECL|macro|SMB_INFO_QUERY_EAS_FROM_LIST
 mdefine_line|#define SMB_INFO_QUERY_EAS_FROM_LIST        3
 DECL|macro|SMB_INFO_QUERY_ALL_EAS
@@ -4858,6 +4862,56 @@ DECL|typedef|FILE_UNIX_LINK_INFO
 id|FILE_UNIX_LINK_INFO
 suffix:semicolon
 multiline_comment|/* level 513 QPathInfo */
+r_typedef
+r_struct
+(brace
+DECL|member|CreationDate
+id|__u16
+id|CreationDate
+suffix:semicolon
+DECL|member|CreationTime
+id|__u16
+id|CreationTime
+suffix:semicolon
+DECL|member|LastAccessDate
+id|__u16
+id|LastAccessDate
+suffix:semicolon
+DECL|member|LastAccessTime
+id|__u16
+id|LastAccessTime
+suffix:semicolon
+DECL|member|LastWriteDate
+id|__u16
+id|LastWriteDate
+suffix:semicolon
+DECL|member|LastWriteTime
+id|__u16
+id|LastWriteTime
+suffix:semicolon
+DECL|member|DataSize
+id|__u32
+id|DataSize
+suffix:semicolon
+multiline_comment|/* File Size (EOF) */
+DECL|member|AllocationSize
+id|__u32
+id|AllocationSize
+suffix:semicolon
+DECL|member|Attributes
+id|__u16
+id|Attributes
+suffix:semicolon
+multiline_comment|/* verify not u32 */
+DECL|member|EASize
+id|__u32
+id|EASize
+suffix:semicolon
+DECL|typedef|FILE_INFO_STANDARD
+)brace
+id|FILE_INFO_STANDARD
+suffix:semicolon
+multiline_comment|/* level 1 SetPath/FileInfo */
 multiline_comment|/* defines for enumerating possible values of the Unix type field below */
 DECL|macro|UNIX_FILE
 mdefine_line|#define UNIX_FILE      0
@@ -5062,14 +5116,14 @@ DECL|struct|gea
 r_struct
 id|gea
 (brace
-DECL|member|cbName
+DECL|member|name_len
 r_int
 r_char
-id|cbName
+id|name_len
 suffix:semicolon
-DECL|member|szName
+DECL|member|name
 r_char
-id|szName
+id|name
 (braket
 l_int|1
 )braket
@@ -5080,10 +5134,10 @@ DECL|struct|gealist
 r_struct
 id|gealist
 (brace
-DECL|member|cbList
+DECL|member|list_len
 r_int
 r_int
-id|cbList
+id|list_len
 suffix:semicolon
 DECL|member|list
 r_struct
@@ -5112,9 +5166,9 @@ DECL|member|value_len
 id|__u16
 id|value_len
 suffix:semicolon
-DECL|member|szName
+DECL|member|name
 r_char
-id|szName
+id|name
 (braket
 l_int|1
 )braket
