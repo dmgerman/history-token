@@ -3582,10 +3582,6 @@ id|sgivwfb_fix.ypanstep
 op_assign
 id|ypan
 suffix:semicolon
-id|fb_info.node
-op_assign
-id|NODEV
-suffix:semicolon
 id|fb_info.fix
 op_assign
 id|sgivwfb_fix
@@ -3720,11 +3716,7 @@ c_func
 id|KERN_INFO
 l_string|&quot;fb%d: SGI DBE frame buffer device, using %ldK of video memory at %#lx&bslash;n&quot;
 comma
-id|minor
-c_func
-(paren
 id|fb_info.node
-)paren
 comma
 id|sgivwfb_mem_size
 op_rshift

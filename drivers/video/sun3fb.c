@@ -2998,10 +2998,6 @@ id|fix-&gt;visual
 op_assign
 id|FB_VISUAL_PSEUDOCOLOR
 suffix:semicolon
-id|fb-&gt;info.node
-op_assign
-id|NODEV
-suffix:semicolon
 id|fb-&gt;info.fbops
 op_assign
 op_amp
@@ -3333,11 +3329,7 @@ c_func
 (paren
 l_string|&quot;fb%d: %s&bslash;n&quot;
 comma
-id|minor
-c_func
-(paren
 id|fb-&gt;info.node
-)paren
 comma
 id|p
 )paren
