@@ -1945,9 +1945,12 @@ id|HCI_FILTER
 suffix:colon
 id|len
 op_assign
-id|MIN
+id|min_t
 c_func
 (paren
+r_int
+r_int
+comma
 id|len
 comma
 r_sizeof
@@ -2312,9 +2315,12 @@ suffix:semicolon
 )brace
 id|len
 op_assign
-id|MIN
+id|min_t
 c_func
 (paren
+r_int
+r_int
+comma
 id|len
 comma
 r_sizeof

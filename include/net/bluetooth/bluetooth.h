@@ -16,10 +16,6 @@ macro_line|#endif
 multiline_comment|/* Reserv for core and drivers use */
 DECL|macro|BT_SKB_RESERVE
 mdefine_line|#define BT_SKB_RESERVE       8
-macro_line|#ifndef MIN
-DECL|macro|MIN
-mdefine_line|#define MIN(a,b) ((a) &lt; (b) ? (a) : (b))
-macro_line|#endif
 DECL|macro|BTPROTO_L2CAP
 mdefine_line|#define BTPROTO_L2CAP   0
 DECL|macro|BTPROTO_HCI

@@ -589,9 +589,12 @@ id|buf
 suffix:semicolon
 id|len
 op_assign
-id|MIN
+id|min_t
 c_func
 (paren
+r_int
+r_int
+comma
 id|skb-&gt;len
 comma
 id|len

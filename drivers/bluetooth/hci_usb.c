@@ -2843,9 +2843,12 @@ suffix:semicolon
 multiline_comment|/* Find endpoints that we need */
 id|ifn
 op_assign
-id|MIN
+id|min_t
 c_func
 (paren
+r_int
+r_int
+comma
 id|udev-&gt;actconfig-&gt;bNumInterfaces
 comma
 id|HCI_MAX_IFACE_NUM
