@@ -211,6 +211,7 @@ macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/etherdevice.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;linux/ethtool.h&gt;
+macro_line|#include &lt;linux/mii.h&gt;
 id|MODULE_AUTHOR
 c_func
 (paren
@@ -1411,14 +1412,6 @@ suffix:colon
 l_int|1
 suffix:semicolon
 multiline_comment|/* The Tx queue is full. */
-DECL|member|full_duplex
-r_int
-r_int
-id|full_duplex
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* Full-duplex operation requested. */
 DECL|member|flow_ctrl
 r_int
 r_int
@@ -4563,37 +4556,11 @@ comma
 id|MII_ADVERTISE
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|mdio_read
+id|mii_check_link
 c_func
 (paren
-id|dev
-comma
-id|sp-&gt;phy
-(braket
-l_int|0
-)braket
 op_amp
-l_int|0x1f
-comma
-id|MII_BMSR
-)paren
-op_amp
-id|BMSR_LSTATUS
-)paren
-id|netif_carrier_on
-c_func
-(paren
-id|dev
-)paren
-suffix:semicolon
-r_else
-id|netif_carrier_off
-c_func
-(paren
-id|dev
+id|sp-&gt;mii_if
 )paren
 suffix:semicolon
 r_if
@@ -5341,48 +5308,15 @@ l_int|1
 suffix:semicolon
 multiline_comment|/* Trigger a reload. */
 )brace
-multiline_comment|/* Clear sticky bit. */
-id|mdio_read
+)brace
+)brace
+id|mii_check_link
 c_func
 (paren
-id|dev
-comma
-id|phy_num
-comma
-id|MII_BMSR
-)paren
-suffix:semicolon
-multiline_comment|/* If link beat has returned... */
-r_if
-c_cond
-(paren
-id|mdio_read
-c_func
-(paren
-id|dev
-comma
-id|phy_num
-comma
-id|MII_BMSR
-)paren
 op_amp
-id|BMSR_LSTATUS
-)paren
-id|netif_carrier_on
-c_func
-(paren
-id|dev
+id|sp-&gt;mii_if
 )paren
 suffix:semicolon
-r_else
-id|netif_carrier_off
-c_func
-(paren
-id|dev
-)paren
-suffix:semicolon
-)brace
-)brace
 r_if
 c_cond
 (paren
