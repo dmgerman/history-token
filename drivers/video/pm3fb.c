@@ -7653,7 +7653,7 @@ c_func
 (paren
 l_string|&quot;fb%d: %s, using %uK of video memory (%s)&bslash;n&quot;
 comma
-id|GET_FB_IDX
+id|minor
 c_func
 (paren
 id|l_fb_info-&gt;gen.info.node
@@ -16498,15 +16498,10 @@ id|flags
 suffix:semicolon
 id|DTRACE
 suffix:semicolon
-id|save_flags
+id|local_irq_save
 c_func
 (paren
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 id|info-&gt;info.screen_base
@@ -16704,7 +16699,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags

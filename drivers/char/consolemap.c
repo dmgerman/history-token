@@ -1,4 +1,6 @@
 multiline_comment|/*&n; * consolemap.c&n; *&n; * Mapping from internal code (such as Latin-1 or Unicode or IBM PC code)&n; * to font positions.&n; *&n; * aeb, 950210&n; *&n; * Support for multiple unimaps by Jakub Jelinek &lt;jj@ultra.linux.cz&gt;, July 1998&n; *&n; * Fix bug in inverse translation. Stanislav Voronyi &lt;stas@cnti.uanet.kharkov.ua&gt;, Dec 1998&n; */
+macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kd.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
@@ -7,7 +9,6 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/consolemap.h&gt;
-macro_line|#include &lt;linux/console_struct.h&gt;
 macro_line|#include &lt;linux/vt_kern.h&gt;
 DECL|variable|translations
 r_static
@@ -4982,4 +4983,11 @@ id|i
 )paren
 suffix:semicolon
 )brace
+DECL|variable|con_copy_unimap
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|con_copy_unimap
+)paren
+suffix:semicolon
 eof
