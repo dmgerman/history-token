@@ -15130,7 +15130,6 @@ id|__init
 id|parport_init_mode_setup
 c_func
 (paren
-r_const
 r_char
 op_star
 id|str
@@ -15248,7 +15247,6 @@ id|PARPORT_PC_MAX_PORTS
 suffix:semicolon
 DECL|variable|init_mode
 r_static
-r_const
 r_char
 op_star
 id|init_mode
