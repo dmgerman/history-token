@@ -15,6 +15,7 @@ macro_line|#include &lt;linux/iobuf.h&gt;
 macro_line|#include &lt;linux/hash.h&gt;
 macro_line|#include &lt;linux/writeback.h&gt;
 macro_line|#include &lt;linux/pagevec.h&gt;
+macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/security.h&gt;
 multiline_comment|/*&n; * This is needed for the following functions:&n; *  - try_to_release_page&n; *  - block_invalidatepage&n; *  - page_has_buffers&n; *  - generic_osync_inode&n; *&n; * FIXME: remove all knowledge of the buffer layer from this file&n; */
 macro_line|#include &lt;linux/buffer_head.h&gt;
@@ -860,7 +861,7 @@ op_amp
 id|page-&gt;flags
 )paren
 )paren
-id|schedule
+id|io_schedule
 c_func
 (paren
 )paren
@@ -1093,7 +1094,7 @@ c_func
 id|page
 )paren
 )paren
-id|schedule
+id|io_schedule
 c_func
 (paren
 )paren

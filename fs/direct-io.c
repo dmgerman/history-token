@@ -8,6 +8,7 @@ macro_line|#include &lt;linux/pagemap.h&gt;
 macro_line|#include &lt;linux/bio.h&gt;
 macro_line|#include &lt;linux/wait.h&gt;
 macro_line|#include &lt;linux/err.h&gt;
+macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/buffer_head.h&gt;
 macro_line|#include &lt;linux/rwsem.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
@@ -776,7 +777,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|schedule
+id|io_schedule
 c_func
 (paren
 )paren
