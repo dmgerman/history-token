@@ -2806,8 +2806,6 @@ id|ia64_os_to_sal_handoff_state
 )paren
 )paren
 suffix:semicolon
-id|return_to_sal
-suffix:colon
 r_if
 c_cond
 (paren
