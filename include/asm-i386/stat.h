@@ -71,11 +71,6 @@ r_int
 r_int
 id|st_dev
 suffix:semicolon
-DECL|member|__pad1
-r_int
-r_int
-id|__pad1
-suffix:semicolon
 DECL|member|st_ino
 r_int
 r_int
@@ -105,11 +100,6 @@ DECL|member|st_rdev
 r_int
 r_int
 id|st_rdev
-suffix:semicolon
-DECL|member|__pad2
-r_int
-r_int
-id|__pad2
 suffix:semicolon
 DECL|member|st_size
 r_int
@@ -176,6 +166,7 @@ id|stat64
 DECL|member|st_dev
 r_int
 r_int
+r_int
 id|st_dev
 suffix:semicolon
 DECL|member|__pad0
@@ -183,7 +174,7 @@ r_int
 r_char
 id|__pad0
 (braket
-l_int|10
+l_int|4
 )braket
 suffix:semicolon
 DECL|macro|STAT64_HAS_BROKEN_ST_INO
@@ -216,6 +207,7 @@ suffix:semicolon
 DECL|member|st_rdev
 r_int
 r_int
+r_int
 id|st_rdev
 suffix:semicolon
 DECL|member|__pad3
@@ -223,7 +215,7 @@ r_int
 r_char
 id|__pad3
 (braket
-l_int|10
+l_int|4
 )braket
 suffix:semicolon
 DECL|member|st_size
