@@ -887,6 +887,10 @@ suffix:semicolon
 id|iounmap
 c_func
 (paren
+(paren
+r_void
+op_star
+)paren
 id|sun3_scsi_regp
 )paren
 suffix:semicolon
