@@ -5798,7 +5798,7 @@ suffix:semicolon
 r_int
 id|prevactive
 op_assign
-l_int|1
+l_int|0
 suffix:semicolon
 id|uhci_dec_fsbr
 c_func
@@ -5809,7 +5809,7 @@ id|urb
 )paren
 suffix:semicolon
 multiline_comment|/* Safe since it checks */
-multiline_comment|/*&n;&t; * Now we need to find out what the last successful toggle was&n;&t; * so we can update the local data toggle for the next transfer&n;&t; *&n;&t; * There&squot;s 3 way&squot;s the last successful completed TD is found:&n;&t; *&n;&t; * 1) The TD is NOT active and the actual length &lt; expected length&n;&t; * 2) The TD is NOT active and it&squot;s the last TD in the chain&n;&t; * 3) The TD is active and the previous TD is NOT active&n;&t; *&n;&t; * Control and Isochronous ignore the toggle, so this is safe&n;&t; * for all types&n;&t; */
+multiline_comment|/*&n;&t; * Now we need to find out what the last successful toggle was&n;&t; * so we can update the local data toggle for the next transfer&n;&t; *&n;&t; * There are 2 ways the last successful completed TD is found:&n;&t; *&n;&t; * 1) The TD is NOT active and the actual length &lt; expected length&n;&t; * 2) The TD is NOT active and it&squot;s the last TD in the chain&n;&t; *&n;&t; * and a third way the first uncompleted TD is found:&n;&t; *&n;&t; * 3) The TD is active and the previous TD is NOT active&n;&t; *&n;&t; * Control and Isochronous ignore the toggle, so this is safe&n;&t; * for all types&n;&t; *&n;&t; * FIXME: The toggle fixups won&squot;t be 100% reliable until we&n;&t; * change over to using a single queue for each endpoint and&n;&t; * stop the queue before unlinking.&n;&t; */
 id|head
 op_assign
 op_amp
