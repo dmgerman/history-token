@@ -3848,6 +3848,10 @@ c_func
 id|dart_tablebase
 )paren
 op_assign
+(paren
+r_int
+r_int
+)paren
 id|abs_to_virt
 c_func
 (paren
@@ -12269,6 +12273,13 @@ id|base_address
 op_assign
 l_int|0
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|measure_only
+)paren
+(brace
 r_for
 c_loop
 (paren
@@ -12313,6 +12324,7 @@ id|address
 suffix:semicolon
 r_break
 suffix:semicolon
+)brace
 )brace
 )brace
 id|rp
@@ -12507,6 +12519,13 @@ id|base_address
 op_assign
 l_int|0
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|measure_only
+)paren
+(brace
 r_for
 c_loop
 (paren
@@ -12551,6 +12570,7 @@ id|address
 suffix:semicolon
 r_break
 suffix:semicolon
+)brace
 )brace
 )brace
 id|rp
