@@ -3407,6 +3407,20 @@ l_int|NULL
 r_goto
 id|error
 suffix:semicolon
+id|memset
+c_func
+(paren
+id|state
+comma
+l_int|0
+comma
+r_sizeof
+(paren
+r_struct
+id|dib3000_state
+)paren
+)paren
+suffix:semicolon
 multiline_comment|/* setup the state */
 id|state-&gt;i2c
 op_assign

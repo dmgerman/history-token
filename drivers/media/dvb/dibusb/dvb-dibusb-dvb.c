@@ -84,7 +84,7 @@ r_case
 op_minus
 id|ECONNRESET
 suffix:colon
-multiline_comment|/* unlink */
+multiline_comment|/* kill */
 r_case
 op_minus
 id|ENOENT
@@ -113,6 +113,10 @@ r_if
 c_cond
 (paren
 id|dib-&gt;feedcount
+OG
+l_int|0
+op_logical_and
+id|urb-&gt;actual_length
 OG
 l_int|0
 )paren
@@ -255,6 +259,14 @@ id|ENODEV
 suffix:semicolon
 )brace
 )brace
+id|dibusb_streaming
+c_func
+(paren
+id|dib
+comma
+l_int|0
+)paren
+suffix:semicolon
 )brace
 id|dib-&gt;feedcount
 op_assign

@@ -100,6 +100,9 @@ comma
 DECL|enumerator|NOVAT_USB2
 id|NOVAT_USB2
 comma
+DECL|enumerator|DTT200U
+id|DTT200U
+comma
 DECL|typedef|dibusb_class_t
 )brace
 id|dibusb_class_t
@@ -138,6 +141,9 @@ id|DIBUSB_DIB3000MC
 comma
 DECL|enumerator|DIBUSB_MT352
 id|DIBUSB_MT352
+comma
+DECL|enumerator|DTT200U_FE
+id|DTT200U_FE
 comma
 DECL|typedef|dibusb_demodulator_t
 )brace
@@ -358,14 +364,16 @@ DECL|macro|DIBUSB_STATE_URB_LIST
 mdefine_line|#define DIBUSB_STATE_URB_LIST   0x001
 DECL|macro|DIBUSB_STATE_URB_BUF
 mdefine_line|#define DIBUSB_STATE_URB_BUF    0x002
-DECL|macro|DIBUSB_STATE_URB_SUBMIT
-mdefine_line|#define DIBUSB_STATE_URB_SUBMIT 0x004
+DECL|macro|DIBUSB_STATE_URB_INIT
+mdefine_line|#define DIBUSB_STATE_URB_INIT&t;0x004
 DECL|macro|DIBUSB_STATE_DVB
 mdefine_line|#define DIBUSB_STATE_DVB        0x008
 DECL|macro|DIBUSB_STATE_I2C
 mdefine_line|#define DIBUSB_STATE_I2C        0x010
 DECL|macro|DIBUSB_STATE_REMOTE
 mdefine_line|#define DIBUSB_STATE_REMOTE&t;&t;0x020
+DECL|macro|DIBUSB_STATE_URB_SUBMIT
+mdefine_line|#define DIBUSB_STATE_URB_SUBMIT 0x040
 DECL|member|init_state
 r_int
 id|init_state
@@ -651,6 +659,23 @@ id|rlen
 )paren
 suffix:semicolon
 r_int
+id|dibusb_write_usb
+c_func
+(paren
+r_struct
+id|usb_dibusb
+op_star
+id|dib
+comma
+id|u8
+op_star
+id|buf
+comma
+id|u16
+id|len
+)paren
+suffix:semicolon
+r_int
 id|dibusb_hw_wakeup
 c_func
 (paren
@@ -705,6 +730,22 @@ c_func
 (paren
 r_struct
 id|usb_dibusb
+op_star
+)paren
+suffix:semicolon
+multiline_comment|/* dvb-fe-dtt200u.c */
+r_struct
+id|dvb_frontend
+op_star
+id|dtt200u_fe_attach
+c_func
+(paren
+r_struct
+id|usb_dibusb
+op_star
+comma
+r_struct
+id|dib_fe_xfer_ops
 op_star
 )paren
 suffix:semicolon

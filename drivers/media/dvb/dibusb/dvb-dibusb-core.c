@@ -254,7 +254,6 @@ id|USB_PID_YAKUMO_DTT200U_COLD
 )paren
 )brace
 comma
-multiline_comment|/* the following device is actually not supported, but when loading the &n; * correct firmware (ie. its usb ids will change) everything works fine then &n; */
 multiline_comment|/* 03 */
 (brace
 id|USB_DEVICE
@@ -597,7 +596,7 @@ id|USB_PID_ADSTECH_USB2_WARM
 )brace
 comma
 multiline_comment|/* &n; * activate the following define when you have one of the devices and want to &n; * build it from build-2.6 in dvb-kernel&n; */
-singleline_comment|// #define CONFIG_DVB_DIBUSB_MISDESIGNED_DEVICES 
+singleline_comment|// #define CONFIG_DVB_DIBUSB_MISDESIGNED_DEVICES
 macro_line|#ifdef CONFIG_DVB_DIBUSB_MISDESIGNED_DEVICES
 multiline_comment|/* 34 */
 (brace
@@ -789,6 +788,19 @@ l_int|0
 comma
 )brace
 comma
+(brace
+id|DTT200U_FE
+comma
+l_int|8
+comma
+(brace
+l_int|0xff
+comma
+l_int|0
+)brace
+comma
+multiline_comment|/* there is no i2c bus in this device */
+)brace
 )brace
 suffix:semicolon
 DECL|variable|dibusb_device_classes
@@ -1029,6 +1041,38 @@ id|dibusb_tuner
 id|DIBUSB_TUNER_COFDM_PANASONIC_ENV57H1XD5
 )braket
 comma
+)brace
+comma
+(brace
+id|DTT200U
+comma
+op_amp
+id|dibusb_usb_ctrl
+(braket
+l_int|2
+)braket
+comma
+l_string|&quot;dvb-dtt200u-1.fw&quot;
+comma
+l_int|0x01
+comma
+l_int|0x02
+comma
+l_int|7
+comma
+l_int|4096
+comma
+id|DIBUSB_RC_NO
+comma
+op_amp
+id|dibusb_demod
+(braket
+id|DTT200U_FE
+)braket
+comma
+l_int|NULL
+comma
+multiline_comment|/* no explicit tuner/pll-programming necessary (it has the ENV57H1XD5) */
 )brace
 comma
 )brace
@@ -1439,12 +1483,12 @@ comma
 )brace
 comma
 (brace
-l_string|&quot;AVermedia/Yakumo/Hama/Typhoon DVB-T USB2.0&quot;
+l_string|&quot;DTT200U (Yakumo/Hama/Typhoon) DVB-T USB2.0&quot;
 comma
 op_amp
 id|dibusb_device_classes
 (braket
-id|UMT2_0
+id|DTT200U
 )braket
 comma
 (brace
@@ -1458,6 +1502,12 @@ l_int|NULL
 )brace
 comma
 (brace
+op_amp
+id|dib_table
+(braket
+l_int|3
+)braket
+comma
 l_int|NULL
 )brace
 comma
@@ -1558,7 +1608,7 @@ comma
 op_amp
 id|dibusb_device_classes
 (braket
-id|DIBUSB2_0
+id|DTT200U
 )braket
 comma
 (brace
