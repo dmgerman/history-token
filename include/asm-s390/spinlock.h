@@ -354,13 +354,13 @@ id|__volatile__
 c_func
 (paren
 macro_line|#ifndef __s390x__
-l_string|&quot;   lhi  %0,1&bslash;n&quot;
-l_string|&quot;   sll  %0,31&bslash;n&quot;
-l_string|&quot;   basr %1,0&bslash;n&quot;
-l_string|&quot;0: cs   %0,%1,0(%3)&bslash;n&quot;
+l_string|&quot;   slr  %0,%0&bslash;n&quot;
+l_string|&quot;   lhi  %1,1&bslash;n&quot;
+l_string|&quot;   sll  %1,31&bslash;n&quot;
+l_string|&quot;   cs   %0,%1,0(%3)&quot;
 macro_line|#else /* __s390x__ */
-l_string|&quot;   llihh %0,0x8000&bslash;n&quot;
-l_string|&quot;   basr  %1,0&bslash;n&quot;
+l_string|&quot;   slgr  %0,%0&bslash;n&quot;
+l_string|&quot;   llihh %1,0x8000&bslash;n&quot;
 l_string|&quot;0: csg %0,%1,0(%3)&bslash;n&quot;
 macro_line|#endif /* __s390x__ */
 suffix:colon
@@ -389,8 +389,9 @@ l_string|&quot;cc&quot;
 )paren
 suffix:semicolon
 r_return
-op_logical_neg
 id|result
+op_eq
+l_int|0
 suffix:semicolon
 )brace
 macro_line|#endif /* __ASM_SPINLOCK_H */
