@@ -4,7 +4,7 @@ macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
-macro_line|#if defined(CONFIG_SMP) &amp;&amp; defined(CONFIG_DEBUG_SPINLOCK)
+macro_line|#ifdef CONFIG_SMP
 DECL|macro|GET_CALLER
 mdefine_line|#define GET_CALLER(PC) __asm__ __volatile__(&quot;mov %%i7, %0&quot; : &quot;=r&quot; (PC))
 DECL|function|show
@@ -1248,5 +1248,5 @@ id|wlock_again
 suffix:semicolon
 )brace
 )brace
-macro_line|#endif /* CONFIG_SMP &amp;&amp; CONFIG_DEBUG_SPINLOCK */
+macro_line|#endif /* CONFIG_SMP */
 eof
