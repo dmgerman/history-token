@@ -2212,7 +2212,7 @@ c_func
 id|sbi
 )paren
 suffix:semicolon
-id|sb-&gt;u.generic_sbp
+id|s-&gt;u.generic_sbp
 op_assign
 l_int|NULL
 suffix:semicolon
