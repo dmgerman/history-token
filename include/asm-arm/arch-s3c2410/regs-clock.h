@@ -1,4 +1,4 @@
-multiline_comment|/* linux/include/asm/arch-s3c2410/regs-clock.h&n; *&n; * Copyright (c) 2003,2004 Simtec Electronics &lt;linux@simtec.co.uk&gt;&n; *&t;&t;      http://www.simtec.co.uk/products/SWLINUX/&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; * S3C2410 clock register definitions&n; *&n; *  Changelog:&n; *    08-Aug-2004 Herbert P&#xfffd;tzl  Added CLKCON definitions&n; *    19-06-2003  Ben Dooks      Created file&n; *    12-03-2004  Ben Dooks      Updated include protection&n; */
+multiline_comment|/* linux/include/asm/arch-s3c2410/regs-clock.h&n; *&n; * Copyright (c) 2003,2004 Simtec Electronics &lt;linux@simtec.co.uk&gt;&n; *&t;&t;      http://www.simtec.co.uk/products/SWLINUX/&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; * S3C2410 clock register definitions&n; *&n; *  Changelog:&n; *    18-Aug-2004 Ben Dooks      Added 2440 definitions&n; *    08-Aug-2004 Herbert P&#xfffd;tzl  Added CLKCON definitions&n; *    19-06-2003  Ben Dooks      Created file&n; *    12-03-2004  Ben Dooks      Updated include protection&n; */
 macro_line|#ifndef __ASM_ARM_REGS_CLOCK
 DECL|macro|__ASM_ARM_REGS_CLOCK
 mdefine_line|#define __ASM_ARM_REGS_CLOCK &quot;$Id: clock.h,v 1.4 2003/04/30 14:50:51 ben Exp $&quot;
@@ -161,5 +161,38 @@ id|sdiv
 )paren
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_CPU_S3C2440
+multiline_comment|/* extra registers */
+DECL|macro|S3C2440_CAMDIVN
+mdefine_line|#define S3C2440_CAMDIVN&t;    S3C2410_CLKREG(0x14)
+DECL|macro|S3C2440_CLKCON_CAMERA
+mdefine_line|#define S3C2440_CLKCON_CAMERA        (1&lt;&lt;19)
+DECL|macro|S3C2440_CLKCON_AC97
+mdefine_line|#define S3C2440_CLKCON_AC97          (1&lt;&lt;20)
+DECL|macro|S3C2440_CLKDIVN_PDIVN
+mdefine_line|#define S3C2440_CLKDIVN_PDIVN&t;     (1&lt;&lt;0)
+DECL|macro|S3C2440_CLKDIVN_HDIVN_MASK
+mdefine_line|#define S3C2440_CLKDIVN_HDIVN_MASK   (3&lt;&lt;1)
+DECL|macro|S3C2440_CLKDIVN_HDIVN_1
+mdefine_line|#define S3C2440_CLKDIVN_HDIVN_1      (0&lt;&lt;1)
+DECL|macro|S3C2440_CLKDIVN_HDIVN_2
+mdefine_line|#define S3C2440_CLKDIVN_HDIVN_2      (1&lt;&lt;1)
+DECL|macro|S3C2440_CLKDIVN_HDIVN_4_8
+mdefine_line|#define S3C2440_CLKDIVN_HDIVN_4_8    (2&lt;&lt;1)
+DECL|macro|S3C2440_CLKDIVN_HDIVN_3_6
+mdefine_line|#define S3C2440_CLKDIVN_HDIVN_3_6    (3&lt;&lt;1)
+DECL|macro|S3C2440_CLKDIVN_UCLK
+mdefine_line|#define S3C2440_CLKDIVN_UCLK         (1&lt;&lt;3)
+DECL|macro|S3C2440_CAMDIVN_CAMCLK_MASK
+mdefine_line|#define S3C2440_CAMDIVN_CAMCLK_MASK  (0xf&lt;&lt;0)
+DECL|macro|S3C2440_CAMDIVN_CAMCLK_SEL
+mdefine_line|#define S3C2440_CAMDIVN_CAMCLK_SEL   (1&lt;&lt;4)
+DECL|macro|S3C2440_CAMDIVN_HCLK3_HALF
+mdefine_line|#define S3C2440_CAMDIVN_HCLK3_HALF   (1&lt;&lt;8)
+DECL|macro|S3C2440_CAMDIVN_HCLK4_HALF
+mdefine_line|#define S3C2440_CAMDIVN_HCLK4_HALF   (1&lt;&lt;9)
+DECL|macro|S3C2440_CAMDIVN_DVSEN
+mdefine_line|#define S3C2440_CAMDIVN_DVSEN        (1&lt;&lt;12)
+macro_line|#endif /* CONFIG_CPU_S3C2440 */
 macro_line|#endif /* __ASM_ARM_REGS_CLOCK */
 eof
