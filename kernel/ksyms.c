@@ -3020,13 +3020,6 @@ c_func
 id|event
 )paren
 suffix:semicolon
-DECL|variable|brw_page
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|brw_page
-)paren
-suffix:semicolon
 macro_line|#ifdef CONFIG_UID16
 DECL|variable|overflowuid
 id|EXPORT_SYMBOL
