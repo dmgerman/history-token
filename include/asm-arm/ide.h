@@ -27,8 +27,6 @@ mdefine_line|#define ide_release_region(from,extent)&t;&t;release_region((from),
 multiline_comment|/*&n; * The following are not needed for the non-m68k ports&n; */
 DECL|macro|ide_ack_intr
 mdefine_line|#define ide_ack_intr(hwif)&t;&t;(1)
-DECL|macro|ide_fix_driveid
-mdefine_line|#define ide_fix_driveid(id)&t;&t;do {} while (0)
 DECL|macro|ide_release_lock
 mdefine_line|#define ide_release_lock(lock)&t;&t;do {} while (0)
 DECL|macro|ide_get_lock

@@ -1787,7 +1787,11 @@ c_cond
 (paren
 id|rq-&gt;flags
 op_amp
+(paren
 id|REQ_PC
+op_or
+id|REQ_BLOCK_PC
+)paren
 )paren
 (brace
 multiline_comment|/* All other functions, except for READ. */

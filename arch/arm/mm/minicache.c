@@ -4,6 +4,7 @@ macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
+macro_line|#include &lt;asm/tlbflush.h&gt;
 multiline_comment|/*&n; * 0xffff8000 to 0xffffffff is reserved for any ARM architecture&n; * specific hacks for copying pages efficiently.&n; */
 DECL|macro|minicache_address
 mdefine_line|#define minicache_address (0xffff8000)

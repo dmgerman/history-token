@@ -471,6 +471,18 @@ r_int
 r_int
 )paren
 suffix:semicolon
+r_int
+id|shrink_all_memory
+c_func
+(paren
+r_int
+id|nr_pages
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|vm_swappiness
+suffix:semicolon
 multiline_comment|/* linux/mm/page_io.c */
 r_int
 id|swap_readpage

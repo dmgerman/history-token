@@ -1324,6 +1324,9 @@ r_struct
 id|dio
 op_star
 id|dio
+comma
+id|sector_t
+id|blkno
 )paren
 (brace
 id|sector_t
@@ -1352,7 +1355,7 @@ id|out
 suffix:semicolon
 id|sector
 op_assign
-id|dio-&gt;next_block_in_bio
+id|blkno
 op_lshift
 (paren
 id|dio-&gt;blkbits
@@ -1429,6 +1432,9 @@ comma
 r_int
 r_int
 id|bv_offset
+comma
+id|sector_t
+id|blkno
 )paren
 (brace
 r_int
@@ -1446,6 +1452,7 @@ l_int|0
 r_goto
 id|out
 suffix:semicolon
+multiline_comment|/* Take a ref against the page each time it is placed into a BIO */
 id|page_cache_get
 c_func
 (paren
@@ -1480,6 +1487,8 @@ id|dio_new_bio
 c_func
 (paren
 id|dio
+comma
+id|blkno
 )paren
 suffix:semicolon
 r_if
@@ -1513,13 +1522,17 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
-)brace
+r_else
+(brace
+multiline_comment|/* The page didn&squot;t make it into a BIO */
 id|page_cache_release
 c_func
 (paren
 id|page
 )paren
 suffix:semicolon
+)brace
+)brace
 id|dio-&gt;pages_left
 op_decrement
 suffix:semicolon
@@ -1593,6 +1606,9 @@ r_int
 r_int
 id|bv_len
 suffix:semicolon
+id|sector_t
+id|curr_blkno
+suffix:semicolon
 id|page
 op_assign
 id|dio_get_page
@@ -1635,6 +1651,10 @@ id|bv_len
 op_assign
 l_int|0
 suffix:semicolon
+id|curr_blkno
+op_assign
+l_int|0
+suffix:semicolon
 r_while
 c_loop
 (paren
@@ -1668,7 +1688,7 @@ c_cond
 id|ret
 )paren
 r_goto
-id|out
+id|fail_release
 suffix:semicolon
 multiline_comment|/* Handle holes */
 r_if
@@ -1760,6 +1780,8 @@ id|dio_new_bio
 c_func
 (paren
 id|dio
+comma
+id|dio-&gt;next_block_in_bio
 )paren
 suffix:semicolon
 r_if
@@ -1768,7 +1790,7 @@ c_cond
 id|ret
 )paren
 r_goto
-id|out
+id|fail_release
 suffix:semicolon
 id|new_page
 op_assign
@@ -1790,6 +1812,10 @@ op_assign
 id|block_in_page
 op_lshift
 id|blkbits
+suffix:semicolon
+id|curr_blkno
+op_assign
+id|dio-&gt;next_block_in_bio
 suffix:semicolon
 id|new_page
 op_assign
@@ -1928,6 +1954,8 @@ comma
 id|bv_len
 comma
 id|bv_offset
+comma
+id|curr_blkno
 )paren
 suffix:semicolon
 r_if
@@ -1936,13 +1964,31 @@ c_cond
 id|ret
 )paren
 r_goto
-id|out
+id|fail_release
+suffix:semicolon
+multiline_comment|/* Drop the ref which was taken in get_user_pages() */
+id|page_cache_release
+c_func
+(paren
+id|page
+)paren
 suffix:semicolon
 id|block_in_page
 op_assign
 l_int|0
 suffix:semicolon
 )brace
+r_goto
+id|out
+suffix:semicolon
+id|fail_release
+suffix:colon
+id|page_cache_release
+c_func
+(paren
+id|page
+)paren
+suffix:semicolon
 id|out
 suffix:colon
 r_return

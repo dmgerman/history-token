@@ -5,6 +5,59 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#ifdef __KERNEL__
 macro_line|#ifndef __ASSEMBLY__
 macro_line|#include &lt;asm/glue.h&gt;
+multiline_comment|/*&n; *&t;User Space Model&n; *&t;================&n; *&n; *&t;This section selects the correct set of functions for dealing with&n; *&t;page-based copying and clearing for user space for the particular&n; *&t;processor(s) we&squot;re building for.&n; *&n; *&t;We have the following to choose from:&n; *&t;  v3&t;&t;- ARMv3&n; *&t;  v4wt&t;&t;- ARMv4 with writethrough cache, without minicache&n; *&t;  v4wb&t;&t;- ARMv4 with writeback cache, without minicache&n; *&t;  v4_mc&t;&t;- ARMv4 with minicache&n; *&t;  xscale&t;- Xscale&n; */
+DECL|macro|_USER
+macro_line|#undef _USER
+DECL|macro|MULTI_USER
+macro_line|#undef MULTI_USER
+macro_line|#if defined(CONFIG_CPU_ARM610) || defined(CONFIG_CPU_ARM710)
+macro_line|# ifdef _USER
+DECL|macro|MULTI_USER
+macro_line|#  define MULTI_USER 1
+macro_line|# else
+DECL|macro|_USER
+macro_line|#  define _USER v3
+macro_line|# endif
+macro_line|#endif
+macro_line|#if defined(CONFIG_CPU_ARM720T)
+macro_line|# ifdef _USER
+DECL|macro|MULTI_USER
+macro_line|#  define MULTI_USER 1
+macro_line|# else
+DECL|macro|_USER
+macro_line|#  define _USER v4wt
+macro_line|# endif
+macro_line|#endif
+macro_line|#if defined(CONFIG_CPU_ARM920T) || defined(CONFIG_CPU_ARM922T) || &bslash;&n;    defined(CONFIG_CPU_ARM926T) || defined(CONFIG_CPU_SA110)   || &bslash;&n;    defined(CONFIG_CPU_ARM1020)
+macro_line|# ifdef _USER
+DECL|macro|MULTI_USER
+macro_line|#  define MULTI_USER 1
+macro_line|# else
+DECL|macro|_USER
+macro_line|#  define _USER v4wb
+macro_line|# endif
+macro_line|#endif
+macro_line|#if defined(CONFIG_CPU_SA1100)
+macro_line|# ifdef _USER
+DECL|macro|MULTI_USER
+macro_line|#  define MULTI_USER 1
+macro_line|# else
+DECL|macro|_USER
+macro_line|#  define _USER v4_mc
+macro_line|# endif
+macro_line|#endif
+macro_line|#if defined(CONFIG_CPU_XSCALE)
+macro_line|# ifdef _USER
+DECL|macro|MULTI_USER
+macro_line|#  define MULTI_USER 1
+macro_line|# else
+DECL|macro|_USER
+macro_line|#  define _USER xscale_mc
+macro_line|# endif
+macro_line|#endif
+macro_line|#ifndef _USER
+macro_line|#error Unknown user operations model
+macro_line|#endif
 DECL|struct|cpu_user_fns
 r_struct
 id|cpu_user_fns

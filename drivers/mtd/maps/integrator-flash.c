@@ -1,4 +1,4 @@
-multiline_comment|/*======================================================================&n;&n;    drivers/mtd/maps/armflash.c: ARM Flash Layout/Partitioning&n;  &n;    Copyright (C) 2000 ARM Limited&n;  &n;   This program is free software; you can redistribute it and/or modify&n;   it under the terms of the GNU General Public License as published by&n;   the Free Software Foundation; either version 2 of the License, or&n;   (at your option) any later version.&n;  &n;   This program is distributed in the hope that it will be useful,&n;   but WITHOUT ANY WARRANTY; without even the implied warranty of&n;   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;   GNU General Public License for more details.&n;  &n;   You should have received a copy of the GNU General Public License&n;   along with this program; if not, write to the Free Software&n;   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n;  &n;   This is access code for flashes using ARM&squot;s flash partitioning &n;   standards.&n;&n;   $Id: integrator-flash.c,v 1.6 2001/10/02 16:00:01 dwmw2 Exp $&n;&n;======================================================================*/
+multiline_comment|/*======================================================================&n;&n;    drivers/mtd/maps/armflash.c: ARM Flash Layout/Partitioning&n;  &n;    Copyright (C) 2000 ARM Limited&n;  &n;   This program is free software; you can redistribute it and/or modify&n;   it under the terms of the GNU General Public License as published by&n;   the Free Software Foundation; either version 2 of the License, or&n;   (at your option) any later version.&n;  &n;   This program is distributed in the hope that it will be useful,&n;   but WITHOUT ANY WARRANTY; without even the implied warranty of&n;   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;   GNU General Public License for more details.&n;  &n;   You should have received a copy of the GNU General Public License&n;   along with this program; if not, write to the Free Software&n;   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n;  &n;   This is access code for flashes using ARM&squot;s flash partitioning &n;   standards.&n;&n;   $Id: integrator-flash.c,v 1.7 2001/11/01 20:55:47 rmk Exp $&n;&n;======================================================================*/
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -654,6 +654,13 @@ id|mtd_info
 op_star
 id|mtd
 suffix:semicolon
+DECL|variable|parts
+r_static
+r_struct
+id|mtd_partition
+op_star
+id|parts
+suffix:semicolon
 DECL|function|armflash_cfi_init
 r_static
 r_int
@@ -669,11 +676,6 @@ id|u_int
 id|size
 )paren
 (brace
-r_struct
-id|mtd_partition
-op_star
-id|parts
-suffix:semicolon
 r_int
 id|ret
 suffix:semicolon
@@ -762,13 +764,6 @@ comma
 id|ret
 )paren
 suffix:semicolon
-multiline_comment|/* we don&squot;t need the partition info any longer */
-id|kfree
-c_func
-(paren
-id|parts
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -839,6 +834,17 @@ id|mtd
 )paren
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|parts
+)paren
+id|kfree
+c_func
+(paren
+id|parts
+)paren
+suffix:semicolon
 )brace
 DECL|function|armflash_init
 r_static

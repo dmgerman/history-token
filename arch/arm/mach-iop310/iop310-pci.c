@@ -383,6 +383,7 @@ id|devfn
 comma
 r_int
 id|where
+comma
 r_int
 id|size
 comma
@@ -478,7 +479,7 @@ id|IOP310_POCCDR
 op_assign
 id|val
 op_or
-id|v
+id|value
 op_lshift
 id|where
 suffix:semicolon
@@ -498,7 +499,7 @@ suffix:colon
 suffix:colon
 l_string|&quot;r&quot;
 (paren
-id|val
+id|value
 )paren
 comma
 l_string|&quot;r&quot;
@@ -780,6 +781,7 @@ id|devfn
 comma
 r_int
 id|where
+comma
 r_int
 id|size
 comma
@@ -875,7 +877,7 @@ id|IOP310_SOCCDR
 op_assign
 id|val
 op_or
-id|v
+id|value
 op_lshift
 id|where
 suffix:semicolon
@@ -895,7 +897,7 @@ suffix:colon
 suffix:colon
 l_string|&quot;r&quot;
 (paren
-id|val
+id|value
 )paren
 comma
 l_string|&quot;r&quot;

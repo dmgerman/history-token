@@ -929,6 +929,7 @@ suffix:semicolon
 )brace
 multiline_comment|/**&n; * prune_dcache - shrink the dcache&n; * @count: number of entries to try and free&n; *&n; * Shrink the dcache. This is done when we need&n; * more memory, or simply when we need to unmount&n; * something (at which point we need to unuse&n; * all dentries).&n; *&n; * This function may fail to free any resources if&n; * all the dentries are in use.&n; */
 DECL|function|prune_dcache
+r_static
 r_void
 id|prune_dcache
 c_func
@@ -1749,49 +1750,42 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * This is called from kswapd when we think we need some&n; * more memory. &n; */
 DECL|function|shrink_dcache_memory
+r_static
 r_int
 id|shrink_dcache_memory
 c_func
 (paren
 r_int
-id|ratio
+id|nr
 comma
 r_int
 r_int
 id|gfp_mask
 )paren
 (brace
-r_int
-id|entries
-op_assign
-id|dentry_stat.nr_dentry
-op_div
-id|ratio
-op_plus
-l_int|1
-suffix:semicolon
-multiline_comment|/*&n;&t; * Nasty deadlock avoidance.&n;&t; *&n;&t; * ext2_new_block-&gt;getblk-&gt;GFP-&gt;shrink_dcache_memory-&gt;prune_dcache-&gt;&n;&t; * prune_one_dentry-&gt;dput-&gt;dentry_iput-&gt;iput-&gt;inode-&gt;i_sb-&gt;s_op-&gt;&n;&t; * put_inode-&gt;ext2_discard_prealloc-&gt;ext2_free_blocks-&gt;lock_super-&gt;&n;&t; * DEADLOCK.&n;&t; *&n;&t; * We should make sure we don&squot;t hold the superblock lock over&n;&t; * block allocations, but for now:&n;&t; */
 r_if
 c_cond
 (paren
-op_logical_neg
+id|nr
+)paren
+(brace
+multiline_comment|/*&n;&t;&t; * Nasty deadlock avoidance.&n;&t;&t; *&n;&t; &t; * ext2_new_block-&gt;getblk-&gt;GFP-&gt;shrink_dcache_memory-&gt;&n;&t;&t; * prune_dcache-&gt;prune_one_dentry-&gt;dput-&gt;dentry_iput-&gt;iput-&gt;&n;&t;&t; * inode-&gt;i_sb-&gt;s_op-&gt;put_inode-&gt;ext2_discard_prealloc-&gt;&n;&t;&t; * ext2_free_blocks-&gt;lock_super-&gt;DEADLOCK.&n;&t; &t; *&n;&t; &t; * We should make sure we don&squot;t hold the superblock lock over&n;&t; &t; * block allocations, but for now:&n;&t;&t; */
+r_if
+c_cond
 (paren
 id|gfp_mask
 op_amp
 id|__GFP_FS
 )paren
-)paren
-r_return
-l_int|0
-suffix:semicolon
 id|prune_dcache
 c_func
 (paren
-id|entries
+id|nr
 )paren
 suffix:semicolon
+)brace
 r_return
-id|entries
+id|dentry_stat.nr_dentry
 suffix:semicolon
 )brace
 DECL|macro|NAME_ALLOC_LEN
@@ -4360,6 +4354,14 @@ c_func
 l_string|&quot;Cannot create dentry cache&quot;
 )paren
 suffix:semicolon
+id|set_shrinker
+c_func
+(paren
+id|DEFAULT_SEEKS
+comma
+id|shrink_dcache_memory
+)paren
+suffix:semicolon
 macro_line|#if PAGE_SHIFT &lt; 13
 id|mempages
 op_rshift_assign
@@ -4553,12 +4555,6 @@ id|kmem_cache_t
 op_star
 id|filp_cachep
 suffix:semicolon
-multiline_comment|/* SLAB cache for dquot structures */
-DECL|variable|dquot_cachep
-id|kmem_cache_t
-op_star
-id|dquot_cachep
-suffix:semicolon
 DECL|variable|d_genocide
 id|EXPORT_SYMBOL
 c_func
@@ -4659,48 +4655,6 @@ l_string|&quot;Cannot create filp SLAB cache&quot;
 )paren
 suffix:semicolon
 )brace
-macro_line|#if defined (CONFIG_QUOTA)
-id|dquot_cachep
-op_assign
-id|kmem_cache_create
-c_func
-(paren
-l_string|&quot;dquot&quot;
-comma
-r_sizeof
-(paren
-r_struct
-id|dquot
-)paren
-comma
-r_sizeof
-(paren
-r_int
-r_int
-)paren
-op_star
-l_int|4
-comma
-id|SLAB_HWCACHE_ALIGN
-comma
-l_int|NULL
-comma
-l_int|NULL
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|dquot_cachep
-)paren
-id|panic
-c_func
-(paren
-l_string|&quot;Cannot create dquot SLAB cache&quot;
-)paren
-suffix:semicolon
-macro_line|#endif
 id|dcache_init
 c_func
 (paren
