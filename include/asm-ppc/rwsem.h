@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.rwsem.h 1.6 05/17/01 18:14:25 cort&n; */
+multiline_comment|/*&n; * BK Id: %F% %I% %G% %U% %#%&n; */
 multiline_comment|/*&n; * include/asm-ppc/rwsem.h: R/W semaphores for PPC using the stuff&n; * in lib/rwsem.c.  Adapted largely from include/asm-i386/rwsem.h&n; * by Paul Mackerras &lt;paulus@samba.org&gt;.&n; */
 macro_line|#ifndef _PPC_RWSEM_H
 DECL|macro|_PPC_RWSEM_H
@@ -91,6 +91,19 @@ r_struct
 id|rw_semaphore
 op_star
 id|rwsem_wake
+c_func
+(paren
+r_struct
+id|rw_semaphore
+op_star
+id|sem
+)paren
+suffix:semicolon
+r_extern
+r_struct
+id|rw_semaphore
+op_star
+id|rwsem_downgrade_wake
 c_func
 (paren
 r_struct
@@ -372,6 +385,60 @@ op_star
 op_amp
 id|sem-&gt;count
 )paren
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/*&n; * downgrade write lock to read lock&n; */
+DECL|function|__downgrade_write
+r_static
+r_inline
+r_void
+id|__downgrade_write
+c_func
+(paren
+r_struct
+id|rw_semaphore
+op_star
+id|sem
+)paren
+(brace
+r_int
+id|tmp
+suffix:semicolon
+id|smp_wmb
+c_func
+(paren
+)paren
+suffix:semicolon
+id|tmp
+op_assign
+id|atomic_add_return
+c_func
+(paren
+op_minus
+id|RWSEM_WAITING_BIAS
+comma
+(paren
+id|atomic_t
+op_star
+)paren
+(paren
+op_amp
+id|sem-&gt;count
+)paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|tmp
+OL
+l_int|0
+)paren
+id|rwsem_downgrade_wake
+c_func
+(paren
+id|sem
 )paren
 suffix:semicolon
 )brace
