@@ -1,87 +1,4 @@
-multiline_comment|/*&n; * Copyright (C) 2001,2002,2003 Broadcom Corporation&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License&n; * as published by the Free Software Foundation; either version 2&n; * of the License, or (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; * &n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.&n; */
-multiline_comment|/*&n;  This driver is designed for the Broadcom SiByte SOC built-in&n;  Ethernet controllers.&n;  &n;  Written by Mitch Lichtenberg at Broadcom Corp.&n;*/
-DECL|macro|CONFIG_SBMAC_COALESCE
-mdefine_line|#define CONFIG_SBMAC_COALESCE
-multiline_comment|/* A few user-configurable values.&n;   These may be modified when a driver module is loaded. */
-DECL|variable|debug
-r_static
-r_int
-id|debug
-op_assign
-l_int|1
-suffix:semicolon
-multiline_comment|/* 1 normal messages, 0 quiet .. 7 verbose. */
-DECL|variable|noisy_mii
-r_static
-r_int
-id|noisy_mii
-op_assign
-l_int|1
-suffix:semicolon
-multiline_comment|/* mii status msgs */
-multiline_comment|/* Used to pass the media type, etc.&n;   Both &squot;options[]&squot; and &squot;full_duplex[]&squot; should exist for driver&n;   interoperability.&n;   The media type is usually passed in &squot;options[]&squot;.&n;*/
-DECL|macro|MAX_UNITS
-mdefine_line|#define MAX_UNITS 3&t;&t;/* More are supported, limit only on options */
-macro_line|#ifdef MODULE
-DECL|variable|options
-r_static
-r_int
-id|options
-(braket
-id|MAX_UNITS
-)braket
-op_assign
-(brace
-op_minus
-l_int|1
-comma
-op_minus
-l_int|1
-comma
-op_minus
-l_int|1
-)brace
-suffix:semicolon
-DECL|variable|full_duplex
-r_static
-r_int
-id|full_duplex
-(braket
-id|MAX_UNITS
-)braket
-op_assign
-(brace
-op_minus
-l_int|1
-comma
-op_minus
-l_int|1
-comma
-op_minus
-l_int|1
-)brace
-suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef CONFIG_SBMAC_COALESCE
-DECL|variable|int_pktcnt
-r_static
-r_int
-id|int_pktcnt
-op_assign
-l_int|0
-suffix:semicolon
-DECL|variable|int_timeout
-r_static
-r_int
-id|int_timeout
-op_assign
-l_int|0
-suffix:semicolon
-macro_line|#endif
-multiline_comment|/* Operational parameters that usually are not changed. */
-multiline_comment|/* Time in jiffies before concluding the transmitter is hung. */
-DECL|macro|TX_TIMEOUT
-mdefine_line|#define TX_TIMEOUT  (2*HZ)
+multiline_comment|/*&n; * Copyright (C) 2001,2002,2003 Broadcom Corporation&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License&n; * as published by the Free Software Foundation; either version 2&n; * of the License, or (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; * &n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.&n; *&n; *&n; * This driver is designed for the Broadcom SiByte SOC built-in&n; * Ethernet controllers. Written by Mitch Lichtenberg at Broadcom Corp.&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
@@ -120,6 +37,14 @@ op_assign
 l_string|&quot;sb1250-mac.c:1.00 1/11/2001 Written by Mitch Lichtenberg&bslash;n&quot;
 suffix:semicolon
 macro_line|#endif
+multiline_comment|/* Operational parameters that usually are not changed. */
+DECL|macro|CONFIG_SBMAC_COALESCE
+mdefine_line|#define CONFIG_SBMAC_COALESCE
+DECL|macro|MAX_UNITS
+mdefine_line|#define MAX_UNITS 3&t;&t;/* More are supported, limit only on options */
+multiline_comment|/* Time in jiffies before concluding the transmitter is hung. */
+DECL|macro|TX_TIMEOUT
+mdefine_line|#define TX_TIMEOUT  (2*HZ)
 id|MODULE_AUTHOR
 c_func
 (paren
@@ -132,23 +57,93 @@ c_func
 l_string|&quot;Broadcom SiByte SOC GB Ethernet driver&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+multiline_comment|/* A few user-configurable values which may be modified when a driver&n;   module is loaded. */
+multiline_comment|/* 1 normal messages, 0 quiet .. 7 verbose. */
+DECL|variable|debug
+r_static
+r_int
+id|debug
+op_assign
+l_int|1
+suffix:semicolon
+id|module_param
 c_func
 (paren
 id|debug
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+id|S_IRUGO
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|debug
+comma
+l_string|&quot;Debug messages&quot;
+)paren
+suffix:semicolon
+multiline_comment|/* mii status msgs */
+DECL|variable|noisy_mii
+r_static
+r_int
+id|noisy_mii
+op_assign
+l_int|1
+suffix:semicolon
+id|module_param
 c_func
 (paren
 id|noisy_mii
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+id|S_IRUGO
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|noisy_mii
+comma
+l_string|&quot;MII status messages&quot;
+)paren
+suffix:semicolon
+multiline_comment|/* Used to pass the media type, etc.&n;   Both &squot;options[]&squot; and &squot;full_duplex[]&squot; should exist for driver&n;   interoperability.&n;   The media type is usually passed in &squot;options[]&squot;.&n;*/
+macro_line|#ifdef MODULE
+DECL|variable|options
+r_static
+r_int
+id|options
+(braket
+id|MAX_UNITS
+)braket
+op_assign
+(brace
+op_minus
+l_int|1
+comma
+op_minus
+l_int|1
+comma
+op_minus
+l_int|1
+)brace
+suffix:semicolon
+id|module_param_array
+c_func
+(paren
+id|options
+comma
+r_int
+comma
+l_int|NULL
+comma
+id|S_IRUGO
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
 c_func
 (paren
 id|options
@@ -159,10 +154,40 @@ c_func
 (paren
 id|MAX_UNITS
 )paren
-l_string|&quot;i&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+DECL|variable|full_duplex
+r_static
+r_int
+id|full_duplex
+(braket
+id|MAX_UNITS
+)braket
+op_assign
+(brace
+op_minus
+l_int|1
+comma
+op_minus
+l_int|1
+comma
+op_minus
+l_int|1
+)brace
+suffix:semicolon
+id|module_param_array
+c_func
+(paren
+id|full_duplex
+comma
+r_int
+comma
+l_int|NULL
+comma
+id|S_IRUGO
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
 c_func
 (paren
 id|full_duplex
@@ -173,25 +198,61 @@ c_func
 (paren
 id|MAX_UNITS
 )paren
-l_string|&quot;i&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+macro_line|#endif
+macro_line|#ifdef CONFIG_SBMAC_COALESCE
+DECL|variable|int_pktcnt
+r_static
+r_int
+id|int_pktcnt
+op_assign
+l_int|0
+suffix:semicolon
+id|module_param
 c_func
 (paren
 id|int_pktcnt
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+id|S_IRUGO
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|int_pktcnt
+comma
+l_string|&quot;Packet count&quot;
+)paren
+suffix:semicolon
+DECL|variable|int_timeout
+r_static
+r_int
+id|int_timeout
+op_assign
+l_int|0
+suffix:semicolon
+id|module_param
 c_func
 (paren
 id|int_timeout
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+id|S_IRUGO
 )paren
 suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|int_timeout
+comma
+l_string|&quot;Timeout value&quot;
+)paren
+suffix:semicolon
+macro_line|#endif
 macro_line|#include &lt;asm/sibyte/sb1250.h&gt;
 macro_line|#include &lt;asm/sibyte/sb1250_defs.h&gt;
 macro_line|#include &lt;asm/sibyte/sb1250_regs.h&gt;
@@ -4705,15 +4766,6 @@ op_ge
 l_int|2
 )paren
 (brace
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;%s: enabling TCP rcv checksum&bslash;n&quot;
-comma
-id|sc-&gt;sbm_dev-&gt;name
-)paren
-suffix:semicolon
 id|sc-&gt;rx_hw_checksum
 op_assign
 id|ENABLE
@@ -6245,6 +6297,24 @@ id|err
 r_goto
 id|out_uninit
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|periph_rev
+op_ge
+l_int|2
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;%s: enabling TCP rcv checksum&bslash;n&quot;
+comma
+id|sc-&gt;sbm_dev-&gt;name
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/*&n;&t; * Display Ethernet address (this is called during the config&n;&t; * process so we need to finish off the config message that&n;&t; * was being displayed)&n;&t; */
 id|printk
 c_func
@@ -8045,7 +8115,7 @@ suffix:semicolon
 id|SBMAC_WRITECSR
 c_func
 (paren
-id|KSEG1ADDR
+id|IOADDR
 c_func
 (paren
 id|port
@@ -8071,7 +8141,6 @@ suffix:semicolon
 id|dev_sbmac
 (braket
 id|idx
-op_increment
 )braket
 op_assign
 id|dev
