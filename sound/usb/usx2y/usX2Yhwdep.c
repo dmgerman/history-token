@@ -9,6 +9,15 @@ macro_line|#include &lt;sound/hwdep.h&gt;
 macro_line|#include &quot;usx2y.h&quot;
 macro_line|#include &quot;usbusx2y.h&quot;
 macro_line|#include &quot;usX2Yhwdep.h&quot;
+r_int
+id|usX2Y_hwdep_pcm_new
+c_func
+(paren
+id|snd_card_t
+op_star
+id|card
+)paren
+suffix:semicolon
 DECL|function|snd_us428ctls_vm_nopage
 r_static
 r_struct
@@ -868,6 +877,23 @@ c_cond
 id|err
 op_assign
 id|usX2Y_audio_create
+c_func
+(paren
+id|card
+)paren
+)paren
+OL
+l_int|0
+)paren
+r_break
+suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|err
+op_assign
+id|usX2Y_hwdep_pcm_new
 c_func
 (paren
 id|card

@@ -60,6 +60,7 @@ r_struct
 id|snd_usX2Y_substream
 id|snd_usX2Y_substream_t
 suffix:semicolon
+macro_line|#include &quot;usx2yhwdeppcm.h&quot;
 r_typedef
 r_struct
 (brace
@@ -135,6 +136,11 @@ suffix:semicolon
 DECL|member|us428ctls_wait_queue_head
 id|wait_queue_head_t
 id|us428ctls_wait_queue_head
+suffix:semicolon
+DECL|member|hwdep_pcm_shm
+id|snd_usX2Y_hwdep_pcm_shm_t
+op_star
+id|hwdep_pcm_shm
 suffix:semicolon
 DECL|member|subs
 id|snd_usX2Y_substream_t

@@ -4592,6 +4592,17 @@ id|runtime
 op_assign
 id|substream-&gt;runtime
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|subs-&gt;usX2Y-&gt;chip_status
+op_amp
+id|USX2Y_STAT_CHIP_MMAP_PCM_URBS
+)paren
+r_return
+op_minus
+id|EBUSY
+suffix:semicolon
 id|runtime-&gt;hw
 op_assign
 id|snd_usX2Y_2c
