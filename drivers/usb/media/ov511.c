@@ -768,8 +768,31 @@ comma
 l_string|&quot;For objects that are lit from behind&quot;
 )paren
 suffix:semicolon
-multiline_comment|/*module_param_array(unit_video, int, OV511_MAX_UNIT_VIDEO, 0); */
-multiline_comment|/*MODULE_PARM_DESC(unit_video,&n;  &quot;Force use of specific minor number(s). 0 is not allowed.&quot;); */
+DECL|variable|num_uv
+r_static
+r_int
+id|num_uv
+suffix:semicolon
+id|module_param_array
+c_func
+(paren
+id|unit_video
+comma
+r_int
+comma
+id|num_uv
+comma
+l_int|0
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|unit_video
+comma
+l_string|&quot;Force use of specific minor number(s). 0 is not allowed.&quot;
+)paren
+suffix:semicolon
 id|module_param
 c_func
 (paren
