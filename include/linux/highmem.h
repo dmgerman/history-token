@@ -291,6 +291,8 @@ c_func
 id|addr
 comma
 id|vaddr
+comma
+id|page
 )paren
 suffix:semicolon
 id|kunmap_atomic
@@ -486,6 +488,8 @@ comma
 id|vfrom
 comma
 id|vaddr
+comma
+id|to
 )paren
 suffix:semicolon
 id|kunmap_atomic
