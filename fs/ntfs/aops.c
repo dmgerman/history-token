@@ -2957,6 +2957,7 @@ op_logical_neg
 id|vi-&gt;i_ino
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t; * NOTE: ntfs_write_mst_block() would be called for $MFTMirr if a page&n;&t; * in its page cache were to be marked dirty.  However this should&n;&t; * never happen with the current driver and considering we do not&n;&t; * handle this case here we do want to BUG(), at least for now.&n;&t; */
 id|BUG_ON
 c_func
 (paren
@@ -8435,6 +8436,17 @@ comma
 id|bh_size
 comma
 id|bh_ofs
+suffix:semicolon
+id|BUG_ON
+c_func
+(paren
+op_logical_neg
+id|PageUptodate
+c_func
+(paren
+id|page
+)paren
+)paren
 suffix:semicolon
 id|end
 op_assign
