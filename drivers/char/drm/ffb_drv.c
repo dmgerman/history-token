@@ -23,7 +23,7 @@ mdefine_line|#define DRIVER_MINOR&t;&t;0
 DECL|macro|DRIVER_PATCHLEVEL
 mdefine_line|#define DRIVER_PATCHLEVEL&t;1
 DECL|macro|DRIVER_FOPS
-mdefine_line|#define DRIVER_FOPS&t;&t;&t;&t;&t;&t;&bslash;&n;static struct file_operations&t;DRM(fops) = {&t;&t;&t;&bslash;&n;&t;owner:   &t;&t;THIS_MODULE,&t;&t;&t;&bslash;&n;&t;open:&t; &t;&t;DRM(open),&t;&t;&t;&bslash;&n;&t;flush:&t; &t;&t;DRM(flush),&t;&t;&t;&bslash;&n;&t;release: &t;&t;DRM(release),&t;&t;&t;&bslash;&n;&t;ioctl:&t; &t;&t;DRM(ioctl),&t;&t;&t;&bslash;&n;&t;mmap:&t; &t;&t;DRM(mmap),&t;&t;&t;&bslash;&n;&t;read:&t; &t;&t;DRM(read),&t;&t;&t;&bslash;&n;&t;fasync:&t; &t;&t;DRM(fasync),&t;&t;&t;&bslash;&n;&t;poll:&t; &t;&t;DRM(poll),&t;&t;&t;&bslash;&n;&t;get_unmapped_area:&t;ffb_get_unmapped_area,&t;&t;&bslash;&n;}
+mdefine_line|#define DRIVER_FOPS&t;&t;&t;&t;&t;&t;&bslash;&n;static struct file_operations&t;DRM(fops) = {&t;&t;&t;&bslash;&n;&t;.owner   &t;&t;= THIS_MODULE,&t;&t;&t;&bslash;&n;&t;.open&t; &t;&t;= DRM(open),&t;&t;&t;&bslash;&n;&t;.flush&t; &t;&t;= DRM(flush),&t;&t;&t;&bslash;&n;&t;.release &t;&t;= DRM(release),&t;&t;&t;&bslash;&n;&t;.ioctl&t; &t;&t;= DRM(ioctl),&t;&t;&t;&bslash;&n;&t;.mmap&t; &t;&t;= DRM(mmap),&t;&t;&t;&bslash;&n;&t;.read&t; &t;&t;= DRM(read),&t;&t;&t;&bslash;&n;&t;.fasync&t; &t;&t;= DRM(fasync),&t;&t;&t;&bslash;&n;&t;.poll&t; &t;&t;= DRM(poll),&t;&t;&t;&bslash;&n;&t;.get_unmapped_area&t;= ffb_get_unmapped_area,&t;&t;&bslash;&n;}
 DECL|macro|DRIVER_COUNT_CARDS
 mdefine_line|#define DRIVER_COUNT_CARDS()&t;ffb_count_card_instances()
 multiline_comment|/* Allocate private structure and fill it */

@@ -1,8 +1,8 @@
 multiline_comment|/*&n; * Node information (ConfigROM) collection and management.&n; *&n; * Copyright (C) 2000 Andreas E. Bombe&n; *               2001 Ben Collins &lt;bcollins@debian.net&gt;&n; *&n; * This code is licensed under the GPL.  See the file COPYING in the root&n; * directory of the kernel sources for details.&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
-macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/kmod.h&gt;
@@ -11,6 +11,8 @@ macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#ifdef CONFIG_PROC_FS
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#endif
+macro_line|#include &lt;asm/atomic.h&gt;
+macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#include &quot;ieee1394_types.h&quot;
 macro_line|#include &quot;ieee1394.h&quot;
 macro_line|#include &quot;hosts.h&quot;
@@ -19,6 +21,85 @@ macro_line|#include &quot;ieee1394_hotplug.h&quot;
 macro_line|#include &quot;highlevel.h&quot;
 macro_line|#include &quot;csr.h&quot;
 macro_line|#include &quot;nodemgr.h&quot;
+macro_line|#ifdef CONFIG_IEEE1394_OUI_DB
+DECL|struct|oui_list_struct
+r_struct
+id|oui_list_struct
+(brace
+DECL|member|oui
+r_int
+id|oui
+suffix:semicolon
+DECL|member|name
+r_char
+op_star
+id|name
+suffix:semicolon
+)brace
+suffix:semicolon
+r_extern
+r_struct
+id|oui_list_struct
+id|oui_list
+(braket
+)braket
+suffix:semicolon
+DECL|function|nodemgr_find_oui_name
+r_static
+r_char
+op_star
+id|nodemgr_find_oui_name
+c_func
+(paren
+r_int
+id|oui
+)paren
+(brace
+r_int
+id|i
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|oui_list
+(braket
+id|i
+)braket
+dot
+id|name
+suffix:semicolon
+id|i
+op_increment
+)paren
+r_if
+c_cond
+(paren
+id|oui_list
+(braket
+id|i
+)braket
+dot
+id|oui
+op_eq
+id|oui
+)paren
+r_return
+id|oui_list
+(braket
+id|i
+)braket
+dot
+id|name
+suffix:semicolon
+r_return
+l_int|NULL
+suffix:semicolon
+)brace
+macro_line|#endif
 multiline_comment|/* &n; * Basically what we do here is start off retrieving the bus_info block.&n; * From there will fill in some info about the node, verify it is of IEEE&n; * 1394 type, and that the crc checks out ok. After that we start off with&n; * the root directory, and subdirectories. To do this, we retrieve the&n; * quadlet header for a directory, find out the length, and retrieve the&n; * complete directory entry (be it a leaf or a directory). We then process&n; * it and add the info to our structure for that particular node.&n; *&n; * We verify CRC&squot;s along the way for each directory/block/leaf. The&n; * entire node structure is generic, and simply stores the information in&n; * a way that&squot;s easy to parse by the protocol interface.&n; */
 multiline_comment|/* The nodemgr maintains a number of data structures: the node list,&n; * the driver list, unit directory list and the host info list.  The&n; * first three lists are accessed from process context only: /proc&n; * readers, insmod and rmmod, and the nodemgr thread.  Access to these&n; * lists are serialized by means of the nodemgr_serialize mutex, which&n; * must be taken before accessing the structures and released&n; * afterwards.  The host info list is only accessed during insmod,&n; * rmmod and from interrupt and allways only for a short period of&n; * time, so a spinlock is used to protect this list.&n; */
 r_static
@@ -154,6 +235,10 @@ id|out
 op_assign
 id|page
 suffix:semicolon
+r_int
+r_int
+id|flags
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -233,15 +318,24 @@ multiline_comment|/* Generic Node information */
 id|PUTF
 c_func
 (paren
-l_string|&quot;  Vendor ID: `%s&squot; [0x%06x]&bslash;n&quot;
+l_string|&quot;  Vendor ID   : `%s&squot; [0x%06x]&bslash;n&quot;
 comma
-id|ne-&gt;vendor_name
-ques
-c_cond
-suffix:colon
-l_string|&quot;Unknown&quot;
+id|ne-&gt;oui_name
 comma
 id|ne-&gt;vendor_id
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ne-&gt;vendor_name
+)paren
+id|PUTF
+c_func
+(paren
+l_string|&quot;  Vendor text : `%s&squot;&bslash;n&quot;
+comma
+id|ne-&gt;vendor_name
 )paren
 suffix:semicolon
 id|PUTF
@@ -255,7 +349,67 @@ suffix:semicolon
 id|PUTF
 c_func
 (paren
-l_string|&quot;  Bus Options:&bslash;n&quot;
+l_string|&quot;  Tlabel stats:&bslash;n&quot;
+)paren
+suffix:semicolon
+id|spin_lock_irqsave
+c_func
+(paren
+op_amp
+id|ne-&gt;tpool-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
+id|PUTF
+c_func
+(paren
+l_string|&quot;    Free  : %d&bslash;n&quot;
+comma
+id|atomic_read
+c_func
+(paren
+op_amp
+id|ne-&gt;tpool-&gt;count.count
+)paren
+op_plus
+l_int|1
+)paren
+suffix:semicolon
+id|PUTF
+c_func
+(paren
+l_string|&quot;    Total : %u&bslash;n&quot;
+comma
+id|ne-&gt;tpool-&gt;allocations
+)paren
+suffix:semicolon
+id|PUTF
+c_func
+(paren
+l_string|&quot;    Mask  : %016Lx&bslash;n&quot;
+comma
+(paren
+r_int
+r_int
+r_int
+)paren
+id|ne-&gt;tpool-&gt;pool
+)paren
+suffix:semicolon
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|ne-&gt;tpool-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
+id|PUTF
+c_func
+(paren
+l_string|&quot;  Bus Options :&bslash;n&quot;
 )paren
 suffix:semicolon
 id|PUTF
@@ -473,12 +627,31 @@ c_cond
 id|ud-&gt;flags
 op_amp
 id|UNIT_DIRECTORY_VENDOR_ID
+op_logical_or
+id|ud-&gt;flags
+op_amp
+id|UNIT_DIRECTORY_MODEL_ID
 )paren
 (brace
 id|PUTF
 c_func
 (paren
-l_string|&quot;    Vendor/Model ID: %s [%06x]&quot;
+l_string|&quot;    Vendor/Model ID  : &quot;
+)paren
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|ud-&gt;flags
+op_amp
+id|UNIT_DIRECTORY_VENDOR_ID
+)paren
+(brace
+id|PUTF
+c_func
+(paren
+l_string|&quot;%s [%06x]&quot;
 comma
 id|ud-&gt;vendor_name
 ques
@@ -508,10 +681,11 @@ c_cond
 op_logical_neg
 id|printed
 )paren
+(brace
 id|PUTF
 c_func
 (paren
-l_string|&quot;    Vendor/Model ID: %s [%06x]&quot;
+l_string|&quot;%s [%06x]&quot;
 comma
 id|ne-&gt;vendor_name
 ques
@@ -522,6 +696,7 @@ comma
 id|ne-&gt;vendor_id
 )paren
 suffix:semicolon
+)brace
 id|PUTF
 c_func
 (paren
@@ -562,7 +737,7 @@ id|UNIT_DIRECTORY_SPECIFIER_ID
 id|PUTF
 c_func
 (paren
-l_string|&quot;    Software Specifier ID: %06x&bslash;n&quot;
+l_string|&quot;    Software Spec ID : %06x&bslash;n&quot;
 comma
 id|ud-&gt;specifier_id
 )paren
@@ -577,7 +752,7 @@ id|UNIT_DIRECTORY_VERSION
 id|PUTF
 c_func
 (paren
-l_string|&quot;    Software Version: %06x&bslash;n&quot;
+l_string|&quot;    Software Version : %06x&bslash;n&quot;
 comma
 id|ud-&gt;version
 )paren
@@ -590,7 +765,7 @@ id|ud-&gt;driver
 id|PUTF
 c_func
 (paren
-l_string|&quot;    Driver: %s&bslash;n&quot;
+l_string|&quot;    Driver           : %s&bslash;n&quot;
 comma
 id|ud-&gt;driver-&gt;name
 )paren
@@ -1391,17 +1566,18 @@ c_func
 (paren
 id|total_size
 comma
-id|SLAB_ATOMIC
+id|GFP_KERNEL
 )paren
 suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|ne
-op_ne
-l_int|NULL
 )paren
-(brace
+r_return
+l_int|NULL
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1439,7 +1615,6 @@ id|ne-&gt;vendor_name
 op_assign
 l_int|NULL
 suffix:semicolon
-)brace
 )brace
 r_return
 id|ne
@@ -1511,6 +1686,16 @@ op_amp
 id|ne-&gt;unit_directories
 )paren
 suffix:semicolon
+id|ne-&gt;tpool
+op_assign
+op_amp
+id|host-&gt;tpool
+(braket
+id|nodeid
+op_amp
+id|NODE_MASK
+)braket
+suffix:semicolon
 id|ne-&gt;host
 op_assign
 id|host
@@ -1547,9 +1732,9 @@ suffix:semicolon
 id|HPSB_DEBUG
 c_func
 (paren
-l_string|&quot;%s added: Node[&quot;
+l_string|&quot;%s added: ID:BUS[&quot;
 id|NODE_BUS_FMT
-l_string|&quot;]  GUID[%016Lx]  [%s]&quot;
+l_string|&quot;]  GUID[%016Lx]  [%s] (%s)&quot;
 comma
 (paren
 id|host-&gt;node_id
@@ -1560,7 +1745,7 @@ ques
 c_cond
 l_string|&quot;Host&quot;
 suffix:colon
-l_string|&quot;Device&quot;
+l_string|&quot;Node&quot;
 comma
 id|NODE_BUS_ARGS
 c_func
@@ -1574,6 +1759,8 @@ r_int
 r_int
 )paren
 id|guid
+comma
+id|ne-&gt;oui_name
 comma
 id|ne-&gt;vendor_name
 ques
@@ -2857,6 +3044,21 @@ id|ne-&gt;vendor_id
 op_assign
 id|value
 suffix:semicolon
+macro_line|#ifdef CONFIG_IEEE1394_OUI_DB
+id|ne-&gt;oui_name
+op_assign
+id|nodemgr_find_oui_name
+c_func
+(paren
+id|value
+)paren
+suffix:semicolon
+macro_line|#else
+id|ne-&gt;oui_name
+op_assign
+l_string|&quot;Unknown&quot;
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/* Now check if there is a vendor name text&n;&t;&t;&t;   string.  */
 r_if
 c_cond
@@ -5247,6 +5449,54 @@ r_return
 id|ne
 suffix:semicolon
 )brace
+DECL|function|hpsb_check_nodeid
+r_struct
+id|node_entry
+op_star
+id|hpsb_check_nodeid
+c_func
+(paren
+id|nodeid_t
+id|nodeid
+)paren
+(brace
+r_struct
+id|node_entry
+op_star
+id|ne
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|down_trylock
+c_func
+(paren
+op_amp
+id|nodemgr_serialize
+)paren
+)paren
+r_return
+l_int|NULL
+suffix:semicolon
+id|ne
+op_assign
+id|find_entry_by_nodeid
+c_func
+(paren
+id|nodeid
+)paren
+suffix:semicolon
+id|up
+c_func
+(paren
+op_amp
+id|nodemgr_serialize
+)paren
+suffix:semicolon
+r_return
+id|ne
+suffix:semicolon
+)brace
 multiline_comment|/* The following four convenience functions use a struct node_entry&n; * for addressing a node on the bus.  They are intended for use by any&n; * process context, not just the nodemgr thread, so we need to be a&n; * little careful when reading out the node ID and generation.  The&n; * thing that can go wrong is that we get the node ID, then a bus&n; * reset occurs, and then we read the generation.  The node ID is&n; * possibly invalid, but the generation is current, and we end up&n; * sending a packet to a the wrong node.&n; *&n; * The solution is to make sure we read the generation first, so that&n; * if a reset occurs in the process, we end up with a stale generation&n; * and the transactions will fail instead of silently using wrong node&n; * ID&squot;s.&n; */
 DECL|function|hpsb_node_fill_packet
 r_void
@@ -5453,8 +5703,15 @@ r_struct
 id|host_info
 op_star
 id|hi
+suffix:semicolon
+r_int
+r_int
+id|flags
+suffix:semicolon
+id|hi
 op_assign
 id|kmalloc
+c_func
 (paren
 r_sizeof
 (paren
@@ -5462,12 +5719,16 @@ r_struct
 id|host_info
 )paren
 comma
-id|GFP_KERNEL
+id|in_interrupt
+c_func
+(paren
 )paren
-suffix:semicolon
-r_int
-r_int
-id|flags
+ques
+c_cond
+id|SLAB_ATOMIC
+suffix:colon
+id|SLAB_KERNEL
+)paren
 suffix:semicolon
 r_if
 c_cond

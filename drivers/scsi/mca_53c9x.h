@@ -115,7 +115,7 @@ id|inout
 )paren
 suffix:semicolon
 DECL|macro|MCA_53C9X
-mdefine_line|#define MCA_53C9X         { proc_name:&t;&t;&quot;esp&quot;, &bslash;&n;&t;&t;&t;    name:&t;&t;&quot;NCR 53c9x SCSI&quot;, &bslash;&n;&t;&t;&t;    detect:&t;&t;mca_esp_detect, &bslash;&n;&t;&t;&t;    release:&t;&t;mca_esp_release, &bslash;&n;&t;&t;&t;    queuecommand:&t;esp_queue, &bslash;&n;&t;&t;&t;    abort:&t;&t;esp_abort, &bslash;&n;&t;&t;&t;    reset:&t;&t;esp_reset, &bslash;&n;&t;&t;&t;    can_queue:          7, &bslash;&n;&t;&t;&t;    sg_tablesize:&t;SG_ALL, &bslash;&n;&t;&t;&t;    cmd_per_lun:&t;1, &bslash;&n;                            unchecked_isa_dma:  1, &bslash;&n;&t;&t;&t;    use_clustering:&t;DISABLE_CLUSTERING }
+mdefine_line|#define MCA_53C9X         { .proc_name&t;&t;= &quot;esp&quot;, &bslash;&n;&t;&t;&t;    .name&t;&t;= &quot;NCR 53c9x SCSI&quot;, &bslash;&n;&t;&t;&t;    .detect&t;&t;= mca_esp_detect, &bslash;&n;&t;&t;&t;    .release&t;&t;= mca_esp_release, &bslash;&n;&t;&t;&t;    .queuecommand&t;= esp_queue, &bslash;&n;&t;&t;&t;    .abort&t;&t;= esp_abort, &bslash;&n;&t;&t;&t;    .reset&t;&t;= esp_reset, &bslash;&n;&t;&t;&t;    .can_queue          = 7, &bslash;&n;&t;&t;&t;    .sg_tablesize&t;= SG_ALL, &bslash;&n;&t;&t;&t;    .cmd_per_lun&t;= 1, &bslash;&n;                            .unchecked_isa_dma  = 1, &bslash;&n;&t;&t;&t;    .use_clustering&t;= DISABLE_CLUSTERING }
 multiline_comment|/* Ports the ncr&squot;s 53c94 can be put at; indexed by pos register value */
 DECL|macro|MCA_53C9X_IO_PORTS
 mdefine_line|#define MCA_53C9X_IO_PORTS {                             &bslash;&n;                         0x0000, 0x0240, 0x0340, 0x0400, &bslash;&n;&t;                 0x0420, 0x3240, 0x8240, 0xA240, &bslash;&n;&t;                }

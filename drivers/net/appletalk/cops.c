@@ -3726,8 +3726,9 @@ id|net_device
 id|cops0_dev
 op_assign
 (brace
+dot
 id|init
-suffix:colon
+op_assign
 id|cops_probe
 )brace
 suffix:semicolon
