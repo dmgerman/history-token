@@ -2313,11 +2313,15 @@ id|CS_BAD_HANDLE
 suffix:semicolon
 id|s
 op_assign
-id|SOCKET
+id|pcmcia_get_socket_by_nr
 c_func
+(paren
 (paren
 op_star
 id|handle
+)paren
+op_member_access_from_pointer
+id|Socket
 )paren
 suffix:semicolon
 r_if

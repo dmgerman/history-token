@@ -312,7 +312,7 @@ mdefine_line|#define CHECK_HANDLE(h) &bslash;&n;    (((h) == NULL) || ((h)-&gt;c
 DECL|macro|CHECK_SOCKET
 mdefine_line|#define CHECK_SOCKET(s) &bslash;&n;    (((s) &gt;= sockets) || (socket_table[s]-&gt;ss_entry == NULL))
 DECL|macro|SOCKET
-mdefine_line|#define SOCKET(h) (socket_table[(h)-&gt;Socket])
+mdefine_line|#define SOCKET(h) (pcmcia_get_socket_by_nr(h-&gt;Socket))
 DECL|macro|CONFIG
 mdefine_line|#define CONFIG(h) (&amp;SOCKET(h)-&gt;config[(h)-&gt;Function])
 DECL|macro|CHECK_REGION
@@ -835,19 +835,15 @@ op_star
 id|data
 )paren
 suffix:semicolon
-DECL|macro|MAX_SOCK
-mdefine_line|#define MAX_SOCK 8
 r_extern
-id|socket_t
-id|sockets
+r_struct
+id|rw_semaphore
+id|pcmcia_socket_list_rwsem
 suffix:semicolon
 r_extern
-id|socket_info_t
-op_star
-id|socket_table
-(braket
-id|MAX_SOCK
-)braket
+r_struct
+id|list_head
+id|pcmcia_socket_list
 suffix:semicolon
 macro_line|#ifdef CONFIG_PROC_FS
 r_extern

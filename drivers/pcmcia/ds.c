@@ -3963,7 +3963,7 @@ op_eq
 id|class_dev-&gt;dev
 )paren
 (brace
-id|bus_sock-&gt;parent.pcmcia
+id|bus_sock-&gt;parent-&gt;pcmcia
 op_assign
 l_int|NULL
 suffix:semicolon
