@@ -7029,6 +7029,10 @@ id|sdevscan-&gt;id
 op_assign
 id|id
 suffix:semicolon
+id|sdevscan-&gt;channel
+op_assign
+id|channel
+suffix:semicolon
 multiline_comment|/*&n;&t; * Scan LUN 0, if there is some response, scan further. Ideally, we&n;&t; * would not configure LUN 0 until all LUNs are scanned.&n;&t; *&n;&t; * The scsi_level is set (in scsi_probe_lun) if a target responds.&n;&t; */
 id|sdevscan-&gt;lun
 op_assign
