@@ -617,10 +617,7 @@ l_int|42
 id|outb_p
 c_func
 (paren
-id|wd_times
-(braket
-id|wd_margin
-)braket
+l_int|0
 comma
 id|WDT_STOP
 )paren
@@ -695,10 +692,7 @@ multiline_comment|/* Turn the WDT off */
 id|outb_p
 c_func
 (paren
-id|wd_times
-(braket
-id|wd_margin
-)braket
+l_int|0
 comma
 id|WDT_STOP
 )paren
