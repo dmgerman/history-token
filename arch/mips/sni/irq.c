@@ -9,10 +9,11 @@ macro_line|#include &lt;asm/i8259.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/sni.h&gt;
 DECL|variable|pciasic_lock
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|pciasic_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 r_extern
 id|asmlinkage
