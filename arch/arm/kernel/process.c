@@ -1149,6 +1149,14 @@ id|debug_info
 )paren
 )paren
 suffix:semicolon
+macro_line|#if defined(CONFIG_IWMMXT)
+id|iwmmxt_task_release
+c_func
+(paren
+id|thread
+)paren
+suffix:semicolon
+macro_line|#endif
 id|fp_init
 c_func
 (paren
@@ -1183,6 +1191,14 @@ c_func
 (paren
 op_amp
 id|dead_task-&gt;thread_info-&gt;vfpstate
+)paren
+suffix:semicolon
+macro_line|#endif
+macro_line|#if defined(CONFIG_IWMMXT)
+id|iwmmxt_task_release
+c_func
+(paren
+id|dead_task-&gt;thread_info
 )paren
 suffix:semicolon
 macro_line|#endif

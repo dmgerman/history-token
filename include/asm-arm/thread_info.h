@@ -237,29 +237,52 @@ DECL|macro|thread_saved_pc
 mdefine_line|#define thread_saved_pc(tsk)&t;&bslash;&n;&t;((unsigned long)(pc_pointer((tsk)-&gt;thread_info-&gt;cpu_context.pc)))
 DECL|macro|thread_saved_fp
 mdefine_line|#define thread_saved_fp(tsk)&t;&bslash;&n;&t;((unsigned long)((tsk)-&gt;thread_info-&gt;cpu_context.fp))
-macro_line|#else /* !__ASSEMBLY__ */
-DECL|macro|TI_FLAGS
-mdefine_line|#define TI_FLAGS&t;0
-DECL|macro|TI_PREEMPT
-mdefine_line|#define TI_PREEMPT&t;4
-DECL|macro|TI_ADDR_LIMIT
-mdefine_line|#define TI_ADDR_LIMIT&t;8
-DECL|macro|TI_TASK
-mdefine_line|#define TI_TASK&t;&t;12
-DECL|macro|TI_EXEC_DOMAIN
-mdefine_line|#define TI_EXEC_DOMAIN&t;16
-DECL|macro|TI_CPU
-mdefine_line|#define TI_CPU&t;&t;20
-DECL|macro|TI_CPU_DOMAIN
-mdefine_line|#define TI_CPU_DOMAIN&t;24
-DECL|macro|TI_CPU_SAVE
-mdefine_line|#define TI_CPU_SAVE&t;28
-DECL|macro|TI_USED_CP
-mdefine_line|#define TI_USED_CP&t;76
-DECL|macro|TI_FPSTATE
-mdefine_line|#define TI_FPSTATE&t;(TI_USED_CP+16)
-DECL|macro|TI_VFPSTATE
-mdefine_line|#define TI_VFPSTATE&t;(TI_FPSTATE+FP_SIZE*4)
+r_extern
+r_void
+id|iwmmxt_task_disable
+c_func
+(paren
+r_struct
+id|thread_info
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|iwmmxt_task_copy
+c_func
+(paren
+r_struct
+id|thread_info
+op_star
+comma
+r_void
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|iwmmxt_task_restore
+c_func
+(paren
+r_struct
+id|thread_info
+op_star
+comma
+r_void
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|iwmmxt_task_release
+c_func
+(paren
+r_struct
+id|thread_info
+op_star
+)paren
+suffix:semicolon
 macro_line|#endif
 DECL|macro|PREEMPT_ACTIVE
 mdefine_line|#define PREEMPT_ACTIVE&t;0x04000000
@@ -276,6 +299,8 @@ DECL|macro|TIF_USED_FPU
 mdefine_line|#define TIF_USED_FPU&t;&t;16
 DECL|macro|TIF_POLLING_NRFLAG
 mdefine_line|#define TIF_POLLING_NRFLAG&t;17
+DECL|macro|TIF_USING_IWMMXT
+mdefine_line|#define TIF_USING_IWMMXT&t;18
 DECL|macro|_TIF_NOTIFY_RESUME
 mdefine_line|#define _TIF_NOTIFY_RESUME&t;(1 &lt;&lt; TIF_NOTIFY_RESUME)
 DECL|macro|_TIF_SIGPENDING
@@ -288,6 +313,8 @@ DECL|macro|_TIF_USED_FPU
 mdefine_line|#define _TIF_USED_FPU&t;&t;(1 &lt;&lt; TIF_USED_FPU)
 DECL|macro|_TIF_POLLING_NRFLAG
 mdefine_line|#define _TIF_POLLING_NRFLAG&t;(1 &lt;&lt; TIF_POLLING_NRFLAG)
+DECL|macro|_TIF_USING_IWMMXT
+mdefine_line|#define _TIF_USING_IWMMXT&t;(1 &lt;&lt; TIF_USING_IWMMXT)
 multiline_comment|/*&n; * Change these and you break ASM code in entry-common.S&n; */
 DECL|macro|_TIF_WORK_MASK
 mdefine_line|#define _TIF_WORK_MASK&t;&t;0x000000ff
