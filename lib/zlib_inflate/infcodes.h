@@ -17,9 +17,6 @@ r_extern
 id|inflate_codes_statef
 op_star
 id|zlib_inflate_codes_new
-id|OF
-c_func
-(paren
 (paren
 id|uInt
 comma
@@ -33,14 +30,10 @@ op_star
 comma
 id|z_streamp
 )paren
-)paren
 suffix:semicolon
 r_extern
 r_int
 id|zlib_inflate_codes
-id|OF
-c_func
-(paren
 (paren
 id|inflate_blocks_statef
 op_star
@@ -49,20 +42,15 @@ id|z_streamp
 comma
 r_int
 )paren
-)paren
 suffix:semicolon
 r_extern
 r_void
 id|zlib_inflate_codes_free
-id|OF
-c_func
-(paren
 (paren
 id|inflate_codes_statef
 op_star
 comma
 id|z_streamp
-)paren
 )paren
 suffix:semicolon
 macro_line|#endif /* _INFCODES_H */

@@ -73,9 +73,6 @@ id|uLong
 op_star
 id|check_func
 )paren
-id|OF
-c_func
-(paren
 (paren
 id|uLong
 id|check
@@ -87,7 +84,6 @@ id|buf
 comma
 id|uInt
 id|len
-)paren
 )paren
 suffix:semicolon
 multiline_comment|/* checksum functions */

@@ -15,8 +15,6 @@ DECL|macro|MAX_WBITS
 macro_line|#  define MAX_WBITS   15 /* 32K LZ77 window */
 macro_line|#endif
 multiline_comment|/* Type declarations */
-DECL|macro|OF
-macro_line|#    define OF(args)  args
 DECL|typedef|Byte
 r_typedef
 r_int
@@ -44,7 +42,5 @@ r_void
 op_star
 id|voidp
 suffix:semicolon
-macro_line|#include &lt;linux/types.h&gt; /* for off_t */
-macro_line|#include &lt;linux/unistd.h&gt;    /* for SEEK_* and off_t */
 macro_line|#endif /* _ZCONF_H */
 eof

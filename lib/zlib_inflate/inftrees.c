@@ -24,9 +24,6 @@ mdefine_line|#define bits word.what.Bits
 id|local
 r_int
 id|huft_build
-id|OF
-c_func
-(paren
 (paren
 id|uInt
 op_star
@@ -67,7 +64,6 @@ comma
 multiline_comment|/* hufts used in space */
 id|uInt
 op_star
-)paren
 )paren
 suffix:semicolon
 multiline_comment|/* space for values */

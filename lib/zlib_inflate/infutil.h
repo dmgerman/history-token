@@ -231,9 +231,6 @@ multiline_comment|/* copy as much as possible from the sliding window to the out
 r_extern
 r_int
 id|zlib_inflate_flush
-id|OF
-c_func
-(paren
 (paren
 id|inflate_blocks_statef
 op_star
@@ -241,7 +238,6 @@ comma
 id|z_streamp
 comma
 r_int
-)paren
 )paren
 suffix:semicolon
 multiline_comment|/* inflate private state */

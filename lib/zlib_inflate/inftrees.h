@@ -55,9 +55,6 @@ mdefine_line|#define MANY 1440
 r_extern
 r_int
 id|zlib_inflate_trees_bits
-id|OF
-c_func
-(paren
 (paren
 id|uInt
 op_star
@@ -78,15 +75,11 @@ comma
 multiline_comment|/* space for trees */
 id|z_streamp
 )paren
-)paren
 suffix:semicolon
 multiline_comment|/* for messages */
 r_extern
 r_int
 id|zlib_inflate_trees_dynamic
-id|OF
-c_func
-(paren
 (paren
 id|uInt
 comma
@@ -122,15 +115,11 @@ comma
 multiline_comment|/* space for trees */
 id|z_streamp
 )paren
-)paren
 suffix:semicolon
 multiline_comment|/* for messages */
 r_extern
 r_int
 id|zlib_inflate_trees_fixed
-id|OF
-c_func
-(paren
 (paren
 id|uInt
 op_star
@@ -151,7 +140,6 @@ op_star
 comma
 multiline_comment|/* distance tree result */
 id|z_streamp
-)paren
 )paren
 suffix:semicolon
 multiline_comment|/* for memory allocation */

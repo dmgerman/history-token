@@ -16,9 +16,6 @@ r_extern
 id|inflate_blocks_statef
 op_star
 id|zlib_inflate_blocks_new
-id|OF
-c_func
-(paren
 (paren
 id|z_streamp
 id|z
@@ -30,15 +27,11 @@ multiline_comment|/* check function */
 id|uInt
 id|w
 )paren
-)paren
 suffix:semicolon
 multiline_comment|/* window size */
 r_extern
 r_int
 id|zlib_inflate_blocks
-id|OF
-c_func
-(paren
 (paren
 id|inflate_blocks_statef
 op_star
@@ -47,15 +40,11 @@ id|z_streamp
 comma
 r_int
 )paren
-)paren
 suffix:semicolon
 multiline_comment|/* initial return code */
 r_extern
 r_void
 id|zlib_inflate_blocks_reset
-id|OF
-c_func
-(paren
 (paren
 id|inflate_blocks_statef
 op_star
@@ -65,29 +54,21 @@ comma
 id|uLong
 op_star
 )paren
-)paren
 suffix:semicolon
 multiline_comment|/* check value on output */
 r_extern
 r_int
 id|zlib_inflate_blocks_free
-id|OF
-c_func
-(paren
 (paren
 id|inflate_blocks_statef
 op_star
 comma
 id|z_streamp
 )paren
-)paren
 suffix:semicolon
 r_extern
 r_void
 id|zlib_inflate_set_dictionary
-id|OF
-c_func
-(paren
 (paren
 id|inflate_blocks_statef
 op_star
@@ -102,20 +83,15 @@ multiline_comment|/* dictionary */
 id|uInt
 id|n
 )paren
-)paren
 suffix:semicolon
 multiline_comment|/* dictionary length */
 r_extern
 r_int
 id|zlib_inflate_blocks_sync_point
-id|OF
-c_func
-(paren
 (paren
 id|inflate_blocks_statef
 op_star
 id|s
-)paren
 )paren
 suffix:semicolon
 macro_line|#endif /* _INFBLOCK_H */
