@@ -195,19 +195,7 @@ macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/elfcore.h&gt;
-DECL|struct|timeval32
-r_struct
-id|timeval32
-(brace
-DECL|member|tv_sec
-DECL|member|tv_usec
-r_int
-id|tv_sec
-comma
-id|tv_usec
-suffix:semicolon
-)brace
-suffix:semicolon
+macro_line|#include &lt;linux/compat.h&gt;
 DECL|macro|elf_prstatus
 mdefine_line|#define elf_prstatus elf_prstatus32
 DECL|struct|elf_prstatus32
@@ -255,25 +243,25 @@ id|pr_sid
 suffix:semicolon
 DECL|member|pr_utime
 r_struct
-id|timeval32
+id|compat_timeval
 id|pr_utime
 suffix:semicolon
 multiline_comment|/* User time */
 DECL|member|pr_stime
 r_struct
-id|timeval32
+id|compat_timeval
 id|pr_stime
 suffix:semicolon
 multiline_comment|/* System time */
 DECL|member|pr_cutime
 r_struct
-id|timeval32
+id|compat_timeval
 id|pr_cutime
 suffix:semicolon
 multiline_comment|/* Cumulative user time */
 DECL|member|pr_cstime
 r_struct
-id|timeval32
+id|compat_timeval
 id|pr_cstime
 suffix:semicolon
 multiline_comment|/* Cumulative system time */
@@ -372,12 +360,12 @@ DECL|macro|NEW_TO_OLD_GID
 mdefine_line|#define NEW_TO_OLD_GID(gid) ((gid) &gt; 65535) ? (u16)overflowgid : (u16)(gid)
 macro_line|#include &lt;linux/time.h&gt;
 DECL|macro|jiffies_to_timeval
-mdefine_line|#define jiffies_to_timeval jiffies_to_timeval32
+mdefine_line|#define jiffies_to_timeval jiffies_to_compat_timeval
 r_static
 id|__inline__
 r_void
-DECL|function|jiffies_to_timeval32
-id|jiffies_to_timeval32
+DECL|function|jiffies_to_compat_timeval
+id|jiffies_to_compat_timeval
 c_func
 (paren
 r_int
@@ -385,7 +373,7 @@ r_int
 id|jiffies
 comma
 r_struct
-id|timeval32
+id|compat_timeval
 op_star
 id|value
 )paren

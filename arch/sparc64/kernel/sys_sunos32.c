@@ -2,6 +2,7 @@ multiline_comment|/* $Id: sys_sunos32.c,v 1.64 2002/02/09 19:49:31 davem Exp $&n
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
+macro_line|#include &lt;linux/compat.h&gt;
 macro_line|#include &lt;linux/mman.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/swap.h&gt;
@@ -2298,19 +2299,6 @@ id|u32
 id|tvp
 )paren
 suffix:semicolon
-DECL|struct|timeval32
-r_struct
-id|timeval32
-(brace
-DECL|member|tv_sec
-DECL|member|tv_usec
-r_int
-id|tv_sec
-comma
-id|tv_usec
-suffix:semicolon
-)brace
-suffix:semicolon
 DECL|function|sunos_select
 id|asmlinkage
 r_int
@@ -2364,13 +2352,13 @@ id|tvp_x
 )paren
 (brace
 r_struct
-id|timeval32
+id|compat_timeval
 op_star
 id|tvp
 op_assign
 (paren
 r_struct
-id|timeval32
+id|compat_timeval
 op_star
 )paren
 id|A
@@ -4203,15 +4191,15 @@ id|u32
 id|msg_last
 suffix:semicolon
 DECL|member|msg_stime
-id|__kernel_time_t32
+id|compat_time_t
 id|msg_stime
 suffix:semicolon
 DECL|member|msg_rtime
-id|__kernel_time_t32
+id|compat_time_t
 id|msg_rtime
 suffix:semicolon
 DECL|member|msg_ctime
-id|__kernel_time_t32
+id|compat_time_t
 id|msg_ctime
 suffix:semicolon
 DECL|member|wwait
@@ -5125,15 +5113,15 @@ r_int
 id|shm_segsz
 suffix:semicolon
 DECL|member|shm_atime
-id|__kernel_time_t32
+id|compat_time_t
 id|shm_atime
 suffix:semicolon
 DECL|member|shm_dtime
-id|__kernel_time_t32
+id|compat_time_t
 id|shm_dtime
 suffix:semicolon
 DECL|member|shm_ctime
-id|__kernel_time_t32
+id|compat_time_t
 id|shm_ctime
 suffix:semicolon
 DECL|member|shm_cpid
