@@ -4092,7 +4092,6 @@ op_assign
 id|blk_rq_map_sg
 c_func
 (paren
-op_amp
 id|drive-&gt;queue
 comma
 id|rq
