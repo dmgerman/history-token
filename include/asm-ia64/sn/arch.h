@@ -8,11 +8,6 @@ macro_line|#include &lt;asm/sn/sn_cpuid.h&gt;
 multiline_comment|/*&n; * This is the maximum number of nodes that can be part of a kernel.&n; * Effectively, it&squot;s the maximum number of compact node ids (cnodeid_t).&n; * This is not necessarily the same as MAX_NASIDS.&n; */
 DECL|macro|MAX_COMPACT_NODES
 mdefine_line|#define MAX_COMPACT_NODES       2048
-DECL|typedef|nic_t
-r_typedef
-id|u64
-id|nic_t
-suffix:semicolon
 r_extern
 r_void
 id|sn_flush_all_caches
