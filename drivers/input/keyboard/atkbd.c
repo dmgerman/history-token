@@ -23,30 +23,6 @@ c_func
 l_string|&quot;AT and PS/2 keyboard driver&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
-c_func
-(paren
-id|atkbd_set
-comma
-l_string|&quot;1i&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM
-c_func
-(paren
-id|atkbd_reset
-comma
-l_string|&quot;1i&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM
-c_func
-(paren
-id|atkbd_softrepeat
-comma
-l_string|&quot;1i&quot;
-)paren
-suffix:semicolon
 id|MODULE_LICENSE
 c_func
 (paren
@@ -188,6 +164,24 @@ c_func
 id|extra
 comma
 l_string|&quot;Enable extra LEDs and keys on IBM RapidAcces, EzKey and similar keyboards&quot;
+)paren
+suffix:semicolon
+id|__obsolete_setup
+c_func
+(paren
+l_string|&quot;atkbd_set=&quot;
+)paren
+suffix:semicolon
+id|__obsolete_setup
+c_func
+(paren
+l_string|&quot;atkbd_reset&quot;
+)paren
+suffix:semicolon
+id|__obsolete_setup
+c_func
+(paren
+l_string|&quot;atkbd_softrepeat=&quot;
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * Scancode to keycode tables. These are just the default setting, and&n; * are loadable via an userland utility.&n; */

@@ -420,6 +420,27 @@ id|n
 r_if
 c_cond
 (paren
+op_logical_neg
+id|p-&gt;setup_func
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;Parameter %s is obsolete, ignored&bslash;n&quot;
+comma
+id|p-&gt;str
+)paren
+suffix:semicolon
+r_return
+l_int|1
+suffix:semicolon
+)brace
+r_else
+r_if
+c_cond
+(paren
 id|p
 op_member_access_from_pointer
 id|setup_func
