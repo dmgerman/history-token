@@ -48,6 +48,7 @@ macro_line|#include &lt;asm/isa.h&gt;
 macro_line|#endif
 macro_line|#include &lt;asm/a.out.h&gt;
 macro_line|#include &lt;asm/ns87303.h&gt;
+macro_line|#include &lt;asm/timer.h&gt;
 DECL|struct|poll
 r_struct
 id|poll
@@ -803,21 +804,13 @@ id|smp_call_function
 )paren
 suffix:semicolon
 macro_line|#endif /* CONFIG_SMP */
-multiline_comment|/* Uniprocessor clock frequency */
-macro_line|#ifndef CONFIG_SMP
-r_extern
-r_int
-r_int
-id|up_clock_tick
-suffix:semicolon
-DECL|variable|up_clock_tick
+DECL|variable|sparc64_get_clock_tick
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|up_clock_tick
+id|sparc64_get_clock_tick
 )paren
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/* semaphores */
 DECL|variable|down
 id|EXPORT_SYMBOL
