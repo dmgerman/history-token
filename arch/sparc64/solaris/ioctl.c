@@ -1623,7 +1623,7 @@ op_star
 id|ino
 suffix:semicolon
 multiline_comment|/* I wonder which of these tests are superfluous... --patrik */
-id|read_lock
+id|spin_lock
 c_func
 (paren
 op_amp
@@ -1663,7 +1663,7 @@ op_logical_neg
 id|ino-&gt;i_sock
 )paren
 (brace
-id|read_unlock
+id|spin_unlock
 c_func
 (paren
 op_amp
@@ -1674,7 +1674,7 @@ r_return
 id|TBADF
 suffix:semicolon
 )brace
-id|read_unlock
+id|spin_unlock
 c_func
 (paren
 op_amp
