@@ -225,9 +225,9 @@ mdefine_line|#define OSST_TIMEOUT (200 * HZ)
 DECL|macro|OSST_LONG_TIMEOUT
 mdefine_line|#define OSST_LONG_TIMEOUT (1800 * HZ)
 DECL|macro|TAPE_NR
-mdefine_line|#define TAPE_NR(x) (MINOR(x) &amp; ~(128 | ST_MODE_MASK))
+mdefine_line|#define TAPE_NR(x) (minor(x) &amp; ~(128 | ST_MODE_MASK))
 DECL|macro|TAPE_MODE
-mdefine_line|#define TAPE_MODE(x) ((MINOR(x) &amp; ST_MODE_MASK) &gt;&gt; ST_MODE_SHIFT)
+mdefine_line|#define TAPE_MODE(x) ((minor(x) &amp; ST_MODE_MASK) &gt;&gt; ST_MODE_SHIFT)
 multiline_comment|/* Internal ioctl to set both density (uppermost 8 bits) and blocksize (lower&n;   24 bits) */
 DECL|macro|SET_DENS_AND_BLK
 mdefine_line|#define SET_DENS_AND_BLK 0x10001
@@ -21478,7 +21478,7 @@ op_eq
 id|MTLOAD
 )paren
 (brace
-multiline_comment|/*      &t;&t;STp-&gt;rew_at_close = (MINOR(inode-&gt;i_rdev) &amp; 0x80) == 0;  FIXME */
+multiline_comment|/*      &t;&t;STp-&gt;rew_at_close = (minor(inode-&gt;i_rdev) &amp; 0x80) == 0;  FIXME */
 r_for
 c_loop
 (paren
@@ -21934,7 +21934,7 @@ suffix:semicolon
 id|STp-&gt;rew_at_close
 op_assign
 (paren
-id|MINOR
+id|minor
 c_func
 (paren
 id|inode-&gt;i_rdev
@@ -22033,7 +22033,7 @@ suffix:semicolon
 id|STp-&gt;raw
 op_assign
 (paren
-id|MINOR
+id|minor
 c_func
 (paren
 id|inode-&gt;i_rdev
@@ -29017,7 +29017,7 @@ id|SDp
 suffix:semicolon
 id|tpnt-&gt;devt
 op_assign
-id|MKDEV
+id|mk_kdev
 c_func
 (paren
 id|MAJOR_NR
