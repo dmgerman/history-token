@@ -172,7 +172,8 @@ op_star
 id|rtm
 )paren
 suffix:semicolon
-r_extern
+DECL|variable|pim_protocol
+r_static
 r_struct
 id|inet_protocol
 id|pim_protocol
@@ -3800,6 +3801,8 @@ suffix:colon
 (brace
 r_int
 id|v
+comma
+id|ret
 suffix:semicolon
 r_if
 c_cond
@@ -3838,6 +3841,10 @@ c_func
 (paren
 )paren
 suffix:semicolon
+id|ret
+op_assign
+l_int|0
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -3860,20 +3867,40 @@ c_cond
 (paren
 id|mroute_do_pim
 )paren
+id|ret
+op_assign
 id|inet_add_protocol
 c_func
 (paren
 op_amp
 id|pim_protocol
+comma
+id|IPPROTO_PIM
 )paren
 suffix:semicolon
 r_else
+id|ret
+op_assign
 id|inet_del_protocol
 c_func
 (paren
 op_amp
 id|pim_protocol
+comma
+id|IPPROTO_PIM
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ret
+OL
+l_int|0
+)paren
+id|ret
+op_assign
+op_minus
+id|EAGAIN
 suffix:semicolon
 macro_line|#endif
 )brace
@@ -3883,7 +3910,7 @@ c_func
 )paren
 suffix:semicolon
 r_return
-l_int|0
+id|ret
 suffix:semicolon
 )brace
 macro_line|#endif
@@ -7575,31 +7602,17 @@ suffix:semicolon
 macro_line|#endif&t;
 macro_line|#ifdef CONFIG_IP_PIMSM_V2
 DECL|variable|pim_protocol
+r_static
 r_struct
 id|inet_protocol
 id|pim_protocol
 op_assign
 (brace
+dot
+id|handler
+op_assign
 id|pim_rcv
 comma
-multiline_comment|/* PIM handler&t;&t;*/
-l_int|NULL
-comma
-multiline_comment|/* PIM error control&t;*/
-l_int|NULL
-comma
-multiline_comment|/* next&t;&t;&t;*/
-id|IPPROTO_PIM
-comma
-multiline_comment|/* protocol ID&t;&t;*/
-l_int|0
-comma
-multiline_comment|/* copy&t;&t;&t;*/
-l_int|NULL
-comma
-multiline_comment|/* data&t;&t;&t;*/
-l_string|&quot;PIM&quot;
-multiline_comment|/* name&t;&t;&t;*/
 )brace
 suffix:semicolon
 macro_line|#endif

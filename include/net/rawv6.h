@@ -18,9 +18,7 @@ id|rwlock_t
 id|raw_v6_lock
 suffix:semicolon
 r_extern
-r_struct
-id|sock
-op_star
+r_void
 id|ipv6_raw_deliver
 c_func
 (paren

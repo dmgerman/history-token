@@ -83,9 +83,7 @@ id|dif
 )paren
 suffix:semicolon
 r_extern
-r_struct
-id|sock
-op_star
+r_void
 id|raw_v4_input
 c_func
 (paren

@@ -5495,26 +5495,16 @@ id|inet_protocol
 id|ipgre_protocol
 op_assign
 (brace
+dot
+id|handler
+op_assign
 id|ipgre_rcv
 comma
-multiline_comment|/* GRE handler          */
+dot
+id|err_handler
+op_assign
 id|ipgre_err
 comma
-multiline_comment|/* TUNNEL error control */
-l_int|0
-comma
-multiline_comment|/* next                 */
-id|IPPROTO_GRE
-comma
-multiline_comment|/* protocol ID          */
-l_int|0
-comma
-multiline_comment|/* copy                 */
-l_int|NULL
-comma
-multiline_comment|/* data                 */
-l_string|&quot;GRE&quot;
-multiline_comment|/* name                 */
 )brace
 suffix:semicolon
 multiline_comment|/*&n; *&t;And now the modules code and kernel interface.&n; */
@@ -5543,6 +5533,33 @@ id|KERN_INFO
 l_string|&quot;GRE over IPv4 tunneling driver&bslash;n&quot;
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|inet_add_protocol
+c_func
+(paren
+op_amp
+id|ipgre_protocol
+comma
+id|IPPROTO_GRE
+)paren
+OL
+l_int|0
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;ipgre init: can&squot;t add protocol&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|EAGAIN
+suffix:semicolon
+)brace
 id|ipgre_fb_tunnel_dev.priv
 op_assign
 (paren
@@ -5557,13 +5574,6 @@ c_func
 (paren
 op_amp
 id|ipgre_fb_tunnel_dev
-)paren
-suffix:semicolon
-id|inet_add_protocol
-c_func
-(paren
-op_amp
-id|ipgre_protocol
 )paren
 suffix:semicolon
 r_return
@@ -5587,6 +5597,8 @@ c_func
 (paren
 op_amp
 id|ipgre_protocol
+comma
+id|IPPROTO_GRE
 )paren
 OL
 l_int|0

@@ -8,7 +8,7 @@ macro_line|#if defined(CONFIG_IPV6) || defined (CONFIG_IPV6_MODULE)
 macro_line|#include &lt;linux/ipv6.h&gt;
 macro_line|#endif
 DECL|macro|MAX_INET_PROTOS
-mdefine_line|#define MAX_INET_PROTOS&t;32&t;&t;/* Must be a power of 2&t;&t;*/
+mdefine_line|#define MAX_INET_PROTOS&t;256&t;&t;/* Must be a power of 2&t;&t;*/
 multiline_comment|/* This is used to register protocols. */
 DECL|struct|inet_protocol
 r_struct
@@ -42,35 +42,6 @@ comma
 id|u32
 id|info
 )paren
-suffix:semicolon
-DECL|member|next
-r_struct
-id|inet_protocol
-op_star
-id|next
-suffix:semicolon
-DECL|member|protocol
-r_int
-r_char
-id|protocol
-suffix:semicolon
-DECL|member|copy
-r_int
-r_char
-id|copy
-suffix:colon
-l_int|1
-suffix:semicolon
-DECL|member|data
-r_void
-op_star
-id|data
-suffix:semicolon
-DECL|member|name
-r_const
-r_char
-op_star
-id|name
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -121,35 +92,6 @@ comma
 id|__u32
 id|info
 )paren
-suffix:semicolon
-DECL|member|next
-r_struct
-id|inet6_protocol
-op_star
-id|next
-suffix:semicolon
-DECL|member|protocol
-r_int
-r_char
-id|protocol
-suffix:semicolon
-DECL|member|copy
-r_int
-r_char
-id|copy
-suffix:colon
-l_int|1
-suffix:semicolon
-DECL|member|data
-r_void
-op_star
-id|data
-suffix:semicolon
-DECL|member|name
-r_const
-r_char
-op_star
-id|name
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -253,7 +195,7 @@ id|SOCK_MAX
 suffix:semicolon
 macro_line|#endif
 r_extern
-r_void
+r_int
 id|inet_add_protocol
 c_func
 (paren
@@ -261,6 +203,10 @@ r_struct
 id|inet_protocol
 op_star
 id|prot
+comma
+r_int
+r_char
+id|num
 )paren
 suffix:semicolon
 r_extern
@@ -272,6 +218,10 @@ r_struct
 id|inet_protocol
 op_star
 id|prot
+comma
+r_int
+r_char
+id|num
 )paren
 suffix:semicolon
 r_extern
@@ -298,7 +248,7 @@ id|p
 suffix:semicolon
 macro_line|#if defined(CONFIG_IPV6) || defined (CONFIG_IPV6_MODULE)
 r_extern
-r_void
+r_int
 id|inet6_add_protocol
 c_func
 (paren
@@ -306,6 +256,10 @@ r_struct
 id|inet6_protocol
 op_star
 id|prot
+comma
+r_int
+r_char
+id|num
 )paren
 suffix:semicolon
 r_extern
@@ -317,6 +271,10 @@ r_struct
 id|inet6_protocol
 op_star
 id|prot
+comma
+r_int
+r_char
+id|num
 )paren
 suffix:semicolon
 r_extern
