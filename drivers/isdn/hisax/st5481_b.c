@@ -1151,12 +1151,12 @@ op_assign
 id|bcs-&gt;adapter-&gt;usb_dev
 suffix:semicolon
 r_struct
-id|usb_interface_descriptor
+id|usb_host_interface
 op_star
 id|altsetting
 suffix:semicolon
 r_struct
-id|usb_endpoint_descriptor
+id|usb_host_endpoint
 op_star
 id|endpoint
 suffix:semicolon
@@ -1213,9 +1213,9 @@ l_int|4
 comma
 l_string|&quot;endpoint address=%02x,packet size=%d&quot;
 comma
-id|endpoint-&gt;bEndpointAddress
+id|endpoint-&gt;desc.bEndpointAddress
 comma
-id|endpoint-&gt;wMaxPacketSize
+id|endpoint-&gt;desc.wMaxPacketSize
 )paren
 suffix:semicolon
 singleline_comment|// Allocate memory for 8000bytes/sec + extra bytes if underrun
@@ -1232,7 +1232,7 @@ c_func
 (paren
 id|dev
 comma
-id|endpoint-&gt;bEndpointAddress
+id|endpoint-&gt;desc.bEndpointAddress
 )paren
 comma
 id|NUM_ISO_PACKETS_B

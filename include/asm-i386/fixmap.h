@@ -11,8 +11,7 @@ macro_line|#ifdef CONFIG_HIGHMEM
 macro_line|#include &lt;linux/threads.h&gt;
 macro_line|#include &lt;asm/kmap_types.h&gt;
 macro_line|#endif
-multiline_comment|/*&n; * Here we define all the compile-time &squot;special&squot; virtual&n; * addresses. The point is to have a constant address at&n; * compile time, but to set the physical address only&n; * in the boot process. We allocate these special  addresses&n; * from the end of virtual memory (0xfffff000) backwards.&n; * Also this lets us do fail-safe vmalloc(), we&n; * can guarantee that these special addresses and&n; * vmalloc()-ed addresses never overlap.&n; *&n; * these &squot;compile-time allocated&squot; memory buffers are&n; * fixed-size 4k pages. (or larger if used with an increment&n; * highger than 1) use fixmap_set(idx,phys) to associate&n; * physical memory with fixmap indices.&n; *&n; * TLB entries of such buffers will not be flushed across&n; * task switches.&n; */
-multiline_comment|/*&n; * on UP currently we will have no trace of the fixmap mechanizm,&n; * no page table allocations, etc. This might change in the&n; * future, say framebuffers for the console driver(s) could be&n; * fix-mapped?&n; */
+multiline_comment|/*&n; * Here we define all the compile-time &squot;special&squot; virtual&n; * addresses. The point is to have a constant address at&n; * compile time, but to set the physical address only&n; * in the boot process. We allocate these special addresses&n; * from the end of virtual memory (0xfffff000) backwards.&n; * Also this lets us do fail-safe vmalloc(), we&n; * can guarantee that these special addresses and&n; * vmalloc()-ed addresses never overlap.&n; *&n; * these &squot;compile-time allocated&squot; memory buffers are&n; * fixed-size 4k pages. (or larger if used with an increment&n; * highger than 1) use fixmap_set(idx,phys) to associate&n; * physical memory with fixmap indices.&n; *&n; * TLB entries of such buffers will not be flushed across&n; * task switches.&n; */
 DECL|enum|fixed_addresses
 r_enum
 id|fixed_addresses
@@ -120,6 +119,9 @@ id|NR_FIX_BTMAPS
 op_minus
 l_int|1
 comma
+DECL|enumerator|FIX_WP_TEST
+id|FIX_WP_TEST
+comma
 DECL|enumerator|__end_of_fixed_addresses
 id|__end_of_fixed_addresses
 )brace
@@ -145,6 +147,8 @@ mdefine_line|#define set_fixmap(idx, phys) &bslash;&n;&t;&t;__set_fixmap(idx, ph
 multiline_comment|/*&n; * Some hardware wants to get fixmapped without caching.&n; */
 DECL|macro|set_fixmap_nocache
 mdefine_line|#define set_fixmap_nocache(idx, phys) &bslash;&n;&t;&t;__set_fixmap(idx, phys, PAGE_KERNEL_NOCACHE)
+DECL|macro|clear_fixmap
+mdefine_line|#define clear_fixmap(idx) &bslash;&n;&t;&t;__set_fixmap(idx, 0, __pgprot(0))
 multiline_comment|/*&n; * used by vmalloc.c.&n; *&n; * Leave one empty page between vmalloc&squot;ed areas and&n; * the start of the fixmap, and leave one page empty&n; * at the top of mem..&n; */
 DECL|macro|FIXADDR_TOP
 mdefine_line|#define FIXADDR_TOP&t;(0xffffe000UL)

@@ -77,6 +77,8 @@ op_star
 id|page
 )paren
 suffix:semicolon
+DECL|macro|copy_page
+mdefine_line|#define copy_page(X,Y)&t;__memcpy((void *)(X), (void *)(Y), PAGE_SIZE)
 r_extern
 r_void
 id|copy_user_page

@@ -4723,8 +4723,8 @@ id|regions
 suffix:semicolon
 )brace
 r_extern
-id|kdev_t
-id|name_to_kdev_t
+id|dev_t
+id|name_to_dev_t
 c_func
 (paren
 r_char
@@ -4783,7 +4783,7 @@ id|erase_size
 op_assign
 id|CONFIG_MTD_BLKDEV_ERASESIZE
 suffix:semicolon
-id|kdev_t
+id|dev_t
 id|rdev
 suffix:semicolon
 r_struct
@@ -5003,7 +5003,7 @@ suffix:semicolon
 )brace
 id|rdev
 op_assign
-id|inode-&gt;i_rdev
+id|inode-&gt;i_bdev-&gt;bd_dev
 suffix:semicolon
 id|filp_close
 c_func
@@ -5016,7 +5016,7 @@ suffix:semicolon
 macro_line|#else
 id|rdev
 op_assign
-id|name_to_kdev_t
+id|name_to_dev_t
 c_func
 (paren
 id|device
@@ -5025,7 +5025,7 @@ suffix:semicolon
 macro_line|#endif
 id|maj
 op_assign
-id|major
+id|MAJOR
 c_func
 (paren
 id|rdev
@@ -5033,7 +5033,7 @@ id|rdev
 suffix:semicolon
 id|min
 op_assign
-id|minor
+id|MINOR
 c_func
 (paren
 id|rdev
@@ -5054,11 +5054,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|kdev_none
-c_func
-(paren
+op_logical_neg
 id|rdev
-)paren
 )paren
 (brace
 id|printk

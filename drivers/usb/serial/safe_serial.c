@@ -1267,7 +1267,7 @@ id|port-&gt;tty
 suffix:semicolon
 )brace
 multiline_comment|/* Continue trying to always read  */
-id|FILL_BULK_URB
+id|usb_fill_bulk_urb
 (paren
 id|urb
 comma
@@ -1836,7 +1836,7 @@ id|serial
 r_switch
 c_cond
 (paren
-id|serial-&gt;interface-&gt;altsetting-&gt;bInterfaceProtocol
+id|serial-&gt;interface-&gt;altsetting-&gt;desc.bInterfaceProtocol
 )paren
 (brace
 r_case

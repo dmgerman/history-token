@@ -715,7 +715,14 @@ suffix:semicolon
 multiline_comment|/* Try to redo what tcp_v4_send_synack did. */
 id|req-&gt;window_clamp
 op_assign
-id|rt-&gt;u.dst.window
+id|dst_metric
+c_func
+(paren
+op_amp
+id|rt-&gt;u.dst
+comma
+id|RTAX_WINDOW
+)paren
 suffix:semicolon
 id|tcp_select_initial_window
 c_func

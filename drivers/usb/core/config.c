@@ -3,6 +3,17 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
+DECL|macro|USB_MAXALTSETTING
+mdefine_line|#define USB_MAXALTSETTING&t;&t;128&t;/* Hard limit */
+DECL|macro|USB_MAXENDPOINTS
+mdefine_line|#define USB_MAXENDPOINTS&t;&t;30&t;/* Hard limit */
+multiline_comment|/* these maximums are arbitrary */
+DECL|macro|USB_MAXCONFIG
+mdefine_line|#define USB_MAXCONFIG&t;&t;&t;8
+DECL|macro|USB_ALTSETTINGALLOC
+mdefine_line|#define USB_ALTSETTINGALLOC&t;&t;4
+DECL|macro|USB_MAXINTERFACES
+mdefine_line|#define USB_MAXINTERFACES&t;&t;32
 DECL|function|usb_parse_endpoint
 r_static
 r_int
@@ -10,7 +21,7 @@ id|usb_parse_endpoint
 c_func
 (paren
 r_struct
-id|usb_endpoint_descriptor
+id|usb_host_endpoint
 op_star
 id|endpoint
 comma
@@ -83,9 +94,9 @@ id|USB_DT_ENDPOINT
 id|warn
 c_func
 (paren
-l_string|&quot;unexpected descriptor 0x%X, expecting endpoint descriptor, type 0x%X&quot;
+l_string|&quot;unexpected descriptor 0x%X, expecting endpoint, 0x%X&quot;
 comma
-id|endpoint-&gt;bDescriptorType
+id|header-&gt;bDescriptorType
 comma
 id|USB_DT_ENDPOINT
 )paren
@@ -104,7 +115,8 @@ id|USB_DT_ENDPOINT_AUDIO_SIZE
 id|memcpy
 c_func
 (paren
-id|endpoint
+op_amp
+id|endpoint-&gt;desc
 comma
 id|buffer
 comma
@@ -115,7 +127,8 @@ r_else
 id|memcpy
 c_func
 (paren
-id|endpoint
+op_amp
+id|endpoint-&gt;desc
 comma
 id|buffer
 comma
@@ -126,7 +139,7 @@ id|le16_to_cpus
 c_func
 (paren
 op_amp
-id|endpoint-&gt;wMaxPacketSize
+id|endpoint-&gt;desc.wMaxPacketSize
 )paren
 suffix:semicolon
 id|buffer
@@ -380,7 +393,7 @@ op_star
 id|header
 suffix:semicolon
 r_struct
-id|usb_interface_descriptor
+id|usb_host_interface
 op_star
 id|ifp
 suffix:semicolon
@@ -443,6 +456,11 @@ OG
 l_int|0
 )paren
 (brace
+r_struct
+id|usb_interface_descriptor
+op_star
+id|d
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -586,15 +604,15 @@ suffix:semicolon
 multiline_comment|/* Skip over the interface */
 id|buffer
 op_add_assign
-id|ifp-&gt;bLength
+id|ifp-&gt;desc.bLength
 suffix:semicolon
 id|parsed
 op_add_assign
-id|ifp-&gt;bLength
+id|ifp-&gt;desc.bLength
 suffix:semicolon
 id|size
 op_sub_assign
-id|ifp-&gt;bLength
+id|ifp-&gt;desc.bLength
 suffix:semicolon
 id|begin
 op_assign
@@ -815,7 +833,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|ifp-&gt;bNumEndpoints
+id|ifp-&gt;desc.bNumEndpoints
 OG
 id|USB_MAXENDPOINTS
 )paren
@@ -835,18 +853,18 @@ id|ifp-&gt;endpoint
 op_assign
 (paren
 r_struct
-id|usb_endpoint_descriptor
+id|usb_host_endpoint
 op_star
 )paren
 id|kmalloc
 c_func
 (paren
-id|ifp-&gt;bNumEndpoints
+id|ifp-&gt;desc.bNumEndpoints
 op_star
 r_sizeof
 (paren
 r_struct
-id|usb_endpoint_descriptor
+id|usb_host_endpoint
 )paren
 comma
 id|GFP_KERNEL
@@ -877,12 +895,12 @@ id|ifp-&gt;endpoint
 comma
 l_int|0
 comma
-id|ifp-&gt;bNumEndpoints
+id|ifp-&gt;desc.bNumEndpoints
 op_star
 r_sizeof
 (paren
 r_struct
-id|usb_endpoint_descriptor
+id|usb_host_endpoint
 )paren
 )paren
 suffix:semicolon
@@ -895,7 +913,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|ifp-&gt;bNumEndpoints
+id|ifp-&gt;desc.bNumEndpoints
 suffix:semicolon
 id|i
 op_increment
@@ -967,7 +985,7 @@ id|retval
 suffix:semicolon
 )brace
 multiline_comment|/* We check to see if it&squot;s an alternate to this one */
-id|ifp
+id|d
 op_assign
 (paren
 r_struct
@@ -983,12 +1001,12 @@ id|size
 OL
 id|USB_DT_INTERFACE_SIZE
 op_logical_or
-id|ifp-&gt;bDescriptorType
+id|d-&gt;bDescriptorType
 op_ne
 id|USB_DT_INTERFACE
 op_logical_or
 op_logical_neg
-id|ifp-&gt;bAlternateSetting
+id|d-&gt;bAlternateSetting
 )paren
 r_return
 id|parsed
@@ -1004,7 +1022,7 @@ id|usb_parse_configuration
 c_func
 (paren
 r_struct
-id|usb_config_descriptor
+id|usb_host_config
 op_star
 id|config
 comma
@@ -1028,7 +1046,8 @@ suffix:semicolon
 id|memcpy
 c_func
 (paren
-id|config
+op_amp
+id|config-&gt;desc
 comma
 id|buffer
 comma
@@ -1039,17 +1058,17 @@ id|le16_to_cpus
 c_func
 (paren
 op_amp
-id|config-&gt;wTotalLength
+id|config-&gt;desc.wTotalLength
 )paren
 suffix:semicolon
 id|size
 op_assign
-id|config-&gt;wTotalLength
+id|config-&gt;desc.wTotalLength
 suffix:semicolon
 r_if
 c_cond
 (paren
-id|config-&gt;bNumInterfaces
+id|config-&gt;desc.bNumInterfaces
 OG
 id|USB_MAXINTERFACES
 )paren
@@ -1075,7 +1094,7 @@ op_star
 id|kmalloc
 c_func
 (paren
-id|config-&gt;bNumInterfaces
+id|config-&gt;desc.bNumInterfaces
 op_star
 r_sizeof
 (paren
@@ -1093,7 +1112,7 @@ l_string|&quot;kmalloc IF %p, numif %i&quot;
 comma
 id|config-&gt;interface
 comma
-id|config-&gt;bNumInterfaces
+id|config-&gt;desc.bNumInterfaces
 )paren
 suffix:semicolon
 r_if
@@ -1121,7 +1140,7 @@ id|config-&gt;interface
 comma
 l_int|0
 comma
-id|config-&gt;bNumInterfaces
+id|config-&gt;desc.bNumInterfaces
 op_star
 r_sizeof
 (paren
@@ -1132,11 +1151,11 @@ id|usb_interface
 suffix:semicolon
 id|buffer
 op_add_assign
-id|config-&gt;bLength
+id|config-&gt;desc.bLength
 suffix:semicolon
 id|size
 op_sub_assign
-id|config-&gt;bLength
+id|config-&gt;desc.bLength
 suffix:semicolon
 id|config-&gt;extra
 op_assign
@@ -1155,7 +1174,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|config-&gt;bNumInterfaces
+id|config-&gt;desc.bNumInterfaces
 suffix:semicolon
 id|i
 op_increment
@@ -1494,7 +1513,7 @@ op_increment
 )paren
 (brace
 r_struct
-id|usb_config_descriptor
+id|usb_host_config
 op_star
 id|cf
 op_assign
@@ -1521,7 +1540,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|cf-&gt;bNumInterfaces
+id|cf-&gt;desc.bNumInterfaces
 suffix:semicolon
 id|i
 op_increment
@@ -1562,7 +1581,7 @@ op_increment
 )paren
 (brace
 r_struct
-id|usb_interface_descriptor
+id|usb_host_interface
 op_star
 id|as
 op_assign
@@ -1602,7 +1621,7 @@ l_int|0
 suffix:semicolon
 id|k
 OL
-id|as-&gt;bNumEndpoints
+id|as-&gt;desc.bNumEndpoints
 suffix:semicolon
 id|k
 op_increment
@@ -1739,7 +1758,7 @@ id|dev-&gt;config
 op_assign
 (paren
 r_struct
-id|usb_config_descriptor
+id|usb_host_config
 op_star
 )paren
 id|kmalloc
@@ -1750,7 +1769,7 @@ op_star
 r_sizeof
 (paren
 r_struct
-id|usb_config_descriptor
+id|usb_host_config
 )paren
 comma
 id|GFP_KERNEL
@@ -1786,7 +1805,7 @@ op_star
 r_sizeof
 (paren
 r_struct
-id|usb_config_descriptor
+id|usb_host_config
 )paren
 )paren
 suffix:semicolon

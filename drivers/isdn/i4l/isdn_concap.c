@@ -1,5 +1,5 @@
-multiline_comment|/* $Id: isdn_concap.c,v 1.8.6.1 2001/09/23 22:24:31 kai Exp $&n; * &n; * Linux ISDN subsystem, protocol encapsulation&n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; */
-multiline_comment|/* Stuff to support the concap_proto by isdn4linux. isdn4linux - specific&n; * stuff goes here. Stuff that depends only on the concap protocol goes to&n; * another -- protocol specific -- source file.&n; *&n; */
+multiline_comment|/* Linux ISDN subsystem, protocol encapsulation&n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; */
+multiline_comment|/* Stuff to support the concap_proto by isdn4linux. isdn4linux - specific&n; * stuff goes here. Stuff that depends only on the concap protocol goes to&n; * another -- protocol specific -- source file.&n; */
 macro_line|#include &lt;linux/isdn.h&gt;
 macro_line|#include &quot;isdn_x25iface.h&quot;
 macro_line|#include &quot;isdn_net.h&quot;
@@ -327,7 +327,7 @@ id|lp
 op_member_access_from_pointer
 id|netdev
 op_member_access_from_pointer
-id|cprot
+id|ind_priv
 suffix:semicolon
 r_struct
 id|concap_proto
@@ -336,7 +336,7 @@ id|dops
 op_assign
 id|lp
 op_member_access_from_pointer
-id|dops
+id|inl_priv
 suffix:semicolon
 r_int
 r_int
@@ -408,7 +408,7 @@ id|lp
 op_member_access_from_pointer
 id|netdev
 op_member_access_from_pointer
-id|cprot
+id|ind_priv
 suffix:semicolon
 r_if
 c_cond
@@ -452,7 +452,7 @@ id|lp
 op_member_access_from_pointer
 id|netdev
 op_member_access_from_pointer
-id|cprot
+id|ind_priv
 suffix:semicolon
 r_struct
 id|concap_proto_ops
@@ -516,7 +516,7 @@ id|lp
 op_member_access_from_pointer
 id|netdev
 op_member_access_from_pointer
-id|cprot
+id|ind_priv
 suffix:semicolon
 r_struct
 id|concap_proto_ops
@@ -590,7 +590,7 @@ id|lp
 op_member_access_from_pointer
 id|netdev
 op_member_access_from_pointer
-id|cprot
+id|ind_priv
 suffix:semicolon
 r_int
 id|ret
@@ -657,7 +657,7 @@ id|lp
 op_member_access_from_pointer
 id|netdev
 op_member_access_from_pointer
-id|cprot
+id|ind_priv
 suffix:semicolon
 multiline_comment|/* try if there are generic sync_device receiver routines */
 r_if
@@ -732,7 +732,7 @@ id|ISDN_NET_ENCAP_X25IFACE
 suffix:colon
 id|lp
 op_member_access_from_pointer
-id|dops
+id|inl_priv
 op_assign
 op_amp
 id|isdn_concap_reliable_dl_dops
@@ -838,7 +838,7 @@ l_int|NULL
 suffix:semicolon
 id|lp
 op_member_access_from_pointer
-id|dops
+id|inl_priv
 op_assign
 l_int|NULL
 suffix:semicolon

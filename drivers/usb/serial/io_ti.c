@@ -2105,7 +2105,7 @@ l_string|&quot;%s - Number of Interfaces = %d&quot;
 comma
 id|__FUNCTION__
 comma
-id|dev-&gt;config-&gt;bNumInterfaces
+id|dev-&gt;config-&gt;desc.bNumInterfaces
 )paren
 suffix:semicolon
 id|dbg
@@ -2114,7 +2114,7 @@ l_string|&quot;%s - MAX Power            = %d&quot;
 comma
 id|__FUNCTION__
 comma
-id|dev-&gt;config-&gt;MaxPower
+id|dev-&gt;config-&gt;desc.bMaxPower
 op_star
 l_int|2
 )paren
@@ -2122,7 +2122,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|dev-&gt;config-&gt;bNumInterfaces
+id|dev-&gt;config-&gt;desc.bNumInterfaces
 op_ne
 l_int|1
 )paren
@@ -3673,7 +3673,8 @@ id|status
 suffix:semicolon
 id|interface
 op_assign
-id|serial-&gt;serial-&gt;dev-&gt;config-&gt;interface-&gt;altsetting
+op_amp
+id|serial-&gt;serial-&gt;dev-&gt;config-&gt;interface-&gt;altsetting-&gt;desc
 suffix:semicolon
 r_if
 c_cond

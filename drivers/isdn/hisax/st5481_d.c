@@ -1291,7 +1291,7 @@ l_int|0
 singleline_comment|// There is another URB queued up
 id|urb-&gt;transfer_flags
 op_assign
-id|USB_ISO_ASAP
+id|URB_ISO_ASAP
 suffix:semicolon
 id|SUBMIT_URB
 c_func
@@ -1717,7 +1717,7 @@ id|adapter-&gt;usb_dev
 suffix:semicolon
 id|urb-&gt;transfer_flags
 op_assign
-id|USB_ISO_ASAP
+id|URB_ISO_ASAP
 suffix:semicolon
 id|DBG_ISO_PACKET
 c_func
@@ -2791,12 +2791,12 @@ op_assign
 id|adapter-&gt;usb_dev
 suffix:semicolon
 r_struct
-id|usb_interface_descriptor
+id|usb_host_interface
 op_star
 id|altsetting
 suffix:semicolon
 r_struct
-id|usb_endpoint_descriptor
+id|usb_host_endpoint
 op_star
 id|endpoint
 suffix:semicolon
@@ -2849,9 +2849,9 @@ l_int|2
 comma
 l_string|&quot;endpoint address=%02x,packet size=%d&quot;
 comma
-id|endpoint-&gt;bEndpointAddress
+id|endpoint-&gt;desc.bEndpointAddress
 comma
-id|endpoint-&gt;wMaxPacketSize
+id|endpoint-&gt;desc.wMaxPacketSize
 )paren
 suffix:semicolon
 r_return
@@ -2867,7 +2867,7 @@ c_func
 (paren
 id|dev
 comma
-id|endpoint-&gt;bEndpointAddress
+id|endpoint-&gt;desc.bEndpointAddress
 )paren
 comma
 id|NUM_ISO_PACKETS_D

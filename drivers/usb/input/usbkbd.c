@@ -1556,7 +1556,7 @@ id|iface
 )paren
 suffix:semicolon
 r_struct
-id|usb_interface_descriptor
+id|usb_host_interface
 op_star
 id|interface
 suffix:semicolon
@@ -1598,7 +1598,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|interface-&gt;bNumEndpoints
+id|interface-&gt;desc.bNumEndpoints
 op_ne
 l_int|1
 )paren
@@ -1608,9 +1608,13 @@ id|ENODEV
 suffix:semicolon
 id|endpoint
 op_assign
+op_amp
 id|interface-&gt;endpoint
-op_plus
+(braket
 l_int|0
+)braket
+dot
+id|desc
 suffix:semicolon
 r_if
 c_cond
@@ -1911,7 +1915,7 @@ op_assign
 id|cpu_to_le16
 c_func
 (paren
-id|interface-&gt;bInterfaceNumber
+id|interface-&gt;desc.bInterfaceNumber
 )paren
 suffix:semicolon
 id|kbd-&gt;cr-&gt;wLength

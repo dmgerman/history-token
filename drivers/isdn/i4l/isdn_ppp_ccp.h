@@ -1,3 +1,4 @@
+multiline_comment|/* Linux ISDN subsystem, PPP CCP support&n; *&n; * Copyright 1994-1998  by Fritz Elfert (fritz@isdn4linux.de)&n; *           1995,96    by Thinking Objects Software GmbH Wuerzburg&n; *           1995,96    by Michael Hipp (Michael.Hipp@student.uni-tuebingen.de)&n; *           1999-2002  by Kai Germaschewski &lt;kai@germaschewski.name&gt;&n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/isdn_ppp.h&gt;
 multiline_comment|/* for ippp_ccp::flags */
@@ -15,7 +16,7 @@ r_struct
 id|ippp_ccp
 (brace
 DECL|member|proto
-r_int
+id|u16
 id|proto
 suffix:semicolon
 DECL|member|compressor
@@ -79,6 +80,9 @@ r_struct
 id|sk_buff
 op_star
 id|skb
+comma
+id|u16
+id|proto
 )paren
 suffix:semicolon
 DECL|member|kick_up
@@ -91,25 +95,6 @@ id|kick_up
 r_void
 op_star
 id|priv
-)paren
-suffix:semicolon
-DECL|member|push_header
-r_void
-(paren
-op_star
-id|push_header
-)paren
-(paren
-r_void
-op_star
-id|priv
-comma
-r_struct
-id|sk_buff
-op_star
-id|skb
-comma
-id|u16
 )paren
 suffix:semicolon
 DECL|member|alloc_skb
@@ -194,7 +179,7 @@ id|sk_buff
 op_star
 id|skb
 comma
-r_int
+id|u16
 op_star
 id|proto
 )paren
@@ -215,7 +200,7 @@ id|sk_buff
 op_star
 id|skb
 comma
-r_int
+id|u16
 op_star
 id|proto
 )paren

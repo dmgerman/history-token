@@ -18406,6 +18406,11 @@ id|FDC_NONE
 r_return
 l_int|NULL
 suffix:semicolon
+op_star
+id|part
+op_assign
+l_int|0
+suffix:semicolon
 r_return
 id|get_disk
 c_func

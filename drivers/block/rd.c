@@ -1629,7 +1629,7 @@ c_func
 (paren
 id|disk-&gt;disk_name
 comma
-l_string|&quot;rd%d&quot;
+l_string|&quot;ram%d&quot;
 comma
 id|i
 )paren

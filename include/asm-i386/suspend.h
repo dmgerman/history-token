@@ -33,7 +33,8 @@ DECL|member|eax
 DECL|member|ebx
 DECL|member|ecx
 DECL|member|edx
-id|u32
+r_int
+r_int
 id|eax
 comma
 id|ebx
@@ -46,7 +47,8 @@ DECL|member|esp
 DECL|member|ebp
 DECL|member|esi
 DECL|member|edi
-id|u32
+r_int
+r_int
 id|esp
 comma
 id|ebp
@@ -72,7 +74,8 @@ DECL|member|cr0
 DECL|member|cr2
 DECL|member|cr3
 DECL|member|cr4
-id|u32
+r_int
+r_int
 id|cr0
 comma
 id|cr2
@@ -90,7 +93,8 @@ id|u16
 id|gdt_limit
 suffix:semicolon
 DECL|member|gdt_base
-id|u32
+r_int
+r_int
 id|gdt_base
 suffix:semicolon
 DECL|member|idt_pad
@@ -102,7 +106,8 @@ id|u16
 id|idt_limit
 suffix:semicolon
 DECL|member|idt_base
-id|u32
+r_int
+r_int
 id|idt_base
 suffix:semicolon
 DECL|member|ldt
@@ -114,19 +119,23 @@ id|u16
 id|tss
 suffix:semicolon
 DECL|member|tr
-id|u32
+r_int
+r_int
 id|tr
 suffix:semicolon
 DECL|member|safety
-id|u32
+r_int
+r_int
 id|safety
 suffix:semicolon
 DECL|member|return_address
-id|u32
+r_int
+r_int
 id|return_address
 suffix:semicolon
 DECL|member|eflags
-id|u32
+r_int
+r_int
 id|eflags
 suffix:semicolon
 )brace
@@ -207,7 +216,7 @@ suffix:semicolon
 id|asm
 r_volatile
 (paren
-l_string|&quot;movl %%esp,(%0)&quot;
+l_string|&quot;movl %%esp,%0&quot;
 suffix:colon
 l_string|&quot;=m&quot;
 (paren
@@ -218,7 +227,7 @@ suffix:semicolon
 id|asm
 r_volatile
 (paren
-l_string|&quot;movl %%ebp,(%0)&quot;
+l_string|&quot;movl %%ebp,%0&quot;
 suffix:colon
 l_string|&quot;=m&quot;
 (paren
@@ -229,7 +238,7 @@ suffix:semicolon
 id|asm
 r_volatile
 (paren
-l_string|&quot;movl %%ebx,(%0)&quot;
+l_string|&quot;movl %%ebx,%0&quot;
 suffix:colon
 l_string|&quot;=m&quot;
 (paren
@@ -240,7 +249,7 @@ suffix:semicolon
 id|asm
 r_volatile
 (paren
-l_string|&quot;movl %%edi,(%0)&quot;
+l_string|&quot;movl %%edi,%0&quot;
 suffix:colon
 l_string|&quot;=m&quot;
 (paren
@@ -251,7 +260,7 @@ suffix:semicolon
 id|asm
 r_volatile
 (paren
-l_string|&quot;movl %%esi,(%0)&quot;
+l_string|&quot;movl %%esi,%0&quot;
 suffix:colon
 l_string|&quot;=m&quot;
 (paren
