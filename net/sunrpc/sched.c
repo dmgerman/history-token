@@ -13,6 +13,8 @@ macro_line|#include &lt;linux/sunrpc/xprt.h&gt;
 macro_line|#ifdef RPC_DEBUG
 DECL|macro|RPCDBG_FACILITY
 mdefine_line|#define RPCDBG_FACILITY&t;&t;RPCDBG_SCHED
+DECL|macro|RPC_TASK_MAGIC_ID
+mdefine_line|#define RPC_TASK_MAGIC_ID&t;0xf00baa
 DECL|variable|rpc_task_id
 r_static
 r_int
@@ -1243,34 +1245,14 @@ id|jiffies
 )paren
 suffix:semicolon
 macro_line|#ifdef RPC_DEBUG
-r_if
-c_cond
+id|BUG_ON
+c_func
 (paren
 id|task-&gt;tk_magic
 op_ne
-l_int|0xf00baa
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;RPC: attempt to wake up non-existing task!&bslash;n&quot;
+id|RPC_TASK_MAGIC_ID
 )paren
 suffix:semicolon
-id|rpc_debug
-op_assign
-op_complement
-l_int|0
-suffix:semicolon
-id|rpc_show_tasks
-c_func
-(paren
-)paren
-suffix:semicolon
-r_return
-suffix:semicolon
-)brace
 macro_line|#endif
 multiline_comment|/* Has the task been executed yet? If not, we cannot wake it up! */
 r_if
@@ -2825,7 +2807,7 @@ suffix:semicolon
 macro_line|#ifdef RPC_DEBUG
 id|task-&gt;tk_magic
 op_assign
-l_int|0xf00baa
+id|RPC_TASK_MAGIC_ID
 suffix:semicolon
 id|task-&gt;tk_pid
 op_assign
@@ -3062,34 +3044,14 @@ id|task-&gt;tk_pid
 )paren
 suffix:semicolon
 macro_line|#ifdef RPC_DEBUG
-r_if
-c_cond
+id|BUG_ON
+c_func
 (paren
 id|task-&gt;tk_magic
 op_ne
-l_int|0xf00baa
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;RPC: attempt to release a non-existing task!&bslash;n&quot;
+id|RPC_TASK_MAGIC_ID
 )paren
 suffix:semicolon
-id|rpc_debug
-op_assign
-op_complement
-l_int|0
-suffix:semicolon
-id|rpc_show_tasks
-c_func
-(paren
-)paren
-suffix:semicolon
-r_return
-suffix:semicolon
-)brace
 macro_line|#endif
 multiline_comment|/* Remove from global task list */
 id|spin_lock
