@@ -8448,8 +8448,8 @@ id|instance-&gt;host_no
 suffix:semicolon
 )brace
 r_else
-(brace
 macro_line|#endif&t;&t;&t;&t;/* def AUTOSENSE */
+(brace
 id|collect_stats
 c_func
 (paren
