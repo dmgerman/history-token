@@ -1457,7 +1457,20 @@ comma
 )brace
 comma
 multiline_comment|/* VT8361 */
-multiline_comment|/*&t;{&n;&t;&t;.device_id&t;= PCI_DEVICE_ID_VIA_8361,&t;// 0x3112&n;&t;&t;.chipset_name&t;= &quot;Apollo KLE133&quot;,&n;&t;}, */
+(brace
+dot
+id|device_id
+op_assign
+id|PCI_DEVICE_ID_VIA_8361
+comma
+singleline_comment|// 0x3112
+dot
+id|chipset_name
+op_assign
+l_string|&quot;Apollo KLE133&quot;
+comma
+)brace
+comma
 multiline_comment|/* VT8365 / VT8362 */
 (brace
 dot
@@ -1473,7 +1486,20 @@ comma
 )brace
 comma
 multiline_comment|/* VT8753A */
-multiline_comment|/*&t;{&n;&t;&t;.device_id&t;= PCI_DEVICE_ID_VIA_8753_0,&t;// 0x3128&n;&t;&t;.chipset_name&t;= &quot;P4X266&quot;,&n;&t;},&t;*/
+(brace
+dot
+id|device_id
+op_assign
+id|PCI_DEVICE_ID_VIA_8753_0
+comma
+singleline_comment|// 0x3128
+dot
+id|chipset_name
+op_assign
+l_string|&quot;P4X266&quot;
+comma
+)brace
+comma
 multiline_comment|/* VT8366 */
 (brace
 dot
@@ -1503,9 +1529,35 @@ comma
 )brace
 comma
 multiline_comment|/* KM266 / PM266 */
-multiline_comment|/*&t;{&n;&t;&t;.device_id&t;= PCI_DEVICE_ID_VIA_KM266,&t;// 0x3116&n;&t;&t;.chipset_name&t;= &quot;KM266/PM266&quot;,&n;&t;},&t;*/
+(brace
+dot
+id|device_id
+op_assign
+id|PCI_DEVICE_ID_VIA_KM266
+comma
+singleline_comment|// 0x3116
+dot
+id|chipset_name
+op_assign
+l_string|&quot;KM266/PM266&quot;
+comma
+)brace
+comma
 multiline_comment|/* CLE266 */
-multiline_comment|/*&t;{&n;&t;&t;.device_id&t;= PCI_DEVICE_ID_VIA_CLE266,&t;// 0x3123&n;&t;&t;.chipset_name&t;= &quot;CLE266&quot;,&n;&t;},&t;*/
+(brace
+dot
+id|device_id
+op_assign
+id|PCI_DEVICE_ID_VIA_CLE266
+comma
+singleline_comment|// 0x3123
+dot
+id|chipset_name
+op_assign
+l_string|&quot;CLE266&quot;
+comma
+)brace
+comma
 (brace
 dot
 id|device_id
@@ -1538,9 +1590,35 @@ l_string|&quot;Apollo ProSavage PM133/PL133/PN133/Twister&quot;
 )brace
 comma
 multiline_comment|/* VT8752*/
-multiline_comment|/*&t;{&n;&t;&t;.device_id&t;= PCI_DEVICE_ID_VIA_8752,&t;// 0x3148&n;&t;&t;.chipset_name&t;= &quot;ProSavage DDR P4M266&quot;,&n;&t;},&t;*/
+(brace
+dot
+id|device_id
+op_assign
+id|PCI_DEVICE_ID_VIA_8752
+comma
+singleline_comment|// 0x3148
+dot
+id|chipset_name
+op_assign
+l_string|&quot;ProSavage DDR P4M266&quot;
+comma
+)brace
+comma
 multiline_comment|/* KN266/PN266 */
-multiline_comment|/*&t;{&n;&t;&t;.device_id&t;= PCI_DEVICE_ID_KN266,&t;// 0x3156&n;&t;&t;.chipset_name&t;= &quot;KN266/PN266&quot;,&n;&t;},&t;*/
+(brace
+dot
+id|device_id
+op_assign
+id|PCI_DEVICE_ID_KN266
+comma
+singleline_comment|// 0x3156
+dot
+id|chipset_name
+op_assign
+l_string|&quot;KN266/PN266&quot;
+comma
+)brace
+comma
 multiline_comment|/* VT8754 */
 (brace
 dot
@@ -1555,13 +1633,65 @@ l_string|&quot;Apollo P4X333/P4X400&quot;
 )brace
 comma
 multiline_comment|/* P4N333 */
-multiline_comment|/*&t;{&n;&t;&t;.device_id&t;= PCI_DEVICE_ID_VIA_P4N333,&t;// 0x3178&n;&t;&t;.chipset_name&t;= &quot;P4N333&quot;,&n;&t;}, */
+(brace
+dot
+id|device_id
+op_assign
+id|PCI_DEVICE_ID_VIA_P4N333
+comma
+singleline_comment|// 0x3178
+dot
+id|chipset_name
+op_assign
+l_string|&quot;P4N333&quot;
+comma
+)brace
+comma
 multiline_comment|/* P4X600 */
-multiline_comment|/*&t;{&n;&t;&t;.device_id&t;= PCI_DEVICE_ID_VIA_P4X600,&t;// 0x0198&n;&t;&t;.chipset_name&t;= &quot;P4X600&quot;,&n;&t;},&t;*/
+(brace
+dot
+id|device_id
+op_assign
+id|PCI_DEVICE_ID_VIA_P4X600
+comma
+singleline_comment|// 0x0198
+dot
+id|chipset_name
+op_assign
+l_string|&quot;P4X600&quot;
+comma
+)brace
+comma
 multiline_comment|/* KM400 */
-multiline_comment|/*&t;{&n;&t;&t;.device_id&t;= PCI_DEVICE_ID_VIA_KM400,&t;// 0x3205&n;&t;&t;.chipset_name&t;= &quot;KM400&quot;,&n;&t;},&t;*/
+(brace
+dot
+id|device_id
+op_assign
+id|PCI_DEVICE_ID_VIA_KM400
+comma
+singleline_comment|// 0x3205
+dot
+id|chipset_name
+op_assign
+l_string|&quot;KM400&quot;
+comma
+)brace
+comma
 multiline_comment|/* P4M400 */
-multiline_comment|/*&t;{&n;&t;&t;.device_id&t;= PCI_DEVICE_ID_VIA_P4M400,&t;// 0x3209&n;&t;&t;.chipset_name&t;= &quot;PM400&quot;,&n;&t;},&t;*/
+(brace
+dot
+id|device_id
+op_assign
+id|PCI_DEVICE_ID_VIA_P4M400
+comma
+singleline_comment|// 0x3209
+dot
+id|chipset_name
+op_assign
+l_string|&quot;PM400&quot;
+comma
+)brace
+comma
 (brace
 )brace
 comma
