@@ -6,7 +6,6 @@ macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/mman.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
-macro_line|#include &lt;asm/pgalloc.h&gt;
 multiline_comment|/*&n; * Later we can get more picky about what &quot;in core&quot; means precisely.&n; * For now, simply check to see if the page is in the page cache,&n; * and is up to date; i.e. that no page-in operation would be required&n; * at this time if an application were to map and access this page.&n; */
 DECL|function|mincore_page
 r_static
