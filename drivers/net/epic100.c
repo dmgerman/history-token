@@ -15,14 +15,6 @@ op_assign
 l_int|1
 suffix:semicolon
 multiline_comment|/* 1 normal messages, 0 quiet .. 7 verbose. */
-multiline_comment|/* Maximum events (Rx packets, etc.) to handle at each interrupt. */
-DECL|variable|max_interrupt_work
-r_static
-r_int
-id|max_interrupt_work
-op_assign
-l_int|32
-suffix:semicolon
 multiline_comment|/* Used to pass the full-duplex flag, etc. */
 DECL|macro|MAX_UNITS
 mdefine_line|#define MAX_UNITS 8&t;&t;/* More are supported, limit only on options */
@@ -216,14 +208,6 @@ suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
-id|max_interrupt_work
-comma
-l_string|&quot;i&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM
-c_func
-(paren
 id|rx_copybreak
 comma
 l_string|&quot;i&quot;
@@ -263,14 +247,6 @@ c_func
 id|debug
 comma
 l_string|&quot;EPIC/100 debug level (0-5)&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_DESC
-c_func
-(paren
-id|max_interrupt_work
-comma
-l_string|&quot;EPIC/100 maximum events handled per interrupt&quot;
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -5717,20 +5693,14 @@ op_assign
 id|dev-&gt;base_addr
 suffix:semicolon
 r_int
-id|status
-comma
-id|boguscnt
-op_assign
-id|max_interrupt_work
-suffix:semicolon
-r_int
 r_int
 id|handled
 op_assign
 l_int|0
 suffix:semicolon
-r_do
-(brace
+r_int
+id|status
+suffix:semicolon
 id|status
 op_assign
 id|inl
@@ -5761,6 +5731,7 @@ id|debug
 OG
 l_int|4
 )paren
+(brace
 id|printk
 c_func
 (paren
@@ -5784,6 +5755,7 @@ id|INTSTAT
 )paren
 )paren
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -5795,7 +5767,8 @@ id|IntrSummary
 op_eq
 l_int|0
 )paren
-r_break
+r_goto
+id|out
 suffix:semicolon
 id|handled
 op_assign
@@ -5887,7 +5860,8 @@ id|status
 op_eq
 id|EpicRemoved
 )paren
-r_break
+r_goto
+id|out
 suffix:semicolon
 multiline_comment|/* Always update the error counts to avoid overhead later. */
 id|ep-&gt;stats.rx_missed_errors
@@ -5968,7 +5942,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;%s: PCI Bus Error!  EPIC status %4.4x.&bslash;n&quot;
+l_string|&quot;%s: PCI Bus Error! status %4.4x.&bslash;n&quot;
 comma
 id|dev-&gt;name
 comma
@@ -6002,60 +5976,8 @@ id|INTSTAT
 )paren
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-op_logical_neg
-(paren
-id|status
-op_amp
-id|EpicNormalEvent
-)paren
-)paren
-r_break
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_decrement
-id|boguscnt
-OL
-l_int|0
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;%s: Too much work at interrupt, &quot;
-l_string|&quot;IntrStatus=0x%8.8x.&bslash;n&quot;
-comma
-id|dev-&gt;name
-comma
-id|status
-)paren
-suffix:semicolon
-multiline_comment|/* Clear all interrupt sources. */
-id|outl
-c_func
-(paren
-l_int|0x0001ffff
-comma
-id|ioaddr
-op_plus
-id|INTSTAT
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
-)brace
-)brace
-r_while
-c_loop
-(paren
-l_int|1
-)paren
-suffix:semicolon
+id|out
+suffix:colon
 r_if
 c_cond
 (paren
@@ -6063,17 +5985,19 @@ id|debug
 OG
 l_int|3
 )paren
+(brace
 id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;%s: exiting interrupt, intr_status=%#4.4x.&bslash;n&quot;
+l_string|&quot;%s: exit interrupt, intr_status=%#4.4x.&bslash;n&quot;
 comma
 id|dev-&gt;name
 comma
 id|status
 )paren
 suffix:semicolon
+)brace
 r_return
 id|IRQ_RETVAL
 c_func
