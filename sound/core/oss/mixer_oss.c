@@ -7153,6 +7153,15 @@ l_int|0
 comma
 multiline_comment|/* fallback */
 (brace
+id|SOUND_MIXER_SYNTH
+comma
+l_string|&quot;Music&quot;
+comma
+l_int|0
+)brace
+comma
+multiline_comment|/* fallback */
+(brace
 id|SOUND_MIXER_PCM
 comma
 l_string|&quot;PCM&quot;
@@ -7208,6 +7217,15 @@ comma
 l_int|1
 )brace
 comma
+(brace
+id|SOUND_MIXER_ALTPCM
+comma
+l_string|&quot;Headphone&quot;
+comma
+l_int|0
+)brace
+comma
+multiline_comment|/* fallback */
 (brace
 id|SOUND_MIXER_ALTPCM
 comma
@@ -7274,6 +7292,33 @@ l_int|0
 )brace
 comma
 (brace
+id|SOUND_MIXER_DIGITAL1
+comma
+l_string|&quot;IEC958&quot;
+comma
+l_int|0
+)brace
+comma
+multiline_comment|/* fallback */
+(brace
+id|SOUND_MIXER_DIGITAL1
+comma
+l_string|&quot;IEC958 Optical&quot;
+comma
+l_int|0
+)brace
+comma
+multiline_comment|/* fallback */
+(brace
+id|SOUND_MIXER_DIGITAL1
+comma
+l_string|&quot;IEC958 Coaxial&quot;
+comma
+l_int|0
+)brace
+comma
+multiline_comment|/* fallback */
+(brace
 id|SOUND_MIXER_DIGITAL2
 comma
 l_string|&quot;Digital&quot;
@@ -7300,11 +7345,20 @@ comma
 (brace
 id|SOUND_MIXER_PHONEOUT
 comma
-l_string|&quot;Phone&quot;
+l_string|&quot;Master Mono&quot;
 comma
-l_int|1
+l_int|0
 )brace
 comma
+(brace
+id|SOUND_MIXER_PHONEOUT
+comma
+l_string|&quot;Phone&quot;
+comma
+l_int|0
+)brace
+comma
+multiline_comment|/* fallback */
 (brace
 id|SOUND_MIXER_VIDEO
 comma
