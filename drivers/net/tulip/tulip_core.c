@@ -8472,6 +8472,13 @@ l_int|0
 )braket
 op_eq
 l_int|0xC0
+op_logical_or
+id|dev-&gt;dev_addr
+(braket
+l_int|0
+)braket
+op_eq
+l_int|0x02
 )paren
 op_logical_and
 id|dev-&gt;dev_addr
