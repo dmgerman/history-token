@@ -1624,7 +1624,7 @@ id|page
 suffix:semicolon
 )brace
 multiline_comment|/* Set the page dirty again, unlock */
-id|SetPageDirty
+id|set_page_dirty
 c_func
 (paren
 id|page

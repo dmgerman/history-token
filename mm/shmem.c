@@ -3442,7 +3442,7 @@ OG
 l_int|0
 )paren
 (brace
-id|SetPageDirty
+id|set_page_dirty
 c_func
 (paren
 id|page
@@ -4728,7 +4728,7 @@ c_func
 id|page
 )paren
 suffix:semicolon
-id|SetPageDirty
+id|set_page_dirty
 c_func
 (paren
 id|page
