@@ -478,6 +478,17 @@ macro_line|# define IS_IA32_PROCESS(regs)&t;(ia64_psr(regs)-&gt;is != 0)
 macro_line|#else
 DECL|macro|IS_IA32_PROCESS
 macro_line|# define IS_IA32_PROCESS(regs)&t;&t;0
+r_struct
+id|task_struct
+suffix:semicolon
+DECL|function|ia32_save_state
+r_static
+r_inline
+r_void
+DECL|function|ia32_load_state
+r_static
+r_inline
+r_void
 macro_line|#endif
 multiline_comment|/*&n; * Context switch from one thread to another.  If the two threads have&n; * different address spaces, schedule() has already taken care of&n; * switching to the new address space by calling switch_mm().&n; *&n; * Disabling access to the fph partition and the debug-register&n; * context switch MUST be done before calling ia64_switch_to() since a&n; * newly created thread returns directly to&n; * ia64_ret_from_syscall_clear_r8.&n; */
 r_extern

@@ -5,6 +5,14 @@ mdefine_line|#define _ASM_ACPI_H
 macro_line|#ifdef __KERNEL__
 DECL|macro|__acpi_map_table
 mdefine_line|#define __acpi_map_table(phys_addr, size) __va(phys_addr)
+r_const
+r_char
+op_star
+id|acpi_get_sysname
+(paren
+r_void
+)paren
+suffix:semicolon
 r_int
 id|acpi_boot_init
 (paren
