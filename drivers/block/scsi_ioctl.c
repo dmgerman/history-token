@@ -330,6 +330,8 @@ DECL|macro|CMD_READ_SAFE
 mdefine_line|#define CMD_READ_SAFE&t;0x01
 DECL|macro|CMD_WRITE_SAFE
 mdefine_line|#define CMD_WRITE_SAFE&t;0x02
+DECL|macro|CMD_WARNED
+mdefine_line|#define CMD_WARNED&t;0x04
 DECL|macro|safe_for_read
 mdefine_line|#define safe_for_read(cmd)&t;[cmd] = CMD_READ_SAFE
 DECL|macro|safe_for_write
@@ -352,7 +354,6 @@ id|cmd
 )paren
 (brace
 r_static
-r_const
 r_int
 r_char
 id|cmd_type
@@ -786,6 +787,40 @@ id|FMODE_WRITE
 )paren
 r_return
 l_int|0
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|type
+op_amp
+id|CMD_WARNED
+)paren
+)paren
+(brace
+id|cmd_type
+(braket
+id|cmd
+(braket
+l_int|0
+)braket
+)braket
+op_assign
+id|CMD_WARNED
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;scsi: unknown opcode 0x%02x&bslash;n&quot;
+comma
+id|cmd
+(braket
+l_int|0
+)braket
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/* And root can do any command.. */
