@@ -1076,7 +1076,7 @@ l_int|NULL
 )paren
 r_return
 suffix:semicolon
-id|del_timer
+id|del_timer_sync
 c_func
 (paren
 op_amp
@@ -2111,17 +2111,7 @@ id|printk
 c_func
 (paren
 id|KERN_NOTICE
-"&quot;"
-id|fmvj18x_cs
-suffix:colon
-id|unable
-id|to
-id|read
-id|hardware
-id|net
-id|address
-dot
-"&quot;"
+l_string|&quot;fmvj18x_cs: unable to read hardware net address.&bslash;n&quot;
 )paren
 suffix:semicolon
 id|unregister_netdev
