@@ -7553,11 +7553,15 @@ id|port
 id|printk
 c_func
 (paren
-l_string|&quot;%s%d at &quot;
-comma
 id|drv-&gt;dev_name
 comma
 id|port-&gt;line
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot; at &quot;
 )paren
 suffix:semicolon
 r_switch
@@ -9112,11 +9116,21 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;Attempt to unregister %s%d&bslash;n&quot;
-comma
+l_string|&quot;Attempt to unregister &quot;
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
 id|drv-&gt;dev_name
 comma
 id|line
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return

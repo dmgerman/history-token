@@ -4188,7 +4188,7 @@ macro_line|#else
 dot
 id|dev_name
 op_assign
-l_string|&quot;ttyS&quot;
+l_string|&quot;ttyS%d&quot;
 comma
 macro_line|#endif
 dot
