@@ -810,6 +810,33 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|variable|llc_oui
+r_static
+r_const
+r_int
+r_char
+id|llc_oui
+(braket
+)braket
+op_assign
+(brace
+l_int|0xaa
+comma
+multiline_comment|/* DSAP: non-ISO */
+l_int|0xaa
+comma
+multiline_comment|/* SSAP: non-ISO */
+l_int|0x03
+comma
+multiline_comment|/* Ctrl: Unnumbered Information Command PDU */
+l_int|0x00
+comma
+multiline_comment|/* OUI: EtherType */
+l_int|0x00
+comma
+l_int|0x00
+)brace
+suffix:semicolon
 DECL|function|clip_push
 r_static
 r_void
