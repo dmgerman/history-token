@@ -243,6 +243,8 @@ macro_line|#endif
 DECL|variable|randomize_va_space
 r_int
 id|randomize_va_space
+op_assign
+l_int|1
 suffix:semicolon
 r_static
 r_int

@@ -952,7 +952,7 @@ id|randomize_va_space
 suffix:semicolon
 macro_line|#else
 DECL|macro|randomize_va_space
-mdefine_line|#define randomize_va_space 0
+mdefine_line|#define randomize_va_space 1
 macro_line|#endif
 multiline_comment|/* Trap pasters of __FUNCTION__ at compile-time */
 macro_line|#if __GNUC__ &gt; 2 || __GNUC_MINOR__ &gt;= 95
