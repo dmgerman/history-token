@@ -207,6 +207,7 @@ suffix:semicolon
 id|i
 op_increment
 )paren
+(brace
 id|writel
 c_func
 (paren
@@ -217,6 +218,16 @@ op_plus
 id|i
 )paren
 suffix:semicolon
+id|readl
+c_func
+(paren
+id|page_map-&gt;remapped
+op_plus
+id|i
+)paren
+suffix:semicolon
+multiline_comment|/* PCI Posting. */
+)brace
 r_return
 l_int|0
 suffix:semicolon
@@ -729,6 +740,19 @@ id|addr
 )paren
 )paren
 suffix:semicolon
+id|readl
+c_func
+(paren
+id|page_dir.remapped
+op_plus
+id|GET_PAGE_DIR_OFF
+c_func
+(paren
+id|addr
+)paren
+)paren
+suffix:semicolon
+multiline_comment|/* PCI Posting. */
 )brace
 r_return
 l_int|0
@@ -954,16 +978,25 @@ l_int|4096
 )paren
 suffix:semicolon
 multiline_comment|/* Write out the address of the gatt table */
-id|OUTREG32
+id|writel
+c_func
+(paren
+id|agp_bridge-&gt;gatt_bus_addr
+comma
+id|amd_irongate_private.registers
+op_plus
+id|AMD_ATTBASE
+)paren
+suffix:semicolon
+id|readl
 c_func
 (paren
 id|amd_irongate_private.registers
-comma
+op_plus
 id|AMD_ATTBASE
-comma
-id|agp_bridge-&gt;gatt_bus_addr
 )paren
 suffix:semicolon
+multiline_comment|/* PCI Posting. */
 multiline_comment|/* Write the Sync register */
 id|pci_write_config_byte
 c_func
@@ -989,11 +1022,11 @@ suffix:semicolon
 multiline_comment|/* Write the enable register */
 id|enable_reg
 op_assign
-id|INREG16
+id|readw
 c_func
 (paren
 id|amd_irongate_private.registers
-comma
+op_plus
 id|AMD_GARTENABLE
 )paren
 suffix:semicolon
@@ -1005,16 +1038,25 @@ op_or
 l_int|0x0004
 )paren
 suffix:semicolon
-id|OUTREG16
+id|writew
+c_func
+(paren
+id|enable_reg
+comma
+id|amd_irongate_private.registers
+op_plus
+id|AMD_GARTENABLE
+)paren
+suffix:semicolon
+id|readw
 c_func
 (paren
 id|amd_irongate_private.registers
-comma
+op_plus
 id|AMD_GARTENABLE
-comma
-id|enable_reg
 )paren
 suffix:semicolon
+multiline_comment|/* PCI Posting. */
 multiline_comment|/* Write out the size register */
 id|pci_read_config_dword
 c_func
@@ -1043,7 +1085,7 @@ op_or
 id|current_size-&gt;size_value
 )paren
 op_or
-l_int|0x00000001
+l_int|1
 )paren
 suffix:semicolon
 id|pci_write_config_dword
@@ -1057,16 +1099,25 @@ id|temp
 )paren
 suffix:semicolon
 multiline_comment|/* Flush the tlb */
-id|OUTREG32
+id|writel
+c_func
+(paren
+l_int|1
+comma
+id|amd_irongate_private.registers
+op_plus
+id|AMD_TLBFLUSH
+)paren
+suffix:semicolon
+id|readl
 c_func
 (paren
 id|amd_irongate_private.registers
-comma
+op_plus
 id|AMD_TLBFLUSH
-comma
-l_int|0x00000001
 )paren
 suffix:semicolon
+multiline_comment|/* PCI Posting.*/
 r_return
 l_int|0
 suffix:semicolon
@@ -1101,11 +1152,11 @@ id|agp_bridge-&gt;previous_size
 suffix:semicolon
 id|enable_reg
 op_assign
-id|INREG16
+id|readw
 c_func
 (paren
 id|amd_irongate_private.registers
-comma
+op_plus
 id|AMD_GARTENABLE
 )paren
 suffix:semicolon
@@ -1120,16 +1171,25 @@ l_int|0x0004
 )paren
 )paren
 suffix:semicolon
-id|OUTREG16
+id|writew
+c_func
+(paren
+id|enable_reg
+comma
+id|amd_irongate_private.registers
+op_plus
+id|AMD_GARTENABLE
+)paren
+suffix:semicolon
+id|readw
 c_func
 (paren
 id|amd_irongate_private.registers
-comma
+op_plus
 id|AMD_GARTENABLE
-comma
-id|enable_reg
 )paren
 suffix:semicolon
+multiline_comment|/* PCI Posting. */
 multiline_comment|/* Write back the previous size and disable gart translation */
 id|pci_read_config_dword
 c_func
@@ -1192,16 +1252,25 @@ op_star
 id|temp
 )paren
 (brace
-id|OUTREG32
+id|writel
+c_func
+(paren
+l_int|1
+comma
+id|amd_irongate_private.registers
+op_plus
+id|AMD_TLBFLUSH
+)paren
+suffix:semicolon
+id|readl
 c_func
 (paren
 id|amd_irongate_private.registers
-comma
+op_plus
 id|AMD_TLBFLUSH
-comma
-l_int|0x00000001
 )paren
 suffix:semicolon
+multiline_comment|/* PCI Posting. */
 )brace
 DECL|function|amd_insert_memory
 r_static
@@ -1423,6 +1492,19 @@ id|addr
 )paren
 )paren
 suffix:semicolon
+id|readl
+c_func
+(paren
+id|cur_gatt
+op_plus
+id|GET_GATT_OFF
+c_func
+(paren
+id|addr
+)paren
+)paren
+suffix:semicolon
+multiline_comment|/* PCI Posting. */
 )brace
 id|amd_irongate_tlbflush
 c_func
@@ -1531,6 +1613,19 @@ id|addr
 )paren
 )paren
 suffix:semicolon
+id|readl
+c_func
+(paren
+id|cur_gatt
+op_plus
+id|GET_GATT_OFF
+c_func
+(paren
+id|addr
+)paren
+)paren
+suffix:semicolon
+multiline_comment|/* PCI Posting. */
 )brace
 id|amd_irongate_tlbflush
 c_func
@@ -2142,6 +2237,15 @@ c_func
 r_void
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|agp_off
+)paren
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
 r_return
 id|pci_module_init
 c_func

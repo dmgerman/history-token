@@ -1812,6 +1812,8 @@ DECL|macro|PCI_DEVICE_ID_AL_M1533
 mdefine_line|#define PCI_DEVICE_ID_AL_M1533&t;&t;0x1533
 DECL|macro|PCI_DEVICE_ID_AL_M1541
 mdefine_line|#define PCI_DEVICE_ID_AL_M1541&t;&t;0x1541
+DECL|macro|PCI_DEVICE_ID_AL_M1543
+mdefine_line|#define PCI_DEVICE_ID_AL_M1543&t;&t;0x1543
 DECL|macro|PCI_DEVICE_ID_AL_M1563
 mdefine_line|#define PCI_DEVICE_ID_AL_M1563&t;&t;0x1563
 DECL|macro|PCI_DEVICE_ID_AL_M1621
@@ -1830,8 +1832,12 @@ DECL|macro|PCI_DEVICE_ID_AL_M1651
 mdefine_line|#define PCI_DEVICE_ID_AL_M1651&t;&t;0x1651
 DECL|macro|PCI_DEVICE_ID_AL_M1671
 mdefine_line|#define PCI_DEVICE_ID_AL_M1671&t;&t;0x1671
-DECL|macro|PCI_DEVICE_ID_AL_M1543
-mdefine_line|#define PCI_DEVICE_ID_AL_M1543&t;&t;0x1543
+DECL|macro|PCI_DEVICE_ID_AL_M1681
+mdefine_line|#define PCI_DEVICE_ID_AL_M1681&t;&t;0x1681
+DECL|macro|PCI_DEVICE_ID_AL_M1683
+mdefine_line|#define PCI_DEVICE_ID_AL_M1683&t;&t;0x1683
+DECL|macro|PCI_DEVICE_ID_AL_M1689
+mdefine_line|#define PCI_DEVICE_ID_AL_M1689&t;&t;0x1689
 DECL|macro|PCI_DEVICE_ID_AL_M3307
 mdefine_line|#define PCI_DEVICE_ID_AL_M3307&t;&t;0x3307
 DECL|macro|PCI_DEVICE_ID_AL_M4803

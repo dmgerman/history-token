@@ -1536,10 +1536,8 @@ l_string|&quot;could not assign resource 0&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
-(paren
 op_minus
 id|ENODEV
-)paren
 suffix:semicolon
 )brace
 )brace
@@ -1563,10 +1561,8 @@ l_string|&quot;Unable to Enable PCI device&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
-(paren
 op_minus
 id|ENODEV
-)paren
 suffix:semicolon
 )brace
 multiline_comment|/* Fill in the mode register */
@@ -1775,6 +1771,15 @@ r_int
 id|agp_initialised
 op_assign
 l_int|0
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|agp_off
+)paren
+r_return
+op_minus
+id|EINVAL
 suffix:semicolon
 r_if
 c_cond
