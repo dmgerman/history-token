@@ -9970,9 +9970,10 @@ id|rinfo
 )paren
 suffix:semicolon
 macro_line|#endif        
-id|kfree
+id|framebuffer_release
+c_func
 (paren
-id|rinfo
+id|info
 )paren
 suffix:semicolon
 )brace

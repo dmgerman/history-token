@@ -798,26 +798,22 @@ DECL|macro|PPC44x_TLB_VALID
 mdefine_line|#define&t;PPC44x_TLB_VALID&t;0x00000200      /* Valid flag */
 DECL|macro|PPC44x_TLB_TS
 mdefine_line|#define PPC44x_TLB_TS&t;&t;0x00000100&t;/* Translation address space */
-DECL|macro|PPC44x_TLB_PAGESZ_MASK
-mdefine_line|#define PPC44x_TLB_PAGESZ_MASK&t;0x000000f0
-DECL|macro|PPC44x_TLB_PAGESZ
-mdefine_line|#define PPC44x_TLB_PAGESZ(x)&t;(x &lt;&lt; 4)
-DECL|macro|PPC44x_PAGESZ_1K
-mdefine_line|#define PPC44x_PAGESZ_1K&t;0
-DECL|macro|PPC44x_PAGESZ_4K
-mdefine_line|#define PPC44x_PAGESZ_4K&t;1
-DECL|macro|PPC44x_PAGESZ_16K
-mdefine_line|#define PPC44x_PAGESZ_16K&t;2
-DECL|macro|PPC44x_PAGESZ_64K
-mdefine_line|#define PPC44x_PAGESZ_64K&t;3
-DECL|macro|PPC44x_PAGESZ_256K
-mdefine_line|#define PPC44x_PAGESZ_256K&t;4
-DECL|macro|PPC44x_PAGESZ_1M
-mdefine_line|#define PPC44x_PAGESZ_1M&t;5
-DECL|macro|PPC44x_PAGESZ_16M
-mdefine_line|#define PPC44x_PAGESZ_16M&t;7
-DECL|macro|PPC44x_PAGESZ_256M
-mdefine_line|#define&t;PPC44x_PAGESZ_256M&t;9
+DECL|macro|PPC44x_TLB_1K
+mdefine_line|#define PPC44x_TLB_1K&t;&t;0x00000000&t;/* Page sizes */
+DECL|macro|PPC44x_TLB_4K
+mdefine_line|#define PPC44x_TLB_4K&t;&t;0x00000010
+DECL|macro|PPC44x_TLB_16K
+mdefine_line|#define PPC44x_TLB_16K&t;&t;0x00000020
+DECL|macro|PPC44x_TLB_64K
+mdefine_line|#define PPC44x_TLB_64K&t;&t;0x00000030
+DECL|macro|PPC44x_TLB_256K
+mdefine_line|#define PPC44x_TLB_256K&t;&t;0x00000040
+DECL|macro|PPC44x_TLB_1M
+mdefine_line|#define PPC44x_TLB_1M&t;&t;0x00000050
+DECL|macro|PPC44x_TLB_16M
+mdefine_line|#define PPC44x_TLB_16M&t;&t;0x00000070
+DECL|macro|PPC44x_TLB_256M
+mdefine_line|#define&t;PPC44x_TLB_256M&t;&t;0x00000090
 multiline_comment|/* Translation fields */
 DECL|macro|PPC44x_TLB_RPN_MASK
 mdefine_line|#define PPC44x_TLB_RPN_MASK&t;0xfffffc00      /* Real Page Number */

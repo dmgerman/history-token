@@ -1404,12 +1404,6 @@ r_int
 id|currcon
 suffix:semicolon
 multiline_comment|/* Current VC. */
-DECL|member|class_dev
-r_struct
-id|class_device
-id|class_dev
-suffix:semicolon
-multiline_comment|/* Sysfs data */
 DECL|member|pseudo_palette
 r_void
 op_star
@@ -1451,7 +1445,7 @@ DECL|macro|fb_writeq
 mdefine_line|#define fb_writeq sbus_writeq
 DECL|macro|fb_memset
 mdefine_line|#define fb_memset sbus_memset_io
-macro_line|#elif defined(__i386__) || defined(__alpha__) || defined(__x86_64__) || defined(__hppa__)
+macro_line|#elif defined(__i386__) || defined(__alpha__) || defined(__x86_64__) || defined(__hppa__) || defined(__sh__)
 DECL|macro|fb_readb
 mdefine_line|#define fb_readb __raw_readb
 DECL|macro|fb_readw
@@ -1785,22 +1779,6 @@ id|fb_info
 op_star
 id|info
 )paren
-suffix:semicolon
-r_extern
-r_int
-id|fb_add_class_device
-c_func
-(paren
-r_struct
-id|fb_info
-op_star
-id|info
-)paren
-suffix:semicolon
-r_extern
-r_struct
-r_class
-id|fb_class
 suffix:semicolon
 multiline_comment|/* drivers/video/fbmon.c */
 DECL|macro|FB_MAXTIMINGS
