@@ -1380,23 +1380,6 @@ r_return
 suffix:semicolon
 id|badframe
 suffix:colon
-id|udbg_printf
-c_func
-(paren
-l_string|&quot;setup_frame32 - badframe in setup_frame, regs=%p frame=%p newsp=%lx&bslash;n&quot;
-comma
-id|regs
-comma
-id|frame
-comma
-id|newsp
-)paren
-suffix:semicolon
-id|PPCDBG_ENTER_DEBUGGER
-c_func
-(paren
-)paren
-suffix:semicolon
 macro_line|#if DEBUG_SIG
 id|printk
 c_func
@@ -4454,23 +4437,6 @@ r_return
 suffix:semicolon
 id|badframe
 suffix:colon
-id|udbg_printf
-c_func
-(paren
-l_string|&quot;setup_frame32 - badframe in setup_frame, regs=%p frame=%p newsp=%lx&bslash;n&quot;
-comma
-id|regs
-comma
-id|frame
-comma
-id|newsp
-)paren
-suffix:semicolon
-id|PPCDBG_ENTER_DEBUGGER
-c_func
-(paren
-)paren
-suffix:semicolon
 macro_line|#if DEBUG_SIG
 id|printk
 c_func
