@@ -2,12 +2,6 @@ multiline_comment|/*&n; *  linux/fs/fat/cache.c&n; *&n; *  Written 1992,1993 by 
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/msdos_fs.h&gt;
 macro_line|#include &lt;linux/buffer_head.h&gt;
-macro_line|#if 0
-mdefine_line|#define debug_pr(fmt, args...)&t;printk(fmt, ##args)
-macro_line|#else
-DECL|macro|debug_pr
-mdefine_line|#define debug_pr(fmt, args...)
-macro_line|#endif
 multiline_comment|/* this must be &gt; 0. */
 DECL|macro|FAT_MAX_CACHE
 mdefine_line|#define FAT_MAX_CACHE&t;8
@@ -388,16 +382,6 @@ op_member_access_from_pointer
 id|cache_lru_lock
 )paren
 suffix:semicolon
-id|debug_pr
-c_func
-(paren
-l_string|&quot;FAT: %s, fclus %d&quot;
-comma
-id|__FUNCTION__
-comma
-id|fclus
-)paren
-suffix:semicolon
 id|list_for_each_entry
 c_func
 (paren
@@ -415,6 +399,7 @@ comma
 id|cache_list
 )paren
 (brace
+multiline_comment|/* Find the cache of &quot;fclus&quot; or nearest cache. */
 r_if
 c_cond
 (paren
@@ -430,18 +415,6 @@ id|p-&gt;fcluster
 id|hit
 op_assign
 id|p
-suffix:semicolon
-id|debug_pr
-c_func
-(paren
-l_string|&quot;, fclus %d, dclus %d, cont %d&quot;
-comma
-id|p-&gt;fcluster
-comma
-id|p-&gt;dcluster
-comma
-id|p-&gt;nr_contig
-)paren
 suffix:semicolon
 r_if
 c_cond
@@ -459,14 +432,6 @@ id|offset
 op_assign
 id|hit-&gt;nr_contig
 suffix:semicolon
-id|debug_pr
-c_func
-(paren
-l_string|&quot; (off %d, hit)&quot;
-comma
-id|offset
-)paren
-suffix:semicolon
 )brace
 r_else
 (brace
@@ -475,14 +440,6 @@ op_assign
 id|fclus
 op_minus
 id|hit-&gt;fcluster
-suffix:semicolon
-id|debug_pr
-c_func
-(paren
-l_string|&quot; (off %d, full hit)&quot;
-comma
-id|offset
-)paren
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -543,12 +500,6 @@ op_plus
 id|offset
 suffix:semicolon
 )brace
-id|debug_pr
-c_func
-(paren
-l_string|&quot;&bslash;n&quot;
-)paren
-suffix:semicolon
 id|spin_unlock
 c_func
 (paren
@@ -589,11 +540,6 @@ r_struct
 id|fat_cache
 op_star
 id|p
-comma
-op_star
-id|hit
-op_assign
-l_int|NULL
 suffix:semicolon
 id|list_for_each_entry
 c_func
@@ -612,6 +558,7 @@ comma
 id|cache_list
 )paren
 (brace
+multiline_comment|/* Find the same part as &quot;new&quot; in cluster-chain. */
 r_if
 c_cond
 (paren
@@ -632,25 +579,6 @@ op_member_access_from_pointer
 id|dcluster
 )paren
 suffix:semicolon
-id|debug_pr
-c_func
-(paren
-l_string|&quot;FAT: %s: merged fclus %d, dclus %d, &quot;
-l_string|&quot;cur cont %d =&gt; new cont %d&bslash;n&quot;
-comma
-id|__FUNCTION__
-comma
-id|p-&gt;fcluster
-comma
-id|p-&gt;dcluster
-comma
-id|p-&gt;nr_contig
-comma
-r_new
-op_member_access_from_pointer
-id|nr_contig
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -666,16 +594,13 @@ r_new
 op_member_access_from_pointer
 id|nr_contig
 suffix:semicolon
-id|hit
-op_assign
+r_return
 id|p
-suffix:semicolon
-r_break
 suffix:semicolon
 )brace
 )brace
 r_return
-id|hit
+l_int|NULL
 suffix:semicolon
 )brace
 DECL|function|fat_cache_add
@@ -702,26 +627,6 @@ id|cache
 comma
 op_star
 id|tmp
-suffix:semicolon
-id|debug_pr
-c_func
-(paren
-l_string|&quot;FAT: %s: fclus %d, dclus %d, cont %d&bslash;n&quot;
-comma
-id|__FUNCTION__
-comma
-r_new
-op_member_access_from_pointer
-id|fcluster
-comma
-r_new
-op_member_access_from_pointer
-id|dcluster
-comma
-r_new
-op_member_access_from_pointer
-id|nr_contig
-)paren
 suffix:semicolon
 r_if
 c_cond
@@ -969,48 +874,6 @@ id|cache
 suffix:semicolon
 id|out
 suffix:colon
-id|debug_pr
-c_func
-(paren
-l_string|&quot;FAT: &quot;
-)paren
-suffix:semicolon
-id|list_for_each_entry
-c_func
-(paren
-id|cache
-comma
-op_amp
-id|MSDOS_I
-c_func
-(paren
-id|inode
-)paren
-op_member_access_from_pointer
-id|cache_lru
-comma
-id|cache_list
-)paren
-(brace
-id|debug_pr
-c_func
-(paren
-l_string|&quot;(fclus %d, dclus %d, cont %d), &quot;
-comma
-id|cache-&gt;fcluster
-comma
-id|cache-&gt;dcluster
-comma
-id|cache-&gt;nr_contig
-)paren
-suffix:semicolon
-)brace
-id|debug_pr
-c_func
-(paren
-l_string|&quot;&bslash;n&quot;
-)paren
-suffix:semicolon
 id|spin_unlock
 c_func
 (paren
@@ -1109,14 +972,6 @@ id|FAT_CACHE_VALID
 )paren
 id|i-&gt;cache_valid_id
 op_increment
-suffix:semicolon
-id|debug_pr
-c_func
-(paren
-l_string|&quot;FAT: %s&bslash;n&quot;
-comma
-id|__FUNCTION__
-)paren
 suffix:semicolon
 )brace
 DECL|function|fat_cache_inval_inode
