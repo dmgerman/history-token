@@ -17,12 +17,12 @@ r_int
 id|pages
 )paren
 suffix:semicolon
-DECL|function|get_one_pte_map2
+DECL|function|get_one_pte_map_nested
 r_static
 r_inline
 id|pte_t
 op_star
-id|get_one_pte_map2
+id|get_one_pte_map_nested
 c_func
 (paren
 r_struct
@@ -153,7 +153,7 @@ suffix:semicolon
 )brace
 id|pte
 op_assign
-id|pte_offset_map2
+id|pte_offset_map_nested
 c_func
 (paren
 id|pmd
@@ -172,7 +172,7 @@ id|pte
 )paren
 )paren
 (brace
-id|pte_unmap2
+id|pte_unmap_nested
 c_func
 (paren
 id|pte
@@ -375,7 +375,7 @@ id|mm-&gt;page_table_lock
 suffix:semicolon
 id|src
 op_assign
-id|get_one_pte_map2
+id|get_one_pte_map_nested
 c_func
 (paren
 id|mm
@@ -411,7 +411,7 @@ comma
 id|dst
 )paren
 suffix:semicolon
-id|pte_unmap2
+id|pte_unmap_nested
 c_func
 (paren
 id|src
