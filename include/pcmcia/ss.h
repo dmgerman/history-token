@@ -625,10 +625,6 @@ id|pccard_operations
 op_star
 id|ss_entry
 suffix:semicolon
-DECL|member|sock
-id|u_int
-id|sock
-suffix:semicolon
 DECL|member|socket
 id|socket_state_t
 id|socket
@@ -728,7 +724,18 @@ r_char
 op_star
 id|fake_cis
 suffix:semicolon
+DECL|member|socket_list
+r_struct
+id|list_head
+id|socket_list
+suffix:semicolon
 multiline_comment|/* deprecated */
+DECL|member|sock
+r_int
+r_int
+id|sock
+suffix:semicolon
+multiline_comment|/* socket number */
 macro_line|#ifdef CONFIG_PROC_FS
 DECL|member|proc
 r_struct
@@ -770,6 +777,12 @@ r_int
 id|thread_events
 suffix:semicolon
 multiline_comment|/* pcmcia (16-bit) */
+DECL|member|pcmcia
+r_struct
+id|pcmcia_bus_socket
+op_star
+id|pcmcia
+suffix:semicolon
 multiline_comment|/* cardbus (32-bit) */
 macro_line|#ifdef CONFIG_CARDBUS
 DECL|member|cb_cis_res
@@ -785,6 +798,18 @@ id|cb_cis_virt
 suffix:semicolon
 macro_line|#endif
 )brace
+suffix:semicolon
+id|__deprecated
+r_struct
+id|pcmcia_socket
+op_star
+id|pcmcia_get_socket_by_nr
+c_func
+(paren
+r_int
+r_int
+id|nr
+)paren
 suffix:semicolon
 macro_line|#endif /* _LINUX_SS_H */
 eof
