@@ -41,31 +41,14 @@ r_enum
 id|cpu_type
 id|type
 suffix:semicolon
-DECL|member|loops_per_jiffy
-r_int
-r_int
-id|loops_per_jiffy
-suffix:semicolon
 DECL|member|hard_math
 r_char
 id|hard_math
 suffix:semicolon
-DECL|member|pgd_quick
+DECL|member|loops_per_jiffy
 r_int
 r_int
-op_star
-id|pgd_quick
-suffix:semicolon
-DECL|member|pte_quick
-r_int
-r_int
-op_star
-id|pte_quick
-suffix:semicolon
-DECL|member|pgtable_cache_sz
-r_int
-r_int
-id|pgtable_cache_sz
+id|loops_per_jiffy
 suffix:semicolon
 DECL|member|cpu_clock
 DECL|member|master_clock
@@ -309,7 +292,7 @@ DECL|macro|release_segments
 mdefine_line|#define release_segments(mm)&t;do { } while(0)
 multiline_comment|/*&n; * FPU lazy state save handling.&n; */
 DECL|function|release_fpu
-r_extern
+r_static
 id|__inline__
 r_void
 id|release_fpu
@@ -344,7 +327,7 @@ id|SR_FD
 suffix:semicolon
 )brace
 DECL|function|grab_fpu
-r_extern
+r_static
 id|__inline__
 r_void
 id|grab_fpu
@@ -399,7 +382,7 @@ DECL|macro|FPSCR_INIT
 mdefine_line|#define FPSCR_INIT  0x00080000
 multiline_comment|/*&n; * Return saved PC of a blocked thread.&n; */
 DECL|function|thread_saved_pc
-r_extern
+r_static
 id|__inline__
 r_int
 r_int

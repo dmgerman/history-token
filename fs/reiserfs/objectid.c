@@ -1,13 +1,9 @@
 multiline_comment|/*&n; * Copyright 2000 by Hans Reiser, licensing governed by reiserfs/README&n; */
-macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/locks.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/reiserfs_fs.h&gt;
-macro_line|#else
-macro_line|#include &quot;nokernel.h&quot;
-macro_line|#endif
 singleline_comment|// find where objectid map starts
 DECL|macro|objectid_map
 mdefine_line|#define objectid_map(s,rs) (old_format_only (s) ? &bslash;&n;                         (__u32 *)((struct reiserfs_super_block_v1 *)(rs) + 1) :&bslash;&n;&t;&t;&t; (__u32 *)((rs) + 1))

@@ -23,7 +23,7 @@ mdefine_line|#define MMU_NO_ASID&t;&t;&t;0x100
 multiline_comment|/*&n; * Virtual Page Number mask&n; */
 DECL|macro|MMU_VPN_MASK
 mdefine_line|#define MMU_VPN_MASK&t;0xfffff000
-r_extern
+r_static
 id|__inline__
 r_void
 DECL|function|get_new_mmu_context
@@ -88,7 +88,7 @@ id|mc
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Get MMU context if needed.&n; */
-r_extern
+r_static
 id|__inline__
 r_void
 DECL|function|get_mmu_context
@@ -135,7 +135,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Initialize the context related info for a new mm_struct&n; * instance.&n; */
 DECL|function|init_new_context
-r_extern
+r_static
 id|__inline__
 r_int
 id|init_new_context
@@ -162,7 +162,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Destroy context related info for an mm_struct that is about&n; * to be put to rest.&n; */
 DECL|function|destroy_context
-r_extern
+r_static
 id|__inline__
 r_void
 id|destroy_context
@@ -237,7 +237,7 @@ DECL|macro|MMU_ITLB_VALID
 mdefine_line|#define MMU_ITLB_VALID&t;&t;0x100
 macro_line|#endif
 DECL|function|set_asid
-r_extern
+r_static
 id|__inline__
 r_void
 id|set_asid
@@ -287,7 +287,7 @@ l_int|0xffffff00
 suffix:semicolon
 )brace
 DECL|function|get_asid
-r_extern
+r_static
 id|__inline__
 r_int
 r_int
@@ -331,7 +331,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * After we have set current-&gt;mm to a new value, this activates&n; * the context for the new mm so we see the new mappings.&n; */
 DECL|function|activate_context
-r_extern
+r_static
 id|__inline__
 r_void
 id|activate_context
@@ -360,7 +360,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* MMU_TTB can be used for optimizing the fault handling.&n;   (Currently not used) */
 DECL|function|switch_mm
-r_extern
+r_static
 id|__inline__
 r_void
 id|switch_mm
@@ -455,7 +455,7 @@ suffix:semicolon
 )brace
 DECL|macro|activate_mm
 mdefine_line|#define activate_mm(prev, next) &bslash;&n;&t;switch_mm((prev),(next),NULL,smp_processor_id())
-r_extern
+r_static
 id|__inline__
 r_void
 DECL|function|enter_lazy_tlb

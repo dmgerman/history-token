@@ -25,6 +25,7 @@ macro_line|#include &lt;asm/machdep.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
+macro_line|#include &lt;asm/sections.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/hardirq.h&gt;
 macro_line|#include &lt;asm/feature.h&gt;
@@ -9320,10 +9321,6 @@ comma
 id|i
 comma
 id|x
-suffix:semicolon
-r_int
-r_int
-id|msr
 suffix:semicolon
 r_int
 r_int

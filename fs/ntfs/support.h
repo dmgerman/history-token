@@ -24,6 +24,7 @@ DECL|macro|DEBUG_NAME1
 mdefine_line|#define DEBUG_NAME1  1024
 DECL|macro|DEBUG_NAME2
 mdefine_line|#define DEBUG_NAME2  2048
+macro_line|#ifdef DEBUG
 r_void
 id|ntfs_debug
 c_func
@@ -41,6 +42,10 @@ dot
 dot
 )paren
 suffix:semicolon
+macro_line|#else
+DECL|macro|ntfs_debug
+mdefine_line|#define ntfs_debug(mask, fmt, ...)&t;do {} while (0)
+macro_line|#endif
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/vmalloc.h&gt;
 DECL|macro|ntfs_malloc

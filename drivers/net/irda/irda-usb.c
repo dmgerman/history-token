@@ -323,6 +323,8 @@ comma
 id|match_flags
 suffix:colon
 id|USB_DEVICE_ID_MATCH_INT_CLASS
+op_or
+id|USB_DEVICE_ID_MATCH_INT_SUBCLASS
 comma
 id|bInterfaceClass
 suffix:colon

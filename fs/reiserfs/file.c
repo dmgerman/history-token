@@ -1,11 +1,7 @@
 multiline_comment|/*&n; * Copyright 2000 by Hans Reiser, licensing governed by reiserfs/README&n; */
-macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/reiserfs_fs.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
-macro_line|#else
-macro_line|#include &quot;nokernel.h&quot;
-macro_line|#endif
 multiline_comment|/*&n;** We pack the tails of files on file close, not at the time they are written.&n;** This implies an unnecessary copy of the tail and an unnecessary indirect item&n;** insertion/balancing, for files that are written in one write.&n;** It avoids unnecessary tail packings (balances) for files that are written in&n;** multiple writes and are small enough to have tails.&n;** &n;** file_release is called by the VFS layer when the file is closed.  If&n;** this is the last open file descriptor, and the file&n;** small enough to have a tail, and the tail is currently in an&n;** unformatted node, the tail is converted back into a direct item.&n;** &n;** We use reiserfs_truncate_file to pack the tail, since it already has&n;** all the conditions coded.  &n;*/
 DECL|function|reiserfs_file_release
 r_static

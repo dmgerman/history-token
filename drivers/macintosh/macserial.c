@@ -19,7 +19,7 @@ macro_line|#ifdef CONFIG_SERIAL_CONSOLE
 macro_line|#include &lt;linux/console.h&gt;
 macro_line|#endif
 macro_line|#include &lt;linux/slab.h&gt;
-macro_line|#include &lt;asm/init.h&gt;
+macro_line|#include &lt;asm/sections.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
@@ -487,17 +487,21 @@ macro_line|#ifdef SERIAL_PARANOIA_CHECK
 r_static
 r_const
 r_char
-op_star
 id|badmagic
+(braket
+)braket
 op_assign
+id|KERN_WARNING
 l_string|&quot;Warning: bad magic number for serial struct (%d, %d) in %s&bslash;n&quot;
 suffix:semicolon
 r_static
 r_const
 r_char
-op_star
 id|badinfo
+(braket
+)braket
 op_assign
+id|KERN_WARNING
 l_string|&quot;Warning: null mac_serial for (%d, %d) in %s&bslash;n&quot;
 suffix:semicolon
 r_if
@@ -1583,6 +1587,7 @@ l_int|1
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;FB. overflow: %d&bslash;n&quot;
 comma
 id|flip_buf_ovf
@@ -1990,6 +1995,7 @@ macro_line|#ifdef SERIAL_DEBUG_FLOW
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;CTS up&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -2018,6 +2024,7 @@ macro_line|#ifdef SERIAL_DEBUG_FLOW
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;CTS down&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -2246,7 +2253,9 @@ id|ZILOG_INITIALIZED
 id|printk
 c_func
 (paren
-l_string|&quot;rs_interrupt: irq %d, port not initialized&bslash;n&quot;
+id|KERN_WARNING
+l_string|&quot;rs_interrupt: irq %d, port not &quot;
+l_string|&quot;initialized&bslash;n&quot;
 comma
 id|irq
 )paren
@@ -2304,6 +2313,7 @@ macro_line|#ifdef SERIAL_DEBUG_INTR
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;rs_interrupt: irq %d, zs_intreg 0x%x&bslash;n&quot;
 comma
 id|irq
@@ -2580,6 +2590,7 @@ macro_line|#ifdef SERIAL_DEBUG_STOP
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;rs_stop %ld....&bslash;n&quot;
 comma
 id|tty-&gt;ldisc
@@ -2700,6 +2711,7 @@ macro_line|#ifdef SERIAL_DEBUG_STOP
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;rs_start %ld....&bslash;n&quot;
 comma
 id|tty-&gt;ldisc
@@ -5401,46 +5413,12 @@ c_cond
 id|info-&gt;is_cobalt_modem
 )paren
 (brace
-id|mdelay
-c_func
-(paren
-l_int|300
-)paren
-suffix:semicolon
-id|feature_set
+id|feature_set_modem_power
 c_func
 (paren
 id|info-&gt;dev_node
 comma
-id|FEATURE_Modem_power
-)paren
-suffix:semicolon
-id|mdelay
-c_func
-(paren
-l_int|5
-)paren
-suffix:semicolon
-id|feature_clear
-c_func
-(paren
-id|info-&gt;dev_node
-comma
-id|FEATURE_Modem_power
-)paren
-suffix:semicolon
-id|mdelay
-c_func
-(paren
-l_int|10
-)paren
-suffix:semicolon
-id|feature_set
-c_func
-(paren
-id|info-&gt;dev_node
-comma
-id|FEATURE_Modem_power
+l_int|1
 )paren
 suffix:semicolon
 id|delay
@@ -5465,6 +5443,7 @@ macro_line|#endif /* CONFIG_PMAC_PBOOK */
 )brace
 r_else
 (brace
+multiline_comment|/* TODO: Make that depend on a timer, don&squot;t power down&n;&t;&t; * immediately&n;&t;&t; */
 id|PWRDBG
 c_func
 (paren
@@ -5487,18 +5466,12 @@ comma
 id|info-&gt;line
 )paren
 suffix:semicolon
-id|feature_clear
+id|feature_set_modem_power
 c_func
 (paren
 id|info-&gt;dev_node
 comma
-id|FEATURE_Modem_power
-)paren
-suffix:semicolon
-id|mdelay
-c_func
-(paren
-l_int|10
+l_int|0
 )paren
 suffix:semicolon
 )brace
@@ -7737,6 +7710,7 @@ macro_line|#ifdef SERIAL_DEBUG_THROTTLE
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;throttle %ld....&bslash;n&quot;
 comma
 id|tty-&gt;ldisc
@@ -7967,6 +7941,7 @@ macro_line|#ifdef SERIAL_DEBUG_THROTTLE
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;unthrottle %s: %d....&bslash;n&quot;
 comma
 id|tty-&gt;ldisc
@@ -8703,9 +8678,6 @@ id|value
 )paren
 (brace
 r_int
-id|error
-suffix:semicolon
-r_int
 r_int
 id|arg
 comma
@@ -8715,8 +8687,9 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-id|error
-op_assign
+r_if
+c_cond
+(paren
 id|get_user
 c_func
 (paren
@@ -8724,14 +8697,10 @@ id|arg
 comma
 id|value
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|error
 )paren
 r_return
-id|error
+op_minus
+id|EFAULT
 suffix:semicolon
 id|bits
 op_assign
@@ -9413,8 +9382,9 @@ multiline_comment|/*&n;&t;&t; * Uh, oh.  tty-&gt;count is 1, which means that th
 id|printk
 c_func
 (paren
-l_string|&quot;rs_close: bad serial port count; tty-&gt;count is 1, &quot;
-l_string|&quot;info-&gt;count is %d&bslash;n&quot;
+id|KERN_ERR
+l_string|&quot;rs_close: bad serial port count; tty-&gt;count &quot;
+l_string|&quot;is 1, info-&gt;count is %d&bslash;n&quot;
 comma
 id|info-&gt;count
 )paren
@@ -9436,7 +9406,9 @@ l_int|0
 id|printk
 c_func
 (paren
-l_string|&quot;rs_close: bad serial port count for ttys%d: %d&bslash;n&quot;
+id|KERN_ERR
+l_string|&quot;rs_close: bad serial port count for &quot;
+l_string|&quot;ttys%d: %d&bslash;n&quot;
 comma
 id|info-&gt;line
 comma
@@ -9825,6 +9797,7 @@ l_int|50
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;macserial: invalid info-&gt;timeout=%d&bslash;n&quot;
 comma
 id|info-&gt;timeout
@@ -9868,6 +9841,7 @@ id|HZ
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;macserial: char_time %ld &gt;HZ !!!&bslash;n&quot;
 comma
 id|char_time
@@ -10934,6 +10908,7 @@ r_void
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;PowerMac Z8530 serial driver version 2.0&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -11374,7 +11349,9 @@ id|NUM_CHANNELS
 id|printk
 c_func
 (paren
-l_string|&quot;Sorry, can&squot;t use %s: no more channels&bslash;n&quot;
+id|KERN_WARNING
+l_string|&quot;Sorry, can&squot;t use %s: no more &quot;
+l_string|&quot;channels&bslash;n&quot;
 comma
 id|dev-&gt;full_name
 )paren
@@ -12146,7 +12123,9 @@ id|is_cons
 id|printk
 c_func
 (paren
-l_string|&quot;macserial: console line, enabling interrupt %d&bslash;n&quot;
+id|KERN_INFO
+l_string|&quot;macserial: console line, enabling &quot;
+l_string|&quot;interrupt %d&bslash;n&quot;
 comma
 id|zs_soft
 (braket
@@ -12332,6 +12311,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;tty%02d at 0x%08x (irq = %d)&quot;
 comma
 id|info-&gt;line

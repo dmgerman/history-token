@@ -3,8 +3,8 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/machvec.h&gt;
 macro_line|#include &lt;asm/rtc.h&gt;
 macro_line|#include &lt;asm/machvec_init.h&gt;
-macro_line|#include &lt;asm/io_hd64461.h&gt;
-macro_line|#include &lt;asm/io_generic.h&gt;
+macro_line|#include &lt;asm/io.h&gt;
+macro_line|#include &lt;asm/hd64461.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 multiline_comment|/*&n; * The Machine Vector&n; */
 DECL|variable|__initmv
@@ -20,9 +20,10 @@ l_string|&quot;hp620&quot;
 comma
 id|mv_nr_irqs
 suffix:colon
-l_int|80
+id|HD64461_IRQBASE
+op_plus
+id|HD64461_IRQ_NUM
 comma
-multiline_comment|/* HD64461_IRQBASE+16, see hd64461.h */
 id|mv_inb
 suffix:colon
 id|hd64461_inb
@@ -162,9 +163,10 @@ l_string|&quot;hp680&quot;
 comma
 id|mv_nr_irqs
 suffix:colon
-l_int|80
+id|HD64461_IRQBASE
+op_plus
+id|HD64461_IRQ_NUM
 comma
-multiline_comment|/* HD64461_IRQBASE+16, see hd64461.h */
 id|mv_inb
 suffix:colon
 id|hd64461_inb
@@ -304,9 +306,10 @@ l_string|&quot;hp690&quot;
 comma
 id|mv_nr_irqs
 suffix:colon
-l_int|80
+id|HD64461_IRQBASE
+op_plus
+id|HD64461_IRQ_NUM
 comma
-multiline_comment|/* HD64461_IRQBASE+16, see hd64461.h */
 id|mv_inb
 suffix:colon
 id|hd64461_inb

@@ -20,7 +20,7 @@ macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/hardirq.h&gt;
 macro_line|#include &lt;asm/softirq.h&gt;
-macro_line|#include &lt;asm/init.h&gt;
+macro_line|#include &lt;asm/sections.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/prom.h&gt;
 macro_line|#include &lt;asm/smp.h&gt;
@@ -35,6 +35,7 @@ id|smp_chrp_cpu_nr
 suffix:semicolon
 r_static
 r_int
+id|__init
 DECL|function|smp_chrp_probe
 id|smp_chrp_probe
 c_func
@@ -60,6 +61,7 @@ suffix:semicolon
 )brace
 r_static
 r_void
+id|__init
 DECL|function|smp_chrp_kick_cpu
 id|smp_chrp_kick_cpu
 c_func
@@ -94,6 +96,7 @@ suffix:semicolon
 )brace
 r_static
 r_void
+id|__init
 DECL|function|smp_chrp_setup_cpu
 id|smp_chrp_setup_cpu
 c_func
@@ -310,6 +313,7 @@ suffix:semicolon
 macro_line|#ifdef CONFIG_POWER4
 r_static
 r_void
+id|__chrp
 DECL|function|smp_xics_message_pass
 id|smp_xics_message_pass
 c_func
@@ -387,6 +391,7 @@ suffix:semicolon
 )brace
 r_static
 r_int
+id|__chrp
 DECL|function|smp_xics_probe
 id|smp_xics_probe
 c_func
@@ -400,6 +405,7 @@ suffix:semicolon
 )brace
 r_static
 r_void
+id|__chrp
 DECL|function|smp_xics_setup_cpu
 id|smp_xics_setup_cpu
 c_func
@@ -423,10 +429,11 @@ suffix:semicolon
 )brace
 macro_line|#endif /* CONFIG_POWER4 */
 multiline_comment|/* CHRP with openpic */
-DECL|variable|chrp_smp_ops
+DECL|variable|__chrpdata
 r_struct
 id|smp_ops_t
 id|chrp_smp_ops
+id|__chrpdata
 op_assign
 (brace
 id|smp_openpic_message_pass
@@ -441,10 +448,11 @@ comma
 suffix:semicolon
 macro_line|#ifdef CONFIG_POWER4
 multiline_comment|/* CHRP with new XICS interrupt controller */
-DECL|variable|xics_smp_ops
+DECL|variable|__chrpdata
 r_struct
 id|smp_ops_t
 id|xics_smp_ops
+id|__chrpdata
 op_assign
 (brace
 id|smp_xics_message_pass

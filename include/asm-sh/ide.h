@@ -34,13 +34,13 @@ r_case
 l_int|0x01f0
 suffix:colon
 r_return
-l_int|77
+l_int|93
 suffix:semicolon
 r_case
 l_int|0x0170
 suffix:colon
 r_return
-l_int|78
+l_int|94
 suffix:semicolon
 r_default
 suffix:colon

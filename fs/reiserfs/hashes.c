@@ -11,13 +11,6 @@ DECL|macro|FULLROUNDS
 mdefine_line|#define FULLROUNDS 10&t;&t;/* 32 is overkill, 16 is strong crypto */
 DECL|macro|PARTROUNDS
 mdefine_line|#define PARTROUNDS 6&t;&t;/* 6 gets complete mixing */
-macro_line|#ifndef __KERNEL__
-DECL|typedef|u32
-r_typedef
-id|__u32
-id|u32
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/* a, b, c, d - data; h0, h1 - accumulated hash */
 DECL|macro|TEACORE
 mdefine_line|#define TEACORE(rounds)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;u32 sum = 0;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;int n = rounds;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;u32 b0, b1;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;b0 = h0;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;b1 = h1;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;do&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;{&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;sum += DELTA;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;b0 += ((b1 &lt;&lt; 4)+a) ^ (b1+sum) ^ ((b1 &gt;&gt; 5)+b);&t;&bslash;&n;&t;&t;&t;b1 += ((b0 &lt;&lt; 4)+c) ^ (b0+sum) ^ ((b0 &gt;&gt; 5)+d);&t;&bslash;&n;&t;&t;} while(--n);&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;h0 += b0;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;h1 += b1;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;} while(0)

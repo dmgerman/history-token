@@ -1,5 +1,4 @@
 multiline_comment|/*&n; * Copyright 2000 by Hans Reiser, licensing governed by reiserfs/README&n; *&n; * Trivial changes by Alan Cox to add the LFS fixes&n; *&n; * Trivial Changes:&n; * Rights granted to Hans Reiser to redistribute under other terms providing&n; * he accepts all liability including but not limited to patent, fitness&n; * for purpose, and direct or indirect claims arising from failure to perform.&n; *&n; * NO WARRANTY&n; */
-macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -8,11 +7,6 @@ macro_line|#include &lt;linux/reiserfs_fs.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/locks.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
-macro_line|#else
-macro_line|#include &quot;nokernel.h&quot;
-macro_line|#include &lt;stdlib.h&gt; 
-singleline_comment|// for simple_strtoul
-macro_line|#endif
 DECL|macro|REISERFS_OLD_BLOCKSIZE
 mdefine_line|#define REISERFS_OLD_BLOCKSIZE 4096
 DECL|macro|REISERFS_SUPER_MAGIC_STRING_OFFSET_NJ
@@ -3748,7 +3742,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#ifdef __KERNEL__
 r_static
 id|DECLARE_FSTYPE_DEV
 c_func
@@ -3818,5 +3811,4 @@ c_func
 id|exit_reiserfs_fs
 )paren
 suffix:semicolon
-macro_line|#endif
 eof

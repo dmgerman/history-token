@@ -1,6 +1,5 @@
 multiline_comment|/* &n; * Copyright 2000 by Hans Reiser, licensing governed by reiserfs/README&n; */
 multiline_comment|/* &n; * Written by Alexander Zarochentcev.&n; *&n; * The kernel part of the (on-line) reiserfs resizer.&n; */
-macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/vmalloc.h&gt;
 macro_line|#include &lt;linux/locks.h&gt;
@@ -8,9 +7,6 @@ macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/reiserfs_fs.h&gt;
 macro_line|#include &lt;linux/reiserfs_fs_sb.h&gt;
-macro_line|#else
-macro_line|#include &quot;nokernel.h&quot;
-macro_line|#endif
 DECL|function|reiserfs_resize
 r_int
 id|reiserfs_resize

@@ -34,6 +34,22 @@ DECL|macro|RTC_IPR_POS
 mdefine_line|#define RTC_IPR_POS&t; 0
 DECL|macro|RTC_PRIORITY
 mdefine_line|#define RTC_PRIORITY&t;TIMER_PRIORITY
+macro_line|#if defined(__sh3__)
+DECL|macro|DMTE0_IRQ
+mdefine_line|#define DMTE0_IRQ&t;48
+DECL|macro|DMTE1_IRQ
+mdefine_line|#define DMTE1_IRQ&t;49
+DECL|macro|DMTE2_IRQ
+mdefine_line|#define DMTE2_IRQ&t;50
+DECL|macro|DMTE3_IRQ
+mdefine_line|#define DMTE3_IRQ&t;51
+DECL|macro|DMA_IPR_ADDR
+mdefine_line|#define DMA_IPR_ADDR&t;INTC_IPRE
+DECL|macro|DMA_IPR_POS
+mdefine_line|#define DMA_IPR_POS&t;3
+DECL|macro|DMA_PRIORITY
+mdefine_line|#define DMA_PRIORITY&t;7
+macro_line|#elif defined(__SH4__)
 DECL|macro|DMTE0_IRQ
 mdefine_line|#define DMTE0_IRQ&t;34
 DECL|macro|DMTE1_IRQ
@@ -50,6 +66,7 @@ DECL|macro|DMA_IPR_POS
 mdefine_line|#define DMA_IPR_POS&t;2
 DECL|macro|DMA_PRIORITY
 mdefine_line|#define DMA_PRIORITY&t;7
+macro_line|#endif
 macro_line|#if defined (CONFIG_CPU_SUBTYPE_SH7707) || defined (CONFIG_CPU_SUBTYPE_SH7708) || &bslash;&n;    defined (CONFIG_CPU_SUBTYPE_SH7709) || defined (CONFIG_CPU_SUBTYPE_SH7750) || &bslash;&n;    defined (CONFIG_CPU_SUBTYPE_SH7751)
 DECL|macro|SCI_ERI_IRQ
 mdefine_line|#define SCI_ERI_IRQ&t;23
@@ -237,6 +254,23 @@ c_func
 r_int
 r_int
 )paren
+suffix:semicolon
+multiline_comment|/*&n; * Simple Mask Register Support&n; */
+r_extern
+r_void
+id|make_maskreg_irq
+c_func
+(paren
+r_int
+r_int
+id|irq
+)paren
+suffix:semicolon
+r_extern
+r_int
+r_int
+op_star
+id|irq_mask_register
 suffix:semicolon
 multiline_comment|/*&n; * Function for &quot;on chip support modules&quot;.&n; */
 r_extern
@@ -447,7 +481,7 @@ suffix:semicolon
 macro_line|#endif                                                                        
 macro_line|#ifdef CONFIG_SH_GENERIC
 DECL|function|irq_demux
-r_extern
+r_static
 id|__inline__
 r_int
 id|irq_demux

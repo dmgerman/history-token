@@ -46,13 +46,7 @@ r_int
 r_int
 id|bcr2
 suffix:semicolon
-singleline_comment|//
-singleline_comment|// Initialize the slave bus controller on the pcic.  The values used
-singleline_comment|// here should not be hardcoded, but they should be taken from the bsc
-singleline_comment|// on the processor, to make this function as generic as possible.
-singleline_comment|// (i.e. Another sbc may usr different SDRAM timing settings -- in order
-singleline_comment|// for the pcic to work, its settings need to be exactly the same.)
-singleline_comment|//
+multiline_comment|/*&n;    * Initialize the slave bus controller on the pcic.  The values used&n;    * here should not be hardcoded, but they should be taken from the bsc&n;    * on the processor, to make this function as generic as possible.&n;    * (i.e. Another sbc may usr different SDRAM timing settings -- in order&n;    * for the pcic to work, its settings need to be exactly the same.)&n;    */
 id|bcr1
 op_assign
 (paren
@@ -236,6 +230,7 @@ id|mcr
 )paren
 suffix:semicolon
 multiline_comment|/* PCIC MCR */
+multiline_comment|/* Enable all interrupts, so we know what to fix */
 id|PCIC_WRITE
 c_func
 (paren
@@ -249,9 +244,10 @@ c_func
 (paren
 id|SH7751_PCIAINTM
 comma
-l_int|0x0000980f
+l_int|0x0000380f
 )paren
 suffix:semicolon
+multiline_comment|/* Set up standard PCI config registers */
 id|PCIC_WRITE
 c_func
 (paren
@@ -260,7 +256,7 @@ comma
 l_int|0xF39000C7
 )paren
 suffix:semicolon
-multiline_comment|/* FB9000C7 */
+multiline_comment|/* Bus Master, Mem &amp; I/O access */
 id|PCIC_WRITE
 c_func
 (paren
@@ -278,7 +274,7 @@ comma
 l_int|0xab000001
 )paren
 suffix:semicolon
-multiline_comment|/* PCI I/O */
+multiline_comment|/* PCI I/O address (local regs) */
 id|PCIC_WRITE
 c_func
 (paren
@@ -287,7 +283,7 @@ comma
 l_int|0x0c000000
 )paren
 suffix:semicolon
-multiline_comment|/* PCI MEM0 old val: 0xb0000000 */
+multiline_comment|/* PCI MEM address (local RAM)  */
 id|PCIC_WRITE
 c_func
 (paren
@@ -296,7 +292,7 @@ comma
 l_int|0xd0000000
 )paren
 suffix:semicolon
-multiline_comment|/* PCI MEM1 */
+multiline_comment|/* PCI MEM address (unused)     */
 id|PCIC_WRITE
 c_func
 (paren
@@ -305,7 +301,7 @@ comma
 l_int|0x35051054
 )paren
 suffix:semicolon
-multiline_comment|/* PCI Sub system ID &amp; Sub system vendor ID */
+multiline_comment|/* PCI Subsystem ID &amp; Vendor ID */
 id|PCIC_WRITE
 c_func
 (paren
@@ -314,7 +310,7 @@ comma
 l_int|0x03f00000
 )paren
 suffix:semicolon
-multiline_comment|/* PCI MEM0 */
+multiline_comment|/* MEM (full 64M exposed)       */
 id|PCIC_WRITE
 c_func
 (paren
@@ -323,7 +319,7 @@ comma
 l_int|0x00000000
 )paren
 suffix:semicolon
-multiline_comment|/* PCI MEM1 */
+multiline_comment|/* MEM (unused)                 */
 id|PCIC_WRITE
 c_func
 (paren
@@ -332,7 +328,7 @@ comma
 l_int|0x0c000000
 )paren
 suffix:semicolon
-multiline_comment|/* MEM0 */
+multiline_comment|/* MEM (direct map from PCI)    */
 id|PCIC_WRITE
 c_func
 (paren
@@ -341,7 +337,8 @@ comma
 l_int|0x00000000
 )paren
 suffix:semicolon
-multiline_comment|/* MEM1 */
+multiline_comment|/* MEM (unused)                 */
+multiline_comment|/* Now turn it on... */
 id|PCIC_WRITE
 c_func
 (paren
@@ -350,6 +347,33 @@ comma
 l_int|0xa5000001
 )paren
 suffix:semicolon
+multiline_comment|/*&n;    * Set PCIMBR and PCIIOBR here, assuming a single window&n;    * (16M MEM, 256K IO) is enough.  If a larger space is&n;    * needed, the readx/writex and inx/outx functions will&n;    * have to do more (e.g. setting registers for each call).&n;    */
+multiline_comment|/*&n;    * Set the MBR so PCI address is one-to-one with window,&n;    * meaning all calls go straight through... use ifdef to&n;    * catch erroneous assumption.&n;    */
+macro_line|#if PCIBIOS_MIN_MEM != SH7751_PCI_MEMORY_BASE
+macro_line|#error One-to-one assumption for PCI memory mapping is wrong!?!?!?
+macro_line|#endif   
+id|PCIC_WRITE
+c_func
+(paren
+id|SH7751_PCIMBR
+comma
+id|PCIBIOS_MIN_MEM
+)paren
+suffix:semicolon
+multiline_comment|/* Set IOBR for window containing area specified in pci.h */
+id|PCIC_WRITE
+c_func
+(paren
+id|SH7751_PCIIOBR
+comma
+(paren
+id|PCIBIOS_MIN_IO
+op_amp
+id|SH7751_PCIIOBR_MASK
+)paren
+)paren
+suffix:semicolon
+multiline_comment|/* All done, may as well say so... */
 id|printk
 c_func
 (paren

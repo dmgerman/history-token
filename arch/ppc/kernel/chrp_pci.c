@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.chrp_pci.c 1.20 08/08/01 16:35:43 paulus&n; */
+multiline_comment|/*&n; * BK Id: SCCS/s.chrp_pci.c 1.22 09/08/01 15:47:42 paulus&n; */
 multiline_comment|/*&n; * CHRP pci routines.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -15,7 +15,7 @@ macro_line|#include &lt;asm/hydra.h&gt;
 macro_line|#include &lt;asm/prom.h&gt;
 macro_line|#include &lt;asm/gg2.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;
-macro_line|#include &lt;asm/init.h&gt;
+macro_line|#include &lt;asm/sections.h&gt;
 macro_line|#include &lt;asm/pci-bridge.h&gt;
 macro_line|#include &quot;open_pic.h&quot;
 macro_line|#include &quot;pci.h&quot;

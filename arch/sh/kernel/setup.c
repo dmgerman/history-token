@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: setup.c,v 1.20 2000/03/05 02:44:41 gniibe Exp $&n; *&n; *  linux/arch/sh/kernel/setup.c&n; *&n; *  Copyright (C) 1999  Niibe Yutaka&n; *&n; */
+multiline_comment|/* $Id: setup.c,v 1.31 2001/08/23 16:36:40 dwmw2 Exp $&n; *&n; *  linux/arch/sh/kernel/setup.c&n; *&n; *  Copyright (C) 1999  Niibe Yutaka&n; *&n; */
 multiline_comment|/*&n; * This file handles the architecture-dependent parts of initialization&n; */
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -28,12 +28,12 @@ macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/io_generic.h&gt;
-macro_line|#include &lt;asm/smp.h&gt;
 macro_line|#include &lt;asm/machvec.h&gt;
 macro_line|#ifdef CONFIG_SH_EARLY_PRINTK
 macro_line|#include &lt;asm/sh_bios.h&gt;
 macro_line|#endif
 multiline_comment|/*&n; * Machine setup..&n; */
+multiline_comment|/*&n; * Initialize loops_per_jiffy as 10000000 (1000MIPS).&n; * This value will be used at the very early stage of serial setup.&n; * The bigger value means no problem.&n; */
 DECL|variable|boot_cpu_data
 r_struct
 id|sh_cpuinfo
@@ -44,9 +44,7 @@ id|CPU_SH_NONE
 comma
 l_int|0
 comma
-l_int|0
-comma
-l_int|0
+l_int|10000000
 comma
 )brace
 suffix:semicolon
@@ -602,18 +600,11 @@ id|PAGE_OFFSET
 op_plus
 id|__MEMORY_START
 suffix:semicolon
-multiline_comment|/* Default is 4Mbyte. */
 id|memory_end
 op_assign
-(paren
-r_int
-r_int
-)paren
-id|PAGE_OFFSET
+id|memory_start
 op_plus
-l_int|0x00400000
-op_plus
-id|__MEMORY_START
+id|__MEMORY_SIZE
 suffix:semicolon
 r_for
 c_loop
@@ -935,11 +926,13 @@ op_star
 id|cmdline_p
 )paren
 (brace
+macro_line|#if defined(CONFIG_SH_GENERIC) || defined(CONFIG_SH_UNKNOWN)
 r_extern
 r_struct
 id|sh_machine_vector
 id|mv_unknown
 suffix:semicolon
+macro_line|#endif
 r_struct
 id|sh_machine_vector
 op_star
@@ -1304,6 +1297,96 @@ DECL|macro|PFN_DOWN
 mdefine_line|#define PFN_DOWN(x)&t;((x) &gt;&gt; PAGE_SHIFT)
 DECL|macro|PFN_PHYS
 mdefine_line|#define PFN_PHYS(x)&t;((x) &lt;&lt; PAGE_SHIFT)
+macro_line|#ifdef CONFIG_DISCONTIGMEM
+id|NODE_DATA
+c_func
+(paren
+l_int|0
+)paren
+op_member_access_from_pointer
+id|bdata
+op_assign
+op_amp
+id|discontig_node_bdata
+(braket
+l_int|0
+)braket
+suffix:semicolon
+id|NODE_DATA
+c_func
+(paren
+l_int|1
+)paren
+op_member_access_from_pointer
+id|bdata
+op_assign
+op_amp
+id|discontig_node_bdata
+(braket
+l_int|1
+)braket
+suffix:semicolon
+id|bootmap_size
+op_assign
+id|init_bootmem_node
+c_func
+(paren
+id|NODE_DATA
+c_func
+(paren
+l_int|1
+)paren
+comma
+id|PFN_UP
+c_func
+(paren
+id|__MEMORY_START_2ND
+)paren
+comma
+id|PFN_UP
+c_func
+(paren
+id|__MEMORY_START_2ND
+)paren
+comma
+id|PFN_DOWN
+c_func
+(paren
+id|__MEMORY_START_2ND
+op_plus
+id|__MEMORY_SIZE_2ND
+)paren
+)paren
+suffix:semicolon
+id|free_bootmem_node
+c_func
+(paren
+id|NODE_DATA
+c_func
+(paren
+l_int|1
+)paren
+comma
+id|__MEMORY_START_2ND
+comma
+id|__MEMORY_SIZE_2ND
+)paren
+suffix:semicolon
+id|reserve_bootmem_node
+c_func
+(paren
+id|NODE_DATA
+c_func
+(paren
+l_int|1
+)paren
+comma
+id|__MEMORY_START_2ND
+comma
+id|bootmap_size
+)paren
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/*&n;&t; * Find the highest page frame number we have available&n;&t; */
 id|max_pfn
 op_assign
@@ -1406,9 +1489,15 @@ id|last_pfn
 op_minus
 id|curr_pfn
 suffix:semicolon
-id|free_bootmem
+id|free_bootmem_node
 c_func
 (paren
+id|NODE_DATA
+c_func
+(paren
+l_int|0
+)paren
+comma
 id|PFN_PHYS
 c_func
 (paren
@@ -1424,9 +1513,15 @@ id|pages
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * Reserve the kernel text and&n;&t; * Reserve the bootmem bitmap. We do this in two steps (first step&n;&t; * was init_bootmem()), because this catches the (definitely buggy)&n;&t; * case of us accidentally initializing the bootmem allocator with&n;&t; * an invalid RAM area.&n;&t; */
-id|reserve_bootmem
+id|reserve_bootmem_node
 c_func
 (paren
+id|NODE_DATA
+c_func
+(paren
+l_int|0
+)paren
+comma
 id|__MEMORY_START
 op_plus
 id|PAGE_SIZE
@@ -1449,9 +1544,15 @@ id|__MEMORY_START
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * reserve physical page 0 - it&squot;s a special BIOS page on many boxes,&n;&t; * enabling clean reboots, SMP operation, laptop functions.&n;&t; */
-id|reserve_bootmem
+id|reserve_bootmem_node
 c_func
 (paren
+id|NODE_DATA
+c_func
+(paren
+l_int|0
+)paren
+comma
 id|__MEMORY_START
 comma
 id|PAGE_SIZE
@@ -1480,9 +1581,15 @@ id|PAGE_SHIFT
 )paren
 )paren
 (brace
-id|reserve_bootmem
+id|reserve_bootmem_node
 c_func
 (paren
+id|NODE_DATA
+c_func
+(paren
+l_int|0
+)paren
+comma
 id|INITRD_START
 op_plus
 id|__MEMORY_START

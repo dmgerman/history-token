@@ -445,6 +445,18 @@ r_int
 id|__n
 )paren
 suffix:semicolon
+DECL|macro|__HAVE_ARCH_STRLEN
+mdefine_line|#define __HAVE_ARCH_STRLEN
+r_extern
+r_int
+id|strlen
+c_func
+(paren
+r_const
+r_char
+op_star
+)paren
+suffix:semicolon
 multiline_comment|/* Don&squot;t build bcopy at all ...  */
 DECL|macro|__HAVE_ARCH_BCOPY
 mdefine_line|#define __HAVE_ARCH_BCOPY

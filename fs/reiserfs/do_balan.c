@@ -5,14 +5,10 @@ multiline_comment|/* tree will be stable until the balancing will be finished &t
 multiline_comment|/* balance the tree according to the analysis made before,&t;&t;*/
 multiline_comment|/* and using buffers obtained after all above.&t;&t;&t;&t;*/
 multiline_comment|/**&n; ** balance_leaf_when_delete&n; ** balance_leaf&n; ** do_balance&n; **&n; **/
-macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/reiserfs_fs.h&gt;
-macro_line|#else
-macro_line|#include &quot;nokernel.h&quot;
-macro_line|#endif
 macro_line|#ifdef CONFIG_REISERFS_CHECK
 DECL|variable|cur_tb
 r_struct
@@ -3244,23 +3240,6 @@ id|item_head
 op_star
 id|pasted
 suffix:semicolon
-macro_line|#ifdef REISERFS_FSCK
-r_if
-c_cond
-(paren
-op_logical_neg
-id|item_pos
-op_logical_and
-id|is_left_mergeable
-(paren
-id|tb-&gt;tb_sb
-comma
-id|tb-&gt;tb_path
-)paren
-op_eq
-l_int|1
-)paren
-macro_line|#else
 r_if
 c_cond
 (paren
@@ -3279,7 +3258,6 @@ comma
 id|tbS0-&gt;b_size
 )paren
 )paren
-macro_line|#endif
 (brace
 multiline_comment|/* if we paste into first item of S[0] and it is left mergable */
 multiline_comment|/* then increment pos_in_item by the size of the last item in L[0] */
@@ -8546,13 +8524,6 @@ id|i
 op_assign
 id|first_b
 suffix:semicolon
-macro_line|#ifdef REISERFS_FSCK
-id|mark_block_formatted
-(paren
-id|first_b-&gt;b_blocknr
-)paren
-suffix:semicolon
-macro_line|#endif
 r_return
 id|first_b
 suffix:semicolon
@@ -8802,48 +8773,6 @@ comma
 id|bh
 )paren
 suffix:semicolon
-macro_line|#if 0
-macro_line|#ifdef REISERFS_FSCK
-(brace
-r_struct
-id|buffer_head
-op_star
-id|to_be_forgotten
-suffix:semicolon
-id|to_be_forgotten
-op_assign
-id|find_buffer
-(paren
-id|bh-&gt;b_dev
-comma
-id|bh-&gt;b_blocknr
-comma
-id|bh-&gt;b_size
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|to_be_forgotten
-)paren
-(brace
-id|to_be_forgotten-&gt;b_count
-op_increment
-suffix:semicolon
-id|bforget
-(paren
-id|to_be_forgotten
-)paren
-suffix:semicolon
-)brace
-id|unmark_block_formatted
-(paren
-id|bh-&gt;b_blocknr
-)paren
-suffix:semicolon
-)brace
-macro_line|#endif
-macro_line|#endif
 )brace
 multiline_comment|/* Replace n_dest&squot;th key in buffer dest by n_src&squot;th key of buffer src.*/
 DECL|function|replace_key
@@ -9966,88 +9895,6 @@ comma
 l_string|&quot;PAP-12340: do_balance: locked buffers in TB&quot;
 )paren
 suffix:semicolon
-macro_line|#ifndef __KERNEL__
-r_if
-c_cond
-(paren
-id|atomic_read
-c_func
-(paren
-op_amp
-(paren
-id|PATH_PLAST_BUFFER
-c_func
-(paren
-id|tb-&gt;tb_path
-)paren
-op_member_access_from_pointer
-id|b_count
-)paren
-)paren
-OG
-l_int|1
-op_logical_or
-(paren
-id|tb-&gt;L
-(braket
-l_int|0
-)braket
-op_logical_and
-id|atomic_read
-c_func
-(paren
-op_amp
-(paren
-id|tb-&gt;L
-(braket
-l_int|0
-)braket
-op_member_access_from_pointer
-id|b_count
-)paren
-)paren
-OG
-l_int|1
-)paren
-op_logical_or
-(paren
-id|tb-&gt;R
-(braket
-l_int|0
-)braket
-op_logical_and
-id|atomic_read
-c_func
-(paren
-op_amp
-(paren
-id|tb-&gt;R
-(braket
-l_int|0
-)braket
-op_member_access_from_pointer
-id|b_count
-)paren
-)paren
-OG
-l_int|1
-)paren
-)paren
-(brace
-id|print_cur_tb
-(paren
-l_string|&quot;first three parameters are invalid&quot;
-)paren
-suffix:semicolon
-id|reiserfs_panic
-(paren
-id|tb-&gt;tb_sb
-comma
-l_string|&quot;PAP-12345: do_balance: counter too big&quot;
-)paren
-suffix:semicolon
-)brace
-macro_line|#endif /* !__KERNEL__ */
 id|cur_tb
 op_assign
 id|tb
@@ -10221,111 +10068,6 @@ id|do_balance_starts
 id|tb
 )paren
 suffix:semicolon
-macro_line|#ifdef REISERFS_FSCK
-r_if
-c_cond
-(paren
-id|flag
-op_eq
-id|M_INTERNAL
-)paren
-(brace
-id|insert_ptr
-(braket
-l_int|0
-)braket
-op_assign
-(paren
-r_struct
-id|buffer_head
-op_star
-)paren
-id|body
-suffix:semicolon
-multiline_comment|/* we must prepare insert_key */
-r_if
-c_cond
-(paren
-id|PATH_H_B_ITEM_ORDER
-(paren
-id|tb-&gt;tb_path
-comma
-l_int|0
-)paren
-multiline_comment|/*LAST_POSITION (tb-&gt;tb_path)*/
-multiline_comment|/*item_pos*/
-op_eq
-op_minus
-l_int|1
-)paren
-(brace
-multiline_comment|/* get delimiting key from buffer in tree */
-id|copy_key
-(paren
-op_amp
-id|insert_key
-(braket
-l_int|0
-)braket
-dot
-id|ih_key
-comma
-id|B_N_PKEY
-(paren
-id|PATH_PLAST_BUFFER
-(paren
-id|tb-&gt;tb_path
-)paren
-comma
-l_int|0
-)paren
-)paren
-suffix:semicolon
-multiline_comment|/*insert_ptr[0]-&gt;b_item_order = 0;*/
-)brace
-r_else
-(brace
-multiline_comment|/* get delimiting key from new buffer */
-id|copy_key
-(paren
-op_amp
-id|insert_key
-(braket
-l_int|0
-)braket
-dot
-id|ih_key
-comma
-id|B_N_PKEY
-c_func
-(paren
-(paren
-r_struct
-id|buffer_head
-op_star
-)paren
-id|body
-comma
-l_int|0
-)paren
-)paren
-suffix:semicolon
-multiline_comment|/*insert_ptr[0]-&gt;b_item_order = item_pos;*/
-)brace
-multiline_comment|/* and insert_ptr instead of balance_leaf */
-id|child_pos
-op_assign
-id|PATH_H_B_ITEM_ORDER
-(paren
-id|tb-&gt;tb_path
-comma
-l_int|0
-)paren
-multiline_comment|/*item_pos*/
-suffix:semicolon
-)brace
-r_else
-macro_line|#endif
 multiline_comment|/* balance leaf returns 0 except if combining L R and S into&n;&t;   one node.  see balance_internal() for explanation of this&n;&t;   line of code.*/
 id|child_pos
 op_assign

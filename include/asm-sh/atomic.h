@@ -319,5 +319,14 @@ id|flags
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* Atomic operations are already serializing on SH */
+DECL|macro|smp_mb__before_atomic_dec
+mdefine_line|#define smp_mb__before_atomic_dec()&t;barrier()
+DECL|macro|smp_mb__after_atomic_dec
+mdefine_line|#define smp_mb__after_atomic_dec()&t;barrier()
+DECL|macro|smp_mb__before_atomic_inc
+mdefine_line|#define smp_mb__before_atomic_inc()&t;barrier()
+DECL|macro|smp_mb__after_atomic_inc
+mdefine_line|#define smp_mb__after_atomic_inc()&t;barrier()
 macro_line|#endif /* __ASM_SH_ATOMIC_H */
 eof

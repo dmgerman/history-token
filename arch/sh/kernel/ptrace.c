@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: ptrace.c,v 1.6 2000/06/08 23:44:50 gniibe Exp $&n; *&n; * linux/arch/sh/kernel/ptrace.c&n; *&n; * Original x86 implementation:&n; *&t;By Ross Biro 1/23/92&n; *&t;edited by Linus Torvalds&n; *&n; * SuperH version:   Copyright (C) 1999, 2000  Kaz Kojima &amp; Niibe Yutaka&n; *&n; */
+multiline_comment|/* $Id: ptrace.c,v 1.12 2001/07/23 00:00:56 gniibe Exp $&n; *&n; * linux/arch/sh/kernel/ptrace.c&n; *&n; * Original x86 implementation:&n; *&t;By Ross Biro 1/23/92&n; *&t;edited by Linus Torvalds&n; *&n; * SuperH version:   Copyright (C) 1999, 2000  Kaz Kojima &amp; Niibe Yutaka&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -568,7 +568,12 @@ comma
 id|UBC_BASRA
 )paren
 suffix:semicolon
-macro_line|#if defined(CONFIG_CPU_SUBTYPE_SH7709)
+r_if
+c_cond
+(paren
+id|UBC_TYPE_SH7729
+)paren
+(brace
 id|ctrl_outl
 c_func
 (paren
@@ -577,7 +582,21 @@ comma
 id|UBC_BAMRA
 )paren
 suffix:semicolon
-macro_line|#else
+id|ctrl_outw
+c_func
+(paren
+id|BBR_INST
+op_or
+id|BBR_READ
+op_or
+id|BBR_CPU
+comma
+id|UBC_BBRA
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
 id|ctrl_outb
 c_func
 (paren
@@ -586,7 +605,6 @@ comma
 id|UBC_BAMRA
 )paren
 suffix:semicolon
-macro_line|#endif
 id|ctrl_outw
 c_func
 (paren
@@ -597,6 +615,7 @@ comma
 id|UBC_BBRA
 )paren
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -626,16 +645,35 @@ comma
 id|UBC_BASRB
 )paren
 suffix:semicolon
-macro_line|#if defined(CONFIG_CPU_SUBTYPE_SH7709)
+r_if
+c_cond
+(paren
+id|UBC_TYPE_SH7729
+)paren
+(brace
 id|ctrl_outl
 c_func
 (paren
 l_int|0x0fff
 comma
-id|UBC_BAMRA
+id|UBC_BAMRB
 )paren
 suffix:semicolon
-macro_line|#else
+id|ctrl_outw
+c_func
+(paren
+id|BBR_INST
+op_or
+id|BBR_READ
+op_or
+id|BBR_CPU
+comma
+id|UBC_BBRB
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
 id|ctrl_outb
 c_func
 (paren
@@ -644,7 +682,6 @@ comma
 id|UBC_BAMRB
 )paren
 suffix:semicolon
-macro_line|#endif
 id|ctrl_outw
 c_func
 (paren
@@ -656,6 +693,27 @@ id|UBC_BBRB
 )paren
 suffix:semicolon
 )brace
+)brace
+r_if
+c_cond
+(paren
+id|UBC_TYPE_SH7729
+)paren
+(brace
+id|ctrl_outl
+c_func
+(paren
+id|BRCR_PCBA
+op_or
+id|BRCR_PCBB
+op_or
+id|BRCR_PCTE
+comma
+id|UBC_BRCR
+)paren
+suffix:semicolon
+)brace
+r_else
 id|ctrl_outw
 c_func
 (paren

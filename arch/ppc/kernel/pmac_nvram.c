@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.pmac_nvram.c 1.13 08/19/01 22:23:04 paulus&n; */
+multiline_comment|/*&n; * BK Id: SCCS/s.pmac_nvram.c 1.15 09/08/01 15:47:42 paulus&n; */
 multiline_comment|/*&n; * Miscellaneous procedures for dealing with the PowerMac hardware.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -8,7 +8,7 @@ macro_line|#include &lt;linux/nvram.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
-macro_line|#include &lt;asm/init.h&gt;
+macro_line|#include &lt;asm/sections.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/prom.h&gt;

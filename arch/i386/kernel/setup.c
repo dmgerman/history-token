@@ -2666,48 +2666,6 @@ l_string|&quot;user&quot;
 suffix:semicolon
 )brace
 )brace
-DECL|macro|PFN_UP
-mdefine_line|#define PFN_UP(x)&t;(((x) + PAGE_SIZE-1) &gt;&gt; PAGE_SHIFT)
-DECL|macro|PFN_DOWN
-mdefine_line|#define PFN_DOWN(x)&t;((x) &gt;&gt; PAGE_SHIFT)
-DECL|macro|PFN_PHYS
-mdefine_line|#define PFN_PHYS(x)&t;((x) &lt;&lt; PAGE_SHIFT)
-multiline_comment|/*&n; * 128MB for vmalloc and initrd&n; */
-DECL|macro|VMALLOC_RESERVE
-mdefine_line|#define VMALLOC_RESERVE&t;(unsigned long)(128 &lt;&lt; 20)
-DECL|macro|MAXMEM
-mdefine_line|#define MAXMEM&t;&t;(unsigned long)(-PAGE_OFFSET-VMALLOC_RESERVE)
-DECL|macro|MAXMEM_PFN
-mdefine_line|#define MAXMEM_PFN&t;PFN_DOWN(MAXMEM)
-DECL|macro|MAX_NONPAE_PFN
-mdefine_line|#define MAX_NONPAE_PFN&t;(1 &lt;&lt; 20)
-multiline_comment|/* On x86 for 1GB low mem the bootmem_bitmap is at worst 32k&n; * that is big but nothing to worry about.  This must be in the kernels&n; * initial page tables so don&squot;t even try to get fancy where we allocate it.&n; * This data must be aligned on a page boundary so since I don&squot;t&n; * have a handlig __aligned_page_size attribute I allocate an extra&n; * PAGE_SIZE -1 bytes.&n; */
-DECL|variable|__initdata
-r_static
-r_int
-r_char
-id|bootmem_bitmap
-(braket
-(paren
-(paren
-id|MAXMEM_PFN
-op_plus
-l_int|7
-)paren
-op_div
-l_int|8
-)paren
-op_plus
-id|PAGE_SIZE
-op_minus
-l_int|1
-)braket
-id|__initdata
-op_assign
-(brace
-l_int|0
-)brace
-suffix:semicolon
 DECL|function|setup_arch
 r_void
 id|__init
@@ -2722,7 +2680,7 @@ id|cmdline_p
 (brace
 r_int
 r_int
-id|bootmap_pfn
+id|bootmap_size
 comma
 id|low_mem_size
 suffix:semicolon
@@ -2893,7 +2851,7 @@ id|_end
 suffix:semicolon
 id|code_resource.start
 op_assign
-id|virt_to_phys
+id|virt_to_bus
 c_func
 (paren
 op_amp
@@ -2902,7 +2860,7 @@ id|_text
 suffix:semicolon
 id|code_resource.end
 op_assign
-id|virt_to_phys
+id|virt_to_bus
 c_func
 (paren
 op_amp
@@ -2913,7 +2871,7 @@ l_int|1
 suffix:semicolon
 id|data_resource.start
 op_assign
-id|virt_to_phys
+id|virt_to_bus
 c_func
 (paren
 op_amp
@@ -2922,7 +2880,7 @@ id|_etext
 suffix:semicolon
 id|data_resource.end
 op_assign
-id|virt_to_phys
+id|virt_to_bus
 c_func
 (paren
 op_amp
@@ -2937,13 +2895,28 @@ c_func
 id|cmdline_p
 )paren
 suffix:semicolon
+DECL|macro|PFN_UP
+mdefine_line|#define PFN_UP(x)&t;(((x) + PAGE_SIZE-1) &gt;&gt; PAGE_SHIFT)
+DECL|macro|PFN_DOWN
+mdefine_line|#define PFN_DOWN(x)&t;((x) &gt;&gt; PAGE_SHIFT)
+DECL|macro|PFN_PHYS
+mdefine_line|#define PFN_PHYS(x)&t;((x) &lt;&lt; PAGE_SHIFT)
+multiline_comment|/*&n; * 128MB for vmalloc and initrd&n; */
+DECL|macro|VMALLOC_RESERVE
+mdefine_line|#define VMALLOC_RESERVE&t;(unsigned long)(128 &lt;&lt; 20)
+DECL|macro|MAXMEM
+mdefine_line|#define MAXMEM&t;&t;(unsigned long)(-PAGE_OFFSET-VMALLOC_RESERVE)
+DECL|macro|MAXMEM_PFN
+mdefine_line|#define MAXMEM_PFN&t;PFN_DOWN(MAXMEM)
+DECL|macro|MAX_NONPAE_PFN
+mdefine_line|#define MAX_NONPAE_PFN&t;(1 &lt;&lt; 20)
 multiline_comment|/*&n;&t; * partially used pages are not usable - thus&n;&t; * we are rounding upwards:&n;&t; */
 id|start_pfn
 op_assign
 id|PFN_UP
 c_func
 (paren
-id|virt_to_phys
+id|__pa
 c_func
 (paren
 op_amp
@@ -3167,23 +3140,12 @@ suffix:semicolon
 )brace
 macro_line|#endif
 multiline_comment|/*&n;&t; * Initialize the boot-time allocator (with low memory only):&n;&t; */
-id|bootmap_pfn
+id|bootmap_size
 op_assign
-id|PFN_UP
-c_func
-(paren
-id|virt_to_phys
-c_func
-(paren
-op_amp
-id|bootmem_bitmap
-)paren
-)paren
-suffix:semicolon
 id|init_bootmem
 c_func
 (paren
-id|bootmap_pfn
+id|start_pfn
 comma
 id|max_low_pfn
 )paren
@@ -3315,103 +3277,31 @@ id|size
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* &n;&t; * Reserve the kernel memory.&n;&t; */
+multiline_comment|/*&n;&t; * Reserve the bootmem bitmap itself as well. We do this in two&n;&t; * steps (first step was init_bootmem()) because this catches&n;&t; * the (very unlikely) case of us accidentally initializing the&n;&t; * bootmem allocator with an invalid RAM area.&n;&t; */
 id|reserve_bootmem
 c_func
 (paren
 id|HIGH_MEMORY
 comma
+(paren
 id|PFN_PHYS
 c_func
 (paren
 id|start_pfn
 )paren
 op_plus
+id|bootmap_size
+op_plus
 id|PAGE_SIZE
 op_minus
 l_int|1
+)paren
 op_minus
 (paren
 id|HIGH_MEMORY
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* &n;&t; * Reserve the initrd &n;&t; */
-macro_line|#ifdef CONFIG_BLK_DEV_INITRD
-id|initrd_start
-op_assign
-l_int|0
-suffix:semicolon
-id|initrd_end
-op_assign
-l_int|0
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|LOADER_TYPE
-op_logical_and
-id|INITRD_START
-op_logical_and
-id|INITRD_SIZE
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|INITRD_START
-op_plus
-id|INITRD_SIZE
-op_le
-(paren
-id|max_low_pfn
-op_lshift
-id|PAGE_SHIFT
-)paren
-)paren
-(brace
-id|reserve_bootmem
-c_func
-(paren
-id|INITRD_START
-comma
-id|INITRD_SIZE
-)paren
-suffix:semicolon
-id|initrd_start
-op_assign
-id|INITRD_START
-op_plus
-id|PAGE_OFFSET
-suffix:semicolon
-id|initrd_end
-op_assign
-id|initrd_start
-op_plus
-id|INITRD_SIZE
-suffix:semicolon
-)brace
-r_else
-(brace
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;initrd extends beyond end of memory &quot;
-l_string|&quot;(0x%08lx &gt; 0x%08lx)&bslash;ndisabling initrd&bslash;n&quot;
-comma
-id|INITRD_START
-op_plus
-id|INITRD_SIZE
-comma
-id|max_low_pfn
-op_lshift
-id|PAGE_SHIFT
-)paren
-suffix:semicolon
-)brace
-)brace
-macro_line|#endif
 multiline_comment|/*&n;&t; * reserve physical page 0 - it&squot;s a special BIOS page on many boxes,&n;&t; * enabling clean reboots, SMP operation, laptop functions.&n;&t; */
 id|reserve_bootmem
 c_func
@@ -3470,6 +3360,80 @@ c_func
 (paren
 )paren
 suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef CONFIG_BLK_DEV_INITRD
+r_if
+c_cond
+(paren
+id|LOADER_TYPE
+op_logical_and
+id|INITRD_START
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|INITRD_START
+op_plus
+id|INITRD_SIZE
+op_le
+(paren
+id|max_low_pfn
+op_lshift
+id|PAGE_SHIFT
+)paren
+)paren
+(brace
+id|reserve_bootmem
+c_func
+(paren
+id|INITRD_START
+comma
+id|INITRD_SIZE
+)paren
+suffix:semicolon
+id|initrd_start
+op_assign
+id|INITRD_START
+ques
+c_cond
+id|INITRD_START
+op_plus
+id|PAGE_OFFSET
+suffix:colon
+l_int|0
+suffix:semicolon
+id|initrd_end
+op_assign
+id|initrd_start
+op_plus
+id|INITRD_SIZE
+suffix:semicolon
+)brace
+r_else
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;initrd extends beyond end of memory &quot;
+l_string|&quot;(0x%08lx &gt; 0x%08lx)&bslash;ndisabling initrd&bslash;n&quot;
+comma
+id|INITRD_START
+op_plus
+id|INITRD_SIZE
+comma
+id|max_low_pfn
+op_lshift
+id|PAGE_SHIFT
+)paren
+suffix:semicolon
+id|initrd_start
+op_assign
+l_int|0
+suffix:semicolon
+)brace
+)brace
 macro_line|#endif
 multiline_comment|/*&n;&t; * Request address space for all standard RAM and ROM resources&n;&t; * and also for regions reported as reserved by the e820.&n;&t; */
 id|probe_roms

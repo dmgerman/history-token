@@ -205,6 +205,46 @@ suffix:semicolon
 multiline_comment|/* one per physical disc */
 )brace
 suffix:semicolon
+multiline_comment|/* drivers/block/genhd.c */
+r_extern
+r_struct
+id|gendisk
+op_star
+id|gendisk_head
+suffix:semicolon
+r_extern
+r_void
+id|add_gendisk
+c_func
+(paren
+r_struct
+id|gendisk
+op_star
+id|gp
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|del_gendisk
+c_func
+(paren
+r_struct
+id|gendisk
+op_star
+id|gp
+)paren
+suffix:semicolon
+r_extern
+r_struct
+id|gendisk
+op_star
+id|get_gendisk
+c_func
+(paren
+id|kdev_t
+id|dev
+)paren
+suffix:semicolon
 macro_line|#endif  /*  __KERNEL__  */
 macro_line|#ifdef CONFIG_SOLARIS_X86_PARTITION
 DECL|macro|SOLARIS_X86_NUMSLICE
@@ -757,13 +797,6 @@ DECL|macro|MINIX_NR_SUBPARTITIONS
 macro_line|#   define MINIX_NR_SUBPARTITIONS  4
 macro_line|#endif /* CONFIG_MINIX_SUBPARTITION */
 macro_line|#ifdef __KERNEL__
-r_extern
-r_struct
-id|gendisk
-op_star
-id|gendisk_head
-suffix:semicolon
-multiline_comment|/* linked list of disks */
 r_char
 op_star
 id|disk_name

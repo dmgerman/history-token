@@ -203,7 +203,7 @@ l_int|27
 id|rdmsr
 c_func
 (paren
-id|MSR_IA32_MC0_ADDR
+id|MSR_IA32_MC0_MISC
 op_plus
 id|i
 op_star

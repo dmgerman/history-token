@@ -6050,17 +6050,13 @@ op_assign
 l_int|8
 suffix:semicolon
 multiline_comment|/* 8 sector (4kB?) read ahread */
-macro_line|#ifndef MODULE
-id|mfm_gendisk.next
-op_assign
-id|gendisk_head
-suffix:semicolon
-id|gendisk_head
-op_assign
+id|add_gendisk
+c_func
+(paren
 op_amp
 id|mfm_gendisk
+)paren
 suffix:semicolon
-macro_line|#endif
 id|Busy
 op_assign
 l_int|0
@@ -6339,6 +6335,13 @@ c_func
 id|MAJOR_NR
 comma
 l_string|&quot;mfm&quot;
+)paren
+suffix:semicolon
+id|del_gendisk
+c_func
+(paren
+op_amp
+id|mfm_gendisk
 )paren
 suffix:semicolon
 r_if

@@ -2,6 +2,7 @@ macro_line|#ifndef __ASM_SH_PCI_H
 DECL|macro|__ASM_SH_PCI_H
 mdefine_line|#define __ASM_SH_PCI_H
 macro_line|#ifdef __KERNEL__
+macro_line|#include &lt;linux/config.h&gt;
 multiline_comment|/* Can be used to override the logic in pci_scan_bus for skipping&n;   already-configured bus numbers - to be used for buggy BIOSes&n;   or architectures with incomplete PCI setup by the loader */
 DECL|macro|pcibios_assign_all_busses
 mdefine_line|#define pcibios_assign_all_busses()&t;1
@@ -21,7 +22,7 @@ DECL|macro|PCIBIOS_MIN_IO
 mdefine_line|#define PCIBIOS_MIN_IO&t;&t;0x2000
 DECL|macro|PCIBIOS_MIN_MEM
 mdefine_line|#define PCIBIOS_MIN_MEM&t;&t;0xFD000000
-macro_line|#elif defined(CONFIG_SH_7751_SOLUTION_ENGINE) &amp;&amp; defined(CONFIG_CPU_SUBTYPE_SH7751)
+macro_line|#elif defined(CONFIG_SH_7751_SOLUTION_ENGINE)
 DECL|macro|PCIBIOS_MIN_IO
 mdefine_line|#define PCIBIOS_MIN_IO          0x4000
 DECL|macro|PCIBIOS_MIN_MEM
@@ -41,10 +42,6 @@ op_star
 id|dev
 )paren
 suffix:semicolon
-singleline_comment|//static inline void pcibios_set_master(struct pci_dev *dev)
-singleline_comment|//{
-multiline_comment|/* No special bus mastering setup handling */
-singleline_comment|//}
 DECL|function|pcibios_penalize_isa_irq
 r_static
 r_inline
@@ -127,14 +124,31 @@ r_int
 id|size
 comma
 r_int
-id|directoin
+id|direction
 )paren
 (brace
-id|flush_cache_all
+r_if
+c_cond
+(paren
+id|direction
+op_eq
+id|PCI_DMA_NONE
+)paren
+id|BUG
 c_func
 (paren
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_SH_PCIDMA_NONCOHERENT
+id|dma_cache_wback_inv
+c_func
+(paren
+id|ptr
+comma
+id|size
+)paren
+suffix:semicolon
+macro_line|#endif
 r_return
 id|virt_to_bus
 c_func
@@ -193,7 +207,51 @@ r_int
 id|direction
 )paren
 (brace
-id|flush_cache_all
+macro_line|#ifdef CONFIG_SH_PCIDMA_NONCOHERENT
+r_int
+id|i
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+id|nents
+suffix:semicolon
+id|i
+op_increment
+)paren
+id|dma_cache_wback_inv
+c_func
+(paren
+id|sg
+(braket
+id|i
+)braket
+dot
+id|address
+comma
+id|sg
+(braket
+id|i
+)braket
+dot
+id|length
+)paren
+suffix:semicolon
+macro_line|#endif
+r_if
+c_cond
+(paren
+id|direction
+op_eq
+id|PCI_DMA_NONE
+)paren
+id|BUG
 c_func
 (paren
 )paren
@@ -252,7 +310,32 @@ r_int
 id|direction
 )paren
 (brace
-multiline_comment|/* Nothing to do */
+r_if
+c_cond
+(paren
+id|direction
+op_eq
+id|PCI_DMA_NONE
+)paren
+id|BUG
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#ifdef CONFIG_SH_PCIDMA_NONCOHERENT
+id|dma_cache_wback_inv
+c_func
+(paren
+id|bus_to_virt
+c_func
+(paren
+id|dma_handle
+)paren
+comma
+id|size
+)paren
+suffix:semicolon
+macro_line|#endif
 )brace
 multiline_comment|/* Make physical memory consistent for a set of streaming&n; * mode DMA translations after a transfer.&n; *&n; * The same as pci_dma_sync_single but for a scatter-gather list,&n; * same rules and usage.&n; */
 DECL|function|pci_dma_sync_sg
@@ -279,11 +362,59 @@ r_int
 id|direction
 )paren
 (brace
-multiline_comment|/* Nothing to do */
+r_if
+c_cond
+(paren
+id|direction
+op_eq
+id|PCI_DMA_NONE
+)paren
+id|BUG
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#ifdef CONFIG_SH_PCIDMA_NONCOHERENT
+r_int
+id|i
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+id|nelems
+suffix:semicolon
+id|i
+op_increment
+)paren
+id|dma_cache_wback_inv
+c_func
+(paren
+id|sg
+(braket
+id|i
+)braket
+dot
+id|address
+comma
+id|sg
+(braket
+id|i
+)braket
+dot
+id|length
+)paren
+suffix:semicolon
+macro_line|#endif
 )brace
 multiline_comment|/* Return whether the given PCI device DMA address mask can&n; * be supported properly.  For example, if your device can&n; * only drive the low 24-bits during PCI bus mastering, then&n; * you would pass 0x00ffffff as the mask to this function.&n; */
 DECL|function|pci_dma_supported
-r_extern
+r_static
 r_inline
 r_int
 id|pci_dma_supported

@@ -578,6 +578,20 @@ id|mv_hw_bigsur
 suffix:colon
 l_int|1
 suffix:semicolon
+DECL|member|mv_hw_7751se
+r_int
+r_int
+id|mv_hw_7751se
+suffix:colon
+l_int|1
+suffix:semicolon
+DECL|member|mv_hw_adx
+r_int
+r_int
+id|mv_hw_adx
+suffix:colon
+l_int|1
+suffix:semicolon
 )brace
 suffix:semicolon
 r_extern
@@ -607,13 +621,24 @@ DECL|macro|MACH_DREAMCAST
 mdefine_line|#define MACH_DREAMCAST&t;(sh_mv.mv_hw_dreamcast)
 DECL|macro|MACH_BIGSUR
 mdefine_line|#define MACH_BIGSUR&t;(sh_mv.mv_hw_bigsur)
+DECL|macro|MACH_7751SE
+mdefine_line|#define MACH_7751SE&t;(sh_mv.mv_hw_7751se)
+DECL|macro|MACH_ADX
+mdefine_line|#define MACH_ADX&t;(sh_mv.mv_hw_adx)
 macro_line|#else
-macro_line|# if defined(CONFIG_SH_SOLUTION_ENGINE) || &bslash;&n;     defined(CONFIG_SH_7751_SOLUTION_ENGINE)
+macro_line|# ifdef CONFIG_SH_SOLUTION_ENGINE
 DECL|macro|MACH_SE
 macro_line|#  define MACH_SE&t;&t;1
 macro_line|# else
 DECL|macro|MACH_SE
 macro_line|#  define MACH_SE&t;&t;0
+macro_line|# endif
+macro_line|# ifdef CONFIG_SH_7751_SOLUTION_ENGINE
+DECL|macro|MACH_7751SE
+macro_line|#  define MACH_7751SE&t;&t;1
+macro_line|# else
+DECL|macro|MACH_7751SE
+macro_line|#  define MACH_7751SE&t;&t;0
 macro_line|# endif
 macro_line|# ifdef CONFIG_SH_HP600
 DECL|macro|MACH_HP600
@@ -642,7 +667,6 @@ macro_line|#  define MACH_HP690&t;&t;1
 macro_line|# else
 DECL|macro|MACH_HP690
 macro_line|#  define MACH_HP690&t;&t;0
-macro_line|# endif
 macro_line|# endif
 macro_line|# ifdef CONFIG_HD64461
 DECL|macro|MACH_HD64461
@@ -685,6 +709,14 @@ macro_line|#  define MACH_BIGSUR&t;&t;1
 macro_line|# else
 DECL|macro|MACH_BIGSUR
 macro_line|#  define MACH_BIGSUR&t;&t;0
+macro_line|# endif
+macro_line|# ifdef CONFIG_SH_ADX
+DECL|macro|MACH_ADX
+macro_line|#  define MACH_ADX&t;&t;1
+macro_line|# else
+DECL|macro|MACH_ADX
+macro_line|#  define MACH_ADX&t;&t;0
+macro_line|# endif
 macro_line|#endif
 macro_line|#endif /* _ASM_SH_MACHVEC_H */
 eof

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.prep_setup.c 1.34 08/29/01 10:07:29 paulus&n; */
+multiline_comment|/*&n; * BK Id: SCCS/s.prep_setup.c 1.36 09/08/01 15:47:42 paulus&n; */
 multiline_comment|/*&n; *  linux/arch/ppc/kernel/setup.c&n; *&n; *  Copyright (C) 1995  Linus Torvalds&n; *  Adapted from &squot;alpha&squot; version by Gary Thomas&n; *  Modified by Cort Dougan (cort@cs.nmt.edu)&n; *&n; * Support for PReP (Motorola MTX/MVME)&n; * by Troy Benjegerdes (hozer@drgw.net)&n; */
 multiline_comment|/*&n; * bootup setup stuff..&n; */
 macro_line|#include &lt;linux/config.h&gt;
@@ -25,7 +25,7 @@ macro_line|#include &lt;linux/console.h&gt;
 macro_line|#include &lt;linux/timex.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/ide.h&gt;
-macro_line|#include &lt;asm/init.h&gt;
+macro_line|#include &lt;asm/sections.h&gt;
 macro_line|#include &lt;asm/mmu.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/residual.h&gt;

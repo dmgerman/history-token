@@ -15,7 +15,5 @@ DECL|macro|in_softirq
 mdefine_line|#define in_softirq()&t;&t;(local_bh_count(smp_processor_id()) != 0)
 DECL|macro|local_bh_enable
 mdefine_line|#define local_bh_enable()&t;&t;&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;unsigned int *ptr = &amp;local_bh_count(smp_processor_id());&t;&bslash;&n;&t;if (!--*ptr &amp;&amp; ptr[-2])&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__asm__(&quot;bl%? __do_softirq&quot;: : : &quot;lr&quot;);/* out of line */&bslash;&n;} while (0)
-DECL|macro|__cpu_raise_softirq
-mdefine_line|#define __cpu_raise_softirq(cpu, nr) __set_bit(nr, &amp;softirq_pending(cpu))
 macro_line|#endif&t;/* __ASM_SOFTIRQ_H */
 eof

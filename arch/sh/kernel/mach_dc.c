@@ -1,6 +1,7 @@
-multiline_comment|/*&n; *&t;$Id: mach_dc.c,v 1.4 2001/05/24 05:09:16 mrbrown Exp $&n; *&t;SEGA Dreamcast machine vector&n; */
+multiline_comment|/*&n; *&t;$Id: mach_dc.c,v 1.5 2001/09/01 14:34:31 mrbrown Exp $&n; *&t;SEGA Dreamcast machine vector&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;asm/machvec.h&gt;
 macro_line|#include &lt;asm/machvec_init.h&gt;
 macro_line|#include &lt;asm/io_generic.h&gt;
@@ -20,6 +21,28 @@ id|dreamcast_pcibios_init
 c_func
 (paren
 r_void
+)paren
+suffix:semicolon
+multiline_comment|/* Custom Dreamcast RTC routines */
+r_void
+id|aica_rtc_gettimeofday
+c_func
+(paren
+r_struct
+id|timeval
+op_star
+id|tv
+)paren
+suffix:semicolon
+r_int
+id|aica_rtc_settimeofday
+c_func
+(paren
+r_const
+r_struct
+id|timeval
+op_star
+id|tv
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * The Machine Vector&n; */
@@ -153,6 +176,14 @@ comma
 id|mv_irq_demux
 suffix:colon
 id|systemasic_irq_demux
+comma
+id|mv_rtc_gettimeofday
+suffix:colon
+id|aica_rtc_gettimeofday
+comma
+id|mv_rtc_settimeofday
+suffix:colon
+id|aica_rtc_settimeofday
 comma
 id|mv_hw_dreamcast
 suffix:colon

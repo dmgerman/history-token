@@ -1,11 +1,11 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.pmac_backlight.c 1.5 05/17/01 18:14:21 cort&n; */
+multiline_comment|/*&n; * BK Id: SCCS/s.pmac_backlight.c 1.8 09/08/01 15:47:42 paulus&n; */
 multiline_comment|/*&n; * Miscellaneous procedures for dealing with the PowerMac hardware.&n; * Contains support for the backlight.&n; * &n; *   Copyright (C) 2000 Benjamin Herrenschmidt&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/stddef.h&gt;
 macro_line|#include &lt;linux/reboot.h&gt;
 macro_line|#include &lt;linux/nvram.h&gt;
-macro_line|#include &lt;asm/init.h&gt;
+macro_line|#include &lt;asm/sections.h&gt;
 macro_line|#include &lt;asm/ptrace.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;

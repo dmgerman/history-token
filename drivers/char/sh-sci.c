@@ -27,7 +27,7 @@ macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;linux/generic_serial.h&gt;
-macro_line|#ifdef CONFIG_DEBUG_KERNEL_WITH_GDB_STUB
+macro_line|#ifdef CONFIG_SH_STANDARD_BIOS
 macro_line|#include &lt;asm/sh_bios.h&gt;
 macro_line|#endif
 macro_line|#include &quot;sh-sci.h&quot;
@@ -312,6 +312,7 @@ suffix:semicolon
 macro_line|#endif
 DECL|macro|dprintk
 mdefine_line|#define dprintk(x...) do { if (sci_debug) printk(x); } while(0)
+macro_line|#ifdef CONFIG_SERIAL_CONSOLE
 DECL|function|put_char
 r_static
 r_void
@@ -407,7 +408,8 @@ id|flags
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_DEBUG_KERNEL_WITH_GDB_STUB
+macro_line|#endif
+macro_line|#ifdef CONFIG_SH_STANDARD_BIOS
 DECL|function|handle_error
 r_static
 r_void
@@ -614,6 +616,7 @@ suffix:semicolon
 )brace
 macro_line|#endif
 multiline_comment|/*&n; * Send the packet in buffer.  The host gets one chance to read it.&n; * This routine does not wait for a positive acknowledge.&n; */
+macro_line|#ifdef CONFIG_SERIAL_CONSOLE
 DECL|function|put_string
 r_static
 r_void
@@ -645,7 +648,7 @@ id|p
 op_assign
 id|buffer
 suffix:semicolon
-macro_line|#ifdef CONFIG_DEBUG_KERNEL_WITH_GDB_STUB
+macro_line|#ifdef CONFIG_SH_STANDARD_BIOS
 r_int
 id|checksum
 suffix:semicolon
@@ -844,6 +847,7 @@ op_increment
 suffix:semicolon
 )brace
 )brace
+macro_line|#endif
 DECL|variable|sci_real_driver
 r_static
 r_struct
@@ -5326,7 +5330,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_DEBUG_KERNEL_WITH_GDB_STUB
+macro_line|#ifdef CONFIG_SH_STANDARD_BIOS
 id|sh_bios_gdb_detach
 c_func
 (paren

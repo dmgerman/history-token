@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: ioremap.c,v 1.2 1999/11/25 14:00:28 gniibe Exp $&n; *&n; * arch/sh/mm/ioremap.c&n; *&n; * Re-map IO memory to kernel address space so that we can access it.&n; * This is needed for high PCI addresses that aren&squot;t mapped in the&n; * 640k-1MB IO memory area on PC&squot;s&n; *&n; * (C) Copyright 1995 1996 Linus Torvalds&n; */
+multiline_comment|/* $Id: ioremap.c,v 1.4 2001/06/30 09:18:39 gniibe Exp $&n; *&n; * arch/sh/mm/ioremap.c&n; *&n; * Re-map IO memory to kernel address space so that we can access it.&n; * This is needed for high PCI addresses that aren&squot;t mapped in the&n; * 640k-1MB IO memory area on PC&squot;s&n; *&n; * (C) Copyright 1995 1996 Linus Torvalds&n; */
 macro_line|#include &lt;linux/vmalloc.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
@@ -146,9 +146,11 @@ c_loop
 (paren
 id|address
 op_logical_and
+(paren
 id|address
 OL
 id|end
+)paren
 )paren
 suffix:semicolon
 )brace
@@ -286,9 +288,11 @@ c_loop
 (paren
 id|address
 op_logical_and
+(paren
 id|address
 OL
 id|end
+)paren
 )paren
 suffix:semicolon
 r_return
@@ -296,7 +300,6 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|remap_area_pages
-r_static
 r_int
 id|remap_area_pages
 c_func
@@ -339,12 +342,9 @@ id|address
 suffix:semicolon
 id|dir
 op_assign
-id|pgd_offset
+id|pgd_offset_k
 c_func
 (paren
-op_amp
-id|init_mm
-comma
 id|address
 )paren
 suffix:semicolon
@@ -475,10 +475,10 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Generic mapping function (not visible outside):&n; */
 multiline_comment|/*&n; * Remap an arbitrary physical address space into the kernel virtual&n; * address space. Needed when the kernel wants to access high addresses&n; * directly.&n; *&n; * NOTE! We need to allow non-page-aligned mappings too: we will obviously&n; * have to convert them into an offset in a page-aligned mapping, but the&n; * caller shouldn&squot;t need to know that small detail.&n; */
-DECL|function|__ioremap
+DECL|function|p3_ioremap
 r_void
 op_star
-id|__ioremap
+id|p3_ioremap
 c_func
 (paren
 r_int
@@ -657,9 +657,9 @@ id|addr
 )paren
 suffix:semicolon
 )brace
-DECL|function|iounmap
+DECL|function|p3_iounmap
 r_void
-id|iounmap
+id|p3_iounmap
 c_func
 (paren
 r_void

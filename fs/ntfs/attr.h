@@ -42,12 +42,9 @@ id|ntfs_attribute
 op_star
 id|attr
 comma
+r_const
 id|__s64
-op_star
 id|len
-comma
-r_int
-id|flags
 )paren
 suffix:semicolon
 r_int

@@ -1,5 +1,6 @@
 multiline_comment|/*&n; * linux/arch/sh/kernel/led_se.c&n; *&n; * Copyright (C) 2000 Stuart Menefy &lt;stuart.menefy@st.com&gt;&n; *&n; * May be copied or modified under the terms of the GNU General Public&n; * License.  See linux/COPYING for more information.&n; *&n; * This file contains Solution Engine specific LED code.&n; */
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;asm/hitachi_se.h&gt;
 DECL|function|mach_led
 r_static
 r_void
@@ -25,7 +26,7 @@ r_int
 r_int
 op_star
 )paren
-l_int|0xb0c00000
+id|PA_LED
 suffix:semicolon
 r_if
 c_cond
@@ -91,7 +92,7 @@ r_int
 r_int
 op_star
 )paren
-l_int|0xb0c00000
+id|PA_LED
 suffix:semicolon
 r_static
 r_int

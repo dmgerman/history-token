@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: time.c,v 1.20 2000/02/28 12:42:51 gniibe Exp $&n; *&n; *  linux/arch/sh/kernel/time.c&n; *&n; *  Copyright (C) 1999  Tetsuya Okada &amp; Niibe Yutaka&n; *  Copyright (C) 2000  Philipp Rumpf &lt;prumpf@tux.org&gt;&n; *&n; *  Some code taken from i386 version.&n; *    Copyright (C) 1991, 1992, 1995  Linus Torvalds&n; */
+multiline_comment|/* $Id: time.c,v 1.30 2001/09/01 14:34:31 mrbrown Exp $&n; *&n; *  linux/arch/sh/kernel/time.c&n; *&n; *  Copyright (C) 1999  Tetsuya Okada &amp; Niibe Yutaka&n; *  Copyright (C) 2000  Philipp Rumpf &lt;prumpf@tux.org&gt;&n; *&n; *  Some code taken from i386 version.&n; *    Copyright (C) 1991, 1992, 1995  Linus Torvalds&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -437,7 +437,6 @@ c_func
 id|regs
 )paren
 suffix:semicolon
-macro_line|#if 0
 r_if
 c_cond
 (paren
@@ -454,7 +453,6 @@ c_func
 id|regs-&gt;pc
 )paren
 suffix:semicolon
-macro_line|#endif
 macro_line|#ifdef CONFIG_HEARTBEAT
 r_if
 c_cond
@@ -1780,18 +1778,6 @@ singleline_comment|// 111
 suffix:semicolon
 macro_line|#endif
 macro_line|#endif
-r_if
-c_cond
-(paren
-id|MACH_DREAMCAST
-)paren
-id|xtime.tv_sec
-op_assign
-id|xtime.tv_usec
-op_assign
-l_int|0
-suffix:semicolon
-r_else
 id|rtc_gettimeofday
 c_func
 (paren
@@ -1808,22 +1794,6 @@ op_amp
 id|irq0
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|MACH_DREAMCAST
-)paren
-id|timer_freq
-op_assign
-l_int|50
-op_star
-l_int|1000
-op_star
-l_int|1000
-op_div
-l_int|4
-suffix:semicolon
-r_else
 id|timer_freq
 op_assign
 id|get_timer_frequency
@@ -1931,19 +1901,11 @@ suffix:semicolon
 )brace
 macro_line|#elif defined(__SH4__)
 (brace
+macro_line|#ifdef CONFIG_CPU_SUBTYPE_ST40STB1
 r_int
 r_int
 id|pvr
 suffix:semicolon
-id|frqcr
-op_assign
-id|ctrl_inw
-c_func
-(paren
-id|FRQCR
-)paren
-suffix:semicolon
-macro_line|#ifdef CONFIG_CPU_SUBTYPE_ST40STB1
 multiline_comment|/* This should probably be moved into the SH3 probing code, and then use the processor&n;&t;&t; * structure to determine which CPU we are running on.&n;&t;&t; */
 id|pvr
 op_assign
@@ -2198,6 +2160,14 @@ suffix:semicolon
 r_else
 macro_line|#endif
 (brace
+id|frqcr
+op_assign
+id|ctrl_inw
+c_func
+(paren
+id|FRQCR
+)paren
+suffix:semicolon
 id|ifc
 op_assign
 id|ifc_table

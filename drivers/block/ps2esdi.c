@@ -726,14 +726,12 @@ l_int|8
 suffix:semicolon
 multiline_comment|/* 8 sector (4kB) read ahead */
 multiline_comment|/* some minor housekeeping - setup the global gendisk structure */
-id|ps2esdi_gendisk.next
-op_assign
-id|gendisk_head
-suffix:semicolon
-id|gendisk_head
-op_assign
+id|add_gendisk
+c_func
+(paren
 op_amp
 id|ps2esdi_gendisk
+)paren
 suffix:semicolon
 id|ps2esdi_geninit
 c_func
@@ -1009,6 +1007,13 @@ c_func
 id|MAJOR_NR
 comma
 l_string|&quot;ed&quot;
+)paren
+suffix:semicolon
+id|del_gendisk
+c_func
+(paren
+op_amp
+id|ps2esdi_gendisk
 )paren
 suffix:semicolon
 id|blk_cleanup_queue

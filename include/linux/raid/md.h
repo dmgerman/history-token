@@ -228,16 +228,6 @@ id|mddev
 )paren
 suffix:semicolon
 r_extern
-r_struct
-id|gendisk
-op_star
-id|find_gendisk
-(paren
-id|kdev_t
-id|dev
-)paren
-suffix:semicolon
-r_extern
 r_int
 id|md_notify_reboot
 c_func

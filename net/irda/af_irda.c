@@ -6981,7 +6981,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|optlen
+id|len
 OL
 l_int|0
 )paren

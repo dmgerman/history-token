@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: extable.c,v 1.1 1999/09/18 16:57:37 gniibe Exp $&n; *&n; * linux/arch/sh/mm/extable.c&n; *  Taken from:&n; *   linux/arch/i386/mm/extable.c&n; */
+multiline_comment|/* $Id: extable.c,v 1.2 2001/03/31 10:43:18 gniibe Exp $&n; *&n; * linux/arch/sh/mm/extable.c&n; *  Taken from:&n; *   linux/arch/i386/mm/extable.c&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;

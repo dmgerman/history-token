@@ -81,9 +81,12 @@ id|ret
 suffix:semicolon
 )brace
 multiline_comment|/* We must flush the cache before we pass it on to the device */
-id|flush_cache_all
+id|dma_cache_wback_inv
 c_func
 (paren
+id|ret
+comma
+id|size
 )paren
 suffix:semicolon
 r_return

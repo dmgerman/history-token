@@ -57,5 +57,18 @@ id|__packed__
 )paren
 id|ATTR_FLAGS
 suffix:semicolon
+multiline_comment|/*&n; * The two zones from which to allocate clusters.&n; */
+r_typedef
+r_enum
+(brace
+DECL|enumerator|MFT_ZONE
+id|MFT_ZONE
+comma
+DECL|enumerator|DATA_ZONE
+id|DATA_ZONE
+DECL|typedef|NTFS_CLUSTER_ALLOCATION_ZONES
+)brace
+id|NTFS_CLUSTER_ALLOCATION_ZONES
+suffix:semicolon
 macro_line|#endif
 eof

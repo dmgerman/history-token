@@ -77,17 +77,6 @@ op_star
 id|pgdp
 )paren
 (brace
-id|pgd_val
-c_func
-(paren
-op_star
-(paren
-id|pgdp
-)paren
-)paren
-op_assign
-l_int|0
-suffix:semicolon
 )brace
 multiline_comment|/*&n; * Certain architectures need to do special things when PTEs&n; * within a page table are directly modified.  Thus, the following&n; * hook is made available.&n; */
 DECL|macro|set_pte

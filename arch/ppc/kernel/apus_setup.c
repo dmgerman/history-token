@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.apus_setup.c 1.18 08/20/01 15:25:16 paulus&n; */
+multiline_comment|/*&n; * BK Id: SCCS/s.apus_setup.c 1.20 09/08/01 15:47:42 paulus&n; */
 multiline_comment|/*&n; *  linux/arch/ppc/kernel/apus_setup.c&n; *&n; *  Copyright (C) 1998, 1999  Jesper Skov&n; *&n; *  Basically what is needed to replace functionality found in&n; *  arch/m68k allowing Amiga drivers to work under APUS.&n; *  Bits of code and/or ideas from arch/m68k and arch/ppc files.&n; *&n; * TODO:&n; *  This file needs a *really* good cleanup. Restructure and optimize.&n; *  Make sure it can be compiled for non-APUS configs. Begin to move&n; *  Amiga specific stuff into mach/amiga.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -154,7 +154,6 @@ macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;
-macro_line|#include &lt;asm/init.h&gt;
 macro_line|#include &quot;local_irq.h&quot;
 DECL|variable|m68k_machtype
 r_int

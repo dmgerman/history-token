@@ -1,13 +1,9 @@
 multiline_comment|/*&n; * Copyright 2000 by Hans Reiser, licensing governed by reiserfs/README&n; */
-macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/reiserfs_fs.h&gt;
-macro_line|#else
-macro_line|#include &quot;nokernel.h&quot;
-macro_line|#endif
 multiline_comment|/* these are used in do_balance.c */
 multiline_comment|/* leaf_move_items&n;   leaf_shift_left&n;   leaf_shift_right&n;   leaf_delete_items&n;   leaf_insert_into_buf&n;   leaf_paste_in_buffer&n;   leaf_cut_from_buffer&n;   leaf_paste_entries&n;   */
 multiline_comment|/* copy copy_count entries from source directory item to dest buffer (creating new item if needed) */
@@ -217,53 +213,6 @@ op_minus
 l_int|1
 )paren
 op_logical_or
-macro_line|#ifdef REISERFS_FSCK
-(paren
-id|last_first
-op_eq
-id|FIRST_TO_LAST
-op_logical_and
-id|are_items_mergeable
-(paren
-id|B_N_PITEM_HEAD
-(paren
-id|dest
-comma
-id|item_num_in_dest
-)paren
-comma
-id|ih
-comma
-id|dest-&gt;b_size
-)paren
-op_eq
-l_int|0
-)paren
-op_logical_or
-(paren
-id|last_first
-op_eq
-id|LAST_TO_FIRST
-op_logical_and
-id|are_items_mergeable
-(paren
-id|ih
-comma
-id|B_N_PITEM_HEAD
-(paren
-id|dest
-comma
-id|item_num_in_dest
-)paren
-comma
-id|dest-&gt;b_size
-)paren
-op_eq
-l_int|0
-)paren
-)paren
-(brace
-macro_line|#else
 (paren
 id|last_first
 op_eq
@@ -306,7 +255,6 @@ id|item_num_in_dest
 )paren
 )paren
 (brace
-macro_line|#endif
 multiline_comment|/* create new item in dest */
 r_struct
 id|item_head
@@ -639,27 +587,6 @@ op_minus
 l_int|1
 )paren
 suffix:semicolon
-macro_line|#ifdef REISERFS_FSCK
-r_if
-c_cond
-(paren
-op_logical_neg
-id|dest_nr_item
-op_logical_or
-(paren
-id|are_items_mergeable
-(paren
-id|dih
-comma
-id|ih
-comma
-id|src-&gt;b_size
-)paren
-op_eq
-l_int|0
-)paren
-)paren
-macro_line|#else
 r_if
 c_cond
 (paren
@@ -679,7 +606,6 @@ id|src-&gt;b_size
 )paren
 )paren
 )paren
-macro_line|#endif
 multiline_comment|/* there is nothing to merge */
 r_return
 l_int|0
@@ -905,25 +831,6 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-macro_line|#ifdef REISERFS_FSCK
-r_if
-c_cond
-(paren
-op_logical_neg
-id|dest_nr_item
-op_logical_or
-id|are_items_mergeable
-(paren
-id|ih
-comma
-id|dih
-comma
-id|src-&gt;b_size
-)paren
-op_eq
-l_int|0
-)paren
-macro_line|#else
 r_if
 c_cond
 (paren
@@ -941,7 +848,6 @@ comma
 id|src-&gt;b_size
 )paren
 )paren
-macro_line|#endif
 r_return
 l_int|0
 suffix:semicolon

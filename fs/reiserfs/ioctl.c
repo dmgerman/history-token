@@ -1,14 +1,10 @@
 multiline_comment|/*&n; * Copyright 2000 by Hans Reiser, licensing governed by reiserfs/README&n; */
-macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/reiserfs_fs.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/locks.h&gt;
-macro_line|#else
-macro_line|#include &quot;nokernel.h&quot;
-macro_line|#endif
 multiline_comment|/*&n;** reiserfs_ioctl - handler for ioctl for inode&n;** supported commands:&n;**  1) REISERFS_IOC_UNPACK - try to unpack tail from direct item into indirect&n;**                           and prevent packing file (argument arg has to be non-zero)&n;**  2) That&squot;s all for a while ...&n;*/
 DECL|function|reiserfs_ioctl
 r_int

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.apus_pci.c 1.4 07/06/01 09:19:28 trini&n; */
+multiline_comment|/*&n; * BK Id: SCCS/s.apus_pci.c 1.5 09/08/01 15:47:42 paulus&n; */
 multiline_comment|/*&n; * Copyright (C) Michel D&#xfffd;nzer &lt;michdaen@iiic.ethz.ch&gt;&n; *&n; * APUS PCI routines.&n; *&n; * Currently, only B/CVisionPPC cards (Permedia2) are supported.&n; *&n; * Thanks to Geert Uytterhoeven for the idea:&n; * Read values from given config space(s) for the first devices, -1 otherwise&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#ifdef CONFIG_AMIGA
@@ -6,7 +6,6 @@ macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
-macro_line|#include &lt;asm/init.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/pci-bridge.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;

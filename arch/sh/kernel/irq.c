@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: irq.c,v 1.12 2000/03/06 14:07:50 gniibe Exp $&n; *&n; * linux/arch/sh/kernel/irq.c&n; *&n; *&t;Copyright (C) 1992, 1998 Linus Torvalds, Ingo Molnar&n; *&n; *&n; * SuperH version:  Copyright (C) 1999  Niibe Yutaka&n; */
+multiline_comment|/* $Id: irq.c,v 1.21 2001/07/17 02:26:53 gniibe Exp $&n; *&n; * linux/arch/sh/kernel/irq.c&n; *&n; *&t;Copyright (C) 1992, 1998 Linus Torvalds, Ingo Molnar&n; *&n; *&n; * SuperH version:  Copyright (C) 1999  Niibe Yutaka&n; */
 multiline_comment|/*&n; * IRQs are in fact implemented a bit like signal handlers for the kernel.&n; * Naturally it&squot;s not a 1:1 relation, but there are similarities.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/ptrace.h&gt;
@@ -17,7 +17,6 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
-macro_line|#include &lt;asm/smp.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/delay.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
@@ -1615,13 +1614,6 @@ id|desc-&gt;lock
 )paren
 suffix:semicolon
 )brace
-id|spin_unlock_irq
-c_func
-(paren
-op_amp
-id|desc-&gt;lock
-)paren
-suffix:semicolon
 r_return
 id|val
 suffix:semicolon
@@ -1931,7 +1923,13 @@ suffix:semicolon
 id|desc-&gt;status
 op_and_assign
 op_complement
+(paren
 id|IRQ_DISABLED
+op_or
+id|IRQ_AUTODETECT
+op_or
+id|IRQ_WAITING
+)paren
 suffix:semicolon
 id|desc-&gt;handler
 op_member_access_from_pointer

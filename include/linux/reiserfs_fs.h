@@ -4534,55 +4534,6 @@ mdefine_line|#define tail_size(inode) (file_size (inode) &amp; (block_size (inod
 DECL|macro|tail_has_to_be_packed
 mdefine_line|#define tail_has_to_be_packed(inode) (!dont_have_tails ((inode)-&gt;i_sb) &amp;&amp;&bslash;&n;!STORE_TAIL_IN_UNFM(file_size (inode), tail_size(inode), block_size (inode)))
 multiline_comment|/*&n;int get_buffer_by_range (struct super_block * p_s_sb, struct key * p_s_range_begin, struct key * p_s_range_end, &n;&t;&t;&t; struct buffer_head ** pp_s_buf, unsigned long * p_n_objectid);&n;int get_buffers_from_range (struct super_block * p_s_sb, struct key * p_s_range_start, struct key * p_s_range_end, &n;                            struct buffer_head ** p_s_range_buffers,&n;&t;&t;&t;    int n_max_nr_buffers_to_return);&n;*/
-macro_line|#ifndef REISERFS_FSCK
-singleline_comment|//inline int is_left_mergeable (struct item_head * ih, unsigned long bsize);
-macro_line|#else
-r_int
-id|is_left_mergeable
-(paren
-r_struct
-id|super_block
-op_star
-id|s
-comma
-r_struct
-id|path
-op_star
-id|path
-)paren
-suffix:semicolon
-r_int
-id|is_right_mergeable
-(paren
-r_struct
-id|super_block
-op_star
-id|s
-comma
-r_struct
-id|path
-op_star
-id|path
-)paren
-suffix:semicolon
-r_int
-id|are_items_mergeable
-(paren
-r_struct
-id|item_head
-op_star
-id|left
-comma
-r_struct
-id|item_head
-op_star
-id|right
-comma
-r_int
-id|bsize
-)paren
-suffix:semicolon
-macro_line|#endif
 r_void
 id|padd_item
 (paren

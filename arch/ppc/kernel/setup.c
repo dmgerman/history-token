@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.setup.c 1.55 08/24/01 20:07:37 paulus&n; */
+multiline_comment|/*&n; * BK Id: SCCS/s.setup.c 1.57 09/08/01 15:47:42 paulus&n; */
 multiline_comment|/*&n; * Common prep/pmac/chrp boot and setup code.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -11,7 +11,6 @@ macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#include &lt;linux/ide.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/bootmem.h&gt;
-macro_line|#include &lt;asm/init.h&gt;
 macro_line|#include &lt;asm/residual.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/prom.h&gt;

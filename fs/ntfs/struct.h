@@ -6,11 +6,11 @@ id|ntfs_inode
 suffix:semicolon
 multiline_comment|/* Which files should be returned from a director listing. */
 DECL|macro|ngt_dos
-mdefine_line|#define ngt_dos   1&t;/* only short names, no hidden files */
+mdefine_line|#define ngt_dos   1&t;/* only short names, no system files */
 DECL|macro|ngt_nt
-mdefine_line|#define ngt_nt    2&t;/* only long names, all-uppercase becomes &n;&t;&t;&t; * all-lowercase, no hidden files */
+mdefine_line|#define ngt_nt    2&t;/* only long names, all-uppercase becomes &n;&t;&t;&t; * all-lowercase, no system files */
 DECL|macro|ngt_posix
-mdefine_line|#define ngt_posix 3&t;/* all names except hidden files */
+mdefine_line|#define ngt_posix 3&t;/* all names except system files */
 DECL|macro|ngt_full
 mdefine_line|#define ngt_full  4&t;/* all entries */
 DECL|typedef|ntfs_volume
@@ -22,9 +22,9 @@ suffix:semicolon
 r_typedef
 r_struct
 (brace
-DECL|member|cluster
+DECL|member|lcn
 id|ntfs_cluster_t
-id|cluster
+id|lcn
 suffix:semicolon
 DECL|member|len
 id|ntfs_cluster_t

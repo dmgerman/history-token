@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * $Id: setup_hd64465.c,v 1.3 2001/02/07 17:52:53 stuart_menefy Exp $&n; *&n; * Setup and IRQ handling code for the HD64465 companion chip.&n; * by Greg Banks &lt;gbanks@pocketpenguins.com&gt;&n; * Copyright (c) 2000 PocketPenguins Inc&n; *&n; * Derived from setup_hd64461.c which bore the message:&n; * Copyright (C) 2000 YAEGASHI Takeshi&n; */
+multiline_comment|/*&n; * $Id: setup_hd64465.c,v 1.4 2001/07/15 23:26:56 gniibe Exp $&n; *&n; * Setup and IRQ handling code for the HD64465 companion chip.&n; * by Greg Banks &lt;gbanks@pocketpenguins.com&gt;&n; * Copyright (c) 2000 PocketPenguins Inc&n; *&n; * Derived from setup_hd64461.c which bore the message:&n; * Copyright (C) 2000 YAEGASHI Takeshi&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -198,6 +198,25 @@ r_int
 id|irq
 )paren
 (brace
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|irq_desc
+(braket
+id|irq
+)braket
+dot
+id|status
+op_amp
+(paren
+id|IRQ_DISABLED
+op_or
+id|IRQ_INPROGRESS
+)paren
+)paren
+)paren
 id|enable_hd64465_irq
 c_func
 (paren

@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: uaccess.h,v 1.10 2000/03/24 13:53:45 gniibe Exp $&n; *&n; * User space memory access functions&n; *&n; * Copyright (C) 1999  Niibe Yutaka&n; *&n; *  Based on:&n; *     MIPS implementation version 1.15 by&n; *              Copyright (C) 1996, 1997, 1998 by Ralf Baechle&n; *     and i386 version.&n; */
+multiline_comment|/* $Id: uaccess.h,v 1.12 2001/07/27 06:09:47 gniibe Exp $&n; *&n; * User space memory access functions&n; *&n; * Copyright (C) 1999  Niibe Yutaka&n; *&n; *  Based on:&n; *     MIPS implementation version 1.15 by&n; *              Copyright (C) 1996, 1997, 1998 by Ralf Baechle&n; *     and i386 version.&n; */
 macro_line|#ifndef __ASM_SH_UACCESS_H
 DECL|macro|__ASM_SH_UACCESS_H
 mdefine_line|#define __ASM_SH_UACCESS_H
@@ -128,7 +128,7 @@ suffix:semicolon
 multiline_comment|/* Generic arbitrary sized copy.  */
 multiline_comment|/* Return the number of bytes NOT copied */
 multiline_comment|/* XXX: should be such that: 4byte and the rest. */
-r_extern
+r_static
 id|__inline__
 id|__kernel_size_t
 DECL|function|__copy_user
@@ -247,7 +247,7 @@ mdefine_line|#define copy_from_user(to,from,n) ({ &bslash;&n;void *__copy_to = (
 DECL|macro|__copy_from_user
 mdefine_line|#define __copy_from_user(to,from,n)&t;&t;&bslash;&n;&t;__copy_user((void *)(to),&t;&t;&bslash;&n;&t;&t;    (void *)(from), n)
 multiline_comment|/* XXX: Not sure it works well..&n;   should be such that: 4byte clear and the rest. */
-r_extern
+r_static
 id|__inline__
 id|__kernel_size_t
 DECL|function|__clear_user
@@ -326,7 +326,7 @@ suffix:semicolon
 )brace
 DECL|macro|clear_user
 mdefine_line|#define clear_user(addr,n) ({ &bslash;&n;void * __cl_addr = (addr); &bslash;&n;unsigned long __cl_size = (n); &bslash;&n;if (__cl_size &amp;&amp; __access_ok(((unsigned long)(__cl_addr)), __cl_size)) &bslash;&n;__cl_size = __clear_user(__cl_addr, __cl_size); &bslash;&n;__cl_size; })
-r_extern
+r_static
 id|__inline__
 r_int
 DECL|function|__strncpy_from_user
@@ -446,7 +446,7 @@ DECL|macro|strlen_user
 mdefine_line|#define strlen_user(str) strnlen_user(str, ~0UL &gt;&gt; 1)
 multiline_comment|/*&n; * Return the size of a string (including the ending 0!)&n; */
 DECL|function|__strnlen_user
-r_extern
+r_static
 id|__inline__
 r_int
 id|__strnlen_user
@@ -534,7 +534,7 @@ id|res
 suffix:semicolon
 )brace
 DECL|function|strnlen_user
-r_extern
+r_static
 id|__inline__
 r_int
 id|strnlen_user

@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: traps.c,v 1.5 2000/02/27 08:27:55 gniibe Exp $&n; *&n; *  linux/arch/sh/traps.c&n; *&n; *  SuperH version: Copyright (C) 1999 Niibe Yutaka&n; *                  Copyright (C) 2000 Philipp Rumpf&n; *                  Copyright (C) 2000 David Howells&n; */
+multiline_comment|/* $Id: traps.c,v 1.14 2001/07/24 08:07:10 gniibe Exp $&n; *&n; *  linux/arch/sh/traps.c&n; *&n; *  SuperH version: Copyright (C) 1999 Niibe Yutaka&n; *                  Copyright (C) 2000 Philipp Rumpf&n; *                  Copyright (C) 2000 David Howells&n; */
 multiline_comment|/*&n; * &squot;Traps.c&squot; handles hardware traps and faults after we have saved some&n; * state in &squot;entry.S&squot;.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -2057,7 +2057,7 @@ id|ex
 )paren
 suffix:semicolon
 )brace
-macro_line|#if defined(CONFIG_DEBUG_KERNEL_WITH_GDB_STUB) || defined(CONFIG_SH_STANDARD_BIOS)
+macro_line|#if defined(CONFIG_SH_STANDARD_BIOS)
 DECL|variable|gdb_vbr_vector
 r_void
 op_star
@@ -2108,7 +2108,7 @@ op_star
 )paren
 id|do_illegal_slot_inst
 suffix:semicolon
-macro_line|#if defined(CONFIG_DEBUG_KERNEL_WITH_GDB_STUB) || defined(CONFIG_SH_STANDARD_BIOS)
+macro_line|#if defined(CONFIG_SH_STANDARD_BIOS)
 multiline_comment|/*&n;&t; * Read the old value of the VBR register to initialise&n;&t; * the vector through which debug and BIOS traps are&n;&t; * delegated by the Linux trap handler.&n;&t; */
 (brace
 r_register

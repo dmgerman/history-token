@@ -1,10 +1,6 @@
 multiline_comment|/*&n; * Copyright 2000 by Hans Reiser, licensing governed by reiserfs/README&n; */
-macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/reiserfs_fs.h&gt;
-macro_line|#else
-macro_line|#include &quot;nokernel.h&quot;
-macro_line|#endif
 singleline_comment|// this contains item handlers for old item types: sd, direct,
 singleline_comment|// indirect, directory
 multiline_comment|/* and where are the comments? how about saying where we can find an&n;   explanation of each item handler method? -Hans */
@@ -101,38 +97,6 @@ id|timebuf
 l_int|256
 )braket
 suffix:semicolon
-macro_line|#ifndef __KERNEL__
-singleline_comment|//    struct tm *loctime;
-singleline_comment|//    loctime = localtime (&amp;t);
-id|sprintf
-(paren
-id|timebuf
-comma
-l_string|&quot;%s&quot;
-comma
-id|asctime
-(paren
-id|localtime
-(paren
-op_amp
-id|t
-)paren
-)paren
-)paren
-suffix:semicolon
-id|timebuf
-(braket
-id|strlen
-(paren
-id|timebuf
-)paren
-op_minus
-l_int|1
-)braket
-op_assign
-l_int|0
-suffix:semicolon
-macro_line|#else
 id|sprintf
 (paren
 id|timebuf
@@ -142,7 +106,6 @@ comma
 id|t
 )paren
 suffix:semicolon
-macro_line|#endif
 r_return
 id|timebuf
 suffix:semicolon

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.residual.c 1.7 05/17/01 18:14:22 cort&n; */
+multiline_comment|/*&n; * BK Id: SCCS/s.residual.c 1.11 09/08/01 15:47:42 paulus&n; */
 multiline_comment|/*&n; * Code to deal with the PReP residual data.&n; *&n; * Written by: Cort Dougan (cort@cs.nmt.edu)&n; * Improved _greatly_ and rewritten by Gabriel Paubert (paubert@iram.es)&n; *&n; *  This file is based on the following documentation:&n; *&n; *&t;IBM Power Personal Systems Architecture&n; *&t;Residual Data&n; * &t;Document Number: PPS-AR-FW0001&n; *&n; *  This file is subject to the terms and conditions of the GNU General Public&n; *  License.  See the file COPYING in the main directory of this archive&n; *  for more details.&n; *&n; */
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;asm/residual.h&gt;
@@ -23,7 +23,7 @@ macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/ide.h&gt;
-macro_line|#include &lt;asm/init.h&gt;
+macro_line|#include &lt;asm/sections.h&gt;
 macro_line|#include &lt;asm/mmu.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
@@ -59,7 +59,6 @@ op_amp
 id|__res
 suffix:semicolon
 DECL|variable|__initdata
-r_const
 r_char
 op_star
 id|PnP_BASE_TYPES
@@ -93,7 +92,6 @@ l_string|&quot;ServiceProcessor&quot;
 suffix:semicolon
 multiline_comment|/* Device Sub Type Codes */
 DECL|variable|__initdata
-r_const
 r_int
 r_char
 op_star
@@ -210,7 +208,6 @@ l_int|NULL
 suffix:semicolon
 multiline_comment|/* Device Interface Type Codes */
 DECL|variable|__initdata
-r_const
 r_int
 r_char
 op_star

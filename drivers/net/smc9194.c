@@ -31,8 +31,13 @@ macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &quot;smc9194.h&quot;
 multiline_comment|/*------------------------------------------------------------------------&n; .&n; . Configuration options, for the experienced user to change.&n; .&n; -------------------------------------------------------------------------*/
 multiline_comment|/*&n; . Do you want to use 32 bit xfers?  This should work on all chips, as&n; . the chipset is designed to accommodate them.&n;*/
+macro_line|#ifdef __sh__
+DECL|macro|USE_32_BIT
+macro_line|#undef USE_32_BIT
+macro_line|#else
 DECL|macro|USE_32_BIT
 mdefine_line|#define USE_32_BIT 1
+macro_line|#endif
 multiline_comment|/*&n; .the SMC9194 can be at any of the following port addresses.  To change,&n; .for a slightly different card, you can add it to the array.  Keep in&n; .mind that the array must end in zero.&n;*/
 DECL|variable|__initdata
 r_static
@@ -2421,20 +2426,6 @@ r_goto
 id|err_out
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-id|dev-&gt;irq
-op_eq
-l_int|2
-)paren
-(brace
-multiline_comment|/* Fixup for users that don&squot;t know that IRQ 2 is really IRQ 9,&n;&t;&t; * or don&squot;t know which one to set.&n;&t;&t; */
-id|dev-&gt;irq
-op_assign
-l_int|9
-suffix:semicolon
-)brace
 multiline_comment|/* now, print out the card info, in a short format.. */
 id|printk
 c_func
@@ -3886,6 +3877,7 @@ l_int|0x3
 suffix:semicolon
 macro_line|#else
 id|PRINTK3
+c_func
 (paren
 (paren
 l_string|&quot; Reading %d words and %d byte(s) &bslash;n&quot;
@@ -3900,26 +3892,6 @@ id|packet_length
 op_amp
 l_int|1
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|packet_length
-op_amp
-l_int|1
-)paren
-op_star
-(paren
-id|data
-op_increment
-)paren
-op_assign
-id|inb
-c_func
-(paren
-id|ioaddr
-op_plus
-id|DATA_1
 )paren
 suffix:semicolon
 id|insw
@@ -3931,11 +3903,7 @@ id|DATA_1
 comma
 id|data
 comma
-(paren
 id|packet_length
-op_plus
-l_int|1
-)paren
 op_rshift
 l_int|1
 )paren
@@ -3956,7 +3924,6 @@ op_complement
 l_int|1
 suffix:semicolon
 op_star
-(paren
 (paren
 id|data
 op_increment

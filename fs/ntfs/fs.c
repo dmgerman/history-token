@@ -10,6 +10,7 @@ macro_line|#include &quot;dir.h&quot;
 macro_line|#include &quot;support.h&quot;
 macro_line|#include &quot;macros.h&quot;
 macro_line|#include &quot;sysctl.h&quot;
+macro_line|#include &quot;attr.h&quot;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/locks.h&gt;
@@ -366,27 +367,31 @@ id|pos
 )paren
 (brace
 r_int
-id|ret
-suffix:semicolon
-id|ntfs_io
-id|io
+id|err
 suffix:semicolon
 r_struct
 id|inode
 op_star
-id|inode
+id|vfs_ino
 op_assign
 id|filp-&gt;f_dentry-&gt;d_inode
 suffix:semicolon
 id|ntfs_inode
 op_star
-id|ino
+id|ntfs_ino
 op_assign
 id|NTFS_LINO2NINO
 c_func
 (paren
-id|inode
+id|vfs_ino
 )paren
+suffix:semicolon
+id|ntfs_attribute
+op_star
+id|data
+suffix:semicolon
+id|ntfs_io
+id|io
 suffix:semicolon
 r_struct
 id|ntfs_getuser_update_vm_s
@@ -396,7 +401,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|ino
+id|ntfs_ino
 )paren
 r_return
 op_minus
@@ -407,22 +412,15 @@ c_func
 (paren
 id|DEBUG_LINUX
 comma
-l_string|&quot;ntfs_write %x, %x, %x -&gt;&bslash;n&quot;
+id|__FUNCTION__
+l_string|&quot;(): Entering for inode 0x%lx, &quot;
+l_string|&quot;*pos 0x%Lx, count 0x%x.&bslash;n&quot;
 comma
-(paren
-r_int
-)paren
-id|ino-&gt;i_number
+id|ntfs_ino-&gt;i_number
 comma
-(paren
-r_int
-)paren
 op_star
 id|pos
 comma
-(paren
-r_int
-)paren
 id|count
 )paren
 suffix:semicolon
@@ -430,27 +428,31 @@ multiline_comment|/* Allows to lock fs ro at any time. */
 r_if
 c_cond
 (paren
-id|inode-&gt;i_sb-&gt;s_flags
+id|vfs_ino-&gt;i_sb-&gt;s_flags
 op_amp
 id|MS_RDONLY
 )paren
 r_return
 op_minus
-id|ENOSPC
+id|EROFS
+suffix:semicolon
+id|data
+op_assign
+id|ntfs_find_attr
+c_func
+(paren
+id|ntfs_ino
+comma
+id|ntfs_ino-&gt;vol-&gt;at_data
+comma
+l_int|NULL
+)paren
 suffix:semicolon
 r_if
 c_cond
 (paren
 op_logical_neg
-id|ntfs_find_attr
-c_func
-(paren
-id|ino
-comma
-id|ino-&gt;vol-&gt;at_data
-comma
-l_int|NULL
-)paren
+id|data
 )paren
 r_return
 op_minus
@@ -467,15 +469,55 @@ id|O_APPEND
 op_star
 id|pos
 op_assign
-id|inode-&gt;i_size
+id|vfs_ino-&gt;i_size
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|data-&gt;resident
+op_logical_and
+op_star
+id|pos
+op_plus
+id|count
+OG
+id|data-&gt;allocated
+)paren
+(brace
+id|err
+op_assign
+id|ntfs_extend_attr
+c_func
+(paren
+id|ntfs_ino
+comma
+id|data
+comma
+op_star
+id|pos
+op_plus
+id|count
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|err
+OL
+l_int|0
+)paren
+r_return
+id|err
+suffix:semicolon
+)brace
 id|param.user
 op_assign
 id|buf
 suffix:semicolon
 id|param.ino
 op_assign
-id|inode
+id|vfs_ino
 suffix:semicolon
 id|param.off
 op_assign
@@ -499,16 +541,18 @@ id|io.size
 op_assign
 id|count
 suffix:semicolon
-id|ret
+id|io.do_read
 op_assign
-id|ntfs_write_attr
+l_int|0
+suffix:semicolon
+id|err
+op_assign
+id|ntfs_readwrite_attr
 c_func
 (paren
-id|ino
+id|ntfs_ino
 comma
-id|ino-&gt;vol-&gt;at_data
-comma
-l_int|NULL
+id|data
 comma
 op_star
 id|pos
@@ -522,22 +566,20 @@ c_func
 (paren
 id|DEBUG_LINUX
 comma
-l_string|&quot;write -&gt; %x&bslash;n&quot;
+id|__FUNCTION__
+l_string|&quot;(): Returning %i&bslash;n&quot;
 comma
-id|ret
+op_minus
+id|err
 )paren
 suffix:semicolon
 r_if
 c_cond
 (paren
-id|ret
-OL
-l_int|0
+op_logical_neg
+id|err
 )paren
-r_return
-op_minus
-id|EINVAL
-suffix:semicolon
+(brace
 op_star
 id|pos
 op_add_assign
@@ -549,9 +591,9 @@ c_cond
 op_star
 id|pos
 OG
-id|inode-&gt;i_size
+id|vfs_ino-&gt;i_size
 )paren
-id|inode-&gt;i_size
+id|vfs_ino-&gt;i_size
 op_assign
 op_star
 id|pos
@@ -559,11 +601,15 @@ suffix:semicolon
 id|mark_inode_dirty
 c_func
 (paren
-id|filp-&gt;f_dentry-&gt;d_inode
+id|vfs_ino
 )paren
 suffix:semicolon
 r_return
 id|io.size
+suffix:semicolon
+)brace
+r_return
+id|err
 suffix:semicolon
 )brace
 macro_line|#endif
@@ -588,7 +634,7 @@ id|type
 suffix:semicolon
 DECL|member|ph
 DECL|member|pl
-id|ntfs_u32
+id|u32
 id|ph
 comma
 id|pl
@@ -607,6 +653,10 @@ DECL|member|namelen
 r_int
 id|namelen
 suffix:semicolon
+DECL|member|ret_code
+r_int
+id|ret_code
+suffix:semicolon
 )brace
 suffix:semicolon
 DECL|function|ntfs_printcb
@@ -624,6 +674,18 @@ op_star
 id|param
 )paren
 (brace
+r_int
+r_int
+id|inum
+op_assign
+id|NTFS_GETU64
+c_func
+(paren
+id|entry
+)paren
+op_amp
+l_int|0xffffffffffff
+suffix:semicolon
 r_struct
 id|ntfs_filldir
 op_star
@@ -631,8 +693,35 @@ id|nf
 op_assign
 id|param
 suffix:semicolon
-r_int
+id|u32
 id|flags
+op_assign
+id|NTFS_GETU32
+c_func
+(paren
+id|entry
+op_plus
+l_int|0x48
+)paren
+suffix:semicolon
+r_char
+id|show_sys_files
+op_assign
+l_int|0
+suffix:semicolon
+id|u8
+id|name_len
+op_assign
+id|NTFS_GETU8
+c_func
+(paren
+id|entry
+op_plus
+l_int|0x50
+)paren
+suffix:semicolon
+id|u8
+id|name_type
 op_assign
 id|NTFS_GETU8
 c_func
@@ -643,42 +732,11 @@ l_int|0x51
 )paren
 suffix:semicolon
 r_int
-id|show_hidden
-op_assign
-l_int|0
+id|err
 suffix:semicolon
 r_int
-id|length
-op_assign
-id|NTFS_GETU8
-c_func
-(paren
-id|entry
-op_plus
-l_int|0x50
-)paren
+id|file_type
 suffix:semicolon
-r_int
-id|inum
-op_assign
-id|NTFS_GETU32
-c_func
-(paren
-id|entry
-)paren
-suffix:semicolon
-r_int
-id|error
-suffix:semicolon
-macro_line|#ifdef NTFS_NGT_NT_DOES_LOWER
-r_int
-id|i
-comma
-id|to_lower
-op_assign
-l_int|0
-suffix:semicolon
-macro_line|#endif
 r_switch
 c_cond
 (paren
@@ -692,13 +750,12 @@ multiline_comment|/* Don&squot;t display long names. */
 r_if
 c_cond
 (paren
+op_logical_neg
 (paren
-id|flags
+id|name_type
 op_amp
 l_int|2
 )paren
-op_eq
-l_int|0
 )paren
 r_return
 l_int|0
@@ -709,30 +766,20 @@ r_case
 id|ngt_nt
 suffix:colon
 multiline_comment|/* Don&squot;t display short-only names. */
-r_switch
+r_if
 c_cond
 (paren
-id|flags
+(paren
+id|name_type
 op_amp
 l_int|3
 )paren
-(brace
-r_case
+op_eq
 l_int|2
-suffix:colon
+)paren
 r_return
 l_int|0
 suffix:semicolon
-macro_line|#ifdef NTFS_NGT_NT_DOES_LOWER
-r_case
-l_int|3
-suffix:colon
-id|to_lower
-op_assign
-l_int|1
-suffix:semicolon
-macro_line|#endif
-)brace
 r_break
 suffix:semicolon
 r_case
@@ -743,52 +790,20 @@ suffix:semicolon
 r_case
 id|ngt_full
 suffix:colon
-id|show_hidden
+id|show_sys_files
 op_assign
 l_int|1
 suffix:semicolon
 r_break
 suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-op_logical_neg
-id|show_hidden
-op_logical_and
-(paren
-(paren
-id|NTFS_GETU8
+r_default
+suffix:colon
+id|BUG
 c_func
 (paren
-id|entry
-op_plus
-l_int|0x48
 )paren
-op_amp
-l_int|2
-)paren
-op_eq
-l_int|2
-)paren
-)paren
-(brace
-id|ntfs_debug
-c_func
-(paren
-id|DEBUG_OTHER
-comma
-l_string|&quot;Skipping hidden file&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-l_int|0
 suffix:semicolon
 )brace
-id|nf-&gt;name
-op_assign
-l_int|0
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -811,7 +826,7 @@ op_plus
 l_int|0x52
 )paren
 comma
-id|length
+id|name_len
 comma
 op_amp
 id|nf-&gt;name
@@ -826,7 +841,9 @@ c_func
 (paren
 id|DEBUG_OTHER
 comma
-l_string|&quot;Skipping unrepresentable file&bslash;n&quot;
+id|__FUNCTION__
+l_string|&quot;(): Skipping &quot;
+l_string|&quot;unrepresentable file.&bslash;n&quot;
 )paren
 suffix:semicolon
 r_if
@@ -844,91 +861,124 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|show_sys_files
+op_logical_and
+id|inum
+OL
+l_int|0x10UL
+)paren
+(brace
+id|ntfs_debug
+c_func
+(paren
+id|DEBUG_OTHER
+comma
+id|__FUNCTION__
+l_string|&quot;(): Skipping system &quot;
+l_string|&quot;file (%s).&bslash;n&quot;
+comma
+id|nf-&gt;name
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
 multiline_comment|/* Do not return &quot;.&quot;, as this is faked. */
 r_if
 c_cond
 (paren
-id|length
+id|nf-&gt;namelen
 op_eq
 l_int|1
 op_logical_and
-op_star
 id|nf-&gt;name
+(braket
+l_int|0
+)braket
 op_eq
 l_char|&squot;.&squot;
 )paren
+(brace
+id|ntfs_debug
+c_func
+(paren
+id|DEBUG_OTHER
+comma
+id|__FUNCTION__
+l_string|&quot;(): Skipping &bslash;&quot;.&bslash;&quot;&bslash;n&quot;
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
-macro_line|#ifdef NTFS_NGT_NT_DOES_LOWER
-r_if
-c_cond
-(paren
-id|to_lower
-)paren
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-id|nf-&gt;namelen
-suffix:semicolon
-id|i
-op_increment
-)paren
-multiline_comment|/* This supports ASCII only. Since only DOS-only names&n;&t;&t;&t; * get converted, and since those are restricted to&n;&t;&t;&t; * ASCII, this should be correct. */
-r_if
-c_cond
-(paren
-id|nf-&gt;name
-(braket
-id|i
-)braket
-op_ge
-l_char|&squot;A&squot;
-op_logical_and
-id|nf-&gt;name
-(braket
-id|i
-)braket
-op_le
-l_char|&squot;Z&squot;
-)paren
-id|nf-&gt;name
-(braket
-id|i
-)braket
-op_add_assign
-l_char|&squot;a&squot;
-op_minus
-l_char|&squot;A&squot;
-suffix:semicolon
-macro_line|#endif
+)brace
 id|nf-&gt;name
 (braket
 id|nf-&gt;namelen
 )braket
 op_assign
 l_int|0
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|flags
+op_amp
+l_int|0x10000000
+)paren
+multiline_comment|/* FILE_ATTR_DUP_FILE_NAME_INDEX_PRESENT */
+id|file_type
+op_assign
+id|DT_DIR
+suffix:semicolon
+r_else
+id|file_type
+op_assign
+id|DT_REG
 suffix:semicolon
 id|ntfs_debug
 c_func
 (paren
 id|DEBUG_OTHER
 comma
-l_string|&quot;readdir got %s, len %d&bslash;n&quot;
+id|__FUNCTION__
+l_string|&quot;(): Calling filldir for %s with &quot;
+l_string|&quot;len %i, f_pos 0x%Lx, inode %lu, %s.&bslash;n&quot;
 comma
 id|nf-&gt;name
 comma
 id|nf-&gt;namelen
+comma
+(paren
+id|loff_t
+)paren
+(paren
+id|nf-&gt;ph
+op_lshift
+l_int|16
+)paren
+op_or
+id|nf-&gt;pl
+comma
+id|inum
+comma
+id|file_type
+op_eq
+id|DT_DIR
+ques
+c_cond
+l_string|&quot;DT_DIR&quot;
+suffix:colon
+l_string|&quot;DT_REG&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* filldir expects an off_t rather than an loff_t. Hope we don&squot;t have&n;&t; * more than 65535 index records. */
-id|error
+multiline_comment|/*&n;&t; * Userspace side of filldir expects an off_t rather than an loff_t.&n;&t; * And it also doesn&squot;t like the most significant bit being set as it&n;&t; * then considers the value to be negative. Thus this implementation&n;&t; * limits the number of index records to 32766, which should be plenty.&n;&t; */
+id|err
 op_assign
 id|nf
 op_member_access_from_pointer
@@ -942,6 +992,9 @@ comma
 id|nf-&gt;namelen
 comma
 (paren
+id|loff_t
+)paren
+(paren
 id|nf-&gt;ph
 op_lshift
 l_int|16
@@ -951,8 +1004,17 @@ id|nf-&gt;pl
 comma
 id|inum
 comma
-id|DT_UNKNOWN
+id|file_type
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|err
+)paren
+id|nf-&gt;ret_code
+op_assign
+id|err
 suffix:semicolon
 id|ntfs_free
 c_func
@@ -961,10 +1023,10 @@ id|nf-&gt;name
 )paren
 suffix:semicolon
 r_return
-id|error
+id|err
 suffix:semicolon
 )brace
-multiline_comment|/* readdir returns &squot;..&squot;, then &squot;.&squot;, then the directory entries in sequence.&n; * As the root directory contains a entry for itself, &squot;.&squot; is not emulated for&n; * the root directory. */
+multiline_comment|/*&n; * readdir returns &squot;.&squot;, then &squot;..&squot;, then the directory entries in sequence.&n; * As the root directory contains an entry for itself, &squot;.&squot; is not emulated for&n; * the root directory.&n; */
 DECL|function|ntfs_readdir
 r_static
 r_int
@@ -985,49 +1047,70 @@ id|filldir
 )paren
 (brace
 r_struct
-id|ntfs_filldir
-id|cb
-suffix:semicolon
-r_int
-id|error
-suffix:semicolon
-r_struct
 id|inode
 op_star
 id|dir
 op_assign
 id|filp-&gt;f_dentry-&gt;d_inode
 suffix:semicolon
-id|ntfs_debug
-c_func
-(paren
-id|DEBUG_OTHER
-comma
-l_string|&quot;ntfs_readdir ino %x mode %x&bslash;n&quot;
-comma
-(paren
 r_int
-)paren
-id|dir-&gt;i_ino
-comma
+id|err
+suffix:semicolon
+r_struct
+id|ntfs_filldir
+id|cb
+suffix:semicolon
+id|cb.ret_code
+op_assign
+l_int|0
+suffix:semicolon
+id|cb.pl
+op_assign
+id|filp-&gt;f_pos
+op_amp
+l_int|0xffff
+suffix:semicolon
+id|cb.ph
+op_assign
 (paren
-r_int
-r_int
+id|filp-&gt;f_pos
+op_rshift
+l_int|16
 )paren
-id|dir-&gt;i_mode
+op_amp
+l_int|0x7fff
+suffix:semicolon
+id|filp-&gt;f_pos
+op_assign
+(paren
+id|loff_t
 )paren
+(paren
+id|cb.ph
+op_lshift
+l_int|16
+)paren
+op_or
+id|cb.pl
 suffix:semicolon
 id|ntfs_debug
 c_func
 (paren
 id|DEBUG_OTHER
 comma
-l_string|&quot;readdir: Looking for file %x dircount %d&bslash;n&quot;
+id|__FUNCTION__
+l_string|&quot;(): Entering for inode %lu, &quot;
+l_string|&quot;f_pos 0x%Lx, i_mode 0x%x, i_count %lu.&bslash;n&quot;
+comma
+id|dir-&gt;i_ino
+comma
+id|filp-&gt;f_pos
 comma
 (paren
 r_int
+r_int
 )paren
-id|filp-&gt;f_pos
+id|dir-&gt;i_mode
 comma
 id|atomic_read
 c_func
@@ -1037,37 +1120,38 @@ id|dir-&gt;i_count
 )paren
 )paren
 suffix:semicolon
-id|cb.pl
-op_assign
-id|filp-&gt;f_pos
-op_amp
-l_int|0xFFFF
-suffix:semicolon
-id|cb.ph
-op_assign
-id|filp-&gt;f_pos
-op_rshift
-l_int|16
-suffix:semicolon
-multiline_comment|/* End of directory. */
 r_if
 c_cond
 (paren
+op_logical_neg
 id|cb.ph
-op_eq
-l_int|0xFFFF
 )paren
 (brace
-multiline_comment|/* FIXME: Maybe we can return those with the previous call. */
-r_switch
+multiline_comment|/* Start of directory. Emulate &quot;.&quot; and &quot;..&quot;. */
+r_if
 c_cond
 (paren
+op_logical_neg
 id|cb.pl
 )paren
 (brace
-r_case
-l_int|0
-suffix:colon
+id|ntfs_debug
+c_func
+(paren
+id|DEBUG_OTHER
+comma
+id|__FUNCTION__
+l_string|&quot;(): Calling &quot;
+l_string|&quot;filldir for . with len 1, f_pos 0x%Lx, &quot;
+l_string|&quot;inode %lu, DT_DIR.&bslash;n&quot;
+comma
+id|filp-&gt;f_pos
+comma
+id|dir-&gt;i_ino
+)paren
+suffix:semicolon
+id|cb.ret_code
+op_assign
 id|filldir
 c_func
 (paren
@@ -1084,17 +1168,59 @@ comma
 id|DT_DIR
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|cb.ret_code
+)paren
+r_goto
+id|done
+suffix:semicolon
+id|cb.pl
+op_increment
+suffix:semicolon
 id|filp-&gt;f_pos
 op_assign
-l_int|0xFFFF0001
+(paren
+id|loff_t
+)paren
+(paren
+id|cb.ph
+op_lshift
+l_int|16
+)paren
+op_or
+id|cb.pl
 suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-multiline_comment|/* FIXME: Parent directory. */
-r_case
+)brace
+r_if
+c_cond
+(paren
+id|cb.pl
+op_eq
+(paren
+id|u32
+)paren
 l_int|1
-suffix:colon
+)paren
+(brace
+id|ntfs_debug
+c_func
+(paren
+id|DEBUG_OTHER
+comma
+id|__FUNCTION__
+l_string|&quot;(): Calling &quot;
+l_string|&quot;filldir for .. with len 2, f_pos 0x%Lx, &quot;
+l_string|&quot;inode %lu, DT_DIR.&bslash;n&quot;
+comma
+id|filp-&gt;f_pos
+comma
+id|filp-&gt;f_dentry-&gt;d_parent-&gt;d_inode-&gt;i_ino
+)paren
+suffix:semicolon
+id|cb.ret_code
+op_assign
 id|filldir
 c_func
 (paren
@@ -1106,31 +1232,49 @@ l_int|2
 comma
 id|filp-&gt;f_pos
 comma
-l_int|0
+id|filp-&gt;f_dentry-&gt;d_parent-&gt;d_inode-&gt;i_ino
 comma
 id|DT_DIR
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|cb.ret_code
+)paren
+r_goto
+id|done
+suffix:semicolon
+id|cb.pl
+op_increment
+suffix:semicolon
 id|filp-&gt;f_pos
 op_assign
-l_int|0xFFFF0002
-suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-)brace
-id|ntfs_debug
-c_func
 (paren
-id|DEBUG_OTHER
-comma
-l_string|&quot;readdir: EOD&bslash;n&quot;
+id|loff_t
 )paren
-suffix:semicolon
-r_return
-l_int|0
+(paren
+id|cb.ph
+op_lshift
+l_int|16
+)paren
+op_or
+id|cb.pl
 suffix:semicolon
 )brace
+)brace
+r_else
+r_if
+c_cond
+(paren
+id|cb.ph
+op_ge
+l_int|0x7fff
+)paren
+multiline_comment|/* End of directory. */
+r_goto
+id|done
+suffix:semicolon
 id|cb.dir
 op_assign
 id|dir
@@ -1160,10 +1304,24 @@ c_func
 (paren
 id|DEBUG_OTHER
 comma
-l_string|&quot;looking for next file&bslash;n&quot;
+id|__FUNCTION__
+l_string|&quot;(): Looking for next &quot;
+l_string|&quot;file using ntfs_getdir_unsorted(), f_pos &quot;
+l_string|&quot;0x%Lx.&bslash;n&quot;
+comma
+(paren
+id|loff_t
+)paren
+(paren
+id|cb.ph
+op_lshift
+l_int|16
+)paren
+op_or
+id|cb.pl
 )paren
 suffix:semicolon
-id|error
+id|err
 op_assign
 id|ntfs_getdir_unsorted
 c_func
@@ -1191,15 +1349,18 @@ r_while
 c_loop
 (paren
 op_logical_neg
-id|error
+id|err
 op_logical_and
 id|cb.ph
-op_ne
-l_int|0xFFFFFFFF
+OL
+l_int|0x7fff
 )paren
 suffix:semicolon
 id|filp-&gt;f_pos
 op_assign
+(paren
+id|loff_t
+)paren
 (paren
 id|cb.ph
 op_lshift
@@ -1213,30 +1374,94 @@ c_func
 (paren
 id|DEBUG_OTHER
 comma
-l_string|&quot;new position %x&bslash;n&quot;
+id|__FUNCTION__
+l_string|&quot;(): After ntfs_getdir_unsorted()&quot;
+l_string|&quot; calls, f_pos 0x%Lx.&bslash;n&quot;
 comma
-(paren
-r_int
-)paren
 id|filp-&gt;f_pos
 )paren
 suffix:semicolon
-multiline_comment|/* -EINVAL is on user buffer full. This is not considered as an error&n;&t; * by sys_getdents. */
 r_if
 c_cond
 (paren
-id|error
-op_eq
-op_minus
-id|EINVAL
+op_logical_neg
+id|err
 )paren
-id|error
-op_assign
+(brace
+macro_line|#ifdef DEBUG
+r_if
+c_cond
+(paren
+id|cb.ph
+op_ne
+l_int|0x7fff
+op_logical_or
+id|cb.pl
+)paren
+id|BUG
+c_func
+(paren
+)paren
+suffix:semicolon
+id|done
+suffix:colon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|cb.ret_code
+)paren
+id|ntfs_debug
+c_func
+(paren
+id|DEBUG_OTHER
+comma
+id|__FUNCTION__
+l_string|&quot;(): EOD, f_pos &quot;
+l_string|&quot;0x%Lx, returning 0.&bslash;n&quot;
+comma
+id|filp-&gt;f_pos
+)paren
+suffix:semicolon
+r_else
+id|ntfs_debug
+c_func
+(paren
+id|DEBUG_OTHER
+comma
+id|__FUNCTION__
+l_string|&quot;(): filldir &quot;
+l_string|&quot;returned %i, returning 0, f_pos &quot;
+l_string|&quot;0x%Lx.&bslash;n&quot;
+comma
+id|cb.ret_code
+comma
+id|filp-&gt;f_pos
+)paren
+suffix:semicolon
+macro_line|#else
+id|done
+suffix:colon
+macro_line|#endif
+r_return
 l_int|0
 suffix:semicolon
-multiline_comment|/* Otherwise (device error, inconsistent data) return the error code. */
+)brace
+id|ntfs_debug
+c_func
+(paren
+id|DEBUG_OTHER
+comma
+id|__FUNCTION__
+l_string|&quot;(): Returning %i, f_pos 0x%Lx.&bslash;n&quot;
+comma
+id|err
+comma
+id|filp-&gt;f_pos
+)paren
+suffix:semicolon
 r_return
-id|error
+id|err
 suffix:semicolon
 )brace
 multiline_comment|/* Copied from vfat driver. */
@@ -2379,7 +2604,9 @@ c_func
 (paren
 id|DEBUG_NAME1
 comma
-l_string|&quot;Looking up %s in %x&bslash;n&quot;
+id|__FUNCTION__
+l_string|&quot;(): Looking up %s in directory &quot;
+l_string|&quot;ino 0x%x.&bslash;n&quot;
 comma
 id|d-&gt;d_name.name
 comma
@@ -2516,11 +2743,11 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
-DECL|variable|ntfs_file_operations_nommap
+DECL|variable|ntfs_file_operations
 r_static
 r_struct
 id|file_operations
-id|ntfs_file_operations_nommap
+id|ntfs_file_operations
 op_assign
 (brace
 id|llseek
@@ -2543,11 +2770,11 @@ id|generic_file_open
 comma
 )brace
 suffix:semicolon
-DECL|variable|ntfs_inode_operations_nobmap
+DECL|variable|ntfs_inode_operations
 r_static
 r_struct
 id|inode_operations
-id|ntfs_inode_operations_nobmap
+id|ntfs_inode_operations
 suffix:semicolon
 macro_line|#ifdef CONFIG_NTFS_RW
 DECL|function|ntfs_create
@@ -2806,13 +3033,13 @@ multiline_comment|/* It&squot;s not a directory */
 id|r-&gt;i_op
 op_assign
 op_amp
-id|ntfs_inode_operations_nobmap
+id|ntfs_inode_operations
 suffix:semicolon
 id|r-&gt;i_fop
 op_assign
 op_amp
-id|ntfs_file_operations_nommap
-comma
+id|ntfs_file_operations
+suffix:semicolon
 id|r-&gt;i_mode
 op_assign
 id|S_IFREG
@@ -3139,9 +3366,6 @@ id|error
 suffix:semicolon
 )brace
 macro_line|#endif
-multiline_comment|/* It&squot;s fscking broken. */
-multiline_comment|/* FIXME: mmap code is disabled until ntfs_get_block() gets sorted! */
-multiline_comment|/*&n;static int ntfs_get_block(struct inode *inode, long block, struct buffer_head *bh, int create)&n;{&n;&t;BUG();&n;&t;return -1;&n;}&n;&n;static struct file_operations ntfs_file_operations = {&n;&t;llseek:&t;&t;generic_file_llseek,&n;&t;read:&t;&t;ntfs_read,&n;&t;mmap:&t;&t;generic_file_mmap,&n;#ifdef CONFIG_NTFS_RW&n;&t;write:&t;&t;ntfs_write,&n;#endif&n;&t;open:&t;&t;generic_file_open,&n;};&n;&n;static struct inode_operations ntfs_inode_operations;&n;*/
 DECL|variable|ntfs_dir_operations
 r_static
 r_struct
@@ -3182,7 +3406,6 @@ comma
 macro_line|#endif
 )brace
 suffix:semicolon
-multiline_comment|/*&n;static int ntfs_writepage(struct page *page)&n;{&n;&t;return block_write_full_page(page,ntfs_get_block);&n;}&n;&n;static int ntfs_readpage(struct file *file, struct page *page)&n;{&n;&t;return block_read_full_page(page,ntfs_get_block);&n;}&n;&n;static int ntfs_prepare_write(struct file *file, struct page *page,&n;&t;&t;&t;      unsigned from, unsigned to)&n;{&n;&t;return cont_prepare_write(page, from, to, ntfs_get_block,&n;&t;&t;&t;&t;  &amp;page-&gt;mapping-&gt;host-&gt;u.ntfs_i.mmu_private);&n;}&n;&n;static int _ntfs_bmap(struct address_space *mapping, long block)&n;{&n;&t;return generic_block_bmap(mapping, block, ntfs_get_block);&n;}&n;&n;struct address_space_operations ntfs_aops = {&n;&t;readpage: ntfs_readpage,&n;&t;writepage: ntfs_writepage,&n;&t;sync_page: block_sync_page,&n;&t;prepare_write: ntfs_prepare_write,&n;&t;commit_write: generic_commit_write,&n;&t;bmap: _ntfs_bmap&n;};&n;*/
 multiline_comment|/* ntfs_read_inode() is called by the Virtual File System (the kernel layer &n; * that deals with filesystems) when iget is called requesting an inode not&n; * already present in the inode table. Typically filesystems have separate&n; * inode_operations for directories, files and symlinks. */
 DECL|function|ntfs_read_inode
 r_static
@@ -3199,11 +3422,6 @@ id|inode
 id|ntfs_volume
 op_star
 id|vol
-suffix:semicolon
-r_int
-id|can_mmap
-op_assign
-l_int|0
 suffix:semicolon
 id|ntfs_inode
 op_star
@@ -3247,9 +3465,7 @@ id|inode-&gt;i_ino
 (brace
 multiline_comment|/* Those are loaded special files. */
 r_case
-id|FILE_
-"$"
-id|Mft
+id|FILE_Mft
 suffix:colon
 r_if
 c_cond
@@ -3319,9 +3535,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|FILE_
-"$"
-id|MftMirr
+id|FILE_MftMirr
 suffix:colon
 r_if
 c_cond
@@ -3391,9 +3605,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|FILE_
-"$"
-id|BitMap
+id|FILE_BitMap
 suffix:colon
 r_if
 c_cond
@@ -3463,27 +3675,19 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|FILE_
-"$"
-id|LogFile
+id|FILE_LogFile
 dot
 dot
 dot
-id|FILE_
-"$"
-id|AttrDef
+id|FILE_AttrDef
 suffix:colon
 multiline_comment|/* No need to log root directory accesses. */
 r_case
-id|FILE_
-"$"
-id|Boot
+id|FILE_Boot
 dot
 dot
 dot
-id|FILE_
-"$"
-id|UpCase
+id|FILE_UpCase
 suffix:colon
 id|ntfs_debug
 c_func
@@ -3574,29 +3778,15 @@ c_cond
 op_logical_neg
 id|data
 )paren
-(brace
 id|inode-&gt;i_size
 op_assign
 l_int|0
 suffix:semicolon
-id|can_mmap
-op_assign
-l_int|0
-suffix:semicolon
-)brace
 r_else
-(brace
 id|inode-&gt;i_size
 op_assign
 id|data-&gt;size
 suffix:semicolon
-multiline_comment|/* FIXME: once ntfs_get_block is implemented, uncomment the&n;&t;&t; * next line and remove the &quot;can_mmap = 0;&quot;. (AIA) */
-multiline_comment|/* can_mmap = !data-&gt;resident &amp;&amp; !(data-&gt;flags &amp;&n;&t;&t; * &t;&t;(ATTR_IS_COMPRESSED | ATTR_IS_ENCRYPTED)); */
-id|can_mmap
-op_assign
-l_int|0
-suffix:semicolon
-)brace
 multiline_comment|/* Get the file modification times from the standard information. */
 id|si
 op_assign
@@ -3724,20 +3914,16 @@ suffix:semicolon
 )brace
 r_else
 (brace
-multiline_comment|/* As long as ntfs_get_block() is just a call to BUG() do not&n;&t; &t; * define any [bm]map ops or we get the BUG() whenever someone&n;&t;&t; * runs mc or mpg123 on an ntfs partition!&n;&t;&t; * FIXME: Uncomment the below code when ntfs_get_block is&n;&t;&t; * implemented. */
-multiline_comment|/* if (can_mmap) {&n;&t;&t;&t;inode-&gt;i_op = &amp;ntfs_inode_operations;&n;&t;&t;&t;inode-&gt;i_fop = &amp;ntfs_file_operations;&n;&t;&t;&t;inode-&gt;i_mapping-&gt;a_ops = &amp;ntfs_aops;&n;&t;&t;&t;inode-&gt;u.ntfs_i.mmu_private = inode-&gt;i_size;&n;&t;&t;} else */
-(brace
 id|inode-&gt;i_op
 op_assign
 op_amp
-id|ntfs_inode_operations_nobmap
+id|ntfs_inode_operations
 suffix:semicolon
 id|inode-&gt;i_fop
 op_assign
 op_amp
-id|ntfs_file_operations_nommap
+id|ntfs_file_operations
 suffix:semicolon
-)brace
 id|inode-&gt;i_mode
 op_assign
 id|S_IFREG
@@ -3897,9 +4083,7 @@ id|inode-&gt;i_ino
 )paren
 (brace
 r_case
-id|FILE_
-"$"
-id|Mft
+id|FILE_Mft
 suffix:colon
 r_if
 c_cond
@@ -3961,9 +4145,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|FILE_
-"$"
-id|MftMirr
+id|FILE_MftMirr
 suffix:colon
 r_if
 c_cond
@@ -4025,9 +4207,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|FILE_
-"$"
-id|BitMap
+id|FILE_BitMap
 suffix:colon
 r_if
 c_cond
@@ -4289,7 +4469,8 @@ c_func
 (paren
 id|DEBUG_OTHER
 comma
-l_string|&quot;ntfs_statfs: calling mft = iget(sb, FILE_$Mft)&bslash;n&quot;
+l_string|&quot;ntfs_statfs: calling mft = iget(sb, &quot;
+l_string|&quot;FILE_Mft)&bslash;n&quot;
 )paren
 suffix:semicolon
 id|mft
@@ -4299,9 +4480,7 @@ c_func
 (paren
 id|sb
 comma
-id|FILE_
-"$"
-id|Mft
+id|FILE_Mft
 )paren
 suffix:semicolon
 id|ntfs_debug
@@ -4309,7 +4488,8 @@ c_func
 (paren
 id|DEBUG_OTHER
 comma
-l_string|&quot;ntfs_statfs: iget(sb, FILE_$Mft) returned 0x%x&bslash;n&quot;
+l_string|&quot;ntfs_statfs: iget(sb, FILE_Mft) returned &quot;
+l_string|&quot;0x%x&bslash;n&quot;
 comma
 id|mft
 )paren
@@ -5048,7 +5228,7 @@ c_func
 (paren
 id|DEBUG_OTHER
 comma
-l_string|&quot;$Mft at cluster 0x%Lx&bslash;n&quot;
+l_string|&quot;$Mft at cluster 0x%lx&bslash;n&quot;
 comma
 id|vol-&gt;mft_lcn
 )paren
@@ -5363,9 +5543,7 @@ c_func
 (paren
 id|sb
 comma
-id|FILE_
-"$"
-id|root
+id|FILE_root
 )paren
 )paren
 )paren
@@ -5448,9 +5626,21 @@ id|printk
 c_func
 (paren
 id|KERN_NOTICE
-l_string|&quot;NTFS version &quot;
+l_string|&quot;NTFS driver v&quot;
 id|NTFS_VERSION
-l_string|&quot;&bslash;n&quot;
+l_string|&quot; [Flags: R/&quot;
+macro_line|#ifdef CONFIG_NTFS_RW
+l_string|&quot;W&quot;
+macro_line|#else
+l_string|&quot;O&quot;
+macro_line|#endif
+macro_line|#ifdef DEBUG
+l_string|&quot; DEBUG&quot;
+macro_line|#endif
+macro_line|#ifdef MODULE
+l_string|&quot; MODULE&quot;
+macro_line|#endif
+l_string|&quot;]&bslash;n&quot;
 )paren
 suffix:semicolon
 id|SYSCTL
@@ -5525,7 +5715,7 @@ suffix:semicolon
 id|MODULE_DESCRIPTION
 c_func
 (paren
-l_string|&quot;NTFS driver&quot;
+l_string|&quot;Linux NTFS driver&quot;
 )paren
 suffix:semicolon
 macro_line|#ifdef DEBUG

@@ -80,29 +80,6 @@ r_int
 r_int
 id|nowtime
 suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;rtc.c:set_rtc_time: %04d-%02d-%02d %02d:%02d:%02d.&bslash;n&quot;
-comma
-id|t-&gt;tm_year
-op_plus
-l_int|1900
-comma
-id|t-&gt;tm_mon
-op_plus
-l_int|1
-comma
-id|t-&gt;tm_mday
-comma
-id|t-&gt;tm_hour
-comma
-id|t-&gt;tm_min
-comma
-id|t-&gt;tm_sec
-)paren
-suffix:semicolon
 id|nowtime
 op_assign
 id|mktime
@@ -123,15 +100,6 @@ comma
 id|t-&gt;tm_min
 comma
 id|t-&gt;tm_sec
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;rtc.c:set_rtc_time: set rtc time to %ld seconds.&bslash;n&quot;
-comma
-id|nowtime
 )paren
 suffix:semicolon
 (paren

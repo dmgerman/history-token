@@ -1,37 +1,11 @@
-multiline_comment|/* $Id: process.c,v 1.33 2000/03/25 00:06:15 gniibe Exp $&n; *&n; *  linux/arch/sh/kernel/process.c&n; *&n; *  Copyright (C) 1995  Linus Torvalds&n; *&n; *  SuperH version:  Copyright (C) 1999, 2000  Niibe Yutaka &amp; Kaz Kojima&n; */
+multiline_comment|/* $Id: process.c,v 1.34 2001/07/30 12:42:11 gniibe Exp $&n; *&n; *  linux/arch/sh/kernel/process.c&n; *&n; *  Copyright (C) 1995  Linus Torvalds&n; *&n; *  SuperH version:  Copyright (C) 1999, 2000  Niibe Yutaka &amp; Kaz Kojima&n; */
 multiline_comment|/*&n; * This file handles the architecture-dependent parts of process handling..&n; */
-DECL|macro|__KERNEL_SYSCALLS__
-mdefine_line|#define __KERNEL_SYSCALLS__
-macro_line|#include &lt;stdarg.h&gt;
-macro_line|#include &lt;linux/config.h&gt;
-macro_line|#include &lt;linux/errno.h&gt;
-macro_line|#include &lt;linux/sched.h&gt;
-macro_line|#include &lt;linux/kernel.h&gt;
-macro_line|#include &lt;linux/mm.h&gt;
-macro_line|#include &lt;linux/smp.h&gt;
-macro_line|#include &lt;linux/smp_lock.h&gt;
-macro_line|#include &lt;linux/stddef.h&gt;
-macro_line|#include &lt;linux/ptrace.h&gt;
-macro_line|#include &lt;linux/slab.h&gt;
-macro_line|#include &lt;linux/vmalloc.h&gt;
-macro_line|#include &lt;linux/user.h&gt;
-macro_line|#include &lt;linux/a.out.h&gt;
-macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/unistd.h&gt;
-macro_line|#include &lt;linux/delay.h&gt;
-macro_line|#include &lt;linux/reboot.h&gt;
-macro_line|#include &lt;linux/init.h&gt;
-macro_line|#include &lt;linux/irq.h&gt;
-macro_line|#include &lt;asm/uaccess.h&gt;
-macro_line|#include &lt;asm/pgtable.h&gt;
-macro_line|#include &lt;asm/system.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
-macro_line|#include &lt;asm/processor.h&gt;
+macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/mmu_context.h&gt;
 macro_line|#include &lt;asm/elf.h&gt;
-macro_line|#ifdef CONFIG_SH_STANDARD_BIOS
-macro_line|#include &lt;asm/sh_bios.h&gt;
-macro_line|#endif
 DECL|variable|hlt_counter
 r_static
 r_int
@@ -97,6 +71,27 @@ c_loop
 l_int|1
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|hlt_counter
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|current-&gt;need_resched
+)paren
+r_break
+suffix:semicolon
+)brace
+r_else
+(brace
+id|__cli
+c_func
+(paren
+)paren
+suffix:semicolon
 r_while
 c_loop
 (paren
@@ -104,13 +99,6 @@ op_logical_neg
 id|current-&gt;need_resched
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|hlt_counter
-)paren
-r_continue
-suffix:semicolon
 id|__sti
 c_func
 (paren
@@ -124,6 +112,17 @@ suffix:colon
 suffix:colon
 suffix:colon
 l_string|&quot;memory&quot;
+)paren
+suffix:semicolon
+id|__cli
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
+id|__sti
+c_func
+(paren
 )paren
 suffix:semicolon
 )brace
@@ -149,14 +148,25 @@ op_star
 id|__unused
 )paren
 (brace
-macro_line|#ifdef CONFIG_SH_STANDARD_BIOS
-id|sh_bios_shutdown
-c_func
+multiline_comment|/* SR.BL=1 and invoke address error to let CPU reset (manual reset) */
+id|asm
+r_volatile
 (paren
-l_int|1
+l_string|&quot;ldc %0, sr&bslash;n&bslash;t&quot;
+l_string|&quot;mov.l @%1, %0&quot;
+suffix:colon
+suffix:colon
+l_string|&quot;r&quot;
+(paren
+l_int|0x10000000
+)paren
+comma
+l_string|&quot;r&quot;
+(paren
+l_int|0x80000001
+)paren
 )paren
 suffix:semicolon
-macro_line|#endif
 )brace
 DECL|function|machine_halt
 r_void
@@ -166,14 +176,21 @@ c_func
 r_void
 )paren
 (brace
-macro_line|#ifdef CONFIG_SH_STANDARD_BIOS
-id|sh_bios_shutdown
-c_func
+r_while
+c_loop
 (paren
-l_int|0
+l_int|1
+)paren
+id|asm
+r_volatile
+(paren
+l_string|&quot;sleep&quot;
+suffix:colon
+suffix:colon
+suffix:colon
+l_string|&quot;memory&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 )brace
 DECL|function|machine_power_off
 r_void

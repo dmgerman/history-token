@@ -50,7 +50,7 @@ mdefine_line|#define DECLARE_MUTEX(name) __DECLARE_SEMAPHORE_GENERIC(name,1)
 DECL|macro|DECLARE_MUTEX_LOCKED
 mdefine_line|#define DECLARE_MUTEX_LOCKED(name) __DECLARE_SEMAPHORE_GENERIC(name,0)
 DECL|function|sema_init
-r_extern
+r_static
 r_inline
 r_void
 id|sema_init

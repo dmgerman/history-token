@@ -4027,14 +4027,14 @@ op_assign
 l_int|8
 suffix:semicolon
 multiline_comment|/* 8 sector (4kB) read-ahead */
-id|hd_gendisk.next
-op_assign
-id|gendisk_head
-suffix:semicolon
-id|gendisk_head
-op_assign
+id|add_gendisk
+c_func
+(paren
 op_amp
 id|hd_gendisk
+comma
+id|MAJOR_NR
+)paren
 suffix:semicolon
 id|init_timer
 c_func

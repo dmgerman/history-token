@@ -1,7 +1,8 @@
 macro_line|#ifndef&t;__ASM_SH_KEYBOARD_H
 DECL|macro|__ASM_SH_KEYBOARD_H
 mdefine_line|#define&t;__ASM_SH_KEYBOARD_H
-multiline_comment|/*&n; *&t;$Id: keyboard.h,v 1.1 2000/06/10 21:45:48 yaegashi Exp $&n; */
+multiline_comment|/*&n; *&t;$Id: keyboard.h,v 1.12 2001/09/06 04:01:41 gniibe Exp $&n; */
+macro_line|#include &lt;linux/kd.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/machvec.h&gt;
 macro_line|#ifdef CONFIG_SH_EC3104
@@ -52,6 +53,26 @@ suffix:colon
 id|scancode
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_SH_DREAMCAST
+r_extern
+r_int
+id|kbd_translate
+c_func
+(paren
+r_int
+r_char
+id|scancode
+comma
+r_int
+r_char
+op_star
+id|keycode
+comma
+r_char
+id|raw_mode
+)paren
+suffix:semicolon
+macro_line|#else
 DECL|function|kbd_translate
 r_static
 id|__inline__
@@ -81,6 +102,7 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
+macro_line|#endif
 DECL|function|kbd_unexpected_up
 r_static
 id|__inline__

@@ -3453,12 +3453,6 @@ comma
 id|skb
 )paren
 suffix:semicolon
-id|local_irq_restore
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
 multiline_comment|/* Runs from irqs or BH&squot;s, no need to wake BH */
 id|__cpu_raise_softirq
 c_func
@@ -3466,6 +3460,12 @@ c_func
 id|this_cpu
 comma
 id|NET_RX_SOFTIRQ
+)paren
+suffix:semicolon
+id|local_irq_restore
+c_func
+(paren
+id|flags
 )paren
 suffix:semicolon
 macro_line|#ifndef OFFLINE_SAMPLE
@@ -4688,11 +4688,6 @@ dot
 id|time_squeeze
 op_increment
 suffix:semicolon
-id|local_irq_enable
-c_func
-(paren
-)paren
-suffix:semicolon
 multiline_comment|/* This already runs in BH context, no need to wake up BH&squot;s */
 id|__cpu_raise_softirq
 c_func
@@ -4700,6 +4695,11 @@ c_func
 id|this_cpu
 comma
 id|NET_RX_SOFTIRQ
+)paren
+suffix:semicolon
+id|local_irq_enable
+c_func
+(paren
 )paren
 suffix:semicolon
 id|NET_PROFILE_LEAVE

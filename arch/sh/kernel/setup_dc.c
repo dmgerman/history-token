@@ -1,4 +1,4 @@
-multiline_comment|/* arch/sh/kernel/setup_dc.c&n; *&n; * Hardware support for the Sega Dreamcast.&n; *&n; * Copyright (c) 2001 M. R. Brown &lt;mrbrown@linuxdc.org&gt;&n; *&n; * This file is part of the LinuxDC project (www.linuxdc.org)&n; *&n; * Released under the terms of the GNU GPL v2.0.&n; * &n; * This file originally bore the message:&n; *&t;$Id: setup_dc.c,v 1.5 2001/05/24 05:09:16 mrbrown Exp $&n; *&t;SEGA Dreamcast support&n; */
+multiline_comment|/* arch/sh/kernel/setup_dc.c&n; *&n; * Hardware support for the Sega Dreamcast.&n; *&n; * Copyright (c) 2001 M. R. Brown &lt;mrbrown@linuxdc.org&gt;&n; *&n; * This file is part of the LinuxDC project (www.linuxdc.org)&n; *&n; * Released under the terms of the GNU GPL v2.0.&n; * &n; * This file originally bore the message (with enclosed-$):&n; *&t;Id: setup_dc.c,v 1.5 2001/05/24 05:09:16 mrbrown Exp&n; *&t;SEGA Dreamcast support&n; */
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/param.h&gt;
@@ -43,6 +43,10 @@ r_int
 id|irq
 )paren
 (brace
+r_int
+r_int
+id|flags
+suffix:semicolon
 id|__u32
 id|emr
 op_assign
@@ -70,6 +74,12 @@ l_int|2
 suffix:semicolon
 id|__u32
 id|mask
+suffix:semicolon
+id|save_and_cli
+c_func
+(paren
+id|flags
+)paren
 suffix:semicolon
 id|mask
 op_assign
@@ -100,6 +110,12 @@ comma
 id|emr
 )paren
 suffix:semicolon
+id|restore_flags
+c_func
+(paren
+id|flags
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/* Enable the hardware event by setting its bit in its EMR */
 DECL|function|enable_systemasic_irq
@@ -114,6 +130,10 @@ r_int
 id|irq
 )paren
 (brace
+r_int
+r_int
+id|flags
+suffix:semicolon
 id|__u32
 id|emr
 op_assign
@@ -142,6 +162,12 @@ suffix:semicolon
 id|__u32
 id|mask
 suffix:semicolon
+id|save_and_cli
+c_func
+(paren
+id|flags
+)paren
+suffix:semicolon
 id|mask
 op_assign
 id|inl
@@ -168,6 +194,12 @@ c_func
 id|mask
 comma
 id|emr
+)paren
+suffix:semicolon
+id|restore_flags
+c_func
+(paren
+id|flags
 )paren
 suffix:semicolon
 )brace
@@ -233,6 +265,25 @@ r_int
 id|irq
 )paren
 (brace
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|irq_desc
+(braket
+id|irq
+)braket
+dot
+id|status
+op_amp
+(paren
+id|IRQ_DISABLED
+op_or
+id|IRQ_INPROGRESS
+)paren
+)paren
+)paren
 id|enable_systemasic_irq
 c_func
 (paren

@@ -1,11 +1,11 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.prep_pci.c 1.24 08/20/01 15:06:15 paulus&n; */
+multiline_comment|/*&n; * BK Id: SCCS/s.prep_pci.c 1.26 09/08/01 15:47:42 paulus&n; */
 multiline_comment|/*&n; * PReP pci functions.&n; * Originally by Gary Thomas&n; * rewritten and updated by Cort Dougan (cort@cs.nmt.edu)&n; *&n; * The motherboard routes/maps will disappear shortly. -- Cort&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
-macro_line|#include &lt;asm/init.h&gt;
+macro_line|#include &lt;asm/sections.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/ptrace.h&gt;

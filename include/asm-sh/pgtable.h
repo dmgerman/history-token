@@ -43,8 +43,13 @@ DECL|macro|flush_icache_page
 mdefine_line|#define flush_icache_page(vma,pg)&t;&t;do { } while (0)
 DECL|macro|flush_cache_sigtramp
 mdefine_line|#define flush_cache_sigtramp(vaddr)&t;&t;do { } while (0)
+DECL|macro|p3_cache_init
+mdefine_line|#define p3_cache_init()&t;&t;&t;&t;do { } while (0)
 macro_line|#elif defined(__SH4__)
 multiline_comment|/*&n; *  Caches are broken on SH-4, so we need them.&n; */
+multiline_comment|/* Page is 4K, OC size is 16K, there are four lines. */
+DECL|macro|CACHE_ALIAS
+mdefine_line|#define CACHE_ALIAS 0x00003000
 r_extern
 r_void
 id|flush_cache_all
@@ -100,17 +105,6 @@ id|addr
 suffix:semicolon
 r_extern
 r_void
-id|flush_page_to_ram
-c_func
-(paren
-r_struct
-id|page
-op_star
-id|page
-)paren
-suffix:semicolon
-r_extern
-r_void
 id|flush_dcache_page
 c_func
 (paren
@@ -136,22 +130,6 @@ id|end
 suffix:semicolon
 r_extern
 r_void
-id|flush_icache_page
-c_func
-(paren
-r_struct
-id|vm_area_struct
-op_star
-id|vma
-comma
-r_struct
-id|page
-op_star
-id|pg
-)paren
-suffix:semicolon
-r_extern
-r_void
 id|flush_cache_sigtramp
 c_func
 (paren
@@ -160,7 +138,67 @@ r_int
 id|addr
 )paren
 suffix:semicolon
+DECL|macro|flush_page_to_ram
+mdefine_line|#define flush_page_to_ram(page)&t;&t;&t;do { } while (0)
+DECL|macro|flush_icache_page
+mdefine_line|#define flush_icache_page(vma,pg)&t;&t;do { } while (0)
+multiline_comment|/* Initialization of P3 area for copy_user_page */
+r_extern
+r_void
+id|p3_cache_init
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+DECL|macro|PG_mapped
+mdefine_line|#define PG_mapped&t;PG_arch_1
+multiline_comment|/* We provide our own get_unmapped_area to avoid cache alias issue */
+DECL|macro|HAVE_ARCH_UNMAPPED_AREA
+mdefine_line|#define HAVE_ARCH_UNMAPPED_AREA
 macro_line|#endif
+multiline_comment|/* Flush (write-back only) a region (smaller than a page) */
+r_extern
+r_void
+id|__flush_wback_region
+c_func
+(paren
+r_void
+op_star
+id|start
+comma
+r_int
+id|size
+)paren
+suffix:semicolon
+multiline_comment|/* Flush (write-back &amp; invalidate) a region (smaller than a page) */
+r_extern
+r_void
+id|__flush_purge_region
+c_func
+(paren
+r_void
+op_star
+id|start
+comma
+r_int
+id|size
+)paren
+suffix:semicolon
+multiline_comment|/* Flush (invalidate only) a region (smaller than a page) */
+r_extern
+r_void
+id|__flush_invalidate_region
+c_func
+(paren
+r_void
+op_star
+id|start
+comma
+r_int
+id|size
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Basically we have the same two-level (which is the logical three level&n; * Linux page table layout folded) page tables as the i386.&n; */
 multiline_comment|/*&n; * ZERO_PAGE is a global shared page that is always zero: used&n; * for zero-mapped memory areas etc..&n; */
 r_extern
@@ -188,9 +226,12 @@ DECL|macro|USER_PTRS_PER_PGD
 mdefine_line|#define USER_PTRS_PER_PGD&t;(TASK_SIZE/PGDIR_SIZE)
 DECL|macro|FIRST_USER_PGD_NR
 mdefine_line|#define FIRST_USER_PGD_NR&t;0
+DECL|macro|PTE_PHYS_MASK
+mdefine_line|#define PTE_PHYS_MASK&t;0x1ffff000
 macro_line|#ifndef __ASSEMBLY__
+multiline_comment|/*&n; * First 1MB map is used by fixed purpose.&n; * Currently only 4-enty (16kB) is used (see arch/sh/mm/cache.c)&n; */
 DECL|macro|VMALLOC_START
-mdefine_line|#define VMALLOC_START&t;P3SEG
+mdefine_line|#define VMALLOC_START&t;(P3SEG+0x00100000)
 DECL|macro|VMALLOC_VMADDR
 mdefine_line|#define VMALLOC_VMADDR(x) ((unsigned long)(x))
 DECL|macro|VMALLOC_END
@@ -319,11 +360,11 @@ DECL|macro|pmd_bad
 mdefine_line|#define&t;pmd_bad(x)&t;((pmd_val(x) &amp; (~PAGE_MASK &amp; ~_PAGE_USER)) != _KERNPG_TABLE)
 multiline_comment|/*&n; * Permanent address of a page. Obviously must never be&n; * called on a highmem page.&n; */
 DECL|macro|page_address
-mdefine_line|#define page_address(page)  ((page)-&gt;virtual)
+mdefine_line|#define page_address(page)  ((page)-&gt;virtual) /* P1 address of the page */
 DECL|macro|pages_to_mb
-mdefine_line|#define pages_to_mb(x) ((x) &gt;&gt; (20-PAGE_SHIFT))
+mdefine_line|#define pages_to_mb(x)&t;((x) &gt;&gt; (20-PAGE_SHIFT))
 DECL|macro|pte_page
-mdefine_line|#define pte_page(x) (mem_map+(unsigned long)(((pte_val(x) -__MEMORY_START) &gt;&gt; PAGE_SHIFT)))
+mdefine_line|#define pte_page(x) &t;phys_to_page(pte_val(x)&amp;PTE_PHYS_MASK)
 multiline_comment|/*&n; * The following only work if pte_present() is true.&n; * Undefined behaviour if not..&n; */
 DECL|function|pte_read
 r_static
@@ -436,12 +477,12 @@ id|_PAGE_RW
 suffix:semicolon
 )brace
 )def_block
-DECL|function|pte_shared
+DECL|function|pte_not_present
 r_static
 r_inline
 r_int
 (def_block
-id|pte_shared
+id|pte_not_present
 c_func
 (paren
 id|pte_t
@@ -449,13 +490,16 @@ id|pte
 )paren
 (brace
 r_return
+op_logical_neg
+(paren
 id|pte_val
 c_func
 (paren
 id|pte
 )paren
 op_amp
-id|_PAGE_SHARED
+id|_PAGE_PRESENT
+)paren
 suffix:semicolon
 )brace
 )def_block
@@ -806,7 +850,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Conversion functions: convert a page and protection to a page entry,&n; * and a page entry and page directory to the page they refer to.&n; *&n; * extern pte_t mk_pte(struct page *page, pgprot_t pgprot)&n; */
 DECL|macro|mk_pte
-mdefine_line|#define mk_pte(page,pgprot)&t;&t;&t;&t;&t;&t;&bslash;&n;({&t;pte_t __pte;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;set_pte(&amp;__pte, __pte(((page)-mem_map) * &t;&t;&t;&bslash;&n;&t;&t;(unsigned long long)PAGE_SIZE + pgprot_val(pgprot) +&t;&bslash;&n;&t;&t;__MEMORY_START));&t;&t;&t;&t;&t;&bslash;&n;&t;__pte;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
+mdefine_line|#define mk_pte(page,pgprot)&t;&t;&t;&t;&t;&t;&bslash;&n;({&t;pte_t __pte;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;set_pte(&amp;__pte, __pte(PHYSADDR(page_address(page))&t;&t;&bslash;&n;&t;&t;&t;&t;+pgprot_val(pgprot)));&t;&t;&t;&bslash;&n;&t;__pte;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
 multiline_comment|/* This takes a physical page address that is used by the remapping functions */
 DECL|macro|mk_pte_phys
 mdefine_line|#define mk_pte_phys(physpage, pgprot) &bslash;&n;({ pte_t __pte; set_pte(&amp;__pte, __pte(physpage + pgprot_val(pgprot))); __pte; })
@@ -904,8 +948,9 @@ DECL|macro|pte_to_swp_entry
 mdefine_line|#define pte_to_swp_entry(pte)&t;((swp_entry_t) { pte_val(pte) })
 DECL|macro|swp_entry_to_pte
 mdefine_line|#define swp_entry_to_pte(x)&t;((pte_t) { (x).val })
-multiline_comment|/*&n; * Routines for update of PTE &n; *&n; * We just can use generic implementation, as SuperH has no SMP feature.&n; * (We needed atomic implementation for SMP)&n; */
-macro_line|#include &lt;asm-generic/pgtable.h&gt;
+multiline_comment|/*&n; * Routines for update of PTE &n; *&n; * We just can use generic implementation, as SuperH has no SMP feature.&n; * (We needed atomic implementation for SMP)&n; *&n; */
+DECL|macro|pte_same
+mdefine_line|#define pte_same(A,B)&t;(pte_val(A) == pte_val(B))
 macro_line|#endif /* !__ASSEMBLY__ */
 multiline_comment|/* Needs to be defined here and not in linux/mm.h, as it is arch dependent */
 DECL|macro|PageSkip

@@ -3762,6 +3762,14 @@ r_if
 c_cond
 (paren
 id|wrthdr.size
+OG
+id|FST_MEMSIZE
+op_logical_or
+id|wrthdr.offset
+OG
+id|FST_MEMSIZE
+op_logical_or
+id|wrthdr.size
 op_plus
 id|wrthdr.offset
 OG

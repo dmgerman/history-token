@@ -1,6 +1,7 @@
 macro_line|#ifndef __ASM_SH_PTRACE_H
 DECL|macro|__ASM_SH_PTRACE_H
 mdefine_line|#define __ASM_SH_PTRACE_H
+macro_line|#include &lt;asm/processor.h&gt;
 multiline_comment|/*&n; * Copyright (C) 1999, 2000  Niibe Yutaka&n; *&n; */
 multiline_comment|/*&n; * GCC defines register number like this:&n; * -----------------------------&n; *&t; 0 - 15 are integer registers&n; *&t;17 - 22 are control/special registers&n; *&t;24 - 39 fp registers&n; *&t;40 - 47 xd registers&n; *&t;48 -    fpscr register&n; * -----------------------------&n; *&n; * We follows above, except:&n; *&t;16 --- program counter (PC)&n; *&t;22 --- syscall #&n; *&t;23 --- floating point communication register&n; */
 DECL|macro|REG_REG0
@@ -103,6 +104,13 @@ op_star
 )paren
 suffix:semicolon
 multiline_comment|/* User Break Controller */
+macro_line|#if defined(CONFIG_CPU_SUBTYPE_SH7709)
+DECL|macro|UBC_TYPE_SH7729
+mdefine_line|#define UBC_TYPE_SH7729&t;(cpu_data-&gt;type == CPU_SH7729)
+macro_line|#else
+DECL|macro|UBC_TYPE_SH7729
+mdefine_line|#define UBC_TYPE_SH7729&t;0
+macro_line|#endif
 macro_line|#if defined(__sh3__)
 DECL|macro|UBC_BARA
 mdefine_line|#define UBC_BARA                0xffffffb0
@@ -171,7 +179,7 @@ mdefine_line|#define BBR_DATA&t;&t;(2 &lt;&lt; 4)
 DECL|macro|BBR_READ
 mdefine_line|#define BBR_READ&t;&t;(1 &lt;&lt; 2)
 DECL|macro|BBR_WRITE
-mdefine_line|#define BBR_WRITE&t;&t;(2 &lt;&lt; 4)
+mdefine_line|#define BBR_WRITE&t;&t;(2 &lt;&lt; 2)
 DECL|macro|BBR_BYTE
 mdefine_line|#define BBR_BYTE&t;&t;0x1
 DECL|macro|BBR_HALF
@@ -179,11 +187,17 @@ mdefine_line|#define BBR_HALF&t;&t;0x2
 DECL|macro|BBR_LONG
 mdefine_line|#define BBR_LONG&t;&t;0x3
 DECL|macro|BBR_QUAD
-mdefine_line|#define BBR_QUAD&t;&t;(1 &lt;&lt; 6)
+mdefine_line|#define BBR_QUAD&t;&t;(1 &lt;&lt; 6)&t;/* SH7750 */
+DECL|macro|BBR_CPU
+mdefine_line|#define BBR_CPU&t;&t;&t;(1 &lt;&lt; 6)&t;/* SH7709A,SH7729 */
+DECL|macro|BBR_DMA
+mdefine_line|#define BBR_DMA&t;&t;&t;(2 &lt;&lt; 6)&t;/* SH7709A,SH7729 */
 DECL|macro|BRCR_CMFA
 mdefine_line|#define BRCR_CMFA&t;&t;(1 &lt;&lt; 15)
 DECL|macro|BRCR_CMFB
 mdefine_line|#define BRCR_CMFB&t;&t;(1 &lt;&lt; 14)
+DECL|macro|BRCR_PCTE
+mdefine_line|#define BRCR_PCTE&t;&t;(1 &lt;&lt; 11)
 DECL|macro|BRCR_PCBA
 mdefine_line|#define BRCR_PCBA&t;&t;(1 &lt;&lt; 10)&t;/* 1: after execution */
 DECL|macro|BRCR_DBEB

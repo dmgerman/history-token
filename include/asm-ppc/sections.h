@@ -1,9 +1,8 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.init.h 1.8 07/06/01 09:19:30 trini&n; */
+multiline_comment|/*&n; * BK Id: SCCS/s.sections.h 1.11 09/08/01 15:47:43 paulus&n; */
 macro_line|#ifdef __KERNEL__
-macro_line|#ifndef _PPC_INIT_H
-DECL|macro|_PPC_INIT_H
-mdefine_line|#define _PPC_INIT_H
-macro_line|#include &lt;linux/init.h&gt;
+macro_line|#ifndef _PPC_SECTIONS_H
+DECL|macro|_PPC_SECTIONS_H
+mdefine_line|#define _PPC_SECTIONS_H
 DECL|macro|__pmac
 mdefine_line|#define __pmac __attribute__ ((__section__ (&quot;.text.pmac&quot;)))
 DECL|macro|__pmacdata
@@ -29,6 +28,6 @@ DECL|macro|__openfirmwaredata
 mdefine_line|#define __openfirmwaredata __attribute__ ((__section__ (&quot;.data.openfirmware&quot;)))
 DECL|macro|__openfirmwarefunc
 mdefine_line|#define __openfirmwarefunc(__argopenfirmware) &bslash;&n;&t;__argopenfirmware __openfirmware; &bslash;&n;&t;__argopenfirmware
-macro_line|#endif /* _PPC_INIT_H */
+macro_line|#endif /* _PPC_SECTIONS_H */
 macro_line|#endif /* __KERNEL__ */
 eof

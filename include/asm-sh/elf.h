@@ -4,7 +4,6 @@ mdefine_line|#define __ASM_SH_ELF_H
 multiline_comment|/*&n; * ELF register definitions..&n; */
 macro_line|#include &lt;asm/ptrace.h&gt;
 macro_line|#include &lt;asm/user.h&gt;
-macro_line|#include &lt;asm/byteorder.h&gt;
 DECL|typedef|elf_greg_t
 r_typedef
 r_int

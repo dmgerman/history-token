@@ -66,6 +66,7 @@ c_func
 id|print_buf
 comma
 id|KERN_DEBUG
+l_string|&quot;NTFS: &quot;
 )paren
 suffix:semicolon
 id|vsprintf
@@ -73,7 +74,7 @@ c_func
 (paren
 id|print_buf
 op_plus
-l_int|3
+l_int|9
 comma
 id|fmt
 comma
@@ -168,25 +169,6 @@ suffix:semicolon
 )brace
 macro_line|#endif
 macro_line|#else /* End of DEBUG functions. Normal ones below... */
-DECL|function|ntfs_debug
-r_void
-id|ntfs_debug
-c_func
-(paren
-r_int
-id|mask
-comma
-r_const
-r_char
-op_star
-id|fmt
-comma
-dot
-dot
-dot
-)paren
-(brace
-)brace
 macro_line|#ifndef ntfs_malloc
 DECL|function|ntfs_malloc
 r_void
@@ -411,9 +393,7 @@ c_cond
 (paren
 id|mftno
 op_eq
-id|FILE_
-"$"
-id|Mft
+id|FILE_Mft
 )paren
 (brace
 id|ntfs_memcpy

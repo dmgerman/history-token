@@ -2,7 +2,7 @@ macro_line|#ifndef __ASM_SH_IO_H
 DECL|macro|__ASM_SH_IO_H
 mdefine_line|#define __ASM_SH_IO_H
 multiline_comment|/*&n; * Convention:&n; *    read{b,w,l}/write{b,w,l} are for PCI,&n; *    while in{b,w,l}/out{b,w,l} are for ISA&n; * These may (will) be platform specific function.&n; * In addition we have &squot;pausing&squot; versions: in{b,w,l}_p/out{b,w,l}_p&n; * and &squot;string&squot; versions: ins{b,w,l}/outs{b,w,l}&n; * For read{b,w,l} and write{b,w,l} there are also __raw versions, which&n; * do not have a memory barrier after them.&n; *&n; * In addition, we have &n; *   ctrl_in{b,w,l}/ctrl_out{b,w,l} for SuperH specific I/O.&n; *   which are processor specific.&n; */
-multiline_comment|/*&n; * We follow the Alpha convention here:&n; *  __inb expands to an inline function call (which either calls via the&n; *        mach_vec if generic, or a machine specific implementation)&n; *  _inb  is a real function call (note ___raw fns are _ version of __raw)&n; *  inb   by default expands to _inb, but the machine specif code may&n; *        define it to __inb if it chooses.&n; */
+multiline_comment|/*&n; * We follow the Alpha convention here:&n; *  __inb expands to an inline function call (which either calls via the&n; *        mach_vec if generic, or a machine specific implementation)&n; *  _inb  is a real function call (note ___raw fns are _ version of __raw)&n; *  inb   by default expands to _inb, but the machine specific code may&n; *        define it to __inb if it chooses.&n; */
 macro_line|#include &lt;asm/cache.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
@@ -119,7 +119,7 @@ DECL|macro|__WANT_IO_DEF
 macro_line|# define __WANT_IO_DEF
 macro_line|# if defined(CONFIG_SH_HP600)
 macro_line|#  include &lt;asm/io_hd64461.h&gt;
-macro_line|# elif (defined(CONFIG_SH_SOLUTION_ENGINE) || defined(CONFIG_SH_7751_SOLUTION_ENGINE))
+macro_line|# elif defined(CONFIG_SH_SOLUTION_ENGINE)
 macro_line|#  include &lt;asm/io_se.h&gt;
 macro_line|# elif defined(CONFIG_SH_SH2000)
 macro_line|#  include &lt;asm/io_sh2000.h&gt;
@@ -133,6 +133,10 @@ macro_line|# elif defined(CONFIG_SH_CAT68701)
 macro_line|#  include &lt;asm/io_cat68701.h&gt;
 macro_line|# elif defined(CONFIG_SH_BIGSUR)
 macro_line|#  include &lt;asm/io_bigsur.h&gt;
+macro_line|# elif defined(CONFIG_SH_7751_SOLUTION_ENGINE)
+macro_line|#  include &lt;asm/io_7751se.h&gt;
+macro_line|# elif defined(CONFIG_SH_ADX)
+macro_line|#  include &lt;asm/io_adx.h&gt;
 macro_line|# elif defined(CONFIG_SH_UNKNOWN)
 macro_line|#  include &lt;asm/io_unknown.h&gt;
 macro_line|# else
@@ -951,7 +955,7 @@ macro_line|#endif /* __KERNEL__ */
 macro_line|#ifdef __KERNEL__
 multiline_comment|/*&n; * If the platform has PC-like I/O, this function converts the offset into&n; * an address.&n; */
 DECL|function|isa_port2addr
-r_extern
+r_static
 id|__inline__
 r_int
 r_int
@@ -1037,7 +1041,7 @@ r_int
 suffix:semicolon
 multiline_comment|/* SuperH on-chip I/O functions */
 DECL|function|ctrl_inb
-r_extern
+r_static
 id|__inline__
 r_int
 r_char
@@ -1061,7 +1065,7 @@ id|addr
 suffix:semicolon
 )brace
 DECL|function|ctrl_inw
-r_extern
+r_static
 id|__inline__
 r_int
 r_int
@@ -1085,7 +1089,7 @@ id|addr
 suffix:semicolon
 )brace
 DECL|function|ctrl_inl
-r_extern
+r_static
 id|__inline__
 r_int
 r_int
@@ -1109,7 +1113,7 @@ id|addr
 suffix:semicolon
 )brace
 DECL|function|ctrl_outb
-r_extern
+r_static
 id|__inline__
 r_void
 id|ctrl_outb
@@ -1137,7 +1141,7 @@ id|b
 suffix:semicolon
 )brace
 DECL|function|ctrl_outw
-r_extern
+r_static
 id|__inline__
 r_void
 id|ctrl_outw
@@ -1165,7 +1169,7 @@ id|b
 suffix:semicolon
 )brace
 DECL|function|ctrl_outl
-r_extern
+r_static
 id|__inline__
 r_void
 id|ctrl_outl
@@ -1197,7 +1201,7 @@ mdefine_line|#define IO_SPACE_LIMIT 0xffffffff
 macro_line|#include &lt;asm/addrspace.h&gt;
 multiline_comment|/*&n; * Change virtual addresses to physical addresses and vv.&n; * These are trivial on the 1:1 Linux/SuperH mapping&n; */
 DECL|function|virt_to_phys
-r_extern
+r_static
 id|__inline__
 r_int
 r_int
@@ -1219,7 +1223,7 @@ id|address
 suffix:semicolon
 )brace
 DECL|function|phys_to_virt
-r_extern
+r_static
 id|__inline__
 r_void
 op_star
@@ -1247,6 +1251,8 @@ DECL|macro|virt_to_bus
 mdefine_line|#define virt_to_bus virt_to_phys
 DECL|macro|bus_to_virt
 mdefine_line|#define bus_to_virt phys_to_virt
+DECL|macro|page_to_bus
+mdefine_line|#define page_to_bus page_to_phys
 multiline_comment|/*&n; * readX/writeX() are used to access memory mapped devices. On some&n; * architectures the memory mapped IO stuff needs to be accessed&n; * differently. On the x86 architecture, we just read/write the&n; * memory location directly.&n; *&n; * On SH, we have the whole physical address space mapped at all times&n; * (as MIPS does), so &quot;ioremap()&quot; and &quot;iounmap()&quot; do not need to do&n; * anything.  (This isn&squot;t true for all machines but we still handle&n; * these cases with wired TLB entries anyway ...)&n; *&n; * We cheat a bit and always return uncachable areas until we&squot;ve fixed&n; * the drivers to handle caching properly.  &n; */
 DECL|function|ioremap
 r_static
@@ -1368,11 +1374,11 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * The caches on some architectures aren&squot;t dma-coherent and have need to&n; * handle this in software.  There are three types of operations that&n; * can be applied to dma buffers.&n; *&n; *  - dma_cache_wback_inv(start, size) makes caches and RAM coherent by&n; *    writing the content of the caches back to memory, if necessary.&n; *    The function also invalidates the affected part of the caches as&n; *    necessary before DMA transfers from outside to memory.&n; *  - dma_cache_inv(start, size) invalidates the affected parts of the&n; *    caches.  Dirty lines of the caches may be written back or simply&n; *    be discarded.  This operation is necessary before dma operations&n; *    to the memory.&n; *  - dma_cache_wback(start, size) writes back any dirty lines but does&n; *    not invalidate the cache.  This can be used before DMA reads from&n; *    memory,&n; */
 DECL|macro|dma_cache_wback_inv
-mdefine_line|#define dma_cache_wback_inv(_start,_size) &bslash;&n;    cache_flush_area((unsigned long)(_start),((unsigned long)(_start)+(_size)))
+mdefine_line|#define dma_cache_wback_inv(_start,_size) &bslash;&n;    __flush_purge_region(_start,_size)
 DECL|macro|dma_cache_inv
-mdefine_line|#define dma_cache_inv(_start,_size) &bslash;&n;    cache_purge_area((unsigned long)(_start),((unsigned long)(_start)+(_size)))
+mdefine_line|#define dma_cache_inv(_start,_size) &bslash;&n;    __flush_invalidate_region(_start,_size)
 DECL|macro|dma_cache_wback
-mdefine_line|#define dma_cache_wback(_start,_size) &bslash;&n;    cache_wback_area((unsigned long)(_start),((unsigned long)(_start)+(_size)))
+mdefine_line|#define dma_cache_wback(_start,_size) &bslash;&n;    __flush_wback_region(_start,_size)
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* __ASM_SH_IO_H */
 eof

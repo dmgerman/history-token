@@ -1,13 +1,9 @@
 multiline_comment|/*&n; * Copyright 2000 by Hans Reiser, licensing governed by reiserfs/README&n; */
-macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/reiserfs_fs.h&gt;
-macro_line|#else
-macro_line|#include &quot;nokernel.h&quot;
-macro_line|#endif
 multiline_comment|/* this is one and only function that is used outside (do_balance.c) */
 r_int
 id|balance_internal
@@ -5407,25 +5403,6 @@ id|tbSh
 )paren
 suffix:semicolon
 multiline_comment|/*number of items in S[h] */
-macro_line|#ifdef REISERFS_FSCK
-r_if
-c_cond
-(paren
-op_minus
-l_int|1
-op_le
-id|child_pos
-op_logical_and
-id|child_pos
-op_le
-id|n
-op_logical_and
-id|insert_num
-OG
-l_int|0
-)paren
-(brace
-macro_line|#else
 r_if
 c_cond
 (paren
@@ -5442,7 +5419,6 @@ OG
 l_int|0
 )paren
 (brace
-macro_line|#endif
 id|bi.tb
 op_assign
 id|tb
@@ -5471,66 +5447,6 @@ op_plus
 l_int|1
 )paren
 suffix:semicolon
-macro_line|#ifdef REISERFS_FSCK
-r_if
-c_cond
-(paren
-id|child_pos
-op_eq
-op_minus
-l_int|1
-)paren
-(brace
-multiline_comment|/* this is a little different from original do_balance: &n;&t;&t;   here we insert the minimal keys in the tree, that has never happened when file system works */
-r_if
-c_cond
-(paren
-id|tb-&gt;CFL
-(braket
-id|h
-op_minus
-l_int|1
-)braket
-op_logical_or
-id|insert_num
-op_ne
-l_int|1
-op_logical_or
-id|h
-op_ne
-l_int|1
-)paren
-id|die
-(paren
-l_string|&quot;balance_internal: invalid child_pos&quot;
-)paren
-suffix:semicolon
-multiline_comment|/*      insert_child (tb-&gt;S[h], tb-&gt;S[h-1], child_pos, insert_num, B_N_ITEM_HEAD(tb-&gt;S[0],0), insert_ptr);*/
-id|internal_insert_childs
-(paren
-op_amp
-id|bi
-comma
-id|child_pos
-comma
-id|insert_num
-comma
-id|B_N_PITEM_HEAD
-(paren
-id|PATH_PLAST_BUFFER
-(paren
-id|tb-&gt;tb_path
-)paren
-comma
-l_int|0
-)paren
-comma
-id|insert_ptr
-)paren
-suffix:semicolon
-)brace
-r_else
-macro_line|#endif
 id|internal_insert_childs
 (paren
 op_amp

@@ -194,6 +194,8 @@ c_func
 r_void
 )paren
 suffix:semicolon
+DECL|macro|__cpu_raise_softirq
+mdefine_line|#define __cpu_raise_softirq(cpu, nr) do { softirq_pending(cpu) |= 1UL &lt;&lt; (nr); } while (0)
 r_extern
 r_void
 id|FASTCALL

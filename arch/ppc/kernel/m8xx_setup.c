@@ -1,5 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.m8xx_setup.c 1.27 08/20/01 15:25:16 paulus&n; */
-multiline_comment|/*&n; *  linux/arch/ppc/kernel/setup.c&n; *&n; *  Copyright (C) 1995  Linus Torvalds&n; *  Adapted from &squot;alpha&squot; version by Gary Thomas&n; *  Modified by Cort Dougan (cort@cs.nmt.edu)&n; *  Modified for MBX using prep/chrp/pmac functions by Dan (dmalek@jlc.net)&n; *  Further modified for generic 8xx by Dan.&n; */
+multiline_comment|/*&n; * BK Id: SCCS/s.m8xx_setup.c 1.29 08/30/01 09:01:04 trini&n; *&n; *  linux/arch/ppc/kernel/setup.c&n; *&n; *  Copyright (C) 1995  Linus Torvalds&n; *  Adapted from &squot;alpha&squot; version by Gary Thomas&n; *  Modified by Cort Dougan (cort@cs.nmt.edu)&n; *  Modified for MBX using prep/chrp/pmac functions by Dan (dmalek@jlc.net)&n; *  Further modified for generic 8xx by Dan.&n; */
 multiline_comment|/*&n; * bootup setup stuff..&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
@@ -364,7 +363,7 @@ l_int|NULL
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* A place holder for time base interrupts, if they are ever enabled.&n;*/
+multiline_comment|/* A place holder for time base interrupts, if they are ever enabled. */
 DECL|function|timebase_interrupt
 r_void
 id|timebase_interrupt
@@ -416,7 +415,7 @@ id|fp
 comma
 id|divisor
 suffix:semicolon
-multiline_comment|/* Unlock the SCCR.&n;&t;*/
+multiline_comment|/* Unlock the SCCR. */
 (paren
 (paren
 r_volatile
@@ -444,7 +443,7 @@ id|im_clkrstk.cark_sccrk
 op_assign
 id|KAPWR_KEY
 suffix:semicolon
-multiline_comment|/* Force all 8xx processors to use divide by 16 processor clock.&n;&t;*/
+multiline_comment|/* Force all 8xx processors to use divide by 16 processor clock. */
 (paren
 (paren
 r_volatile
@@ -588,7 +587,7 @@ id|im_sitk.sitk_tbk
 op_assign
 id|KAPWR_KEY
 suffix:semicolon
-multiline_comment|/* Disable the RTC one second and alarm interrupts.&n;&t;*/
+multiline_comment|/* Disable the RTC one second and alarm interrupts. */
 (paren
 (paren
 r_volatile
@@ -605,6 +604,24 @@ op_complement
 id|RTCSC_SIE
 op_or
 id|RTCSC_ALE
+)paren
+suffix:semicolon
+multiline_comment|/* Enable the RTC */
+(paren
+(paren
+r_volatile
+id|immap_t
+op_star
+)paren
+id|IMAP_ADDR
+)paren
+op_member_access_from_pointer
+id|im_sit.sit_rtcsc
+op_or_assign
+(paren
+id|RTCSC_RTF
+op_or
+id|RTCSC_RTE
 )paren
 suffix:semicolon
 multiline_comment|/* Enabling the decrementer also enables the timebase interrupts&n;&t; * (or from the other point of view, to get decrementer interrupts&n;&t; * we have to enable the timebase).  The decrementer interrupt&n;&t; * is wired into the vector table, nothing to do here for that.&n;&t; */
@@ -719,6 +736,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+r_static
 r_int
 r_int
 DECL|function|m8xx_get_rtc_time
@@ -728,7 +746,7 @@ c_func
 r_void
 )paren
 (brace
-multiline_comment|/* Get time from the RTC.&n;&t;*/
+multiline_comment|/* Get time from the RTC. */
 r_return
 (paren
 r_int
@@ -747,6 +765,7 @@ id|im_sit.sit_rtc
 )paren
 suffix:semicolon
 )brace
+r_static
 r_void
 DECL|function|m8xx_restart
 id|m8xx_restart
@@ -841,6 +860,7 @@ l_int|1
 suffix:semicolon
 )brace
 )brace
+r_static
 r_void
 DECL|function|m8xx_power_off
 id|m8xx_power_off
@@ -856,6 +876,7 @@ l_int|NULL
 )paren
 suffix:semicolon
 )brace
+r_static
 r_void
 DECL|function|m8xx_halt
 id|m8xx_halt
@@ -871,8 +892,9 @@ l_int|NULL
 )paren
 suffix:semicolon
 )brace
-DECL|function|m8xx_setup_residual
+r_static
 r_int
+DECL|function|m8xx_setup_residual
 id|m8xx_setup_residual
 c_func
 (paren
@@ -924,6 +946,7 @@ id|len
 suffix:semicolon
 )brace
 multiline_comment|/* Initialize the internal interrupt controller.  The number of&n; * interrupts supported can vary with the processor type, and the&n; * 82xx family can have up to 64.&n; * External interrupts can be either edge or level triggered, and&n; * need to be initialized by the appropriate driver.&n; */
+r_static
 r_void
 id|__init
 DECL|function|m8xx_init_IRQ
@@ -1043,6 +1066,7 @@ macro_line|#if defined(CONFIG_BLK_DEV_IDE) || defined(CONFIG_BLK_DEV_IDE_MODULE)
 multiline_comment|/*&n; * IDE stuff.&n; */
 macro_line|#ifdef CONFIG_BLK_DEV_MPC8xx_IDE
 DECL|function|ide_interrupt_handler
+r_static
 r_void
 id|ide_interrupt_handler
 (paren
@@ -1053,6 +1077,7 @@ id|dev
 (brace
 )brace
 macro_line|#endif
+r_static
 r_int
 DECL|function|m8xx_ide_default_irq
 id|m8xx_ide_default_irq
@@ -1089,6 +1114,7 @@ l_int|9
 suffix:semicolon
 macro_line|#endif
 )brace
+r_static
 id|ide_ioreg_t
 DECL|function|m8xx_ide_default_io_base
 id|m8xx_ide_default_io_base
@@ -1102,6 +1128,7 @@ r_return
 id|index
 suffix:semicolon
 )brace
+r_static
 r_int
 DECL|function|m8xx_ide_request_irq
 id|m8xx_ide_request_irq
@@ -1158,8 +1185,9 @@ id|dev_id
 suffix:semicolon
 )brace
 multiline_comment|/* We can use an external IDE controller&n; * or wire the IDE interface to the internal PCMCIA controller.&n; *&n; * See include/linux/ide.h for definition of hw_regs_t (p, base)&n; */
-DECL|function|m8xx_ide_init_hwif_ports
+r_static
 r_void
+DECL|function|m8xx_ide_init_hwif_ports
 id|m8xx_ide_init_hwif_ports
 c_func
 (paren
@@ -1919,10 +1947,11 @@ macro_line|#endif&t;/* CONFIG_BLK_DEV_MPC8xx_IDE */
 macro_line|#endif&t;/* CONFIG_BLK_DEV_IDE || CONFIG_BLK_DEV_IDE_MODULE */
 multiline_comment|/* -------------------------------------------------------------------- */
 multiline_comment|/*&n; * This is a big hack right now, but it may turn into something real&n; * someday.&n; *&n; * For the 8xx boards (at this time anyway), there is nothing to initialize&n; * associated the PROM.  Rather than include all of the prom.c&n; * functions in the image just to get prom_init, all we really need right&n; * now is the initialization of the physical memory region.&n; */
-DECL|function|m8xx_find_end_of_memory
+r_static
 r_int
 r_int
 id|__init
+DECL|function|m8xx_find_end_of_memory
 id|m8xx_find_end_of_memory
 c_func
 (paren
@@ -1953,9 +1982,10 @@ id|binfo-&gt;bi_memsize
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Now map in some of the I/O space that is generically needed&n; * or shared with multiple devices.&n; * All of this fits into the same 4Mbyte region, so it only&n; * requires one page table page.  (or at least it used to  -- paulus)&n; */
-DECL|function|m8xx_map_io
+r_static
 r_void
 id|__init
+DECL|function|m8xx_map_io
 id|m8xx_map_io
 c_func
 (paren

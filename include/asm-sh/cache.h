@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: cache.h,v 1.3 1999/12/11 12:31:51 gniibe Exp $&n; *&n; * include/asm-sh/cache.h&n; *&n; * Copyright 1999 (C) Niibe Yutaka&n; */
+multiline_comment|/* $Id: cache.h,v 1.3 2000/07/04 06:24:49 gniibe Exp $&n; *&n; * include/asm-sh/cache.h&n; *&n; * Copyright 1999 (C) Niibe Yutaka&n; */
 macro_line|#ifndef __ASM_SH_CACHE_H
 DECL|macro|__ASM_SH_CACHE_H
 mdefine_line|#define __ASM_SH_CACHE_H

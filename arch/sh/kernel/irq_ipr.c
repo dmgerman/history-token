@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: irq_ipr.c,v 1.6 2000/05/14 08:41:25 gniibe Exp $&n; *&n; * linux/arch/sh/kernel/irq_ipr.c&n; *&n; * Copyright (C) 1999  Niibe Yutaka &amp; Takeshi Yaegashi&n; * Copyright (C) 2000  Kazumoto Kojima&n; *&n; * Interrupt handling for IPR-based IRQ.&n; *&n; * Supported system:&n; *&t;On-chip supporting modules (TMU, RTC, etc.).&n; *&t;On-chip supporting modules for SH7709/SH7709A/SH7729.&n; *&t;Hitachi SolutionEngine external I/O:&n; *&t;&t;MS7709SE01, MS7709ASE01, and MS7750SE01&n; *&n; */
+multiline_comment|/* $Id: irq_ipr.c,v 1.20 2001/07/15 23:26:56 gniibe Exp $&n; *&n; * linux/arch/sh/kernel/irq_ipr.c&n; *&n; * Copyright (C) 1999  Niibe Yutaka &amp; Takeshi Yaegashi&n; * Copyright (C) 2000  Kazumoto Kojima&n; *&n; * Interrupt handling for IPR-based IRQ.&n; *&n; * Supported system:&n; *&t;On-chip supporting modules (TMU, RTC, etc.).&n; *&t;On-chip supporting modules for SH7709/SH7709A/SH7729.&n; *&t;Hitachi SolutionEngine external I/O:&n; *&t;&t;MS7709SE01, MS7709ASE01, and MS7750SE01&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/irq.h&gt;
@@ -366,6 +366,25 @@ r_int
 id|irq
 )paren
 (brace
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|irq_desc
+(braket
+id|irq
+)braket
+dot
+id|status
+op_amp
+(paren
+id|IRQ_DISABLED
+op_or
+id|IRQ_INPROGRESS
+)paren
+)paren
+)paren
 id|enable_ipr_irq
 c_func
 (paren
@@ -724,6 +743,25 @@ r_int
 id|irq
 )paren
 (brace
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|irq_desc
+(braket
+id|irq
+)braket
+dot
+id|status
+op_amp
+(paren
+id|IRQ_DISABLED
+op_or
+id|IRQ_INPROGRESS
+)paren
+)paren
+)paren
 id|enable_pint_irq
 c_func
 (paren

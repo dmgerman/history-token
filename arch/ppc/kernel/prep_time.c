@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.prep_time.c 1.7 05/17/01 18:14:22 cort&n; */
+multiline_comment|/*&n; * BK Id: SCCS/s.prep_time.c 1.10 09/08/01 15:47:42 paulus&n; */
 multiline_comment|/*&n; *  linux/arch/i386/kernel/time.c&n; *&n; *  Copyright (C) 1991, 1992, 1995  Linus Torvalds&n; *&n; * Adapted for PowerPC (PreP) by Gary Thomas&n; * Modified by Cort Dougan (cort@cs.nmt.edu)&n; *  copied and modified from intel version&n; *&n; */
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -11,7 +11,7 @@ macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/timex.h&gt;
 macro_line|#include &lt;linux/kernel_stat.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
-macro_line|#include &lt;asm/init.h&gt;
+macro_line|#include &lt;asm/sections.h&gt;
 macro_line|#include &lt;asm/segment.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;

@@ -1,11 +1,11 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.pmac_pic.c 1.18 08/19/01 22:23:04 paulus&n; */
+multiline_comment|/*&n; * BK Id: SCCS/s.pmac_pic.c 1.20 09/08/01 15:47:42 paulus&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/stddef.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/signal.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
-macro_line|#include &lt;asm/init.h&gt;
+macro_line|#include &lt;asm/sections.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/smp.h&gt;
 macro_line|#include &lt;asm/prom.h&gt;

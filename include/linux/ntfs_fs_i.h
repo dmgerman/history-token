@@ -144,11 +144,6 @@ DECL|struct|ntfs_inode_info
 r_struct
 id|ntfs_inode_info
 (brace
-DECL|member|mmu_private
-r_int
-r_int
-id|mmu_private
-suffix:semicolon
 DECL|member|vol
 r_struct
 id|ntfs_sb_info

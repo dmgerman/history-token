@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.pmac_time.c 1.14 08/19/01 22:23:04 paulus&n; */
+multiline_comment|/*&n; * BK Id: SCCS/s.pmac_time.c 1.16 09/08/01 15:47:42 paulus&n; */
 multiline_comment|/*&n; * Support for periodic interrupts (100 per second) and for getting&n; * the current time from the RTC on Power Macintoshes.&n; *&n; * We use the decrementer register for our periodic interrupts.&n; *&n; * Paul Mackerras&t;August 1996.&n; * Copyright (C) 1996 Paul Mackerras.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
@@ -11,7 +11,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/adb.h&gt;
 macro_line|#include &lt;linux/cuda.h&gt;
 macro_line|#include &lt;linux/pmu.h&gt;
-macro_line|#include &lt;asm/init.h&gt;
+macro_line|#include &lt;asm/sections.h&gt;
 macro_line|#include &lt;asm/prom.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/io.h&gt;

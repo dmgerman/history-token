@@ -15,10 +15,30 @@ DECL|macro|PTE_MASK
 mdefine_line|#define PTE_MASK&t;PAGE_MASK
 macro_line|#ifdef __KERNEL__
 macro_line|#ifndef __ASSEMBLY__
-DECL|macro|clear_page
-mdefine_line|#define clear_page(page)&t;memset((void *)(page), 0, PAGE_SIZE)
-DECL|macro|copy_page
-mdefine_line|#define copy_page(to,from)&t;memcpy((void *)(to), (void *)(from), PAGE_SIZE)
+r_extern
+r_void
+id|clear_page
+c_func
+(paren
+r_void
+op_star
+id|to
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|copy_page
+c_func
+(paren
+r_void
+op_star
+id|to
+comma
+r_void
+op_star
+id|from
+)paren
+suffix:semicolon
 macro_line|#if defined(__sh3__)
 DECL|macro|clear_user_page
 mdefine_line|#define clear_user_page(page, vaddr)&t;clear_page(page)
@@ -55,6 +75,38 @@ comma
 r_int
 r_int
 id|address
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|__clear_user_page
+c_func
+(paren
+r_void
+op_star
+id|to
+comma
+r_void
+op_star
+id|orig_to
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|__copy_user_page
+c_func
+(paren
+r_void
+op_star
+id|to
+comma
+r_void
+op_star
+id|from
+comma
+r_void
+op_star
+id|orig_to
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -130,16 +182,31 @@ mdefine_line|#define PAGE_ALIGN(addr)&t;(((addr)+PAGE_SIZE-1)&amp;PAGE_MASK)
 multiline_comment|/*&n; * IF YOU CHANGE THIS, PLEASE ALSO CHANGE&n; *&n; *&t;arch/sh/vmlinux.lds.S&n; *&n; * which has the same constant encoded..&n; */
 DECL|macro|__MEMORY_START
 mdefine_line|#define __MEMORY_START&t;&t;CONFIG_MEMORY_START
+DECL|macro|__MEMORY_SIZE
+mdefine_line|#define __MEMORY_SIZE&t;&t;CONFIG_MEMORY_SIZE
+macro_line|#ifdef CONFIG_DISCONTIGMEM
+multiline_comment|/* Just for HP690, for now.. */
+DECL|macro|__MEMORY_START_2ND
+mdefine_line|#define __MEMORY_START_2ND&t;(__MEMORY_START+0x02000000)
+DECL|macro|__MEMORY_SIZE_2ND
+mdefine_line|#define __MEMORY_SIZE_2ND&t;0x001000000 /* 16MB */
+macro_line|#endif
 DECL|macro|PAGE_OFFSET
 mdefine_line|#define PAGE_OFFSET&t;&t;(0x80000000UL)
 DECL|macro|__pa
 mdefine_line|#define __pa(x)&t;&t;&t;((unsigned long)(x)-PAGE_OFFSET)
 DECL|macro|__va
 mdefine_line|#define __va(x)&t;&t;&t;((void *)((unsigned long)(x)+PAGE_OFFSET))
-DECL|macro|virt_to_page
-mdefine_line|#define virt_to_page(kaddr)&t;(mem_map + ((__pa(kaddr)-__MEMORY_START) &gt;&gt; PAGE_SHIFT))
+macro_line|#ifndef CONFIG_DISCONTIGMEM
+DECL|macro|phys_to_page
+mdefine_line|#define phys_to_page(phys)&t;(mem_map + (((phys)-__MEMORY_START) &gt;&gt; PAGE_SHIFT))
 DECL|macro|VALID_PAGE
 mdefine_line|#define VALID_PAGE(page)&t;((page - mem_map) &lt; max_mapnr)
+DECL|macro|page_to_phys
+mdefine_line|#define page_to_phys(page)&t;(((page - mem_map) &lt;&lt; PAGE_SHIFT) + __MEMORY_START)
+macro_line|#endif
+DECL|macro|virt_to_page
+mdefine_line|#define virt_to_page(kaddr)&t;phys_to_page(__pa(kaddr))
 macro_line|#ifndef __ASSEMBLY__
 multiline_comment|/*&n; * Tell the user there is some problem.&n; */
 DECL|macro|BUG
@@ -148,7 +215,7 @@ DECL|macro|PAGE_BUG
 mdefine_line|#define PAGE_BUG(page) do { &bslash;&n;&t;BUG(); &bslash;&n;} while (0)
 multiline_comment|/* Pure 2^n version of get_order */
 DECL|function|get_order
-r_extern
+r_static
 id|__inline__
 r_int
 id|get_order

@@ -1,7 +1,7 @@
 macro_line|#ifndef __ASM_SH_HD64461
 DECL|macro|__ASM_SH_HD64461
 mdefine_line|#define __ASM_SH_HD64461
-multiline_comment|/*&n; *&t;$Id: hd64461.h,v 1.1 2000/06/10 21:45:48 yaegashi Exp $&n; *&t;Copyright (C) 2000 YAEGASHI Takeshi&n; *&t;Hitachi HD64461 companion chip support&n; */
+multiline_comment|/*&n; *&t;$Id: hd64461.h,v 1.7 2001/07/07 11:43:58 yaegashi Exp $&n; *&t;Copyright (C) 2000 YAEGASHI Takeshi&n; *&t;Hitachi HD64461 companion chip support&n; */
 macro_line|#include &lt;linux/config.h&gt;
 DECL|macro|HD64461_STBCR
 mdefine_line|#define HD64461_STBCR&t;0x10000
@@ -111,5 +111,7 @@ mdefine_line|#define CONFIG_HD64461_IRQ&t;36
 macro_line|#endif
 DECL|macro|HD64461_IRQBASE
 mdefine_line|#define HD64461_IRQBASE&t;&t;OFFCHIP_IRQ_BASE
+DECL|macro|HD64461_IRQ_NUM
+mdefine_line|#define HD64461_IRQ_NUM &t;16
 macro_line|#endif
 eof

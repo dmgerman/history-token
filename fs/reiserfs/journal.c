@@ -1,5 +1,4 @@
 multiline_comment|/*&n;** Write ahead logging implementation copyright Chris Mason 2000&n;**&n;** The background commits make this code very interelated, and &n;** overly complex.  I need to rethink things a bit....The major players:&n;**&n;** journal_begin -- call with the number of blocks you expect to log.  &n;**                  If the current transaction is too&n;** &t;&t;    old, it will block until the current transaction is &n;** &t;&t;    finished, and then start a new one.&n;**&t;&t;    Usually, your transaction will get joined in with &n;**                  previous ones for speed.&n;**&n;** journal_join  -- same as journal_begin, but won&squot;t block on the current &n;**                  transaction regardless of age.  Don&squot;t ever call&n;**                  this.  Ever.  There are only two places it should be &n;**                  called from, and they are both inside this file.&n;**&n;** journal_mark_dirty -- adds blocks into this transaction.  clears any flags &n;**                       that might make them get sent to disk&n;**                       and then marks them BH_JDirty.  Puts the buffer head &n;**                       into the current transaction hash.  &n;**&n;** journal_end -- if the current transaction is batchable, it does nothing&n;**                   otherwise, it could do an async/synchronous commit, or&n;**                   a full flush of all log and real blocks in the &n;**                   transaction.&n;**&n;** flush_old_commits -- if the current transaction is too old, it is ended and &n;**                      commit blocks are sent to disk.  Forces commit blocks &n;**                      to disk for all backgrounded commits that have been &n;**                      around too long.&n;**&t;&t;     -- Note, if you call this as an immediate flush from &n;**&t;&t;        from within kupdate, it will ignore the immediate flag&n;**&n;** The commit thread -- a writer process for async commits.  It allows a &n;**                      a process to request a log flush on a task queue.&n;**                      the commit will happen once the commit thread wakes up.&n;**                      The benefit here is the writer (with whatever&n;**                      related locks it has) doesn&squot;t have to wait for the&n;**                      log blocks to hit disk if it doesn&squot;t want to.&n;*/
-macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
@@ -14,9 +13,6 @@ macro_line|#include &lt;linux/locks.h&gt;
 macro_line|#include &lt;linux/stat.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
-macro_line|#else
-macro_line|#include &quot;nokernel.h&quot;
-macro_line|#endif
 multiline_comment|/* the number of mounted filesystems.  This is used to decide when to&n;** start and kill the commit thread&n;*/
 DECL|variable|reiserfs_mounted_fs_count
 r_static
@@ -11794,7 +11790,6 @@ id|WAIT
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef __KERNEL__
 DECL|function|show_reiserfs_locks
 r_int
 id|show_reiserfs_locks
@@ -11936,7 +11931,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#endif
 multiline_comment|/*&n;** used to get memory back from async commits that are floating around&n;** and to reclaim any blocks deleted but unusable because their commits&n;** haven&squot;t hit disk yet.  called from bitmap.c&n;**&n;** if it starts flushing things, it ors SCHEDULE_OCCURRED into repeat.&n;** note, this is just if schedule has a chance of occuring.  I need to &n;** change flush_commit_lists to have a repeat parameter too.&n;**&n;*/
 DECL|function|flush_async_commits
 r_void

@@ -20,7 +20,7 @@ macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/hardirq.h&gt;
 macro_line|#include &lt;asm/softirq.h&gt;
-macro_line|#include &lt;asm/init.h&gt;
+macro_line|#include &lt;asm/sections.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/prom.h&gt;
 macro_line|#include &lt;asm/smp.h&gt;
@@ -271,8 +271,9 @@ id|psurge_smp_message
 id|NR_CPUS
 )braket
 suffix:semicolon
-DECL|function|psurge_smp_message_recv
 r_void
+id|__pmac
+DECL|function|psurge_smp_message_recv
 id|psurge_smp_message_recv
 c_func
 (paren
@@ -349,6 +350,7 @@ id|regs
 suffix:semicolon
 )brace
 r_void
+id|__pmac
 DECL|function|psurge_primary_intr
 id|psurge_primary_intr
 c_func
@@ -375,6 +377,7 @@ suffix:semicolon
 )brace
 r_static
 r_void
+id|__pmac
 DECL|function|smp_psurge_message_pass
 id|smp_psurge_message_pass
 c_func
@@ -1372,6 +1375,7 @@ suffix:semicolon
 )brace
 r_static
 r_int
+id|__init
 DECL|function|smp_core99_probe
 id|smp_core99_probe
 c_func
@@ -1482,6 +1486,7 @@ suffix:semicolon
 )brace
 r_static
 r_void
+id|__init
 DECL|function|smp_core99_kick_cpu
 id|smp_core99_kick_cpu
 c_func
@@ -1776,10 +1781,11 @@ l_int|0x349
 suffix:semicolon
 )brace
 multiline_comment|/* PowerSurge-style Macs */
-DECL|variable|psurge_smp_ops
+DECL|variable|__pmacdata
 r_struct
 id|smp_ops_t
 id|psurge_smp_ops
+id|__pmacdata
 op_assign
 (brace
 id|smp_psurge_message_pass
@@ -1793,10 +1799,11 @@ comma
 )brace
 suffix:semicolon
 multiline_comment|/* Core99 Macs (dual G4s) */
-DECL|variable|core99_smp_ops
+DECL|variable|__pmacdata
 r_struct
 id|smp_ops_t
 id|core99_smp_ops
+id|__pmacdata
 op_assign
 (brace
 id|smp_openpic_message_pass

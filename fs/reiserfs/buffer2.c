@@ -1,14 +1,10 @@
 multiline_comment|/*&n; *  Copyright 2000 by Hans Reiser, licensing governed by reiserfs/README  &n; */
 multiline_comment|/*&n; * Contains code from&n; *&n; *  linux/include/linux/lock.h and linux/fs/buffer.c /linux/fs/minix/fsync.c&n; *&n; *  Copyright (C) 1991, 1992  Linus Torvalds&n; */
-macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/locks.h&gt;
 macro_line|#include &lt;linux/reiserfs_fs.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
-macro_line|#else
-macro_line|#include &quot;nokernel.h&quot;
-macro_line|#endif
 multiline_comment|/*&n; *  wait_buffer_until_released&n; *  reiserfs_bread&n; *  reiserfs_getblk&n; *  get_new_buffer&n; */
 multiline_comment|/* when we allocate a new block (get_new_buffer, get_empty_nodes) and&n;   get buffer for it, it is possible that it is held by someone else&n;   or even by this process. In this function we wait until all other&n;   holders release buffer. To make sure, that current process does not&n;   hold we did free all buffers in tree balance structure&n;   (get_empty_nodes and get_nodes_for_preserving) or in path structure&n;   only (get_new_buffer) just before calling this */
 DECL|function|wait_buffer_until_released

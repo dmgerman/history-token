@@ -731,8 +731,6 @@ id|n
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|macro|MAX_PHY
-mdefine_line|#define MAX_PHY 0x20
 DECL|struct|fs_dev
 r_struct
 id|fs_dev
@@ -766,18 +764,11 @@ r_struct
 id|atm_dev
 op_star
 id|atm_dev
-(braket
-id|MAX_PHY
-)braket
 suffix:semicolon
 DECL|member|timer
 r_struct
 id|timer_list
 id|timer
-suffix:semicolon
-DECL|member|start_number
-r_int
-id|start_number
 suffix:semicolon
 DECL|member|hw_base
 r_int

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.feature.c 1.19 08/19/01 22:23:04 paulus&n; */
+multiline_comment|/*&n; * BK Id: SCCS/s.feature.c 1.21 09/08/01 15:47:42 paulus&n; */
 multiline_comment|/*&n; *  arch/ppc/kernel/feature.c&n; *&n; *  Copyright (C) 1996 Paul Mackerras (paulus@cs.anu.edu.au)&n; *                     Ben. Herrenschmidt (benh@kernel.crashing.org)&n; *&n; *  This program is free software; you can redistribute it and/or&n; *  modify it under the terms of the GNU General Public License&n; *  as published by the Free Software Foundation; either version&n; *  2 of the License, or (at your option) any later version.&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -7,7 +7,7 @@ macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
-macro_line|#include &lt;asm/init.h&gt;
+macro_line|#include &lt;asm/sections.h&gt;
 macro_line|#include &lt;asm/errno.h&gt;
 macro_line|#include &lt;asm/ohare.h&gt;
 macro_line|#include &lt;asm/heathrow.h&gt;

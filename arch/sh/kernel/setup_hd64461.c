@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&t;$Id: setup_hd64461.c,v 1.1 2000/06/10 21:45:18 yaegashi Exp $&n; *&t;Copyright (C) 2000 YAEGASHI Takeshi&n; *&t;Hitachi HD64461 companion chip support&n; */
+multiline_comment|/*&n; *&t;$Id: setup_hd64461.c,v 1.9 2001/07/15 23:26:56 gniibe Exp $&n; *&t;Copyright (C) 2000 YAEGASHI Takeshi&n; *&t;Hitachi HD64461 companion chip support&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -186,6 +186,25 @@ r_int
 id|irq
 )paren
 (brace
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|irq_desc
+(braket
+id|irq
+)braket
+dot
+id|status
+op_amp
+(paren
+id|IRQ_DISABLED
+op_or
+id|IRQ_INPROGRESS
+)paren
+)paren
+)paren
 id|enable_hd64461_irq
 c_func
 (paren

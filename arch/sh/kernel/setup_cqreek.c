@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: setup_cqreek.c,v 1.6 2001/02/14 09:36:42 gniibe Exp $&n; *&n; * arch/sh/kernel/setup_cqreek.c&n; *&n; * Copyright (C) 2000  Niibe Yutaka&n; *&n; * CqREEK IDE/ISA Bridge Support.&n; *&n; */
+multiline_comment|/* $Id: setup_cqreek.c,v 1.9 2001/07/30 12:43:28 gniibe Exp $&n; *&n; * arch/sh/kernel/setup_cqreek.c&n; *&n; * Copyright (C) 2000  Niibe Yutaka&n; *&n; * CqREEK IDE/ISA Bridge Support.&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -301,12 +301,6 @@ id|irq
 dot
 id|bit
 suffix:semicolon
-id|inw
-c_func
-(paren
-id|stat_port
-)paren
-suffix:semicolon
 id|disable_cqreek_irq
 c_func
 (paren
@@ -314,6 +308,12 @@ id|irq
 )paren
 suffix:semicolon
 multiline_comment|/* Clear IRQ (it might be edge IRQ) */
+id|inw
+c_func
+(paren
+id|stat_port
+)paren
+suffix:semicolon
 id|outw_p
 c_func
 (paren
@@ -334,6 +334,25 @@ r_int
 id|irq
 )paren
 (brace
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|irq_desc
+(braket
+id|irq
+)braket
+dot
+id|status
+op_amp
+(paren
+id|IRQ_DISABLED
+op_or
+id|IRQ_INPROGRESS
+)paren
+)paren
+)paren
 id|enable_cqreek_irq
 c_func
 (paren
@@ -591,26 +610,12 @@ c_func
 r_void
 )paren
 (brace
-r_extern
-r_void
-id|disable_hlt
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 r_int
 id|i
 suffix:semicolon
 multiline_comment|/* udelay is not available at setup time yet... */
 DECL|macro|DELAY
 mdefine_line|#define DELAY() do {for (i=0; i&lt;10000; i++) ctrl_inw(0xa0000000);} while(0)
-multiline_comment|/*&n;&t; * XXX: I don&squot;t know the reason, but it becomes so fragile with&n;&t; * &quot;sleep&quot;, so we need to stop sleeping.&n;&t; */
-id|disable_hlt
-c_func
-(paren
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren

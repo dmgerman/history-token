@@ -219,7 +219,8 @@ comma
 multiline_comment|/* 7 */
 l_string|&quot;SMC91C100&quot;
 comma
-l_int|NULL
+multiline_comment|/* 8 */
+l_string|&quot;SMC91C100FD&quot;
 comma
 l_int|NULL
 comma
