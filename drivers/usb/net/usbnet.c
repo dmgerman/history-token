@@ -10849,6 +10849,8 @@ r_sizeof
 id|node_id
 )paren
 suffix:semicolon
+macro_line|#if 0
+singleline_comment|// dma_supported() is deeply broken on almost all architectures
 singleline_comment|// possible with some EHCI controllers
 r_if
 c_cond
@@ -10865,6 +10867,7 @@ id|net-&gt;features
 op_or_assign
 id|NETIF_F_HIGHDMA
 suffix:semicolon
+macro_line|#endif
 id|net-&gt;change_mtu
 op_assign
 id|usbnet_change_mtu
