@@ -2,53 +2,56 @@ multiline_comment|/*&n; *   linux/drivers/video/fbmon.c&n; *&n; *  Copyright (C)
 macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/fb.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#ifdef CONFIG_PCI
+macro_line|#include &lt;linux/pci.h&gt;
+macro_line|#endif
 multiline_comment|/* &n; * EDID parser&n; *&n; * portions of this file were based on the EDID parser by&n; * John Fremlin &lt;vii@users.sourceforge.net&gt; and Ani Joshi &lt;ajoshi@unixbox.com&gt;&n; */
 DECL|macro|EDID_LENGTH
-mdefine_line|#define EDID_LENGTH                             0x80
+mdefine_line|#define EDID_LENGTH&t;&t;&t;&t;0x80
 DECL|macro|EDID_HEADER
-mdefine_line|#define EDID_HEADER                             0x00
+mdefine_line|#define EDID_HEADER&t;&t;&t;&t;0x00
 DECL|macro|EDID_HEADER_END
-mdefine_line|#define EDID_HEADER_END                         0x07
+mdefine_line|#define EDID_HEADER_END&t;&t;&t;&t;0x07
 DECL|macro|ID_MANUFACTURER_NAME
-mdefine_line|#define ID_MANUFACTURER_NAME                    0x08
+mdefine_line|#define ID_MANUFACTURER_NAME&t;&t;&t;0x08
 DECL|macro|ID_MANUFACTURER_NAME_END
-mdefine_line|#define ID_MANUFACTURER_NAME_END                0x09
+mdefine_line|#define ID_MANUFACTURER_NAME_END&t;&t;0x09
 DECL|macro|ID_MODEL
-mdefine_line|#define ID_MODEL                                0x0a
+mdefine_line|#define ID_MODEL&t;&t;&t;&t;0x0a
 DECL|macro|ID_SERIAL_NUMBER
-mdefine_line|#define ID_SERIAL_NUMBER                        0x0c
+mdefine_line|#define ID_SERIAL_NUMBER&t;&t;&t;0x0c
 DECL|macro|MANUFACTURE_WEEK
-mdefine_line|#define MANUFACTURE_WEEK                        0x10
+mdefine_line|#define MANUFACTURE_WEEK&t;&t;&t;0x10
 DECL|macro|MANUFACTURE_YEAR
-mdefine_line|#define MANUFACTURE_YEAR                        0x11
+mdefine_line|#define MANUFACTURE_YEAR&t;&t;&t;0x11
 DECL|macro|EDID_STRUCT_VERSION
-mdefine_line|#define EDID_STRUCT_VERSION                     0x12
+mdefine_line|#define EDID_STRUCT_VERSION&t;&t;&t;0x12
 DECL|macro|EDID_STRUCT_REVISION
-mdefine_line|#define EDID_STRUCT_REVISION                    0x13
+mdefine_line|#define EDID_STRUCT_REVISION&t;&t;&t;0x13
 DECL|macro|DPMS_FLAGS
-mdefine_line|#define DPMS_FLAGS                              0x18
+mdefine_line|#define DPMS_FLAGS&t;&t;&t;&t;0x18
 DECL|macro|ESTABLISHED_TIMING_1
-mdefine_line|#define ESTABLISHED_TIMING_1                    0x23
+mdefine_line|#define ESTABLISHED_TIMING_1&t;&t;&t;0x23
 DECL|macro|ESTABLISHED_TIMING_2
-mdefine_line|#define ESTABLISHED_TIMING_2                    0x24
+mdefine_line|#define ESTABLISHED_TIMING_2&t;&t;&t;0x24
 DECL|macro|MANUFACTURERS_TIMINGS
-mdefine_line|#define MANUFACTURERS_TIMINGS                   0x25
+mdefine_line|#define MANUFACTURERS_TIMINGS&t;&t;&t;0x25
 DECL|macro|DETAILED_TIMING_DESCRIPTIONS_START
-mdefine_line|#define DETAILED_TIMING_DESCRIPTIONS_START      0x36
+mdefine_line|#define DETAILED_TIMING_DESCRIPTIONS_START&t;0x36
 DECL|macro|DETAILED_TIMING_DESCRIPTION_SIZE
-mdefine_line|#define DETAILED_TIMING_DESCRIPTION_SIZE        18
+mdefine_line|#define DETAILED_TIMING_DESCRIPTION_SIZE&t;18
 DECL|macro|NO_DETAILED_TIMING_DESCRIPTIONS
-mdefine_line|#define NO_DETAILED_TIMING_DESCRIPTIONS         4
+mdefine_line|#define NO_DETAILED_TIMING_DESCRIPTIONS&t;&t;4
 DECL|macro|DETAILED_TIMING_DESCRIPTION_1
-mdefine_line|#define DETAILED_TIMING_DESCRIPTION_1           0x36
+mdefine_line|#define DETAILED_TIMING_DESCRIPTION_1&t;&t;0x36
 DECL|macro|DETAILED_TIMING_DESCRIPTION_2
-mdefine_line|#define DETAILED_TIMING_DESCRIPTION_2           0x48
+mdefine_line|#define DETAILED_TIMING_DESCRIPTION_2&t;&t;0x48
 DECL|macro|DETAILED_TIMING_DESCRIPTION_3
-mdefine_line|#define DETAILED_TIMING_DESCRIPTION_3           0x5a
+mdefine_line|#define DETAILED_TIMING_DESCRIPTION_3&t;&t;0x5a
 DECL|macro|DETAILED_TIMING_DESCRIPTION_4
-mdefine_line|#define DETAILED_TIMING_DESCRIPTION_4           0x6c
+mdefine_line|#define DETAILED_TIMING_DESCRIPTION_4&t;&t;0x6c
 DECL|macro|DESCRIPTOR_DATA
-mdefine_line|#define DESCRIPTOR_DATA                         5
+mdefine_line|#define DESCRIPTOR_DATA&t;&t;&t;&t;5
 DECL|macro|UPPER_NIBBLE
 mdefine_line|#define UPPER_NIBBLE( x ) &bslash;&n;        (((128|64|32|16) &amp; (x)) &gt;&gt; 4)
 DECL|macro|LOWER_NIBBLE
@@ -62,7 +65,7 @@ mdefine_line|#define PIXEL_CLOCK_LO     (unsigned)block[ 0 ]
 DECL|macro|PIXEL_CLOCK_HI
 mdefine_line|#define PIXEL_CLOCK_HI     (unsigned)block[ 1 ]
 DECL|macro|PIXEL_CLOCK
-mdefine_line|#define PIXEL_CLOCK        (COMBINE_HI_8LO( PIXEL_CLOCK_HI,PIXEL_CLOCK_LO )*1000
+mdefine_line|#define PIXEL_CLOCK&t;   (COMBINE_HI_8LO( PIXEL_CLOCK_HI,PIXEL_CLOCK_LO )*1000)
 DECL|macro|H_ACTIVE_LO
 mdefine_line|#define H_ACTIVE_LO        (unsigned)block[ 2 ]
 DECL|macro|H_BLANKING_LO
@@ -745,9 +748,6 @@ id|var
 )paren
 (brace
 r_int
-id|i
-suffix:semicolon
-r_int
 r_char
 op_star
 id|block
@@ -757,6 +757,11 @@ id|vendor
 comma
 op_star
 id|monitor
+op_assign
+l_int|NULL
+suffix:semicolon
+r_int
+id|i
 suffix:semicolon
 r_if
 c_cond
@@ -924,6 +929,7 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_PCI
 DECL|function|get_EDID
 r_char
 op_star
@@ -1050,6 +1056,7 @@ l_int|NULL
 suffix:semicolon
 macro_line|#endif
 )brace
+macro_line|#endif
 DECL|variable|parse_edid
 id|EXPORT_SYMBOL
 c_func
@@ -1057,6 +1064,7 @@ c_func
 id|parse_edid
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_PCI
 DECL|variable|get_EDID
 id|EXPORT_SYMBOL
 c_func
@@ -1064,4 +1072,5 @@ c_func
 id|get_EDID
 )paren
 suffix:semicolon
+macro_line|#endif
 eof
