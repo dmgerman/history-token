@@ -32,7 +32,7 @@ macro_line|#endif
 macro_line|#if !defined(__LITTLE_ENDIAN) &amp;&amp; !defined(__BIG_ENDIAN)
 macro_line|#error&t;&quot;The endianness of the target host has not been defined.&quot;
 macro_line|#endif
-macro_line|#if defined(__BIG_ENDIAN) &amp;&amp; !defined(__sparc__)
+macro_line|#if defined(__BIG_ENDIAN) &amp;&amp; !defined(__sparc__) &amp;&amp; (!defined(CONFIG_PPC) || defined(CONFIG_FB_PM2_CVPPC))
 DECL|macro|PM2FB_BE_APERTURE
 mdefine_line|#define PM2FB_BE_APERTURE
 macro_line|#endif
