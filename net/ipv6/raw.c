@@ -3697,7 +3697,13 @@ id|sk
 r_if
 c_cond
 (paren
-id|sk-&gt;num
+id|inet_sk
+c_func
+(paren
+id|sk
+)paren
+op_member_access_from_pointer
+id|num
 op_eq
 id|IPPROTO_ICMPV6
 )paren
