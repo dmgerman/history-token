@@ -55,73 +55,87 @@ id|LparMap
 id|xLparMap
 op_assign
 (brace
+dot
 id|xNumberEsids
-suffix:colon
+op_assign
 l_int|4
 comma
 singleline_comment|// Number ESID/VSID pairs
+dot
 id|xNumberRanges
-suffix:colon
+op_assign
 l_int|1
 comma
 singleline_comment|// Number of memory ranges
+dot
 id|xSegmentTableOffs
-suffix:colon
+op_assign
 l_int|0
 comma
 singleline_comment|// Segment Table Page (unused)
+dot
 id|xKernelEsidC
-suffix:colon
+op_assign
 l_int|0xC
 comma
 singleline_comment|// ESID to map
+dot
 id|xKernelVsidC
-suffix:colon
+op_assign
 l_int|0xCCC
 comma
 singleline_comment|// VSID to map
+dot
 id|xKernelEsidD
-suffix:colon
+op_assign
 l_int|0xD
 comma
 singleline_comment|// ESID to map
+dot
 id|xKernelVsidD
-suffix:colon
+op_assign
 l_int|0xDDD
 comma
 singleline_comment|// VSID to map
+dot
 id|xKernelEsidE
-suffix:colon
+op_assign
 l_int|0xE
 comma
 singleline_comment|// ESID to map
+dot
 id|xKernelVsidE
-suffix:colon
+op_assign
 l_int|0xEEE
 comma
 singleline_comment|// VSID to map
+dot
 id|xKernelEsidF
-suffix:colon
+op_assign
 l_int|0xF
 comma
 singleline_comment|// ESID to map
+dot
 id|xKernelVsidF
-suffix:colon
+op_assign
 l_int|0xFFF
 comma
 singleline_comment|// VSID to map
+dot
 id|xPages
-suffix:colon
+op_assign
 id|HvPagesToMap
 comma
 singleline_comment|// # of pages to map (8192)
+dot
 id|xOffset
-suffix:colon
+op_assign
 l_int|0
 comma
 singleline_comment|// Offset into load area
+dot
 id|xVPN
-suffix:colon
+op_assign
 l_int|0xCCC0000
 singleline_comment|// VPN of first mapped page
 )brace
@@ -185,7 +199,7 @@ singleline_comment|// The VPD Areas will give a max logical processors = 2 * max
 singleline_comment|// processors.  The processor VPD array needs one entry per physical
 singleline_comment|// processor (not thread).
 DECL|macro|PacaInit
-mdefine_line|#define PacaInit( n, start, lpq ) &bslash;&n;&t;{ 0, (struct ItLpPaca *)(((char *)(&amp;xPaca[(n)]))+offsetof(struct Paca, xLpPaca)), &bslash;&n;&t;  0, (struct ItLpRegSave *)(((char *)(&amp;xPaca[(n)]))+offsetof(struct Paca, xRegSav)), &bslash;&n;&t;  0, 0, 0, &t;&t;&bslash;&n;&t;  (n), (start),  &t;&bslash;&n;&t;  0,       &t;&t;&bslash;&n;&t;  0,&t;   &t;&t;&bslash;&n;&t;  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, {0},&bslash;&n;&t;  (lpq),&t;&t;&bslash;&n;&t;  0, 0, {0},&t;&t;&bslash;&n;&t;  { /* LpPaca */&t;&t;&bslash;&n;&t;&t;xDesc: 0xd397d781, /* &quot;LpPa&quot; */&t;&bslash;&n;&t;&t;xSize: sizeof(struct ItLpPaca),&t;&bslash;&n;&t;&t;xFPRegsInUse:&t;1,&t;&t;&bslash;&n;&t;&t;xDynProcStatus: 2,&t;&t;&bslash;&n;&t;&t;xEndOfQuantum:&t;0xffffffffffffffff&t;&bslash;&n;&t;  },&t;&t;&t;&bslash;&n;&t;  { /* LpRegSave */&t;&bslash;&n;&t;&t;0xd397d9e2,&t;/* &quot;LpRS&quot; */&t;&bslash;&n;&t;&t;sizeof(struct ItLpRegSave)&t;&bslash;&n;&t;  }&t;&t;&t;&bslash;&n;&t;}
+mdefine_line|#define PacaInit( n, start, lpq ) &bslash;&n;&t;{ 0, (struct ItLpPaca *)(((char *)(&amp;xPaca[(n)]))+offsetof(struct Paca, xLpPaca)), &bslash;&n;&t;  0, (struct ItLpRegSave *)(((char *)(&amp;xPaca[(n)]))+offsetof(struct Paca, xRegSav)), &bslash;&n;&t;  0, 0, 0, &t;&t;&bslash;&n;&t;  (n), (start),  &t;&bslash;&n;&t;  0,       &t;&t;&bslash;&n;&t;  0,&t;   &t;&t;&bslash;&n;&t;  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, {0},&bslash;&n;&t;  (lpq),&t;&t;&bslash;&n;&t;  0, 0, {0},&t;&t;&bslash;&n;&t;  { /* LpPaca */&t;&t;&bslash;&n;&t;&t;.xDesc = 0xd397d781, /* &quot;LpPa&quot; */&t;&bslash;&n;&t;&t;.xSize = sizeof(struct ItLpPaca),&t;&bslash;&n;&t;&t;.xFPRegsInUse =1,&t;&t;&bslash;&n;&t;&t;.xDynProcStatus = 2,&t;&t;&bslash;&n;&t;&t;.xEndOfQuantum =0xffffffffffffffff&t;&bslash;&n;&t;  },&t;&t;&t;&bslash;&n;&t;  { /* LpRegSave */&t;&bslash;&n;&t;&t;0xd397d9e2,&t;/* &quot;LpRS&quot; */&t;&bslash;&n;&t;&t;sizeof(struct ItLpRegSave)&t;&bslash;&n;&t;  }&t;&t;&t;&bslash;&n;&t;}
 DECL|variable|xPaca
 r_struct
 id|Paca
@@ -795,8 +809,9 @@ id|maxProcessors
 op_assign
 (brace
 (brace
+dot
 id|xTimeBaseFreq
-suffix:colon
+op_assign
 l_int|50000000
 )brace
 )brace
