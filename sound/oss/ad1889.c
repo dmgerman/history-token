@@ -10,7 +10,7 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/soundcard.h&gt;
 macro_line|#include &lt;linux/ac97_codec.h&gt;
 macro_line|#include &lt;linux/sound.h&gt;
-macro_line|#include &lt;linux/wrapper.h&gt;
+macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;asm/delay.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/dma.h&gt;
@@ -3455,7 +3455,7 @@ multiline_comment|/* check minor; only support /dev/dsp atm */
 r_if
 c_cond
 (paren
-id|MINOR
+id|minor
 c_func
 (paren
 id|inode-&gt;i_rdev
@@ -3592,7 +3592,7 @@ c_cond
 (paren
 id|ad1889_dev-&gt;ac97_codec-&gt;dev_mixer
 op_ne
-id|MINOR
+id|minor
 c_func
 (paren
 id|inode-&gt;i_rdev
