@@ -1813,9 +1813,9 @@ DECL|member|normalizedSignalStrength
 id|u16
 id|normalizedSignalStrength
 suffix:semicolon
-DECL|member|_reserved1
+DECL|member|shortPreamble
 id|u16
-id|_reserved1
+id|shortPreamble
 suffix:semicolon
 DECL|member|apIP
 id|u8
@@ -1824,13 +1824,93 @@ id|apIP
 l_int|4
 )braket
 suffix:semicolon
-DECL|member|_reserved
+DECL|member|noisePercent
+id|u8
+id|noisePercent
+suffix:semicolon
+multiline_comment|/* Noise percent in last second */
+DECL|member|noisedBm
+id|u8
+id|noisedBm
+suffix:semicolon
+multiline_comment|/* Noise dBm in last second */
+DECL|member|noiseAvePercent
+id|u8
+id|noiseAvePercent
+suffix:semicolon
+multiline_comment|/* Noise percent in last minute */
+DECL|member|noiseAvedBm
+id|u8
+id|noiseAvedBm
+suffix:semicolon
+multiline_comment|/* Noise dBm in last minute */
+DECL|member|noiseMaxPercent
+id|u8
+id|noiseMaxPercent
+suffix:semicolon
+multiline_comment|/* Highest noise percent in last minute */
+DECL|member|noiseMaxdBm
+id|u8
+id|noiseMaxdBm
+suffix:semicolon
+multiline_comment|/* Highest noise dbm in last minute */
+DECL|member|load
 id|u16
-id|_reserved
+id|load
+suffix:semicolon
+DECL|member|carrier
+id|u8
+id|carrier
 (braket
-l_int|7
+l_int|4
 )braket
 suffix:semicolon
+DECL|member|assocStatus
+id|u16
+id|assocStatus
+suffix:semicolon
+DECL|macro|STAT_NOPACKETS
+mdefine_line|#define STAT_NOPACKETS 0
+DECL|macro|STAT_NOCARRIERSET
+mdefine_line|#define STAT_NOCARRIERSET 10
+DECL|macro|STAT_GOTCARRIERSET
+mdefine_line|#define STAT_GOTCARRIERSET 11
+DECL|macro|STAT_WRONGSSID
+mdefine_line|#define STAT_WRONGSSID 20
+DECL|macro|STAT_BADCHANNEL
+mdefine_line|#define STAT_BADCHANNEL 25
+DECL|macro|STAT_BADBITRATES
+mdefine_line|#define STAT_BADBITRATES 30
+DECL|macro|STAT_BADPRIVACY
+mdefine_line|#define STAT_BADPRIVACY 35
+DECL|macro|STAT_APFOUND
+mdefine_line|#define STAT_APFOUND 40
+DECL|macro|STAT_APREJECTED
+mdefine_line|#define STAT_APREJECTED 50
+DECL|macro|STAT_AUTHENTICATING
+mdefine_line|#define STAT_AUTHENTICATING 60
+DECL|macro|STAT_DEAUTHENTICATED
+mdefine_line|#define STAT_DEAUTHENTICATED 61
+DECL|macro|STAT_AUTHTIMEOUT
+mdefine_line|#define STAT_AUTHTIMEOUT 62
+DECL|macro|STAT_ASSOCIATING
+mdefine_line|#define STAT_ASSOCIATING 70
+DECL|macro|STAT_DEASSOCIATED
+mdefine_line|#define STAT_DEASSOCIATED 71
+DECL|macro|STAT_ASSOCTIMEOUT
+mdefine_line|#define STAT_ASSOCTIMEOUT 72
+DECL|macro|STAT_NOTAIROAP
+mdefine_line|#define STAT_NOTAIROAP 73
+DECL|macro|STAT_ASSOCIATED
+mdefine_line|#define STAT_ASSOCIATED 80
+DECL|macro|STAT_LEAPING
+mdefine_line|#define STAT_LEAPING 90
+DECL|macro|STAT_LEAPFAILED
+mdefine_line|#define STAT_LEAPFAILED 91
+DECL|macro|STAT_LEAPTIMEDOUT
+mdefine_line|#define STAT_LEAPTIMEDOUT 92
+DECL|macro|STAT_LEAPCOMPLETE
+mdefine_line|#define STAT_LEAPCOMPLETE 93
 DECL|typedef|StatusRid
 )brace
 id|StatusRid
@@ -4643,10 +4723,7 @@ suffix:semicolon
 id|s
 op_le
 op_amp
-id|statr-&gt;_reserved
-(braket
-l_int|9
-)braket
+id|statr-&gt;shortPreamble
 suffix:semicolon
 id|s
 op_increment
@@ -4663,6 +4740,22 @@ id|s
 )paren
 suffix:semicolon
 )brace
+id|statr-&gt;load
+op_assign
+id|le16_to_cpu
+c_func
+(paren
+id|statr-&gt;load
+)paren
+suffix:semicolon
+id|statr-&gt;assocStatus
+op_assign
+id|le16_to_cpu
+c_func
+(paren
+id|statr-&gt;assocStatus
+)paren
+suffix:semicolon
 r_return
 id|rc
 suffix:semicolon
