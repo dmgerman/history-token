@@ -2990,6 +2990,10 @@ DECL|macro|SMB_FIND_FILE_NAMES_INFO
 mdefine_line|#define SMB_FIND_FILE_NAMES_INFO          0x103
 DECL|macro|SMB_FIND_FILE_BOTH_DIRECTORY_INFO
 mdefine_line|#define SMB_FIND_FILE_BOTH_DIRECTORY_INFO 0x104
+DECL|macro|SMB_FIND_FILE_ID_FULL_DIR_INFO
+mdefine_line|#define SMB_FIND_FILE_ID_FULL_DIR_INFO    0x105
+DECL|macro|SMB_FIND_FILE_ID_BOTH_DIR_INFO
+mdefine_line|#define SMB_FIND_FILE_ID_BOTH_DIR_INFO    0x106
 DECL|macro|SMB_FIND_FILE_UNIX
 mdefine_line|#define SMB_FIND_FILE_UNIX                0x202
 DECL|struct|smb_com_transaction2_qpi_req
@@ -5151,15 +5155,15 @@ DECL|member|ExtFileAttributes
 id|__le32
 id|ExtFileAttributes
 suffix:semicolon
-DECL|member|FileNameLength
-id|__le32
-id|FileNameLength
-suffix:semicolon
 DECL|member|EaSize
 id|__le32
 id|EaSize
 suffix:semicolon
 multiline_comment|/* length of the xattrs */
+DECL|member|FileNameLength
+id|__le32
+id|FileNameLength
+suffix:semicolon
 DECL|member|FileName
 r_char
 id|FileName
@@ -5211,10 +5215,76 @@ DECL|member|ExtFileAttributes
 id|__le32
 id|ExtFileAttributes
 suffix:semicolon
+DECL|member|EaSize
+id|__le32
+id|EaSize
+suffix:semicolon
+multiline_comment|/* length of the xattrs */
+DECL|member|UniqueId
+id|__le64
+id|UniqueId
+suffix:semicolon
+multiline_comment|/* inode num - le since Samba puts ino in low 32 bit*/
 DECL|member|FileNameLength
 id|__le32
 id|FileNameLength
 suffix:semicolon
+DECL|member|FileName
+r_char
+id|FileName
+(braket
+l_int|1
+)braket
+suffix:semicolon
+DECL|typedef|SEARCH_ID_FULL_DIR_INFO
+)brace
+id|SEARCH_ID_FULL_DIR_INFO
+suffix:semicolon
+multiline_comment|/* level 261 FF response data area */
+r_typedef
+r_struct
+(brace
+DECL|member|NextEntryOffset
+id|__le32
+id|NextEntryOffset
+suffix:semicolon
+DECL|member|FileIndex
+id|__u32
+id|FileIndex
+suffix:semicolon
+DECL|member|CreationTime
+id|__le64
+id|CreationTime
+suffix:semicolon
+DECL|member|LastAccessTime
+id|__le64
+id|LastAccessTime
+suffix:semicolon
+DECL|member|LastWriteTime
+id|__le64
+id|LastWriteTime
+suffix:semicolon
+DECL|member|ChangeTime
+id|__le64
+id|ChangeTime
+suffix:semicolon
+DECL|member|EndOfFile
+id|__le64
+id|EndOfFile
+suffix:semicolon
+DECL|member|AllocationSize
+id|__le64
+id|AllocationSize
+suffix:semicolon
+DECL|member|ExtFileAttributes
+id|__le32
+id|ExtFileAttributes
+suffix:semicolon
+DECL|member|FileNameLength
+id|__le32
+id|FileNameLength
+suffix:semicolon
+multiline_comment|/* this should be right before FileName despite what spec says - spec probably wrong */
 DECL|member|EaSize
 id|__le32
 id|EaSize
