@@ -82,15 +82,11 @@ r_int
 r_int
 id|index
 suffix:semicolon
-DECL|member|first_busno
+multiline_comment|/* For compatibility with current (as of July 2003) pciutils&n;&t;   and XFree86. Eventually will be removed. */
+DECL|member|need_domain_info
 r_int
 r_int
-id|first_busno
-suffix:semicolon
-DECL|member|last_busno
-r_int
-r_int
-id|last_busno
+id|need_domain_info
 suffix:semicolon
 DECL|member|sg_pci
 r_struct
@@ -481,7 +477,6 @@ id|res
 suffix:semicolon
 DECL|macro|pci_domain_nr
 mdefine_line|#define pci_domain_nr(bus) ((struct pci_controller *)(bus)-&gt;sysdata)-&gt;index
-multiline_comment|/* Bus number == domain number until we get above 256 busses */
 DECL|function|pci_name_bus
 r_static
 r_inline
@@ -499,21 +494,23 @@ op_star
 id|bus
 )paren
 (brace
-r_int
-id|domain
+r_struct
+id|pci_controller
+op_star
+id|hose
 op_assign
-id|pci_domain_nr
-c_func
-(paren
-id|bus
-)paren
+id|bus-&gt;sysdata
 suffix:semicolon
 r_if
 c_cond
 (paren
-id|domain
-OL
-l_int|256
+id|likely
+c_func
+(paren
+id|hose-&gt;need_domain_info
+op_eq
+l_int|0
+)paren
 )paren
 (brace
 id|sprintf
@@ -523,7 +520,7 @@ id|name
 comma
 l_string|&quot;%02x&quot;
 comma
-id|domain
+id|bus-&gt;number
 )paren
 suffix:semicolon
 )brace
@@ -536,7 +533,7 @@ id|name
 comma
 l_string|&quot;%04x:%02x&quot;
 comma
-id|domain
+id|hose-&gt;index
 comma
 id|bus-&gt;number
 )paren
