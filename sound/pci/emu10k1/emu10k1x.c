@@ -3391,10 +3391,6 @@ id|snd_pcm_t
 op_star
 id|pcm
 suffix:semicolon
-id|snd_pcm_substream_t
-op_star
-id|substream
-suffix:semicolon
 r_int
 id|err
 suffix:semicolon
