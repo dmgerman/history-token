@@ -59,7 +59,7 @@ op_star
 id|kbd_pt_regs
 suffix:semicolon
 r_static
-r_void
+id|irqreturn_t
 id|kbd98io_interrupt
 c_func
 (paren
@@ -388,7 +388,7 @@ suffix:semicolon
 multiline_comment|/*&n; * kbd98io_interrupt() is the most important function in this driver -&n; * it handles the interrupts from keyboard, and sends incoming bytes&n; * to the upper layers.&n; */
 DECL|function|kbd98io_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|kbd98io_interrupt
 c_func
 (paren
@@ -451,6 +451,9 @@ l_int|0
 comma
 id|regs
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 DECL|function|kbd98io_init
