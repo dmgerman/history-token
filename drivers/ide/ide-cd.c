@@ -11137,6 +11137,10 @@ id|devinfo-&gt;mask
 op_or_assign
 id|CDC_MRW_W
 suffix:semicolon
+id|devinfo-&gt;disk
+op_assign
+id|drive-&gt;disk
+suffix:semicolon
 r_return
 id|register_cdrom
 c_func
