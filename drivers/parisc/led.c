@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *    Chassis LCD/LED driver for HP-PARISC workstations&n; *&n; *      (c) Copyright 2000 Red Hat Software&n; *      (c) Copyright 2000 Helge Deller &lt;hdeller@redhat.com&gt;&n; *      (c) Copyright 2001-2003 Helge Deller &lt;deller@gmx.de&gt;&n; *      (c) Copyright 2001 Randolph Chung &lt;tausq@debian.org&gt;&n; *&n; *      This program is free software; you can redistribute it and/or modify&n; *      it under the terms of the GNU General Public License as published by&n; *      the Free Software Foundation; either version 2 of the License, or&n; *      (at your option) any later version.&n; *&n; * TODO:&n; *&t;- speed-up calculations with inlined assembler&n; *&t;- interface to write to second row of LCD from /proc (if technically possible)&n; */
+multiline_comment|/*&n; *    Chassis LCD/LED driver for HP-PARISC workstations&n; *&n; *      (c) Copyright 2000 Red Hat Software&n; *      (c) Copyright 2000 Helge Deller &lt;hdeller@redhat.com&gt;&n; *      (c) Copyright 2001-2003 Helge Deller &lt;deller@gmx.de&gt;&n; *      (c) Copyright 2001 Randolph Chung &lt;tausq@debian.org&gt;&n; *&n; *      This program is free software; you can redistribute it and/or modify&n; *      it under the terms of the GNU General Public License as published by&n; *      the Free Software Foundation; either version 2 of the License, or&n; *      (at your option) any later version.&n; *&n; * TODO:&n; *&t;- speed-up calculations with inlined assembler&n; *&t;- interface to write to second row of LCD from /proc (if technically possible)&n; *&n; * Changes:&n; *      - Audit copy_from_user in led_proc_write.&n; *                                Daniele Bellucci &lt;bellucda@tiscali.it&gt;&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/stddef.h&gt;&t;/* for offsetof() */
@@ -497,6 +497,9 @@ comma
 id|count
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
 id|copy_from_user
 c_func
 (paren
@@ -506,6 +509,10 @@ id|buf
 comma
 id|count
 )paren
+)paren
+r_return
+op_minus
+id|EFAULT
 suffix:semicolon
 id|cur
 op_assign
