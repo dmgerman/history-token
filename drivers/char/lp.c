@@ -1693,14 +1693,6 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|printk
-(paren
-id|KERN_INFO
-l_string|&quot;lp%d: compatibility mode&bslash;n&quot;
-comma
-id|minor
-)paren
-suffix:semicolon
 id|lp_table
 (braket
 id|minor
