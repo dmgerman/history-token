@@ -11,14 +11,12 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/i2c.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
-macro_line|#ifdef MODULE_LICENSE
 id|MODULE_LICENSE
 c_func
 (paren
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 id|MODULE_AUTHOR
 (paren
 l_string|&quot;Hans-Frieder Vogt &lt;hfvogt@arcor.de&gt;&quot;
@@ -30,10 +28,6 @@ c_func
 l_string|&quot;nForce2 SMBus driver&quot;
 )paren
 suffix:semicolon
-DECL|macro|LM_VERSION
-mdefine_line|#define LM_VERSION &quot;2.80-lk1&quot;
-DECL|macro|LM_DATE
-mdefine_line|#define LM_DATE    &quot;2003/07/12&quot;
 macro_line|#ifndef PCI_DEVICE_ID_NVIDIA_NFORCE2_SMBUS
 DECL|macro|PCI_DEVICE_ID_NVIDIA_NFORCE2_SMBUS
 mdefine_line|#define PCI_DEVICE_ID_NVIDIA_NFORCE2_SMBUS   0x0064
@@ -155,19 +149,6 @@ op_star
 id|data
 )paren
 suffix:semicolon
-macro_line|#if 0
-r_static
-r_void
-id|nforce2_do_pause
-c_func
-(paren
-r_int
-r_int
-id|amount
-)paren
-suffix:semicolon
-macro_line|#endif
-multiline_comment|/*&n;static int nforce2_block_transaction(union i2c_smbus_data *data,&n;&t;&t;&t;&t;  char read_write, int i2c_enable);&n; */
 r_static
 id|u32
 id|nforce2_func
@@ -1172,8 +1153,7 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
-multiline_comment|/* TODO: find a better way to find out whether this file is compiled&n;&t; * with i2c 2.7.0 of earlier&n;&t; */
-multiline_comment|/*#ifdef I2C_HW_SMBUS_AMD8111&n;&t;smbus-&gt;adapter.owner = THIS_MODULE;&n;#endif&n;&n;&t;smbus-&gt;adapter.id = I2C_ALGO_SMBUS | I2C_HW_SMBUS_NFORCE2;&n;&t;smbus-&gt;adapter.algo = &amp;smbus_algorithm;&n;&t;smbus-&gt;adapter.algo_data = smbus;*/
+multiline_comment|/*&n;&t;smbus-&gt;adapter.owner = THIS_MODULE;&n;&t;smbus-&gt;adapter.id = I2C_ALGO_SMBUS | I2C_HW_SMBUS_NFORCE2;&n;&t;smbus-&gt;adapter.algo = &amp;smbus_algorithm;&n;&t;smbus-&gt;adapter.algo_data = smbus;&n;*/
 id|smbus-&gt;adapter
 op_assign
 id|nforce2_adapter
@@ -1615,17 +1595,6 @@ c_func
 r_void
 )paren
 (brace
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;i2c-nforce2 version %s (%s)&bslash;n&quot;
-comma
-id|LM_VERSION
-comma
-id|LM_DATE
-)paren
-suffix:semicolon
 r_return
 id|pci_module_init
 c_func
