@@ -141,7 +141,7 @@ suffix:semicolon
 )brace
 suffix:semicolon
 DECL|macro|__m
-mdefine_line|#define __m(x) ((struct __large_struct *)(x))
+mdefine_line|#define __m(x) ((struct __large_struct __user *)(x))
 DECL|macro|__put_user_check
 mdefine_line|#define __put_user_check(x,addr,size) ({ &bslash;&n;register int __pu_ret; &bslash;&n;if (__access_ok(addr,size)) { &bslash;&n;switch (size) { &bslash;&n;case 1: __put_user_asm(x,b,addr,__pu_ret); break; &bslash;&n;case 2: __put_user_asm(x,h,addr,__pu_ret); break; &bslash;&n;case 4: __put_user_asm(x,,addr,__pu_ret); break; &bslash;&n;case 8: __put_user_asm(x,d,addr,__pu_ret); break; &bslash;&n;default: __pu_ret = __put_user_bad(); break; &bslash;&n;} } else { __pu_ret = -EFAULT; } __pu_ret; })
 DECL|macro|__put_user_check_ret
@@ -251,6 +251,7 @@ c_func
 id|to
 comma
 (paren
+id|__force
 r_void
 id|__user
 op_star
@@ -295,6 +296,7 @@ c_func
 id|to
 comma
 (paren
+id|__force
 r_void
 id|__user
 op_star
@@ -350,6 +352,7 @@ id|__copy_user
 c_func
 (paren
 (paren
+id|__force
 r_void
 id|__user
 op_star
@@ -394,6 +397,7 @@ id|__copy_user
 c_func
 (paren
 (paren
+id|__force
 r_void
 id|__user
 op_star

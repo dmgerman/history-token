@@ -4497,11 +4497,14 @@ id|ft_t_info
 )paren
 (brace
 id|printk
+c_func
 (paren
 id|KERN_INFO
 l_string|&quot;(c) 1997 Claus-Justus Heine (claus@momo.math.rwth-aachen.de)&bslash;n&quot;
 id|KERN_INFO
 l_string|&quot;Compressor for zftape (lzrw3 algorithm)&bslash;n&quot;
+)paren
+suffix:semicolon
 )brace
 macro_line|#else /* !MODULE */
 multiline_comment|/* print a short no-nonsense boot message */

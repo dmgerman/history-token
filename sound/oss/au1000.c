@@ -8,6 +8,7 @@ macro_line|#include &lt;linux/sound.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/soundcard.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/page-flags.h&gt;
 macro_line|#include &lt;linux/poll.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/bitops.h&gt;
@@ -15,21 +16,18 @@ macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/ac97_codec.h&gt;
-macro_line|#include &lt;linux/wrapper.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
-macro_line|#include &lt;asm/au1000.h&gt;
-macro_line|#include &lt;asm/au1000_dma.h&gt;
+macro_line|#include &lt;asm/mach-au1x00/au1000.h&gt;
+macro_line|#include &lt;asm/mach-au1x00/au1000_dma.h&gt;
 multiline_comment|/* --------------------------------------------------------------------- */
 DECL|macro|OSS_DOCUMENTED_MIXER_SEMANTICS
 macro_line|#undef OSS_DOCUMENTED_MIXER_SEMANTICS
 DECL|macro|AU1000_DEBUG
-mdefine_line|#define AU1000_DEBUG
+macro_line|#undef AU1000_DEBUG
 DECL|macro|AU1000_VERBOSE_DEBUG
 macro_line|#undef AU1000_VERBOSE_DEBUG
-DECL|macro|USE_COHERENT_DMA
-mdefine_line|#define USE_COHERENT_DMA
 DECL|macro|AU1000_MODULE_NAME
 mdefine_line|#define AU1000_MODULE_NAME &quot;Au1000 audio&quot;
 DECL|macro|PFX
@@ -105,7 +103,6 @@ macro_line|#endif&t;&t;&t;&t;/* AU1000_DEBUG */
 DECL|member|codec
 r_struct
 id|ac97_codec
-op_star
 id|codec
 suffix:semicolon
 DECL|member|codec_base_caps
@@ -403,173 +400,6 @@ r_return
 id|r
 suffix:semicolon
 )brace
-macro_line|#ifdef USE_COHERENT_DMA
-DECL|function|dma_alloc
-r_static
-r_inline
-r_void
-op_star
-id|dma_alloc
-c_func
-(paren
-r_int
-id|size
-comma
-id|dma_addr_t
-op_star
-id|dma_handle
-)paren
-(brace
-r_void
-op_star
-id|ret
-op_assign
-(paren
-r_void
-op_star
-)paren
-id|__get_free_pages
-c_func
-(paren
-id|GFP_ATOMIC
-op_or
-id|GFP_DMA
-comma
-id|get_order
-c_func
-(paren
-id|size
-)paren
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ret
-op_ne
-l_int|NULL
-)paren
-(brace
-id|memset
-c_func
-(paren
-id|ret
-comma
-l_int|0
-comma
-id|size
-)paren
-suffix:semicolon
-op_star
-id|dma_handle
-op_assign
-id|virt_to_phys
-c_func
-(paren
-id|ret
-)paren
-suffix:semicolon
-)brace
-r_return
-id|ret
-suffix:semicolon
-)brace
-DECL|function|dma_free
-r_static
-r_inline
-r_void
-id|dma_free
-c_func
-(paren
-r_int
-id|size
-comma
-r_void
-op_star
-id|va
-comma
-id|dma_addr_t
-id|dma_handle
-)paren
-(brace
-id|free_pages
-c_func
-(paren
-(paren
-r_int
-r_int
-)paren
-id|va
-comma
-id|get_order
-c_func
-(paren
-id|size
-)paren
-)paren
-suffix:semicolon
-)brace
-macro_line|#else
-DECL|function|dma_alloc
-r_static
-r_inline
-r_void
-op_star
-id|dma_alloc
-c_func
-(paren
-r_int
-id|size
-comma
-id|dma_addr_t
-op_star
-id|dma_handle
-)paren
-(brace
-r_return
-id|pci_alloc_consistent
-c_func
-(paren
-l_int|NULL
-comma
-id|size
-comma
-id|dma_handle
-)paren
-suffix:semicolon
-)brace
-DECL|function|dma_free
-r_static
-r_inline
-r_void
-id|dma_free
-c_func
-(paren
-r_int
-id|size
-comma
-r_void
-op_star
-id|va
-comma
-id|dma_addr_t
-id|dma_handle
-)paren
-(brace
-id|pci_free_consistent
-c_func
-(paren
-l_int|NULL
-comma
-id|size
-comma
-id|va
-comma
-id|dma_handle
-)paren
-suffix:semicolon
-)brace
-macro_line|#endif
 multiline_comment|/* --------------------------------------------------------------------- */
 DECL|function|au1000_delay
 r_static
@@ -1185,6 +1015,7 @@ op_assign
 id|rdcodec
 c_func
 (paren
+op_amp
 id|s-&gt;codec
 comma
 id|AC97_EXTENDED_STATUS
@@ -1205,6 +1036,7 @@ singleline_comment|// enable VRA
 id|wrcodec
 c_func
 (paren
+op_amp
 id|s-&gt;codec
 comma
 id|AC97_EXTENDED_STATUS
@@ -1218,6 +1050,7 @@ singleline_comment|// now write the sample rate
 id|wrcodec
 c_func
 (paren
+op_amp
 id|s-&gt;codec
 comma
 id|AC97_PCM_LR_ADC_RATE
@@ -1234,6 +1067,7 @@ op_assign
 id|rdcodec
 c_func
 (paren
+op_amp
 id|s-&gt;codec
 comma
 id|AC97_PCM_LR_ADC_RATE
@@ -1258,6 +1092,7 @@ op_assign
 id|rdcodec
 c_func
 (paren
+op_amp
 id|s-&gt;codec
 comma
 id|AC97_PCM_FRONT_DAC_RATE
@@ -1273,6 +1108,7 @@ l_int|2
 id|wrcodec
 c_func
 (paren
+op_amp
 id|s-&gt;codec
 comma
 id|AC97_PCM_SURR_DAC_RATE
@@ -1290,6 +1126,7 @@ l_int|4
 id|wrcodec
 c_func
 (paren
+op_amp
 id|s-&gt;codec
 comma
 id|AC97_PCM_LFE_DAC_RATE
@@ -1385,6 +1222,7 @@ op_assign
 id|rdcodec
 c_func
 (paren
+op_amp
 id|s-&gt;codec
 comma
 id|AC97_EXTENDED_STATUS
@@ -1405,6 +1243,7 @@ singleline_comment|// enable VRA
 id|wrcodec
 c_func
 (paren
+op_amp
 id|s-&gt;codec
 comma
 id|AC97_EXTENDED_STATUS
@@ -1418,6 +1257,7 @@ singleline_comment|// now write the sample rate
 id|wrcodec
 c_func
 (paren
+op_amp
 id|s-&gt;codec
 comma
 id|AC97_PCM_FRONT_DAC_RATE
@@ -1440,6 +1280,7 @@ l_int|2
 id|wrcodec
 c_func
 (paren
+op_amp
 id|s-&gt;codec
 comma
 id|AC97_PCM_SURR_DAC_RATE
@@ -1460,6 +1301,7 @@ l_int|4
 id|wrcodec
 c_func
 (paren
+op_amp
 id|s-&gt;codec
 comma
 id|AC97_PCM_LFE_DAC_RATE
@@ -1476,6 +1318,7 @@ op_assign
 id|rdcodec
 c_func
 (paren
+op_amp
 id|s-&gt;codec
 comma
 id|AC97_PCM_FRONT_DAC_RATE
@@ -1500,6 +1343,7 @@ op_assign
 id|rdcodec
 c_func
 (paren
+op_amp
 id|s-&gt;codec
 comma
 id|AC97_PCM_LR_ADC_RATE
@@ -2230,15 +2074,17 @@ suffix:semicolon
 id|page
 op_increment
 )paren
-id|mem_map_unreserve
+id|ClearPageReserved
 c_func
 (paren
 id|page
 )paren
 suffix:semicolon
-id|dma_free
+id|dma_free_noncoherent
 c_func
 (paren
+l_int|NULL
+comma
 id|PAGE_SIZE
 op_lshift
 id|db-&gt;buforder
@@ -2336,15 +2182,19 @@ c_cond
 (paren
 id|db-&gt;rawbuf
 op_assign
-id|dma_alloc
+id|dma_alloc_noncoherent
 c_func
 (paren
+l_int|NULL
+comma
 id|PAGE_SIZE
 op_lshift
 id|order
 comma
 op_amp
 id|db-&gt;dmaaddr
+comma
+l_int|0
 )paren
 )paren
 )paren
@@ -2399,7 +2249,7 @@ suffix:semicolon
 id|page
 op_increment
 )paren
-id|mem_map_reserve
+id|SetPageReserved
 c_func
 (paren
 id|page
@@ -2737,7 +2587,7 @@ suffix:semicolon
 multiline_comment|/* hold spinlock for the following */
 DECL|function|dac_dma_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|dac_dma_interrupt
 c_func
 (paren
@@ -2832,6 +2682,7 @@ l_int|0
 (brace
 multiline_comment|/* fastpath out, to ease interrupt sharing */
 r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 id|spin_lock
@@ -3134,10 +2985,13 @@ op_amp
 id|s-&gt;lock
 )paren
 suffix:semicolon
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 DECL|function|adc_dma_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|adc_dma_interrupt
 c_func
 (paren
@@ -3230,6 +3084,7 @@ l_int|0
 (brace
 multiline_comment|/* fastpath out, to ease interrupt sharing */
 r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 id|spin_lock
@@ -3285,6 +3140,7 @@ l_string|&quot;adc overrun&quot;
 )paren
 suffix:semicolon
 r_return
+id|IRQ_NONE
 suffix:semicolon
 )brace
 id|adc-&gt;nextIn
@@ -3466,6 +3322,7 @@ id|s-&gt;lock
 )paren
 suffix:semicolon
 r_return
+id|IRQ_NONE
 suffix:semicolon
 )brace
 id|adc-&gt;nextIn
@@ -3544,6 +3401,9 @@ c_func
 op_amp
 id|s-&gt;lock
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 multiline_comment|/* --------------------------------------------------------------------- */
@@ -3699,6 +3559,7 @@ id|ac97_codec
 op_star
 id|codec
 op_assign
+op_amp
 id|s-&gt;codec
 suffix:semicolon
 r_return
@@ -5837,6 +5698,8 @@ c_cond
 id|remap_pfn_range
 c_func
 (paren
+id|vma
+comma
 id|vma-&gt;vm_start
 comma
 id|virt_to_phys
@@ -5844,8 +5707,6 @@ c_func
 (paren
 id|db-&gt;rawbuf
 )paren
-op_rshift
-id|PAGE_SHIFT
 comma
 id|size
 comma
@@ -6707,6 +6568,7 @@ op_assign
 id|rdcodec
 c_func
 (paren
+op_amp
 id|s-&gt;codec
 comma
 id|AC97_EXTENDED_STATUS
@@ -6715,6 +6577,7 @@ suffix:semicolon
 id|wrcodec
 c_func
 (paren
+op_amp
 id|s-&gt;codec
 comma
 id|AC97_EXTENDED_STATUS
@@ -6933,6 +6796,7 @@ op_assign
 id|rdcodec
 c_func
 (paren
+op_amp
 id|s-&gt;codec
 comma
 id|AC97_EXTENDED_STATUS
@@ -6941,6 +6805,7 @@ suffix:semicolon
 id|wrcodec
 c_func
 (paren
+op_amp
 id|s-&gt;codec
 comma
 id|AC97_EXTENDED_STATUS
@@ -6974,6 +6839,7 @@ op_assign
 id|rdcodec
 c_func
 (paren
+op_amp
 id|s-&gt;codec
 comma
 id|AC97_EXTENDED_STATUS
@@ -7003,6 +6869,7 @@ suffix:semicolon
 id|wrcodec
 c_func
 (paren
+op_amp
 id|s-&gt;codec
 comma
 id|AC97_EXTENDED_STATUS
@@ -8486,6 +8353,7 @@ r_return
 id|mixdev_ioctl
 c_func
 (paren
+op_amp
 id|s-&gt;codec
 comma
 id|cmd
@@ -9271,6 +9139,7 @@ comma
 id|rdcodec
 c_func
 (paren
+op_amp
 id|s-&gt;codec
 comma
 id|cnt
@@ -9365,12 +9234,14 @@ suffix:semicolon
 r_int
 id|val
 suffix:semicolon
+macro_line|#ifdef AU1000_DEBUG
 r_char
 id|proc_str
 (braket
 l_int|80
 )braket
 suffix:semicolon
+macro_line|#endif
 id|memset
 c_func
 (paren
@@ -9420,49 +9291,23 @@ op_amp
 id|s-&gt;lock
 )paren
 suffix:semicolon
-id|s-&gt;codec
-op_assign
-id|ac97_alloc_codec
-c_func
-(paren
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|s-&gt;codec
-op_eq
-l_int|NULL
-)paren
-(brace
-id|error
-c_func
-(paren
-l_string|&quot;Out of memory&quot;
-)paren
-suffix:semicolon
-r_return
-op_minus
-l_int|1
-suffix:semicolon
-)brace
-id|s-&gt;codec-&gt;private_data
+id|s-&gt;codec.private_data
 op_assign
 id|s
 suffix:semicolon
-id|s-&gt;codec-&gt;id
+id|s-&gt;codec.id
 op_assign
 l_int|0
 suffix:semicolon
-id|s-&gt;codec-&gt;codec_read
+id|s-&gt;codec.codec_read
 op_assign
 id|rdcodec
 suffix:semicolon
-id|s-&gt;codec-&gt;codec_write
+id|s-&gt;codec.codec_write
 op_assign
 id|wrcodec
 suffix:semicolon
-id|s-&gt;codec-&gt;codec_wait
+id|s-&gt;codec.codec_wait
 op_assign
 id|waitcodec
 suffix:semicolon
@@ -9470,16 +9315,12 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|request_region
+id|request_mem_region
 c_func
 (paren
-id|virt_to_phys
+id|CPHYSADDR
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 id|AC97C_CONFIG
 )paren
 comma
@@ -9495,8 +9336,9 @@ c_func
 l_string|&quot;AC&squot;97 ports in use&quot;
 )paren
 suffix:semicolon
-r_goto
-id|err_codec
+r_return
+op_minus
+l_int|1
 suffix:semicolon
 )brace
 singleline_comment|// Allocate the DMA Channels
@@ -9590,7 +9432,6 @@ id|s-&gt;dma_adc.dmanr
 )paren
 )paren
 suffix:semicolon
-macro_line|#ifdef USE_COHERENT_DMA
 singleline_comment|// enable DMA coherency in read/write DMA channels
 id|set_dma_mode
 c_func
@@ -9622,37 +9463,6 @@ op_complement
 id|DMA_NC
 )paren
 suffix:semicolon
-macro_line|#else
-singleline_comment|// disable DMA coherency in read/write DMA channels
-id|set_dma_mode
-c_func
-(paren
-id|s-&gt;dma_dac.dmanr
-comma
-id|get_dma_mode
-c_func
-(paren
-id|s-&gt;dma_dac.dmanr
-)paren
-op_or
-id|DMA_NC
-)paren
-suffix:semicolon
-id|set_dma_mode
-c_func
-(paren
-id|s-&gt;dma_adc.dmanr
-comma
-id|get_dma_mode
-c_func
-(paren
-id|s-&gt;dma_adc.dmanr
-)paren
-op_or
-id|DMA_NC
-)paren
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/* register devices */
 r_if
 c_cond
@@ -9680,7 +9490,7 @@ r_if
 c_cond
 (paren
 (paren
-id|s-&gt;codec-&gt;dev_mixer
+id|s-&gt;codec.dev_mixer
 op_assign
 id|register_sound_mixer
 c_func
@@ -9828,6 +9638,7 @@ op_logical_neg
 id|ac97_probe_codec
 c_func
 (paren
+op_amp
 id|s-&gt;codec
 )paren
 )paren
@@ -9839,6 +9650,7 @@ op_assign
 id|rdcodec
 c_func
 (paren
+op_amp
 id|s-&gt;codec
 comma
 id|AC97_RESET
@@ -9849,6 +9661,7 @@ op_assign
 id|rdcodec
 c_func
 (paren
+op_amp
 id|s-&gt;codec
 comma
 id|AC97_EXTENDED_ID
@@ -9865,7 +9678,7 @@ id|s-&gt;codec_ext_caps
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * On the Pb1000, audio playback is on the AUX_OUT&n;&t; * channel (which defaults to LNLVL_OUT in AC&squot;97&n;&t; * rev 2.2) so make sure this channel is listed&n;&t; * as supported (soundcard.h calls this channel&n;&t; * ALTPCM). ac97_codec.c does not handle detection&n;&t; * of this channel correctly.&n;&t; */
-id|s-&gt;codec-&gt;supported_mixers
+id|s-&gt;codec.supported_mixers
 op_or_assign
 id|SOUND_MASK_ALTPCM
 suffix:semicolon
@@ -9877,6 +9690,7 @@ suffix:semicolon
 id|mixdev_ioctl
 c_func
 (paren
+op_amp
 id|s-&gt;codec
 comma
 id|SOUND_MIXER_WRITE_ALTPCM
@@ -9921,6 +9735,7 @@ op_assign
 id|rdcodec
 c_func
 (paren
+op_amp
 id|s-&gt;codec
 comma
 id|AC97_EXTENDED_STATUS
@@ -9929,6 +9744,7 @@ suffix:semicolon
 id|wrcodec
 c_func
 (paren
+op_amp
 id|s-&gt;codec
 comma
 id|AC97_EXTENDED_STATUS
@@ -9963,6 +9779,7 @@ suffix:semicolon
 id|mixdev_ioctl
 c_func
 (paren
+op_amp
 id|s-&gt;codec
 comma
 id|SOUND_MIXER_WRITE_RECSRC
@@ -9985,7 +9802,7 @@ l_string|&quot;driver/%s/%d/ac97&quot;
 comma
 id|AU1000_MODULE_NAME
 comma
-id|s-&gt;codec-&gt;id
+id|s-&gt;codec.id
 )paren
 suffix:semicolon
 id|s-&gt;ac97_ps
@@ -10000,7 +9817,132 @@ l_int|NULL
 comma
 id|ac97_read_proc
 comma
+op_amp
 id|s-&gt;codec
+)paren
+suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef CONFIG_MIPS_XXS1500
+multiline_comment|/* deassert eapd */
+id|wrcodec
+c_func
+(paren
+op_amp
+id|s-&gt;codec
+comma
+id|AC97_POWER_CONTROL
+comma
+id|rdcodec
+c_func
+(paren
+op_amp
+id|s-&gt;codec
+comma
+id|AC97_POWER_CONTROL
+)paren
+op_amp
+op_complement
+l_int|0x8000
+)paren
+suffix:semicolon
+multiline_comment|/* mute a number of signals which seem to be causing problems&n;&t; * if not muted.&n;&t; */
+id|wrcodec
+c_func
+(paren
+op_amp
+id|s-&gt;codec
+comma
+id|AC97_PCBEEP_VOL
+comma
+l_int|0x8000
+)paren
+suffix:semicolon
+id|wrcodec
+c_func
+(paren
+op_amp
+id|s-&gt;codec
+comma
+id|AC97_PHONE_VOL
+comma
+l_int|0x8008
+)paren
+suffix:semicolon
+id|wrcodec
+c_func
+(paren
+op_amp
+id|s-&gt;codec
+comma
+id|AC97_MIC_VOL
+comma
+l_int|0x8008
+)paren
+suffix:semicolon
+id|wrcodec
+c_func
+(paren
+op_amp
+id|s-&gt;codec
+comma
+id|AC97_LINEIN_VOL
+comma
+l_int|0x8808
+)paren
+suffix:semicolon
+id|wrcodec
+c_func
+(paren
+op_amp
+id|s-&gt;codec
+comma
+id|AC97_CD_VOL
+comma
+l_int|0x8808
+)paren
+suffix:semicolon
+id|wrcodec
+c_func
+(paren
+op_amp
+id|s-&gt;codec
+comma
+id|AC97_VIDEO_VOL
+comma
+l_int|0x8808
+)paren
+suffix:semicolon
+id|wrcodec
+c_func
+(paren
+op_amp
+id|s-&gt;codec
+comma
+id|AC97_AUX_VOL
+comma
+l_int|0x8808
+)paren
+suffix:semicolon
+id|wrcodec
+c_func
+(paren
+op_amp
+id|s-&gt;codec
+comma
+id|AC97_PCMOUT_VOL
+comma
+l_int|0x0808
+)paren
+suffix:semicolon
+id|wrcodec
+c_func
+(paren
+op_amp
+id|s-&gt;codec
+comma
+id|AC97_GENERAL_PURPOSE
+comma
+l_int|0x2000
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -10012,7 +9954,7 @@ suffix:colon
 id|unregister_sound_mixer
 c_func
 (paren
-id|s-&gt;codec-&gt;dev_mixer
+id|s-&gt;codec.dev_mixer
 )paren
 suffix:semicolon
 id|err_dev2
@@ -10041,28 +9983,16 @@ id|s-&gt;dma_dac.dmanr
 suffix:semicolon
 id|err_dma1
 suffix:colon
-id|release_region
+id|release_mem_region
 c_func
 (paren
-id|virt_to_phys
+id|CPHYSADDR
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 id|AC97C_CONFIG
 )paren
 comma
 l_int|0x14
-)paren
-suffix:semicolon
-id|err_codec
-suffix:colon
-id|ac97_release_codec
-c_func
-(paren
-id|s-&gt;codec
 )paren
 suffix:semicolon
 r_return
@@ -10127,16 +10057,12 @@ c_func
 id|s-&gt;dma_dac.dmanr
 )paren
 suffix:semicolon
-id|release_region
+id|release_mem_region
 c_func
 (paren
-id|virt_to_phys
+id|CPHYSADDR
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 id|AC97C_CONFIG
 )paren
 comma
@@ -10152,13 +10078,7 @@ suffix:semicolon
 id|unregister_sound_mixer
 c_func
 (paren
-id|s-&gt;codec-&gt;dev_mixer
-)paren
-suffix:semicolon
-id|ac97_release_codec
-c_func
-(paren
-id|s-&gt;codec
+id|s-&gt;codec.dev_mixer
 )paren
 suffix:semicolon
 )brace
@@ -10258,6 +10178,7 @@ suffix:semicolon
 r_while
 c_loop
 (paren
+(paren
 id|this_opt
 op_assign
 id|strsep
@@ -10267,6 +10188,7 @@ op_amp
 id|options
 comma
 l_string|&quot;,&quot;
+)paren
 )paren
 )paren
 (brace

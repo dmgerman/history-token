@@ -61,6 +61,7 @@ r_int
 id|is_slave
 op_assign
 (paren
+op_amp
 id|hwif-&gt;drives
 (braket
 l_int|1
@@ -190,6 +191,7 @@ id|ide_lock
 comma
 id|flags
 )paren
+suffix:semicolon
 )brace
 DECL|function|it8172_dma_2_pio
 r_static

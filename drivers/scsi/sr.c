@@ -1967,12 +1967,6 @@ l_int|0
 suffix:semicolon
 id|error_out
 suffix:colon
-id|scsi_cd_put
-c_func
-(paren
-id|cd
-)paren
-suffix:semicolon
 r_return
 id|retval
 suffix:semicolon

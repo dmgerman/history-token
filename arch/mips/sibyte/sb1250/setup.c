@@ -459,7 +459,7 @@ l_int|0xff
 suffix:semicolon
 id|sys_rev
 op_assign
-id|__raw_readq
+id|bus_readq
 c_func
 (paren
 id|IOADDR
@@ -512,7 +512,7 @@ op_assign
 id|G_SYS_PLL_DIV
 c_func
 (paren
-id|__raw_readq
+id|bus_readq
 c_func
 (paren
 id|IOADDR

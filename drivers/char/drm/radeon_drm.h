@@ -202,8 +202,10 @@ DECL|macro|RADEON_EMIT_PP_TEX_SIZE_2
 mdefine_line|#define RADEON_EMIT_PP_TEX_SIZE_2                   75
 DECL|macro|R200_EMIT_RB3D_BLENDCOLOR
 mdefine_line|#define R200_EMIT_RB3D_BLENDCOLOR                   76
+DECL|macro|R200_EMIT_TCL_POINT_SPRITE_CNTL
+mdefine_line|#define R200_EMIT_TCL_POINT_SPRITE_CNTL             77
 DECL|macro|RADEON_MAX_STATE_PACKETS
-mdefine_line|#define RADEON_MAX_STATE_PACKETS                    77
+mdefine_line|#define RADEON_MAX_STATE_PACKETS                    78
 multiline_comment|/* Commands understood by cmd_buffer ioctl.  More can be added but&n; * obviously these can&squot;t be removed or changed:&n; */
 DECL|macro|RADEON_CMD_PACKET
 mdefine_line|#define RADEON_CMD_PACKET      1 /* emit one of the register packets above */
@@ -363,7 +365,13 @@ mdefine_line|#define RADEON_BACK&t;&t;&t;0x2
 DECL|macro|RADEON_DEPTH
 mdefine_line|#define RADEON_DEPTH&t;&t;&t;0x4
 DECL|macro|RADEON_STENCIL
-mdefine_line|#define RADEON_STENCIL                  0x8
+mdefine_line|#define RADEON_STENCIL&t;&t;&t;0x8
+DECL|macro|RADEON_CLEAR_FASTZ
+mdefine_line|#define RADEON_CLEAR_FASTZ&t;&t;0x80000000
+DECL|macro|RADEON_USE_HIERZ
+mdefine_line|#define RADEON_USE_HIERZ&t;&t;0x40000000
+DECL|macro|RADEON_USE_COMP_ZBUF
+mdefine_line|#define RADEON_USE_COMP_ZBUF&t;&t;0x20000000
 multiline_comment|/* Primitive types&n; */
 DECL|macro|RADEON_POINTS
 mdefine_line|#define RADEON_POINTS&t;&t;&t;0x1
@@ -402,6 +410,8 @@ DECL|macro|RADEON_MAX_TEXTURE_LEVELS
 mdefine_line|#define RADEON_MAX_TEXTURE_LEVELS&t;12
 DECL|macro|RADEON_MAX_TEXTURE_UNITS
 mdefine_line|#define RADEON_MAX_TEXTURE_UNITS&t;3
+DECL|macro|RADEON_MAX_SURFACES
+mdefine_line|#define RADEON_MAX_SURFACES&t;&t;8
 multiline_comment|/* Blits have strict offset rules.  All blit offset must be aligned on&n; * a 1K-byte boundary.&n; */
 DECL|macro|RADEON_OFFSET_SHIFT
 mdefine_line|#define RADEON_OFFSET_SHIFT             10
@@ -855,6 +865,11 @@ r_int
 id|crtc2_base
 suffix:semicolon
 multiline_comment|/* CRTC2 frame offset */
+DECL|member|tiling_enabled
+r_int
+id|tiling_enabled
+suffix:semicolon
+multiline_comment|/* set by drm, read by 2d + 3d clients */
 DECL|typedef|drm_radeon_sarea_t
 )brace
 id|drm_radeon_sarea_t
@@ -913,6 +928,10 @@ DECL|macro|DRM_RADEON_CP_RESUME
 mdefine_line|#define DRM_RADEON_CP_RESUME  0x18
 DECL|macro|DRM_RADEON_SETPARAM
 mdefine_line|#define DRM_RADEON_SETPARAM   0x19
+DECL|macro|DRM_RADEON_SURF_ALLOC
+mdefine_line|#define DRM_RADEON_SURF_ALLOC 0x1a
+DECL|macro|DRM_RADEON_SURF_FREE
+mdefine_line|#define DRM_RADEON_SURF_FREE  0x1b
 DECL|macro|DRM_IOCTL_RADEON_CP_INIT
 mdefine_line|#define DRM_IOCTL_RADEON_CP_INIT    DRM_IOW( DRM_COMMAND_BASE + DRM_RADEON_CP_INIT, drm_radeon_init_t)
 DECL|macro|DRM_IOCTL_RADEON_CP_START
@@ -963,6 +982,10 @@ DECL|macro|DRM_IOCTL_RADEON_CP_RESUME
 mdefine_line|#define DRM_IOCTL_RADEON_CP_RESUME  DRM_IO(  DRM_COMMAND_BASE + DRM_RADEON_CP_RESUME)
 DECL|macro|DRM_IOCTL_RADEON_SETPARAM
 mdefine_line|#define DRM_IOCTL_RADEON_SETPARAM   DRM_IOW( DRM_COMMAND_BASE + DRM_RADEON_SETPARAM, drm_radeon_setparam_t)
+DECL|macro|DRM_IOCTL_RADEON_SURF_ALLOC
+mdefine_line|#define DRM_IOCTL_RADEON_SURF_ALLOC DRM_IOW( DRM_COMMAND_BASE + DRM_RADEON_SURF_ALLOC, drm_radeon_surface_alloc_t)
+DECL|macro|DRM_IOCTL_RADEON_SURF_FREE
+mdefine_line|#define DRM_IOCTL_RADEON_SURF_FREE  DRM_IOW( DRM_COMMAND_BASE + DRM_RADEON_SURF_FREE, drm_radeon_surface_free_t)
 DECL|struct|drm_radeon_init
 r_typedef
 r_struct
@@ -984,6 +1007,11 @@ DECL|enumerator|RADEON_INIT_R200_CP
 id|RADEON_INIT_R200_CP
 op_assign
 l_int|0x03
+comma
+DECL|enumerator|RADEON_INIT_R300_CP
+id|RADEON_INIT_R300_CP
+op_assign
+l_int|0x04
 DECL|member|func
 )brace
 id|func
@@ -1600,6 +1628,47 @@ DECL|typedef|drm_radeon_setparam_t
 id|drm_radeon_setparam_t
 suffix:semicolon
 DECL|macro|RADEON_SETPARAM_FB_LOCATION
-mdefine_line|#define RADEON_SETPARAM_FB_LOCATION    1 /* determined framebuffer location */
+mdefine_line|#define RADEON_SETPARAM_FB_LOCATION    1&t;/* determined framebuffer location */
+DECL|macro|RADEON_SETPARAM_SWITCH_TILING
+mdefine_line|#define RADEON_SETPARAM_SWITCH_TILING  2&t;/* enable/disable color tiling */
+multiline_comment|/* 1.14: Clients can allocate/free a surface&n; */
+DECL|struct|drm_radeon_surface_alloc
+r_typedef
+r_struct
+id|drm_radeon_surface_alloc
+(brace
+DECL|member|address
+r_int
+r_int
+id|address
+suffix:semicolon
+DECL|member|size
+r_int
+r_int
+id|size
+suffix:semicolon
+DECL|member|flags
+r_int
+r_int
+id|flags
+suffix:semicolon
+DECL|typedef|drm_radeon_surface_alloc_t
+)brace
+id|drm_radeon_surface_alloc_t
+suffix:semicolon
+DECL|struct|drm_radeon_surface_free
+r_typedef
+r_struct
+id|drm_radeon_surface_free
+(brace
+DECL|member|address
+r_int
+r_int
+id|address
+suffix:semicolon
+DECL|typedef|drm_radeon_surface_free_t
+)brace
+id|drm_radeon_surface_free_t
+suffix:semicolon
 macro_line|#endif
 eof

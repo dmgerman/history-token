@@ -133,6 +133,11 @@ l_int|16
 )braket
 suffix:semicolon
 multiline_comment|/* thread used copro */
+DECL|member|tp_value
+r_int
+r_int
+id|tp_value
+suffix:semicolon
 DECL|member|fpstate
 r_union
 id|fp_state
@@ -304,6 +309,8 @@ DECL|macro|TIF_POLLING_NRFLAG
 mdefine_line|#define TIF_POLLING_NRFLAG&t;16
 DECL|macro|TIF_USING_IWMMXT
 mdefine_line|#define TIF_USING_IWMMXT&t;17
+DECL|macro|TIF_MEMDIE
+mdefine_line|#define TIF_MEMDIE&t;&t;18
 DECL|macro|_TIF_NOTIFY_RESUME
 mdefine_line|#define _TIF_NOTIFY_RESUME&t;(1 &lt;&lt; TIF_NOTIFY_RESUME)
 DECL|macro|_TIF_SIGPENDING

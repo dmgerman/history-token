@@ -6,7 +6,5 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/initrd.h&gt;
 macro_line|#include &lt;syslib/ppc85xx_setup.h&gt;
 macro_line|#include &lt;platforms/85xx/mpc85xx_ads_common.h&gt;
-DECL|macro|SERIAL_PORT_DFNS
-mdefine_line|#define SERIAL_PORT_DFNS&t;&bslash;&n;&t;STD_UART_OP(0)&t;&t;&bslash;&n;&t;STD_UART_OP(1)
 macro_line|#endif /* __MACH_MPC8540ADS_H__ */
 eof

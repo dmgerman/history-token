@@ -1,7 +1,8 @@
-multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 2003, 2004 Chris Dearman&n; */
+multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 2003, 2004 Chris Dearman&n; * Copyright (C) 2005 Ralf Baechle (ralf@linux-mips.org)&n; */
 macro_line|#ifndef __ASM_MACH_MIPS_CPU_FEATURE_OVERRIDES_H
 DECL|macro|__ASM_MACH_MIPS_CPU_FEATURE_OVERRIDES_H
 mdefine_line|#define __ASM_MACH_MIPS_CPU_FEATURE_OVERRIDES_H
+macro_line|#include &lt;linux/config.h&gt;
 multiline_comment|/*&n; * CPU feature overrides for MIPS boards&n; */
 macro_line|#ifdef CONFIG_CPU_MIPS32
 DECL|macro|cpu_has_tlb

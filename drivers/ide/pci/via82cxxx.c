@@ -9,6 +9,9 @@ macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/ide.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
+macro_line|#ifdef CONFIG_PPC_MULTIPLATFORM
+macro_line|#include &lt;asm/processor.h&gt;
+macro_line|#endif
 macro_line|#include &quot;ide-timing.h&quot;
 DECL|macro|DISPLAY_VIA_TIMINGS
 mdefine_line|#define DISPLAY_VIA_TIMINGS
@@ -3234,6 +3237,30 @@ op_assign
 op_amp
 id|via_set_drive
 suffix:semicolon
+macro_line|#if defined(CONFIG_PPC_MULTIPLATFORM) &amp;&amp; defined(CONFIG_PPC32)
+r_if
+c_cond
+(paren
+id|_machine
+op_eq
+id|_MACH_chrp
+op_logical_and
+id|_chrp_type
+op_eq
+id|_CHRP_Pegasos
+)paren
+(brace
+id|hwif-&gt;irq
+op_assign
+id|hwif-&gt;channel
+ques
+c_cond
+l_int|15
+suffix:colon
+l_int|14
+suffix:semicolon
+)brace
+macro_line|#endif
 r_for
 c_loop
 (paren

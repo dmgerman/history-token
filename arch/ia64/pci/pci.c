@@ -87,7 +87,7 @@ c_cond
 (paren
 id|seg
 OG
-l_int|255
+l_int|65535
 )paren
 op_logical_or
 (paren

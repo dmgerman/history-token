@@ -4,6 +4,8 @@ DECL|macro|__ASM_MACH_GENERIC_IDE_H
 mdefine_line|#define __ASM_MACH_GENERIC_IDE_H
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/pci.h&gt;
+macro_line|#include &lt;linux/stddef.h&gt;
 macro_line|#ifndef MAX_HWIFS
 macro_line|# ifdef CONFIG_BLK_DEV_IDEPCI
 DECL|macro|MAX_HWIFS
@@ -15,6 +17,81 @@ macro_line|# endif
 macro_line|#endif
 DECL|macro|IDE_ARCH_OBSOLETE_DEFAULTS
 mdefine_line|#define IDE_ARCH_OBSOLETE_DEFAULTS
+DECL|function|ide_probe_legacy
+r_static
+id|__inline__
+r_int
+id|ide_probe_legacy
+c_func
+(paren
+r_void
+)paren
+(brace
+macro_line|#ifdef CONFIG_PCI
+r_struct
+id|pci_dev
+op_star
+id|dev
+suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|dev
+op_assign
+id|pci_get_class
+c_func
+(paren
+id|PCI_CLASS_BRIDGE_EISA
+op_lshift
+l_int|8
+comma
+l_int|NULL
+)paren
+)paren
+op_ne
+l_int|NULL
+op_logical_or
+(paren
+id|dev
+op_assign
+id|pci_get_class
+c_func
+(paren
+id|PCI_CLASS_BRIDGE_ISA
+op_lshift
+l_int|8
+comma
+l_int|NULL
+)paren
+)paren
+op_ne
+l_int|NULL
+)paren
+(brace
+id|pci_dev_put
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
+r_return
+l_int|1
+suffix:semicolon
+)brace
+r_return
+l_int|0
+suffix:semicolon
+macro_line|#elif defined(CONFIG_EISA) || defined(CONFIG_ISA)
+r_return
+l_int|1
+suffix:semicolon
+macro_line|#else
+r_return
+l_int|0
+suffix:semicolon
+macro_line|#endif
+)brace
 DECL|function|ide_default_irq
 r_static
 id|__inline__
@@ -27,6 +104,14 @@ r_int
 id|base
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|ide_probe_legacy
+c_func
+(paren
+)paren
+)paren
 r_switch
 c_cond
 (paren
@@ -75,6 +160,10 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+r_else
+r_return
+l_int|0
+suffix:semicolon
 )brace
 DECL|function|ide_default_io_base
 r_static
@@ -88,6 +177,14 @@ r_int
 id|index
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|ide_probe_legacy
+c_func
+(paren
+)paren
+)paren
 r_switch
 c_cond
 (paren
@@ -136,6 +233,10 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+r_else
+r_return
+l_int|0
+suffix:semicolon
 )brace
 DECL|macro|IDE_ARCH_OBSOLETE_INIT
 mdefine_line|#define IDE_ARCH_OBSOLETE_INIT
@@ -148,7 +249,23 @@ macro_line|#else
 DECL|macro|ide_init_default_irq
 mdefine_line|#define ide_init_default_irq(base)&t;ide_default_irq(base)
 macro_line|#endif
-macro_line|#include &lt;asm-generic/ide_iops.h&gt;
+multiline_comment|/* MIPS port and memory-mapped I/O string operations.  */
+DECL|macro|__ide_insw
+mdefine_line|#define __ide_insw&t;insw
+DECL|macro|__ide_insl
+mdefine_line|#define __ide_insl&t;insl
+DECL|macro|__ide_outsw
+mdefine_line|#define __ide_outsw&t;outsw
+DECL|macro|__ide_outsl
+mdefine_line|#define __ide_outsl&t;outsl
+DECL|macro|__ide_mm_insw
+mdefine_line|#define __ide_mm_insw&t;readsw
+DECL|macro|__ide_mm_insl
+mdefine_line|#define __ide_mm_insl&t;readsl
+DECL|macro|__ide_mm_outsw
+mdefine_line|#define __ide_mm_outsw&t;writesw
+DECL|macro|__ide_mm_outsl
+mdefine_line|#define __ide_mm_outsl&t;writesl
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* __ASM_MACH_GENERIC_IDE_H */
 eof

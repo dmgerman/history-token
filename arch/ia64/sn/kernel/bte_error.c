@@ -3,7 +3,7 @@ macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;asm/sn/sn_sal.h&gt;
 macro_line|#include &quot;ioerror.h&quot;
 macro_line|#include &lt;asm/sn/addrs.h&gt;
-macro_line|#include &quot;shubio.h&quot;
+macro_line|#include &lt;asm/sn/shubio.h&gt;
 macro_line|#include &lt;asm/sn/geo.h&gt;
 macro_line|#include &quot;xtalk/xwidgetdev.h&quot;
 macro_line|#include &quot;xtalk/hubdev.h&quot;

@@ -1764,11 +1764,11 @@ id|thread_keyring
 suffix:semicolon
 multiline_comment|/* keyring private to this thread */
 macro_line|#endif
-DECL|member|used_math
+DECL|member|oomkilladj
 r_int
-r_int
-id|used_math
+id|oomkilladj
 suffix:semicolon
+multiline_comment|/* OOM kill score adjustment (bit shift). */
 DECL|member|comm
 r_char
 id|comm
@@ -1998,7 +1998,6 @@ DECL|member|il_next
 r_int
 id|il_next
 suffix:semicolon
-multiline_comment|/* could be shared with used_math */
 macro_line|#endif
 )brace
 suffix:semicolon
@@ -2090,10 +2089,10 @@ DECL|macro|PF_SIGNALED
 mdefine_line|#define PF_SIGNALED&t;0x00000400&t;/* killed by a signal */
 DECL|macro|PF_MEMALLOC
 mdefine_line|#define PF_MEMALLOC&t;0x00000800&t;/* Allocating memory */
-DECL|macro|PF_MEMDIE
-mdefine_line|#define PF_MEMDIE&t;0x00001000&t;/* Killed for out-of-memory */
 DECL|macro|PF_FLUSHER
-mdefine_line|#define PF_FLUSHER&t;0x00002000&t;/* responsible for disk writeback */
+mdefine_line|#define PF_FLUSHER&t;0x00001000&t;/* responsible for disk writeback */
+DECL|macro|PF_USED_MATH
+mdefine_line|#define PF_USED_MATH&t;0x00002000&t;/* if unset the fpu must be initialized before use */
 DECL|macro|PF_FREEZE
 mdefine_line|#define PF_FREEZE&t;0x00004000&t;/* this task is being frozen for suspend now */
 DECL|macro|PF_NOFREEZE
@@ -2112,6 +2111,26 @@ DECL|macro|PF_SYNCWRITE
 mdefine_line|#define PF_SYNCWRITE&t;0x00200000&t;/* I am doing a sync write */
 DECL|macro|PF_BORROWED_MM
 mdefine_line|#define PF_BORROWED_MM&t;0x00400000&t;/* I am a kthread doing use_mm */
+multiline_comment|/*&n; * Only the _current_ task can read/write to tsk-&gt;flags, but other&n; * tasks can access tsk-&gt;flags in readonly mode for example&n; * with tsk_used_math (like during threaded core dumping).&n; * There is however an exception to this rule during ptrace&n; * or during fork: the ptracer task is allowed to write to the&n; * child-&gt;flags of its traced child (same goes for fork, the parent&n; * can write to the child-&gt;flags), because we&squot;re guaranteed the&n; * child is not running and in turn not changing child-&gt;flags&n; * at the same time the parent does it.&n; */
+DECL|macro|clear_stopped_child_used_math
+mdefine_line|#define clear_stopped_child_used_math(child) do { (child)-&gt;flags &amp;= ~PF_USED_MATH; } while (0)
+DECL|macro|set_stopped_child_used_math
+mdefine_line|#define set_stopped_child_used_math(child) do { (child)-&gt;flags |= PF_USED_MATH; } while (0)
+DECL|macro|clear_used_math
+mdefine_line|#define clear_used_math() clear_stopped_child_used_math(current)
+DECL|macro|set_used_math
+mdefine_line|#define set_used_math() set_stopped_child_used_math(current)
+DECL|macro|conditional_stopped_child_used_math
+mdefine_line|#define conditional_stopped_child_used_math(condition, child) &bslash;&n;&t;do { (child)-&gt;flags &amp;= ~PF_USED_MATH, (child)-&gt;flags |= (condition) ? PF_USED_MATH : 0; } while (0)
+DECL|macro|conditional_used_math
+mdefine_line|#define conditional_used_math(condition) &bslash;&n;&t;conditional_stopped_child_used_math(condition, current)
+DECL|macro|copy_to_stopped_child_used_math
+mdefine_line|#define copy_to_stopped_child_used_math(child) &bslash;&n;&t;do { (child)-&gt;flags &amp;= ~PF_USED_MATH, (child)-&gt;flags |= current-&gt;flags &amp; PF_USED_MATH; } while (0)
+multiline_comment|/* NOTE: this will return 0 or PF_USED_MATH, it will never return 1 */
+DECL|macro|tsk_used_math
+mdefine_line|#define tsk_used_math(p) ((p)-&gt;flags &amp; PF_USED_MATH)
+DECL|macro|used_math
+mdefine_line|#define used_math() tsk_used_math(current)
 macro_line|#ifdef CONFIG_SMP
 r_extern
 r_int

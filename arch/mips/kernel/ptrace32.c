@@ -399,7 +399,11 @@ suffix:colon
 r_if
 c_cond
 (paren
-id|child-&gt;used_math
+id|tsk_used_math
+c_func
+(paren
+id|child
+)paren
 )paren
 (brace
 id|fpureg_t
@@ -757,7 +761,11 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|child-&gt;used_math
+id|tsk_used_math
+c_func
+(paren
+id|child
+)paren
 )paren
 (brace
 multiline_comment|/* FP not yet used  */

@@ -265,6 +265,49 @@ id|addr
 )paren
 suffix:semicolon
 )brace
+DECL|function|protected_writeback_scache_line
+r_static
+r_inline
+r_void
+id|protected_writeback_scache_line
+c_func
+(paren
+r_int
+r_int
+id|addr
+)paren
+(brace
+id|__asm__
+id|__volatile__
+c_func
+(paren
+l_string|&quot;.set noreorder&bslash;n&bslash;t&quot;
+l_string|&quot;.set mips3&bslash;n&quot;
+l_string|&quot;1:&bslash;tcache %0,(%1)&bslash;n&quot;
+l_string|&quot;2:&bslash;t.set mips0&bslash;n&bslash;t&quot;
+l_string|&quot;.set reorder&bslash;n&bslash;t&quot;
+l_string|&quot;.section&bslash;t__ex_table,&bslash;&quot;a&bslash;&quot;&bslash;n&bslash;t&quot;
+id|STR
+c_func
+(paren
+id|PTR
+)paren
+l_string|&quot;&bslash;t1b,2b&bslash;n&bslash;t&quot;
+l_string|&quot;.previous&quot;
+suffix:colon
+suffix:colon
+l_string|&quot;i&quot;
+(paren
+id|Hit_Writeback_Inv_SD
+)paren
+comma
+l_string|&quot;r&quot;
+(paren
+id|addr
+)paren
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/*&n; * This one is RM7000-specific&n; */
 DECL|function|invalidate_tcache_page
 r_static

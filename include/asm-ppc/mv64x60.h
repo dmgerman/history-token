@@ -728,12 +728,13 @@ id|rev
 suffix:semicolon
 multiline_comment|/* revision of bridge */
 DECL|member|v_base
-id|u32
+r_void
+op_star
 id|v_base
 suffix:semicolon
 multiline_comment|/* virtual base addr of bridge regs */
 DECL|member|p_base
-id|u32
+id|phys_addr_t
 id|p_base
 suffix:semicolon
 multiline_comment|/* physical base addr of bridge regs */
@@ -741,12 +742,12 @@ DECL|member|pci_mode_a
 id|u32
 id|pci_mode_a
 suffix:semicolon
-multiline_comment|/* pci bus 0 mode: conventional pci, pci-x */
+multiline_comment|/* pci 0 mode: conventional pci, pci-x*/
 DECL|member|pci_mode_b
 id|u32
 id|pci_mode_b
 suffix:semicolon
-multiline_comment|/* pci bus 1 mode: conventional pci, pci-x */
+multiline_comment|/* pci 1 mode: conventional pci, pci-x*/
 DECL|member|io_base_a
 id|u32
 id|io_base_a
@@ -813,16 +814,9 @@ suffix:semicolon
 id|out_le32
 c_func
 (paren
-(paren
-r_volatile
-id|u32
-op_star
-)paren
-(paren
 id|bh-&gt;v_base
 op_plus
 id|offset
-)paren
 comma
 id|val
 )paren
@@ -869,16 +863,9 @@ r_return
 id|in_le32
 c_func
 (paren
-(paren
-r_volatile
-id|u32
-op_star
-)paren
-(paren
 id|bh-&gt;v_base
 op_plus
 id|offset
-)paren
 )paren
 suffix:semicolon
 id|spin_unlock_irqrestore
@@ -1059,7 +1046,8 @@ op_star
 id|bh
 )paren
 suffix:semicolon
-id|u32
+r_void
+op_star
 id|mv64x60_get_bridge_vbase
 c_func
 (paren

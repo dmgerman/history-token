@@ -39,7 +39,7 @@ DECL|macro|RAID6_DUMPSTATE
 mdefine_line|#define RAID6_DUMPSTATE 0&t;/* Include stripe cache state in /proc/mdstat */
 macro_line|#if RAID6_PARANOIA &amp;&amp; defined(CONFIG_SMP)
 DECL|macro|CHECK_DEVLOCK
-macro_line|# define CHECK_DEVLOCK() if (!spin_is_locked(&amp;conf-&gt;device_lock)) BUG()
+macro_line|# define CHECK_DEVLOCK() assert_spin_locked(&amp;conf-&gt;device_lock)
 macro_line|#else
 DECL|macro|CHECK_DEVLOCK
 macro_line|# define CHECK_DEVLOCK()

@@ -1898,7 +1898,7 @@ r_char
 op_star
 id|name
 suffix:semicolon
-r_int
+id|u32
 id|erase_size
 op_assign
 id|PAGE_SIZE

@@ -314,6 +314,66 @@ DECL|macro|AC97_EXTSTAT_PRK
 mdefine_line|#define AC97_EXTSTAT_PRK          0x2000
 DECL|macro|AC97_EXTSTAT_PRL
 mdefine_line|#define AC97_EXTSTAT_PRL          0x4000
+multiline_comment|/* extended audio ID register bit defines */
+DECL|macro|AC97_EXTID_VRA
+mdefine_line|#define AC97_EXTID_VRA            0x0001
+DECL|macro|AC97_EXTID_DRA
+mdefine_line|#define AC97_EXTID_DRA            0x0002
+DECL|macro|AC97_EXTID_SPDIF
+mdefine_line|#define AC97_EXTID_SPDIF          0x0004
+DECL|macro|AC97_EXTID_VRM
+mdefine_line|#define AC97_EXTID_VRM            0x0008
+DECL|macro|AC97_EXTID_DSA0
+mdefine_line|#define AC97_EXTID_DSA0           0x0010
+DECL|macro|AC97_EXTID_DSA1
+mdefine_line|#define AC97_EXTID_DSA1           0x0020
+DECL|macro|AC97_EXTID_CDAC
+mdefine_line|#define AC97_EXTID_CDAC           0x0040
+DECL|macro|AC97_EXTID_SDAC
+mdefine_line|#define AC97_EXTID_SDAC           0x0080
+DECL|macro|AC97_EXTID_LDAC
+mdefine_line|#define AC97_EXTID_LDAC           0x0100
+DECL|macro|AC97_EXTID_AMAP
+mdefine_line|#define AC97_EXTID_AMAP           0x0200
+DECL|macro|AC97_EXTID_REV0
+mdefine_line|#define AC97_EXTID_REV0           0x0400
+DECL|macro|AC97_EXTID_REV1
+mdefine_line|#define AC97_EXTID_REV1           0x0800
+DECL|macro|AC97_EXTID_ID0
+mdefine_line|#define AC97_EXTID_ID0            0x4000
+DECL|macro|AC97_EXTID_ID1
+mdefine_line|#define AC97_EXTID_ID1            0x8000
+multiline_comment|/* extended status register bit defines */
+DECL|macro|AC97_EXTSTAT_VRA
+mdefine_line|#define AC97_EXTSTAT_VRA          0x0001
+DECL|macro|AC97_EXTSTAT_DRA
+mdefine_line|#define AC97_EXTSTAT_DRA          0x0002
+DECL|macro|AC97_EXTSTAT_SPDIF
+mdefine_line|#define AC97_EXTSTAT_SPDIF        0x0004
+DECL|macro|AC97_EXTSTAT_VRM
+mdefine_line|#define AC97_EXTSTAT_VRM          0x0008
+DECL|macro|AC97_EXTSTAT_SPSA0
+mdefine_line|#define AC97_EXTSTAT_SPSA0        0x0010
+DECL|macro|AC97_EXTSTAT_SPSA1
+mdefine_line|#define AC97_EXTSTAT_SPSA1        0x0020
+DECL|macro|AC97_EXTSTAT_CDAC
+mdefine_line|#define AC97_EXTSTAT_CDAC         0x0040
+DECL|macro|AC97_EXTSTAT_SDAC
+mdefine_line|#define AC97_EXTSTAT_SDAC         0x0080
+DECL|macro|AC97_EXTSTAT_LDAC
+mdefine_line|#define AC97_EXTSTAT_LDAC         0x0100
+DECL|macro|AC97_EXTSTAT_MADC
+mdefine_line|#define AC97_EXTSTAT_MADC         0x0200
+DECL|macro|AC97_EXTSTAT_SPCV
+mdefine_line|#define AC97_EXTSTAT_SPCV         0x0400
+DECL|macro|AC97_EXTSTAT_PRI
+mdefine_line|#define AC97_EXTSTAT_PRI          0x0800
+DECL|macro|AC97_EXTSTAT_PRJ
+mdefine_line|#define AC97_EXTSTAT_PRJ          0x1000
+DECL|macro|AC97_EXTSTAT_PRK
+mdefine_line|#define AC97_EXTSTAT_PRK          0x2000
+DECL|macro|AC97_EXTSTAT_PRL
+mdefine_line|#define AC97_EXTSTAT_PRL          0x4000
 multiline_comment|/* useful power states */
 DECL|macro|AC97_PWR_D0
 mdefine_line|#define AC97_PWR_D0               0x0000      /* everything on */

@@ -1393,7 +1393,7 @@ c_cond
 (paren
 id|cpu_model
 OG
-l_int|3
+l_int|4
 )paren
 r_return
 l_int|0

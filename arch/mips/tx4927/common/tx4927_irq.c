@@ -241,19 +241,19 @@ id|irq
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * Kernel structs for all pic&squot;s&n; */
-DECL|variable|tx4927_cp0_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|tx4927_cp0_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
-DECL|variable|tx4927_pic_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|tx4927_pic_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|macro|TX4927_CP0_NAME
 mdefine_line|#define TX4927_CP0_NAME &quot;TX4927-CP0&quot;

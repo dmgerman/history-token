@@ -319,11 +319,11 @@ DECL|macro|MV64360_CPU1_SYNC_BARRIER_VIRT
 mdefine_line|#define MV64360_CPU1_SYNC_BARRIER_VIRT&t;&t;0x00d8
 multiline_comment|/* CPU Deadlock and Ordering registers (Rev B part only) */
 DECL|macro|GT64260_CPU_DEADLOCK_ORDERING
-mdefine_line|#define GT64260_CPU_DEADLOCK_ORDERING                   0x02d0
+mdefine_line|#define GT64260_CPU_DEADLOCK_ORDERING&t;&t;&t;0x02d0
 DECL|macro|GT64260_CPU_WB_PRIORITY_BUFFER_DEPTH
-mdefine_line|#define GT64260_CPU_WB_PRIORITY_BUFFER_DEPTH            0x02d8
+mdefine_line|#define GT64260_CPU_WB_PRIORITY_BUFFER_DEPTH&t;&t;0x02d8
 DECL|macro|GT64260_CPU_COUNTERS_SYNC_BARRIER_ATTRIBUTE
-mdefine_line|#define GT64260_CPU_COUNTERS_SYNC_BARRIER_ATTRIBUTE     0x02e0
+mdefine_line|#define GT64260_CPU_COUNTERS_SYNC_BARRIER_ATTRIBUTE&t;0x02e0
 multiline_comment|/* CPU Access Protection Registers (gt64260 realy has 8 but don&squot;t need) */
 DECL|macro|MV64x260_CPU_PROT_WINDOWS
 mdefine_line|#define&t;MV64x260_CPU_PROT_WINDOWS&t;&t;4

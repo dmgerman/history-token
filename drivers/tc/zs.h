@@ -1,7 +1,8 @@
-multiline_comment|/*&n; * macserial.h: Definitions for the Macintosh Z8530 serial driver.&n; *&n; * Adapted from drivers/sbus/char/sunserial.h by Paul Mackerras.&n; *&n; * Copyright (C) 1996 Paul Mackerras (Paul.Mackerras@cs.anu.edu.au)&n; * Copyright (C) 1995 David S. Miller (davem@caip.rutgers.edu)&n; */
+multiline_comment|/*&n; * drivers/tc/zs.h: Definitions for the DECstation Z85C30 serial driver.&n; *&n; * Adapted from drivers/sbus/char/sunserial.h by Paul Mackerras.&n; * Adapted from drivers/macintosh/macserial.h by Harald Koerfgen.&n; *&n; * Copyright (C) 1996 Paul Mackerras (Paul.Mackerras@cs.anu.edu.au)&n; * Copyright (C) 1995 David S. Miller (davem@caip.rutgers.edu)&n; * Copyright (C) 2004  Maciej W. Rozycki&n; */
 macro_line|#ifndef _DECSERIAL_H
 DECL|macro|_DECSERIAL_H
 mdefine_line|#define _DECSERIAL_H
+macro_line|#include &lt;asm/dec/serial.h&gt;
 DECL|macro|NUM_ZSREGS
 mdefine_line|#define NUM_ZSREGS    16
 DECL|struct|serial_struct
@@ -160,91 +161,6 @@ id|NUM_ZSREGS
 suffix:semicolon
 )brace
 suffix:semicolon
-r_struct
-id|dec_serial
-suffix:semicolon
-DECL|struct|zs_hook
-r_struct
-id|zs_hook
-(brace
-DECL|member|init_channel
-r_int
-(paren
-op_star
-id|init_channel
-)paren
-(paren
-r_struct
-id|dec_serial
-op_star
-id|info
-)paren
-suffix:semicolon
-DECL|member|init_info
-r_void
-(paren
-op_star
-id|init_info
-)paren
-(paren
-r_struct
-id|dec_serial
-op_star
-id|info
-)paren
-suffix:semicolon
-DECL|member|rx_char
-r_void
-(paren
-op_star
-id|rx_char
-)paren
-(paren
-r_int
-r_char
-id|ch
-comma
-r_int
-r_char
-id|stat
-)paren
-suffix:semicolon
-DECL|member|poll_rx_char
-r_int
-(paren
-op_star
-id|poll_rx_char
-)paren
-(paren
-r_struct
-id|dec_serial
-op_star
-id|info
-)paren
-suffix:semicolon
-DECL|member|poll_tx_char
-r_int
-(paren
-op_star
-id|poll_tx_char
-)paren
-(paren
-r_struct
-id|dec_serial
-op_star
-id|info
-comma
-r_int
-r_char
-id|ch
-)paren
-suffix:semicolon
-DECL|member|cflags
-r_int
-id|cflags
-suffix:semicolon
-)brace
-suffix:semicolon
 DECL|struct|dec_serial
 r_struct
 id|dec_serial
@@ -255,67 +171,59 @@ id|dec_serial
 op_star
 id|zs_next
 suffix:semicolon
-multiline_comment|/* For IRQ servicing chain */
+multiline_comment|/* For IRQ servicing chain.  */
 DECL|member|zs_channel
 r_struct
 id|dec_zschannel
 op_star
 id|zs_channel
 suffix:semicolon
-multiline_comment|/* Channel registers */
+multiline_comment|/* Channel registers.  */
 DECL|member|zs_chan_a
 r_struct
 id|dec_zschannel
 op_star
 id|zs_chan_a
 suffix:semicolon
-multiline_comment|/* A side registers */
+multiline_comment|/* A side registers.  */
 DECL|member|read_reg_zero
 r_int
 r_char
 id|read_reg_zero
 suffix:semicolon
-DECL|member|soft_carrier
-r_char
-id|soft_carrier
-suffix:semicolon
-multiline_comment|/* Use soft carrier on this channel */
-DECL|member|break_abort
-r_char
-id|break_abort
-suffix:semicolon
-multiline_comment|/* Is serial console in, so process brk/abrt */
 DECL|member|hook
 r_struct
-id|zs_hook
+id|dec_serial_hook
 op_star
 id|hook
 suffix:semicolon
-multiline_comment|/* Hook on this channel */
+multiline_comment|/* Hook on this channel.  */
+DECL|member|tty_break
+r_int
+id|tty_break
+suffix:semicolon
+multiline_comment|/* Set on BREAK condition.  */
 DECL|member|is_cons
-r_char
+r_int
 id|is_cons
 suffix:semicolon
-multiline_comment|/* Is this our console. */
+multiline_comment|/* Is this our console.  */
 DECL|member|tx_active
 r_int
-r_char
 id|tx_active
 suffix:semicolon
-multiline_comment|/* character is being xmitted */
+multiline_comment|/* Char is being xmitted.  */
 DECL|member|tx_stopped
 r_int
-r_char
 id|tx_stopped
 suffix:semicolon
-multiline_comment|/* output is suspended */
-multiline_comment|/* We need to know the current clock divisor&n;&t; * to read the bps rate the chip has currently&n;&t; * loaded.&n;&t; */
+multiline_comment|/* Output is suspended.  */
+multiline_comment|/*&n;&t; * We need to know the current clock divisor&n;&t; * to read the bps rate the chip has currently loaded.&n;&t; */
 DECL|member|clk_divisor
 r_int
-r_char
 id|clk_divisor
 suffix:semicolon
-multiline_comment|/* May be 1, 16, 32, or 64 */
+multiline_comment|/* May be 1, 16, 32, or 64.  */
 DECL|member|zs_baud
 r_int
 id|zs_baud
@@ -344,12 +252,12 @@ DECL|member|flags
 r_int
 id|flags
 suffix:semicolon
-multiline_comment|/* defined in tty.h */
+multiline_comment|/* Defined in tty.h.  */
 DECL|member|type
 r_int
 id|type
 suffix:semicolon
-multiline_comment|/* UART type */
+multiline_comment|/* UART type.  */
 DECL|member|tty
 r_struct
 id|tty_struct
@@ -380,7 +288,7 @@ DECL|member|x_char
 r_int
 id|x_char
 suffix:semicolon
-multiline_comment|/* xon/xoff character */
+multiline_comment|/* XON/XOFF character.  */
 DECL|member|close_delay
 r_int
 id|close_delay
@@ -413,12 +321,12 @@ DECL|member|count
 r_int
 id|count
 suffix:semicolon
-multiline_comment|/* # of fd on device */
+multiline_comment|/* # of fds on device.  */
 DECL|member|blocked_open
 r_int
 id|blocked_open
 suffix:semicolon
-multiline_comment|/* # of blocked opens */
+multiline_comment|/* # of blocked opens.  */
 DECL|member|xmit_buf
 r_int
 r_char
@@ -540,10 +448,12 @@ DECL|macro|RxINT_DISAB
 mdefine_line|#define&t;RxINT_DISAB&t;0&t;/* Rx Int Disable */
 DECL|macro|RxINT_FCERR
 mdefine_line|#define&t;RxINT_FCERR&t;0x8&t;/* Rx Int on First Character Only or Error */
-DECL|macro|INT_ALL_Rx
-mdefine_line|#define&t;INT_ALL_Rx&t;0x10&t;/* Int on all Rx Characters or error */
-DECL|macro|INT_ERR_Rx
-mdefine_line|#define&t;INT_ERR_Rx&t;0x18&t;/* Int on error only */
+DECL|macro|RxINT_ALL
+mdefine_line|#define&t;RxINT_ALL&t;0x10&t;/* Int on all Rx Characters or error */
+DECL|macro|RxINT_ERR
+mdefine_line|#define&t;RxINT_ERR&t;0x18&t;/* Int on error only */
+DECL|macro|RxINT_MASK
+mdefine_line|#define&t;RxINT_MASK&t;0x18
 DECL|macro|WT_RDY_RT
 mdefine_line|#define&t;WT_RDY_RT&t;0x20&t;/* Wait/Ready on R/T */
 DECL|macro|WT_FN_RDYFN

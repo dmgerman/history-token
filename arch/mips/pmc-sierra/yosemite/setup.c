@@ -10,6 +10,10 @@ macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/timex.h&gt;
+macro_line|#include &lt;linux/termios.h&gt;
+macro_line|#include &lt;linux/tty.h&gt;
+macro_line|#include &lt;linux/serial.h&gt;
+macro_line|#include &lt;linux/serial_core.h&gt;
 macro_line|#include &lt;asm/time.h&gt;
 macro_line|#include &lt;asm/bootinfo.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
@@ -19,11 +23,8 @@ macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/ptrace.h&gt;
 macro_line|#include &lt;asm/reboot.h&gt;
 macro_line|#include &lt;asm/serial.h&gt;
-macro_line|#include &lt;linux/termios.h&gt;
-macro_line|#include &lt;linux/tty.h&gt;
-macro_line|#include &lt;linux/serial.h&gt;
-macro_line|#include &lt;linux/serial_core.h&gt;
 macro_line|#include &lt;asm/titan_dep.h&gt;
+macro_line|#include &lt;asm/m48t37.h&gt;
 macro_line|#include &quot;setup.h&quot;
 DECL|variable|titan_ge_mac_addr_base
 r_int
@@ -34,17 +35,18 @@ l_int|6
 )braket
 op_assign
 (brace
+singleline_comment|// 0x00, 0x03, 0xcc, 0x1d, 0x22, 0x00
 l_int|0x00
 comma
-l_int|0x03
+l_int|0xe0
 comma
-l_int|0xcc
-comma
-l_int|0x1d
-comma
-l_int|0x22
+l_int|0x04
 comma
 l_int|0x00
+comma
+l_int|0x00
+comma
+l_int|0x21
 )brace
 suffix:semicolon
 DECL|variable|cpu_clock
@@ -56,6 +58,13 @@ DECL|variable|yosemite_base
 r_int
 r_int
 id|yosemite_base
+suffix:semicolon
+DECL|variable|m48t37_base
+r_static
+r_struct
+id|m48t37_rtc
+op_star
+id|m48t37_base
 suffix:semicolon
 DECL|function|bus_error_init
 r_void
@@ -77,19 +86,6 @@ c_func
 r_void
 )paren
 (brace
-singleline_comment|//unsigned char *rtc_base = (unsigned char *) YOSEMITE_RTC_BASE;
-r_int
-r_char
-op_star
-id|rtc_base
-op_assign
-(paren
-r_int
-r_char
-op_star
-)paren
-l_int|0xfc000000UL
-suffix:semicolon
 r_int
 r_int
 id|year
@@ -104,13 +100,8 @@ id|min
 comma
 id|sec
 suffix:semicolon
-r_return
-suffix:semicolon
 multiline_comment|/* Stop the update to the time */
-id|rtc_base
-(braket
-l_int|0x7ff8
-)braket
+id|m48t37_base-&gt;control
 op_assign
 l_int|0x40
 suffix:semicolon
@@ -119,10 +110,7 @@ op_assign
 id|BCD2BIN
 c_func
 (paren
-id|rtc_base
-(braket
-l_int|0x7fff
-)braket
+id|m48t37_base-&gt;year
 )paren
 suffix:semicolon
 id|year
@@ -130,10 +118,7 @@ op_add_assign
 id|BCD2BIN
 c_func
 (paren
-id|rtc_base
-(braket
-l_int|0x7fff1
-)braket
+id|m48t37_base-&gt;century
 )paren
 op_star
 l_int|100
@@ -143,10 +128,7 @@ op_assign
 id|BCD2BIN
 c_func
 (paren
-id|rtc_base
-(braket
-l_int|0x7ffe
-)braket
+id|m48t37_base-&gt;month
 )paren
 suffix:semicolon
 id|day
@@ -154,10 +136,7 @@ op_assign
 id|BCD2BIN
 c_func
 (paren
-id|rtc_base
-(braket
-l_int|0x7ffd
-)braket
+id|m48t37_base-&gt;date
 )paren
 suffix:semicolon
 id|hour
@@ -165,10 +144,7 @@ op_assign
 id|BCD2BIN
 c_func
 (paren
-id|rtc_base
-(braket
-l_int|0x7ffb
-)braket
+id|m48t37_base-&gt;hour
 )paren
 suffix:semicolon
 id|min
@@ -176,10 +152,7 @@ op_assign
 id|BCD2BIN
 c_func
 (paren
-id|rtc_base
-(braket
-l_int|0x7ffa
-)braket
+id|m48t37_base-&gt;min
 )paren
 suffix:semicolon
 id|sec
@@ -187,17 +160,11 @@ op_assign
 id|BCD2BIN
 c_func
 (paren
-id|rtc_base
-(braket
-l_int|0x7ff9
-)braket
+id|m48t37_base-&gt;sec
 )paren
 suffix:semicolon
 multiline_comment|/* Start the update to the time again */
-id|rtc_base
-(braket
-l_int|0x7ff8
-)braket
+id|m48t37_base-&gt;control
 op_assign
 l_int|0x00
 suffix:semicolon
@@ -229,23 +196,9 @@ r_int
 id|sec
 )paren
 (brace
-r_int
-r_char
-op_star
-id|rtc_base
-op_assign
-(paren
-r_int
-r_char
-op_star
-)paren
-id|YOSEMITE_RTC_BASE
-suffix:semicolon
 r_struct
 id|rtc_time
 id|tm
-suffix:semicolon
-r_return
 suffix:semicolon
 multiline_comment|/* convert to a more useful format -- note months count from 0 */
 id|to_tm
@@ -262,18 +215,12 @@ op_add_assign
 l_int|1
 suffix:semicolon
 multiline_comment|/* enable writing */
-id|rtc_base
-(braket
-l_int|0x7ff8
-)braket
+id|m48t37_base-&gt;control
 op_assign
 l_int|0x80
 suffix:semicolon
 multiline_comment|/* year */
-id|rtc_base
-(braket
-l_int|0x7fff
-)braket
+id|m48t37_base-&gt;year
 op_assign
 id|BIN2BCD
 c_func
@@ -283,10 +230,7 @@ op_mod
 l_int|100
 )paren
 suffix:semicolon
-id|rtc_base
-(braket
-l_int|0x7ff1
-)braket
+id|m48t37_base-&gt;century
 op_assign
 id|BIN2BCD
 c_func
@@ -297,10 +241,7 @@ l_int|100
 )paren
 suffix:semicolon
 multiline_comment|/* month */
-id|rtc_base
-(braket
-l_int|0x7ffe
-)braket
+id|m48t37_base-&gt;month
 op_assign
 id|BIN2BCD
 c_func
@@ -309,10 +250,7 @@ id|tm.tm_mon
 )paren
 suffix:semicolon
 multiline_comment|/* day */
-id|rtc_base
-(braket
-l_int|0x7ffd
-)braket
+id|m48t37_base-&gt;date
 op_assign
 id|BIN2BCD
 c_func
@@ -321,10 +259,7 @@ id|tm.tm_mday
 )paren
 suffix:semicolon
 multiline_comment|/* hour/min/sec */
-id|rtc_base
-(braket
-l_int|0x7ffb
-)braket
+id|m48t37_base-&gt;hour
 op_assign
 id|BIN2BCD
 c_func
@@ -332,10 +267,7 @@ c_func
 id|tm.tm_hour
 )paren
 suffix:semicolon
-id|rtc_base
-(braket
-l_int|0x7ffa
-)braket
+id|m48t37_base-&gt;min
 op_assign
 id|BIN2BCD
 c_func
@@ -343,10 +275,7 @@ c_func
 id|tm.tm_min
 )paren
 suffix:semicolon
-id|rtc_base
-(braket
-l_int|0x7ff9
-)braket
+id|m48t37_base-&gt;sec
 op_assign
 id|BIN2BCD
 c_func
@@ -355,10 +284,7 @@ id|tm.tm_sec
 )paren
 suffix:semicolon
 multiline_comment|/* day of week -- not really used, but let&squot;s keep it up-to-date */
-id|rtc_base
-(braket
-l_int|0x7ffc
-)braket
+id|m48t37_base-&gt;day
 op_assign
 id|BIN2BCD
 c_func
@@ -369,10 +295,7 @@ l_int|1
 )paren
 suffix:semicolon
 multiline_comment|/* disable writing */
-id|rtc_base
-(braket
-l_int|0x7ff8
-)braket
+id|m48t37_base-&gt;control
 op_assign
 l_int|0x00
 suffix:semicolon
@@ -418,22 +341,15 @@ id|cpu_clock
 op_div
 l_int|2
 suffix:semicolon
-id|rtc_get_time
+id|mips_hpt_frequency
 op_assign
-id|m48t37y_get_time
-suffix:semicolon
-id|rtc_set_time
-op_assign
-id|m48t37y_set_time
+l_int|33000000
+op_star
+l_int|3
+op_star
+l_int|5
 suffix:semicolon
 )brace
-DECL|variable|uart_base
-r_int
-r_int
-id|uart_base
-op_assign
-l_int|0xfd000000L
-suffix:semicolon
 multiline_comment|/* No other usable initialization hook than this ...  */
 r_extern
 r_void
@@ -476,11 +392,6 @@ c_func
 r_void
 )paren
 (brace
-r_struct
-id|uart_port
-id|up
-suffix:semicolon
-multiline_comment|/*&n;&t; * Not specifically interrupt stuff but in case of SMP core_send_ipi&n;&t; * needs this first so I&squot;m mapping it here ...&n;&t; */
 id|ocd_base
 op_assign
 (paren
@@ -506,6 +417,30 @@ c_func
 (paren
 l_string|&quot;Mapping OCD failed - game over.  Your score is 0.&quot;
 )paren
+suffix:semicolon
+multiline_comment|/* Kludge for PMON bug ... */
+id|OCD_WRITE
+c_func
+(paren
+l_int|0x0710
+comma
+l_int|0x0ffff029
+)paren
+suffix:semicolon
+)brace
+DECL|function|py_uart_setup
+r_static
+r_void
+id|__init
+id|py_uart_setup
+c_func
+(paren
+r_void
+)paren
+(brace
+r_struct
+id|uart_port
+id|up
 suffix:semicolon
 multiline_comment|/*&n;&t; * Register to interrupt zero because we share the interrupt with&n;&t; * the serial driver which we don&squot;t properly support yet.&n;&t; */
 id|memset
@@ -581,6 +516,113 @@ l_string|&quot;Early serial init of port 0 failed&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
+DECL|function|py_rtc_setup
+r_static
+r_void
+id|__init
+id|py_rtc_setup
+c_func
+(paren
+r_void
+)paren
+(brace
+id|m48t37_base
+op_assign
+id|ioremap
+c_func
+(paren
+id|YOSEMITE_RTC_BASE
+comma
+id|YOSEMITE_RTC_SIZE
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|m48t37_base
+)paren
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;Mapping the RTC failed&bslash;n&quot;
+)paren
+suffix:semicolon
+id|rtc_get_time
+op_assign
+id|m48t37y_get_time
+suffix:semicolon
+id|rtc_set_time
+op_assign
+id|m48t37y_set_time
+suffix:semicolon
+id|write_seqlock
+c_func
+(paren
+op_amp
+id|xtime_lock
+)paren
+suffix:semicolon
+id|xtime.tv_sec
+op_assign
+id|m48t37y_get_time
+c_func
+(paren
+)paren
+suffix:semicolon
+id|xtime.tv_nsec
+op_assign
+l_int|0
+suffix:semicolon
+id|set_normalized_timespec
+c_func
+(paren
+op_amp
+id|wall_to_monotonic
+comma
+op_minus
+id|xtime.tv_sec
+comma
+op_minus
+id|xtime.tv_nsec
+)paren
+suffix:semicolon
+id|write_sequnlock
+c_func
+(paren
+op_amp
+id|xtime_lock
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/* Not only time init but that&squot;s what the hook it&squot;s called through is named */
+DECL|function|py_late_time_init
+r_static
+r_void
+id|__init
+id|py_late_time_init
+c_func
+(paren
+r_void
+)paren
+(brace
+id|py_map_ocd
+c_func
+(paren
+)paren
+suffix:semicolon
+id|py_uart_setup
+c_func
+(paren
+)paren
+suffix:semicolon
+id|py_rtc_setup
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
 DECL|function|pmc_yosemite_setup
 r_static
 r_int
@@ -591,21 +633,13 @@ c_func
 r_void
 )paren
 (brace
-r_extern
-r_void
-id|pmon_smp_bootstrap
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 id|board_time_init
 op_assign
 id|yosemite_time_init
 suffix:semicolon
 id|late_time_init
 op_assign
-id|py_map_ocd
+id|py_late_time_init
 suffix:semicolon
 multiline_comment|/* Add memory regions */
 id|add_memory_region

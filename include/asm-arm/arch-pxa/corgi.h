@@ -6,51 +6,53 @@ multiline_comment|/*&n; * Corgi (Non Standard) GPIO Definitions&n; */
 DECL|macro|CORGI_GPIO_KEY_INT
 mdefine_line|#define CORGI_GPIO_KEY_INT&t;&t;&t;(0)&t;/* Keyboard Interrupt */
 DECL|macro|CORGI_GPIO_AC_IN
-mdefine_line|#define CORGI_GPIO_AC_IN&t;&t;&t;(1)
+mdefine_line|#define CORGI_GPIO_AC_IN&t;&t;&t;(1) /* Charger Detection */
 DECL|macro|CORGI_GPIO_WAKEUP
-mdefine_line|#define CORGI_GPIO_WAKEUP&t;&t;&t;(3)
+mdefine_line|#define CORGI_GPIO_WAKEUP&t;&t;&t;(3) /* System wakeup notification? */
 DECL|macro|CORGI_GPIO_AK_INT
-mdefine_line|#define CORGI_GPIO_AK_INT&t;&t;&t;(4)&t;/* IR Controller Interrupt */
+mdefine_line|#define CORGI_GPIO_AK_INT&t;&t;&t;(4)&t;/* Headphone Jack Control Interrupt */
 DECL|macro|CORGI_GPIO_TP_INT
 mdefine_line|#define CORGI_GPIO_TP_INT&t;&t;&t;(5)&t;/* Touch Panel Interrupt */
 DECL|macro|CORGI_GPIO_nSD_WP
-mdefine_line|#define CORGI_GPIO_nSD_WP&t;&t;&t;(7)
+mdefine_line|#define CORGI_GPIO_nSD_WP&t;&t;&t;(7) /* SD Write Protect? */
 DECL|macro|CORGI_GPIO_nSD_DETECT
 mdefine_line|#define CORGI_GPIO_nSD_DETECT&t;&t;(9) /* MMC/SD Card Detect */
 DECL|macro|CORGI_GPIO_nSD_INT
-mdefine_line|#define CORGI_GPIO_nSD_INT&t;&t;&t;(10)
+mdefine_line|#define CORGI_GPIO_nSD_INT&t;&t;&t;(10) /* SD Interrupt for SDIO? */
 DECL|macro|CORGI_GPIO_MAIN_BAT_LOW
-mdefine_line|#define CORGI_GPIO_MAIN_BAT_LOW&t;&t;(11)
+mdefine_line|#define CORGI_GPIO_MAIN_BAT_LOW&t;&t;(11) /* Main Battery Low Notification */
 DECL|macro|CORGI_GPIO_BAT_COVER
-mdefine_line|#define CORGI_GPIO_BAT_COVER&t;&t;(11)
+mdefine_line|#define CORGI_GPIO_BAT_COVER&t;&t;(11) /* Battery Cover Detect */
 DECL|macro|CORGI_GPIO_LED_ORANGE
-mdefine_line|#define CORGI_GPIO_LED_ORANGE&t;&t;(13)
+mdefine_line|#define CORGI_GPIO_LED_ORANGE&t;&t;(13) /* Orange LED Control */
 DECL|macro|CORGI_GPIO_CF_CD
 mdefine_line|#define CORGI_GPIO_CF_CD&t;&t;&t;(14) /* Compact Flash Card Detect */
 DECL|macro|CORGI_GPIO_CHRG_FULL
-mdefine_line|#define CORGI_GPIO_CHRG_FULL&t;&t;(16)
+mdefine_line|#define CORGI_GPIO_CHRG_FULL&t;&t;(16) /* Charging Complete Notification */
 DECL|macro|CORGI_GPIO_CF_IRQ
 mdefine_line|#define CORGI_GPIO_CF_IRQ&t;&t;&t;(17) /* Compact Flash Interrupt */
 DECL|macro|CORGI_GPIO_LCDCON_CS
 mdefine_line|#define CORGI_GPIO_LCDCON_CS&t;&t;(19) /* LCD Control Chip Select */
 DECL|macro|CORGI_GPIO_MAX1111_CS
-mdefine_line|#define CORGI_GPIO_MAX1111_CS&t;&t;(20) /* MAX111 Chip Select */
+mdefine_line|#define CORGI_GPIO_MAX1111_CS&t;&t;(20) /* MAX1111 Chip Select */
 DECL|macro|CORGI_GPIO_ADC_TEMP_ON
-mdefine_line|#define CORGI_GPIO_ADC_TEMP_ON&t;&t;(21)
+mdefine_line|#define CORGI_GPIO_ADC_TEMP_ON&t;&t;(21) /* Select battery voltage or temperature */
 DECL|macro|CORGI_GPIO_IR_ON
-mdefine_line|#define CORGI_GPIO_IR_ON&t;&t;&t;(22)
+mdefine_line|#define CORGI_GPIO_IR_ON&t;&t;&t;(22) /* Enable IR Transciever */
 DECL|macro|CORGI_GPIO_ADS7846_CS
 mdefine_line|#define CORGI_GPIO_ADS7846_CS&t;&t;(24) /* ADS7846 Chip Select */
 DECL|macro|CORGI_GPIO_SD_PWR
 mdefine_line|#define CORGI_GPIO_SD_PWR&t;&t;&t;(33) /* MMC/SD Power */
 DECL|macro|CORGI_GPIO_CHRG_ON
-mdefine_line|#define CORGI_GPIO_CHRG_ON&t;&t;&t;(38)
+mdefine_line|#define CORGI_GPIO_CHRG_ON&t;&t;&t;(38) /* Enable battery Charging */
 DECL|macro|CORGI_GPIO_DISCHARGE_ON
-mdefine_line|#define CORGI_GPIO_DISCHARGE_ON&t;&t;(42)
+mdefine_line|#define CORGI_GPIO_DISCHARGE_ON&t;&t;(42) /* Enable battery Discharge */
+DECL|macro|CORGI_GPIO_CHRG_UKN
+mdefine_line|#define CORGI_GPIO_CHRG_UKN&t;&t;&t;(43) /* Unknown Charging (Bypass Control?) */
 DECL|macro|CORGI_GPIO_HSYNC
 mdefine_line|#define CORGI_GPIO_HSYNC&t;&t;&t;(44) /* LCD HSync Pulse */
 DECL|macro|CORGI_GPIO_USB_PULLUP
-mdefine_line|#define CORGI_GPIO_USB_PULLUP&t;&t;(45)
+mdefine_line|#define CORGI_GPIO_USB_PULLUP&t;&t;(45) /* USB show presence to host */
 multiline_comment|/*&n; * Corgi Keyboard Definitions&n; */
 DECL|macro|CORGI_KEY_STROBE_NUM
 mdefine_line|#define CORGI_KEY_STROBE_NUM&t;&t;(12)
@@ -218,6 +220,80 @@ r_int
 id|phadadj
 suffix:semicolon
 )brace
+suffix:semicolon
+multiline_comment|/*&n; * External Functions&n; */
+r_extern
+r_int
+r_int
+id|corgi_ssp_ads7846_putget
+c_func
+(paren
+r_int
+r_int
+)paren
+suffix:semicolon
+r_extern
+r_int
+r_int
+id|corgi_ssp_ads7846_get
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|corgi_ssp_ads7846_put
+c_func
+(paren
+id|ulong
+id|data
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|corgi_ssp_ads7846_lock
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|corgi_ssp_ads7846_unlock
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|corgi_ssp_lcdtg_send
+(paren
+id|u8
+id|adrs
+comma
+id|u8
+id|data
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|corgi_ssp_blduty_set
+c_func
+(paren
+r_int
+id|duty
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|corgi_ssp_max1111_get
+c_func
+(paren
+id|ulong
+id|data
+)paren
 suffix:semicolon
 macro_line|#endif /* __ASM_ARCH_CORGI_H  */
 eof

@@ -1545,6 +1545,8 @@ op_amp
 id|flags
 )paren
 suffix:semicolon
+id|drive-&gt;hwif
+op_member_access_from_pointer
 id|atapi_input_bytes
 c_func
 (paren
@@ -1716,6 +1718,8 @@ op_amp
 id|flags
 )paren
 suffix:semicolon
+id|drive-&gt;hwif
+op_member_access_from_pointer
 id|atapi_output_bytes
 c_func
 (paren

@@ -4630,7 +4630,7 @@ id|nr
 r_int
 id|retval
 suffix:semicolon
-id|ssize_t
+r_int
 id|n
 suffix:semicolon
 r_int
@@ -4667,9 +4667,6 @@ op_assign
 id|min
 c_func
 (paren
-(paren
-id|ssize_t
-)paren
 op_star
 id|nr
 comma

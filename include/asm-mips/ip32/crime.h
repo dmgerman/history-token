@@ -335,5 +335,7 @@ id|sgi_crime
 op_star
 id|crime
 suffix:semicolon
+DECL|macro|CRIME_HI_MEM_BASE
+mdefine_line|#define CRIME_HI_MEM_BASE&t;0x40000000&t;/* this is where whole 1G of RAM is mapped */
 macro_line|#endif /* __ASM_CRIME_H__ */
 eof

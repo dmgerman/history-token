@@ -798,10 +798,6 @@ l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef MODULE
-id|MOD_INC_USE_COUNT
-suffix:semicolon
-macro_line|#endif
 id|i2c_add_adapter
 c_func
 (paren
@@ -844,10 +840,6 @@ l_int|0
 r_return
 id|res
 suffix:semicolon
-macro_line|#ifdef MODULE
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
-macro_line|#endif
 r_return
 l_int|0
 suffix:semicolon

@@ -1,6 +1,5 @@
-multiline_comment|/*&n; * Copytight (C) 1999, 2000 Ralf Baechle (ralf@gnu.org)&n; * Copytight (C) 1999, 2000 Silicon Graphics, Inc.&n; */
+multiline_comment|/*&n; * Copytight (C) 1999, 2000, 05 Ralf Baechle (ralf@linux-mips.org)&n; * Copytight (C) 1999, 2000 Silicon Graphics, Inc.&n; */
 macro_line|#include &lt;linux/bcd.h&gt;
-macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;

@@ -67,6 +67,8 @@ DECL|macro|SRMMU_DIRTY
 mdefine_line|#define SRMMU_DIRTY        0x40
 DECL|macro|SRMMU_REF
 mdefine_line|#define SRMMU_REF          0x20
+DECL|macro|SRMMU_NOREAD
+mdefine_line|#define SRMMU_NOREAD       0x10
 DECL|macro|SRMMU_EXEC
 mdefine_line|#define SRMMU_EXEC         0x08
 DECL|macro|SRMMU_WRITE

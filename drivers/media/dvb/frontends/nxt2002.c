@@ -1072,7 +1072,7 @@ suffix:semicolon
 id|dprintk
 c_func
 (paren
-l_string|&quot;Firmware is %d bytes&bslash;n&quot;
+l_string|&quot;Firmware is %zu bytes&bslash;n&quot;
 comma
 id|fw-&gt;size
 )paren

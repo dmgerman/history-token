@@ -423,6 +423,11 @@ c_cond
 (paren
 id|large
 )paren
+(brace
+id|va
+op_and_assign
+id|HPAGE_MASK
+suffix:semicolon
 id|asm
 r_volatile
 (paren
@@ -437,7 +442,13 @@ suffix:colon
 l_string|&quot;memory&quot;
 )paren
 suffix:semicolon
+)brace
 r_else
+(brace
+id|va
+op_and_assign
+id|PAGE_MASK
+suffix:semicolon
 id|asm
 r_volatile
 (paren
@@ -452,6 +463,7 @@ suffix:colon
 l_string|&quot;memory&quot;
 )paren
 suffix:semicolon
+)brace
 )brace
 DECL|function|tlbie
 r_static
@@ -518,6 +530,10 @@ l_int|0xffffULL
 op_lshift
 l_int|48
 )paren
+suffix:semicolon
+id|va
+op_and_assign
+id|PAGE_MASK
 suffix:semicolon
 multiline_comment|/* &n;&t; * Thanks to Alan Modra we are now able to use machine specific &n;&t; * assembly instructions (like tlbiel) by using the gas -many flag.&n;&t; * However we have to support older toolchains so for the moment &n;&t; * we hardwire it.&n;&t; */
 macro_line|#if 0

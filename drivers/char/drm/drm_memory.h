@@ -18,7 +18,6 @@ DECL|macro|PAGE_AGP
 macro_line|#  define PAGE_AGP&t;PAGE_KERNEL
 macro_line|# endif
 macro_line|#endif
-macro_line|#include &lt;asm/tlbflush.h&gt;
 multiline_comment|/*&n; * Find the drm_map that covers the range [offset, offset+size).&n; */
 r_static
 r_inline

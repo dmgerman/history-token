@@ -63,7 +63,7 @@ op_assign
 id|M_SCD_TRACE_CFG_FREEZE_FULL
 suffix:semicolon
 multiline_comment|/* Generate an SCD_PERFCNT interrupt in TB_PERIOD Zclks to&n;&t;   trigger start of trace.  XXX vary sampling period */
-id|__raw_writeq
+id|bus_writeq
 c_func
 (paren
 l_int|0
@@ -77,7 +77,7 @@ id|A_SCD_PERF_CNT_1
 suffix:semicolon
 id|scdperfcnt
 op_assign
-id|__raw_readq
+id|bus_readq
 c_func
 (paren
 id|IOADDR
@@ -88,7 +88,7 @@ id|A_SCD_PERF_CNT_CFG
 )paren
 suffix:semicolon
 multiline_comment|/* Unfortunately, in Pass 2 we must clear all counters to knock down&n;&t;   a previous interrupt request.  This means that bus profiling&n;&t;   requires ALL of the SCD perf counters. */
-id|__raw_writeq
+id|bus_writeq
 c_func
 (paren
 (paren
@@ -119,7 +119,7 @@ id|A_SCD_PERF_CNT_CFG
 )paren
 )paren
 suffix:semicolon
-id|__raw_writeq
+id|bus_writeq
 c_func
 (paren
 id|next
@@ -132,7 +132,7 @@ id|A_SCD_PERF_CNT_1
 )paren
 suffix:semicolon
 multiline_comment|/* Reset the trace buffer */
-id|__raw_writeq
+id|bus_writeq
 c_func
 (paren
 id|M_SCD_TRACE_CFG_RESET
@@ -151,7 +151,7 @@ op_or_assign
 id|M_SCD_TRACE_CFG_FORCECNT
 suffix:semicolon
 macro_line|#endif
-id|__raw_writeq
+id|bus_writeq
 c_func
 (paren
 id|tb_options
@@ -221,7 +221,7 @@ op_increment
 )braket
 suffix:semicolon
 multiline_comment|/* Read out trace */
-id|__raw_writeq
+id|bus_writeq
 c_func
 (paren
 id|M_SCD_TRACE_CFG_START_READ
@@ -271,7 +271,7 @@ op_minus
 l_int|1
 )braket
 op_assign
-id|__raw_readq
+id|bus_readq
 c_func
 (paren
 id|IOADDR
@@ -289,7 +289,7 @@ op_minus
 l_int|2
 )braket
 op_assign
-id|__raw_readq
+id|bus_readq
 c_func
 (paren
 id|IOADDR
@@ -307,7 +307,7 @@ op_minus
 l_int|3
 )braket
 op_assign
-id|__raw_readq
+id|bus_readq
 c_func
 (paren
 id|IOADDR
@@ -325,7 +325,7 @@ op_minus
 l_int|4
 )braket
 op_assign
-id|__raw_readq
+id|bus_readq
 c_func
 (paren
 id|IOADDR
@@ -343,7 +343,7 @@ op_minus
 l_int|5
 )braket
 op_assign
-id|__raw_readq
+id|bus_readq
 c_func
 (paren
 id|IOADDR
@@ -361,7 +361,7 @@ op_minus
 l_int|6
 )braket
 op_assign
-id|__raw_readq
+id|bus_readq
 c_func
 (paren
 id|IOADDR
@@ -391,7 +391,7 @@ l_string|&quot;: tb_intr shutdown&bslash;n&quot;
 )paren
 )paren
 suffix:semicolon
-id|__raw_writeq
+id|bus_writeq
 c_func
 (paren
 id|M_SCD_TRACE_CFG_RESET
@@ -439,7 +439,7 @@ l_string|&quot;: tb_intr full&bslash;n&quot;
 )paren
 )paren
 suffix:semicolon
-id|__raw_writeq
+id|bus_writeq
 c_func
 (paren
 id|M_SCD_TRACE_CFG_RESET
@@ -585,7 +585,7 @@ suffix:semicolon
 multiline_comment|/* Make sure there isn&squot;t a perf-cnt interrupt waiting */
 id|scdperfcnt
 op_assign
-id|__raw_readq
+id|bus_readq
 c_func
 (paren
 id|IOADDR
@@ -596,7 +596,7 @@ id|A_SCD_PERF_CNT_CFG
 )paren
 suffix:semicolon
 multiline_comment|/* Disable and clear counters, override SRC_1 */
-id|__raw_writeq
+id|bus_writeq
 c_func
 (paren
 (paren
@@ -662,7 +662,7 @@ id|EBUSY
 suffix:semicolon
 )brace
 multiline_comment|/* I need the core to mask these, but the interrupt mapper to&n;&t;   pass them through.  I am exploiting my knowledge that&n;&t;   cp0_status masks out IP[5]. krw */
-id|__raw_writeq
+id|bus_writeq
 c_func
 (paren
 id|K_INT_MAP_I3
@@ -687,7 +687,7 @@ l_int|3
 )paren
 suffix:semicolon
 multiline_comment|/* Initialize address traps */
-id|__raw_writeq
+id|bus_writeq
 c_func
 (paren
 l_int|0
@@ -699,7 +699,7 @@ id|A_ADDR_TRAP_UP_0
 )paren
 )paren
 suffix:semicolon
-id|__raw_writeq
+id|bus_writeq
 c_func
 (paren
 l_int|0
@@ -711,7 +711,7 @@ id|A_ADDR_TRAP_UP_1
 )paren
 )paren
 suffix:semicolon
-id|__raw_writeq
+id|bus_writeq
 c_func
 (paren
 l_int|0
@@ -723,7 +723,7 @@ id|A_ADDR_TRAP_UP_2
 )paren
 )paren
 suffix:semicolon
-id|__raw_writeq
+id|bus_writeq
 c_func
 (paren
 l_int|0
@@ -735,7 +735,7 @@ id|A_ADDR_TRAP_UP_3
 )paren
 )paren
 suffix:semicolon
-id|__raw_writeq
+id|bus_writeq
 c_func
 (paren
 l_int|0
@@ -747,7 +747,7 @@ id|A_ADDR_TRAP_DOWN_0
 )paren
 )paren
 suffix:semicolon
-id|__raw_writeq
+id|bus_writeq
 c_func
 (paren
 l_int|0
@@ -759,7 +759,7 @@ id|A_ADDR_TRAP_DOWN_1
 )paren
 )paren
 suffix:semicolon
-id|__raw_writeq
+id|bus_writeq
 c_func
 (paren
 l_int|0
@@ -771,7 +771,7 @@ id|A_ADDR_TRAP_DOWN_2
 )paren
 )paren
 suffix:semicolon
-id|__raw_writeq
+id|bus_writeq
 c_func
 (paren
 l_int|0
@@ -783,7 +783,7 @@ id|A_ADDR_TRAP_DOWN_3
 )paren
 )paren
 suffix:semicolon
-id|__raw_writeq
+id|bus_writeq
 c_func
 (paren
 l_int|0
@@ -795,7 +795,7 @@ id|A_ADDR_TRAP_CFG_0
 )paren
 )paren
 suffix:semicolon
-id|__raw_writeq
+id|bus_writeq
 c_func
 (paren
 l_int|0
@@ -807,7 +807,7 @@ id|A_ADDR_TRAP_CFG_1
 )paren
 )paren
 suffix:semicolon
-id|__raw_writeq
+id|bus_writeq
 c_func
 (paren
 l_int|0
@@ -819,7 +819,7 @@ id|A_ADDR_TRAP_CFG_2
 )paren
 )paren
 suffix:semicolon
-id|__raw_writeq
+id|bus_writeq
 c_func
 (paren
 l_int|0
@@ -833,7 +833,7 @@ id|A_ADDR_TRAP_CFG_3
 suffix:semicolon
 multiline_comment|/* Initialize Trace Event 0-7 */
 singleline_comment|//&t;&t;&t;&t;when interrupt
-id|__raw_writeq
+id|bus_writeq
 c_func
 (paren
 id|M_SCD_TREVT_INTERRUPT
@@ -845,7 +845,7 @@ id|A_SCD_TRACE_EVENT_0
 )paren
 )paren
 suffix:semicolon
-id|__raw_writeq
+id|bus_writeq
 c_func
 (paren
 l_int|0
@@ -857,7 +857,7 @@ id|A_SCD_TRACE_EVENT_1
 )paren
 )paren
 suffix:semicolon
-id|__raw_writeq
+id|bus_writeq
 c_func
 (paren
 l_int|0
@@ -869,7 +869,7 @@ id|A_SCD_TRACE_EVENT_2
 )paren
 )paren
 suffix:semicolon
-id|__raw_writeq
+id|bus_writeq
 c_func
 (paren
 l_int|0
@@ -881,7 +881,7 @@ id|A_SCD_TRACE_EVENT_3
 )paren
 )paren
 suffix:semicolon
-id|__raw_writeq
+id|bus_writeq
 c_func
 (paren
 l_int|0
@@ -893,7 +893,7 @@ id|A_SCD_TRACE_EVENT_4
 )paren
 )paren
 suffix:semicolon
-id|__raw_writeq
+id|bus_writeq
 c_func
 (paren
 l_int|0
@@ -905,7 +905,7 @@ id|A_SCD_TRACE_EVENT_5
 )paren
 )paren
 suffix:semicolon
-id|__raw_writeq
+id|bus_writeq
 c_func
 (paren
 l_int|0
@@ -917,7 +917,7 @@ id|A_SCD_TRACE_EVENT_6
 )paren
 )paren
 suffix:semicolon
-id|__raw_writeq
+id|bus_writeq
 c_func
 (paren
 l_int|0
@@ -931,7 +931,7 @@ id|A_SCD_TRACE_EVENT_7
 suffix:semicolon
 multiline_comment|/* Initialize Trace Sequence 0-7 */
 singleline_comment|//&t;&t;&t;&t;     Start on event 0 (interrupt)
-id|__raw_writeq
+id|bus_writeq
 c_func
 (paren
 id|V_SCD_TRSEQ_FUNC_START
@@ -946,7 +946,7 @@ id|A_SCD_TRACE_SEQUENCE_0
 )paren
 suffix:semicolon
 singleline_comment|//&t;&t;&t;  dsamp when d used | asamp when a used
-id|__raw_writeq
+id|bus_writeq
 c_func
 (paren
 id|M_SCD_TRSEQ_ASAMPLE
@@ -962,7 +962,7 @@ id|A_SCD_TRACE_SEQUENCE_1
 )paren
 )paren
 suffix:semicolon
-id|__raw_writeq
+id|bus_writeq
 c_func
 (paren
 l_int|0
@@ -974,7 +974,7 @@ id|A_SCD_TRACE_SEQUENCE_2
 )paren
 )paren
 suffix:semicolon
-id|__raw_writeq
+id|bus_writeq
 c_func
 (paren
 l_int|0
@@ -986,7 +986,7 @@ id|A_SCD_TRACE_SEQUENCE_3
 )paren
 )paren
 suffix:semicolon
-id|__raw_writeq
+id|bus_writeq
 c_func
 (paren
 l_int|0
@@ -998,7 +998,7 @@ id|A_SCD_TRACE_SEQUENCE_4
 )paren
 )paren
 suffix:semicolon
-id|__raw_writeq
+id|bus_writeq
 c_func
 (paren
 l_int|0
@@ -1010,7 +1010,7 @@ id|A_SCD_TRACE_SEQUENCE_5
 )paren
 )paren
 suffix:semicolon
-id|__raw_writeq
+id|bus_writeq
 c_func
 (paren
 l_int|0
@@ -1022,7 +1022,7 @@ id|A_SCD_TRACE_SEQUENCE_6
 )paren
 )paren
 suffix:semicolon
-id|__raw_writeq
+id|bus_writeq
 c_func
 (paren
 l_int|0
@@ -1035,7 +1035,7 @@ id|A_SCD_TRACE_SEQUENCE_7
 )paren
 suffix:semicolon
 multiline_comment|/* Now indicate the PERF_CNT interrupt as a trace-relevant interrupt */
-id|__raw_writeq
+id|bus_writeq
 c_func
 (paren
 (paren

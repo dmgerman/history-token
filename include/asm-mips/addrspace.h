@@ -132,7 +132,7 @@ DECL|macro|XKPHYS_TO_PHYS
 mdefine_line|#define XKPHYS_TO_PHYS(p)&t;&t;((p) &amp; TO_PHYS_MASK)
 DECL|macro|PHYS_TO_XKPHYS
 mdefine_line|#define PHYS_TO_XKPHYS(cm,a)&t;&t;(0x8000000000000000 | ((cm)&lt;&lt;59) | (a))
-macro_line|#if defined (CONFIG_CPU_R4300)&t;&t;&t;&t;&t;&t;&bslash;&n;    || defined (CONFIG_CPU_R4X00)&t;&t;&t;&t;&t;&bslash;&n;    || defined (CONFIG_CPU_R5000)&t;&t;&t;&t;&t;&bslash;&n;    || defined (CONFIG_CPU_NEVADA)&t;&t;&t;&t;&t;&bslash;&n;    || defined (CONFIG_CPU_MIPS64)
+macro_line|#if defined (CONFIG_CPU_R4300)&t;&t;&t;&t;&t;&t;&bslash;&n;    || defined (CONFIG_CPU_R4X00)&t;&t;&t;&t;&t;&bslash;&n;    || defined (CONFIG_CPU_R5000)&t;&t;&t;&t;&t;&bslash;&n;    || defined (CONFIG_CPU_NEVADA)&t;&t;&t;&t;&t;&bslash;&n;    || defined (CONFIG_CPU_TX49XX)&t;&t;&t;&t;&t;&bslash;&n;    || defined (CONFIG_CPU_MIPS64)
 DECL|macro|KUSIZE
 mdefine_line|#define&t;KUSIZE&t;&t;&t;0x0000010000000000&t;/* 2^^40 */
 DECL|macro|KUSIZE_64

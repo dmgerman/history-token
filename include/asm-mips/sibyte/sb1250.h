@@ -105,6 +105,6 @@ DECL|macro|AT_spin
 mdefine_line|#define AT_spin &bslash;&n;&t;__asm__ __volatile__ (&t;&t;&bslash;&n;&t;&t;&quot;.set noat&bslash;n&quot;&t;&t;&bslash;&n;&t;&t;&quot;li $at, 0&bslash;n&quot;&t;&t;&bslash;&n;&t;&t;&quot;1: beqz $at, 1b&bslash;n&quot;&t;&bslash;&n;&t;&t;&quot;.set at&bslash;n&quot;&t;&t;&bslash;&n;&t;&t;)
 macro_line|#endif
 DECL|macro|IOADDR
-mdefine_line|#define IOADDR(a) (UNCAC_BASE + (a))
+mdefine_line|#define IOADDR(a) (IO_BASE + (a))
 macro_line|#endif
 eof

@@ -36,7 +36,7 @@ comma
 dot
 id|num_devices
 op_assign
-l_int|9
+l_int|10
 comma
 dot
 id|device_list
@@ -65,6 +65,8 @@ comma
 id|MPC85xx_DMA3
 comma
 id|MPC85xx_PERFMON
+comma
+id|MPC85xx_DUART
 comma
 )brace
 comma
@@ -162,7 +164,7 @@ comma
 dot
 id|num_devices
 op_assign
-l_int|12
+l_int|13
 comma
 dot
 id|device_list
@@ -189,6 +191,8 @@ comma
 id|MPC85xx_DMA3
 comma
 id|MPC85xx_PERFMON
+comma
+id|MPC85xx_DUART
 comma
 id|MPC85xx_CPM_SPI
 comma
@@ -221,7 +225,7 @@ comma
 dot
 id|num_devices
 op_assign
-l_int|13
+l_int|14
 comma
 dot
 id|device_list
@@ -248,6 +252,8 @@ comma
 id|MPC85xx_DMA3
 comma
 id|MPC85xx_PERFMON
+comma
+id|MPC85xx_DUART
 comma
 id|MPC85xx_SEC2
 comma
@@ -282,7 +288,7 @@ comma
 dot
 id|num_devices
 op_assign
-l_int|19
+l_int|20
 comma
 dot
 id|device_list
@@ -309,6 +315,8 @@ comma
 id|MPC85xx_DMA3
 comma
 id|MPC85xx_PERFMON
+comma
+id|MPC85xx_DUART
 comma
 id|MPC85xx_CPM_SPI
 comma
@@ -355,7 +363,7 @@ comma
 dot
 id|num_devices
 op_assign
-l_int|20
+l_int|21
 comma
 dot
 id|device_list
@@ -382,6 +390,8 @@ comma
 id|MPC85xx_DMA3
 comma
 id|MPC85xx_PERFMON
+comma
+id|MPC85xx_DUART
 comma
 id|MPC85xx_SEC2
 comma

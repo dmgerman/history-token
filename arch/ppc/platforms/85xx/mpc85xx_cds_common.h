@@ -73,7 +73,5 @@ DECL|macro|MPC85XX_PCI2_MEM_OFFSET
 mdefine_line|#define MPC85XX_PCI2_MEM_OFFSET      0x00000000
 DECL|macro|MPC85XX_PCI2_IO_SIZE
 mdefine_line|#define MPC85XX_PCI2_IO_SIZE         0x01000000
-DECL|macro|SERIAL_PORT_DFNS
-mdefine_line|#define SERIAL_PORT_DFNS&t;&t;&bslash;&n;&t;       STD_UART_OP(0)&t;&t;&bslash;&n;&t;       STD_UART_OP(1)
 macro_line|#endif /* __MACH_MPC85XX_CDS_H__ */
 eof

@@ -1209,9 +1209,10 @@ c_func
 id|tsk
 )paren
 suffix:semicolon
-id|tsk-&gt;used_math
-op_assign
-l_int|0
+id|clear_used_math
+c_func
+(paren
+)paren
 suffix:semicolon
 )brace
 DECL|function|release_thread

@@ -83,6 +83,7 @@ id|ft_t_info
 )paren
 (brace
 id|printk
+c_func
 (paren
 id|KERN_INFO
 l_string|&quot;(c) 1993-1996 Bas Laarhoven (bas@vimec.nl)&bslash;n&quot;
@@ -92,6 +93,8 @@ id|KERN_INFO
 l_string|&quot;(c) 1996-1997 Claus-Justus Heine (claus@momo.math.rwth-aachen.de)&bslash;n&quot;
 id|KERN_INFO
 l_string|&quot;QIC-117 driver for QIC-40/80/3010/3020 floppy tape drives&bslash;n&quot;
+)paren
+suffix:semicolon
 )brace
 macro_line|#else /* !MODULE */
 multiline_comment|/* print a short no-nonsense boot message */

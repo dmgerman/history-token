@@ -1,8 +1,25 @@
-multiline_comment|/*&n; * AMD Alchemy Semi PB1550 Referrence Board&n; * Board Registers defines.&n; *&n; * Copyright 2004 Embedded Edge LLC.&n; *&n; * ########################################################################&n; *&n; *  This program is free software; you can distribute it and/or modify it&n; *  under the terms of the GNU General Public License (Version 2) as&n; *  published by the Free Software Foundation.&n; *&n; *  This program is distributed in the hope it will be useful, but WITHOUT&n; *  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or&n; *  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License&n; *  for more details.&n; *&n; *  You should have received a copy of the GNU General Public License along&n; *  with this program; if not, write to the Free Software Foundation, Inc.,&n; *  59 Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * ########################################################################&n; *&n; *&n; */
+multiline_comment|/*&n; * AMD Alchemy Semi PB1550 Referrence Board&n; * Board Registers defines.&n; *&n; * Copyright 2004 Embedded Edge LLC.&n; * Copyright 2005 Ralf Baechle (ralf@linux-mips.org)&n; *&n; * ########################################################################&n; *&n; *  This program is free software; you can distribute it and/or modify it&n; *  under the terms of the GNU General Public License (Version 2) as&n; *  published by the Free Software Foundation.&n; *&n; *  This program is distributed in the hope it will be useful, but WITHOUT&n; *  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or&n; *  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License&n; *  for more details.&n; *&n; *  You should have received a copy of the GNU General Public License along&n; *  with this program; if not, write to the Free Software Foundation, Inc.,&n; *  59 Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * ########################################################################&n; *&n; *&n; */
 macro_line|#ifndef __ASM_PB1550_H
 DECL|macro|__ASM_PB1550_H
 mdefine_line|#define __ASM_PB1550_H
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
+DECL|macro|DBDMA_AC97_TX_CHAN
+mdefine_line|#define DBDMA_AC97_TX_CHAN DSCR_CMD0_PSC1_TX
+DECL|macro|DBDMA_AC97_RX_CHAN
+mdefine_line|#define DBDMA_AC97_RX_CHAN DSCR_CMD0_PSC1_RX
+DECL|macro|DBDMA_I2S_TX_CHAN
+mdefine_line|#define DBDMA_I2S_TX_CHAN DSCR_CMD0_PSC3_TX
+DECL|macro|DBDMA_I2S_RX_CHAN
+mdefine_line|#define DBDMA_I2S_RX_CHAN DSCR_CMD0_PSC3_RX
+DECL|macro|SPI_PSC_BASE
+mdefine_line|#define SPI_PSC_BASE        PSC0_BASE_ADDR
+DECL|macro|AC97_PSC_BASE
+mdefine_line|#define AC97_PSC_BASE       PSC1_BASE_ADDR
+DECL|macro|SMBUS_PSC_BASE
+mdefine_line|#define SMBUS_PSC_BASE      PSC2_BASE_ADDR
+DECL|macro|I2S_PSC_BASE
+mdefine_line|#define I2S_PSC_BASE        PSC3_BASE_ADDR
 DECL|macro|BCSR_PHYS_ADDR
 mdefine_line|#define BCSR_PHYS_ADDR 0xAF000000
 r_typedef

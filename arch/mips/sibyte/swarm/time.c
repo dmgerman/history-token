@@ -90,7 +90,7 @@ id|addr
 r_while
 c_loop
 (paren
-id|__raw_readq
+id|bus_readq
 c_func
 (paren
 id|SMB_CSR
@@ -103,7 +103,7 @@ op_amp
 id|M_SMB_BUSY
 )paren
 suffix:semicolon
-id|__raw_writeq
+id|bus_writeq
 c_func
 (paren
 (paren
@@ -121,7 +121,7 @@ id|R_SMB_CMD
 )paren
 )paren
 suffix:semicolon
-id|__raw_writeq
+id|bus_writeq
 c_func
 (paren
 (paren
@@ -137,7 +137,7 @@ id|R_SMB_DATA
 )paren
 )paren
 suffix:semicolon
-id|__raw_writeq
+id|bus_writeq
 c_func
 (paren
 (paren
@@ -160,7 +160,7 @@ suffix:semicolon
 r_while
 c_loop
 (paren
-id|__raw_readq
+id|bus_readq
 c_func
 (paren
 id|SMB_CSR
@@ -173,7 +173,7 @@ op_amp
 id|M_SMB_BUSY
 )paren
 suffix:semicolon
-id|__raw_writeq
+id|bus_writeq
 c_func
 (paren
 (paren
@@ -196,7 +196,7 @@ suffix:semicolon
 r_while
 c_loop
 (paren
-id|__raw_readq
+id|bus_readq
 c_func
 (paren
 id|SMB_CSR
@@ -212,7 +212,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|__raw_readq
+id|bus_readq
 c_func
 (paren
 id|SMB_CSR
@@ -226,7 +226,7 @@ id|M_SMB_ERROR
 )paren
 (brace
 multiline_comment|/* Clear error bit by writing a 1 */
-id|__raw_writeq
+id|bus_writeq
 c_func
 (paren
 id|M_SMB_ERROR
@@ -245,7 +245,7 @@ suffix:semicolon
 )brace
 r_return
 (paren
-id|__raw_readq
+id|bus_readq
 c_func
 (paren
 id|SMB_CSR
@@ -275,7 +275,7 @@ id|b
 r_while
 c_loop
 (paren
-id|__raw_readq
+id|bus_readq
 c_func
 (paren
 id|SMB_CSR
@@ -288,7 +288,7 @@ op_amp
 id|M_SMB_BUSY
 )paren
 suffix:semicolon
-id|__raw_writeq
+id|bus_writeq
 c_func
 (paren
 id|addr
@@ -300,7 +300,7 @@ id|R_SMB_CMD
 )paren
 )paren
 suffix:semicolon
-id|__raw_writeq
+id|bus_writeq
 c_func
 (paren
 (paren
@@ -326,7 +326,7 @@ id|R_SMB_DATA
 )paren
 )paren
 suffix:semicolon
-id|__raw_writeq
+id|bus_writeq
 c_func
 (paren
 id|V_SMB_ADDR
@@ -347,7 +347,7 @@ suffix:semicolon
 r_while
 c_loop
 (paren
-id|__raw_readq
+id|bus_readq
 c_func
 (paren
 id|SMB_CSR
@@ -363,7 +363,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|__raw_readq
+id|bus_readq
 c_func
 (paren
 id|SMB_CSR
@@ -377,7 +377,7 @@ id|M_SMB_ERROR
 )paren
 (brace
 multiline_comment|/* Clear error bit by writing a 1 */
-id|__raw_writeq
+id|bus_writeq
 c_func
 (paren
 id|M_SMB_ERROR
@@ -813,7 +813,7 @@ c_func
 suffix:semicolon
 multiline_comment|/* Establish communication with the Xicor 1241 RTC */
 multiline_comment|/* XXXKW how do I share the SMBus with the I2C subsystem? */
-id|__raw_writeq
+id|bus_writeq
 c_func
 (paren
 id|K_SMB_FREQ_400KHZ
@@ -825,7 +825,7 @@ id|R_SMB_FREQ
 )paren
 )paren
 suffix:semicolon
-id|__raw_writeq
+id|bus_writeq
 c_func
 (paren
 l_int|0

@@ -106,12 +106,12 @@ comma
 id|last_match20
 suffix:semicolon
 macro_line|#endif
-DECL|variable|time_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|time_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|function|ack_r4ktimer
 r_static
@@ -930,7 +930,7 @@ multiline_comment|/* This is for machines which generate the exact clock. */
 DECL|macro|USECS_PER_JIFFY
 mdefine_line|#define USECS_PER_JIFFY (1000000/HZ)
 DECL|macro|USECS_PER_JIFFY_FRAC
-mdefine_line|#define USECS_PER_JIFFY_FRAC (0x100000000*1000000/HZ&amp;0xffffffff)
+mdefine_line|#define USECS_PER_JIFFY_FRAC (0x100000000LL*1000000/HZ&amp;0xffffffff)
 r_static
 r_int
 r_int
@@ -1356,12 +1356,6 @@ c_func
 id|r4k_cur
 )paren
 suffix:semicolon
-multiline_comment|/* no RTC on the pb1000 */
-id|xtime.tv_sec
-op_assign
-l_int|0
-suffix:semicolon
-singleline_comment|//xtime.tv_usec = 0;
 macro_line|#ifdef CONFIG_PM
 multiline_comment|/*&n;&t; * setup counter 0, since it keeps ticking after a&n;&t; * &squot;wait&squot; instruction has been executed. The CP0 timer and&n;&t; * counter 1 do NOT continue running after &squot;wait&squot;&n;&t; *&n;&t; * It&squot;s too early to call request_irq() here, so we handle&n;&t; * counter 0 interrupt as a special irq and it doesn&squot;t show&n;&t; * up under /proc/interrupts.&n;&t; *&n;&t; * Check to ensure we really have a 32KHz oscillator before&n;&t; * we do this.&n;&t; */
 r_if

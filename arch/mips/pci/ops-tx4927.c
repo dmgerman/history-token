@@ -4,8 +4,8 @@ macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/addrspace.h&gt;
+macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#include &lt;asm/tx4927/tx4927_pci.h&gt;
-macro_line|#include &lt;asm/debug.h&gt;
 multiline_comment|/* initialize in setup */
 DECL|variable|pci_io_resource
 r_struct
@@ -322,44 +322,6 @@ c_func
 id|devfn
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|size
-op_eq
-l_int|2
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|where
-op_amp
-l_int|1
-)paren
-r_return
-id|PCIBIOS_BAD_REGISTER_NUMBER
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-id|size
-op_eq
-l_int|4
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|where
-op_amp
-l_int|3
-)paren
-r_return
-id|PCIBIOS_BAD_REGISTER_NUMBER
-suffix:semicolon
-)brace
 multiline_comment|/* check if the bus is top-level */
 r_if
 c_cond
@@ -428,6 +390,7 @@ id|tx4927_pcicptr
 op_member_access_from_pointer
 id|g2pcfgdata
 op_or
+macro_line|#ifdef __LITTLE_ENDIAN
 (paren
 id|where
 op_amp
@@ -435,6 +398,19 @@ l_int|3
 )paren
 )paren
 suffix:semicolon
+macro_line|#else
+(paren
+(paren
+id|where
+op_amp
+l_int|0x3
+)paren
+op_xor
+l_int|0x3
+)paren
+)paren
+suffix:semicolon
+macro_line|#endif
 r_break
 suffix:semicolon
 r_case
@@ -458,6 +434,7 @@ id|tx4927_pcicptr
 op_member_access_from_pointer
 id|g2pcfgdata
 op_or
+macro_line|#ifdef __LITTLE_ENDIAN
 (paren
 id|where
 op_amp
@@ -465,6 +442,19 @@ l_int|3
 )paren
 )paren
 suffix:semicolon
+macro_line|#else
+(paren
+(paren
+id|where
+op_amp
+l_int|0x3
+)paren
+op_xor
+l_int|0x2
+)paren
+)paren
+suffix:semicolon
+macro_line|#endif
 r_break
 suffix:semicolon
 r_case
@@ -556,44 +546,6 @@ c_func
 id|devfn
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|size
-op_eq
-l_int|1
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|where
-op_amp
-l_int|1
-)paren
-r_return
-id|PCIBIOS_BAD_REGISTER_NUMBER
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-id|size
-op_eq
-l_int|4
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|where
-op_amp
-l_int|3
-)paren
-r_return
-id|PCIBIOS_BAD_REGISTER_NUMBER
-suffix:semicolon
-)brace
 multiline_comment|/* check if the bus is top-level */
 r_if
 c_cond
@@ -659,6 +611,7 @@ id|tx4927_pcicptr
 op_member_access_from_pointer
 id|g2pcfgdata
 op_or
+macro_line|#ifdef __LITTLE_ENDIAN
 (paren
 id|where
 op_amp
@@ -668,6 +621,21 @@ l_int|3
 op_assign
 id|val
 suffix:semicolon
+macro_line|#else
+(paren
+(paren
+id|where
+op_amp
+l_int|0x3
+)paren
+op_xor
+l_int|0x3
+)paren
+)paren
+op_assign
+id|val
+suffix:semicolon
+macro_line|#endif
 r_break
 suffix:semicolon
 r_case
@@ -688,6 +656,7 @@ id|tx4927_pcicptr
 op_member_access_from_pointer
 id|g2pcfgdata
 op_or
+macro_line|#ifdef __LITTLE_ENDIAN
 (paren
 id|where
 op_amp
@@ -697,6 +666,21 @@ l_int|3
 op_assign
 id|val
 suffix:semicolon
+macro_line|#else
+(paren
+(paren
+id|where
+op_amp
+l_int|0x3
+)paren
+op_xor
+l_int|0x2
+)paren
+)paren
+op_assign
+id|val
+suffix:semicolon
+macro_line|#endif
 r_break
 suffix:semicolon
 r_case

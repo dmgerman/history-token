@@ -1,5 +1,4 @@
 multiline_comment|/*&n; * Platform device support for Au1x00 SoCs.&n; *&n; * Copyright 2004, Matt Porter &lt;mporter@kernel.crashing.org&gt;&n; *&n; * This file is licensed under the terms of the GNU General Public&n; * License version 2.  This program is licensed &quot;as is&quot; without any&n; * warranty of any kind, whether express or implied.&n; */
-macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/init.h&gt;

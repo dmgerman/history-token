@@ -261,7 +261,7 @@ id|dma
 r_if
 c_cond
 (paren
-id|rq-&gt;sector
+id|block
 op_plus
 id|rq-&gt;nr_sectors
 OG
@@ -1114,6 +1114,7 @@ comma
 id|IDE_COMMAND_REG
 )paren
 suffix:semicolon
+r_return
 id|pre_task_out_intr
 c_func
 (paren
@@ -1121,9 +1122,6 @@ id|drive
 comma
 id|rq
 )paren
-suffix:semicolon
-r_return
-id|ide_started
 suffix:semicolon
 )brace
 )brace

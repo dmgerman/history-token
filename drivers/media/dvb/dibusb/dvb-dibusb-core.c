@@ -1738,7 +1738,11 @@ id|j
 op_member_access_from_pointer
 id|idVendor
 op_eq
+id|le16_to_cpu
+c_func
+(paren
 id|udev-&gt;descriptor.idVendor
+)paren
 op_logical_and
 id|dibusb_devices
 (braket
@@ -1752,7 +1756,11 @@ id|j
 op_member_access_from_pointer
 id|idProduct
 op_eq
+id|le16_to_cpu
+c_func
+(paren
 id|udev-&gt;descriptor.idProduct
+)paren
 )paren
 (brace
 op_star
@@ -1841,7 +1849,11 @@ id|j
 op_member_access_from_pointer
 id|idVendor
 op_eq
+id|le16_to_cpu
+c_func
+(paren
 id|udev-&gt;descriptor.idVendor
+)paren
 op_logical_and
 id|dibusb_devices
 (braket
@@ -1855,7 +1867,11 @@ id|j
 op_member_access_from_pointer
 id|idProduct
 op_eq
+id|le16_to_cpu
+c_func
+(paren
 id|udev-&gt;descriptor.idProduct
+)paren
 )paren
 (brace
 op_star
@@ -1956,7 +1972,11 @@ c_func
 l_string|&quot;something went very wrong, &quot;
 l_string|&quot;unknown product ID: %.4x&quot;
 comma
+id|le16_to_cpu
+c_func
+(paren
 id|udev-&gt;descriptor.idProduct
+)paren
 )paren
 suffix:semicolon
 r_return

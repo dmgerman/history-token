@@ -20274,11 +20274,11 @@ DECL|macro|TEA_ENC_TEST_VECTORS
 mdefine_line|#define TEA_ENC_TEST_VECTORS&t;4
 DECL|macro|TEA_DEC_TEST_VECTORS
 mdefine_line|#define TEA_DEC_TEST_VECTORS&t;4
-DECL|variable|xtea_enc_tv_template
+DECL|variable|tea_enc_tv_template
 r_static
 r_struct
 id|cipher_testvec
-id|xtea_enc_tv_template
+id|tea_enc_tv_template
 (braket
 )braket
 op_assign
@@ -21275,11 +21275,11 @@ DECL|macro|XTEA_ENC_TEST_VECTORS
 mdefine_line|#define XTEA_ENC_TEST_VECTORS&t;4
 DECL|macro|XTEA_DEC_TEST_VECTORS
 mdefine_line|#define XTEA_DEC_TEST_VECTORS&t;4
-DECL|variable|tea_enc_tv_template
+DECL|variable|xtea_enc_tv_template
 r_static
 r_struct
 id|cipher_testvec
-id|tea_enc_tv_template
+id|xtea_enc_tv_template
 (braket
 )braket
 op_assign

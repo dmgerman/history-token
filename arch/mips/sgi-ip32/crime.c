@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 2001, 2003 Keith M Wesolowski&n; */
+multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 2001, 2003 Keith M Wesolowski&n; * Copyright (C) 2005 Ilya A. Volynets &lt;ilya@total-knowledge.com&gt;&n; */
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -47,6 +47,22 @@ r_sizeof
 (paren
 r_int
 r_int
+)paren
+suffix:semicolon
+id|set_io_port_base
+c_func
+(paren
+(paren
+r_int
+r_int
+)paren
+id|ioremap
+c_func
+(paren
+id|MACEPCI_LOW_IO
+comma
+l_int|0x2000000
+)paren
 )paren
 suffix:semicolon
 id|crime

@@ -631,14 +631,6 @@ c_func
 id|vp
 )paren
 suffix:semicolon
-id|inode
-op_assign
-id|LINVFS_GET_IP
-c_func
-(paren
-id|vp
-)paren
-suffix:semicolon
 id|inode-&gt;i_mode
 op_assign
 id|VTTOIF
@@ -1288,7 +1280,7 @@ suffix:semicolon
 )brace
 macro_line|#ifdef&t;XFS_VNODE_TRACE
 DECL|macro|KTRACE_ENTER
-mdefine_line|#define KTRACE_ENTER(vp, vk, s, line, ra)&t;&t;&t;&bslash;&n;&t;ktrace_enter(&t;(vp)-&gt;v_trace,&t;&t;&t;&t;&bslash;&n;/*  0 */&t;&t;(void *)(__psint_t)(vk),&t;&t;&bslash;&n;/*  1 */&t;&t;(void *)(s),&t;&t;&t;&t;&bslash;&n;/*  2 */&t;&t;(void *)(__psint_t) line,&t;&t;&bslash;&n;/*  3 */&t;&t;(void *)(vn_count(vp)), &bslash;&n;/*  4 */&t;&t;(void *)(ra),&t;&t;&t;&t;&bslash;&n;/*  5 */&t;&t;(void *)(__psunsigned_t)(vp)-&gt;v_flag,&t;&bslash;&n;/*  6 */&t;&t;(void *)(__psint_t)smp_processor_id(),&t;&bslash;&n;/*  7 */&t;&t;(void *)(__psint_t)(current-&gt;pid),&t;&bslash;&n;/*  8 */&t;&t;(void *)__return_address,&t;&t;&bslash;&n;/*  9 */&t;&t;0, 0, 0, 0, 0, 0, 0)
+mdefine_line|#define KTRACE_ENTER(vp, vk, s, line, ra)&t;&t;&t;&bslash;&n;&t;ktrace_enter(&t;(vp)-&gt;v_trace,&t;&t;&t;&t;&bslash;&n;/*  0 */&t;&t;(void *)(__psint_t)(vk),&t;&t;&bslash;&n;/*  1 */&t;&t;(void *)(s),&t;&t;&t;&t;&bslash;&n;/*  2 */&t;&t;(void *)(__psint_t) line,&t;&t;&bslash;&n;/*  3 */&t;&t;(void *)(vn_count(vp)), &bslash;&n;/*  4 */&t;&t;(void *)(ra),&t;&t;&t;&t;&bslash;&n;/*  5 */&t;&t;(void *)(__psunsigned_t)(vp)-&gt;v_flag,&t;&bslash;&n;/*  6 */&t;&t;(void *)(__psint_t)current_cpu(),&t;&bslash;&n;/*  7 */&t;&t;(void *)(__psint_t)current_pid(),&t;&bslash;&n;/*  8 */&t;&t;(void *)__return_address,&t;&t;&bslash;&n;/*  9 */&t;&t;0, 0, 0, 0, 0, 0, 0)
 multiline_comment|/*&n; * Vnode tracing code.&n; */
 r_void
 DECL|function|vn_trace_entry

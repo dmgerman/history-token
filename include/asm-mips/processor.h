@@ -49,9 +49,6 @@ multiline_comment|/*&n; * This decides where the kernel will search for a free c
 DECL|macro|TASK_UNMAPPED_BASE
 mdefine_line|#define TASK_UNMAPPED_BASE&t;((current-&gt;thread.mflags &amp; MF_32BIT_ADDR) ? &bslash;&n;&t;PAGE_ALIGN(TASK_SIZE32 / 3) : PAGE_ALIGN(TASK_SIZE / 3))
 macro_line|#endif
-multiline_comment|/*&n; * Size of io_bitmap in longwords.&n; */
-DECL|macro|IO_BITMAP_SIZE
-mdefine_line|#define IO_BITMAP_SIZE&t;2048
 DECL|macro|NUM_FPU_REGS
 mdefine_line|#define NUM_FPU_REGS&t;32
 DECL|typedef|fpureg_t

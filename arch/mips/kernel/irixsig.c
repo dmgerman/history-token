@@ -602,7 +602,12 @@ suffix:semicolon
 id|__put_user
 c_func
 (paren
-id|current-&gt;used_math
+op_logical_neg
+op_logical_neg
+id|used_math
+c_func
+(paren
+)paren
 comma
 op_amp
 id|ctx-&gt;usedfp
@@ -3263,7 +3268,7 @@ r_goto
 id|end_waitsys
 suffix:semicolon
 r_case
-id|TASK_ZOMBIE
+id|EXIT_ZOMBIE
 suffix:colon
 id|current-&gt;signal-&gt;cutime
 op_add_assign
@@ -3842,7 +3847,10 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|current-&gt;used_math
+id|used_math
+c_func
+(paren
+)paren
 )paren
 (brace
 id|flags

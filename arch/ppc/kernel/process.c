@@ -1208,58 +1208,6 @@ comma
 id|current-&gt;thread.last_syscall
 )paren
 suffix:semicolon
-macro_line|#if defined(CONFIG_4xx) &amp;&amp; defined(DCRN_PLB0_BEAR)
-id|printk
-c_func
-(paren
-l_string|&quot;&bslash;nPLB0: bear= 0x%8.8x acr=   0x%8.8x besr=  0x%8.8x&bslash;n&quot;
-comma
-id|mfdcr
-c_func
-(paren
-id|DCRN_PLB0_BEAR
-)paren
-comma
-id|mfdcr
-c_func
-(paren
-id|DCRN_PLB0_ACR
-)paren
-comma
-id|mfdcr
-c_func
-(paren
-id|DCRN_PLB0_BESR
-)paren
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#if defined(CONFIG_4xx) &amp;&amp; defined(DCRN_POB0_BEAR)
-id|printk
-c_func
-(paren
-l_string|&quot;PLB0 to OPB: bear= 0x%8.8x besr0= 0x%8.8x besr1= 0x%8.8x&bslash;n&quot;
-comma
-id|mfdcr
-c_func
-(paren
-id|DCRN_POB0_BEAR
-)paren
-comma
-id|mfdcr
-c_func
-(paren
-id|DCRN_POB0_BESR0
-)paren
-comma
-id|mfdcr
-c_func
-(paren
-id|DCRN_POB0_BESR1
-)paren
-)paren
-suffix:semicolon
-macro_line|#endif
 macro_line|#ifdef CONFIG_SMP
 id|printk
 c_func

@@ -3712,6 +3712,13 @@ op_star
 id|prev
 suffix:semicolon
 macro_line|#ifdef DEBUG
+id|assert_spin_locked
+c_func
+(paren
+op_amp
+id|ehci-&gt;lock
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -3726,16 +3733,6 @@ id|qh-&gt;qh_state
 op_ne
 id|QH_STATE_UNLINK_WAIT
 )paren
-macro_line|#ifdef CONFIG_SMP
-singleline_comment|// this macro lies except on SMP compiles
-op_logical_or
-op_logical_neg
-id|spin_is_locked
-(paren
-op_amp
-id|ehci-&gt;lock
-)paren
-macro_line|#endif
 )paren
 id|BUG
 (paren

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * arch/ppc/platforms/katana.h&n; *&n; * Definitions for Artesyn Katana750i/3750 board.&n; *&n; * Tim Montgomery &lt;timm@artesyncp.com&gt;&n; *&n; * Based on code done by Rabeeh Khoury - rabeeh@galileo.co.il&n; * Based on code done by Mark A. Greer &lt;mgreer@mvista.com&gt;&n; *&n; * This program is free software; you can redistribute  it and/or modify it&n; * under  the terms of  the GNU General  Public License as published by the&n; * Free Software Foundation;  either version 2 of the  License, or (at your&n; * option) any later version.&n; */
+multiline_comment|/*&n; * arch/ppc/platforms/katana.h&n; *&n; * Definitions for Artesyn Katana750i/3750 board.&n; *&n; * Tim Montgomery &lt;timm@artesyncp.com&gt;&n; *&n; * Based on code done by Rabeeh Khoury - rabeeh@galileo.co.il&n; * Based on code done by Mark A. Greer &lt;mgreer@mvista.com&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of the GNU General Public License as published by the&n; * Free Software Foundation; either version 2 of the License, or (at your&n; * option) any later version.&n; */
 multiline_comment|/*&n; * The MV64360 has 2 PCI buses each with 1 window from the CPU bus to&n; * PCI I/O space and 4 windows from the CPU bus to PCI MEM space.&n; * We&squot;ll only use one PCI MEM window on each PCI bus.&n; *&n; * This is the CPU physical memory map (windows must be at least 1MB and start&n; * on a boundary that is a multiple of the window size):&n; *&n; *    0xff800000-0xffffffff      - Boot window&n; *    0xf8400000-0xf85fffff      - Internal SRAM&n; *    0xf8200000-0xf823ffff      - CPLD&n; *    0xf8100000-0xf810ffff      - MV64360 Registers&n; *    0xf8000000-0xf80fffff      - PLCC socket&n; *    0xf0000000-0xf01fffff&t; - Consistent memory pool&n; *    0xe8000000-0xefffffff      - soldered flash&n; *    0xc0000000-0xc0ffffff      - PCI I/O&n; *    0x80000000-0xbfffffff      - PCI MEM&n; */
 macro_line|#ifndef __PPC_PLATFORMS_KATANA_H
 DECL|macro|__PPC_PLATFORMS_KATANA_H
@@ -115,6 +115,10 @@ DECL|macro|KATANA_CPLD_RST_CMD_HR
 mdefine_line|#define KATANA_CPLD_RST_CMD_HR&t;&t;&t;0x01
 DECL|macro|KATANA_CPLD_BD_CFG_0_SYSCLK_MASK
 mdefine_line|#define KATANA_CPLD_BD_CFG_0_SYSCLK_MASK&t;0xc0
+DECL|macro|KATANA_CPLD_BD_CFG_0_SYSCLK_200
+mdefine_line|#define KATANA_CPLD_BD_CFG_0_SYSCLK_200&t;&t;0x00
+DECL|macro|KATANA_CPLD_BD_CFG_0_SYSCLK_166
+mdefine_line|#define KATANA_CPLD_BD_CFG_0_SYSCLK_166&t;&t;0x80
 DECL|macro|KATANA_CPLD_BD_CFG_0_SYSCLK_133
 mdefine_line|#define KATANA_CPLD_BD_CFG_0_SYSCLK_133&t;&t;0xc0
 DECL|macro|KATANA_CPLD_BD_CFG_0_SYSCLK_100
@@ -214,9 +218,9 @@ mdefine_line|#define KATANA_PRODUCT_ID_750i&t;&t;&t;0x02
 DECL|macro|KATANA_PRODUCT_ID_752i
 mdefine_line|#define KATANA_PRODUCT_ID_752i&t;&t;&t;0x04
 DECL|macro|KATANA_ETH_TX_QUEUE_SIZE
-mdefine_line|#define KATANA_ETH_TX_QUEUE_SIZE&t;&t;1050
+mdefine_line|#define KATANA_ETH_TX_QUEUE_SIZE&t;&t;800
 DECL|macro|KATANA_ETH_RX_QUEUE_SIZE
-mdefine_line|#define KATANA_ETH_RX_QUEUE_SIZE&t;&t;450
+mdefine_line|#define KATANA_ETH_RX_QUEUE_SIZE&t;&t;400
 DECL|macro|KATANA_ETH_PORT_CONFIG_VALUE
 mdefine_line|#define&t;KATANA_ETH_PORT_CONFIG_VALUE&t;&t;&t;&bslash;&n;&t;ETH_UNICAST_NORMAL_MODE&t;&t;&t;|&t;&bslash;&n;&t;ETH_DEFAULT_RX_QUEUE_0&t;&t;&t;|&t;&bslash;&n;&t;ETH_DEFAULT_RX_ARP_QUEUE_0&t;&t;|&t;&bslash;&n;&t;ETH_RECEIVE_BC_IF_NOT_IP_OR_ARP&t;&t;|&t;&bslash;&n;&t;ETH_RECEIVE_BC_IF_IP&t;&t;&t;|&t;&bslash;&n;&t;ETH_RECEIVE_BC_IF_ARP&t;&t;&t;|&t;&bslash;&n;&t;ETH_CAPTURE_TCP_FRAMES_DIS&t;&t;|&t;&bslash;&n;&t;ETH_CAPTURE_UDP_FRAMES_DIS&t;&t;|&t;&bslash;&n;&t;ETH_DEFAULT_RX_TCP_QUEUE_0&t;&t;|&t;&bslash;&n;&t;ETH_DEFAULT_RX_UDP_QUEUE_0&t;&t;|&t;&bslash;&n;&t;ETH_DEFAULT_RX_BPDU_QUEUE_0
 DECL|macro|KATANA_ETH_PORT_CONFIG_EXTEND_VALUE

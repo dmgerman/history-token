@@ -10127,6 +10127,14 @@ suffix:semicolon
 id|BTFIXUPSET_HALF
 c_func
 (paren
+id|pte_readi
+comma
+id|_SUN4C_PAGE_READ
+)paren
+suffix:semicolon
+id|BTFIXUPSET_HALF
+c_func
+(paren
 id|pte_writei
 comma
 id|_SUN4C_PAGE_WRITE

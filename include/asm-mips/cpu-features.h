@@ -1,7 +1,8 @@
-multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 2003 Ralf Baechle&n; */
+multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 2003, 2004 Ralf Baechle&n; */
 macro_line|#ifndef __ASM_CPU_FEATURES_H
 DECL|macro|__ASM_CPU_FEATURES_H
 mdefine_line|#define __ASM_CPU_FEATURES_H
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/cpu.h&gt;
 macro_line|#include &lt;asm/cpu-info.h&gt;
 macro_line|#include &lt;cpu-feature-overrides.h&gt;
@@ -81,6 +82,16 @@ macro_line|#endif
 macro_line|#ifndef cpu_has_ic_fills_f_dc
 DECL|macro|cpu_has_ic_fills_f_dc
 mdefine_line|#define cpu_has_ic_fills_f_dc&t;(cpu_data[0].icache.flags &amp; MIPS_CACHE_IC_F_DC)
+macro_line|#endif
+multiline_comment|/*&n; * I-Cache snoops remote store.  This only matters on SMP.  Some multiprocessors&n; * such as the R10000 have I-Caches that snoop local stores; the embedded ones&n; * don&squot;t.  For maintaining I-cache coherency this means we need to flush the&n; * D-cache all the way back to whever the I-cache does refills from, so the&n; * I-cache has a chance to see the new data at all.  Then we have to flush the&n; * I-cache also.&n; * Note we may have been rescheduled and may no longer be running on the CPU&n; * that did the store so we can&squot;t optimize this into only doing the flush on&n; * the local CPU.&n; */
+macro_line|#ifndef cpu_icache_snoops_remote_store
+macro_line|#ifdef CONFIG_SMP
+DECL|macro|cpu_icache_snoops_remote_store
+mdefine_line|#define cpu_icache_snoops_remote_store&t;(cpu_data[0].icache.flags &amp; MIPS_IC_SNOOPS_REMOTE)
+macro_line|#else
+DECL|macro|cpu_icache_snoops_remote_store
+mdefine_line|#define cpu_icache_snoops_remote_store&t;1
+macro_line|#endif
 macro_line|#endif
 multiline_comment|/*&n; * Certain CPUs may throw bizarre exceptions if not the whole cacheline&n; * contains valid instructions.  For these we ensure proper alignment of&n; * signal trampolines and pad them to the size of a full cache lines with&n; * nops.  This is also used in structure definitions so can&squot;t be a test macro&n; * like the others.&n; */
 macro_line|#ifndef PLAT_TRAMPOLINE_STUFF_LINE

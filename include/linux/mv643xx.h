@@ -1668,9 +1668,9 @@ DECL|macro|MPSC_ROUTING_REG_BLOCK_SIZE
 mdefine_line|#define MPSC_ROUTING_REG_BLOCK_SIZE&t;0x000c
 DECL|macro|MPSC_SDMA_INTR_REG_BLOCK_SIZE
 mdefine_line|#define MPSC_SDMA_INTR_REG_BLOCK_SIZE&t;0x0084
-DECL|struct|mpsc_shared_pd_dd
+DECL|struct|mpsc_shared_pdata
 r_struct
-id|mpsc_shared_pd_dd
+id|mpsc_shared_pdata
 (brace
 DECL|member|mrr_val
 id|u32
@@ -1709,9 +1709,9 @@ DECL|macro|MPSC_SDMA_REG_BLOCK_SIZE
 mdefine_line|#define MPSC_SDMA_REG_BLOCK_SIZE&t;0x0c18
 DECL|macro|MPSC_BRG_REG_BLOCK_SIZE
 mdefine_line|#define MPSC_BRG_REG_BLOCK_SIZE&t;&t;0x0008
-DECL|struct|mpsc_pd_dd
+DECL|struct|mpsc_pdata
 r_struct
-id|mpsc_pd_dd
+id|mpsc_pdata
 (brace
 DECL|member|mirror_regs
 id|u8

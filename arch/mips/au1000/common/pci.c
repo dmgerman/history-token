@@ -138,7 +138,31 @@ l_int|1
 suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_DMA_NONCOHERENT
-multiline_comment|/* &n;&t; *  Set the NC bit in controller for pre-AC silicon&n;&t; */
+multiline_comment|/* &n;         *  Set the NC bit in controller for Au1500 pre-AC silicon&n;&t; */
+id|u32
+id|prid
+op_assign
+id|read_c0_prid
+c_func
+(paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|prid
+op_amp
+l_int|0xFF000000
+)paren
+op_eq
+l_int|0x01000000
+op_logical_and
+id|prid
+OL
+l_int|0x01030202
+)paren
+(brace
 id|au_writel
 c_func
 (paren
@@ -161,6 +185,7 @@ c_func
 l_string|&quot;Non-coherent PCI accesses enabled&bslash;n&quot;
 )paren
 suffix:semicolon
+)brace
 macro_line|#endif
 id|set_io_port_base
 c_func

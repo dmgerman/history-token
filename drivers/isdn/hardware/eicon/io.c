@@ -1200,19 +1200,6 @@ r_void
 op_star
 id|local_addr
 suffix:semicolon
-macro_line|#if 0
-id|DBG_TRC
-c_func
-(paren
-(paren
-l_string|&quot;A(%d) dma_alloc(%d)&quot;
-comma
-id|IoAdapter-&gt;ANum
-comma
-id|pI-&gt;descriptor_number
-)paren
-)paren
-macro_line|#endif
 id|diva_get_dma_map_entry
 (paren
 "&bslash;"
@@ -1271,19 +1258,6 @@ l_int|0
 )paren
 )paren
 (brace
-macro_line|#if 0
-id|DBG_TRC
-c_func
-(paren
-(paren
-l_string|&quot;A(%d) dma_free(%d)&quot;
-comma
-id|IoAdapter-&gt;ANum
-comma
-id|pI-&gt;descriptor_number
-)paren
-)paren
-macro_line|#endif
 id|diva_free_dma_map_entry
 c_func
 (paren
@@ -1807,17 +1781,6 @@ c_cond
 id|IoAdapter
 )paren
 (brace
-macro_line|#if 0
-id|DBG_FTL
-c_func
-(paren
-(paren
-l_string|&quot;xdi: unknown Req 0 / Rc %d !&quot;
-comma
-id|e-&gt;Rc
-)paren
-)paren
-macro_line|#endif
 r_return
 suffix:semicolon
 )brace

@@ -1,3 +1,4 @@
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;asm/mips-boards/atlasint.h&gt;

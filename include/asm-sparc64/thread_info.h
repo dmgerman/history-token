@@ -364,6 +364,8 @@ mdefine_line|#define TIF_SYSCALL_SUCCESS&t;11
 multiline_comment|/* NOTE: Thread flags &gt;= 12 should be ones we have no interest&n; *       in using in assembly, else we can&squot;t use the mask as&n; *       an immediate value in instructions such as andcc.&n; */
 DECL|macro|TIF_ABI_PENDING
 mdefine_line|#define TIF_ABI_PENDING&t;&t;12
+DECL|macro|TIF_MEMDIE
+mdefine_line|#define TIF_MEMDIE&t;&t;13
 DECL|macro|_TIF_SYSCALL_TRACE
 mdefine_line|#define _TIF_SYSCALL_TRACE&t;(1&lt;&lt;TIF_SYSCALL_TRACE)
 DECL|macro|_TIF_NOTIFY_RESUME

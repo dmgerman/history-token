@@ -4979,7 +4979,7 @@ id|dev
 op_assign
 (paren
 r_struct
-id|aav_dev
+id|aac_dev
 op_star
 )paren
 id|sdev-&gt;host-&gt;hostdata

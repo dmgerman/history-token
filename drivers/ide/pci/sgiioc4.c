@@ -2596,11 +2596,18 @@ comma
 id|d-&gt;name
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
 id|probe_hwif_init
 c_func
 (paren
 id|hwif
 )paren
+)paren
+r_return
+op_minus
+id|EIO
 suffix:semicolon
 multiline_comment|/* Create /proc/ide entries */
 id|create_proc_ide_interfaces

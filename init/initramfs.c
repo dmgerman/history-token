@@ -80,6 +80,7 @@ suffix:semicolon
 multiline_comment|/* link hash */
 DECL|struct|hash
 r_static
+id|__initdata
 r_struct
 id|hash
 (brace

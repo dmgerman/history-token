@@ -283,7 +283,7 @@ op_star
 id|command
 )paren
 (brace
-id|cli
+id|local_irq_disable
 c_func
 (paren
 )paren

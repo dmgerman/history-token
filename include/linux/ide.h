@@ -190,13 +190,8 @@ mdefine_line|#define IDE_LARGE_SEEK(b1,b2,t)&t;(((b1) &gt; (b2) + (t)) || ((b2) 
 multiline_comment|/*&n; * Timeouts for various operations:&n; */
 DECL|macro|WAIT_DRQ
 mdefine_line|#define WAIT_DRQ&t;(HZ/10)&t;&t;/* 100msec - spec allows up to 20ms */
-macro_line|#if defined(CONFIG_APM) || defined(CONFIG_APM_MODULE)
 DECL|macro|WAIT_READY
 mdefine_line|#define WAIT_READY&t;(5*HZ)&t;&t;/* 5sec - some laptops are very slow */
-macro_line|#else
-DECL|macro|WAIT_READY
-mdefine_line|#define WAIT_READY&t;(HZ/10)&t;&t;/* 100msec - should be instantaneous */
-macro_line|#endif /* CONFIG_APM || CONFIG_APM_MODULE */
 DECL|macro|WAIT_PIDENTIFY
 mdefine_line|#define WAIT_PIDENTIFY&t;(10*HZ)&t;/* 10sec  - should be less than 3ms (?), if all ATAPI CD is closed at boot */
 DECL|macro|WAIT_WORSTCASE
@@ -1809,6 +1804,13 @@ suffix:colon
 l_int|1
 suffix:semicolon
 multiline_comment|/* 0=default, 1=ide-scsi emulation */
+DECL|member|sleeping
+r_int
+id|sleeping
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* 1=sleeping &amp; sleep field valid */
 DECL|member|quirk_list
 id|u8
 id|quirk_list
@@ -3029,6 +3031,15 @@ multiline_comment|/* BOOL: wake us up on timer expiry */
 DECL|member|sleeping
 r_int
 id|sleeping
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* BOOL: polling active &amp; poll_timeout field valid */
+DECL|member|polling
+r_int
+id|polling
+suffix:colon
+l_int|1
 suffix:semicolon
 multiline_comment|/* current drive */
 DECL|member|drive
@@ -4216,62 +4227,6 @@ op_star
 )paren
 suffix:semicolon
 r_extern
-r_void
-id|ata_input_data
-c_func
-(paren
-id|ide_drive_t
-op_star
-comma
-r_void
-op_star
-comma
-id|u32
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|ata_output_data
-c_func
-(paren
-id|ide_drive_t
-op_star
-comma
-r_void
-op_star
-comma
-id|u32
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|atapi_input_bytes
-c_func
-(paren
-id|ide_drive_t
-op_star
-comma
-r_void
-op_star
-comma
-id|u32
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|atapi_output_bytes
-c_func
-(paren
-id|ide_drive_t
-op_star
-comma
-r_void
-op_star
-comma
-id|u32
-)paren
-suffix:semicolon
-r_extern
 r_int
 id|drive_is_ready
 c_func
@@ -4537,15 +4492,6 @@ id|sector_t
 id|block
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * ide_system_bus_speed() returns what we think is the system VESA/PCI&n; * bus speed (in MHz).  This is used for calculating interface PIO timings.&n; * The default is 40 for known PCI systems, 50 otherwise.&n; * The &quot;idebus=xx&quot; parameter can be used to override this value.&n; */
-r_extern
-r_int
-id|ide_system_bus_speed
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 multiline_comment|/*&n; * ide_stall_queue() can be used by a drive to give excess bandwidth back&n; * to the hwgroup by sleeping for timeout jiffies.&n; */
 r_extern
 r_void
@@ -4618,12 +4564,6 @@ r_extern
 r_struct
 id|block_device_operations
 id|ide_fops
-(braket
-)braket
-suffix:semicolon
-r_extern
-id|ide_proc_entry_t
-id|generic_subdriver_entries
 (braket
 )braket
 suffix:semicolon
@@ -5231,15 +5171,6 @@ suffix:semicolon
 r_extern
 r_int
 id|__ide_dma_end
-c_func
-(paren
-id|ide_drive_t
-op_star
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|__ide_dma_test_irq
 c_func
 (paren
 id|ide_drive_t

@@ -59,6 +59,8 @@ DECL|macro|MIPS_CACHE_ALIASES
 mdefine_line|#define MIPS_CACHE_ALIASES&t;0x00000004&t;/* Cache could have aliases */
 DECL|macro|MIPS_CACHE_IC_F_DC
 mdefine_line|#define MIPS_CACHE_IC_F_DC&t;0x00000008&t;/* Ic can refill from D-cache */
+DECL|macro|MIPS_IC_SNOOPS_REMOTE
+mdefine_line|#define MIPS_IC_SNOOPS_REMOTE&t;0x00000010&t;/* Ic snoops remote stores */
 DECL|struct|cpuinfo_mips
 r_struct
 id|cpuinfo_mips

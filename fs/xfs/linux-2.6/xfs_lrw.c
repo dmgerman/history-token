@@ -1313,6 +1313,13 @@ id|ret
 op_eq
 op_minus
 id|EIOCBQUEUED
+op_logical_and
+op_logical_neg
+(paren
+id|ioflags
+op_amp
+id|IO_ISAIO
+)paren
 )paren
 id|ret
 op_assign
@@ -3550,6 +3557,13 @@ id|ret
 op_eq
 op_minus
 id|EIOCBQUEUED
+op_logical_and
+op_logical_neg
+(paren
+id|ioflags
+op_amp
+id|IO_ISAIO
+)paren
 )paren
 id|ret
 op_assign

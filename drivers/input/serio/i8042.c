@@ -1916,7 +1916,14 @@ id|I8042_CMD_AUX_LOOP
 op_logical_or
 id|param
 op_ne
+(paren
+id|mode
+ques
+c_cond
 l_int|0xa9
+suffix:colon
+l_int|0x09
+)paren
 )paren
 r_return
 op_minus
@@ -2764,6 +2771,11 @@ l_string|&quot;i8042.c: i8042 controller reset timeout.&bslash;n&quot;
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * Disable MUX mode if present.&n; */
+r_if
+c_cond
+(paren
+id|i8042_mux_present
+)paren
 id|i8042_set_mux_mode
 c_func
 (paren

@@ -207,9 +207,10 @@ c_func
 id|TIF_USEDFPU
 )paren
 suffix:semicolon
-id|current-&gt;used_math
-op_assign
-l_int|0
+id|clear_used_math
+c_func
+(paren
+)paren
 suffix:semicolon
 id|atomic_inc
 c_func

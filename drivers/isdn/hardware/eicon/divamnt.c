@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: divamnt.c,v 1.32.6.5 2004/08/28 20:03:53 armin Exp $&n; *&n; * Driver for Eicon DIVA Server ISDN cards.&n; * Maint module&n; *&n; * Copyright 2000-2003 by Armin Schindler (mac@melware.de)&n; * Copyright 2000-2003 Cytronics &amp; Melware (info@melware.de)&n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; */
+multiline_comment|/* $Id: divamnt.c,v 1.32.6.9 2005/01/31 12:22:20 armin Exp $&n; *&n; * Driver for Eicon DIVA Server ISDN cards.&n; * Maint module&n; *&n; * Copyright 2000-2003 by Armin Schindler (mac@melware.de)&n; * Copyright 2000-2003 Cytronics &amp; Melware (info@melware.de)&n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/poll.h&gt;
 macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
+macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &quot;platform.h&quot;
 macro_line|#include &quot;di_defs.h&quot;
 macro_line|#include &quot;divasync.h&quot;
@@ -17,7 +18,7 @@ r_char
 op_star
 id|main_revision
 op_assign
-l_string|&quot;$Revision: 1.32.6.5 $&quot;
+l_string|&quot;$Revision: 1.32.6.9 $&quot;
 suffix:semicolon
 DECL|variable|major
 r_static

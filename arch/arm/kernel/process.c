@@ -1332,6 +1332,17 @@ r_int
 )paren
 id|ret_from_fork
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|clone_flags
+op_amp
+id|CLONE_SETTLS
+)paren
+id|thread-&gt;tp_value
+op_assign
+id|regs-&gt;ARM_r3
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon

@@ -1342,6 +1342,7 @@ r_int
 id|sched_find_first_bit
 c_func
 (paren
+r_const
 r_int
 r_int
 op_star

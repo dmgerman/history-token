@@ -84,19 +84,12 @@ op_star
 id|lock
 )paren
 (brace
-macro_line|#ifdef CONFIG_DEBUG_SPINLOCK
-id|BUG_ON
-c_func
-(paren
-op_logical_neg
-id|spin_is_locked
+id|assert_spin_locked
 c_func
 (paren
 id|lock
 )paren
-)paren
 suffix:semicolon
-macro_line|#endif
 id|lock-&gt;lock
 op_assign
 l_int|0

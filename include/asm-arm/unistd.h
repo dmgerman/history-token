@@ -490,7 +490,8 @@ DECL|macro|__NR_remap_file_pages
 mdefine_line|#define __NR_remap_file_pages&t;&t;(__NR_SYSCALL_BASE+253)
 multiline_comment|/* 254 for set_thread_area */
 multiline_comment|/* 255 for get_thread_area */
-multiline_comment|/* 256 for set_tid_address */
+DECL|macro|__NR_set_tid_address
+mdefine_line|#define __NR_set_tid_address&t;&t;(__NR_SYSCALL_BASE+256)
 DECL|macro|__NR_timer_create
 mdefine_line|#define __NR_timer_create&t;&t;(__NR_SYSCALL_BASE+257)
 DECL|macro|__NR_timer_settime
@@ -550,6 +551,8 @@ DECL|macro|__ARM_NR_usr26
 mdefine_line|#define __ARM_NR_usr26&t;&t;&t;(__ARM_NR_BASE+3)
 DECL|macro|__ARM_NR_usr32
 mdefine_line|#define __ARM_NR_usr32&t;&t;&t;(__ARM_NR_BASE+4)
+DECL|macro|__ARM_NR_set_tls
+mdefine_line|#define __ARM_NR_set_tls&t;&t;(__ARM_NR_BASE+0x800)
 DECL|macro|__sys2
 mdefine_line|#define __sys2(x) #x
 DECL|macro|__sys1

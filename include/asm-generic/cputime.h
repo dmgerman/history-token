@@ -51,9 +51,9 @@ DECL|macro|msecs_to_cputime
 mdefine_line|#define msecs_to_cputime(__msecs)&t;msecs_to_jiffies(__msecs)
 multiline_comment|/*&n; * Convert cputime to seconds and back.&n; */
 DECL|macro|cputime_to_secs
-mdefine_line|#define cputime_to_secs(__ct)&t;&t;(jiffies_to_msecs(__ct) / 1000)
+mdefine_line|#define cputime_to_secs(jif)&t;&t;((jif) / HZ)
 DECL|macro|secs_to_cputime
-mdefine_line|#define secs_to_cputime(__secs)&t;&t;(msecs_to_jiffies((__secs) * 1000))
+mdefine_line|#define secs_to_cputime(sec)&t;&t;((sec) * HZ)
 multiline_comment|/*&n; * Convert cputime to timespec and back.&n; */
 DECL|macro|timespec_to_cputime
 mdefine_line|#define timespec_to_cputime(__val)&t;timespec_to_jiffies(__val)

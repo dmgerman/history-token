@@ -5,19 +5,6 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/ide.h&gt;
 r_static
-r_int
-id|init_setup_opti621
-c_func
-(paren
-r_struct
-id|pci_dev
-op_star
-comma
-id|ide_pci_device_t
-op_star
-)paren
-suffix:semicolon
-r_static
 r_void
 id|init_hwif_opti621
 c_func
@@ -41,11 +28,6 @@ dot
 id|name
 op_assign
 l_string|&quot;OPTI621&quot;
-comma
-dot
-id|init_setup
-op_assign
-id|init_setup_opti621
 comma
 dot
 id|init_hwif
@@ -96,11 +78,6 @@ dot
 id|name
 op_assign
 l_string|&quot;OPTI621X&quot;
-comma
-dot
-id|init_setup
-op_assign
-id|init_setup_opti621
 comma
 dot
 id|init_hwif

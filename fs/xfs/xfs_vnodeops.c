@@ -14524,8 +14524,8 @@ c_func
 id|vp
 )paren
 )paren
-r_return
-l_int|0
+r_goto
+id|reclaim
 suffix:semicolon
 multiline_comment|/* The hash lock here protects a thread in xfs_iget_core from&n;&t; * racing with us on linking the inode back with a vnode.&n;&t; * Once we have the XFS_IRECLAIM flag set it will not touch&n;&t; * us.&n;&t; */
 id|write_lock
@@ -14680,16 +14680,8 @@ comma
 id|XFS_ILOCK_EXCL
 )paren
 suffix:semicolon
-id|xfs_ireclaim
-c_func
-(paren
-id|ip
-)paren
-suffix:semicolon
-r_return
-(paren
-l_int|0
-)paren
+r_goto
+id|reclaim
 suffix:semicolon
 )brace
 id|xfs_iflock
@@ -14752,6 +14744,8 @@ id|XFS_ILOCK_EXCL
 )paren
 suffix:semicolon
 )brace
+id|reclaim
+suffix:colon
 id|xfs_ireclaim
 c_func
 (paren

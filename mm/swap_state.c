@@ -170,6 +170,34 @@ comma
 id|swap_cache_info.exist_race
 )paren
 suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;Free swap  = %lukB&bslash;n&quot;
+comma
+id|nr_swap_pages
+op_lshift
+(paren
+id|PAGE_SHIFT
+op_minus
+l_int|10
+)paren
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;Total swap = %lukB&bslash;n&quot;
+comma
+id|total_swap_pages
+op_lshift
+(paren
+id|PAGE_SHIFT
+op_minus
+l_int|10
+)paren
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/*&n; * __add_to_swap_cache resembles add_to_page_cache on swapper_space,&n; * but sets SwapCache flag and private instead of mapping and index.&n; */
 DECL|function|__add_to_swap_cache

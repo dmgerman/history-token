@@ -7075,7 +7075,13 @@ id|r
 comma
 id|tmp
 comma
+(paren
 id|bytes
+op_plus
+l_int|3
+)paren
+op_div
+l_int|4
 )paren
 suffix:semicolon
 id|credit_entropy_store

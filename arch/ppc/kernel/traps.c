@@ -655,6 +655,25 @@ mdefine_line|#define single_stepping(regs)&t;((regs)-&gt;msr &amp; MSR_SE)
 DECL|macro|clear_single_step
 mdefine_line|#define clear_single_step(regs)&t;((regs)-&gt;msr &amp;= ~MSR_SE)
 macro_line|#endif
+multiline_comment|/*&n; * This is &quot;fall-back&quot; implementation for configurations&n; * which don&squot;t provide platform-specific machine check info&n; */
+r_void
+id|__attribute__
+(paren
+(paren
+id|weak
+)paren
+)paren
+DECL|function|platform_machine_check
+id|platform_machine_check
+c_func
+(paren
+r_struct
+id|pt_regs
+op_star
+id|regs
+)paren
+(brace
+)brace
 DECL|function|MachineCheckException
 r_void
 id|MachineCheckException
@@ -1257,6 +1276,13 @@ l_string|&quot;Unknown values in msr&bslash;n&quot;
 suffix:semicolon
 )brace
 macro_line|#endif /* CONFIG_4xx */
+multiline_comment|/*&n;&t; * Optional platform-provided routine to print out&n;&t; * additional info, e.g. bus error registers.&n;&t; */
+id|platform_machine_check
+c_func
+(paren
+id|regs
+)paren
+suffix:semicolon
 id|debugger
 c_func
 (paren

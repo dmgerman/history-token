@@ -2665,9 +2665,10 @@ id|fpregs
 r_if
 c_cond
 (paren
-id|current-&gt;used_math
-op_eq
-l_int|0
+id|used_math
+c_func
+(paren
+)paren
 )paren
 (brace
 id|memset
