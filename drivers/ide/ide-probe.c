@@ -3361,6 +3361,26 @@ comma
 l_int|1
 )paren
 suffix:semicolon
+multiline_comment|/* enable led activity for disk drives only */
+r_if
+c_cond
+(paren
+id|drive-&gt;media
+op_eq
+id|ide_disk
+op_logical_and
+id|hwif-&gt;led_act
+)paren
+id|blk_queue_activity_fn
+c_func
+(paren
+id|q
+comma
+id|hwif-&gt;led_act
+comma
+id|drive
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
