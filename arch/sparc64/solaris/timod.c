@@ -5342,7 +5342,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|IS_SOCK
+id|S_ISSOCK
 c_func
 (paren
 id|ino-&gt;i_mode
