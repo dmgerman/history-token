@@ -222,12 +222,10 @@ op_eq
 id|ARGI_INVALID_OPCODE
 )paren
 (brace
-id|ACPI_DEBUG_PRINT
+id|ACPI_REPORT_ERROR
 (paren
 (paren
-id|ACPI_DB_ERROR
-comma
-l_string|&quot;Internal - %X is not a valid AML opcode&bslash;n&quot;
+l_string|&quot;resolve_operands: %X is not a valid AML opcode&bslash;n&quot;
 comma
 id|opcode
 )paren
@@ -275,12 +273,10 @@ op_star
 id|stack_ptr
 )paren
 (brace
-id|ACPI_DEBUG_PRINT
+id|ACPI_REPORT_ERROR
 (paren
 (paren
-id|ACPI_DB_ERROR
-comma
-l_string|&quot;Internal - null stack entry at %p&bslash;n&quot;
+l_string|&quot;resolve_operands: Null stack entry at %p&bslash;n&quot;
 comma
 id|stack_ptr
 )paren
