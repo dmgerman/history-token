@@ -38298,7 +38298,7 @@ op_amp
 id|tp-&gt;indirect_lock
 )paren
 suffix:semicolon
-id|PREPARE_WORK
+id|INIT_WORK
 c_func
 (paren
 op_amp
