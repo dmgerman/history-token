@@ -8401,7 +8401,7 @@ singleline_comment|//&t;&t;&t;&t;&t;   __mark_inode_dirty(). */
 dot
 id|write_inode
 op_assign
-id|ntfs_write_inode
+id|ntfs_write_inode_vfs
 comma
 multiline_comment|/* VFS: Write dirty inode to&n;&t;&t;&t;&t;&t;&t;   disk. */
 singleline_comment|//.drop_inode&t;= NULL,&t;&t;&t;/* VFS: Called just after the
