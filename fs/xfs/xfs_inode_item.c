@@ -2538,7 +2538,7 @@ c_func
 (paren
 id|ip
 comma
-id|XFS_IFLUSH_DELWRI
+id|XFS_IFLUSH_ASYNC
 )paren
 suffix:semicolon
 id|xfs_iunlock
