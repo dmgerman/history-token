@@ -779,9 +779,16 @@ comma
 id|newflags
 )paren
 )paren
+(brace
+id|vma
+op_assign
+op_star
+id|pprev
+suffix:semicolon
 r_goto
 id|success
 suffix:semicolon
+)brace
 )brace
 r_else
 (brace
