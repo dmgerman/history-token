@@ -1164,7 +1164,8 @@ id|attr
 r_int
 id|modify
 op_assign
-l_int|0
+op_minus
+l_int|1
 suffix:semicolon
 r_int
 id|num_attrs
@@ -1239,8 +1240,9 @@ id|class_attrs
 op_eq
 id|scsi_sysfs_shost_attrs
 op_logical_or
-op_logical_neg
 id|modify
+OL
+l_int|0
 )paren
 (brace
 multiline_comment|/* note: need space for null at the end as well */
@@ -1255,8 +1257,8 @@ c_func
 (paren
 r_sizeof
 (paren
-r_struct
-id|class_device_attribute
+op_star
+id|tmp_attrs
 )paren
 op_star
 (paren
@@ -1264,6 +1266,8 @@ id|num_attrs
 op_plus
 (paren
 id|modify
+op_ge
+l_int|0
 ques
 c_cond
 l_int|1
@@ -1298,11 +1302,15 @@ id|class_attrs
 comma
 r_sizeof
 (paren
-r_struct
-id|class_device_attribute
+op_star
+id|tmp_attrs
 )paren
 op_star
+(paren
 id|num_attrs
+op_plus
+l_int|1
+)paren
 )paren
 suffix:semicolon
 r_if
@@ -1332,6 +1340,8 @@ r_if
 c_cond
 (paren
 id|modify
+op_ge
+l_int|0
 )paren
 (brace
 multiline_comment|/* spare the caller from having to copy things it&squot;s&n;&t;&t; * not interested in */
@@ -1448,7 +1458,8 @@ id|attr
 r_int
 id|modify
 op_assign
-l_int|0
+op_minus
+l_int|1
 suffix:semicolon
 r_int
 id|num_attrs
@@ -1523,8 +1534,9 @@ id|dev_attrs
 op_eq
 id|scsi_sysfs_sdev_attrs
 op_logical_or
-op_logical_neg
 id|modify
+OL
+l_int|0
 )paren
 (brace
 multiline_comment|/* note: need space for null at the end as well */
@@ -1539,8 +1551,8 @@ c_func
 (paren
 r_sizeof
 (paren
-r_struct
-id|device_attribute
+op_star
+id|tmp_attrs
 )paren
 op_star
 (paren
@@ -1548,6 +1560,8 @@ id|num_attrs
 op_plus
 (paren
 id|modify
+op_ge
+l_int|0
 ques
 c_cond
 l_int|1
@@ -1582,11 +1596,15 @@ id|dev_attrs
 comma
 r_sizeof
 (paren
-r_struct
-id|device_attribute
+op_star
+id|tmp_attrs
 )paren
 op_star
+(paren
 id|num_attrs
+op_plus
+l_int|1
+)paren
 )paren
 suffix:semicolon
 r_if
@@ -1616,6 +1634,8 @@ r_if
 c_cond
 (paren
 id|modify
+op_ge
+l_int|0
 )paren
 (brace
 multiline_comment|/* spare the caller from having to copy things it&squot;s&n;&t;&t; * not interested in */
