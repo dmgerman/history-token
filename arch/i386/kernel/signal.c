@@ -1866,41 +1866,25 @@ id|err
 r_goto
 id|give_sigsegv
 suffix:semicolon
-multiline_comment|/* Set up to return from userspace.  If provided, use a stub&n;&t;   already in userspace.  */
-r_if
-c_cond
-(paren
-id|ka-&gt;sa.sa_flags
-op_amp
-id|SA_RESTORER
-)paren
-(brace
+multiline_comment|/* Set up to return from userspace.  */
 id|err
 op_or_assign
 id|__put_user
 c_func
 (paren
-id|ka-&gt;sa.sa_restorer
-comma
-op_amp
-id|frame-&gt;pretcode
-)paren
-suffix:semicolon
-)brace
-r_else
-(brace
-id|err
-op_or_assign
-id|__put_user
+id|fix_to_virt
 c_func
 (paren
-id|frame-&gt;retcode
+id|FIX_VSYSCALL
+)paren
+op_plus
+l_int|32
 comma
 op_amp
 id|frame-&gt;pretcode
 )paren
 suffix:semicolon
-multiline_comment|/* This is popl %eax ; movl $,%eax ; int $0x80 */
+multiline_comment|/*&n;&t; * This is popl %eax ; movl $,%eax ; int $0x80&n;&t; *&n;&t; * WE DO NOT USE IT ANY MORE! It&squot;s only left here for historical&n;&t; * reasons and because gdb uses it as a signature to notice&n;&t; * signal handler stack frames.&n;&t; */
 id|err
 op_or_assign
 id|__put_user
@@ -1955,7 +1939,6 @@ l_int|6
 )paren
 )paren
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -2314,41 +2297,25 @@ id|err
 r_goto
 id|give_sigsegv
 suffix:semicolon
-multiline_comment|/* Set up to return from userspace.  If provided, use a stub&n;&t;   already in userspace.  */
-r_if
-c_cond
-(paren
-id|ka-&gt;sa.sa_flags
-op_amp
-id|SA_RESTORER
-)paren
-(brace
+multiline_comment|/* Set up to return from userspace.  */
 id|err
 op_or_assign
 id|__put_user
 c_func
 (paren
-id|ka-&gt;sa.sa_restorer
-comma
-op_amp
-id|frame-&gt;pretcode
-)paren
-suffix:semicolon
-)brace
-r_else
-(brace
-id|err
-op_or_assign
-id|__put_user
+id|fix_to_virt
 c_func
 (paren
-id|frame-&gt;retcode
+id|FIX_VSYSCALL
+)paren
+op_plus
+l_int|64
 comma
 op_amp
 id|frame-&gt;pretcode
 )paren
 suffix:semicolon
-multiline_comment|/* This is movl $,%eax ; int $0x80 */
+multiline_comment|/*&n;&t; * This is movl $,%eax ; int $0x80&n;&t; *&n;&t; * WE DO NOT USE IT ANY MORE! It&squot;s only left here for historical&n;&t; * reasons and because gdb uses it as a signature to notice&n;&t; * signal handler stack frames.&n;&t; */
 id|err
 op_or_assign
 id|__put_user
@@ -2403,7 +2370,6 @@ l_int|5
 )paren
 )paren
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
