@@ -87,6 +87,18 @@ id|ACPI_EXTERN
 id|u8
 id|acpi_gbl_integer_byte_width
 suffix:semicolon
+DECL|variable|acpi_gbl_xpm1a_enable
+id|ACPI_EXTERN
+r_struct
+id|acpi_generic_address
+id|acpi_gbl_xpm1a_enable
+suffix:semicolon
+DECL|variable|acpi_gbl_xpm1b_enable
+id|ACPI_EXTERN
+r_struct
+id|acpi_generic_address
+id|acpi_gbl_xpm1b_enable
+suffix:semicolon
 multiline_comment|/*&n; * Since there may be multiple SSDTs and PSDTS, a single pointer is not&n; * sufficient; Therefore, there isn&squot;t one!&n; */
 multiline_comment|/*&n; * ACPI Table info arrays&n; */
 r_extern
