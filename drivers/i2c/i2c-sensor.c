@@ -789,7 +789,7 @@ id|i
 op_eq
 id|ANY_I2C_BUS
 )paren
-op_amp
+op_logical_and
 op_logical_neg
 id|is_isa
 )paren
@@ -872,7 +872,7 @@ id|i
 op_eq
 id|ANY_I2C_BUS
 )paren
-op_amp
+op_logical_and
 op_logical_neg
 id|is_isa
 )paren

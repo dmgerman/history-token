@@ -20,25 +20,6 @@ macro_line|#include &lt;asm/sn/prio.h&gt;
 macro_line|#include &lt;asm/sn/xtalk/xbow.h&gt;
 macro_line|#include &lt;asm/sn/io.h&gt;
 macro_line|#include &lt;asm/sn/sn_private.h&gt;
-r_extern
-r_char
-op_star
-id|bcopy
-c_func
-(paren
-r_const
-r_char
-op_star
-id|src
-comma
-r_char
-op_star
-id|dest
-comma
-r_int
-id|count
-)paren
-suffix:semicolon
 DECL|macro|PCI_BUS_NO_1
 mdefine_line|#define PCI_BUS_NO_1 1
 r_extern
@@ -134,21 +115,12 @@ c_func
 id|peer_pinv
 )paren
 suffix:semicolon
-id|bcopy
+id|memcpy
 c_func
 (paren
-(paren
-r_const
-r_char
-op_star
-)paren
-id|pinv
-comma
-(paren
-r_char
-op_star
-)paren
 id|peer_pinv
+comma
+id|pinv
 comma
 r_sizeof
 (paren

@@ -1736,10 +1736,7 @@ c_func
 (paren
 id|pdev
 comma
-(paren
-id|u64
-)paren
-l_int|0xffffffffffffffff
+l_int|0xffffffffffffffffULL
 )paren
 op_logical_and
 id|pci_set_dma_mask
@@ -1747,10 +1744,7 @@ c_func
 (paren
 id|pdev
 comma
-(paren
-id|u64
-)paren
-l_int|0xffffffff
+l_int|0xffffffffULL
 )paren
 )paren
 r_continue

@@ -16,10 +16,6 @@ DECL|macro|u_int
 mdefine_line|#define u_int&t;&t;unsigned int
 DECL|macro|u_long
 mdefine_line|#define u_long&t;&t;unsigned long
-macro_line|#ifndef bcopy
-DECL|macro|bcopy
-mdefine_line|#define bcopy(s, d, n)&t;memcpy((d), (s), (n))
-macro_line|#endif
 macro_line|#ifndef bcmp
 DECL|macro|bcmp
 mdefine_line|#define bcmp(s, d, n)&t;memcmp((d), (s), (n))

@@ -3,9 +3,9 @@ macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/jbd.h&gt;
 macro_line|#include &lt;linux/ext3_fs.h&gt;
 macro_line|#include &quot;xattr.h&quot;
-DECL|function|ext3_readlink
 r_static
 r_int
+DECL|function|ext3_readlink
 id|ext3_readlink
 c_func
 (paren
@@ -15,6 +15,7 @@ op_star
 id|dentry
 comma
 r_char
+id|__user
 op_star
 id|buffer
 comma

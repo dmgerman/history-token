@@ -126,49 +126,49 @@ DECL|macro|DL_TO_KERNEL
 mdefine_line|#define DL_TO_KERNEL    0x40000000
 macro_line|#ifdef DIVA_NO_DEBUGLIB
 DECL|macro|myDbgPrint_LOG
-mdefine_line|#define myDbgPrint_LOG(x,...) do { } while(0);
+mdefine_line|#define myDbgPrint_LOG(x...) do { } while(0);
 DECL|macro|myDbgPrint_FTL
-mdefine_line|#define myDbgPrint_FTL(x,...) do { } while(0);
+mdefine_line|#define myDbgPrint_FTL(x...) do { } while(0);
 DECL|macro|myDbgPrint_ERR
-mdefine_line|#define myDbgPrint_ERR(x,...) do { } while(0);
+mdefine_line|#define myDbgPrint_ERR(x...) do { } while(0);
 DECL|macro|myDbgPrint_TRC
-mdefine_line|#define myDbgPrint_TRC(x,...) do { } while(0);
+mdefine_line|#define myDbgPrint_TRC(x...) do { } while(0);
 DECL|macro|myDbgPrint_MXLOG
-mdefine_line|#define myDbgPrint_MXLOG(x,...) do { } while(0);
+mdefine_line|#define myDbgPrint_MXLOG(x...) do { } while(0);
 DECL|macro|myDbgPrint_EVL
-mdefine_line|#define myDbgPrint_EVL(x,...) do { } while(0);
+mdefine_line|#define myDbgPrint_EVL(x...) do { } while(0);
 DECL|macro|myDbgPrint_REG
-mdefine_line|#define myDbgPrint_REG(x,...) do { } while(0);
+mdefine_line|#define myDbgPrint_REG(x...) do { } while(0);
 DECL|macro|myDbgPrint_MEM
-mdefine_line|#define myDbgPrint_MEM(x,...) do { } while(0);
+mdefine_line|#define myDbgPrint_MEM(x...) do { } while(0);
 DECL|macro|myDbgPrint_SPL
-mdefine_line|#define myDbgPrint_SPL(x,...) do { } while(0);
+mdefine_line|#define myDbgPrint_SPL(x...) do { } while(0);
 DECL|macro|myDbgPrint_IRP
-mdefine_line|#define myDbgPrint_IRP(x,...) do { } while(0);
+mdefine_line|#define myDbgPrint_IRP(x...) do { } while(0);
 DECL|macro|myDbgPrint_TIM
-mdefine_line|#define myDbgPrint_TIM(x,...) do { } while(0);
+mdefine_line|#define myDbgPrint_TIM(x...) do { } while(0);
 DECL|macro|myDbgPrint_BLK
-mdefine_line|#define myDbgPrint_BLK(x,...) do { } while(0);
+mdefine_line|#define myDbgPrint_BLK(x...) do { } while(0);
 DECL|macro|myDbgPrint_TAPI
-mdefine_line|#define myDbgPrint_TAPI(x,...) do { } while(0);
+mdefine_line|#define myDbgPrint_TAPI(x...) do { } while(0);
 DECL|macro|myDbgPrint_NDIS
-mdefine_line|#define myDbgPrint_NDIS(x,...) do { } while(0);
+mdefine_line|#define myDbgPrint_NDIS(x...) do { } while(0);
 DECL|macro|myDbgPrint_CONN
-mdefine_line|#define myDbgPrint_CONN(x,...) do { } while(0);
+mdefine_line|#define myDbgPrint_CONN(x...) do { } while(0);
 DECL|macro|myDbgPrint_STAT
-mdefine_line|#define myDbgPrint_STAT(x,...) do { } while(0);
+mdefine_line|#define myDbgPrint_STAT(x...) do { } while(0);
 DECL|macro|myDbgPrint_SEND
-mdefine_line|#define myDbgPrint_SEND(x,...) do { } while(0);
+mdefine_line|#define myDbgPrint_SEND(x...) do { } while(0);
 DECL|macro|myDbgPrint_RECV
-mdefine_line|#define myDbgPrint_RECV(x,...) do { } while(0);
+mdefine_line|#define myDbgPrint_RECV(x...) do { } while(0);
 DECL|macro|myDbgPrint_PRV0
-mdefine_line|#define myDbgPrint_PRV0(x,...) do { } while(0);
+mdefine_line|#define myDbgPrint_PRV0(x...) do { } while(0);
 DECL|macro|myDbgPrint_PRV1
-mdefine_line|#define myDbgPrint_PRV1(x,...) do { } while(0);
+mdefine_line|#define myDbgPrint_PRV1(x...) do { } while(0);
 DECL|macro|myDbgPrint_PRV2
-mdefine_line|#define myDbgPrint_PRV2(x,...) do { } while(0);
+mdefine_line|#define myDbgPrint_PRV2(x...) do { } while(0);
 DECL|macro|myDbgPrint_PRV3
-mdefine_line|#define myDbgPrint_PRV3(x,...) do { } while(0);
+mdefine_line|#define myDbgPrint_PRV3(x...) do { } while(0);
 DECL|macro|DBG_TEST
 mdefine_line|#define DBG_TEST(func,args) do { } while(0);
 DECL|macro|DBG_EVL_ID

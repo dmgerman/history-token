@@ -15,6 +15,7 @@ id|dentry
 op_star
 comma
 r_char
+id|__user
 op_star
 comma
 r_int
@@ -94,6 +95,7 @@ op_star
 id|dp
 comma
 r_char
+id|__user
 op_star
 id|bp
 comma
