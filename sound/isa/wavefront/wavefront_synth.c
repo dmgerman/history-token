@@ -6989,6 +6989,25 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|section_length
+template_param
+id|WF_SECTION_MAX
+)paren
+(brace
+id|snd_printk
+(paren
+l_string|&quot;invalid firmware section length %d&bslash;n&quot;
+comma
+id|section_length
+)paren
+suffix:semicolon
+r_goto
+id|failure
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
 id|sys_read
 (paren
 id|fd
