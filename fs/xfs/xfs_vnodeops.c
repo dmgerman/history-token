@@ -10302,9 +10302,6 @@ id|xfs_trans_t
 op_star
 id|tp
 suffix:semicolon
-id|xfs_dev_t
-id|rdev
-suffix:semicolon
 id|xfs_mount_t
 op_star
 id|mp
@@ -10744,19 +10741,6 @@ r_goto
 id|error_return
 suffix:semicolon
 multiline_comment|/*&n;&t; * create the directory inode.&n;&t; */
-id|rdev
-op_assign
-(paren
-id|vap-&gt;va_mask
-op_amp
-id|XFS_AT_RDEV
-)paren
-ques
-c_cond
-id|vap-&gt;va_rdev
-suffix:colon
-l_int|0
-suffix:semicolon
 id|error
 op_assign
 id|xfs_dir_ialloc
@@ -10777,7 +10761,7 @@ id|vap-&gt;va_mode
 comma
 l_int|2
 comma
-id|rdev
+l_int|0
 comma
 id|credp
 comma
@@ -12335,9 +12319,6 @@ suffix:semicolon
 r_int
 id|pathlen
 suffix:semicolon
-id|xfs_dev_t
-id|rdev
-suffix:semicolon
 id|xfs_bmap_free_t
 id|free_list
 suffix:semicolon
@@ -12938,19 +12919,6 @@ id|first_block
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Allocate an inode for the symlink.&n;&t; */
-id|rdev
-op_assign
-(paren
-id|vap-&gt;va_mask
-op_amp
-id|XFS_AT_RDEV
-)paren
-ques
-c_cond
-id|vap-&gt;va_rdev
-suffix:colon
-l_int|0
-suffix:semicolon
 id|error
 op_assign
 id|xfs_dir_ialloc
@@ -12972,7 +12940,7 @@ id|IFMT
 comma
 l_int|1
 comma
-id|rdev
+l_int|0
 comma
 id|credp
 comma
