@@ -5,7 +5,7 @@ multiline_comment|/*&n; * Flags for SCSI devices that need special treatment&n; 
 DECL|macro|BLIST_NOLUN
 mdefine_line|#define BLIST_NOLUN     &t;0x001&t;/* Only scan LUN 0 */
 DECL|macro|BLIST_FORCELUN
-mdefine_line|#define BLIST_FORCELUN  &t;0x002&t;/* Known to have LUNs, force scanning */
+mdefine_line|#define BLIST_FORCELUN  &t;0x002&t;/* Known to have LUNs, force scanning,&n;&t;&t;&t;&t;&t;   deprecated: Use max_luns=N */
 DECL|macro|BLIST_BORKEN
 mdefine_line|#define BLIST_BORKEN    &t;0x004&t;/* Flag for broken handshaking */
 DECL|macro|BLIST_KEY
