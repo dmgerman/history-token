@@ -24,17 +24,17 @@ macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/time.h&gt;
 DECL|macro|TX_RING_SIZE
-mdefine_line|#define TX_RING_SIZE&t;128
+mdefine_line|#define TX_RING_SIZE&t;256
 DECL|macro|TX_QUEUE_LEN
-mdefine_line|#define TX_QUEUE_LEN&t;120&t;/* Limit ring entries actually used.  */
+mdefine_line|#define TX_QUEUE_LEN&t;(TX_RING_SIZE - 1) /* Limit ring entries actually used.*/
 DECL|macro|RX_RING_SIZE
-mdefine_line|#define RX_RING_SIZE &t;128
+mdefine_line|#define RX_RING_SIZE &t;256
 DECL|macro|TX_TOTAL_SIZE
 mdefine_line|#define TX_TOTAL_SIZE&t;TX_RING_SIZE*sizeof(struct netdev_desc)
 DECL|macro|RX_TOTAL_SIZE
 mdefine_line|#define RX_TOTAL_SIZE&t;RX_RING_SIZE*sizeof(struct netdev_desc)
 multiline_comment|/* This driver was written to use PCI memory space, however x86-oriented&n;   hardware often uses I/O space accesses. */
-macro_line|#ifdef USE_IO_OPS
+macro_line|#ifndef MEM_MAPPING
 DECL|macro|readb
 macro_line|#undef readb
 DECL|macro|readw
@@ -2858,6 +2858,12 @@ r_int
 id|rx_timeout
 suffix:semicolon
 multiline_comment|/* Wait time between RxDMAComplete intr */
+DECL|member|tx_coalesce
+r_int
+r_int
+id|tx_coalesce
+suffix:semicolon
+multiline_comment|/* Maximum frames each tx interrupt */
 DECL|member|full_duplex
 r_int
 r_int
@@ -2998,12 +3004,12 @@ multiline_comment|/* PHY addresses. */
 )brace
 suffix:semicolon
 multiline_comment|/* The station address location in the EEPROM. */
-macro_line|#ifdef USE_IO_OPS
-DECL|macro|PCI_IOTYPE
-mdefine_line|#define PCI_IOTYPE (PCI_USES_MASTER | PCI_USES_IO  | PCI_ADDR0)
-macro_line|#else
+macro_line|#ifdef MEM_MAPPING
 DECL|macro|PCI_IOTYPE
 mdefine_line|#define PCI_IOTYPE (PCI_USES_MASTER | PCI_USES_MEM | PCI_ADDR1)
+macro_line|#else
+DECL|macro|PCI_IOTYPE
+mdefine_line|#define PCI_IOTYPE (PCI_USES_MASTER | PCI_USES_IO  | PCI_ADDR0)
 macro_line|#endif
 multiline_comment|/* The struct pci_device_id consist of:&n;        vendor, device          Vendor and device ID to match (or PCI_ANY_ID)&n;        subvendor, subdevice    Subsystem vendor and device ID to match (or PCI_ANY_ID)&n;        class                   Device class to match. The class_mask tells which bits&n;        class_mask              of the class are honored during the comparison.&n;        driver_data             Data private to the driver.&n;*/
 DECL|variable|__devinitdata
