@@ -8100,14 +8100,6 @@ op_amp
 id|pmz_driver
 )paren
 suffix:semicolon
-multiline_comment|/* Unregister UART driver */
-id|uart_unregister_driver
-c_func
-(paren
-op_amp
-id|pmz_uart_reg
-)paren
-suffix:semicolon
 r_for
 c_loop
 (paren
@@ -8160,6 +8152,14 @@ id|uport
 suffix:semicolon
 )brace
 )brace
+multiline_comment|/* Unregister UART driver */
+id|uart_unregister_driver
+c_func
+(paren
+op_amp
+id|pmz_uart_reg
+)paren
+suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_SERIAL_PMACZILOG_CONSOLE
 multiline_comment|/*&n; * Print a string to the serial port trying not to disturb&n; * any possible real use of the port...&n; */
