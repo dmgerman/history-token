@@ -10,12 +10,12 @@ mdefine_line|#define DRIVER_NAME&t;&t;&quot;radeon&quot;
 DECL|macro|DRIVER_DESC
 mdefine_line|#define DRIVER_DESC&t;&t;&quot;ATI Radeon&quot;
 DECL|macro|DRIVER_DATE
-mdefine_line|#define DRIVER_DATE&t;&t;&quot;20041207&quot;
-multiline_comment|/* Interface history:&n; *&n; * 1.1 - ??&n; * 1.2 - Add vertex2 ioctl (keith)&n; *     - Add stencil capability to clear ioctl (gareth, keith)&n; *     - Increase MAX_TEXTURE_LEVELS (brian)&n; * 1.3 - Add cmdbuf ioctl (keith)&n; *     - Add support for new radeon packets (keith)&n; *     - Add getparam ioctl (keith)&n; *     - Add flip-buffers ioctl, deprecate fullscreen foo (keith).&n; * 1.4 - Add scratch registers to get_param ioctl.&n; * 1.5 - Add r200 packets to cmdbuf ioctl&n; *     - Add r200 function to init ioctl&n; *     - Add &squot;scalar2&squot; instruction to cmdbuf&n; * 1.6 - Add static GART memory manager&n; *       Add irq handler (won&squot;t be turned on unless X server knows to)&n; *       Add irq ioctls and irq_active getparam.&n; *       Add wait command for cmdbuf ioctl&n; *       Add GART offset query for getparam&n; * 1.7 - Add support for cube map registers: R200_PP_CUBIC_FACES_[0..5]&n; *       and R200_PP_CUBIC_OFFSET_F1_[0..5].&n; *       Added packets R200_EMIT_PP_CUBIC_FACES_[0..5] and&n; *       R200_EMIT_PP_CUBIC_OFFSETS_[0..5].  (brian)&n; * 1.8 - Remove need to call cleanup ioctls on last client exit (keith)&n; *       Add &squot;GET&squot; queries for starting additional clients on different VT&squot;s.&n; * 1.9 - Add DRM_IOCTL_RADEON_CP_RESUME ioctl.&n; *       Add texture rectangle support for r100.&n; * 1.10- Add SETPARAM ioctl; first parameter to set is FB_LOCATION, which&n; *       clients use to tell the DRM where they think the framebuffer is &n; *       located in the card&squot;s address space&n; * 1.11- Add packet R200_EMIT_RB3D_BLENDCOLOR to support GL_EXT_blend_color&n; *       and GL_EXT_blend_[func|equation]_separate on r200&n; * 1.12- Add R300 CP microcode support - this just loads the CP on r300&n; *       (No 3D support yet - just microcode loading)&n; * 1.13- Add packet R200_EMIT_TCL_POINT_SPRITE_CNTL for ARB_point_parameters&n; *     - Add hyperz support, add hyperz flags to clear ioctl.&n; */
+mdefine_line|#define DRIVER_DATE&t;&t;&quot;20050125&quot;
+multiline_comment|/* Interface history:&n; *&n; * 1.1 - ??&n; * 1.2 - Add vertex2 ioctl (keith)&n; *     - Add stencil capability to clear ioctl (gareth, keith)&n; *     - Increase MAX_TEXTURE_LEVELS (brian)&n; * 1.3 - Add cmdbuf ioctl (keith)&n; *     - Add support for new radeon packets (keith)&n; *     - Add getparam ioctl (keith)&n; *     - Add flip-buffers ioctl, deprecate fullscreen foo (keith).&n; * 1.4 - Add scratch registers to get_param ioctl.&n; * 1.5 - Add r200 packets to cmdbuf ioctl&n; *     - Add r200 function to init ioctl&n; *     - Add &squot;scalar2&squot; instruction to cmdbuf&n; * 1.6 - Add static GART memory manager&n; *       Add irq handler (won&squot;t be turned on unless X server knows to)&n; *       Add irq ioctls and irq_active getparam.&n; *       Add wait command for cmdbuf ioctl&n; *       Add GART offset query for getparam&n; * 1.7 - Add support for cube map registers: R200_PP_CUBIC_FACES_[0..5]&n; *       and R200_PP_CUBIC_OFFSET_F1_[0..5].&n; *       Added packets R200_EMIT_PP_CUBIC_FACES_[0..5] and&n; *       R200_EMIT_PP_CUBIC_OFFSETS_[0..5].  (brian)&n; * 1.8 - Remove need to call cleanup ioctls on last client exit (keith)&n; *       Add &squot;GET&squot; queries for starting additional clients on different VT&squot;s.&n; * 1.9 - Add DRM_IOCTL_RADEON_CP_RESUME ioctl.&n; *       Add texture rectangle support for r100.&n; * 1.10- Add SETPARAM ioctl; first parameter to set is FB_LOCATION, which&n; *       clients use to tell the DRM where they think the framebuffer is &n; *       located in the card&squot;s address space&n; * 1.11- Add packet R200_EMIT_RB3D_BLENDCOLOR to support GL_EXT_blend_color&n; *       and GL_EXT_blend_[func|equation]_separate on r200&n; * 1.12- Add R300 CP microcode support - this just loads the CP on r300&n; *       (No 3D support yet - just microcode loading)&n; * 1.13- Add packet R200_EMIT_TCL_POINT_SPRITE_CNTL for ARB_point_parameters&n; *     - Add hyperz support, add hyperz flags to clear ioctl.&n; * 1.14- Add support for color tiling&n; *     - Add R100/R200 surface allocation/free support&n; */
 DECL|macro|DRIVER_MAJOR
 mdefine_line|#define DRIVER_MAJOR&t;&t;1
 DECL|macro|DRIVER_MINOR
-mdefine_line|#define DRIVER_MINOR&t;&t;13
+mdefine_line|#define DRIVER_MINOR&t;&t;14
 DECL|macro|DRIVER_PATCHLEVEL
 mdefine_line|#define DRIVER_PATCHLEVEL&t;0
 DECL|macro|GET_RING_HEAD
@@ -262,6 +262,54 @@ id|DRMFILE
 id|filp
 suffix:semicolon
 multiline_comment|/* 0: free, -1: heap, other: real files */
+)brace
+suffix:semicolon
+DECL|struct|radeon_surface
+r_struct
+id|radeon_surface
+(brace
+DECL|member|refcount
+r_int
+id|refcount
+suffix:semicolon
+DECL|member|lower
+id|u32
+id|lower
+suffix:semicolon
+DECL|member|upper
+id|u32
+id|upper
+suffix:semicolon
+DECL|member|flags
+id|u32
+id|flags
+suffix:semicolon
+)brace
+suffix:semicolon
+DECL|struct|radeon_virt_surface
+r_struct
+id|radeon_virt_surface
+(brace
+DECL|member|surface_index
+r_int
+id|surface_index
+suffix:semicolon
+DECL|member|lower
+id|u32
+id|lower
+suffix:semicolon
+DECL|member|upper
+id|u32
+id|upper
+suffix:semicolon
+DECL|member|flags
+id|u32
+id|flags
+suffix:semicolon
+DECL|member|filp
+id|DRMFILE
+id|filp
+suffix:semicolon
 )brace
 suffix:semicolon
 DECL|struct|drm_radeon_private
@@ -527,6 +575,24 @@ suffix:semicolon
 DECL|member|swi_emitted
 id|atomic_t
 id|swi_emitted
+suffix:semicolon
+DECL|member|surfaces
+r_struct
+id|radeon_surface
+id|surfaces
+(braket
+id|RADEON_MAX_SURFACES
+)braket
+suffix:semicolon
+DECL|member|virt_surfaces
+r_struct
+id|radeon_virt_surface
+id|virt_surfaces
+(braket
+l_int|2
+op_star
+id|RADEON_MAX_SURFACES
+)braket
 suffix:semicolon
 multiline_comment|/* starting from here on, data is preserved accross an open */
 DECL|member|flags
@@ -859,6 +925,22 @@ r_struct
 id|mem_block
 op_star
 id|heap
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|radeon_surface_alloc
+c_func
+(paren
+id|DRM_IOCTL_ARGS
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|radeon_surface_free
+c_func
+(paren
+id|DRM_IOCTL_ARGS
 )paren
 suffix:semicolon
 multiline_comment|/* radeon_irq.c */
@@ -1516,6 +1598,8 @@ DECL|macro|RADEON_SURFACE0_LOWER_BOUND
 mdefine_line|#define RADEON_SURFACE0_LOWER_BOUND&t;0x0b04
 DECL|macro|RADEON_SURFACE0_UPPER_BOUND
 mdefine_line|#define RADEON_SURFACE0_UPPER_BOUND&t;0x0b08
+DECL|macro|RADEON_SURF_ADDRESS_FIXED_MASK
+macro_line|#&t;define RADEON_SURF_ADDRESS_FIXED_MASK&t;(0x3ff &lt;&lt; 0)
 DECL|macro|RADEON_SURFACE1_INFO
 mdefine_line|#define RADEON_SURFACE1_INFO&t;&t;0x0b1c
 DECL|macro|RADEON_SURFACE1_LOWER_BOUND
