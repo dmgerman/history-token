@@ -854,9 +854,7 @@ op_star
 id|indexes
 )paren
 r_return
-(paren
 l_int|0
-)paren
 suffix:semicolon
 multiline_comment|/* &amp;names[1] contains NULL terminated slot names */
 op_star
@@ -884,9 +882,7 @@ op_star
 id|names
 )paren
 r_return
-(paren
 l_int|0
-)paren
 suffix:semicolon
 multiline_comment|/* &amp;types[1] contains NULL terminated slot types */
 op_star
@@ -914,9 +910,7 @@ op_star
 id|types
 )paren
 r_return
-(paren
 l_int|0
-)paren
 suffix:semicolon
 multiline_comment|/* power_domains[1...n] are the slot power domains */
 op_star
@@ -944,9 +938,7 @@ op_star
 id|power_domains
 )paren
 r_return
-(paren
 l_int|0
-)paren
 suffix:semicolon
 r_if
 c_cond
@@ -973,14 +965,10 @@ l_int|NULL
 )paren
 )paren
 r_return
-(paren
 l_int|0
-)paren
 suffix:semicolon
 r_return
-(paren
 l_int|1
-)paren
 suffix:semicolon
 )brace
 DECL|function|is_vdevice_root
@@ -1007,7 +995,7 @@ l_string|&quot;vdevice&quot;
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*************************************&n; * Add  Hot Plug slot(s) to sysfs&n; *&n; ************************************/
+multiline_comment|/**&n; * rpaphp_add_slot: Add  Hot Plug slot(s) to sysfs&n; *&n; */
 DECL|function|rpaphp_add_slot
 r_int
 id|rpaphp_add_slot
