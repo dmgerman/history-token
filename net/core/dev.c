@@ -5981,6 +5981,7 @@ c_func
 (paren
 r_struct
 id|ifreq
+id|__user
 op_star
 id|arg
 )paren
@@ -6100,6 +6101,7 @@ id|dev_ifconf
 c_func
 (paren
 r_char
+id|__user
 op_star
 id|arg
 )paren
@@ -8390,6 +8392,7 @@ r_int
 id|cmd
 comma
 r_void
+id|__user
 op_star
 id|arg
 )paren
@@ -8426,6 +8429,7 @@ c_func
 (paren
 (paren
 r_char
+id|__user
 op_star
 )paren
 id|arg
@@ -8454,6 +8458,7 @@ c_func
 (paren
 r_struct
 id|ifreq
+id|__user
 op_star
 )paren
 id|arg

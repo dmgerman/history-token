@@ -205,6 +205,7 @@ op_star
 id|dev
 comma
 r_void
+id|__user
 op_star
 id|useraddr
 )paren
@@ -290,6 +291,7 @@ op_star
 id|dev
 comma
 r_void
+id|__user
 op_star
 id|useraddr
 )paren
@@ -354,6 +356,7 @@ op_star
 id|dev
 comma
 r_void
+id|__user
 op_star
 id|useraddr
 )paren
@@ -505,6 +508,7 @@ op_star
 id|dev
 comma
 r_char
+id|__user
 op_star
 id|useraddr
 )paren
@@ -696,6 +700,7 @@ op_star
 id|dev
 comma
 r_char
+id|__user
 op_star
 id|useraddr
 )paren
@@ -766,6 +771,7 @@ op_star
 id|dev
 comma
 r_char
+id|__user
 op_star
 id|useraddr
 )paren
@@ -830,6 +836,7 @@ op_star
 id|dev
 comma
 r_char
+id|__user
 op_star
 id|useraddr
 )paren
@@ -899,6 +906,7 @@ op_star
 id|dev
 comma
 r_char
+id|__user
 op_star
 id|useraddr
 )paren
@@ -996,6 +1004,7 @@ op_star
 id|dev
 comma
 r_void
+id|__user
 op_star
 id|useraddr
 )paren
@@ -1065,6 +1074,7 @@ op_star
 id|dev
 comma
 r_void
+id|__user
 op_star
 id|useraddr
 )paren
@@ -1298,6 +1308,7 @@ op_star
 id|dev
 comma
 r_void
+id|__user
 op_star
 id|useraddr
 )paren
@@ -1504,6 +1515,7 @@ op_star
 id|dev
 comma
 r_void
+id|__user
 op_star
 id|useraddr
 )paren
@@ -1574,6 +1586,7 @@ op_star
 id|dev
 comma
 r_void
+id|__user
 op_star
 id|useraddr
 )paren
@@ -1638,6 +1651,7 @@ op_star
 id|dev
 comma
 r_void
+id|__user
 op_star
 id|useraddr
 )paren
@@ -1708,6 +1722,7 @@ op_star
 id|dev
 comma
 r_void
+id|__user
 op_star
 id|useraddr
 )paren
@@ -1772,6 +1787,7 @@ op_star
 id|dev
 comma
 r_void
+id|__user
 op_star
 id|useraddr
 )paren
@@ -1842,6 +1858,7 @@ op_star
 id|dev
 comma
 r_void
+id|__user
 op_star
 id|useraddr
 )paren
@@ -1906,6 +1923,7 @@ op_star
 id|dev
 comma
 r_char
+id|__user
 op_star
 id|useraddr
 )paren
@@ -1975,6 +1993,7 @@ op_star
 id|dev
 comma
 r_char
+id|__user
 op_star
 id|useraddr
 )paren
@@ -2040,6 +2059,7 @@ op_star
 id|dev
 comma
 r_char
+id|__user
 op_star
 id|useraddr
 )paren
@@ -2109,6 +2129,7 @@ op_star
 id|dev
 comma
 r_char
+id|__user
 op_star
 id|useraddr
 )paren
@@ -2172,6 +2193,7 @@ op_star
 id|dev
 comma
 r_char
+id|__user
 op_star
 id|useraddr
 )paren
@@ -2241,6 +2263,7 @@ op_star
 id|dev
 comma
 r_char
+id|__user
 op_star
 id|useraddr
 )paren
@@ -2304,6 +2327,7 @@ op_star
 id|dev
 comma
 r_char
+id|__user
 op_star
 id|useraddr
 )paren
@@ -2373,6 +2397,7 @@ op_star
 id|dev
 comma
 r_char
+id|__user
 op_star
 id|useraddr
 )paren
@@ -2436,6 +2461,7 @@ op_star
 id|dev
 comma
 r_char
+id|__user
 op_star
 id|useraddr
 )paren
@@ -2621,6 +2647,7 @@ op_star
 id|dev
 comma
 r_void
+id|__user
 op_star
 id|useraddr
 )paren
@@ -2849,6 +2876,7 @@ op_star
 id|dev
 comma
 r_void
+id|__user
 op_star
 id|useraddr
 )paren
@@ -2912,6 +2940,7 @@ op_star
 id|dev
 comma
 r_void
+id|__user
 op_star
 id|useraddr
 )paren
@@ -3109,11 +3138,13 @@ id|ifr-&gt;ifr_name
 )paren
 suffix:semicolon
 r_void
+id|__user
 op_star
 id|useraddr
 op_assign
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|ifr-&gt;ifr_data

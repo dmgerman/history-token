@@ -98,6 +98,7 @@ id|uint64
 suffix:semicolon
 DECL|member|ptr
 r_void
+id|__user
 op_star
 id|ptr
 suffix:semicolon
@@ -198,6 +199,7 @@ id|cmd
 comma
 r_struct
 id|divert_cf
+id|__user
 op_star
 id|arg
 )paren
