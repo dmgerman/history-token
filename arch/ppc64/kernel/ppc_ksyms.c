@@ -1199,7 +1199,7 @@ id|xmon
 )paren
 suffix:semicolon
 macro_line|#endif
-macro_line|#if defined(CONFIG_KGDB) || defined(CONFIG_XMON)
+macro_line|#ifdef CONFIG_DEBUG_KERNEL
 r_extern
 r_void
 (paren

@@ -80,8 +80,8 @@ DECL|macro|HMT_LOW
 mdefine_line|#define HMT_LOW&t;&t;&quot;&bslash;tor&t;1,1,1&t;&t;# low priority&bslash;n&quot;
 DECL|macro|HMT_MEDIUM
 mdefine_line|#define HMT_MEDIUM&t;&quot;&bslash;tor&t;2,2,2&t;&t;# medium priority&bslash;n&quot;
-DECL|macro|HMT_MEDIUM
-mdefine_line|#define HMT_MEDIUM&t;&quot;&bslash;tor&t;3,3,3&t;&t;# high priority&bslash;n&quot;
+DECL|macro|HMT_HIGH
+mdefine_line|#define HMT_HIGH&t;&quot;&bslash;tor&t;3,3,3&t;&t;# high priority&bslash;n&quot;
 macro_line|#else
 DECL|macro|HMT_low
 mdefine_line|#define HMT_low()&t;do { } while(0)

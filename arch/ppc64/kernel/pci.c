@@ -1897,6 +1897,13 @@ l_string|&quot;PCI: Probing PCI hardware done.&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
+DECL|variable|pcibios_init
+id|subsys_initcall
+c_func
+(paren
+id|pcibios_init
+)paren
+suffix:semicolon
 r_int
 id|__init
 DECL|function|pcibios_assign_all_busses

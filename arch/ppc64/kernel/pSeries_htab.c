@@ -1376,8 +1376,6 @@ id|_tlbiel
 c_func
 (paren
 id|va
-comma
-id|large
 )paren
 suffix:semicolon
 )brace

@@ -14,10 +14,6 @@ r_int
 r_int
 id|cycles_t
 suffix:semicolon
-r_extern
-id|cycles_t
-id|cacheflush_time
-suffix:semicolon
 DECL|function|get_cycles
 r_static
 r_inline

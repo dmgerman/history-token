@@ -803,7 +803,7 @@ id|rec-&gt;data
 l_int|0
 )braket
 op_assign
-id|_MACH_pSeries
+id|PLATFORM_PSERIES
 suffix:semicolon
 id|rec-&gt;data
 (braket

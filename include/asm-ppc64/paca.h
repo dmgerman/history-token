@@ -127,11 +127,15 @@ id|u8
 id|prof_enabled
 suffix:semicolon
 multiline_comment|/* 1=iSeries profiling enabled          0x7A */
+DECL|member|stab_cache_pointer
+id|u8
+id|stab_cache_pointer
+suffix:semicolon
 DECL|member|resv1
 id|u8
 id|resv1
 (braket
-l_int|5
+l_int|4
 )braket
 suffix:semicolon
 multiline_comment|/*&t;&t;&t;&t;&t;0x7B-0x7F */

@@ -806,9 +806,6 @@ c_func
 r_int
 r_int
 id|va
-comma
-r_int
-id|large
 )paren
 (brace
 id|asm
@@ -821,16 +818,10 @@ suffix:colon
 l_string|&quot;memory&quot;
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|large
-)paren
-(brace
 id|asm
 r_volatile
 (paren
-l_string|&quot;clrldi&t;%0,%0,16&bslash;n&bslash;&n;&t;&t;&t;      tlbiel&t;%0,1&quot;
+l_string|&quot;clrldi&t;%0,%0,16&bslash;n&bslash;&n;&t;&t;      tlbiel&t;%0&quot;
 suffix:colon
 suffix:colon
 l_string|&quot;r&quot;
@@ -841,24 +832,6 @@ suffix:colon
 l_string|&quot;memory&quot;
 )paren
 suffix:semicolon
-)brace
-r_else
-(brace
-id|asm
-r_volatile
-(paren
-l_string|&quot;clrldi&t;%0,%0,16&bslash;n&bslash;&n;&t;&t;&t;      tlbiel&t;%0,0&quot;
-suffix:colon
-suffix:colon
-l_string|&quot;r&quot;
-(paren
-id|va
-)paren
-suffix:colon
-l_string|&quot;memory&quot;
-)paren
-suffix:semicolon
-)brace
 id|asm
 r_volatile
 (paren

@@ -38,10 +38,10 @@ r_int
 r_int
 id|__syscall_count
 suffix:semicolon
-DECL|member|__unused
+DECL|member|idle_timestamp
 r_int
 r_int
-id|__unused
+id|idle_timestamp
 suffix:semicolon
 DECL|member|__ksoftirqd_task
 r_struct
