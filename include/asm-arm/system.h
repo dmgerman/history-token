@@ -100,9 +100,12 @@ multiline_comment|/*&n; * This is used to ensure the compiler did actually alloc
 DECL|macro|__asmeq
 mdefine_line|#define __asmeq(x, y)  &quot;.ifnc &quot; x &quot;,&quot; y &quot; ; .err ; .endif&bslash;n&bslash;t&quot;
 macro_line|#ifndef __ASSEMBLY__
-macro_line|#include &lt;linux/kernel.h&gt;
+macro_line|#include &lt;linux/linkage.h&gt;
 r_struct
 id|thread_info
+suffix:semicolon
+r_struct
+id|task_struct
 suffix:semicolon
 multiline_comment|/* information about the system we&squot;re running on */
 r_extern
@@ -296,12 +299,6 @@ DECL|macro|task_running
 mdefine_line|#define task_running(rq,p)&t;&t;((rq)-&gt;curr == (p))
 macro_line|#endif
 multiline_comment|/*&n; * switch_to(prev, next) should switch from task `prev&squot; to `next&squot;&n; * `prev&squot; will never be the same as `next&squot;.  schedule() itself&n; * contains the memory barrier to tell GCC not to cache `current&squot;.&n; */
-r_struct
-id|thread_info
-suffix:semicolon
-r_struct
-id|task_struct
-suffix:semicolon
 r_extern
 r_struct
 id|task_struct

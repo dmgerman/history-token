@@ -112,7 +112,7 @@ l_int|1
 suffix:semicolon
 )brace
 DECL|macro|unix_peer
-mdefine_line|#define unix_peer(sk) ((sk)-&gt;sk_pair)
+mdefine_line|#define unix_peer(sk) (unix_sk(sk)-&gt;peer)
 DECL|function|unix_our_peer
 r_static
 r_inline

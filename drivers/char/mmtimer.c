@@ -508,6 +508,20 @@ c_func
 r_void
 )paren
 (brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|ia64_platform_is
+c_func
+(paren
+l_string|&quot;sn2&quot;
+)paren
+)paren
+r_return
+op_minus
+l_int|1
+suffix:semicolon
 multiline_comment|/*&n;&t; * Sanity check the cycles/sec variable&n;&t; */
 r_if
 c_cond

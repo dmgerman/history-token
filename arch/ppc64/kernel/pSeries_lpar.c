@@ -1683,7 +1683,7 @@ id|ppc_md.flush_hash_range
 op_assign
 id|pSeries_lpar_flush_hash_range
 suffix:semicolon
-id|ppc_md.htpe_clear_all
+id|ppc_md.hpte_clear_all
 op_assign
 id|pSeries_lpar_hptab_clear
 suffix:semicolon

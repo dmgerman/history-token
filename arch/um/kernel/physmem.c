@@ -1675,6 +1675,24 @@ c_cond
 id|err
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|err
+op_eq
+op_minus
+id|ENOMEM
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;try increasing the host&squot;s &quot;
+l_string|&quot;/proc/sys/vm/max_map_count to &lt;physical &quot;
+l_string|&quot;memory size&gt;/4096&bslash;n&quot;
+)paren
+suffix:semicolon
+)brace
 id|panic
 c_func
 (paren

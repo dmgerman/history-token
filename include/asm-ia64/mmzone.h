@@ -21,17 +21,6 @@ macro_line|# define NR_NODES&t;&t;256
 DECL|macro|NR_NODE_MEMBLKS
 macro_line|# define NR_NODE_MEMBLKS&t;(NR_NODES * 4)
 macro_line|#endif
-r_extern
-r_int
-r_int
-id|max_low_pfn
-suffix:semicolon
-DECL|macro|pfn_valid
-mdefine_line|#define pfn_valid(pfn)&t;&t;(((pfn) &lt; max_low_pfn) &amp;&amp; ia64_pfn_valid(pfn))
-DECL|macro|page_to_pfn
-mdefine_line|#define page_to_pfn(page)&t;((unsigned long) (page - vmem_map))
-DECL|macro|pfn_to_page
-mdefine_line|#define pfn_to_page(pfn)&t;(vmem_map + (pfn))
 macro_line|#else /* CONFIG_DISCONTIGMEM */
 DECL|macro|NR_NODE_MEMBLKS
 macro_line|# define NR_NODE_MEMBLKS&t;4

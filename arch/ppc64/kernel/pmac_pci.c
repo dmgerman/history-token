@@ -1564,8 +1564,6 @@ multiline_comment|/*&n;&t; * /ht node doesn&squot;t expose a &quot;ranges&quot; 
 id|hose-&gt;io_base_phys
 op_assign
 l_int|0xf4000000
-op_plus
-l_int|0x00400000
 suffix:semicolon
 id|hose-&gt;io_base_virt
 op_assign
@@ -2873,13 +2871,11 @@ c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_PMAC_DART
-id|iommu_setup_pmac
+id|iommu_setup_u3
 c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#endif /* CONFIG_PMAC_DART */
 )brace
 DECL|function|pmac_fixup_phb_resources
 r_static

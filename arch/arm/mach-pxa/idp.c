@@ -11,6 +11,7 @@ macro_line|#include &lt;asm/hardware.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/mach/arch.h&gt;
 macro_line|#include &lt;asm/mach/map.h&gt;
+macro_line|#include &lt;asm/arch/pxa-regs.h&gt;
 macro_line|#include &lt;asm/arch/idp.h&gt;
 macro_line|#include &quot;generic.h&quot;
 macro_line|#ifndef PXA_IDP_REV02

@@ -271,7 +271,7 @@ id|cnt
 comma
 id|min_len
 suffix:semicolon
-id|ntfschar
+id|u16
 id|c1
 comma
 id|c2
@@ -480,7 +480,7 @@ r_int
 id|n
 )paren
 (brace
-id|ntfschar
+id|u16
 id|c1
 comma
 id|c2
@@ -588,13 +588,13 @@ id|u32
 id|upcase_size
 )paren
 (brace
-id|ntfschar
+r_int
+id|i
+suffix:semicolon
+id|u16
 id|c1
 comma
 id|c2
-suffix:semicolon
-r_int
-id|i
 suffix:semicolon
 r_for
 c_loop
@@ -728,7 +728,7 @@ id|upcase_len
 id|u32
 id|i
 suffix:semicolon
-id|ntfschar
+id|u16
 id|u
 suffix:semicolon
 r_for
@@ -1028,11 +1028,7 @@ id|ucs
 id|o
 )braket
 op_assign
-id|cpu_to_le16
-c_func
-(paren
-l_char|&squot;&bslash;0&squot;
-)paren
+l_int|0
 suffix:semicolon
 op_star
 id|outs
@@ -1390,7 +1386,7 @@ id|ns
 id|o
 )braket
 op_assign
-l_char|&squot;&bslash;0&squot;
+l_int|0
 suffix:semicolon
 op_star
 id|outs

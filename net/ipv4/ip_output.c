@@ -1688,6 +1688,10 @@ c_func
 id|to-&gt;nfct
 )paren
 suffix:semicolon
+id|to-&gt;nfctinfo
+op_assign
+id|from-&gt;nfctinfo
+suffix:semicolon
 macro_line|#ifdef CONFIG_BRIDGE_NETFILTER
 id|nf_bridge_put
 c_func

@@ -1809,35 +1809,6 @@ op_assign
 l_int|1
 suffix:semicolon
 )brace
-macro_line|#ifndef CONFIG_PMAC_DART
-r_if
-c_cond
-(paren
-id|RELOC
-c_func
-(paren
-id|of_platform
-)paren
-op_eq
-id|PLATFORM_POWERMAC
-)paren
-(brace
-id|RELOC
-c_func
-(paren
-id|ppc64_iommu_off
-)paren
-op_assign
-l_int|1
-suffix:semicolon
-id|prom_printf
-c_func
-(paren
-l_string|&quot;DART disabled on PowerMac !&bslash;n&quot;
-)paren
-suffix:semicolon
-)brace
-macro_line|#endif
 )brace
 multiline_comment|/*&n; * Memory allocation strategy... our layout is normally:&n; *&n; *  at 14Mb or more we vmlinux, then a gap and initrd. In some rare cases, initrd&n; *  might end up beeing before the kernel though. We assume this won&squot;t override&n; *  the final kernel at 0, we have no provision to handle that in this version,&n; *  but it should hopefully never happen.&n; *&n; *  alloc_top is set to the top of RMO, eventually shrink down if the TCEs overlap&n; *  alloc_bottom is set to the top of kernel/initrd&n; *&n; *  from there, allocations are done that way : rtas is allocated topmost, and&n; *  the device-tree is allocated from the bottom. We try to grow the device-tree&n; *  allocation as we progress. If we can&squot;t, then we fail, we don&squot;t currently have&n; *  a facility to restart elsewhere, but that shouldn&squot;t be necessary neither&n; *&n; *  Note that calls to reserve_mem have to be done explicitely, memory allocated&n; *  with either alloc_up or alloc_down isn&squot;t automatically reserved.&n; */
 multiline_comment|/*&n; * Allocates memory in the RMO upward from the kernel/initrd&n; *&n; * When align is 0, this is a special case, it means to allocate in place&n; * at the current location of alloc_bottom or fail (that is basically&n; * extending the previous allocation). Used for the device-tree flattening&n; */

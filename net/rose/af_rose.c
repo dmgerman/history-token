@@ -3683,10 +3683,6 @@ id|newsk
 op_assign
 id|skb-&gt;sk
 suffix:semicolon
-id|newsk-&gt;sk_pair
-op_assign
-l_int|NULL
-suffix:semicolon
 id|newsk-&gt;sk_socket
 op_assign
 id|newsock
@@ -4262,10 +4258,6 @@ l_int|0
 suffix:semicolon
 id|sk-&gt;sk_ack_backlog
 op_increment
-suffix:semicolon
-id|make-&gt;sk_pair
-op_assign
-id|sk
 suffix:semicolon
 id|rose_insert_socket
 c_func

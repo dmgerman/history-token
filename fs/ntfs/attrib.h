@@ -176,7 +176,7 @@ id|ntfs_attr_lookup
 c_func
 (paren
 r_const
-id|ATTR_TYPES
+id|ATTR_TYPE
 id|type
 comma
 r_const
@@ -236,11 +236,11 @@ id|s64
 id|initialized_size
 )paren
 suffix:semicolon
-DECL|function|attribute_value_length
+DECL|function|ntfs_attr_size
 r_static
 r_inline
 id|s64
-id|attribute_value_length
+id|ntfs_attr_size
 c_func
 (paren
 r_const

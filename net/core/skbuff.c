@@ -929,6 +929,12 @@ c_func
 id|skb-&gt;nfct
 )paren
 suffix:semicolon
+id|C
+c_func
+(paren
+id|nfctinfo
+)paren
+suffix:semicolon
 macro_line|#ifdef CONFIG_NETFILTER_DEBUG
 id|C
 c_func
@@ -1250,6 +1256,12 @@ c_func
 (paren
 id|old-&gt;nfct
 )paren
+suffix:semicolon
+r_new
+op_member_access_from_pointer
+id|nfctinfo
+op_assign
+id|old-&gt;nfctinfo
 suffix:semicolon
 macro_line|#ifdef CONFIG_NETFILTER_DEBUG
 r_new

@@ -82,10 +82,7 @@ c_cond
 id|skb-&gt;nfct
 op_eq
 op_amp
-id|ip_conntrack_untracked.infos
-(braket
-id|IP_CT_NEW
-)braket
+id|ip_conntrack_untracked.ct_general
 )paren
 id|statebit
 op_assign
@@ -99,11 +96,6 @@ op_logical_neg
 id|ip_conntrack_get
 c_func
 (paren
-(paren
-r_struct
-id|sk_buff
-op_star
-)paren
 id|skb
 comma
 op_amp

@@ -513,6 +513,20 @@ comma
 l_int|5
 )brace
 suffix:semicolon
+r_static
+r_void
+id|register_slot
+c_func
+(paren
+r_int
+id|i
+comma
+r_struct
+id|grip_mp
+op_star
+id|grip
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Returns whether an odd or even number of bits are on in pkt.&n; */
 DECL|function|bit_parity
 r_static
@@ -1560,20 +1574,6 @@ r_int
 id|slot
 op_assign
 l_int|0
-suffix:semicolon
-r_static
-r_void
-id|register_slot
-c_func
-(paren
-r_int
-id|i
-comma
-r_struct
-id|grip_mp
-op_star
-id|grip
-)paren
 suffix:semicolon
 multiline_comment|/* Get a packet and check for validity */
 id|flags
