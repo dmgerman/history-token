@@ -2843,7 +2843,7 @@ op_increment
 id|devfs_remove
 c_func
 (paren
-l_string|&quot;snd/%s&quot;
+l_string|&quot;sound/%s&quot;
 comma
 id|dev_list
 (braket
