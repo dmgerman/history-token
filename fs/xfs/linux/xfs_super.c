@@ -2274,12 +2274,6 @@ op_star
 id|sb
 )paren
 (brace
-r_int
-id|error
-suffix:semicolon
-r_int
-id|sector_size
-suffix:semicolon
 id|vfs_t
 op_star
 id|vfsp
@@ -2289,6 +2283,9 @@ c_func
 (paren
 id|sb
 )paren
+suffix:semicolon
+r_int
+id|error
 suffix:semicolon
 id|VFS_DOUNMOUNT
 c_func
