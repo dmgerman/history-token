@@ -5525,25 +5525,12 @@ c_func
 id|FTL_MAJOR
 comma
 l_string|&quot;ftl&quot;
-comma
-op_amp
-id|ftl_blk_fops
 )paren
 )paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_NOTICE
-l_string|&quot;ftl_cs: unable to grab major &quot;
-l_string|&quot;device number!&bslash;n&quot;
-)paren
-suffix:semicolon
 r_return
 op_minus
 id|EAGAIN
 suffix:semicolon
-)brace
 id|blk_init_queue
 c_func
 (paren

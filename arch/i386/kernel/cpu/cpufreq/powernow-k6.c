@@ -711,6 +711,11 @@ id|name
 op_assign
 l_string|&quot;powernow-k6&quot;
 comma
+dot
+id|owner
+op_assign
+id|THIS_MODULE
+comma
 )brace
 suffix:semicolon
 multiline_comment|/**&n; * powernow_k6_init - initializes the k6 PowerNow! CPUFreq driver&n; *&n; *   Initializes the K6 PowerNow! support. Returns -ENODEV on unsupported&n; * devices, -EINVAL or -ENOMEM on problems during initiatization, and zero&n; * on success.&n; */

@@ -482,7 +482,6 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef MODULE
 r_extern
 r_int
 id|ncr53c8xx_release
@@ -522,5 +521,4 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
-macro_line|#endif
 eof

@@ -2017,6 +2017,9 @@ r_struct
 id|file_ra_state
 op_star
 id|ra
+comma
+id|pgoff_t
+id|offset
 )paren
 suffix:semicolon
 r_int

@@ -5344,9 +5344,6 @@ c_func
 id|MAJOR_NR
 comma
 l_string|&quot;fd&quot;
-comma
-op_amp
-id|floppy_fops
 )paren
 suffix:semicolon
 r_if
@@ -5354,19 +5351,9 @@ c_cond
 (paren
 id|err
 )paren
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot;Unable to get major %d for floppy&bslash;n&quot;
-comma
-id|MAJOR_NR
-)paren
-suffix:semicolon
 r_goto
 id|err_disk
 suffix:semicolon
-)brace
 id|err
 op_assign
 op_minus

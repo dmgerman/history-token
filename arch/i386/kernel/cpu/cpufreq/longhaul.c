@@ -3197,6 +3197,11 @@ id|name
 op_assign
 l_string|&quot;longhaul&quot;
 comma
+dot
+id|owner
+op_assign
+id|THIS_MODULE
+comma
 )brace
 suffix:semicolon
 DECL|function|longhaul_init

@@ -38,7 +38,7 @@ id|count
 comma
 id|hilo
 suffix:semicolon
-multiline_comment|/* Select desired events.  We&squot;ve mapped the event numbers&n;&t;   such that they fit directly into the event selection fields.&n;&n;&t;   Note that there is no &quot;off&quot; setting.  In both cases we select&n;&t;   the EXTERNAL event source, hoping that it&squot;ll be the lowest&n;&t;   frequency, and set the frequency counter to LOW.  The interrupts&n;&t;   for these &quot;disabled&quot; counter overflows are ignored by the&n;&t;   interrupt handler.&n;&n;&t;   This is most irritating, becuase the hardware *can* enable and&n;&t;   disable the interrupts for these counters independently, but the&n;&t;   wrperfmon interface doesn&squot;t allow it.  */
+multiline_comment|/* Select desired events.  We&squot;ve mapped the event numbers&n;&t;   such that they fit directly into the event selection fields.&n;&n;&t;   Note that there is no &quot;off&quot; setting.  In both cases we select&n;&t;   the EXTERNAL event source, hoping that it&squot;ll be the lowest&n;&t;   frequency, and set the frequency counter to LOW.  The interrupts&n;&t;   for these &quot;disabled&quot; counter overflows are ignored by the&n;&t;   interrupt handler.&n;&n;&t;   This is most irritating, because the hardware *can* enable and&n;&t;   disable the interrupts for these counters independently, but the&n;&t;   wrperfmon interface doesn&squot;t allow it.  */
 id|ctl
 op_or_assign
 (paren
