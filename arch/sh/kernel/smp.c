@@ -17,12 +17,6 @@ macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/mmu_context.h&gt;
 macro_line|#include &lt;asm/smp.h&gt;
 multiline_comment|/*&n; * This was written with the Sega Saturn (SMP SH-2 7604) in mind,&n; * but is designed to be usable regardless if there&squot;s an MMU&n; * present or not.&n; */
-DECL|variable|smp_threads_ready
-r_int
-id|smp_threads_ready
-op_assign
-l_int|0
-suffix:semicolon
 DECL|variable|cpu_data
 r_struct
 id|sh_cpuinfo
@@ -46,15 +40,6 @@ suffix:semicolon
 DECL|variable|cpu_online_map
 id|cpumask_t
 id|cpu_online_map
-suffix:semicolon
-DECL|variable|cache_decay_ticks
-r_int
-r_int
-id|cache_decay_ticks
-op_assign
-id|HZ
-op_div
-l_int|100
 suffix:semicolon
 DECL|variable|cpus_booted
 r_static
@@ -364,10 +349,6 @@ r_int
 id|max_cpus
 )paren
 (brace
-id|smp_threads_ready
-op_assign
-l_int|1
-suffix:semicolon
 id|smp_mb
 c_func
 (paren

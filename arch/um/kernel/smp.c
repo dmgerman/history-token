@@ -64,27 +64,12 @@ id|cpu_data
 id|NR_CPUS
 )braket
 suffix:semicolon
-multiline_comment|/* Set when the idlers are all forked */
-DECL|variable|smp_threads_ready
-r_int
-id|smp_threads_ready
-op_assign
-l_int|0
-suffix:semicolon
 multiline_comment|/* A statistic, can be a little off */
 DECL|variable|num_reschedules_sent
 r_int
 id|num_reschedules_sent
 op_assign
 l_int|0
-suffix:semicolon
-multiline_comment|/* Small, random number, never changed */
-DECL|variable|cache_decay_ticks
-r_int
-r_int
-id|cache_decay_ticks
-op_assign
-l_int|5
 suffix:semicolon
 multiline_comment|/* Not changed after boot */
 DECL|variable|idle_threads

@@ -167,11 +167,6 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * True once the per process idle is forked&n; */
-r_extern
-r_int
-id|smp_threads_ready
-suffix:semicolon
 DECL|macro|MSG_ALL_BUT_SELF
 mdefine_line|#define MSG_ALL_BUT_SELF&t;0x8000&t;/* Assume &lt;32768 CPU&squot;s */
 DECL|macro|MSG_ALL
@@ -200,8 +195,6 @@ macro_line|# define smp_processor_id()&t;&t;&t;0
 macro_line|#endif
 DECL|macro|hard_smp_processor_id
 mdefine_line|#define hard_smp_processor_id()&t;&t;&t;0
-DECL|macro|smp_threads_ready
-mdefine_line|#define smp_threads_ready&t;&t;&t;1
 DECL|macro|smp_call_function
 mdefine_line|#define smp_call_function(func,info,retry,wait)&t;({ 0; })
 DECL|macro|on_each_cpu

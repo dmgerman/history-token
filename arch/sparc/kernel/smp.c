@@ -37,12 +37,6 @@ id|smp_num_cpus
 op_assign
 l_int|1
 suffix:semicolon
-DECL|variable|smp_threads_ready
-r_int
-id|smp_threads_ready
-op_assign
-l_int|0
-suffix:semicolon
 DECL|variable|__initdata
 r_volatile
 r_int
@@ -94,20 +88,6 @@ id|__cpu_logical_map
 (braket
 id|NR_CPUS
 )braket
-suffix:semicolon
-DECL|variable|cacheflush_time
-id|cycles_t
-id|cacheflush_time
-op_assign
-l_int|0
-suffix:semicolon
-multiline_comment|/* XXX */
-DECL|variable|cache_decay_ticks
-r_int
-r_int
-id|cache_decay_ticks
-op_assign
-l_int|100
 suffix:semicolon
 DECL|variable|cpu_online_map
 id|cpumask_t

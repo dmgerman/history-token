@@ -36,10 +36,6 @@ macro_line|#else
 DECL|macro|DBG
 mdefine_line|#define DBG(fmt...)
 macro_line|#endif
-DECL|variable|smp_threads_ready
-r_int
-id|smp_threads_ready
-suffix:semicolon
 DECL|variable|cpu_possible_map
 id|cpumask_t
 id|cpu_possible_map

@@ -333,11 +333,6 @@ c_func
 r_void
 )paren
 suffix:semicolon
-r_extern
-r_int
-r_int
-id|cache_decay_ticks
-suffix:semicolon
 multiline_comment|/* Attach to any functions which should be ignored in wchan output. */
 DECL|macro|__sched
 mdefine_line|#define __sched&t;&t;__attribute__((__section__(&quot;.sched.text&quot;)))

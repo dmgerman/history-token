@@ -72,11 +72,6 @@ id|NR_CPUS
 )braket
 id|__cacheline_aligned
 suffix:semicolon
-multiline_comment|/* Set when the idlers are all forked */
-DECL|variable|smp_threads_ready
-r_int
-id|smp_threads_ready
-suffix:semicolon
 DECL|variable|cpucount
 r_static
 r_int
@@ -164,15 +159,6 @@ r_static
 r_int
 r_int
 id|calibration_result
-suffix:semicolon
-DECL|variable|cache_decay_ticks
-r_int
-r_int
-id|cache_decay_ticks
-op_assign
-id|HZ
-op_div
-l_int|100
 suffix:semicolon
 multiline_comment|/*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*/
 multiline_comment|/* Function Prototypes                                                       */

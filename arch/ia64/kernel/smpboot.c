@@ -1402,10 +1402,6 @@ op_amp
 id|ticks
 )paren
 suffix:semicolon
-id|cache_decay_ticks
-op_assign
-id|ticks
-suffix:semicolon
 r_return
 l_int|1
 suffix:semicolon
@@ -1418,41 +1414,6 @@ comma
 id|decay
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * # of ticks an idle task is considered cache-hot.  Highly application-dependent.  There&n; * are apps out there which are known to suffer significantly with values &gt;= 4.&n; */
-DECL|variable|cache_decay_ticks
-r_int
-r_int
-id|cache_decay_ticks
-op_assign
-l_int|10
-suffix:semicolon
-multiline_comment|/* equal to MIN_TIMESLICE */
-r_static
-r_void
-DECL|function|smp_tune_scheduling
-id|smp_tune_scheduling
-(paren
-r_void
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;task migration cache decay timeout: %ld msecs.&bslash;n&quot;
-comma
-(paren
-id|cache_decay_ticks
-op_plus
-l_int|1
-)paren
-op_star
-l_int|1000
-op_div
-id|HZ
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/*&n; * Initialize the logical CPU number to SAPICID mapping&n; */
 r_void
 id|__init
@@ -1847,11 +1808,6 @@ op_member_access_from_pointer
 id|cpu
 op_assign
 l_int|0
-suffix:semicolon
-id|smp_tune_scheduling
-c_func
-(paren
-)paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * If SMP should be disabled, then really disable it!&n;&t; */
 r_if

@@ -14,10 +14,6 @@ r_int
 id|cycles_t
 suffix:semicolon
 multiline_comment|/*&n; * For the &quot;cycle&quot; counter we use the timebase lower half.&n; * Currently only used on SMP.&n; */
-r_extern
-id|cycles_t
-id|cacheflush_time
-suffix:semicolon
 DECL|function|get_cycles
 r_static
 r_inline

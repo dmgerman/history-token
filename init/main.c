@@ -1273,10 +1273,6 @@ id|max_cpus
 suffix:semicolon
 macro_line|#if 0
 multiline_comment|/* Get other processors into their bootup holding patterns. */
-id|smp_threads_ready
-op_assign
-l_int|1
-suffix:semicolon
 id|smp_commence
 c_func
 (paren

@@ -7,8 +7,6 @@ r_int
 r_int
 id|cycles_t
 suffix:semicolon
-DECL|macro|cacheflush_time
-mdefine_line|#define cacheflush_time (0)
 DECL|function|get_cycles
 r_static
 r_inline

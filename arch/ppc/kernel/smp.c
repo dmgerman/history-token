@@ -24,10 +24,6 @@ macro_line|#include &lt;asm/time.h&gt;
 macro_line|#include &lt;asm/thread_info.h&gt;
 macro_line|#include &lt;asm/tlbflush.h&gt;
 macro_line|#include &lt;asm/xmon.h&gt;
-DECL|variable|smp_threads_ready
-r_int
-id|smp_threads_ready
-suffix:semicolon
 DECL|variable|smp_commenced
 r_volatile
 r_int
@@ -63,15 +59,6 @@ suffix:semicolon
 DECL|variable|ipi_sent
 id|atomic_t
 id|ipi_sent
-suffix:semicolon
-DECL|variable|cache_decay_ticks
-r_int
-r_int
-id|cache_decay_ticks
-op_assign
-id|HZ
-op_div
-l_int|100
 suffix:semicolon
 DECL|variable|cpu_online_map
 id|cpumask_t

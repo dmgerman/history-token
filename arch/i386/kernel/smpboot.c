@@ -102,11 +102,6 @@ c_func
 id|x86_cpu_to_apicid
 )paren
 suffix:semicolon
-multiline_comment|/* Set when the idlers are all forked */
-DECL|variable|smp_threads_ready
-r_int
-id|smp_threads_ready
-suffix:semicolon
 multiline_comment|/*&n; * Trampoline 80x86 program as an array.&n; */
 r_extern
 r_int
@@ -133,6 +128,14 @@ DECL|variable|trampoline_exec
 r_static
 r_int
 id|trampoline_exec
+suffix:semicolon
+r_static
+r_void
+id|map_cpu_to_logical_apicid
+c_func
+(paren
+r_void
+)paren
 suffix:semicolon
 multiline_comment|/*&n; * Currently trivial. Write the real-&gt;protected mode&n; * bootstrap into the page concerned. The caller&n; * has made sure it&squot;s suitably aligned.&n; */
 DECL|function|setup_trampoline
@@ -1007,6 +1010,7 @@ id|atomic_t
 id|init_deasserted
 suffix:semicolon
 DECL|function|smp_callin
+r_static
 r_void
 id|__init
 id|smp_callin
@@ -1232,6 +1236,7 @@ c_func
 suffix:semicolon
 )brace
 DECL|variable|cpucount
+r_static
 r_int
 id|cpucount
 suffix:semicolon
@@ -1576,6 +1581,7 @@ id|BAD_APICID
 )brace
 suffix:semicolon
 DECL|function|map_cpu_to_logical_apicid
+r_static
 r_void
 id|map_cpu_to_logical_apicid
 c_func
@@ -1620,6 +1626,7 @@ id|apicid
 suffix:semicolon
 )brace
 DECL|function|unmap_cpu_to_logical_apicid
+r_static
 r_void
 id|unmap_cpu_to_logical_apicid
 c_func
@@ -2932,15 +2939,6 @@ r_return
 id|boot_error
 suffix:semicolon
 )brace
-DECL|variable|cacheflush_time
-id|cycles_t
-id|cacheflush_time
-suffix:semicolon
-DECL|variable|cache_decay_ticks
-r_int
-r_int
-id|cache_decay_ticks
-suffix:semicolon
 DECL|function|smp_tune_scheduling
 r_static
 r_void
@@ -2970,10 +2968,6 @@ id|cpu_khz
 )paren
 (brace
 multiline_comment|/*&n;&t;&t; * this basically disables processor-affinity&n;&t;&t; * scheduling on SMP without a TSC.&n;&t;&t; */
-id|cacheflush_time
-op_assign
-l_int|0
-suffix:semicolon
 r_return
 suffix:semicolon
 )brace
@@ -3002,76 +2996,7 @@ op_assign
 l_int|100
 suffix:semicolon
 )brace
-id|cacheflush_time
-op_assign
-(paren
-id|cpu_khz
-op_rshift
-l_int|10
-)paren
-op_star
-(paren
-id|cachesize
-op_lshift
-l_int|10
-)paren
-op_div
-id|bandwidth
-suffix:semicolon
 )brace
-id|cache_decay_ticks
-op_assign
-(paren
-r_int
-)paren
-id|cacheflush_time
-op_div
-id|cpu_khz
-op_plus
-l_int|1
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;per-CPU timeslice cutoff: %ld.%02ld usecs.&bslash;n&quot;
-comma
-(paren
-r_int
-)paren
-id|cacheflush_time
-op_div
-(paren
-id|cpu_khz
-op_div
-l_int|1000
-)paren
-comma
-(paren
-(paren
-r_int
-)paren
-id|cacheflush_time
-op_star
-l_int|100
-op_div
-(paren
-id|cpu_khz
-op_div
-l_int|1000
-)paren
-)paren
-op_mod
-l_int|100
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;task migration cache decay timeout: %ld msecs.&bslash;n&quot;
-comma
-id|cache_decay_ticks
-)paren
-suffix:semicolon
 )brace
 multiline_comment|/*&n; * Cycle through the processors sending APIC IPIs to boot each.&n; */
 DECL|variable|boot_cpu_logical_apicid

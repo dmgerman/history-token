@@ -33,19 +33,6 @@ id|lowcore_ptr
 id|NR_CPUS
 )braket
 suffix:semicolon
-DECL|variable|cacheflush_time
-id|cycles_t
-id|cacheflush_time
-op_assign
-l_int|0
-suffix:semicolon
-DECL|variable|smp_threads_ready
-r_int
-id|smp_threads_ready
-op_assign
-l_int|0
-suffix:semicolon
-multiline_comment|/* Set when the idlers are all forked. */
 DECL|variable|cpu_online_map
 id|cpumask_t
 id|cpu_online_map
@@ -53,13 +40,6 @@ suffix:semicolon
 DECL|variable|cpu_possible_map
 id|cpumask_t
 id|cpu_possible_map
-suffix:semicolon
-DECL|variable|cache_decay_ticks
-r_int
-r_int
-id|cache_decay_ticks
-op_assign
-l_int|0
 suffix:semicolon
 DECL|variable|current_set
 r_static

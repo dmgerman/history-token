@@ -52,10 +52,6 @@ r_int
 id|smp_num_cpus
 suffix:semicolon
 r_extern
-r_int
-id|smp_threads_ready
-suffix:semicolon
-r_extern
 r_volatile
 r_int
 r_int

@@ -64,13 +64,6 @@ op_complement
 l_int|0UL
 )brace
 suffix:semicolon
-multiline_comment|/* Set when the idlers are all forked - Set in main.c but not actually&n; * used by any other parts of the kernel */
-DECL|variable|smp_threads_ready
-r_int
-id|smp_threads_ready
-op_assign
-l_int|0
-suffix:semicolon
 multiline_comment|/* per CPU data structure (for /proc/cpuinfo et al), visible externally&n; * indexed physically */
 DECL|variable|__cacheline_aligned
 r_struct
@@ -155,21 +148,6 @@ id|cpumask_t
 id|phys_cpu_present_map
 op_assign
 id|CPU_MASK_NONE
-suffix:semicolon
-multiline_comment|/* estimate of time used to flush the SMP-local cache - used in&n; * processor affinity calculations */
-DECL|variable|cacheflush_time
-id|cycles_t
-id|cacheflush_time
-op_assign
-l_int|0
-suffix:semicolon
-multiline_comment|/* cache decay ticks for scheduler---a fairly useless quantity for the&n;   voyager system with its odd affinity and huge L3 cache */
-DECL|variable|cache_decay_ticks
-r_int
-r_int
-id|cache_decay_ticks
-op_assign
-l_int|20
 suffix:semicolon
 multiline_comment|/* The internal functions */
 r_static

@@ -55,12 +55,6 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* track which CPU is booting */
-DECL|variable|cache_decay_ticks
-r_int
-r_int
-id|cache_decay_ticks
-suffix:semicolon
-multiline_comment|/* declared by include/linux/sched.h */
 DECL|variable|parisc_max_cpus
 r_static
 r_int
@@ -1747,13 +1741,6 @@ comma
 id|cpu_present_map
 )paren
 suffix:semicolon
-id|cache_decay_ticks
-op_assign
-id|HZ
-op_div
-l_int|100
-suffix:semicolon
-multiline_comment|/* FIXME very rough.  */
 )brace
 multiline_comment|/*&n;** inventory.c:do_inventory() hasn&squot;t yet been run and thus we&n;** don&squot;t &squot;discover&squot; the additional CPU&squot;s until later.&n;*/
 DECL|function|smp_prepare_cpus

@@ -138,23 +138,6 @@ id|cpu_callout_map
 )paren
 suffix:semicolon
 )brace
-r_extern
-r_void
-id|map_cpu_to_logical_apicid
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|unmap_cpu_to_logical_apicid
-c_func
-(paren
-r_int
-id|cpu
-)paren
-suffix:semicolon
 macro_line|#ifdef CONFIG_X86_LOCAL_APIC
 macro_line|#ifdef APIC_DEFINITION
 r_extern
