@@ -147,16 +147,6 @@ l_string|&quot;EXTREMELY DANGEROUS!&quot;
 )paren
 suffix:semicolon
 r_static
-r_void
-id|piix4_do_pause
-c_func
-(paren
-r_int
-r_int
-id|amount
-)paren
-suffix:semicolon
-r_static
 r_int
 id|piix4_transaction
 c_func
@@ -602,29 +592,6 @@ r_return
 id|error_return
 suffix:semicolon
 )brace
-multiline_comment|/* Internally used pause function */
-DECL|function|piix4_do_pause
-r_static
-r_void
-id|piix4_do_pause
-c_func
-(paren
-r_int
-r_int
-id|amount
-)paren
-(brace
-id|current-&gt;state
-op_assign
-id|TASK_INTERRUPTIBLE
-suffix:semicolon
-id|schedule_timeout
-c_func
-(paren
-id|amount
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/* Another internally used function */
 DECL|function|piix4_transaction
 r_static
@@ -788,7 +755,7 @@ suffix:semicolon
 multiline_comment|/* We will always wait for a fraction of a second! (See PIIX4 docs errata) */
 r_do
 (brace
-id|piix4_do_pause
+id|i2c_delay
 c_func
 (paren
 l_int|1
