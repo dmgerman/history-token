@@ -9371,7 +9371,7 @@ op_assign
 id|SNDRV_DEFAULT_PORT
 suffix:semicolon
 multiline_comment|/* 0x220,0x240,0x260,0x280 */
-macro_line|#ifndef CONFIG_PNP_
+macro_line|#ifndef CONFIG_PNP
 DECL|variable|mpu_port
 r_static
 r_int
@@ -10503,7 +10503,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#endif /* CONFIG_PNP_ */
+macro_line|#endif /* CONFIG_PNP */
 DECL|function|snd_audiodrive_probe
 r_static
 r_int
