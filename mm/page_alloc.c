@@ -3817,7 +3817,7 @@ id|pgdat-&gt;node_zones
 id|ZONE_HIGHMEM
 )braket
 dot
-id|spanned_pages
+id|present_pages
 suffix:semicolon
 id|val-&gt;freehigh
 op_assign
