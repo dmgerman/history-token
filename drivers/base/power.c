@@ -73,7 +73,7 @@ op_logical_neg
 id|error
 )paren
 (brace
-id|get_device
+id|get_device_locked
 c_func
 (paren
 id|dev
@@ -203,7 +203,7 @@ op_amp
 id|device_root
 )paren
 (brace
-id|get_device
+id|get_device_locked
 c_func
 (paren
 id|dev
@@ -339,7 +339,9 @@ op_amp
 id|device_root
 )paren
 (brace
-id|get_device
+id|dev
+op_assign
+id|get_device_locked
 c_func
 (paren
 id|dev
