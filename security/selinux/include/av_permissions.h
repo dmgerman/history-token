@@ -473,6 +473,8 @@ DECL|macro|TCP_SOCKET__ACCEPTFROM
 mdefine_line|#define TCP_SOCKET__ACCEPTFROM                    0x01000000UL
 DECL|macro|TCP_SOCKET__NODE_BIND
 mdefine_line|#define TCP_SOCKET__NODE_BIND                     0x02000000UL
+DECL|macro|TCP_SOCKET__NAME_CONNECT
+mdefine_line|#define TCP_SOCKET__NAME_CONNECT                  0x04000000UL
 DECL|macro|UDP_SOCKET__IOCTL
 mdefine_line|#define UDP_SOCKET__IOCTL                         0x00000001UL
 DECL|macro|UDP_SOCKET__READ
