@@ -1046,29 +1046,14 @@ c_func
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Double-check wether this APIC is really registered.&n;&t; * This is meaningless in clustered apic mode, so we skip it.&n;&t; */
+multiline_comment|/*&n;&t; * Double-check whether this APIC is really registered.&n;&t; */
 r_if
 c_cond
 (paren
 op_logical_neg
-id|clustered_apic_mode
-op_logical_and
-op_logical_neg
-id|test_bit
+id|apic_id_registered
 c_func
 (paren
-id|GET_APIC_ID
-c_func
-(paren
-id|apic_read
-c_func
-(paren
-id|APIC_ID
-)paren
-)paren
-comma
-op_amp
-id|phys_cpu_present_map
 )paren
 )paren
 id|BUG
@@ -1077,44 +1062,11 @@ c_func
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Intel recommends to set DFR, LDR and TPR before enabling&n;&t; * an APIC.  See e.g. &quot;AP-388 82489DX User&squot;s Manual&quot; (Intel&n;&t; * document number 292116).  So here it goes...&n;&t; */
-r_if
-c_cond
-(paren
-op_logical_neg
-id|clustered_apic_mode
-)paren
-(brace
-multiline_comment|/*&n;&t;&t; * In clustered apic mode, the firmware does this for us &n;&t;&t; * Put the APIC into flat delivery mode.&n;&t;&t; * Must be &quot;all ones&quot; explicitly for 82489DX.&n;&t;&t; */
-id|apic_write_around
+id|init_apic_ldr
 c_func
 (paren
-id|APIC_DFR
-comma
-id|APIC_DFR_VALUE
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * Set up the logical destination ID.&n;&t;&t; */
-id|value
-op_assign
-id|apic_read
-c_func
-(paren
-id|APIC_LDR
-)paren
-suffix:semicolon
-id|apic_write_around
-c_func
-(paren
-id|APIC_LDR
-comma
-id|calculate_ldr
-c_func
-(paren
-id|value
-)paren
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/*&n;&t; * Set Task Priority to &squot;accept all&squot;. We never change this&n;&t; * later on.&n;&t; */
 id|value
 op_assign
