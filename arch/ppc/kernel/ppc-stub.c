@@ -2374,7 +2374,6 @@ c_func
 r_char
 op_star
 )paren
-op_amp
 id|regs
 )paren
 op_plus
@@ -3242,14 +3241,6 @@ macro_line|#else
 id|regs-&gt;msr
 op_or_assign
 id|MSR_SE
-suffix:semicolon
-id|set_msr
-c_func
-(paren
-id|msr
-op_or
-id|MSR_SE
-)paren
 suffix:semicolon
 macro_line|#endif
 id|unlock_kernel
