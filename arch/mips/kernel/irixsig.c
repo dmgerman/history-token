@@ -4364,9 +4364,6 @@ r_int
 id|sig
 )paren
 (brace
-r_int
-id|error
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -4385,16 +4382,10 @@ id|pset
 )paren
 )paren
 )paren
-(brace
-id|error
-op_assign
+r_return
 op_minus
 id|EFAULT
 suffix:semicolon
-r_goto
-id|out
-suffix:semicolon
-)brace
 macro_line|#ifdef DEBUG_SIG
 id|printk
 c_func
@@ -4419,15 +4410,9 @@ id|sig
 )paren
 suffix:semicolon
 macro_line|#endif
-id|error
-op_assign
+r_return
 op_minus
 id|EINVAL
-suffix:semicolon
-id|out
-suffix:colon
-r_return
-id|error
 suffix:semicolon
 )brace
 eof
