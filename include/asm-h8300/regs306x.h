@@ -223,9 +223,9 @@ mdefine_line|#define RDR2  0xFFFFC5
 DECL|macro|SCMR2
 mdefine_line|#define SCMR2 0xFFFFC6
 DECL|macro|MDCR
-mdefine_line|#define MDCR   0xFEE000
+mdefine_line|#define MDCR   0xFEE011
 DECL|macro|SYSCR
-mdefine_line|#define SYSCR  0xFEE001
+mdefine_line|#define SYSCR  0xFEE012
 DECL|macro|DIVCR
 mdefine_line|#define DIVCR  0xFEE01B
 DECL|macro|MSTCRH

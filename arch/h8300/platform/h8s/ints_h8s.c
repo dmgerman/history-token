@@ -88,8 +88,9 @@ l_int|16
 op_assign
 initialization_block
 suffix:semicolon
+multiline_comment|/* IRQ to GPIO pinno transrate */
 DECL|macro|IRQ_GPIO_MAP
-mdefine_line|#define IRQ_GPIO_MAP(irqbit,port,bit)&t;&t;&t;&t;  &bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;  &bslash;&n;&t;if (*(volatile unsigned short *)ITSR &amp; irqbit) {&t;  &bslash;&n;&t;&t;port = irq_assign_table1[irq - EXT_IRQ0].port_no; &bslash;&n;&t;&t;bit  = irq_assign_table1[irq - EXT_IRQ0].bit_no;  &bslash;&n;&t;} else {&t;&t;&t;&t;&t;&t;  &bslash;&n;&t;&t;port = irq_assign_table0[irq - EXT_IRQ0].port_no; &bslash;&n;&t;&t;bit  = irq_assign_table0[irq - EXT_IRQ0].bit_no;  &bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;  &bslash;&n;} while(0)
+mdefine_line|#define IRQ_GPIO_MAP(irqbit,irq,port,bit)&t;&t;&t;  &bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;  &bslash;&n;&t;if (*(volatile unsigned short *)ITSR &amp; irqbit) {&t;  &bslash;&n;&t;&t;port = irq_assign_table1[irq - EXT_IRQ0].port_no; &bslash;&n;&t;&t;bit  = irq_assign_table1[irq - EXT_IRQ0].bit_no;  &bslash;&n;&t;} else {&t;&t;&t;&t;&t;&t;  &bslash;&n;&t;&t;port = irq_assign_table0[irq - EXT_IRQ0].port_no; &bslash;&n;&t;&t;bit  = irq_assign_table0[irq - EXT_IRQ0].bit_no;  &bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;  &bslash;&n;} while(0)
 DECL|function|h8300_enable_irq_pin
 r_int
 id|h8300_enable_irq_pin
@@ -134,6 +135,8 @@ id|IRQ_GPIO_MAP
 c_func
 (paren
 id|ptn
+comma
+id|irq
 comma
 id|port_no
 comma
