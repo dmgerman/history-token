@@ -1580,10 +1580,12 @@ comma
 suffix:semicolon
 multiline_comment|/* Also try the generic routines.  */
 macro_line|#include &lt;asm-generic/xor.h&gt;
+DECL|macro|cpu_has_mmx
+mdefine_line|#define cpu_has_mmx&t;(test_bit(X86_FEATURE_MMX,  boot_cpu_data.x86_capability))
 DECL|macro|XOR_TRY_TEMPLATES
 macro_line|#undef XOR_TRY_TEMPLATES
 DECL|macro|XOR_TRY_TEMPLATES
-mdefine_line|#define XOR_TRY_TEMPLATES&t;&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;xor_speed(&amp;xor_block_8regs);&t;&t;&bslash;&n;&t;&t;xor_speed(&amp;xor_block_32regs);&t;&t;&bslash;&n;&t;        if (cpu_has_xmm)&t;&t;&t;&bslash;&n;&t;&t;&t;xor_speed(&amp;xor_block_pIII_sse);&t;&bslash;&n;&t;        if (md_cpu_has_mmx()) {&t;&t;&t;&bslash;&n;&t;                xor_speed(&amp;xor_block_pII_mmx);&t;&bslash;&n;&t;                xor_speed(&amp;xor_block_p5_mmx);&t;&bslash;&n;&t;        }&t;&t;&t;&t;&t;&bslash;&n;&t;} while (0)
+mdefine_line|#define XOR_TRY_TEMPLATES&t;&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;xor_speed(&amp;xor_block_8regs);&t;&t;&bslash;&n;&t;&t;xor_speed(&amp;xor_block_32regs);&t;&t;&bslash;&n;&t;        if (cpu_has_xmm)&t;&t;&t;&bslash;&n;&t;&t;&t;xor_speed(&amp;xor_block_pIII_sse);&t;&bslash;&n;&t;        if (cpu_has_mmx) {&t;&t;&t;&bslash;&n;&t;                xor_speed(&amp;xor_block_pII_mmx);&t;&bslash;&n;&t;                xor_speed(&amp;xor_block_p5_mmx);&t;&bslash;&n;&t;        }&t;&t;&t;&t;&t;&bslash;&n;&t;} while (0)
 multiline_comment|/* We force the use of the SSE xor block because it can write around L2.&n;   We may also be able to load into the L1 only depending on how the cpu&n;   deals with a load to a line that is being prefetched.  */
 DECL|macro|XOR_SELECT_TEMPLATE
 mdefine_line|#define XOR_SELECT_TEMPLATE(FASTEST) &bslash;&n;&t;(cpu_has_xmm ? &amp;xor_block_pIII_sse : FASTEST)

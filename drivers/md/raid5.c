@@ -1145,7 +1145,7 @@ comma
 id|sector
 )paren
 suffix:semicolon
-id|md_spin_lock_irq
+id|spin_lock_irq
 c_func
 (paren
 op_amp
@@ -1545,7 +1545,7 @@ op_amp
 id|sh-&gt;count
 )paren
 suffix:semicolon
-id|md_spin_unlock_irq
+id|spin_unlock_irq
 c_func
 (paren
 op_amp
@@ -2193,7 +2193,7 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-id|md_spin_lock_irqsave
+id|spin_lock_irqsave
 c_func
 (paren
 op_amp
@@ -2239,7 +2239,7 @@ comma
 id|sh
 )paren
 suffix:semicolon
-id|md_spin_unlock_irqrestore
+id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
@@ -2339,10 +2339,10 @@ r_return
 id|bh
 suffix:semicolon
 )brace
-DECL|function|raid5_error
+DECL|function|error
 r_static
 r_int
-id|raid5_error
+id|error
 (paren
 id|mddev_t
 op_star
@@ -2381,7 +2381,7 @@ suffix:semicolon
 id|PRINTK
 c_func
 (paren
-l_string|&quot;raid5_error called&bslash;n&quot;
+l_string|&quot;raid5: error called&bslash;n&quot;
 )paren
 suffix:semicolon
 r_for
@@ -6349,10 +6349,10 @@ id|conf-&gt;device_lock
 )paren
 suffix:semicolon
 )brace
-DECL|function|raid5_make_request
+DECL|function|make_request
 r_static
 r_int
-id|raid5_make_request
+id|make_request
 (paren
 id|mddev_t
 op_star
@@ -6455,7 +6455,7 @@ suffix:semicolon
 id|PRINTK
 c_func
 (paren
-l_string|&quot;raid5_make_request, sector %lu&bslash;n&quot;
+l_string|&quot;raid5: make_request, sector %lu&bslash;n&quot;
 comma
 id|new_sector
 )paren
@@ -6534,10 +6534,10 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|raid5_sync_request
+DECL|function|sync_request
 r_static
 r_int
-id|raid5_sync_request
+id|sync_request
 (paren
 id|mddev_t
 op_star
@@ -6786,7 +6786,7 @@ id|mddev
 )paren
 suffix:semicolon
 )brace
-id|md_spin_lock_irq
+id|spin_lock_irq
 c_func
 (paren
 op_amp
@@ -6899,7 +6899,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|md_spin_unlock_irq
+id|spin_unlock_irq
 c_func
 (paren
 op_amp
@@ -6921,7 +6921,7 @@ c_func
 id|sh
 )paren
 suffix:semicolon
-id|md_spin_lock_irq
+id|spin_lock_irq
 c_func
 (paren
 op_amp
@@ -6937,7 +6937,7 @@ comma
 id|handled
 )paren
 suffix:semicolon
-id|md_spin_unlock_irq
+id|spin_unlock_irq
 c_func
 (paren
 op_amp
@@ -7044,10 +7044,10 @@ l_string|&quot;raid5: resync finished.&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
-DECL|function|raid5_run
+DECL|function|run
 r_static
 r_int
-id|raid5_run
+id|run
 (paren
 id|mddev_t
 op_star
@@ -7087,7 +7087,7 @@ op_star
 id|disk
 suffix:semicolon
 r_struct
-id|md_list_head
+id|list_head
 op_star
 id|tmp
 suffix:semicolon
@@ -7190,7 +7190,7 @@ id|stripe_head
 op_star
 op_star
 )paren
-id|md__get_free_pages
+id|__get_free_pages
 c_func
 (paren
 id|GFP_ATOMIC
@@ -7218,9 +7218,9 @@ id|PAGE_SIZE
 suffix:semicolon
 id|conf-&gt;device_lock
 op_assign
-id|MD_SPIN_LOCK_UNLOCKED
+id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
-id|md_init_waitqueue_head
+id|init_waitqueue_head
 c_func
 (paren
 op_amp
@@ -7291,7 +7291,7 @@ suffix:semicolon
 id|PRINTK
 c_func
 (paren
-l_string|&quot;raid5_run(md%d) called.&bslash;n&quot;
+l_string|&quot;raid5: run(md%d) called.&bslash;n&quot;
 comma
 id|mdidx
 c_func
@@ -8272,10 +8272,10 @@ op_minus
 id|EIO
 suffix:semicolon
 )brace
-DECL|function|raid5_stop_resync
+DECL|function|stop_resync
 r_static
 r_int
-id|raid5_stop_resync
+id|stop_resync
 (paren
 id|mddev_t
 op_star
@@ -8339,10 +8339,10 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|raid5_restart_resync
+DECL|function|restart_resync
 r_static
 r_int
-id|raid5_restart_resync
+id|restart_resync
 (paren
 id|mddev_t
 op_star
@@ -8412,10 +8412,10 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|raid5_stop
+DECL|function|stop
 r_static
 r_int
-id|raid5_stop
+id|stop
 (paren
 id|mddev_t
 op_star
@@ -8610,7 +8610,7 @@ suffix:semicolon
 r_int
 id|i
 suffix:semicolon
-id|md_spin_lock_irq
+id|spin_lock_irq
 c_func
 (paren
 op_amp
@@ -8667,7 +8667,7 @@ id|sh
 suffix:semicolon
 )brace
 )brace
-id|md_spin_unlock_irq
+id|spin_unlock_irq
 c_func
 (paren
 op_amp
@@ -8682,10 +8682,10 @@ l_string|&quot;--- raid5d inactive&bslash;n&quot;
 suffix:semicolon
 )brace
 macro_line|#endif
-DECL|function|raid5_status
+DECL|function|status
 r_static
 r_int
-id|raid5_status
+id|status
 (paren
 r_char
 op_star
@@ -8936,10 +8936,10 @@ id|tmp-&gt;dev
 suffix:semicolon
 )brace
 )brace
-DECL|function|raid5_diskop
+DECL|function|diskop
 r_static
 r_int
-id|raid5_diskop
+id|diskop
 c_func
 (paren
 id|mddev_t
@@ -9037,7 +9037,7 @@ c_func
 id|conf
 )paren
 suffix:semicolon
-id|md_spin_lock_irq
+id|spin_lock_irq
 c_func
 (paren
 op_amp
@@ -9857,7 +9857,7 @@ suffix:semicolon
 )brace
 m_abort
 suffix:colon
-id|md_spin_unlock_irq
+id|spin_unlock_irq
 c_func
 (paren
 op_amp
@@ -9886,45 +9886,45 @@ l_string|&quot;raid5&quot;
 comma
 id|make_request
 suffix:colon
-id|raid5_make_request
+id|make_request
 comma
 id|run
 suffix:colon
-id|raid5_run
+id|run
 comma
 id|stop
 suffix:colon
-id|raid5_stop
+id|stop
 comma
 id|status
 suffix:colon
-id|raid5_status
+id|status
 comma
 id|error_handler
 suffix:colon
-id|raid5_error
+id|error
 comma
 id|diskop
 suffix:colon
-id|raid5_diskop
+id|diskop
 comma
 id|stop_resync
 suffix:colon
-id|raid5_stop_resync
+id|stop_resync
 comma
 id|restart_resync
 suffix:colon
-id|raid5_restart_resync
+id|restart_resync
 comma
 id|sync_request
 suffix:colon
-id|raid5_sync_request
+id|sync_request
 )brace
 suffix:semicolon
 DECL|function|raid5_init
 r_static
 r_int
-id|md__init
+id|__init
 id|raid5_init
 (paren
 r_void

@@ -274,7 +274,7 @@ id|list_head
 id|inactive_list
 suffix:semicolon
 DECL|member|wait_for_stripe
-id|md_wait_queue_head_t
+id|wait_queue_head_t
 id|wait_for_stripe
 suffix:semicolon
 DECL|member|inactive_blocked
@@ -283,7 +283,7 @@ id|inactive_blocked
 suffix:semicolon
 multiline_comment|/* release of inactive stripes blocked,&n;&t;&t;&t;&t;&t;&t;&t; * waiting for 25% to be free&n;&t;&t;&t;&t;&t;&t;&t; */
 DECL|member|device_lock
-id|md_spinlock_t
+id|spinlock_t
 id|device_lock
 suffix:semicolon
 DECL|member|plugged
