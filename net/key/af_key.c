@@ -100,7 +100,14 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|sk-&gt;dead
+id|test_bit
+c_func
+(paren
+id|SOCK_DEAD
+comma
+op_amp
+id|sk-&gt;flags
+)paren
 )paren
 (brace
 id|printk
@@ -12628,6 +12635,9 @@ op_star
 id|pfkey_compile_policy
 c_func
 (paren
+id|u16
+id|family
+comma
 r_int
 id|opt
 comma
@@ -12761,6 +12771,10 @@ suffix:semicolon
 id|xp-&gt;lft.hard_packet_limit
 op_assign
 id|XFRM_INF
+suffix:semicolon
+id|xp-&gt;family
+op_assign
+id|family
 suffix:semicolon
 id|xp-&gt;xfrm_nr
 op_assign

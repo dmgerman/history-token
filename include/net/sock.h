@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * INET&t;&t;An implementation of the TCP/IP protocol suite for the LINUX&n; *&t;&t;operating system.  INET is implemented using the  BSD Socket&n; *&t;&t;interface as the means of communication with the user level.&n; *&n; *&t;&t;Definitions for the AF_INET socket handler.&n; *&n; * Version:&t;@(#)sock.h&t;1.0.4&t;05/13/93&n; *&n; * Authors:&t;Ross Biro, &lt;bir7@leland.Stanford.Edu&gt;&n; *&t;&t;Fred N. van Kempen, &lt;waltje@uWalt.NL.Mugnet.ORG&gt;&n; *&t;&t;Corey Minyard &lt;wf-rch!minyard@relay.EU.net&gt;&n; *&t;&t;Florian La Roche &lt;flla@stud.uni-sb.de&gt;&n; *&n; * Fixes:&n; *&t;&t;Alan Cox&t;:&t;Volatiles in skbuff pointers. See&n; *&t;&t;&t;&t;&t;skbuff comments. May be overdone,&n; *&t;&t;&t;&t;&t;better to prove they can be removed&n; *&t;&t;&t;&t;&t;than the reverse.&n; *&t;&t;Alan Cox&t;:&t;Added a zapped field for tcp to note&n; *&t;&t;&t;&t;&t;a socket is reset and must stay shut up&n; *&t;&t;Alan Cox&t;:&t;New fields for options&n; *&t;Pauline Middelink&t;:&t;identd support&n; *&t;&t;Alan Cox&t;:&t;Eliminate low level recv/recvfrom&n; *&t;&t;David S. Miller&t;:&t;New socket lookup architecture.&n; *              Steve Whitehouse:       Default routines for sock_ops&n; *              Arnaldo C. Melo :&t;removed net_pinfo, tp_pinfo and made&n; *              &t;&t;&t;protinfo be just a void pointer, as the&n; *              &t;&t;&t;protocol specific parts were moved to&n; *              &t;&t;&t;respective headers and ipv4/v6, etc now&n; *              &t;&t;&t;use private slabcaches for its socks&n; *&n; *&t;&t;This program is free software; you can redistribute it and/or&n; *&t;&t;modify it under the terms of the GNU General Public License&n; *&t;&t;as published by the Free Software Foundation; either version&n; *&t;&t;2 of the License, or (at your option) any later version.&n; */
+multiline_comment|/*&n; * INET&t;&t;An implementation of the TCP/IP protocol suite for the LINUX&n; *&t;&t;operating system.  INET is implemented using the  BSD Socket&n; *&t;&t;interface as the means of communication with the user level.&n; *&n; *&t;&t;Definitions for the AF_INET socket handler.&n; *&n; * Version:&t;@(#)sock.h&t;1.0.4&t;05/13/93&n; *&n; * Authors:&t;Ross Biro, &lt;bir7@leland.Stanford.Edu&gt;&n; *&t;&t;Fred N. van Kempen, &lt;waltje@uWalt.NL.Mugnet.ORG&gt;&n; *&t;&t;Corey Minyard &lt;wf-rch!minyard@relay.EU.net&gt;&n; *&t;&t;Florian La Roche &lt;flla@stud.uni-sb.de&gt;&n; *&n; * Fixes:&n; *&t;&t;Alan Cox&t;:&t;Volatiles in skbuff pointers. See&n; *&t;&t;&t;&t;&t;skbuff comments. May be overdone,&n; *&t;&t;&t;&t;&t;better to prove they can be removed&n; *&t;&t;&t;&t;&t;than the reverse.&n; *&t;&t;Alan Cox&t;:&t;Added a zapped field for tcp to note&n; *&t;&t;&t;&t;&t;a socket is reset and must stay shut up&n; *&t;&t;Alan Cox&t;:&t;New fields for options&n; *&t;Pauline Middelink&t;:&t;identd support&n; *&t;&t;Alan Cox&t;:&t;Eliminate low level recv/recvfrom&n; *&t;&t;David S. Miller&t;:&t;New socket lookup architecture.&n; *              Steve Whitehouse:       Default routines for sock_ops&n; *              Arnaldo C. Melo :&t;removed net_pinfo, tp_pinfo and made&n; *              &t;&t;&t;protinfo be just a void pointer, as the&n; *              &t;&t;&t;protocol specific parts were moved to&n; *              &t;&t;&t;respective headers and ipv4/v6, etc now&n; *              &t;&t;&t;use private slabcaches for its socks&n; *              Pedro Hortas&t;:&t;New flags field for socket options&n; *&n; *&n; *&t;&t;This program is free software; you can redistribute it and/or&n; *&t;&t;modify it under the terms of the GNU General Public License&n; *&t;&t;as published by the Free Software Foundation; either version&n; *&t;&t;2 of the License, or (at your option) any later version.&n; */
 macro_line|#ifndef _SOCK_H
 DECL|macro|_SOCK_H
 mdefine_line|#define _SOCK_H
@@ -15,6 +15,35 @@ macro_line|#include &lt;asm/atomic.h&gt;
 macro_line|#include &lt;net/dst.h&gt;
 macro_line|#include &lt;net/scm.h&gt;
 multiline_comment|/*&n; * This structure really needs to be cleaned up.&n; * Most of it is for TCP, and not used by any of&n; * the other protocols.&n; */
+multiline_comment|/* Sock flags */
+r_enum
+(brace
+DECL|enumerator|SOCK_DEAD
+id|SOCK_DEAD
+comma
+DECL|enumerator|SOCK_DONE
+id|SOCK_DONE
+comma
+DECL|enumerator|SOCK_URGINLINE
+id|SOCK_URGINLINE
+comma
+DECL|enumerator|SOCK_KEEPOPEN
+id|SOCK_KEEPOPEN
+comma
+DECL|enumerator|SOCK_LINGER
+id|SOCK_LINGER
+comma
+DECL|enumerator|SOCK_DESTROY
+id|SOCK_DESTROY
+comma
+DECL|enumerator|SOCK_BROADCAST
+id|SOCK_BROADCAST
+comma
+DECL|enumerator|SOCK_BSDISM
+id|SOCK_BSDISM
+comma
+)brace
+suffix:semicolon
 multiline_comment|/* Define this to get the sk-&gt;debug debugging facility. */
 DECL|macro|SOCK_DEBUGGING
 mdefine_line|#define SOCK_DEBUGGING
@@ -223,35 +252,14 @@ id|sock
 op_star
 id|prev
 suffix:semicolon
-multiline_comment|/* Not all are volatile, but some are, so we might as well say they all are.&n;&t; * XXX Make this a flag word -DaveM&n;&t; */
-DECL|member|dead
-r_volatile
-r_char
-id|dead
-comma
-DECL|member|done
-id|done
-comma
-DECL|member|urginline
-id|urginline
-comma
-DECL|member|keepopen
-id|keepopen
-comma
-DECL|member|linger
-id|linger
-comma
-DECL|member|destroy
-id|destroy
-comma
+DECL|member|flags
+r_int
+r_int
+id|flags
+suffix:semicolon
 DECL|member|no_check
+r_char
 id|no_check
-comma
-DECL|member|broadcast
-id|broadcast
-comma
-DECL|member|bsdism
-id|bsdism
 suffix:semicolon
 DECL|member|debug
 r_int
@@ -2170,9 +2178,14 @@ op_amp
 id|sk-&gt;callback_lock
 )paren
 suffix:semicolon
-id|sk-&gt;dead
-op_assign
-l_int|1
+id|__set_bit
+c_func
+(paren
+id|SOCK_DEAD
+comma
+op_amp
+id|sk-&gt;flags
+)paren
 suffix:semicolon
 id|sk-&gt;socket
 op_assign
@@ -2850,7 +2863,14 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|sk-&gt;dead
+id|test_bit
+c_func
+(paren
+id|SOCK_DEAD
+comma
+op_amp
+id|sk-&gt;flags
+)paren
 )paren
 id|sk
 op_member_access_from_pointer
@@ -2929,7 +2949,14 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|sk-&gt;dead
+id|test_bit
+c_func
+(paren
+id|SOCK_DEAD
+comma
+op_amp
+id|sk-&gt;flags
+)paren
 )paren
 id|sk
 op_member_access_from_pointer
@@ -3306,6 +3333,50 @@ DECL|macro|SOCK_SLEEP_PRE
 mdefine_line|#define SOCK_SLEEP_PRE(sk) &t;{ struct task_struct *tsk = current; &bslash;&n;&t;&t;&t;&t;DECLARE_WAITQUEUE(wait, tsk); &bslash;&n;&t;&t;&t;&t;tsk-&gt;state = TASK_INTERRUPTIBLE; &bslash;&n;&t;&t;&t;&t;add_wait_queue((sk)-&gt;sleep, &amp;wait); &bslash;&n;&t;&t;&t;&t;release_sock(sk);
 DECL|macro|SOCK_SLEEP_POST
 mdefine_line|#define SOCK_SLEEP_POST(sk)&t;tsk-&gt;state = TASK_RUNNING; &bslash;&n;&t;&t;&t;&t;remove_wait_queue((sk)-&gt;sleep, &amp;wait); &bslash;&n;&t;&t;&t;&t;lock_sock(sk); &bslash;&n;&t;&t;&t;&t;}
+DECL|function|sock_valbool_flag
+r_static
+r_inline
+r_void
+id|sock_valbool_flag
+c_func
+(paren
+r_struct
+id|sock
+op_star
+id|sk
+comma
+r_int
+id|bit
+comma
+r_int
+id|valbool
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|valbool
+)paren
+id|__set_bit
+c_func
+(paren
+id|bit
+comma
+op_amp
+id|sk-&gt;flags
+)paren
+suffix:semicolon
+r_else
+id|__clear_bit
+c_func
+(paren
+id|bit
+comma
+op_amp
+id|sk-&gt;flags
+)paren
+suffix:semicolon
+)brace
 r_extern
 id|__u32
 id|sysctl_wmem_max

@@ -1799,7 +1799,7 @@ id|ebt_mutex
 suffix:semicolon
 r_return
 op_minus
-id|EINVAL
+id|ENOENT
 suffix:semicolon
 )brace
 id|up
@@ -1980,7 +1980,7 @@ id|ebt_mutex
 suffix:semicolon
 r_return
 op_minus
-id|EINVAL
+id|ENOENT
 suffix:semicolon
 )brace
 id|up
@@ -3318,6 +3318,11 @@ c_func
 op_amp
 id|ebt_mutex
 )paren
+suffix:semicolon
+id|ret
+op_assign
+op_minus
+id|ENOENT
 suffix:semicolon
 r_goto
 id|cleanup_watchers

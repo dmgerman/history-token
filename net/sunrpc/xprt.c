@@ -3801,7 +3801,14 @@ c_func
 id|xprt
 )paren
 comma
-id|sk-&gt;dead
+id|test_bit
+c_func
+(paren
+id|SOCK_DEAD
+comma
+op_amp
+id|sk-&gt;flags
+)paren
 comma
 id|sk-&gt;zapped
 )paren
