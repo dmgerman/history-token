@@ -2056,6 +2056,8 @@ r_void
 id|usb_suspend_device
 (paren
 id|hcd-&gt;self.root_hub
+comma
+id|state
 )paren
 suffix:semicolon
 macro_line|#else
@@ -3407,6 +3409,16 @@ dot
 id|hub_control
 op_assign
 id|ehci_hub_control
+comma
+dot
+id|hub_suspend
+op_assign
+id|ehci_hub_suspend
+comma
+dot
+id|hub_resume
+op_assign
+id|ehci_hub_resume
 comma
 )brace
 suffix:semicolon

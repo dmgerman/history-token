@@ -858,6 +858,8 @@ id|ohci-&gt;hcd.state
 )paren
 )paren
 (brace
+id|sanitize
+suffix:colon
 id|ed-&gt;state
 op_assign
 id|ED_IDLE
@@ -883,14 +885,26 @@ id|ED_UNLINK
 suffix:colon
 multiline_comment|/* wait for hw to finish? */
 multiline_comment|/* major IRQ delivery trouble loses INTR_SF too... */
-id|WARN_ON
+r_if
+c_cond
 (paren
 id|limit
 op_decrement
 op_eq
 l_int|0
 )paren
+(brace
+id|ohci_warn
+(paren
+id|ohci
+comma
+l_string|&quot;IRQ INTR_SF lossage&bslash;n&quot;
+)paren
 suffix:semicolon
+r_goto
+id|sanitize
+suffix:semicolon
+)brace
 id|spin_unlock_irqrestore
 (paren
 op_amp
@@ -2162,6 +2176,15 @@ id|ohci-&gt;hcd.state
 id|hc_reset
 (paren
 id|ohci
+)paren
+suffix:semicolon
+r_else
+id|writel
+(paren
+id|OHCI_INTR_MIE
+comma
+op_amp
+id|ohci-&gt;regs-&gt;intrdisable
 )paren
 suffix:semicolon
 id|remove_debug_files

@@ -3362,7 +3362,11 @@ id|list
 suffix:semicolon
 id|urbp-&gt;qh-&gt;element
 op_assign
+id|cpu_to_le32
+c_func
+(paren
 id|td-&gt;dma_handle
+)paren
 suffix:semicolon
 r_return
 op_minus

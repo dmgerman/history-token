@@ -5,21 +5,6 @@ macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/usb.h&gt;
-macro_line|#ifdef CONFIG_USB_SERIAL_DEBUG
-DECL|variable|debug
-r_static
-r_int
-id|debug
-op_assign
-l_int|1
-suffix:semicolon
-macro_line|#else
-DECL|variable|debug
-r_static
-r_int
-id|debug
-suffix:semicolon
-macro_line|#endif
 macro_line|#include &quot;usb-serial.h&quot;
 DECL|function|usb_serial_device_match
 r_static

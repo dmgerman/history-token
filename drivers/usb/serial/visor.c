@@ -12,21 +12,6 @@ macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/usb.h&gt;
-macro_line|#ifdef CONFIG_USB_SERIAL_DEBUG
-DECL|variable|debug
-r_static
-r_int
-id|debug
-op_assign
-l_int|1
-suffix:semicolon
-macro_line|#else
-DECL|variable|debug
-r_static
-r_int
-id|debug
-suffix:semicolon
-macro_line|#endif
 macro_line|#include &quot;usb-serial.h&quot;
 macro_line|#include &quot;visor.h&quot;
 multiline_comment|/*&n; * Version Information&n; */
@@ -312,6 +297,11 @@ id|id
 )paren
 suffix:semicolon
 multiline_comment|/* Parameters that may be passed into the module. */
+DECL|variable|debug
+r_static
+r_int
+id|debug
+suffix:semicolon
 DECL|variable|vendor
 r_static
 id|__u16
@@ -2035,8 +2025,12 @@ id|count
 suffix:semicolon
 )brace
 id|usb_serial_debug_data
+c_func
 (paren
-id|__FILE__
+id|debug
+comma
+op_amp
+id|port-&gt;dev
 comma
 id|__FUNCTION__
 comma
@@ -2319,8 +2313,12 @@ r_return
 suffix:semicolon
 )brace
 id|usb_serial_debug_data
+c_func
 (paren
-id|__FILE__
+id|debug
+comma
+op_amp
+id|port-&gt;dev
 comma
 id|__FUNCTION__
 comma
@@ -2469,6 +2467,18 @@ op_star
 id|regs
 )paren
 (brace
+r_struct
+id|usb_serial_port
+op_star
+id|port
+op_assign
+(paren
+r_struct
+id|usb_serial_port
+op_star
+)paren
+id|urb-&gt;context
+suffix:semicolon
 r_int
 id|result
 suffix:semicolon
@@ -2527,8 +2537,12 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * This information is still unknown what it can be used for.&n;&t; * If anyone has an idea, please let the author know...&n;&t; *&n;&t; * Rumor has it this endpoint is used to notify when data&n;&t; * is ready to be read from the bulk ones.&n;&t; */
 id|usb_serial_debug_data
+c_func
 (paren
-id|__FILE__
+id|debug
+comma
+op_amp
+id|port-&gt;dev
 comma
 id|__FUNCTION__
 comma
@@ -3203,8 +3217,12 @@ id|retval
 suffix:semicolon
 r_else
 id|usb_serial_debug_data
+c_func
 (paren
-id|__FILE__
+id|debug
+comma
+op_amp
+id|serial-&gt;dev-&gt;dev
 comma
 id|__FUNCTION__
 comma

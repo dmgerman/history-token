@@ -12,24 +12,13 @@ macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/usb.h&gt;
 macro_line|#include &lt;linux/ioctl.h&gt;
-macro_line|#include &quot;kobil_sct.h&quot;
-singleline_comment|//#include &quot;../core/usb-debug.c&quot;
-macro_line|#ifdef CONFIG_USB_SERIAL_DEBUG
-DECL|variable|debug
-r_static
-r_int
-id|debug
-op_assign
-l_int|1
-suffix:semicolon
-macro_line|#else
-DECL|variable|debug
-r_static
-r_int
-id|debug
-suffix:semicolon
-macro_line|#endif
 macro_line|#include &quot;usb-serial.h&quot;
+macro_line|#include &quot;kobil_sct.h&quot;
+DECL|variable|debug
+r_static
+r_int
+id|debug
+suffix:semicolon
 multiline_comment|/* Version Information */
 DECL|macro|DRIVER_VERSION
 mdefine_line|#define DRIVER_VERSION &quot;21/05/2004&quot;
@@ -1831,8 +1820,12 @@ id|count
 suffix:semicolon
 )brace
 id|usb_serial_debug_data
+c_func
 (paren
-id|__FILE__
+id|debug
+comma
+op_amp
+id|port-&gt;dev
 comma
 id|__FUNCTION__
 comma
@@ -3404,12 +3397,16 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|debug
 comma
-l_string|&quot;i&quot;
+r_bool
+comma
+id|S_IRUGO
+op_or
+id|S_IWUSR
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * &lt;linux/usb_gadget.h&gt;&n; *&n; * We call the USB code inside a Linux-based peripheral device a &quot;gadget&quot;&n; * driver, except for the hardware-specific bus glue.  One USB host can&n; * master many USB gadgets, but the gadgets are only slaved to one host.&n; *&n; *&n; * (c) Copyright 2002-2003 by David Brownell&n; * All Rights Reserved.&n; *&n; * This software is licensed under the GNU GPL version 2.&n; */
+multiline_comment|/*&n; * &lt;linux/usb_gadget.h&gt;&n; *&n; * We call the USB code inside a Linux-based peripheral device a &quot;gadget&quot;&n; * driver, except for the hardware-specific bus glue.  One USB host can&n; * master many USB gadgets, but the gadgets are only slaved to one host.&n; *&n; *&n; * (C) Copyright 2002-2004 by David Brownell&n; * All Rights Reserved.&n; *&n; * This software is licensed under the GNU GPL version 2.&n; */
 macro_line|#ifndef __LINUX_USB_GADGET_H
 DECL|macro|__LINUX_USB_GADGET_H
 mdefine_line|#define __LINUX_USB_GADGET_H
@@ -9,8 +9,6 @@ suffix:semicolon
 multiline_comment|/**&n; * struct usb_request - describes one i/o request&n; * @buf: Buffer used for data.  Always provide this; some controllers&n; * &t;only use PIO, or don&squot;t use DMA for some endpoints.&n; * @dma: DMA address corresponding to &squot;buf&squot;.  If you don&squot;t set this&n; * &t;field, and the usb controller needs one, it is responsible&n; * &t;for mapping and unmapping the buffer.&n; * @length: Length of that data&n; * @no_interrupt: If true, hints that no completion irq is needed.&n; *&t;Helpful sometimes with deep request queues that are handled&n; *&t;directly by DMA controllers.&n; * @zero: If true, when writing data, makes the last packet be &quot;short&quot;&n; *     by adding a zero length packet as needed;&n; * @short_not_ok: When reading data, makes short packets be&n; *     treated as errors (queue stops advancing till cleanup).&n; * @complete: Function called when request completes, so this request and&n; *&t;its buffer may be re-used.&n; *&t;Reads terminate with a short packet, or when the buffer fills,&n; *&t;whichever comes first.  When writes terminate, some data bytes&n; *&t;will usually still be in flight (often in a hardware fifo).&n; *&t;Errors (for reads or writes) stop the queue from advancing&n; *&t;until the completion function returns, so that any transfers&n; *&t;invalidated by the error may first be dequeued.&n; * @context: For use by the completion callback&n; * @list: For use by the gadget driver.&n; * @status: Reports completion code, zero or a negative errno.&n; * &t;Normally, faults block the transfer queue from advancing until&n; * &t;the completion callback returns.&n; * &t;Code &quot;-ESHUTDOWN&quot; indicates completion caused by device disconnect,&n; * &t;or when the driver disabled the endpoint.&n; * @actual: Reports bytes transferred to/from the buffer.  For reads (OUT&n; * &t;transfers) this may be less than the requested length.  If the&n; * &t;short_not_ok flag is set, short reads are treated as errors&n; * &t;even when status otherwise indicates successful completion.&n; * &t;Note that for writes (IN transfers) some data bytes may still&n; * &t;reside in a device-side FIFO when the request is reported as&n; *&t;complete.&n; *&n; * These are allocated/freed through the endpoint they&squot;re used with.  The&n; * hardware&squot;s driver can add extra per-request data to the memory it returns,&n; * which often avoids separate memory allocations (potential failures),&n; * later when the request is queued.&n; *&n; * Request flags affect request handling, such as whether a zero length&n; * packet is written (the &quot;zero&quot; flag), whether a short read should be&n; * treated as an error (blocking request queue advance, the &quot;short_not_ok&quot;&n; * flag), or hinting that an interrupt is not required (the &quot;no_interrupt&quot;&n; * flag, for use with deep request queues).&n; *&n; * Bulk endpoints can use any size buffers, and can also be used for interrupt&n; * transfers. interrupt-only endpoints can be much less functional.&n; */
 singleline_comment|// NOTE this is analagous to &squot;struct urb&squot; on the host side,
 singleline_comment|// except that it&squot;s thinner and promotes more pre-allocation.
-singleline_comment|//
-singleline_comment|// ISSUE should this be allocated through the device?
 DECL|struct|usb_request
 r_struct
 id|usb_request
@@ -205,8 +203,8 @@ r_int
 id|bytes
 )paren
 suffix:semicolon
-singleline_comment|// NOTE:  on 2.5, drivers may also use dma_map() and
-singleline_comment|// dma_sync_single_*() to manage dma overhead.
+singleline_comment|// NOTE:  on 2.6, drivers may also use dma_map() and
+singleline_comment|// dma_sync_single_*() to directly manage dma overhead. 
 DECL|member|queue
 r_int
 (paren
@@ -702,7 +700,52 @@ id|usb_gadget
 op_star
 comma
 r_int
-id|value
+id|is_selfpowered
+)paren
+suffix:semicolon
+DECL|member|vbus_session
+r_int
+(paren
+op_star
+id|vbus_session
+)paren
+(paren
+r_struct
+id|usb_gadget
+op_star
+comma
+r_int
+id|is_active
+)paren
+suffix:semicolon
+DECL|member|vbus_draw
+r_int
+(paren
+op_star
+id|vbus_draw
+)paren
+(paren
+r_struct
+id|usb_gadget
+op_star
+comma
+r_int
+id|mA
+)paren
+suffix:semicolon
+DECL|member|pullup
+r_int
+(paren
+op_star
+id|pullup
+)paren
+(paren
+r_struct
+id|usb_gadget
+op_star
+comma
+r_int
+id|is_on
 )paren
 suffix:semicolon
 DECL|member|ioctl
@@ -726,7 +769,7 @@ id|param
 suffix:semicolon
 )brace
 suffix:semicolon
-multiline_comment|/**&n; * struct usb_gadget - represents a usb slave device&n; * @ops: Function pointers used to access hardware-specific operations.&n; * @ep0: Endpoint zero, used when reading or writing responses to&n; * &t;driver setup() requests&n; * @ep_list: List of other endpoints supported by the device.&n; * @speed: Speed of current connection to USB host.&n; * @is_dualspeed: True if the controller supports both high and full speed&n; *&t;operation.  If it does, the gadget driver must also support both.&n; * @name: Identifies the controller hardware type.  Used in diagnostics&n; * &t;and sometimes configuration.&n; * @dev: Driver model state for this abstract device.&n; *&n; * Gadgets have a mostly-portable &quot;gadget driver&quot; implementing device&n; * functions, handling all usb configurations and interfaces.  Gadget&n; * drivers talk to hardware-specific code indirectly, through ops vectors.&n; * That insulates the gadget driver from hardware details, and packages&n; * the hardware endpoints through generic i/o queues.  The &quot;usb_gadget&quot;&n; * and &quot;usb_ep&quot; interfaces provide that insulation from the hardware.&n; *&n; * Except for the driver data, all fields in this structure are&n; * read-only to the gadget driver.  That driver data is part of the&n; * &quot;driver model&quot; infrastructure in 2.5 (and later) kernels, and for&n; * earlier systems is grouped in a similar structure that&squot;s not known&n; * to the rest of the kernel.&n; */
+multiline_comment|/**&n; * struct usb_gadget - represents a usb slave device&n; * @ops: Function pointers used to access hardware-specific operations.&n; * @ep0: Endpoint zero, used when reading or writing responses to&n; * &t;driver setup() requests&n; * @ep_list: List of other endpoints supported by the device.&n; * @speed: Speed of current connection to USB host.&n; * @is_dualspeed: True if the controller supports both high and full speed&n; *&t;operation.  If it does, the gadget driver must also support both.&n; * @is_otg: True if the USB device port uses a Mini-AB jack, so that the&n; *&t;gadget driver must provide a USB OTG descriptor.&n; * @is_a_peripheral: False unless is_otg, the &quot;A&quot; end of a USB cable&n; *&t;is in the Mini-AB jack, and HNP has been used to switch roles&n; *&t;so that the &quot;A&quot; device currently acts as A-Peripheral, not A-Host.&n; * @a_hnp_support: OTG device feature flag, indicating that the A-Host&n; *&t;supports HNP at this port.&n; * @a_alt_hnp_support: OTG device feature flag, indicating that the A-Host&n; *&t;only supports HNP on a different root port.&n; * @b_hnp_enable: OTG device feature flag, indicating that the A-Host&n; *&t;enabled HNP support.&n; * @name: Identifies the controller hardware type.  Used in diagnostics&n; * &t;and sometimes configuration.&n; * @dev: Driver model state for this abstract device.&n; *&n; * Gadgets have a mostly-portable &quot;gadget driver&quot; implementing device&n; * functions, handling all usb configurations and interfaces.  Gadget&n; * drivers talk to hardware-specific code indirectly, through ops vectors.&n; * That insulates the gadget driver from hardware details, and packages&n; * the hardware endpoints through generic i/o queues.  The &quot;usb_gadget&quot;&n; * and &quot;usb_ep&quot; interfaces provide that insulation from the hardware.&n; *&n; * Except for the driver data, all fields in this structure are&n; * read-only to the gadget driver.  That driver data is part of the&n; * &quot;driver model&quot; infrastructure in 2.6 (and later) kernels, and for&n; * earlier systems is grouped in a similar structure that&squot;s not known&n; * to the rest of the kernel.&n; *&n; * Values of the three OTG device feature flags are updated before the&n; * setup() call corresponding to USB_REQ_SET_CONFIGURATION, and before&n; * driver suspend() calls.  They are valid only when is_otg, and when the&n; * device is acting as a B-Peripheral (so is_a_peripheral is false).&n; */
 DECL|struct|usb_gadget
 r_struct
 id|usb_gadget
@@ -759,6 +802,36 @@ suffix:semicolon
 DECL|member|is_dualspeed
 r_int
 id|is_dualspeed
+suffix:colon
+l_int|1
+suffix:semicolon
+DECL|member|is_otg
+r_int
+id|is_otg
+suffix:colon
+l_int|1
+suffix:semicolon
+DECL|member|is_a_peripheral
+r_int
+id|is_a_peripheral
+suffix:colon
+l_int|1
+suffix:semicolon
+DECL|member|b_hnp_enable
+r_int
+id|b_hnp_enable
+suffix:colon
+l_int|1
+suffix:semicolon
+DECL|member|a_hnp_support
+r_int
+id|a_hnp_support
+suffix:colon
+l_int|1
+suffix:semicolon
+DECL|member|a_alt_hnp_support
+r_int
+id|a_alt_hnp_support
 suffix:colon
 l_int|1
 suffix:semicolon
@@ -844,7 +917,7 @@ id|gadget
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * usb_gadget_wakeup - tries to wake up the host connected to this gadget&n; * @gadget: controller used to wake up the host&n; *&n; * Returns zero on success, else negative error code if the hardware&n; * doesn&squot;t support such attempts, or its support has not been enabled&n; * by the usb host.  Drivers must return device descriptors that report&n; * their ability to support this, or hosts won&squot;t enable it.&n; */
+multiline_comment|/**&n; * usb_gadget_wakeup - tries to wake up the host connected to this gadget&n; * @gadget: controller used to wake up the host&n; *&n; * Returns zero on success, else negative error code if the hardware&n; * doesn&squot;t support such attempts, or its support has not been enabled&n; * by the usb host.  Drivers must return device descriptors that report&n; * their ability to support this, or hosts won&squot;t enable it.&n; *&n; * This may also try to use SRP to wake the host and start enumeration,&n; * even if OTG isn&squot;t otherwise in use.  OTG devices may also start&n; * remote wakeup even when hosts don&squot;t explicitly enable it.&n; */
 DECL|function|usb_gadget_wakeup
 r_static
 r_inline
@@ -938,8 +1011,174 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * usb_gadget_vbus_connect - Notify controller that VBUS is powered&n; * @gadget:The device which now has VBUS power.&n; *&n; * This call is used by a driver for an external transceiver (or GPIO)&n; * that detects a VBUS power session starting.  Common responses include&n; * resuming the controller, activating the D+ (or D-) pullup to let the&n; * host detect that a USB device is attached, and starting to draw power&n; * (8mA or possibly more, especially after SET_CONFIGURATION).&n; *&n; * Returns zero on success, else negative errno.&n; */
+r_static
+r_inline
+r_int
+DECL|function|usb_gadget_vbus_connect
+id|usb_gadget_vbus_connect
+c_func
+(paren
+r_struct
+id|usb_gadget
+op_star
+id|gadget
+)paren
+(brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|gadget-&gt;ops-&gt;vbus_session
+)paren
+r_return
+op_minus
+id|EOPNOTSUPP
+suffix:semicolon
+r_return
+id|gadget-&gt;ops-&gt;vbus_session
+(paren
+id|gadget
+comma
+l_int|1
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/**&n; * usb_gadget_vbus_draw - constrain controller&squot;s VBUS power usage&n; * @gadget:The device whose VBUS usage is being described&n; * @mA:How much current to draw, in milliAmperes.  This should be twice&n; *&t;the value listed in the configuration descriptor bMaxPower field.&n; *&n; * This call is used by gadget drivers during SET_CONFIGURATION calls,&n; * reporting how much power the device may consume.  For example, this&n; * could affect how quickly batteries are recharged.&n; *&n; * Returns zero on success, else negative errno.&n; */
+r_static
+r_inline
+r_int
+DECL|function|usb_gadget_vbus_draw
+id|usb_gadget_vbus_draw
+c_func
+(paren
+r_struct
+id|usb_gadget
+op_star
+id|gadget
+comma
+r_int
+id|mA
+)paren
+(brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|gadget-&gt;ops-&gt;vbus_draw
+)paren
+r_return
+op_minus
+id|EOPNOTSUPP
+suffix:semicolon
+r_return
+id|gadget-&gt;ops-&gt;vbus_draw
+(paren
+id|gadget
+comma
+id|mA
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/**&n; * usb_gadget_vbus_disconnect - notify controller about VBUS session end&n; * @gadget:the device whose VBUS supply is being described&n; *&n; * This call is used by a driver for an external transceiver (or GPIO)&n; * that detects a VBUS power session ending.  Common responses include&n; * reversing everything done in usb_gadget_vbus_connect().&n; *&n; * Returns zero on success, else negative errno.&n; */
+r_static
+r_inline
+r_int
+DECL|function|usb_gadget_vbus_disconnect
+id|usb_gadget_vbus_disconnect
+c_func
+(paren
+r_struct
+id|usb_gadget
+op_star
+id|gadget
+)paren
+(brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|gadget-&gt;ops-&gt;vbus_session
+)paren
+r_return
+op_minus
+id|EOPNOTSUPP
+suffix:semicolon
+r_return
+id|gadget-&gt;ops-&gt;vbus_session
+(paren
+id|gadget
+comma
+l_int|0
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/**&n; * usb_gadget_connect - software-controlled connect to USB host&n; * @gadget:the peripheral being connected&n; *&n; * Enables the D+ (or potentially D-) pullup.  The host will start&n; * enumerating this gadget when the pullup is active and a VBUS session&n; * is active (the link is powered).  This pullup is always enabled unless&n; * usb_gadget_disconnect() has been used to disable it.&n; *&n; * Returns zero on success, else negative errno.&n; */
+r_static
+r_inline
+r_int
+DECL|function|usb_gadget_connect
+id|usb_gadget_connect
+(paren
+r_struct
+id|usb_gadget
+op_star
+id|gadget
+)paren
+(brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|gadget-&gt;ops-&gt;pullup
+)paren
+r_return
+op_minus
+id|EOPNOTSUPP
+suffix:semicolon
+r_return
+id|gadget-&gt;ops-&gt;pullup
+(paren
+id|gadget
+comma
+l_int|1
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/**&n; * usb_gadget_disconnect - software-controlled disconnect from USB host&n; * @gadget:the peripheral being disconnected&n; *&n; * Disables the D+ (or potentially D-) pullup, which the host may see&n; * as a disconnect (when a VBUS session is active).  Not all systems&n; * support software pullup controls.&n; *&n; * This routine may be used during the gadget driver bind() call to prevent&n; * the peripheral from ever being visible to the USB host, unless later&n; * usb_gadget_connect() is called.  For example, user mode components may&n; * need to be activated before the system can talk to hosts.&n; *&n; * Returns zero on success, else negative errno.&n; */
+r_static
+r_inline
+r_int
+DECL|function|usb_gadget_disconnect
+id|usb_gadget_disconnect
+(paren
+r_struct
+id|usb_gadget
+op_star
+id|gadget
+)paren
+(brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|gadget-&gt;ops-&gt;pullup
+)paren
+r_return
+op_minus
+id|EOPNOTSUPP
+suffix:semicolon
+r_return
+id|gadget-&gt;ops-&gt;pullup
+(paren
+id|gadget
+comma
+l_int|0
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/*-------------------------------------------------------------------------*/
-multiline_comment|/**&n; * struct usb_gadget_driver - driver for usb &squot;slave&squot; devices&n; * @function: String describing the gadget&squot;s function&n; * @speed: Highest speed the driver handles.&n; * @bind: Invoked when the driver is bound to a gadget, usually&n; * &t;after registering the driver.&n; * &t;At that point, ep0 is fully initialized, and ep_list holds&n; * &t;the currently-available endpoints.&n; * &t;Called in a context that permits sleeping.&n; * @setup: Invoked for ep0 control requests that aren&squot;t handled by&n; * &t;the hardware level driver. Most calls must be handled by&n; * &t;the gadget driver, including descriptor and configuration&n; * &t;management.  The 16 bit members of the setup data are in&n; * &t;cpu order. Called in_interrupt; this may not sleep.  Driver&n; *&t;queues a response to ep0, or returns negative to stall.&n; * @disconnect: Invoked after all transfers have been stopped,&n; * &t;when the host is disconnected.  May be called in_interrupt; this&n; * &t;may not sleep.  Some devices can&squot;t detect disconnect, so this might&n; *&t;not be called except as part of controller shutdown.&n; * @unbind: Invoked when the driver is unbound from a gadget,&n; * &t;usually from rmmod (after a disconnect is reported).&n; * &t;Called in a context that permits sleeping.&n; * @suspend: Invoked on USB suspend.  May be called in_interrupt.&n; * @resume: Invoked on USB resume.  May be called in_interrupt.&n; * @driver: Driver model state for this driver.&n; *&n; * Devices are disabled till a gadget driver successfully bind()s, which&n; * means the driver will handle setup() requests needed to enumerate (and&n; * meet &quot;chapter 9&quot; requirements) then do some useful work.&n; *&n; * Drivers use hardware-specific knowledge to configure the usb hardware.&n; * endpoint addressing is only one of several hardware characteristics that&n; * are in descriptors the ep0 implementation returns from setup() calls.&n; *&n; * Except for ep0 implementation, most driver code shouldn&squot;t need change to&n; * run on top of different usb controllers.  It&squot;ll use endpoints set up by&n; * that ep0 implementation.&n; *&n; * The usb controller driver handles a few standard usb requests.  Those&n; * include set_address, and feature flags for devices, interfaces, and&n; * endpoints (the get_status, set_feature, and clear_feature requests).&n; *&n; * Accordingly, the driver&squot;s setup() callback must always implement all&n; * get_descriptor requests, returning at least a device descriptor and&n; * a configuration descriptor.  Drivers must make sure the endpoint&n; * descriptors match any hardware constraints. Some hardware also constrains&n; * other descriptors. (The pxa250 allows only configurations 1, 2, or 3).&n; *&n; * The driver&squot;s setup() callback must also implement set_configuration,&n; * and should also implement set_interface, get_configuration, and&n; * get_interface.  Setting a configuration (or interface) is where&n; * endpoints should be activated or (config 0) shut down.&n; *&n; * (Note that only the default control endpoint is supported.  Neither&n; * hosts nor devices generally support control traffic except to ep0.)&n; *&n; * Most devices will ignore USB suspend/resume operations, and so will&n; * not provide those callbacks.  However, some may need to change modes&n; * when the host is not longer directing those activities.  For example,&n; * local controls (buttons, dials, etc) may need to be re-enabled since&n; * the (remote) host can&squot;t do that any longer; or an error state might&n; * be cleared, to make the device behave identically whether or not&n; * power is maintained.&n; */
+multiline_comment|/**&n; * struct usb_gadget_driver - driver for usb &squot;slave&squot; devices&n; * @function: String describing the gadget&squot;s function&n; * @speed: Highest speed the driver handles.&n; * @bind: Invoked when the driver is bound to a gadget, usually&n; * &t;after registering the driver.&n; * &t;At that point, ep0 is fully initialized, and ep_list holds&n; * &t;the currently-available endpoints.&n; * &t;Called in a context that permits sleeping.&n; * @setup: Invoked for ep0 control requests that aren&squot;t handled by&n; * &t;the hardware level driver. Most calls must be handled by&n; * &t;the gadget driver, including descriptor and configuration&n; * &t;management.  The 16 bit members of the setup data are in&n; * &t;cpu order. Called in_interrupt; this may not sleep.  Driver&n; *&t;queues a response to ep0, or returns negative to stall.&n; * @disconnect: Invoked after all transfers have been stopped,&n; * &t;when the host is disconnected.  May be called in_interrupt; this&n; * &t;may not sleep.  Some devices can&squot;t detect disconnect, so this might&n; *&t;not be called except as part of controller shutdown.&n; * @unbind: Invoked when the driver is unbound from a gadget,&n; * &t;usually from rmmod (after a disconnect is reported).&n; * &t;Called in a context that permits sleeping.&n; * @suspend: Invoked on USB suspend.  May be called in_interrupt.&n; * @resume: Invoked on USB resume.  May be called in_interrupt.&n; * @driver: Driver model state for this driver.&n; *&n; * Devices are disabled till a gadget driver successfully bind()s, which&n; * means the driver will handle setup() requests needed to enumerate (and&n; * meet &quot;chapter 9&quot; requirements) then do some useful work.&n; *&n; * If gadget-&gt;is_otg is true, the gadget driver must provide an OTG&n; * descriptor during enumeration, or else fail the bind() call.  In such&n; * cases, no USB traffic may flow until both bind() returns without&n; * having called usb_gadget_disconnect(), and the USB host stack has&n; * initialized.&n; *&n; * Drivers use hardware-specific knowledge to configure the usb hardware.&n; * endpoint addressing is only one of several hardware characteristics that&n; * are in descriptors the ep0 implementation returns from setup() calls.&n; *&n; * Except for ep0 implementation, most driver code shouldn&squot;t need change to&n; * run on top of different usb controllers.  It&squot;ll use endpoints set up by&n; * that ep0 implementation.&n; *&n; * The usb controller driver handles a few standard usb requests.  Those&n; * include set_address, and feature flags for devices, interfaces, and&n; * endpoints (the get_status, set_feature, and clear_feature requests).&n; *&n; * Accordingly, the driver&squot;s setup() callback must always implement all&n; * get_descriptor requests, returning at least a device descriptor and&n; * a configuration descriptor.  Drivers must make sure the endpoint&n; * descriptors match any hardware constraints. Some hardware also constrains&n; * other descriptors. (The pxa250 allows only configurations 1, 2, or 3).&n; *&n; * The driver&squot;s setup() callback must also implement set_configuration,&n; * and should also implement set_interface, get_configuration, and&n; * get_interface.  Setting a configuration (or interface) is where&n; * endpoints should be activated or (config 0) shut down.&n; *&n; * (Note that only the default control endpoint is supported.  Neither&n; * hosts nor devices generally support control traffic except to ep0.)&n; *&n; * Most devices will ignore USB suspend/resume operations, and so will&n; * not provide those callbacks.  However, some may need to change modes&n; * when the host is not longer directing those activities.  For example,&n; * local controls (buttons, dials, etc) may need to be re-enabled since&n; * the (remote) host can&squot;t do that any longer; or an error state might&n; * be cleared, to make the device behave identically whether or not&n; * power is maintained.&n; *&n; * If the OTG b_hnp_enabled flag is set during a suspend() call, the&n; * device may use HNP to switch from &quot;B-Peripheral&quot; to &quot;B-Host&quot; mode&n; * (or back from &quot;A-Peripheral&quot; mode to the original &quot;A-Host&quot;) if&n; * the gadget driver calls usb_gadget_disconnect() before the device&n; * is resumed.&n; */
 DECL|struct|usb_gadget_driver
 r_struct
 id|usb_gadget_driver

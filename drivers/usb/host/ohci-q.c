@@ -3402,6 +3402,8 @@ c_cond
 (paren
 id|likely
 (paren
+id|regs
+op_logical_and
 id|HCD_IS_RUNNING
 c_func
 (paren

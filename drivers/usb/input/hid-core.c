@@ -3398,12 +3398,32 @@ op_assign
 id|field-&gt;logical_maximum
 suffix:semicolon
 id|__s32
+op_star
 id|value
-(braket
-id|count
-)braket
 suffix:semicolon
-multiline_comment|/* WARNING: gcc specific */
+id|value
+op_assign
+id|kmalloc
+c_func
+(paren
+r_sizeof
+(paren
+id|__s32
+)paren
+op_star
+id|count
+comma
+id|GFP_ATOMIC
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|value
+)paren
+r_return
+suffix:semicolon
 r_for
 c_loop
 (paren
@@ -3504,7 +3524,8 @@ id|HID_UP_KEYBOARD
 op_plus
 l_int|1
 )paren
-r_return
+r_goto
+m_exit
 suffix:semicolon
 )brace
 r_for
@@ -3736,6 +3757,14 @@ r_sizeof
 (paren
 id|__s32
 )paren
+)paren
+suffix:semicolon
+m_exit
+suffix:colon
+id|kfree
+c_func
+(paren
+id|value
 )paren
 suffix:semicolon
 )brace
@@ -6338,6 +6367,12 @@ DECL|macro|USB_DEVICE_ID_4_PHIDGETSERVO_30
 mdefine_line|#define USB_DEVICE_ID_4_PHIDGETSERVO_30&t;0x0038
 DECL|macro|USB_DEVICE_ID_1_PHIDGETSERVO_30
 mdefine_line|#define USB_DEVICE_ID_1_PHIDGETSERVO_30&t;0x0039
+DECL|macro|USB_DEVICE_ID_8_8_8_IF_KIT
+mdefine_line|#define USB_DEVICE_ID_8_8_8_IF_KIT&t;0x0045
+DECL|macro|USB_DEVICE_ID_0_0_4_IF_KIT
+mdefine_line|#define USB_DEVICE_ID_0_0_4_IF_KIT&t;0x0040
+DECL|macro|USB_DEVICE_ID_0_8_8_IF_KIT
+mdefine_line|#define USB_DEVICE_ID_0_8_8_IF_KIT&t;0x0053
 DECL|macro|USB_VENDOR_ID_WISEGROUP
 mdefine_line|#define USB_VENDOR_ID_WISEGROUP&t;&t;0x0925
 DECL|macro|USB_DEVICE_ID_1_PHIDGETSERVO_20
@@ -6788,6 +6823,30 @@ comma
 id|USB_VENDOR_ID_GLAB
 comma
 id|USB_DEVICE_ID_1_PHIDGETSERVO_30
+comma
+id|HID_QUIRK_IGNORE
+)brace
+comma
+(brace
+id|USB_VENDOR_ID_GLAB
+comma
+id|USB_DEVICE_ID_8_8_8_IF_KIT
+comma
+id|HID_QUIRK_IGNORE
+)brace
+comma
+(brace
+id|USB_VENDOR_ID_GLAB
+comma
+id|USB_DEVICE_ID_0_0_4_IF_KIT
+comma
+id|HID_QUIRK_IGNORE
+)brace
+comma
+(brace
+id|USB_VENDOR_ID_GLAB
+comma
+id|USB_DEVICE_ID_0_8_8_IF_KIT
 comma
 id|HID_QUIRK_IGNORE
 )brace

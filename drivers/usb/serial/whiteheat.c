@@ -14,24 +14,14 @@ macro_line|#include &lt;asm/termbits.h&gt;
 macro_line|#include &lt;linux/usb.h&gt;
 macro_line|#include &lt;linux/serial_reg.h&gt;
 macro_line|#include &lt;linux/serial.h&gt;
-macro_line|#ifdef CONFIG_USB_SERIAL_DEBUG
-DECL|variable|debug
-r_static
-r_int
-id|debug
-op_assign
-l_int|1
-suffix:semicolon
-macro_line|#else
-DECL|variable|debug
-r_static
-r_int
-id|debug
-suffix:semicolon
-macro_line|#endif
 macro_line|#include &quot;usb-serial.h&quot;
 macro_line|#include &quot;whiteheat_fw.h&quot;&t;&t;/* firmware for the ConnectTech WhiteHEAT device */
 macro_line|#include &quot;whiteheat.h&quot;&t;&t;&t;/* WhiteHEAT specific commands */
+DECL|variable|debug
+r_static
+r_int
+id|debug
+suffix:semicolon
 macro_line|#ifndef CMSPAR
 DECL|macro|CMSPAR
 mdefine_line|#define CMSPAR 0
@@ -3313,8 +3303,12 @@ id|bytes
 suffix:semicolon
 )brace
 id|usb_serial_debug_data
+c_func
 (paren
-id|__FILE__
+id|debug
+comma
+op_amp
+id|port-&gt;dev
 comma
 id|__FUNCTION__
 comma
@@ -4316,19 +4310,6 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-id|usb_serial_debug_data
-(paren
-id|__FILE__
-comma
-id|__FUNCTION__
-comma
-id|urb-&gt;actual_length
-comma
-id|urb-&gt;transfer_buffer
-)paren
-suffix:semicolon
-r_return
-suffix:semicolon
 )brace
 DECL|function|command_port_read_callback
 r_static
@@ -4405,8 +4386,12 @@ r_return
 suffix:semicolon
 )brace
 id|usb_serial_debug_data
+c_func
 (paren
-id|__FILE__
+id|debug
+comma
+op_amp
+id|command_port-&gt;dev
 comma
 id|__FUNCTION__
 comma
@@ -4772,8 +4757,12 @@ r_return
 suffix:semicolon
 )brace
 id|usb_serial_debug_data
+c_func
 (paren
-id|__FILE__
+id|debug
+comma
+op_amp
+id|port-&gt;dev
 comma
 id|__FUNCTION__
 comma
@@ -7011,12 +7000,14 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|urb_pool_size
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -7027,12 +7018,16 @@ comma
 l_string|&quot;Number of urbs to use for buffering&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|debug
 comma
-l_string|&quot;i&quot;
+r_bool
+comma
+id|S_IRUGO
+op_or
+id|S_IWUSR
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC

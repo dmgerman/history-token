@@ -310,6 +310,9 @@ r_struct
 id|urb
 op_star
 id|urb
+comma
+r_int
+id|status
 )paren
 suffix:semicolon
 multiline_comment|/* allocate dma-consistent buffer for URB_DMA_NOMAPPING */
@@ -374,6 +377,31 @@ id|udev
 comma
 r_int
 id|bEndpointAddress
+)paren
+suffix:semicolon
+multiline_comment|/* global suspend/resume of bus */
+DECL|member|hub_suspend
+r_int
+(paren
+op_star
+id|hub_suspend
+)paren
+(paren
+r_struct
+id|usb_bus
+op_star
+)paren
+suffix:semicolon
+DECL|member|hub_resume
+r_int
+(paren
+op_star
+id|hub_resume
+)paren
+(paren
+r_struct
+id|usb_bus
+op_star
 )paren
 suffix:semicolon
 )brace
@@ -449,6 +477,7 @@ op_star
 id|hcd
 )paren
 suffix:semicolon
+multiline_comment|/* NOTE:  these suspend/resume calls relate to the HC as&n;&t; * a whole, not just the root hub; they&squot;re for bus glue.&n;&t; */
 multiline_comment|/* called after all devices were suspended */
 DECL|member|suspend
 r_int
@@ -643,6 +672,30 @@ id|u16
 id|wLength
 )paren
 suffix:semicolon
+DECL|member|hub_suspend
+r_int
+(paren
+op_star
+id|hub_suspend
+)paren
+(paren
+r_struct
+id|usb_hcd
+op_star
+)paren
+suffix:semicolon
+DECL|member|hub_resume
+r_int
+(paren
+op_star
+id|hub_resume
+)paren
+(paren
+r_struct
+id|usb_hcd
+op_star
+)paren
+suffix:semicolon
 )brace
 suffix:semicolon
 r_extern
@@ -676,7 +729,7 @@ id|bus
 )paren
 suffix:semicolon
 r_extern
-r_void
+r_int
 id|usb_rh_status_dequeue
 (paren
 r_struct
@@ -1136,6 +1189,10 @@ r_extern
 r_struct
 id|semaphore
 id|usb_bus_list_lock
+suffix:semicolon
+r_extern
+id|wait_queue_head_t
+id|usb_kill_urb_queue
 suffix:semicolon
 r_extern
 r_struct
