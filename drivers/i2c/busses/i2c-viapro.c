@@ -133,29 +133,6 @@ r_struct
 id|i2c_adapter
 id|vt596_adapter
 suffix:semicolon
-multiline_comment|/* Internally used pause function */
-DECL|function|vt596_do_pause
-r_static
-r_void
-id|vt596_do_pause
-c_func
-(paren
-r_int
-r_int
-id|amount
-)paren
-(brace
-id|current-&gt;state
-op_assign
-id|TASK_INTERRUPTIBLE
-suffix:semicolon
-id|schedule_timeout
-c_func
-(paren
-id|amount
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/* Another internally used function */
 DECL|function|vt596_transaction
 r_static
@@ -319,7 +296,7 @@ suffix:semicolon
 multiline_comment|/* We will always wait for a fraction of a second! &n;&t;   I don&squot;t know if VIA needs this, Intel did  */
 r_do
 (brace
-id|vt596_do_pause
+id|i2c_delay
 c_func
 (paren
 l_int|1

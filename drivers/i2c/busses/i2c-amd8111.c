@@ -1122,11 +1122,7 @@ op_amp
 id|AMD_SMB_STS_DONE
 )paren
 (brace
-id|current-&gt;state
-op_assign
-id|TASK_INTERRUPTIBLE
-suffix:semicolon
-id|schedule_timeout
+id|i2c_delay
 c_func
 (paren
 id|HZ
