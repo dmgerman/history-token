@@ -170,12 +170,6 @@ op_star
 id|nflognl
 suffix:semicolon
 multiline_comment|/* our socket */
-DECL|variable|qlen
-r_static
-r_int
-id|qlen
-suffix:semicolon
-multiline_comment|/* current length of multipart-nlmsg */
 DECL|variable|ulog_lock
 id|DECLARE_LOCK
 c_func
@@ -264,7 +258,7 @@ l_string|&quot;ipt_ULOG: throwing %d packets to netlink mask %u&bslash;n&quot;
 comma
 id|ub-&gt;qlen
 comma
-id|nlgroup
+id|nlgroupnum
 )paren
 suffix:semicolon
 id|netlink_broadcast
@@ -298,7 +292,7 @@ op_assign
 l_int|NULL
 suffix:semicolon
 )brace
-multiline_comment|/* timer function to flush queue in ULOG_FLUSH_INTERVAL time */
+multiline_comment|/* timer function to flush queue in flushtimeout time */
 DECL|function|ulog_timer
 r_static
 r_void
@@ -875,27 +869,6 @@ op_or_assign
 id|NLM_F_MULTI
 suffix:semicolon
 )brace
-multiline_comment|/* if threshold is reached, send message to userspace */
-r_if
-c_cond
-(paren
-id|qlen
-op_ge
-id|loginfo-&gt;qthreshold
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|loginfo-&gt;qthreshold
-OG
-l_int|1
-)paren
-id|nlh-&gt;nlmsg_type
-op_assign
-id|NLMSG_DONE
-suffix:semicolon
-)brace
 id|ub-&gt;lastnlh
 op_assign
 id|nlh
@@ -924,6 +897,33 @@ c_func
 (paren
 op_amp
 id|ub-&gt;timer
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/* if threshold is reached, send message to userspace */
+r_if
+c_cond
+(paren
+id|ub-&gt;qlen
+op_ge
+id|loginfo-&gt;qthreshold
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|loginfo-&gt;qthreshold
+OG
+l_int|1
+)paren
+id|nlh-&gt;nlmsg_type
+op_assign
+id|NLMSG_DONE
+suffix:semicolon
+id|ulog_send
+c_func
+(paren
+id|groupnum
 )paren
 suffix:semicolon
 )brace
