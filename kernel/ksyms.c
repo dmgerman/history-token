@@ -31,6 +31,7 @@ macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/capability.h&gt;
 macro_line|#include &lt;linux/highuid.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
+macro_line|#include &lt;linux/fs_struct.h&gt;
 macro_line|#include &lt;linux/uio.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/in6.h&gt;
@@ -91,6 +92,20 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|exit_mm
+)paren
+suffix:semicolon
+DECL|variable|exit_fs
+id|EXPORT_SYMBOL_GPL
+c_func
+(paren
+id|exit_fs
+)paren
+suffix:semicolon
+DECL|variable|copy_fs_struct
+id|EXPORT_SYMBOL_GPL
+c_func
+(paren
+id|copy_fs_struct
 )paren
 suffix:semicolon
 multiline_comment|/* internal kernel memory management */
