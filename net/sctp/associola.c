@@ -150,6 +150,16 @@ id|sctp_opt
 op_star
 id|sp
 suffix:semicolon
+r_struct
+id|sctp_protocol
+op_star
+id|proto
+op_assign
+id|sctp_get_protocol
+c_func
+(paren
+)paren
+suffix:semicolon
 r_int
 id|i
 suffix:semicolon
@@ -287,19 +297,19 @@ suffix:semicolon
 multiline_comment|/* Initialize the default association max_retrans and RTO values.  */
 id|asoc-&gt;max_retrans
 op_assign
-id|ep-&gt;proto-&gt;max_retrans_association
+id|proto-&gt;max_retrans_association
 suffix:semicolon
 id|asoc-&gt;rto_initial
 op_assign
-id|ep-&gt;proto-&gt;rto_initial
+id|proto-&gt;rto_initial
 suffix:semicolon
 id|asoc-&gt;rto_max
 op_assign
-id|ep-&gt;proto-&gt;rto_max
+id|proto-&gt;rto_max
 suffix:semicolon
 id|asoc-&gt;rto_min
 op_assign
-id|ep-&gt;proto-&gt;rto_min
+id|proto-&gt;rto_min
 suffix:semicolon
 id|asoc-&gt;overall_error_threshold
 op_assign
@@ -312,7 +322,7 @@ suffix:semicolon
 multiline_comment|/* Initialize the maximum mumber of new data packets that can be sent&n;&t; * in a burst.&n;&t; */
 id|asoc-&gt;max_burst
 op_assign
-id|ep-&gt;proto-&gt;max_burst
+id|proto-&gt;max_burst
 suffix:semicolon
 multiline_comment|/* Copy things from the endpoint.  */
 r_for
