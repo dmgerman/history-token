@@ -175,6 +175,10 @@ op_or
 id|MAY_TRUNC
 )paren
 suffix:semicolon
+id|accmode
+op_or_assign
+id|MAY_OWNER_OVERRIDE
+suffix:semicolon
 id|status
 op_assign
 id|fh_verify
