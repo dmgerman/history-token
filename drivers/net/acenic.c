@@ -5699,6 +5699,8 @@ id|ace_private
 op_star
 id|ap
 op_assign
+id|netdev_priv
+c_func
 (paren
 (paren
 r_struct
@@ -5707,8 +5709,6 @@ op_star
 )paren
 id|dev
 )paren
-op_member_access_from_pointer
-id|priv
 suffix:semicolon
 r_int
 id|cur_size

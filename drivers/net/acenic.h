@@ -1859,7 +1859,11 @@ id|ace_private
 op_star
 id|ap
 op_assign
-id|dev-&gt;priv
+id|netdev_priv
+c_func
+(paren
+id|dev
+)paren
 suffix:semicolon
 r_struct
 id|ace_regs
@@ -1928,7 +1932,11 @@ id|ace_private
 op_star
 id|ap
 op_assign
-id|dev-&gt;priv
+id|netdev_priv
+c_func
+(paren
+id|dev
+)paren
 suffix:semicolon
 r_struct
 id|ace_regs
