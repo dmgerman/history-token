@@ -4688,7 +4688,7 @@ id|bh_lrus
 op_assign
 (brace
 (brace
-l_int|0
+l_int|NULL
 )brace
 )brace
 suffix:semicolon
@@ -9245,7 +9245,7 @@ l_int|0
 suffix:semicolon
 id|bh-&gt;b_this_page
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|bh-&gt;b_page
 op_assign

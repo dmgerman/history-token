@@ -303,7 +303,6 @@ op_star
 id|pdev
 )paren
 suffix:semicolon
-macro_line|#ifndef MODULE
 DECL|variable|__initdata
 r_static
 r_struct
@@ -1547,7 +1546,6 @@ id|VMODE_1920_1440_75
 comma
 )brace
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/* Accessors */
 DECL|function|kyro_dev_video_mode_set
 r_int
@@ -3264,7 +3262,6 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* This should give a reasonable default video mode */
-macro_line|#ifndef MODULE
 r_if
 c_cond
 (paren
@@ -3292,7 +3289,6 @@ comma
 l_int|32
 )paren
 )paren
-macro_line|#endif
 id|info-&gt;var
 op_assign
 id|kyro_var
@@ -3337,7 +3333,7 @@ id|size
 op_mul_assign
 id|info-&gt;var.yres_virtual
 suffix:semicolon
-id|memset_io
+id|fb_memset
 c_func
 (paren
 (paren

@@ -3967,7 +3967,6 @@ id|blk_remove_plug
 suffix:semicolon
 multiline_comment|/*&n; * remove the plug and let it rip..&n; */
 DECL|function|__generic_unplug_device
-r_inline
 r_void
 id|__generic_unplug_device
 c_func

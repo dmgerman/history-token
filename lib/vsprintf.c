@@ -720,7 +720,7 @@ template_param
 l_int|36
 )paren
 r_return
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|c
 op_assign

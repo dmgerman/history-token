@@ -9520,6 +9520,12 @@ id|dma_handle
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/*&n;&t; * Some architectures require a full mb() to enforce completion of&n;&t; * the memory writes above before the I/O transfers in start_hc().&n;&t; */
+id|mb
+c_func
+(paren
+)paren
+suffix:semicolon
 id|start_hc
 c_func
 (paren

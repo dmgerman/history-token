@@ -976,6 +976,8 @@ op_assign
 op_star
 id|p
 )paren
+op_ne
+l_int|NULL
 suffix:semicolon
 id|p
 op_assign
@@ -1192,6 +1194,8 @@ op_assign
 op_star
 id|p
 )paren
+op_ne
+l_int|NULL
 suffix:semicolon
 id|p
 op_assign

@@ -841,6 +841,8 @@ id|left
 op_assign
 id|node-&gt;rb_left
 )paren
+op_ne
+l_int|NULL
 )paren
 id|node
 op_assign
@@ -1069,7 +1071,7 @@ op_logical_neg
 id|n
 )paren
 r_return
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_while
 c_loop

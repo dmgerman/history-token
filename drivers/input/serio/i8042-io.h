@@ -23,6 +23,8 @@ macro_line|# define I8042_AUX_IRQ isa_irq_to_vector(12)
 macro_line|#elif defined(__arm__)
 multiline_comment|/* defined in include/asm-arm/arch-xxx/irqs.h */
 macro_line|#include &lt;asm/irq.h&gt;
+macro_line|#elif defined(CONFIG_SUPERH64)
+macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#else
 DECL|macro|I8042_KBD_IRQ
 macro_line|# define I8042_KBD_IRQ&t;1

@@ -274,7 +274,7 @@ id|slot-&gt;dev.vio_dev
 )paren
 id|slot-&gt;dev.vio_dev
 op_assign
-id|vio_register_device
+id|vio_register_device_node
 c_func
 (paren
 id|dn
@@ -377,7 +377,7 @@ c_cond
 (paren
 id|slot-&gt;dev.vio_dev
 op_assign
-id|vio_register_device
+id|vio_register_device_node
 c_func
 (paren
 id|slot-&gt;dn

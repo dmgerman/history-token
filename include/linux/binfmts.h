@@ -98,8 +98,11 @@ suffix:semicolon
 multiline_comment|/* Name of the binary really executed. Most&n;&t;&t;&t;&t;   of the time same as filename, but could be&n;&t;&t;&t;&t;   different for binfmt_{misc,script} */
 DECL|member|interp_flags
 r_int
-r_int
 id|interp_flags
+suffix:semicolon
+DECL|member|interp_data
+r_int
+id|interp_data
 suffix:semicolon
 DECL|member|loader
 DECL|member|exec
@@ -115,6 +118,11 @@ DECL|macro|BINPRM_FLAGS_ENFORCE_NONDUMP_BIT
 mdefine_line|#define BINPRM_FLAGS_ENFORCE_NONDUMP_BIT 0
 DECL|macro|BINPRM_FLAGS_ENFORCE_NONDUMP
 mdefine_line|#define BINPRM_FLAGS_ENFORCE_NONDUMP (1 &lt;&lt; BINPRM_FLAGS_ENFORCE_NONDUMP_BIT)
+multiline_comment|/* fd of the binary should be passed to the interpreter */
+DECL|macro|BINPRM_FLAGS_EXECFD_BIT
+mdefine_line|#define BINPRM_FLAGS_EXECFD_BIT 1
+DECL|macro|BINPRM_FLAGS_EXECFD
+mdefine_line|#define BINPRM_FLAGS_EXECFD (1 &lt;&lt; BINPRM_FLAGS_EXECFD_BIT)
 multiline_comment|/*&n; * This structure defines the functions that are used to load the binary formats that&n; * linux accepts.&n; */
 DECL|struct|linux_binfmt
 r_struct

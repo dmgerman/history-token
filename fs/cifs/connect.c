@@ -1038,29 +1038,26 @@ l_string|&quot;tcp session abended prematurely (after SMBnegprot)&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* some servers kill tcp session rather than returning&n;&t;&t;&t;&t;&t;smb negprot error in which case reconnecting here is&n;&t;&t;&t;&t;&t;not going to help - return error to mount */
-id|spin_lock
-c_func
+r_break
+suffix:semicolon
+)brace
+r_if
+c_cond
 (paren
-op_amp
-id|GlobalMid_Lock
+id|length
+op_eq
+op_minus
+id|EINTR
 )paren
-suffix:semicolon
-id|server-&gt;tcpStatus
-op_assign
-id|CifsExiting
-suffix:semicolon
-id|spin_unlock
+(brace
+id|cFYI
 c_func
 (paren
-op_amp
-id|GlobalMid_Lock
+l_int|1
+comma
+(paren
+l_string|&quot;cifsd thread killed&quot;
 )paren
-suffix:semicolon
-id|wake_up
-c_func
-(paren
-op_amp
-id|server-&gt;response_q
 )paren
 suffix:semicolon
 r_break
@@ -1284,32 +1281,6 @@ id|CifsNew
 )paren
 (brace
 multiline_comment|/* if nack on negprot (rather than &n;&t;&t;&t;&t;&t;ret of smb negprot error) reconnecting&n;&t;&t;&t;&t;&t;not going to help, ret error to mount */
-id|spin_lock
-c_func
-(paren
-op_amp
-id|GlobalMid_Lock
-)paren
-suffix:semicolon
-id|server-&gt;tcpStatus
-op_assign
-id|CifsExiting
-suffix:semicolon
-id|spin_unlock
-c_func
-(paren
-op_amp
-id|GlobalMid_Lock
-)paren
-suffix:semicolon
-multiline_comment|/* wake up thread doing negprot */
-id|wake_up
-c_func
-(paren
-op_amp
-id|server-&gt;response_q
-)paren
-suffix:semicolon
 r_break
 suffix:semicolon
 )brace
@@ -1819,12 +1790,9 @@ id|server-&gt;tcpStatus
 op_assign
 id|CifsExiting
 suffix:semicolon
-id|spin_unlock
-c_func
-(paren
-op_amp
-id|GlobalMid_Lock
-)paren
+id|server-&gt;tsk
+op_assign
+l_int|NULL
 suffix:semicolon
 id|atomic_set
 c_func
@@ -1835,6 +1803,13 @@ comma
 l_int|0
 )paren
 suffix:semicolon
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|GlobalMid_Lock
+)paren
+suffix:semicolon
 multiline_comment|/* Although there should not be any requests blocked on &n;&t;this queue it can not hurt to be paranoid and try to wake up requests&n;&t;that may haven been blocked when more than 50 at time were on the wire &n;&t;to the same server - they now will see the session is in exit state&n;&t;and get out of SendReceive.  */
 id|wake_up_all
 c_func
@@ -1843,9 +1818,20 @@ op_amp
 id|server-&gt;request_q
 )paren
 suffix:semicolon
-id|server-&gt;tsk
-op_assign
-l_int|NULL
+multiline_comment|/* give those requests time to exit */
+id|set_current_state
+c_func
+(paren
+id|TASK_INTERRUPTIBLE
+)paren
+suffix:semicolon
+id|schedule_timeout
+c_func
+(paren
+id|HZ
+op_div
+l_int|8
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -7100,21 +7086,17 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|pSesInfo
+)paren
+(brace
+r_if
+c_cond
+(paren
 id|pSesInfo-&gt;capabilities
 op_amp
 id|CAP_LARGE_FILES
 )paren
 (brace
-id|cFYI
-c_func
-(paren
-l_int|0
-comma
-(paren
-l_string|&quot;Large files supported &quot;
-)paren
-)paren
-suffix:semicolon
 id|sb-&gt;s_maxbytes
 op_assign
 (paren
@@ -7136,6 +7118,7 @@ op_lshift
 l_int|31
 suffix:semicolon
 multiline_comment|/* 2 GB */
+)brace
 multiline_comment|/* on error free sesinfo and tcon struct if needed */
 r_if
 c_cond
@@ -7143,6 +7126,7 @@ c_cond
 id|rc
 )paren
 (brace
+multiline_comment|/* if session setup failed, use count is zero but&n;&t;&t;we still need to free cifsd thread */
 r_if
 c_cond
 (paren
@@ -7174,6 +7158,23 @@ op_amp
 id|GlobalMid_Lock
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|srvTcp-&gt;tsk
+)paren
+(brace
+id|send_sig
+c_func
+(paren
+id|SIGKILL
+comma
+id|srvTcp-&gt;tsk
+comma
+l_int|1
+)paren
+suffix:semicolon
+)brace
 )brace
 multiline_comment|/* If find_unc succeeded then rc == 0 so we can not end */
 r_if
@@ -7181,7 +7182,7 @@ c_cond
 (paren
 id|tcon
 )paren
-multiline_comment|/* up here accidently freeing someone elses tcon struct */
+multiline_comment|/* up accidently freeing someone elses tcon struct */
 id|tconInfoFree
 c_func
 (paren
@@ -7205,14 +7206,22 @@ id|pSesInfo
 r_if
 c_cond
 (paren
+(paren
 id|pSesInfo-&gt;server
 )paren
-(brace
-r_if
-c_cond
+op_logical_and
 (paren
-id|pSesInfo-&gt;Suid
+id|pSesInfo-&gt;status
+op_eq
+id|CifsGood
 )paren
+)paren
+(brace
+r_int
+id|temp_rc
+suffix:semicolon
+id|temp_rc
+op_assign
 id|CIFSSMBLogoff
 c_func
 (paren
@@ -7221,10 +7230,20 @@ comma
 id|pSesInfo
 )paren
 suffix:semicolon
+multiline_comment|/* if the socketUseCount is now zero */
 r_if
 c_cond
 (paren
+(paren
+id|temp_rc
+op_eq
+op_minus
+id|ESHUTDOWN
+)paren
+op_logical_and
+(paren
 id|pSesInfo-&gt;server-&gt;tsk
+)paren
 )paren
 (brace
 id|send_sig
@@ -7238,21 +7257,6 @@ l_int|1
 )paren
 suffix:semicolon
 )brace
-id|set_current_state
-c_func
-(paren
-id|TASK_INTERRUPTIBLE
-)paren
-suffix:semicolon
-id|schedule_timeout
-c_func
-(paren
-id|HZ
-op_div
-l_int|4
-)paren
-suffix:semicolon
-multiline_comment|/* give captive thread time to exit */
 )brace
 r_else
 id|cFYI
@@ -14475,22 +14479,6 @@ op_minus
 id|ESHUTDOWN
 )paren
 (brace
-multiline_comment|/* should we add wake_up_all(&amp;server-&gt;request_q); &n;&t;&t;&t;   and add a check in  the check inFlight loop&n;&t;&t;&t;   for the session ending */
-id|set_current_state
-c_func
-(paren
-id|TASK_INTERRUPTIBLE
-)paren
-suffix:semicolon
-multiline_comment|/* give captive thread time to exit */
-id|schedule_timeout
-c_func
-(paren
-id|HZ
-op_div
-l_int|4
-)paren
-suffix:semicolon
 id|cFYI
 c_func
 (paren

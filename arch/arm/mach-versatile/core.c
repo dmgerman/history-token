@@ -1231,11 +1231,6 @@ id|mmc0_plat_data
 op_assign
 (brace
 dot
-id|mclk
-op_assign
-l_int|33000000
-comma
-dot
 id|ocr_mask
 op_assign
 id|MMC_VDD_32_33
@@ -1256,11 +1251,6 @@ id|mmc_platform_data
 id|mmc1_plat_data
 op_assign
 (brace
-dot
-id|mclk
-op_assign
-l_int|33000000
-comma
 dot
 id|ocr_mask
 op_assign

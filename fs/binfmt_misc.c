@@ -382,12 +382,6 @@ op_assign
 op_minus
 l_int|1
 suffix:semicolon
-r_char
-id|fd_str
-(braket
-l_int|12
-)braket
-suffix:semicolon
 r_struct
 id|files_struct
 op_star
@@ -482,12 +476,6 @@ op_amp
 id|MISC_FMT_OPEN_BINARY
 )paren
 (brace
-r_char
-op_star
-id|fdsp
-op_assign
-id|fd_str
-suffix:semicolon
 id|files
 op_assign
 id|current-&gt;files
@@ -588,47 +576,14 @@ id|bprm-&gt;file
 op_assign
 l_int|NULL
 suffix:semicolon
-multiline_comment|/* make argv[1] be the file descriptor of the binary */
-id|snprintf
-c_func
-(paren
-id|fd_str
-comma
-r_sizeof
-(paren
-id|fd_str
-)paren
-comma
-l_string|&quot;%d&quot;
-comma
-id|fd_binary
-)paren
+multiline_comment|/* mark the bprm that fd should be passed to interp */
+id|bprm-&gt;interp_flags
+op_or_assign
+id|BINPRM_FLAGS_EXECFD
 suffix:semicolon
-id|retval
+id|bprm-&gt;interp_data
 op_assign
-id|copy_strings_kernel
-c_func
-(paren
-l_int|1
-comma
-op_amp
-id|fdsp
-comma
-id|bprm
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|retval
-OL
-l_int|0
-)paren
-r_goto
-id|_error
-suffix:semicolon
-id|bprm-&gt;argc
-op_increment
+id|fd_binary
 suffix:semicolon
 )brace
 r_else
@@ -649,6 +604,7 @@ id|bprm-&gt;file
 op_assign
 l_int|NULL
 suffix:semicolon
+)brace
 multiline_comment|/* make argv[1] be the path to the binary */
 id|retval
 op_assign
@@ -675,7 +631,7 @@ suffix:semicolon
 id|bprm-&gt;argc
 op_increment
 suffix:semicolon
-)brace
+multiline_comment|/* add the interp as argv[0] */
 id|retval
 op_assign
 id|copy_strings_kernel
@@ -850,6 +806,10 @@ id|fd_binary
 )paren
 suffix:semicolon
 id|bprm-&gt;interp_flags
+op_assign
+l_int|0
+suffix:semicolon
+id|bprm-&gt;interp_data
 op_assign
 l_int|0
 suffix:semicolon

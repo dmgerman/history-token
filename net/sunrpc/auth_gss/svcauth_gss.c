@@ -3638,7 +3638,7 @@ id|svcdata
 suffix:semicolon
 id|svcdata-&gt;body_start
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|svcdata-&gt;rsci
 op_assign
@@ -4621,7 +4621,7 @@ id|gsd-&gt;body_start
 suffix:semicolon
 id|gsd-&gt;body_start
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 multiline_comment|/* move accept_stat to right place: */
 id|memcpy

@@ -1,6 +1,7 @@
 multiline_comment|/*&n; * Copyright (C) 1995-2003 Russell King&n; *               2001-2002 Keith Owens&n; *     &n; * Generate definitions needed by assembly language modules.&n; * This code generates raw asm output which is post-processed to extract&n; * and format the required data.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; */
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
+macro_line|#include &lt;asm/mach/arch.h&gt;
 multiline_comment|/*&n; * Make sure that the compiler and target are compatible.&n; */
 macro_line|#if defined(__APCS_26__)
 macro_line|#error Sorry, your compiler targets APCS-26 but this kernel requires APCS-32
@@ -128,6 +129,23 @@ c_func
 id|SYS_ERROR0
 comma
 l_int|0x9f0000
+)paren
+suffix:semicolon
+id|BLANK
+c_func
+(paren
+)paren
+suffix:semicolon
+id|DEFINE
+c_func
+(paren
+id|SIZEOF_MACHINE_DESC
+comma
+r_sizeof
+(paren
+r_struct
+id|machine_desc
+)paren
 )paren
 suffix:semicolon
 r_return

@@ -141,7 +141,7 @@ id|tcp_timeouts
 )braket
 op_assign
 (brace
-l_int|0
+l_int|NULL
 comma
 multiline_comment|/*      TCP_CONNTRACK_NONE */
 op_amp
@@ -176,7 +176,7 @@ op_amp
 id|ip_ct_tcp_timeout_last_ack
 comma
 multiline_comment|/*      TCP_CONNTRACK_LAST_ACK, */
-l_int|0
+l_int|NULL
 comma
 multiline_comment|/*      TCP_CONNTRACK_LISTEN */
 )brace

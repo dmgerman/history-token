@@ -65,6 +65,8 @@ id|t-&gt;default_attrs
 id|i
 )braket
 )paren
+op_ne
+l_int|NULL
 suffix:semicolon
 id|i
 op_increment
@@ -588,7 +590,7 @@ id|argv
 l_int|2
 )braket
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 multiline_comment|/* minimal command environment */
 id|envp

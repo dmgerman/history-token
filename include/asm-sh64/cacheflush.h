@@ -1,0 +1,146 @@
+macro_line|#ifndef __ASM_SH64_CACHEFLUSH_H
+DECL|macro|__ASM_SH64_CACHEFLUSH_H
+mdefine_line|#define __ASM_SH64_CACHEFLUSH_H
+macro_line|#ifndef __ASSEMBLY__
+macro_line|#include &lt;asm/page.h&gt;
+r_struct
+id|vm_area_struct
+suffix:semicolon
+r_struct
+id|page
+suffix:semicolon
+r_struct
+id|mm_struct
+suffix:semicolon
+r_extern
+r_void
+id|flush_cache_all
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|flush_cache_mm
+c_func
+(paren
+r_struct
+id|mm_struct
+op_star
+id|mm
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|flush_cache_sigtramp
+c_func
+(paren
+r_int
+r_int
+id|start
+comma
+r_int
+r_int
+id|end
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|flush_cache_range
+c_func
+(paren
+r_struct
+id|vm_area_struct
+op_star
+id|vma
+comma
+r_int
+r_int
+id|start
+comma
+r_int
+r_int
+id|end
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|flush_cache_page
+c_func
+(paren
+r_struct
+id|vm_area_struct
+op_star
+id|vma
+comma
+r_int
+r_int
+id|addr
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|flush_dcache_page
+c_func
+(paren
+r_struct
+id|page
+op_star
+id|pg
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|flush_icache_range
+c_func
+(paren
+r_int
+r_int
+id|start
+comma
+r_int
+r_int
+id|end
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|flush_icache_user_range
+c_func
+(paren
+r_struct
+id|vm_area_struct
+op_star
+id|vma
+comma
+r_struct
+id|page
+op_star
+id|page
+comma
+r_int
+r_int
+id|addr
+comma
+r_int
+id|len
+)paren
+suffix:semicolon
+DECL|macro|flush_dcache_mmap_lock
+mdefine_line|#define flush_dcache_mmap_lock(mapping)&t;&t;do { } while (0)
+DECL|macro|flush_dcache_mmap_unlock
+mdefine_line|#define flush_dcache_mmap_unlock(mapping)&t;do { } while (0)
+DECL|macro|flush_cache_vmap
+mdefine_line|#define flush_cache_vmap(start, end)&t;&t;flush_cache_all()
+DECL|macro|flush_cache_vunmap
+mdefine_line|#define flush_cache_vunmap(start, end)&t;&t;flush_cache_all()
+DECL|macro|flush_icache_page
+mdefine_line|#define flush_icache_page(vma, page)&t;do { } while (0)
+DECL|macro|copy_to_user_page
+mdefine_line|#define copy_to_user_page(vma, page, vaddr, dst, src, len) &bslash;&n;do { memcpy(dst, src, len); &bslash;&n;     flush_icache_user_range(vma, page, vaddr, len); &bslash;&n;} while (0)
+DECL|macro|copy_from_user_page
+mdefine_line|#define copy_from_user_page(vma, page, vaddr, dst, src, len) &bslash;&n;&t;memcpy(dst, src, len)
+macro_line|#endif /* __ASSEMBLY__ */
+macro_line|#endif /* __ASM_SH64_CACHEFLUSH_H */
+eof

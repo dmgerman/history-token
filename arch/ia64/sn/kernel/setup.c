@@ -63,13 +63,6 @@ id|cnodeid_t
 suffix:semicolon
 r_extern
 r_void
-id|bte_init_cpu
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_void
 id|sn_timer_init
 c_func
 (paren
@@ -1705,11 +1698,6 @@ id|SH_PI_CAM_CONTROL
 )paren
 suffix:semicolon
 )brace
-id|bte_init_cpu
-c_func
-(paren
-)paren
-suffix:semicolon
 )brace
 multiline_comment|/*&n; * Scan klconfig for ionodes.  Add the nasids to the&n; * physical_node_map and the pda and increment numionodes.&n; */
 r_static

@@ -569,7 +569,7 @@ c_cond
 op_amp
 id|get_buffer
 suffix:colon
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 r_if

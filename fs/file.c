@@ -595,12 +595,12 @@ id|fd_set
 op_star
 id|new_openset
 op_assign
-l_int|0
+l_int|NULL
 comma
 op_star
 id|new_execset
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_int
 id|error
