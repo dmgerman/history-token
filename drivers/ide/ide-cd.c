@@ -6366,6 +6366,20 @@ comma
 id|sense
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|CDROM_STATE_FLAGS
+c_func
+(paren
+id|drive
+)paren
+op_member_access_from_pointer
+id|toc_valid
+)paren
+r_return
+l_int|0
+suffix:semicolon
 multiline_comment|/* First read just the header, so we know how long the TOC is. */
 id|stat
 op_assign

@@ -479,14 +479,6 @@ DECL|macro|MODULE_GENERIC_TABLE
 mdefine_line|#define MODULE_GENERIC_TABLE(gtype,name)&t;&bslash;&n;static const unsigned long __module_##gtype##_size &bslash;&n;  __attribute__ ((unused)) = sizeof(struct gtype##_id); &bslash;&n;static const struct gtype##_id * __module_##gtype##_table &bslash;&n;  __attribute__ ((unused)) = name
 DECL|macro|MODULE_DEVICE_TABLE
 mdefine_line|#define MODULE_DEVICE_TABLE(type,name)&t;&t;&bslash;&n;  MODULE_GENERIC_TABLE(type##_device,name)
-multiline_comment|/* not put to .modinfo section to avoid section type conflicts */
-multiline_comment|/* The attributes of a section are set the first time the section is&n;   seen; we want .modinfo to not be allocated.  */
-id|__asm__
-c_func
-(paren
-l_string|&quot;.section .modinfo&bslash;n&bslash;t.previous&quot;
-)paren
-suffix:semicolon
 multiline_comment|/* Define the module variable, and usage macros.  */
 r_extern
 r_struct

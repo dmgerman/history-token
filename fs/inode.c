@@ -2459,7 +2459,7 @@ r_int
 id|tmp
 op_assign
 id|i_ino
-op_or
+op_plus
 (paren
 (paren
 r_int

@@ -7621,7 +7621,7 @@ c_func
 (paren
 id|KERN_NOTICE
 l_string|&quot;aha152x: current partition table is using extended translation.&bslash;n&quot;
-l_string|&quot;         using it also, although it&squot;s not explictly enabled.&bslash;n&quot;
+l_string|&quot;         using it also, although it&squot;s not explicitly enabled.&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace

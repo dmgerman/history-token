@@ -5660,7 +5660,7 @@ id|return_fail
 )paren
 )paren
 (brace
-id|return_ok
+id|return_fail
 op_assign
 id|bh-&gt;b_reqnext
 suffix:semicolon

@@ -5078,6 +5078,10 @@ id|pmd_t
 op_star
 id|pmd
 suffix:semicolon
+id|current-&gt;state
+op_assign
+id|TASK_RUNNING
+suffix:semicolon
 id|pgd
 op_assign
 id|pgd_offset

@@ -37,6 +37,8 @@ DECL|macro|SO_RCVTIMEO
 mdefine_line|#define&t;SO_RCVTIMEO&t;0x1012
 DECL|macro|SO_SNDTIMEO
 mdefine_line|#define&t;SO_SNDTIMEO&t;0x1013
+DECL|macro|SO_ACCEPTCONN
+mdefine_line|#define SO_ACCEPTCONN&t;0x1014
 multiline_comment|/* linux-specific, might as well be the same as on i386 */
 DECL|macro|SO_NO_CHECK
 mdefine_line|#define SO_NO_CHECK&t;11

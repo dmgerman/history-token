@@ -845,21 +845,27 @@ r_case
 id|UPDATE_PRESERVE
 suffix:colon
 multiline_comment|/* Check if update rule needs to be applied (not if mask is all ones) */
+multiline_comment|/* The left shift drops the bits we want to ignore. */
 r_if
 c_cond
 (paren
 (paren
-(paren
-l_int|1
-op_lshift
-id|bit_granularity
-)paren
-op_minus
-l_int|1
-)paren
-op_amp
 op_complement
 id|mask
+op_lshift
+(paren
+r_sizeof
+(paren
+id|mask
+)paren
+op_star
+l_int|8
+op_minus
+id|bit_granularity
+)paren
+)paren
+op_ne
+l_int|0
 )paren
 (brace
 multiline_comment|/*&n;&t;&t;&t; * Read the current contents of the byte/word/dword containing&n;&t;&t;&t; * the field, and merge with the new field value.&n;&t;&t;&t; */

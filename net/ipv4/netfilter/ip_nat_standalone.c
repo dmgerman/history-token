@@ -1366,7 +1366,6 @@ c_func
 id|fini
 )paren
 suffix:semicolon
-macro_line|#ifdef MODULE
 DECL|variable|ip_nat_setup_info
 id|EXPORT_SYMBOL
 c_func
@@ -1409,5 +1408,4 @@ c_func
 id|ip_nat_cheat_check
 )paren
 suffix:semicolon
-macro_line|#endif
 eof

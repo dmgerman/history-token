@@ -1607,6 +1607,16 @@ comma
 id|GFP_KERNEL
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|b
+)paren
+r_return
+op_minus
+id|ENOMEM
+suffix:semicolon
 id|b-&gt;driver
 op_assign
 id|driver

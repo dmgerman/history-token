@@ -787,7 +787,11 @@ id|cpu_has_xmm
 (brace
 id|tsk-&gt;thread.i387.fxsave.mxcsr
 op_assign
+(paren
 id|mxcsr
+op_amp
+l_int|0xffbf
+)paren
 suffix:semicolon
 )brace
 )brace
@@ -1548,6 +1552,11 @@ id|i387_fxsave_struct
 )paren
 r_return
 l_int|1
+suffix:semicolon
+multiline_comment|/* mxcsr bit 6 and 31-16 must be zero for security reasons */
+id|tsk-&gt;thread.i387.fxsave.mxcsr
+op_and_assign
+l_int|0xffbf
 suffix:semicolon
 r_return
 id|convert_fxsr_from_user

@@ -767,6 +767,7 @@ r_int
 id|i
 suffix:semicolon
 r_int
+r_int
 id|flags
 suffix:semicolon
 id|save_flags
@@ -2294,6 +2295,7 @@ r_int
 id|status
 suffix:semicolon
 r_int
+r_int
 id|flags
 suffix:semicolon
 multiline_comment|/* Next test is for debugging; &quot;can&squot;t happen&quot; */
@@ -2925,6 +2927,7 @@ r_int
 id|i
 suffix:semicolon
 r_int
+r_int
 id|flags
 suffix:semicolon
 id|save_flags
@@ -3135,6 +3138,7 @@ l_int|1
 )paren
 (brace
 r_int
+r_int
 id|flags
 suffix:semicolon
 id|save_flags
@@ -3224,6 +3228,7 @@ op_eq
 l_int|0
 )paren
 (brace
+r_int
 r_int
 id|flags
 suffix:semicolon
@@ -3452,6 +3457,7 @@ r_int
 id|reset_flags
 )paren
 (brace
+r_int
 r_int
 id|flags
 suffix:semicolon

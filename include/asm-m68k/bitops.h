@@ -1001,7 +1001,7 @@ id|cnt
 suffix:semicolon
 id|asm
 (paren
-l_string|&quot;bfffo %1{#0:#0}&quot;
+l_string|&quot;bfffo %1{#0:#0},%0&quot;
 suffix:colon
 l_string|&quot;=d&quot;
 (paren

@@ -330,10 +330,18 @@ DECL|macro|SA5_REPLY_PORT_OFFSET
 mdefine_line|#define SA5_REPLY_PORT_OFFSET&t;&t;0x44
 DECL|macro|SA5_INTR_STATUS
 mdefine_line|#define SA5_INTR_STATUS&t;&t;0x30
+DECL|macro|SA5_CTCFG_OFFSET
+mdefine_line|#define SA5_CTCFG_OFFSET&t;0xB4
+DECL|macro|SA5_CTMEM_OFFSET
+mdefine_line|#define SA5_CTMEM_OFFSET&t;0xB8
 DECL|macro|SA5_INTR_OFF
 mdefine_line|#define SA5_INTR_OFF&t;&t;0x08
+DECL|macro|SA5B_INTR_OFF
+mdefine_line|#define SA5B_INTR_OFF&t;&t;0x04
 DECL|macro|SA5_INTR_PENDING
 mdefine_line|#define SA5_INTR_PENDING&t;0x08
+DECL|macro|SA5B_INTR_PENDING
+mdefine_line|#define SA5B_INTR_PENDING&t;0x04
 DECL|macro|FIFO_EMPTY
 mdefine_line|#define FIFO_EMPTY&t;&t;0xffffffff&t;
 DECL|macro|CISS_ERROR_BIT
@@ -434,6 +442,55 @@ id|writel
 c_func
 (paren
 id|SA5_INTR_OFF
+comma
+id|h-&gt;vaddr
+op_plus
+id|SA5_REPLY_INTR_MASK_OFFSET
+)paren
+suffix:semicolon
+)brace
+)brace
+multiline_comment|/*&n; *  This card is the oposite of the other cards.&n; *   0 turns interrupts on...&n; *   0x04 turns them off...&n; */
+DECL|function|SA5B_intr_mask
+r_static
+r_void
+id|SA5B_intr_mask
+c_func
+(paren
+id|ctlr_info_t
+op_star
+id|h
+comma
+r_int
+r_int
+id|val
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|val
+)paren
+(brace
+multiline_comment|/* Turn interrupts on */
+id|writel
+c_func
+(paren
+l_int|0
+comma
+id|h-&gt;vaddr
+op_plus
+id|SA5_REPLY_INTR_MASK_OFFSET
+)paren
+suffix:semicolon
+)brace
+r_else
+multiline_comment|/* Turn them off */
+(brace
+id|writel
+c_func
+(paren
+id|SA5B_INTR_OFF
 comma
 id|h-&gt;vaddr
 op_plus
@@ -587,6 +644,57 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/*&n; *      Returns true if an interrupt is pending..&n; */
+DECL|function|SA5B_intr_pending
+r_static
+r_int
+r_int
+id|SA5B_intr_pending
+c_func
+(paren
+id|ctlr_info_t
+op_star
+id|h
+)paren
+(brace
+r_int
+r_int
+id|register_value
+op_assign
+id|readl
+c_func
+(paren
+id|h-&gt;vaddr
+op_plus
+id|SA5_INTR_STATUS
+)paren
+suffix:semicolon
+macro_line|#ifdef CCISS_DEBUG
+id|printk
+c_func
+(paren
+l_string|&quot;cciss: intr_pending %lx&bslash;n&quot;
+comma
+id|register_value
+)paren
+suffix:semicolon
+macro_line|#endif  /* CCISS_DEBUG */
+r_if
+c_cond
+(paren
+id|register_value
+op_amp
+id|SA5B_INTR_PENDING
+)paren
+(brace
+r_return
+l_int|1
+suffix:semicolon
+)brace
+r_return
+l_int|0
+suffix:semicolon
+)brace
 DECL|variable|SA5_access
 r_static
 r_struct
@@ -601,6 +709,25 @@ comma
 id|SA5_fifo_full
 comma
 id|SA5_intr_pending
+comma
+id|SA5_completed
+comma
+)brace
+suffix:semicolon
+DECL|variable|SA5B_access
+r_static
+r_struct
+id|access_method
+id|SA5B_access
+op_assign
+(brace
+id|SA5_submit_command
+comma
+id|SA5B_intr_mask
+comma
+id|SA5_fifo_full
+comma
+id|SA5B_intr_pending
 comma
 id|SA5_completed
 comma

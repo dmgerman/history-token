@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: socket.h,v 1.8 2000/07/08 00:20:43 davem Exp $ */
+multiline_comment|/* $Id: socket.h,v 1.9 2001/01/30 07:48:30 davem Exp $ */
 macro_line|#ifndef _ASM_SOCKET_H
 DECL|macro|_ASM_SOCKET_H
 mdefine_line|#define _ASM_SOCKET_H
@@ -35,6 +35,8 @@ DECL|macro|SO_RCVTIMEO
 mdefine_line|#define SO_RCVTIMEO     0x2000
 DECL|macro|SO_SNDTIMEO
 mdefine_line|#define SO_SNDTIMEO     0x4000
+DECL|macro|SO_ACCEPTCONN
+mdefine_line|#define SO_ACCEPTCONN&t;0x8000
 multiline_comment|/* wha!??? */
 DECL|macro|SO_DONTLINGER
 mdefine_line|#define SO_DONTLINGER   (~SO_LINGER)  /* Older SunOS compat. hack */

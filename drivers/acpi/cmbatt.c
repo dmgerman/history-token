@@ -559,8 +559,10 @@ l_int|8
 dot
 id|integer.value
 suffix:semicolon
+DECL|macro|Xstrncpy
+mdefine_line|#define Xstrncpy(a, b, c) if (b) strncpy(a,b,c); else strncpy(a, &quot;unknown&quot;, c);
 multiline_comment|/* BUG: trailing NULL issue */
-id|strncpy
+id|Xstrncpy
 c_func
 (paren
 id|result-&gt;model_number
@@ -577,7 +579,7 @@ op_minus
 l_int|1
 )paren
 suffix:semicolon
-id|strncpy
+id|Xstrncpy
 c_func
 (paren
 id|result-&gt;serial_number
@@ -594,7 +596,7 @@ op_minus
 l_int|1
 )paren
 suffix:semicolon
-id|strncpy
+id|Xstrncpy
 c_func
 (paren
 id|result-&gt;battery_type
@@ -611,7 +613,7 @@ op_minus
 l_int|1
 )paren
 suffix:semicolon
-id|strncpy
+id|Xstrncpy
 c_func
 (paren
 id|result-&gt;oem_info

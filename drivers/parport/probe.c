@@ -407,20 +407,30 @@ suffix:semicolon
 multiline_comment|/* Get rid of trailing blanks */
 id|u
 op_assign
-id|strchr
+id|sep
+op_plus
+id|strlen
 (paren
 id|sep
-comma
-l_char|&squot; &squot;
 )paren
+op_minus
+l_int|1
 suffix:semicolon
-r_if
-c_cond
+r_while
+c_loop
 (paren
 id|u
+op_ge
+id|p
+op_logical_and
+op_star
+id|u
+op_eq
+l_char|&squot; &squot;
 )paren
 op_star
 id|u
+op_decrement
 op_assign
 l_char|&squot;&bslash;0&squot;
 suffix:semicolon

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * acenic.c: Linux driver for the Alteon AceNIC Gigabit Ethernet card&n; *           and other Tigon based cards.&n; *&n; * Copyright 1998-2000 by Jes Sorensen, &lt;jes@linuxcare.com&gt;.&n; *&n; * Thanks to Alteon and 3Com for providing hardware and documentation&n; * enabling me to write this driver.&n; *&n; * A mailing list for discussing the use of this driver has been&n; * setup, please subscribe to the lists if you have any questions&n; * about the driver. Send mail to linux-acenic-help@sunsite.auc.dk to&n; * see how to subscribe.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * Additional credits:&n; *   Pete Wyckoff &lt;wyckoff@ca.sandia.gov&gt;: Initial Linux/Alpha and trace&n; *       dump support. The trace dump support has not been&n; *       integrated yet however.&n; *   Troy Benjegerdes: Big Endian (PPC) patches.&n; *   Nate Stahl: Better out of memory handling and stats support.&n; *   Aman Singla: Nasty race between interrupt handler and tx code dealing&n; *                with &squot;testing the tx_ret_csm and setting tx_full&squot;&n; *   David S. Miller &lt;davem@redhat.com&gt;: conversion to new PCI dma mapping&n; *                                       infrastructure and Sparc support&n; *   Pierrick Pinasseau (CERN): For lending me an Ultra 5 to test the&n; *                              driver under Linux/Sparc64&n; *   Matt Domsch &lt;Matt_Domsch@dell.com&gt;: Detect Alteon 1000baseT cards&n; *   Chip Salzenberg &lt;chip@valinux.com&gt;: Fix race condition between tx&n; *                                       handler and close() cleanup.&n; *   Ken Aaker &lt;kdaaker@rchland.vnet.ibm.com&gt;: Correct check for whether&n; *                                       memory mapped IO is enabled to&n; *                                       make the driver work on RS/6000.&n; *   Takayoshi Kouchi &lt;kouchi@hpc.bs1.fc.nec.co.jp&gt;: Identifying problem&n; *                                       where the driver would disable&n; *                                       bus master mode if it had to disable&n; *                                       write and invalidate.&n; *   Stephen Hack &lt;stephen_hack@hp.com&gt;: Fixed ace_set_mac_addr for little&n; *                                       endian systems.&n; *   Val Henson &lt;vhenson@esscom.com&gt;:    Reset Jumbo skb producer and&n; *                                       rx producer index when&n; *                                       flushing the Jumbo ring.&n; */
+multiline_comment|/*&n; * acenic.c: Linux driver for the Alteon AceNIC Gigabit Ethernet card&n; *           and other Tigon based cards.&n; *&n; * Copyright 1998-2000 by Jes Sorensen, &lt;jes@linuxcare.com&gt;.&n; *&n; * Thanks to Alteon and 3Com for providing hardware and documentation&n; * enabling me to write this driver.&n; *&n; * A mailing list for discussing the use of this driver has been&n; * setup, please subscribe to the lists if you have any questions&n; * about the driver. Send mail to linux-acenic-help@sunsite.auc.dk to&n; * see how to subscribe.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * Additional credits:&n; *   Pete Wyckoff &lt;wyckoff@ca.sandia.gov&gt;: Initial Linux/Alpha and trace&n; *       dump support. The trace dump support has not been&n; *       integrated yet however.&n; *   Troy Benjegerdes: Big Endian (PPC) patches.&n; *   Nate Stahl: Better out of memory handling and stats support.&n; *   Aman Singla: Nasty race between interrupt handler and tx code dealing&n; *                with &squot;testing the tx_ret_csm and setting tx_full&squot;&n; *   David S. Miller &lt;davem@redhat.com&gt;: conversion to new PCI dma mapping&n; *                                       infrastructure and Sparc support&n; *   Pierrick Pinasseau (CERN): For lending me an Ultra 5 to test the&n; *                              driver under Linux/Sparc64&n; *   Matt Domsch &lt;Matt_Domsch@dell.com&gt;: Detect Alteon 1000baseT cards&n; *   Chip Salzenberg &lt;chip@valinux.com&gt;: Fix race condition between tx&n; *                                       handler and close() cleanup.&n; *   Ken Aaker &lt;kdaaker@rchland.vnet.ibm.com&gt;: Correct check for whether&n; *                                       memory mapped IO is enabled to&n; *                                       make the driver work on RS/6000.&n; *   Takayoshi Kouchi &lt;kouchi@hpc.bs1.fc.nec.co.jp&gt;: Identifying problem&n; *                                       where the driver would disable&n; *                                       bus master mode if it had to disable&n; *                                       write and invalidate.&n; *   Stephen Hack &lt;stephen_hack@hp.com&gt;: Fixed ace_set_mac_addr for little&n; *                                       endian systems.&n; *   Val Henson &lt;vhenson@esscom.com&gt;:    Reset Jumbo skb producer and&n; *                                       rx producer index when&n; *                                       flushing the Jumbo ring.&n; *   Hans Grobler &lt;grobh@sun.ac.za&gt;:     Memory leak fixes in the&n; *                                       driver init path.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
@@ -26,8 +26,6 @@ macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 DECL|macro|INDEX_DEBUG
 macro_line|#undef INDEX_DEBUG
-DECL|macro|TX_HOST_RING
-mdefine_line|#define TX_HOST_RING&t;1
 macro_line|#ifdef CONFIG_ACENIC_OMIT_TIGON_I
 DECL|macro|ACE_IS_TIGON_I
 mdefine_line|#define ACE_IS_TIGON_I(ap)&t;0
@@ -224,6 +222,10 @@ macro_line|#ifndef __exit
 DECL|macro|__exit
 mdefine_line|#define __exit
 macro_line|#endif
+macro_line|#ifndef __devinit
+DECL|macro|__devinit
+mdefine_line|#define __devinit&t;__init
+macro_line|#endif
 macro_line|#ifndef SMP_CACHE_BYTES
 DECL|macro|SMP_CACHE_BYTES
 mdefine_line|#define SMP_CACHE_BYTES&t;L1_CACHE_BYTES
@@ -296,6 +298,15 @@ id|size
 comma
 id|GFP_KERNEL
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|virt_ptr
+)paren
+r_return
+l_int|NULL
 suffix:semicolon
 op_star
 id|dma_handle
@@ -644,7 +655,7 @@ id|version
 )braket
 id|__initdata
 op_assign
-l_string|&quot;acenic.c: v0.49 12/13/2000  Jes Sorensen, linux-acenic@SunSITE.auc.dk&bslash;n&quot;
+l_string|&quot;acenic.c: v0.50 02/02/2001  Jes Sorensen, linux-acenic@SunSITE.dk&bslash;n&quot;
 l_string|&quot;                            http://home.cern.ch/~jes/gige/acenic.html&bslash;n&quot;
 suffix:semicolon
 DECL|variable|root_dev
@@ -653,8 +664,6 @@ r_struct
 id|net_device
 op_star
 id|root_dev
-op_assign
-l_int|NULL
 suffix:semicolon
 DECL|variable|__initdata
 r_static
@@ -666,7 +675,7 @@ l_int|0
 suffix:semicolon
 DECL|function|acenic_probe
 r_int
-id|__init
+id|__devinit
 id|acenic_probe
 (paren
 id|ACE_PROBE_ARG
@@ -1395,6 +1404,12 @@ c_func
 id|dev
 )paren
 suffix:semicolon
+id|kfree
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
 r_continue
 suffix:semicolon
 )brace
@@ -1408,8 +1423,17 @@ c_func
 id|dev
 )paren
 )paren
+(brace
+multiline_comment|/*&n;&t;&t;&t; * ace_allocate_descriptors() calls&n;&t;&t;&t; * ace_init_cleanup() on error.&n;&t;&t;&t; */
+id|kfree
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
 r_continue
 suffix:semicolon
+)brace
 macro_line|#ifdef MODULE
 r_if
 c_cond
@@ -1442,8 +1466,17 @@ c_func
 id|dev
 )paren
 )paren
+(brace
+multiline_comment|/*&n;&t;&t;&t; * ace_init() calls ace_init_cleanup() on error.&n;&t;&t;&t; */
+id|kfree
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
 r_continue
 suffix:semicolon
+)brace
 id|boards_found
 op_increment
 suffix:semicolon
@@ -1564,6 +1597,7 @@ l_string|&quot;i&quot;
 suffix:semicolon
 macro_line|#endif
 DECL|function|ace_module_cleanup
+r_static
 r_void
 id|__exit
 id|ace_module_cleanup
@@ -2767,6 +2801,35 @@ suffix:semicolon
 multiline_comment|/*&n;&t; * Don&squot;t access any other registes before this point!&n;&t; */
 macro_line|#ifdef __BIG_ENDIAN
 multiline_comment|/*&n;&t; * This will most likely need BYTE_SWAP once we switch&n;&t; * to using __raw_writel()&n;&t; */
+macro_line|#ifdef __parisc__
+id|writel
+c_func
+(paren
+(paren
+id|WORD_SWAP
+op_or
+id|BYTE_SWAP
+op_or
+id|CLR_INT
+op_or
+(paren
+(paren
+id|WORD_SWAP
+op_or
+id|BYTE_SWAP
+op_or
+id|CLR_INT
+)paren
+op_lshift
+l_int|24
+)paren
+)paren
+comma
+op_amp
+id|regs-&gt;HostCtrl
+)paren
+suffix:semicolon
+macro_line|#else
 id|writel
 c_func
 (paren
@@ -2790,6 +2853,7 @@ op_amp
 id|regs-&gt;HostCtrl
 )paren
 suffix:semicolon
+macro_line|#endif
 macro_line|#else
 id|writel
 c_func
@@ -2960,8 +3024,9 @@ suffix:colon
 id|printk
 c_func
 (paren
-id|KERN_INFO
-l_string|&quot;  Unsupported Tigon version detected (%i), &quot;
+id|KERN_WARNING
+l_string|&quot;  Unsupported Tigon version detected &quot;
+l_string|&quot;(%i), &quot;
 comma
 id|tig_ver
 )paren
@@ -7287,6 +7352,10 @@ id|skb
 )paren
 suffix:semicolon
 multiline_comment|/* send it up */
+id|dev-&gt;last_rx
+op_assign
+id|jiffies
+suffix:semicolon
 id|ap-&gt;stats.rx_packets
 op_increment
 suffix:semicolon

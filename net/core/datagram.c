@@ -106,7 +106,7 @@ c_cond
 id|error
 )paren
 r_goto
-id|out
+id|out_err
 suffix:semicolon
 r_if
 c_cond
@@ -131,7 +131,7 @@ op_amp
 id|RCV_SHUTDOWN
 )paren
 r_goto
-id|out
+id|out_noerr
 suffix:semicolon
 multiline_comment|/* Sequenced packets can come disconnected. If so we report the problem */
 id|error
@@ -161,7 +161,7 @@ id|TCP_LISTEN
 )paren
 (brace
 r_goto
-id|out
+id|out_err
 suffix:semicolon
 )brace
 multiline_comment|/* handle signals */
@@ -216,6 +216,13 @@ op_star
 id|timeo_p
 )paren
 suffix:semicolon
+id|out_err
+suffix:colon
+op_star
+id|err
+op_assign
+id|error
+suffix:semicolon
 id|out
 suffix:colon
 id|current-&gt;state
@@ -231,13 +238,22 @@ op_amp
 id|wait
 )paren
 suffix:semicolon
+r_return
+id|error
+suffix:semicolon
+id|out_noerr
+suffix:colon
 op_star
 id|err
 op_assign
-id|error
+l_int|0
 suffix:semicolon
-r_return
 id|error
+op_assign
+l_int|1
+suffix:semicolon
+r_goto
+id|out
 suffix:semicolon
 )brace
 multiline_comment|/*&n; *&t;Get a datagram skbuff, understands the peeking, nonblocking wakeups and possible&n; *&t;races. This replaces identical code in packet,raw and udp, as well as the IPX&n; *&t;AX.25 and Appletalk. It also finally fixes the long standing peek and read&n; *&t;race for datagram sockets. If you alter this routine remember it must be&n; *&t;re-entrant.&n; *&n; *&t;This function will lock the socket if a skb is returned, so the caller&n; *&t;needs to unlock the socket in that case (usually by calling skb_free_datagram)&n; *&n; *&t;* It does not lock socket since today. This function is&n; *&t;* free of race conditions. This measure should/can improve&n; *&t;* significantly datagram socket latencies at high loads,&n; *&t;* when data copying to user space takes lots of time.&n; *&t;* (BTW I&squot;ve just killed the last cli() in IP/IPv6/core/netlink/packet&n; *&t;*  8) Great win.)&n; *&t;*&t;&t;&t;                    --ANK (980729)&n; *&n; *&t;The order of the tests when we find no data waiting are specified&n; *&t;quite explicitly by POSIX 1003.1g, don&squot;t change them without having&n; *&t;the standard around please.&n; */

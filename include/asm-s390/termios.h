@@ -131,7 +131,7 @@ mdefine_line|#define N_R3964&t;&t;9&t;/* Reserved for Simatic R3964 module */
 DECL|macro|N_PROFIBUS_FDL
 mdefine_line|#define N_PROFIBUS_FDL&t;10&t;/* Reserved for Profibus &lt;Dave@mvhi.com&gt; */
 DECL|macro|N_IRDA
-mdefine_line|#define N_IRDA&t;&t;11&t;/* Linux IR - http://www.cs.uit.no/~dagb/irda/irda.html */
+mdefine_line|#define N_IRDA&t;&t;11&t;/* Linux IR - http://irda.sourceforge.net/ */
 DECL|macro|N_SMSBLOCK
 mdefine_line|#define N_SMSBLOCK&t;12&t;/* SMS block mode - for talking to GSM data cards about SMS messages */
 DECL|macro|N_HDLC
