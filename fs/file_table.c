@@ -172,8 +172,7 @@ l_int|1
 suffix:semicolon
 id|f-&gt;f_version
 op_assign
-op_increment
-id|event
+l_int|0
 suffix:semicolon
 id|f-&gt;f_uid
 op_assign
