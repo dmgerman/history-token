@@ -13,7 +13,6 @@ id|unused
 op_assign
 l_string|&quot;$Id: sctp_output.c,v 1.22 2002/07/12 14:39:05 jgrimm Exp $&quot;
 suffix:semicolon
-macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/wait.h&gt;
@@ -21,10 +20,6 @@ macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/ip.h&gt;
 macro_line|#include &lt;linux/ipv6.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
-macro_line|#ifndef CONFIG_INET_ECN
-DECL|macro|CONFIG_INET_ECN
-mdefine_line|#define CONFIG_INET_ECN
-macro_line|#endif /* CONFIG_INET_ECN */
 macro_line|#include &lt;net/inet_ecn.h&gt; 
 macro_line|#include &lt;net/icmp.h&gt;
 macro_line|#ifndef TEST_FRAME
@@ -36,15 +31,15 @@ macro_line|#include &lt;net/sock.h&gt;
 macro_line|#include &lt;net/sctp/sctp.h&gt;
 macro_line|#include &lt;net/sctp/sctp_sm.h&gt;
 multiline_comment|/* Forward declarations for private helpers. */
-r_uint32
+id|__u32
 id|count_crc
 c_func
 (paren
-r_uint8
+id|__u8
 op_star
 id|ptr
 comma
-r_uint16
+id|__u16
 id|count
 )paren
 suffix:semicolon
@@ -59,7 +54,6 @@ id|packet
 )paren
 suffix:semicolon
 r_static
-r_inline
 id|sctp_xmit_t
 id|sctp_packet_append_data
 c_func
@@ -73,10 +67,10 @@ op_star
 id|chunk
 )paren
 suffix:semicolon
-multiline_comment|/* Config a packet.   &n; * This appears to be a followup set of initializations.)&n; */
+multiline_comment|/* Config a packet.&n; * This appears to be a followup set of initializations.)&n; */
+DECL|function|sctp_packet_config
 id|sctp_packet_t
 op_star
-DECL|function|sctp_packet_config
 id|sctp_packet_config
 c_func
 (paren
@@ -84,7 +78,7 @@ id|sctp_packet_t
 op_star
 id|packet
 comma
-r_uint32
+id|__u32
 id|vtag
 comma
 r_int
@@ -126,23 +120,20 @@ c_cond
 (paren
 id|packet_empty
 )paren
-(brace
 id|sctp_packet_reset
 c_func
 (paren
 id|packet
 )paren
 suffix:semicolon
-)brace
 r_return
 id|packet
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_packet_config() */
 multiline_comment|/* Initialize the packet structure. */
+DECL|function|sctp_packet_init
 id|sctp_packet_t
 op_star
-DECL|function|sctp_packet_init
 id|sctp_packet_init
 c_func
 (paren
@@ -154,10 +145,10 @@ id|sctp_transport_t
 op_star
 id|transport
 comma
-r_uint16
+id|__u16
 id|sport
 comma
-r_uint16
+id|__u16
 id|dport
 )paren
 (brace
@@ -210,10 +201,9 @@ r_return
 id|packet
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_packet_init() */
 multiline_comment|/* Free a packet.  */
-r_void
 DECL|function|sctp_packet_free
+r_void
 id|sctp_packet_free
 c_func
 (paren
@@ -259,7 +249,6 @@ c_cond
 (paren
 id|packet-&gt;malloced
 )paren
-(brace
 id|kfree
 c_func
 (paren
@@ -267,11 +256,9 @@ id|packet
 )paren
 suffix:semicolon
 )brace
-)brace
-multiline_comment|/* sctp_packet_free() */
 multiline_comment|/* This routine tries to append the chunk to the offered packet. If adding&n; * the chunk causes the packet to exceed the path MTU and COOKIE_ECHO chunk&n; * is not present in the packet, it transmits the input packet.&n; * Data can be bundled with a packet containing a COOKIE_ECHO chunk as long&n; * as it can fit in the packet, but any more data that does not fit in this&n; * packet can be sent only after receiving the COOKIE_ACK.&n; */
-id|sctp_xmit_t
 DECL|function|sctp_packet_transmit_chunk
+id|sctp_xmit_t
 id|sctp_packet_transmit_chunk
 c_func
 (paren
@@ -295,6 +282,7 @@ suffix:semicolon
 r_switch
 c_cond
 (paren
+(paren
 id|retval
 op_assign
 (paren
@@ -304,6 +292,7 @@ c_func
 id|packet
 comma
 id|chunk
+)paren
 )paren
 )paren
 )paren
@@ -333,13 +322,11 @@ id|error
 OL
 l_int|0
 )paren
-(brace
 id|chunk-&gt;skb-&gt;sk-&gt;err
 op_assign
 op_minus
 id|error
 suffix:semicolon
-)brace
 multiline_comment|/* If we have an empty packet, then we can NOT ever&n;&t;&t;&t; * return PMTU_FULL.&n;&t;&t;&t; */
 id|retval
 op_assign
@@ -366,14 +353,14 @@ suffix:colon
 r_break
 suffix:semicolon
 )brace
+suffix:semicolon
 r_return
 id|retval
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_packet_transmit_chunk() */
-multiline_comment|/* Append a chunk to the offered packet reporting back any inability to do&n; * so. &n; */
-id|sctp_xmit_t
+multiline_comment|/* Append a chunk to the offered packet reporting back any inability to do&n; * so.&n; */
 DECL|function|sctp_packet_append_chunk
+id|sctp_xmit_t
 id|sctp_packet_append_chunk
 c_func
 (paren
@@ -391,7 +378,7 @@ id|retval
 op_assign
 id|SCTP_XMIT_OK
 suffix:semicolon
-r_uint16
+id|__u16
 id|chunk_len
 op_assign
 id|WORD_ROUND
@@ -458,7 +445,7 @@ op_eq
 id|SCTP_IP_OVERHEAD
 )paren
 suffix:semicolon
-multiline_comment|/* Both control chunks and data chunks with TSNs are&n;                 * non-fragmentable.&n;                 */
+multiline_comment|/* Both control chunks and data chunks with TSNs are&n;&t;&t; * non-fragmentable.&n;&t;&t; */
 r_int
 id|fragmentable
 op_assign
@@ -495,7 +482,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-multiline_comment|/* The packet is too big but we can&n;                                 * not fragment it--we have to just&n;                                 * transmit and rely on IP&n;                                 * fragmentation.&n;                                 */
+multiline_comment|/* The packet is too big but we can&n;&t;&t;&t;&t; * not fragment it--we have to just&n;&t;&t;&t;&t; * transmit and rely on IP&n;&t;&t;&t;&t; * fragmentation.&n;&t;&t;&t;&t; */
 r_goto
 id|append
 suffix:semicolon
@@ -522,7 +509,7 @@ suffix:semicolon
 )brace
 id|append
 suffix:colon
-multiline_comment|/* We believe that this chunk is OK to add to the packet (as&n;        * long as we have the cwnd for it).&n;        */
+multiline_comment|/* We believe that this chunk is OK to add to the packet (as&n;&t; * long as we have the cwnd for it).&n;&t; */
 multiline_comment|/* DATA is a special case since we must examine both rwnd and cwnd&n;&t; * before we send DATA.&n;&t; */
 r_if
 c_cond
@@ -551,11 +538,9 @@ id|SCTP_XMIT_OK
 op_ne
 id|retval
 )paren
-(brace
 r_goto
 id|finish
 suffix:semicolon
-)brace
 )brace
 r_else
 r_if
@@ -596,10 +581,9 @@ r_return
 id|retval
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_packet_append_chunk() */
 multiline_comment|/* All packets are sent to the network through this function from&n; * sctp_push_outqueue().&n; *&n; * The return value is a normal kernel error return value.&n; */
-r_int
 DECL|function|sctp_packet_transmit
+r_int
 id|sctp_packet_transmit
 c_func
 (paren
@@ -625,7 +609,7 @@ id|sctphdr
 op_star
 id|sh
 suffix:semicolon
-r_uint32
+id|__u32
 id|crc32
 suffix:semicolon
 r_struct
@@ -651,7 +635,7 @@ r_int
 id|padding
 suffix:semicolon
 multiline_comment|/* How much padding do we need?  */
-r_uint8
+id|__u8
 id|packet_has_data
 op_assign
 l_int|0
@@ -667,11 +651,9 @@ op_amp
 id|packet-&gt;chunks
 )paren
 )paren
-(brace
 r_return
 id|err
 suffix:semicolon
-)brace
 multiline_comment|/* Set up convenience variables... */
 id|chunk
 op_assign
@@ -699,8 +681,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-l_int|NULL
-op_eq
+op_logical_neg
 id|nskb
 )paren
 (brace
@@ -722,7 +703,7 @@ comma
 id|SCTP_IP_OVERHEAD
 )paren
 suffix:semicolon
-multiline_comment|/* Set the owning socket so that we know where to get the&n;         * destination IP address.&n;         */
+multiline_comment|/* Set the owning socket so that we know where to get the&n;&t; * destination IP address.&n;&t; */
 id|skb_set_owner_w
 c_func
 (paren
@@ -731,8 +712,8 @@ comma
 id|sk
 )paren
 suffix:semicolon
-multiline_comment|/**&n;&t; * 6.10 Bundling&n;&t; * &n;&t; *    An endpoint bundles chunks by simply including multiple&n;&t; *    chunks in one outbound SCTP packet.  ...&n;&t; */
-multiline_comment|/**&n;&t; * 3.2  Chunk Field Descriptions&n;&t; *&n;&t; * The total length of a chunk (including Type, Length and&n;&t; * Value fields) MUST be a multiple of 4 bytes.  If the length&n;&t; * of the chunk is not a multiple of 4 bytes, the sender MUST&n;&t; * pad the chunk with all zero bytes and this padding is not&n;&t; * included in the chunk length field.  The sender should&n;&t; * never pad with more than 3 bytes.&n;&t; * &n;&t; * [This whole comment explains WORD_ROUND() below.]&n;&t; */
+multiline_comment|/**&n;&t; * 6.10 Bundling&n;&t; *&n;&t; *    An endpoint bundles chunks by simply including multiple&n;&t; *    chunks in one outbound SCTP packet.  ...&n;&t; */
+multiline_comment|/**&n;&t; * 3.2  Chunk Field Descriptions&n;&t; *&n;&t; * The total length of a chunk (including Type, Length and&n;&t; * Value fields) MUST be a multiple of 4 bytes.  If the length&n;&t; * of the chunk is not a multiple of 4 bytes, the sender MUST&n;&t; * pad the chunk with all zero bytes and this padding is not&n;&t; * included in the chunk length field.  The sender should&n;&t; * never pad with more than 3 bytes.&n;&t; *&n;&t; * [This whole comment explains WORD_ROUND() below.]&n;&t; */
 id|SCTP_DEBUG_PRINTK
 c_func
 (paren
@@ -783,7 +764,7 @@ c_func
 id|chunk
 )paren
 suffix:semicolon
-multiline_comment|/* 6.3.1 C4) When data is in flight and when allowed &n;&t;&t;&t; * by rule C5, a new RTT measurement MUST be made each &n;&t;&t;&t; * round trip.  Furthermore, new RTT measurements &n;&t;&t;&t; * SHOULD be made no more than once per round-trip&n;&t;&t;&t; * for a given destination transport address.&n;&t;&t;&t; */
+multiline_comment|/* 6.3.1 C4) When data is in flight and when allowed&n;&t;&t;&t; * by rule C5, a new RTT measurement MUST be made each&n;&t;&t;&t; * round trip.  Furthermore, new RTT measurements&n;&t;&t;&t; * SHOULD be made no more than once per round-trip&n;&t;&t;&t; * for a given destination transport address.&n;&t;&t;&t; */
 r_if
 c_cond
 (paren
@@ -914,7 +895,7 @@ comma
 id|chunk-&gt;rtt_in_progress
 )paren
 suffix:semicolon
-multiline_comment|/* &n;&t;&t; * If this is a control chunk, this is our last &n;&t;&t; * reference. Free data chunks after they&squot;ve been &n;&t;&t; * acknowledged or have failed.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * If this is a control chunk, this is our last&n;&t;&t; * reference. Free data chunks after they&squot;ve been&n;&t;&t; * acknowledged or have failed.&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -925,14 +906,12 @@ c_func
 id|chunk
 )paren
 )paren
-(brace
 id|sctp_free_chunk
 c_func
 (paren
 id|chunk
 )paren
 suffix:semicolon
-)brace
 )brace
 multiline_comment|/* Build the SCTP header.  */
 id|sh
@@ -970,7 +949,7 @@ c_func
 id|packet-&gt;destination_port
 )paren
 suffix:semicolon
-multiline_comment|/* From 6.8 Adler-32 Checksum Calculation:&n;         * After the packet is constructed (containing the SCTP common&n;         * header and one or more control or DATA chunks), the&n;         * transmitter shall: &n;         * &n;         * 1) Fill in the proper Verification Tag in the SCTP common&n;         *    header and initialize the checksum field to 0&squot;s.&n;         */
+multiline_comment|/* From 6.8 Adler-32 Checksum Calculation:&n;&t; * After the packet is constructed (containing the SCTP common&n;&t; * header and one or more control or DATA chunks), the&n;&t; * transmitter shall:&n;&t; *&n;&t; * 1) Fill in the proper Verification Tag in the SCTP common&n;&t; *    header and initialize the checksum field to 0&squot;s.&n;&t; */
 id|sh-&gt;vtag
 op_assign
 id|htonl
@@ -983,14 +962,14 @@ id|sh-&gt;checksum
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* 2) Calculate the Adler-32 checksum of the whole packet,&n;         *    including the SCTP common header and all the&n;         *    chunks. &n;&t; * &n;&t; * Note: Adler-32 is no longer applicable, as has been replaced&n;&t; * by CRC32-C as described in &lt;draft-ietf-tsvwg-sctpcsum-02.txt&gt;. &n;         */
+multiline_comment|/* 2) Calculate the Adler-32 checksum of the whole packet,&n;&t; *    including the SCTP common header and all the&n;&t; *    chunks.&n;&t; *&n;&t; * Note: Adler-32 is no longer applicable, as has been replaced&n;&t; * by CRC32-C as described in &lt;draft-ietf-tsvwg-sctpcsum-02.txt&gt;.&n;&t; */
 id|crc32
 op_assign
 id|count_crc
 c_func
 (paren
 (paren
-r_uint8
+id|__u8
 op_star
 )paren
 id|sh
@@ -998,7 +977,7 @@ comma
 id|nskb-&gt;len
 )paren
 suffix:semicolon
-multiline_comment|/* 3) Put the resultant value into the checksum field in the&n;         *    common header, and leave the rest of the bits unchanged.&n;         */
+multiline_comment|/* 3) Put the resultant value into the checksum field in the&n;&t; *    common header, and leave the rest of the bits unchanged.&n;&t; */
 id|sh-&gt;checksum
 op_assign
 id|htonl
@@ -1053,7 +1032,8 @@ multiline_comment|/* This is bogus address type, just bail. */
 r_break
 suffix:semicolon
 )brace
-multiline_comment|/* IP layer ECN support &n;&t; * From RFC 2481&n;&t; *  &quot;The ECN-Capable Transport (ECT) bit would be set by the &n;&t; *   data sender to indicate that the end-points of the &n;&t; *   transport protocol are ECN-capable.&quot;&n;&t; *&n;&t; * If ECN capable &amp;&amp; negotiated &amp;&amp; it makes sense for&n;&t; * this packet to support it (e.g. post ECN negotiation)&n;         * then lets set the ECT bit&n;&t; *&n;&t; * FIXME:  Need to do something else for IPv6&n;&t; */
+suffix:semicolon
+multiline_comment|/* IP layer ECN support&n;&t; * From RFC 2481&n;&t; *  &quot;The ECN-Capable Transport (ECT) bit would be set by the&n;&t; *   data sender to indicate that the end-points of the&n;&t; *   transport protocol are ECN-capable.&quot;&n;&t; *&n;&t; * If ECN capable &amp;&amp; negotiated &amp;&amp; it makes sense for&n;&t; * this packet to support it (e.g. post ECN negotiation)&n;&t; * then lets set the ECT bit&n;&t; *&n;&t; * FIXME:  Need to do something else for IPv6&n;&t; */
 r_if
 c_cond
 (paren
@@ -1077,14 +1057,12 @@ id|nskb-&gt;sk
 suffix:semicolon
 )brace
 multiline_comment|/* Set up the IP options.  */
-multiline_comment|/* BUG: not implemented&n;         * For v4 this all lives somewhere in sk-&gt;opt...&n;         */
+multiline_comment|/* BUG: not implemented&n;&t; * For v4 this all lives somewhere in sk-&gt;opt...&n;&t; */
 multiline_comment|/* Dump that on IP!  */
 r_if
 c_cond
 (paren
 id|asoc
-op_ne
-l_int|NULL
 op_logical_and
 id|asoc-&gt;peer.last_sent_to
 op_ne
@@ -1102,15 +1080,11 @@ r_if
 c_cond
 (paren
 id|sk-&gt;dst_cache
-op_ne
-l_int|NULL
 )paren
-(brace
 id|sk-&gt;dst_cache-&gt;obsolete
 op_assign
 l_int|1
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -1174,14 +1148,12 @@ op_plus
 id|timeout
 )paren
 )paren
-(brace
 id|sctp_association_hold
 c_func
 (paren
 id|asoc
 )paren
 suffix:semicolon
-)brace
 )brace
 )brace
 id|SCTP_DEBUG_PRINTK
@@ -1210,12 +1182,11 @@ r_return
 id|err
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_packet_transmit() */
 multiline_comment|/********************************************************************&n; * 2nd Level Abstractions&n; ********************************************************************/
-multiline_comment|/* &n; * This private function resets the packet to a fresh state.&n; */
+multiline_comment|/*&n; * This private function resets the packet to a fresh state.&n; */
+DECL|function|sctp_packet_reset
 r_static
 r_void
-DECL|function|sctp_packet_reset
 id|sctp_packet_reset
 c_func
 (paren
@@ -1237,11 +1208,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-l_int|NULL
-op_ne
 id|packet-&gt;get_prepend_chunk
 )paren
-(brace
 id|chunk
 op_assign
 id|packet
@@ -1252,14 +1220,12 @@ c_func
 id|packet-&gt;transport-&gt;asoc
 )paren
 suffix:semicolon
-)brace
 multiline_comment|/* If there a is a prepend chunk stick it on the list before&n;&t; * any other chunks get appended.&n;&t; */
 r_if
 c_cond
 (paren
 id|chunk
 )paren
-(brace
 id|sctp_packet_append_chunk
 c_func
 (paren
@@ -1269,13 +1235,10 @@ id|chunk
 )paren
 suffix:semicolon
 )brace
-)brace
-multiline_comment|/* sctp_packet_reset() */
-multiline_comment|/* This private function handles the specifics of appending DATA chunks. */
-r_static
-r_inline
-id|sctp_xmit_t
+multiline_comment|/* This private function handles the specifics of appending DATA chunks.  */
 DECL|function|sctp_packet_append_data
+r_static
+id|sctp_xmit_t
 id|sctp_packet_append_data
 c_func
 (paren
@@ -1306,10 +1269,10 @@ id|transport
 op_assign
 id|packet-&gt;transport
 suffix:semicolon
-r_uint32
+id|__u32
 id|max_burst_bytes
 suffix:semicolon
-multiline_comment|/* RFC 2960 6.1  Transmission of DATA Chunks&n;       *&n;       * A) At any given time, the data sender MUST NOT transmit new data to&n;       * any destination transport address if its peer&squot;s rwnd indicates&n;       * that the peer has no buffer space (i.e. rwnd is 0, see Section&n;       * 6.2.1).  However, regardless of the value of rwnd (including if it&n;       * is 0), the data sender can always have one DATA chunk in flight to&n;       * the receiver if allowed by cwnd (see rule B below).  This rule&n;       * allows the sender to probe for a change in rwnd that the sender&n;       * missed due to the SACK having been lost in transit from the data&n;       * receiver to the data sender.&n;       */
+multiline_comment|/* RFC 2960 6.1  Transmission of DATA Chunks&n;&t; *&n;&t; * A) At any given time, the data sender MUST NOT transmit new data to&n;&t; * any destination transport address if its peer&squot;s rwnd indicates&n;&t; * that the peer has no buffer space (i.e. rwnd is 0, see Section&n;&t; * 6.2.1).  However, regardless of the value of rwnd (including if it&n;&t; * is 0), the data sender can always have one DATA chunk in flight to&n;&t; * the receiver if allowed by cwnd (see rule B below).  This rule&n;&t; * allows the sender to probe for a change in rwnd that the sender&n;&t; * missed due to the SACK having been lost in transit from the data&n;&t; * receiver to the data sender.&n;&t; */
 id|rwnd
 op_assign
 id|transport-&gt;asoc-&gt;peer.rwnd
@@ -1342,7 +1305,7 @@ OG
 l_int|0
 )paren
 (brace
-multiline_comment|/* We have (at least) one data chunk in flight, &n;&t;&t;&t;* so we can&squot;t fall back to rule 6.1 B).&n;&t;&t;&t;*/
+multiline_comment|/* We have (at least) one data chunk in flight,&n;&t;&t;&t; * so we can&squot;t fall back to rule 6.1 B).&n;&t;&t;&t; */
 id|retval
 op_assign
 id|SCTP_XMIT_RWND_FULL
@@ -1352,7 +1315,7 @@ id|finish
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/* sctpimpguide-05 2.14.2 D) When the time comes for the sender to &n;&t; * transmit new DATA chunks, the protocol parameter Max.Burst MUST &n;&t; * first be applied to limit how many new DATA chunks may be sent.  &n;&t; * The limit is applied by adjusting cwnd as follows:&n;&t; * &t;if((flightsize + Max.Burst*MTU) &lt; cwnd)&n;&t; *&t;&t;cwnd = flightsize + Max.Burst*MTU&n;&t; */
+multiline_comment|/* sctpimpguide-05 2.14.2 D) When the time comes for the sender to&n;&t; * transmit new DATA chunks, the protocol parameter Max.Burst MUST&n;&t; * first be applied to limit how many new DATA chunks may be sent.&n;&t; * The limit is applied by adjusting cwnd as follows:&n;&t; * &t;if((flightsize + Max.Burst*MTU) &lt; cwnd)&n;&t; *&t;&t;cwnd = flightsize + Max.Burst*MTU&n;&t; */
 id|max_burst_bytes
 op_assign
 id|transport-&gt;asoc-&gt;max_burst
@@ -1399,7 +1362,7 @@ id|transport-&gt;partial_bytes_acked
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* RFC 2960 6.1  Transmission of DATA Chunks&n;         *&n;         * B) At any given time, the sender MUST NOT transmit new data&n;         * to a given transport address if it has cwnd or more bytes&n;         * of data outstanding to that transport address.&n;         */
+multiline_comment|/* RFC 2960 6.1  Transmission of DATA Chunks&n;&t; *&n;&t; * B) At any given time, the sender MUST NOT transmit new data&n;&t; * to a given transport address if it has cwnd or more bytes&n;&t; * of data outstanding to that transport address.&n;&t; */
 r_if
 c_cond
 (paren
@@ -1457,5 +1420,4 @@ r_return
 id|retval
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_packet_append_data() */
 eof

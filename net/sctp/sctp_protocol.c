@@ -62,10 +62,9 @@ r_return
 id|sctp_ctl_socket-&gt;sk
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_get_ctl_sock() */
 multiline_comment|/* Set up the proc fs entry for the SCTP protocol. */
-r_void
 DECL|function|sctp_proc_init
+r_void
 id|sctp_proc_init
 c_func
 (paren
@@ -111,10 +110,9 @@ suffix:semicolon
 )brace
 )brace
 )brace
-multiline_comment|/* sctp_proc_init() */
 multiline_comment|/* Clean up the proc fs entry for the SCTP protocol. */
-r_void
 DECL|function|sctp_proc_exit
+r_void
 id|sctp_proc_exit
 c_func
 (paren
@@ -141,12 +139,11 @@ l_int|0
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/* sctp_proc_exit() */
-multiline_comment|/* Private helper to extract ipv4 address and stash them in&n; * the protocol structure. &n; */
+multiline_comment|/* Private helper to extract ipv4 address and stash them in&n; * the protocol structure.&n; */
+DECL|function|sctp_v4_get_local_addr_list
 r_static
 r_inline
 r_void
-DECL|function|sctp_v4_get_local_addr_list
 id|sctp_v4_get_local_addr_list
 c_func
 (paren
@@ -230,6 +227,7 @@ id|ifa-&gt;ifa_next
 )paren
 (brace
 multiline_comment|/* Add the address to the local list.  */
+multiline_comment|/* XXX BUG: sleeping allocation with lock held -DaveM */
 id|addr
 op_assign
 id|t_new
@@ -292,15 +290,12 @@ op_amp
 id|inetdev_lock
 )paren
 suffix:semicolon
-r_return
-suffix:semicolon
 )brace
-multiline_comment|/* sctp_v4_get_local_addr_list() */
-multiline_comment|/* Private helper to extract ipv6 address and stash them in&n; * the protocol structure.&n; * FIXME: Make this an address family function.   &n; */
+multiline_comment|/* Private helper to extract ipv6 address and stash them in&n; * the protocol structure.&n; * FIXME: Make this an address family function.&n; */
+DECL|function|sctp_v6_get_local_addr_list
 r_static
 r_inline
 r_void
-DECL|function|sctp_v6_get_local_addr_list
 id|sctp_v6_get_local_addr_list
 c_func
 (paren
@@ -316,7 +311,7 @@ id|dev
 (brace
 macro_line|#ifdef SCTP_V6_SUPPORT
 multiline_comment|/* FIXME: The testframe doesn&squot;t support this function. */
-macro_line|#ifndef TEST_FRAME  
+macro_line|#ifndef TEST_FRAME
 r_struct
 id|inet6_dev
 op_star
@@ -387,6 +382,7 @@ id|ifp-&gt;if_next
 )paren
 (brace
 multiline_comment|/* Add the address to the local list.  */
+multiline_comment|/* XXX BUG: sleeping allocation with lock held -DaveM */
 id|addr
 op_assign
 id|t_new
@@ -450,15 +446,12 @@ id|addrconf_lock
 )paren
 suffix:semicolon
 macro_line|#endif /* TEST_FRAME */
-r_return
-suffix:semicolon
 macro_line|#endif /* SCTP_V6_SUPPORT */
 )brace
-multiline_comment|/* sctp_v6_get_local_addr_list() */
 multiline_comment|/* Extract our IP addresses from the system and stash them in the&n; * protocol structure.&n; */
+DECL|function|__sctp_get_local_addr_list
 r_static
 r_void
-DECL|function|__sctp_get_local_addr_list
 id|__sctp_get_local_addr_list
 c_func
 (paren
@@ -518,10 +511,9 @@ id|dev_base_lock
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* __sctp_get_local_addr_list() */
+DECL|function|sctp_get_local_addr_list
 r_static
 r_void
-DECL|function|sctp_get_local_addr_list
 id|sctp_get_local_addr_list
 c_func
 (paren
@@ -565,11 +557,10 @@ id|flags
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_get_local_addr_list() */
-multiline_comment|/* Free the existing local addresses. */
+multiline_comment|/* Free the existing local addresses.  */
+DECL|function|__sctp_free_local_addr_list
 r_static
 r_void
-DECL|function|__sctp_free_local_addr_list
 id|__sctp_free_local_addr_list
 c_func
 (paren
@@ -578,7 +569,7 @@ op_star
 id|proto
 )paren
 (brace
-r_struct
+id|astruct
 id|sockaddr_storage_list
 op_star
 id|addr
@@ -628,11 +619,10 @@ id|addr
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/* __sctp_free_local_addr_list() */
-multiline_comment|/* Free the existing local addresses. */
+multiline_comment|/* Free the existing local addresses.  */
+DECL|function|sctp_free_local_addr_list
 r_static
 r_void
-DECL|function|sctp_free_local_addr_list
 id|sctp_free_local_addr_list
 c_func
 (paren
@@ -675,10 +665,9 @@ id|flags
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_free_local_addr_list() */
 multiline_comment|/* Copy the local addresses which are valid for &squot;scope&squot; into &squot;bp&squot;.  */
-r_int
 DECL|function|sctp_copy_local_addr_list
+r_int
 id|sctp_copy_local_addr_list
 c_func
 (paren
@@ -767,7 +756,7 @@ id|scope
 )paren
 )paren
 (brace
-multiline_comment|/* Now that the address is in scope, check to see if &n;&t;&t;&t; * the address type is really supported by the local&n;&t;&t;&t; * sock as well as the remote peer.&n;&t;&t;&t; */
+multiline_comment|/* Now that the address is in scope, check to see if&n;&t;&t;&t; * the address type is really supported by the local&n;&t;&t;&t; * sock as well as the remote peer.&n;&t;&t;&t; */
 r_if
 c_cond
 (paren
@@ -826,15 +815,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-l_int|0
-op_ne
 id|error
 )paren
-(brace
 r_goto
 id|end_copy
 suffix:semicolon
-)brace
 )brace
 )brace
 )brace
@@ -853,10 +838,9 @@ r_return
 id|error
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_copy_local_addr_list() */
-multiline_comment|/* Returns the mtu for the given v4 destination address. */
-r_int
+multiline_comment|/* Returns the mtu for the given v4 destination address.  */
 DECL|function|sctp_v4_get_dst_mtu
+r_int
 id|sctp_v4_get_dst_mtu
 c_func
 (paren
@@ -961,16 +945,13 @@ id|rt
 suffix:semicolon
 )brace
 r_return
-(paren
 id|dst_mtu
-)paren
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_v4_get_dst_mtu() */
-multiline_comment|/* Event handler for inet device events. &n; * Basically, whenever there is an event, we re-build our local address list.&n; */
+multiline_comment|/* Event handler for inet device events.&n; * Basically, whenever there is an event, we re-build our local address list.&n; */
+DECL|function|sctp_netdev_event
 r_static
 r_int
-DECL|function|sctp_netdev_event
 id|sctp_netdev_event
 c_func
 (paren
@@ -1033,10 +1014,9 @@ r_return
 id|NOTIFY_DONE
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_netdev_event() */
 multiline_comment|/*&n; * Initialize the control inode/socket with a control endpoint data&n; * structure.  This endpoint is reserved exclusively for the OOTB processing.&n; */
-r_int
 DECL|function|sctp_ctl_sock_init
+r_int
 id|sctp_ctl_sock_init
 c_func
 (paren
@@ -1113,11 +1093,10 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_ctl_sock_init() */
 multiline_comment|/* Get the table of functions for manipulating a particular address&n; * family.&n; */
+DECL|function|sctp_get_af_specific
 id|sctp_func_t
 op_star
-DECL|function|sctp_get_af_specific
 id|sctp_get_af_specific
 c_func
 (paren
@@ -1151,7 +1130,7 @@ id|retval
 op_assign
 l_int|NULL
 suffix:semicolon
-multiline_comment|/* Cycle through all AF specific functions looking for a &n;&t; * match.&n;&t; */
+multiline_comment|/* Cycle through all AF specific functions looking for a&n;&t; * match.&n;&t; */
 id|list_for_each
 c_func
 (paren
@@ -1193,8 +1172,7 @@ r_return
 id|retval
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_get_af_specific() */
-multiline_comment|/* Registration for netdev events. */
+multiline_comment|/* Registration for netdev events.  */
 DECL|variable|sctp_netdev_notifier
 r_struct
 id|notifier_block
@@ -1208,7 +1186,7 @@ id|sctp_netdev_event
 comma
 )brace
 suffix:semicolon
-multiline_comment|/* Socket operations. */
+multiline_comment|/* Socket operations.  */
 DECL|variable|inet_seqpacket_ops
 r_struct
 id|proto_ops
@@ -1306,7 +1284,7 @@ id|sock_no_sendpage
 comma
 )brace
 suffix:semicolon
-multiline_comment|/* Registration with AF_INET family. */
+multiline_comment|/* Registration with AF_INET family.  */
 DECL|variable|sctp_protosw
 r_struct
 id|inet_protosw
@@ -1352,7 +1330,7 @@ op_assign
 id|SCTP_PROTOSW_FLAG
 )brace
 suffix:semicolon
-multiline_comment|/* Register with IP layer. */
+multiline_comment|/* Register with IP layer.  */
 DECL|variable|sctp_protocol
 r_static
 r_struct
@@ -1385,7 +1363,7 @@ l_string|&quot;SCTP&quot;
 multiline_comment|/* name                 */
 )brace
 suffix:semicolon
-multiline_comment|/* IPv4 address related functions. */
+multiline_comment|/* IPv4 address related functions.  */
 DECL|variable|sctp_ipv4_specific
 id|sctp_func_t
 id|sctp_ipv4_specific
@@ -1437,8 +1415,8 @@ comma
 )brace
 suffix:semicolon
 multiline_comment|/* Initialize the universe into something sensible.  */
-r_int
 DECL|function|sctp_init
+r_int
 id|sctp_init
 c_func
 (paren
@@ -1461,7 +1439,7 @@ op_amp
 id|sctp_protosw
 )paren
 suffix:semicolon
-multiline_comment|/* Add SCTP to inet_protos hash table. */
+multiline_comment|/* Add SCTP to inet_protos hash table.  */
 id|inet_add_protocol
 c_func
 (paren
@@ -1469,20 +1447,20 @@ op_amp
 id|sctp_protocol
 )paren
 suffix:semicolon
-multiline_comment|/* Initialize proc fs directory. */
+multiline_comment|/* Initialize proc fs directory.  */
 id|sctp_proc_init
 c_func
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/* Initialize object count debugging. */
+multiline_comment|/* Initialize object count debugging.  */
 id|sctp_dbg_objcnt_init
 c_func
 (paren
 )paren
 suffix:semicolon
 multiline_comment|/*&n;         * 14. Suggested SCTP Protocol Parameter Values&n;         */
-multiline_comment|/* The following protocol parameters are RECOMMENDED: */
+multiline_comment|/* The following protocol parameters are RECOMMENDED:  */
 multiline_comment|/* RTO.Initial              - 3  seconds */
 id|sctp_proto.rto_initial
 op_assign
@@ -1508,7 +1486,7 @@ id|sctp_proto.rto_beta
 op_assign
 id|SCTP_RTO_BETA
 suffix:semicolon
-multiline_comment|/* Valid.Cookie.Life        - 60  seconds&n;         */
+multiline_comment|/* Valid.Cookie.Life        - 60  seconds */
 id|sctp_proto.valid_cookie_life
 op_assign
 l_int|60
@@ -1520,7 +1498,7 @@ id|sctp_proto.max_burst
 op_assign
 id|SCTP_MAX_BURST
 suffix:semicolon
-multiline_comment|/* Association.Max.Retrans  - 10 attempts&n;         * Path.Max.Retrans         - 5  attempts (per destination address)&n;         * Max.Init.Retransmits     - 8  attempts&n;         */
+multiline_comment|/* Association.Max.Retrans  - 10 attempts&n;&t; * Path.Max.Retrans         - 5  attempts (per destination address)&n;&t; * Max.Init.Retransmits     - 8  attempts&n;&t; */
 id|sctp_proto.max_retrans_association
 op_assign
 l_int|10
@@ -1541,7 +1519,7 @@ op_star
 id|HZ
 suffix:semicolon
 multiline_comment|/* Implementation specific variables. */
-multiline_comment|/* Initialize default stream count setup information.  &n;&t; * Note: today the stream accounting data structures are very &n;&t; * fixed size, so one really does need to make sure that these have &n;&t; * upper/lower limits when changing. &n;&t; */
+multiline_comment|/* Initialize default stream count setup information.&n;&t; * Note: today the stream accounting data structures are very&n;&t; * fixed size, so one really does need to make sure that these have&n;&t; * upper/lower limits when changing.&n;&t; */
 id|sctp_proto.max_instreams
 op_assign
 id|SCTP_MAX_STREAM
@@ -1550,7 +1528,7 @@ id|sctp_proto.max_outstreams
 op_assign
 id|SCTP_MAX_STREAM
 suffix:semicolon
-multiline_comment|/* Allocate and initialize the association hash table. */
+multiline_comment|/* Allocate and initialize the association hash table.  */
 id|sctp_proto.assoc_hashsize
 op_assign
 l_int|4096
@@ -1630,7 +1608,7 @@ op_assign
 l_int|NULL
 suffix:semicolon
 )brace
-multiline_comment|/* Allocate and initialize the endpoint hash table. */
+multiline_comment|/* Allocate and initialize the endpoint hash table.  */
 id|sctp_proto.ep_hashsize
 op_assign
 l_int|64
@@ -1843,20 +1821,14 @@ r_if
 c_cond
 (paren
 id|status
-op_ne
-l_int|0
 )paren
-(brace
 r_goto
 id|err_v6_init
 suffix:semicolon
-)brace
-multiline_comment|/* Initialize the control inode/socket for handling OOTB packets. */
+multiline_comment|/* Initialize the control inode/socket for handling OOTB packets.  */
 r_if
 c_cond
 (paren
-l_int|0
-op_ne
 (paren
 id|status
 op_assign
@@ -1979,18 +1951,17 @@ r_return
 id|status
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_init() */
-multiline_comment|/* Exit handler for the SCTP protocol. */
-r_void
+multiline_comment|/* Exit handler for the SCTP protocol.  */
 DECL|function|sctp_exit
+r_void
 id|sctp_exit
 c_func
 (paren
 r_void
 )paren
 (brace
-multiline_comment|/* BUG.  This should probably do something useful like clean&n;         * up all the remaining associations and all that memory.&n;         */
-multiline_comment|/* Free the local address list. */
+multiline_comment|/* BUG.  This should probably do something useful like clean&n;&t; * up all the remaining associations and all that memory.&n;&t; */
+multiline_comment|/* Free the local address list.  */
 id|unregister_inetaddr_notifier
 c_func
 (paren
@@ -2005,7 +1976,7 @@ op_amp
 id|sctp_proto
 )paren
 suffix:semicolon
-multiline_comment|/* Free the control endpoint. */
+multiline_comment|/* Free the control endpoint.  */
 id|sock_release
 c_func
 (paren
@@ -2072,7 +2043,6 @@ id|sctp_protosw
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_exit() */
 DECL|variable|sctp_init
 id|module_init
 c_func

@@ -82,7 +82,7 @@ r_int
 id|flags
 )paren
 suffix:semicolon
-multiline_comment|/* &n; * sctp_socket.c &n; */
+multiline_comment|/*&n; * sctp_socket.c&n; */
 r_extern
 r_int
 id|sctp_backlog_rcv
@@ -160,7 +160,7 @@ op_star
 id|wait
 )paren
 suffix:semicolon
-multiline_comment|/* &n; * sctp_primitive.c &n; */
+multiline_comment|/*&n; * sctp_primitive.c&n; */
 r_extern
 r_int
 id|sctp_primitive_ASSOCIATE
@@ -213,21 +213,21 @@ op_star
 id|arg
 )paren
 suffix:semicolon
-multiline_comment|/* &n; * sctp_crc32c.c&n; */
+multiline_comment|/*&n; * sctp_crc32c.c&n; */
 r_extern
-r_uint32
+id|__u32
 id|count_crc
 c_func
 (paren
-r_uint8
+id|__u8
 op_star
 id|ptr
 comma
-r_uint16
+id|__u16
 id|count
 )paren
 suffix:semicolon
-multiline_comment|/* &n; * sctp_input.c &n; */
+multiline_comment|/*&n; * sctp_input.c&n; */
 r_extern
 r_int
 id|sctp_rcv
@@ -325,7 +325,7 @@ id|sctp_endpoint_t
 op_star
 )paren
 suffix:semicolon
-multiline_comment|/* &n; * sctp_hashdriver.c&n; */
+multiline_comment|/*&n; * sctp_hashdriver.c&n; */
 r_extern
 r_void
 id|sctp_hash_digest
@@ -349,7 +349,7 @@ r_const
 r_int
 id|text_len
 comma
-r_uint8
+id|__u8
 op_star
 id|digest
 )paren
@@ -394,11 +394,11 @@ DECL|macro|SCTP_SOCK_SLEEP_PRE
 mdefine_line|#define SCTP_SOCK_SLEEP_PRE(sk) SOCK_SLEEP_PRE(sk)
 DECL|macro|SCTP_SOCK_SLEEP_POST
 mdefine_line|#define SCTP_SOCK_SLEEP_POST(sk) SOCK_SLEEP_POST(sk)
-multiline_comment|/* Determine if this is a valid kernel address.&n; */
+multiline_comment|/* Determine if this is a valid kernel address.  */
+DECL|function|sctp_is_valid_kaddr
 r_static
 r_inline
 r_int
-DECL|function|sctp_is_valid_kaddr
 id|sctp_is_valid_kaddr
 c_func
 (paren
@@ -420,11 +420,9 @@ id|addr
 OL
 id|PAGE_OFFSET
 )paren
-(brace
 r_return
 l_int|0
 suffix:semicolon
-)brace
 id|page
 op_assign
 id|virt_to_page
@@ -450,16 +448,13 @@ c_func
 id|page
 )paren
 )paren
-(brace
 r_return
 l_int|0
 suffix:semicolon
-)brace
 r_return
 l_int|1
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_is_valid_kaddr() */
 macro_line|#endif /* !TEST_FRAME */
 multiline_comment|/* Print debugging messages.  */
 macro_line|#if SCTP_DEBUG
@@ -485,7 +480,7 @@ mdefine_line|#define SCTP_DISABLE_DEBUG
 DECL|macro|SCTP_ASSERT
 mdefine_line|#define SCTP_ASSERT(expr, str, func)
 macro_line|#endif /* SCTP_DEBUG */
-multiline_comment|/* &n; * Macros for keeping a global reference of object allocations. &n; */
+multiline_comment|/*&n; * Macros for keeping a global reference of object allocations.&n; */
 macro_line|#ifdef CONFIG_SCTP_DBG_OBJCNT
 r_extern
 id|atomic_t
@@ -515,14 +510,14 @@ r_extern
 id|atomic_t
 id|sctp_dbg_objcnt_addr
 suffix:semicolon
-multiline_comment|/* Macros to atomically increment/decrement objcnt counters. &n;*/
+multiline_comment|/* Macros to atomically increment/decrement objcnt counters.  */
 DECL|macro|SCTP_DBG_OBJCNT_INC
 mdefine_line|#define SCTP_DBG_OBJCNT_INC(name) &bslash;&n;atomic_inc(&amp;sctp_dbg_objcnt_## name)
 DECL|macro|SCTP_DBG_OBJCNT_DEC
 mdefine_line|#define SCTP_DBG_OBJCNT_DEC(name) &bslash;&n;atomic_dec(&amp;sctp_dbg_objcnt_## name)
 DECL|macro|SCTP_DBG_OBJCNT
 mdefine_line|#define SCTP_DBG_OBJCNT(name) &bslash;&n;atomic_t sctp_dbg_objcnt_## name = ATOMIC_INIT(0)
-multiline_comment|/* Macro to help create new entries in in the global array of&n; * objcnt counters. &n; */
+multiline_comment|/* Macro to help create new entries in in the global array of&n; * objcnt counters.&n; */
 DECL|macro|SCTP_DBG_OBJCNT_ENTRY
 mdefine_line|#define SCTP_DBG_OBJCNT_ENTRY(name) &bslash;&n;{.label= #name, .counter= &amp;sctp_dbg_objcnt_## name}
 r_extern
@@ -635,10 +630,10 @@ c_func
 r_void
 )paren
 suffix:semicolon
+DECL|function|sctp_ipv6_addr_type
 r_static
 r_inline
 r_int
-DECL|function|sctp_ipv6_addr_type
 id|sctp_ipv6_addr_type
 c_func
 (paren
@@ -663,22 +658,22 @@ id|addr
 suffix:semicolon
 )brace
 DECL|macro|SCTP_SAT_LEN
-mdefine_line|#define SCTP_SAT_LEN (sizeof(sctp_paramhdr_t) + 2 * sizeof(uint16_t))
+mdefine_line|#define SCTP_SAT_LEN (sizeof(sctp_paramhdr_t) + 2 * sizeof(__u16))
 multiline_comment|/* Note: These V6 macros are obsolescent.  */
 multiline_comment|/* Use this macro to enclose code fragments which are V6-dependent. */
 DECL|macro|SCTP_V6
 mdefine_line|#define SCTP_V6(m...)&t;m
 DECL|macro|SCTP_V6_SUPPORT
-mdefine_line|#define SCTP_V6_SUPPORT 1 
+mdefine_line|#define SCTP_V6_SUPPORT 1
 macro_line|#else /* #ifdef defined(CONFIG_IPV6) || defined(CONFIG_IPV6_MODULE) */
 DECL|macro|sctp_ipv6_addr_type
 mdefine_line|#define sctp_ipv6_addr_type(a) 0
 DECL|macro|SCTP_SAT_LEN
-mdefine_line|#define SCTP_SAT_LEN (sizeof(sctp_paramhdr_t) + 1 * sizeof(uint16_t))
+mdefine_line|#define SCTP_SAT_LEN (sizeof(sctp_paramhdr_t) + 1 * sizeof(__u16))
 DECL|macro|SCTP_V6
-mdefine_line|#define SCTP_V6(m...) /* Do nothing. */        
+mdefine_line|#define SCTP_V6(m...) /* Do nothing. */
 DECL|macro|SCTP_V6_SUPPORT
-macro_line|#undef SCTP_V6_SUPPORT        
+macro_line|#undef SCTP_V6_SUPPORT
 DECL|function|sctp_v6_init
 r_static
 r_inline
@@ -708,10 +703,10 @@ suffix:semicolon
 )brace
 macro_line|#endif /* #ifdef defined(CONFIG_IPV6) || defined(CONFIG_IPV6_MODULE) */
 multiline_comment|/* Map an association to an assoc_id. */
+DECL|function|sctp_assoc2id
 r_static
 r_inline
 id|sctp_assoc_t
-DECL|function|sctp_assoc2id
 id|sctp_assoc2id
 c_func
 (paren
@@ -723,20 +718,17 @@ id|asoc
 (brace
 r_return
 (paren
-(paren
 id|sctp_assoc_t
 )paren
 id|asoc
-)paren
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_assoc2id() */
-multiline_comment|/* Look up the association by its id. &n; */
+multiline_comment|/* Look up the association by its id.  */
+DECL|function|sctp_id2assoc
 r_static
 r_inline
 id|sctp_association_t
 op_star
-DECL|function|sctp_id2assoc
 id|sctp_id2assoc
 c_func
 (paren
@@ -774,8 +766,6 @@ id|id
 id|sctp_association_t
 op_star
 id|temp
-suffix:semicolon
-id|temp
 op_assign
 (paren
 id|sctp_association_t
@@ -799,26 +789,23 @@ op_eq
 id|sk
 )paren
 )paren
-(brace
 id|asoc
 op_assign
 id|temp
 suffix:semicolon
 )brace
-)brace
 r_return
 id|asoc
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_id2assoc() */
 multiline_comment|/* A macro to walk a list of skbs.  */
 DECL|macro|sctp_skb_for_each
 mdefine_line|#define sctp_skb_for_each(pos, head, tmp) &bslash;&n;for (pos = (head)-&gt;next;&bslash;&n;     tmp = (pos)-&gt;next, pos != ((struct sk_buff *)(head));&bslash;&n;     pos = tmp)
 multiline_comment|/* A helper to append an entire skb list (list) to another (head). */
+DECL|function|sctp_skb_list_tail
 r_static
 r_inline
 r_void
-DECL|function|sctp_skb_list_tail
 id|sctp_skb_list_tail
 c_func
 (paren
@@ -901,14 +888,13 @@ id|flags
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_skb_list_tail() */
 multiline_comment|/**&n; *&t;sctp_list_dequeue - remove from the head of the queue&n; *&t;@list: list to dequeue from&n; *&n; *&t;Remove the head of the list. The head item is&n; *&t;returned or %NULL if the list is empty.&n; */
+DECL|function|sctp_list_dequeue
 r_static
 r_inline
 r_struct
 id|list_head
 op_star
-DECL|function|sctp_list_dequeue
 id|sctp_list_dequeue
 c_func
 (paren
@@ -922,14 +908,8 @@ r_struct
 id|list_head
 op_star
 id|result
-suffix:semicolon
-id|result
 op_assign
-(paren
-r_void
-op_star
-)paren
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_if
 c_cond
@@ -962,12 +942,11 @@ r_return
 id|result
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_list_dequeue() */
 multiline_comment|/* Calculate the size (in bytes) occupied by the data of an iovec.  */
+DECL|function|get_user_iov_size
 r_static
 r_inline
 r_int
-DECL|function|get_user_iov_size
 id|get_user_iov_size
 c_func
 (paren
@@ -981,8 +960,6 @@ id|iovlen
 )paren
 (brace
 r_int
-id|retval
-suffix:semicolon
 id|retval
 op_assign
 l_int|0
@@ -1011,7 +988,6 @@ r_return
 id|retval
 suffix:semicolon
 )brace
-multiline_comment|/* get_user_iov_size() */
 multiline_comment|/* Round an int up to the next multiple of 4.  */
 DECL|macro|WORD_ROUND
 mdefine_line|#define WORD_ROUND(s) (((s)+3)&amp;~3)
@@ -1022,10 +998,10 @@ multiline_comment|/* Compare two timevals.  */
 DECL|macro|tv_lt
 mdefine_line|#define tv_lt(s, t) &bslash;&n;   (s.tv_sec &lt; t.tv_sec || (s.tv_sec == t.tv_sec &amp;&amp; s.tv_usec &lt; t.tv_usec))
 multiline_comment|/* Stolen from net/profile.h.  Using it from there is more grief than&n; * it is worth.&n; */
+DECL|function|tv_add
 r_static
 r_inline
 r_void
-DECL|function|tv_add
 id|tv_add
 c_func
 (paren
@@ -1080,7 +1056,6 @@ op_assign
 id|usecs
 suffix:semicolon
 )brace
-multiline_comment|/* tv_add() */
 multiline_comment|/* External references. */
 r_extern
 r_struct
@@ -1122,7 +1097,6 @@ op_amp
 id|sctp_proto
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_get_protocol() */
 multiline_comment|/* Warning: The following hash functions assume a power of two &squot;size&squot;. */
 multiline_comment|/* This is the hash function for the SCTP port hash table. */
 DECL|function|sctp_phashfn
@@ -1132,7 +1106,7 @@ r_int
 id|sctp_phashfn
 c_func
 (paren
-r_uint16
+id|__u16
 id|lport
 )paren
 (brace
@@ -1157,7 +1131,6 @@ l_int|1
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_phashfn() */
 multiline_comment|/* This is the hash function for the endpoint hash table. */
 DECL|function|sctp_ep_hashfn
 r_static
@@ -1166,7 +1139,7 @@ r_int
 id|sctp_ep_hashfn
 c_func
 (paren
-r_uint16
+id|__u16
 id|lport
 )paren
 (brace
@@ -1191,7 +1164,6 @@ l_int|1
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_ep_hashfn() */
 multiline_comment|/* This is the hash function for the association hash table. */
 DECL|function|sctp_assoc_hashfn
 r_static
@@ -1200,10 +1172,10 @@ r_int
 id|sctp_assoc_hashfn
 c_func
 (paren
-r_uint16
+id|__u16
 id|lport
 comma
-r_uint16
+id|__u16
 id|rport
 )paren
 (brace
@@ -1245,8 +1217,7 @@ l_int|1
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_ep_hashfn() */
-multiline_comment|/* This is the hash function for the association hash table.  This is &n; * not used yet, but could be used as a better hash function when&n; * we have a vtag. &n;*/
+multiline_comment|/* This is the hash function for the association hash table.  This is&n; * not used yet, but could be used as a better hash function when&n; * we have a vtag.&n; */
 DECL|function|sctp_vtag_hashfn
 r_static
 r_inline
@@ -1254,13 +1225,13 @@ r_int
 id|sctp_vtag_hashfn
 c_func
 (paren
-r_uint16
+id|__u16
 id|lport
 comma
-r_uint16
+id|__u16
 id|rport
 comma
-r_uint32
+id|__u32
 id|vtag
 )paren
 (brace
@@ -1300,7 +1271,6 @@ l_int|1
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_vtag_hashfn() */
 multiline_comment|/* WARNING: Do not change the layout of the members in sctp_sock! */
 DECL|struct|sctp_sock
 r_struct

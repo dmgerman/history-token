@@ -183,7 +183,6 @@ DECL|typedef|sctp_verb_t
 )brace
 id|sctp_verb_t
 suffix:semicolon
-multiline_comment|/* enum */
 DECL|macro|SCTP_CMD_MAX
 mdefine_line|#define SCTP_CMD_MAX&t;&t;(SCTP_CMD_LAST - 1)
 DECL|macro|SCTP_CMD_NUM_VERBS
@@ -195,19 +194,19 @@ r_typedef
 r_union
 (brace
 DECL|member|i32
-r_int32
+id|__s32
 id|i32
 suffix:semicolon
 DECL|member|u32
-r_uint32
+id|__u32
 id|u32
 suffix:semicolon
 DECL|member|u16
-r_uint16
+id|__u16
 id|u16
 suffix:semicolon
 DECL|member|u8
-r_uint8
+id|__u8
 id|u8
 suffix:semicolon
 DECL|member|error
@@ -275,11 +274,11 @@ DECL|typedef|sctp_arg_t
 )brace
 id|sctp_arg_t
 suffix:semicolon
-multiline_comment|/* We are simulating ML type constructors here.&n; * &n; * SCTP_ARG_CONSTRUCTOR(NAME, TYPE, ELT) builds a function called&n; * SCTP_NAME() which takes an argument of type TYPE and returns an&n; * sctp_arg_t.  It does this by inserting the sole argument into the&n; * ELT union element of a local sctp_arg_t.&n; *&n; * E.g., SCTP_ARG_CONSTRUCTOR(I32, int32_t, i32) builds SCTP_I32(arg),&n; * which takes an int32_t and returns a sctp_arg_t containing the&n; * int32_t.  So, after foo = SCTP_I32(arg), foo.i32 == arg.&n; */
+multiline_comment|/* We are simulating ML type constructors here.&n; *&n; * SCTP_ARG_CONSTRUCTOR(NAME, TYPE, ELT) builds a function called&n; * SCTP_NAME() which takes an argument of type TYPE and returns an&n; * sctp_arg_t.  It does this by inserting the sole argument into the&n; * ELT union element of a local sctp_arg_t.&n; *&n; * E.g., SCTP_ARG_CONSTRUCTOR(I32, __s32, i32) builds SCTP_I32(arg),&n; * which takes an __s32 and returns a sctp_arg_t containing the&n; * __s32.  So, after foo = SCTP_I32(arg), foo.i32 == arg.&n; */
+DECL|function|SCTP_NULL
 r_static
 r_inline
 id|sctp_arg_t
-DECL|function|SCTP_NULL
 id|SCTP_NULL
 c_func
 (paren
@@ -297,10 +296,10 @@ r_return
 id|retval
 suffix:semicolon
 )brace
+DECL|function|SCTP_NOFORCE
 r_static
 r_inline
 id|sctp_arg_t
-DECL|function|SCTP_NOFORCE
 id|SCTP_NOFORCE
 c_func
 (paren
@@ -318,10 +317,10 @@ r_return
 id|retval
 suffix:semicolon
 )brace
+DECL|function|SCTP_FORCE
 r_static
 r_inline
 id|sctp_arg_t
-DECL|function|SCTP_FORCE
 id|SCTP_FORCE
 c_func
 (paren
@@ -340,13 +339,13 @@ id|retval
 suffix:semicolon
 )brace
 DECL|macro|SCTP_ARG_CONSTRUCTOR
-mdefine_line|#define SCTP_ARG_CONSTRUCTOR(name, type, elt) &bslash;&n;static inline sctp_arg_t&t;&bslash;&n;SCTP_## name (type arg)&t;&t;&bslash;&n;{ sctp_arg_t retval; retval.elt = arg; return(retval); }
+mdefine_line|#define SCTP_ARG_CONSTRUCTOR(name, type, elt) &bslash;&n;static inline sctp_arg_t&t;&bslash;&n;SCTP_## name (type arg)&t;&t;&bslash;&n;{ sctp_arg_t retval; retval.elt = arg; return retval; }
 id|SCTP_ARG_CONSTRUCTOR
 c_func
 (paren
 id|I32
 comma
-r_int32
+id|__s32
 comma
 id|i32
 )paren
@@ -355,7 +354,7 @@ c_func
 (paren
 id|U32
 comma
-r_int32
+id|__u32
 comma
 id|u32
 )paren
@@ -364,7 +363,7 @@ c_func
 (paren
 id|U16
 comma
-r_int32
+id|__u16
 comma
 id|u16
 )paren
@@ -373,7 +372,7 @@ c_func
 (paren
 id|U8
 comma
-r_int32
+id|__u8
 comma
 id|u8
 )paren
@@ -529,18 +528,18 @@ id|SCTP_MAX_NUM_COMMANDS
 )braket
 suffix:semicolon
 DECL|member|next_free_slot
-r_uint8
+id|__u8
 id|next_free_slot
 suffix:semicolon
 DECL|member|next_cmd
-r_uint8
+id|__u8
 id|next_cmd
 suffix:semicolon
 DECL|typedef|sctp_cmd_seq_t
 )brace
 id|sctp_cmd_seq_t
 suffix:semicolon
-multiline_comment|/* Create a new sctp_command_sequence. &n; * Return NULL if creating a new sequence fails.&n; */
+multiline_comment|/* Create a new sctp_command_sequence.&n; * Return NULL if creating a new sequence fails.&n; */
 id|sctp_cmd_seq_t
 op_star
 id|sctp_new_cmd_seq

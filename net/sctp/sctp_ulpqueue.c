@@ -13,14 +13,13 @@ id|unused
 op_assign
 l_string|&quot;$Id: sctp_ulpqueue.c,v 1.14 2002/08/21 18:34:04 jgrimm Exp $&quot;
 suffix:semicolon
-macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;net/sock.h&gt;
 macro_line|#include &lt;net/sctp/sctp_structs.h&gt;
 macro_line|#include &lt;net/sctp/sctp.h&gt;
 macro_line|#include &lt;net/sctp/sctp_sm.h&gt;
-multiline_comment|/* Forward declarations for internal helpers. */
+multiline_comment|/* Forward declarations for internal helpers.  */
 r_static
 r_inline
 id|sctp_ulpevent_t
@@ -54,10 +53,10 @@ id|event
 )paren
 suffix:semicolon
 multiline_comment|/* 1st Level Abstractions */
-multiline_comment|/* Create a new ULP queue.&n; */
+multiline_comment|/* Create a new ULP queue.  */
+DECL|function|sctp_ulpqueue_new
 id|sctp_ulpqueue_t
 op_star
-DECL|function|sctp_ulpqueue_new
 id|sctp_ulpqueue_new
 c_func
 (paren
@@ -65,7 +64,7 @@ id|sctp_association_t
 op_star
 id|asoc
 comma
-r_uint16
+id|__u16
 id|inbound
 comma
 r_int
@@ -79,7 +78,7 @@ suffix:semicolon
 r_int
 id|size
 suffix:semicolon
-multiline_comment|/* Today, there is only a fixed size of storage needed for&n;&t; * stream support, but make the interfaces acceptable for &n;&t; * the future.&n;&t; */
+multiline_comment|/* Today, there is only a fixed size of storage needed for&n;&t; * stream support, but make the interfaces acceptable for&n;&t; * the future.&n;&t; */
 id|size
 op_assign
 r_sizeof
@@ -106,20 +105,16 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-l_int|NULL
-op_eq
+op_logical_neg
 id|ulpq
 )paren
-(brace
 r_goto
 id|fail
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
-l_int|NULL
-op_eq
+op_logical_neg
 id|sctp_ulpqueue_init
 c_func
 (paren
@@ -130,11 +125,9 @@ comma
 id|inbound
 )paren
 )paren
-(brace
 r_goto
 id|fail_init
 suffix:semicolon
-)brace
 id|ulpq-&gt;malloced
 op_assign
 l_int|1
@@ -156,11 +149,10 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_ulpqueue_new() */
-multiline_comment|/* Initialize a ULP queue from a block of memory. */
+multiline_comment|/* Initialize a ULP queue from a block of memory.  */
+DECL|function|sctp_ulpqueue_init
 id|sctp_ulpqueue_t
 op_star
-DECL|function|sctp_ulpqueue_init
 id|sctp_ulpqueue_init
 c_func
 (paren
@@ -172,7 +164,7 @@ id|sctp_association_t
 op_star
 id|asoc
 comma
-r_uint16
+id|__u16
 id|inbound
 )paren
 (brace
@@ -228,10 +220,9 @@ r_return
 id|ulpq
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_ulpqueue_init() */
-multiline_comment|/* Flush the reassembly and ordering queues. */
-r_void
+multiline_comment|/* Flush the reassembly and ordering queues.  */
 DECL|function|sctp_ulpqueue_flush
+r_void
 id|sctp_ulpqueue_flush
 c_func
 (paren
@@ -310,10 +301,9 @@ id|event
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/* sctp_ulpqueue_flush() */
-multiline_comment|/* Dispose of a ulpqueue. */
-r_void
+multiline_comment|/* Dispose of a ulpqueue.  */
 DECL|function|sctp_ulpqueue_free
+r_void
 id|sctp_ulpqueue_free
 c_func
 (paren
@@ -333,7 +323,6 @@ c_cond
 (paren
 id|ulpq-&gt;malloced
 )paren
-(brace
 id|kfree
 c_func
 (paren
@@ -341,11 +330,9 @@ id|ulpq
 )paren
 suffix:semicolon
 )brace
-)brace
-multiline_comment|/* sctp_ulpqueue_free() */
-multiline_comment|/* Process an incoming DATA chunk. */
-r_int
+multiline_comment|/* Process an incoming DATA chunk.  */
 DECL|function|sctp_ulpqueue_tail_data
+r_int
 id|sctp_ulpqueue_tail_data
 c_func
 (paren
@@ -381,7 +368,7 @@ op_star
 )paren
 id|chunk-&gt;chunk_hdr
 suffix:semicolon
-multiline_comment|/* FIXME: Instead of event being the skb clone, we really should &n;&t; * have a new skb based chunk structure that we can convert to &n;&t; * an event.  Temporarily, I&squot;m carrying a few chunk fields in&n;&t; * the event to allow reassembly.  Its too painful to change&n;&t; * everything at once.  --jgrimm&n;&t; */
+multiline_comment|/* FIXME: Instead of event being the skb clone, we really should&n;&t; * have a new skb based chunk structure that we can convert to&n;&t; * an event.  Temporarily, I&squot;m carrying a few chunk fields in&n;&t; * the event to allow reassembly.  Its too painful to change&n;&t; * everything at once.  --jgrimm&n;&t; */
 id|event
 op_assign
 id|sctp_ulpevent_make_rcvmsg
@@ -400,13 +387,11 @@ c_cond
 op_logical_neg
 id|event
 )paren
-(brace
 r_return
 op_minus
 id|ENOMEM
 suffix:semicolon
-)brace
-multiline_comment|/* Do reassembly if needed. */
+multiline_comment|/* Do reassembly if needed.  */
 id|event
 op_assign
 id|sctp_ulpqueue_reasm
@@ -417,16 +402,14 @@ comma
 id|event
 )paren
 suffix:semicolon
-multiline_comment|/* Do ordering if needed. */
+multiline_comment|/* Do ordering if needed.  */
 r_if
 c_cond
 (paren
-l_int|NULL
-op_ne
 id|event
 )paren
 (brace
-multiline_comment|/* Create a temporary list to collect chunks on. */
+multiline_comment|/* Create a temporary list to collect chunks on.  */
 id|skb_queue_head_init
 c_func
 (paren
@@ -454,15 +437,12 @@ id|event
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Send event to the ULP. */
+multiline_comment|/* Send event to the ULP.  */
 r_if
 c_cond
 (paren
-l_int|NULL
-op_ne
 id|event
 )paren
-(brace
 id|sctp_ulpqueue_tail_event
 c_func
 (paren
@@ -471,15 +451,13 @@ comma
 id|event
 )paren
 suffix:semicolon
-)brace
 r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_ulpqueue_tail_data() */
-multiline_comment|/* Add a new event for propogation to the ULP. */
-r_int
+multiline_comment|/* Add a new event for propogation to the ULP.  */
 DECL|function|sctp_ulpqueue_tail_event
+r_int
 id|sctp_ulpqueue_tail_event
 c_func
 (paren
@@ -496,8 +474,6 @@ r_struct
 id|sock
 op_star
 id|sk
-suffix:semicolon
-id|sk
 op_assign
 id|ulpq-&gt;asoc-&gt;base.sk
 suffix:semicolon
@@ -513,12 +489,10 @@ op_amp
 id|RCV_SHUTDOWN
 )paren
 )paren
-(brace
 r_goto
 id|out_free
 suffix:semicolon
-)brace
-multiline_comment|/* Check if the user wishes to receive this event. */
+multiline_comment|/* Check if the user wishes to receive this event.  */
 r_if
 c_cond
 (paren
@@ -538,18 +512,15 @@ op_member_access_from_pointer
 id|subscribe
 )paren
 )paren
-(brace
 r_goto
 id|out_free
 suffix:semicolon
-)brace
-multiline_comment|/* If we are harvesting multiple skbs they will be &n;&t; * collected on a list. &n;&t; */
+multiline_comment|/* If we are harvesting multiple skbs they will be&n;&t; * collected on a list.&n;&t; */
 r_if
 c_cond
 (paren
 id|event-&gt;parent-&gt;list
 )paren
-(brace
 id|sctp_skb_list_tail
 c_func
 (paren
@@ -559,9 +530,7 @@ op_amp
 id|sk-&gt;receive_queue
 )paren
 suffix:semicolon
-)brace
 r_else
-(brace
 id|skb_queue_tail
 c_func
 (paren
@@ -571,7 +540,6 @@ comma
 id|event-&gt;parent
 )paren
 suffix:semicolon
-)brace
 id|wake_up_interruptible
 c_func
 (paren
@@ -588,34 +556,29 @@ c_cond
 (paren
 id|event-&gt;parent-&gt;list
 )paren
-(brace
 id|skb_queue_purge
 c_func
 (paren
 id|event-&gt;parent-&gt;list
 )paren
 suffix:semicolon
-)brace
 r_else
-(brace
 id|kfree_skb
 c_func
 (paren
 id|event-&gt;parent
 )paren
 suffix:semicolon
-)brace
 r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_ulpqueue_tail_event() */
 multiline_comment|/* 2nd Level Abstractions */
-multiline_comment|/* Helper function to store chunks that need to be reassembled. */
+multiline_comment|/* Helper function to store chunks that need to be reassembled.  */
+DECL|function|sctp_ulpqueue_store_reasm
 r_static
 r_inline
 r_void
-DECL|function|sctp_ulpqueue_store_reasm
 id|sctp_ulpqueue_store_reasm
 c_func
 (paren
@@ -640,11 +603,12 @@ id|sctp_ulpevent_t
 op_star
 id|cevent
 suffix:semicolon
-r_uint32
+id|__u32
 id|tsn
 comma
 id|ctsn
 suffix:semicolon
+r_int
 r_int
 id|flags
 id|__attribute
@@ -667,7 +631,7 @@ comma
 id|flags
 )paren
 suffix:semicolon
-multiline_comment|/* Find the right place in this list. We store them by TSN. */
+multiline_comment|/* Find the right place in this list. We store them by TSN.  */
 id|sctp_skb_for_each
 c_func
 (paren
@@ -702,12 +666,10 @@ comma
 id|ctsn
 )paren
 )paren
-(brace
 r_break
 suffix:semicolon
 )brace
-)brace
-multiline_comment|/* If the queue is empty, we have a different function to call. */
+multiline_comment|/* If the queue is empty, we have a different function to call.  */
 r_if
 c_cond
 (paren
@@ -718,7 +680,6 @@ op_amp
 id|ulpq-&gt;reasm
 )paren
 )paren
-(brace
 id|__skb_insert
 c_func
 (paren
@@ -732,9 +693,7 @@ op_amp
 id|ulpq-&gt;reasm
 )paren
 suffix:semicolon
-)brace
 r_else
-(brace
 id|__skb_queue_tail
 c_func
 (paren
@@ -744,7 +703,6 @@ comma
 id|event-&gt;parent
 )paren
 suffix:semicolon
-)brace
 id|sctp_spin_unlock_irqrestore
 c_func
 (paren
@@ -755,13 +713,12 @@ id|flags
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_ulpqueue_store_reasm() */
-multiline_comment|/* Helper function to return an event corresponding to the reassembled &n; * datagram. &n; */
+multiline_comment|/* Helper function to return an event corresponding to the reassembled&n; * datagram.&n; */
+DECL|function|sctp_make_reassembled_event
 r_static
 r_inline
 id|sctp_ulpevent_t
 op_star
-DECL|function|sctp_make_reassembled_event
 id|sctp_make_reassembled_event
 c_func
 (paren
@@ -794,7 +751,7 @@ id|pos
 op_assign
 id|f_frag-&gt;next
 suffix:semicolon
-multiline_comment|/* Set the first fragment&squot;s frag_list to point to the 2nd fragment. */
+multiline_comment|/* Set the first fragment&squot;s frag_list to point to the 2nd fragment.  */
 id|skb_shinfo
 c_func
 (paren
@@ -805,7 +762,7 @@ id|frag_list
 op_assign
 id|pos
 suffix:semicolon
-multiline_comment|/* Remove the first fragment from the reassembly queue. */
+multiline_comment|/* Remove the first fragment from the reassembly queue.  */
 id|__skb_unlink
 c_func
 (paren
@@ -820,7 +777,7 @@ id|pnext
 op_assign
 id|pos-&gt;next
 suffix:semicolon
-multiline_comment|/* Remove the fragment from the reassembly queue. */
+multiline_comment|/* Remove the fragment from the reassembly queue.  */
 id|__skb_unlink
 c_func
 (paren
@@ -829,7 +786,7 @@ comma
 id|pos-&gt;list
 )paren
 suffix:semicolon
-multiline_comment|/* Break if we have reached the last fragment. */
+multiline_comment|/* Break if we have reached the last fragment.  */
 r_if
 c_cond
 (paren
@@ -837,10 +794,8 @@ id|pos
 op_eq
 id|l_frag
 )paren
-(brace
 r_break
 suffix:semicolon
-)brace
 id|pos-&gt;next
 op_assign
 id|pnext
@@ -865,18 +820,15 @@ op_star
 id|f_frag-&gt;cb
 suffix:semicolon
 r_return
-(paren
 id|event
-)paren
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_make_reassembled_event() */
-multiline_comment|/* Helper function to check if an incoming chunk has filled up the last &n; * missing fragment in a SCTP datagram and return the corresponding event. &n; */
+multiline_comment|/* Helper function to check if an incoming chunk has filled up the last&n; * missing fragment in a SCTP datagram and return the corresponding event.&n; */
+DECL|function|sctp_ulpqueue_retrieve_reassembled
 r_static
 r_inline
 id|sctp_ulpevent_t
 op_star
-DECL|function|sctp_ulpqueue_retrieve_reassembled
 id|sctp_ulpqueue_retrieve_reassembled
 c_func
 (paren
@@ -904,11 +856,12 @@ id|first_frag
 op_assign
 l_int|NULL
 suffix:semicolon
-r_uint32
+id|__u32
 id|ctsn
 comma
 id|next_tsn
 suffix:semicolon
+r_int
 r_int
 id|flags
 id|__attribute
@@ -924,7 +877,7 @@ id|retval
 op_assign
 l_int|NULL
 suffix:semicolon
-multiline_comment|/* Initialized to 0 just to avoid compiler warning message. Will&n;&t; * never be used with this value. It is referenced only after it &n;&t; * is set when we find the first fragment of a message.&n;&t; */
+multiline_comment|/* Initialized to 0 just to avoid compiler warning message. Will&n;&t; * never be used with this value. It is referenced only after it&n;&t; * is set when we find the first fragment of a message.&n;&t; */
 id|next_tsn
 op_assign
 l_int|0
@@ -938,7 +891,7 @@ comma
 id|flags
 )paren
 suffix:semicolon
-multiline_comment|/* The chunks are held in the reasm queue sorted by TSN. &n;&t; * Walk through the queue sequentially and look for a sequence of&n;&t; * fragmented chunks that complete a datagram. &n;&t; * &squot;first_frag&squot; and next_tsn are reset when we find a chunk which&n;&t; * is the first fragment of a datagram. Once these 2 fields are set&n;&t; * we expect to find the remaining middle fragments and the last&n;&t; * fragment in order. If not, first_frag is reset to NULL and we&n;&t; * start the next pass when we find another first fragment. &n;&t; */
+multiline_comment|/* The chunks are held in the reasm queue sorted by TSN.&n;&t; * Walk through the queue sequentially and look for a sequence of&n;&t; * fragmented chunks that complete a datagram.&n;&t; * &squot;first_frag&squot; and next_tsn are reset when we find a chunk which&n;&t; * is the first fragment of a datagram. Once these 2 fields are set&n;&t; * we expect to find the remaining middle fragments and the last&n;&t; * fragment in order. If not, first_frag is reset to NULL and we&n;&t; * start the next pass when we find another first fragment.&n;&t; */
 id|sctp_skb_for_each
 c_func
 (paren
@@ -1001,18 +954,14 @@ op_eq
 id|next_tsn
 )paren
 )paren
-(brace
 id|next_tsn
 op_increment
 suffix:semicolon
-)brace
 r_else
-(brace
 id|first_frag
 op_assign
 l_int|NULL
 suffix:semicolon
-)brace
 r_break
 suffix:semicolon
 r_case
@@ -1031,7 +980,6 @@ op_eq
 id|next_tsn
 )paren
 )paren
-(brace
 id|retval
 op_assign
 id|sctp_make_reassembled_event
@@ -1042,27 +990,23 @@ comma
 id|pos
 )paren
 suffix:semicolon
-)brace
 r_else
-(brace
 id|first_frag
 op_assign
 l_int|NULL
 suffix:semicolon
-)brace
 r_break
 suffix:semicolon
 )brace
-multiline_comment|/* We have the reassembled event. There is no need to look &n;&t;&t; * further. &n;&t;&t; */
+suffix:semicolon
+multiline_comment|/* We have the reassembled event. There is no need to look&n;&t;&t; * further.&n;&t;&t; */
 r_if
 c_cond
 (paren
 id|retval
 )paren
-(brace
 r_break
 suffix:semicolon
-)brace
 )brace
 id|sctp_spin_unlock_irqrestore
 c_func
@@ -1074,18 +1018,15 @@ id|flags
 )paren
 suffix:semicolon
 r_return
-(paren
 id|retval
-)paren
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_ulpqueue_retrieve_reassembled() */
-multiline_comment|/* Helper function to reassemble chunks. Hold chunks on the reasm queue that &n; * need reassembling. &n; */
+multiline_comment|/* Helper function to reassemble chunks. Hold chunks on the reasm queue that&n; * need reassembling.&n; */
+DECL|function|sctp_ulpqueue_reasm
 r_static
 r_inline
 id|sctp_ulpevent_t
 op_star
-DECL|function|sctp_ulpqueue_reasm
 id|sctp_ulpqueue_reasm
 c_func
 (paren
@@ -1104,8 +1045,8 @@ id|retval
 op_assign
 l_int|NULL
 suffix:semicolon
-multiline_comment|/* FIXME: We should be using some new chunk structure here &n;&t; * instead of carrying chunk fields in the event structure.&n;&t; * This is temporary as it is too painful to change everything &n;&t; * at once.&n;&t; */
-multiline_comment|/* Check if this is part of a fragmented message. */
+multiline_comment|/* FIXME: We should be using some new chunk structure here&n;&t; * instead of carrying chunk fields in the event structure.&n;&t; * This is temporary as it is too painful to change everything&n;&t; * at once.&n;&t; */
+multiline_comment|/* Check if this is part of a fragmented message.  */
 r_if
 c_cond
 (paren
@@ -1117,11 +1058,9 @@ op_amp
 id|SCTP_DATA_FRAG_MASK
 )paren
 )paren
-(brace
 r_return
 id|event
 suffix:semicolon
-)brace
 id|sctp_ulpqueue_store_reasm
 c_func
 (paren
@@ -1142,12 +1081,11 @@ r_return
 id|retval
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_ulpqueue_reasm() */
-multiline_comment|/* Helper function to gather skbs that have possibly become&n; * ordered by an an incoming chunk. &n; */
+multiline_comment|/* Helper function to gather skbs that have possibly become&n; * ordered by an an incoming chunk.&n; */
+DECL|function|sctp_ulpqueue_retrieve_ordered
 r_static
 r_inline
 r_void
-DECL|function|sctp_ulpqueue_retrieve_ordered
 id|sctp_ulpqueue_retrieve_ordered
 c_func
 (paren
@@ -1172,16 +1110,17 @@ id|sctp_ulpevent_t
 op_star
 id|cevent
 suffix:semicolon
-r_uint16
+id|__u16
 id|sid
 comma
 id|csid
 suffix:semicolon
-r_uint16
+id|__u16
 id|ssn
 comma
 id|cssn
 suffix:semicolon
+r_int
 r_int
 id|flags
 id|__attribute
@@ -1199,7 +1138,7 @@ id|ssn
 op_assign
 id|event-&gt;sndrcvinfo.sinfo_ssn
 suffix:semicolon
-multiline_comment|/* We are holding the chunks by stream, by SSN. */
+multiline_comment|/* We are holding the chunks by stream, by SSN.  */
 id|sctp_spin_lock_irqsave
 c_func
 (paren
@@ -1236,7 +1175,7 @@ id|cssn
 op_assign
 id|cevent-&gt;sndrcvinfo.sinfo_ssn
 suffix:semicolon
-multiline_comment|/* Have we gone too far? */
+multiline_comment|/* Have we gone too far?  */
 r_if
 c_cond
 (paren
@@ -1244,11 +1183,9 @@ id|csid
 OG
 id|sid
 )paren
-(brace
 r_break
 suffix:semicolon
-)brace
-multiline_comment|/* Have we not gone far enough? */
+multiline_comment|/* Have we not gone far enough?  */
 r_if
 c_cond
 (paren
@@ -1256,10 +1193,8 @@ id|csid
 OL
 id|sid
 )paren
-(brace
 r_continue
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -1270,10 +1205,8 @@ id|ulpq-&gt;ssn
 id|sid
 )braket
 )paren
-(brace
 r_break
 suffix:semicolon
-)brace
 id|ulpq-&gt;ssn
 (braket
 id|sid
@@ -1288,7 +1221,7 @@ comma
 id|pos-&gt;list
 )paren
 suffix:semicolon
-multiline_comment|/* Attach all gathered skbs to the event. */
+multiline_comment|/* Attach all gathered skbs to the event.  */
 id|__skb_queue_tail
 c_func
 (paren
@@ -1308,12 +1241,11 @@ id|flags
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_ulpqueue_retrieve_ordered() */
 multiline_comment|/* Helper function to store chunks needing ordering.  */
+DECL|function|sctp_ulpqueue_store_ordered
 r_static
 r_inline
 r_void
-DECL|function|sctp_ulpqueue_store_ordered
 id|sctp_ulpqueue_store_ordered
 c_func
 (paren
@@ -1338,16 +1270,17 @@ id|sctp_ulpevent_t
 op_star
 id|cevent
 suffix:semicolon
-r_uint16
+id|__u16
 id|sid
 comma
 id|csid
 suffix:semicolon
-r_uint16
+id|__u16
 id|ssn
 comma
 id|cssn
 suffix:semicolon
+r_int
 r_int
 id|flags
 id|__attribute
@@ -1409,10 +1342,8 @@ id|csid
 OG
 id|sid
 )paren
-(brace
 r_break
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -1428,12 +1359,10 @@ comma
 id|cssn
 )paren
 )paren
-(brace
 r_break
 suffix:semicolon
 )brace
-)brace
-multiline_comment|/* If the queue is empty, we have a different function to call. */
+multiline_comment|/* If the queue is empty, we have a different function to call.  */
 r_if
 c_cond
 (paren
@@ -1444,7 +1373,6 @@ op_amp
 id|ulpq-&gt;lobby
 )paren
 )paren
-(brace
 id|__skb_insert
 c_func
 (paren
@@ -1458,9 +1386,7 @@ op_amp
 id|ulpq-&gt;lobby
 )paren
 suffix:semicolon
-)brace
 r_else
-(brace
 id|__skb_queue_tail
 c_func
 (paren
@@ -1470,7 +1396,6 @@ comma
 id|event-&gt;parent
 )paren
 suffix:semicolon
-)brace
 id|sctp_spin_unlock_irqrestore
 c_func
 (paren
@@ -1481,12 +1406,11 @@ id|flags
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_ulpqueue_store_ordered() */
+DECL|function|sctp_ulpqueue_order
 r_static
 r_inline
 id|sctp_ulpevent_t
 op_star
-DECL|function|sctp_ulpqueue_order
 id|sctp_ulpqueue_order
 c_func
 (paren
@@ -1499,14 +1423,13 @@ op_star
 id|event
 )paren
 (brace
-r_uint16
+id|__u16
 id|sid
-suffix:semicolon
-r_uint16
+comma
 id|ssn
 suffix:semicolon
-multiline_comment|/* FIXME: We should be using some new chunk structure here &n;&t; * instead of carrying chunk fields in the event structure.&n;&t; * This is temporary as it is too painful to change everything &n;&t; * at once.&n;&t; */
-multiline_comment|/* Check if this message needs ordering. */
+multiline_comment|/* FIXME: We should be using some new chunk structure here&n;&t; * instead of carrying chunk fields in the event structure.&n;&t; * This is temporary as it is too painful to change everything&n;&t; * at once.&n;&t; */
+multiline_comment|/* Check if this message needs ordering.  */
 r_if
 c_cond
 (paren
@@ -1514,12 +1437,10 @@ id|SCTP_DATA_UNORDERED
 op_amp
 id|event-&gt;chunk_flags
 )paren
-(brace
 r_return
 id|event
 suffix:semicolon
-)brace
-multiline_comment|/* Note: The stream ID must be verified before this routine. */
+multiline_comment|/* Note: The stream ID must be verified before this routine.  */
 id|sid
 op_assign
 id|event-&gt;sndrcvinfo.sinfo_stream
@@ -1528,7 +1449,7 @@ id|ssn
 op_assign
 id|event-&gt;sndrcvinfo.sinfo_ssn
 suffix:semicolon
-multiline_comment|/* Is this the expected SSN for this stream ID? */
+multiline_comment|/* Is this the expected SSN for this stream ID?  */
 r_if
 c_cond
 (paren
@@ -1540,7 +1461,7 @@ id|sid
 )braket
 )paren
 (brace
-multiline_comment|/* We&squot;ve received something out of order, so find where it&n;&t;&t;* needs to be placed.  We order by stream and then by SSN.&n;&t;&t;*/
+multiline_comment|/* We&squot;ve received something out of order, so find where it&n;&t;&t; * needs to be placed.  We order by stream and then by SSN.&n;&t;&t; */
 id|sctp_ulpqueue_store_ordered
 c_func
 (paren
@@ -1553,14 +1474,14 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
-multiline_comment|/* Mark that the next chunk has been found. */
+multiline_comment|/* Mark that the next chunk has been found.  */
 id|ulpq-&gt;ssn
 (braket
 id|sid
 )braket
 op_increment
 suffix:semicolon
-multiline_comment|/* Go find any other chunks that were waiting for&n;&t;* ordering.&n;&t;*/
+multiline_comment|/* Go find any other chunks that were waiting for&n;&t; * ordering.&n;&t; */
 id|sctp_ulpqueue_retrieve_ordered
 c_func
 (paren
@@ -1573,5 +1494,4 @@ r_return
 id|event
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_ulpqueue_order() */
 eof

@@ -14,7 +14,7 @@ op_assign
 l_string|&quot;$Id: sctp_objcnt.c,v 1.5 2002/07/12 14:50:25 jgrimm Exp $&quot;
 suffix:semicolon
 macro_line|#include &lt;net/sctp/sctp.h&gt;
-multiline_comment|/* &n; * Global counters to count raw object allocation counts. &n; * To add new counters, choose a unique suffix for the variable&n; * name as the helper macros key off this suffix to make&n; * life easier for the programmer.  &n; */
+multiline_comment|/*&n; * Global counters to count raw object allocation counts.&n; * To add new counters, choose a unique suffix for the variable&n; * name as the helper macros key off this suffix to make&n; * life easier for the programmer.&n; */
 DECL|variable|sock
 id|SCTP_DBG_OBJCNT
 c_func
@@ -64,7 +64,7 @@ c_func
 id|addr
 )paren
 suffix:semicolon
-multiline_comment|/* An array to make it easy to pretty print the debug information&n; * to the proc fs.  &n; */
+multiline_comment|/* An array to make it easy to pretty print the debug information&n; * to the proc fs.&n; */
 DECL|variable|sctp_dbg_objcnt
 id|sctp_dbg_objcnt_entry_t
 id|sctp_dbg_objcnt
@@ -116,10 +116,10 @@ id|addr
 comma
 )brace
 suffix:semicolon
-multiline_comment|/* Callback from procfs to read out objcount information. &n; * Walk through the entries in the sctp_dbg_objcnt array, dumping&n; * the raw object counts for each monitored type.&n; * &n; * This code was modified from similar code in route.c&n; */
+multiline_comment|/* Callback from procfs to read out objcount information.&n; * Walk through the entries in the sctp_dbg_objcnt array, dumping&n; * the raw object counts for each monitored type.&n; *&n; * This code was modified from similar code in route.c&n; */
+DECL|function|sctp_dbg_objcnt_read
 r_static
 r_int
-DECL|function|sctp_dbg_objcnt_read
 id|sctp_dbg_objcnt_read
 c_func
 (paren
@@ -185,7 +185,7 @@ l_int|0
 )braket
 )paren
 suffix:semicolon
-multiline_comment|/* Walk the entries and print out the debug information &n;&t; * for proc fs.&n;&t; */
+multiline_comment|/* Walk the entries and print out the debug information&n;&t; * for proc fs.&n;&t; */
 r_for
 c_loop
 (paren
@@ -273,11 +273,9 @@ id|offset
 op_plus
 id|length
 )paren
-(brace
 r_goto
 id|done
 suffix:semicolon
-)brace
 )brace
 id|done
 suffix:colon
@@ -315,8 +313,7 @@ r_return
 id|len
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_dbg_objcnt_read() */
-multiline_comment|/* Initialize the objcount in the proc filesystem. */
+multiline_comment|/* Initialize the objcount in the proc filesystem.  */
 DECL|function|sctp_dbg_objcnt_init
 r_void
 id|sctp_dbg_objcnt_init
@@ -340,8 +337,7 @@ l_int|NULL
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_dbg_objcnt_init() */
-multiline_comment|/* Cleanup the objcount entry in the proc filesystem. */
+multiline_comment|/* Cleanup the objcount entry in the proc filesystem.  */
 DECL|function|sctp_dbg_objcnt_exit
 r_void
 id|sctp_dbg_objcnt_exit
@@ -359,5 +355,4 @@ id|proc_net_sctp
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_dbg_objcnt_exit() */
 eof

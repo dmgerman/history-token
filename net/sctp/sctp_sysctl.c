@@ -339,7 +339,7 @@ id|ctl_table_header
 op_star
 id|sctp_sysctl_header
 suffix:semicolon
-multiline_comment|/* Sysctl registration. */
+multiline_comment|/* Sysctl registration.  */
 DECL|function|sctp_sysctl_register
 r_void
 id|sctp_sysctl_register
@@ -359,8 +359,7 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_sysctl_register() */
-multiline_comment|/* Sysctl deregistration. */
+multiline_comment|/* Sysctl deregistration.  */
 DECL|function|sctp_sysctl_unregister
 r_void
 id|sctp_sysctl_unregister
@@ -376,5 +375,4 @@ id|sctp_sysctl_header
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_sysctl_unregister() */
 eof

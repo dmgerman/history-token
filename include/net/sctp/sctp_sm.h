@@ -1,5 +1,4 @@
 multiline_comment|/* SCTP kernel reference Implementation&n; * Copyright (c) 1999-2000 Cisco, Inc.&n; * Copyright (c) 1999-2001 Motorola, Inc.&n; * Copyright (c) 2001 Intel Corp.&n; * Copyright (c) 2001-2002 International Business Machines Corp.&n; * &n; * This file is part of the SCTP kernel reference Implementation&n; * &n; * This file is part of the implementation of the add-IP extension,&n; * based on &lt;draft-ietf-tsvwg-addip-sctp-02.txt&gt; June 29, 2001,&n; * for the SCTP kernel reference Implementation.&n; * &n; * $Header: /cvsroot/lksctp/lksctp/sctp_cvs/include/net/sctp/sctp_sm.h,v 1.34 2002/08/21 18:34:04 jgrimm Exp $&n; * &n; * These are definitions needed by the state machine.&n; * &n; * The SCTP reference implementation is free software; &n; * you can redistribute it and/or modify it under the terms of &n; * the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; * &n; * The SCTP reference implementation is distributed in the hope that it &n; * will be useful, but WITHOUT ANY WARRANTY; without even the implied&n; *                 ************************&n; * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; * See the GNU General Public License for more details.&n; * &n; * You should have received a copy of the GNU General Public License&n; * along with GNU CC; see the file COPYING.  If not, write to&n; * the Free Software Foundation, 59 Temple Place - Suite 330,&n; * Boston, MA 02111-1307, USA.  &n; * &n; * Please send any bug reports or fixes you make to the&n; * email addresses:&n; *    lksctp developers &lt;lksctp-developers@lists.sourceforge.net&gt;&n; * &n; * Or submit a bug report through the following website:&n; *    http://www.sf.net/projects/lksctp&n; *&n; * Written or modified by: &n; *    La Monte H.P. Yarroll &lt;piggy@acm.org&gt;&n; *    Karl Knutson &lt;karl@athena.chicago.il.us&gt;&n; *    Xingang Guo &lt;xingang.guo@intel.com&gt;&n; *    Jon Grimm &lt;jgrimm@us.ibm.com&gt;&n; *    Dajiang Zhang &lt;dajiang.zhang@nokia.com&gt;&n; *    Sridhar Samudrala &lt;sri@us.ibm.com&gt;&n; *    Daisy Chang &lt;daisyc@us.ibm.com&gt;&n; *&n; * Any bugs reported given to us we will try to fix... any fixes shared will&n; * be incorporated into the next SCTP release.&n; */
-macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/compiler.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -124,7 +123,7 @@ DECL|typedef|sctp_sm_table_entry_t
 )brace
 id|sctp_sm_table_entry_t
 suffix:semicolon
-multiline_comment|/* A naming convention of &quot;sctp_sf_xxx&quot; applies to all the state functions &n; * currently in use.&n; */
+multiline_comment|/* A naming convention of &quot;sctp_sf_xxx&quot; applies to all the state functions&n; * currently in use.&n; */
 multiline_comment|/* Prototypes for generic state functions. */
 DECL|variable|sctp_sf_not_impl
 id|sctp_state_fn_t
@@ -331,7 +330,7 @@ DECL|variable|sctp_sf_autoclose_timer_expire
 id|sctp_state_fn_t
 id|sctp_sf_autoclose_timer_expire
 suffix:semicolon
-multiline_comment|/* These are state functions which are either obsolete or not in use yet. &n; * If any of these functions needs to be revived, it should be renamed with&n; * the &quot;sctp_sf_xxx&quot; prefix, and be moved to the above prototype groups.&n; */
+multiline_comment|/* These are state functions which are either obsolete or not in use yet.&n; * If any of these functions needs to be revived, it should be renamed with&n; * the &quot;sctp_sf_xxx&quot; prefix, and be moved to the above prototype groups.&n; */
 multiline_comment|/* Prototypes for chunk state functions.  Not in use. */
 DECL|variable|sctp_sf_do_5_2_6_stale
 id|sctp_state_fn_t
@@ -392,7 +391,7 @@ id|sctp_state_fn_t
 id|sctp_addip_do_asconf_ack
 suffix:semicolon
 multiline_comment|/* Prototypes for utility support functions.  */
-r_uint8
+id|__u8
 id|sctp_get_chunk_type
 c_func
 (paren
@@ -446,7 +445,7 @@ r_int
 id|priority
 )paren
 suffix:semicolon
-r_uint32
+id|__u32
 id|sctp_generate_verification_tag
 c_func
 (paren
@@ -474,14 +473,14 @@ r_void
 id|sctp_populate_tie_tags
 c_func
 (paren
-r_uint8
+id|__u8
 op_star
 id|cookie
 comma
-r_uint32
+id|__u32
 id|curTag
 comma
-r_uint32
+id|__u32
 id|hisTag
 )paren
 suffix:semicolon
@@ -559,7 +558,7 @@ id|sctp_association_t
 op_star
 comma
 r_const
-r_uint32
+id|__u32
 id|lowest_tsn
 comma
 r_const
@@ -585,14 +584,14 @@ r_int
 id|len
 comma
 r_const
-r_uint8
+id|__u8
 op_star
 id|data
 comma
-r_uint8
+id|__u8
 id|flags
 comma
-r_uint16
+id|__u16
 id|ssn
 )paren
 suffix:semicolon
@@ -614,10 +613,10 @@ r_int
 id|len
 comma
 r_const
-r_uint8
+id|__u8
 id|flags
 comma
-r_uint16
+id|__u16
 id|ssn
 )paren
 suffix:semicolon
@@ -639,7 +638,7 @@ r_int
 id|len
 comma
 r_const
-r_uint8
+id|__u8
 op_star
 id|data
 )paren
@@ -671,7 +670,7 @@ id|sctp_association_t
 op_star
 comma
 r_const
-r_uint32
+id|__u32
 )paren
 suffix:semicolon
 id|sctp_chunk_t
@@ -731,7 +730,7 @@ c_func
 id|sctp_chunk_t
 op_star
 comma
-r_uint16
+id|__u16
 id|cause
 comma
 r_const
@@ -772,7 +771,7 @@ r_const
 id|sctp_chunk_t
 op_star
 comma
-r_uint32
+id|__u32
 id|tsn
 )paren
 suffix:semicolon
@@ -836,7 +835,7 @@ id|sctp_chunk_t
 op_star
 id|chunk
 comma
-r_uint16
+id|__u16
 id|cause_code
 comma
 r_const
@@ -1034,7 +1033,7 @@ op_star
 id|cookie_len
 comma
 r_const
-r_uint8
+id|__u8
 op_star
 comma
 r_int
@@ -1082,7 +1081,7 @@ r_int
 )paren
 suffix:semicolon
 multiline_comment|/* 3rd level prototypes */
-r_uint32
+id|__u32
 id|sctp_generate_tag
 c_func
 (paren
@@ -1091,7 +1090,7 @@ id|sctp_endpoint_t
 op_star
 )paren
 suffix:semicolon
-r_uint32
+id|__u32
 id|sctp_generate_tsn
 c_func
 (paren
@@ -1113,7 +1112,7 @@ r_const
 id|sctpParam_t
 id|param
 comma
-r_uint16
+id|__u16
 id|port
 )paren
 suffix:semicolon
@@ -1190,10 +1189,10 @@ id|SCTP_NUM_TIMEOUT_TYPES
 suffix:semicolon
 multiline_comment|/* These are some handy utility macros... */
 multiline_comment|/* Get the size of a DATA chunk payload. */
+DECL|function|sctp_data_size
 r_static
 r_inline
-r_uint16
-DECL|function|sctp_data_size
+id|__u16
 id|sctp_data_size
 c_func
 (paren
@@ -1202,7 +1201,7 @@ op_star
 id|chunk
 )paren
 (brace
-r_uint16
+id|__u16
 id|size
 suffix:semicolon
 id|size
@@ -1224,10 +1223,9 @@ r_return
 id|size
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_data_size( ) */
 multiline_comment|/* Compare two TSNs */
-multiline_comment|/* RFC 1982 - Serial Number Arithmetic&n; *&n; * 2. Comparison&n; *  Then, s1 is said to be equal to s2 if and only if i1 is equal to i2,&n; *  in all other cases, s1 is not equal to s2.&n; *&n; * s1 is said to be less than s2 if, and only if, s1 is not equal to s2,&n; * and&n; *&n; *      (i1 &lt; i2 and i2 - i1 &lt; 2^(SERIAL_BITS - 1)) or&n; *      (i1 &gt; i2 and i1 - i2 &gt; 2^(SERIAL_BITS - 1))&n; *&n; * s1 is said to be greater than s2 if, and only if, s1 is not equal to&n; * s2, and&n; *&n; *      (i1 &lt; i2 and i2 - i1 &gt; 2^(SERIAL_BITS - 1)) or&n; *      (i1 &gt; i2 and i1 - i2 &lt; 2^(SERIAL_BITS - 1)) &n; */
-multiline_comment|/*&n; * RFC 2960&n; *  1.6 Serial Number Arithmetic &n; *&n; * Comparisons and arithmetic on TSNs in this document SHOULD use Serial&n; * Number Arithmetic as defined in [RFC1982] where SERIAL_BITS = 32.&n; */
+multiline_comment|/* RFC 1982 - Serial Number Arithmetic&n; *&n; * 2. Comparison&n; *  Then, s1 is said to be equal to s2 if and only if i1 is equal to i2,&n; *  in all other cases, s1 is not equal to s2.&n; *&n; * s1 is said to be less than s2 if, and only if, s1 is not equal to s2,&n; * and&n; *&n; *      (i1 &lt; i2 and i2 - i1 &lt; 2^(SERIAL_BITS - 1)) or&n; *      (i1 &gt; i2 and i1 - i2 &gt; 2^(SERIAL_BITS - 1))&n; *&n; * s1 is said to be greater than s2 if, and only if, s1 is not equal to&n; * s2, and&n; *&n; *      (i1 &lt; i2 and i2 - i1 &gt; 2^(SERIAL_BITS - 1)) or&n; *      (i1 &gt; i2 and i1 - i2 &lt; 2^(SERIAL_BITS - 1))&n; */
+multiline_comment|/*&n; * RFC 2960&n; *  1.6 Serial Number Arithmetic&n; *&n; * Comparisons and arithmetic on TSNs in this document SHOULD use Serial&n; * Number Arithmetic as defined in [RFC1982] where SERIAL_BITS = 32.&n; */
 r_enum
 (brace
 DECL|enumerator|TSN_SIGN_BIT
@@ -1240,10 +1238,10 @@ l_int|31
 )paren
 )brace
 suffix:semicolon
+DECL|function|TSN_lt
 r_static
 r_inline
 r_int
-DECL|function|TSN_lt
 id|TSN_lt
 c_func
 (paren
@@ -1270,10 +1268,10 @@ id|TSN_SIGN_BIT
 )paren
 suffix:semicolon
 )brace
+DECL|function|TSN_lte
 r_static
 r_inline
 r_int
-DECL|function|TSN_lte
 id|TSN_lte
 c_func
 (paren
@@ -1313,7 +1311,7 @@ id|TSN_SIGN_BIT
 suffix:semicolon
 )brace
 multiline_comment|/* Compare two SSNs */
-multiline_comment|/*&n; * RFC 2960&n; *  1.6 Serial Number Arithmetic &n; *&n; * Comparisons and arithmetic on Stream Sequence Numbers in this document &n; * SHOULD use Serial Number Arithmetic as defined in [RFC1982] where &n; * SERIAL_BITS = 16.&n; */
+multiline_comment|/*&n; * RFC 2960&n; *  1.6 Serial Number Arithmetic&n; *&n; * Comparisons and arithmetic on Stream Sequence Numbers in this document&n; * SHOULD use Serial Number Arithmetic as defined in [RFC1982] where&n; * SERIAL_BITS = 16.&n; */
 r_enum
 (brace
 DECL|enumerator|SSN_SIGN_BIT
@@ -1326,10 +1324,10 @@ l_int|15
 )paren
 )brace
 suffix:semicolon
+DECL|function|SSN_lt
 r_static
 r_inline
 r_int
-DECL|function|SSN_lt
 id|SSN_lt
 c_func
 (paren
@@ -1356,10 +1354,10 @@ id|SSN_SIGN_BIT
 )paren
 suffix:semicolon
 )brace
+DECL|function|SSN_lte
 r_static
 r_inline
 r_int
-DECL|function|SSN_lte
 id|SSN_lte
 c_func
 (paren
@@ -1399,10 +1397,10 @@ id|SSN_SIGN_BIT
 suffix:semicolon
 )brace
 multiline_comment|/* Run sctp_add_cmd() generating a BUG() if there is a failure.  */
+DECL|function|sctp_add_cmd_sf
 r_static
 r_inline
 r_void
-DECL|function|sctp_add_cmd_sf
 id|sctp_add_cmd_sf
 c_func
 (paren
@@ -1435,14 +1433,11 @@ id|obj
 )paren
 )paren
 )paren
-(brace
 id|BUG
 c_func
 (paren
 )paren
 suffix:semicolon
 )brace
-)brace
-multiline_comment|/* sctp_add_cmd_sf() */
 macro_line|#endif /* __sctp_sm_h__ */
 eof

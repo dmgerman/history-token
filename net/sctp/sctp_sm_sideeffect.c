@@ -14,7 +14,6 @@ op_assign
 l_string|&quot;$Id: sctp_sm_sideeffect.c,v 1.44 2002/08/16 19:30:50 jgrimm Exp $&quot;
 suffix:semicolon
 macro_line|#include &lt;linux/skbuff.h&gt;
-macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/socket.h&gt;
 macro_line|#include &lt;linux/ip.h&gt;
@@ -31,7 +30,7 @@ id|sctp_association_t
 op_star
 id|asoc
 comma
-r_uint32
+id|__u32
 id|lowest_tsn
 )paren
 suffix:semicolon
@@ -45,7 +44,7 @@ id|sctp_association_t
 op_star
 id|asoc
 comma
-r_uint32
+id|__u32
 id|lowest_tsn
 comma
 id|sctp_chunk_t
@@ -61,7 +60,7 @@ id|sctp_association_t
 op_star
 id|asoc
 comma
-r_uint32
+id|__u32
 id|lowest_tsn
 )paren
 suffix:semicolon
@@ -227,8 +226,8 @@ mdefine_line|#define DEBUG_POST &bslash;&n;&t;SCTP_DEBUG_PRINTK(&quot;sctp_do_sm
 DECL|macro|DEBUG_POST_SFX
 mdefine_line|#define DEBUG_POST_SFX &bslash;&n;&t;SCTP_DEBUG_PRINTK(&quot;sctp_do_sm post sfx: error %d, asoc %p[%s]&bslash;n&quot;, &bslash;&n;&t;&t;&t;  error, asoc, &bslash;&n;&t;&t;&t;  sctp_state_tbl[sctp_id2assoc(ep-&gt;base.sk, &bslash;&n;&t;&t;&t;  sctp_assoc2id(asoc))?asoc-&gt;state:SCTP_STATE_CLOSED])
 multiline_comment|/*&n; * This is the master state machine processing function.&n; *&n; * If you want to understand all of lksctp, this is a&n; * good place to start.&n; */
-r_int
 DECL|function|sctp_do_sm
+r_int
 id|sctp_do_sm
 c_func
 (paren
@@ -392,14 +391,13 @@ r_return
 id|error
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_do_sm() */
 DECL|macro|DEBUG_PRE
 macro_line|#undef DEBUG_PRE
 DECL|macro|DEBUG_POST
 macro_line|#undef DEBUG_POST
 multiline_comment|/*****************************************************************&n; * This the master state function side effect processing function.&n; *****************************************************************/
-r_int
 DECL|function|sctp_side_effects
+r_int
 id|sctp_side_effects
 c_func
 (paren
@@ -435,13 +433,8 @@ r_int
 id|priority
 )paren
 (brace
-r_int
-id|error
-suffix:semicolon
 id|sctp_chunk_t
 op_star
-id|chunk
-suffix:semicolon
 id|chunk
 op_assign
 (paren
@@ -450,7 +443,10 @@ op_star
 )paren
 id|event_arg
 suffix:semicolon
-multiline_comment|/* FIXME - Most of the dispositions left today would be categorized &n;&t; * as &quot;exceptional&quot; dispositions.  For those dispositions, it &n;&t; * may not be proper to run through any of the commands at all.&n;&t; * For example, the command interpreter might be run only with&n;&t; * disposition SCTP_DISPOSITION_CONSUME.&n;&t; */
+r_int
+id|error
+suffix:semicolon
+multiline_comment|/* FIXME - Most of the dispositions left today would be categorized&n;&t; * as &quot;exceptional&quot; dispositions.  For those dispositions, it&n;&t; * may not be proper to run through any of the commands at all.&n;&t; * For example, the command interpreter might be run only with&n;&t; * disposition SCTP_DISPOSITION_CONSUME.&n;&t; */
 r_if
 c_cond
 (paren
@@ -482,11 +478,9 @@ id|priority
 )paren
 )paren
 )paren
-(brace
 r_goto
 id|bail
 suffix:semicolon
-)brace
 r_switch
 c_cond
 (paren
@@ -530,7 +524,7 @@ suffix:colon
 r_case
 id|SCTP_DISPOSITION_ABORT
 suffix:colon
-multiline_comment|/* &n;&t;&t; * We should no longer have much work to do here as the &n;&t;&t; * real work has been done as explicit commands above.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * We should no longer have much work to do here as the&n;&t;&t; * real work has been done as explicit commands above.&n;&t;&t; */
 r_break
 suffix:semicolon
 r_case
@@ -619,18 +613,17 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-multiline_comment|/* switch (status) */
+suffix:semicolon
 id|bail
 suffix:colon
 r_return
 id|error
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_side_effects() */
 multiline_comment|/********************************************************************&n; * 2nd Level Abstractions&n; ********************************************************************/
 multiline_comment|/* This is the side-effect interpreter.  */
-r_int
 DECL|function|sctp_cmd_interpreter
+r_int
 id|sctp_cmd_interpreter
 c_func
 (paren
@@ -714,7 +707,7 @@ op_star
 )paren
 id|event_arg
 suffix:semicolon
-multiline_comment|/* Note:  This whole file is a huge candidate for rework. &n;&t; * For example, each command could either have its own handler, so &n;&t; * the loop would look like:  &n;&t; *     while (cmds)&n;&t; *         cmd-&gt;handle(x, y, z)&n;&t; * --jgrimm&n;&t; */
+multiline_comment|/* Note:  This whole file is a huge candidate for rework.&n;&t; * For example, each command could either have its own handler, so&n;&t; * the loop would look like:&n;&t; *     while (cmds)&n;&t; *         cmd-&gt;handle(x, y, z)&n;&t; * --jgrimm&n;&t; */
 r_while
 c_loop
 (paren
@@ -906,11 +899,9 @@ c_cond
 op_logical_neg
 id|new_obj
 )paren
-(brace
 r_goto
 id|nomem
 suffix:semicolon
-)brace
 id|sctp_add_cmd_sf
 c_func
 (paren
@@ -930,7 +921,7 @@ suffix:semicolon
 r_case
 id|SCTP_CMD_PEER_INIT
 suffix:colon
-multiline_comment|/* Process a unified INIT from the peer. */
+multiline_comment|/* Process a unified INIT from the peer.  */
 id|sctp_cmd_process_init
 c_func
 (paren
@@ -950,7 +941,7 @@ suffix:semicolon
 r_case
 id|SCTP_CMD_GEN_COOKIE_ECHO
 suffix:colon
-multiline_comment|/* Generate a COOKIE ECHO chunk. */
+multiline_comment|/* Generate a COOKIE ECHO chunk.  */
 id|new_obj
 op_assign
 id|sctp_make_cookie_echo
@@ -967,11 +958,9 @@ c_cond
 op_logical_neg
 id|new_obj
 )paren
-(brace
 r_goto
 id|nomem
 suffix:semicolon
-)brace
 id|sctp_add_cmd_sf
 c_func
 (paren
@@ -991,12 +980,12 @@ suffix:semicolon
 r_case
 id|SCTP_CMD_GEN_SHUTDOWN
 suffix:colon
-multiline_comment|/* Generate SHUTDOWN when in SHUTDOWN_SENT state.  &n;&t;&t;&t; * Reset error counts.  &n;&t;&t;&t; */
+multiline_comment|/* Generate SHUTDOWN when in SHUTDOWN_SENT state.&n;&t;&t;&t; * Reset error counts.&n;&t;&t;&t; */
 id|asoc-&gt;overall_error_count
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* Generate a SHUTDOWN chunk. */
+multiline_comment|/* Generate a SHUTDOWN chunk.  */
 id|new_obj
 op_assign
 id|sctp_make_shutdown
@@ -1011,11 +1000,9 @@ c_cond
 op_logical_neg
 id|new_obj
 )paren
-(brace
 r_goto
 id|nomem
 suffix:semicolon
-)brace
 id|sctp_add_cmd_sf
 c_func
 (paren
@@ -1067,7 +1054,7 @@ suffix:semicolon
 r_case
 id|SCTP_CMD_EVENT_ULP
 suffix:colon
-multiline_comment|/* Send a notification to the sockets layer. */
+multiline_comment|/* Send a notification to the sockets layer.  */
 id|SCTP_DEBUG_PRINTK
 c_func
 (paren
@@ -1276,17 +1263,14 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-l_int|0
-op_eq
+op_logical_neg
 id|timeout
 )paren
-(brace
 id|BUG
 c_func
 (paren
 )paren
 suffix:semicolon
-)brace
 id|timer-&gt;expires
 op_assign
 id|jiffies
@@ -1339,14 +1323,12 @@ op_plus
 id|timeout
 )paren
 )paren
-(brace
 id|sctp_association_hold
 c_func
 (paren
 id|asoc
 )paren
 suffix:semicolon
-)brace
 r_break
 suffix:semicolon
 r_case
@@ -1375,20 +1357,18 @@ c_func
 id|timer
 )paren
 )paren
-(brace
 id|sctp_association_put
 c_func
 (paren
 id|asoc
 )paren
 suffix:semicolon
-)brace
 r_break
 suffix:semicolon
 r_case
 id|SCTP_CMD_INIT_RESTART
 suffix:colon
-multiline_comment|/* Do the needed accounting and updates&n;&t;&t;&t; * associated with restarting an initialization&n;&t;&t;&t; * timer. &n;&t;&t;&t; */
+multiline_comment|/* Do the needed accounting and updates&n;&t;&t;&t; * associated with restarting an initialization&n;&t;&t;&t; * timer.&n;&t;&t;&t; */
 id|asoc-&gt;counters
 (braket
 id|SCTP_COUNTER_INIT_ERROR
@@ -1697,9 +1677,8 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-multiline_comment|/* switch (cmd-&gt;verb) */
+suffix:semicolon
 )brace
-multiline_comment|/* while (more commands) */
 r_return
 id|error
 suffix:semicolon
@@ -1714,11 +1693,10 @@ r_return
 id|error
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_cmd_interpreter() */
 multiline_comment|/* A helper function for delayed processing of INET ECN CE bit. */
+DECL|function|sctp_do_ecn_ce_work
 r_static
 r_void
-DECL|function|sctp_do_ecn_ce_work
 id|sctp_do_ecn_ce_work
 c_func
 (paren
@@ -1726,11 +1704,11 @@ id|sctp_association_t
 op_star
 id|asoc
 comma
-r_uint32
+id|__u32
 id|lowest_tsn
 )paren
 (brace
-multiline_comment|/* &n;&t; * Save the TSN away for comparison when we receive CWR&n;&t; * Note: dp-&gt;TSN is expected in host endian &n;&t; */
+multiline_comment|/*&n;&t; * Save the TSN away for comparison when we receive CWR&n;&t; * Note: dp-&gt;TSN is expected in host endian&n;&t; */
 id|asoc-&gt;last_ecne_tsn
 op_assign
 id|lowest_tsn
@@ -1740,13 +1718,12 @@ op_assign
 l_int|1
 suffix:semicolon
 )brace
-multiline_comment|/* void sctp_do_ecn_ce_work(asoc, command) */
 multiline_comment|/* Helper function for delayed processing of SCTP ECNE chunk.  */
-multiline_comment|/* RFC 2960 Appendix A&n; *&n; * RFC 2481 details a specific bit for a sender to send in &n; * the header of its next outbound TCP segment to indicate to &n; * its peer that it has reduced its congestion window.  This &n; * is termed the CWR bit.  For SCTP the same indication is made &n; * by including the CWR chunk.  This chunk contains one data &n; * element, i.e. the TSN number that was sent in the ECNE chunk.  &n; * This element represents the lowest TSN number in the datagram &n; * that was originally marked with the CE bit.&n; */
+multiline_comment|/* RFC 2960 Appendix A&n; *&n; * RFC 2481 details a specific bit for a sender to send in&n; * the header of its next outbound TCP segment to indicate to&n; * its peer that it has reduced its congestion window.  This&n; * is termed the CWR bit.  For SCTP the same indication is made&n; * by including the CWR chunk.  This chunk contains one data&n; * element, i.e. the TSN number that was sent in the ECNE chunk.&n; * This element represents the lowest TSN number in the datagram&n; * that was originally marked with the CE bit.&n; */
+DECL|function|sctp_do_ecn_ecne_work
 r_static
 id|sctp_chunk_t
 op_star
-DECL|function|sctp_do_ecn_ecne_work
 id|sctp_do_ecn_ecne_work
 c_func
 (paren
@@ -1754,7 +1731,7 @@ id|sctp_association_t
 op_star
 id|asoc
 comma
-r_uint32
+id|__u32
 id|lowest_tsn
 comma
 id|sctp_chunk_t
@@ -1770,8 +1747,8 @@ id|sctp_transport_t
 op_star
 id|transport
 suffix:semicolon
-multiline_comment|/* Our previously transmitted packet ran into some congestion&n;&t; * so we should take action by reducing cwnd and ssthresh&n;&t; * and then ACK our peer that we we&squot;ve done so by &n;&t; * sending a CWR.&n;&t; */
-multiline_comment|/* Find which transport&squot;s congestion variables &n;&t; * need to be adjusted.&n;&t; */
+multiline_comment|/* Our previously transmitted packet ran into some congestion&n;&t; * so we should take action by reducing cwnd and ssthresh&n;&t; * and then ACK our peer that we we&squot;ve done so by&n;&t; * sending a CWR.&n;&t; */
+multiline_comment|/* Find which transport&squot;s congestion variables&n;&t; * need to be adjusted.&n;&t; */
 id|transport
 op_assign
 id|sctp_assoc_lookup_tsn
@@ -1788,7 +1765,6 @@ c_cond
 (paren
 id|transport
 )paren
-(brace
 id|sctp_transport_lower_cwnd
 c_func
 (paren
@@ -1797,8 +1773,7 @@ comma
 id|SCTP_LOWER_CWND_ECNE
 )paren
 suffix:semicolon
-)brace
-multiline_comment|/* Save away a rough idea of when we last sent out a CWR.&n;&t; * We compare against this value (see above) to decide if &n;&t; * this is a fairly new request.  &n;&t; * Note that this is not a perfect solution.  We may &n;&t; * have moved beyond the window (several times) by the&n;&t; * next time we get an ECNE.  However, it is cute.  This idea&n;&t; * came from Randy&squot;s reference code.&n;&t; *&n;&t; * Here&squot;s what RFC 2960 has to say about CWR.  This is NOT&n;&t; * what we do.&n;&t; *&n;&t; * RFC 2960 Appendix A&n;&t; * &n;&t; *    CWR:&n;&t; *&n;&t; *    RFC 2481 details a specific bit for a sender to send in&n;&t; *    the header of its next outbound TCP segment to indicate&n;&t; *    to its peer that it has reduced its congestion window.&n;&t; *    This is termed the CWR bit.  For SCTP the same&n;&t; *    indication is made by including the CWR chunk.  This&n;&t; *    chunk contains one data element, i.e. the TSN number&n;&t; *    that was sent in the ECNE chunk.  This element&n;&t; *    represents the lowest TSN number in the datagram that&n;&t; *    was originally marked with the CE bit.&t; &n;&t; */
+multiline_comment|/* Save away a rough idea of when we last sent out a CWR.&n;&t; * We compare against this value (see above) to decide if&n;&t; * this is a fairly new request.&n;&t; * Note that this is not a perfect solution.  We may&n;&t; * have moved beyond the window (several times) by the&n;&t; * next time we get an ECNE.  However, it is cute.  This idea&n;&t; * came from Randy&squot;s reference code.&n;&t; *&n;&t; * Here&squot;s what RFC 2960 has to say about CWR.  This is NOT&n;&t; * what we do.&n;&t; *&n;&t; * RFC 2960 Appendix A&n;&t; *&n;&t; *    CWR:&n;&t; *&n;&t; *    RFC 2481 details a specific bit for a sender to send in&n;&t; *    the header of its next outbound TCP segment to indicate&n;&t; *    to its peer that it has reduced its congestion window.&n;&t; *    This is termed the CWR bit.  For SCTP the same&n;&t; *    indication is made by including the CWR chunk.  This&n;&t; *    chunk contains one data element, i.e. the TSN number&n;&t; *    that was sent in the ECNE chunk.  This element&n;&t; *    represents the lowest TSN number in the datagram that&n;&t; *    was originally marked with the CE bit.&n;&t; */
 id|asoc-&gt;last_cwr_tsn
 op_assign
 id|asoc-&gt;next_tsn
@@ -1822,11 +1797,10 @@ r_return
 id|repl
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_chunk_t *sctp_do_ecn_ecne_work(asoc, command) */
-multiline_comment|/* Helper function to do delayed processing of ECN CWR chunk */
+multiline_comment|/* Helper function to do delayed processing of ECN CWR chunk.  */
+DECL|function|sctp_do_ecn_cwr_work
 r_static
 r_void
-DECL|function|sctp_do_ecn_cwr_work
 id|sctp_do_ecn_cwr_work
 c_func
 (paren
@@ -1834,7 +1808,7 @@ id|sctp_association_t
 op_star
 id|asoc
 comma
-r_uint32
+id|__u32
 id|lowest_tsn
 )paren
 (brace
@@ -1844,13 +1818,12 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* void sctp_do_ecn_cwr_work(asoc, command) */
-multiline_comment|/* This macro is to compress the text a bit... */
+multiline_comment|/* This macro is to compress the text a bit...  */
 DECL|macro|AP
 mdefine_line|#define AP(v) asoc-&gt;peer.v
 multiline_comment|/* Generate SACK if necessary.  We call this at the end of a packet.  */
-r_int
 DECL|function|sctp_gen_sack
+r_int
 id|sctp_gen_sack
 c_func
 (paren
@@ -1866,7 +1839,7 @@ op_star
 id|commands
 )paren
 (brace
-r_uint32
+id|__u32
 id|ctsn
 comma
 id|max_tsn_seen
@@ -1885,12 +1858,10 @@ c_cond
 (paren
 id|force
 )paren
-(brace
 id|asoc-&gt;peer.sack_needed
 op_assign
 l_int|1
 suffix:semicolon
-)brace
 id|ctsn
 op_assign
 id|sctp_tsnmap_get_ctsn
@@ -1909,7 +1880,7 @@ op_amp
 id|asoc-&gt;peer.tsn_map
 )paren
 suffix:semicolon
-multiline_comment|/* From 12.2 Parameters necessary per association (i.e. the TCB):&n;         * &n;         * Ack State : This flag indicates if the next received packet &n;         * &t;     : is to be responded to with a SACK. ...&n;         *&t;     : When DATA chunks are out of order, SACK&squot;s&n;         *           : are not delayed (see Section 6). &n;         *&n;         * [This is actually not mentioned in Section 6, but we&n;         * implement it here anyway. --piggy]&n;         */
+multiline_comment|/* From 12.2 Parameters necessary per association (i.e. the TCB):&n;&t; *&n;&t; * Ack State : This flag indicates if the next received packet&n;&t; * &t;     : is to be responded to with a SACK. ...&n;&t; *&t;     : When DATA chunks are out of order, SACK&squot;s&n;&t; *           : are not delayed (see Section 6).&n;&t; *&n;&t; * [This is actually not mentioned in Section 6, but we&n;&t; * implement it here anyway. --piggy]&n;&t; */
 r_if
 c_cond
 (paren
@@ -1917,13 +1888,11 @@ id|max_tsn_seen
 op_ne
 id|ctsn
 )paren
-(brace
 id|asoc-&gt;peer.sack_needed
 op_assign
 l_int|1
 suffix:semicolon
-)brace
-multiline_comment|/* From 6.2  Acknowledgement on Reception of DATA Chunks: &n;         * &n;         * Section 4.2 of [RFC2581] SHOULD be followed. Specifically,&n;         * an acknowledgement SHOULD be generated for at least every&n;         * second packet (not every second DATA chunk) received, and&n;         * SHOULD be generated within 200 ms of the arrival of any&n;         * unacknowledged DATA chunk. ...&n;         */
+multiline_comment|/* From 6.2  Acknowledgement on Reception of DATA Chunks:&n;&t; *&n;&t; * Section 4.2 of [RFC2581] SHOULD be followed. Specifically,&n;&t; * an acknowledgement SHOULD be generated for at least every&n;&t; * second packet (not every second DATA chunk) received, and&n;&t; * SHOULD be generated within 200 ms of the arrival of any&n;&t; * unacknowledged DATA chunk. ...&n;&t; */
 r_if
 c_cond
 (paren
@@ -1953,15 +1922,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-l_int|NULL
-op_eq
+op_logical_neg
 id|sack
 )paren
-(brace
 r_goto
 id|nomem
 suffix:semicolon
-)brace
 id|asoc-&gt;peer.sack_needed
 op_assign
 l_int|0
@@ -1997,7 +1963,6 @@ id|SCTP_EVENT_TIMEOUT_SACK
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* else (we needed a sack) */
 id|out
 suffix:colon
 r_return
@@ -2014,10 +1979,9 @@ r_return
 id|error
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_gen_sack() */
 multiline_comment|/* Handle a duplicate TSN.  */
-r_void
 DECL|function|sctp_do_TSNdup
+r_void
 id|sctp_do_TSNdup
 c_func
 (paren
@@ -2066,7 +2030,7 @@ id|SCTP_TSN_MAP_SIZE
 op_increment
 suffix:semicolon
 )brace
-multiline_comment|/* From 6.2  Acknowledgement on Reception of DATA Chunks&n;         *&n;         * When a packet arrives with duplicate DATA chunk(s)&n;         * and with no new DATA chunk(s), the endpoint MUST&n;         * immediately send a SACK with no delay. If a packet&n;         * arrives with duplicate DATA chunk(s) bundled with&n;         * new DATA chunks, the endpoint MAY immediately send a&n;         * SACK.  Normally receipt of duplicate DATA chunks&n;         * will occur when the original SACK chunk was lost and&n;         * the peer&squot;s RTO has expired. The duplicate TSN&n;         * number(s) SHOULD be reported in the SACK as&n;         * duplicate.&n;         */
+multiline_comment|/* From 6.2  Acknowledgement on Reception of DATA Chunks&n;&t; *&n;&t; * When a packet arrives with duplicate DATA chunk(s)&n;&t; * and with no new DATA chunk(s), the endpoint MUST&n;&t; * immediately send a SACK with no delay. If a packet&n;&t; * arrives with duplicate DATA chunk(s) bundled with&n;&t; * new DATA chunks, the endpoint MAY immediately send a&n;&t; * SACK.  Normally receipt of duplicate DATA chunks&n;&t; * will occur when the original SACK chunk was lost and&n;&t; * the peer&squot;s RTO has expired. The duplicate TSN&n;&t; * number(s) SHOULD be reported in the SACK as&n;&t; * duplicate.&n;&t; */
 id|asoc-&gt;counters
 (braket
 id|SctpCounterAckState
@@ -2080,8 +2044,8 @@ multiline_comment|/* sctp_do_TSNdup() */
 DECL|macro|AP
 macro_line|#undef AP
 multiline_comment|/* When the T3-RTX timer expires, it calls this function to create the&n; * relevant state machine event.&n; */
-r_void
 DECL|function|sctp_generate_t3_rtx_event
+r_void
 id|sctp_generate_t3_rtx_event
 c_func
 (paren
@@ -2109,7 +2073,7 @@ id|asoc
 op_assign
 id|transport-&gt;asoc
 suffix:semicolon
-multiline_comment|/* Check whether a task is in the sock. */
+multiline_comment|/* Check whether a task is in the sock.  */
 id|sctp_bh_lock_sock
 c_func
 (paren
@@ -2133,7 +2097,7 @@ id|__FUNCTION__
 l_string|&quot;:Sock is busy.&bslash;n&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* Try again later. */
+multiline_comment|/* Try again later.  */
 r_if
 c_cond
 (paren
@@ -2153,14 +2117,12 @@ l_int|20
 )paren
 )paren
 )paren
-(brace
 id|sctp_transport_hold
 c_func
 (paren
 id|transport
 )paren
 suffix:semicolon
-)brace
 r_goto
 id|out_unlock
 suffix:semicolon
@@ -2171,11 +2133,9 @@ c_cond
 (paren
 id|transport-&gt;dead
 )paren
-(brace
 r_goto
 id|out_unlock
 suffix:semicolon
-)brace
 multiline_comment|/* Run through the state machine.  */
 id|error
 op_assign
@@ -2206,13 +2166,11 @@ c_cond
 (paren
 id|error
 )paren
-(brace
 id|asoc-&gt;base.sk-&gt;err
 op_assign
 op_minus
 id|error
 suffix:semicolon
-)brace
 id|out_unlock
 suffix:colon
 id|sctp_bh_unlock_sock
@@ -2228,11 +2186,10 @@ id|transport
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_generate_t3_rtx_event() */
 multiline_comment|/* This is a sa interface for producing timeout events.  It works&n; * for timeouts which use the association as their parameter.&n; */
+DECL|function|sctp_generate_timeout_event
 r_static
 r_void
-DECL|function|sctp_generate_timeout_event
 id|sctp_generate_timeout_event
 c_func
 (paren
@@ -2274,7 +2231,7 @@ comma
 id|timeout_type
 )paren
 suffix:semicolon
-multiline_comment|/* Try again later. */
+multiline_comment|/* Try again later.  */
 r_if
 c_cond
 (paren
@@ -2297,14 +2254,12 @@ l_int|20
 )paren
 )paren
 )paren
-(brace
 id|sctp_association_hold
 c_func
 (paren
 id|asoc
 )paren
 suffix:semicolon
-)brace
 r_goto
 id|out_unlock
 suffix:semicolon
@@ -2315,12 +2270,10 @@ c_cond
 (paren
 id|asoc-&gt;base.dead
 )paren
-(brace
 r_goto
 id|out_unlock
 suffix:semicolon
-)brace
-multiline_comment|/* Run through the state machine. */
+multiline_comment|/* Run through the state machine.  */
 id|error
 op_assign
 id|sctp_do_sm
@@ -2354,13 +2307,11 @@ c_cond
 (paren
 id|error
 )paren
-(brace
 id|asoc-&gt;base.sk-&gt;err
 op_assign
 op_minus
 id|error
 suffix:semicolon
-)brace
 id|out_unlock
 suffix:colon
 id|sctp_bh_unlock_sock
@@ -2376,9 +2327,8 @@ id|asoc
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_generate_timeout_event() */
-r_void
 DECL|function|sctp_generate_t1_cookie_event
+r_void
 id|sctp_generate_t1_cookie_event
 c_func
 (paren
@@ -2406,9 +2356,8 @@ id|SCTP_EVENT_TIMEOUT_T1_COOKIE
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_generate_t1_cookie_event() */
-r_void
 DECL|function|sctp_generate_t1_init_event
+r_void
 id|sctp_generate_t1_init_event
 c_func
 (paren
@@ -2436,9 +2385,8 @@ id|SCTP_EVENT_TIMEOUT_T1_INIT
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_generate_t1_init_event() */
-r_void
 DECL|function|sctp_generate_t2_shutdown_event
+r_void
 id|sctp_generate_t2_shutdown_event
 c_func
 (paren
@@ -2466,9 +2414,8 @@ id|SCTP_EVENT_TIMEOUT_T2_SHUTDOWN
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_generate_t2_shutdown_event() */
-r_void
 DECL|function|sctp_generate_autoclose_event
+r_void
 id|sctp_generate_autoclose_event
 c_func
 (paren
@@ -2496,10 +2443,9 @@ id|SCTP_EVENT_TIMEOUT_AUTOCLOSE
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_generate_autoclose_event() */
-multiline_comment|/* Generate a heart beat event.  If the sock is busy, reschedule.   Make &n; * sure that the transport is still valid.  &n; */
-r_void
+multiline_comment|/* Generate a heart beat event.  If the sock is busy, reschedule.   Make&n; * sure that the transport is still valid.&n; */
 DECL|function|sctp_generate_heartbeat_event
+r_void
 id|sctp_generate_heartbeat_event
 c_func
 (paren
@@ -2552,7 +2498,7 @@ id|__FUNCTION__
 l_string|&quot;:Sock is busy.&bslash;n&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* Try again later. */
+multiline_comment|/* Try again later.  */
 r_if
 c_cond
 (paren
@@ -2572,29 +2518,25 @@ l_int|20
 )paren
 )paren
 )paren
-(brace
 id|sctp_transport_hold
 c_func
 (paren
 id|transport
 )paren
 suffix:semicolon
-)brace
 r_goto
 id|out_unlock
 suffix:semicolon
 )brace
-multiline_comment|/* Is this structure just waiting around for us to actually &n;&t; * get destroyed?&n;&t; */
+multiline_comment|/* Is this structure just waiting around for us to actually&n;&t; * get destroyed?&n;&t; */
 r_if
 c_cond
 (paren
 id|transport-&gt;dead
 )paren
-(brace
 r_goto
 id|out_unlock
 suffix:semicolon
-)brace
 id|error
 op_assign
 id|sctp_do_sm
@@ -2624,13 +2566,11 @@ c_cond
 (paren
 id|error
 )paren
-(brace
 id|asoc-&gt;base.sk-&gt;err
 op_assign
 op_minus
 id|error
 suffix:semicolon
-)brace
 id|out_unlock
 suffix:colon
 id|sctp_bh_unlock_sock
@@ -2646,10 +2586,9 @@ id|transport
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_generate_heartbeat_event() */
-multiline_comment|/* Inject a SACK Timeout event into the state machine. */
-r_void
+multiline_comment|/* Inject a SACK Timeout event into the state machine.  */
 DECL|function|sctp_generate_sack_event
+r_void
 id|sctp_generate_sack_event
 c_func
 (paren
@@ -2677,9 +2616,8 @@ id|SCTP_EVENT_TIMEOUT_SACK
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_generate_sack_event() */
-r_void
 DECL|function|sctp_generate_pmtu_raise_event
+r_void
 id|sctp_generate_pmtu_raise_event
 c_func
 (paren
@@ -2707,7 +2645,6 @@ id|SCTP_EVENT_TIMEOUT_PMTU_RAISE
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_generate_pmtu_raise_event() */
 DECL|variable|sctp_timer_events
 id|sctp_timer_event_t
 op_star
@@ -2740,10 +2677,10 @@ comma
 )brace
 suffix:semicolon
 multiline_comment|/********************************************************************&n; * 3rd Level Abstractions&n; ********************************************************************/
-multiline_comment|/* RFC 2960 8.2 Path Failure Detection&n; *&n; * When its peer endpoint is multi-homed, an endpoint should keep a&n; * error counter for each of the destination transport addresses of the&n; * peer endpoint.&n; * &n; * Each time the T3-rtx timer expires on any address, or when a&n; * HEARTBEAT sent to an idle address is not acknowledged within a RTO,&n; * the error counter of that destination address will be incremented.&n; * When the value in the error counter exceeds the protocol parameter&n; * &squot;Path.Max.Retrans&squot; of that destination address, the endpoint should&n; * mark the destination transport address as inactive, and a&n; * notification SHOULD be sent to the upper layer.&n; * &n; * &n; */
+multiline_comment|/* RFC 2960 8.2 Path Failure Detection&n; *&n; * When its peer endpoint is multi-homed, an endpoint should keep a&n; * error counter for each of the destination transport addresses of the&n; * peer endpoint.&n; *&n; * Each time the T3-rtx timer expires on any address, or when a&n; * HEARTBEAT sent to an idle address is not acknowledged within a RTO,&n; * the error counter of that destination address will be incremented.&n; * When the value in the error counter exceeds the protocol parameter&n; * &squot;Path.Max.Retrans&squot; of that destination address, the endpoint should&n; * mark the destination transport address as inactive, and a&n; * notification SHOULD be sent to the upper layer.&n; *&n; */
+DECL|function|sctp_do_8_2_transport_strike
 r_static
 r_void
-DECL|function|sctp_do_8_2_transport_strike
 id|sctp_do_8_2_transport_strike
 c_func
 (paren
@@ -2799,7 +2736,7 @@ id|SCTP_FAILED_THRESHOLD
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* E2) For the destination address for which the timer&n;         * expires, set RTO &lt;- RTO * 2 (&quot;back off the timer&quot;).  The&n;         * maximum value discussed in rule C7 above (RTO.max) may be&n;         * used to provide an upper bound to this doubling operation.&n;         */
+multiline_comment|/* E2) For the destination address for which the timer&n;&t; * expires, set RTO &lt;- RTO * 2 (&quot;back off the timer&quot;).  The&n;&t; * maximum value discussed in rule C7 above (RTO.max) may be&n;&t; * used to provide an upper bound to this doubling operation.&n;&t; */
 id|transport-&gt;rto
 op_assign
 id|min
@@ -2815,11 +2752,10 @@ id|transport-&gt;asoc-&gt;rto_max
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_do_8_2_transport_strike() */
-multiline_comment|/* Worker routine to handle INIT command failure. */
+multiline_comment|/* Worker routine to handle INIT command failure.  */
+DECL|function|sctp_cmd_init_failed
 r_static
 r_void
-DECL|function|sctp_cmd_init_failed
 id|sctp_cmd_init_failed
 c_func
 (paren
@@ -2861,7 +2797,6 @@ c_cond
 (paren
 id|event
 )paren
-(brace
 id|sctp_add_cmd_sf
 c_func
 (paren
@@ -2876,7 +2811,6 @@ id|event
 )paren
 )paren
 suffix:semicolon
-)brace
 multiline_comment|/* FIXME:  We need to handle data possibly either&n;&t; * sent via COOKIE-ECHO bundling or just waiting in&n;&t; * the transmit queue, if the user has enabled&n;&t; * SEND_FAILED notifications.&n;&t; */
 id|sctp_add_cmd_sf
 c_func
@@ -2891,14 +2825,11 @@ c_func
 )paren
 )paren
 suffix:semicolon
-r_return
-suffix:semicolon
 )brace
-multiline_comment|/* sctp_cmd_init_failed() */
-multiline_comment|/* Worker routine to handle SCTP_CMD_ASSOC_FAILED. */
+multiline_comment|/* Worker routine to handle SCTP_CMD_ASSOC_FAILED.  */
+DECL|function|sctp_cmd_assoc_failed
 r_static
 r_void
-DECL|function|sctp_cmd_assoc_failed
 id|sctp_cmd_assoc_failed
 c_func
 (paren
@@ -2940,7 +2871,6 @@ c_cond
 (paren
 id|event
 )paren
-(brace
 id|sctp_add_cmd_sf
 c_func
 (paren
@@ -2955,7 +2885,6 @@ id|event
 )paren
 )paren
 suffix:semicolon
-)brace
 multiline_comment|/* FIXME:  We need to handle data that could not be sent or was not&n;&t; * acked, if the user has enabled SEND_FAILED notifications.&n;&t; */
 id|sctp_add_cmd_sf
 c_func
@@ -2970,14 +2899,11 @@ c_func
 )paren
 )paren
 suffix:semicolon
-r_return
-suffix:semicolon
 )brace
-multiline_comment|/* sctp_cmd_assoc_failed() */
-multiline_comment|/* Process an init chunk (may be real INIT/INIT-ACK or an embedded INIT&n; * inside the cookie. &n; */
+multiline_comment|/* Process an init chunk (may be real INIT/INIT-ACK or an embedded INIT&n; * inside the cookie.&n; */
+DECL|function|sctp_cmd_process_init
 r_static
 r_void
-DECL|function|sctp_cmd_process_init
 id|sctp_cmd_process_init
 c_func
 (paren
@@ -3001,7 +2927,7 @@ r_int
 id|priority
 )paren
 (brace
-multiline_comment|/* The command sequence holds commands assuming that the &n;&t; * processing will happen successfully.  If this is not the&n;&t; * case, rewind the sequence and add appropriate  error handling&n;&t; * to the sequence. &n;&t; */
+multiline_comment|/* The command sequence holds commands assuming that the&n;&t; * processing will happen successfully.  If this is not the&n;&t; * case, rewind the sequence and add appropriate  error handling&n;&t; * to the sequence.&n;&t; */
 id|sctp_process_init
 c_func
 (paren
@@ -3021,11 +2947,10 @@ id|priority
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_cmd_process_init() */
 multiline_comment|/* Helper function to break out starting up of heartbeat timers.  */
+DECL|function|sctp_cmd_hb_timers_start
 r_static
 r_void
-DECL|function|sctp_cmd_hb_timers_start
 id|sctp_cmd_hb_timers_start
 c_func
 (paren
@@ -3094,12 +3019,10 @@ id|t
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/* for (all transports)  */
 )brace
-multiline_comment|/* sctp_cmd_hb_timers_start() */
-multiline_comment|/* Helper function to break out SCTP_CMD_SET_BIND_ADDR handling. */
-r_void
+multiline_comment|/* Helper function to break out SCTP_CMD_SET_BIND_ADDR handling.  */
 DECL|function|sctp_cmd_set_bind_addrs
+r_void
 id|sctp_cmd_set_bind_addrs
 c_func
 (paren
@@ -3150,7 +3073,7 @@ id|asoc-&gt;base.bind_addr.address_list
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Free the temporary bind addr header, otherwise&n;&t; * there will a memory leak. &n;&t; */
+multiline_comment|/* Free the temporary bind addr header, otherwise&n;&t; * there will a memory leak.&n;&t; */
 id|sctp_bind_addr_free
 c_func
 (paren
@@ -3158,11 +3081,10 @@ id|bp
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_cmd_set_bind_addrs() */
-multiline_comment|/* Helper function to handle the reception of an HEARTBEAT ACK. */
+multiline_comment|/* Helper function to handle the reception of an HEARTBEAT ACK.  */
+DECL|function|sctp_cmd_transport_on
 r_static
 r_void
-DECL|function|sctp_cmd_transport_on
 id|sctp_cmd_transport_on
 c_func
 (paren
@@ -3187,7 +3109,7 @@ id|sctp_sender_hb_info_t
 op_star
 id|hbinfo
 suffix:semicolon
-multiline_comment|/* 8.3 Upon the receipt of the HEARTBEAT ACK, the sender of the &n;&t; * HEARTBEAT should clear the error counter of the destination &n;&t; * transport address to which the HEARTBEAT was sent. &n;&t; * The association&squot;s overall error count is also cleared.&n;&t; */
+multiline_comment|/* 8.3 Upon the receipt of the HEARTBEAT ACK, the sender of the&n;&t; * HEARTBEAT should clear the error counter of the destination&n;&t; * transport address to which the HEARTBEAT was sent.&n;&t; * The association&squot;s overall error count is also cleared.&n;&t; */
 id|t-&gt;error_count
 op_assign
 l_int|0
@@ -3196,14 +3118,13 @@ id|t-&gt;asoc-&gt;overall_error_count
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* Mark the destination transport address as active if it is not so &n;&t; * marked. &t;&t;&t;&n;&t; */
+multiline_comment|/* Mark the destination transport address as active if it is not so&n;&t; * marked.&n;&t; */
 r_if
 c_cond
 (paren
 op_logical_neg
 id|t-&gt;state.active
 )paren
-(brace
 id|sctp_assoc_control_transport
 c_func
 (paren
@@ -3216,7 +3137,6 @@ comma
 id|SCTP_HEARTBEAT_SUCCESS
 )paren
 suffix:semicolon
-)brace
 multiline_comment|/* The receiver of the HEARTBEAT ACK should also perform an&n;&t; * RTT measurement for that destination transport address&n;&t; * using the time value carried in the HEARTBEAT ACK chunk.&n;&t; */
 id|hbinfo
 op_assign
@@ -3239,11 +3159,10 @@ id|hbinfo-&gt;sent_at
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_cmd_transport_on() */
-multiline_comment|/* Helper function to do a transport reset at the expiry of the hearbeat &n; * timer. &n; */
+multiline_comment|/* Helper function to do a transport reset at the expiry of the hearbeat&n; * timer.&n; */
+DECL|function|sctp_cmd_transport_reset
 r_static
 r_void
-DECL|function|sctp_cmd_transport_reset
 id|sctp_cmd_transport_reset
 c_func
 (paren
@@ -3277,7 +3196,7 @@ comma
 id|t
 )paren
 suffix:semicolon
-multiline_comment|/* Update the heartbeat timer. */
+multiline_comment|/* Update the heartbeat timer.  */
 r_if
 c_cond
 (paren
@@ -3295,7 +3214,6 @@ op_plus
 id|jiffies
 )paren
 )paren
-(brace
 id|sctp_transport_hold
 c_func
 (paren
@@ -3303,12 +3221,10 @@ id|t
 )paren
 suffix:semicolon
 )brace
-)brace
-multiline_comment|/* sctp_cmd_transport_reset() */
-multiline_comment|/* Helper function to process the process SACK command. */
+multiline_comment|/* Helper function to process the process SACK command.  */
+DECL|function|sctp_cmd_process_sack
 r_static
 r_int
-DECL|function|sctp_cmd_process_sack
 id|sctp_cmd_process_sack
 c_func
 (paren
@@ -3341,7 +3257,7 @@ id|sackh
 )paren
 )paren
 (brace
-multiline_comment|/* There are no more TSNs awaiting SACK. */
+multiline_comment|/* There are no more TSNs awaiting SACK.  */
 id|err
 op_assign
 id|sctp_do_sm
@@ -3386,11 +3302,10 @@ r_return
 id|err
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_cmd_process_sack() */
-multiline_comment|/* Helper function to set the timeout value for T2-SHUTDOWN timer and to set&n; * the transport for a shutdown chunk. &n; */
+multiline_comment|/* Helper function to set the timeout value for T2-SHUTDOWN timer and to set&n; * the transport for a shutdown chunk.&n; */
+DECL|function|sctp_cmd_setup_t2
 r_static
 r_void
-DECL|function|sctp_cmd_setup_t2
 id|sctp_cmd_setup_t2
 c_func
 (paren
@@ -3434,8 +3349,5 @@ id|chunk-&gt;transport
 op_assign
 id|t
 suffix:semicolon
-r_return
-suffix:semicolon
 )brace
-multiline_comment|/* sctp_cmd_setup_t2() */
 eof

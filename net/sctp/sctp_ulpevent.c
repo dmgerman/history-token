@@ -13,7 +13,6 @@ id|unused
 op_assign
 l_string|&quot;$Id: sctp_ulpevent.c,v 1.16 2002/08/21 18:34:04 jgrimm Exp $&quot;
 suffix:semicolon
-macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;net/sctp/sctp_structs.h&gt;
@@ -31,7 +30,6 @@ id|skb
 )paren
 suffix:semicolon
 r_static
-r_inline
 r_void
 id|sctp_ulpevent_set_owner_r
 c_func
@@ -46,10 +44,10 @@ op_star
 id|asoc
 )paren
 suffix:semicolon
-multiline_comment|/* Create a new sctp_ulpevent.&n; */
+multiline_comment|/* Create a new sctp_ulpevent.  */
+DECL|function|sctp_ulpevent_new
 id|sctp_ulpevent_t
 op_star
-DECL|function|sctp_ulpevent_new
 id|sctp_ulpevent_new
 c_func
 (paren
@@ -85,15 +83,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-l_int|NULL
-op_eq
+op_logical_neg
 id|skb
 )paren
-(brace
 r_goto
 id|fail
 suffix:semicolon
-)brace
 id|event
 op_assign
 (paren
@@ -117,15 +112,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-l_int|NULL
-op_eq
+op_logical_neg
 id|event
 )paren
-(brace
 r_goto
 id|fail_init
 suffix:semicolon
-)brace
 id|event-&gt;malloced
 op_assign
 l_int|1
@@ -147,11 +139,10 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_ulpevent_new() */
-multiline_comment|/* Initialize an ULP event from an given skb. */
+multiline_comment|/* Initialize an ULP event from an given skb.  */
+DECL|function|sctp_ulpevent_init
 id|sctp_ulpevent_t
 op_star
-DECL|function|sctp_ulpevent_init
 id|sctp_ulpevent_init
 c_func
 (paren
@@ -197,10 +188,9 @@ r_return
 id|event
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_ulpevent_init() */
-multiline_comment|/* Dispose of an event. */
-r_void
+multiline_comment|/* Dispose of an event.  */
 DECL|function|sctp_ulpevent_free
+r_void
 id|sctp_ulpevent_free
 c_func
 (paren
@@ -214,7 +204,6 @@ c_cond
 (paren
 id|event-&gt;malloced
 )paren
-(brace
 id|kfree_skb
 c_func
 (paren
@@ -222,11 +211,9 @@ id|event-&gt;parent
 )paren
 suffix:semicolon
 )brace
-)brace
-multiline_comment|/* sctp_ulpevent_free() */
-multiline_comment|/* Is this a MSG_NOTIFICATION? */
-r_int
+multiline_comment|/* Is this a MSG_NOTIFICATION?  */
 DECL|function|sctp_ulpevent_is_notification
+r_int
 id|sctp_ulpevent_is_notification
 c_func
 (paren
@@ -242,11 +229,10 @@ op_amp
 id|MSG_NOTIFICATION
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_ulpevent_is_notification() */
-multiline_comment|/* Create and initialize an SCTP_ASSOC_CHANGE event. &n; * &n; * 5.3.1.1 SCTP_ASSOC_CHANGE&n; * &n; * Communication notifications inform the ULP that an SCTP association&n; * has either begun or ended. The identifier for a new association is&n; * provided by this notification.&n; * &n; * Note: There is no field checking here.  If a field is unused it will be&n; * zero&squot;d out.&n; */
+multiline_comment|/* Create and initialize an SCTP_ASSOC_CHANGE event.&n; *&n; * 5.3.1.1 SCTP_ASSOC_CHANGE&n; *&n; * Communication notifications inform the ULP that an SCTP association&n; * has either begun or ended. The identifier for a new association is&n; * provided by this notification.&n; *&n; * Note: There is no field checking here.  If a field is unused it will be&n; * zero&squot;d out.&n; */
+DECL|function|sctp_ulpevent_make_assoc_change
 id|sctp_ulpevent_t
 op_star
-DECL|function|sctp_ulpevent_make_assoc_change
 id|sctp_ulpevent_make_assoc_change
 c_func
 (paren
@@ -255,19 +241,19 @@ id|sctp_association_t
 op_star
 id|asoc
 comma
-r_uint16
+id|__u16
 id|flags
 comma
-r_uint16
+id|__u16
 id|state
 comma
-r_uint16
+id|__u16
 id|error
 comma
-r_uint16
+id|__u16
 id|outbound
 comma
-r_uint16
+id|__u16
 id|inbound
 comma
 r_int
@@ -302,15 +288,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-l_int|NULL
-op_eq
+op_logical_neg
 id|event
 )paren
-(brace
 r_goto
 id|fail
 suffix:semicolon
-)brace
 id|sac
 op_assign
 (paren
@@ -330,22 +313,22 @@ id|sctp_assoc_change
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* Socket Extensions for SCTP &n;&t; * 5.3.1.1 SCTP_ASSOC_CHANGE&n;&t; * &n;&t; * sac_type:&n;&t; * It should be SCTP_ASSOC_CHANGE.&n;&t; */
+multiline_comment|/* Socket Extensions for SCTP&n;&t; * 5.3.1.1 SCTP_ASSOC_CHANGE&n;&t; *&n;&t; * sac_type:&n;&t; * It should be SCTP_ASSOC_CHANGE.&n;&t; */
 id|sac-&gt;sac_type
 op_assign
 id|SCTP_ASSOC_CHANGE
 suffix:semicolon
-multiline_comment|/* Socket Extensions for SCTP &n;&t; * 5.3.1.1 SCTP_ASSOC_CHANGE&n;&t; * &n;&t; * sac_state: 32 bits (signed integer)&n;&t; * This field holds one of a number of values that communicate the&n;&t; * event that happened to the association.  &t;&n;&t; */
+multiline_comment|/* Socket Extensions for SCTP&n;&t; * 5.3.1.1 SCTP_ASSOC_CHANGE&n;&t; *&n;&t; * sac_state: 32 bits (signed integer)&n;&t; * This field holds one of a number of values that communicate the&n;&t; * event that happened to the association.&n;&t; */
 id|sac-&gt;sac_state
 op_assign
 id|state
 suffix:semicolon
-multiline_comment|/* Socket Extensions for SCTP &n;&t; * 5.3.1.1 SCTP_ASSOC_CHANGE&n;&t; * &n;&t; * sac_flags: 16 bits (unsigned integer)&n;&t; * Currently unused.&n;&t; * &n;&t; */
+multiline_comment|/* Socket Extensions for SCTP&n;&t; * 5.3.1.1 SCTP_ASSOC_CHANGE&n;&t; *&n;&t; * sac_flags: 16 bits (unsigned integer)&n;&t; * Currently unused.&n;&t; */
 id|sac-&gt;sac_flags
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* Socket Extensions for SCTP &n;&t; * 5.3.1.1 SCTP_ASSOC_CHANGE&n;&t; * &n;&t; * sac_length: sizeof (uint32_t)&n;&t; * This field is the total length of the notification data, including&n;&t; * the notification header.&n;&t; */
+multiline_comment|/* Socket Extensions for SCTP&n;&t; * 5.3.1.1 SCTP_ASSOC_CHANGE&n;&t; *&n;&t; * sac_length: sizeof (__u32)&n;&t; * This field is the total length of the notification data, including&n;&t; * the notification header.&n;&t; */
 id|sac-&gt;sac_length
 op_assign
 r_sizeof
@@ -354,12 +337,12 @@ r_struct
 id|sctp_assoc_change
 )paren
 suffix:semicolon
-multiline_comment|/* Socket Extensions for SCTP &n;&t; * 5.3.1.1 SCTP_ASSOC_CHANGE&n;&t; * &n;&t; * sac_error:  32 bits (signed integer)&n;&t; * &n;&t; * If the state was reached due to a error condition (e.g.&n;&t; * COMMUNICATION_LOST) any relevant error information is available in&n;&t; * this field. This corresponds to the protocol error codes defined in&n;&t; * [SCTP].&n;&t; */
+multiline_comment|/* Socket Extensions for SCTP&n;&t; * 5.3.1.1 SCTP_ASSOC_CHANGE&n;&t; *&n;&t; * sac_error:  32 bits (signed integer)&n;&t; *&n;&t; * If the state was reached due to a error condition (e.g.&n;&t; * COMMUNICATION_LOST) any relevant error information is available in&n;&t; * this field. This corresponds to the protocol error codes defined in&n;&t; * [SCTP].&n;&t; */
 id|sac-&gt;sac_error
 op_assign
 id|error
 suffix:semicolon
-multiline_comment|/* Socket Extensions for SCTP &n;&t; * 5.3.1.1 SCTP_ASSOC_CHANGE&n;&t; * &n;&t; * sac_outbound_streams:  16 bits (unsigned integer)&n;&t; * sac_inbound_streams:  16 bits (unsigned integer)&n;&t; * &n;&t; * The maximum number of streams allowed in each direction are&n;&t; * available in sac_outbound_streams and sac_inbound streams.&n;&t; */
+multiline_comment|/* Socket Extensions for SCTP&n;&t; * 5.3.1.1 SCTP_ASSOC_CHANGE&n;&t; *&n;&t; * sac_outbound_streams:  16 bits (unsigned integer)&n;&t; * sac_inbound_streams:  16 bits (unsigned integer)&n;&t; *&n;&t; * The maximum number of streams allowed in each direction are&n;&t; * available in sac_outbound_streams and sac_inbound streams.&n;&t; */
 id|sac-&gt;sac_outbound_streams
 op_assign
 id|outbound
@@ -368,7 +351,7 @@ id|sac-&gt;sac_inbound_streams
 op_assign
 id|inbound
 suffix:semicolon
-multiline_comment|/* Socket Extensions for SCTP &n;&t; * 5.3.1.1 SCTP_ASSOC_CHANGE&n;&t; *&n;&t; * sac_assoc_id: sizeof (sctp_assoc_t)&n;&t; * &n;&t; * The association id field, holds the identifier for the association.&n;&t; * All notifications for a given association have the same association&n;&t; * identifier.  For TCP style socket, this field is ignored.&n;&t; */
+multiline_comment|/* Socket Extensions for SCTP&n;&t; * 5.3.1.1 SCTP_ASSOC_CHANGE&n;&t; *&n;&t; * sac_assoc_id: sizeof (sctp_assoc_t)&n;&t; *&n;&t; * The association id field, holds the identifier for the association.&n;&t; * All notifications for a given association have the same association&n;&t; * identifier.  For TCP style socket, this field is ignored.&n;&t; */
 id|sac-&gt;sac_assoc_id
 op_assign
 id|sctp_assoc2id
@@ -386,11 +369,10 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_ulpevent_make_assoc_change() */
-multiline_comment|/* Create and initialize an SCTP_PEER_ADDR_CHANGE event.&n; *&n; * Socket Extensions for SCTP - draft-01&n; * 5.3.1.2 SCTP_PEER_ADDR_CHANGE&n; *&n; * When a destination address on a multi-homed peer encounters a change&n; * an interface details event is sent. &n; * &n; */
+multiline_comment|/* Create and initialize an SCTP_PEER_ADDR_CHANGE event.&n; *&n; * Socket Extensions for SCTP - draft-01&n; * 5.3.1.2 SCTP_PEER_ADDR_CHANGE&n; *&n; * When a destination address on a multi-homed peer encounters a change&n; * an interface details event is sent.&n; */
+DECL|function|sctp_ulpevent_make_peer_addr_change
 id|sctp_ulpevent_t
 op_star
-DECL|function|sctp_ulpevent_make_peer_addr_change
 id|sctp_ulpevent_make_peer_addr_change
 c_func
 (paren
@@ -446,15 +428,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-l_int|NULL
-op_eq
+op_logical_neg
 id|event
 )paren
-(brace
 r_goto
 id|fail
 suffix:semicolon
-)brace
 id|spc
 op_assign
 (paren
@@ -474,12 +453,12 @@ id|sctp_paddr_change
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* Sockets API Extensions for SCTP &n;&t; * Section 5.3.1.2 SCTP_PEER_ADDR_CHANGE&n;&t; * &n;&t; * spc_type:&n;&t; * &n;&t; *    It should be SCTP_PEER_ADDR_CHANGE.&n;&t; */
+multiline_comment|/* Sockets API Extensions for SCTP&n;&t; * Section 5.3.1.2 SCTP_PEER_ADDR_CHANGE&n;&t; *&n;&t; * spc_type:&n;&t; *&n;&t; *    It should be SCTP_PEER_ADDR_CHANGE.&n;&t; */
 id|spc-&gt;spc_type
 op_assign
 id|SCTP_PEER_ADDR_CHANGE
 suffix:semicolon
-multiline_comment|/* Sockets API Extensions for SCTP &n;&t; * Section 5.3.1.2 SCTP_PEER_ADDR_CHANGE&n;&t; *&n;&t; * spc_length: sizeof (uint32_t)&n;&t; * &n;&t; * This field is the total length of the notification data, including&n;&t; * the notification header.&n;&t; */
+multiline_comment|/* Sockets API Extensions for SCTP&n;&t; * Section 5.3.1.2 SCTP_PEER_ADDR_CHANGE&n;&t; *&n;&t; * spc_length: sizeof (__u32)&n;&t; *&n;&t; * This field is the total length of the notification data, including&n;&t; * the notification header.&n;&t; */
 id|spc-&gt;spc_length
 op_assign
 r_sizeof
@@ -488,22 +467,22 @@ r_struct
 id|sctp_paddr_change
 )paren
 suffix:semicolon
-multiline_comment|/* Sockets API Extensions for SCTP &n;&t; * Section 5.3.1.2 SCTP_PEER_ADDR_CHANGE&n;&t; *&n;&t; * spc_flags: 16 bits (unsigned integer)&n;&t; * Currently unused.&n;&t; */
+multiline_comment|/* Sockets API Extensions for SCTP&n;&t; * Section 5.3.1.2 SCTP_PEER_ADDR_CHANGE&n;&t; *&n;&t; * spc_flags: 16 bits (unsigned integer)&n;&t; * Currently unused.&n;&t; */
 id|spc-&gt;spc_flags
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* Sockets API Extensions for SCTP &n;&t; * Section 5.3.1.2 SCTP_PEER_ADDR_CHANGE&n;&t; *&n;&t; * spc_state:  32 bits (signed integer)&n;&t; * &n;&t; * This field holds one of a number of values that communicate the&n;&t; * event that happened to the address.&n;&t; */
+multiline_comment|/* Sockets API Extensions for SCTP&n;&t; * Section 5.3.1.2 SCTP_PEER_ADDR_CHANGE&n;&t; *&n;&t; * spc_state:  32 bits (signed integer)&n;&t; * &n;&t; * This field holds one of a number of values that communicate the&n;&t; * event that happened to the address.&n;&t; */
 id|spc-&gt;spc_state
 op_assign
 id|state
 suffix:semicolon
-multiline_comment|/* Sockets API Extensions for SCTP &n;&t; * Section 5.3.1.2 SCTP_PEER_ADDR_CHANGE&n;&t; *&n;&t; * spc_error:  32 bits (signed integer)&n;&t; *&n;&t; * If the state was reached due to any error condition (e.g.&n;&t; * ADDRESS_UNREACHABLE) any relevant error information is available in&n;&t; * this field.&n;&t; */
+multiline_comment|/* Sockets API Extensions for SCTP&n;&t; * Section 5.3.1.2 SCTP_PEER_ADDR_CHANGE&n;&t; *&n;&t; * spc_error:  32 bits (signed integer)&n;&t; *&n;&t; * If the state was reached due to any error condition (e.g.&n;&t; * ADDRESS_UNREACHABLE) any relevant error information is available in&n;&t; * this field.&n;&t; */
 id|spc-&gt;spc_error
 op_assign
 id|error
 suffix:semicolon
-multiline_comment|/* Socket Extensions for SCTP &n;&t; * 5.3.1.1 SCTP_ASSOC_CHANGE&n;&t; *&n;&t; * sac_assoc_id: sizeof (sctp_assoc_t)&n;&t; * &n;&t; * The association id field, holds the identifier for the association.&n;&t; * All notifications for a given association have the same association&n;&t; * identifier.  For TCP style socket, this field is ignored.&n;&t; */
+multiline_comment|/* Socket Extensions for SCTP&n;&t; * 5.3.1.1 SCTP_ASSOC_CHANGE&n;&t; *&n;&t; * sac_assoc_id: sizeof (sctp_assoc_t)&n;&t; *&n;&t; * The association id field, holds the identifier for the association.&n;&t; * All notifications for a given association have the same association&n;&t; * identifier.  For TCP style socket, this field is ignored.&n;&t; */
 id|spc-&gt;spc_assoc_id
 op_assign
 id|sctp_assoc2id
@@ -512,7 +491,7 @@ c_func
 id|asoc
 )paren
 suffix:semicolon
-multiline_comment|/* Sockets API Extensions for SCTP &n;&t; * Section 5.3.1.2 SCTP_PEER_ADDR_CHANGE&n;&t; *&n;&t; * spc_aaddr: sizeof (struct sockaddr_storage)&n;&t; *&n;&t; * The affected address field, holds the remote peer&squot;s address that is&n;&t; * encountering the change of state.&n;&t; */
+multiline_comment|/* Sockets API Extensions for SCTP&n;&t; * Section 5.3.1.2 SCTP_PEER_ADDR_CHANGE&n;&t; *&n;&t; * spc_aaddr: sizeof (struct sockaddr_storage)&n;&t; *&n;&t; * The affected address field, holds the remote peer&squot;s address that is&n;&t; * encountering the change of state.&n;&t; */
 id|memcpy
 c_func
 (paren
@@ -537,11 +516,10 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_ulpevent_make_peer_addr_change() */
-multiline_comment|/* Create and initialize an SCTP_REMOTE_ERROR notification.&n; * &n; * Note: This assumes that the chunk-&gt;skb-&gt;data already points to the&n; * operation error payload.  &n; *&n; * Socket Extensions for SCTP - draft-01&n; * 5.3.1.3 SCTP_REMOTE_ERROR &n; *&n; * A remote peer may send an Operational Error message to its peer.&n; * This message indicates a variety of error conditions on an&n; * association. The entire error TLV as it appears on the wire is&n; * included in a SCTP_REMOTE_ERROR event.  Please refer to the SCTP&n; * specification [SCTP] and any extensions for a list of possible&n; * error formats.&n; * &n; */
+multiline_comment|/* Create and initialize an SCTP_REMOTE_ERROR notification.&n; *&n; * Note: This assumes that the chunk-&gt;skb-&gt;data already points to the&n; * operation error payload.&n; *&n; * Socket Extensions for SCTP - draft-01&n; * 5.3.1.3 SCTP_REMOTE_ERROR&n; *&n; * A remote peer may send an Operational Error message to its peer.&n; * This message indicates a variety of error conditions on an&n; * association. The entire error TLV as it appears on the wire is&n; * included in a SCTP_REMOTE_ERROR event.  Please refer to the SCTP&n; * specification [SCTP] and any extensions for a list of possible&n; * error formats.&n; */
+DECL|function|sctp_ulpevent_make_remote_error
 id|sctp_ulpevent_t
 op_star
-DECL|function|sctp_ulpevent_make_remote_error
 id|sctp_ulpevent_make_remote_error
 c_func
 (paren
@@ -554,7 +532,7 @@ id|sctp_chunk_t
 op_star
 id|chunk
 comma
-r_uint16
+id|__u16
 id|flags
 comma
 r_int
@@ -579,7 +557,7 @@ id|sctp_errhdr_t
 op_star
 id|ch
 suffix:semicolon
-r_uint16
+id|__u16
 id|cause
 suffix:semicolon
 r_int
@@ -612,7 +590,7 @@ r_sizeof
 id|sctp_errhdr_t
 )paren
 suffix:semicolon
-multiline_comment|/* Pull off the ERROR header. */
+multiline_comment|/* Pull off the ERROR header.  */
 id|skb_pull
 c_func
 (paren
@@ -624,7 +602,7 @@ id|sctp_errhdr_t
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* Copy the skb to a new skb with room for us to prepend &n;&t; * notification with. */
+multiline_comment|/* Copy the skb to a new skb with room for us to prepend&n;&t; * notification with.&n;&t; */
 id|skb
 op_assign
 id|skb_copy_expand
@@ -645,7 +623,7 @@ multiline_comment|/* tailroom */
 id|priority
 )paren
 suffix:semicolon
-multiline_comment|/* Pull off the rest of the cause TLV from the chunk. */
+multiline_comment|/* Pull off the rest of the cause TLV from the chunk.  */
 id|skb_pull
 c_func
 (paren
@@ -657,16 +635,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-l_int|NULL
-op_eq
+op_logical_neg
 id|skb
 )paren
-(brace
 r_goto
 id|fail
 suffix:semicolon
-)brace
-multiline_comment|/* Embed the event fields inside the cloned skb. */
+multiline_comment|/* Embed the event fields inside the cloned skb.  */
 id|event
 op_assign
 (paren
@@ -690,15 +665,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-l_int|NULL
-op_eq
+op_logical_neg
 id|event
 )paren
-(brace
 r_goto
 id|fail
 suffix:semicolon
-)brace
 id|event-&gt;malloced
 op_assign
 l_int|1
@@ -722,7 +694,7 @@ id|sctp_remote_error
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* Trim the buffer to the right length. */
+multiline_comment|/* Trim the buffer to the right length.  */
 id|skb_trim
 c_func
 (paren
@@ -737,27 +709,27 @@ op_plus
 id|elen
 )paren
 suffix:semicolon
-multiline_comment|/* Socket Extensions for SCTP &n;&t; * 5.3.1.3 SCTP_REMOTE_ERROR &t;&n;&t; * &n;&t; * sre_type:&n;&t; *   It should be SCTP_REMOTE_ERROR.&n;&t; */
+multiline_comment|/* Socket Extensions for SCTP&n;&t; * 5.3.1.3 SCTP_REMOTE_ERROR&n;&t; *&n;&t; * sre_type:&n;&t; *   It should be SCTP_REMOTE_ERROR.&n;&t; */
 id|sre-&gt;sre_type
 op_assign
 id|SCTP_REMOTE_ERROR
 suffix:semicolon
-multiline_comment|/*&n;&t; * Socket Extensions for SCTP &n;&t; * 5.3.1.3 SCTP_REMOTE_ERROR &t;&n;&t; * &n;&t; * sre_flags: 16 bits (unsigned integer)&n;&t; *   Currently unused.&n;&t; */
+multiline_comment|/*&n;&t; * Socket Extensions for SCTP&n;&t; * 5.3.1.3 SCTP_REMOTE_ERROR&n;&t; *&n;&t; * sre_flags: 16 bits (unsigned integer)&n;&t; *   Currently unused.&n;&t; */
 id|sre-&gt;sre_flags
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* Socket Extensions for SCTP &n;&t; * 5.3.1.3 SCTP_REMOTE_ERROR &t;&n;&t; * &n;&t; * sre_length: sizeof (uint32_t)&n;&t; * &n;&t; * This field is the total length of the notification data, &n;&t; * including the notification header.&n;&t; */
+multiline_comment|/* Socket Extensions for SCTP&n;&t; * 5.3.1.3 SCTP_REMOTE_ERROR&n;&t; *&n;&t; * sre_length: sizeof (__u32)&n;&t; *&n;&t; * This field is the total length of the notification data,&n;&t; * including the notification header.&n;&t; */
 id|sre-&gt;sre_length
 op_assign
 id|skb-&gt;len
 suffix:semicolon
-multiline_comment|/*&n;&t; * Socket Extensions for SCTP &n;&t; * 5.3.1.3 SCTP_REMOTE_ERROR &t;&n;&t; * &n;&t; * sre_error: 16 bits (unsigned integer)&n;&t; * This value represents one of the Operational Error causes defined in&n;&t; * the SCTP specification, in network byte order.&n;&t; */
+multiline_comment|/* Socket Extensions for SCTP&n;&t; * 5.3.1.3 SCTP_REMOTE_ERROR&n;&t; *&n;&t; * sre_error: 16 bits (unsigned integer)&n;&t; * This value represents one of the Operational Error causes defined in&n;&t; * the SCTP specification, in network byte order.&n;&t; */
 id|sre-&gt;sre_error
 op_assign
 id|cause
 suffix:semicolon
-multiline_comment|/*&n;&t; * Socket Extensions for SCTP &n;&t; * 5.3.1.3 SCTP_REMOTE_ERROR &t;&n;&t; * &n;&t; * sre_assoc_id: sizeof (sctp_assoc_t)&n;&t; *&n;&t; *&n;&t; * The association id field, holds the identifier for the association.&n;&t; * All notifications for a given association have the same association&n;&t; * identifier.  For TCP style socket, this field is ignored.&n;&t; */
+multiline_comment|/* Socket Extensions for SCTP&n;&t; * 5.3.1.3 SCTP_REMOTE_ERROR&n;&t; *&n;&t; * sre_assoc_id: sizeof (sctp_assoc_t)&n;&t; *&n;&t; * The association id field, holds the identifier for the association.&n;&t; * All notifications for a given association have the same association&n;&t; * identifier.  For TCP style socket, this field is ignored.&n;&t; */
 id|sre-&gt;sre_assoc_id
 op_assign
 id|sctp_assoc2id
@@ -775,11 +747,10 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_ulpevent_make_remote_error () */
-multiline_comment|/* Create and initialize a SCTP_SEND_FAILED notification.&n; * &n; * Socket Extensions for SCTP - draft-01&n; * 5.3.1.4 SCTP_SEND_FAILED&n; */
+multiline_comment|/* Create and initialize a SCTP_SEND_FAILED notification.&n; *&n; * Socket Extensions for SCTP - draft-01&n; * 5.3.1.4 SCTP_SEND_FAILED&n; */
+DECL|function|sctp_ulpevent_make_send_failed
 id|sctp_ulpevent_t
 op_star
-DECL|function|sctp_ulpevent_make_send_failed
 id|sctp_ulpevent_make_send_failed
 c_func
 (paren
@@ -792,10 +763,10 @@ id|sctp_chunk_t
 op_star
 id|chunk
 comma
-r_uint16
+id|__u16
 id|flags
 comma
-r_uint32
+id|__u32
 id|error
 comma
 r_int
@@ -816,7 +787,7 @@ id|sk_buff
 op_star
 id|skb
 suffix:semicolon
-multiline_comment|/* Make skb with more room so we can prepend notification. */
+multiline_comment|/* Make skb with more room so we can prepend notification.  */
 id|skb
 op_assign
 id|skb_copy_expand
@@ -840,16 +811,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-l_int|NULL
-op_eq
+op_logical_neg
 id|skb
 )paren
-(brace
 r_goto
 id|fail
 suffix:semicolon
-)brace
-multiline_comment|/* Pull off the common chunk header and DATA header. */
+multiline_comment|/* Pull off the common chunk header and DATA header.  */
 id|skb_pull
 c_func
 (paren
@@ -861,7 +829,7 @@ id|sctp_data_chunk_t
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* Embed the event fields inside the cloned skb. */
+multiline_comment|/* Embed the event fields inside the cloned skb.  */
 id|event
 op_assign
 (paren
@@ -885,16 +853,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-l_int|NULL
-op_eq
+op_logical_neg
 id|event
 )paren
-(brace
 r_goto
 id|fail
 suffix:semicolon
-)brace
-multiline_comment|/* Mark as malloced, even though the constructor was not &n;&t; * called. &n;&t; */
+multiline_comment|/* Mark as malloced, even though the constructor was not&n;&t; * called.&n;&t; */
 id|event-&gt;malloced
 op_assign
 l_int|1
@@ -918,27 +883,27 @@ id|sctp_send_failed
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* Socket Extensions for SCTP &n;&t; * 5.3.1.4 SCTP_SEND_FAILED&n;&t; *&n;&t; * ssf_type:&n;&t; * It should be SCTP_SEND_FAILED.&t;&n;&t; */
+multiline_comment|/* Socket Extensions for SCTP&n;&t; * 5.3.1.4 SCTP_SEND_FAILED&n;&t; *&n;&t; * ssf_type:&n;&t; * It should be SCTP_SEND_FAILED.&n;&t; */
 id|ssf-&gt;ssf_type
 op_assign
 id|SCTP_SEND_FAILED
 suffix:semicolon
-multiline_comment|/* Socket Extensions for SCTP &n;&t; * 5.3.1.4 SCTP_SEND_FAILED&n;&t; * &n;&t; * ssf_flags: 16 bits (unsigned integer)&n;&t; * The flag value will take one of the following values&n;&t; *&n;&t; * SCTP_DATA_UNSENT - Indicates that the data was never put on&n;         *                    the wire.&n;&t; * &n;&t; * SCTP_DATA_SENT   - Indicates that the data was put on the wire.&n;         *                    Note that this does not necessarily mean that the&n;         *                    data was (or was not) successfully delivered.&n;&t; */
+multiline_comment|/* Socket Extensions for SCTP&n;&t; * 5.3.1.4 SCTP_SEND_FAILED&n;&t; *&n;&t; * ssf_flags: 16 bits (unsigned integer)&n;&t; * The flag value will take one of the following values&n;&t; *&n;&t; * SCTP_DATA_UNSENT - Indicates that the data was never put on&n;&t; *                    the wire.&n;&t; *&n;&t; * SCTP_DATA_SENT   - Indicates that the data was put on the wire.&n;&t; *                    Note that this does not necessarily mean that the&n;&t; *                    data was (or was not) successfully delivered.&n;&t; */
 id|ssf-&gt;ssf_flags
 op_assign
 id|flags
 suffix:semicolon
-multiline_comment|/* Socket Extensions for SCTP &n;&t; * 5.3.1.4 SCTP_SEND_FAILED&n;&t; *&n;&t; * ssf_length: sizeof (uint32_t)&n;&t; * This field is the total length of the notification data, including&n;&t; * the notification header.&n;&t; */
+multiline_comment|/* Socket Extensions for SCTP&n;&t; * 5.3.1.4 SCTP_SEND_FAILED&n;&t; *&n;&t; * ssf_length: sizeof (__u32)&n;&t; * This field is the total length of the notification data, including&n;&t; * the notification header.&n;&t; */
 id|ssf-&gt;ssf_length
 op_assign
 id|skb-&gt;len
 suffix:semicolon
-multiline_comment|/* Socket Extensions for SCTP &n;&t; * 5.3.1.4 SCTP_SEND_FAILED&n;&t; *&n;&t; * ssf_error: 16 bits (unsigned integer)&n;&t; * This value represents the reason why the send failed, and if set,&n;&t; * will be a SCTP protocol error code as defined in [SCTP] section&n;&t; * 3.3.10.&n;&t; */
+multiline_comment|/* Socket Extensions for SCTP&n;&t; * 5.3.1.4 SCTP_SEND_FAILED&n;&t; *&n;&t; * ssf_error: 16 bits (unsigned integer)&n;&t; * This value represents the reason why the send failed, and if set,&n;&t; * will be a SCTP protocol error code as defined in [SCTP] section&n;&t; * 3.3.10.&n;&t; */
 id|ssf-&gt;ssf_error
 op_assign
 id|error
 suffix:semicolon
-multiline_comment|/* Socket Extensions for SCTP &n;&t; * 5.3.1.4 SCTP_SEND_FAILED&n;&t; *&n;&t; * ssf_info: sizeof (struct sctp_sndrcvinfo)&n;&t; * The original send information associated with the undelivered&n;&t; * message. &n;&t; */
+multiline_comment|/* Socket Extensions for SCTP&n;&t; * 5.3.1.4 SCTP_SEND_FAILED&n;&t; *&n;&t; * ssf_info: sizeof (struct sctp_sndrcvinfo)&n;&t; * The original send information associated with the undelivered&n;&t; * message.&n;&t; */
 id|memcpy
 c_func
 (paren
@@ -955,7 +920,7 @@ id|sctp_sndrcvinfo
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* Socket Extensions for SCTP &n;&t; * 5.3.1.4 SCTP_SEND_FAILED&n;&t; *&n;&t; * ssf_assoc_id: sizeof (sctp_assoc_t)&n;&t; * The association id field, sf_assoc_id, holds the identifier for the&n;&t; * association.  All notifications for a given association have the&n;&t; * same association identifier.  For TCP style socket, this field is&n;&t; * ignored.&n;&t; */
+multiline_comment|/* Socket Extensions for SCTP&n;&t; * 5.3.1.4 SCTP_SEND_FAILED&n;&t; *&n;&t; * ssf_assoc_id: sizeof (sctp_assoc_t)&n;&t; * The association id field, sf_assoc_id, holds the identifier for the&n;&t; * association.  All notifications for a given association have the&n;&t; * same association identifier.  For TCP style socket, this field is&n;&t; * ignored.&n;&t; */
 id|ssf-&gt;ssf_assoc_id
 op_assign
 id|sctp_assoc2id
@@ -973,11 +938,10 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_ulpevent_make_send_failed () */
-multiline_comment|/* Create and initialize a SCTP_SHUTDOWN_EVENT notification.&n; * &n; * Socket Extensions for SCTP - draft-01&n; * 5.3.1.5 SCTP_SHUTDOWN_EVENT&n; */
+multiline_comment|/* Create and initialize a SCTP_SHUTDOWN_EVENT notification.&n; *&n; * Socket Extensions for SCTP - draft-01&n; * 5.3.1.5 SCTP_SHUTDOWN_EVENT&n; */
+DECL|function|sctp_ulpevent_make_shutdown_event
 id|sctp_ulpevent_t
 op_star
-DECL|function|sctp_ulpevent_make_shutdown_event
 id|sctp_ulpevent_make_shutdown_event
 c_func
 (paren
@@ -986,7 +950,7 @@ id|sctp_association_t
 op_star
 id|asoc
 comma
-r_uint16
+id|__u16
 id|flags
 comma
 r_int
@@ -1021,15 +985,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-l_int|NULL
-op_eq
+op_logical_neg
 id|event
 )paren
-(brace
 r_goto
 id|fail
 suffix:semicolon
-)brace
 id|sse
 op_assign
 (paren
@@ -1049,17 +1010,17 @@ id|sctp_shutdown_event
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* Socket Extensions for SCTP &n;&t; * 5.3.1.5 SCTP_SHUTDOWN_EVENT&n;&t; * &n;&t; * sse_type&n;&t; * It should be SCTP_SHUTDOWN_EVENT&n;&t; */
+multiline_comment|/* Socket Extensions for SCTP&n;&t; * 5.3.1.5 SCTP_SHUTDOWN_EVENT&n;&t; *&n;&t; * sse_type&n;&t; * It should be SCTP_SHUTDOWN_EVENT&n;&t; */
 id|sse-&gt;sse_type
 op_assign
 id|SCTP_SHUTDOWN_EVENT
 suffix:semicolon
-multiline_comment|/* Socket Extensions for SCTP &n;&t; * 5.3.1.5 SCTP_SHUTDOWN_EVENT&n;&t; * &n;&t; * sse_flags: 16 bits (unsigned integer)&n;&t; * Currently unused.&n;&t; */
+multiline_comment|/* Socket Extensions for SCTP&n;&t; * 5.3.1.5 SCTP_SHUTDOWN_EVENT&n;&t; *&n;&t; * sse_flags: 16 bits (unsigned integer)&n;&t; * Currently unused.&n;&t; */
 id|sse-&gt;sse_flags
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* Socket Extensions for SCTP &n;&t; * 5.3.1.5 SCTP_SHUTDOWN_EVENT&n;&t; *&n;&t; * sse_length: sizeof (uint32_t)&n;&t; * This field is the total length of the notification data, including&n;&t; * the notification header.&n;&t; */
+multiline_comment|/* Socket Extensions for SCTP&n;&t; * 5.3.1.5 SCTP_SHUTDOWN_EVENT&n;&t; *&n;&t; * sse_length: sizeof (__u32)&n;&t; * This field is the total length of the notification data, including&n;&t; * the notification header.&n;&t; */
 id|sse-&gt;sse_length
 op_assign
 r_sizeof
@@ -1068,7 +1029,7 @@ r_struct
 id|sctp_shutdown_event
 )paren
 suffix:semicolon
-multiline_comment|/* Socket Extensions for SCTP &n;&t; * 5.3.1.5 SCTP_SHUTDOWN_EVENT&n;&t; *&n;&t; * sse_assoc_id: sizeof (sctp_assoc_t)&n;&t; * The association id field, holds the identifier for the association.&n;&t; * All notifications for a given association have the same association&n;&t; * identifier.  For TCP style socket, this field is ignored.&n;&t; */
+multiline_comment|/* Socket Extensions for SCTP&n;&t; * 5.3.1.5 SCTP_SHUTDOWN_EVENT&n;&t; *&n;&t; * sse_assoc_id: sizeof (sctp_assoc_t)&n;&t; * The association id field, holds the identifier for the association.&n;&t; * All notifications for a given association have the same association&n;&t; * identifier.  For TCP style socket, this field is ignored.&n;&t; */
 id|sse-&gt;sse_assoc_id
 op_assign
 id|sctp_assoc2id
@@ -1086,11 +1047,10 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_ulpevent_make_shutdown_event () */
-multiline_comment|/* A message has been received.  Package this message as a notification&n; * to pass it to the upper layers.  Go ahead and calculate the sndrcvinfo&n; * even if filtered out later.&n; * &n; * Socket Extensions for SCTP - draft-01&n; * 5.2.2 SCTP Header Information Structure (SCTP_SNDRCV)&n; *&n; */
+multiline_comment|/* A message has been received.  Package this message as a notification&n; * to pass it to the upper layers.  Go ahead and calculate the sndrcvinfo&n; * even if filtered out later.&n; *&n; * Socket Extensions for SCTP - draft-01&n; * 5.2.2 SCTP Header Information Structure (SCTP_SNDRCV)&n; */
+DECL|function|sctp_ulpevent_make_rcvmsg
 id|sctp_ulpevent_t
 op_star
-DECL|function|sctp_ulpevent_make_rcvmsg
 id|sctp_ulpevent_make_rcvmsg
 c_func
 (paren
@@ -1125,7 +1085,7 @@ id|padding
 comma
 id|len
 suffix:semicolon
-multiline_comment|/* Clone the original skb, sharing the data. */
+multiline_comment|/* Clone the original skb, sharing the data.  */
 id|skb
 op_assign
 id|skb_clone
@@ -1139,16 +1099,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-l_int|NULL
-op_eq
+op_logical_neg
 id|skb
 )paren
-(brace
 r_goto
 id|fail
 suffix:semicolon
-)brace
-multiline_comment|/* First calculate the padding, so we don&squot;t inadvertently&n;&t; * pass up the wrong length to the user.&n;&t; *&n;&t; * RFC 2960 - Section 3.2  Chunk Field Descriptions &n;&t; *&n;&t; * The total length of a chunk(including Type, Length and Value fields)&n;&t; * MUST be a multiple of 4 bytes.  If the length of the chunk is not a&n;&t; * multiple of 4 bytes, the sender MUST pad the chunk with all zero&n;&t; * bytes and this padding is not included in the chunk length field.&n;&t; * The sender should never pad with more than 3 bytes.  The receiver&n;&t; * MUST ignore the padding bytes.&n;&t; *&n;         */
+multiline_comment|/* First calculate the padding, so we don&squot;t inadvertently&n;&t; * pass up the wrong length to the user.&n;&t; *&n;&t; * RFC 2960 - Section 3.2  Chunk Field Descriptions&n;&t; *&n;&t; * The total length of a chunk(including Type, Length and Value fields)&n;&t; * MUST be a multiple of 4 bytes.  If the length of the chunk is not a&n;&t; * multiple of 4 bytes, the sender MUST pad the chunk with all zero&n;&t; * bytes and this padding is not included in the chunk length field.&n;&t; * The sender should never pad with more than 3 bytes.  The receiver&n;&t; * MUST ignore the padding bytes.&n;&t; */
 id|len
 op_assign
 id|ntohs
@@ -1180,7 +1137,7 @@ op_minus
 id|skb-&gt;data
 )paren
 suffix:semicolon
-multiline_comment|/* Set up a destructor to do rwnd accounting. */
+multiline_comment|/* Set up a destructor to do rwnd accounting.  */
 id|sctp_ulpevent_set_owner_r
 c_func
 (paren
@@ -1189,7 +1146,7 @@ comma
 id|asoc
 )paren
 suffix:semicolon
-multiline_comment|/* Embed the event fields inside the cloned skb. */
+multiline_comment|/* Embed the event fields inside the cloned skb.  */
 id|event
 op_assign
 (paren
@@ -1198,7 +1155,7 @@ op_star
 )paren
 id|skb-&gt;cb
 suffix:semicolon
-multiline_comment|/* Initialize event with flags 0. */
+multiline_comment|/* Initialize event with flags 0.  */
 id|event
 op_assign
 id|sctp_ulpevent_init
@@ -1214,15 +1171,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-l_int|NULL
-op_eq
+op_logical_neg
 id|event
 )paren
-(brace
 r_goto
 id|fail_init
 suffix:semicolon
-)brace
 id|event-&gt;malloced
 op_assign
 l_int|1
@@ -1237,7 +1191,7 @@ op_star
 op_amp
 id|event-&gt;sndrcvinfo
 suffix:semicolon
-multiline_comment|/* &n;&t; * Sockets API Extensions for SCTP &n;&t; * Section 5.2.2 SCTP Header Information Structure (SCTP_SNDRCV)&n;&t; *&n;&t; * sinfo_stream: 16 bits (unsigned integer)&n;&t; *&n;&t; * For recvmsg() the SCTP stack places the message&squot;s stream number in&n;&t; * this value.&n;&t; */
+multiline_comment|/* Sockets API Extensions for SCTP&n;&t; * Section 5.2.2 SCTP Header Information Structure (SCTP_SNDRCV)&n;&t; *&n;&t; * sinfo_stream: 16 bits (unsigned integer)&n;&t; *&n;&t; * For recvmsg() the SCTP stack places the message&squot;s stream number in&n;&t; * this value.&n;&t; */
 id|info-&gt;sinfo_stream
 op_assign
 id|ntohs
@@ -1246,7 +1200,7 @@ c_func
 id|chunk-&gt;subh.data_hdr-&gt;stream
 )paren
 suffix:semicolon
-multiline_comment|/* Sockets API Extensions for SCTP &n;&t; * Section 5.2.2 SCTP Header Information Structure (SCTP_SNDRCV)&n;&t; *&n;&t; * sinfo_ssn: 16 bits (unsigned integer)&n;&t; *&n;&t; * For recvmsg() this value contains the stream sequence number that&n;&t; * the remote endpoint placed in the DATA chunk.  For fragmented&n;&t; * messages this is the same number for all deliveries of the message&n;&t; * (if more than one recvmsg() is needed to read the message).&n;&t; */
+multiline_comment|/* Sockets API Extensions for SCTP&n;&t; * Section 5.2.2 SCTP Header Information Structure (SCTP_SNDRCV)&n;&t; *&n;&t; * sinfo_ssn: 16 bits (unsigned integer)&n;&t; *&n;&t; * For recvmsg() this value contains the stream sequence number that&n;&t; * the remote endpoint placed in the DATA chunk.  For fragmented&n;&t; * messages this is the same number for all deliveries of the message&n;&t; * (if more than one recvmsg() is needed to read the message).&n;&t; */
 id|info-&gt;sinfo_ssn
 op_assign
 id|ntohs
@@ -1255,7 +1209,7 @@ c_func
 id|chunk-&gt;subh.data_hdr-&gt;ssn
 )paren
 suffix:semicolon
-multiline_comment|/* Sockets API Extensions for SCTP &n;&t; * Section 5.2.2 SCTP Header Information Structure (SCTP_SNDRCV)&n;&t; *&n;&t; * sinfo_ppid:32 bits (unsigned integer)&n;&t; *&n;&t; * In recvmsg() this value is&n;&t; * the same information that was passed by the upper layer in the peer&n;&t; * application.  Please note that byte order issues are NOT accounted&n;&t; * for and this information is passed opaquely by the SCTP stack from&n;&t; * one end to the other.&n;&t; */
+multiline_comment|/* Sockets API Extensions for SCTP&n;&t; * Section 5.2.2 SCTP Header Information Structure (SCTP_SNDRCV)&n;&t; *&n;&t; * sinfo_ppid: 32 bits (unsigned integer)&n;&t; *&n;&t; * In recvmsg() this value is&n;&t; * the same information that was passed by the upper layer in the peer&n;&t; * application.  Please note that byte order issues are NOT accounted&n;&t; * for and this information is passed opaquely by the SCTP stack from&n;&t; * one end to the other.&n;&t; */
 id|info-&gt;sinfo_ppid
 op_assign
 id|ntohl
@@ -1264,7 +1218,7 @@ c_func
 id|chunk-&gt;subh.data_hdr-&gt;ppid
 )paren
 suffix:semicolon
-multiline_comment|/* Sockets API Extensions for SCTP &n;&t; * Section 5.2.2 SCTP Header Information Structure (SCTP_SNDRCV)&n;&t; *&n;         * sinfo_flags: 16 bits (unsigned integer)&n;&t; * &n;&t; * This field may contain any of the following flags and is composed of&n;&t; * a bitwise OR of these values.&n;&t; * &n;&t; * recvmsg() flags:&n;&t; * &n;&t; * MSG_UNORDERED - This flag is present when the message was sent&n;         *                 non-ordered. &n;&t; */
+multiline_comment|/* Sockets API Extensions for SCTP&n;&t; * Section 5.2.2 SCTP Header Information Structure (SCTP_SNDRCV)&n;&t; *&n;&t; * sinfo_flags: 16 bits (unsigned integer)&n;&t; *&n;&t; * This field may contain any of the following flags and is composed of&n;&t; * a bitwise OR of these values.&n;&t; *&n;&t; * recvmsg() flags:&n;&t; *&n;&t; * MSG_UNORDERED - This flag is present when the message was sent&n;&t; *                 non-ordered.&n;&t; */
 r_if
 c_cond
 (paren
@@ -1272,12 +1226,10 @@ id|chunk-&gt;chunk_hdr-&gt;flags
 op_amp
 id|SCTP_DATA_UNORDERED
 )paren
-(brace
 id|info-&gt;sinfo_flags
 op_or_assign
 id|MSG_UNORDERED
 suffix:semicolon
-)brace
 multiline_comment|/* FIXME:  For reassembly, we need to have the fragmentation bits.&n;&t; * This really does not belong in the event structure, but&n;&t; * its difficult to fix everything at the same time.   Eventually,&n;&t; * we should create and skb based chunk structure.   This structure&n;&t; * storage can be converted to an event.  --jgrimm&n;&t; */
 id|event-&gt;chunk_flags
 op_assign
@@ -1297,7 +1249,7 @@ id|info-&gt;sinfo_context
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* Sockets API Extensions for SCTP &n;&t; * Section 5.2.2 SCTP Header Information Structure (SCTP_SNDRCV)&n;&t; * &n;&t; * sinfo_assoc_id: sizeof (sctp_assoc_t)&n;&t; * &n;&t; * The association handle field, sinfo_assoc_id, holds the identifier&n;&t; * for the association announced in the COMMUNICATION_UP notification.&n;&t; * All notifications for a given association have the same identifier.&n;&t; * Ignored for TCP-style sockets.&n;&t; */
+multiline_comment|/* Sockets API Extensions for SCTP&n;&t; * Section 5.2.2 SCTP Header Information Structure (SCTP_SNDRCV)&n;&t; *&n;&t; * sinfo_assoc_id: sizeof (sctp_assoc_t)&n;&t; *&n;&t; * The association handle field, sinfo_assoc_id, holds the identifier&n;&t; * for the association announced in the COMMUNICATION_UP notification.&n;&t; * All notifications for a given association have the same identifier.&n;&t; * Ignored for TCP-style sockets.&n;&t; */
 id|info-&gt;sinfo_assoc_id
 op_assign
 id|sctp_assoc2id
@@ -1323,10 +1275,9 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_ulpevent_make_rcvmsg() */
 multiline_comment|/* Return the notification type, assuming this is a notification&n; * event.&n; */
-r_uint16
 DECL|function|sctp_ulpevent_get_notification_type
+id|__u16
 id|sctp_ulpevent_get_notification_type
 c_func
 (paren
@@ -1354,10 +1305,9 @@ r_return
 id|notification-&gt;h.sn_type
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_ulpevent_get_notification_type() */
 multiline_comment|/* Copy out the sndrcvinfo into a msghdr.  */
-r_void
 DECL|function|sctp_ulpevent_read_sndrcvinfo
+r_void
 id|sctp_ulpevent_read_sndrcvinfo
 c_func
 (paren
@@ -1408,11 +1358,10 @@ id|event-&gt;sndrcvinfo
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/* sctp_ulpevent_read_sndrcvinfo() */
-multiline_comment|/* Do accounting for bytes just read by user. */
+multiline_comment|/* Do accounting for bytes just read by user.  */
+DECL|function|sctp_rcvmsg_rfree
 r_static
 r_void
-DECL|function|sctp_rcvmsg_rfree
 id|sctp_rcvmsg_rfree
 c_func
 (paren
@@ -1430,7 +1379,7 @@ id|sctp_ulpevent_t
 op_star
 id|event
 suffix:semicolon
-multiline_comment|/* Current stack structures assume that the rcv buffer is &n;&t; * per socket.   For UDP style sockets this is not true as &n;&t; * multiple associations may be on a single UDP-style socket.   &n;&t; * Use the local private area of the skb to track the owning &n;&t; * association.&n;&t; */
+multiline_comment|/* Current stack structures assume that the rcv buffer is&n;&t; * per socket.   For UDP style sockets this is not true as&n;&t; * multiple associations may be on a single UDP-style socket.&n;&t; * Use the local private area of the skb to track the owning&n;&t; * association.&n;&t; */
 id|event
 op_assign
 (paren
@@ -1504,12 +1453,10 @@ id|asoc
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_rcvmsg_rfree() */
 multiline_comment|/* Charge receive window for bytes recieved.  */
-r_static
-r_inline
-r_void
 DECL|function|sctp_ulpevent_set_owner_r
+r_static
+r_void
 id|sctp_ulpevent_set_owner_r
 c_func
 (paren
@@ -1527,7 +1474,7 @@ id|sctp_ulpevent_t
 op_star
 id|event
 suffix:semicolon
-multiline_comment|/* The current stack structures assume that the rcv buffer is &n;&t; * per socket.  For UDP-style sockets this is not true as &n;&t; * multiple associations may be on a single UDP-style socket.   &n;&t; * We use the local private area of the skb to track the owning &n;&t; * association.&n;&t; */
+multiline_comment|/* The current stack structures assume that the rcv buffer is&n;&t; * per socket.  For UDP-style sockets this is not true as&n;&t; * multiple associations may be on a single UDP-style socket.&n;&t; * We use the local private area of the skb to track the owning&n;&t; * association.&n;&t; */
 id|sctp_association_hold
 c_func
 (paren
@@ -1614,5 +1561,4 @@ id|asoc-&gt;rwnd_over
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_ulpevent_set_owner_r() */
 eof

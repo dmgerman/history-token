@@ -13,7 +13,6 @@ id|unused
 op_assign
 l_string|&quot;$Id: sctp_associola.c,v 1.48 2002/08/16 19:30:49 jgrimm Exp $&quot;
 suffix:semicolon
-macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/fcntl.h&gt;
 macro_line|#include &lt;linux/poll.h&gt;
@@ -37,9 +36,9 @@ id|asoc
 suffix:semicolon
 multiline_comment|/* 1st Level Abstractions. */
 multiline_comment|/* Allocate and initialize a new association */
+DECL|function|sctp_association_new
 id|sctp_association_t
 op_star
-DECL|function|sctp_association_new
 id|sctp_association_new
 c_func
 (paren
@@ -81,11 +80,9 @@ c_cond
 op_logical_neg
 id|asoc
 )paren
-(brace
 r_goto
 id|fail
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -104,11 +101,9 @@ comma
 id|priority
 )paren
 )paren
-(brace
 r_goto
 id|fail_init
 suffix:semicolon
-)brace
 id|asoc-&gt;base.malloced
 op_assign
 l_int|1
@@ -136,11 +131,10 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_association_new() */
 multiline_comment|/* Intialize a new association from provided memory. */
+DECL|function|sctp_association_init
 id|sctp_association_t
 op_star
-DECL|function|sctp_association_init
 id|sctp_association_init
 c_func
 (paren
@@ -166,12 +160,12 @@ r_int
 id|priority
 )paren
 (brace
-r_int
-id|i
-suffix:semicolon
 id|sctp_opt_t
 op_star
 id|sp
+suffix:semicolon
+r_int
+id|i
 suffix:semicolon
 multiline_comment|/* Retrieve the SCTP per socket area.  */
 id|sp
@@ -319,7 +313,7 @@ id|asoc-&gt;overall_error_count
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* Initialize the maximum mumber of new data packets that can be sent &n;&t; * in a burst. &n;&t; */
+multiline_comment|/* Initialize the maximum mumber of new data packets that can be sent&n;&t; * in a burst.&n;&t; */
 id|asoc-&gt;max_burst
 op_assign
 id|ep-&gt;proto-&gt;max_burst
@@ -386,7 +380,7 @@ r_int
 id|asoc
 suffix:semicolon
 )brace
-multiline_comment|/* Pull default initialization values from the sock options. &n;&t; * Note: This assumes that the values have already been &n;&t; * validated in the sock. &n;&t; */
+multiline_comment|/* Pull default initialization values from the sock options.&n;&t; * Note: This assumes that the values have already been&n;&t; * validated in the sock.&n;&t; */
 id|asoc-&gt;c.sinit_max_instreams
 op_assign
 id|sp-&gt;initmsg.sinit_max_instreams
@@ -405,7 +399,7 @@ id|sp-&gt;initmsg.sinit_max_init_timeo
 op_star
 id|HZ
 suffix:semicolon
-multiline_comment|/* RFC 2960 6.5 Stream Identifier and Stream Sequence Number&n;&t; * &n;&t; * The stream sequence number in all the streams shall start&n;&t; * from 0 when the association is established.  Also, when the&n;&t; * stream sequence number reaches the value 65535 the next&n;&t; * stream sequence number shall be set to 0.&n;&t; */
+multiline_comment|/* RFC 2960 6.5 Stream Identifier and Stream Sequence Number&n;&t; *&n;&t; * The stream sequence number in all the streams shall start&n;&t; * from 0 when the association is established.  Also, when the&n;&t; * stream sequence number reaches the value 65535 the next&n;&t; * stream sequence number shall be set to 0.&n;&t; */
 r_for
 c_loop
 (paren
@@ -420,7 +414,6 @@ suffix:semicolon
 id|i
 op_increment
 )paren
-(brace
 id|asoc-&gt;ssn
 (braket
 id|i
@@ -428,8 +421,7 @@ id|i
 op_assign
 l_int|0
 suffix:semicolon
-)brace
-multiline_comment|/* Set the local window size for receive.  &n;&t; * This is also the rcvbuf space per association. &n;&t; * RFC 6 - A SCTP receiver MUST be able to receive a minimum of &n;&t; * 1500 bytes in one SCTP packet. &n;&t; */
+multiline_comment|/* Set the local window size for receive.&n;&t; * This is also the rcvbuf space per association.&n;&t; * RFC 6 - A SCTP receiver MUST be able to receive a minimum of&n;&t; * 1500 bytes in one SCTP packet.&n;&t; */
 r_if
 c_cond
 (paren
@@ -437,19 +429,15 @@ id|sk-&gt;rcvbuf
 OL
 id|SCTP_DEFAULT_MINWINDOW
 )paren
-(brace
 id|asoc-&gt;rwnd
 op_assign
 id|SCTP_DEFAULT_MINWINDOW
 suffix:semicolon
-)brace
 r_else
-(brace
 id|asoc-&gt;rwnd
 op_assign
 id|sk-&gt;rcvbuf
 suffix:semicolon
-)brace
 id|asoc-&gt;rwnd_over
 op_assign
 l_int|0
@@ -528,7 +516,7 @@ comma
 id|asoc-&gt;ctsn_ack_point
 )paren
 suffix:semicolon
-multiline_comment|/* ADDIP Section 4.1 Asconf Chunk Procedures&n;&t; * &n;&t; * When an endpoint has an ASCONF signaled change to be sent to the&n;&t; * remote endpoint it should do the following:&n;&t; * ...&n;&t; * A2) a serial number should be assigned to the chunk. The serial&n;&t; * number should be a monotonically increasing number. All serial&n;&t; * numbers are defined to be initialized at the start of the&n;&t; * association to the same value as the initial TSN.&n;&t; */
+multiline_comment|/* ADDIP Section 4.1 Asconf Chunk Procedures&n;&t; *&n;&t; * When an endpoint has an ASCONF signaled change to be sent to the&n;&t; * remote endpoint it should do the following:&n;&t; * ...&n;&t; * A2) a serial number should be assigned to the chunk. The serial&n;&t; * number should be a monotonically increasing number. All serial&n;&t; * numbers are defined to be initialized at the start of the&n;&t; * association to the same value as the initial TSN.&n;&t; */
 id|asoc-&gt;addip_serial
 op_assign
 id|asoc-&gt;c.initial_tsn
@@ -541,7 +529,7 @@ op_amp
 id|asoc-&gt;peer.transport_addr_list
 )paren
 suffix:semicolon
-multiline_comment|/* RFC 2960 5.1 Normal Establishment of an Association&n;&t; *&n;         * After the reception of the first data chunk in an&n;         * association the endpoint must immediately respond with a&n;         * sack to acknowledge the data chunk.  Subsequent&n;         * acknowledgements should be done as described in Section&n;         * 6.2.&n;         *&n;         * [We implement this by telling a new association that it&n;         * already received one packet.]&n;&t; */
+multiline_comment|/* RFC 2960 5.1 Normal Establishment of an Association&n;&t; *&n;&t; * After the reception of the first data chunk in an&n;&t; * association the endpoint must immediately respond with a&n;&t; * sack to acknowledge the data chunk.  Subsequent&n;&t; * acknowledgements should be done as described in Section&n;&t; * 6.2.&n;&t; *&n;&t; * [We implement this by telling a new association that it&n;&t; * already received one packet.]&n;&t; */
 id|asoc-&gt;peer.sack_needed
 op_assign
 l_int|1
@@ -618,11 +606,9 @@ comma
 id|SCTP_MAX_STREAM
 )paren
 )paren
-(brace
 r_goto
 id|fail_init
 suffix:semicolon
-)brace
 multiline_comment|/* Set up the tsn tracking. */
 id|sctp_tsnmap_init
 c_func
@@ -658,7 +644,7 @@ id|asoc-&gt;eyecatcher
 op_assign
 id|SCTP_ASSOC_EYECATCHER
 suffix:semicolon
-multiline_comment|/* Assume that peer would support both address types unless we are&n;&t; * told otherwise.  &n;&t; */
+multiline_comment|/* Assume that peer would support both address types unless we are&n;&t; * told otherwise.&n;&t; */
 id|asoc-&gt;peer.ipv4_address
 op_assign
 l_int|1
@@ -699,10 +685,9 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_association_init() */
-multiline_comment|/* Free this association if possible.  There may still be users, so &n; * the actual deallocation may be delayed. &n;*/
-r_void
+multiline_comment|/* Free this association if possible.  There may still be users, so&n; * the actual deallocation may be delayed.&n; */
 DECL|function|sctp_association_free
+r_void
 id|sctp_association_free
 c_func
 (paren
@@ -740,7 +725,7 @@ op_amp
 id|asoc-&gt;asocs
 )paren
 suffix:semicolon
-multiline_comment|/* Mark as dead, so other users can know this structure is &n;&t; * going away. &n;&t; */
+multiline_comment|/* Mark as dead, so other users can know this structure is&n;&t; * going away.&n;&t; */
 id|asoc-&gt;base.dead
 op_assign
 l_int|1
@@ -777,7 +762,7 @@ op_amp
 id|asoc-&gt;base.bind_addr
 )paren
 suffix:semicolon
-multiline_comment|/* Do we need to go through all of our timers and &n;&t; * delete them?   To be safe we will try to delete all, but we &n;&t; * should be able to go through and make a guess based&n;&t; * on our state.  &n;&t; */
+multiline_comment|/* Do we need to go through all of our timers and&n;&t; * delete them?   To be safe we will try to delete all, but we&n;&t; * should be able to go through and make a guess based&n;&t; * on our state.&n;&t; */
 r_for
 c_loop
 (paren
@@ -816,14 +801,12 @@ id|i
 )braket
 )paren
 )paren
-(brace
 id|sctp_association_put
 c_func
 (paren
 id|asoc
 )paren
 suffix:semicolon
-)brace
 )brace
 multiline_comment|/* Release the transport structures. */
 id|list_for_each_safe
@@ -862,7 +845,6 @@ id|transport
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* for (all transports). */
 id|asoc-&gt;eyecatcher
 op_assign
 l_int|0
@@ -874,11 +856,10 @@ id|asoc
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_association_free() */
 multiline_comment|/* Cleanup and free up an association. */
+DECL|function|sctp_association_destroy
 r_static
 r_void
-DECL|function|sctp_association_destroy
 id|sctp_association_destroy
 c_func
 (paren
@@ -929,11 +910,10 @@ id|assoc
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/* sctp_association_destroy() */
 multiline_comment|/* Add a transport address to an association.  */
+DECL|function|sctp_assoc_add_peer
 id|sctp_transport_t
 op_star
-DECL|function|sctp_assoc_add_peer
 id|sctp_assoc_add_peer
 c_func
 (paren
@@ -959,7 +939,7 @@ op_star
 id|sp
 suffix:semicolon
 r_const
-r_uint16
+id|__u16
 op_star
 id|port
 suffix:semicolon
@@ -1000,7 +980,7 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
-multiline_comment|/* switch addr type */
+suffix:semicolon
 multiline_comment|/* Set the port if it has not been set yet.  */
 r_if
 c_cond
@@ -1046,11 +1026,9 @@ c_cond
 (paren
 id|peer
 )paren
-(brace
 r_return
 id|peer
 suffix:semicolon
-)brace
 id|peer
 op_assign
 id|sctp_transport_new
@@ -1068,11 +1046,9 @@ l_int|NULL
 op_eq
 id|peer
 )paren
-(brace
 r_return
 l_int|NULL
 suffix:semicolon
-)brace
 id|sctp_transport_set_owner
 c_func
 (paren
@@ -1081,7 +1057,7 @@ comma
 id|asoc
 )paren
 suffix:semicolon
-multiline_comment|/* If this is the first transport addr on this association,&n;         * initialize the association PMTU to the peer&squot;s PMTU.&n;         * If not and the current association PMTU is higher than the new&n;         * peer&squot;s PMTU, reset the association PMTU to the new peer&squot;s PMTU.&n;         */
+multiline_comment|/* If this is the first transport addr on this association,&n;&t; * initialize the association PMTU to the peer&squot;s PMTU.&n;&t; * If not and the current association PMTU is higher than the new&n;&t; * peer&squot;s PMTU, reset the association PMTU to the new peer&squot;s PMTU.&n;&t; */
 r_if
 c_cond
 (paren
@@ -1147,14 +1123,14 @@ comma
 id|asoc-&gt;peer.port
 )paren
 suffix:semicolon
-multiline_comment|/* 7.2.1 Slow-Start&n;         * &n;         * o The initial cwnd before data transmission or after a&n;         *   sufficiently long idle period MUST be &lt;= 2*MTU.&n;         * &n;         * o The initial value of ssthresh MAY be arbitrarily high&n;         *   (for example, implementations MAY use the size of the&n;         *   receiver advertised window). &n;         */
+multiline_comment|/* 7.2.1 Slow-Start&n;&t; *&n;&t; * o The initial cwnd before data transmission or after a&n;&t; *   sufficiently long idle period MUST be &lt;= 2*MTU.&n;&t; *&n;&t; * o The initial value of ssthresh MAY be arbitrarily high&n;&t; *   (for example, implementations MAY use the size of the&n;&t; *   receiver advertised window).&n;&t; */
 id|peer-&gt;cwnd
 op_assign
 id|asoc-&gt;pmtu
 op_star
 l_int|2
 suffix:semicolon
-multiline_comment|/* At this point, we may not have the receiver&squot;s advertised window, &n;&t; * so initialize ssthresh to the default value and it will be set &n;&t; * later when we process the INIT.&n;&t; */
+multiline_comment|/* At this point, we may not have the receiver&squot;s advertised window,&n;&t; * so initialize ssthresh to the default value and it will be set&n;&t; * later when we process the INIT.&n;&t; */
 id|peer-&gt;ssthresh
 op_assign
 id|SCTP_DEFAULT_MAXWINDOW
@@ -1171,7 +1147,7 @@ id|peer-&gt;error_threshold
 op_assign
 id|peer-&gt;max_retrans
 suffix:semicolon
-multiline_comment|/* Update the overall error threshold value of the association &n;&t; * taking the new peer&squot;s error threshold into account.&n;&t; */
+multiline_comment|/* Update the overall error threshold value of the association&n;&t; * taking the new peer&squot;s error threshold into account.&n;&t; */
 id|asoc-&gt;overall_error_threshold
 op_assign
 id|min
@@ -1184,7 +1160,7 @@ comma
 id|asoc-&gt;max_retrans
 )paren
 suffix:semicolon
-multiline_comment|/* Initialize the peer&squot;s heartbeat interval based on the&n;&t; * sock configured value. &n;&t; */
+multiline_comment|/* Initialize the peer&squot;s heartbeat interval based on the&n;&t; * sock configured value.&n;&t; */
 id|sp
 op_assign
 id|sctp_sk
@@ -1239,21 +1215,18 @@ id|asoc-&gt;peer.active_path
 op_eq
 id|asoc-&gt;peer.retran_path
 )paren
-(brace
 id|asoc-&gt;peer.retran_path
 op_assign
 id|peer
 suffix:semicolon
-)brace
 r_return
 id|peer
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_assoc_add_peer() */
 multiline_comment|/* Lookup a transport by address. */
+DECL|function|sctp_assoc_lookup_paddr
 id|sctp_transport_t
 op_star
-DECL|function|sctp_assoc_lookup_paddr
 id|sctp_assoc_lookup_paddr
 c_func
 (paren
@@ -1310,21 +1283,17 @@ op_amp
 id|t-&gt;ipaddr
 )paren
 )paren
-(brace
 r_return
 id|t
 suffix:semicolon
 )brace
-)brace
-multiline_comment|/* for (all transports) */
 r_return
 l_int|NULL
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_assoc_lookup_paddr() */
 multiline_comment|/* Engage in transport control operations.&n; * Mark the transport up or down and send a notification to the user.&n; * Select and update the new active and retran paths.&n; */
-r_void
 DECL|function|sctp_assoc_control_transport
+r_void
 id|sctp_assoc_control_transport
 c_func
 (paren
@@ -1411,8 +1380,8 @@ c_func
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* switch (command) */
-multiline_comment|/* Generate and send a SCTP_PEER_ADDR_CHANGE notification to the&n;&t; * user. &n;&t; */
+suffix:semicolon
+multiline_comment|/* Generate and send a SCTP_PEER_ADDR_CHANGE notification to the&n;&t; * user.&n;&t; */
 id|event
 op_assign
 id|sctp_ulpevent_make_peer_addr_change
@@ -1442,7 +1411,6 @@ c_cond
 (paren
 id|event
 )paren
-(brace
 id|sctp_ulpqueue_tail_event
 c_func
 (paren
@@ -1452,7 +1420,6 @@ comma
 id|event
 )paren
 suffix:semicolon
-)brace
 multiline_comment|/* Select new active and retran paths. */
 multiline_comment|/* Look for the two most recently used active transports.&n;&t; *&n;&t; * This code produces the wrong ordering whenever jiffies&n;&t; * rolls over, but we still get usable transports, so we don&squot;t&n;&t; * worry about it.&n;&t; */
 id|first
@@ -1490,10 +1457,8 @@ c_cond
 op_logical_neg
 id|t-&gt;state.active
 )paren
-(brace
 r_continue
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -1524,14 +1489,11 @@ id|t-&gt;last_time_heard
 OG
 id|second-&gt;last_time_heard
 )paren
-(brace
 id|second
 op_assign
 id|t
 suffix:semicolon
 )brace
-)brace
-multiline_comment|/* for (all transports) */
 multiline_comment|/* RFC 2960 6.4 Multi-Homed SCTP Endpoints&n;&t; *&n;&t; * By default, an endpoint should always transmit to the&n;&t; * primary path, unless the SCTP user explicitly specifies the&n;&t; * destination transport address (and possibly source&n;&t; * transport address) to use.&n;&t; *&n;&t; * [If the primary is active but not most recent, bump the most&n;&t; * recently used transport.]&n;&t; */
 r_if
 c_cond
@@ -1579,10 +1541,7 @@ id|asoc-&gt;peer.retran_path
 op_assign
 id|second
 suffix:semicolon
-r_return
-suffix:semicolon
 )brace
-multiline_comment|/* sctp_assoc_control_transport() */
 multiline_comment|/* Hold a reference to an association. */
 DECL|function|sctp_association_hold
 r_void
@@ -1602,8 +1561,7 @@ id|asoc-&gt;base.refcnt
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_association_hold() */
-multiline_comment|/* Release a reference to an association and cleanup&n; * if there are no more references. &n; */
+multiline_comment|/* Release a reference to an association and cleanup&n; * if there are no more references.&n; */
 DECL|function|sctp_association_put
 r_void
 id|sctp_association_put
@@ -1624,7 +1582,6 @@ op_amp
 id|asoc-&gt;base.refcnt
 )paren
 )paren
-(brace
 id|sctp_association_destroy
 c_func
 (paren
@@ -1632,11 +1589,9 @@ id|asoc
 )paren
 suffix:semicolon
 )brace
-)brace
-multiline_comment|/* sctp_association_put() */
 multiline_comment|/* Allocate the next TSN, Transmission Sequence Number, for the given&n; * association.&n; */
-r_uint32
 DECL|function|__sctp_association_get_next_tsn
+id|__u32
 id|__sctp_association_get_next_tsn
 c_func
 (paren
@@ -1645,8 +1600,8 @@ op_star
 id|asoc
 )paren
 (brace
-multiline_comment|/* From Section 1.6 Serial Number Arithmetic:&n;         * Transmission Sequence Numbers wrap around when they reach&n;         * 2**32 - 1.  That is, the next TSN a DATA chunk MUST use&n;         * after transmitting TSN = 2*32 - 1 is TSN = 0.&n;         */
-r_uint32
+multiline_comment|/* From Section 1.6 Serial Number Arithmetic:&n;&t; * Transmission Sequence Numbers wrap around when they reach&n;&t; * 2**32 - 1.  That is, the next TSN a DATA chunk MUST use&n;&t; * after transmitting TSN = 2*32 - 1 is TSN = 0.&n;&t; */
+id|__u32
 id|retval
 op_assign
 id|asoc-&gt;next_tsn
@@ -1661,10 +1616,9 @@ r_return
 id|retval
 suffix:semicolon
 )brace
-multiline_comment|/* __sctp_association_get_next_tsn() */
 multiline_comment|/* Allocate &squot;num&squot; TSNs by incrementing the association&squot;s TSN by num. */
-r_uint32
 DECL|function|__sctp_association_get_tsn_block
+id|__u32
 id|__sctp_association_get_tsn_block
 c_func
 (paren
@@ -1676,7 +1630,7 @@ r_int
 id|num
 )paren
 (brace
-r_uint32
+id|__u32
 id|retval
 op_assign
 id|asoc-&gt;next_tsn
@@ -1693,10 +1647,9 @@ r_return
 id|retval
 suffix:semicolon
 )brace
-multiline_comment|/* __sctp_association_get_tsn_block() */
 multiline_comment|/* Fetch the next Stream Sequence Number for stream number &squot;sid&squot;.  */
-r_uint16
 DECL|function|__sctp_association_get_next_ssn
+id|__u16
 id|__sctp_association_get_next_ssn
 c_func
 (paren
@@ -1704,7 +1657,7 @@ id|sctp_association_t
 op_star
 id|asoc
 comma
-r_uint16
+id|__u16
 id|sid
 )paren
 (brace
@@ -1716,10 +1669,9 @@ id|sid
 op_increment
 suffix:semicolon
 )brace
-multiline_comment|/* __sctp_association_get_next_ssn() */
-multiline_comment|/* Compare two addresses to see if they match.  Wildcard addresses&n; * always match within their address family.&n; * &n; * FIXME: We do not match address scopes correctly.&n; */
-r_int
+multiline_comment|/* Compare two addresses to see if they match.  Wildcard addresses&n; * always match within their address family.&n; *&n; * FIXME: We do not match address scopes correctly.&n; */
 DECL|function|sctp_cmp_addr
+r_int
 id|sctp_cmp_addr
 c_func
 (paren
@@ -1754,11 +1706,9 @@ id|ss1-&gt;sa.sa_family
 op_ne
 id|ss2-&gt;sa.sa_family
 )paren
-(brace
 r_return
 l_int|0
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -1766,11 +1716,9 @@ id|ss1-&gt;v4.sin_port
 op_ne
 id|ss2-&gt;v4.sin_port
 )paren
-(brace
 r_return
 l_int|0
 suffix:semicolon
-)brace
 r_switch
 c_cond
 (paren
@@ -1791,11 +1739,9 @@ id|INADDR_ANY
 op_eq
 id|ss2-&gt;v4.sin_addr.s_addr
 )paren
-(brace
 r_goto
 id|match
 suffix:semicolon
-)brace
 id|len
 op_assign
 r_sizeof
@@ -1833,11 +1779,9 @@ op_amp
 id|ss1-&gt;v6.sin6_addr
 )paren
 )paren
-(brace
 r_goto
 id|match
 suffix:semicolon
-)brace
 r_if
 (paren
 id|IPV6_ADDR_ANY
@@ -1849,11 +1793,9 @@ op_amp
 id|ss2-&gt;v6.sin6_addr
 )paren
 )paren
-(brace
 r_goto
 id|match
 suffix:semicolon
-)brace
 id|len
 op_assign
 r_sizeof
@@ -1890,6 +1832,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+suffix:semicolon
 r_return
 (paren
 l_int|0
@@ -1911,10 +1854,9 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_cmp_addr() */
 multiline_comment|/* Compare two addresses to see if they match.  Wildcard addresses&n; * only match themselves.&n; *&n; * FIXME: We do not match address scopes correctly.&n; */
-r_int
 DECL|function|sctp_cmp_addr_exact
+r_int
 id|sctp_cmp_addr_exact
 c_func
 (paren
@@ -1949,11 +1891,9 @@ id|ss1-&gt;sa.sa_family
 op_ne
 id|ss2-&gt;sa.sa_family
 )paren
-(brace
 r_return
 l_int|0
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -1961,11 +1901,9 @@ id|ss1-&gt;v4.sin_port
 op_ne
 id|ss2-&gt;v4.sin_port
 )paren
-(brace
 r_return
 l_int|0
 suffix:semicolon
-)brace
 r_switch
 c_cond
 (paren
@@ -2037,6 +1975,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+suffix:semicolon
 r_return
 (paren
 l_int|0
@@ -2053,11 +1992,10 @@ id|len
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_cmp_addr_exact() */
 multiline_comment|/* Return an ecne chunk to get prepended to a packet.&n; * Note:  We are sly and return a shared, prealloced chunk.&n; */
+DECL|function|sctp_get_ecne_prepend
 id|sctp_chunk_t
 op_star
-DECL|function|sctp_get_ecne_prepend
 id|sctp_get_ecne_prepend
 c_func
 (paren
@@ -2073,10 +2011,10 @@ suffix:semicolon
 r_int
 id|need_ecne
 suffix:semicolon
-r_uint32
+id|__u32
 id|lowest_tsn
 suffix:semicolon
-multiline_comment|/* Can be called from task or bh.   Both need_ecne and&n;&t; * last_ecne_tsn are written during bh. &n;&t; */
+multiline_comment|/* Can be called from task or bh.   Both need_ecne and&n;&t; * last_ecne_tsn are written during bh.&n;&t; */
 id|need_ecne
 op_assign
 id|asoc-&gt;need_ecne
@@ -2114,11 +2052,10 @@ r_return
 id|chunk
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_get_ecne_prepend(asoc) */
 multiline_comment|/* Use this function for the packet prepend callback when no ECNE&n; * packet is desired (e.g. some packets don&squot;t like to be bundled).&n; */
+DECL|function|sctp_get_no_prepend
 id|sctp_chunk_t
 op_star
-DECL|function|sctp_get_no_prepend
 id|sctp_get_no_prepend
 c_func
 (paren
@@ -2131,11 +2068,10 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_get_no_prepend(asoc) */
-multiline_comment|/*&n; * Find which transport this TSN was sent on.   &n; */
+multiline_comment|/*&n; * Find which transport this TSN was sent on.&n; */
+DECL|function|sctp_assoc_lookup_tsn
 id|sctp_transport_t
 op_star
-DECL|function|sctp_assoc_lookup_tsn
 id|sctp_assoc_lookup_tsn
 c_func
 (paren
@@ -2143,7 +2079,7 @@ id|sctp_association_t
 op_star
 id|asoc
 comma
-r_uint32
+id|__u32
 id|tsn
 )paren
 (brace
@@ -2170,7 +2106,7 @@ id|sctp_chunk_t
 op_star
 id|chunk
 suffix:semicolon
-r_uint32
+id|__u32
 id|key
 op_assign
 id|htonl
@@ -2183,8 +2119,8 @@ id|match
 op_assign
 l_int|NULL
 suffix:semicolon
-multiline_comment|/* &n;&t; * FIXME: In general, find a more efficient data structure for&n;&t; * searching. &n;&t; */
-multiline_comment|/* &n;&t; * The general strategy is to search each transport&squot;s transmitted&n;&t; * list.   Return which transport this TSN lives on.&n;&t; * &n;&t; * Let&squot;s be hopeful and check the active_path first.&n;&t; * Another optimization would be to know if there is only one&n;&t; * outbound path and not have to look for the TSN at all.&n;&t; * &n;&t; */
+multiline_comment|/*&n;&t; * FIXME: In general, find a more efficient data structure for&n;&t; * searching.&n;&t; */
+multiline_comment|/*&n;&t; * The general strategy is to search each transport&squot;s transmitted&n;&t; * list.   Return which transport this TSN lives on.&n;&t; *&n;&t; * Let&squot;s be hopeful and check the active_path first.&n;&t; * Another optimization would be to know if there is only one&n;&t; * outbound path and not have to look for the TSN at all.&n;&t; *&n;&t; */
 id|active
 op_assign
 id|asoc-&gt;peer.active_path
@@ -2227,7 +2163,6 @@ id|out
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/* for (each unacknowledged TSN) */
 multiline_comment|/* If not found, go search all the other transports. */
 id|list_for_each
 c_func
@@ -2257,10 +2192,8 @@ id|transport
 op_eq
 id|active
 )paren
-(brace
 r_break
 suffix:semicolon
-)brace
 id|list_for_each
 c_func
 (paren
@@ -2299,20 +2232,17 @@ id|out
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/* for (all unacknowledged TSNs) */
 )brace
-multiline_comment|/* for (all transports) */
 id|out
 suffix:colon
 r_return
 id|match
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_assoc_lookup_tsn() */
 multiline_comment|/* Is this the association we are looking for? */
+DECL|function|sctp_assoc_is_match
 id|sctp_transport_t
 op_star
-DECL|function|sctp_assoc_is_match
 id|sctp_assoc_is_match
 c_func
 (paren
@@ -2374,11 +2304,9 @@ c_cond
 op_logical_neg
 id|transport
 )paren
-(brace
 r_goto
 id|out
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -2391,11 +2319,9 @@ comma
 id|laddr
 )paren
 )paren
-(brace
 r_goto
 id|out
 suffix:semicolon
-)brace
 )brace
 id|transport
 op_assign
@@ -2414,11 +2340,10 @@ r_return
 id|transport
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_assoc_is_match() */
 multiline_comment|/* Do delayed input processing.  This is scheduled by sctp_rcv(). */
+DECL|function|sctp_assoc_bh_rcv
 r_static
 r_void
-DECL|function|sctp_assoc_bh_rcv
 id|sctp_assoc_bh_rcv
 c_func
 (paren
@@ -2511,23 +2436,19 @@ c_func
 id|chunk
 )paren
 )paren
-(brace
 id|asoc-&gt;peer.last_data_from
 op_assign
 id|chunk-&gt;transport
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
 id|chunk-&gt;transport
 )paren
-(brace
 id|chunk-&gt;transport-&gt;last_time_heard
 op_assign
 id|jiffies
 suffix:semicolon
-)brace
 multiline_comment|/* Run through the state machine. */
 id|error
 op_assign
@@ -2566,11 +2487,9 @@ comma
 id|associd
 )paren
 )paren
-(brace
 r_goto
 id|out
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -2578,13 +2497,10 @@ id|error
 op_ne
 l_int|0
 )paren
-(brace
 r_goto
 id|err_out
 suffix:semicolon
 )brace
-)brace
-multiline_comment|/* while (we have more chunks to receive) */
 id|err_out
 suffix:colon
 multiline_comment|/* Is this the right way to pass errors up to the ULP?  */
@@ -2593,22 +2509,17 @@ c_cond
 (paren
 id|error
 )paren
-(brace
 id|sk-&gt;err
 op_assign
 op_minus
 id|error
 suffix:semicolon
-)brace
 id|out
 suffix:colon
-r_return
-suffix:semicolon
 )brace
-multiline_comment|/* sctp_bh_rcv_asoc() */
 multiline_comment|/* This routine moves an association from its old sk to a new sk.  */
-r_void
 DECL|function|sctp_assoc_migrate
+r_void
 id|sctp_assoc_migrate
 c_func
 (paren
@@ -2632,7 +2543,7 @@ c_func
 id|newsk
 )paren
 suffix:semicolon
-multiline_comment|/* Delete the association from the old endpoint&squot;s list of&n;&t; * associations. &n;&t; */
+multiline_comment|/* Delete the association from the old endpoint&squot;s list of&n;&t; * associations.&n;&t; */
 id|list_del
 c_func
 (paren
@@ -2685,10 +2596,9 @@ id|assoc
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_assoc_migrate() */
 multiline_comment|/* Update an association (possibly from unexpected COOKIE-ECHO processing).  */
-r_void
 DECL|function|sctp_assoc_update
+r_void
 id|sctp_assoc_update
 c_func
 (paren
@@ -2746,7 +2656,7 @@ comma
 id|asoc-&gt;peer.i.initial_tsn
 )paren
 suffix:semicolon
-multiline_comment|/* FIXME:&n;&t; *    Do we need to copy primary_path etc?&n;&t; *    &n;&t; *    More explicitly, addresses may have been removed and&n;&t; *    this needs accounting for.&n;&t; */
+multiline_comment|/* FIXME:&n;&t; *    Do we need to copy primary_path etc?&n;&t; *&n;&t; *    More explicitly, addresses may have been removed and&n;&t; *    this needs accounting for.&n;&t; */
 multiline_comment|/* If the case is A (association restart), use&n;&t; * initial_tsn as next_tsn. If the case is B, use&n;&t; * current next_tsn in case there is data sent to peer&n;&t; * has been discarded and needs retransmission.&n;&t; */
 r_if
 c_cond
@@ -2809,14 +2719,11 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
-r_return
-suffix:semicolon
 )brace
-multiline_comment|/* sctp_assoc_update() */
-multiline_comment|/* Choose the transport for sending a shutdown packet. &n; * Round-robin through the active transports, else round-robin&n; * through the inactive transports as this is the next best thing&n; * we can try. &n; */
+multiline_comment|/* Choose the transport for sending a shutdown packet.&n; * Round-robin through the active transports, else round-robin&n; * through the inactive transports as this is the next best thing&n; * we can try.&n; */
+DECL|function|sctp_assoc_choose_shutdown_transport
 id|sctp_transport_t
 op_star
-DECL|function|sctp_assoc_choose_shutdown_transport
 id|sctp_assoc_choose_shutdown_transport
 c_func
 (paren
@@ -2850,11 +2757,9 @@ c_cond
 op_logical_neg
 id|asoc-&gt;shutdown_last_sent_to
 )paren
-(brace
 r_return
 id|asoc-&gt;peer.active_path
 suffix:semicolon
-)brace
 multiline_comment|/* Otherwise, find the next transport in a round-robin fashion. */
 id|t
 op_assign
@@ -2883,19 +2788,15 @@ id|pos-&gt;next
 op_eq
 id|head
 )paren
-(brace
 id|pos
 op_assign
 id|head-&gt;next
 suffix:semicolon
-)brace
 r_else
-(brace
 id|pos
 op_assign
 id|pos-&gt;next
 suffix:semicolon
-)brace
 id|t
 op_assign
 id|list_entry
@@ -2927,14 +2828,12 @@ c_cond
 op_logical_neg
 id|next
 )paren
-(brace
 id|next
 op_assign
 id|t
 suffix:semicolon
 )brace
-)brace
-multiline_comment|/* We have exhausted the list, but didn&squot;t find any&n;&t;&t; * other active transports.  If so, use the next&n;&t;&t; * transport. &n;&t;&t; */
+multiline_comment|/* We have exhausted the list, but didn&squot;t find any&n;&t;&t; * other active transports.  If so, use the next&n;&t;&t; * transport.&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -2955,5 +2854,4 @@ r_return
 id|t
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_assoc_choose_shutdown_transport() */
 eof

@@ -17,8 +17,8 @@ macro_line|#include &lt;net/sctp/sctp.h&gt;
 macro_line|#include &lt;net/sctp/sctp_sm.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 multiline_comment|/* Initialize an SCTP_inqueue.  */
-r_void
 DECL|function|sctp_inqueue_init
+r_void
 id|sctp_inqueue_init
 c_func
 (paren
@@ -63,14 +63,14 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_inqueue_init() */
 multiline_comment|/* Create an initialized SCTP_inqueue.  */
+DECL|function|sctp_inqueue_new
 id|sctp_inqueue_t
 op_star
-DECL|function|sctp_inqueue_new
 id|sctp_inqueue_new
 c_func
 (paren
+r_void
 )paren
 (brace
 id|sctp_inqueue_t
@@ -90,15 +90,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-l_int|NULL
-op_eq
 id|retval
 )paren
 (brace
-r_return
-l_int|NULL
-suffix:semicolon
-)brace
 id|sctp_inqueue_init
 c_func
 (paren
@@ -109,14 +103,14 @@ id|retval-&gt;malloced
 op_assign
 l_int|1
 suffix:semicolon
+)brace
 r_return
 id|retval
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_inqueue_new() */
 multiline_comment|/* Release the memory associated with an SCTP inqueue.  */
-r_void
 DECL|function|sctp_inqueue_free
+r_void
 id|sctp_inqueue_free
 c_func
 (paren
@@ -150,28 +144,24 @@ id|queue-&gt;in
 op_ne
 l_int|NULL
 )paren
-(brace
 id|sctp_free_chunk
 c_func
 (paren
 id|chunk
 )paren
 suffix:semicolon
-)brace
-multiline_comment|/* If there is a packet which is currently being worked on, &n;&t; * free it as well.&n;&t; */
+multiline_comment|/* If there is a packet which is currently being worked on,&n;&t; * free it as well.&n;&t; */
 r_if
 c_cond
 (paren
 id|queue-&gt;in_progress
 )paren
-(brace
 id|sctp_free_chunk
 c_func
 (paren
 id|queue-&gt;in_progress
 )paren
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -187,10 +177,9 @@ id|queue
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/* sctp_inqueue_free() */
-multiline_comment|/* Put a new packet in an SCTP inqueue.  &n; * We assume that packet-&gt;sctp_hdr is set and in host byte order.  &n; */
-r_void
+multiline_comment|/* Put a new packet in an SCTP inqueue.&n; * We assume that packet-&gt;sctp_hdr is set and in host byte order.&n; */
 DECL|function|sctp_push_inqueue
+r_void
 id|sctp_push_inqueue
 c_func
 (paren
@@ -230,11 +219,10 @@ id|q-&gt;immediate.data
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_push_inqueue() */
-multiline_comment|/* Extract a chunk from an SCTP inqueue.&n; * &n; * WARNING:  If you need to put the chunk on another queue, you need to &n; * make a shallow copy (clone) of it.&n; */
+multiline_comment|/* Extract a chunk from an SCTP inqueue.&n; *&n; * WARNING:  If you need to put the chunk on another queue, you need to&n; * make a shallow copy (clone) of it.&n; */
+DECL|function|sctp_pop_inqueue
 id|sctp_chunk_t
 op_star
-DECL|function|sctp_pop_inqueue
 id|sctp_pop_inqueue
 c_func
 (paren
@@ -253,20 +241,20 @@ id|ch
 op_assign
 l_int|NULL
 suffix:semicolon
-multiline_comment|/* The assumption is that we are safe to process the chunks&n;&t; * at this time.   &n;&t; */
+multiline_comment|/* The assumption is that we are safe to process the chunks&n;&t; * at this time.&n;&t; */
 r_if
 c_cond
 (paren
-l_int|NULL
-op_ne
 (paren
 id|chunk
 op_assign
 id|queue-&gt;in_progress
 )paren
+op_ne
+l_int|NULL
 )paren
 (brace
-multiline_comment|/* There is a packet that we have been working on.&n;        &t; * Any post processing work to do before we move on?&n;         &t; */
+multiline_comment|/* There is a packet that we have been working on.&n;&t;&t; * Any post processing work to do before we move on?&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -318,8 +306,7 @@ multiline_comment|/* Do we need to take the next packet out of the queue to proc
 r_if
 c_cond
 (paren
-l_int|NULL
-op_eq
+op_logical_neg
 id|chunk
 )paren
 (brace
@@ -334,11 +321,9 @@ op_amp
 id|queue-&gt;in
 )paren
 )paren
-(brace
 r_return
 l_int|NULL
 suffix:semicolon
-)brace
 id|chunk
 op_assign
 id|queue-&gt;in_progress
@@ -376,7 +361,7 @@ id|chunk-&gt;chunk_end
 op_assign
 (paren
 (paren
-r_uint8
+id|__u8
 op_star
 )paren
 id|ch
@@ -424,7 +409,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-multiline_comment|/* We are at the end of the packet, so mark the chunk&n;                 * in case we need to send a SACK.&n;                 */
+multiline_comment|/* We are at the end of the packet, so mark the chunk&n;&t;&t; * in case we need to send a SACK.&n;&t;&t; */
 id|chunk-&gt;end_of_packet
 op_assign
 l_int|1
@@ -461,10 +446,9 @@ r_return
 id|chunk
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_pop_inqueue() */
-multiline_comment|/* Set a top-half handler.&n; * &n; * Originally, we the top-half handler was scheduled as a BH.  We now&n; * call the handler directly in sctp_push_inqueue() at a time that &n; * we know we are lock safe.  &n; * The intent is that this routine will pull stuff out of the &n; * inqueue and process it.&n; */
-r_void
+multiline_comment|/* Set a top-half handler.&n; *&n; * Originally, we the top-half handler was scheduled as a BH.  We now&n; * call the handler directly in sctp_push_inqueue() at a time that&n; * we know we are lock safe.&n; * The intent is that this routine will pull stuff out of the&n; * inqueue and process it.&n; */
 DECL|function|sctp_inqueue_set_th_handler
+r_void
 id|sctp_inqueue_set_th_handler
 c_func
 (paren
@@ -496,5 +480,4 @@ op_assign
 id|arg
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_inqueue_set_th_handler() */
 eof

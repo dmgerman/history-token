@@ -16,7 +16,6 @@ suffix:semicolon
 DECL|macro|__NO_VERSION__
 mdefine_line|#define __NO_VERSION__
 macro_line|#include &lt;linux/module.h&gt;
-macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/socket.h&gt;
@@ -78,12 +77,11 @@ id|info
 (brace
 multiline_comment|/* BUG.  WRITE ME.  */
 )brace
-multiline_comment|/* sctp_v6_err */
 multiline_comment|/* Based on tcp_v6_xmit() in tcp_ipv6.c. */
+DECL|function|sctp_v6_xmit
 r_static
 r_inline
 r_int
-DECL|function|sctp_v6_xmit
 id|sctp_v6_xmit
 c_func
 (paren
@@ -273,7 +271,7 @@ c_func
 id|dst
 )paren
 suffix:semicolon
-multiline_comment|/* FIXME: This is all temporary until real source address&n;&t; * selection is done. &n;&t; */
+multiline_comment|/* FIXME: This is all temporary until real source address&n;&t; * selection is done.&n;&t; */
 r_if
 c_cond
 (paren
@@ -303,7 +301,6 @@ c_cond
 (paren
 id|err
 )paren
-(brace
 id|printk
 c_func
 (paren
@@ -311,8 +308,7 @@ id|KERN_ERR
 l_string|&quot;sctp_v6_xmit: no saddr available&bslash;n&quot;
 )paren
 suffix:semicolon
-)brace
-multiline_comment|/* FIXME: This is a workaround until we get &n;&t;&t; * real source address selection done.  This is here&n;&t;&t; * to disallow loopback when the scoping rules have &n;&t;&t; * not bound loopback to the endpoint.  &n;&t;&t; */
+multiline_comment|/* FIXME: This is a workaround until we get&n;&t;&t; * real source address selection done.  This is here&n;&t;&t; * to disallow loopback when the scoping rules have&n;&t;&t; * not bound loopback to the endpoint.&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -389,11 +385,10 @@ id|np-&gt;opt
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_v6_xmit */
 macro_line|#endif /* TEST_FRAME */
 multiline_comment|/* Returns the mtu for the given v6 destination address. */
-r_int
 DECL|function|sctp_v6_get_dst_mtu
+r_int
 id|sctp_v6_get_dst_mtu
 c_func
 (paren
@@ -403,19 +398,19 @@ op_star
 id|address
 )paren
 (brace
-r_int
-id|dst_mtu
-op_assign
-id|SCTP_DEFAULT_MAXSEGMENT
+r_struct
+id|dst_entry
+op_star
+id|dst
 suffix:semicolon
 r_struct
 id|flowi
 id|fl
 suffix:semicolon
-r_struct
-id|dst_entry
-op_star
-id|dst
+r_int
+id|dst_mtu
+op_assign
+id|SCTP_DEFAULT_MAXSEGMENT
 suffix:semicolon
 id|fl.proto
 op_assign
@@ -504,12 +499,9 @@ id|dst_mtu
 suffix:semicolon
 )brace
 r_return
-(paren
 id|dst_mtu
-)paren
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_v6_get_dst_mtu() */
 DECL|variable|inet6_seqpacket_ops
 r_static
 r_struct
@@ -739,7 +731,7 @@ id|AF_INET6
 comma
 )brace
 suffix:semicolon
-multiline_comment|/* Initialize IPv6 support and register with inet6 stack. */
+multiline_comment|/* Initialize IPv6 support and register with inet6 stack.  */
 DECL|function|sctp_v6_init
 r_int
 id|sctp_v6_init
@@ -786,7 +778,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_v6_init() */
 multiline_comment|/* IPv6 specific exit support. */
 DECL|function|sctp_v6_exit
 r_void
@@ -818,5 +809,4 @@ id|sctpv6_protosw
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_v6_exit() */
 eof

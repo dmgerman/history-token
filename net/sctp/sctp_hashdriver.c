@@ -17,9 +17,9 @@ macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;asm/string.h&gt;
 macro_line|#include &lt;net/sctp/sctp.h&gt;
 macro_line|#include &lt;net/sctp/sctp_sla1.h&gt;
-multiline_comment|/* SCTP Main driver.&n;   passing a two pointers and two lengths,&n;   returning a digest pointer filled. The md5 code&n;   was taken directly from the RFC (2104) so to understand it&n;   you may want to go look at the RFC referenced in the&n;   SCTP spec. We did modify this code to either user OUR&n;   implementation of SLA1 or the MD5 that comes from its&n;   RFC. SLA1 may have IPR issues so you need to check in&n;   to this if you wish to use it... Or at least that is&n;   what the FIP-180.1 web page says.&n; */
-r_void
+multiline_comment|/* SCTP Main driver.&n; * passing a two pointers and two lengths,&n; * returning a digest pointer filled. The md5 code&n; * was taken directly from the RFC (2104) so to understand it&n; * you may want to go look at the RFC referenced in the&n; * SCTP spec. We did modify this code to either user OUR&n; * implementation of SLA1 or the MD5 that comes from its&n; * RFC. SLA1 may have IPR issues so you need to check in&n; * to this if you wish to use it... Or at least that is&n; * what the FIP-180.1 web page says.&n; */
 DECL|function|sctp_hash_digest
+r_void
 id|sctp_hash_digest
 c_func
 (paren
@@ -41,7 +41,7 @@ r_const
 r_int
 id|text_len
 comma
-r_uint8
+id|__u8
 op_star
 id|digest
 )paren
@@ -51,30 +51,25 @@ id|key_len
 op_assign
 id|in_key_len
 suffix:semicolon
-r_int
-r_int
-op_star
-id|p
-suffix:semicolon
 r_struct
 id|SLA_1_Context
 id|context
 suffix:semicolon
-r_uint8
+id|__u8
 id|k_ipad
 (braket
 l_int|65
 )braket
 suffix:semicolon
-multiline_comment|/* inner padding -&n;&t;&t;&t;&t;* key XORd with ipad&n;&t;&t;&t;&t;*/
-r_uint8
+multiline_comment|/* inner padding -&n;&t;&t;&t;&t; * key XORd with ipad&n;&t;&t;&t;&t; */
+id|__u8
 id|k_opad
 (braket
 l_int|65
 )braket
 suffix:semicolon
-multiline_comment|/* outer padding -&n;&t;&t;&t;&t;* key XORd with opad&n;&t;&t;&t;&t;*/
-r_uint8
+multiline_comment|/* outer padding -&n;&t;&t;&t;&t; * key XORd with opad&n;&t;&t;&t;&t; */
+id|__u8
 id|tk
 (braket
 l_int|20
@@ -132,7 +127,7 @@ op_assign
 l_int|20
 suffix:semicolon
 )brace
-multiline_comment|/*&n;         * the HMAC_MD5 transform looks like:&n;         *&n;         * MD5(K XOR opad, MD5(K XOR ipad, text))&n;         *&n;         * where K is an n byte key&n;         * ipad is the byte 0x36 repeated 64 times&n;         * opad is the byte 0x5c repeated 64 times&n;         * and text is the data being protected&n;         */
+multiline_comment|/*&n;&t; * the HMAC_MD5 transform looks like:&n;&t; *&n;&t; * MD5(K XOR opad, MD5(K XOR ipad, text))&n;&t; *&n;&t; * where K is an n byte key&n;&t; * ipad is the byte 0x36 repeated 64 times&n;&t; * opad is the byte 0x5c repeated 64 times&n;&t; * and text is the data being protected&n;&t; */
 multiline_comment|/* start out by storing key in pads */
 id|memset
 c_func
@@ -207,7 +202,7 @@ op_xor_assign
 l_int|0x5c
 suffix:semicolon
 )brace
-multiline_comment|/*&n;         * perform inner hash&n;         */
+multiline_comment|/* perform inner hash */
 id|SLA1_Init
 c_func
 (paren
@@ -215,7 +210,7 @@ op_amp
 id|context
 )paren
 suffix:semicolon
-multiline_comment|/* init context for 1st&n;                                                  * pass &n;                                                  */
+multiline_comment|/* init context for 1st&n;&t;&t;&t;&t;&t;&t;  * pass&n;&t;&t;&t;&t;&t;&t;  */
 id|SLA1_Process
 c_func
 (paren
@@ -258,7 +253,7 @@ op_amp
 id|context
 )paren
 suffix:semicolon
-multiline_comment|/* init context for 2nd&n;                                                * pass &n;                                                */
+multiline_comment|/* init context for 2nd&n;&t;&t;&t;&t;&t;&t;* pass&n;&t;&t;&t;&t;&t;&t;*/
 id|SLA1_Process
 c_func
 (paren
@@ -282,7 +277,7 @@ comma
 l_int|20
 )paren
 suffix:semicolon
-multiline_comment|/* then results of 1st&n;                                                 * hash &n;                                                 */
+multiline_comment|/* then results of 1st&n;&t;&t;&t;&t;&t;&t; * hash&n;&t;&t;&t;&t;&t;&t; */
 id|SLA1_Final
 c_func
 (paren
@@ -293,14 +288,5 @@ id|digest
 )paren
 suffix:semicolon
 multiline_comment|/* finish up 2nd pass */
-id|p
-op_assign
-(paren
-r_int
-r_int
-op_star
-)paren
-id|digest
-suffix:semicolon
 )brace
 eof

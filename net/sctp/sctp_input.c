@@ -13,7 +13,6 @@ id|unused
 op_assign
 l_string|&quot;$Id: sctp_input.c,v 1.24 2002/07/24 12:26:20 jgrimm Exp $&quot;
 suffix:semicolon
-macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/list.h&gt; /* For struct list_head */
 macro_line|#include &lt;linux/socket.h&gt;
@@ -24,18 +23,6 @@ macro_line|#include &lt;linux/ipsec.h&gt;
 macro_line|#include &lt;net/sctp/sctp.h&gt;
 macro_line|#include &lt;net/sctp/sctp_sm.h&gt;
 multiline_comment|/* Forward declarations for internal helpers. */
-r_static
-r_inline
-r_int
-id|sctp_rcv_checksum
-c_func
-(paren
-r_struct
-id|sk_buff
-op_star
-id|skb
-)paren
-suffix:semicolon
 r_static
 r_int
 id|sctp_rcv_ootb
@@ -84,10 +71,10 @@ id|laddr
 )paren
 suffix:semicolon
 multiline_comment|/* Initialize a sockaddr_storage from in incoming skb.&n; * FIXME:  This belongs with AF specific sctp_func_t.  --jgrimm&n; */
+DECL|function|sctp_sockaddr_storage_init
 r_static
 id|sockaddr_storage_t
 op_star
-DECL|function|sctp_sockaddr_storage_init
 id|sctp_sockaddr_storage_init
 c_func
 (paren
@@ -121,7 +108,7 @@ comma
 op_star
 id|daddr
 suffix:semicolon
-r_uint16
+id|__u16
 op_star
 id|port
 suffix:semicolon
@@ -233,6 +220,7 @@ r_goto
 id|out
 suffix:semicolon
 )brace
+suffix:semicolon
 id|sh
 op_assign
 (paren
@@ -300,10 +288,82 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_sockaddr_storage_init() */
-multiline_comment|/*&n; * This is the routine which IP calls when receiving an SCTP packet.&n; */
+multiline_comment|/* Calculate the SCTP checksum of an SCTP packet.  */
+DECL|function|sctp_rcv_checksum
+r_static
+r_inline
 r_int
+id|sctp_rcv_checksum
+c_func
+(paren
+r_struct
+id|sk_buff
+op_star
+id|skb
+)paren
+(brace
+r_struct
+id|sctphdr
+op_star
+id|sh
+suffix:semicolon
+id|__u32
+id|cmp
+comma
+id|val
+suffix:semicolon
+id|sh
+op_assign
+(paren
+r_struct
+id|sctphdr
+op_star
+)paren
+id|skb-&gt;h.raw
+suffix:semicolon
+id|cmp
+op_assign
+id|ntohl
+c_func
+(paren
+id|sh-&gt;checksum
+)paren
+suffix:semicolon
+id|val
+op_assign
+id|count_crc
+c_func
+(paren
+(paren
+id|__u8
+op_star
+)paren
+id|sh
+comma
+id|skb-&gt;len
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|val
+op_ne
+id|cmp
+)paren
+(brace
+multiline_comment|/* CRC failure, dump it. */
+r_return
+op_minus
+l_int|1
+suffix:semicolon
+)brace
+r_return
+l_int|0
+suffix:semicolon
+)brace
+multiline_comment|/*&n; * This is the routine which IP calls when receiving an SCTP packet.&n; */
 DECL|function|sctp_rcv
+r_int
 id|sctp_rcv
 c_func
 (paren
@@ -365,11 +425,9 @@ id|skb-&gt;pkt_type
 op_ne
 id|PACKET_HOST
 )paren
-(brace
 r_goto
 id|discard_it
 suffix:semicolon
-)brace
 id|sh
 op_assign
 (paren
@@ -401,11 +459,9 @@ r_struct
 id|sctphdr
 )paren
 )paren
-(brace
 r_goto
 id|bad_packet
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -417,11 +473,9 @@ id|skb
 OL
 l_int|0
 )paren
-(brace
 r_goto
 id|bad_packet
 suffix:semicolon
-)brace
 id|skb_pull
 c_func
 (paren
@@ -456,7 +510,7 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-multiline_comment|/* If the packet is to or from a non-unicast address,&n;&t; * silently discard the packet.&n;&t; *&n;&t; * This is not clearly defined in the RFC except in section&n;&t; * 8.4 - OOTB handling.  However, based on the book &quot;Stream Control &n;&t; * Transmission Protocol&quot; 2.1, &quot;It is important to note that the &n;&t; * IP address of an SCTP transport address must be a routable&n;&t; * unicast address.  In other words, IP multicast addresses and&n;&t; * IP broadcast addresses cannot be used in an SCTP transport&n;&t; * address.&quot;&n;&t; */
+multiline_comment|/* If the packet is to or from a non-unicast address,&n;&t; * silently discard the packet.&n;&t; *&n;&t; * This is not clearly defined in the RFC except in section&n;&t; * 8.4 - OOTB handling.  However, based on the book &quot;Stream Control&n;&t; * Transmission Protocol&quot; 2.1, &quot;It is important to note that the&n;&t; * IP address of an SCTP transport address must be a routable&n;&t; * unicast address.  In other words, IP multicast addresses and&n;&t; * IP broadcast addresses cannot be used in an SCTP transport&n;&t; * address.&quot;&n;&t; */
 r_if
 c_cond
 (paren
@@ -476,11 +530,9 @@ op_amp
 id|dest
 )paren
 )paren
-(brace
 r_goto
 id|discard_it
 suffix:semicolon
-)brace
 id|asoc
 op_assign
 id|__sctp_rcv_lookup
@@ -498,7 +550,7 @@ op_amp
 id|transport
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * RFC 2960, 8.4 - Handle &quot;Out of the blue&quot; Packets.&n;&t; * An SCTP packet is called an &quot;out of the blue&quot; (OOTB) &n;&t; * packet if it is correctly formed, i.e., passed the &n;&t; * receiver&squot;s checksum check, but the receiver is not &n;&t; * able to identify the association to which this &n;&t; * packet belongs. &n;&t; */
+multiline_comment|/*&n;&t; * RFC 2960, 8.4 - Handle &quot;Out of the blue&quot; Packets.&n;&t; * An SCTP packet is called an &quot;out of the blue&quot; (OOTB)&n;&t; * packet if it is correctly formed, i.e., passed the&n;&t; * receiver&squot;s checksum check, but the receiver is not&n;&t; * able to identify the association to which this&n;&t; * packet belongs.&n;&t; */
 r_if
 c_cond
 (paren
@@ -524,11 +576,9 @@ c_func
 id|skb
 )paren
 )paren
-(brace
 r_goto
 id|discard_release
 suffix:semicolon
-)brace
 )brace
 multiline_comment|/* Retrieve the common input handling substructure. */
 id|rcvr
@@ -558,11 +608,9 @@ comma
 id|skb
 )paren
 )paren
-(brace
 r_goto
 id|discard_release
 suffix:semicolon
-)brace
 multiline_comment|/* Create an SCTP packet structure. */
 id|chunk
 op_assign
@@ -661,7 +709,7 @@ id|chunk
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Release the sock and any reference counts we took in the &n;&t; * lookup calls.&n;&t; */
+multiline_comment|/* Release the sock and any reference counts we took in the&n;&t; * lookup calls.&n;&t; */
 id|sctp_bh_unlock_sock
 c_func
 (paren
@@ -761,10 +809,9 @@ r_goto
 id|discard_it
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_rcv() */
-multiline_comment|/* Handle second half of inbound skb processing.  If the sock was busy,&n; * we may have need to delay processing until later when the sock is&n; * released (on the backlog).   If not busy, we call this routine &n; * directly from the bottom half. &n; */
-r_int
+multiline_comment|/* Handle second half of inbound skb processing.  If the sock was busy,&n; * we may have need to delay processing until later when the sock is&n; * released (on the backlog).   If not busy, we call this routine&n; * directly from the bottom half.&n; */
 DECL|function|sctp_backlog_rcv
+r_int
 id|sctp_backlog_rcv
 c_func
 (paren
@@ -813,10 +860,9 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_backlog_rcv() */
 multiline_comment|/*&n; * This routine is called by the ICMP module when it gets some&n; * sort of error condition.  If err &lt; 0 then the socket should&n; * be closed and the error returned to the user.  If err &gt; 0&n; * it&squot;s just the icmp type &lt;&lt; 8 | icmp code.  After adjustment&n; * header points to the first 8 bytes of the sctp header.  We need&n; * to find the appropriate port.&n; *&n; * The locking strategy used here is very &quot;optimistic&quot;. When&n; * someone else accesses the socket the ICMP is just dropped&n; * and for some paths there is no check at all.&n; * A more general error queue to queue errors for later handling&n; * is probably better.&n; *&n; */
-r_void
 DECL|function|sctp_v4_err
+r_void
 id|sctp_v4_err
 c_func
 (paren
@@ -831,84 +877,9 @@ id|info
 (brace
 multiline_comment|/* This should probably involve a call to SCTPhandleICMP().  */
 )brace
-multiline_comment|/* void sctp_v4_err(struct sk_buff *skb, u32 info) */
-multiline_comment|/* Calculate the SCTP checksum of an SCTP packet.  */
-r_static
-r_inline
-r_int
-DECL|function|sctp_rcv_checksum
-id|sctp_rcv_checksum
-c_func
-(paren
-r_struct
-id|sk_buff
-op_star
-id|skb
-)paren
-(brace
-r_uint32
-id|cmp
-comma
-id|val
-suffix:semicolon
-r_struct
-id|sctphdr
-op_star
-id|sh
-suffix:semicolon
-id|sh
-op_assign
-(paren
-r_struct
-id|sctphdr
-op_star
-)paren
-id|skb-&gt;h.raw
-suffix:semicolon
-id|cmp
-op_assign
-id|ntohl
-c_func
-(paren
-id|sh-&gt;checksum
-)paren
-suffix:semicolon
-id|val
-op_assign
-id|count_crc
-c_func
-(paren
-(paren
-r_uint8
-op_star
-)paren
-id|sh
-comma
-id|skb-&gt;len
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|val
-op_ne
-id|cmp
-)paren
-(brace
-multiline_comment|/* CRC failure, dump it. */
-r_return
-op_minus
-l_int|1
-suffix:semicolon
-)brace
-r_return
-l_int|0
-suffix:semicolon
-)brace
-multiline_comment|/* sctp_rcv_checksum() */
 multiline_comment|/*&n; * RFC 2960, 8.4 - Handle &quot;Out of the blue&quot; Packets.&n; *&n; * This function scans all the chunks in the OOTB packet to determine if&n; * the packet should be discarded right away.  If a response might be needed&n; * for this packet, or, if further processing is possible, the packet will&n; * be queued to a proper inqueue for the next phase of handling.&n; *&n; * Output:&n; * Return 0 - If further processing is needed.&n; * Return 1 - If the packet can be discarded right away.&n; */
-r_int
 DECL|function|sctp_rcv_ootb
+r_int
 id|sctp_rcv_ootb
 c_func
 (paren
@@ -922,7 +893,7 @@ id|sctp_chunkhdr_t
 op_star
 id|ch
 suffix:semicolon
-r_uint8
+id|__u8
 op_star
 id|ch_end
 suffix:semicolon
@@ -941,7 +912,7 @@ id|ch_end
 op_assign
 (paren
 (paren
-r_uint8
+id|__u8
 op_star
 )paren
 id|ch
@@ -957,7 +928,7 @@ id|ch-&gt;length
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* RFC 8.4, 2) If the OOTB packet contains an ABORT chunk, the &n;&t;&t; * receiver MUST silently discard the OOTB packet and take no &n;&t;&t; * further action.&n;&t;&t; */
+multiline_comment|/* RFC 8.4, 2) If the OOTB packet contains an ABORT chunk, the&n;&t;&t; * receiver MUST silently discard the OOTB packet and take no&n;&t;&t; * further action.&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -965,12 +936,10 @@ id|SCTP_CID_ABORT
 op_eq
 id|ch-&gt;type
 )paren
-(brace
 r_goto
 id|discard
 suffix:semicolon
-)brace
-multiline_comment|/* RFC 8.4, 6) If the packet contains a SHUTDOWN COMPLETE &n;&t;&t; * chunk, the receiver should silently discard the packet &n;&t;&t; * and take no further action.&n;&t;&t; */
+multiline_comment|/* RFC 8.4, 6) If the packet contains a SHUTDOWN COMPLETE&n;&t;&t; * chunk, the receiver should silently discard the packet&n;&t;&t; * and take no further action.&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -978,12 +947,10 @@ id|ch-&gt;type
 op_eq
 id|SCTP_CID_SHUTDOWN_COMPLETE
 )paren
-(brace
 r_goto
 id|discard
 suffix:semicolon
-)brace
-multiline_comment|/* RFC 8.4, 7) If the packet contains a &quot;Stale cookie&quot; ERROR &n;&t;&t; * or a COOKIE ACK the SCTP Packet should be silently &n;&t;&t; * discarded. &n;&t;&t; */
+multiline_comment|/* RFC 8.4, 7) If the packet contains a &quot;Stale cookie&quot; ERROR&n;&t;&t; * or a COOKIE ACK the SCTP Packet should be silently&n;&t;&t; * discarded.&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -991,11 +958,9 @@ id|ch-&gt;type
 op_eq
 id|SCTP_CID_COOKIE_ACK
 )paren
-(brace
 r_goto
 id|discard
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -1035,7 +1000,6 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_rcv_ootb() */
 multiline_comment|/* Insert endpoint into the hash table.  */
 DECL|function|__sctp_hash_endpoint
 r_void
@@ -1103,7 +1067,6 @@ c_cond
 (paren
 id|epb-&gt;next
 )paren
-(brace
 (paren
 op_star
 id|epp
@@ -1114,7 +1077,6 @@ op_assign
 op_amp
 id|epb-&gt;next
 suffix:semicolon
-)brace
 op_star
 id|epp
 op_assign
@@ -1132,7 +1094,6 @@ id|head-&gt;lock
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* __sctp_hash_endpoint() */
 multiline_comment|/* Add an endpoint to the hash. Local BH-safe. */
 DECL|function|sctp_hash_endpoint
 r_void
@@ -1161,7 +1122,6 @@ c_func
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* __sctp_hash_endpoint() */
 multiline_comment|/* Remove endpoint from the hash table.  */
 DECL|function|__sctp_unhash_endpoint
 r_void
@@ -1220,12 +1180,10 @@ c_cond
 (paren
 id|epb-&gt;next
 )paren
-(brace
 id|epb-&gt;next-&gt;pprev
 op_assign
 id|epb-&gt;pprev
 suffix:semicolon
-)brace
 op_star
 id|epb-&gt;pprev
 op_assign
@@ -1244,7 +1202,6 @@ id|head-&gt;lock
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* __sctp_unhash_endpoint() */
 multiline_comment|/* Remove endpoint from the hash.  Local BH-safe. */
 DECL|function|sctp_unhash_endpoint
 r_void
@@ -1273,11 +1230,10 @@ c_func
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_unhash_endpoint() */
 multiline_comment|/* Look up an endpoint. */
+DECL|function|__sctp_rcv_lookup_endpoint
 id|sctp_endpoint_t
 op_star
-DECL|function|__sctp_rcv_lookup_endpoint
 id|__sctp_rcv_lookup_endpoint
 c_func
 (paren
@@ -1358,11 +1314,9 @@ comma
 id|laddr
 )paren
 )paren
-(brace
 r_goto
 id|hit
 suffix:semicolon
-)brace
 )brace
 id|ep
 op_assign
@@ -1409,7 +1363,6 @@ r_return
 id|ep
 suffix:semicolon
 )brace
-multiline_comment|/* __sctp_rcv_lookup_endpoint() */
 multiline_comment|/* Add an association to the hash. Local BH-safe. */
 DECL|function|sctp_hash_established
 r_void
@@ -1438,7 +1391,6 @@ c_func
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_hash_association() */
 multiline_comment|/* Insert association into the hash table.  */
 DECL|function|__sctp_hash_established
 r_void
@@ -1509,7 +1461,6 @@ c_cond
 (paren
 id|epb-&gt;next
 )paren
-(brace
 (paren
 op_star
 id|epp
@@ -1520,7 +1471,6 @@ op_assign
 op_amp
 id|epb-&gt;next
 suffix:semicolon
-)brace
 op_star
 id|epp
 op_assign
@@ -1538,7 +1488,6 @@ id|head-&gt;lock
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* __sctp_hash_established() */
 multiline_comment|/* Remove association from the hash table.  Local BH-safe. */
 DECL|function|sctp_unhash_established
 r_void
@@ -1567,7 +1516,6 @@ c_func
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_unhash_established() */
 multiline_comment|/* Remove association from the hash table.  */
 DECL|function|__sctp_unhash_established
 r_void
@@ -1628,12 +1576,10 @@ c_cond
 (paren
 id|epb-&gt;next
 )paren
-(brace
 id|epb-&gt;next-&gt;pprev
 op_assign
 id|epb-&gt;pprev
 suffix:semicolon
-)brace
 op_star
 id|epb-&gt;pprev
 op_assign
@@ -1652,11 +1598,10 @@ id|head-&gt;lock
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* __sctp_unhash_established() */
 multiline_comment|/* Look up an association. */
+DECL|function|__sctp_rcv_lookup_association
 id|sctp_association_t
 op_star
-DECL|function|__sctp_rcv_lookup_association
 id|__sctp_rcv_lookup_association
 c_func
 (paren
@@ -1695,7 +1640,7 @@ suffix:semicolon
 r_int
 id|hash
 suffix:semicolon
-multiline_comment|/* Optimize here for direct hit, only listening connections can&n;&t; * have wildcards anyways.  &n;&t; */
+multiline_comment|/* Optimize here for direct hit, only listening connections can&n;&t; * have wildcards anyways.&n;&t; */
 id|hash
 op_assign
 id|sctp_assoc_hashfn
@@ -1760,11 +1705,9 @@ c_cond
 (paren
 id|transport
 )paren
-(brace
 r_goto
 id|hit
 suffix:semicolon
-)brace
 )brace
 id|read_unlock
 c_func
@@ -1806,12 +1749,11 @@ r_return
 id|asoc
 suffix:semicolon
 )brace
-multiline_comment|/* __sctp_rcv_lookup_association() */
-multiline_comment|/*&n; * SCTP Implementors Guide, 2.18 Handling of address &n; * parameters within the INIT or INIT-ACK.&n; *&n; * D) When searching for a matching TCB upon reception of an INIT&n; *    or INIT-ACK chunk the receiver SHOULD use not only the&n; *    source address of the packet (containing the INIT or&n; *    INIT-ACK) but the receiver SHOULD also use all valid&n; *    address parameters contained within the chunk.&n; * &n; * 2.18.3 Solution description&n; *&n; * This new text clearly specifies to an implementor the need&n; * to look within the INIT or INIT-ACK. Any implementation that&n; * does not do this, may not be able to establish associations&n; * in certain circumstances.&n; *&n; */
+multiline_comment|/*&n; * SCTP Implementors Guide, 2.18 Handling of address&n; * parameters within the INIT or INIT-ACK.&n; *&n; * D) When searching for a matching TCB upon reception of an INIT&n; *    or INIT-ACK chunk the receiver SHOULD use not only the&n; *    source address of the packet (containing the INIT or&n; *    INIT-ACK) but the receiver SHOULD also use all valid&n; *    address parameters contained within the chunk.&n; *&n; * 2.18.3 Solution description&n; *&n; * This new text clearly specifies to an implementor the need&n; * to look within the INIT or INIT-ACK. Any implementation that&n; * does not do this, may not be able to establish associations&n; * in certain circumstances.&n; *&n; */
+DECL|function|__sctp_rcv_initack_lookup
 r_static
 id|sctp_association_t
 op_star
-DECL|function|__sctp_rcv_initack_lookup
 id|__sctp_rcv_initack_lookup
 c_func
 (paren
@@ -1861,7 +1803,7 @@ id|sctp_chunkhdr_t
 op_star
 id|ch
 suffix:semicolon
-r_uint8
+id|__u8
 op_star
 id|ch_end
 comma
@@ -1883,7 +1825,7 @@ id|ch_end
 op_assign
 (paren
 (paren
-r_uint8
+id|__u8
 op_star
 )paren
 id|ch
@@ -1906,13 +1848,11 @@ id|SCTP_CID_INIT_ACK
 op_ne
 id|ch-&gt;type
 )paren
-(brace
 r_return
 l_int|NULL
 suffix:semicolon
-)brace
-multiline_comment|/* &n;         * This code will NOT touch anything inside the chunk--it is&n;         * strictly READ-ONLY.&n;         *&n;         * RFC 2960 3  SCTP packet Format&n;         *&n;         * Multiple chunks can be bundled into one SCTP packet up to&n;         * the MTU size, except for the INIT, INIT ACK, and SHUTDOWN&n;         * COMPLETE chunks.  These chunks MUST NOT be bundled with any&n;         * other chunk in a packet.  See Section 6.10 for more details&n;         * on chunk bundling.&n;         */
-multiline_comment|/* Find the start of the TLVs and the end of the chunk.  This is &n;&t; * the region we search for address parameters.&n;&t; */
+multiline_comment|/*&n;&t; * This code will NOT touch anything inside the chunk--it is&n;&t; * strictly READ-ONLY.&n;&t; *&n;&t; * RFC 2960 3  SCTP packet Format&n;&t; *&n;&t; * Multiple chunks can be bundled into one SCTP packet up to&n;&t; * the MTU size, except for the INIT, INIT ACK, and SHUTDOWN&n;&t; * COMPLETE chunks.  These chunks MUST NOT be bundled with any&n;&t; * other chunk in a packet.  See Section 6.10 for more details&n;&t; * on chunk bundling.&n;&t; */
+multiline_comment|/* Find the start of the TLVs and the end of the chunk.  This is&n;&t; * the region we search for address parameters.&n;&t; */
 id|data
 op_assign
 id|skb-&gt;data
@@ -1938,14 +1878,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|parm.p-&gt;length
-op_eq
-l_int|0
 )paren
-(brace
 r_break
 suffix:semicolon
-)brace
 id|data
 op_add_assign
 id|WORD_ROUND
@@ -1974,10 +1911,8 @@ op_ne
 id|parm.p-&gt;type
 )paren
 )paren
-(brace
 r_continue
 suffix:semicolon
-)brace
 id|sctp_param2sockaddr
 c_func
 (paren
@@ -2009,22 +1944,18 @@ c_cond
 (paren
 id|asoc
 )paren
-(brace
 r_return
 id|asoc
 suffix:semicolon
 )brace
-)brace
-multiline_comment|/* while (not at end of chunk) */
 r_return
 l_int|NULL
 suffix:semicolon
 )brace
-multiline_comment|/* __sctp_rcv_initack_lookup() */
 multiline_comment|/* Lookup an association for an inbound skb. */
+DECL|function|__sctp_rcv_lookup
 id|sctp_association_t
 op_star
-DECL|function|__sctp_rcv_lookup
 id|__sctp_rcv_lookup
 c_func
 (paren
@@ -2065,14 +1996,13 @@ comma
 id|transportp
 )paren
 suffix:semicolon
-multiline_comment|/* Further lookup for INIT-ACK packet. &n;&t; * SCTP Implementors Guide, 2.18 Handling of address &n;&t; * parameters within the INIT or INIT-ACK.&n;&t; */
+multiline_comment|/* Further lookup for INIT-ACK packet.&n;&t; * SCTP Implementors Guide, 2.18 Handling of address&n;&t; * parameters within the INIT or INIT-ACK.&n;&t; */
 r_if
 c_cond
 (paren
 op_logical_neg
 id|asoc
 )paren
-(brace
 id|asoc
 op_assign
 id|__sctp_rcv_initack_lookup
@@ -2085,10 +2015,8 @@ comma
 id|transportp
 )paren
 suffix:semicolon
-)brace
 r_return
 id|asoc
 suffix:semicolon
 )brace
-multiline_comment|/* __sctp_rcv_lookup() */
 eof

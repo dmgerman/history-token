@@ -15,10 +15,10 @@ op_assign
 l_int|10
 )brace
 suffix:semicolon
-multiline_comment|/* Define the amount of space to reserve for SCTP, IP, LL. &n; * There is a little bit of waste that we are always allocating &n; * for ipv6 headers, but this seems worth the simplicity.&n; */
+multiline_comment|/* Define the amount of space to reserve for SCTP, IP, LL.&n; * There is a little bit of waste that we are always allocating&n; * for ipv6 headers, but this seems worth the simplicity.&n; */
 DECL|macro|SCTP_IP_OVERHEAD
 mdefine_line|#define SCTP_IP_OVERHEAD ((sizeof(struct sctphdr)&bslash;&n;                          + sizeof(struct ipv6hdr)&bslash;&n;                          + MAX_HEADER))
-multiline_comment|/* Define the amount of space to reserve for SCTP, IP, LL. &n; * There is a little bit of waste that we are always allocating &n; * for ipv6 headers, but this seems worth the simplicity.&n; */
+multiline_comment|/* Define the amount of space to reserve for SCTP, IP, LL.&n; * There is a little bit of waste that we are always allocating&n; * for ipv6 headers, but this seems worth the simplicity.&n; */
 DECL|macro|SCTP_IP_OVERHEAD
 mdefine_line|#define SCTP_IP_OVERHEAD ((sizeof(struct sctphdr)&bslash;&n;                          + sizeof(struct ipv6hdr)&bslash;&n;                          + MAX_HEADER))
 multiline_comment|/* Since CIDs are sparse, we need all four of the following&n; * symbols.  CIDs are dense through SCTP_CID_BASE_MAX.&n; */
@@ -205,7 +205,7 @@ DECL|typedef|sctp_subtype_t
 id|sctp_subtype_t
 suffix:semicolon
 DECL|macro|SCTP_SUBTYPE_CONSTRUCTOR
-mdefine_line|#define SCTP_SUBTYPE_CONSTRUCTOR(_name, _type, _elt) &bslash;&n;static inline sctp_subtype_t&t;&bslash;&n;SCTP_ST_## _name (_type _arg)&t;&t;&bslash;&n;{ sctp_subtype_t _retval; _retval._elt = _arg; return(_retval); }
+mdefine_line|#define SCTP_SUBTYPE_CONSTRUCTOR(_name, _type, _elt) &bslash;&n;static inline sctp_subtype_t&t;&bslash;&n;SCTP_ST_## _name (_type _arg)&t;&t;&bslash;&n;{ sctp_subtype_t _retval; _retval._elt = _arg; return _retval; }
 id|SCTP_SUBTYPE_CONSTRUCTOR
 c_func
 (paren
@@ -304,7 +304,6 @@ DECL|typedef|sctp_ierror_t
 )brace
 id|sctp_ierror_t
 suffix:semicolon
-multiline_comment|/* enum */
 multiline_comment|/* SCTP state defines for internal state machine */
 r_typedef
 r_enum
@@ -358,7 +357,6 @@ DECL|typedef|sctp_state_t
 )brace
 id|sctp_state_t
 suffix:semicolon
-multiline_comment|/* enum */
 DECL|macro|SCTP_STATE_MAX
 mdefine_line|#define SCTP_STATE_MAX&t;&t;&t;SCTP_STATE_SHUTDOWN_ACK_SENT
 DECL|macro|SCTP_STATE_NUM_STATES
@@ -467,12 +465,12 @@ DECL|macro|SCTP_ADDR_REACHABLE
 mdefine_line|#define SCTP_ADDR_REACHABLE&t;&t;2
 DECL|macro|SCTP_ADDR_NOT_REACHABLE
 mdefine_line|#define SCTP_ADDR_NOT_REACHABLE&t;&t;1
-multiline_comment|/* Guess at how big to make the TSN mapping array.&n; * We guarantee that we can handle at least this big a gap between the&n; * cumulative ACK and the highest TSN.  In practice, we can often&n; * handle up to twice this value.&n; *&n; * NEVER make this more than 32767 (2^15-1).  The Gap Ack Blocks in a&n; * SACK (see  section 3.3.4) are only 16 bits, so 2*SCTP_TSN_MAP_SIZE&n; * must be less than 65535 (2^16 - 1), or we will have overflow&n; * problems creating SACK&squot;s. &n; */
+multiline_comment|/* Guess at how big to make the TSN mapping array.&n; * We guarantee that we can handle at least this big a gap between the&n; * cumulative ACK and the highest TSN.  In practice, we can often&n; * handle up to twice this value.&n; *&n; * NEVER make this more than 32767 (2^15-1).  The Gap Ack Blocks in a&n; * SACK (see  section 3.3.4) are only 16 bits, so 2*SCTP_TSN_MAP_SIZE&n; * must be less than 65535 (2^16 - 1), or we will have overflow&n; * problems creating SACK&squot;s.&n; */
 DECL|macro|SCTP_TSN_MAP_SIZE
 mdefine_line|#define SCTP_TSN_MAP_SIZE 2048
 DECL|macro|SCTP_TSN_MAX_GAP
 mdefine_line|#define SCTP_TSN_MAX_GAP  65535
-multiline_comment|/* We will not record more than this many duplicate TSNs between two&n; * SACKs.  The minimum PMTU is 576.  Remove all the headers and there&n; * is enough room for 131 duplicate reports.  Round down to the&n; * nearest power of 2.  &n; */
+multiline_comment|/* We will not record more than this many duplicate TSNs between two&n; * SACKs.  The minimum PMTU is 576.  Remove all the headers and there&n; * is enough room for 131 duplicate reports.  Round down to the&n; * nearest power of 2.&n; */
 DECL|macro|SCTP_MAX_DUP_TSNS
 mdefine_line|#define SCTP_MAX_DUP_TSNS 128
 r_typedef
@@ -488,7 +486,7 @@ suffix:semicolon
 multiline_comment|/* How many counters does an association need? */
 DECL|macro|SCTP_NUMBER_COUNTERS
 mdefine_line|#define SCTP_NUMBER_COUNTERS&t;5
-multiline_comment|/* Here we define the default timers. &n; */
+multiline_comment|/* Here we define the default timers.  */
 multiline_comment|/* cookie timer def = ? seconds */
 DECL|macro|SCTP_DEFAULT_TIMEOUT_T1_COOKIE
 mdefine_line|#define SCTP_DEFAULT_TIMEOUT_T1_COOKIE&t;(3 * HZ)
@@ -546,7 +544,7 @@ mdefine_line|#define SCTP_DEFAULT_MINSEGMENT 512&t;/* MTU size ... if no mtu dis
 DECL|macro|SCTP_HOW_MANY_SECRETS
 mdefine_line|#define SCTP_HOW_MANY_SECRETS 2&t;&t;/* How many secrets I keep */
 DECL|macro|SCTP_HOW_LONG_COOKIE_LIVE
-mdefine_line|#define SCTP_HOW_LONG_COOKIE_LIVE 3600&t;/* How many seconds the current &n;&t;&t;&t;&t;&t; * secret will live?&n;&t;&t;&t;&t;&t; */
+mdefine_line|#define SCTP_HOW_LONG_COOKIE_LIVE 3600&t;/* How many seconds the current&n;&t;&t;&t;&t;&t; * secret will live?&n;&t;&t;&t;&t;&t; */
 DECL|macro|SCTP_SECRET_SIZE
 mdefine_line|#define SCTP_SECRET_SIZE 32&t;&t;/* Number of octets in a 256 bits. */
 DECL|macro|SCTP_SIGNATURE_SIZE
@@ -587,7 +585,7 @@ DECL|typedef|sctp_transport_cmd_t
 )brace
 id|sctp_transport_cmd_t
 suffix:semicolon
-multiline_comment|/* These are the address scopes defined mainly for IPv4 addresses&n; * based on draft of SCTP IPv4 scoping &lt;draft-stewart-tsvwg-sctp-ipv4-00.txt&gt;. &n; * These scopes are hopefully generic enough to be used on scoping both &n; * IPv4 and IPv6 addresses in SCTP.  &n; * At this point, the IPv6 scopes will be mapped to these internal scopes&n; * as much as possible.&n; */
+multiline_comment|/* These are the address scopes defined mainly for IPv4 addresses&n; * based on draft of SCTP IPv4 scoping &lt;draft-stewart-tsvwg-sctp-ipv4-00.txt&gt;.&n; * These scopes are hopefully generic enough to be used on scoping both&n; * IPv4 and IPv6 addresses in SCTP.&n; * At this point, the IPv6 scopes will be mapped to these internal scopes&n; * as much as possible.&n; */
 r_typedef
 r_enum
 (brace
@@ -615,7 +613,7 @@ DECL|typedef|sctp_scope_t
 )brace
 id|sctp_scope_t
 suffix:semicolon
-multiline_comment|/* Based on IPv4 scoping &lt;draft-stewart-tsvwg-sctp-ipv4-00.txt&gt;, &n; * SCTP IPv4 unusable addresses: 0.0.0.0/8, 224.0.0.0/4, 198.18.0.0/24, &n; * 192.88.99.0/24.&n; * Also, RFC 8.4, non-unicast addresses are not considered valid SCTP &n; * addresses.&n; */
+multiline_comment|/* Based on IPv4 scoping &lt;draft-stewart-tsvwg-sctp-ipv4-00.txt&gt;,&n; * SCTP IPv4 unusable addresses: 0.0.0.0/8, 224.0.0.0/4, 198.18.0.0/24,&n; * 192.88.99.0/24.&n; * Also, RFC 8.4, non-unicast addresses are not considered valid SCTP&n; * addresses.&n; */
 DECL|macro|IS_IPV4_UNUSABLE_ADDRESS
 mdefine_line|#define IS_IPV4_UNUSABLE_ADDRESS(a) &bslash;&n;&t;((INADDR_BROADCAST == *a) || &bslash;&n;&t;(MULTICAST(*a)) || &bslash;&n;&t;(((unsigned char *)(a))[0] == 0) || &bslash;&n;&t;((((unsigned char *)(a))[0] == 198) &amp;&amp; &bslash;&n;&t;(((unsigned char *)(a))[1] == 18) &amp;&amp; &bslash;&n;&t;(((unsigned char *)(a))[2] == 0)) || &bslash;&n;&t;((((unsigned char *)(a))[0] == 192) &amp;&amp; &bslash;&n;&t;(((unsigned char *)(a))[1] == 88) &amp;&amp; &bslash;&n;&t;(((unsigned char *)(a))[2] == 99)))
 multiline_comment|/* IPv4 Link-local addresses: 169.254.0.0/16.  */
@@ -626,7 +624,7 @@ DECL|macro|IS_IPV4_PRIVATE_ADDRESS
 mdefine_line|#define IS_IPV4_PRIVATE_ADDRESS(a) &bslash;&n;&t;((((unsigned char *)(a))[0] == 10) || &bslash;&n;&t;((((unsigned char *)(a))[0] == 172) &amp;&amp; &bslash;&n;&t;(((unsigned char *)(a))[1] &gt;= 16) &amp;&amp; &bslash;&n;&t;(((unsigned char *)(a))[1] &lt; 32)) || &bslash;&n;&t;((((unsigned char *)(a))[0] == 192) &amp;&amp; &bslash;&n;&t;(((unsigned char *)(a))[1] == 168)))
 multiline_comment|/* Flags used for the bind address copy functions.  */
 DECL|macro|SCTP_ADDR6_ALLOWED
-mdefine_line|#define SCTP_ADDR6_ALLOWED&t;0x00000001&t;/* IPv6 address is allowed by&n;&t;&t;&t;&t;&t;&t;  local sock family */
+mdefine_line|#define SCTP_ADDR6_ALLOWED&t;0x00000001&t;/* IPv6 address is allowed by&n;&t;&t;&t;&t;&t;&t;   local sock family */
 DECL|macro|SCTP_ADDR4_PEERSUPP
 mdefine_line|#define SCTP_ADDR4_PEERSUPP&t;0x00000002&t;/* IPv4 address is supported by&n;&t;&t;&t;&t;&t;&t;   peer */
 DECL|macro|SCTP_ADDR6_PEERSUPP

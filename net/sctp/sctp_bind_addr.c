@@ -13,7 +13,6 @@ id|unused
 op_assign
 l_string|&quot;$Id: sctp_bind_addr.c,v 1.16 2002/07/12 15:15:45 jgrimm Exp $&quot;
 suffix:semicolon
-macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/in.h&gt;
@@ -55,8 +54,8 @@ op_star
 suffix:semicolon
 multiline_comment|/* First Level Abstractions. */
 multiline_comment|/* Copy &squot;src&squot; to &squot;dest&squot; taking &squot;scope&squot; into account.  Omit addresses&n; * in &squot;src&squot; which have a broader scope than &squot;scope&squot;.&n; */
-r_int
 DECL|function|sctp_bind_addr_copy
+r_int
 id|sctp_bind_addr_copy
 c_func
 (paren
@@ -79,11 +78,6 @@ r_int
 id|flags
 )paren
 (brace
-r_int
-id|error
-op_assign
-l_int|0
-suffix:semicolon
 r_struct
 id|sockaddr_storage_list
 op_star
@@ -92,6 +86,11 @@ suffix:semicolon
 id|list_t
 op_star
 id|pos
+suffix:semicolon
+r_int
+id|error
+op_assign
+l_int|0
 suffix:semicolon
 multiline_comment|/* All addresses share the same port.  */
 id|dest-&gt;port
@@ -145,39 +144,31 @@ id|error
 OL
 l_int|0
 )paren
-(brace
 r_goto
 id|out
 suffix:semicolon
 )brace
-)brace
-multiline_comment|/* for (each address in the source bind_addr) */
 id|out
 suffix:colon
 r_if
 c_cond
 (paren
-l_int|0
-op_ne
 id|error
 )paren
-(brace
 id|sctp_bind_addr_clean
 c_func
 (paren
 id|dest
 )paren
 suffix:semicolon
-)brace
 r_return
 id|error
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_bind_addr_copy() */
 multiline_comment|/* Create a new SCTP_bind_addr from nothing.  */
+DECL|function|sctp_bind_addr_new
 id|sctp_bind_addr_t
 op_star
-DECL|function|sctp_bind_addr_new
 id|sctp_bind_addr_new
 c_func
 (paren
@@ -202,15 +193,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-l_int|NULL
-op_eq
+op_logical_neg
 id|retval
 )paren
-(brace
 r_goto
 id|nomem
 suffix:semicolon
-)brace
 id|sctp_bind_addr_init
 c_func
 (paren
@@ -235,10 +223,9 @@ r_return
 id|retval
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_bind_addr_new() */
 multiline_comment|/* Initialize the SCTP_bind_addr structure for either an endpoint or&n; * an association.&n; */
-r_void
 DECL|function|sctp_bind_addr_init
+r_void
 id|sctp_bind_addr_init
 c_func
 (paren
@@ -246,7 +233,7 @@ id|sctp_bind_addr_t
 op_star
 id|bp
 comma
-r_uint16
+id|__u16
 id|port
 )paren
 (brace
@@ -266,11 +253,10 @@ op_assign
 id|port
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_bind_addr_init() */
 multiline_comment|/* Dispose of the address list. */
+DECL|function|sctp_bind_addr_clean
 r_static
 r_void
-DECL|function|sctp_bind_addr_clean
 id|sctp_bind_addr_clean
 c_func
 (paren
@@ -335,12 +321,10 @@ id|addr
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* for (each bound address) */
 )brace
-multiline_comment|/* sctp_bind_addr_clean() */
-multiline_comment|/* Dispose of an SCTP_bind_addr structure &n; */
-r_void
+multiline_comment|/* Dispose of an SCTP_bind_addr structure  */
 DECL|function|sctp_bind_addr_free
+r_void
 id|sctp_bind_addr_free
 c_func
 (paren
@@ -376,10 +360,9 @@ id|bind_addr
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/* sctp_bind_addr_free() */
 multiline_comment|/* Add an address to the bind address list in the SCTP_bind_addr structure. */
-r_int
 DECL|function|sctp_add_bind_addr
+r_int
 id|sctp_add_bind_addr
 c_func
 (paren
@@ -415,35 +398,29 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-l_int|NULL
-op_eq
+op_logical_neg
 id|addr
 )paren
-(brace
 r_return
 op_minus
 id|ENOMEM
 suffix:semicolon
-)brace
 id|addr-&gt;a
 op_assign
 op_star
 r_new
 suffix:semicolon
-multiline_comment|/* Fix up the port if it has not yet been set. &n;&t; * Both v4 and v6 have the port at the same offset.&n;&t; */
+multiline_comment|/* Fix up the port if it has not yet been set.&n;&t; * Both v4 and v6 have the port at the same offset.&n;&t; */
 r_if
 c_cond
 (paren
-l_int|0
-op_eq
+op_logical_neg
 id|addr-&gt;a.v4.sin_port
 )paren
-(brace
 id|addr-&gt;a.v4.sin_port
 op_assign
 id|bp-&gt;port
 suffix:semicolon
-)brace
 id|INIT_LIST_HEAD
 c_func
 (paren
@@ -471,10 +448,9 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_add_bind_addr() */
 multiline_comment|/* Delete an address from the bind address list in the SCTP_bind_addr&n; * structure.&n; */
-r_int
 DECL|function|sctp_del_bind_addr
+r_int
 id|sctp_del_bind_addr
 c_func
 (paren
@@ -560,16 +536,14 @@ l_int|0
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/* for (each bound address) */
 r_return
 op_minus
 id|EINVAL
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_del_bind_addr() */
 multiline_comment|/* Create a network byte-order representation of all the addresses&n; * formated as SCTP parameters.&n; *&n; * The second argument is the return value for the length.&n; */
-id|sctpParam_t
 DECL|function|sctp_bind_addrs_to_raw
+id|sctpParam_t
 id|sctp_bind_addrs_to_raw
 c_func
 (paren
@@ -643,7 +617,6 @@ id|sctp_ipv6addr_param_t
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* for (each bound address) */
 id|addrparms.v
 op_assign
 id|kmalloc
@@ -657,15 +630,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-l_int|NULL
-op_eq
+op_logical_neg
 id|addrparms.v
 )paren
-(brace
 r_goto
 id|end_raw
 suffix:semicolon
-)brace
 id|retval
 op_assign
 id|addrparms
@@ -727,7 +697,6 @@ op_add_assign
 id|len
 suffix:semicolon
 )brace
-multiline_comment|/* for (all addresses in the bind address list) */
 id|end_raw
 suffix:colon
 op_star
@@ -739,10 +708,9 @@ r_return
 id|retval
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_bind_addrs_to_raw() */
-multiline_comment|/*&n; * Create an address list out of the raw address list format (IPv4 and IPv6 &n; * address parameters). &n; * &n; */
-r_int
+multiline_comment|/*&n; * Create an address list out of the raw address list format (IPv4 and IPv6&n; * address parameters).&n; */
 DECL|function|sctp_raw_to_bind_addrs
+r_int
 id|sctp_raw_to_bind_addrs
 c_func
 (paren
@@ -750,14 +718,14 @@ id|sctp_bind_addr_t
 op_star
 id|bp
 comma
-r_uint8
+id|__u8
 op_star
 id|raw_addr_list
 comma
 r_int
 id|addrs_len
 comma
-r_uint16
+id|__u16
 id|port
 comma
 r_int
@@ -880,11 +848,10 @@ r_return
 id|retval
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_raw_to_bind_addrs() */
 multiline_comment|/********************************************************************&n; * 2nd Level Abstractions&n; ********************************************************************/
 multiline_comment|/* Does this contain a specified address? */
-r_int
 DECL|function|sctp_bind_addr_has_addr
+r_int
 id|sctp_bind_addr_has_addr
 c_func
 (paren
@@ -898,14 +865,14 @@ op_star
 id|addr
 )paren
 (brace
-id|list_t
-op_star
-id|pos
-suffix:semicolon
 r_struct
 id|sockaddr_storage_list
 op_star
 id|laddr
+suffix:semicolon
+id|list_t
+op_star
+id|pos
 suffix:semicolon
 id|list_for_each
 c_func
@@ -941,22 +908,18 @@ comma
 id|addr
 )paren
 )paren
-(brace
 r_return
 l_int|1
 suffix:semicolon
 )brace
-)brace
-multiline_comment|/* for (all bound addresses).  */
 r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_bind_addr_has_addr() */
 multiline_comment|/* Copy out addresses from the global local address list. */
+DECL|function|sctp_copy_one_addr
 r_static
 r_int
-DECL|function|sctp_copy_one_addr
 id|sctp_copy_one_addr
 c_func
 (paren
@@ -1074,7 +1037,6 @@ id|SCTP_ADDR6_PEERSUPP
 )paren
 )paren
 )paren
-(brace
 id|error
 op_assign
 id|sctp_add_bind_addr
@@ -1088,15 +1050,13 @@ id|priority
 )paren
 suffix:semicolon
 )brace
-)brace
 r_return
 id|error
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_copy_one_addr() */
 multiline_comment|/* Is addr one of the wildcards?  */
-r_int
 DECL|function|sctp_is_any
+r_int
 id|sctp_is_any
 c_func
 (paren
@@ -1127,12 +1087,10 @@ id|INADDR_ANY
 op_eq
 id|addr-&gt;v4.sin_addr.s_addr
 )paren
-(brace
 id|retval
 op_assign
 l_int|1
 suffix:semicolon
-)brace
 r_break
 suffix:semicolon
 r_case
@@ -1152,12 +1110,10 @@ op_amp
 id|addr-&gt;v6.sin6_addr
 )paren
 )paren
-(brace
 id|retval
 op_assign
 l_int|1
 suffix:semicolon
-)brace
 )paren
 suffix:semicolon
 r_break
@@ -1167,14 +1123,14 @@ suffix:colon
 r_break
 suffix:semicolon
 )brace
+suffix:semicolon
 r_return
 id|retval
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_is_any() */
 multiline_comment|/* Is &squot;addr&squot; valid for &squot;scope&squot;?  */
-r_int
 DECL|function|sctp_in_scope
+r_int
 id|sctp_in_scope
 c_func
 (paren
@@ -1205,7 +1161,7 @@ id|addr-&gt;sa.sa_family
 r_case
 id|AF_INET
 suffix:colon
-multiline_comment|/* According to the SCTP IPv4 address scoping document -&n;&t; &t; * &lt;draft-stewart-tsvwg-sctp-ipv4-00.txt&gt;, the scope has&n;&t; &t; * a heirarchy of 5 levels: &n;&t;&t; * Level 0 - unusable SCTP addresses&n;&t; &t; * Level 1 - loopback address&n;&t; &t; * Level 2 - link-local addresses&n;&t; &t; * Level 3 - private addresses. &n;&t; &t; * Level 4 - global addresses&n;&t; &t; * For INIT and INIT-ACK address list, let L be the level of&n;&t; &t; * of requested destination address, sender and receiver&n;&t;&t; * SHOULD include all of its addresses with level greater&n;&t; &t; * than or equal to L.&n;&t; &t; */
+multiline_comment|/* According to the SCTP IPv4 address scoping document -&n;&t;&t; * &lt;draft-stewart-tsvwg-sctp-ipv4-00.txt&gt;, the scope has&n;&t;&t; * a heirarchy of 5 levels: &n;&t;&t; * Level 0 - unusable SCTP addresses&n;&t;&t; * Level 1 - loopback address&n;&t;&t; * Level 2 - link-local addresses&n;&t;&t; * Level 3 - private addresses.&n;&t;&t; * Level 4 - global addresses&n;&t;&t; * For INIT and INIT-ACK address list, let L be the level of&n;&t;&t; * of requested destination address, sender and receiver&n;&t;&t; * SHOULD include all of its addresses with level greater&n;&t;&t; * than or equal to L.&n;&t;&t; */
 multiline_comment|/* The unusable SCTP addresses will not be considered with&n;&t;&t; * any defined scopes.&n;&t;&t; */
 r_if
 c_cond
@@ -1214,12 +1170,10 @@ id|SCTP_SCOPE_UNUSABLE
 op_eq
 id|addr_scope
 )paren
-(brace
 r_return
 l_int|0
 suffix:semicolon
-)brace
-multiline_comment|/* Note that we are assuming that the scoping are the same&n;&t;&t; * for both IPv4 addresses and IPv6 addresses, i.e., if the&n;&t;&t; * scope is link local, both IPv4 link local addresses and &n;&t;&t; * IPv6 link local addresses would be treated as in the &n;&t;&t; * scope.  There is no filtering for IPv4 vs. IPv6 addresses&n;&t;&t; * based on scoping alone.&n;&t;&t; */
+multiline_comment|/* Note that we are assuming that the scoping are the same&n;&t;&t; * for both IPv4 addresses and IPv6 addresses, i.e., if the&n;&t;&t; * scope is link local, both IPv4 link local addresses and&n;&t;&t; * IPv6 link local addresses would be treated as in the&n;&t;&t; * scope.  There is no filtering for IPv4 vs. IPv6 addresses&n;&t;&t; * based on scoping alone.&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -1227,17 +1181,15 @@ id|addr_scope
 op_le
 id|scope
 )paren
-(brace
 r_return
 l_int|1
 suffix:semicolon
-)brace
 r_break
 suffix:semicolon
 r_case
 id|AF_INET6
 suffix:colon
-multiline_comment|/* FIXME:&n;&t;&t; * This is almost certainly wrong since scopes have an&n;&t;&t; * heirarchy.  I don&squot;t know what RFC to look at.&n;&t;&t; * There may be some guidance in the SCTP implementors&n;&t;&t; * guide (an Internet Draft as of October 2001).&n;&t;&t; *&n;&t;&t; * Further verification on the correctness of the IPv6 &n;&t;&t; * scoping is needed.  According to the IPv6 scoping draft,&n;&t;&t; * the link local and site local address may require &n;&t;&t; * further scoping.  &n;&t;&t; *&n;&t;&t; * Is the heirachy of the IPv6 scoping the same as what&squot;s&n;&t;&t; * defined for IPv4? &n;&t;&t; * If the same heirarchy indeed applies to both famiies, &n;&t;&t; * this function can be simplified with one set of code.  &n;&t;&t; * (see the comments for IPv4 above)&n;&t;&t; *&n;&t;&t; */
+multiline_comment|/* FIXME:&n;&t;&t; * This is almost certainly wrong since scopes have an&n;&t;&t; * heirarchy.  I don&squot;t know what RFC to look at.&n;&t;&t; * There may be some guidance in the SCTP implementors&n;&t;&t; * guide (an Internet Draft as of October 2001).&n;&t;&t; *&n;&t;&t; * Further verification on the correctness of the IPv6&n;&t;&t; * scoping is needed.  According to the IPv6 scoping draft,&n;&t;&t; * the link local and site local address may require&n;&t;&t; * further scoping.&n;&t;&t; *&n;&t;&t; * Is the heirachy of the IPv6 scoping the same as what&squot;s&n;&t;&t; * defined for IPv4?&n;&t;&t; * If the same heirarchy indeed applies to both famiies,&n;&t;&t; * this function can be simplified with one set of code.&n;&t;&t; * (see the comments for IPv4 above)&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -1245,11 +1197,9 @@ id|addr_scope
 op_le
 id|scope
 )paren
-(brace
 r_return
 l_int|1
 suffix:semicolon
-)brace
 r_break
 suffix:semicolon
 r_default
@@ -1258,15 +1208,15 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_in_scope()  */
 multiline_comment|/********************************************************************&n; * 3rd Level Abstractions&n; ********************************************************************/
 multiline_comment|/* What is the scope of &squot;addr&squot;?  */
-id|sctp_scope_t
 DECL|function|sctp_scope
+id|sctp_scope_t
 id|sctp_scope
 c_func
 (paren
@@ -1290,8 +1240,8 @@ id|addr-&gt;sa.sa_family
 r_case
 id|AF_INET
 suffix:colon
-multiline_comment|/* We are checking the loopback, private and other address&n;&t;&t; * scopes as defined in RFC 1918. &n;&t;&t; * The IPv4 scoping is based on the draft for SCTP IPv4&n;&t;&t; * scoping &lt;draft-stewart-tsvwg-sctp-ipv4-00.txt&gt;.&n;&t;&t; * The set of SCTP address scope hopefully can cover both&n;&t;&t; * types of addresses.&n;&t;&t; */
-multiline_comment|/* Should IPv4 scoping be a sysctl configurable option &n;&t;&t; * so users can turn it off (default on) for certain &n;&t;&t; * unconventional networking environments? &n;&t;&t; */
+multiline_comment|/* We are checking the loopback, private and other address&n;&t;&t; * scopes as defined in RFC 1918.&n;&t;&t; * The IPv4 scoping is based on the draft for SCTP IPv4&n;&t;&t; * scoping &lt;draft-stewart-tsvwg-sctp-ipv4-00.txt&gt;.&n;&t;&t; * The set of SCTP address scope hopefully can cover both&n;&t;&t; * types of addresses.&n;&t;&t; */
+multiline_comment|/* Should IPv4 scoping be a sysctl configurable option&n;&t;&t; * so users can turn it off (default on) for certain&n;&t;&t; * unconventional networking environments?&n;&t;&t; */
 multiline_comment|/* Check for unusable SCTP addresses. */
 r_if
 c_cond
@@ -1392,7 +1342,7 @@ op_amp
 id|addr-&gt;v6.sin6_addr
 )paren
 suffix:semicolon
-multiline_comment|/* The IPv6 scope is really a set of bit &n;&t;&t;&t;&t; * fields. See IFA_* in &lt;net/if_inet6.h&gt;.&n;&t;&t;&t;&t; * Mapping them to the generic SCTP scope &n;&t;&t;&t;&t; * set is an attempt to have code &n;&t;&t;&t;&t; * consistencies with the IPv4 scoping.&n;&t;&t;&t;&t; */
+multiline_comment|/* The IPv6 scope is really a set of bit&n;&t;&t;&t;&t; * fields. See IFA_* in &lt;net/if_inet6.h&gt;.&n;&t;&t;&t;&t; * Mapping them to the generic SCTP scope&n;&t;&t;&t;&t; * set is an attempt to have code&n;&t;&t;&t;&t; * consistencies with the IPv4 scoping.&n;&t;&t;&t;&t; */
 r_switch
 (paren
 id|v6scope
@@ -1431,7 +1381,10 @@ id|retval
 op_assign
 id|SCTP_SCOPE_GLOBAL
 suffix:semicolon
+r_break
+suffix:semicolon
 )brace
+suffix:semicolon
 )paren
 suffix:semicolon
 r_break
@@ -1443,15 +1396,17 @@ id|retval
 op_assign
 id|SCTP_SCOPE_GLOBAL
 suffix:semicolon
+r_break
+suffix:semicolon
 )brace
+suffix:semicolon
 r_return
 id|retval
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_scope() */
-multiline_comment|/* This function checks if the address is a valid address to be used for&n; * SCTP. &n; *&n; * Output:&n; * Return 0 - If the address is a non-unicast or an illegal address.  &n; * Return 1 - If the address is a unicast.&n; */
-r_int
+multiline_comment|/* This function checks if the address is a valid address to be used for&n; * SCTP.&n; *&n; * Output:&n; * Return 0 - If the address is a non-unicast or an illegal address.&n; * Return 1 - If the address is a unicast.&n; */
 DECL|function|sctp_addr_is_valid
+r_int
 id|sctp_addr_is_valid
 c_func
 (paren
@@ -1487,11 +1442,9 @@ op_amp
 id|addr-&gt;v4.sin_addr.s_addr
 )paren
 )paren
-(brace
 r_return
 l_int|0
 suffix:semicolon
-)brace
 r_break
 suffix:semicolon
 r_case
@@ -1502,8 +1455,6 @@ c_func
 (paren
 (brace
 r_int
-id|ret
-suffix:semicolon
 id|ret
 op_assign
 id|sctp_ipv6_addr_type
@@ -1523,11 +1474,9 @@ op_amp
 id|IPV6_ADDR_UNICAST
 )paren
 )paren
-(brace
 r_return
 l_int|0
 suffix:semicolon
-)brace
 r_break
 suffix:semicolon
 )brace
@@ -1539,9 +1488,9 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+suffix:semicolon
 r_return
 l_int|1
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_addr_is_valid() */
 eof

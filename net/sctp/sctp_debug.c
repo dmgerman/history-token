@@ -67,12 +67,11 @@ l_string|&quot;SHUTDOWN_COMPLETE&quot;
 comma
 )brace
 suffix:semicolon
-multiline_comment|/* char *sctp_cid_tbl[] */
 multiline_comment|/* Lookup &quot;chunk type&quot; debug name. */
+DECL|function|sctp_cname
 r_const
 r_char
 op_star
-DECL|function|sctp_cname
 id|sctp_cname
 c_func
 (paren
@@ -88,11 +87,9 @@ id|cid.chunk
 OL
 l_int|0
 )paren
-(brace
 r_return
 l_string|&quot;illegal chunk id&quot;
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -100,14 +97,12 @@ id|cid.chunk
 op_le
 id|SCTP_CID_BASE_MAX
 )paren
-(brace
 r_return
 id|sctp_cid_tbl
 (braket
 id|cid.chunk
 )braket
 suffix:semicolon
-)brace
 r_switch
 c_cond
 (paren
@@ -132,11 +127,11 @@ r_return
 l_string|&quot;unknown chunk&quot;
 suffix:semicolon
 )brace
+suffix:semicolon
 r_return
 l_string|&quot;unknown chunk&quot;
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_cname() */
 multiline_comment|/* These are printable form of variable-length parameters. */
 DECL|variable|sctp_param_tbl
 r_const
@@ -178,7 +173,6 @@ l_string|&quot;PARAM_SUPPORTED_ADDRESS_TYPES&quot;
 comma
 )brace
 suffix:semicolon
-multiline_comment|/* char *sctp_param_tbl[] */
 multiline_comment|/* These are printable forms of the states.  */
 DECL|variable|sctp_state_tbl
 r_const
@@ -210,7 +204,6 @@ l_string|&quot;STATE_SHUTDOWN_ACK_SENT&quot;
 comma
 )brace
 suffix:semicolon
-multiline_comment|/* char *sctp_state_tbl[] */
 multiline_comment|/* Events that could change the state of an association.  */
 DECL|variable|sctp_evttype_tbl
 r_const
@@ -307,10 +300,10 @@ l_string|&quot;PRIMITIVE_DESTROY&quot;
 )brace
 suffix:semicolon
 multiline_comment|/* Lookup primitive debug name. */
+DECL|function|sctp_pname
 r_const
 r_char
 op_star
-DECL|function|sctp_pname
 id|sctp_pname
 c_func
 (paren
@@ -326,11 +319,9 @@ id|id.primitive
 OL
 l_int|0
 )paren
-(brace
 r_return
 l_string|&quot;illegal primitive&quot;
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -338,19 +329,16 @@ id|id.primitive
 op_le
 id|SCTP_EVENT_PRIMITIVE_MAX
 )paren
-(brace
 r_return
 id|sctp_primitive_tbl
 (braket
 id|id.primitive
 )braket
 suffix:semicolon
-)brace
 r_return
 l_string|&quot;unknown_primitive&quot;
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_pname() */
 DECL|variable|sctp_other_tbl
 r_static
 r_const
@@ -367,10 +355,10 @@ l_string|&quot;ICMP_UNREACHFRAG&quot;
 )brace
 suffix:semicolon
 multiline_comment|/* Lookup &quot;other&quot; debug name. */
+DECL|function|sctp_oname
 r_const
 r_char
 op_star
-DECL|function|sctp_oname
 id|sctp_oname
 c_func
 (paren
@@ -386,11 +374,9 @@ id|id.other
 OL
 l_int|0
 )paren
-(brace
 r_return
 l_string|&quot;illegal &squot;other&squot; event&quot;
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -398,19 +384,16 @@ id|id.other
 OL
 id|SCTP_EVENT_OTHER_MAX
 )paren
-(brace
 r_return
 id|sctp_other_tbl
 (braket
 id|id.other
 )braket
 suffix:semicolon
-)brace
 r_return
 l_string|&quot;unknown &squot;other&squot; event&quot;
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_oname() */
 DECL|variable|sctp_timer_tbl
 r_static
 r_const
@@ -444,10 +427,10 @@ comma
 )brace
 suffix:semicolon
 multiline_comment|/* Lookup timer debug name. */
+DECL|function|sctp_tname
 r_const
 r_char
 op_star
-DECL|function|sctp_tname
 id|sctp_tname
 c_func
 (paren
@@ -463,11 +446,9 @@ id|id.timeout
 OL
 l_int|0
 )paren
-(brace
 r_return
 l_string|&quot;illegal &squot;timer&squot; event&quot;
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -475,17 +456,14 @@ id|id.timeout
 op_le
 id|SCTP_EVENT_TIMEOUT_MAX
 )paren
-(brace
 r_return
 id|sctp_timer_tbl
 (braket
 id|id.timeout
 )braket
 suffix:semicolon
-)brace
 r_return
 l_string|&quot;unknown_timer&quot;
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_tname() */
 eof

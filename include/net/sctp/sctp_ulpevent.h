@@ -3,7 +3,7 @@ macro_line|#ifndef __sctp_ulpevent_h__
 DECL|macro|__sctp_ulpevent_h__
 mdefine_line|#define __sctp_ulpevent_h__
 multiline_comment|/* A structure to carry information to the ULP (e.g. Sockets API) */
-multiline_comment|/* Warning: This sits inside an skb.cb[] area.  Be very careful of &n; * growing this structure as it is at the maximum limit now. &n; */
+multiline_comment|/* Warning: This sits inside an skb.cb[] area.  Be very careful of&n; * growing this structure as it is at the maximum limit now.&n; */
 DECL|struct|sctp_ulpevent
 r_typedef
 r_struct
@@ -105,19 +105,19 @@ id|SCTP_association
 op_star
 id|asoc
 comma
-r_uint16
+id|__u16
 id|flags
 comma
-r_uint16
+id|__u16
 id|state
 comma
-r_uint16
+id|__u16
 id|error
 comma
-r_uint16
+id|__u16
 id|outbound
 comma
-r_uint16
+id|__u16
 id|inbound
 comma
 r_int
@@ -170,7 +170,7 @@ id|SCTP_chunk
 op_star
 id|chunk
 comma
-r_uint16
+id|__u16
 id|flags
 comma
 r_int
@@ -193,10 +193,10 @@ id|SCTP_chunk
 op_star
 id|chunk
 comma
-r_uint16
+id|__u16
 id|flags
 comma
-r_uint32
+id|__u32
 id|error
 comma
 r_int
@@ -214,7 +214,7 @@ id|SCTP_association
 op_star
 id|asoc
 comma
-r_uint16
+id|__u16
 id|flags
 comma
 r_int
@@ -255,7 +255,7 @@ op_star
 id|msghdr
 )paren
 suffix:semicolon
-r_uint16
+id|__u16
 id|sctp_ulpevent_get_notification_type
 c_func
 (paren
@@ -266,10 +266,10 @@ id|event
 )paren
 suffix:semicolon
 multiline_comment|/* Given an event subscription, is this event enabled? */
+DECL|function|sctp_ulpevent_is_enabled
 r_static
 r_inline
 r_int
-DECL|function|sctp_ulpevent_is_enabled
 id|sctp_ulpevent_is_enabled
 c_func
 (paren
@@ -297,7 +297,7 @@ op_star
 )paren
 id|mask
 suffix:semicolon
-r_uint16
+id|__u16
 id|sn_type
 suffix:semicolon
 r_int
@@ -337,6 +337,5 @@ r_return
 id|enabled
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_ulpevent_is_enabled() */
 macro_line|#endif /* __sctp_ulpevent_h__ */
 eof

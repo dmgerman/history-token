@@ -13,7 +13,7 @@ id|unused
 op_assign
 l_string|&quot;$Id: sctp_adler32.c,v 1.5 2002/06/13 16:03:38 jgrimm Exp $&quot;
 suffix:semicolon
-multiline_comment|/* This is an entry point for external calls&n; * Define this function in the header file. This is&n; * direct from rfc1950, ...&n;&n; * The following C code computes the Adler-32 checksum of a data buffer.&n;   It is written for clarity, not for speed.  The sample code is in the&n;   ANSI C programming language. Non C users may find it easier to read&n;   with these hints:&n;&n;      &amp;      Bitwise AND operator.&n;      &gt;&gt;     Bitwise right shift operator. When applied to an&n;             unsigned quantity, as here, right shift inserts zero bit(s)&n;             at the left.&n;      &lt;&lt;     Bitwise left shift operator. Left shift inserts zero&n;             bit(s) at the right.&n;      ++     &quot;n++&quot; increments the variable n.&n;      %      modulo operator: a % b is the remainder of a divided by b.&n;&n; * Well, the above is a bit of a lie, I have optimized this a small&n; * tad, but I have commented the original lines below&n; */
+multiline_comment|/* This is an entry point for external calls&n; * Define this function in the header file. This is&n; * direct from rfc1950, ...&n; *&n; * The following C code computes the Adler-32 checksum of a data buffer.&n; * It is written for clarity, not for speed.  The sample code is in the&n; * ANSI C programming language. Non C users may find it easier to read&n; * with these hints:&n; *&n; *    &amp;      Bitwise AND operator.&n; *    &gt;&gt;     Bitwise right shift operator. When applied to an&n; *           unsigned quantity, as here, right shift inserts zero bit(s)&n; *           at the left.&n; *    &lt;&lt;     Bitwise left shift operator. Left shift inserts zero&n; *           bit(s) at the right.&n; *    ++     &quot;n++&quot; increments the variable n.&n; *    %      modulo operator: a % b is the remainder of a divided by b.&n; *&n; * Well, the above is a bit of a lie, I have optimized this a small&n; * tad, but I have commented the original lines below&n; */
 macro_line|#include &lt;linux/types.h&gt; 
 macro_line|#include &lt;net/sctp/sctp.h&gt;
 DECL|macro|BASE
@@ -38,14 +38,14 @@ r_int
 id|len
 )paren
 (brace
-r_uint32
+id|__u32
 id|s1
 op_assign
 id|adler
 op_amp
 l_int|0xffff
 suffix:semicolon
-r_uint32
+id|__u32
 id|s2
 op_assign
 (paren
@@ -88,7 +88,7 @@ op_star
 id|buf
 )paren
 suffix:semicolon
-multiline_comment|/* Now if we need to, we do a mod by&n;                 * subtracting. It seems a bit faster&n;                 * since I really will only ever do&n;                 * one subtract at the MOST, since buf[n]&n;                 * is a max of 255.&n;                 */
+multiline_comment|/* Now if we need to, we do a mod by&n;&t;&t; * subtracting. It seems a bit faster&n;&t;&t; * since I really will only ever do&n;&t;&t; * one subtract at the MOST, since buf[n]&n;&t;&t; * is a max of 255.&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -112,7 +112,7 @@ op_plus
 id|s1
 )paren
 suffix:semicolon
-multiline_comment|/* again, it is more efficent (it seems) to &n;                 * subtract since the most s2 will ever be&n;                 * is (BASE-1 + BASE-1) in the worse case.&n;                 * This would then be (2 * BASE) - 2, which&n;                 * will still only do one subtract. On Intel&n;                 * this is much better to do this way and&n;                 * avoid the divide. Have not -pg&squot;d on &n;                 * sparc.&n;                 */
+multiline_comment|/* again, it is more efficent (it seems) to&n;&t;&t; * subtract since the most s2 will ever be&n;&t;&t; * is (BASE-1 + BASE-1) in the worse case.&n;&t;&t; * This would then be (2 * BASE) - 2, which&n;&t;&t; * will still only do one subtract. On Intel&n;&t;&t; * this is much better to do this way and&n;&t;&t; * avoid the divide. Have not -pg&squot;d on &n;&t;&t; * sparc.&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -139,26 +139,26 @@ op_plus
 id|s1
 suffix:semicolon
 )brace
-r_uint32
 DECL|function|count_crc
+id|__u32
 id|count_crc
 c_func
 (paren
-r_uint8
+id|__u8
 op_star
 id|ptr
 comma
-r_uint16
+id|__u16
 id|count
 )paren
 (brace
-multiline_comment|/*&n;         * Update a running Adler-32 checksum with the bytes&n;         * buf[0..len-1] and return the updated checksum. The Adler-32&n;         * checksum should be initialized to 1.&n;         */
-r_uint32
+multiline_comment|/*&n;&t; * Update a running Adler-32 checksum with the bytes&n;&t; * buf[0..len-1] and return the updated checksum. The Adler-32&n;&t; * checksum should be initialized to 1.&n;&t; */
+id|__u32
 id|adler
 op_assign
 l_int|1L
 suffix:semicolon
-r_uint32
+id|__u32
 id|zero
 op_assign
 l_int|0L
@@ -181,7 +181,7 @@ id|sctphdr
 op_minus
 r_sizeof
 (paren
-r_uint32
+id|__u32
 )paren
 )paren
 suffix:semicolon
@@ -198,7 +198,7 @@ id|zero
 comma
 r_sizeof
 (paren
-r_uint32
+id|__u32
 )paren
 )paren
 suffix:semicolon

@@ -13,7 +13,6 @@ id|unused
 op_assign
 l_string|&quot;$Id: sctp_sm_statefuns.c,v 1.49 2002/08/21 18:34:04 jgrimm Exp $&quot;
 suffix:semicolon
-macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/ip.h&gt;
@@ -21,19 +20,15 @@ macro_line|#include &lt;linux/ipv6.h&gt;
 macro_line|#include &lt;linux/net.h&gt;
 macro_line|#include &lt;linux/inet.h&gt;
 macro_line|#include &lt;net/sock.h&gt;
-macro_line|#ifndef CONFIG_INET_ECN
-DECL|macro|CONFIG_INET_ECN
-mdefine_line|#define CONFIG_INET_ECN
-macro_line|#endif /* CONFIG_INET_ECN */
 macro_line|#include &lt;net/inet_ecn.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;net/sctp/sctp.h&gt;
 macro_line|#include &lt;net/sctp/sctp_sm.h&gt;
 macro_line|#include &lt;net/sctp/sctp_structs.h&gt;
 multiline_comment|/**********************************************************&n; * These are the state functions for handling chunk events.&n; **********************************************************/
-multiline_comment|/*&n; * Process the final SHUTDOWN COMPLETE.&n; * &n; * Section: 4 (C) (diagram), 9.2&n; * Upon reception of the SHUTDOWN COMPLETE chunk the endpoint will verify&n; * that it is in SHUTDOWN-ACK-SENT state, if it is not the chunk should be&n; * discarded. If the endpoint is in the SHUTDOWN-ACK-SENT state the endpoint&n; * should stop the T2-shutdown timer and remove all knowledge of the&n; * association (and thus the association enters the CLOSED state).&n; *&n; * Verification Tag: 8.5.1(C)&n; * C) Rules for packet carrying SHUTDOWN COMPLETE:&n; * ...&n; * - The receiver of a SHUTDOWN COMPLETE shall accept the packet if the&n; *   Verification Tag field of the packet matches its own tag OR it is&n; *   set to its peer&squot;s tag and the T bit is set in the Chunk Flags. &n; *   Otherwise, the receiver MUST silently discard the packet and take &n; *   no further action. An endpoint MUST ignore the SHUTDOWN COMPLETE if &n; *   it is not in the SHUTDOWN-ACK-SENT state. &n; *&n; * Inputs&n; * (endpoint, asoc, chunk)&n; * &n; * Outputs&n; * (asoc, reply_msg, msg_up, timers, counters)&n; *&n; * The return value is the disposition of the chunk.&n; */
-id|sctp_disposition_t
+multiline_comment|/*&n; * Process the final SHUTDOWN COMPLETE.&n; *&n; * Section: 4 (C) (diagram), 9.2&n; * Upon reception of the SHUTDOWN COMPLETE chunk the endpoint will verify&n; * that it is in SHUTDOWN-ACK-SENT state, if it is not the chunk should be&n; * discarded. If the endpoint is in the SHUTDOWN-ACK-SENT state the endpoint&n; * should stop the T2-shutdown timer and remove all knowledge of the&n; * association (and thus the association enters the CLOSED state).&n; *&n; * Verification Tag: 8.5.1(C)&n; * C) Rules for packet carrying SHUTDOWN COMPLETE:&n; * ...&n; * - The receiver of a SHUTDOWN COMPLETE shall accept the packet if the&n; *   Verification Tag field of the packet matches its own tag OR it is&n; *   set to its peer&squot;s tag and the T bit is set in the Chunk Flags.&n; *   Otherwise, the receiver MUST silently discard the packet and take&n; *   no further action. An endpoint MUST ignore the SHUTDOWN COMPLETE if&n; *   it is not in the SHUTDOWN-ACK-SENT state.&n; *&n; * Inputs&n; * (endpoint, asoc, chunk)&n; *&n; * Outputs&n; * (asoc, reply_msg, msg_up, timers, counters)&n; *&n; * The return value is the disposition of the chunk.&n; */
 DECL|function|sctp_sf_do_4_C
+id|sctp_disposition_t
 id|sctp_sf_do_4_C
 c_func
 (paren
@@ -77,12 +72,10 @@ c_cond
 op_logical_neg
 id|chunk-&gt;singleton
 )paren
-(brace
 r_return
 id|SCTP_DISPOSITION_VIOLATION
 suffix:semicolon
-)brace
-multiline_comment|/* RFC 2960 8.5.1 Exceptions in Verification Tag Rules&n;&t; * &n;&t; * (C) The receiver of a SHUTDOWN COMPLETE shall accept the&n;&t; * packet if the Verification Tag field of the packet&n;&t; * matches its own tag OR it is set to its peer&squot;s tag and&n;&t; * the T bit is set in the Chunk Flags.  Otherwise, the &n;&t; * receiver MUST silently discard the packet and take no &n;&t; * further action....&n;&t; */
+multiline_comment|/* RFC 2960 8.5.1 Exceptions in Verification Tag Rules&n;&t; *&n;&t; * (C) The receiver of a SHUTDOWN COMPLETE shall accept the&n;&t; * packet if the Verification Tag field of the packet&n;&t; * matches its own tag OR it is set to its peer&squot;s tag and&n;&t; * the T bit is set in the Chunk Flags.  Otherwise, the&n;&t; * receiver MUST silently discard the packet and take no&n;&t; * further action....&n;&t; */
 r_if
 c_cond
 (paren
@@ -115,7 +108,6 @@ id|asoc-&gt;peer.i.init_tag
 )paren
 )paren
 )paren
-(brace
 r_return
 id|sctp_sf_pdiscard
 c_func
@@ -131,8 +123,7 @@ comma
 id|commands
 )paren
 suffix:semicolon
-)brace
-multiline_comment|/* RFC 2960 10.2 SCTP-to-ULP&n;&t; *&n;&t; * H) SHUTDOWN COMPLETE notification&n;         * &n;         * When SCTP completes the shutdown procedures (section 9.2) this&n;         * notification is passed to the upper layer.&n;         */
+multiline_comment|/* RFC 2960 10.2 SCTP-to-ULP&n;&t; *&n;&t; * H) SHUTDOWN COMPLETE notification&n;&t; *&n;&t; * When SCTP completes the shutdown procedures (section 9.2) this&n;&t; * notification is passed to the upper layer.&n;&t; */
 id|ev
 op_assign
 id|sctp_ulpevent_make_assoc_change
@@ -159,11 +150,9 @@ c_cond
 op_logical_neg
 id|ev
 )paren
-(brace
 r_goto
 id|nomem
 suffix:semicolon
-)brace
 id|sctp_add_cmd_sf
 c_func
 (paren
@@ -178,7 +167,7 @@ id|ev
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* Upon reception of the SHUTDOWN COMPLETE chunk the endpoint&n;         * will verify that it is in SHUTDOWN-ACK-SENT state, if it is&n;         * not the chunk should be discarded. If the endpoint is in&n;         * the SHUTDOWN-ACK-SENT state the endpoint should stop the&n;         * T2-shutdown timer and remove all knowledge of the&n;         * association (and thus the association enters the CLOSED&n;         * state).&n;         */
+multiline_comment|/* Upon reception of the SHUTDOWN COMPLETE chunk the endpoint&n;&t; * will verify that it is in SHUTDOWN-ACK-SENT state, if it is&n;&t; * not the chunk should be discarded. If the endpoint is in&n;&t; * the SHUTDOWN-ACK-SENT state the endpoint should stop the&n;&t; * T2-shutdown timer and remove all knowledge of the&n;&t; * association (and thus the association enters the CLOSED&n;&t; * state).&n;&t; */
 id|sctp_add_cmd_sf
 c_func
 (paren
@@ -229,10 +218,9 @@ r_return
 id|SCTP_DISPOSITION_NOMEM
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_sf_do_4_C() */
-multiline_comment|/*&n; * Discard the whole packet.&n; * &n; * Section: 8.4 2)&n; *&n; * 2) If the OOTB packet contains an ABORT chunk, the receiver MUST &n; *    silently discard the OOTB packet and take no further action. &n; *    Otherwise,&n; *&n; * Verification Tag: No verification necessary&n; *&n; * Inputs&n; * (endpoint, asoc, chunk)&n; * &n; * Outputs&n; * (asoc, reply_msg, msg_up, timers, counters)&n; *&n; * The return value is the disposition of the chunk.&n; */
-id|sctp_disposition_t
+multiline_comment|/*&n; * Discard the whole packet.&n; *&n; * Section: 8.4 2)&n; *&n; * 2) If the OOTB packet contains an ABORT chunk, the receiver MUST&n; *    silently discard the OOTB packet and take no further action.&n; *    Otherwise,&n; *&n; * Verification Tag: No verification necessary&n; *&n; * Inputs&n; * (endpoint, asoc, chunk)&n; *&n; * Outputs&n; * (asoc, reply_msg, msg_up, timers, counters)&n; *&n; * The return value is the disposition of the chunk.&n; */
 DECL|function|sctp_sf_pdiscard
+id|sctp_disposition_t
 id|sctp_sf_pdiscard
 c_func
 (paren
@@ -276,10 +264,9 @@ r_return
 id|SCTP_DISPOSITION_CONSUME
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_sf_pdiscard() */
-multiline_comment|/*&n; * Respond to a normal INIT chunk.&n; * We are the side that is being asked for an association.&n; * &n; * Section: 5.1 Normal Establishment of an Association, B&n; * B) &quot;Z&quot; shall respond immediately with an INIT ACK chunk.  The&n; *    destination IP address of the INIT ACK MUST be set to the source &n; *    IP address of the INIT to which this INIT ACK is responding.  In &n; *    the response, besides filling in other parameters, &quot;Z&quot; must set the&n; *    Verification Tag field to Tag_A, and also provide its own &n; *    Verification Tag (Tag_Z) in the Initiate Tag field. &n; *&n; * Verification Tag: No checking.&n; *&n; * Inputs&n; * (endpoint, asoc, chunk)&n; * &n; * Outputs&n; * (asoc, reply_msg, msg_up, timers, counters)&n; *&n; * The return value is the disposition of the chunk.&n; */
-id|sctp_disposition_t
+multiline_comment|/*&n; * Respond to a normal INIT chunk.&n; * We are the side that is being asked for an association.&n; *&n; * Section: 5.1 Normal Establishment of an Association, B&n; * B) &quot;Z&quot; shall respond immediately with an INIT ACK chunk.  The&n; *    destination IP address of the INIT ACK MUST be set to the source&n; *    IP address of the INIT to which this INIT ACK is responding.  In&n; *    the response, besides filling in other parameters, &quot;Z&quot; must set the&n; *    Verification Tag field to Tag_A, and also provide its own&n; *    Verification Tag (Tag_Z) in the Initiate Tag field.&n; *&n; * Verification Tag: No checking.&n; *&n; * Inputs&n; * (endpoint, asoc, chunk)&n; *&n; * Outputs&n; * (asoc, reply_msg, msg_up, timers, counters)&n; *&n; * The return value is the disposition of the chunk.&n; */
 DECL|function|sctp_sf_do_5_1B_init
+id|sctp_disposition_t
 id|sctp_sf_do_5_1B_init
 c_func
 (paren
@@ -339,7 +326,6 @@ c_func
 op_member_access_from_pointer
 id|ep
 )paren
-(brace
 r_return
 id|sctp_sf_ootb
 c_func
@@ -355,7 +341,6 @@ comma
 id|commands
 )paren
 suffix:semicolon
-)brace
 multiline_comment|/* 6.10 Bundling&n;&t; * An endpoint MUST NOT bundle INIT, INIT ACK or&n;&t; * SHUTDOWN COMPLETE with any other chunks.&n;&t; */
 r_if
 c_cond
@@ -363,11 +348,9 @@ c_cond
 op_logical_neg
 id|chunk-&gt;singleton
 )paren
-(brace
 r_return
 id|SCTP_DISPOSITION_VIOLATION
 suffix:semicolon
-)brace
 multiline_comment|/* Grab the INIT header.  */
 id|chunk-&gt;subh.init_hdr
 op_assign
@@ -406,16 +389,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-l_int|NULL
-op_eq
+op_logical_neg
 id|new_asoc
 )paren
-(brace
 r_goto
 id|nomem
 suffix:semicolon
-)brace
-multiline_comment|/* FIXME: sctp_process_init can fail, but there is no &n;&t; * status nor handling. &n;&t; */
+multiline_comment|/* FIXME: sctp_process_init can fail, but there is no&n;&t; * status nor handling.&n;&t; */
 id|sctp_process_init
 c_func
 (paren
@@ -452,7 +432,7 @@ id|new_asoc
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* B) &quot;Z&quot; shall respond immediately with an INIT ACK chunk. &n;&t; */
+multiline_comment|/* B) &quot;Z&quot; shall respond immediately with an INIT ACK chunk.  */
 id|repl
 op_assign
 id|sctp_make_init_ack
@@ -471,11 +451,9 @@ c_cond
 op_logical_neg
 id|repl
 )paren
-(brace
 r_goto
 id|nomem_ack
 suffix:semicolon
-)brace
 id|sctp_add_cmd_sf
 c_func
 (paren
@@ -521,10 +499,9 @@ r_return
 id|SCTP_DISPOSITION_NOMEM
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_sf_do_5_1B_init() */
-multiline_comment|/*&n; * Respond to a normal INIT ACK chunk.&n; * We are the side that is initiating the association.&n; * &n; * Section: 5.1 Normal Establishment of an Association, C&n; * C) Upon reception of the INIT ACK from &quot;Z&quot;, &quot;A&quot; shall stop the T1-init&n; *    timer and leave COOKIE-WAIT state. &quot;A&quot; shall then send the State &n; *    Cookie received in the INIT ACK chunk in a COOKIE ECHO chunk, start &n; *    the T1-cookie timer, and enter the COOKIE-ECHOED state.&n; * &n; *    Note: The COOKIE ECHO chunk can be bundled with any pending outbound&n; *    DATA chunks, but it MUST be the first chunk in the packet and&n; *    until the COOKIE ACK is returned the sender MUST NOT send any&n; *    other packets to the peer.&n; * &n; * Verification Tag: 3.3.3&n; *   If the value of the Initiate Tag in a received INIT ACK chunk is &n; *   found to be 0, the receiver MUST treat it as an error and close the&n; *   association by transmitting an ABORT.&n; *&n; * Inputs&n; * (endpoint, asoc, chunk)&n; * &n; * Outputs&n; * (asoc, reply_msg, msg_up, timers, counters)&n; *&n; * The return value is the disposition of the chunk.&n; */
-id|sctp_disposition_t
+multiline_comment|/*&n; * Respond to a normal INIT ACK chunk.&n; * We are the side that is initiating the association.&n; *&n; * Section: 5.1 Normal Establishment of an Association, C&n; * C) Upon reception of the INIT ACK from &quot;Z&quot;, &quot;A&quot; shall stop the T1-init&n; *    timer and leave COOKIE-WAIT state. &quot;A&quot; shall then send the State&n; *    Cookie received in the INIT ACK chunk in a COOKIE ECHO chunk, start&n; *    the T1-cookie timer, and enter the COOKIE-ECHOED state.&n; *&n; *    Note: The COOKIE ECHO chunk can be bundled with any pending outbound&n; *    DATA chunks, but it MUST be the first chunk in the packet and&n; *    until the COOKIE ACK is returned the sender MUST NOT send any&n; *    other packets to the peer.&n; *&n; * Verification Tag: 3.3.3&n; *   If the value of the Initiate Tag in a received INIT ACK chunk is&n; *   found to be 0, the receiver MUST treat it as an error and close the&n; *   association by transmitting an ABORT.&n; *&n; * Inputs&n; * (endpoint, asoc, chunk)&n; *&n; * Outputs&n; * (asoc, reply_msg, msg_up, timers, counters)&n; *&n; * The return value is the disposition of the chunk.&n; */
 DECL|function|sctp_sf_do_5_1C_ack
+id|sctp_disposition_t
 id|sctp_sf_do_5_1C_ack
 c_func
 (paren
@@ -561,7 +538,7 @@ id|sctp_init_chunk_t
 op_star
 id|initchunk
 suffix:semicolon
-r_uint32
+id|__u32
 id|init_tag
 suffix:semicolon
 multiline_comment|/* 6.10 Bundling&n;&t; * An endpoint MUST NOT bundle INIT, INIT ACK or&n;&t; * SHUTDOWN COMPLETE with any other chunks.&n;&t; */
@@ -571,12 +548,10 @@ c_cond
 op_logical_neg
 id|chunk-&gt;singleton
 )paren
-(brace
 r_return
 id|SCTP_DISPOSITION_VIOLATION
 suffix:semicolon
-)brace
-multiline_comment|/* Grab the INIT header.  &n;&t; */
+multiline_comment|/* Grab the INIT header.  */
 id|chunk-&gt;subh.init_hdr
 op_assign
 (paren
@@ -593,19 +568,16 @@ c_func
 id|chunk-&gt;subh.init_hdr-&gt;init_tag
 )paren
 suffix:semicolon
-multiline_comment|/* Verification Tag: 3.3.3&n;         *   If the value of the Initiate Tag in a received INIT ACK&n;         *   chunk is found to be 0, the receiver MUST treat it as an&n;         *   error and close the association by transmitting an ABORT.&n;         */
+multiline_comment|/* Verification Tag: 3.3.3&n;&t; *   If the value of the Initiate Tag in a received INIT ACK&n;&t; *   chunk is found to be 0, the receiver MUST treat it as an&n;&t; *   error and close the association by transmitting an ABORT.&n;&t; */
 r_if
 c_cond
 (paren
-l_int|0
-op_eq
+op_logical_neg
 id|init_tag
 )paren
 (brace
 id|sctp_chunk_t
 op_star
-id|reply
-suffix:semicolon
 id|reply
 op_assign
 id|sctp_make_abort
@@ -624,11 +596,9 @@ c_cond
 op_logical_neg
 id|reply
 )paren
-(brace
 r_goto
 id|nomem
 suffix:semicolon
-)brace
 id|sctp_add_cmd_sf
 c_func
 (paren
@@ -710,7 +680,7 @@ id|initchunk
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* 5.1 C) &quot;A&quot; shall stop the T1-init timer and leave&n;         * COOKIE-WAIT state.  &quot;A&quot; shall then ... start the T1-cookie&n;         * timer, and enter the COOKIE-ECHOED state.&n;         */
+multiline_comment|/* 5.1 C) &quot;A&quot; shall stop the T1-init timer and leave&n;&t; * COOKIE-WAIT state.  &quot;A&quot; shall then ... start the T1-cookie&n;&t; * timer, and enter the COOKIE-ECHOED state.&n;&t; */
 id|sctp_add_cmd_sf
 c_func
 (paren
@@ -767,7 +737,7 @@ id|SCTP_STATE_COOKIE_ECHOED
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* 5.1 C) &quot;A&quot; shall then send the State Cookie received in the&n;         * INIT ACK chunk in a COOKIE ECHO chunk, ...&n;         */
+multiline_comment|/* 5.1 C) &quot;A&quot; shall then send the State Cookie received in the&n;&t; * INIT ACK chunk in a COOKIE ECHO chunk, ...&n;&t; */
 id|sctp_add_cmd_sf
 c_func
 (paren
@@ -790,10 +760,9 @@ r_return
 id|SCTP_DISPOSITION_NOMEM
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_sf_do_5_1C_ack() */
-multiline_comment|/*&n; * Respond to a normal COOKIE ECHO chunk.&n; * We are the side that is being asked for an association.&n; * &n; * Section: 5.1 Normal Establishment of an Association, D&n; * D) Upon reception of the COOKIE ECHO chunk, Endpoint &quot;Z&quot; will reply &n; *    with a COOKIE ACK chunk after building a TCB and moving to&n; *    the ESTABLISHED state. A COOKIE ACK chunk may be bundled with&n; *    any pending DATA chunks (and/or SACK chunks), but the COOKIE ACK&n; *    chunk MUST be the first chunk in the packet.&n; * &n; *   IMPLEMENTATION NOTE: An implementation may choose to send the&n; *   Communication Up notification to the SCTP user upon reception&n; *   of a valid COOKIE ECHO chunk.&n; * &n; * Verification Tag: 8.5.1 Exceptions in Verification Tag Rules&n; * D) Rules for packet carrying a COOKIE ECHO&n; * &n; * - When sending a COOKIE ECHO, the endpoint MUST use the value of the&n; *   Initial Tag received in the INIT ACK.&n; * &n; * - The receiver of a COOKIE ECHO follows the procedures in Section 5.&n; * &n; * Inputs&n; * (endpoint, asoc, chunk)&n; * &n; * Outputs&n; * (asoc, reply_msg, msg_up, timers, counters)&n; *&n; * The return value is the disposition of the chunk.&n; */
-id|sctp_disposition_t
+multiline_comment|/*&n; * Respond to a normal COOKIE ECHO chunk.&n; * We are the side that is being asked for an association.&n; *&n; * Section: 5.1 Normal Establishment of an Association, D&n; * D) Upon reception of the COOKIE ECHO chunk, Endpoint &quot;Z&quot; will reply&n; *    with a COOKIE ACK chunk after building a TCB and moving to&n; *    the ESTABLISHED state. A COOKIE ACK chunk may be bundled with&n; *    any pending DATA chunks (and/or SACK chunks), but the COOKIE ACK&n; *    chunk MUST be the first chunk in the packet.&n; *&n; *   IMPLEMENTATION NOTE: An implementation may choose to send the&n; *   Communication Up notification to the SCTP user upon reception&n; *   of a valid COOKIE ECHO chunk.&n; *&n; * Verification Tag: 8.5.1 Exceptions in Verification Tag Rules&n; * D) Rules for packet carrying a COOKIE ECHO&n; *&n; * - When sending a COOKIE ECHO, the endpoint MUST use the value of the&n; *   Initial Tag received in the INIT ACK.&n; *&n; * - The receiver of a COOKIE ECHO follows the procedures in Section 5.&n; *&n; * Inputs&n; * (endpoint, asoc, chunk)&n; *&n; * Outputs&n; * (asoc, reply_msg, msg_up, timers, counters)&n; *&n; * The return value is the disposition of the chunk.&n; */
 DECL|function|sctp_sf_do_5_1D_ce
+id|sctp_disposition_t
 id|sctp_sf_do_5_1D_ce
 c_func
 (paren
@@ -866,7 +835,6 @@ c_func
 op_member_access_from_pointer
 id|ep
 )paren
-(brace
 r_return
 id|sctp_sf_ootb
 c_func
@@ -882,8 +850,7 @@ comma
 id|commands
 )paren
 suffix:semicolon
-)brace
-multiline_comment|/* &quot;Decode&quot; the chunk.  We have no optional parameters so we&n;         * are in good shape.&n;         */
+multiline_comment|/* &quot;Decode&quot; the chunk.  We have no optional parameters so we&n;&t; * are in good shape.&n;&t; */
 id|chunk-&gt;subh.cookie_hdr
 op_assign
 (paren
@@ -909,7 +876,7 @@ id|sctp_chunkhdr_t
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* 5.1 D) Upon reception of the COOKIE ECHO chunk, Endpoint&n;         * &quot;Z&quot; will reply with a COOKIE ACK chunk after building a TCB&n;         * and moving to the ESTABLISHED state.&n;         */
+multiline_comment|/* 5.1 D) Upon reception of the COOKIE ECHO chunk, Endpoint&n;&t; * &quot;Z&quot; will reply with a COOKIE ACK chunk after building a TCB&n;&t; * and moving to the ESTABLISHED state.&n;&t; */
 id|new_asoc
 op_assign
 id|sctp_unpack_cookie
@@ -927,7 +894,7 @@ op_amp
 id|error
 )paren
 suffix:semicolon
-multiline_comment|/* FIXME:  &n;&t; * If the re-build failed, what is the proper error path&n;&t; * from here?&n;&t; *&n;&t; * [We should abort the association. --piggy]&n;&t; */
+multiline_comment|/* FIXME:&n;&t; * If the re-build failed, what is the proper error path&n;&t; * from here?&n;&t; *&n;&t; * [We should abort the association. --piggy]&n;&t; */
 r_if
 c_cond
 (paren
@@ -971,6 +938,7 @@ id|commands
 )paren
 suffix:semicolon
 )brace
+suffix:semicolon
 )brace
 id|sctp_add_cmd_sf
 c_func
@@ -1018,7 +986,6 @@ c_cond
 (paren
 id|new_asoc-&gt;autoclose
 )paren
-(brace
 id|sctp_add_cmd_sf
 c_func
 (paren
@@ -1033,7 +1000,6 @@ id|SCTP_EVENT_TIMEOUT_AUTOCLOSE
 )paren
 )paren
 suffix:semicolon
-)brace
 id|sctp_add_cmd_sf
 c_func
 (paren
@@ -1047,7 +1013,7 @@ c_func
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* Re-build the bind address for the association is done in &n;&t; * the sctp_unpack_cookie() already. &n;&t; */
+multiline_comment|/* Re-build the bind address for the association is done in&n;&t; * the sctp_unpack_cookie() already.&n;&t; */
 multiline_comment|/* This is a brand-new association, so these are not yet side&n;&t; * effects--it is safe to run them here.&n;&t; */
 id|peer_init
 op_assign
@@ -1088,11 +1054,9 @@ c_cond
 op_logical_neg
 id|repl
 )paren
-(brace
 r_goto
 id|nomem_repl
 suffix:semicolon
-)brace
 id|sctp_add_cmd_sf
 c_func
 (paren
@@ -1107,7 +1071,7 @@ id|repl
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* RFC 2960 5.1 Normal Establishment of an Association&n;&t; *&n;&t; * D) IMPLEMENTATION NOTE: An implementation may choose to&n;         * send the Communication Up notification to the SCTP user&n;         * upon reception of a valid COOKIE ECHO chunk.&n;&t; */
+multiline_comment|/* RFC 2960 5.1 Normal Establishment of an Association&n;&t; *&n;&t; * D) IMPLEMENTATION NOTE: An implementation may choose to&n;&t; * send the Communication Up notification to the SCTP user&n;&t; * upon reception of a valid COOKIE ECHO chunk.&n;&t; */
 id|ev
 op_assign
 id|sctp_ulpevent_make_assoc_change
@@ -1134,11 +1098,9 @@ c_cond
 op_logical_neg
 id|ev
 )paren
-(brace
 r_goto
 id|nomem_ev
 suffix:semicolon
-)brace
 id|sctp_add_cmd_sf
 c_func
 (paren
@@ -1178,10 +1140,9 @@ r_return
 id|SCTP_DISPOSITION_NOMEM
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_sf_do_5_1D_ce() */
-multiline_comment|/*&n; * Respond to a normal COOKIE ACK chunk.&n; * We are the side that is being asked for an association.&n; * &n; * RFC 2960 5.1 Normal Establishment of an Association&n; * &n; * E) Upon reception of the COOKIE ACK, endpoint &quot;A&quot; will move from the &n; *    COOKIE-ECHOED state to the ESTABLISHED state, stopping the T1-cookie&n; *    timer. It may also notify its ULP about the successful&n; *    establishment of the association with a Communication Up &n; *    notification (see Section 10). &n; * &n; * Verification Tag:&n; * Inputs&n; * (endpoint, asoc, chunk)&n; * &n; * Outputs&n; * (asoc, reply_msg, msg_up, timers, counters)&n; *&n; * The return value is the disposition of the chunk.&n; */
-id|sctp_disposition_t
+multiline_comment|/*&n; * Respond to a normal COOKIE ACK chunk.&n; * We are the side that is being asked for an association.&n; *&n; * RFC 2960 5.1 Normal Establishment of an Association&n; *&n; * E) Upon reception of the COOKIE ACK, endpoint &quot;A&quot; will move from the&n; *    COOKIE-ECHOED state to the ESTABLISHED state, stopping the T1-cookie&n; *    timer. It may also notify its ULP about the successful&n; *    establishment of the association with a Communication Up&n; *    notification (see Section 10).&n; *&n; * Verification Tag:&n; * Inputs&n; * (endpoint, asoc, chunk)&n; *&n; * Outputs&n; * (asoc, reply_msg, msg_up, timers, counters)&n; *&n; * The return value is the disposition of the chunk.&n; */
 DECL|function|sctp_sf_do_5_1E_ca
+id|sctp_disposition_t
 id|sctp_sf_do_5_1E_ca
 c_func
 (paren
@@ -1212,7 +1173,7 @@ id|sctp_ulpevent_t
 op_star
 id|ev
 suffix:semicolon
-multiline_comment|/* RFC 2960 5.1 Normal Establishment of an Association&n;&t; * &n;&t; * E) Upon reception of the COOKIE ACK, endpoint &quot;A&quot; will move&n;         * from the COOKIE-ECHOED state to the ESTABLISHED state,&n;         * stopping the T1-cookie timer.&n;&t; */
+multiline_comment|/* RFC 2960 5.1 Normal Establishment of an Association&n;&t; *&n;&t; * E) Upon reception of the COOKIE ACK, endpoint &quot;A&quot; will move&n;&t; * from the COOKIE-ECHOED state to the ESTABLISHED state,&n;&t; * stopping the T1-cookie timer.&n;&t; */
 id|sctp_add_cmd_sf
 c_func
 (paren
@@ -1259,7 +1220,6 @@ c_cond
 (paren
 id|asoc-&gt;autoclose
 )paren
-(brace
 id|sctp_add_cmd_sf
 c_func
 (paren
@@ -1274,7 +1234,6 @@ id|SCTP_EVENT_TIMEOUT_AUTOCLOSE
 )paren
 )paren
 suffix:semicolon
-)brace
 id|sctp_add_cmd_sf
 c_func
 (paren
@@ -1288,7 +1247,7 @@ c_func
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* It may also notify its ULP about the successful&n;         * establishment of the association with a Communication Up&n;         * notification (see Section 10).&n;         */
+multiline_comment|/* It may also notify its ULP about the successful&n;&t; * establishment of the association with a Communication Up&n;&t; * notification (see Section 10).&n;&t; */
 id|ev
 op_assign
 id|sctp_ulpevent_make_assoc_change
@@ -1315,11 +1274,9 @@ c_cond
 op_logical_neg
 id|ev
 )paren
-(brace
 r_goto
 id|nomem
 suffix:semicolon
-)brace
 id|sctp_add_cmd_sf
 c_func
 (paren
@@ -1343,10 +1300,9 @@ r_return
 id|SCTP_DISPOSITION_NOMEM
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_sf_do_5_1E_ca() */
 multiline_comment|/* Generate a HEARTBEAT packet on the given transport.  */
-id|sctp_disposition_t
 DECL|function|sctp_sf_sendbeat_8_3
+id|sctp_disposition_t
 id|sctp_sf_sendbeat_8_3
 c_func
 (paren
@@ -1421,7 +1377,7 @@ r_return
 id|SCTP_DISPOSITION_DELETE_TCB
 suffix:semicolon
 )brace
-multiline_comment|/* Section 3.3.5. &n;&t; * The Sender-specific Heartbeat Info field should normally include&n;&t; * information about the sender&squot;s current time when this HEARTBEAT&n;&t; * chunk is sent and the destination transport address to which this&n;&t; * HEARTBEAT is sent (see Section 8.3).&n;&t; */
+multiline_comment|/* Section 3.3.5.&n;&t; * The Sender-specific Heartbeat Info field should normally include&n;&t; * information about the sender&squot;s current time when this HEARTBEAT&n;&t; * chunk is sent and the destination transport address to which this&n;&t; * HEARTBEAT is sent (see Section 8.3).&n;&t; */
 id|hbinfo.param_hdr.type
 op_assign
 id|SCTP_PARAM_HEATBEAT_INFO
@@ -1450,7 +1406,7 @@ id|transport-&gt;rto_pending
 op_assign
 l_int|1
 suffix:semicolon
-multiline_comment|/* Send a heartbeat to our peer. */
+multiline_comment|/* Send a heartbeat to our peer.  */
 id|paylen
 op_assign
 r_sizeof
@@ -1476,15 +1432,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-l_int|NULL
-op_eq
+op_logical_neg
 id|reply
 )paren
-(brace
 r_goto
 id|nomem
 suffix:semicolon
-)brace
 id|sctp_add_cmd_sf
 c_func
 (paren
@@ -1499,7 +1452,7 @@ id|reply
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* Set transport error counter and association error counter&n;         * when sending heartbeat.&n;&t; */
+multiline_comment|/* Set transport error counter and association error counter&n;&t; * when sending heartbeat.&n;&t; */
 id|sctp_add_cmd_sf
 c_func
 (paren
@@ -1523,10 +1476,9 @@ r_return
 id|SCTP_DISPOSITION_NOMEM
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_sf_sendbeat_8_3() */
-multiline_comment|/*&n; * Process an heartbeat request.&n; * &n; * Section: 8.3 Path Heartbeat&n; * The receiver of the HEARTBEAT should immediately respond with a&n; * HEARTBEAT ACK that contains the Heartbeat Information field copied &n; * from the received HEARTBEAT chunk.&n; * &n; * Verification Tag:  8.5 Verification Tag [Normal verification]&n; * When receiving an SCTP packet, the endpoint MUST ensure that the&n; * value in the Verification Tag field of the received SCTP packet&n; * matches its own Tag. If the received Verification Tag value does not&n; * match the receiver&squot;s own tag value, the receiver shall silently&n; * discard the packet and shall not process it any further except for &n; * those cases listed in Section 8.5.1 below.&n; * &n; * Inputs&n; * (endpoint, asoc, chunk)&n; * &n; * Outputs&n; * (asoc, reply_msg, msg_up, timers, counters)&n; *&n; * The return value is the disposition of the chunk.&n; */
-id|sctp_disposition_t
+multiline_comment|/*&n; * Process an heartbeat request.&n; *&n; * Section: 8.3 Path Heartbeat&n; * The receiver of the HEARTBEAT should immediately respond with a&n; * HEARTBEAT ACK that contains the Heartbeat Information field copied&n; * from the received HEARTBEAT chunk.&n; *&n; * Verification Tag:  8.5 Verification Tag [Normal verification]&n; * When receiving an SCTP packet, the endpoint MUST ensure that the&n; * value in the Verification Tag field of the received SCTP packet&n; * matches its own Tag. If the received Verification Tag value does not&n; * match the receiver&squot;s own tag value, the receiver shall silently&n; * discard the packet and shall not process it any further except for&n; * those cases listed in Section 8.5.1 below.&n; *&n; * Inputs&n; * (endpoint, asoc, chunk)&n; *&n; * Outputs&n; * (asoc, reply_msg, msg_up, timers, counters)&n; *&n; * The return value is the disposition of the chunk.&n; */
 DECL|function|sctp_sf_beat_8_3
+id|sctp_disposition_t
 id|sctp_sf_beat_8_3
 c_func
 (paren
@@ -1568,7 +1520,7 @@ id|paylen
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* 8.5 When receiving an SCTP packet, the endpoint MUST ensure&n;         * that the value in the Verification Tag field of the&n;         * received SCTP packet matches its own Tag. If the received&n;         * Verification Tag value does not match the receiver&squot;s own&n;         * tag value, the receiver shall silently discard the packet...&n;         */
+multiline_comment|/* 8.5 When receiving an SCTP packet, the endpoint MUST ensure&n;&t; * that the value in the Verification Tag field of the&n;&t; * received SCTP packet matches its own Tag. If the received&n;&t; * Verification Tag value does not match the receiver&squot;s own&n;&t; * tag value, the receiver shall silently discard the packet...&n;&t; */
 r_if
 c_cond
 (paren
@@ -1580,7 +1532,6 @@ id|chunk-&gt;sctp_hdr-&gt;vtag
 op_ne
 id|asoc-&gt;c.my_vtag
 )paren
-(brace
 r_return
 id|sctp_sf_pdiscard
 c_func
@@ -1596,8 +1547,7 @@ comma
 id|commands
 )paren
 suffix:semicolon
-)brace
-multiline_comment|/* 8.3 The receiver of the HEARTBEAT should immediately&n;         * respond with a HEARTBEAT ACK that contains the Heartbeat&n;         * Information field copied from the received HEARTBEAT chunk.&n;         */
+multiline_comment|/* 8.3 The receiver of the HEARTBEAT should immediately&n;&t; * respond with a HEARTBEAT ACK that contains the Heartbeat&n;&t; * Information field copied from the received HEARTBEAT chunk.&n;&t; */
 id|chunk-&gt;subh.hb_hdr
 op_assign
 (paren
@@ -1644,15 +1594,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-l_int|NULL
-op_eq
+op_logical_neg
 id|reply
 )paren
-(brace
 r_goto
 id|nomem
 suffix:semicolon
-)brace
 id|sctp_add_cmd_sf
 c_func
 (paren
@@ -1676,10 +1623,9 @@ r_return
 id|SCTP_DISPOSITION_NOMEM
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_sf_beat_8_3() */
-multiline_comment|/*&n; * Process the returning HEARTBEAT ACK.&n; * &n; * Section: 8.3 Path Heartbeat&n; * Upon the receipt of the HEARTBEAT ACK, the sender of the HEARTBEAT&n; * should clear the error counter of the destination transport&n; * address to which the HEARTBEAT was sent, and mark the destination&n; * transport address as active if it is not so marked. The endpoint may&n; * optionally report to the upper layer when an inactive destination&n; * address is marked as active due to the reception of the latest&n; * HEARTBEAT ACK. The receiver of the HEARTBEAT ACK must also&n; * clear the association overall error count as well (as defined&n; * in section 8.1).&n; * &n; * The receiver of the HEARTBEAT ACK should also perform an RTT&n; * measurement for that destination transport address using the time&n; * value carried in the HEARTBEAT ACK chunk.&n; * &n; * Verification Tag:  8.5 Verification Tag [Normal verification]&n; *&n; * Inputs&n; * (endpoint, asoc, chunk)&n; * &n; * Outputs&n; * (asoc, reply_msg, msg_up, timers, counters)&n; *&n; * The return value is the disposition of the chunk.&n; */
-id|sctp_disposition_t
+multiline_comment|/*&n; * Process the returning HEARTBEAT ACK.&n; *&n; * Section: 8.3 Path Heartbeat&n; * Upon the receipt of the HEARTBEAT ACK, the sender of the HEARTBEAT&n; * should clear the error counter of the destination transport&n; * address to which the HEARTBEAT was sent, and mark the destination&n; * transport address as active if it is not so marked. The endpoint may&n; * optionally report to the upper layer when an inactive destination&n; * address is marked as active due to the reception of the latest&n; * HEARTBEAT ACK. The receiver of the HEARTBEAT ACK must also&n; * clear the association overall error count as well (as defined&n; * in section 8.1).&n; *&n; * The receiver of the HEARTBEAT ACK should also perform an RTT&n; * measurement for that destination transport address using the time&n; * value carried in the HEARTBEAT ACK chunk.&n; *&n; * Verification Tag:  8.5 Verification Tag [Normal verification]&n; *&n; * Inputs&n; * (endpoint, asoc, chunk)&n; *&n; * Outputs&n; * (asoc, reply_msg, msg_up, timers, counters)&n; *&n; * The return value is the disposition of the chunk.&n; */
 DECL|function|sctp_sf_backbeat_8_3
+id|sctp_disposition_t
 id|sctp_sf_backbeat_8_3
 c_func
 (paren
@@ -1727,7 +1673,7 @@ r_int
 r_int
 id|max_interval
 suffix:semicolon
-multiline_comment|/* 8.5 When receiving an SCTP packet, the endpoint MUST ensure&n;         * that the value in the Verification Tag field of the&n;         * received SCTP packet matches its own Tag. ...&n;         */
+multiline_comment|/* 8.5 When receiving an SCTP packet, the endpoint MUST ensure&n;&t; * that the value in the Verification Tag field of the&n;&t; * received SCTP packet matches its own Tag. ...&n;&t; */
 r_if
 c_cond
 (paren
@@ -1739,7 +1685,6 @@ id|chunk-&gt;sctp_hdr-&gt;vtag
 op_ne
 id|asoc-&gt;c.my_vtag
 )paren
-(brace
 r_return
 id|sctp_sf_pdiscard
 c_func
@@ -1755,7 +1700,6 @@ comma
 id|commands
 )paren
 suffix:semicolon
-)brace
 id|hbinfo
 op_assign
 (paren
@@ -1779,7 +1723,7 @@ op_amp
 id|from_addr
 )paren
 suffix:semicolon
-multiline_comment|/* This should never happen, but lets log it if so. */
+multiline_comment|/* This should never happen, but lets log it if so.  */
 r_if
 c_cond
 (paren
@@ -1865,7 +1809,7 @@ r_return
 id|SCTP_DISPOSITION_DISCARD
 suffix:semicolon
 )brace
-multiline_comment|/* 8.3 Upon the receipt of the HEARTBEAT ACK, the sender of&n;         * the HEARTBEAT should clear the error counter of the&n;         * destination transport address to which the HEARTBEAT was&n;         * sent and mark the destination transport address as active if&n;         * it is not so marked.&n;         */
+multiline_comment|/* 8.3 Upon the receipt of the HEARTBEAT ACK, the sender of&n;&t; * the HEARTBEAT should clear the error counter of the&n;&t; * destination transport address to which the HEARTBEAT was&n;&t; * sent and mark the destination transport address as active if&n;&t; * it is not so marked.&n;&t; */
 id|sctp_add_cmd_sf
 c_func
 (paren
@@ -1896,11 +1840,10 @@ r_return
 id|SCTP_DISPOSITION_NOMEM
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_sf_backbeat_8_3() */
-multiline_comment|/* Populate the verification/tie tags based on overlapping INIT&n; * scenario.  &n; *  &n; * Note: Do not use in CLOSED or SHUTDOWN-ACK-SENT state.&n; */
+multiline_comment|/* Populate the verification/tie tags based on overlapping INIT&n; * scenario.&n; *&n; * Note: Do not use in CLOSED or SHUTDOWN-ACK-SENT state.&n; */
+DECL|function|sctp_tietags_populate
 r_static
 r_void
-DECL|function|sctp_tietags_populate
 id|sctp_tietags_populate
 c_func
 (paren
@@ -1969,7 +1912,8 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-multiline_comment|/* Other parameters for the endpoint SHOULD be copied from the&n;         * existing parameters of the association (e.g. number of&n;         * outbound streams) into the INIT ACK and cookie.&n;         */
+suffix:semicolon
+multiline_comment|/* Other parameters for the endpoint SHOULD be copied from the&n;&t; * existing parameters of the association (e.g. number of&n;&t; * outbound streams) into the INIT ACK and cookie.&n;&t; */
 id|new_asoc-&gt;rwnd
 op_assign
 id|asoc-&gt;rwnd
@@ -1986,14 +1930,11 @@ id|new_asoc-&gt;c.initial_tsn
 op_assign
 id|asoc-&gt;c.initial_tsn
 suffix:semicolon
-r_return
-suffix:semicolon
 )brace
-multiline_comment|/* sctp_tietags_populate() */
-multiline_comment|/* &n; * Compare vtag/tietag values to determine unexpected COOKIE-ECHO&n; * handling action.&n; *&n; * RFC 2960 5.2.4 Handle a COOKIE ECHO when a TCB exists.&n; * &n; * Returns value representing action to be taken.   These action values &n; * correspond to Action/Description values in RFC 2960, Table 2. &n; */
+multiline_comment|/*&n; * Compare vtag/tietag values to determine unexpected COOKIE-ECHO&n; * handling action.&n; *&n; * RFC 2960 5.2.4 Handle a COOKIE ECHO when a TCB exists.&n; *&n; * Returns value representing action to be taken.   These action values&n; * correspond to Action/Description values in RFC 2960, Table 2.&n; */
+DECL|function|sctp_tietags_compare
 r_static
 r_char
-DECL|function|sctp_tietags_compare
 id|sctp_tietags_compare
 c_func
 (paren
@@ -2035,11 +1976,9 @@ op_eq
 id|new_asoc-&gt;c.peer_ttag
 )paren
 )paren
-(brace
 r_return
 l_char|&squot;A&squot;
 suffix:semicolon
-)brace
 multiline_comment|/* Collision case D.&n;&t; * Note: Test case D first, otherwise it may be incorrectly&n;&t; * identified as second case of B if the value of the Tie_tag is&n;&t; * not filled into the state cookie.&n;&t; */
 r_if
 c_cond
@@ -2056,11 +1995,9 @@ op_eq
 id|new_asoc-&gt;c.peer_vtag
 )paren
 )paren
-(brace
 r_return
 l_char|&squot;D&squot;
 suffix:semicolon
-)brace
 multiline_comment|/* Collision case B. */
 r_if
 c_cond
@@ -2087,11 +2024,9 @@ id|new_asoc-&gt;c.peer_ttag
 )paren
 )paren
 )paren
-(brace
 r_return
 l_char|&squot;B&squot;
 suffix:semicolon
-)brace
 multiline_comment|/* Collision case C. */
 r_if
 c_cond
@@ -2120,21 +2055,18 @@ op_eq
 id|new_asoc-&gt;c.peer_ttag
 )paren
 )paren
-(brace
 r_return
 l_char|&squot;C&squot;
 suffix:semicolon
-)brace
 r_return
 l_char|&squot;E&squot;
 suffix:semicolon
 multiline_comment|/* No such case available. */
 )brace
-multiline_comment|/* sctp_tietags_compare() */
 multiline_comment|/* Common helper routine for both duplicate and simulataneous INIT&n; * chunk handling.&n; */
+DECL|function|sctp_sf_do_unexpected_init
 r_static
 id|sctp_disposition_t
-DECL|function|sctp_sf_do_unexpected_init
 id|sctp_sf_do_unexpected_init
 c_func
 (paren
@@ -2182,11 +2114,9 @@ c_cond
 op_logical_neg
 id|chunk-&gt;singleton
 )paren
-(brace
 r_return
 id|SCTP_DISPOSITION_VIOLATION
 suffix:semicolon
-)brace
 multiline_comment|/* Grab the INIT header.  */
 id|chunk-&gt;subh.init_hdr
 op_assign
@@ -2196,7 +2126,7 @@ op_star
 )paren
 id|chunk-&gt;skb-&gt;data
 suffix:semicolon
-multiline_comment|/* Tag the variable length parameters.  &n;&t; */
+multiline_comment|/* Tag the variable length parameters.  */
 id|chunk-&gt;param_hdr.v
 op_assign
 id|skb_pull
@@ -2210,7 +2140,7 @@ id|sctp_inithdr_t
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Other parameters for the endpoint SHOULD be copied from the&n;&t; * existing parameters of the association (e.g. number of&n;&t; * outbound streams) into the INIT ACK and cookie.&n;&t; * FIXME:  We are copying parameters from the endpoint not the &n;&t; * association. &n;&t; */
+multiline_comment|/*&n;&t; * Other parameters for the endpoint SHOULD be copied from the&n;&t; * existing parameters of the association (e.g. number of&n;&t; * outbound streams) into the INIT ACK and cookie.&n;&t; * FIXME:  We are copying parameters from the endpoint not the&n;&t; * association.&n;&t; */
 id|new_asoc
 op_assign
 id|sctp_make_temp_asoc
@@ -2229,12 +2159,10 @@ c_cond
 op_logical_neg
 id|new_asoc
 )paren
-(brace
 r_goto
 id|nomem
 suffix:semicolon
-)brace
-multiline_comment|/* In the outbound INIT ACK the endpoint MUST copy its current&n;         * Verification Tag and Peers Verification tag into a reserved&n;         * place (local tie-tag and per tie-tag) within the state cookie.&n;&t; */
+multiline_comment|/* In the outbound INIT ACK the endpoint MUST copy its current&n;&t; * Verification Tag and Peers Verification tag into a reserved&n;&t; * place (local tie-tag and per tie-tag) within the state cookie.&n;&t; */
 id|sctp_process_init
 c_func
 (paren
@@ -2265,7 +2193,7 @@ comma
 id|asoc
 )paren
 suffix:semicolon
-multiline_comment|/* B) &quot;Z&quot; shall respond immediately with an INIT ACK chunk. &n;&t; */
+multiline_comment|/* B) &quot;Z&quot; shall respond immediately with an INIT ACK chunk.  */
 id|repl
 op_assign
 id|sctp_make_init_ack
@@ -2284,11 +2212,9 @@ c_cond
 op_logical_neg
 id|repl
 )paren
-(brace
 r_goto
 id|nomem
 suffix:semicolon
-)brace
 id|sctp_add_cmd_sf
 c_func
 (paren
@@ -2340,10 +2266,9 @@ r_return
 id|SCTP_DISPOSITION_NOMEM
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_sf_do_unexpected_init() */
-multiline_comment|/*&n; * Handle simultanous INIT.&n; * This means we started an INIT and then we got an INIT request from&n; * our peer.&n; * &n; * Section: 5.2.1 INIT received in COOKIE-WAIT or COOKIE-ECHOED State (Item B)&n; * This usually indicates an initialization collision, i.e., each&n; * endpoint is attempting, at about the same time, to establish an&n; * association with the other endpoint.&n; * &n; * Upon receipt of an INIT in the COOKIE-WAIT or COOKIE-ECHOED state, an&n; * endpoint MUST respond with an INIT ACK using the same parameters it&n; * sent in its original INIT chunk (including its Verification Tag,&n; * unchanged). These original parameters are combined with those from the&n; * newly received INIT chunk. The endpoint shall also generate a State&n; * Cookie with the INIT ACK. The endpoint uses the parameters sent in its&n; * INIT to calculate the State Cookie.&n; * &n; * After that, the endpoint MUST NOT change its state, the T1-init &n; * timer shall be left running and the corresponding TCB MUST NOT be &n; * destroyed. The normal procedures for handling State Cookies when&n; * a TCB exists will resolve the duplicate INITs to a single association.&n; * &n; * For an endpoint that is in the COOKIE-ECHOED state it MUST populate&n; * its Tie-Tags with the Tag information of itself and its peer (see&n; * section 5.2.2 for a description of the Tie-Tags).&n; * &n; * Verification Tag: Not explicit, but an INIT can not have a valid&n; * verification tag, so we skip the check.&n; *&n; * Inputs&n; * (endpoint, asoc, chunk)&n; * &n; * Outputs&n; * (asoc, reply_msg, msg_up, timers, counters)&n; *&n; * The return value is the disposition of the chunk.&n; */
-id|sctp_disposition_t
+multiline_comment|/*&n; * Handle simultanous INIT.&n; * This means we started an INIT and then we got an INIT request from&n; * our peer.&n; *&n; * Section: 5.2.1 INIT received in COOKIE-WAIT or COOKIE-ECHOED State (Item B)&n; * This usually indicates an initialization collision, i.e., each&n; * endpoint is attempting, at about the same time, to establish an&n; * association with the other endpoint.&n; *&n; * Upon receipt of an INIT in the COOKIE-WAIT or COOKIE-ECHOED state, an&n; * endpoint MUST respond with an INIT ACK using the same parameters it&n; * sent in its original INIT chunk (including its Verification Tag,&n; * unchanged). These original parameters are combined with those from the&n; * newly received INIT chunk. The endpoint shall also generate a State&n; * Cookie with the INIT ACK. The endpoint uses the parameters sent in its&n; * INIT to calculate the State Cookie.&n; *&n; * After that, the endpoint MUST NOT change its state, the T1-init&n; * timer shall be left running and the corresponding TCB MUST NOT be&n; * destroyed. The normal procedures for handling State Cookies when&n; * a TCB exists will resolve the duplicate INITs to a single association.&n; *&n; * For an endpoint that is in the COOKIE-ECHOED state it MUST populate&n; * its Tie-Tags with the Tag information of itself and its peer (see&n; * section 5.2.2 for a description of the Tie-Tags).&n; *&n; * Verification Tag: Not explicit, but an INIT can not have a valid&n; * verification tag, so we skip the check.&n; *&n; * Inputs&n; * (endpoint, asoc, chunk)&n; *&n; * Outputs&n; * (asoc, reply_msg, msg_up, timers, counters)&n; *&n; * The return value is the disposition of the chunk.&n; */
 DECL|function|sctp_sf_do_5_2_1_siminit
+id|sctp_disposition_t
 id|sctp_sf_do_5_2_1_siminit
 c_func
 (paren
@@ -2370,12 +2295,8 @@ op_star
 id|commands
 )paren
 (brace
-id|sctp_disposition_t
-id|retval
-suffix:semicolon
-multiline_comment|/* Call helper to do the real work for both simulataneous and&n;&t; * duplicate INIT chunk handling. &n;&t; */
-id|retval
-op_assign
+multiline_comment|/* Call helper to do the real work for both simulataneous and&n;&t; * duplicate INIT chunk handling.&n;&t; */
+r_return
 id|sctp_sf_do_unexpected_init
 c_func
 (paren
@@ -2390,14 +2311,10 @@ comma
 id|commands
 )paren
 suffix:semicolon
-r_return
-id|retval
-suffix:semicolon
 )brace
-multiline_comment|/* sctp_sf_do_5_2_1_siminit() */
-multiline_comment|/*&n; * Handle duplicated INIT messages.  These are usually delayed &n; * restransmissions.&n; * &n; * Section: 5.2.2 Unexpected INIT in States Other than CLOSED,&n; * COOKIE-ECHOED and COOKIE-WAIT&n; *&n; * Unless otherwise stated, upon reception of an unexpected INIT for&n; * this association, the endpoint shall generate an INIT ACK with a&n; * State Cookie.  In the outbound INIT ACK the endpoint MUST copy its&n; * current Verification Tag and peer&squot;s Verification Tag into a reserved&n; * place within the state cookie.  We shall refer to these locations as&n; * the Peer&squot;s-Tie-Tag and the Local-Tie-Tag.  The outbound SCTP packet&n; * containing this INIT ACK MUST carry a Verification Tag value equal to&n; * the Initiation Tag found in the unexpected INIT.  And the INIT ACK&n; * MUST contain a new Initiation Tag (randomly generated see Section&n; * 5.3.1).  Other parameters for the endpoint SHOULD be copied from the&n; * existing parameters of the association (e.g. number of outbound&n; * streams) into the INIT ACK and cookie.&n; *&n; * After sending out the INIT ACK, the endpoint shall take no further&n; * actions, i.e., the existing association, including its current state,&n; * and the corresponding TCB MUST NOT be changed.&n; *&n; * Note: Only when a TCB exists and the association is not in a COOKIE-&n; * WAIT state are the Tie-Tags populated.  For a normal association INIT&n; * (i.e. the endpoint is in a COOKIE-WAIT state), the Tie-Tags MUST be&n; * set to 0 (indicating that no previous TCB existed).  The INIT ACK and&n; * State Cookie are populated as specified in section 5.2.1.&n; * &n; * Verification Tag: Not specifed, but an INIT has no way of knowing&n; * what the verification tag could be, so we ignore it.&n; *&n; * Inputs&n; * (endpoint, asoc, chunk)&n; * &n; * Outputs&n; * (asoc, reply_msg, msg_up, timers, counters)&n; *&n; * The return value is the disposition of the chunk.  */
-id|sctp_disposition_t
+multiline_comment|/*&n; * Handle duplicated INIT messages.  These are usually delayed&n; * restransmissions.&n; *&n; * Section: 5.2.2 Unexpected INIT in States Other than CLOSED,&n; * COOKIE-ECHOED and COOKIE-WAIT&n; *&n; * Unless otherwise stated, upon reception of an unexpected INIT for&n; * this association, the endpoint shall generate an INIT ACK with a&n; * State Cookie.  In the outbound INIT ACK the endpoint MUST copy its&n; * current Verification Tag and peer&squot;s Verification Tag into a reserved&n; * place within the state cookie.  We shall refer to these locations as&n; * the Peer&squot;s-Tie-Tag and the Local-Tie-Tag.  The outbound SCTP packet&n; * containing this INIT ACK MUST carry a Verification Tag value equal to&n; * the Initiation Tag found in the unexpected INIT.  And the INIT ACK&n; * MUST contain a new Initiation Tag (randomly generated see Section&n; * 5.3.1).  Other parameters for the endpoint SHOULD be copied from the&n; * existing parameters of the association (e.g. number of outbound&n; * streams) into the INIT ACK and cookie.&n; *&n; * After sending out the INIT ACK, the endpoint shall take no further&n; * actions, i.e., the existing association, including its current state,&n; * and the corresponding TCB MUST NOT be changed.&n; *&n; * Note: Only when a TCB exists and the association is not in a COOKIE-&n; * WAIT state are the Tie-Tags populated.  For a normal association INIT&n; * (i.e. the endpoint is in a COOKIE-WAIT state), the Tie-Tags MUST be&n; * set to 0 (indicating that no previous TCB existed).  The INIT ACK and&n; * State Cookie are populated as specified in section 5.2.1.&n; *&n; * Verification Tag: Not specifed, but an INIT has no way of knowing&n; * what the verification tag could be, so we ignore it.&n; *&n; * Inputs&n; * (endpoint, asoc, chunk)&n; *&n; * Outputs&n; * (asoc, reply_msg, msg_up, timers, counters)&n; *&n; * The return value is the disposition of the chunk.&n; */
 DECL|function|sctp_sf_do_5_2_2_dupinit
+id|sctp_disposition_t
 id|sctp_sf_do_5_2_2_dupinit
 c_func
 (paren
@@ -2424,12 +2341,8 @@ op_star
 id|commands
 )paren
 (brace
-id|sctp_disposition_t
-id|retval
-suffix:semicolon
-multiline_comment|/* Call helper to do the real work for both simulataneous and&n;&t; * duplicate INIT chunk handling. &n;&t; */
-id|retval
-op_assign
+multiline_comment|/* Call helper to do the real work for both simulataneous and&n;&t; * duplicate INIT chunk handling.&n;&t; */
+r_return
 id|sctp_sf_do_unexpected_init
 c_func
 (paren
@@ -2444,15 +2357,11 @@ comma
 id|commands
 )paren
 suffix:semicolon
-r_return
-id|retval
-suffix:semicolon
 )brace
-multiline_comment|/* sctp_sf_do_5_2_2_dupinit() */
-multiline_comment|/* Unexpected COOKIE-ECHO handlerfor peer restart (Table 2, action &squot;A&squot;)&n; * &n; * Section 5.2.4 &n; *  A)  In this case, the peer may have restarted.&n; */
+multiline_comment|/* Unexpected COOKIE-ECHO handlerfor peer restart (Table 2, action &squot;A&squot;)&n; *&n; * Section 5.2.4&n; *  A)  In this case, the peer may have restarted.&n; */
+DECL|function|sctp_sf_do_dupcook_a
 r_static
 id|sctp_disposition_t
-DECL|function|sctp_sf_do_dupcook_a
 id|sctp_sf_do_dupcook_a
 c_func
 (paren
@@ -2540,7 +2449,7 @@ comma
 id|GFP_ATOMIC
 )paren
 suffix:semicolon
-multiline_comment|/* Make sure peer is not adding new addresses. */
+multiline_comment|/* Make sure peer is not adding new addresses.  */
 id|found
 op_assign
 l_int|0
@@ -2626,12 +2535,9 @@ c_cond
 op_logical_neg
 id|found
 )paren
-(brace
 r_break
 suffix:semicolon
 )brace
-)brace
-multiline_comment|/* list_for_each(...) */
 r_if
 c_cond
 (paren
@@ -2663,11 +2569,9 @@ c_cond
 op_logical_neg
 id|bp
 )paren
-(brace
 r_goto
 id|nomem
 suffix:semicolon
-)brace
 id|error
 op_assign
 id|sctp_add_bind_addr
@@ -2686,11 +2590,9 @@ c_cond
 (paren
 id|error
 )paren
-(brace
 r_goto
 id|nomem_add
 suffix:semicolon
-)brace
 id|rawaddr
 op_assign
 id|sctp_bind_addrs_to_raw
@@ -2710,11 +2612,9 @@ c_cond
 op_logical_neg
 id|rawaddr.v
 )paren
-(brace
 r_goto
 id|nomem_raw
 suffix:semicolon
-)brace
 id|repl
 op_assign
 id|sctp_make_abort
@@ -2738,11 +2638,9 @@ c_cond
 op_logical_neg
 id|repl
 )paren
-(brace
 r_goto
 id|nomem_abort
 suffix:semicolon
-)brace
 id|sctp_init_cause
 c_func
 (paren
@@ -2839,11 +2737,9 @@ c_cond
 op_logical_neg
 id|repl
 )paren
-(brace
 r_goto
 id|nomem
 suffix:semicolon
-)brace
 id|sctp_add_cmd_sf
 c_func
 (paren
@@ -2882,15 +2778,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-l_int|NULL
-op_eq
+op_logical_neg
 id|ev
 )paren
-(brace
 r_goto
 id|nomem_ev
 suffix:semicolon
-)brace
 id|sctp_add_cmd_sf
 c_func
 (paren
@@ -2922,12 +2815,11 @@ r_return
 id|SCTP_DISPOSITION_NOMEM
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_sf_dupcook_a() */
-multiline_comment|/* Unexpected COOKIE-ECHO handler for setup collision (Table 2, action &squot;B&squot;)&n; * &n; * Section 5.2.4 &n; *   B) In this case, both sides may be attempting to start an association&n; *      at about the same time but the peer endpoint started its INIT&n; *      after responding to the local endpoint&squot;s INIT&n; */
+multiline_comment|/* Unexpected COOKIE-ECHO handler for setup collision (Table 2, action &squot;B&squot;)&n; *&n; * Section 5.2.4&n; *   B) In this case, both sides may be attempting to start an association&n; *      at about the same time but the peer endpoint started its INIT&n; *      after responding to the local endpoint&squot;s INIT&n; */
 multiline_comment|/* This case represents an intialization collision.  */
+DECL|function|sctp_sf_do_dupcook_b
 r_static
 id|sctp_disposition_t
-DECL|function|sctp_sf_do_dupcook_b
 id|sctp_sf_do_dupcook_b
 c_func
 (paren
@@ -2993,7 +2885,7 @@ comma
 id|GFP_ATOMIC
 )paren
 suffix:semicolon
-multiline_comment|/* Update the content of current association. */
+multiline_comment|/* Update the content of current association.  */
 id|sctp_add_cmd_sf
 c_func
 (paren
@@ -3048,15 +2940,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-l_int|NULL
-op_eq
+op_logical_neg
 id|repl
 )paren
-(brace
 r_goto
 id|nomem
 suffix:semicolon
-)brace
 id|sctp_add_cmd_sf
 c_func
 (paren
@@ -3108,15 +2997,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-l_int|NULL
-op_eq
+op_logical_neg
 id|ev
 )paren
-(brace
 r_goto
 id|nomem_ev
 suffix:semicolon
-)brace
 id|sctp_add_cmd_sf
 c_func
 (paren
@@ -3148,12 +3034,11 @@ r_return
 id|SCTP_DISPOSITION_NOMEM
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_sf_dupcook_b() */
-multiline_comment|/* Unexpected COOKIE-ECHO handler for setup collision (Table 2, action &squot;C&squot;)&n; * &n; * Section 5.2.4 &n; *  C) In this case, the local endpoint&squot;s cookie has arrived late.&n; *     Before it arrived, the local endpoint sent an INIT and received an&n; *     INIT-ACK and finally sent a COOKIE ECHO with the peer&squot;s same tag&n; *     but a new tag of its own.&n; */
+multiline_comment|/* Unexpected COOKIE-ECHO handler for setup collision (Table 2, action &squot;C&squot;)&n; *&n; * Section 5.2.4&n; *  C) In this case, the local endpoint&squot;s cookie has arrived late.&n; *     Before it arrived, the local endpoint sent an INIT and received an&n; *     INIT-ACK and finally sent a COOKIE ECHO with the peer&squot;s same tag&n; *     but a new tag of its own.&n; */
 multiline_comment|/* This case represents an intialization collision.  */
+DECL|function|sctp_sf_do_dupcook_c
 r_static
 id|sctp_disposition_t
-DECL|function|sctp_sf_do_dupcook_c
 id|sctp_sf_do_dupcook_c
 c_func
 (paren
@@ -3180,17 +3065,16 @@ op_star
 id|new_asoc
 )paren
 (brace
-multiline_comment|/* The cookie should be silently discarded. &n;&t; * The endpoint SHOULD NOT change states and should leave&n;&t; * any timers running.&n;&t; */
+multiline_comment|/* The cookie should be silently discarded.&n;&t; * The endpoint SHOULD NOT change states and should leave&n;&t; * any timers running.&n;&t; */
 r_return
 id|SCTP_DISPOSITION_DISCARD
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_sf_do_dupcook_c() */
-multiline_comment|/* Unexpected COOKIE-ECHO handler lost chunk (Table 2, action &squot;D&squot;)&n; * &n; * Section 5.2.4 &n; * &n; * D) When both local and remote tags match the endpoint should always&n; *    enter the ESTABLISHED state, if it has not already done so.&n; */
+multiline_comment|/* Unexpected COOKIE-ECHO handler lost chunk (Table 2, action &squot;D&squot;)&n; *&n; * Section 5.2.4&n; *&n; * D) When both local and remote tags match the endpoint should always&n; *    enter the ESTABLISHED state, if it has not already done so.&n; */
 multiline_comment|/* This case represents an intialization collision.  */
+DECL|function|sctp_sf_do_dupcook_d
 r_static
 id|sctp_disposition_t
-DECL|function|sctp_sf_do_dupcook_d
 id|sctp_sf_do_dupcook_d
 c_func
 (paren
@@ -3287,15 +3171,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-l_int|NULL
-op_eq
+op_logical_neg
 id|ev
 )paren
-(brace
 r_goto
 id|nomem
 suffix:semicolon
-)brace
 id|sctp_add_cmd_sf
 c_func
 (paren
@@ -3337,15 +3218,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-l_int|NULL
-op_eq
+op_logical_neg
 id|repl
 )paren
-(brace
 r_goto
 id|nomem
 suffix:semicolon
-)brace
 id|sctp_add_cmd_sf
 c_func
 (paren
@@ -3383,22 +3261,19 @@ c_cond
 (paren
 id|ev
 )paren
-(brace
 id|sctp_ulpevent_free
 c_func
 (paren
 id|ev
 )paren
 suffix:semicolon
-)brace
 r_return
 id|SCTP_DISPOSITION_NOMEM
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_sf_do_dupcook_c() */
-multiline_comment|/*&n; * Handle a duplicate COOKIE-ECHO.  This usually means a cookie-carrying&n; * chunk was retransmitted and then delayed in the network.&n; * &n; * Section: 5.2.4 Handle a COOKIE ECHO when a TCB exists&n; * &n; * Verification Tag: None.  Do cookie validation.&n; *&n; * Inputs&n; * (endpoint, asoc, chunk)&n; * &n; * Outputs&n; * (asoc, reply_msg, msg_up, timers, counters)&n; *&n; * The return value is the disposition of the chunk.&n; */
-id|sctp_disposition_t
+multiline_comment|/*&n; * Handle a duplicate COOKIE-ECHO.  This usually means a cookie-carrying&n; * chunk was retransmitted and then delayed in the network.&n; *&n; * Section: 5.2.4 Handle a COOKIE ECHO when a TCB exists&n; *&n; * Verification Tag: None.  Do cookie validation.&n; *&n; * Inputs&n; * (endpoint, asoc, chunk)&n; *&n; * Outputs&n; * (asoc, reply_msg, msg_up, timers, counters)&n; *&n; * The return value is the disposition of the chunk.&n; */
 DECL|function|sctp_sf_do_5_2_4_dupcook
+id|sctp_disposition_t
 id|sctp_sf_do_5_2_4_dupcook
 c_func
 (paren
@@ -3446,7 +3321,7 @@ suffix:semicolon
 r_char
 id|action
 suffix:semicolon
-multiline_comment|/* &quot;Decode&quot; the chunk.  We have no optional parameters so we&n;          * are in good shape.&n;          */
+multiline_comment|/* &quot;Decode&quot; the chunk.  We have no optional parameters so we&n;&t; * are in good shape.&n;&t; */
 id|chunk-&gt;subh.cookie_hdr
 op_assign
 (paren
@@ -3472,7 +3347,7 @@ id|sctp_chunkhdr_t
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* In RFC 2960 5.2.4 3, if both Verification Tags in the State Cookie&n;&t;  * of a duplicate COOKIE ECHO match the Verification Tags of the&n;&t;  * current association, consider the State Cookie valid even if&n;&t;  * the lifespan is exceeded.&n;&t;  */
+multiline_comment|/* In RFC 2960 5.2.4 3, if both Verification Tags in the State Cookie&n;&t; * of a duplicate COOKIE ECHO match the Verification Tags of the&n;&t; * current association, consider the State Cookie valid even if&n;&t; * the lifespan is exceeded.&n;&t; */
 id|new_asoc
 op_assign
 id|sctp_unpack_cookie
@@ -3490,12 +3365,11 @@ op_amp
 id|error
 )paren
 suffix:semicolon
-multiline_comment|/* FIXME:&n;&t;  * If the re-build failed, what is the proper error path&n;&t;  * from here?&n;&t;  *&n;&t;  * [We should abort the association. --piggy]&n;&t;  */
+multiline_comment|/* FIXME:&n;&t; * If the re-build failed, what is the proper error path&n;&t; * from here?&n;&t; *&n;&t; * [We should abort the association. --piggy]&n;&t; */
 r_if
 c_cond
 (paren
-l_int|NULL
-op_eq
+op_logical_neg
 id|new_asoc
 )paren
 (brace
@@ -3535,8 +3409,9 @@ id|commands
 )paren
 suffix:semicolon
 )brace
+suffix:semicolon
 )brace
-multiline_comment|/* Compare the tie_tag in cookie with the verification tag of&n;         * current association.&n;         */
+multiline_comment|/* Compare the tie_tag in cookie with the verification tag of&n;&t; * current association.&n;&t; */
 id|action
 op_assign
 id|sctp_tietags_compare
@@ -3659,7 +3534,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-multiline_comment|/* switch */
+suffix:semicolon
 multiline_comment|/* Delete the tempory new association. */
 id|sctp_add_cmd_sf
 c_func
@@ -3697,9 +3572,8 @@ r_return
 id|SCTP_DISPOSITION_NOMEM
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_sf_do_5_2_4_dupcook() */
 macro_line|#if 0
-multiline_comment|/*&n; * Handle a Stale COOKIE Error&n; * &n; * Section: 5.2.6 Handle Stale COOKIE Error&n; * If the association is in the COOKIE-ECHOED state, the endpoint may elect&n; * one of the following three alternatives. &n; * ...&n; * 3) Send a new INIT chunk to the endpoint, adding a Cookie&n; *    Preservative parameter requesting an extension to the lifetime of&n; *    the State Cookie. When calculating the time extension, an &n; *    implementation SHOULD use the RTT information measured based on the&n; *    previous COOKIE ECHO / ERROR exchange, and should add no more &n; *    than 1 second beyond the measured RTT, due to long State Cookie &n; *    lifetimes making the endpoint more subject to a replay attack.&n; * &n; * Verification Tag:  Not explicit, but safe to ignore.&n; *&n; * Inputs&n; * (endpoint, asoc, chunk)&n; * &n; * Outputs&n; * (asoc, reply_msg, msg_up, timers, counters)&n; *&n; * The return value is the disposition of the chunk.&n; */
+multiline_comment|/*&n; * Handle a Stale COOKIE Error&n; *&n; * Section: 5.2.6 Handle Stale COOKIE Error&n; * If the association is in the COOKIE-ECHOED state, the endpoint may elect&n; * one of the following three alternatives.&n; * ...&n; * 3) Send a new INIT chunk to the endpoint, adding a Cookie&n; *    Preservative parameter requesting an extension to the lifetime of&n; *    the State Cookie. When calculating the time extension, an&n; *    implementation SHOULD use the RTT information measured based on the&n; *    previous COOKIE ECHO / ERROR exchange, and should add no more&n; *    than 1 second beyond the measured RTT, due to long State Cookie&n; *    lifetimes making the endpoint more subject to a replay attack.&n; *&n; * Verification Tag:  Not explicit, but safe to ignore.&n; *&n; * Inputs&n; * (endpoint, asoc, chunk)&n; *&n; * Outputs&n; * (asoc, reply_msg, msg_up, timers, counters)&n; *&n; * The return value is the disposition of the chunk.&n; */
 id|sctp_disposition_t
 id|do_5_2_6_stale
 c_func
@@ -3733,7 +3607,7 @@ id|chunk
 op_assign
 id|arg
 suffix:semicolon
-multiline_comment|/* This is not a real chunk type.  It is a subtype of the&n;         * ERROR chunk type.  The ERROR chunk processing will bring us&n;         * here.&n;         */
+multiline_comment|/* This is not a real chunk type.  It is a subtype of the&n;&t; * ERROR chunk type.  The ERROR chunk processing will bring us&n;&t; * here.&n;&t; */
 id|sctp_chunk_t
 op_star
 id|in_packet
@@ -3745,7 +3619,7 @@ suffix:semicolon
 id|sctp_inithdr_t
 id|initack
 suffix:semicolon
-r_uint8
+id|__u8
 op_star
 id|addrs
 suffix:semicolon
@@ -3754,11 +3628,6 @@ id|addrs_len
 suffix:semicolon
 id|time_t
 id|rtt
-suffix:semicolon
-r_extern
-r_struct
-id|timespec
-id|now
 suffix:semicolon
 r_struct
 id|sctpCookiePreserve
@@ -3778,7 +3647,7 @@ OG
 id|asoc-&gt;max_init_attempts
 )paren
 (brace
-multiline_comment|/* FIXME: Move to new ulpevent. */
+multiline_comment|/* FIXME: Move to new ulpevent.  */
 id|retval-&gt;event_up
 op_assign
 id|sctp_make_ulp_init_timeout
@@ -3790,15 +3659,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-l_int|NULL
-op_eq
+op_logical_neg
 id|retval-&gt;event_up
 )paren
-(brace
 r_goto
 id|nomem
 suffix:semicolon
-)brace
 id|sctp_add_cmd_sf
 c_func
 (paren
@@ -3862,7 +3728,7 @@ comma
 id|asoc-&gt;c.state_timestamp
 )paren
 suffix:semicolon
-multiline_comment|/* When calculating the time extension, an implementation&n;         * SHOULD use the RTT information measured based on the&n;         * previous COOKIE ECHO / ERROR exchange, and should add no&n;         * more than 1 second beyond the measured RTT, due to long&n;         * State Cookie lifetimes making the endpoint more subject to&n;         * a replay attack.&n;         */
+multiline_comment|/* When calculating the time extension, an implementation&n;&t; * SHOULD use the RTT information measured based on the&n;&t; * previous COOKIE ECHO / ERROR exchange, and should add no&n;&t; * more than 1 second beyond the measured RTT, due to long&n;&t; * State Cookie lifetimes making the endpoint more subject to&n;&t; * a replay attack.&n;&t; */
 id|bht.p
 op_assign
 (brace
@@ -3964,15 +3830,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-l_int|NULL
-op_eq
+op_logical_neg
 id|reply
 )paren
-(brace
 r_goto
 id|nomem
 suffix:semicolon
-)brace
 id|sctp_addto_chunk
 c_func
 (paren
@@ -4034,11 +3897,10 @@ r_return
 id|SCTP_DISPOSITION_NOMEM
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_disposition_t do_5_2_6_stale  (...) */
 macro_line|#endif /* 0 */
-multiline_comment|/*&n; * Process an ABORT.&n; * &n; * Section: 9.1&n; * After checking the Verification Tag, the receiving endpoint shall &n; * remove the association from its record, and shall report the &n; * termination to its upper layer.&n; *&n; * Verification Tag: 8.5.1 Exceptions in Verification Tag Rules&n; * B) Rules for packet carrying ABORT:&n; * &n; *  - The endpoint shall always fill in the Verification Tag field of the&n; *    outbound packet with the destination endpoint&squot;s tag value if it&n; *    is known. &n; * &n; *  - If the ABORT is sent in response to an OOTB packet, the endpoint&n; *    MUST follow the procedure described in Section 8.4.&n; * &n; *  - The receiver MUST accept the packet if the Verification Tag&n; *    matches either its own tag, OR the tag of its peer. Otherwise, the&n; *    receiver MUST silently discard the packet and take no further&n; *    action.  &n; * &n; * Inputs&n; * (endpoint, asoc, chunk)&n; * &n; * Outputs&n; * (asoc, reply_msg, msg_up, timers, counters)&n; *&n; * The return value is the disposition of the chunk.&n; */
-id|sctp_disposition_t
+multiline_comment|/*&n; * Process an ABORT.&n; *&n; * Section: 9.1&n; * After checking the Verification Tag, the receiving endpoint shall&n; * remove the association from its record, and shall report the&n; * termination to its upper layer.&n; *&n; * Verification Tag: 8.5.1 Exceptions in Verification Tag Rules&n; * B) Rules for packet carrying ABORT:&n; *&n; *  - The endpoint shall always fill in the Verification Tag field of the&n; *    outbound packet with the destination endpoint&squot;s tag value if it&n; *    is known.&n; *&n; *  - If the ABORT is sent in response to an OOTB packet, the endpoint&n; *    MUST follow the procedure described in Section 8.4.&n; *&n; *  - The receiver MUST accept the packet if the Verification Tag&n; *    matches either its own tag, OR the tag of its peer. Otherwise, the&n; *    receiver MUST silently discard the packet and take no further&n; *    action.&n; *&n; * Inputs&n; * (endpoint, asoc, chunk)&n; *&n; * Outputs&n; * (asoc, reply_msg, msg_up, timers, counters)&n; *&n; * The return value is the disposition of the chunk.&n; */
 DECL|function|sctp_sf_do_9_1_abort
+id|sctp_disposition_t
 id|sctp_sf_do_9_1_abort
 c_func
 (paren
@@ -4099,10 +3961,9 @@ r_return
 id|SCTP_DISPOSITION_ABORT
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_sf_do_9_1_abort() */
-multiline_comment|/*&n; * Process an ABORT.  (COOKIE-WAIT state)&n; * &n; * See sctp_sf_do_9_1_abort() above.&n; */
-id|sctp_disposition_t
+multiline_comment|/*&n; * Process an ABORT.  (COOKIE-WAIT state)&n; *&n; * See sctp_sf_do_9_1_abort() above.&n; */
 DECL|function|sctp_sf_cookie_wait_abort
+id|sctp_disposition_t
 id|sctp_sf_cookie_wait_abort
 c_func
 (paren
@@ -4175,10 +4036,9 @@ r_return
 id|SCTP_DISPOSITION_DELETE_TCB
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_sf_cookie_wait_abort() */
-multiline_comment|/*&n; * Process an ABORT.  (COOKIE-ECHOED state)&n; * &n; * See sctp_sf_do_9_1_abort() above.&n; */
-id|sctp_disposition_t
+multiline_comment|/*&n; * Process an ABORT.  (COOKIE-ECHOED state)&n; *&n; * See sctp_sf_do_9_1_abort() above.&n; */
 DECL|function|sctp_sf_cookie_echoed_abort
+id|sctp_disposition_t
 id|sctp_sf_cookie_echoed_abort
 c_func
 (paren
@@ -4205,7 +4065,7 @@ op_star
 id|commands
 )paren
 (brace
-multiline_comment|/* There is a single T1 timer, so we should be able to use&n;&t; * common function with the COOKIE-WAIT state. &n;&t; */
+multiline_comment|/* There is a single T1 timer, so we should be able to use&n;&t; * common function with the COOKIE-WAIT state.&n;&t; */
 r_return
 id|sctp_sf_cookie_wait_abort
 c_func
@@ -4222,9 +4082,8 @@ id|commands
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_sf_cookie_echoed_abort() */
 macro_line|#if 0
-multiline_comment|/*&n; * Handle a shutdown timeout or INIT during a shutdown phase.&n; * &n; * Section: 9.2&n; * If an endpoint is in SHUTDOWN-ACK-SENT state and receives an INIT chunk &n; * (e.g., if the SHUTDOWN COMPLETE was lost) with source and destination &n; * transport addresses (either in the IP addresses or in the INIT chunk) &n; * that belong to this association, it should discard the INIT chunk and &n; * retransmit the SHUTDOWN ACK chunk. &n; *... &n; * While in SHUTDOWN-SENT state ... If the timer expires, the endpoint&n; * must re-send the SHUTDOWN ACK.&n; *&n; * Verification Tag:  Neither the INIT nor the timeout will have a&n; * valid verification tag, so it is safe to ignore.&n; *&n; * Inputs&n; * (endpoint, asoc, chunk)&n; * &n; * Outputs&n; * (asoc, reply_msg, msg_up, timers, counters)&n; *&n; * The return value is the disposition of the chunk.&n; */
+multiline_comment|/*&n; * Handle a shutdown timeout or INIT during a shutdown phase.&n; *&n; * Section: 9.2&n; * If an endpoint is in SHUTDOWN-ACK-SENT state and receives an INIT chunk&n; * (e.g., if the SHUTDOWN COMPLETE was lost) with source and destination&n; * transport addresses (either in the IP addresses or in the INIT chunk)&n; * that belong to this association, it should discard the INIT chunk and&n; * retransmit the SHUTDOWN ACK chunk.&n; *...&n; * While in SHUTDOWN-SENT state ... If the timer expires, the endpoint&n; * must re-send the SHUTDOWN ACK.&n; *&n; * Verification Tag:  Neither the INIT nor the timeout will have a&n; * valid verification tag, so it is safe to ignore.&n; *&n; * Inputs&n; * (endpoint, asoc, chunk)&n; *&n; * Outputs&n; * (asoc, reply_msg, msg_up, timers, counters)&n; *&n; * The return value is the disposition of the chunk.&n; */
 id|sctp_disposition_t
 id|sctp_do_9_2_reshutack
 c_func
@@ -4341,11 +4200,9 @@ c_cond
 op_logical_neg
 id|reply
 )paren
-(brace
 r_goto
 id|nomem
 suffix:semicolon
-)brace
 id|sctp_add_cmd_sf
 c_func
 (paren
@@ -4369,11 +4226,10 @@ r_return
 id|SCTP_DISPOSITION_NOMEM
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_disposition_t sctp_do_9_2_reshutack(...) */
 macro_line|#endif /* 0 */
-multiline_comment|/*&n; * sctp_sf_do_9_2_shut&n; * &n; * Section: 9.2&n; * Upon the reception of the SHUTDOWN, the peer endpoint shall &n; *  - enter the SHUTDOWN-RECEIVED state, &n; *&n; *  - stop accepting new data from its SCTP user &n; *&n; *  - verify, by checking the Cumulative TSN Ack field of the chunk,&n; *    that all its outstanding DATA chunks have been received by the&n; *    SHUTDOWN sender.&n; *&n; * Once an endpoint as reached the SHUTDOWN-RECEIVED state it MUST NOT&n; * send a SHUTDOWN in response to a ULP request. And should discard&n; * subsequent SHUTDOWN chunks.&n; * &n; * If there are still outstanding DATA chunks left, the SHUTDOWN&n; * receiver shall continue to follow normal data transmission&n; * procedures defined in Section 6 until all outstanding DATA chunks&n; * are acknowledged; however, the SHUTDOWN receiver MUST NOT accept&n; * new data from its SCTP user.&n; * &n; * Verification Tag:  8.5 Verification Tag [Normal verification]&n; *&n; * Inputs&n; * (endpoint, asoc, chunk)&n; * &n; * Outputs&n; * (asoc, reply_msg, msg_up, timers, counters)&n; *&n; * The return value is the disposition of the chunk.  */
-id|sctp_disposition_t
+multiline_comment|/*&n; * sctp_sf_do_9_2_shut&n; *&n; * Section: 9.2&n; * Upon the reception of the SHUTDOWN, the peer endpoint shall&n; *  - enter the SHUTDOWN-RECEIVED state,&n; *&n; *  - stop accepting new data from its SCTP user&n; *&n; *  - verify, by checking the Cumulative TSN Ack field of the chunk,&n; *    that all its outstanding DATA chunks have been received by the&n; *    SHUTDOWN sender.&n; *&n; * Once an endpoint as reached the SHUTDOWN-RECEIVED state it MUST NOT&n; * send a SHUTDOWN in response to a ULP request. And should discard&n; * subsequent SHUTDOWN chunks.&n; *&n; * If there are still outstanding DATA chunks left, the SHUTDOWN&n; * receiver shall continue to follow normal data transmission&n; * procedures defined in Section 6 until all outstanding DATA chunks&n; * are acknowledged; however, the SHUTDOWN receiver MUST NOT accept&n; * new data from its SCTP user.&n; *&n; * Verification Tag:  8.5 Verification Tag [Normal verification]&n; *&n; * Inputs&n; * (endpoint, asoc, chunk)&n; *&n; * Outputs&n; * (asoc, reply_msg, msg_up, timers, counters)&n; *&n; * The return value is the disposition of the chunk.&n; */
 DECL|function|sctp_sf_do_9_2_shutdown
+id|sctp_disposition_t
 id|sctp_sf_do_9_2_shutdown
 c_func
 (paren
@@ -4437,7 +4293,7 @@ id|chunk-&gt;subh.shutdown_hdr
 op_assign
 id|sdh
 suffix:semicolon
-multiline_comment|/* 8.5 When receiving an SCTP packet, the endpoint MUST ensure&n;         * that the value in the Verification Tag field of the&n;         * received SCTP packet matches its own Tag. If the received&n;         * Verification Tag value does not match the receiver&squot;s own&n;         * tag value, the receiver shall silently discard the packet...&n;         */
+multiline_comment|/* 8.5 When receiving an SCTP packet, the endpoint MUST ensure&n;&t; * that the value in the Verification Tag field of the&n;&t; * received SCTP packet matches its own Tag. If the received&n;&t; * Verification Tag value does not match the receiver&squot;s own&n;&t; * tag value, the receiver shall silently discard the packet...&n;&t; */
 r_if
 c_cond
 (paren
@@ -4449,7 +4305,6 @@ id|chunk-&gt;sctp_hdr-&gt;vtag
 op_ne
 id|asoc-&gt;c.my_vtag
 )paren
-(brace
 r_return
 id|sctp_sf_pdiscard
 c_func
@@ -4465,8 +4320,7 @@ comma
 id|commands
 )paren
 suffix:semicolon
-)brace
-multiline_comment|/* Upon the reception of the SHUTDOWN, the peer endpoint shall &n;         *  - enter the SHUTDOWN-RECEIVED state,         &n;&t; *  - stop accepting new data from its SCTP user&n;         *&n;         * [This is implicit in the new state.]&n;         */
+multiline_comment|/* Upon the reception of the SHUTDOWN, the peer endpoint shall&n;&t; *  - enter the SHUTDOWN-RECEIVED state,&n;&t; *  - stop accepting new data from its SCTP user&n;&t; *&n;&t; * [This is implicit in the new state.]&n;&t; */
 id|sctp_add_cmd_sf
 c_func
 (paren
@@ -4513,7 +4367,7 @@ id|commands
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*  - verify, by checking the Cumulative TSN Ack field of the&n;         *    chunk, that all its outstanding DATA chunks have been&n;         *    received by the SHUTDOWN sender.&n;         */
+multiline_comment|/*  - verify, by checking the Cumulative TSN Ack field of the&n;&t; *    chunk, that all its outstanding DATA chunks have been&n;&t; *    received by the SHUTDOWN sender.&n;&t; */
 id|sctp_add_cmd_sf
 c_func
 (paren
@@ -4532,10 +4386,9 @@ r_return
 id|disposition
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_sf_do_9_2_shutdown() */
-multiline_comment|/*&n; * sctp_sf_do_ecn_cwr&n; * &n; * Section:  Appendix A: Explicit Congestion Notification&n; *&n; * CWR:&n; *&n; * RFC 2481 details a specific bit for a sender to send in the header of&n; * its next outbound TCP segment to indicate to its peer that it has&n; * reduced its congestion window.  This is termed the CWR bit.  For&n; * SCTP the same indication is made by including the CWR chunk.&n; * This chunk contains one data element, i.e. the TSN number that&n; * was sent in the ECNE chunk.  This element represents the lowest&n; * TSN number in the datagram that was originally marked with the&n; * CE bit.&n; *&n; * Verification Tag: 8.5 Verification Tag [Normal verification]&n; * Inputs&n; * (endpoint, asoc, chunk)&n; * &n; * Outputs&n; * (asoc, reply_msg, msg_up, timers, counters)&n; *&n; * The return value is the disposition of the chunk.&n; */
-id|sctp_disposition_t
+multiline_comment|/*&n; * sctp_sf_do_ecn_cwr&n; *&n; * Section:  Appendix A: Explicit Congestion Notification&n; *&n; * CWR:&n; *&n; * RFC 2481 details a specific bit for a sender to send in the header of&n; * its next outbound TCP segment to indicate to its peer that it has&n; * reduced its congestion window.  This is termed the CWR bit.  For&n; * SCTP the same indication is made by including the CWR chunk.&n; * This chunk contains one data element, i.e. the TSN number that&n; * was sent in the ECNE chunk.  This element represents the lowest&n; * TSN number in the datagram that was originally marked with the&n; * CE bit.&n; *&n; * Verification Tag: 8.5 Verification Tag [Normal verification]&n; * Inputs&n; * (endpoint, asoc, chunk)&n; *&n; * Outputs&n; * (asoc, reply_msg, msg_up, timers, counters)&n; *&n; * The return value is the disposition of the chunk.&n; */
 DECL|function|sctp_sf_do_ecn_cwr
+id|sctp_disposition_t
 id|sctp_sf_do_ecn_cwr
 c_func
 (paren
@@ -4572,7 +4425,7 @@ id|chunk
 op_assign
 id|arg
 suffix:semicolon
-multiline_comment|/* 8.5 When receiving an SCTP packet, the endpoint MUST ensure&n;         * that the value in the Verification Tag field of the&n;         * received SCTP packet matches its own Tag. If the received&n;         * Verification Tag value does not match the receiver&squot;s own&n;         * tag value, the receiver shall silently discard the packet...&n;         */
+multiline_comment|/* 8.5 When receiving an SCTP packet, the endpoint MUST ensure&n;&t; * that the value in the Verification Tag field of the&n;&t; * received SCTP packet matches its own Tag. If the received&n;&t; * Verification Tag value does not match the receiver&squot;s own&n;&t; * tag value, the receiver shall silently discard the packet...&n;&t; */
 r_if
 c_cond
 (paren
@@ -4584,7 +4437,6 @@ id|chunk-&gt;sctp_hdr-&gt;vtag
 op_ne
 id|asoc-&gt;c.my_vtag
 )paren
-(brace
 r_return
 id|sctp_sf_pdiscard
 c_func
@@ -4600,7 +4452,6 @@ comma
 id|commands
 )paren
 suffix:semicolon
-)brace
 id|cwr
 op_assign
 (paren
@@ -4661,10 +4512,9 @@ r_return
 id|SCTP_DISPOSITION_CONSUME
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_sf_do_ecne_cwr() */
-multiline_comment|/*&n; * sctp_sf_do_ecne&n; * &n; * Section:  Appendix A: Explicit Congestion Notification&n; *&n; * ECN-Echo&n; *&n; * RFC 2481 details a specific bit for a receiver to send back in its&n; * TCP acknowledgements to notify the sender of the Congestion&n; * Experienced (CE) bit having arrived from the network.  For SCTP this&n; * same indication is made by including the ECNE chunk.  This chunk&n; * contains one data element, i.e. the lowest TSN associated with the IP&n; * datagram marked with the CE bit.....&n; *&n; * Verification Tag: 8.5 Verification Tag [Normal verification]&n; * Inputs&n; * (endpoint, asoc, chunk)&n; * &n; * Outputs&n; * (asoc, reply_msg, msg_up, timers, counters)&n; *&n; * The return value is the disposition of the chunk.&n; */
-id|sctp_disposition_t
+multiline_comment|/*&n; * sctp_sf_do_ecne&n; *&n; * Section:  Appendix A: Explicit Congestion Notification&n; *&n; * ECN-Echo&n; *&n; * RFC 2481 details a specific bit for a receiver to send back in its&n; * TCP acknowledgements to notify the sender of the Congestion&n; * Experienced (CE) bit having arrived from the network.  For SCTP this&n; * same indication is made by including the ECNE chunk.  This chunk&n; * contains one data element, i.e. the lowest TSN associated with the IP&n; * datagram marked with the CE bit.....&n; *&n; * Verification Tag: 8.5 Verification Tag [Normal verification]&n; * Inputs&n; * (endpoint, asoc, chunk)&n; *&n; * Outputs&n; * (asoc, reply_msg, msg_up, timers, counters)&n; *&n; * The return value is the disposition of the chunk.&n; */
 DECL|function|sctp_sf_do_ecne
+id|sctp_disposition_t
 id|sctp_sf_do_ecne
 c_func
 (paren
@@ -4701,7 +4551,7 @@ id|chunk
 op_assign
 id|arg
 suffix:semicolon
-multiline_comment|/* 8.5 When receiving an SCTP packet, the endpoint MUST ensure&n;         * that the value in the Verification Tag field of the&n;         * received SCTP packet matches its own Tag. If the received&n;         * Verification Tag value does not match the receiver&squot;s own&n;         * tag value, the receiver shall silently discard the packet...&n;         */
+multiline_comment|/* 8.5 When receiving an SCTP packet, the endpoint MUST ensure&n;&t; * that the value in the Verification Tag field of the&n;&t; * received SCTP packet matches its own Tag. If the received&n;&t; * Verification Tag value does not match the receiver&squot;s own&n;&t; * tag value, the receiver shall silently discard the packet...&n;&t; */
 r_if
 c_cond
 (paren
@@ -4713,7 +4563,6 @@ id|chunk-&gt;sctp_hdr-&gt;vtag
 op_ne
 id|asoc-&gt;c.my_vtag
 )paren
-(brace
 r_return
 id|sctp_sf_pdiscard
 c_func
@@ -4729,7 +4578,6 @@ comma
 id|commands
 )paren
 suffix:semicolon
-)brace
 id|ecne
 op_assign
 (paren
@@ -4790,10 +4638,9 @@ r_return
 id|SCTP_DISPOSITION_CONSUME
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_sf_do_ecne() */
-multiline_comment|/*&n; * Section: 6.2  Acknowledgement on Reception of DATA Chunks&n; * &n; * The SCTP endpoint MUST always acknowledge the reception of each valid &n; * DATA chunk. &n; * &n; * The guidelines on delayed acknowledgement algorithm specified in&n; * Section 4.2 of [RFC2581] SHOULD be followed. Specifically, an&n; * acknowledgement SHOULD be generated for at least every second packet&n; * (not every second DATA chunk) received, and SHOULD be generated within &n; * 200 ms of the arrival of any unacknowledged DATA chunk. In some &n; * situations it may be beneficial for an SCTP transmitter to be more &n; * conservative than the algorithms detailed in this document allow. &n; * However, an SCTP transmitter MUST NOT be more aggressive than the &n; * following algorithms allow.&n; * &n; * A SCTP receiver MUST NOT generate more than one SACK for every&n; * incoming packet, other than to update the offered window as the&n; * receiving application consumes new data.&n; * &n; * Verification Tag:  8.5 Verification Tag [Normal verification]&n; * &n; * Inputs&n; * (endpoint, asoc, chunk)&n; * &n; * Outputs&n; * (asoc, reply_msg, msg_up, timers, counters)&n; *&n; * The return value is the disposition of the chunk.&n; */
-id|sctp_disposition_t
+multiline_comment|/*&n; * Section: 6.2  Acknowledgement on Reception of DATA Chunks&n; *&n; * The SCTP endpoint MUST always acknowledge the reception of each valid&n; * DATA chunk.&n; *&n; * The guidelines on delayed acknowledgement algorithm specified in&n; * Section 4.2 of [RFC2581] SHOULD be followed. Specifically, an&n; * acknowledgement SHOULD be generated for at least every second packet&n; * (not every second DATA chunk) received, and SHOULD be generated within&n; * 200 ms of the arrival of any unacknowledged DATA chunk. In some&n; * situations it may be beneficial for an SCTP transmitter to be more&n; * conservative than the algorithms detailed in this document allow.&n; * However, an SCTP transmitter MUST NOT be more aggressive than the&n; * following algorithms allow.&n; *&n; * A SCTP receiver MUST NOT generate more than one SACK for every&n; * incoming packet, other than to update the offered window as the&n; * receiving application consumes new data.&n; *&n; * Verification Tag:  8.5 Verification Tag [Normal verification]&n; *&n; * Inputs&n; * (endpoint, asoc, chunk)&n; *&n; * Outputs&n; * (asoc, reply_msg, msg_up, timers, counters)&n; *&n; * The return value is the disposition of the chunk.&n; */
 DECL|function|sctp_sf_eat_data_6_2
+id|sctp_disposition_t
 id|sctp_sf_eat_data_6_2
 c_func
 (paren
@@ -4840,10 +4687,10 @@ suffix:semicolon
 r_int
 id|tmp
 suffix:semicolon
-r_uint32
+id|__u32
 id|tsn
 suffix:semicolon
-multiline_comment|/* RFC 2960 8.5 Verification Tag&n;&t; *&n;&t; * When receiving an SCTP packet, the endpoint MUST ensure&n;         * that the value in the Verification Tag field of the&n;         * received SCTP packet matches its own Tag.&n;&t; */
+multiline_comment|/* RFC 2960 8.5 Verification Tag&n;&t; *&n;&t; * When receiving an SCTP packet, the endpoint MUST ensure&n;&t; * that the value in the Verification Tag field of the&n;&t; * received SCTP packet matches its own Tag.&n;&t; */
 r_if
 c_cond
 (paren
@@ -4931,7 +4778,7 @@ id|chunk-&gt;skb-&gt;head
 )paren
 suffix:semicolon
 multiline_comment|/* ASSERT:  Now skb-&gt;data is really the user data.  */
-multiline_comment|/* Process ECN based congestion.&n;&t; * &n;&t; * Since the chunk structure is reused for all chunks within&n;&t; * a packet, we use ecn_ce_done to track if we&squot;ve already&n;&t; * done CE processing for this packet.&n;&t; *&n;&t; * We need to do ECN processing even if we plan to discard the&n;&t; * chunk later.&n;&t; */
+multiline_comment|/* Process ECN based congestion.&n;&t; *&n;&t; * Since the chunk structure is reused for all chunks within&n;&t; * a packet, we use ecn_ce_done to track if we&squot;ve already&n;&t; * done CE processing for this packet.&n;&t; *&n;&t; * We need to do ECN processing even if we plan to discard the&n;&t; * chunk later.&n;&t; */
 r_if
 c_cond
 (paren
@@ -4971,9 +4818,7 @@ id|tsn
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* if (packet experienced congestion) */
 )brace
-multiline_comment|/* if (we have not done ecn_ce processing) */
 id|tmp
 op_assign
 id|sctp_tsnmap_check
@@ -5073,7 +4918,7 @@ r_goto
 id|discard_noforce
 suffix:semicolon
 )brace
-multiline_comment|/* &n;&t; * Section 3.3.10.9 No User Data (9)&n;&t; *&n;&t; * Cause of error&n;&t; * ---------------&n;&t; * No User Data:  This error cause is returned to the originator of a&n;&t; * DATA chunk if a received DATA chunk has no user data.&n;&t; */
+multiline_comment|/*&n;&t; * Section 3.3.10.9 No User Data (9)&n;&t; *&n;&t; * Cause of error&n;&t; * ---------------&n;&t; * No User Data:  This error cause is returned to the originator of a&n;&t; * DATA chunk if a received DATA chunk has no user data.&n;&t; */
 r_if
 c_cond
 (paren
@@ -5180,7 +5025,7 @@ id|tsn
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* RFC 2960 6.5 Stream Identifier and Stream Sequence Number&n;&t; * &n;&t; * If an endpoint receive a DATA chunk with an invalid stream &n;&t; * identifier, it shall acknowledge the reception of the DATA chunk&n;&t; * following the normal procedure, immediately send an ERROR chunk&n;&t; * with cause set to &quot;Invalid Stream Identifier&quot; (See Section 3.3.10)&n;&t; * and discard the DATA chunk. &n;&t; */
+multiline_comment|/* RFC 2960 6.5 Stream Identifier and Stream Sequence Number&n;&t; *&n;&t; * If an endpoint receive a DATA chunk with an invalid stream&n;&t; * identifier, it shall acknowledge the reception of the DATA chunk&n;&t; * following the normal procedure, immediately send an ERROR chunk&n;&t; * with cause set to &quot;Invalid Stream Identifier&quot; (See Section 3.3.10)&n;&t; * and discard the DATA chunk.&n;&t; */
 r_if
 c_cond
 (paren
@@ -5238,7 +5083,7 @@ r_goto
 id|discard_noforce
 suffix:semicolon
 )brace
-multiline_comment|/* Send the data up to the user.  Note:  Schedule  the&n;&t; * SCTP_CMD_CHUNK_ULP cmd before the SCTP_CMD_GEN_SACK, as the SACK &n;&t; * chunk needs the updated rwnd.&n;&t; */
+multiline_comment|/* Send the data up to the user.  Note:  Schedule  the&n;&t; * SCTP_CMD_CHUNK_ULP cmd before the SCTP_CMD_GEN_SACK, as the SACK&n;&t; * chunk needs the updated rwnd.&n;&t; */
 id|sctp_add_cmd_sf
 c_func
 (paren
@@ -5274,7 +5119,7 @@ id|SCTP_EVENT_TIMEOUT_AUTOCLOSE
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* If this is the last chunk in a packet, we need to count it&n;         * toward sack generation.  Note that we need to SACK every&n;         * OTHER packet containing data chunks, EVEN IF WE DISCARD&n;         * THEM.  We elect to NOT generate SACK&squot;s if the chunk fails&n;         * the verification tag test.&n;&t; *&n;&t; * RFC 2960 6.2 Acknowledgement on Reception of DATA Chunks&n;&t; *&n;&t; * The SCTP endpoint MUST always acknowledge the reception of&n;&t; * each valid DATA chunk.&n;&t; * &n;&t; * The guidelines on delayed acknowledgement algorithm&n;&t; * specified in  Section 4.2 of [RFC2581] SHOULD be followed.&n;&t; * Specifically, an acknowledgement SHOULD be generated for at&n;&t; * least every second packet (not every second DATA chunk)&n;&t; * received, and SHOULD be generated within 200 ms of the&n;&t; * arrival of any unacknowledged DATA chunk.  In some&n;&t; * situations it may be beneficial for an SCTP transmitter to&n;&t; * be more conservative than the algorithms detailed in this&n;&t; * document allow. However, an SCTP transmitter MUST NOT be&n;&t; * more aggressive than the following algorithms allow.&n;         */
+multiline_comment|/* If this is the last chunk in a packet, we need to count it&n;&t; * toward sack generation.  Note that we need to SACK every&n;&t; * OTHER packet containing data chunks, EVEN IF WE DISCARD&n;&t; * THEM.  We elect to NOT generate SACK&squot;s if the chunk fails&n;&t; * the verification tag test.&n;&t; *&n;&t; * RFC 2960 6.2 Acknowledgement on Reception of DATA Chunks&n;&t; *&n;&t; * The SCTP endpoint MUST always acknowledge the reception of&n;&t; * each valid DATA chunk.&n;&t; * &n;&t; * The guidelines on delayed acknowledgement algorithm&n;&t; * specified in  Section 4.2 of [RFC2581] SHOULD be followed.&n;&t; * Specifically, an acknowledgement SHOULD be generated for at&n;&t; * least every second packet (not every second DATA chunk)&n;&t; * received, and SHOULD be generated within 200 ms of the&n;&t; * arrival of any unacknowledged DATA chunk.  In some&n;&t; * situations it may be beneficial for an SCTP transmitter to&n;&t; * be more conservative than the algorithms detailed in this&n;&t; * document allow. However, an SCTP transmitter MUST NOT be&n;&t; * more aggressive than the following algorithms allow.&n;&t; */
 r_if
 c_cond
 (paren
@@ -5322,7 +5167,6 @@ c_cond
 (paren
 id|chunk-&gt;end_of_packet
 )paren
-(brace
 id|sctp_add_cmd_sf
 c_func
 (paren
@@ -5336,7 +5180,6 @@ c_func
 )paren
 )paren
 suffix:semicolon
-)brace
 r_return
 id|SCTP_DISPOSITION_DISCARD
 suffix:semicolon
@@ -5381,10 +5224,9 @@ r_return
 id|SCTP_DISPOSITION_DISCARD
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_sf_eat_data_6_2() */
-multiline_comment|/*&n; * sctp_sf_eat_data_fast_4_4&n; * &n; * Section: 4 (4)&n; * (4) In SHUTDOWN-SENT state the endpoint MUST acknowledge any received&n; *    DATA chunks without delay.&n; *&n; * Verification Tag:  8.5 Verification Tag [Normal verification]&n; * Inputs&n; * (endpoint, asoc, chunk)&n; * &n; * Outputs&n; * (asoc, reply_msg, msg_up, timers, counters)&n; *&n; * The return value is the disposition of the chunk.&n; */
-id|sctp_disposition_t
+multiline_comment|/*&n; * sctp_sf_eat_data_fast_4_4&n; *&n; * Section: 4 (4)&n; * (4) In SHUTDOWN-SENT state the endpoint MUST acknowledge any received&n; *    DATA chunks without delay.&n; *&n; * Verification Tag:  8.5 Verification Tag [Normal verification]&n; * Inputs&n; * (endpoint, asoc, chunk)&n; *&n; * Outputs&n; * (asoc, reply_msg, msg_up, timers, counters)&n; *&n; * The return value is the disposition of the chunk.&n; */
 DECL|function|sctp_sf_eat_data_fast_4_4
+id|sctp_disposition_t
 id|sctp_sf_eat_data_fast_4_4
 c_func
 (paren
@@ -5431,10 +5273,10 @@ suffix:semicolon
 r_int
 id|tmp
 suffix:semicolon
-r_uint32
+id|__u32
 id|tsn
 suffix:semicolon
-multiline_comment|/* RFC 2960 8.5 Verification Tag&n;&t; *&n;&t; * When receiving an SCTP packet, the endpoint MUST ensure&n;         * that the value in the Verification Tag field of the&n;         * received SCTP packet matches its own Tag.&n;&t; */
+multiline_comment|/* RFC 2960 8.5 Verification Tag&n;&t; *&n;&t; * When receiving an SCTP packet, the endpoint MUST ensure&n;&t; * that the value in the Verification Tag field of the&n;&t; * received SCTP packet matches its own Tag.&n;&t; */
 r_if
 c_cond
 (paren
@@ -5514,7 +5356,7 @@ id|tsn
 )paren
 suffix:semicolon
 multiline_comment|/* ASSERT:  Now skb-&gt;data is really the user data.  */
-multiline_comment|/* Process ECN based congestion.&n;&t; * &n;&t; * Since the chunk structure is reused for all chunks within&n;&t; * a packet, we use ecn_ce_done to track if we&squot;ve already&n;&t; * done CE processing for this packet.&n;&t; *&n;&t; * We need to do ECN processing even if we plan to discard the&n;&t; * chunk later.&n;&t; */
+multiline_comment|/* Process ECN based congestion.&n;&t; *&n;&t; * Since the chunk structure is reused for all chunks within&n;&t; * a packet, we use ecn_ce_done to track if we&squot;ve already&n;&t; * done CE processing for this packet.&n;&t; *&n;&t; * We need to do ECN processing even if we plan to discard the&n;&t; * chunk later.&n;&t; */
 r_if
 c_cond
 (paren
@@ -5554,9 +5396,7 @@ id|tsn
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* if (packet experienced congestion) */
 )brace
-multiline_comment|/* if (we have not done ecn_ce processing) */
 id|tmp
 op_assign
 id|sctp_tsnmap_check
@@ -5625,7 +5465,7 @@ r_sizeof
 id|sctp_data_chunk_t
 )paren
 suffix:semicolon
-multiline_comment|/* &n;&t; * Section 3.3.10.9 No User Data (9)&n;&t; *&n;&t; * Cause of error&n;&t; * ---------------&n;&t; * No User Data:  This error cause is returned to the originator of a&n;&t; * DATA chunk if a received DATA chunk has no user data.&n;&t; */
+multiline_comment|/*&n;&t; * Section 3.3.10.9 No User Data (9)&n;&t; *&n;&t; * Cause of error&n;&t; * ---------------&n;&t; * No User Data:  This error cause is returned to the originator of a&n;&t; * DATA chunk if a received DATA chunk has no user data.&n;&t; */
 r_if
 c_cond
 (paren
@@ -5732,7 +5572,7 @@ id|tsn
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* RFC 2960 6.5 Stream Identifier and Stream Sequence Number&n;&t; * &n;&t; * If an endpoint receive a DATA chunk with an invalid stream &n;&t; * identifier, it shall acknowledge the reception of the DATA chunk&n;&t; * following the normal procedure, immediately send an ERROR chunk&n;&t; * with cause set to &quot;Invalid Stream Identifier&quot; (See Section 3.3.10)&n;&t; * and discard the DATA chunk. &n;&t; */
+multiline_comment|/* RFC 2960 6.5 Stream Identifier and Stream Sequence Number&n;&t; *&n;&t; * If an endpoint receive a DATA chunk with an invalid stream&n;&t; * identifier, it shall acknowledge the reception of the DATA chunk&n;&t; * following the normal procedure, immediately send an ERROR chunk&n;&t; * with cause set to &quot;Invalid Stream Identifier&quot; (See Section 3.3.10)&n;&t; * and discard the DATA chunk.&n;&t; */
 r_if
 c_cond
 (paren
@@ -5790,14 +5630,14 @@ suffix:semicolon
 multiline_comment|/* Go a head and force a SACK, since we are shutting down. */
 id|gen_shutdown
 suffix:colon
-multiline_comment|/* Implementor&squot;s Guide.  &n;&t; *&n;&t; * While in SHUTDOWN-SENT state, the SHUTDOWN sender MUST immediately&n;&t; * respond to each received packet containing one or more DATA chunk(s)&n;&t; * with a SACK, a SHUTDOWN chunk, and restart the T2-shutdown timer&n;&t; */
+multiline_comment|/* Implementor&squot;s Guide.&n;&t; *&n;&t; * While in SHUTDOWN-SENT state, the SHUTDOWN sender MUST immediately&n;&t; * respond to each received packet containing one or more DATA chunk(s)&n;&t; * with a SACK, a SHUTDOWN chunk, and restart the T2-shutdown timer&n;&t; */
 r_if
 c_cond
 (paren
 id|chunk-&gt;end_of_packet
 )paren
 (brace
-multiline_comment|/* We must delay the chunk creation since the cumulative&n;&t;&t; * TSN has not been updated yet.  &n;&t;&t; */
+multiline_comment|/* We must delay the chunk creation since the cumulative&n;&t;&t; * TSN has not been updated yet.&n;&t;&t; */
 id|sctp_add_cmd_sf
 c_func
 (paren
@@ -5843,10 +5683,9 @@ r_return
 id|SCTP_DISPOSITION_CONSUME
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_sf_eat_data_fast4_4() */
-multiline_comment|/*&n; * Section: 6.2  Processing a Received SACK&n; * D) Any time a SACK arrives, the endpoint performs the following:&n; * &n; *     i) If Cumulative TSN Ack is less than the Cumulative TSN Ack Point,&n; *     then drop the SACK.   Since Cumulative TSN Ack is monotonically&n; *     increasing, a SACK whose Cumulative TSN Ack is less than the&n; *     Cumulative TSN Ack Point indicates an out-of-order SACK.&n; * &n; *     ii) Set rwnd equal to the newly received a_rwnd minus the number&n; *     of bytes still outstanding after processing the Cumulative TSN Ack&n; *     and the Gap Ack Blocks.&n; * &n; *     iii) If the SACK is missing a TSN that was previously&n; *     acknowledged via a Gap Ack Block (e.g., the data receiver&n; *     reneged on the data), then mark the corresponding DATA chunk&n; *     as available for retransmit:  Mark it as missing for fast&n; *     retransmit as described in Section 7.2.4 and if no retransmit&n; *     timer is running for the destination address to which the DATA&n; *     chunk was originally transmitted, then T3-rtx is started for&n; *     that destination address.&n; * &n; * Verification Tag:  8.5 Verification Tag [Normal verification]&n; *&n; * Inputs&n; * (endpoint, asoc, chunk)&n; * &n; * Outputs&n; * (asoc, reply_msg, msg_up, timers, counters)&n; *&n; * The return value is the disposition of the chunk.&n; */
-id|sctp_disposition_t
+multiline_comment|/*&n; * Section: 6.2  Processing a Received SACK&n; * D) Any time a SACK arrives, the endpoint performs the following:&n; *&n; *     i) If Cumulative TSN Ack is less than the Cumulative TSN Ack Point,&n; *     then drop the SACK.   Since Cumulative TSN Ack is monotonically&n; *     increasing, a SACK whose Cumulative TSN Ack is less than the&n; *     Cumulative TSN Ack Point indicates an out-of-order SACK.&n; *&n; *     ii) Set rwnd equal to the newly received a_rwnd minus the number&n; *     of bytes still outstanding after processing the Cumulative TSN Ack&n; *     and the Gap Ack Blocks.&n; *&n; *     iii) If the SACK is missing a TSN that was previously&n; *     acknowledged via a Gap Ack Block (e.g., the data receiver&n; *     reneged on the data), then mark the corresponding DATA chunk&n; *     as available for retransmit:  Mark it as missing for fast&n; *     retransmit as described in Section 7.2.4 and if no retransmit&n; *     timer is running for the destination address to which the DATA&n; *     chunk was originally transmitted, then T3-rtx is started for&n; *     that destination address.&n; *&n; * Verification Tag:  8.5 Verification Tag [Normal verification]&n; *&n; * Inputs&n; * (endpoint, asoc, chunk)&n; *&n; * Outputs&n; * (asoc, reply_msg, msg_up, timers, counters)&n; *&n; * The return value is the disposition of the chunk.&n; */
 DECL|function|sctp_sf_eat_sack_6_2
+id|sctp_disposition_t
 id|sctp_sf_eat_sack_6_2
 c_func
 (paren
@@ -5883,10 +5722,10 @@ id|sctp_sackhdr_t
 op_star
 id|sackh
 suffix:semicolon
-r_uint32
+id|__u32
 id|ctsn
 suffix:semicolon
-multiline_comment|/* 8.5 When receiving an SCTP packet, the endpoint MUST ensure&n;         * that the value in the Verification Tag field of the&n;         * received SCTP packet matches its own Tag. ...&n;         */
+multiline_comment|/* 8.5 When receiving an SCTP packet, the endpoint MUST ensure&n;&t; * that the value in the Verification Tag field of the&n;&t; * received SCTP packet matches its own Tag. ...&n;&t; */
 r_if
 c_cond
 (paren
@@ -5898,7 +5737,6 @@ id|chunk-&gt;sctp_hdr-&gt;vtag
 op_ne
 id|asoc-&gt;c.my_vtag
 )paren
-(brace
 r_return
 id|sctp_sf_pdiscard
 c_func
@@ -5914,7 +5752,6 @@ comma
 id|commands
 )paren
 suffix:semicolon
-)brace
 multiline_comment|/* Pull the SACK chunk from the data buffer */
 id|sackh
 op_assign
@@ -5936,7 +5773,7 @@ c_func
 id|sackh-&gt;cum_tsn_ack
 )paren
 suffix:semicolon
-multiline_comment|/* i) If Cumulative TSN Ack is less than the Cumulative TSN&n;         *     Ack Point, then drop the SACK.  Since Cumulative TSN&n;         *     Ack is monotonically increasing, a SACK whose&n;         *     Cumulative TSN Ack is less than the Cumulative TSN Ack&n;         *     Point indicates an out-of-order SACK.&n;         */
+multiline_comment|/* i) If Cumulative TSN Ack is less than the Cumulative TSN&n;&t; *     Ack Point, then drop the SACK.  Since Cumulative TSN&n;&t; *     Ack is monotonically increasing, a SACK whose&n;&t; *     Cumulative TSN Ack is less than the Cumulative TSN Ack&n;&t; *     Point indicates an out-of-order SACK.&n;&t; */
 r_if
 c_cond
 (paren
@@ -5984,15 +5821,14 @@ id|sackh
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* Note: We do the rest of the work on the PROCESS_SACK &n;&t; * sideeffect.&n;&t; */
+multiline_comment|/* Note: We do the rest of the work on the PROCESS_SACK&n;&t; * sideeffect.&n;&t; */
 r_return
 id|SCTP_DISPOSITION_CONSUME
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_sf_eat_sack_6_2() */
-multiline_comment|/*&n; * Generate an ABORT in response to a packet.&n; * &n; * Section: 8.4 Handle &quot;Out of the blue&quot; Packets&n; *&n; * 8) The receiver should respond to the sender of the OOTB packet&n; *    with an ABORT.  When sending the ABORT, the receiver of the&n; *    OOTB packet MUST fill in the Verification Tag field of the&n; *    outbound packet with the value found in the Verification Tag&n; *    field of the OOTB packet and set the T-bit in the Chunk Flags&n; *    to indicate that no TCB was found.  After sending this ABORT,&n; *    the receiver of the OOTB packet shall discard the OOTB packet&n; *    and take no further action.&n; *&n; * Verification Tag:&n; *&n; * The return value is the disposition of the chunk.  */
-id|sctp_disposition_t
+multiline_comment|/*&n; * Generate an ABORT in response to a packet.&n; *&n; * Section: 8.4 Handle &quot;Out of the blue&quot; Packets&n; *&n; * 8) The receiver should respond to the sender of the OOTB packet&n; *    with an ABORT.  When sending the ABORT, the receiver of the&n; *    OOTB packet MUST fill in the Verification Tag field of the&n; *    outbound packet with the value found in the Verification Tag&n; *    field of the OOTB packet and set the T-bit in the Chunk Flags&n; *    to indicate that no TCB was found.  After sending this ABORT,&n; *    the receiver of the OOTB packet shall discard the OOTB packet&n; *    and take no further action.&n; *&n; * Verification Tag:&n; *&n; * The return value is the disposition of the chunk.&n;*/
 DECL|function|sctp_sf_tabort_8_4_8
+id|sctp_disposition_t
 id|sctp_sf_tabort_8_4_8
 c_func
 (paren
@@ -6041,13 +5877,13 @@ id|sctp_chunk_t
 op_star
 m_abort
 suffix:semicolon
-r_uint16
+id|__u16
 id|sport
 suffix:semicolon
-r_uint16
+id|__u16
 id|dport
 suffix:semicolon
-r_uint32
+id|__u32
 id|vtag
 suffix:semicolon
 multiline_comment|/* Grub in chunk and endpoint for kewl bitz. */
@@ -6067,20 +5903,17 @@ c_func
 id|chunk-&gt;sctp_hdr-&gt;source
 )paren
 suffix:semicolon
-multiline_comment|/* -- Make sure the ABORT packet&squot;s V-tag is the same as the&n;         *    inbound packet if no association exists, otherwise use&n;         *    the peer&squot;s vtag.&n;         */
+multiline_comment|/* -- Make sure the ABORT packet&squot;s V-tag is the same as the&n;&t; *    inbound packet if no association exists, otherwise use&n;&t; *    the peer&squot;s vtag.&n;&t; */
 r_if
 c_cond
 (paren
 id|asoc
 )paren
-(brace
 id|vtag
 op_assign
 id|asoc-&gt;peer.i.init_tag
 suffix:semicolon
-)brace
 r_else
-(brace
 id|vtag
 op_assign
 id|ntohl
@@ -6089,7 +5922,6 @@ c_func
 id|chunk-&gt;sctp_hdr-&gt;vtag
 )paren
 suffix:semicolon
-)brace
 multiline_comment|/* Make a transport for the bucket, Eliza... */
 id|transport
 op_assign
@@ -6111,11 +5943,9 @@ c_cond
 op_logical_neg
 id|transport
 )paren
-(brace
 r_goto
 id|nomem
 suffix:semicolon
-)brace
 multiline_comment|/* Make a packet for the ABORT to go into. */
 id|packet
 op_assign
@@ -6133,11 +5963,9 @@ c_cond
 op_logical_neg
 id|packet
 )paren
-(brace
 r_goto
 id|nomem_packet
 suffix:semicolon
-)brace
 id|packet
 op_assign
 id|sctp_packet_init
@@ -6166,7 +5994,7 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
-multiline_comment|/* Make an ABORT.&n;         * This will set the T bit since we have no association.&n;         */
+multiline_comment|/* Make an ABORT.&n;&t; * This will set the T bit since we have no association.&n;&t; */
 m_abort
 op_assign
 id|sctp_make_abort
@@ -6182,15 +6010,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-l_int|NULL
-op_eq
+op_logical_neg
 m_abort
 )paren
-(brace
 r_goto
 id|nomem_chunk
 suffix:semicolon
-)brace
 multiline_comment|/* Set the skb to the belonging sock for accounting.  */
 m_abort
 op_member_access_from_pointer
@@ -6245,10 +6070,9 @@ r_return
 id|SCTP_DISPOSITION_NOMEM
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_sf_tabort_8_4_8() */
-multiline_comment|/*&n; * Received an ERROR chunk from peer.  Generate SCTP_REMOTE_ERROR &n; * event as ULP notification for each cause included in the chunk.&n; * &n; * API 5.3.1.3 - SCTP_REMOTE_ERROR &n; *&n; * The return value is the disposition of the chunk.  */
-id|sctp_disposition_t
+multiline_comment|/*&n; * Received an ERROR chunk from peer.  Generate SCTP_REMOTE_ERROR&n; * event as ULP notification for each cause included in the chunk.&n; *&n; * API 5.3.1.3 - SCTP_REMOTE_ERROR&n; *&n; * The return value is the disposition of the chunk.&n;*/
 DECL|function|sctp_sf_operr_notify
+id|sctp_disposition_t
 id|sctp_sf_operr_notify
 c_func
 (paren
@@ -6313,11 +6137,9 @@ c_cond
 op_logical_neg
 id|ev
 )paren
-(brace
 r_goto
 id|nomem
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -6357,10 +6179,9 @@ r_return
 id|SCTP_DISPOSITION_NOMEM
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_sf_operr_notify() */
-multiline_comment|/*&n; * Process an inbound SHUTDOWN ACK.&n; * &n; * From Section 9.2: &n; * Upon the receipt of the SHUTDOWN ACK, the SHUTDOWN sender shall&n; * stop the T2-shutdown timer, send a SHUTDOWN COMPLETE chunk to its&n; * peer, and remove all record of the association.&n; *&n; * The return value is the disposition.  */
-id|sctp_disposition_t
+multiline_comment|/*&n; * Process an inbound SHUTDOWN ACK.&n; *&n; * From Section 9.2:&n; * Upon the receipt of the SHUTDOWN ACK, the SHUTDOWN sender shall&n; * stop the T2-shutdown timer, send a SHUTDOWN COMPLETE chunk to its&n; * peer, and remove all record of the association.&n; *&n; * The return value is the disposition.&n; */
 DECL|function|sctp_sf_do_9_2_final
+id|sctp_disposition_t
 id|sctp_sf_do_9_2_final
 c_func
 (paren
@@ -6401,7 +6222,7 @@ id|sctp_ulpevent_t
 op_star
 id|ev
 suffix:semicolon
-multiline_comment|/* 10.2 H) SHUTDOWN COMPLETE notification&n;         * &n;         * When SCTP completes the shutdown procedures (section 9.2) this&n;         * notification is passed to the upper layer.&n;         */
+multiline_comment|/* 10.2 H) SHUTDOWN COMPLETE notification&n;&t; *&n;&t; * When SCTP completes the shutdown procedures (section 9.2) this&n;&t; * notification is passed to the upper layer.&n;&t; */
 id|ev
 op_assign
 id|sctp_ulpevent_make_assoc_change
@@ -6428,11 +6249,9 @@ c_cond
 op_logical_neg
 id|ev
 )paren
-(brace
 r_goto
 id|nomem
 suffix:semicolon
-)brace
 id|sctp_add_cmd_sf
 c_func
 (paren
@@ -6447,7 +6266,7 @@ id|ev
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* Upon the receipt of the SHUTDOWN ACK, the SHUTDOWN sender shall&n;         * stop the T2-shutdown timer,&n;         */
+multiline_comment|/* Upon the receipt of the SHUTDOWN ACK, the SHUTDOWN sender shall&n;&t; * stop the T2-shutdown timer,&n;&t; */
 id|sctp_add_cmd_sf
 c_func
 (paren
@@ -6479,11 +6298,9 @@ c_cond
 op_logical_neg
 id|reply
 )paren
-(brace
 r_goto
 id|nomem
 suffix:semicolon
-)brace
 id|sctp_add_cmd_sf
 c_func
 (paren
@@ -6535,10 +6352,9 @@ r_return
 id|SCTP_DISPOSITION_NOMEM
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_sf_do_9_2_final() */
 multiline_comment|/*&n; * RFC 2960, 8.4 - Handle &quot;Out of the blue&quot; Packets&n; * 5) If the packet contains a SHUTDOWN ACK chunk, the receiver should&n; *    respond to the sender of the OOTB packet with a SHUTDOWN COMPLETE.&n; *    When sending the SHUTDOWN COMPLETE, the receiver of the OOTB&n; *    packet must fill in the Verification Tag field of the outbound&n; *    packet with the Verification Tag received in the SHUTDOWN ACK and&n; *    set the T-bit in the Chunk Flags to indicate that no TCB was&n; *    found. Otherwise,&n; *&n; * 8) The receiver should respond to the sender of the OOTB packet with&n; *    an ABORT.  When sending the ABORT, the receiver of the OOTB packet&n; *    MUST fill in the Verification Tag field of the outbound packet&n; *    with the value found in the Verification Tag field of the OOTB&n; *    packet and set the T-bit in the Chunk Flags to indicate that no&n; *    TCB was found.  After sending this ABORT, the receiver of the OOTB&n; *    packet shall discard the OOTB packet and take no further action.&n; */
-id|sctp_disposition_t
 DECL|function|sctp_sf_ootb
+id|sctp_disposition_t
 id|sctp_sf_ootb
 c_func
 (paren
@@ -6582,7 +6398,7 @@ id|sctp_chunkhdr_t
 op_star
 id|ch
 suffix:semicolon
-r_uint8
+id|__u8
 op_star
 id|ch_end
 suffix:semicolon
@@ -6605,7 +6421,7 @@ id|ch_end
 op_assign
 (paren
 (paren
-r_uint8
+id|__u8
 op_star
 )paren
 id|ch
@@ -6628,12 +6444,10 @@ id|SCTP_CID_SHUTDOWN_ACK
 op_eq
 id|ch-&gt;type
 )paren
-(brace
 id|ootb_shut_ack
 op_assign
 l_int|1
 suffix:semicolon
-)brace
 id|ch
 op_assign
 (paren
@@ -6656,7 +6470,6 @@ c_cond
 (paren
 id|ootb_shut_ack
 )paren
-(brace
 id|sctp_sf_shut_8_4_5
 c_func
 (paren
@@ -6671,9 +6484,7 @@ comma
 id|commands
 )paren
 suffix:semicolon
-)brace
 r_else
-(brace
 id|sctp_sf_tabort_8_4_8
 c_func
 (paren
@@ -6688,7 +6499,6 @@ comma
 id|commands
 )paren
 suffix:semicolon
-)brace
 r_return
 id|sctp_sf_pdiscard
 c_func
@@ -6705,10 +6515,9 @@ id|commands
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_sf_ootb() */
-multiline_comment|/*&n; * Handle an &quot;Out of the blue&quot; SHUTDOWN ACK.&n; *&n; * Section: 8.4 5)&n; * 5) If the packet contains a SHUTDOWN ACK chunk, the receiver should &n; *   respond to the sender of the OOTB packet with a SHUTDOWN COMPLETE.  &n; *   When sending the SHUTDOWN COMPLETE, the receiver of the OOTB packet &n; *   must fill in the Verification Tag field of the outbound packet with &n; *   the Verification Tag received in the SHUTDOWN ACK and set the &n; *   T-bit in the Chunk Flags to indicate that no TCB was found. &n; * &n; * Verification Tag:  8.5.1 E) Rules for packet carrying a SHUTDOWN ACK&n; *   If the receiver is in COOKIE-ECHOED or COOKIE-WAIT state the&n; *   procedures in section 8.4 SHOULD be followed, in other words it&n; *   should be treated as an Out Of The Blue packet.&n; *   [This means that we do NOT check the Verification Tag on these&n; *   chunks. --piggy ]&n; *&n; * Inputs&n; * (endpoint, asoc, type, arg, commands)&n; * &n; * Outputs&n; * (sctp_disposition_t)&n; *&n; * The return value is the disposition of the chunk.&n; */
-id|sctp_disposition_t
+multiline_comment|/*&n; * Handle an &quot;Out of the blue&quot; SHUTDOWN ACK.&n; *&n; * Section: 8.4 5)&n; * 5) If the packet contains a SHUTDOWN ACK chunk, the receiver should&n; *   respond to the sender of the OOTB packet with a SHUTDOWN COMPLETE.&n; *   When sending the SHUTDOWN COMPLETE, the receiver of the OOTB packet&n; *   must fill in the Verification Tag field of the outbound packet with&n; *   the Verification Tag received in the SHUTDOWN ACK and set the&n; *   T-bit in the Chunk Flags to indicate that no TCB was found.&n; *&n; * Verification Tag:  8.5.1 E) Rules for packet carrying a SHUTDOWN ACK&n; *   If the receiver is in COOKIE-ECHOED or COOKIE-WAIT state the&n; *   procedures in section 8.4 SHOULD be followed, in other words it&n; *   should be treated as an Out Of The Blue packet.&n; *   [This means that we do NOT check the Verification Tag on these&n; *   chunks. --piggy ]&n; *&n; * Inputs&n; * (endpoint, asoc, type, arg, commands)&n; *&n; * Outputs&n; * (sctp_disposition_t)&n; *&n; * The return value is the disposition of the chunk.&n; */
 DECL|function|sctp_sf_shut_8_4_5
+id|sctp_disposition_t
 id|sctp_sf_shut_8_4_5
 c_func
 (paren
@@ -6757,13 +6566,13 @@ id|sctp_chunk_t
 op_star
 id|shut
 suffix:semicolon
-r_uint16
+id|__u16
 id|sport
 suffix:semicolon
-r_uint16
+id|__u16
 id|dport
 suffix:semicolon
-r_uint32
+id|__u32
 id|vtag
 suffix:semicolon
 multiline_comment|/* Grub in chunk and endpoint for kewl bitz. */
@@ -6783,7 +6592,7 @@ c_func
 id|chunk-&gt;sctp_hdr-&gt;source
 )paren
 suffix:semicolon
-multiline_comment|/* Make sure the ABORT packet&squot;s V-tag is the same as the&n;         * inbound packet if no association exists, otherwise use&n;         * the peer&squot;s vtag.&n;         */
+multiline_comment|/* Make sure the ABORT packet&squot;s V-tag is the same as the&n;&t; * inbound packet if no association exists, otherwise use&n;&t; * the peer&squot;s vtag.&n;&t; */
 id|vtag
 op_assign
 id|ntohl
@@ -6813,11 +6622,9 @@ c_cond
 op_logical_neg
 id|transport
 )paren
-(brace
 r_goto
 id|nomem
 suffix:semicolon
-)brace
 multiline_comment|/* Make a packet for the ABORT to go into. */
 id|packet
 op_assign
@@ -6835,11 +6642,9 @@ c_cond
 op_logical_neg
 id|packet
 )paren
-(brace
 r_goto
 id|nomem_packet
 suffix:semicolon
-)brace
 id|packet
 op_assign
 id|sctp_packet_init
@@ -6868,7 +6673,7 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
-multiline_comment|/* Make an ABORT.&n;         * This will set the T bit since we have no association.&n;         */
+multiline_comment|/* Make an ABORT.&n;&t; * This will set the T bit since we have no association.&n;&t; */
 id|shut
 op_assign
 id|sctp_make_shutdown_complete
@@ -6885,11 +6690,9 @@ c_cond
 op_logical_neg
 id|shut
 )paren
-(brace
 r_goto
 id|nomem_chunk
 suffix:semicolon
-)brace
 multiline_comment|/* Set the skb to the belonging sock for accounting.  */
 id|shut-&gt;skb-&gt;sk
 op_assign
@@ -6942,9 +6745,8 @@ r_return
 id|SCTP_DISPOSITION_NOMEM
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_sf_shut_8_4_5() */
 macro_line|#if 0
-multiline_comment|/*&n; * We did something stupid but got lucky.  Namely, we sent a HEARTBEAT&n; * before the association was all the way up and we did NOT get an&n; * ABORT.&n; *&n; * Log the fact and then process normally.&n; * &n; * Section: Not specified&n; * Verification Tag:  8.5 Verification Tag [Normal verification]&n; * Inputs&n; * (endpoint, asoc, chunk)&n; * &n; * Outputs&n; * (asoc, reply_msg, msg_up, timers, counters)&n; *&n; * The return value is the disposition of the chunk.&n; */
+multiline_comment|/*&n; * We did something stupid but got lucky.  Namely, we sent a HEARTBEAT&n; * before the association was all the way up and we did NOT get an&n; * ABORT.&n; *&n; * Log the fact and then process normally.&n; *&n; * Section: Not specified&n; * Verification Tag:  8.5 Verification Tag [Normal verification]&n; * Inputs&n; * (endpoint, asoc, chunk)&n; *&n; * Outputs&n; * (asoc, reply_msg, msg_up, timers, counters)&n; *&n; * The return value is the disposition of the chunk.&n; */
 id|sctp_disposition_t
 id|lucky
 c_func
@@ -6978,7 +6780,7 @@ id|chunk
 op_assign
 id|arg
 suffix:semicolon
-multiline_comment|/* 8.5 When receiving an SCTP packet, the endpoint MUST ensure&n;         * that the value in the Verification Tag field of the&n;         * received SCTP packet matches its own Tag. ...&n;         */
+multiline_comment|/* 8.5 When receiving an SCTP packet, the endpoint MUST ensure&n;&t; * that the value in the Verification Tag field of the&n;&t; * received SCTP packet matches its own Tag. ...&n;&t; */
 r_if
 c_cond
 (paren
@@ -6986,7 +6788,6 @@ id|chunk-&gt;sctp_hdr-&gt;vtag
 op_ne
 id|asoc-&gt;c.my_vtag
 )paren
-(brace
 r_return
 id|sctp_sf_pdiscard
 c_func
@@ -7002,7 +6803,6 @@ comma
 id|commands
 )paren
 suffix:semicolon
-)brace
 r_return
 id|SCTP_DISPOSITION_CONSUME
 suffix:semicolon
@@ -7012,10 +6812,9 @@ r_return
 id|SCTP_DISPOSITION_NOMEM
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_disposition_t lucky(...) */
 macro_line|#endif /* 0 */
 macro_line|#if 0
-multiline_comment|/*&n; * The other end is doing something very stupid.  We&squot;ll ignore them&n; * after logging their idiocy. :-)&n; * &n; * Section: Not specified&n; * Verification Tag:  8.5 Verification Tag [Normal verification]&n; * Inputs&n; * (endpoint, asoc, chunk)&n; * &n; * Outputs&n; * (asoc, reply_msg, msg_up, timers, counters)&n; *&n; * The return value is the disposition of the chunk.&n; */
+multiline_comment|/*&n; * The other end is doing something very stupid.  We&squot;ll ignore them&n; * after logging their idiocy. :-)&n; *&n; * Section: Not specified&n; * Verification Tag:  8.5 Verification Tag [Normal verification]&n; * Inputs&n; * (endpoint, asoc, chunk)&n; *&n; * Outputs&n; * (asoc, reply_msg, msg_up, timers, counters)&n; *&n; * The return value is the disposition of the chunk.&n; */
 id|sctp_disposition_t
 id|other_stupid
 c_func
@@ -7049,7 +6848,7 @@ id|chunk
 op_assign
 id|arg
 suffix:semicolon
-multiline_comment|/* 8.5 When receiving an SCTP packet, the endpoint MUST ensure&n;         * that the value in the Verification Tag field of the&n;         * received SCTP packet matches its own Tag. ...&n;         */
+multiline_comment|/* 8.5 When receiving an SCTP packet, the endpoint MUST ensure&n;&t; * that the value in the Verification Tag field of the&n;&t; * received SCTP packet matches its own Tag. ...&n;&t; */
 r_if
 c_cond
 (paren
@@ -7057,7 +6856,6 @@ id|chunk-&gt;sctp_hdr-&gt;vtag
 op_ne
 id|asoc-&gt;c.my_vtag
 )paren
-(brace
 r_return
 id|sctp_sf_pdiscard
 c_func
@@ -7073,7 +6871,6 @@ comma
 id|commands
 )paren
 suffix:semicolon
-)brace
 r_return
 id|SCTP_DISPOSITION_CONSUME
 suffix:semicolon
@@ -7083,11 +6880,10 @@ r_return
 id|SCTP_DISPOSITION_NOMEM
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_disposition_t other_stupid(...) */
 macro_line|#endif /* 0 */
-multiline_comment|/*&n; * The other end is violating protocol.&n; * &n; * Section: Not specified&n; * Verification Tag: Not specified&n; * Inputs&n; * (endpoint, asoc, chunk)&n; * &n; * Outputs&n; * (asoc, reply_msg, msg_up, timers, counters)&n; *&n; * We simply tag the chunk as a violation.  The state machine will log&n; * the violation and continue.&n; */
-id|sctp_disposition_t
+multiline_comment|/*&n; * The other end is violating protocol.&n; *&n; * Section: Not specified&n; * Verification Tag: Not specified&n; * Inputs&n; * (endpoint, asoc, chunk)&n; *&n; * Outputs&n; * (asoc, reply_msg, msg_up, timers, counters)&n; *&n; * We simply tag the chunk as a violation.  The state machine will log&n; * the violation and continue.&n; */
 DECL|function|sctp_sf_violation
+id|sctp_disposition_t
 id|sctp_sf_violation
 c_func
 (paren
@@ -7118,11 +6914,10 @@ r_return
 id|SCTP_DISPOSITION_VIOLATION
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_sf_violation() */
 multiline_comment|/***************************************************************************&n; * These are the state functions for handling primitive (Section 10) events.&n; ***************************************************************************/
-multiline_comment|/*&n; * sctp_sf_do_prm_asoc&n; * &n; * Section: 10.1 ULP-to-SCTP&n; * B) Associate&n; * &n; * Format: ASSOCIATE(local SCTP instance name, destination transport addr, &n; * outbound stream count) &n; * -&gt; association id [,destination transport addr list] [,outbound stream&n; * count] &n; * &n; * This primitive allows the upper layer to initiate an association to a&n; * specific peer endpoint. &n; * &n; * The peer endpoint shall be specified by one of the transport addresses&n; * which defines the endpoint (see Section 1.4).  If the local SCTP&n; * instance has not been initialized, the ASSOCIATE is considered an&n; * error. &n; * [This is not relevant for the kernel implementation since we do all&n; * initialization at boot time.  It we hadn&squot;t initialized we wouldn&squot;t&n; * get anywhere near this code.]&n; * &n; * An association id, which is a local handle to the SCTP association,&n; * will be returned on successful establishment of the association. If&n; * SCTP is not able to open an SCTP association with the peer endpoint,&n; * an error is returned.&n; * [In the kernel implementation, the sctp_association_t needs to&n; * be created BEFORE causing this primitive to run.]&n; * &n; * Other association parameters may be returned, including the&n; * complete destination transport addresses of the peer as well as the&n; * outbound stream count of the local endpoint. One of the transport&n; * address from the returned destination addresses will be selected by&n; * the local endpoint as default primary path for sending SCTP packets&n; * to this peer.  The returned &quot;destination transport addr list&quot; can&n; * be used by the ULP to change the default primary path or to force&n; * sending a packet to a specific transport address.  [All of this&n; * stuff happens when the INIT ACK arrives.  This is a NON-BLOCKING&n; * function.]&n; * &n; * Mandatory attributes:&n; * &n; * o local SCTP instance name - obtained from the INITIALIZE operation.&n; *   [This is the argument asoc.]&n; * o destination transport addr - specified as one of the transport&n; * addresses of the peer endpoint with which the association is to be&n; * established.&n; *  [This is asoc-&gt;peer.active_path.]&n; * o outbound stream count - the number of outbound streams the ULP&n; * would like to open towards this peer endpoint.&n; * [BUG: This is not currently implemented.]&n; * Optional attributes:&n; * &n; * None.&n; * &n; * The return value is a disposition.&n; */
-id|sctp_disposition_t
+multiline_comment|/*&n; * sctp_sf_do_prm_asoc&n; *&n; * Section: 10.1 ULP-to-SCTP&n; * B) Associate&n; *&n; * Format: ASSOCIATE(local SCTP instance name, destination transport addr,&n; * outbound stream count)&n; * -&gt; association id [,destination transport addr list] [,outbound stream&n; * count]&n; *&n; * This primitive allows the upper layer to initiate an association to a&n; * specific peer endpoint.&n; *&n; * The peer endpoint shall be specified by one of the transport addresses&n; * which defines the endpoint (see Section 1.4).  If the local SCTP&n; * instance has not been initialized, the ASSOCIATE is considered an&n; * error.&n; * [This is not relevant for the kernel implementation since we do all&n; * initialization at boot time.  It we hadn&squot;t initialized we wouldn&squot;t&n; * get anywhere near this code.]&n; *&n; * An association id, which is a local handle to the SCTP association,&n; * will be returned on successful establishment of the association. If&n; * SCTP is not able to open an SCTP association with the peer endpoint,&n; * an error is returned.&n; * [In the kernel implementation, the sctp_association_t needs to&n; * be created BEFORE causing this primitive to run.]&n; *&n; * Other association parameters may be returned, including the&n; * complete destination transport addresses of the peer as well as the&n; * outbound stream count of the local endpoint. One of the transport&n; * address from the returned destination addresses will be selected by&n; * the local endpoint as default primary path for sending SCTP packets&n; * to this peer.  The returned &quot;destination transport addr list&quot; can&n; * be used by the ULP to change the default primary path or to force&n; * sending a packet to a specific transport address.  [All of this&n; * stuff happens when the INIT ACK arrives.  This is a NON-BLOCKING&n; * function.]&n; *&n; * Mandatory attributes:&n; *&n; * o local SCTP instance name - obtained from the INITIALIZE operation.&n; *   [This is the argument asoc.]&n; * o destination transport addr - specified as one of the transport&n; * addresses of the peer endpoint with which the association is to be&n; * established.&n; *  [This is asoc-&gt;peer.active_path.]&n; * o outbound stream count - the number of outbound streams the ULP&n; * would like to open towards this peer endpoint.&n; * [BUG: This is not currently implemented.]&n; * Optional attributes:&n; *&n; * None.&n; *&n; * The return value is a disposition.&n; */
 DECL|function|sctp_sf_do_prm_asoc
+id|sctp_disposition_t
 id|sctp_sf_do_prm_asoc
 c_func
 (paren
@@ -7193,16 +6988,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-l_int|NULL
-op_eq
+op_logical_neg
 id|bp
 )paren
-(brace
 r_goto
 id|nomem
 suffix:semicolon
-)brace
-multiline_comment|/* Use scoping rules to determine the subset of addresses from&n;&t; * the endpoint. &n;&t; */
+multiline_comment|/* Use scoping rules to determine the subset of addresses from&n;&t; * the endpoint.&n;&t; */
 id|scope
 op_assign
 id|sctp_scope
@@ -7230,23 +7022,19 @@ c_cond
 (paren
 id|asoc-&gt;peer.ipv4_address
 )paren
-(brace
 id|flags
 op_or_assign
 id|SCTP_ADDR4_PEERSUPP
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
 id|asoc-&gt;peer.ipv6_address
 )paren
-(brace
 id|flags
 op_or_assign
 id|SCTP_ADDR6_PEERSUPP
 suffix:semicolon
-)brace
 id|error
 op_assign
 id|sctp_bind_addr_copy
@@ -7267,15 +7055,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-l_int|0
-op_ne
 id|error
 )paren
-(brace
 r_goto
 id|nomem
 suffix:semicolon
-)brace
 multiline_comment|/* FIXME: Either move address assignment out of this function&n;&t; * or else move the association allocation/init into this function.&n;&t; * The association structure is brand new before calling this&n;&t; * function, so would not be a sideeffect if the allocation&n;&t; * moved into this function.  --jgrimm &n;&t; */
 id|sctp_add_cmd_sf
 c_func
@@ -7290,7 +7074,7 @@ id|sctp_arg_t
 id|bp
 )paren
 suffix:semicolon
-multiline_comment|/* RFC 2960 5.1 Normal Establishment of an Association&n;         *&n;         * A) &quot;A&quot; first sends an INIT chunk to &quot;Z&quot;.  In the INIT, &quot;A&quot;&n;         * must provide its Verification Tag (Tag_A) in the Initiate&n;         * Tag field.  Tag_A SHOULD be a random number in the range of&n;         * 1 to 4294967295 (see 5.3.1 for Tag value selection). ...&n;         */
+multiline_comment|/* RFC 2960 5.1 Normal Establishment of an Association&n;&t; *&n;&t; * A) &quot;A&quot; first sends an INIT chunk to &quot;Z&quot;.  In the INIT, &quot;A&quot;&n;&t; * must provide its Verification Tag (Tag_A) in the Initiate&n;&t; * Tag field.  Tag_A SHOULD be a random number in the range of&n;&t; * 1 to 4294967295 (see 5.3.1 for Tag value selection). ...&n;&t; */
 id|repl
 op_assign
 id|sctp_make_init
@@ -7306,16 +7090,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-l_int|NULL
-op_eq
+op_logical_neg
 id|repl
 )paren
-(brace
 r_goto
 id|nomem
 suffix:semicolon
-)brace
-multiline_comment|/* Cast away the const modifier, as we want to just&n;&t; * rerun it through as a sideffect. &n;&t; */
+multiline_comment|/* Cast away the const modifier, as we want to just&n;&t; * rerun it through as a sideffect.&n;&t; */
 id|sctp_add_cmd_sf
 c_func
 (paren
@@ -7334,7 +7115,7 @@ id|asoc
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* After sending the INIT, &quot;A&quot; starts the T1-init timer and&n;         * enters the COOKIE-WAIT state.&n;         */
+multiline_comment|/* After sending the INIT, &quot;A&quot; starts the T1-init timer and&n;&t; * enters the COOKIE-WAIT state.&n;&t; */
 id|sctp_add_cmd_sf
 c_func
 (paren
@@ -7373,22 +7154,19 @@ c_cond
 (paren
 id|bp
 )paren
-(brace
 id|sctp_bind_addr_free
 c_func
 (paren
 id|bp
 )paren
 suffix:semicolon
-)brace
 r_return
 id|SCTP_DISPOSITION_NOMEM
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_sf_do_prm_asoc() */
-multiline_comment|/*&n; * Process the SEND primitive.&n; * &n; * Section: 10.1 ULP-to-SCTP&n; * E) Send&n; * &n; * Format: SEND(association id, buffer address, byte count [,context]&n; *         [,stream id] [,life time] [,destination transport address] &n; *         [,unorder flag] [,no-bundle flag] [,payload protocol-id] )&n; * -&gt; result&n; * &n; * This is the main method to send user data via SCTP. &n; * &n; * Mandatory attributes:&n; * &n; *  o association id - local handle to the SCTP association&n; * &n; *  o buffer address - the location where the user message to be&n; *    transmitted is stored;&n; * &n; *  o byte count - The size of the user data in number of bytes;&n; * &n; * Optional attributes:&n; * &n; *  o context - an optional 32 bit integer that will be carried in the&n; *    sending failure notification to the ULP if the transportation of&n; *    this User Message fails.&n; * &n; *  o stream id - to indicate which stream to send the data on. If not&n; *    specified, stream 0 will be used.&n; * &n; *  o life time - specifies the life time of the user data. The user data&n; *    will not be sent by SCTP after the life time expires. This&n; *    parameter can be used to avoid efforts to transmit stale&n; *    user messages. SCTP notifies the ULP if the data cannot be&n; *    initiated to transport (i.e. sent to the destination via SCTP&squot;s&n; *    send primitive) within the life time variable. However, the&n; *    user data will be transmitted if SCTP has attempted to transmit a &n; *    chunk before the life time expired.&n; * &n; *  o destination transport address - specified as one of the destination&n; *    transport addresses of the peer endpoint to which this packet&n; *    should be sent. Whenever possible, SCTP should use this destination&n; *    transport address for sending the packets, instead of the current&n; *    primary path. &n; * &n; *  o unorder flag - this flag, if present, indicates that the user&n; *    would like the data delivered in an unordered fashion to the peer &n; *    (i.e., the U flag is set to 1 on all DATA chunks carrying this &n; *    message).&n; * &n; *  o no-bundle flag - instructs SCTP not to bundle this user data with&n; *    other outbound DATA chunks. SCTP MAY still bundle even when &n; *    this flag is present, when faced with network congestion.&n; * &n; *  o payload protocol-id - A 32 bit unsigned integer that is to be &n; *    passed to the peer indicating the type of payload protocol data &n; *    being transmitted. This value is passed as opaque data by SCTP.&n; * &n; *    &n; * The return value is the disposition.&n; */
-id|sctp_disposition_t
+multiline_comment|/*&n; * Process the SEND primitive.&n; *&n; * Section: 10.1 ULP-to-SCTP&n; * E) Send&n; *&n; * Format: SEND(association id, buffer address, byte count [,context]&n; *         [,stream id] [,life time] [,destination transport address]&n; *         [,unorder flag] [,no-bundle flag] [,payload protocol-id] )&n; * -&gt; result&n; *&n; * This is the main method to send user data via SCTP.&n; *&n; * Mandatory attributes:&n; *&n; *  o association id - local handle to the SCTP association&n; *&n; *  o buffer address - the location where the user message to be&n; *    transmitted is stored;&n; *&n; *  o byte count - The size of the user data in number of bytes;&n; *&n; * Optional attributes:&n; *&n; *  o context - an optional 32 bit integer that will be carried in the&n; *    sending failure notification to the ULP if the transportation of&n; *    this User Message fails.&n; *&n; *  o stream id - to indicate which stream to send the data on. If not&n; *    specified, stream 0 will be used.&n; *&n; *  o life time - specifies the life time of the user data. The user data&n; *    will not be sent by SCTP after the life time expires. This&n; *    parameter can be used to avoid efforts to transmit stale&n; *    user messages. SCTP notifies the ULP if the data cannot be&n; *    initiated to transport (i.e. sent to the destination via SCTP&squot;s&n; *    send primitive) within the life time variable. However, the&n; *    user data will be transmitted if SCTP has attempted to transmit a&n; *    chunk before the life time expired.&n; *&n; *  o destination transport address - specified as one of the destination&n; *    transport addresses of the peer endpoint to which this packet&n; *    should be sent. Whenever possible, SCTP should use this destination&n; *    transport address for sending the packets, instead of the current&n; *    primary path.&n; *&n; *  o unorder flag - this flag, if present, indicates that the user&n; *    would like the data delivered in an unordered fashion to the peer&n; *    (i.e., the U flag is set to 1 on all DATA chunks carrying this&n; *    message).&n; *&n; *  o no-bundle flag - instructs SCTP not to bundle this user data with&n; *    other outbound DATA chunks. SCTP MAY still bundle even when&n; *    this flag is present, when faced with network congestion.&n; *&n; *  o payload protocol-id - A 32 bit unsigned integer that is to be&n; *    passed to the peer indicating the type of payload protocol data&n; *    being transmitted. This value is passed as opaque data by SCTP.&n; *&n; * The return value is the disposition.&n; */
 DECL|function|sctp_sf_do_prm_send
+id|sctp_disposition_t
 id|sctp_sf_do_prm_send
 c_func
 (paren
@@ -7439,10 +7217,9 @@ r_return
 id|SCTP_DISPOSITION_CONSUME
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_sf_do_prm_send() */
-multiline_comment|/*&n; * Process the SHUTDOWN primitive.&n; * &n; * Section: 10.1:&n; * C) Shutdown&n; * &n; * Format: SHUTDOWN(association id)&n; * -&gt; result &n; * &n; * Gracefully closes an association. Any locally queued user data&n; * will be delivered to the peer. The association will be terminated only&n; * after the peer acknowledges all the SCTP packets sent.  A success code&n; * will be returned on successful termination of the association. If&n; * attempting to terminate the association results in a failure, an error&n; * code shall be returned.&n; * &n; * Mandatory attributes:&n; * &n; *  o association id - local handle to the SCTP association&n; * &n; * Optional attributes:&n; * &n; * None.&n; *&n; * The return value is the disposition.&n; */
-id|sctp_disposition_t
+multiline_comment|/*&n; * Process the SHUTDOWN primitive.&n; *&n; * Section: 10.1:&n; * C) Shutdown&n; *&n; * Format: SHUTDOWN(association id)&n; * -&gt; result&n; *&n; * Gracefully closes an association. Any locally queued user data&n; * will be delivered to the peer. The association will be terminated only&n; * after the peer acknowledges all the SCTP packets sent.  A success code&n; * will be returned on successful termination of the association. If&n; * attempting to terminate the association results in a failure, an error&n; * code shall be returned.&n; *&n; * Mandatory attributes:&n; *&n; *  o association id - local handle to the SCTP association&n; *&n; * Optional attributes:&n; *&n; * None.&n; *&n; * The return value is the disposition.&n; */
 DECL|function|sctp_sf_do_9_2_prm_shutdown
+id|sctp_disposition_t
 id|sctp_sf_do_9_2_prm_shutdown
 c_func
 (paren
@@ -7472,7 +7249,7 @@ id|commands
 r_int
 id|disposition
 suffix:semicolon
-multiline_comment|/* From 9.2 Shutdown of an Association&n;         * Upon receipt of the SHUTDOWN primitive from its upper&n;         * layer, the endpoint enters SHUTDOWN-PENDING state and&n;         * remains there until all outstanding data has been&n;         * acknowledged by its peer. The endpoint accepts no new data&n;         * from its upper layer, but retransmits data to the far end&n;         * if necessary to fill gaps.&n;         */
+multiline_comment|/* From 9.2 Shutdown of an Association&n;&t; * Upon receipt of the SHUTDOWN primitive from its upper&n;&t; * layer, the endpoint enters SHUTDOWN-PENDING state and&n;&t; * remains there until all outstanding data has been&n;&t; * acknowledged by its peer. The endpoint accepts no new data&n;&t; * from its upper layer, but retransmits data to the far end&n;&t; * if necessary to fill gaps.&n;&t; */
 id|sctp_add_cmd_sf
 c_func
 (paren
@@ -7523,10 +7300,9 @@ r_return
 id|disposition
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_sf_do_9_2_prm_shutdown() */
 multiline_comment|/*&n; * Process the ABORT primitive.&n; *&n; * Section: 10.1:&n; * C) Abort&n; *&n; * Format: Abort(association id [, cause code])&n; * -&gt; result&n; *&n; * Ungracefully closes an association. Any locally queued user data&n; * will be discarded and an ABORT chunk is sent to the peer.  A success code&n; * will be returned on successful abortion of the association. If&n; * attempting to abort the association results in a failure, an error&n; * code shall be returned.&n; *&n; * Mandatory attributes:&n; *&n; *  o association id - local handle to the SCTP association&n; *&n; * Optional attributes:&n; *&n; *  o cause code - reason of the abort to be passed to the peer&n; *&n; * None.&n; *&n; * The return value is the disposition.&n; */
-id|sctp_disposition_t
 DECL|function|sctp_sf_do_9_1_prm_abort
+id|sctp_disposition_t
 id|sctp_sf_do_9_1_prm_abort
 c_func
 (paren
@@ -7553,7 +7329,7 @@ op_star
 id|commands
 )paren
 (brace
-multiline_comment|/* From 9.1 Abort of an Association&n;         * Upon receipt of the ABORT primitive from its upper&n;         * layer, the endpoint enters CLOSED state and&n;         * discard all outstanding data has been&n;         * acknowledged by its peer. The endpoint accepts no new data&n;         * from its upper layer, but retransmits data to the far end&n;         * if necessary to fill gaps.&n;         */
+multiline_comment|/* From 9.1 Abort of an Association&n;&t; * Upon receipt of the ABORT primitive from its upper&n;&t; * layer, the endpoint enters CLOSED state and&n;&t; * discard all outstanding data has been&n;&t; * acknowledged by its peer. The endpoint accepts no new data&n;&t; * from its upper layer, but retransmits data to the far end&n;&t; * if necessary to fill gaps.&n;&t; */
 id|sctp_chunk_t
 op_star
 m_abort
@@ -7565,7 +7341,7 @@ id|retval
 op_assign
 id|SCTP_DISPOSITION_CONSUME
 suffix:semicolon
-multiline_comment|/* Generate ABORT chunk to send the peer */
+multiline_comment|/* Generate ABORT chunk to send the peer.  */
 m_abort
 op_assign
 id|sctp_make_abort
@@ -7584,14 +7360,11 @@ c_cond
 op_logical_neg
 m_abort
 )paren
-(brace
 id|retval
 op_assign
 id|SCTP_DISPOSITION_NOMEM
 suffix:semicolon
-)brace
 r_else
-(brace
 id|sctp_add_cmd_sf
 c_func
 (paren
@@ -7606,9 +7379,8 @@ m_abort
 )paren
 )paren
 suffix:semicolon
-)brace
 multiline_comment|/* Even if we can&squot;t send the ABORT due to low memory delete the&n;&t; * TCB.  This is a departure from our typical NOMEM handling.&n;&t; */
-multiline_comment|/* Change to CLOSED state */
+multiline_comment|/* Change to CLOSED state.  */
 id|sctp_add_cmd_sf
 c_func
 (paren
@@ -7623,7 +7395,7 @@ id|SCTP_STATE_CLOSED
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* Delete the established association */
+multiline_comment|/* Delete the established association.  */
 id|sctp_add_cmd_sf
 c_func
 (paren
@@ -7641,10 +7413,9 @@ r_return
 id|retval
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_sf_do_9_1_prm_abort() */
 multiline_comment|/* We tried an illegal operation on an association which is closed.  */
-id|sctp_disposition_t
 DECL|function|sctp_sf_error_closed
+id|sctp_disposition_t
 id|sctp_sf_error_closed
 c_func
 (paren
@@ -7690,10 +7461,9 @@ r_return
 id|SCTP_DISPOSITION_CONSUME
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_sf_error_closed() */
 multiline_comment|/* We tried an illegal operation on an association which is shutting&n; * down.&n; */
-id|sctp_disposition_t
 DECL|function|sctp_sf_error_shutdown
+id|sctp_disposition_t
 id|sctp_sf_error_shutdown
 c_func
 (paren
@@ -7739,11 +7509,9 @@ r_return
 id|SCTP_DISPOSITION_CONSUME
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_sf_error_shutdown() */
-multiline_comment|/*&n; * sctp_cookie_wait_prm_shutdown&n; * &n; * Section: 4 Note: 2&n; * Verification Tag:&n; * Inputs&n; * (endpoint, asoc)&n; * &n; * The RFC does not explicitly address this issue, but is the route through the&n; * state table when someone issues a shutdown while in COOKIE_WAIT state.&n; *&n; * Outputs&n; * (timers)&n; */
-id|sctp_disposition_t
+multiline_comment|/*&n; * sctp_cookie_wait_prm_shutdown&n; *&n; * Section: 4 Note: 2&n; * Verification Tag:&n; * Inputs&n; * (endpoint, asoc)&n; *&n; * The RFC does not explicitly address this issue, but is the route through the&n; * state table when someone issues a shutdown while in COOKIE_WAIT state.&n; *&n; * Outputs&n; * (timers)&n; */
 DECL|function|sctp_sf_cookie_wait_prm_shutdown
-(def_block
+id|sctp_disposition_t
 id|sctp_sf_cookie_wait_prm_shutdown
 c_func
 (paren
@@ -7815,11 +7583,9 @@ r_return
 id|SCTP_DISPOSITION_DELETE_TCB
 suffix:semicolon
 )brace
-)def_block
-multiline_comment|/* sctp_sf_cookie_wait_prm_shutdown()  */
-multiline_comment|/*&n; * sctp_cookie_echoed_prm_shutdown&n; * &n; * Section: 4 Note: 2&n; * Verification Tag:&n; * Inputs&n; * (endpoint, asoc)&n; * &n; * The RFC does not explcitly address this issue, but is the route through the&n; * state table when someone issues a shutdown while in COOKIE_ECHOED state.&n; *&n; * Outputs&n; * (timers)&n; */
-id|sctp_disposition_t
+multiline_comment|/*&n; * sctp_cookie_echoed_prm_shutdown&n; *&n; * Section: 4 Note: 2&n; * Verification Tag:&n; * Inputs&n; * (endpoint, asoc)&n; *&n; * The RFC does not explcitly address this issue, but is the route through the&n; * state table when someone issues a shutdown while in COOKIE_ECHOED state.&n; *&n; * Outputs&n; * (timers)&n; */
 DECL|function|sctp_sf_cookie_echoed_prm_shutdown
+id|sctp_disposition_t
 id|sctp_sf_cookie_echoed_prm_shutdown
 c_func
 (paren
@@ -7846,7 +7612,7 @@ op_star
 id|commands
 )paren
 (brace
-multiline_comment|/* There is a single T1 timer, so we should be able to use&n;&t; * common function with the COOKIE-WAIT state. &n;&t; */
+multiline_comment|/* There is a single T1 timer, so we should be able to use&n;&t; * common function with the COOKIE-WAIT state.&n;&t; */
 r_return
 id|sctp_sf_cookie_wait_prm_shutdown
 c_func
@@ -7863,11 +7629,9 @@ id|commands
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_sf_cookie_echoed_prm_shutdown()  */
 multiline_comment|/*&n; * sctp_cookie_wait_prm_abort&n; *&n; * Section: 4 Note: 2&n; * Verification Tag:&n; * Inputs&n; * (endpoint, asoc)&n; *&n; * The RFC does not explicitly address this issue, but is the route through the&n; * state table when someone issues an abort while in COOKIE_WAIT state.&n; *&n; * Outputs&n; * (timers)&n; */
-id|sctp_disposition_t
 DECL|function|sctp_sf_cookie_wait_prm_abort
-(def_block
+id|sctp_disposition_t
 id|sctp_sf_cookie_wait_prm_abort
 c_func
 (paren
@@ -7925,11 +7689,9 @@ id|commands
 )paren
 suffix:semicolon
 )brace
-)def_block
-multiline_comment|/* sctp_sf_cookie_wait_prm_abort()  */
 multiline_comment|/*&n; * sctp_cookie_echoed_prm_abort&n; *&n; * Section: 4 Note: 3&n; * Verification Tag:&n; * Inputs&n; * (endpoint, asoc)&n; *&n; * The RFC does not explcitly address this issue, but is the route through the&n; * state table when someone issues an abort while in COOKIE_ECHOED state.&n; *&n; * Outputs&n; * (timers)&n; */
-id|sctp_disposition_t
 DECL|function|sctp_sf_cookie_echoed_prm_abort
+id|sctp_disposition_t
 id|sctp_sf_cookie_echoed_prm_abort
 c_func
 (paren
@@ -7973,10 +7735,9 @@ id|commands
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_sf_cookie_echoed_prm_abort()  */
 multiline_comment|/*&n; * Ignore the primitive event&n; *&n; * The return value is the disposition of the primitive.&n; */
-id|sctp_disposition_t
 DECL|function|sctp_sf_ignore_primitive
+id|sctp_disposition_t
 id|sctp_sf_ignore_primitive
 c_func
 (paren
@@ -8015,11 +7776,10 @@ r_return
 id|SCTP_DISPOSITION_DISCARD
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_sf_ignore_primitive() */
 multiline_comment|/***************************************************************************&n; * These are the state functions for the OTHER events.&n; ***************************************************************************/
-multiline_comment|/*&n; * Start the shutdown negotiation.&n; * &n; * From Section 9.2:&n; * Once all its outstanding data has been acknowledged, the endpoint &n; * shall send a SHUTDOWN chunk to its peer including in the Cumulative &n; * TSN Ack field the last sequential TSN it has received from the peer. &n; * It shall then start the T2-shutdown timer and enter the SHUTDOWN-SENT &n; * state. If the timer expires, the endpoint must re-send the SHUTDOWN &n; * with the updated last sequential TSN received from its peer.&n; * &n; * The return value is the disposition.&n; */
-id|sctp_disposition_t
+multiline_comment|/*&n; * Start the shutdown negotiation.&n; *&n; * From Section 9.2:&n; * Once all its outstanding data has been acknowledged, the endpoint&n; * shall send a SHUTDOWN chunk to its peer including in the Cumulative&n; * TSN Ack field the last sequential TSN it has received from the peer.&n; * It shall then start the T2-shutdown timer and enter the SHUTDOWN-SENT&n; * state. If the timer expires, the endpoint must re-send the SHUTDOWN&n; * with the updated last sequential TSN received from its peer.&n; *&n; * The return value is the disposition.&n; */
 DECL|function|sctp_sf_do_9_2_start_shutdown
+id|sctp_disposition_t
 id|sctp_sf_do_9_2_start_shutdown
 c_func
 (paren
@@ -8050,7 +7810,7 @@ id|sctp_chunk_t
 op_star
 id|reply
 suffix:semicolon
-multiline_comment|/* Once all its outstanding data has been acknowledged, the&n;         * endpoint shall send a SHUTDOWN chunk to its peer including&n;         * in the Cumulative TSN Ack field the last sequential TSN it&n;         * has received from the peer.&n;         */
+multiline_comment|/* Once all its outstanding data has been acknowledged, the&n;&t; * endpoint shall send a SHUTDOWN chunk to its peer including&n;&t; * in the Cumulative TSN Ack field the last sequential TSN it&n;&t; * has received from the peer.&n;&t; */
 id|reply
 op_assign
 id|sctp_make_shutdown
@@ -8062,16 +7822,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-l_int|NULL
-op_eq
+op_logical_neg
 id|reply
 )paren
-(brace
 r_goto
 id|nomem
 suffix:semicolon
-)brace
-multiline_comment|/* Set the transport for the SHUTDOWN chunk and the timeout for the&n;&t; * T2-shutdown timer.  &n;&t; */
+multiline_comment|/* Set the transport for the SHUTDOWN chunk and the timeout for the&n;&t; * T2-shutdown timer.&n;&t; */
 id|sctp_add_cmd_sf
 c_func
 (paren
@@ -8106,7 +7863,6 @@ c_cond
 (paren
 id|asoc-&gt;autoclose
 )paren
-(brace
 id|sctp_add_cmd_sf
 c_func
 (paren
@@ -8121,7 +7877,6 @@ id|SCTP_EVENT_TIMEOUT_AUTOCLOSE
 )paren
 )paren
 suffix:semicolon
-)brace
 multiline_comment|/* and enter the SHUTDOWN-SENT state.  */
 id|sctp_add_cmd_sf
 c_func
@@ -8160,10 +7915,9 @@ r_return
 id|SCTP_DISPOSITION_NOMEM
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_sf_do_9_2_start_shutdown() */
-multiline_comment|/*&n; * Generate a SHUTDOWN ACK now that everything is SACK&squot;d.&n; * &n; * From Section 9.2: &n; * &n; * If it has no more outstanding DATA chunks, the SHUTDOWN receiver&n; * shall send a SHUTDOWN ACK and start a T2-shutdown timer of its own,&n; * entering the SHUTDOWN-ACK-SENT state. If the timer expires, the&n; * endpoint must re-send the SHUTDOWN ACK.&n; *&n; * The return value is the disposition.  */
-id|sctp_disposition_t
+multiline_comment|/*&n; * Generate a SHUTDOWN ACK now that everything is SACK&squot;d.&n; *&n; * From Section 9.2:&n; *&n; * If it has no more outstanding DATA chunks, the SHUTDOWN receiver&n; * shall send a SHUTDOWN ACK and start a T2-shutdown timer of its own,&n; * entering the SHUTDOWN-ACK-SENT state. If the timer expires, the&n; * endpoint must re-send the SHUTDOWN ACK.&n; *&n; * The return value is the disposition.&n; */
 DECL|function|sctp_sf_do_9_2_shutdown_ack
+id|sctp_disposition_t
 id|sctp_sf_do_9_2_shutdown_ack
 c_func
 (paren
@@ -8204,7 +7958,7 @@ id|sctp_chunk_t
 op_star
 id|reply
 suffix:semicolon
-multiline_comment|/* If it has no more outstanding DATA chunks, the SHUTDOWN receiver&n;         * shall send a SHUTDOWN ACK ...&n;         */
+multiline_comment|/* If it has no more outstanding DATA chunks, the SHUTDOWN receiver&n;&t; * shall send a SHUTDOWN ACK ...&n;&t; */
 id|reply
 op_assign
 id|sctp_make_shutdown_ack
@@ -8218,16 +7972,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-l_int|NULL
-op_eq
+op_logical_neg
 id|reply
 )paren
-(brace
 r_goto
 id|nomem
 suffix:semicolon
-)brace
-multiline_comment|/* Set the transport for the SHUTDOWN ACK chunk and the timeout for &n;&t; * the T2-shutdown timer.  &n;&t; */
+multiline_comment|/* Set the transport for the SHUTDOWN ACK chunk and the timeout for&n;&t; * the T2-shutdown timer.&n;&t; */
 id|sctp_add_cmd_sf
 c_func
 (paren
@@ -8262,7 +8013,6 @@ c_cond
 (paren
 id|asoc-&gt;autoclose
 )paren
-(brace
 id|sctp_add_cmd_sf
 c_func
 (paren
@@ -8277,7 +8027,6 @@ id|SCTP_EVENT_TIMEOUT_AUTOCLOSE
 )paren
 )paren
 suffix:semicolon
-)brace
 multiline_comment|/* Enter the SHUTDOWN-ACK-SENT state.  */
 id|sctp_add_cmd_sf
 c_func
@@ -8316,10 +8065,9 @@ r_return
 id|SCTP_DISPOSITION_NOMEM
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_sf_do_9_2_shutdown_ack() */
 multiline_comment|/*&n; * Ignore the event defined as other&n; *&n; * The return value is the disposition of the event.&n; */
-id|sctp_disposition_t
 DECL|function|sctp_sf_ignore_other
+id|sctp_disposition_t
 id|sctp_sf_ignore_other
 c_func
 (paren
@@ -8358,11 +8106,10 @@ r_return
 id|SCTP_DISPOSITION_DISCARD
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_sf_ignore_primitive() */
 multiline_comment|/************************************************************&n; * These are the state functions for handling timeout events.&n; ************************************************************/
-multiline_comment|/*&n; * RTX Timeout&n; * &n; * Section: 6.3.3 Handle T3-rtx Expiration&n; * &n; * Whenever the retransmission timer T3-rtx expires for a destination&n; * address, do the following:&n; * [See below]&n; *&n; * The return value is the disposition of the chunk.&n; */
-id|sctp_disposition_t
+multiline_comment|/*&n; * RTX Timeout&n; *&n; * Section: 6.3.3 Handle T3-rtx Expiration&n; *&n; * Whenever the retransmission timer T3-rtx expires for a destination&n; * address, do the following:&n; * [See below]&n; *&n; * The return value is the disposition of the chunk.&n; */
 DECL|function|sctp_sf_do_6_3_3_rtx
+id|sctp_disposition_t
 id|sctp_sf_do_6_3_3_rtx
 c_func
 (paren
@@ -8421,9 +8168,9 @@ r_return
 id|SCTP_DISPOSITION_DELETE_TCB
 suffix:semicolon
 )brace
-multiline_comment|/* E1) For the destination address for which the timer&n;         * expires, adjust its ssthresh with rules defined in Section&n;         * 7.2.3 and set the cwnd &lt;- MTU.&n;         */
-multiline_comment|/* E2) For the destination address for which the timer&n;         * expires, set RTO &lt;- RTO * 2 (&quot;back off the timer&quot;).  The&n;         * maximum value discussed in rule C7 above (RTO.max) may be&n;         * used to provide an upper bound to this doubling operation.&n;         */
-multiline_comment|/* E3) Determine how many of the earliest (i.e., lowest TSN)&n;         * outstanding DATA chunks for the address for which the&n;         * T3-rtx has expired will fit into a single packet, subject&n;         * to the MTU constraint for the path corresponding to the&n;         * destination transport address to which the retransmission&n;         * is being sent (this may be different from the address for&n;         * which the timer expires [see Section 6.4]).  Call this&n;         * value K. Bundle and retransmit those K DATA chunks in a&n;         * single packet to the destination endpoint.&n;         * &n;         * Note: Any DATA chunks that were sent to the address for&n;         * which the T3-rtx timer expired but did not fit in one MTU&n;         * (rule E3 above), should be marked for retransmission and&n;         * sent as soon as cwnd allows (normally when a SACK arrives).&n;         */
+multiline_comment|/* E1) For the destination address for which the timer&n;&t; * expires, adjust its ssthresh with rules defined in Section&n;&t; * 7.2.3 and set the cwnd &lt;- MTU.&n;&t; */
+multiline_comment|/* E2) For the destination address for which the timer&n;&t; * expires, set RTO &lt;- RTO * 2 (&quot;back off the timer&quot;).  The&n;&t; * maximum value discussed in rule C7 above (RTO.max) may be&n;&t; * used to provide an upper bound to this doubling operation.&n;&t; */
+multiline_comment|/* E3) Determine how many of the earliest (i.e., lowest TSN)&n;&t; * outstanding DATA chunks for the address for which the&n;&t; * T3-rtx has expired will fit into a single packet, subject&n;&t; * to the MTU constraint for the path corresponding to the&n;&t; * destination transport address to which the retransmission&n;&t; * is being sent (this may be different from the address for&n;&t; * which the timer expires [see Section 6.4]).  Call this&n;&t; * value K. Bundle and retransmit those K DATA chunks in a&n;&t; * single packet to the destination endpoint.&n;&t; *&n;&t; * Note: Any DATA chunks that were sent to the address for&n;&t; * which the T3-rtx timer expired but did not fit in one MTU&n;&t; * (rule E3 above), should be marked for retransmission and&n;&t; * sent as soon as cwnd allows (normally when a SACK arrives).&n;&t; */
 multiline_comment|/* NB: Rules E4 and F1 are implicit in R1.  */
 id|sctp_add_cmd_sf
 c_func
@@ -8458,10 +8205,9 @@ r_return
 id|SCTP_DISPOSITION_CONSUME
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_sf_do_6_3_3_rtx() */
-multiline_comment|/*&n; * Generate delayed SACK on timeout&n; * &n; * Section: 6.2  Acknowledgement on Reception of DATA Chunks&n; *&n; * The guidelines on delayed acknowledgement algorithm specified in&n; * Section 4.2 of [RFC2581] SHOULD be followed.  Specifically, an&n; * acknowledgement SHOULD be generated for at least every second packet&n; * (not every second DATA chunk) received, and SHOULD be generated&n; * within 200 ms of the arrival of any unacknowledged DATA chunk.  In&n; * some situations it may be beneficial for an SCTP transmitter to be&n; * more conservative than the algorithms detailed in this document&n; * allow. However, an SCTP transmitter MUST NOT be more aggressive than&n; * the following algorithms allow.&n; */
-id|sctp_disposition_t
+multiline_comment|/*&n; * Generate delayed SACK on timeout&n; *&n; * Section: 6.2  Acknowledgement on Reception of DATA Chunks&n; *&n; * The guidelines on delayed acknowledgement algorithm specified in&n; * Section 4.2 of [RFC2581] SHOULD be followed.  Specifically, an&n; * acknowledgement SHOULD be generated for at least every second packet&n; * (not every second DATA chunk) received, and SHOULD be generated&n; * within 200 ms of the arrival of any unacknowledged DATA chunk.  In&n; * some situations it may be beneficial for an SCTP transmitter to be&n; * more conservative than the algorithms detailed in this document&n; * allow. However, an SCTP transmitter MUST NOT be more aggressive than&n; * the following algorithms allow.&n; */
 DECL|function|sctp_sf_do_6_2_sack
+id|sctp_disposition_t
 id|sctp_sf_do_6_2_sack
 c_func
 (paren
@@ -8505,10 +8251,9 @@ r_return
 id|SCTP_DISPOSITION_CONSUME
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_sf_do_6_2_sack() */
-multiline_comment|/*&n; * sctp_sf_t1_timer_expire&n; * &n; * Section: 4 Note: 2&n; * Verification Tag:&n; * Inputs&n; * (endpoint, asoc)&n; * &n; *  RFC 2960 Section 4 Notes &n; *  2) If the T1-init timer expires, the endpoint MUST retransmit INIT&n; *     and re-start the T1-init timer without changing state.  This MUST&n; *     be repeated up to &squot;Max.Init.Retransmits&squot; times.  After that, the&n; *     endpoint MUST abort the initialization process and report the&n; *     error to SCTP user.&n; * &n; *   3) If the T1-cookie timer expires, the endpoint MUST retransmit&n; *     COOKIE ECHO and re-start the T1-cookie timer without changing&n; *     state.  This MUST be repeated up to &squot;Max.Init.Retransmits&squot; times.&n; *     After that, the endpoint MUST abort the initialization process and&n; *     report the error to SCTP user.&n; *&n; *&n; * Outputs&n; * (timers, events)&n; *&n; */
-id|sctp_disposition_t
+multiline_comment|/*&n; * sctp_sf_t1_timer_expire&n; *&n; * Section: 4 Note: 2&n; * Verification Tag:&n; * Inputs&n; * (endpoint, asoc)&n; *&n; *  RFC 2960 Section 4 Notes&n; *  2) If the T1-init timer expires, the endpoint MUST retransmit INIT&n; *     and re-start the T1-init timer without changing state.  This MUST&n; *     be repeated up to &squot;Max.Init.Retransmits&squot; times.  After that, the&n; *     endpoint MUST abort the initialization process and report the&n; *     error to SCTP user.&n; *&n; *   3) If the T1-cookie timer expires, the endpoint MUST retransmit&n; *     COOKIE ECHO and re-start the T1-cookie timer without changing&n; *     state.  This MUST be repeated up to &squot;Max.Init.Retransmits&squot; times.&n; *     After that, the endpoint MUST abort the initialization process and&n; *     report the error to SCTP user.&n; *&n; * Outputs&n; * (timers, events)&n; *&n; */
 DECL|function|sctp_sf_t1_timer_expire
+id|sctp_disposition_t
 id|sctp_sf_t1_timer_expire
 c_func
 (paren
@@ -8656,17 +8401,16 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
+suffix:semicolon
 r_if
 c_cond
 (paren
 op_logical_neg
 id|repl
 )paren
-(brace
 r_goto
 id|nomem
 suffix:semicolon
-)brace
 id|sctp_add_cmd_sf
 c_func
 (paren
@@ -8725,10 +8469,9 @@ r_return
 id|SCTP_DISPOSITION_NOMEM
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_sf_t1_timer_expire() */
 multiline_comment|/* RFC2960 9.2 If the timer expires, the endpoint must re-send the SHUTDOWN&n; * with the updated last sequential TSN received from its peer.&n; *&n; * An endpoint should limit the number of retransmissions of the&n; * SHUTDOWN chunk to the protocol parameter &squot;Association.Max.Retrans&squot;.&n; * If this threshold is exceeded the endpoint should destroy the TCB and&n; * MUST report the peer endpoint unreachable to the upper layer (and&n; * thus the association enters the CLOSED state).  The reception of any&n; * packet from its peer (i.e. as the peer sends all of its queued DATA&n; * chunks) should clear the endpoint&squot;s retransmission count and restart&n; * the T2-Shutdown timer,  giving its peer ample opportunity to transmit&n; * all of its queued DATA chunks that have not yet been sent.&n; */
-id|sctp_disposition_t
 DECL|function|sctp_sf_t2_timer_expire
+id|sctp_disposition_t
 id|sctp_sf_t2_timer_expire
 c_func
 (paren
@@ -8837,17 +8580,16 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
+suffix:semicolon
 r_if
 c_cond
 (paren
 op_logical_neg
 id|reply
 )paren
-(brace
 r_goto
 id|nomem
 suffix:semicolon
-)brace
 multiline_comment|/* Do some failure management (Section 8.2). */
 id|sctp_add_cmd_sf
 c_func
@@ -8863,7 +8605,7 @@ id|asoc-&gt;shutdown_last_sent_to
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* Set the transport for the SHUTDOWN/ACK chunk and the timeout for &n;&t; * the T2-shutdown timer.  &n;&t; */
+multiline_comment|/* Set the transport for the SHUTDOWN/ACK chunk and the timeout for&n;&t; * the T2-shutdown timer.&n;&t; */
 id|sctp_add_cmd_sf
 c_func
 (paren
@@ -8916,10 +8658,9 @@ r_return
 id|SCTP_DISPOSITION_NOMEM
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_sf_t2_timer_expire() */
-multiline_comment|/* Handle expiration of AUTOCLOSE timer.  When the autoclose timer expires, &n; * the association is automatically closed by starting the shutdown process. &n; * The work that needs to be done is same as when SHUTDOWN is initiated by&n; * the user.  So this routine looks same as sctp_sf_do_9_2_prm_shutdown().&n; */
-id|sctp_disposition_t
+multiline_comment|/* Handle expiration of AUTOCLOSE timer.  When the autoclose timer expires,&n; * the association is automatically closed by starting the shutdown process.&n; * The work that needs to be done is same as when SHUTDOWN is initiated by&n; * the user.  So this routine looks same as sctp_sf_do_9_2_prm_shutdown().&n; */
 DECL|function|sctp_sf_autoclose_timer_expire
+id|sctp_disposition_t
 id|sctp_sf_autoclose_timer_expire
 c_func
 (paren
@@ -8949,7 +8690,7 @@ id|commands
 r_int
 id|disposition
 suffix:semicolon
-multiline_comment|/* From 9.2 Shutdown of an Association&n;         * Upon receipt of the SHUTDOWN primitive from its upper&n;         * layer, the endpoint enters SHUTDOWN-PENDING state and&n;         * remains there until all outstanding data has been&n;         * acknowledged by its peer. The endpoint accepts no new data&n;         * from its upper layer, but retransmits data to the far end&n;         * if necessary to fill gaps.&n;         */
+multiline_comment|/* From 9.2 Shutdown of an Association&n;&t; * Upon receipt of the SHUTDOWN primitive from its upper&n;&t; * layer, the endpoint enters SHUTDOWN-PENDING state and&n;&t; * remains there until all outstanding data has been&n;&t; * acknowledged by its peer. The endpoint accepts no new data&n;&t; * from its upper layer, but retransmits data to the far end&n;&t; * if necessary to fill gaps.&n;&t; */
 id|sctp_add_cmd_sf
 c_func
 (paren
@@ -9000,11 +8741,10 @@ r_return
 id|disposition
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_sf_autoclose_timer_expire() */
 multiline_comment|/*****************************************************************************&n; * These are sa state functions which could apply to all types of events.&n; ****************************************************************************/
-multiline_comment|/*&n; * This table entry is not implemented.&n; *&n; * Inputs&n; * (endpoint, asoc, chunk)&n; * &n; * The return value is the disposition of the chunk.&n; */
-id|sctp_disposition_t
+multiline_comment|/*&n; * This table entry is not implemented.&n; *&n; * Inputs&n; * (endpoint, asoc, chunk)&n; *&n; * The return value is the disposition of the chunk.&n; */
 DECL|function|sctp_sf_not_impl
+id|sctp_disposition_t
 id|sctp_sf_not_impl
 c_func
 (paren
@@ -9035,10 +8775,9 @@ r_return
 id|SCTP_DISPOSITION_NOT_IMPL
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_sf_not_impl() */
-multiline_comment|/*&n; * This table entry represents a bug.&n; *&n; * Inputs&n; * (endpoint, asoc, chunk)&n; * &n; * The return value is the disposition of the chunk.&n; */
-id|sctp_disposition_t
+multiline_comment|/*&n; * This table entry represents a bug.&n; *&n; * Inputs&n; * (endpoint, asoc, chunk)&n; *&n; * The return value is the disposition of the chunk.&n; */
 DECL|function|sctp_sf_bug
+id|sctp_disposition_t
 id|sctp_sf_bug
 c_func
 (paren
@@ -9069,10 +8808,9 @@ r_return
 id|SCTP_DISPOSITION_BUG
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_sf_bug() */
-multiline_comment|/*&n; * This table entry represents the firing of a timer in the wrong state.&n; * Since timer deletion cannot be guaranteed a timer &squot;may&squot; end up firing&n; * when the association is in the wrong state.   This event should &n; * be ignored, so as to prevent any rearming of the timer. &n; *&n; * Inputs&n; * (endpoint, asoc, chunk)&n; * &n; * The return value is the disposition of the chunk.&n; */
-id|sctp_disposition_t
+multiline_comment|/*&n; * This table entry represents the firing of a timer in the wrong state.&n; * Since timer deletion cannot be guaranteed a timer &squot;may&squot; end up firing&n; * when the association is in the wrong state.   This event should&n; * be ignored, so as to prevent any rearming of the timer.&n; *&n; * Inputs&n; * (endpoint, asoc, chunk)&n; *&n; * The return value is the disposition of the chunk.&n; */
 DECL|function|sctp_sf_timer_ignore
+id|sctp_disposition_t
 id|sctp_sf_timer_ignore
 c_func
 (paren
@@ -9111,10 +8849,9 @@ r_return
 id|SCTP_DISPOSITION_CONSUME
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_sf_timer_ignore() */
-multiline_comment|/*&n; * Discard the chunk.&n; *&n; * Section: 0.2, 5.2.3, 5.2.5, 5.2.6, 6.0, 8.4.6, 8.5.1c, 9.2&n; * [Too numerous to mention...]&n; * Verification Tag: No verification needed.&n; * Inputs&n; * (endpoint, asoc, chunk)&n; * &n; * Outputs&n; * (asoc, reply_msg, msg_up, timers, counters)&n; *&n; * The return value is the disposition of the chunk.&n; */
-id|sctp_disposition_t
+multiline_comment|/*&n; * Discard the chunk.&n; *&n; * Section: 0.2, 5.2.3, 5.2.5, 5.2.6, 6.0, 8.4.6, 8.5.1c, 9.2&n; * [Too numerous to mention...]&n; * Verification Tag: No verification needed.&n; * Inputs&n; * (endpoint, asoc, chunk)&n; *&n; * Outputs&n; * (asoc, reply_msg, msg_up, timers, counters)&n; *&n; * The return value is the disposition of the chunk.&n; */
 DECL|function|sctp_sf_discard_chunk
+id|sctp_disposition_t
 id|sctp_sf_discard_chunk
 c_func
 (paren
@@ -9153,12 +8890,11 @@ r_return
 id|SCTP_DISPOSITION_DISCARD
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_sf_discard_chunk() */
 multiline_comment|/********************************************************************&n; * 2nd Level Abstractions&n; ********************************************************************/
 multiline_comment|/* Pull the SACK chunk based on the SACK header. */
+DECL|function|sctp_sm_pull_sack
 id|sctp_sackhdr_t
 op_star
-DECL|function|sctp_sm_pull_sack
 id|sctp_sm_pull_sack
 c_func
 (paren
@@ -9171,10 +8907,10 @@ id|sctp_sackhdr_t
 op_star
 id|sack
 suffix:semicolon
-r_uint16
+id|__u16
 id|num_blocks
 suffix:semicolon
-r_uint16
+id|__u16
 id|num_dup_tsns
 suffix:semicolon
 id|sack
@@ -9225,7 +8961,7 @@ id|num_dup_tsns
 op_star
 r_sizeof
 (paren
-r_uint32
+id|__u32
 )paren
 )paren
 suffix:semicolon
@@ -9233,5 +8969,4 @@ r_return
 id|sack
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_sm_pull_sack() */
 eof

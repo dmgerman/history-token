@@ -13,7 +13,6 @@ id|unused
 op_assign
 l_string|&quot;$Id: sctp_outqueue.c,v 1.35 2002/08/05 02:58:05 jgrimm Exp $&quot;
 suffix:semicolon
-macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/list.h&gt; /* For struct list_head */
 macro_line|#include &lt;linux/socket.h&gt;
@@ -30,7 +29,7 @@ id|sctp_sackhdr_t
 op_star
 id|sack
 comma
-r_uint32
+id|__u32
 id|tsn
 )paren
 suffix:semicolon
@@ -58,9 +57,9 @@ id|sack
 )paren
 suffix:semicolon
 multiline_comment|/* Generate a new outqueue.  */
+DECL|function|sctp_outqueue_new
 id|sctp_outqueue_t
 op_star
-DECL|function|sctp_outqueue_new
 id|sctp_outqueue_new
 c_func
 (paren
@@ -106,10 +105,9 @@ r_return
 id|q
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_outqueue_new() */
 multiline_comment|/* Initialize an existing SCTP_outqueue.  This does the boring stuff.&n; * You still need to define handlers if you really want to DO&n; * something with this structure...&n; */
-r_void
 DECL|function|sctp_outqueue_init
+r_void
 id|sctp_outqueue_init
 c_func
 (paren
@@ -187,10 +185,9 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_outqueue_init() */
-multiline_comment|/* Free the outqueue structure and any related pending chunks. &n; * FIXME: Add SEND_FAILED support.  &n; */
-r_void
+multiline_comment|/* Free the outqueue structure and any related pending chunks.&n; * FIXME: Add SEND_FAILED support.&n; */
 DECL|function|sctp_outqueue_teardown
+r_void
 id|sctp_outqueue_teardown
 c_func
 (paren
@@ -271,7 +268,6 @@ id|chunk
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/* For all transports. */
 multiline_comment|/* Throw away any leftover chunks. */
 r_while
 c_loop
@@ -291,7 +287,6 @@ id|q-&gt;out
 )paren
 )paren
 )paren
-(brace
 id|sctp_free_chunk
 c_func
 (paren
@@ -299,11 +294,9 @@ id|chunk
 )paren
 suffix:semicolon
 )brace
-)brace
-multiline_comment|/* sctp_outqueue_teardown() */
-multiline_comment|/* Free the outqueue structure and any related pending chunks. */
-r_void
+multiline_comment|/* Free the outqueue structure and any related pending chunks.  */
 DECL|function|sctp_outqueue_free
+r_void
 id|sctp_outqueue_free
 c_func
 (paren
@@ -325,7 +318,6 @@ c_cond
 (paren
 id|q-&gt;malloced
 )paren
-(brace
 id|kfree
 c_func
 (paren
@@ -333,11 +325,9 @@ id|q
 )paren
 suffix:semicolon
 )brace
-)brace
-multiline_comment|/* sctp_outqueue_free() */
 multiline_comment|/* Transmit any pending partial chunks.  */
-r_void
 DECL|function|sctp_force_outqueue
+r_void
 id|sctp_force_outqueue
 c_func
 (paren
@@ -349,10 +339,9 @@ id|q
 multiline_comment|/* Do we really need this? */
 multiline_comment|/* BUG */
 )brace
-multiline_comment|/* sctp_force_outqueue() */
-multiline_comment|/* Put a new chunk in an SCTP_outqueue. */
-r_int
+multiline_comment|/* Put a new chunk in an SCTP_outqueue.  */
 DECL|function|sctp_push_outqueue
+r_int
 id|sctp_push_outqueue
 c_func
 (paren
@@ -397,7 +386,7 @@ suffix:colon
 l_string|&quot;Illegal Chunk&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* If it is data, queue it up, otherwise, send it&n;         * immediately.&n;         */
+multiline_comment|/* If it is data, queue it up, otherwise, send it&n;&t; * immediately.&n;&t; */
 r_if
 c_cond
 (paren
@@ -407,7 +396,7 @@ id|chunk-&gt;chunk_hdr-&gt;type
 )paren
 (brace
 multiline_comment|/* Is it OK to queue data chunks?  */
-multiline_comment|/* From 9. Termination of Association&n;                 * &n;                 * When either endpoint performs a shutdown, the&n;                 * association on each peer will stop accepting new&n;                 * data from its user and only deliver data in queue&n;                 * at the time of sending or receiving the SHUTDOWN&n;                 * chunk.&n;                 */
+multiline_comment|/* From 9. Termination of Association&n;&t;&t; * &n;&t;&t; * When either endpoint performs a shutdown, the&n;&t;&t; * association on each peer will stop accepting new&n;&t;&t; * data from its user and only deliver data in queue&n;&t;&t; * at the time of sending or receiving the SHUTDOWN&n;&t;&t; * chunk.&n;&t;&t; */
 r_switch
 c_cond
 (paren
@@ -490,7 +479,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-multiline_comment|/* switch() (case It is OK to queue data chunks) */
+suffix:semicolon
 )brace
 r_else
 (brace
@@ -516,11 +505,9 @@ id|error
 OL
 l_int|0
 )paren
-(brace
 r_return
 id|error
 suffix:semicolon
-)brace
 id|error
 op_assign
 id|sctp_flush_outqueue
@@ -535,10 +522,9 @@ r_return
 id|error
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_push_outqueue() */
-multiline_comment|/* Mark all the eligible packets on a transport for retransmission and force &n; * one packet out.&n; */
-r_void
+multiline_comment|/* Mark all the eligible packets on a transport for retransmission and force&n; * one packet out.&n; */
 DECL|function|sctp_retransmit
+r_void
 id|sctp_retransmit
 c_func
 (paren
@@ -550,7 +536,7 @@ id|sctp_transport_t
 op_star
 id|transport
 comma
-r_uint8
+id|__u8
 id|fast_retransmit
 )paren
 (brace
@@ -638,7 +624,7 @@ comma
 id|transmitted_list
 )paren
 suffix:semicolon
-multiline_comment|/* If we are doing retransmission due to a fast retransmit, &n;&t;&t; * only the chunk&squot;s that are marked for fast retransmit &n;&t;&t; * should be added to the retransmit queue.  If we are doing &n;&t;&t; * retransmission due to a timeout, only the chunks that are &n;&t;&t; * not yet acked should be added to the retransmit queue.&n;&t;&t; */
+multiline_comment|/* If we are doing retransmission due to a fast retransmit,&n;&t;&t; * only the chunk&squot;s that are marked for fast retransmit&n;&t;&t; * should be added to the retransmit queue.  If we are doing&n;&t;&t; * retransmission due to a timeout, only the chunks that are&n;&t;&t; * not yet acked should be added to the retransmit queue.&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -669,7 +655,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-multiline_comment|/* RFC 2960 6.2.1 Processing a Received SACK&n;&t;&t; &t; *&n;&t;&t; &t; * C) Any time a DATA chunk is marked for &n;&t;&t; &t; * retransmission (via either T3-rtx timer expiration &n;&t;&t; &t; * (Section 6.3.3) or via fast retransmit&n;&t;&t; &t; * (Section 7.2.4)), add the data size of those &n;&t;&t; &t; * chunks to the rwnd.&n;&t;&t; &t; */
+multiline_comment|/* RFC 2960 6.2.1 Processing a Received SACK&n;&t;&t;&t; *&n;&t;&t;&t; * C) Any time a DATA chunk is marked for&n;&t;&t;&t; * retransmission (via either T3-rtx timer expiration&n;&t;&t;&t; * (Section 6.3.3) or via fast retransmit&n;&t;&t;&t; * (Section 7.2.4)), add the data size of those&n;&t;&t;&t; * chunks to the rwnd.&n;&t;&t;&t; */
 id|q-&gt;asoc-&gt;peer.rwnd
 op_add_assign
 id|sctp_data_size
@@ -694,12 +680,12 @@ c_func
 id|chunk
 )paren
 suffix:semicolon
-multiline_comment|/* sctpimpguide-05 Section 2.8.2 &n;&t;&t;&t; * M5) If a T3-rtx timer expires, the &n;&t;&t;&t; * &squot;TSN.Missing.Report&squot; of all affected TSNs is set &n;&t;&t;&t; * to 0.&n;&t;&t;&t; */
+multiline_comment|/* sctpimpguide-05 Section 2.8.2&n;&t;&t;&t; * M5) If a T3-rtx timer expires, the&n;&t;&t;&t; * &squot;TSN.Missing.Report&squot; of all affected TSNs is set&n;&t;&t;&t; * to 0.&n;&t;&t;&t; */
 id|chunk-&gt;tsn_missing_report
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* If a chunk that is being used for RTT measurement&n;&t;&t;&t; * has to be retransmitted, we cannot use this chunk&n;&t;&t;&t; * anymore for RTT measurements. Reset rto_pending so &n;&t;&t;&t; * that a new RTT measurement is started when a new &n;&t;&t;&t; * data chunk is sent.&n;&t;&t;&t; */
+multiline_comment|/* If a chunk that is being used for RTT measurement&n;&t;&t;&t; * has to be retransmitted, we cannot use this chunk&n;&t;&t;&t; * anymore for RTT measurements. Reset rto_pending so&n;&t;&t;&t; * that a new RTT measurement is started when a new&n;&t;&t;&t; * data chunk is sent.&n;&t;&t;&t; */
 r_if
 c_cond
 (paren
@@ -726,8 +712,7 @@ id|q-&gt;retransmit
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/* while (we have stuff left on transport-&gt;transmitted) */
-multiline_comment|/* Reconstruct the transmitted queue with chunks that are not &n;&t; * eligible for retransmission. &n;&t; */
+multiline_comment|/* Reconstruct the transmitted queue with chunks that are not&n;&t; * eligible for retransmission.&n;&t; */
 r_while
 c_loop
 (paren
@@ -744,7 +729,6 @@ id|tlist
 )paren
 )paren
 )paren
-(brace
 id|list_add_tail
 c_func
 (paren
@@ -754,7 +738,6 @@ op_amp
 id|transport-&gt;transmitted
 )paren
 suffix:semicolon
-)brace
 id|SCTP_DEBUG_PRINTK
 c_func
 (paren
@@ -792,19 +775,16 @@ c_cond
 (paren
 id|error
 )paren
-(brace
 id|q-&gt;asoc-&gt;base.sk-&gt;err
 op_assign
 op_minus
 id|error
 suffix:semicolon
 )brace
-)brace
-multiline_comment|/* sctp_retransmit() */
-multiline_comment|/* &n; * Transmit DATA chunks on the retransmit queue.  Upon return from&n; * sctp_flush_retran_queue() the packet &squot;pkt&squot; may contain chunks which&n; * need to be transmitted by the caller.&n; * We assume that pkt-&gt;transport has already been set.&n; *&n; * The return value is a normal kernel error return value.&n; */
+multiline_comment|/*&n; * Transmit DATA chunks on the retransmit queue.  Upon return from&n; * sctp_flush_retran_queue() the packet &squot;pkt&squot; may contain chunks which&n; * need to be transmitted by the caller.&n; * We assume that pkt-&gt;transport has already been set.&n; *&n; * The return value is a normal kernel error return value.&n; */
+DECL|function|sctp_flush_retran_queue
 r_static
 r_int
-DECL|function|sctp_flush_retran_queue
 id|sctp_flush_retran_queue
 c_func
 (paren
@@ -877,8 +857,6 @@ suffix:semicolon
 r_while
 c_loop
 (paren
-l_int|NULL
-op_ne
 id|lchunk
 )paren
 (brace
@@ -954,13 +932,11 @@ id|pkt
 op_eq
 l_int|0
 )paren
-(brace
 op_star
 id|start_timer
 op_assign
 l_int|1
 suffix:semicolon
-)brace
 multiline_comment|/* If we are retransmitting, we should only&n;&t;&t;&t; * send a single packet.&n;&t;&t;&t; */
 r_if
 c_cond
@@ -1005,13 +981,11 @@ id|pkt
 op_eq
 l_int|0
 )paren
-(brace
 op_star
 id|start_timer
 op_assign
 l_int|1
 suffix:semicolon
-)brace
 multiline_comment|/* Stop sending DATA as there is no more room&n;&t;&t;&t; * at the reciever.&n;&t;&t;&t; */
 id|list_add
 c_func
@@ -1060,16 +1034,15 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
+suffix:semicolon
 )brace
-multiline_comment|/* while (more retransmit chunks) */
 r_return
 id|error
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_flush_retran_queue() */
-multiline_comment|/* This routine either transmits the fragment or puts it on the output &n; * queue.  &squot;pos&squot; points to the next chunk in the output queue after the&n; * chunk that is currently in the process of fragmentation.&n; */
-r_void
+multiline_comment|/* This routine either transmits the fragment or puts it on the output&n; * queue.  &squot;pos&squot; points to the next chunk in the output queue after the&n; * chunk that is currently in the process of fragmentation.&n; */
 DECL|function|sctp_xmit_frag
+r_void
 id|sctp_xmit_frag
 c_func
 (paren
@@ -1090,7 +1063,7 @@ id|sctp_chunk_t
 op_star
 id|frag
 comma
-r_uint32
+id|__u32
 id|tsn
 )paren
 (brace
@@ -1126,7 +1099,7 @@ id|frag-&gt;has_tsn
 op_assign
 l_int|1
 suffix:semicolon
-multiline_comment|/* An inner fragment may be smaller than the earlier one and may get &n;&t; * in if we call q-&gt;build_output.  This ensures that all the fragments &n;&t; * are sent in order. &n;&t; */
+multiline_comment|/* An inner fragment may be smaller than the earlier one and may get&n;&t; * in if we call q-&gt;build_output.  This ensures that all the fragments&n;&t; * are sent in order.&n;&t; */
 r_if
 c_cond
 (paren
@@ -1285,7 +1258,7 @@ OL
 l_int|0
 )paren
 (brace
-multiline_comment|/* Packet could not be transmitted, put the chunk in &n;&t;&t;&t; * the output queue &n;&t;&t;&t; */
+multiline_comment|/* Packet could not be transmitted, put the chunk in&n;&t;&t;&t; * the output queue&n;&t;&t;&t; */
 id|SCTP_DEBUG_PRINTK
 c_func
 (paren
@@ -1378,11 +1351,11 @@ c_func
 )paren
 suffix:semicolon
 )brace
+suffix:semicolon
 )brace
-multiline_comment|/* sctp_xmit_frag() */
-multiline_comment|/* This routine calls sctp_xmit_frag() for all the fragments of a message. &n; * The argument &squot;frag&squot; point to the first fragment and it holds the list &n; * of all the other fragments in the &squot;frag_list&squot; field.&n; */
-r_void
+multiline_comment|/* This routine calls sctp_xmit_frag() for all the fragments of a message.&n; * The argument &squot;frag&squot; point to the first fragment and it holds the list&n; * of all the other fragments in the &squot;frag_list&squot; field.&n; */
 DECL|function|sctp_xmit_fragmented_chunks
+r_void
 id|sctp_xmit_fragmented_chunks
 c_func
 (paren
@@ -1413,7 +1386,7 @@ comma
 op_star
 id|frag_list
 suffix:semicolon
-r_uint32
+id|__u32
 id|tsn
 suffix:semicolon
 r_int
@@ -1523,11 +1496,10 @@ op_increment
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/* sctp_xmit_fragmented_chunks() */
-multiline_comment|/* This routine breaks the given chunk into &squot;max_frag_data_len&squot; size &n; * fragments.  It returns the first fragment with the frag_list field holding &n; * the remaining fragments. &n; */
+multiline_comment|/* This routine breaks the given chunk into &squot;max_frag_data_len&squot; size&n; * fragments.  It returns the first fragment with the frag_list field holding&n; * the remaining fragments.&n; */
+DECL|function|sctp_fragment_chunk
 id|sctp_chunk_t
 op_star
-DECL|function|sctp_fragment_chunk
 id|sctp_fragment_chunk
 c_func
 (paren
@@ -1559,7 +1531,7 @@ op_assign
 op_amp
 id|chunk-&gt;sinfo
 suffix:semicolon
-r_uint16
+id|__u16
 id|chunk_data_len
 op_assign
 id|sctp_data_size
@@ -1568,7 +1540,7 @@ c_func
 id|chunk
 )paren
 suffix:semicolon
-r_uint16
+id|__u16
 id|ssn
 op_assign
 id|ntohs
@@ -1649,11 +1621,9 @@ c_cond
 op_logical_neg
 id|first_frag
 )paren
-(brace
 r_goto
 id|err
 suffix:semicolon
-)brace
 multiline_comment|/* All the fragments are added to the frag_list of the first chunk. */
 id|frag_list
 op_assign
@@ -1701,12 +1671,10 @@ c_cond
 op_logical_neg
 id|frag
 )paren
-(brace
 r_goto
 id|err
 suffix:semicolon
-)brace
-multiline_comment|/* Add the middle fragment to the first fragment&squot;s frag_list.*/
+multiline_comment|/* Add the middle fragment to the first fragment&squot;s frag_list.  */
 id|list_add_tail
 c_func
 (paren
@@ -1750,11 +1718,9 @@ c_cond
 op_logical_neg
 id|frag
 )paren
-(brace
 r_goto
 id|err
 suffix:semicolon
-)brace
 multiline_comment|/* Add the last fragment to the first fragment&squot;s frag_list. */
 id|list_add_tail
 c_func
@@ -1773,13 +1739,11 @@ id|chunk
 )paren
 suffix:semicolon
 r_return
-(paren
 id|first_frag
-)paren
 suffix:semicolon
 id|err
 suffix:colon
-multiline_comment|/* Free any fragments that are created before the failure. */
+multiline_comment|/* Free any fragments that are created before the failure.  */
 r_if
 c_cond
 (paren
@@ -1847,10 +1811,9 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_fragment_chunk() */
-multiline_comment|/*&n; * sctp_flush_outqueue - Try to flush an outqueue.&n; * &n; * Description: Send everything in q which we legally can, subject to&n; * congestion limitations.&n; * &n; * Note: This function can be called from multiple contexts so appropriate&n; * locking concerns must be made.  Today we use the sock lock to protect&n; * this function.  &n; */
-r_int
+multiline_comment|/*&n; * sctp_flush_outqueue - Try to flush an outqueue.&n; *&n; * Description: Send everything in q which we legally can, subject to&n; * congestion limitations.&n; *&n; * Note: This function can be called from multiple contexts so appropriate&n; * locking concerns must be made.  Today we use the sock lock to protect&n; * this function.&n; */
 DECL|function|sctp_flush_outqueue
+r_int
 id|sctp_flush_outqueue
 c_func
 (paren
@@ -1880,17 +1843,17 @@ id|ecn_capable
 op_assign
 id|asoc-&gt;peer.ecn_capable
 suffix:semicolon
-r_uint16
+id|__u16
 id|sport
 op_assign
 id|asoc-&gt;base.bind_addr.port
 suffix:semicolon
-r_uint16
+id|__u16
 id|dport
 op_assign
 id|asoc-&gt;peer.port
 suffix:semicolon
-r_uint32
+id|__u32
 id|vtag
 op_assign
 id|asoc-&gt;peer.i.init_tag
@@ -2016,9 +1979,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|new_transport
-op_eq
-l_int|NULL
 )paren
 (brace
 id|new_transport
@@ -2034,7 +1996,7 @@ op_logical_neg
 id|new_transport-&gt;state.active
 )paren
 (brace
-multiline_comment|/* If the chunk is Heartbeat, send it to&n;&t;&t;&t; * chunk-&gt;transport, even it&squot;s inactive.&n;&t;&t; &t; */
+multiline_comment|/* If the chunk is Heartbeat, send it to&n;&t;&t;&t; * chunk-&gt;transport, even it&squot;s inactive.&n;&t;&t;&t; */
 r_if
 c_cond
 (paren
@@ -2042,12 +2004,10 @@ id|chunk-&gt;chunk_hdr-&gt;type
 op_ne
 id|SCTP_CID_HEARTBEAT
 )paren
-(brace
 id|new_transport
 op_assign
 id|asoc-&gt;peer.active_path
 suffix:semicolon
-)brace
 )brace
 multiline_comment|/* Are we switching transports?&n;&t;&t; * Take care of transport locks.&n;&t;&t; */
 r_if
@@ -2182,11 +2142,9 @@ id|error
 OL
 l_int|0
 )paren
-(brace
 r_return
 id|error
 suffix:semicolon
-)brace
 r_break
 suffix:semicolon
 r_case
@@ -2267,9 +2225,8 @@ c_func
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* switch(type) */
+suffix:semicolon
 )brace
-multiline_comment|/* while (more chunks in control queue) */
 multiline_comment|/* Is it OK to send data chunks?  */
 r_switch
 c_cond
@@ -2289,10 +2246,9 @@ op_logical_and
 op_logical_neg
 id|packet-&gt;has_cookie_echo
 )paren
-(brace
 r_break
 suffix:semicolon
-)brace
+multiline_comment|/* fallthru */
 r_case
 id|SCTP_STATE_ESTABLISHED
 suffix:colon
@@ -2322,11 +2278,9 @@ id|transport
 op_eq
 id|asoc-&gt;peer.retran_path
 )paren
-(brace
 r_goto
 id|retran
 suffix:semicolon
-)brace
 multiline_comment|/* Switch transports &amp; prepare the packet.  */
 id|transport
 op_assign
@@ -2395,7 +2349,6 @@ c_cond
 (paren
 id|start_timer
 )paren
-(brace
 id|sctp_transport_reset_timers
 c_func
 (paren
@@ -2403,8 +2356,6 @@ id|transport
 )paren
 suffix:semicolon
 )brace
-)brace
-multiline_comment|/* if (we have chunks for retransmission) */
 multiline_comment|/* Finally, transmit new packets.  */
 id|start_timer
 op_assign
@@ -2435,7 +2386,7 @@ id|queue
 )paren
 )paren
 (brace
-multiline_comment|/* RFC 2960 6.5 Every DATA chunk MUST carry a valid&n;&t;&t;&t; * stream identifier. &n;&t;&t;&t; */
+multiline_comment|/* RFC 2960 6.5 Every DATA chunk MUST carry a valid&n;&t;&t;&t; * stream identifier.&n;&t;&t;&t; */
 r_if
 c_cond
 (paren
@@ -2477,7 +2428,7 @@ id|event
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Free the chunk. This chunk is not on any &n;&t;&t;&t;&t; * list yet, just free it. */
+multiline_comment|/* Free the chunk. This chunk is not on any&n;&t;&t;&t;&t; * list yet, just free it.&n;&t;&t;&t;&t; */
 id|sctp_free_chunk
 c_func
 (paren
@@ -2502,12 +2453,10 @@ op_logical_or
 op_logical_neg
 id|new_transport-&gt;state.active
 )paren
-(brace
 id|new_transport
 op_assign
 id|asoc-&gt;peer.active_path
 suffix:semicolon
-)brace
 multiline_comment|/* Change packets if necessary.  */
 r_if
 c_cond
@@ -2613,9 +2562,6 @@ comma
 id|chunk-&gt;skb
 ques
 c_cond
-(paren
-r_int
-)paren
 id|atomic_read
 c_func
 (paren
@@ -2711,7 +2657,7 @@ op_logical_neg
 id|frag
 )paren
 (brace
-multiline_comment|/* We could not fragment due to out of&n;&t;&t;&t;&t;&t; * memory condition. Free the original &n;&t;&t;&t;&t;&t; * chunk and return ENOMEM. &n;&t;&t;&t;&t;&t; */
+multiline_comment|/* We could not fragment due to out of&n;&t;&t;&t;&t;&t; * memory condition. Free the original&n;&t;&t;&t;&t;&t; * chunk and return ENOMEM.&n;&t;&t;&t;&t;&t; */
 id|sctp_free_chunk
 c_func
 (paren
@@ -2724,9 +2670,7 @@ op_minus
 id|ENOMEM
 suffix:semicolon
 r_return
-(paren
 id|error
-)paren
 suffix:semicolon
 )brace
 id|sctp_xmit_fragmented_chunks
@@ -2758,7 +2702,8 @@ c_func
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* BUG: We assume that the (*q-&gt;force_output())&n;&t;&t;&t; * call below will succeed all the time and add the &n;&t;&t;&t; * chunk to the transmitted list and restart the &n;&t;&t;&t; * timers. &n;&t;&t;&t; * It is possible that the call can fail under OOM &n;&t;&t;&t; * conditions.&n;&t;&t;&t; *&n;&t;&t;&t; * Is this really a problem?  Won&squot;t this behave&n;&t;&t;&t; * like a lost TSN?&n;&t;&t;&t; */
+suffix:semicolon
+multiline_comment|/* BUG: We assume that the (*q-&gt;force_output())&n;&t;&t;&t; * call below will succeed all the time and add the&n;&t;&t;&t; * chunk to the transmitted list and restart the&n;&t;&t;&t; * timers.&n;&t;&t;&t; * It is possible that the call can fail under OOM&n;&t;&t;&t; * conditions.&n;&t;&t;&t; *&n;&t;&t;&t; * Is this really a problem?  Won&squot;t this behave&n;&t;&t;&t; * like a lost TSN?&n;&t;&t;&t; */
 id|list_add_tail
 c_func
 (paren
@@ -2788,10 +2733,10 @@ multiline_comment|/* Do nothing.  */
 r_break
 suffix:semicolon
 )brace
-multiline_comment|/* switch ()(case It is OK to send data chunks:) */
+suffix:semicolon
 id|sctp_flush_out
 suffix:colon
-multiline_comment|/* Before returning, examine all the transports touched in&n;&t; * this call.  Right now, we bluntly force clear all the&n;&t; * transports.  Things might change after we implement Nagle.&n;&t; * But such an examination is still required.&n;&t; * &n;&t; * --xguo&n;&t; */
+multiline_comment|/* Before returning, examine all the transports touched in&n;&t; * this call.  Right now, we bluntly force clear all the&n;&t; * transports.  Things might change after we implement Nagle.&n;&t; * But such an examination is still required.&n;&t; *&n;&t; * --xguo&n;&t; */
 r_while
 c_loop
 (paren
@@ -2830,12 +2775,10 @@ id|t
 op_ne
 id|transport
 )paren
-(brace
 id|transport
 op_assign
 id|t
 suffix:semicolon
-)brace
 id|packet
 op_assign
 op_amp
@@ -2848,7 +2791,6 @@ id|packet-&gt;size
 op_ne
 id|SCTP_IP_OVERHEAD
 )paren
-(brace
 id|error
 op_assign
 (paren
@@ -2860,15 +2802,13 @@ id|packet
 )paren
 suffix:semicolon
 )brace
-)brace
 r_return
 id|error
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_flush_outqueue() */
-multiline_comment|/* Set the various output handling callbacks. */
-r_int
+multiline_comment|/* Set the various output handling callbacks.  */
 DECL|function|sctp_outqueue_set_output_handlers
+r_int
 id|sctp_outqueue_set_output_handlers
 c_func
 (paren
@@ -2916,11 +2856,10 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_outqueue_set_out_handler() */
 multiline_comment|/* Update unack_data based on the incoming SACK chunk */
+DECL|function|sctp_sack_update_unack_data
 r_static
 r_void
-DECL|function|sctp_sack_update_unack_data
 id|sctp_sack_update_unack_data
 c_func
 (paren
@@ -2937,7 +2876,7 @@ id|sctp_sack_variable_t
 op_star
 id|frags
 suffix:semicolon
-r_uint16
+id|__u16
 id|unack_data
 suffix:semicolon
 r_int
@@ -3011,8 +2950,8 @@ id|unack_data
 suffix:semicolon
 )brace
 multiline_comment|/* This is where we REALLY process a SACK.&n; *&n; * Process the sack against the outqueue.  Mostly, this just frees&n; * things off the transmitted queue.&n; */
-r_int
 DECL|function|sctp_sack_outqueue
+r_int
 id|sctp_sack_outqueue
 c_func
 (paren
@@ -3039,13 +2978,13 @@ comma
 op_star
 id|pos
 suffix:semicolon
-r_uint32
+id|__u32
 id|tsn
 suffix:semicolon
-r_uint32
+id|__u32
 id|sack_ctsn
 suffix:semicolon
-r_uint32
+id|__u32
 id|ctsn
 suffix:semicolon
 id|sctp_transport_t
@@ -3055,7 +2994,7 @@ suffix:semicolon
 r_int
 id|outstanding
 suffix:semicolon
-r_uint32
+id|__u32
 id|sack_a_rwnd
 suffix:semicolon
 multiline_comment|/* Grab the association&squot;s destination address list. */
@@ -3064,7 +3003,7 @@ op_assign
 op_amp
 id|q-&gt;asoc-&gt;peer.transport_addr_list
 suffix:semicolon
-multiline_comment|/* Run through the retransmit queue.  Credit bytes received&n;&t; * and free those chunks that we can. &n;&t; */
+multiline_comment|/* Run through the retransmit queue.  Credit bytes received&n;&t; * and free those chunks that we can.&n;&t; */
 id|sctp_check_transmitted
 c_func
 (paren
@@ -3078,7 +3017,7 @@ comma
 id|sack
 )paren
 suffix:semicolon
-multiline_comment|/* Run through the transmitted queue.&n;         * Credit bytes received and free those chunks which we can.&n;         *&n;         * This is a MASSIVE candidate for optimization.&n;         */
+multiline_comment|/* Run through the transmitted queue.&n;&t; * Credit bytes received and free those chunks which we can.&n;&t; *&n;&t; * This is a MASSIVE candidate for optimization.&n;&t; */
 id|list_for_each
 c_func
 (paren
@@ -3133,12 +3072,10 @@ comma
 id|sack_ctsn
 )paren
 )paren
-(brace
 id|q-&gt;asoc-&gt;ctsn_ack_point
 op_assign
 id|sack_ctsn
 suffix:semicolon
-)brace
 multiline_comment|/* Update unack_data field in the assoc. */
 id|sctp_sack_update_unack_data
 c_func
@@ -3227,7 +3164,7 @@ id|tchunk
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/* ii) Set rwnd equal to the newly received a_rwnd minus the&n;         *     number of bytes still outstanding after processing the&n;         *     Cumulative TSN Ack and the Gap Ack Blocks.&n;         */
+multiline_comment|/* ii) Set rwnd equal to the newly received a_rwnd minus the&n;&t; *     number of bytes still outstanding after processing the&n;&t; *     Cumulative TSN Ack and the Gap Ack Blocks.&n;&t; */
 id|sack_a_rwnd
 op_assign
 id|ntohl
@@ -3264,7 +3201,7 @@ id|q-&gt;asoc-&gt;peer.rwnd
 op_assign
 id|sack_a_rwnd
 suffix:semicolon
-multiline_comment|/* See if all chunks are acked.&n;         * Make sure the empty queue handler will get run later.&n;         */
+multiline_comment|/* See if all chunks are acked.&n;&t; * Make sure the empty queue handler will get run later.&n;&t; */
 id|q-&gt;empty
 op_assign
 id|skb_queue_empty
@@ -3287,11 +3224,9 @@ c_cond
 op_logical_neg
 id|q-&gt;empty
 )paren
-(brace
 r_goto
 id|finish
 suffix:semicolon
-)brace
 id|list_for_each
 c_func
 (paren
@@ -3329,11 +3264,9 @@ c_cond
 op_logical_neg
 id|q-&gt;empty
 )paren
-(brace
 r_goto
 id|finish
 suffix:semicolon
-)brace
 )brace
 id|SCTP_DEBUG_PRINTK
 c_func
@@ -3347,10 +3280,9 @@ r_return
 id|q-&gt;empty
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_sack_outqueue() */
 multiline_comment|/* Is the outqueue empty?  */
-r_int
 DECL|function|sctp_outqueue_is_empty
+r_int
 id|sctp_outqueue_is_empty
 c_func
 (paren
@@ -3364,12 +3296,11 @@ r_return
 id|q-&gt;empty
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_outqueue_is_empty() */
 multiline_comment|/********************************************************************&n; * 2nd Level Abstractions&n; ********************************************************************/
-multiline_comment|/* Go through a transport&squot;s transmitted list or the assocication&squot;s retransmit&n; * list and move chunks that are acked by the Cumulative TSN Ack to q-&gt;sacked.&n; * The retransmit list will not have an associated transport. In case of a&n; * transmitted list with a transport, the transport&squot;s congestion, rto and fast &n; * retransmit parameters are also updated and if needed a fast retransmit&n; * process is started. &n; *&n; * I added coherent debug information output.&t;--xguo&n; *&n; * Instead of printing &squot;sacked&squot; or &squot;kept&squot; for each TSN on the&n; * transmitted_queue, we print a range: SACKED: TSN1-TSN2, TSN3, TSN4-TSN5.&n; * KEPT TSN6-TSN7, etc.&n; */
+multiline_comment|/* Go through a transport&squot;s transmitted list or the assocication&squot;s retransmit&n; * list and move chunks that are acked by the Cumulative TSN Ack to q-&gt;sacked.&n; * The retransmit list will not have an associated transport. In case of a&n; * transmitted list with a transport, the transport&squot;s congestion, rto and fast&n; * retransmit parameters are also updated and if needed a fast retransmit&n; * process is started.&n; *&n; * I added coherent debug information output.&t;--xguo&n; *&n; * Instead of printing &squot;sacked&squot; or &squot;kept&squot; for each TSN on the&n; * transmitted_queue, we print a range: SACKED: TSN1-TSN2, TSN3, TSN4-TSN5.&n; * KEPT TSN6-TSN7, etc.&n; */
+DECL|function|sctp_check_transmitted
 r_static
 r_void
-DECL|function|sctp_check_transmitted
 id|sctp_check_transmitted
 c_func
 (paren
@@ -3404,24 +3335,24 @@ r_struct
 id|list_head
 id|tlist
 suffix:semicolon
-r_uint32
+id|__u32
 id|tsn
 suffix:semicolon
-r_uint32
+id|__u32
 id|sack_ctsn
 suffix:semicolon
-r_uint32
+id|__u32
 id|rtt
 suffix:semicolon
-r_uint32
+id|__u32
 id|highest_new_tsn_in_sack
 suffix:semicolon
-r_uint8
+id|__u8
 id|restart_timer
 op_assign
 l_int|0
 suffix:semicolon
-r_uint8
+id|__u8
 id|do_fast_retransmit
 op_assign
 l_int|0
@@ -3433,25 +3364,25 @@ l_int|0
 suffix:semicolon
 multiline_comment|/* These state variables are for coherent debug output. --xguo */
 macro_line|#if SCTP_DEBUG
-r_uint32
+id|__u32
 id|dbg_ack_tsn
 op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* An ACKed TSN range starts here... */
-r_uint32
+id|__u32
 id|dbg_last_ack_tsn
 op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* ...and finishes here.&t;     */
-r_uint32
+id|__u32
 id|dbg_kept_tsn
 op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* An un-ACKed range starts here...  */
-r_uint32
+id|__u32
 id|dbg_last_kept_tsn
 op_assign
 l_int|0
@@ -3540,7 +3471,7 @@ c_cond
 id|transport
 )paren
 (brace
-multiline_comment|/* If this chunk is being used for RTT &n;&t;&t;&t;    * measurement, calculate the RTT and update &n;&t;&t;&t;    * the RTO using this value.&n;&t;&t;&t;    *&n;&t;&t;&t;    * 6.3.1 C5) Karn&squot;s algorithm: RTT measurements &n;&t;&t;&t;    * MUST NOT be made using packets that were &n;&t;&t;&t;    * retransmitted (and thus for which it is &n;&t;&t;&t;    * ambiguous whether the reply was for the first &n;&t;&t;&t;    * instance of the packet or a later instance).&n;&t;&t;&t;    */
+multiline_comment|/* If this chunk is being used for RTT&n;&t;&t;&t;&t; * measurement, calculate the RTT and update&n;&t;&t;&t;&t; * the RTO using this value.&n;&t;&t;&t;&t; *&n;&t;&t;&t;&t; * 6.3.1 C5) Karn&squot;s algorithm: RTT measurements&n;&t;&t;&t;&t; * MUST NOT be made using packets that were&n;&t;&t;&t;&t; * retransmitted (and thus for which it is&n;&t;&t;&t;&t; * ambiguous whether the reply was for the first&n;&t;&t;&t;&t; * instance of the packet or a later instance).&n;&t;&t;&t;&t; */
 r_if
 c_cond
 (paren
@@ -3588,7 +3519,7 @@ id|sack_ctsn
 )paren
 )paren
 (brace
-multiline_comment|/* RFC 2960  6.3.2 Retransmission Timer Rules&n;                                 *&n;                                 * R3) Whenever a SACK is received&n;                                 * that acknowledges the DATA chunk&n;                                 * with the earliest outstanding TSN&n;                                 * for that address, restart T3-rtx&n;                                 * timer for that address with its&n;                                 * current RTO.&n;                                 */
+multiline_comment|/* RFC 2960  6.3.2 Retransmission Timer Rules&n;&t;&t;&t;&t; *&n;&t;&t;&t;&t; * R3) Whenever a SACK is received&n;&t;&t;&t;&t; * that acknowledges the DATA chunk&n;&t;&t;&t;&t; * with the earliest outstanding TSN&n;&t;&t;&t;&t; * for that address, restart T3-rtx&n;&t;&t;&t;&t; * timer for that address with its&n;&t;&t;&t;&t; * current RTO.&n;&t;&t;&t;&t; */
 id|restart_timer
 op_assign
 l_int|1
@@ -3626,7 +3557,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-multiline_comment|/* RFC2960 7.2.4, sctpimpguide-05 2.8.2&n;&t;&t;&t;       * M2) Each time a SACK arrives reporting &n;&t;&t;&t;       * &squot;Stray DATA chunk(s)&squot; record the highest TSN &n;&t;&t;&t;       * reported as newly acknowledged, call this &n;&t;&t;&t;       * value &squot;HighestTSNinSack&squot;. A newly &n;&t;&t;&t;       * acknowledged DATA chunk is one not previously &n;&t;&t;&t;       * acknowledged in a SACK.&n;&t;&t;&t;       *&n;&t;&t;&t;       * When the SCTP sender of data receives a SACK &n;&t;&t;&t;       * chunk that acknowledges, for the first time, &n;&t;&t;&t;       * the receipt of a DATA chunk, all the still &n;&t;&t;&t;       * unacknowledged DATA chunks whose TSN is older &n;&t;&t;&t;       * than that newly acknowledged DATA chunk, are &n;&t;&t;&t;       * qualified as &squot;Stray DATA chunks&squot;.&n;&t;&t;&t;       */
+multiline_comment|/* RFC2960 7.2.4, sctpimpguide-05 2.8.2&n;&t;&t;&t;&t; * M2) Each time a SACK arrives reporting&n;&t;&t;&t;&t; * &squot;Stray DATA chunk(s)&squot; record the highest TSN&n;&t;&t;&t;&t; * reported as newly acknowledged, call this&n;&t;&t;&t;&t; * value &squot;HighestTSNinSack&squot;. A newly&n;&t;&t;&t;&t; * acknowledged DATA chunk is one not previously&n;&t;&t;&t;&t; * acknowledged in a SACK.&n;&t;&t;&t;&t; *&n;&t;&t;&t;&t; * When the SCTP sender of data receives a SACK&n;&t;&t;&t;&t; * chunk that acknowledges, for the first time,&n;&t;&t;&t;&t; * the receipt of a DATA chunk, all the still&n;&t;&t;&t;&t; * unacknowledged DATA chunks whose TSN is older&n;&t;&t;&t;&t; * than that newly acknowledged DATA chunk, are&n;&t;&t;&t;&t; * qualified as &squot;Stray DATA chunks&squot;.&n;&t;&t;&t;&t; */
 r_if
 c_cond
 (paren
@@ -3764,7 +3695,7 @@ multiline_comment|/* FALL THROUGH... */
 r_default
 suffix:colon
 multiline_comment|/* This is the first-ever TSN we examined.  */
-multiline_comment|/* Start a new range of ACK-ed TSNs. */
+multiline_comment|/* Start a new range of ACK-ed TSNs.  */
 id|SCTP_DEBUG_PRINTK
 c_func
 (paren
@@ -3782,11 +3713,12 @@ op_assign
 id|tsn
 suffix:semicolon
 )brace
+suffix:semicolon
 id|dbg_last_ack_tsn
 op_assign
 id|tsn
 suffix:semicolon
-macro_line|#endif /* SCTP_DEBUG */&t;&t;&t;&t;
+macro_line|#endif /* SCTP_DEBUG */
 )brace
 r_else
 (brace
@@ -3818,7 +3750,7 @@ c_func
 id|tchunk
 )paren
 suffix:semicolon
-multiline_comment|/* RFC 2960 6.3.2 Retransmission Timer Rules&n;&t;&t;&t; *&n;&t;&t;&t; * R4) Whenever a SACK is received missing a TSN &n;&t;&t;&t; * that was previously acknowledged via a Gap Ack &n;&t;&t;&t; * Block, start T3-rtx for the destination &n;&t;&t;&t; * address to which the DATA chunk was originally &n;&t;&t;&t; * transmitted if it is not already running.&n;&t;&t;&t; */
+multiline_comment|/* RFC 2960 6.3.2 Retransmission Timer Rules&n;&t;&t;&t;&t; *&n;&t;&t;&t;&t; * R4) Whenever a SACK is received missing a TSN&n;&t;&t;&t;&t; * that was previously acknowledged via a Gap Ack&n;&t;&t;&t;&t; * Block, start T3-rtx for the destination&n;&t;&t;&t;&t; * address to which the DATA chunk was originally&n;&t;&t;&t;&t; * transmitted if it is not already running.&n;&t;&t;&t;&t; */
 id|restart_timer
 op_assign
 l_int|1
@@ -3853,10 +3785,8 @@ l_int|1
 op_eq
 id|tsn
 )paren
-(brace
 r_break
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -3930,18 +3860,16 @@ op_assign
 id|tsn
 suffix:semicolon
 )brace
+suffix:semicolon
 id|dbg_last_kept_tsn
 op_assign
 id|tsn
 suffix:semicolon
 macro_line|#endif /* SCTP_DEBUG */
 )brace
-multiline_comment|/* if (TSN has just been ACKd) */
 )brace
-suffix:semicolon
-multiline_comment|/* while (transmitted queue is not empty) */
 macro_line|#if SCTP_DEBUG
-multiline_comment|/* Finish off the last range, displaying its ending TSN. */
+multiline_comment|/* Finish off the last range, displaying its ending TSN.  */
 r_switch
 c_cond
 (paren
@@ -4009,6 +3937,7 @@ l_string|&quot;&bslash;n&quot;
 suffix:semicolon
 )brace
 )brace
+suffix:semicolon
 macro_line|#endif /* SCTP_DEBUG */
 r_if
 c_cond
@@ -4022,7 +3951,7 @@ c_cond
 id|bytes_acked
 )paren
 (brace
-multiline_comment|/* 8.2. When an outstanding TSN is acknowledged, &n;&t;&t;&t; * the endpoint shall clear the error counter of &n;&t;&t;&t; * the destination transport address to which the &n;&t;&t;&t; * DATA chunk was last sent.&n;&t;&t;&t; * The association&squot;s overall error counter is &n;&t;&t;&t; * also cleared.&n;&t;&t;&t; */
+multiline_comment|/* 8.2. When an outstanding TSN is acknowledged,&n;&t;&t;&t; * the endpoint shall clear the error counter of&n;&t;&t;&t; * the destination transport address to which the&n;&t;&t;&t; * DATA chunk was last sent.&n;&t;&t;&t; * The association&squot;s overall error counter is&n;&t;&t;&t; * also cleared.&n;&t;&t;&t; */
 id|transport-&gt;error_count
 op_assign
 l_int|0
@@ -4031,7 +3960,7 @@ id|transport-&gt;asoc-&gt;overall_error_count
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* Mark the destination transport address as &n;&t;&t;&t; * active if it is not so marked.&n;&t;&t;&t; */
+multiline_comment|/* Mark the destination transport address as&n;&t;&t;&t; * active if it is not so marked.&n;&t;&t;&t; */
 r_if
 c_cond
 (paren
@@ -4073,7 +4002,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-multiline_comment|/* RFC 2960 6.1, sctpimpguide-06 2.15.2 &n;&t;&t;&t; * When a sender is doing zero window probing, it &n;&t;&t;&t; * should not timeout the association if it continues &n;&t;&t;&t; * to receive new packets from the receiver. The &n;&t;&t;&t; * reason is that the receiver MAY keep its window &n;&t;&t;&t; * closed for an indefinite time.&n;&t;&t;&t; * A sender is doing zero window probing when the &n;&t;&t;&t; * receiver&squot;s advertised window is zero, and there is&n;&t;&t;&t; * only one data chunk in flight to the receiver.  &n;&t;&t;&t; */
+multiline_comment|/* RFC 2960 6.1, sctpimpguide-06 2.15.2&n;&t;&t;&t; * When a sender is doing zero window probing, it&n;&t;&t;&t; * should not timeout the association if it continues&n;&t;&t;&t; * to receive new packets from the receiver. The&n;&t;&t;&t; * reason is that the receiver MAY keep its window&n;&t;&t;&t; * closed for an indefinite time.&n;&t;&t;&t; * A sender is doing zero window probing when the&n;&t;&t;&t; * receiver&squot;s advertised window is zero, and there is&n;&t;&t;&t; * only one data chunk in flight to the receiver.&n;&t;&t;&t; */
 r_if
 c_cond
 (paren
@@ -4123,7 +4052,7 @@ l_int|0
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/* RFC 2960 6.3.2 Retransmission Timer Rules&n;         &t; * &n;         &t; * R2) Whenever all outstanding data sent to an address have &n;&t;&t; * been acknowledged, turn off the T3-rtx timer of that &n;&t;&t; * address. &n;         &t; */
+multiline_comment|/* RFC 2960 6.3.2 Retransmission Timer Rules&n;&t;&t; *&n;&t;&t; * R2) Whenever all outstanding data sent to an address have&n;&t;&t; * been acknowledged, turn off the T3-rtx timer of that&n;&t;&t; * address.&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -4179,14 +4108,12 @@ op_plus
 id|transport-&gt;rto
 )paren
 )paren
-(brace
 id|sctp_transport_hold
 c_func
 (paren
 id|transport
 )paren
 suffix:semicolon
-)brace
 )brace
 )brace
 multiline_comment|/* Reconstruct the transmitted list with chunks that are not yet&n;&t; * acked by the Cumulative TSN Ack.&n;&t; */
@@ -4227,7 +4154,7 @@ c_func
 id|tchunk-&gt;subh.data_hdr-&gt;tsn
 )paren
 suffix:semicolon
-multiline_comment|/* RFC 2960 7.2.4, sctpimpguide-05 2.8.2 M3) Examine all &n;&t;&t; * &squot;Unacknowledged TSN&squot;s&squot;, if the TSN number of an &n;&t;&t; * &squot;Unacknowledged TSN&squot; is smaller than the &squot;HighestTSNinSack&squot;&n;&t;&t; * value, increment the &squot;TSN.Missing.Report&squot; count on that &n;&t;&t; * chunk if it has NOT been fast retransmitted or marked for &n;&t;&t; * fast retransmit already.&n;&t;&t; *&n;&t;&t; * M4) If any DATA chunk is found to have a &n;&t;&t; * &squot;TSN.Missing.Report&squot; &n;&t;&t; * value larger than or equal to 4, mark that chunk for &n;&t;&t; * retransmission and start the fast retransmit procedure. &n;&t;&t; */
+multiline_comment|/* RFC 2960 7.2.4, sctpimpguide-05 2.8.2 M3) Examine all&n;&t;&t; * &squot;Unacknowledged TSN&squot;s&squot;, if the TSN number of an&n;&t;&t; * &squot;Unacknowledged TSN&squot; is smaller than the &squot;HighestTSNinSack&squot;&n;&t;&t; * value, increment the &squot;TSN.Missing.Report&squot; count on that&n;&t;&t; * chunk if it has NOT been fast retransmitted or marked for&n;&t;&t; * fast retransmit already.&n;&t;&t; *&n;&t;&t; * M4) If any DATA chunk is found to have a&n;&t;&t; * &squot;TSN.Missing.Report&squot;&n;&t;&t; * value larger than or equal to 4, mark that chunk for&n;&t;&t; * retransmission and start the fast retransmit procedure.&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -4305,7 +4232,6 @@ c_cond
 (paren
 id|do_fast_retransmit
 )paren
-(brace
 id|sctp_retransmit
 c_func
 (paren
@@ -4316,7 +4242,6 @@ comma
 id|do_fast_retransmit
 )paren
 suffix:semicolon
-)brace
 id|SCTP_DEBUG_PRINTK
 c_func
 (paren
@@ -4337,11 +4262,10 @@ id|transport-&gt;partial_bytes_acked
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/* sctp_check_transmitted() */
 multiline_comment|/* Is the given TSN acked by this packet?  */
+DECL|function|sctp_acked
 r_static
 r_int
-DECL|function|sctp_acked
 id|sctp_acked
 c_func
 (paren
@@ -4349,7 +4273,7 @@ id|sctp_sackhdr_t
 op_star
 id|sack
 comma
-r_uint32
+id|__u32
 id|tsn
 )paren
 (brace
@@ -4360,10 +4284,10 @@ id|sctp_sack_variable_t
 op_star
 id|frags
 suffix:semicolon
-r_uint16
+id|__u16
 id|gap
 suffix:semicolon
-r_uint32
+id|__u32
 id|ctsn
 op_assign
 id|ntohl
@@ -4383,12 +4307,10 @@ comma
 id|ctsn
 )paren
 )paren
-(brace
 r_goto
 id|pass
 suffix:semicolon
-)brace
-multiline_comment|/* 3.3.4 Selective Acknowledgement (SACK) (3):&n;         * &n;         * Gap Ack Blocks:&n;         *  These fields contain the Gap Ack Blocks. They are repeated&n;         *  for each Gap Ack Block up to the number of Gap Ack Blocks&n;         *  defined in the Number of Gap Ack Blocks field. All DATA&n;         *  chunks with TSNs greater than or equal to (Cumulative TSN&n;         *  Ack + Gap Ack Block Start) and less than or equal to&n;         *  (Cumulative TSN Ack + Gap Ack Block End) of each Gap Ack&n;         *  Block are assumed to have been received correctly.&n;         */
+multiline_comment|/* 3.3.4 Selective Acknowledgement (SACK) (3):&n;&t; *&n;&t; * Gap Ack Blocks:&n;&t; *  These fields contain the Gap Ack Blocks. They are repeated&n;&t; *  for each Gap Ack Block up to the number of Gap Ack Blocks&n;&t; *  defined in the Number of Gap Ack Blocks field. All DATA&n;&t; *  chunks with TSNs greater than or equal to (Cumulative TSN&n;&t; *  Ack + Gap Ack Block Start) and less than or equal to&n;&t; *  (Cumulative TSN Ack + Gap Ack Block End) of each Gap Ack&n;&t; *  Block are assumed to have been received correctly.&n;&t; */
 id|frags
 op_assign
 id|sack-&gt;variable
@@ -4455,11 +4377,9 @@ id|gab.end
 )paren
 )paren
 )paren
-(brace
 r_goto
 id|pass
 suffix:semicolon
-)brace
 )brace
 r_return
 l_int|0
@@ -4470,5 +4390,4 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_acked() */
 eof

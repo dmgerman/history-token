@@ -32,7 +32,7 @@ id|sk_buff_head
 id|lobby
 suffix:semicolon
 DECL|member|ssn
-r_uint16
+id|__u16
 id|ssn
 (braket
 l_int|0
@@ -42,9 +42,9 @@ DECL|typedef|sctp_ulpqueue_t
 )brace
 id|sctp_ulpqueue_t
 suffix:semicolon
-multiline_comment|/* This macro assists in creation of external storage for variable length &n; * internal buffers. &n; */
+multiline_comment|/* This macro assists in creation of external storage for variable length&n; * internal buffers.&n; */
 DECL|macro|sctp_ulpqueue_storage_size
-mdefine_line|#define sctp_ulpqueue_storage_size(inbound) (sizeof(uint16_t) * (inbound))
+mdefine_line|#define sctp_ulpqueue_storage_size(inbound) (sizeof(__u16) * (inbound))
 id|sctp_ulpqueue_t
 op_star
 id|sctp_ulpqueue_new
@@ -54,7 +54,7 @@ id|sctp_association_t
 op_star
 id|asoc
 comma
-r_uint16
+id|__u16
 id|inbound
 comma
 r_int
@@ -74,7 +74,7 @@ id|sctp_association_t
 op_star
 id|asoc
 comma
-r_uint16
+id|__u16
 id|inbound
 )paren
 suffix:semicolon

@@ -13,7 +13,6 @@ id|unused
 op_assign
 l_string|&quot;$Id: sctp_endpointola.c,v 1.26 2002/08/16 19:30:49 jgrimm Exp $&quot;
 suffix:semicolon
-macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
@@ -34,10 +33,10 @@ op_star
 id|ep
 )paren
 suffix:semicolon
-multiline_comment|/* Create a sctp_endpoint_t with all that boring stuff initialized.  &n; * Returns NULL if there isn&squot;t enough memory.&n; */
+multiline_comment|/* Create a sctp_endpoint_t with all that boring stuff initialized.&n; * Returns NULL if there isn&squot;t enough memory.&n; */
+DECL|function|sctp_endpoint_new
 id|sctp_endpoint_t
 op_star
-DECL|function|sctp_endpoint_new
 id|sctp_endpoint_new
 c_func
 (paren
@@ -72,20 +71,16 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-l_int|NULL
-op_eq
+op_logical_neg
 id|ep
 )paren
-(brace
 r_goto
 id|fail
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
-l_int|NULL
-op_eq
+op_logical_neg
 id|sctp_endpoint_init
 c_func
 (paren
@@ -98,11 +93,9 @@ comma
 id|priority
 )paren
 )paren
-(brace
 r_goto
 id|fail_init
 suffix:semicolon
-)brace
 id|ep-&gt;base.malloced
 op_assign
 l_int|1
@@ -130,11 +123,10 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_endpoint_new() */
-multiline_comment|/* &n; * Initialize the base fields of the endpoint structure.  &n; */
+multiline_comment|/*&n; * Initialize the base fields of the endpoint structure.&n; */
+DECL|function|sctp_endpoint_init
 id|sctp_endpoint_t
 op_star
-DECL|function|sctp_endpoint_init
 id|sctp_endpoint_init
 c_func
 (paren
@@ -247,7 +239,7 @@ c_func
 id|ep-&gt;base.sk
 )paren
 suffix:semicolon
-multiline_comment|/* This pointer is useful to access the default protocol parameter &n;&t; * values.&n;&t; */
+multiline_comment|/* This pointer is useful to access the default protocol parameter&n;&t; * values.&n;&t; */
 id|ep-&gt;proto
 op_assign
 id|proto
@@ -346,7 +338,7 @@ op_assign
 id|SCTP_DEFAULT_TIMEOUT_PMTU_RAISE
 suffix:semicolon
 multiline_comment|/* Set up the default send/receive buffer space.  */
-multiline_comment|/* FIXME - Should the min and max window size be configurable &n;&t; * sysctl parameters as opposed to be constants? &n;&t; */
+multiline_comment|/* FIXME - Should the min and max window size be configurable&n;&t; * sysctl parameters as opposed to be constants?&n;&t; */
 id|sk-&gt;rcvbuf
 op_assign
 id|SCTP_DEFAULT_MAXWINDOW
@@ -397,10 +389,9 @@ r_return
 id|ep
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_endpoint_init() */
-multiline_comment|/* Add an association to an endpoint.   &n; */
-r_void
+multiline_comment|/* Add an association to an endpoint.  */
 DECL|function|sctp_endpoint_add_asoc
+r_void
 id|sctp_endpoint_add_asoc
 c_func
 (paren
@@ -425,10 +416,9 @@ id|ep-&gt;asocs
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_endpoint_add_asoc() */
-multiline_comment|/* Free the endpoint structure.  Delay cleanup until &n; * all users have released their reference count on this structure.&n; */
-r_void
+multiline_comment|/* Free the endpoint structure.  Delay cleanup until&n; * all users have released their reference count on this structure.&n; */
 DECL|function|sctp_endpoint_free
+r_void
 id|sctp_endpoint_free
 c_func
 (paren
@@ -448,8 +438,7 @@ id|ep
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_free_endpoint() */
-multiline_comment|/* Final destructor for endpoint. */
+multiline_comment|/* Final destructor for endpoint.  */
 DECL|function|sctp_endpoint_destroy
 r_void
 id|sctp_endpoint_destroy
@@ -500,28 +489,24 @@ id|ep-&gt;base.sk-&gt;prev
 op_ne
 l_int|NULL
 )paren
-(brace
 id|sctp_put_port
 c_func
 (paren
 id|ep-&gt;base.sk
 )paren
 suffix:semicolon
-)brace
 multiline_comment|/* Give up our hold on the sock. */
 r_if
 c_cond
 (paren
 id|ep-&gt;base.sk
 )paren
-(brace
 id|sock_put
 c_func
 (paren
 id|ep-&gt;base.sk
 )paren
 suffix:semicolon
-)brace
 multiline_comment|/* Finally, free up our memory. */
 r_if
 c_cond
@@ -542,10 +527,7 @@ id|ep
 )paren
 suffix:semicolon
 )brace
-r_return
-suffix:semicolon
 )brace
-multiline_comment|/* sctp_endpoint_destroy() */
 multiline_comment|/* Hold a reference to an endpoint. */
 DECL|function|sctp_endpoint_hold
 r_void
@@ -565,8 +547,7 @@ id|ep-&gt;base.refcnt
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_endpoint_hold() */
-multiline_comment|/* Release a reference to an endpoint and clean up if there are&n; * no more references. &n; */
+multiline_comment|/* Release a reference to an endpoint and clean up if there are&n; * no more references.&n; */
 DECL|function|sctp_endpoint_put
 r_void
 id|sctp_endpoint_put
@@ -587,7 +568,6 @@ op_amp
 id|ep-&gt;base.refcnt
 )paren
 )paren
-(brace
 id|sctp_endpoint_destroy
 c_func
 (paren
@@ -595,12 +575,10 @@ id|ep
 )paren
 suffix:semicolon
 )brace
-)brace
-multiline_comment|/* sctp_endpoint_put() */
-multiline_comment|/* Is this the endpoint we are looking for? */
+multiline_comment|/* Is this the endpoint we are looking for?  */
+DECL|function|sctp_endpoint_is_match
 id|sctp_endpoint_t
 op_star
-DECL|function|sctp_endpoint_is_match
 id|sctp_endpoint_is_match
 c_func
 (paren
@@ -672,11 +650,10 @@ r_return
 id|retval
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_endpoint_is_match() */
 multiline_comment|/* Find the association that goes with this chunk.&n; * We do a linear search of the associations for this endpoint.&n; * We return the matching transport address too.&n; */
+DECL|function|__sctp_endpoint_lookup_assoc
 id|sctp_association_t
 op_star
-DECL|function|__sctp_endpoint_lookup_assoc
 id|__sctp_endpoint_lookup_assoc
 c_func
 (paren
@@ -771,14 +748,11 @@ c_cond
 op_star
 id|transport
 )paren
-(brace
 r_return
 id|asoc
 suffix:semicolon
 )brace
 )brace
-)brace
-multiline_comment|/* for (all associations on endpoint) */
 op_star
 id|transport
 op_assign
@@ -788,11 +762,10 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
-multiline_comment|/* __sctp_endpoint_lookup_assoc() */
-multiline_comment|/* Lookup association on an endpoint based on a peer address.  BH-safe. */
+multiline_comment|/* Lookup association on an endpoint based on a peer address.  BH-safe.  */
+DECL|function|sctp_endpoint_lookup_assoc
 id|sctp_association_t
 op_star
-DECL|function|sctp_endpoint_lookup_assoc
 id|sctp_endpoint_lookup_assoc
 c_func
 (paren
@@ -842,11 +815,10 @@ r_return
 id|asoc
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_endpoint_lookup_assoc() */
-multiline_comment|/* Do delayed input processing.  This is scheduled by sctp_rcv(). &n; * This may be called on BH or task time. &n; */
+multiline_comment|/* Do delayed input processing.  This is scheduled by sctp_rcv().&n; * This may be called on BH or task time.&n; */
+DECL|function|sctp_endpoint_bh_rcv
 r_static
 r_void
-DECL|function|sctp_endpoint_bh_rcv
 id|sctp_endpoint_bh_rcv
 c_func
 (paren
@@ -892,11 +864,9 @@ c_cond
 (paren
 id|ep-&gt;base.dead
 )paren
-(brace
 r_goto
 id|out
 suffix:semicolon
-)brace
 id|asoc
 op_assign
 l_int|NULL
@@ -930,7 +900,7 @@ id|subtype.chunk
 op_assign
 id|chunk-&gt;chunk_hdr-&gt;type
 suffix:semicolon
-multiline_comment|/* We might have grown an association since last we&n;&t;&t; * looked, so try again.&n;&t;&t; *&n;&t;&t; * This happens when we&squot;ve just processed our&n;&t;&t; * COOKIE-ECHO chunk.  &n;&t;&t; */
+multiline_comment|/* We might have grown an association since last we&n;&t;&t; * looked, so try again.&n;&t;&t; *&n;&t;&t; * This happens when we&squot;ve just processed our&n;&t;&t; * COOKIE-ECHO chunk.&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -979,8 +949,6 @@ r_if
 c_cond
 (paren
 id|asoc
-op_ne
-l_int|NULL
 op_logical_and
 id|sctp_chunk_is_data
 c_func
@@ -988,24 +956,20 @@ c_func
 id|chunk
 )paren
 )paren
-(brace
 id|asoc-&gt;peer.last_data_from
 op_assign
 id|chunk-&gt;transport
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
 id|chunk-&gt;transport
 )paren
-(brace
 id|chunk-&gt;transport-&gt;last_time_heard
 op_assign
 id|jiffies
 suffix:semicolon
-)brace
-multiline_comment|/* FIX ME We really would rather NOT have to use&n;                 * GFP_ATOMIC.&n;                 */
+multiline_comment|/* FIX ME We really would rather NOT have to use&n;&t;&t; * GFP_ATOMIC.&n;&t;&t; */
 id|error
 op_assign
 id|sctp_do_sm
@@ -1033,17 +997,14 @@ id|error
 op_ne
 l_int|0
 )paren
-(brace
 r_goto
 id|err_out
 suffix:semicolon
-)brace
 multiline_comment|/* Check to see if the endpoint is freed in response to &n;&t;&t; * the incoming chunk. If so, get out of the while loop.&n;&t;&t; */
 r_if
 c_cond
 (paren
-l_int|NULL
-op_eq
+op_logical_neg
 id|sctp_sk
 c_func
 (paren
@@ -1052,13 +1013,10 @@ id|sk
 op_member_access_from_pointer
 id|ep
 )paren
-(brace
 r_goto
 id|out
 suffix:semicolon
 )brace
-)brace
-multiline_comment|/* while (we have more chunks to receive) */
 id|err_out
 suffix:colon
 multiline_comment|/* Is this the right way to pass errors up to the ULP?  */
@@ -1067,17 +1025,12 @@ c_cond
 (paren
 id|error
 )paren
-(brace
 id|ep-&gt;base.sk-&gt;err
 op_assign
 op_minus
 id|error
 suffix:semicolon
-)brace
 id|out
 suffix:colon
-r_return
-suffix:semicolon
 )brace
-multiline_comment|/* sctp_bh_rcv_ep() */
 eof

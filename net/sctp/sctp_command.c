@@ -13,14 +13,13 @@ id|unused
 op_assign
 l_string|&quot;$Id: sctp_command.c,v 1.4 2002/04/24 16:33:39 jgrimm Exp $&quot;
 suffix:semicolon
-macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;net/sctp/sctp.h&gt;
 macro_line|#include &lt;net/sctp/sctp_sm.h&gt;
 multiline_comment|/* Create a new sctp_command_sequence.  */
+DECL|function|sctp_new_cmd_seq
 id|sctp_cmd_seq_t
 op_star
-DECL|function|sctp_new_cmd_seq
 id|sctp_new_cmd_seq
 c_func
 (paren
@@ -31,8 +30,6 @@ id|priority
 id|sctp_cmd_seq_t
 op_star
 id|retval
-suffix:semicolon
-id|retval
 op_assign
 id|t_new
 c_func
@@ -42,6 +39,7 @@ comma
 id|priority
 )paren
 suffix:semicolon
+multiline_comment|/* XXX Check for NULL? -DaveM */
 id|sctp_init_cmd_seq
 c_func
 (paren
@@ -52,10 +50,9 @@ r_return
 id|retval
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_new_cmd_seq() */
 multiline_comment|/* Initialize a block of memory as a command sequence. */
-r_int
 DECL|function|sctp_init_cmd_seq
+r_int
 id|sctp_init_cmd_seq
 c_func
 (paren
@@ -82,10 +79,9 @@ l_int|1
 suffix:semicolon
 multiline_comment|/* We always succeed.  */
 )brace
-multiline_comment|/* sctp_init_cmd_seq() */
 multiline_comment|/* Add a command to a sctp_cmd_seq_t.&n; * Return 0 if the command sequence is full.&n; */
-r_int
 DECL|function|sctp_add_cmd
+r_int
 id|sctp_add_cmd
 c_func
 (paren
@@ -107,11 +103,9 @@ id|seq-&gt;next_free_slot
 op_ge
 id|SCTP_MAX_NUM_COMMANDS
 )paren
-(brace
 r_goto
 id|fail
 suffix:semicolon
-)brace
 id|seq-&gt;cmds
 (braket
 id|seq-&gt;next_free_slot
@@ -140,10 +134,9 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_add_cmd() */
 multiline_comment|/* Rewind an sctp_cmd_seq_t to iterate from the start.  */
-r_int
 DECL|function|sctp_rewind_sequence
+r_int
 id|sctp_rewind_sequence
 c_func
 (paren
@@ -161,11 +154,10 @@ l_int|1
 suffix:semicolon
 multiline_comment|/* We always succeed. */
 )brace
-multiline_comment|/* sctp_rewind_sequence() */
 multiline_comment|/* Return the next command structure in a sctp_cmd_seq.&n; * Returns NULL at the end of the sequence.&n; */
+DECL|function|sctp_next_cmd
 id|sctp_cmd_t
 op_star
-DECL|function|sctp_next_cmd
 id|sctp_next_cmd
 c_func
 (paren
@@ -187,7 +179,6 @@ id|seq-&gt;next_cmd
 OL
 id|seq-&gt;next_free_slot
 )paren
-(brace
 id|retval
 op_assign
 op_amp
@@ -197,15 +188,13 @@ id|seq-&gt;next_cmd
 op_increment
 )braket
 suffix:semicolon
-)brace
 r_return
 id|retval
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_next_cmd() */
 multiline_comment|/* Dispose of a command sequence.  */
-r_void
 DECL|function|sctp_free_cmd_seq
+r_void
 id|sctp_free_cmd_seq
 c_func
 (paren
@@ -221,5 +210,4 @@ id|seq
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_free_cmd_seq() */
 eof

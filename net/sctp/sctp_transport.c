@@ -13,14 +13,13 @@ id|unused
 op_assign
 l_string|&quot;$Id: sctp_transport.c,v 1.11 2002/06/20 05:57:01 samudrala Exp $&quot;
 suffix:semicolon
-macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;net/sctp/sctp.h&gt;
-multiline_comment|/* 1st Level Abstractions. */
-multiline_comment|/* Allocate and initialize a new transport. */
+multiline_comment|/* 1st Level Abstractions.  */
+multiline_comment|/* Allocate and initialize a new transport.  */
+DECL|function|sctp_transport_new
 id|sctp_transport_t
 op_star
-DECL|function|sctp_transport_new
 id|sctp_transport_new
 c_func
 (paren
@@ -50,20 +49,16 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-l_int|NULL
-op_eq
+op_logical_neg
 id|transport
 )paren
-(brace
 r_goto
 id|fail
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
-l_int|NULL
-op_eq
+op_logical_neg
 id|sctp_transport_init
 c_func
 (paren
@@ -74,11 +69,9 @@ comma
 id|priority
 )paren
 )paren
-(brace
 r_goto
 id|fail_init
 suffix:semicolon
-)brace
 id|transport-&gt;malloced
 op_assign
 l_int|1
@@ -106,11 +99,10 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_transport_new() */
-multiline_comment|/* Intialize a new transport from provided memory. */
+multiline_comment|/* Intialize a new transport from provided memory.  */
+DECL|function|sctp_transport_init
 id|sctp_transport_t
 op_star
-DECL|function|sctp_transport_init
 id|sctp_transport_init
 c_func
 (paren
@@ -136,7 +128,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/* Copy in the address. */
+multiline_comment|/* Copy in the address.  */
 id|peer-&gt;ipaddr
 op_assign
 op_star
@@ -164,7 +156,7 @@ c_func
 id|addr
 )paren
 suffix:semicolon
-multiline_comment|/* From 6.3.1 RTO Calculation:&n;         * &n;&t; * C1) Until an RTT measurement has been made for a packet sent to the&n;&t; * given destination transport address, set RTO to the protocol&n;&t; * parameter &squot;RTO.Initial&squot;.&n;         */
+multiline_comment|/* From 6.3.1 RTO Calculation:&n;&t; *&n;&t; * C1) Until an RTT measurement has been made for a packet sent to the&n;&t; * given destination transport address, set RTO to the protocol&n;&t; * parameter &squot;RTO.Initial&squot;.&n;&t; */
 id|peer-&gt;rtt
 op_assign
 l_int|0
@@ -205,7 +197,7 @@ id|peer-&gt;state.hb_allowed
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* Initialize the default path max_retrans. */
+multiline_comment|/* Initialize the default path max_retrans.  */
 id|peer-&gt;max_retrans
 op_assign
 id|proto-&gt;max_retrans_path
@@ -308,10 +300,9 @@ r_return
 id|peer
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_transport_init() */
-multiline_comment|/* This transport is no longer needed.  Free up if possible, or&n; * delay until it last reference count. &n; */
-r_void
+multiline_comment|/* This transport is no longer needed.  Free up if possible, or&n; * delay until it last reference count.&n; */
 DECL|function|sctp_transport_free
+r_void
 id|sctp_transport_free
 c_func
 (paren
@@ -324,7 +315,7 @@ id|transport-&gt;dead
 op_assign
 l_int|1
 suffix:semicolon
-multiline_comment|/* Try to delete the heartbeat timer. */
+multiline_comment|/* Try to delete the heartbeat timer.  */
 r_if
 c_cond
 (paren
@@ -335,7 +326,12 @@ op_amp
 id|transport-&gt;hb_timer
 )paren
 )paren
-(brace
+id|sctp_transport_put
+c_func
+(paren
+id|transport
+)paren
+suffix:semicolon
 id|sctp_transport_put
 c_func
 (paren
@@ -343,17 +339,9 @@ id|transport
 )paren
 suffix:semicolon
 )brace
-id|sctp_transport_put
-c_func
-(paren
-id|transport
-)paren
-suffix:semicolon
-)brace
-multiline_comment|/* sctp_transport_free() */
-multiline_comment|/* Destroy the transport data structure.   &n; * Assumes there are no more users of this structure. &n;*/
-r_void
+multiline_comment|/* Destroy the transport data structure.&n; * Assumes there are no more users of this structure.&n; */
 DECL|function|sctp_transport_destroy
+r_void
 id|sctp_transport_destroy
 c_func
 (paren
@@ -377,14 +365,12 @@ c_cond
 (paren
 id|transport-&gt;asoc
 )paren
-(brace
 id|sctp_association_put
 c_func
 (paren
 id|transport-&gt;asoc
 )paren
 suffix:semicolon
-)brace
 id|kfree
 c_func
 (paren
@@ -398,10 +384,9 @@ id|transport
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_transport_destroy() */
-multiline_comment|/* Start T3_rtx timer if it is not already running and update the heartbeat &n; * timer.  This routine is called everytime a DATA chunk is sent. &n; */
-r_void
+multiline_comment|/* Start T3_rtx timer if it is not already running and update the heartbeat&n; * timer.  This routine is called everytime a DATA chunk is sent.&n; */
 DECL|function|sctp_transport_reset_timers
+r_void
 id|sctp_transport_reset_timers
 c_func
 (paren
@@ -410,7 +395,7 @@ op_star
 id|transport
 )paren
 (brace
-multiline_comment|/* RFC 2960 6.3.2 Retransmission Timer Rules&n;&t; *&n;&t; * R1) Every time a DATA chunk is sent to any address(including a &n;&t; * retransmission), if the T3-rtx timer of that address is not running &n;&t; * start it running so that it will expire after the RTO of that&n;&t; * address.&n;&t; */
+multiline_comment|/* RFC 2960 6.3.2 Retransmission Timer Rules&n;&t; *&n;&t; * R1) Every time a DATA chunk is sent to any address(including a&n;&t; * retransmission), if the T3-rtx timer of that address is not running&n;&t; * start it running so that it will expire after the RTO of that&n;&t; * address.&n;&t; */
 r_if
 c_cond
 (paren
@@ -438,7 +423,6 @@ op_plus
 id|transport-&gt;rto
 )paren
 )paren
-(brace
 id|sctp_transport_hold
 c_func
 (paren
@@ -446,8 +430,7 @@ id|transport
 )paren
 suffix:semicolon
 )brace
-)brace
-multiline_comment|/* When a data chunk is sent, reset the heartbeat interval. */
+multiline_comment|/* When a data chunk is sent, reset the heartbeat interval.  */
 r_if
 c_cond
 (paren
@@ -465,7 +448,6 @@ op_plus
 id|jiffies
 )paren
 )paren
-(brace
 id|sctp_transport_hold
 c_func
 (paren
@@ -473,9 +455,7 @@ id|transport
 )paren
 suffix:semicolon
 )brace
-)brace
-multiline_comment|/* sctp_transport_reset_timers() */
-multiline_comment|/* This transport has been assigned to an association.  &n; * Initialize fields from the association or from the sock itself. &n; * Register the reference count in the association. &n; */
+multiline_comment|/* This transport has been assigned to an association.&n; * Initialize fields from the association or from the sock itself.&n; * Register the reference count in the association.&n; */
 DECL|function|sctp_transport_set_owner
 r_void
 id|sctp_transport_set_owner
@@ -501,8 +481,7 @@ id|asoc
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_transport_set_owner() */
-multiline_comment|/* Hold a reference to a transport. */
+multiline_comment|/* Hold a reference to a transport.  */
 DECL|function|sctp_transport_hold
 r_void
 id|sctp_transport_hold
@@ -521,8 +500,7 @@ id|transport-&gt;refcnt
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_transport_hold() */
-multiline_comment|/* Release a reference to a transport and clean up&n; * if there are no more references. &n; */
+multiline_comment|/* Release a reference to a transport and clean up&n; * if there are no more references.&n; */
 DECL|function|sctp_transport_put
 r_void
 id|sctp_transport_put
@@ -543,7 +521,6 @@ op_amp
 id|transport-&gt;refcnt
 )paren
 )paren
-(brace
 id|sctp_transport_destroy
 c_func
 (paren
@@ -551,11 +528,9 @@ id|transport
 )paren
 suffix:semicolon
 )brace
-)brace
-multiline_comment|/* sctp_transport_put() */
 multiline_comment|/* Update transport&squot;s RTO based on the newly calculated RTT. */
-r_void
 DECL|function|sctp_transport_update_rto
+r_void
 id|sctp_transport_update_rto
 c_func
 (paren
@@ -563,7 +538,7 @@ id|sctp_transport_t
 op_star
 id|tp
 comma
-r_uint32
+id|__u32
 id|rtt
 )paren
 (brace
@@ -576,7 +551,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/* Check for valid transport. */
+multiline_comment|/* Check for valid transport.  */
 id|SCTP_ASSERT
 c_func
 (paren
@@ -587,7 +562,7 @@ comma
 r_return
 )paren
 suffix:semicolon
-multiline_comment|/* We should not be doing any RTO updates unless rto_pending is set. */
+multiline_comment|/* We should not be doing any RTO updates unless rto_pending is set.  */
 id|SCTP_ASSERT
 c_func
 (paren
@@ -606,8 +581,8 @@ op_logical_or
 id|tp-&gt;srtt
 )paren
 (brace
-multiline_comment|/* 6.3.1 C3) When a new RTT measurement R&squot; is made, set&n;&t;&t; * RTTVAR &lt;- (1 - RTO.Beta) * RTTVAR + RTO.Beta * |SRTT - R&squot;| &n;&t;&t; * SRTT &lt;- (1 - RTO.Alpha) * SRTT + RTO.Alpha * R&squot;&n;&t;&t; */
-multiline_comment|/* Note:  The above algorithm has been rewritten to &n;&t;&t; * express rto_beta and rto_alpha as inverse powers&n;&t;&t; * of two. &n;&t;&t; * For example, assuming the default value of RTO.Alpha of&n;&t;&t; * 1/8, rto_alpha would be expressed as 3.   &n;&t;&t; */
+multiline_comment|/* 6.3.1 C3) When a new RTT measurement R&squot; is made, set&n;&t;&t; * RTTVAR &lt;- (1 - RTO.Beta) * RTTVAR + RTO.Beta * |SRTT - R&squot;|&n;&t;&t; * SRTT &lt;- (1 - RTO.Alpha) * SRTT + RTO.Alpha * R&squot;&n;&t;&t; */
+multiline_comment|/* Note:  The above algorithm has been rewritten to&n;&t;&t; * express rto_beta and rto_alpha as inverse powers&n;&t;&t; * of two.&n;&t;&t; * For example, assuming the default value of RTO.Alpha of&n;&t;&t; * 1/8, rto_alpha would be expressed as 3.&n;&t;&t; */
 id|tp-&gt;rttvar
 op_assign
 id|tp-&gt;rttvar
@@ -651,7 +626,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-multiline_comment|/* 6.3.1 C2) When the first RTT measurement R is made, set &n;&t;&t; * SRTT &lt;- R, RTTVAR &lt;- R/2.&n;&t;&t; */
+multiline_comment|/* 6.3.1 C2) When the first RTT measurement R is made, set&n;&t;&t; * SRTT &lt;- R, RTTVAR &lt;- R/2.&n;&t;&t; */
 id|tp-&gt;srtt
 op_assign
 id|rtt
@@ -663,7 +638,7 @@ op_rshift
 l_int|1
 suffix:semicolon
 )brace
-multiline_comment|/* 6.3.1 G1) Whenever RTTVAR is computed, if RTTVAR = 0, then &n;&t; * adjust RTTVAR &lt;- G, where G is the CLOCK GRANULARITY.&n;&t; */
+multiline_comment|/* 6.3.1 G1) Whenever RTTVAR is computed, if RTTVAR = 0, then&n;&t; * adjust RTTVAR &lt;- G, where G is the CLOCK GRANULARITY.&n;&t; */
 r_if
 c_cond
 (paren
@@ -671,13 +646,11 @@ id|tp-&gt;rttvar
 op_eq
 l_int|0
 )paren
-(brace
 id|tp-&gt;rttvar
 op_assign
 id|SCTP_CLOCK_GRANULARITY
 suffix:semicolon
-)brace
-multiline_comment|/* 6.3.1 C3) After the computation, update RTO &lt;- SRTT + 4 * RTTVAR. */
+multiline_comment|/* 6.3.1 C3) After the computation, update RTO &lt;- SRTT + 4 * RTTVAR.  */
 id|tp-&gt;rto
 op_assign
 id|tp-&gt;srtt
@@ -688,7 +661,7 @@ op_lshift
 l_int|2
 )paren
 suffix:semicolon
-multiline_comment|/* 6.3.1 C6) Whenever RTO is computed, if it is less than RTO.Min &n;&t; * seconds then it is rounded up to RTO.Min seconds.  &n;&t; */
+multiline_comment|/* 6.3.1 C6) Whenever RTO is computed, if it is less than RTO.Min&n;&t; * seconds then it is rounded up to RTO.Min seconds.&n;&t; */
 r_if
 c_cond
 (paren
@@ -696,13 +669,11 @@ id|tp-&gt;rto
 OL
 id|tp-&gt;asoc-&gt;rto_min
 )paren
-(brace
 id|tp-&gt;rto
 op_assign
 id|tp-&gt;asoc-&gt;rto_min
 suffix:semicolon
-)brace
-multiline_comment|/* 6.3.1 C7) A maximum value may be placed on RTO provided it is &n;&t; * at least RTO.max seconds.&n;&t; */
+multiline_comment|/* 6.3.1 C7) A maximum value may be placed on RTO provided it is&n;&t; * at least RTO.max seconds.&n;&t; */
 r_if
 c_cond
 (paren
@@ -710,17 +681,15 @@ id|tp-&gt;rto
 OG
 id|tp-&gt;asoc-&gt;rto_max
 )paren
-(brace
 id|tp-&gt;rto
 op_assign
 id|tp-&gt;asoc-&gt;rto_max
 suffix:semicolon
-)brace
 id|tp-&gt;rtt
 op_assign
 id|rtt
 suffix:semicolon
-multiline_comment|/* Reset rto_pending so that a new RTT measurement is started when a &n;&t; * new data chunk is sent.&n;&t; */
+multiline_comment|/* Reset rto_pending so that a new RTT measurement is started when a&n;&t; * new data chunk is sent.&n;&t; */
 id|tp-&gt;rto_pending
 op_assign
 l_int|0
@@ -744,10 +713,9 @@ id|tp-&gt;rto
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_transport_update_rto() */
-multiline_comment|/* This routine updates the transport&squot;s cwnd and partial_bytes_acked &n; * parameters based on the bytes acked in the received SACK.&n; */
-r_void
+multiline_comment|/* This routine updates the transport&squot;s cwnd and partial_bytes_acked&n; * parameters based on the bytes acked in the received SACK.&n; */
 DECL|function|sctp_transport_raise_cwnd
+r_void
 id|sctp_transport_raise_cwnd
 c_func
 (paren
@@ -755,14 +723,14 @@ id|sctp_transport_t
 op_star
 id|transport
 comma
-r_uint32
+id|__u32
 id|sack_ctsn
 comma
-r_uint32
+id|__u32
 id|bytes_acked
 )paren
 (brace
-r_uint32
+id|__u32
 id|cwnd
 comma
 id|ssthresh
@@ -781,7 +749,7 @@ id|flight_size
 op_assign
 id|transport-&gt;flight_size
 suffix:semicolon
-multiline_comment|/* The appropriate cwnd increase algorithm is performed if, and only &n;&t; * if the cumulative TSN has advanced and the congestion window is &n;&t; * being fully utilized. &n;&t; */
+multiline_comment|/* The appropriate cwnd increase algorithm is performed if, and only&n;&t; * if the cumulative TSN has advanced and the congestion window is&n;&t; * being fully utilized.&n;&t; */
 r_if
 c_cond
 (paren
@@ -797,10 +765,8 @@ OL
 id|cwnd
 )paren
 )paren
-(brace
 r_return
 suffix:semicolon
-)brace
 id|ssthresh
 op_assign
 id|transport-&gt;ssthresh
@@ -821,7 +787,7 @@ op_le
 id|ssthresh
 )paren
 (brace
-multiline_comment|/* RFC 2960 7.2.1, sctpimpguide-05 2.14.2 When cwnd is less &n;&t;&t; * than or equal to ssthresh an SCTP endpoint MUST use the &n;&t;&t; * slow start algorithm to increase cwnd only if the current &n;&t;&t; * congestion window is being fully utilized and an incoming &n;&t;&t; * SACK advances the Cumulative TSN Ack Point. Only when these &n;&t;&t; * two conditions are met can the cwnd be increased otherwise&n;&t;&t; * the cwnd MUST not be increased. If these conditions are met &n;&t;&t; * then cwnd MUST be increased by at most the lesser of &n;&t;&t; * 1) the total size of the previously outstanding DATA chunk(s) &n;&t;&t; * acknowledged, and 2) the destination&squot;s path MTU. &n;&t;&t; */
+multiline_comment|/* RFC 2960 7.2.1, sctpimpguide-05 2.14.2 When cwnd is less&n;&t;&t; * than or equal to ssthresh an SCTP endpoint MUST use the&n;&t;&t; * slow start algorithm to increase cwnd only if the current&n;&t;&t; * congestion window is being fully utilized and an incoming&n;&t;&t; * SACK advances the Cumulative TSN Ack Point. Only when these&n;&t;&t; * two conditions are met can the cwnd be increased otherwise&n;&t;&t; * the cwnd MUST not be increased. If these conditions are met&n;&t;&t; * then cwnd MUST be increased by at most the lesser of&n;&t;&t; * 1) the total size of the previously outstanding DATA chunk(s)&n;&t;&t; * acknowledged, and 2) the destination&squot;s path MTU.&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -829,19 +795,15 @@ id|bytes_acked
 OG
 id|pmtu
 )paren
-(brace
 id|cwnd
 op_add_assign
 id|pmtu
 suffix:semicolon
-)brace
 r_else
-(brace
 id|cwnd
 op_add_assign
 id|bytes_acked
 suffix:semicolon
-)brace
 id|SCTP_DEBUG_PRINTK
 c_func
 (paren
@@ -866,7 +828,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-multiline_comment|/* RFC 2960 7.2.2 Whenever cwnd is greater than ssthresh, upon &n;&t;&t; * each SACK arrival that advances the Cumulative TSN Ack Point, &n;&t;&t; * increase partial_bytes_acked by the total number of bytes of &n;&t;&t; * all new chunks acknowledged in that SACK including chunks &n;&t;&t; * acknowledged by the new Cumulative TSN Ack and by Gap Ack &n;&t;&t; * Blocks.&n;&t;&t; * &n;&t;&t; * When partial_bytes_acked is equal to or greater than cwnd and&n;&t;&t; * before the arrival of the SACK the sender had cwnd or more &n;&t;&t; * bytes of data outstanding (i.e., before arrival of the SACK, &n;&t;&t; * flightsize was greater than or equal to cwnd), increase cwnd &n;&t;&t; * by MTU, and reset partial_bytes_acked to &n;&t;&t; * (partial_bytes_acked - cwnd).&n;&t;&t; */
+multiline_comment|/* RFC 2960 7.2.2 Whenever cwnd is greater than ssthresh, upon&n;&t;&t; * each SACK arrival that advances the Cumulative TSN Ack Point,&n;&t;&t; * increase partial_bytes_acked by the total number of bytes of&n;&t;&t; * all new chunks acknowledged in that SACK including chunks&n;&t;&t; * acknowledged by the new Cumulative TSN Ack and by Gap Ack&n;&t;&t; * Blocks.&n;&t;&t; *&n;&t;&t; * When partial_bytes_acked is equal to or greater than cwnd and&n;&t;&t; * before the arrival of the SACK the sender had cwnd or more&n;&t;&t; * bytes of data outstanding (i.e., before arrival of the SACK,&n;&t;&t; * flightsize was greater than or equal to cwnd), increase cwnd&n;&t;&t; * by MTU, and reset partial_bytes_acked to&n;&t;&t; * (partial_bytes_acked - cwnd).&n;&t;&t; */
 id|pba
 op_add_assign
 id|bytes_acked
@@ -934,10 +896,9 @@ op_assign
 id|pba
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_transport_raise_cwnd() */
-multiline_comment|/* This routine is used to lower the transport&squot;s cwnd when congestion is &n; * detected. &n; */
-r_void
+multiline_comment|/* This routine is used to lower the transport&squot;s cwnd when congestion is&n; * detected.&n; */
 DECL|function|sctp_transport_lower_cwnd
+r_void
 id|sctp_transport_lower_cwnd
 c_func
 (paren
@@ -958,7 +919,7 @@ id|reason
 r_case
 id|SCTP_LOWER_CWND_T3_RTX
 suffix:colon
-multiline_comment|/* RFC 2960 Section 7.2.3, sctpimpguide-05 Section 2.9.2 &n;&t;&t; * When the T3-rtx timer expires on an address, SCTP should &n;&t;&t; * perform slow start by:&n;&t; &t; *      ssthresh = max(cwnd/2, 2*MTU)&n;&t; &t; *      cwnd = 1*MTU&n;&t; &t; *      partial_bytes_acked = 0&n;&t; &t; */
+multiline_comment|/* RFC 2960 Section 7.2.3, sctpimpguide-05 Section 2.9.2&n;&t;&t; * When the T3-rtx timer expires on an address, SCTP should&n;&t;&t; * perform slow start by:&n;&t;&t; *      ssthresh = max(cwnd/2, 2*MTU)&n;&t;&t; *      cwnd = 1*MTU&n;&t;&t; *      partial_bytes_acked = 0&n;&t;&t; */
 id|transport-&gt;ssthresh
 op_assign
 id|max
@@ -982,7 +943,7 @@ suffix:semicolon
 r_case
 id|SCTP_LOWER_CWND_FAST_RTX
 suffix:colon
-multiline_comment|/* RFC 2960 7.2.4 Adjust the ssthresh and cwnd of the &n;&t;&t; * destination address(es) to which the missing DATA chunks &n;&t;&t; * were last sent, according to the formula described in &n;&t;&t; * Section 7.2.3.&n;&t; &t; *&n;&t; &t; * RFC 2960 7.2.3, sctpimpguide-05 2.9.2 Upon detection of &n;&t;&t; * packet losses from SACK (see Section 7.2.4), An endpoint &n;&t;&t; * should do the following:&n;&t; &t; *      ssthresh = max(cwnd/2, 2*MTU)&n;&t; &t; *      cwnd = ssthresh&n;&t;&t; *      partial_bytes_acked = 0&n;&t; &t; */
+multiline_comment|/* RFC 2960 7.2.4 Adjust the ssthresh and cwnd of the &n;&t;&t; * destination address(es) to which the missing DATA chunks &n;&t;&t; * were last sent, according to the formula described in &n;&t;&t; * Section 7.2.3.&n;&t; &t; *&n;&t; &t; * RFC 2960 7.2.3, sctpimpguide-05 2.9.2 Upon detection of &n;&t;&t; * packet losses from SACK (see Section 7.2.4), An endpoint &n;&t;&t; * should do the following:&n;&t;&t; *      ssthresh = max(cwnd/2, 2*MTU)&n;&t;&t; *      cwnd = ssthresh&n;&t;&t; *      partial_bytes_acked = 0&n;&t;&t; */
 id|transport-&gt;ssthresh
 op_assign
 id|max
@@ -1006,7 +967,7 @@ suffix:semicolon
 r_case
 id|SCTP_LOWER_CWND_ECNE
 suffix:colon
-multiline_comment|/* RFC 2481 Section 6.1.2. &n;&t;&t; * If the sender receives an ECN-Echo ACK packet&n;&t;&t; * then the sender knows that congestion was encountered in the&n;&t;&t; * network on the path from the sender to the receiver. The&n;&t;&t; * indication of congestion should be treated just as a &n;&t;&t; * congestion loss in non-ECN Capable TCP. That is, the TCP &n;&t;&t; * source halves the congestion window &quot;cwnd&quot; and reduces the&n;&t;&t; * slow start threshold &quot;ssthresh&quot;.&n;&t;&t; * A critical condition is that TCP does not react to &n;&t;&t; * congestion indications more than once every window of &n;&t;&t; * data (or more loosely more than once every round-trip time).&n;&t;&t; */
+multiline_comment|/* RFC 2481 Section 6.1.2.&n;&t;&t; * If the sender receives an ECN-Echo ACK packet&n;&t;&t; * then the sender knows that congestion was encountered in the&n;&t;&t; * network on the path from the sender to the receiver. The&n;&t;&t; * indication of congestion should be treated just as a&n;&t;&t; * congestion loss in non-ECN Capable TCP. That is, the TCP&n;&t;&t; * source halves the congestion window &quot;cwnd&quot; and reduces the&n;&t;&t; * slow start threshold &quot;ssthresh&quot;.&n;&t;&t; * A critical condition is that TCP does not react to&n;&t;&t; * congestion indications more than once every window of&n;&t;&t; * data (or more loosely more than once every round-trip time).&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -1047,7 +1008,7 @@ suffix:semicolon
 r_case
 id|SCTP_LOWER_CWND_INACTIVE
 suffix:colon
-multiline_comment|/* RFC 2960 Section 7.2.1, sctpimpguide-05 Section 2.14.2 &n;&t;&t; * When the association does not transmit data on a given &n;&t;&t; * transport address within an RTO, the cwnd of the transport &n;&t;&t; * address should be adjusted to 2*MTU.  &n;&t;&t; * NOTE: Although the draft recommends that this check needs &n;&t;&t; * to be done every RTO interval, we do it every hearbeat &n;&t;&t; * interval. &n;&t;&t; */
+multiline_comment|/* RFC 2960 Section 7.2.1, sctpimpguide-05 Section 2.14.2&n;&t;&t; * When the association does not transmit data on a given&n;&t;&t; * transport address within an RTO, the cwnd of the transport&n;&t;&t; * address should be adjusted to 2*MTU.&n;&t;&t; * NOTE: Although the draft recommends that this check needs&n;&t;&t; * to be done every RTO interval, we do it every hearbeat&n;&t;&t; * interval.&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -1059,17 +1020,16 @@ id|transport-&gt;last_time_used
 OG
 id|transport-&gt;rto
 )paren
-(brace
 id|transport-&gt;cwnd
 op_assign
 l_int|2
 op_star
 id|transport-&gt;asoc-&gt;pmtu
 suffix:semicolon
-)brace
 r_break
 suffix:semicolon
 )brace
+suffix:semicolon
 id|transport-&gt;partial_bytes_acked
 op_assign
 l_int|0
@@ -1091,5 +1051,4 @@ id|transport-&gt;ssthresh
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_transport_lower_cwnd() */
 eof

@@ -13,7 +13,6 @@ id|unused
 op_assign
 l_string|&quot;$Id: sctp_sla1.c,v 1.4 2002/07/19 22:00:33 jgrimm Exp $&quot;
 suffix:semicolon
-macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/fcntl.h&gt;
@@ -21,8 +20,8 @@ macro_line|#include &lt;asm/string.h&gt;&t;&t;/* for memcpy */
 macro_line|#include &lt;linux/sched.h&gt;&t;/* dead chicken for in.h */
 macro_line|#include &lt;linux/in.h&gt;&t;&t;/* for htonl and ntohl */
 macro_line|#include &lt;net/sctp/sctp_sla1.h&gt;
-r_void
 DECL|function|SLA1_Init
+r_void
 id|SLA1_Init
 c_func
 (paren
@@ -32,7 +31,7 @@ op_star
 id|ctx
 )paren
 (brace
-multiline_comment|/* Init the SLA-1 context structure */
+multiline_comment|/* Init the SLA-1 context structure.  */
 id|ctx-&gt;A
 op_assign
 l_int|0
@@ -99,8 +98,8 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
-r_void
 DECL|function|SLA1processABlock
+r_void
 id|SLA1processABlock
 c_func
 (paren
@@ -118,7 +117,7 @@ id|block
 r_int
 id|i
 suffix:semicolon
-multiline_comment|/* init the W0-W15 to the block of words being &n;   * hashed.&n;   */
+multiline_comment|/* init the W0-W15 to the block of words being&n;&t; * hashed.&n;&t; */
 multiline_comment|/* step a) */
 r_for
 c_loop
@@ -134,7 +133,6 @@ suffix:semicolon
 id|i
 op_increment
 )paren
-(brace
 id|ctx-&gt;words
 (braket
 id|i
@@ -149,7 +147,6 @@ id|i
 )braket
 )paren
 suffix:semicolon
-)brace
 multiline_comment|/* now init the rest based on the SLA-1 formula, step b) */
 r_for
 c_loop
@@ -165,7 +162,6 @@ suffix:semicolon
 id|i
 op_increment
 )paren
-(brace
 id|ctx-&gt;words
 (braket
 id|i
@@ -223,7 +219,6 @@ l_int|16
 )paren
 )paren
 suffix:semicolon
-)brace
 multiline_comment|/* step c) */
 id|ctx-&gt;A
 op_assign
@@ -526,8 +521,8 @@ id|ctx-&gt;E
 )paren
 suffix:semicolon
 )brace
-r_void
 DECL|function|SLA1_Process
+r_void
 id|SLA1_Process
 c_func
 (paren
@@ -651,8 +646,8 @@ suffix:semicolon
 )brace
 )brace
 )brace
-r_void
 DECL|function|SLA1_Final
+r_void
 id|SLA1_Final
 c_func
 (paren
@@ -667,7 +662,7 @@ op_star
 id|digestBuf
 )paren
 (brace
-multiline_comment|/* if any left in block fill with padding &n;   * and process. Then transfer the digest to &n;   * the pointer. At the last block some special&n;   * rules need to apply. We must add a 1 bit&n;   * following the message, then we pad with&n;   * 0&squot;s. The total size is encoded as a 64 bit&n;   * number at the end. Now if the last buffer has&n;   * more than 55 octets in it we cannot fit&n;   * the 64 bit number + 10000000 pad on the end&n;   * and must add the 10000000 pad, pad the rest&n;   * of the message with 0&squot;s and then create a&n;   * all 0 message with just the 64 bit size&n;   * at the end and run this block through by itself.&n;   * Also the 64 bit int must be in network byte&n;   * order.&n;   */
+multiline_comment|/* if any left in block fill with padding&n;&t; * and process. Then transfer the digest to&n;&t; * the pointer. At the last block some special&n;&t; * rules need to apply. We must add a 1 bit&n;&t; * following the message, then we pad with&n;&t; * 0&squot;s. The total size is encoded as a 64 bit&n;&t; * number at the end. Now if the last buffer has&n;&t; * more than 55 octets in it we cannot fit&n;&t; * the 64 bit number + 10000000 pad on the end&n;&t; * and must add the 10000000 pad, pad the rest&n;&t; * of the message with 0&squot;s and then create a&n;&t; * all 0 message with just the 64 bit size&n;&t; * at the end and run this block through by itself.&n;&t; * Also the 64 bit int must be in network byte&n;&t; * order.&n;&t; */
 r_int
 id|i
 comma
@@ -686,7 +681,7 @@ OG
 l_int|55
 )paren
 (brace
-multiline_comment|/* special case, we need to process two&n;     * blocks here. One for the current stuff&n;     * plus possibly the pad. The other for&n;     * the size.&n;     */
+multiline_comment|/* special case, we need to process two&n;&t;&t; * blocks here. One for the current stuff&n;&t;&t; * plus possibly the pad. The other for&n;&t;&t; * the size.&n;&t;&t; */
 id|leftToFill
 op_assign
 r_sizeof
@@ -705,7 +700,7 @@ l_int|0
 )paren
 (brace
 multiline_comment|/* Should not really happen but I am paranoid */
-multiline_comment|/* Not paranoid enough!  It is possible for leftToFill to become&n;       * negative!  AAA!!!!  This is another reason to pick MD5 :-)...&n;       */
+multiline_comment|/* Not paranoid enough!  It is possible for leftToFill&n;&t;&t;&t; * to become negative!  AAA!!!!  This is another reason&n;&t;&t;&t; * to pick MD5 :-)...&n;&t;&t;&t; */
 id|SLA1processABlock
 c_func
 (paren
@@ -908,7 +903,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-multiline_comment|/* easy case, we just pad this&n;     * message to size - end with 0&n;     * add the magic 0x80 to the next&n;     * word and then put the network byte&n;     * order size in the last spot and&n;     * process the block.&n;     */
+multiline_comment|/* easy case, we just pad this&n;&t;&t; * message to size - end with 0&n;&t;&t; * add the magic 0x80 to the next&n;&t;&t; * word and then put the network byte&n;&t;&t; * order size in the last spot and&n;&t;&t; * process the block.&n;&t;&t; */
 id|ctx-&gt;SLAblock
 (braket
 id|ctx-&gt;howManyInBlock
@@ -987,7 +982,7 @@ id|ctx-&gt;SLAblock
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Now at this point all we need do is transfer the &n;   * digest back to the user&n;   */
+multiline_comment|/* Now at this point all we need do is transfer the&n;&t; * digest back to the user&n;&t; */
 id|digestBuf
 (braket
 l_int|3

@@ -10,7 +10,7 @@ r_void
 op_star
 id|sctp_assoc_t
 suffix:semicolon
-multiline_comment|/* The following symbols come from the Sockets API Extensions for &n; * SCTP &lt;draft-ietf-tsvwg-sctpsocket-04.txt&gt;.&n; */
+multiline_comment|/* The following symbols come from the Sockets API Extensions for&n; * SCTP &lt;draft-ietf-tsvwg-sctpsocket-04.txt&gt;.&n; */
 DECL|enum|sctp_optname
 r_enum
 id|sctp_optname
@@ -123,63 +123,61 @@ DECL|macro|SCTP_SOCKOPT_PEELOFF
 mdefine_line|#define SCTP_SOCKOPT_PEELOFF&t;SCTP_SOCKOPT_PEELOFF
 )brace
 suffix:semicolon
-multiline_comment|/* enum sctp_optname */
-multiline_comment|/* &n; * 5.2 SCTP msg_control Structures&n; *&n; * A key element of all SCTP-specific socket extensions is the use of&n; * ancillary data to specify and access SCTP-specific data via the&n; * struct msghdr&squot;s msg_control member used in sendmsg() and recvmsg().&n; * Fine-grained control over initialization and sending parameters are&n; * handled with ancillary data.&n; *&n; * Each ancillary data item is preceeded by a struct cmsghdr (see&n; * Section 5.1), which defines the function and purpose of the data&n; * contained in in the cmsg_data[] member.&n; */
-multiline_comment|/* &n; * 5.2.1 SCTP Initiation Structure (SCTP_INIT)&n; * &n; *   This cmsghdr structure provides information for initializing new&n; *   SCTP associations with sendmsg().  The SCTP_INITMSG socket option&n; *   uses this same data structure.  This structure is not used for&n; *   recvmsg().&n; *&n; *   cmsg_level    cmsg_type      cmsg_data[]&n; *   ------------  ------------   ----------------------&n; *   IPPROTO_SCTP  SCTP_INIT      struct sctp_initmsg&n; *&n; */
+multiline_comment|/*&n; * 5.2 SCTP msg_control Structures&n; *&n; * A key element of all SCTP-specific socket extensions is the use of&n; * ancillary data to specify and access SCTP-specific data via the&n; * struct msghdr&squot;s msg_control member used in sendmsg() and recvmsg().&n; * Fine-grained control over initialization and sending parameters are&n; * handled with ancillary data.&n; *&n; * Each ancillary data item is preceeded by a struct cmsghdr (see&n; * Section 5.1), which defines the function and purpose of the data&n; * contained in in the cmsg_data[] member.&n; */
+multiline_comment|/*&n; * 5.2.1 SCTP Initiation Structure (SCTP_INIT)&n; *&n; *   This cmsghdr structure provides information for initializing new&n; *   SCTP associations with sendmsg().  The SCTP_INITMSG socket option&n; *   uses this same data structure.  This structure is not used for&n; *   recvmsg().&n; *&n; *   cmsg_level    cmsg_type      cmsg_data[]&n; *   ------------  ------------   ----------------------&n; *   IPPROTO_SCTP  SCTP_INIT      struct sctp_initmsg&n; *&n; */
 DECL|struct|sctp_initmsg
 r_struct
 id|sctp_initmsg
 (brace
 DECL|member|sinit_num_ostreams
-r_uint16
+id|__u16
 id|sinit_num_ostreams
 suffix:semicolon
 DECL|member|sinit_max_instreams
-r_uint16
+id|__u16
 id|sinit_max_instreams
 suffix:semicolon
 DECL|member|sinit_max_attempts
-r_uint16
+id|__u16
 id|sinit_max_attempts
 suffix:semicolon
 DECL|member|sinit_max_init_timeo
-r_uint16
+id|__u16
 id|sinit_max_init_timeo
 suffix:semicolon
 )brace
 suffix:semicolon
-multiline_comment|/* struct sctp_initmsg */
-multiline_comment|/* &n; * 5.2.2 SCTP Header Information Structure (SCTP_SNDRCV)&n; * &n; *   This cmsghdr structure specifies SCTP options for sendmsg() and&n; *   describes SCTP header information about a received message through&n; *   recvmsg().&n; *&n; *   cmsg_level    cmsg_type      cmsg_data[]&n; *   ------------  ------------   ----------------------&n; *   IPPROTO_SCTP  SCTP_SNDRCV    struct sctp_sndrcvinfo&n; *&n; */
+multiline_comment|/*&n; * 5.2.2 SCTP Header Information Structure (SCTP_SNDRCV)&n; *&n; *   This cmsghdr structure specifies SCTP options for sendmsg() and&n; *   describes SCTP header information about a received message through&n; *   recvmsg().&n; *&n; *   cmsg_level    cmsg_type      cmsg_data[]&n; *   ------------  ------------   ----------------------&n; *   IPPROTO_SCTP  SCTP_SNDRCV    struct sctp_sndrcvinfo&n; *&n; */
 DECL|struct|sctp_sndrcvinfo
 r_struct
 id|sctp_sndrcvinfo
 (brace
 DECL|member|sinfo_stream
-r_uint16
+id|__u16
 id|sinfo_stream
 suffix:semicolon
 DECL|member|sinfo_ssn
-r_uint16
+id|__u16
 id|sinfo_ssn
 suffix:semicolon
 DECL|member|sinfo_flags
-r_uint16
+id|__u16
 id|sinfo_flags
 suffix:semicolon
 DECL|member|sinfo_ppid
-r_uint32
+id|__u32
 id|sinfo_ppid
 suffix:semicolon
 DECL|member|sinfo_context
-r_uint32
+id|__u32
 id|sinfo_context
 suffix:semicolon
 DECL|member|sinfo_timetolive
-r_uint32
+id|__u32
 id|sinfo_timetolive
 suffix:semicolon
 DECL|member|sinfo_tsn
-r_uint32
+id|__u32
 id|sinfo_tsn
 suffix:semicolon
 DECL|member|sinfo_assoc_id
@@ -188,7 +186,6 @@ id|sinfo_assoc_id
 suffix:semicolon
 )brace
 suffix:semicolon
-multiline_comment|/* struct sctp_sndrcvinfo */
 multiline_comment|/*&n; *  sinfo_flags: 16 bits (unsigned integer)&n; *&n; *   This field may contain any of the following flags and is composed of&n; *   a bitwise OR of these values.&n; */
 DECL|enum|sctp_sinfo_flags
 r_enum
@@ -215,12 +212,11 @@ multiline_comment|/* Send an ABORT message to the peer. */
 multiline_comment|/* MSG_EOF is already defined per socket.h */
 )brace
 suffix:semicolon
-multiline_comment|/* enum sctp_sinfo_flags */
 r_typedef
 r_union
 (brace
 DECL|member|raw
-id|u_int8_t
+id|__u8
 id|raw
 suffix:semicolon
 DECL|member|init
@@ -255,37 +251,37 @@ DECL|typedef|sctp_cmsg_t
 )brace
 id|sctp_cmsg_t
 suffix:semicolon
-multiline_comment|/* &n; * 5.3.1.1 SCTP_ASSOC_CHANGE&n; *&n; *   Communication notifications inform the ULP that an SCTP association&n; *   has either begun or ended. The identifier for a new association is&n; *   provided by this notificaion. The notification information has the&n; *   following format:&n; *&n; */
+multiline_comment|/*&n; * 5.3.1.1 SCTP_ASSOC_CHANGE&n; *&n; *   Communication notifications inform the ULP that an SCTP association&n; *   has either begun or ended. The identifier for a new association is&n; *   provided by this notificaion. The notification information has the&n; *   following format:&n; *&n; */
 DECL|struct|sctp_assoc_change
 r_struct
 id|sctp_assoc_change
 (brace
 DECL|member|sac_type
-r_uint16
+id|__u16
 id|sac_type
 suffix:semicolon
 DECL|member|sac_flags
-r_uint16
+id|__u16
 id|sac_flags
 suffix:semicolon
 DECL|member|sac_length
-r_uint32
+id|__u32
 id|sac_length
 suffix:semicolon
 DECL|member|sac_state
-r_uint16
+id|__u16
 id|sac_state
 suffix:semicolon
 DECL|member|sac_error
-r_uint16
+id|__u16
 id|sac_error
 suffix:semicolon
 DECL|member|sac_outbound_streams
-r_uint16
+id|__u16
 id|sac_outbound_streams
 suffix:semicolon
 DECL|member|sac_inbound_streams
-r_uint16
+id|__u16
 id|sac_inbound_streams
 suffix:semicolon
 DECL|member|sac_assoc_id
@@ -294,8 +290,7 @@ id|sac_assoc_id
 suffix:semicolon
 )brace
 suffix:semicolon
-multiline_comment|/* sctp_assoc_change */
-multiline_comment|/*&n; *   sac_state: 32 bits (signed integer)&n; *&n; *   This field holds one of a number of values that communicate the&n; *   event that happened to the association.  They include:&n; *   &n; *   Note:  The following state names deviate from the API draft as&n; *   the names clash too easily with other kernel symbols.&n; */
+multiline_comment|/*&n; *   sac_state: 32 bits (signed integer)&n; *&n; *   This field holds one of a number of values that communicate the&n; *   event that happened to the association.  They include:&n; *&n; *   Note:  The following state names deviate from the API draft as&n; *   the names clash too easily with other kernel symbols.&n; */
 DECL|enum|sctp_sac_state
 r_enum
 id|sctp_sac_state
@@ -317,22 +312,21 @@ id|SCTP_CANT_STR_ASSOC
 comma
 )brace
 suffix:semicolon
-multiline_comment|/* sctp_sac_state */
-multiline_comment|/* &n; * 5.3.1.2 SCTP_PEER_ADDR_CHANGE&n; *&n; *   When a destination address on a multi-homed peer encounters a change&n; *   an interface details event is sent.  The information has the&n; *   following structure:&n; */
+multiline_comment|/*&n; * 5.3.1.2 SCTP_PEER_ADDR_CHANGE&n; *&n; *   When a destination address on a multi-homed peer encounters a change&n; *   an interface details event is sent.  The information has the&n; *   following structure:&n; */
 DECL|struct|sctp_paddr_change
 r_struct
 id|sctp_paddr_change
 (brace
 DECL|member|spc_type
-r_uint16
+id|__u16
 id|spc_type
 suffix:semicolon
 DECL|member|spc_flags
-r_uint16
+id|__u16
 id|spc_flags
 suffix:semicolon
 DECL|member|spc_length
-r_uint32
+id|__u32
 id|spc_length
 suffix:semicolon
 DECL|member|spc_aaddr
@@ -354,7 +348,6 @@ id|spc_assoc_id
 suffix:semicolon
 )brace
 suffix:semicolon
-multiline_comment|/* sctp_paddr_change */
 multiline_comment|/*&n; *    spc_state:  32 bits (signed integer)&n; *&n; *   This field holds one of a number of values that communicate the&n; *   event that happened to the address.  They include:&n; */
 DECL|enum|sctp_spc_state
 r_enum
@@ -377,30 +370,29 @@ id|ADDRESS_MADE_PRIM
 comma
 )brace
 suffix:semicolon
-multiline_comment|/* sctp_spc_state */
-multiline_comment|/* &n; * 5.3.1.3 SCTP_REMOTE_ERROR&n; *&n; *   A remote peer may send an Operational Error message to its peer.&n; *   This message indicates a variety of error conditions on an&n; *   association. The entire error TLV as it appears on the wire is&n; *   included in a SCTP_REMOTE_ERROR event.  Please refer to the SCTP&n; *   specification [SCTP] and any extensions for a list of possible&n; *   error formats. SCTP error TLVs have the format:&n; */
+multiline_comment|/*&n; * 5.3.1.3 SCTP_REMOTE_ERROR&n; *&n; *   A remote peer may send an Operational Error message to its peer.&n; *   This message indicates a variety of error conditions on an&n; *   association. The entire error TLV as it appears on the wire is&n; *   included in a SCTP_REMOTE_ERROR event.  Please refer to the SCTP&n; *   specification [SCTP] and any extensions for a list of possible&n; *   error formats. SCTP error TLVs have the format:&n; */
 DECL|struct|sctp_remote_error
 r_struct
 id|sctp_remote_error
 (brace
 DECL|member|sre_type
-r_uint16
+id|__u16
 id|sre_type
 suffix:semicolon
 DECL|member|sre_flags
-r_uint16
+id|__u16
 id|sre_flags
 suffix:semicolon
 DECL|member|sre_length
-r_uint32
+id|__u32
 id|sre_length
 suffix:semicolon
 DECL|member|sre_error
-r_uint16
+id|__u16
 id|sre_error
 suffix:semicolon
 DECL|member|sre_len
-r_uint16
+id|__u16
 id|sre_len
 suffix:semicolon
 DECL|member|sre_assoc_id
@@ -408,7 +400,7 @@ id|sctp_assoc_t
 id|sre_assoc_id
 suffix:semicolon
 DECL|member|sre_data
-r_uint8
+id|__u8
 id|sre_data
 (braket
 l_int|0
@@ -416,25 +408,25 @@ l_int|0
 suffix:semicolon
 )brace
 suffix:semicolon
-multiline_comment|/* &n; * 5.3.1.4 SCTP_SEND_FAILED&n; *&n; *   If SCTP cannot deliver a message it may return the message as a&n; *   notification.&n; */
+multiline_comment|/*&n; * 5.3.1.4 SCTP_SEND_FAILED&n; *&n; *   If SCTP cannot deliver a message it may return the message as a&n; *   notification.&n; */
 DECL|struct|sctp_send_failed
 r_struct
 id|sctp_send_failed
 (brace
 DECL|member|ssf_type
-r_uint16
+id|__u16
 id|ssf_type
 suffix:semicolon
 DECL|member|ssf_flags
-r_uint16
+id|__u16
 id|ssf_flags
 suffix:semicolon
 DECL|member|ssf_length
-r_uint32
+id|__u32
 id|ssf_length
 suffix:semicolon
 DECL|member|ssf_error
-r_uint32
+id|__u32
 id|ssf_error
 suffix:semicolon
 DECL|member|ssf_info
@@ -447,7 +439,7 @@ id|sctp_assoc_t
 id|ssf_assoc_id
 suffix:semicolon
 DECL|member|ssf_data
-r_uint8
+id|__u8
 id|ssf_data
 (braket
 l_int|0
@@ -474,15 +466,15 @@ r_struct
 id|sctp_shutdown_event
 (brace
 DECL|member|sse_type
-r_uint16
+id|__u16
 id|sse_type
 suffix:semicolon
 DECL|member|sse_flags
-r_uint16
+id|__u16
 id|sse_flags
 suffix:semicolon
 DECL|member|sse_length
-r_uint32
+id|__u32
 id|sse_length
 suffix:semicolon
 DECL|member|sse_assoc_id
@@ -491,25 +483,25 @@ id|sse_assoc_id
 suffix:semicolon
 )brace
 suffix:semicolon
-multiline_comment|/* &n; * 5.3.1.6 SCTP_ADAPTION_INDICATION&n; *&n; *   When a peer sends a Adaption Layer Indication parameter , SCTP&n; *   delivers this notification to inform the application &n; *   that of the peers requested adaption layer.&n; */
+multiline_comment|/*&n; * 5.3.1.6 SCTP_ADAPTION_INDICATION&n; *&n; *   When a peer sends a Adaption Layer Indication parameter , SCTP&n; *   delivers this notification to inform the application&n; *   that of the peers requested adaption layer.&n; */
 DECL|struct|sctp_adaption_event
 r_struct
 id|sctp_adaption_event
 (brace
 DECL|member|sai_type
-r_uint16
+id|__u16
 id|sai_type
 suffix:semicolon
 DECL|member|sai_flags
-r_uint16
+id|__u16
 id|sai_flags
 suffix:semicolon
 DECL|member|sai_length
-r_uint32
+id|__u32
 id|sai_length
 suffix:semicolon
 DECL|member|sai_adaptation_bits
-r_uint32
+id|__u32
 id|sai_adaptation_bits
 suffix:semicolon
 DECL|member|sse_assoc_id
@@ -518,25 +510,25 @@ id|sse_assoc_id
 suffix:semicolon
 )brace
 suffix:semicolon
-multiline_comment|/* &n; * 5.3.1.7 SCTP_PARTIAL_DELIVERY_EVENT&n; *&n; *   When a reciever is engaged in a partial delivery of a&n; *   message this notification will be used to inidicate&n; *   various events. &n; */
+multiline_comment|/*&n; * 5.3.1.7 SCTP_PARTIAL_DELIVERY_EVENT&n; *&n; *   When a reciever is engaged in a partial delivery of a&n; *   message this notification will be used to inidicate&n; *   various events.&n; */
 DECL|struct|sctp_rcv_pdapi_event
 r_struct
 id|sctp_rcv_pdapi_event
 (brace
 DECL|member|pdapi_type
-r_uint16
+id|__u16
 id|pdapi_type
 suffix:semicolon
 DECL|member|pdapi_flags
-r_uint16
+id|__u16
 id|pdapi_flags
 suffix:semicolon
 DECL|member|pdapi_length
-r_uint32
+id|__u32
 id|pdapi_length
 suffix:semicolon
 DECL|member|pdapi_indication
-r_uint32
+id|__u32
 id|pdapi_indication
 suffix:semicolon
 DECL|member|pdapi_assoc_id
@@ -545,47 +537,46 @@ id|pdapi_assoc_id
 suffix:semicolon
 )brace
 suffix:semicolon
-multiline_comment|/* &n; * Described in Section 7.3 &n; *   Ancillary Data and Notification Interest Options&n; */
+multiline_comment|/*&n; * Described in Section 7.3&n; *   Ancillary Data and Notification Interest Options&n; */
 DECL|struct|sctp_event_subscribe
 r_struct
 id|sctp_event_subscribe
 (brace
 DECL|member|sctp_data_io_event
-r_uint8
+id|__u8
 id|sctp_data_io_event
 suffix:semicolon
 DECL|member|sctp_association_event
-r_uint8
+id|__u8
 id|sctp_association_event
 suffix:semicolon
 DECL|member|sctp_address_event
-r_uint8
+id|__u8
 id|sctp_address_event
 suffix:semicolon
 DECL|member|sctp_send_failure_event
-r_uint8
+id|__u8
 id|sctp_send_failure_event
 suffix:semicolon
 DECL|member|sctp_peer_error_event
-r_uint8
+id|__u8
 id|sctp_peer_error_event
 suffix:semicolon
 DECL|member|sctp_shutdown_event
-r_uint8
+id|__u8
 id|sctp_shutdown_event
 suffix:semicolon
 DECL|member|sctp_partial_delivery_event
-r_uint8
+id|__u8
 id|sctp_partial_delivery_event
 suffix:semicolon
 DECL|member|sctp_adaption_layer_event
-r_uint8
+id|__u8
 id|sctp_adaption_layer_event
 suffix:semicolon
 )brace
 suffix:semicolon
-multiline_comment|/* struct sctp_event_subscribe */
-multiline_comment|/* &n; * 5.3.1 SCTP Notification Structure&n; *&n; *   The notification structure is defined as the union of all&n; *   notification types.&n; *&n; */
+multiline_comment|/*&n; * 5.3.1 SCTP Notification Structure&n; *&n; *   The notification structure is defined as the union of all&n; *   notification types.&n; *&n; */
 DECL|union|sctp_notification
 r_union
 id|sctp_notification
@@ -593,16 +584,16 @@ id|sctp_notification
 r_struct
 (brace
 DECL|member|sn_type
-r_uint16
+id|__u16
 id|sn_type
 suffix:semicolon
 multiline_comment|/* Notification type. */
 DECL|member|sn_flags
-r_uint16
+id|__u16
 id|sn_flags
 suffix:semicolon
 DECL|member|sn_length
-r_uint32
+id|__u32
 id|sn_length
 suffix:semicolon
 DECL|member|h
@@ -683,7 +674,7 @@ id|SCTP_ADAPTION_INDICATION
 comma
 )brace
 suffix:semicolon
-multiline_comment|/* Notification error codes used to fill up the error fields in some &n; * notifications.&n; * SCTP_PEER_ADDRESS_CHAGE &t;: spc_error&n; * SCTP_ASSOC_CHANGE&t;&t;: sac_error&n; * These names should be potentially included in the draft 04 of the SCTP &n; * sockets API specification.&n; */
+multiline_comment|/* Notification error codes used to fill up the error fields in some&n; * notifications.&n; * SCTP_PEER_ADDRESS_CHAGE &t;: spc_error&n; * SCTP_ASSOC_CHANGE&t;&t;: sac_error&n; * These names should be potentially included in the draft 04 of the SCTP&n; * sockets API specification.&n; */
 DECL|enum|sctp_sn_error
 r_typedef
 r_enum
@@ -714,7 +705,7 @@ DECL|typedef|sctp_sn_error_t
 )brace
 id|sctp_sn_error_t
 suffix:semicolon
-multiline_comment|/* &n; *&n; * 7.1.14 Peer Address Parameters&n; *&n; *   Applications can enable or disable heartbeats for any peer address&n; *   of an association, modify an address&squot;s heartbeat interval, force a&n; *   heartbeat to be sent immediately, and adjust the address&squot;s maximum&n; *   number of retransmissions sent before an address is considered&n; *   unreachable. The following structure is used to access and modify an&n; *   address&squot;s parameters:&n; */
+multiline_comment|/*&n; *&n; * 7.1.14 Peer Address Parameters&n; *&n; *   Applications can enable or disable heartbeats for any peer address&n; *   of an association, modify an address&squot;s heartbeat interval, force a&n; *   heartbeat to be sent immediately, and adjust the address&squot;s maximum&n; *   number of retransmissions sent before an address is considered&n; *   unreachable. The following structure is used to access and modify an&n; *   address&squot;s parameters:&n; */
 DECL|struct|sctp_paddrparams
 r_struct
 id|sctp_paddrparams
@@ -725,11 +716,11 @@ id|sockaddr_storage
 id|spp_address
 suffix:semicolon
 DECL|member|spp_hbinterval
-r_uint32
+id|__u32
 id|spp_hbinterval
 suffix:semicolon
 DECL|member|spp_pathmaxrxt
-r_uint16
+id|__u16
 id|spp_pathmaxrxt
 suffix:semicolon
 DECL|member|spp_assoc_id
@@ -738,7 +729,7 @@ id|spp_assoc_id
 suffix:semicolon
 )brace
 suffix:semicolon
-multiline_comment|/* &n; * 7.2.2 Peer Address Information&n; *&n; *   Applications can retrieve information about a specific peer address&n; *   of an association, including its reachability state, congestion&n; *   window, and retransmission timer values.  This information is&n; *   read-only. The following structure is used to access this&n; *   information:&n; */
+multiline_comment|/*&n; * 7.2.2 Peer Address Information&n; *&n; *   Applications can retrieve information about a specific peer address&n; *   of an association, including its reachability state, congestion&n; *   window, and retransmission timer values.  This information is&n; *   read-only. The following structure is used to access this&n; *   information:&n; */
 DECL|struct|sctp_paddrinfo
 r_struct
 id|sctp_paddrinfo
@@ -753,42 +744,42 @@ id|sockaddr_storage
 id|spinfo_address
 suffix:semicolon
 DECL|member|spinfo_state
-r_int32
+id|__s32
 id|spinfo_state
 suffix:semicolon
 DECL|member|spinfo_cwnd
-r_uint32
+id|__u32
 id|spinfo_cwnd
 suffix:semicolon
 DECL|member|spinfo_srtt
-r_uint32
+id|__u32
 id|spinfo_srtt
 suffix:semicolon
 DECL|member|spinfo_rto
-r_uint32
+id|__u32
 id|spinfo_rto
 suffix:semicolon
 DECL|member|spinfo_mtu
-r_uint32
+id|__u32
 id|spinfo_mtu
 suffix:semicolon
 )brace
 suffix:semicolon
-multiline_comment|/* &n; * 7.1.1 Retransmission Timeout Parameters (SCTP_RTOINFO)&n; *&n; *   The protocol parameters used to initialize and bound retransmission&n; *   timeout (RTO) are tunable.  See [SCTP] for more information on how&n; *   these parameters are used in RTO calculation.  The peer address&n; *   parameter is ignored for TCP style socket.&n; */
+multiline_comment|/*&n; * 7.1.1 Retransmission Timeout Parameters (SCTP_RTOINFO)&n; *&n; *   The protocol parameters used to initialize and bound retransmission&n; *   timeout (RTO) are tunable.  See [SCTP] for more information on how&n; *   these parameters are used in RTO calculation.  The peer address&n; *   parameter is ignored for TCP style socket.&n; */
 DECL|struct|sctp_rtoinfo
 r_struct
 id|sctp_rtoinfo
 (brace
 DECL|member|srto_initial
-r_uint32
+id|__u32
 id|srto_initial
 suffix:semicolon
 DECL|member|srto_max
-r_uint32
+id|__u32
 id|srto_max
 suffix:semicolon
 DECL|member|srto_min
-r_uint32
+id|__u32
 id|srto_min
 suffix:semicolon
 DECL|member|srto_assoc_id
@@ -797,13 +788,13 @@ id|srto_assoc_id
 suffix:semicolon
 )brace
 suffix:semicolon
-multiline_comment|/* &n; * 7.1.2 Association Retransmission Parameter (SCTP_ASSOCRTXINFO)&n; *&n; *   The protocol parameter used to set the number of retransmissions&n; *   sent before an association is considered unreachable.&n; *   See [SCTP] for more information on how this parameter is used.  The&n; *   peer address parameter is ignored for TCP style socket.&n; */
+multiline_comment|/*&n; * 7.1.2 Association Retransmission Parameter (SCTP_ASSOCRTXINFO)&n; *&n; *   The protocol parameter used to set the number of retransmissions&n; *   sent before an association is considered unreachable.&n; *   See [SCTP] for more information on how this parameter is used.  The&n; *   peer address parameter is ignored for TCP style socket.&n; */
 DECL|struct|sctp_assocparams
 r_struct
 id|sctp_assocparams
 (brace
 DECL|member|sasoc_asocmaxrxt
-r_uint16
+id|__u16
 id|sasoc_asocmaxrxt
 suffix:semicolon
 DECL|member|sasoc_assoc_id
@@ -812,7 +803,7 @@ id|sasoc_assoc_id
 suffix:semicolon
 )brace
 suffix:semicolon
-multiline_comment|/* &n; * 7.1.9 Set Primary Address (SCTP_SET_PRIMARY_ADDR)&n; *&n; *  Requests that the peer mark the enclosed address as the association&n; *  primary. The enclosed address must be one of the association&squot;s&n; *  locally bound addresses. The following structure is used to make a&n; *   set primary request:&n; */
+multiline_comment|/*&n; * 7.1.9 Set Primary Address (SCTP_SET_PRIMARY_ADDR)&n; *&n; *  Requests that the peer mark the enclosed address as the association&n; *  primary. The enclosed address must be one of the association&squot;s&n; *  locally bound addresses. The following structure is used to make a&n; *   set primary request:&n; */
 DECL|struct|sctp_setprim
 r_struct
 id|sctp_setprim
@@ -828,7 +819,7 @@ id|ssp_assoc_id
 suffix:semicolon
 )brace
 suffix:semicolon
-multiline_comment|/* &n; * 7.1.10 Set Peer Primary Address (SCTP_SET_PEER_PRIMARY_ADDR)&n; *&n; *  Requests that the local SCTP stack use the enclosed peer address as&n; *  the association primary. The enclosed address must be one of the&n; *  association peer&squot;s addresses. The following structure is used to&n; *  make a set peer primary request:&n; */
+multiline_comment|/*&n; * 7.1.10 Set Peer Primary Address (SCTP_SET_PEER_PRIMARY_ADDR)&n; *&n; *  Requests that the local SCTP stack use the enclosed peer address as&n; *  the association primary. The enclosed address must be one of the&n; *  association peer&squot;s addresses. The following structure is used to&n; *  make a set peer primary request:&n; */
 DECL|struct|sctp_setpeerprim
 r_struct
 id|sctp_setpeerprim
@@ -844,7 +835,7 @@ id|sspp_assoc_id
 suffix:semicolon
 )brace
 suffix:semicolon
-multiline_comment|/* &n; * 7.2.1 Association Status (SCTP_STATUS)&n; *&n; *   Applications can retrieve current status information about an&n; *   association, including association state, peer receiver window size,&n; *   number of unacked data chunks, and number of data chunks pending&n; *   receipt.  This information is read-only.  The following structure is&n; *   used to access this information:&n; */
+multiline_comment|/*&n; * 7.2.1 Association Status (SCTP_STATUS)&n; *&n; *   Applications can retrieve current status information about an&n; *   association, including association state, peer receiver window size,&n; *   number of unacked data chunks, and number of data chunks pending&n; *   receipt.  This information is read-only.  The following structure is&n; *   used to access this information:&n; */
 DECL|struct|sctp_status
 r_struct
 id|sctp_status
@@ -854,31 +845,31 @@ id|sctp_assoc_t
 id|sstat_assoc_id
 suffix:semicolon
 DECL|member|sstat_state
-r_int32
+id|__s32
 id|sstat_state
 suffix:semicolon
 DECL|member|sstat_rwnd
-r_uint32
+id|__u32
 id|sstat_rwnd
 suffix:semicolon
 DECL|member|sstat_unackdata
-r_uint16
+id|__u16
 id|sstat_unackdata
 suffix:semicolon
 DECL|member|sstat_penddata
-r_uint16
+id|__u16
 id|sstat_penddata
 suffix:semicolon
 DECL|member|sstat_instrms
-r_uint16
+id|__u16
 id|sstat_instrms
 suffix:semicolon
 DECL|member|sstat_outstrms
-r_uint16
+id|__u16
 id|sstat_outstrms
 suffix:semicolon
 DECL|member|sstat_fragmentation_point
-r_uint32
+id|__u32
 id|sstat_fragmentation_point
 suffix:semicolon
 DECL|member|sstat_primary
@@ -888,18 +879,18 @@ id|sstat_primary
 suffix:semicolon
 )brace
 suffix:semicolon
-multiline_comment|/* &n; * 7.1.12 Set Adaption Layer Indicator &n; * &n; * Requests that the local endpoint set the specified Adaption Layer &n; * Indication parameter for all future&n; *  INIT and INIT-ACK exchanges. &n; */
+multiline_comment|/*&n; * 7.1.12 Set Adaption Layer Indicator&n; *&n; * Requests that the local endpoint set the specified Adaption Layer&n; * Indication parameter for all future&n; *  INIT and INIT-ACK exchanges.&n; */
 DECL|struct|sctp_setadaption
 r_struct
 id|sctp_setadaption
 (brace
 DECL|member|ssb_adaption_ind
-id|u_int32_t
+id|__u32
 id|ssb_adaption_ind
 suffix:semicolon
 )brace
 suffix:semicolon
-multiline_comment|/* &n; * 7.1.12 Set default message time outs (SCTP_SET_STREAM_TIMEOUTS)&n; * &n; * This option requests that the requested stream apply a&n; *  default time-out for messages in queue.&n; */
+multiline_comment|/*&n; * 7.1.12 Set default message time outs (SCTP_SET_STREAM_TIMEOUTS)&n; *&n; * This option requests that the requested stream apply a&n; *  default time-out for messages in queue.&n; */
 DECL|struct|sctp_setstrm_timeout
 r_struct
 id|sctp_setstrm_timeout
@@ -909,15 +900,15 @@ id|sctp_assoc_t
 id|ssto_assoc_id
 suffix:semicolon
 DECL|member|ssto_timeout
-id|u_int32_t
+id|__u32
 id|ssto_timeout
 suffix:semicolon
 DECL|member|ssto_streamid_start
-id|u_int16_t
+id|__u16
 id|ssto_streamid_start
 suffix:semicolon
 DECL|member|ssto_streamid_end
-id|u_int16_t
+id|__u16
 id|ssto_streamid_end
 suffix:semicolon
 )brace
@@ -937,13 +928,12 @@ DECL|macro|MSG_NOTIFICATION
 mdefine_line|#define MSG_NOTIFICATION MSG_NOTIFICATION
 )brace
 suffix:semicolon
-multiline_comment|/* enum sctp_msg_flags */
-multiline_comment|/* &n; * 8.1 sctp_bindx()&n; *&n; * The flags parameter is formed from the bitwise OR of zero or more of the &n; * following currently defined flags:&n; */
+multiline_comment|/*&n; * 8.1 sctp_bindx()&n; *&n; * The flags parameter is formed from the bitwise OR of zero or more of the&n; * following currently defined flags:&n; */
 DECL|macro|BINDX_ADD_ADDR
 mdefine_line|#define BINDX_ADD_ADDR 0x01
 DECL|macro|BINDX_REM_ADDR
 mdefine_line|#define BINDX_REM_ADDR 0x02
-multiline_comment|/* This is the structure that is passed as an argument(optval) to &n; * getsockopt(SCTP_SOCKOPT_PEELOFF).&n; */
+multiline_comment|/* This is the structure that is passed as an argument(optval) to&n; * getsockopt(SCTP_SOCKOPT_PEELOFF).&n; */
 r_typedef
 r_struct
 (brace

@@ -13,12 +13,10 @@ id|unused
 op_assign
 l_string|&quot;$Id: sctp_tsnmap.c,v 1.8 2002/07/26 22:52:32 jgrimm Exp $&quot;
 suffix:semicolon
-macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;net/sctp/sctp.h&gt;
 macro_line|#include &lt;net/sctp/sctp_sm.h&gt;
 r_static
-r_inline
 r_void
 id|_sctp_tsnmap_update
 c_func
@@ -29,7 +27,6 @@ id|map
 )paren
 suffix:semicolon
 r_static
-r_inline
 r_void
 id|_sctp_tsnmap_update_pending_data
 c_func
@@ -40,29 +37,28 @@ id|map
 )paren
 suffix:semicolon
 r_static
-r_inline
 r_void
 id|_sctp_tsnmap_find_gap_ack
 c_func
 (paren
-r_uint8
+id|__u8
 op_star
 id|map
 comma
-r_uint16
+id|__u16
 id|off
 comma
-r_uint16
+id|__u16
 id|len
 comma
-r_uint16
+id|__u16
 id|base
 comma
 r_int
 op_star
 id|started
 comma
-r_uint16
+id|__u16
 op_star
 id|start
 comma
@@ -70,22 +66,22 @@ r_int
 op_star
 id|ended
 comma
-r_uint16
+id|__u16
 op_star
 id|end
 )paren
 suffix:semicolon
 multiline_comment|/* Create a new sctp_tsnmap.&n; * Allocate room to store at least &squot;len&squot; contiguous TSNs.&n; */
+DECL|function|sctp_tsnmap_new
 id|sctp_tsnmap_t
 op_star
-DECL|function|sctp_tsnmap_new
 id|sctp_tsnmap_new
 c_func
 (paren
-r_uint16
+id|__u16
 id|len
 comma
-r_uint32
+id|__u32
 id|initial_tsn
 comma
 r_int
@@ -118,20 +114,16 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-l_int|NULL
-op_eq
+op_logical_neg
 id|retval
 )paren
-(brace
 r_goto
 id|fail
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
-l_int|NULL
-op_eq
+op_logical_neg
 id|sctp_tsnmap_init
 c_func
 (paren
@@ -142,11 +134,9 @@ comma
 id|initial_tsn
 )paren
 )paren
-(brace
 r_goto
 id|fail_map
 suffix:semicolon
-)brace
 id|retval-&gt;malloced
 op_assign
 l_int|1
@@ -157,10 +147,7 @@ suffix:semicolon
 id|fail_map
 suffix:colon
 id|kfree
-c_func
-(paren
 id|retval
-)paren
 suffix:semicolon
 id|fail
 suffix:colon
@@ -168,11 +155,10 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_tsnmap_new() */
 multiline_comment|/* Initialize a block of memory as a tsnmap.  */
+DECL|function|sctp_tsnmap_init
 id|sctp_tsnmap_t
 op_star
-DECL|function|sctp_tsnmap_init
 id|sctp_tsnmap_init
 c_func
 (paren
@@ -180,10 +166,10 @@ id|sctp_tsnmap_t
 op_star
 id|map
 comma
-r_uint16
+id|__u16
 id|len
 comma
-r_uint32
+id|__u32
 id|initial_tsn
 )paren
 (brace
@@ -247,10 +233,9 @@ r_return
 id|map
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_tsnmap_init() */
 multiline_comment|/* Test the tracking state of this TSN.&n; * Returns:&n; *   0 if the TSN has not yet been seen&n; *  &gt;0 if the TSN has been seen (duplicate)&n; *  &lt;0 if the TSN is invalid (too large to track)&n; */
-r_int
 DECL|function|sctp_tsnmap_check
+r_int
 id|sctp_tsnmap_check
 c_func
 (paren
@@ -259,11 +244,11 @@ id|sctp_tsnmap_t
 op_star
 id|map
 comma
-r_uint32
+id|__u32
 id|tsn
 )paren
 (brace
-r_int32
+id|__s32
 id|gap
 suffix:semicolon
 r_int
@@ -300,7 +285,7 @@ r_goto
 id|out
 suffix:semicolon
 )brace
-multiline_comment|/* Honk if we&squot;ve already seen this TSN.&n;         * We have three cases:&n;&t; *&t;1. The TSN is ancient or belongs to a previous tsn_map.&n;&t; *&t;2. The TSN is already marked in the tsn_map.&n;&t; *&t;3. The TSN is already marked in the tsn_map_overflow.&n;&t; */
+multiline_comment|/* Honk if we&squot;ve already seen this TSN.&n;&t; * We have three cases:&n;&t; *&t;1. The TSN is ancient or belongs to a previous tsn_map.&n;&t; *&t;2. The TSN is already marked in the tsn_map.&n;&t; *&t;3. The TSN is already marked in the tsn_map_overflow.&n;&t; */
 r_if
 c_cond
 (paren
@@ -332,29 +317,24 @@ id|map-&gt;len
 )braket
 )paren
 )paren
-(brace
 id|dup
 op_assign
 l_int|1
 suffix:semicolon
-)brace
 r_else
-(brace
 id|dup
 op_assign
 l_int|0
 suffix:semicolon
-)brace
 id|out
 suffix:colon
 r_return
 id|dup
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_tsnmap_check() */
-multiline_comment|/* Is there a gap in the TSN map? */
-r_int
+multiline_comment|/* Is there a gap in the TSN map?  */
 DECL|function|sctp_tsnmap_has_gap
+r_int
 id|sctp_tsnmap_has_gap
 c_func
 (paren
@@ -379,10 +359,9 @@ r_return
 id|has_gap
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_tsnmap_has_gap() */
 multiline_comment|/* Mark this TSN as seen.  */
-r_void
 DECL|function|sctp_tsnmap_mark
+r_void
 id|sctp_tsnmap_mark
 c_func
 (paren
@@ -390,11 +369,11 @@ id|sctp_tsnmap_t
 op_star
 id|map
 comma
-r_uint32
+id|__u32
 id|tsn
 )paren
 (brace
-r_int32
+id|__s32
 id|gap
 suffix:semicolon
 multiline_comment|/* Vacuously mark any TSN which precedes the map base or&n;&t; * exceeds the end of the map.&n;&t; */
@@ -409,10 +388,8 @@ comma
 id|map-&gt;base_tsn
 )paren
 )paren
-(brace
 r_return
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -429,10 +406,8 @@ op_plus
 id|map-&gt;len
 )paren
 )paren
-(brace
 r_return
 suffix:semicolon
-)brace
 multiline_comment|/* Bump the max.  */
 r_if
 c_cond
@@ -445,13 +420,11 @@ comma
 id|tsn
 )paren
 )paren
-(brace
 id|map-&gt;max_tsn_seen
 op_assign
 id|tsn
 suffix:semicolon
-)brace
-multiline_comment|/* Assert: TSN is in range. */
+multiline_comment|/* Assert: TSN is in range.  */
 id|gap
 op_assign
 id|tsn
@@ -466,16 +439,13 @@ id|gap
 OL
 id|map-&gt;len
 )paren
-(brace
 id|map-&gt;tsn_map
 (braket
 id|gap
 )braket
 op_increment
 suffix:semicolon
-)brace
 r_else
-(brace
 id|map-&gt;overflow_map
 (braket
 id|gap
@@ -484,7 +454,6 @@ id|map-&gt;len
 )braket
 op_increment
 suffix:semicolon
-)brace
 multiline_comment|/* Go fixup any internal TSN mapping variables including&n;&t; * cumulative_tsn_ack_point.&n;&t; */
 id|_sctp_tsnmap_update
 c_func
@@ -493,10 +462,9 @@ id|map
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_tsnmap_mark() */
 multiline_comment|/* Retrieve the Cumulative TSN Ack Point. */
-r_uint32
 DECL|function|sctp_tsnmap_get_ctsn
+id|__u32
 id|sctp_tsnmap_get_ctsn
 c_func
 (paren
@@ -510,10 +478,9 @@ r_return
 id|map-&gt;cumulative_tsn_ack_point
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_tsnmap_get_ctsn() */
 multiline_comment|/* Retrieve the highest TSN we&squot;ve seen.  */
-r_uint32
 DECL|function|sctp_tsnmap_get_max_tsn_seen
+id|__u32
 id|sctp_tsnmap_get_max_tsn_seen
 c_func
 (paren
@@ -527,10 +494,9 @@ r_return
 id|map-&gt;max_tsn_seen
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_tsnmap_get_max_tsn_seen() */
 multiline_comment|/* Dispose of a tsnmap.  */
-r_void
 DECL|function|sctp_tsnmap_free
+r_void
 id|sctp_tsnmap_free
 c_func
 (paren
@@ -544,7 +510,6 @@ c_cond
 (paren
 id|map-&gt;malloced
 )paren
-(brace
 id|kfree
 c_func
 (paren
@@ -552,11 +517,9 @@ id|map
 )paren
 suffix:semicolon
 )brace
-)brace
-multiline_comment|/* sctp_tsnmap_free() */
 multiline_comment|/* Initialize a Gap Ack Block iterator from memory being provided.  */
-r_void
 DECL|function|sctp_tsnmap_iter_init
+r_void
 id|sctp_tsnmap_iter_init
 c_func
 (paren
@@ -578,10 +541,9 @@ op_plus
 l_int|1
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_tsnmap_iter_init() */
-multiline_comment|/* Get the next Gap Ack Blocks. Returns 0 if there was not &n; * another block to get.&n; */
-r_int
+multiline_comment|/* Get the next Gap Ack Blocks. Returns 0 if there was not&n; * another block to get.&n; */
 DECL|function|sctp_tsnmap_next_gap_ack
+r_int
 id|sctp_tsnmap_next_gap_ack
 c_func
 (paren
@@ -594,11 +556,11 @@ id|sctp_tsnmap_iter_t
 op_star
 id|iter
 comma
-r_uint16
+id|__u16
 op_star
 id|start
 comma
-r_uint16
+id|__u16
 op_star
 id|end
 )paren
@@ -608,7 +570,7 @@ id|started
 comma
 id|ended
 suffix:semicolon
-r_uint16
+id|__u16
 id|_start
 comma
 id|_end
@@ -682,14 +644,11 @@ id|map-&gt;base_tsn
 OL
 id|map-&gt;len
 )paren
-(brace
 id|offset
 op_assign
 l_int|0
 suffix:semicolon
-)brace
 r_else
-(brace
 id|offset
 op_assign
 id|iter-&gt;start
@@ -698,7 +657,6 @@ id|map-&gt;base_tsn
 op_minus
 id|map-&gt;len
 suffix:semicolon
-)brace
 multiline_comment|/* Search the overflow map.  */
 id|_sctp_tsnmap_find_gap_ack
 c_func
@@ -754,7 +712,7 @@ c_cond
 id|ended
 )paren
 (brace
-multiline_comment|/* Fix up the start and end based on the &n;&t;&t; * Cumulative TSN Ack offset into the map.&n;&t;&t; */
+multiline_comment|/* Fix up the start and end based on the&n;&t;&t; * Cumulative TSN Ack offset into the map.&n;&t;&t; */
 r_int
 id|gap
 op_assign
@@ -791,13 +749,11 @@ r_return
 id|ended
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_tsnmap_next_gap_ack() */
 multiline_comment|/********************************************************************&n; * 2nd Level Abstractions&n; ********************************************************************/
 multiline_comment|/* This private helper function updates the tsnmap buffers and&n; * the Cumulative TSN Ack Point.&n; */
-r_static
-r_inline
-r_void
 DECL|function|_sctp_tsnmap_update
+r_static
+r_void
 id|_sctp_tsnmap_update
 c_func
 (paren
@@ -806,7 +762,7 @@ op_star
 id|map
 )paren
 (brace
-r_uint32
+id|__u32
 id|ctsn
 suffix:semicolon
 id|ctsn
@@ -827,7 +783,7 @@ id|map-&gt;overflow_tsn
 )paren
 (brace
 multiline_comment|/* Now tsn_map must have been all &squot;1&squot;s,&n;&t;&t;&t; * so we swap the map and check the overflow table&n;&t;&t;&t; */
-r_uint8
+id|__u8
 op_star
 id|tmp
 op_assign
@@ -887,11 +843,9 @@ id|map
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* _sctp_tsnmap_update() */
-r_static
-r_inline
-r_void
 DECL|function|_sctp_tsnmap_update_pending_data
+r_static
+r_void
 id|_sctp_tsnmap_update_pending_data
 c_func
 (paren
@@ -900,25 +854,25 @@ op_star
 id|map
 )paren
 (brace
-r_uint32
+id|__u32
 id|cum_tsn
 op_assign
 id|map-&gt;cumulative_tsn_ack_point
 suffix:semicolon
-r_uint32
+id|__u32
 id|max_tsn
 op_assign
 id|map-&gt;max_tsn_seen
 suffix:semicolon
-r_uint32
+id|__u32
 id|base_tsn
 op_assign
 id|map-&gt;base_tsn
 suffix:semicolon
-r_uint16
+id|__u16
 id|pending_data
 suffix:semicolon
-r_int32
+id|__s32
 id|gap
 comma
 id|start
@@ -954,11 +908,9 @@ op_plus
 id|map-&gt;len
 )paren
 )paren
-(brace
 r_goto
 id|out
 suffix:semicolon
-)brace
 id|start
 op_assign
 (paren
@@ -1020,11 +972,9 @@ id|map-&gt;tsn_map
 id|i
 )braket
 )paren
-(brace
 id|pending_data
 op_decrement
 suffix:semicolon
-)brace
 )brace
 r_if
 c_cond
@@ -1069,11 +1019,9 @@ id|map-&gt;overflow_map
 id|i
 )braket
 )paren
-(brace
 id|pending_data
 op_decrement
 suffix:semicolon
-)brace
 )brace
 )brace
 id|out
@@ -1083,32 +1031,31 @@ op_assign
 id|pending_data
 suffix:semicolon
 )brace
-multiline_comment|/* This is a private helper for finding Gap Ack Blocks.  It searches a&n; * single array for the start and end of a Gap Ack Block.&n; *&n; * The flags &quot;started&quot; and &quot;ended&quot; tell is if we found the beginning&n; * or (respectively) the end of a Gap Ack Block.&n; * &n; */
-r_static
-r_inline
-r_void
+multiline_comment|/* This is a private helper for finding Gap Ack Blocks.  It searches a&n; * single array for the start and end of a Gap Ack Block.&n; *&n; * The flags &quot;started&quot; and &quot;ended&quot; tell is if we found the beginning&n; * or (respectively) the end of a Gap Ack Block.&n; */
 DECL|function|_sctp_tsnmap_find_gap_ack
+r_static
+r_void
 id|_sctp_tsnmap_find_gap_ack
 c_func
 (paren
-r_uint8
+id|__u8
 op_star
 id|map
 comma
-r_uint16
+id|__u16
 id|off
 comma
-r_uint16
+id|__u16
 id|len
 comma
-r_uint16
+id|__u16
 id|base
 comma
 r_int
 op_star
 id|started
 comma
-r_uint16
+id|__u16
 op_star
 id|start
 comma
@@ -1116,7 +1063,7 @@ r_int
 op_star
 id|ended
 comma
-r_uint16
+id|__u16
 op_star
 id|end
 )paren
@@ -1229,5 +1176,4 @@ suffix:semicolon
 )brace
 )brace
 )brace
-multiline_comment|/* _sctp_tsnmap_next_gap_ack() */
 eof

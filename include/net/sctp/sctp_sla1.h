@@ -2,11 +2,6 @@ multiline_comment|/* SCTP reference Implementation &n; * Copyright (C) 1999 Cisc
 macro_line|#ifndef __SLA1_h__
 DECL|macro|__SLA1_h__
 mdefine_line|#define __SLA1_h__
-macro_line|#ifdef&t;__cplusplus
-r_extern
-l_string|&quot;C&quot;
-(brace
-macro_line|#endif
 DECL|struct|SLA_1_Context
 r_struct
 id|SLA_1_Context
@@ -164,8 +159,5 @@ r_char
 op_star
 )paren
 suffix:semicolon
-macro_line|#ifdef&t;__cplusplus
-)brace
-macro_line|#endif
 macro_line|#endif
 eof

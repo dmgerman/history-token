@@ -9,46 +9,46 @@ r_typedef
 r_struct
 id|sctp_tsnmap
 (brace
-multiline_comment|/* This array counts the number of chunks with each TSN.&n;&t; * It points at one of the two buffers with which we will&n;&t; * ping-pong between.  &n;&t; */
+multiline_comment|/* This array counts the number of chunks with each TSN.&n;&t; * It points at one of the two buffers with which we will&n;&t; * ping-pong between.&n;&t; */
 DECL|member|tsn_map
-r_uint8
+id|__u8
 op_star
 id|tsn_map
 suffix:semicolon
 multiline_comment|/* This marks the tsn which overflows the tsn_map, when the&n;&t; * cumulative ack point reaches this point we know we can switch&n;&t; * maps (tsn_map and overflow_map swap).&n;&t; */
 DECL|member|overflow_tsn
-r_uint32
+id|__u32
 id|overflow_tsn
 suffix:semicolon
 multiline_comment|/* This is the overflow array for tsn_map.&n;&t; * It points at one of the other ping-pong buffers.&n;&t; */
 DECL|member|overflow_map
-r_uint8
+id|__u8
 op_star
 id|overflow_map
 suffix:semicolon
 multiline_comment|/* This is the TSN at tsn_map[0].  */
 DECL|member|base_tsn
-r_uint32
+id|__u32
 id|base_tsn
 suffix:semicolon
-multiline_comment|/* Last Rcvd   : This is the last TSN received in&n;&t; * TSN&t;       : sequence. This value is set initially by&n;&t; *             : taking the peer&squot;s Initial TSN, received in&n;&t; *             : the INIT or INIT ACK chunk, and subtracting&n;&t; *             : one from it. &n;&t; *&n;&t; * Throughout most of the specification this is called the&n;&t; * &quot;Cumulative TSN ACK Point&quot;.  In this case, we&n;&t; * ignore the advice in 12.2 in favour of the term&n;&t; * used in the bulk of the text.&n;&t; */
+multiline_comment|/* Last Rcvd   : This is the last TSN received in&n;&t; * TSN&t;       : sequence. This value is set initially by&n;&t; *             : taking the peer&squot;s Initial TSN, received in&n;&t; *             : the INIT or INIT ACK chunk, and subtracting&n;&t; *             : one from it.&n;&t; *&n;&t; * Throughout most of the specification this is called the&n;&t; * &quot;Cumulative TSN ACK Point&quot;.  In this case, we&n;&t; * ignore the advice in 12.2 in favour of the term&n;&t; * used in the bulk of the text.&n;&t; */
 DECL|member|cumulative_tsn_ack_point
-r_uint32
+id|__u32
 id|cumulative_tsn_ack_point
 suffix:semicolon
-multiline_comment|/* This is the minimum number of TSNs we can track.  This corresponds&n;&t; * to the size of tsn_map.   Note: the overflow_map allows us to &n;&t; * potentially track more than this quantity.  &n;&t; */
+multiline_comment|/* This is the minimum number of TSNs we can track.  This corresponds&n;&t; * to the size of tsn_map.   Note: the overflow_map allows us to&n;&t; * potentially track more than this quantity.&n;&t; */
 DECL|member|len
-r_uint16
+id|__u16
 id|len
 suffix:semicolon
 multiline_comment|/* This is the highest TSN we&squot;ve marked.  */
 DECL|member|max_tsn_seen
-r_uint32
+id|__u32
 id|max_tsn_seen
 suffix:semicolon
 multiline_comment|/* No. of data chunks pending receipt. used by SCTP_STATUS sockopt */
 DECL|member|pending_data
-r_uint16
+id|__u16
 id|pending_data
 suffix:semicolon
 DECL|member|malloced
@@ -56,7 +56,7 @@ r_int
 id|malloced
 suffix:semicolon
 DECL|member|raw_map
-r_uint8
+id|__u8
 id|raw_map
 (braket
 l_int|0
@@ -72,7 +72,7 @@ r_struct
 id|sctp_tsnmap_iter
 (brace
 DECL|member|start
-r_uint32
+id|__u32
 id|start
 suffix:semicolon
 DECL|typedef|sctp_tsnmap_iter_t
@@ -85,10 +85,10 @@ op_star
 id|sctp_tsnmap_new
 c_func
 (paren
-r_uint16
+id|__u16
 id|len
 comma
-r_uint32
+id|__u32
 id|initial_tsn
 comma
 r_int
@@ -105,9 +105,9 @@ op_star
 id|map
 )paren
 suffix:semicolon
-multiline_comment|/* This macro assists in creation of external storage for variable length &n; * internal buffers.  We double allocate so the overflow map works.&n; */
+multiline_comment|/* This macro assists in creation of external storage for variable length&n; * internal buffers.  We double allocate so the overflow map works.&n; */
 DECL|macro|sctp_tsnmap_storage_size
-mdefine_line|#define sctp_tsnmap_storage_size(count) (sizeof(uint8_t) * (count) * 2)
+mdefine_line|#define sctp_tsnmap_storage_size(count) (sizeof(__u8) * (count) * 2)
 multiline_comment|/* Initialize a block of memory as a tsnmap.  */
 id|sctp_tsnmap_t
 op_star
@@ -118,10 +118,10 @@ id|sctp_tsnmap_t
 op_star
 id|map
 comma
-r_uint16
+id|__u16
 id|len
 comma
-r_uint32
+id|__u32
 id|initial_tsn
 )paren
 suffix:semicolon
@@ -135,7 +135,7 @@ id|sctp_tsnmap_t
 op_star
 id|map
 comma
-r_uint32
+id|__u32
 id|tsn
 )paren
 suffix:semicolon
@@ -148,12 +148,12 @@ id|sctp_tsnmap_t
 op_star
 id|map
 comma
-r_uint32
+id|__u32
 id|tsn
 )paren
 suffix:semicolon
 multiline_comment|/* Retrieve the Cumulative TSN ACK Point.  */
-r_uint32
+id|__u32
 id|sctp_tsnmap_get_ctsn
 c_func
 (paren
@@ -164,7 +164,7 @@ id|map
 )paren
 suffix:semicolon
 multiline_comment|/* Retrieve the highest TSN we&squot;ve seen.  */
-r_uint32
+id|__u32
 id|sctp_tsnmap_get_max_tsn_seen
 c_func
 (paren
@@ -214,11 +214,11 @@ id|sctp_tsnmap_iter_t
 op_star
 id|iter
 comma
-r_uint16
+id|__u16
 op_star
 id|start
 comma
-r_uint16
+id|__u16
 op_star
 id|end
 )paren

@@ -13,7 +13,6 @@ id|unused
 op_assign
 l_string|&quot;$Id: sctp_sm_make_chunk.c,v 1.38 2002/07/26 22:52:32 jgrimm Exp $&quot;
 suffix:semicolon
-macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/ip.h&gt;
@@ -81,8 +80,8 @@ comma
 )brace
 suffix:semicolon
 multiline_comment|/* A helper to initilize to initilize an op error inside a&n; * provided chunk, as most cause codes will be embedded inside an&n; * abort chunk.&n; */
-r_void
 DECL|function|sctp_init_cause
+r_void
 id|sctp_init_cause
 c_func
 (paren
@@ -90,7 +89,7 @@ id|sctp_chunk_t
 op_star
 id|chunk
 comma
-r_uint16
+id|__u16
 id|cause_code
 comma
 r_const
@@ -108,10 +107,10 @@ suffix:semicolon
 r_int
 id|padlen
 suffix:semicolon
-r_uint16
+id|__u16
 id|len
 suffix:semicolon
-multiline_comment|/* Cause code constants are now defined in network order. */
+multiline_comment|/* Cause code constants are now defined in network order.  */
 id|err.cause
 op_assign
 id|cause_code
@@ -169,14 +168,11 @@ comma
 id|payload
 )paren
 suffix:semicolon
-r_return
-suffix:semicolon
 )brace
-multiline_comment|/* sctp_init_cause() */
-multiline_comment|/* 3.3.2 Initiation (INIT) (1)&n; *    &n; * This chunk is used to initiate a SCTP association between two&n; * endpoints. The format of the INIT chunk is shown below:&n; * &n; *     0                   1                   2                   3&n; *     0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1&n; *    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+&n; *    |   Type = 1    |  Chunk Flags  |      Chunk Length             |&n; *    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+&n; *    |                         Initiate Tag                          |&n; *    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+&n; *    |           Advertised Receiver Window Credit (a_rwnd)          |&n; *    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+&n; *    |  Number of Outbound Streams   |  Number of Inbound Streams    |&n; *    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+&n; *    |                          Initial TSN                          |&n; *    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+&n; *    &bslash;                                                               &bslash;&n; *    /              Optional/Variable-Length Parameters              /&n; *    &bslash;                                                               &bslash;&n; *    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+&n; * &n; * &n; * The INIT chunk contains the following parameters. Unless otherwise &n; * noted, each parameter MUST only be included once in the INIT chunk.&n; * &n; * Fixed Parameters                     Status&n; * ----------------------------------------------&n; * Initiate Tag                        Mandatory&n; * Advertised Receiver Window Credit   Mandatory&n; * Number of Outbound Streams          Mandatory&n; * Number of Inbound Streams           Mandatory&n; * Initial TSN                         Mandatory&n; * &n; * Variable Parameters                  Status     Type Value&n; * -------------------------------------------------------------&n; * IPv4 Address (Note 1)               Optional    5&n; * IPv6 Address (Note 1)               Optional    6&n; * Cookie Preservative                 Optional    9&n; * Reserved for ECN Capable (Note 2)   Optional    32768 (0x8000)&n; * Host Name Address (Note 3)          Optional    11&n; * Supported Address Types (Note 4)    Optional    12&n; */
+multiline_comment|/* 3.3.2 Initiation (INIT) (1)&n; *&n; * This chunk is used to initiate a SCTP association between two&n; * endpoints. The format of the INIT chunk is shown below:&n; *&n; *     0                   1                   2                   3&n; *     0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1&n; *    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+&n; *    |   Type = 1    |  Chunk Flags  |      Chunk Length             |&n; *    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+&n; *    |                         Initiate Tag                          |&n; *    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+&n; *    |           Advertised Receiver Window Credit (a_rwnd)          |&n; *    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+&n; *    |  Number of Outbound Streams   |  Number of Inbound Streams    |&n; *    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+&n; *    |                          Initial TSN                          |&n; *    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+&n; *    &bslash;                                                               &bslash;&n; *    /              Optional/Variable-Length Parameters              /&n; *    &bslash;                                                               &bslash;&n; *    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+&n; *&n; *&n; * The INIT chunk contains the following parameters. Unless otherwise&n; * noted, each parameter MUST only be included once in the INIT chunk.&n; *&n; * Fixed Parameters                     Status&n; * ----------------------------------------------&n; * Initiate Tag                        Mandatory&n; * Advertised Receiver Window Credit   Mandatory&n; * Number of Outbound Streams          Mandatory&n; * Number of Inbound Streams           Mandatory&n; * Initial TSN                         Mandatory&n; *&n; * Variable Parameters                  Status     Type Value&n; * -------------------------------------------------------------&n; * IPv4 Address (Note 1)               Optional    5&n; * IPv6 Address (Note 1)               Optional    6&n; * Cookie Preservative                 Optional    9&n; * Reserved for ECN Capable (Note 2)   Optional    32768 (0x8000)&n; * Host Name Address (Note 3)          Optional    11&n; * Supported Address Types (Note 4)    Optional    12&n; */
+DECL|function|sctp_make_init
 id|sctp_chunk_t
 op_star
-DECL|function|sctp_make_init
 id|sctp_make_init
 c_func
 (paren
@@ -214,7 +210,7 @@ id|addrs_len
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* RFC 2960 3.3.2 Initiation (INIT) (1)&n;&t; *&n;&t; * Note 1: The INIT chunks can contain multiple addresses that&n;         * can be IPv4 and/or IPv6 in any combination.&n;         */
+multiline_comment|/* RFC 2960 3.3.2 Initiation (INIT) (1)&n;&t; *&n;&t; * Note 1: The INIT chunks can contain multiple addresses that&n;&t; * can be IPv4 and/or IPv6 in any combination.&n;&t; */
 id|retval
 op_assign
 l_int|NULL
@@ -240,15 +236,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-l_int|NULL
-op_eq
+op_logical_neg
 id|addrs.v
 )paren
-(brace
 r_goto
 id|nodata
 suffix:semicolon
-)brace
 id|init.init_tag
 op_assign
 id|htonl
@@ -307,7 +300,7 @@ r_sizeof
 id|ecap_param
 )paren
 suffix:semicolon
-multiline_comment|/* RFC 2960 3.3.2 Initiation (INIT) (1)&n;&t; *&n;&t; * Note 3: An INIT chunk MUST NOT contain more than one Host&n;         * Name address parameter. Moreover, the sender of the INIT&n;         * MUST NOT combine any other address types with the Host Name&n;         * address in the INIT. The receiver of INIT MUST ignore any&n;         * other address types if the Host Name address parameter is&n;         * present in the received INIT chunk.&n;&t; *&n;         * PLEASE DO NOT FIXME [This version does not support Host Name.]&n;         */
+multiline_comment|/* RFC 2960 3.3.2 Initiation (INIT) (1)&n;&t; *&n;&t; * Note 3: An INIT chunk MUST NOT contain more than one Host&n;&t; * Name address parameter. Moreover, the sender of the INIT&n;&t; * MUST NOT combine any other address types with the Host Name&n;&t; * address in the INIT. The receiver of INIT MUST ignore any&n;&t; * other address types if the Host Name address parameter is&n;&t; * present in the received INIT chunk.&n;&t; *&n;&t; * PLEASE DO NOT FIXME [This version does not support Host Name.]&n;&t; */
 id|retval
 op_assign
 id|sctp_make_chunk
@@ -325,15 +318,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-l_int|NULL
-op_eq
+op_logical_neg
 id|retval
 )paren
-(brace
 r_goto
 id|nodata
 suffix:semicolon
-)brace
 id|retval-&gt;subh.init_hdr
 op_assign
 id|sctp_addto_chunk
@@ -392,27 +382,21 @@ suffix:colon
 r_if
 c_cond
 (paren
-l_int|NULL
-op_ne
 id|addrs.v
 )paren
-(brace
 id|kfree
 c_func
 (paren
 id|addrs.v
 )paren
 suffix:semicolon
-)brace
 r_return
 id|retval
 suffix:semicolon
 )brace
-suffix:semicolon
-multiline_comment|/* sctp_chunk_t *sctp_make_init() */
+DECL|function|sctp_make_init_ack
 id|sctp_chunk_t
 op_star
-DECL|function|sctp_make_init_ack
 id|sctp_make_init_ack
 c_func
 (paren
@@ -484,16 +468,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-l_int|NULL
-op_eq
+op_logical_neg
 id|bp
 )paren
-(brace
 r_goto
 id|nomem_bindaddr
 suffix:semicolon
-)brace
-multiline_comment|/* Look for supported address types parameter and then build &n;&t; * our address list based on that.&n;&t; */
+multiline_comment|/* Look for supported address types parameter and then build&n;&t; * our address list based on that.&n;&t; */
 id|scope
 op_assign
 id|sctp_scope
@@ -521,23 +502,19 @@ c_cond
 (paren
 id|asoc-&gt;peer.ipv4_address
 )paren
-(brace
 id|flags
 op_or_assign
 id|SCTP_ADDR4_PEERSUPP
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
 id|asoc-&gt;peer.ipv6_address
 )paren
-(brace
 id|flags
 op_or_assign
 id|SCTP_ADDR6_PEERSUPP
 suffix:semicolon
-)brace
 id|error
 op_assign
 id|sctp_bind_addr_copy
@@ -558,15 +535,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-l_int|0
-op_ne
 id|error
 )paren
-(brace
 r_goto
 id|nomem_copyaddr
 suffix:semicolon
-)brace
 id|addrs
 op_assign
 id|sctp_bind_addrs_to_raw
@@ -583,15 +556,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-l_int|NULL
-op_eq
+op_logical_neg
 id|addrs.v
 )paren
-(brace
 r_goto
 id|nomem_rawaddr
 suffix:semicolon
-)brace
 id|initack.init_tag
 op_assign
 id|htonl
@@ -632,7 +602,7 @@ c_func
 id|asoc-&gt;c.initial_tsn
 )paren
 suffix:semicolon
-multiline_comment|/* FIXME:  We really ought to build the cookie right&n;&t; * into the packet instead of allocating more fresh memory.  &n;&t; */
+multiline_comment|/* FIXME:  We really ought to build the cookie right&n;&t; * into the packet instead of allocating more fresh memory.&n;&t; */
 id|cookie
 op_assign
 id|sctp_pack_cookie
@@ -655,15 +625,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-l_int|NULL
-op_eq
+op_logical_neg
 id|cookie
 )paren
-(brace
 r_goto
 id|nomem_cookie
 suffix:semicolon
-)brace
 id|chunksize
 op_assign
 r_sizeof
@@ -675,13 +642,12 @@ id|addrs_len
 op_plus
 id|cookie_len
 suffix:semicolon
-multiline_comment|/* Tell peer that we&squot;ll do ECN only if peer advertised such cap. */
+multiline_comment|/* Tell peer that we&squot;ll do ECN only if peer advertised such cap.  */
 r_if
 c_cond
 (paren
 id|asoc-&gt;peer.ecn_capable
 )paren
-(brace
 id|chunksize
 op_add_assign
 r_sizeof
@@ -689,8 +655,7 @@ r_sizeof
 id|ecap_param
 )paren
 suffix:semicolon
-)brace
-multiline_comment|/* Now allocate and fill out the chunk. */
+multiline_comment|/* Now allocate and fill out the chunk.  */
 id|retval
 op_assign
 id|sctp_make_chunk
@@ -708,15 +673,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-l_int|NULL
-op_eq
+op_logical_neg
 id|retval
 )paren
-(brace
 r_goto
 id|nomem_chunk
 suffix:semicolon
-)brace
 multiline_comment|/* Per the advice in RFC 2960 6.4, send this reply to&n;&t; * the source of the INIT packet.&n;&t; */
 id|retval-&gt;transport
 op_assign
@@ -765,7 +727,6 @@ c_cond
 (paren
 id|asoc-&gt;peer.ecn_capable
 )paren
-(brace
 id|sctp_addto_chunk
 c_func
 (paren
@@ -780,7 +741,6 @@ op_amp
 id|ecap_param
 )paren
 suffix:semicolon
-)brace
 multiline_comment|/* We need to remove the const qualifier at this point.  */
 id|retval-&gt;asoc
 op_assign
@@ -790,20 +750,16 @@ op_star
 )paren
 id|asoc
 suffix:semicolon
-multiline_comment|/* RFC 2960 6.4 Multi-homed SCTP Endpoints&n;&t; * &n;&t; * An endpoint SHOULD transmit reply chunks (e.g., SACK,&n;&t; * HEARTBEAT ACK, * etc.) to the same destination transport&n;&t; * address from which it received the DATA or control chunk&n;&t; * to which it is replying.&n;&t; *&n;&t; * [INIT ACK back to where the INIT came from.]&n;&t; */
+multiline_comment|/* RFC 2960 6.4 Multi-homed SCTP Endpoints&n;&t; *&n;&t; * An endpoint SHOULD transmit reply chunks (e.g., SACK,&n;&t; * HEARTBEAT ACK, * etc.) to the same destination transport&n;&t; * address from which it received the DATA or control chunk&n;&t; * to which it is replying.&n;&t; *&n;&t; * [INIT ACK back to where the INIT came from.]&n;&t; */
 r_if
 c_cond
 (paren
-l_int|NULL
-op_ne
 id|chunk
 )paren
-(brace
 id|retval-&gt;transport
 op_assign
 id|chunk-&gt;transport
 suffix:semicolon
-)brace
 id|nomem_chunk
 suffix:colon
 id|kfree
@@ -836,11 +792,10 @@ r_return
 id|retval
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_make_init_ack() */
-multiline_comment|/* 3.3.11 Cookie Echo (COOKIE ECHO) (10):&n; * &n; * This chunk is used only during the initialization of an association.&n; * It is sent by the initiator of an association to its peer to complete&n; * the initialization process. This chunk MUST precede any DATA chunk &n; * sent within the association, but MAY be bundled with one or more DATA&n; * chunks in the same packet.&n; * &n; *      0                   1                   2                   3&n; *      0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1&n; *     +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+&n; *     |   Type = 10   |Chunk  Flags   |         Length                |&n; *     +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+&n; *     /                     Cookie                                    /&n; *     &bslash;                                                               &bslash;&n; *     +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+&n; * &n; * Chunk Flags: 8 bit&n; * &n; *   Set to zero on transmit and ignored on receipt.&n; * &n; * Length: 16 bits (unsigned integer)&n; * &n; *   Set to the size of the chunk in bytes, including the 4 bytes of&n; *   the chunk header and the size of the Cookie.&n; * &n; * Cookie: variable size&n; * &n; *   This field must contain the exact cookie received in the &n; *   State Cookie parameter from the previous INIT ACK.&n; * &n; *   An implementation SHOULD make the cookie as small as possible&n; *   to insure interoperability.&n; */
+multiline_comment|/* 3.3.11 Cookie Echo (COOKIE ECHO) (10):&n; *&n; * This chunk is used only during the initialization of an association.&n; * It is sent by the initiator of an association to its peer to complete&n; * the initialization process. This chunk MUST precede any DATA chunk&n; * sent within the association, but MAY be bundled with one or more DATA&n; * chunks in the same packet.&n; *&n; *      0                   1                   2                   3&n; *      0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1&n; *     +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+&n; *     |   Type = 10   |Chunk  Flags   |         Length                |&n; *     +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+&n; *     /                     Cookie                                    /&n; *     &bslash;                                                               &bslash;&n; *     +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+&n; *&n; * Chunk Flags: 8 bit&n; *&n; *   Set to zero on transmit and ignored on receipt.&n; *&n; * Length: 16 bits (unsigned integer)&n; *&n; *   Set to the size of the chunk in bytes, including the 4 bytes of&n; *   the chunk header and the size of the Cookie.&n; *&n; * Cookie: variable size&n; *&n; *   This field must contain the exact cookie received in the&n; *   State Cookie parameter from the previous INIT ACK.&n; *&n; *   An implementation SHOULD make the cookie as small as possible&n; *   to insure interoperability.&n; */
+DECL|function|sctp_make_cookie_echo
 id|sctp_chunk_t
 op_star
-DECL|function|sctp_make_cookie_echo
 id|sctp_make_cookie_echo
 c_func
 (paren
@@ -892,15 +847,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-l_int|NULL
-op_eq
+op_logical_neg
 id|retval
 )paren
-(brace
 r_goto
 id|nodata
 suffix:semicolon
-)brace
 id|retval-&gt;subh.cookie_hdr
 op_assign
 id|sctp_addto_chunk
@@ -913,31 +865,26 @@ comma
 id|cookie
 )paren
 suffix:semicolon
-multiline_comment|/* RFC 2960 6.4 Multi-homed SCTP Endpoints&n;&t; * &n;&t; * An endpoint SHOULD transmit reply chunks (e.g., SACK,&n;&t; * HEARTBEAT ACK, * etc.) to the same destination transport&n;&t; * address from which it * received the DATA or control chunk&n;&t; * to which it is replying.&n;&t; *&n;&t; * [COOKIE ECHO back to where the INIT ACK came from.]&n;&t; */
+multiline_comment|/* RFC 2960 6.4 Multi-homed SCTP Endpoints&n;&t; *&n;&t; * An endpoint SHOULD transmit reply chunks (e.g., SACK,&n;&t; * HEARTBEAT ACK, * etc.) to the same destination transport&n;&t; * address from which it * received the DATA or control chunk&n;&t; * to which it is replying.&n;&t; *&n;&t; * [COOKIE ECHO back to where the INIT ACK came from.]&n;&t; */
 r_if
 c_cond
 (paren
-l_int|NULL
-op_ne
 id|chunk
 )paren
-(brace
 id|retval-&gt;transport
 op_assign
 id|chunk-&gt;transport
 suffix:semicolon
-)brace
 id|nodata
 suffix:colon
 r_return
 id|retval
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_make_cookie_echo() */
-multiline_comment|/* 3.3.12 Cookie Acknowledgement (COOKIE ACK) (11):&n; *&n; * This chunk is used only during the initialization of an&n; * association.  It is used to acknowledge the receipt of a COOKIE &n; * ECHO chunk.  This chunk MUST precede any DATA or SACK chunk sent&n; * within the association, but MAY be bundled with one or more DATA&n; * chunks or SACK chunk in the same SCTP packet.&n; * &n; *      0                   1                   2                   3&n; *      0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1&n; *     +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+&n; *     |   Type = 11   |Chunk  Flags   |     Length = 4                |&n; *     +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+&n; * &n; * Chunk Flags: 8 bits&n; * &n; * &n; *   Set to zero on transmit and ignored on receipt.&n; */
+multiline_comment|/* 3.3.12 Cookie Acknowledgement (COOKIE ACK) (11):&n; *&n; * This chunk is used only during the initialization of an&n; * association.  It is used to acknowledge the receipt of a COOKIE&n; * ECHO chunk.  This chunk MUST precede any DATA or SACK chunk sent&n; * within the association, but MAY be bundled with one or more DATA&n; * chunks or SACK chunk in the same SCTP packet.&n; *&n; *      0                   1                   2                   3&n; *      0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1&n; *     +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+&n; *     |   Type = 11   |Chunk  Flags   |     Length = 4                |&n; *     +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+&n; *&n; * Chunk Flags: 8 bits&n; *&n; *   Set to zero on transmit and ignored on receipt.&n; */
+DECL|function|sctp_make_cookie_ack
 id|sctp_chunk_t
 op_star
-DECL|function|sctp_make_cookie_ack
 id|sctp_make_cookie_ack
 c_func
 (paren
@@ -970,33 +917,26 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-multiline_comment|/* RFC 2960 6.4 Multi-homed SCTP Endpoints&n;&t; * &n;&t; * An endpoint SHOULD transmit reply chunks (e.g., SACK,&n;&t; * HEARTBEAT ACK, * etc.) to the same destination transport&n;&t; * address from which it * received the DATA or control chunk&n;&t; * to which it is replying.&n;&t; *&n;&t; * [COOKIE ACK back to where the COOKIE ECHO came from.]&n;&t; */
+multiline_comment|/* RFC 2960 6.4 Multi-homed SCTP Endpoints&n;&t; *&n;&t; * An endpoint SHOULD transmit reply chunks (e.g., SACK,&n;&t; * HEARTBEAT ACK, * etc.) to the same destination transport&n;&t; * address from which it * received the DATA or control chunk&n;&t; * to which it is replying.&n;&t; *&n;&t; * [COOKIE ACK back to where the COOKIE ECHO came from.]&n;&t; */
 r_if
 c_cond
 (paren
-l_int|NULL
-op_ne
 id|retval
 op_logical_and
-l_int|NULL
-op_ne
 id|chunk
 )paren
-(brace
 id|retval-&gt;transport
 op_assign
 id|chunk-&gt;transport
 suffix:semicolon
-)brace
 r_return
 id|retval
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_make_cookie_ack() */
-multiline_comment|/*  &n; *  Appendix A: Explicit Congestion Notification: &n; *  CWR:&n; *  &n; *  RFC 2481 details a specific bit for a sender to send in the header of&n; *  its next outbound TCP segment to indicate to its peer that it has&n; *  reduced its congestion window.  This is termed the CWR bit.  For&n; *  SCTP the same indication is made by including the CWR chunk.&n; *  This chunk contains one data element, i.e. the TSN number that&n; *  was sent in the ECNE chunk.  This element represents the lowest&n; *  TSN number in the datagram that was originally marked with the&n; *  CE bit.&n; *&n; *     0                   1                   2                   3&n; *     0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1&n; *    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+&n; *    | Chunk Type=13 | Flags=00000000|    Chunk Length = 8           |&n; *    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+&n; *    |                      Lowest TSN Number                        |&n; *    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+&n; *&n; *     Note: The CWR is considered a Control chunk.&n; */
+multiline_comment|/*&n; *  Appendix A: Explicit Congestion Notification:&n; *  CWR:&n; *&n; *  RFC 2481 details a specific bit for a sender to send in the header of&n; *  its next outbound TCP segment to indicate to its peer that it has&n; *  reduced its congestion window.  This is termed the CWR bit.  For&n; *  SCTP the same indication is made by including the CWR chunk.&n; *  This chunk contains one data element, i.e. the TSN number that&n; *  was sent in the ECNE chunk.  This element represents the lowest&n; *  TSN number in the datagram that was originally marked with the&n; *  CE bit.&n; *&n; *     0                   1                   2                   3&n; *     0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1&n; *    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+&n; *    | Chunk Type=13 | Flags=00000000|    Chunk Length = 8           |&n; *    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+&n; *    |                      Lowest TSN Number                        |&n; *    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+&n; *&n; *     Note: The CWR is considered a Control chunk.&n; */
+DECL|function|sctp_make_cwr
 id|sctp_chunk_t
 op_star
-DECL|function|sctp_make_cwr
 id|sctp_make_cwr
 c_func
 (paren
@@ -1006,7 +946,7 @@ op_star
 id|asoc
 comma
 r_const
-r_uint32
+id|__u32
 id|lowest_tsn
 comma
 r_const
@@ -1050,15 +990,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-l_int|NULL
-op_eq
+op_logical_neg
 id|retval
 )paren
-(brace
 r_goto
 id|nodata
 suffix:semicolon
-)brace
 id|retval-&gt;subh.ecn_cwr_hdr
 op_assign
 id|sctp_addto_chunk
@@ -1075,31 +1012,26 @@ op_amp
 id|cwr
 )paren
 suffix:semicolon
-multiline_comment|/* RFC 2960 6.4 Multi-homed SCTP Endpoints&n;&t; * &n;&t; * An endpoint SHOULD transmit reply chunks (e.g., SACK,&n;&t; * HEARTBEAT ACK, * etc.) to the same destination transport&n;&t; * address from which it * received the DATA or control chunk&n;&t; * to which it is replying.&n;&t; *&n;&t; * [Report a reduced congestion window back to where the ECNE&n;&t; * came from.]&n;&t; */
+multiline_comment|/* RFC 2960 6.4 Multi-homed SCTP Endpoints&n;&t; *&n;&t; * An endpoint SHOULD transmit reply chunks (e.g., SACK,&n;&t; * HEARTBEAT ACK, * etc.) to the same destination transport&n;&t; * address from which it * received the DATA or control chunk&n;&t; * to which it is replying.&n;&t; *&n;&t; * [Report a reduced congestion window back to where the ECNE&n;&t; * came from.]&n;&t; */
 r_if
 c_cond
 (paren
-l_int|NULL
-op_ne
 id|chunk
 )paren
-(brace
 id|retval-&gt;transport
 op_assign
 id|chunk-&gt;transport
 suffix:semicolon
-)brace
 id|nodata
 suffix:colon
 r_return
 id|retval
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_make_cwr() */
 multiline_comment|/* Make an ECNE chunk.  This is a congestion experienced report.  */
+DECL|function|sctp_make_ecne
 id|sctp_chunk_t
 op_star
-DECL|function|sctp_make_ecne
 id|sctp_make_ecne
 c_func
 (paren
@@ -1109,7 +1041,7 @@ op_star
 id|asoc
 comma
 r_const
-r_uint32
+id|__u32
 id|lowest_tsn
 )paren
 (brace
@@ -1148,15 +1080,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-l_int|NULL
-op_eq
+op_logical_neg
 id|retval
 )paren
-(brace
 r_goto
 id|nodata
 suffix:semicolon
-)brace
 id|retval-&gt;subh.ecne_hdr
 op_assign
 id|sctp_addto_chunk
@@ -1179,11 +1108,10 @@ r_return
 id|retval
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_make_ecne() */
-multiline_comment|/* Make a DATA chunk for the given association from the provided &n; * parameters.  However, do not populate the data payload. &n; */
+multiline_comment|/* Make a DATA chunk for the given association from the provided&n; * parameters.  However, do not populate the data payload.&n; */
+DECL|function|sctp_make_datafrag_empty
 id|sctp_chunk_t
 op_star
-DECL|function|sctp_make_datafrag_empty
 id|sctp_make_datafrag_empty
 c_func
 (paren
@@ -1200,10 +1128,10 @@ comma
 r_int
 id|data_len
 comma
-r_uint8
+id|__u8
 id|flags
 comma
-r_uint16
+id|__u16
 id|ssn
 )paren
 (brace
@@ -1216,10 +1144,6 @@ id|dp
 suffix:semicolon
 r_int
 id|chunk_len
-suffix:semicolon
-id|retval
-op_assign
-l_int|NULL
 suffix:semicolon
 multiline_comment|/* We assign the TSN as LATE as possible, not here when&n;&t; * creating the chunk.&n;&t; */
 id|dp.tsn
@@ -1259,12 +1183,10 @@ id|sinfo-&gt;sinfo_flags
 op_amp
 id|MSG_UNORDERED
 )paren
-(brace
 id|flags
 op_or_assign
 id|SCTP_DATA_UNORDERED
 suffix:semicolon
-)brace
 id|chunk_len
 op_assign
 r_sizeof
@@ -1291,15 +1213,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-l_int|NULL
-op_eq
+op_logical_neg
 id|retval
 )paren
-(brace
 r_goto
 id|nodata
 suffix:semicolon
-)brace
 id|retval-&gt;subh.data_hdr
 op_assign
 id|sctp_addto_chunk
@@ -1337,11 +1256,10 @@ r_return
 id|retval
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_make_datafrag_empty() */
 multiline_comment|/* Make a DATA chunk for the given association.  Populate the data&n; * payload.&n; */
+DECL|function|sctp_make_datafrag
 id|sctp_chunk_t
 op_star
-DECL|function|sctp_make_datafrag
 id|sctp_make_datafrag
 c_func
 (paren
@@ -1359,14 +1277,14 @@ r_int
 id|data_len
 comma
 r_const
-r_uint8
+id|__u8
 op_star
 id|data
 comma
-r_uint8
+id|__u8
 id|flags
 comma
-r_uint16
+id|__u16
 id|ssn
 )paren
 (brace
@@ -1393,11 +1311,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-l_int|NULL
-op_ne
 id|retval
 )paren
-(brace
 id|sctp_addto_chunk
 c_func
 (paren
@@ -1408,16 +1323,14 @@ comma
 id|data
 )paren
 suffix:semicolon
-)brace
 r_return
 id|retval
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_make_datafrag() */
 multiline_comment|/* Make a DATA chunk for the given association to ride on stream id&n; * &squot;stream&squot;, with a payload id of &squot;payload&squot;, and a body of &squot;data&squot;.&n; */
+DECL|function|sctp_make_data
 id|sctp_chunk_t
 op_star
-DECL|function|sctp_make_data
 id|sctp_make_data
 c_func
 (paren
@@ -1435,7 +1348,7 @@ r_int
 id|data_len
 comma
 r_const
-r_uint8
+id|__u8
 op_star
 id|data
 )paren
@@ -1461,11 +1374,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-l_int|NULL
-op_ne
 id|retval
 )paren
-(brace
 id|sctp_addto_chunk
 c_func
 (paren
@@ -1476,16 +1386,14 @@ comma
 id|data
 )paren
 suffix:semicolon
-)brace
 r_return
 id|retval
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_make_data() */
 multiline_comment|/* Make a DATA chunk for the given association to ride on stream id&n; * &squot;stream&squot;, with a payload id of &squot;payload&squot;, and a body big enough to&n; * hold &squot;data_len&squot; octets of data.  We use this version when we need&n; * to build the message AFTER allocating memory.&n; */
+DECL|function|sctp_make_data_empty
 id|sctp_chunk_t
 op_star
-DECL|function|sctp_make_data_empty
 id|sctp_make_data_empty
 c_func
 (paren
@@ -1507,15 +1415,15 @@ id|sctp_chunk_t
 op_star
 id|retval
 suffix:semicolon
-r_uint16
+id|__u16
 id|ssn
 suffix:semicolon
-r_uint8
+id|__u8
 id|flags
 op_assign
 id|SCTP_DATA_NOT_FRAG
 suffix:semicolon
-multiline_comment|/* Sockets API Extensions for SCTP 5.2.2&n;&t; *  MSG_UNORDERED - This flag requests the un-ordered delivery of the&n;&t; *  message.  If this flag is clear, the datagram is considered an &n;&t; *  ordered send and a new ssn is generated.  The flags field is set &n;&t; *  in the inner routine - sctp_make_datafrag_empty(). &n;&t; */
+multiline_comment|/* Sockets API Extensions for SCTP 5.2.2&n;&t; *  MSG_UNORDERED - This flag requests the un-ordered delivery of the&n;&t; *  message.  If this flag is clear, the datagram is considered an&n;&t; *  ordered send and a new ssn is generated.  The flags field is set&n;&t; *  in the inner routine - sctp_make_datafrag_empty().&n;&t; */
 r_if
 c_cond
 (paren
@@ -1542,8 +1450,7 @@ id|sinfo-&gt;sinfo_stream
 )paren
 suffix:semicolon
 )brace
-id|retval
-op_assign
+r_return
 id|sctp_make_datafrag_empty
 c_func
 (paren
@@ -1558,29 +1465,11 @@ comma
 id|ssn
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-l_int|NULL
-op_eq
-id|retval
-)paren
-(brace
-r_goto
-id|nodata
-suffix:semicolon
 )brace
-id|nodata
-suffix:colon
-r_return
-id|retval
-suffix:semicolon
-)brace
-multiline_comment|/* sctp_make_data_empty() */
 multiline_comment|/* Create a selective ackowledgement (SACK) for the given&n; * association.  This reports on which TSN&squot;s we&squot;ve seen to date,&n; * including duplicates and gaps.&n; */
+DECL|function|sctp_make_sack
 id|sctp_chunk_t
 op_star
-DECL|function|sctp_make_sack
 id|sctp_make_sack
 c_func
 (paren
@@ -1603,16 +1492,16 @@ suffix:semicolon
 r_int
 id|length
 suffix:semicolon
-r_uint32
+id|__u32
 id|ctsn
 suffix:semicolon
 id|sctp_tsnmap_iter_t
 id|iter
 suffix:semicolon
-r_uint16
+id|__u16
 id|num_gabs
 suffix:semicolon
-r_uint16
+id|__u16
 id|num_dup_tsns
 op_assign
 id|asoc-&gt;peer.next_dup_tsn
@@ -1751,16 +1640,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-l_int|NULL
-op_eq
+op_logical_neg
 id|retval
 )paren
-(brace
 r_goto
 id|nodata
 suffix:semicolon
-)brace
-multiline_comment|/* RFC 2960 6.4 Multi-homed SCTP Endpoints&n;&t; * &n;&t; * An endpoint SHOULD transmit reply chunks (e.g., SACK,&n;&t; * HEARTBEAT ACK, etc.) to the same destination transport&n;&t; * address from which it received the DATA or control chunk to&n;&t; * which it is replying.  This rule should also be followed if&n;&t; * the endpoint is bundling DATA chunks together with the&n;&t; * reply chunk.&n;&t; * &n;&t; * However, when acknowledging multiple DATA chunks received&n;&t; * in packets from different source addresses in a single&n;&t; * SACK, the SACK chunk may be transmitted to one of the&n;&t; * destination transport addresses from which the DATA or&n;&t; * control chunks being acknowledged were received.&n;&t; *&n;&t; * [BUG:  We do not implement the following paragraph.&n;&t; * Perhaps we should remember the last transport we used for a&n;&t; * SACK and avoid that (if possible) if we have seen any&n;&t; * duplicates. --piggy]&n;&t; * &n;&t; * When a receiver of a duplicate DATA chunk sends a SACK to a&n;&t; * multi- homed endpoint it MAY be beneficial to vary the&n;&t; * destination address and not use the source address of the&n;&t; * DATA chunk.  The reason being that receiving a duplicate&n;&t; * from a multi-homed endpoint might indicate that the return&n;&t; * path (as specified in the source address of the DATA chunk)&n;&t; * for the SACK is broken.&n;&t; * &n;&t; * &n;&t; * [Send to the address from which we last received a DATA chunk.]&n;&t; */
+multiline_comment|/* RFC 2960 6.4 Multi-homed SCTP Endpoints&n;&t; *&n;&t; * An endpoint SHOULD transmit reply chunks (e.g., SACK,&n;&t; * HEARTBEAT ACK, etc.) to the same destination transport&n;&t; * address from which it received the DATA or control chunk to&n;&t; * which it is replying.  This rule should also be followed if&n;&t; * the endpoint is bundling DATA chunks together with the&n;&t; * reply chunk.&n;&t; *&n;&t; * However, when acknowledging multiple DATA chunks received&n;&t; * in packets from different source addresses in a single&n;&t; * SACK, the SACK chunk may be transmitted to one of the&n;&t; * destination transport addresses from which the DATA or&n;&t; * control chunks being acknowledged were received.&n;&t; *&n;&t; * [BUG:  We do not implement the following paragraph.&n;&t; * Perhaps we should remember the last transport we used for a&n;&t; * SACK and avoid that (if possible) if we have seen any&n;&t; * duplicates. --piggy]&n;&t; *&n;&t; * When a receiver of a duplicate DATA chunk sends a SACK to a&n;&t; * multi- homed endpoint it MAY be beneficial to vary the&n;&t; * destination address and not use the source address of the&n;&t; * DATA chunk.  The reason being that receiving a duplicate&n;&t; * from a multi-homed endpoint might indicate that the return&n;&t; * path (as specified in the source address of the DATA chunk)&n;&t; * for the SACK is broken.&n;&t; *&n;&t; * [Send to the address from which we last received a DATA chunk.]&n;&t; */
 id|retval-&gt;transport
 op_assign
 id|asoc-&gt;peer.last_data_from
@@ -1864,10 +1750,9 @@ r_return
 id|retval
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_make_sack() */
+DECL|function|sctp_make_shutdown
 id|sctp_chunk_t
 op_star
-DECL|function|sctp_make_shutdown
 id|sctp_make_shutdown
 c_func
 (paren
@@ -1884,7 +1769,7 @@ suffix:semicolon
 id|sctp_shutdownhdr_t
 id|shut
 suffix:semicolon
-r_uint32
+id|__u32
 id|ctsn
 suffix:semicolon
 id|ctsn
@@ -1924,15 +1809,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-l_int|NULL
-op_eq
+op_logical_neg
 id|retval
 )paren
-(brace
 r_goto
 id|nodata
 suffix:semicolon
-)brace
 id|retval-&gt;subh.shutdown_hdr
 op_assign
 id|sctp_addto_chunk
@@ -1955,10 +1837,9 @@ r_return
 id|retval
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_make_shutdown() */
+DECL|function|sctp_make_shutdown_ack
 id|sctp_chunk_t
 op_star
-DECL|function|sctp_make_shutdown_ack
 id|sctp_make_shutdown_ack
 c_func
 (paren
@@ -1991,32 +1872,25 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-multiline_comment|/* RFC 2960 6.4 Multi-homed SCTP Endpoints&n;&t; * &n;&t; * An endpoint SHOULD transmit reply chunks (e.g., SACK,&n;&t; * HEARTBEAT ACK, * etc.) to the same destination transport&n;&t; * address from which it * received the DATA or control chunk&n;&t; * to which it is replying.&n;&t; *&n;&t; * [ACK back to where the SHUTDOWN came from.]&n;&t; */
+multiline_comment|/* RFC 2960 6.4 Multi-homed SCTP Endpoints&n;&t; *&n;&t; * An endpoint SHOULD transmit reply chunks (e.g., SACK,&n;&t; * HEARTBEAT ACK, * etc.) to the same destination transport&n;&t; * address from which it * received the DATA or control chunk&n;&t; * to which it is replying.&n;&t; *&n;&t; * [ACK back to where the SHUTDOWN came from.]&n;&t; */
 r_if
 c_cond
 (paren
-l_int|NULL
-op_ne
 id|retval
 op_logical_and
-l_int|NULL
-op_ne
 id|chunk
 )paren
-(brace
 id|retval-&gt;transport
 op_assign
 id|chunk-&gt;transport
 suffix:semicolon
-)brace
 r_return
 id|retval
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_make_shutdown_ack() */
+DECL|function|sctp_make_shutdown_complete
 id|sctp_chunk_t
 op_star
-DECL|function|sctp_make_shutdown_complete
 id|sctp_make_shutdown_complete
 c_func
 (paren
@@ -2035,7 +1909,7 @@ id|sctp_chunk_t
 op_star
 id|retval
 suffix:semicolon
-r_uint8
+id|__u8
 id|flags
 op_assign
 l_int|0
@@ -2064,33 +1938,26 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-multiline_comment|/* RFC 2960 6.4 Multi-homed SCTP Endpoints&n;&t; * &n;&t; * An endpoint SHOULD transmit reply chunks (e.g., SACK,&n;&t; * HEARTBEAT ACK, * etc.) to the same destination transport&n;&t; * address from which it * received the DATA or control chunk&n;&t; * to which it is replying.&n;&t; *&n;&t; * [Report SHUTDOWN COMPLETE back to where the SHUTDOWN ACK&n;&t; * came from.]&n;&t; */
+multiline_comment|/* RFC 2960 6.4 Multi-homed SCTP Endpoints&n;&t; *&n;&t; * An endpoint SHOULD transmit reply chunks (e.g., SACK,&n;&t; * HEARTBEAT ACK, * etc.) to the same destination transport&n;&t; * address from which it * received the DATA or control chunk&n;&t; * to which it is replying.&n;&t; *&n;&t; * [Report SHUTDOWN COMPLETE back to where the SHUTDOWN ACK&n;&t; * came from.]&n;&t; */
 r_if
 c_cond
 (paren
-l_int|NULL
-op_ne
 id|retval
 op_logical_and
-l_int|NULL
-op_ne
 id|chunk
 )paren
-(brace
 id|retval-&gt;transport
 op_assign
 id|chunk-&gt;transport
 suffix:semicolon
-)brace
 r_return
 id|retval
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_make_shutdown_complete() */
 multiline_comment|/* Create an ABORT.  Note that we set the T bit if we have no&n; * association.&n; */
+DECL|function|sctp_make_abort
 id|sctp_chunk_t
 op_star
-DECL|function|sctp_make_abort
 id|sctp_make_abort
 c_func
 (paren
@@ -2113,12 +1980,12 @@ id|sctp_chunk_t
 op_star
 id|retval
 suffix:semicolon
-r_uint8
+id|__u8
 id|flags
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* Maybe set the T-bit if we have no association. */
+multiline_comment|/* Maybe set the T-bit if we have no association.  */
 id|flags
 op_or_assign
 id|asoc
@@ -2142,33 +2009,26 @@ comma
 id|hint
 )paren
 suffix:semicolon
-multiline_comment|/* RFC 2960 6.4 Multi-homed SCTP Endpoints&n;&t; * &n;&t; * An endpoint SHOULD transmit reply chunks (e.g., SACK,&n;&t; * HEARTBEAT ACK, * etc.) to the same destination transport&n;&t; * address from which it * received the DATA or control chunk&n;&t; * to which it is replying.&n;&t; *&n;&t; * [ABORT back to where the offender came from.]&n;&t; */
+multiline_comment|/* RFC 2960 6.4 Multi-homed SCTP Endpoints&n;&t; *&n;&t; * An endpoint SHOULD transmit reply chunks (e.g., SACK,&n;&t; * HEARTBEAT ACK, * etc.) to the same destination transport&n;&t; * address from which it * received the DATA or control chunk&n;&t; * to which it is replying.&n;&t; *&n;&t; * [ABORT back to where the offender came from.]&n;&t; */
 r_if
 c_cond
 (paren
-l_int|NULL
-op_ne
 id|retval
 op_logical_and
-l_int|NULL
-op_ne
 id|chunk
 )paren
-(brace
 id|retval-&gt;transport
 op_assign
 id|chunk-&gt;transport
 suffix:semicolon
-)brace
 r_return
 id|retval
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_make_abort() */
-multiline_comment|/* Helper to create ABORT with a NO_USER_DATA error. */
+multiline_comment|/* Helper to create ABORT with a NO_USER_DATA error.  */
+DECL|function|sctp_make_abort_no_data
 id|sctp_chunk_t
 op_star
-DECL|function|sctp_make_abort_no_data
 id|sctp_make_abort_no_data
 c_func
 (paren
@@ -2182,7 +2042,7 @@ id|sctp_chunk_t
 op_star
 id|chunk
 comma
-r_uint32
+id|__u32
 id|tsn
 )paren
 (brace
@@ -2190,7 +2050,7 @@ id|sctp_chunk_t
 op_star
 id|retval
 suffix:semicolon
-r_uint32
+id|__u32
 id|payload
 suffix:semicolon
 id|retval
@@ -2219,12 +2079,10 @@ c_cond
 op_logical_neg
 id|retval
 )paren
-(brace
 r_goto
 id|no_mem
 suffix:semicolon
-)brace
-multiline_comment|/* Put the tsn back into network byte order. */
+multiline_comment|/* Put the tsn back into network byte order.  */
 id|payload
 op_assign
 id|htonl
@@ -2254,29 +2112,26 @@ id|payload
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* RFC 2960 6.4 Multi-homed SCTP Endpoints&n;&t; * &n;&t; * An endpoint SHOULD transmit reply chunks (e.g., SACK,&n;&t; * HEARTBEAT ACK, * etc.) to the same destination transport&n;&t; * address from which it * received the DATA or control chunk&n;&t; * to which it is replying.&n;&t; *&n;&t; * [ABORT back to where the offender came from.]&n;&t; */
+multiline_comment|/* RFC 2960 6.4 Multi-homed SCTP Endpoints&n;&t; *&n;&t; * An endpoint SHOULD transmit reply chunks (e.g., SACK,&n;&t; * HEARTBEAT ACK, * etc.) to the same destination transport&n;&t; * address from which it * received the DATA or control chunk&n;&t; * to which it is replying.&n;&t; *&n;&t; * [ABORT back to where the offender came from.]&n;&t; */
 r_if
 c_cond
 (paren
 id|chunk
 )paren
-(brace
 id|retval-&gt;transport
 op_assign
 id|chunk-&gt;transport
 suffix:semicolon
-)brace
 id|no_mem
 suffix:colon
 r_return
 id|retval
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_make_abort_no_data() */
-multiline_comment|/* Make a HEARTBEAT chunk. */
+multiline_comment|/* Make a HEARTBEAT chunk.  */
+DECL|function|sctp_make_heartbeat
 id|sctp_chunk_t
 op_star
-DECL|function|sctp_make_heartbeat
 id|sctp_make_heartbeat
 c_func
 (paren
@@ -2303,8 +2158,6 @@ id|paylen
 id|sctp_chunk_t
 op_star
 id|retval
-suffix:semicolon
-id|retval
 op_assign
 id|sctp_make_chunk
 c_func
@@ -2321,15 +2174,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-l_int|NULL
-op_eq
+op_logical_neg
 id|retval
 )paren
-(brace
 r_goto
 id|nodata
 suffix:semicolon
-)brace
 multiline_comment|/* Cast away the &squot;const&squot;, as this is just telling the chunk&n;&t; * what transport it belongs to.&n;&t; */
 id|retval-&gt;transport
 op_assign
@@ -2357,10 +2207,9 @@ r_return
 id|retval
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_make_heartbeat() */
+DECL|function|sctp_make_heartbeat_ack
 id|sctp_chunk_t
 op_star
-DECL|function|sctp_make_heartbeat_ack
 id|sctp_make_heartbeat_ack
 c_func
 (paren
@@ -2387,8 +2236,6 @@ id|paylen
 id|sctp_chunk_t
 op_star
 id|retval
-suffix:semicolon
-id|retval
 op_assign
 id|sctp_make_chunk
 c_func
@@ -2405,15 +2252,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-l_int|NULL
-op_eq
+op_logical_neg
 id|retval
 )paren
-(brace
 r_goto
 id|nodata
 suffix:semicolon
-)brace
 id|retval-&gt;subh.hbs_hdr
 op_assign
 id|sctp_addto_chunk
@@ -2426,31 +2270,26 @@ comma
 id|payload
 )paren
 suffix:semicolon
-multiline_comment|/* RFC 2960 6.4 Multi-homed SCTP Endpoints&n;&t; * &n;&t; * An endpoint SHOULD transmit reply chunks (e.g., SACK,&n;&t; * HEARTBEAT ACK, * etc.) to the same destination transport&n;&t; * address from which it * received the DATA or control chunk&n;&t; * to which it is replying.&n;&t; *&n;&t; * [HBACK back to where the HEARTBEAT came from.]&n;&t; */
+multiline_comment|/* RFC 2960 6.4 Multi-homed SCTP Endpoints&n;&t; *&n;&t; * An endpoint SHOULD transmit reply chunks (e.g., SACK,&n;&t; * HEARTBEAT ACK, * etc.) to the same destination transport&n;&t; * address from which it * received the DATA or control chunk&n;&t; * to which it is replying.&n;&t; *&n;&t; * [HBACK back to where the HEARTBEAT came from.]&n;&t; */
 r_if
 c_cond
 (paren
-l_int|NULL
-op_ne
 id|chunk
 )paren
-(brace
 id|retval-&gt;transport
 op_assign
 id|chunk-&gt;transport
 suffix:semicolon
-)brace
 id|nodata
 suffix:colon
 r_return
 id|retval
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_make_heartbeat_ack() */
-multiline_comment|/* Create an Operation Error chunk. */
+multiline_comment|/* Create an Operation Error chunk.  */
+DECL|function|sctp_make_op_error
 id|sctp_chunk_t
 op_star
-DECL|function|sctp_make_op_error
 id|sctp_make_op_error
 c_func
 (paren
@@ -2464,7 +2303,7 @@ id|sctp_chunk_t
 op_star
 id|chunk
 comma
-r_uint16
+id|__u16
 id|cause_code
 comma
 r_const
@@ -2478,8 +2317,6 @@ id|paylen
 (brace
 id|sctp_chunk_t
 op_star
-id|retval
-suffix:semicolon
 id|retval
 op_assign
 id|sctp_make_chunk
@@ -2502,15 +2339,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-l_int|NULL
-op_eq
+op_logical_neg
 id|retval
 )paren
-(brace
 r_goto
 id|nodata
 suffix:semicolon
-)brace
 id|sctp_init_cause
 c_func
 (paren
@@ -2523,32 +2357,27 @@ comma
 id|paylen
 )paren
 suffix:semicolon
-multiline_comment|/* RFC 2960 6.4 Multi-homed SCTP Endpoints&n;&t; * &n;&t; * An endpoint SHOULD transmit reply chunks (e.g., SACK,&n;&t; * HEARTBEAT ACK, * etc.) to the same destination transport&n;&t; * address from which it * received the DATA or control chunk&n;&t; * to which it is replying.&n;&t; *&n;&t; */
+multiline_comment|/* RFC 2960 6.4 Multi-homed SCTP Endpoints&n;&t; *&n;&t; * An endpoint SHOULD transmit reply chunks (e.g., SACK,&n;&t; * HEARTBEAT ACK, * etc.) to the same destination transport&n;&t; * address from which it * received the DATA or control chunk&n;&t; * to which it is replying.&n;&t; */
 r_if
 c_cond
 (paren
-l_int|NULL
-op_ne
 id|chunk
 )paren
-(brace
 id|retval-&gt;transport
 op_assign
 id|chunk-&gt;transport
 suffix:semicolon
-)brace
 id|nodata
 suffix:colon
 r_return
 id|retval
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_make_op_error() */
 multiline_comment|/********************************************************************&n; * 2nd Level Abstractions&n; ********************************************************************/
-multiline_comment|/* Turn an skb into a chunk.  &n; * FIXME: Eventually move the structure directly inside the skb-&gt;cb[].&n; */
+multiline_comment|/* Turn an skb into a chunk.&n; * FIXME: Eventually move the structure directly inside the skb-&gt;cb[].&n; */
+DECL|function|sctp_chunkify
 id|sctp_chunk_t
 op_star
-DECL|function|sctp_chunkify
 id|sctp_chunkify
 c_func
 (paren
@@ -2571,8 +2400,6 @@ id|sk
 id|sctp_chunk_t
 op_star
 id|retval
-suffix:semicolon
-id|retval
 op_assign
 id|t_new
 c_func
@@ -2585,15 +2412,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-l_int|NULL
-op_eq
+op_logical_neg
 id|retval
 )paren
-(brace
 r_goto
 id|nodata
 suffix:semicolon
-)brace
 id|memset
 c_func
 (paren
@@ -2667,7 +2491,7 @@ id|retval-&gt;pdiscard
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* sctpimpguide-05.txt Section 2.8.2 &n;&t; * M1) Each time a new DATA chunk is transmitted &n;&t; * set the &squot;TSN.Missing.Report&squot; count for that TSN to 0. The&n;&t; * &squot;TSN.Missing.Report&squot; count will be used to determine missing chunks &n;&t; * and when to fast retransmit.&n;&t; */
+multiline_comment|/* sctpimpguide-05.txt Section 2.8.2&n;&t; * M1) Each time a new DATA chunk is transmitted&n;&t; * set the &squot;TSN.Missing.Report&squot; count for that TSN to 0. The&n;&t; * &squot;TSN.Missing.Report&squot; count will be used to determine missing chunks&n;&t; * and when to fast retransmit.&n;&t; */
 id|retval-&gt;tsn_missing_report
 op_assign
 l_int|0
@@ -2707,10 +2531,9 @@ r_return
 id|retval
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_chunkify() */
 multiline_comment|/* Set chunk-&gt;source based on the IP header in chunk-&gt;skb.  */
-r_void
 DECL|function|sctp_init_source
+r_void
 id|sctp_init_source
 c_func
 (paren
@@ -2813,7 +2636,7 @@ id|source-&gt;v6.sin6_addr
 op_assign
 id|ih6-&gt;saddr
 suffix:semicolon
-multiline_comment|/* FIXME:  What do we do with scope, etc. ? &n;&t;&t;&t; */
+multiline_comment|/* FIXME:  What do we do with scope, etc. ? */
 r_break
 suffix:semicolon
 )paren
@@ -2823,14 +2646,13 @@ multiline_comment|/* This is a bogus address type, just bail.  */
 r_break
 suffix:semicolon
 )brace
-multiline_comment|/* switch (IP version of header) */
+suffix:semicolon
 )brace
-multiline_comment|/* sctp_init_source() */
 multiline_comment|/* Extract the source address from a chunk.  */
+DECL|function|sctp_source
 r_const
 id|sockaddr_storage_t
 op_star
-DECL|function|sctp_source
 id|sctp_source
 c_func
 (paren
@@ -2861,11 +2683,10 @@ id|chunk-&gt;source
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/* sctp_source() */
 multiline_comment|/* Create a new chunk, setting the type and flags headers from the&n; * arguments, reserving enough space for a &squot;paylen&squot; byte payload.&n; */
+DECL|function|sctp_make_chunk
 id|sctp_chunk_t
 op_star
-DECL|function|sctp_make_chunk
 id|sctp_make_chunk
 c_func
 (paren
@@ -2874,10 +2695,10 @@ id|sctp_association_t
 op_star
 id|asoc
 comma
-r_uint8
+id|__u8
 id|type
 comma
-r_uint8
+id|__u8
 id|flags
 comma
 r_int
@@ -2922,15 +2743,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-l_int|NULL
-op_eq
+op_logical_neg
 id|skb
 )paren
-(brace
 r_goto
 id|nodata
 suffix:semicolon
-)brace
 multiline_comment|/* Make room for the chunk header.  */
 id|chunk_hdr
 op_assign
@@ -3015,8 +2833,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-l_int|NULL
-op_eq
+op_logical_neg
 id|retval
 )paren
 (brace
@@ -3038,7 +2855,7 @@ id|retval-&gt;chunk_end
 op_assign
 (paren
 (paren
-r_uint8
+id|__u8
 op_star
 )paren
 id|chunk_hdr
@@ -3063,10 +2880,9 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_make_chunk() */
 multiline_comment|/* Release the memory occupied by a chunk.  */
-r_void
 DECL|function|sctp_free_chunk
+r_void
 id|sctp_free_chunk
 c_func
 (paren
@@ -3114,11 +2930,10 @@ id|chunk
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_free_chunk() */
 multiline_comment|/* Do a deep copy of a chunk.  */
+DECL|function|sctp_copy_chunk
 id|sctp_chunk_t
 op_star
-DECL|function|sctp_copy_chunk
 id|sctp_copy_chunk
 c_func
 (paren
@@ -3151,15 +2966,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-l_int|NULL
-op_eq
+op_logical_neg
 id|retval
 )paren
-(brace
 r_goto
 id|nodata
 suffix:semicolon
-)brace
 multiline_comment|/* Do the shallow copy.  */
 op_star
 id|retval
@@ -3208,8 +3020,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-l_int|NULL
-op_eq
+op_logical_neg
 id|retval-&gt;skb
 )paren
 (brace
@@ -3228,7 +3039,7 @@ id|offset
 op_assign
 (paren
 (paren
-r_uint8
+id|__u8
 op_star
 )paren
 id|retval-&gt;skb-&gt;head
@@ -3236,7 +3047,7 @@ id|retval-&gt;skb-&gt;head
 op_minus
 (paren
 (paren
-r_uint8
+id|__u8
 op_star
 )paren
 id|chunk-&gt;skb-&gt;head
@@ -3245,42 +3056,29 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-l_int|NULL
-op_ne
 id|retval-&gt;param_hdr.v
 )paren
-(brace
 id|retval-&gt;param_hdr.v
 op_add_assign
 id|offset
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
-l_int|NULL
-op_ne
 id|retval-&gt;subh.v
 )paren
-(brace
-(paren
 id|retval-&gt;subh.v
-)paren
 op_add_assign
 id|offset
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
-l_int|NULL
-op_ne
 id|retval-&gt;chunk_end
 )paren
-(brace
 (paren
 (paren
-r_uint8
+id|__u8
 op_star
 )paren
 id|retval-&gt;chunk_end
@@ -3288,18 +3086,14 @@ id|retval-&gt;chunk_end
 op_add_assign
 id|offset
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
-l_int|NULL
-op_ne
 id|retval-&gt;chunk_hdr
 )paren
-(brace
 (paren
 (paren
-r_uint8
+id|__u8
 op_star
 )paren
 id|retval-&gt;chunk_hdr
@@ -3307,18 +3101,14 @@ id|retval-&gt;chunk_hdr
 op_add_assign
 id|offset
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
-l_int|NULL
-op_ne
 id|retval-&gt;sctp_hdr
 )paren
-(brace
 (paren
 (paren
-r_uint8
+id|__u8
 op_star
 )paren
 id|retval-&gt;sctp_hdr
@@ -3326,7 +3116,6 @@ id|retval-&gt;sctp_hdr
 op_add_assign
 id|offset
 suffix:semicolon
-)brace
 id|SCTP_DBG_OBJCNT_INC
 c_func
 (paren
@@ -3342,11 +3131,10 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_copy_chunk() */
 multiline_comment|/* Append bytes to the end of a chunk.  Will panic if chunk is not big&n; * enough.&n; */
+DECL|function|sctp_addto_chunk
 r_void
 op_star
-DECL|function|sctp_addto_chunk
 id|sctp_addto_chunk
 c_func
 (paren
@@ -3448,10 +3236,9 @@ r_return
 id|target
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_addto_chunk() */
 multiline_comment|/* Append bytes from user space to the end of a chunk.  Will panic if&n; * chunk is not big enough.&n; * Returns a kernel err value.&n; */
-r_int
 DECL|function|sctp_user_addto_chunk
+r_int
 id|sctp_user_addto_chunk
 c_func
 (paren
@@ -3468,7 +3255,7 @@ op_star
 id|data
 )paren
 (brace
-r_uint8
+id|__u8
 op_star
 id|target
 suffix:semicolon
@@ -3477,7 +3264,7 @@ id|err
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* Make room in chunk for data */
+multiline_comment|/* Make room in chunk for data.  */
 id|target
 op_assign
 id|skb_put
@@ -3506,11 +3293,9 @@ id|len
 )paren
 )paren
 )paren
-(brace
 r_goto
 id|out
 suffix:semicolon
-)brace
 multiline_comment|/* Adjust the chunk length field.  */
 id|chunk-&gt;chunk_hdr-&gt;length
 op_assign
@@ -3536,10 +3321,9 @@ r_return
 id|err
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_user_addto_chunk() */
-multiline_comment|/* Helper function to assign a TSN if needed.  This assumes that both&n; * the data_hdr and association have already been assigned. &n; */
-r_void
+multiline_comment|/* Helper function to assign a TSN if needed.  This assumes that both&n; * the data_hdr and association have already been assigned.&n; */
 DECL|function|sctp_chunk_assign_tsn
+r_void
 id|sctp_chunk_assign_tsn
 c_func
 (paren
@@ -3575,9 +3359,9 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/* Create a CLOSED association to use with an incoming packet.  */
+DECL|function|sctp_make_temp_asoc
 id|sctp_association_t
 op_star
-DECL|function|sctp_make_temp_asoc
 id|sctp_make_temp_asoc
 c_func
 (paren
@@ -3631,15 +3415,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-l_int|NULL
-op_eq
+op_logical_neg
 id|asoc
 )paren
-(brace
 r_goto
 id|nodata
 suffix:semicolon
-)brace
 multiline_comment|/* Create an entry for the source address of the packet.  */
 r_switch
 c_cond
@@ -3706,6 +3487,7 @@ r_goto
 id|fail
 suffix:semicolon
 )brace
+suffix:semicolon
 id|nodata
 suffix:colon
 r_return
@@ -3723,11 +3505,10 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_make_temp_asoc() */
 multiline_comment|/* Build a cookie representing asoc.&n; * This INCLUDES the param header needed to put the cookie in the INIT ACK.&n; */
+DECL|function|sctp_pack_cookie
 id|sctp_cookie_param_t
 op_star
-DECL|function|sctp_pack_cookie
 id|sctp_pack_cookie
 c_func
 (paren
@@ -3751,7 +3532,7 @@ op_star
 id|cookie_len
 comma
 r_const
-r_uint8
+id|__u8
 op_star
 id|raw_addrs
 comma
@@ -3804,7 +3585,6 @@ id|bodysize
 op_mod
 id|SCTP_COOKIE_MULTIPLE
 )paren
-(brace
 id|bodysize
 op_add_assign
 id|SCTP_COOKIE_MULTIPLE
@@ -3815,7 +3595,6 @@ op_mod
 id|SCTP_COOKIE_MULTIPLE
 )paren
 suffix:semicolon
-)brace
 op_star
 id|cookie_len
 op_assign
@@ -3841,8 +3620,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-l_int|NULL
-op_eq
+op_logical_neg
 id|retval
 )paren
 (brace
@@ -3941,7 +3719,7 @@ id|memcpy
 c_func
 (paren
 (paren
-r_uint8
+id|__u8
 op_star
 )paren
 op_amp
@@ -3973,7 +3751,7 @@ comma
 id|SCTP_SECRET_SIZE
 comma
 (paren
-r_uint8
+id|__u8
 op_star
 )paren
 op_amp
@@ -3990,11 +3768,10 @@ r_return
 id|retval
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_pack_cookie() */
 multiline_comment|/* Unpack the cookie from COOKIE ECHO chunk, recreating the association.  */
+DECL|function|sctp_unpack_cookie
 id|sctp_association_t
 op_star
-DECL|function|sctp_unpack_cookie
 id|sctp_unpack_cookie
 c_func
 (paren
@@ -4048,7 +3825,7 @@ id|var_size2
 comma
 id|var_size3
 suffix:semicolon
-r_uint8
+id|__u8
 id|digest_buf
 (braket
 id|SCTP_SIGNATURE_SIZE
@@ -4060,7 +3837,7 @@ suffix:semicolon
 id|sctp_scope_t
 id|scope
 suffix:semicolon
-r_uint8
+id|__u8
 op_star
 id|raw_addr_list
 suffix:semicolon
@@ -4092,7 +3869,7 @@ r_sizeof
 id|sctp_cookie_t
 )paren
 suffix:semicolon
-multiline_comment|/* Verify that the chunk looks like it even has a cookie. &n;&t; * There must be enough room for our cookie and our peer&squot;s&n;&t; * INIT chunk.&n;&t; */
+multiline_comment|/* Verify that the chunk looks like it even has a cookie.&n;&t; * There must be enough room for our cookie and our peer&squot;s&n;&t; * INIT chunk.&n;&t; */
 r_if
 c_cond
 (paren
@@ -4111,11 +3888,9 @@ id|sctp_chunkhdr_t
 )paren
 )paren
 )paren
-(brace
 r_goto
 id|malformed
 suffix:semicolon
-)brace
 multiline_comment|/* Verify that the cookie has been padded out. */
 r_if
 c_cond
@@ -4124,11 +3899,9 @@ id|bodysize
 op_mod
 id|SCTP_COOKIE_MULTIPLE
 )paren
-(brace
 r_goto
 id|malformed
 suffix:semicolon
-)brace
 multiline_comment|/* Process the cookie.  */
 id|cookie
 op_assign
@@ -4177,7 +3950,7 @@ comma
 id|SCTP_SECRET_SIZE
 comma
 (paren
-r_uint8
+id|__u8
 op_star
 )paren
 id|bear_cookie
@@ -4217,7 +3990,7 @@ comma
 id|SCTP_SECRET_SIZE
 comma
 (paren
-r_uint8
+id|__u8
 op_star
 )paren
 id|bear_cookie
@@ -4253,7 +4026,6 @@ id|fail
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/* if (the current secret failed) */
 multiline_comment|/* Check to see if the cookie is stale.  If there is already&n;&t; * an association, there is no need to check cookie&squot;s expiration&n;&t; * for init collision case of lost COOKIE ACK.&n;&t; */
 r_if
 c_cond
@@ -4310,8 +4082,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-l_int|NULL
-op_eq
+op_logical_neg
 id|retval
 )paren
 (brace
@@ -4340,11 +4111,11 @@ op_assign
 op_star
 id|bear_cookie
 suffix:semicolon
-multiline_comment|/* Build the bind address list based on the cookie */
+multiline_comment|/* Build the bind address list based on the cookie.  */
 id|raw_addr_list
 op_assign
 (paren
-r_uint8
+id|__u8
 op_star
 )paren
 id|bear_cookie
@@ -4406,14 +4177,12 @@ c_cond
 (paren
 id|retval
 )paren
-(brace
 id|sctp_association_free
 c_func
 (paren
 id|retval
 )paren
 suffix:semicolon
-)brace
 r_return
 l_int|NULL
 suffix:semicolon
@@ -4430,11 +4199,10 @@ r_goto
 id|fail
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_unpack_cookie() */
 multiline_comment|/********************************************************************&n; * 3rd Level Abstractions&n; ********************************************************************/
-multiline_comment|/* Unpack the parameters in an INIT packet.&n; * FIXME:  There is no return status to allow callers to do&n; * error handling.  &n; */
-r_void
+multiline_comment|/* Unpack the parameters in an INIT packet.&n; * FIXME:  There is no return status to allow callers to do&n; * error handling.&n; */
 DECL|function|sctp_process_init
+r_void
 id|sctp_process_init
 c_func
 (paren
@@ -4461,7 +4229,7 @@ id|priority
 id|sctpParam_t
 id|param
 suffix:semicolon
-r_uint8
+id|__u8
 op_star
 id|end
 suffix:semicolon
@@ -4481,11 +4249,8 @@ multiline_comment|/* This implementation defaults to making the first transport&
 r_if
 c_cond
 (paren
-l_int|NULL
-op_ne
 id|peer_addr
 )paren
-(brace
 id|sctp_assoc_add_peer
 c_func
 (paren
@@ -4496,13 +4261,12 @@ comma
 id|priority
 )paren
 suffix:semicolon
-)brace
-multiline_comment|/* Process the initialization parameters. */
+multiline_comment|/* Process the initialization parameters.  */
 id|end
 op_assign
 (paren
 (paren
-r_uint8
+id|__u8
 op_star
 )paren
 id|peer_init
@@ -4556,13 +4320,10 @@ comma
 id|priority
 )paren
 )paren
-(brace
 r_goto
 id|clean_up
 suffix:semicolon
 )brace
-)brace
-multiline_comment|/* for (loop through all parameters) */
 multiline_comment|/* The fixed INIT headers are always in network byte&n;&t; * order.&n;&t; */
 id|asoc-&gt;peer.i.init_tag
 op_assign
@@ -4604,7 +4365,7 @@ c_func
 id|peer_init-&gt;init_hdr.initial_tsn
 )paren
 suffix:semicolon
-multiline_comment|/* Apply the upper bounds for output streams based on peer&squot;s &n;&t; * number of inbound streams.  &n;&t; */
+multiline_comment|/* Apply the upper bounds for output streams based on peer&squot;s&n;&t; * number of inbound streams.&n;&t; */
 r_if
 c_cond
 (paren
@@ -4626,17 +4387,17 @@ id|peer_init-&gt;init_hdr.num_inbound_streams
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Copy Initiation tag from INIT to VT_peer in cookie */
+multiline_comment|/* Copy Initiation tag from INIT to VT_peer in cookie.   */
 id|asoc-&gt;c.peer_vtag
 op_assign
 id|asoc-&gt;peer.i.init_tag
 suffix:semicolon
-multiline_comment|/* Peer Rwnd   : Current calculated value of the peer&squot;s rwnd. */
+multiline_comment|/* Peer Rwnd   : Current calculated value of the peer&squot;s rwnd.  */
 id|asoc-&gt;peer.rwnd
 op_assign
 id|asoc-&gt;peer.i.a_rwnd
 suffix:semicolon
-multiline_comment|/* RFC 2960 7.2.1 The initial value of ssthresh MAY be arbitrarily &n;&t; * high (for example, implementations MAY use the size of the receiver&n;&t; * advertised window).&n;&t; */
+multiline_comment|/* RFC 2960 7.2.1 The initial value of ssthresh MAY be arbitrarily&n;&t; * high (for example, implementations MAY use the size of the receiver&n;&t; * advertised window).&n;&t; */
 id|list_for_each
 c_func
 (paren
@@ -4675,7 +4436,7 @@ comma
 id|asoc-&gt;peer.i.initial_tsn
 )paren
 suffix:semicolon
-multiline_comment|/* ADDIP Section 4.1 ASCONF Chunk Procedures&n;&t; * &n;&t; * When an endpoint has an ASCONF signaled change to be sent to the&n;&t; * remote endpoint it should do the following:&n;&t; * ...&n;&t; * A2) A serial number should be assigned to the Chunk. The serial&n;&t; * number should be a monotonically increasing number. All serial&n;&t; * numbers are defined to be initialized at the start of the&n;&t; * association to the same value as the Initial TSN.&n;&t; */
+multiline_comment|/* ADDIP Section 4.1 ASCONF Chunk Procedures&n;&t; *&n;&t; * When an endpoint has an ASCONF signaled change to be sent to the&n;&t; * remote endpoint it should do the following:&n;&t; * ...&n;&t; * A2) A serial number should be assigned to the Chunk. The serial&n;&t; * number should be a monotonically increasing number. All serial&n;&t; * numbers are defined to be initialized at the start of the&n;&t; * association to the same value as the Initial TSN.&n;&t; */
 id|asoc-&gt;peer.addip_serial
 op_assign
 id|asoc-&gt;peer.i.initial_tsn
@@ -4723,13 +4484,10 @@ id|transport
 )paren
 suffix:semicolon
 )brace
-r_return
-suffix:semicolon
 )brace
-multiline_comment|/* sctp_process_init() */
-multiline_comment|/* Update asoc with the option described in param.&n; * &n; * RFC2960 3.3.2.1 Optional/Variable Length Parameters in INIT&n; *&n; * asoc is the association to update.&n; * param is the variable length parameter to use for update.&n; * cid tells us if this is an INIT, INIT ACK or COOKIE ECHO.&n; * If the current packet is an INIT we want to minimize the amount of&n; * work we do.  In particular, we should not build transport&n; * structures for the addresses.&n; */
-r_int
+multiline_comment|/* Update asoc with the option described in param.&n; *&n; * RFC2960 3.3.2.1 Optional/Variable Length Parameters in INIT&n; *&n; * asoc is the association to update.&n; * param is the variable length parameter to use for update.&n; * cid tells us if this is an INIT, INIT ACK or COOKIE ECHO.&n; * If the current packet is an INIT we want to minimize the amount of&n; * work we do.  In particular, we should not build transport&n; * structures for the addresses.&n; */
 DECL|function|sctp_process_param
+r_int
 id|sctp_process_param
 c_func
 (paren
@@ -4769,7 +4527,7 @@ suffix:semicolon
 id|sctp_scope_t
 id|scope
 suffix:semicolon
-multiline_comment|/* We maintain all INIT parameters in network byte order all the&n; * time.  This allows us to not worry about whether the parameters&n; * came from a fresh INIT, and INIT ACK, or were stored in a cookie.&n; */
+multiline_comment|/* We maintain all INIT parameters in network byte order all the&n;&t; * time.  This allows us to not worry about whether the parameters&n;&t; * came from a fresh INIT, and INIT ACK, or were stored in a cookie.&n;&t; */
 r_switch
 c_cond
 (paren
@@ -4818,7 +4576,6 @@ comma
 id|scope
 )paren
 )paren
-(brace
 id|sctp_assoc_add_peer
 c_func
 (paren
@@ -4830,7 +4587,6 @@ comma
 id|priority
 )paren
 suffix:semicolon
-)brace
 )brace
 r_break
 suffix:semicolon
@@ -4884,7 +4640,6 @@ comma
 id|scope
 )paren
 )paren
-(brace
 id|sctp_assoc_add_peer
 c_func
 (paren
@@ -4896,7 +4651,6 @@ comma
 id|priority
 )paren
 suffix:semicolon
-)brace
 )brace
 )brace
 r_break
@@ -4928,7 +4682,7 @@ suffix:semicolon
 r_case
 id|SCTP_PARAM_SUPPORTED_ADDRESS_TYPES
 suffix:colon
-multiline_comment|/* Turn off the default values first so we&squot;ll know which&n;&t;&t; * ones are really set by the peer.  &n;&t;&t; */
+multiline_comment|/* Turn off the default values first so we&squot;ll know which&n;&t;&t; * ones are really set by the peer.&n;&t;&t; */
 id|asoc-&gt;peer.ipv4_address
 op_assign
 l_int|0
@@ -4954,7 +4708,7 @@ id|sctp_paramhdr_t
 op_div
 r_sizeof
 (paren
-r_uint16
+id|__u16
 )paren
 suffix:semicolon
 r_for
@@ -5014,6 +4768,7 @@ multiline_comment|/* Just ignore anything else.  */
 r_break
 suffix:semicolon
 )brace
+suffix:semicolon
 )brace
 r_break
 suffix:semicolon
@@ -5027,7 +4782,7 @@ c_func
 (paren
 id|param.p-&gt;length
 )paren
-op_minus
+op_assign
 r_sizeof
 (paren
 id|sctp_paramhdr_t
@@ -5096,14 +4851,14 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
+suffix:semicolon
 r_return
 id|retval
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_process_param() */
 multiline_comment|/* Select a new verification tag.  */
-r_uint32
 DECL|function|sctp_generate_tag
+id|__u32
 id|sctp_generate_tag
 c_func
 (paren
@@ -5114,7 +4869,7 @@ id|ep
 )paren
 (brace
 multiline_comment|/* I believe that this random number generator complies with RFC1750.&n;&t; * A tag of 0 is reserved for special cases (e.g. INIT).&n;&t; */
-r_uint32
+id|__u32
 id|x
 suffix:semicolon
 r_do
@@ -5127,7 +4882,7 @@ id|x
 comma
 r_sizeof
 (paren
-r_uint32
+id|__u32
 )paren
 )paren
 suffix:semicolon
@@ -5139,17 +4894,14 @@ id|x
 op_eq
 l_int|0
 )paren
-(brace
 suffix:semicolon
-)brace
 r_return
 id|x
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_generate_tag() */
 multiline_comment|/* Select an initial TSN to send during startup.  */
-r_uint32
 DECL|function|sctp_generate_tsn
+id|__u32
 id|sctp_generate_tsn
 c_func
 (paren
@@ -5159,8 +4911,8 @@ op_star
 id|ep
 )paren
 (brace
-multiline_comment|/* I believe that this random number generator complies with RFC1750.&n;&t; */
-r_uint32
+multiline_comment|/* I believe that this random number generator complies with RFC1750.  */
+id|__u32
 id|retval
 suffix:semicolon
 id|get_random_bytes
@@ -5171,7 +4923,7 @@ id|retval
 comma
 r_sizeof
 (paren
-r_uint32
+id|__u32
 )paren
 )paren
 suffix:semicolon
@@ -5179,11 +4931,10 @@ r_return
 id|retval
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_generate_tsn() */
 multiline_comment|/********************************************************************&n; * 4th Level Abstractions&n; ********************************************************************/
 multiline_comment|/* Convert from an SCTP IP parameter to a sockaddr_storage_t.  */
-r_void
 DECL|function|sctp_param2sockaddr
+r_void
 id|sctp_param2sockaddr
 c_func
 (paren
@@ -5194,7 +4945,7 @@ comma
 id|sctpParam_t
 id|param
 comma
-r_uint16
+id|__u16
 id|port
 )paren
 (brace
@@ -5265,12 +5016,12 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
+suffix:semicolon
 )brace
-multiline_comment|/* sctp_param2sockaddr() */
 multiline_comment|/* Convert an IP address in an SCTP param into a sockaddr_in.  */
 multiline_comment|/* Returns true if a valid conversion was possible.  */
-r_int
 DECL|function|sctp_addr2sockaddr
+r_int
 id|sctp_addr2sockaddr
 c_func
 (paren
@@ -5285,15 +5036,12 @@ id|sa
 r_if
 c_cond
 (paren
-l_int|NULL
-op_eq
+op_logical_neg
 id|p.v
 )paren
-(brace
 r_return
 l_int|0
 suffix:semicolon
-)brace
 r_switch
 c_cond
 (paren
@@ -5350,18 +5098,18 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+suffix:semicolon
 r_return
 l_int|1
 suffix:semicolon
 )brace
-multiline_comment|/* sctp_addr2sockaddr() */
 multiline_comment|/* Convert from an IP version number to an Address Family symbol.  */
 DECL|function|ipver2af
 r_int
 id|ipver2af
 c_func
 (paren
-r_uint8
+id|__u8
 id|ipver
 )paren
 (brace
@@ -5401,16 +5149,15 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-multiline_comment|/* switch (ipversion) */
+suffix:semicolon
 r_return
 id|family
 suffix:semicolon
 )brace
-multiline_comment|/* ipver2af() */
 multiline_comment|/* Convert a sockaddr_in to  IP address in an SCTP para.  */
 multiline_comment|/* Returns true if a valid conversion was possible.  */
-r_int
 DECL|function|sockaddr2sctp_addr
+r_int
 id|sockaddr2sctp_addr
 c_func
 (paren
@@ -5515,9 +5262,9 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+suffix:semicolon
 r_return
 id|len
 suffix:semicolon
 )brace
-multiline_comment|/* sockaddr2sctp_addr() */
 eof
