@@ -487,6 +487,9 @@ DECL|macro|local_irq_save
 mdefine_line|#define local_irq_save(flags)&t;((flags) = read_psr_and_cli())
 DECL|macro|local_irq_restore
 mdefine_line|#define local_irq_restore(flags)&t;setipl((flags))
+multiline_comment|/* On sparc32 IRQ flags are the PSR register in the PSR_PIL&n; * field.&n; */
+DECL|macro|irqs_disabled
+mdefine_line|#define irqs_disabled()&t;&t;&bslash;&n;({&t;unsigned long flags;&t;&bslash;&n;&t;local_save_flags(flags);&bslash;&n;&t;(flags &amp; PSR_PIL) != 0;&t;&bslash;&n;})
 macro_line|#ifdef CONFIG_SMP
 r_extern
 r_int
