@@ -599,6 +599,7 @@ c_func
 (paren
 id|x
 )paren
+suffix:semicolon
 r_goto
 id|out
 suffix:semicolon
@@ -1066,6 +1067,7 @@ c_func
 (paren
 id|x
 )paren
+suffix:semicolon
 id|spin_unlock_bh
 c_func
 (paren
@@ -1519,6 +1521,7 @@ c_func
 (paren
 id|x
 )paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1556,6 +1559,7 @@ c_func
 (paren
 id|x
 )paren
+suffix:semicolon
 )brace
 id|x-&gt;lft.hard_add_expires_seconds
 op_assign
@@ -1566,6 +1570,7 @@ c_func
 (paren
 id|x
 )paren
+suffix:semicolon
 id|mod_timer
 c_func
 (paren
@@ -1683,6 +1688,7 @@ c_func
 (paren
 id|x
 )paren
+suffix:semicolon
 id|h
 op_assign
 id|xfrm_spi_hash
@@ -1714,6 +1720,7 @@ c_func
 (paren
 id|x
 )paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1734,6 +1741,7 @@ c_func
 (paren
 id|x
 )paren
+suffix:semicolon
 id|spin_unlock_bh
 c_func
 (paren
@@ -1825,6 +1833,7 @@ c_func
 (paren
 id|x
 )paren
+suffix:semicolon
 r_return
 op_minus
 id|EINVAL
@@ -2167,6 +2176,7 @@ c_func
 (paren
 id|x
 )paren
+suffix:semicolon
 id|spin_unlock_bh
 c_func
 (paren
@@ -2460,6 +2470,7 @@ c_func
 (paren
 id|x
 )paren
+suffix:semicolon
 id|spin_unlock_bh
 c_func
 (paren

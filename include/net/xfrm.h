@@ -1255,6 +1255,8 @@ id|likely
 c_func
 (paren
 id|policy
+op_ne
+l_int|NULL
 )paren
 )paren
 id|atomic_inc
