@@ -3800,6 +3800,13 @@ c_cond
 id|dirty
 OG
 id|hard_dirty_limit
+op_logical_and
+op_logical_neg
+(paren
+id|current-&gt;flags
+op_amp
+id|PF_NOIO
+)paren
 )paren
 r_return
 l_int|1
