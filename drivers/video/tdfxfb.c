@@ -511,16 +511,6 @@ op_assign
 id|gen_set_var
 comma
 dot
-id|fb_get_cmap
-op_assign
-id|gen_get_cmap
-comma
-dot
-id|fb_set_cmap
-op_assign
-id|gen_set_cmap
-comma
-dot
 id|fb_check_var
 op_assign
 id|tdfxfb_check_var
@@ -598,12 +588,6 @@ r_int
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * Driver data &n; */
-DECL|variable|default_par
-r_static
-r_struct
-id|tdfx_par
-id|default_par
-suffix:semicolon
 DECL|variable|nopan
 r_static
 r_int
@@ -644,6 +628,11 @@ id|u8
 id|vga_inb
 c_func
 (paren
+r_struct
+id|tdfx_par
+op_star
+id|par
+comma
 id|u32
 id|reg
 )paren
@@ -663,6 +652,11 @@ id|u16
 id|vga_inw
 c_func
 (paren
+r_struct
+id|tdfx_par
+op_star
+id|par
+comma
 id|u32
 id|reg
 )paren
@@ -682,6 +676,11 @@ id|u16
 id|vga_inl
 c_func
 (paren
+r_struct
+id|tdfx_par
+op_star
+id|par
+comma
 id|u32
 id|reg
 )paren
@@ -701,6 +700,11 @@ r_void
 id|vga_outb
 c_func
 (paren
+r_struct
+id|tdfx_par
+op_star
+id|par
+comma
 id|u32
 id|reg
 comma
@@ -724,6 +728,11 @@ r_void
 id|vga_outw
 c_func
 (paren
+r_struct
+id|tdfx_par
+op_star
+id|par
+comma
 id|u32
 id|reg
 comma
@@ -747,6 +756,11 @@ r_void
 id|vga_outl
 c_func
 (paren
+r_struct
+id|tdfx_par
+op_star
+id|par
+comma
 id|u32
 id|reg
 comma
@@ -771,6 +785,11 @@ id|u8
 id|vga_inb
 c_func
 (paren
+r_struct
+id|tdfx_par
+op_star
+id|par
+comma
 id|u32
 id|reg
 )paren
@@ -779,7 +798,7 @@ r_return
 id|inb
 c_func
 (paren
-id|default_par.iobase
+id|par-&gt;iobase
 op_plus
 id|reg
 op_minus
@@ -794,6 +813,11 @@ id|u16
 id|vga_inw
 c_func
 (paren
+r_struct
+id|tdfx_par
+op_star
+id|par
+comma
 id|u32
 id|reg
 )paren
@@ -802,7 +826,7 @@ r_return
 id|inw
 c_func
 (paren
-id|default_par.iobase
+id|par-&gt;iobase
 op_plus
 id|reg
 op_minus
@@ -817,6 +841,11 @@ id|u16
 id|vga_inl
 c_func
 (paren
+r_struct
+id|tdfx_par
+op_star
+id|par
+comma
 id|u32
 id|reg
 )paren
@@ -825,7 +854,7 @@ r_return
 id|inl
 c_func
 (paren
-id|default_par.iobase
+id|par-&gt;iobase
 op_plus
 id|reg
 op_minus
@@ -840,6 +869,11 @@ r_void
 id|vga_outb
 c_func
 (paren
+r_struct
+id|tdfx_par
+op_star
+id|par
+comma
 id|u32
 id|reg
 comma
@@ -852,7 +886,7 @@ c_func
 (paren
 id|val
 comma
-id|default_par.iobase
+id|par-&gt;iobase
 op_plus
 id|reg
 op_minus
@@ -867,6 +901,11 @@ r_void
 id|vga_outw
 c_func
 (paren
+r_struct
+id|tdfx_par
+op_star
+id|par
+comma
 id|u32
 id|reg
 comma
@@ -879,7 +918,7 @@ c_func
 (paren
 id|val
 comma
-id|default_par.iobase
+id|par-&gt;iobase
 op_plus
 id|reg
 op_minus
@@ -894,6 +933,11 @@ r_void
 id|vga_outl
 c_func
 (paren
+r_struct
+id|tdfx_par
+op_star
+id|par
+comma
 id|u32
 id|reg
 comma
@@ -906,7 +950,7 @@ c_func
 (paren
 id|val
 comma
-id|default_par.iobase
+id|par-&gt;iobase
 op_plus
 id|reg
 op_minus
@@ -922,6 +966,11 @@ r_void
 id|gra_outb
 c_func
 (paren
+r_struct
+id|tdfx_par
+op_star
+id|par
+comma
 id|u32
 id|idx
 comma
@@ -953,6 +1002,11 @@ id|u8
 id|gra_inb
 c_func
 (paren
+r_struct
+id|tdfx_par
+op_star
+id|par
+comma
 id|u32
 id|idx
 )paren
@@ -980,6 +1034,11 @@ r_void
 id|seq_outb
 c_func
 (paren
+r_struct
+id|tdfx_par
+op_star
+id|par
+comma
 id|u32
 id|idx
 comma
@@ -1011,6 +1070,11 @@ id|u8
 id|seq_inb
 c_func
 (paren
+r_struct
+id|tdfx_par
+op_star
+id|par
+comma
 id|u32
 id|idx
 )paren
@@ -1038,6 +1102,11 @@ r_void
 id|crt_outb
 c_func
 (paren
+r_struct
+id|tdfx_par
+op_star
+id|par
+comma
 id|u32
 id|idx
 comma
@@ -1069,6 +1138,11 @@ id|u8
 id|crt_inb
 c_func
 (paren
+r_struct
+id|tdfx_par
+op_star
+id|par
+comma
 id|u32
 id|idx
 )paren
@@ -1096,6 +1170,11 @@ r_void
 id|att_outb
 c_func
 (paren
+r_struct
+id|tdfx_par
+op_star
+id|par
+comma
 id|u32
 id|idx
 comma
@@ -1139,6 +1218,11 @@ id|u8
 id|att_inb
 c_func
 (paren
+r_struct
+id|tdfx_par
+op_star
+id|par
+comma
 id|u32
 id|idx
 )paren
@@ -1301,7 +1385,10 @@ r_void
 id|vga_enable_palette
 c_func
 (paren
-r_void
+r_struct
+id|tdfx_par
+op_star
+id|par
 )paren
 (brace
 id|vga_inb
@@ -1326,6 +1413,11 @@ id|u32
 id|tdfx_inl
 c_func
 (paren
+r_struct
+id|tdfx_par
+op_star
+id|par
+comma
 r_int
 r_int
 id|reg
@@ -1335,7 +1427,7 @@ r_return
 id|readl
 c_func
 (paren
-id|default_par.regbase_virt
+id|par-&gt;regbase_virt
 op_plus
 id|reg
 )paren
@@ -1348,6 +1440,11 @@ r_void
 id|tdfx_outl
 c_func
 (paren
+r_struct
+id|tdfx_par
+op_star
+id|par
+comma
 r_int
 r_int
 id|reg
@@ -1361,7 +1458,7 @@ c_func
 (paren
 id|val
 comma
-id|default_par.regbase_virt
+id|par-&gt;regbase_virt
 op_plus
 id|reg
 )paren
@@ -1374,6 +1471,11 @@ r_void
 id|banshee_make_room
 c_func
 (paren
+r_struct
+id|tdfx_par
+op_star
+id|par
+comma
 r_int
 id|size
 )paren
@@ -1385,6 +1487,8 @@ c_loop
 id|tdfx_inl
 c_func
 (paren
+id|par
+comma
 id|STATUS
 )paren
 op_amp
@@ -1404,7 +1508,10 @@ r_void
 id|banshee_wait_idle
 c_func
 (paren
-r_void
+r_struct
+id|tdfx_par
+op_star
+id|par
 )paren
 (brace
 r_int
@@ -1421,6 +1528,8 @@ suffix:semicolon
 id|tdfx_outl
 c_func
 (paren
+id|par
+comma
 id|COMMAND_3D
 comma
 id|COMMAND_3D_NOP
@@ -1438,6 +1547,8 @@ op_assign
 id|tdfx_inl
 c_func
 (paren
+id|par
+comma
 id|STATUS
 )paren
 op_amp
@@ -1472,6 +1583,11 @@ r_void
 id|do_setpalentry
 c_func
 (paren
+r_struct
+id|tdfx_par
+op_star
+id|par
+comma
 r_int
 id|regno
 comma
@@ -1488,6 +1604,8 @@ suffix:semicolon
 id|tdfx_outl
 c_func
 (paren
+id|par
+comma
 id|DACADDR
 comma
 id|regno
@@ -1496,6 +1614,8 @@ suffix:semicolon
 id|tdfx_outl
 c_func
 (paren
+id|par
+comma
 id|DACDATA
 comma
 id|c
@@ -5229,6 +5349,11 @@ id|fb_info
 op_star
 id|info
 suffix:semicolon
+r_struct
+id|tdfx_par
+op_star
+id|par
+suffix:semicolon
 r_int
 id|size
 comma
@@ -5275,7 +5400,7 @@ op_plus
 r_sizeof
 (paren
 r_struct
-id|display
+id|tdfx_par
 )paren
 op_plus
 r_sizeof
@@ -5283,7 +5408,7 @@ r_sizeof
 id|u32
 )paren
 op_star
-l_int|16
+l_int|17
 comma
 id|GFP_KERNEL
 )paren
@@ -5313,7 +5438,7 @@ op_plus
 r_sizeof
 (paren
 r_struct
-id|display
+id|tdfx_par
 )paren
 op_plus
 r_sizeof
@@ -5321,7 +5446,7 @@ r_sizeof
 id|u32
 )paren
 op_star
-l_int|16
+l_int|17
 )paren
 suffix:semicolon
 multiline_comment|/* Configure the default fb_fix_screeninfo first */
@@ -5342,7 +5467,7 @@ comma
 l_string|&quot; Banshee&quot;
 )paren
 suffix:semicolon
-id|default_par.max_pixclock
+id|par-&gt;max_pixclock
 op_assign
 id|BANSHEE_MAX_PIXCLOCK
 suffix:semicolon
@@ -5359,7 +5484,7 @@ comma
 l_string|&quot; Voodoo3&quot;
 )paren
 suffix:semicolon
-id|default_par.max_pixclock
+id|par-&gt;max_pixclock
 op_assign
 id|VOODOO3_MAX_PIXCLOCK
 suffix:semicolon
@@ -5376,7 +5501,7 @@ comma
 l_string|&quot; Voodoo5&quot;
 )paren
 suffix:semicolon
-id|default_par.max_pixclock
+id|par-&gt;max_pixclock
 op_assign
 id|VOODOO5_MAX_PIXCLOCK
 suffix:semicolon
@@ -5403,7 +5528,7 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-id|default_par.regbase_virt
+id|par-&gt;regbase_virt
 op_assign
 id|ioremap_nocache
 c_func
@@ -5417,7 +5542,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|default_par.regbase_virt
+id|par-&gt;regbase_virt
 )paren
 (brace
 id|printk
@@ -5654,7 +5779,7 @@ r_goto
 id|out_err
 suffix:semicolon
 )brace
-id|default_par.iobase
+id|par-&gt;iobase
 op_assign
 id|pci_resource_start
 c_func
@@ -5798,14 +5923,9 @@ id|tdfx_fix
 suffix:semicolon
 id|info-&gt;par
 op_assign
-op_amp
-id|default_par
-suffix:semicolon
-id|info-&gt;disp
-op_assign
 (paren
 r_struct
-id|display
+id|tdfx_par
 op_star
 )paren
 (paren
@@ -5821,7 +5941,7 @@ r_void
 op_star
 )paren
 (paren
-id|info-&gt;disp
+id|info-&gt;par
 op_plus
 l_int|1
 )paren
@@ -5830,7 +5950,7 @@ id|info-&gt;flags
 op_assign
 id|FBINFO_FLAG_DEFAULT
 suffix:semicolon
-multiline_comment|/* The below feilds will go away !!!! */
+multiline_comment|/* The below fields will go away !!!! */
 id|strcpy
 c_func
 (paren
@@ -5843,10 +5963,6 @@ id|info-&gt;currcon
 op_assign
 op_minus
 l_int|1
-suffix:semicolon
-id|info-&gt;switch_con
-op_assign
-id|gen_switch
 suffix:semicolon
 id|info-&gt;updatevar
 op_assign
@@ -5973,12 +6089,12 @@ multiline_comment|/*&n;&t; * Cleanup after anything that was remapped/allocated.
 r_if
 c_cond
 (paren
-id|default_par.regbase_virt
+id|par-&gt;regbase_virt
 )paren
 id|iounmap
 c_func
 (paren
-id|default_par.regbase_virt
+id|par-&gt;regbase_virt
 )paren
 suffix:semicolon
 r_if
@@ -5990,6 +6106,12 @@ id|iounmap
 c_func
 (paren
 id|info-&gt;screen_base
+)paren
+suffix:semicolon
+id|kfree
+c_func
+(paren
+id|par
 )paren
 suffix:semicolon
 id|kfree

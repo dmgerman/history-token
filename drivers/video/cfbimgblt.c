@@ -2,7 +2,6 @@ multiline_comment|/*&n; *  Generic BitBLT function for frame buffer with packed 
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/fb.h&gt;
 macro_line|#include &lt;asm/types.h&gt;
-macro_line|#include &lt;video/fbcon.h&gt;
 DECL|macro|DEBUG
 mdefine_line|#define DEBUG
 macro_line|#ifdef DEBUG
