@@ -2812,7 +2812,7 @@ id|QL_TURBO_PDMA
 suffix:semicolon
 id|host-&gt;name
 op_assign
-id|qinfo
+id|qlogicfas_name
 suffix:semicolon
 r_return
 id|hreg
