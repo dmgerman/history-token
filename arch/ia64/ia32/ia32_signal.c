@@ -5216,29 +5216,6 @@ c_func
 id|USER_DS
 )paren
 suffix:semicolon
-id|regs-&gt;r16
-op_assign
-(paren
-id|__USER_DS
-op_lshift
-l_int|16
-)paren
-op_or
-(paren
-id|__USER_DS
-)paren
-suffix:semicolon
-multiline_comment|/* ES == DS, GS, FS are zero */
-id|regs-&gt;r17
-op_assign
-(paren
-id|__USER_DS
-op_lshift
-l_int|16
-)paren
-op_or
-id|__USER_CS
-suffix:semicolon
 macro_line|#if 0
 id|regs-&gt;eflags
 op_and_assign
@@ -5689,29 +5666,6 @@ c_func
 (paren
 id|USER_DS
 )paren
-suffix:semicolon
-id|regs-&gt;r16
-op_assign
-(paren
-id|__USER_DS
-op_lshift
-l_int|16
-)paren
-op_or
-(paren
-id|__USER_DS
-)paren
-suffix:semicolon
-multiline_comment|/* ES == DS, GS, FS are zero */
-id|regs-&gt;r17
-op_assign
-(paren
-id|__USER_DS
-op_lshift
-l_int|16
-)paren
-op_or
-id|__USER_CS
 suffix:semicolon
 macro_line|#if 0
 id|regs-&gt;eflags
