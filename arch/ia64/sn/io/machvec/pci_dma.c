@@ -1646,11 +1646,7 @@ op_logical_neg
 id|sn_dma_supported
 c_func
 (paren
-id|to_pci_dev
-c_func
-(paren
 id|dev
-)paren
 comma
 id|dma_mask
 )paren

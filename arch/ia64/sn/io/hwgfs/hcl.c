@@ -294,14 +294,6 @@ id|label_string_table
 suffix:semicolon
 r_extern
 r_int
-id|init_ifconfig_net
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_int
 id|init_ioconfig_bus
 c_func
 (paren
@@ -477,11 +469,6 @@ c_func
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Initialize the ifconfgi_net driver that does network devices &n;&t; * Persistent Naming.&n;&t; */
-id|init_ifconfig_net
-c_func
-(paren
-)paren
-suffix:semicolon
 id|init_ioconfig_bus
 c_func
 (paren
@@ -1662,7 +1649,7 @@ op_star
 )paren
 id|name
 comma
-id|DEVFS_FL_DEFAULT
+l_int|0
 comma
 id|link
 comma
