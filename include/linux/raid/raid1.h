@@ -61,11 +61,6 @@ DECL|member|next_seq_sect
 id|sector_t
 id|next_seq_sect
 suffix:semicolon
-DECL|member|thread
-id|mdk_thread_t
-op_star
-id|thread
-suffix:semicolon
 DECL|member|device_lock
 id|spinlock_t
 id|device_lock
@@ -104,13 +99,6 @@ DECL|member|r1buf_pool
 id|mempool_t
 op_star
 id|r1buf_pool
-suffix:semicolon
-DECL|member|thread_name
-r_char
-id|thread_name
-(braket
-id|MD_THREAD_NAME_MAX
-)braket
 suffix:semicolon
 )brace
 suffix:semicolon

@@ -39,11 +39,6 @@ DECL|member|working_disks
 r_int
 id|working_disks
 suffix:semicolon
-DECL|member|thread
-id|mdk_thread_t
-op_star
-id|thread
-suffix:semicolon
 DECL|member|device_lock
 id|spinlock_t
 id|device_lock

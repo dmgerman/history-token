@@ -637,6 +637,13 @@ id|uuid
 l_int|16
 )braket
 suffix:semicolon
+DECL|member|thread
+r_struct
+id|mdk_thread_s
+op_star
+id|thread
+suffix:semicolon
+multiline_comment|/* management thread */
 DECL|member|sync_thread
 r_struct
 id|mdk_thread_s
@@ -662,7 +669,7 @@ r_int
 id|resync_mark_cnt
 suffix:semicolon
 multiline_comment|/* blocks written at resync_mark */
-multiline_comment|/* recovery/resync flags &n;&t; * RUNNING:  a thread is running, or about to be started&n;&t; * SYNC:     actually doing a resync, not a recovery&n;&t; * ERR:      and IO error was detected - abort the resync/recovery&n;&t; * INTR:     someone requested a (clean) early abort.&n;&t; * DONE:     thread is done and is waiting to be reaped&n;&t; */
+multiline_comment|/* recovery/resync flags &n;&t; * NEEDED:   we might need to start a resync/recover&n;&t; * RUNNING:  a thread is running, or about to be started&n;&t; * SYNC:     actually doing a resync, not a recovery&n;&t; * ERR:      and IO error was detected - abort the resync/recovery&n;&t; * INTR:     someone requested a (clean) early abort.&n;&t; * DONE:     thread is done and is waiting to be reaped&n;&t; */
 DECL|macro|MD_RECOVERY_RUNNING
 mdefine_line|#define&t;MD_RECOVERY_RUNNING&t;0
 DECL|macro|MD_RECOVERY_SYNC
@@ -673,6 +680,8 @@ DECL|macro|MD_RECOVERY_INTR
 mdefine_line|#define&t;MD_RECOVERY_INTR&t;3
 DECL|macro|MD_RECOVERY_DONE
 mdefine_line|#define&t;MD_RECOVERY_DONE&t;4
+DECL|macro|MD_RECOVERY_NEEDED
+mdefine_line|#define&t;MD_RECOVERY_NEEDED&t;5
 DECL|member|recovery
 r_int
 r_int
@@ -929,15 +938,15 @@ op_star
 id|run
 )paren
 (paren
-r_void
+id|mddev_t
 op_star
-id|data
+id|mddev
 )paren
 suffix:semicolon
-DECL|member|data
-r_void
+DECL|member|mddev
+id|mddev_t
 op_star
-id|data
+id|mddev
 suffix:semicolon
 DECL|member|wqueue
 id|wait_queue_head_t
