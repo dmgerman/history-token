@@ -2670,7 +2670,7 @@ op_star
 id|fset
 comma
 r_struct
-id|statfs
+id|kstatfs
 op_star
 id|buf
 )paren

@@ -5243,7 +5243,7 @@ op_star
 id|sb
 comma
 r_struct
-id|statfs
+id|kstatfs
 op_star
 id|buf
 )paren
@@ -5321,6 +5321,9 @@ id|buf-&gt;f_bfree
 OG
 (paren
 (paren
+(paren
+r_int
+)paren
 id|buf-&gt;f_blocks
 op_div
 l_int|100
@@ -5336,6 +5339,9 @@ id|buf-&gt;f_bfree
 op_minus
 (paren
 (paren
+(paren
+r_int
+)paren
 id|buf-&gt;f_blocks
 op_div
 l_int|100
