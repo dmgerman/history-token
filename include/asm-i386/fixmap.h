@@ -16,11 +16,11 @@ DECL|enum|fixed_addresses
 r_enum
 id|fixed_addresses
 (brace
-DECL|enumerator|FIX_VSYSCALL
-id|FIX_VSYSCALL
-comma
 DECL|enumerator|FIX_HOLE
 id|FIX_HOLE
+comma
+DECL|enumerator|FIX_VSYSCALL
+id|FIX_VSYSCALL
 comma
 macro_line|#ifdef CONFIG_X86_LOCAL_APIC
 DECL|enumerator|FIX_APIC_BASE
