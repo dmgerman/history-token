@@ -2193,13 +2193,6 @@ c_func
 id|free_irq
 )paren
 suffix:semicolon
-DECL|variable|irq_stat
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|irq_stat
-)paren
-suffix:semicolon
 multiline_comment|/* waitqueue handling */
 DECL|variable|add_wait_queue
 id|EXPORT_SYMBOL

@@ -10,14 +10,6 @@ mdefine_line|#define __ARCH_IRQ_STAT 1
 multiline_comment|/* Generate a lvalue for a pda member. Should fix softirq.c instead to use&n;   special access macros. This would generate better code. */
 DECL|macro|__IRQ_STAT
 mdefine_line|#define __IRQ_STAT(cpu,member) (read_pda(me)-&gt;member)
-r_typedef
-r_struct
-(brace
-multiline_comment|/* Empty. All the fields have moved to the PDA. */
-DECL|typedef|irq_cpustat_t
-)brace
-id|irq_cpustat_t
-suffix:semicolon
 macro_line|#include &lt;linux/irq_cpustat.h&gt;&t;/* Standard mappings for irq_cpustat_t above */
 multiline_comment|/*&n; * We put the hardirq and softirq counter into the preemption&n; * counter. The bitmask has the following meaning:&n; *&n; * - bits 0-7 are the preemption count (max preemption depth: 256)&n; * - bits 8-15 are the softirq count (max # of softirqs: 256)&n; * - bits 16-23 are the hardirq count (max # of hardirqs: 256)&n; *&n; * - ( bit 26 is the PREEMPT_ACTIVE flag. )&n; *&n; * PREEMPT_MASK: 0x000000ff&n; * HARDIRQ_MASK: 0x0000ff00&n; * SOFTIRQ_MASK: 0x00ff0000&n; */
 DECL|macro|PREEMPT_BITS
