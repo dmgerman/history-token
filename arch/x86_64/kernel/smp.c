@@ -41,7 +41,7 @@ id|tlbstate_lock
 )paren
 suffix:semicolon
 DECL|macro|FLUSH_ALL
-mdefine_line|#define FLUSH_ALL&t;0xffffffff
+mdefine_line|#define FLUSH_ALL&t;-1ULL
 multiline_comment|/*&n; * We cannot call mmdrop() because we are in interrupt context, &n; * instead update mm-&gt;cpu_vm_mask.&n; */
 DECL|function|leave_mm
 r_static
