@@ -433,16 +433,6 @@ r_int
 id|priority
 )paren
 (brace
-id|sctp_chunk_t
-op_star
-id|chunk
-op_assign
-(paren
-id|sctp_chunk_t
-op_star
-)paren
-id|event_arg
-suffix:semicolon
 r_int
 id|error
 suffix:semicolon
