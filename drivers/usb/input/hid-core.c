@@ -6139,7 +6139,7 @@ op_amp
 id|hid-&gt;iofl
 )paren
 )paren
-id|usb_unlink_urb
+id|usb_kill_urb
 c_func
 (paren
 id|hid-&gt;urbctrl
@@ -6157,7 +6157,7 @@ op_amp
 id|hid-&gt;iofl
 )paren
 )paren
-id|usb_unlink_urb
+id|usb_kill_urb
 c_func
 (paren
 id|hid-&gt;urbout
