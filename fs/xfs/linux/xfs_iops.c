@@ -2122,6 +2122,21 @@ id|flags
 op_assign
 id|ATTR_UTIME
 suffix:semicolon
+macro_line|#ifdef ATTR_NO_BLOCK
+r_if
+c_cond
+(paren
+(paren
+id|ia_valid
+op_amp
+id|ATTR_NO_BLOCK
+)paren
+)paren
+id|flags
+op_or_assign
+id|ATTR_NONBLOCK
+suffix:semicolon
+macro_line|#endif
 id|VOP_SETATTR
 c_func
 (paren
