@@ -135,7 +135,7 @@ id|s_fpack
 l_int|11
 )braket
 suffix:semicolon
-multiline_comment|/* 11: file system volume name &n;&t;&t;&t;&t; *     N.B. This must be 11 bytes to&n;&t;&t;&t;&t; *          conform with the OS/2 BootSector&n;&t;&t;&t;&t; *          requirements&n;&t;&t;&t;&t; */
+multiline_comment|/* 11: file system volume name &n;&t;&t;&t;&t; *     N.B. This must be 11 bytes to&n;&t;&t;&t;&t; *          conform with the OS/2 BootSector&n;&t;&t;&t;&t; *          requirements&n;&t;&t;&t;&t; *          Only used when s_version is 1&n;&t;&t;&t;&t; */
 multiline_comment|/* extendfs() parameter under s_state &amp; FM_EXTENDFS */
 DECL|member|s_xsize
 id|s64
@@ -153,11 +153,30 @@ id|s_xlogpxd
 suffix:semicolon
 multiline_comment|/* 8: extendfs logpxd */
 multiline_comment|/* - 128 byte boundary - */
-DECL|member|s_device
-id|u32
-id|s_device
+DECL|member|s_uuid
+r_char
+id|s_uuid
+(braket
+l_int|16
+)braket
 suffix:semicolon
-multiline_comment|/* Store device in case location changes&n;&t;&t;&t;&t; * between reboots&n;&t;&t;&t;&t; */
+multiline_comment|/* 16: 128-bit uuid for volume */
+DECL|member|s_label
+r_char
+id|s_label
+(braket
+l_int|16
+)braket
+suffix:semicolon
+multiline_comment|/* 16: volume label */
+DECL|member|s_loguuid
+r_char
+id|s_loguuid
+(braket
+l_int|16
+)braket
+suffix:semicolon
+multiline_comment|/* 16: 128-bit uuid for log device */
 )brace
 suffix:semicolon
 r_extern
