@@ -6,8 +6,6 @@ mdefine_line|#define NET_ATM_SIGNALING_H
 macro_line|#include &lt;linux/atm.h&gt;
 macro_line|#include &lt;linux/atmdev.h&gt;
 macro_line|#include &lt;linux/atmsvc.h&gt;
-DECL|macro|WAITING
-mdefine_line|#define WAITING 1 /* for reply: 0: no error, &lt; 0: error, ... */
 r_extern
 r_struct
 id|atm_vcc

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * xfrm6_state.c: based on xfrm4_state.c&n; *&n; * Authors:&n; *&t;Mitsuru KANDA @USAGI&n; * &t;Kazunori MIYAZAWA @USAGI&n; * &t;Kunihiro Ishiguro&n; * &t;&t;IPv6 support&n; * &t;YOSHIFUJI Hideaki @USAGI&n; * &t;&t;Split up af-specific portion&n; * &t;&n; */
+multiline_comment|/*&n; * xfrm6_state.c: based on xfrm4_state.c&n; *&n; * Authors:&n; *&t;Mitsuru KANDA @USAGI&n; * &t;Kazunori MIYAZAWA @USAGI&n; * &t;Kunihiro Ishiguro &lt;kunihiro@ipinfusion.com&gt;&n; * &t;&t;IPv6 support&n; * &t;YOSHIFUJI Hideaki @USAGI&n; * &t;&t;Split up af-specific portion&n; * &t;&n; */
 macro_line|#include &lt;net/xfrm.h&gt;
 macro_line|#include &lt;linux/pfkeyv2.h&gt;
 macro_line|#include &lt;linux/ipsec.h&gt;

@@ -341,6 +341,10 @@ DECL|enumerator|ATM_VF_CLOSE
 id|ATM_VF_CLOSE
 comma
 multiline_comment|/* asynchronous close - treat like VF_RELEASED*/
+DECL|enumerator|ATM_VF_WAITING
+id|ATM_VF_WAITING
+comma
+multiline_comment|/* waiting for reply from sigd */
 )brace
 suffix:semicolon
 DECL|macro|ATM_VF2VS
@@ -503,11 +507,6 @@ op_star
 id|stats
 suffix:semicolon
 multiline_comment|/* pointer to AAL stats group */
-DECL|member|sleep
-id|wait_queue_head_t
-id|sleep
-suffix:semicolon
-multiline_comment|/* if socket is busy */
 DECL|member|sk
 r_struct
 id|sock
@@ -531,24 +530,6 @@ r_struct
 id|sockaddr_atmsvc
 id|remote
 suffix:semicolon
-DECL|member|callback
-r_void
-(paren
-op_star
-id|callback
-)paren
-(paren
-r_struct
-id|atm_vcc
-op_star
-id|vcc
-)paren
-suffix:semicolon
-DECL|member|reply
-r_int
-id|reply
-suffix:semicolon
-multiline_comment|/* also used by ATMTCP */
 multiline_comment|/* Multipoint part ------------------------------------------------- */
 DECL|member|session
 r_struct

@@ -2415,6 +2415,10 @@ id|skb
 op_assign
 id|new_skb
 suffix:semicolon
+id|old_iph
+op_assign
+id|skb-&gt;nh.iph
+suffix:semicolon
 )brace
 id|skb-&gt;nh.raw
 op_assign

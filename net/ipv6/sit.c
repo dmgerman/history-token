@@ -2345,6 +2345,10 @@ id|skb
 op_assign
 id|new_skb
 suffix:semicolon
+id|iph6
+op_assign
+id|skb-&gt;nh.ipv6h
+suffix:semicolon
 )brace
 id|skb-&gt;nh.raw
 op_assign

@@ -518,7 +518,7 @@ comma
 dot
 id|poll
 op_assign
-id|atm_poll
+id|vcc_poll
 comma
 dot
 id|ioctl

@@ -1222,7 +1222,7 @@ l_string|&quot; %04lx  %5d %7d/%7d %7d/%7d&bslash;n&quot;
 comma
 id|vcc-&gt;flags
 comma
-id|vcc-&gt;reply
+id|vcc-&gt;sk-&gt;sk_err
 comma
 id|atomic_read
 c_func
