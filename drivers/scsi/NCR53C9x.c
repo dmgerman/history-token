@@ -8333,7 +8333,7 @@ comma
 id|in_the_dark
 )paren
 suffix:semicolon
-multiline_comment|/* Check for premature interrupt condition. Can happen on FAS2x6&n;&t; * chips. QLogic recommends a workaround by overprogramming the&n;&t; * transfer counters, but this makes doing scatter-gather impossible.&n;&t; * Until there is a way to disable scatter-gather for a single target,&n;&t; * and not only for the entire host adapter as it is now, the workaround&n;&t; * is way to expensive performance wise.&n;&t; * Instead, it turns out that when this happens the target has disconnected&n;&t; * allready but it doesn&squot;t show in the interrupt register. Compensate for&n;&t; * that here to try and avoid a SCSI bus reset.&n;&t; */
+multiline_comment|/* Check for premature interrupt condition. Can happen on FAS2x6&n;&t; * chips. QLogic recommends a workaround by overprogramming the&n;&t; * transfer counters, but this makes doing scatter-gather impossible.&n;&t; * Until there is a way to disable scatter-gather for a single target,&n;&t; * and not only for the entire host adapter as it is now, the workaround&n;&t; * is way to expensive performance wise.&n;&t; * Instead, it turns out that when this happens the target has disconnected&n;&t; * already but it doesn&squot;t show in the interrupt register. Compensate for&n;&t; * that here to try and avoid a SCSI bus reset.&n;&t; */
 r_if
 c_cond
 (paren

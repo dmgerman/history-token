@@ -2690,6 +2690,9 @@ op_star
 id|SCpnt
 )paren
 (brace
+r_int
+id|rtn
+suffix:semicolon
 multiline_comment|/*&n;&t; * First check the host byte, to see if there is anything in there&n;&t; * that would indicate what we need to do.&n;&t; */
 r_if
 c_cond
@@ -2711,23 +2714,37 @@ op_amp
 id|IS_RESETTING
 )paren
 (brace
-multiline_comment|/*&n;&t;&t;&t; * OK, this is normal.  We don&squot;t know whether in fact the&n;&t;&t;&t; * command in question really needs to be rerun or not - &n;&t;&t;&t; * if this was the original data command then the answer is yes,&n;&t;&t;&t; * otherwise we just flag it as success.&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * OK, this is normal.  We don&squot;t know whether in fact&n;&t;&t;&t; * the command in question really needs to be rerun&n;&t;&t;&t; * or not - if this was the original data command then&n;&t;&t;&t; * the answer is yes, otherwise we just flag it as&n;&t;&t;&t; * success.&n;&t;&t;&t; */
 id|SCpnt-&gt;flags
 op_and_assign
 op_complement
 id|IS_RESETTING
 suffix:semicolon
-r_return
-id|NEEDS_RETRY
+r_goto
+id|maybe_retry
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t;&t; * Rats.  We are already in the error handler, so we now get to try&n;&t;&t; * and figure out what to do next.  If the sense is valid, we have&n;&t;&t; * a pretty good idea of what to do.  If not, we mark it as failed.&n;&t;&t; */
-r_return
+multiline_comment|/*&n;&t;&t; * Rats.  We are already in the error handler, so we now&n;&t;&t; * get to try and figure out what to do next.  If the sense&n;&t;&t; * is valid, we have a pretty good idea of what to do.&n;&t;&t; * If not, we mark it as failed.&n;&t;&t; */
+id|rtn
+op_assign
 id|scsi_check_sense
 c_func
 (paren
 id|SCpnt
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|rtn
+op_eq
+id|NEEDS_RETRY
+)paren
+r_goto
+id|maybe_retry
+suffix:semicolon
+r_return
+id|rtn
 suffix:semicolon
 )brace
 r_if
@@ -2763,7 +2780,7 @@ r_return
 id|FAILED
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * Now, check the status byte to see if this indicates anything special.&n;&t; */
+multiline_comment|/*&n;&t; * Now, check the status byte to see if this indicates&n;&t; * anything special.&n;&t; */
 r_switch
 c_cond
 (paren
@@ -2786,12 +2803,26 @@ suffix:semicolon
 r_case
 id|CHECK_CONDITION
 suffix:colon
-r_return
+id|rtn
+op_assign
 id|scsi_check_sense
 c_func
 (paren
 id|SCpnt
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|rtn
+op_eq
+id|NEEDS_RETRY
+)paren
+r_goto
+id|maybe_retry
+suffix:semicolon
+r_return
+id|rtn
 suffix:semicolon
 r_case
 id|CONDITION_GOOD
@@ -2824,6 +2855,30 @@ suffix:semicolon
 r_return
 id|FAILED
 suffix:semicolon
+id|maybe_retry
+suffix:colon
+r_if
+c_cond
+(paren
+(paren
+op_increment
+id|SCpnt-&gt;retries
+)paren
+OL
+id|SCpnt-&gt;allowed
+)paren
+(brace
+r_return
+id|NEEDS_RETRY
+suffix:semicolon
+)brace
+r_else
+(brace
+multiline_comment|/* No more retries - report this one back to upper level */
+r_return
+id|SUCCESS
+suffix:semicolon
+)brace
 )brace
 multiline_comment|/*&n; * Function:  scsi_check_sense&n; *&n; * Purpose:     Examine sense information - give suggestion as to what&n; *              we should do with it.&n; */
 DECL|function|scsi_check_sense
