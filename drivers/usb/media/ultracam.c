@@ -37,7 +37,8 @@ DECL|macro|ULTRACAM_T
 mdefine_line|#define&t;ULTRACAM_T(uvd)&t;((ultracam_t *)((uvd)-&gt;user_data))
 DECL|variable|cams
 r_static
-id|usbvideo_t
+r_struct
+id|usbvideo
 op_star
 id|cams
 op_assign

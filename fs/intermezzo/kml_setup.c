@@ -5,10 +5,10 @@ DECL|macro|__NO_VERSION__
 mdefine_line|#define __NO_VERSION__
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
-macro_line|#include &lt;linux/intermezzo_fs.h&gt;
-macro_line|#include &lt;linux/intermezzo_upcall.h&gt;
-macro_line|#include &lt;linux/intermezzo_psdev.h&gt;
-macro_line|#include &lt;linux/intermezzo_kml.h&gt;
+macro_line|#include &quot;intermezzo_fs.h&quot;
+macro_line|#include &quot;intermezzo_upcall.h&quot;
+macro_line|#include &quot;intermezzo_psdev.h&quot;
+macro_line|#include &quot;intermezzo_kml.h&quot;
 DECL|function|kml_init
 r_int
 id|kml_init

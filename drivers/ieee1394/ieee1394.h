@@ -22,6 +22,8 @@ DECL|macro|TCODE_LOCK_REQUEST
 mdefine_line|#define TCODE_LOCK_REQUEST       0x9
 DECL|macro|TCODE_ISO_DATA
 mdefine_line|#define TCODE_ISO_DATA           0xa
+DECL|macro|TCODE_STREAM_DATA
+mdefine_line|#define TCODE_STREAM_DATA        0xa
 DECL|macro|TCODE_LOCK_RESPONSE
 mdefine_line|#define TCODE_LOCK_RESPONSE      0xb
 DECL|macro|RCODE_COMPLETE

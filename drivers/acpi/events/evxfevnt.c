@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: evxfevnt - External Interfaces, ACPI event disable/enable&n; *              $Revision: 59 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: evxfevnt - External Interfaces, ACPI event disable/enable&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acevents.h&quot;
@@ -8,7 +8,7 @@ id|ACPI_MODULE_NAME
 (paren
 l_string|&quot;evxfevnt&quot;
 )paren
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_enable&n; *&n; * PARAMETERS:  None&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Transfers the system into ACPI mode.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_enable&n; *&n; * PARAMETERS:  None&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Transfers the system into ACPI mode.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_enable
 id|acpi_enable
@@ -23,7 +23,7 @@ id|AE_OK
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
-l_string|&quot;Acpi_enable&quot;
+l_string|&quot;acpi_enable&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Make sure we have the FADT*/
@@ -118,7 +118,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_disable&n; *&n; * PARAMETERS:  None&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Transfers the system into LEGACY mode.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_disable&n; *&n; * PARAMETERS:  None&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Transfers the system into LEGACY mode.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_disable
 id|acpi_disable
@@ -133,7 +133,7 @@ id|AE_OK
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
-l_string|&quot;Acpi_disable&quot;
+l_string|&quot;acpi_disable&quot;
 )paren
 suffix:semicolon
 r_if
@@ -229,7 +229,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_enable_event&n; *&n; * PARAMETERS:  Event           - The fixed event or GPE to be enabled&n; *              Type            - The type of event&n; *              Flags           - Just enable, or also wake enable?&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Enable an ACPI event (fixed and general purpose)&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_enable_event&n; *&n; * PARAMETERS:  Event           - The fixed event or GPE to be enabled&n; *              Type            - The type of event&n; *              Flags           - Just enable, or also wake enable?&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Enable an ACPI event (fixed and general purpose)&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_enable_event
 id|acpi_enable_event
@@ -254,7 +254,7 @@ id|value
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
-l_string|&quot;Acpi_enable_event&quot;
+l_string|&quot;acpi_enable_event&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* The Type must be either Fixed Event or GPE */
@@ -450,7 +450,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_disable_event&n; *&n; * PARAMETERS:  Event           - The fixed event or GPE to be enabled&n; *              Type            - The type of event, fixed or general purpose&n; *              Flags           - Wake disable vs. non-wake disable&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Disable an ACPI event (fixed and general purpose)&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_disable_event&n; *&n; * PARAMETERS:  Event           - The fixed event or GPE to be enabled&n; *              Type            - The type of event, fixed or general purpose&n; *              Flags           - Wake disable vs. non-wake disable&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Disable an ACPI event (fixed and general purpose)&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_disable_event
 id|acpi_disable_event
@@ -475,7 +475,7 @@ id|value
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
-l_string|&quot;Acpi_disable_event&quot;
+l_string|&quot;acpi_disable_event&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* The Type must be either Fixed Event or GPE */
@@ -658,7 +658,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_clear_event&n; *&n; * PARAMETERS:  Event           - The fixed event or GPE to be cleared&n; *              Type            - The type of event&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Clear an ACPI event (fixed and general purpose)&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_clear_event&n; *&n; * PARAMETERS:  Event           - The fixed event or GPE to be cleared&n; *              Type            - The type of event&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Clear an ACPI event (fixed and general purpose)&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_clear_event
 id|acpi_clear_event
@@ -677,7 +677,7 @@ id|AE_OK
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
-l_string|&quot;Acpi_clear_event&quot;
+l_string|&quot;acpi_clear_event&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* The Type must be either Fixed Event or GPE */
@@ -767,7 +767,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_get_event_status&n; *&n; * PARAMETERS:  Event           - The fixed event or GPE&n; *              Type            - The type of event&n; *              Status          - Where the current status of the event will&n; *                                be returned&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Obtains and returns the current status of the event&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_get_event_status&n; *&n; * PARAMETERS:  Event           - The fixed event or GPE&n; *              Type            - The type of event&n; *              Status          - Where the current status of the event will&n; *                                be returned&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Obtains and returns the current status of the event&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_get_event_status
 id|acpi_get_event_status
@@ -790,7 +790,7 @@ id|AE_OK
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
-l_string|&quot;Acpi_get_event_status&quot;
+l_string|&quot;acpi_get_event_status&quot;
 )paren
 suffix:semicolon
 r_if

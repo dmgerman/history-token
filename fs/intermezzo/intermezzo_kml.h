@@ -2,9 +2,9 @@ macro_line|#ifndef __INTERMEZZO_KML_H
 DECL|macro|__INTERMEZZO_KML_H
 mdefine_line|#define __INTERMEZZO_KML_H
 macro_line|#include &lt;linux/version.h&gt;
-macro_line|#include &lt;linux/intermezzo_psdev.h&gt;
+macro_line|#include &quot;intermezzo_psdev.h&quot;
 macro_line|#include &lt;linux/fs.h&gt;
-macro_line|#include &lt;linux/intermezzo_journal.h&gt;
+macro_line|#include &quot;intermezzo_journal.h&quot;
 DECL|macro|PRESTO_KML_MAJOR_VERSION
 mdefine_line|#define PRESTO_KML_MAJOR_VERSION 0x00010000
 DECL|macro|PRESTO_KML_MINOR_VERSION

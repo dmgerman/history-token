@@ -2,7 +2,7 @@ multiline_comment|/*&n; *  Do sleep inside a spin-lock&n; *  Copyright (c) 1999 
 macro_line|#include &lt;sound/driver.h&gt;
 macro_line|#include &lt;sound/core.h&gt;
 macro_line|#include &quot;seq_lock.h&quot;
-macro_line|#if defined(__SMP__) || defined(CONFIG_SND_DEBUG)
+macro_line|#if defined(CONFIG_SMP) || defined(CONFIG_SND_DEBUG)
 macro_line|#if 0 /* NOT USED */
 multiline_comment|/* (interruptible) sleep_on during the specified spinlock */
 r_void

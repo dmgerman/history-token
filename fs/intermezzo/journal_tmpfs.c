@@ -20,8 +20,8 @@ macro_line|#include &lt;linux/ext3_fs.h&gt;
 macro_line|#include &lt;linux/ext3_jbd.h&gt;
 macro_line|#endif
 macro_line|#endif
-macro_line|#include &lt;linux/intermezzo_fs.h&gt;
-macro_line|#include &lt;linux/intermezzo_psdev.h&gt;
+macro_line|#include &quot;intermezzo_fs.h&quot;
+macro_line|#include &quot;intermezzo_psdev.h&quot;
 macro_line|#if defined(CONFIG_TMPFS)
 multiline_comment|/* space requirements: &n;   presto_do_truncate: &n;        used to truncate the KML forward to next fset-&gt;chunksize boundary&n;          - zero partial block&n;          - update inode&n;   presto_write_record: &n;        write header (&lt; one block) &n;        write one path (&lt; MAX_PATHLEN) &n;        possibly write another path (&lt; MAX_PATHLEN)&n;        write suffix (&lt; one block) &n;   presto_update_last_rcvd&n;        write one block&n;*/
 DECL|function|presto_tmpfs_freespace

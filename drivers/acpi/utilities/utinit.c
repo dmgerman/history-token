@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: utinit - Common ACPI subsystem initialization&n; *              $Revision: 114 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: utinit - Common ACPI subsystem initialization&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acnamesp.h&quot;
@@ -9,20 +9,20 @@ id|ACPI_MODULE_NAME
 (paren
 l_string|&quot;utinit&quot;
 )paren
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ut_fadt_register_error&n; *&n; * PARAMETERS:  *Register_name          - Pointer to string identifying register&n; *              Value                   - Actual register contents value&n; *              Acpi_test_spec_section  - TDS section containing assertion&n; *              Acpi_assertion          - Assertion number being tested&n; *&n; * RETURN:      AE_BAD_VALUE&n; *&n; * DESCRIPTION: Display failure message and link failure to TDS assertion&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ut_fadt_register_error&n; *&n; * PARAMETERS:  *register_name          - Pointer to string identifying register&n; *              Value                   - Actual register contents value&n; *              acpi_test_spec_section  - TDS section containing assertion&n; *              acpi_assertion          - Assertion number being tested&n; *&n; * RETURN:      AE_BAD_VALUE&n; *&n; * DESCRIPTION: Display failure message and link failure to TDS assertion&n; *&n; ******************************************************************************/
 r_static
 r_void
 DECL|function|acpi_ut_fadt_register_error
 id|acpi_ut_fadt_register_error
 (paren
-id|NATIVE_CHAR
+r_char
 op_star
 id|register_name
 comma
 id|u32
 id|value
 comma
-id|ACPI_SIZE
+id|acpi_size
 id|offset
 )paren
 (brace
@@ -45,7 +45,7 @@ id|acpi_gbl_FADT
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/******************************************************************************&n; *&n; * FUNCTION:    Acpi_ut_validate_fadt&n; *&n; * PARAMETERS:  None&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Validate various ACPI registers in the FADT&n; *&n; ******************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * FUNCTION:    acpi_ut_validate_fadt&n; *&n; * PARAMETERS:  None&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Validate various ACPI registers in the FADT&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ut_validate_fadt
 id|acpi_ut_validate_fadt
@@ -102,10 +102,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|ACPI_VALID_ADDRESS
-(paren
-id|acpi_gbl_FADT-&gt;Xpm1a_evt_blk.address
-)paren
+id|acpi_gbl_FADT-&gt;xpm1a_evt_blk.address
 )paren
 (brace
 id|acpi_ut_fadt_register_error
@@ -116,7 +113,7 @@ l_int|0
 comma
 id|ACPI_FADT_OFFSET
 (paren
-id|Xpm1a_evt_blk.address
+id|xpm1a_evt_blk.address
 )paren
 )paren
 suffix:semicolon
@@ -125,10 +122,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|ACPI_VALID_ADDRESS
-(paren
-id|acpi_gbl_FADT-&gt;Xpm1a_cnt_blk.address
-)paren
+id|acpi_gbl_FADT-&gt;xpm1a_cnt_blk.address
 )paren
 (brace
 id|acpi_ut_fadt_register_error
@@ -139,7 +133,7 @@ l_int|0
 comma
 id|ACPI_FADT_OFFSET
 (paren
-id|Xpm1a_cnt_blk.address
+id|xpm1a_cnt_blk.address
 )paren
 )paren
 suffix:semicolon
@@ -148,10 +142,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|ACPI_VALID_ADDRESS
-(paren
-id|acpi_gbl_FADT-&gt;Xpm_tmr_blk.address
-)paren
+id|acpi_gbl_FADT-&gt;xpm_tmr_blk.address
 )paren
 (brace
 id|acpi_ut_fadt_register_error
@@ -162,7 +153,7 @@ l_int|0
 comma
 id|ACPI_FADT_OFFSET
 (paren
-id|Xpm_tmr_blk.address
+id|xpm_tmr_blk.address
 )paren
 )paren
 suffix:semicolon
@@ -171,10 +162,7 @@ r_if
 c_cond
 (paren
 (paren
-id|ACPI_VALID_ADDRESS
-(paren
-id|acpi_gbl_FADT-&gt;Xpm2_cnt_blk.address
-)paren
+id|acpi_gbl_FADT-&gt;xpm2_cnt_blk.address
 op_logical_and
 op_logical_neg
 id|acpi_gbl_FADT-&gt;pm2_cnt_len
@@ -225,10 +213,7 @@ multiline_comment|/* Length of GPE blocks must be a multiple of 2 */
 r_if
 c_cond
 (paren
-id|ACPI_VALID_ADDRESS
-(paren
-id|acpi_gbl_FADT-&gt;Xgpe0_blk.address
-)paren
+id|acpi_gbl_FADT-&gt;xgpe0_blk.address
 op_logical_and
 (paren
 id|acpi_gbl_FADT-&gt;gpe0_blk_len
@@ -256,10 +241,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|ACPI_VALID_ADDRESS
-(paren
-id|acpi_gbl_FADT-&gt;Xgpe1_blk.address
-)paren
+id|acpi_gbl_FADT-&gt;xgpe1_blk.address
 op_logical_and
 (paren
 id|acpi_gbl_FADT-&gt;gpe1_blk_len
@@ -290,7 +272,7 @@ id|AE_OK
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/******************************************************************************&n; *&n; * FUNCTION:    Acpi_ut_terminate&n; *&n; * PARAMETERS:  none&n; *&n; * RETURN:      none&n; *&n; * DESCRIPTION: free memory allocated for table storage.&n; *&n; ******************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * FUNCTION:    acpi_ut_terminate&n; *&n; * PARAMETERS:  none&n; *&n; * RETURN:      none&n; *&n; * DESCRIPTION: free memory allocated for table storage.&n; *&n; ******************************************************************************/
 r_void
 DECL|function|acpi_ut_terminate
 id|acpi_ut_terminate
@@ -300,7 +282,7 @@ r_void
 (brace
 id|ACPI_FUNCTION_TRACE
 (paren
-l_string|&quot;Ut_terminate&quot;
+l_string|&quot;ut_terminate&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Free global tables, etc. */
@@ -308,7 +290,7 @@ multiline_comment|/* Nothing to do at this time */
 id|return_VOID
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ut_subsystem_shutdown&n; *&n; * PARAMETERS:  none&n; *&n; * RETURN:      none&n; *&n; * DESCRIPTION: Shutdown the various subsystems.  Don&squot;t delete the mutex&n; *              objects here -- because the AML debugger may be still running.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ut_subsystem_shutdown&n; *&n; * PARAMETERS:  none&n; *&n; * RETURN:      none&n; *&n; * DESCRIPTION: Shutdown the various subsystems.  Don&squot;t delete the mutex&n; *              objects here -- because the AML debugger may be still running.&n; *&n; ******************************************************************************/
 r_void
 DECL|function|acpi_ut_subsystem_shutdown
 id|acpi_ut_subsystem_shutdown
@@ -318,7 +300,7 @@ r_void
 (brace
 id|ACPI_FUNCTION_TRACE
 (paren
-l_string|&quot;Ut_subsystem_shutdown&quot;
+l_string|&quot;ut_subsystem_shutdown&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Just exit if subsystem is already shutdown */
@@ -354,7 +336,7 @@ l_string|&quot;Shutting down ACPI Subsystem...&bslash;n&quot;
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* Close the Acpi_event Handling */
+multiline_comment|/* Close the acpi_event Handling */
 id|acpi_ev_terminate
 (paren
 )paren

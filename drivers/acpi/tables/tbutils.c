@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: tbutils - Table manipulation utilities&n; *              $Revision: 57 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: tbutils - Table manipulation utilities&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;actables.h&quot;
@@ -8,7 +8,7 @@ id|ACPI_MODULE_NAME
 (paren
 l_string|&quot;tbutils&quot;
 )paren
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_tb_handle_to_object&n; *&n; * PARAMETERS:  Table_id            - Id for which the function is searching&n; *              Table_desc          - Pointer to return the matching table&n; *                                      descriptor.&n; *&n; * RETURN:      Search the tables to find one with a matching Table_id and&n; *              return a pointer to that table descriptor.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_tb_handle_to_object&n; *&n; * PARAMETERS:  table_id            - Id for which the function is searching&n; *              table_desc          - Pointer to return the matching table&n; *                                      descriptor.&n; *&n; * RETURN:      Search the tables to find one with a matching table_id and&n; *              return a pointer to that table descriptor.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_tb_handle_to_object
 id|acpi_tb_handle_to_object
@@ -31,7 +31,7 @@ id|list_head
 suffix:semicolon
 id|ACPI_FUNCTION_NAME
 (paren
-l_string|&quot;Tb_handle_to_object&quot;
+l_string|&quot;tb_handle_to_object&quot;
 )paren
 suffix:semicolon
 r_for
@@ -101,7 +101,7 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_ERROR
 comma
-l_string|&quot;Table_id=%X does not exist&bslash;n&quot;
+l_string|&quot;table_id=%X does not exist&bslash;n&quot;
 comma
 id|table_id
 )paren
@@ -113,7 +113,7 @@ id|AE_BAD_PARAMETER
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_tb_validate_table_header&n; *&n; * PARAMETERS:  Table_header        - Logical pointer to the table&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Check an ACPI table header for validity&n; *&n; * NOTE:  Table pointers are validated as follows:&n; *          1) Table pointer must point to valid physical memory&n; *          2) Signature must be 4 ASCII chars, even if we don&squot;t recognize the&n; *             name&n; *          3) Table must be readable for length specified in the header&n; *          4) Table checksum must be valid (with the exception of the FACS&n; *              which has no checksum because it contains variable fields)&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_tb_validate_table_header&n; *&n; * PARAMETERS:  table_header        - Logical pointer to the table&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Check an ACPI table header for validity&n; *&n; * NOTE:  Table pointers are validated as follows:&n; *          1) Table pointer must point to valid physical memory&n; *          2) Signature must be 4 ASCII chars, even if we don&squot;t recognize the&n; *             name&n; *          3) Table must be readable for length specified in the header&n; *          4) Table checksum must be valid (with the exception of the FACS&n; *              which has no checksum because it contains variable fields)&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_tb_validate_table_header
 id|acpi_tb_validate_table_header
@@ -128,7 +128,7 @@ id|signature
 suffix:semicolon
 id|ACPI_FUNCTION_NAME
 (paren
-l_string|&quot;Tb_validate_table_header&quot;
+l_string|&quot;tb_validate_table_header&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Verify that this is a valid address */
@@ -291,7 +291,7 @@ id|AE_OK
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_tb_verify_table_checksum&n; *&n; * PARAMETERS:  *Table_header           - ACPI table to verify&n; *&n; * RETURN:      8 bit checksum of table&n; *&n; * DESCRIPTION: Does an 8 bit checksum of table and returns status.  A correct&n; *              table should have a checksum of 0.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_tb_verify_table_checksum&n; *&n; * PARAMETERS:  *table_header           - ACPI table to verify&n; *&n; * RETURN:      8 bit checksum of table&n; *&n; * DESCRIPTION: Does an 8 bit checksum of table and returns status.  A correct&n; *              table should have a checksum of 0.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_tb_verify_table_checksum
 id|acpi_tb_verify_table_checksum
@@ -311,7 +311,7 @@ id|AE_OK
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
-l_string|&quot;Tb_verify_table_checksum&quot;
+l_string|&quot;tb_verify_table_checksum&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Compute the checksum on the table */
@@ -361,7 +361,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_tb_checksum&n; *&n; * PARAMETERS:  Buffer              - Buffer to checksum&n; *              Length              - Size of the buffer&n; *&n; * RETURNS      8 bit checksum of buffer&n; *&n; * DESCRIPTION: Computes an 8 bit checksum of the buffer(length) and returns it.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_tb_checksum&n; *&n; * PARAMETERS:  Buffer              - Buffer to checksum&n; *              Length              - Size of the buffer&n; *&n; * RETURNS      8 bit checksum of buffer&n; *&n; * DESCRIPTION: Computes an 8 bit checksum of the buffer(length) and returns it.&n; *&n; ******************************************************************************/
 id|u8
 DECL|function|acpi_tb_checksum
 id|acpi_tb_checksum

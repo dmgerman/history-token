@@ -18,8 +18,8 @@ macro_line|#include &lt;linux/jbd.h&gt;
 macro_line|#include &lt;linux/ext3_fs.h&gt;
 macro_line|#include &lt;linux/ext3_jbd.h&gt;
 macro_line|#endif
-macro_line|#include &lt;linux/intermezzo_fs.h&gt;
-macro_line|#include &lt;linux/intermezzo_psdev.h&gt;
+macro_line|#include &quot;intermezzo_fs.h&quot;
+macro_line|#include &quot;intermezzo_psdev.h&quot;
 macro_line|#if defined(CONFIG_EXT3_FS) || defined (CONFIG_EXT3_FS_MODULE)
 DECL|macro|MAX_PATH_BLOCKS
 mdefine_line|#define MAX_PATH_BLOCKS(inode) (PATH_MAX &gt;&gt; EXT3_BLOCK_SIZE_BITS((inode)-&gt;i_sb))

@@ -2748,6 +2748,12 @@ c_func
 id|inode
 )paren
 suffix:semicolon
+id|brelse
+c_func
+(paren
+id|bitmap_bh
+)paren
+suffix:semicolon
 r_return
 id|ERR_PTR
 c_func

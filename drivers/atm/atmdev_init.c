@@ -42,16 +42,6 @@ r_void
 )paren
 suffix:semicolon
 macro_line|#endif
-macro_line|#ifdef CONFIG_ATM_IA
-r_extern
-r_int
-id|ia_detect
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-macro_line|#endif
 macro_line|#ifdef CONFIG_ATM_FORE200E
 r_extern
 r_int
@@ -120,15 +110,6 @@ macro_line|#ifdef CONFIG_ATM_HORIZON
 id|devs
 op_add_assign
 id|hrz_detect
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef CONFIG_ATM_IA
-id|devs
-op_add_assign
-id|ia_detect
 c_func
 (paren
 )paren

@@ -124,9 +124,6 @@ suffix:semicolon
 multiline_comment|/**&n; * Add a sample. This may be called from any context. Pass&n; * smp_processor_id() as cpu.&n; */
 r_extern
 r_void
-id|FASTCALL
-c_func
-(paren
 id|oprofile_add_sample
 c_func
 (paren
@@ -140,7 +137,6 @@ id|event
 comma
 r_int
 id|cpu
-)paren
 )paren
 suffix:semicolon
 multiline_comment|/**&n; * Create a file of the given name as a child of the given root, with&n; * the specified file operations.&n; */

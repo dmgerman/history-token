@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Name: acinterp.h - Interpreter subcomponent prototypes and defines&n; *       $Revision: 142 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Name: acinterp.h - Interpreter subcomponent prototypes and defines&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#ifndef __ACINTERP_H__
 DECL|macro|__ACINTERP_H__
@@ -151,6 +151,9 @@ comma
 id|u8
 op_star
 id|string
+comma
+id|u8
+id|max_length
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * exfield - ACPI AML (p-code) execution - field manipulation&n; */
@@ -641,7 +644,7 @@ suffix:semicolon
 r_void
 id|acpi_ex_release_all_mutexes
 (paren
-id|ACPI_THREAD_STATE
+id|acpi_thread_state
 op_star
 id|thread
 )paren
@@ -661,7 +664,7 @@ id|acpi_operand_object
 op_star
 id|obj_desc
 comma
-id|ACPI_THREAD_STATE
+id|acpi_thread_state
 op_star
 id|thread
 )paren
@@ -690,7 +693,7 @@ suffix:semicolon
 id|acpi_status
 id|acpi_ex_prep_field_value
 (paren
-id|ACPI_CREATE_FIELD_INFO
+id|acpi_create_field_info
 op_star
 id|info
 )paren
@@ -912,18 +915,18 @@ comma
 id|acpi_interpreter_mode
 id|interpreter_mode
 comma
-id|NATIVE_CHAR
+r_char
 op_star
 id|ident
 comma
 id|u32
 id|num_levels
 comma
-id|NATIVE_CHAR
+r_char
 op_star
 id|note
 comma
-id|NATIVE_CHAR
+r_char
 op_star
 id|module_name
 comma
@@ -995,12 +998,12 @@ r_char
 op_star
 id|title
 comma
-id|ACPI_PHYSICAL_ADDRESS
+id|acpi_physical_address
 id|value
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * exnames - interpreter/scanner name load/execute&n; */
-id|NATIVE_CHAR
+r_char
 op_star
 id|acpi_ex_allocate_name_string
 (paren
@@ -1026,7 +1029,7 @@ op_star
 op_star
 id|in_aml_address
 comma
-id|NATIVE_CHAR
+r_char
 op_star
 id|name_string
 )paren
@@ -1041,7 +1044,7 @@ id|u8
 op_star
 id|in_aml_address
 comma
-id|NATIVE_CHAR
+r_char
 op_star
 op_star
 id|out_name_string
@@ -1272,7 +1275,7 @@ id|acpi_ex_eisa_id_to_string
 id|u32
 id|numeric_id
 comma
-id|NATIVE_CHAR
+r_char
 op_star
 id|out_string
 )paren
@@ -1283,19 +1286,19 @@ id|acpi_ex_unsigned_integer_to_string
 id|acpi_integer
 id|value
 comma
-id|NATIVE_CHAR
+r_char
 op_star
 id|out_string
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * exregion - default Op_region handlers&n; */
+multiline_comment|/*&n; * exregion - default op_region handlers&n; */
 id|acpi_status
 id|acpi_ex_system_memory_space_handler
 (paren
 id|u32
 id|function
 comma
-id|ACPI_PHYSICAL_ADDRESS
+id|acpi_physical_address
 id|address
 comma
 id|u32
@@ -1320,7 +1323,7 @@ id|acpi_ex_system_io_space_handler
 id|u32
 id|function
 comma
-id|ACPI_PHYSICAL_ADDRESS
+id|acpi_physical_address
 id|address
 comma
 id|u32
@@ -1345,7 +1348,7 @@ id|acpi_ex_pci_config_space_handler
 id|u32
 id|function
 comma
-id|ACPI_PHYSICAL_ADDRESS
+id|acpi_physical_address
 id|address
 comma
 id|u32
@@ -1370,7 +1373,7 @@ id|acpi_ex_cmos_space_handler
 id|u32
 id|function
 comma
-id|ACPI_PHYSICAL_ADDRESS
+id|acpi_physical_address
 id|address
 comma
 id|u32
@@ -1395,7 +1398,7 @@ id|acpi_ex_pci_bar_space_handler
 id|u32
 id|function
 comma
-id|ACPI_PHYSICAL_ADDRESS
+id|acpi_physical_address
 id|address
 comma
 id|u32
@@ -1420,7 +1423,7 @@ id|acpi_ex_embedded_controller_space_handler
 id|u32
 id|function
 comma
-id|ACPI_PHYSICAL_ADDRESS
+id|acpi_physical_address
 id|address
 comma
 id|u32
@@ -1445,7 +1448,7 @@ id|acpi_ex_sm_bus_space_handler
 id|u32
 id|function
 comma
-id|ACPI_PHYSICAL_ADDRESS
+id|acpi_physical_address
 id|address
 comma
 id|u32
@@ -1470,7 +1473,7 @@ id|acpi_ex_data_table_space_handler
 id|u32
 id|function
 comma
-id|ACPI_PHYSICAL_ADDRESS
+id|acpi_physical_address
 id|address
 comma
 id|u32

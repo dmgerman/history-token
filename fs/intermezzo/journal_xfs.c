@@ -16,9 +16,9 @@ multiline_comment|/* XFS Support not there yet */
 macro_line|#ifdef CONFIG_FS_XFS
 macro_line|#include &lt;linux/xfs_fs.h&gt;
 macro_line|#endif
-macro_line|#include &lt;linux/intermezzo_fs.h&gt;
-macro_line|#include &lt;linux/intermezzo_psdev.h&gt;
-macro_line|#include &lt;linux/intermezzo_journal.h&gt;
+macro_line|#include &quot;intermezzo_fs.h&quot;
+macro_line|#include &quot;intermezzo_psdev.h&quot;
+macro_line|#include &quot;intermezzo_journal.h&quot;
 macro_line|#if 0
 multiline_comment|/* XFS has journalling, but these functions do nothing yet... */
 r_static

@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: exresop - AML Interpreter operand/object resolution&n; *              $Revision: 60 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: exresop - AML Interpreter operand/object resolution&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;amlcode.h&quot;
@@ -10,7 +10,7 @@ id|ACPI_MODULE_NAME
 (paren
 l_string|&quot;exresop&quot;
 )paren
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ex_check_object_type&n; *&n; * PARAMETERS:  Type_needed         Object type needed&n; *              This_type           Actual object type&n; *              Object              Object pointer&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Check required type against actual type&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ex_check_object_type&n; *&n; * PARAMETERS:  type_needed         Object type needed&n; *              this_type           Actual object type&n; *              Object              Object pointer&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Check required type against actual type&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ex_check_object_type
 id|acpi_ex_check_object_type
@@ -28,7 +28,7 @@ id|object
 (brace
 id|ACPI_FUNCTION_NAME
 (paren
-l_string|&quot;Ex_check_object_type&quot;
+l_string|&quot;ex_check_object_type&quot;
 )paren
 suffix:semicolon
 r_if
@@ -127,7 +127,7 @@ id|AE_OK
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ex_resolve_operands&n; *&n; * PARAMETERS:  Opcode              - Opcode being interpreted&n; *              Stack_ptr           - Pointer to the operand stack to be&n; *                                    resolved&n; *              Walk_state          - Current state&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Convert multiple input operands to the types required by the&n; *              target operator.&n; *&n; *      Each 5-bit group in Arg_types represents one required&n; *      operand and indicates the required Type. The corresponding operand&n; *      will be converted to the required type if possible, otherwise we&n; *      abort with an exception.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ex_resolve_operands&n; *&n; * PARAMETERS:  Opcode              - Opcode being interpreted&n; *              stack_ptr           - Pointer to the operand stack to be&n; *                                    resolved&n; *              walk_state          - Current state&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Convert multiple input operands to the types required by the&n; *              target operator.&n; *&n; *      Each 5-bit group in arg_types represents one required&n; *      operand and indicates the required Type. The corresponding operand&n; *      will be converted to the required type if possible, otherwise we&n; *      abort with an exception.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ex_resolve_operands
 id|acpi_ex_resolve_operands
@@ -177,7 +177,7 @@ id|type_needed
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE_U32
 (paren
-l_string|&quot;Ex_resolve_operands&quot;
+l_string|&quot;ex_resolve_operands&quot;
 comma
 id|opcode
 )paren
@@ -239,7 +239,7 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_EXEC
 comma
-l_string|&quot;Opcode %X [%s] Operand_types=%X &bslash;n&quot;
+l_string|&quot;Opcode %X [%s] operand_types=%X &bslash;n&quot;
 comma
 id|opcode
 comma
@@ -249,7 +249,7 @@ id|arg_types
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Normal exit is with (Arg_types == 0) at end of argument list.&n;&t; * Function will return an exception from within the loop upon&n;&t; * finding an entry which is not (or cannot be converted&n;&t; * to) the required type; if stack underflows; or upon&n;&t; * finding a NULL stack entry (which should not happen).&n;&t; */
+multiline_comment|/*&n;&t; * Normal exit is with (arg_types == 0) at end of argument list.&n;&t; * Function will return an exception from within the loop upon&n;&t; * finding an entry which is not (or cannot be converted&n;&t; * to) the required type; if stack underflows; or upon&n;&t; * finding a NULL stack entry (which should not happen).&n;&t; */
 r_while
 c_loop
 (paren
@@ -635,7 +635,7 @@ suffix:semicolon
 r_case
 id|ARGI_ANYTYPE
 suffix:colon
-multiline_comment|/*&n;&t;&t;&t; * We don&squot;t want to resolve Index_op reference objects during&n;&t;&t;&t; * a store because this would be an implicit De_ref_of operation.&n;&t;&t;&t; * Instead, we just want to store the reference object.&n;&t;&t;&t; * -- All others must be resolved below.&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * We don&squot;t want to resolve index_op reference objects during&n;&t;&t;&t; * a store because this would be an implicit de_ref_of operation.&n;&t;&t;&t; * Instead, we just want to store the reference object.&n;&t;&t;&t; * -- All others must be resolved below.&n;&t;&t;&t; */
 r_if
 c_cond
 (paren
@@ -1019,7 +1019,7 @@ suffix:semicolon
 r_case
 id|ARGI_DATAOBJECT
 suffix:colon
-multiline_comment|/*&n;&t;&t;&t; * ARGI_DATAOBJECT is only used by the Size_of operator.&n;&t;&t;&t; * Need a buffer, string, package, or Ref_of reference.&n;&t;&t;&t; *&n;&t;&t;&t; * The only reference allowed here is a direct reference to&n;&t;&t;&t; * a namespace node.&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * ARGI_DATAOBJECT is only used by the size_of operator.&n;&t;&t;&t; * Need a buffer, string, package, or ref_of reference.&n;&t;&t;&t; *&n;&t;&t;&t; * The only reference allowed here is a direct reference to&n;&t;&t;&t; * a namespace node.&n;&t;&t;&t; */
 r_switch
 c_cond
 (paren
@@ -1177,7 +1177,7 @@ suffix:semicolon
 )brace
 id|next_operand
 suffix:colon
-multiline_comment|/*&n;&t;&t; * If more operands needed, decrement Stack_ptr to point&n;&t;&t; * to next operand on stack&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * If more operands needed, decrement stack_ptr to point&n;&t;&t; * to next operand on stack&n;&t;&t; */
 r_if
 c_cond
 (paren

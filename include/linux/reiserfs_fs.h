@@ -6358,6 +6358,11 @@ id|reiserfs_transaction_handle
 op_star
 id|th
 comma
+r_struct
+id|inode
+op_star
+id|inode
+comma
 id|b_blocknr_t
 op_star
 id|new_blocknrs
@@ -6388,7 +6393,7 @@ comma
 dot
 id|inode
 op_assign
-l_int|NULL
+id|inode
 comma
 dot
 id|block

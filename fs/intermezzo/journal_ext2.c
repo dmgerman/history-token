@@ -12,8 +12,8 @@ macro_line|#include &lt;asm/segment.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/ext2_fs.h&gt; 
-macro_line|#include &lt;linux/intermezzo_fs.h&gt;
-macro_line|#include &lt;linux/intermezzo_psdev.h&gt;
+macro_line|#include &quot;intermezzo_fs.h&quot;
+macro_line|#include &quot;intermezzo_psdev.h&quot;
 macro_line|#if defined(CONFIG_EXT2_FS)
 multiline_comment|/* EXT2 has no journalling, so these functions do nothing */
 DECL|function|presto_e2_freespace

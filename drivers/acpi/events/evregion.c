@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: evregion - ACPI Address_space (Op_region) handler dispatch&n; *              $Revision: 136 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: evregion - ACPI address_space (op_region) handler dispatch&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acevents.h&quot;
@@ -10,7 +10,7 @@ id|ACPI_MODULE_NAME
 (paren
 l_string|&quot;evregion&quot;
 )paren
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ev_init_address_spaces&n; *&n; * PARAMETERS:&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Installs the core subsystem address space handlers.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ev_init_address_spaces&n; *&n; * PARAMETERS:&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Installs the core subsystem address space handlers.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ev_init_address_spaces
 id|acpi_ev_init_address_spaces
@@ -23,10 +23,10 @@ id|status
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
-l_string|&quot;Ev_init_address_spaces&quot;
+l_string|&quot;ev_init_address_spaces&quot;
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * All address spaces (PCI Config, EC, SMBus) are scope dependent&n;&t; * and registration must occur for a specific device.  In the case&n;&t; * system memory and IO address spaces there is currently no device&n;&t; * associated with the address space.  For these we use the root.&n;&t; * We install the default PCI config space handler at the root so&n;&t; * that this space is immediately available even though the we have&n;&t; * not enumerated all the PCI Root Buses yet.  This is to conform&n;&t; * to the ACPI specification which states that the PCI config&n;&t; * space must be always available -- even though we are nowhere&n;&t; * near ready to find the PCI root buses at this point.&n;&t; *&n;&t; * NOTE: We ignore AE_ALREADY_EXISTS because this means that a handler&n;&t; * has already been installed (via Acpi_install_address_space_handler)&n;&t; */
+multiline_comment|/*&n;&t; * All address spaces (PCI Config, EC, SMBus) are scope dependent&n;&t; * and registration must occur for a specific device.  In the case&n;&t; * system memory and IO address spaces there is currently no device&n;&t; * associated with the address space.  For these we use the root.&n;&t; * We install the default PCI config space handler at the root so&n;&t; * that this space is immediately available even though the we have&n;&t; * not enumerated all the PCI Root Buses yet.  This is to conform&n;&t; * to the ACPI specification which states that the PCI config&n;&t; * space must be always available -- even though we are nowhere&n;&t; * near ready to find the PCI root buses at this point.&n;&t; *&n;&t; * NOTE: We ignore AE_ALREADY_EXISTS because this means that a handler&n;&t; * has already been installed (via acpi_install_address_space_handler)&n;&t; */
 id|status
 op_assign
 id|acpi_install_address_space_handler
@@ -197,7 +197,7 @@ id|AE_OK
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ev_execute_reg_method&n; *&n; * PARAMETERS:  Region_obj          - Object structure&n; *              Function            - On (1) or Off (0)&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Execute _REG method for a region&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ev_execute_reg_method&n; *&n; * PARAMETERS:  region_obj          - Object structure&n; *              Function            - On (1) or Off (0)&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Execute _REG method for a region&n; *&n; ******************************************************************************/
 r_static
 id|acpi_status
 DECL|function|acpi_ev_execute_reg_method
@@ -227,7 +227,7 @@ id|status
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
-l_string|&quot;Ev_execute_reg_method&quot;
+l_string|&quot;ev_execute_reg_method&quot;
 )paren
 suffix:semicolon
 id|region_obj2
@@ -264,7 +264,7 @@ id|AE_OK
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; *  _REG method has two arguments&n;&t; *  Arg0:   Integer: Operation region space ID&n;&t; *          Same value as Region_obj-&gt;Region.Space_id&n;&t; *  Arg1:   Integer: connection status&n;&t; *          1 for connecting the handler,&n;&t; *          0 for disconnecting the handler&n;&t; *          Passed as a parameter&n;&t; */
+multiline_comment|/*&n;&t; *  _REG method has two arguments&n;&t; *  Arg0:   Integer: Operation region space ID&n;&t; *          Same value as region_obj-&gt;Region.space_id&n;&t; *  Arg1:   Integer: connection status&n;&t; *          1 for connecting the handler,&n;&t; *          0 for disconnecting the handler&n;&t; *          Passed as a parameter&n;&t; */
 id|params
 (braket
 l_int|0
@@ -394,7 +394,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ev_address_space_dispatch&n; *&n; * PARAMETERS:  Region_obj          - internal region object&n; *              Space_id            - ID of the address space (0-255)&n; *              Function            - Read or Write operation&n; *              Address             - Where in the space to read or write&n; *              Bit_width           - Field width in bits (8, 16, 32, or 64)&n; *              Value               - Pointer to in or out value&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Dispatch an address space or operation region access to&n; *              a previously installed handler.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ev_address_space_dispatch&n; *&n; * PARAMETERS:  region_obj          - internal region object&n; *              space_id            - ID of the address space (0-255)&n; *              Function            - Read or Write operation&n; *              Address             - Where in the space to read or write&n; *              bit_width           - Field width in bits (8, 16, 32, or 64)&n; *              Value               - Pointer to in or out value&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Dispatch an address space or operation region access to&n; *              a previously installed handler.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ev_address_space_dispatch
 id|acpi_ev_address_space_dispatch
@@ -406,7 +406,7 @@ comma
 id|u32
 id|function
 comma
-id|ACPI_PHYSICAL_ADDRESS
+id|acpi_physical_address
 id|address
 comma
 id|u32
@@ -445,7 +445,7 @@ l_int|NULL
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
-l_string|&quot;Ev_address_space_dispatch&quot;
+l_string|&quot;ev_address_space_dispatch&quot;
 )paren
 suffix:semicolon
 id|region_obj2
@@ -767,7 +767,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ev_detach_region&n; *&n; * PARAMETERS:  Region_obj      - Region Object&n; *              Acpi_ns_is_locked - Namespace Region Already Locked?&n; *&n; * RETURN:      None&n; *&n; * DESCRIPTION: Break the association between the handler and the region&n; *              this is a two way association.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ev_detach_region&n; *&n; * PARAMETERS:  region_obj      - Region Object&n; *              acpi_ns_is_locked - Namespace Region Already Locked?&n; *&n; * RETURN:      None&n; *&n; * DESCRIPTION: Break the association between the handler and the region&n; *              this is a two way association.&n; *&n; ******************************************************************************/
 r_void
 DECL|function|acpi_ev_detach_region
 id|acpi_ev_detach_region
@@ -810,7 +810,7 @@ id|status
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
-l_string|&quot;Ev_detach_region&quot;
+l_string|&quot;ev_detach_region&quot;
 )paren
 suffix:semicolon
 id|region_obj2
@@ -1083,7 +1083,7 @@ suffix:semicolon
 id|return_VOID
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ev_attach_region&n; *&n; * PARAMETERS:  Handler_obj     - Handler Object&n; *              Region_obj      - Region Object&n; *              Acpi_ns_is_locked - Namespace Region Already Locked?&n; *&n; * RETURN:      None&n; *&n; * DESCRIPTION: Create the association between the handler and the region&n; *              this is a two way association.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ev_attach_region&n; *&n; * PARAMETERS:  handler_obj     - Handler Object&n; *              region_obj      - Region Object&n; *              acpi_ns_is_locked - Namespace Region Already Locked?&n; *&n; * RETURN:      None&n; *&n; * DESCRIPTION: Create the association between the handler and the region&n; *              this is a two way association.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ev_attach_region
 id|acpi_ev_attach_region
@@ -1108,7 +1108,7 @@ id|status2
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
-l_string|&quot;Ev_attach_region&quot;
+l_string|&quot;ev_attach_region&quot;
 )paren
 suffix:semicolon
 id|ACPI_DEBUG_PRINT
@@ -1217,7 +1217,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ev_addr_handler_helper&n; *&n; * PARAMETERS:  Handle              - Node to be dumped&n; *              Level               - Nesting level of the handle&n; *              Context             - Passed into Acpi_ns_walk_namespace&n; *&n; * DESCRIPTION: This routine installs an address handler into objects that are&n; *              of type Region.&n; *&n; *              If the Object is a Device, and the device has a handler of&n; *              the same type then the search is terminated in that branch.&n; *&n; *              This is because the existing handler is closer in proximity&n; *              to any more regions than the one we are trying to install.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ev_addr_handler_helper&n; *&n; * PARAMETERS:  Handle              - Node to be dumped&n; *              Level               - Nesting level of the handle&n; *              Context             - Passed into acpi_ns_walk_namespace&n; *&n; * DESCRIPTION: This routine installs an address handler into objects that are&n; *              of type Region.&n; *&n; *              If the Object is a Device, and the device has a handler of&n; *              the same type then the search is terminated in that branch.&n; *&n; *              This is because the existing handler is closer in proximity&n; *              to any more regions than the one we are trying to install.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ev_addr_handler_helper
 id|acpi_ev_addr_handler_helper
@@ -1259,7 +1259,7 @@ id|status
 suffix:semicolon
 id|ACPI_FUNCTION_NAME
 (paren
-l_string|&quot;Ev_addr_handler_helper&quot;
+l_string|&quot;ev_addr_handler_helper&quot;
 )paren
 suffix:semicolon
 id|handler_obj

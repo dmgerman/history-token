@@ -1,5 +1,4 @@
 multiline_comment|/**&n; * @file init.c&n; *&n; * @remark Copyright 2002 OProfile authors&n; * @remark Read the file COPYING&n; *&n; * @author John Levon &lt;levon@movementarian.org&gt;&n; */
-macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/oprofile.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 multiline_comment|/* We support CPUs that have performance counters like the Pentium Pro&n; * with NMI mode samples. Other x86 CPUs use a simple interrupt keyed&n; * off the timer interrupt, which cannot profile interrupts-disabled&n; * code unlike the NMI-based code.&n; */

@@ -2686,6 +2686,12 @@ id|ep_out-&gt;bEndpointAddress
 op_amp
 id|USB_ENDPOINT_NUMBER_MASK
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|ep_int
+)paren
+(brace
 id|ss-&gt;ep_int
 op_assign
 id|ep_int-&gt;bEndpointAddress
@@ -2695,6 +2701,14 @@ suffix:semicolon
 id|ss-&gt;ep_bInterval
 op_assign
 id|ep_int-&gt;bInterval
+suffix:semicolon
+)brace
+r_else
+id|ss-&gt;ep_int
+op_assign
+id|ss-&gt;ep_bInterval
+op_assign
+l_int|0
 suffix:semicolon
 multiline_comment|/* allocate the URB, the usb_ctrlrequest, and the IRQ URB */
 r_if
@@ -2867,6 +2881,12 @@ id|ep_out-&gt;bEndpointAddress
 op_amp
 id|USB_ENDPOINT_NUMBER_MASK
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|ep_int
+)paren
+(brace
 id|ss-&gt;ep_int
 op_assign
 id|ep_int-&gt;bEndpointAddress
@@ -2876,6 +2896,14 @@ suffix:semicolon
 id|ss-&gt;ep_bInterval
 op_assign
 id|ep_int-&gt;bInterval
+suffix:semicolon
+)brace
+r_else
+id|ss-&gt;ep_int
+op_assign
+id|ss-&gt;ep_bInterval
+op_assign
+l_int|0
 suffix:semicolon
 multiline_comment|/* establish the connection to the new device */
 id|ss-&gt;ifnum

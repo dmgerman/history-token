@@ -109,8 +109,9 @@ suffix:semicolon
 multiline_comment|/* Processes waiting */
 )brace
 suffix:semicolon
-r_typedef
+DECL|enum|ScanState
 r_enum
+id|ScanState
 (brace
 DECL|enumerator|ScanState_Scanning
 id|ScanState_Scanning
@@ -119,13 +120,12 @@ multiline_comment|/* Scanning for header */
 DECL|enumerator|ScanState_Lines
 id|ScanState_Lines
 multiline_comment|/* Parsing lines */
-DECL|typedef|ScanState_t
 )brace
-id|ScanState_t
 suffix:semicolon
 multiline_comment|/* Completion states of the data parser */
-r_typedef
+DECL|enum|ParseState
 r_enum
+id|ParseState
 (brace
 DECL|enumerator|scan_Continue
 id|scan_Continue
@@ -142,12 +142,11 @@ multiline_comment|/* Not enough data for frame */
 DECL|enumerator|scan_EndParse
 id|scan_EndParse
 multiline_comment|/* End parsing */
-DECL|typedef|ParseState_t
 )brace
-id|ParseState_t
 suffix:semicolon
-r_typedef
+DECL|enum|FrameState
 r_enum
+id|FrameState
 (brace
 DECL|enumerator|FrameState_Unused
 id|FrameState_Unused
@@ -173,13 +172,12 @@ DECL|enumerator|FrameState_Error
 id|FrameState_Error
 comma
 multiline_comment|/* Something bad happened while processing */
-DECL|typedef|FrameState_t
 )brace
-id|FrameState_t
 suffix:semicolon
 multiline_comment|/*&n; * Some frames may contain only even or odd lines. This type&n; * specifies what type of deinterlacing is required.&n; */
-r_typedef
+DECL|enum|Deinterlace
 r_enum
+id|Deinterlace
 (brace
 DECL|enumerator|Deinterlace_None
 id|Deinterlace_None
@@ -191,9 +189,7 @@ id|Deinterlace_FillOddLines
 comma
 DECL|enumerator|Deinterlace_FillEvenLines
 id|Deinterlace_FillEvenLines
-DECL|typedef|Deinterlace_t
 )brace
-id|Deinterlace_t
 suffix:semicolon
 DECL|macro|USBVIDEO_NUMFRAMES
 mdefine_line|#define USBVIDEO_NUMFRAMES&t;2&t;/* How many frames we work with */
@@ -250,17 +246,20 @@ id|palette
 suffix:semicolon
 multiline_comment|/* The desired format */
 DECL|member|frameState
-id|FrameState_t
+r_enum
+id|FrameState
 id|frameState
 suffix:semicolon
 multiline_comment|/* State of grabbing */
 DECL|member|scanstate
-id|ScanState_t
+r_enum
+id|ScanState
 id|scanstate
 suffix:semicolon
 multiline_comment|/* State of scanning */
 DECL|member|deinterlace
-id|Deinterlace_t
+r_enum
+id|Deinterlace
 id|deinterlace
 suffix:semicolon
 DECL|member|flags
@@ -341,7 +340,7 @@ multiline_comment|/* How many bad ISO packets received */
 )brace
 suffix:semicolon
 r_struct
-id|s_usbvideo_t
+id|usbvideo
 suffix:semicolon
 DECL|struct|uvd
 r_struct
@@ -361,11 +360,11 @@ id|dev
 suffix:semicolon
 DECL|member|handle
 r_struct
-id|s_usbvideo_t
+id|usbvideo
 op_star
 id|handle
 suffix:semicolon
-multiline_comment|/* Points back to the usbvideo_t */
+multiline_comment|/* Points back to the struct usbvideo */
 DECL|member|user_data
 r_void
 op_star
@@ -834,9 +833,9 @@ id|vw
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|struct|s_usbvideo_t
+DECL|struct|usbvideo
 r_struct
-id|s_usbvideo_t
+id|usbvideo
 (brace
 DECL|member|num_cameras
 r_int
@@ -902,12 +901,6 @@ id|md_module
 suffix:semicolon
 multiline_comment|/* Minidriver module */
 )brace
-suffix:semicolon
-DECL|typedef|usbvideo_t
-r_typedef
-r_struct
-id|s_usbvideo_t
-id|usbvideo_t
 suffix:semicolon
 multiline_comment|/*&n; * This macro retrieves callback address from the struct uvd object.&n; * No validity checks are done here, so be sure to check the&n; * callback beforehand with VALID_CALLBACK.&n; */
 DECL|macro|GET_CALLBACK
@@ -1115,7 +1108,8 @@ r_int
 id|usbvideo_register
 c_func
 (paren
-id|usbvideo_t
+r_struct
+id|usbvideo
 op_star
 op_star
 id|pCams
@@ -1157,7 +1151,8 @@ op_star
 id|usbvideo_AllocateDevice
 c_func
 (paren
-id|usbvideo_t
+r_struct
+id|usbvideo
 op_star
 id|cams
 )paren
@@ -1176,7 +1171,8 @@ r_void
 id|usbvideo_Deregister
 c_func
 (paren
-id|usbvideo_t
+r_struct
+id|usbvideo
 op_star
 op_star
 id|uvt

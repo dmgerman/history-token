@@ -1,12 +1,9 @@
 multiline_comment|/**&n; * @file oprofilefs.c&n; *&n; * @remark Copyright 2002 OProfile authors&n; * @remark Read the file COPYING&n; *&n; * @author John Levon&n; *&n; * A simple filesystem for configuration and&n; * access of oprofile.&n; */
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
-macro_line|#include &lt;linux/pagemap.h&gt;
-macro_line|#include &lt;linux/fs.h&gt;
-macro_line|#include &lt;linux/dcache.h&gt;
-macro_line|#include &lt;linux/file.h&gt;
-macro_line|#include &lt;linux/namei.h&gt;
 macro_line|#include &lt;linux/oprofile.h&gt;
+macro_line|#include &lt;linux/fs.h&gt;
+macro_line|#include &lt;linux/pagemap.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &quot;oprof.h&quot;
 DECL|macro|OPROFILEFS_MAGIC

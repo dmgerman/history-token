@@ -32,9 +32,9 @@ macro_line|#  include &lt;errno.h&gt;
 macro_line|#  include &lt;sys/stat.h&gt;
 macro_line|#  include &lt;glib.h&gt;
 macro_line|#endif
-macro_line|#include &lt;linux/intermezzo_lib.h&gt;
-macro_line|#include &lt;linux/intermezzo_idl.h&gt;
-macro_line|#include &lt;linux/intermezzo_fs.h&gt;
+macro_line|#include &quot;intermezzo_lib.h&quot;
+macro_line|#include &quot;intermezzo_idl.h&quot;
+macro_line|#include &quot;intermezzo_fs.h&quot;
 DECL|function|kml_unpack_version
 r_int
 id|kml_unpack_version
@@ -87,20 +87,36 @@ op_assign
 op_star
 id|ver
 suffix:semicolon
-id|pv-&gt;pv_mtime
+id|pv-&gt;pv_mtime_sec
 op_assign
-id|NTOH__u64
+id|NTOH__u32
 c_func
 (paren
-id|pv-&gt;pv_mtime
+id|pv-&gt;pv_mtime_sec
 )paren
 suffix:semicolon
-id|pv-&gt;pv_ctime
+id|pv-&gt;pv_mtime_nsec
 op_assign
-id|NTOH__u64
+id|NTOH__u32
 c_func
 (paren
-id|pv-&gt;pv_ctime
+id|pv-&gt;pv_mtime_nsec
+)paren
+suffix:semicolon
+id|pv-&gt;pv_ctime_sec
+op_assign
+id|NTOH__u32
+c_func
+(paren
+id|pv-&gt;pv_ctime_sec
+)paren
+suffix:semicolon
+id|pv-&gt;pv_ctime_nsec
+op_assign
+id|NTOH__u32
+c_func
+(paren
+id|pv-&gt;pv_ctime_nsec
 )paren
 suffix:semicolon
 id|pv-&gt;pv_size
@@ -1389,9 +1405,9 @@ suffix:semicolon
 id|LUNLOGV
 c_func
 (paren
-id|rec-&gt;mtime
+id|rec-&gt;mtime_sec
 comma
-id|__u64
+id|__u32
 comma
 id|ptr
 comma
@@ -1401,9 +1417,33 @@ suffix:semicolon
 id|LUNLOGV
 c_func
 (paren
-id|rec-&gt;ctime
+id|rec-&gt;mtime_nsec
 comma
-id|__u64
+id|__u32
+comma
+id|ptr
+comma
+id|end
+)paren
+suffix:semicolon
+id|LUNLOGV
+c_func
+(paren
+id|rec-&gt;ctime_sec
+comma
+id|__u32
+comma
+id|ptr
+comma
+id|end
+)paren
+suffix:semicolon
+id|LUNLOGV
+c_func
+(paren
+id|rec-&gt;ctime_nsec
+comma
+id|__u32
 comma
 id|ptr
 comma

@@ -1,15 +1,14 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: evevent - Fixed Event handling and dispatch&n; *              $Revision: 104 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: evevent - Fixed Event handling and dispatch&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acevents.h&quot;
-macro_line|#include &quot;acnamesp.h&quot;
 DECL|macro|_COMPONENT
 mdefine_line|#define _COMPONENT          ACPI_EVENTS
 id|ACPI_MODULE_NAME
 (paren
 l_string|&quot;evevent&quot;
 )paren
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ev_initialize&n; *&n; * PARAMETERS:  None&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Initialize global data structures for events.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ev_initialize&n; *&n; * PARAMETERS:  None&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Initialize global data structures for events.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ev_initialize
 id|acpi_ev_initialize
@@ -22,7 +21,7 @@ id|status
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
-l_string|&quot;Ev_initialize&quot;
+l_string|&quot;ev_initialize&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Make sure we have ACPI tables */
@@ -48,7 +47,7 @@ id|AE_NO_ACPI_TABLES
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * Initialize the Fixed and General Purpose Acpi_events prior. This is&n;&t; * done prior to enabling SCIs to prevent interrupts from occuring&n;&t; * before handers are installed.&n;&t; */
+multiline_comment|/*&n;&t; * Initialize the Fixed and General Purpose acpi_events prior. This is&n;&t; * done prior to enabling SCIs to prevent interrupts from occuring&n;&t; * before handers are installed.&n;&t; */
 id|status
 op_assign
 id|acpi_ev_fixed_event_initialize
@@ -121,7 +120,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ev_handler_initialize&n; *&n; * PARAMETERS:  None&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Install handlers for the SCI, Global Lock, and GPEs.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ev_handler_initialize&n; *&n; * PARAMETERS:  None&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Install handlers for the SCI, Global Lock, and GPEs.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ev_handler_initialize
 id|acpi_ev_handler_initialize
@@ -134,7 +133,7 @@ id|status
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
-l_string|&quot;Ev_handler_initialize&quot;
+l_string|&quot;ev_handler_initialize&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Install the SCI handler */
@@ -249,7 +248,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ev_fixed_event_initialize&n; *&n; * PARAMETERS:  None&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Install the fixed event handlers and enable the fixed events.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ev_fixed_event_initialize&n; *&n; * PARAMETERS:  None&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Install the fixed event handlers and enable the fixed events.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ev_fixed_event_initialize
 id|acpi_ev_fixed_event_initialize
@@ -257,7 +256,7 @@ id|acpi_ev_fixed_event_initialize
 r_void
 )paren
 (brace
-id|NATIVE_UINT
+id|acpi_native_uint
 id|i
 suffix:semicolon
 id|acpi_status
@@ -350,7 +349,7 @@ id|AE_OK
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ev_fixed_event_detect&n; *&n; * PARAMETERS:  None&n; *&n; * RETURN:      INTERRUPT_HANDLED or INTERRUPT_NOT_HANDLED&n; *&n; * DESCRIPTION: Checks the PM status register for fixed events&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ev_fixed_event_detect&n; *&n; * PARAMETERS:  None&n; *&n; * RETURN:      INTERRUPT_HANDLED or INTERRUPT_NOT_HANDLED&n; *&n; * DESCRIPTION: Checks the PM status register for fixed events&n; *&n; ******************************************************************************/
 id|u32
 DECL|function|acpi_ev_fixed_event_detect
 id|acpi_ev_fixed_event_detect
@@ -369,12 +368,12 @@ suffix:semicolon
 id|u32
 id|fixed_enable
 suffix:semicolon
-id|NATIVE_UINT_MAX32
+id|acpi_native_uint
 id|i
 suffix:semicolon
 id|ACPI_FUNCTION_NAME
 (paren
-l_string|&quot;Ev_fixed_event_detect&quot;
+l_string|&quot;ev_fixed_event_detect&quot;
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Read the fixed feature status and enable registers, as all the cases&n;&t; * depend on their values.  Ignore errors here.&n;&t; */
@@ -409,7 +408,7 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_INTERRUPTS
 comma
-l_string|&quot;Fixed Acpi_event Block: Enable %08X Status %08X&bslash;n&quot;
+l_string|&quot;Fixed acpi_event Block: Enable %08X Status %08X&bslash;n&quot;
 comma
 id|fixed_enable
 comma
@@ -465,6 +464,9 @@ id|int_status
 op_or_assign
 id|acpi_ev_fixed_event_dispatch
 (paren
+(paren
+id|u32
+)paren
 id|i
 )paren
 suffix:semicolon
@@ -476,7 +478,7 @@ id|int_status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ev_fixed_event_dispatch&n; *&n; * PARAMETERS:  Event               - Event type&n; *&n; * RETURN:      INTERRUPT_HANDLED or INTERRUPT_NOT_HANDLED&n; *&n; * DESCRIPTION: Clears the status bit for the requested event, calls the&n; *              handler that previously registered for the event.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ev_fixed_event_dispatch&n; *&n; * PARAMETERS:  Event               - Event type&n; *&n; * RETURN:      INTERRUPT_HANDLED or INTERRUPT_NOT_HANDLED&n; *&n; * DESCRIPTION: Clears the status bit for the requested event, calls the&n; *              handler that previously registered for the event.&n; *&n; ******************************************************************************/
 id|u32
 DECL|function|acpi_ev_fixed_event_dispatch
 id|acpi_ev_fixed_event_dispatch
@@ -541,7 +543,7 @@ suffix:semicolon
 id|ACPI_REPORT_ERROR
 (paren
 (paren
-l_string|&quot;Ev_gpe_dispatch: No installed handler for fixed event [%08X]&bslash;n&quot;
+l_string|&quot;ev_gpe_dispatch: No installed handler for fixed event [%08X]&bslash;n&quot;
 comma
 id|event
 )paren

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  drivers/s390/cio/css.c&n; *  driver for channel subsystem&n; *   $Revision: 1.39 $&n; *&n; *    Copyright (C) 2002 IBM Deutschland Entwicklung GmbH,&n; *&t;&t;&t; IBM Corporation&n; *    Author(s): Arnd Bergmann (arndb@de.ibm.com)&n; *&t;&t; Cornelia Huck (cohuck@de.ibm.com)&n; */
+multiline_comment|/*&n; *  drivers/s390/cio/css.c&n; *  driver for channel subsystem&n; *   $Revision: 1.40 $&n; *&n; *    Copyright (C) 2002 IBM Deutschland Entwicklung GmbH,&n; *&t;&t;&t; IBM Corporation&n; *    Author(s): Arnd Bergmann (arndb@de.ibm.com)&n; *&t;&t; Cornelia Huck (cohuck@de.ibm.com)&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/device.h&gt;
@@ -11,6 +11,7 @@ macro_line|#include &quot;cio.h&quot;
 macro_line|#include &quot;cio_debug.h&quot;
 macro_line|#include &quot;device.h&quot; 
 singleline_comment|// FIXME: dito
+macro_line|#include &quot;ioasm.h&quot;
 DECL|variable|ioinfo
 r_struct
 id|subchannel
@@ -478,6 +479,11 @@ id|subchannel
 op_star
 id|sch
 suffix:semicolon
+r_int
+id|ccode
+comma
+id|devno
+suffix:semicolon
 id|CIO_CRW_EVENT
 c_func
 (paren
@@ -521,6 +527,10 @@ id|sch-&gt;dev.driver_data
 )paren
 r_return
 suffix:semicolon
+id|devno
+op_assign
+id|sch-&gt;schib.pmcw.dev
+suffix:semicolon
 multiline_comment|/* FIXME: css_process_crw must not know about ccw_device */
 id|dev_fsm_event
 c_func
@@ -530,7 +540,37 @@ comma
 id|DEV_EVENT_NOTOPER
 )paren
 suffix:semicolon
-singleline_comment|// FIXME: revalidate machine checks?
+id|ccode
+op_assign
+id|stsch
+c_func
+(paren
+id|irq
+comma
+op_amp
+id|sch-&gt;schib
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|ccode
+)paren
+r_if
+c_cond
+(paren
+id|devno
+op_ne
+id|sch-&gt;schib.pmcw.dev
+)paren
+id|schedule_work
+c_func
+(paren
+op_amp
+id|work
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/*&n; * some of the initialization has already been done from init_IRQ(),&n; * here we do the rest now that the driver core is running.&n; * Currently, this functions scans all the subchannel structures for&n; * devices. The long term plan is to remove ioinfo[] and then the&n; * struct subchannel&squot;s will be created during probing. &n; */
 r_static

@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: psxface - Parser external interfaces&n; *              $Revision: 66 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: psxface - Parser external interfaces&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acparser.h&quot;
@@ -11,7 +11,7 @@ id|ACPI_MODULE_NAME
 (paren
 l_string|&quot;psxface&quot;
 )paren
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_psx_execute&n; *&n; * PARAMETERS:  Method_node         - A method object containing both the AML&n; *                                    address and length.&n; *              **Params            - List of parameters to pass to method,&n; *                                    terminated by NULL. Params itself may be&n; *                                    NULL if no parameters are being passed.&n; *              **Return_obj_desc   - Return object from execution of the&n; *                                    method.&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Execute a control method&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_psx_execute&n; *&n; * PARAMETERS:  method_node         - A method object containing both the AML&n; *                                    address and length.&n; *              **Params            - List of parameters to pass to method,&n; *                                    terminated by NULL. Params itself may be&n; *                                    NULL if no parameters are being passed.&n; *              **return_obj_desc   - Return object from execution of the&n; *                                    method.&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Execute a control method&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_psx_execute
 id|acpi_psx_execute
@@ -51,7 +51,7 @@ id|walk_state
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
-l_string|&quot;Psx_execute&quot;
+l_string|&quot;psx_execute&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Validate the Node and get the attached object */
@@ -182,7 +182,7 @@ id|AE_NO_MEMORY
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * Get a new Owner_id for objects created by this method. Namespace&n;&t; * objects (such as Operation Regions) can be created during the&n;&t; * first pass parse.&n;&t; */
+multiline_comment|/*&n;&t; * Get a new owner_id for objects created by this method. Namespace&n;&t; * objects (such as Operation Regions) can be created during the&n;&t; * first pass parse.&n;&t; */
 id|obj_desc-&gt;method.owning_id
 op_assign
 id|acpi_ut_allocate_owner_id
@@ -450,7 +450,7 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_PARSE
 comma
-l_string|&quot;Method returned Obj_desc=%p&bslash;n&quot;
+l_string|&quot;Method returned obj_desc=%p&bslash;n&quot;
 comma
 op_star
 id|return_obj_desc

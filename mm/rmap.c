@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/swapops.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/rmap-locking.h&gt;
+macro_line|#include &lt;linux/cache.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/rmap.h&gt;
 macro_line|#include &lt;asm/tlb.h&gt;
@@ -31,7 +32,9 @@ id|ptes
 id|NRPTE
 )braket
 suffix:semicolon
+DECL|variable|____cacheline_aligned
 )brace
+id|____cacheline_aligned
 suffix:semicolon
 DECL|variable|pte_chain_cache
 r_static

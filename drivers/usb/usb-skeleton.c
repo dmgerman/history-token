@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * USB Skeleton driver - 0.8&n; *&n; * Copyright (c) 2001-2002 Greg Kroah-Hartman (greg@kroah.com)&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *&t;modify it under the terms of the GNU General Public License as&n; *&t;published by the Free Software Foundation, version 2.&n; *&n; *&n; * This driver is to be used as a skeleton driver to be able to create a&n; * USB driver quickly.  The design of it is based on the usb-serial and&n; * dc2xx drivers.&n; *&n; * Thanks to Oliver Neukum and David Brownell for their help in debugging&n; * this driver.&n; *&n; * TODO:&n; *&t;- fix urb-&gt;status race condition in write sequence&n; *&t;- move minor_table to a dynamic list.&n; *&n; * History:&n; *&n; * 2002_09_26 - 0.8 - changes due to USB core conversion to struct device&n; *&t;&t;&t;driver.&n; * 2002_02_12 - 0.7 - zero out dev in probe function for devices that do&n; *&t;&t;&t;not have both a bulk in and bulk out endpoint.&n; *&t;&t;&t;Thanks to Holger Waechtler for the fix.&n; * 2001_11_05 - 0.6 - fix minor locking problem in skel_disconnect.&n; *&t;&t;&t;Thanks to Pete Zaitcev for the fix.&n; * 2001_09_04 - 0.5 - fix devfs bug in skel_disconnect. Thanks to wim delvaux&n; * 2001_08_21 - 0.4 - more small bug fixes.&n; * 2001_05_29 - 0.3 - more bug fixes based on review from linux-usb-devel&n; * 2001_05_24 - 0.2 - bug fixes based on review from linux-usb-devel people&n; * 2001_05_01 - 0.1 - first version&n; * &n; */
+multiline_comment|/*&n; * USB Skeleton driver - 0.9&n; *&n; * Copyright (c) 2001-2002 Greg Kroah-Hartman (greg@kroah.com)&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *&t;modify it under the terms of the GNU General Public License as&n; *&t;published by the Free Software Foundation, version 2.&n; *&n; *&n; * This driver is to be used as a skeleton driver to be able to create a&n; * USB driver quickly.  The design of it is based on the usb-serial and&n; * dc2xx drivers.&n; *&n; * Thanks to Oliver Neukum and David Brownell for their help in debugging&n; * this driver.&n; *&n; * TODO:&n; *&t;- fix urb-&gt;status race condition in write sequence&n; *&n; * History:&n; *&n; * 2002_12_12 - 0.9 - compile fixes and got rid of fixed minor array.&n; * 2002_09_26 - 0.8 - changes due to USB core conversion to struct device&n; *&t;&t;&t;driver.&n; * 2002_02_12 - 0.7 - zero out dev in probe function for devices that do&n; *&t;&t;&t;not have both a bulk in and bulk out endpoint.&n; *&t;&t;&t;Thanks to Holger Waechtler for the fix.&n; * 2001_11_05 - 0.6 - fix minor locking problem in skel_disconnect.&n; *&t;&t;&t;Thanks to Pete Zaitcev for the fix.&n; * 2001_09_04 - 0.5 - fix devfs bug in skel_disconnect. Thanks to wim delvaux&n; * 2001_08_21 - 0.4 - more small bug fixes.&n; * 2001_05_29 - 0.3 - more bug fixes based on review from linux-usb-devel&n; * 2001_05_24 - 0.2 - bug fixes based on review from linux-usb-devel people&n; * 2001_05_01 - 0.1 - first version&n; * &n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
@@ -92,18 +92,12 @@ id|skel_table
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_USB_DYNAMIC_MINORS
-multiline_comment|/* &n; * if the user wants to use dynamic minor numbers, then we can have up to 256&n; * devices&n; */
 DECL|macro|USB_SKEL_MINOR_BASE
 mdefine_line|#define USB_SKEL_MINOR_BASE&t;0
-DECL|macro|MAX_DEVICES
-mdefine_line|#define MAX_DEVICES&t;&t;256
 macro_line|#else
 multiline_comment|/* Get a minor range for your devices from the usb maintainer */
 DECL|macro|USB_SKEL_MINOR_BASE
 mdefine_line|#define USB_SKEL_MINOR_BASE&t;200
-multiline_comment|/* we can have up to this number of device plugged in at once */
-DECL|macro|MAX_DEVICES
-mdefine_line|#define MAX_DEVICES&t;&t;16
 macro_line|#endif
 multiline_comment|/* Structure to hold all of our device specific stuff */
 DECL|struct|usb_skel
@@ -203,11 +197,11 @@ id|work_struct
 id|work
 suffix:semicolon
 multiline_comment|/* work queue entry for line discipline waking up */
-DECL|member|open_count
+DECL|member|open
 r_int
-id|open_count
+id|open
 suffix:semicolon
-multiline_comment|/* number of times this port has been opened */
+multiline_comment|/* if the port is open or not */
 DECL|member|sem
 r_struct
 id|semaphore
@@ -357,24 +351,6 @@ r_struct
 id|pt_regs
 op_star
 id|regs
-)paren
-suffix:semicolon
-multiline_comment|/* array of pointers to our devices that are currently connected */
-DECL|variable|minor_table
-r_static
-r_struct
-id|usb_skel
-op_star
-id|minor_table
-(braket
-id|MAX_DEVICES
-)braket
-suffix:semicolon
-multiline_comment|/* lock to protect the minor_table structure */
-r_static
-id|DECLARE_MUTEX
-(paren
-id|minor_table_mutex
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * File operations needed when we register this driver.&n; * This assumes that this driver NEEDS file operations,&n; * of course, which means that the driver is expected&n; * to have a node in the /dev directory. If the USB&n; * device were for a network interface then the driver&n; * would use &quot;struct net_driver&quot; instead, and a serial&n; * device would use &quot;struct tty_driver&quot;. &n; */
@@ -537,13 +513,6 @@ op_star
 id|dev
 )paren
 (brace
-id|minor_table
-(braket
-id|dev-&gt;minor
-)braket
-op_assign
-l_int|NULL
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -610,6 +579,11 @@ id|dev
 op_assign
 l_int|NULL
 suffix:semicolon
+r_struct
+id|usb_interface
+op_star
+id|interface
+suffix:semicolon
 r_int
 id|subminor
 suffix:semicolon
@@ -621,77 +595,73 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
+l_string|&quot;%s&quot;
+comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
 id|subminor
 op_assign
-id|MINOR
+id|minor
 (paren
 id|inode-&gt;i_rdev
 )paren
-op_minus
-id|USB_SKEL_MINOR_BASE
+suffix:semicolon
+id|interface
+op_assign
+id|usb_find_interface
+(paren
+op_amp
+id|skel_driver
+comma
+id|mk_kdev
+c_func
+(paren
+id|USB_MAJOR
+comma
+id|subminor
+)paren
+)paren
 suffix:semicolon
 r_if
 c_cond
 (paren
-(paren
-id|subminor
-OL
-l_int|0
-)paren
-op_logical_or
-(paren
-id|subminor
-op_ge
-id|MAX_DEVICES
-)paren
+op_logical_neg
+id|interface
 )paren
 (brace
+id|err
+(paren
+l_string|&quot;%s - error, can&squot;t find device for minor %d&quot;
+comma
+id|__FUNCTION__
+comma
+id|subminor
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|ENODEV
 suffix:semicolon
 )brace
-multiline_comment|/* Increment our usage count for the module.&n;&t; * This is redundant here, because &quot;struct file_operations&quot;&n;&t; * has an &quot;owner&quot; field. This line is included here soley as&n;&t; * a reference for drivers using lesser structures... ;-)&n;&t; */
-id|MOD_INC_USE_COUNT
-suffix:semicolon
-multiline_comment|/* lock our minor table and get our local data for this minor */
-id|down
-(paren
-op_amp
-id|minor_table_mutex
-)paren
-suffix:semicolon
 id|dev
 op_assign
-id|minor_table
-(braket
-id|subminor
-)braket
+id|dev_get_drvdata
+(paren
+op_amp
+id|interface-&gt;dev
+)paren
 suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|dev
-op_eq
-l_int|NULL
 )paren
-(brace
-id|up
-(paren
-op_amp
-id|minor_table_mutex
-)paren
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 r_return
 op_minus
 id|ENODEV
 suffix:semicolon
-)brace
 multiline_comment|/* lock this device */
 id|down
 (paren
@@ -699,16 +669,9 @@ op_amp
 id|dev-&gt;sem
 )paren
 suffix:semicolon
-multiline_comment|/* unlock the minor table */
-id|up
-(paren
-op_amp
-id|minor_table_mutex
-)paren
-suffix:semicolon
 multiline_comment|/* increment our usage count for the driver */
 op_increment
-id|dev-&gt;open_count
+id|dev-&gt;open
 suffix:semicolon
 multiline_comment|/* save our object in the file&squot;s private structure */
 id|file-&gt;private_data
@@ -772,8 +735,9 @@ l_int|NULL
 (brace
 id|dbg
 (paren
+l_string|&quot;%s - object is NULL&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - object is NULL&quot;
 )paren
 suffix:semicolon
 r_return
@@ -784,17 +748,11 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
+l_string|&quot;%s - minor %d&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - minor %d&quot;
 comma
 id|dev-&gt;minor
-)paren
-suffix:semicolon
-multiline_comment|/* lock our minor table */
-id|down
-(paren
-op_amp
-id|minor_table_mutex
 )paren
 suffix:semicolon
 multiline_comment|/* lock our device */
@@ -807,15 +765,16 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|dev-&gt;open_count
+id|dev-&gt;open
 op_le
 l_int|0
 )paren
 (brace
 id|dbg
 (paren
+l_string|&quot;%s - device not opened&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - device not opened&quot;
 )paren
 suffix:semicolon
 id|retval
@@ -847,43 +806,19 @@ id|skel_delete
 id|dev
 )paren
 suffix:semicolon
-id|up
-(paren
-op_amp
-id|minor_table_mutex
-)paren
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* decrement our usage count for the device */
-op_decrement
-id|dev-&gt;open_count
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|dev-&gt;open_count
-op_le
-l_int|0
-)paren
-(brace
 multiline_comment|/* shutdown any bulk writes that might be going on */
 id|usb_unlink_urb
 (paren
 id|dev-&gt;write_urb
 )paren
 suffix:semicolon
-id|dev-&gt;open_count
+id|dev-&gt;open
 op_assign
 l_int|0
-suffix:semicolon
-)brace
-multiline_comment|/* decrement our usage count for the module */
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 id|exit_not_opened
 suffix:colon
@@ -891,12 +826,6 @@ id|up
 (paren
 op_amp
 id|dev-&gt;sem
-)paren
-suffix:semicolon
-id|up
-(paren
-op_amp
-id|minor_table_mutex
 )paren
 suffix:semicolon
 r_return
@@ -948,8 +877,9 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
+l_string|&quot;%s - minor %d, count = %d&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - minor %d, count = %d&quot;
 comma
 id|dev-&gt;minor
 comma
@@ -1102,8 +1032,9 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
+l_string|&quot;%s - minor %d, count = %d&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - minor %d, count = %d&quot;
 comma
 id|dev-&gt;minor
 comma
@@ -1147,8 +1078,9 @@ l_int|0
 id|dbg
 c_func
 (paren
+l_string|&quot;%s - write request of 0 bytes&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - write request of 0 bytes&quot;
 )paren
 suffix:semicolon
 r_goto
@@ -1167,8 +1099,9 @@ id|EINPROGRESS
 (brace
 id|dbg
 (paren
+l_string|&quot;%s - already writing&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - already writing&quot;
 )paren
 suffix:semicolon
 r_goto
@@ -1268,8 +1201,9 @@ id|retval
 id|err
 c_func
 (paren
+l_string|&quot;%s - failed submitting write urb, error %d&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - failed submitting write urb, error %d&quot;
 comma
 id|retval
 )paren
@@ -1364,8 +1298,9 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
+l_string|&quot;%s - minor %d, cmd 0x%.4x, arg %ld&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - minor %d, cmd 0x%.4x, arg %ld&quot;
 comma
 id|dev-&gt;minor
 comma
@@ -1420,8 +1355,9 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
+l_string|&quot;%s - minor %d&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - minor %d&quot;
 comma
 id|dev-&gt;minor
 )paren
@@ -1447,8 +1383,9 @@ id|ECONNRESET
 id|dbg
 c_func
 (paren
+l_string|&quot;%s - nonzero write bulk status received: %d&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - nonzero write bulk status received: %d&quot;
 comma
 id|urb-&gt;status
 )paren
@@ -1497,7 +1434,7 @@ op_assign
 l_int|NULL
 suffix:semicolon
 r_struct
-id|usb_interface_descriptor
+id|usb_host_interface
 op_star
 id|iface_desc
 suffix:semicolon
@@ -1546,12 +1483,6 @@ op_minus
 id|ENODEV
 suffix:semicolon
 )brace
-id|down
-(paren
-op_amp
-id|minor_table_mutex
-)paren
-suffix:semicolon
 id|retval
 op_assign
 id|usb_register_dev
@@ -1627,13 +1558,6 @@ id|dev
 )paren
 )paren
 suffix:semicolon
-id|minor_table
-(braket
-id|minor
-)braket
-op_assign
-id|dev
-suffix:semicolon
 id|init_MUTEX
 (paren
 op_amp
@@ -1671,7 +1595,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|iface_desc-&gt;bNumEndpoints
+id|iface_desc-&gt;desc.bNumEndpoints
 suffix:semicolon
 op_increment
 id|i
@@ -1887,8 +1811,6 @@ id|DEVFS_FL_DEFAULT
 comma
 id|USB_MAJOR
 comma
-id|USB_SKEL_MINOR_BASE
-op_plus
 id|dev-&gt;minor
 comma
 id|S_IFCHR
@@ -1913,6 +1835,17 @@ multiline_comment|/* let the user know what node this device is now attached to 
 id|info
 (paren
 l_string|&quot;USB Skeleton device now attached to USBSkel%d&quot;
+comma
+id|dev-&gt;minor
+)paren
+suffix:semicolon
+multiline_comment|/* add device id so the device works when advertised */
+id|interface-&gt;kdev
+op_assign
+id|mk_kdev
+c_func
+(paren
+id|USB_MAJOR
 comma
 id|dev-&gt;minor
 )paren
@@ -1942,12 +1875,6 @@ id|minor
 suffix:semicolon
 m_exit
 suffix:colon
-id|up
-(paren
-op_amp
-id|minor_table_mutex
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2019,14 +1946,13 @@ suffix:semicolon
 id|down
 (paren
 op_amp
-id|minor_table_mutex
-)paren
-suffix:semicolon
-id|down
-(paren
-op_amp
 id|dev-&gt;sem
 )paren
+suffix:semicolon
+multiline_comment|/* remove device id to disable open() */
+id|interface-&gt;kdev
+op_assign
+id|NODEV
 suffix:semicolon
 id|minor
 op_assign
@@ -2051,7 +1977,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|dev-&gt;open_count
+id|dev-&gt;open
 )paren
 (brace
 id|up
@@ -2085,12 +2011,6 @@ c_func
 l_string|&quot;USB Skeleton #%d now disconnected&quot;
 comma
 id|minor
-)paren
-suffix:semicolon
-id|up
-(paren
-op_amp
-id|minor_table_mutex
 )paren
 suffix:semicolon
 )brace

@@ -8,6 +8,7 @@ macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#include &lt;linux/blkpg.h&gt;
 macro_line|#include &lt;linux/cdrom.h&gt;
+macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &quot;scsi.h&quot;
 macro_line|#include &quot;hosts.h&quot;
 macro_line|#include &lt;scsi/scsi_ioctl.h&gt;
@@ -667,22 +668,6 @@ suffix:semicolon
 r_case
 id|ILLEGAL_REQUEST
 suffix:colon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|cgc-&gt;quiet
-)paren
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;%s: CDROM (ioctl) reports ILLEGAL &quot;
-l_string|&quot;REQUEST.&bslash;n&quot;
-comma
-id|cd-&gt;cdi.name
-)paren
-suffix:semicolon
 id|err
 op_assign
 op_minus

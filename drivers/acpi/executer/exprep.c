@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: exprep - ACPI AML (p-code) execution - field prep utilities&n; *              $Revision: 121 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: exprep - ACPI AML (p-code) execution - field prep utilities&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acinterp.h&quot;
@@ -10,7 +10,7 @@ id|ACPI_MODULE_NAME
 (paren
 l_string|&quot;exprep&quot;
 )paren
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ex_decode_field_access&n; *&n; * PARAMETERS:  Access          - Encoded field access bits&n; *              Length          - Field length.&n; *&n; * RETURN:      Field granularity (8, 16, 32 or 64) and&n; *              Byte_alignment (1, 2, 3, or 4)&n; *&n; * DESCRIPTION: Decode the Access_type bits of a field definition.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ex_decode_field_access&n; *&n; * PARAMETERS:  Access          - Encoded field access bits&n; *              Length          - Field length.&n; *&n; * RETURN:      Field granularity (8, 16, 32 or 64) and&n; *              byte_alignment (1, 2, 3, or 4)&n; *&n; * DESCRIPTION: Decode the access_type bits of a field definition.&n; *&n; ******************************************************************************/
 r_static
 id|u32
 DECL|function|acpi_ex_decode_field_access
@@ -40,7 +40,7 @@ suffix:semicolon
 multiline_comment|/*    u32                     Length; */
 id|ACPI_FUNCTION_NAME
 (paren
-l_string|&quot;Ex_decode_field_access&quot;
+l_string|&quot;ex_decode_field_access&quot;
 )paren
 suffix:semicolon
 id|access
@@ -229,7 +229,7 @@ op_eq
 id|ACPI_TYPE_BUFFER_FIELD
 )paren
 (brace
-multiline_comment|/*&n;&t;&t; * Buffer_field access can be on any byte boundary, so the&n;&t;&t; * Byte_alignment is always 1 byte -- regardless of any Byte_alignment&n;&t;&t; * implied by the field access type.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * buffer_field access can be on any byte boundary, so the&n;&t;&t; * byte_alignment is always 1 byte -- regardless of any byte_alignment&n;&t;&t; * implied by the field access type.&n;&t;&t; */
 id|byte_alignment
 op_assign
 l_int|1
@@ -246,7 +246,7 @@ id|bit_length
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ex_prep_common_field_object&n; *&n; * PARAMETERS:  Obj_desc            - The field object&n; *              Field_flags         - Access, Lock_rule, and Update_rule.&n; *                                    The format of a Field_flag is described&n; *                                    in the ACPI specification&n; *              Field_bit_position  - Field start position&n; *              Field_bit_length    - Field length in number of bits&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Initialize the areas of the field object that are common&n; *              to the various types of fields.  Note: This is very &quot;sensitive&quot;&n; *              code because we are solving the general case for field&n; *              alignment.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ex_prep_common_field_object&n; *&n; * PARAMETERS:  obj_desc            - The field object&n; *              field_flags         - Access, lock_rule, and update_rule.&n; *                                    The format of a field_flag is described&n; *                                    in the ACPI specification&n; *              field_bit_position  - Field start position&n; *              field_bit_length    - Field length in number of bits&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Initialize the areas of the field object that are common&n; *              to the various types of fields.  Note: This is very &quot;sensitive&quot;&n; *              code because we are solving the general case for field&n; *              alignment.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ex_prep_common_field_object
 id|acpi_ex_prep_common_field_object
@@ -279,7 +279,7 @@ id|nearest_byte_address
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
-l_string|&quot;Ex_prep_common_field_object&quot;
+l_string|&quot;ex_prep_common_field_object&quot;
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Note: the structure being initialized is the&n;&t; * ACPI_COMMON_FIELD_INFO;  No structure fields outside of the common&n;&t; * area are initialized by this procedure.&n;&t; */
@@ -295,7 +295,7 @@ id|obj_desc-&gt;common_field.bit_length
 op_assign
 id|field_bit_length
 suffix:semicolon
-multiline_comment|/*&n;&t; * Decode the access type so we can compute offsets.  The access type gives&n;&t; * two pieces of information - the width of each field access and the&n;&t; * necessary Byte_alignment (address granularity) of the access.&n;&t; *&n;&t; * For Any_acc, the Access_bit_width is the largest width that is both&n;&t; * necessary and possible in an attempt to access the whole field in one&n;&t; * I/O operation.  However, for Any_acc, the Byte_alignment is always one&n;&t; * byte.&n;&t; *&n;&t; * For all Buffer Fields, the Byte_alignment is always one byte.&n;&t; *&n;&t; * For all other access types (Byte, Word, Dword, Qword), the Bitwidth is&n;&t; * the same (equivalent) as the Byte_alignment.&n;&t; */
+multiline_comment|/*&n;&t; * Decode the access type so we can compute offsets.  The access type gives&n;&t; * two pieces of information - the width of each field access and the&n;&t; * necessary byte_alignment (address granularity) of the access.&n;&t; *&n;&t; * For any_acc, the access_bit_width is the largest width that is both&n;&t; * necessary and possible in an attempt to access the whole field in one&n;&t; * I/O operation.  However, for any_acc, the byte_alignment is always one&n;&t; * byte.&n;&t; *&n;&t; * For all Buffer Fields, the byte_alignment is always one byte.&n;&t; *&n;&t; * For all other access types (Byte, Word, Dword, Qword), the Bitwidth is&n;&t; * the same (equivalent) as the byte_alignment.&n;&t; */
 id|access_bit_width
 op_assign
 id|acpi_ex_decode_field_access
@@ -333,7 +333,7 @@ id|access_bit_width
 )paren
 suffix:semicolon
 multiline_comment|/* 1, 2, 4,  8 */
-multiline_comment|/*&n;&t; * Base_byte_offset is the address of the start of the field within the&n;&t; * region.  It is the byte address of the first *datum* (field-width data&n;&t; * unit) of the field. (i.e., the first datum that contains at least the&n;&t; * first *bit* of the field.)&n;&t; *&n;&t; * Note: Byte_alignment is always either equal to the Access_bit_width or 8&n;&t; * (Byte access), and it defines the addressing granularity of the parent&n;&t; * region or buffer.&n;&t; */
+multiline_comment|/*&n;&t; * base_byte_offset is the address of the start of the field within the&n;&t; * region.  It is the byte address of the first *datum* (field-width data&n;&t; * unit) of the field. (i.e., the first datum that contains at least the&n;&t; * first *bit* of the field.)&n;&t; *&n;&t; * Note: byte_alignment is always either equal to the access_bit_width or 8&n;&t; * (Byte access), and it defines the addressing granularity of the parent&n;&t; * region or buffer.&n;&t; */
 id|nearest_byte_address
 op_assign
 id|ACPI_ROUND_BITS_DOWN_TO_BYTES
@@ -350,7 +350,7 @@ comma
 id|byte_alignment
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Start_field_bit_offset is the offset of the first bit of the field within&n;&t; * a field datum.&n;&t; */
+multiline_comment|/*&n;&t; * start_field_bit_offset is the offset of the first bit of the field within&n;&t; * a field datum.&n;&t; */
 id|obj_desc-&gt;common_field.start_field_bit_offset
 op_assign
 (paren
@@ -381,7 +381,7 @@ op_mod
 id|access_bit_width
 )paren
 suffix:semicolon
-multiline_comment|/* Start_buffer_bit_offset always = 0 */
+multiline_comment|/* start_buffer_bit_offset always = 0 */
 id|obj_desc-&gt;common_field.end_buffer_valid_bits
 op_assign
 (paren
@@ -393,7 +393,7 @@ op_mod
 id|access_bit_width
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Datum_valid_bits is the number of valid field bits in the first&n;&t; * field datum.&n;&t; */
+multiline_comment|/*&n;&t; * datum_valid_bits is the number of valid field bits in the first&n;&t; * field datum.&n;&t; */
 id|obj_desc-&gt;common_field.datum_valid_bits
 op_assign
 (paren
@@ -432,12 +432,12 @@ id|AE_OK
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ex_prep_field_value&n; *&n; * PARAMETERS:  Node                - Owning Node&n; *              Region_node         - Region in which field is being defined&n; *              Field_flags         - Access, Lock_rule, and Update_rule.&n; *              Field_bit_position  - Field start position&n; *              Field_bit_length    - Field length in number of bits&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Construct an acpi_operand_object of type Def_field and&n; *              connect it to the parent Node.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ex_prep_field_value&n; *&n; * PARAMETERS:  Node                - Owning Node&n; *              region_node         - Region in which field is being defined&n; *              field_flags         - Access, lock_rule, and update_rule.&n; *              field_bit_position  - Field start position&n; *              field_bit_length    - Field length in number of bits&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Construct an acpi_operand_object of type def_field and&n; *              connect it to the parent Node.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ex_prep_field_value
 id|acpi_ex_prep_field_value
 (paren
-id|ACPI_CREATE_FIELD_INFO
+id|acpi_create_field_info
 op_star
 id|info
 )paren
@@ -454,7 +454,7 @@ id|status
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
-l_string|&quot;Ex_prep_field_value&quot;
+l_string|&quot;ex_prep_field_value&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Parameter validation */
@@ -478,7 +478,7 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_ERROR
 comma
-l_string|&quot;Null Region_node&bslash;n&quot;
+l_string|&quot;Null region_node&bslash;n&quot;
 )paren
 )paren
 suffix:semicolon
@@ -615,7 +615,7 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_BFIELD
 comma
-l_string|&quot;Region_field: Bitoff=%X Off=%X Gran=%X Region %p&bslash;n&quot;
+l_string|&quot;region_field: Bitoff=%X Off=%X Gran=%X Region %p&bslash;n&quot;
 comma
 id|obj_desc-&gt;field.start_field_bit_offset
 comma
@@ -666,7 +666,7 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_BFIELD
 comma
-l_string|&quot;Bank Field: Bit_off=%X Off=%X Gran=%X Region %p Bank_reg %p&bslash;n&quot;
+l_string|&quot;Bank Field: bit_off=%X Off=%X Gran=%X Region %p bank_reg %p&bslash;n&quot;
 comma
 id|obj_desc-&gt;bank_field.start_field_bit_offset
 comma
@@ -754,7 +754,7 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_BFIELD
 comma
-l_string|&quot;Index_field: bitoff=%X off=%X gran=%X Index %p Data %p&bslash;n&quot;
+l_string|&quot;index_field: bitoff=%X off=%X gran=%X Index %p Data %p&bslash;n&quot;
 comma
 id|obj_desc-&gt;index_field.start_field_bit_offset
 comma
@@ -776,7 +776,7 @@ multiline_comment|/* No other types should get here */
 r_break
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * Store the constructed descriptor (Obj_desc) into the parent Node,&n;&t; * preserving the current type of that Named_obj.&n;&t; */
+multiline_comment|/*&n;&t; * Store the constructed descriptor (obj_desc) into the parent Node,&n;&t; * preserving the current type of that named_obj.&n;&t; */
 id|status
 op_assign
 id|acpi_ns_attach_object
@@ -796,7 +796,7 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_BFIELD
 comma
-l_string|&quot;set Named_obj %p (%4.4s) val = %p&bslash;n&quot;
+l_string|&quot;set named_obj %p (%4.4s) val = %p&bslash;n&quot;
 comma
 id|info-&gt;field_node
 comma

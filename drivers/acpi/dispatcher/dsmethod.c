@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: dsmethod - Parser/Interpreter interface - control method parsing&n; *              $Revision: 89 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: dsmethod - Parser/Interpreter interface - control method parsing&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acparser.h&quot;
@@ -12,7 +12,7 @@ id|ACPI_MODULE_NAME
 (paren
 l_string|&quot;dsmethod&quot;
 )paren
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ds_parse_method&n; *&n; * PARAMETERS:  Obj_handle      - Node of the method&n; *              Level           - Current nesting level&n; *              Context         - Points to a method counter&n; *              Return_value    - Not used&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Call the parser and parse the AML that is&n; *              associated with the method.&n; *&n; * MUTEX:       Assumes parser is locked&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ds_parse_method&n; *&n; * PARAMETERS:  obj_handle      - Node of the method&n; *              Level           - Current nesting level&n; *              Context         - Points to a method counter&n; *              return_value    - Not used&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Call the parser and parse the AML that is&n; *              associated with the method.&n; *&n; * MUTEX:       Assumes parser is locked&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ds_parse_method
 id|acpi_ds_parse_method
@@ -45,7 +45,7 @@ id|walk_state
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE_PTR
 (paren
-l_string|&quot;Ds_parse_method&quot;
+l_string|&quot;ds_parse_method&quot;
 comma
 id|obj_handle
 )paren
@@ -69,7 +69,7 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_PARSE
 comma
-l_string|&quot;**** Parsing [%4.4s] **** Named_obj=%p&bslash;n&quot;
+l_string|&quot;**** Parsing [%4.4s] **** named_obj=%p&bslash;n&quot;
 comma
 (paren
 (paren
@@ -191,7 +191,7 @@ id|op-&gt;common.node
 op_assign
 id|node
 suffix:semicolon
-multiline_comment|/*&n;&t; * Get a new Owner_id for objects created by this method. Namespace&n;&t; * objects (such as Operation Regions) can be created during the&n;&t; * first pass parse.&n;&t; */
+multiline_comment|/*&n;&t; * Get a new owner_id for objects created by this method. Namespace&n;&t; * objects (such as Operation Regions) can be created during the&n;&t; * first pass parse.&n;&t; */
 id|owner_id
 op_assign
 id|acpi_ut_allocate_owner_id
@@ -299,7 +299,7 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_PARSE
 comma
-l_string|&quot;**** [%4.4s] Parsed **** Named_obj=%p Op=%p&bslash;n&quot;
+l_string|&quot;**** [%4.4s] Parsed **** named_obj=%p Op=%p&bslash;n&quot;
 comma
 (paren
 (paren
@@ -328,7 +328,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ds_begin_method_execution&n; *&n; * PARAMETERS:  Method_node         - Node of the method&n; *              Obj_desc            - The method object&n; *              Calling_method_node - Caller of this method (if non-null)&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Prepare a method for execution.  Parses the method if necessary,&n; *              increments the thread count, and waits at the method semaphore&n; *              for clearance to execute.&n; *&n; * MUTEX:       Locks/unlocks parser.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ds_begin_method_execution&n; *&n; * PARAMETERS:  method_node         - Node of the method&n; *              obj_desc            - The method object&n; *              calling_method_node - Caller of this method (if non-null)&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Prepare a method for execution.  Parses the method if necessary,&n; *              increments the thread count, and waits at the method semaphore&n; *              for clearance to execute.&n; *&n; * MUTEX:       Locks/unlocks parser.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ds_begin_method_execution
 id|acpi_ds_begin_method_execution
@@ -353,7 +353,7 @@ id|AE_OK
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE_PTR
 (paren
-l_string|&quot;Ds_begin_method_execution&quot;
+l_string|&quot;ds_begin_method_execution&quot;
 comma
 id|method_node
 )paren
@@ -378,7 +378,7 @@ c_cond
 id|obj_desc-&gt;method.semaphore
 )paren
 (brace
-multiline_comment|/*&n;&t;&t; * Allow recursive method calls, up to the reentrancy/concurrency&n;&t;&t; * limit imposed by the SERIALIZED rule and the Sync_level method&n;&t;&t; * parameter.&n;&t;&t; *&n;&t;&t; * The point of this code is to avoid permanently blocking a&n;&t;&t; * thread that is making recursive method calls.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Allow recursive method calls, up to the reentrancy/concurrency&n;&t;&t; * limit imposed by the SERIALIZED rule and the sync_level method&n;&t;&t; * parameter.&n;&t;&t; *&n;&t;&t; * The point of this code is to avoid permanently blocking a&n;&t;&t; * thread that is making recursive method calls.&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -423,12 +423,12 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ds_call_control_method&n; *&n; * PARAMETERS:  Walk_state          - Current state of the walk&n; *              Op                  - Current Op to be walked&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Transfer execution to a called control method&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ds_call_control_method&n; *&n; * PARAMETERS:  walk_state          - Current state of the walk&n; *              Op                  - Current Op to be walked&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Transfer execution to a called control method&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ds_call_control_method
 id|acpi_ds_call_control_method
 (paren
-id|ACPI_THREAD_STATE
+id|acpi_thread_state
 op_star
 id|thread
 comma
@@ -461,7 +461,7 @@ id|i
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE_PTR
 (paren
-l_string|&quot;Ds_call_control_method&quot;
+l_string|&quot;ds_call_control_method&quot;
 comma
 id|this_walk_state
 )paren
@@ -795,7 +795,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ds_restart_control_method&n; *&n; * PARAMETERS:  Walk_state          - State of the method when it was preempted&n; *              Op                  - Pointer to new current op&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Restart a method that was preempted&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ds_restart_control_method&n; *&n; * PARAMETERS:  walk_state          - State of the method when it was preempted&n; *              Op                  - Pointer to new current op&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Restart a method that was preempted&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ds_restart_control_method
 id|acpi_ds_restart_control_method
@@ -814,7 +814,7 @@ id|status
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE_PTR
 (paren
-l_string|&quot;Ds_restart_control_method&quot;
+l_string|&quot;ds_restart_control_method&quot;
 comma
 id|walk_state
 )paren
@@ -877,7 +877,7 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_DISPATCH
 comma
-l_string|&quot;Method=%p Return=%p Return_used?=%X Res_stack=%p State=%p&bslash;n&quot;
+l_string|&quot;Method=%p Return=%p return_used?=%X res_stack=%p State=%p&bslash;n&quot;
 comma
 id|walk_state-&gt;method_call_op
 comma
@@ -897,7 +897,7 @@ id|AE_OK
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ds_terminate_control_method&n; *&n; * PARAMETERS:  Walk_state          - State of the method&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Terminate a control method.  Delete everything that the method&n; *              created, delete all locals and arguments, and delete the parse&n; *              tree if requested.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ds_terminate_control_method&n; *&n; * PARAMETERS:  walk_state          - State of the method&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Terminate a control method.  Delete everything that the method&n; *              created, delete all locals and arguments, and delete the parse&n; *              tree if requested.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ds_terminate_control_method
 id|acpi_ds_terminate_control_method
@@ -920,7 +920,7 @@ id|status
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE_PTR
 (paren
-l_string|&quot;Ds_terminate_control_method&quot;
+l_string|&quot;ds_terminate_control_method&quot;
 comma
 id|walk_state
 )paren

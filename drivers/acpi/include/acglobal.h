@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Name: acglobal.h - Declarations for global variables&n; *       $Revision: 134 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Name: acglobal.h - Declarations for global variables&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#ifndef __ACGLOBAL_H__
 DECL|macro|__ACGLOBAL_H__
@@ -27,7 +27,7 @@ id|u32
 id|acpi_gbl_nesting_level
 suffix:semicolon
 multiline_comment|/*****************************************************************************&n; *&n; * ACPI Table globals&n; *&n; ****************************************************************************/
-multiline_comment|/*&n; * Table pointers.&n; * Although these pointers are somewhat redundant with the global Acpi_table,&n; * they are convenient because they are typed pointers.&n; *&n; * These tables are single-table only; meaning that there can be at most one&n; * of each in the system.  Each global points to the actual table.&n; *&n; */
+multiline_comment|/*&n; * Table pointers.&n; * Although these pointers are somewhat redundant with the global acpi_table,&n; * they are convenient because they are typed pointers.&n; *&n; * These tables are single-table only; meaning that there can be at most one&n; * of each in the system.  Each global points to the actual table.&n; *&n; */
 DECL|variable|acpi_gbl_table_flags
 id|ACPI_EXTERN
 id|u32
@@ -40,7 +40,7 @@ id|acpi_gbl_rsdt_table_count
 suffix:semicolon
 DECL|variable|acpi_gbl_RSDP
 id|ACPI_EXTERN
-id|RSDP_DESCRIPTOR
+id|rsdp_descriptor
 op_star
 id|acpi_gbl_RSDP
 suffix:semicolon
@@ -112,7 +112,7 @@ suffix:semicolon
 multiline_comment|/*****************************************************************************&n; *&n; * Miscellaneous globals&n; *&n; ****************************************************************************/
 DECL|variable|acpi_gbl_memory_lists
 id|ACPI_EXTERN
-id|ACPI_MEMORY_LIST
+id|acpi_memory_list
 id|acpi_gbl_memory_lists
 (braket
 id|ACPI_NUM_MEM_LISTS
@@ -120,17 +120,17 @@ id|ACPI_NUM_MEM_LISTS
 suffix:semicolon
 DECL|variable|acpi_gbl_drv_notify
 id|ACPI_EXTERN
-id|ACPI_OBJECT_NOTIFY_HANDLER
+id|acpi_object_notify_handler
 id|acpi_gbl_drv_notify
 suffix:semicolon
 DECL|variable|acpi_gbl_sys_notify
 id|ACPI_EXTERN
-id|ACPI_OBJECT_NOTIFY_HANDLER
+id|acpi_object_notify_handler
 id|acpi_gbl_sys_notify
 suffix:semicolon
 DECL|variable|acpi_gbl_init_handler
 id|ACPI_EXTERN
-id|ACPI_INIT_HANDLER
+id|acpi_init_handler
 id|acpi_gbl_init_handler
 suffix:semicolon
 DECL|variable|acpi_gbl_breakpoint_walk
@@ -237,7 +237,7 @@ l_int|8
 suffix:semicolon
 r_extern
 r_const
-id|NATIVE_CHAR
+r_char
 op_star
 id|acpi_gbl_db_sleep_states
 (braket
@@ -254,7 +254,7 @@ id|AML_NUM_OPCODES
 suffix:semicolon
 r_extern
 r_const
-id|NATIVE_CHAR
+r_char
 op_star
 id|acpi_gbl_region_types
 (braket
@@ -316,12 +316,12 @@ id|acpi_gbl_max_concurrent_node_count
 suffix:semicolon
 DECL|variable|acpi_gbl_entry_stack_pointer
 id|ACPI_EXTERN
-id|ACPI_SIZE
+id|acpi_size
 id|acpi_gbl_entry_stack_pointer
 suffix:semicolon
 DECL|variable|acpi_gbl_lowest_stack_pointer
 id|ACPI_EXTERN
-id|ACPI_SIZE
+id|acpi_size
 id|acpi_gbl_lowest_stack_pointer
 suffix:semicolon
 DECL|variable|acpi_gbl_deepest_nesting
@@ -333,7 +333,7 @@ macro_line|#endif
 multiline_comment|/*****************************************************************************&n; *&n; * Interpreter globals&n; *&n; ****************************************************************************/
 DECL|variable|acpi_gbl_current_walk_list
 id|ACPI_EXTERN
-id|ACPI_THREAD_STATE
+id|acpi_thread_state
 op_star
 id|acpi_gbl_current_walk_list
 suffix:semicolon
@@ -352,7 +352,7 @@ id|acpi_gbl_parsed_namespace_root
 suffix:semicolon
 multiline_comment|/*****************************************************************************&n; *&n; * Hardware globals&n; *&n; ****************************************************************************/
 r_extern
-id|ACPI_BIT_REGISTER_INFO
+id|acpi_bit_register_info
 id|acpi_gbl_bit_register_info
 (braket
 id|ACPI_NUM_BITREG
@@ -378,7 +378,7 @@ id|ACPI_NUM_FIXED_EVENTS
 suffix:semicolon
 DECL|variable|acpi_gbl_fixed_event_handlers
 id|ACPI_EXTERN
-id|ACPI_FIXED_EVENT_HANDLER
+id|acpi_fixed_event_handler
 id|acpi_gbl_fixed_event_handlers
 (braket
 id|ACPI_NUM_FIXED_EVENTS
@@ -401,19 +401,19 @@ id|acpi_gbl_gpe_number_max
 suffix:semicolon
 DECL|variable|acpi_gbl_gpe_register_info
 id|ACPI_EXTERN
-id|ACPI_GPE_REGISTER_INFO
+id|acpi_gpe_register_info
 op_star
 id|acpi_gbl_gpe_register_info
 suffix:semicolon
 DECL|variable|acpi_gbl_gpe_number_info
 id|ACPI_EXTERN
-id|ACPI_GPE_NUMBER_INFO
+id|acpi_gpe_number_info
 op_star
 id|acpi_gbl_gpe_number_info
 suffix:semicolon
 DECL|variable|acpi_gbl_gpe_block_info
 id|ACPI_EXTERN
-id|ACPI_GPE_BLOCK_INFO
+id|acpi_gpe_block_info
 id|acpi_gbl_gpe_block_info
 (braket
 id|ACPI_MAX_GPE_BLOCKS
@@ -422,7 +422,7 @@ suffix:semicolon
 multiline_comment|/*&n; * GPE translation table&n; * Indexed by the GPE number, returns a valid index into the global GPE tables.&n; *&n; * This table is needed because the GPE numbers supported by block 1 do not&n; * have to be contiguous with the GPE numbers supported by block 0.&n; */
 DECL|variable|acpi_gbl_gpe_number_to_index
 id|ACPI_EXTERN
-id|ACPI_GPE_INDEX_INFO
+id|acpi_gpe_index_info
 op_star
 id|acpi_gbl_gpe_number_to_index
 suffix:semicolon
@@ -464,7 +464,7 @@ id|optind
 suffix:semicolon
 DECL|variable|optarg
 id|ACPI_EXTERN
-id|NATIVE_CHAR
+r_char
 op_star
 id|optarg
 suffix:semicolon
@@ -485,7 +485,7 @@ id|acpi_gbl_db_opt_ini_methods
 suffix:semicolon
 DECL|variable|acpi_gbl_db_args
 id|ACPI_EXTERN
-id|NATIVE_CHAR
+r_char
 op_star
 id|acpi_gbl_db_args
 (braket
@@ -494,7 +494,7 @@ id|ACPI_DEBUGGER_MAX_ARGS
 suffix:semicolon
 DECL|variable|acpi_gbl_db_line_buf
 id|ACPI_EXTERN
-id|NATIVE_CHAR
+r_char
 id|acpi_gbl_db_line_buf
 (braket
 l_int|80
@@ -502,7 +502,7 @@ l_int|80
 suffix:semicolon
 DECL|variable|acpi_gbl_db_parsed_buf
 id|ACPI_EXTERN
-id|NATIVE_CHAR
+r_char
 id|acpi_gbl_db_parsed_buf
 (braket
 l_int|80
@@ -510,7 +510,7 @@ l_int|80
 suffix:semicolon
 DECL|variable|acpi_gbl_db_scope_buf
 id|ACPI_EXTERN
-id|NATIVE_CHAR
+r_char
 id|acpi_gbl_db_scope_buf
 (braket
 l_int|40
@@ -518,7 +518,7 @@ l_int|40
 suffix:semicolon
 DECL|variable|acpi_gbl_db_debug_filename
 id|ACPI_EXTERN
-id|NATIVE_CHAR
+r_char
 id|acpi_gbl_db_debug_filename
 (braket
 l_int|40
@@ -531,13 +531,13 @@ id|acpi_gbl_db_output_to_file
 suffix:semicolon
 DECL|variable|acpi_gbl_db_buffer
 id|ACPI_EXTERN
-id|NATIVE_CHAR
+r_char
 op_star
 id|acpi_gbl_db_buffer
 suffix:semicolon
 DECL|variable|acpi_gbl_db_filename
 id|ACPI_EXTERN
-id|NATIVE_CHAR
+r_char
 op_star
 id|acpi_gbl_db_filename
 suffix:semicolon

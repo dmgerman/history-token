@@ -24,6 +24,8 @@ DECL|macro|SEMGET
 mdefine_line|#define SEMGET&t;&t; 2
 DECL|macro|SEMCTL
 mdefine_line|#define SEMCTL&t;&t; 3
+DECL|macro|SEMTIMEDOP
+mdefine_line|#define SEMTIMEDOP&t; 4
 DECL|macro|MSGSND
 mdefine_line|#define MSGSND&t;&t;11
 DECL|macro|MSGRCV

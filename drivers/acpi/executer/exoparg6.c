@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: exoparg6 - AML execution - opcodes with 6 arguments&n; *              $Revision: 11 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: exoparg6 - AML execution - opcodes with 6 arguments&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acinterp.h&quot;
@@ -11,7 +11,7 @@ id|ACPI_MODULE_NAME
 l_string|&quot;exoparg6&quot;
 )paren
 multiline_comment|/*!&n; * Naming convention for AML interpreter execution routines.&n; *&n; * The routines that begin execution of AML opcodes are named with a common&n; * convention based upon the number of arguments, the number of target operands,&n; * and whether or not a value is returned:&n; *&n; *      AcpiExOpcode_xA_yT_zR&n; *&n; * Where:&n; *&n; * xA - ARGUMENTS:    The number of arguments (input operands) that are&n; *                    required for this opcode type (1 through 6 args).&n; * yT - TARGETS:      The number of targets (output operands) that are required&n; *                    for this opcode type (0, 1, or 2 targets).&n; * zR - RETURN VALUE: Indicates whether this opcode type returns a value&n; *                    as the function return (0 or 1).&n; *&n; * The AcpiExOpcode* functions are called via the Dispatcher component with&n; * fully resolved operands.&n;!*/
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ex_do_match&n; *&n; * PARAMETERS:  Match_op        - The AML match operand&n; *              Package_value   - Value from the target package&n; *              Match_value     - Value to be matched&n; *&n; * RETURN:      TRUE if the match is successful, FALSE otherwise&n; *&n; * DESCRIPTION: Implements the low-level match for the ASL Match operator&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ex_do_match&n; *&n; * PARAMETERS:  match_op        - The AML match operand&n; *              package_value   - Value from the target package&n; *              match_value     - Value to be matched&n; *&n; * RETURN:      TRUE if the match is successful, FALSE otherwise&n; *&n; * DESCRIPTION: Implements the low-level match for the ASL Match operator&n; *&n; ******************************************************************************/
 id|u8
 DECL|function|acpi_ex_do_match
 id|acpi_ex_do_match
@@ -151,7 +151,7 @@ r_return
 id|TRUE
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ex_opcode_6A_0T_1R&n; *&n; * PARAMETERS:  Walk_state          - Current walk state&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Execute opcode with 6 arguments, no target, and a return value&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ex_opcode_6A_0T_1R&n; *&n; * PARAMETERS:  walk_state          - Current walk state&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Execute opcode with 6 arguments, no target, and a return value&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ex_opcode_6A_0T_1R
 id|acpi_ex_opcode_6A_0T_1R
@@ -192,7 +192,7 @@ id|this_element
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE_STR
 (paren
-l_string|&quot;Ex_opcode_6A_0T_1R&quot;
+l_string|&quot;ex_opcode_6A_0T_1R&quot;
 comma
 id|acpi_ps_get_opcode_name
 (paren
@@ -209,7 +209,7 @@ id|walk_state-&gt;opcode
 r_case
 id|AML_MATCH_OP
 suffix:colon
-multiline_comment|/*&n;&t;&t; * Match (Search_package[0], Match_op1[1], Match_object1[2],&n;&t;&t; *                          Match_op2[3], Match_object2[4], Start_index[5])&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Match (search_package[0], match_op1[1], match_object1[2],&n;&t;&t; *                          match_op2[3], match_object2[4], start_index[5])&n;&t;&t; */
 multiline_comment|/* Validate match comparison sub-opcodes */
 r_if
 c_cond
@@ -326,7 +326,7 @@ id|return_desc-&gt;integer.value
 op_assign
 id|ACPI_INTEGER_MAX
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * Examine each element until a match is found.  Within the loop,&n;&t;&t; * &quot;continue&quot; signifies that the current element does not match&n;&t;&t; * and the next should be examined.&n;&t;&t; *&n;&t;&t; * Upon finding a match, the loop will terminate via &quot;break&quot; at&n;&t;&t; * the bottom.  If it terminates &quot;normally&quot;, Match_value will be -1&n;&t;&t; * (its initial value) indicating that no match was found.  When&n;&t;&t; * returned as a Number, this will produce the Ones value as specified.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Examine each element until a match is found.  Within the loop,&n;&t;&t; * &quot;continue&quot; signifies that the current element does not match&n;&t;&t; * and the next should be examined.&n;&t;&t; *&n;&t;&t; * Upon finding a match, the loop will terminate via &quot;break&quot; at&n;&t;&t; * the bottom.  If it terminates &quot;normally&quot;, match_value will be -1&n;&t;&t; * (its initial value) indicating that no match was found.  When&n;&t;&t; * returned as a Number, this will produce the Ones value as specified.&n;&t;&t; */
 r_for
 c_loop
 (paren
@@ -465,7 +465,7 @@ suffix:colon
 id|ACPI_REPORT_ERROR
 (paren
 (paren
-l_string|&quot;Acpi_ex_opcode_3A_0T_0R: Unknown opcode %X&bslash;n&quot;
+l_string|&quot;acpi_ex_opcode_3A_0T_0R: Unknown opcode %X&bslash;n&quot;
 comma
 id|walk_state-&gt;opcode
 )paren

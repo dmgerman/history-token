@@ -445,6 +445,8 @@ DECL|macro|__NR_epoll_ctl
 mdefine_line|#define __NR_epoll_ctl&t;&t;&t;1244
 DECL|macro|__NR_epoll_wait
 mdefine_line|#define __NR_epoll_wait&t;&t;&t;1245
+DECL|macro|__NR_semtimedop
+mdefine_line|#define __NR_semtimedop&t;&t;&t;1246
 macro_line|#if !defined(__ASSEMBLY__) &amp;&amp; !defined(ASSEMBLER)
 r_extern
 r_int
