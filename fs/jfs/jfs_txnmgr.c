@@ -7000,6 +7000,7 @@ op_complement
 id|tlckWRITEPAGE
 suffix:semicolon
 multiline_comment|/* do not release page to freelist */
+multiline_comment|/*&n;&t;&t;&t;&t; * The &quot;right&quot; thing to do here is to&n;&t;&t;&t;&t; * synchronously write the metadata.&n;&t;&t;&t;&t; * With the current implementation this&n;&t;&t;&t;&t; * is hard since write_metapage requires&n;&t;&t;&t;&t; * us to kunmap &amp; remap the page.  If we&n;&t;&t;&t;&t; * have tlocks pointing into the metadata&n;&t;&t;&t;&t; * pages, we don&squot;t want to do this.  I think&n;&t;&t;&t;&t; * we can get by with synchronously writing&n;&t;&t;&t;&t; * the pages when they are released.&n;&t;&t;&t;&t; */
 m_assert
 (paren
 id|atomic_read
@@ -7010,18 +7011,22 @@ id|mp-&gt;nohomeok
 )paren
 )paren
 suffix:semicolon
-id|hold_metapage
+id|set_bit
 c_func
 (paren
-id|mp
+id|META_dirty
 comma
-l_int|0
+op_amp
+id|mp-&gt;flag
 )paren
 suffix:semicolon
-id|write_metapage
+id|set_bit
 c_func
 (paren
-id|mp
+id|META_sync
+comma
+op_amp
+id|mp-&gt;flag
 )paren
 suffix:semicolon
 )brace
