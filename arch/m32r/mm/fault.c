@@ -1,5 +1,4 @@
-multiline_comment|/*&n; *  linux/arch/m32r/mm/fault.c&n; *&n; *  Copyright (c) 2001, 2002  Hitoshi Yamamoto, and H. Kondo&n; *&n; *  Some code taken from i386 version.&n; *    Copyright (C) 1995  Linus Torvalds&n; */
-multiline_comment|/* $Id$ */
+multiline_comment|/*&n; *  linux/arch/m32r/mm/fault.c&n; *&n; *  Copyright (c) 2001, 2002  Hitoshi Yamamoto, and H. Kondo&n; *  Copyright (c) 2004  Naoto Sugai, NIIBE Yutaka&n; *&n; *  Some code taken from i386 version.&n; *    Copyright (C) 1995  Linus Torvalds&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/signal.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -220,7 +219,7 @@ id|info.si_code
 op_assign
 id|SEGV_MAPERR
 suffix:semicolon
-multiline_comment|/*&n;&t; * We fault-in kernel-space virtual memory on-demand. The&n;&t; * &squot;reference&squot; page table is init_mm.pgd.&n;&t; *&n;&t; * NOTE! We MUST NOT take any locks for this case. We may&n;&t; * be in an interrupt or a critical region, and should&n;&t; * only copy the information from the master page table,&n;&t; * nothing more.&n;&t; *&n;&t; * This verifies that the fault happens in kernel space&n;&t; * (error_code &amp; ACE_USEMODE) == 0, and that the fault was not a&n;&t; * protection error (error_code &amp; ACE_PROTECTION) == 0.&n;&t; */
+multiline_comment|/*&n;&t; * We fault-in kernel-space virtual memory on-demand. The&n;&t; * &squot;reference&squot; page table is init_mm.pgd.&n;&t; *&n;&t; * NOTE! We MUST NOT take any locks for this case. We may&n;&t; * be in an interrupt or a critical region, and should&n;&t; * only copy the information from the master page table,&n;&t; * nothing more.&n;&t; *&n;&t; * This verifies that the fault happens in kernel space&n;&t; * (error_code &amp; ACE_USERMODE) == 0, and that the fault was not a&n;&t; * protection error (error_code &amp; ACE_PROTECTION) == 0.&n;&t; */
 r_if
 c_cond
 (paren
