@@ -1321,7 +1321,6 @@ id|vfsp-&gt;vfs_flag
 op_amp
 id|VFS_RDONLY
 )paren
-suffix:semicolon
 r_continue
 suffix:semicolon
 id|VFS_SYNC
