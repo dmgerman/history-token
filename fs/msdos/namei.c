@@ -3338,6 +3338,10 @@ id|res
 r_return
 id|res
 suffix:semicolon
+id|sb-&gt;s_flags
+op_or_assign
+id|MS_NOATIME
+suffix:semicolon
 id|sb-&gt;s_root-&gt;d_op
 op_assign
 op_amp
