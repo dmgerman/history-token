@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;asm/hardware.h&gt;
 macro_line|#include &lt;asm/memory.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
+macro_line|#include &lt;asm/mach/time.h&gt;
 r_extern
 r_void
 id|sa1100_cpu_suspend
@@ -86,16 +87,18 @@ id|state
 (brace
 r_int
 r_int
+id|gpio
+comma
 id|sleep_save
 (braket
 id|SLEEP_SAVE_SIZE
 )braket
 suffix:semicolon
-r_int
-r_int
+r_struct
+id|timespec
 id|delta
 comma
-id|gpio
+id|rtc
 suffix:semicolon
 r_if
 c_cond
@@ -109,11 +112,23 @@ op_minus
 id|EINVAL
 suffix:semicolon
 multiline_comment|/* preserve current time */
-id|delta
+id|rtc.tv_sec
 op_assign
-id|xtime.tv_sec
-op_minus
 id|RCNR
+suffix:semicolon
+id|rtc.tv_nsec
+op_assign
+l_int|0
+suffix:semicolon
+id|save_time_delta
+c_func
+(paren
+op_amp
+id|delta
+comma
+op_amp
+id|rtc
+)paren
 suffix:semicolon
 id|gpio
 op_assign
@@ -331,11 +346,19 @@ op_minus
 id|LATCH
 suffix:semicolon
 multiline_comment|/* restore current time */
-id|xtime.tv_sec
+id|rtc.tv_sec
 op_assign
 id|RCNR
-op_plus
+suffix:semicolon
+id|restore_time_delta
+c_func
+(paren
+op_amp
 id|delta
+comma
+op_amp
+id|rtc
+)paren
 suffix:semicolon
 r_return
 l_int|0
