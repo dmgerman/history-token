@@ -8,9 +8,6 @@ macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#include &quot;ieee1394_types.h&quot;
 macro_line|#include &quot;csr.h&quot;
-multiline_comment|/* size of the array used to store config rom (in quadlets)&n;   maximum is 0x100. About 0x40 is needed for the default&n;   entries. So 0x80 should provide enough space for additional&n;   directories etc. &n;   Note: All lowlevel drivers are required to allocate at least&n;         this amount of memory for the configuration rom!&n;*/
-DECL|macro|CSR_CONFIG_ROM_SIZE
-mdefine_line|#define CSR_CONFIG_ROM_SIZE       0x100
 r_struct
 id|hpsb_packet
 suffix:semicolon
@@ -179,6 +176,15 @@ r_struct
 id|device
 id|device
 suffix:semicolon
+DECL|member|update_config_rom
+r_int
+id|update_config_rom
+suffix:semicolon
+DECL|member|delayed_reset
+r_struct
+id|timer_list
+id|delayed_reset
+suffix:semicolon
 DECL|member|addr_space
 r_struct
 id|list_head
@@ -316,12 +322,12 @@ r_char
 op_star
 id|name
 suffix:semicolon
-multiline_comment|/* This function must store a pointer to the configuration ROM into the&n;         * location referenced to by pointer and return the size of the ROM. It&n;         * may not fail.  If any allocation is required, it must be done&n;         * earlier.&n;         */
-DECL|member|get_rom
-r_int
+multiline_comment|/* The hardware driver may optionally support a function that is used&n;&t; * to set the hardware ConfigROM if the hardware supports handling&n;&t; * reads to the ConfigROM on its own. */
+DECL|member|set_hw_config_rom
+r_void
 (paren
 op_star
-id|get_rom
+id|set_hw_config_rom
 )paren
 (paren
 r_struct
@@ -331,8 +337,7 @@ id|host
 comma
 id|quadlet_t
 op_star
-op_star
-id|pointer
+id|config_rom
 )paren
 suffix:semicolon
 multiline_comment|/* This function shall implement packet transmission based on&n;         * packet-&gt;type.  It shall CRC both parts of the packet (unless&n;         * packet-&gt;type == raw) and do byte-swapping as necessary or instruct&n;         * the hardware to do so.  It can return immediately after the packet&n;         * was queued for sending.  After sending, hpsb_sent_packet() has to be&n;         * called.  Return 0 on success, negative errno on failure.&n;         * NOTE: The function must be callable in interrupt context.&n;         */
@@ -462,7 +467,7 @@ op_star
 id|h
 )paren
 suffix:semicolon
-multiline_comment|/* updates the configuration rom of a host.&n; * rom_version must be the current version,&n; * otherwise it will fail with return value -1.&n; * Return value -2 indicates that the new&n; * rom version is too big.&n; * Return value 0 indicates success&n; */
+multiline_comment|/* The following 2 functions are deprecated and will be removed when the&n; * raw1394/libraw1394 update is complete. */
 r_int
 id|hpsb_update_config_rom
 c_func
@@ -485,7 +490,6 @@ r_char
 id|rom_version
 )paren
 suffix:semicolon
-multiline_comment|/* reads the current version of the configuration rom of a host.&n; * buffersize is the size of the buffer, rom_size&n; * returns the size of the current rom image.&n; * rom_version is the version number of the fetched rom.&n; * return value -1 indicates, that the buffer was&n; * too small, 0 indicates success.&n; */
 r_int
 id|hpsb_get_config_rom
 c_func
@@ -510,6 +514,17 @@ r_int
 r_char
 op_star
 id|rom_version
+)paren
+suffix:semicolon
+multiline_comment|/* Updates the configuration rom image of a host.  rom_version must be the&n; * current version, otherwise it will fail with return value -1. If this&n; * host does not support config-rom-update, it will return -EINVAL.&n; * Return value 0 indicates success.&n; */
+r_int
+id|hpsb_update_config_rom_image
+c_func
+(paren
+r_struct
+id|hpsb_host
+op_star
+id|host
 )paren
 suffix:semicolon
 macro_line|#endif /* _IEEE1394_HOSTS_H */
