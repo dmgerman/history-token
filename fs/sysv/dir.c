@@ -1,7 +1,6 @@
 multiline_comment|/*&n; *  linux/fs/sysv/dir.c&n; *&n; *  minix/dir.c&n; *  Copyright (C) 1991, 1992  Linus Torvalds&n; *&n; *  coh/dir.c&n; *  Copyright (C) 1993  Pascal Haible, Bruno Haible&n; *&n; *  sysv/dir.c&n; *  Copyright (C) 1993  Bruno Haible&n; *&n; *  SystemV/Coherent directory handling functions&n; */
-macro_line|#include &lt;linux/fs.h&gt;
-macro_line|#include &lt;linux/sysv_fs.h&gt;
 macro_line|#include &lt;linux/pagemap.h&gt;
+macro_line|#include &quot;sysv.h&quot;
 r_static
 r_int
 id|sysv_readdir
@@ -534,7 +533,11 @@ comma
 id|fs16_to_cpu
 c_func
 (paren
+id|SYSV_SB
+c_func
+(paren
 id|sb
+)paren
 comma
 id|de-&gt;inode
 )paren
@@ -1182,7 +1185,11 @@ op_assign
 id|cpu_to_fs16
 c_func
 (paren
+id|SYSV_SB
+c_func
+(paren
 id|inode-&gt;i_sb
+)paren
 comma
 id|inode-&gt;i_ino
 )paren
@@ -1499,7 +1506,11 @@ op_assign
 id|cpu_to_fs16
 c_func
 (paren
+id|SYSV_SB
+c_func
+(paren
 id|inode-&gt;i_sb
+)paren
 comma
 id|inode-&gt;i_ino
 )paren
@@ -1520,7 +1531,11 @@ op_assign
 id|cpu_to_fs16
 c_func
 (paren
+id|SYSV_SB
+c_func
+(paren
 id|inode-&gt;i_sb
+)paren
 comma
 id|dir-&gt;i_ino
 )paren
@@ -1731,7 +1746,11 @@ op_eq
 id|cpu_to_fs16
 c_func
 (paren
+id|SYSV_SB
+c_func
+(paren
 id|sb
+)paren
 comma
 id|inode-&gt;i_ino
 )paren
@@ -1883,7 +1902,11 @@ op_assign
 id|cpu_to_fs16
 c_func
 (paren
+id|SYSV_SB
+c_func
+(paren
 id|inode-&gt;i_sb
+)paren
 comma
 id|inode-&gt;i_ino
 )paren
@@ -2044,7 +2067,11 @@ op_assign
 id|fs16_to_cpu
 c_func
 (paren
+id|SYSV_SB
+c_func
+(paren
 id|dentry-&gt;d_sb
+)paren
 comma
 id|de-&gt;inode
 )paren
