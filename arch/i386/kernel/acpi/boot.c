@@ -987,6 +987,7 @@ id|acpi_pic_sci_setup
 suffix:semicolon
 macro_line|#endif /* CONFIG_ACPI_BUS */
 macro_line|#ifdef CONFIG_X86_IO_APIC
+multiline_comment|/* deprecated in favor of acpi_gsi_to_irq */
 DECL|function|acpi_irq_to_vector
 r_int
 id|acpi_irq_to_vector
@@ -1024,6 +1025,56 @@ id|irq
 suffix:semicolon
 )brace
 macro_line|#endif
+DECL|function|acpi_gsi_to_irq
+r_int
+id|acpi_gsi_to_irq
+c_func
+(paren
+id|u32
+id|gsi
+comma
+r_int
+r_int
+op_star
+id|irq
+)paren
+(brace
+macro_line|#ifdef CONFIG_X86_IO_APIC
+r_if
+c_cond
+(paren
+id|use_pci_vector
+c_func
+(paren
+)paren
+op_logical_and
+op_logical_neg
+id|platform_legacy_irq
+c_func
+(paren
+id|gsi
+)paren
+)paren
+op_star
+id|irq
+op_assign
+id|IO_APIC_VECTOR
+c_func
+(paren
+id|gsi
+)paren
+suffix:semicolon
+r_else
+macro_line|#endif
+op_star
+id|irq
+op_assign
+id|gsi
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
 r_static
 r_int
 r_int
