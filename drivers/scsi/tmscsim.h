@@ -331,12 +331,6 @@ id|Scsi_Host
 op_star
 id|pScsiHost
 suffix:semicolon
-DECL|member|pNextACB
-r_struct
-id|dc390_acb
-op_star
-id|pNextACB
-suffix:semicolon
 DECL|member|IOPortBase
 id|u16
 id|IOPortBase
