@@ -22,29 +22,29 @@ mdefine_line|#define ICS_ARCIN_V5_INTRSTAT&t;&t;0x0000
 DECL|macro|ICS_ARCIN_V5_INTROFFSET
 mdefine_line|#define ICS_ARCIN_V5_INTROFFSET&t;&t;0x0004
 DECL|macro|ICS_ARCIN_V5_IDEOFFSET
-mdefine_line|#define ICS_ARCIN_V5_IDEOFFSET&t;&t;0xa00
+mdefine_line|#define ICS_ARCIN_V5_IDEOFFSET&t;&t;0x2800
 DECL|macro|ICS_ARCIN_V5_IDEALTOFFSET
-mdefine_line|#define ICS_ARCIN_V5_IDEALTOFFSET&t;0xae0
+mdefine_line|#define ICS_ARCIN_V5_IDEALTOFFSET&t;0x2b80
 DECL|macro|ICS_ARCIN_V5_IDESTEPPING
-mdefine_line|#define ICS_ARCIN_V5_IDESTEPPING&t;4
+mdefine_line|#define ICS_ARCIN_V5_IDESTEPPING&t;6
 DECL|macro|ICS_ARCIN_V6_IDEOFFSET_1
-mdefine_line|#define ICS_ARCIN_V6_IDEOFFSET_1&t;0x800
+mdefine_line|#define ICS_ARCIN_V6_IDEOFFSET_1&t;0x2000
 DECL|macro|ICS_ARCIN_V6_INTROFFSET_1
 mdefine_line|#define ICS_ARCIN_V6_INTROFFSET_1&t;0x2200
 DECL|macro|ICS_ARCIN_V6_INTRSTAT_1
 mdefine_line|#define ICS_ARCIN_V6_INTRSTAT_1&t;&t;0x2290
 DECL|macro|ICS_ARCIN_V6_IDEALTOFFSET_1
-mdefine_line|#define ICS_ARCIN_V6_IDEALTOFFSET_1&t;0x8e0
+mdefine_line|#define ICS_ARCIN_V6_IDEALTOFFSET_1&t;0x2380
 DECL|macro|ICS_ARCIN_V6_IDEOFFSET_2
-mdefine_line|#define ICS_ARCIN_V6_IDEOFFSET_2&t;0xc00
+mdefine_line|#define ICS_ARCIN_V6_IDEOFFSET_2&t;0x3000
 DECL|macro|ICS_ARCIN_V6_INTROFFSET_2
 mdefine_line|#define ICS_ARCIN_V6_INTROFFSET_2&t;0x3200
 DECL|macro|ICS_ARCIN_V6_INTRSTAT_2
 mdefine_line|#define ICS_ARCIN_V6_INTRSTAT_2&t;&t;0x3290
 DECL|macro|ICS_ARCIN_V6_IDEALTOFFSET_2
-mdefine_line|#define ICS_ARCIN_V6_IDEALTOFFSET_2&t;0xce0
+mdefine_line|#define ICS_ARCIN_V6_IDEALTOFFSET_2&t;0x3380
 DECL|macro|ICS_ARCIN_V6_IDESTEPPING
-mdefine_line|#define ICS_ARCIN_V6_IDESTEPPING&t;4
+mdefine_line|#define ICS_ARCIN_V6_IDESTEPPING&t;6
 DECL|struct|cardinfo
 r_struct
 id|cardinfo
@@ -1871,8 +1871,9 @@ DECL|function|icside_setup
 id|icside_setup
 c_func
 (paren
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|base
 comma
 r_struct
@@ -1890,6 +1891,10 @@ r_int
 r_int
 id|port
 op_assign
+(paren
+r_int
+r_int
+)paren
 id|base
 op_plus
 id|info-&gt;dataoffset
@@ -1903,7 +1908,7 @@ op_assign
 id|icside_find_hwif
 c_func
 (paren
-id|base
+id|port
 )paren
 suffix:semicolon
 r_if
@@ -1928,6 +1933,17 @@ r_sizeof
 id|hw_regs_t
 )paren
 )paren
+suffix:semicolon
+multiline_comment|/*&n;&t;&t; * Ensure we&squot;re using MMIO&n;&t;&t; */
+id|default_hwif_mmiops
+c_func
+(paren
+id|hwif
+)paren
+suffix:semicolon
+id|hwif-&gt;mmio
+op_assign
+l_int|2
 suffix:semicolon
 r_for
 c_loop
@@ -1970,6 +1986,10 @@ id|hwif-&gt;hw.io_ports
 id|IDE_CONTROL_OFFSET
 )braket
 op_assign
+(paren
+r_int
+r_int
+)paren
 id|base
 op_plus
 id|info-&gt;ctrloffset
@@ -1979,6 +1999,10 @@ id|hwif-&gt;io_ports
 id|IDE_CONTROL_OFFSET
 )braket
 op_assign
+(paren
+r_int
+r_int
+)paren
 id|base
 op_plus
 id|info-&gt;ctrloffset
@@ -2027,10 +2051,6 @@ op_star
 id|ec
 )paren
 (brace
-r_int
-r_int
-id|slot_port
-suffix:semicolon
 id|ide_hwif_t
 op_star
 id|hwif
@@ -2039,18 +2059,6 @@ r_void
 id|__iomem
 op_star
 id|base
-suffix:semicolon
-id|slot_port
-op_assign
-id|ecard_address
-c_func
-(paren
-id|ec
-comma
-id|ECARD_MEMC
-comma
-l_int|0
-)paren
 suffix:semicolon
 id|base
 op_assign
@@ -2121,7 +2129,7 @@ op_assign
 id|icside_setup
 c_func
 (paren
-id|slot_port
+id|base
 comma
 op_amp
 id|icside_cardinfo_v5
@@ -2176,12 +2184,6 @@ op_star
 id|ec
 )paren
 (brace
-r_int
-r_int
-id|slot_port
-comma
-id|port
-suffix:semicolon
 id|ide_hwif_t
 op_star
 id|hwif
@@ -2205,41 +2207,6 @@ l_int|0
 suffix:semicolon
 r_int
 id|ret
-suffix:semicolon
-id|slot_port
-op_assign
-id|ecard_address
-c_func
-(paren
-id|ec
-comma
-id|ECARD_IOC
-comma
-id|ECARD_FAST
-)paren
-suffix:semicolon
-id|port
-op_assign
-id|ecard_address
-c_func
-(paren
-id|ec
-comma
-id|ECARD_EASI
-comma
-id|ECARD_FAST
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|port
-op_eq
-l_int|0
-)paren
-id|port
-op_assign
-id|slot_port
 suffix:semicolon
 id|ioc_base
 op_assign
@@ -2381,7 +2348,7 @@ op_assign
 id|icside_setup
 c_func
 (paren
-id|port
+id|easi_base
 comma
 op_amp
 id|icside_cardinfo_v6_1
@@ -2394,7 +2361,7 @@ op_assign
 id|icside_setup
 c_func
 (paren
-id|port
+id|easi_base
 comma
 op_amp
 id|icside_cardinfo_v6_2
