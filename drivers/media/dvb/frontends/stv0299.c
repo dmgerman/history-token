@@ -6413,8 +6413,9 @@ id|buf
 op_assign
 id|rpt
 comma
+dot
 id|len
-suffix:colon
+op_assign
 l_int|2
 )brace
 comma
@@ -6464,8 +6465,9 @@ id|buf
 op_assign
 id|rpt
 comma
+dot
 id|len
-suffix:colon
+op_assign
 l_int|2
 )brace
 comma
@@ -6515,8 +6517,9 @@ id|buf
 op_assign
 id|rpt
 comma
+dot
 id|len
-suffix:colon
+op_assign
 l_int|2
 )brace
 comma
