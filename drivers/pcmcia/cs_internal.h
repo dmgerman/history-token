@@ -715,6 +715,24 @@ op_star
 id|skt
 )paren
 suffix:semicolon
+r_int
+id|pccard_get_status
+c_func
+(paren
+r_struct
+id|pcmcia_socket
+op_star
+id|s
+comma
+r_int
+r_int
+id|function
+comma
+id|cs_status_t
+op_star
+id|status
+)paren
+suffix:semicolon
 DECL|macro|cs_socket_name
 mdefine_line|#define cs_socket_name(skt)&t;((skt)-&gt;dev.class_id)
 macro_line|#ifdef DEBUG
