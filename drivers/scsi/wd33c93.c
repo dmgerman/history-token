@@ -4791,7 +4791,6 @@ l_string|&quot;} &quot;
 )paren
 )brace
 DECL|function|reset_wd33c93
-r_static
 r_void
 id|reset_wd33c93
 c_func
@@ -4823,6 +4822,66 @@ suffix:semicolon
 id|uchar
 id|sr
 suffix:semicolon
+macro_line|#ifdef CONFIG_SGI_IP22
+(brace
+r_int
+id|busycount
+op_assign
+l_int|0
+suffix:semicolon
+r_extern
+r_void
+id|sgiwd93_reset
+c_func
+(paren
+r_int
+r_int
+)paren
+suffix:semicolon
+multiline_comment|/* wait &squot;til the chip gets some time for us */
+r_while
+c_loop
+(paren
+(paren
+id|READ_AUX_STAT
+c_func
+(paren
+)paren
+op_amp
+id|ASR_BSY
+)paren
+op_logical_and
+id|busycount
+op_increment
+OL
+l_int|100
+)paren
+id|udelay
+(paren
+l_int|10
+)paren
+suffix:semicolon
+multiline_comment|/*&n;    * there are scsi devices out there, which manage to lock up&n;    * the wd33c93 in a busy condition. In this state it won&squot;t&n;    * accept the reset command. The only way to solve this is to&n;    * give the chip a hardware reset (if possible). The code below&n;    * does this for the SGI Indy, where this is possible&n;    */
+multiline_comment|/* still busy ? */
+r_if
+c_cond
+(paren
+id|READ_AUX_STAT
+c_func
+(paren
+)paren
+op_amp
+id|ASR_BSY
+)paren
+id|sgiwd93_reset
+c_func
+(paren
+id|instance-&gt;base
+)paren
+suffix:semicolon
+multiline_comment|/* yeah, give it the hard one */
+)brace
+macro_line|#endif
 id|write_wd33c93
 c_func
 (paren
