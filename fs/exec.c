@@ -2338,6 +2338,12 @@ c_func
 id|tsk
 )paren
 suffix:semicolon
+id|arch_pick_mmap_layout
+c_func
+(paren
+id|mm
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren

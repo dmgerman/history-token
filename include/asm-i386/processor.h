@@ -776,6 +776,8 @@ mdefine_line|#define TASK_SIZE&t;(PAGE_OFFSET)
 multiline_comment|/* This decides where the kernel will search for a free chunk of vm&n; * space during mmap&squot;s.&n; */
 DECL|macro|TASK_UNMAPPED_BASE
 mdefine_line|#define TASK_UNMAPPED_BASE&t;(PAGE_ALIGN(TASK_SIZE / 3))
+DECL|macro|HAVE_ARCH_PICK_MMAP_LAYOUT
+mdefine_line|#define HAVE_ARCH_PICK_MMAP_LAYOUT
 multiline_comment|/*&n; * Size of io_bitmap.&n; */
 DECL|macro|IO_BITMAP_BITS
 mdefine_line|#define IO_BITMAP_BITS  65536

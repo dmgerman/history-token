@@ -2885,7 +2885,7 @@ l_int|0
 suffix:semicolon
 id|current-&gt;mm-&gt;free_area_cache
 op_assign
-id|TASK_UNMAPPED_BASE
+id|current-&gt;mm-&gt;mmap_base
 suffix:semicolon
 id|retval
 op_assign

@@ -956,7 +956,7 @@ l_int|NULL
 suffix:semicolon
 id|mm-&gt;free_area_cache
 op_assign
-id|TASK_UNMAPPED_BASE
+id|oldmm-&gt;mmap_base
 suffix:semicolon
 id|mm-&gt;map_count
 op_assign
