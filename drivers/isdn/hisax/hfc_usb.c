@@ -5949,6 +5949,8 @@ r_struct
 id|usb_host_interface
 op_star
 id|iface_used
+op_assign
+l_int|NULL
 suffix:semicolon
 r_struct
 id|usb_host_endpoint
