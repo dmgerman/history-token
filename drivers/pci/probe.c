@@ -2086,7 +2086,7 @@ suffix:semicolon
 id|DBG
 c_func
 (paren
-l_string|&quot;Scanning behind PCI bridge %s, config %06x, pass %d&bslash;n&quot;
+l_string|&quot;PCI: Scanning behind PCI bridge %s, config %06x, pass %d&bslash;n&quot;
 comma
 id|pci_name
 c_func
@@ -2596,11 +2596,13 @@ suffix:semicolon
 id|DBG
 c_func
 (paren
-l_string|&quot;Found %02x:%02x [%04x/%04x] %06x %02x&bslash;n&quot;
+l_string|&quot;PCI: Found %s [%04x/%04x] %06x %02x&bslash;n&quot;
 comma
-id|dev-&gt;bus-&gt;number
-comma
-id|dev-&gt;devfn
+id|pci_name
+c_func
+(paren
+id|dev
+)paren
 comma
 id|dev-&gt;vendor
 comma
@@ -3592,7 +3594,13 @@ suffix:semicolon
 id|DBG
 c_func
 (paren
-l_string|&quot;Scanning bus %02x&bslash;n&quot;
+l_string|&quot;PCI: Scanning bus %04x:%02x&bslash;n&quot;
+comma
+id|pci_domain_nr
+c_func
+(paren
+id|bus
+)paren
 comma
 id|bus-&gt;number
 )paren
@@ -3625,7 +3633,13 @@ multiline_comment|/*&n;&t; * After performing arch-dependent fixup of the bus, l
 id|DBG
 c_func
 (paren
-l_string|&quot;Fixups for bus %02x&bslash;n&quot;
+l_string|&quot;PCI: Fixups for bus %04x:%02x&bslash;n&quot;
+comma
+id|pci_domain_nr
+c_func
+(paren
+id|bus
+)paren
 comma
 id|bus-&gt;number
 )paren
@@ -3691,7 +3705,13 @@ multiline_comment|/*&n;&t; * We&squot;ve scanned the bus and so we know all abou
 id|DBG
 c_func
 (paren
-l_string|&quot;Bus scan for %02x returning with max=%02x&bslash;n&quot;
+l_string|&quot;PCI: Bus scan for %04x:%02x returning with max=%02x&bslash;n&quot;
+comma
+id|pci_domain_nr
+c_func
+(paren
+id|bus
+)paren
 comma
 id|bus-&gt;number
 comma
