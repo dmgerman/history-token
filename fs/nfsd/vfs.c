@@ -2281,7 +2281,7 @@ id|nfs3_anyaccess
 )braket
 op_assign
 (brace
-multiline_comment|/* Some clients - Solaris 2.6 at least, make an access call&n;&t; * to the server to check for access for things like /dev/null&n;&t; * (which really, the server doesn&squot;t care about).  So&n;&t; * We provide simple access checking for them, looking&n;&t; * mainly at mode bits&n;&t; */
+multiline_comment|/* Some clients - Solaris 2.6 at least, make an access call&n;&t; * to the server to check for access for things like /dev/null&n;&t; * (which really, the server doesn&squot;t care about).  So&n;&t; * We provide simple access checking for them, looking&n;&t; * mainly at mode bits, and we make sure to ignore read-only&n;&t; * filesystem checks&n;&t; */
 (brace
 id|NFS3_ACCESS_READ
 comma
@@ -2298,12 +2298,16 @@ comma
 id|NFS3_ACCESS_MODIFY
 comma
 id|MAY_WRITE
+op_or
+id|MAY_LOCAL_ACCESS
 )brace
 comma
 (brace
 id|NFS3_ACCESS_EXTEND
 comma
 id|MAY_WRITE
+op_or
+id|MAY_LOCAL_ACCESS
 )brace
 comma
 (brace
