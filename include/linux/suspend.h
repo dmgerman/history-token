@@ -178,7 +178,7 @@ macro_line|#else&t;/* CONFIG_SOFTWARE_SUSPEND */
 DECL|function|software_suspend
 r_static
 r_inline
-r_int
+r_void
 id|software_suspend
 c_func
 (paren
