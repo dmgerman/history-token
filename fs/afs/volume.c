@@ -13,7 +13,9 @@ macro_line|#include &quot;cmservice.h&quot;
 macro_line|#include &quot;fsclient.h&quot;
 macro_line|#include &quot;vlclient.h&quot;
 macro_line|#include &quot;internal.h&quot;
+macro_line|#ifdef __KDEBUG
 DECL|variable|afs_voltypes
+r_static
 r_const
 r_char
 op_star
@@ -29,6 +31,7 @@ comma
 l_string|&quot;BAK&quot;
 )brace
 suffix:semicolon
+macro_line|#endif
 macro_line|#ifdef AFS_CACHING_SUPPORT
 r_static
 id|cachefs_match_val_t

@@ -28,12 +28,6 @@ r_struct
 id|list_head
 id|free_list
 suffix:semicolon
-DECL|member|map
-r_int
-r_int
-op_star
-id|map
-suffix:semicolon
 DECL|member|nr_free
 r_int
 r_int
@@ -460,10 +454,6 @@ mdefine_line|#define node_present_pages(nid)&t;(NODE_DATA(nid)-&gt;node_present_
 DECL|macro|node_spanned_pages
 mdefine_line|#define node_spanned_pages(nid)&t;(NODE_DATA(nid)-&gt;node_spanned_pages)
 r_extern
-r_int
-id|numnodes
-suffix:semicolon
-r_extern
 r_struct
 id|pglist_data
 op_star
@@ -771,7 +761,7 @@ suffix:semicolon
 macro_line|#include &lt;linux/topology.h&gt;
 multiline_comment|/* Returns the number of the current Node. */
 DECL|macro|numa_node_id
-mdefine_line|#define numa_node_id()&t;&t;(cpu_to_node(smp_processor_id()))
+mdefine_line|#define numa_node_id()&t;&t;(cpu_to_node(_smp_processor_id()))
 macro_line|#ifndef CONFIG_DISCONTIGMEM
 r_extern
 r_struct

@@ -536,15 +536,6 @@ op_amp
 id|inode-&gt;i_data.i_mmap_lock
 )paren
 suffix:semicolon
-id|atomic_set
-c_func
-(paren
-op_amp
-id|inode-&gt;i_data.truncate_count
-comma
-l_int|0
-)paren
-suffix:semicolon
 id|INIT_LIST_HEAD
 c_func
 (paren
@@ -993,6 +984,14 @@ r_struct
 id|inode
 op_star
 id|inode
+suffix:semicolon
+multiline_comment|/*&n;&t;&t; * We can reschedule here without worrying about the list&squot;s&n;&t;&t; * consistency because the per-sb list of inodes must not&n;&t;&t; * change during umount anymore, and because iprune_sem keeps&n;&t;&t; * shrink_icache_memory() away.&n;&t;&t; */
+id|cond_resched_lock
+c_func
+(paren
+op_amp
+id|inode_lock
+)paren
 suffix:semicolon
 id|next
 op_assign

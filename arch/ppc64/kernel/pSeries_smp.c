@@ -43,7 +43,7 @@ mdefine_line|#define DBG(fmt...)
 macro_line|#endif
 r_extern
 r_void
-id|pseries_secondary_smp_init
+id|pSeries_secondary_smp_init
 c_func
 (paren
 r_int
@@ -543,7 +543,7 @@ r_int
 r_int
 op_star
 )paren
-id|pseries_secondary_smp_init
+id|pSeries_secondary_smp_init
 )paren
 )paren
 suffix:semicolon
@@ -1259,7 +1259,7 @@ r_int
 r_int
 op_star
 )paren
-id|pseries_secondary_smp_init
+id|pSeries_secondary_smp_init
 )paren
 )paren
 comma

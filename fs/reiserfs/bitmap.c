@@ -1922,6 +1922,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* preallocated blocks don&squot;t need to be run through journal_mark_freed */
 DECL|function|reiserfs_free_prealloc_block
+r_static
 r_void
 id|reiserfs_free_prealloc_block
 (paren

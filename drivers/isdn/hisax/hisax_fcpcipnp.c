@@ -25,15 +25,17 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* static int hdlcfifosize = 32; */
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|debug
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
-multiline_comment|/* MODULE_PARM(hdlcfifosize, &quot;i&quot;); */
+multiline_comment|/* module_param(hdlcfifosize, int, 0); */
 macro_line|#endif
 id|MODULE_AUTHOR
 c_func
@@ -178,12 +180,14 @@ op_assign
 l_int|2
 suffix:semicolon
 multiline_comment|/* EURO-ISDN Default */
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|protocol
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_LICENSE

@@ -1,28 +1,4 @@
 multiline_comment|/*&n; *      Copyright (C) 1994-1997 Claus-Justus Heine&n;&n; This program is free software; you can redistribute it and/or&n; modify it under the terms of the GNU General Public License as&n; published by the Free Software Foundation; either version 2, or (at&n; your option) any later version.&n; &n; This program is distributed in the hope that it will be useful, but&n; WITHOUT ANY WARRANTY; without even the implied warranty of&n; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU&n; General Public License for more details.&n; &n; You should have received a copy of the GNU General Public License&n; along with this program; see the file COPYING.  If not, write to&n; the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139,&n; USA.&n; &n; *&n; *     This file implements a &quot;generic&quot; interface between the *&n; *     zftape-driver and a compression-algorithm. The *&n; *     compression-algorithm currently used is a LZ77. I use the *&n; *     implementation lzrw3 by Ross N. Williams (Renaissance *&n; *     Software). The compression program itself is in the file&n; *     lzrw3.c * and lzrw3.h.  To adopt another compression algorithm&n; *     the functions * zft_compress() and zft_uncompress() must be&n; *     changed * appropriately. See below.&n; */
-DECL|variable|zftc_src
-r_char
-id|zftc_src
-(braket
-)braket
-op_assign
-l_string|&quot;$Source: /homes/cvs/ftape-stacked/ftape/compressor/zftape-compress.c,v $&quot;
-suffix:semicolon
-DECL|variable|zftc_rev
-r_char
-id|zftc_rev
-(braket
-)braket
-op_assign
-l_string|&quot;$Revision: 1.1.6.1 $&quot;
-suffix:semicolon
-DECL|variable|zftc_dat
-r_char
-id|zftc_dat
-(braket
-)braket
-op_assign
-l_string|&quot;$Date: 1997/11/16 15:15:56 $&quot;
-suffix:semicolon
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;

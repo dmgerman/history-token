@@ -1654,6 +1654,7 @@ comma
 )brace
 suffix:semicolon
 DECL|variable|BTTV_TVNORMS
+r_static
 r_const
 r_int
 r_int
@@ -1668,6 +1669,7 @@ suffix:semicolon
 multiline_comment|/* ----------------------------------------------------------------------- */
 multiline_comment|/* bttv format list&n;   packed pixel formats must come first */
 DECL|variable|bttv_formats
+r_static
 r_const
 r_struct
 id|bttv_format
@@ -2401,6 +2403,7 @@ comma
 )brace
 suffix:semicolon
 DECL|variable|BTTV_FORMATS
+r_static
 r_const
 r_int
 r_int
@@ -3050,6 +3053,7 @@ comma
 )brace
 suffix:semicolon
 DECL|variable|BTTV_CTLS
+r_static
 r_const
 r_int
 id|BTTV_CTLS
@@ -3569,6 +3573,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* used to switch between the bt848&squot;s analog/digital video capture modes */
 DECL|function|bt848A_set_timing
+r_static
 r_void
 id|bt848A_set_timing
 c_func
@@ -14392,6 +14397,7 @@ comma
 )brace
 suffix:semicolon
 DECL|variable|bttv_vbi_template
+r_static
 r_struct
 id|video_device
 id|bttv_vbi_template
@@ -17770,13 +17776,19 @@ op_amp
 id|btv-&gt;reslock
 )paren
 suffix:semicolon
+id|spin_lock_init
+c_func
+(paren
+op_amp
 id|btv-&gt;s_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
+id|spin_lock_init
+c_func
+(paren
+op_amp
 id|btv-&gt;gpio_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 id|init_waitqueue_head
 c_func

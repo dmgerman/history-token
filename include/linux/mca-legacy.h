@@ -33,25 +33,6 @@ r_int
 id|start
 )paren
 suffix:semicolon
-multiline_comment|/* adapter state info - returns 0 if no */
-r_extern
-r_int
-id|mca_isadapter
-c_func
-(paren
-r_int
-id|slot
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|mca_isenabled
-c_func
-(paren
-r_int
-id|slot
-)paren
-suffix:semicolon
 r_extern
 r_int
 id|mca_is_adapter_used
@@ -105,16 +86,6 @@ comma
 r_char
 op_star
 id|name
-)paren
-suffix:semicolon
-r_extern
-r_char
-op_star
-id|mca_get_adapter_name
-c_func
-(paren
-r_int
-id|slot
 )paren
 suffix:semicolon
 multiline_comment|/* These routines actually mess with the hardware POS registers.  They&n; * temporarily disable the device (and interrupts), so make sure you know&n; * what you&squot;re doing if you use them.  Furthermore, writing to a POS may&n; * result in two devices trying to share a resource, which in turn can&n; * result in multiple devices sharing memory spaces, IRQs, or even trashing&n; * hardware.  YOU HAVE BEEN WARNED.&n; *&n; * You can only access slots with this.  Motherboard registers are off&n; * limits.&n; */

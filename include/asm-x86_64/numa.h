@@ -16,8 +16,6 @@ id|end
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|macro|for_all_nodes
-mdefine_line|#define for_all_nodes(x) for ((x) = 0; (x) &lt; numnodes; (x)++) &bslash;&n;&t;&t;&t;&t;if (node_online(x))
 r_extern
 r_int
 id|compute_hash_shift

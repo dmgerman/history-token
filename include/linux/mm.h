@@ -186,6 +186,12 @@ op_star
 id|vm_private_data
 suffix:semicolon
 multiline_comment|/* was vm_pte (shared mem) */
+DECL|member|vm_truncate_count
+r_int
+r_int
+id|vm_truncate_count
+suffix:semicolon
+multiline_comment|/* truncate_count or restart_addr */
 macro_line|#ifndef CONFIG_MMU
 DECL|member|vm_usage
 id|atomic_t
@@ -495,7 +501,7 @@ r_int
 r_int
 r_private
 suffix:semicolon
-multiline_comment|/* Mapping-private opaque data:&n;&t;&t;&t;&t;&t; * usually used for buffer_heads&n;&t;&t;&t;&t;&t; * if PagePrivate set; used for&n;&t;&t;&t;&t;&t; * swp_entry_t if PageSwapCache&n;&t;&t;&t;&t;&t; */
+multiline_comment|/* Mapping-private opaque data:&n;&t;&t;&t;&t;&t; * usually used for buffer_heads&n;&t;&t;&t;&t;&t; * if PagePrivate set; used for&n;&t;&t;&t;&t;&t; * swp_entry_t if PageSwapCache&n;&t;&t;&t;&t;&t; * When page is free, this indicates&n;&t;&t;&t;&t;&t; * order in the buddy system.&n;&t;&t;&t;&t;&t; */
 DECL|member|mapping
 r_struct
 id|address_space
@@ -1387,11 +1393,24 @@ id|pgoff_t
 id|last_index
 suffix:semicolon
 multiline_comment|/* Highest page-&gt;index to unmap */
-DECL|member|atomic
-r_int
-id|atomic
+DECL|member|i_mmap_lock
+id|spinlock_t
+op_star
+id|i_mmap_lock
 suffix:semicolon
-multiline_comment|/* May not schedule() */
+multiline_comment|/* For unmap_mapping_range: */
+DECL|member|break_addr
+r_int
+r_int
+id|break_addr
+suffix:semicolon
+multiline_comment|/* Where unmap_vmas stopped */
+DECL|member|truncate_count
+r_int
+r_int
+id|truncate_count
+suffix:semicolon
+multiline_comment|/* Compare vm_truncate_count */
 )brace
 suffix:semicolon
 r_void
@@ -3043,54 +3062,6 @@ comma
 id|pgprot_t
 )paren
 suffix:semicolon
-r_static
-r_inline
-id|__deprecated
-multiline_comment|/* since 25 Sept 2004 -- wli */
-DECL|function|remap_page_range
-r_int
-id|remap_page_range
-c_func
-(paren
-r_struct
-id|vm_area_struct
-op_star
-id|vma
-comma
-r_int
-r_int
-id|uvaddr
-comma
-r_int
-r_int
-id|paddr
-comma
-r_int
-r_int
-id|size
-comma
-id|pgprot_t
-id|prot
-)paren
-(brace
-r_return
-id|remap_pfn_range
-c_func
-(paren
-id|vma
-comma
-id|uvaddr
-comma
-id|paddr
-op_rshift
-id|PAGE_SHIFT
-comma
-id|size
-comma
-id|prot
-)paren
-suffix:semicolon
-)brace
 macro_line|#ifdef CONFIG_PROC_FS
 r_void
 id|__vm_stat_account

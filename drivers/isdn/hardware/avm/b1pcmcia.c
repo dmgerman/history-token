@@ -829,9 +829,6 @@ id|rev
 l_int|32
 )braket
 suffix:semicolon
-r_int
-id|err
-suffix:semicolon
 r_if
 c_cond
 (paren

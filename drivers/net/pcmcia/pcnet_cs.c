@@ -64,12 +64,14 @@ id|pc_debug
 op_assign
 id|PCMCIA_DEBUG
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|pc_debug
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 DECL|macro|DEBUG
@@ -107,7 +109,7 @@ l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
 DECL|macro|INT_MODULE_PARM
-mdefine_line|#define INT_MODULE_PARM(n, v) static int n = v; MODULE_PARM(n, &quot;i&quot;)
+mdefine_line|#define INT_MODULE_PARM(n, v) static int n = v; module_param(n, int, 0)
 multiline_comment|/* Bit map of interrupts to choose from */
 id|INT_MODULE_PARM
 c_func
@@ -130,12 +132,16 @@ op_minus
 l_int|1
 )brace
 suffix:semicolon
-id|MODULE_PARM
+id|module_param_array
 c_func
 (paren
 id|irq_list
 comma
-l_string|&quot;1-4i&quot;
+r_int
+comma
+l_int|NULL
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|INT_MODULE_PARM
@@ -217,12 +223,16 @@ comma
 multiline_comment|/* ... */
 )brace
 suffix:semicolon
-id|MODULE_PARM
+id|module_param_array
 c_func
 (paren
 id|hw_addr
 comma
-l_string|&quot;6i&quot;
+r_int
+comma
+l_int|NULL
+comma
+l_int|0
 )paren
 suffix:semicolon
 multiline_comment|/*====================================================================*/

@@ -45,20 +45,20 @@ op_assign
 id|HPET_USER_FREQ
 suffix:semicolon
 multiline_comment|/* A lock for concurrent access by app and isr hpet activity. */
-DECL|variable|hpet_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|hpet_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 multiline_comment|/* A lock for concurrent intermodule access to hpet and isr hpet activity. */
-DECL|variable|hpet_task_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|hpet_task_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|macro|HPET_DEV_NAME
 mdefine_line|#define&t;HPET_DEV_NAME&t;(7)

@@ -32,11 +32,6 @@ id|zoran_formats
 (braket
 )braket
 suffix:semicolon
-r_extern
-r_const
-r_int
-id|zoran_num_formats
-suffix:semicolon
 DECL|variable|card
 r_static
 r_int
@@ -59,18 +54,16 @@ op_minus
 l_int|1
 )brace
 suffix:semicolon
-id|MODULE_PARM
+id|module_param_array
 c_func
 (paren
 id|card
 comma
-l_string|&quot;1-&quot;
-id|__stringify
-c_func
-(paren
-id|BUZ_MAX
-)paren
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|NULL
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -103,18 +96,16 @@ op_minus
 l_int|1
 )brace
 suffix:semicolon
-id|MODULE_PARM
+id|module_param_array
 c_func
 (paren
 id|encoder
 comma
-l_string|&quot;1-&quot;
-id|__stringify
-c_func
-(paren
-id|BUZ_MAX
-)paren
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|NULL
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -147,18 +138,16 @@ op_minus
 l_int|1
 )brace
 suffix:semicolon
-id|MODULE_PARM
+id|module_param_array
 c_func
 (paren
 id|decoder
 comma
-l_string|&quot;1-&quot;
-id|__stringify
-c_func
-(paren
-id|BUZ_MAX
-)paren
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|NULL
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -179,12 +168,14 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* Video memory base address */
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|vidmem
 comma
-l_string|&quot;i&quot;
+id|ulong
+comma
+l_int|0
 )paren
 suffix:semicolon
 multiline_comment|/*&n;   Default input and video norm at startup of the driver.&n;*/
@@ -196,12 +187,14 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* 0=Composite, 1=S-Video */
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|default_input
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -220,12 +213,14 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* 0=PAL, 1=NTSC 2=SECAM */
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|default_norm
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -245,12 +240,14 @@ op_minus
 l_int|1
 suffix:semicolon
 multiline_comment|/* /dev/videoN, -1 for autodetect */
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|video_nr
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -275,12 +272,14 @@ op_assign
 l_int|128
 suffix:semicolon
 multiline_comment|/* Everybody should be able to work with this setting */
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|v4l_nbufs
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -291,12 +290,14 @@ comma
 l_string|&quot;Maximum number of V4L buffers to use&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|v4l_bufsize
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -320,12 +321,14 @@ op_assign
 l_int|512
 suffix:semicolon
 multiline_comment|/* max size for 100% quality full-PAL frame */
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|jpg_nbufs
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -336,12 +339,14 @@ comma
 l_string|&quot;Maximum number of JPG buffers to use&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|jpg_bufsize
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -360,12 +365,14 @@ l_int|0
 suffix:semicolon
 multiline_comment|/* 1=Pass through TV signal when device is not used */
 multiline_comment|/* 0=Show color bar when device is not used (LML33: only if lml33dpath=1) */
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|pass_through
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -391,12 +398,14 @@ op_assign
 op_amp
 id|debug
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|debug
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC

@@ -57,12 +57,14 @@ op_assign
 op_minus
 l_int|1
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|radio_nr
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 DECL|macro|FREQ_LO
@@ -1413,6 +1415,7 @@ comma
 )brace
 suffix:semicolon
 DECL|function|maxiradio_radio_init
+r_static
 r_int
 id|__init
 id|maxiradio_radio_init
@@ -1431,6 +1434,7 @@ id|maxiradio_driver
 suffix:semicolon
 )brace
 DECL|function|maxiradio_radio_exit
+r_static
 r_void
 id|__exit
 id|maxiradio_radio_exit

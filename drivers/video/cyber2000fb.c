@@ -143,12 +143,14 @@ id|default_font
 op_assign
 l_string|&quot;Acorn8x8&quot;
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|default_font
 comma
-l_string|&quot;s&quot;
+id|charp
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC

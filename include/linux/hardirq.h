@@ -50,16 +50,19 @@ DECL|macro|in_softirq
 mdefine_line|#define in_softirq()&t;&t;(softirq_count())
 DECL|macro|in_interrupt
 mdefine_line|#define in_interrupt()&t;&t;(irq_count())
-macro_line|#ifdef CONFIG_PREEMPT
+macro_line|#if defined(CONFIG_PREEMPT) &amp;&amp; !defined(CONFIG_PREEMPT_BKL)
 DECL|macro|in_atomic
 macro_line|# define in_atomic()&t;((preempt_count() &amp; ~PREEMPT_ACTIVE) != kernel_locked())
+macro_line|#else
+DECL|macro|in_atomic
+macro_line|# define in_atomic()&t;((preempt_count() &amp; ~PREEMPT_ACTIVE) != 0)
+macro_line|#endif
+macro_line|#ifdef CONFIG_PREEMPT
 DECL|macro|preemptible
 macro_line|# define preemptible()&t;(preempt_count() == 0 &amp;&amp; !irqs_disabled())
 DECL|macro|IRQ_EXIT_OFFSET
 macro_line|# define IRQ_EXIT_OFFSET (HARDIRQ_OFFSET-1)
 macro_line|#else
-DECL|macro|in_atomic
-macro_line|# define in_atomic()&t;(preempt_count() != 0)
 DECL|macro|preemptible
 macro_line|# define preemptible()&t;0
 DECL|macro|IRQ_EXIT_OFFSET
@@ -81,11 +84,11 @@ DECL|macro|synchronize_irq
 macro_line|# define synchronize_irq(irq)&t;barrier()
 macro_line|#endif
 DECL|macro|nmi_enter
-mdefine_line|#define nmi_enter()&t;&t;(preempt_count() += HARDIRQ_OFFSET)
+mdefine_line|#define nmi_enter()&t;&t;irq_enter()
 DECL|macro|nmi_exit
-mdefine_line|#define nmi_exit()&t;&t;(preempt_count() -= HARDIRQ_OFFSET)
+mdefine_line|#define nmi_exit()&t;&t;sub_preempt_count(HARDIRQ_OFFSET)
 DECL|macro|irq_enter
-mdefine_line|#define irq_enter()&t;&t;(preempt_count() += HARDIRQ_OFFSET)
+mdefine_line|#define irq_enter()&t;&t;add_preempt_count(HARDIRQ_OFFSET)
 r_extern
 r_void
 id|irq_exit

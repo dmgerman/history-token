@@ -3292,6 +3292,12 @@ comma
 id|skb
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t;&t;&t; * We are in process context here with softirqs&n;&t;&t;&t; * disabled, use cond_resched_softirq() to preempt.&n;&t;&t;&t; * This is safe to do because we&squot;ve taken the backlog&n;&t;&t;&t; * queue private:&n;&t;&t;&t; */
+id|cond_resched_softirq
+c_func
+(paren
+)paren
+suffix:semicolon
 id|skb
 op_assign
 id|next

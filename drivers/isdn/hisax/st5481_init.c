@@ -33,12 +33,14 @@ op_assign
 l_int|2
 suffix:semicolon
 multiline_comment|/* EURO-ISDN Default */
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|protocol
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 DECL|variable|number_of_leds
@@ -49,12 +51,14 @@ op_assign
 l_int|2
 suffix:semicolon
 multiline_comment|/* 2 LEDs on the adpater default */
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|number_of_leds
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_HISAX_DEBUG
@@ -65,12 +69,14 @@ id|debug
 op_assign
 l_int|0x1
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|debug
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 DECL|variable|st5481_debug

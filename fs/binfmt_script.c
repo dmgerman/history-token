@@ -441,6 +441,7 @@ id|regs
 suffix:semicolon
 )brace
 DECL|variable|script_format
+r_static
 r_struct
 id|linux_binfmt
 id|script_format

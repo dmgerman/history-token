@@ -1327,10 +1327,11 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|variable|kbd_controller_lock
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|kbd_controller_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 r_static
 r_int

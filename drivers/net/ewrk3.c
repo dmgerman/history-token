@@ -79,7 +79,6 @@ DECL|macro|EWRK3_IOP_INC
 mdefine_line|#define EWRK3_IOP_INC 0x20&t;/* I/O address increment */
 DECL|macro|EWRK3_TOTAL_SIZE
 mdefine_line|#define EWRK3_TOTAL_SIZE 0x20&t;/* required I/O address length */
-multiline_comment|/* If you change this, remember to also change MODULE_PARM array limits */
 macro_line|#ifndef MAX_NUM_EWRK3S
 DECL|macro|MAX_NUM_EWRK3S
 mdefine_line|#define MAX_NUM_EWRK3S 21
@@ -8706,20 +8705,28 @@ comma
 )brace
 suffix:semicolon
 multiline_comment|/* &squot;21&squot; below should really be &squot;MAX_NUM_EWRK3S&squot; */
-id|MODULE_PARM
+id|module_param_array
 c_func
 (paren
 id|io
 comma
-l_string|&quot;0-21i&quot;
+r_int
+comma
+l_int|NULL
+comma
+l_int|0
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param_array
 c_func
 (paren
 id|irq
 comma
-l_string|&quot;0-21i&quot;
+r_int
+comma
+l_int|NULL
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC

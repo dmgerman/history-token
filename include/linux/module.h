@@ -304,9 +304,6 @@ mdefine_line|#define EXPORT_SYMBOL(sym)&t;&t;&t;&t;&t;&bslash;&n;&t;__EXPORT_SYM
 DECL|macro|EXPORT_SYMBOL_GPL
 mdefine_line|#define EXPORT_SYMBOL_GPL(sym)&t;&t;&t;&t;&t;&bslash;&n;&t;__EXPORT_SYMBOL(sym, &quot;_gpl&quot;)
 macro_line|#endif
-multiline_comment|/* We don&squot;t mangle the actual symbol anymore, so no need for&n; * special casing EXPORT_SYMBOL_NOVERS.  FIXME: Deprecated */
-DECL|macro|EXPORT_SYMBOL_NOVERS
-mdefine_line|#define EXPORT_SYMBOL_NOVERS(sym) EXPORT_SYMBOL(sym)
 DECL|struct|module_ref
 r_struct
 id|module_ref
@@ -1112,8 +1109,6 @@ DECL|macro|EXPORT_SYMBOL
 mdefine_line|#define EXPORT_SYMBOL(sym)
 DECL|macro|EXPORT_SYMBOL_GPL
 mdefine_line|#define EXPORT_SYMBOL_GPL(sym)
-DECL|macro|EXPORT_SYMBOL_NOVERS
-mdefine_line|#define EXPORT_SYMBOL_NOVERS(sym)
 multiline_comment|/* Given an address, look for it in the exception tables. */
 r_static
 r_inline

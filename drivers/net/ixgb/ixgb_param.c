@@ -14,7 +14,7 @@ DECL|macro|IXGB_PARAM_INIT
 mdefine_line|#define IXGB_PARAM_INIT { [0 ... IXGB_MAX_NIC] = OPTION_UNSET }
 multiline_comment|/* All parameters are treated the same, as an integer array of values.&n; * This macro just reduces the need to repeat the same declaration code&n; * over and over (plus this helps to avoid typo bugs).&n; */
 DECL|macro|IXGB_PARAM
-mdefine_line|#define IXGB_PARAM(X, S) &bslash;&n;static const int __devinitdata X[IXGB_MAX_NIC + 1] = IXGB_PARAM_INIT; &bslash;&n;MODULE_PARM(X, &quot;1-&quot; __MODULE_STRING(IXGB_MAX_NIC) &quot;i&quot;); &bslash;&n;MODULE_PARM_DESC(X, S);
+mdefine_line|#define IXGB_PARAM(X, S) &bslash;&n;static int __devinitdata X[IXGB_MAX_NIC + 1] = IXGB_PARAM_INIT; &bslash;&n;module_param_array(X, int, NULL, 0); &bslash;&n;MODULE_PARM_DESC(X, S);
 multiline_comment|/* Transmit Descriptor Count&n; *&n; * Valid Range: 64-4096&n; *&n; * Default Value: 256&n; */
 id|IXGB_PARAM
 c_func

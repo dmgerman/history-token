@@ -7034,6 +7034,7 @@ suffix:semicolon
 )brace
 macro_line|#endif /* VM_RESERVED */
 DECL|variable|via_mm_ops
+r_static
 r_struct
 id|vm_operations_struct
 id|via_mm_ops

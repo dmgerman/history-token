@@ -722,6 +722,7 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* Return the contents of register REG; use the cache if the value in it&n;   is valid.  Returns a negative error code on failure. */
+r_static
 r_int
 DECL|function|ac97_get_register
 id|ac97_get_register
@@ -1150,6 +1151,7 @@ id|i
 suffix:semicolon
 )brace
 )brace
+r_static
 r_int
 DECL|function|ac97_set_mixer
 id|ac97_set_mixer
@@ -1329,6 +1331,7 @@ r_return
 id|result
 suffix:semicolon
 )brace
+r_static
 r_int
 DECL|function|ac97_get_mixer_scaled
 id|ac97_get_mixer_scaled
@@ -1453,6 +1456,7 @@ id|channel-&gt;is_inverted
 )paren
 suffix:semicolon
 )brace
+r_static
 r_int
 DECL|function|ac97_get_recmask
 id|ac97_get_recmask
@@ -1539,6 +1543,7 @@ id|ENODEV
 suffix:semicolon
 )brace
 )brace
+r_static
 r_int
 DECL|function|ac97_set_recmask
 id|ac97_set_recmask
@@ -2140,32 +2145,11 @@ c_func
 id|ac97_set_values
 )paren
 suffix:semicolon
-DECL|variable|ac97_set_mixer
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|ac97_set_mixer
-)paren
-suffix:semicolon
-DECL|variable|ac97_get_register
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|ac97_get_register
-)paren
-suffix:semicolon
 DECL|variable|ac97_put_register
 id|EXPORT_SYMBOL
 c_func
 (paren
 id|ac97_put_register
-)paren
-suffix:semicolon
-DECL|variable|ac97_get_mixer_scaled
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|ac97_get_mixer_scaled
 )paren
 suffix:semicolon
 DECL|variable|ac97_mixer_ioctl

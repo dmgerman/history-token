@@ -22,33 +22,6 @@ macro_line|#include &quot;../zftape/zftape-read.h&quot;
 macro_line|#include &quot;../zftape/zftape-write.h&quot;
 macro_line|#include &quot;../zftape/zftape-ctl.h&quot;
 macro_line|#include &quot;../zftape/zftape-buffers.h&quot;
-DECL|variable|__initdata
-r_char
-id|zft_src
-(braket
-)braket
-id|__initdata
-op_assign
-l_string|&quot;$Source: /homes/cvs/ftape-stacked/ftape/zftape/zftape-init.c,v $&quot;
-suffix:semicolon
-DECL|variable|__initdata
-r_char
-id|zft_rev
-(braket
-)braket
-id|__initdata
-op_assign
-l_string|&quot;$Revision: 1.8 $&quot;
-suffix:semicolon
-DECL|variable|__initdata
-r_char
-id|zft_dat
-(braket
-)braket
-id|__initdata
-op_assign
-l_string|&quot;$Date: 1997/11/06 00:48:56 $&quot;
-suffix:semicolon
 id|MODULE_AUTHOR
 c_func
 (paren
@@ -1139,37 +1112,6 @@ id|TRACE_EXIT
 l_int|0
 suffix:semicolon
 )brace
-)brace
-DECL|function|zft_cmpr_unregister
-r_struct
-id|zft_cmpr_ops
-op_star
-id|zft_cmpr_unregister
-c_func
-(paren
-r_void
-)paren
-(brace
-r_struct
-id|zft_cmpr_ops
-op_star
-id|old_ops
-op_assign
-id|zft_cmpr_ops
-suffix:semicolon
-id|TRACE_FUN
-c_func
-(paren
-id|ft_t_flow
-)paren
-suffix:semicolon
-id|zft_cmpr_ops
-op_assign
-l_int|NULL
-suffix:semicolon
-id|TRACE_EXIT
-id|old_ops
-suffix:semicolon
 )brace
 multiline_comment|/*  lock the zft-compressor() module.&n; */
 DECL|function|zft_cmpr_lock

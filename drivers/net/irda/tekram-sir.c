@@ -4,12 +4,22 @@ macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;net/irda/irda.h&gt;
 macro_line|#include &quot;sir-dev.h&quot;
-id|MODULE_PARM
+DECL|variable|tekram_delay
+r_static
+r_int
+id|tekram_delay
+op_assign
+l_int|150
+suffix:semicolon
+multiline_comment|/* default is 150 ms */
+id|module_param
 c_func
 (paren
 id|tekram_delay
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -20,14 +30,6 @@ comma
 l_string|&quot;tekram dongle write complete delay&quot;
 )paren
 suffix:semicolon
-DECL|variable|tekram_delay
-r_static
-r_int
-id|tekram_delay
-op_assign
-l_int|150
-suffix:semicolon
-multiline_comment|/* default is 150 ms */
 r_static
 r_int
 id|tekram_open

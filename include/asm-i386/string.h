@@ -6,7 +6,6 @@ macro_line|#include &lt;linux/config.h&gt;
 multiline_comment|/*&n; * On a 486 or Pentium, we are better off not using the&n; * byte string operations. But on a 386 or a PPro the&n; * byte string ops are faster than doing it by hand&n; * (MUCH faster on a Pentium).&n; */
 multiline_comment|/*&n; * This string-include defines all string functions as inline&n; * functions. Use gcc. It also assumes ds=es=data space, this should be&n; * normal. Most of the string-functions are rather heavily hand-optimized,&n; * see especially strsep,strstr,str[c]spn. They should work, but are not&n; * very easy to understand. Everything is done entirely within the register&n; * set, making the functions fast and clean. String instructions have been&n; * used through-out, making for &quot;slightly&quot; unclear code :-)&n; *&n; *&t;&t;NO Copyright (C) 1991, 1992 Linus Torvalds,&n; *&t;&t;consider these trivial functions to be PD.&n; */
 multiline_comment|/* AK: in fact I bet it would be better to move this stuff all out of line.&n; */
-macro_line|#if !defined(IN_STRING_C)
 DECL|macro|__HAVE_ARCH_STRCPY
 mdefine_line|#define __HAVE_ARCH_STRCPY
 DECL|function|strcpy
@@ -659,7 +658,6 @@ r_return
 id|__res
 suffix:semicolon
 )brace
-macro_line|#endif
 DECL|macro|__HAVE_ARCH_STRLEN
 mdefine_line|#define __HAVE_ARCH_STRLEN
 DECL|function|strlen

@@ -5,6 +5,21 @@ macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/pagemap.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
+r_static
+r_int
+id|reiserfs_unpack
+(paren
+r_struct
+id|inode
+op_star
+id|inode
+comma
+r_struct
+id|file
+op_star
+id|filp
+)paren
+suffix:semicolon
 multiline_comment|/*&n;** reiserfs_ioctl - handler for ioctl for inode&n;** supported commands:&n;**  1) REISERFS_IOC_UNPACK - try to unpack tail from direct item into indirect&n;**                           and prevent packing file (argument arg has to be non-zero)&n;**  2) REISERFS_IOC_[GS]ETFLAGS, REISERFS_IOC_[GS]ETVERSION&n;**  3) That&squot;s all for a while ...&n;*/
 DECL|function|reiserfs_ioctl
 r_int
@@ -379,6 +394,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n;** reiserfs_unpack&n;** Function try to convert tail from direct item into indirect.&n;** It set up nopack attribute in the REISERFS_I(inode)-&gt;nopack&n;*/
 DECL|function|reiserfs_unpack
+r_static
 r_int
 id|reiserfs_unpack
 (paren

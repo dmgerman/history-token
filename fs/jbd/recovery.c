@@ -1130,6 +1130,12 @@ id|buffer_head
 op_star
 id|nbh
 suffix:semicolon
+id|cond_resched
+c_func
+(paren
+)paren
+suffix:semicolon
+multiline_comment|/* We&squot;re under lock_kernel() */
 multiline_comment|/* If we already know where to stop the log traversal,&n;&t;&t; * check right now that we haven&squot;t gone past the end of&n;&t;&t; * the log. */
 r_if
 c_cond

@@ -9438,6 +9438,12 @@ id|tcp_tw_bucket
 op_star
 id|tw
 suffix:semicolon
+multiline_comment|/* We can reschedule _before_ having picked the target: */
+id|cond_resched_softirq
+c_func
+(paren
+)paren
+suffix:semicolon
 id|read_lock
 c_func
 (paren
@@ -9665,6 +9671,12 @@ suffix:semicolon
 id|st-&gt;state
 op_assign
 id|TCP_SEQ_STATE_ESTABLISHED
+suffix:semicolon
+multiline_comment|/* We can reschedule between buckets: */
+id|cond_resched_softirq
+c_func
+(paren
+)paren
 suffix:semicolon
 r_if
 c_cond

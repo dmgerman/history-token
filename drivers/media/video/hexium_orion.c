@@ -9,12 +9,14 @@ id|debug
 op_assign
 l_int|0
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|debug
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -2302,6 +2304,7 @@ comma
 )brace
 suffix:semicolon
 DECL|function|hexium_init_module
+r_static
 r_int
 id|__init
 id|hexium_init_module
@@ -2341,6 +2344,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|hexium_cleanup_module
+r_static
 r_void
 id|__exit
 id|hexium_cleanup_module

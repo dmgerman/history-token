@@ -8,6 +8,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 multiline_comment|/* Very few machines have more than one MCA bus.  However, there are&n; * those that do (Voyager 35xx/5xxx), so we do it this way for future&n; * expansion.  None that I know have more than 2 */
 DECL|variable|mca_root_busses
+r_static
 r_struct
 id|mca_bus
 op_star
