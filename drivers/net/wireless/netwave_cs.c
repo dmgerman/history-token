@@ -509,22 +509,6 @@ id|dev
 )paren
 suffix:semicolon
 multiline_comment|/* Close the device */
-r_static
-r_int
-id|netwave_config
-c_func
-(paren
-r_struct
-id|net_device
-op_star
-id|dev
-comma
-r_struct
-id|ifmap
-op_star
-id|map
-)paren
-suffix:semicolon
 multiline_comment|/* Packet transmission and Packet reception */
 r_static
 r_int
@@ -1350,11 +1334,6 @@ id|dev-&gt;hard_start_xmit
 op_assign
 op_amp
 id|netwave_start_xmit
-suffix:semicolon
-id|dev-&gt;set_config
-op_assign
-op_amp
-id|netwave_config
 suffix:semicolon
 id|dev-&gt;get_stats
 op_assign
@@ -4615,28 +4594,6 @@ id|iobase
 op_plus
 id|NETWAVE_REG_COR
 )paren
-suffix:semicolon
-)brace
-multiline_comment|/*&n; * Function netwave_config (dev, map)&n; *&n; *    Configure device, this work is done by netwave_pcmcia_config when a&n; *    card is inserted&n; */
-DECL|function|netwave_config
-r_static
-r_int
-id|netwave_config
-c_func
-(paren
-r_struct
-id|net_device
-op_star
-id|dev
-comma
-r_struct
-id|ifmap
-op_star
-id|map
-)paren
-(brace
-r_return
-l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Function netwave_hw_xmit (data, len, dev)    &n; */

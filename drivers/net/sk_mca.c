@@ -3432,28 +3432,6 @@ id|priv-&gt;stat
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* we don&squot;t support runtime reconfiguration, since an MCA card can&n;   be unambigously identified by its POS registers. */
-DECL|function|skmca_config
-r_static
-r_int
-id|skmca_config
-c_func
-(paren
-r_struct
-id|net_device
-op_star
-id|dev
-comma
-r_struct
-id|ifmap
-op_star
-id|map
-)paren
-(brace
-r_return
-l_int|0
-suffix:semicolon
-)brace
 multiline_comment|/* switch receiver mode.  We use the LANCE&squot;s multicast filter to prefilter&n;   multicast addresses. */
 DECL|function|skmca_set_multicast_list
 r_static
@@ -4156,10 +4134,6 @@ suffix:semicolon
 id|dev-&gt;stop
 op_assign
 id|skmca_close
-suffix:semicolon
-id|dev-&gt;set_config
-op_assign
-id|skmca_config
 suffix:semicolon
 id|dev-&gt;hard_start_xmit
 op_assign
