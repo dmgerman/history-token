@@ -1923,6 +1923,8 @@ c_func
 id|ioa_cfg-&gt;pdev
 comma
 id|pcix_cmd_reg
+op_plus
+id|PCI_X_CMD
 comma
 op_amp
 id|ioa_cfg-&gt;saved_pcix_cmd_reg
@@ -1994,6 +1996,8 @@ c_func
 id|ioa_cfg-&gt;pdev
 comma
 id|pcix_cmd_reg
+op_plus
+id|PCI_X_CMD
 comma
 id|ioa_cfg-&gt;saved_pcix_cmd_reg
 )paren
