@@ -310,7 +310,7 @@ r_return
 id|error
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * The mincore(2) system call.&n; *&n; * mincore() returns the memory residency status of the pages in the&n; * current process&squot;s address space specified by [addr, addr + len).&n; * The status is returned in a vector of bytes.  The least significant&n; * bit of each byte is 1 if the referenced page is in memory, otherwise&n; * it is zero.&n; *&n; * Because the status of a page can change after mincore() checks it&n; * but before it returns to the application, the returned vector may&n; * contain stale information.  Only locked pages are guaranteed to&n; * remain in memory.&n; *&n; * return values:&n; *  zero    - success&n; *  -EFAULT - vec points to an illegal address&n; *  -EINVAL - addr is not a multiple of PAGE_CACHE_SIZE,&n; *&t;&t;or len has a nonpositive value&n; *  -ENOMEM - Addresses in the range [addr, addr + len] are&n; *&t;&t;invalid for the address space of this process, or&n; *&t;&t;specify one or more pages which are not currently&n; *&t;&t;mapped&n; *  -EAGAIN - A kernel resource was temporarily unavailable.&n; */
+multiline_comment|/*&n; * The mincore(2) system call.&n; *&n; * mincore() returns the memory residency status of the pages in the&n; * current process&squot;s address space specified by [addr, addr + len).&n; * The status is returned in a vector of bytes.  The least significant&n; * bit of each byte is 1 if the referenced page is in memory, otherwise&n; * it is zero.&n; *&n; * Because the status of a page can change after mincore() checks it&n; * but before it returns to the application, the returned vector may&n; * contain stale information.  Only locked pages are guaranteed to&n; * remain in memory.&n; *&n; * return values:&n; *  zero    - success&n; *  -EFAULT - vec points to an illegal address&n; *  -EINVAL - addr is not a multiple of PAGE_CACHE_SIZE&n; *  -ENOMEM - Addresses in the range [addr, addr + len] are&n; *&t;&t;invalid for the address space of this process, or&n; *&t;&t;specify one or more pages which are not currently&n; *&t;&t;mapped&n; *  -EAGAIN - A kernel resource was temporarily unavailable.&n; */
 DECL|function|sys_mincore
 id|asmlinkage
 r_int
@@ -396,6 +396,15 @@ id|limit
 r_goto
 id|enomem
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|len
+)paren
+r_return
+l_int|0
+suffix:semicolon
 id|max
 op_assign
 id|limit
@@ -416,9 +425,12 @@ c_cond
 id|len
 OG
 id|max
+op_logical_or
+op_logical_neg
+id|len
 )paren
 r_goto
-id|einval
+id|enomem
 suffix:semicolon
 id|end
 op_assign
