@@ -20,6 +20,9 @@ DECL|macro|NFS4_ANYONE_MODE
 mdefine_line|#define NFS4_ANYONE_MODE (NFS4_ACE_READ_ATTRIBUTES | NFS4_ACE_READ_ACL | NFS4_ACE_SYNCHRONIZE)
 DECL|macro|NFS4_OWNER_MODE
 mdefine_line|#define NFS4_OWNER_MODE (NFS4_ACE_WRITE_ATTRIBUTES | NFS4_ACE_WRITE_ACL)
+multiline_comment|/* We don&squot;t support these bits; insist they be neither allowed nor denied */
+DECL|macro|NFS4_MASK_UNSUPP
+mdefine_line|#define NFS4_MASK_UNSUPP (NFS4_ACE_DELETE | NFS4_ACE_WRITE_OWNER)
 multiline_comment|/* flags used to simulate posix default ACLs */
 DECL|macro|NFS4_INHERITANCE_FLAGS
 mdefine_line|#define NFS4_INHERITANCE_FLAGS (NFS4_ACE_FILE_INHERIT_ACE &bslash;&n;&t;&t;| NFS4_ACE_DIRECTORY_INHERIT_ACE | NFS4_ACE_INHERIT_ONLY_ACE)
@@ -133,7 +136,7 @@ op_complement
 id|allow_mask
 op_amp
 op_complement
-id|NFS4_ACE_DELETE
+id|NFS4_MASK_UNSUPP
 suffix:semicolon
 r_if
 c_cond
