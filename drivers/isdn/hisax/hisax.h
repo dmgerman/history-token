@@ -53,14 +53,6 @@ DECL|macro|HW_RSYNC
 mdefine_line|#define HW_RSYNC&t;0x0060
 DECL|macro|HW_TESTLOOP
 mdefine_line|#define HW_TESTLOOP&t;0x0070
-DECL|macro|CARD_RESET
-mdefine_line|#define CARD_RESET&t;0x00F0
-DECL|macro|CARD_RELEASE
-mdefine_line|#define CARD_RELEASE&t;0x00F3
-DECL|macro|CARD_TEST
-mdefine_line|#define CARD_TEST&t;0x00F4
-DECL|macro|CARD_AUX_IND
-mdefine_line|#define CARD_AUX_IND&t;0x00F5
 DECL|macro|PH_ACTIVATE
 mdefine_line|#define PH_ACTIVATE&t;0x0100
 DECL|macro|PH_DEACTIVATE
@@ -3198,6 +3190,58 @@ id|init
 r_struct
 id|IsdnCardState
 op_star
+)paren
+suffix:semicolon
+DECL|member|test
+r_void
+(paren
+op_star
+id|test
+)paren
+(paren
+r_struct
+id|IsdnCardState
+op_star
+)paren
+suffix:semicolon
+DECL|member|reset
+r_int
+(paren
+op_star
+id|reset
+)paren
+(paren
+r_struct
+id|IsdnCardState
+op_star
+)paren
+suffix:semicolon
+DECL|member|release
+r_void
+(paren
+op_star
+id|release
+)paren
+(paren
+r_struct
+id|IsdnCardState
+op_star
+)paren
+suffix:semicolon
+DECL|member|aux_ind
+r_void
+(paren
+op_star
+id|aux_ind
+)paren
+(paren
+r_struct
+id|IsdnCardState
+op_star
+comma
+r_void
+op_star
+id|arg
 )paren
 suffix:semicolon
 DECL|member|irq_func

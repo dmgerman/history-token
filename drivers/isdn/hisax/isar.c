@@ -972,16 +972,12 @@ suffix:semicolon
 r_int
 id|debug
 suffix:semicolon
-id|cs
+id|cs-&gt;card_ops
 op_member_access_from_pointer
-id|cardmsg
+id|reset
 c_func
 (paren
 id|cs
-comma
-id|CARD_RESET
-comma
-l_int|NULL
 )paren
 suffix:semicolon
 multiline_comment|/* disable ISAR IRQ */

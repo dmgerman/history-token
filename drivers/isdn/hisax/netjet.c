@@ -5503,6 +5503,7 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
+r_static
 r_void
 DECL|function|releasetiger
 id|releasetiger
@@ -5656,8 +5657,8 @@ suffix:semicolon
 )brace
 )brace
 r_void
-DECL|function|release_io_netjet
-id|release_io_netjet
+DECL|function|netjet_release
+id|netjet_release
 c_func
 (paren
 r_struct

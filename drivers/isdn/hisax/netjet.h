@@ -207,7 +207,7 @@ id|cs
 )paren
 suffix:semicolon
 r_void
-id|release_io_netjet
+id|netjet_release
 c_func
 (paren
 r_struct
