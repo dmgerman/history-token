@@ -1665,7 +1665,7 @@ r_int
 r_int
 id|free
 suffix:semicolon
-id|get_zone_counts
+id|__get_zone_counts
 c_func
 (paren
 op_amp
@@ -1676,6 +1676,15 @@ id|inactive
 comma
 op_amp
 id|free
+comma
+id|NODE_DATA
+c_func
+(paren
+id|numa_node_id
+c_func
+(paren
+)paren
+)paren
 )paren
 suffix:semicolon
 r_return
