@@ -20,7 +20,7 @@ id|state
 r_if
 c_cond
 (paren
-id|pda.idle_flag
+id|pda-&gt;idle_flag
 op_eq
 l_int|0
 )paren
@@ -50,7 +50,7 @@ c_func
 )paren
 suffix:semicolon
 macro_line|#endif
-id|pda.idle_flag
+id|pda-&gt;idle_flag
 op_assign
 l_int|1
 suffix:semicolon
@@ -66,7 +66,7 @@ comma
 id|LED_CPU_ACTIVITY
 )paren
 suffix:semicolon
-id|pda.idle_flag
+id|pda-&gt;idle_flag
 op_assign
 l_int|0
 suffix:semicolon
