@@ -12,13 +12,6 @@ r_int
 r_int
 id|__softirq_pending
 suffix:semicolon
-DECL|member|__ksoftirqd_task
-r_struct
-id|task_struct
-op_star
-id|__ksoftirqd_task
-suffix:semicolon
-multiline_comment|/* waitqueue is too large */
 DECL|member|idle_timestamp
 r_int
 r_int

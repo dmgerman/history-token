@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/percpu.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/notifier.h&gt;
+macro_line|#include &lt;linux/percpu.h&gt;
 macro_line|#include &lt;linux/cpu.h&gt;
 multiline_comment|/*&n;   - No shared variables, all the data are CPU local.&n;   - If a softirq needs serialization, let it serialize itself&n;     by its own spinlocks.&n;   - Even if softirq is serialized, only local cpu is marked for&n;     execution. Hence, we get something sort of weak cpu binding.&n;     Though it is still not clear, will it result in better locality&n;     or will not.&n;&n;   Examples:&n;   - NET RX softirq. It is multithreaded and does not require&n;     any global serialization.&n;   - NET TX softirq. It kicks software netdevice queues, hence&n;     it is logically serialized per device, but this serialization&n;     is invisible to common code.&n;   - Tasklets: serialized wrt itself.&n; */
 macro_line|#ifndef __ARCH_IRQ_STAT
@@ -36,6 +37,17 @@ l_int|32
 )braket
 id|__cacheline_aligned_in_smp
 suffix:semicolon
+r_static
+id|DEFINE_PER_CPU
+c_func
+(paren
+r_struct
+id|task_struct
+op_star
+comma
+id|ksoftirqd
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * we cannot loop indefinitely here to avoid userspace starvation,&n; * but we also don&squot;t want to introduce a worst case 1/HZ latency&n; * to the pending events, so lets the scheduler to balance&n; * the softirq load for us.&n; */
 DECL|function|wakeup_softirqd
 r_static
@@ -44,19 +56,19 @@ r_void
 id|wakeup_softirqd
 c_func
 (paren
-r_int
-id|cpu
+r_void
 )paren
 (brace
+multiline_comment|/* Interrupts are disabled: no need to stop preemption */
 r_struct
 id|task_struct
 op_star
 id|tsk
 op_assign
-id|ksoftirqd_task
+id|__get_cpu_var
 c_func
 (paren
-id|cpu
+id|ksoftirqd
 )paren
 suffix:semicolon
 r_if
@@ -225,10 +237,6 @@ id|pending
 id|wakeup_softirqd
 c_func
 (paren
-id|smp_processor_id
-c_func
-(paren
-)paren
 )paren
 suffix:semicolon
 id|__local_bh_enable
@@ -333,7 +341,6 @@ c_func
 id|wakeup_softirqd
 c_func
 (paren
-id|cpu
 )paren
 suffix:semicolon
 )brace
@@ -1269,9 +1276,10 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|local_ksoftirqd_task
+id|__get_cpu_var
 c_func
 (paren
+id|ksoftirqd
 )paren
 op_assign
 id|current
@@ -1401,9 +1409,11 @@ r_while
 c_loop
 (paren
 op_logical_neg
-id|ksoftirqd_task
+id|per_cpu
 c_func
 (paren
+id|ksoftirqd
+comma
 id|hotcpu
 )paren
 )paren
