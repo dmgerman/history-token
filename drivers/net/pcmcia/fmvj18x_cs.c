@@ -3985,7 +3985,7 @@ id|lp-&gt;stats.tx_errors
 op_increment
 suffix:semicolon
 multiline_comment|/* ToDo: We should try to restart the adaptor... */
-id|cli
+id|local_irq_disable
 c_func
 (paren
 )paren
@@ -4016,7 +4016,7 @@ id|lp-&gt;open_time
 op_assign
 id|jiffies
 suffix:semicolon
-id|sti
+id|local_irq_enable
 c_func
 (paren
 )paren
@@ -5994,15 +5994,10 @@ id|bit
 suffix:semicolon
 )brace
 )brace
-id|save_flags
+id|local_irq_save
 c_func
 (paren
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 r_if
@@ -6097,7 +6092,7 @@ id|CONFIG_1
 )paren
 suffix:semicolon
 )brace
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
