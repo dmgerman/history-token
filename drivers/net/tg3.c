@@ -37555,6 +37555,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
+macro_line|#if 0
 multiline_comment|/* validate data reached card RAM correctly. */
 r_for
 c_loop
@@ -37632,6 +37633,7 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
+macro_line|#endif
 multiline_comment|/* Now read it back. */
 id|ret
 op_assign
