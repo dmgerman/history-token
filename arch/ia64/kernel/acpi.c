@@ -1444,7 +1444,7 @@ id|node_from
 comma
 id|node_to
 suffix:semicolon
-multiline_comment|/* If there&squot;s no SRAT, fix the phys_id */
+multiline_comment|/* If there&squot;s no SRAT, fix the phys_id and mark node 0 online */
 r_if
 c_cond
 (paren
@@ -1453,6 +1453,12 @@ op_eq
 l_int|0
 )paren
 (brace
+id|node_set_online
+c_func
+(paren
+l_int|0
+)paren
+suffix:semicolon
 id|node_cpuid
 (braket
 l_int|0
