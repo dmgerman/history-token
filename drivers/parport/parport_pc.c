@@ -11098,7 +11098,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* Via support maintained by Jeff Garzik &lt;jgarzik@mandrakesoft.com&gt; */
+multiline_comment|/* Via support maintained by Jeff Garzik &lt;jgarzik@pobox.com&gt; */
 DECL|function|sio_via_686a_probe
 r_static
 r_int

@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: tg3.h,v 1.37.2.32 2002/03/11 12:18:18 davem Exp $&n; * tg3.h: Definitions for Broadcom Tigon3 ethernet driver.&n; *&n; * Copyright (C) 2001, 2002 David S. Miller (davem@redhat.com)&n; * Copyright (C) 2001 Jeff Garzik (jgarzik@mandrakesoft.com)&n; */
+multiline_comment|/* $Id: tg3.h,v 1.37.2.32 2002/03/11 12:18:18 davem Exp $&n; * tg3.h: Definitions for Broadcom Tigon3 ethernet driver.&n; *&n; * Copyright (C) 2001, 2002 David S. Miller (davem@redhat.com)&n; * Copyright (C) 2001 Jeff Garzik (jgarzik@pobox.com)&n; */
 macro_line|#ifndef _T3_H
 DECL|macro|_T3_H
 mdefine_line|#define _T3_H

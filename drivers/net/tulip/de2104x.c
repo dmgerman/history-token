@@ -1,5 +1,5 @@
 multiline_comment|/* de2104x.c: A Linux PCI Ethernet driver for Intel/Digital 21040/1 chips. */
-multiline_comment|/*&n;&t;Copyright 2001 Jeff Garzik &lt;jgarzik@mandrakesoft.com&gt;&n;&n;&t;Copyright 1994, 1995 Digital Equipment Corporation.&t;    [de4x5.c]&n;&t;Written/copyright 1994-2001 by Donald Becker.&t;&t;    [tulip.c]&n;&n;&t;This software may be used and distributed according to the terms of&n;&t;the GNU General Public License (GPL), incorporated herein by reference.&n;&t;Drivers based on or derived from this code fall under the GPL and must&n;&t;retain the authorship, copyright and license notice.  This file is not&n;&t;a complete program and may only be used when the entire operating&n;&t;system is licensed under the GPL.&n;&n;&t;See the file COPYING in this distribution for more information.&n;&n;&t;TODO, in rough priority order:&n;&t;* Support forcing media type with a module parameter,&n;&t;  like dl2k.c/sundance.c&n;&t;* Constants (module parms?) for Rx work limit&n;&t;* Complete reset on PciErr&n;&t;* Jumbo frames / dev-&gt;change_mtu&n;&t;* Adjust Rx FIFO threshold and Max Rx DMA burst on Rx FIFO error&n;&t;* Adjust Tx FIFO threshold and Max Tx DMA burst on Tx FIFO error&n;&t;* Implement Tx software interrupt mitigation via&n;&t;  Tx descriptor bit&n;&n; */
+multiline_comment|/*&n;&t;Copyright 2001 Jeff Garzik &lt;jgarzik@pobox.com&gt;&n;&n;&t;Copyright 1994, 1995 Digital Equipment Corporation.&t;    [de4x5.c]&n;&t;Written/copyright 1994-2001 by Donald Becker.&t;&t;    [tulip.c]&n;&n;&t;This software may be used and distributed according to the terms of&n;&t;the GNU General Public License (GPL), incorporated herein by reference.&n;&t;Drivers based on or derived from this code fall under the GPL and must&n;&t;retain the authorship, copyright and license notice.  This file is not&n;&t;a complete program and may only be used when the entire operating&n;&t;system is licensed under the GPL.&n;&n;&t;See the file COPYING in this distribution for more information.&n;&n;&t;TODO, in rough priority order:&n;&t;* Support forcing media type with a module parameter,&n;&t;  like dl2k.c/sundance.c&n;&t;* Constants (module parms?) for Rx work limit&n;&t;* Complete reset on PciErr&n;&t;* Jumbo frames / dev-&gt;change_mtu&n;&t;* Adjust Rx FIFO threshold and Max Rx DMA burst on Rx FIFO error&n;&t;* Adjust Tx FIFO threshold and Max Tx DMA burst on Tx FIFO error&n;&t;* Implement Tx software interrupt mitigation via&n;&t;  Tx descriptor bit&n;&n; */
 DECL|macro|DRV_NAME
 mdefine_line|#define DRV_NAME&t;&t;&quot;de2104x&quot;
 DECL|macro|DRV_VERSION
@@ -43,7 +43,7 @@ suffix:semicolon
 id|MODULE_AUTHOR
 c_func
 (paren
-l_string|&quot;Jeff Garzik &lt;jgarzik@mandrakesoft.com&gt;&quot;
+l_string|&quot;Jeff Garzik &lt;jgarzik@pobox.com&gt;&quot;
 )paren
 suffix:semicolon
 id|MODULE_DESCRIPTION

@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: tg3.c,v 1.43.2.80 2002/03/14 00:10:04 davem Exp $&n; * tg3.c: Broadcom Tigon3 ethernet driver.&n; *&n; * Copyright (C) 2001, 2002 David S. Miller (davem@redhat.com)&n; * Copyright (C) 2001, 2002 Jeff Garzik (jgarzik@mandrakesoft.com)&n; */
+multiline_comment|/* $Id: tg3.c,v 1.43.2.80 2002/03/14 00:10:04 davem Exp $&n; * tg3.c: Broadcom Tigon3 ethernet driver.&n; *&n; * Copyright (C) 2001, 2002 David S. Miller (davem@redhat.com)&n; * Copyright (C) 2001, 2002 Jeff Garzik (jgarzik@pobox.com)&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -136,7 +136,7 @@ suffix:semicolon
 id|MODULE_AUTHOR
 c_func
 (paren
-l_string|&quot;David S. Miller (davem@redhat.com) and Jeff Garzik (jgarzik@mandrakesoft.com)&quot;
+l_string|&quot;David S. Miller (davem@redhat.com) and Jeff Garzik (jgarzik@pobox.com)&quot;
 )paren
 suffix:semicolon
 id|MODULE_DESCRIPTION
