@@ -30,7 +30,7 @@ DECL|macro|per_cpu
 macro_line|# define per_cpu(var, cpu)&t;(*RELOC_HIDE(&amp;var##__per_cpu, __per_cpu_offset[cpu]))
 macro_line|#else
 DECL|macro|per_cpu
-macro_line|# define per_cpu(var, cpu)&t;__get_cpu_var(var)
+macro_line|# define per_cpu(var, cpu)&t;((void)cpu, __get_cpu_var(var))
 macro_line|#endif
 macro_line|#endif /* !__ASSEMBLY__ */
 macro_line|#endif /* _ASM_IA64_PERCPU_H */

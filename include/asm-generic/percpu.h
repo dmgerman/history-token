@@ -30,7 +30,7 @@ DECL|macro|DEFINE_PER_CPU
 mdefine_line|#define DEFINE_PER_CPU(type, name) &bslash;&n;    __typeof__(type) name##__per_cpu
 macro_line|#endif
 DECL|macro|per_cpu
-mdefine_line|#define per_cpu(var, cpu)&t;&t;&t;var##__per_cpu
+mdefine_line|#define per_cpu(var, cpu)&t;&t;&t;((void)cpu, var##__per_cpu)
 DECL|macro|__get_cpu_var
 mdefine_line|#define __get_cpu_var(var)&t;&t;&t;var##__per_cpu
 macro_line|#endif
