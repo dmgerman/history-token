@@ -42,6 +42,91 @@ macro_line|#else
 DECL|macro|XFS_ERROR
 mdefine_line|#define XFS_ERROR(e)&t;(e)
 macro_line|#endif
+r_extern
+r_void
+id|xfs_error_report
+c_func
+(paren
+r_char
+op_star
+id|tag
+comma
+r_int
+id|level
+comma
+r_struct
+id|xfs_mount
+op_star
+id|mp
+comma
+r_char
+op_star
+id|fname
+comma
+r_int
+id|linenum
+comma
+id|inst_t
+op_star
+id|ra
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|xfs_corruption_error
+c_func
+(paren
+r_char
+op_star
+id|tag
+comma
+r_int
+id|level
+comma
+r_struct
+id|xfs_mount
+op_star
+id|mp
+comma
+r_void
+op_star
+id|p
+comma
+r_char
+op_star
+id|fname
+comma
+r_int
+id|linenum
+comma
+id|inst_t
+op_star
+id|ra
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|xfs_hex_dump
+c_func
+(paren
+r_void
+op_star
+id|p
+comma
+r_int
+id|length
+)paren
+suffix:semicolon
+DECL|macro|XFS_ERROR_REPORT
+mdefine_line|#define&t;XFS_ERROR_REPORT(e, lvl, mp)&t;&bslash;&n;&t;xfs_error_report(e, lvl, mp, __FILE__, __LINE__, __return_address)
+DECL|macro|XFS_CORRUPTION_ERROR
+mdefine_line|#define&t;XFS_CORRUPTION_ERROR(e, lvl, mp, mem)&t;&bslash;&n;&t;xfs_corruption_error(e, lvl, mp, mem, &bslash;&n;&t;&t;&t;     __FILE__, __LINE__, __return_address)
+DECL|macro|XFS_ERRLEVEL_OFF
+mdefine_line|#define XFS_ERRLEVEL_OFF&t;0
+DECL|macro|XFS_ERRLEVEL_LOW
+mdefine_line|#define XFS_ERRLEVEL_LOW&t;1
+DECL|macro|XFS_ERRLEVEL_HIGH
+mdefine_line|#define XFS_ERRLEVEL_HIGH&t;5
 multiline_comment|/*&n; * error injection tags - the labels can be anything you want&n; * but each tag should have its own unique number&n; */
 DECL|macro|XFS_ERRTAG_NOERROR
 mdefine_line|#define XFS_ERRTAG_NOERROR&t;&t;&t;&t;0
@@ -85,8 +170,10 @@ DECL|macro|XFS_ERRTAG_STRATCMPL_IOERR
 mdefine_line|#define XFS_ERRTAG_STRATCMPL_IOERR&t;&t;&t;19
 DECL|macro|XFS_ERRTAG_DIOWRITE_IOERR
 mdefine_line|#define XFS_ERRTAG_DIOWRITE_IOERR&t;&t;&t;20
+DECL|macro|XFS_ERRTAG_BMAPIFORMAT
+mdefine_line|#define XFS_ERRTAG_BMAPIFORMAT&t;&t;&t;&t;21
 DECL|macro|XFS_ERRTAG_MAX
-mdefine_line|#define XFS_ERRTAG_MAX&t;&t;&t;&t;&t;21
+mdefine_line|#define XFS_ERRTAG_MAX&t;&t;&t;&t;&t;22
 multiline_comment|/*&n; * Random factors for above tags, 1 means always, 2 means 1/2 time, etc.&n; */
 DECL|macro|XFS_RANDOM_DEFAULT
 mdefine_line|#define XFS_RANDOM_DEFAULT&t;&t;&t;&t;100
@@ -130,6 +217,8 @@ DECL|macro|XFS_RANDOM_STRATCMPL_IOERR
 mdefine_line|#define XFS_RANDOM_STRATCMPL_IOERR&t;&t;&t;(XFS_RANDOM_DEFAULT/10)
 DECL|macro|XFS_RANDOM_DIOWRITE_IOERR
 mdefine_line|#define XFS_RANDOM_DIOWRITE_IOERR&t;&t;&t;(XFS_RANDOM_DEFAULT/10)
+DECL|macro|XFS_RANDOM_BMAPIFORMAT
+mdefine_line|#define&t;XFS_RANDOM_BMAPIFORMAT&t;&t;&t;&t;XFS_RANDOM_DEFAULT
 macro_line|#if (defined(DEBUG) || defined(INDUCE_IO_ERROR))
 r_extern
 r_int
@@ -234,8 +323,8 @@ DECL|macro|XFS_PTAG_LOGRES
 mdefine_line|#define&t;&t;XFS_PTAG_LOGRES&t;&t;&t;0x0000000000000002LL
 DECL|macro|XFS_PTAG_AILDELETE
 mdefine_line|#define&t;&t;XFS_PTAG_AILDELETE&t;&t;0x0000000000000004LL
-DECL|macro|XFS_PTAG_AVAILABLE
-mdefine_line|#define&t;&t;XFS_PTAG_AVAILABLE&t;&t;0x0000000000000008LL
+DECL|macro|XFS_PTAG_ERROR_REPORT
+mdefine_line|#define&t;&t;XFS_PTAG_ERROR_REPORT&t;&t;0x0000000000000008LL
 DECL|macro|XFS_PTAG_SHUTDOWN_CORRUPT
 mdefine_line|#define&t;&t;XFS_PTAG_SHUTDOWN_CORRUPT&t;0x0000000000000010LL
 DECL|macro|XFS_PTAG_SHUTDOWN_IOERROR
