@@ -477,6 +477,7 @@ id|bh-&gt;b_size
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * Requires read_lock(&amp;pointers_lock) or write_lock(&amp;pointers_lock)&n; */
 DECL|function|get_branch
 r_static
 id|Indirect
@@ -599,13 +600,6 @@ id|bh
 r_goto
 id|failure
 suffix:semicolon
-id|read_lock
-c_func
-(paren
-op_amp
-id|pointers_lock
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -640,13 +634,6 @@ op_increment
 id|offsets
 )paren
 suffix:semicolon
-id|read_unlock
-c_func
-(paren
-op_amp
-id|pointers_lock
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -662,13 +649,6 @@ l_int|NULL
 suffix:semicolon
 id|changed
 suffix:colon
-id|read_unlock
-c_func
-(paren
-op_amp
-id|pointers_lock
-)paren
-suffix:semicolon
 id|brelse
 c_func
 (paren
@@ -1243,6 +1223,13 @@ id|out
 suffix:semicolon
 id|reread
 suffix:colon
+id|read_lock
+c_func
+(paren
+op_amp
+id|pointers_lock
+)paren
+suffix:semicolon
 id|partial
 op_assign
 id|get_branch
@@ -1258,6 +1245,13 @@ id|chain
 comma
 op_amp
 id|err
+)paren
+suffix:semicolon
+id|read_unlock
+c_func
+(paren
+op_amp
+id|pointers_lock
 )paren
 suffix:semicolon
 multiline_comment|/* Simplest case - block found, no allocation needed */
