@@ -2057,8 +2057,8 @@ id|entry
 (braket
 l_int|1
 )braket
-op_ne
-l_int|1
+op_eq
+l_int|0
 )paren
 )paren
 r_goto
