@@ -4712,6 +4712,7 @@ c_func
 id|bh
 )paren
 )paren
+multiline_comment|/* AKPM: why? */
 r_goto
 id|out
 suffix:semicolon
@@ -5187,19 +5188,6 @@ id|bh
 comma
 l_string|&quot;entry&quot;
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|buffer_mapped
-c_func
-(paren
-id|bh
-)paren
-)paren
-r_return
-l_int|1
 suffix:semicolon
 multiline_comment|/* It is safe to proceed here without the&n;&t; * journal_datalist_spinlock because the buffers cannot be&n;&t; * stolen by try_to_free_buffers as long as we are holding the&n;&t; * page lock. --sct */
 r_if

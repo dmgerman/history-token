@@ -3670,6 +3670,7 @@ suffix:semicolon
 multiline_comment|/*&n; * Called when truncating a buffer on a page completely.&n; */
 DECL|function|discard_buffer
 r_static
+multiline_comment|/* inline */
 r_void
 id|discard_buffer
 c_func
@@ -3680,23 +3681,13 @@ op_star
 id|bh
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|buffer_mapped
-c_func
-(paren
-id|bh
-)paren
-)paren
-(brace
-id|clear_buffer_dirty
+id|lock_buffer
 c_func
 (paren
 id|bh
 )paren
 suffix:semicolon
-id|lock_buffer
+id|clear_buffer_dirty
 c_func
 (paren
 id|bh
@@ -3730,7 +3721,6 @@ c_func
 id|bh
 )paren
 suffix:semicolon
-)brace
 )brace
 multiline_comment|/**&n; * try_to_release_page() - release old fs-specific metadata on a page&n; *&n; * @page: the page which the kernel is trying to free&n; * @gfp_mask: memory allocation flags (and I/O mode)&n; *&n; * The address_space is to try to release any data against the page&n; * (presumably at page-&gt;private).  If the release was successful, return `1&squot;.&n; * Otherwise return zero.&n; *&n; * The @gfp_mask argument specifies whether I/O may be performed to release&n; * this page (__GFP_IO), and whether the call may block (__GFP_WAIT).&n; *&n; * NOTE: @gfp_mask may go away, and this function may become non-blocking.&n; */
 DECL|function|try_to_release_page
