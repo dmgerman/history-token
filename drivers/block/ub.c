@@ -964,6 +964,8 @@ id|US_PR_BULK
 )paren
 )brace
 comma
+(brace
+)brace
 )brace
 suffix:semicolon
 id|MODULE_DEVICE_TABLE
