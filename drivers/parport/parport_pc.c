@@ -11,6 +11,7 @@ macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
+macro_line|#include &lt;linux/pnp.h&gt;
 macro_line|#include &lt;linux/sysctl.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/dma.h&gt;
@@ -13987,16 +13988,19 @@ id|pci_driver
 id|parport_pc_pci_driver
 op_assign
 (brace
+dot
 id|name
-suffix:colon
+op_assign
 l_string|&quot;parport_pc&quot;
 comma
+dot
 id|id_table
-suffix:colon
+op_assign
 id|parport_pc_pci_tbl
 comma
+dot
 id|probe
-suffix:colon
+op_assign
 id|parport_pc_pci_probe
 comma
 )brace
@@ -14112,6 +14116,85 @@ l_int|0
 suffix:semicolon
 )brace
 macro_line|#endif /* CONFIG_PCI */
+macro_line|#ifdef CONFIG_PNP
+DECL|variable|pnp_dev_table
+r_static
+r_const
+r_struct
+id|pnp_id
+id|pnp_dev_table
+(braket
+)braket
+op_assign
+(brace
+multiline_comment|/* Standard LPT Printer Port */
+(brace
+dot
+id|id
+op_assign
+l_string|&quot;PNP0400&quot;
+comma
+dot
+id|driver_data
+op_assign
+l_int|0
+)brace
+comma
+multiline_comment|/* ECP Printer Port */
+(brace
+dot
+id|id
+op_assign
+l_string|&quot;PNP0401&quot;
+comma
+dot
+id|driver_data
+op_assign
+l_int|0
+)brace
+comma
+(brace
+dot
+id|id
+op_assign
+l_string|&quot;&quot;
+)brace
+)brace
+suffix:semicolon
+multiline_comment|/* we only need the pnp layer to activate the device, at least for now */
+DECL|variable|parport_pc_pnp_driver
+r_static
+r_struct
+id|pnp_driver
+id|parport_pc_pnp_driver
+op_assign
+(brace
+dot
+id|name
+op_assign
+l_string|&quot;parport_pc&quot;
+comma
+dot
+id|card_id_table
+op_assign
+l_int|NULL
+comma
+dot
+id|id_table
+op_assign
+id|pnp_dev_table
+comma
+)brace
+suffix:semicolon
+macro_line|#else
+DECL|variable|parport_pc_pnp_driver
+r_static
+r_const
+r_struct
+id|pnp_driver
+id|parport_pc_pnp_driver
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/* This is called by parport_pc_find_nonpci_ports (in asm/parport.h) */
 r_static
 r_int
@@ -14312,6 +14395,14 @@ comma
 id|i
 op_assign
 l_int|0
+suffix:semicolon
+multiline_comment|/* try to activate any PnP parports first */
+id|pnp_register_driver
+c_func
+(paren
+op_amp
+id|parport_pc_pnp_driver
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -14953,6 +15044,12 @@ op_assign
 id|tmp
 suffix:semicolon
 )brace
+id|pnp_unregister_driver
+(paren
+op_amp
+id|parport_pc_pnp_driver
+)paren
+suffix:semicolon
 )brace
 macro_line|#endif
 eof
