@@ -81,7 +81,6 @@ c_func
 r_int
 id|i
 comma
-r_volatile
 id|atomic_t
 op_star
 id|v
@@ -139,7 +138,6 @@ c_func
 r_int
 id|i
 comma
-r_volatile
 id|atomic_t
 op_star
 id|v
@@ -198,7 +196,6 @@ r_int
 id|atomic_dec_and_test
 c_func
 (paren
-r_volatile
 id|atomic_t
 op_star
 id|v
@@ -257,7 +254,6 @@ c_func
 r_int
 id|i
 comma
-r_volatile
 id|atomic_t
 op_star
 id|v
@@ -386,7 +382,6 @@ c_func
 r_int
 id|i
 comma
-r_volatile
 id|atomic_t
 op_star
 id|v
@@ -423,7 +418,6 @@ c_func
 r_int
 id|i
 comma
-r_volatile
 id|atomic_t
 op_star
 id|v
@@ -457,7 +451,6 @@ r_void
 id|atomic_inc
 c_func
 (paren
-r_volatile
 id|atomic_t
 op_star
 id|v
@@ -491,7 +484,6 @@ r_void
 id|atomic_dec
 c_func
 (paren
-r_volatile
 id|atomic_t
 op_star
 id|v
@@ -525,7 +517,6 @@ r_int
 id|atomic_dec_and_test
 c_func
 (paren
-r_volatile
 id|atomic_t
 op_star
 id|v
@@ -576,7 +567,6 @@ c_func
 r_int
 id|i
 comma
-r_volatile
 id|atomic_t
 op_star
 id|v
