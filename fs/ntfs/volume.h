@@ -147,6 +147,17 @@ op_star
 id|upcase
 suffix:semicolon
 multiline_comment|/* The upcase table. */
+DECL|member|attrdef_size
+id|s32
+id|attrdef_size
+suffix:semicolon
+multiline_comment|/* Size of the attribute definition&n;&t;&t;&t;&t;&t;   table in bytes. */
+DECL|member|attrdef
+id|ATTR_DEF
+op_star
+id|attrdef
+suffix:semicolon
+multiline_comment|/* Table of attribute definitions.&n;&t;&t;&t;&t;&t;   Obtained from FILE_AttrDef. */
 macro_line|#ifdef NTFS_RW
 multiline_comment|/* Variables used by the cluster and mft allocators. */
 DECL|member|mft_zone_start

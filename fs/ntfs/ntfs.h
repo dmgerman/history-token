@@ -302,11 +302,6 @@ r_int
 id|ntfs_nr_upcase_users
 suffix:semicolon
 r_extern
-r_int
-r_int
-id|ntfs_nr_mounts
-suffix:semicolon
-r_extern
 r_struct
 id|semaphore
 id|ntfs_lock
