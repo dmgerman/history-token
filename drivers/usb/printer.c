@@ -504,6 +504,15 @@ id|USBLP_QUIRK_BIDIR
 comma
 multiline_comment|/* HP DeskJet 830C */
 (brace
+l_int|0x0409
+comma
+l_int|0xefbe
+comma
+id|USBLP_QUIRK_BIDIR
+)brace
+comma
+multiline_comment|/* NEC Picty900 (HP OEM) */
+(brace
 l_int|0
 comma
 l_int|0
