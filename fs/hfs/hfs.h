@@ -729,21 +729,10 @@ id|hfs_u16
 id|files
 suffix:semicolon
 multiline_comment|/* Number of files in this directory */
-DECL|member|readers
-r_int
-id|readers
-suffix:semicolon
-DECL|member|read_wait
-id|hfs_wait_queue
-id|read_wait
-suffix:semicolon
-DECL|member|writers
-r_int
-id|writers
-suffix:semicolon
-DECL|member|write_wait
-id|hfs_wait_queue
-id|write_wait
+DECL|member|sem
+r_struct
+id|rw_semaphore
+id|sem
 suffix:semicolon
 )brace
 suffix:semicolon
