@@ -175,6 +175,11 @@ DECL|member|gc_win
 id|u32
 id|gc_win
 suffix:semicolon
+DECL|member|gc_expiry
+r_int
+r_int
+id|gc_expiry
+suffix:semicolon
 )brace
 suffix:semicolon
 DECL|struct|gss_cred
