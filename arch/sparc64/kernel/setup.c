@@ -2703,7 +2703,10 @@ l_int|0xff
 comma
 id|linux_num_cpus
 comma
-id|smp_num_cpus
+id|num_online_cpus
+c_func
+(paren
+)paren
 macro_line|#ifndef CONFIG_SMP
 comma
 id|loops_per_jiffy
