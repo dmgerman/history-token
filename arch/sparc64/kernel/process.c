@@ -3557,7 +3557,7 @@ id|retval
 suffix:semicolon
 multiline_comment|/* If the parent runs before fn(arg) is called by the child,&n;&t; * the input registers of this function can be clobbered.&n;&t; * So we stash &squot;fn&squot; and &squot;arg&squot; into global registers which&n;&t; * will not be modified by the parent.&n;&t; */
 id|__asm__
-id|__volatile
+id|__volatile__
 c_func
 (paren
 l_string|&quot;mov %4, %%g2&bslash;n&bslash;t&quot;
