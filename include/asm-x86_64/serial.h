@@ -24,11 +24,6 @@ DECL|macro|BOCA_FLAGS
 mdefine_line|#define BOCA_FLAGS 0
 DECL|macro|HUB6_FLAGS
 mdefine_line|#define HUB6_FLAGS 0
-DECL|macro|RS_TABLE_SIZE
-mdefine_line|#define RS_TABLE_SIZE&t;64
-macro_line|#else
-DECL|macro|RS_TABLE_SIZE
-mdefine_line|#define RS_TABLE_SIZE
 macro_line|#endif
 DECL|macro|MCA_COM_FLAGS
 mdefine_line|#define MCA_COM_FLAGS&t;(STD_COM_FLAGS|ASYNC_BOOT_ONLYMCA)

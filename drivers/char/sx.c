@@ -38,7 +38,6 @@ mdefine_line|#define _u16 u16
 macro_line|#include &quot;sxboards.h&quot;
 macro_line|#include &quot;sxwindow.h&quot;
 macro_line|#include &lt;linux/generic_serial.h&gt;
-macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &quot;sx.h&quot;
 multiline_comment|/* I don&squot;t think that this driver can handle more than 256 ports on&n;   one machine. You&squot;ll have to increase the number of boards in sx.h&n;   if you want more than 4 boards.  */
 macro_line|#ifndef PCI_DEVICE_ID_SPECIALIX_SX_XIO_IO8

@@ -3205,7 +3205,7 @@ id|namelen
 suffix:semicolon
 id|rval
 op_assign
-id|uiomove
+id|uio_read
 c_func
 (paren
 (paren
@@ -3214,8 +3214,6 @@ id|caddr_t
 id|idbp
 comma
 id|reclen
-comma
-id|UIO_READ
 comma
 id|uio
 )paren

@@ -492,6 +492,8 @@ DECL|macro|INT_MEMORY_AND_IO
 mdefine_line|#define INT_MEMORY_AND_IO&t;0x02
 DECL|macro|INT_CARDBUS
 mdefine_line|#define INT_CARDBUS&t;&t;0x04
+DECL|macro|INT_ZOOMED_VIDEO
+mdefine_line|#define INT_ZOOMED_VIDEO&t;0x08
 multiline_comment|/* For RequestIO and ReleaseIO */
 DECL|struct|io_req_t
 r_typedef

@@ -1,7 +1,7 @@
 macro_line|#ifndef _GDTH_PROC_H
 DECL|macro|_GDTH_PROC_H
 mdefine_line|#define _GDTH_PROC_H
-multiline_comment|/* gdth_proc.h &n; * $Id: gdth_proc.h,v 1.13 2003/02/27 14:59:25 achim Exp $&n; */
+multiline_comment|/* gdth_proc.h &n; * $Id: gdth_proc.h,v 1.14 2003/08/27 11:37:35 achim Exp $&n; */
 r_static
 r_int
 id|gdth_set_info

@@ -70,7 +70,6 @@ multiline_comment|/************/
 multiline_comment|/* Includes */
 multiline_comment|/************/
 macro_line|#include &lt;linux/config.h&gt;
-macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/ctype.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/fcntl.h&gt;

@@ -1249,36 +1249,33 @@ mdefine_line|#define XFS_DFORK_NEXT_SET(dip,w,n)             XFS_DFORK_NEXT_SET_
 macro_line|#endif
 multiline_comment|/*&n; * File types (mode field)&n; */
 DECL|macro|IFMT
-mdefine_line|#define&t;IFMT&t;&t;0170000&t;&t;/* type of file */
-DECL|macro|IFIFO
-mdefine_line|#define&t;IFIFO&t;&t;0010000&t;&t;/* named pipe (fifo) */
-DECL|macro|IFCHR
-mdefine_line|#define&t;IFCHR&t;&t;0020000&t;&t;/* character special */
-DECL|macro|IFDIR
-mdefine_line|#define&t;IFDIR&t;&t;0040000&t;&t;/* directory */
-DECL|macro|IFBLK
-mdefine_line|#define&t;IFBLK&t;&t;0060000&t;&t;/* block special */
-DECL|macro|IFREG
-mdefine_line|#define&t;IFREG&t;&t;0100000&t;&t;/* regular */
-DECL|macro|IFLNK
-mdefine_line|#define&t;IFLNK&t;&t;0120000&t;&t;/* symbolic link */
+mdefine_line|#define&t;IFMT&t;&t;S_IFMT
 DECL|macro|IFSOCK
-mdefine_line|#define&t;IFSOCK&t;&t;0140000&t;&t;/* socket */
-DECL|macro|IFMNT
-mdefine_line|#define&t;IFMNT&t;&t;0160000&t;&t;/* mount point */
-multiline_comment|/*&n; * File execution and access modes.&n; */
+mdefine_line|#define&t;IFSOCK&t;&t;S_IFSOCK
+DECL|macro|IFLNK
+mdefine_line|#define&t;IFLNK&t;&t;S_IFLNK
+DECL|macro|IFREG
+mdefine_line|#define&t;IFREG&t;&t;S_IFREG
+DECL|macro|IFBLK
+mdefine_line|#define&t;IFBLK&t;&t;S_IFBLK
+DECL|macro|IFDIR
+mdefine_line|#define&t;IFDIR&t;&t;S_IFDIR
+DECL|macro|IFCHR
+mdefine_line|#define&t;IFCHR&t;&t;S_IFCHR
+DECL|macro|IFIFO
+mdefine_line|#define&t;IFIFO&t;&t;S_IFIFO
 DECL|macro|ISUID
-mdefine_line|#define&t;ISUID&t;&t;04000&t;&t;/* set user id on execution */
+mdefine_line|#define&t;ISUID&t;&t;S_ISUID
 DECL|macro|ISGID
-mdefine_line|#define&t;ISGID&t;&t;02000&t;&t;/* set group id on execution */
+mdefine_line|#define&t;ISGID&t;&t;S_ISGID
 DECL|macro|ISVTX
-mdefine_line|#define&t;ISVTX&t;&t;01000&t;&t;/* sticky directory */
+mdefine_line|#define&t;ISVTX&t;&t;S_ISVTX
 DECL|macro|IREAD
-mdefine_line|#define&t;IREAD&t;&t;0400&t;&t;/* read, write, execute permissions */
+mdefine_line|#define&t;IREAD&t;&t;S_IRUSR
 DECL|macro|IWRITE
-mdefine_line|#define&t;IWRITE&t;&t;0200
+mdefine_line|#define&t;IWRITE&t;&t;S_IWUSR
 DECL|macro|IEXEC
-mdefine_line|#define&t;IEXEC&t;&t;0100
+mdefine_line|#define&t;IEXEC&t;&t;S_IXUSR
 macro_line|#if XFS_WANT_FUNCS || (XFS_WANT_SPACE &amp;&amp; XFSSO_XFS_BUF_TO_DINODE)
 id|xfs_dinode_t
 op_star

@@ -24,5 +24,7 @@ id|block_minor
 suffix:semicolon
 )brace
 suffix:semicolon
+DECL|macro|MAX_RAW_MINORS
+mdefine_line|#define MAX_RAW_MINORS CONFIG_MAX_RAW_DEVS
 macro_line|#endif /* __LINUX_RAW_H */
 eof

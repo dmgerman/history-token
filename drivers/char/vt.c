@@ -10608,7 +10608,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|current-&gt;tty
+id|process_tty
+c_func
+(paren
+id|current
+)paren
 op_ne
 id|tty
 op_logical_and

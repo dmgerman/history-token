@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  drivers/s390/cio/ccwgroup.c&n; *  bus driver for ccwgroup&n; *   $Revision: 1.15 $&n; *&n; *    Copyright (C) 2002 IBM Deutschland Entwicklung GmbH,&n; *                       IBM Corporation&n; *    Author(s): Arnd Bergmann (arndb@de.ibm.com)&n; *               Cornelia Huck (cohuck@de.ibm.com)&n; */
+multiline_comment|/*&n; *  drivers/s390/cio/ccwgroup.c&n; *  bus driver for ccwgroup&n; *   $Revision: 1.17 $&n; *&n; *    Copyright (C) 2002 IBM Deutschland Entwicklung GmbH,&n; *                       IBM Corporation&n; *    Author(s): Arnd Bergmann (arndb@de.ibm.com)&n; *               Cornelia Huck (cohuck@de.ibm.com)&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
@@ -189,22 +189,6 @@ comma
 id|str
 )paren
 suffix:semicolon
-multiline_comment|/* Hack: Make sure we act on still valid subdirs. */
-r_if
-c_cond
-(paren
-id|atomic_read
-c_func
-(paren
-op_amp
-id|gdev-&gt;cdev
-(braket
-id|i
-)braket
-op_member_access_from_pointer
-id|dev.kobj.dentry-&gt;d_count
-)paren
-)paren
 id|sysfs_remove_link
 c_func
 (paren
@@ -785,7 +769,6 @@ comma
 dot
 id|release
 op_assign
-op_amp
 id|ccwgroup_release
 comma
 )brace

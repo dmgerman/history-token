@@ -1241,7 +1241,7 @@ id|BBSHIFT
 )paren
 )paren
 OG
-id|INT_MAX
+id|UINT_MAX
 op_logical_or
 (paren
 id|sbp-&gt;sb_rblocks
@@ -1256,7 +1256,7 @@ id|BBSHIFT
 )paren
 )paren
 OG
-id|INT_MAX
+id|UINT_MAX
 )paren
 )paren
 (brace
@@ -3910,7 +3910,7 @@ c_func
 (paren
 id|mp
 comma
-id|mp-&gt;m_logdev_targp-&gt;pbr_dev
+id|mp-&gt;m_logdev_targp
 comma
 id|XFS_FSB_TO_DADDR
 c_func
@@ -4072,7 +4072,7 @@ c_func
 (paren
 l_string|&quot;Root inode %llu is not a directory&quot;
 comma
-id|mp-&gt;m_dev
+id|mp-&gt;m_ddev_targp
 comma
 (paren
 r_int

@@ -967,10 +967,6 @@ id|schedule_timeout
 id|POOL_TIMEOUT_JIFFIES
 )paren
 suffix:semicolon
-id|current-&gt;state
-op_assign
-id|TASK_RUNNING
-suffix:semicolon
 id|remove_wait_queue
 (paren
 op_amp

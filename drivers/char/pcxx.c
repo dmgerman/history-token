@@ -18,7 +18,6 @@ macro_line|#include &lt;linux/serial.h&gt;
 macro_line|#include &lt;linux/tty_driver.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
-macro_line|#include &lt;linux/version.h&gt;
 macro_line|#ifndef MODULE
 macro_line|#include &lt;linux/ctype.h&gt; /* We only need it for parsing the &quot;digi=&quot;-line */
 macro_line|#endif

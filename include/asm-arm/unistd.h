@@ -25,8 +25,7 @@ DECL|macro|__NR_open
 mdefine_line|#define __NR_open&t;&t;&t;(__NR_SYSCALL_BASE+  5)
 DECL|macro|__NR_close
 mdefine_line|#define __NR_close&t;&t;&t;(__NR_SYSCALL_BASE+  6)
-DECL|macro|__NR_waitpid
-mdefine_line|#define __NR_waitpid&t;&t;&t;(__NR_SYSCALL_BASE+  7)&t;/* removed */
+multiline_comment|/* 7 was sys_waitpid */
 DECL|macro|__NR_creat
 mdefine_line|#define __NR_creat&t;&t;&t;(__NR_SYSCALL_BASE+  8)
 DECL|macro|__NR_link
@@ -45,8 +44,7 @@ DECL|macro|__NR_chmod
 mdefine_line|#define __NR_chmod&t;&t;&t;(__NR_SYSCALL_BASE+ 15)
 DECL|macro|__NR_lchown
 mdefine_line|#define __NR_lchown&t;&t;&t;(__NR_SYSCALL_BASE+ 16)
-DECL|macro|__NR_break
-mdefine_line|#define __NR_break&t;&t;&t;(__NR_SYSCALL_BASE+ 17)&t;/* removed */
+multiline_comment|/* 17 was sys_break */
 multiline_comment|/* 18 was sys_stat */
 DECL|macro|__NR_lseek
 mdefine_line|#define __NR_lseek&t;&t;&t;(__NR_SYSCALL_BASE+ 19)
@@ -66,20 +64,18 @@ DECL|macro|__NR_ptrace
 mdefine_line|#define __NR_ptrace&t;&t;&t;(__NR_SYSCALL_BASE+ 26)
 DECL|macro|__NR_alarm
 mdefine_line|#define __NR_alarm&t;&t;&t;(__NR_SYSCALL_BASE+ 27)
+multiline_comment|/* 28 was sys_fstat */
 DECL|macro|__NR_pause
 mdefine_line|#define __NR_pause&t;&t;&t;(__NR_SYSCALL_BASE+ 29)
 DECL|macro|__NR_utime
 mdefine_line|#define __NR_utime&t;&t;&t;(__NR_SYSCALL_BASE+ 30)
-DECL|macro|__NR_stty
-mdefine_line|#define __NR_stty&t;&t;&t;(__NR_SYSCALL_BASE+ 31)&t;/* removed */
-DECL|macro|__NR_gtty
-mdefine_line|#define __NR_gtty&t;&t;&t;(__NR_SYSCALL_BASE+ 32)&t;/* removed */
+multiline_comment|/* 31 was sys_stty */
+multiline_comment|/* 32 was sys_gtty */
 DECL|macro|__NR_access
 mdefine_line|#define __NR_access&t;&t;&t;(__NR_SYSCALL_BASE+ 33)
 DECL|macro|__NR_nice
 mdefine_line|#define __NR_nice&t;&t;&t;(__NR_SYSCALL_BASE+ 34)
-DECL|macro|__NR_ftime
-mdefine_line|#define __NR_ftime&t;&t;&t;(__NR_SYSCALL_BASE+ 35)&t;/* removed */
+multiline_comment|/* 35 was sys_ftime */
 DECL|macro|__NR_sync
 mdefine_line|#define __NR_sync&t;&t;&t;(__NR_SYSCALL_BASE+ 36)
 DECL|macro|__NR_kill
@@ -96,16 +92,14 @@ DECL|macro|__NR_pipe
 mdefine_line|#define __NR_pipe&t;&t;&t;(__NR_SYSCALL_BASE+ 42)
 DECL|macro|__NR_times
 mdefine_line|#define __NR_times&t;&t;&t;(__NR_SYSCALL_BASE+ 43)
-DECL|macro|__NR_prof
-mdefine_line|#define __NR_prof&t;&t;&t;(__NR_SYSCALL_BASE+ 44)&t;/* removed */
+multiline_comment|/* 44 was sys_prof */
 DECL|macro|__NR_brk
 mdefine_line|#define __NR_brk&t;&t;&t;(__NR_SYSCALL_BASE+ 45)
 DECL|macro|__NR_setgid
 mdefine_line|#define __NR_setgid&t;&t;&t;(__NR_SYSCALL_BASE+ 46)
 DECL|macro|__NR_getgid
 mdefine_line|#define __NR_getgid&t;&t;&t;(__NR_SYSCALL_BASE+ 47)
-DECL|macro|__NR_signal
-mdefine_line|#define __NR_signal&t;&t;&t;(__NR_SYSCALL_BASE+ 48)&t;/* removed */
+multiline_comment|/* 48 was sys_signal */
 DECL|macro|__NR_geteuid
 mdefine_line|#define __NR_geteuid&t;&t;&t;(__NR_SYSCALL_BASE+ 49)
 DECL|macro|__NR_getegid
@@ -114,18 +108,15 @@ DECL|macro|__NR_acct
 mdefine_line|#define __NR_acct&t;&t;&t;(__NR_SYSCALL_BASE+ 51)
 DECL|macro|__NR_umount2
 mdefine_line|#define __NR_umount2&t;&t;&t;(__NR_SYSCALL_BASE+ 52)
-DECL|macro|__NR_lock
-mdefine_line|#define __NR_lock&t;&t;&t;(__NR_SYSCALL_BASE+ 53)&t;/* removed */
+multiline_comment|/* 53 was sys_lock */
 DECL|macro|__NR_ioctl
 mdefine_line|#define __NR_ioctl&t;&t;&t;(__NR_SYSCALL_BASE+ 54)
 DECL|macro|__NR_fcntl
 mdefine_line|#define __NR_fcntl&t;&t;&t;(__NR_SYSCALL_BASE+ 55)
-DECL|macro|__NR_mpx
-mdefine_line|#define __NR_mpx&t;&t;&t;(__NR_SYSCALL_BASE+ 56)&t;/* removed */
+multiline_comment|/* 56 was sys_mpx */
 DECL|macro|__NR_setpgid
 mdefine_line|#define __NR_setpgid&t;&t;&t;(__NR_SYSCALL_BASE+ 57)
-DECL|macro|__NR_ulimit
-mdefine_line|#define __NR_ulimit&t;&t;&t;(__NR_SYSCALL_BASE+ 58)&t;/* removed */
+multiline_comment|/* 58 was sys_ulimit */
 multiline_comment|/* 59 was sys_olduname */
 DECL|macro|__NR_umask
 mdefine_line|#define __NR_umask&t;&t;&t;(__NR_SYSCALL_BASE+ 60)
@@ -143,10 +134,8 @@ DECL|macro|__NR_setsid
 mdefine_line|#define __NR_setsid&t;&t;&t;(__NR_SYSCALL_BASE+ 66)
 DECL|macro|__NR_sigaction
 mdefine_line|#define __NR_sigaction&t;&t;&t;(__NR_SYSCALL_BASE+ 67)
-DECL|macro|__NR_sgetmask
-mdefine_line|#define __NR_sgetmask&t;&t;&t;(__NR_SYSCALL_BASE+ 68)&t;/* removed */
-DECL|macro|__NR_ssetmask
-mdefine_line|#define __NR_ssetmask&t;&t;&t;(__NR_SYSCALL_BASE+ 69)&t;/* removed */
+multiline_comment|/* 68 was sys_sgetmask */
+multiline_comment|/* 69 was sys_ssetmask */
 DECL|macro|__NR_setreuid
 mdefine_line|#define __NR_setreuid&t;&t;&t;(__NR_SYSCALL_BASE+ 70)
 DECL|macro|__NR_setregid
@@ -202,14 +191,12 @@ DECL|macro|__NR_getpriority
 mdefine_line|#define __NR_getpriority&t;&t;(__NR_SYSCALL_BASE+ 96)
 DECL|macro|__NR_setpriority
 mdefine_line|#define __NR_setpriority&t;&t;(__NR_SYSCALL_BASE+ 97)
-DECL|macro|__NR_profil
-mdefine_line|#define __NR_profil&t;&t;&t;(__NR_SYSCALL_BASE+ 98)&t;/* removed */
+multiline_comment|/* 98 was sys_profil */
 DECL|macro|__NR_statfs
 mdefine_line|#define __NR_statfs&t;&t;&t;(__NR_SYSCALL_BASE+ 99)
 DECL|macro|__NR_fstatfs
 mdefine_line|#define __NR_fstatfs&t;&t;&t;(__NR_SYSCALL_BASE+100)
-DECL|macro|__NR_ioperm
-mdefine_line|#define __NR_ioperm&t;&t;&t;(__NR_SYSCALL_BASE+101)
+multiline_comment|/* 101 was sys_ioperm */
 DECL|macro|__NR_socketcall
 mdefine_line|#define __NR_socketcall&t;&t;&t;(__NR_SYSCALL_BASE+102)
 DECL|macro|__NR_syslog
@@ -228,8 +215,7 @@ multiline_comment|/* 109 was sys_uname */
 multiline_comment|/* 110 was sys_iopl */
 DECL|macro|__NR_vhangup
 mdefine_line|#define __NR_vhangup&t;&t;&t;(__NR_SYSCALL_BASE+111)
-DECL|macro|__NR_idle
-mdefine_line|#define __NR_idle&t;&t;&t;(__NR_SYSCALL_BASE+112)
+multiline_comment|/* 112 was sys_idle */
 DECL|macro|__NR_syscall
 mdefine_line|#define __NR_syscall&t;&t;&t;(__NR_SYSCALL_BASE+113) /* syscall to call a syscall! */
 DECL|macro|__NR_wait4
@@ -250,22 +236,19 @@ DECL|macro|__NR_setdomainname
 mdefine_line|#define __NR_setdomainname&t;&t;(__NR_SYSCALL_BASE+121)
 DECL|macro|__NR_uname
 mdefine_line|#define __NR_uname&t;&t;&t;(__NR_SYSCALL_BASE+122)
-DECL|macro|__NR_modify_ldt
-mdefine_line|#define __NR_modify_ldt&t;&t;&t;(__NR_SYSCALL_BASE+123)
+multiline_comment|/* 123 was sys_modify_ldt */
 DECL|macro|__NR_adjtimex
 mdefine_line|#define __NR_adjtimex&t;&t;&t;(__NR_SYSCALL_BASE+124)
 DECL|macro|__NR_mprotect
 mdefine_line|#define __NR_mprotect&t;&t;&t;(__NR_SYSCALL_BASE+125)
 DECL|macro|__NR_sigprocmask
 mdefine_line|#define __NR_sigprocmask&t;&t;(__NR_SYSCALL_BASE+126)
-DECL|macro|__NR_create_module
-mdefine_line|#define __NR_create_module&t;&t;(__NR_SYSCALL_BASE+127)&t;/* removed */
+multiline_comment|/* 127 was sys_create_module */
 DECL|macro|__NR_init_module
 mdefine_line|#define __NR_init_module&t;&t;(__NR_SYSCALL_BASE+128)
 DECL|macro|__NR_delete_module
 mdefine_line|#define __NR_delete_module&t;&t;(__NR_SYSCALL_BASE+129)
-DECL|macro|__NR_get_kernel_syms
-mdefine_line|#define __NR_get_kernel_syms&t;&t;(__NR_SYSCALL_BASE+130)&t;/* removed */
+multiline_comment|/* 130 was sys_get_kernel_syms */
 DECL|macro|__NR_quotactl
 mdefine_line|#define __NR_quotactl&t;&t;&t;(__NR_SYSCALL_BASE+131)
 DECL|macro|__NR_getpgid
@@ -278,8 +261,7 @@ DECL|macro|__NR_sysfs
 mdefine_line|#define __NR_sysfs&t;&t;&t;(__NR_SYSCALL_BASE+135)
 DECL|macro|__NR_personality
 mdefine_line|#define __NR_personality&t;&t;(__NR_SYSCALL_BASE+136)
-DECL|macro|__NR_afs_syscall
-mdefine_line|#define __NR_afs_syscall&t;&t;(__NR_SYSCALL_BASE+137) /* Syscall for Andrew File System */
+multiline_comment|/* 137 was sys_afs_syscall */
 DECL|macro|__NR_setfsuid
 mdefine_line|#define __NR_setfsuid&t;&t;&t;(__NR_SYSCALL_BASE+138)
 DECL|macro|__NR_setfsgid
@@ -336,10 +318,8 @@ DECL|macro|__NR_setresuid
 mdefine_line|#define __NR_setresuid&t;&t;&t;(__NR_SYSCALL_BASE+164)
 DECL|macro|__NR_getresuid
 mdefine_line|#define __NR_getresuid&t;&t;&t;(__NR_SYSCALL_BASE+165)
-DECL|macro|__NR_vm86
-mdefine_line|#define __NR_vm86&t;&t;&t;(__NR_SYSCALL_BASE+166)&t;/* removed */
-DECL|macro|__NR_query_module
-mdefine_line|#define __NR_query_module&t;&t;(__NR_SYSCALL_BASE+167)&t;/* removed */
+multiline_comment|/* 166 was sys_vm86 */
+multiline_comment|/* 167 was sys_query_module */
 DECL|macro|__NR_poll
 mdefine_line|#define __NR_poll&t;&t;&t;(__NR_SYSCALL_BASE+168)
 DECL|macro|__NR_nfsservctl

@@ -4,7 +4,6 @@ mdefine_line|#define TOSH_VERSION &quot;1.11 26/9/2001&quot;
 DECL|macro|TOSH_DEBUG
 mdefine_line|#define TOSH_DEBUG 0
 macro_line|#include &lt;linux/module.h&gt;
-macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -71,23 +70,6 @@ l_string|&quot;i&quot;
 suffix:semicolon
 r_static
 r_int
-id|tosh_get_info
-c_func
-(paren
-r_char
-op_star
-comma
-r_char
-op_star
-op_star
-comma
-id|off_t
-comma
-r_int
-)paren
-suffix:semicolon
-r_static
-r_int
 id|tosh_ioctl
 c_func
 (paren
@@ -141,6 +123,7 @@ id|tosh_fops
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * Read the Fn key status&n; */
+macro_line|#ifdef CONFIG_PROC_FS
 DECL|function|tosh_fn_status
 r_static
 r_int
@@ -213,6 +196,7 @@ r_int
 id|scan
 suffix:semicolon
 )brace
+macro_line|#endif
 multiline_comment|/*&n; * For the Portage 610CT and the Tecra 700CS/700CDT emulate the HCI fan function&n; */
 DECL|function|tosh_emulate_fan
 r_static
@@ -979,6 +963,7 @@ id|EINVAL
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Print the information for /proc/toshiba&n; */
+macro_line|#ifdef CONFIG_PROC_FS
 DECL|function|tosh_get_info
 r_int
 id|tosh_get_info
@@ -1065,6 +1050,7 @@ op_minus
 id|buffer
 suffix:semicolon
 )brace
+macro_line|#endif
 multiline_comment|/*&n; * Determine which port to use for the Fn key status&n; */
 DECL|function|tosh_set_fn_port
 r_static

@@ -19,7 +19,6 @@ macro_line|#include &lt;linux/serial.h&gt;
 macro_line|#include &lt;linux/fcntl.h&gt;
 macro_line|#include &lt;linux/major.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
-macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/miscdevice.h&gt;
@@ -788,10 +787,6 @@ c_func
 id|njiffies
 )paren
 suffix:semicolon
-id|current-&gt;state
-op_assign
-id|TASK_RUNNING
-suffix:semicolon
 id|func_exit
 c_func
 (paren
@@ -851,10 +846,6 @@ c_func
 (paren
 id|njiffies
 )paren
-suffix:semicolon
-id|current-&gt;state
-op_assign
-id|TASK_RUNNING
 suffix:semicolon
 id|func_exit
 c_func

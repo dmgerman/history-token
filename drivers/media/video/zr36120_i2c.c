@@ -2,7 +2,6 @@ multiline_comment|/*&n;    zr36120_i2c.c - Zoran 36120/36125 based framegrabbers
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
-macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/video_decoder.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &quot;tuner.h&quot;

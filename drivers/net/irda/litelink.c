@@ -83,17 +83,35 @@ id|dongle_reg
 id|dongle
 op_assign
 (brace
-id|Q_NULL
-comma
+dot
+id|type
+op_assign
 id|IRDA_LITELINK_DONGLE
 comma
+dot
+id|open
+op_assign
 id|litelink_open
 comma
+dot
+id|close
+op_assign
 id|litelink_close
 comma
+dot
+id|reset
+op_assign
 id|litelink_reset
 comma
+dot
+id|change_speed
+op_assign
 id|litelink_change_speed
+comma
+dot
+id|owner
+op_assign
+id|THIS_MODULE
 comma
 )brace
 suffix:semicolon
@@ -165,8 +183,6 @@ op_assign
 l_int|0x7f
 suffix:semicolon
 multiline_comment|/* Needs 0.01 ms */
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 )brace
 DECL|function|litelink_close
 r_static
@@ -191,8 +207,6 @@ id|FALSE
 comma
 id|FALSE
 )paren
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Function litelink_change_speed (task)&n; *&n; *    Change speed of the Litelink dongle. To cycle through the available &n; *    baud rates, pulse RTS low for a few ms.  &n; */

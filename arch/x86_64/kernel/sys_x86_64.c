@@ -461,7 +461,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|personality
+c_func
+(paren
 id|current-&gt;personality
+)paren
 op_eq
 id|PER_LINUX32
 )paren
@@ -473,7 +477,7 @@ c_func
 op_amp
 id|name-&gt;machine
 comma
-l_string|&quot;i386&quot;
+l_string|&quot;i686&quot;
 comma
 l_int|5
 )paren

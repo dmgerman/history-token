@@ -1,5 +1,4 @@
 multiline_comment|/*&n; * Driver for the i2c/i2s based DAC3550a sound chip used&n; * on some Apple iBooks. Also known as &quot;DACA&quot;.&n; *&n; *  This file is subject to the terms and conditions of the GNU General Public&n; *  License.  See the file COPYING in the main directory of this archive&n; *  for more details.&n; */
-macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;

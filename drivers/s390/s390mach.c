@@ -92,7 +92,11 @@ suffix:semicolon
 r_int
 id|ccode
 suffix:semicolon
-r_do
+r_while
+c_loop
+(paren
+l_int|1
+)paren
 (brace
 id|ccode
 op_assign
@@ -266,12 +270,6 @@ r_break
 suffix:semicolon
 )brace
 )brace
-r_while
-c_loop
-(paren
-id|crw.chn
-)paren
-suffix:semicolon
 )brace
 multiline_comment|/*&n; * machine check handler.&n; */
 r_void

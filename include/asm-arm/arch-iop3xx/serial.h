@@ -11,8 +11,6 @@ DECL|macro|IRQ_UART1
 mdefine_line|#define IRQ_UART1&t;IRQ_IQ80310_UART1
 DECL|macro|IRQ_UART2
 mdefine_line|#define IRQ_UART2&t;IRQ_IQ80310_UART2
-DECL|macro|RS_TABLE_SIZE
-mdefine_line|#define RS_TABLE_SIZE 2
 DECL|macro|STD_SERIAL_PORT_DEFNS
 mdefine_line|#define STD_SERIAL_PORT_DEFNS&t;&t;&t;&bslash;&n;       /* UART CLK      PORT        IRQ        FLAGS        */&t;&t;&t;&bslash;&n;&t;{ 0, BASE_BAUD, IQ80310_UART2, IRQ_UART2, STD_COM_FLAGS },  /* ttyS0 */&t;&bslash;&n;&t;{ 0, BASE_BAUD, IQ80310_UART1, IRQ_UART1, STD_COM_FLAGS }  /* ttyS1 */
 macro_line|#endif 
@@ -20,8 +18,6 @@ singleline_comment|// CONFIG_ARCH_IQ80310
 macro_line|#ifdef CONFIG_ARCH_IQ80321
 DECL|macro|IRQ_UART1
 mdefine_line|#define IRQ_UART1&t;IRQ_IQ80321_UART
-DECL|macro|RS_TABLE_SIZE
-mdefine_line|#define RS_TABLE_SIZE 1
 DECL|macro|STD_SERIAL_PORT_DEFNS
 mdefine_line|#define STD_SERIAL_PORT_DEFNS&t;&t;&t;&bslash;&n;       /* UART CLK      PORT        IRQ        FLAGS        */&t;&t;&t;&bslash;&n;&t;{ 0, BASE_BAUD, 0xfe800000, IRQ_UART1, STD_COM_FLAGS },  /* ttyS0 */
 macro_line|#endif 

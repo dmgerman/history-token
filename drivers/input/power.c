@@ -33,7 +33,6 @@ op_star
 id|data
 )paren
 (brace
-singleline_comment|//extern void pm_do_suspend(void);
 id|udelay
 c_func
 (paren
@@ -41,7 +40,6 @@ l_int|200
 )paren
 suffix:semicolon
 multiline_comment|/* debounce */
-singleline_comment|//pm_do_suspend();
 id|suspend_button_pushed
 op_assign
 l_int|0
@@ -130,7 +128,6 @@ c_func
 l_string|&quot;Powering down entire device&bslash;n&quot;
 )paren
 suffix:semicolon
-singleline_comment|//pm_send_all(PM_SUSPEND, dev);
 r_if
 c_cond
 (paren

@@ -128,12 +128,6 @@ DECL|macro|SPRN_CTR
 mdefine_line|#define SPRN_CTR&t;0x009&t;/* Count Register */
 DECL|macro|SPRN_DABR
 mdefine_line|#define SPRN_DABR&t;0x3F5&t;/* Data Address Breakpoint Register */
-macro_line|#if !defined(SPRN_DAC1) &amp;&amp; !defined(SPRN_DAC2)
-DECL|macro|SPRN_DAC1
-mdefine_line|#define SPRN_DAC1&t;0x3F6&t;/* Data Address Compare 1 */
-DECL|macro|SPRN_DAC2
-mdefine_line|#define SPRN_DAC2&t;0x3F7&t;/* Data Address Compare 2 */
-macro_line|#endif
 DECL|macro|SPRN_DAR
 mdefine_line|#define SPRN_DAR&t;0x013&t;/* Data Address Register */
 DECL|macro|SPRN_DBAT0L
@@ -526,10 +520,6 @@ DECL|macro|SPRN_SRR0
 mdefine_line|#define SPRN_SRR0&t;0x01A&t;/* Save/Restore Register 0 */
 DECL|macro|SPRN_SRR1
 mdefine_line|#define SPRN_SRR1&t;0x01B&t;/* Save/Restore Register 1 */
-DECL|macro|SPRN_SRR2
-mdefine_line|#define SPRN_SRR2&t;0x3DE&t;/* Save/Restore Register 2 */
-DECL|macro|SPRN_SRR3
-mdefine_line|#define SPRN_SRR3&t;0x3DF&t;/* Save/Restore Register 3 */
 DECL|macro|SPRN_THRM1
 mdefine_line|#define SPRN_THRM1&t;0x3FC&t;&t;/* Thermal Management Register 1 */
 multiline_comment|/* these bits were defined in inverted endian sense originally, ugh, confusing */

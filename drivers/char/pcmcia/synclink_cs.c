@@ -12,7 +12,6 @@ DECL|macro|MAX_DEVICE_COUNT
 mdefine_line|#define MAX_DEVICE_COUNT 4
 macro_line|#include &lt;linux/config.h&gt;&t;
 macro_line|#include &lt;linux/module.h&gt;
-macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/signal.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;

@@ -1,13 +1,11 @@
 multiline_comment|/*&n; *&t;AMD 766/768 TCO Timer Driver&n; *&t;(c) Copyright 2002 Zwane Mwaikambo &lt;zwane@holomorphy.com&gt;&n; *&t;All Rights Reserved.&n; *&n; *&t;Parts from;&n; *&t;Hardware driver for the AMD 768 Random Number Generator (RNG)&n; *&t;(c) Copyright 2001 Red Hat Inc &lt;alan@redhat.com&gt;&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *&t;modify it under the terms of the GNU General Public License version 2&n; *&t;as published by the Free Software Foundation.&n; *&n; *&t;The author(s) of this software shall not be held liable for damages&n; *&t;of any nature resulting due to the use of this software. This&n; *&t;software is provided AS-IS with no warranties.&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
-macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/miscdevice.h&gt;
 macro_line|#include &lt;linux/watchdog.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
-macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;

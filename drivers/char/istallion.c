@@ -10,7 +10,6 @@ macro_line|#include &lt;linux/tty_flip.h&gt;
 macro_line|#include &lt;linux/serial.h&gt;
 macro_line|#include &lt;linux/cdk.h&gt;
 macro_line|#include &lt;linux/comstats.h&gt;
-macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/istallion.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
@@ -5821,12 +5820,6 @@ id|schedule_timeout
 c_func
 (paren
 id|len
-)paren
-suffix:semicolon
-id|set_current_state
-c_func
-(paren
-id|TASK_RUNNING
 )paren
 suffix:semicolon
 )brace

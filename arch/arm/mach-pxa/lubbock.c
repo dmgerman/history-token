@@ -264,11 +264,7 @@ l_int|0
 suffix:semicolon
 id|irq
 op_le
-id|LUBBOCK_IRQ
-c_func
-(paren
-l_int|5
-)paren
+id|LUBBOCK_LAST_IRQ
 suffix:semicolon
 id|irq
 op_increment
@@ -506,6 +502,17 @@ id|MT_DEVICE
 )brace
 comma
 multiline_comment|/* LAN91C96 Attr */
+(brace
+l_int|0xf4000000
+comma
+l_int|0x10000000
+comma
+l_int|0x00800000
+comma
+id|MT_DEVICE
+)brace
+comma
+multiline_comment|/* SA1111 */
 )brace
 suffix:semicolon
 DECL|function|lubbock_map_io

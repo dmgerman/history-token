@@ -7590,15 +7590,6 @@ id|mem.sys_stop
 op_assign
 l_int|0x1000
 suffix:semicolon
-id|pcic_set_socket
-c_func
-(paren
-id|s
-comma
-op_amp
-id|dead_socket
-)paren
-suffix:semicolon
 r_for
 c_loop
 (paren

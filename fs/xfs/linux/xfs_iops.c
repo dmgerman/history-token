@@ -1481,6 +1481,10 @@ id|uio.uio_iovcnt
 op_assign
 l_int|1
 suffix:semicolon
+id|uio.uio_fmode
+op_assign
+l_int|0
+suffix:semicolon
 id|VOP_READLINK
 c_func
 (paren

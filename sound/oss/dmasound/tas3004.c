@@ -1,5 +1,4 @@
 multiline_comment|/*&n; * Driver for the i2c/i2s based TA3004 sound chip used&n; * on some Apple hardware. Also known as &quot;snapper&quot;.&n; *&n; * Tobias Sargeant &lt;tobias.sargeant@bigpond.com&gt;&n; * Based upon tas3001c.c by Christopher C. Chimelis &lt;chris@debian.org&gt;:&n; *&n; *   TODO:&n; *   -----&n; *   * Enable control over input line 2 (is this connected?)&n; *   * Implement sleep support (at least mute everything and&n; *   * set gains to minimum during sleep)&n; *&n; */
-macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
