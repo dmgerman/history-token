@@ -2779,6 +2779,8 @@ multiline_comment|/* Port Number */
 (brace
 r_int
 id|ReturnCode
+op_assign
+l_int|0
 suffix:semicolon
 macro_line|#if (!defined(SK_SLIM) || defined(DEBUG))
 r_if
@@ -4890,6 +4892,8 @@ multiline_comment|/* new promiscuous mode */
 (brace
 r_int
 id|ReturnCode
+op_assign
+l_int|0
 suffix:semicolon
 macro_line|#if (!defined(SK_SLIM) || defined(DEBUG))
 r_if
