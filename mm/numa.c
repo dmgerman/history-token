@@ -13,6 +13,7 @@ op_assign
 l_int|1
 suffix:semicolon
 multiline_comment|/* Initialized for UMA platforms */
+macro_line|#ifndef CONFIG_DISCONTIGMEM
 DECL|variable|contig_bootmem_data
 r_static
 id|bootmem_data_t
@@ -30,7 +31,6 @@ op_amp
 id|contig_bootmem_data
 )brace
 suffix:semicolon
-macro_line|#ifndef CONFIG_DISCONTIGMEM
 multiline_comment|/*&n; * This is meant to be invoked by platforms whose physical memory starts&n; * at a considerably higher value than 0. Examples are Super-H, ARM, m68k.&n; * Should be invoked with paramters (0, 0, unsigned long *[], start_paddr).&n; */
 DECL|function|free_area_init_node
 r_void

@@ -1441,6 +1441,7 @@ id|pgdat
 )paren
 suffix:semicolon
 )brace
+macro_line|#ifndef CONFIG_DISCONTIGMEM
 DECL|function|init_bootmem
 r_int
 r_int
@@ -1550,6 +1551,7 @@ id|contig_page_data
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif /* !CONFIG_DISCONTIGMEM */
 DECL|function|__alloc_bootmem
 r_void
 op_star
