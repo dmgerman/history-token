@@ -8175,4 +8175,11 @@ c_func
 id|wd33c93_intr
 )paren
 suffix:semicolon
+DECL|variable|wd33c93_proc_info
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|wd33c93_proc_info
+)paren
+suffix:semicolon
 eof
