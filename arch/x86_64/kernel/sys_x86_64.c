@@ -270,6 +270,7 @@ id|end
 op_assign
 id|TASK_SIZE
 suffix:semicolon
+macro_line|#ifdef CONFIG_IA32_EMULATION
 r_if
 c_cond
 (paren
@@ -296,6 +297,7 @@ id|IA32_PAGE_OFFSET
 suffix:semicolon
 )brace
 r_else
+macro_line|#endif
 r_if
 c_cond
 (paren

@@ -197,7 +197,7 @@ mdefine_line|#define&t;&t;&t;APIC_TDR_DIV_128&t;0xA
 DECL|macro|APIC_BASE
 mdefine_line|#define APIC_BASE (fix_to_virt(FIX_APIC_BASE))
 DECL|macro|MAX_IO_APICS
-mdefine_line|#define MAX_IO_APICS 8
+mdefine_line|#define MAX_IO_APICS 16
 multiline_comment|/*&n; * the local APIC register structure, memory mapped. Not terribly well&n; * tested, but we might eventually use this one in the future - the&n; * problem why we cannot use it right now is the P5 APIC, it has an&n; * errata which cannot take 8-bit reads and writes, only 32-bit ones ...&n; */
 DECL|macro|u32
 mdefine_line|#define u32 unsigned int

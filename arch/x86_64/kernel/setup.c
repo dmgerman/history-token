@@ -32,6 +32,7 @@ macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/smp.h&gt;
 macro_line|#include &lt;asm/msr.h&gt;
 macro_line|#include &lt;asm/desc.h&gt;
+macro_line|#include &lt;video/edid.h&gt;
 macro_line|#include &lt;asm/e820.h&gt;
 macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#include &lt;asm/mpspec.h&gt;
@@ -39,8 +40,6 @@ macro_line|#include &lt;asm/mmu_context.h&gt;
 macro_line|#include &lt;asm/bootsetup.h&gt;
 macro_line|#include &lt;asm/smp.h&gt;
 macro_line|#include &lt;asm/proto.h&gt;
-DECL|macro|Dprintk
-mdefine_line|#define Dprintk(x...) printk(x)
 multiline_comment|/*&n; * Machine setup..&n; */
 DECL|variable|boot_cpu_data
 r_struct
@@ -118,6 +117,11 @@ l_int|0
 )braket
 suffix:semicolon
 )brace
+suffix:semicolon
+DECL|variable|edid_info
+r_struct
+id|edid_info
+id|edid_info
 suffix:semicolon
 DECL|variable|e820
 r_struct
@@ -984,12 +988,6 @@ op_star
 id|cmdline_p
 )paren
 (brace
-id|Dprintk
-c_func
-(paren
-l_string|&quot;setup_arch&bslash;n&quot;
-)paren
-suffix:semicolon
 id|ROOT_DEV
 op_assign
 id|ORIG_ROOT_DEV
@@ -1001,6 +999,10 @@ suffix:semicolon
 id|screen_info
 op_assign
 id|SCREEN_INFO
+suffix:semicolon
+id|edid_info
+op_assign
+id|EDID_INFO
 suffix:semicolon
 id|aux_device_present
 op_assign

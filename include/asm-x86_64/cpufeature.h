@@ -110,7 +110,7 @@ mdefine_line|#define cpu_has_pae            ___BUG___
 DECL|macro|cpu_has_pge
 mdefine_line|#define cpu_has_pge            1
 DECL|macro|cpu_has_apic
-mdefine_line|#define cpu_has_apic           1
+mdefine_line|#define cpu_has_apic           boot_cpu_has(X86_FEATURE_APIC)
 DECL|macro|cpu_has_mtrr
 mdefine_line|#define cpu_has_mtrr           1
 DECL|macro|cpu_has_mmx

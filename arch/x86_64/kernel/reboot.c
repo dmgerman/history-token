@@ -12,6 +12,7 @@ macro_line|#include &lt;asm/hw_irq.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/tlbflush.h&gt;
+macro_line|#include &lt;asm/apic.h&gt;
 multiline_comment|/*&n; * Power off function, if any&n; */
 DECL|variable|pm_power_off
 r_void
@@ -285,15 +286,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/* Only run this on the boot processor */
-r_if
-c_cond
-(paren
-id|cpuid
-op_ne
-id|boot_cpu_id
-)paren
-(brace
 r_static
 r_int
 id|first_entry
@@ -327,26 +319,40 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
-r_else
+id|smp_stop_cpu
+c_func
+(paren
+)paren
+suffix:semicolon
+multiline_comment|/* AP calling this. Just halt */
+r_if
+c_cond
+(paren
+id|cpuid
+op_ne
+id|boot_cpu_id
+)paren
 (brace
-multiline_comment|/* AP reentering. just halt */
 r_for
 c_loop
 (paren
 suffix:semicolon
 suffix:semicolon
 )paren
-(brace
 id|asm
-r_volatile
+c_func
 (paren
 l_string|&quot;hlt&quot;
 )paren
 suffix:semicolon
 )brace
-)brace
-)brace
-id|smp_send_stop
+multiline_comment|/* Wait for all other CPUs to have run smp_stop_cpu */
+r_while
+c_loop
+(paren
+id|cpu_online_map
+)paren
+id|rep_nop
 c_func
 (paren
 )paren
@@ -418,7 +424,24 @@ c_func
 )paren
 suffix:semicolon
 macro_line|#endif
+id|local_irq_disable
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#ifndef CONFIG_SMP
+id|disable_local_APIC
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif
 id|disable_IO_APIC
+c_func
+(paren
+)paren
+suffix:semicolon
+id|local_irq_enable
 c_func
 (paren
 )paren

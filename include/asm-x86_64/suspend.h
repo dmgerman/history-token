@@ -172,7 +172,7 @@ r_int
 id|saved_context_eflags
 suffix:semicolon
 DECL|macro|loaddebug
-mdefine_line|#define loaddebug(thread,register) &bslash;&n;               __asm__(&quot;movq %0,%%db&quot; #register  &bslash;&n;                       : /* no output */ &bslash;&n;                       :&quot;r&quot; ((thread)-&gt;debugreg[register]))
+mdefine_line|#define loaddebug(thread,register) &bslash;&n;               __asm__(&quot;movq %0,%%db&quot; #register  &bslash;&n;                       : /* no output */ &bslash;&n;                       :&quot;r&quot; ((thread)-&gt;debugreg##register))
 r_extern
 r_void
 id|fix_processor_context

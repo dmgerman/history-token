@@ -357,6 +357,13 @@ c_func
 id|copy_to_user
 )paren
 suffix:semicolon
+DECL|variable|copy_in_user
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|copy_in_user
+)paren
+suffix:semicolon
 DECL|variable|strnlen_user
 id|EXPORT_SYMBOL
 c_func
@@ -458,22 +465,6 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|smp_call_function
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#if defined(CONFIG_X86_LOCAL_APIC) &amp;&amp; defined(CONFIG_PM)
-DECL|variable|set_nmi_pm_callback
-id|EXPORT_SYMBOL_GPL
-c_func
-(paren
-id|set_nmi_pm_callback
-)paren
-suffix:semicolon
-DECL|variable|unset_nmi_pm_callback
-id|EXPORT_SYMBOL_GPL
-c_func
-(paren
-id|unset_nmi_pm_callback
 )paren
 suffix:semicolon
 macro_line|#endif
