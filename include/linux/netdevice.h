@@ -1399,6 +1399,14 @@ id|dev_base_lock
 suffix:semicolon
 multiline_comment|/* Device list lock */
 r_extern
+r_void
+id|probe_old_netdevs
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
 r_int
 id|netdev_boot_setup_add
 c_func

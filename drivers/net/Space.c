@@ -1449,6 +1449,16 @@ op_minus
 id|ENODEV
 suffix:semicolon
 )brace
+multiline_comment|/*  Statically configured drivers -- order matters here. */
+DECL|function|probe_old_netdevs
+r_void
+id|probe_old_netdevs
+c_func
+(paren
+r_void
+)paren
+(brace
+)brace
 macro_line|#ifdef CONFIG_SDLA
 r_extern
 r_int
