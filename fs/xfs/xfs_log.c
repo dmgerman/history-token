@@ -4282,9 +4282,18 @@ op_le
 id|mp-&gt;m_sectbb_log
 )paren
 suffix:semicolon
+multiline_comment|/* for larger sector sizes, must have v2 or external log */
 id|ASSERT
 c_func
 (paren
+id|log-&gt;l_sectbb_log
+op_eq
+l_int|0
+op_logical_or
+id|log-&gt;l_logBBstart
+op_eq
+l_int|0
+op_logical_or
 id|XFS_SB_VERSION_HASLOGV2
 c_func
 (paren
