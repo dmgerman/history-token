@@ -2798,7 +2798,7 @@ id|lock
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/* Reevaluate whether the task has signals pending delivery.&n;   This is required every time the blocked sigset_t changes.&n;   callers must hold sig-&gt;siglock.  */
+multiline_comment|/* Reevaluate whether the task has signals pending delivery.&n;   This is required every time the blocked sigset_t changes.&n;   callers must hold sighand-&gt;siglock.  */
 r_extern
 id|FASTCALL
 c_func
