@@ -140,6 +140,7 @@ mdefine_line|#define N_SYNC_PPP&t;14&t;/* synchronous PPP */
 DECL|macro|N_HCI
 mdefine_line|#define N_HCI&t;&t;15  /* Bluetooth HCI UART */
 macro_line|#ifdef __KERNEL__
+macro_line|#include &lt;linux/module.h&gt;
 multiline_comment|/*&t;intr=^C&t;&t;quit=^&bslash;&t;&t;erase=del&t;kill=^U&n;&t;eof=^D&t;&t;vtime=&bslash;0&t;vmin=&bslash;1&t;&t;sxtc=&bslash;0&n;&t;start=^Q&t;stop=^S&t;&t;susp=^Z&t;&t;eol=&bslash;0&n;&t;reprint=^R&t;discard=^U&t;werase=^W&t;lnext=^V&n;&t;eol2=&bslash;0&n;*/
 DECL|macro|INIT_C_CC
 mdefine_line|#define INIT_C_CC &quot;&bslash;003&bslash;034&bslash;177&bslash;025&bslash;004&bslash;0&bslash;1&bslash;0&bslash;021&bslash;023&bslash;032&bslash;0&bslash;022&bslash;017&bslash;027&bslash;026&bslash;0&quot;
@@ -155,6 +156,8 @@ DECL|macro|user_termios_to_kernel_termios
 mdefine_line|#define user_termios_to_kernel_termios(k, u) copy_from_user(k, u, sizeof(struct termios))
 DECL|macro|kernel_termios_to_user_termios
 mdefine_line|#define kernel_termios_to_user_termios(u, k) copy_to_user(u, k, sizeof(struct termios))
+DECL|macro|MODULE_ALIAS_LDISC
+mdefine_line|#define MODULE_ALIAS_LDISC(ldisc) &bslash;&n;&t;MODULE_ALIAS(&quot;tty-ldisc-&quot; __stringify(ldisc))
 macro_line|#endif&t;/* __KERNEL__ */
 macro_line|#endif&t;/* _I386_TERMIOS_H */
 eof

@@ -235,7 +235,7 @@ comma
 )brace
 suffix:semicolon
 r_static
-r_int
+id|u_int
 id|l2addrsize
 c_func
 (paren
@@ -611,7 +611,7 @@ id|l2
 suffix:semicolon
 )brace
 r_inline
-r_int
+id|u_int
 DECL|function|l2headersize
 id|l2headersize
 c_func
@@ -669,7 +669,7 @@ l_int|1
 suffix:semicolon
 )brace
 r_inline
-r_int
+id|u_int
 DECL|function|l2addrsize
 id|l2addrsize
 c_func
@@ -1278,7 +1278,7 @@ op_star
 id|skb
 )paren
 (brace
-r_int
+id|u_int
 id|i
 op_assign
 id|l2addrsize
@@ -1583,7 +1583,7 @@ op_star
 id|skb
 )paren
 (brace
-r_int
+id|u_int
 id|headers
 op_assign
 id|l2addrsize
@@ -5771,13 +5771,13 @@ suffix:semicolon
 r_int
 id|PollFlag
 comma
-id|ns
-comma
 id|i
 suffix:semicolon
 r_int
 r_int
 id|nr
+comma
+id|ns
 suffix:semicolon
 id|i
 op_assign
@@ -7011,11 +7011,10 @@ id|MAX_HEADER_LEN
 )braket
 suffix:semicolon
 r_int
-id|i
-suffix:semicolon
-r_int
 r_int
 id|p1
+comma
+id|i
 suffix:semicolon
 r_int
 r_int
@@ -9503,7 +9502,7 @@ id|u8
 op_star
 id|datap
 suffix:semicolon
-r_int
+id|u_int
 id|ret
 op_assign
 l_int|1

@@ -9177,6 +9177,9 @@ id|st-&gt;next
 r_if
 c_cond
 (paren
+(paren
+id|u_int
+)paren
 id|st-&gt;protocol
 op_eq
 (paren

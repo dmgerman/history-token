@@ -12221,6 +12221,14 @@ id|dev_kfree_skb_irq
 id|skb
 )paren
 suffix:semicolon
+macro_line|#else
+r_if
+c_cond
+(paren
+l_int|0
+)paren
+(brace
+macro_line|#endif
 id|badrx
 suffix:colon
 id|OUT4500
@@ -12237,7 +12245,6 @@ r_goto
 id|exitrx
 suffix:semicolon
 )brace
-macro_line|#endif
 )brace
 macro_line|#if WIRELESS_EXT &gt; 15
 macro_line|#ifdef IW_WIRELESS_SPY&t;&t;/* defined in iw_handler.h */
@@ -28176,6 +28183,9 @@ id|local
 op_assign
 id|dev-&gt;priv
 suffix:semicolon
+r_int
+id|mode
+suffix:semicolon
 id|readConfigRid
 c_func
 (paren
@@ -28184,7 +28194,6 @@ comma
 l_int|1
 )paren
 suffix:semicolon
-r_int
 id|mode
 op_assign
 id|local-&gt;config.powerSaveMode

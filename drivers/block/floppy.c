@@ -20534,4 +20534,10 @@ c_func
 id|floppy_init
 )paren
 macro_line|#endif
+id|MODULE_ALIAS_BLOCKDEV_MAJOR
+c_func
+(paren
+id|FLOPPY_MAJOR
+)paren
+suffix:semicolon
 eof

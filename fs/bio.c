@@ -938,10 +938,6 @@ id|bio-&gt;bi_bdev
 )paren
 suffix:semicolon
 r_int
-id|fail_segments
-op_assign
-l_int|0
-comma
 id|retried_segments
 op_assign
 l_int|0
@@ -999,10 +995,8 @@ r_return
 l_int|0
 suffix:semicolon
 multiline_comment|/*&n;&t; * we might lose a segment or two here, but rather that than&n;&t; * make this too complex.&n;&t; */
-id|retry_segments
-suffix:colon
-r_if
-c_cond
+r_while
+c_loop
 (paren
 id|bio_phys_segments
 c_func
@@ -1023,15 +1017,6 @@ id|bio
 )paren
 op_ge
 id|q-&gt;max_hw_segments
-)paren
-id|fail_segments
-op_assign
-l_int|1
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|fail_segments
 )paren
 (brace
 r_if
@@ -1054,9 +1039,6 @@ suffix:semicolon
 id|retried_segments
 op_assign
 l_int|1
-suffix:semicolon
-r_goto
-id|retry_segments
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * setup the new entry, we might clear it again later if we&n;&t; * cannot add the page&n;&t; */

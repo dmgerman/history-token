@@ -3501,6 +3501,9 @@ r_while
 c_loop
 (paren
 (paren
+id|u_int
+)paren
+(paren
 id|p
 op_minus
 id|skb-&gt;data
@@ -15727,7 +15730,7 @@ suffix:semicolon
 r_int
 id|l
 suffix:semicolon
-r_int
+id|u_int
 id|i
 suffix:semicolon
 r_struct
@@ -15997,9 +16000,10 @@ op_star
 id|arg
 )paren
 (brace
-r_int
+id|u_int
 id|i
-comma
+suffix:semicolon
+r_int
 id|mt
 comma
 id|cr
@@ -16217,6 +16221,9 @@ c_cond
 (paren
 id|skb-&gt;len
 OL
+(paren
+id|u_int
+)paren
 (paren
 (paren
 id|skb-&gt;data
@@ -17086,9 +17093,10 @@ op_star
 id|arg
 )paren
 (brace
-r_int
+id|u_int
 id|i
-comma
+suffix:semicolon
+r_int
 id|cr
 suffix:semicolon
 r_struct
@@ -17393,7 +17401,7 @@ op_star
 id|arg
 )paren
 (brace
-r_int
+id|u_int
 id|i
 suffix:semicolon
 r_struct

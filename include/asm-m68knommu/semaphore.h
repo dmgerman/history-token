@@ -232,6 +232,11 @@ id|sem-&gt;__magic
 )paren
 suffix:semicolon
 macro_line|#endif
+id|might_sleep
+c_func
+(paren
+)paren
+suffix:semicolon
 id|__asm__
 id|__volatile__
 c_func
@@ -284,6 +289,11 @@ id|sem-&gt;__magic
 )paren
 suffix:semicolon
 macro_line|#endif
+id|might_sleep
+c_func
+(paren
+)paren
+suffix:semicolon
 id|__asm__
 id|__volatile__
 c_func

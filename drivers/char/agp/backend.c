@@ -1193,6 +1193,13 @@ c_func
 l_string|&quot;GPL and additional rights&quot;
 )paren
 suffix:semicolon
+DECL|variable|AGPGART_MINOR
+id|MODULE_ALIAS_MISCDEV
+c_func
+(paren
+id|AGPGART_MINOR
+)paren
+suffix:semicolon
 DECL|variable|agp_init
 id|module_init
 c_func

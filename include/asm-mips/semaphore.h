@@ -232,6 +232,11 @@ id|sem-&gt;__magic
 )paren
 suffix:semicolon
 macro_line|#endif
+id|might_sleep
+c_func
+(paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -278,6 +283,11 @@ id|sem-&gt;__magic
 )paren
 suffix:semicolon
 macro_line|#endif
+id|might_sleep
+c_func
+(paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren

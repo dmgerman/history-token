@@ -1270,7 +1270,7 @@ suffix:semicolon
 id|__u8
 id|Data
 suffix:semicolon
-r_int
+id|u_int
 id|i
 suffix:semicolon
 r_if

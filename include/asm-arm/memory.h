@@ -4,6 +4,7 @@ DECL|macro|__ASM_ARM_MEMORY_H
 mdefine_line|#define __ASM_ARM_MEMORY_H
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/arch/memory.h&gt;
+macro_line|#ifndef __ASSEMBLY__
 multiline_comment|/*&n; * PFNs are used to describe any physical page; this means&n; * PFN 0 == physical address 0.&n; *&n; * This is the PFN of the first RAM page in the kernel&n; * direct-mapped view.  We assume this is the first page&n; * of RAM in the mem_map as well.&n; */
 DECL|macro|PHYS_PFN_OFFSET
 mdefine_line|#define PHYS_PFN_OFFSET&t;(PHYS_OFFSET &gt;&gt; PAGE_SHIFT)
@@ -114,5 +115,6 @@ mdefine_line|#define page_to_phys(page)&t;(page_to_pfn(page) &lt;&lt; PAGE_SHIFT
 multiline_comment|/*&n; * We should really eliminate virt_to_bus() here - it&squot;s deprecated.&n; */
 DECL|macro|page_to_bus
 mdefine_line|#define page_to_bus(page)&t;(virt_to_bus(page_address(page)))
+macro_line|#endif
 macro_line|#endif
 eof
