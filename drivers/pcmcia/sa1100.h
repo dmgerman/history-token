@@ -179,9 +179,9 @@ id|io_map
 id|MAX_IO_WIN
 )braket
 suffix:semicolon
-DECL|member|mem_map
+DECL|member|pc_mem_map
 id|pccard_mem_map
-id|mem_map
+id|pc_mem_map
 (braket
 id|MAX_WIN
 )braket

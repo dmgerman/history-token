@@ -1842,6 +1842,7 @@ id|page
 op_star
 id|page
 suffix:semicolon
+macro_line|#ifndef CONFIG_DISCONTIGMEM&t;
 r_if
 c_cond
 (paren
@@ -1855,6 +1856,7 @@ c_func
 l_string|&quot;mapnr is not expected&quot;
 )paren
 suffix:semicolon
+macro_line|#endif
 r_for
 c_loop
 (paren
@@ -1864,7 +1866,7 @@ l_int|0
 suffix:semicolon
 id|pfn
 OL
-id|max_mapnr
+id|num_physpages
 suffix:semicolon
 id|pfn
 op_increment
@@ -2064,11 +2066,9 @@ r_struct
 id|page
 op_star
 id|page
-op_assign
-id|mem_map
 suffix:semicolon
 r_int
-id|i
+id|pfn
 suffix:semicolon
 r_int
 r_int
@@ -2085,21 +2085,26 @@ suffix:semicolon
 r_for
 c_loop
 (paren
-id|i
+id|pfn
 op_assign
 l_int|0
 suffix:semicolon
-id|i
+id|pfn
 OL
 id|num_physpages
 suffix:semicolon
-id|i
-op_increment
-comma
-id|page
+id|pfn
 op_increment
 )paren
 (brace
+id|page
+op_assign
+id|pfn_to_page
+c_func
+(paren
+id|pfn
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2118,7 +2123,7 @@ c_cond
 id|ADDRESS
 c_func
 (paren
-id|i
+id|pfn
 )paren
 op_ge
 id|this_pagedir
@@ -2126,7 +2131,7 @@ op_logical_and
 id|ADDRESS
 c_func
 (paren
-id|i
+id|pfn
 )paren
 OL
 id|this_pagedir_end
@@ -2140,7 +2145,7 @@ c_func
 id|ADDRESS
 c_func
 (paren
-id|i
+id|pfn
 )paren
 )paren
 suffix:semicolon

@@ -12,11 +12,13 @@ macro_line|#include &lt;linux/mmzone.h&gt;
 macro_line|#include &lt;linux/swap.h&gt;
 macro_line|#include &lt;linux/rbtree.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
+macro_line|#ifndef CONFIG_DISCONTIGMEM          /* Don&squot;t use mapnrs, do it properly */
 r_extern
 r_int
 r_int
 id|max_mapnr
 suffix:semicolon
+macro_line|#endif
 r_extern
 r_int
 r_int
@@ -529,13 +531,15 @@ DECL|macro|VM_FAULT_MINOR
 mdefine_line|#define VM_FAULT_MINOR&t;1
 DECL|macro|VM_FAULT_MAJOR
 mdefine_line|#define VM_FAULT_MAJOR&t;2
-multiline_comment|/* The array of struct pages */
+macro_line|#ifndef CONFIG_DISCONTIGMEM
+multiline_comment|/* The array of struct pages - for discontigmem use pgdat-&gt;lmem_map */
 r_extern
 r_struct
 id|page
 op_star
 id|mem_map
 suffix:semicolon
+macro_line|#endif 
 r_extern
 r_void
 id|show_free_areas

@@ -69,8 +69,6 @@ DECL|macro|PHYSADDR_TO_NID
 mdefine_line|#define PHYSADDR_TO_NID(pa)&t;&t;ALPHA_PA_TO_NID(pa)
 DECL|macro|PLAT_NODE_DATA
 mdefine_line|#define PLAT_NODE_DATA(n)&t;&t;(plat_node_data[(n)])
-DECL|macro|PLAT_NODE_DATA_STARTNR
-mdefine_line|#define PLAT_NODE_DATA_STARTNR(n)&t;&bslash;&n;&t;(PLAT_NODE_DATA(n)-&gt;gendata.node_start_mapnr)
 DECL|macro|PLAT_NODE_DATA_SIZE
 mdefine_line|#define PLAT_NODE_DATA_SIZE(n)&t;&t;(PLAT_NODE_DATA(n)-&gt;gendata.node_size)
 macro_line|#if 1

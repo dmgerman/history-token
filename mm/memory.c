@@ -17,11 +17,20 @@ macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/tlb.h&gt;
 macro_line|#include &lt;asm/tlbflush.h&gt;
 macro_line|#include &lt;linux/swapops.h&gt;
+macro_line|#ifndef CONFIG_DISCONTIGMEM
+multiline_comment|/* use the per-pgdat data instead for discontigmem - mbligh */
 DECL|variable|max_mapnr
 r_int
 r_int
 id|max_mapnr
 suffix:semicolon
+DECL|variable|mem_map
+r_struct
+id|page
+op_star
+id|mem_map
+suffix:semicolon
+macro_line|#endif
 DECL|variable|num_physpages
 r_int
 r_int
@@ -95,12 +104,6 @@ id|address
 )paren
 suffix:semicolon
 )brace
-DECL|variable|mem_map
-r_struct
-id|page
-op_star
-id|mem_map
-suffix:semicolon
 multiline_comment|/*&n; * Note: this doesn&squot;t free the actual pages themselves. That&n; * has been handled earlier when unmapping all the memory regions.&n; */
 DECL|function|free_one_pmd
 r_static

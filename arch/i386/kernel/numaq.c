@@ -156,38 +156,32 @@ op_minus
 l_int|1
 )brace
 suffix:semicolon
-DECL|macro|MB_TO_ELEMENT
-mdefine_line|#define MB_TO_ELEMENT(x) (x &gt;&gt; ELEMENT_REPRESENTS)
-DECL|macro|PA_TO_MB
-mdefine_line|#define PA_TO_MB(pa) (pa &gt;&gt; 20) &t;/* assumption: a physical address is in bytes */
-DECL|function|pa_to_nid
+DECL|macro|PFN_TO_ELEMENT
+mdefine_line|#define PFN_TO_ELEMENT(pfn) (pfn / PAGES_PER_ELEMENT)
+DECL|macro|PA_TO_ELEMENT
+mdefine_line|#define PA_TO_ELEMENT(pa) (PFN_TO_ELEMENT(pa &gt;&gt; PAGE_SHIFT))
+DECL|function|pfn_to_nid
 r_int
-id|pa_to_nid
+id|pfn_to_nid
 c_func
 (paren
-id|u64
-id|pa
+r_int
+r_int
+id|pfn
 )paren
 (brace
 r_int
 id|nid
-suffix:semicolon
-id|nid
 op_assign
 id|physnode_map
 (braket
-id|MB_TO_ELEMENT
+id|PFN_TO_ELEMENT
 c_func
 (paren
-id|PA_TO_MB
-c_func
-(paren
-id|pa
-)paren
+id|pfn
 )paren
 )braket
 suffix:semicolon
-multiline_comment|/* the physical address passed in is not in the map for the system */
 r_if
 c_cond
 (paren
@@ -201,33 +195,9 @@ c_func
 (paren
 )paren
 suffix:semicolon
+multiline_comment|/* address is not present */
 r_return
 id|nid
-suffix:semicolon
-)brace
-DECL|function|pfn_to_nid
-r_int
-id|pfn_to_nid
-c_func
-(paren
-r_int
-r_int
-id|pfn
-)paren
-(brace
-r_return
-id|pa_to_nid
-c_func
-(paren
-(paren
-(paren
-id|u64
-)paren
-id|pfn
-)paren
-op_lshift
-id|PAGE_SHIFT
-)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * for each node mark the regions&n; *        TOPOFMEM = hi_shrd_mem_start + hi_shrd_mem_size&n; *&n; * need to be very careful to not mark 1024+ as belonging&n; * to node 0. will want 1027 to show as belonging to node 1&n; * example:&n; *  TOPOFMEM = 1024&n; * 1024 &gt;&gt; 8 = 4 (subtract 1 for starting at 0]&n; * tmpvar = TOPOFMEM - 256 = 768&n; * 1024 &gt;&gt; 8 = 4 (subtract 1 for starting at 0]&n; * &n; */
@@ -334,12 +304,7 @@ op_assign
 id|nid
 suffix:semicolon
 id|cur
-op_add_assign
-(paren
-id|ELEMENT_REPRESENTS
-op_minus
-l_int|1
-)paren
+op_increment
 suffix:semicolon
 )brace
 )brace
