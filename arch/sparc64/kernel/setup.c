@@ -454,7 +454,7 @@ id|pte_t
 op_star
 id|ptep
 suffix:semicolon
-id|for_each_task
+id|for_each_process
 c_func
 (paren
 id|p
