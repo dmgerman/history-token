@@ -709,6 +709,11 @@ id|acpi_irq_handler
 (paren
 id|acpi_irq_context
 )paren
+ques
+c_cond
+id|IRQ_HANDLED
+suffix:colon
+id|IRQ_NONE
 suffix:semicolon
 )brace
 id|acpi_status
@@ -3286,6 +3291,11 @@ op_star
 id|str
 op_eq
 l_char|&squot; &squot;
+op_logical_or
+op_star
+id|str
+op_eq
+l_char|&squot;:&squot;
 )paren
 op_star
 id|p
