@@ -419,6 +419,14 @@ op_amp
 id|GlobalSMBSeslock
 )paren
 suffix:semicolon
+multiline_comment|/* do not want to be sending data on a socket we are freeing */
+id|down
+c_func
+(paren
+op_amp
+id|server-&gt;tcpSem
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -530,6 +538,13 @@ c_func
 (paren
 op_amp
 id|GlobalMid_Lock
+)paren
+suffix:semicolon
+id|up
+c_func
+(paren
+op_amp
+id|ses-&gt;server-&gt;tcpSem
 )paren
 suffix:semicolon
 r_while
