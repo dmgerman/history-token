@@ -4637,6 +4637,10 @@ comma
 id|jiff
 )paren
 )paren
+id|cpu_relax
+c_func
+(paren
+)paren
 suffix:semicolon
 multiline_comment|/* Setup all network devices */
 r_if
@@ -4670,6 +4674,10 @@ id|jiffies
 comma
 id|jiff
 )paren
+)paren
+id|cpu_relax
+c_func
+(paren
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * If the config information is insufficient (e.g., our IP address or&n;&t; * IP address of the boot server is missing or we have multiple network&n;&t; * interfaces and no default was set), use BOOTP or RARP to get the&n;&t; * missing values.&n;&t; */
