@@ -1366,14 +1366,6 @@ DECL|macro|ENABLE
 mdefine_line|#define ENABLE&t;&t;1
 DECL|macro|DISABLE
 mdefine_line|#define DISABLE&t;&t;0
-DECL|macro|ADD
-mdefine_line|#define ADD&t;&t;0
-DECL|macro|REMOVE
-mdefine_line|#define REMOVE&t;&t;1
-DECL|macro|DETAIL
-mdefine_line|#define DETAIL&t;&t;2
-DECL|macro|MAX_OPS
-mdefine_line|#define MAX_OPS&t;&t;3
 DECL|macro|CARD_INFO
 mdefine_line|#define CARD_INFO&t;0x07
 DECL|macro|PCIX133
