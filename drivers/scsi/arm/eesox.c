@@ -2124,14 +2124,6 @@ r_goto
 id|out_unmap
 suffix:semicolon
 )brace
-id|host-&gt;base
-op_assign
-(paren
-r_int
-r_int
-)paren
-id|base
-suffix:semicolon
 id|ecard_set_drvdata
 c_func
 (paren

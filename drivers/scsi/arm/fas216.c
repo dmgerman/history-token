@@ -269,26 +269,11 @@ id|reg
 op_lshift
 id|info-&gt;scsi.io_shift
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|info-&gt;scsi.io_base
-)paren
 r_return
 id|readb
 c_func
 (paren
 id|info-&gt;scsi.io_base
-op_plus
-id|off
-)paren
-suffix:semicolon
-r_else
-r_return
-id|inb
-c_func
-(paren
-id|info-&gt;scsi.io_port
 op_plus
 id|off
 )paren
@@ -322,28 +307,12 @@ id|reg
 op_lshift
 id|info-&gt;scsi.io_shift
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|info-&gt;scsi.io_base
-)paren
 id|writeb
 c_func
 (paren
 id|val
 comma
 id|info-&gt;scsi.io_base
-op_plus
-id|off
-)paren
-suffix:semicolon
-r_else
-id|outb
-c_func
-(paren
-id|val
-comma
-id|info-&gt;scsi.io_port
 op_plus
 id|off
 )paren
@@ -573,9 +542,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;    scsi={ io_port=%X io_shift=%X irq=%X cfg={ %X %X %X %X }&bslash;n&quot;
-comma
-id|info-&gt;scsi.io_port
+l_string|&quot;    scsi={ io_shift=%X irq=%X cfg={ %X %X %X %X }&bslash;n&quot;
 comma
 id|info-&gt;scsi.io_shift
 comma
@@ -10954,13 +10921,13 @@ id|buffer
 comma
 l_string|&quot;&bslash;n&quot;
 l_string|&quot;Chip    : %s&bslash;n&quot;
-l_string|&quot; Address: 0x%08lx&bslash;n&quot;
+l_string|&quot; Address: 0x%p&bslash;n&quot;
 l_string|&quot; IRQ    : %d&bslash;n&quot;
 l_string|&quot; DMA    : %d&bslash;n&quot;
 comma
 id|info-&gt;scsi.type
 comma
-id|info-&gt;host-&gt;io_port
+id|info-&gt;scsi.io_base
 comma
 id|info-&gt;scsi.irq
 comma
