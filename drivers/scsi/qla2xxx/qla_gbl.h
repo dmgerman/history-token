@@ -894,7 +894,7 @@ op_star
 comma
 r_uint8
 comma
-r_void
+id|link_stat_t
 op_star
 comma
 r_uint16
