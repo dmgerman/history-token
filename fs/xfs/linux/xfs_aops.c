@@ -3449,6 +3449,10 @@ r_if
 c_cond
 (paren
 id|uptodate
+op_logical_and
+id|bh
+op_eq
+id|head
 )paren
 id|SetPageUptodate
 c_func
