@@ -6697,6 +6697,7 @@ suffix:semicolon
 id|rtnl_lock
 c_func
 (paren
+l_int|NULL
 )paren
 suffix:semicolon
 id|err
@@ -7305,6 +7306,7 @@ suffix:semicolon
 id|rtnl_lock
 c_func
 (paren
+l_int|NULL
 )paren
 suffix:semicolon
 id|err
@@ -7385,6 +7387,7 @@ suffix:semicolon
 id|rtnl_lock
 c_func
 (paren
+l_int|NULL
 )paren
 suffix:semicolon
 id|err
@@ -12565,6 +12568,7 @@ multiline_comment|/* This takes sense only during module load. */
 id|rtnl_lock
 c_func
 (paren
+l_int|NULL
 )paren
 suffix:semicolon
 r_for
@@ -12742,6 +12746,7 @@ macro_line|#endif
 id|rtnl_lock
 c_func
 (paren
+l_int|NULL
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; *&t;clean dev list.&n;&t; */

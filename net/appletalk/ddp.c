@@ -6527,6 +6527,11 @@ id|sk
 op_assign
 id|sock-&gt;sk
 suffix:semicolon
+r_struct
+id|net_device
+op_star
+id|unregister_list
+suffix:semicolon
 r_switch
 c_cond
 (paren
@@ -6749,6 +6754,8 @@ multiline_comment|/* proxy AARP */
 id|rtnl_lock
 c_func
 (paren
+op_amp
+id|unregister_list
 )paren
 suffix:semicolon
 id|rc

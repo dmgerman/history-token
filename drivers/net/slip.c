@@ -3078,6 +3078,7 @@ multiline_comment|/* RTnetlink lock is misused here to serialize concurrent&n;&t
 id|rtnl_lock
 c_func
 (paren
+l_int|NULL
 )paren
 suffix:semicolon
 multiline_comment|/* Collect hanged up channels. */

@@ -2298,6 +2298,11 @@ op_star
 )paren
 id|tty-&gt;disc_data
 suffix:semicolon
+r_struct
+id|net_device
+op_star
+id|unregister_list
+suffix:semicolon
 multiline_comment|/* First make sure we&squot;re connected. */
 r_if
 c_cond
@@ -2314,6 +2319,8 @@ suffix:semicolon
 id|rtnl_lock
 c_func
 (paren
+op_amp
+id|unregister_list
 )paren
 suffix:semicolon
 id|dev_close

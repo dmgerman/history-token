@@ -6327,9 +6327,16 @@ c_cond
 id|self-&gt;netdev
 )paren
 (brace
+r_struct
+id|net_device
+op_star
+id|unregister_list
+suffix:semicolon
 multiline_comment|/* Remove netdevice */
 id|rtnl_lock
 (paren
+op_amp
+id|unregister_list
 )paren
 suffix:semicolon
 id|unregister_netdevice
@@ -6965,6 +6972,7 @@ id|toshoboe_net_ioctl
 suffix:semicolon
 id|rtnl_lock
 (paren
+l_int|NULL
 )paren
 suffix:semicolon
 id|err

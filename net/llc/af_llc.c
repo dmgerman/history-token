@@ -747,6 +747,7 @@ id|addr-&gt;sllc_smac
 id|rtnl_lock
 c_func
 (paren
+l_int|NULL
 )paren
 suffix:semicolon
 id|dev
@@ -1422,6 +1423,7 @@ id|llc-&gt;dev
 id|rtnl_lock
 c_func
 (paren
+l_int|NULL
 )paren
 suffix:semicolon
 id|dev
@@ -3109,6 +3111,7 @@ id|llc-&gt;dev
 id|rtnl_lock
 c_func
 (paren
+l_int|NULL
 )paren
 suffix:semicolon
 id|dev

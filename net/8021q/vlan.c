@@ -291,10 +291,15 @@ id|dev
 comma
 op_star
 id|nxt
+comma
+op_star
+id|unregister_list
 suffix:semicolon
 id|rtnl_lock
 c_func
 (paren
+op_amp
+id|unregister_list
 )paren
 suffix:semicolon
 r_for
@@ -959,9 +964,16 @@ op_amp
 id|IFF_802_1Q_VLAN
 )paren
 (brace
+r_struct
+id|net_device
+op_star
+id|unregister_list
+suffix:semicolon
 id|rtnl_lock
 c_func
 (paren
+op_amp
+id|unregister_list
 )paren
 suffix:semicolon
 id|ret
@@ -1090,6 +1102,11 @@ r_struct
 id|vlan_group
 op_star
 id|grp
+suffix:semicolon
+r_struct
+id|net_device
+op_star
+id|unregister_list
 suffix:semicolon
 r_struct
 id|net_device
@@ -1250,6 +1267,8 @@ multiline_comment|/* From this point on, all the data structures must remain&n;&
 id|rtnl_lock
 c_func
 (paren
+op_amp
+id|unregister_list
 )paren
 suffix:semicolon
 multiline_comment|/* The real device must be up and operating in order to&n;&t; * assosciate a VLAN device with it.&n;&t; */
@@ -1482,9 +1501,11 @@ id|new_dev-&gt;destructor
 op_assign
 id|vlan_dev_destruct
 suffix:semicolon
-id|new_dev-&gt;owner
-op_assign
-id|THIS_MODULE
+id|SET_MODULE_OWNER
+c_func
+(paren
+id|new_dev
+)paren
 suffix:semicolon
 multiline_comment|/* new_dev-&gt;ifindex = 0;  it will be set when added to&n;&t; * the global list.&n;&t; * iflink is set as well.&n;&t; */
 id|new_dev-&gt;get_stats

@@ -3327,9 +3327,16 @@ op_star
 id|sk
 )paren
 (brace
+r_struct
+id|net_device
+op_star
+id|unregister_list
+suffix:semicolon
 id|rtnl_lock
 c_func
 (paren
+op_amp
+id|unregister_list
 )paren
 suffix:semicolon
 r_if
@@ -3406,6 +3413,11 @@ suffix:semicolon
 r_struct
 id|mfcctl
 id|mfc
+suffix:semicolon
+r_struct
+id|net_device
+op_star
+id|unregister_list
 suffix:semicolon
 r_if
 c_cond
@@ -3487,6 +3499,7 @@ suffix:semicolon
 id|rtnl_lock
 c_func
 (paren
+l_int|NULL
 )paren
 suffix:semicolon
 r_if
@@ -3639,6 +3652,8 @@ suffix:semicolon
 id|rtnl_lock
 c_func
 (paren
+op_amp
+id|unregister_list
 )paren
 suffix:semicolon
 r_if
@@ -3729,6 +3744,7 @@ suffix:semicolon
 id|rtnl_lock
 c_func
 (paren
+l_int|NULL
 )paren
 suffix:semicolon
 r_if
@@ -3858,6 +3874,7 @@ suffix:semicolon
 id|rtnl_lock
 c_func
 (paren
+l_int|NULL
 )paren
 suffix:semicolon
 id|ret

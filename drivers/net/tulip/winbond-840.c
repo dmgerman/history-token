@@ -7871,6 +7871,7 @@ suffix:semicolon
 id|rtnl_lock
 c_func
 (paren
+l_int|NULL
 )paren
 suffix:semicolon
 r_if
@@ -8042,6 +8043,7 @@ suffix:semicolon
 id|rtnl_lock
 c_func
 (paren
+l_int|NULL
 )paren
 suffix:semicolon
 r_if

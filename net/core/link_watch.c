@@ -267,6 +267,7 @@ suffix:semicolon
 id|rtnl_lock
 c_func
 (paren
+l_int|NULL
 )paren
 suffix:semicolon
 id|linkwatch_run_queue
