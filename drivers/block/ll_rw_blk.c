@@ -2362,7 +2362,7 @@ op_minus
 id|ENOMEM
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * blk_queue_init_tags - initialize the queue tag info&n; * @q:  the request queue for the device&n; * @depth:  the maximum queue depth supported&n; **/
+multiline_comment|/**&n; * blk_queue_init_tags - initialize the queue tag info&n; * @q:  the request queue for the device&n; * @depth:  the maximum queue depth supported&n; * @tags: the tag to use&n; **/
 DECL|function|blk_queue_init_tags
 r_int
 id|blk_queue_init_tags
@@ -7231,7 +7231,7 @@ c_func
 id|blk_rq_map_user
 )paren
 suffix:semicolon
-multiline_comment|/**&n; * blk_rq_unmap_user - unmap a request with user data&n; * @rq:&t;&t;request to be unmapped&n; * @ubuf:&t;user buffer&n; * @ulen:&t;length of user buffer&n; *&n; * Description:&n; *    Unmap a request previously mapped by blk_rq_map_user().&n; */
+multiline_comment|/**&n; * blk_rq_unmap_user - unmap a request with user data&n; * @rq:&t;&t;request to be unmapped&n; * @bio:&t;bio for the request&n; * @ulen:&t;length of user buffer&n; *&n; * Description:&n; *    Unmap a request previously mapped by blk_rq_map_user().&n; */
 DECL|function|blk_rq_unmap_user
 r_int
 id|blk_rq_unmap_user

@@ -5653,7 +5653,7 @@ id|ppos
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * proc_dostring - read a string sysctl&n; * @table: the sysctl table&n; * @write: %TRUE if this is a write to the sysctl file&n; * @filp: the file structure&n; * @buffer: the user buffer&n; * @lenp: the size of the user buffer&n; *&n; * Reads/writes a string from/to the user buffer. If the kernel&n; * buffer provided is not large enough to hold the string, the&n; * string is truncated. The copied string is %NULL-terminated.&n; * If the string is being read by the user process, it is copied&n; * and a newline &squot;&bslash;n&squot; is added. It is truncated if the buffer is&n; * not large enough.&n; *&n; * Returns 0 on success.&n; */
+multiline_comment|/**&n; * proc_dostring - read a string sysctl&n; * @table: the sysctl table&n; * @write: %TRUE if this is a write to the sysctl file&n; * @filp: the file structure&n; * @buffer: the user buffer&n; * @lenp: the size of the user buffer&n; * @ppos: file position&n; *&n; * Reads/writes a string from/to the user buffer. If the kernel&n; * buffer provided is not large enough to hold the string, the&n; * string is truncated. The copied string is %NULL-terminated.&n; * If the string is being read by the user process, it is copied&n; * and a newline &squot;&bslash;n&squot; is added. It is truncated if the buffer is&n; * not large enough.&n; *&n; * Returns 0 on success.&n; */
 DECL|function|proc_dostring
 r_int
 id|proc_dostring
@@ -6795,7 +6795,7 @@ suffix:semicolon
 DECL|macro|TMPBUFLEN
 macro_line|#undef TMPBUFLEN
 )brace
-multiline_comment|/**&n; * proc_dointvec - read a vector of integers&n; * @table: the sysctl table&n; * @write: %TRUE if this is a write to the sysctl file&n; * @filp: the file structure&n; * @buffer: the user buffer&n; * @lenp: the size of the user buffer&n; *&n; * Reads/writes up to table-&gt;maxlen/sizeof(unsigned int) integer&n; * values from/to the user buffer, treated as an ASCII string. &n; *&n; * Returns 0 on success.&n; */
+multiline_comment|/**&n; * proc_dointvec - read a vector of integers&n; * @table: the sysctl table&n; * @write: %TRUE if this is a write to the sysctl file&n; * @filp: the file structure&n; * @buffer: the user buffer&n; * @lenp: the size of the user buffer&n; * @ppos: file position&n; *&n; * Reads/writes up to table-&gt;maxlen/sizeof(unsigned int) integer&n; * values from/to the user buffer, treated as an ASCII string. &n; *&n; * Returns 0 on success.&n; */
 DECL|function|proc_dointvec
 r_int
 id|proc_dointvec
@@ -7292,7 +7292,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * proc_dointvec_minmax - read a vector of integers with min/max values&n; * @table: the sysctl table&n; * @write: %TRUE if this is a write to the sysctl file&n; * @filp: the file structure&n; * @buffer: the user buffer&n; * @lenp: the size of the user buffer&n; *&n; * Reads/writes up to table-&gt;maxlen/sizeof(unsigned int) integer&n; * values from/to the user buffer, treated as an ASCII string.&n; *&n; * This routine will ensure the values are within the range specified by&n; * table-&gt;extra1 (min) and table-&gt;extra2 (max).&n; *&n; * Returns 0 on success.&n; */
+multiline_comment|/**&n; * proc_dointvec_minmax - read a vector of integers with min/max values&n; * @table: the sysctl table&n; * @write: %TRUE if this is a write to the sysctl file&n; * @filp: the file structure&n; * @buffer: the user buffer&n; * @lenp: the size of the user buffer&n; * @ppos: file position&n; *&n; * Reads/writes up to table-&gt;maxlen/sizeof(unsigned int) integer&n; * values from/to the user buffer, treated as an ASCII string.&n; *&n; * This routine will ensure the values are within the range specified by&n; * table-&gt;extra1 (min) and table-&gt;extra2 (max).&n; *&n; * Returns 0 on success.&n; */
 DECL|function|proc_dointvec_minmax
 r_int
 id|proc_dointvec_minmax
@@ -7991,7 +7991,7 @@ suffix:semicolon
 DECL|macro|TMPBUFLEN
 macro_line|#undef TMPBUFLEN
 )brace
-multiline_comment|/**&n; * proc_doulongvec_minmax - read a vector of long integers with min/max values&n; * @table: the sysctl table&n; * @write: %TRUE if this is a write to the sysctl file&n; * @filp: the file structure&n; * @buffer: the user buffer&n; * @lenp: the size of the user buffer&n; *&n; * Reads/writes up to table-&gt;maxlen/sizeof(unsigned long) unsigned long&n; * values from/to the user buffer, treated as an ASCII string.&n; *&n; * This routine will ensure the values are within the range specified by&n; * table-&gt;extra1 (min) and table-&gt;extra2 (max).&n; *&n; * Returns 0 on success.&n; */
+multiline_comment|/**&n; * proc_doulongvec_minmax - read a vector of long integers with min/max values&n; * @table: the sysctl table&n; * @write: %TRUE if this is a write to the sysctl file&n; * @filp: the file structure&n; * @buffer: the user buffer&n; * @lenp: the size of the user buffer&n; * @ppos: file position&n; *&n; * Reads/writes up to table-&gt;maxlen/sizeof(unsigned long) unsigned long&n; * values from/to the user buffer, treated as an ASCII string.&n; *&n; * This routine will ensure the values are within the range specified by&n; * table-&gt;extra1 (min) and table-&gt;extra2 (max).&n; *&n; * Returns 0 on success.&n; */
 DECL|function|proc_doulongvec_minmax
 r_int
 id|proc_doulongvec_minmax
@@ -8045,7 +8045,7 @@ l_int|1l
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * proc_doulongvec_ms_jiffies_minmax - read a vector of millisecond values with min/max values&n; * @table: the sysctl table&n; * @write: %TRUE if this is a write to the sysctl file&n; * @filp: the file structure&n; * @buffer: the user buffer&n; * @lenp: the size of the user buffer&n; *&n; * Reads/writes up to table-&gt;maxlen/sizeof(unsigned long) unsigned long&n; * values from/to the user buffer, treated as an ASCII string. The values&n; * are treated as milliseconds, and converted to jiffies when they are stored.&n; *&n; * This routine will ensure the values are within the range specified by&n; * table-&gt;extra1 (min) and table-&gt;extra2 (max).&n; *&n; * Returns 0 on success.&n; */
+multiline_comment|/**&n; * proc_doulongvec_ms_jiffies_minmax - read a vector of millisecond values with min/max values&n; * @table: the sysctl table&n; * @write: %TRUE if this is a write to the sysctl file&n; * @filp: the file structure&n; * @buffer: the user buffer&n; * @lenp: the size of the user buffer&n; * @ppos: file position&n; *&n; * Reads/writes up to table-&gt;maxlen/sizeof(unsigned long) unsigned long&n; * values from/to the user buffer, treated as an ASCII string. The values&n; * are treated as milliseconds, and converted to jiffies when they are stored.&n; *&n; * This routine will ensure the values are within the range specified by&n; * table-&gt;extra1 (min) and table-&gt;extra2 (max).&n; *&n; * Returns 0 on success.&n; */
 DECL|function|proc_doulongvec_ms_jiffies_minmax
 r_int
 id|proc_doulongvec_ms_jiffies_minmax
@@ -8455,7 +8455,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * proc_dointvec_jiffies - read a vector of integers as seconds&n; * @table: the sysctl table&n; * @write: %TRUE if this is a write to the sysctl file&n; * @filp: the file structure&n; * @buffer: the user buffer&n; * @lenp: the size of the user buffer&n; *&n; * Reads/writes up to table-&gt;maxlen/sizeof(unsigned int) integer&n; * values from/to the user buffer, treated as an ASCII string. &n; * The values read are assumed to be in seconds, and are converted into&n; * jiffies.&n; *&n; * Returns 0 on success.&n; */
+multiline_comment|/**&n; * proc_dointvec_jiffies - read a vector of integers as seconds&n; * @table: the sysctl table&n; * @write: %TRUE if this is a write to the sysctl file&n; * @filp: the file structure&n; * @buffer: the user buffer&n; * @lenp: the size of the user buffer&n; * @ppos: file position&n; *&n; * Reads/writes up to table-&gt;maxlen/sizeof(unsigned int) integer&n; * values from/to the user buffer, treated as an ASCII string. &n; * The values read are assumed to be in seconds, and are converted into&n; * jiffies.&n; *&n; * Returns 0 on success.&n; */
 DECL|function|proc_dointvec_jiffies
 r_int
 id|proc_dointvec_jiffies
