@@ -4238,7 +4238,7 @@ id|try_hard
 (brace
 id|neigh
 op_assign
-id|dn_neigh_lookup
+id|neigh_lookup_nodev
 c_func
 (paren
 op_amp

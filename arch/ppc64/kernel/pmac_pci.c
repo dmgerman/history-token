@@ -2873,13 +2873,11 @@ c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_PMAC_DART
-id|iommu_setup_pmac
+id|iommu_setup_u3
 c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#endif /* CONFIG_PMAC_DART */
 )brace
 DECL|function|pmac_fixup_phb_resources
 r_static

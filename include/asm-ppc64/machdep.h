@@ -230,11 +230,11 @@ id|local
 )paren
 suffix:semicolon
 multiline_comment|/* special for kexec, to be called in real mode, linar mapping is&n;&t; * destroyed as well */
-DECL|member|htpe_clear_all
+DECL|member|hpte_clear_all
 r_void
 (paren
 op_star
-id|htpe_clear_all
+id|hpte_clear_all
 )paren
 (paren
 r_void
