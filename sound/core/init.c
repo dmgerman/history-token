@@ -1471,7 +1471,7 @@ id|snd_printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;unable to choose default card id (%s)&quot;
+l_string|&quot;unable to choose default card id (%s)&bslash;n&quot;
 comma
 id|id
 )paren
