@@ -6362,7 +6362,11 @@ c_cond
 id|bdev_read_only
 c_func
 (paren
-id|inode-&gt;i_bdev
+id|I_BDEV
+c_func
+(paren
+id|inode
+)paren
 )paren
 )paren
 r_return

@@ -2759,7 +2759,11 @@ id|inode-&gt;i_mode
 (brace
 id|lo_device
 op_assign
-id|inode-&gt;i_bdev
+id|I_BDEV
+c_func
+(paren
+id|inode
+)paren
 suffix:semicolon
 r_if
 c_cond

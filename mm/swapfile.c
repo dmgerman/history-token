@@ -4316,10 +4316,12 @@ r_struct
 id|block_device
 op_star
 id|bdev
-suffix:semicolon
-id|bdev
 op_assign
-id|mapping-&gt;host-&gt;i_bdev
+id|I_BDEV
+c_func
+(paren
+id|mapping-&gt;host
+)paren
 suffix:semicolon
 id|set_blocksize
 c_func
@@ -5259,7 +5261,11 @@ id|inode-&gt;i_mode
 (brace
 id|bdev
 op_assign
-id|inode-&gt;i_bdev
+id|I_BDEV
+c_func
+(paren
+id|inode
+)paren
 suffix:semicolon
 id|error
 op_assign
@@ -5300,7 +5306,7 @@ op_assign
 id|set_blocksize
 c_func
 (paren
-id|inode-&gt;i_bdev
+id|bdev
 comma
 id|PAGE_SIZE
 )paren
