@@ -81,11 +81,6 @@ c_func
 id|sb
 )paren
 suffix:semicolon
-id|lock_kernel
-c_func
-(paren
-)paren
-suffix:semicolon
 id|pr_debug
 c_func
 (paren
@@ -193,11 +188,6 @@ id|sb-&gt;s_fs_info
 op_assign
 l_int|NULL
 suffix:semicolon
-id|unlock_kernel
-c_func
-(paren
-)paren
-suffix:semicolon
 r_return
 suffix:semicolon
 )brace
@@ -227,11 +217,6 @@ id|AFFS_SB
 c_func
 (paren
 id|sb
-)paren
-suffix:semicolon
-id|lock_kernel
-c_func
-(paren
 )paren
 suffix:semicolon
 r_if
@@ -310,9 +295,17 @@ id|sb-&gt;s_dirt
 op_assign
 l_int|0
 suffix:semicolon
-id|unlock_kernel
+id|pr_debug
 c_func
 (paren
+l_string|&quot;AFFS: write_super() at %lu, clean=%d&bslash;n&quot;
+comma
+id|get_seconds
+c_func
+(paren
+)paren
+comma
+id|clean
 )paren
 suffix:semicolon
 )brace
