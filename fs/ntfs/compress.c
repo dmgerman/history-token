@@ -2709,9 +2709,16 @@ c_func
 (paren
 id|vol-&gt;sb
 comma
-l_string|&quot;ntfs_decompress() failed with &quot;
-l_string|&quot;error code %i. Skipping this &quot;
-l_string|&quot;compression block.&bslash;n&quot;
+l_string|&quot;ntfs_decompress() failed in inode &quot;
+l_string|&quot;0x%Lx with error code %i. Skipping &quot;
+l_string|&quot;this compression block.&bslash;n&quot;
+comma
+(paren
+r_int
+r_int
+r_int
+)paren
+id|ni-&gt;mft_no
 comma
 op_minus
 id|err
