@@ -1,10 +1,10 @@
 multiline_comment|/* 3c501.c: A 3Com 3c501 Ethernet driver for Linux. */
-multiline_comment|/*&n;    Written 1992,1993,1994  Donald Becker&n;&n;    Copyright 1993 United States Government as represented by the&n;    Director, National Security Agency.  This software may be used and&n;    distributed according to the terms of the GNU General Public License,&n;    incorporated herein by reference.&n;&n;    This is a device driver for the 3Com Etherlink 3c501.&n;    Do not purchase this card, even as a joke.  It&squot;s performance is horrible,&n;    and it breaks in many ways.&n;&n;    The author may be reached as becker@scyld.com, or C/O&n;&t;Scyld Computing Corporation&n;&t;410 Severn Ave., Suite 210&n;&t;Annapolis MD 21403&n;&n;&n;    Fixed (again!) the missing interrupt locking on TX/RX shifting.&n;    &t;&t;Alan Cox &lt;Alan.Cox@linux.org&gt;&n;&n;    Removed calls to init_etherdev since they are no longer needed, and&n;    cleaned up modularization just a bit. The driver still allows only&n;    the default address for cards when loaded as a module, but that&squot;s&n;    really less braindead than anyone using a 3c501 board. :)&n;&t;&t;    19950208 (invid@msen.com)&n;&n;    Added traps for interrupts hitting the window as we clear and TX load&n;    the board. Now getting 150K/second FTP with a 3c501 card. Still playing&n;    with a TX-TX optimisation to see if we can touch 180-200K/second as seems&n;    theoretically maximum.&n;    &t;&t;19950402 Alan Cox &lt;Alan.Cox@linux.org&gt;&n;    &t;&t;&n;    Cleaned up for 2.3.x because we broke SMP now. &n;    &t;&t;20000208 Alan Cox &lt;alan@redhat.com&gt;&n;    &t;&t;&n;*/
+multiline_comment|/*&n;    Written 1992,1993,1994  Donald Becker&n;&n;    Copyright 1993 United States Government as represented by the&n;    Director, National Security Agency.  This software may be used and&n;    distributed according to the terms of the GNU General Public License,&n;    incorporated herein by reference.&n;&n;    This is a device driver for the 3Com Etherlink 3c501.&n;    Do not purchase this card, even as a joke.  It&squot;s performance is horrible,&n;    and it breaks in many ways.&n;&n;    The original author may be reached as becker@scyld.com, or C/O&n;&t;Scyld Computing Corporation&n;&t;410 Severn Ave., Suite 210&n;&t;Annapolis MD 21403&n;&n;    Fixed (again!) the missing interrupt locking on TX/RX shifting.&n;    &t;&t;Alan Cox &lt;Alan.Cox@linux.org&gt;&n;&n;    Removed calls to init_etherdev since they are no longer needed, and&n;    cleaned up modularization just a bit. The driver still allows only&n;    the default address for cards when loaded as a module, but that&squot;s&n;    really less braindead than anyone using a 3c501 board. :)&n;&t;&t;    19950208 (invid@msen.com)&n;&n;    Added traps for interrupts hitting the window as we clear and TX load&n;    the board. Now getting 150K/second FTP with a 3c501 card. Still playing&n;    with a TX-TX optimisation to see if we can touch 180-200K/second as seems&n;    theoretically maximum.&n;    &t;&t;19950402 Alan Cox &lt;Alan.Cox@linux.org&gt;&n;    &t;&t;&n;    Cleaned up for 2.3.x because we broke SMP now. &n;    &t;&t;20000208 Alan Cox &lt;alan@redhat.com&gt;&n;&n;    Check up pass for 2.5. Nothing significant changed&n;    &t;&t;20021009 Alan Cox &lt;alan@redhat.com&gt;&n;    &t;&t;&n;   For the avoidance of doubt the &quot;preferred form&quot; of this code is one which&n;   is in an open non patent encumbered format. Where cryptographic key signing&n;   forms part of the process of creating an executable the information&n;   including keys needed to generate an equivalently functional executable&n;   are deemed to be part of the source code.&n;&n;*/
 multiline_comment|/**&n; * DOC: 3c501 Card Notes&n; *&n; *  Some notes on this thing if you have to hack it.  [Alan]&n; *&n; *  Some documentation is available from 3Com. Due to the boards age&n; *  standard responses when you ask for this will range from &squot;be serious&squot;&n; *  to &squot;give it to a museum&squot;. The documentation is incomplete and mostly&n; *  of historical interest anyway. &n; *&n; *  The basic system is a single buffer which can be used to receive or&n; *  transmit a packet. A third command mode exists when you are setting&n; *  things up.&n; *&n; *  If it&squot;s transmitting it&squot;s not receiving and vice versa. In fact the&n; *  time to get the board back into useful state after an operation is&n; *  quite large.&n; *&n; *  The driver works by keeping the board in receive mode waiting for a&n; *  packet to arrive. When one arrives it is copied out of the buffer&n; *  and delivered to the kernel. The card is reloaded and off we go.&n; *&n; *  When transmitting lp-&gt;txing is set and the card is reset (from&n; *  receive mode) [possibly losing a packet just received] to command&n; *  mode. A packet is loaded and transmit mode triggered. The interrupt&n; *  handler runs different code for transmit interrupts and can handle&n; *  returning to receive mode or retransmissions (yes you have to help&n; *  out with those too).&n; *&n; * DOC: Problems&n; *  &n; *  There are a wide variety of undocumented error returns from the card&n; *  and you basically have to kick the board and pray if they turn up. Most&n; *  only occur under extreme load or if you do something the board doesn&squot;t&n; *  like (eg touching a register at the wrong time).&n; *&n; *  The driver is less efficient than it could be. It switches through&n; *  receive mode even if more transmits are queued. If this worries you buy&n; *  a real Ethernet card.&n; *&n; *  The combination of slow receive restart and no real multicast&n; *  filter makes the board unusable with a kernel compiled for IP&n; *  multicasting in a real multicast environment. That&squot;s down to the board,&n; *  but even with no multicast programs running a multicast IP kernel is&n; *  in group 224.0.0.1 and you will therefore be listening to all multicasts.&n; *  One nv conference running over that Ethernet and you can give up.&n; *&n; */
 DECL|macro|DRV_NAME
 mdefine_line|#define DRV_NAME&t;&quot;3c501&quot;
 DECL|macro|DRV_VERSION
-mdefine_line|#define DRV_VERSION&t;&quot;2001/11/17&quot;
+mdefine_line|#define DRV_VERSION&t;&quot;2002/10/09&quot;
 DECL|variable|version
 r_static
 r_const
@@ -38,6 +38,7 @@ macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/etherdevice.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &quot;3c501.h&quot;
 multiline_comment|/* A zero-terminated list of I/O addresses to be probed.&n;   The 3c501 can be at many locations, but here are the popular ones. */
 DECL|variable|__initdata
 r_static
@@ -56,290 +57,8 @@ comma
 l_int|0
 )brace
 suffix:semicolon
-"&f;"
-multiline_comment|/*&n; *&t;Index to functions.&n; */
-r_int
-id|el1_probe
-c_func
-(paren
-r_struct
-id|net_device
-op_star
-id|dev
-)paren
-suffix:semicolon
-r_static
-r_int
-id|el1_probe1
-c_func
-(paren
-r_struct
-id|net_device
-op_star
-id|dev
-comma
-r_int
-id|ioaddr
-)paren
-suffix:semicolon
-r_static
-r_int
-id|el_open
-c_func
-(paren
-r_struct
-id|net_device
-op_star
-id|dev
-)paren
-suffix:semicolon
-r_static
-r_void
-id|el_timeout
-c_func
-(paren
-r_struct
-id|net_device
-op_star
-id|dev
-)paren
-suffix:semicolon
-r_static
-r_int
-id|el_start_xmit
-c_func
-(paren
-r_struct
-id|sk_buff
-op_star
-id|skb
-comma
-r_struct
-id|net_device
-op_star
-id|dev
-)paren
-suffix:semicolon
-r_static
-r_void
-id|el_interrupt
-c_func
-(paren
-r_int
-id|irq
-comma
-r_void
-op_star
-id|dev_id
-comma
-r_struct
-id|pt_regs
-op_star
-id|regs
-)paren
-suffix:semicolon
-r_static
-r_void
-id|el_receive
-c_func
-(paren
-r_struct
-id|net_device
-op_star
-id|dev
-)paren
-suffix:semicolon
-r_static
-r_void
-id|el_reset
-c_func
-(paren
-r_struct
-id|net_device
-op_star
-id|dev
-)paren
-suffix:semicolon
-r_static
-r_int
-id|el1_close
-c_func
-(paren
-r_struct
-id|net_device
-op_star
-id|dev
-)paren
-suffix:semicolon
-r_static
-r_struct
-id|net_device_stats
-op_star
-id|el1_get_stats
-c_func
-(paren
-r_struct
-id|net_device
-op_star
-id|dev
-)paren
-suffix:semicolon
-r_static
-r_void
-id|set_multicast_list
-c_func
-(paren
-r_struct
-id|net_device
-op_star
-id|dev
-)paren
-suffix:semicolon
-r_static
-r_int
-id|netdev_ioctl
-(paren
-r_struct
-id|net_device
-op_star
-id|dev
-comma
-r_struct
-id|ifreq
-op_star
-id|rq
-comma
-r_int
-id|cmd
-)paren
-suffix:semicolon
-DECL|macro|EL1_IO_EXTENT
-mdefine_line|#define EL1_IO_EXTENT&t;16
-macro_line|#ifndef EL_DEBUG
-DECL|macro|EL_DEBUG
-mdefine_line|#define EL_DEBUG  0&t;/* use 0 for production, 1 for devel., &gt;2 for debug */
-macro_line|#endif&t;&t;&t;/* Anything above 5 is wordy death! */
-DECL|macro|debug
-mdefine_line|#define debug el_debug
-DECL|variable|el_debug
-r_static
-r_int
-id|el_debug
-op_assign
-id|EL_DEBUG
-suffix:semicolon
-multiline_comment|/*&n; *&t;Board-specific info in dev-&gt;priv.&n; */
-DECL|struct|net_local
-r_struct
-id|net_local
-(brace
-DECL|member|stats
-r_struct
-id|net_device_stats
-id|stats
-suffix:semicolon
-DECL|member|tx_pkt_start
-r_int
-id|tx_pkt_start
-suffix:semicolon
-multiline_comment|/* The length of the current Tx packet. */
-DECL|member|collisions
-r_int
-id|collisions
-suffix:semicolon
-multiline_comment|/* Tx collisions this packet */
-DECL|member|loading
-r_int
-id|loading
-suffix:semicolon
-multiline_comment|/* Spot buffer load collisions */
-DECL|member|txing
-r_int
-id|txing
-suffix:semicolon
-multiline_comment|/* True if card is in TX mode */
-DECL|member|lock
-id|spinlock_t
-id|lock
-suffix:semicolon
-multiline_comment|/* Serializing lock */
-)brace
-suffix:semicolon
-"&f;"
-DECL|macro|RX_STATUS
-mdefine_line|#define RX_STATUS (ioaddr + 0x06)
-DECL|macro|RX_CMD
-mdefine_line|#define RX_CMD&t;  RX_STATUS
-DECL|macro|TX_STATUS
-mdefine_line|#define TX_STATUS (ioaddr + 0x07)
-DECL|macro|TX_CMD
-mdefine_line|#define TX_CMD&t;  TX_STATUS
-DECL|macro|GP_LOW
-mdefine_line|#define GP_LOW &t;  (ioaddr + 0x08)
-DECL|macro|GP_HIGH
-mdefine_line|#define GP_HIGH   (ioaddr + 0x09)
-DECL|macro|RX_BUF_CLR
-mdefine_line|#define RX_BUF_CLR (ioaddr + 0x0A)
-DECL|macro|RX_LOW
-mdefine_line|#define RX_LOW&t;  (ioaddr + 0x0A)
-DECL|macro|RX_HIGH
-mdefine_line|#define RX_HIGH   (ioaddr + 0x0B)
-DECL|macro|SAPROM
-mdefine_line|#define SAPROM&t;  (ioaddr + 0x0C)
-DECL|macro|AX_STATUS
-mdefine_line|#define AX_STATUS (ioaddr + 0x0E)
-DECL|macro|AX_CMD
-mdefine_line|#define AX_CMD&t;  AX_STATUS
-DECL|macro|DATAPORT
-mdefine_line|#define DATAPORT  (ioaddr + 0x0F)
-DECL|macro|TX_RDY
-mdefine_line|#define TX_RDY 0x08&t;&t;/* In TX_STATUS */
-DECL|macro|EL1_DATAPTR
-mdefine_line|#define EL1_DATAPTR&t;0x08
-DECL|macro|EL1_RXPTR
-mdefine_line|#define EL1_RXPTR&t;0x0A
-DECL|macro|EL1_SAPROM
-mdefine_line|#define EL1_SAPROM&t;0x0C
-DECL|macro|EL1_DATAPORT
-mdefine_line|#define EL1_DATAPORT &t;0x0f
-multiline_comment|/*&n; *&t;Writes to the ax command register.&n; */
-DECL|macro|AX_OFF
-mdefine_line|#define AX_OFF&t;0x00&t;&t;&t;/* Irq off, buffer access on */
-DECL|macro|AX_SYS
-mdefine_line|#define AX_SYS  0x40&t;&t;&t;/* Load the buffer */
-DECL|macro|AX_XMIT
-mdefine_line|#define AX_XMIT 0x44&t;&t;&t;/* Transmit a packet */
-DECL|macro|AX_RX
-mdefine_line|#define AX_RX&t;0x48&t;&t;&t;/* Receive a packet */
-DECL|macro|AX_LOOP
-mdefine_line|#define AX_LOOP&t;0x0C&t;&t;&t;/* Loopback mode */
-DECL|macro|AX_RESET
-mdefine_line|#define AX_RESET 0x80
-multiline_comment|/*&n; *&t;Normal receive mode written to RX_STATUS.  We must intr on short packets&n; *&t;to avoid bogus rx lockups.&n; */
-DECL|macro|RX_NORM
-mdefine_line|#define RX_NORM 0xA8&t;&t;/* 0x68 == all addrs, 0xA8 only to me. */
-DECL|macro|RX_PROM
-mdefine_line|#define RX_PROM 0x68&t;&t;/* Senior Prom, uhmm promiscuous mode. */
-DECL|macro|RX_MULT
-mdefine_line|#define RX_MULT 0xE8&t;&t;/* Accept multicast packets. */
-DECL|macro|TX_NORM
-mdefine_line|#define TX_NORM 0x0A&t;&t;/* Interrupt on everything that might hang the chip */
-multiline_comment|/*&n; *&t;TX_STATUS register.&n; */
-DECL|macro|TX_COLLISION
-mdefine_line|#define TX_COLLISION 0x02
-DECL|macro|TX_16COLLISIONS
-mdefine_line|#define TX_16COLLISIONS 0x04
-DECL|macro|TX_READY
-mdefine_line|#define TX_READY 0x08
-DECL|macro|RX_RUNT
-mdefine_line|#define RX_RUNT 0x08
-DECL|macro|RX_MISSED
-mdefine_line|#define RX_MISSED 0x01&t;&t;/* Missed a packet due to 3c501 braindamage. */
-DECL|macro|RX_GOOD
-mdefine_line|#define RX_GOOD&t;0x30&t;&t;/* Good packet 0x20, or simple overflow 0x10. */
-"&f;"
 multiline_comment|/*&n; *&t;The boilerplate probe code.&n; */
-multiline_comment|/**&n; * el1_probe:&n; * @dev: The device structure passed in to probe. &n; *&n; * This can be called from two places. The network layer will probe using&n; * a device structure passed in with the probe information completed. For a&n; * modular driver we use #init_module to fill in our own structure and probe&n; * for it.&n; *&n; * Returns 0 on success. ENXIO if asked not to probe and ENODEV if asked to&n; * probe and failing to find anything.&n; */
+multiline_comment|/**&n; * el1_probe:&t;&t;-&t;probe for a 3c501&n; * @dev: The device structure passed in to probe. &n; *&n; * This can be called from two places. The network layer will probe using&n; * a device structure passed in with the probe information completed. For a&n; * modular driver we use #init_module to fill in our own structure and probe&n; * for it.&n; *&n; * Returns 0 on success. ENXIO if asked not to probe and ENODEV if asked to&n; * probe and failing to find anything.&n; */
 DECL|function|el1_probe
 r_int
 id|__init
@@ -1423,7 +1142,6 @@ l_int|1
 suffix:semicolon
 )brace
 )brace
-"&f;"
 multiline_comment|/**&n; * el_interrupt:&n; * @irq: Interrupt number&n; * @dev_id: The 3c501 that burped&n; * @regs: Register data (surplus to our requirements)&n; *&n; * Handle the ether interface interrupts. The 3c501 needs a lot more &n; * hand holding than most cards. In paticular we get a transmit interrupt&n; * with a collision error because the board firmware isnt capable of rewinding&n; * its own transmit buffer pointers. It can however count to 16 for us.&n; *&n; * On the receive side the card is also very dumb. It has no buffering to&n; * speak of. We simply pull the packet out of its PIO buffer (which is slow)&n; * and queue it for the kernel. Then we reset the card for the next packet.&n; *&n; * We sometimes get suprise interrupts late both because the SMP IRQ delivery&n; * is message passing and because the card sometimes seems to deliver late. I&n; * think if it is part way through a receive and the mode is changed it carries&n; * on receiving and sends us an interrupt. We have to band aid all these cases&n; * to get a sensible 150kbytes/second performance. Even then you want a small&n; * TCP window.&n; */
 DECL|function|el_interrupt
 r_static
@@ -2982,12 +2700,22 @@ id|EL1_IO_EXTENT
 suffix:semicolon
 )brace
 macro_line|#endif /* MODULE */
+id|MODULE_AUTHOR
+c_func
+(paren
+l_string|&quot;Donald Becker, Alan Cox&quot;
+)paren
+suffix:semicolon
+id|MODULE_DESCRIPTION
+c_func
+(paren
+l_string|&quot;Support for the ancient 3Com 3c501 ethernet card&quot;
+)paren
+suffix:semicolon
 id|MODULE_LICENSE
 c_func
 (paren
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
-"&f;"
-multiline_comment|/*&n; * Local variables:&n; *  compile-command: &quot;gcc -D__KERNEL__ -Wall -Wstrict-prototypes -O6 -fomit-frame-pointer  -m486 -c -o 3c501.o 3c501.c&quot;&n; *  kept-new-versions: 5&n; * End:&n; */
 eof
