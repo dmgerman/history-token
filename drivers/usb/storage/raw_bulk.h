@@ -13,6 +13,7 @@ op_star
 id|us
 comma
 r_int
+r_int
 id|pipe
 comma
 r_int

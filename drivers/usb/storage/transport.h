@@ -307,6 +307,7 @@ op_star
 id|data
 comma
 r_int
+r_int
 id|pipe
 comma
 r_int
@@ -363,6 +364,8 @@ id|us_data
 op_star
 comma
 r_int
+r_int
+id|pipe
 )paren
 suffix:semicolon
 r_extern
