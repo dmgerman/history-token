@@ -691,6 +691,30 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/* Grab socket reference count. This operation is valid only&n;   when sk is ALREADY grabbed f.e. it is found in hash table&n;   or a list and the lookup is made under lock preventing hash table&n;   modifications.&n; */
+DECL|function|sock_hold
+r_static
+r_inline
+r_void
+id|sock_hold
+c_func
+(paren
+r_struct
+id|sock
+op_star
+id|sk
+)paren
+(brace
+id|atomic_inc
+c_func
+(paren
+op_amp
+id|sk-&gt;sk_refcnt
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/* Ungrab socket in the context, which assumes that socket refcnt&n;   cannot hit zero, f.e. it is true in context of any socketcall.&n; */
+DECL|function|__sock_put
 r_static
 r_inline
 r_void
@@ -702,7 +726,15 @@ id|sock
 op_star
 id|sk
 )paren
+(brace
+id|atomic_dec
+c_func
+(paren
+op_amp
+id|sk-&gt;sk_refcnt
+)paren
 suffix:semicolon
+)brace
 DECL|function|sk_del_node_init
 r_static
 id|__inline__
@@ -2550,50 +2582,6 @@ id|sk-&gt;sk_omem_alloc
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Socket reference counting postulates.&n; *&n; * * Each user of socket SHOULD hold a reference count.&n; * * Each access point to socket (an hash table bucket, reference from a list,&n; *   running timer, skb in flight MUST hold a reference count.&n; * * When reference count hits 0, it means it will never increase back.&n; * * When reference count hits 0, it means that no references from&n; *   outside exist to this socket and current process on current CPU&n; *   is last user and may/should destroy this socket.&n; * * sk_free is called from any context: process, BH, IRQ. When&n; *   it is called, socket has no references from outside -&gt; sk_free&n; *   may release descendant resources allocated by the socket, but&n; *   to the time when it is called, socket is NOT referenced by any&n; *   hash tables, lists etc.&n; * * Packets, delivered from outside (from network or from another process)&n; *   and enqueued on receive/error queues SHOULD NOT grab reference count,&n; *   when they sit in queue. Otherwise, packets will leak to hole, when&n; *   socket is looked up by one cpu and unhasing is made by another CPU.&n; *   It is true for udp/raw, netlink (leak to receive and error queues), tcp&n; *   (leak to backlog). Packet socket does all the processing inside&n; *   BR_NETPROTO_LOCK, so that it has not this race condition. UNIX sockets&n; *   use separate SMP lock, so that they are prone too.&n; */
-multiline_comment|/* Grab socket reference count. This operation is valid only&n;   when sk is ALREADY grabbed f.e. it is found in hash table&n;   or a list and the lookup is made under lock preventing hash table&n;   modifications.&n; */
-DECL|function|sock_hold
-r_static
-r_inline
-r_void
-id|sock_hold
-c_func
-(paren
-r_struct
-id|sock
-op_star
-id|sk
-)paren
-(brace
-id|atomic_inc
-c_func
-(paren
-op_amp
-id|sk-&gt;sk_refcnt
-)paren
-suffix:semicolon
-)brace
-multiline_comment|/* Ungrab socket in the context, which assumes that socket refcnt&n;   cannot hit zero, f.e. it is true in context of any socketcall.&n; */
-DECL|function|__sock_put
-r_static
-r_inline
-r_void
-id|__sock_put
-c_func
-(paren
-r_struct
-id|sock
-op_star
-id|sk
-)paren
-(brace
-id|atomic_dec
-c_func
-(paren
-op_amp
-id|sk-&gt;sk_refcnt
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/* Ungrab socket and destroy it, if it was the last reference. */
 DECL|function|sock_put
 r_static
