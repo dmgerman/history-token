@@ -3282,6 +3282,7 @@ l_int|1
 comma
 r_sizeof
 (paren
+op_star
 id|chip
 )paren
 op_plus
