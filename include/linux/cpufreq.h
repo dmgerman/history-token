@@ -388,12 +388,6 @@ id|name
 id|CPUFREQ_NAME_LEN
 )braket
 suffix:semicolon
-DECL|member|policy
-r_struct
-id|cpufreq_policy
-op_star
-id|policy
-suffix:semicolon
 multiline_comment|/* needed by all drivers */
 DECL|member|init
 r_int
