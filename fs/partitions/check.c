@@ -1614,9 +1614,6 @@ c_loop
 id|part
 op_assign
 l_int|1
-comma
-id|p
-op_increment
 suffix:semicolon
 id|part
 OL
