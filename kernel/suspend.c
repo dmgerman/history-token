@@ -29,6 +29,17 @@ macro_line|#include &lt;asm/mmu_context.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;linux/swapops.h&gt;
+r_extern
+r_void
+id|signal_wake_up
+c_func
+(paren
+r_struct
+id|task_struct
+op_star
+id|t
+)paren
+suffix:semicolon
 DECL|variable|software_suspend_enabled
 r_int
 r_char
@@ -181,8 +192,8 @@ l_int|NULL
 suffix:semicolon
 DECL|variable|pagedir_save
 r_static
-r_int
-r_int
+id|suspend_pagedir_t
+op_star
 id|pagedir_save
 suffix:semicolon
 DECL|variable|__nosavedata
@@ -696,10 +707,6 @@ id|PAGE_SIZE
 suffix:semicolon
 id|sh-&gt;suspend_pagedir
 op_assign
-(paren
-r_int
-r_int
-)paren
 id|pagedir_nosave
 suffix:semicolon
 r_if
@@ -727,6 +734,7 @@ suffix:semicolon
 multiline_comment|/*&n; * This is our sync function. With this solution we probably won&squot;t sleep&n; * but that should not be a problem since tasks are stopped..&n; */
 DECL|function|do_suspend_sync
 r_static
+r_inline
 r_void
 id|do_suspend_sync
 c_func
@@ -734,38 +742,12 @@ c_func
 r_void
 )paren
 (brace
-r_while
-c_loop
-(paren
-l_int|1
-)paren
-(brace
 id|blk_run_queues
 c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#error this is broken, FIXME
-r_if
-c_cond
-(paren
-op_logical_neg
-id|TQ_ACTIVE
-c_func
-(paren
-id|tq_disk
-)paren
-)paren
-r_break
-suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;Hm, tq_disk is not empty after run_task_queue&bslash;n&quot;
-)paren
-suffix:semicolon
-)brace
+macro_line|#warning This might be broken. We need to somehow wait for data to reach the disk
 )brace
 multiline_comment|/* We memorize in swapfile_used what swap devices are used for suspension */
 DECL|macro|SWAPFILE_UNUSED
@@ -1348,9 +1330,6 @@ r_int
 r_int
 id|address
 suffix:semicolon
-id|kdev_t
-id|suspend_device
-suffix:semicolon
 id|PRINTS
 c_func
 (paren
@@ -1458,8 +1437,11 @@ suffix:semicolon
 (brace
 r_int
 id|dummy1
-comma
-id|dummy2
+suffix:semicolon
+r_struct
+id|inode
+op_star
+id|suspend_file
 suffix:semicolon
 id|get_swaphandle_info
 c_func
@@ -1470,7 +1452,7 @@ op_amp
 id|dummy1
 comma
 op_amp
-id|suspend_device
+id|suspend_file
 )paren
 suffix:semicolon
 )brace
@@ -3286,6 +3268,10 @@ suffix:semicolon
 id|free_suspend_pagedir
 c_func
 (paren
+(paren
+r_int
+r_int
+)paren
 id|pagedir_save
 )paren
 suffix:semicolon
@@ -4417,6 +4403,7 @@ id|__init
 id|name_to_kdev_t
 c_func
 (paren
+r_const
 r_char
 op_star
 id|line
@@ -4506,7 +4493,11 @@ c_func
 (paren
 l_string|&quot;Resuming from device %x&bslash;n&quot;
 comma
+id|kdev_t_to_nr
+c_func
+(paren
 id|resume_device
+)paren
 )paren
 suffix:semicolon
 DECL|macro|READTO

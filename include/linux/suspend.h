@@ -86,8 +86,8 @@ r_int
 id|page_size
 suffix:semicolon
 DECL|member|suspend_pagedir
-r_int
-r_int
+id|suspend_pagedir_t
+op_star
 id|suspend_pagedir
 suffix:semicolon
 DECL|member|num_pbes
@@ -146,16 +146,6 @@ id|software_resume
 c_func
 (paren
 r_void
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|resume_setup
-c_func
-(paren
-r_char
-op_star
-id|str
 )paren
 suffix:semicolon
 r_extern
