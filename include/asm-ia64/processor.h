@@ -684,7 +684,7 @@ suffix:semicolon
 r_struct
 id|task_struct
 suffix:semicolon
-multiline_comment|/*&n; * Free all resources held by a thread. This is called after the&n; * parent of DEAD_TASK has collected the exist status of the task via&n; * wait().&n; */
+multiline_comment|/*&n; * Free all resources held by a thread. This is called after the&n; * parent of DEAD_TASK has collected the exit status of the task via&n; * wait().&n; */
 DECL|macro|release_thread
 mdefine_line|#define release_thread(dead_task)
 multiline_comment|/* Prepare to copy thread state - unlazy all lazy status */

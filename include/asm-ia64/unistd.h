@@ -421,7 +421,8 @@ DECL|macro|__NR_set_tid_address
 mdefine_line|#define __NR_set_tid_address&t;&t;1233
 DECL|macro|__NR_fadvise64
 mdefine_line|#define __NR_fadvise64&t;&t;&t;1234
-multiline_comment|/* 1235 available for reuse */
+DECL|macro|__NR_tgkill
+mdefine_line|#define __NR_tgkill&t;&t;&t;1235
 DECL|macro|__NR_exit_group
 mdefine_line|#define __NR_exit_group&t;&t;&t;1236
 DECL|macro|__NR_lookup_dcookie
