@@ -116,8 +116,6 @@ DECL|macro|TASK_ZOMBIE
 mdefine_line|#define TASK_ZOMBIE&t;&t;4
 DECL|macro|TASK_STOPPED
 mdefine_line|#define TASK_STOPPED&t;&t;8
-DECL|macro|PREEMPT_ACTIVE
-mdefine_line|#define PREEMPT_ACTIVE&t;&t;0x4000000
 DECL|macro|__set_task_state
 mdefine_line|#define __set_task_state(tsk, state_value)&t;&t;&bslash;&n;&t;do { (tsk)-&gt;state = (state_value); } while (0)
 macro_line|#ifdef CONFIG_SMP
