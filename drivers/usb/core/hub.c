@@ -3889,13 +3889,6 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-id|hub-&gt;children
-(braket
-id|port
-)braket
-op_assign
-id|dev
-suffix:semicolon
 id|dev-&gt;state
 op_assign
 id|USB_STATE_POWERED
@@ -4081,9 +4074,18 @@ op_amp
 id|hub-&gt;dev
 )paren
 )paren
+(brace
+id|hub-&gt;children
+(braket
+id|port
+)braket
+op_assign
+id|dev
+suffix:semicolon
 r_goto
 id|done
 suffix:semicolon
+)brace
 multiline_comment|/* Free the configuration if there was an error */
 id|usb_put_dev
 c_func
@@ -4097,13 +4099,6 @@ op_assign
 id|HUB_LONG_RESET_TIME
 suffix:semicolon
 )brace
-id|hub-&gt;children
-(braket
-id|port
-)braket
-op_assign
-l_int|NULL
-suffix:semicolon
 id|hub_port_disable
 c_func
 (paren
