@@ -2415,6 +2415,24 @@ id|i
 )paren
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|signal_pending
+c_func
+(paren
+id|current
+)paren
+)paren
+(brace
+id|retval
+op_assign
+op_minus
+id|EINTR
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
 multiline_comment|/* &n;&t;&t; * Get a page for the entry, using the existing swap&n;&t;&t; * cache page if there is one.  Otherwise, get a clean&n;&t;&t; * page and read the swap into it. &n;&t;&t; */
 id|swap_map
 op_assign
@@ -2980,7 +2998,7 @@ c_func
 id|page
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * Make sure that we aren&squot;t completely killing&n;&t;&t; * interactive performance.  Interruptible check on&n;&t;&t; * signal_pending() would be nice, but changes the spec?&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Make sure that we aren&squot;t completely killing&n;&t;&t; * interactive performance.&n;&t;&t; */
 id|cond_resched
 c_func
 (paren
