@@ -22,12 +22,12 @@ macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/mach/map.h&gt;
 macro_line|#include &lt;asm/mach/time.h&gt;
 macro_line|#include &lt;asm/mach/irq.h&gt;
-DECL|variable|ixp2000_slowport_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|ixp2000_slowport_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|variable|ixp2000_slowport_irq_flags
 r_static

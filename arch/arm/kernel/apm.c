@@ -158,12 +158,12 @@ c_func
 id|kapmd_exit
 )paren
 suffix:semicolon
-DECL|variable|kapmd_queue_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|kapmd_queue_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|variable|kapmd_queue
 r_static

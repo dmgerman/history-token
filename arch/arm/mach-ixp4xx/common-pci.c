@@ -44,12 +44,12 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/*&n; * PCI cfg an I/O routines are done by programming a &n; * command/byte enable register, and then read/writing&n; * the data from a data regsiter. We need to ensure&n; * these transactions are atomic or we will end up&n; * with corrupt data on the bus or in a driver.&n; */
-DECL|variable|ixp4xx_pci_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|ixp4xx_pci_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 multiline_comment|/*&n; * Read from PCI config space&n; */
 DECL|function|crp_read
