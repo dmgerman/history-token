@@ -2552,9 +2552,8 @@ id|PORT_CMD
 suffix:semicolon
 id|tmp
 op_and_assign
+op_complement
 id|PORT_CMD_START
-op_or
-id|PORT_CMD_FIS_RX
 suffix:semicolon
 id|writel
 c_func
@@ -2713,8 +2712,6 @@ suffix:semicolon
 id|tmp
 op_or_assign
 id|PORT_CMD_START
-op_or
-id|PORT_CMD_FIS_RX
 suffix:semicolon
 id|writel
 c_func
