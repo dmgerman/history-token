@@ -294,7 +294,7 @@ op_star
 id|out
 )paren
 suffix:semicolon
-macro_line|#ifdef __ia64__
+macro_line|#if defined(__ia64__) || defined(__x86_64__)
 multiline_comment|/* On IA-64, we always use the &quot;64-bit version&quot; of the IPC structures.  */
 DECL|macro|ipc_parse_version
 macro_line|# define ipc_parse_version(cmd)&t;IPC_64
