@@ -2,11 +2,6 @@ macro_line|#ifndef _LINUX_SCHED_H
 DECL|macro|_LINUX_SCHED_H
 mdefine_line|#define _LINUX_SCHED_H
 macro_line|#include &lt;asm/param.h&gt;&t;/* for HZ */
-r_extern
-r_int
-r_int
-id|event
-suffix:semicolon
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/capability.h&gt;
 macro_line|#include &lt;linux/threads.h&gt;

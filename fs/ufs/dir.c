@@ -1664,9 +1664,7 @@ id|inode
 )paren
 (brace
 id|dir-&gt;i_version
-op_assign
 op_increment
-id|event
 suffix:semicolon
 id|de-&gt;d_ino
 op_assign
@@ -2356,9 +2354,7 @@ op_assign
 id|CURRENT_TIME
 suffix:semicolon
 id|dir-&gt;i_version
-op_assign
 op_increment
-id|event
 suffix:semicolon
 id|mark_inode_dirty
 c_func
@@ -2547,9 +2543,7 @@ op_assign
 l_int|0
 suffix:semicolon
 id|inode-&gt;i_version
-op_assign
 op_increment
-id|event
 suffix:semicolon
 id|inode-&gt;i_ctime
 op_assign

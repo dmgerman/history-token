@@ -2970,13 +2970,6 @@ c_func
 id|is_bad_inode
 )paren
 suffix:semicolon
-DECL|variable|event
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|event
-)paren
-suffix:semicolon
 DECL|variable|__inode_dir_notify
 id|EXPORT_SYMBOL
 c_func

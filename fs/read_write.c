@@ -126,8 +126,7 @@ id|offset
 suffix:semicolon
 id|file-&gt;f_version
 op_assign
-op_increment
-id|event
+l_int|0
 suffix:semicolon
 )brace
 id|retval
@@ -226,8 +225,7 @@ id|offset
 suffix:semicolon
 id|file-&gt;f_version
 op_assign
-op_increment
-id|event
+l_int|0
 suffix:semicolon
 )brace
 id|retval
@@ -342,8 +340,7 @@ id|offset
 suffix:semicolon
 id|file-&gt;f_version
 op_assign
-op_increment
-id|event
+l_int|0
 suffix:semicolon
 )brace
 id|retval

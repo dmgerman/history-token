@@ -5453,6 +5453,13 @@ op_assign
 op_amp
 id|sem
 suffix:semicolon
+id|init_timer
+c_func
+(paren
+op_amp
+id|chip-&gt;wt
+)paren
+suffix:semicolon
 id|chip-&gt;wt.function
 op_assign
 id|chip_thread_wake

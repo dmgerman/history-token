@@ -5850,6 +5850,13 @@ c_func
 id|dev
 )paren
 suffix:semicolon
+id|init_timer
+c_func
+(paren
+op_amp
+id|smc-&gt;media
+)paren
+suffix:semicolon
 id|smc-&gt;media.function
 op_assign
 op_amp

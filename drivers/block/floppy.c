@@ -19121,6 +19121,16 @@ id|drive
 op_increment
 )paren
 (brace
+id|init_timer
+c_func
+(paren
+op_amp
+id|motor_off_timer
+(braket
+id|drive
+)braket
+)paren
+suffix:semicolon
 id|motor_off_timer
 (braket
 id|drive

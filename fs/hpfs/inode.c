@@ -318,11 +318,6 @@ id|hpfs_inode-&gt;i_ea_size
 op_assign
 l_int|0
 suffix:semicolon
-id|i-&gt;i_version
-op_assign
-op_increment
-id|event
-suffix:semicolon
 id|hpfs_inode-&gt;i_rddir_off
 op_assign
 l_int|NULL

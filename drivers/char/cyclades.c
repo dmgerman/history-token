@@ -53,6 +53,7 @@ macro_line|#undef&t;CY_ENABLE_MONITORING
 DECL|macro|CY_PCI_DEBUG
 macro_line|#undef&t;CY_PCI_DEBUG
 macro_line|#if 0
+DECL|macro|PAUSE
 mdefine_line|#define PAUSE __asm__(&quot;nop&quot;);
 macro_line|#else
 DECL|macro|PAUSE
@@ -941,10 +942,16 @@ r_struct
 id|timer_list
 id|cyz_timerlist
 op_assign
-(brace
-id|function
-suffix:colon
+id|TIMER_INITIALIZER
+c_func
+(paren
 id|cyz_poll
+comma
+l_int|0
+comma
+l_int|0
+)paren
+suffix:semicolon
 )brace
 suffix:semicolon
 macro_line|#else /* CONFIG_CYZ_INTR */
@@ -957,7 +964,6 @@ r_int
 r_int
 )paren
 suffix:semicolon
-DECL|variable|cyz_rx_full_timer
 r_static
 r_struct
 id|timer_list
@@ -970,7 +976,6 @@ macro_line|#endif /* CONFIG_CYZ_INTR */
 r_static
 r_inline
 r_int
-DECL|function|serial_paranoia_check
 id|serial_paranoia_check
 c_func
 (paren
@@ -1128,7 +1133,6 @@ multiline_comment|/*&n; * This routine is used by the interrupt handler to sched
 r_static
 r_inline
 r_void
-DECL|function|cy_sched_event
 id|cy_sched_event
 c_func
 (paren
@@ -1160,7 +1164,6 @@ multiline_comment|/* cy_sched_event */
 multiline_comment|/*&n; * This routine is used to handle the &quot;bottom half&quot; processing for the&n; * serial driver, known also the &quot;software interrupt&quot; processing.&n; * This processing is done at the kernel interrupt level, after the&n; * cy#/_interrupt() has returned, BUT WITH INTERRUPTS TURNED ON.  This&n; * is where time-consuming activities which can not be done in the&n; * interrupt driver proper are done; the interrupt driver schedules&n; * them using cy_sched_event(), and they get done here.&n; *&n; * This is done through one level of indirection--the task queue.&n; * When a hardware interrupt service routine wants service by the&n; * driver&squot;s bottom half, it enqueues the appropriate tq_struct (one&n; * per port) to the keventd work queue and sets a request flag&n; * that the work queue be processed.&n; *&n; * Although this may seem unwieldy, it gives the system a way to&n; * pass an argument (in this case the pointer to the cyclades_port&n; * structure) to the bottom half of the driver.  Previous kernels&n; * had to poll every port to see if that port needed servicing.&n; */
 r_static
 r_void
-DECL|function|do_softint
 id|do_softint
 c_func
 (paren
@@ -1424,7 +1427,6 @@ multiline_comment|/********* Start of block of Cyclom-Y specific code ********/
 multiline_comment|/* This routine waits up to 1000 micro-seconds for the previous&n;   command to the Cirrus chip to complete and then issues the&n;   new command.  An error is returned if the previous command&n;   didn&squot;t finish within the time limit.&n;&n;   This function is only called from inside spinlock-protected code.&n; */
 r_static
 r_int
-DECL|function|cyy_issue_cmd
 id|cyy_issue_cmd
 c_func
 (paren
@@ -1529,7 +1531,6 @@ macro_line|#ifdef CONFIG_ISA
 multiline_comment|/* ISA interrupt detection code */
 r_static
 r_int
-DECL|function|detect_isa_irq
 id|detect_isa_irq
 (paren
 r_volatile
@@ -1870,7 +1871,6 @@ macro_line|#endif /* CONFIG_ISA */
 multiline_comment|/* The real interrupt service routine is called&n;   whenever the card wants its hand held--chars&n;   received, out buffer empty, modem change, etc.&n; */
 r_static
 r_void
-DECL|function|cyy_interrupt
 id|cyy_interrupt
 c_func
 (paren
@@ -4066,7 +4066,6 @@ multiline_comment|/******** Start of block of Cyclades-Z specific code *********
 multiline_comment|/***********************************************************/
 r_static
 r_int
-DECL|function|cyz_fetch_msg
 id|cyz_fetch_msg
 c_func
 (paren
@@ -4258,7 +4257,6 @@ suffix:semicolon
 multiline_comment|/* cyz_fetch_msg */
 r_static
 r_int
-DECL|function|cyz_issue_cmd
 id|cyz_issue_cmd
 c_func
 (paren
@@ -4477,7 +4475,6 @@ suffix:semicolon
 multiline_comment|/* cyz_issue_cmd */
 r_static
 r_void
-DECL|function|cyz_handle_rx
 id|cyz_handle_rx
 c_func
 (paren
@@ -4933,7 +4930,6 @@ suffix:semicolon
 )brace
 r_static
 r_void
-DECL|function|cyz_handle_tx
 id|cyz_handle_tx
 c_func
 (paren
@@ -5381,7 +5377,6 @@ suffix:semicolon
 )brace
 r_static
 r_void
-DECL|function|cyz_handle_cmd
 id|cyz_handle_cmd
 c_func
 (paren
@@ -5955,7 +5950,6 @@ suffix:semicolon
 macro_line|#ifdef CONFIG_CYZ_INTR
 r_static
 r_void
-DECL|function|cyz_interrupt
 id|cyz_interrupt
 c_func
 (paren
@@ -6046,7 +6040,6 @@ suffix:semicolon
 multiline_comment|/* cyz_interrupt */
 r_static
 r_void
-DECL|function|cyz_rx_restart
 id|cyz_rx_restart
 c_func
 (paren
@@ -6161,7 +6154,6 @@ suffix:semicolon
 macro_line|#else /* CONFIG_CYZ_INTR */
 r_static
 r_void
-DECL|function|cyz_poll
 id|cyz_poll
 c_func
 (paren
@@ -6452,7 +6444,6 @@ multiline_comment|/***********************************************************/
 multiline_comment|/* This is called whenever a port becomes active;&n;   interrupts are enabled and DTR &amp; RTS are turned on.&n; */
 r_static
 r_int
-DECL|function|startup
 id|startup
 c_func
 (paren
@@ -7437,7 +7428,6 @@ suffix:semicolon
 multiline_comment|/* startup */
 r_static
 r_void
-DECL|function|start_xmit
 id|start_xmit
 c_func
 (paren
@@ -7673,7 +7663,6 @@ multiline_comment|/* start_xmit */
 multiline_comment|/*&n; * This routine shuts down a serial port; interrupts are disabled,&n; * and DTR is dropped if the hangup on close termio flag is on.&n; */
 r_static
 r_void
-DECL|function|shutdown
 id|shutdown
 c_func
 (paren
@@ -8311,7 +8300,6 @@ multiline_comment|/* shutdown */
 multiline_comment|/*&n; * ------------------------------------------------------------&n; * cy_open() and friends&n; * ------------------------------------------------------------&n; */
 r_static
 r_int
-DECL|function|block_til_ready
 id|block_til_ready
 c_func
 (paren
@@ -9383,7 +9371,6 @@ multiline_comment|/* block_til_ready */
 multiline_comment|/*&n; * This routine is called whenever a serial port is opened.  It&n; * performs the serial-specific initialization for the tty structure.&n; */
 r_static
 r_int
-DECL|function|cy_open
 id|cy_open
 c_func
 (paren
@@ -9961,7 +9948,6 @@ multiline_comment|/* cy_open */
 multiline_comment|/*&n; * cy_wait_until_sent() --- wait until the transmitter is empty&n; */
 r_static
 r_void
-DECL|function|cy_wait_until_sent
 id|cy_wait_until_sent
 c_func
 (paren
@@ -10314,7 +10300,6 @@ macro_line|#endif
 multiline_comment|/*&n; * This routine is called when a particular tty device is closed.&n; */
 r_static
 r_void
-DECL|function|cy_close
 id|cy_close
 c_func
 (paren
@@ -11043,7 +11028,6 @@ multiline_comment|/* cy_close */
 multiline_comment|/* This routine gets called when tty_write has put something into&n; * the write_queue.  The characters may come from user space or&n; * kernel space.&n; *&n; * This routine will return the number of characters actually&n; * accepted for writing.&n; *&n; * If the port is not already transmitting stuff, start it off by&n; * enabling interrupts.  The interrupt service routine will then&n; * ensure that the characters are sent.&n; * If the port is already active, there is no need to kick it.&n; *&n; */
 r_static
 r_int
-DECL|function|cy_write
 id|cy_write
 c_func
 (paren
@@ -11458,7 +11442,6 @@ multiline_comment|/* cy_write */
 multiline_comment|/*&n; * This routine is called by the kernel to write a single&n; * character to the tty device.  If the kernel uses this routine,&n; * it must call the flush_chars() routine (if defined) when it is&n; * done stuffing characters into the driver.  If there is no room&n; * in the queue, the character is ignored.&n; */
 r_static
 r_void
-DECL|function|cy_put_char
 id|cy_put_char
 c_func
 (paren
@@ -11590,7 +11573,6 @@ multiline_comment|/* cy_put_char */
 multiline_comment|/*&n; * This routine is called by the kernel after it has written a&n; * series of characters to the tty device using put_char().  &n; */
 r_static
 r_void
-DECL|function|cy_flush_chars
 id|cy_flush_chars
 c_func
 (paren
@@ -11665,7 +11647,6 @@ multiline_comment|/* cy_flush_chars */
 multiline_comment|/*&n; * This routine returns the numbers of characters the tty driver&n; * will accept for queuing to be written.  This number is subject&n; * to change as output buffers get emptied, or if the output flow&n; * control is activated.&n; */
 r_static
 r_int
-DECL|function|cy_write_room
 id|cy_write_room
 c_func
 (paren
@@ -11743,7 +11724,6 @@ suffix:semicolon
 multiline_comment|/* cy_write_room */
 r_static
 r_int
-DECL|function|cy_chars_in_buffer
 id|cy_chars_in_buffer
 c_func
 (paren
@@ -12023,7 +12003,6 @@ multiline_comment|/* cy_chars_in_buffer */
 multiline_comment|/*&n; * ------------------------------------------------------------&n; * cy_ioctl() and friends&n; * ------------------------------------------------------------&n; */
 r_static
 r_void
-DECL|function|cyy_baud_calc
 id|cyy_baud_calc
 c_func
 (paren
@@ -12159,7 +12138,6 @@ suffix:semicolon
 multiline_comment|/*&n; * This routine finds or computes the various line characteristics.&n; * It used to be called config_setup&n; */
 r_static
 r_void
-DECL|function|set_line_char
 id|set_line_char
 c_func
 (paren
@@ -14337,7 +14315,6 @@ suffix:semicolon
 multiline_comment|/* set_line_char */
 r_static
 r_int
-DECL|function|get_serial_info
 id|get_serial_info
 c_func
 (paren
@@ -14459,7 +14436,6 @@ suffix:semicolon
 multiline_comment|/* get_serial_info */
 r_static
 r_int
-DECL|function|set_serial_info
 id|set_serial_info
 c_func
 (paren
@@ -14662,7 +14638,6 @@ suffix:semicolon
 )brace
 multiline_comment|/* set_serial_info */
 multiline_comment|/*&n; * get_lsr_info - get line status register info&n; *&n; * Purpose: Let user call ioctl() to get info when the UART physically&n; *&t;    is emptied.  On bus types like RS485, the transmitter must&n; *&t;    release the bus after transmitting. This must be done when&n; *&t;    the transmit shift register is empty, not be done when the&n; *&t;    transmit holding register is empty.  This functionality&n; *&t;    allows an RS485 driver to be written in user space.&n; */
-DECL|function|get_lsr_info
 r_static
 r_int
 id|get_lsr_info
@@ -14855,7 +14830,6 @@ suffix:semicolon
 )brace
 r_static
 r_int
-DECL|function|get_modem_info
 id|get_modem_info
 c_func
 (paren
@@ -15406,7 +15380,6 @@ suffix:semicolon
 multiline_comment|/* get_modem_info */
 r_static
 r_int
-DECL|function|set_modem_info
 id|set_modem_info
 c_func
 (paren
@@ -17062,7 +17035,6 @@ multiline_comment|/* set_modem_info */
 multiline_comment|/*&n; * cy_break() --- routine which turns the break handling on or off&n; */
 r_static
 r_void
-DECL|function|cy_break
 id|cy_break
 c_func
 (paren
@@ -17354,7 +17326,6 @@ suffix:semicolon
 multiline_comment|/* cy_break */
 r_static
 r_int
-DECL|function|get_mon_info
 id|get_mon_info
 c_func
 (paren
@@ -17416,7 +17387,6 @@ suffix:semicolon
 multiline_comment|/* get_mon_info */
 r_static
 r_int
-DECL|function|set_threshold
 id|set_threshold
 c_func
 (paren
@@ -17589,7 +17559,6 @@ suffix:semicolon
 multiline_comment|/* set_threshold */
 r_static
 r_int
-DECL|function|get_threshold
 id|get_threshold
 c_func
 (paren
@@ -17732,7 +17701,6 @@ suffix:semicolon
 multiline_comment|/* get_threshold */
 r_static
 r_int
-DECL|function|set_default_threshold
 id|set_default_threshold
 c_func
 (paren
@@ -17759,7 +17727,6 @@ suffix:semicolon
 multiline_comment|/* set_default_threshold */
 r_static
 r_int
-DECL|function|get_default_threshold
 id|get_default_threshold
 c_func
 (paren
@@ -17787,7 +17754,6 @@ suffix:semicolon
 multiline_comment|/* get_default_threshold */
 r_static
 r_int
-DECL|function|set_timeout
 id|set_timeout
 c_func
 (paren
@@ -17939,7 +17905,6 @@ suffix:semicolon
 multiline_comment|/* set_timeout */
 r_static
 r_int
-DECL|function|get_timeout
 id|get_timeout
 c_func
 (paren
@@ -18080,7 +18045,6 @@ suffix:semicolon
 multiline_comment|/* get_timeout */
 r_static
 r_int
-DECL|function|set_default_timeout
 id|set_default_timeout
 c_func
 (paren
@@ -18107,7 +18071,6 @@ suffix:semicolon
 multiline_comment|/* set_default_timeout */
 r_static
 r_int
-DECL|function|get_default_timeout
 id|get_default_timeout
 c_func
 (paren
@@ -18136,7 +18099,6 @@ multiline_comment|/* get_default_timeout */
 multiline_comment|/*&n; * This routine allows the tty driver to implement device-&n; * specific ioctl&squot;s.  If the ioctl number passed in cmd is&n; * not recognized by the driver, it should return ENOIOCTLCMD.&n; */
 r_static
 r_int
-DECL|function|cy_ioctl
 id|cy_ioctl
 c_func
 (paren
@@ -19137,7 +19099,6 @@ multiline_comment|/* cy_ioctl */
 multiline_comment|/*&n; * This routine allows the tty driver to be notified when&n; * device&squot;s termios settings have changed.  Note that a&n; * well-designed tty driver should be prepared to accept the case&n; * where old == NULL, and try to do something rational.&n; */
 r_static
 r_void
-DECL|function|cy_set_termios
 id|cy_set_termios
 c_func
 (paren
@@ -19274,7 +19235,6 @@ multiline_comment|/* cy_set_termios */
 multiline_comment|/* This routine is called by the upper-layer tty layer to signal&n;   that incoming characters should be throttled because the input&n;   buffers are close to full.&n; */
 r_static
 r_void
-DECL|function|cy_throttle
 id|cy_throttle
 c_func
 (paren
@@ -19550,7 +19510,6 @@ multiline_comment|/* cy_throttle */
 multiline_comment|/*&n; * This routine notifies the tty driver that it should signal&n; * that characters can now be sent to the tty without fear of&n; * overrunning the input buffers of the line disciplines.&n; */
 r_static
 r_void
-DECL|function|cy_unthrottle
 id|cy_unthrottle
 c_func
 (paren
@@ -19834,7 +19793,6 @@ multiline_comment|/* cy_unthrottle */
 multiline_comment|/* cy_start and cy_stop provide software output flow control as a&n;   function of XON/XOFF, software CTS, and other such stuff.&n;*/
 r_static
 r_void
-DECL|function|cy_stop
 id|cy_stop
 c_func
 (paren
@@ -20050,7 +20008,6 @@ suffix:semicolon
 multiline_comment|/* cy_stop */
 r_static
 r_void
-DECL|function|cy_start
 id|cy_start
 c_func
 (paren
@@ -20265,7 +20222,6 @@ suffix:semicolon
 multiline_comment|/* cy_start */
 r_static
 r_void
-DECL|function|cy_flush_buffer
 id|cy_flush_buffer
 c_func
 (paren
@@ -20469,7 +20425,6 @@ multiline_comment|/* cy_flush_buffer */
 multiline_comment|/*&n; * cy_hangup() --- called by tty_hangup() when a hangup is signaled.&n; */
 r_static
 r_void
-DECL|function|cy_hangup
 id|cy_hangup
 c_func
 (paren
@@ -20575,7 +20530,6 @@ r_static
 r_int
 r_int
 id|__init
-DECL|function|cyy_init_card
 id|cyy_init_card
 c_func
 (paren
@@ -20917,7 +20871,6 @@ multiline_comment|/*&n; * ------------------------------------------------------
 r_static
 r_int
 id|__init
-DECL|function|cy_detect_isa
 id|cy_detect_isa
 c_func
 (paren
@@ -21428,7 +21381,6 @@ macro_line|#endif /* CONFIG_ISA */
 multiline_comment|/* cy_detect_isa */
 r_static
 r_void
-DECL|function|plx_init
 id|plx_init
 c_func
 (paren
@@ -21532,7 +21484,6 @@ multiline_comment|/*&n; * ------------------------------------------------------
 r_static
 r_int
 id|__init
-DECL|function|cy_detect_pci
 id|cy_detect_pci
 c_func
 (paren
@@ -23955,7 +23906,6 @@ multiline_comment|/*&n; * This routine prints out the appropriate serial driver 
 r_static
 r_inline
 r_void
-DECL|function|show_version
 id|show_version
 c_func
 (paren
@@ -24053,7 +24003,6 @@ suffix:semicolon
 multiline_comment|/* show_version */
 r_static
 r_int
-DECL|function|cyclades_get_proc_info
 id|cyclades_get_proc_info
 c_func
 (paren
@@ -24350,7 +24299,6 @@ suffix:semicolon
 multiline_comment|/* The serial driver boot-time initialization code!&n;    Hardware I/O ports are mapped to character special devices on a&n;    first found, first allocated manner.  That is, this code searches&n;    for Cyclom cards in the system.  As each is found, it is probed&n;    to discover how many chips (and thus how many ports) are present.&n;    These ports are mapped to the tty ports 32 and upward in monotonic&n;    fashion.  If an 8-port card is replaced with a 16-port card, the&n;    port mapping on a following card will shift.&n;&n;    This approach is different from what is used in the other serial&n;    device driver because the Cyclom is more properly a multiplexer,&n;    not just an aggregation of serial ports on one card.&n;&n;    If there are more cards with more ports than have been&n;    statically allocated above, a warning is printed and the&n;    extra ports are ignored.&n; */
 r_int
 id|__init
-DECL|function|cy_init
 id|cy_init
 c_func
 (paren
@@ -25128,6 +25076,16 @@ op_assign
 l_int|0
 suffix:semicolon
 macro_line|#ifdef CONFIG_CYZ_INTR
+id|init_timer
+c_func
+(paren
+op_amp
+id|cyz_rx_full_timer
+(braket
+id|port
+)braket
+)paren
+suffix:semicolon
 id|cyz_rx_full_timer
 (braket
 id|port
@@ -25544,7 +25502,6 @@ suffix:semicolon
 multiline_comment|/* cy_init */
 macro_line|#ifdef MODULE
 r_void
-DECL|function|cy_cleanup_module
 id|cy_cleanup_module
 c_func
 (paren
@@ -25808,14 +25765,12 @@ suffix:semicolon
 )brace
 multiline_comment|/* cy_cleanup_module */
 multiline_comment|/* Module entry-points */
-DECL|variable|cy_init
 id|module_init
 c_func
 (paren
 id|cy_init
 )paren
 suffix:semicolon
-DECL|variable|cy_cleanup_module
 id|module_exit
 c_func
 (paren
@@ -25825,7 +25780,6 @@ suffix:semicolon
 macro_line|#else /* MODULE */
 multiline_comment|/* called by linux/init/main.c to parse command line options */
 r_void
-DECL|function|cy_setup
 id|cy_setup
 c_func
 (paren

@@ -709,11 +709,6 @@ id|file-&gt;f_pos
 op_assign
 id|offset
 suffix:semicolon
-id|file-&gt;f_version
-op_assign
-op_increment
-id|event
-suffix:semicolon
 )brace
 id|retval
 op_assign

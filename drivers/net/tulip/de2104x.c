@@ -9771,6 +9771,13 @@ id|dev-&gt;irq
 op_assign
 id|pdev-&gt;irq
 suffix:semicolon
+id|init_timer
+c_func
+(paren
+op_amp
+id|de-&gt;media_timer
+)paren
+suffix:semicolon
 id|de
 op_assign
 id|dev-&gt;priv
