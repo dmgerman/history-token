@@ -6754,22 +6754,7 @@ op_lshift
 id|REISERFS_SMALLTAIL
 )paren
 suffix:semicolon
-multiline_comment|/* default block allocator option: skip_busy */
-id|REISERFS_SB
-c_func
-(paren
-id|s
-)paren
-op_member_access_from_pointer
-id|s_alloc_options.bits
-op_assign
-(paren
-l_int|1
-op_lshift
-l_int|5
-)paren
-suffix:semicolon
-multiline_comment|/* If file grew past 4 blocks, start preallocation blocks for it. */
+multiline_comment|/* no preallocation minimum, be smart in&n;       reiserfs_file_write instead */
 id|REISERFS_SB
 c_func
 (paren
@@ -6778,7 +6763,7 @@ id|s
 op_member_access_from_pointer
 id|s_alloc_options.preallocmin
 op_assign
-l_int|4
+l_int|0
 suffix:semicolon
 multiline_comment|/* Preallocate by 16 blocks (17-1) at once */
 id|REISERFS_SB
@@ -6803,6 +6788,13 @@ id|s
 )paren
 op_member_access_from_pointer
 id|xattr_dir_sem
+)paren
+suffix:semicolon
+multiline_comment|/* setup default block allocator options */
+id|reiserfs_init_alloc_options
+c_func
+(paren
+id|s
 )paren
 suffix:semicolon
 id|jdev_name

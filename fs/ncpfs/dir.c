@@ -3708,10 +3708,6 @@ c_func
 id|sb
 )paren
 suffix:semicolon
-r_struct
-id|nw_info_struct
-id|i
-suffix:semicolon
 r_int
 id|result
 suffix:semicolon
@@ -3732,6 +3728,13 @@ r_struct
 id|dentry
 op_star
 id|dent
+suffix:semicolon
+id|__u32
+id|volNumber
+comma
+id|dirEntNum
+comma
+id|DosDirNum
 suffix:semicolon
 id|__u8
 id|__name
@@ -3787,7 +3790,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|ncp_lookup_volume
+id|ncp_get_volume_root
 c_func
 (paren
 id|server
@@ -3795,7 +3798,13 @@ comma
 id|__name
 comma
 op_amp
-id|i
+id|volNumber
+comma
+op_amp
+id|dirEntNum
+comma
+op_amp
+id|DosDirNum
 )paren
 )paren
 (brace
@@ -3842,7 +3851,7 @@ id|ino
 op_member_access_from_pointer
 id|volNumber
 op_assign
-id|i.volNumber
+id|volNumber
 suffix:semicolon
 id|NCP_FINFO
 c_func
@@ -3852,7 +3861,7 @@ id|ino
 op_member_access_from_pointer
 id|dirEntNum
 op_assign
-id|i.dirEntNum
+id|dirEntNum
 suffix:semicolon
 id|NCP_FINFO
 c_func
@@ -3862,7 +3871,7 @@ id|ino
 op_member_access_from_pointer
 id|DosDirNum
 op_assign
-id|i.DosDirNum
+id|DosDirNum
 suffix:semicolon
 )brace
 r_else

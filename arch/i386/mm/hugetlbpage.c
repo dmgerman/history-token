@@ -10,7 +10,6 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/err.h&gt;
 macro_line|#include &lt;linux/sysctl.h&gt;
 macro_line|#include &lt;asm/mman.h&gt;
-macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/tlb.h&gt;
 macro_line|#include &lt;asm/tlbflush.h&gt;
 DECL|function|huge_pte_alloc
@@ -1176,8 +1175,45 @@ op_star
 id|pte
 )paren
 )paren
-r_continue
+(brace
+id|pmd_t
+op_star
+id|pmd
+op_assign
+(paren
+id|pmd_t
+op_star
+)paren
+id|pte
 suffix:semicolon
+id|page
+op_assign
+id|pmd_page
+c_func
+(paren
+op_star
+id|pmd
+)paren
+suffix:semicolon
+id|pmd_clear
+c_func
+(paren
+id|pmd
+)paren
+suffix:semicolon
+id|dec_page_state
+c_func
+(paren
+id|nr_page_table_pages
+)paren
+suffix:semicolon
+id|page_cache_release
+c_func
+(paren
+id|page
+)paren
+suffix:semicolon
+)brace
 id|idx
 op_assign
 (paren

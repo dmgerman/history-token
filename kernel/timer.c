@@ -3008,6 +3008,7 @@ suffix:semicolon
 )brace
 )brace
 DECL|function|update_one_process
+r_static
 r_void
 id|update_one_process
 c_func

@@ -309,9 +309,8 @@ c_func
 id|mempool_create
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * mempool_resize is disabled for now, because it has no callers.  Feel free&n; * to turn it back on if needed.&n; */
-macro_line|#if 0
 multiline_comment|/**&n; * mempool_resize - resize an existing memory pool&n; * @pool:       pointer to the memory pool which was allocated via&n; *              mempool_create().&n; * @new_min_nr: the new minimum number of elements guaranteed to be&n; *              allocated for this pool.&n; * @gfp_mask:   the usual allocation bitmask.&n; *&n; * This function shrinks/grows the pool. In the case of growing,&n; * it cannot be guaranteed that the pool will be grown to the new&n; * size immediately, but new mempool_free() calls will refill it.&n; *&n; * Note, the caller must guarantee that no mempool_destroy is called&n; * while this function is running. mempool_alloc() &amp; mempool_free()&n; * might be called (eg. from IRQ contexts) while this function executes.&n; */
+DECL|function|mempool_resize
 r_int
 id|mempool_resize
 c_func
@@ -607,13 +606,13 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|variable|mempool_resize
 id|EXPORT_SYMBOL
 c_func
 (paren
 id|mempool_resize
 )paren
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/**&n; * mempool_destroy - deallocate a memory pool&n; * @pool:      pointer to the memory pool which was allocated via&n; *             mempool_create().&n; *&n; * this function only sleeps if the free_fn() function sleeps. The caller&n; * has to guarantee that all elements have been returned to the pool (ie:&n; * freed) prior to calling mempool_destroy().&n; */
 DECL|function|mempool_destroy
 r_void

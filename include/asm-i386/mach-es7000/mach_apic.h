@@ -88,8 +88,6 @@ mdefine_line|#define APIC_DEST_LOGICAL&t;0x0
 DECL|macro|WAKE_SECONDARY_VIA_INIT
 mdefine_line|#define WAKE_SECONDARY_VIA_INIT
 macro_line|#endif
-DECL|macro|APIC_BROADCAST_ID
-mdefine_line|#define APIC_BROADCAST_ID&t;(0xff)
 DECL|macro|NO_IOAPIC_CHECK
 mdefine_line|#define NO_IOAPIC_CHECK (1)
 DECL|function|check_apicid_used

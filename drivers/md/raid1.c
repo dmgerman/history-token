@@ -1418,8 +1418,9 @@ multiline_comment|/*&n;&t; * Check if it if we can balance. We can balance on th
 r_if
 c_cond
 (paren
-op_logical_neg
-id|conf-&gt;mddev-&gt;in_sync
+id|conf-&gt;mddev-&gt;recovery_cp
+OL
+id|MaxSector
 op_logical_and
 (paren
 id|this_sector

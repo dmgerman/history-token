@@ -909,7 +909,7 @@ c_func
 id|invalidate_inode_pages
 )paren
 suffix:semicolon
-multiline_comment|/**&n; * invalidate_inode_pages2 - remove all unmapped pages from an address_space&n; * @mapping - the address_space&n; *&n; * invalidate_inode_pages2() is like truncate_inode_pages(), except for the case&n; * where the page is seen to be mapped into process pagetables.  In that case,&n; * the page is marked clean but is left attached to its address_space.&n; *&n; * FIXME: invalidate_inode_pages2() is probably trivially livelockable.&n; */
+multiline_comment|/**&n; * invalidate_inode_pages2 - remove all unmapped pages from an address_space&n; * @mapping - the address_space&n; *&n; * invalidate_inode_pages2() is like truncate_inode_pages(), except for the case&n; * where the page is seen to be mapped into process pagetables.  In that case,&n; * the page is marked clean but is left attached to its address_space.&n; *&n; * The page is also marked not uptodate so that a subsequent pagefault will&n; * perform I/O to bringthe page&squot;s contents back into sync with its backing&n; * store.&n; *&n; * FIXME: invalidate_inode_pages2() is probably trivially livelockable.&n; */
 DECL|function|invalidate_inode_pages2
 r_void
 id|invalidate_inode_pages2
@@ -1025,13 +1025,22 @@ c_func
 id|page
 )paren
 )paren
+(brace
 id|clear_page_dirty
 c_func
 (paren
 id|page
 )paren
 suffix:semicolon
+id|ClearPageUptodate
+c_func
+(paren
+id|page
+)paren
+suffix:semicolon
+)brace
 r_else
+(brace
 id|invalidate_complete_page
 c_func
 (paren
@@ -1040,6 +1049,7 @@ comma
 id|page
 )paren
 suffix:semicolon
+)brace
 )brace
 id|unlock_page
 c_func

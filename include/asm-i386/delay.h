@@ -59,7 +59,7 @@ id|loops
 )paren
 suffix:semicolon
 DECL|macro|udelay
-mdefine_line|#define udelay(n) (__builtin_constant_p(n) ? &bslash;&n;&t;((n) &gt; 20000 ? __bad_udelay() : __const_udelay((n) * 0x10c6ul)) : &bslash;&n;&t;__udelay(n))
+mdefine_line|#define udelay(n) (__builtin_constant_p(n) ? &bslash;&n;&t;((n) &gt; 20000 ? __bad_udelay() : __const_udelay((n) * 0x10c7ul)) : &bslash;&n;&t;__udelay(n))
 DECL|macro|ndelay
 mdefine_line|#define ndelay(n) (__builtin_constant_p(n) ? &bslash;&n;&t;((n) &gt; 20000 ? __bad_ndelay() : __const_udelay((n) * 5ul)) : &bslash;&n;&t;__ndelay(n))
 macro_line|#endif /* defined(_I386_DELAY_H) */

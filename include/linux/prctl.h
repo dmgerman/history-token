@@ -39,6 +39,18 @@ DECL|macro|PR_GET_FPEXC
 mdefine_line|#define PR_GET_FPEXC&t;11
 DECL|macro|PR_SET_FPEXC
 mdefine_line|#define PR_SET_FPEXC&t;12
+DECL|macro|PR_FP_EXC_SW_ENABLE
+macro_line|# define PR_FP_EXC_SW_ENABLE&t;0x80&t;/* Use FPEXC for FP exception enables */
+DECL|macro|PR_FP_EXC_DIV
+macro_line|# define PR_FP_EXC_DIV&t;&t;0x010000&t;/* floating point divide by zero */
+DECL|macro|PR_FP_EXC_OVF
+macro_line|# define PR_FP_EXC_OVF&t;&t;0x020000&t;/* floating point overflow */
+DECL|macro|PR_FP_EXC_UND
+macro_line|# define PR_FP_EXC_UND&t;&t;0x040000&t;/* floating point underflow */
+DECL|macro|PR_FP_EXC_RES
+macro_line|# define PR_FP_EXC_RES&t;&t;0x080000&t;/* floating point inexact result */
+DECL|macro|PR_FP_EXC_INV
+macro_line|# define PR_FP_EXC_INV&t;&t;0x100000&t;/* floating point invalid operation */
 DECL|macro|PR_FP_EXC_DISABLED
 macro_line|# define PR_FP_EXC_DISABLED&t;0&t;/* FP exceptions disabled */
 DECL|macro|PR_FP_EXC_NONRECOV

@@ -1,18 +1,22 @@
 multiline_comment|/*&n; * include/linux/id.h&n; * &n; * 2002-10-18  written by Jim Houston jim.houston@ccur.com&n; *&t;Copyright (C) 2002 by Concurrent Computer Corporation&n; *&t;Distributed under the GNU GPL license version 2.&n; *&n; * Small id to pointer translation service avoiding fixed sized&n; * tables.&n; */
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
-DECL|macro|RESERVED_ID_BITS
-mdefine_line|#define RESERVED_ID_BITS 8
 macro_line|#if BITS_PER_LONG == 32
 DECL|macro|IDR_BITS
 macro_line|# define IDR_BITS 5
 DECL|macro|IDR_FULL
 macro_line|# define IDR_FULL 0xfffffffful
+multiline_comment|/* We can only use two of the bits in the top level because there is&n;   only one possible bit in the top level (5 bits * 7 levels = 35&n;   bits, but you only use 31 bits in the id). */
+DECL|macro|TOP_LEVEL_FULL
+macro_line|# define TOP_LEVEL_FULL (IDR_FULL &gt;&gt; 30)
 macro_line|#elif BITS_PER_LONG == 64
 DECL|macro|IDR_BITS
 macro_line|# define IDR_BITS 6
 DECL|macro|IDR_FULL
 macro_line|# define IDR_FULL 0xfffffffffffffffful
+multiline_comment|/* We can only use two of the bits in the top level because there is&n;   only one possible bit in the top level (6 bits * 6 levels = 36&n;   bits, but you only use 31 bits in the id). */
+DECL|macro|TOP_LEVEL_FULL
+macro_line|# define TOP_LEVEL_FULL (IDR_FULL &gt;&gt; 62)
 macro_line|#else
 macro_line|# error &quot;BITS_PER_LONG is not 32 or 64&quot;
 macro_line|#endif
@@ -20,13 +24,10 @@ DECL|macro|IDR_SIZE
 mdefine_line|#define IDR_SIZE (1 &lt;&lt; IDR_BITS)
 DECL|macro|IDR_MASK
 mdefine_line|#define IDR_MASK ((1 &lt;&lt; IDR_BITS)-1)
-multiline_comment|/* Define the size of the id&squot;s */
-DECL|macro|BITS_PER_INT
-mdefine_line|#define BITS_PER_INT (sizeof(int)*8)
 DECL|macro|MAX_ID_SHIFT
-mdefine_line|#define MAX_ID_SHIFT (BITS_PER_INT - RESERVED_ID_BITS)
+mdefine_line|#define MAX_ID_SHIFT (sizeof(int)*8 - 1)
 DECL|macro|MAX_ID_BIT
-mdefine_line|#define MAX_ID_BIT (1 &lt;&lt; MAX_ID_SHIFT)
+mdefine_line|#define MAX_ID_BIT (1U &lt;&lt; MAX_ID_SHIFT)
 DECL|macro|MAX_ID_MASK
 mdefine_line|#define MAX_ID_MASK (MAX_ID_BIT - 1)
 multiline_comment|/* Leave the possibility of an incomplete final layer */
@@ -79,10 +80,6 @@ id|idr_layer
 op_star
 id|id_free
 suffix:semicolon
-DECL|member|count
-r_int
-id|count
-suffix:semicolon
 DECL|member|layers
 r_int
 id|layers
@@ -98,7 +95,7 @@ suffix:semicolon
 )brace
 suffix:semicolon
 DECL|macro|IDR_INIT
-mdefine_line|#define IDR_INIT(name)&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;.top&t;&t;= NULL,&t;&t;&t;&t;&t;&bslash;&n;&t;.id_free&t;= NULL,&t;&t;&t;&t;&t;&bslash;&n;&t;.count&t;&t;= 0,&t;&t;&t;&t;&t;&bslash;&n;&t;.layers &t;= 0,&t;&t;&t;&t;&t;&bslash;&n;&t;.id_free_cnt&t;= 0,&t;&t;&t;&t;&t;&bslash;&n;&t;.lock&t;&t;= SPIN_LOCK_UNLOCKED,&t;&t;&t;&bslash;&n;}
+mdefine_line|#define IDR_INIT(name)&t;&t;&t;&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;.top&t;&t;= NULL,&t;&t;&t;&t;&t;&bslash;&n;&t;.id_free&t;= NULL,&t;&t;&t;&t;&t;&bslash;&n;&t;.layers &t;= 0,&t;&t;&t;&t;&t;&bslash;&n;&t;.id_free_cnt&t;= 0,&t;&t;&t;&t;&t;&bslash;&n;&t;.lock&t;&t;= SPIN_LOCK_UNLOCKED,&t;&t;&t;&bslash;&n;}
 DECL|macro|DEFINE_IDR
 mdefine_line|#define DEFINE_IDR(name)&t;struct idr name = IDR_INIT(name)
 multiline_comment|/*&n; * This is what we export.&n; */
@@ -141,6 +138,31 @@ comma
 r_void
 op_star
 id|ptr
+comma
+r_int
+op_star
+id|id
+)paren
+suffix:semicolon
+r_int
+id|idr_get_new_above
+c_func
+(paren
+r_struct
+id|idr
+op_star
+id|idp
+comma
+r_void
+op_star
+id|ptr
+comma
+r_int
+id|starting_id
+comma
+r_int
+op_star
+id|id
 )paren
 suffix:semicolon
 r_void

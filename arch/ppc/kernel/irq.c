@@ -2430,6 +2430,14 @@ op_star
 id|data
 )paren
 (brace
+r_int
+id|err
+suffix:semicolon
+r_int
+id|full_count
+op_assign
+id|count
+suffix:semicolon
 id|cpumask_t
 op_star
 id|mask
@@ -2439,12 +2447,6 @@ id|cpumask_t
 op_star
 )paren
 id|data
-comma
-id|full_count
-op_assign
-id|count
-comma
-id|err
 suffix:semicolon
 id|cpumask_t
 id|new_value

@@ -2011,7 +2011,7 @@ suffix:colon
 id|printk
 c_func
 (paren
-id|KERN_WARNING
+id|KERN_DEBUG
 l_string|&quot;atkbd.c: Keyboard on %s reports too many keys pressed.&bslash;n&quot;
 comma
 id|serio-&gt;phys

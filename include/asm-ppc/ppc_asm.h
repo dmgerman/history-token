@@ -73,6 +73,30 @@ DECL|macro|REST_16VR
 mdefine_line|#define REST_16VR(n,b,base)&t;REST_8VR(n,b,base); REST_8VR(n+8,b,base)
 DECL|macro|REST_32VR
 mdefine_line|#define REST_32VR(n,b,base)&t;REST_16VR(n,b,base); REST_16VR(n+16,b,base)
+DECL|macro|SAVE_EVR
+mdefine_line|#define SAVE_EVR(n,s,base)&t;evmergehi s,s,n; stw s,THREAD_EVR0+4*(n)(base)
+DECL|macro|SAVE_2EVR
+mdefine_line|#define SAVE_2EVR(n,s,base)&t;SAVE_EVR(n,s,base); SAVE_EVR(n+1,s,base)
+DECL|macro|SAVE_4EVR
+mdefine_line|#define SAVE_4EVR(n,s,base)&t;SAVE_2EVR(n,s,base); SAVE_2EVR(n+2,s,base)
+DECL|macro|SAVE_8EVR
+mdefine_line|#define SAVE_8EVR(n,s,base)&t;SAVE_4EVR(n,s,base); SAVE_4EVR(n+4,s,base)
+DECL|macro|SAVE_16EVR
+mdefine_line|#define SAVE_16EVR(n,s,base)&t;SAVE_8EVR(n,s,base); SAVE_8EVR(n+8,s,base)
+DECL|macro|SAVE_32EVR
+mdefine_line|#define SAVE_32EVR(n,s,base)&t;SAVE_16EVR(n,s,base); SAVE_16EVR(n+16,s,base)
+DECL|macro|REST_EVR
+mdefine_line|#define REST_EVR(n,s,base)&t;lwz s,THREAD_EVR0+4*(n)(base); evmergelo n,s,n
+DECL|macro|REST_2EVR
+mdefine_line|#define REST_2EVR(n,s,base)&t;REST_EVR(n,s,base); REST_EVR(n+1,s,base)
+DECL|macro|REST_4EVR
+mdefine_line|#define REST_4EVR(n,s,base)&t;REST_2EVR(n,s,base); REST_2EVR(n+2,s,base)
+DECL|macro|REST_8EVR
+mdefine_line|#define REST_8EVR(n,s,base)&t;REST_4EVR(n,s,base); REST_4EVR(n+4,s,base)
+DECL|macro|REST_16EVR
+mdefine_line|#define REST_16EVR(n,s,base)&t;REST_8EVR(n,s,base); REST_8EVR(n+8,s,base)
+DECL|macro|REST_32EVR
+mdefine_line|#define REST_32EVR(n,s,base)&t;REST_16EVR(n,s,base); REST_16EVR(n+16,s,base)
 macro_line|#ifdef CONFIG_PPC601_SYNC_FIX
 DECL|macro|SYNC
 mdefine_line|#define SYNC&t;&t;&t;&t;&bslash;&n;BEGIN_FTR_SECTION&t;&t;&t;&bslash;&n;&t;sync;&t;&t;&t;&t;&bslash;&n;&t;isync;&t;&t;&t;&t;&bslash;&n;END_FTR_SECTION_IFSET(CPU_FTR_601)
@@ -101,18 +125,18 @@ macro_line|#if !defined(CONFIG_4xx) &amp;&amp; !defined(CONFIG_8xx)
 DECL|macro|tlbia
 mdefine_line|#define tlbia&t;&t;&t;&t;&t;&bslash;&n;&t;li&t;r4,1024;&t;&t;&t;&bslash;&n;&t;mtctr&t;r4;&t;&t;&t;&t;&bslash;&n;&t;lis&t;r4,KERNELBASE@h;&t;&t;&bslash;&n;0:&t;tlbie&t;r4;&t;&t;&t;&t;&bslash;&n;&t;addi&t;r4,r4,0x1000;&t;&t;&t;&bslash;&n;&t;bdnz&t;0b
 macro_line|#endif
-macro_line|#if !defined(CONFIG_44x)
+macro_line|#ifdef CONFIG_BOOKE
+DECL|macro|tophys
+mdefine_line|#define tophys(rd,rs)&t;&t;&t;&t;&bslash;&n;&t;addis&t;rd,rs,0
+DECL|macro|tovirt
+mdefine_line|#define tovirt(rd,rs)&t;&t;&t;&t;&bslash;&n;&t;addis&t;rd,rs,0
+macro_line|#else  /* CONFIG_BOOKE */
 multiline_comment|/*&n; * On APUS (Amiga PowerPC cpu upgrade board), we don&squot;t know the&n; * physical base address of RAM at compile time.&n; */
 DECL|macro|tophys
 mdefine_line|#define tophys(rd,rs)&t;&t;&t;&t;&bslash;&n;0:&t;addis&t;rd,rs,-KERNELBASE@h;&t;&t;&bslash;&n;&t;.section &quot;.vtop_fixup&quot;,&quot;aw&quot;;&t;&t;&bslash;&n;&t;.align  1;&t;&t;&t;&t;&bslash;&n;&t;.long   0b;&t;&t;&t;&t;&bslash;&n;&t;.previous
 DECL|macro|tovirt
 mdefine_line|#define tovirt(rd,rs)&t;&t;&t;&t;&bslash;&n;0:&t;addis&t;rd,rs,KERNELBASE@h;&t;&t;&bslash;&n;&t;.section &quot;.ptov_fixup&quot;,&quot;aw&quot;;&t;&t;&bslash;&n;&t;.align  1;&t;&t;&t;&t;&bslash;&n;&t;.long   0b;&t;&t;&t;&t;&bslash;&n;&t;.previous
-macro_line|#else  /* CONFIG_44x */
-DECL|macro|tophys
-mdefine_line|#define tophys(rd,rs)&t;&t;&t;&t;&bslash;&n;&t;mr&t;rd,rs
-DECL|macro|tovirt
-mdefine_line|#define tovirt(rd,rs)&t;&t;&t;&t;&bslash;&n;&t;mr&t;rd,rs
-macro_line|#endif /* CONFIG_44x */
+macro_line|#endif  /* CONFIG_BOOKE */
 multiline_comment|/*&n; * On 64-bit cpus, we use the rfid instruction instead of rfi, but&n; * we then have to make sure we preserve the top 32 bits except for&n; * the 64-bit mode bit, which we clear.&n; */
 macro_line|#ifdef CONFIG_PPC64BRIDGE
 DECL|macro|FIX_SRR1
@@ -363,6 +387,70 @@ DECL|macro|vr30
 mdefine_line|#define&t;vr30&t;30
 DECL|macro|vr31
 mdefine_line|#define&t;vr31&t;31
+DECL|macro|evr0
+mdefine_line|#define&t;evr0&t;0
+DECL|macro|evr1
+mdefine_line|#define&t;evr1&t;1
+DECL|macro|evr2
+mdefine_line|#define&t;evr2&t;2
+DECL|macro|evr3
+mdefine_line|#define&t;evr3&t;3
+DECL|macro|evr4
+mdefine_line|#define&t;evr4&t;4
+DECL|macro|evr5
+mdefine_line|#define&t;evr5&t;5
+DECL|macro|evr6
+mdefine_line|#define&t;evr6&t;6
+DECL|macro|evr7
+mdefine_line|#define&t;evr7&t;7
+DECL|macro|evr8
+mdefine_line|#define&t;evr8&t;8
+DECL|macro|evr9
+mdefine_line|#define&t;evr9&t;9
+DECL|macro|evr10
+mdefine_line|#define&t;evr10&t;10
+DECL|macro|evr11
+mdefine_line|#define&t;evr11&t;11
+DECL|macro|evr12
+mdefine_line|#define&t;evr12&t;12
+DECL|macro|evr13
+mdefine_line|#define&t;evr13&t;13
+DECL|macro|evr14
+mdefine_line|#define&t;evr14&t;14
+DECL|macro|evr15
+mdefine_line|#define&t;evr15&t;15
+DECL|macro|evr16
+mdefine_line|#define&t;evr16&t;16
+DECL|macro|evr17
+mdefine_line|#define&t;evr17&t;17
+DECL|macro|evr18
+mdefine_line|#define&t;evr18&t;18
+DECL|macro|evr19
+mdefine_line|#define&t;evr19&t;19
+DECL|macro|evr20
+mdefine_line|#define&t;evr20&t;20
+DECL|macro|evr21
+mdefine_line|#define&t;evr21&t;21
+DECL|macro|evr22
+mdefine_line|#define&t;evr22&t;22
+DECL|macro|evr23
+mdefine_line|#define&t;evr23&t;23
+DECL|macro|evr24
+mdefine_line|#define&t;evr24&t;24
+DECL|macro|evr25
+mdefine_line|#define&t;evr25&t;25
+DECL|macro|evr26
+mdefine_line|#define&t;evr26&t;26
+DECL|macro|evr27
+mdefine_line|#define&t;evr27&t;27
+DECL|macro|evr28
+mdefine_line|#define&t;evr28&t;28
+DECL|macro|evr29
+mdefine_line|#define&t;evr29&t;29
+DECL|macro|evr30
+mdefine_line|#define&t;evr30&t;30
+DECL|macro|evr31
+mdefine_line|#define&t;evr31&t;31
 multiline_comment|/* some stab codes */
 DECL|macro|N_FUN
 mdefine_line|#define N_FUN&t;36

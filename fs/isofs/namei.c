@@ -10,6 +10,7 @@ macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/config.h&gt;&t;/* Joliet? */
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/buffer_head.h&gt;
+macro_line|#include &lt;linux/dcache.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 multiline_comment|/*&n; * ok, we cannot use strncmp, as the name is not in our data space.&n; * Thus we&squot;ll have to use isofs_match. No big problem. Match also makes&n; * some sanity tests.&n; */
 r_static
@@ -144,6 +145,16 @@ id|dentry
 op_star
 id|dentry
 comma
+r_int
+r_int
+op_star
+id|block_rv
+comma
+r_int
+r_int
+op_star
+id|offset_rv
+comma
 r_char
 op_star
 id|tmpname
@@ -154,10 +165,6 @@ op_star
 id|tmpde
 )paren
 (brace
-r_int
-r_int
-id|inode_number
-suffix:semicolon
 r_int
 r_int
 id|bufsize
@@ -185,6 +192,10 @@ comma
 id|f_pos
 comma
 id|offset
+comma
+id|block_saved
+comma
+id|offset_saved
 suffix:semicolon
 r_struct
 id|buffer_head
@@ -297,16 +308,6 @@ op_plus
 id|offset
 )paren
 suffix:semicolon
-id|inode_number
-op_assign
-(paren
-id|bh-&gt;b_blocknr
-op_lshift
-id|bufbits
-)paren
-op_plus
-id|offset
-suffix:semicolon
 id|de_len
 op_assign
 op_star
@@ -362,6 +363,14 @@ suffix:semicolon
 r_continue
 suffix:semicolon
 )brace
+id|block_saved
+op_assign
+id|bh-&gt;b_blocknr
+suffix:semicolon
+id|offset_saved
+op_assign
+id|offset
+suffix:semicolon
 id|offset
 op_add_assign
 id|de_len
@@ -638,6 +647,28 @@ c_cond
 id|match
 )paren
 (brace
+id|isofs_normalize_block_and_offset
+c_func
+(paren
+id|de
+comma
+op_amp
+id|block_saved
+comma
+op_amp
+id|offset_saved
+)paren
+suffix:semicolon
+op_star
+id|block_rv
+op_assign
+id|block_saved
+suffix:semicolon
+op_star
+id|offset_rv
+op_assign
+id|offset_saved
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -650,7 +681,7 @@ id|bh
 )paren
 suffix:semicolon
 r_return
-id|inode_number
+l_int|1
 suffix:semicolon
 )brace
 )brace
@@ -693,8 +724,13 @@ id|nd
 )paren
 (brace
 r_int
+id|found
+suffix:semicolon
 r_int
-id|ino
+r_int
+id|block
+comma
+id|offset
 suffix:semicolon
 r_struct
 id|inode
@@ -737,7 +773,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|ino
+id|found
 op_assign
 id|isofs_find_entry
 c_func
@@ -745,6 +781,12 @@ c_func
 id|dir
 comma
 id|dentry
+comma
+op_amp
+id|block
+comma
+op_amp
+id|offset
 comma
 id|page_address
 c_func
@@ -774,17 +816,19 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|ino
+id|found
 )paren
 (brace
 id|inode
 op_assign
-id|iget
+id|isofs_iget
 c_func
 (paren
 id|dir-&gt;i_sb
 comma
-id|ino
+id|block
+comma
+id|offset
 )paren
 suffix:semicolon
 r_if
@@ -812,6 +856,20 @@ suffix:semicolon
 id|unlock_kernel
 c_func
 (paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|inode
+)paren
+r_return
+id|d_splice_alias
+c_func
+(paren
+id|inode
+comma
+id|dentry
 )paren
 suffix:semicolon
 id|d_add

@@ -9,11 +9,11 @@ macro_line|#include &lt;linux/bootmem.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/kernel_stat.h&gt;
 macro_line|#include &lt;linux/mc146818rtc.h&gt;
+macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &lt;asm/smp.h&gt;
 macro_line|#include &lt;asm/acpi.h&gt;
 macro_line|#include &lt;asm/mtrr.h&gt;
 macro_line|#include &lt;asm/mpspec.h&gt;
-macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/io_apic.h&gt;
 macro_line|#include &lt;mach_apic.h&gt;
 macro_line|#include &lt;mach_mpparse.h&gt;
@@ -243,6 +243,74 @@ id|MAX_MPC_ENTRY
 )braket
 id|__initdata
 suffix:semicolon
+macro_line|#ifdef CONFIG_X86_NUMAQ
+DECL|function|MP_valid_apicid
+r_static
+r_int
+id|MP_valid_apicid
+c_func
+(paren
+r_int
+id|apicid
+comma
+r_int
+id|version
+)paren
+(brace
+r_return
+id|hweight_long
+c_func
+(paren
+id|apicid
+op_amp
+l_int|0xf
+)paren
+op_eq
+l_int|1
+op_logical_and
+(paren
+id|apicid
+op_rshift
+l_int|4
+)paren
+op_ne
+l_int|0xf
+suffix:semicolon
+)brace
+macro_line|#else
+DECL|function|MP_valid_apicid
+r_static
+r_int
+id|MP_valid_apicid
+c_func
+(paren
+r_int
+id|apicid
+comma
+r_int
+id|version
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|version
+op_ge
+l_int|0x14
+)paren
+r_return
+id|apicid
+OL
+l_int|0xff
+suffix:semicolon
+r_else
+r_return
+id|apicid
+OL
+l_int|0xf
+suffix:semicolon
+)brace
+macro_line|#endif
 DECL|function|MP_processor_info
 r_void
 id|__init
@@ -731,14 +799,21 @@ suffix:semicolon
 id|num_processors
 op_increment
 suffix:semicolon
+id|ver
+op_assign
+id|m-&gt;mpc_apicver
+suffix:semicolon
 r_if
 c_cond
 (paren
-id|MAX_APICS
-op_minus
-id|m-&gt;mpc_apicid
-op_le
-l_int|0
+op_logical_neg
+id|MP_valid_apicid
+c_func
+(paren
+id|apicid
+comma
+id|ver
+)paren
 )paren
 (brace
 id|printk
@@ -758,10 +833,6 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-id|ver
-op_assign
-id|m-&gt;mpc_apicver
-suffix:semicolon
 id|tmp
 op_assign
 id|apicid_to_cpu_present
@@ -3493,7 +3564,7 @@ id|processor
 )paren
 suffix:semicolon
 )brace
-macro_line|#if defined(CONFIG_X86_IO_APIC) &amp;&amp; defined(CONFIG_ACPI_INTERPRETER)
+macro_line|#if defined(CONFIG_X86_IO_APIC) &amp;&amp; (defined(CONFIG_ACPI_INTERPRETER) || defined(CONFIG_ACPI_BOOT))
 DECL|macro|MP_ISA_BUS
 mdefine_line|#define MP_ISA_BUS&t;&t;0
 DECL|macro|MP_MAX_IOAPIC_PIN
@@ -4630,6 +4701,6 @@ r_return
 suffix:semicolon
 )brace
 macro_line|#endif /*CONFIG_ACPI_PCI*/
-macro_line|#endif /*CONFIG_X86_IO_APIC &amp;&amp; CONFIG_ACPI_INTERPRETER*/
+macro_line|#endif /*CONFIG_X86_IO_APIC &amp;&amp; (CONFIG_ACPI_INTERPRETER || CONFIG_ACPI_BOOT)*/
 macro_line|#endif /*CONFIG_ACPI_BOOT*/
 eof

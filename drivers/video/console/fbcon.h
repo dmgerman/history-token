@@ -90,35 +90,15 @@ mdefine_line|#define attr_underline(s) &bslash;&n;&t;((s) &amp; 0x400)
 DECL|macro|attr_blink
 mdefine_line|#define attr_blink(s) &bslash;&n;&t;((s) &amp; 0x8000)
 multiline_comment|/*&n;     *  Scroll Method&n;     */
-multiline_comment|/* Internal flags */
-DECL|macro|__SCROLL_YPAN
-mdefine_line|#define __SCROLL_YPAN&t;&t;0x001
-DECL|macro|__SCROLL_YWRAP
-mdefine_line|#define __SCROLL_YWRAP&t;&t;0x002
-DECL|macro|__SCROLL_YMOVE
-mdefine_line|#define __SCROLL_YMOVE&t;&t;0x003
-DECL|macro|__SCROLL_YREDRAW
-mdefine_line|#define __SCROLL_YREDRAW&t;0x004
-DECL|macro|__SCROLL_YMASK
-mdefine_line|#define __SCROLL_YMASK&t;&t;0x00f
-DECL|macro|__SCROLL_YFIXED
-mdefine_line|#define __SCROLL_YFIXED&t;&t;0x010
-DECL|macro|__SCROLL_YNOMOVE
-mdefine_line|#define __SCROLL_YNOMOVE&t;0x020
-DECL|macro|__SCROLL_YPANREDRAW
-mdefine_line|#define __SCROLL_YPANREDRAW&t;0x040
-DECL|macro|__SCROLL_YNOPARTIAL
-mdefine_line|#define __SCROLL_YNOPARTIAL&t;0x080
-multiline_comment|/* Only these should be used by the drivers */
-multiline_comment|/* Which one should you use? If you have a fast card and slow bus,&n;   then probably just 0 to indicate fbcon should choose between&n;   YWRAP/YPAN+MOVE/YMOVE. On the other side, if you have a fast bus&n;   and even better if your card can do fonting (1-&gt;8/32bit painting),&n;   you should consider either SCROLL_YREDRAW (if your card is&n;   able to do neither YPAN/YWRAP), or SCROLL_YNOMOVE.&n;   The best is to test it with some real life scrolling (usually, not&n;   all lines on the screen are filled completely with non-space characters,&n;   and REDRAW performs much better on such lines, so don&squot;t cat a file&n;   with every line covering all screen columns, it would not be the right&n;   benchmark).&n; */
-DECL|macro|SCROLL_YREDRAW
-mdefine_line|#define SCROLL_YREDRAW&t;&t;(__SCROLL_YFIXED|__SCROLL_YREDRAW)
-DECL|macro|SCROLL_YNOMOVE
-mdefine_line|#define SCROLL_YNOMOVE&t;&t;(__SCROLL_YNOMOVE|__SCROLL_YPANREDRAW)
-multiline_comment|/* SCROLL_YNOPARTIAL, used in combination with the above, is for video&n;   cards which can not handle using panning to scroll a portion of the&n;   screen without excessive flicker.  Panning will only be used for&n;   whole screens.&n; */
-multiline_comment|/* Namespace consistency */
-DECL|macro|SCROLL_YNOPARTIAL
-mdefine_line|#define SCROLL_YNOPARTIAL&t;__SCROLL_YNOPARTIAL
+multiline_comment|/* There are several methods fbcon can use to move text around the screen:&n; *&n; * + use the hardware engine to move the text&n; *    (hw-accelerated copyarea() and fillrect())&n; * + use hardware-supported panning on a large virtual screen&n; * + amifb can not only pan, but also wrap the display by N lines&n; *    (i.e. visible line i = physical line (i+N) % yres).&n; * + read what&squot;s already rendered on the screen and&n; *     write it in a different place (this is cfb_copyarea())&n; * + re-render the text to the screen&n; *&n; * Whether to use wrapping or panning can only be figured out at&n; * runtime (when we know whether our font height is a multiple&n; * of the pan/wrap step)&n; *&n; */
+DECL|macro|SCROLL_ACCEL
+mdefine_line|#define SCROLL_ACCEL&t;0x001
+DECL|macro|SCROLL_PAN
+mdefine_line|#define SCROLL_PAN&t;0x002
+DECL|macro|SCROLL_WRAP
+mdefine_line|#define SCROLL_WRAP&t;0x003
+DECL|macro|SCROLL_REDRAW
+mdefine_line|#define SCROLL_REDRAW&t;0x004
 r_extern
 r_int
 id|fb_console_init

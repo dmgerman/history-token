@@ -13,7 +13,7 @@ macro_line|#include &lt;linux/ipmi.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 DECL|macro|IPMI_DEVINTF_VERSION
-mdefine_line|#define IPMI_DEVINTF_VERSION &quot;v31&quot;
+mdefine_line|#define IPMI_DEVINTF_VERSION &quot;v32&quot;
 DECL|struct|ipmi_file_private
 r_struct
 id|ipmi_file_private
@@ -673,7 +673,6 @@ c_cond
 id|copy_from_user
 c_func
 (paren
-op_amp
 id|msgdata
 comma
 id|req-&gt;msg.data

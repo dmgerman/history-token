@@ -31,7 +31,9 @@ mdefine_line|#define TV_SVIDEO               0x00000200
 DECL|macro|TV_SCART
 mdefine_line|#define TV_SCART                0x00000400
 DECL|macro|VB_CONEXANT
-mdefine_line|#define VB_CONEXANT&t;&t;0x00000800
+mdefine_line|#define VB_CONEXANT&t;&t;0x00000800&t;/* 661 series only */
+DECL|macro|VB_TRUMPION
+mdefine_line|#define VB_TRUMPION&t;&t;VB_CONEXANT&t;/* 300 series only */
 DECL|macro|TV_PALM
 mdefine_line|#define TV_PALM                 0x00001000
 DECL|macro|TV_PALN
@@ -114,83 +116,7 @@ DECL|macro|VB_DISPMODE_DUAL
 mdefine_line|#define VB_DISPMODE_DUAL&t;VB_DUALVIEW_MODE
 DECL|macro|VB_DISPLAY_MODE
 mdefine_line|#define VB_DISPLAY_MODE       &t;(SINGLE_MODE | MIRROR_MODE | DUALVIEW_MODE)
-multiline_comment|/* *Never* change the order of the following enum */
-DECL|enum|_SIS_CHIP_TYPE
-r_typedef
-r_enum
-id|_SIS_CHIP_TYPE
-(brace
-DECL|enumerator|SIS_VGALegacy
-id|SIS_VGALegacy
-op_assign
-l_int|0
-comma
-multiline_comment|/* chip_id in sisfb_info */
-DECL|enumerator|SIS_300
-id|SIS_300
-comma
-DECL|enumerator|SIS_630
-id|SIS_630
-comma
-DECL|enumerator|SIS_540
-id|SIS_540
-comma
-DECL|enumerator|SIS_730
-id|SIS_730
-comma
-DECL|enumerator|SIS_315H
-id|SIS_315H
-comma
-DECL|enumerator|SIS_315
-id|SIS_315
-comma
-DECL|enumerator|SIS_315PRO
-id|SIS_315PRO
-comma
-DECL|enumerator|SIS_550
-id|SIS_550
-comma
-DECL|enumerator|SIS_650
-id|SIS_650
-comma
-DECL|enumerator|SIS_740
-id|SIS_740
-comma
-DECL|enumerator|SIS_330
-id|SIS_330
-comma
-DECL|enumerator|SIS_661
-id|SIS_661
-comma
-DECL|enumerator|SIS_741
-id|SIS_741
-comma
-DECL|enumerator|SIS_660
-id|SIS_660
-comma
-DECL|enumerator|SIS_760
-id|SIS_760
-comma
-DECL|enumerator|MAX_SIS_CHIP
-id|MAX_SIS_CHIP
-DECL|typedef|SIS_CHIP_TYPE
-)brace
-id|SIS_CHIP_TYPE
-suffix:semicolon
-multiline_comment|/* Addtional IOCTLs for communication sisfb &lt;&gt; X driver                */
-multiline_comment|/* If changing this, vgatypes.h must also be changed (for X driver)    */
-multiline_comment|/* ioctl for identifying and giving some info (esp. memory heap start) */
-DECL|macro|SISFB_GET_INFO
-mdefine_line|#define SISFB_GET_INFO&t;  &t;_IOR(&squot;n&squot;,0xF8,__u32)
-multiline_comment|/* ioctrl to get current vertical retrace status */
-DECL|macro|SISFB_GET_VBRSTATUS
-mdefine_line|#define SISFB_GET_VBRSTATUS  &t;_IOR(&squot;n&squot;,0xF9,__u32)
-multiline_comment|/* ioctl to enable/disable panning auto-maximize (like nomax parameter) */
-DECL|macro|SISFB_GET_AUTOMAXIMIZE
-mdefine_line|#define SISFB_GET_AUTOMAXIMIZE &t;_IOR(&squot;n&squot;,0xFA,__u32)
-DECL|macro|SISFB_SET_AUTOMAXIMIZE
-mdefine_line|#define SISFB_SET_AUTOMAXIMIZE &t;_IOW(&squot;n&squot;,0xFA,__u32)
-multiline_comment|/* TW: Structure argument for SISFB_GET_INFO ioctl  */
+multiline_comment|/* Structure argument for SISFB_GET_INFO ioctl  */
 DECL|typedef|sisfb_info
 DECL|typedef|psisfb_info
 r_typedef
@@ -206,8 +132,7 @@ r_struct
 id|_SISFB_INFO
 (brace
 DECL|member|sisfb_id
-r_int
-r_int
+id|__u32
 id|sisfb_id
 suffix:semicolon
 multiline_comment|/* for identifying sisfb */
@@ -216,110 +141,95 @@ DECL|macro|SISFB_ID
 mdefine_line|#define SISFB_ID&t;  0x53495346    /* Identify myself with &squot;SISF&squot; */
 macro_line|#endif
 DECL|member|chip_id
-r_int
+id|__u32
 id|chip_id
 suffix:semicolon
-multiline_comment|/* PCI ID of detected chip */
+multiline_comment|/* PCI-ID of detected chip */
 DECL|member|memory
-r_int
+id|__u32
 id|memory
 suffix:semicolon
 multiline_comment|/* video memory in KB which sisfb manages */
 DECL|member|heapstart
-r_int
+id|__u32
 id|heapstart
 suffix:semicolon
 multiline_comment|/* heap start (= sisfb &quot;mem&quot; argument) in KB */
 DECL|member|fbvidmode
-r_int
-r_char
+id|__u8
 id|fbvidmode
 suffix:semicolon
 multiline_comment|/* current sisfb mode */
 DECL|member|sisfb_version
-r_int
-r_char
+id|__u8
 id|sisfb_version
 suffix:semicolon
 DECL|member|sisfb_revision
-r_int
-r_char
+id|__u8
 id|sisfb_revision
 suffix:semicolon
 DECL|member|sisfb_patchlevel
-r_int
-r_char
+id|__u8
 id|sisfb_patchlevel
 suffix:semicolon
 DECL|member|sisfb_caps
-r_int
-r_char
+id|__u8
 id|sisfb_caps
 suffix:semicolon
-multiline_comment|/* Sisfb capabilities */
+multiline_comment|/* sisfb capabilities */
 DECL|member|sisfb_tqlen
-r_int
+id|__u32
 id|sisfb_tqlen
 suffix:semicolon
 multiline_comment|/* turbo queue length (in KB) */
 DECL|member|sisfb_pcibus
-r_int
-r_int
+id|__u32
 id|sisfb_pcibus
 suffix:semicolon
 multiline_comment|/* The card&squot;s PCI ID */
 DECL|member|sisfb_pcislot
-r_int
-r_int
+id|__u32
 id|sisfb_pcislot
 suffix:semicolon
 DECL|member|sisfb_pcifunc
-r_int
-r_int
+id|__u32
 id|sisfb_pcifunc
 suffix:semicolon
 DECL|member|sisfb_lcdpdc
-r_int
-r_char
+id|__u8
 id|sisfb_lcdpdc
 suffix:semicolon
 multiline_comment|/* PanelDelayCompensation */
 DECL|member|sisfb_lcda
-r_int
-r_char
+id|__u8
 id|sisfb_lcda
 suffix:semicolon
 multiline_comment|/* Detected status of LCDA for low res/text modes */
 DECL|member|sisfb_vbflags
-r_int
-r_int
+id|__u32
 id|sisfb_vbflags
 suffix:semicolon
 DECL|member|sisfb_currentvbflags
-r_int
-r_int
+id|__u32
 id|sisfb_currentvbflags
 suffix:semicolon
 DECL|member|sisfb_scalelcd
-r_int
+id|__u32
 id|sisfb_scalelcd
 suffix:semicolon
 DECL|member|sisfb_specialtiming
-r_int
-r_int
+id|__u32
 id|sisfb_specialtiming
 suffix:semicolon
 DECL|member|sisfb_haveemi
-r_int
-r_char
+id|__u8
 id|sisfb_haveemi
 suffix:semicolon
 DECL|member|sisfb_emi30
 DECL|member|sisfb_emi31
 DECL|member|sisfb_emi32
 DECL|member|sisfb_emi33
-r_int
-r_char
+id|__u8
 id|sisfb_emi30
 comma
 id|sisfb_emi31
@@ -329,451 +239,101 @@ comma
 id|sisfb_emi33
 suffix:semicolon
 DECL|member|sisfb_haveemilcd
-r_int
-r_char
+id|__u8
 id|sisfb_haveemilcd
 suffix:semicolon
+DECL|member|sisfb_lcdpdca
+id|__u8
+id|sisfb_lcdpdca
+suffix:semicolon
+multiline_comment|/* PanelDelayCompensation for LCD-via-CRT1 */
+DECL|member|sisfb_tvxpos
+DECL|member|sisfb_tvypos
+id|__u16
+id|sisfb_tvxpos
+comma
+id|sisfb_tvypos
+suffix:semicolon
+multiline_comment|/* Warning: Values + 32 ! */
 DECL|member|reserved
-r_char
+id|__u8
 id|reserved
 (braket
-l_int|213
+l_int|208
 )braket
 suffix:semicolon
 multiline_comment|/* for future use */
 )brace
 suffix:semicolon
-multiline_comment|/* For fb memory manager */
+multiline_comment|/* Addtional IOCTLs for communication sisfb &lt;&gt; X driver                */
+multiline_comment|/* If changing this, vgatypes.h must also be changed (for X driver)    */
+multiline_comment|/* ioctl for identifying and giving some info (esp. memory heap start) */
+DECL|macro|SISFB_GET_INFO_SIZE
+mdefine_line|#define SISFB_GET_INFO_SIZE  &t;_IOR(0xF3,0x00,__u32)
+DECL|macro|SISFB_GET_INFO
+mdefine_line|#define SISFB_GET_INFO&t;  &t;_IOR(0xF3,0x01,struct _SISFB_INFO)
+multiline_comment|/* ioctrl to get current vertical retrace status */
+DECL|macro|SISFB_GET_VBRSTATUS
+mdefine_line|#define SISFB_GET_VBRSTATUS  &t;_IOR(0xF3,0x02,__u32)
+multiline_comment|/* ioctl to enable/disable panning auto-maximize (like nomax parameter) */
+DECL|macro|SISFB_GET_AUTOMAXIMIZE
+mdefine_line|#define SISFB_GET_AUTOMAXIMIZE &t;_IOR(0xF3,0x03,__u32)
+DECL|macro|SISFB_SET_AUTOMAXIMIZE
+mdefine_line|#define SISFB_SET_AUTOMAXIMIZE &t;_IOW(0xF3,0x03,__u32)
+multiline_comment|/* ioctls to relocate TV output (x=D[31:16], y=D[15:0], + 32)*/
+DECL|macro|SISFB_GET_TVPOSOFFSET
+mdefine_line|#define SISFB_GET_TVPOSOFFSET   _IOR(0xF3,0x04,__u32)
+DECL|macro|SISFB_SET_TVPOSOFFSET
+mdefine_line|#define SISFB_SET_TVPOSOFFSET   _IOW(0xF3,0x04,__u32)
+multiline_comment|/* ioctl for locking sisfb (no register access during lock) */
+multiline_comment|/* As of now, only used to avoid register access during&n; * the ioctls listed above.&n; */
+DECL|macro|SISFB_SET_LOCK
+mdefine_line|#define SISFB_SET_LOCK  &t;_IOW(0xF3,0x06,__u32)
+multiline_comment|/* more to come soon */
+multiline_comment|/* ioctls 0xF3 up to 0x3F reserved for sisfb */
+multiline_comment|/****************************************************************/
+multiline_comment|/* The following are deprecated and should not be used anymore: */
+multiline_comment|/****************************************************************/
+multiline_comment|/* ioctl for identifying and giving some info (esp. memory heap start) */
+DECL|macro|SISFB_GET_INFO_OLD
+mdefine_line|#define SISFB_GET_INFO_OLD  &t;   _IOR(&squot;n&squot;,0xF8,__u32)
+multiline_comment|/* ioctrl to get current vertical retrace status */
+DECL|macro|SISFB_GET_VBRSTATUS_OLD
+mdefine_line|#define SISFB_GET_VBRSTATUS_OLD&t;   _IOR(&squot;n&squot;,0xF9,__u32)
+multiline_comment|/* ioctl to enable/disable panning auto-maximize (like nomax parameter) */
+DECL|macro|SISFB_GET_AUTOMAXIMIZE_OLD
+mdefine_line|#define SISFB_GET_AUTOMAXIMIZE_OLD _IOR(&squot;n&squot;,0xFA,__u32)
+DECL|macro|SISFB_SET_AUTOMAXIMIZE_OLD
+mdefine_line|#define SISFB_SET_AUTOMAXIMIZE_OLD _IOW(&squot;n&squot;,0xFA,__u32)
+multiline_comment|/****************************************************************/
+multiline_comment|/*               End of deprecated ioctl numbers                */
+multiline_comment|/****************************************************************/
+multiline_comment|/* For fb memory manager (FBIO_ALLOC, FBIO_FREE) */
 DECL|struct|sis_memreq
 r_struct
 id|sis_memreq
 (brace
 DECL|member|offset
-r_int
-r_int
+id|__u32
 id|offset
 suffix:semicolon
 DECL|member|size
-r_int
-r_int
+id|__u32
 id|size
-suffix:semicolon
-)brace
-suffix:semicolon
-multiline_comment|/* More or less deprecated stuff follows: */
-DECL|enum|_TVTYPE
-r_typedef
-r_enum
-id|_TVTYPE
-(brace
-DECL|enumerator|TVMODE_NTSC
-id|TVMODE_NTSC
-op_assign
-l_int|0
-comma
-DECL|enumerator|TVMODE_PAL
-id|TVMODE_PAL
-comma
-DECL|enumerator|TVMODE_HIVISION
-id|TVMODE_HIVISION
-comma
-DECL|enumerator|TVMODE_TOTAL
-id|TVMODE_TOTAL
-DECL|typedef|SIS_TV_TYPE
-)brace
-id|SIS_TV_TYPE
-suffix:semicolon
-DECL|enum|_TVPLUGTYPE
-r_typedef
-r_enum
-id|_TVPLUGTYPE
-(brace
-DECL|enumerator|TVPLUG_Legacy
-id|TVPLUG_Legacy
-op_assign
-l_int|0
-comma
-DECL|enumerator|TVPLUG_COMPOSITE
-id|TVPLUG_COMPOSITE
-comma
-DECL|enumerator|TVPLUG_SVIDEO
-id|TVPLUG_SVIDEO
-comma
-DECL|enumerator|TVPLUG_SCART
-id|TVPLUG_SCART
-comma
-DECL|enumerator|TVPLUG_TOTAL
-id|TVPLUG_TOTAL
-DECL|typedef|SIS_TV_PLUG
-)brace
-id|SIS_TV_PLUG
-suffix:semicolon
-DECL|struct|mode_info
-r_struct
-id|mode_info
-(brace
-DECL|member|bpp
-r_int
-id|bpp
-suffix:semicolon
-DECL|member|xres
-r_int
-id|xres
-suffix:semicolon
-DECL|member|yres
-r_int
-id|yres
-suffix:semicolon
-DECL|member|v_xres
-r_int
-id|v_xres
-suffix:semicolon
-multiline_comment|/* deprecated - use var instead */
-DECL|member|v_yres
-r_int
-id|v_yres
-suffix:semicolon
-multiline_comment|/* deprecated - use var instead */
-DECL|member|org_x
-r_int
-id|org_x
-suffix:semicolon
-multiline_comment|/* deprecated - use var instead */
-DECL|member|org_y
-r_int
-id|org_y
-suffix:semicolon
-multiline_comment|/* deprecated - use var instead */
-DECL|member|vrate
-r_int
-r_int
-id|vrate
-suffix:semicolon
-)brace
-suffix:semicolon
-DECL|struct|ap_data
-r_struct
-id|ap_data
-(brace
-DECL|member|minfo
-r_struct
-id|mode_info
-id|minfo
-suffix:semicolon
-DECL|member|iobase
-r_int
-r_int
-id|iobase
-suffix:semicolon
-DECL|member|mem_size
-r_int
-r_int
-id|mem_size
-suffix:semicolon
-DECL|member|disp_state
-r_int
-r_int
-id|disp_state
-suffix:semicolon
-multiline_comment|/* deprecated */
-DECL|member|chip
-id|SIS_CHIP_TYPE
-id|chip
-suffix:semicolon
-DECL|member|hasVB
-r_int
-r_char
-id|hasVB
-suffix:semicolon
-DECL|member|TV_type
-id|SIS_TV_TYPE
-id|TV_type
-suffix:semicolon
-multiline_comment|/* deprecated */
-DECL|member|TV_plug
-id|SIS_TV_PLUG
-id|TV_plug
-suffix:semicolon
-multiline_comment|/* deprecated */
-DECL|member|version
-r_int
-r_int
-id|version
-suffix:semicolon
-DECL|member|vbflags
-r_int
-r_int
-id|vbflags
-suffix:semicolon
-multiline_comment|/* replaces deprecated entries above */
-DECL|member|currentvbflags
-r_int
-r_int
-id|currentvbflags
-suffix:semicolon
-DECL|member|reserved
-r_char
-id|reserved
-(braket
-l_int|248
-)braket
 suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/**********************************************/
 multiline_comment|/*                  PRIVATE                   */
+multiline_comment|/*         (for IN-KERNEL usage only)         */
 multiline_comment|/**********************************************/
 macro_line|#ifdef __KERNEL__
-macro_line|#include &lt;linux/spinlock.h&gt;
-DECL|enum|_VGA_ENGINE
-r_typedef
-r_enum
-id|_VGA_ENGINE
-(brace
-DECL|enumerator|UNKNOWN_VGA
-id|UNKNOWN_VGA
-op_assign
-l_int|0
-comma
-DECL|enumerator|SIS_300_VGA
-id|SIS_300_VGA
-comma
-DECL|enumerator|SIS_315_VGA
-id|SIS_315_VGA
-comma
-DECL|typedef|VGA_ENGINE
-)brace
-id|VGA_ENGINE
-suffix:semicolon
-DECL|struct|video_info
-r_struct
-id|video_info
-(brace
-DECL|member|chip_id
-r_int
-id|chip_id
-suffix:semicolon
-DECL|member|video_size
-r_int
-r_int
-id|video_size
-suffix:semicolon
-DECL|member|video_base
-r_int
-r_int
-id|video_base
-suffix:semicolon
-DECL|member|video_vbase
-r_char
-op_star
-id|video_vbase
-suffix:semicolon
-DECL|member|mmio_base
-r_int
-r_int
-id|mmio_base
-suffix:semicolon
-DECL|member|mmio_vbase
-r_char
-op_star
-id|mmio_vbase
-suffix:semicolon
-DECL|member|vga_base
-r_int
-r_int
-id|vga_base
-suffix:semicolon
-DECL|member|mtrr
-r_int
-r_int
-id|mtrr
-suffix:semicolon
-DECL|member|heapstart
-r_int
-r_int
-id|heapstart
-suffix:semicolon
-DECL|member|video_bpp
-r_int
-id|video_bpp
-suffix:semicolon
-DECL|member|video_cmap_len
-r_int
-id|video_cmap_len
-suffix:semicolon
-DECL|member|video_width
-r_int
-id|video_width
-suffix:semicolon
-DECL|member|video_height
-r_int
-id|video_height
-suffix:semicolon
-DECL|member|video_vwidth
-r_int
-id|video_vwidth
-suffix:semicolon
-multiline_comment|/* DEPRECATED - use var instead */
-DECL|member|video_vheight
-r_int
-id|video_vheight
-suffix:semicolon
-multiline_comment|/* DEPRECATED - use var instead */
-DECL|member|org_x
-r_int
-id|org_x
-suffix:semicolon
-multiline_comment|/* DEPRECATED - use var instead */
-DECL|member|org_y
-r_int
-id|org_y
-suffix:semicolon
-multiline_comment|/* DEPRECATED - use var instead */
-DECL|member|video_linelength
-r_int
-id|video_linelength
-suffix:semicolon
-DECL|member|refresh_rate
-r_int
-r_int
-id|refresh_rate
-suffix:semicolon
-DECL|member|disp_state
-r_int
-r_int
-id|disp_state
-suffix:semicolon
-multiline_comment|/* DEPRECATED */
-DECL|member|hasVB
-r_int
-r_char
-id|hasVB
-suffix:semicolon
-multiline_comment|/* DEPRECATED */
-DECL|member|TV_type
-r_int
-r_char
-id|TV_type
-suffix:semicolon
-multiline_comment|/* DEPRECATED */
-DECL|member|TV_plug
-r_int
-r_char
-id|TV_plug
-suffix:semicolon
-multiline_comment|/* DEPRECATED */
-DECL|member|chip
-id|SIS_CHIP_TYPE
-id|chip
-suffix:semicolon
-DECL|member|revision_id
-r_int
-r_char
-id|revision_id
-suffix:semicolon
-DECL|member|DstColor
-r_int
-r_int
-id|DstColor
-suffix:semicolon
-multiline_comment|/* For 2d acceleration */
-DECL|member|SiS310_AccelDepth
-r_int
-r_int
-id|SiS310_AccelDepth
-suffix:semicolon
-DECL|member|CommandReg
-r_int
-r_int
-id|CommandReg
-suffix:semicolon
-DECL|member|lockaccel
-id|spinlock_t
-id|lockaccel
-suffix:semicolon
-multiline_comment|/* Do not use outside of kernel! */
-DECL|member|pcibus
-r_int
-r_int
-id|pcibus
-suffix:semicolon
-DECL|member|pcislot
-r_int
-r_int
-id|pcislot
-suffix:semicolon
-DECL|member|pcifunc
-r_int
-r_int
-id|pcifunc
-suffix:semicolon
-DECL|member|accel
-r_int
-id|accel
-suffix:semicolon
-DECL|member|subsysvendor
-r_int
-r_int
-id|subsysvendor
-suffix:semicolon
-DECL|member|subsysdevice
-r_int
-r_int
-id|subsysdevice
-suffix:semicolon
-DECL|member|vbflags
-r_int
-r_int
-id|vbflags
-suffix:semicolon
-multiline_comment|/* Replacing deprecated stuff from above */
-DECL|member|currentvbflags
-r_int
-r_int
-id|currentvbflags
-suffix:semicolon
-DECL|member|current_bpp
-r_int
-id|current_bpp
-suffix:semicolon
-DECL|member|current_width
-r_int
-id|current_width
-suffix:semicolon
-DECL|member|current_height
-r_int
-id|current_height
-suffix:semicolon
-DECL|member|current_htotal
-r_int
-id|current_htotal
-suffix:semicolon
-DECL|member|current_vtotal
-r_int
-id|current_vtotal
-suffix:semicolon
-DECL|member|current_pixclock
-id|__u32
-id|current_pixclock
-suffix:semicolon
-DECL|member|current_refresh_rate
-r_int
-id|current_refresh_rate
-suffix:semicolon
-DECL|member|reserved
-r_char
-id|reserved
-(braket
-l_int|200
-)braket
-suffix:semicolon
-)brace
-suffix:semicolon
-r_extern
-r_struct
-id|video_info
-id|ivideo
-suffix:semicolon
+DECL|macro|UNKNOWN_VGA
+mdefine_line|#define&t;UNKNOWN_VGA  0
+DECL|macro|SIS_300_VGA
+mdefine_line|#define&t;SIS_300_VGA  1
+DECL|macro|SIS_315_VGA
+mdefine_line|#define&t;SIS_315_VGA  2
 r_extern
 r_void
 id|sis_malloc
@@ -790,20 +350,8 @@ r_void
 id|sis_free
 c_func
 (paren
-r_int
-r_int
+id|u32
 id|base
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|sis_dispinfo
-c_func
-(paren
-r_struct
-id|ap_data
-op_star
-id|rec
 )paren
 suffix:semicolon
 macro_line|#endif

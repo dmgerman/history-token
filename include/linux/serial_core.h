@@ -55,19 +55,6 @@ mdefine_line|#define PORT_SUNSAB&t;39
 multiline_comment|/* NEC v850.  */
 DECL|macro|PORT_V850E_UART
 mdefine_line|#define PORT_V850E_UART&t;40
-multiline_comment|/* NEC PC-9800 */
-DECL|macro|PORT_8251_PC98
-mdefine_line|#define PORT_8251_PC98&t;41
-DECL|macro|PORT_19K_PC98
-mdefine_line|#define PORT_19K_PC98&t;42
-DECL|macro|PORT_FIFO_PC98
-mdefine_line|#define PORT_FIFO_PC98&t;43
-DECL|macro|PORT_VFAST_PC98
-mdefine_line|#define PORT_VFAST_PC98&t;44
-DECL|macro|PORT_PC9861
-mdefine_line|#define PORT_PC9861&t;45
-DECL|macro|PORT_PC9801_101
-mdefine_line|#define PORT_PC9801_101&t;46
 multiline_comment|/* DZ */
 DECL|macro|PORT_DZ
 mdefine_line|#define PORT_DZ&t;&t;47

@@ -261,7 +261,8 @@ DECL|member|accel
 id|__u32
 id|accel
 suffix:semicolon
-multiline_comment|/* Type of acceleration available */
+multiline_comment|/* Indicate to driver which&t;*/
+multiline_comment|/*  specific chip/card we have&t;*/
 DECL|member|reserved
 id|__u16
 id|reserved
@@ -315,7 +316,7 @@ mdefine_line|#define FB_ACTIVATE_ALL&t;       64&t;/* change all VCs on this fb&
 DECL|macro|FB_ACTIVATE_FORCE
 mdefine_line|#define FB_ACTIVATE_FORCE     128&t;/* force apply even when no change*/
 DECL|macro|FB_ACCELF_TEXT
-mdefine_line|#define FB_ACCELF_TEXT&t;&t;1&t;/* text mode acceleration */
+mdefine_line|#define FB_ACCELF_TEXT&t;&t;1&t;/* (OBSOLETE) see fb_info.flags and vc_mode */
 DECL|macro|FB_SYNC_HOR_HIGH_ACT
 mdefine_line|#define FB_SYNC_HOR_HIGH_ACT&t;1&t;/* horizontal sync high active&t;*/
 DECL|macro|FB_SYNC_VERT_HIGH_ACT
@@ -437,7 +438,7 @@ DECL|member|accel_flags
 id|__u32
 id|accel_flags
 suffix:semicolon
-multiline_comment|/* acceleration flags (hints)&t;*/
+multiline_comment|/* (OBSOLETE) see fb_info.flags */
 multiline_comment|/* Timing: All values in pixclocks, except pixclock (of course) */
 DECL|member|pixclock
 id|__u32
@@ -1013,6 +1014,7 @@ id|rop
 suffix:semicolon
 multiline_comment|/* bitop operation */
 DECL|member|mask
+r_const
 r_char
 op_star
 id|mask
@@ -1539,6 +1541,35 @@ id|vma
 suffix:semicolon
 )brace
 suffix:semicolon
+multiline_comment|/* FBINFO_* = fb_info.flags bit flags */
+DECL|macro|FBINFO_MODULE
+mdefine_line|#define FBINFO_MODULE&t;&t;0x0001&t;/* Low-level driver is a module */
+DECL|macro|FBINFO_HWACCEL_DISABLED
+mdefine_line|#define FBINFO_HWACCEL_DISABLED&t;0x0002
+multiline_comment|/* When FBINFO_HWACCEL_DISABLED is set:&n;&t; *  Hardware acceleration is turned off.  Software implementations&n;&t; *  of required functions (copyarea(), fillrect(), and imageblit())&n;&t; *  takes over; acceleration engine should be in a quiescent state */
+multiline_comment|/* hints */
+DECL|macro|FBINFO_PARTIAL_PAN_OK
+mdefine_line|#define FBINFO_PARTIAL_PAN_OK&t;0x0040 /* otw use pan only for double-buffering */
+DECL|macro|FBINFO_READS_FAST
+mdefine_line|#define FBINFO_READS_FAST&t;0x0080 /* soft-copy faster than rendering */
+multiline_comment|/* hardware supported ops */
+multiline_comment|/*  semantics: when a bit is set, it indicates that the operation is&n; *   accelerated by hardware.&n; *  required functions will still work even if the bit is not set.&n; *  optional functions may not even exist if the flag bit is not set.&n; */
+DECL|macro|FBINFO_HWACCEL_NONE
+mdefine_line|#define FBINFO_HWACCEL_NONE&t;&t;0x0000
+DECL|macro|FBINFO_HWACCEL_COPYAREA
+mdefine_line|#define FBINFO_HWACCEL_COPYAREA&t;&t;0x0100 /* required */
+DECL|macro|FBINFO_HWACCEL_FILLRECT
+mdefine_line|#define FBINFO_HWACCEL_FILLRECT&t;&t;0x0200 /* required */
+DECL|macro|FBINFO_HWACCEL_IMAGEBLIT
+mdefine_line|#define FBINFO_HWACCEL_IMAGEBLIT&t;0x0400 /* required */
+DECL|macro|FBINFO_HWACCEL_ROTATE
+mdefine_line|#define FBINFO_HWACCEL_ROTATE&t;&t;0x0800 /* optional */
+DECL|macro|FBINFO_HWACCEL_XPAN
+mdefine_line|#define FBINFO_HWACCEL_XPAN&t;&t;0x1000 /* optional */
+DECL|macro|FBINFO_HWACCEL_YPAN
+mdefine_line|#define FBINFO_HWACCEL_YPAN&t;&t;0x2000 /* optional */
+DECL|macro|FBINFO_HWACCEL_YWRAP
+mdefine_line|#define FBINFO_HWACCEL_YWRAP&t;&t;0x4000 /* optional */
 DECL|struct|fb_info
 r_struct
 id|fb_info
@@ -1551,8 +1582,6 @@ DECL|member|flags
 r_int
 id|flags
 suffix:semicolon
-DECL|macro|FBINFO_FLAG_MODULE
-mdefine_line|#define FBINFO_FLAG_MODULE&t;1&t;/* Low-level driver is a module */
 DECL|member|var
 r_struct
 id|fb_var_screeninfo
@@ -1642,12 +1671,20 @@ suffix:semicolon
 )brace
 suffix:semicolon
 macro_line|#ifdef MODULE
-DECL|macro|FBINFO_FLAG_DEFAULT
-mdefine_line|#define FBINFO_FLAG_DEFAULT&t;FBINFO_FLAG_MODULE
+DECL|macro|FBINFO_DEFAULT
+mdefine_line|#define FBINFO_DEFAULT&t;FBINFO_MODULE
 macro_line|#else
-DECL|macro|FBINFO_FLAG_DEFAULT
-mdefine_line|#define FBINFO_FLAG_DEFAULT&t;0
+DECL|macro|FBINFO_DEFAULT
+mdefine_line|#define FBINFO_DEFAULT&t;0
 macro_line|#endif
+singleline_comment|// This will go away
+DECL|macro|FBINFO_FLAG_MODULE
+mdefine_line|#define FBINFO_FLAG_MODULE&t;FBINFO_MODULE
+DECL|macro|FBINFO_FLAG_DEFAULT
+mdefine_line|#define FBINFO_FLAG_DEFAULT&t;FBINFO_DEFAULT
+multiline_comment|/* This will go away&n; * fbset currently hacks in FB_ACCELF_TEXT into var.accel_flags&n; * when it wants to turn the acceleration engine on.  This is&n; * really a separate operation, and should be modified via sysfs.&n; *  But for now, we leave it broken with the following define&n; */
+DECL|macro|STUPID_ACCELF_TEXT_SHIT
+mdefine_line|#define STUPID_ACCELF_TEXT_SHIT
 singleline_comment|// This will go away
 macro_line|#if defined(__sparc__)
 multiline_comment|/* We map all of our framebuffers such that big-endian accesses&n; * are what we want, so the following is sufficient.&n; */

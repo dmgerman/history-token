@@ -32,7 +32,6 @@ macro_line|#include &lt;asm/desc.h&gt;
 macro_line|#include &lt;asm/i387.h&gt;
 macro_line|#include &lt;asm/nmi.h&gt;
 macro_line|#include &lt;asm/smp.h&gt;
-macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/arch_hooks.h&gt;
 macro_line|#include &lt;linux/irq.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -658,12 +657,6 @@ l_string|&quot; =======================&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
-id|printk
-c_func
-(paren
-l_string|&quot;&bslash;n&quot;
-)paren
-suffix:semicolon
 )brace
 DECL|function|show_stack
 r_void

@@ -6,6 +6,8 @@ macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;asm/signal.h&gt;
 macro_line|#include &lt;asm/siginfo.h&gt;
 macro_line|#ifdef __KERNEL__
+DECL|macro|MAX_SIGPENDING
+mdefine_line|#define MAX_SIGPENDING&t;1024
 multiline_comment|/*&n; * Real Time signals may be queued.&n; */
 DECL|struct|sigqueue
 r_struct
@@ -28,6 +30,12 @@ suffix:semicolon
 DECL|member|info
 id|siginfo_t
 id|info
+suffix:semicolon
+DECL|member|user
+r_struct
+id|user_struct
+op_star
+id|user
 suffix:semicolon
 )brace
 suffix:semicolon

@@ -227,7 +227,7 @@ id|cpu
 (brace
 )brace
 macro_line|#endif /* CONFIG_HOTPLUG_CPU */
-multiline_comment|/*&n; * register_cpu - Setup a driverfs device for a CPU.&n; * @num - CPU number to use when creating the device.&n; *&n; * Initialize and register the CPU device.&n; */
+multiline_comment|/*&n; * register_cpu - Setup a driverfs device for a CPU.&n; * @cpu - Callers can set the cpu-&gt;no_control field to 1, to indicate not to&n; *&t;&t;  generate a control file in sysfs for this CPU.&n; * @num - CPU number to use when creating the device.&n; *&n; * Initialize and register the CPU device.&n; */
 DECL|function|register_cpu
 r_int
 id|__init
@@ -309,6 +309,9 @@ c_cond
 (paren
 op_logical_neg
 id|error
+op_logical_and
+op_logical_neg
+id|cpu-&gt;no_control
 )paren
 id|register_cpu_control
 c_func

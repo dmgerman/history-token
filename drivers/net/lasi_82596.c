@@ -19,7 +19,6 @@ macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
-macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/pdc.h&gt;
 macro_line|#include &lt;asm/cache.h&gt;

@@ -11,7 +11,6 @@ macro_line|#include &lt;linux/reboot.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#include &lt;asm/cache.h&gt;&t;&t;/* for L1_CACHE_BYTES */
 macro_line|#include &lt;asm/uaccess.h&gt;
-macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#include &lt;asm/io.h&gt;

@@ -908,6 +908,14 @@ id|total_lowmem
 op_assign
 id|total_memory
 suffix:semicolon
+macro_line|#ifdef CONFIG_FSL_BOOKE
+multiline_comment|/* Freescale Book-E parts expect lowmem to be mapped by fixed TLB&n;&t; * entries, so we need to adjust lowmem to match the amount we can map&n;&t; * in the fixed entries */
+id|adjust_total_lowmem
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif /* CONFIG_FSL_BOOKE */
 r_if
 c_cond
 (paren

@@ -26,7 +26,6 @@ macro_line|#include &lt;linux/security.h&gt;
 macro_line|#include &lt;linux/syscalls.h&gt;
 macro_line|#include &lt;linux/rmap.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
-macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/mmu_context.h&gt;
 macro_line|#ifdef CONFIG_KMOD
 macro_line|#include &lt;linux/kmod.h&gt;
@@ -3526,6 +3525,12 @@ id|MAY_READ
 comma
 l_int|NULL
 )paren
+op_logical_or
+(paren
+id|bprm-&gt;interp_flags
+op_amp
+id|BINPRM_FLAGS_ENFORCE_NONDUMP
+)paren
 )paren
 id|current-&gt;mm-&gt;dumpable
 op_assign
@@ -4577,6 +4582,10 @@ suffix:semicolon
 id|bprm.interp
 op_assign
 id|filename
+suffix:semicolon
+id|bprm.interp_flags
+op_assign
+l_int|0
 suffix:semicolon
 id|bprm.sh_bang
 op_assign

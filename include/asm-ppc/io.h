@@ -36,6 +36,8 @@ macro_line|#elif defined(CONFIG_8xx)
 macro_line|#include &lt;asm/mpc8xx.h&gt;
 macro_line|#elif defined(CONFIG_8260)
 macro_line|#include &lt;asm/mpc8260.h&gt;
+macro_line|#elif defined(CONFIG_85xx)
+macro_line|#include &lt;asm/mpc85xx.h&gt;
 macro_line|#elif defined(CONFIG_APUS)
 DECL|macro|_IO_BASE
 mdefine_line|#define _IO_BASE&t;0

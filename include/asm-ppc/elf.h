@@ -89,6 +89,8 @@ DECL|macro|ELF_NFPREG
 mdefine_line|#define ELF_NFPREG&t;33&t;/* includes fpscr */
 DECL|macro|ELF_NVRREG
 mdefine_line|#define ELF_NVRREG&t;33&t;/* includes vscr */
+DECL|macro|ELF_NEVRREG
+mdefine_line|#define ELF_NEVRREG&t;34&t;/* includes acc (as 2) */
 multiline_comment|/*&n; * These are used to set parameters in the core dumps.&n; */
 DECL|macro|ELF_ARCH
 mdefine_line|#define ELF_ARCH&t;EM_PPC

@@ -1063,7 +1063,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|mtdblks
+id|mtdblk
 )paren
 r_return
 op_minus

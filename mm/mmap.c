@@ -17,7 +17,6 @@ macro_line|#include &lt;linux/mount.h&gt;
 macro_line|#include &lt;linux/mempolicy.h&gt;
 macro_line|#include &lt;linux/rmap.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
-macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/cacheflush.h&gt;
 macro_line|#include &lt;asm/tlb.h&gt;
 multiline_comment|/*&n; * WARNING: the debugging will use recursive algorithms so never enable this&n; * unless you know what you are doing.&n; */

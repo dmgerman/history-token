@@ -14,7 +14,7 @@ macro_line|#include &lt;linux/notifier.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 DECL|macro|IPMI_MSGHANDLER_VERSION
-mdefine_line|#define IPMI_MSGHANDLER_VERSION &quot;v31&quot;
+mdefine_line|#define IPMI_MSGHANDLER_VERSION &quot;v32&quot;
 r_struct
 id|ipmi_recv_msg
 op_star
@@ -6366,6 +6366,56 @@ l_int|0
 )paren
 (brace
 multiline_comment|/* Got an error from the channel, just go on. */
+r_if
+c_cond
+(paren
+id|msg-&gt;rsp
+(braket
+l_int|2
+)braket
+op_eq
+id|IPMI_INVALID_COMMAND_ERR
+)paren
+(brace
+multiline_comment|/* If the MC does not support this&n;&t;&t;&t;&t;   command, that is legal.  We just&n;&t;&t;&t;&t;   assume it has one IPMB at channel&n;&t;&t;&t;&t;   zero. */
+id|intf-&gt;channels
+(braket
+l_int|0
+)braket
+dot
+id|medium
+op_assign
+id|IPMI_CHANNEL_MEDIUM_IPMB
+suffix:semicolon
+id|intf-&gt;channels
+(braket
+l_int|0
+)braket
+dot
+id|protocol
+op_assign
+id|IPMI_CHANNEL_PROTOCOL_IPMB
+suffix:semicolon
+id|rv
+op_assign
+op_minus
+id|ENOSYS
+suffix:semicolon
+id|intf-&gt;curr_channel
+op_assign
+id|IPMI_MAX_CHANNELS
+suffix:semicolon
+id|wake_up
+c_func
+(paren
+op_amp
+id|intf-&gt;waitq
+)paren
+suffix:semicolon
+r_goto
+id|out
+suffix:semicolon
+)brace
 r_goto
 id|next_channel
 suffix:semicolon
@@ -6468,13 +6518,45 @@ c_func
 (paren
 id|KERN_WARNING
 l_string|&quot;ipmi_msghandler: Error sending&quot;
-l_string|&quot;channel information: 0x%x&bslash;n&quot;
+l_string|&quot;channel information: %d&bslash;n&quot;
 comma
 id|rv
 )paren
 suffix:semicolon
 )brace
 )brace
+id|out
+suffix:colon
+r_return
+suffix:semicolon
+)brace
+DECL|function|ipmi_poll_interface
+r_void
+id|ipmi_poll_interface
+c_func
+(paren
+id|ipmi_user_t
+id|user
+)paren
+(brace
+id|ipmi_smi_t
+id|intf
+op_assign
+id|user-&gt;intf
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|intf-&gt;handlers-&gt;poll
+)paren
+id|intf-&gt;handlers
+op_member_access_from_pointer
+id|poll
+c_func
+(paren
+id|intf-&gt;send_info
+)paren
+suffix:semicolon
 )brace
 DECL|function|ipmi_register_smi
 r_int
@@ -12755,6 +12837,13 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|ipmi_request_with_source
+)paren
+suffix:semicolon
+DECL|variable|ipmi_poll_interface
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|ipmi_poll_interface
 )paren
 suffix:semicolon
 DECL|variable|ipmi_register_smi

@@ -3599,7 +3599,6 @@ id|blk_remove_plug
 suffix:semicolon
 multiline_comment|/*&n; * remove the plug and let it rip..&n; */
 DECL|function|__generic_unplug_device
-r_static
 r_inline
 r_void
 id|__generic_unplug_device
@@ -3655,6 +3654,13 @@ id|q
 )paren
 suffix:semicolon
 )brace
+DECL|variable|__generic_unplug_device
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|__generic_unplug_device
+)paren
+suffix:semicolon
 multiline_comment|/**&n; * generic_unplug_device - fire a request queue&n; * @q:    The &amp;request_queue_t in question&n; *&n; * Description:&n; *   Linux uses plugging to build bigger requests queues before letting&n; *   the device have at them. If a queue is plugged, the I/O scheduler&n; *   is still adding and merging requests on the queue. Once the queue&n; *   gets unplugged, the request_fn defined for the queue is invoked and&n; *   transfers started.&n; **/
 DECL|function|generic_unplug_device
 r_void
@@ -7555,35 +7561,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|blk_queue_plugged
-c_func
-(paren
-id|q
-)paren
-)paren
-(brace
-r_int
-id|nrq
-op_assign
-id|q-&gt;rq.count
-(braket
-id|READ
-)braket
-op_plus
-id|q-&gt;rq.count
-(braket
-id|WRITE
-)braket
-op_minus
-id|q-&gt;in_flight
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|nrq
-op_eq
-id|q-&gt;unplug_thresh
-op_logical_or
 id|bio_sync
 c_func
 (paren
@@ -7596,7 +7573,6 @@ c_func
 id|q
 )paren
 suffix:semicolon
-)brace
 id|spin_unlock_irq
 c_func
 (paren

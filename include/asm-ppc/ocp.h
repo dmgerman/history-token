@@ -495,6 +495,9 @@ mdefine_line|#define OCP_SYSFS_ADDTL(type, format, name, field)&t;&t;&t;&bslash;
 macro_line|#ifdef CONFIG_IBM_OCP
 macro_line|#include &lt;asm/ibm_ocp.h&gt;
 macro_line|#endif
+macro_line|#ifdef CONFIG_FSL_OCP
+macro_line|#include &lt;asm/fsl_ocp.h&gt;
+macro_line|#endif
 macro_line|#endif&t;&t;&t;&t;/* CONFIG_PPC_OCP */
 macro_line|#endif&t;&t;&t;&t;/* __OCP_H__ */
 macro_line|#endif&t;&t;&t;&t;/* __KERNEL__ */

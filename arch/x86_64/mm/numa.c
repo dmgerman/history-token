@@ -968,7 +968,11 @@ id|node_to_cpumask
 l_int|0
 )braket
 op_assign
-l_int|1
+id|cpumask_of_cpu
+c_func
+(paren
+l_int|0
+)paren
 suffix:semicolon
 id|setup_node_bootmem
 c_func

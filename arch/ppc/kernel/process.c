@@ -17,6 +17,7 @@ macro_line|#include &lt;linux/prctl.h&gt;
 macro_line|#include &lt;linux/init_task.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kallsyms.h&gt;
+macro_line|#include &lt;linux/mqueue.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
@@ -47,6 +48,14 @@ r_struct
 id|task_struct
 op_star
 id|last_task_used_altivec
+op_assign
+l_int|NULL
+suffix:semicolon
+DECL|variable|last_task_used_spe
+r_struct
+id|task_struct
+op_star
+id|last_task_used_spe
 op_assign
 l_int|NULL
 suffix:semicolon
@@ -621,6 +630,119 @@ id|enable_kernel_altivec
 )paren
 suffix:semicolon
 macro_line|#endif /* CONFIG_ALTIVEC */
+macro_line|#ifdef CONFIG_SPE
+r_int
+DECL|function|dump_spe
+id|dump_spe
+c_func
+(paren
+r_struct
+id|pt_regs
+op_star
+id|regs
+comma
+id|elf_vrregset_t
+op_star
+id|evrregs
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|regs-&gt;msr
+op_amp
+id|MSR_SPE
+)paren
+id|giveup_spe
+c_func
+(paren
+id|current
+)paren
+suffix:semicolon
+multiline_comment|/* We copy u32 evr[32] + u64 acc + u32 spefscr -&gt; 35 */
+id|memcpy
+c_func
+(paren
+id|evrregs
+comma
+op_amp
+id|current-&gt;thread.evr
+(braket
+l_int|0
+)braket
+comma
+r_sizeof
+(paren
+id|u32
+)paren
+op_star
+l_int|35
+)paren
+suffix:semicolon
+r_return
+l_int|1
+suffix:semicolon
+)brace
+r_void
+DECL|function|enable_kernel_spe
+id|enable_kernel_spe
+c_func
+(paren
+r_void
+)paren
+(brace
+id|WARN_ON
+c_func
+(paren
+id|preemptible
+c_func
+(paren
+)paren
+)paren
+suffix:semicolon
+macro_line|#ifdef CONFIG_SMP
+r_if
+c_cond
+(paren
+id|current-&gt;thread.regs
+op_logical_and
+(paren
+id|current-&gt;thread.regs-&gt;msr
+op_amp
+id|MSR_SPE
+)paren
+)paren
+id|giveup_spe
+c_func
+(paren
+id|current
+)paren
+suffix:semicolon
+r_else
+id|giveup_spe
+c_func
+(paren
+l_int|NULL
+)paren
+suffix:semicolon
+multiline_comment|/* just enable SPE for kernel - force */
+macro_line|#else
+id|giveup_spe
+c_func
+(paren
+id|last_task_used_spe
+)paren
+suffix:semicolon
+macro_line|#endif /* __SMP __ */
+)brace
+DECL|variable|enable_kernel_spe
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|enable_kernel_spe
+)paren
+suffix:semicolon
+macro_line|#endif /* CONFIG_SPE */
 r_void
 DECL|function|enable_kernel_fp
 id|enable_kernel_fp
@@ -840,6 +962,28 @@ id|prev
 )paren
 suffix:semicolon
 macro_line|#endif /* CONFIG_ALTIVEC */
+macro_line|#ifdef CONFIG_SPE
+multiline_comment|/*&n;&t; * If the previous thread used spe in the last quantum&n;&t; * (thus changing spe regs) then save them.&n;&t; *&n;&t; * On SMP we always save/restore spe regs just to avoid the&n;&t; * complexity of changing processors.&n;&t; */
+r_if
+c_cond
+(paren
+(paren
+id|prev-&gt;thread.regs
+op_logical_and
+(paren
+id|prev-&gt;thread.regs-&gt;msr
+op_amp
+id|MSR_SPE
+)paren
+)paren
+)paren
+id|giveup_spe
+c_func
+(paren
+id|prev
+)paren
+suffix:semicolon
+macro_line|#endif /* CONFIG_SPE */
 macro_line|#endif /* CONFIG_SMP */
 multiline_comment|/* Avoid the trap.  On smp this this never happens since&n;&t; * we don&squot;t set last_task_used_altivec -- Cort&n;&t; */
 r_if
@@ -859,6 +1003,26 @@ id|thread.regs-&gt;msr
 op_or_assign
 id|MSR_VEC
 suffix:semicolon
+macro_line|#ifdef CONFIG_SPE
+multiline_comment|/* Avoid the trap.  On smp this this never happens since&n;&t; * we don&squot;t set last_task_used_spe&n;&t; */
+r_if
+c_cond
+(paren
+r_new
+op_member_access_from_pointer
+id|thread.regs
+op_logical_and
+id|last_task_used_spe
+op_eq
+r_new
+)paren
+r_new
+op_member_access_from_pointer
+id|thread.regs-&gt;msr
+op_or_assign
+id|MSR_SPE
+suffix:semicolon
+macro_line|#endif /* CONFIG_SPE */
 id|new_thread
 op_assign
 op_amp
@@ -1383,6 +1547,21 @@ id|current
 )paren
 suffix:semicolon
 macro_line|#endif /* CONFIG_ALTIVEC */
+macro_line|#ifdef CONFIG_SPE
+r_if
+c_cond
+(paren
+id|regs-&gt;msr
+op_amp
+id|MSR_SPE
+)paren
+id|giveup_spe
+c_func
+(paren
+id|current
+)paren
+suffix:semicolon
+macro_line|#endif /* CONFIG_SPE */
 id|preempt_enable
 c_func
 (paren
@@ -1772,7 +1951,36 @@ op_assign
 l_int|0
 suffix:semicolon
 macro_line|#endif /* CONFIG_ALTIVEC */
+macro_line|#ifdef CONFIG_SPE
+id|memset
+c_func
+(paren
+id|current-&gt;thread.evr
+comma
+l_int|0
+comma
+r_sizeof
+(paren
+id|current-&gt;thread.evr
+)paren
+)paren
+suffix:semicolon
+id|current-&gt;thread.acc
+op_assign
+l_int|0
+suffix:semicolon
+id|current-&gt;thread.spefscr
+op_assign
+l_int|0
+suffix:semicolon
+id|current-&gt;thread.used_spe
+op_assign
+l_int|0
+suffix:semicolon
+macro_line|#endif /* CONFIG_SPE */
 )brace
+DECL|macro|PR_FP_ALL_EXCEPT
+mdefine_line|#define PR_FP_ALL_EXCEPT (PR_FP_EXC_DIV | PR_FP_EXC_OVF | PR_FP_EXC_UND &bslash;&n;&t;&t;| PR_FP_EXC_RES | PR_FP_EXC_INV)
 DECL|function|set_fpexc_mode
 r_int
 id|set_fpexc_mode
@@ -1795,6 +2003,36 @@ id|regs
 op_assign
 id|tsk-&gt;thread.regs
 suffix:semicolon
+multiline_comment|/* This is a bit hairy.  If we are an SPE enabled  processor&n;&t; * (have embedded fp) we store the IEEE exception enable flags in&n;&t; * fpexc_mode.  fpexc_mode is also used for setting FP exception&n;&t; * mode (asyn, precise, disabled) for &squot;Classic&squot; FP. */
+r_if
+c_cond
+(paren
+id|val
+op_amp
+id|PR_FP_EXC_SW_ENABLE
+)paren
+(brace
+macro_line|#ifdef CONFIG_SPE
+id|tsk-&gt;thread.fpexc_mode
+op_assign
+id|val
+op_amp
+(paren
+id|PR_FP_EXC_SW_ENABLE
+op_or
+id|PR_FP_ALL_EXCEPT
+)paren
+suffix:semicolon
+macro_line|#else
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
+macro_line|#endif
+)brace
+r_else
+(brace
+multiline_comment|/* on a CONFIG_SPE this does not hurt us.  The bits that&n;&t;&t; * __pack_fe01 use do not overlap with bits used for&n;&t;&t; * PR_FP_EXC_SW_ENABLE.  Additionally, the MSR[FE0,FE1] bits&n;&t;&t; * on CONFIG_SPE implementations are reserved so writing to&n;&t;&t; * them does not change anything */
 r_if
 c_cond
 (paren
@@ -1844,6 +2082,7 @@ id|MSR_FE1
 op_or
 id|tsk-&gt;thread.fpexc_mode
 suffix:semicolon
+)brace
 r_return
 l_int|0
 suffix:semicolon
@@ -1867,6 +2106,25 @@ r_int
 r_int
 id|val
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|tsk-&gt;thread.fpexc_mode
+op_amp
+id|PR_FP_EXC_SW_ENABLE
+)paren
+macro_line|#ifdef CONFIG_SPE
+id|val
+op_assign
+id|tsk-&gt;thread.fpexc_mode
+suffix:semicolon
+macro_line|#else
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
+macro_line|#endif
+r_else
 id|val
 op_assign
 id|__unpack_fe01
@@ -2193,6 +2451,21 @@ id|current
 )paren
 suffix:semicolon
 macro_line|#endif /* CONFIG_ALTIVEC */
+macro_line|#ifdef CONFIG_SPE
+r_if
+c_cond
+(paren
+id|regs-&gt;msr
+op_amp
+id|MSR_SPE
+)paren
+id|giveup_spe
+c_func
+(paren
+id|current
+)paren
+suffix:semicolon
+macro_line|#endif /* CONFIG_SPE */
 id|preempt_enable
 c_func
 (paren

@@ -48,6 +48,8 @@ DECL|macro|IPMI_CC_NO_ERROR
 mdefine_line|#define IPMI_CC_NO_ERROR&t;&t;0x00
 DECL|macro|IPMI_NODE_BUSY_ERR
 mdefine_line|#define IPMI_NODE_BUSY_ERR&t;&t;0xc0
+DECL|macro|IPMI_INVALID_COMMAND_ERR
+mdefine_line|#define IPMI_INVALID_COMMAND_ERR&t;0xc1
 DECL|macro|IPMI_ERR_MSG_TRUNCATED
 mdefine_line|#define IPMI_ERR_MSG_TRUNCATED&t;&t;0xc6
 DECL|macro|IPMI_LOST_ARBITRATION_ERR

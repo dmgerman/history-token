@@ -7,6 +7,8 @@ DECL|macro|SMP_MAGIC_IDENT
 mdefine_line|#define SMP_MAGIC_IDENT&t;((&squot;_&squot;&lt;&lt;24)|(&squot;P&squot;&lt;&lt;16)|(&squot;M&squot;&lt;&lt;8)|&squot;_&squot;)
 DECL|macro|MAX_MPC_ENTRY
 mdefine_line|#define MAX_MPC_ENTRY 1024
+DECL|macro|MAX_APICS
+mdefine_line|#define MAX_APICS      256
 DECL|struct|intel_mp_floating
 r_struct
 id|intel_mp_floating

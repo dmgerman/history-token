@@ -44,8 +44,6 @@ id|resource
 id|code_resource
 comma
 id|data_resource
-comma
-id|vram_resource
 suffix:semicolon
 multiline_comment|/* Check for some hardcoded bad areas that early boot is not allowed to touch */
 DECL|function|bad_addr

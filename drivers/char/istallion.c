@@ -2845,7 +2845,7 @@ id|printk
 c_func
 (paren
 l_string|&quot;STALLION: failed to un-register tty driver, &quot;
-l_string|&quot;errno=%d,%d&bslash;n&quot;
+l_string|&quot;errno=%d&bslash;n&quot;
 comma
 op_minus
 id|i

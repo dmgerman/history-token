@@ -12,6 +12,7 @@ macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/user.h&gt;
 macro_line|#include &lt;linux/elfcore.h&gt;
+macro_line|#include &lt;linux/mqueue.h&gt;
 singleline_comment|//#define DEBUG
 multiline_comment|/*&n; * Initial task structure. Make this a per-architecture thing,&n; * because different architectures tend to have different&n; * alignment requirements and potentially different initial&n; * setup.&n; */
 DECL|variable|init_fs

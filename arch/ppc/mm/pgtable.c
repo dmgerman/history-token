@@ -28,6 +28,10 @@ macro_line|#if defined(CONFIG_6xx) || defined(CONFIG_POWER3)
 DECL|macro|HAVE_BATS
 mdefine_line|#define HAVE_BATS&t;1
 macro_line|#endif
+macro_line|#if defined(CONFIG_FSL_BOOKE)
+DECL|macro|HAVE_TLBCAM
+mdefine_line|#define HAVE_TLBCAM&t;1
+macro_line|#endif
 r_extern
 r_char
 id|etext
@@ -100,6 +104,45 @@ mdefine_line|#define v_mapped_by_bats(x)&t;(0UL)
 DECL|macro|p_mapped_by_bats
 mdefine_line|#define p_mapped_by_bats(x)&t;(0UL)
 macro_line|#endif /* HAVE_BATS */
+macro_line|#ifdef HAVE_TLBCAM
+r_extern
+r_int
+r_int
+id|tlbcam_index
+suffix:semicolon
+r_extern
+r_int
+r_int
+id|num_tlbcam_entries
+suffix:semicolon
+r_extern
+r_int
+r_int
+id|v_mapped_by_tlbcam
+c_func
+(paren
+r_int
+r_int
+id|va
+)paren
+suffix:semicolon
+r_extern
+r_int
+r_int
+id|p_mapped_by_tlbcam
+c_func
+(paren
+r_int
+r_int
+id|pa
+)paren
+suffix:semicolon
+macro_line|#else /* !HAVE_TLBCAM */
+DECL|macro|v_mapped_by_tlbcam
+mdefine_line|#define v_mapped_by_tlbcam(x)&t;(0UL)
+DECL|macro|p_mapped_by_tlbcam
+mdefine_line|#define p_mapped_by_tlbcam(x)&t;(0UL)
+macro_line|#endif /* HAVE_TLBCAM */
 macro_line|#ifdef CONFIG_44x
 multiline_comment|/* 44x uses an 8kB pgdir because it has 8-byte Linux PTEs. */
 DECL|macro|PGDIR_ORDER
@@ -667,6 +710,22 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
+id|v
+op_assign
+id|p_mapped_by_tlbcam
+c_func
+(paren
+id|p
+)paren
+)paren
+)paren
+r_goto
+id|out
+suffix:semicolon
+r_if
+c_cond
+(paren
 id|mem_init_done
 )paren
 (brace
@@ -1122,6 +1181,9 @@ suffix:semicolon
 multiline_comment|/* is x a power of 2? */
 DECL|macro|is_power_of_2
 mdefine_line|#define is_power_of_2(x)&t;((x) != 0 &amp;&amp; (((x) &amp; ((x) - 1)) == 0))
+multiline_comment|/* is x a power of 4? */
+DECL|macro|is_power_of_4
+mdefine_line|#define is_power_of_4(x)&t;((x) != 0 &amp;&amp; (((x) &amp; (x-1)) == 0) &amp;&amp; (ffs(x) &amp; 1))
 multiline_comment|/*&n; * Set up a mapping for a block of I/O.&n; * virt, phys, size must all be page-aligned.&n; * This should only be called before ioremap is called.&n; */
 DECL|function|io_block_mapping
 r_void
@@ -1225,6 +1287,69 @@ r_return
 suffix:semicolon
 )brace
 macro_line|#endif /* HAVE_BATS */
+macro_line|#ifdef HAVE_TLBCAM
+multiline_comment|/*&n;&t; * Use a CAM for this if possible...&n;&t; */
+r_if
+c_cond
+(paren
+id|tlbcam_index
+OL
+id|num_tlbcam_entries
+op_logical_and
+id|is_power_of_4
+c_func
+(paren
+id|size
+)paren
+op_logical_and
+(paren
+id|virt
+op_amp
+(paren
+id|size
+op_minus
+l_int|1
+)paren
+)paren
+op_eq
+l_int|0
+op_logical_and
+(paren
+id|phys
+op_amp
+(paren
+id|size
+op_minus
+l_int|1
+)paren
+)paren
+op_eq
+l_int|0
+)paren
+(brace
+id|settlbcam
+c_func
+(paren
+id|tlbcam_index
+comma
+id|virt
+comma
+id|phys
+comma
+id|size
+comma
+id|flags
+comma
+l_int|0
+)paren
+suffix:semicolon
+op_increment
+id|tlbcam_index
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
+macro_line|#endif /* HAVE_TLBCAM */
 multiline_comment|/* No BATs available, put it in the page tables. */
 r_for
 c_loop

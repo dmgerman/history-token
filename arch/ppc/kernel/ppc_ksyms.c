@@ -867,6 +867,22 @@ id|giveup_altivec
 )paren
 suffix:semicolon
 macro_line|#endif /* CONFIG_ALTIVEC */
+macro_line|#ifdef CONFIG_SPE
+DECL|variable|last_task_used_spe
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|last_task_used_spe
+)paren
+suffix:semicolon
+DECL|variable|giveup_spe
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|giveup_spe
+)paren
+suffix:semicolon
+macro_line|#endif /* CONFIG_SPE */
 macro_line|#ifdef CONFIG_SMP
 DECL|variable|smp_call_function
 id|EXPORT_SYMBOL
@@ -1544,7 +1560,7 @@ id|cpm_free_handler
 )paren
 suffix:semicolon
 macro_line|#endif /* CONFIG_8xx */
-macro_line|#if defined(CONFIG_8xx) || defined(CONFIG_40x)
+macro_line|#if defined(CONFIG_8xx) || defined(CONFIG_40x) || defined(CONFIG_85xx)
 DECL|variable|__res
 id|EXPORT_SYMBOL
 c_func

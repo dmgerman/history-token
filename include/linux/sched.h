@@ -318,28 +318,6 @@ id|user
 suffix:semicolon
 r_extern
 r_void
-id|update_one_process
-c_func
-(paren
-r_struct
-id|task_struct
-op_star
-id|p
-comma
-r_int
-r_int
-id|user
-comma
-r_int
-r_int
-id|system
-comma
-r_int
-id|cpu
-)paren
-suffix:semicolon
-r_extern
-r_void
 id|scheduler_tick
 c_func
 (paren
@@ -721,6 +699,18 @@ id|atomic_t
 id|files
 suffix:semicolon
 multiline_comment|/* How many open files does this user have? */
+DECL|member|sigpending
+id|atomic_t
+id|sigpending
+suffix:semicolon
+multiline_comment|/* How many pending signals does this user have? */
+multiline_comment|/* protected by mq_lock&t;*/
+DECL|member|mq_bytes
+r_int
+r_int
+id|mq_bytes
+suffix:semicolon
+multiline_comment|/* How many bytes can be allocated to mqueue? */
 multiline_comment|/* Hash table maintenance information */
 DECL|member|uidhash_list
 r_struct
@@ -892,6 +882,7 @@ l_int|0
 suffix:semicolon
 )brace
 suffix:semicolon
+multiline_comment|/*&n; * get_group_info() must be called with the owning task locked (via task_lock())&n; * when task != current.  The reason being that the vast majority of callers are&n; * looking at current-&gt;group_info, which can not be changed except by the&n; * current task.  Changing current-&gt;group_info requires the task lock, too.&n; */
 DECL|macro|get_group_info
 mdefine_line|#define get_group_info(group_info) do { &bslash;&n;&t;atomic_inc(&amp;(group_info)-&gt;usage); &bslash;&n;} while (0)
 DECL|macro|put_group_info
@@ -1816,6 +1807,7 @@ r_int
 id|task_prio
 c_func
 (paren
+r_const
 id|task_t
 op_star
 id|p
@@ -1826,6 +1818,7 @@ r_int
 id|task_nice
 c_func
 (paren
+r_const
 id|task_t
 op_star
 id|p
@@ -1836,6 +1829,7 @@ r_int
 id|task_curr
 c_func
 (paren
+r_const
 id|task_t
 op_star
 id|p
@@ -1994,6 +1988,32 @@ c_func
 id|uid_t
 )paren
 suffix:semicolon
+DECL|function|get_uid
+r_static
+r_inline
+r_struct
+id|user_struct
+op_star
+id|get_uid
+c_func
+(paren
+r_struct
+id|user_struct
+op_star
+id|u
+)paren
+(brace
+id|atomic_inc
+c_func
+(paren
+op_amp
+id|u-&gt;__count
+)paren
+suffix:semicolon
+r_return
+id|u
+suffix:semicolon
+)brace
 r_extern
 r_void
 id|free_uid
@@ -3144,6 +3164,7 @@ c_func
 id|next_thread
 c_func
 (paren
+r_const
 id|task_t
 op_star
 id|p
@@ -3196,7 +3217,7 @@ op_star
 id|p
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * Protects -&gt;fs, -&gt;files, -&gt;mm, -&gt;ptrace and synchronises with wait4().&n; * Nests both inside and outside of read_lock(&amp;tasklist_lock).&n; * It must not be nested with write_lock_irq(&amp;tasklist_lock),&n; * neither inside nor outside.&n; */
+multiline_comment|/*&n; * Protects -&gt;fs, -&gt;files, -&gt;mm, -&gt;ptrace, -&gt;group_info and synchronises with&n; * wait4().&n; *&n; * Nests both inside and outside of read_lock(&amp;tasklist_lock).&n; * It must not be nested with write_lock_irq(&amp;tasklist_lock),&n; * neither inside nor outside.&n; */
 DECL|function|task_lock
 r_static
 r_inline
@@ -3641,6 +3662,7 @@ r_int
 id|task_cpu
 c_func
 (paren
+r_const
 r_struct
 id|task_struct
 op_star
@@ -3682,6 +3704,7 @@ r_int
 id|task_cpu
 c_func
 (paren
+r_const
 r_struct
 id|task_struct
 op_star

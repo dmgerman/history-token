@@ -536,6 +536,10 @@ DECL|macro|SPRN_SRR0
 mdefine_line|#define SPRN_SRR0&t;0x01A&t;/* Save/Restore Register 0 */
 DECL|macro|SPRN_SRR1
 mdefine_line|#define SPRN_SRR1&t;0x01B&t;/* Save/Restore Register 1 */
+macro_line|#ifndef SPRN_SVR
+DECL|macro|SPRN_SVR
+mdefine_line|#define SPRN_SVR&t;0x11E&t;/* System Version Register */
+macro_line|#endif
 DECL|macro|SPRN_THRM1
 mdefine_line|#define SPRN_THRM1&t;0x3FC&t;&t;/* Thermal Management Register 1 */
 multiline_comment|/* these bits were defined in inverted endian sense originally, ugh, confusing */
@@ -741,6 +745,8 @@ DECL|macro|SRR2
 mdefine_line|#define SRR2&t;SPRN_SRR2&t;/* Save and Restore Register 2 */
 DECL|macro|SRR3
 mdefine_line|#define SRR3&t;SPRN_SRR3&t;/* Save and Restore Register 3 */
+DECL|macro|SVR
+mdefine_line|#define SVR&t;SPRN_SVR&t;/* System Version Register */
 DECL|macro|ICTC
 mdefine_line|#define ICTC&t;SPRN_ICTC&t;/* Instruction Cache Throttling Control Reg */
 DECL|macro|THRM1
@@ -841,6 +847,10 @@ DECL|macro|PVR_7410
 mdefine_line|#define PVR_7410&t;0x800C0000
 DECL|macro|PVR_7450
 mdefine_line|#define PVR_7450&t;0x80000000
+DECL|macro|PVR_8540
+mdefine_line|#define PVR_8540&t;0x80200000
+DECL|macro|PVR_8560
+mdefine_line|#define PVR_8560&t;0x80200000
 multiline_comment|/*&n; * For the 8xx processors, all of them report the same PVR family for&n; * the PowerPC core. The various versions of these processors must be&n; * differentiated by the version number in the Communication Processor&n; * Module (CPM).&n; */
 DECL|macro|PVR_821
 mdefine_line|#define PVR_821&t;&t;0x00500000
@@ -856,6 +866,15 @@ DECL|macro|PVR_8245
 mdefine_line|#define PVR_8245&t;0x80811014
 DECL|macro|PVR_8260
 mdefine_line|#define PVR_8260&t;PVR_8240
+multiline_comment|/* System Version Numbers */
+DECL|macro|SVR_8540
+mdefine_line|#define SVR_8540&t;0x80300000
+DECL|macro|SVR_8541E
+mdefine_line|#define SVR_8541E&t;0x807A0000
+DECL|macro|SVR_8555E
+mdefine_line|#define SVR_8555E&t;0x80790000
+DECL|macro|SVR_8560
+mdefine_line|#define SVR_8560&t;0x80700000
 multiline_comment|/* Segment Registers */
 DECL|macro|SR0
 mdefine_line|#define SR0&t;0

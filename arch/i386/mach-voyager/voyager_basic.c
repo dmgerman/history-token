@@ -11,7 +11,6 @@ macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/reboot.h&gt;
 macro_line|#include &lt;linux/sysrq.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
-macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/voyager.h&gt;
 macro_line|#include &lt;asm/vic.h&gt;
 macro_line|#include &lt;linux/pm.h&gt;
