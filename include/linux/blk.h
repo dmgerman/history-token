@@ -7,15 +7,6 @@ macro_line|#include &lt;linux/locks.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/compiler.h&gt;
-multiline_comment|/*&n; * get rid of this next...&n; */
-r_extern
-r_int
-id|ide_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 r_extern
 r_void
 id|set_device_ro

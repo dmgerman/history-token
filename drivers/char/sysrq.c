@@ -550,10 +550,10 @@ c_func
 id|sb
 )paren
 suffix:semicolon
-id|fsync_dev
+id|fsync_bdev
 c_func
 (paren
-id|sb-&gt;s_dev
+id|sb-&gt;s_bdev
 )paren
 suffix:semicolon
 id|flags
@@ -632,10 +632,10 @@ suffix:semicolon
 r_else
 (brace
 multiline_comment|/* Sync only */
-id|fsync_dev
+id|fsync_bdev
 c_func
 (paren
-id|sb-&gt;s_dev
+id|sb-&gt;s_bdev
 )paren
 suffix:semicolon
 id|printk

@@ -430,11 +430,7 @@ l_string|&quot;block %lu is out of range on %s&bslash;n&quot;
 comma
 id|block
 comma
-id|bdevname
-c_func
-(paren
-id|s-&gt;s_dev
-)paren
+id|s-&gt;s_id
 )paren
 suffix:semicolon
 r_return

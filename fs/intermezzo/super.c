@@ -55,8 +55,10 @@ id|presto_cache
 op_star
 id|cache
 comma
-id|kdev_t
-id|dev
+r_struct
+id|super_block
+op_star
+id|sb
 )paren
 suffix:semicolon
 r_extern
@@ -1337,7 +1339,7 @@ c_func
 (paren
 id|cache
 comma
-id|mysb-&gt;s_dev
+id|mysb
 )paren
 suffix:semicolon
 multiline_comment|/* make sure we have our own super operations: mysb&n;           still contains the cache operations */
@@ -1729,7 +1731,7 @@ op_assign
 id|presto_find_cache
 c_func
 (paren
-id|sb-&gt;s_dev
+id|sb
 )paren
 suffix:semicolon
 r_if

@@ -816,11 +816,6 @@ r_struct
 id|pci_dev
 op_star
 id|dev
-comma
-r_const
-r_char
-op_star
-id|msg
 )paren
 (brace
 r_int

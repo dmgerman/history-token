@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * USB Compaq iPAQ driver&n; *&n; *&t;Copyright (C) 2001&n; *&t;    Ganesh Varadarajan &lt;ganesh@veritas.com&gt;&n; *&n; *&t;This program is free software; you can redistribute it and/or modify&n; *&t;it under the terms of the GNU General Public License as published by&n; *&t;the Free Software Foundation; either version 2 of the License, or&n; *&t;(at your option) any later version.&n; *&n; */
+multiline_comment|/*&n; * USB Compaq iPAQ driver&n; *&n; *&t;Copyright (C) 2001 - 2002&n; *&t;    Ganesh Varadarajan &lt;ganesh@veritas.com&gt;&n; *&n; *&t;This program is free software; you can redistribute it and/or modify&n; *&t;it under the terms of the GNU General Public License as published by&n; *&t;the Free Software Foundation; either version 2 of the License, or&n; *&t;(at your option) any later version.&n; *&n; * (25/2/2002) ganesh&n; * &t;Added support for the HP Jornada 548 and 568. Completely untested.&n; * &t;Thanks to info from Heath Robinson and Arieh Davidoff.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -35,11 +35,11 @@ macro_line|#include &quot;usb-serial.h&quot;
 macro_line|#include &quot;ipaq.h&quot;
 multiline_comment|/*&n; * Version Information&n; */
 DECL|macro|DRIVER_VERSION
-mdefine_line|#define DRIVER_VERSION &quot;v0.1&quot;
+mdefine_line|#define DRIVER_VERSION &quot;v0.2&quot;
 DECL|macro|DRIVER_AUTHOR
 mdefine_line|#define DRIVER_AUTHOR &quot;Ganesh Varadarajan &lt;ganesh@veritas.com&gt;&quot;
 DECL|macro|DRIVER_DESC
-mdefine_line|#define DRIVER_DESC &quot;USB Compaq iPAQ driver&quot;
+mdefine_line|#define DRIVER_DESC &quot;USB Compaq iPAQ, HP Jornada driver&quot;
 multiline_comment|/* Function prototypes for an ipaq */
 r_static
 r_int
@@ -216,9 +216,29 @@ op_assign
 id|USB_DEVICE
 c_func
 (paren
-id|IPAQ_VENDOR_ID
+id|COMPAQ_VENDOR_ID
 comma
-id|IPAQ_PRODUCT_ID
+id|COMPAQ_IPAQ_ID
+)paren
+)brace
+comma
+(brace
+id|USB_DEVICE
+c_func
+(paren
+id|HP_VENDOR_ID
+comma
+id|HP_JORNADA_548_ID
+)paren
+)brace
+comma
+(brace
+id|USB_DEVICE
+c_func
+(paren
+id|HP_VENDOR_ID
+comma
+id|HP_JORNADA_568_ID
 )paren
 )brace
 comma
@@ -255,7 +275,7 @@ id|ipaq_id_table
 comma
 id|num_interrupt_in
 suffix:colon
-l_int|0
+id|NUM_DONT_CARE
 comma
 id|num_bulk_in
 suffix:colon
@@ -387,13 +407,6 @@ id|__FUNCTION__
 l_string|&quot; - port %d&quot;
 comma
 id|port-&gt;number
-)paren
-suffix:semicolon
-id|down
-c_func
-(paren
-op_amp
-id|port-&gt;sem
 )paren
 suffix:semicolon
 op_increment
@@ -826,13 +839,6 @@ id|result
 suffix:semicolon
 )brace
 )brace
-id|up
-c_func
-(paren
-op_amp
-id|port-&gt;sem
-)paren
-suffix:semicolon
 r_return
 id|result
 suffix:semicolon
@@ -935,12 +941,6 @@ id|serial
 )paren
 r_return
 suffix:semicolon
-id|down
-(paren
-op_amp
-id|port-&gt;sem
-)paren
-suffix:semicolon
 op_decrement
 id|port-&gt;open_count
 suffix:semicolon
@@ -988,12 +988,6 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
-id|up
-(paren
-op_amp
-id|port-&gt;sem
-)paren
-suffix:semicolon
 multiline_comment|/* Uncomment the following line if you want to see some statistics in your syslog */
 multiline_comment|/* info (&quot;Bytes In = %d  Bytes Out = %d&quot;, bytes_in, bytes_out); */
 )brace

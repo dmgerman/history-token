@@ -595,6 +595,12 @@ r_int
 id|fsbr
 suffix:semicolon
 multiline_comment|/* Full speed bandwidth reclamation */
+DECL|member|fsbrtimeout
+r_int
+r_int
+id|fsbrtimeout
+suffix:semicolon
+multiline_comment|/* FSBR delay */
 DECL|member|is_suspended
 r_int
 id|is_suspended

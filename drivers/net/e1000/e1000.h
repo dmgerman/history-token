@@ -41,9 +41,6 @@ macro_line|#include &quot;e1000_mac.h&quot;
 macro_line|#include &quot;e1000_phy.h&quot;
 DECL|macro|BAR_0
 mdefine_line|#define BAR_0 0
-multiline_comment|/* Advertise that we can DMA from any address location */
-DECL|macro|E1000_DMA_MASK
-mdefine_line|#define E1000_DMA_MASK (~0x0UL)
 macro_line|#if DBG
 DECL|macro|E1000_DBG
 mdefine_line|#define E1000_DBG(args...) printk(KERN_DEBUG &quot;e1000: &quot; args)

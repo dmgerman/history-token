@@ -3057,10 +3057,10 @@ r_return
 op_minus
 id|EACCES
 suffix:semicolon
-id|fsync_dev
+id|fsync_bdev
 c_func
 (paren
-id|inode-&gt;i_rdev
+id|inode-&gt;i_bdev
 )paren
 suffix:semicolon
 id|invalidate_buffers

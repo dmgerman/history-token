@@ -1,11 +1,11 @@
 multiline_comment|/* 8139cp.c: A Linux PCI Ethernet driver for the RealTek 8139C+ chips. */
-multiline_comment|/*&n;&t;Copyright 2001 Jeff Garzik &lt;jgarzik@mandrakesoft.com&gt;&n;&n;&t;Copyright (C) 2000, 2001 David S. Miller (davem@redhat.com) [sungem.c]&n;&t;Copyright 2001 Manfred Spraul&t;&t;&t;&t;    [natsemi.c]&n;&t;Copyright 1999-2001 by Donald Becker.&t;&t;&t;    [natsemi.c]&n;       &t;Written 1997-2001 by Donald Becker.&t;&t;&t;    [8139too.c]&n;&t;Copyright 1998-2001 by Jes Sorensen, &lt;jes@trained-monkey.org&gt;. [acenic.c]&n;&n;&t;This software may be used and distributed according to the terms of&n;&t;the GNU General Public License (GPL), incorporated herein by reference.&n;&t;Drivers based on or derived from this code fall under the GPL and must&n;&t;retain the authorship, copyright and license notice.  This file is not&n;&t;a complete program and may only be used when the entire operating&n;&t;system is licensed under the GPL.&n;&n;&t;See the file COPYING in this distribution for more information.&n;&n;&t;TODO, in rough priority order:&n;&t;* dev-&gt;tx_timeout&n;&t;* LinkChg interrupt&n;&t;* Support forcing media type with a module parameter,&n;&t;  like dl2k.c/sundance.c&n;&t;* Implement PCI suspend/resume&n;&t;* Constants (module parms?) for Rx work limit&n;&t;* support 64-bit PCI DMA&n;&t;* Complete reset on PciErr&n;&t;* Consider Rx interrupt mitigation using TimerIntr&n;&t;* Implement 8139C+ statistics dump; maybe not...&n;&t;  h/w stats can be reset only by software reset&n;&t;* Rx checksumming&n;&t;* Tx checksumming&n;&t;* ETHTOOL_GREGS, ETHTOOL_[GS]WOL,&n;&t;* Jumbo frames / dev-&gt;change_mtu&n;&t;* Investigate using skb-&gt;priority with h/w VLAN priority&n;&t;* Investigate using High Priority Tx Queue with skb-&gt;priority&n;&t;* Adjust Rx FIFO threshold and Max Rx DMA burst on Rx FIFO error&n;&t;* Adjust Tx FIFO threshold and Max Tx DMA burst on Tx FIFO error&n;        * Implement Tx software interrupt mitigation via&n;&t;          Tx descriptor bit&n;&n; */
+multiline_comment|/*&n;&t;Copyright 2001,2002 Jeff Garzik &lt;jgarzik@mandrakesoft.com&gt;&n;&n;&t;Copyright (C) 2000, 2001 David S. Miller (davem@redhat.com) [sungem.c]&n;&t;Copyright 2001 Manfred Spraul&t;&t;&t;&t;    [natsemi.c]&n;&t;Copyright 1999-2001 by Donald Becker.&t;&t;&t;    [natsemi.c]&n;       &t;Written 1997-2001 by Donald Becker.&t;&t;&t;    [8139too.c]&n;&t;Copyright 1998-2001 by Jes Sorensen, &lt;jes@trained-monkey.org&gt;. [acenic.c]&n;&n;&t;This software may be used and distributed according to the terms of&n;&t;the GNU General Public License (GPL), incorporated herein by reference.&n;&t;Drivers based on or derived from this code fall under the GPL and must&n;&t;retain the authorship, copyright and license notice.  This file is not&n;&t;a complete program and may only be used when the entire operating&n;&t;system is licensed under the GPL.&n;&n;&t;See the file COPYING in this distribution for more information.&n;&n;&t;TODO, in rough priority order:&n;&t;* dev-&gt;tx_timeout&n;&t;* LinkChg interrupt&n;&t;* Support forcing media type with a module parameter,&n;&t;  like dl2k.c/sundance.c&n;&t;* Implement PCI suspend/resume&n;&t;* Constants (module parms?) for Rx work limit&n;&t;* support 64-bit PCI DMA&n;&t;* Complete reset on PciErr&n;&t;* Consider Rx interrupt mitigation using TimerIntr&n;&t;* Implement 8139C+ statistics dump; maybe not...&n;&t;  h/w stats can be reset only by software reset&n;&t;* Rx checksumming&n;&t;* Tx checksumming&n;&t;* ETHTOOL_GREGS, ETHTOOL_[GS]WOL,&n;&t;* Investigate using skb-&gt;priority with h/w VLAN priority&n;&t;* Investigate using High Priority Tx Queue with skb-&gt;priority&n;&t;* Adjust Rx FIFO threshold and Max Rx DMA burst on Rx FIFO error&n;&t;* Adjust Tx FIFO threshold and Max Tx DMA burst on Tx FIFO error&n;        * Implement Tx software interrupt mitigation via&n;&t;          Tx descriptor bit&n;&t;* Determine correct value for CP_{MIN,MAX}_MTU, instead of&n;&t;  using conservative guesses.&n;&n; */
 DECL|macro|DRV_NAME
 mdefine_line|#define DRV_NAME&t;&t;&quot;8139cp&quot;
 DECL|macro|DRV_VERSION
-mdefine_line|#define DRV_VERSION&t;&t;&quot;0.0.6cvs&quot;
+mdefine_line|#define DRV_VERSION&t;&t;&quot;0.0.7&quot;
 DECL|macro|DRV_RELDATE
-mdefine_line|#define DRV_RELDATE&t;&t;&quot;Nov 19, 2001&quot;
+mdefine_line|#define DRV_RELDATE&t;&t;&quot;Feb 27, 2002&quot;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
@@ -14,7 +14,6 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/ethtool.h&gt;
-macro_line|#include &lt;linux/crc32.h&gt;
 macro_line|#include &lt;linux/mii.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
@@ -132,7 +131,12 @@ DECL|macro|TX_EARLY_THRESH
 mdefine_line|#define TX_EARLY_THRESH&t;&t;256&t;/* Early Tx threshold, in bytes */
 multiline_comment|/* Time in jiffies before concluding the transmitter is hung. */
 DECL|macro|TX_TIMEOUT
-mdefine_line|#define TX_TIMEOUT  (6*HZ)
+mdefine_line|#define TX_TIMEOUT&t;&t;(6*HZ)
+multiline_comment|/* hardware minimum and maximum for a single frame&squot;s data payload */
+DECL|macro|CP_MIN_MTU
+mdefine_line|#define CP_MIN_MTU&t;&t;60&t;/* FIXME: this is a guess */
+DECL|macro|CP_MAX_MTU
+mdefine_line|#define CP_MAX_MTU&t;&t;1500&t;/* FIXME: this is a guess */
 r_enum
 (brace
 multiline_comment|/* NIC register offsets */
@@ -1236,6 +1240,46 @@ comma
 id|cp_pci_tbl
 )paren
 suffix:semicolon
+DECL|function|cp_set_rxbufsize
+r_static
+r_inline
+r_void
+id|cp_set_rxbufsize
+(paren
+r_struct
+id|cp_private
+op_star
+id|cp
+)paren
+(brace
+r_int
+r_int
+id|mtu
+op_assign
+id|cp-&gt;dev-&gt;mtu
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|mtu
+OG
+id|ETH_DATA_LEN
+)paren
+multiline_comment|/* MTU + ethernet header + FCS + optional VLAN tag */
+id|cp-&gt;rx_buf_sz
+op_assign
+id|mtu
+op_plus
+id|ETH_HLEN
+op_plus
+l_int|8
+suffix:semicolon
+r_else
+id|cp-&gt;rx_buf_sz
+op_assign
+id|PKT_BUF_SZ
+suffix:semicolon
+)brace
 DECL|function|cp_rx_skb
 r_static
 r_inline
@@ -3284,7 +3328,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* Set or clear the multicast filter for this adaptor.&n;   This routine is not state sensitive and need not be SMP locked. */
 DECL|function|__cp_set_rx_mode
 r_static
 r_void
@@ -3813,6 +3856,41 @@ id|cp-&gt;dev-&gt;name
 )paren
 suffix:semicolon
 )brace
+DECL|function|cp_start_hw
+r_static
+r_inline
+r_void
+id|cp_start_hw
+(paren
+r_struct
+id|cp_private
+op_star
+id|cp
+)paren
+(brace
+id|cpw8
+c_func
+(paren
+id|Cmd
+comma
+id|RxOn
+op_or
+id|TxOn
+)paren
+suffix:semicolon
+id|cpw16
+c_func
+(paren
+id|CpCmd
+comma
+id|PCIMulRW
+op_or
+id|CpRxOn
+op_or
+id|CpTxOn
+)paren
+suffix:semicolon
+)brace
 DECL|function|cp_init_hw
 r_static
 r_void
@@ -3887,26 +3965,10 @@ l_int|4
 )paren
 )paren
 suffix:semicolon
-id|cpw8
+id|cp_start_hw
 c_func
 (paren
-id|Cmd
-comma
-id|RxOn
-op_or
-id|TxOn
-)paren
-suffix:semicolon
-id|cpw16
-c_func
-(paren
-id|CpCmd
-comma
-id|PCIMulRW
-op_or
-id|CpRxOn
-op_or
-id|CpTxOn
+id|cp
 )paren
 suffix:semicolon
 id|cpw8
@@ -4699,21 +4761,6 @@ comma
 id|dev-&gt;name
 )paren
 suffix:semicolon
-id|cp-&gt;rx_buf_sz
-op_assign
-(paren
-id|dev-&gt;mtu
-op_le
-l_int|1500
-ques
-c_cond
-id|PKT_BUF_SZ
-suffix:colon
-id|dev-&gt;mtu
-op_plus
-l_int|32
-)paren
-suffix:semicolon
 id|rc
 op_assign
 id|cp_alloc_rings
@@ -4851,6 +4898,119 @@ id|cp
 suffix:semicolon
 r_return
 l_int|0
+suffix:semicolon
+)brace
+DECL|function|cp_change_mtu
+r_static
+r_int
+id|cp_change_mtu
+c_func
+(paren
+r_struct
+id|net_device
+op_star
+id|dev
+comma
+r_int
+id|new_mtu
+)paren
+(brace
+r_struct
+id|cp_private
+op_star
+id|cp
+op_assign
+id|dev-&gt;priv
+suffix:semicolon
+r_int
+id|rc
+suffix:semicolon
+multiline_comment|/* check for invalid MTU, according to hardware limits */
+r_if
+c_cond
+(paren
+id|new_mtu
+template_param
+id|CP_MAX_MTU
+)paren
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
+multiline_comment|/* if network interface not up, no need for complexity */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|netif_running
+c_func
+(paren
+id|dev
+)paren
+)paren
+(brace
+id|cp_set_rxbufsize
+c_func
+(paren
+id|cp
+)paren
+suffix:semicolon
+multiline_comment|/* set new rx buf size */
+r_return
+l_int|0
+suffix:semicolon
+)brace
+id|spin_lock_irq
+c_func
+(paren
+op_amp
+id|cp-&gt;lock
+)paren
+suffix:semicolon
+id|cp_stop_hw
+c_func
+(paren
+id|cp
+)paren
+suffix:semicolon
+multiline_comment|/* stop h/w and free rings */
+id|cp_clean_rings
+c_func
+(paren
+id|cp
+)paren
+suffix:semicolon
+id|cp_set_rxbufsize
+c_func
+(paren
+id|cp
+)paren
+suffix:semicolon
+multiline_comment|/* set new rx buf size */
+id|rc
+op_assign
+id|cp_init_rings
+c_func
+(paren
+id|cp
+)paren
+suffix:semicolon
+multiline_comment|/* realloc and restart h/w */
+id|cp_start_hw
+c_func
+(paren
+id|cp
+)paren
+suffix:semicolon
+id|spin_unlock_irq
+c_func
+(paren
+op_amp
+id|cp-&gt;lock
+)paren
+suffix:semicolon
+r_return
+id|rc
 suffix:semicolon
 )brace
 DECL|variable|mii_2_8139_map
@@ -5925,6 +6085,12 @@ id|cp-&gt;mii_if.phy_id
 op_assign
 id|CP_INTERNAL_PHY
 suffix:semicolon
+id|cp_set_rxbufsize
+c_func
+(paren
+id|cp
+)paren
+suffix:semicolon
 id|rc
 op_assign
 id|pci_enable_device
@@ -6212,6 +6378,10 @@ suffix:semicolon
 id|dev-&gt;do_ioctl
 op_assign
 id|cp_ioctl
+suffix:semicolon
+id|dev-&gt;change_mtu
+op_assign
+id|cp_change_mtu
 suffix:semicolon
 macro_line|#if 0
 id|dev-&gt;tx_timeout

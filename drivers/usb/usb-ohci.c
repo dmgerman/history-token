@@ -25,6 +25,7 @@ DECL|macro|OHCI_USE_NPS
 mdefine_line|#define OHCI_USE_NPS&t;&t;
 singleline_comment|// force NoPowerSwitching mode
 singleline_comment|// #define OHCI_VERBOSE_DEBUG&t;/* not always helpful */
+macro_line|#include &quot;hcd.h&quot;
 macro_line|#include &quot;usb-ohci.h&quot;
 macro_line|#ifdef CONFIG_PMAC_PBOOK
 macro_line|#include &lt;asm/feature.h&gt;
