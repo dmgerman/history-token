@@ -4907,41 +4907,6 @@ op_minus
 id|EAGAIN
 suffix:semicolon
 )brace
-multiline_comment|/*&n; *&t;Release a skb if it is no longer needed. This routine&n; *&t;must be called with interrupts disabled or with the&n; *&t;socket locked so that the sk_buff queue operation is ok.&n; */
-DECL|function|tcp_eat_skb
-r_static
-r_inline
-r_void
-id|tcp_eat_skb
-c_func
-(paren
-r_struct
-id|sock
-op_star
-id|sk
-comma
-r_struct
-id|sk_buff
-op_star
-id|skb
-)paren
-(brace
-id|__skb_unlink
-c_func
-(paren
-id|skb
-comma
-op_amp
-id|sk-&gt;sk_receive_queue
-)paren
-suffix:semicolon
-id|__kfree_skb
-c_func
-(paren
-id|skb
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/* Clean up the receive buffer for full frames taken by the user,&n; * then send an ACK if necessary.  COPIED is the number of bytes&n; * tcp_recvmsg has given to the user so far, it speeds up the&n; * calculation of whether or not we must ACK for the sake of&n; * a window update.&n; */
 DECL|function|cleanup_rbuf
 r_static
@@ -5584,7 +5549,7 @@ c_cond
 id|skb-&gt;h.th-&gt;fin
 )paren
 (brace
-id|tcp_eat_skb
+id|sk_eat_skb
 c_func
 (paren
 id|sk
@@ -5598,7 +5563,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-id|tcp_eat_skb
+id|sk_eat_skb
 c_func
 (paren
 id|sk
@@ -6628,7 +6593,7 @@ op_amp
 id|MSG_PEEK
 )paren
 )paren
-id|tcp_eat_skb
+id|sk_eat_skb
 c_func
 (paren
 id|sk
@@ -6655,7 +6620,7 @@ op_amp
 id|MSG_PEEK
 )paren
 )paren
-id|tcp_eat_skb
+id|sk_eat_skb
 c_func
 (paren
 id|sk
