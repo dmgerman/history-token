@@ -1,6 +1,6 @@
-macro_line|#ifndef __MV64340_ETH_H__
-DECL|macro|__MV64340_ETH_H__
-mdefine_line|#define __MV64340_ETH_H__
+macro_line|#ifndef __MV643XX_ETH_H__
+DECL|macro|__MV643XX_ETH_H__
+mdefine_line|#define __MV643XX_ETH_H__
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -73,28 +73,28 @@ DECL|macro|BIT31
 mdefine_line|#define&t;BIT31&t;0x80000000
 multiline_comment|/*&n; *  The first part is the high level driver of the gigE ethernet ports.&n; */
 multiline_comment|/* Checksum offload for Tx works */
-DECL|macro|MV64340_CHECKSUM_OFFLOAD_TX
-mdefine_line|#define&t;MV64340_CHECKSUM_OFFLOAD_TX
-DECL|macro|MV64340_NAPI
-mdefine_line|#define&t;MV64340_NAPI
-DECL|macro|MV64340_TX_FAST_REFILL
-mdefine_line|#define&t;MV64340_TX_FAST_REFILL
-DECL|macro|MV64340_RX_QUEUE_FILL_ON_TASK
-macro_line|#undef&t;MV64340_RX_QUEUE_FILL_ON_TASK&t;/* Does not work, yet */
-DECL|macro|MV64340_COAL
-macro_line|#undef&t;MV64340_COAL
+DECL|macro|MV643XX_CHECKSUM_OFFLOAD_TX
+mdefine_line|#define&t;MV643XX_CHECKSUM_OFFLOAD_TX
+DECL|macro|MV643XX_NAPI
+mdefine_line|#define&t;MV643XX_NAPI
+DECL|macro|MV643XX_TX_FAST_REFILL
+mdefine_line|#define&t;MV643XX_TX_FAST_REFILL
+DECL|macro|MV643XX_RX_QUEUE_FILL_ON_TASK
+macro_line|#undef&t;MV643XX_RX_QUEUE_FILL_ON_TASK&t;/* Does not work, yet */
+DECL|macro|MV643XX_COAL
+macro_line|#undef&t;MV643XX_COAL
 multiline_comment|/*&n; * Number of RX / TX descriptors on RX / TX rings.&n; * Note that allocating RX descriptors is done by allocating the RX&n; * ring AND a preallocated RX buffers (skb&squot;s) for each descriptor.&n; * The TX descriptors only allocates the TX descriptors ring,&n; * with no pre allocated TX buffers (skb&squot;s are allocated by higher layers.&n; */
 multiline_comment|/* Default TX ring size is 1000 descriptors */
-DECL|macro|MV64340_DEFAULT_TX_QUEUE_SIZE
-mdefine_line|#define MV64340_DEFAULT_TX_QUEUE_SIZE 1000
+DECL|macro|MV643XX_DEFAULT_TX_QUEUE_SIZE
+mdefine_line|#define MV643XX_DEFAULT_TX_QUEUE_SIZE 1000
 multiline_comment|/* Default RX ring size is 400 descriptors */
-DECL|macro|MV64340_DEFAULT_RX_QUEUE_SIZE
-mdefine_line|#define MV64340_DEFAULT_RX_QUEUE_SIZE 400
-DECL|macro|MV64340_TX_COAL
-mdefine_line|#define MV64340_TX_COAL 100
-macro_line|#ifdef MV64340_COAL
-DECL|macro|MV64340_RX_COAL
-mdefine_line|#define MV64340_RX_COAL 100
+DECL|macro|MV643XX_DEFAULT_RX_QUEUE_SIZE
+mdefine_line|#define MV643XX_DEFAULT_RX_QUEUE_SIZE 400
+DECL|macro|MV643XX_TX_COAL
+mdefine_line|#define MV643XX_TX_COAL 100
+macro_line|#ifdef MV643XX_COAL
+DECL|macro|MV643XX_RX_COAL
+mdefine_line|#define MV643XX_RX_COAL 100
 macro_line|#endif
 multiline_comment|/*&n; * The second part is the low level driver of the gigE ethernet ports.&n; */
 multiline_comment|/*&n; * Header File for : MV-643xx network interface header&n; *&n; * DESCRIPTION:&n; *&t;This header file contains macros typedefs and function declaration for&n; *&t;the Marvell Gig Bit Ethernet Controller.&n; *&n; * DEPENDENCIES:&n; *&t;None.&n; *&n; */
@@ -536,9 +536,9 @@ multiline_comment|/* User resource return information */
 )brace
 suffix:semicolon
 multiline_comment|/* Ethernet port specific infomation */
-DECL|struct|mv64340_private
+DECL|struct|mv643xx_private
 r_struct
-id|mv64340_private
+id|mv643xx_private
 (brace
 DECL|member|port_num
 r_int
@@ -630,7 +630,7 @@ id|tx_curr_desc_q
 comma
 id|tx_used_desc_q
 suffix:semicolon
-macro_line|#ifdef MV64340_CHECKSUM_OFFLOAD_TX
+macro_line|#ifdef MV643XX_CHECKSUM_OFFLOAD_TX
 DECL|member|tx_first_desc_q
 r_int
 id|tx_first_desc_q
@@ -640,7 +640,7 @@ id|u32
 id|tx_first_command
 suffix:semicolon
 macro_line|#endif
-macro_line|#ifdef MV64340_TX_FAST_REFILL
+macro_line|#ifdef MV643XX_TX_FAST_REFILL
 DECL|member|tx_clean_threshold
 id|u32
 id|tx_clean_threshold
@@ -695,7 +695,7 @@ r_struct
 id|work_struct
 id|tx_timeout_task
 suffix:semicolon
-multiline_comment|/*&n;&t; * Former struct mv64340_eth_priv members start here&n;&t; */
+multiline_comment|/*&n;&t; * Former struct mv643xx_eth_priv members start here&n;&t; */
 DECL|member|stats
 r_struct
 id|net_device_stats
@@ -777,7 +777,7 @@ id|eth_port_init
 c_func
 (paren
 r_struct
-id|mv64340_private
+id|mv643xx_private
 op_star
 id|mp
 )paren
@@ -798,7 +798,7 @@ id|eth_port_start
 c_func
 (paren
 r_struct
-id|mv64340_private
+id|mv643xx_private
 op_star
 id|mp
 )paren
@@ -909,7 +909,7 @@ id|eth_port_send
 c_func
 (paren
 r_struct
-id|mv64340_private
+id|mv643xx_private
 op_star
 id|mp
 comma
@@ -925,7 +925,7 @@ id|eth_tx_return_desc
 c_func
 (paren
 r_struct
-id|mv64340_private
+id|mv643xx_private
 op_star
 id|mp
 comma
@@ -941,7 +941,7 @@ id|eth_port_receive
 c_func
 (paren
 r_struct
-id|mv64340_private
+id|mv643xx_private
 op_star
 id|mp
 comma
@@ -957,7 +957,7 @@ id|eth_rx_return_buff
 c_func
 (paren
 r_struct
-id|mv64340_private
+id|mv643xx_private
 op_star
 id|mp
 comma
@@ -967,5 +967,5 @@ op_star
 id|p_pkt_info
 )paren
 suffix:semicolon
-macro_line|#endif&t;&t;&t;&t;/* __MV64340_ETH_H__ */
+macro_line|#endif&t;&t;&t;&t;/* __MV643XX_ETH_H__ */
 eof
