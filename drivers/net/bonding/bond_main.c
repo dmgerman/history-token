@@ -12905,7 +12905,7 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-id|kfree
+id|free_netdev
 c_func
 (paren
 id|dev
@@ -14333,7 +14333,7 @@ OL
 l_int|0
 )paren
 (brace
-id|kfree
+id|free_netdev
 c_func
 (paren
 id|dev
@@ -14360,7 +14360,7 @@ OL
 l_int|0
 )paren
 (brace
-id|kfree
+id|free_netdev
 c_func
 (paren
 id|dev
@@ -14398,7 +14398,7 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-id|kfree
+id|free_netdev
 c_func
 (paren
 id|dev
