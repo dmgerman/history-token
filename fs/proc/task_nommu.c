@@ -410,6 +410,13 @@ c_func
 id|mm
 )paren
 suffix:semicolon
+id|down_read
+c_func
+(paren
+op_amp
+id|mm-&gt;mmap_sem
+)paren
+suffix:semicolon
 r_for
 c_loop
 (paren
@@ -482,6 +489,13 @@ op_assign
 id|mm-&gt;start_stack
 op_minus
 id|mm-&gt;start_data
+)paren
+suffix:semicolon
+id|up_read
+c_func
+(paren
+op_amp
+id|mm-&gt;mmap_sem
 )paren
 suffix:semicolon
 op_star

@@ -610,6 +610,7 @@ suffix:semicolon
 DECL|member|rss
 DECL|member|total_vm
 DECL|member|locked_vm
+DECL|member|shared_vm
 r_int
 r_int
 id|rss
@@ -617,10 +618,18 @@ comma
 id|total_vm
 comma
 id|locked_vm
+comma
+id|shared_vm
 suffix:semicolon
+DECL|member|exec_vm
+DECL|member|stack_vm
 DECL|member|def_flags
 r_int
 r_int
+id|exec_vm
+comma
+id|stack_vm
+comma
 id|def_flags
 suffix:semicolon
 DECL|member|saved_auxv

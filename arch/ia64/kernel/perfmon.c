@@ -7972,6 +7972,12 @@ id|size
 op_rshift
 id|PAGE_SHIFT
 suffix:semicolon
+id|vm_stat_account
+c_func
+(paren
+id|vma
+)paren
+suffix:semicolon
 id|up_write
 c_func
 (paren
