@@ -1479,8 +1479,6 @@ DECL|variable|initialized
 r_static
 r_int
 id|initialized
-op_assign
-l_int|0
 suffix:semicolon
 DECL|function|zisofs_init
 r_int
