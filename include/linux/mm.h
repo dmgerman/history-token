@@ -44,7 +44,7 @@ DECL|macro|MM_VM_SIZE
 mdefine_line|#define MM_VM_SIZE(mm)&t;TASK_SIZE
 macro_line|#endif
 multiline_comment|/*&n; * Linux kernel virtual memory manager primitives.&n; * The idea being to have a &quot;virtual&quot; mm in the same way&n; * we have a virtual fs - giving a cleaner interface to the&n; * mm details, and allowing different kinds of memory mappings&n; * (from shared memory to executable loading to arbitrary&n; * mmap() functions).&n; */
-multiline_comment|/*&n; * This struct defines a memory VMM memory area. There is one of these&n; * per VM-area/task.  A VM area is any part of the process virtual memory&n; * space that has a special rule for the page-fault handlers (ie a shared&n; * library, the executable area etc).&n; *&n; * This structure is exactly 64 bytes on ia32.  Please think very, very hard&n; * before adding anything to it.&n; * [Now 4 bytes more on 32bit NUMA machines. Sorry. -AK.&n; * But if you want to recover the 4 bytes justr remove vm_next. It is redundant&n; * with vm_rb. Will be a lot of editing work though. vm_rb.color is redundant&n; * too.]&n; */
+multiline_comment|/*&n; * This struct defines a memory VMM memory area. There is one of these&n; * per VM-area/task.  A VM area is any part of the process virtual memory&n; * space that has a special rule for the page-fault handlers (ie a shared&n; * library, the executable area etc).&n; */
 DECL|struct|vm_area_struct
 r_struct
 id|vm_area_struct
