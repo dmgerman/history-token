@@ -230,13 +230,6 @@ op_assign
 op_minus
 l_int|1
 suffix:semicolon
-DECL|variable|proc_pccard
-r_static
-r_struct
-id|proc_dir_entry
-op_star
-id|proc_pccard
-suffix:semicolon
 multiline_comment|/*====================================================================*/
 multiline_comment|/* code which was in cs.c before */
 multiline_comment|/*======================================================================&n;&n;    Bind_device() associates a device driver with a particular socket.&n;    It is normally called by Driver Services after it has identified&n;    a newly inserted card.  An instance of that driver will then be&n;    eligible to register as a client of this socket.&n;    &n;======================================================================*/
