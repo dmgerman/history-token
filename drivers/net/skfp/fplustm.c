@@ -4921,7 +4921,7 @@ suffix:semicolon
 )brace
 id|slot
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_for
 c_loop

@@ -267,7 +267,7 @@ l_int|100
 comma
 macro_line|#endif
 (brace
-l_int|0
+l_int|NULL
 )brace
 )brace
 suffix:semicolon

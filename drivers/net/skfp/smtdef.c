@@ -1050,7 +1050,7 @@ id|port
 dot
 id|mib
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|mib-&gt;fddiSMTPORTIndexes
 (braket
