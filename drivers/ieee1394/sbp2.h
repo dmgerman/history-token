@@ -1130,6 +1130,11 @@ id|dma_dir
 suffix:semicolon
 )brace
 suffix:semicolon
+multiline_comment|/* A list of flags for detected oddities and brokeness. */
+DECL|macro|SBP2_BREAKAGE_128K_MAX_TRANSFER
+mdefine_line|#define SBP2_BREAKAGE_128K_MAX_TRANSFER&t;&t;0x1
+DECL|macro|SBP2_BREAKAGE_INQUIRY_HACK
+mdefine_line|#define SBP2_BREAKAGE_INQUIRY_HACK&t;&t;0x2
 multiline_comment|/*&n; * Information needed on a per scsi id basis (one for each sbp2 device)&n; */
 DECL|struct|scsi_id_instance_data
 r_struct
@@ -1270,6 +1275,11 @@ r_struct
 id|node_entry
 op_star
 id|ne
+suffix:semicolon
+multiline_comment|/* Device specific workarounds/brokeness */
+DECL|member|workarounds
+id|u32
+id|workarounds
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -1992,6 +2002,25 @@ op_star
 id|ints
 )paren
 suffix:semicolon
+macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,5,28)
+r_static
+r_int
+id|sbp2scsi_biosparam
+(paren
+id|Scsi_Disk
+op_star
+id|disk
+comma
+id|kdev_t
+id|dev
+comma
+r_int
+id|geom
+(braket
+)braket
+)paren
+suffix:semicolon
+macro_line|#else
 r_static
 r_int
 id|sbp2scsi_biosparam
@@ -2011,6 +2040,7 @@ id|geom
 )braket
 )paren
 suffix:semicolon
+macro_line|#endif
 r_static
 r_int
 id|sbp2scsi_abort
