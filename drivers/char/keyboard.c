@@ -881,8 +881,6 @@ id|keycode
 comma
 id|kbd_pt_regs
 comma
-id|kbd
-comma
 id|tty
 )paren
 suffix:semicolon

@@ -4340,11 +4340,6 @@ op_star
 id|pt_regs
 comma
 r_struct
-id|kbd_struct
-op_star
-id|kbd
-comma
-r_struct
 id|tty_struct
 op_star
 id|tty
