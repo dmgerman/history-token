@@ -3,6 +3,7 @@ multiline_comment|/* These are all the functions necessary to implement itimers 
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
+macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 DECL|function|do_getitimer
 r_int
