@@ -1753,8 +1753,9 @@ r_int
 id|check_signature
 c_func
 (paren
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|io_addr
 comma
 r_const
@@ -1780,11 +1781,6 @@ c_cond
 id|readb
 c_func
 (paren
-(paren
-r_void
-id|__iomem
-op_star
-)paren
 id|io_addr
 )paren
 op_ne
