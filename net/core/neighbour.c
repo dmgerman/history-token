@@ -154,6 +154,10 @@ id|base
 (brace
 r_return
 (paren
+id|base
+ques
+c_cond
+(paren
 id|net_random
 c_func
 (paren
@@ -166,6 +170,9 @@ op_plus
 id|base
 op_rshift
 l_int|1
+)paren
+suffix:colon
+l_int|0
 )paren
 suffix:semicolon
 )brace
