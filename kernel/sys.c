@@ -1371,6 +1371,11 @@ op_logical_neg
 id|software_suspend_enabled
 )paren
 (brace
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|EAGAIN
