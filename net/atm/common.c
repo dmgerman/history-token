@@ -3511,6 +3511,9 @@ suffix:semicolon
 )brace
 macro_line|#if defined(CONFIG_ATM_LANE) || defined(CONFIG_ATM_LANE_MODULE)
 macro_line|#if defined(CONFIG_BRIDGE) || defined(CONFIG_BRIDGE_MODULE)
+r_struct
+id|net_bridge
+suffix:semicolon
 DECL|variable|br_fdb_get_hook
 r_struct
 id|net_bridge_fdb_entry
