@@ -3128,7 +3128,7 @@ l_int|NULL
 r_return
 l_int|1
 suffix:semicolon
-id|pnpc_add_device
+id|pnp_add_card_device
 c_func
 (paren
 id|card
@@ -3228,7 +3228,7 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-id|pnpc_add_device
+id|pnp_add_card_device
 c_func
 (paren
 id|card
@@ -4192,7 +4192,7 @@ op_amp
 l_int|0x0f
 )paren
 suffix:semicolon
-id|pnpc_add_id
+id|pnp_add_card_id
 c_func
 (paren
 id|id
@@ -4948,7 +4948,7 @@ id|dev-&gt;res
 )paren
 suffix:semicolon
 )brace
-id|pnpc_add_card
+id|pnp_add_card
 c_func
 (paren
 id|card

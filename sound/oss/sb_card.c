@@ -9,9 +9,9 @@ macro_line|#endif /* CONFIG_MCA */
 macro_line|#include &quot;sound_config.h&quot;
 macro_line|#include &quot;sb_mixer.h&quot;
 macro_line|#include &quot;sb.h&quot;
-macro_line|#ifdef CONFIG_PNP_CARD
+macro_line|#ifdef CONFIG_PNP
 macro_line|#include &lt;linux/pnp.h&gt;
-macro_line|#endif
+macro_line|#endif /* CONFIG_PNP */
 macro_line|#include &quot;sb_card.h&quot;
 id|MODULE_DESCRIPTION
 c_func
@@ -118,7 +118,7 @@ id|legacy
 op_assign
 l_int|NULL
 suffix:semicolon
-macro_line|#ifdef CONFIG_PNP_CARD
+macro_line|#ifdef CONFIG_PNP
 DECL|variable|pnp
 r_static
 r_int
@@ -306,7 +306,7 @@ l_string|&quot;Set this to detect cards in some ACER notebooks &quot;
 l_string|&quot;(doesn&squot;t work with pnp)&quot;
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_PNP_CARD
+macro_line|#ifdef CONFIG_PNP
 id|module_param
 c_func
 (paren
@@ -329,7 +329,7 @@ l_string|&quot;Default is 1.&bslash;n&quot;
 suffix:semicolon
 multiline_comment|/* Not done yet.... */
 multiline_comment|/*&n;module_param(uart401, int, 000);&n;MODULE_PARM_DESC(uart401,  &quot;When set to 1, will attempt to detect and enable&quot;&bslash;&n;&t;&t; &quot;the mpu on some clones&quot;);&n;*/
-macro_line|#endif /* CONFIG_PNP_CARD */
+macro_line|#endif /* CONFIG_PNP */
 multiline_comment|/* OSS subsystem card registration shared by PnP and legacy routines */
 DECL|function|sb_register_oss
 r_static
@@ -629,7 +629,7 @@ id|sbmo
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_PNP_CARD
+macro_line|#ifdef CONFIG_PNP
 multiline_comment|/* Populate the OSS subsystem structures with information from PnP */
 DECL|function|sb_dev2cfg
 r_static
@@ -1103,7 +1103,7 @@ id|sb_pnp_probe
 c_func
 (paren
 r_struct
-id|pnp_card
+id|pnp_card_link
 op_star
 id|card
 comma
@@ -1256,7 +1256,7 @@ comma
 id|scc-&gt;conf.dma2
 )paren
 suffix:semicolon
-id|pnpc_set_drvdata
+id|pnp_set_card_drvdata
 c_func
 (paren
 id|card
@@ -1282,7 +1282,7 @@ id|sb_pnp_remove
 c_func
 (paren
 r_struct
-id|pnp_card
+id|pnp_card_link
 op_star
 id|card
 )paren
@@ -1292,7 +1292,7 @@ id|sb_card_config
 op_star
 id|scc
 op_assign
-id|pnpc_get_drvdata
+id|pnp_get_card_drvdata
 c_func
 (paren
 id|card
@@ -1327,7 +1327,7 @@ suffix:semicolon
 DECL|variable|sb_pnp_driver
 r_static
 r_struct
-id|pnpc_driver
+id|pnp_card_driver
 id|sb_pnp_driver
 op_assign
 (brace
@@ -1354,7 +1354,7 @@ id|sb_pnp_remove
 comma
 )brace
 suffix:semicolon
-macro_line|#endif /* CONFIG_PNP_CARD */
+macro_line|#endif /* CONFIG_PNP */
 DECL|function|sb_init
 r_static
 r_int
@@ -1480,7 +1480,7 @@ l_string|&quot;must be set for legacy cards.&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_PNP_CARD
+macro_line|#ifdef CONFIG_PNP
 r_if
 c_cond
 (paren
@@ -1489,7 +1489,7 @@ id|pnp
 (brace
 id|pres
 op_assign
-id|pnpc_register_driver
+id|pnp_register_card_driver
 c_func
 (paren
 op_amp
@@ -1561,8 +1561,8 @@ id|legacy
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_PNP_CARD
-id|pnpc_unregister_driver
+macro_line|#ifdef CONFIG_PNP
+id|pnp_unregister_card_driver
 c_func
 (paren
 op_amp
