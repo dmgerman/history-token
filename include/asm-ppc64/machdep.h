@@ -335,6 +335,17 @@ id|pt_regs
 op_star
 )paren
 suffix:semicolon
+multiline_comment|/* PCI stuff */
+DECL|member|pcibios_fixup
+r_void
+(paren
+op_star
+id|pcibios_fixup
+)paren
+(paren
+r_void
+)paren
+suffix:semicolon
 multiline_comment|/* Optional, may be NULL. */
 DECL|member|init
 r_void

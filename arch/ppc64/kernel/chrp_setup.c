@@ -74,6 +74,14 @@ r_void
 suffix:semicolon
 r_extern
 r_void
+id|pSeries_final_fixup
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
 id|pSeries_get_boot_time
 c_func
 (paren
@@ -838,6 +846,10 @@ suffix:semicolon
 id|ppc_md.init
 op_assign
 id|chrp_init2
+suffix:semicolon
+id|ppc_md.pcibios_fixup
+op_assign
+id|pSeries_final_fixup
 suffix:semicolon
 id|ppc_md.restart
 op_assign
