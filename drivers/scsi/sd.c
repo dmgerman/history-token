@@ -1,4 +1,6 @@
-multiline_comment|/*&n; *      sd.c Copyright (C) 1992 Drew Eckhardt&n; *           Copyright (C) 1993, 1994, 1995, 1999 Eric Youngdale&n; *&n; *      Linux scsi disk driver&n; *              Initial versions: Drew Eckhardt&n; *              Subsequent revisions: Eric Youngdale&n; *&t;Modification history:&n; *       - Drew Eckhardt &lt;drew@colorado.edu&gt; original&n; *       - Eric Youngdale &lt;eric@andante.org&gt; add scatter-gather, multiple &n; *         outstanding request, and other enhancements.&n; *         Support loadable low-level scsi drivers.&n; *       - Jirka Hanika &lt;geo@ff.cuni.cz&gt; support more scsi disks using &n; *         eight major numbers.&n; *       - Richard Gooch &lt;rgooch@atnf.csiro.au&gt; support devfs.&n; *&t; - Torben Mathiasen &lt;tmm@image.dk&gt; Resource allocation fixes in &n; *&t;   sd_init and cleanups.&n; *&t; - Alex Davis &lt;letmein@erols.com&gt; Fix problem where partition info&n; *&t;   not being read in sd_open. Fix problem where removable media &n; *&t;   could be ejected after sd_open.&n; *&t; - Douglas Gilbert &lt;dgilbert@interlog.com&gt; cleanup for lk 2.5 series&n; *&n; *&t;Logging policy (needs CONFIG_SCSI_LOGGING defined):&n; *&t; - setting up transfer: SCSI_LOG_HLQUEUE levels 1 and 2&n; *&t; - end of transfer (bh + scsi_lib): SCSI_LOG_HLCOMPLETE level 1&n; *&t; - entering sd_ioctl: SCSI_LOG_IOCTL level 1&n; *&t; - entering other commands: SCSI_LOG_HLQUEUE level 3&n; *&t;Note: when the logging level is set by the user, it must be greater&n; *&t;than the level indicated above to trigger output.&t;&n; */
+multiline_comment|/*&n; *      sd.c Copyright (C) 1992 Drew Eckhardt&n; *           Copyright (C) 1993, 1994, 1995, 1999 Eric Youngdale&n; *&n; *      Linux scsi disk driver&n; *              Initial versions: Drew Eckhardt&n; *              Subsequent revisions: Eric Youngdale&n; *&t;Modification history:&n; *       - Drew Eckhardt &lt;drew@colorado.edu&gt; original&n; *       - Eric Youngdale &lt;eric@andante.org&gt; add scatter-gather, multiple &n; *         outstanding request, and other enhancements.&n; *         Support loadable low-level scsi drivers.&n; *       - Jirka Hanika &lt;geo@ff.cuni.cz&gt; support more scsi disks using &n; *         eight major numbers.&n; *       - Richard Gooch &lt;rgooch@atnf.csiro.au&gt; support devfs.&n; *&t; - Torben Mathiasen &lt;tmm@image.dk&gt; Resource allocation fixes in &n; *&t;   sd_init and cleanups.&n; *&t; - Alex Davis &lt;letmein@erols.com&gt; Fix problem where partition info&n; *&t;   not being read in sd_open. Fix problem where removable media &n; *&t;   could be ejected after sd_open.&n; *&t; - Douglas Gilbert &lt;dgilbert@interlog.com&gt; cleanup for lk 2.5.x&n; *&n; *&t;Logging policy (needs CONFIG_SCSI_LOGGING defined):&n; *&t; - setting up transfer: SCSI_LOG_HLQUEUE levels 1 and 2&n; *&t; - end of transfer (bh + scsi_lib): SCSI_LOG_HLCOMPLETE level 1&n; *&t; - entering sd_ioctl: SCSI_LOG_IOCTL level 1&n; *&t; - entering other commands: SCSI_LOG_HLQUEUE level 3&n; *&t;Note: when the logging level is set by the user, it must be greater&n; *&t;than the level indicated above to trigger output.&t;&n; */
+DECL|macro|MAJOR_NR
+mdefine_line|#define MAJOR_NR SCSI_DISK0_MAJOR
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
@@ -6,29 +8,24 @@ macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/bio.h&gt;
-macro_line|#include &lt;linux/string.h&gt;
+macro_line|#include &lt;linux/genhd.h&gt;
 macro_line|#include &lt;linux/hdreg.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/reboot.h&gt;
 macro_line|#include &lt;linux/vmalloc.h&gt;
-macro_line|#include &lt;linux/smp.h&gt;
-macro_line|#include &lt;asm/uaccess.h&gt;
-macro_line|#include &lt;asm/io.h&gt;
-DECL|macro|MAJOR_NR
-mdefine_line|#define MAJOR_NR SCSI_DISK0_MAJOR
-DECL|macro|LOCAL_END_REQUEST
-mdefine_line|#define LOCAL_END_REQUEST
 macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#include &lt;linux/blkpg.h&gt;
+macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &quot;scsi.h&quot;
 macro_line|#include &quot;hosts.h&quot;
-macro_line|#include &quot;sd.h&quot;
 macro_line|#include &lt;scsi/scsi_ioctl.h&gt;
-macro_line|#include &lt;scsi/scsicam.h&gt;&t;/* must follow &quot;hosts.h&quot; */
-macro_line|#include &lt;linux/genhd.h&gt;
-multiline_comment|/* static char sd_version_str[] = &quot;Version: 2.0.3 (20020417)&quot;; */
+macro_line|#include &lt;scsi/scsicam.h&gt;
+DECL|macro|N_SD_MAJORS
+mdefine_line|#define N_SD_MAJORS&t;8
+DECL|macro|SD_MAJOR_MASK
+mdefine_line|#define SD_MAJOR_MASK&t;(N_SD_MAJORS - 1)
 DECL|macro|SD_MAJOR
 mdefine_line|#define SD_MAJOR(i) (!(i) ? SCSI_DISK0_MAJOR : SCSI_DISK1_MAJOR-1+(i))
 DECL|macro|SCSI_DISKS_PER_MAJOR
@@ -43,18 +40,60 @@ DECL|macro|MKDEV_SD
 mdefine_line|#define MKDEV_SD(index)&t;&t;MKDEV_SD_PARTITION((index) &lt;&lt; 4)
 DECL|macro|N_USED_SD_MAJORS
 mdefine_line|#define N_USED_SD_MAJORS&t;(1 + ((sd_template.dev_max - 1) &gt;&gt; 4))
-DECL|macro|MAX_RETRIES
-mdefine_line|#define MAX_RETRIES 5
 multiline_comment|/*&n; *  Time out in seconds for disks and Magneto-opticals (which are slower).&n; */
 DECL|macro|SD_TIMEOUT
-mdefine_line|#define SD_TIMEOUT (30 * HZ)
+mdefine_line|#define SD_TIMEOUT&t;&t;(30 * HZ)
 DECL|macro|SD_MOD_TIMEOUT
-mdefine_line|#define SD_MOD_TIMEOUT (75 * HZ)
+mdefine_line|#define SD_MOD_TIMEOUT&t;&t;(75 * HZ)
+multiline_comment|/*&n; * Amount to over allocate sd_dsk_arr by&n; */
 DECL|macro|SD_DSK_ARR_LUMP
-mdefine_line|#define SD_DSK_ARR_LUMP 6 /* amount to over allocate sd_dsk_arr by */
+mdefine_line|#define SD_DSK_ARR_LUMP&t;&t;6
+multiline_comment|/*&n; * Number of allowed retries&n; */
+DECL|macro|SD_MAX_RETRIES
+mdefine_line|#define SD_MAX_RETRIES&t;&t;5
+DECL|struct|scsi_disk
+r_struct
+id|scsi_disk
+(brace
+DECL|member|device
+r_struct
+id|scsi_device
+op_star
+id|device
+suffix:semicolon
+DECL|member|capacity
+id|sector_t
+id|capacity
+suffix:semicolon
+multiline_comment|/* size in 512-byte sectors */
+DECL|member|media_present
+id|u8
+id|media_present
+suffix:semicolon
+DECL|member|write_prot
+id|u8
+id|write_prot
+suffix:semicolon
+DECL|member|WCE
+r_int
+id|WCE
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* state of disk WCE bit */
+DECL|member|RCD
+r_int
+id|RCD
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* state of disk RCD bit */
+)brace
+suffix:semicolon
 DECL|variable|sd_dsk_arr
 r_static
-id|Scsi_Disk
+r_struct
+id|scsi_disk
 op_star
 op_star
 id|sd_dsk_arr
@@ -91,7 +130,8 @@ r_void
 id|sd_init_onedisk
 c_func
 (paren
-id|Scsi_Disk
+r_struct
+id|scsi_disk
 op_star
 id|sdkp
 comma
@@ -114,7 +154,8 @@ r_int
 id|sd_attach
 c_func
 (paren
-id|Scsi_Device
+r_struct
+id|scsi_device
 op_star
 )paren
 suffix:semicolon
@@ -123,7 +164,8 @@ r_int
 id|sd_detect
 c_func
 (paren
-id|Scsi_Device
+r_struct
+id|scsi_device
 op_star
 )paren
 suffix:semicolon
@@ -132,7 +174,8 @@ r_void
 id|sd_detach
 c_func
 (paren
-id|Scsi_Device
+r_struct
+id|scsi_device
 op_star
 )paren
 suffix:semicolon
@@ -141,7 +184,8 @@ r_int
 id|sd_init_command
 c_func
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 )paren
 suffix:semicolon
@@ -264,13 +308,15 @@ r_void
 id|sd_rw_intr
 c_func
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|SCpnt
 )paren
 suffix:semicolon
 r_static
-id|Scsi_Disk
+r_struct
+id|scsi_disk
 op_star
 id|sd_get_sdisk
 c_func
@@ -295,11 +341,13 @@ r_int
 id|scsi_id
 )paren
 (brace
-id|Scsi_Disk
+r_struct
+id|scsi_disk
 op_star
 id|sdkp
 suffix:semicolon
-id|Scsi_Device
+r_struct
+id|scsi_device
 op_star
 id|sdp
 suffix:semicolon
@@ -467,13 +515,15 @@ id|disk
 op_assign
 id|bdev-&gt;bd_disk
 suffix:semicolon
-id|Scsi_Disk
+r_struct
+id|scsi_disk
 op_star
 id|sdkp
 op_assign
 id|disk-&gt;private_data
 suffix:semicolon
-id|Scsi_Device
+r_struct
+id|scsi_device
 op_star
 id|sdp
 op_assign
@@ -858,7 +908,8 @@ r_int
 id|sd_init_command
 c_func
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|SCpnt
 )paren
@@ -876,7 +927,8 @@ suffix:semicolon
 id|sector_t
 id|block
 suffix:semicolon
-id|Scsi_Device
+r_struct
+id|scsi_device
 op_star
 id|sdp
 op_assign
@@ -1641,7 +1693,7 @@ l_int|9
 suffix:semicolon
 id|SCpnt-&gt;allowed
 op_assign
-id|MAX_RETRIES
+id|SD_MAX_RETRIES
 suffix:semicolon
 id|SCpnt-&gt;timeout_per_command
 op_assign
@@ -1682,13 +1734,15 @@ id|disk
 op_assign
 id|inode-&gt;i_bdev-&gt;bd_disk
 suffix:semicolon
-id|Scsi_Disk
+r_struct
+id|scsi_disk
 op_star
 id|sdkp
 op_assign
 id|disk-&gt;private_data
 suffix:semicolon
-id|Scsi_Device
+r_struct
+id|scsi_device
 op_star
 id|sdp
 op_assign
@@ -1929,13 +1983,15 @@ id|disk
 op_assign
 id|inode-&gt;i_bdev-&gt;bd_disk
 suffix:semicolon
-id|Scsi_Disk
+r_struct
+id|scsi_disk
 op_star
 id|sdkp
 op_assign
 id|disk-&gt;private_data
 suffix:semicolon
-id|Scsi_Device
+r_struct
+id|scsi_device
 op_star
 id|sdp
 op_assign
@@ -2071,7 +2127,8 @@ r_void
 id|sd_rw_intr
 c_func
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|SCpnt
 )paren
@@ -2454,7 +2511,8 @@ DECL|function|sd_set_media_not_present
 id|sd_set_media_not_present
 c_func
 (paren
-id|Scsi_Disk
+r_struct
+id|scsi_disk
 op_star
 id|sdkp
 )paren
@@ -2485,13 +2543,15 @@ op_star
 id|disk
 )paren
 (brace
-id|Scsi_Disk
+r_struct
+id|scsi_disk
 op_star
 id|sdkp
 op_assign
 id|disk-&gt;private_data
 suffix:semicolon
-id|Scsi_Device
+r_struct
+id|scsi_device
 op_star
 id|sdp
 op_assign
@@ -2616,7 +2676,7 @@ l_int|1
 suffix:semicolon
 multiline_comment|/* This will force a flush, if called from&n;&t;&t;&t;&t; * check_disk_change */
 )brace
-multiline_comment|/*&n;&t; * For removable scsi disk we have to recognise the presence&n;&t; * of a disk in the drive. This is kept in the Scsi_Disk&n;&t; * struct and tested at open !  Daniel Roche ( dan@lectra.fr )&n;&t; */
+multiline_comment|/*&n;&t; * For removable scsi disk we have to recognise the presence&n;&t; * of a disk in the drive. This is kept in the struct scsi_disk&n;&t; * struct and tested at open !  Daniel Roche ( dan@lectra.fr )&n;&t; */
 id|sdkp-&gt;media_present
 op_assign
 l_int|1
@@ -2645,11 +2705,13 @@ DECL|function|sd_media_not_present
 id|sd_media_not_present
 c_func
 (paren
-id|Scsi_Disk
+r_struct
+id|scsi_disk
 op_star
 id|sdkp
 comma
-id|Scsi_Request
+r_struct
+id|scsi_request
 op_star
 id|SRpnt
 )paren
@@ -2724,7 +2786,8 @@ DECL|function|sd_spinup_disk
 id|sd_spinup_disk
 c_func
 (paren
-id|Scsi_Disk
+r_struct
+id|scsi_disk
 op_star
 id|sdkp
 comma
@@ -2732,7 +2795,8 @@ r_char
 op_star
 id|diskname
 comma
-id|Scsi_Request
+r_struct
+id|scsi_request
 op_star
 id|SRpnt
 comma
@@ -2749,7 +2813,8 @@ id|cmd
 l_int|10
 )braket
 suffix:semicolon
-id|Scsi_Device
+r_struct
+id|scsi_device
 op_star
 id|sdp
 op_assign
@@ -2856,7 +2921,7 @@ multiline_comment|/*512*/
 comma
 id|SD_TIMEOUT
 comma
-id|MAX_RETRIES
+id|SD_MAX_RETRIES
 )paren
 suffix:semicolon
 id|the_result
@@ -3019,7 +3084,7 @@ multiline_comment|/*512*/
 comma
 id|SD_TIMEOUT
 comma
-id|MAX_RETRIES
+id|SD_MAX_RETRIES
 )paren
 suffix:semicolon
 id|spintime_value
@@ -3120,7 +3185,8 @@ DECL|function|sd_read_cache_type
 id|sd_read_cache_type
 c_func
 (paren
-id|Scsi_Disk
+r_struct
+id|scsi_disk
 op_star
 id|sdkp
 comma
@@ -3128,7 +3194,8 @@ r_char
 op_star
 id|diskname
 comma
-id|Scsi_Request
+r_struct
+id|scsi_request
 op_star
 id|SRpnt
 comma
@@ -3262,7 +3329,7 @@ l_int|128
 comma
 id|SD_TIMEOUT
 comma
-id|MAX_RETRIES
+id|SD_MAX_RETRIES
 )paren
 suffix:semicolon
 id|the_result
@@ -3528,7 +3595,8 @@ DECL|function|sd_read_capacity
 id|sd_read_capacity
 c_func
 (paren
-id|Scsi_Disk
+r_struct
+id|scsi_disk
 op_star
 id|sdkp
 comma
@@ -3536,7 +3604,8 @@ r_char
 op_star
 id|diskname
 comma
-id|Scsi_Request
+r_struct
+id|scsi_request
 op_star
 id|SRpnt
 comma
@@ -3553,7 +3622,8 @@ id|cmd
 l_int|10
 )braket
 suffix:semicolon
-id|Scsi_Device
+r_struct
+id|scsi_device
 op_star
 id|sdp
 op_assign
@@ -3655,7 +3725,7 @@ l_int|8
 comma
 id|SD_TIMEOUT
 comma
-id|MAX_RETRIES
+id|SD_MAX_RETRIES
 )paren
 suffix:semicolon
 r_if
@@ -4075,11 +4145,13 @@ DECL|function|sd_do_mode_sense6
 id|sd_do_mode_sense6
 c_func
 (paren
-id|Scsi_Device
+r_struct
+id|scsi_device
 op_star
 id|sdp
 comma
-id|Scsi_Request
+r_struct
+id|scsi_request
 op_star
 id|SRpnt
 comma
@@ -4184,7 +4256,7 @@ id|len
 comma
 id|SD_TIMEOUT
 comma
-id|MAX_RETRIES
+id|SD_MAX_RETRIES
 )paren
 suffix:semicolon
 r_return
@@ -4198,7 +4270,8 @@ DECL|function|sd_read_write_protect_flag
 id|sd_read_write_protect_flag
 c_func
 (paren
-id|Scsi_Disk
+r_struct
+id|scsi_disk
 op_star
 id|sdkp
 comma
@@ -4206,7 +4279,8 @@ r_char
 op_star
 id|diskname
 comma
-id|Scsi_Request
+r_struct
+id|scsi_request
 op_star
 id|SRpnt
 comma
@@ -4216,7 +4290,8 @@ op_star
 id|buffer
 )paren
 (brace
-id|Scsi_Device
+r_struct
+id|scsi_device
 op_star
 id|sdp
 op_assign
@@ -4366,14 +4441,15 @@ l_int|3
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/**&n; *&t;sd_init_onedisk - called the first time a new disk is seen,&n; *&t;performs disk spin up, read_capacity, etc.&n; *&t;@sdkp: pointer to associated Scsi_Disk object&n; *&t;@dsk_nr: disk number within this driver (e.g. 0-&gt;/dev/sda,&n; *&t;1-&gt;/dev/sdb, etc)&n; *&n; *&t;Note: this function is local to this driver.&n; **/
+multiline_comment|/**&n; *&t;sd_init_onedisk - called the first time a new disk is seen,&n; *&t;performs disk spin up, read_capacity, etc.&n; *&t;@sdkp: pointer to associated struct scsi_disk object&n; *&t;@dsk_nr: disk number within this driver (e.g. 0-&gt;/dev/sda,&n; *&t;1-&gt;/dev/sdb, etc)&n; *&n; *&t;Note: this function is local to this driver.&n; **/
 r_static
 r_void
 DECL|function|sd_init_onedisk
 id|sd_init_onedisk
 c_func
 (paren
-id|Scsi_Disk
+r_struct
+id|scsi_disk
 op_star
 id|sdkp
 comma
@@ -4388,11 +4464,13 @@ r_char
 op_star
 id|buffer
 suffix:semicolon
-id|Scsi_Device
+r_struct
+id|scsi_device
 op_star
 id|sdp
 suffix:semicolon
-id|Scsi_Request
+r_struct
+id|scsi_request
 op_star
 id|SRpnt
 suffix:semicolon
@@ -4599,7 +4677,8 @@ id|k
 comma
 id|maxparts
 suffix:semicolon
-id|Scsi_Disk
+r_struct
+id|scsi_disk
 op_star
 id|sdkp
 suffix:semicolon
@@ -4796,7 +4875,8 @@ c_func
 (paren
 r_sizeof
 (paren
-id|Scsi_Disk
+r_struct
+id|scsi_disk
 )paren
 )paren
 suffix:semicolon
@@ -4819,7 +4899,8 @@ l_int|0
 comma
 r_sizeof
 (paren
-id|Scsi_Disk
+r_struct
+id|scsi_disk
 )paren
 )paren
 suffix:semicolon
@@ -4966,7 +5047,8 @@ r_int
 id|sd_detect
 c_func
 (paren
-id|Scsi_Device
+r_struct
+id|scsi_device
 op_star
 id|sdp
 )paren
@@ -5013,12 +5095,14 @@ r_int
 id|sd_attach
 c_func
 (paren
-id|Scsi_Device
+r_struct
+id|scsi_device
 op_star
 id|sdp
 )paren
 (brace
-id|Scsi_Disk
+r_struct
+id|scsi_disk
 op_star
 id|sdkp
 op_assign
@@ -5159,7 +5243,8 @@ l_int|0
 comma
 r_sizeof
 (paren
-id|Scsi_Disk
+r_struct
+id|scsi_disk
 )paren
 )paren
 suffix:semicolon
@@ -5391,7 +5476,8 @@ op_star
 id|disk
 )paren
 (brace
-id|Scsi_Disk
+r_struct
+id|scsi_disk
 op_star
 id|sdkp
 op_assign
@@ -5434,12 +5520,14 @@ r_void
 id|sd_detach
 c_func
 (paren
-id|Scsi_Device
+r_struct
+id|scsi_device
 op_star
 id|sdp
 )paren
 (brace
-id|Scsi_Disk
+r_struct
+id|scsi_disk
 op_star
 id|sdkp
 op_assign
@@ -5868,7 +5956,8 @@ id|i
 op_increment
 )paren
 (brace
-id|Scsi_Disk
+r_struct
+id|scsi_disk
 op_star
 id|sdkp
 op_assign
@@ -5957,11 +6046,13 @@ r_int
 id|verbose
 )paren
 (brace
-id|Scsi_Request
+r_struct
+id|scsi_request
 op_star
 id|SRpnt
 suffix:semicolon
-id|Scsi_Disk
+r_struct
+id|scsi_disk
 op_star
 id|sdkp
 op_assign
@@ -5971,7 +6062,8 @@ c_func
 id|index
 )paren
 suffix:semicolon
-id|Scsi_Device
+r_struct
+id|scsi_device
 op_star
 id|SDpnt
 op_assign
@@ -6103,7 +6195,7 @@ l_int|0
 comma
 id|SD_TIMEOUT
 comma
-id|MAX_RETRIES
+id|SD_MAX_RETRIES
 )paren
 suffix:semicolon
 r_if
@@ -6203,7 +6295,8 @@ suffix:semicolon
 )brace
 DECL|function|sd_get_sdisk
 r_static
-id|Scsi_Disk
+r_struct
+id|scsi_disk
 op_star
 id|sd_get_sdisk
 c_func
@@ -6212,7 +6305,8 @@ r_int
 id|index
 )paren
 (brace
-id|Scsi_Disk
+r_struct
+id|scsi_disk
 op_star
 id|sdkp
 op_assign
