@@ -11,7 +11,7 @@ c_func
 id|pwc_decompressor_list
 )paren
 suffix:semicolon
-multiline_comment|/* Should the pwc_decompress structure ever change, we increase the &n;   version number so that we don&squot;t get nasty surprises, or can &n;   dynamicly adjust our structure.&n; */
+multiline_comment|/* Should the pwc_decompress structure ever change, we increase the &n;   version number so that we don&squot;t get nasty surprises, or can &n;   dynamically adjust our structure.&n; */
 DECL|variable|pwc_decompressor_version
 r_const
 r_int

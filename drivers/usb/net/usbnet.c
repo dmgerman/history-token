@@ -5336,7 +5336,7 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*-------------------------------------------------------------------------*/
-singleline_comment|// posts reads, and enables write queing
+singleline_comment|// posts reads, and enables write queuing
 singleline_comment|// precondition: never called in_interrupt
 DECL|function|usbnet_open
 r_static

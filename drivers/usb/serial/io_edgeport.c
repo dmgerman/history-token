@@ -3390,7 +3390,7 @@ op_minus
 id|ENODEV
 suffix:semicolon
 )brace
-multiline_comment|/* now wait for the port to be completly opened */
+multiline_comment|/* now wait for the port to be completely opened */
 id|timeout
 op_assign
 id|OPEN_TIMEOUT
