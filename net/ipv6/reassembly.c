@@ -1760,6 +1760,12 @@ OG
 id|IPV6_MAXPLEN
 )paren
 (brace
+id|IP6_INC_STATS_BH
+c_func
+(paren
+id|Ip6InHdrErrors
+)paren
+suffix:semicolon
 id|icmpv6_param_prob
 c_func
 (paren
@@ -1875,6 +1881,12 @@ l_int|0x7
 )paren
 (brace
 multiline_comment|/* RFC2460 says always send parameter problem in&n;&t;&t;&t; * this case. -DaveM&n;&t;&t;&t; */
+id|IP6_INC_STATS_BH
+c_func
+(paren
+id|Ip6InHdrErrors
+)paren
+suffix:semicolon
 id|icmpv6_param_prob
 c_func
 (paren
@@ -2338,6 +2350,12 @@ r_return
 suffix:semicolon
 id|err
 suffix:colon
+id|IP6_INC_STATS
+c_func
+(paren
+id|Ip6ReasmFails
+)paren
+suffix:semicolon
 id|kfree_skb
 c_func
 (paren
@@ -2964,6 +2982,12 @@ op_eq
 l_int|0
 )paren
 (brace
+id|IP6_INC_STATS
+c_func
+(paren
+id|Ip6InHdrErrors
+)paren
+suffix:semicolon
 id|icmpv6_param_prob
 c_func
 (paren
@@ -3004,6 +3028,12 @@ id|frag_hdr
 )paren
 )paren
 (brace
+id|IP6_INC_STATS
+c_func
+(paren
+id|Ip6InHdrErrors
+)paren
+suffix:semicolon
 id|icmpv6_param_prob
 c_func
 (paren
