@@ -1,6 +1,4 @@
-multiline_comment|/*&n; * Network block device - make block devices work over TCP&n; *&n; * Note that you can not swap over this thing, yet. Seems to work but&n; * deadlocks sometimes - you can not swap over TCP in general.&n; * &n; * Copyright 1997-2000 Pavel Machek &lt;pavel@ucw.cz&gt;&n; * Parts copyright 2001 Steven Whitehouse &lt;steve@chygwyn.com&gt;&n; *&n; * (part of code stolen from loop.c)&n; *&n; * 97-3-25 compiled 0-th version, not yet tested it &n; *   (it did not work, BTW) (later that day) HEY! it works!&n; *   (bit later) hmm, not that much... 2:00am next day:&n; *   yes, it works, but it gives something like 50kB/sec&n; * 97-4-01 complete rewrite to make it possible for many requests at &n; *   once to be processed&n; * 97-4-11 Making protocol independent of endianity etc.&n; * 97-9-13 Cosmetic changes&n; * 98-5-13 Attempt to make 64-bit-clean on 64-bit machines&n; * 99-1-11 Attempt to make 64-bit-clean on 32-bit machines &lt;ankry@mif.pg.gda.pl&gt;&n; * 01-2-27 Fix to store proper blockcount for kernel (calculated using&n; *   BLOCK_SIZE_BITS, not device blocksize) &lt;aga@permonline.ru&gt;&n; * 01-3-11 Make nbd work with new Linux block layer code. It now supports&n; *   plugging like all the other block devices. Also added in MSG_MORE to&n; *   reduce number of partial TCP segments sent. &lt;steve@chygwyn.com&gt;&n; * 01-12-6 Fix deadlock condition by making queue locks independent of&n; *   the transmit lock. &lt;steve@chygwyn.com&gt;&n; * 02-10-11 Allow hung xmit to be aborted via SIGKILL &amp; various fixes.&n; *   &lt;Paul.Clements@SteelEye.com&gt; &lt;James.Bottomley@SteelEye.com&gt;&n; * 03-06-22 Make nbd work with new linux 2.5 block layer design. This fixes&n; *   memory corruption from module removal and possible memory corruption&n; *   from sending/receiving disk data. &lt;ldl@aros.net&gt;&n; * 03-06-23 Cosmetic changes. &lt;ldl@aros.net&gt;&n; * 03-06-23 Enhance diagnostics support. &lt;ldl@aros.net&gt;&n; * 03-06-24 Remove unneeded blksize_bits field from nbd_device struct.&n; *   &lt;ldl@aros.net&gt;&n; *&n; * possible FIXME: make set_sock / set_blksize / set_size / do_it one syscall&n; * why not: would need verify_area and friends, would share yet another &n; *          structure with userland&n; */
-DECL|macro|PARANOIA
-mdefine_line|#define PARANOIA
+multiline_comment|/*&n; * Network block device - make block devices work over TCP&n; *&n; * Note that you can not swap over this thing, yet. Seems to work but&n; * deadlocks sometimes - you can not swap over TCP in general.&n; * &n; * Copyright 1997-2000 Pavel Machek &lt;pavel@ucw.cz&gt;&n; * Parts copyright 2001 Steven Whitehouse &lt;steve@chygwyn.com&gt;&n; *&n; * (part of code stolen from loop.c)&n; *&n; * 97-3-25 compiled 0-th version, not yet tested it &n; *   (it did not work, BTW) (later that day) HEY! it works!&n; *   (bit later) hmm, not that much... 2:00am next day:&n; *   yes, it works, but it gives something like 50kB/sec&n; * 97-4-01 complete rewrite to make it possible for many requests at &n; *   once to be processed&n; * 97-4-11 Making protocol independent of endianity etc.&n; * 97-9-13 Cosmetic changes&n; * 98-5-13 Attempt to make 64-bit-clean on 64-bit machines&n; * 99-1-11 Attempt to make 64-bit-clean on 32-bit machines &lt;ankry@mif.pg.gda.pl&gt;&n; * 01-2-27 Fix to store proper blockcount for kernel (calculated using&n; *   BLOCK_SIZE_BITS, not device blocksize) &lt;aga@permonline.ru&gt;&n; * 01-3-11 Make nbd work with new Linux block layer code. It now supports&n; *   plugging like all the other block devices. Also added in MSG_MORE to&n; *   reduce number of partial TCP segments sent. &lt;steve@chygwyn.com&gt;&n; * 01-12-6 Fix deadlock condition by making queue locks independent of&n; *   the transmit lock. &lt;steve@chygwyn.com&gt;&n; * 02-10-11 Allow hung xmit to be aborted via SIGKILL &amp; various fixes.&n; *   &lt;Paul.Clements@SteelEye.com&gt; &lt;James.Bottomley@SteelEye.com&gt;&n; * 03-06-22 Make nbd work with new linux 2.5 block layer design. This fixes&n; *   memory corruption from module removal and possible memory corruption&n; *   from sending/receiving disk data. &lt;ldl@aros.net&gt;&n; * 03-06-23 Cosmetic changes. &lt;ldl@aros.net&gt;&n; * 03-06-23 Enhance diagnostics support. &lt;ldl@aros.net&gt;&n; * 03-06-24 Remove unneeded blksize_bits field from nbd_device struct.&n; *   &lt;ldl@aros.net&gt;&n; * 03-06-24 Cleanup PARANOIA usage &amp; code. &lt;ldl@aros.net&gt;&n; *&n; * possible FIXME: make set_sock / set_blksize / set_size / do_it one syscall&n; * why not: would need verify_area and friends, would share yet another &n; *          structure with userland&n; */
 macro_line|#include &lt;linux/major.h&gt;
 macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#include &lt;linux/blkdev.h&gt;
@@ -19,9 +17,12 @@ macro_line|#include &lt;net/sock.h&gt;
 macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/types.h&gt;
+multiline_comment|/* Define PARANOIA in linux/nbd.h to turn on extra sanity checking */
 macro_line|#include &lt;linux/nbd.h&gt;
+macro_line|#ifdef PARANOIA
 DECL|macro|LO_MAGIC
 mdefine_line|#define LO_MAGIC 0x68797548
+macro_line|#endif
 macro_line|#ifdef NDEBUG
 DECL|macro|dprintk
 mdefine_line|#define dprintk(flags, fmt...)
@@ -68,6 +69,7 @@ id|nbd_lock
 op_assign
 id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
+macro_line|#ifdef PARANOIA
 DECL|variable|requests_in
 r_static
 r_int
@@ -78,6 +80,7 @@ r_static
 r_int
 id|requests_out
 suffix:semicolon
+macro_line|#endif
 macro_line|#ifndef NDEBUG
 DECL|function|ioctl_cmd_to_ascii
 r_static
@@ -1561,6 +1564,7 @@ id|request
 op_star
 id|req
 suffix:semicolon
+macro_line|#ifdef PARANOIA
 id|BUG_ON
 c_func
 (paren
@@ -1569,6 +1573,7 @@ op_ne
 id|LO_MAGIC
 )paren
 suffix:semicolon
+macro_line|#endif
 r_while
 c_loop
 (paren
@@ -1618,6 +1623,7 @@ id|request
 op_star
 id|req
 suffix:semicolon
+macro_line|#ifdef PARANOIA
 id|BUG_ON
 c_func
 (paren
@@ -1626,6 +1632,7 @@ op_ne
 id|LO_MAGIC
 )paren
 suffix:semicolon
+macro_line|#endif
 r_do
 (brace
 id|req
@@ -1778,6 +1785,7 @@ id|lo
 op_assign
 id|req-&gt;rq_disk-&gt;private_data
 suffix:semicolon
+macro_line|#ifdef PARANOIA
 id|BUG_ON
 c_func
 (paren
@@ -1786,6 +1794,7 @@ op_ne
 id|LO_MAGIC
 )paren
 suffix:semicolon
+macro_line|#endif
 r_if
 c_cond
 (paren
@@ -1856,9 +1865,11 @@ id|error_out
 suffix:semicolon
 )brace
 )brace
+macro_line|#ifdef PARANOIA
 id|requests_in
 op_increment
 suffix:semicolon
+macro_line|#endif
 id|req-&gt;errors
 op_assign
 l_int|0
@@ -2095,6 +2106,7 @@ id|lo
 op_assign
 id|inode-&gt;i_bdev-&gt;bd_disk-&gt;private_data
 suffix:semicolon
+macro_line|#ifdef PARANOIA
 r_if
 c_cond
 (paren
@@ -2120,6 +2132,7 @@ c_func
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif
 id|lo-&gt;refcnt
 op_decrement
 suffix:semicolon
@@ -2178,6 +2191,16 @@ r_struct
 id|request
 id|sreq
 suffix:semicolon
+macro_line|#ifdef PARANOIA
+id|BUG_ON
+c_func
+(paren
+id|lo-&gt;magic
+op_ne
+id|LO_MAGIC
+)paren
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/* Anyone capable of this syscall can do *real bad* things */
 id|dprintk
 c_func
@@ -2677,10 +2700,10 @@ suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
-macro_line|#ifdef PARANOIA
 r_case
 id|NBD_PRINT_DEBUG
 suffix:colon
+macro_line|#ifdef PARANOIA
 id|printk
 c_func
 (paren
@@ -2698,10 +2721,24 @@ comma
 id|requests_out
 )paren
 suffix:semicolon
+macro_line|#else
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;%s: next = %p, prev = %p&bslash;n&quot;
+comma
+id|inode-&gt;i_bdev-&gt;bd_disk-&gt;disk_name
+comma
+id|lo-&gt;queue_head.next
+comma
+id|lo-&gt;queue_head.prev
+)paren
+suffix:semicolon
+macro_line|#endif
 r_return
 l_int|0
 suffix:semicolon
-macro_line|#endif
 )brace
 r_return
 op_minus
@@ -2757,6 +2794,7 @@ suffix:semicolon
 r_int
 id|i
 suffix:semicolon
+macro_line|#ifdef PARANOIA
 r_if
 c_cond
 (paren
@@ -2781,6 +2819,7 @@ op_minus
 id|EIO
 suffix:semicolon
 )brace
+macro_line|#endif
 r_for
 c_loop
 (paren
@@ -2974,6 +3013,7 @@ id|file
 op_assign
 l_int|NULL
 suffix:semicolon
+macro_line|#ifdef PARANOIA
 id|nbd_dev
 (braket
 id|i
@@ -2983,6 +3023,7 @@ id|magic
 op_assign
 id|LO_MAGIC
 suffix:semicolon
+macro_line|#endif
 id|nbd_dev
 (braket
 id|i
