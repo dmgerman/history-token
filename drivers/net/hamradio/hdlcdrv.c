@@ -2703,6 +2703,12 @@ op_star
 )paren
 id|dev-&gt;priv
 suffix:semicolon
+id|netif_stop_queue
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
