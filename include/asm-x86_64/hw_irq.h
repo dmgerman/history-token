@@ -404,6 +404,8 @@ id|i
 (brace
 )brace
 macro_line|#endif
+DECL|macro|platform_legacy_irq
+mdefine_line|#define platform_legacy_irq(irq)&t;((irq) &lt; 16)
 macro_line|#endif
 macro_line|#endif /* _ASM_HW_IRQ_H */
 eof

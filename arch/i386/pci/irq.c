@@ -3615,6 +3615,7 @@ id|mask
 )paren
 )paren
 (brace
+macro_line|#ifndef CONFIG_PCI_USE_VECTOR
 id|printk
 c_func
 (paren
@@ -3632,6 +3633,7 @@ comma
 id|irq
 )paren
 suffix:semicolon
+macro_line|#endif
 r_continue
 suffix:semicolon
 )brace
@@ -3935,6 +3937,29 @@ op_ge
 l_int|0
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|use_pci_vector
+c_func
+(paren
+)paren
+op_logical_and
+op_logical_neg
+id|platform_legacy_irq
+c_func
+(paren
+id|irq
+)paren
+)paren
+id|irq
+op_assign
+id|IO_APIC_VECTOR
+c_func
+(paren
+id|irq
+)paren
+suffix:semicolon
 id|printk
 c_func
 (paren

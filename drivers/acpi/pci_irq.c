@@ -672,7 +672,6 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* --------------------------------------------------------------------------&n;                          PCI Interrupt Routing Support&n;   -------------------------------------------------------------------------- */
-r_static
 r_int
 DECL|function|acpi_pci_irq_lookup
 id|acpi_pci_irq_lookup
