@@ -1557,6 +1557,12 @@ DECL|enumerator|NET_IPV6_IP6FRAG_SECRET_INTERVAL
 id|NET_IPV6_IP6FRAG_SECRET_INTERVAL
 op_assign
 l_int|24
+comma
+DECL|enumerator|NET_IPV6_MLD_MAX_MSF
+id|NET_IPV6_MLD_MAX_MSF
+op_assign
+l_int|25
+comma
 )brace
 suffix:semicolon
 r_enum
