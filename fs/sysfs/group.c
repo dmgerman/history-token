@@ -24,6 +24,7 @@ id|grp
 r_struct
 id|attribute
 op_star
+op_star
 id|attr
 suffix:semicolon
 r_for
@@ -33,7 +34,8 @@ id|attr
 op_assign
 id|grp-&gt;attrs
 suffix:semicolon
-id|attr-&gt;name
+op_star
+id|attr
 suffix:semicolon
 id|attr
 op_increment
@@ -43,7 +45,12 @@ c_func
 (paren
 id|dir
 comma
-id|attr-&gt;name
+(paren
+op_star
+id|attr
+)paren
+op_member_access_from_pointer
+id|name
 )paren
 suffix:semicolon
 )brace
@@ -53,11 +60,6 @@ r_int
 id|create_files
 c_func
 (paren
-r_struct
-id|kobject
-op_star
-id|kobj
-comma
 r_struct
 id|dentry
 op_star
@@ -71,6 +73,7 @@ id|grp
 (brace
 r_struct
 id|attribute
+op_star
 op_star
 id|attr
 suffix:semicolon
@@ -86,7 +89,8 @@ id|attr
 op_assign
 id|grp-&gt;attrs
 suffix:semicolon
-id|attr-&gt;name
+op_star
+id|attr
 op_logical_and
 op_logical_neg
 id|error
@@ -102,6 +106,7 @@ c_func
 (paren
 id|dir
 comma
+op_star
 id|attr
 )paren
 suffix:semicolon
@@ -202,8 +207,6 @@ op_assign
 id|create_files
 c_func
 (paren
-id|kobj
-comma
 id|dir
 comma
 id|grp

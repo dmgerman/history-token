@@ -282,6 +282,7 @@ DECL|member|attrs
 r_struct
 id|attribute
 op_star
+op_star
 id|attrs
 suffix:semicolon
 )brace
