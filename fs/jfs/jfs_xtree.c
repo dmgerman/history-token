@@ -11224,14 +11224,7 @@ id|xtpage_t
 op_star
 id|p
 suffix:semicolon
-r_struct
-id|tlock
-op_star
-id|tlck
-suffix:semicolon
 multiline_comment|/*&n;&t; * acquire a transaction lock on the root&n;&t; *&n;&t; * action:&n;&t; */
-id|tlck
-op_assign
 id|txLock
 c_func
 (paren
