@@ -1503,6 +1503,7 @@ l_int|2
 suffix:colon
 multiline_comment|/* 16 bit */
 (brace
+r_const
 r_int
 op_star
 id|data
@@ -1514,6 +1515,7 @@ suffix:semicolon
 id|data
 op_assign
 (paren
+r_const
 r_int
 op_star
 )paren
@@ -1625,6 +1627,7 @@ l_int|4
 suffix:colon
 multiline_comment|/* 32 bit */
 (brace
+r_const
 r_int
 op_star
 id|data
@@ -1636,6 +1639,7 @@ suffix:semicolon
 id|data
 op_assign
 (paren
+r_const
 r_int
 op_star
 )paren
