@@ -1041,15 +1041,15 @@ id|guillemot-&gt;dev.phys
 op_assign
 id|guillemot-&gt;phys
 suffix:semicolon
-id|guillemot-&gt;dev.idbus
+id|guillemot-&gt;dev.id.bustype
 op_assign
 id|BUS_GAMEPORT
 suffix:semicolon
-id|guillemot-&gt;dev.idvendor
+id|guillemot-&gt;dev.id.vendor
 op_assign
 id|GAMEPORT_ID_VENDOR_GUILLEMOT
 suffix:semicolon
-id|guillemot-&gt;dev.idproduct
+id|guillemot-&gt;dev.id.product
 op_assign
 id|guillemot_type
 (braket
@@ -1058,7 +1058,7 @@ id|i
 dot
 id|id
 suffix:semicolon
-id|guillemot-&gt;dev.idversion
+id|guillemot-&gt;dev.id.version
 op_assign
 (paren
 r_int

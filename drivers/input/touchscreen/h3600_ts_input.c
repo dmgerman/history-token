@@ -1442,20 +1442,20 @@ id|ts-&gt;dev.phys
 op_assign
 id|ts-&gt;phys
 suffix:semicolon
-id|ts-&gt;dev.idbus
+id|ts-&gt;dev.id.bustype
 op_assign
 id|BUS_RS232
 suffix:semicolon
-id|ts-&gt;dev.idvendor
+id|ts-&gt;dev.id.vendor
 op_assign
 id|SERIO_H3600
 suffix:semicolon
-id|ts-&gt;dev.idproduct
+id|ts-&gt;dev.id.product
 op_assign
 l_int|0x0666
 suffix:semicolon
 multiline_comment|/* FIXME !!! We can ask the hardware */
-id|ts-&gt;dev.idversion
+id|ts-&gt;dev.id.version
 op_assign
 l_int|0x0100
 suffix:semicolon

@@ -41,10 +41,32 @@ multiline_comment|/*&n; * Protocol version.&n; */
 DECL|macro|EV_VERSION
 mdefine_line|#define EV_VERSION&t;&t;0x010000
 multiline_comment|/*&n; * IOCTLs (0x00 - 0x7f)&n; */
+DECL|struct|input_devinfo
+r_struct
+id|input_devinfo
+(brace
+DECL|member|bustype
+r_uint16
+id|bustype
+suffix:semicolon
+DECL|member|vendor
+r_uint16
+id|vendor
+suffix:semicolon
+DECL|member|product
+r_uint16
+id|product
+suffix:semicolon
+DECL|member|version
+r_uint16
+id|version
+suffix:semicolon
+)brace
+suffix:semicolon
 DECL|macro|EVIOCGVERSION
 mdefine_line|#define EVIOCGVERSION&t;&t;_IOR(&squot;E&squot;, 0x01, int)&t;&t;&t;/* get driver version */
 DECL|macro|EVIOCGID
-mdefine_line|#define EVIOCGID&t;&t;_IOR(&squot;E&squot;, 0x02, short[4])&t;&t;/* get device ID */
+mdefine_line|#define EVIOCGID&t;&t;_IOR(&squot;E&squot;, 0x02, struct input_devinfo)&t;/* get device ID */
 DECL|macro|EVIOCGREP
 mdefine_line|#define EVIOCGREP&t;&t;_IOR(&squot;E&squot;, 0x03, int[2])&t;&t;&t;/* get repeat settings */
 DECL|macro|EVIOCSREP
@@ -1307,25 +1329,10 @@ r_char
 op_star
 id|uniq
 suffix:semicolon
-DECL|member|idbus
-r_int
-r_int
-id|idbus
-suffix:semicolon
-DECL|member|idvendor
-r_int
-r_int
-id|idvendor
-suffix:semicolon
-DECL|member|idproduct
-r_int
-r_int
-id|idproduct
-suffix:semicolon
-DECL|member|idversion
-r_int
-r_int
-id|idversion
+DECL|member|id
+r_struct
+id|input_devinfo
+id|id
 suffix:semicolon
 DECL|member|evbit
 r_int
@@ -1724,25 +1731,10 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-DECL|member|idbus
-r_int
-r_int
-id|idbus
-suffix:semicolon
-DECL|member|idvendor
-r_int
-r_int
-id|idvendor
-suffix:semicolon
-DECL|member|idproduct
-r_int
-r_int
-id|idproduct
-suffix:semicolon
-DECL|member|idversion
-r_int
-r_int
-id|idversion
+DECL|member|id
+r_struct
+id|input_devinfo
+id|id
 suffix:semicolon
 DECL|member|evbit
 r_int

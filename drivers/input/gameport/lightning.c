@@ -1281,7 +1281,7 @@ id|gameport-&gt;phys
 op_assign
 id|l4-&gt;phys
 suffix:semicolon
-id|gameport-&gt;idbus
+id|gameport-&gt;id.bustype
 op_assign
 id|BUS_ISA
 suffix:semicolon

@@ -1292,15 +1292,15 @@ id|interact-&gt;dev.phys
 op_assign
 id|interact-&gt;phys
 suffix:semicolon
-id|interact-&gt;dev.idbus
+id|interact-&gt;dev.id.bustype
 op_assign
 id|BUS_GAMEPORT
 suffix:semicolon
-id|interact-&gt;dev.idvendor
+id|interact-&gt;dev.id.vendor
 op_assign
 id|GAMEPORT_ID_VENDOR_INTERACT
 suffix:semicolon
-id|interact-&gt;dev.idproduct
+id|interact-&gt;dev.id.product
 op_assign
 id|interact_type
 (braket
@@ -1309,7 +1309,7 @@ id|i
 dot
 id|id
 suffix:semicolon
-id|interact-&gt;dev.idversion
+id|interact-&gt;dev.id.version
 op_assign
 l_int|0x0100
 suffix:semicolon

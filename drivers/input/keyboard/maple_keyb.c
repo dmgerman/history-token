@@ -1076,7 +1076,7 @@ id|kbd-&gt;dev.name
 op_assign
 id|dev-&gt;product_name
 suffix:semicolon
-id|kbd-&gt;dev.idbus
+id|kbd-&gt;dev.id.bustype
 op_assign
 id|BUS_MAPLE
 suffix:semicolon

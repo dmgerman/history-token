@@ -747,7 +747,7 @@ id|amijoy-&gt;dev
 id|i
 )braket
 dot
-id|idbus
+id|id.bustype
 op_assign
 id|BUS_AMIGA
 suffix:semicolon
@@ -756,7 +756,7 @@ id|amijoy-&gt;dev
 id|i
 )braket
 dot
-id|idvendor
+id|id.vendor
 op_assign
 l_int|0x0001
 suffix:semicolon
@@ -765,7 +765,7 @@ id|amijoy-&gt;dev
 id|i
 )braket
 dot
-id|idproduct
+id|id.product
 op_assign
 l_int|0x0003
 suffix:semicolon
@@ -774,7 +774,7 @@ id|amijoy-&gt;dev
 id|i
 )braket
 dot
-id|version
+id|id.version
 op_assign
 l_int|0x0100
 suffix:semicolon
