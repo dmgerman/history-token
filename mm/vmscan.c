@@ -3472,6 +3472,9 @@ suffix:semicolon
 r_int
 id|to_reclaim
 suffix:semicolon
+r_int
+id|reclaimed
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -3487,10 +3490,6 @@ r_if
 c_cond
 (paren
 id|nr_pages
-op_logical_and
-id|to_free
-OG
-l_int|0
 )paren
 (brace
 multiline_comment|/* Software suspend */
@@ -3530,10 +3529,6 @@ id|zone-&gt;temp_priority
 op_assign
 id|priority
 suffix:semicolon
-id|all_zones_ok
-op_assign
-l_int|0
-suffix:semicolon
 id|max_scan
 op_assign
 id|zone-&gt;nr_inactive
@@ -3566,8 +3561,8 @@ id|max_scan
 op_assign
 id|SWAP_CLUSTER_MAX
 suffix:semicolon
-id|to_free
-op_sub_assign
+id|reclaimed
+op_assign
 id|shrink_zone
 c_func
 (paren
@@ -3607,11 +3602,15 @@ comma
 id|GFP_KERNEL
 )paren
 suffix:semicolon
-id|to_free
-op_sub_assign
+id|reclaimed
+op_add_assign
 id|reclaim_state-&gt;reclaimed_slab
 suffix:semicolon
 )brace
+id|to_free
+op_sub_assign
+id|reclaimed
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -3632,7 +3631,31 @@ id|zone-&gt;all_unreclaimable
 op_assign
 l_int|1
 suffix:semicolon
+multiline_comment|/*&n;&t;&t;&t; * If this scan failed to reclaim `to_reclaim&squot; or more&n;&t;&t;&t; * pages, we&squot;re getting into trouble.  Need to scan&n;&t;&t;&t; * some more, and throttle kswapd.   Note that this zone&n;&t;&t;&t; * may now have sufficient free pages due to freeing&n;&t;&t;&t; * activity by some other process.   That&squot;s OK - we&squot;ll&n;&t;&t;&t; * pick that info up on the next pass through the loop.&n;&t;&t;&t; */
+r_if
+c_cond
+(paren
+id|reclaimed
+OL
+id|to_reclaim
+)paren
+id|all_zones_ok
+op_assign
+l_int|0
+suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|nr_pages
+op_logical_and
+id|to_free
+OG
+l_int|0
+)paren
+r_continue
+suffix:semicolon
+multiline_comment|/* swsusp: need to do more work */
 r_if
 c_cond
 (paren
@@ -3640,13 +3663,8 @@ id|all_zones_ok
 )paren
 r_break
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|to_free
-OG
-l_int|0
-)paren
+multiline_comment|/* kswapd: all done */
+multiline_comment|/*&n;&t;&t; * OK, kswapd is getting into trouble.  Take a nap, then take&n;&t;&t; * another pass across the zones.&n;&t;&t; */
 id|blk_congestion_wait
 c_func
 (paren
