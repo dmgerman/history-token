@@ -1375,7 +1375,7 @@ DECL|variable|cfg_data
 r_static
 r_struct
 id|ParameterData
-id|__initdata
+id|__devinitdata
 id|cfg_data
 (braket
 )braket
@@ -1677,7 +1677,7 @@ multiline_comment|/**&n; * set_safe_settings - if the use_safe_settings option i
 DECL|function|set_safe_settings
 r_static
 r_void
-id|__init
+id|__devinit
 id|set_safe_settings
 c_func
 (paren
@@ -1737,7 +1737,7 @@ multiline_comment|/**&n; * fix_settings - reset any boot parameters which are ou
 DECL|function|fix_settings
 r_static
 r_void
-id|__init
+id|__devinit
 id|fix_settings
 c_func
 (paren
@@ -1850,7 +1850,7 @@ multiline_comment|/*&n; * Mapping from the eeprom delay index value (index into 
 DECL|variable|eeprom_index_to_delay_map
 r_static
 r_char
-id|__initdata
+id|__devinitdata
 id|eeprom_index_to_delay_map
 (braket
 )braket
@@ -1877,7 +1877,7 @@ multiline_comment|/**&n; * eeprom_index_to_delay - Take the eeprom delay setting
 DECL|function|eeprom_index_to_delay
 r_static
 r_void
-id|__init
+id|__devinit
 id|eeprom_index_to_delay
 c_func
 (paren
@@ -1899,7 +1899,7 @@ multiline_comment|/**&n; * delay_to_eeprom_index - Take a delay in seconds and r
 DECL|function|delay_to_eeprom_index
 r_static
 r_int
-id|__init
+id|__devinit
 id|delay_to_eeprom_index
 c_func
 (paren
@@ -1937,7 +1937,7 @@ multiline_comment|/**&n; * eeprom_override - Override the eeprom settings, in th
 DECL|function|eeprom_override
 r_static
 r_void
-id|__init
+id|__devinit
 id|eeprom_override
 c_func
 (paren
@@ -16382,7 +16382,7 @@ multiline_comment|/**&n; * trms1040_wait_30us: wait for 30 us&n; *&n; * Waits fo
 DECL|function|trms1040_wait_30us
 r_static
 r_void
-id|__init
+id|__devinit
 id|trms1040_wait_30us
 c_func
 (paren
@@ -16425,7 +16425,7 @@ multiline_comment|/**&n; * trms1040_write_cmd - write the secified command and a
 DECL|function|trms1040_write_cmd
 r_static
 r_void
-id|__init
+id|__devinit
 id|trms1040_write_cmd
 c_func
 (paren
@@ -16613,7 +16613,7 @@ multiline_comment|/**&n; * trms1040_set_data - store a single byte in the eeprom
 DECL|function|trms1040_set_data
 r_static
 r_void
-id|__init
+id|__devinit
 id|trms1040_set_data
 c_func
 (paren
@@ -16842,7 +16842,7 @@ multiline_comment|/**&n; * trms1040_write_all - write 128 bytes to the eeprom&n;
 DECL|function|trms1040_write_all
 r_static
 r_void
-id|__init
+id|__devinit
 id|trms1040_write_all
 c_func
 (paren
@@ -17000,7 +17000,7 @@ multiline_comment|/**&n; * trms1040_get_data - get a single byte from the eeprom
 DECL|function|trms1040_get_data
 r_static
 id|u8
-id|__init
+id|__devinit
 id|trms1040_get_data
 c_func
 (paren
@@ -17132,7 +17132,7 @@ multiline_comment|/**&n; * trms1040_read_all - read all bytes from the eeprom&n;
 DECL|function|trms1040_read_all
 r_static
 r_void
-id|__init
+id|__devinit
 id|trms1040_read_all
 c_func
 (paren
@@ -17236,7 +17236,7 @@ multiline_comment|/**&n; * check_eeprom - get and check contents of the eeprom&n
 DECL|function|check_eeprom
 r_static
 r_void
-id|__init
+id|__devinit
 id|check_eeprom
 c_func
 (paren
@@ -17609,7 +17609,7 @@ multiline_comment|/**&n; * print_eeprom_settings - output the eeprom settings&n;
 DECL|function|print_eeprom_settings
 r_static
 r_void
-id|__init
+id|__devinit
 id|print_eeprom_settings
 c_func
 (paren
@@ -17751,7 +17751,7 @@ multiline_comment|/*&n; * Allocate SG tables; as we have to pci_map them, an SG 
 DECL|function|adapter_sg_tables_alloc
 r_static
 r_int
-id|__init
+id|__devinit
 id|adapter_sg_tables_alloc
 c_func
 (paren
@@ -17964,7 +17964,7 @@ multiline_comment|/**&n; * adapter_print_config - print adapter connection and t
 DECL|function|adapter_print_config
 r_static
 r_void
-id|__init
+id|__devinit
 id|adapter_print_config
 c_func
 (paren
@@ -18186,7 +18186,7 @@ multiline_comment|/**&n; * adapter_init_params - Initialize the various paramete
 DECL|function|adapter_init_params
 r_static
 r_void
-id|__init
+id|__devinit
 id|adapter_init_params
 c_func
 (paren
@@ -18379,7 +18379,7 @@ multiline_comment|/**&n; * adapter_init_host - Initialize the scsi host instance
 DECL|function|adapter_init_scsi_host
 r_static
 r_void
-id|__init
+id|__devinit
 id|adapter_init_scsi_host
 c_func
 (paren
@@ -18497,7 +18497,7 @@ multiline_comment|/**&n; * adapter_init_chip - Get the chip into a know state an
 DECL|function|adapter_init_chip
 r_static
 r_void
-id|__init
+id|__devinit
 id|adapter_init_chip
 c_func
 (paren
@@ -18652,7 +18652,7 @@ multiline_comment|/**&n; * init_adapter - Grab the resource for the card, setup 
 DECL|function|adapter_init
 r_static
 r_int
-id|__init
+id|__devinit
 id|adapter_init
 c_func
 (paren
