@@ -730,6 +730,7 @@ id|status
 op_ge
 l_int|0
 )paren
+(brace
 id|nfs_refresh_inode
 c_func
 (paren
@@ -738,6 +739,21 @@ comma
 id|fattr
 )paren
 suffix:semicolon
+multiline_comment|/* Emulate the eof flag, which isn&squot;t normally needed in NFSv2&n;&t;&t; * as it is guaranteed to always return the file attributes&n;&t;&t; */
+r_if
+c_cond
+(paren
+id|rdata-&gt;args.offset
+op_plus
+id|rdata-&gt;args.count
+op_ge
+id|fattr-&gt;size
+)paren
+id|rdata-&gt;res.eof
+op_assign
+l_int|1
+suffix:semicolon
+)brace
 id|dprintk
 c_func
 (paren
@@ -2590,6 +2606,7 @@ id|task-&gt;tk_status
 op_ge
 l_int|0
 )paren
+(brace
 id|nfs_refresh_inode
 c_func
 (paren
@@ -2598,6 +2615,21 @@ comma
 id|data-&gt;res.fattr
 )paren
 suffix:semicolon
+multiline_comment|/* Emulate the eof flag, which isn&squot;t normally needed in NFSv2&n;&t;&t; * as it is guaranteed to always return the file attributes&n;&t;&t; */
+r_if
+c_cond
+(paren
+id|data-&gt;args.offset
+op_plus
+id|data-&gt;args.count
+op_ge
+id|data-&gt;res.fattr-&gt;size
+)paren
+id|data-&gt;res.eof
+op_assign
+l_int|1
+suffix:semicolon
+)brace
 id|nfs_readpage_result
 c_func
 (paren

@@ -411,14 +411,18 @@ id|rdata.args.pgbase
 op_add_assign
 id|result
 suffix:semicolon
+multiline_comment|/* Note: result == 0 should only happen if we&squot;re caching&n;&t;&t; * a write that extends the file and punches a hole.&n;&t;&t; */
 r_if
 c_cond
 (paren
+id|rdata.res.eof
+op_ne
+l_int|0
+op_logical_or
 id|result
-OL
-id|rdata.args.count
+op_eq
+l_int|0
 )paren
-multiline_comment|/* NFSv2ism */
 r_break
 suffix:semicolon
 )brace
