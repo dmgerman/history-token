@@ -1389,15 +1389,7 @@ suffix:semicolon
 macro_line|#endif
 "&f;"
 multiline_comment|/* ---------- Initialization stuff ---------- */
-macro_line|#ifdef MODULE
-DECL|function|init_module
-r_int
-id|init_module
-c_func
-(paren
-r_void
-)paren
-macro_line|#else
+DECL|function|cosa_init
 r_static
 r_int
 id|__init
@@ -1406,7 +1398,6 @@ c_func
 (paren
 r_void
 )paren
-macro_line|#endif
 (brace
 r_int
 id|i
@@ -1639,10 +1630,19 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#ifdef MODULE
-DECL|function|cleanup_module
+DECL|variable|cosa_init
+id|module_init
+c_func
+(paren
+id|cosa_init
+)paren
+suffix:semicolon
+DECL|function|cosa_exit
+r_static
 r_void
-id|cleanup_module
+id|__exit
+id|cosa_exit
+c_func
 (paren
 r_void
 )paren
@@ -1784,7 +1784,13 @@ l_string|&quot;cosa&quot;
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif
+DECL|variable|cosa_exit
+id|module_exit
+c_func
+(paren
+id|cosa_exit
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * This function should register all the net devices needed for the&n; * single channel.&n; */
 DECL|function|channel_init
 r_static
@@ -2236,11 +2242,6 @@ r_int
 id|irqs
 suffix:semicolon
 multiline_comment|/*&t;&t;printk(KERN_INFO &quot;IRQ autoprobe&bslash;n&quot;); */
-id|sti
-c_func
-(paren
-)paren
-suffix:semicolon
 id|irqs
 op_assign
 id|probe_irq_on
@@ -2764,6 +2765,12 @@ c_func
 id|chan-&gt;pppdev.dev
 )paren
 suffix:semicolon
+id|free_netdev
+c_func
+(paren
+id|chan-&gt;pppdev.dev
+)paren
+suffix:semicolon
 r_return
 suffix:semicolon
 )brace
@@ -2914,8 +2921,6 @@ suffix:semicolon
 id|chan-&gt;cosa-&gt;usage
 op_increment
 suffix:semicolon
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 id|spin_unlock_irqrestore
 c_func
 (paren
@@ -2954,8 +2959,6 @@ l_int|0
 suffix:semicolon
 id|chan-&gt;cosa-&gt;usage
 op_decrement
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 id|spin_unlock_irqrestore
 c_func
@@ -3202,8 +3205,6 @@ l_int|0
 suffix:semicolon
 id|chan-&gt;cosa-&gt;usage
 op_decrement
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 id|spin_unlock_irqrestore
 c_func
@@ -5561,27 +5562,6 @@ op_star
 id|arg
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * These two are _very_ugly_hack_(tm). Don&squot;t even look at this.&n; * Implementing this saved me few reboots after some process segfaulted&n; * inside this module.&n; */
-macro_line|#ifdef MODULE
-macro_line|#if 0
-r_case
-id|COSAIOMINC
-suffix:colon
-id|MOD_INC_USE_COUNT
-suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-r_case
-id|COSAIOMDEC
-suffix:colon
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-macro_line|#endif
-macro_line|#endif
 r_case
 id|COSAIONRCARDS
 suffix:colon
