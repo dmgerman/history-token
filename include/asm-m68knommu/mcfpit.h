@@ -6,7 +6,7 @@ DECL|macro|mcfpit_h
 mdefine_line|#define&t;mcfpit_h
 multiline_comment|/****************************************************************************/
 macro_line|#include &lt;linux/config.h&gt;
-multiline_comment|/*&n; *&t;Get address specific defines for the 5282.&n; */
+multiline_comment|/*&n; *&t;Get address specific defines for the 5270/5271 and 5280/5282.&n; */
 DECL|macro|MCFPIT_BASE1
 mdefine_line|#define&t;MCFPIT_BASE1&t;&t;0x00150000&t;/* Base address of TIMER1 */
 DECL|macro|MCFPIT_BASE2
