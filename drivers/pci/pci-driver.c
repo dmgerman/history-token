@@ -6,95 +6,6 @@ macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;linux/pci-dynids.h&gt;
 macro_line|#include &quot;pci.h&quot;
 multiline_comment|/*&n; *  Registration of PCI drivers and handling of hot-pluggable devices.&n; */
-multiline_comment|/**&n; * pci_match_one_device - Tell if a PCI device structure has a matching&n; *                        PCI device id structure&n; * @id: single PCI device id structure to match&n; * @dev: the PCI device structure to match against&n; * &n; * Returns the matching pci_device_id structure or %NULL if there is no match.&n; */
-r_static
-r_inline
-r_const
-r_struct
-id|pci_device_id
-op_star
-DECL|function|pci_match_one_device
-id|pci_match_one_device
-c_func
-(paren
-r_const
-r_struct
-id|pci_device_id
-op_star
-id|id
-comma
-r_const
-r_struct
-id|pci_dev
-op_star
-id|dev
-)paren
-(brace
-r_if
-c_cond
-(paren
-(paren
-id|id-&gt;vendor
-op_eq
-id|PCI_ANY_ID
-op_logical_or
-id|id-&gt;vendor
-op_eq
-id|dev-&gt;vendor
-)paren
-op_logical_and
-(paren
-id|id-&gt;device
-op_eq
-id|PCI_ANY_ID
-op_logical_or
-id|id-&gt;device
-op_eq
-id|dev-&gt;device
-)paren
-op_logical_and
-(paren
-id|id-&gt;subvendor
-op_eq
-id|PCI_ANY_ID
-op_logical_or
-id|id-&gt;subvendor
-op_eq
-id|dev-&gt;subsystem_vendor
-)paren
-op_logical_and
-(paren
-id|id-&gt;subdevice
-op_eq
-id|PCI_ANY_ID
-op_logical_or
-id|id-&gt;subdevice
-op_eq
-id|dev-&gt;subsystem_device
-)paren
-op_logical_and
-op_logical_neg
-(paren
-(paren
-id|id
-op_member_access_from_pointer
-r_class
-op_xor
-id|dev
-op_member_access_from_pointer
-r_class
-)paren
-op_amp
-id|id-&gt;class_mask
-)paren
-)paren
-r_return
-id|id
-suffix:semicolon
-r_return
-l_int|NULL
-suffix:semicolon
-)brace
 multiline_comment|/*&n; * Dynamic device IDs are disabled for !CONFIG_HOTPLUG&n; */
 macro_line|#ifdef CONFIG_HOTPLUG
 multiline_comment|/**&n; * pci_device_probe_dynamic()&n; *&n; * Walk the dynamic ID list looking for a match.&n; * returns 0 and sets pci_dev-&gt;driver when drv claims pci_dev, else error.&n; */
@@ -1242,6 +1153,27 @@ op_assign
 l_int|NULL
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_DEBUG_KERNEL
+multiline_comment|/*&n;&t; * If the driver decides to stop using the device, it should&n;&t; * call pci_disable_device().&n;&t; */
+r_if
+c_cond
+(paren
+id|pci_dev-&gt;is_enabled
+)paren
+(brace
+id|dev_warn
+c_func
+(paren
+op_amp
+id|pci_dev-&gt;dev
+comma
+l_string|&quot;Device was removed without properly &quot;
+l_string|&quot;calling pci_disable_device(). This may need fixing.&bslash;n&quot;
+)paren
+suffix:semicolon
+multiline_comment|/* WARN_ON(1); */
+)brace
+macro_line|#endif /* CONFIG_DEBUG_KERNEL */
 id|pci_dev_put
 c_func
 (paren
@@ -1379,8 +1311,6 @@ id|pci_save_state
 c_func
 (paren
 id|pci_dev
-comma
-id|pci_dev-&gt;saved_config_space
 )paren
 suffix:semicolon
 r_return
@@ -1405,8 +1335,6 @@ id|pci_restore_state
 c_func
 (paren
 id|pci_dev
-comma
-id|pci_dev-&gt;saved_config_space
 )paren
 suffix:semicolon
 multiline_comment|/* if the device was enabled before suspend, reenable */
@@ -1726,9 +1654,9 @@ id|drv
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * pci_register_driver - register a new pci driver&n; * @drv: the driver structure to register&n; * &n; * Adds the driver structure to the list of registered drivers.&n; * Returns a negative value on error. The driver remains registered&n; * even if no device was claimed during registration.&n; */
-r_int
+multiline_comment|/**&n; * pci_register_driver - register a new pci driver&n; * @drv: the driver structure to register&n; * &n; * Adds the driver structure to the list of registered drivers.&n; * Returns a negative value on error, otherwise 0. &n; * If no error occured, the driver remains registered even if &n; * no device was claimed during registration.&n; */
 DECL|function|pci_register_driver
+r_int
 id|pci_register_driver
 c_func
 (paren
@@ -1739,9 +1667,7 @@ id|drv
 )paren
 (brace
 r_int
-id|count
-op_assign
-l_int|0
+id|error
 suffix:semicolon
 multiline_comment|/* initialize common driver fields */
 id|drv-&gt;driver.name
@@ -1761,6 +1687,10 @@ id|drv-&gt;driver.remove
 op_assign
 id|pci_device_remove
 suffix:semicolon
+id|drv-&gt;driver.owner
+op_assign
+id|drv-&gt;owner
+suffix:semicolon
 id|drv-&gt;driver.kobj.ktype
 op_assign
 op_amp
@@ -1774,7 +1704,7 @@ id|drv-&gt;dynids
 )paren
 suffix:semicolon
 multiline_comment|/* register with core */
-id|count
+id|error
 op_assign
 id|driver_register
 c_func
@@ -1786,25 +1716,17 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|count
-op_ge
-l_int|0
+op_logical_neg
+id|error
 )paren
-(brace
 id|pci_populate_driver_dir
 c_func
 (paren
 id|drv
 )paren
 suffix:semicolon
-)brace
 r_return
-id|count
-ques
-c_cond
-id|count
-suffix:colon
-l_int|1
+id|error
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * pci_unregister_driver - unregister a pci driver&n; * @drv: the driver structure to unregister&n; * &n; * Deletes the driver structure from the list of registered PCI drivers,&n; * gives it a chance to clean up by calling its remove() function for&n; * each device it was responsible for, and marks those devices as&n; * driverless.&n; */
@@ -2015,22 +1937,11 @@ op_star
 id|dev
 )paren
 (brace
-r_struct
-id|device
-op_star
-id|tmp
-suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
 id|dev
 )paren
-r_return
-l_int|NULL
-suffix:semicolon
-id|tmp
-op_assign
 id|get_device
 c_func
 (paren
@@ -2038,21 +1949,8 @@ op_amp
 id|dev-&gt;dev
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|tmp
-)paren
 r_return
-id|to_pci_dev
-c_func
-(paren
-id|tmp
-)paren
-suffix:semicolon
-r_else
-r_return
-l_int|NULL
+id|dev
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * pci_dev_put - release a use of the pci device structure&n; * @dev: device that&squot;s been disconnected&n; *&n; * Must be called when a user of a device is finished with it.  When the last&n; * user of the device calls this function, the memory of the device is freed.&n; */

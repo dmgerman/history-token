@@ -138,7 +138,7 @@ id|dpm_sem
 suffix:semicolon
 )brace
 DECL|variable|device_resume
-id|EXPORT_SYMBOL
+id|EXPORT_SYMBOL_GPL
 c_func
 (paren
 id|device_resume
@@ -220,7 +220,7 @@ c_func
 suffix:semicolon
 )brace
 DECL|variable|device_power_up
-id|EXPORT_SYMBOL
+id|EXPORT_SYMBOL_GPL
 c_func
 (paren
 id|device_power_up

@@ -103,6 +103,10 @@ id|p
 op_plus
 id|fb_info_size
 suffix:semicolon
+id|info-&gt;device
+op_assign
+id|dev
+suffix:semicolon
 r_return
 id|info
 suffix:semicolon

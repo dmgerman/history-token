@@ -2864,23 +2864,11 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
-id|set_current_state
-c_func
-(paren
-id|TASK_UNINTERRUPTIBLE
-)paren
-suffix:semicolon
 multiline_comment|/* Timeout 10ms */
-id|schedule_timeout
+id|msleep
 c_func
-(paren
 (paren
 l_int|10
-op_star
-id|HZ
-)paren
-op_div
-l_int|1000
 )paren
 suffix:semicolon
 id|printk

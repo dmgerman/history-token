@@ -2891,7 +2891,7 @@ op_star
 )paren
 id|dev-&gt;data
 suffix:semicolon
-id|usb_unlink_urb
+id|usb_kill_urb
 c_func
 (paren
 id|data-&gt;int_urb
@@ -4831,7 +4831,7 @@ singleline_comment|// FIXME:  can&squot;t cancel here; it&squot;s synchronous, a
 singleline_comment|// should have happened earlier in any case (interrupt
 singleline_comment|// handling needs to be generic)
 singleline_comment|// cancel irq urb first
-id|usb_unlink_urb
+id|usb_kill_urb
 (paren
 id|priv-&gt;irq_urb
 )paren
@@ -11893,6 +11893,27 @@ id|ax8817x_info
 comma
 )brace
 comma
+(brace
+singleline_comment|// Surecom EP-1427X-2
+id|USB_DEVICE
+(paren
+l_int|0x1189
+comma
+l_int|0x0893
+)paren
+comma
+dot
+id|driver_info
+op_assign
+(paren
+r_int
+r_int
+)paren
+op_amp
+id|ax8817x_info
+comma
+)brace
+comma
 macro_line|#endif
 macro_line|#ifdef&t;CONFIG_USB_EPSON2888
 (brace
@@ -12056,7 +12077,7 @@ comma
 comma
 macro_line|#endif
 macro_line|#ifdef&t;CONFIG_USB_ARMLINUX
-multiline_comment|/*&n; * SA-1100 using standard ARM Linux kernels, or compatible.&n; * Often used when talking to Linux PDAs (iPaq, Yopy, etc).&n; * The sa-1100 &quot;usb-eth&quot; driver handles the basic framing.&n; *&n; * PXA25x or PXA210 ...  these use a &quot;usb-eth&quot; driver much like&n; * the sa1100 one, but hardware uses different endpoint numbers.&n; */
+multiline_comment|/*&n; * SA-1100 using standard ARM Linux kernels, or compatible.&n; * Often used when talking to Linux PDAs (iPaq, Yopy, etc).&n; * The sa-1100 &quot;usb-eth&quot; driver handles the basic framing.&n; *&n; * PXA25x or PXA210 ...  these use a &quot;usb-eth&quot; driver much like&n; * the sa1100 one, but hardware uses different endpoint numbers.&n; *&n; * Or the Linux &quot;Ethernet&quot; gadget on hardware that can&squot;t talk&n; * CDC Ethernet (e.g., no altsettings), in either of two modes:&n; *  - acting just like the old &quot;usb-eth&quot; firmware, though&n; *    the implementation is different &n; *  - supporting RNDIS as the first/default configuration for&n; *    MS-Windows interop; Linux needs to use the other config&n; */
 (brace
 singleline_comment|// 1183 = 0x049F, both used as hex values?
 singleline_comment|// Compaq &quot;Itsy&quot; vendor/product id
@@ -12067,6 +12088,7 @@ comma
 l_int|0x505A
 )paren
 comma
+singleline_comment|// usb-eth, or compatible
 dot
 id|driver_info
 op_assign
@@ -12118,6 +12140,31 @@ r_int
 )paren
 op_amp
 id|blob_info
+comma
+)brace
+comma
+(brace
+singleline_comment|// Linux Ethernet/RNDIS gadget on pxa210/25x/26x
+id|USB_DEVICE_VER
+(paren
+l_int|0x0525
+comma
+l_int|0xa4a2
+comma
+l_int|0x0203
+comma
+l_int|0x0203
+)paren
+comma
+dot
+id|driver_info
+op_assign
+(paren
+r_int
+r_int
+)paren
+op_amp
+id|linuxdev_info
 comma
 )brace
 comma

@@ -114,7 +114,7 @@ id|comp_short_keys
 (paren
 r_const
 r_struct
-id|key
+id|reiserfs_key
 op_star
 id|le_key
 comma
@@ -212,7 +212,7 @@ id|comp_keys
 (paren
 r_const
 r_struct
-id|key
+id|reiserfs_key
 op_star
 id|le_key
 comma
@@ -499,13 +499,13 @@ id|comp_short_le_keys
 (paren
 r_const
 r_struct
-id|key
+id|reiserfs_key
 op_star
 id|key1
 comma
 r_const
 r_struct
-id|key
+id|reiserfs_key
 op_star
 id|key2
 )paren
@@ -727,7 +727,7 @@ id|to
 comma
 r_const
 r_struct
-id|key
+id|reiserfs_key
 op_star
 id|from
 )paren
@@ -808,13 +808,13 @@ id|comp_le_keys
 (paren
 r_const
 r_struct
-id|key
+id|reiserfs_key
 op_star
 id|k1
 comma
 r_const
 r_struct
-id|key
+id|reiserfs_key
 op_star
 id|k2
 )paren
@@ -829,7 +829,7 @@ comma
 r_sizeof
 (paren
 r_struct
-id|key
+id|reiserfs_key
 )paren
 )paren
 suffix:semicolon
@@ -919,7 +919,7 @@ c_func
 (paren
 (paren
 r_struct
-id|key
+id|reiserfs_key
 op_star
 )paren
 (paren
@@ -1001,7 +1001,7 @@ multiline_comment|/* Minimal possible key. It is never in the tree. */
 DECL|variable|MIN_KEY
 r_const
 r_struct
-id|key
+id|reiserfs_key
 id|MIN_KEY
 op_assign
 (brace
@@ -1023,7 +1023,7 @@ multiline_comment|/* Maximal possible key. It is never in the tree. */
 DECL|variable|MAX_KEY
 r_const
 r_struct
-id|key
+id|reiserfs_key
 id|MAX_KEY
 op_assign
 (brace
@@ -1046,7 +1046,7 @@ DECL|function|get_lkey
 r_inline
 r_const
 r_struct
-id|key
+id|reiserfs_key
 op_star
 id|get_lkey
 (paren
@@ -1242,7 +1242,7 @@ DECL|function|get_rkey
 r_inline
 r_const
 r_struct
-id|key
+id|reiserfs_key
 op_star
 id|get_rkey
 (paren
@@ -3104,7 +3104,7 @@ id|p_s_bh
 )paren
 suffix:semicolon
 r_struct
-id|key
+id|reiserfs_key
 op_star
 id|le_key
 suffix:semicolon
@@ -4937,7 +4937,7 @@ id|key2type
 c_func
 (paren
 r_struct
-id|key
+id|reiserfs_key
 op_star
 id|ih
 )paren
@@ -5551,7 +5551,7 @@ op_star
 id|inode
 comma
 r_struct
-id|key
+id|reiserfs_key
 op_star
 id|key
 )paren

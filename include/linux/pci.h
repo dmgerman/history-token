@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&t;$Id: pci.h,v 1.87 1998/10/11 15:13:12 mj Exp $&n; *&n; *&t;PCI defines and function prototypes&n; *&t;Copyright 1994, Drew Eckhardt&n; *&t;Copyright 1997--1999 Martin Mares &lt;mj@ucw.cz&gt;&n; *&n; *&t;For more information, please consult the following manuals (look at&n; *&t;http://www.pcisig.com/ for how to get them):&n; *&n; *&t;PCI BIOS Specification&n; *&t;PCI Local Bus Specification&n; *&t;PCI to PCI Bridge Specification&n; *&t;PCI System Design Guide&n; */
+multiline_comment|/*&n; *&t;pci.h&n; *&n; *&t;PCI defines and function prototypes&n; *&t;Copyright 1994, Drew Eckhardt&n; *&t;Copyright 1997--1999 Martin Mares &lt;mj@ucw.cz&gt;&n; *&n; *&t;For more information, please consult the following manuals (look at&n; *&t;http://www.pcisig.com/ for how to get them):&n; *&n; *&t;PCI BIOS Specification&n; *&t;PCI Local Bus Specification&n; *&t;PCI to PCI Bridge Specification&n; *&t;PCI System Design Guide&n; */
 macro_line|#ifndef LINUX_PCI_H
 DECL|macro|LINUX_PCI_H
 mdefine_line|#define LINUX_PCI_H
@@ -1303,6 +1303,9 @@ suffix:semicolon
 multiline_comment|/* pci_driver-&gt;driver_data is used */
 )brace
 suffix:semicolon
+r_struct
+id|module
+suffix:semicolon
 DECL|struct|pci_driver
 r_struct
 id|pci_driver
@@ -1316,6 +1319,12 @@ DECL|member|name
 r_char
 op_star
 id|name
+suffix:semicolon
+DECL|member|owner
+r_struct
+id|module
+op_star
+id|owner
 suffix:semicolon
 DECL|member|id_table
 r_const
@@ -1430,6 +1439,9 @@ mdefine_line|#define PCI_DEVICE(vend,dev) &bslash;&n;&t;.vendor = (vend), .devic
 multiline_comment|/**&n; * PCI_DEVICE_CLASS - macro used to describe a specific pci device class&n; * @dev_class: the class, subclass, prog-if triple for this device&n; * @dev_class_mask: the class mask for this device&n; *&n; * This macro is used to create a struct pci_device_id that matches a&n; * specific PCI class.  The vendor, device, subvendor, and subdevice &n; * fields will be set to PCI_ANY_ID.&n; */
 DECL|macro|PCI_DEVICE_CLASS
 mdefine_line|#define PCI_DEVICE_CLASS(dev_class,dev_class_mask) &bslash;&n;&t;.class = (dev_class), .class_mask = (dev_class_mask), &bslash;&n;&t;.vendor = PCI_ANY_ID, .device = PCI_ANY_ID, &bslash;&n;&t;.subvendor = PCI_ANY_ID, .subdevice = PCI_ANY_ID
+multiline_comment|/* &n; * pci_module_init is obsolete, this stays here till we fix up all usages of it&n; * in the tree.&n; */
+DECL|macro|pci_module_init
+mdefine_line|#define pci_module_init&t;pci_register_driver
 multiline_comment|/* these external functions are only available when PCI support is enabled */
 macro_line|#ifdef CONFIG_PCI
 r_extern
@@ -1788,50 +1800,6 @@ suffix:semicolon
 r_struct
 id|pci_dev
 op_star
-id|pci_find_subsys
-(paren
-r_int
-r_int
-id|vendor
-comma
-r_int
-r_int
-id|device
-comma
-r_int
-r_int
-id|ss_vendor
-comma
-r_int
-r_int
-id|ss_device
-comma
-r_const
-r_struct
-id|pci_dev
-op_star
-id|from
-)paren
-suffix:semicolon
-r_struct
-id|pci_dev
-op_star
-id|pci_find_class
-(paren
-r_int
-r_int
-r_class
-comma
-r_const
-r_struct
-id|pci_dev
-op_star
-id|from
-)paren
-suffix:semicolon
-r_struct
-id|pci_dev
-op_star
 id|pci_find_slot
 (paren
 r_int
@@ -1939,6 +1907,32 @@ comma
 r_int
 r_int
 id|devfn
+)paren
+suffix:semicolon
+r_struct
+id|pci_dev
+op_star
+id|pci_get_class
+(paren
+r_int
+r_int
+r_class
+comma
+r_struct
+id|pci_dev
+op_star
+id|from
+)paren
+suffix:semicolon
+r_int
+id|pci_dev_present
+c_func
+(paren
+r_const
+r_struct
+id|pci_device_id
+op_star
+id|ids
 )paren
 suffix:semicolon
 r_int
@@ -2379,10 +2373,6 @@ r_struct
 id|pci_dev
 op_star
 id|dev
-comma
-id|u32
-op_star
-id|buffer
 )paren
 suffix:semicolon
 r_int
@@ -2393,10 +2383,6 @@ r_struct
 id|pci_dev
 op_star
 id|dev
-comma
-id|u32
-op_star
-id|buffer
 )paren
 suffix:semicolon
 r_int
@@ -2932,11 +2918,6 @@ macro_line|#endif
 macro_line|#endif /* CONFIG_PCI */
 multiline_comment|/* Include architecture-dependent settings and functions */
 macro_line|#include &lt;asm/pci.h&gt;
-multiline_comment|/* Backwards compat, remove in 2.7.x */
-DECL|macro|pci_dma_sync_single
-mdefine_line|#define pci_dma_sync_single&t;pci_dma_sync_single_for_cpu
-DECL|macro|pci_dma_sync_sg
-mdefine_line|#define pci_dma_sync_sg&t;&t;pci_dma_sync_sg_for_cpu
 multiline_comment|/*&n; *  If the system does not have PCI, clearly these return errors.  Define&n; *  these as simple inline functions to avoid hair in drivers.&n; */
 macro_line|#ifndef CONFIG_PCI
 DECL|macro|_PCI_NOP
@@ -2984,30 +2965,6 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
-DECL|function|pci_find_class
-r_static
-r_inline
-r_struct
-id|pci_dev
-op_star
-id|pci_find_class
-c_func
-(paren
-r_int
-r_int
-r_class
-comma
-r_const
-r_struct
-id|pci_dev
-op_star
-id|from
-)paren
-(brace
-r_return
-l_int|NULL
-suffix:semicolon
-)brace
 DECL|function|pci_find_slot
 r_static
 r_inline
@@ -3024,42 +2981,6 @@ comma
 r_int
 r_int
 id|devfn
-)paren
-(brace
-r_return
-l_int|NULL
-suffix:semicolon
-)brace
-DECL|function|pci_find_subsys
-r_static
-r_inline
-r_struct
-id|pci_dev
-op_star
-id|pci_find_subsys
-c_func
-(paren
-r_int
-r_int
-id|vendor
-comma
-r_int
-r_int
-id|device
-comma
-r_int
-r_int
-id|ss_vendor
-comma
-r_int
-r_int
-id|ss_device
-comma
-r_const
-r_struct
-id|pci_dev
-op_star
-id|from
 )paren
 (brace
 r_return
@@ -3126,6 +3047,33 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
+DECL|function|pci_get_class
+r_static
+r_inline
+r_struct
+id|pci_dev
+op_star
+id|pci_get_class
+c_func
+(paren
+r_int
+r_int
+r_class
+comma
+r_struct
+id|pci_dev
+op_star
+id|from
+)paren
+(brace
+r_return
+l_int|NULL
+suffix:semicolon
+)brace
+DECL|macro|pci_dev_present
+mdefine_line|#define pci_dev_present(ids)&t;(0)
+DECL|macro|pci_dev_put
+mdefine_line|#define pci_dev_put(dev)&t;do { } while (0)
 DECL|function|pci_set_master
 r_static
 r_inline
@@ -3171,24 +3119,6 @@ op_star
 id|dev
 )paren
 (brace
-)brace
-DECL|function|pci_module_init
-r_static
-r_inline
-r_int
-id|pci_module_init
-c_func
-(paren
-r_struct
-id|pci_driver
-op_star
-id|drv
-)paren
-(brace
-r_return
-op_minus
-id|ENODEV
-suffix:semicolon
 )brace
 DECL|function|pci_set_dma_mask
 r_static
@@ -3361,10 +3291,6 @@ r_struct
 id|pci_dev
 op_star
 id|dev
-comma
-id|u32
-op_star
-id|buffer
 )paren
 (brace
 r_return
@@ -3382,10 +3308,6 @@ r_struct
 id|pci_dev
 op_star
 id|dev
-comma
-id|u32
-op_star
-id|buffer
 )paren
 (brace
 r_return
@@ -3438,39 +3360,6 @@ suffix:semicolon
 DECL|macro|isa_bridge
 mdefine_line|#define&t;isa_bridge&t;((struct pci_dev *)NULL)
 macro_line|#else
-multiline_comment|/*&n; * a helper function which helps ensure correct pci_driver&n; * setup and cleanup for commonly-encountered hotplug/modular cases&n; *&n; * This MUST stay in a header, as it checks for -DMODULE&n; */
-DECL|function|pci_module_init
-r_static
-r_inline
-r_int
-id|pci_module_init
-c_func
-(paren
-r_struct
-id|pci_driver
-op_star
-id|drv
-)paren
-(brace
-r_int
-id|rc
-op_assign
-id|pci_register_driver
-(paren
-id|drv
-)paren
-suffix:semicolon
-r_return
-id|rc
-OL
-l_int|0
-ques
-c_cond
-id|rc
-suffix:colon
-l_int|0
-suffix:semicolon
-)brace
 multiline_comment|/*&n; * PCI domain support.  Sometimes called PCI segment (eg by ACPI),&n; * a PCI domain is defined to be a set of PCI busses which share&n; * configuration space.&n; */
 macro_line|#ifndef CONFIG_PCI_DOMAINS
 DECL|function|pci_domain_nr
@@ -3648,6 +3537,10 @@ DECL|enumerator|pci_fixup_final
 id|pci_fixup_final
 comma
 multiline_comment|/* Final phase of device fixups */
+DECL|enumerator|pci_fixup_enable
+id|pci_fixup_enable
+comma
+multiline_comment|/* pci_enable_device() time */
 )brace
 suffix:semicolon
 multiline_comment|/* Anonymous variables would be nice... */
@@ -3655,6 +3548,8 @@ DECL|macro|DECLARE_PCI_FIXUP_HEADER
 mdefine_line|#define DECLARE_PCI_FIXUP_HEADER(vendor, device, hook)&t;&t;&t;&t;&t;&bslash;&n;&t;static struct pci_fixup __pci_fixup_##vendor##device##hook __attribute_used__&t;&bslash;&n;&t;__attribute__((__section__(&quot;.pci_fixup_header&quot;))) = {&t;&t;&t;&t;&bslash;&n;&t;&t;vendor, device, hook };
 DECL|macro|DECLARE_PCI_FIXUP_FINAL
 mdefine_line|#define DECLARE_PCI_FIXUP_FINAL(vendor, device, hook)&t;&t;&t;&t;&bslash;&n;&t;static struct pci_fixup __pci_fixup_##vendor##device##hook __attribute_used__&t;&bslash;&n;&t;__attribute__((__section__(&quot;.pci_fixup_final&quot;))) = {&t;&t;&t;&t;&bslash;&n;&t;&t;vendor, device, hook };
+DECL|macro|DECLARE_PCI_FIXUP_ENABLE
+mdefine_line|#define DECLARE_PCI_FIXUP_ENABLE(vendor, device, hook)&t;&t;&t;&t;&bslash;&n;&t;static struct pci_fixup __pci_fixup_##vendor##device##hook __attribute_used__&t;&bslash;&n;&t;__attribute__((__section__(&quot;.pci_fixup_enable&quot;))) = {&t;&t;&t;&t;&bslash;&n;&t;&t;vendor, device, hook };
 r_void
 id|pci_fixup_device
 c_func

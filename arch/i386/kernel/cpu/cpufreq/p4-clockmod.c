@@ -362,8 +362,6 @@ id|freqs
 suffix:semicolon
 id|cpumask_t
 id|cpus_allowed
-comma
-id|affected_cpu_map
 suffix:semicolon
 r_int
 id|i
@@ -429,37 +427,13 @@ id|freqs.old
 r_return
 l_int|0
 suffix:semicolon
-multiline_comment|/* switch to physical CPU where state is to be changed*/
-id|cpus_allowed
-op_assign
-id|current-&gt;cpus_allowed
-suffix:semicolon
-multiline_comment|/* only run on CPU to be set, or on its sibling */
-macro_line|#ifdef CONFIG_SMP
-id|affected_cpu_map
-op_assign
-id|cpu_sibling_map
-(braket
-id|policy-&gt;cpu
-)braket
-suffix:semicolon
-macro_line|#else
-id|affected_cpu_map
-op_assign
-id|cpumask_of_cpu
-c_func
-(paren
-id|policy-&gt;cpu
-)paren
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/* notifiers */
 id|for_each_cpu_mask
 c_func
 (paren
 id|i
 comma
-id|affected_cpu_map
+id|policy-&gt;cpus
 )paren
 (brace
 id|freqs.cpu
@@ -477,12 +451,16 @@ id|CPUFREQ_PRECHANGE
 suffix:semicolon
 )brace
 multiline_comment|/* run on each logical CPU, see section 13.15.3 of IA32 Intel Architecture Software&n;&t; * Developer&squot;s Manual, Volume 3 &n;&t; */
+id|cpus_allowed
+op_assign
+id|current-&gt;cpus_allowed
+suffix:semicolon
 id|for_each_cpu_mask
 c_func
 (paren
 id|i
 comma
-id|affected_cpu_map
+id|policy-&gt;cpus
 )paren
 (brace
 id|cpumask_t
@@ -541,7 +519,7 @@ c_func
 (paren
 id|i
 comma
-id|affected_cpu_map
+id|policy-&gt;cpus
 )paren
 (brace
 id|freqs.cpu
@@ -774,6 +752,15 @@ r_int
 r_int
 id|i
 suffix:semicolon
+macro_line|#ifdef CONFIG_SMP
+id|policy-&gt;cpus
+op_assign
+id|cpu_sibling_map
+(braket
+id|policy-&gt;cpu
+)braket
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/* Errata workaround */
 id|cpuid
 op_assign
@@ -973,8 +960,6 @@ id|cpu
 (brace
 id|cpumask_t
 id|cpus_allowed
-comma
-id|affected_cpu_map
 suffix:semicolon
 id|u32
 id|l
@@ -985,36 +970,27 @@ id|cpus_allowed
 op_assign
 id|current-&gt;cpus_allowed
 suffix:semicolon
-id|affected_cpu_map
-op_assign
-id|cpumask_of_cpu
-c_func
-(paren
-id|cpu
-)paren
-suffix:semicolon
 id|set_cpus_allowed
 c_func
 (paren
 id|current
 comma
-id|affected_cpu_map
+id|cpumask_of_cpu
+c_func
+(paren
+id|cpu
+)paren
 )paren
 suffix:semicolon
 id|BUG_ON
-c_func
-(paren
-op_logical_neg
-id|cpu_isset
 c_func
 (paren
 id|smp_processor_id
 c_func
 (paren
 )paren
-comma
-id|affected_cpu_map
-)paren
+op_ne
+id|cpu
 )paren
 suffix:semicolon
 id|rdmsr

@@ -5,7 +5,6 @@ macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/pm.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
-macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;asm/elf.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/mach-types.h&gt;
@@ -203,91 +202,11 @@ op_complement
 id|HWCAP_HALF
 suffix:semicolon
 )brace
-r_static
-id|irqreturn_t
-DECL|function|rpc_timer_interrupt
-id|rpc_timer_interrupt
-c_func
-(paren
-r_int
-id|irq
-comma
-r_void
-op_star
-id|dev_id
-comma
-r_struct
-id|pt_regs
-op_star
-id|regs
-)paren
-(brace
-id|timer_tick
-c_func
-(paren
-id|regs
-)paren
-suffix:semicolon
-r_return
-id|IRQ_HANDLED
-suffix:semicolon
-)brace
-DECL|variable|rpc_timer_irq
-r_static
-r_struct
-id|irqaction
-id|rpc_timer_irq
-op_assign
-(brace
-dot
-id|name
-op_assign
-l_string|&quot;RiscPC Timer Tick&quot;
-comma
-dot
-id|flags
-op_assign
-id|SA_INTERRUPT
-comma
-dot
-id|handler
-op_assign
-id|rpc_timer_interrupt
-)brace
-suffix:semicolon
-multiline_comment|/*&n; * Set up timer interrupt.&n; */
-DECL|function|rpc_init_time
-r_void
-id|__init
-id|rpc_init_time
-c_func
-(paren
-r_void
-)paren
-(brace
 r_extern
-r_void
-id|ioctime_init
-c_func
-(paren
-r_void
-)paren
+r_struct
+id|sys_timer
+id|ioc_timer
 suffix:semicolon
-id|ioctime_init
-c_func
-(paren
-)paren
-suffix:semicolon
-id|setup_irq
-c_func
-(paren
-id|IRQ_TIMER
-comma
-op_amp
-id|rpc_timer_irq
-)paren
-suffix:semicolon
-)brace
 id|MACHINE_START
 c_func
 (paren
@@ -334,10 +253,11 @@ c_func
 (paren
 id|rpc_init_irq
 )paren
-id|INITTIME
-c_func
-(paren
-id|rpc_init_time
-)paren
+dot
+id|timer
+op_assign
+op_amp
+id|ioc_timer
+comma
 id|MACHINE_END
 eof

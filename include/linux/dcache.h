@@ -17,7 +17,7 @@ suffix:semicolon
 multiline_comment|/*&n; * linux/include/linux/dcache.h&n; *&n; * Dirent cache data structures&n; *&n; * (C) Copyright 1997 Thomas Schoebel-Theuer,&n; * with heavy changes by Linus Torvalds&n; */
 DECL|macro|IS_ROOT
 mdefine_line|#define IS_ROOT(x) ((x) == (x)-&gt;d_parent)
-multiline_comment|/*&n; * &quot;quick string&quot; -- eases parameter passing, but more importantly&n; * saves &quot;metadata&quot; about the string (ie length and the hash).&n; *&n; * hash comes first so it snuggles against d_parent and d_bucket in the&n; * dentry.&n; */
+multiline_comment|/*&n; * &quot;quick string&quot; -- eases parameter passing, but more importantly&n; * saves &quot;metadata&quot; about the string (ie length and the hash).&n; *&n; * hash comes first so it snuggles against d_parent in the&n; * dentry.&n; */
 DECL|struct|qstr
 r_struct
 id|qstr
@@ -235,13 +235,6 @@ op_star
 id|d_parent
 suffix:semicolon
 multiline_comment|/* parent directory */
-DECL|member|d_bucket
-r_struct
-id|hlist_head
-op_star
-id|d_bucket
-suffix:semicolon
-multiline_comment|/* lookup hash bucket */
 DECL|member|d_name
 r_struct
 id|qstr

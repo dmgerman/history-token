@@ -4,6 +4,7 @@ DECL|macro|_LINUX_NTFS_MALLOC_H
 mdefine_line|#define _LINUX_NTFS_MALLOC_H
 macro_line|#include &lt;linux/vmalloc.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
+macro_line|#include &lt;linux/highmem.h&gt;
 multiline_comment|/**&n; * ntfs_malloc_nofs - allocate memory in multiples of pages&n; * @size&t;number of bytes to allocate&n; *&n; * Allocates @size bytes of memory, rounded up to multiples of PAGE_SIZE and&n; * returns a pointer to the allocated memory.&n; *&n; * If there was insufficient memory to complete the request, return NULL.&n; */
 DECL|function|ntfs_malloc_nofs
 r_static

@@ -17277,7 +17277,7 @@ dot
 id|urb
 )paren
 (brace
-id|usb_unlink_urb
+id|usb_kill_urb
 c_func
 (paren
 id|ov-&gt;sbuf

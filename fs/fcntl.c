@@ -1196,13 +1196,6 @@ l_int|1
 )paren
 suffix:semicolon
 )brace
-DECL|variable|f_delown
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|f_delown
-)paren
-suffix:semicolon
 DECL|function|do_fcntl
 r_static
 r_int

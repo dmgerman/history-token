@@ -37,8 +37,6 @@ DECL|macro|EP_DONTUSE
 mdefine_line|#define&t;EP_DONTUSE&t;&t;13&t;/* nonzero */
 DECL|macro|USE_RDK_LEDS
 mdefine_line|#define USE_RDK_LEDS&t;&t;/* GPIO pins control three LEDs */
-DECL|macro|USE_SYSFS_DEBUG_FILES
-mdefine_line|#define USE_SYSFS_DEBUG_FILES
 DECL|variable|driver_name
 r_static
 r_const
@@ -149,7 +147,7 @@ l_int|0644
 suffix:semicolon
 DECL|macro|DIR_STRING
 mdefine_line|#define&t;DIR_STRING(bAddress) (((bAddress) &amp; USB_DIR_IN) ? &quot;in&quot; : &quot;out&quot;)
-macro_line|#if defined(USE_SYSFS_DEBUG_FILES) || defined (DEBUG)
+macro_line|#if defined(CONFIG_USB_GADGET_DEBUG_FILES) || defined (DEBUG)
 DECL|function|type_string
 r_static
 r_char
@@ -5913,7 +5911,8 @@ comma
 )brace
 suffix:semicolon
 multiline_comment|/*-------------------------------------------------------------------------*/
-macro_line|#ifdef&t;USE_SYSFS_DEBUG_FILES
+macro_line|#ifdef&t;CONFIG_USB_GADGET_DEBUG_FILES
+multiline_comment|/* FIXME move these into procfs, and use seq_file.&n; * Sysfs _still_ doesn&squot;t behave for arbitrarily sized files,&n; * and also doesn&squot;t help products using this with 2.4 kernels.&n; */
 multiline_comment|/* &quot;function&quot; sysfs attribute */
 r_static
 id|ssize_t
@@ -12240,7 +12239,7 @@ op_assign
 l_int|0
 suffix:semicolon
 r_return
-id|pci_module_init
+id|pci_register_driver
 (paren
 op_amp
 id|net2280_pci_driver

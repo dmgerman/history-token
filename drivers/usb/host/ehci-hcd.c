@@ -115,7 +115,7 @@ r_static
 r_int
 id|handshake
 (paren
-id|u32
+r_void
 id|__iomem
 op_star
 id|ptr
@@ -866,7 +866,6 @@ id|hcd-&gt;regs
 suffix:semicolon
 id|ehci-&gt;regs
 op_assign
-(paren
 id|hcd-&gt;regs
 op_plus
 id|HC_LENGTH
@@ -875,7 +874,6 @@ id|readl
 (paren
 op_amp
 id|ehci-&gt;caps-&gt;hc_capbase
-)paren
 )paren
 )paren
 suffix:semicolon
@@ -3614,7 +3612,7 @@ id|ehci_sitd
 )paren
 suffix:semicolon
 r_return
-id|pci_module_init
+id|pci_register_driver
 (paren
 op_amp
 id|ehci_pci_driver

@@ -12862,8 +12862,6 @@ id|pci_save_state
 c_func
 (paren
 id|pci_dev
-comma
-id|dev-&gt;state.pci_cfg
 )paren
 suffix:semicolon
 r_if
@@ -12955,8 +12953,6 @@ id|pci_restore_state
 c_func
 (paren
 id|pci_dev
-comma
-id|dev-&gt;state.pci_cfg
 )paren
 suffix:semicolon
 multiline_comment|/* re-initialize hardware */

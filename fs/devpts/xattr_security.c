@@ -1,9 +1,8 @@
-multiline_comment|/*&n; * File: fs/devpts/xattr_security.c&n; */
-macro_line|#include &lt;linux/module.h&gt;
+multiline_comment|/*&n; * Security xattr support for devpts.&n; *&n; * Author: Stephen Smalley &lt;sds@epoch.ncsc.mil&gt;&n; * Copyright (c) 2004 Red Hat, Inc., James Morris &lt;jmorris@redhat.com&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of the GNU General Public License as published by the Free&n; * Software Foundation; either version 2 of the License, or (at your option)&n; * any later version.&n; */
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/security.h&gt;
-macro_line|#include &quot;xattr.h&quot;
+macro_line|#include &lt;linux/xattr.h&gt;
 r_static
 r_int
 DECL|function|devpts_xattr_security_list
@@ -11,22 +10,35 @@ id|devpts_xattr_security_list
 c_func
 (paren
 r_struct
-id|dentry
+id|inode
 op_star
-id|dentry
+id|inode
 comma
 r_char
 op_star
-id|buffer
+id|list
+comma
+r_int
+id|list_len
+comma
+r_const
+r_char
+op_star
+id|name
+comma
+r_int
+id|name_len
 )paren
 (brace
 r_return
 id|security_inode_listsecurity
 c_func
 (paren
-id|dentry
+id|inode
 comma
-id|buffer
+id|list
+comma
+id|list_len
 )paren
 suffix:semicolon
 )brace
@@ -37,9 +49,9 @@ id|devpts_xattr_security_get
 c_func
 (paren
 r_struct
-id|dentry
+id|inode
 op_star
-id|dentry
+id|inode
 comma
 r_const
 r_char
@@ -75,7 +87,7 @@ r_return
 id|security_inode_getsecurity
 c_func
 (paren
-id|dentry
+id|inode
 comma
 id|name
 comma
@@ -92,9 +104,9 @@ id|devpts_xattr_security_set
 c_func
 (paren
 r_struct
-id|dentry
+id|inode
 op_star
-id|dentry
+id|inode
 comma
 r_const
 r_char
@@ -134,7 +146,7 @@ r_return
 id|security_inode_setsecurity
 c_func
 (paren
-id|dentry
+id|inode
 comma
 id|name
 comma
@@ -148,7 +160,7 @@ suffix:semicolon
 )brace
 DECL|variable|devpts_xattr_security_handler
 r_struct
-id|devpts_xattr_handler
+id|xattr_handler
 id|devpts_xattr_security_handler
 op_assign
 (brace

@@ -7,7 +7,7 @@ macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/sn/sn_sal.h&gt;
 macro_line|#include &lt;asm/sn/sn_cpuid.h&gt;
-macro_line|#include &lt;asm/sn/sn2/addrs.h&gt;
+macro_line|#include &lt;asm/sn/addrs.h&gt;
 id|MODULE_DESCRIPTION
 c_func
 (paren
@@ -178,11 +178,11 @@ l_string|&quot;Error&quot;
 comma
 )brace
 suffix:semicolon
+DECL|function|fit_type_name
 r_static
 r_const
 r_char
 op_star
-DECL|function|fit_type_name
 id|fit_type_name
 c_func
 (paren
@@ -269,7 +269,7 @@ DECL|macro|FIT_SIGNATURE
 mdefine_line|#define FIT_SIGNATURE&t;&t;0x2020205f5449465ful
 multiline_comment|/* Sub-regions determined by bits in Node Offset */
 DECL|macro|LB_PROM_SPACE
-mdefine_line|#define&t;LB_PROM_SPACE&t;&t;0x0000000700000000ul /* Local LB PROM */
+mdefine_line|#define&t;LB_PROM_SPACE&t;&t;0x0000000700000000ul&t;/* Local LB PROM */
 multiline_comment|/* Offset of PROM banner pointers in SAL A and SAL B */
 DECL|macro|SAL_A_BANNER_OFFSET
 mdefine_line|#define SAL_A_BANNER_OFFSET&t;(1 * 16)
@@ -280,10 +280,10 @@ DECL|macro|FW_BASE
 mdefine_line|#define FW_BASE                 0x00000000FF000000
 DECL|macro|FW_TOP
 mdefine_line|#define FW_TOP                  0x0000000100000000
+DECL|function|convert_fw_addr
 r_static
 r_int
 r_int
-DECL|function|convert_fw_addr
 id|convert_fw_addr
 c_func
 (paren
@@ -322,9 +322,9 @@ id|addr
 )paren
 suffix:semicolon
 )brace
+DECL|function|valid_fw_addr
 r_static
 r_int
-DECL|function|valid_fw_addr
 id|valid_fw_addr
 c_func
 (paren
@@ -739,9 +739,9 @@ id|ret
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * These two routines display the FIT table for each node.&n; */
+DECL|function|dump_fit_entry
 r_static
 r_int
-DECL|function|dump_fit_entry
 id|dump_fit_entry
 c_func
 (paren
@@ -1336,9 +1336,9 @@ id|sgi_prominfo_entry
 suffix:semicolon
 DECL|macro|NODE_NAME_LEN
 mdefine_line|#define NODE_NAME_LEN 11
+DECL|function|prominfo_init
 r_int
 id|__init
-DECL|function|prominfo_init
 id|prominfo_init
 c_func
 (paren
@@ -1525,9 +1525,9 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|function|prominfo_exit
 r_void
 id|__exit
-DECL|function|prominfo_exit
 id|prominfo_exit
 c_func
 (paren

@@ -242,6 +242,9 @@ c_func
 id|nr_page_table_pages
 )paren
 suffix:semicolon
+id|tlb-&gt;mm-&gt;nr_ptes
+op_decrement
+suffix:semicolon
 id|pte_free_tlb
 c_func
 (paren
@@ -511,6 +514,9 @@ r_goto
 id|out
 suffix:semicolon
 )brace
+id|mm-&gt;nr_ptes
+op_increment
+suffix:semicolon
 id|inc_page_state
 c_func
 (paren

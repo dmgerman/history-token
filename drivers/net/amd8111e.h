@@ -3333,6 +3333,7 @@ suffix:semicolon
 multiline_comment|/* Reg memory mapped address */
 DECL|member|mmio
 r_void
+id|__iomem
 op_star
 id|mmio
 suffix:semicolon
@@ -3389,13 +3390,6 @@ suffix:semicolon
 DECL|member|pm_cap
 r_int
 id|pm_cap
-suffix:semicolon
-DECL|member|pm_state
-id|u32
-id|pm_state
-(braket
-l_int|12
-)braket
 suffix:semicolon
 DECL|member|next
 r_struct

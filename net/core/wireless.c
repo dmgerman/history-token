@@ -1,6 +1,6 @@
-multiline_comment|/*&n; * This file implement the Wireless Extensions APIs.&n; *&n; * Authors :&t;Jean Tourrilhes - HPL - &lt;jt@hpl.hp.com&gt;&n; * Copyright (c) 1997-2003 Jean Tourrilhes, All Rights Reserved.&n; *&n; * (As all part of the Linux kernel, this file is GPL)&n; */
+multiline_comment|/*&n; * This file implement the Wireless Extensions APIs.&n; *&n; * Authors :&t;Jean Tourrilhes - HPL - &lt;jt@hpl.hp.com&gt;&n; * Copyright (c) 1997-2004 Jean Tourrilhes, All Rights Reserved.&n; *&n; * (As all part of the Linux kernel, this file is GPL)&n; */
 multiline_comment|/************************** DOCUMENTATION **************************/
-multiline_comment|/*&n; * API definition :&n; * --------------&n; * See &lt;linux/wireless.h&gt; for details of the APIs and the rest.&n; *&n; * History :&n; * -------&n; *&n; * v1 - 5.12.01 - Jean II&n; *&t;o Created this file.&n; *&n; * v2 - 13.12.01 - Jean II&n; *&t;o Move /proc/net/wireless stuff from net/core/dev.c to here&n; *&t;o Make Wireless Extension IOCTLs go through here&n; *&t;o Added iw_handler handling ;-)&n; *&t;o Added standard ioctl description&n; *&t;o Initial dumb commit strategy based on orinoco.c&n; *&n; * v3 - 19.12.01 - Jean II&n; *&t;o Make sure we don&squot;t go out of standard_ioctl[] in ioctl_standard_call&n; *&t;o Add event dispatcher function&n; *&t;o Add event description&n; *&t;o Propagate events as rtnetlink IFLA_WIRELESS option&n; *&t;o Generate event on selected SET requests&n; *&n; * v4 - 18.04.02 - Jean II&n; *&t;o Fix stupid off by one in iw_ioctl_description : IW_ESSID_MAX_SIZE + 1&n; *&n; * v5 - 21.06.02 - Jean II&n; *&t;o Add IW_PRIV_TYPE_ADDR in priv_type_size (+cleanup)&n; *&t;o Reshuffle IW_HEADER_TYPE_XXX to map IW_PRIV_TYPE_XXX changes&n; *&t;o Add IWEVCUSTOM for driver specific event/scanning token&n; *&t;o Turn on WE_STRICT_WRITE by default + kernel warning&n; *&t;o Fix WE_STRICT_WRITE in ioctl_export_private() (32 =&gt; iw_num)&n; *&t;o Fix off-by-one in test (extra_size &lt;= IFNAMSIZ)&n; *&n; * v6 - 9.01.03 - Jean II&n; *&t;o Add common spy support : iw_handler_set_spy(), wireless_spy_update()&n; *&t;o Add enhanced spy support : iw_handler_set_thrspy() and event.&n; *&t;o Add WIRELESS_EXT version display in /proc/net/wireless&n; */
+multiline_comment|/*&n; * API definition :&n; * --------------&n; * See &lt;linux/wireless.h&gt; for details of the APIs and the rest.&n; *&n; * History :&n; * -------&n; *&n; * v1 - 5.12.01 - Jean II&n; *&t;o Created this file.&n; *&n; * v2 - 13.12.01 - Jean II&n; *&t;o Move /proc/net/wireless stuff from net/core/dev.c to here&n; *&t;o Make Wireless Extension IOCTLs go through here&n; *&t;o Added iw_handler handling ;-)&n; *&t;o Added standard ioctl description&n; *&t;o Initial dumb commit strategy based on orinoco.c&n; *&n; * v3 - 19.12.01 - Jean II&n; *&t;o Make sure we don&squot;t go out of standard_ioctl[] in ioctl_standard_call&n; *&t;o Add event dispatcher function&n; *&t;o Add event description&n; *&t;o Propagate events as rtnetlink IFLA_WIRELESS option&n; *&t;o Generate event on selected SET requests&n; *&n; * v4 - 18.04.02 - Jean II&n; *&t;o Fix stupid off by one in iw_ioctl_description : IW_ESSID_MAX_SIZE + 1&n; *&n; * v5 - 21.06.02 - Jean II&n; *&t;o Add IW_PRIV_TYPE_ADDR in priv_type_size (+cleanup)&n; *&t;o Reshuffle IW_HEADER_TYPE_XXX to map IW_PRIV_TYPE_XXX changes&n; *&t;o Add IWEVCUSTOM for driver specific event/scanning token&n; *&t;o Turn on WE_STRICT_WRITE by default + kernel warning&n; *&t;o Fix WE_STRICT_WRITE in ioctl_export_private() (32 =&gt; iw_num)&n; *&t;o Fix off-by-one in test (extra_size &lt;= IFNAMSIZ)&n; *&n; * v6 - 9.01.03 - Jean II&n; *&t;o Add common spy support : iw_handler_set_spy(), wireless_spy_update()&n; *&t;o Add enhanced spy support : iw_handler_set_thrspy() and event.&n; *&t;o Add WIRELESS_EXT version display in /proc/net/wireless&n; *&n; * v6 - 18.06.04 - Jean II&n; *&t;o Change get_spydata() method for added safety&n; *&t;o Remove spy #ifdef, they are always on -&gt; cleaner code&n; *&t;o Allow any size GET request is user specifies length &gt; max&n; *&t;o Start migrating get_wireless_stats to struct iw_handler_def&n; *&t;o Add wmb() in iw_handler_set_spy() for non-coherent archs/cpus&n; * Based on patch from Pavel Roskin &lt;proski@gnu.org&gt; :&n; *&t;o Fix kernel data leak to user space in private handler handling&n; */
 multiline_comment|/***************************** INCLUDES *****************************/
 macro_line|#include &lt;linux/config.h&gt;&t;&t;/* Not needed ??? */
 macro_line|#include &lt;linux/module.h&gt;
@@ -15,10 +15,6 @@ macro_line|#include &lt;linux/wireless.h&gt;&t;&t;/* Pretty obvious */
 macro_line|#include &lt;net/iw_handler.h&gt;&t;&t;/* New driver API */
 macro_line|#include &lt;asm/uaccess.h&gt;&t;&t;/* copy_to_user() */
 multiline_comment|/**************************** CONSTANTS ****************************/
-multiline_comment|/* Enough lenience, let&squot;s make sure things are proper... */
-DECL|macro|WE_STRICT_WRITE
-mdefine_line|#define WE_STRICT_WRITE&t;&t;/* Check write buffer size */
-multiline_comment|/* I&squot;ll probably drop both the define and kernel message in the next version */
 multiline_comment|/* Debugging stuff */
 DECL|macro|WE_IOCTL_DEBUG
 macro_line|#undef WE_IOCTL_DEBUG&t;&t;/* Debug IOCTL API */
@@ -522,6 +518,11 @@ id|max_tokens
 op_assign
 id|IW_MAX_AP
 comma
+dot
+id|flags
+op_assign
+id|IW_DESCR_FLAG_NOMAX
+comma
 )brace
 comma
 (braket
@@ -559,6 +560,11 @@ dot
 id|max_tokens
 op_assign
 id|IW_SCAN_MAX_DATA
+comma
+dot
+id|flags
+op_assign
+id|IW_DESCR_FLAG_NOMAX
 comma
 )brace
 comma
@@ -1040,11 +1046,10 @@ id|iw_ioctl_description
 )paren
 suffix:semicolon
 multiline_comment|/* Size (in bytes) of the various private data types */
-DECL|variable|priv_type_size
-r_static
+DECL|variable|iw_priv_type_size
 r_const
 r_char
-id|priv_type_size
+id|iw_priv_type_size
 (braket
 )braket
 op_assign
@@ -1236,6 +1241,34 @@ op_star
 id|dev
 )paren
 (brace
+multiline_comment|/* New location */
+r_if
+c_cond
+(paren
+(paren
+id|dev-&gt;wireless_handlers
+op_ne
+l_int|NULL
+)paren
+op_logical_and
+(paren
+id|dev-&gt;wireless_handlers-&gt;get_wireless_stats
+op_ne
+l_int|NULL
+)paren
+)paren
+(brace
+r_return
+id|dev-&gt;wireless_handlers
+op_member_access_from_pointer
+id|get_wireless_stats
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/* Old location, will be phased out in next WE */
 r_return
 (paren
 id|dev-&gt;get_wireless_stats
@@ -1257,7 +1290,6 @@ op_star
 l_int|NULL
 )paren
 suffix:semicolon
-multiline_comment|/* In the future, get_wireless_stats may move from &squot;struct net_device&squot;&n;&t; * to &squot;struct iw_handler_def&squot;, to de-bloat struct net_device.&n;&t; * Definitely worse a thought... */
 )brace
 multiline_comment|/* ---------------------------------------------------------------- */
 multiline_comment|/*&n; * Call the commit handler in the driver&n; * (if exist and if conditions are right)&n; *&n; * Note : our current commit strategy is currently pretty dumb,&n; * but we will be able to improve on that...&n; * The goal is to try to agreagate as many changes as possible&n; * before doing the commit. Drivers that will define a commit handler&n; * are usually those that need a reset after changing parameters, so&n; * we want to minimise the number of reset.&n; * A cool idea is to use a timer : at each &quot;set&quot; command, we re-set the&n; * timer, when the timer eventually fires, we call the driver.&n; * Hopefully, more on that later.&n; *&n; * Also, I&squot;m waiting to see how many people will complain about the&n; * netif_running(dev) test. I&squot;m open on that one...&n; * Hopefully, the driver will remember to do a commit in &quot;open()&quot; ;-)&n; */
@@ -1319,7 +1351,7 @@ suffix:semicolon
 multiline_comment|/* Command completed successfully */
 )brace
 multiline_comment|/* ---------------------------------------------------------------- */
-multiline_comment|/*&n; * Number of private arguments&n; */
+multiline_comment|/*&n; * Calculate size of private arguments&n; */
 DECL|function|get_priv_size
 r_static
 r_inline
@@ -1352,7 +1384,69 @@ suffix:semicolon
 r_return
 id|num
 op_star
-id|priv_type_size
+id|iw_priv_type_size
+(braket
+id|type
+)braket
+suffix:semicolon
+)brace
+multiline_comment|/* ---------------------------------------------------------------- */
+multiline_comment|/*&n; * Re-calculate the size of private arguments&n; */
+DECL|function|adjust_priv_size
+r_static
+r_inline
+r_int
+id|adjust_priv_size
+c_func
+(paren
+id|__u16
+id|args
+comma
+r_union
+id|iwreq_data
+op_star
+id|wrqu
+)paren
+(brace
+r_int
+id|num
+op_assign
+id|wrqu-&gt;data.length
+suffix:semicolon
+r_int
+id|max
+op_assign
+id|args
+op_amp
+id|IW_PRIV_SIZE_MASK
+suffix:semicolon
+r_int
+id|type
+op_assign
+(paren
+id|args
+op_amp
+id|IW_PRIV_TYPE_MASK
+)paren
+op_rshift
+l_int|12
+suffix:semicolon
+multiline_comment|/* Make sure the driver doesn&squot;t goof up */
+r_if
+c_cond
+(paren
+id|max
+OL
+id|num
+)paren
+id|num
+op_assign
+id|max
+suffix:semicolon
+r_return
+id|num
+op_star
+id|iw_priv_type_size
 (braket
 id|type
 )braket
@@ -1415,7 +1509,7 @@ id|stats-&gt;qual.qual
 comma
 id|stats-&gt;qual.updated
 op_amp
-l_int|1
+id|IW_QUAL_QUAL_UPDATED
 ques
 c_cond
 l_char|&squot;.&squot;
@@ -1431,7 +1525,7 @@ id|stats-&gt;qual.level
 comma
 id|stats-&gt;qual.updated
 op_amp
-l_int|2
+id|IW_QUAL_LEVEL_UPDATED
 ques
 c_cond
 l_char|&squot;.&squot;
@@ -1447,7 +1541,7 @@ id|stats-&gt;qual.noise
 comma
 id|stats-&gt;qual.updated
 op_amp
-l_int|4
+id|IW_QUAL_NOISE_UPDATED
 ques
 c_cond
 l_char|&squot;.&squot;
@@ -1876,7 +1970,6 @@ op_minus
 id|EFAULT
 suffix:semicolon
 )brace
-macro_line|#ifdef WE_STRICT_WRITE
 multiline_comment|/* Check if there is enough buffer up there */
 r_if
 c_cond
@@ -1886,25 +1979,16 @@ OL
 id|dev-&gt;wireless_handlers-&gt;num_private_args
 )paren
 (brace
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;%s (WE) : Buffer for request SIOCGIWPRIV too small (%d&lt;%d)&bslash;n&quot;
-comma
-id|dev-&gt;name
-comma
+multiline_comment|/* User space can&squot;t know in advance how large the buffer&n;&t;&t; * needs to be. Give it a hint, so that we can support&n;&t;&t; * any size buffer we want somewhat efficiently... */
 id|iwr-&gt;u.data.length
-comma
+op_assign
 id|dev-&gt;wireless_handlers-&gt;num_private_args
-)paren
 suffix:semicolon
 r_return
 op_minus
 id|E2BIG
 suffix:semicolon
 )brace
-macro_line|#endif&t;/* WE_STRICT_WRITE */
 multiline_comment|/* Set the number of available ioctls. */
 id|iwr-&gt;u.data.length
 op_assign
@@ -1992,11 +2076,6 @@ id|ret
 op_assign
 op_minus
 id|EINVAL
-suffix:semicolon
-r_int
-id|user_size
-op_assign
-l_int|0
 suffix:semicolon
 multiline_comment|/* Get the description of the IOCTL */
 r_if
@@ -2147,7 +2226,22 @@ op_star
 id|extra
 suffix:semicolon
 r_int
+id|extra_size
+suffix:semicolon
+r_int
+id|user_length
+op_assign
+l_int|0
+suffix:semicolon
+r_int
 id|err
+suffix:semicolon
+multiline_comment|/* Calculate space needed by arguments. Always allocate&n;&t;&t; * for max space. Easier, and won&squot;t last long... */
+id|extra_size
+op_assign
+id|descr-&gt;max_tokens
+op_star
+id|descr-&gt;token_size
 suffix:semicolon
 multiline_comment|/* Check what user space is giving us */
 r_if
@@ -2227,10 +2321,36 @@ id|EFAULT
 suffix:semicolon
 )brace
 multiline_comment|/* Save user space buffer size for checking */
-id|user_size
+id|user_length
 op_assign
 id|iwr-&gt;u.data.length
 suffix:semicolon
+multiline_comment|/* Don&squot;t check if user_length &gt; max to allow forward&n;&t;&t;&t; * compatibility. The test user_length &lt; min is&n;&t;&t;&t; * implied by the test at the end. */
+multiline_comment|/* Support for very large requests */
+r_if
+c_cond
+(paren
+(paren
+id|descr-&gt;flags
+op_amp
+id|IW_DESCR_FLAG_NOMAX
+)paren
+op_logical_and
+(paren
+id|user_length
+OG
+id|descr-&gt;max_tokens
+)paren
+)paren
+(brace
+multiline_comment|/* Allow userspace to GET more than max so&n;&t;&t;&t;&t; * we can support any size GET requests.&n;&t;&t;&t;&t; * There is still a limit : -ENOMEM. */
+id|extra_size
+op_assign
+id|user_length
+op_star
+id|descr-&gt;token_size
+suffix:semicolon
+)brace
 )brace
 macro_line|#ifdef WE_IOCTL_DEBUG
 id|printk
@@ -2241,21 +2361,17 @@ l_string|&quot;%s (WE) : Malloc %d bytes&bslash;n&quot;
 comma
 id|dev-&gt;name
 comma
-id|descr-&gt;max_tokens
-op_star
-id|descr-&gt;token_size
+id|extra_size
 )paren
 suffix:semicolon
 macro_line|#endif&t;/* WE_IOCTL_DEBUG */
-multiline_comment|/* Always allocate for max space. Easier, and won&squot;t last&n;&t;&t; * long... */
+multiline_comment|/* Create the kernel buffer */
 id|extra
 op_assign
 id|kmalloc
 c_func
 (paren
-id|descr-&gt;max_tokens
-op_star
-id|descr-&gt;token_size
+id|extra_size
 comma
 id|GFP_KERNEL
 )paren
@@ -2370,31 +2486,15 @@ id|cmd
 )paren
 )paren
 (brace
-macro_line|#ifdef WE_STRICT_WRITE
 multiline_comment|/* Check if there is enough buffer up there */
 r_if
 c_cond
 (paren
-id|user_size
+id|user_length
 OL
 id|iwr-&gt;u.data.length
 )paren
 (brace
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;%s (WE) : Buffer for request %04X too small (%d&lt;%d)&bslash;n&quot;
-comma
-id|dev-&gt;name
-comma
-id|cmd
-comma
-id|user_size
-comma
-id|iwr-&gt;u.data.length
-)paren
-suffix:semicolon
 id|kfree
 c_func
 (paren
@@ -2406,7 +2506,6 @@ op_minus
 id|E2BIG
 suffix:semicolon
 )brace
-macro_line|#endif&t;/* WE_STRICT_WRITE */
 id|err
 op_assign
 id|copy_to_user
@@ -2588,6 +2687,7 @@ op_star
 )paren
 id|ifr
 suffix:semicolon
+r_const
 r_struct
 id|iw_priv_args
 op_star
@@ -2773,7 +2873,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-multiline_comment|/* Size of set arguments */
+multiline_comment|/* Size of get arguments */
 id|extra_size
 op_assign
 id|get_priv_size
@@ -3059,6 +3159,32 @@ id|cmd
 )paren
 )paren
 (brace
+multiline_comment|/* Adjust for the actual length if it&squot;s variable,&n;&t;&t;&t; * avoid leaking kernel bits outside. */
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|descr-&gt;get_args
+op_amp
+id|IW_PRIV_SIZE_FIXED
+)paren
+)paren
+(brace
+id|extra_size
+op_assign
+id|adjust_priv_size
+c_func
+(paren
+id|descr-&gt;get_args
+comma
+op_amp
+(paren
+id|iwr-&gt;u
+)paren
+)paren
+suffix:semicolon
+)brace
 id|err
 op_assign
 id|copy_to_user
@@ -3965,7 +4091,44 @@ suffix:semicolon
 multiline_comment|/* Always success, I guess ;-) */
 )brace
 multiline_comment|/********************** ENHANCED IWSPY SUPPORT **********************/
-multiline_comment|/*&n; * In the old days, the driver was handling spy support all by itself.&n; * Now, the driver can delegate this task to Wireless Extensions.&n; * It needs to use those standard spy iw_handler in struct iw_handler_def,&n; * push data to us via wireless_spy_update() and include struct iw_spy_data&n; * in its private part (and advertise it in iw_handler_def-&gt;spy_offset).&n; * One of the main advantage of centralising spy support here is that&n; * it becomes much easier to improve and extend it without having to touch&n; * the drivers. One example is the addition of the Spy-Threshold events.&n; * Note : IW_WIRELESS_SPY is defined in iw_handler.h&n; */
+multiline_comment|/*&n; * In the old days, the driver was handling spy support all by itself.&n; * Now, the driver can delegate this task to Wireless Extensions.&n; * It needs to use those standard spy iw_handler in struct iw_handler_def,&n; * push data to us via wireless_spy_update() and include struct iw_spy_data&n; * in its private part (and advertise it in iw_handler_def-&gt;spy_offset).&n; * One of the main advantage of centralising spy support here is that&n; * it becomes much easier to improve and extend it without having to touch&n; * the drivers. One example is the addition of the Spy-Threshold events.&n; */
+multiline_comment|/* ---------------------------------------------------------------- */
+multiline_comment|/*&n; * Return the pointer to the spy data in the driver.&n; * Because this is called on the Rx path via wireless_spy_update(),&n; * we want it to be efficient...&n; */
+DECL|function|get_spydata
+r_static
+r_inline
+r_struct
+id|iw_spy_data
+op_star
+id|get_spydata
+c_func
+(paren
+r_struct
+id|net_device
+op_star
+id|dev
+)paren
+(brace
+multiline_comment|/* This is the new way */
+r_if
+c_cond
+(paren
+id|dev-&gt;wireless_data
+)paren
+(brace
+r_return
+id|dev-&gt;wireless_data-&gt;spy_data
+suffix:semicolon
+)brace
+multiline_comment|/* This is the old way. Doesn&squot;t work for multi-headed drivers.&n;&t; * It will be removed in the next version of WE. */
+r_return
+(paren
+id|dev-&gt;priv
+op_plus
+id|dev-&gt;wireless_handlers-&gt;spy_offset
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/*------------------------------------------------------------------*/
 multiline_comment|/*&n; * Standard Wireless Handler : set Spy List&n; */
 DECL|function|iw_handler_set_spy
@@ -3993,16 +4156,15 @@ op_star
 id|extra
 )paren
 (brace
-macro_line|#ifdef IW_WIRELESS_SPY
 r_struct
 id|iw_spy_data
 op_star
 id|spydata
 op_assign
+id|get_spydata
+c_func
 (paren
-id|dev-&gt;priv
-op_plus
-id|dev-&gt;wireless_handlers-&gt;spy_offset
+id|dev
 )paren
 suffix:semicolon
 r_struct
@@ -4017,10 +4179,47 @@ op_star
 )paren
 id|extra
 suffix:semicolon
-multiline_comment|/* Disable spy collection while we copy the addresses.&n;&t; * As we don&squot;t disable interrupts, we need to do this to avoid races.&n;&t; * As we are the only writer, this is good enough. */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|dev-&gt;wireless_data
+)paren
+(brace
+multiline_comment|/* Help user know that driver needs updating */
+id|printk
+c_func
+(paren
+id|KERN_DEBUG
+l_string|&quot;%s (WE) : Driver using old/buggy spy support, please fix driver !&bslash;n&quot;
+comma
+id|dev-&gt;name
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/* Make sure driver is not buggy or using the old API */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|spydata
+)paren
+(brace
+r_return
+op_minus
+id|EOPNOTSUPP
+suffix:semicolon
+)brace
+multiline_comment|/* Disable spy collection while we copy the addresses.&n;&t; * While we copy addresses, any call to wireless_spy_update()&n;&t; * will NOP. This is OK, as anyway the addresses are changing. */
 id|spydata-&gt;spy_number
 op_assign
 l_int|0
+suffix:semicolon
+multiline_comment|/* We want to operate without locking, because wireless_spy_update()&n;&t; * most likely will happen in the interrupt handler, and therefore&n;&t; * have it own locking constraints and needs performance.&n;&t; * The rtnl_lock() make sure we don&squot;t race with the other iw_handlers.&n;&t; * This make sure wireless_spy_update() &quot;see&quot; that the spy list&n;&t; * is temporarily disabled. */
+id|wmb
+c_func
+(paren
+)paren
 suffix:semicolon
 multiline_comment|/* Are there are addresses to copy? */
 r_if
@@ -4171,6 +4370,12 @@ l_int|5
 suffix:semicolon
 macro_line|#endif&t;/* WE_SPY_DEBUG */
 )brace
+multiline_comment|/* Make sure above is updated before re-enabling */
+id|wmb
+c_func
+(paren
+)paren
+suffix:semicolon
 multiline_comment|/* Enable addresses */
 id|spydata-&gt;spy_number
 op_assign
@@ -4179,12 +4384,6 @@ suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
-macro_line|#else /* IW_WIRELESS_SPY */
-r_return
-op_minus
-id|EOPNOTSUPP
-suffix:semicolon
-macro_line|#endif /* IW_WIRELESS_SPY */
 )brace
 multiline_comment|/*------------------------------------------------------------------*/
 multiline_comment|/*&n; * Standard Wireless Handler : get Spy List&n; */
@@ -4213,16 +4412,15 @@ op_star
 id|extra
 )paren
 (brace
-macro_line|#ifdef IW_WIRELESS_SPY
 r_struct
 id|iw_spy_data
 op_star
 id|spydata
 op_assign
+id|get_spydata
+c_func
 (paren
-id|dev-&gt;priv
-op_plus
-id|dev-&gt;wireless_handlers-&gt;spy_offset
+id|dev
 )paren
 suffix:semicolon
 r_struct
@@ -4240,6 +4438,19 @@ suffix:semicolon
 r_int
 id|i
 suffix:semicolon
+multiline_comment|/* Make sure driver is not buggy or using the old API */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|spydata
+)paren
+(brace
+r_return
+op_minus
+id|EOPNOTSUPP
+suffix:semicolon
+)brace
 id|wrqu-&gt;data.length
 op_assign
 id|spydata-&gt;spy_number
@@ -4353,12 +4564,6 @@ suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
-macro_line|#else /* IW_WIRELESS_SPY */
-r_return
-op_minus
-id|EOPNOTSUPP
-suffix:semicolon
-macro_line|#endif /* IW_WIRELESS_SPY */
 )brace
 multiline_comment|/*------------------------------------------------------------------*/
 multiline_comment|/*&n; * Standard Wireless Handler : set spy threshold&n; */
@@ -4387,16 +4592,15 @@ op_star
 id|extra
 )paren
 (brace
-macro_line|#ifdef IW_WIRELESS_THRSPY
 r_struct
 id|iw_spy_data
 op_star
 id|spydata
 op_assign
+id|get_spydata
+c_func
 (paren
-id|dev-&gt;priv
-op_plus
-id|dev-&gt;wireless_handlers-&gt;spy_offset
+id|dev
 )paren
 suffix:semicolon
 r_struct
@@ -4411,6 +4615,19 @@ op_star
 )paren
 id|extra
 suffix:semicolon
+multiline_comment|/* Make sure driver is not buggy or using the old API */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|spydata
+)paren
+(brace
+r_return
+op_minus
+id|EOPNOTSUPP
+suffix:semicolon
+)brace
 multiline_comment|/* Just do it */
 id|memcpy
 c_func
@@ -4464,12 +4681,6 @@ macro_line|#endif&t;/* WE_SPY_DEBUG */
 r_return
 l_int|0
 suffix:semicolon
-macro_line|#else /* IW_WIRELESS_THRSPY */
-r_return
-op_minus
-id|EOPNOTSUPP
-suffix:semicolon
-macro_line|#endif /* IW_WIRELESS_THRSPY */
 )brace
 multiline_comment|/*------------------------------------------------------------------*/
 multiline_comment|/*&n; * Standard Wireless Handler : get spy threshold&n; */
@@ -4498,16 +4709,15 @@ op_star
 id|extra
 )paren
 (brace
-macro_line|#ifdef IW_WIRELESS_THRSPY
 r_struct
 id|iw_spy_data
 op_star
 id|spydata
 op_assign
+id|get_spydata
+c_func
 (paren
-id|dev-&gt;priv
-op_plus
-id|dev-&gt;wireless_handlers-&gt;spy_offset
+id|dev
 )paren
 suffix:semicolon
 r_struct
@@ -4522,6 +4732,19 @@ op_star
 )paren
 id|extra
 suffix:semicolon
+multiline_comment|/* Make sure driver is not buggy or using the old API */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|spydata
+)paren
+(brace
+r_return
+op_minus
+id|EOPNOTSUPP
+suffix:semicolon
+)brace
 multiline_comment|/* Just do it */
 id|memcpy
 c_func
@@ -4548,14 +4771,7 @@ suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
-macro_line|#else /* IW_WIRELESS_THRSPY */
-r_return
-op_minus
-id|EOPNOTSUPP
-suffix:semicolon
-macro_line|#endif /* IW_WIRELESS_THRSPY */
 )brace
-macro_line|#ifdef IW_WIRELESS_THRSPY
 multiline_comment|/*------------------------------------------------------------------*/
 multiline_comment|/*&n; * Prepare and send a Spy Threshold event&n; */
 DECL|function|iw_send_thrspy_event
@@ -4719,7 +4935,6 @@ id|threshold
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif /* IW_WIRELESS_THRSPY */
 multiline_comment|/* ---------------------------------------------------------------- */
 multiline_comment|/*&n; * Call for the driver to update the spy data.&n; * For now, the spy data is a simple array. As the size of the array is&n; * small, this is good enough. If we wanted to support larger number of&n; * spy addresses, we should use something more efficient...&n; */
 DECL|function|wireless_spy_update
@@ -4743,16 +4958,15 @@ op_star
 id|wstats
 )paren
 (brace
-macro_line|#ifdef IW_WIRELESS_SPY
 r_struct
 id|iw_spy_data
 op_star
 id|spydata
 op_assign
+id|get_spydata
+c_func
 (paren
-id|dev-&gt;priv
-op_plus
-id|dev-&gt;wireless_handlers-&gt;spy_offset
+id|dev
 )paren
 suffix:semicolon
 r_int
@@ -4764,6 +4978,17 @@ op_assign
 op_minus
 l_int|1
 suffix:semicolon
+multiline_comment|/* Make sure driver is not buggy or using the old API */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|spydata
+)paren
+(brace
+r_return
+suffix:semicolon
+)brace
 macro_line|#ifdef WE_SPY_DEBUG
 id|printk
 c_func
@@ -4865,7 +5090,6 @@ op_assign
 id|i
 suffix:semicolon
 )brace
-macro_line|#ifdef IW_WIRELESS_THRSPY
 multiline_comment|/* Generate an event if we cross the spy threshold.&n;&t; * To avoid event storms, we have a simple hysteresis : we generate&n;&t; * event only when we go under the low threshold or above the&n;&t; * high threshold. */
 r_if
 c_cond
@@ -4945,8 +5169,6 @@ suffix:semicolon
 )brace
 )brace
 )brace
-macro_line|#endif /* IW_WIRELESS_THRSPY */
-macro_line|#endif /* IW_WIRELESS_SPY */
 )brace
 DECL|variable|iw_handler_get_spy
 id|EXPORT_SYMBOL

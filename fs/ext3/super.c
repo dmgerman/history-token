@@ -6695,6 +6695,10 @@ op_assign
 op_amp
 id|ext3_export_ops
 suffix:semicolon
+id|sb-&gt;s_xattr
+op_assign
+id|ext3_xattr_handlers
+suffix:semicolon
 macro_line|#ifdef CONFIG_QUOTA
 id|sb-&gt;s_qcop
 op_assign

@@ -395,6 +395,18 @@ c_func
 id|fp
 )paren
 suffix:semicolon
+macro_line|#ifndef CONFIG_SMP
+id|update_process_times
+c_func
+(paren
+id|user_mode
+c_func
+(paren
+id|fp
+)paren
+)paren
+suffix:semicolon
+macro_line|#endif
 r_if
 c_cond
 (paren

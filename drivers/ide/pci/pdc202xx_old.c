@@ -2967,10 +2967,10 @@ id|pdc_quirk_drives
 )paren
 suffix:semicolon
 )brace
-DECL|function|pdc202xx_old_ide_dma_begin
+DECL|function|pdc202xx_old_ide_dma_start
 r_static
-r_int
-id|pdc202xx_old_ide_dma_begin
+r_void
+id|pdc202xx_old_ide_dma_start
 c_func
 (paren
 id|ide_drive_t
@@ -3124,8 +3124,7 @@ id|atapi_reg
 )paren
 suffix:semicolon
 )brace
-r_return
-id|__ide_dma_begin
+id|ide_dma_start
 c_func
 (paren
 id|drive
@@ -4227,10 +4226,10 @@ l_int|0
 suffix:colon
 l_int|1
 suffix:semicolon
-id|hwif-&gt;ide_dma_begin
+id|hwif-&gt;dma_start
 op_assign
 op_amp
-id|pdc202xx_old_ide_dma_begin
+id|pdc202xx_old_ide_dma_start
 suffix:semicolon
 id|hwif-&gt;ide_dma_end
 op_assign

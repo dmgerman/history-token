@@ -20597,7 +20597,7 @@ c_loop
 (paren
 id|dev
 op_assign
-id|pci_find_class
+id|pci_get_class
 c_func
 (paren
 id|PCI_CLASS_BRIDGE_HOST
@@ -20703,7 +20703,7 @@ c_loop
 (paren
 id|dev
 op_assign
-id|pci_find_device
+id|pci_get_device
 c_func
 (paren
 id|PCI_VENDOR_ID_INTEL

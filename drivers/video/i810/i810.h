@@ -447,6 +447,7 @@ id|physical
 suffix:semicolon
 DECL|member|virtual
 id|__u8
+id|__iomem
 op_star
 r_virtual
 suffix:semicolon
@@ -679,13 +680,6 @@ id|pseudo_palette
 l_int|17
 )braket
 suffix:semicolon
-DECL|member|pci_state
-id|u32
-id|pci_state
-(braket
-l_int|16
-)braket
-suffix:semicolon
 DECL|member|mmio_start_phys
 r_int
 r_int
@@ -693,6 +687,7 @@ id|mmio_start_phys
 suffix:semicolon
 DECL|member|mmio_start_virtual
 id|u8
+id|__iomem
 op_star
 id|mmio_start_virtual
 suffix:semicolon

@@ -2987,6 +2987,7 @@ id|gendev
 suffix:semicolon
 DECL|member|cb_fn_base
 r_char
+id|__iomem
 op_star
 id|cb_fn_base
 suffix:semicolon
@@ -3101,7 +3102,7 @@ id|pm_state_valid
 suffix:colon
 l_int|1
 comma
-multiline_comment|/* power_state[] has sane contents */
+multiline_comment|/* pci_dev-&gt;saved_config_space has sane contents */
 DECL|member|open
 id|open
 suffix:colon
@@ -3186,13 +3187,6 @@ id|spinlock_t
 id|mdio_lock
 suffix:semicolon
 multiline_comment|/* Serialise access to mdio hardware */
-DECL|member|power_state
-id|u32
-id|power_state
-(braket
-l_int|16
-)braket
-suffix:semicolon
 )brace
 suffix:semicolon
 macro_line|#ifdef CONFIG_PCI
@@ -6829,8 +6823,6 @@ c_func
 (paren
 id|vp
 )paren
-comma
-id|vp-&gt;power_state
 )paren
 suffix:semicolon
 id|acpi_set_WOL
@@ -7138,8 +7130,6 @@ c_func
 (paren
 id|vp
 )paren
-comma
-id|vp-&gt;power_state
 )paren
 suffix:semicolon
 )brace
@@ -14080,8 +14070,6 @@ c_func
 (paren
 id|vp
 )paren
-comma
-id|vp-&gt;power_state
 )paren
 suffix:semicolon
 id|acpi_set_WOL
@@ -16422,8 +16410,6 @@ c_func
 (paren
 id|vp
 )paren
-comma
-id|vp-&gt;power_state
 )paren
 suffix:semicolon
 )brace

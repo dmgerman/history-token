@@ -1053,6 +1053,31 @@ c_func
 r_void
 )paren
 suffix:semicolon
+r_struct
+id|device_driver
+suffix:semicolon
+r_void
+id|module_add_driver
+c_func
+(paren
+r_struct
+id|module
+op_star
+comma
+r_struct
+id|device_driver
+op_star
+)paren
+suffix:semicolon
+r_void
+id|module_remove_driver
+c_func
+(paren
+r_struct
+id|device_driver
+op_star
+)paren
+suffix:semicolon
 macro_line|#else /* !CONFIG_MODULES... */
 DECL|macro|EXPORT_SYMBOL
 mdefine_line|#define EXPORT_SYMBOL(sym)
@@ -1330,6 +1355,45 @@ r_void
 )paren
 (brace
 )brace
+r_struct
+id|device_driver
+suffix:semicolon
+r_struct
+id|module
+suffix:semicolon
+DECL|function|module_add_driver
+r_static
+r_inline
+r_void
+id|module_add_driver
+c_func
+(paren
+r_struct
+id|module
+op_star
+id|module
+comma
+r_struct
+id|device_driver
+op_star
+id|driver
+)paren
+(brace
+)brace
+DECL|function|module_remove_driver
+r_static
+r_inline
+r_void
+id|module_remove_driver
+c_func
+(paren
+r_struct
+id|device_driver
+op_star
+id|driver
+)paren
+(brace
+)brace
 macro_line|#endif /* CONFIG_MODULES */
 DECL|macro|symbol_request
 mdefine_line|#define symbol_request(x) try_then_request_module(symbol_get(x), &quot;symbol:&quot; #x)
@@ -1369,91 +1433,9 @@ macro_line|#ifdef MODULE
 multiline_comment|/* DEPRECATED: Do not use. */
 DECL|macro|MODULE_PARM
 mdefine_line|#define MODULE_PARM(var,type)&t;&t;&t;&t;&t;&t;    &bslash;&n;struct obsolete_modparm __parm_##var __attribute__((section(&quot;__obsparm&quot;))) = &bslash;&n;{ __stringify(var), type };
-DECL|function|MOD_INC_USE_COUNT
-r_static
-r_inline
-r_void
-id|__deprecated
-id|MOD_INC_USE_COUNT
-c_func
-(paren
-r_struct
-id|module
-op_star
-id|module
-)paren
-(brace
-id|__unsafe
-c_func
-(paren
-id|module
-)paren
-suffix:semicolon
-macro_line|#if defined(CONFIG_MODULE_UNLOAD) &amp;&amp; defined(MODULE)
-id|local_inc
-c_func
-(paren
-op_amp
-id|module-&gt;ref
-(braket
-id|get_cpu
-c_func
-(paren
-)paren
-)braket
-dot
-id|count
-)paren
-suffix:semicolon
-id|put_cpu
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#else
-(paren
-r_void
-)paren
-id|try_module_get
-c_func
-(paren
-id|module
-)paren
-suffix:semicolon
-macro_line|#endif
-)brace
-DECL|function|MOD_DEC_USE_COUNT
-r_static
-r_inline
-r_void
-id|__deprecated
-id|MOD_DEC_USE_COUNT
-c_func
-(paren
-r_struct
-id|module
-op_star
-id|module
-)paren
-(brace
-id|module_put
-c_func
-(paren
-id|module
-)paren
-suffix:semicolon
-)brace
-DECL|macro|MOD_INC_USE_COUNT
-mdefine_line|#define MOD_INC_USE_COUNT&t;MOD_INC_USE_COUNT(THIS_MODULE)
-DECL|macro|MOD_DEC_USE_COUNT
-mdefine_line|#define MOD_DEC_USE_COUNT&t;MOD_DEC_USE_COUNT(THIS_MODULE)
 macro_line|#else
 DECL|macro|MODULE_PARM
 mdefine_line|#define MODULE_PARM(var,type)
-DECL|macro|MOD_INC_USE_COUNT
-mdefine_line|#define MOD_INC_USE_COUNT&t;do { } while (0)
-DECL|macro|MOD_DEC_USE_COUNT
-mdefine_line|#define MOD_DEC_USE_COUNT&t;do { } while (0)
 macro_line|#endif
 DECL|macro|__MODULE_STRING
 mdefine_line|#define __MODULE_STRING(x) __stringify(x)
@@ -1462,6 +1444,7 @@ DECL|macro|HAVE_INTER_MODULE
 mdefine_line|#define HAVE_INTER_MODULE
 r_extern
 r_void
+id|__deprecated
 id|inter_module_register
 c_func
 (paren
@@ -1480,6 +1463,7 @@ op_star
 suffix:semicolon
 r_extern
 r_void
+id|__deprecated
 id|inter_module_unregister
 c_func
 (paren
@@ -1492,6 +1476,7 @@ r_extern
 r_const
 r_void
 op_star
+id|__deprecated
 id|inter_module_get
 c_func
 (paren
@@ -1504,6 +1489,7 @@ r_extern
 r_const
 r_void
 op_star
+id|__deprecated
 id|inter_module_get_request
 c_func
 (paren
@@ -1518,6 +1504,7 @@ op_star
 suffix:semicolon
 r_extern
 r_void
+id|__deprecated
 id|inter_module_put
 c_func
 (paren

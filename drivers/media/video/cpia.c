@@ -11,6 +11,7 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/ctype.h&gt;
 macro_line|#include &lt;linux/pagemap.h&gt;
+macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#ifdef CONFIG_KMOD
@@ -14243,18 +14244,10 @@ c_func
 )paren
 suffix:semicolon
 multiline_comment|/* sleep for 10 ms, hopefully ;) */
-id|current-&gt;state
-op_assign
-id|TASK_INTERRUPTIBLE
-suffix:semicolon
-id|schedule_timeout
+id|msleep_interruptible
 c_func
 (paren
 l_int|10
-op_star
-id|HZ
-op_div
-l_int|1000
 )paren
 suffix:semicolon
 r_if
@@ -14511,18 +14504,10 @@ l_int|0
 )paren
 suffix:semicolon
 multiline_comment|/* FIXME: Trial &amp; error - need up to 70ms for&n;&t;&t;&t;&t;   the grab mode change to complete ? */
-id|current-&gt;state
-op_assign
-id|TASK_INTERRUPTIBLE
-suffix:semicolon
-id|schedule_timeout
+id|msleep_interruptible
 c_func
 (paren
 l_int|70
-op_star
-id|HZ
-op_div
-l_int|1000
 )paren
 suffix:semicolon
 r_if
@@ -14750,18 +14735,10 @@ r_return
 op_minus
 id|EIO
 suffix:semicolon
-id|current-&gt;state
-op_assign
-id|TASK_INTERRUPTIBLE
-suffix:semicolon
-id|schedule_timeout
+id|msleep_interruptible
 c_func
 (paren
 l_int|40
-op_star
-id|HZ
-op_div
-l_int|1000
 )paren
 suffix:semicolon
 multiline_comment|/* windows driver does it too */
@@ -15085,13 +15062,8 @@ id|cam
 )paren
 suffix:semicolon
 multiline_comment|/* Wait 6 frames for the sensor to get all settings and&n;&t;   AEC/ACB to settle */
-id|current-&gt;state
-op_assign
-id|TASK_INTERRUPTIBLE
-suffix:semicolon
-id|schedule_timeout
+id|msleep_interruptible
 c_func
-(paren
 (paren
 l_int|6
 op_star
@@ -15111,11 +15083,6 @@ id|cam-&gt;params.sensorFps.divisor
 )paren
 op_plus
 l_int|10
-)paren
-op_star
-id|HZ
-op_div
-l_int|1000
 )paren
 suffix:semicolon
 r_if

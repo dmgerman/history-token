@@ -267,6 +267,20 @@ mdefine_line|#define FALCOM_TWIST_PID&t;0x0001&t;/* Falcom Twist USB GPRS modem 
 multiline_comment|/*&n; * SUUNTO product ids&n; */
 DECL|macro|FTDI_SUUNTO_SPORTS_PID
 mdefine_line|#define FTDI_SUUNTO_SPORTS_PID&t;0xF680&t;/* Suunto Sports instrument */
+multiline_comment|/*&n; * Definitions for B&amp;B Electronics products.&n; */
+DECL|macro|BANDB_VID
+mdefine_line|#define BANDB_VID&t;&t;0x0856&t;/* B&amp;B Electronics Vendor ID */
+DECL|macro|BANDB_USOTL4_PID
+mdefine_line|#define BANDB_USOTL4_PID&t;0xAC01&t;/* USOTL4 Isolated RS-485 Converter */
+DECL|macro|BANDB_USTL4_PID
+mdefine_line|#define BANDB_USTL4_PID&t;&t;0xAC02&t;/* USTL4 RS-485 Converter */
+DECL|macro|BANDB_USO9ML2_PID
+mdefine_line|#define BANDB_USO9ML2_PID&t;0xAC03&t;/* USO9ML2 Isolated RS-232 Converter */
+multiline_comment|/*&n; * RM Michaelides CANview USB (http://www.rmcan.com)&n; * CAN filedbus interface adapter, addad by port GmbH www.port.de)&n; */
+DECL|macro|FTDI_RM_VID
+mdefine_line|#define FTDI_RM_VID&t;&t;0x0403&t;/* Vendor  Id */
+DECL|macro|FTDI_RMCANVIEW_PID
+mdefine_line|#define FTDI_RMCANVIEW_PID&t;0xfd60&t;/* Product Id */
 multiline_comment|/* Commands */
 DECL|macro|FTDI_SIO_RESET
 mdefine_line|#define FTDI_SIO_RESET &t;&t;0 /* Reset the port */

@@ -2157,6 +2157,11 @@ op_plus
 l_int|1
 )paren
 suffix:semicolon
+id|info-&gt;device
+op_assign
+op_amp
+id|pdev-&gt;dev
+suffix:semicolon
 r_if
 c_cond
 (paren

@@ -4750,12 +4750,7 @@ r_return
 l_string|&quot;(dma IN)&quot;
 suffix:semicolon
 )brace
-multiline_comment|/* if we&squot;re trying to save space, don&squot;t bother with this proc file */
-macro_line|#if defined(CONFIG_PROC_FS) &amp;&amp; !defined(CONFIG_EMBEDDED)
-DECL|macro|UDC_PROC_FILE
-macro_line|#  define&t;UDC_PROC_FILE
-macro_line|#endif
-macro_line|#ifdef UDC_PROC_FILE
+macro_line|#ifdef CONFIG_USB_GADGET_DEBUG_FILES
 DECL|variable|proc_node_name
 r_static
 r_const
@@ -6004,7 +5999,7 @@ op_minus
 id|size
 suffix:semicolon
 )brace
-macro_line|#endif&t;/* UDC_PROC_FILE */
+macro_line|#endif&t;/* CONFIG_USB_GADGET_DEBUG_FILES */
 multiline_comment|/*-------------------------------------------------------------------------*/
 DECL|function|udc_reinit
 r_static
@@ -8289,7 +8284,7 @@ id|dev-&gt;driver
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef&t;UDC_PROC_FILE
+macro_line|#ifdef CONFIG_USB_GADGET_DEBUG_FILES
 id|remove_proc_entry
 c_func
 (paren
@@ -8875,7 +8870,7 @@ c_func
 id|pdev
 )paren
 suffix:semicolon
-macro_line|#ifdef&t;UDC_PROC_FILE
+macro_line|#ifdef CONFIG_USB_GADGET_DEBUG_FILES
 id|create_proc_read_entry
 c_func
 (paren
@@ -9032,7 +9027,7 @@ r_void
 )paren
 (brace
 r_return
-id|pci_module_init
+id|pci_register_driver
 (paren
 op_amp
 id|goku_pci_driver

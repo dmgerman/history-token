@@ -9,6 +9,7 @@ macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/ocp.h&gt;
 macro_line|#include &lt;linux/i2c.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
+macro_line|#include &lt;linux/delay.h&gt;
 DECL|macro|MPC_I2C_ADDR
 mdefine_line|#define MPC_I2C_ADDR  0x00
 DECL|macro|MPC_I2C_FDR
@@ -301,6 +302,12 @@ suffix:semicolon
 )brace
 r_else
 (brace
+id|set_current_state
+c_func
+(paren
+id|TASK_INTERRUPTIBLE
+)paren
+suffix:semicolon
 id|add_wait_queue
 c_func
 (paren
@@ -322,12 +329,6 @@ id|CSR_MIF
 )paren
 )paren
 (brace
-id|set_current_state
-c_func
-(paren
-id|TASK_INTERRUPTIBLE
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -380,16 +381,22 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-id|schedule_timeout
+id|msleep_interruptible
+c_func
+(paren
+id|jiffies_to_msecs
 c_func
 (paren
 id|timeout
 )paren
+)paren
 suffix:semicolon
 )brace
-id|current-&gt;state
-op_assign
+id|set_current_state
+c_func
+(paren
 id|TASK_RUNNING
+)paren
 suffix:semicolon
 id|remove_wait_queue
 c_func

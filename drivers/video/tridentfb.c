@@ -6079,6 +6079,11 @@ id|fb_info.var
 op_assign
 id|default_var
 suffix:semicolon
+id|fb_info.device
+op_assign
+op_amp
+id|dev-&gt;dev
+suffix:semicolon
 r_if
 c_cond
 (paren

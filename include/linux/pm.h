@@ -282,22 +282,6 @@ op_star
 id|data
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * Find a device&n; */
-r_struct
-id|pm_dev
-op_star
-id|pm_find
-c_func
-(paren
-id|pm_dev_t
-id|type
-comma
-r_struct
-id|pm_dev
-op_star
-id|from
-)paren
-suffix:semicolon
 DECL|function|pm_access
 r_static
 r_inline

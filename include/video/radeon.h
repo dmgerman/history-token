@@ -1154,7 +1154,7 @@ mdefine_line|#define LVDS_BLON&t;&t;&t;&t;   (1 &lt;&lt; 19)
 DECL|macro|LVDS_SEL_CRTC2
 mdefine_line|#define LVDS_SEL_CRTC2&t;&t;&t;&t;   (1 &lt;&lt; 23)
 DECL|macro|LVDS_STATE_MASK
-mdefine_line|#define LVDS_STATE_MASK&t;&bslash;&n;&t;(LVDS_ON | LVDS_DISPLAY_DIS | LVDS_BL_MOD_LEVEL_MASK | &bslash;&n;&t; LVDS_EN | LVDS_DIGON | LVDS_BLON)
+mdefine_line|#define LVDS_STATE_MASK&t;&bslash;&n;&t;(LVDS_ON | LVDS_DISPLAY_DIS | LVDS_BL_MOD_LEVEL_MASK | LVDS_BLON)
 multiline_comment|/* LVDS_PLL_CNTL bit constatns */
 DECL|macro|HSYNC_DELAY_SHIFT
 mdefine_line|#define HSYNC_DELAY_SHIFT&t;&t;&t;   0x1c

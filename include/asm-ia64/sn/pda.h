@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992 - 1997, 2000-2003 Silicon Graphics, Inc. All rights reserved.&n; */
+multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992 - 1997, 2000-2004 Silicon Graphics, Inc. All rights reserved.&n; */
 macro_line|#ifndef _ASM_IA64_SN_PDA_H
 DECL|macro|_ASM_IA64_SN_PDA_H
 mdefine_line|#define _ASM_IA64_SN_PDA_H
@@ -85,6 +85,16 @@ r_int
 op_star
 id|mem_write_status_addr
 suffix:semicolon
+DECL|member|cpu_bte_if
+r_struct
+id|bteinfo_s
+op_star
+id|cpu_bte_if
+(braket
+id|BTES_PER_NODE
+)braket
+suffix:semicolon
+multiline_comment|/* cpu interface order */
 DECL|member|sn_soft_irr
 r_int
 r_int
@@ -120,11 +130,6 @@ DECL|member|sn_first_irq
 r_int
 id|sn_first_irq
 suffix:semicolon
-DECL|member|sn_num_irqs
-r_int
-id|sn_num_irqs
-suffix:semicolon
-multiline_comment|/* number of irqs targeted for this cpu */
 DECL|typedef|pda_t
 )brace
 id|pda_t

@@ -1104,13 +1104,6 @@ r_return
 id|retval
 suffix:semicolon
 )brace
-DECL|variable|do_select
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|do_select
-)paren
-suffix:semicolon
 DECL|function|select_bits_alloc
 r_static
 r_void

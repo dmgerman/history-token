@@ -1392,8 +1392,9 @@ r_int
 id|nir
 suffix:semicolon
 DECL|member|base_addr
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|base_addr
 suffix:semicolon
 DECL|member|csr12_shadow
@@ -1781,32 +1782,6 @@ id|t21040_csr13
 (braket
 )braket
 suffix:semicolon
-macro_line|#ifndef USE_IO_OPS
-DECL|macro|inb
-macro_line|#undef inb
-DECL|macro|inw
-macro_line|#undef inw
-DECL|macro|inl
-macro_line|#undef inl
-DECL|macro|outb
-macro_line|#undef outb
-DECL|macro|outw
-macro_line|#undef outw
-DECL|macro|outl
-macro_line|#undef outl
-DECL|macro|inb
-mdefine_line|#define inb(addr) readb((void*)(addr))
-DECL|macro|inw
-mdefine_line|#define inw(addr) readw((void*)(addr))
-DECL|macro|inl
-mdefine_line|#define inl(addr) readl((void*)(addr))
-DECL|macro|outb
-mdefine_line|#define outb(val,addr) writeb((val), (void*)(addr))
-DECL|macro|outw
-mdefine_line|#define outw(val,addr) writew((val), (void*)(addr))
-DECL|macro|outl
-mdefine_line|#define outl(val,addr) writel((val), (void*)(addr))
-macro_line|#endif /* !USE_IO_OPS */
 DECL|function|tulip_start_rxtx
 r_static
 r_inline
@@ -1820,12 +1795,14 @@ op_star
 id|tp
 )paren
 (brace
-r_int
+r_void
+id|__iomem
+op_star
 id|ioaddr
 op_assign
 id|tp-&gt;base_addr
 suffix:semicolon
-id|outl
+id|iowrite32
 c_func
 (paren
 id|tp-&gt;csr6
@@ -1845,7 +1822,7 @@ suffix:semicolon
 (paren
 r_void
 )paren
-id|inl
+id|ioread32
 c_func
 (paren
 id|ioaddr
@@ -1868,7 +1845,9 @@ op_star
 id|tp
 )paren
 (brace
-r_int
+r_void
+id|__iomem
+op_star
 id|ioaddr
 op_assign
 id|tp-&gt;base_addr
@@ -1876,7 +1855,7 @@ suffix:semicolon
 id|u32
 id|csr6
 op_assign
-id|inl
+id|ioread32
 c_func
 (paren
 id|ioaddr
@@ -1892,7 +1871,7 @@ op_amp
 id|RxTx
 )paren
 (brace
-id|outl
+id|iowrite32
 c_func
 (paren
 id|csr6
@@ -1913,7 +1892,7 @@ suffix:semicolon
 (paren
 r_void
 )paren
-id|inl
+id|ioread32
 c_func
 (paren
 id|ioaddr

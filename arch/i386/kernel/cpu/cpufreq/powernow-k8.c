@@ -18,7 +18,7 @@ mdefine_line|#define PFX &quot;powernow-k8: &quot;
 DECL|macro|BFX
 mdefine_line|#define BFX PFX &quot;BIOS error: &quot;
 DECL|macro|VERSION
-mdefine_line|#define VERSION &quot;version 1.00.09b&quot;
+mdefine_line|#define VERSION &quot;version 1.00.09e&quot;
 macro_line|#include &quot;powernow-k8.h&quot;
 multiline_comment|/* serialize freq changes  */
 r_static
@@ -2618,6 +2618,14 @@ suffix:semicolon
 id|u8
 id|maxvid
 suffix:semicolon
+id|u32
+id|cpst
+op_assign
+l_int|0
+suffix:semicolon
+id|u32
+id|thiscpuid
+suffix:semicolon
 r_for
 c_loop
 (paren
@@ -2845,10 +2853,60 @@ comma
 id|psb-&gt;numpst
 )paren
 suffix:semicolon
+id|cpst
+op_assign
+id|psb-&gt;numpst
+suffix:semicolon
 r_if
 c_cond
 (paren
-id|psb-&gt;numpst
+(paren
+id|psb-&gt;cpuid
+op_eq
+l_int|0x00000fc0
+)paren
+op_logical_or
+(paren
+id|psb-&gt;cpuid
+op_eq
+l_int|0x00000fe0
+)paren
+)paren
+(brace
+id|thiscpuid
+op_assign
+id|cpuid_eax
+c_func
+(paren
+id|CPUID_PROCESSOR_SIGNATURE
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|thiscpuid
+op_eq
+l_int|0x00000fc0
+)paren
+op_logical_or
+(paren
+id|thiscpuid
+op_eq
+l_int|0x00000fe0
+)paren
+)paren
+(brace
+id|cpst
+op_assign
+l_int|1
+suffix:semicolon
+)brace
+)brace
+r_if
+c_cond
+(paren
+id|cpst
 op_ne
 l_int|1
 )paren

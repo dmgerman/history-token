@@ -1214,6 +1214,10 @@ id|SCpnt-&gt;sc_data_direction
 op_assign
 id|DMA_TO_DEVICE
 suffix:semicolon
+id|cd-&gt;cdi.media_written
+op_assign
+l_int|1
+suffix:semicolon
 )brace
 r_else
 r_if
@@ -3527,7 +3531,7 @@ op_or_assign
 id|CDC_SELECT_DISC
 suffix:semicolon
 multiline_comment|/*else    I don&squot;t think it can close its tray&n;&t;&t;cd-&gt;cdi.mask |= CDC_CLOSE_TRAY; */
-multiline_comment|/*&n;&t; * if DVD-RAM of MRW-W, we are randomly writeable&n;&t; */
+multiline_comment|/*&n;&t; * if DVD-RAM, MRW-W or CD-RW, we are randomly writable&n;&t; */
 r_if
 c_cond
 (paren
@@ -3540,6 +3544,8 @@ op_or
 id|CDC_MRW_W
 op_or
 id|CDC_RAM
+op_or
+id|CDC_CD_RW
 )paren
 )paren
 op_ne
@@ -3549,6 +3555,8 @@ op_or
 id|CDC_MRW_W
 op_or
 id|CDC_RAM
+op_or
+id|CDC_CD_RW
 )paren
 )paren
 (brace

@@ -427,6 +427,12 @@ r_struct
 id|list_head
 id|devices
 suffix:semicolon
+DECL|member|owner
+r_struct
+id|module
+op_star
+id|owner
+suffix:semicolon
 DECL|member|probe
 r_int
 (paren

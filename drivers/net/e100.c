@@ -2046,6 +2046,7 @@ suffix:semicolon
 DECL|member|csr
 r_struct
 id|csr
+id|__iomem
 op_star
 id|csr
 suffix:semicolon
@@ -2263,13 +2264,6 @@ id|u16
 id|eeprom
 (braket
 l_int|256
-)braket
-suffix:semicolon
-DECL|member|pm_state
-id|u32
-id|pm_state
-(braket
-l_int|16
 )braket
 suffix:semicolon
 )brace
@@ -11876,8 +11870,6 @@ id|pci_save_state
 c_func
 (paren
 id|pdev
-comma
-id|nic-&gt;pm_state
 )paren
 suffix:semicolon
 id|pci_enable_wake
@@ -11964,8 +11956,6 @@ id|pci_restore_state
 c_func
 (paren
 id|pdev
-comma
-id|nic-&gt;pm_state
 )paren
 suffix:semicolon
 id|e100_hw_init

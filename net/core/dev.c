@@ -9167,9 +9167,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
-id|ret
-op_logical_and
 id|IW_IS_GET
 c_func
 (paren

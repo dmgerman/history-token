@@ -115,10 +115,11 @@ id|epxa10db_timer_interrupt
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * Set up timer interrupt, and return the current time in seconds.&n; */
-DECL|function|epxa10db_init_time
+DECL|function|epxa10db_timer_init
+r_static
 r_void
 id|__init
-id|epxa10db_init_time
+id|epxa10db_timer_init
 c_func
 (paren
 r_void
@@ -184,4 +185,17 @@ id|epxa10db_timer_irq
 )paren
 suffix:semicolon
 )brace
+DECL|variable|epxa10db_timer
+r_struct
+id|sys_timer
+id|epxa10db_timer
+op_assign
+(brace
+dot
+id|init
+op_assign
+id|epxa10db_timer_init
+comma
+)brace
+suffix:semicolon
 eof

@@ -179,6 +179,17 @@ c_func
 id|regs
 )paren
 suffix:semicolon
+macro_line|#else
+id|update_process_times
+c_func
+(paren
+id|user_mode
+c_func
+(paren
+id|regs
+)paren
+)paren
+suffix:semicolon
 macro_line|#endif
 r_if
 c_cond

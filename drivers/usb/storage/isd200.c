@@ -3362,11 +3362,6 @@ id|info-&gt;InquiryData.DeviceType
 op_assign
 id|DIRECT_ACCESS_DEVICE
 suffix:semicolon
-multiline_comment|/* Fix-up the return data from an INQUIRY command to show &n;&t;&t;&t;&t; * ANSI SCSI rev 2 so we don&squot;t confuse the SCSI layers above us&n;&t;&t;&t;&t; * in Linux.&n;&t;&t;&t;&t; */
-id|info-&gt;InquiryData.Versions
-op_assign
-l_int|0x2
-suffix:semicolon
 multiline_comment|/* The length must be at least 36 (5 + 31) */
 id|info-&gt;InquiryData.AdditionalLength
 op_assign

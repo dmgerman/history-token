@@ -41,6 +41,7 @@ id|irq
 suffix:semicolon
 DECL|member|dpmbase
 r_void
+id|__iomem
 op_star
 id|dpmbase
 suffix:semicolon
@@ -74,6 +75,10 @@ id|sfm
 comma
 id|u32
 id|len
+comma
+r_int
+r_int
+id|base
 )paren
 suffix:semicolon
 r_extern
@@ -135,6 +140,7 @@ id|cycx_exec
 c_func
 (paren
 r_void
+id|__iomem
 op_star
 id|addr
 )paren

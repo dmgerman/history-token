@@ -95,15 +95,17 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-r_int
+r_void
+id|__iomem
+op_star
 id|ioaddr
 op_assign
-id|dev-&gt;base_addr
+id|tp-&gt;base_addr
 suffix:semicolon
 r_int
 id|csr12
 op_assign
-id|inl
+id|ioread32
 c_func
 (paren
 id|ioaddr
@@ -342,7 +344,7 @@ id|dev-&gt;if_port
 op_assign
 l_int|0
 suffix:semicolon
-id|outl
+id|iowrite32
 c_func
 (paren
 l_int|0
@@ -352,7 +354,7 @@ op_plus
 id|CSR13
 )paren
 suffix:semicolon
-id|outl
+id|iowrite32
 c_func
 (paren
 l_int|0x0003FFFF
@@ -362,7 +364,7 @@ op_plus
 id|CSR14
 )paren
 suffix:semicolon
-id|outw
+id|iowrite16
 c_func
 (paren
 id|t21142_csr15
@@ -375,7 +377,7 @@ op_plus
 id|CSR15
 )paren
 suffix:semicolon
-id|outl
+id|iowrite32
 c_func
 (paren
 id|t21142_csr13
@@ -400,7 +402,7 @@ id|dev-&gt;if_port
 op_assign
 l_int|3
 suffix:semicolon
-id|outl
+id|iowrite32
 c_func
 (paren
 l_int|0
@@ -410,7 +412,7 @@ op_plus
 id|CSR13
 )paren
 suffix:semicolon
-id|outl
+id|iowrite32
 c_func
 (paren
 l_int|0x0003FF7F
@@ -420,7 +422,7 @@ op_plus
 id|CSR14
 )paren
 suffix:semicolon
-id|outw
+id|iowrite16
 c_func
 (paren
 l_int|8
@@ -430,7 +432,7 @@ op_plus
 id|CSR15
 )paren
 suffix:semicolon
-id|outl
+id|iowrite32
 c_func
 (paren
 l_int|1
@@ -483,7 +485,7 @@ id|tp-&gt;csr6
 op_or_assign
 id|new_csr6
 suffix:semicolon
-id|outl
+id|iowrite32
 c_func
 (paren
 l_int|0x0301
@@ -544,10 +546,12 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-r_int
+r_void
+id|__iomem
+op_star
 id|ioaddr
 op_assign
-id|dev-&gt;base_addr
+id|tp-&gt;base_addr
 suffix:semicolon
 r_int
 id|csr14
@@ -608,7 +612,7 @@ comma
 id|csr14
 )paren
 suffix:semicolon
-id|outl
+id|iowrite32
 c_func
 (paren
 l_int|0x0001
@@ -624,7 +628,7 @@ c_func
 l_int|100
 )paren
 suffix:semicolon
-id|outl
+id|iowrite32
 c_func
 (paren
 id|csr14
@@ -649,7 +653,7 @@ suffix:colon
 l_int|0
 )paren
 suffix:semicolon
-id|outl
+id|iowrite32
 c_func
 (paren
 id|tp-&gt;csr6
@@ -667,7 +671,7 @@ op_logical_and
 id|tp-&gt;mtable-&gt;csr15dir
 )paren
 (brace
-id|outl
+id|iowrite32
 c_func
 (paren
 id|tp-&gt;mtable-&gt;csr15dir
@@ -677,7 +681,7 @@ op_plus
 id|CSR15
 )paren
 suffix:semicolon
-id|outl
+id|iowrite32
 c_func
 (paren
 id|tp-&gt;mtable-&gt;csr15val
@@ -689,7 +693,7 @@ id|CSR15
 suffix:semicolon
 )brace
 r_else
-id|outw
+id|iowrite16
 c_func
 (paren
 l_int|0x0008
@@ -699,7 +703,7 @@ op_plus
 id|CSR15
 )paren
 suffix:semicolon
-id|outl
+id|iowrite32
 c_func
 (paren
 l_int|0x1301
@@ -736,15 +740,17 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-r_int
+r_void
+id|__iomem
+op_star
 id|ioaddr
 op_assign
-id|dev-&gt;base_addr
+id|tp-&gt;base_addr
 suffix:semicolon
 r_int
 id|csr12
 op_assign
-id|inl
+id|ioread32
 c_func
 (paren
 id|ioaddr
@@ -772,7 +778,7 @@ id|csr12
 comma
 id|csr5
 comma
-id|inl
+id|ioread32
 c_func
 (paren
 id|ioaddr
@@ -1076,7 +1082,7 @@ id|tp-&gt;csr6
 op_or_assign
 l_int|0x0200
 suffix:semicolon
-id|outl
+id|iowrite32
 c_func
 (paren
 l_int|1
@@ -1088,7 +1094,7 @@ id|CSR13
 suffix:semicolon
 )brace
 macro_line|#if 0&t;&t;&t;&t;&t;&t;&t;/* Restart shouldn&squot;t be needed. */
-id|outl
+id|iowrite32
 c_func
 (paren
 id|tp-&gt;csr6
@@ -1115,7 +1121,7 @@ l_string|&quot;%s:  Restarting Tx and Rx, CSR5 is %8.8x.&bslash;n&quot;
 comma
 id|dev-&gt;name
 comma
-id|inl
+id|ioread32
 c_func
 (paren
 id|ioaddr
@@ -1148,7 +1154,7 @@ id|dev-&gt;name
 comma
 id|tp-&gt;csr6
 comma
-id|inl
+id|ioread32
 c_func
 (paren
 id|ioaddr
@@ -1156,7 +1162,7 @@ op_plus
 id|CSR6
 )paren
 comma
-id|inl
+id|ioread32
 c_func
 (paren
 id|ioaddr
@@ -1340,10 +1346,10 @@ id|dev-&gt;if_port
 op_eq
 l_int|5
 )paren
-id|outl
+id|iowrite32
 c_func
 (paren
-id|inl
+id|ioread32
 c_func
 (paren
 id|ioaddr
@@ -1486,7 +1492,7 @@ op_amp
 l_int|0x20ff
 )paren
 suffix:semicolon
-id|outl
+id|iowrite32
 c_func
 (paren
 l_int|0x0003FF7F
@@ -1496,7 +1502,7 @@ op_plus
 id|CSR14
 )paren
 suffix:semicolon
-id|outl
+id|iowrite32
 c_func
 (paren
 l_int|0x0301

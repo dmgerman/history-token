@@ -66,24 +66,24 @@ l_int|12
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|macro|LOGIN_REQUEST
-mdefine_line|#define LOGIN_REQUEST&t;&t;&t;0x0
-DECL|macro|QUERY_LOGINS_REQUEST
-mdefine_line|#define QUERY_LOGINS_REQUEST&t;&t;0x1
-DECL|macro|RECONNECT_REQUEST
-mdefine_line|#define RECONNECT_REQUEST&t;&t;0x3
-DECL|macro|SET_PASSWORD_REQUEST
-mdefine_line|#define SET_PASSWORD_REQUEST&t;&t;0x4
-DECL|macro|LOGOUT_REQUEST
-mdefine_line|#define LOGOUT_REQUEST&t;&t;&t;0x7
-DECL|macro|ABORT_TASK_REQUEST
-mdefine_line|#define ABORT_TASK_REQUEST&t;&t;0xb
-DECL|macro|ABORT_TASK_SET
-mdefine_line|#define ABORT_TASK_SET&t;&t;&t;0xc
-DECL|macro|LOGICAL_UNIT_RESET
-mdefine_line|#define LOGICAL_UNIT_RESET&t;&t;0xe
-DECL|macro|TARGET_RESET_REQUEST
-mdefine_line|#define TARGET_RESET_REQUEST&t;&t;0xf
+DECL|macro|SBP2_LOGIN_REQUEST
+mdefine_line|#define SBP2_LOGIN_REQUEST&t;&t;0x0
+DECL|macro|SBP2_QUERY_LOGINS_REQUEST
+mdefine_line|#define SBP2_QUERY_LOGINS_REQUEST&t;0x1
+DECL|macro|SBP2_RECONNECT_REQUEST
+mdefine_line|#define SBP2_RECONNECT_REQUEST&t;&t;0x3
+DECL|macro|SBP2_SET_PASSWORD_REQUEST
+mdefine_line|#define SBP2_SET_PASSWORD_REQUEST&t;0x4
+DECL|macro|SBP2_LOGOUT_REQUEST
+mdefine_line|#define SBP2_LOGOUT_REQUEST&t;&t;0x7
+DECL|macro|SBP2_ABORT_TASK_REQUEST
+mdefine_line|#define SBP2_ABORT_TASK_REQUEST&t;&t;0xb
+DECL|macro|SBP2_ABORT_TASK_SET
+mdefine_line|#define SBP2_ABORT_TASK_SET&t;&t;0xc
+DECL|macro|SBP2_LOGICAL_UNIT_RESET
+mdefine_line|#define SBP2_LOGICAL_UNIT_RESET&t;&t;0xe
+DECL|macro|SBP2_TARGET_RESET_REQUEST
+mdefine_line|#define SBP2_TARGET_RESET_REQUEST&t;0xf
 DECL|macro|ORB_SET_LUN
 mdefine_line|#define ORB_SET_LUN(value)                      (value &amp; 0xffff)
 DECL|macro|ORB_SET_FUNCTION

@@ -268,6 +268,8 @@ DECL|macro|user
 mdefine_line|#define user user32
 DECL|macro|__ASM_X86_64_ELF_H
 mdefine_line|#define __ASM_X86_64_ELF_H 1
+DECL|macro|elf_read_implies_exec
+mdefine_line|#define elf_read_implies_exec(ex, have_pt_gnu_stack)&t;(!(have_pt_gnu_stack))
 singleline_comment|//#include &lt;asm/ia32.h&gt;
 macro_line|#include &lt;linux/elf.h&gt;
 DECL|typedef|elf_fpregset_t
@@ -940,7 +942,7 @@ id|EXSTACK_ENABLE_X
 )paren
 id|mpnt-&gt;vm_flags
 op_assign
-id|vm_stack_flags32
+id|VM_STACK_FLAGS
 op_or
 id|VM_EXEC
 suffix:semicolon
@@ -954,7 +956,7 @@ id|EXSTACK_DISABLE_X
 )paren
 id|mpnt-&gt;vm_flags
 op_assign
-id|vm_stack_flags32
+id|VM_STACK_FLAGS
 op_amp
 op_complement
 id|VM_EXEC
@@ -962,7 +964,7 @@ suffix:semicolon
 r_else
 id|mpnt-&gt;vm_flags
 op_assign
-id|vm_stack_flags32
+id|VM_STACK_FLAGS
 suffix:semicolon
 id|mpnt-&gt;vm_page_prot
 op_assign
@@ -1098,17 +1100,6 @@ op_star
 id|me
 op_assign
 id|current
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|prot
-op_amp
-id|PROT_READ
-)paren
-id|prot
-op_or_assign
-id|vm_force_exec32
 suffix:semicolon
 id|down_write
 c_func

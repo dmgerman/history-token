@@ -545,6 +545,12 @@ l_int|0x0002
 )paren
 comma
 )brace
+id|__attribute__
+(paren
+(paren
+id|__packed__
+)paren
+)paren
 suffix:semicolon
 DECL|typedef|MFT_RECORD_FLAGS
 r_typedef
@@ -584,6 +590,10 @@ r_typedef
 id|le64
 id|leMFT_REF
 suffix:semicolon
+DECL|macro|MK_MREF
+mdefine_line|#define MK_MREF(m, s)&t;((MFT_REF)(((MFT_REF)(s) &lt;&lt; 48) |&t;&t;&bslash;&n;&t;&t;&t;&t;&t;((MFT_REF)(m) &amp; MFT_REF_MASK_CPU)))
+DECL|macro|MK_LE_MREF
+mdefine_line|#define MK_LE_MREF(m, s) cpu_to_le64(MK_MREF(m, s))
 DECL|macro|MREF
 mdefine_line|#define MREF(x)&t;&t;((unsigned long)((x) &amp; MFT_REF_MASK_CPU))
 DECL|macro|MSEQNO
@@ -673,14 +683,21 @@ id|le16
 id|next_attr_instance
 suffix:semicolon
 multiline_comment|/* The instance number that will be assigned to&n;&t;&t;&t;&t;   the next attribute added to this mft record.&n;&t;&t;&t;&t;   NOTE: Incremented each time after it is used.&n;&t;&t;&t;&t;   NOTE: Every time the mft record is reused&n;&t;&t;&t;&t;   this number is set to zero.  NOTE: The first&n;&t;&t;&t;&t;   instance number is always 0. */
-multiline_comment|/* sizeof() = 42 bytes */
-multiline_comment|/* NTFS 3.1+ (Windows XP and above) introduce the following additions. */
+multiline_comment|/* The below fields are specific to NTFS 3.1+ (Windows XP and above): */
+DECL|member|reserved
 multiline_comment|/* 42*/
-singleline_comment|//le16 reserved;&t;/* Reserved/alignment. */
+id|le16
+id|reserved
+suffix:semicolon
+multiline_comment|/* Reserved/alignment. */
+DECL|member|mft_record_number
 multiline_comment|/* 44*/
-singleline_comment|//le32 mft_record_number;/* Number of this mft record. */
+id|le32
+id|mft_record_number
+suffix:semicolon
+multiline_comment|/* Number of this mft record. */
 multiline_comment|/* sizeof() = 48 bytes */
-multiline_comment|/*&n; * When (re)using the mft record, we place the update sequence array at this&n; * offset, i.e. before we start with the attributes. This also makes sense,&n; * otherwise we could run into problems with the update sequence array&n; * containing in itself the last two bytes of a sector which would mean that&n; * multi sector transfer protection wouldn&squot;t work. As you can&squot;t protect data&n; * by overwriting it since you then can&squot;t get it back...&n; * When reading we obviously use the data from the ntfs record header.&n; */
+multiline_comment|/*&n; * When (re)using the mft record, we place the update sequence array at this&n; * offset, i.e. before we start with the attributes.  This also makes sense,&n; * otherwise we could run into problems with the update sequence array&n; * containing in itself the last two bytes of a sector which would mean that&n; * multi sector transfer protection wouldn&squot;t work.  As you can&squot;t protect data&n; * by overwriting it since you then can&squot;t get it back...&n; * When reading we obviously use the data from the ntfs record header.&n; */
 DECL|typedef|MFT_RECORD
 )brace
 id|__attribute__
@@ -690,6 +707,93 @@ id|__packed__
 )paren
 )paren
 id|MFT_RECORD
+suffix:semicolon
+multiline_comment|/* This is the version without the NTFS 3.1+ specific fields. */
+r_typedef
+r_struct
+(brace
+multiline_comment|/*Ofs*/
+multiline_comment|/*  0&t;NTFS_RECORD; -- Unfolded here as gcc doesn&squot;t like unnamed structs. */
+DECL|member|magic
+id|NTFS_RECORD_TYPE
+id|magic
+suffix:semicolon
+multiline_comment|/* Usually the magic is &quot;FILE&quot;. */
+DECL|member|usa_ofs
+id|le16
+id|usa_ofs
+suffix:semicolon
+multiline_comment|/* See NTFS_RECORD definition above. */
+DECL|member|usa_count
+id|le16
+id|usa_count
+suffix:semicolon
+multiline_comment|/* See NTFS_RECORD definition above. */
+DECL|member|lsn
+multiline_comment|/*  8*/
+id|le64
+id|lsn
+suffix:semicolon
+multiline_comment|/* $LogFile sequence number for this record.&n;&t;&t;&t;&t;   Changed every time the record is modified. */
+DECL|member|sequence_number
+multiline_comment|/* 16*/
+id|le16
+id|sequence_number
+suffix:semicolon
+multiline_comment|/* Number of times this mft record has been&n;&t;&t;&t;&t;   reused. (See description for MFT_REF&n;&t;&t;&t;&t;   above.) NOTE: The increment (skipping zero)&n;&t;&t;&t;&t;   is done when the file is deleted. NOTE: If&n;&t;&t;&t;&t;   this is zero it is left zero. */
+DECL|member|link_count
+multiline_comment|/* 18*/
+id|le16
+id|link_count
+suffix:semicolon
+multiline_comment|/* Number of hard links, i.e. the number of&n;&t;&t;&t;&t;   directory entries referencing this record.&n;&t;&t;&t;&t;   NOTE: Only used in mft base records.&n;&t;&t;&t;&t;   NOTE: When deleting a directory entry we&n;&t;&t;&t;&t;   check the link_count and if it is 1 we&n;&t;&t;&t;&t;   delete the file. Otherwise we delete the&n;&t;&t;&t;&t;   FILE_NAME_ATTR being referenced by the&n;&t;&t;&t;&t;   directory entry from the mft record and&n;&t;&t;&t;&t;   decrement the link_count.&n;&t;&t;&t;&t;   FIXME: Careful with Win32 + DOS names! */
+DECL|member|attrs_offset
+multiline_comment|/* 20*/
+id|le16
+id|attrs_offset
+suffix:semicolon
+multiline_comment|/* Byte offset to the first attribute in this&n;&t;&t;&t;&t;   mft record from the start of the mft record.&n;&t;&t;&t;&t;   NOTE: Must be aligned to 8-byte boundary. */
+DECL|member|flags
+multiline_comment|/* 22*/
+id|MFT_RECORD_FLAGS
+id|flags
+suffix:semicolon
+multiline_comment|/* Bit array of MFT_RECORD_FLAGS. When a file&n;&t;&t;&t;&t;   is deleted, the MFT_RECORD_IN_USE flag is&n;&t;&t;&t;&t;   set to zero. */
+DECL|member|bytes_in_use
+multiline_comment|/* 24*/
+id|le32
+id|bytes_in_use
+suffix:semicolon
+multiline_comment|/* Number of bytes used in this mft record.&n;&t;&t;&t;&t;   NOTE: Must be aligned to 8-byte boundary. */
+DECL|member|bytes_allocated
+multiline_comment|/* 28*/
+id|le32
+id|bytes_allocated
+suffix:semicolon
+multiline_comment|/* Number of bytes allocated for this mft&n;&t;&t;&t;&t;   record. This should be equal to the mft&n;&t;&t;&t;&t;   record size. */
+DECL|member|base_mft_record
+multiline_comment|/* 32*/
+id|leMFT_REF
+id|base_mft_record
+suffix:semicolon
+multiline_comment|/* This is zero for base mft records.&n;&t;&t;&t;&t;   When it is not zero it is a mft reference&n;&t;&t;&t;&t;   pointing to the base mft record to which&n;&t;&t;&t;&t;   this record belongs (this is then used to&n;&t;&t;&t;&t;   locate the attribute list attribute present&n;&t;&t;&t;&t;   in the base record which describes this&n;&t;&t;&t;&t;   extension record and hence might need&n;&t;&t;&t;&t;   modification when the extension record&n;&t;&t;&t;&t;   itself is modified, also locating the&n;&t;&t;&t;&t;   attribute list also means finding the other&n;&t;&t;&t;&t;   potential extents, belonging to the non-base&n;&t;&t;&t;&t;   mft record). */
+DECL|member|next_attr_instance
+multiline_comment|/* 40*/
+id|le16
+id|next_attr_instance
+suffix:semicolon
+multiline_comment|/* The instance number that will be assigned to&n;&t;&t;&t;&t;   the next attribute added to this mft record.&n;&t;&t;&t;&t;   NOTE: Incremented each time after it is used.&n;&t;&t;&t;&t;   NOTE: Every time the mft record is reused&n;&t;&t;&t;&t;   this number is set to zero.  NOTE: The first&n;&t;&t;&t;&t;   instance number is always 0. */
+multiline_comment|/* sizeof() = 42 bytes */
+multiline_comment|/*&n; * When (re)using the mft record, we place the update sequence array at this&n; * offset, i.e. before we start with the attributes.  This also makes sense,&n; * otherwise we could run into problems with the update sequence array&n; * containing in itself the last two bytes of a sector which would mean that&n; * multi sector transfer protection wouldn&squot;t work.  As you can&squot;t protect data&n; * by overwriting it since you then can&squot;t get it back...&n; * When reading we obviously use the data from the ntfs record header.&n; */
+DECL|typedef|MFT_RECORD_OLD
+)brace
+id|__attribute__
+(paren
+(paren
+id|__packed__
+)paren
+)paren
+id|MFT_RECORD_OLD
 suffix:semicolon
 multiline_comment|/*&n; * System defined attributes (32-bit).  Each attribute type has a corresponding&n; * attribute name (Unicode string of maximum 64 character length) as described&n; * by the attribute definitions present in the data attribute of the $AttrDef&n; * system file.  On NTFS 3.0 volumes the names are just as the types are named&n; * in the below defines exchanging AT_ for the dollar sign ($).  If that is not&n; * a revealing choice of symbol I do not know what is... (-;&n; */
 r_enum

@@ -95,6 +95,10 @@ DECL|member|flags
 id|u32
 id|flags
 suffix:semicolon
+DECL|member|ttl
+r_int
+id|ttl
+suffix:semicolon
 DECL|member|master
 r_struct
 id|w1_master
@@ -286,6 +290,10 @@ DECL|member|attempts
 r_int
 r_int
 id|attempts
+suffix:semicolon
+DECL|member|slave_ttl
+r_int
+id|slave_ttl
 suffix:semicolon
 DECL|member|initialized
 r_int

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * This file define the new driver API for Wireless Extensions&n; *&n; * Version :&t;5&t;4.12.02&n; *&n; * Authors :&t;Jean Tourrilhes - HPL - &lt;jt@hpl.hp.com&gt;&n; * Copyright (c) 2001-2002 Jean Tourrilhes, All Rights Reserved.&n; */
+multiline_comment|/*&n; * This file define the new driver API for Wireless Extensions&n; *&n; * Version :&t;6&t;21.6.04&n; *&n; * Authors :&t;Jean Tourrilhes - HPL - &lt;jt@hpl.hp.com&gt;&n; * Copyright (c) 2001-2004 Jean Tourrilhes, All Rights Reserved.&n; */
 macro_line|#ifndef _IW_HANDLER_H
 DECL|macro|_IW_HANDLER_H
 mdefine_line|#define _IW_HANDLER_H
@@ -11,10 +11,10 @@ macro_line|#include &lt;linux/wireless.h&gt;&t;&t;/* IOCTL user space API */
 multiline_comment|/***************************** VERSION *****************************/
 multiline_comment|/*&n; * This constant is used to know which version of the driver API is&n; * available. Hopefully, this will be pretty stable and no changes&n; * will be needed...&n; * I just plan to increment with each new version.&n; */
 DECL|macro|IW_HANDLER_VERSION
-mdefine_line|#define IW_HANDLER_VERSION&t;5
-multiline_comment|/*&n; * Changes :&n; *&n; * V2 to V3&n; * --------&n; *&t;- Move event definition in &lt;linux/wireless.h&gt;&n; *&t;- Add Wireless Event support :&n; *&t;&t;o wireless_send_event() prototype&n; *&t;&t;o iwe_stream_add_event/point() inline functions&n; * V3 to V4&n; * --------&n; *&t;- Reshuffle IW_HEADER_TYPE_XXX to map IW_PRIV_TYPE_XXX changes&n; *&n; * V4 to V5&n; * --------&n; *&t;- Add new spy support : struct iw_spy_data &amp; prototypes&n; */
+mdefine_line|#define IW_HANDLER_VERSION&t;6
+multiline_comment|/*&n; * Changes :&n; *&n; * V2 to V3&n; * --------&n; *&t;- Move event definition in &lt;linux/wireless.h&gt;&n; *&t;- Add Wireless Event support :&n; *&t;&t;o wireless_send_event() prototype&n; *&t;&t;o iwe_stream_add_event/point() inline functions&n; * V3 to V4&n; * --------&n; *&t;- Reshuffle IW_HEADER_TYPE_XXX to map IW_PRIV_TYPE_XXX changes&n; *&n; * V4 to V5&n; * --------&n; *&t;- Add new spy support : struct iw_spy_data &amp; prototypes&n; *&n; * V5 to V6&n; * --------&n; *&t;- Change the way we get to spy_data method for added safety&n; *&t;- Remove spy #ifdef, they are always on -&gt; cleaner code&n; *&t;- Add IW_DESCR_FLAG_NOMAX flag for very large requests&n; *&t;- Start migrating get_wireless_stats to struct iw_handler_def&n; */
 multiline_comment|/**************************** CONSTANTS ****************************/
-multiline_comment|/* Enable enhanced spy support. Disable to reduce footprint */
+multiline_comment|/* Enhanced spy support available */
 DECL|macro|IW_WIRELESS_SPY
 mdefine_line|#define IW_WIRELESS_SPY
 DECL|macro|IW_WIRELESS_THRSPY
@@ -54,6 +54,8 @@ mdefine_line|#define IW_DESCR_FLAG_EVENT&t;0x0002&t;/* Generate an event on SET 
 DECL|macro|IW_DESCR_FLAG_RESTRICT
 mdefine_line|#define IW_DESCR_FLAG_RESTRICT&t;0x0004&t;/* GET : request is ROOT only */
 multiline_comment|/* SET : Omit payload from generated iwevent */
+DECL|macro|IW_DESCR_FLAG_NOMAX
+mdefine_line|#define IW_DESCR_FLAG_NOMAX&t;0x0008&t;/* GET : no limit on request size */
 multiline_comment|/* Driver level flags */
 DECL|macro|IW_DESCR_FLAG_WAIT
 mdefine_line|#define IW_DESCR_FLAG_WAIT&t;0x0100&t;/* Wait for driver event */
@@ -113,44 +115,66 @@ id|iw_handler_def
 (brace
 multiline_comment|/* Number of handlers defined (more precisely, index of the&n;&t; * last defined handler + 1) */
 DECL|member|num_standard
+r_const
 id|__u16
 id|num_standard
 suffix:semicolon
 DECL|member|num_private
+r_const
 id|__u16
 id|num_private
 suffix:semicolon
 multiline_comment|/* Number of private arg description */
 DECL|member|num_private_args
+r_const
 id|__u16
 id|num_private_args
 suffix:semicolon
 multiline_comment|/* Array of handlers for standard ioctls&n;&t; * We will call dev-&gt;wireless_handlers-&gt;standard[ioctl - SIOCSIWNAME]&n;&t; */
 DECL|member|standard
+r_const
 id|iw_handler
 op_star
 id|standard
 suffix:semicolon
 multiline_comment|/* Array of handlers for private ioctls&n;&t; * Will call dev-&gt;wireless_handlers-&gt;private[ioctl - SIOCIWFIRSTPRIV]&n;&t; */
 DECL|member|private
+r_const
 id|iw_handler
 op_star
 r_private
 suffix:semicolon
 multiline_comment|/* Arguments of private handler. This one is just a list, so you&n;&t; * can put it in any order you want and should not leave holes...&n;&t; * We will automatically export that to user space... */
 DECL|member|private_args
+r_const
 r_struct
 id|iw_priv_args
 op_star
 id|private_args
 suffix:semicolon
-multiline_comment|/* Driver enhanced spy support */
+multiline_comment|/* This field will be *removed* in the next version of WE */
 DECL|member|spy_offset
+r_const
 r_int
 id|spy_offset
 suffix:semicolon
-multiline_comment|/* Spy data offset */
-multiline_comment|/* In the long term, get_wireless_stats will move from&n;&t; * &squot;struct net_device&squot; to here, to minimise bloat. */
+multiline_comment|/* DO NOT USE */
+multiline_comment|/* New location of get_wireless_stats, to de-bloat struct net_device.&n;&t; * The old pointer in struct net_device will be gradually phased&n;&t; * out, and drivers are encouraged to use this one... */
+DECL|member|get_wireless_stats
+r_struct
+id|iw_statistics
+op_star
+(paren
+op_star
+id|get_wireless_stats
+)paren
+(paren
+r_struct
+id|net_device
+op_star
+id|dev
+)paren
+suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/* ---------------------- IOCTL DESCRIPTION ---------------------- */
@@ -200,7 +224,6 @@ DECL|struct|iw_spy_data
 r_struct
 id|iw_spy_data
 (brace
-macro_line|#ifdef IW_WIRELESS_SPY
 multiline_comment|/* --- Standard spy support --- */
 DECL|member|spy_number
 r_int
@@ -224,7 +247,6 @@ id|spy_stat
 id|IW_MAX_SPY
 )braket
 suffix:semicolon
-macro_line|#ifdef IW_WIRELESS_THRSPY
 multiline_comment|/* --- Enhanced spy support (event) */
 DECL|member|spy_thr_low
 r_struct
@@ -245,12 +267,33 @@ id|spy_thr_under
 id|IW_MAX_SPY
 )braket
 suffix:semicolon
-macro_line|#endif /* IW_WIRELESS_THRSPY */
-macro_line|#endif /* IW_WIRELESS_SPY */
+)brace
+suffix:semicolon
+multiline_comment|/* --------------------- DEVICE WIRELESS DATA --------------------- */
+multiline_comment|/*&n; * This is all the wireless data specific to a device instance that&n; * is managed by the core of Wireless Extensions.&n; * We only keep pointer to those structures, so that a driver is free&n; * to share them between instances.&n; * This structure should be initialised before registering the device.&n; * Access to this data follow the same rules as any other struct net_device&n; * data (i.e. valid as long as struct net_device exist, same locking rules).&n; */
+DECL|struct|iw_public_data
+r_struct
+id|iw_public_data
+(brace
+multiline_comment|/* Driver enhanced spy support */
+DECL|member|spy_data
+r_struct
+id|iw_spy_data
+op_star
+id|spy_data
+suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/**************************** PROTOTYPES ****************************/
 multiline_comment|/*&n; * Functions part of the Wireless Extensions (defined in net/core/wireless.c).&n; * Those may be called only within the kernel.&n; */
+multiline_comment|/* Data needed by fs/compat_ioctl.c for 32-&gt;64 bit conversion */
+r_extern
+r_const
+r_char
+id|iw_priv_type_size
+(braket
+)braket
+suffix:semicolon
 multiline_comment|/* First : function strictly used inside the kernel */
 multiline_comment|/* Handle /proc/net/wireless, called in net/code/dev.c */
 r_extern

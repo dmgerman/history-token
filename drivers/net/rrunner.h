@@ -963,6 +963,7 @@ c_func
 (paren
 r_struct
 id|rr_regs
+id|__iomem
 op_star
 id|regs
 comma
@@ -1058,6 +1059,7 @@ c_func
 (paren
 r_struct
 id|rr_regs
+id|__iomem
 op_star
 id|regs
 comma
@@ -2021,6 +2023,7 @@ suffix:semicolon
 DECL|member|regs
 r_struct
 id|rr_regs
+id|__iomem
 op_star
 id|regs
 suffix:semicolon

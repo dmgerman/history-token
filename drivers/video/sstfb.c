@@ -7077,6 +7077,11 @@ l_int|0
 )paren
 suffix:semicolon
 multiline_comment|/* register fb */
+id|info-&gt;device
+op_assign
+op_amp
+id|pdev-&gt;dev
+suffix:semicolon
 r_if
 c_cond
 (paren

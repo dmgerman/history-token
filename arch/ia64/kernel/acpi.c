@@ -11,6 +11,7 @@ macro_line|#include &lt;linux/irq.h&gt;
 macro_line|#include &lt;linux/acpi.h&gt;
 macro_line|#include &lt;linux/efi.h&gt;
 macro_line|#include &lt;linux/mmzone.h&gt;
+macro_line|#include &lt;linux/nodemask.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/iosapic.h&gt;
 macro_line|#include &lt;asm/machvec.h&gt;

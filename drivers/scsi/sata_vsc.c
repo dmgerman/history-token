@@ -1459,6 +1459,17 @@ c_func
 id|pdev
 )paren
 suffix:semicolon
+multiline_comment|/* &n;&t; * Config offset 0x98 is &quot;Extended Control and Status Register 0&quot;&n;&t; * Default value is (1 &lt;&lt; 28).  All bits except bit 28 are reserved in&n;&t; * DPA mode.  If bit 28 is set, LED 0 reflects all ports&squot; activity.&n;&t; * If bit 28 is clear, each port has its own LED.&n;&t; */
+id|pci_write_config_dword
+c_func
+(paren
+id|pdev
+comma
+l_int|0x98
+comma
+l_int|0
+)paren
+suffix:semicolon
 multiline_comment|/* FIXME: check ata_device_add return value */
 id|ata_device_add
 c_func

@@ -67,15 +67,16 @@ id|put_link
 op_assign
 id|page_put_link
 comma
+macro_line|#ifdef CONFIG_EXT2_FS_XATTR
 dot
 id|setxattr
 op_assign
-id|ext2_setxattr
+id|generic_setxattr
 comma
 dot
 id|getxattr
 op_assign
-id|ext2_getxattr
+id|generic_getxattr
 comma
 dot
 id|listxattr
@@ -85,8 +86,9 @@ comma
 dot
 id|removexattr
 op_assign
-id|ext2_removexattr
+id|generic_removexattr
 comma
+macro_line|#endif
 )brace
 suffix:semicolon
 DECL|variable|ext2_fast_symlink_inode_operations
@@ -105,15 +107,16 @@ id|follow_link
 op_assign
 id|ext2_follow_link
 comma
+macro_line|#ifdef CONFIG_EXT2_FS_XATTR
 dot
 id|setxattr
 op_assign
-id|ext2_setxattr
+id|generic_setxattr
 comma
 dot
 id|getxattr
 op_assign
-id|ext2_getxattr
+id|generic_getxattr
 comma
 dot
 id|listxattr
@@ -123,8 +126,9 @@ comma
 dot
 id|removexattr
 op_assign
-id|ext2_removexattr
+id|generic_removexattr
 comma
+macro_line|#endif
 )brace
 suffix:semicolon
 eof

@@ -672,7 +672,7 @@ id|dev_info
 (paren
 id|hcd-&gt;self.controller
 comma
-l_string|&quot;irq %s, %s %p&bslash;n&quot;
+l_string|&quot;irq %s, %s 0x%lx&bslash;n&quot;
 comma
 id|bufp
 comma
@@ -687,7 +687,7 @@ l_string|&quot;pci mem&quot;
 suffix:colon
 l_string|&quot;io base&quot;
 comma
-id|base
+id|resource
 )paren
 suffix:semicolon
 id|usb_bus_init
@@ -937,6 +937,12 @@ op_amp
 id|hcd-&gt;self
 )paren
 suffix:semicolon
+id|pci_disable_device
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
 )brace
 DECL|variable|usb_hcd_pci_remove
 id|EXPORT_SYMBOL
@@ -1072,8 +1078,6 @@ suffix:semicolon
 id|pci_save_state
 (paren
 id|dev
-comma
-id|hcd-&gt;pci_state
 )paren
 suffix:semicolon
 macro_line|#ifdef&t;CONFIG_USB_SUSPEND
@@ -1303,8 +1307,6 @@ suffix:semicolon
 id|pci_restore_state
 (paren
 id|dev
-comma
-id|hcd-&gt;pci_state
 )paren
 suffix:semicolon
 macro_line|#ifdef&t;CONFIG_USB_SUSPEND

@@ -38,6 +38,9 @@ macro_line|#include &quot;scsi.h&quot;
 macro_line|#include &lt;scsi/scsi_host.h&gt;
 macro_line|#include &quot;sd.h&quot;
 macro_line|#endif
+macro_line|#if defined(CONFIG_IA64_GENERIC) || defined(CONFIG_IA64_SGI_SN2)
+macro_line|#include &lt;asm/sn/io.h&gt;
+macro_line|#endif
 macro_line|#if LINUX_VERSION_CODE &lt; 0x020407
 macro_line|#error &quot;Kernels older than 2.4.7 are no longer supported&quot;
 macro_line|#endif
@@ -93,29 +96,6 @@ macro_line|#endif
 macro_line|#if (BITS_PER_LONG == 64) || defined CONFIG_HIGHMEM
 DECL|macro|QLA_64BIT_PTR
 mdefine_line|#define QLA_64BIT_PTR&t;1
-macro_line|#endif
-macro_line|#if defined(CONFIG_IA64_GENERIC) || defined(CONFIG_IA64_SGI_SN2)
-macro_line|#include &lt;asm/sn/pci/pciio.h&gt;
-multiline_comment|/* Ugly hack needed for the virtual channel fix on SN2 */
-r_extern
-r_int
-id|snia_pcibr_rrb_alloc
-c_func
-(paren
-r_struct
-id|pci_dev
-op_star
-id|pci_dev
-comma
-r_int
-op_star
-id|count_vchan0
-comma
-r_int
-op_star
-id|count_vchan1
-)paren
-suffix:semicolon
 macro_line|#endif
 macro_line|#ifdef QLA_64BIT_PTR
 DECL|macro|pci_dma_hi32
@@ -5359,22 +5339,6 @@ l_string|&quot;sn2&quot;
 )paren
 )paren
 (brace
-r_int
-id|count1
-comma
-id|count2
-suffix:semicolon
-r_int
-id|c
-suffix:semicolon
-id|count1
-op_assign
-l_int|3
-suffix:semicolon
-id|count2
-op_assign
-l_int|3
-suffix:semicolon
 id|printk
 c_func
 (paren
@@ -5385,38 +5349,6 @@ comma
 id|ha-&gt;host_no
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-(paren
-id|c
-op_assign
-id|snia_pcibr_rrb_alloc
-c_func
-(paren
-id|ha-&gt;pdev
-comma
-op_amp
-id|count1
-comma
-op_amp
-id|count2
-)paren
-)paren
-OL
-l_int|0
-)paren
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;scsi(%li): Unable to allocate SN2 &quot;
-l_string|&quot;virtual DMA channels&bslash;n&quot;
-comma
-id|ha-&gt;host_no
-)paren
-suffix:semicolon
-r_else
 id|ha-&gt;flags.use_pci_vchannel
 op_assign
 l_int|1
@@ -12488,6 +12420,11 @@ c_func
 (paren
 id|ha-&gt;pdev
 comma
+(paren
+r_int
+r_int
+op_star
+)paren
 op_amp
 id|dma_handle
 comma
@@ -12790,6 +12727,11 @@ c_func
 (paren
 id|ha-&gt;pdev
 comma
+(paren
+r_int
+r_int
+op_star
+)paren
 op_amp
 id|dma_handle
 comma
@@ -12988,6 +12930,11 @@ c_func
 (paren
 id|ha-&gt;pdev
 comma
+(paren
+r_int
+r_int
+op_star
+)paren
 op_amp
 id|dma_handle
 comma

@@ -321,11 +321,12 @@ c_func
 (paren
 id|idp_init_irq
 )paren
-id|INITTIME
-c_func
-(paren
-id|pxa_init_time
-)paren
+dot
+id|timer
+op_assign
+op_amp
+id|pxa_timer
+comma
 id|INIT_MACHINE
 c_func
 (paren

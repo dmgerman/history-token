@@ -77,14 +77,14 @@ id|firmware_subsys
 suffix:semicolon
 )brace
 DECL|variable|firmware_register
-id|EXPORT_SYMBOL
+id|EXPORT_SYMBOL_GPL
 c_func
 (paren
 id|firmware_register
 )paren
 suffix:semicolon
 DECL|variable|firmware_unregister
-id|EXPORT_SYMBOL
+id|EXPORT_SYMBOL_GPL
 c_func
 (paren
 id|firmware_unregister

@@ -814,10 +814,6 @@ macro_line|#endif
 multiline_comment|/*&n;&t; * Remap the regs into kernel space.&n;&t; */
 id|pAC-&gt;IoBase
 op_assign
-(paren
-r_char
-op_star
-)paren
 id|ioremap_nocache
 c_func
 (paren

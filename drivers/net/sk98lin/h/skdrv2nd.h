@@ -585,7 +585,7 @@ id|TxDesRingLock
 suffix:semicolon
 multiline_comment|/* serialize descriptor accesses */
 DECL|member|HwAddr
-id|caddr_t
+id|SK_IOC
 id|HwAddr
 suffix:semicolon
 multiline_comment|/* bmu registers address */
@@ -651,7 +651,7 @@ id|RxFillLimit
 suffix:semicolon
 multiline_comment|/* limit for buffers in ring */
 DECL|member|HwAddr
-id|caddr_t
+id|SK_IOC
 id|HwAddr
 suffix:semicolon
 multiline_comment|/* bmu registers address */

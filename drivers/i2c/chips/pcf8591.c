@@ -245,8 +245,6 @@ DECL|variable|pcf8591_id
 r_static
 r_int
 id|pcf8591_id
-op_assign
-l_int|0
 suffix:semicolon
 multiline_comment|/* following are the sysfs callback functions */
 DECL|macro|show_in_channel

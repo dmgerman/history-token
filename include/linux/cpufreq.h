@@ -10,6 +10,7 @@ macro_line|#include &lt;linux/kobject.h&gt;
 macro_line|#include &lt;linux/sysfs.h&gt;
 macro_line|#include &lt;linux/completion.h&gt;
 macro_line|#include &lt;linux/workqueue.h&gt;
+macro_line|#include &lt;linux/cpumask.h&gt;
 DECL|macro|CPUFREQ_NAME_LEN
 mdefine_line|#define CPUFREQ_NAME_LEN 16
 multiline_comment|/*********************************************************************&n; *                     CPUFREQ NOTIFIER INTERFACE                    *&n; *********************************************************************/
@@ -113,12 +114,17 @@ DECL|struct|cpufreq_policy
 r_struct
 id|cpufreq_policy
 (brace
+DECL|member|cpus
+id|cpumask_t
+id|cpus
+suffix:semicolon
+multiline_comment|/* affected CPUs */
 DECL|member|cpu
 r_int
 r_int
 id|cpu
 suffix:semicolon
-multiline_comment|/* cpu nr */
+multiline_comment|/* cpu nr of registered CPU */
 DECL|member|cpuinfo
 r_struct
 id|cpufreq_cpuinfo

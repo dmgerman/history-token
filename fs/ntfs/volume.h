@@ -2,6 +2,7 @@ multiline_comment|/*&n; * volume.h - Defines for volume structures in NTFS Linux
 macro_line|#ifndef _LINUX_NTFS_VOLUME_H
 DECL|macro|_LINUX_NTFS_VOLUME_H
 mdefine_line|#define _LINUX_NTFS_VOLUME_H
+macro_line|#include &lt;linux/rwsem.h&gt;
 macro_line|#include &quot;types.h&quot;
 macro_line|#include &quot;layout.h&quot;
 multiline_comment|/*&n; * The NTFS in memory super block structure.&n; */
@@ -160,6 +161,11 @@ suffix:semicolon
 multiline_comment|/* Table of attribute definitions.&n;&t;&t;&t;&t;&t;   Obtained from FILE_AttrDef. */
 macro_line|#ifdef NTFS_RW
 multiline_comment|/* Variables used by the cluster and mft allocators. */
+DECL|member|mft_data_pos
+id|s64
+id|mft_data_pos
+suffix:semicolon
+multiline_comment|/* Mft record number at which to&n;&t;&t;&t;&t;&t;   allocate the next mft record. */
 DECL|member|mft_zone_start
 id|LCN
 id|mft_zone_start

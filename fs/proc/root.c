@@ -575,15 +575,6 @@ id|proc_root
 comma
 )brace
 suffix:semicolon
-macro_line|#ifdef CONFIG_SYSCTL
-DECL|variable|proc_sys_root
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|proc_sys_root
-)paren
-suffix:semicolon
-macro_line|#endif
 DECL|variable|proc_symlink
 id|EXPORT_SYMBOL
 c_func
