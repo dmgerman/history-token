@@ -2536,13 +2536,6 @@ comma
 id|ACPI_CA_VERSION
 )paren
 suffix:semicolon
-multiline_comment|/* Initial core debug level excludes drivers, so include them now */
-id|acpi_set_debug
-c_func
-(paren
-id|ACPI_DEBUG_LOW
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
