@@ -92,10 +92,6 @@ r_int
 id|smp_threads_ready
 suffix:semicolon
 r_extern
-r_int
-id|smp_num_cpus
-suffix:semicolon
-r_extern
 r_volatile
 r_int
 r_int
@@ -125,8 +121,6 @@ DECL|macro|MSG_CALL_FUNCTION
 mdefine_line|#define MSG_CALL_FUNCTION       0x0004  /* Call function on all other CPUs */
 macro_line|#else /* !SMP */
 multiline_comment|/*&n; *&t;These macros fold the SMP functionality into a single CPU system&n; */
-DECL|macro|smp_num_cpus
-mdefine_line|#define smp_num_cpus&t;&t;&t;&t;1
 DECL|macro|smp_processor_id
 mdefine_line|#define smp_processor_id()&t;&t;&t;0
 DECL|macro|hard_smp_processor_id
@@ -137,14 +131,8 @@ macro_line|#ifndef CONFIG_PREEMPT
 DECL|macro|kernel_lock
 mdefine_line|#define kernel_lock()
 macro_line|#endif
-DECL|macro|cpu_logical_map
-mdefine_line|#define cpu_logical_map(cpu)&t;&t;&t;0
-DECL|macro|cpu_number_map
-mdefine_line|#define cpu_number_map(cpu)&t;&t;&t;0
 DECL|macro|smp_call_function
 mdefine_line|#define smp_call_function(func,info,retry,wait)&t;({ 0; })
-DECL|macro|cpu_online_map
-mdefine_line|#define cpu_online_map&t;&t;&t;&t;1
 DECL|function|smp_send_reschedule
 r_static
 r_inline
@@ -168,6 +156,12 @@ r_void
 )paren
 (brace
 )brace
+DECL|macro|cpu_online_map
+mdefine_line|#define cpu_online_map&t;&t;&t;&t;1
+DECL|macro|cpu_online
+mdefine_line|#define cpu_online(cpu)&t;&t;&t;&t;1
+DECL|macro|num_online_cpus
+mdefine_line|#define num_online_cpus()&t;&t;&t;1
 DECL|macro|__per_cpu_data
 mdefine_line|#define __per_cpu_data
 DECL|macro|per_cpu

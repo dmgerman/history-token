@@ -1961,7 +1961,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|smp_num_cpus
+id|NR_CPUS
 suffix:semicolon
 op_increment
 id|i
@@ -1969,6 +1969,15 @@ comma
 id|cpumask
 op_rshift_assign
 l_int|1
+)paren
+r_if
+c_cond
+(paren
+id|cpu_online
+c_func
+(paren
+id|i
+)paren
 )paren
 id|mask
 op_or_assign

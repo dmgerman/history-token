@@ -12,8 +12,14 @@ macro_line|#else
 DECL|macro|LOCK_PREFIX
 mdefine_line|#define LOCK_PREFIX &quot;&quot;
 macro_line|#endif
-DECL|macro|prepare_to_switch
-mdefine_line|#define prepare_to_switch() do {} while(0)
+DECL|macro|prepare_arch_schedule
+mdefine_line|#define prepare_arch_schedule(prev)            do { } while(0)
+DECL|macro|finish_arch_schedule
+mdefine_line|#define finish_arch_schedule(prev)             do { } while(0)
+DECL|macro|prepare_arch_switch
+mdefine_line|#define prepare_arch_switch(rq)                        do { } while(0)
+DECL|macro|finish_arch_switch
+mdefine_line|#define finish_arch_switch(rq)                 spin_unlock_irq(&amp;(rq)-&gt;lock)
 DECL|macro|__STR
 mdefine_line|#define __STR(x) #x
 DECL|macro|STR
@@ -29,7 +35,7 @@ mdefine_line|#define SAVE_CONTEXT &bslash;&n;&t;__PUSH(r8) __PUSH(r9) __PUSH(r10
 DECL|macro|RESTORE_CONTEXT
 mdefine_line|#define RESTORE_CONTEXT &bslash;&n;&t;__POP(rbp) __POP(rbx) &bslash;&n;&t;__POP(rcx) __POP(rdx) &bslash;&n;&t;__POP(rsi) __POP(rdi) &bslash;&n;&t;__POP(rax) __POP(r15) __POP(r14) __POP(r13) __POP(r12) __POP(r11) __POP(r10) &bslash;&n;&t;__POP(r9) __POP(r8)
 DECL|macro|switch_to
-mdefine_line|#define switch_to(prev,next) &bslash;&n;&t;asm volatile(SAVE_CONTEXT&t;&t;&t;&t;&t;&t;    &bslash;&n;&t;&t;     &quot;movq %%rsp,%[prevrsp]&bslash;n&bslash;t&quot;&t;&t;&t;&t;    &bslash;&n;&t;&t;     &quot;movq %[nextrsp],%%rsp&bslash;n&bslash;t&quot;&t;&t;&t;&t;    &bslash;&n;&t;&t;     &quot;movq $1f,%[prevrip]&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;    &bslash;&n;&t;&t;     &quot;pushq %[nextrip]&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;    &bslash;&n;&t;&t;     &quot;jmp __switch_to&bslash;n&bslash;t&quot;&t;&t;&bslash;&n;&t;&t;     &quot;1:&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&t;    &bslash;&n;&t;&t;     RESTORE_CONTEXT&t;&t;&t;&t;&t;&t;    &bslash;&n;&t;&t;     :[prevrsp] &quot;=m&quot; (prev-&gt;thread.rsp), &t;&t;&t;    &bslash;&n;&t;&t;      [prevrip] &quot;=m&quot; (prev-&gt;thread.rip)&t;&t;&t;    &t;    &bslash;&n;&t;&t;     :[nextrsp] &quot;m&quot; (next-&gt;thread.rsp), &t;&t;&t;    &bslash;&n;&t;&t;      [nextrip]&quot;m&quot; (next-&gt;thread.rip),&t;&t;&t;&t;    &bslash;&n;&t;&t;      [next] &quot;S&quot; (next), [prev] &quot;D&quot; (prev)  &t;&t;&t;    &bslash;&n;&t;             :&quot;memory&quot;)
+mdefine_line|#define switch_to(prev,next,last) &bslash;&n;&t;asm volatile(SAVE_CONTEXT&t;&t;&t;&t;&t;&t;    &bslash;&n;&t;&t;     &quot;movq %%rsp,%[prevrsp]&bslash;n&bslash;t&quot;&t;&t;&t;&t;    &bslash;&n;&t;&t;     &quot;movq %[nextrsp],%%rsp&bslash;n&bslash;t&quot;&t;&t;&t;&t;    &bslash;&n;&t;&t;     &quot;movq $1f,%[prevrip]&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;    &bslash;&n;&t;&t;     &quot;pushq %[nextrip]&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;    &bslash;&n;&t;&t;     &quot;jmp __switch_to&bslash;n&bslash;t&quot;&t;&t;&bslash;&n;&t;&t;     &quot;1:&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&t;    &bslash;&n;&t;&t;     RESTORE_CONTEXT&t;&t;&t;&t;&t;&t;    &bslash;&n;&t;&t;     :[prevrsp] &quot;=m&quot; (prev-&gt;thread.rsp), &t;&t;&t;    &bslash;&n;&t;&t;      [prevrip] &quot;=m&quot; (prev-&gt;thread.rip)&t;&t;&t;    &t;    &bslash;&n;&t;&t;     :[nextrsp] &quot;m&quot; (next-&gt;thread.rsp), &t;&t;&t;    &bslash;&n;&t;&t;      [nextrip]&quot;m&quot; (next-&gt;thread.rip),&t;&t;&t;&t;    &bslash;&n;&t;&t;      [next] &quot;S&quot; (next), [prev] &quot;D&quot; (prev)  &t;&t;&t;    &bslash;&n;&t;             :&quot;memory&quot;)
 r_extern
 r_void
 id|load_gs_index

@@ -1,4 +1,4 @@
-multiline_comment|/*&n;   The compile-time configurable defaults for the Linux SCSI tape driver.&n;&n;   Copyright 1995-2000 Kai Makisara.&n;&n;   Last modified: Tue Jan 22 21:52:34 2002 by makisara&n;*/
+multiline_comment|/*&n;   The compile-time configurable defaults for the Linux SCSI tape driver.&n;&n;   Copyright 1995-2000 Kai Makisara.&n;&n;   Last modified: Sun May  5 15:09:56 2002 by makisara&n;*/
 macro_line|#ifndef _ST_OPTIONS_H
 DECL|macro|_ST_OPTIONS_H
 mdefine_line|#define _ST_OPTIONS_H
@@ -14,18 +14,15 @@ mdefine_line|#define ST_RECOVERED_WRITE_FATAL 0
 multiline_comment|/* The &quot;guess&quot; for the block size for devices that don&squot;t support MODE&n;   SENSE. */
 DECL|macro|ST_DEFAULT_BLOCK
 mdefine_line|#define ST_DEFAULT_BLOCK 0
-multiline_comment|/* The tape driver buffer size in kilobytes. Must be non-zero. */
-DECL|macro|ST_BUFFER_BLOCKS
-mdefine_line|#define ST_BUFFER_BLOCKS 32
+multiline_comment|/* The minimum tape driver buffer size in kilobytes in fixed block mode.&n;   Must be non-zero. */
+DECL|macro|ST_FIXED_BUFFER_BLOCKS
+mdefine_line|#define ST_FIXED_BUFFER_BLOCKS 32
 multiline_comment|/* The number of kilobytes of data in the buffer that triggers an&n;   asynchronous write in fixed block mode. See also ST_ASYNC_WRITES&n;   below. */
 DECL|macro|ST_WRITE_THRESHOLD_BLOCKS
 mdefine_line|#define ST_WRITE_THRESHOLD_BLOCKS 30
-multiline_comment|/* The maximum number of tape buffers the driver tries to allocate at &n;   driver initialisation. The number is also constrained by the number&n;   of drives detected. If more buffers are needed, they are allocated&n;   at run time and freed after use. */
-DECL|macro|ST_MAX_BUFFERS
-mdefine_line|#define ST_MAX_BUFFERS 4
 multiline_comment|/* Maximum number of scatter/gather segments */
 DECL|macro|ST_MAX_SG
-mdefine_line|#define ST_MAX_SG      16
+mdefine_line|#define ST_MAX_SG      64
 multiline_comment|/* The number of scatter/gather segments to allocate at first try (must be&n;   smaller or equal to the maximum). */
 DECL|macro|ST_FIRST_SG
 mdefine_line|#define ST_FIRST_SG    8

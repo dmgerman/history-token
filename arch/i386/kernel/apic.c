@@ -2859,13 +2859,13 @@ c_func
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * ok, Intel has some smart code in their APIC that knows&n;&t; * if a CPU was in &squot;hlt&squot; lowpower mode, and this increases&n;&t; * its APIC arbitration priority. To avoid the external timer&n;&t; * IRQ APIC event being in synchron with the APIC clock we&n;&t; * introduce an interrupt skew to spread out timer events.&n;&t; *&n;&t; * The number of slices within a &squot;big&squot; timeslice is smp_num_cpus+1&n;&t; */
+multiline_comment|/*&n;&t; * ok, Intel has some smart code in their APIC that knows&n;&t; * if a CPU was in &squot;hlt&squot; lowpower mode, and this increases&n;&t; * its APIC arbitration priority. To avoid the external timer&n;&t; * IRQ APIC event being in synchron with the APIC clock we&n;&t; * introduce an interrupt skew to spread out timer events.&n;&t; *&n;&t; * The number of slices within a &squot;big&squot; timeslice is NR_CPUS+1&n;&t; */
 id|slice
 op_assign
 id|clocks
 op_div
 (paren
-id|smp_num_cpus
+id|NR_CPUS
 op_plus
 l_int|1
 )paren

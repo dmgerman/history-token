@@ -96,6 +96,8 @@ op_assign
 id|pte.pte_low
 suffix:semicolon
 )brace
+DECL|macro|set_pte_atomic
+mdefine_line|#define set_pte_atomic(pteptr,pteval) &bslash;&n;&t;&t;set_64bit((unsigned long long *)(pteptr),pte_val(pteval))
 DECL|macro|set_pmd
 mdefine_line|#define set_pmd(pmdptr,pmdval) &bslash;&n;&t;&t;set_64bit((unsigned long long *)(pmdptr),pmd_val(pmdval))
 DECL|macro|set_pgd

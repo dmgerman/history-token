@@ -653,7 +653,7 @@ l_int|0
 suffix:semicolon
 id|cpu
 OL
-id|smp_num_cpus
+id|NR_CPUS
 suffix:semicolon
 id|cpu
 op_increment

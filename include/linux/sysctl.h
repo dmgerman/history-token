@@ -408,24 +408,24 @@ suffix:semicolon
 multiline_comment|/* CTL_VM names: */
 r_enum
 (brace
-DECL|enumerator|VM_SWAPCTL
-id|VM_SWAPCTL
+DECL|enumerator|VM_UNUSED1
+id|VM_UNUSED1
 op_assign
 l_int|1
 comma
-multiline_comment|/* struct: Set vm swapping control */
-DECL|enumerator|VM_SWAPOUT
-id|VM_SWAPOUT
+multiline_comment|/* was: struct: Set vm swapping control */
+DECL|enumerator|VM_UNUSED2
+id|VM_UNUSED2
 op_assign
 l_int|2
 comma
-multiline_comment|/* int: Linear or sqrt() swapout for hogs */
-DECL|enumerator|VM_FREEPG
-id|VM_FREEPG
+multiline_comment|/* was; int: Linear or sqrt() swapout for hogs */
+DECL|enumerator|VM_UNUSED3
+id|VM_UNUSED3
 op_assign
 l_int|3
 comma
-multiline_comment|/* struct: Set free page thresholds */
+multiline_comment|/* was: struct: Set free page thresholds */
 DECL|enumerator|VM_BDFLUSH_UNUSED
 id|VM_BDFLUSH_UNUSED
 op_assign
@@ -438,35 +438,66 @@ op_assign
 l_int|5
 comma
 multiline_comment|/* Turn off the virtual memory safety limit */
-DECL|enumerator|VM_BUFFERMEM
-id|VM_BUFFERMEM
+DECL|enumerator|VM_UNUSED4
+id|VM_UNUSED4
 op_assign
 l_int|6
 comma
-multiline_comment|/* struct: Set buffer memory thresholds */
-DECL|enumerator|VM_PAGECACHE
-id|VM_PAGECACHE
+multiline_comment|/* was: struct: Set buffer memory thresholds */
+DECL|enumerator|VM_UNUSED5
+id|VM_UNUSED5
 op_assign
 l_int|7
 comma
-multiline_comment|/* struct: Set cache memory thresholds */
+multiline_comment|/* was: struct: Set cache memory thresholds */
 DECL|enumerator|VM_PAGERDAEMON
 id|VM_PAGERDAEMON
 op_assign
 l_int|8
 comma
 multiline_comment|/* struct: Control kswapd behaviour */
-DECL|enumerator|VM_PGT_CACHE
-id|VM_PGT_CACHE
+DECL|enumerator|VM_UNUSED6
+id|VM_UNUSED6
 op_assign
 l_int|9
 comma
-multiline_comment|/* struct: Set page table cache parameters */
+multiline_comment|/* was: struct: Set page table cache parameters */
 DECL|enumerator|VM_PAGE_CLUSTER
 id|VM_PAGE_CLUSTER
 op_assign
 l_int|10
+comma
 multiline_comment|/* int: set number of pages to swap together */
+DECL|enumerator|VM_DIRTY_BACKGROUND
+id|VM_DIRTY_BACKGROUND
+op_assign
+l_int|11
+comma
+multiline_comment|/* dirty_background_ratio */
+DECL|enumerator|VM_DIRTY_ASYNC
+id|VM_DIRTY_ASYNC
+op_assign
+l_int|12
+comma
+multiline_comment|/* dirty_async_ratio */
+DECL|enumerator|VM_DIRTY_SYNC
+id|VM_DIRTY_SYNC
+op_assign
+l_int|13
+comma
+multiline_comment|/* dirty_sync_ratio */
+DECL|enumerator|VM_DIRTY_WB_CS
+id|VM_DIRTY_WB_CS
+op_assign
+l_int|14
+comma
+multiline_comment|/* dirty_writeback_centisecs */
+DECL|enumerator|VM_DIRTY_EXPIRE_CS
+id|VM_DIRTY_EXPIRE_CS
+op_assign
+l_int|15
+comma
+multiline_comment|/* dirty_expire_centisecs */
 )brace
 suffix:semicolon
 multiline_comment|/* CTL_NET names: */

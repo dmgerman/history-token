@@ -1,11 +1,12 @@
+multiline_comment|/*&n; * Generate definitions needed by assembly language modules.&n; * This code generates raw asm output which is post-processed to extract&n; * and format the required data.&n; */
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/stddef.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
-DECL|macro|OUT
-mdefine_line|#define OUT(x) &bslash;&n;  asm (&quot;&bslash;nxyzzy &quot; x)
-DECL|macro|DEF
-mdefine_line|#define DEF(name, val) &bslash;&n;  asm volatile (&quot;&bslash;nxyzzy #define &quot; name &quot; %0&quot; : : &quot;i&quot;(val))
+DECL|macro|DEFINE
+mdefine_line|#define DEFINE(sym, val) &bslash;&n;        asm volatile(&quot;&bslash;n-&gt;&quot; #sym &quot; %0 &quot; #val : : &quot;i&quot; (val))
+DECL|macro|BLANK
+mdefine_line|#define BLANK() asm volatile(&quot;&bslash;n-&gt;&quot; : : )
 DECL|function|foo
 r_void
 id|foo
@@ -14,28 +15,10 @@ c_func
 r_void
 )paren
 (brace
-id|OUT
+id|DEFINE
 c_func
 (paren
-l_string|&quot;#ifndef __ASM_OFFSETS_H__&quot;
-)paren
-suffix:semicolon
-id|OUT
-c_func
-(paren
-l_string|&quot;#define __ASM_OFFSETS_H__&quot;
-)paren
-suffix:semicolon
-id|OUT
-c_func
-(paren
-l_string|&quot;&quot;
-)paren
-suffix:semicolon
-id|DEF
-c_func
-(paren
-l_string|&quot;TI_TASK&quot;
+id|TI_TASK
 comma
 m_offsetof
 (paren
@@ -46,10 +29,10 @@ id|task
 )paren
 )paren
 suffix:semicolon
-id|DEF
+id|DEFINE
 c_func
 (paren
-l_string|&quot;TI_FLAGS&quot;
+id|TI_FLAGS
 comma
 m_offsetof
 (paren
@@ -60,10 +43,10 @@ id|flags
 )paren
 )paren
 suffix:semicolon
-id|DEF
+id|DEFINE
 c_func
 (paren
-l_string|&quot;TI_CPU&quot;
+id|TI_CPU
 comma
 m_offsetof
 (paren
@@ -74,34 +57,44 @@ id|cpu
 )paren
 )paren
 suffix:semicolon
-id|DEF
+id|BLANK
 c_func
 (paren
-l_string|&quot;PT_PTRACED&quot;
+)paren
+suffix:semicolon
+id|DEFINE
+c_func
+(paren
+id|PT_PTRACED
 comma
 id|PT_PTRACED
 )paren
 suffix:semicolon
-id|DEF
+id|DEFINE
 c_func
 (paren
-l_string|&quot;CLONE_VM&quot;
+id|CLONE_VM
 comma
 id|CLONE_VM
 )paren
 suffix:semicolon
-id|DEF
+id|DEFINE
 c_func
 (paren
-l_string|&quot;SIGCHLD&quot;
+id|SIGCHLD
 comma
 id|SIGCHLD
 )paren
 suffix:semicolon
-id|DEF
+id|BLANK
 c_func
 (paren
-l_string|&quot;HAE_CACHE&quot;
+)paren
+suffix:semicolon
+id|DEFINE
+c_func
+(paren
+id|HAE_CACHE
 comma
 m_offsetof
 (paren
@@ -112,10 +105,10 @@ id|hae_cache
 )paren
 )paren
 suffix:semicolon
-id|DEF
+id|DEFINE
 c_func
 (paren
-l_string|&quot;HAE_REG&quot;
+id|HAE_REG
 comma
 m_offsetof
 (paren
@@ -124,18 +117,6 @@ id|alpha_machine_vector
 comma
 id|hae_register
 )paren
-)paren
-suffix:semicolon
-id|OUT
-c_func
-(paren
-l_string|&quot;&quot;
-)paren
-suffix:semicolon
-id|OUT
-c_func
-(paren
-l_string|&quot;#endif /* __ASM_OFFSETS_H__ */&quot;
 )paren
 suffix:semicolon
 )brace

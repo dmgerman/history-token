@@ -110,7 +110,7 @@ macro_line|#endif
 l_int|NULL
 )brace
 suffix:semicolon
-multiline_comment|/*&n; *&t;This is ucking fugly but its probably the best thing for 2.4.x&n; *&t;Take it as a clear reminder than we should put the device name&n; *&t;generation in the object kdev_t points to in 2.5.&n; */
+multiline_comment|/*&n; *&t;This is ucking fugly but its probably the best thing for 2.4.x&n; *&t;Take it as a clear reminder that: 1) we should put the device name&n; *&t;generation in the object kdev_t points to in 2.5.&n; *&t;and 2) ioctls better work on half-opened devices.&n; */
 macro_line|#ifdef CONFIG_ARCH_S390
 DECL|variable|genhd_dasd_name
 r_int
@@ -133,11 +133,44 @@ op_star
 op_assign
 l_int|NULL
 suffix:semicolon
+DECL|variable|genhd_dasd_ioctl
+r_int
+(paren
+op_star
+id|genhd_dasd_ioctl
+)paren
+(paren
+r_struct
+id|inode
+op_star
+id|inp
+comma
+r_struct
+id|file
+op_star
+id|filp
+comma
+r_int
+r_int
+id|no
+comma
+r_int
+r_int
+id|data
+)paren
+suffix:semicolon
 DECL|variable|genhd_dasd_name
 id|EXPORT_SYMBOL
 c_func
 (paren
 id|genhd_dasd_name
+)paren
+suffix:semicolon
+DECL|variable|genhd_dasd_ioctl
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|genhd_dasd_ioctl
 )paren
 suffix:semicolon
 macro_line|#endif

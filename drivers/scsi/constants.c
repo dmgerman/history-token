@@ -4796,6 +4796,10 @@ l_int|4
 suffix:semicolon
 )brace
 macro_line|#if !(CONSTANTS &amp; CONST_SENSE)
+(brace
+r_int
+id|i
+suffix:semicolon
 id|printk
 c_func
 (paren
@@ -4833,6 +4837,7 @@ c_func
 l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
+)brace
 macro_line|#endif
 )brace
 DECL|function|print_sense

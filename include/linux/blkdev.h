@@ -619,28 +619,6 @@ c_func
 r_void
 )paren
 suffix:semicolon
-r_extern
-r_void
-id|create_bounce
-c_func
-(paren
-r_int
-r_int
-id|pfn
-comma
-r_int
-id|gfp
-comma
-r_struct
-id|bio
-op_star
-op_star
-id|bio_orig
-)paren
-suffix:semicolon
-DECL|function|blk_queue_bounce
-r_extern
-r_inline
 r_void
 id|blk_queue_bounce
 c_func
@@ -655,18 +633,7 @@ op_star
 op_star
 id|bio
 )paren
-(brace
-id|create_bounce
-c_func
-(paren
-id|q-&gt;bounce_pfn
-comma
-id|q-&gt;bounce_gfp
-comma
-id|bio
-)paren
 suffix:semicolon
-)brace
 DECL|macro|rq_for_each_bio
 mdefine_line|#define rq_for_each_bio(bio, rq)&t;&bslash;&n;&t;if ((rq-&gt;bio))&t;&t;&t;&bslash;&n;&t;&t;for (bio = (rq)-&gt;bio; bio; bio = bio-&gt;bi_next)
 DECL|struct|blk_dev_struct
@@ -1156,8 +1123,6 @@ op_star
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * tag stuff&n; */
-DECL|macro|blk_queue_tag_request
-mdefine_line|#define blk_queue_tag_request(q, tag)&t;((q)-&gt;queue_tags-&gt;tag_index[(tag)])
 DECL|macro|blk_queue_tag_depth
 mdefine_line|#define blk_queue_tag_depth(q)&t;&t;((q)-&gt;queue_tags-&gt;busy)
 DECL|macro|blk_queue_tag_queue
@@ -1175,6 +1140,19 @@ comma
 r_struct
 id|request
 op_star
+)paren
+suffix:semicolon
+r_extern
+r_struct
+id|request
+op_star
+id|blk_queue_find_tag
+c_func
+(paren
+id|request_queue_t
+op_star
+comma
+r_int
 )paren
 suffix:semicolon
 r_extern

@@ -27,6 +27,10 @@ r_extern
 id|rwlock_t
 id|xtime_lock
 suffix:semicolon
+DECL|variable|jiffies_64
+id|u64
+id|jiffies_64
+suffix:semicolon
 DECL|variable|sp_clock_typ
 r_enum
 id|sparc_clock_type

@@ -6,6 +6,7 @@ DECL|macro|_PPC_SMP_H
 mdefine_line|#define _PPC_SMP_H
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
+macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#ifdef CONFIG_SMP
 macro_line|#ifndef __ASSEMBLY__
 DECL|struct|cpuinfo_PPC
@@ -127,13 +128,62 @@ DECL|macro|NO_PROC_ID
 mdefine_line|#define NO_PROC_ID&t;&t;0xFF            /* No processor magic marker */
 DECL|macro|PROC_CHANGE_PENALTY
 mdefine_line|#define PROC_CHANGE_PENALTY&t;20
-multiline_comment|/* 1 to 1 mapping on PPC -- Cort */
-DECL|macro|cpu_logical_map
-mdefine_line|#define cpu_logical_map(cpu) (cpu)
-DECL|macro|cpu_number_map
-mdefine_line|#define cpu_number_map(x) (x)
 DECL|macro|smp_processor_id
 mdefine_line|#define smp_processor_id() (current_thread_info()-&gt;cpu)
+DECL|macro|cpu_online
+mdefine_line|#define cpu_online(cpu) (cpu_online_map &amp; (1&lt;&lt;(cpu)))
+DECL|function|num_online_cpus
+r_extern
+r_inline
+r_int
+r_int
+id|num_online_cpus
+c_func
+(paren
+r_void
+)paren
+(brace
+r_return
+id|hweight32
+c_func
+(paren
+id|cpu_online_map
+)paren
+suffix:semicolon
+)brace
+DECL|function|any_online_cpu
+r_extern
+r_inline
+r_int
+id|any_online_cpu
+c_func
+(paren
+r_int
+r_int
+id|mask
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|mask
+op_amp
+id|cpu_online_map
+)paren
+r_return
+id|__ffs
+c_func
+(paren
+id|mask
+op_amp
+id|cpu_online_map
+)paren
+suffix:semicolon
+r_return
+op_minus
+l_int|1
+suffix:semicolon
+)brace
 r_extern
 r_int
 id|smp_hw_index

@@ -1500,6 +1500,9 @@ id|page
 op_star
 id|page
 suffix:semicolon
+r_int
+id|may_enter_fs
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1664,6 +1667,29 @@ id|page-&gt;mapping
 r_goto
 id|page_mapped
 suffix:semicolon
+multiline_comment|/*&n;&t;&t; * swap activity never enters the filesystem and is safe&n;&t;&t; * for GFP_NOFS allocations.&n;&t;&t; */
+id|may_enter_fs
+op_assign
+(paren
+id|gfp_mask
+op_amp
+id|__GFP_FS
+)paren
+op_logical_or
+(paren
+id|PageSwapCache
+c_func
+(paren
+id|page
+)paren
+op_logical_and
+(paren
+id|gfp_mask
+op_amp
+id|__GFP_IO
+)paren
+)paren
+suffix:semicolon
 multiline_comment|/*&n;&t;&t; * IO in progress? Leave it at the back of the list.&n;&t;&t; */
 r_if
 c_cond
@@ -1682,9 +1708,7 @@ id|page
 r_if
 c_cond
 (paren
-id|gfp_mask
-op_amp
-id|__GFP_FS
+id|may_enter_fs
 )paren
 (brace
 id|page_cache_get
@@ -1775,11 +1799,7 @@ id|page
 op_logical_and
 id|page-&gt;mapping
 op_logical_and
-(paren
-id|gfp_mask
-op_amp
-id|__GFP_FS
-)paren
+id|may_enter_fs
 )paren
 (brace
 multiline_comment|/*&n;&t;&t;&t; * It is not critical here to write it only if&n;&t;&t;&t; * the page is unmapped beause any direct writer&n;&t;&t;&t; * like O_DIRECT would set the page&squot;s dirty bitflag&n;&t;&t;&t; * on the phisical page after having successfully&n;&t;&t;&t; * pinned it and after the I/O to the page is finished,&n;&t;&t;&t; * so the direct writes to the page cannot get lost.&n;&t;&t;&t; */
@@ -1871,7 +1891,7 @@ suffix:semicolon
 r_continue
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t;&t; * If the page has buffers, try to free the buffer mappings&n;&t;&t; * associated with this page. If we succeed we try to free&n;&t;&t; * the page as well.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * If the page has buffers, try to free the buffer mappings&n;&t;&t; * associated with this page. If we succeed we try to free&n;&t;&t; * the page as well.&n;&t;&t; *&n;&t;&t; * We do this even if the page is PageDirty().&n;&t;&t; * try_to_release_page() does not perform I/O, but it is&n;&t;&t; * possible for a page to have PageDirty set, but it is actually&n;&t;&t; * clean (all its buffers are clean).  This happens if the&n;&t;&t; * buffers were written out directly, with submit_bh(). ext3&n;&t;&t; * will do this, as well as the blockdev mapping. &n;&t;&t; * try_to_release_page() will discover that cleanness and will&n;&t;&t; * drop the buffers and mark the page clean - it can be freed.&n;&t;&t; */
 r_if
 c_cond
 (paren

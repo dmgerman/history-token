@@ -5,6 +5,7 @@ macro_line|#include &lt;linux/timex.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
+macro_line|#include &lt;linux/tqueue.h&gt;
 macro_line|#include &lt;linux/kernel_stat.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 DECL|variable|kstat
@@ -194,11 +195,7 @@ id|itimerval
 op_star
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * The 64-bit value is not volatile - you MUST NOT read it&n; * without holding read_lock_irq(&amp;xtime_lock).&n; * jiffies is defined in the linker script...&n; */
-DECL|variable|jiffies_64
-id|u64
-id|jiffies_64
-suffix:semicolon
+multiline_comment|/*&n; * The 64-bit jiffies value is not atomic - you MUST NOT read it&n; * without holding read_lock_irq(&amp;xtime_lock).&n; * jiffies is defined in the linker script...&n; */
 DECL|variable|prof_buffer
 r_int
 r_int
@@ -921,22 +918,6 @@ id|ret
 suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_SMP
-DECL|function|sync_timers
-r_void
-id|sync_timers
-c_func
-(paren
-r_void
-)paren
-(brace
-id|spin_unlock_wait
-c_func
-(paren
-op_amp
-id|global_bh_lock
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/*&n; * SMP specific function to delete periodic timer.&n; * Caller must disable by some means restarting the timer&n; * for new. Upon exit the timer is not queued and handler is not running&n; * on any CPU. It returns number of times, which timer was deleted&n; * (for reference counting).&n; */
 DECL|function|del_timer_sync
 r_int

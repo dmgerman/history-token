@@ -3518,8 +3518,8 @@ multiline_comment|/* finds n&squot;th buffer with 0 being the start of this comm
 DECL|macro|JOURNAL_BUFFER
 mdefine_line|#define JOURNAL_BUFFER(j,n) ((j)-&gt;j_ap_blocks[((j)-&gt;j_start + (n)) % JOURNAL_BLOCK_COUNT])
 singleline_comment|// We need these to make journal.c code more readable
-DECL|macro|journal_get_hash_table
-mdefine_line|#define journal_get_hash_table(s, block) __get_hash_table(SB_JOURNAL(s)-&gt;j_dev_bd, block, s-&gt;s_blocksize)
+DECL|macro|journal_find_get_block
+mdefine_line|#define journal_find_get_block(s, block) __find_get_block(SB_JOURNAL(s)-&gt;j_dev_bd, block, s-&gt;s_blocksize)
 DECL|macro|journal_getblk
 mdefine_line|#define journal_getblk(s, block) __getblk(SB_JOURNAL(s)-&gt;j_dev_bd, block, s-&gt;s_blocksize)
 DECL|macro|journal_bread

@@ -43,14 +43,12 @@ l_string|&quot;QDIO base support version 2, &quot;
 l_string|&quot;Copyright 2000 IBM Corporation&quot;
 )paren
 suffix:semicolon
-macro_line|#if (LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,4,12))
 id|MODULE_LICENSE
 c_func
 (paren
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/******************** HERE WE GO ***********************************/
 DECL|variable|version
 r_static
@@ -5985,8 +5983,7 @@ id|irq_ptr-&gt;output_qs
 id|i
 )braket
 )paren
-r_goto
-id|next2
+r_continue
 suffix:semicolon
 id|available
 op_assign
@@ -6101,8 +6098,6 @@ id|i
 )braket
 )paren
 suffix:semicolon
-id|next2
-suffix:colon
 )brace
 r_if
 c_cond
@@ -9372,7 +9367,6 @@ id|chsc_area
 r_int
 id|cc
 suffix:semicolon
-macro_line|#ifdef QDIO_32_BIT
 id|asm
 r_volatile
 (paren
@@ -9393,28 +9387,6 @@ suffix:colon
 l_string|&quot;cc&quot;
 )paren
 suffix:semicolon
-macro_line|#else /* QDIO_32_BIT */
-id|asm
-r_volatile
-(paren
-l_string|&quot;.insn&t;rre,0xb25f0000,%1,0&t;&bslash;n&bslash;t&quot;
-l_string|&quot;ipm&t;%0&t;&bslash;n&bslash;t&quot;
-l_string|&quot;srl&t;%0,28&t;&bslash;n&bslash;t&quot;
-suffix:colon
-l_string|&quot;=d&quot;
-(paren
-id|cc
-)paren
-suffix:colon
-l_string|&quot;d&quot;
-(paren
-id|chsc_area
-)paren
-suffix:colon
-l_string|&quot;cc&quot;
-)paren
-suffix:semicolon
-macro_line|#endif /* QDIO_32_BIT */
 r_return
 id|cc
 suffix:semicolon

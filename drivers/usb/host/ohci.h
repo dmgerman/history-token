@@ -19,7 +19,7 @@ mdefine_line|#define ED_LOWSPEED&t;__constant_cpu_to_le32(1 &lt;&lt; 13)
 DECL|macro|ED_OUT
 mdefine_line|#define ED_OUT&t;&t;__constant_cpu_to_le32(0x01 &lt;&lt; 11)
 DECL|macro|ED_IN
-mdefine_line|#define ED_IN&t;&t;__constant_cpu_to_le32(0x10 &lt;&lt; 11)
+mdefine_line|#define ED_IN&t;&t;__constant_cpu_to_le32(0x02 &lt;&lt; 11)
 DECL|member|hwTailP
 id|__u32
 id|hwTailP
@@ -58,13 +58,32 @@ id|td
 op_star
 id|dummy
 suffix:semicolon
+DECL|member|td_list
+r_struct
+id|list_head
+id|td_list
+suffix:semicolon
+multiline_comment|/* &quot;shadow list&quot; of our TDs */
+DECL|member|state
+id|u8
+id|state
+suffix:semicolon
+multiline_comment|/* ED_{NEW,UNLINK,OPER} */
+DECL|macro|ED_NEW
+mdefine_line|#define ED_NEW &t;&t;0x00&t;&t;/* unused, no dummy td */
+DECL|macro|ED_UNLINK
+mdefine_line|#define ED_UNLINK &t;0x01&t;&t;/* dummy td, maybe linked to hc */
+DECL|macro|ED_OPER
+mdefine_line|#define ED_OPER&t;&t;0x02&t;&t;/* dummy td, _is_ linked to hc */
+DECL|macro|ED_URB_DEL
+mdefine_line|#define ED_URB_DEL  &t;0x08&t;&t;/* for unlinking; masked in */
 DECL|member|type
 id|u8
 id|type
 suffix:semicolon
 multiline_comment|/* PIPE_{BULK,...} */
 DECL|member|interval
-id|u8
+id|u16
 id|interval
 suffix:semicolon
 multiline_comment|/* interrupt, isochronous */
@@ -75,10 +94,6 @@ r_struct
 id|intr_info
 (brace
 multiline_comment|/* interrupt */
-DECL|member|int_period
-id|u8
-id|int_period
-suffix:semicolon
 DECL|member|int_branch
 id|u8
 id|int_branch
@@ -100,19 +115,6 @@ DECL|member|intriso
 )brace
 id|intriso
 suffix:semicolon
-DECL|member|state
-id|u8
-id|state
-suffix:semicolon
-multiline_comment|/* ED_{NEW,UNLINK,OPER} */
-DECL|macro|ED_NEW
-mdefine_line|#define ED_NEW &t;&t;0x00&t;&t;/* unused, no dummy td */
-DECL|macro|ED_UNLINK
-mdefine_line|#define ED_UNLINK &t;0x01&t;&t;/* dummy td, maybe linked to hc */
-DECL|macro|ED_OPER
-mdefine_line|#define ED_OPER&t;&t;0x02&t;&t;/* dummy td, _is_ linked to hc */
-DECL|macro|ED_URB_DEL
-mdefine_line|#define ED_URB_DEL  &t;0x08&t;&t;/* for unlinking; masked in */
 multiline_comment|/* HC may see EDs on rm_list until next frame (frame_no == tick) */
 DECL|member|tick
 id|u16
@@ -244,6 +246,12 @@ id|dma_addr_t
 id|data_dma
 suffix:semicolon
 multiline_comment|/* addr of data it points to */
+DECL|member|td_list
+r_struct
+id|list_head
+id|td_list
+suffix:semicolon
+multiline_comment|/* &quot;shadow list&quot;, TDs on same ED */
 )brace
 id|__attribute__
 (paren
