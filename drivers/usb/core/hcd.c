@@ -25,6 +25,12 @@ id|LIST_HEAD
 id|usb_bus_list
 )paren
 suffix:semicolon
+DECL|variable|usb_bus_list
+id|EXPORT_SYMBOL
+(paren
+id|usb_bus_list
+)paren
+suffix:semicolon
 multiline_comment|/* used when allocating bus numbers */
 DECL|macro|USB_MAXBUS
 mdefine_line|#define USB_MAXBUS&t;&t;64
@@ -66,6 +72,12 @@ id|usb_bus_list_lock
 )paren
 suffix:semicolon
 multiline_comment|/* exported only for usbfs */
+DECL|variable|usb_bus_list_lock
+id|EXPORT_SYMBOL
+(paren
+id|usb_bus_list_lock
+)paren
+suffix:semicolon
 multiline_comment|/* used when updating hcd data */
 DECL|variable|hcd_data_lock
 r_static

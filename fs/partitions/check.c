@@ -1811,13 +1811,6 @@ comma
 id|part
 )paren
 suffix:semicolon
-id|kobject_init
-c_func
-(paren
-op_amp
-id|p-&gt;kobj
-)paren
-suffix:semicolon
 id|snprintf
 c_func
 (paren
@@ -1965,7 +1958,7 @@ id|s
 op_assign
 l_char|&squot;!&squot;
 suffix:semicolon
-id|kobject_register
+id|kobject_add
 c_func
 (paren
 op_amp
@@ -2716,15 +2709,7 @@ id|disk-&gt;driverfs_dev
 )paren
 suffix:semicolon
 )brace
-id|kobject_get
-c_func
-(paren
-op_amp
-id|disk-&gt;kobj
-)paren
-suffix:semicolon
-multiline_comment|/* kobject model is fucked in head */
-id|kobject_unregister
+id|kobject_del
 c_func
 (paren
 op_amp
