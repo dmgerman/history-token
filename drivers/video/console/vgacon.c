@@ -112,6 +112,9 @@ id|c
 comma
 r_int
 id|blank
+comma
+r_int
+id|mode_switch
 )paren
 suffix:semicolon
 r_static
@@ -3162,6 +3165,9 @@ id|c
 comma
 r_int
 id|blank
+comma
+r_int
+id|mode_switch
 )paren
 (brace
 r_switch
@@ -3226,9 +3232,17 @@ r_case
 l_int|1
 suffix:colon
 multiline_comment|/* Normal blanking */
+r_case
+op_minus
+l_int|1
+suffix:colon
+multiline_comment|/* Obsolete */
 r_if
 c_cond
 (paren
+op_logical_neg
+id|mode_switch
+op_logical_and
 id|vga_video_type
 op_eq
 id|VIDEO_TYPE_VGAC
@@ -3269,28 +3283,11 @@ comma
 id|c-&gt;vc_screenbuf_size
 )paren
 suffix:semicolon
-r_return
-l_int|1
-suffix:semicolon
-r_case
-op_minus
-l_int|1
-suffix:colon
-multiline_comment|/* Entering graphic mode */
-id|scr_memsetw
-c_func
+r_if
+c_cond
 (paren
-(paren
-r_void
-op_star
+id|mode_switch
 )paren
-id|vga_vram_base
-comma
-id|BLANK
-comma
-id|c-&gt;vc_screenbuf_size
-)paren
-suffix:semicolon
 id|vga_is_gfx
 op_assign
 l_int|1
