@@ -10,6 +10,10 @@ macro_line|#include &quot;sysdep/syscalls.h&quot;
 macro_line|#include &quot;kern_util.h&quot;
 r_extern
 id|syscall_handler_t
+id|sys_restart_syscall
+suffix:semicolon
+r_extern
+id|syscall_handler_t
 id|sys_ni_syscall
 suffix:semicolon
 r_extern

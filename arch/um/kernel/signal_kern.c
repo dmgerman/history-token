@@ -12,6 +12,7 @@ macro_line|#include &quot;linux/tty.h&quot;
 macro_line|#include &quot;linux/binfmts.h&quot;
 macro_line|#include &quot;asm/signal.h&quot;
 macro_line|#include &quot;asm/uaccess.h&quot;
+macro_line|#include &quot;asm/unistd.h&quot;
 macro_line|#include &quot;user_util.h&quot;
 macro_line|#include &quot;kern_util.h&quot;
 macro_line|#include &quot;signal_kern.h&quot;
