@@ -1156,6 +1156,15 @@ op_amp
 id|thread-&gt;fpstate
 )paren
 suffix:semicolon
+macro_line|#if defined(CONFIG_VFP)
+id|vfp_flush_thread
+c_func
+(paren
+op_amp
+id|thread-&gt;vfpstate
+)paren
+suffix:semicolon
+macro_line|#endif
 )brace
 DECL|function|release_thread
 r_void
@@ -1168,6 +1177,15 @@ op_star
 id|dead_task
 )paren
 (brace
+macro_line|#if defined(CONFIG_VFP)
+id|vfp_release_thread
+c_func
+(paren
+op_amp
+id|dead_task-&gt;thread_info-&gt;vfpstate
+)paren
+suffix:semicolon
+macro_line|#endif
 )brace
 id|asmlinkage
 r_void
