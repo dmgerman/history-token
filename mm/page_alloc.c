@@ -1943,9 +1943,6 @@ op_star
 id|page
 suffix:semicolon
 r_int
-id|cflags
-suffix:semicolon
-r_int
 id|i
 suffix:semicolon
 r_int
@@ -2291,10 +2288,6 @@ c_func
 id|allocstall
 )paren
 suffix:semicolon
-id|cflags
-op_assign
-id|current-&gt;flags
-suffix:semicolon
 id|current-&gt;flags
 op_or_assign
 id|PF_MEMALLOC
@@ -2310,8 +2303,9 @@ id|order
 )paren
 suffix:semicolon
 id|current-&gt;flags
-op_assign
-id|cflags
+op_and_assign
+op_complement
+id|PF_MEMALLOC
 suffix:semicolon
 multiline_comment|/* go through the zonelist yet one more time */
 id|min
