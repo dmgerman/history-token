@@ -108,6 +108,12 @@ comma
 id|filler
 )paren
 suffix:semicolon
+id|update_atime
+c_func
+(paren
+id|inode
+)paren
+suffix:semicolon
 )brace
 id|up
 c_func

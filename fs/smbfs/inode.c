@@ -1996,6 +1996,10 @@ id|SMB_MOUNT_ASCII
 r_goto
 id|out_wrong_data
 suffix:semicolon
+id|sb-&gt;s_flags
+op_or_assign
+id|MS_NODIRATIME
+suffix:semicolon
 id|sb-&gt;s_blocksize
 op_assign
 l_int|1024

@@ -256,6 +256,10 @@ id|inode
 op_star
 id|root
 suffix:semicolon
+id|sbp-&gt;s_flags
+op_or_assign
+id|MS_RDONLY
+suffix:semicolon
 id|infp
 op_assign
 id|kmalloc

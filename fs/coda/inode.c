@@ -662,6 +662,11 @@ id|sb-&gt;s_fs_info
 op_assign
 id|sbi
 suffix:semicolon
+id|sb-&gt;s_flags
+op_or_assign
+id|MS_NODIRATIME
+suffix:semicolon
+multiline_comment|/* probably even noatime */
 id|sb-&gt;s_blocksize
 op_assign
 l_int|1024

@@ -163,12 +163,6 @@ comma
 id|dirent
 )paren
 suffix:semicolon
-id|update_atime
-c_func
-(paren
-id|dir
-)paren
-suffix:semicolon
 id|unlock_kernel
 c_func
 (paren

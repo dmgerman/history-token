@@ -771,6 +771,10 @@ id|inode
 op_star
 id|root
 suffix:semicolon
+id|sb-&gt;s_flags
+op_or_assign
+id|MS_RDONLY
+suffix:semicolon
 id|sbi
 op_assign
 id|kmalloc
