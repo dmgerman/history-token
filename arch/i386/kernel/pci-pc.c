@@ -5981,6 +5981,13 @@ c_func
 r_void
 )paren
 (brace
+r_struct
+id|pci_ops
+op_star
+id|tmp
+op_assign
+l_int|NULL
+suffix:semicolon
 multiline_comment|/*&n;&t; * Try all known PCI access methods. Note that we support using &n;&t; * both PCI BIOS and direct access, with a preference for direct.&n;&t; */
 macro_line|#ifdef CONFIG_PCI_BIOS
 r_if
@@ -6022,6 +6029,10 @@ id|pci_bios_write
 suffix:semicolon
 )brace
 macro_line|#endif
+id|tmp
+op_assign
+id|pci_root_ops
+suffix:semicolon
 macro_line|#ifdef CONFIG_PCI_DIRECT
 r_if
 c_cond
@@ -6077,6 +6088,18 @@ suffix:semicolon
 )brace
 )brace
 macro_line|#endif
+multiline_comment|/* if direct access failed, fall back to BIOS access. */
+r_if
+c_cond
+(paren
+id|pci_root_ops
+op_eq
+l_int|NULL
+)paren
+id|pci_root_ops
+op_assign
+id|tmp
+suffix:semicolon
 r_return
 suffix:semicolon
 )brace
