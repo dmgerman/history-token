@@ -1436,7 +1436,7 @@ l_string|&quot;driver/nvram&quot;
 comma
 l_int|0
 comma
-l_int|0
+l_int|NULL
 comma
 id|nvram_read_proc
 comma
@@ -1506,7 +1506,7 @@ c_func
 (paren
 l_string|&quot;driver/nvram&quot;
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 id|misc_deregister

@@ -10954,14 +10954,10 @@ id|mii_ioctl_data
 op_star
 id|miidata
 op_assign
+id|if_mii
+c_func
 (paren
-r_struct
-id|mii_ioctl_data
-op_star
-)paren
-op_amp
-(paren
-id|ifr-&gt;ifr_data
+id|ifr
 )paren
 suffix:semicolon
 r_int

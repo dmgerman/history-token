@@ -472,9 +472,9 @@ id|MAX_MP_BUSSES
 suffix:semicolon
 r_extern
 id|cpumask_t
-id|mp_bus_to_cpumask
+id|pci_bus_to_cpumask
 (braket
-id|MAX_MP_BUSSES
+l_int|256
 )braket
 suffix:semicolon
 r_extern

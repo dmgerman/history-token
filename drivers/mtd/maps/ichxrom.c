@@ -1280,7 +1280,7 @@ c_func
 (paren
 id|KERN_WARNING
 id|MOD_NAME
-l_string|&quot; rom(%u) larger than window(%u). fixing...&bslash;n&quot;
+l_string|&quot; rom(%u) larger than window(%lu). fixing...&bslash;n&quot;
 comma
 id|info-&gt;mtd-&gt;size
 comma

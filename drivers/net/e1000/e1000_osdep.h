@@ -39,7 +39,7 @@ id|boolean_t
 suffix:semicolon
 DECL|macro|MSGOUT
 mdefine_line|#define MSGOUT(S, A, B)&t;printk(KERN_DEBUG S &quot;&bslash;n&quot;, A, B)
-macro_line|#if DBG
+macro_line|#ifdef DBG
 DECL|macro|DEBUGOUT
 mdefine_line|#define DEBUGOUT(S)&t;&t;printk(KERN_DEBUG S &quot;&bslash;n&quot;)
 DECL|macro|DEBUGOUT1

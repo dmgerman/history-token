@@ -4932,7 +4932,7 @@ macro_line|#if __HAVE_KERNEL_CTX_SWITCH
 multiline_comment|/* We no longer really hold it, but if we are the next&n;&t; * agent to request it then we should just be able to&n;&t; * take it immediately and not eat the ioctl.&n;&t; */
 id|dev-&gt;lock.filp
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 (brace
 id|__volatile__

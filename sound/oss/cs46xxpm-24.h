@@ -34,7 +34,7 @@ id|pcidev
 )paren
 suffix:semicolon
 DECL|macro|cs_pm_register
-mdefine_line|#define cs_pm_register(a, b, c)  0
+mdefine_line|#define cs_pm_register(a, b, c)  NULL
 DECL|macro|cs_pm_unregister_all
 mdefine_line|#define cs_pm_unregister_all(a) 
 DECL|macro|CS46XX_SUSPEND_TBL

@@ -467,12 +467,6 @@ r_return
 op_minus
 id|EINVAL
 suffix:semicolon
-id|acpi_table_print_madt_entry
-c_func
-(paren
-id|header
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -553,49 +547,12 @@ r_return
 op_minus
 id|EINVAL
 suffix:semicolon
-id|acpi_table_print_madt_entry
-c_func
-(paren
-id|header
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;CPU %d (0x%04x)&quot;
-comma
-id|total_cpus
-comma
-(paren
-id|lsapic-&gt;id
-op_lshift
-l_int|8
-)paren
-op_or
-id|lsapic-&gt;eid
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
 id|lsapic-&gt;flags.enabled
 )paren
-id|printk
-c_func
-(paren
-l_string|&quot; disabled&quot;
-)paren
-suffix:semicolon
-r_else
 (brace
-id|printk
-c_func
-(paren
-l_string|&quot; enabled&quot;
-)paren
-suffix:semicolon
 macro_line|#ifdef CONFIG_SMP
 id|smp_boot_data.cpu_phys_id
 (braket
@@ -609,29 +566,6 @@ l_int|8
 )paren
 op_or
 id|lsapic-&gt;eid
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|hard_smp_processor_id
-c_func
-(paren
-)paren
-op_eq
-(paren
-r_int
-r_int
-)paren
-id|smp_boot_data.cpu_phys_id
-(braket
-id|available_cpus
-)braket
-)paren
-id|printk
-c_func
-(paren
-l_string|&quot; (BSP)&quot;
-)paren
 suffix:semicolon
 macro_line|#endif
 id|ia64_acpiid_to_sapicid
@@ -651,12 +585,6 @@ op_increment
 id|available_cpus
 suffix:semicolon
 )brace
-id|printk
-c_func
-(paren
-l_string|&quot;&bslash;n&quot;
-)paren
-suffix:semicolon
 id|total_cpus
 op_increment
 suffix:semicolon
@@ -709,12 +637,6 @@ r_return
 op_minus
 id|EINVAL
 suffix:semicolon
-id|acpi_table_print_madt_entry
-c_func
-(paren
-id|header
-)paren
-suffix:semicolon
 multiline_comment|/* TBD: Support lapic_nmi entries */
 r_return
 l_int|0
@@ -764,12 +686,6 @@ id|end
 r_return
 op_minus
 id|EINVAL
-suffix:semicolon
-id|acpi_table_print_madt_entry
-c_func
-(paren
-id|header
-)paren
 suffix:semicolon
 id|iosapic_init
 c_func
@@ -830,12 +746,6 @@ id|end
 r_return
 op_minus
 id|EINVAL
-suffix:semicolon
-id|acpi_table_print_madt_entry
-c_func
-(paren
-id|header
-)paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Get vector assignment for this interrupt, set attributes,&n;&t; * and program the IOSAPIC routing table.&n;&t; */
 id|vector
@@ -932,12 +842,6 @@ r_return
 op_minus
 id|EINVAL
 suffix:semicolon
-id|acpi_table_print_madt_entry
-c_func
-(paren
-id|header
-)paren
-suffix:semicolon
 id|iosapic_override_isa_irq
 c_func
 (paren
@@ -1016,12 +920,6 @@ id|end
 r_return
 op_minus
 id|EINVAL
-suffix:semicolon
-id|acpi_table_print_madt_entry
-c_func
-(paren
-id|header
-)paren
 suffix:semicolon
 multiline_comment|/* TBD: Support nimsrc entries */
 r_return

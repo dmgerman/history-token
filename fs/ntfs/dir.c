@@ -4466,7 +4466,7 @@ id|ie-&gt;length
 id|ntfs_debug
 c_func
 (paren
-l_string|&quot;In index root, offset 0x%x.&quot;
+l_string|&quot;In index root, offset 0x%zx.&quot;
 comma
 (paren
 id|u8

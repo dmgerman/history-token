@@ -690,10 +690,10 @@ suffix:semicolon
 multiline_comment|/*&n; *  LUN control block lookup.&n; *  We use a direct pointer for LUN #0, and a table of &n; *  pointers which is only allocated for devices that support &n; *  LUN(s) &gt; 0.&n; */
 macro_line|#if SYM_CONF_MAX_LUN &lt;= 1
 DECL|macro|sym_lp
-mdefine_line|#define sym_lp(np, tp, lun) (!lun) ? (tp)-&gt;lun0p : 0
+mdefine_line|#define sym_lp(np, tp, lun) (!lun) ? (tp)-&gt;lun0p : NULL
 macro_line|#else
 DECL|macro|sym_lp
-mdefine_line|#define sym_lp(np, tp, lun) &bslash;&n;&t;(!lun) ? (tp)-&gt;lun0p : (tp)-&gt;lunmp ? (tp)-&gt;lunmp[(lun)] : 0
+mdefine_line|#define sym_lp(np, tp, lun) &bslash;&n;&t;(!lun) ? (tp)-&gt;lun0p : (tp)-&gt;lunmp ? (tp)-&gt;lunmp[(lun)] : NULL
 macro_line|#endif
 multiline_comment|/*&n; *  Status are used by the host and the script processor.&n; *&n; *  The last four bytes (status[4]) are copied to the &n; *  scratchb register (declared as scr0..scr3) just after the &n; *  select/reselect, and copied back just after disconnecting.&n; *  Inside the script the XX_REG are used.&n; */
 multiline_comment|/*&n; *  Last four bytes (script)&n; */

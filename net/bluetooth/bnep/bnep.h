@@ -305,6 +305,7 @@ suffix:semicolon
 DECL|member|ci
 r_struct
 id|bnep_conninfo
+id|__user
 op_star
 id|ci
 suffix:semicolon

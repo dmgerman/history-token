@@ -4448,7 +4448,7 @@ id|SNDRV_PCM_HW_PARAM_RATE
 comma
 id|snd_sonicvibes_hw_constraint_dac_rate
 comma
-l_int|0
+l_int|NULL
 comma
 id|SNDRV_PCM_HW_PARAM_RATE
 comma

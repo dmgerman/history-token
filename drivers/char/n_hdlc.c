@@ -769,7 +769,7 @@ id|n_hdlc-&gt;backup_tty
 )paren
 id|n_hdlc-&gt;backup_tty
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_if
 c_cond
@@ -2690,7 +2690,7 @@ op_logical_neg
 id|n_hdlc
 )paren
 r_return
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|memset
 c_func

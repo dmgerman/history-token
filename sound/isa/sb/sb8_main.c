@@ -2096,7 +2096,7 @@ id|SNDRV_PCM_HW_PARAM_RATE
 comma
 id|snd_sb8_hw_constraint_rate_channels
 comma
-l_int|0
+l_int|NULL
 comma
 id|SNDRV_PCM_HW_PARAM_CHANNELS
 comma
@@ -2117,7 +2117,7 @@ id|SNDRV_PCM_HW_PARAM_CHANNELS
 comma
 id|snd_sb8_hw_constraint_channels_rate
 comma
-l_int|0
+l_int|NULL
 comma
 id|SNDRV_PCM_HW_PARAM_RATE
 comma

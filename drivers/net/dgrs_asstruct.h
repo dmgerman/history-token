@@ -1,5 +1,5 @@
 multiline_comment|/*&n; *&t;For declaring structures shared with assembly routines&n; *&n; *&t;$Id: asstruct.h,v 1.1.1.1 1994/10/23 05:08:32 rick Exp $&n; */
-macro_line|#if ASSEMBLER
+macro_line|#ifdef ASSEMBLER
 DECL|macro|MO
 macro_line|#&t;define MO(t,a)&t;&t;(a)
 DECL|macro|VMO
