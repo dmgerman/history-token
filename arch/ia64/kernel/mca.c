@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/irq.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/bootmem.h&gt;
+macro_line|#include &lt;linux/acpi.h&gt;
 macro_line|#include &lt;asm/machvec.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/ptrace.h&gt;
@@ -15,7 +16,6 @@ macro_line|#include &lt;asm/sal.h&gt;
 macro_line|#include &lt;asm/mca.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/hw_irq.h&gt;
-macro_line|#include &lt;asm/acpi-ext.h&gt;
 DECL|macro|MCA_PRT_XTRA_DATA
 macro_line|#undef MCA_PRT_XTRA_DATA
 DECL|struct|ia64_fptr
@@ -1275,7 +1275,7 @@ op_assign
 id|acpi_request_vector
 c_func
 (paren
-id|ACPI20_ENTRY_PIS_CPEI
+id|ACPI_INTERRUPT_CPEI
 )paren
 suffix:semicolon
 r_if

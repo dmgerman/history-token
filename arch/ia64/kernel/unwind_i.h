@@ -396,7 +396,7 @@ id|u8
 op_star
 id|imask
 suffix:semicolon
-multiline_comment|/* imask of of spill_mask record or NULL */
+multiline_comment|/* imask of spill_mask record or NULL */
 DECL|member|pr_val
 r_int
 r_int

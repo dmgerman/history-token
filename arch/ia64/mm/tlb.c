@@ -185,8 +185,6 @@ c_func
 )paren
 suffix:semicolon
 )brace
-r_static
-r_inline
 r_void
 DECL|function|ia64_global_tlb_purge
 id|ia64_global_tlb_purge

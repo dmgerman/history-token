@@ -622,4 +622,21 @@ c_func
 id|efi_dir
 )paren
 suffix:semicolon
+macro_line|#include &lt;asm/machvec.h&gt;
+macro_line|#ifdef CONFIG_IA64_GENERIC
+DECL|variable|ia64_mv
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|ia64_mv
+)paren
+suffix:semicolon
+macro_line|#endif
+DECL|variable|machvec_noop
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|machvec_noop
+)paren
+suffix:semicolon
 eof
