@@ -23099,18 +23099,6 @@ id|arg
 )paren
 suffix:semicolon
 )brace
-DECL|macro|HCIUARTSETPROTO
-mdefine_line|#define HCIUARTSETPROTO&t;_IOW(&squot;U&squot;, 200, int)
-DECL|macro|HCIUARTGETPROTO
-mdefine_line|#define HCIUARTGETPROTO&t;_IOR(&squot;U&squot;, 201, int)
-DECL|macro|BNEPCONNADD
-mdefine_line|#define BNEPCONNADD&t;_IOW(&squot;B&squot;, 200, int)
-DECL|macro|BNEPCONNDEL
-mdefine_line|#define BNEPCONNDEL&t;_IOW(&squot;B&squot;, 201, int)
-DECL|macro|BNEPGETCONNLIST
-mdefine_line|#define BNEPGETCONNLIST&t;_IOR(&squot;B&squot;, 210, int)
-DECL|macro|BNEPGETCONNINFO
-mdefine_line|#define BNEPGETCONNINFO&t;_IOR(&squot;B&squot;, 211, int)
 DECL|struct|usbdevfs_ctrltransfer32
 r_struct
 id|usbdevfs_ctrltransfer32
@@ -25224,6 +25212,19 @@ id|arg
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* Bluetooth ioctls */
+DECL|macro|HCIUARTSETPROTO
+mdefine_line|#define HCIUARTSETPROTO&t;_IOW(&squot;U&squot;, 200, int)
+DECL|macro|HCIUARTGETPROTO
+mdefine_line|#define HCIUARTGETPROTO&t;_IOR(&squot;U&squot;, 201, int)
+DECL|macro|BNEPCONNADD
+mdefine_line|#define BNEPCONNADD     _IOW(&squot;B&squot;, 200, int)
+DECL|macro|BNEPCONNDEL
+mdefine_line|#define BNEPCONNDEL     _IOW(&squot;B&squot;, 201, int)
+DECL|macro|BNEPGETCONNLIST
+mdefine_line|#define BNEPGETCONNLIST&t;_IOR(&squot;B&squot;, 210, int)
+DECL|macro|BNEPGETCONNINFO
+mdefine_line|#define BNEPGETCONNINFO&t;_IOR(&squot;B&squot;, 211, int)
 DECL|struct|ioctl_trans
 r_struct
 id|ioctl_trans
