@@ -839,7 +839,6 @@ id|bridge-&gt;dev
 )paren
 (brace
 id|printk
-c_func
 (paren
 id|KERN_DEBUG
 id|PFX
@@ -858,9 +857,8 @@ id|agp_count
 )paren
 (brace
 id|printk
-c_func
 (paren
-id|KERN_DEBUG
+id|KERN_INFO
 id|PFX
 l_string|&quot;Only one agpgart device currently supported.&bslash;n&quot;
 )paren
@@ -881,10 +879,19 @@ c_func
 id|bridge-&gt;driver-&gt;owner
 )paren
 )paren
+(brace
+id|printk
+(paren
+id|KERN_INFO
+id|PFX
+l_string|&quot;Couldn&squot;t lock chipset driver.&bslash;n&quot;
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|EINVAL
 suffix:semicolon
+)brace
 id|bridge-&gt;type
 op_assign
 id|SUPPORTED
@@ -902,9 +909,18 @@ c_cond
 (paren
 id|error
 )paren
+(brace
+id|printk
+(paren
+id|KERN_INFO
+id|PFX
+l_string|&quot;agp_backend_initialize() failed.&bslash;n&quot;
+)paren
+suffix:semicolon
 r_goto
 id|err_out
 suffix:semicolon
+)brace
 id|error
 op_assign
 id|agp_frontend_initialize
@@ -917,9 +933,18 @@ c_cond
 (paren
 id|error
 )paren
+(brace
+id|printk
+(paren
+id|KERN_INFO
+id|PFX
+l_string|&quot;agp_frontend_initialize() failed.&bslash;n&quot;
+)paren
+suffix:semicolon
 r_goto
 id|frontend_err
 suffix:semicolon
+)brace
 multiline_comment|/* FIXME: What to do with this? */
 id|inter_module_register
 c_func
