@@ -1599,7 +1599,7 @@ id|THIS_MODULE
 comma
 id|name
 suffix:colon
-l_string|&quot;pchihpfs&quot;
+l_string|&quot;pcihpfs&quot;
 comma
 id|get_sb
 suffix:colon
