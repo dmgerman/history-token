@@ -1666,6 +1666,31 @@ comma
 id|US_FL_FIX_CAPACITY
 )paren
 comma
+multiline_comment|/* Reported by Alex Butcher &lt;alex.butcher@assursys.co.uk&gt; */
+id|UNUSUAL_DEV
+c_func
+(paren
+l_int|0x067b
+comma
+l_int|0x3507
+comma
+l_int|0x0001
+comma
+l_int|0x0001
+comma
+l_string|&quot;Prolific Technology Inc.&quot;
+comma
+l_string|&quot;ATAPI-6 Bridge Controller&quot;
+comma
+id|US_SC_DEVICE
+comma
+id|US_PR_DEVICE
+comma
+l_int|NULL
+comma
+id|US_FL_FIX_CAPACITY
+)paren
+comma
 multiline_comment|/* Submitted by Benny Sjostrand &lt;benny@hostmobility.com&gt; */
 id|UNUSUAL_DEV
 c_func
