@@ -50,7 +50,7 @@ comma
 l_int|0
 )paren
 comma
-macro_line|#ifdef CONFIG_USB_STORAGE_HP8200e
+macro_line|#ifdef CONFIG_USB_STORAGE_USBAT
 id|UNUSUAL_DEV
 c_func
 (paren
@@ -70,7 +70,7 @@ id|US_SC_8070
 comma
 id|US_PR_SCM_ATAPI
 comma
-id|init_8200e
+id|init_usbat_hp8200e
 comma
 l_int|0
 )paren
@@ -94,7 +94,7 @@ id|US_SC_8070
 comma
 id|US_PR_SCM_ATAPI
 comma
-id|init_8200e
+id|init_usbat_hp8200e
 comma
 l_int|0
 )paren

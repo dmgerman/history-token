@@ -10,7 +10,75 @@ DECL|macro|USBAT_ATA
 mdefine_line|#define USBAT_ATA&t;&t;0x40
 DECL|macro|USBAT_ISA
 mdefine_line|#define USBAT_ISA&t;&t;0x50
-multiline_comment|/* SCM User I/O Data registers */
+multiline_comment|/* Commands (need to be logically OR&squot;d with an access type */
+DECL|macro|USBAT_CMD_READ_REG
+mdefine_line|#define USBAT_CMD_READ_REG&t;&t;0x00
+DECL|macro|USBAT_CMD_WRITE_REG
+mdefine_line|#define USBAT_CMD_WRITE_REG&t;&t;0x01
+DECL|macro|USBAT_CMD_READ_BLOCK
+mdefine_line|#define USBAT_CMD_READ_BLOCK&t;0x02
+DECL|macro|USBAT_CMD_WRITE_BLOCK
+mdefine_line|#define USBAT_CMD_WRITE_BLOCK&t;0x03
+DECL|macro|USBAT_CMD_COND_READ_BLOCK
+mdefine_line|#define USBAT_CMD_COND_READ_BLOCK&t;0x04
+DECL|macro|USBAT_CMD_COND_WRITE_BLOCK
+mdefine_line|#define USBAT_CMD_COND_WRITE_BLOCK&t;0x05
+DECL|macro|USBAT_CMD_WRITE_REGS
+mdefine_line|#define USBAT_CMD_WRITE_REGS&t;0x07
+multiline_comment|/* Commands (these don&squot;t need an access type) */
+DECL|macro|USBAT_CMD_EXEC_CMD
+mdefine_line|#define USBAT_CMD_EXEC_CMD&t;0x80
+DECL|macro|USBAT_CMD_SET_FEAT
+mdefine_line|#define USBAT_CMD_SET_FEAT&t;0x81
+DECL|macro|USBAT_CMD_UIO
+mdefine_line|#define USBAT_CMD_UIO&t;&t;0x82
+multiline_comment|/* Methods of accessing UIO register */
+DECL|macro|USBAT_UIO_READ
+mdefine_line|#define USBAT_UIO_READ&t;1
+DECL|macro|USBAT_UIO_WRITE
+mdefine_line|#define USBAT_UIO_WRITE&t;0
+multiline_comment|/* Qualifier bits */
+DECL|macro|USBAT_QUAL_FCQ
+mdefine_line|#define USBAT_QUAL_FCQ&t;0x20 
+singleline_comment|// full compare
+DECL|macro|USBAT_QUAL_ALQ
+mdefine_line|#define USBAT_QUAL_ALQ&t;0x10 
+singleline_comment|// auto load subcount
+multiline_comment|/* USBAT ATA registers */
+DECL|macro|USBAT_ATA_DATA
+mdefine_line|#define USBAT_ATA_DATA      0x10  
+singleline_comment|// read/write data (R/W)
+DECL|macro|USBAT_ATA_FEATURES
+mdefine_line|#define USBAT_ATA_FEATURES  0x11  
+singleline_comment|// set features (W)
+DECL|macro|USBAT_ATA_ERROR
+mdefine_line|#define USBAT_ATA_ERROR     0x11  
+singleline_comment|// error (R)
+DECL|macro|USBAT_ATA_SECCNT
+mdefine_line|#define USBAT_ATA_SECCNT    0x12  
+singleline_comment|// sector count (R/W)
+DECL|macro|USBAT_ATA_SECNUM
+mdefine_line|#define USBAT_ATA_SECNUM    0x13  
+singleline_comment|// sector number (R/W)
+DECL|macro|USBAT_ATA_LBA_ME
+mdefine_line|#define USBAT_ATA_LBA_ME    0x14  
+singleline_comment|// cylinder low (R/W)
+DECL|macro|USBAT_ATA_LBA_HI
+mdefine_line|#define USBAT_ATA_LBA_HI    0x15  
+singleline_comment|// cylinder high (R/W)
+DECL|macro|USBAT_ATA_DEVICE
+mdefine_line|#define USBAT_ATA_DEVICE    0x16  
+singleline_comment|// head/device selection (R/W)
+DECL|macro|USBAT_ATA_STATUS
+mdefine_line|#define USBAT_ATA_STATUS    0x17  
+singleline_comment|// device status (R)
+DECL|macro|USBAT_ATA_CMD
+mdefine_line|#define USBAT_ATA_CMD       0x17  
+singleline_comment|// device command (W)
+DECL|macro|USBAT_ATA_ALTSTATUS
+mdefine_line|#define USBAT_ATA_ALTSTATUS 0x0E  
+singleline_comment|// status (no clear IRQ) (R)
+multiline_comment|/* USBAT User I/O Data registers */
 DECL|macro|USBAT_UIO_EPAD
 mdefine_line|#define USBAT_UIO_EPAD&t;&t;0x80 
 singleline_comment|// Enable Peripheral Control Signals
@@ -36,7 +104,7 @@ singleline_comment|// Input 0
 DECL|macro|USBAT_UIO_INTR_ACK
 mdefine_line|#define USBAT_UIO_INTR_ACK&t;0x01 
 singleline_comment|// Interrupt (ATA &amp; ISA)/Acknowledge (EPP)
-multiline_comment|/* SCM User I/O Enable registers */
+multiline_comment|/* USBAT User I/O Enable registers */
 DECL|macro|USBAT_UIO_DRVRST
 mdefine_line|#define USBAT_UIO_DRVRST&t;0x80 
 singleline_comment|// Reset Peripheral
@@ -53,10 +121,22 @@ singleline_comment|// I/O 0 set=output/clr=input
 DECL|macro|USBAT_UIO_ADPRST
 mdefine_line|#define USBAT_UIO_ADPRST&t;0x01 
 singleline_comment|// Reset SCM chip
+multiline_comment|/* USBAT Features */
+DECL|macro|USBAT_FEAT_ETEN
+mdefine_line|#define USBAT_FEAT_ETEN&t;0x80 
+singleline_comment|// External trigger enable
+DECL|macro|USBAT_FEAT_U1
+mdefine_line|#define USBAT_FEAT_U1&t;0x08
+DECL|macro|USBAT_FEAT_U0
+mdefine_line|#define USBAT_FEAT_U0&t;0x04
+DECL|macro|USBAT_FEAT_ET1
+mdefine_line|#define USBAT_FEAT_ET1&t;0x02
+DECL|macro|USBAT_FEAT_ET2
+mdefine_line|#define USBAT_FEAT_ET2&t;0x01
 multiline_comment|/* HP 8200e stuff */
 r_extern
 r_int
-id|hp8200e_transport
+id|usbat_hp8200e_transport
 c_func
 (paren
 r_struct
@@ -72,7 +152,7 @@ id|us
 suffix:semicolon
 r_extern
 r_int
-id|init_8200e
+id|init_usbat_hp8200e
 c_func
 (paren
 r_struct

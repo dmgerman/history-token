@@ -12,7 +12,7 @@ macro_line|#include &quot;transport.h&quot;
 macro_line|#include &quot;protocol.h&quot;
 macro_line|#include &quot;debug.h&quot;
 macro_line|#include &quot;initializers.h&quot;
-macro_line|#ifdef CONFIG_USB_STORAGE_HP8200e
+macro_line|#ifdef CONFIG_USB_STORAGE_USBAT
 macro_line|#include &quot;shuttle_usbat.h&quot;
 macro_line|#endif
 macro_line|#ifdef CONFIG_USB_STORAGE_SDDR09
@@ -1927,7 +1927,7 @@ id|usb_stor_Bulk_reset
 suffix:semicolon
 r_break
 suffix:semicolon
-macro_line|#ifdef CONFIG_USB_STORAGE_HP8200e
+macro_line|#ifdef CONFIG_USB_STORAGE_USBAT
 r_case
 id|US_PR_SCM_ATAPI
 suffix:colon
@@ -1937,7 +1937,7 @@ l_string|&quot;SCM/ATAPI&quot;
 suffix:semicolon
 id|us-&gt;transport
 op_assign
-id|hp8200e_transport
+id|usbat_hp8200e_transport
 suffix:semicolon
 id|us-&gt;transport_reset
 op_assign
