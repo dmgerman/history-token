@@ -5,7 +5,7 @@ mdefine_line|#define _ASM_CACHEFLUSH_H
 multiline_comment|/* Keep includes the same across arches.  */
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;asm/cpu-features.h&gt;
-multiline_comment|/* Cache flushing:&n; *&n; *  - flush_cache_all() flushes entire cache&n; *  - flush_cache_mm(mm) flushes the specified mm context&squot;s cache lines&n; *  - flush_cache_page(mm, vmaddr) flushes a single page&n; *  - flush_cache_range(vma, start, end) flushes a range of pages&n; *  - flush_icache_range(start, end) flush a range of instructions&n; *  - flush_dcache_page(pg) flushes(wback&amp;invalidates) a page for dcache&n; *  - flush_icache_page(vma, pg) flushes(invalidates) a page for icache&n; *&n; * MIPS specific flush operations:&n; *&n; *  - flush_cache_sigtramp() flush signal trampoline&n; *  - flush_icache_all() flush the entire instruction cache&n; *  - flush_data_cache_page() flushes a page from the data cache&n; */
+multiline_comment|/* Cache flushing:&n; *&n; *  - flush_cache_all() flushes entire cache&n; *  - flush_cache_mm(mm) flushes the specified mm context&squot;s cache lines&n; *  - flush_cache_page(mm, vmaddr, pfn) flushes a single page&n; *  - flush_cache_range(vma, start, end) flushes a range of pages&n; *  - flush_icache_range(start, end) flush a range of instructions&n; *  - flush_dcache_page(pg) flushes(wback&amp;invalidates) a page for dcache&n; *  - flush_icache_page(vma, pg) flushes(invalidates) a page for icache&n; *&n; * MIPS specific flush operations:&n; *&n; *  - flush_cache_sigtramp() flush signal trampoline&n; *  - flush_icache_all() flush the entire instruction cache&n; *  - flush_data_cache_page() flushes a page from the data cache&n; */
 r_extern
 r_void
 (paren
@@ -75,6 +75,10 @@ comma
 r_int
 r_int
 id|page
+comma
+r_int
+r_int
+id|pfn
 )paren
 suffix:semicolon
 r_extern

@@ -6936,6 +6936,12 @@ c_func
 id|vma
 comma
 id|addr
+comma
+id|page_to_pfn
+c_func
+(paren
+id|page
+)paren
 )paren
 suffix:semicolon
 id|kaddr

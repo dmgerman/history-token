@@ -166,6 +166,12 @@ c_func
 id|vma
 comma
 id|address
+comma
+id|pte_pfn
+c_func
+(paren
+id|entry
+)paren
 )paren
 suffix:semicolon
 id|pte_val
@@ -431,6 +437,12 @@ c_func
 id|vma
 comma
 id|addr
+comma
+id|page_to_pfn
+c_func
+(paren
+id|page
+)paren
 )paren
 suffix:semicolon
 )brace
