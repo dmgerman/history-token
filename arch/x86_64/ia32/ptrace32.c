@@ -5,6 +5,7 @@ macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/syscalls.h&gt;
 macro_line|#include &lt;linux/unistd.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
+macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;asm/ptrace.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/user32.h&gt;
@@ -13,8 +14,6 @@ macro_line|#include &lt;asm/errno.h&gt;
 macro_line|#include &lt;asm/debugreg.h&gt;
 macro_line|#include &lt;asm/i387.h&gt;
 macro_line|#include &lt;asm/fpu32.h&gt;
-macro_line|#include &lt;linux/ptrace.h&gt;
-macro_line|#include &lt;linux/mm.h&gt;
 multiline_comment|/* determines which flags the user has access to. */
 multiline_comment|/* 1 = access 0 = no access */
 DECL|macro|FLAG_MASK

@@ -63,7 +63,7 @@ id|reboot_mode
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* reboot=b[ios] | t[riple] | k[bd] [, [w]arm | [c]old]&n;   bios&t;  Use the CPU reboto vector for warm reset&n;   warm   Don&squot;t set the cold reboot flag&n;   cold   Set the cold reboto flag&n;   triple Force a triple fault (init)&n;   kbd    Use the keyboard controller. cold reset (default)&n; */
+multiline_comment|/* reboot=b[ios] | t[riple] | k[bd] [, [w]arm | [c]old]&n;   bios&t;  Use the CPU reboot vector for warm reset&n;   warm   Don&squot;t set the cold reboot flag&n;   cold   Set the cold reboot flag&n;   triple Force a triple fault (init)&n;   kbd    Use the keyboard controller. cold reset (default)&n; */
 DECL|function|reboot_setup
 r_static
 r_int

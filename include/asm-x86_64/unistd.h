@@ -2614,7 +2614,7 @@ id|fildes
 )paren
 suffix:semicolon
 macro_line|#endif /* __KERNEL_SYSCALLS__ */
-macro_line|#ifndef __ASSEMBLY__
+macro_line|#if !defined(__ASSEMBLY__) &amp;&amp; defined(__KERNEL__)
 macro_line|#include &lt;linux/linkage.h&gt;
 macro_line|#include &lt;linux/compiler.h&gt;
 macro_line|#include &lt;linux/types.h&gt;

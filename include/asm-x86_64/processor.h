@@ -39,7 +39,7 @@ mdefine_line|#define desc_equal(desc1, desc2) &bslash;&n;               (((desc1
 multiline_comment|/*&n; * Default implementation of macro that returns current&n; * instruction pointer (&quot;program counter&quot;).&n; */
 DECL|macro|current_text_addr
 mdefine_line|#define current_text_addr() ({ void *pc; asm volatile(&quot;leaq 1f(%%rip),%0&bslash;n1:&quot;:&quot;=r&quot;(pc)); pc; })
-multiline_comment|/*&n; *  CPU type and hardware bug flags. Kept separately for each CPU.&n; *  Members of this structure are referenced in head.S, so think twice&n; *  before touching them. [mj]&n; */
+multiline_comment|/*&n; *  CPU type and hardware bug flags. Kept separately for each CPU.&n; */
 DECL|struct|cpuinfo_x86
 r_struct
 id|cpuinfo_x86
@@ -515,6 +515,8 @@ id|packed
 )paren
 id|____cacheline_aligned
 suffix:semicolon
+DECL|macro|ARCH_MIN_TASKALIGN
+mdefine_line|#define ARCH_MIN_TASKALIGN&t;16
 DECL|struct|thread_struct
 r_struct
 id|thread_struct
@@ -607,6 +609,17 @@ DECL|member|i387
 r_union
 id|i387_union
 id|i387
+id|__attribute__
+c_func
+(paren
+(paren
+id|aligned
+c_func
+(paren
+l_int|16
+)paren
+)paren
+)paren
 suffix:semicolon
 multiline_comment|/* IO permissions. the bitmap could be moved into the GDT, that would make&n;   switch faster for a limited number of ioperm using tasks. -AK */
 DECL|member|ioperm
@@ -628,6 +641,17 @@ id|GDT_ENTRY_TLS_ENTRIES
 )braket
 suffix:semicolon
 )brace
+id|__attribute__
+c_func
+(paren
+(paren
+id|aligned
+c_func
+(paren
+l_int|16
+)paren
+)paren
+)paren
 suffix:semicolon
 DECL|macro|INIT_THREAD
 mdefine_line|#define INIT_THREAD  {}
@@ -871,6 +895,24 @@ suffix:semicolon
 multiline_comment|/* &squot;6&squot; because it used to be for P6 only (but now covers Pentium 4 as well) */
 DECL|macro|MICROCODE_IOCFREE
 mdefine_line|#define MICROCODE_IOCFREE&t;_IO(&squot;6&squot;,0)
+multiline_comment|/* generic versions from gas */
+DECL|macro|GENERIC_NOP1
+mdefine_line|#define GENERIC_NOP1&t;&quot;.byte 0x90&bslash;n&quot;
+DECL|macro|GENERIC_NOP2
+mdefine_line|#define GENERIC_NOP2    &t;&quot;.byte 0x89,0xf6&bslash;n&quot;
+DECL|macro|GENERIC_NOP3
+mdefine_line|#define GENERIC_NOP3        &quot;.byte 0x8d,0x76,0x00&bslash;n&quot;
+DECL|macro|GENERIC_NOP4
+mdefine_line|#define GENERIC_NOP4        &quot;.byte 0x8d,0x74,0x26,0x00&bslash;n&quot;
+DECL|macro|GENERIC_NOP5
+mdefine_line|#define GENERIC_NOP5        GENERIC_NOP1 GENERIC_NOP4
+DECL|macro|GENERIC_NOP6
+mdefine_line|#define GENERIC_NOP6&t;&quot;.byte 0x8d,0xb6,0x00,0x00,0x00,0x00&bslash;n&quot;
+DECL|macro|GENERIC_NOP7
+mdefine_line|#define GENERIC_NOP7&t;&quot;.byte 0x8d,0xb4,0x26,0x00,0x00,0x00,0x00&bslash;n&quot;
+DECL|macro|GENERIC_NOP8
+mdefine_line|#define GENERIC_NOP8&t;GENERIC_NOP1 GENERIC_NOP7
+macro_line|#ifdef CONFIG_MK8
 DECL|macro|ASM_NOP1
 mdefine_line|#define ASM_NOP1 K8_NOP1
 DECL|macro|ASM_NOP2
@@ -887,6 +929,24 @@ DECL|macro|ASM_NOP7
 mdefine_line|#define ASM_NOP7 K8_NOP7
 DECL|macro|ASM_NOP8
 mdefine_line|#define ASM_NOP8 K8_NOP8
+macro_line|#else
+DECL|macro|ASM_NOP1
+mdefine_line|#define ASM_NOP1 GENERIC_NOP1
+DECL|macro|ASM_NOP2
+mdefine_line|#define ASM_NOP2 GENERIC_NOP2
+DECL|macro|ASM_NOP3
+mdefine_line|#define ASM_NOP3 GENERIC_NOP3
+DECL|macro|ASM_NOP4
+mdefine_line|#define ASM_NOP4 GENERIC_NOP4
+DECL|macro|ASM_NOP5
+mdefine_line|#define ASM_NOP5 GENERIC_NOP5
+DECL|macro|ASM_NOP6
+mdefine_line|#define ASM_NOP6 GENERIC_NOP6
+DECL|macro|ASM_NOP7
+mdefine_line|#define ASM_NOP7 GENERIC_NOP7
+DECL|macro|ASM_NOP8
+mdefine_line|#define ASM_NOP8 GENERIC_NOP8
+macro_line|#endif
 multiline_comment|/* Opteron nops */
 DECL|macro|K8_NOP1
 mdefine_line|#define K8_NOP1 &quot;.byte 0x90&bslash;n&quot;

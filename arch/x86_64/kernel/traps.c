@@ -1175,18 +1175,14 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;Process %s (pid: %d, stackpage=%08lx)&bslash;n&quot;
+l_string|&quot;Process %s (pid: %d, threadinfo %p, task %p)&bslash;n&quot;
 comma
 id|cur-&gt;comm
 comma
 id|cur-&gt;pid
 comma
-l_int|4096
-op_plus
-(paren
-r_int
-r_int
-)paren
+id|cur-&gt;thread_info
+comma
 id|cur
 )paren
 suffix:semicolon

@@ -3577,8 +3577,20 @@ id|acpi_fadt.sci_int
 op_eq
 id|gsi
 )paren
+(brace
+multiline_comment|/* we still need to set up the entry&squot;s irq */
+id|acpi_gsi_to_irq
+c_func
+(paren
+id|gsi
+comma
+op_amp
+id|entry-&gt;irq
+)paren
+suffix:semicolon
 r_continue
 suffix:semicolon
+)brace
 id|ioapic
 op_assign
 id|mp_find_ioapic

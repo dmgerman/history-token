@@ -104,6 +104,25 @@ id|cpu_domain
 op_assign
 id|SD_SIBLING_INIT
 suffix:semicolon
+multiline_comment|/* Disable SMT NICE for CMP */
+multiline_comment|/* RED-PEN use a generic flag */
+r_if
+c_cond
+(paren
+id|cpu_data
+(braket
+id|i
+)braket
+dot
+id|x86_vendor
+op_eq
+id|X86_VENDOR_AMD
+)paren
+id|cpu_domain-&gt;flags
+op_and_assign
+op_complement
+id|SD_SHARE_CPUPOWER
+suffix:semicolon
 id|cpu_domain-&gt;span
 op_assign
 id|cpu_sibling_map

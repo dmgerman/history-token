@@ -143,6 +143,9 @@ id|address
 comma
 id|pgprot_t
 id|prot
+comma
+id|pgprot_t
+id|ref_prot
 )paren
 (brace
 r_int
@@ -242,7 +245,7 @@ ques
 c_cond
 id|prot
 suffix:colon
-id|PAGE_KERNEL
+id|ref_prot
 )paren
 suffix:semicolon
 )brace
@@ -472,6 +475,9 @@ comma
 r_int
 r_int
 id|address
+comma
+id|pgprot_t
+id|ref_prot
 )paren
 (brace
 id|pgd_t
@@ -516,6 +522,14 @@ op_amp
 id|_PAGE_PSE
 )paren
 suffix:semicolon
+id|pgprot_val
+c_func
+(paren
+id|ref_prot
+)paren
+op_or_assign
+id|_PAGE_PSE
+suffix:semicolon
 id|large_pte
 op_assign
 id|mk_pte_phys
@@ -529,7 +543,7 @@ id|address
 op_amp
 id|LARGE_PAGE_MASK
 comma
-id|PAGE_KERNEL_LARGE
+id|ref_prot
 )paren
 suffix:semicolon
 id|set_pte
@@ -562,6 +576,9 @@ id|page
 comma
 id|pgprot_t
 id|prot
+comma
+id|pgprot_t
+id|ref_prot
 )paren
 (brace
 id|pte_t
@@ -630,7 +647,7 @@ op_ne
 id|pgprot_val
 c_func
 (paren
-id|PAGE_KERNEL
+id|ref_prot
 )paren
 )paren
 (brace
@@ -660,7 +677,7 @@ c_func
 (paren
 id|page
 comma
-id|PAGE_KERNEL
+id|ref_prot
 )paren
 suffix:semicolon
 id|set_pte
@@ -708,6 +725,8 @@ c_func
 id|address
 comma
 id|prot
+comma
+id|ref_prot
 )paren
 suffix:semicolon
 r_if
@@ -736,7 +755,7 @@ c_func
 (paren
 id|split
 comma
-id|PAGE_KERNEL
+id|ref_prot
 )paren
 )paren
 suffix:semicolon
@@ -765,7 +784,7 @@ c_func
 (paren
 id|page
 comma
-id|PAGE_KERNEL
+id|ref_prot
 )paren
 )paren
 suffix:semicolon
@@ -802,6 +821,8 @@ c_func
 id|kpte_page
 comma
 id|address
+comma
+id|ref_prot
 )paren
 suffix:semicolon
 )brace
@@ -887,6 +908,8 @@ comma
 id|page
 comma
 id|prot
+comma
+id|PAGE_KERNEL
 )paren
 suffix:semicolon
 r_if
@@ -896,7 +919,7 @@ id|err
 )paren
 r_break
 suffix:semicolon
-multiline_comment|/* Handle kernel mapping too which aliases part of the lowmem */
+multiline_comment|/* Handle kernel mapping too which aliases part of the&n;&t;&t; * lowmem */
 r_if
 c_cond
 (paren
@@ -911,6 +934,8 @@ id|KERNEL_TEXT_SIZE
 (brace
 r_int
 r_int
+id|addr2
+suffix:semicolon
 id|addr2
 op_assign
 id|__START_KERNEL_map
@@ -931,6 +956,8 @@ comma
 id|page
 comma
 id|prot
+comma
+id|PAGE_KERNEL_EXECUTABLE
 )paren
 suffix:semicolon
 )brace

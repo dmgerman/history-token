@@ -19,7 +19,6 @@ macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/proto.h&gt;
 macro_line|#include &lt;asm/cacheflush.h&gt;
 macro_line|#include &lt;asm/kdebug.h&gt;
-macro_line|#include &lt;asm/proto.h&gt;
 macro_line|#ifdef CONFIG_PREEMPT
 DECL|macro|preempt_atomic
 mdefine_line|#define preempt_atomic() in_atomic()
