@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Name: acmacros.h - C macros for the entire subsystem.&n; *       $Revision: 132 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Name: acmacros.h - C macros for the entire subsystem.&n; *       $Revision: 133 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#ifndef __ACMACROS_H__
 DECL|macro|__ACMACROS_H__
@@ -320,7 +320,7 @@ mdefine_line|#define _ACPI_REPORT_WARNING(a,b,c,fp)      {acpi_ut_report_warning
 multiline_comment|/*&n; * Debug macros that are conditionally compiled&n; */
 macro_line|#ifdef ACPI_DEBUG_OUTPUT
 DECL|macro|ACPI_MODULE_NAME
-mdefine_line|#define ACPI_MODULE_NAME(name)               static char *_THIS_MODULE = name;
+mdefine_line|#define ACPI_MODULE_NAME(name)               static char ACPI_UNUSED_VAR *_THIS_MODULE = name;
 multiline_comment|/*&n; * Function entry tracing.&n; * The first parameter should be the procedure name as a quoted string.  This is declared&n; * as a local string (&quot;_Proc_name) so that it can be also used by the function exit macros below.&n; */
 DECL|macro|ACPI_FUNCTION_NAME
 mdefine_line|#define ACPI_FUNCTION_NAME(a)           acpi_debug_print_info _dbg;     &bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;_dbg.component_id = _COMPONENT; &bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;_dbg.proc_name   = a;           &bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;_dbg.module_name = _THIS_MODULE;
