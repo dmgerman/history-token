@@ -1136,11 +1136,17 @@ comma
 id|dev-&gt;slot_name
 )paren
 suffix:semicolon
+multiline_comment|/* Interrupt Line values above 0xF are forbidden */
 r_if
 c_cond
 (paren
 id|dev-&gt;irq
+op_logical_and
+id|dev-&gt;irq
+op_ge
+l_int|0xF
 )paren
+(brace
 id|printk
 c_func
 (paren
@@ -1153,6 +1159,14 @@ id|return_VALUE
 c_func
 (paren
 id|dev-&gt;irq
+)paren
+suffix:semicolon
+)brace
+r_else
+id|return_VALUE
+c_func
+(paren
+l_int|0
 )paren
 suffix:semicolon
 )brace
