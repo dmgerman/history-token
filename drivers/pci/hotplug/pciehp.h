@@ -522,7 +522,7 @@ mdefine_line|#define msg_HPC_rev_error&t;&quot;Unsupported revision of the PCI h
 DECL|macro|msg_HPC_non_pcie
 mdefine_line|#define msg_HPC_non_pcie&t;&quot;The PCI hot plug controller is not supported by this driver.&bslash;n&quot;
 DECL|macro|msg_HPC_not_supported
-mdefine_line|#define msg_HPC_not_supported&t;&quot;This system is not supported by this version of pciephd mdoule. Upgrade to a newer version of pciehpd&bslash;n&quot;
+mdefine_line|#define msg_HPC_not_supported&t;&quot;This system is not supported by this version of pciephd module. Upgrade to a newer version of pciehpd&bslash;n&quot;
 DECL|macro|msg_unable_to_save
 mdefine_line|#define msg_unable_to_save&t;&quot;Unable to store PCI hot plug add resource information. This system must be rebooted before adding any PCI devices.&bslash;n&quot;
 DECL|macro|msg_button_on
@@ -928,9 +928,7 @@ id|tmp_slot
 suffix:semicolon
 )brace
 r_return
-(paren
 id|p_slot
-)paren
 suffix:semicolon
 )brace
 DECL|function|wait_for_ctrl_irq
