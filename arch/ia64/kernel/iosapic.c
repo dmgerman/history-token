@@ -60,7 +60,7 @@ suffix:semicolon
 multiline_comment|/* base address of IOSAPIC */
 DECL|member|base_irq
 r_int
-r_char
+r_int
 id|base_irq
 suffix:semicolon
 multiline_comment|/* first irq assigned to this IOSAPIC */
@@ -111,15 +111,9 @@ op_star
 id|addr
 suffix:semicolon
 multiline_comment|/* base address of IOSAPIC */
-DECL|member|pcat_compat
-r_int
-r_char
-id|pcat_compat
-suffix:semicolon
-multiline_comment|/* 8259 compatibility flag */
 DECL|member|base_irq
 r_int
-r_char
+r_int
 id|base_irq
 suffix:semicolon
 multiline_comment|/* first irq assigned to this IOSAPIC */
@@ -129,6 +123,12 @@ r_int
 id|max_pin
 suffix:semicolon
 multiline_comment|/* max input pin supported in this IOSAPIC */
+DECL|member|pcat_compat
+r_int
+r_char
+id|pcat_compat
+suffix:semicolon
+multiline_comment|/* 8259 compatibility flag */
 DECL|variable|__initdata
 )brace
 id|iosapic_lists
