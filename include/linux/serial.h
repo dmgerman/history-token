@@ -429,25 +429,22 @@ r_int
 id|line
 )paren
 suffix:semicolon
-multiline_comment|/* Allow complicated architectures to specify rs_table[] at run time */
+multiline_comment|/* Allow architectures to override entries in serial8250_ports[] at run time: */
+r_struct
+id|uart_port
+suffix:semicolon
+multiline_comment|/* forward declaration */
 r_extern
 r_int
 id|early_serial_setup
 c_func
 (paren
 r_struct
-id|serial_struct
+id|uart_port
 op_star
-id|req
+id|port
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_ACPI
-multiline_comment|/* tty ports reserved for the ACPI serial console port and debug port */
-DECL|macro|ACPI_SERIAL_CONSOLE_PORT
-mdefine_line|#define ACPI_SERIAL_CONSOLE_PORT        4
-DECL|macro|ACPI_SERIAL_DEBUG_PORT
-mdefine_line|#define ACPI_SERIAL_DEBUG_PORT          5
-macro_line|#endif
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* _LINUX_SERIAL_H */
 eof
