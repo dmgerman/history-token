@@ -892,12 +892,12 @@ comma
 dot
 id|tf_read
 op_assign
-id|ata_tf_read_mmio
+id|ata_tf_read
 comma
 dot
 id|check_status
 op_assign
-id|ata_check_status_mmio
+id|ata_check_status
 comma
 dot
 id|exec_command
@@ -4338,7 +4338,7 @@ op_eq
 id|ATA_PROT_NODATA
 )paren
 suffix:semicolon
-id|ata_tf_load_mmio
+id|ata_tf_load
 c_func
 (paren
 id|ap
@@ -4375,7 +4375,7 @@ op_eq
 id|ATA_PROT_NODATA
 )paren
 suffix:semicolon
-id|ata_exec_command_mmio
+id|ata_exec_command
 c_func
 (paren
 id|ap
