@@ -21,9 +21,9 @@ macro_line|#else
 DECL|macro|DEFAULT_TIMER_LIMIT
 mdefine_line|#define DEFAULT_TIMER_LIMIT 2
 macro_line|#endif
-DECL|variable|snd_timer_limit
+DECL|variable|timer_limit
 r_int
-id|snd_timer_limit
+id|timer_limit
 op_assign
 id|DEFAULT_TIMER_LIMIT
 suffix:semicolon
@@ -54,7 +54,7 @@ suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
-id|snd_timer_limit
+id|timer_limit
 comma
 l_string|&quot;i&quot;
 )paren
@@ -62,7 +62,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|snd_timer_limit
+id|timer_limit
 comma
 l_string|&quot;Maximum global timers in system.&quot;
 )paren
@@ -518,7 +518,7 @@ c_cond
 (paren
 id|tid-&gt;device
 op_ge
-id|snd_timer_limit
+id|timer_limit
 )paren
 r_return
 suffix:semicolon

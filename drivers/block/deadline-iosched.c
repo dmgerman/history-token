@@ -365,12 +365,6 @@ id|next
 op_assign
 id|entry-&gt;next
 suffix:semicolon
-id|prefetch
-c_func
-(paren
-id|next
-)paren
-suffix:semicolon
 id|drq
 op_assign
 id|list_entry_hash
@@ -651,12 +645,6 @@ id|list_entry_rq
 c_func
 (paren
 id|entry
-)paren
-suffix:semicolon
-id|prefetch
-c_func
-(paren
-id|entry-&gt;prev
 )paren
 suffix:semicolon
 id|BUG_ON
@@ -1100,12 +1088,6 @@ id|rq-&gt;queuelist.next
 suffix:semicolon
 r_int
 id|this_rq_cost
-suffix:semicolon
-id|prefetch
-c_func
-(paren
-id|nxt
-)paren
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; * take it off the sort and fifo list, move&n;&t;&t; * to dispatch queue&n;&t;&t; */
 id|deadline_move_to_dispatch

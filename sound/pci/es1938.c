@@ -1,5 +1,5 @@
-multiline_comment|/*&n; *  Driver for ESS Solo-1 (ES1938, ES1946, ES1969) soundcard&n; *  Copyright (c) by Jaromir Koutek &lt;miri@punknet.cz&gt;,&n; *                   Jaroslav Kysela &lt;perex@suse.cz&gt;,&n; *                   Thomas Sailer &lt;sailer@ife.ee.ethz.ch&gt;,&n; *                   Abramo Bagnara &lt;abramo@alsa-project.org&gt;,&n; *                   Markus Gruber &lt;gruber@eikon.tum.de&gt;&n; * &n; * Rewritted from sonicvibes.c source.&n; *&n; *  TODO:&n; *    Rewrite better spinlocks&n; *&n; *&n; *   This program is free software; you can redistribute it and/or modify&n; *   it under the terms of the GNU General Public License as published by&n; *   the Free Software Foundation; either version 2 of the License, or&n; *   (at your option) any later version.&n; *&n; *   This program is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *   GNU General Public License for more details.&n; *&n; *   You should have received a copy of the GNU General Public License&n; *   along with this program; if not, write to the Free Software&n; *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA&n; *&n; */
-multiline_comment|/*&n;  NOTES:&n;  - Capture data is written unaligned starting from dma_base + 1 so I need to&n;    disable mmap and to add a copy callback.&n;  - After several cycle of the following:&n;    while : ; do arecord -d1 -f cd -t raw | aplay -f cd ; done&n;    a &quot;playback write error (DMA or IRQ trouble?)&quot; may happen.&n;    This is due to playback interrupts not generated.&n;    I suspect a timing issue.&n;  - Sometimes the interrupt handler is invoked wrongly during playback.&n;    This generate some harmless &quot;Unexpected hw_pointer: wrong interrupt&n;    acknowledge&quot;.&n;    I&squot;ve seen that using small period sizes.&n;    Reproducible with:&n;    mpg123 test.mp3 &amp;&n;    hdparm -t -T /dev/hda&n;*/
+multiline_comment|/*&n; *  Driver for ESS Solo-1 (ES1938, ES1946, ES1969) soundcard&n; *  Copyright (c) by Jaromir Koutek &lt;miri@punknet.cz&gt;,&n; *                   Jaroslav Kysela &lt;perex@suse.cz&gt;,&n; *                   Thomas Sailer &lt;sailer@ife.ee.ethz.ch&gt;,&n; *                   Abramo Bagnara &lt;abramo@alsa-project.org&gt;,&n; *                   Markus Gruber &lt;gruber@eikon.tum.de&gt;&n; * &n; * Rewritten from sonicvibes.c source.&n; *&n; *  TODO:&n; *    Rewrite better spinlocks&n; *&n; *&n; *   This program is free software; you can redistribute it and/or modify&n; *   it under the terms of the GNU General Public License as published by&n; *   the Free Software Foundation; either version 2 of the License, or&n; *   (at your option) any later version.&n; *&n; *   This program is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *   GNU General Public License for more details.&n; *&n; *   You should have received a copy of the GNU General Public License&n; *   along with this program; if not, write to the Free Software&n; *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA&n; *&n; */
+multiline_comment|/*&n;  NOTES:&n;  - Capture data is written unaligned starting from dma_base + 1 so I need to&n;    disable mmap and to add a copy callback.&n;  - After several cycle of the following:&n;    while : ; do arecord -d1 -f cd -t raw | aplay -f cd ; done&n;    a &quot;playback write error (DMA or IRQ trouble?)&quot; may happen.&n;    This is due to playback interrupts not generated.&n;    I suspect a timing issue.&n;  - Sometimes the interrupt handler is invoked wrongly during playback.&n;    This generates some harmless &quot;Unexpected hw_pointer: wrong interrupt&n;    acknowledge&quot;.&n;    I&squot;ve seen that using small period sizes.&n;    Reproducible with:&n;    mpg123 test.mp3 &amp;&n;    hdparm -t -T /dev/hda&n;*/
 macro_line|#include &lt;sound/driver.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -59,10 +59,10 @@ macro_line|#ifndef PCI_DEVICE_ID_ESS_ES1938
 DECL|macro|PCI_DEVICE_ID_ESS_ES1938
 mdefine_line|#define PCI_DEVICE_ID_ESS_ES1938&t;0x1969
 macro_line|#endif
-DECL|variable|snd_index
+DECL|variable|index
 r_static
 r_int
-id|snd_index
+id|index
 (braket
 id|SNDRV_CARDS
 )braket
@@ -70,11 +70,11 @@ op_assign
 id|SNDRV_DEFAULT_IDX
 suffix:semicolon
 multiline_comment|/* Index 0-MAX */
-DECL|variable|snd_id
+DECL|variable|id
 r_static
 r_char
 op_star
-id|snd_id
+id|id
 (braket
 id|SNDRV_CARDS
 )braket
@@ -82,10 +82,10 @@ op_assign
 id|SNDRV_DEFAULT_STR
 suffix:semicolon
 multiline_comment|/* ID for this card */
-DECL|variable|snd_enable
+DECL|variable|enable
 r_static
 r_int
-id|snd_enable
+id|enable
 (braket
 id|SNDRV_CARDS
 )braket
@@ -96,7 +96,7 @@ multiline_comment|/* Enable this card */
 id|MODULE_PARM
 c_func
 (paren
-id|snd_index
+id|index
 comma
 l_string|&quot;1-&quot;
 id|__MODULE_STRING
@@ -110,7 +110,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|snd_index
+id|index
 comma
 l_string|&quot;Index value for ESS Solo-1 soundcard.&quot;
 )paren
@@ -118,7 +118,7 @@ suffix:semicolon
 id|MODULE_PARM_SYNTAX
 c_func
 (paren
-id|snd_index
+id|index
 comma
 id|SNDRV_INDEX_DESC
 )paren
@@ -126,7 +126,7 @@ suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
-id|snd_id
+id|id
 comma
 l_string|&quot;1-&quot;
 id|__MODULE_STRING
@@ -140,7 +140,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|snd_id
+id|id
 comma
 l_string|&quot;ID string for ESS Solo-1 soundcard.&quot;
 )paren
@@ -148,7 +148,7 @@ suffix:semicolon
 id|MODULE_PARM_SYNTAX
 c_func
 (paren
-id|snd_id
+id|id
 comma
 id|SNDRV_ID_DESC
 )paren
@@ -156,7 +156,7 @@ suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
-id|snd_enable
+id|enable
 comma
 l_string|&quot;1-&quot;
 id|__MODULE_STRING
@@ -170,7 +170,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|snd_enable
+id|enable
 comma
 l_string|&quot;Enable ESS Solo-1 soundcard.&quot;
 )paren
@@ -178,7 +178,7 @@ suffix:semicolon
 id|MODULE_PARM_SYNTAX
 c_func
 (paren
-id|snd_enable
+id|enable
 comma
 id|SNDRV_ENABLE_DESC
 )paren
@@ -2286,7 +2286,7 @@ id|cmd
 r_case
 id|SNDRV_PCM_TRIGGER_START
 suffix:colon
-multiline_comment|/* According to the documentation this should be:&n;&t;&t;   0x13 but that value may random swap stereo channels */
+multiline_comment|/* According to the documentation this should be:&n;&t;&t;   0x13 but that value may randomly swap stereo channels */
 id|snd_es1938_mixer_write
 c_func
 (paren
@@ -7974,7 +7974,7 @@ r_const
 r_struct
 id|pci_device_id
 op_star
-id|id
+id|pci_id
 )paren
 (brace
 r_static
@@ -8017,7 +8017,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|snd_enable
+id|enable
 (braket
 id|dev
 )braket
@@ -8036,12 +8036,12 @@ op_assign
 id|snd_card_new
 c_func
 (paren
-id|snd_index
+id|index
 (braket
 id|dev
 )braket
 comma
-id|snd_id
+id|id
 (braket
 id|dev
 )braket
@@ -8588,7 +8588,7 @@ c_func
 id|alsa_card_es1938_exit
 )paren
 macro_line|#ifndef MODULE
-multiline_comment|/* format is: snd-es1938=snd_enable,snd_index,snd_id */
+multiline_comment|/* format is: snd-es1938=enable,index,id */
 DECL|function|alsa_card_es1938_setup
 r_static
 r_int
@@ -8629,7 +8629,7 @@ op_amp
 id|str
 comma
 op_amp
-id|snd_enable
+id|enable
 (braket
 id|nr_dev
 )braket
@@ -8644,7 +8644,7 @@ op_amp
 id|str
 comma
 op_amp
-id|snd_index
+id|index
 (braket
 id|nr_dev
 )braket
@@ -8659,7 +8659,7 @@ op_amp
 id|str
 comma
 op_amp
-id|snd_id
+id|id
 (braket
 id|nr_dev
 )braket

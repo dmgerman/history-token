@@ -147,8 +147,6 @@ mdefine_line|#define USB_AUDIO_FORMAT_IEC1937_MPEG2_LAYER23_LS&t;0x2006
 multiline_comment|/* maximum number of endpoints per interface */
 DECL|macro|MIDI_MAX_ENDPOINTS
 mdefine_line|#define MIDI_MAX_ENDPOINTS 2
-DECL|macro|SNDRV_SEQ_DEV_ID_USBMIDI
-mdefine_line|#define SNDRV_SEQ_DEV_ID_USBMIDI &quot;usb-midi&quot;
 multiline_comment|/*&n; */
 DECL|typedef|snd_usb_audio_t
 r_typedef
@@ -189,12 +187,10 @@ DECL|member|pcm_devs
 r_int
 id|pcm_devs
 suffix:semicolon
-macro_line|#if defined(CONFIG_SND_SEQUENCER) || defined(CONFIG_SND_SEQUENCER_MODULE)
-DECL|member|next_seq_device
+DECL|member|next_midi_device
 r_int
-id|next_seq_device
+id|next_midi_device
 suffix:semicolon
-macro_line|#endif
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * Information about devices with broken descriptors&n; */
@@ -206,6 +202,8 @@ DECL|macro|QUIRK_MIDI_YAMAHA
 mdefine_line|#define QUIRK_MIDI_YAMAHA&t;&t;1
 DECL|macro|QUIRK_MIDI_MIDIMAN
 mdefine_line|#define QUIRK_MIDI_MIDIMAN&t;&t;2
+DECL|macro|QUIRK_ROLAND_UA100
+mdefine_line|#define QUIRK_ROLAND_UA100&t;&t;3
 DECL|typedef|snd_usb_audio_quirk_t
 r_typedef
 r_struct
@@ -274,93 +272,7 @@ multiline_comment|/* bitmask */
 suffix:semicolon
 multiline_comment|/* for QUIRK_MIDI_YAMAHA, data is NULL */
 multiline_comment|/* for QUIRK_MIDI_MIDIMAN, data is the number of ports */
-multiline_comment|/*&n; * USB MIDI sequencer device data&n; */
-DECL|typedef|snd_usb_midi_t
-r_typedef
-r_struct
-id|snd_usb_midi
-id|snd_usb_midi_t
-suffix:semicolon
-DECL|typedef|snd_usb_midi_endpoint_t
-r_typedef
-r_struct
-id|snd_usb_midi_endpoint
-id|snd_usb_midi_endpoint_t
-suffix:semicolon
-DECL|typedef|snd_usb_midi_out_endpoint_t
-r_typedef
-r_struct
-id|snd_usb_midi_out_endpoint
-id|snd_usb_midi_out_endpoint_t
-suffix:semicolon
-DECL|typedef|snd_usb_midi_in_endpoint_t
-r_typedef
-r_struct
-id|snd_usb_midi_in_endpoint
-id|snd_usb_midi_in_endpoint_t
-suffix:semicolon
-DECL|struct|snd_usb_midi
-r_struct
-id|snd_usb_midi
-(brace
-multiline_comment|/* filled by usbaudio.c */
-DECL|member|chip
-id|snd_usb_audio_t
-op_star
-id|chip
-suffix:semicolon
-DECL|member|iface
-r_struct
-id|usb_interface
-op_star
-id|iface
-suffix:semicolon
-DECL|member|ifnum
-r_int
-id|ifnum
-suffix:semicolon
-DECL|member|quirk
-r_const
-id|snd_usb_audio_quirk_t
-op_star
-id|quirk
-suffix:semicolon
-multiline_comment|/* used internally in usbmidi.c */
-DECL|member|seq_client
-r_int
-id|seq_client
-suffix:semicolon
-DECL|struct|snd_usb_midi_endpoint
-r_struct
-id|snd_usb_midi_endpoint
-(brace
-DECL|member|out
-id|snd_usb_midi_out_endpoint_t
-op_star
-id|out
-suffix:semicolon
-DECL|member|in
-id|snd_usb_midi_in_endpoint_t
-op_star
-id|in
-suffix:semicolon
-DECL|member|rmidi
-id|snd_rawmidi_t
-op_star
-id|rmidi
-(braket
-l_int|0x10
-)braket
-suffix:semicolon
-DECL|member|endpoints
-)brace
-id|endpoints
-(braket
-id|MIDI_MAX_ENDPOINTS
-)braket
-suffix:semicolon
-)brace
-suffix:semicolon
+multiline_comment|/* for QUIRK_ROLAND_UA100, data is NULL */
 multiline_comment|/*&n; */
 DECL|macro|combine_word
 mdefine_line|#define combine_word(s)    ((*s) | ((unsigned int)(s)[1] &lt;&lt; 8))
@@ -452,6 +364,25 @@ id|buffer
 comma
 r_int
 id|buflen
+)paren
+suffix:semicolon
+r_int
+id|snd_usb_create_midi_interface
+c_func
+(paren
+id|snd_usb_audio_t
+op_star
+id|chip
+comma
+r_struct
+id|usb_interface
+op_star
+id|iface
+comma
+r_const
+id|snd_usb_audio_quirk_t
+op_star
+id|quirk
 )paren
 suffix:semicolon
 macro_line|#endif /* __USBAUDIO_H */

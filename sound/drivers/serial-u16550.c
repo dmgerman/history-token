@@ -66,10 +66,10 @@ comma
 l_string|&quot;Generic&quot;
 )brace
 suffix:semicolon
-DECL|variable|snd_index
+DECL|variable|index
 r_static
 r_int
-id|snd_index
+id|index
 (braket
 id|SNDRV_CARDS
 )braket
@@ -77,11 +77,11 @@ op_assign
 id|SNDRV_DEFAULT_IDX
 suffix:semicolon
 multiline_comment|/* Index 0-MAX */
-DECL|variable|snd_id
+DECL|variable|id
 r_static
 r_char
 op_star
-id|snd_id
+id|id
 (braket
 id|SNDRV_CARDS
 )braket
@@ -89,10 +89,10 @@ op_assign
 id|SNDRV_DEFAULT_STR
 suffix:semicolon
 multiline_comment|/* ID for this card */
-DECL|variable|snd_enable
+DECL|variable|enable
 r_static
 r_int
-id|snd_enable
+id|enable
 (braket
 id|SNDRV_CARDS
 )braket
@@ -100,10 +100,10 @@ op_assign
 id|SNDRV_DEFAULT_ENABLE
 suffix:semicolon
 multiline_comment|/* Enable this card */
-DECL|variable|snd_port
+DECL|variable|port
 r_static
 r_int
-id|snd_port
+id|port
 (braket
 id|SNDRV_CARDS
 )braket
@@ -111,10 +111,10 @@ op_assign
 id|SNDRV_DEFAULT_PORT
 suffix:semicolon
 multiline_comment|/* 0x3f8,0x2f8,0x3e8,0x2e8 */
-DECL|variable|snd_irq
+DECL|variable|irq
 r_static
 r_int
-id|snd_irq
+id|irq
 (braket
 id|SNDRV_CARDS
 )braket
@@ -122,10 +122,10 @@ op_assign
 id|SNDRV_DEFAULT_IRQ
 suffix:semicolon
 multiline_comment|/* 3,4,5,7,9,10,11,14,15 */
-DECL|variable|snd_speed
+DECL|variable|speed
 r_static
 r_int
-id|snd_speed
+id|speed
 (braket
 id|SNDRV_CARDS
 )braket
@@ -147,10 +147,10 @@ l_int|38400
 )brace
 suffix:semicolon
 multiline_comment|/* 9600,19200,38400,57600,115200 */
-DECL|variable|snd_base
+DECL|variable|base
 r_static
 r_int
-id|snd_base
+id|base
 (braket
 id|SNDRV_CARDS
 )braket
@@ -172,10 +172,10 @@ l_int|115200
 )brace
 suffix:semicolon
 multiline_comment|/* baud base */
-DECL|variable|snd_outs
+DECL|variable|outs
 r_static
 r_int
-id|snd_outs
+id|outs
 (braket
 id|SNDRV_CARDS
 )braket
@@ -197,10 +197,10 @@ l_int|1
 )brace
 suffix:semicolon
 multiline_comment|/* 1 to 16 */
-DECL|variable|snd_ins
+DECL|variable|ins
 r_static
 r_int
-id|snd_ins
+id|ins
 (braket
 id|SNDRV_CARDS
 )braket
@@ -222,10 +222,10 @@ l_int|1
 )brace
 suffix:semicolon
 multiline_comment|/* 1 to 16 */
-DECL|variable|snd_adaptor
+DECL|variable|adaptor
 r_static
 r_int
-id|snd_adaptor
+id|adaptor
 (braket
 id|SNDRV_CARDS
 )braket
@@ -249,7 +249,7 @@ suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
-id|snd_index
+id|index
 comma
 l_string|&quot;1-&quot;
 id|__MODULE_STRING
@@ -263,7 +263,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|snd_index
+id|index
 comma
 l_string|&quot;Index value for Serial MIDI.&quot;
 )paren
@@ -271,7 +271,7 @@ suffix:semicolon
 id|MODULE_PARM_SYNTAX
 c_func
 (paren
-id|snd_index
+id|index
 comma
 id|SNDRV_INDEX_DESC
 )paren
@@ -279,7 +279,7 @@ suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
-id|snd_id
+id|id
 comma
 l_string|&quot;1-&quot;
 id|__MODULE_STRING
@@ -293,7 +293,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|snd_id
+id|id
 comma
 l_string|&quot;ID string for Serial MIDI.&quot;
 )paren
@@ -301,7 +301,7 @@ suffix:semicolon
 id|MODULE_PARM_SYNTAX
 c_func
 (paren
-id|snd_id
+id|id
 comma
 id|SNDRV_ID_DESC
 )paren
@@ -309,7 +309,7 @@ suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
-id|snd_enable
+id|enable
 comma
 l_string|&quot;1-&quot;
 id|__MODULE_STRING
@@ -323,7 +323,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|snd_enable
+id|enable
 comma
 l_string|&quot;Enable UART16550A chip.&quot;
 )paren
@@ -331,7 +331,7 @@ suffix:semicolon
 id|MODULE_PARM_SYNTAX
 c_func
 (paren
-id|snd_enable
+id|enable
 comma
 id|SNDRV_ENABLE_DESC
 )paren
@@ -339,7 +339,7 @@ suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
-id|snd_port
+id|port
 comma
 l_string|&quot;1-&quot;
 id|__MODULE_STRING
@@ -353,7 +353,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|snd_port
+id|port
 comma
 l_string|&quot;Port # for UART16550A chip.&quot;
 )paren
@@ -361,7 +361,7 @@ suffix:semicolon
 id|MODULE_PARM_SYNTAX
 c_func
 (paren
-id|snd_port
+id|port
 comma
 id|SNDRV_PORT12_DESC
 )paren
@@ -369,7 +369,7 @@ suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
-id|snd_irq
+id|irq
 comma
 l_string|&quot;1-&quot;
 id|__MODULE_STRING
@@ -383,7 +383,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|snd_irq
+id|irq
 comma
 l_string|&quot;IRQ # for UART16550A chip.&quot;
 )paren
@@ -391,7 +391,7 @@ suffix:semicolon
 id|MODULE_PARM_SYNTAX
 c_func
 (paren
-id|snd_irq
+id|irq
 comma
 id|SNDRV_IRQ_DESC
 )paren
@@ -399,7 +399,7 @@ suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
-id|snd_speed
+id|speed
 comma
 l_string|&quot;1-&quot;
 id|__MODULE_STRING
@@ -413,7 +413,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|snd_speed
+id|speed
 comma
 l_string|&quot;Speed in bauds.&quot;
 )paren
@@ -421,7 +421,7 @@ suffix:semicolon
 id|MODULE_PARM_SYNTAX
 c_func
 (paren
-id|snd_speed
+id|speed
 comma
 id|SNDRV_ENABLED
 l_string|&quot;,allows:{9600,19200,38400,57600,115200},dialog:list&quot;
@@ -430,7 +430,7 @@ suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
-id|snd_base
+id|base
 comma
 l_string|&quot;1-&quot;
 id|__MODULE_STRING
@@ -444,7 +444,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|snd_base
+id|base
 comma
 l_string|&quot;Base for divisor in bauds.&quot;
 )paren
@@ -452,7 +452,7 @@ suffix:semicolon
 id|MODULE_PARM_SYNTAX
 c_func
 (paren
-id|snd_base
+id|base
 comma
 id|SNDRV_ENABLED
 l_string|&quot;,allows:{57600,115200,230400,460800},dialog:list&quot;
@@ -461,7 +461,7 @@ suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
-id|snd_outs
+id|outs
 comma
 l_string|&quot;1-&quot;
 id|__MODULE_STRING
@@ -475,7 +475,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|snd_outs
+id|outs
 comma
 l_string|&quot;Number of MIDI outputs.&quot;
 )paren
@@ -483,7 +483,7 @@ suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
-id|snd_ins
+id|ins
 comma
 l_string|&quot;1-&quot;
 id|__MODULE_STRING
@@ -497,7 +497,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|snd_ins
+id|ins
 comma
 l_string|&quot;Number of MIDI inputs.&quot;
 )paren
@@ -505,7 +505,7 @@ suffix:semicolon
 id|MODULE_PARM_SYNTAX
 c_func
 (paren
-id|snd_outs
+id|outs
 comma
 id|SNDRV_ENABLED
 l_string|&quot;,allows:{{1,16}},dialog:list&quot;
@@ -514,7 +514,7 @@ suffix:semicolon
 id|MODULE_PARM_SYNTAX
 c_func
 (paren
-id|snd_ins
+id|ins
 comma
 id|SNDRV_ENABLED
 l_string|&quot;,allows:{{1,16}},dialog:list&quot;
@@ -523,7 +523,7 @@ suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
-id|snd_adaptor
+id|adaptor
 comma
 l_string|&quot;1-&quot;
 id|__MODULE_STRING
@@ -537,7 +537,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|snd_adaptor
+id|adaptor
 comma
 l_string|&quot;Type of adaptor.&quot;
 )paren
@@ -545,7 +545,7 @@ suffix:semicolon
 id|MODULE_PARM_SYNTAX
 c_func
 (paren
-id|snd_adaptor
+id|adaptor
 comma
 id|SNDRV_ENABLED
 l_string|&quot;,allows:{{0=Soundcanvas,1=MS-124T,2=MS-124W S/A,3=MS-124W M/B,4=Generic}},dialog:list&quot;
@@ -3755,7 +3755,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|snd_enable
+id|enable
 (braket
 id|dev
 )braket
@@ -3767,7 +3767,7 @@ suffix:semicolon
 r_switch
 c_cond
 (paren
-id|snd_adaptor
+id|adaptor
 (braket
 id|dev
 )braket
@@ -3776,7 +3776,7 @@ id|dev
 r_case
 id|SNDRV_SERIAL_SOUNDCANVAS
 suffix:colon
-id|snd_ins
+id|ins
 (braket
 id|dev
 )braket
@@ -3791,14 +3791,14 @@ suffix:colon
 r_case
 id|SNDRV_SERIAL_MS124W_SA
 suffix:colon
-id|snd_outs
+id|outs
 (braket
 id|dev
 )braket
 op_assign
 l_int|1
 suffix:semicolon
-id|snd_ins
+id|ins
 (braket
 id|dev
 )braket
@@ -3810,14 +3810,14 @@ suffix:semicolon
 r_case
 id|SNDRV_SERIAL_MS124W_MB
 suffix:colon
-id|snd_outs
+id|outs
 (braket
 id|dev
 )braket
 op_assign
 l_int|16
 suffix:semicolon
-id|snd_ins
+id|ins
 (braket
 id|dev
 )braket
@@ -3840,7 +3840,7 @@ l_string|&quot;Adaptor type is out of range 0-%d (%d)&bslash;n&quot;
 comma
 id|SNDRV_SERIAL_MAX_ADAPTOR
 comma
-id|snd_adaptor
+id|adaptor
 (braket
 id|dev
 )braket
@@ -3854,7 +3854,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|snd_outs
+id|outs
 (braket
 id|dev
 )braket
@@ -3869,7 +3869,7 @@ l_string|&quot;Count of outputs is out of range 1-%d (%d)&bslash;n&quot;
 comma
 id|SNDRV_SERIAL_MAX_OUTS
 comma
-id|snd_outs
+id|outs
 (braket
 id|dev
 )braket
@@ -3883,7 +3883,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|snd_ins
+id|ins
 (braket
 id|dev
 )braket
@@ -3898,7 +3898,7 @@ l_string|&quot;Count of inputs is out of range 1-%d (%d)&bslash;n&quot;
 comma
 id|SNDRV_SERIAL_MAX_INS
 comma
-id|snd_ins
+id|ins
 (braket
 id|dev
 )braket
@@ -3914,12 +3914,12 @@ op_assign
 id|snd_card_new
 c_func
 (paren
-id|snd_index
+id|index
 (braket
 id|dev
 )braket
 comma
-id|snd_id
+id|id
 (braket
 id|dev
 )braket
@@ -3965,7 +3965,7 @@ op_assign
 id|snd_uart16550_detect
 c_func
 (paren
-id|snd_port
+id|port
 (braket
 id|dev
 )braket
@@ -3990,7 +3990,7 @@ comma
 (paren
 r_int
 )paren
-id|snd_port
+id|port
 (braket
 id|dev
 )braket
@@ -4011,27 +4011,27 @@ c_func
 (paren
 id|card
 comma
-id|snd_port
+id|port
 (braket
 id|dev
 )braket
 comma
-id|snd_irq
+id|irq
 (braket
 id|dev
 )braket
 comma
-id|snd_speed
+id|speed
 (braket
 id|dev
 )braket
 comma
-id|snd_base
+id|base
 (braket
 id|dev
 )braket
 comma
-id|snd_adaptor
+id|adaptor
 (braket
 id|dev
 )braket
@@ -4067,12 +4067,12 @@ id|uart
 comma
 l_int|0
 comma
-id|snd_outs
+id|outs
 (braket
 id|dev
 )braket
 comma
-id|snd_ins
+id|ins
 (braket
 id|dev
 )braket
@@ -4115,12 +4115,12 @@ r_int
 )paren
 id|uart-&gt;divisor
 comma
-id|snd_outs
+id|outs
 (braket
 id|dev
 )braket
 comma
-id|snd_ins
+id|ins
 (braket
 id|dev
 )braket
@@ -4304,7 +4304,7 @@ c_func
 id|alsa_card_serial_exit
 )paren
 macro_line|#ifndef MODULE
-multiline_comment|/* format is: snd-serial=snd_enable,snd_index,snd_id,&n;&t;&t;&t; snd_port,snd_irq,snd_speed,snd_base,snd_outs,&n; &t;&t;&t; snd_ins,snd_adaptor */
+multiline_comment|/* format is: snd-serial=enable,index,id,&n;&t;&t;&t; port,irq,speed,base,outs,&n; &t;&t;&t; ins,adaptor */
 DECL|function|alsa_card_serial_setup
 r_static
 r_int
@@ -4345,7 +4345,7 @@ op_amp
 id|str
 comma
 op_amp
-id|snd_enable
+id|enable
 (braket
 id|nr_dev
 )braket
@@ -4360,7 +4360,7 @@ op_amp
 id|str
 comma
 op_amp
-id|snd_index
+id|index
 (braket
 id|nr_dev
 )braket
@@ -4375,7 +4375,7 @@ op_amp
 id|str
 comma
 op_amp
-id|snd_id
+id|id
 (braket
 id|nr_dev
 )braket
@@ -4394,7 +4394,7 @@ r_int
 op_star
 )paren
 op_amp
-id|snd_port
+id|port
 (braket
 id|nr_dev
 )braket
@@ -4409,7 +4409,7 @@ op_amp
 id|str
 comma
 op_amp
-id|snd_irq
+id|irq
 (braket
 id|nr_dev
 )braket
@@ -4424,7 +4424,7 @@ op_amp
 id|str
 comma
 op_amp
-id|snd_speed
+id|speed
 (braket
 id|nr_dev
 )braket
@@ -4439,7 +4439,7 @@ op_amp
 id|str
 comma
 op_amp
-id|snd_base
+id|base
 (braket
 id|nr_dev
 )braket
@@ -4454,7 +4454,7 @@ op_amp
 id|str
 comma
 op_amp
-id|snd_outs
+id|outs
 (braket
 id|nr_dev
 )braket
@@ -4469,7 +4469,7 @@ op_amp
 id|str
 comma
 op_amp
-id|snd_ins
+id|ins
 (braket
 id|nr_dev
 )braket
@@ -4484,7 +4484,7 @@ op_amp
 id|str
 comma
 op_amp
-id|snd_adaptor
+id|adaptor
 (braket
 id|nr_dev
 )braket

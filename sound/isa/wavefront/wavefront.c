@@ -47,10 +47,10 @@ c_func
 l_string|&quot;{{Turtle Beach,Maui/Tropez/Tropez+}}&quot;
 )paren
 suffix:semicolon
-DECL|variable|snd_index
+DECL|variable|index
 r_static
 r_int
-id|snd_index
+id|index
 (braket
 id|SNDRV_CARDS
 )braket
@@ -58,11 +58,11 @@ op_assign
 id|SNDRV_DEFAULT_IDX
 suffix:semicolon
 multiline_comment|/* Index 0-MAX */
-DECL|variable|snd_id
+DECL|variable|id
 r_static
 r_char
 op_star
-id|snd_id
+id|id
 (braket
 id|SNDRV_CARDS
 )braket
@@ -70,10 +70,10 @@ op_assign
 id|SNDRV_DEFAULT_STR
 suffix:semicolon
 multiline_comment|/* ID for this card */
-DECL|variable|snd_enable
+DECL|variable|enable
 r_static
 r_int
-id|snd_enable
+id|enable
 (braket
 id|SNDRV_CARDS
 )braket
@@ -81,10 +81,10 @@ op_assign
 id|SNDRV_DEFAULT_ENABLE
 suffix:semicolon
 multiline_comment|/* Enable this card */
-DECL|variable|snd_isapnp
+DECL|variable|isapnp
 r_static
 r_int
-id|snd_isapnp
+id|isapnp
 (braket
 id|SNDRV_CARDS
 )braket
@@ -105,10 +105,10 @@ op_assign
 l_int|1
 )brace
 suffix:semicolon
-DECL|variable|snd_cs4232_pcm_port
+DECL|variable|cs4232_pcm_port
 r_static
 r_int
-id|snd_cs4232_pcm_port
+id|cs4232_pcm_port
 (braket
 id|SNDRV_CARDS
 )braket
@@ -116,10 +116,10 @@ op_assign
 id|SNDRV_DEFAULT_PORT
 suffix:semicolon
 multiline_comment|/* PnP setup */
-DECL|variable|snd_cs4232_pcm_irq
+DECL|variable|cs4232_pcm_irq
 r_static
 r_int
-id|snd_cs4232_pcm_irq
+id|cs4232_pcm_irq
 (braket
 id|SNDRV_CARDS
 )braket
@@ -127,10 +127,10 @@ op_assign
 id|SNDRV_DEFAULT_IRQ
 suffix:semicolon
 multiline_comment|/* 5,7,9,11,12,15 */
-DECL|variable|snd_cs4232_mpu_port
+DECL|variable|cs4232_mpu_port
 r_static
 r_int
-id|snd_cs4232_mpu_port
+id|cs4232_mpu_port
 (braket
 id|SNDRV_CARDS
 )braket
@@ -138,10 +138,10 @@ op_assign
 id|SNDRV_DEFAULT_PORT
 suffix:semicolon
 multiline_comment|/* PnP setup */
-DECL|variable|snd_cs4232_mpu_irq
+DECL|variable|cs4232_mpu_irq
 r_static
 r_int
-id|snd_cs4232_mpu_irq
+id|cs4232_mpu_irq
 (braket
 id|SNDRV_CARDS
 )braket
@@ -149,10 +149,10 @@ op_assign
 id|SNDRV_DEFAULT_IRQ
 suffix:semicolon
 multiline_comment|/* 9,11,12,15 */
-DECL|variable|snd_ics2115_port
+DECL|variable|ics2115_port
 r_static
 r_int
-id|snd_ics2115_port
+id|ics2115_port
 (braket
 id|SNDRV_CARDS
 )braket
@@ -160,10 +160,10 @@ op_assign
 id|SNDRV_DEFAULT_PORT
 suffix:semicolon
 multiline_comment|/* PnP setup */
-DECL|variable|snd_ics2115_irq
+DECL|variable|ics2115_irq
 r_static
 r_int
-id|snd_ics2115_irq
+id|ics2115_irq
 (braket
 id|SNDRV_CARDS
 )braket
@@ -171,10 +171,10 @@ op_assign
 id|SNDRV_DEFAULT_IRQ
 suffix:semicolon
 multiline_comment|/* 2,9,11,12,15 */
-DECL|variable|snd_fm_port
+DECL|variable|fm_port
 r_static
 r_int
-id|snd_fm_port
+id|fm_port
 (braket
 id|SNDRV_CARDS
 )braket
@@ -182,10 +182,10 @@ op_assign
 id|SNDRV_DEFAULT_PORT
 suffix:semicolon
 multiline_comment|/* PnP setup */
-DECL|variable|snd_dma1
+DECL|variable|dma1
 r_static
 r_int
-id|snd_dma1
+id|dma1
 (braket
 id|SNDRV_CARDS
 )braket
@@ -193,10 +193,10 @@ op_assign
 id|SNDRV_DEFAULT_DMA
 suffix:semicolon
 multiline_comment|/* 0,1,3,5,6,7 */
-DECL|variable|snd_dma2
+DECL|variable|dma2
 r_static
 r_int
-id|snd_dma2
+id|dma2
 (braket
 id|SNDRV_CARDS
 )braket
@@ -204,10 +204,10 @@ op_assign
 id|SNDRV_DEFAULT_DMA
 suffix:semicolon
 multiline_comment|/* 0,1,3,5,6,7 */
-DECL|variable|snd_use_cs4232_midi
+DECL|variable|use_cs4232_midi
 r_static
 r_int
-id|snd_use_cs4232_midi
+id|use_cs4232_midi
 (braket
 id|SNDRV_CARDS
 )braket
@@ -231,7 +231,7 @@ suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
-id|snd_index
+id|index
 comma
 l_string|&quot;1-&quot;
 id|__MODULE_STRING
@@ -245,7 +245,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|snd_index
+id|index
 comma
 l_string|&quot;Index value for WaveFront soundcard.&quot;
 )paren
@@ -253,7 +253,7 @@ suffix:semicolon
 id|MODULE_PARM_SYNTAX
 c_func
 (paren
-id|snd_index
+id|index
 comma
 id|SNDRV_INDEX_DESC
 )paren
@@ -261,7 +261,7 @@ suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
-id|snd_id
+id|id
 comma
 l_string|&quot;1-&quot;
 id|__MODULE_STRING
@@ -275,7 +275,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|snd_id
+id|id
 comma
 l_string|&quot;ID string for WaveFront soundcard.&quot;
 )paren
@@ -283,7 +283,7 @@ suffix:semicolon
 id|MODULE_PARM_SYNTAX
 c_func
 (paren
-id|snd_id
+id|id
 comma
 id|SNDRV_ID_DESC
 )paren
@@ -291,7 +291,7 @@ suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
-id|snd_enable
+id|enable
 comma
 l_string|&quot;1-&quot;
 id|__MODULE_STRING
@@ -305,7 +305,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|snd_enable
+id|enable
 comma
 l_string|&quot;Enable WaveFront soundcard.&quot;
 )paren
@@ -313,7 +313,7 @@ suffix:semicolon
 id|MODULE_PARM_SYNTAX
 c_func
 (paren
-id|snd_enable
+id|enable
 comma
 id|SNDRV_ENABLE_DESC
 )paren
@@ -322,7 +322,7 @@ macro_line|#ifdef __ISAPNP__
 id|MODULE_PARM
 c_func
 (paren
-id|snd_isapnp
+id|isapnp
 comma
 l_string|&quot;1-&quot;
 id|__MODULE_STRING
@@ -336,7 +336,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|snd_isapnp
+id|isapnp
 comma
 l_string|&quot;ISA PnP detection for WaveFront soundcards.&quot;
 )paren
@@ -344,7 +344,7 @@ suffix:semicolon
 id|MODULE_PARM_SYNTAX
 c_func
 (paren
-id|snd_isapnp
+id|isapnp
 comma
 id|SNDRV_ISAPNP_DESC
 )paren
@@ -353,7 +353,7 @@ macro_line|#endif
 id|MODULE_PARM
 c_func
 (paren
-id|snd_cs4232_pcm_port
+id|cs4232_pcm_port
 comma
 l_string|&quot;1-&quot;
 id|__MODULE_STRING
@@ -367,7 +367,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|snd_cs4232_pcm_port
+id|cs4232_pcm_port
 comma
 l_string|&quot;Port # for CS4232 PCM interface.&quot;
 )paren
@@ -375,7 +375,7 @@ suffix:semicolon
 id|MODULE_PARM_SYNTAX
 c_func
 (paren
-id|snd_cs4232_pcm_port
+id|cs4232_pcm_port
 comma
 id|SNDRV_PORT12_DESC
 )paren
@@ -383,7 +383,7 @@ suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
-id|snd_cs4232_pcm_irq
+id|cs4232_pcm_irq
 comma
 l_string|&quot;1-&quot;
 id|__MODULE_STRING
@@ -397,7 +397,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|snd_cs4232_pcm_irq
+id|cs4232_pcm_irq
 comma
 l_string|&quot;IRQ # for CS4232 PCM interface.&quot;
 )paren
@@ -405,7 +405,7 @@ suffix:semicolon
 id|MODULE_PARM_SYNTAX
 c_func
 (paren
-id|snd_cs4232_pcm_irq
+id|cs4232_pcm_irq
 comma
 id|SNDRV_ENABLED
 l_string|&quot;,allows:{{5},{7},{9},{11},{12},{15}},dialog:list&quot;
@@ -414,7 +414,7 @@ suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
-id|snd_dma1
+id|dma1
 comma
 l_string|&quot;1-&quot;
 id|__MODULE_STRING
@@ -428,7 +428,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|snd_dma1
+id|dma1
 comma
 l_string|&quot;DMA1 # for CS4232 PCM interface.&quot;
 )paren
@@ -436,7 +436,7 @@ suffix:semicolon
 id|MODULE_PARM_SYNTAX
 c_func
 (paren
-id|snd_dma1
+id|dma1
 comma
 id|SNDRV_DMA_DESC
 )paren
@@ -444,7 +444,7 @@ suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
-id|snd_dma2
+id|dma2
 comma
 l_string|&quot;1-&quot;
 id|__MODULE_STRING
@@ -458,7 +458,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|snd_dma2
+id|dma2
 comma
 l_string|&quot;DMA2 # for CS4232 PCM interface.&quot;
 )paren
@@ -466,7 +466,7 @@ suffix:semicolon
 id|MODULE_PARM_SYNTAX
 c_func
 (paren
-id|snd_dma2
+id|dma2
 comma
 id|SNDRV_DMA_DESC
 )paren
@@ -474,7 +474,7 @@ suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
-id|snd_cs4232_mpu_port
+id|cs4232_mpu_port
 comma
 l_string|&quot;1-&quot;
 id|__MODULE_STRING
@@ -488,7 +488,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|snd_cs4232_mpu_port
+id|cs4232_mpu_port
 comma
 l_string|&quot;port # for CS4232 MPU-401 interface.&quot;
 )paren
@@ -496,7 +496,7 @@ suffix:semicolon
 id|MODULE_PARM_SYNTAX
 c_func
 (paren
-id|snd_cs4232_mpu_port
+id|cs4232_mpu_port
 comma
 id|SNDRV_PORT12_DESC
 )paren
@@ -504,7 +504,7 @@ suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
-id|snd_cs4232_mpu_irq
+id|cs4232_mpu_irq
 comma
 l_string|&quot;1-&quot;
 id|__MODULE_STRING
@@ -518,7 +518,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|snd_cs4232_mpu_irq
+id|cs4232_mpu_irq
 comma
 l_string|&quot;IRQ # for CS4232 MPU-401 interface.&quot;
 )paren
@@ -526,7 +526,7 @@ suffix:semicolon
 id|MODULE_PARM_SYNTAX
 c_func
 (paren
-id|snd_cs4232_mpu_irq
+id|cs4232_mpu_irq
 comma
 id|SNDRV_ENABLED
 l_string|&quot;,allows:{{9},{11},{12},{15}},dialog:list&quot;
@@ -535,7 +535,7 @@ suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
-id|snd_ics2115_irq
+id|ics2115_irq
 comma
 l_string|&quot;1-&quot;
 id|__MODULE_STRING
@@ -549,7 +549,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|snd_ics2115_irq
+id|ics2115_irq
 comma
 l_string|&quot;IRQ # for ICS2115.&quot;
 )paren
@@ -557,7 +557,7 @@ suffix:semicolon
 id|MODULE_PARM_SYNTAX
 c_func
 (paren
-id|snd_ics2115_irq
+id|ics2115_irq
 comma
 id|SNDRV_ENABLED
 l_string|&quot;,allows:{{9},{11},{12},{15}},dialog:list&quot;
@@ -566,7 +566,7 @@ suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
-id|snd_ics2115_port
+id|ics2115_port
 comma
 l_string|&quot;1-&quot;
 id|__MODULE_STRING
@@ -580,7 +580,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|snd_ics2115_port
+id|ics2115_port
 comma
 l_string|&quot;Port # for ICS2115.&quot;
 )paren
@@ -588,7 +588,7 @@ suffix:semicolon
 id|MODULE_PARM_SYNTAX
 c_func
 (paren
-id|snd_ics2115_port
+id|ics2115_port
 comma
 id|SNDRV_PORT12_DESC
 )paren
@@ -596,7 +596,7 @@ suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
-id|snd_fm_port
+id|fm_port
 comma
 l_string|&quot;1-&quot;
 id|__MODULE_STRING
@@ -610,7 +610,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|snd_fm_port
+id|fm_port
 comma
 l_string|&quot;FM port #.&quot;
 )paren
@@ -618,7 +618,7 @@ suffix:semicolon
 id|MODULE_PARM_SYNTAX
 c_func
 (paren
-id|snd_fm_port
+id|fm_port
 comma
 id|SNDRV_PORT12_DESC
 )paren
@@ -626,7 +626,7 @@ suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
-id|snd_use_cs4232_midi
+id|use_cs4232_midi
 comma
 l_string|&quot;1-&quot;
 id|__MODULE_STRING
@@ -640,7 +640,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|snd_use_cs4232_midi
+id|use_cs4232_midi
 comma
 l_string|&quot;Use CS4232 MPU-401 interface (inaccessibly located inside your computer)&quot;
 )paren
@@ -648,7 +648,7 @@ suffix:semicolon
 id|MODULE_PARM_SYNTAX
 c_func
 (paren
-id|snd_use_cs4232_midi
+id|use_cs4232_midi
 comma
 id|SNDRV_ENABLED
 l_string|&quot;,&quot;
@@ -953,7 +953,7 @@ multiline_comment|/* Only configure the CS4232 MIDI interface if its been&n;&t; 
 r_if
 c_cond
 (paren
-id|snd_use_cs4232_midi
+id|use_cs4232_midi
 (braket
 id|dev
 )braket
@@ -1098,7 +1098,7 @@ multiline_comment|/* An interesting note from the Tropez+ FAQ:&n;&n;&t;   Q. [Po
 r_if
 c_cond
 (paren
-id|snd_cs4232_pcm_port
+id|cs4232_pcm_port
 (braket
 id|dev
 )braket
@@ -1114,7 +1114,7 @@ id|pdev-&gt;resource
 l_int|0
 )braket
 comma
-id|snd_cs4232_pcm_port
+id|cs4232_pcm_port
 (braket
 id|dev
 )braket
@@ -1125,7 +1125,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|snd_fm_port
+id|fm_port
 (braket
 id|dev
 )braket
@@ -1141,7 +1141,7 @@ id|pdev-&gt;resource
 l_int|1
 )braket
 comma
-id|snd_fm_port
+id|fm_port
 (braket
 id|dev
 )braket
@@ -1152,7 +1152,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|snd_dma1
+id|dma1
 (braket
 id|dev
 )braket
@@ -1168,7 +1168,7 @@ id|pdev-&gt;dma_resource
 l_int|0
 )braket
 comma
-id|snd_dma1
+id|dma1
 (braket
 id|dev
 )braket
@@ -1179,7 +1179,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|snd_dma2
+id|dma2
 (braket
 id|dev
 )braket
@@ -1195,7 +1195,7 @@ id|pdev-&gt;dma_resource
 l_int|1
 )braket
 comma
-id|snd_dma2
+id|dma2
 (braket
 id|dev
 )braket
@@ -1206,7 +1206,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|snd_cs4232_pcm_irq
+id|cs4232_pcm_irq
 (braket
 id|dev
 )braket
@@ -1222,7 +1222,7 @@ id|pdev-&gt;irq_resource
 l_int|0
 )braket
 comma
-id|snd_cs4232_pcm_irq
+id|cs4232_pcm_irq
 (braket
 id|dev
 )braket
@@ -1254,7 +1254,7 @@ op_minus
 id|EBUSY
 suffix:semicolon
 )brace
-id|snd_cs4232_pcm_port
+id|cs4232_pcm_port
 (braket
 id|dev
 )braket
@@ -1266,7 +1266,7 @@ l_int|0
 dot
 id|start
 suffix:semicolon
-id|snd_fm_port
+id|fm_port
 (braket
 id|dev
 )braket
@@ -1278,7 +1278,7 @@ l_int|1
 dot
 id|start
 suffix:semicolon
-id|snd_dma1
+id|dma1
 (braket
 id|dev
 )braket
@@ -1290,7 +1290,7 @@ l_int|0
 dot
 id|start
 suffix:semicolon
-id|snd_dma2
+id|dma2
 (braket
 id|dev
 )braket
@@ -1302,7 +1302,7 @@ l_int|1
 dot
 id|start
 suffix:semicolon
-id|snd_cs4232_pcm_irq
+id|cs4232_pcm_irq
 (braket
 id|dev
 )braket
@@ -1374,7 +1374,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|snd_ics2115_port
+id|ics2115_port
 (braket
 id|dev
 )braket
@@ -1391,7 +1391,7 @@ id|pdev-&gt;resource
 l_int|0
 )braket
 comma
-id|snd_ics2115_port
+id|ics2115_port
 (braket
 id|dev
 )braket
@@ -1403,7 +1403,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|snd_ics2115_port
+id|ics2115_port
 (braket
 id|dev
 )braket
@@ -1420,7 +1420,7 @@ id|pdev-&gt;irq_resource
 l_int|0
 )braket
 comma
-id|snd_ics2115_irq
+id|ics2115_irq
 (braket
 id|dev
 )braket
@@ -1462,7 +1462,7 @@ op_minus
 id|EBUSY
 suffix:semicolon
 )brace
-id|snd_ics2115_port
+id|ics2115_port
 (braket
 id|dev
 )braket
@@ -1474,7 +1474,7 @@ l_int|0
 dot
 id|start
 suffix:semicolon
-id|snd_ics2115_irq
+id|ics2115_irq
 (braket
 id|dev
 )braket
@@ -1490,7 +1490,7 @@ multiline_comment|/* CS4232 MPU initialization. Configure this only if&n;&t;   e
 r_if
 c_cond
 (paren
-id|snd_use_cs4232_midi
+id|use_cs4232_midi
 (braket
 id|dev
 )braket
@@ -1548,7 +1548,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|snd_cs4232_mpu_port
+id|cs4232_mpu_port
 (braket
 id|dev
 )braket
@@ -1564,7 +1564,7 @@ id|pdev-&gt;resource
 l_int|0
 )braket
 comma
-id|snd_cs4232_mpu_port
+id|cs4232_mpu_port
 (braket
 id|dev
 )braket
@@ -1575,7 +1575,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|snd_cs4232_mpu_irq
+id|cs4232_mpu_irq
 (braket
 id|dev
 )braket
@@ -1591,7 +1591,7 @@ id|pdev-&gt;resource
 l_int|0
 )braket
 comma
-id|snd_cs4232_mpu_irq
+id|cs4232_mpu_irq
 (braket
 id|dev
 )braket
@@ -1619,7 +1619,7 @@ c_func
 l_string|&quot;isapnp CS4232 MPU activation failed&bslash;n&quot;
 )paren
 suffix:semicolon
-id|snd_cs4232_mpu_port
+id|cs4232_mpu_port
 (braket
 id|dev
 )braket
@@ -1629,7 +1629,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|snd_cs4232_mpu_port
+id|cs4232_mpu_port
 (braket
 id|dev
 )braket
@@ -1641,7 +1641,7 @@ l_int|0
 dot
 id|start
 suffix:semicolon
-id|snd_cs4232_mpu_irq
+id|cs4232_mpu_irq
 (braket
 id|dev
 )braket
@@ -1658,12 +1658,12 @@ id|snd_printk
 (paren
 l_string|&quot;CS4232 MPU: port=0x%lx, irq=%i&bslash;n&quot;
 comma
-id|snd_cs4232_mpu_port
+id|cs4232_mpu_port
 (braket
 id|dev
 )braket
 comma
-id|snd_cs4232_mpu_irq
+id|cs4232_mpu_irq
 (braket
 id|dev
 )braket
@@ -1674,37 +1674,37 @@ id|snd_printdd
 (paren
 l_string|&quot;CS4232: pcm port=0x%lx, fm port=0x%lx, dma1=%i, dma2=%i, irq=%i&bslash;nICS2115: port=0x%lx, irq=%i&bslash;n&quot;
 comma
-id|snd_cs4232_pcm_port
+id|cs4232_pcm_port
 (braket
 id|dev
 )braket
 comma
-id|snd_fm_port
+id|fm_port
 (braket
 id|dev
 )braket
 comma
-id|snd_dma1
+id|dma1
 (braket
 id|dev
 )braket
 comma
-id|snd_dma2
+id|dma2
 (braket
 id|dev
 )braket
 comma
-id|snd_cs4232_pcm_irq
+id|cs4232_pcm_irq
 (braket
 id|dev
 )braket
 comma
-id|snd_ics2115_port
+id|ics2115_port
 (braket
 id|dev
 )braket
 comma
-id|snd_ics2115_irq
+id|ics2115_irq
 (braket
 id|dev
 )braket
@@ -2366,14 +2366,14 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|snd_cs4232_mpu_port
+id|cs4232_mpu_port
 (braket
 id|dev
 )braket
 OL
 l_int|0
 )paren
-id|snd_cs4232_mpu_port
+id|cs4232_mpu_port
 (braket
 id|dev
 )braket
@@ -2383,14 +2383,14 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|snd_fm_port
+id|fm_port
 (braket
 id|dev
 )braket
 OL
 l_int|0
 )paren
-id|snd_fm_port
+id|fm_port
 (braket
 id|dev
 )braket
@@ -2400,14 +2400,14 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|snd_ics2115_port
+id|ics2115_port
 (braket
 id|dev
 )braket
 OL
 l_int|0
 )paren
-id|snd_ics2115_port
+id|ics2115_port
 (braket
 id|dev
 )braket
@@ -2419,7 +2419,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|snd_isapnp
+id|isapnp
 (braket
 id|dev
 )braket
@@ -2429,7 +2429,7 @@ macro_line|#endif
 r_if
 c_cond
 (paren
-id|snd_cs4232_pcm_port
+id|cs4232_pcm_port
 (braket
 id|dev
 )braket
@@ -2451,7 +2451,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|snd_ics2115_port
+id|ics2115_port
 (braket
 id|dev
 )braket
@@ -2477,12 +2477,12 @@ id|card
 op_assign
 id|snd_card_new
 (paren
-id|snd_index
+id|index
 (braket
 id|dev
 )braket
 comma
-id|snd_id
+id|id
 (braket
 id|dev
 )braket
@@ -2559,7 +2559,7 @@ macro_line|#ifdef __ISAPNP__
 r_if
 c_cond
 (paren
-id|snd_isapnp
+id|isapnp
 (braket
 id|dev
 )braket
@@ -2577,7 +2577,7 @@ l_int|0
 r_if
 c_cond
 (paren
-id|snd_cs4232_pcm_port
+id|cs4232_pcm_port
 (braket
 id|dev
 )braket
@@ -2613,7 +2613,7 @@ id|snd_cs4231_create
 (paren
 id|card
 comma
-id|snd_cs4232_pcm_port
+id|cs4232_pcm_port
 (braket
 id|dev
 )braket
@@ -2621,17 +2621,17 @@ comma
 op_minus
 l_int|1
 comma
-id|snd_cs4232_pcm_irq
+id|cs4232_pcm_irq
 (braket
 id|dev
 )braket
 comma
-id|snd_dma1
+id|dma1
 (braket
 id|dev
 )braket
 comma
-id|snd_dma2
+id|dma2
 (braket
 id|dev
 )braket
@@ -2725,7 +2725,7 @@ multiline_comment|/* ---------- OPL3 synth --------- */
 r_if
 c_cond
 (paren
-id|snd_fm_port
+id|fm_port
 (braket
 id|dev
 )braket
@@ -2748,12 +2748,12 @@ c_func
 (paren
 id|card
 comma
-id|snd_fm_port
+id|fm_port
 (braket
 id|dev
 )braket
 comma
-id|snd_fm_port
+id|fm_port
 (braket
 id|dev
 )braket
@@ -2833,7 +2833,7 @@ op_assign
 id|request_region
 c_func
 (paren
-id|snd_ics2115_port
+id|ics2115_port
 (braket
 id|dev
 )braket
@@ -2852,12 +2852,12 @@ c_func
 (paren
 l_string|&quot;unable to grab ICS2115 i/o region 0x%lx-0x%lx&bslash;n&quot;
 comma
-id|snd_ics2115_port
+id|ics2115_port
 (braket
 id|dev
 )braket
 comma
-id|snd_ics2115_port
+id|ics2115_port
 (braket
 id|dev
 )braket
@@ -2884,7 +2884,7 @@ c_cond
 id|request_irq
 c_func
 (paren
-id|snd_ics2115_irq
+id|ics2115_irq
 (braket
 id|dev
 )braket
@@ -2908,7 +2908,7 @@ c_func
 (paren
 l_string|&quot;unable to use ICS2115 IRQ %d&bslash;n&quot;
 comma
-id|snd_ics2115_irq
+id|ics2115_irq
 (braket
 id|dev
 )braket
@@ -2927,14 +2927,14 @@ suffix:semicolon
 )brace
 id|acard-&gt;wavefront.irq
 op_assign
-id|snd_ics2115_irq
+id|ics2115_irq
 (braket
 id|dev
 )braket
 suffix:semicolon
 id|acard-&gt;wavefront.base
 op_assign
-id|snd_ics2115_port
+id|ics2115_port
 (braket
 id|dev
 )braket
@@ -3024,14 +3024,14 @@ multiline_comment|/* -------- CS4232 MPU-401 interface -------- */
 r_if
 c_cond
 (paren
-id|snd_cs4232_mpu_port
+id|cs4232_mpu_port
 (braket
 id|dev
 )braket
 OG
 l_int|0
 op_logical_and
-id|snd_cs4232_mpu_port
+id|cs4232_mpu_port
 (braket
 id|dev
 )braket
@@ -3054,14 +3054,14 @@ id|midi_dev
 comma
 id|MPU401_HW_CS4232
 comma
-id|snd_cs4232_mpu_port
+id|cs4232_mpu_port
 (braket
 id|dev
 )braket
 comma
 l_int|0
 comma
-id|snd_cs4232_mpu_irq
+id|cs4232_mpu_irq
 (braket
 id|dev
 )braket
@@ -3098,14 +3098,14 @@ multiline_comment|/* ------ ICS2115 internal MIDI ------------ */
 r_if
 c_cond
 (paren
-id|snd_ics2115_port
+id|ics2115_port
 (braket
 id|dev
 )braket
 op_ge
 l_int|0
 op_logical_and
-id|snd_ics2115_port
+id|ics2115_port
 (braket
 id|dev
 )braket
@@ -3123,7 +3123,7 @@ id|midi_dev
 comma
 id|acard
 comma
-id|snd_ics2115_port
+id|ics2115_port
 (braket
 id|dev
 )braket
@@ -3163,14 +3163,14 @@ multiline_comment|/* ------ ICS2115 external MIDI ------------ */
 r_if
 c_cond
 (paren
-id|snd_ics2115_port
+id|ics2115_port
 (braket
 id|dev
 )braket
 op_ge
 l_int|0
 op_logical_and
-id|snd_ics2115_port
+id|ics2115_port
 (braket
 id|dev
 )braket
@@ -3188,7 +3188,7 @@ id|midi_dev
 comma
 id|acard
 comma
-id|snd_ics2115_port
+id|ics2115_port
 (braket
 id|dev
 )braket
@@ -3241,7 +3241,7 @@ id|hw_dev
 comma
 id|acard
 comma
-id|snd_ics2115_port
+id|ics2115_port
 (braket
 id|dev
 )braket
@@ -3324,12 +3324,12 @@ id|card-&gt;driver
 comma
 id|chip-&gt;port
 comma
-id|snd_cs4232_pcm_irq
+id|cs4232_pcm_irq
 (braket
 id|dev
 )braket
 comma
-id|snd_dma1
+id|dma1
 (braket
 id|dev
 )braket
@@ -3338,14 +3338,14 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|snd_dma2
+id|dma2
 (braket
 id|dev
 )braket
 op_ge
 l_int|0
 op_logical_and
-id|snd_dma2
+id|dma2
 (braket
 id|dev
 )braket
@@ -3365,7 +3365,7 @@ id|card-&gt;longname
 comma
 l_string|&quot;&amp;%d&quot;
 comma
-id|snd_dma2
+id|dma2
 (braket
 id|dev
 )braket
@@ -3374,7 +3374,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|snd_cs4232_mpu_port
+id|cs4232_mpu_port
 (braket
 id|dev
 )braket
@@ -3393,12 +3393,12 @@ id|card-&gt;longname
 comma
 l_string|&quot; MPU-401 0x%lx irq %d&quot;
 comma
-id|snd_cs4232_mpu_port
+id|cs4232_mpu_port
 (braket
 id|dev
 )braket
 comma
-id|snd_cs4232_mpu_irq
+id|cs4232_mpu_irq
 (braket
 id|dev
 )braket
@@ -3416,12 +3416,12 @@ id|card-&gt;longname
 comma
 l_string|&quot; SYNTH 0x%lx irq %d&quot;
 comma
-id|snd_ics2115_port
+id|ics2115_port
 (braket
 id|dev
 )braket
 comma
-id|snd_ics2115_irq
+id|ics2115_irq
 (braket
 id|dev
 )braket
@@ -3507,13 +3507,13 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|snd_enable
+id|enable
 (braket
 id|dev
 )braket
 op_logical_or
 op_logical_neg
-id|snd_isapnp
+id|isapnp
 (braket
 id|dev
 )braket
@@ -3602,7 +3602,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|snd_enable
+id|enable
 (braket
 id|dev
 )braket
@@ -3613,7 +3613,7 @@ macro_line|#ifdef __ISAPNP__
 r_if
 c_cond
 (paren
-id|snd_isapnp
+id|isapnp
 (braket
 id|dev
 )braket
@@ -3720,7 +3720,7 @@ c_func
 id|alsa_card_wavefront_exit
 )paren
 macro_line|#ifndef MODULE
-multiline_comment|/* format is: snd-wavefront=snd_enable,snd_index,snd_id,snd_isapnp,&n;&t;&t;&t;    snd_cs4232_pcm_port,snd_cs4232_pcm_irq,&n;&t;&t;&t;    snd_cs4232_mpu_port,snd_cs4232_mpu_irq,&n;&t;&t;&t;    snd_ics2115_port,snd_ics2115_irq,&n;&t;&t;&t;    snd_fm_port,&n;&t;&t;&t;    snd_dma1,snd_dma2,&n;&t;&t;&t;    snd_use_cs4232_midi */
+multiline_comment|/* format is: snd-wavefront=enable,index,id,isapnp,&n;&t;&t;&t;    cs4232_pcm_port,cs4232_pcm_irq,&n;&t;&t;&t;    cs4232_mpu_port,cs4232_mpu_irq,&n;&t;&t;&t;    ics2115_port,ics2115_irq,&n;&t;&t;&t;    fm_port,&n;&t;&t;&t;    dma1,dma2,&n;&t;&t;&t;    use_cs4232_midi */
 DECL|function|alsa_card_wavefront_setup
 r_static
 r_int
@@ -3761,7 +3761,7 @@ op_amp
 id|str
 comma
 op_amp
-id|snd_enable
+id|enable
 (braket
 id|nr_dev
 )braket
@@ -3776,7 +3776,7 @@ op_amp
 id|str
 comma
 op_amp
-id|snd_index
+id|index
 (braket
 id|nr_dev
 )braket
@@ -3791,7 +3791,7 @@ op_amp
 id|str
 comma
 op_amp
-id|snd_id
+id|id
 (braket
 id|nr_dev
 )braket
@@ -3806,41 +3806,7 @@ op_amp
 id|str
 comma
 op_amp
-id|snd_isapnp
-(braket
-id|nr_dev
-)braket
-)paren
-op_eq
-l_int|2
-op_logical_and
-id|get_option
-c_func
-(paren
-op_amp
-id|str
-comma
-(paren
-r_int
-op_star
-)paren
-op_amp
-id|snd_cs4232_pcm_port
-(braket
-id|nr_dev
-)braket
-)paren
-op_eq
-l_int|2
-op_logical_and
-id|get_option
-c_func
-(paren
-op_amp
-id|str
-comma
-op_amp
-id|snd_cs4232_pcm_irq
+id|isapnp
 (braket
 id|nr_dev
 )braket
@@ -3859,7 +3825,7 @@ r_int
 op_star
 )paren
 op_amp
-id|snd_cs4232_mpu_port
+id|cs4232_pcm_port
 (braket
 id|nr_dev
 )braket
@@ -3874,41 +3840,7 @@ op_amp
 id|str
 comma
 op_amp
-id|snd_cs4232_mpu_irq
-(braket
-id|nr_dev
-)braket
-)paren
-op_eq
-l_int|2
-op_logical_and
-id|get_option
-c_func
-(paren
-op_amp
-id|str
-comma
-(paren
-r_int
-op_star
-)paren
-op_amp
-id|snd_ics2115_port
-(braket
-id|nr_dev
-)braket
-)paren
-op_eq
-l_int|2
-op_logical_and
-id|get_option
-c_func
-(paren
-op_amp
-id|str
-comma
-op_amp
-id|snd_ics2115_irq
+id|cs4232_pcm_irq
 (braket
 id|nr_dev
 )braket
@@ -3927,7 +3859,7 @@ r_int
 op_star
 )paren
 op_amp
-id|snd_fm_port
+id|cs4232_mpu_port
 (braket
 id|nr_dev
 )braket
@@ -3942,7 +3874,26 @@ op_amp
 id|str
 comma
 op_amp
-id|snd_dma1
+id|cs4232_mpu_irq
+(braket
+id|nr_dev
+)braket
+)paren
+op_eq
+l_int|2
+op_logical_and
+id|get_option
+c_func
+(paren
+op_amp
+id|str
+comma
+(paren
+r_int
+op_star
+)paren
+op_amp
+id|ics2115_port
 (braket
 id|nr_dev
 )braket
@@ -3957,7 +3908,26 @@ op_amp
 id|str
 comma
 op_amp
-id|snd_dma2
+id|ics2115_irq
+(braket
+id|nr_dev
+)braket
+)paren
+op_eq
+l_int|2
+op_logical_and
+id|get_option
+c_func
+(paren
+op_amp
+id|str
+comma
+(paren
+r_int
+op_star
+)paren
+op_amp
+id|fm_port
 (braket
 id|nr_dev
 )braket
@@ -3972,7 +3942,37 @@ op_amp
 id|str
 comma
 op_amp
-id|snd_use_cs4232_midi
+id|dma1
+(braket
+id|nr_dev
+)braket
+)paren
+op_eq
+l_int|2
+op_logical_and
+id|get_option
+c_func
+(paren
+op_amp
+id|str
+comma
+op_amp
+id|dma2
+(braket
+id|nr_dev
+)braket
+)paren
+op_eq
+l_int|2
+op_logical_and
+id|get_option
+c_func
+(paren
+op_amp
+id|str
+comma
+op_amp
+id|use_cs4232_midi
 (braket
 id|nr_dev
 )braket

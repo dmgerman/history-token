@@ -3485,6 +3485,31 @@ op_amp
 id|tasklist_lock
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t; * Check for pending SIGKILL! The new thread should not be allowed&n;&t; * to slip out of an OOM kill. (or normal SIGKILL.)&n;&t; */
+r_if
+c_cond
+(paren
+id|sigismember
+c_func
+(paren
+op_amp
+id|current-&gt;pending.signal
+comma
+id|SIGKILL
+)paren
+)paren
+(brace
+id|write_unlock_irq
+c_func
+(paren
+op_amp
+id|tasklist_lock
+)paren
+suffix:semicolon
+r_goto
+id|bad_fork_cleanup_namespace
+suffix:semicolon
+)brace
 multiline_comment|/* CLONE_PARENT re-uses the old parent */
 r_if
 c_cond

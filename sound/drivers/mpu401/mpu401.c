@@ -34,10 +34,10 @@ c_func
 l_string|&quot;{sound}&quot;
 )paren
 suffix:semicolon
-DECL|variable|snd_index
+DECL|variable|index
 r_static
 r_int
-id|snd_index
+id|index
 (braket
 id|SNDRV_CARDS
 )braket
@@ -45,11 +45,11 @@ op_assign
 id|SNDRV_DEFAULT_IDX
 suffix:semicolon
 multiline_comment|/* Index 0-MAX */
-DECL|variable|snd_id
+DECL|variable|id
 r_static
 r_char
 op_star
-id|snd_id
+id|id
 (braket
 id|SNDRV_CARDS
 )braket
@@ -57,10 +57,10 @@ op_assign
 id|SNDRV_DEFAULT_STR
 suffix:semicolon
 multiline_comment|/* ID for this card */
-DECL|variable|snd_enable
+DECL|variable|enable
 r_static
 r_int
-id|snd_enable
+id|enable
 (braket
 id|SNDRV_CARDS
 )braket
@@ -68,10 +68,10 @@ op_assign
 id|SNDRV_DEFAULT_ENABLE
 suffix:semicolon
 multiline_comment|/* Enable this card */
-DECL|variable|snd_port
+DECL|variable|port
 r_static
 r_int
-id|snd_port
+id|port
 (braket
 id|SNDRV_CARDS
 )braket
@@ -79,10 +79,10 @@ op_assign
 id|SNDRV_DEFAULT_PORT
 suffix:semicolon
 multiline_comment|/* MPU-401 port number */
-DECL|variable|snd_irq
+DECL|variable|irq
 r_static
 r_int
-id|snd_irq
+id|irq
 (braket
 id|SNDRV_CARDS
 )braket
@@ -93,7 +93,7 @@ multiline_comment|/* MPU-401 IRQ */
 id|MODULE_PARM
 c_func
 (paren
-id|snd_index
+id|index
 comma
 l_string|&quot;1-&quot;
 id|__MODULE_STRING
@@ -107,7 +107,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|snd_index
+id|index
 comma
 l_string|&quot;Index value for MPU-401 device.&quot;
 )paren
@@ -115,7 +115,7 @@ suffix:semicolon
 id|MODULE_PARM_SYNTAX
 c_func
 (paren
-id|snd_index
+id|index
 comma
 id|SNDRV_INDEX_DESC
 )paren
@@ -123,7 +123,7 @@ suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
-id|snd_id
+id|id
 comma
 l_string|&quot;1-&quot;
 id|__MODULE_STRING
@@ -137,7 +137,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|snd_id
+id|id
 comma
 l_string|&quot;ID string for MPU-401 device.&quot;
 )paren
@@ -145,7 +145,7 @@ suffix:semicolon
 id|MODULE_PARM_SYNTAX
 c_func
 (paren
-id|snd_id
+id|id
 comma
 id|SNDRV_ID_DESC
 )paren
@@ -153,7 +153,7 @@ suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
-id|snd_enable
+id|enable
 comma
 l_string|&quot;1-&quot;
 id|__MODULE_STRING
@@ -167,7 +167,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|snd_enable
+id|enable
 comma
 l_string|&quot;Enable MPU-401 device.&quot;
 )paren
@@ -175,7 +175,7 @@ suffix:semicolon
 id|MODULE_PARM_SYNTAX
 c_func
 (paren
-id|snd_enable
+id|enable
 comma
 id|SNDRV_ENABLE_DESC
 )paren
@@ -183,7 +183,7 @@ suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
-id|snd_port
+id|port
 comma
 l_string|&quot;1-&quot;
 id|__MODULE_STRING
@@ -197,7 +197,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|snd_port
+id|port
 comma
 l_string|&quot;Port # for MPU-401 device.&quot;
 )paren
@@ -205,7 +205,7 @@ suffix:semicolon
 id|MODULE_PARM_SYNTAX
 c_func
 (paren
-id|snd_port
+id|port
 comma
 id|SNDRV_PORT12_DESC
 )paren
@@ -213,7 +213,7 @@ suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
-id|snd_irq
+id|irq
 comma
 l_string|&quot;1-&quot;
 id|__MODULE_STRING
@@ -227,7 +227,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|snd_irq
+id|irq
 comma
 l_string|&quot;IRQ # for MPU-401 device.&quot;
 )paren
@@ -235,7 +235,7 @@ suffix:semicolon
 id|MODULE_PARM_SYNTAX
 c_func
 (paren
-id|snd_irq
+id|irq
 comma
 id|SNDRV_IRQ_DESC
 )paren
@@ -272,7 +272,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|snd_port
+id|port
 (braket
 id|dev
 )braket
@@ -283,7 +283,7 @@ id|SNDRV_AUTO_PORT
 id|snd_printk
 c_func
 (paren
-l_string|&quot;specify snd_port&bslash;n&quot;
+l_string|&quot;specify port&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -294,7 +294,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|snd_irq
+id|irq
 (braket
 id|dev
 )braket
@@ -318,12 +318,12 @@ op_assign
 id|snd_card_new
 c_func
 (paren
-id|snd_index
+id|index
 (braket
 id|dev
 )braket
 comma
-id|snd_id
+id|id
 (braket
 id|dev
 )braket
@@ -356,19 +356,19 @@ l_int|0
 comma
 id|MPU401_HW_MPU401
 comma
-id|snd_port
+id|port
 (braket
 id|dev
 )braket
 comma
 l_int|0
 comma
-id|snd_irq
+id|irq
 (braket
 id|dev
 )braket
 comma
-id|snd_irq
+id|irq
 (braket
 id|dev
 )braket
@@ -392,7 +392,7 @@ c_func
 id|KERN_ERR
 l_string|&quot;MPU401 not detected at 0x%lx&bslash;n&quot;
 comma
-id|snd_port
+id|port
 (braket
 id|dev
 )braket
@@ -434,7 +434,7 @@ l_string|&quot;%s at 0x%lx, &quot;
 comma
 id|card-&gt;shortname
 comma
-id|snd_port
+id|port
 (braket
 id|dev
 )braket
@@ -443,7 +443,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|snd_irq
+id|irq
 (braket
 id|dev
 )braket
@@ -464,7 +464,7 @@ id|card-&gt;longname
 comma
 l_string|&quot;IRQ %d&quot;
 comma
-id|snd_irq
+id|irq
 (braket
 id|dev
 )braket
@@ -555,7 +555,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|snd_enable
+id|enable
 (braket
 id|dev
 )braket
@@ -650,7 +650,7 @@ c_func
 id|alsa_card_mpu401_exit
 )paren
 macro_line|#ifndef MODULE
-multiline_comment|/* format is: snd-mpu401=snd_enable,snd_index,snd_id,snd_port,snd_irq */
+multiline_comment|/* format is: snd-mpu401=enable,index,id,port,irq */
 DECL|function|alsa_card_mpu401_setup
 r_static
 r_int
@@ -691,7 +691,7 @@ op_amp
 id|str
 comma
 op_amp
-id|snd_enable
+id|enable
 (braket
 id|nr_dev
 )braket
@@ -706,7 +706,7 @@ op_amp
 id|str
 comma
 op_amp
-id|snd_index
+id|index
 (braket
 id|nr_dev
 )braket
@@ -721,7 +721,7 @@ op_amp
 id|str
 comma
 op_amp
-id|snd_id
+id|id
 (braket
 id|nr_dev
 )braket
@@ -740,7 +740,7 @@ r_int
 op_star
 )paren
 op_amp
-id|snd_port
+id|port
 (braket
 id|nr_dev
 )braket
@@ -755,7 +755,7 @@ op_amp
 id|str
 comma
 op_amp
-id|snd_irq
+id|irq
 (braket
 id|nr_dev
 )braket

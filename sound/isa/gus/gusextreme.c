@@ -48,10 +48,10 @@ c_func
 l_string|&quot;{{Gravis,UltraSound Extreme}}&quot;
 )paren
 suffix:semicolon
-DECL|variable|snd_index
+DECL|variable|index
 r_static
 r_int
-id|snd_index
+id|index
 (braket
 id|SNDRV_CARDS
 )braket
@@ -59,11 +59,11 @@ op_assign
 id|SNDRV_DEFAULT_IDX
 suffix:semicolon
 multiline_comment|/* Index 0-MAX */
-DECL|variable|snd_id
+DECL|variable|id
 r_static
 r_char
 op_star
-id|snd_id
+id|id
 (braket
 id|SNDRV_CARDS
 )braket
@@ -71,10 +71,10 @@ op_assign
 id|SNDRV_DEFAULT_STR
 suffix:semicolon
 multiline_comment|/* ID for this card */
-DECL|variable|snd_enable
+DECL|variable|enable
 r_static
 r_int
-id|snd_enable
+id|enable
 (braket
 id|SNDRV_CARDS
 )braket
@@ -82,10 +82,10 @@ op_assign
 id|SNDRV_DEFAULT_ENABLE
 suffix:semicolon
 multiline_comment|/* Enable this card */
-DECL|variable|snd_port
+DECL|variable|port
 r_static
 r_int
-id|snd_port
+id|port
 (braket
 id|SNDRV_CARDS
 )braket
@@ -93,10 +93,10 @@ op_assign
 id|SNDRV_DEFAULT_PORT
 suffix:semicolon
 multiline_comment|/* 0x220,0x240,0x260 */
-DECL|variable|snd_gf1_port
+DECL|variable|gf1_port
 r_static
 r_int
-id|snd_gf1_port
+id|gf1_port
 (braket
 id|SNDRV_CARDS
 )braket
@@ -119,10 +119,10 @@ l_int|1
 )brace
 suffix:semicolon
 multiline_comment|/* 0x210,0x220,0x230,0x240,0x250,0x260,0x270 */
-DECL|variable|snd_mpu_port
+DECL|variable|mpu_port
 r_static
 r_int
-id|snd_mpu_port
+id|mpu_port
 (braket
 id|SNDRV_CARDS
 )braket
@@ -145,10 +145,10 @@ l_int|1
 )brace
 suffix:semicolon
 multiline_comment|/* 0x300,0x310,0x320 */
-DECL|variable|snd_irq
+DECL|variable|irq
 r_static
 r_int
-id|snd_irq
+id|irq
 (braket
 id|SNDRV_CARDS
 )braket
@@ -156,10 +156,10 @@ op_assign
 id|SNDRV_DEFAULT_IRQ
 suffix:semicolon
 multiline_comment|/* 5,7,9,10 */
-DECL|variable|snd_mpu_irq
+DECL|variable|mpu_irq
 r_static
 r_int
-id|snd_mpu_irq
+id|mpu_irq
 (braket
 id|SNDRV_CARDS
 )braket
@@ -167,10 +167,10 @@ op_assign
 id|SNDRV_DEFAULT_IRQ
 suffix:semicolon
 multiline_comment|/* 5,7,9,10 */
-DECL|variable|snd_gf1_irq
+DECL|variable|gf1_irq
 r_static
 r_int
-id|snd_gf1_irq
+id|gf1_irq
 (braket
 id|SNDRV_CARDS
 )braket
@@ -178,10 +178,10 @@ op_assign
 id|SNDRV_DEFAULT_IRQ
 suffix:semicolon
 multiline_comment|/* 2,3,5,9,11,12,15 */
-DECL|variable|snd_dma8
+DECL|variable|dma8
 r_static
 r_int
-id|snd_dma8
+id|dma8
 (braket
 id|SNDRV_CARDS
 )braket
@@ -189,20 +189,20 @@ op_assign
 id|SNDRV_DEFAULT_DMA
 suffix:semicolon
 multiline_comment|/* 0,1,3 */
-DECL|variable|snd_dma1
+DECL|variable|dma1
 r_static
 r_int
-id|snd_dma1
+id|dma1
 (braket
 id|SNDRV_CARDS
 )braket
 op_assign
 id|SNDRV_DEFAULT_DMA
 suffix:semicolon
-DECL|variable|snd_joystick_dac
+DECL|variable|joystick_dac
 r_static
 r_int
-id|snd_joystick_dac
+id|joystick_dac
 (braket
 id|SNDRV_CARDS
 )braket
@@ -224,10 +224,10 @@ l_int|29
 )brace
 suffix:semicolon
 multiline_comment|/* 0 to 31, (0.59V-4.52V or 0.389V-2.98V) */
-DECL|variable|snd_channels
+DECL|variable|channels
 r_static
 r_int
-id|snd_channels
+id|channels
 (braket
 id|SNDRV_CARDS
 )braket
@@ -248,10 +248,10 @@ op_assign
 l_int|24
 )brace
 suffix:semicolon
-DECL|variable|snd_pcm_channels
+DECL|variable|pcm_channels
 r_static
 r_int
-id|snd_pcm_channels
+id|pcm_channels
 (braket
 id|SNDRV_CARDS
 )braket
@@ -275,7 +275,7 @@ suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
-id|snd_index
+id|index
 comma
 l_string|&quot;1-&quot;
 id|__MODULE_STRING
@@ -289,7 +289,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|snd_index
+id|index
 comma
 l_string|&quot;Index value for GUS Extreme soundcard.&quot;
 )paren
@@ -297,7 +297,7 @@ suffix:semicolon
 id|MODULE_PARM_SYNTAX
 c_func
 (paren
-id|snd_index
+id|index
 comma
 id|SNDRV_INDEX_DESC
 )paren
@@ -305,7 +305,7 @@ suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
-id|snd_id
+id|id
 comma
 l_string|&quot;1-&quot;
 id|__MODULE_STRING
@@ -319,7 +319,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|snd_id
+id|id
 comma
 l_string|&quot;ID string for GUS Extreme soundcard.&quot;
 )paren
@@ -327,7 +327,7 @@ suffix:semicolon
 id|MODULE_PARM_SYNTAX
 c_func
 (paren
-id|snd_id
+id|id
 comma
 id|SNDRV_ID_DESC
 )paren
@@ -335,7 +335,7 @@ suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
-id|snd_enable
+id|enable
 comma
 l_string|&quot;1-&quot;
 id|__MODULE_STRING
@@ -349,7 +349,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|snd_enable
+id|enable
 comma
 l_string|&quot;Enable GUS Extreme soundcard.&quot;
 )paren
@@ -357,7 +357,7 @@ suffix:semicolon
 id|MODULE_PARM_SYNTAX
 c_func
 (paren
-id|snd_enable
+id|enable
 comma
 id|SNDRV_ENABLE_DESC
 )paren
@@ -365,7 +365,7 @@ suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
-id|snd_port
+id|port
 comma
 l_string|&quot;1-&quot;
 id|__MODULE_STRING
@@ -379,7 +379,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|snd_port
+id|port
 comma
 l_string|&quot;Port # for GUS Extreme driver.&quot;
 )paren
@@ -387,7 +387,7 @@ suffix:semicolon
 id|MODULE_PARM_SYNTAX
 c_func
 (paren
-id|snd_port
+id|port
 comma
 id|SNDRV_ENABLED
 l_string|&quot;,allows:{{0x220,0x260,0x20}},dialog:list&quot;
@@ -396,7 +396,7 @@ suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
-id|snd_gf1_port
+id|gf1_port
 comma
 l_string|&quot;1-&quot;
 id|__MODULE_STRING
@@ -410,7 +410,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|snd_gf1_port
+id|gf1_port
 comma
 l_string|&quot;GF1 port # for GUS Extreme driver (optional).&quot;
 )paren
@@ -418,7 +418,7 @@ suffix:semicolon
 id|MODULE_PARM_SYNTAX
 c_func
 (paren
-id|snd_gf1_port
+id|gf1_port
 comma
 id|SNDRV_ENABLED
 l_string|&quot;,allows:{{0x210,0x270,0x10}},dialog:list&quot;
@@ -427,7 +427,7 @@ suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
-id|snd_mpu_port
+id|mpu_port
 comma
 l_string|&quot;1-&quot;
 id|__MODULE_STRING
@@ -441,7 +441,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|snd_mpu_port
+id|mpu_port
 comma
 l_string|&quot;MPU-401 port # for GUS Extreme driver.&quot;
 )paren
@@ -449,7 +449,7 @@ suffix:semicolon
 id|MODULE_PARM_SYNTAX
 c_func
 (paren
-id|snd_mpu_port
+id|mpu_port
 comma
 id|SNDRV_ENABLED
 l_string|&quot;,allows:{{0x300,0x320,0x10}},dialog:list&quot;
@@ -458,7 +458,7 @@ suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
-id|snd_irq
+id|irq
 comma
 l_string|&quot;1-&quot;
 id|__MODULE_STRING
@@ -472,7 +472,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|snd_irq
+id|irq
 comma
 l_string|&quot;IRQ # for GUS Extreme driver.&quot;
 )paren
@@ -480,7 +480,7 @@ suffix:semicolon
 id|MODULE_PARM_SYNTAX
 c_func
 (paren
-id|snd_irq
+id|irq
 comma
 id|SNDRV_ENABLED
 l_string|&quot;,allows:{{5},{7},{9},{10}},dialog:list&quot;
@@ -489,7 +489,7 @@ suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
-id|snd_mpu_irq
+id|mpu_irq
 comma
 l_string|&quot;1-&quot;
 id|__MODULE_STRING
@@ -503,7 +503,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|snd_mpu_irq
+id|mpu_irq
 comma
 l_string|&quot;MPU-401 IRQ # for GUS Extreme driver.&quot;
 )paren
@@ -511,7 +511,7 @@ suffix:semicolon
 id|MODULE_PARM_SYNTAX
 c_func
 (paren
-id|snd_mpu_irq
+id|mpu_irq
 comma
 id|SNDRV_ENABLED
 l_string|&quot;,allows:{{5},{7},{9},{10}},dialog:list&quot;
@@ -520,7 +520,7 @@ suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
-id|snd_gf1_irq
+id|gf1_irq
 comma
 l_string|&quot;1-&quot;
 id|__MODULE_STRING
@@ -534,7 +534,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|snd_gf1_irq
+id|gf1_irq
 comma
 l_string|&quot;GF1 IRQ # for GUS Extreme driver.&quot;
 )paren
@@ -542,7 +542,7 @@ suffix:semicolon
 id|MODULE_PARM_SYNTAX
 c_func
 (paren
-id|snd_gf1_irq
+id|gf1_irq
 comma
 id|SNDRV_ENABLED
 l_string|&quot;,allows:{{2},{3},{5},{9},{11},{12},{15}},dialog:list&quot;
@@ -551,7 +551,7 @@ suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
-id|snd_dma8
+id|dma8
 comma
 l_string|&quot;1-&quot;
 id|__MODULE_STRING
@@ -565,7 +565,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|snd_dma8
+id|dma8
 comma
 l_string|&quot;8-bit DMA # for GUS Extreme driver.&quot;
 )paren
@@ -573,7 +573,7 @@ suffix:semicolon
 id|MODULE_PARM_SYNTAX
 c_func
 (paren
-id|snd_dma8
+id|dma8
 comma
 id|SNDRV_DMA8_DESC
 )paren
@@ -581,7 +581,7 @@ suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
-id|snd_dma1
+id|dma1
 comma
 l_string|&quot;1-&quot;
 id|__MODULE_STRING
@@ -595,7 +595,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|snd_dma1
+id|dma1
 comma
 l_string|&quot;GF1 DMA # for GUS Extreme driver.&quot;
 )paren
@@ -603,7 +603,7 @@ suffix:semicolon
 id|MODULE_PARM_SYNTAX
 c_func
 (paren
-id|snd_dma1
+id|dma1
 comma
 id|SNDRV_DMA_DESC
 )paren
@@ -611,7 +611,7 @@ suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
-id|snd_joystick_dac
+id|joystick_dac
 comma
 l_string|&quot;1-&quot;
 id|__MODULE_STRING
@@ -625,7 +625,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|snd_joystick_dac
+id|joystick_dac
 comma
 l_string|&quot;Joystick DAC level 0.59V-4.52V or 0.389V-2.98V for GUS Extreme driver.&quot;
 )paren
@@ -633,7 +633,7 @@ suffix:semicolon
 id|MODULE_PARM_SYNTAX
 c_func
 (paren
-id|snd_joystick_dac
+id|joystick_dac
 comma
 id|SNDRV_ENABLED
 l_string|&quot;,allows:{{0,31}}&quot;
@@ -642,7 +642,7 @@ suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
-id|snd_channels
+id|channels
 comma
 l_string|&quot;1-&quot;
 id|__MODULE_STRING
@@ -656,7 +656,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|snd_channels
+id|channels
 comma
 l_string|&quot;GF1 channels for GUS Extreme driver.&quot;
 )paren
@@ -664,7 +664,7 @@ suffix:semicolon
 id|MODULE_PARM_SYNTAX
 c_func
 (paren
-id|snd_channels
+id|channels
 comma
 id|SNDRV_ENABLED
 l_string|&quot;,allows:{{14,32}}&quot;
@@ -673,7 +673,7 @@ suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
-id|snd_pcm_channels
+id|pcm_channels
 comma
 l_string|&quot;1-&quot;
 id|__MODULE_STRING
@@ -687,7 +687,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|snd_pcm_channels
+id|pcm_channels
 comma
 l_string|&quot;Reserved PCM channels for GUS Extreme driver.&quot;
 )paren
@@ -695,7 +695,7 @@ suffix:semicolon
 id|MODULE_PARM_SYNTAX
 c_func
 (paren
-id|snd_pcm_channels
+id|pcm_channels
 comma
 id|SNDRV_ENABLED
 l_string|&quot;,allows:{{2,16}}&quot;
@@ -781,7 +781,7 @@ suffix:semicolon
 id|outb
 c_func
 (paren
-id|snd_gf1_port
+id|gf1_port
 (braket
 id|dev
 )braket
@@ -813,7 +813,7 @@ suffix:semicolon
 id|outb
 c_func
 (paren
-id|snd_gf1_port
+id|gf1_port
 (braket
 id|dev
 )braket
@@ -845,7 +845,7 @@ suffix:semicolon
 id|outb
 c_func
 (paren
-id|snd_gf1_port
+id|gf1_port
 (braket
 id|dev
 )braket
@@ -1070,7 +1070,7 @@ id|gus
 (brace
 id|gus-&gt;joystick_dac
 op_assign
-id|snd_joystick_dac
+id|joystick_dac
 (braket
 id|dev
 )braket
@@ -1316,15 +1316,15 @@ l_int|1
 )brace
 suffix:semicolon
 r_int
-id|gf1_irq
+id|xgf1_irq
 comma
-id|gf1_dma
+id|xgf1_dma
 comma
-id|ess_irq
+id|xess_irq
 comma
-id|mpu_irq
+id|xmpu_irq
 comma
-id|ess_dma
+id|xess_dma
 suffix:semicolon
 id|snd_card_t
 op_star
@@ -1355,12 +1355,12 @@ op_assign
 id|snd_card_new
 c_func
 (paren
-id|snd_index
+id|index
 (braket
 id|dev
 )braket
 comma
-id|snd_id
+id|id
 (braket
 id|dev
 )braket
@@ -1390,9 +1390,9 @@ op_star
 )paren
 id|card-&gt;private_data
 suffix:semicolon
-id|gf1_irq
+id|xgf1_irq
 op_assign
-id|snd_gf1_irq
+id|gf1_irq
 (braket
 id|dev
 )braket
@@ -1400,7 +1400,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|gf1_irq
+id|xgf1_irq
 op_eq
 id|SNDRV_AUTO_IRQ
 )paren
@@ -1409,7 +1409,7 @@ r_if
 c_cond
 (paren
 (paren
-id|gf1_irq
+id|xgf1_irq
 op_assign
 id|snd_legacy_find_free_irq
 c_func
@@ -1439,9 +1439,9 @@ id|EBUSY
 suffix:semicolon
 )brace
 )brace
-id|ess_irq
+id|xess_irq
 op_assign
-id|snd_irq
+id|irq
 (braket
 id|dev
 )braket
@@ -1449,7 +1449,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|ess_irq
+id|xess_irq
 op_eq
 id|SNDRV_AUTO_IRQ
 )paren
@@ -1458,7 +1458,7 @@ r_if
 c_cond
 (paren
 (paren
-id|ess_irq
+id|xess_irq
 op_assign
 id|snd_legacy_find_free_irq
 c_func
@@ -1491,23 +1491,23 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|snd_mpu_port
+id|mpu_port
 (braket
 id|dev
 )braket
 op_eq
 id|SNDRV_AUTO_PORT
 )paren
-id|snd_mpu_port
+id|mpu_port
 (braket
 id|dev
 )braket
 op_assign
 l_int|0
 suffix:semicolon
-id|mpu_irq
+id|xmpu_irq
 op_assign
-id|snd_mpu_irq
+id|mpu_irq
 (braket
 id|dev
 )braket
@@ -1515,18 +1515,18 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|mpu_irq
+id|xmpu_irq
 OG
 l_int|15
 )paren
-id|mpu_irq
+id|xmpu_irq
 op_assign
 op_minus
 l_int|1
 suffix:semicolon
-id|gf1_dma
+id|xgf1_dma
 op_assign
-id|snd_dma1
+id|dma1
 (braket
 id|dev
 )braket
@@ -1534,7 +1534,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|gf1_dma
+id|xgf1_dma
 op_eq
 id|SNDRV_AUTO_DMA
 )paren
@@ -1543,7 +1543,7 @@ r_if
 c_cond
 (paren
 (paren
-id|gf1_dma
+id|xgf1_dma
 op_assign
 id|snd_legacy_find_free_dma
 c_func
@@ -1573,9 +1573,9 @@ id|EBUSY
 suffix:semicolon
 )brace
 )brace
-id|ess_dma
+id|xess_dma
 op_assign
-id|snd_dma8
+id|dma8
 (braket
 id|dev
 )braket
@@ -1583,7 +1583,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|ess_dma
+id|xess_dma
 op_eq
 id|SNDRV_AUTO_DMA
 )paren
@@ -1592,7 +1592,7 @@ r_if
 c_cond
 (paren
 (paren
-id|ess_dma
+id|xess_dma
 op_assign
 id|snd_legacy_find_free_dma
 c_func
@@ -1633,21 +1633,21 @@ c_func
 (paren
 id|card
 comma
-id|snd_port
+id|port
 (braket
 id|dev
 )braket
 comma
-id|snd_mpu_port
+id|mpu_port
 (braket
 id|dev
 )braket
 comma
-id|ess_irq
+id|xess_irq
 comma
-id|mpu_irq
+id|xmpu_irq
 comma
-id|ess_dma
+id|xess_dma
 comma
 id|ES1688_HW_1688
 comma
@@ -1672,19 +1672,19 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|snd_gf1_port
+id|gf1_port
 (braket
 id|dev
 )braket
 OL
 l_int|0
 )paren
-id|snd_gf1_port
+id|gf1_port
 (braket
 id|dev
 )braket
 op_assign
-id|snd_port
+id|port
 (braket
 id|dev
 )braket
@@ -1702,26 +1702,26 @@ c_func
 (paren
 id|card
 comma
-id|snd_gf1_port
+id|gf1_port
 (braket
 id|dev
 )braket
 comma
-id|gf1_irq
+id|xgf1_irq
 comma
-id|gf1_dma
+id|xgf1_dma
 comma
 op_minus
 l_int|1
 comma
 l_int|0
 comma
-id|snd_channels
+id|channels
 (braket
 id|dev
 )braket
 comma
-id|snd_pcm_channels
+id|pcm_channels
 (braket
 id|dev
 )braket
@@ -1905,7 +1905,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|snd_pcm_channels
+id|pcm_channels
 (braket
 id|dev
 )braket
@@ -2095,7 +2095,7 @@ id|es1688-&gt;mpu_port
 comma
 l_int|0
 comma
-id|mpu_irq
+id|xmpu_irq
 comma
 id|SA_INTERRUPT
 comma
@@ -2126,13 +2126,13 @@ l_string|&quot;Gravis UltraSound Extreme at 0x%lx, irq %i&amp;%i, dma %i&amp;%i&
 comma
 id|es1688-&gt;port
 comma
-id|gf1_irq
+id|xgf1_irq
 comma
-id|ess_irq
+id|xess_irq
 comma
-id|gf1_dma
+id|xgf1_dma
 comma
-id|ess_dma
+id|xess_dma
 )paren
 suffix:semicolon
 r_if
@@ -2181,7 +2181,7 @@ c_func
 (paren
 r_int
 r_int
-id|port
+id|xport
 )paren
 (brace
 r_static
@@ -2207,12 +2207,12 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|snd_enable
+id|enable
 (braket
 id|dev
 )braket
 op_logical_or
-id|snd_port
+id|port
 (braket
 id|dev
 )braket
@@ -2221,12 +2221,12 @@ id|SNDRV_AUTO_PORT
 )paren
 r_continue
 suffix:semicolon
-id|snd_port
+id|port
 (braket
 id|dev
 )braket
 op_assign
-id|port
+id|xport
 suffix:semicolon
 id|res
 op_assign
@@ -2243,7 +2243,7 @@ id|res
 OL
 l_int|0
 )paren
-id|snd_port
+id|port
 (braket
 id|dev
 )braket
@@ -2312,7 +2312,7 @@ op_increment
 r_if
 c_cond
 (paren
-id|snd_port
+id|port
 (braket
 id|dev
 )braket
@@ -2455,7 +2455,7 @@ c_func
 id|alsa_card_gusextreme_exit
 )paren
 macro_line|#ifndef MODULE
-multiline_comment|/* format is: snd-gusextreme=snd_enable,snd_index,snd_id,&n;&t;&t;&t;     snd_port,snd_gf1_port,snd_mpu_port,&n;&t;&t;&t;     snd_irq,snd_gf1_irq,snd_mpu_irq,&n;&t;&t;&t;     snd_dma8,snd_dma1,&n;&t;&t;&t;     snd_joystick_dac,&n;&t;&t;&t;     snd_channels,snd_pcm_channels */
+multiline_comment|/* format is: snd-gusextreme=enable,index,id,&n;&t;&t;&t;     port,gf1_port,mpu_port,&n;&t;&t;&t;     irq,gf1_irq,mpu_irq,&n;&t;&t;&t;     dma8,dma1,&n;&t;&t;&t;     joystick_dac,&n;&t;&t;&t;     channels,pcm_channels */
 DECL|function|alsa_card_gusextreme_setup
 r_static
 r_int
@@ -2496,7 +2496,7 @@ op_amp
 id|str
 comma
 op_amp
-id|snd_enable
+id|enable
 (braket
 id|nr_dev
 )braket
@@ -2511,7 +2511,7 @@ op_amp
 id|str
 comma
 op_amp
-id|snd_index
+id|index
 (braket
 id|nr_dev
 )braket
@@ -2526,7 +2526,7 @@ op_amp
 id|str
 comma
 op_amp
-id|snd_id
+id|id
 (braket
 id|nr_dev
 )braket
@@ -2545,7 +2545,7 @@ r_int
 op_star
 )paren
 op_amp
-id|snd_port
+id|port
 (braket
 id|nr_dev
 )braket
@@ -2564,7 +2564,7 @@ r_int
 op_star
 )paren
 op_amp
-id|snd_gf1_port
+id|gf1_port
 (braket
 id|nr_dev
 )braket
@@ -2583,7 +2583,7 @@ r_int
 op_star
 )paren
 op_amp
-id|snd_mpu_port
+id|mpu_port
 (braket
 id|nr_dev
 )braket
@@ -2598,7 +2598,7 @@ op_amp
 id|str
 comma
 op_amp
-id|snd_irq
+id|irq
 (braket
 id|nr_dev
 )braket
@@ -2613,7 +2613,7 @@ op_amp
 id|str
 comma
 op_amp
-id|snd_gf1_irq
+id|gf1_irq
 (braket
 id|nr_dev
 )braket
@@ -2628,7 +2628,7 @@ op_amp
 id|str
 comma
 op_amp
-id|snd_mpu_irq
+id|mpu_irq
 (braket
 id|nr_dev
 )braket
@@ -2643,7 +2643,7 @@ op_amp
 id|str
 comma
 op_amp
-id|snd_dma8
+id|dma8
 (braket
 id|nr_dev
 )braket
@@ -2658,7 +2658,7 @@ op_amp
 id|str
 comma
 op_amp
-id|snd_dma1
+id|dma1
 (braket
 id|nr_dev
 )braket
