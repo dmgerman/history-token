@@ -87,7 +87,7 @@ DECL|macro|TI_RESTART_BLOCK
 mdefine_line|#define TI_RESTART_BLOCK 0x000001C
 macro_line|#endif
 DECL|macro|PREEMPT_ACTIVE
-mdefine_line|#define PREEMPT_ACTIVE&t;&t;0x4000000
+mdefine_line|#define PREEMPT_ACTIVE&t;&t;0x10000000
 multiline_comment|/*&n; * macros/functions for gaining access to the thread information structure&n; *&n; * preempt_count needs to be 1 initially, until the scheduler is functional.&n; */
 macro_line|#ifndef __ASSEMBLY__
 DECL|macro|INIT_THREAD_INFO

@@ -1,7 +1,7 @@
+macro_line|#ifdef __KERNEL__
 macro_line|#ifndef _ASM_M32R_IRQ_H
 DECL|macro|_ASM_M32R_IRQ_H
 mdefine_line|#define _ASM_M32R_IRQ_H
-multiline_comment|/* $Id$ */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#if defined(CONFIG_PLAT_M32700UT_Alpha) || defined(CONFIG_PLAT_USRV)
 multiline_comment|/*&n; * IRQ definitions for M32700UT&n; *  M32700 Chip: 64 interrupts&n; *  ICU of M32700UT-on-board PLD: 32 interrupts cascaded to INT1# chip pin&n; */
@@ -67,56 +67,6 @@ mdefine_line|#define NR_IRQS&t;64
 macro_line|#endif
 DECL|macro|irq_canonicalize
 mdefine_line|#define irq_canonicalize(irq)&t;(irq)
-macro_line|#ifndef __ASSEMBLY__
-r_extern
-r_void
-id|disable_irq
-c_func
-(paren
-r_int
-r_int
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|disable_irq_nosync
-c_func
-(paren
-r_int
-r_int
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|enable_irq
-c_func
-(paren
-r_int
-r_int
-)paren
-suffix:semicolon
-r_struct
-id|irqaction
-suffix:semicolon
-r_struct
-id|pt_regs
-suffix:semicolon
-r_int
-id|handle_IRQ_event
-c_func
-(paren
-r_int
-r_int
-comma
-r_struct
-id|pt_regs
-op_star
-comma
-r_struct
-id|irqaction
-op_star
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#endif&t;/* _ASM_M32R_IRQ_H */
+macro_line|#endif /* _ASM_M32R_IRQ_H */
+macro_line|#endif /* __KERNEL__ */
 eof
