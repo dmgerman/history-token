@@ -32,9 +32,9 @@ macro_line|#  include &lt;errno.h&gt;
 macro_line|#  include &lt;sys/stat.h&gt;
 macro_line|#  include &lt;glib.h&gt;
 macro_line|#endif
-macro_line|#include &lt;linux/intermezzo_lib.h&gt;
-macro_line|#include &lt;linux/intermezzo_idl.h&gt;
-macro_line|#include &lt;linux/intermezzo_fs.h&gt;
+macro_line|#include &quot;intermezzo_lib.h&quot;
+macro_line|#include &quot;intermezzo_idl.h&quot;
+macro_line|#include &quot;intermezzo_fs.h&quot;
 DECL|function|kml_unpack_version
 r_int
 id|kml_unpack_version

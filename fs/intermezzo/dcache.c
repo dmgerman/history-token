@@ -15,7 +15,7 @@ macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/vmalloc.h&gt;
-macro_line|#include &lt;linux/intermezzo_fs.h&gt;
+macro_line|#include &quot;intermezzo_fs.h&quot;
 DECL|variable|presto_dentry_slab
 id|kmem_cache_t
 op_star

@@ -2,8 +2,8 @@ multiline_comment|/* -*- mode: c; c-basic-offset: 8; indent-tabs-mode: nil; -*-&
 macro_line|#ifndef __INTERMEZZO_FS_H_
 DECL|macro|__INTERMEZZO_FS_H_
 mdefine_line|#define __INTERMEZZO_FS_H_ 1
-macro_line|#include &lt;linux/intermezzo_lib.h&gt;
-macro_line|#include &lt;linux/intermezzo_idl.h&gt;
+macro_line|#include &quot;intermezzo_lib.h&quot;
+macro_line|#include &quot;intermezzo_idl.h&quot;
 macro_line|#ifdef __KERNEL__
 DECL|typedef|uuid_t
 r_typedef
