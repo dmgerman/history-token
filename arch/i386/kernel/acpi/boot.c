@@ -1416,6 +1416,57 @@ c_func
 id|acpi_register_gsi
 )paren
 suffix:semicolon
+multiline_comment|/*&n; *  ACPI based hotplug support for CPU&n; */
+macro_line|#ifdef CONFIG_ACPI_HOTPLUG_CPU
+r_int
+DECL|function|acpi_map_lsapic
+id|acpi_map_lsapic
+c_func
+(paren
+id|acpi_handle
+id|handle
+comma
+r_int
+op_star
+id|pcpu
+)paren
+(brace
+multiline_comment|/* TBD */
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
+)brace
+DECL|variable|acpi_map_lsapic
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|acpi_map_lsapic
+)paren
+suffix:semicolon
+r_int
+DECL|function|acpi_unmap_lsapic
+id|acpi_unmap_lsapic
+c_func
+(paren
+r_int
+id|cpu
+)paren
+(brace
+multiline_comment|/* TBD */
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
+)brace
+DECL|variable|acpi_unmap_lsapic
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|acpi_unmap_lsapic
+)paren
+suffix:semicolon
+macro_line|#endif /* CONFIG_ACPI_HOTPLUG_CPU */
 r_static
 r_int
 r_int
