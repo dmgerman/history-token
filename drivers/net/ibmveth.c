@@ -1778,7 +1778,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|vio_dma_mapping_error
+id|dma_mapping_error
 c_func
 (paren
 id|adapter-&gt;buffer_list_dma
@@ -1829,7 +1829,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|vio_dma_mapping_error
+id|dma_mapping_error
 c_func
 (paren
 id|adapter-&gt;filter_list_dma
@@ -1880,7 +1880,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|vio_dma_mapping_error
+id|dma_mapping_error
 c_func
 (paren
 id|adapter-&gt;rx_queue.queue_dma
@@ -2162,7 +2162,7 @@ r_if
 c_cond
 (paren
 (paren
-id|vio_dma_mapping_error
+id|dma_mapping_error
 c_func
 (paren
 id|adapter-&gt;buffer_list_dma
@@ -2170,7 +2170,7 @@ id|adapter-&gt;buffer_list_dma
 )paren
 op_logical_or
 (paren
-id|vio_dma_mapping_error
+id|dma_mapping_error
 c_func
 (paren
 id|adapter-&gt;filter_list_dma
@@ -2178,7 +2178,7 @@ id|adapter-&gt;filter_list_dma
 )paren
 op_logical_or
 (paren
-id|vio_dma_mapping_error
+id|dma_mapping_error
 c_func
 (paren
 id|adapter-&gt;rx_queue.queue_dma
@@ -2973,7 +2973,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|vio_dma_mapping_error
+id|dma_mapping_error
 c_func
 (paren
 id|desc
@@ -3087,7 +3087,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|vio_dma_mapping_error
+id|dma_mapping_error
 c_func
 (paren
 id|desc

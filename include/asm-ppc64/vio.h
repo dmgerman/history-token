@@ -593,24 +593,5 @@ id|dev
 )paren
 suffix:semicolon
 )brace
-DECL|function|vio_dma_mapping_error
-r_static
-r_inline
-r_int
-id|vio_dma_mapping_error
-c_func
-(paren
-id|dma_addr_t
-id|dma_addr
-)paren
-(brace
-r_return
-id|dma_mapping_error
-c_func
-(paren
-id|dma_addr
-)paren
-suffix:semicolon
-)brace
 macro_line|#endif /* _ASM_VIO_H */
 eof
