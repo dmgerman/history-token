@@ -2837,9 +2837,6 @@ id|data
 comma
 r_int
 id|size
-comma
-r_int
-id|flags
 )paren
 (brace
 id|ssize_t
@@ -3221,9 +3218,6 @@ id|data
 comma
 r_int
 id|size
-comma
-r_int
-id|flags
 )paren
 (brace
 id|ssize_t
@@ -3467,9 +3461,6 @@ r_const
 r_char
 op_star
 id|name
-comma
-r_int
-id|flags
 )paren
 (brace
 r_int
