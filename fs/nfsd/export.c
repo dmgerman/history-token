@@ -941,10 +941,6 @@ r_struct
 id|cache_head
 op_star
 id|h
-comma
-r_char
-op_star
-id|pbuf
 )paren
 (brace
 r_struct
@@ -2188,10 +2184,6 @@ r_struct
 id|cache_head
 op_star
 id|h
-comma
-r_char
-op_star
-id|pbuf
 )paren
 (brace
 r_struct
@@ -5241,8 +5233,6 @@ op_amp
 id|svc_export_cache
 comma
 id|cp
-comma
-l_int|NULL
 )paren
 suffix:semicolon
 )brace
