@@ -3616,6 +3616,8 @@ id|eeprom
 (braket
 l_int|6
 )braket
+op_amp
+l_int|0x1f
 suffix:semicolon
 id|sp-&gt;mii_if.dev
 op_assign
