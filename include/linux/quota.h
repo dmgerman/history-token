@@ -181,6 +181,8 @@ DECL|macro|DQ_INODES
 mdefine_line|#define DQ_INODES     0x20&t;/* uid/gid has been warned about inode limit */
 DECL|macro|DQ_FAKE
 mdefine_line|#define DQ_FAKE       0x40&t;/* no limits only usage */
+DECL|macro|DQ_INVAL
+mdefine_line|#define DQ_INVAL      0x80&t;/* dquot is going to be invalidated */
 DECL|struct|dquot
 r_struct
 id|dquot

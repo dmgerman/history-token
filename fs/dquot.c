@@ -488,7 +488,6 @@ op_star
 id|dquot
 )paren
 (brace
-multiline_comment|/* sanity check */
 r_if
 c_cond
 (paren
@@ -499,17 +498,8 @@ op_amp
 id|dquot-&gt;dq_free
 )paren
 )paren
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot;remove_free_dquot: dquot not on the free list??&bslash;n&quot;
-)paren
-suffix:semicolon
 r_return
 suffix:semicolon
-multiline_comment|/* J.K. Just don&squot;t do anything */
-)brace
 id|list_del
 c_func
 (paren
@@ -1135,66 +1125,6 @@ id|dquot
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Unhash and selectively clear the dquot structure,&n; * but preserve the use count, list pointers, and&n; * wait queue.&n; */
-DECL|function|clear_dquot
-r_void
-id|clear_dquot
-c_func
-(paren
-r_struct
-id|dquot
-op_star
-id|dquot
-)paren
-(brace
-multiline_comment|/* unhash it first */
-id|remove_dquot_hash
-c_func
-(paren
-id|dquot
-)paren
-suffix:semicolon
-id|dquot-&gt;dq_sb
-op_assign
-l_int|NULL
-suffix:semicolon
-id|dquot-&gt;dq_id
-op_assign
-l_int|0
-suffix:semicolon
-id|dquot-&gt;dq_dev
-op_assign
-id|NODEV
-suffix:semicolon
-id|dquot-&gt;dq_type
-op_assign
-op_minus
-l_int|1
-suffix:semicolon
-id|dquot-&gt;dq_flags
-op_assign
-l_int|0
-suffix:semicolon
-id|dquot-&gt;dq_referenced
-op_assign
-l_int|0
-suffix:semicolon
-id|memset
-c_func
-(paren
-op_amp
-id|dquot-&gt;dq_dqb
-comma
-l_int|0
-comma
-r_sizeof
-(paren
-r_struct
-id|dqblk
-)paren
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/* Invalidate all dquots on the list, wait for all users. Note that this function is called&n; * after quota is disabled so no new quota might be created. As we only insert to the end of&n; * inuse list, we don&squot;t have to restart searching... */
 DECL|function|invalidate_dquots
 r_static
@@ -1271,6 +1201,10 @@ id|type
 )paren
 r_continue
 suffix:semicolon
+id|dquot-&gt;dq_flags
+op_or_assign
+id|DQ_INVAL
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1336,6 +1270,11 @@ r_struct
 id|dquot
 op_star
 id|dquot
+suffix:semicolon
+id|lock_kernel
+c_func
+(paren
+)paren
 suffix:semicolon
 id|restart
 suffix:colon
@@ -1462,6 +1401,11 @@ suffix:semicolon
 id|dqstats.syncs
 op_increment
 suffix:semicolon
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -1563,6 +1507,11 @@ r_int
 id|gfp_mask
 )paren
 (brace
+id|lock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 id|prune_dqcache
 c_func
 (paren
@@ -1573,6 +1522,11 @@ id|priority
 op_plus
 l_int|1
 )paren
+)paren
+suffix:semicolon
+id|unlock_kernel
+c_func
+(paren
 )paren
 suffix:semicolon
 id|kmem_cache_shrink
@@ -1709,13 +1663,24 @@ suffix:semicolon
 id|dquot-&gt;dq_count
 op_decrement
 suffix:semicolon
-multiline_comment|/* Place at end of LRU free queue */
+multiline_comment|/* If dquot is going to be invalidated invalidate_dquots() is going to free it so */
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|dquot-&gt;dq_flags
+op_amp
+id|DQ_INVAL
+)paren
+)paren
 id|put_dquot_last
 c_func
 (paren
 id|dquot
 )paren
 suffix:semicolon
+multiline_comment|/* Place at end of LRU free queue */
 id|wake_up
 c_func
 (paren
@@ -1725,6 +1690,7 @@ id|dquot-&gt;dq_wait_free
 suffix:semicolon
 )brace
 DECL|function|get_empty_dquot
+r_static
 r_struct
 id|dquot
 op_star
@@ -2556,13 +2522,20 @@ r_struct
 id|list_head
 op_star
 id|act_head
-op_assign
-id|tofree_head-&gt;next
 suffix:semicolon
 r_struct
 id|dquot
 op_star
 id|dquot
+suffix:semicolon
+id|lock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
+id|act_head
+op_assign
+id|tofree_head-&gt;next
 suffix:semicolon
 multiline_comment|/* So now we have dquots on the list... Just free them */
 r_while
@@ -2612,6 +2585,11 @@ id|dquot
 )paren
 suffix:semicolon
 )brace
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 )brace
 DECL|function|dquot_incr_inodes
 r_static
@@ -5855,6 +5833,11 @@ c_func
 id|sb
 )paren
 suffix:semicolon
+id|lock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -5989,6 +5972,11 @@ id|dqopt-&gt;dqoff_sem
 suffix:semicolon
 id|out
 suffix:colon
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
