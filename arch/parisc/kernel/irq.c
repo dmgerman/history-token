@@ -800,6 +800,8 @@ op_star
 id|v
 comma
 id|i
+op_assign
+l_int|0
 suffix:semicolon
 r_if
 c_cond
