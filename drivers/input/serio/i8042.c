@@ -611,6 +611,12 @@ id|I8042_BUFFER_SIZE
 )paren
 )paren
 (brace
+id|udelay
+c_func
+(paren
+l_int|50
+)paren
+suffix:semicolon
 id|data
 op_assign
 id|i8042_read_data
