@@ -352,6 +352,12 @@ op_star
 id|task
 )paren
 suffix:semicolon
+DECL|member|owner
+r_struct
+id|module
+op_star
+id|owner
+suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/* &n; * Per-packet information we need to hide inside sk_buff &n; * (must not exceed 48 bytes, check with struct sk_buff) &n; */
