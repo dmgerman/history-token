@@ -662,6 +662,12 @@ op_star
 id|modedb
 suffix:semicolon
 multiline_comment|/* mode database */
+DECL|member|modelist
+r_struct
+id|list_head
+id|modelist
+suffix:semicolon
+multiline_comment|/* mode list */
 DECL|member|manufacturer
 id|__u8
 id|manufacturer
