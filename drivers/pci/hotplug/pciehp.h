@@ -4,6 +4,7 @@ DECL|macro|_PCIEHP_H
 mdefine_line|#define _PCIEHP_H
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
+macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#include &lt;asm/io.h&gt;&t;&t;
 macro_line|#include &quot;pci_hotplug.h&quot;
@@ -966,42 +967,24 @@ op_amp
 id|wait
 )paren
 suffix:semicolon
-id|set_current_state
-c_func
-(paren
-id|TASK_INTERRUPTIBLE
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
 op_logical_neg
 id|pciehp_poll_mode
 )paren
-(brace
 multiline_comment|/* Sleep for up to 1 second */
-id|schedule_timeout
+id|msleep_interruptible
 c_func
 (paren
-l_int|1
-op_star
-id|HZ
+l_int|1000
 )paren
 suffix:semicolon
-)brace
 r_else
-id|schedule_timeout
+id|msleep_interruptible
 c_func
 (paren
-l_float|2.5
-op_star
-id|HZ
-)paren
-suffix:semicolon
-id|set_current_state
-c_func
-(paren
-id|TASK_RUNNING
+l_int|2500
 )paren
 suffix:semicolon
 id|remove_wait_queue

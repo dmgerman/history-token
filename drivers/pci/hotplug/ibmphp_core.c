@@ -3628,7 +3628,7 @@ c_loop
 (paren
 id|dev
 op_assign
-id|pci_find_device
+id|pci_get_device
 c_func
 (paren
 id|PCI_VENDOR_ID_SERVERWORKS

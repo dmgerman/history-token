@@ -680,13 +680,6 @@ id|pseudo_palette
 l_int|17
 )braket
 suffix:semicolon
-DECL|member|pci_state
-id|u32
-id|pci_state
-(braket
-l_int|16
-)braket
-suffix:semicolon
 DECL|member|mmio_start_phys
 r_int
 r_int

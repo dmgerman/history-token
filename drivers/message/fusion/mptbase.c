@@ -5387,8 +5387,6 @@ id|pci_save_state
 c_func
 (paren
 id|pdev
-comma
-id|ioc-&gt;PciState
 )paren
 suffix:semicolon
 multiline_comment|/* put ioc into READY_STATE */
@@ -5524,8 +5522,6 @@ id|pci_restore_state
 c_func
 (paren
 id|pdev
-comma
-id|ioc-&gt;PciState
 )paren
 suffix:semicolon
 id|pci_enable_device

@@ -276,7 +276,7 @@ DECL|member|saved_state
 id|u32
 id|saved_state
 (braket
-l_int|18
+l_int|2
 )braket
 suffix:semicolon
 )brace

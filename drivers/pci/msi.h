@@ -405,8 +405,9 @@ DECL|member|link
 id|link
 suffix:semicolon
 DECL|member|mask_base
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|mask_base
 suffix:semicolon
 DECL|member|dev

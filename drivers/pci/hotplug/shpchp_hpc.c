@@ -4108,7 +4108,7 @@ suffix:semicolon
 multiline_comment|/* Clear all slot events */
 id|temp_dword
 op_assign
-l_int|0xe01fffff
+l_int|0xe01f3fff
 suffix:semicolon
 id|dbg
 c_func
@@ -5848,11 +5848,6 @@ suffix:semicolon
 )brace
 id|php_ctlr-&gt;creg
 op_assign
-(paren
-r_struct
-id|ctrl_reg
-op_star
-)paren
 id|ioremap
 c_func
 (paren
@@ -6161,7 +6156,7 @@ id|slot_reg
 suffix:semicolon
 id|tempdword
 op_assign
-l_int|0xffffffff
+l_int|0xffff3fff
 suffix:semicolon
 id|writel
 c_func
@@ -6423,7 +6418,7 @@ id|slot_reg
 suffix:semicolon
 id|tempdword
 op_assign
-l_int|0xe01fffff
+l_int|0xe01f3fff
 suffix:semicolon
 id|writel
 c_func

@@ -463,13 +463,6 @@ DECL|member|host_bridge_rev
 id|u8
 id|host_bridge_rev
 suffix:semicolon
-DECL|member|pci_state
-id|u32
-id|pci_state
-(braket
-l_int|16
-)braket
-suffix:semicolon
 )brace
 suffix:semicolon
 id|MODULE_AUTHOR
@@ -9211,13 +9204,6 @@ c_func
 id|pci_dev
 )paren
 suffix:semicolon
-r_struct
-id|sis900_private
-op_star
-id|sis_priv
-op_assign
-id|net_dev-&gt;priv
-suffix:semicolon
 r_int
 id|ioaddr
 op_assign
@@ -9283,8 +9269,6 @@ id|pci_save_state
 c_func
 (paren
 id|pci_dev
-comma
-id|sis_priv-&gt;pci_state
 )paren
 suffix:semicolon
 r_return
@@ -9345,8 +9329,6 @@ id|pci_restore_state
 c_func
 (paren
 id|pci_dev
-comma
-id|sis_priv-&gt;pci_state
 )paren
 suffix:semicolon
 id|pci_set_power_state

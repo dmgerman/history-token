@@ -3218,8 +3218,6 @@ id|pci_restore_state
 c_func
 (paren
 id|dev
-comma
-id|dev-&gt;saved_config_space
 )paren
 suffix:semicolon
 multiline_comment|/* FIXME: correct state value? */

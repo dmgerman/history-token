@@ -1121,15 +1121,6 @@ DECL|member|lock
 id|spinlock_t
 id|lock
 suffix:semicolon
-macro_line|#ifdef CONFIG_PM
-DECL|member|pci_state
-id|u32
-id|pci_state
-(braket
-l_int|16
-)braket
-suffix:semicolon
-macro_line|#endif
 )brace
 suffix:semicolon
 r_static
@@ -8278,8 +8269,6 @@ id|pci_save_state
 c_func
 (paren
 id|pdev
-comma
-id|tp-&gt;pci_state
 )paren
 suffix:semicolon
 id|pci_disable_device
@@ -8357,8 +8346,6 @@ id|pci_restore_state
 c_func
 (paren
 id|pdev
-comma
-id|tp-&gt;pci_state
 )paren
 suffix:semicolon
 multiline_comment|/* Bring the chip out of sleep mode.&n;&t;   Caution: Snooze mode does not work with some boards! */

@@ -13298,7 +13298,6 @@ multiline_comment|/* ? */
 r_if
 c_cond
 (paren
-op_logical_neg
 id|pci_register_driver
 c_func
 (paren
@@ -13307,13 +13306,6 @@ id|m3_pci_driver
 )paren
 )paren
 (brace
-id|pci_unregister_driver
-c_func
-(paren
-op_amp
-id|m3_pci_driver
-)paren
-suffix:semicolon
 id|unregister_reboot_notifier
 c_func
 (paren
