@@ -857,6 +857,10 @@ id|sbi-&gt;version
 op_assign
 l_int|0
 suffix:semicolon
+id|sbi-&gt;sub_version
+op_assign
+l_int|0
+suffix:semicolon
 id|sbi-&gt;queues
 op_assign
 l_int|NULL
@@ -1010,6 +1014,10 @@ c_cond
 id|AUTOFS_MAX_PROTO_VERSION
 suffix:colon
 id|maxproto
+suffix:semicolon
+id|sbi-&gt;sub_version
+op_assign
+id|AUTOFS_PROTO_SUBVERSION
 suffix:semicolon
 id|DPRINTK
 c_func
