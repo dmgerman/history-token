@@ -1774,7 +1774,7 @@ id|vma-&gt;vm_flags
 op_and_assign
 id|VM_MAYWRITE
 suffix:semicolon
-macro_line|#if defined(__i386__)
+macro_line|#if defined(__i386__) || defined(__x86_64__)
 id|pgprot_val
 c_func
 (paren
@@ -1858,7 +1858,7 @@ id|high_memory
 )paren
 )paren
 (brace
-macro_line|#if defined(__i386__)
+macro_line|#if defined(__i386__) || defined(__x86_64__)
 r_if
 c_cond
 (paren
