@@ -5407,15 +5407,6 @@ c_func
 id|dsk_nr
 )paren
 suffix:semicolon
-id|driverfs_remove_partitions
-c_func
-(paren
-id|sd_disks
-(braket
-id|dsk_nr
-)braket
-)paren
-suffix:semicolon
 id|del_gendisk
 c_func
 (paren

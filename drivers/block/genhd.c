@@ -126,6 +126,12 @@ op_star
 op_star
 id|p
 suffix:semicolon
+id|driverfs_remove_partitions
+c_func
+(paren
+id|disk
+)paren
+suffix:semicolon
 id|wipe_partitions
 c_func
 (paren
