@@ -4537,7 +4537,6 @@ l_string|&quot;&bslash;n&quot;
 suffix:semicolon
 )brace
 DECL|function|show_stack
-r_extern
 r_void
 id|show_stack
 c_func
