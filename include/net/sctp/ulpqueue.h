@@ -16,7 +16,8 @@ r_char
 id|pd_mode
 suffix:semicolon
 DECL|member|asoc
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 id|asoc
 suffix:semicolon
@@ -39,12 +40,13 @@ op_star
 id|sctp_ulpq_new
 c_func
 (paren
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 id|asoc
 comma
 r_int
-id|priority
+id|gfp
 )paren
 suffix:semicolon
 r_struct
@@ -57,7 +59,8 @@ r_struct
 id|sctp_ulpq
 op_star
 comma
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 )paren
 suffix:semicolon

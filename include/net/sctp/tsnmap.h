@@ -99,7 +99,7 @@ id|__u32
 id|init_tsn
 comma
 r_int
-id|priority
+id|gfp
 )paren
 suffix:semicolon
 multiline_comment|/* Dispose of a tsnmap.  */

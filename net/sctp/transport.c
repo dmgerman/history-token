@@ -17,7 +17,7 @@ op_star
 id|addr
 comma
 r_int
-id|priority
+id|gfp
 )paren
 (brace
 r_struct
@@ -33,7 +33,7 @@ c_func
 r_struct
 id|sctp_transport
 comma
-id|priority
+id|gfp
 )paren
 suffix:semicolon
 r_if
@@ -56,7 +56,7 @@ id|transport
 comma
 id|addr
 comma
-id|priority
+id|gfp
 )paren
 )paren
 r_goto
@@ -109,7 +109,7 @@ op_star
 id|addr
 comma
 r_int
-id|priority
+id|gfp
 )paren
 (brace
 r_struct
@@ -213,10 +213,6 @@ id|peer-&gt;error_count
 op_assign
 l_int|0
 suffix:semicolon
-id|peer-&gt;debug_name
-op_assign
-l_string|&quot;unnamedtransport&quot;
-suffix:semicolon
 id|INIT_LIST_HEAD
 c_func
 (paren
@@ -296,6 +292,23 @@ op_assign
 l_int|0
 suffix:semicolon
 id|peer-&gt;malloced
+op_assign
+l_int|0
+suffix:semicolon
+multiline_comment|/* Initialize the state information for SFR-CACC */
+id|peer-&gt;cacc.changeover_active
+op_assign
+l_int|0
+suffix:semicolon
+id|peer-&gt;cacc.cycling_changeover
+op_assign
+l_int|0
+suffix:semicolon
+id|peer-&gt;cacc.next_tsn_at_change
+op_assign
+l_int|0
+suffix:semicolon
+id|peer-&gt;cacc.cacc_saw_newack
 op_assign
 l_int|0
 suffix:semicolon
@@ -476,7 +489,8 @@ id|sctp_transport
 op_star
 id|transport
 comma
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 id|asoc
 )paren
@@ -573,7 +587,8 @@ op_star
 id|opt
 )paren
 (brace
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 id|asoc
 op_assign
@@ -658,6 +673,7 @@ c_cond
 (paren
 id|dst
 )paren
+(brace
 id|transport-&gt;pmtu
 op_assign
 id|dst_pmtu
@@ -666,6 +682,30 @@ c_func
 id|dst
 )paren
 suffix:semicolon
+multiline_comment|/* Initialize sk-&gt;rcv_saddr, if the transport is the&n;&t;&t; * association&squot;s active path for getsockname().&n;&t;&t; */
+r_if
+c_cond
+(paren
+id|asoc
+op_logical_and
+(paren
+id|transport
+op_eq
+id|asoc-&gt;peer.active_path
+)paren
+)paren
+id|af
+op_member_access_from_pointer
+id|to_sk_saddr
+c_func
+(paren
+op_amp
+id|transport-&gt;saddr
+comma
+id|asoc-&gt;base.sk
+)paren
+suffix:semicolon
+)brace
 r_else
 id|transport-&gt;pmtu
 op_assign
@@ -984,7 +1024,7 @@ op_le
 id|ssthresh
 )paren
 (brace
-multiline_comment|/* RFC 2960 7.2.1, sctpimpguide-05 2.14.2 When cwnd is less&n;&t;&t; * than or equal to ssthresh an SCTP endpoint MUST use the&n;&t;&t; * slow start algorithm to increase cwnd only if the current&n;&t;&t; * congestion window is being fully utilized and an incoming&n;&t;&t; * SACK advances the Cumulative TSN Ack Point. Only when these&n;&t;&t; * two conditions are met can the cwnd be increased otherwise&n;&t;&t; * the cwnd MUST not be increased. If these conditions are met&n;&t;&t; * then cwnd MUST be increased by at most the lesser of&n;&t;&t; * 1) the total size of the previously outstanding DATA &n;&t;&t; * chunk(s) acknowledged, and 2) the destination&squot;s path MTU.&n;&t;&t; */
+multiline_comment|/* RFC 2960 7.2.1, sctpimpguide-05 2.14.2 When cwnd is less&n;&t;&t; * than or equal to ssthresh an SCTP endpoint MUST use the&n;&t;&t; * slow start algorithm to increase cwnd only if the current&n;&t;&t; * congestion window is being fully utilized and an incoming&n;&t;&t; * SACK advances the Cumulative TSN Ack Point. Only when these&n;&t;&t; * two conditions are met can the cwnd be increased otherwise&n;&t;&t; * the cwnd MUST not be increased. If these conditions are met&n;&t;&t; * then cwnd MUST be increased by at most the lesser of&n;&t;&t; * 1) the total size of the previously outstanding DATA&n;&t;&t; * chunk(s) acknowledged, and 2) the destination&squot;s path MTU.&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -1026,7 +1066,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-multiline_comment|/* RFC 2960 7.2.2 Whenever cwnd is greater than ssthresh, &n;&t;&t; * upon each SACK arrival that advances the Cumulative TSN Ack &n;&t;&t; * Point, increase partial_bytes_acked by the total number of &n;&t;&t; * bytes of all new chunks acknowledged in that SACK including &n;&t;&t; * chunks acknowledged by the new Cumulative TSN Ack and by &n;&t;&t; * Gap Ack Blocks.&n;&t;&t; *&n;&t;&t; * When partial_bytes_acked is equal to or greater than cwnd &n;&t;&t; * and before the arrival of the SACK the sender had cwnd or &n;&t;&t; * more bytes of data outstanding (i.e., before arrival of the &n;&t;&t; * SACK, flightsize was greater than or equal to cwnd), &n;&t;&t; * increase cwnd by MTU, and reset partial_bytes_acked to&n;&t;&t; * (partial_bytes_acked - cwnd).&n;&t;&t; */
+multiline_comment|/* RFC 2960 7.2.2 Whenever cwnd is greater than ssthresh,&n;&t;&t; * upon each SACK arrival that advances the Cumulative TSN Ack&n;&t;&t; * Point, increase partial_bytes_acked by the total number of&n;&t;&t; * bytes of all new chunks acknowledged in that SACK including&n;&t;&t; * chunks acknowledged by the new Cumulative TSN Ack and by&n;&t;&t; * Gap Ack Blocks.&n;&t;&t; *&n;&t;&t; * When partial_bytes_acked is equal to or greater than cwnd&n;&t;&t; * and before the arrival of the SACK the sender had cwnd or&n;&t;&t; * more bytes of data outstanding (i.e., before arrival of the&n;&t;&t; * SACK, flightsize was greater than or equal to cwnd),&n;&t;&t; * increase cwnd by MTU, and reset partial_bytes_acked to&n;&t;&t; * (partial_bytes_acked - cwnd).&n;&t;&t; */
 id|pba
 op_add_assign
 id|bytes_acked
