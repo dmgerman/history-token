@@ -4,6 +4,7 @@ DECL|macro|IDEDISK_VERSION
 mdefine_line|#define IDEDISK_VERSION&t;&quot;1.18&quot;
 DECL|macro|REALLY_SLOW_IO
 macro_line|#undef REALLY_SLOW_IO&t;&t;/* most systems can safely undef this */
+singleline_comment|//#define DEBUG
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -1294,6 +1295,16 @@ id|tasklets
 l_int|10
 )braket
 suffix:semicolon
+id|pr_debug
+c_func
+(paren
+l_string|&quot;%s: LBA=0x%012llx&bslash;n&quot;
+comma
+id|drive-&gt;name
+comma
+id|block
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1491,40 +1502,6 @@ macro_line|#ifdef DEBUG
 id|printk
 c_func
 (paren
-l_string|&quot;%s: %sing: LBAsect=%lu, sectors=%ld, &quot;
-l_string|&quot;buffer=0x%08lx, LBAsect=0x%012lx&bslash;n&quot;
-comma
-id|drive-&gt;name
-comma
-id|rq_data_dir
-c_func
-(paren
-id|rq
-)paren
-op_eq
-id|READ
-ques
-c_cond
-l_string|&quot;read&quot;
-suffix:colon
-l_string|&quot;writ&quot;
-comma
-id|block
-comma
-id|rq-&gt;nr_sectors
-comma
-(paren
-r_int
-r_int
-)paren
-id|rq-&gt;buffer
-comma
-id|block
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
 l_string|&quot;%s: 0x%02x%02x 0x%02x%02x%02x%02x%02x%02x&bslash;n&quot;
 comma
 id|drive-&gt;name
@@ -1716,45 +1693,6 @@ suffix:semicolon
 )brace
 r_else
 (brace
-macro_line|#ifdef DEBUG
-id|printk
-c_func
-(paren
-l_string|&quot;%s: %sing: LBAsect=%llu, sectors=%ld, &quot;
-l_string|&quot;buffer=0x%08lx&bslash;n&quot;
-comma
-id|drive-&gt;name
-comma
-id|rq_data_dir
-c_func
-(paren
-id|rq
-)paren
-op_eq
-id|READ
-ques
-c_cond
-l_string|&quot;read&quot;
-suffix:colon
-l_string|&quot;writ&quot;
-comma
-(paren
-r_int
-r_int
-r_int
-)paren
-id|block
-comma
-id|rq-&gt;nr_sectors
-comma
-(paren
-r_int
-r_int
-)paren
-id|rq-&gt;buffer
-)paren
-suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -1921,6 +1859,20 @@ id|track
 op_div
 id|drive-&gt;head
 suffix:semicolon
+id|pr_debug
+c_func
+(paren
+l_string|&quot;%s: CHS=%u/%u/%u&bslash;n&quot;
+comma
+id|drive-&gt;name
+comma
+id|cyl
+comma
+id|head
+comma
+id|sect
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2011,43 +1963,6 @@ comma
 id|IDE_SELECT_REG
 )paren
 suffix:semicolon
-macro_line|#ifdef DEBUG
-id|printk
-c_func
-(paren
-l_string|&quot;%s: %sing: CHS=%d/%d/%d, sectors=%ld, buffer=0x%08lx&bslash;n&quot;
-comma
-id|drive-&gt;name
-comma
-id|rq_data_dir
-c_func
-(paren
-id|rq
-)paren
-op_eq
-id|READ
-ques
-c_cond
-l_string|&quot;read&quot;
-suffix:colon
-l_string|&quot;writ&quot;
-comma
-id|cyl
-comma
-id|head
-comma
-id|sect
-comma
-id|rq-&gt;nr_sectors
-comma
-(paren
-r_int
-r_int
-)paren
-id|rq-&gt;buffer
-)paren
-suffix:semicolon
-macro_line|#endif
 )brace
 r_if
 c_cond
@@ -2790,34 +2705,12 @@ id|u16
 )paren
 id|rq-&gt;nr_sectors
 suffix:semicolon
-macro_line|#ifdef DEBUG
-id|printk
+id|pr_debug
 c_func
 (paren
-l_string|&quot;%s: %sing: &quot;
+l_string|&quot;%s: CHS=%u/%u/%u&bslash;n&quot;
 comma
 id|drive-&gt;name
-comma
-(paren
-id|rq_data_dir
-c_func
-(paren
-id|rq
-)paren
-op_eq
-id|READ
-)paren
-ques
-c_cond
-l_string|&quot;read&quot;
-suffix:colon
-l_string|&quot;writ&quot;
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;CHS=%d/%d/%d, &quot;
 comma
 id|cyl
 comma
@@ -2826,27 +2719,6 @@ comma
 id|sect
 )paren
 suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;sectors=%ld, &quot;
-comma
-id|rq-&gt;nr_sectors
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;buffer=0x%08lx&bslash;n&quot;
-comma
-(paren
-r_int
-r_int
-)paren
-id|rq-&gt;buffer
-)paren
-suffix:semicolon
-macro_line|#endif
 id|memset
 c_func
 (paren
@@ -3032,59 +2904,6 @@ id|u16
 )paren
 id|rq-&gt;nr_sectors
 suffix:semicolon
-macro_line|#ifdef DEBUG
-id|printk
-c_func
-(paren
-l_string|&quot;%s: %sing: &quot;
-comma
-id|drive-&gt;name
-comma
-(paren
-id|rq_data_dir
-c_func
-(paren
-id|rq
-)paren
-op_eq
-id|READ
-)paren
-ques
-c_cond
-l_string|&quot;read&quot;
-suffix:colon
-l_string|&quot;writ&quot;
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;LBAsect=%lld, &quot;
-comma
-id|block
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;sectors=%ld, &quot;
-comma
-id|rq-&gt;nr_sectors
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;buffer=0x%08lx&bslash;n&quot;
-comma
-(paren
-r_int
-r_int
-)paren
-id|rq-&gt;buffer
-)paren
-suffix:semicolon
-macro_line|#endif
 id|memset
 c_func
 (paren
@@ -3284,59 +3103,6 @@ id|u16
 )paren
 id|rq-&gt;nr_sectors
 suffix:semicolon
-macro_line|#ifdef DEBUG
-id|printk
-c_func
-(paren
-l_string|&quot;%s: %sing: &quot;
-comma
-id|drive-&gt;name
-comma
-(paren
-id|rq_data_dir
-c_func
-(paren
-id|rq
-)paren
-op_eq
-id|READ
-)paren
-ques
-c_cond
-l_string|&quot;read&quot;
-suffix:colon
-l_string|&quot;writ&quot;
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;LBAsect=%lld, &quot;
-comma
-id|block
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;sectors=%ld, &quot;
-comma
-id|rq-&gt;nr_sectors
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;buffer=0x%08lx&bslash;n&quot;
-comma
-(paren
-r_int
-r_int
-)paren
-id|rq-&gt;buffer
-)paren
-suffix:semicolon
-macro_line|#endif
 id|memset
 c_func
 (paren
@@ -3669,6 +3435,37 @@ r_return
 id|ide_started
 suffix:semicolon
 )brace
+id|pr_debug
+c_func
+(paren
+l_string|&quot;%s: %sing: block=%llu, sectors=%lu, buffer=0x%08lx&bslash;n&quot;
+comma
+id|drive-&gt;name
+comma
+id|rq_data_dir
+c_func
+(paren
+id|rq
+)paren
+op_eq
+id|READ
+ques
+c_cond
+l_string|&quot;read&quot;
+suffix:colon
+l_string|&quot;writ&quot;
+comma
+id|block
+comma
+id|rq-&gt;nr_sectors
+comma
+(paren
+r_int
+r_int
+)paren
+id|rq-&gt;buffer
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
