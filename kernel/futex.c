@@ -131,6 +131,27 @@ id|q-&gt;waiters
 )paren
 suffix:semicolon
 )brace
+DECL|function|unpin_page
+r_static
+r_inline
+r_void
+id|unpin_page
+c_func
+(paren
+r_struct
+id|page
+op_star
+id|page
+)paren
+(brace
+multiline_comment|/* Avoid releasing the page which is on the LRU list.  I don&squot;t&n;           know if this is correct, but it stops the BUG() in&n;           __free_pages_ok(). */
+id|page_cache_release
+c_func
+(paren
+id|page
+)paren
+suffix:semicolon
+)brace
 DECL|function|futex_wake
 r_static
 r_int
@@ -427,15 +448,15 @@ c_func
 (paren
 id|current
 comma
-id|current-&gt;mm
+id|mm
 comma
 id|page_start
 comma
 l_int|1
 multiline_comment|/* one page */
 comma
-l_int|1
-multiline_comment|/* writable */
+l_int|0
+multiline_comment|/* writable not important */
 comma
 l_int|0
 multiline_comment|/* don&squot;t force */
@@ -885,7 +906,7 @@ op_minus
 id|EINVAL
 suffix:semicolon
 )brace
-id|page_cache_release
+id|unpin_page
 c_func
 (paren
 id|page
