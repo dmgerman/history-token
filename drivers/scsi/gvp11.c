@@ -1563,6 +1563,28 @@ r_return
 id|num_gvp11
 suffix:semicolon
 )brace
+DECL|function|gvp11_bus_reset
+r_static
+r_int
+id|gvp11_bus_reset
+c_func
+(paren
+id|Scsi_Cmnd
+op_star
+id|cmd
+)paren
+(brace
+multiline_comment|/* FIXME perform bus-specific reset */
+id|wd33c93_host_reset
+c_func
+(paren
+id|cmd
+)paren
+suffix:semicolon
+r_return
+id|SUCCESS
+suffix:semicolon
+)brace
 DECL|macro|HOSTS_C
 mdefine_line|#define HOSTS_C
 macro_line|#include &quot;gvp11.h&quot;
@@ -1598,14 +1620,19 @@ op_assign
 id|wd33c93_queuecommand
 comma
 dot
-m_abort
+id|eh_abort_handler
 op_assign
 id|wd33c93_abort
 comma
 dot
-id|reset
+id|eh_bus_reset_handler
 op_assign
-id|wd33c93_reset
+id|gvp11_bus_reset
+comma
+dot
+id|eh_host_reset_handler
+op_assign
+id|wd33c93_host_reset
 comma
 dot
 id|can_queue
