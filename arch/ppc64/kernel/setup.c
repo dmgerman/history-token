@@ -755,17 +755,6 @@ id|j
 op_increment
 )paren
 (brace
-multiline_comment|/*&n;&t;&t;&t; * Only spin up secondary threads if SMT is enabled.&n;&t;&t;&t; * We must leave space in the logical map for the&n;&t;&t;&t; * threads.&n;&t;&t;&t; */
-r_if
-c_cond
-(paren
-id|j
-op_eq
-l_int|0
-op_logical_or
-id|smt_enabled_at_boot
-)paren
-(brace
 id|cpu_set
 c_func
 (paren
@@ -785,7 +774,6 @@ id|j
 )braket
 )paren
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
