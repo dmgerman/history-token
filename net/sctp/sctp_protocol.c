@@ -569,7 +569,7 @@ op_star
 id|proto
 )paren
 (brace
-id|astruct
+r_struct
 id|sockaddr_storage_list
 op_star
 id|addr
