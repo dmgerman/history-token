@@ -147,6 +147,7 @@ suffix:semicolon
 )brace
 )brace
 DECL|function|NVDmaKickoff
+r_static
 r_void
 id|NVDmaKickoff
 c_func
@@ -180,6 +181,7 @@ suffix:semicolon
 )brace
 )brace
 DECL|function|NVDmaWait
+r_static
 r_void
 id|NVDmaWait
 c_func

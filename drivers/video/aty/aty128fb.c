@@ -1889,14 +1889,6 @@ multiline_comment|/* used for TRUECOLOR */
 suffix:semicolon
 DECL|macro|round_div
 mdefine_line|#define round_div(n, d) ((n+(d/2))/d)
-multiline_comment|/*&n;     *  Interface used by the world&n;     */
-r_int
-id|aty128fb_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 r_static
 r_int
 id|aty128fb_check_var
@@ -7426,7 +7418,9 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+macro_line|#ifndef MODULE
 DECL|function|aty128fb_setup
+r_static
 r_int
 id|__init
 id|aty128fb_setup
@@ -7703,6 +7697,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+macro_line|#endif  /*  MODULE  */
 multiline_comment|/*&n; *  Initialisation&n; */
 macro_line|#ifdef CONFIG_PPC_PMAC
 DECL|function|aty128_early_resume
@@ -10976,6 +10971,7 @@ id|rc
 suffix:semicolon
 )brace
 DECL|function|aty128fb_init
+r_static
 r_int
 id|__init
 id|aty128fb_init
@@ -11048,7 +11044,6 @@ c_func
 id|aty128fb_init
 )paren
 suffix:semicolon
-macro_line|#ifdef MODULE
 DECL|variable|aty128fb_exit
 id|module_exit
 c_func
@@ -11113,6 +11108,5 @@ comma
 l_string|&quot;bool: Disable MTRR support (0 or 1=disabled) (default=0)&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 macro_line|#endif
 eof

@@ -9,6 +9,7 @@ macro_line|#include &lt;asm/pmac_feature.h&gt;
 macro_line|#endif
 macro_line|#include &quot;ati_ids.h&quot;
 DECL|function|radeon_pm_disable_dynamic_mode
+r_static
 r_void
 id|radeon_pm_disable_dynamic_mode
 c_func
@@ -785,6 +786,7 @@ l_int|16
 suffix:semicolon
 )brace
 DECL|function|radeon_pm_enable_dynamic_mode
+r_static
 r_void
 id|radeon_pm_enable_dynamic_mode
 c_func

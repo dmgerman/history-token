@@ -420,7 +420,7 @@ id|VGA_MIS_R
 )paren
 suffix:semicolon
 )brace
-DECL|function|NVEnablePalette
+macro_line|#if 0
 r_void
 id|NVEnablePalette
 c_func
@@ -462,7 +462,6 @@ op_assign
 l_int|1
 suffix:semicolon
 )brace
-DECL|function|NVDisablePalette
 r_void
 id|NVDisablePalette
 c_func
@@ -504,6 +503,7 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
+macro_line|#endif  /*  0  */
 DECL|function|NVWriteDacMask
 r_void
 id|NVWriteDacMask
@@ -529,7 +529,7 @@ id|value
 )paren
 suffix:semicolon
 )brace
-DECL|function|NVReadDacMask
+macro_line|#if 0
 id|u8
 id|NVReadDacMask
 c_func
@@ -552,6 +552,7 @@ id|VGA_PEL_MSK
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif  /*  0  */
 DECL|function|NVWriteDacReadAddr
 r_void
 id|NVWriteDacReadAddr

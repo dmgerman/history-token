@@ -809,6 +809,7 @@ suffix:semicolon
 macro_line|#endif
 multiline_comment|/*&n;     *  Interface used by the world&n;     */
 DECL|variable|default_var
+r_static
 r_struct
 id|fb_var_screeninfo
 id|default_var
@@ -14748,6 +14749,7 @@ macro_line|#else /* __sparc__ */
 macro_line|#ifdef __i386__
 macro_line|#ifdef CONFIG_FB_ATY_GENERIC_LCD
 DECL|function|aty_init_lcd
+r_static
 r_void
 id|aty_init_lcd
 c_func
@@ -17617,7 +17619,9 @@ macro_line|#endif /* CONFIG_PM */
 )brace
 suffix:semicolon
 macro_line|#endif /* CONFIG_PCI */
+macro_line|#ifndef MODULE
 DECL|function|atyfb_setup
+r_static
 r_int
 id|__init
 id|atyfb_setup
@@ -18031,7 +18035,9 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+macro_line|#endif  /*  MODULE  */
 DECL|function|atyfb_init
+r_static
 r_int
 id|__init
 id|atyfb_init
@@ -18091,6 +18097,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|atyfb_exit
+r_static
 r_void
 id|__exit
 id|atyfb_exit
@@ -18116,7 +18123,6 @@ c_func
 id|atyfb_init
 )paren
 suffix:semicolon
-macro_line|#ifdef MODULE
 DECL|variable|atyfb_exit
 id|module_exit
 c_func
@@ -18124,7 +18130,6 @@ c_func
 id|atyfb_exit
 )paren
 suffix:semicolon
-macro_line|#endif
 id|MODULE_DESCRIPTION
 c_func
 (paren

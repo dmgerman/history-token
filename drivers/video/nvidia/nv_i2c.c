@@ -615,7 +615,7 @@ l_string|&quot;BUS3&quot;
 )paren
 suffix:semicolon
 )brace
-DECL|function|nvidia_delete_i2c_busses
+macro_line|#if 0
 r_void
 id|nvidia_delete_i2c_busses
 c_func
@@ -720,6 +720,7 @@ op_assign
 l_int|NULL
 suffix:semicolon
 )brace
+macro_line|#endif  /*  0  */
 DECL|function|nvidia_do_probe_i2c_edid
 r_static
 id|u8

@@ -5572,6 +5572,7 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/**&n; *&t;fbmem_init - init frame buffer subsystem&n; *&n; *&t;Initialize the frame buffer subsystem.&n; *&n; *&t;NOTE: This function is _only_ to be called by drivers/char/mem.c.&n; *&n; */
+r_static
 r_int
 id|__init
 DECL|function|fbmem_init
@@ -5665,6 +5666,15 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+macro_line|#ifdef MODULE
+DECL|variable|fbmem_init
+id|module_init
+c_func
+(paren
+id|fbmem_init
+)paren
+suffix:semicolon
+r_static
 r_void
 id|__exit
 DECL|function|fbmem_exit
@@ -5681,14 +5691,6 @@ id|fb_class
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef MODULE
-DECL|variable|fbmem_init
-id|module_init
-c_func
-(paren
-id|fbmem_init
-)paren
-suffix:semicolon
 DECL|variable|fbmem_exit
 id|module_exit
 c_func
@@ -5714,13 +5716,6 @@ id|subsys_initcall
 c_func
 (paren
 id|fbmem_init
-)paren
-suffix:semicolon
-DECL|variable|fbmem_exit
-id|subsys_exitcall
-c_func
-(paren
-id|fbmem_exit
 )paren
 suffix:semicolon
 macro_line|#endif

@@ -4830,6 +4830,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* acceleration routines */
 DECL|function|wait_for_idle
+r_static
 r_inline
 r_void
 id|wait_for_idle
@@ -4908,6 +4909,7 @@ id|rop
 suffix:semicolon
 )brace
 DECL|function|riva_setup_accel
+r_static
 r_void
 id|riva_setup_accel
 c_func
@@ -10411,6 +10413,7 @@ suffix:semicolon
 multiline_comment|/* ------------------------------------------------------------------------- *&n; *&n; * initialization&n; *&n; * ------------------------------------------------------------------------- */
 macro_line|#ifndef MODULE
 DECL|function|rivafb_setup
+r_static
 r_int
 id|__init
 id|rivafb_setup
@@ -10660,6 +10663,7 @@ comma
 suffix:semicolon
 multiline_comment|/* ------------------------------------------------------------------------- *&n; *&n; * modularization&n; *&n; * ------------------------------------------------------------------------- */
 DECL|function|rivafb_init
+r_static
 r_int
 id|__devinit
 id|rivafb_init

@@ -9161,6 +9161,7 @@ id|info
 suffix:semicolon
 )brace
 macro_line|#ifndef MODULE
+r_static
 r_int
 id|__init
 DECL|function|imsttfb_setup
@@ -9457,6 +9458,7 @@ suffix:semicolon
 )brace
 macro_line|#endif /* MODULE */
 DECL|function|imsttfb_init
+r_static
 r_int
 id|__init
 id|imsttfb_init
@@ -9522,14 +9524,12 @@ id|imsttfb_pci_driver
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef MODULE
 id|MODULE_LICENSE
 c_func
 (paren
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 DECL|variable|imsttfb_init
 id|module_init
 c_func

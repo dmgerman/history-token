@@ -571,114 +571,6 @@ comma
 l_string|&quot;Initial video mode &bslash;&quot;&lt;xres&gt;x&lt;yres&gt;[-&lt;depth&gt;][@&lt;refresh&gt;]&bslash;&quot;&quot;
 )paren
 suffix:semicolon
-multiline_comment|/***************************************************************&n; *                     modules entry points                    *&n; ***************************************************************/
-multiline_comment|/* module load/unload entry points */
-r_int
-id|__init
-DECL|function|intelfb_init
-id|intelfb_init
-c_func
-(paren
-r_void
-)paren
-(brace
-macro_line|#ifndef MODULE
-r_char
-op_star
-id|option
-op_assign
-l_int|NULL
-suffix:semicolon
-macro_line|#endif
-id|DBG_MSG
-c_func
-(paren
-l_string|&quot;intelfb_init&bslash;n&quot;
-)paren
-suffix:semicolon
-id|INF_MSG
-c_func
-(paren
-l_string|&quot;Framebuffer driver for &quot;
-l_string|&quot;Intel(R) &quot;
-id|SUPPORTED_CHIPSETS
-l_string|&quot; chipsets&bslash;n&quot;
-)paren
-suffix:semicolon
-id|INF_MSG
-c_func
-(paren
-l_string|&quot;Version &quot;
-id|INTELFB_VERSION
-l_string|&quot;&bslash;n&quot;
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|idonly
-)paren
-r_return
-op_minus
-id|ENODEV
-suffix:semicolon
-macro_line|#ifndef MODULE
-r_if
-c_cond
-(paren
-id|fb_get_options
-c_func
-(paren
-l_string|&quot;intelfb&quot;
-comma
-op_amp
-id|option
-)paren
-)paren
-r_return
-op_minus
-id|ENODEV
-suffix:semicolon
-id|intelfb_setup
-c_func
-(paren
-id|option
-)paren
-suffix:semicolon
-macro_line|#endif
-r_return
-id|pci_module_init
-c_func
-(paren
-op_amp
-id|intelfb_driver
-)paren
-suffix:semicolon
-)brace
-r_static
-r_void
-id|__exit
-DECL|function|intelfb_exit
-id|intelfb_exit
-c_func
-(paren
-r_void
-)paren
-(brace
-id|DBG_MSG
-c_func
-(paren
-l_string|&quot;intelfb_exit&bslash;n&quot;
-)paren
-suffix:semicolon
-id|pci_unregister_driver
-c_func
-(paren
-op_amp
-id|intelfb_driver
-)paren
-suffix:semicolon
-)brace
 macro_line|#ifndef MODULE
 DECL|macro|OPT_EQUAL
 mdefine_line|#define OPT_EQUAL(opt, name) (!strncmp(opt, name, strlen(name)))
@@ -979,6 +871,7 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
+r_static
 r_int
 id|__init
 DECL|function|intelfb_setup
@@ -1189,6 +1082,113 @@ l_int|0
 suffix:semicolon
 )brace
 macro_line|#endif
+r_static
+r_int
+id|__init
+DECL|function|intelfb_init
+id|intelfb_init
+c_func
+(paren
+r_void
+)paren
+(brace
+macro_line|#ifndef MODULE
+r_char
+op_star
+id|option
+op_assign
+l_int|NULL
+suffix:semicolon
+macro_line|#endif
+id|DBG_MSG
+c_func
+(paren
+l_string|&quot;intelfb_init&bslash;n&quot;
+)paren
+suffix:semicolon
+id|INF_MSG
+c_func
+(paren
+l_string|&quot;Framebuffer driver for &quot;
+l_string|&quot;Intel(R) &quot;
+id|SUPPORTED_CHIPSETS
+l_string|&quot; chipsets&bslash;n&quot;
+)paren
+suffix:semicolon
+id|INF_MSG
+c_func
+(paren
+l_string|&quot;Version &quot;
+id|INTELFB_VERSION
+l_string|&quot;&bslash;n&quot;
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|idonly
+)paren
+r_return
+op_minus
+id|ENODEV
+suffix:semicolon
+macro_line|#ifndef MODULE
+r_if
+c_cond
+(paren
+id|fb_get_options
+c_func
+(paren
+l_string|&quot;intelfb&quot;
+comma
+op_amp
+id|option
+)paren
+)paren
+r_return
+op_minus
+id|ENODEV
+suffix:semicolon
+id|intelfb_setup
+c_func
+(paren
+id|option
+)paren
+suffix:semicolon
+macro_line|#endif
+r_return
+id|pci_module_init
+c_func
+(paren
+op_amp
+id|intelfb_driver
+)paren
+suffix:semicolon
+)brace
+r_static
+r_void
+id|__exit
+DECL|function|intelfb_exit
+id|intelfb_exit
+c_func
+(paren
+r_void
+)paren
+(brace
+id|DBG_MSG
+c_func
+(paren
+l_string|&quot;intelfb_exit&bslash;n&quot;
+)paren
+suffix:semicolon
+id|pci_unregister_driver
+c_func
+(paren
+op_amp
+id|intelfb_driver
+)paren
+suffix:semicolon
+)brace
 DECL|variable|intelfb_init
 id|module_init
 c_func
@@ -1196,7 +1196,6 @@ c_func
 id|intelfb_init
 )paren
 suffix:semicolon
-macro_line|#ifdef MODULE
 DECL|variable|intelfb_exit
 id|module_exit
 c_func
@@ -1204,7 +1203,6 @@ c_func
 id|intelfb_exit
 )paren
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/***************************************************************&n; *                     mtrr support functions                  *&n; ***************************************************************/
 macro_line|#ifdef CONFIG_MTRR
 DECL|function|set_mtrr

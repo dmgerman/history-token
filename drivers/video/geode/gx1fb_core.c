@@ -1124,12 +1124,14 @@ id|info
 suffix:semicolon
 )brace
 DECL|variable|gx1fb_info
+r_static
 r_struct
 id|fb_info
 op_star
 id|gx1fb_info
 suffix:semicolon
 DECL|function|gx1fb_init
+r_static
 r_int
 id|__init
 id|gx1fb_init

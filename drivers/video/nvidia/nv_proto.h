@@ -153,26 +153,6 @@ id|par
 )paren
 suffix:semicolon
 r_void
-id|NVEnablePalette
-c_func
-(paren
-r_struct
-id|nvidia_par
-op_star
-id|par
-)paren
-suffix:semicolon
-r_void
-id|NVDisablePalette
-c_func
-(paren
-r_struct
-id|nvidia_par
-op_star
-id|par
-)paren
-suffix:semicolon
-r_void
 id|NVWriteDacMask
 c_func
 (paren
@@ -183,16 +163,6 @@ id|par
 comma
 id|u8
 id|value
-)paren
-suffix:semicolon
-id|u8
-id|NVReadDacMask
-c_func
-(paren
-r_struct
-id|nvidia_par
-op_star
-id|par
 )paren
 suffix:semicolon
 r_void
@@ -347,16 +317,6 @@ op_star
 id|par
 )paren
 suffix:semicolon
-r_void
-id|nvidia_delete_i2c_busses
-c_func
-(paren
-r_struct
-id|nvidia_par
-op_star
-id|par
-)paren
-suffix:semicolon
 r_int
 id|nvidia_probe_i2c_connector
 c_func
@@ -378,8 +338,6 @@ suffix:semicolon
 macro_line|#else
 DECL|macro|nvidia_create_i2c_busses
 mdefine_line|#define nvidia_create_i2c_busses(...)
-DECL|macro|nvidia_delete_i2c_busses
-mdefine_line|#define nvidia_delete_i2c_busses(...)
 DECL|macro|nvidia_probe_i2c_connector
 mdefine_line|#define nvidia_probe_i2c_connector(p, c, edid) &bslash;&n;do {                                           &bslash;&n;&t;*(edid) = NULL;                        &bslash;&n;} while(0)
 macro_line|#endif

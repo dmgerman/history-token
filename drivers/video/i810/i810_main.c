@@ -9556,6 +9556,7 @@ macro_line|#endif
 multiline_comment|/*********************************************************************&n; *                          Modularization                           *&n; *********************************************************************/
 macro_line|#ifdef MODULE
 DECL|function|i810fb_init
+r_static
 r_int
 id|__init
 id|i810fb_init

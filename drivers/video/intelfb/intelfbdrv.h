@@ -2,6 +2,7 @@ macro_line|#ifndef _INTELFBDRV_H
 DECL|macro|_INTELFBDRV_H
 mdefine_line|#define _INTELFBDRV_H
 multiline_comment|/*&n; ******************************************************************************&n; * intelfb&n; *&n; * Linux framebuffer driver for Intel(R) 830M/845G/852GM/855GM/865G/915G&n; * integrated graphics chips.&n; *&n; * Copyright &#xfffd; 2004 Sylvain Meyer&n; *&n; * Author: Sylvain Meyer&n; *&n; ******************************************************************************&n; *    This program is free software; you can redistribute it and/or modify&n; *    it under the terms of the GNU General Public License as published by&n; *    the Free Software Foundation; either version 2 of the License, or&n; *    (at your option) any later version.&n; *&n; *    This program is distributed in the hope that it will be useful,&n; *    but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *    GNU General Public License for more details.&n; *&n; *    You should have received a copy of the GNU General Public License&n; *    along with this program; if not, write to the Free Software&n; *    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n;*/
+r_static
 r_int
 id|__init
 id|intelfb_setup

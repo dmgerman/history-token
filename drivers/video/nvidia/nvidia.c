@@ -8760,6 +8760,7 @@ suffix:semicolon
 multiline_comment|/* ------------------------------------------------------------------------- *&n; *&n; * initialization&n; *&n; * ------------------------------------------------------------------------- */
 macro_line|#ifndef MODULE
 DECL|function|nvidiafb_setup
+r_static
 r_int
 id|__init
 id|nvidiafb_setup
@@ -9061,6 +9062,7 @@ comma
 suffix:semicolon
 multiline_comment|/* ------------------------------------------------------------------------- *&n; *&n; * modularization&n; *&n; * ------------------------------------------------------------------------- */
 DECL|function|nvidiafb_init
+r_static
 r_int
 id|__devinit
 id|nvidiafb_init
