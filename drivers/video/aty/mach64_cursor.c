@@ -5,7 +5,6 @@ macro_line|#include &lt;linux/fb.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
-macro_line|#include &lt;video/fbcon.h&gt;
 macro_line|#ifdef __sparc__
 macro_line|#include &lt;asm/pbm.h&gt;
 macro_line|#include &lt;asm/fbio.h&gt;
