@@ -4903,8 +4903,6 @@ suffix:semicolon
 r_int
 r_int
 id|phys_id_present_map
-op_assign
-id|phys_cpu_present_map
 suffix:semicolon
 r_int
 id|apic
@@ -4928,18 +4926,13 @@ id|acpi_ioapic
 multiline_comment|/* This gets done during IOAPIC enumeration for ACPI. */
 r_return
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|clustered_apic_mode
-)paren
-multiline_comment|/* We don&squot;t have a good way to do this yet - hack */
 id|phys_id_present_map
 op_assign
+id|ioapic_phys_id_map
+c_func
 (paren
-id|u_long
+id|phys_cpu_present_map
 )paren
-l_int|0xf
 suffix:semicolon
 multiline_comment|/*&n;&t; * Set the IOAPIC ID to the value stored in the MPC table.&n;&t; */
 r_for

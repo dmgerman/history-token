@@ -103,6 +103,21 @@ id|val
 )paren
 suffix:semicolon
 )brace
+DECL|function|ioapic_phys_id_map
+r_static
+r_inline
+id|ulong
+id|ioapic_phys_id_map
+c_func
+(paren
+id|ulong
+id|phys_map
+)paren
+(brace
+r_return
+id|phys_map
+suffix:semicolon
+)brace
 DECL|function|clustered_apic_check
 r_static
 r_inline
@@ -224,6 +239,19 @@ r_return
 id|m-&gt;mpc_apicid
 )paren
 suffix:semicolon
+)brace
+DECL|macro|wakeup_secondary_cpu
+mdefine_line|#define wakeup_secondary_cpu(apicid, start_eip) &bslash;&n;&t;wakeup_secondary_via_INIT(apicid, start_eip)
+DECL|function|setup_portio_remap
+r_static
+r_inline
+r_void
+id|setup_portio_remap
+c_func
+(paren
+r_void
+)paren
+(brace
 )brace
 macro_line|#endif /* __ASM_MACH_APIC_H */
 eof
