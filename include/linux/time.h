@@ -241,6 +241,20 @@ r_int
 id|m
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|m
+OG
+id|jiffies_to_msecs
+c_func
+(paren
+id|MAX_JIFFY_OFFSET
+)paren
+)paren
+r_return
+id|MAX_JIFFY_OFFSET
+suffix:semicolon
 macro_line|#if HZ &lt;= 1000 &amp;&amp; !(1000 % HZ)
 r_return
 (paren
