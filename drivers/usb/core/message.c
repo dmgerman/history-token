@@ -1863,8 +1863,6 @@ id|buf
 comma
 id|size
 comma
-id|HZ
-op_star
 id|USB_CTRL_GET_TIMEOUT
 )paren
 suffix:semicolon
@@ -2000,8 +1998,6 @@ id|buf
 comma
 id|size
 comma
-id|HZ
-op_star
 id|USB_CTRL_GET_TIMEOUT
 )paren
 suffix:semicolon
@@ -2825,8 +2821,6 @@ op_star
 id|status
 )paren
 comma
-id|HZ
-op_star
 id|USB_CTRL_GET_TIMEOUT
 )paren
 suffix:semicolon
@@ -2917,8 +2911,6 @@ l_int|NULL
 comma
 l_int|0
 comma
-id|HZ
-op_star
 id|USB_CTRL_SET_TIMEOUT
 )paren
 suffix:semicolon
@@ -3617,9 +3609,7 @@ l_int|NULL
 comma
 l_int|0
 comma
-id|HZ
-op_star
-l_int|5
+l_int|5000
 )paren
 suffix:semicolon
 multiline_comment|/* 9.4.10 says devices don&squot;t need this and are free to STALL the&n;&t; * request if the interface only has one alternate setting.&n;&t; */
@@ -3864,8 +3854,6 @@ l_int|NULL
 comma
 l_int|0
 comma
-id|HZ
-op_star
 id|USB_CTRL_SET_TIMEOUT
 )paren
 suffix:semicolon
@@ -4335,8 +4323,6 @@ l_int|NULL
 comma
 l_int|0
 comma
-id|HZ
-op_star
 id|USB_CTRL_SET_TIMEOUT
 )paren
 )paren
