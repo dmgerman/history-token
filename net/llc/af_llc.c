@@ -1485,6 +1485,16 @@ id|llc-&gt;dev
 op_assign
 id|dev
 suffix:semicolon
+id|memcpy
+c_func
+(paren
+id|llc-&gt;laddr.mac
+comma
+id|llc-&gt;dev-&gt;dev_addr
+comma
+id|IFHWADDRLEN
+)paren
+suffix:semicolon
 )brace
 r_else
 id|dev
