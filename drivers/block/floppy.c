@@ -1900,7 +1900,7 @@ id|N_DRIVE
 suffix:semicolon
 DECL|variable|floppy_sizes
 r_static
-r_int
+id|sector_t
 id|floppy_sizes
 (braket
 l_int|256
@@ -10897,12 +10897,18 @@ id|_floppy-&gt;head
 suffix:semicolon
 id|TRACK
 op_assign
+(paren
+r_int
+)paren
 id|current_req-&gt;sector
 op_div
 id|max_sector
 suffix:semicolon
 id|fsector_t
 op_assign
+(paren
+r_int
+)paren
 id|current_req-&gt;sector
 op_mod
 id|max_sector
@@ -12607,6 +12613,9 @@ c_func
 (paren
 l_string|&quot;sect=%ld flags=%lx&bslash;n&quot;
 comma
+(paren
+r_int
+)paren
 id|current_req-&gt;sector
 comma
 id|current_req-&gt;flags

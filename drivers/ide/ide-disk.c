@@ -1371,8 +1371,7 @@ id|request
 op_star
 id|rq
 comma
-r_int
-r_int
+id|sector_t
 id|block
 )paren
 (brace
@@ -1636,6 +1635,17 @@ op_rshift
 l_int|24
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+r_sizeof
+(paren
+id|block
+)paren
+op_eq
+l_int|4
+)paren
+(brace
 id|tasklets
 (braket
 l_int|8
@@ -1656,8 +1666,44 @@ id|task_ioreg_t
 )paren
 l_int|0
 suffix:semicolon
-singleline_comment|//&t;&t;&t;tasklets[8] = (task_ioreg_t) (block&gt;&gt;32);
-singleline_comment|//&t;&t;&t;tasklets[9] = (task_ioreg_t) (block&gt;&gt;40);
+)brace
+r_else
+(brace
+id|tasklets
+(braket
+l_int|8
+)braket
+op_assign
+(paren
+id|task_ioreg_t
+)paren
+(paren
+(paren
+id|u64
+)paren
+id|block
+op_rshift
+l_int|32
+)paren
+suffix:semicolon
+id|tasklets
+(braket
+l_int|9
+)braket
+op_assign
+(paren
+id|task_ioreg_t
+)paren
+(paren
+(paren
+id|u64
+)paren
+id|block
+op_rshift
+l_int|40
+)paren
+suffix:semicolon
+)brace
 macro_line|#ifdef DEBUG
 id|printk
 c_func
@@ -1891,7 +1937,7 @@ macro_line|#ifdef DEBUG
 id|printk
 c_func
 (paren
-l_string|&quot;%s: %sing: LBAsect=%ld, sectors=%d, &quot;
+l_string|&quot;%s: %sing: LBAsect=%llu, sectors=%ld, &quot;
 l_string|&quot;buffer=0x%08lx&bslash;n&quot;
 comma
 id|drive-&gt;name
@@ -1909,9 +1955,14 @@ l_string|&quot;read&quot;
 suffix:colon
 l_string|&quot;writ&quot;
 comma
+(paren
+r_int
+r_int
+r_int
+)paren
 id|block
 comma
-id|nsectors.b.low
+id|rq-&gt;nr_sectors
 comma
 (paren
 r_int
@@ -2047,12 +2098,18 @@ id|track
 suffix:semicolon
 id|track
 op_assign
+(paren
+r_int
+)paren
 id|block
 op_div
 id|drive-&gt;sect
 suffix:semicolon
 id|sect
 op_assign
+(paren
+r_int
+)paren
 id|block
 op_mod
 id|drive-&gt;sect
@@ -2747,8 +2804,7 @@ id|request
 op_star
 id|rq
 comma
-r_int
-r_int
+id|sector_t
 id|block
 )paren
 (brace
@@ -4840,8 +4896,13 @@ id|rq
 id|printk
 c_func
 (paren
-l_string|&quot;, sector=%ld&quot;
+l_string|&quot;, sector=%llu&quot;
 comma
+(paren
+r_int
+r_int
+r_int
+)paren
 id|HWGROUP
 c_func
 (paren

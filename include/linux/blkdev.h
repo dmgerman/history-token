@@ -99,8 +99,7 @@ r_int
 id|nr_sectors
 suffix:semicolon
 DECL|member|hard_sector
-r_int
-r_int
+id|sector_t
 id|hard_sector
 suffix:semicolon
 multiline_comment|/* the hard_* are block layer&n;&t;&t;&t;&t;&t; * internals, no driver should&n;&t;&t;&t;&t;&t; * touch them&n;&t;&t;&t;&t;&t; */
@@ -1452,8 +1451,7 @@ r_struct
 id|block_device
 op_star
 comma
-r_int
-r_int
+id|sector_t
 comma
 id|Sector
 op_star
@@ -1477,6 +1475,14 @@ id|p.v
 )paren
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_LBD
+macro_line|# include &lt;asm/div64.h&gt;
+DECL|macro|sector_div
+macro_line|# define sector_div(a, b) do_div(a, b)
+macro_line|#else
+DECL|macro|sector_div
+macro_line|# define sector_div(n, b)( &bslash;&n;{ &bslash;&n;&t;int _res; &bslash;&n;&t;_res = (n) % (b); &bslash;&n;&t;(n) /= (b); &bslash;&n;&t;_res; &bslash;&n;} &bslash;&n;)
+macro_line|#endif 
 r_extern
 id|atomic_t
 id|nr_iowait_tasks

@@ -4667,6 +4667,9 @@ r_if
 c_cond
 (paren
 (paren
+(paren
+r_int
+)paren
 id|rq-&gt;sector
 op_mod
 id|floppy-&gt;bs_factor
