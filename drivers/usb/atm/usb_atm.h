@@ -200,14 +200,6 @@ r_int
 r_int
 id|pdu_padding
 suffix:semicolon
-DECL|member|cell_header
-r_int
-r_char
-id|cell_header
-(braket
-id|ATM_CELL_HEADER
-)braket
-suffix:semicolon
 DECL|member|aal5_trailer
 r_int
 r_char
