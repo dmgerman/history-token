@@ -5911,7 +5911,7 @@ r_static
 r_int
 id|ofonly
 suffix:semicolon
-multiline_comment|/**&n; * fb_get_options - get kernel boot parameters&n; * @name - framebuffer name as it would appear in&n; *         the boot parameter line&n; *         (video=&lt;name&gt;:&lt;options&gt;)&n; *&n; * NOTE: Needed to maintain backwards compatibility&n; */
+multiline_comment|/**&n; * fb_get_options - get kernel boot parameters&n; * @name:   framebuffer name as it would appear in&n; *          the boot parameter line&n; *          (video=&lt;name&gt;:&lt;options&gt;)&n; * @option: the option will be stored here&n; *&n; * NOTE: Needed to maintain backwards compatibility&n; */
 DECL|function|fb_get_options
 r_int
 id|fb_get_options
