@@ -1777,11 +1777,6 @@ id|hbinfo.sent_at
 op_assign
 id|jiffies
 suffix:semicolon
-multiline_comment|/* Set rto_pending indicating that an RTT measurement&n;&t; * is started with this heartbeat chunk.&n;&t; */
-id|transport-&gt;rto_pending
-op_assign
-l_int|1
-suffix:semicolon
 multiline_comment|/* Send a heartbeat to our peer.  */
 id|paylen
 op_assign
@@ -1813,6 +1808,21 @@ id|reply
 )paren
 r_return
 id|SCTP_DISPOSITION_NOMEM
+suffix:semicolon
+multiline_comment|/* Set rto_pending indicating that an RTT measurement&n;&t; * is started with this heartbeat chunk.&n;&t; */
+id|sctp_add_cmd_sf
+c_func
+(paren
+id|commands
+comma
+id|SCTP_CMD_RTO_PENDING
+comma
+id|SCTP_TRANSPORT
+c_func
+(paren
+id|transport
+)paren
+)paren
 suffix:semicolon
 id|sctp_add_cmd_sf
 c_func

@@ -181,6 +181,10 @@ DECL|enumerator|SCTP_CMD_SETUP_T2
 id|SCTP_CMD_SETUP_T2
 comma
 multiline_comment|/* Hi-level, setup T2-shutdown parms.  */
+DECL|enumerator|SCTP_CMD_RTO_PENDING
+id|SCTP_CMD_RTO_PENDING
+comma
+multiline_comment|/* Set transport&squot;s rto_pending. */
 DECL|enumerator|SCTP_CMD_LAST
 id|SCTP_CMD_LAST
 DECL|typedef|sctp_verb_t
