@@ -109,24 +109,6 @@ suffix:colon
 l_int|2
 suffix:semicolon
 multiline_comment|/* chkdsk: 0-no, 1-on errs, 2-allways */
-DECL|member|sb_rd_fnode
-r_int
-id|sb_rd_fnode
-suffix:colon
-l_int|2
-suffix:semicolon
-multiline_comment|/* read fnode 0-no 1-dirs 2-all */
-DECL|member|sb_rd_inode
-r_int
-id|sb_rd_inode
-suffix:colon
-l_int|2
-suffix:semicolon
-multiline_comment|/* lookup tells read_inode: 1-read fnode&n;&t;&t;&t;&t;&t;   2-don&squot;t read fnode, file&n;&t;&t;&t;&t;&t;   3-don&squot;t read fnode, direcotry */
-DECL|member|sb_iget_q
-id|wait_queue_head_t
-id|sb_iget_q
-suffix:semicolon
 DECL|member|sb_cp_table
 r_int
 r_char
