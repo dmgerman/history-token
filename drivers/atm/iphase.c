@@ -17268,24 +17268,24 @@ id|iadev_count
 op_assign
 l_int|NULL
 suffix:semicolon
-id|atm_dev_deregister
-c_func
-(paren
-id|dev
-)paren
-suffix:semicolon
 id|IF_EVENT
 c_func
 (paren
 id|printk
 c_func
 (paren
-l_string|&quot;iav deregistered at (itf:%d)&bslash;n&quot;
+l_string|&quot;deregistering iav at (itf:%d)&bslash;n&quot;
 comma
 id|dev-&gt;number
 )paren
 suffix:semicolon
 )paren
+id|atm_dev_deregister
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
 id|iounmap
 c_func
 (paren
