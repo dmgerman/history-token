@@ -85,7 +85,7 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &quot;lec.h&quot;
 macro_line|#include &quot;lec_arpc.h&quot;
-macro_line|#include &quot;resources.h&quot;  /* for bind_vcc() */
+macro_line|#include &quot;resources.h&quot;
 macro_line|#if 0
 mdefine_line|#define DPRINTK printk
 macro_line|#else
@@ -3895,13 +3895,15 @@ id|priv-&gt;lecd
 op_assign
 id|vcc
 suffix:semicolon
-id|bind_vcc
-c_func
-(paren
-id|vcc
-comma
+id|vcc-&gt;dev
+op_assign
 op_amp
 id|lecatm_dev
+suffix:semicolon
+id|vcc_insert_socket
+c_func
+(paren
+id|vcc-&gt;sk
 )paren
 suffix:semicolon
 id|vcc-&gt;proto_data
