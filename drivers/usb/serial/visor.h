@@ -28,6 +28,8 @@ DECL|macro|PALM_TUNGSTEN_Z_ID
 mdefine_line|#define PALM_TUNGSTEN_Z_ID&t;&t;0x0031
 DECL|macro|PALM_ZIRE_ID
 mdefine_line|#define PALM_ZIRE_ID&t;&t;&t;0x0070
+DECL|macro|PALM_M100_ID
+mdefine_line|#define PALM_M100_ID&t;&t;&t;0x0080
 DECL|macro|SONY_VENDOR_ID
 mdefine_line|#define SONY_VENDOR_ID&t;&t;&t;0x054C
 DECL|macro|SONY_CLIE_3_5_ID
