@@ -1634,15 +1634,15 @@ mdefine_line|#define ARLAN_COM_GOTO_SLOW_POLL      0x0a
 DECL|macro|ARLAN_COM_INT
 mdefine_line|#define ARLAN_COM_INT                 0x80
 DECL|macro|TXLAST
-mdefine_line|#define TXLAST(dev) (((struct arlan_private *)dev-&gt;priv)-&gt;txRing[((struct arlan_private *)dev-&gt;priv)-&gt;txLast])
+mdefine_line|#define TXLAST(dev) (((struct arlan_private *)netdev_priv(dev))-&gt;txRing[((struct arlan_private *)netdev_priv(dev))-&gt;txLast])
 DECL|macro|TXHEAD
-mdefine_line|#define TXHEAD(dev) (((struct arlan_private *)dev-&gt;priv)-&gt;txRing[0])
+mdefine_line|#define TXHEAD(dev) (((struct arlan_private *)netdev_priv(dev))-&gt;txRing[0])
 DECL|macro|TXTAIL
-mdefine_line|#define TXTAIL(dev) (((struct arlan_private *)dev-&gt;priv)-&gt;txRing[1])
+mdefine_line|#define TXTAIL(dev) (((struct arlan_private *)netdev_priv(dev))-&gt;txRing[1])
 DECL|macro|TXBuffStart
-mdefine_line|#define TXBuffStart(dev) &bslash;&n; ((int)(((struct arlan_private *)dev-&gt;priv)-&gt;card)-&gt;txBuffer) - ((int)(((struct arlan_private *)dev-&gt;priv)-&gt;card) )
+mdefine_line|#define TXBuffStart(dev) &bslash;&n; ((int)(((struct arlan_private *)netdev_priv(dev))-&gt;card)-&gt;txBuffer) - ((int)(((struct arlan_private *)netdev_priv(dev))-&gt;card) )
 DECL|macro|TXBuffEnd
-mdefine_line|#define TXBuffEnd(dev) &bslash;&n; ((int)(((struct arlan_private *)dev-&gt;priv)-&gt;card)-&gt;rxBuffer) - ((int)(((struct arlan_private *)dev-&gt;priv)-&gt;card)
+mdefine_line|#define TXBuffEnd(dev) &bslash;&n; ((int)(((struct arlan_private *)netdev_priv(dev))-&gt;card)-&gt;rxBuffer) - ((int)(((struct arlan_private *)netdev_priv(dev))-&gt;card)
 DECL|macro|READSHM
 mdefine_line|#define READSHM(to,from,atype) {&bslash;&n;&t;atype tmp;&bslash;&n;&t;memcpy_fromio(&amp;(tmp),&amp;(from),sizeof(atype));&bslash;&n;&t;to = tmp;&bslash;&n;&t;}
 DECL|macro|READSHMEM
@@ -1664,11 +1664,11 @@ mdefine_line|#define WRITESHMI(to, val) &bslash;&n;&t;writel(val,&amp;(to))
 DECL|macro|READSHMI
 mdefine_line|#define READSHMI(to) &bslash;&n;&t;readl(&amp;(to))
 DECL|macro|registrationBad
-mdefine_line|#define registrationBad(dev)&bslash;&n;   ( (   READSHMB(((struct arlan_private *)dev-&gt;priv)-&gt;card-&gt;registrationMode)    &gt; 0) &amp;&amp; &bslash;&n;     (   READSHMB(((struct arlan_private *)dev-&gt;priv)-&gt;card-&gt;registrationStatus) == 0)    )
+mdefine_line|#define registrationBad(dev)&bslash;&n;   ( (   READSHMB(((struct arlan_private *)netdev_priv(dev))-&gt;card-&gt;registrationMode)    &gt; 0) &amp;&amp; &bslash;&n;     (   READSHMB(((struct arlan_private *)netdev_priv(dev))-&gt;card-&gt;registrationStatus) == 0)    )
 DECL|macro|readControlRegister
-mdefine_line|#define readControlRegister(dev)&bslash;&n; &t;READSHMB(((struct arlan_private *)dev-&gt;priv)-&gt;card-&gt;cntrlRegImage)
+mdefine_line|#define readControlRegister(dev)&bslash;&n; &t;READSHMB(((struct arlan_private *)netdev_priv(dev))-&gt;card-&gt;cntrlRegImage)
 DECL|macro|writeControlRegister
-mdefine_line|#define writeControlRegister(dev, v){&bslash;&n;   WRITESHMB(((struct arlan_private *)dev-&gt;priv)-&gt;card-&gt;cntrlRegImage&t;,((v) &amp;0xF) );&bslash;&n;   WRITESHMB(((struct arlan_private *)dev-&gt;priv)-&gt;card-&gt;controlRegister&t;,(v) &t;);}
+mdefine_line|#define writeControlRegister(dev, v){&bslash;&n;   WRITESHMB(((struct arlan_private *)netdev_priv(dev))-&gt;card-&gt;cntrlRegImage&t;,((v) &amp;0xF) );&bslash;&n;   WRITESHMB(((struct arlan_private *)netdev_priv(dev))-&gt;card-&gt;controlRegister&t;,(v) &t;);}
 DECL|macro|arlan_interrupt_lancpu
 mdefine_line|#define arlan_interrupt_lancpu(dev) {&bslash;&n;   int cr;   &bslash;&n;   &bslash;&n;   cr = readControlRegister(dev);&bslash;&n;   if (cr &amp; ARLAN_CHANNEL_ATTENTION){ &bslash;&n;      writeControlRegister(dev, (cr &amp; ~ARLAN_CHANNEL_ATTENTION));&bslash;&n;   }else  &bslash;&n;      writeControlRegister(dev, (cr | ARLAN_CHANNEL_ATTENTION));&bslash;&n;}
 DECL|macro|clearChannelAttention
