@@ -18,7 +18,7 @@ macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/cacheflush.h&gt;
 DECL|macro|DEBUG_SIG
-mdefine_line|#define DEBUG_SIG 0
+macro_line|#undef DEBUG_SIG
 DECL|macro|_BLOCKABLE
 mdefine_line|#define _BLOCKABLE (~(sigmask(SIGKILL) | sigmask(SIGSTOP)))
 r_extern

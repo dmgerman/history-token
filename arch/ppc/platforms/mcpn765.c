@@ -13,9 +13,6 @@ macro_line|#include &lt;linux/initrd.h&gt;
 macro_line|#include &lt;linux/console.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/irq.h&gt;
-macro_line|#if 0
-macro_line|#include &lt;linux/ide.h&gt;
-macro_line|#endif
 macro_line|#include &lt;linux/seq_file.h&gt;
 macro_line|#include &lt;linux/root_dev.h&gt;
 macro_line|#include &lt;linux/serial.h&gt;
@@ -1391,6 +1388,16 @@ id|openpic_init
 c_func
 (paren
 id|NUM_8259_INTERRUPTS
+)paren
+suffix:semicolon
+id|openpic_hookup_cascade
+c_func
+(paren
+id|NUM_8259_INTERRUPTS
+comma
+l_string|&quot;82c59 cascade&quot;
+comma
+id|i8259_irq
 )paren
 suffix:semicolon
 r_for
