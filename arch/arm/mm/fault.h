@@ -76,4 +76,14 @@ op_star
 id|regs
 )paren
 suffix:semicolon
+r_int
+r_int
+id|search_exception_table
+c_func
+(paren
+r_int
+r_int
+id|addr
+)paren
+suffix:semicolon
 eof
