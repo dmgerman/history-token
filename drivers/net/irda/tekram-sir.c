@@ -25,9 +25,9 @@ r_static
 r_int
 id|tekram_delay
 op_assign
-l_int|50
+l_int|150
 suffix:semicolon
-multiline_comment|/* default is 50 ms */
+multiline_comment|/* default is 150 ms */
 r_static
 r_int
 id|tekram_open
@@ -146,6 +146,18 @@ id|tekram_delay
 op_assign
 l_int|200
 suffix:semicolon
+id|IRDA_DEBUG
+c_func
+(paren
+l_int|1
+comma
+l_string|&quot;%s - using %d ms delay&bslash;n&quot;
+comma
+id|tekram.driver_name
+comma
+id|tekram_delay
+)paren
+suffix:semicolon
 r_return
 id|irda_register_dongle
 c_func
@@ -202,9 +214,7 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
-id|dev
-op_member_access_from_pointer
-id|set_dtr_rts
+id|sirdev_set_dtr_rts
 c_func
 (paren
 id|dev
@@ -265,9 +275,7 @@ id|__FUNCTION__
 )paren
 suffix:semicolon
 multiline_comment|/* Power off dongle */
-id|dev
-op_member_access_from_pointer
-id|set_dtr_rts
+id|sirdev_set_dtr_rts
 c_func
 (paren
 id|dev
@@ -300,17 +308,23 @@ id|speed
 )paren
 (brace
 r_int
+id|state
+op_assign
+id|dev-&gt;fsm.substate
+suffix:semicolon
+r_int
 id|delay
 op_assign
 l_int|0
 suffix:semicolon
-r_int
-id|next_state
-op_assign
-id|dev-&gt;fsm.substate
-suffix:semicolon
 id|u8
 id|byte
+suffix:semicolon
+r_static
+r_int
+id|ret
+op_assign
+l_int|0
 suffix:semicolon
 id|IRDA_DEBUG
 c_func
@@ -325,7 +339,7 @@ suffix:semicolon
 r_switch
 c_cond
 (paren
-id|dev-&gt;fsm.substate
+id|state
 )paren
 (brace
 r_case
@@ -342,6 +356,11 @@ suffix:colon
 id|speed
 op_assign
 l_int|9600
+suffix:semicolon
+id|ret
+op_assign
+op_minus
+id|EINVAL
 suffix:semicolon
 multiline_comment|/* fall thru */
 r_case
@@ -399,9 +418,7 @@ r_break
 suffix:semicolon
 )brace
 multiline_comment|/* Set DTR, Clear RTS */
-id|dev
-op_member_access_from_pointer
-id|set_dtr_rts
+id|sirdev_set_dtr_rts
 c_func
 (paren
 id|dev
@@ -419,9 +436,7 @@ l_int|14
 )paren
 suffix:semicolon
 multiline_comment|/* Write control byte */
-id|dev
-op_member_access_from_pointer
-id|write
+id|sirdev_raw_write
 c_func
 (paren
 id|dev
@@ -436,7 +451,7 @@ id|dev-&gt;speed
 op_assign
 id|speed
 suffix:semicolon
-id|next_state
+id|state
 op_assign
 id|TEKRAM_STATE_WAIT_SPEED
 suffix:semicolon
@@ -444,16 +459,13 @@ id|delay
 op_assign
 id|tekram_delay
 suffix:semicolon
-multiline_comment|/* default: 50 ms */
 r_break
 suffix:semicolon
 r_case
 id|TEKRAM_STATE_WAIT_SPEED
 suffix:colon
 multiline_comment|/* Set DTR, Set RTS */
-id|dev
-op_member_access_from_pointer
-id|set_dtr_rts
+id|sirdev_set_dtr_rts
 c_func
 (paren
 id|dev
@@ -469,35 +481,46 @@ c_func
 l_int|50
 )paren
 suffix:semicolon
-r_return
-l_int|0
+r_break
 suffix:semicolon
 r_default
 suffix:colon
 id|ERROR
 c_func
 (paren
-l_string|&quot;%s - undefined state&bslash;n&quot;
+l_string|&quot;%s - undefined state %d&bslash;n&quot;
 comma
 id|__FUNCTION__
+comma
+id|state
 )paren
 suffix:semicolon
-r_return
+id|ret
+op_assign
 op_minus
 id|EINVAL
+suffix:semicolon
+r_break
 suffix:semicolon
 )brace
 id|dev-&gt;fsm.substate
 op_assign
-id|next_state
+id|state
 suffix:semicolon
 r_return
+(paren
 id|delay
+OG
+l_int|0
+)paren
+ques
+c_cond
+id|delay
+suffix:colon
+id|ret
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Function tekram_reset (driver)&n; *&n; *      This function resets the tekram dongle. Warning, this function &n; *      must be called with a process context!! &n; *&n; *      Algorithm:&n; *    &t;  0. Clear RTS and DTR, and wait 50 ms (power off the IR-210 )&n; *        1. clear RTS &n; *        2. set DTR, and wait at least 1 ms &n; *        3. clear DTR to SPACE state, wait at least 50 us for further &n; *         operation&n; */
-DECL|macro|TEKRAM_STATE_WAIT_RESET
-mdefine_line|#define TEKRAM_STATE_WAIT_RESET&t;(SIRDEV_STATE_DONGLE_RESET + 1)
 DECL|function|tekram_reset
 r_static
 r_int
@@ -510,16 +533,6 @@ op_star
 id|dev
 )paren
 (brace
-r_int
-id|delay
-op_assign
-l_int|0
-suffix:semicolon
-r_int
-id|next_state
-op_assign
-id|dev-&gt;fsm.substate
-suffix:semicolon
 id|IRDA_DEBUG
 c_func
 (paren
@@ -530,19 +543,8 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
-r_switch
-c_cond
-(paren
-id|dev-&gt;fsm.substate
-)paren
-(brace
-r_case
-id|SIRDEV_STATE_DONGLE_RESET
-suffix:colon
 multiline_comment|/* Clear DTR, Set RTS */
-id|dev
-op_member_access_from_pointer
-id|set_dtr_rts
+id|sirdev_set_dtr_rts
 c_func
 (paren
 id|dev
@@ -552,24 +554,25 @@ comma
 id|TRUE
 )paren
 suffix:semicolon
-id|next_state
-op_assign
-id|TEKRAM_STATE_WAIT_RESET
-suffix:semicolon
-id|delay
-op_assign
-l_int|1
-suffix:semicolon
 multiline_comment|/* Should sleep 1 ms */
-r_break
+id|set_current_state
+c_func
+(paren
+id|TASK_UNINTERRUPTIBLE
+)paren
 suffix:semicolon
-r_case
-id|TEKRAM_STATE_WAIT_RESET
-suffix:colon
+id|schedule_timeout
+c_func
+(paren
+id|MSECS_TO_JIFFIES
+c_func
+(paren
+l_int|1
+)paren
+)paren
+suffix:semicolon
 multiline_comment|/* Set DTR, Set RTS */
-id|dev
-op_member_access_from_pointer
-id|set_dtr_rts
+id|sirdev_set_dtr_rts
 c_func
 (paren
 id|dev
@@ -586,30 +589,12 @@ c_func
 l_int|75
 )paren
 suffix:semicolon
+id|dev-&gt;speed
+op_assign
+l_int|9600
+suffix:semicolon
 r_return
 l_int|0
-suffix:semicolon
-r_default
-suffix:colon
-id|ERROR
-c_func
-(paren
-l_string|&quot;%s - undefined state&bslash;n&quot;
-comma
-id|__FUNCTION__
-)paren
-suffix:semicolon
-r_return
-op_minus
-id|EINVAL
-suffix:semicolon
-)brace
-id|dev-&gt;fsm.substate
-op_assign
-id|next_state
-suffix:semicolon
-r_return
-id|delay
 suffix:semicolon
 )brace
 id|MODULE_AUTHOR
