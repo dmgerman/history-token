@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/tty_flip.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;linux/usb.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#ifdef CONFIG_USB_SERIAL_DEBUG
@@ -39,12 +40,14 @@ id|product
 op_assign
 l_int|0xffff
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|vendor
 comma
-l_string|&quot;h&quot;
+id|ushort
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -55,12 +58,14 @@ comma
 l_string|&quot;User specified USB idVendor&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|product
 comma
-l_string|&quot;h&quot;
+id|ushort
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
