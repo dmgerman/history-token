@@ -143,10 +143,12 @@ DECL|macro|SYNC_DELWRI
 mdefine_line|#define SYNC_DELWRI&t;&t;0x0004&t;/* look at delayed writes */
 DECL|macro|SYNC_WAIT
 mdefine_line|#define SYNC_WAIT&t;&t;0x0008&t;/* wait for i/o to complete */
-DECL|macro|SYNC_FSDATA
-mdefine_line|#define SYNC_FSDATA&t;&t;0x0020&t;/* flush fs data (e.g. superblocks) */
 DECL|macro|SYNC_BDFLUSH
 mdefine_line|#define SYNC_BDFLUSH&t;&t;0x0010&t;/* BDFLUSH is calling -- don&squot;t block */
+DECL|macro|SYNC_FSDATA
+mdefine_line|#define SYNC_FSDATA&t;&t;0x0020&t;/* flush fs data (e.g. superblocks) */
+DECL|macro|SYNC_REFCACHE
+mdefine_line|#define SYNC_REFCACHE&t;&t;0x0040  /* prune some of the nfs ref cache */
 DECL|typedef|vfs_mount_t
 r_typedef
 r_int
