@@ -70,14 +70,6 @@ comma
 l_string|&quot;port numbers of IRC servers&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* protects irc part of conntracks */
-DECL|variable|ip_irc_lock
-id|DECLARE_LOCK_EXTERN
-c_func
-(paren
-id|ip_irc_lock
-)paren
-suffix:semicolon
 multiline_comment|/* FIXME: Time out? --RR */
 r_static
 r_int
@@ -354,13 +346,6 @@ id|buffer
 l_int|18
 )braket
 suffix:semicolon
-id|MUST_BE_LOCKED
-c_func
-(paren
-op_amp
-id|ip_irc_lock
-)paren
-suffix:semicolon
 id|DEBUGP
 c_func
 (paren
@@ -387,7 +372,6 @@ dot
 id|tuple.dst.ip
 suffix:semicolon
 multiline_comment|/* Alter conntrack&squot;s expectations. */
-multiline_comment|/* We can read expect here without conntrack lock, since it&squot;s&n;&t;   only set in ip_conntrack_irc, with ip_irc_lock held&n;&t;   writable */
 id|t
 op_assign
 id|expect-&gt;tuple
@@ -713,13 +697,6 @@ id|tcph-&gt;doff
 op_star
 l_int|4
 suffix:semicolon
-id|LOCK_BH
-c_func
-(paren
-op_amp
-id|ip_irc_lock
-)paren
-suffix:semicolon
 multiline_comment|/* Check whether the whole IP/address pattern is carried in the payload */
 r_if
 c_cond
@@ -765,18 +742,9 @@ comma
 id|exp
 )paren
 )paren
-(brace
-id|UNLOCK_BH
-c_func
-(paren
-op_amp
-id|ip_irc_lock
-)paren
-suffix:semicolon
 r_return
 id|NF_DROP
 suffix:semicolon
-)brace
 )brace
 r_else
 (brace
@@ -814,24 +782,10 @@ id|datalen
 )paren
 suffix:semicolon
 )brace
-id|UNLOCK_BH
-c_func
-(paren
-op_amp
-id|ip_irc_lock
-)paren
-suffix:semicolon
 r_return
 id|NF_DROP
 suffix:semicolon
 )brace
-id|UNLOCK_BH
-c_func
-(paren
-op_amp
-id|ip_irc_lock
-)paren
-suffix:semicolon
 r_return
 id|NF_ACCEPT
 suffix:semicolon
