@@ -62,14 +62,6 @@ r_int
 id|cpu
 )paren
 suffix:semicolon
-r_extern
-id|cpumask_t
-id|cpu_online_map
-suffix:semicolon
-r_extern
-id|cpumask_t
-id|cpu_possible_map
-suffix:semicolon
 DECL|macro|NO_PROC_ID
 mdefine_line|#define NO_PROC_ID&t;&t;0xFF&t;&t;/* No processor magic marker */
 multiline_comment|/*&n; *&t;This magic constant controls our willingness to transfer&n; *&t;a process across CPUs. Such a transfer incurs misses on the L1&n; *&t;cache, and on a P6 or P5 with multiple L2 caches L2 hits. My&n; *&t;gut feeling is this will vary by board in value. For a board&n; *&t;with separate L2 cache it probably depends also on the RSS, and&n; *&t;for a board with shared L2 cache it ought to decay fast as other&n; *&t;processes are run.&n; */
@@ -77,8 +69,6 @@ DECL|macro|PROC_CHANGE_PENALTY
 mdefine_line|#define PROC_CHANGE_PENALTY&t;20&t;&t;/* Schedule penalty */
 DECL|macro|smp_processor_id
 mdefine_line|#define smp_processor_id() (S390_lowcore.cpu_data.cpu_nr)
-DECL|macro|cpu_online
-mdefine_line|#define cpu_online(cpu) cpu_isset(cpu, cpu_online_map)
 DECL|function|hard_smp_processor_id
 r_extern
 id|__inline__

@@ -26,21 +26,21 @@ DECL|macro|TITAN_I2C_MAX_POLL
 mdefine_line|#define TITAN_I2C_MAX_POLL&t;&t;100
 multiline_comment|/* Registers used for I2C work */
 DECL|macro|TITAN_I2C_SCMB_CONTROL
-mdefine_line|#define TITAN_I2C_SCMB_CONTROL&t;&t;0x0180  /* SCMB Control */
+mdefine_line|#define TITAN_I2C_SCMB_CONTROL&t;&t;0x0180&t;/* SCMB Control */
 DECL|macro|TITAN_I2C_SCMB_CLOCK_A
-mdefine_line|#define TITAN_I2C_SCMB_CLOCK_A&t;&t;0x0184  /* SCMB Clock A */
+mdefine_line|#define TITAN_I2C_SCMB_CLOCK_A&t;&t;0x0184&t;/* SCMB Clock A */
 DECL|macro|TITAN_I2C_SCMB_CLOCK_B
-mdefine_line|#define TITAN_I2C_SCMB_CLOCK_B&t;&t;0x0188  /* SCMB Clock B */
+mdefine_line|#define TITAN_I2C_SCMB_CLOCK_B&t;&t;0x0188&t;/* SCMB Clock B */
 DECL|macro|TITAN_I2C_CONFIG
-mdefine_line|#define&t;TITAN_I2C_CONFIG&t;&t;0x01A0  /* I2C Config */
+mdefine_line|#define&t;TITAN_I2C_CONFIG&t;&t;0x01A0&t;/* I2C Config */
 DECL|macro|TITAN_I2C_COMMAND
-mdefine_line|#define TITAN_I2C_COMMAND&t;&t;0x01A4  /* I2C Command */
+mdefine_line|#define TITAN_I2C_COMMAND&t;&t;0x01A4&t;/* I2C Command */
 DECL|macro|TITAN_I2C_SLAVE_ADDRESS
 mdefine_line|#define&t;TITAN_I2C_SLAVE_ADDRESS&t;&t;0x01A8&t;/* I2C Slave Address */
 DECL|macro|TITAN_I2C_DATA
-mdefine_line|#define TITAN_I2C_DATA&t;&t;&t;0x01AC  /* I2C Data [15:0] */
+mdefine_line|#define TITAN_I2C_DATA&t;&t;&t;0x01AC&t;/* I2C Data [15:0] */
 DECL|macro|TITAN_I2C_INTERRUPTS
-mdefine_line|#define TITAN_I2C_INTERRUPTS&t;&t;0x01BC  /* I2C Interrupts */
+mdefine_line|#define TITAN_I2C_INTERRUPTS&t;&t;0x01BC&t;/* I2C Interrupts */
 multiline_comment|/* Error */
 DECL|macro|TITAN_I2C_ERR_ARB_LOST
 mdefine_line|#define&t;TITAN_I2C_ERR_ARB_LOST&t;&t;(-9220)
@@ -82,7 +82,7 @@ DECL|member|filtera
 r_int
 id|filtera
 suffix:semicolon
-multiline_comment|/* Register 0x0184, bits 15 - 12*/
+multiline_comment|/* Register 0x0184, bits 15 - 12 */
 DECL|member|clka
 r_int
 id|clka
@@ -162,5 +162,5 @@ DECL|typedef|titan_i2c_command
 )brace
 id|titan_i2c_command
 suffix:semicolon
-macro_line|#endif /* __I2C_YOSEMITE_H */ 
+macro_line|#endif&t;&t;&t;&t;/* __I2C_YOSEMITE_H */
 eof

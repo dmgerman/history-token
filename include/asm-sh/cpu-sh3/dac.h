@@ -1,6 +1,6 @@
-macro_line|#ifndef __ASM_SH_DAC_H
-DECL|macro|__ASM_SH_DAC_H
-mdefine_line|#define __ASM_SH_DAC_H
+macro_line|#ifndef __ASM_CPU_SH3_DAC_H
+DECL|macro|__ASM_CPU_SH3_DAC_H
+mdefine_line|#define __ASM_CPU_SH3_DAC_H
 multiline_comment|/*&n; * Copyright (C) 2003  Andriy Skulysh&n; */
 DECL|macro|DADR0
 mdefine_line|#define DADR0&t;0xa40000a0
@@ -151,5 +151,5 @@ id|DADR0
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif /* __ASM_SH_DAC_H */
+macro_line|#endif /* __ASM_CPU_SH3_DAC_H */
 eof

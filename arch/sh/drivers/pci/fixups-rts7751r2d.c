@@ -1,0 +1,66 @@
+multiline_comment|/*&n; * arch/sh/drivers/pci/fixups-rts7751r2d.c&n; *&n; * RTS7751R2D PCI fixups&n; *&n; * Copyright (C) 2003  Lineo uSolutions, Inc.&n; * Copyright (C) 2004  Paul Mundt&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; */
+macro_line|#include &quot;pci-sh7751.h&quot;
+macro_line|#include &lt;asm/io.h&gt;
+DECL|macro|PCIMCR_MRSET_OFF
+mdefine_line|#define PCIMCR_MRSET_OFF&t;0xBFFFFFFF
+DECL|macro|PCIMCR_RFSH_OFF
+mdefine_line|#define PCIMCR_RFSH_OFF&t;&t;0xFFFFFFFB
+DECL|function|pci_fixup_pcic
+r_int
+id|pci_fixup_pcic
+c_func
+(paren
+r_void
+)paren
+(brace
+r_int
+r_int
+id|mcr
+suffix:semicolon
+id|outl
+c_func
+(paren
+l_int|0xfb900047
+comma
+id|SH7751_PCICONF1
+)paren
+suffix:semicolon
+id|outl
+c_func
+(paren
+l_int|0xab000001
+comma
+id|SH7751_PCICONF4
+)paren
+suffix:semicolon
+id|mcr
+op_assign
+id|inl
+c_func
+(paren
+id|SH7751_MCR
+)paren
+suffix:semicolon
+id|mcr
+op_assign
+(paren
+id|mcr
+op_amp
+id|PCIMCR_MRSET_OFF
+)paren
+op_amp
+id|PCIMCR_RFSH_OFF
+suffix:semicolon
+id|outl
+c_func
+(paren
+id|mcr
+comma
+id|SH7751_PCIMCR
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+eof

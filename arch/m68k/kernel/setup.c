@@ -106,13 +106,6 @@ id|m68k_command_line
 id|CL_SIZE
 )braket
 suffix:semicolon
-DECL|variable|saved_command_line
-r_char
-id|saved_command_line
-(braket
-id|CL_SIZE
-)braket
-suffix:semicolon
 DECL|variable|m68k_debug_device
 r_char
 id|m68k_debug_device

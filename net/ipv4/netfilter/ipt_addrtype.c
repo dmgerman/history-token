@@ -203,7 +203,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;ipt_addrtype: invalid size (%u != %u)&bslash;n.&quot;
+l_string|&quot;ipt_addrtype: invalid size (%u != %Zu)&bslash;n.&quot;
 comma
 id|matchsize
 comma

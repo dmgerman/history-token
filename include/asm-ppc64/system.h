@@ -520,14 +520,6 @@ id|t
 )brace
 macro_line|#endif
 r_extern
-r_int
-id|abs
-c_func
-(paren
-r_int
-)paren
-suffix:semicolon
-r_extern
 r_struct
 id|task_struct
 op_star

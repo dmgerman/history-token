@@ -169,6 +169,11 @@ id|SNAPGEAR_LSR1_SIZE
 comma
 )brace
 comma
+dot
+id|flags
+op_assign
+id|SH7751_PCIC_NO_RESET
+comma
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * Initialize the SnapGear PCI interface &n; * Setup hardware to be Central Funtion&n; * Copy the BSR regs to the PCI interface&n; * Setup PCI windows into local RAM&n; */

@@ -183,13 +183,6 @@ id|command_line
 id|COMMAND_LINE_SIZE
 )braket
 suffix:semicolon
-DECL|variable|saved_command_line
-r_char
-id|saved_command_line
-(braket
-id|COMMAND_LINE_SIZE
-)braket
-suffix:semicolon
 DECL|variable|standard_io_resources
 r_struct
 id|resource

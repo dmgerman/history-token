@@ -8,11 +8,17 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 multiline_comment|/**************************************************/
 multiline_comment|/* the actual current config file                 */
-multiline_comment|/* This one is for extraction from the kernel binary file image. */
-macro_line|#include &quot;ikconfig.h&quot;
-macro_line|#ifdef CONFIG_IKCONFIG_PROC
-multiline_comment|/* This is the data that can be read from /proc/config.gz. */
+multiline_comment|/*&n; * Define kernel_config_data and kernel_config_data_size, which contains the&n; * wrapped and compressed configuration file.  The file is first compressed&n; * with gzip and then bounded by two eight byte magic numbers to allow&n; * extraction from a binary kernel image:&n; *&n; *   IKCFG_ST&n; *   &lt;image&gt;&n; *   IKCFG_ED&n; */
+DECL|macro|MAGIC_START
+mdefine_line|#define MAGIC_START&t;&quot;IKCFG_ST&quot;
+DECL|macro|MAGIC_END
+mdefine_line|#define MAGIC_END&t;&quot;IKCFG_ED&quot;
 macro_line|#include &quot;config_data.h&quot;
+DECL|macro|MAGIC_SIZE
+mdefine_line|#define MAGIC_SIZE (sizeof(MAGIC_START) - 1)
+DECL|macro|kernel_config_data_size
+mdefine_line|#define kernel_config_data_size &bslash;&n;&t;(sizeof(kernel_config_data) - 1 - MAGIC_SIZE * 2)
+macro_line|#ifdef CONFIG_IKCONFIG_PROC
 multiline_comment|/**************************************************/
 multiline_comment|/* globals and useful constants                   */
 DECL|variable|__initdata
@@ -96,17 +102,17 @@ id|buf
 comma
 id|kernel_config_data
 op_plus
+id|MAGIC_SIZE
+op_plus
 id|pos
 comma
 id|count
 )paren
 )paren
-(brace
 r_return
 op_minus
 id|EFAULT
 suffix:semicolon
-)brace
 op_star
 id|offset
 op_add_assign

@@ -631,7 +631,6 @@ r_void
 )paren
 (brace
 r_int
-r_int
 id|ret
 op_assign
 id|rtas_call
@@ -660,7 +659,7 @@ l_int|0
 id|printk
 c_func
 (paren
-l_string|&quot;FWNMI: nmi-interlock failed: %ld&bslash;n&quot;
+l_string|&quot;FWNMI: nmi-interlock failed: %d&bslash;n&quot;
 comma
 id|ret
 )paren

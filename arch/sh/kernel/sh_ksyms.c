@@ -94,6 +94,13 @@ c_func
 id|disable_irq
 )paren
 suffix:semicolon
+DECL|variable|probe_irq_mask
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|probe_irq_mask
+)paren
+suffix:semicolon
 DECL|variable|kernel_thread
 id|EXPORT_SYMBOL
 c_func
@@ -314,6 +321,13 @@ c_func
 id|__udelay
 )paren
 suffix:semicolon
+DECL|variable|__ndelay
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|__ndelay
+)paren
+suffix:semicolon
 DECL|variable|__const_udelay
 id|EXPORT_SYMBOL
 c_func
@@ -388,6 +402,13 @@ c_func
 id|__movstr_i4_odd
 )paren
 suffix:semicolon
+DECL|variable|__movstrSI12_i4
+id|DECLARE_EXPORT
+c_func
+(paren
+id|__movstrSI12_i4
+)paren
+suffix:semicolon
 multiline_comment|/* needed by some modules */
 DECL|variable|flush_cache_all
 id|EXPORT_SYMBOL
@@ -446,6 +467,13 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|csum_partial
+)paren
+suffix:semicolon
+DECL|variable|consistent_sync
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|consistent_sync
 )paren
 suffix:semicolon
 eof

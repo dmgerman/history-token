@@ -22,6 +22,14 @@ id|pci_probe
 op_assign
 id|PCI_PROBE_CONF1
 suffix:semicolon
+r_extern
+r_int
+id|pci_fixup_pcic
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Direct access to PCI hardware...&n; */
 DECL|macro|CONFIG_CMD
 mdefine_line|#define CONFIG_CMD(bus, devfn, where) (0x80000000 | (bus-&gt;number &lt;&lt; 16) | (devfn &lt;&lt; 8) | (where &amp; ~3))
@@ -178,7 +186,7 @@ r_return
 id|PCIBIOS_SUCCESSFUL
 suffix:semicolon
 )brace
-multiline_comment|/* &n; * Since SH7751 only does 32bit access we&squot;ll have to do a read,mask,write operation.  &n; * We&squot;ll allow an odd byte offset, though it should be illegal.&n; */
+multiline_comment|/* &n; * Since SH7751 only does 32bit access we&squot;ll have to do a read,&n; * mask,write operation.&n; * We&squot;ll allow an odd byte offset, though it should be illegal.&n; */
 DECL|function|sh7751_pci_write
 r_static
 r_int
@@ -562,6 +570,7 @@ suffix:semicolon
 )brace
 multiline_comment|/***************************************************************************************/
 multiline_comment|/*&n; *  Handle bus scanning and fixups ....&n; */
+macro_line|#if !defined(CONFIG_SH_HS7751RVOIP) &amp;&amp; !defined(CONFIG_SH_RTS7751R2D)
 DECL|function|pci_fixup_ide_bases
 r_static
 r_void
@@ -652,6 +661,7 @@ suffix:semicolon
 )brace
 )brace
 )brace
+macro_line|#endif
 multiline_comment|/* Add future fixups here... */
 DECL|variable|pcibios_fixups
 r_struct
@@ -661,6 +671,7 @@ id|pcibios_fixups
 )braket
 op_assign
 (brace
+macro_line|#if !defined(CONFIG_SH_HS7751RVOIP) &amp;&amp; !defined(CONFIG_SH_RTS7751R2D)
 (brace
 id|PCI_FIXUP_HEADER
 comma
@@ -671,6 +682,7 @@ comma
 id|pci_fixup_ide_bases
 )brace
 comma
+macro_line|#endif
 (brace
 l_int|0
 )brace
@@ -946,8 +958,18 @@ id|SH7751_PCICLKR
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * XXX: This code is unused for the SnapGear boards as it is done in&n;&t; * the bootloader and doing it here means the MAC addresses loaded by&n;&t; * the bootloader get lost.&n;&t; */
-macro_line|#ifndef CONFIG_SH_SECUREEDGE5410
+multiline_comment|/*&n;&t; * This code is unused for some boards as it is done in the&n;&t; * bootloader and doing it here means the MAC addresses loaded&n;&t; * by the bootloader get lost.&n;&t; */
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|map-&gt;flags
+op_amp
+id|SH7751_PCIC_NO_RESET
+)paren
+)paren
+(brace
 multiline_comment|/* toggle PCI reset pin */
 id|word
 op_assign
@@ -990,7 +1012,7 @@ id|SH7751_PCICR
 )paren
 )paren
 suffix:semicolon
-macro_line|#endif
+)brace
 multiline_comment|/* set the command/status bits to:&n;&t; * Wait Cycle Control + Parity Enable + Bus Master +&n;&t; * Mem space enable&n;&t; */
 id|word
 op_assign
@@ -1427,6 +1449,13 @@ id|SH7751_PCIMCR
 )paren
 suffix:semicolon
 multiline_comment|/* NOTE: I&squot;m ignoring the PCI error IRQs for now..&n;&t; * TODO: add support for the internal error interrupts and&n;&t; * DMA interrupts...&n;&t; */
+macro_line|#ifdef CONFIG_SH_RTS7751R2D
+id|pci_fixup_pcic
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/* SH7751 init done, set central function init complete */
 multiline_comment|/* use round robin mode to stop a device starving/overruning */
 id|word

@@ -1031,7 +1031,7 @@ DECL|macro|XFS_CHASH
 mdefine_line|#define XFS_CHASH(mp,blk) ((mp)-&gt;m_chash + (((uint)blk) % (mp)-&gt;m_chsize))
 multiline_comment|/*&n; * For multiple groups support: if S_ISGID bit is set in the parent&n; * directory, group of new file is set to that of the parent, and&n; * new subdirectory gets S_ISGID bit from parent.&n; */
 DECL|macro|XFS_INHERIT_GID
-mdefine_line|#define XFS_INHERIT_GID(pip, vfsp)&t;((pip) != NULL &amp;&amp; &bslash;&n;&t;(((vfsp)-&gt;vfs_flag &amp; VFS_GRPID) || ((pip)-&gt;i_d.di_mode &amp; S_ISGID)))
+mdefine_line|#define XFS_INHERIT_GID(pip, vfsp)&t;&bslash;&n;&t;(((vfsp)-&gt;vfs_flag &amp; VFS_GRPID) || ((pip)-&gt;i_d.di_mode &amp; S_ISGID))
 multiline_comment|/*&n; * xfs_iget.c prototypes.&n; */
 r_void
 id|xfs_ihash_init

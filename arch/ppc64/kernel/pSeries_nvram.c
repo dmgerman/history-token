@@ -69,7 +69,8 @@ suffix:semicolon
 r_int
 r_int
 id|len
-comma
+suffix:semicolon
+r_int
 id|done
 suffix:semicolon
 r_int
@@ -278,7 +279,8 @@ suffix:semicolon
 r_int
 r_int
 id|len
-comma
+suffix:semicolon
+r_int
 id|done
 suffix:semicolon
 r_int

@@ -6119,6 +6119,24 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|subsystem_vendor
+op_eq
+l_int|0x1028
+op_logical_and
+id|subsystem_device
+op_eq
+l_int|0x0080
+)paren
+(brace
+multiline_comment|/* this workaround will cause lock-up after suspend/resume on a Dell laptop */
+id|chip-&gt;latitude_workaround
+op_assign
+l_int|0
+suffix:semicolon
+)brace
 id|snd_nm256_init_chip
 c_func
 (paren

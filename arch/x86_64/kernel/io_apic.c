@@ -65,12 +65,11 @@ id|irq_2_pin
 id|PIN_MAP_SIZE
 )braket
 suffix:semicolon
-macro_line|#ifdef CONFIG_PCI_USE_VECTOR
 DECL|variable|vector_irq
 r_int
 id|vector_irq
 (braket
-id|NR_IRQS
+id|NR_VECTORS
 )braket
 op_assign
 (brace
@@ -79,7 +78,7 @@ l_int|0
 dot
 dot
 dot
-id|NR_IRQS
+id|NR_VECTORS
 op_minus
 l_int|1
 )braket
@@ -88,6 +87,7 @@ op_minus
 l_int|1
 )brace
 suffix:semicolon
+macro_line|#ifdef CONFIG_PCI_USE_VECTOR
 DECL|macro|vector_to_irq
 mdefine_line|#define vector_to_irq(vector) &t;&bslash;&n;&t;(platform_legacy_irq(vector) ? vector : vector_irq[vector])
 macro_line|#else
@@ -2384,8 +2384,16 @@ comma
 l_int|0
 )brace
 suffix:semicolon
-macro_line|#ifndef CONFIG_PCI_USE_VECTOR
+macro_line|#ifdef CONFIG_PCI_USE_VECTOR
 DECL|function|assign_irq_vector
+r_int
+id|assign_irq_vector
+c_func
+(paren
+r_int
+id|irq
+)paren
+macro_line|#else
 r_int
 id|__init
 id|assign_irq_vector
@@ -2394,6 +2402,7 @@ c_func
 r_int
 id|irq
 )paren
+macro_line|#endif
 (brace
 r_static
 r_int
@@ -2451,12 +2460,26 @@ r_if
 c_cond
 (paren
 id|current_vector
-OG
+op_ge
 id|FIRST_SYSTEM_VECTOR
 )paren
 (brace
 id|offset
 op_increment
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|offset
+op_mod
+l_int|8
+)paren
+)paren
+r_return
+op_minus
+id|ENOSPC
 suffix:semicolon
 id|current_vector
 op_assign
@@ -2465,19 +2488,20 @@ op_plus
 id|offset
 suffix:semicolon
 )brace
+id|vector_irq
+(braket
+id|current_vector
+)braket
+op_assign
+id|irq
+suffix:semicolon
 r_if
 c_cond
 (paren
-id|current_vector
-op_eq
-id|FIRST_SYSTEM_VECTOR
+id|irq
+op_ne
+id|AUTO_ASSIGN
 )paren
-id|panic
-c_func
-(paren
-l_string|&quot;ran out of interrupt sources!&quot;
-)paren
-suffix:semicolon
 id|IO_APIC_VECTOR
 c_func
 (paren
@@ -2490,7 +2514,6 @@ r_return
 id|current_vector
 suffix:semicolon
 )brace
-macro_line|#endif
 r_extern
 r_void
 (paren
@@ -3790,6 +3813,21 @@ id|entry.vector
 suffix:semicolon
 )brace
 )brace
+r_if
+c_cond
+(paren
+id|use_pci_vector
+c_func
+(paren
+)paren
+)paren
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;Using vector-based indexing&bslash;n&quot;
+)paren
+suffix:semicolon
 id|printk
 c_func
 (paren
@@ -3830,6 +3868,35 @@ l_int|0
 )paren
 r_continue
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|use_pci_vector
+c_func
+(paren
+)paren
+op_logical_and
+op_logical_neg
+id|platform_legacy_irq
+c_func
+(paren
+id|i
+)paren
+)paren
+id|printk
+c_func
+(paren
+id|KERN_DEBUG
+l_string|&quot;IRQ%d &quot;
+comma
+id|IO_APIC_VECTOR
+c_func
+(paren
+id|i
+)paren
+)paren
+suffix:semicolon
+r_else
 id|printk
 c_func
 (paren
@@ -5727,11 +5794,7 @@ op_assign
 id|cpu_mask_to_apicid
 c_func
 (paren
-id|mk_cpumask_const
-c_func
-(paren
 id|mask
-)paren
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Only the first 8 bits are valid.&n;&t; */

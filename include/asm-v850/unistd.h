@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * include/asm-v850/unistd.h -- System call numbers and invocation mechanism&n; *&n; *  Copyright (C) 2001,02,03  NEC Electronics Corporation&n; *  Copyright (C) 2001,02,03  Miles Bader &lt;miles@gnu.org&gt;&n; *&n; * This file is subject to the terms and conditions of the GNU General&n; * Public License.  See the file COPYING in the main directory of this&n; * archive for more details.&n; *&n; * Written by Miles Bader &lt;miles@gnu.org&gt;&n; */
+multiline_comment|/*&n; * include/asm-v850/unistd.h -- System call numbers and invocation mechanism&n; *&n; *  Copyright (C) 2001,02,03,04  NEC Electronics Corporation&n; *  Copyright (C) 2001,02,03,04  Miles Bader &lt;miles@gnu.org&gt;&n; *&n; * This file is subject to the terms and conditions of the GNU General&n; * Public License.  See the file COPYING in the main directory of this&n; * archive for more details.&n; *&n; * Written by Miles Bader &lt;miles@gnu.org&gt;&n; */
 macro_line|#ifndef __V850_UNISTD_H__
 DECL|macro|__V850_UNISTD_H__
 mdefine_line|#define __V850_UNISTD_H__
@@ -442,8 +442,6 @@ DECL|macro|__ARCH_WANT_IPC_PARSE_VERSION
 mdefine_line|#define __ARCH_WANT_IPC_PARSE_VERSION
 DECL|macro|__ARCH_WANT_OLD_READDIR
 mdefine_line|#define __ARCH_WANT_OLD_READDIR
-DECL|macro|__ARCH_WANT_OLD_STAT
-mdefine_line|#define __ARCH_WANT_OLD_STAT
 DECL|macro|__ARCH_WANT_STAT64
 mdefine_line|#define __ARCH_WANT_STAT64
 DECL|macro|__ARCH_WANT_SYS_ALARM
@@ -472,8 +470,6 @@ DECL|macro|__ARCH_WANT_SYS_LLSEEK
 mdefine_line|#define __ARCH_WANT_SYS_LLSEEK
 DECL|macro|__ARCH_WANT_SYS_NICE
 mdefine_line|#define __ARCH_WANT_SYS_NICE
-DECL|macro|__ARCH_WANT_SYS_OLD_GETRLIMIT
-mdefine_line|#define __ARCH_WANT_SYS_OLD_GETRLIMIT
 DECL|macro|__ARCH_WANT_SYS_OLDUMOUNT
 mdefine_line|#define __ARCH_WANT_SYS_OLDUMOUNT
 DECL|macro|__ARCH_WANT_SYS_SIGPENDING

@@ -83,6 +83,10 @@ macro_line|#if defined(CONFIG_PAGE_SIZE_4KB) &amp;&amp; defined(CONFIG_MIPS64)
 DECL|macro|THREAD_SIZE_ORDER
 mdefine_line|#define THREAD_SIZE_ORDER (2)
 macro_line|#endif
+macro_line|#ifdef CONFIG_PAGE_SIZE_8KB
+DECL|macro|THREAD_SIZE_ORDER
+mdefine_line|#define THREAD_SIZE_ORDER (1)
+macro_line|#endif
 macro_line|#ifdef CONFIG_PAGE_SIZE_16KB
 DECL|macro|THREAD_SIZE_ORDER
 mdefine_line|#define THREAD_SIZE_ORDER (0)

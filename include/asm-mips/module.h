@@ -2,24 +2,31 @@ macro_line|#ifndef _ASM_MODULE_H
 DECL|macro|_ASM_MODULE_H
 mdefine_line|#define _ASM_MODULE_H
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/list.h&gt;
+macro_line|#include &lt;asm/uaccess.h&gt;
 DECL|struct|mod_arch_specific
 r_struct
 id|mod_arch_specific
 (brace
 multiline_comment|/* Data Bus Error exception tables */
-DECL|member|dbe_table_start
-r_const
+DECL|member|dbe_list
 r_struct
-id|exception_table_entry
-op_star
-id|dbe_table_start
+id|list_head
+id|dbe_list
 suffix:semicolon
-DECL|member|dbe_table_end
+DECL|member|dbe_start
 r_const
 r_struct
 id|exception_table_entry
 op_star
-id|dbe_table_end
+id|dbe_start
+suffix:semicolon
+DECL|member|dbe_end
+r_const
+r_struct
+id|exception_table_entry
+op_star
+id|dbe_end
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -86,6 +93,42 @@ DECL|macro|Elf_Sym
 mdefine_line|#define Elf_Sym&t;&t;Elf64_Sym
 DECL|macro|Elf_Ehdr
 mdefine_line|#define Elf_Ehdr&t;Elf64_Ehdr
+macro_line|#endif
+macro_line|#ifdef CONFIG_MODULES
+multiline_comment|/* Given an address, look for it in the exception tables. */
+r_const
+r_struct
+id|exception_table_entry
+op_star
+id|search_module_dbetables
+c_func
+(paren
+r_int
+r_int
+id|addr
+)paren
+suffix:semicolon
+macro_line|#else
+multiline_comment|/* Given an address, look for it in the exception tables. */
+r_static
+r_inline
+r_const
+r_struct
+id|exception_table_entry
+op_star
+DECL|function|search_module_dbetables
+id|search_module_dbetables
+c_func
+(paren
+r_int
+r_int
+id|addr
+)paren
+(brace
+r_return
+l_int|NULL
+suffix:semicolon
+)brace
 macro_line|#endif
 macro_line|#endif /* _ASM_MODULE_H */
 eof

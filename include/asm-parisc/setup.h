@@ -1,6 +1,7 @@
-multiline_comment|/*&n; *&t;Just a place holder. We don&squot;t want to have to test x86 before&n; *&t;we include stuff&n; */
-macro_line|#ifndef _i386_SETUP_H
-DECL|macro|_i386_SETUP_H
-mdefine_line|#define _i386_SETUP_H
-macro_line|#endif /* _i386_SETUP_H */
+macro_line|#ifndef _PARISC_SETUP_H
+DECL|macro|_PARISC_SETUP_H
+mdefine_line|#define _PARISC_SETUP_H
+DECL|macro|COMMAND_LINE_SIZE
+mdefine_line|#define COMMAND_LINE_SIZE&t;1024
+macro_line|#endif /* _PARISC_SETUP_H */
 eof

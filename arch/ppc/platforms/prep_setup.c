@@ -131,12 +131,6 @@ c_func
 r_void
 )paren
 suffix:semicolon
-r_extern
-r_char
-id|saved_command_line
-(braket
-)braket
-suffix:semicolon
 DECL|variable|_prep_type
 r_int
 id|_prep_type

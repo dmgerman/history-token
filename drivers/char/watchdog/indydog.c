@@ -10,30 +10,14 @@ macro_line|#include &lt;linux/watchdog.h&gt;
 macro_line|#include &lt;linux/notifier.h&gt;
 macro_line|#include &lt;linux/reboot.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
-macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
-macro_line|#include &lt;asm/sgi/sgimc.h&gt;
+macro_line|#include &lt;asm/sgi/mc.h&gt;
 DECL|macro|PFX
 mdefine_line|#define PFX &quot;indydog: &quot;
-DECL|macro|WATCHDOG_HEARTBEAT
-mdefine_line|#define WATCHDOG_HEARTBEAT 60
 DECL|variable|indydog_alive
 r_static
 r_int
-r_int
 id|indydog_alive
-suffix:semicolon
-DECL|variable|mcmisc_regs
-r_static
-r_struct
-id|sgimc_misc_ctrl
-op_star
-id|mcmisc_regs
-suffix:semicolon
-DECL|variable|expect_close
-r_static
-r_char
-id|expect_close
 suffix:semicolon
 macro_line|#ifdef CONFIG_WATCHDOG_NOWAYOUT
 DECL|variable|nowayout
@@ -52,6 +36,8 @@ op_assign
 l_int|0
 suffix:semicolon
 macro_line|#endif
+DECL|macro|WATCHDOG_TIMEOUT
+mdefine_line|#define WATCHDOG_TIMEOUT 30&t;&t;/* 30 sec default timeout */
 id|module_param
 c_func
 (paren
@@ -82,23 +68,17 @@ r_void
 id|u32
 id|mc_ctrl0
 op_assign
-id|mcmisc_regs-&gt;cpuctrl0
+id|sgimc-&gt;cpuctrl0
 suffix:semicolon
 id|mc_ctrl0
-op_or_assign
+op_assign
+id|sgimc-&gt;cpuctrl0
+op_or
 id|SGIMC_CCTRL0_WDOG
 suffix:semicolon
-id|mcmisc_regs-&gt;cpuctrl0
+id|sgimc-&gt;cpuctrl0
 op_assign
 id|mc_ctrl0
-suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_INFO
-id|PFX
-l_string|&quot;Started watchdog timer.&bslash;n&quot;
-)paren
 suffix:semicolon
 )brace
 DECL|function|indydog_stop
@@ -113,14 +93,14 @@ r_void
 id|u32
 id|mc_ctrl0
 op_assign
-id|mcmisc_regs-&gt;cpuctrl0
+id|sgimc-&gt;cpuctrl0
 suffix:semicolon
 id|mc_ctrl0
 op_and_assign
 op_complement
 id|SGIMC_CCTRL0_WDOG
 suffix:semicolon
-id|mcmisc_regs-&gt;cpuctrl0
+id|sgimc-&gt;cpuctrl0
 op_assign
 id|mc_ctrl0
 suffix:semicolon
@@ -142,7 +122,7 @@ c_func
 r_void
 )paren
 (brace
-id|mcmisc_regs-&gt;watchdogt
+id|sgimc-&gt;watchdogt
 op_assign
 l_int|0
 suffix:semicolon
@@ -168,21 +148,12 @@ id|file
 r_if
 c_cond
 (paren
-id|test_and_set_bit
-c_func
-(paren
-l_int|0
-comma
-op_amp
 id|indydog_alive
 )paren
-)paren
-(brace
 r_return
 op_minus
 id|EBUSY
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -194,7 +165,7 @@ c_func
 id|THIS_MODULE
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; *&t;Activate timer&n;&t; */
+multiline_comment|/* Activate timer */
 id|indydog_start
 c_func
 (paren
@@ -203,6 +174,17 @@ suffix:semicolon
 id|indydog_ping
 c_func
 (paren
+)paren
+suffix:semicolon
+id|indydog_alive
+op_assign
+l_int|1
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;Started watchdog timer.&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -226,47 +208,37 @@ op_star
 id|file
 )paren
 (brace
-multiline_comment|/*&n;&t; *&t;Shut off the timer.&n;&t; * &t;Lock it in if it&squot;s a module and we set nowayout&n;&t; */
+multiline_comment|/* Shut off the timer.&n;&t; * Lock it in if it&squot;s a module and we defined ...NOWAYOUT */
 r_if
 c_cond
 (paren
-id|expect_close
-op_eq
-l_int|42
+op_logical_neg
+id|nowayout
 )paren
 (brace
-id|indydog_stop
-c_func
-(paren
-)paren
+id|u32
+id|mc_ctrl0
+op_assign
+id|sgimc-&gt;cpuctrl0
 suffix:semicolon
-)brace
-r_else
-(brace
+id|mc_ctrl0
+op_and_assign
+op_complement
+id|SGIMC_CCTRL0_WDOG
+suffix:semicolon
+id|sgimc-&gt;cpuctrl0
+op_assign
+id|mc_ctrl0
+suffix:semicolon
 id|printk
 c_func
 (paren
-id|KERN_CRIT
-id|PFX
-l_string|&quot;WDT device closed unexpectedly.  WDT will not stop!&bslash;n&quot;
-)paren
-suffix:semicolon
-id|indydog_ping
-c_func
-(paren
+id|KERN_INFO
+l_string|&quot;Stopped watchdog timer.&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
-id|clear_bit
-c_func
-(paren
-l_int|0
-comma
-op_amp
 id|indydog_alive
-)paren
-suffix:semicolon
-id|expect_close
 op_assign
 l_int|0
 suffix:semicolon
@@ -298,7 +270,7 @@ op_star
 id|ppos
 )paren
 (brace
-multiline_comment|/*  Can&squot;t seek (pwrite) on this device  */
+multiline_comment|/* Can&squot;t seek (pwrite) on this device */
 r_if
 c_cond
 (paren
@@ -318,69 +290,6 @@ c_cond
 id|len
 )paren
 (brace
-r_if
-c_cond
-(paren
-op_logical_neg
-id|nowayout
-)paren
-(brace
-r_int
-id|i
-suffix:semicolon
-multiline_comment|/* In case it was set long ago */
-id|expect_close
-op_assign
-l_int|0
-suffix:semicolon
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-op_ne
-id|len
-suffix:semicolon
-id|i
-op_increment
-)paren
-(brace
-r_char
-id|c
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|get_user
-c_func
-(paren
-id|c
-comma
-id|data
-op_plus
-id|i
-)paren
-)paren
-r_return
-op_minus
-id|EFAULT
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|c
-op_eq
-l_char|&squot;V&squot;
-)paren
-id|expect_close
-op_assign
-l_int|42
-suffix:semicolon
-)brace
-)brace
 id|indydog_ping
 c_func
 (paren
@@ -486,12 +395,10 @@ id|ident
 )paren
 )paren
 )paren
-(brace
 r_return
 op_minus
 id|EFAULT
 suffix:semicolon
-)brace
 r_return
 l_int|0
 suffix:semicolon
@@ -637,14 +544,12 @@ id|code
 op_eq
 id|SYS_HALT
 )paren
-(brace
-multiline_comment|/* Turn the WDT off */
 id|indydog_stop
 c_func
 (paren
 )paren
 suffix:semicolon
-)brace
+multiline_comment|/* Turn the WDT off */
 r_return
 id|NOTIFY_DONE
 suffix:semicolon
@@ -746,19 +651,6 @@ r_void
 (brace
 r_int
 id|ret
-suffix:semicolon
-id|mcmisc_regs
-op_assign
-(paren
-r_struct
-id|sgimc_misc_ctrl
-op_star
-)paren
-(paren
-id|KSEG1
-op_plus
-l_int|0x1fa00000
-)paren
 suffix:semicolon
 id|ret
 op_assign

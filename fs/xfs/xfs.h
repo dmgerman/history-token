@@ -4,5 +4,6 @@ DECL|macro|__XFS_H__
 mdefine_line|#define __XFS_H__
 macro_line|#include &lt;linux-2.6/xfs_linux.h&gt;
 macro_line|#include &lt;xfs_fs.h&gt; 
+macro_line|#include &lt;xfs_macros.h&gt;
 macro_line|#endif&t;/* __XFS_H__ */
 eof

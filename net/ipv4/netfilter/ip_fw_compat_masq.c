@@ -11,6 +11,7 @@ macro_line|#include &lt;linux/inetdevice.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;net/route.h&gt;
+macro_line|#include &lt;net/ip.h&gt;
 DECL|macro|ASSERT_READ_LOCK
 mdefine_line|#define ASSERT_READ_LOCK(x) MUST_BE_READ_LOCKED(&amp;ip_conntrack_lock)
 DECL|macro|ASSERT_WRITE_LOCK

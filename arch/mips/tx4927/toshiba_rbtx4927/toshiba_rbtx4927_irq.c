@@ -623,9 +623,9 @@ id|sw_irq
 )paren
 suffix:semicolon
 )brace
-singleline_comment|//#define TOSHIBA_RBTX4927_PIC_ACTION(s) { no_action, 0, 0, s, NULL, NULL }
+singleline_comment|//#define TOSHIBA_RBTX4927_PIC_ACTION(s) { no_action, 0, CPU_MASK_NONE, s, NULL, NULL }
 DECL|macro|TOSHIBA_RBTX4927_PIC_ACTION
-mdefine_line|#define TOSHIBA_RBTX4927_PIC_ACTION(s) { no_action, SA_SHIRQ, 0, s, NULL, NULL }
+mdefine_line|#define TOSHIBA_RBTX4927_PIC_ACTION(s) { no_action, SA_SHIRQ, CPU_MASK_NONE, s, NULL, NULL }
 DECL|variable|toshiba_rbtx4927_irq_ioc_action
 r_static
 r_struct

@@ -5351,6 +5351,10 @@ comma
 l_string|&quot;entering DVD_LU_SEND_AGID&bslash;n&quot;
 )paren
 suffix:semicolon
+id|cgc.quiet
+op_assign
+l_int|1
+suffix:semicolon
 id|setup_report_key
 c_func
 (paren
@@ -5522,6 +5526,10 @@ id|CD_DVD
 comma
 l_string|&quot;entering DVD_LU_SEND_TITLE_KEY&bslash;n&quot;
 )paren
+suffix:semicolon
+id|cgc.quiet
+op_assign
+l_int|1
 suffix:semicolon
 id|setup_report_key
 c_func

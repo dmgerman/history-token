@@ -582,7 +582,7 @@ id|no_action
 comma
 id|SA_INTERRUPT
 comma
-l_int|0
+id|CPU_MASK_NONE
 comma
 l_string|&quot;cascade&quot;
 comma
@@ -602,7 +602,7 @@ id|no_action
 comma
 id|SA_INTERRUPT
 comma
-l_int|0
+id|CPU_MASK_NONE
 comma
 l_string|&quot;cascade&quot;
 comma

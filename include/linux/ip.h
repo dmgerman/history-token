@@ -321,18 +321,6 @@ op_star
 id|mc_list
 suffix:semicolon
 multiline_comment|/* Group array */
-DECL|member|sndmsg_page
-r_struct
-id|page
-op_star
-id|sndmsg_page
-suffix:semicolon
-multiline_comment|/* Cached page for sendmsg */
-DECL|member|sndmsg_off
-id|u32
-id|sndmsg_off
-suffix:semicolon
-multiline_comment|/* Cached offset for sendmsg */
 multiline_comment|/*&n;&t; * Following members are used to retain the infomation to build&n;&t; * an ip header on each ip fragmentation while the socket is corked.&n;&t; */
 r_struct
 (brace

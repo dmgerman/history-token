@@ -608,7 +608,7 @@ id|hd64465_interrupt
 comma
 id|SA_INTERRUPT
 comma
-l_int|0
+id|CPU_MASK_NONE
 comma
 l_string|&quot;HD64465&quot;
 comma

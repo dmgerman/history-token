@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: cache-sh3.c,v 1.8 2004/02/01 16:26:27 lethal Exp $&n; *&n; *  linux/arch/sh/mm/cache-sh3.c&n; *&n; * Copyright (C) 1999, 2000  Niibe Yutaka&n; * Copyright (C) 2002 Paul Mundt&n; */
+multiline_comment|/* $Id: cache-sh3.c,v 1.9 2004/05/02 01:46:30 sugioka Exp $&n; *&n; *  linux/arch/sh/mm/cache-sh3.c&n; *&n; * Copyright (C) 1999, 2000  Niibe Yutaka&n; * Copyright (C) 2002 Paul Mundt&n; */
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/mman.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
@@ -218,9 +218,13 @@ id|data3
 )paren
 (brace
 multiline_comment|/* Shadow */
-id|cpu_data-&gt;dcache.way_shift
+id|cpu_data-&gt;dcache.way_incr
 op_assign
+(paren
+l_int|1
+op_lshift
 l_int|11
+)paren
 suffix:semicolon
 id|cpu_data-&gt;dcache.entry_mask
 op_assign
@@ -234,24 +238,21 @@ id|cpu_data-&gt;type
 op_assign
 id|CPU_SH7708
 suffix:semicolon
-id|set_bit
-c_func
-(paren
-id|CPU_HAS_MMU_PAGE_ASSOC
-comma
-op_amp
-(paren
 id|cpu_data-&gt;flags
-)paren
-)paren
+op_or_assign
+id|CPU_HAS_MMU_PAGE_ASSOC
 suffix:semicolon
 )brace
 r_else
 (brace
 multiline_comment|/* 7709A or 7729  */
-id|cpu_data-&gt;dcache.way_shift
+id|cpu_data-&gt;dcache.way_incr
 op_assign
+(paren
+l_int|1
+op_lshift
 l_int|12
+)paren
 suffix:semicolon
 id|cpu_data-&gt;dcache.entry_mask
 op_assign
@@ -363,6 +364,12 @@ op_add_assign
 id|L1_CACHE_BYTES
 )paren
 (brace
+r_int
+r_int
+id|addrstart
+op_assign
+id|CACHE_OC_ADDRESS_ARRAY
+suffix:semicolon
 r_for
 c_loop
 (paren
@@ -396,13 +403,7 @@ id|v
 suffix:semicolon
 id|addr
 op_assign
-id|CACHE_OC_ADDRESS_ARRAY
-op_or
-(paren
-id|j
-op_lshift
-id|cpu_data-&gt;dcache.way_shift
-)paren
+id|addrstart
 op_or
 (paren
 id|v
@@ -467,6 +468,10 @@ c_func
 (paren
 id|flags
 )paren
+suffix:semicolon
+id|addrstart
+op_add_assign
+id|cpu_data-&gt;dcache.way_incr
 suffix:semicolon
 )brace
 )brace

@@ -1,50 +1,8 @@
-multiline_comment|/*&n; * FILE NAME&n; *&t;include/asm-mips/vr41xx/tb0226.h&n; *&n; * BRIEF MODULE DESCRIPTION&n; *&t;Include file for TANBAC TB0226.&n; *&n; * Copyright 2002,2003 Yoichi Yuasa&n; *                yuasa@hh.iij4u.or.jp&n; *&n; *  This program is free software; you can redistribute it and/or modify it&n; *  under the terms of the GNU General Public License as published by the&n; *  Free Software Foundation; either version 2 of the License, or (at your&n; *  option) any later version.&n; */
+multiline_comment|/*&n; *  tb0226.h, Include file for TANBAC TB0226.&n; *&n; *  Copyright (C) 2002-2004  Yoichi Yuasa &lt;yuasa@hh.iij4u.or.jp&gt;&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#ifndef __TANBAC_TB0226_H
 DECL|macro|__TANBAC_TB0226_H
 mdefine_line|#define __TANBAC_TB0226_H
-macro_line|#include &lt;asm/addrspace.h&gt;
 macro_line|#include &lt;asm/vr41xx/vr41xx.h&gt;
-multiline_comment|/*&n; * Board specific address mapping&n; */
-DECL|macro|VR41XX_PCI_MEM1_BASE
-mdefine_line|#define VR41XX_PCI_MEM1_BASE&t;&t;0x10000000
-DECL|macro|VR41XX_PCI_MEM1_SIZE
-mdefine_line|#define VR41XX_PCI_MEM1_SIZE&t;&t;0x04000000
-DECL|macro|VR41XX_PCI_MEM1_MASK
-mdefine_line|#define VR41XX_PCI_MEM1_MASK&t;&t;0x7c000000
-DECL|macro|VR41XX_PCI_MEM2_BASE
-mdefine_line|#define VR41XX_PCI_MEM2_BASE&t;&t;0x14000000
-DECL|macro|VR41XX_PCI_MEM2_SIZE
-mdefine_line|#define VR41XX_PCI_MEM2_SIZE&t;&t;0x02000000
-DECL|macro|VR41XX_PCI_MEM2_MASK
-mdefine_line|#define VR41XX_PCI_MEM2_MASK&t;&t;0x7e000000
-DECL|macro|VR41XX_PCI_IO_BASE
-mdefine_line|#define VR41XX_PCI_IO_BASE&t;&t;0x16000000
-DECL|macro|VR41XX_PCI_IO_SIZE
-mdefine_line|#define VR41XX_PCI_IO_SIZE&t;&t;0x02000000
-DECL|macro|VR41XX_PCI_IO_MASK
-mdefine_line|#define VR41XX_PCI_IO_MASK&t;&t;0x7e000000
-DECL|macro|VR41XX_PCI_IO_START
-mdefine_line|#define VR41XX_PCI_IO_START&t;&t;0x01000000
-DECL|macro|VR41XX_PCI_IO_END
-mdefine_line|#define VR41XX_PCI_IO_END&t;&t;0x01ffffff
-DECL|macro|VR41XX_PCI_MEM_START
-mdefine_line|#define VR41XX_PCI_MEM_START&t;&t;0x12000000
-DECL|macro|VR41XX_PCI_MEM_END
-mdefine_line|#define VR41XX_PCI_MEM_END&t;&t;0x15ffffff
-DECL|macro|IO_PORT_BASE
-mdefine_line|#define IO_PORT_BASE&t;&t;&t;KSEG1ADDR(VR41XX_PCI_IO_BASE)
-DECL|macro|IO_PORT_RESOURCE_START
-mdefine_line|#define IO_PORT_RESOURCE_START&t;&t;0
-DECL|macro|IO_PORT_RESOURCE_END
-mdefine_line|#define IO_PORT_RESOURCE_END&t;&t;VR41XX_PCI_IO_SIZE
-DECL|macro|IO_MEM1_RESOURCE_START
-mdefine_line|#define IO_MEM1_RESOURCE_START&t;&t;VR41XX_PCI_MEM1_BASE
-DECL|macro|IO_MEM1_RESOURCE_END
-mdefine_line|#define IO_MEM1_RESOURCE_END&t;&t;(VR41XX_PCI_MEM1_BASE + VR41XX_PCI_MEM1_SIZE)
-DECL|macro|IO_MEM2_RESOURCE_START
-mdefine_line|#define IO_MEM2_RESOURCE_START&t;&t;VR41XX_PCI_MEM2_BASE
-DECL|macro|IO_MEM2_RESOURCE_END
-mdefine_line|#define IO_MEM2_RESOURCE_END&t;&t;(VR41XX_PCI_MEM2_BASE + VR41XX_PCI_MEM2_SIZE)
 multiline_comment|/*&n; * General-Purpose I/O Pin Number&n; */
 DECL|macro|GD82559_1_PIN
 mdefine_line|#define GD82559_1_PIN&t;&t;&t;2

@@ -21,8 +21,7 @@ id|phandle
 suffix:semicolon
 DECL|typedef|ihandle
 r_typedef
-r_void
-op_star
+id|u32
 id|ihandle
 suffix:semicolon
 DECL|typedef|phandle32

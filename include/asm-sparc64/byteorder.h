@@ -12,6 +12,7 @@ id|__u16
 id|___arch__swab16p
 c_func
 (paren
+r_const
 id|__u16
 op_star
 id|addr
@@ -52,6 +53,7 @@ id|__u32
 id|___arch__swab32p
 c_func
 (paren
+r_const
 id|__u32
 op_star
 id|addr
@@ -92,6 +94,7 @@ id|__u64
 id|___arch__swab64p
 c_func
 (paren
+r_const
 id|__u64
 op_star
 id|addr

@@ -1572,6 +1572,8 @@ DECL|macro|FBINFO_HWACCEL_YPAN
 mdefine_line|#define FBINFO_HWACCEL_YPAN&t;&t;0x2000 /* optional */
 DECL|macro|FBINFO_HWACCEL_YWRAP
 mdefine_line|#define FBINFO_HWACCEL_YWRAP&t;&t;0x4000 /* optional */
+DECL|macro|FBINFO_MISC_MODECHANGEUSER
+mdefine_line|#define FBINFO_MISC_MODECHANGEUSER     0x10000 /* mode change request&n;&t;&t;&t;&t;&t;&t;  from userspace */
 DECL|struct|fb_info
 r_struct
 id|fb_info
@@ -1614,6 +1616,12 @@ id|work_struct
 id|queue
 suffix:semicolon
 multiline_comment|/* Framebuffer event queue */
+DECL|member|cursor_timer
+r_struct
+id|timer_list
+id|cursor_timer
+suffix:semicolon
+multiline_comment|/* Cursor timer */
 DECL|member|pixmap
 r_struct
 id|fb_pixmap

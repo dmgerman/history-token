@@ -96,6 +96,7 @@ id|__u16
 id|__swab16p
 c_func
 (paren
+r_const
 id|__u16
 op_star
 id|x
@@ -155,6 +156,7 @@ id|__u32
 id|__swab32p
 c_func
 (paren
+r_const
 id|__u32
 op_star
 id|x
@@ -269,6 +271,7 @@ id|__u64
 id|__swab64p
 c_func
 (paren
+r_const
 id|__u64
 op_star
 id|x

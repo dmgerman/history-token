@@ -803,6 +803,12 @@ c_func
 (paren
 id|cmd
 comma
+(paren
+r_struct
+id|ifreq
+id|__user
+op_star
+)paren
 id|arg
 )paren
 suffix:semicolon
@@ -860,6 +866,11 @@ c_func
 (paren
 id|cmd
 comma
+(paren
+r_void
+id|__user
+op_star
+)paren
 id|arg
 )paren
 suffix:semicolon
