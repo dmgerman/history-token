@@ -77,6 +77,7 @@ id|__u32
 id|pending
 suffix:semicolon
 r_int
+r_int
 id|flags
 suffix:semicolon
 id|__u32
@@ -293,6 +294,7 @@ r_int
 id|nr
 )paren
 (brace
+r_int
 r_int
 id|flags
 suffix:semicolon

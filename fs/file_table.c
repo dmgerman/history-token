@@ -177,6 +177,10 @@ id|f-&gt;f_gid
 op_assign
 id|current-&gt;fsgid
 suffix:semicolon
+id|f-&gt;f_owner.lock
+op_assign
+id|RW_LOCK_UNLOCKED
+suffix:semicolon
 id|list_add
 c_func
 (paren

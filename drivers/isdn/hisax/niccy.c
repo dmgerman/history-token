@@ -1,6 +1,4 @@
 multiline_comment|/* $Id: niccy.c,v 1.15.6.6 2001/10/20 22:08:24 kai Exp $&n; *&n; * low level stuff for Dr. Neuhaus NICCY PnP and NICCY PCI and&n; * compatible (SAGEM cybermodem)&n; *&n; * Author       Karsten Keil&n; * Copyright    by Karsten Keil      &lt;keil@isdn4linux.de&gt;&n; * &n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; * &n; * Thanks to Dr. Neuhaus and SAGEM for information&n; *&n; */
-DECL|macro|__NO_VERSION__
-mdefine_line|#define __NO_VERSION__
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &quot;hisax.h&quot;

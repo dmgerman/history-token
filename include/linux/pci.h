@@ -2043,10 +2043,6 @@ r_extern
 id|spinlock_t
 id|pci_lock
 suffix:semicolon
-r_extern
-id|spinlock_t
-id|pci_lock
-suffix:semicolon
 r_int
 id|pci_enable_device
 c_func

@@ -1,6 +1,4 @@
 multiline_comment|/* $Id: hfc_sx.c,v 1.9.6.3 2001/09/23 22:24:48 kai Exp $&n; *&n; * level driver for CCD&#xfffd;s hfc-s+/sp based cards&n; *&n; * Author       Werner Cornelius&n; *              based on existing driver for CCD HFC PCI cards&n; * Copyright    by Werner Cornelius  &lt;werner@isdn4linux.de&gt;&n; * &n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; */
-DECL|macro|__NO_VERSION__
-mdefine_line|#define __NO_VERSION__
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &quot;hisax.h&quot;
 macro_line|#include &quot;hfc_sx.h&quot;

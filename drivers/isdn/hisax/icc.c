@@ -1,6 +1,4 @@
 multiline_comment|/* $Id: icc.c,v 1.5.6.4 2001/09/23 22:24:48 kai Exp $&n; *&n; * ICC specific routines&n; *&n; * Author       Matt Henderson &amp; Guy Ellis&n; * Copyright    by Traverse Technologies Pty Ltd, www.travers.com.au&n; * &n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; * 1999.6.25 Initial implementation of routines for Siemens ISDN&n; * Communication Controller PEB 2070 based on the ISAC routines&n; * written by Karsten Keil.&n; *&n; */
-DECL|macro|__NO_VERSION__
-mdefine_line|#define __NO_VERSION__
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &quot;hisax.h&quot;
 macro_line|#include &quot;icc.h&quot;
