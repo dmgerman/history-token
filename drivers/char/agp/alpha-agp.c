@@ -729,6 +729,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
+id|PFX
 l_string|&quot;Detected AGP on hose %d&bslash;n&quot;
 comma
 id|agp-&gt;hose-&gt;index

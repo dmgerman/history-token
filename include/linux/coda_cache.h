@@ -33,11 +33,6 @@ r_struct
 id|super_block
 op_star
 id|sb
-comma
-r_struct
-id|coda_cred
-op_star
-id|cred
 )paren
 suffix:semicolon
 r_int

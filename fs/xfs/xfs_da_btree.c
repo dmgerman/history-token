@@ -5179,9 +5179,6 @@ id|error
 comma
 id|retval
 suffix:semicolon
-id|xfs_daddr_t
-id|mappedbno
-suffix:semicolon
 id|xfs_dahash_t
 id|hashval
 suffix:semicolon
@@ -5192,17 +5189,6 @@ suffix:semicolon
 id|args
 op_assign
 id|state-&gt;args
-suffix:semicolon
-id|mappedbno
-op_assign
-id|state-&gt;holeok
-ques
-c_cond
-op_minus
-l_int|2
-suffix:colon
-op_minus
-l_int|1
 suffix:semicolon
 multiline_comment|/*&n;&t; * Descend thru the B-tree searching each level for the right&n;&t; * node to use, until the right hashval is found.&n;&t; */
 r_if
@@ -5269,7 +5255,8 @@ id|args-&gt;dp
 comma
 id|blkno
 comma
-id|mappedbno
+op_minus
+l_int|1
 comma
 op_amp
 id|blk-&gt;bp
@@ -5277,30 +5264,6 @@ comma
 id|args-&gt;whichfork
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|error
-op_logical_and
-id|unlikely
-c_func
-(paren
-id|state-&gt;holeok
-op_logical_and
-op_logical_neg
-id|blk-&gt;bp
-)paren
-)paren
-id|error
-op_assign
-id|XFS_ERROR
-c_func
-(paren
-id|ENOATTR
-)paren
-suffix:semicolon
-multiline_comment|/* always attr here */
 r_if
 c_cond
 (paren
@@ -10798,6 +10761,10 @@ id|CE_ALERT
 comma
 l_string|&quot;xfs_da_do_buf: bno %lld&bslash;n&quot;
 comma
+(paren
+r_int
+r_int
+)paren
 id|bno
 )paren
 suffix:semicolon
@@ -10808,6 +10775,10 @@ id|CE_ALERT
 comma
 l_string|&quot;dir: inode %lld&bslash;n&quot;
 comma
+(paren
+r_int
+r_int
+)paren
 id|dp-&gt;i_ino
 )paren
 suffix:semicolon

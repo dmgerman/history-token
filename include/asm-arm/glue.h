@@ -33,7 +33,7 @@ DECL|macro|CPU_ABORT_HANDLER
 macro_line|#  define CPU_ABORT_HANDLER cpu_arm7_data_abort
 macro_line|# endif
 macro_line|#endif
-macro_line|#if defined(CONFIG_CPU_ARM720T)
+macro_line|#ifdef CONFIG_CPU_ABRT_LV4T
 macro_line|# ifdef CPU_ABORT_HANDLER
 DECL|macro|MULTI_ABORT
 macro_line|#  define MULTI_ABORT 1
@@ -42,7 +42,7 @@ DECL|macro|CPU_ABORT_HANDLER
 macro_line|#  define CPU_ABORT_HANDLER v4t_late_abort
 macro_line|# endif
 macro_line|#endif
-macro_line|#if defined(CONFIG_CPU_SA110) || defined(CONFIG_CPU_SA1100)
+macro_line|#ifdef CONFIG_CPU_ABRT_EV4
 macro_line|# ifdef CPU_ABORT_HANDLER
 DECL|macro|MULTI_ABORT
 macro_line|#  define MULTI_ABORT 1
@@ -51,7 +51,7 @@ DECL|macro|CPU_ABORT_HANDLER
 macro_line|#  define CPU_ABORT_HANDLER v4_early_abort
 macro_line|# endif
 macro_line|#endif
-macro_line|#if defined(CONFIG_CPU_ARM920T) || defined(CONFIG_CPU_ARM922T) || &bslash;&n;    defined(CONFIG_CPU_ARM1020)
+macro_line|#ifdef CONFIG_CPU_ABRT_EV4T
 macro_line|# ifdef CPU_ABORT_HANDLER
 DECL|macro|MULTI_ABORT
 macro_line|#  define MULTI_ABORT 1
@@ -60,22 +60,22 @@ DECL|macro|CPU_ABORT_HANDLER
 macro_line|#  define CPU_ABORT_HANDLER v4t_early_abort
 macro_line|# endif
 macro_line|#endif
-macro_line|#if defined(CONFIG_CPU_ARM926T)
+macro_line|#ifdef CONFIG_CPU_ABRT_EV5TJ
 macro_line|# ifdef CPU_ABORT_HANDLER
 DECL|macro|MULTI_ABORT
 macro_line|#  define MULTI_ABORT 1
 macro_line|# else
 DECL|macro|CPU_ABORT_HANDLER
-macro_line|#  define CPU_ABORT_HANDLER v5tej_early_abort
+macro_line|#  define CPU_ABORT_HANDLER v5tj_early_abort
 macro_line|# endif
 macro_line|#endif
-macro_line|#if defined(CONFIG_CPU_XSCALE)
+macro_line|#ifdef CONFIG_CPU_ABRT_EV5T
 macro_line|# ifdef CPU_ABORT_HANDLER
 DECL|macro|MULTI_ABORT
 macro_line|#  define MULTI_ABORT 1
 macro_line|# else
 DECL|macro|CPU_ABORT_HANDLER
-macro_line|#  define CPU_ABORT_HANDLER xscale_abort
+macro_line|#  define CPU_ABORT_HANDLER v5t_early_abort
 macro_line|# endif
 macro_line|#endif
 macro_line|#ifndef CPU_ABORT_HANDLER

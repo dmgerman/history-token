@@ -2462,7 +2462,7 @@ suffix:semicolon
 id|XFS_STATS_INC
 c_func
 (paren
-id|xfsstats.xs_trans_empty
+id|xs_trans_empty
 )paren
 suffix:semicolon
 r_if
@@ -2854,7 +2854,7 @@ suffix:semicolon
 id|XFS_STATS_INC
 c_func
 (paren
-id|xfsstats.xs_trans_sync
+id|xs_trans_sync
 )paren
 suffix:semicolon
 )brace
@@ -2863,7 +2863,7 @@ r_else
 id|XFS_STATS_INC
 c_func
 (paren
-id|xfsstats.xs_trans_async
+id|xs_trans_async
 )paren
 suffix:semicolon
 )brace

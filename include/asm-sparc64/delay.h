@@ -6,15 +6,6 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/param.h&gt;
 macro_line|#include &lt;asm/cpudata.h&gt;
 macro_line|#ifndef __ASSEMBLY__
-macro_line|#ifdef CONFIG_SMP
-macro_line|#include &lt;asm/smp.h&gt;
-macro_line|#else
-r_extern
-r_int
-r_int
-id|loops_per_jiffy
-suffix:semicolon
-macro_line|#endif 
 DECL|function|__delay
 r_static
 id|__inline__

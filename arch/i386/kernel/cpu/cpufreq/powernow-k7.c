@@ -1,4 +1,5 @@
 multiline_comment|/*&n; *  AMD K7 Powernow driver.&n; *  (C) 2003 Dave Jones &lt;davej@codemonkey.org.uk&gt; on behalf of SuSE Labs.&n; *  (C) 2003 Dave Jones &lt;davej@redhat.com&gt;&n; *&n; *  Licensed under the terms of the GNU GPL License version 2.&n; *  Based upon datasheets &amp; sample CPUs kindly provided by AMD.&n; *&n; *  BIG FAT DISCLAIMER: Work in progress code. Possibly *dangerous*&n; *&n; * Errata 5: Processor may fail to execute a FID/VID change in presence of interrupt.&n; * - We cli/sti on stepping A0 CPUs around the FID/VID transition.&n; * Errata 15: Processors with half frequency multipliers may hang upon wakeup from disconnect.&n; * - We disable half multipliers if ACPI is used on A0 stepping CPUs.&n; */
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt; 
 macro_line|#include &lt;linux/init.h&gt;
@@ -852,6 +853,13 @@ r_union
 id|msr_fidvidctl
 id|fidvidctl
 suffix:semicolon
+id|rdmsrl
+(paren
+id|MSR_K7_FID_VID_CTL
+comma
+id|fidvidctl.val
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -860,13 +868,6 @@ op_ne
 id|fid
 )paren
 (brace
-id|rdmsrl
-(paren
-id|MSR_K7_FID_VID_CTL
-comma
-id|fidvidctl.val
-)paren
-suffix:semicolon
 id|fidvidctl.bits.SGTC
 op_assign
 id|latency
@@ -874,6 +875,10 @@ suffix:semicolon
 id|fidvidctl.bits.FID
 op_assign
 id|fid
+suffix:semicolon
+id|fidvidctl.bits.VIDC
+op_assign
+l_int|0
 suffix:semicolon
 id|fidvidctl.bits.FIDC
 op_assign
@@ -902,6 +907,13 @@ r_union
 id|msr_fidvidctl
 id|fidvidctl
 suffix:semicolon
+id|rdmsrl
+(paren
+id|MSR_K7_FID_VID_CTL
+comma
+id|fidvidctl.val
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -910,16 +922,17 @@ op_ne
 id|vid
 )paren
 (brace
-id|rdmsrl
-(paren
-id|MSR_K7_FID_VID_CTL
-comma
-id|fidvidctl.val
-)paren
+id|fidvidctl.bits.SGTC
+op_assign
+id|latency
 suffix:semicolon
 id|fidvidctl.bits.VID
 op_assign
 id|vid
+suffix:semicolon
+id|fidvidctl.bits.FIDC
+op_assign
+l_int|0
 suffix:semicolon
 id|fidvidctl.bits.VIDC
 op_assign
@@ -1312,6 +1325,29 @@ id|latency
 op_assign
 id|psb-&gt;settlingtime
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|latency
+OL
+l_int|100
+)paren
+(brace
+id|printk
+(paren
+id|KERN_INFO
+id|PFX
+l_string|&quot;BIOS set settling time to %d microseconds.&quot;
+l_string|&quot;Should be at least 100. Correcting.&bslash;n&quot;
+comma
+id|latency
+)paren
+suffix:semicolon
+id|latency
+op_assign
+l_int|100
+suffix:semicolon
+)brace
 id|dprintk
 (paren
 id|KERN_INFO
@@ -1330,6 +1366,11 @@ comma
 id|psb-&gt;numpst
 )paren
 suffix:semicolon
+id|latency
+op_mul_assign
+l_int|100
+suffix:semicolon
+multiline_comment|/* SGTC needs to be in units of 10ns */
 id|p
 op_add_assign
 r_sizeof

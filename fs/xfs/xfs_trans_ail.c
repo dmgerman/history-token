@@ -9,7 +9,6 @@ macro_line|#include &quot;xfs_sb.h&quot;
 macro_line|#include &quot;xfs_dir.h&quot;
 macro_line|#include &quot;xfs_dmapi.h&quot;
 macro_line|#include &quot;xfs_mount.h&quot;
-macro_line|#include &quot;xfs_log.h&quot;
 macro_line|#include &quot;xfs_trans_priv.h&quot;
 macro_line|#include &quot;xfs_error.h&quot;
 id|STATIC
@@ -245,7 +244,7 @@ suffix:semicolon
 id|XFS_STATS_INC
 c_func
 (paren
-id|xfsstats.xs_push_ail
+id|xs_push_ail
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * While the item we are looking at is below the given threshold&n;&t; * try to flush it out.  Make sure to limit the number of times&n;&t; * we allow xfs_trans_next_ail() to restart scanning from the&n;&t; * beginning of the list.  We&squot;d like not to stop until we&squot;ve at least&n;&t; * tried to push on everything in the AIL with an LSN less than&n;&t; * the given threshold. However, we may give up before that if&n;&t; * we realize that we&squot;ve been holding the AIL_LOCK for &squot;too long&squot;,&n;&t; * blocking interrupts. Currently, too long is &lt; 500us roughly.&n;&t; */
@@ -310,7 +309,7 @@ suffix:semicolon
 id|XFS_STATS_INC
 c_func
 (paren
-id|xfsstats.xs_push_ail_success
+id|xs_push_ail_success
 )paren
 suffix:semicolon
 id|IOP_PUSH
@@ -343,7 +342,7 @@ suffix:semicolon
 id|XFS_STATS_INC
 c_func
 (paren
-id|xfsstats.xs_push_ail_pushbuf
+id|xs_push_ail_pushbuf
 )paren
 suffix:semicolon
 macro_line|#ifdef XFSRACEDEBUG
@@ -393,7 +392,7 @@ suffix:colon
 id|XFS_STATS_INC
 c_func
 (paren
-id|xfsstats.xs_push_ail_pinned
+id|xs_push_ail_pinned
 )paren
 suffix:semicolon
 id|flush_log
@@ -408,7 +407,7 @@ suffix:colon
 id|XFS_STATS_INC
 c_func
 (paren
-id|xfsstats.xs_push_ail_locked
+id|xs_push_ail_locked
 )paren
 suffix:semicolon
 r_break
@@ -419,7 +418,7 @@ suffix:colon
 id|XFS_STATS_INC
 c_func
 (paren
-id|xfsstats.xs_push_ail_flushing
+id|xs_push_ail_flushing
 )paren
 suffix:semicolon
 r_break
@@ -507,7 +506,7 @@ suffix:semicolon
 id|XFS_STATS_INC
 c_func
 (paren
-id|xfsstats.xs_push_ail_flush
+id|xs_push_ail_flush
 )paren
 suffix:semicolon
 id|xfs_log_force
@@ -1126,7 +1125,7 @@ l_int|NULL
 id|XFS_STATS_INC
 c_func
 (paren
-id|xfsstats.xs_push_ail_restarts
+id|xs_push_ail_restarts
 )paren
 suffix:semicolon
 (paren

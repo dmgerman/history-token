@@ -64,6 +64,8 @@ DECL|macro|OFFSET4K
 mdefine_line|#define OFFSET4K(a)&t;&t;((a) &amp; 0xfff)
 DECL|macro|PAGE_START
 mdefine_line|#define PAGE_START(addr)&t;((addr) &amp; PAGE_MASK)
+DECL|macro|MINSIGSTKSZ_IA32
+mdefine_line|#define MINSIGSTKSZ_IA32&t;2048
 DECL|macro|high2lowuid
 mdefine_line|#define high2lowuid(uid) ((uid) &gt; 65535 ? 65534 : (uid))
 DECL|macro|high2lowgid
@@ -12545,9 +12547,27 @@ id|uss.ss_flags
 op_assign
 id|buf32.ss_flags
 suffix:semicolon
+multiline_comment|/* MINSIGSTKSZ is different for ia32 vs ia64. We lie here to pass the &n;           check and set it to the user requested value later */
+r_if
+c_cond
+(paren
+id|buf32.ss_size
+OL
+id|MINSIGSTKSZ_IA32
+)paren
+(brace
+id|ret
+op_assign
+op_minus
+id|ENOMEM
+suffix:semicolon
+r_goto
+id|out
+suffix:semicolon
+)brace
 id|uss.ss_size
 op_assign
-id|buf32.ss_size
+id|MINSIGSTKSZ
 suffix:semicolon
 id|set_fs
 c_func
@@ -12574,12 +12594,18 @@ comma
 id|pt-&gt;r12
 )paren
 suffix:semicolon
+id|current-&gt;sas_ss_size
+op_assign
+id|buf32.ss_size
+suffix:semicolon
 id|set_fs
 c_func
 (paren
 id|old_fs
 )paren
 suffix:semicolon
+id|out
+suffix:colon
 r_if
 c_cond
 (paren

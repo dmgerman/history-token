@@ -23,7 +23,6 @@ macro_line|#include &quot;xfs_inode_item.h&quot;
 macro_line|#include &quot;xfs_inode.h&quot;
 macro_line|#include &quot;xfs_ialloc_btree.h&quot;
 macro_line|#include &quot;xfs_ialloc.h&quot;
-macro_line|#include &quot;xfs_error.h&quot;
 macro_line|#include &quot;xfs_log_priv.h&quot;
 macro_line|#include &quot;xfs_buf_item.h&quot;
 macro_line|#include &quot;xfs_alloc_btree.h&quot;
@@ -4797,7 +4796,7 @@ r_sizeof
 id|xlog_recover_item_t
 )paren
 comma
-l_int|0
+id|KM_SLEEP
 )paren
 suffix:semicolon
 id|xlog_recover_insert_item_backq
@@ -5159,7 +5158,7 @@ id|xfs_log_iovec_t
 )paren
 )paren
 comma
-l_int|0
+id|KM_SLEEP
 )paren
 suffix:semicolon
 )brace
