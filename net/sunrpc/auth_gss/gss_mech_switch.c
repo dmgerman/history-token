@@ -103,6 +103,12 @@ id|GFP_KERNEL
 )paren
 )paren
 (brace
+id|kfree
+c_func
+(paren
+id|gm
+)paren
+suffix:semicolon
 id|printk
 c_func
 (paren
