@@ -5,7 +5,7 @@ multiline_comment|/*&n; * Copyright (C) 1998, 1999, 2001 Hewlett-Packard Co&n; *
 macro_line|#include &lt;asm/ptrace.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 DECL|macro|EMUL_PREFIX_LINUX_IA32
-mdefine_line|#define EMUL_PREFIX_LINUX_IA32 &quot;emul/ia32-linux/&quot;
+mdefine_line|#define EMUL_PREFIX_LINUX_IA32 &quot;/emul/ia32-linux/&quot;
 r_static
 r_inline
 r_char
