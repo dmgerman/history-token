@@ -70,7 +70,7 @@ l_int|1024
 op_star
 l_int|2
 comma
-id|accel_flags
+id|accel
 suffix:colon
 id|FB_ACCEL_NONE
 comma
@@ -283,7 +283,13 @@ OL
 l_int|16
 )paren
 (brace
+(paren
+(paren
+id|u16
+op_star
+)paren
 id|info-&gt;pseudo_palette
+)paren
 (braket
 id|regno
 )braket

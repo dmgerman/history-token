@@ -10,8 +10,8 @@ macro_line|#include &lt;asm/bootinfo.h&gt;
 macro_line|#include &lt;asm/macintosh.h&gt; 
 macro_line|#include &lt;asm/macints.h&gt; 
 macro_line|#include &lt;asm/mac_baboon.h&gt;
-multiline_comment|/* #define DEBUG_BABOON /**/
-multiline_comment|/* #define DEBUG_IRQS /**/
+multiline_comment|/* #define DEBUG_BABOON */
+multiline_comment|/* #define DEBUG_IRQS */
 DECL|variable|baboon_present
 DECL|variable|baboon_active
 r_int

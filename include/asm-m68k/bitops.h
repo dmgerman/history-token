@@ -2,6 +2,7 @@ macro_line|#ifndef _M68K_BITOPS_H
 DECL|macro|_M68K_BITOPS_H
 mdefine_line|#define _M68K_BITOPS_H
 multiline_comment|/*&n; * Copyright 1992, Linus Torvalds.&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file COPYING in the main directory of this archive&n; * for more details.&n; */
+macro_line|#include &lt;linux/compiler.h&gt;
 multiline_comment|/*&n; * Require 68020 or better.&n; *&n; * They use the standard big-endian m680x0 bit ordering.&n; */
 DECL|macro|test_and_set_bit
 mdefine_line|#define test_and_set_bit(nr,vaddr) &bslash;&n;  (__builtin_constant_p(nr) ? &bslash;&n;   __constant_test_and_set_bit(nr, vaddr) : &bslash;&n;   __generic_test_and_set_bit(nr, vaddr))

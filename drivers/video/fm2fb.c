@@ -418,6 +418,9 @@ l_int|0
 op_assign
 id|t
 suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
 )brace
 multiline_comment|/*&n;     *  Set a single color register. The values supplied are already&n;     *  rounded down to the hardware&squot;s capabilities (according to the&n;     *  entries in the var structure). Return != 0 for invalid regno.&n;     */
 DECL|function|fm2fb_setcolreg
