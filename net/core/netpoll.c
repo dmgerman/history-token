@@ -3004,10 +3004,6 @@ id|ndev
 (brace
 r_int
 r_int
-id|oflags
-suffix:semicolon
-r_int
-r_int
 id|atmost
 comma
 id|atleast
@@ -3023,10 +3019,6 @@ comma
 id|np-&gt;dev_name
 )paren
 suffix:semicolon
-id|oflags
-op_assign
-id|ndev-&gt;flags
-suffix:semicolon
 id|rtnl_shlock
 c_func
 (paren
@@ -3040,7 +3032,7 @@ c_func
 (paren
 id|ndev
 comma
-id|oflags
+id|ndev-&gt;flags
 op_or
 id|IFF_UP
 )paren
