@@ -15,6 +15,7 @@ macro_line|#include &lt;linux/profile.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/mount.h&gt;
 macro_line|#include &lt;linux/mempolicy.h&gt;
+macro_line|#include &lt;linux/rmap.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/cacheflush.h&gt;
@@ -292,6 +293,12 @@ id|fput
 c_func
 (paren
 id|file
+)paren
+suffix:semicolon
+id|anon_vma_unlink
+c_func
+(paren
+id|vma
 )paren
 suffix:semicolon
 id|mpol_free
@@ -1278,6 +1285,12 @@ c_func
 id|vma
 )paren
 suffix:semicolon
+id|__anon_vma_link
+c_func
+(paren
+id|vma
+)paren
+suffix:semicolon
 )brace
 DECL|function|vma_link
 r_static
@@ -1340,11 +1353,10 @@ op_amp
 id|mapping-&gt;i_mmap_lock
 )paren
 suffix:semicolon
-id|spin_lock
+id|anon_vma_lock
 c_func
 (paren
-op_amp
-id|mm-&gt;page_table_lock
+id|vma
 )paren
 suffix:semicolon
 id|__vma_link
@@ -1361,11 +1373,10 @@ comma
 id|rb_parent
 )paren
 suffix:semicolon
-id|spin_unlock
+id|anon_vma_unlock
 c_func
 (paren
-op_amp
-id|mm-&gt;page_table_lock
+id|vma
 )paren
 suffix:semicolon
 r_if
@@ -1398,7 +1409,7 @@ id|mm
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Insert vm structure into process list sorted by address and into the&n; * inode&squot;s i_mmap tree. The caller should hold mm-&gt;page_table_lock and&n; * -&gt;f_mappping-&gt;i_mmap_lock if vm_file is non-NULL.&n; */
+multiline_comment|/*&n; * Insert vm structure into process list sorted by address and into the&n; * inode&squot;s i_mmap tree. The caller should hold mm-&gt;mmap_sem and&n; * -&gt;f_mappping-&gt;i_mmap_lock if vm_file is non-NULL.&n; */
 r_static
 r_void
 DECL|function|__insert_vm_struct
@@ -1610,6 +1621,13 @@ id|file
 op_assign
 id|vma-&gt;vm_file
 suffix:semicolon
+r_struct
+id|anon_vma
+op_star
+id|anon_vma
+op_assign
+l_int|NULL
+suffix:semicolon
 r_int
 id|adjust_next
 op_assign
@@ -1653,6 +1671,10 @@ id|end
 op_assign
 id|next-&gt;vm_end
 suffix:semicolon
+id|anon_vma
+op_assign
+id|next-&gt;anon_vma
+suffix:semicolon
 )brace
 r_else
 r_if
@@ -1677,6 +1699,10 @@ op_assign
 id|end
 op_minus
 id|next-&gt;vm_start
+suffix:semicolon
+id|anon_vma
+op_assign
+id|next-&gt;anon_vma
 suffix:semicolon
 )brace
 )brace
@@ -1713,11 +1739,26 @@ id|mapping-&gt;i_mmap_lock
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/*&n;&t; * When changing only vma-&gt;vm_end, we don&squot;t really need&n;&t; * anon_vma lock: but is that case worth optimizing out?&n;&t; */
+r_if
+c_cond
+(paren
+id|vma-&gt;anon_vma
+)paren
+id|anon_vma
+op_assign
+id|vma-&gt;anon_vma
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|anon_vma
+)paren
 id|spin_lock
 c_func
 (paren
 op_amp
-id|mm-&gt;page_table_lock
+id|anon_vma-&gt;lock
 )paren
 suffix:semicolon
 r_if
@@ -1863,6 +1904,19 @@ comma
 id|mapping
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|next-&gt;anon_vma
+)paren
+id|__anon_vma_merge
+c_func
+(paren
+id|vma
+comma
+id|next
+)paren
+suffix:semicolon
 )brace
 r_else
 r_if
@@ -1881,11 +1935,16 @@ id|insert
 )paren
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|anon_vma
+)paren
 id|spin_unlock
 c_func
 (paren
 op_amp
-id|mm-&gt;page_table_lock
+id|anon_vma-&gt;lock
 )paren
 suffix:semicolon
 r_if
@@ -2022,7 +2081,39 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Return true if we can merge this (vm_flags,file,vm_pgoff)&n; * in front of (at a lower virtual address and file offset than) the vma.&n; *&n; * We don&squot;t check here for the merged mmap wrapping around the end of pagecache&n; * indices (16TB on ia32) because do_mmap_pgoff() does not permit mmap&squot;s which&n; * wrap, nor mmaps which cover the final page at index -1UL.&n; */
+DECL|function|is_mergeable_anon_vma
+r_static
+r_inline
+r_int
+id|is_mergeable_anon_vma
+c_func
+(paren
+r_struct
+id|anon_vma
+op_star
+id|anon_vma1
+comma
+r_struct
+id|anon_vma
+op_star
+id|anon_vma2
+)paren
+(brace
+r_return
+op_logical_neg
+id|anon_vma1
+op_logical_or
+op_logical_neg
+id|anon_vma2
+op_logical_or
+(paren
+id|anon_vma1
+op_eq
+id|anon_vma2
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/*&n; * Return true if we can merge this (vm_flags,anon_vma,file,vm_pgoff)&n; * in front of (at a lower virtual address and file offset than) the vma.&n; *&n; * We cannot merge two vmas if they have differently assigned (non-NULL)&n; * anon_vmas, nor if same anon_vma is assigned but offsets incompatible.&n; *&n; * We don&squot;t check here for the merged mmap wrapping around the end of pagecache&n; * indices (16TB on ia32) because do_mmap_pgoff() does not permit mmap&squot;s which&n; * wrap, nor mmaps which cover the final page at index -1UL.&n; */
 r_static
 r_int
 DECL|function|can_vma_merge_before
@@ -2039,6 +2130,11 @@ r_int
 id|vm_flags
 comma
 r_struct
+id|anon_vma
+op_star
+id|anon_vma
+comma
+r_struct
 id|file
 op_star
 id|file
@@ -2059,18 +2155,16 @@ id|file
 comma
 id|vm_flags
 )paren
+op_logical_and
+id|is_mergeable_anon_vma
+c_func
+(paren
+id|anon_vma
+comma
+id|vma-&gt;anon_vma
+)paren
 )paren
 (brace
-r_if
-c_cond
-(paren
-op_logical_neg
-id|file
-)paren
-r_return
-l_int|1
-suffix:semicolon
-multiline_comment|/* anon mapping */
 r_if
 c_cond
 (paren
@@ -2086,7 +2180,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Return true if we can merge this (vm_flags,file,vm_pgoff)&n; * beyond (at a higher virtual address and file offset than) the vma.&n; */
+multiline_comment|/*&n; * Return true if we can merge this (vm_flags,anon_vma,file,vm_pgoff)&n; * beyond (at a higher virtual address and file offset than) the vma.&n; *&n; * We cannot merge two vmas if they have differently assigned (non-NULL)&n; * anon_vmas, nor if same anon_vma is assigned but offsets incompatible.&n; */
 r_static
 r_int
 DECL|function|can_vma_merge_after
@@ -2103,6 +2197,11 @@ r_int
 id|vm_flags
 comma
 r_struct
+id|anon_vma
+op_star
+id|anon_vma
+comma
+r_struct
 id|file
 op_star
 id|file
@@ -2123,21 +2222,19 @@ id|file
 comma
 id|vm_flags
 )paren
+op_logical_and
+id|is_mergeable_anon_vma
+c_func
+(paren
+id|anon_vma
+comma
+id|vma-&gt;anon_vma
+)paren
 )paren
 (brace
 id|pgoff_t
 id|vm_pglen
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|file
-)paren
-r_return
-l_int|1
-suffix:semicolon
-multiline_comment|/* anon mapping */
 id|vm_pglen
 op_assign
 (paren
@@ -2194,6 +2291,11 @@ comma
 r_int
 r_int
 id|vm_flags
+comma
+r_struct
+id|anon_vma
+op_star
+id|anon_vma
 comma
 r_struct
 id|file
@@ -2300,6 +2402,8 @@ id|prev
 comma
 id|vm_flags
 comma
+id|anon_vma
+comma
 id|file
 comma
 id|pgoff
@@ -2335,11 +2439,21 @@ id|next
 comma
 id|vm_flags
 comma
+id|anon_vma
+comma
 id|file
 comma
 id|pgoff
 op_plus
 id|pglen
+)paren
+op_logical_and
+id|is_mergeable_anon_vma
+c_func
+(paren
+id|prev-&gt;anon_vma
+comma
+id|next-&gt;anon_vma
 )paren
 )paren
 (brace
@@ -2407,6 +2521,8 @@ c_func
 id|next
 comma
 id|vm_flags
+comma
+id|anon_vma
 comma
 id|file
 comma
@@ -2940,6 +3056,13 @@ suffix:semicolon
 r_case
 id|MAP_PRIVATE
 suffix:colon
+multiline_comment|/*&n;&t;&t;&t; * Set pgoff according to addr for anon_vma.&n;&t;&t;&t; */
+id|pgoff
+op_assign
+id|addr
+op_rshift
+id|PAGE_SHIFT
+suffix:semicolon
 r_break
 suffix:semicolon
 r_default
@@ -3152,7 +3275,9 @@ id|vm_flags
 comma
 l_int|NULL
 comma
-l_int|0
+l_int|NULL
+comma
+id|pgoff
 comma
 l_int|NULL
 )paren
@@ -3392,6 +3517,8 @@ comma
 id|vma-&gt;vm_end
 comma
 id|vma-&gt;vm_flags
+comma
+l_int|NULL
 comma
 id|file
 comma
@@ -4334,7 +4461,31 @@ r_return
 op_minus
 id|EFAULT
 suffix:semicolon
-multiline_comment|/*&n;&t; * vma-&gt;vm_start/vm_end cannot change under us because the caller&n;&t; * is required to hold the mmap_sem in read mode. We need to get&n;&t; * the spinlock only before relocating the vma range ourself.&n;&t; */
+multiline_comment|/*&n;&t; * We must make sure the anon_vma is allocated&n;&t; * so that the anon_vma locking is not a noop.&n;&t; */
+r_if
+c_cond
+(paren
+id|unlikely
+c_func
+(paren
+id|anon_vma_prepare
+c_func
+(paren
+id|vma
+)paren
+)paren
+)paren
+r_return
+op_minus
+id|ENOMEM
+suffix:semicolon
+id|anon_vma_lock
+c_func
+(paren
+id|vma
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t; * vma-&gt;vm_start/vm_end cannot change under us because the caller&n;&t; * is required to hold the mmap_sem in read mode.  We need the&n;&t; * anon_vma lock to serialize against concurrent expand_stacks.&n;&t; */
 id|address
 op_add_assign
 l_int|4
@@ -4346,13 +4497,6 @@ suffix:semicolon
 id|address
 op_and_assign
 id|PAGE_MASK
-suffix:semicolon
-id|spin_lock
-c_func
-(paren
-op_amp
-id|vma-&gt;vm_mm-&gt;page_table_lock
-)paren
 suffix:semicolon
 id|grow
 op_assign
@@ -4375,11 +4519,10 @@ id|grow
 )paren
 )paren
 (brace
-id|spin_unlock
+id|anon_vma_unlock
 c_func
 (paren
-op_amp
-id|vma-&gt;vm_mm-&gt;page_table_lock
+id|vma
 )paren
 suffix:semicolon
 r_return
@@ -4419,11 +4562,10 @@ dot
 id|rlim_cur
 )paren
 (brace
-id|spin_unlock
+id|anon_vma_unlock
 c_func
 (paren
-op_amp
-id|vma-&gt;vm_mm-&gt;page_table_lock
+id|vma
 )paren
 suffix:semicolon
 id|vm_unacct_memory
@@ -4456,11 +4598,10 @@ id|vma-&gt;vm_mm-&gt;locked_vm
 op_add_assign
 id|grow
 suffix:semicolon
-id|spin_unlock
+id|anon_vma_unlock
 c_func
 (paren
-op_amp
-id|vma-&gt;vm_mm-&gt;page_table_lock
+id|vma
 )paren
 suffix:semicolon
 r_return
@@ -4582,17 +4723,34 @@ r_int
 r_int
 id|grow
 suffix:semicolon
-multiline_comment|/*&n;&t; * vma-&gt;vm_start/vm_end cannot change under us because the caller&n;&t; * is required to hold the mmap_sem in read mode. We need to get&n;&t; * the spinlock only before relocating the vma range ourself.&n;&t; */
+multiline_comment|/*&n;&t; * We must make sure the anon_vma is allocated&n;&t; * so that the anon_vma locking is not a noop.&n;&t; */
+r_if
+c_cond
+(paren
+id|unlikely
+c_func
+(paren
+id|anon_vma_prepare
+c_func
+(paren
+id|vma
+)paren
+)paren
+)paren
+r_return
+op_minus
+id|ENOMEM
+suffix:semicolon
+id|anon_vma_lock
+c_func
+(paren
+id|vma
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t; * vma-&gt;vm_start/vm_end cannot change under us because the caller&n;&t; * is required to hold the mmap_sem in read mode.  We need the&n;&t; * anon_vma lock to serialize against concurrent expand_stacks.&n;&t; */
 id|address
 op_and_assign
 id|PAGE_MASK
-suffix:semicolon
-id|spin_lock
-c_func
-(paren
-op_amp
-id|vma-&gt;vm_mm-&gt;page_table_lock
-)paren
 suffix:semicolon
 id|grow
 op_assign
@@ -4615,11 +4773,10 @@ id|grow
 )paren
 )paren
 (brace
-id|spin_unlock
+id|anon_vma_unlock
 c_func
 (paren
-op_amp
-id|vma-&gt;vm_mm-&gt;page_table_lock
+id|vma
 )paren
 suffix:semicolon
 r_return
@@ -4659,11 +4816,10 @@ dot
 id|rlim_cur
 )paren
 (brace
-id|spin_unlock
+id|anon_vma_unlock
 c_func
 (paren
-op_amp
-id|vma-&gt;vm_mm-&gt;page_table_lock
+id|vma
 )paren
 suffix:semicolon
 id|vm_unacct_memory
@@ -4700,11 +4856,10 @@ id|vma-&gt;vm_mm-&gt;locked_vm
 op_add_assign
 id|grow
 suffix:semicolon
-id|spin_unlock
+id|anon_vma_unlock
 c_func
 (paren
-op_amp
-id|vma-&gt;vm_mm-&gt;page_table_lock
+id|vma
 )paren
 suffix:semicolon
 r_return
@@ -5319,7 +5474,7 @@ id|end
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Create a list of vma&squot;s touched by the unmap, removing them from the mm&squot;s&n; * vma list as we go..&n; *&n; * Called with the page_table_lock held.&n; */
+multiline_comment|/*&n; * Create a list of vma&squot;s touched by the unmap, removing them from the mm&squot;s&n; * vma list as we go..&n; */
 r_static
 r_void
 DECL|function|detach_vmas_to_be_unmapped
@@ -5909,13 +6064,6 @@ suffix:colon
 id|mm-&gt;mmap
 suffix:semicolon
 multiline_comment|/*&n;&t; * Remove the vma&squot;s, and unmap the actual pages&n;&t; */
-id|spin_lock
-c_func
-(paren
-op_amp
-id|mm-&gt;page_table_lock
-)paren
-suffix:semicolon
 id|detach_vmas_to_be_unmapped
 c_func
 (paren
@@ -5926,6 +6074,13 @@ comma
 id|prev
 comma
 id|end
+)paren
+suffix:semicolon
+id|spin_lock
+c_func
+(paren
+op_amp
+id|mm-&gt;page_table_lock
 )paren
 suffix:semicolon
 id|unmap_region
@@ -6066,6 +6221,13 @@ id|rb_link
 comma
 op_star
 id|rb_parent
+suffix:semicolon
+id|pgoff_t
+id|pgoff
+op_assign
+id|addr
+op_rshift
+id|PAGE_SHIFT
 suffix:semicolon
 id|len
 op_assign
@@ -6278,7 +6440,9 @@ id|flags
 comma
 l_int|NULL
 comma
-l_int|0
+l_int|NULL
+comma
+id|pgoff
 comma
 l_int|NULL
 )paren
@@ -6344,6 +6508,10 @@ op_assign
 id|addr
 op_plus
 id|len
+suffix:semicolon
+id|vma-&gt;vm_pgoff
+op_assign
+id|pgoff
 suffix:semicolon
 id|vma-&gt;vm_flags
 op_assign
@@ -6632,6 +6800,27 @@ comma
 op_star
 id|rb_parent
 suffix:semicolon
+multiline_comment|/*&n;&t; * The vm_pgoff of a purely anonymous vma should be irrelevant&n;&t; * until its first write fault, when page&squot;s anon_vma and index&n;&t; * are set.  But now set the vm_pgoff it will almost certainly&n;&t; * end up with (unless mremap moves it elsewhere before that&n;&t; * first wfault), so /proc/pid/maps tells a consistent story.&n;&t; *&n;&t; * By setting it to reflect the virtual start address of the&n;&t; * vma, merges and splits can happen in a seamless way, just&n;&t; * using the existing file pgoff checks and manipulations.&n;&t; * Similarly in do_mmap_pgoff and in do_brk.&n;&t; */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|vma-&gt;vm_file
+)paren
+(brace
+id|BUG_ON
+c_func
+(paren
+id|vma-&gt;anon_vma
+)paren
+suffix:semicolon
+id|vma-&gt;vm_pgoff
+op_assign
+id|vma-&gt;vm_start
+op_rshift
+id|PAGE_SHIFT
+suffix:semicolon
+)brace
 id|__vma
 op_assign
 id|find_vma_prepare
@@ -6749,6 +6938,22 @@ id|mempolicy
 op_star
 id|pol
 suffix:semicolon
+multiline_comment|/*&n;&t; * If anonymous vma has not yet been faulted, update new pgoff&n;&t; * to match new location, to increase its chance of merging.&n;&t; */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|vma-&gt;vm_file
+op_logical_and
+op_logical_neg
+id|vma-&gt;anon_vma
+)paren
+id|pgoff
+op_assign
+id|addr
+op_rshift
+id|PAGE_SHIFT
+suffix:semicolon
 id|find_vma_prepare
 c_func
 (paren
@@ -6782,6 +6987,8 @@ op_plus
 id|len
 comma
 id|vma-&gt;vm_flags
+comma
+id|vma-&gt;anon_vma
 comma
 id|vma-&gt;vm_file
 comma

@@ -630,6 +630,8 @@ id|end
 comma
 id|newflags
 comma
+id|vma-&gt;anon_vma
+comma
 id|vma-&gt;vm_file
 comma
 id|pgoff

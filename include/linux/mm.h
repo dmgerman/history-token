@@ -14,6 +14,9 @@ macro_line|#include &lt;linux/fs.h&gt;
 r_struct
 id|mempolicy
 suffix:semicolon
+r_struct
+id|anon_vma
+suffix:semicolon
 macro_line|#ifndef CONFIG_DISCONTIGMEM          /* Don&squot;t use mapnrs, do it properly */
 r_extern
 r_int
@@ -126,6 +129,20 @@ DECL|member|shared
 )brace
 id|shared
 suffix:semicolon
+multiline_comment|/*&n;&t; * A file&squot;s MAP_PRIVATE vma can be in both i_mmap tree and anon_vma&n;&t; * list, after a COW of one of the file pages.  A MAP_SHARED vma&n;&t; * can only be in the i_mmap tree.  An anonymous MAP_PRIVATE, stack&n;&t; * or brk vma (with NULL file) can only be in an anon_vma list.&n;&t; */
+DECL|member|anon_vma_node
+r_struct
+id|list_head
+id|anon_vma_node
+suffix:semicolon
+multiline_comment|/* Serialized by anon_vma-&gt;lock */
+DECL|member|anon_vma
+r_struct
+id|anon_vma
+op_star
+id|anon_vma
+suffix:semicolon
+multiline_comment|/* Serialized by page_table_lock */
 multiline_comment|/* Function pointers to deal with this struct. */
 DECL|member|vm_ops
 r_struct
@@ -420,7 +437,7 @@ id|address_space
 op_star
 id|mapping
 suffix:semicolon
-multiline_comment|/* The inode (or ...) we belong to. */
+multiline_comment|/* If PG_anon clear, points to&n;&t;&t;&t;&t;&t; * inode address_space, or NULL.&n;&t;&t;&t;&t;&t; * If page mapped as anonymous&n;&t;&t;&t;&t;&t; * memory, PG_anon is set, and&n;&t;&t;&t;&t;&t; * it points to anon_vma object.&n;&t;&t;&t;&t;&t; */
 DECL|member|index
 id|pgoff_t
 id|index
@@ -1992,6 +2009,10 @@ comma
 r_int
 r_int
 id|vm_flags
+comma
+r_struct
+id|anon_vma
+op_star
 comma
 r_struct
 id|file
