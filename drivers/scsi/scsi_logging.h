@@ -76,5 +76,10 @@ DECL|macro|SCSI_LOG_HLCOMPLETE
 mdefine_line|#define SCSI_LOG_HLCOMPLETE(LEVEL,CMD)  &bslash;&n;        SCSI_CHECK_LOGGING(SCSI_LOG_HLCOMPLETE_SHIFT, SCSI_LOG_HLCOMPLETE_BITS, LEVEL,CMD);
 DECL|macro|SCSI_LOG_IOCTL
 mdefine_line|#define SCSI_LOG_IOCTL(LEVEL,CMD)  &bslash;&n;        SCSI_CHECK_LOGGING(SCSI_LOG_IOCTL_SHIFT, SCSI_LOG_IOCTL_BITS, LEVEL,CMD);
+r_extern
+r_int
+r_int
+id|scsi_logging_level
+suffix:semicolon
 macro_line|#endif /* _SCSI_LOGGING_H */
 eof
