@@ -3832,16 +3832,6 @@ id|UREG_I0
 r_case
 id|ERESTART_RESTARTBLOCK
 suffix:colon
-id|current_thread_info
-c_func
-(paren
-)paren
-op_member_access_from_pointer
-id|restart_block.fn
-op_assign
-id|do_no_restart_syscall
-suffix:semicolon
-multiline_comment|/* fallthrough */
 r_case
 id|ERESTARTNOHAND
 suffix:colon
@@ -4034,6 +4024,16 @@ id|signr
 op_minus
 l_int|1
 )braket
+suffix:semicolon
+multiline_comment|/* Always make any pending restarted system&n;&t;&t; * calls return -EINTR.&n;&t;&t; */
+id|current_thread_info
+c_func
+(paren
+)paren
+op_member_access_from_pointer
+id|restart_block.fn
+op_assign
+id|do_no_restart_syscall
 suffix:semicolon
 r_if
 c_cond

@@ -4821,7 +4821,7 @@ r_return
 id|FALSE
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * load_attribute_list - load an attribute list into memory&n; * @vol:&t;&t;ntfs volume from which to read&n; * @run_list:&t;&t;run list of the attribute list&n; * @al:&t;&t;&t;destination buffer&n; * @size:&t;&t;size of the destination buffer in bytes&n; * @initialized_size:&t;initialized size of the attribute list&n; *&n; * Walk the run list @run_list and load all clusters from it copying them into&n; * the linear buffer @al. The maximum number of bytes copied to @al is @size&n; * bytes. Note, @size does not need to be a multiple of the cluster size. If&n; * @initialized_size is less than @size, the region in @al between&n; * @initialized_size and @size will be zeroed and not read from disk.&n; *&n; * Return 0 on success or -errno on error.&n; */
+multiline_comment|/**&n; * load_attribute_list - load an attribute list into memory&n; * @vol:&t;&t;ntfs volume from which to read&n; * @run_list:&t;&t;run list of the attribute list&n; * @al_start:&t;&t;destination buffer&n; * @size:&t;&t;size of the destination buffer in bytes&n; * @initialized_size:&t;initialized size of the attribute list&n; *&n; * Walk the run list @run_list and load all clusters from it copying them into&n; * the linear buffer @al. The maximum number of bytes copied to @al is @size&n; * bytes. Note, @size does not need to be a multiple of the cluster size. If&n; * @initialized_size is less than @size, the region in @al between&n; * @initialized_size and @size will be zeroed and not read from disk.&n; *&n; * Return 0 on success or -errno on error.&n; */
 DECL|function|load_attribute_list
 r_int
 id|load_attribute_list
@@ -4837,7 +4837,7 @@ id|run_list
 comma
 id|u8
 op_star
-id|al
+id|al_start
 comma
 r_const
 id|s64
@@ -4850,6 +4850,12 @@ id|initialized_size
 (brace
 id|LCN
 id|lcn
+suffix:semicolon
+id|u8
+op_star
+id|al
+op_assign
+id|al_start
 suffix:semicolon
 id|u8
 op_star
@@ -5145,7 +5151,7 @@ suffix:colon
 id|memset
 c_func
 (paren
-id|al
+id|al_start
 op_plus
 id|initialized_size
 comma
@@ -5179,7 +5185,7 @@ OL
 id|al_end
 )paren
 (brace
-multiline_comment|/* Partial block. */
+multiline_comment|/*&n;&t;&t; * Partial block.&n;&t;&t; *&n;&t;&t; * Note: The attribute list can be smaller than its allocation&n;&t;&t; * by multiple clusters.  This has been encountered by at least&n;&t;&t; * two people running Windows XP, thus we cannot do any&n;&t;&t; * truncation sanity checking here. (AIA)&n;&t;&t; */
 id|memcpy
 c_func
 (paren
@@ -5198,7 +5204,6 @@ c_func
 id|bh
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * Skip sanity checking if initialized_size &lt; size as it is&n;&t;&t; * too much trouble.&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -5209,72 +5214,10 @@ id|size
 r_goto
 id|initialize
 suffix:semicolon
-multiline_comment|/* If the final lcn is partial all is fine. */
-r_if
-c_cond
-(paren
-(paren
-(paren
-id|s64
-)paren
-(paren
-id|block
-op_minus
-(paren
-id|lcn
-op_lshift
-id|vol-&gt;cluster_size_bits
-op_rshift
-id|block_size_bits
-)paren
-)paren
-op_lshift
-id|block_size_bits
-op_rshift
-id|vol-&gt;cluster_size_bits
-)paren
-op_eq
-id|rl-&gt;length
-op_minus
-l_int|1
-)paren
-(brace
-r_if
-c_cond
-(paren
-op_logical_neg
-id|rl
-(braket
-l_int|1
-)braket
-dot
-id|length
-op_logical_or
-(paren
-id|rl
-(braket
-l_int|1
-)braket
-dot
-id|lcn
-op_eq
-id|LCN_RL_NOT_MAPPED
-op_logical_and
-op_logical_neg
-id|rl
-(braket
-l_int|2
-)braket
-dot
-id|length
-)paren
-)paren
 r_goto
 id|done
 suffix:semicolon
 )brace
-)brace
-r_else
 id|brelse
 c_func
 (paren

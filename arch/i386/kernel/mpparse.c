@@ -1670,7 +1670,7 @@ l_int|4
 )paren
 )paren
 (brace
-id|panic
+id|printk
 c_func
 (paren
 l_string|&quot;SMP mptable: bad signature [%c%c%c%c]!&bslash;n&quot;
@@ -1717,7 +1717,7 @@ id|mpc-&gt;mpc_length
 )paren
 )paren
 (brace
-id|panic
+id|printk
 c_func
 (paren
 l_string|&quot;SMP mptable: checksum error!&bslash;n&quot;
