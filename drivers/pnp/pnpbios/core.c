@@ -4031,6 +4031,12 @@ r_if
 c_cond
 (paren
 id|pnpbios_disabled
+op_logical_or
+(paren
+id|dmi_broken
+op_amp
+id|BROKEN_PNP_BIOS
+)paren
 )paren
 (brace
 id|printk
