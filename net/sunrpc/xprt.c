@@ -1351,19 +1351,6 @@ c_func
 id|sock
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; *&t;TCP doesn&squot;t require the rpciod now - other things may&n;&t; *&t;but rpciod handles that not us.&n;&t; */
-r_if
-c_cond
-(paren
-id|xprt-&gt;stream
-)paren
-(brace
-id|rpciod_down
-c_func
-(paren
-)paren
-suffix:semicolon
-)brace
 )brace
 multiline_comment|/*&n; * Mark a transport as disconnected&n; */
 r_static
@@ -5892,19 +5879,6 @@ id|xprt-&gt;inet
 op_assign
 id|sk
 suffix:semicolon
-multiline_comment|/*&n;&t; *&t;TCP requires the rpc I/O daemon is present&n;&t; */
-r_if
-c_cond
-(paren
-id|xprt-&gt;stream
-)paren
-(brace
-id|rpciod_up
-c_func
-(paren
-)paren
-suffix:semicolon
-)brace
 r_return
 suffix:semicolon
 )brace
