@@ -97,6 +97,8 @@ id|u64
 id|ia64_init_stack
 (braket
 id|KERNEL_STACK_SIZE
+op_div
+l_int|8
 )braket
 id|__attribute__
 c_func
