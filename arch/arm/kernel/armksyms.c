@@ -250,15 +250,15 @@ r_void
 suffix:semicolon
 r_extern
 r_void
-m_abort
+id|__do_div64
+c_func
 (paren
 r_void
 )paren
 suffix:semicolon
 r_extern
 r_void
-id|do_div64
-c_func
+m_abort
 (paren
 r_void
 )paren
@@ -947,11 +947,11 @@ c_func
 id|__umodsi3
 )paren
 suffix:semicolon
-DECL|variable|do_div64
+DECL|variable|__do_div64
 id|EXPORT_SYMBOL_NOVERS
 c_func
 (paren
-id|do_div64
+id|__do_div64
 )paren
 suffix:semicolon
 multiline_comment|/* bitops */
