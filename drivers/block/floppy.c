@@ -20850,15 +20850,6 @@ c_func
 r_void
 )paren
 (brace
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;inserting floppy driver for &quot;
-id|UTS_RELEASE
-l_string|&quot;&bslash;n&quot;
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
