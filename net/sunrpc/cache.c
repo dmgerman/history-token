@@ -1566,12 +1566,7 @@ id|detail
 (brace
 id|detail-&gt;flush_time
 op_assign
-id|get_seconds
-c_func
-(paren
-)paren
-op_plus
-l_int|1
+id|LONG_MAX
 suffix:semicolon
 id|detail-&gt;nextcheck
 op_assign
@@ -1584,6 +1579,10 @@ id|cache_flush
 c_func
 (paren
 )paren
+suffix:semicolon
+id|detail-&gt;flush_time
+op_assign
+l_int|1
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Deferral and Revisiting of Requests.&n; *&n; * If a cache lookup finds a pending entry, we&n; * need to defer the request and revisit it later.&n; * All deferred requests are stored in a hash table,&n; * indexed by &quot;struct cache_head *&quot;.&n; * As it may be wasteful to store a whole request&n; * structure, we allow the request to provide a &n; * deferred form, which must contain a&n; * &squot;struct cache_deferred_req&squot;&n; * This cache_deferred_req contains a method to allow&n; * it to be revisited when cache info is available&n; */
