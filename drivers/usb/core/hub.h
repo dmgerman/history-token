@@ -429,6 +429,18 @@ id|list_head
 id|event_list
 suffix:semicolon
 multiline_comment|/* hubs w/data or errs ready */
+DECL|member|event_bits
+r_int
+r_int
+id|event_bits
+(braket
+l_int|1
+)braket
+suffix:semicolon
+multiline_comment|/* status change bitmask */
+macro_line|#if USB_MAXCHILDREN &gt; 31 /* 8*sizeof(unsigned long) - 1 */
+macro_line|#error event_bits[] is too short!
+macro_line|#endif
 DECL|member|descriptor
 r_struct
 id|usb_hub_descriptor
