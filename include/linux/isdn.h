@@ -459,8 +459,6 @@ DECL|macro|ISDN_TIMER_MODEMRING
 mdefine_line|#define ISDN_TIMER_MODEMRING   4
 DECL|macro|ISDN_TIMER_MODEMXMIT
 mdefine_line|#define ISDN_TIMER_MODEMXMIT   8
-DECL|macro|ISDN_TIMER_NETDIAL
-mdefine_line|#define ISDN_TIMER_NETDIAL    16 
 DECL|macro|ISDN_TIMER_NETHANGUP
 mdefine_line|#define ISDN_TIMER_NETHANGUP  32
 DECL|macro|ISDN_TIMER_CARRIER
@@ -468,14 +466,7 @@ mdefine_line|#define ISDN_TIMER_CARRIER   256 /* Wait for Carrier */
 DECL|macro|ISDN_TIMER_FAST
 mdefine_line|#define ISDN_TIMER_FAST      (ISDN_TIMER_MODEMREAD | ISDN_TIMER_MODEMPLUS | &bslash;&n;                              ISDN_TIMER_MODEMXMIT)
 DECL|macro|ISDN_TIMER_SLOW
-mdefine_line|#define ISDN_TIMER_SLOW      (ISDN_TIMER_MODEMRING | ISDN_TIMER_NETHANGUP | &bslash;&n;                              ISDN_TIMER_NETDIAL | ISDN_TIMER_CARRIER)
-multiline_comment|/* Timeout-Values for isdn_net_dial() */
-DECL|macro|ISDN_TIMER_DTIMEOUT10
-mdefine_line|#define ISDN_TIMER_DTIMEOUT10 (10*HZ/(ISDN_TIMER_02SEC*(ISDN_TIMER_RES+1)))
-DECL|macro|ISDN_TIMER_DTIMEOUT15
-mdefine_line|#define ISDN_TIMER_DTIMEOUT15 (15*HZ/(ISDN_TIMER_02SEC*(ISDN_TIMER_RES+1)))
-DECL|macro|ISDN_TIMER_DTIMEOUT60
-mdefine_line|#define ISDN_TIMER_DTIMEOUT60 (60*HZ/(ISDN_TIMER_02SEC*(ISDN_TIMER_RES+1)))
+mdefine_line|#define ISDN_TIMER_SLOW      (ISDN_TIMER_MODEMRING | ISDN_TIMER_NETHANGUP | &bslash;&n;                              ISDN_TIMER_CARRIER)
 multiline_comment|/* GLOBAL_FLAGS */
 DECL|macro|ISDN_GLOBAL_STOPPED
 mdefine_line|#define ISDN_GLOBAL_STOPPED 1
@@ -532,6 +523,17 @@ l_int|10
 )braket
 suffix:semicolon
 multiline_comment|/* Name of device                   */
+DECL|member|dial_timer
+r_struct
+id|timer_list
+id|dial_timer
+suffix:semicolon
+multiline_comment|/* dial timeout                     */
+DECL|member|dial_event
+r_int
+id|dial_event
+suffix:semicolon
+multiline_comment|/* event in case of timer expiry    */
 DECL|member|stats
 r_struct
 id|net_device_stats
@@ -583,11 +585,6 @@ r_int
 id|cbdelay
 suffix:semicolon
 multiline_comment|/* Delay before Callback starts     */
-DECL|member|dtimer
-r_int
-id|dtimer
-suffix:semicolon
-multiline_comment|/* Timeout-counter for dialing      */
 DECL|member|msn
 r_char
 id|msn
