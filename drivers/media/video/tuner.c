@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * $Id: tuner.c,v 1.31 2004/11/10 11:07:24 kraxel Exp $&n; */
+multiline_comment|/*&n; * $Id: tuner.c,v 1.36 2005/01/14 13:29:40 kraxel Exp $&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -261,10 +261,10 @@ DECL|member|using_v4l2
 r_int
 id|using_v4l2
 suffix:semicolon
-DECL|member|radio
-r_int
-r_int
-id|radio
+DECL|member|mode
+r_enum
+id|v4l2_tuner_type
+id|mode
 suffix:semicolon
 DECL|member|input
 r_int
@@ -1783,6 +1783,59 @@ comma
 l_int|623
 )brace
 comma
+(brace
+l_string|&quot;Thomson DDT 7610 ATSC/NTSC)&quot;
+comma
+id|THOMSON
+comma
+id|ATSC
+comma
+l_int|16
+op_star
+l_float|157.25
+comma
+l_int|16
+op_star
+l_float|454.00
+comma
+l_int|0x39
+comma
+l_int|0x3a
+comma
+l_int|0x3c
+comma
+l_int|0x8e
+comma
+l_int|732
+)brace
+comma
+(brace
+l_string|&quot;Philips FQ1286&quot;
+comma
+id|Philips
+comma
+id|NTSC
+comma
+l_int|16
+op_star
+l_float|160.00
+comma
+l_int|16
+op_star
+l_float|454.00
+comma
+l_int|0x41
+comma
+l_int|0x42
+comma
+l_int|0x04
+comma
+l_int|0x8e
+comma
+l_int|940
+)brace
+comma
+singleline_comment|// UHF band untested
 )brace
 suffix:semicolon
 DECL|macro|TUNERS
@@ -4143,9 +4196,13 @@ suffix:semicolon
 id|dprintk
 c_func
 (paren
-l_string|&quot;mt2050_set_if_freq freq=%d&bslash;n&quot;
+l_string|&quot;mt2050_set_if_freq freq=%d if1=%d if2=%d&bslash;n&quot;
 comma
 id|freq
+comma
+id|if1
+comma
+id|if2
 )paren
 suffix:semicolon
 id|f_lo1
@@ -4279,7 +4336,15 @@ l_int|1
 op_star
 l_int|8
 suffix:semicolon
-id|dprintk
+r_if
+c_cond
+(paren
+id|debug
+OG
+l_int|1
+)paren
+(brace
+id|printk
 c_func
 (paren
 l_string|&quot;lo1 lo2 = %d %d&bslash;n&quot;
@@ -4289,7 +4354,7 @@ comma
 id|lo2
 )paren
 suffix:semicolon
-id|dprintk
+id|printk
 c_func
 (paren
 l_string|&quot;num1 num2 div1a div1b div2a div2b= %x %x %x %x %x %x&bslash;n&quot;
@@ -4307,6 +4372,7 @@ comma
 id|div2b
 )paren
 suffix:semicolon
+)brace
 id|buf
 (braket
 l_int|0
@@ -4417,6 +4483,8 @@ r_if
 c_cond
 (paren
 id|debug
+OG
+l_int|1
 )paren
 (brace
 r_int
@@ -4543,6 +4611,22 @@ singleline_comment|// PAL
 id|if2
 op_assign
 l_int|38900
+op_star
+l_int|1000
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|V4L2_TUNER_DIGITAL_TV
+op_eq
+id|t-&gt;mode
+)paren
+(brace
+singleline_comment|// testing for DVB ...
+id|if2
+op_assign
+l_int|36150
 op_star
 l_int|1000
 suffix:semicolon
@@ -6234,12 +6318,15 @@ c_func
 id|c
 )paren
 suffix:semicolon
-r_if
+r_switch
 c_cond
 (paren
-id|t-&gt;radio
+id|t-&gt;mode
 )paren
 (brace
+r_case
+id|V4L2_TUNER_RADIO
+suffix:colon
 id|dprintk
 c_func
 (paren
@@ -6266,9 +6353,14 @@ comma
 id|freq
 )paren
 suffix:semicolon
-)brace
-r_else
-(brace
+r_break
+suffix:semicolon
+r_case
+id|V4L2_TUNER_ANALOG_TV
+suffix:colon
+r_case
+id|V4L2_TUNER_DIGITAL_TV
+suffix:colon
 id|dprintk
 c_func
 (paren
@@ -6294,6 +6386,8 @@ id|c
 comma
 id|freq
 )paren
+suffix:semicolon
+r_break
 suffix:semicolon
 )brace
 id|t-&gt;freq
@@ -7019,8 +7113,9 @@ suffix:colon
 r_if
 c_cond
 (paren
-op_logical_neg
-id|t-&gt;radio
+id|V4L2_TUNER_RADIO
+op_ne
+id|t-&gt;mode
 )paren
 (brace
 id|set_tv_freq
@@ -7033,9 +7128,9 @@ op_star
 l_int|16
 )paren
 suffix:semicolon
-id|t-&gt;radio
+id|t-&gt;mode
 op_assign
-l_int|1
+id|V4L2_TUNER_RADIO
 suffix:semicolon
 )brace
 r_break
@@ -7151,9 +7246,9 @@ id|arg
 suffix:semicolon
 id|CHECK_V4L2
 suffix:semicolon
-id|t-&gt;radio
+id|t-&gt;mode
 op_assign
-l_int|0
+id|V4L2_TUNER_ANALOG_TV
 suffix:semicolon
 r_if
 c_cond
@@ -7238,7 +7333,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|t-&gt;radio
+id|V4L2_TUNER_RADIO
+op_eq
+id|t-&gt;mode
 )paren
 id|vt-&gt;signal
 op_assign
@@ -7268,7 +7365,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|t-&gt;radio
+id|V4L2_TUNER_RADIO
+op_eq
+id|t-&gt;mode
 )paren
 id|va-&gt;mode
 op_assign
@@ -7301,9 +7400,9 @@ id|arg
 suffix:semicolon
 id|SWITCH_V4L2
 suffix:semicolon
-id|t-&gt;radio
+id|t-&gt;mode
 op_assign
-l_int|0
+id|V4L2_TUNER_ANALOG_TV
 suffix:semicolon
 id|t-&gt;std
 op_assign
@@ -7348,31 +7447,14 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|V4L2_TUNER_ANALOG_TV
-op_eq
-id|f-&gt;type
-)paren
-(brace
-id|t-&gt;radio
-op_assign
-l_int|0
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
 id|V4L2_TUNER_RADIO
 op_eq
 id|f-&gt;type
+op_logical_and
+id|V4L2_TUNER_RADIO
+op_ne
+id|t-&gt;mode
 )paren
-(brace
-r_if
-c_cond
-(paren
-op_logical_neg
-id|t-&gt;radio
-)paren
-(brace
 id|set_tv_freq
 c_func
 (paren
@@ -7383,12 +7465,10 @@ op_star
 l_int|16
 )paren
 suffix:semicolon
-id|t-&gt;radio
+id|t-&gt;mode
 op_assign
-l_int|1
+id|f-&gt;type
 suffix:semicolon
-)brace
-)brace
 id|t-&gt;freq
 op_assign
 id|f-&gt;frequency
@@ -7420,7 +7500,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|t-&gt;radio
+id|V4L2_TUNER_RADIO
+op_eq
+id|t-&gt;mode
 )paren
 id|tuner-&gt;signal
 op_assign
