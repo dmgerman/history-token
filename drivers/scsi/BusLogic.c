@@ -13973,6 +13973,10 @@ suffix:semicolon
 )brace
 id|DiskParameters-&gt;Cylinders
 op_assign
+(paren
+r_int
+r_int
+)paren
 id|Disk-&gt;capacity
 op_div
 (paren
@@ -14162,6 +14166,10 @@ suffix:semicolon
 )brace
 id|DiskParameters-&gt;Cylinders
 op_assign
+(paren
+r_int
+r_int
+)paren
 id|Disk-&gt;capacity
 op_div
 (paren

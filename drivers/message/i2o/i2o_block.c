@@ -2782,6 +2782,10 @@ l_int|255
 suffix:semicolon
 id|cylinders
 op_assign
+(paren
+r_int
+r_int
+)paren
 id|capacity
 op_div
 (paren
