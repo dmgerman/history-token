@@ -113,6 +113,8 @@ DECL|macro|EISR_RWM
 mdefine_line|#define EISR_RWM 0x38
 DECL|macro|EISR_MASK
 mdefine_line|#define EISR_MASK 0x3c
+DECL|macro|EISR_MASK_OPTIONS
+mdefine_line|#define EISR_MASK_OPTIONS 0x001FFF7F
 DECL|macro|LAPA
 mdefine_line|#define LAPA 0x60
 DECL|macro|LAPWWO
