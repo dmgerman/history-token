@@ -2152,6 +2152,8 @@ suffix:semicolon
 id|rt-&gt;rt6i_flags
 op_assign
 id|RTF_LOCAL
+op_or
+id|RTF_NDISC
 suffix:semicolon
 id|rt-&gt;rt6i_metric
 op_assign
@@ -3182,6 +3184,9 @@ suffix:semicolon
 id|rt-&gt;rt6i_flags
 op_assign
 id|rtmsg-&gt;rtmsg_flags
+op_amp
+op_complement
+id|RTF_NDISC
 suffix:semicolon
 id|install_route
 suffix:colon
@@ -4399,6 +4404,14 @@ op_assign
 id|ip6_dst_alloc
 c_func
 (paren
+)paren
+suffix:semicolon
+id|BUG_ON
+c_func
+(paren
+id|ort-&gt;rt6i_flags
+op_amp
+id|RTF_NDISC
 )paren
 suffix:semicolon
 r_if
