@@ -756,10 +756,7 @@ l_string|&quot;ebx value is %x, x86_mask is %x&bslash;n&quot;
 comma
 id|ebx
 comma
-id|c
-op_member_access_from_pointer
-l_int|86
-id|_mask
+id|c-&gt;x86_mask
 )paren
 suffix:semicolon
 r_switch
