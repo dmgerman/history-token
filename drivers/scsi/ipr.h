@@ -8,9 +8,6 @@ macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/kref.h&gt;
 macro_line|#include &lt;scsi/scsi.h&gt;
 macro_line|#include &lt;scsi/scsi_cmnd.h&gt;
-macro_line|#ifdef CONFIG_KDB
-macro_line|#include &lt;linux/kdb.h&gt;
-macro_line|#endif
 multiline_comment|/*&n; * Literals&n; */
 DECL|macro|IPR_DRIVER_VERSION
 mdefine_line|#define IPR_DRIVER_VERSION &quot;2.0.11&quot;
@@ -3644,19 +3641,6 @@ mdefine_line|#define IPR_DBG_CMD(CMD) do { CMD; } while (0)
 macro_line|#else
 DECL|macro|IPR_DBG_CMD
 mdefine_line|#define IPR_DBG_CMD(CMD)
-macro_line|#endif
-DECL|macro|ipr_breakpoint_data
-mdefine_line|#define ipr_breakpoint_data KERN_ERR IPR_NAME&bslash;&n;&quot;: %s: %s: Line: %d ioa_cfg: %p&bslash;n&quot;, __FILE__, &bslash;&n;__FUNCTION__, __LINE__, ioa_cfg
-macro_line|#if defined(CONFIG_KDB) &amp;&amp; !defined(CONFIG_PPC_ISERIES)
-DECL|macro|ipr_breakpoint
-mdefine_line|#define ipr_breakpoint {printk(ipr_breakpoint_data); KDB_ENTER();}
-DECL|macro|ipr_breakpoint_or_die
-mdefine_line|#define ipr_breakpoint_or_die {printk(ipr_breakpoint_data); KDB_ENTER();}
-macro_line|#else
-DECL|macro|ipr_breakpoint
-mdefine_line|#define ipr_breakpoint
-DECL|macro|ipr_breakpoint_or_die
-mdefine_line|#define ipr_breakpoint_or_die panic(ipr_breakpoint_data)
 macro_line|#endif
 macro_line|#ifdef CONFIG_SCSI_IPR_TRACE
 DECL|macro|ipr_create_trace_file
