@@ -124,6 +124,7 @@ mdefine_line|#define ISL38XX_INT_IDENT_SLEEP                 0x0010
 DECL|macro|ISL38XX_INT_SOURCES
 mdefine_line|#define ISL38XX_INT_SOURCES                     0x001E
 multiline_comment|/* Control/Status register bits */
+multiline_comment|/* Looks like there are other meaningful bits&n;    0x20004400 seen in normal operation,&n;    0x200044db at &squot;timeout waiting for mgmt response&squot;&n;*/
 DECL|macro|ISL38XX_CTRL_STAT_SLEEPMODE
 mdefine_line|#define ISL38XX_CTRL_STAT_SLEEPMODE             0x00000200
 DECL|macro|ISL38XX_CTRL_STAT_CLKRUN

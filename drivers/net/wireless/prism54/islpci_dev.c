@@ -1179,15 +1179,6 @@ c_func
 id|ndev
 )paren
 suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_DEBUG
-l_string|&quot;%s: islpci_open()&bslash;n&quot;
-comma
-id|ndev-&gt;name
-)paren
-suffix:semicolon
 multiline_comment|/* reset data structures, upload firmware and reset device */
 id|rc
 op_assign
@@ -1501,7 +1492,7 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;%s: firmware uploaded done, now triggering reset...&bslash;n&quot;
+l_string|&quot;%s: firmware upload complete&bslash;n&quot;
 comma
 id|priv-&gt;ndev-&gt;name
 )paren
@@ -1622,7 +1613,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;%s: device soft reset timed out&bslash;n&quot;
+l_string|&quot;%s: reset problem: no &squot;reset complete&squot; IRQ seen&bslash;n&quot;
 comma
 id|priv-&gt;ndev-&gt;name
 )paren
@@ -1644,6 +1635,15 @@ c_cond
 id|result
 )paren
 (brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;%s: islpci_reset_if: failure&bslash;n&quot;
+comma
+id|priv-&gt;ndev-&gt;name
+)paren
+suffix:semicolon
 r_return
 id|result
 suffix:semicolon
@@ -1689,6 +1689,15 @@ c_func
 id|priv
 comma
 id|PRV_STATE_READY
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_DEBUG
+l_string|&quot;%s: interface reset complete&bslash;n&quot;
+comma
+id|priv-&gt;ndev-&gt;name
 )paren
 suffix:semicolon
 r_return
@@ -1955,9 +1964,20 @@ c_cond
 (paren
 id|rc
 )paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;%s: islpci_reset: failure&bslash;n&quot;
+comma
+id|priv-&gt;ndev-&gt;name
+)paren
+suffix:semicolon
 r_return
 id|rc
 suffix:semicolon
+)brace
 )brace
 multiline_comment|/* finally reset interface */
 id|rc
@@ -1971,17 +1991,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
 id|rc
 )paren
-multiline_comment|/* If successful */
-r_return
-id|rc
-suffix:semicolon
 id|printk
 c_func
 (paren
-id|KERN_DEBUG
+id|KERN_ERR
 l_string|&quot;prism54: Your card/socket may be faulty, or IRQ line too busy :(&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -2018,7 +2033,7 @@ c_func
 (paren
 id|SHOW_FUNCTION_CALLS
 comma
-l_string|&quot;islpci_statistics &bslash;n&quot;
+l_string|&quot;islpci_statistics&bslash;n&quot;
 )paren
 suffix:semicolon
 macro_line|#endif

@@ -3216,12 +3216,9 @@ op_le
 id|t-&gt;range
 )paren
 (brace
-id|response
+r_int
+id|r
 op_assign
-l_int|NULL
-suffix:semicolon
-id|ret
-op_or_assign
 id|islpci_mgt_transaction
 c_func
 (paren
@@ -3245,7 +3242,7 @@ c_cond
 id|response
 )paren
 (brace
-id|ret
+id|r
 op_or_assign
 (paren
 id|response-&gt;header-&gt;operation
@@ -3260,6 +3257,29 @@ id|response
 )paren
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|r
+)paren
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;%s: mgt_commit_list: failure. &quot;
+l_string|&quot;oid=%08x err=%d&bslash;n&quot;
+comma
+id|priv-&gt;ndev-&gt;name
+comma
+id|oid
+comma
+id|r
+)paren
+suffix:semicolon
+id|ret
+op_or_assign
+id|r
+suffix:semicolon
 id|j
 op_increment
 suffix:semicolon
@@ -3498,8 +3518,6 @@ r_struct
 id|islpci_mgmtframe
 op_star
 id|res
-op_assign
-l_int|NULL
 suffix:semicolon
 r_int
 id|ret
@@ -3577,10 +3595,26 @@ c_func
 id|res
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|ret
+)paren
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;%s: mgt_update_addr: failure&bslash;n&quot;
+comma
+id|priv-&gt;ndev-&gt;name
+)paren
+suffix:semicolon
 r_return
 id|ret
 suffix:semicolon
 )brace
+DECL|macro|VEC_SIZE
+mdefine_line|#define VEC_SIZE(a) (sizeof(a)/sizeof(a[0]))
 r_void
 DECL|function|mgt_commit
 id|mgt_commit
@@ -3619,17 +3653,10 @@ id|priv
 comma
 id|commit_part1
 comma
-r_sizeof
+id|VEC_SIZE
+c_func
 (paren
 id|commit_part1
-)paren
-op_div
-r_sizeof
-(paren
-id|commit_part1
-(braket
-l_int|0
-)braket
 )paren
 )paren
 suffix:semicolon
@@ -3649,17 +3676,10 @@ id|priv
 comma
 id|commit_part2
 comma
-r_sizeof
+id|VEC_SIZE
+c_func
 (paren
 id|commit_part2
-)paren
-op_div
-r_sizeof
-(paren
-id|commit_part2
-(braket
-l_int|0
-)braket
 )paren
 )paren
 suffix:semicolon
@@ -3699,8 +3719,7 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;%s: mgt_commit has failed. Restart the &quot;
-l_string|&quot;device &bslash;n&quot;
+l_string|&quot;%s: mgt_commit: failure&bslash;n&quot;
 comma
 id|priv-&gt;ndev-&gt;name
 )paren

@@ -8876,8 +8876,6 @@ r_struct
 id|islpci_mgmtframe
 op_star
 id|response
-op_assign
-l_int|NULL
 suffix:semicolon
 r_int
 id|ret
@@ -9062,8 +9060,6 @@ r_struct
 id|islpci_mgmtframe
 op_star
 id|response
-op_assign
-l_int|NULL
 suffix:semicolon
 r_int
 id|ret
