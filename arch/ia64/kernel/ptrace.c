@@ -2328,6 +2328,13 @@ id|task-&gt;thread.flags
 op_or_assign
 id|IA64_THREAD_FPH_VALID
 suffix:semicolon
+id|task-&gt;thread.last_fph_cpu
+op_assign
+id|smp_processor_id
+c_func
+(paren
+)paren
+suffix:semicolon
 )brace
 )brace
 multiline_comment|/*&n; * Sync the fph state of the task so that it can be manipulated&n; * through thread.fph.  If necessary, f32-f127 are written back to&n; * thread.fph or, if the fph state hasn&squot;t been used before, thread.fph&n; * is cleared to zeroes.  Also, access to f32-f127 is disabled to&n; * ensure that the task picks up the state from thread.fph when it&n; * executes again.&n; */
@@ -2377,6 +2384,12 @@ id|task-&gt;thread.flags
 op_or_assign
 id|IA64_THREAD_FPH_VALID
 suffix:semicolon
+id|task-&gt;thread.last_fph_cpu
+op_assign
+op_minus
+l_int|1
+suffix:semicolon
+multiline_comment|/* force reload */
 id|memset
 c_func
 (paren
