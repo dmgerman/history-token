@@ -12,6 +12,11 @@ macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;linux/random.h&gt;&t;/* for get_random_bytes */
 macro_line|#include &lt;net/sctp/sctp.h&gt;
 macro_line|#include &lt;net/sctp/sm.h&gt;
+r_extern
+id|kmem_cache_t
+op_star
+id|sctp_chunk_cachep
+suffix:semicolon
 multiline_comment|/* What was the inbound interface for this chunk? */
 DECL|function|sctp_chunk_iif
 r_int
@@ -2741,14 +2746,15 @@ r_struct
 id|sctp_chunk
 op_star
 id|retval
+suffix:semicolon
+id|retval
 op_assign
-id|t_new
+id|kmem_cache_alloc
 c_func
 (paren
-r_struct
-id|sctp_chunk
+id|sctp_chunk_cachep
 comma
-id|GFP_ATOMIC
+id|SLAB_ATOMIC
 )paren
 suffix:semicolon
 r_if
@@ -3146,7 +3152,8 @@ id|chunk_hdr
 op_plus
 r_sizeof
 (paren
-id|sctp_chunkhdr_t
+r_struct
+id|sctp_chunkhdr
 )paren
 suffix:semicolon
 multiline_comment|/* Set the skb to the belonging sock for accounting.  */
@@ -3183,15 +3190,17 @@ c_func
 id|chunk-&gt;skb
 )paren
 suffix:semicolon
-id|kfree
+id|SCTP_DBG_OBJCNT_DEC
 c_func
 (paren
 id|chunk
 )paren
 suffix:semicolon
-id|SCTP_DBG_OBJCNT_DEC
+id|kmem_cache_free
 c_func
 (paren
+id|sctp_chunk_cachep
+comma
 id|chunk
 )paren
 suffix:semicolon
@@ -5493,9 +5502,22 @@ comma
 id|errp
 )paren
 )paren
+(brace
+r_if
+c_cond
+(paren
+id|SCTP_PARAM_HOST_NAME_ADDRESS
+op_eq
+id|param.p-&gt;type
+)paren
 r_return
 l_int|0
 suffix:semicolon
+r_else
+r_return
+l_int|1
+suffix:semicolon
+)brace
 )brace
 multiline_comment|/* for (loop through all parameters) */
 r_return
@@ -5993,7 +6015,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|sctp_proto.cookie_preserve_enable
+id|sctp_cookie_preserve_enable
 )paren
 r_break
 suffix:semicolon
