@@ -2066,6 +2066,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|unpack_to_rootfs
+r_static
 r_char
 op_star
 id|__init
