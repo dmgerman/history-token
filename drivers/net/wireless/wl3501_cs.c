@@ -18,7 +18,6 @@ macro_line|#include &lt;linux/etherdevice.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
-macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/wireless.h&gt;
 macro_line|#include &lt;net/iw_handler.h&gt;
 macro_line|#include &lt;pcmcia/version.h&gt;
@@ -117,9 +116,9 @@ r_void
 id|wl3501_release
 c_func
 (paren
-r_int
-r_int
-id|arg
+id|dev_link_t
+op_star
+id|link
 )paren
 suffix:semicolon
 r_static
@@ -6058,21 +6057,14 @@ op_amp
 id|DEV_STALE_CONFIG
 )paren
 (brace
-id|link-&gt;release.expires
-op_assign
-id|jiffies
-op_plus
-id|WL3501_RELEASE_TIMEOUT
-suffix:semicolon
 id|link-&gt;state
 op_or_assign
 id|DEV_RELEASE_PENDING
 suffix:semicolon
-id|add_timer
+id|wl3501_release
 c_func
 (paren
-op_amp
-id|link-&gt;release
+id|link
 )paren
 suffix:semicolon
 )brace
@@ -9513,25 +9505,6 @@ id|dev_link_t
 )paren
 )paren
 suffix:semicolon
-id|init_timer
-c_func
-(paren
-op_amp
-id|link-&gt;release
-)paren
-suffix:semicolon
-id|link-&gt;release.function
-op_assign
-id|wl3501_release
-suffix:semicolon
-id|link-&gt;release.data
-op_assign
-(paren
-r_int
-r_int
-)paren
-id|link
-suffix:semicolon
 multiline_comment|/* The io structure describes IO port mapping */
 id|link-&gt;io.NumPorts1
 op_assign
@@ -10307,10 +10280,6 @@ suffix:colon
 id|wl3501_release
 c_func
 (paren
-(paren
-r_int
-r_int
-)paren
 id|link
 )paren
 suffix:semicolon
@@ -10326,21 +10295,11 @@ r_void
 id|wl3501_release
 c_func
 (paren
-r_int
-r_int
-id|arg
-)paren
-(brace
 id|dev_link_t
 op_star
 id|link
-op_assign
-(paren
-id|dev_link_t
-op_star
 )paren
-id|arg
-suffix:semicolon
+(brace
 r_struct
 id|net_device
 op_star
@@ -10517,17 +10476,10 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-id|link-&gt;release.expires
-op_assign
-id|jiffies
-op_plus
-id|WL3501_RELEASE_TIMEOUT
-suffix:semicolon
-id|add_timer
+id|wl3501_release
 c_func
 (paren
-op_amp
-id|link-&gt;release
+id|link
 )paren
 suffix:semicolon
 )brace
@@ -10798,13 +10750,6 @@ c_loop
 id|wl3501_dev_list
 )paren
 (brace
-id|del_timer
-c_func
-(paren
-op_amp
-id|wl3501_dev_list-&gt;release
-)paren
-suffix:semicolon
 multiline_comment|/* Mark the device as non-existing to minimize calls to card */
 id|wl3501_dev_list-&gt;state
 op_and_assign
@@ -10821,10 +10766,6 @@ id|DEV_CONFIG
 id|wl3501_release
 c_func
 (paren
-(paren
-r_int
-r_int
-)paren
 id|wl3501_dev_list
 )paren
 suffix:semicolon
