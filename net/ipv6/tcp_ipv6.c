@@ -4692,6 +4692,7 @@ id|CHECKSUM_HW
 (brace
 id|th-&gt;check
 op_assign
+op_complement
 id|csum_ipv6_magic
 c_func
 (paren
@@ -7852,7 +7853,7 @@ id|skb
 )paren
 )paren
 r_goto
-id|discard_it
+id|discard_and_relse
 suffix:semicolon
 id|skb-&gt;dev
 op_assign
