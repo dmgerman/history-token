@@ -3824,7 +3824,15 @@ l_string|&quot;%05d %04d %04x %06d %8p %6d %8p %08ld %8s %8p %8p&bslash;n&quot;
 comma
 id|t-&gt;tk_pid
 comma
+(paren
 id|t-&gt;tk_msg.rpc_proc-&gt;p_proc
+ques
+c_cond
+id|t-&gt;tk_msg.rpc_proc-&gt;p_proc
+suffix:colon
+op_minus
+l_int|1
+)paren
 comma
 id|t-&gt;tk_flags
 comma
@@ -3838,16 +3846,11 @@ id|t-&gt;tk_rqstp
 comma
 id|t-&gt;tk_timeout
 comma
-id|t-&gt;tk_rpcwait
-ques
-c_cond
 id|rpc_qname
 c_func
 (paren
 id|t-&gt;tk_rpcwait
 )paren
-suffix:colon
-l_string|&quot; &lt;NULL&gt; &quot;
 comma
 id|t-&gt;tk_action
 comma

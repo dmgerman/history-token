@@ -3061,11 +3061,6 @@ id|flav
 comma
 id|len
 suffix:semicolon
-r_int
-id|code
-op_assign
-l_int|0
-suffix:semicolon
 id|dprintk
 c_func
 (paren
@@ -3189,9 +3184,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-(paren
-id|code
-op_assign
 id|gss_verify_mic
 c_func
 (paren
@@ -3206,9 +3198,8 @@ comma
 op_amp
 id|qop_state
 )paren
-OL
+op_ne
 l_int|0
-)paren
 )paren
 r_return
 l_int|NULL

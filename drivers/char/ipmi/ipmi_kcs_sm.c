@@ -1561,8 +1561,7 @@ suffix:semicolon
 r_case
 id|KCS_HOSED
 suffix:colon
-r_return
-id|KCS_SM_HOSED
+r_break
 suffix:semicolon
 )brace
 r_if
