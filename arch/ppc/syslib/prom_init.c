@@ -1834,7 +1834,7 @@ l_int|0
 )paren
 r_break
 suffix:semicolon
-macro_line|#ifdef CONFIG_FB
+macro_line|#ifdef CONFIG_FRAMEBUFFER_CONSOLE
 r_for
 c_loop
 (paren
@@ -1881,7 +1881,7 @@ l_int|0
 )paren
 r_break
 suffix:semicolon
-macro_line|#endif /* CONFIG_FB */
+macro_line|#endif /* CONFIG_FRAMEBUFFER_CONSOLE */
 )brace
 )brace
 r_return
