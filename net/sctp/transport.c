@@ -715,7 +715,11 @@ id|dst
 )paren
 id|transport-&gt;pmtu
 op_assign
-id|dst-&gt;pmtu
+id|dst_pmtu
+c_func
+(paren
+id|dst
+)paren
 suffix:semicolon
 r_else
 id|transport-&gt;pmtu
