@@ -358,7 +358,7 @@ suffix:semicolon
 r_char
 id|pathname
 (braket
-id|PATHNAME_MAX
+id|ACPI_PATHNAME_MAX
 )braket
 op_assign
 (brace
