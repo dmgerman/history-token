@@ -67,6 +67,7 @@ DECL|member|tx_dma
 r_volatile
 r_struct
 id|dbdma_regs
+id|__iomem
 op_star
 id|tx_dma
 suffix:semicolon
@@ -78,6 +79,7 @@ DECL|member|rx_dma
 r_volatile
 r_struct
 id|dbdma_regs
+id|__iomem
 op_star
 id|rx_dma
 suffix:semicolon
@@ -674,8 +676,8 @@ id|dbdma_st32
 c_func
 (paren
 r_volatile
-r_int
-r_int
+id|__u32
+id|__iomem
 op_star
 id|a
 comma
@@ -715,14 +717,13 @@ id|dbdma_ld32
 c_func
 (paren
 r_volatile
-r_int
-r_int
+id|__u32
+id|__iomem
 op_star
 id|a
 )paren
 (brace
-r_int
-r_int
+id|__u32
 id|swap
 suffix:semicolon
 id|__asm__
@@ -754,6 +755,7 @@ c_func
 r_volatile
 r_struct
 id|dbdma_regs
+id|__iomem
 op_star
 id|dmap
 )paren
@@ -761,12 +763,6 @@ id|dmap
 id|dbdma_st32
 c_func
 (paren
-(paren
-r_volatile
-r_int
-r_int
-op_star
-)paren
 op_amp
 id|dmap-&gt;control
 comma
@@ -802,6 +798,7 @@ c_func
 r_volatile
 r_struct
 id|dbdma_regs
+id|__iomem
 op_star
 id|dmap
 )paren
@@ -809,12 +806,6 @@ id|dmap
 id|dbdma_st32
 c_func
 (paren
-(paren
-r_volatile
-r_int
-r_int
-op_star
-)paren
 op_amp
 id|dmap-&gt;control
 comma
@@ -846,12 +837,6 @@ c_loop
 id|dbdma_ld32
 c_func
 (paren
-(paren
-r_volatile
-r_int
-r_int
-op_star
-)paren
 op_amp
 id|dmap-&gt;status
 )paren
@@ -972,6 +957,7 @@ c_func
 (paren
 (paren
 r_void
+id|__iomem
 op_star
 )paren
 id|dev-&gt;base_addr
@@ -1007,6 +993,7 @@ c_func
 (paren
 (paren
 r_void
+id|__iomem
 op_star
 )paren
 id|dev-&gt;base_addr
@@ -1041,6 +1028,7 @@ suffix:semicolon
 r_volatile
 r_struct
 id|dbdma_regs
+id|__iomem
 op_star
 id|rd
 op_assign
@@ -1049,6 +1037,7 @@ suffix:semicolon
 r_volatile
 r_struct
 id|dbdma_regs
+id|__iomem
 op_star
 id|td
 op_assign
@@ -2046,6 +2035,7 @@ suffix:semicolon
 r_volatile
 r_struct
 id|dbdma_regs
+id|__iomem
 op_star
 id|rd
 op_assign
@@ -2448,6 +2438,7 @@ id|bp-&gt;opened
 r_volatile
 r_struct
 id|dbdma_regs
+id|__iomem
 op_star
 id|rd
 op_assign
@@ -2456,6 +2447,7 @@ suffix:semicolon
 r_volatile
 r_struct
 id|dbdma_regs
+id|__iomem
 op_star
 id|td
 op_assign
@@ -3182,6 +3174,7 @@ id|bp
 r_volatile
 r_struct
 id|dbdma_regs
+id|__iomem
 op_star
 id|td
 op_assign
@@ -3295,6 +3288,7 @@ id|bp
 r_volatile
 r_struct
 id|dbdma_regs
+id|__iomem
 op_star
 id|rd
 op_assign
@@ -3497,6 +3491,7 @@ suffix:semicolon
 r_volatile
 r_struct
 id|dbdma_regs
+id|__iomem
 op_star
 id|td
 op_assign
@@ -3662,6 +3657,7 @@ suffix:semicolon
 r_volatile
 r_struct
 id|dbdma_regs
+id|__iomem
 op_star
 id|rd
 op_assign
@@ -7200,12 +7196,6 @@ id|is_bmac_plus
 suffix:semicolon
 id|bp-&gt;tx_dma
 op_assign
-(paren
-r_volatile
-r_struct
-id|dbdma_regs
-op_star
-)paren
 id|ioremap
 c_func
 (paren
@@ -7247,12 +7237,6 @@ l_int|1
 suffix:semicolon
 id|bp-&gt;rx_dma
 op_assign
-(paren
-r_volatile
-r_struct
-id|dbdma_regs
-op_star
-)paren
 id|ioremap
 c_func
 (paren
@@ -7601,10 +7585,6 @@ suffix:colon
 id|iounmap
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 id|bp-&gt;rx_dma
 )paren
 suffix:semicolon
@@ -7613,10 +7593,6 @@ suffix:colon
 id|iounmap
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 id|bp-&gt;tx_dma
 )paren
 suffix:semicolon
@@ -7627,6 +7603,7 @@ c_func
 (paren
 (paren
 r_void
+id|__iomem
 op_star
 )paren
 id|dev-&gt;base_addr
@@ -7744,6 +7721,7 @@ suffix:semicolon
 r_volatile
 r_struct
 id|dbdma_regs
+id|__iomem
 op_star
 id|rd
 op_assign
@@ -7752,6 +7730,7 @@ suffix:semicolon
 r_volatile
 r_struct
 id|dbdma_regs
+id|__iomem
 op_star
 id|td
 op_assign
@@ -8225,6 +8204,7 @@ suffix:semicolon
 r_volatile
 r_struct
 id|dbdma_regs
+id|__iomem
 op_star
 id|td
 op_assign
@@ -8233,6 +8213,7 @@ suffix:semicolon
 r_volatile
 r_struct
 id|dbdma_regs
+id|__iomem
 op_star
 id|rd
 op_assign
@@ -8994,6 +8975,7 @@ c_func
 (paren
 (paren
 r_void
+id|__iomem
 op_star
 )paren
 id|dev-&gt;base_addr
@@ -9002,20 +8984,12 @@ suffix:semicolon
 id|iounmap
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 id|bp-&gt;tx_dma
 )paren
 suffix:semicolon
 id|iounmap
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 id|bp-&gt;rx_dma
 )paren
 suffix:semicolon
