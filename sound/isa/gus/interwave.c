@@ -336,6 +336,7 @@ comma
 l_string|&quot;Enable InterWave soundcard.&quot;
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_PNP
 id|module_param_array
 c_func
 (paren
@@ -356,6 +357,7 @@ comma
 l_string|&quot;ISA PnP detection for specified soundcard.&quot;
 )paren
 suffix:semicolon
+macro_line|#endif
 id|module_param_array
 c_func
 (paren

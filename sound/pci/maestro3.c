@@ -1510,6 +1510,7 @@ id|irq
 suffix:semicolon
 DECL|member|allegro_flag
 r_int
+r_int
 id|allegro_flag
 suffix:colon
 l_int|1
@@ -1974,6 +1975,30 @@ dot
 id|device
 op_assign
 l_int|0x80f1
+comma
+dot
+id|amp_gpio
+op_assign
+l_int|0x03
+comma
+)brace
+comma
+multiline_comment|/* LEGEND ZhaoYang 3100CF */
+(brace
+dot
+id|name
+op_assign
+l_string|&quot;LEGEND ZhaoYang 3100CF&quot;
+comma
+dot
+id|vendor
+op_assign
+l_int|0x1509
+comma
+dot
+id|device
+op_assign
+l_int|0x1740
 comma
 dot
 id|amp_gpio
@@ -10444,8 +10469,7 @@ id|snd_card_t
 op_star
 id|card
 comma
-r_int
-r_int
+id|pm_message_t
 id|state
 )paren
 (brace
@@ -10600,10 +10624,6 @@ c_func
 id|snd_card_t
 op_star
 id|card
-comma
-r_int
-r_int
-id|state
 )paren
 (brace
 id|m3_t

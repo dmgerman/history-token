@@ -4,6 +4,7 @@ macro_line|#include &lt;linux/wait.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
+macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;sound/core.h&gt;
 macro_line|#include &lt;sound/emu8000.h&gt;
 macro_line|#include &lt;sound/emu8000_reg.h&gt;
@@ -2352,23 +2353,13 @@ op_div
 l_int|4
 )paren
 suffix:semicolon
-id|set_current_state
-c_func
-(paren
-id|TASK_INTERRUPTIBLE
-)paren
-suffix:semicolon
-id|schedule_timeout
+id|msleep
 c_func
 (paren
 (paren
-id|HZ
-op_star
-(paren
-l_int|44099
-op_plus
 l_int|1024
-)paren
+op_star
+l_int|1000
 )paren
 op_div
 l_int|44100

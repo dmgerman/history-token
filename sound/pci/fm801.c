@@ -167,7 +167,7 @@ c_func
 (paren
 id|tea575x_tuner
 comma
-r_bool
+r_int
 comma
 l_int|NULL
 comma

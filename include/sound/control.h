@@ -548,6 +548,29 @@ id|snd_kctl_ioctl_func_t
 id|fcn
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_COMPAT
+r_int
+id|snd_ctl_register_ioctl_compat
+c_func
+(paren
+id|snd_kctl_ioctl_func_t
+id|fcn
+)paren
+suffix:semicolon
+r_int
+id|snd_ctl_unregister_ioctl_compat
+c_func
+(paren
+id|snd_kctl_ioctl_func_t
+id|fcn
+)paren
+suffix:semicolon
+macro_line|#else
+DECL|macro|snd_ctl_register_ioctl_compat
+mdefine_line|#define snd_ctl_register_ioctl_compat(fcn)
+DECL|macro|snd_ctl_unregister_ioctl_compat
+mdefine_line|#define snd_ctl_unregister_ioctl_compat(fcn)
+macro_line|#endif
 r_int
 id|snd_ctl_elem_read
 c_func

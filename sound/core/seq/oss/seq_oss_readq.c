@@ -3,6 +3,7 @@ macro_line|#include &quot;seq_oss_readq.h&quot;
 macro_line|#include &quot;seq_oss_event.h&quot;
 macro_line|#include &lt;sound/seq_oss_legacy.h&gt;
 macro_line|#include &quot;../seq_lock.h&quot;
+macro_line|#include &lt;linux/wait.h&gt;
 multiline_comment|/*&n; * constants&n; */
 singleline_comment|//#define SNDRV_SEQ_OSS_MAX_TIMEOUT&t;(unsigned long)(-1)
 DECL|macro|SNDRV_SEQ_OSS_MAX_TIMEOUT
@@ -507,11 +508,20 @@ op_star
 id|q
 )paren
 (brace
-id|interruptible_sleep_on_timeout
+id|wait_event_interruptible_timeout
 c_func
 (paren
-op_amp
 id|q-&gt;midi_sleep
+comma
+(paren
+id|q-&gt;qlen
+OG
+l_int|0
+op_logical_or
+id|q-&gt;head
+op_eq
+id|q-&gt;tail
+)paren
 comma
 id|q-&gt;pre_event_timeout
 )paren

@@ -1993,6 +1993,11 @@ c_func
 op_amp
 id|put
 comma
+(paren
+r_void
+id|__user
+op_star
+)paren
 id|ev-&gt;data.ext.ptr
 comma
 r_sizeof
@@ -2208,6 +2213,11 @@ id|ops-&gt;private_data
 comma
 id|instr
 comma
+(paren
+r_void
+id|__user
+op_star
+)paren
 id|ev-&gt;data.ext.ptr
 op_plus
 r_sizeof
@@ -2441,6 +2451,11 @@ c_func
 op_amp
 id|ifree
 comma
+(paren
+r_void
+id|__user
+op_star
+)paren
 id|ev-&gt;data.ext.ptr
 comma
 r_sizeof

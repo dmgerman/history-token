@@ -157,7 +157,7 @@ mdefine_line|#define VT1724_REG_I2C_DATA&t;&t;0x12&t;/* byte */
 DECL|macro|VT1724_REG_I2C_CTRL
 mdefine_line|#define VT1724_REG_I2C_CTRL&t;&t;0x13&t;/* byte */
 DECL|macro|VT1724_I2C_EEPROM
-mdefine_line|#define   VT1724_I2C_EEPROM&t;&t;0x80&t;/* EEPROM exists */
+mdefine_line|#define   VT1724_I2C_EEPROM&t;&t;0x80&t;/* 1 = EEPROM exists */
 DECL|macro|VT1724_I2C_BUSY
 mdefine_line|#define   VT1724_I2C_BUSY&t;&t;0x01&t;/* busy bit */
 DECL|macro|VT1724_REG_GPIO_DATA

@@ -186,11 +186,6 @@ id|odev_ioctl
 c_func
 (paren
 r_struct
-id|inode
-op_star
-id|inode
-comma
-r_struct
 id|file
 op_star
 id|file
@@ -703,11 +698,6 @@ id|odev_ioctl
 c_func
 (paren
 r_struct
-id|inode
-op_star
-id|inode
-comma
-r_struct
 id|file
 op_star
 id|file
@@ -725,9 +715,6 @@ id|seq_oss_devinfo_t
 op_star
 id|dp
 suffix:semicolon
-r_int
-id|err
-suffix:semicolon
 id|dp
 op_assign
 id|file-&gt;private_data
@@ -744,14 +731,7 @@ op_minus
 id|EIO
 )paren
 suffix:semicolon
-multiline_comment|/* FIXME: need to unlock BKL to allow preemption */
-id|unlock_kernel
-c_func
-(paren
-)paren
-suffix:semicolon
-id|err
-op_assign
+r_return
 id|snd_seq_oss_ioctl
 c_func
 (paren
@@ -762,15 +742,14 @@ comma
 id|arg
 )paren
 suffix:semicolon
-id|lock_kernel
-c_func
-(paren
-)paren
-suffix:semicolon
-r_return
-id|err
-suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_COMPAT
+DECL|macro|odev_ioctl_compat
+mdefine_line|#define odev_ioctl_compat&t;odev_ioctl
+macro_line|#else
+DECL|macro|odev_ioctl_compat
+mdefine_line|#define odev_ioctl_compat&t;NULL
+macro_line|#endif
 r_static
 r_int
 r_int
@@ -858,9 +837,14 @@ op_assign
 id|odev_poll
 comma
 dot
-id|ioctl
+id|unlocked_ioctl
 op_assign
 id|odev_ioctl
+comma
+dot
+id|compat_ioctl
+op_assign
+id|odev_ioctl_compat
 comma
 )brace
 suffix:semicolon

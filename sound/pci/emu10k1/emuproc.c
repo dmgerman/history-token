@@ -687,100 +687,100 @@ multiline_comment|/* 31 */
 l_string|&quot;???&quot;
 comma
 multiline_comment|/* 32 */
-l_string|&quot;???&quot;
+l_string|&quot;FXBUS2_0&quot;
 comma
 multiline_comment|/* 33 */
-l_string|&quot;???&quot;
+l_string|&quot;FXBUS2_1&quot;
 comma
 multiline_comment|/* 34 */
-l_string|&quot;???&quot;
+l_string|&quot;FXBUS2_2&quot;
 comma
 multiline_comment|/* 35 */
-l_string|&quot;???&quot;
+l_string|&quot;FXBUS2_3&quot;
 comma
 multiline_comment|/* 36 */
-l_string|&quot;???&quot;
+l_string|&quot;FXBUS2_4&quot;
 comma
 multiline_comment|/* 37 */
-l_string|&quot;???&quot;
+l_string|&quot;FXBUS2_5&quot;
 comma
 multiline_comment|/* 38 */
-l_string|&quot;???&quot;
+l_string|&quot;FXBUS2_6&quot;
 comma
 multiline_comment|/* 39 */
-l_string|&quot;???&quot;
+l_string|&quot;FXBUS2_7&quot;
 comma
 multiline_comment|/* 40 */
-l_string|&quot;???&quot;
+l_string|&quot;FXBUS2_8&quot;
 comma
 multiline_comment|/* 41 */
-l_string|&quot;???&quot;
+l_string|&quot;FXBUS2_9&quot;
 comma
 multiline_comment|/* 42 */
-l_string|&quot;???&quot;
+l_string|&quot;FXBUS2_10&quot;
 comma
 multiline_comment|/* 43 */
-l_string|&quot;???&quot;
+l_string|&quot;FXBUS2_11&quot;
 comma
 multiline_comment|/* 44 */
-l_string|&quot;???&quot;
+l_string|&quot;FXBUS2_12&quot;
 comma
 multiline_comment|/* 45 */
-l_string|&quot;???&quot;
+l_string|&quot;FXBUS2_13&quot;
 comma
 multiline_comment|/* 46 */
-l_string|&quot;???&quot;
+l_string|&quot;FXBUS2_14&quot;
 comma
 multiline_comment|/* 47 */
-l_string|&quot;???&quot;
+l_string|&quot;FXBUS2_15&quot;
 comma
 multiline_comment|/* 48 */
-l_string|&quot;???&quot;
+l_string|&quot;FXBUS2_16&quot;
 comma
 multiline_comment|/* 49 */
-l_string|&quot;???&quot;
+l_string|&quot;FXBUS2_17&quot;
 comma
 multiline_comment|/* 50 */
-l_string|&quot;???&quot;
+l_string|&quot;FXBUS2_18&quot;
 comma
 multiline_comment|/* 51 */
-l_string|&quot;???&quot;
+l_string|&quot;FXBUS2_19&quot;
 comma
 multiline_comment|/* 52 */
-l_string|&quot;???&quot;
+l_string|&quot;FXBUS2_20&quot;
 comma
 multiline_comment|/* 53 */
-l_string|&quot;???&quot;
+l_string|&quot;FXBUS2_21&quot;
 comma
 multiline_comment|/* 54 */
-l_string|&quot;???&quot;
+l_string|&quot;FXBUS2_22&quot;
 comma
 multiline_comment|/* 55 */
-l_string|&quot;???&quot;
+l_string|&quot;FXBUS2_23&quot;
 comma
 multiline_comment|/* 56 */
-l_string|&quot;???&quot;
+l_string|&quot;FXBUS2_24&quot;
 comma
 multiline_comment|/* 57 */
-l_string|&quot;???&quot;
+l_string|&quot;FXBUS2_25&quot;
 comma
 multiline_comment|/* 58 */
-l_string|&quot;???&quot;
+l_string|&quot;FXBUS2_26&quot;
 comma
 multiline_comment|/* 59 */
-l_string|&quot;???&quot;
+l_string|&quot;FXBUS2_27&quot;
 comma
 multiline_comment|/* 60 */
-l_string|&quot;???&quot;
+l_string|&quot;FXBUS2_28&quot;
 comma
 multiline_comment|/* 61 */
-l_string|&quot;???&quot;
+l_string|&quot;FXBUS2_29&quot;
 comma
 multiline_comment|/* 62 */
-l_string|&quot;???&quot;
+l_string|&quot;FXBUS2_30&quot;
 comma
-multiline_comment|/* 33 */
-l_string|&quot;???&quot;
+multiline_comment|/* 63 */
+l_string|&quot;FXBUS2_31&quot;
 )brace
 suffix:semicolon
 id|emu10k1_t
@@ -1149,7 +1149,14 @@ l_int|0
 suffix:semicolon
 id|idx
 OL
+(paren
+id|emu-&gt;audigy
+ques
+c_cond
+l_int|64
+suffix:colon
 l_int|32
+)paren
 suffix:semicolon
 id|idx
 op_increment
@@ -1872,6 +1879,87 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|function|snd_emu10k1_proc_voices_read
+r_static
+r_void
+id|snd_emu10k1_proc_voices_read
+c_func
+(paren
+id|snd_info_entry_t
+op_star
+id|entry
+comma
+id|snd_info_buffer_t
+op_star
+id|buffer
+)paren
+(brace
+id|emu10k1_t
+op_star
+id|emu
+op_assign
+id|entry-&gt;private_data
+suffix:semicolon
+id|emu10k1_voice_t
+op_star
+id|voice
+suffix:semicolon
+r_int
+id|idx
+suffix:semicolon
+id|snd_iprintf
+c_func
+(paren
+id|buffer
+comma
+l_string|&quot;ch&bslash;tuse&bslash;tpcm&bslash;tefx&bslash;tsynth&bslash;tmidi&bslash;n&quot;
+)paren
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|idx
+op_assign
+l_int|0
+suffix:semicolon
+id|idx
+OL
+id|NUM_G
+suffix:semicolon
+id|idx
+op_increment
+)paren
+(brace
+id|voice
+op_assign
+op_amp
+id|emu-&gt;voices
+(braket
+id|idx
+)braket
+suffix:semicolon
+id|snd_iprintf
+c_func
+(paren
+id|buffer
+comma
+l_string|&quot;%i&bslash;t%i&bslash;t%i&bslash;t%i&bslash;t%i&bslash;t%i&bslash;n&quot;
+comma
+id|idx
+comma
+id|voice-&gt;use
+comma
+id|voice-&gt;pcm
+comma
+id|voice-&gt;efx
+comma
+id|voice-&gt;synth
+comma
+id|voice-&gt;midi
+)paren
+suffix:semicolon
+)brace
+)brace
 macro_line|#ifdef CONFIG_SND_DEBUG
 DECL|function|snd_emu_proc_io_reg_read
 r_static
@@ -2387,7 +2475,7 @@ l_int|0
 suffix:semicolon
 id|j
 OL
-l_int|4
+l_int|64
 suffix:semicolon
 id|j
 op_increment
@@ -2844,7 +2932,7 @@ id|entry
 comma
 id|emu
 comma
-l_int|1024
+l_int|65536
 comma
 id|snd_emu_proc_ptr_reg_read00a
 )paren
@@ -2881,7 +2969,7 @@ id|entry
 comma
 id|emu
 comma
-l_int|1024
+l_int|65536
 comma
 id|snd_emu_proc_ptr_reg_read00b
 )paren
@@ -2918,7 +3006,7 @@ id|entry
 comma
 id|emu
 comma
-l_int|1024
+l_int|65536
 comma
 id|snd_emu_proc_ptr_reg_read20a
 )paren
@@ -2955,7 +3043,7 @@ id|entry
 comma
 id|emu
 comma
-l_int|1024
+l_int|65536
 comma
 id|snd_emu_proc_ptr_reg_read20b
 )paren
@@ -2995,6 +3083,33 @@ comma
 l_int|2048
 comma
 id|snd_emu10k1_proc_read
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|snd_card_proc_new
+c_func
+(paren
+id|emu-&gt;card
+comma
+l_string|&quot;voices&quot;
+comma
+op_amp
+id|entry
+)paren
+)paren
+id|snd_info_set_text_ops
+c_func
+(paren
+id|entry
+comma
+id|emu
+comma
+l_int|2048
+comma
+id|snd_emu10k1_proc_voices_read
 )paren
 suffix:semicolon
 r_if

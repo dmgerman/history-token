@@ -156,7 +156,7 @@ DECL|macro|AK4117_DIF_24L
 mdefine_line|#define AK4117_DIF_24L&t;&t;(AK4117_DIF2)&t;&t;&t;/* STDO: 24-bit, left justified */
 DECL|macro|AK4117_DIF_24I2S
 mdefine_line|#define AK4117_DIF_24I2S&t;(AK4117_DIF2|AK4117_DIF0)&t;/* STDO: I2S */
-multiline_comment|/* AK4117_REG_INT0_MASK &amp; AK4117_INT1_MASK */
+multiline_comment|/* AK4117_REG_INT0_MASK &amp; AK4117_REG_INT1_MASK */
 DECL|macro|AK4117_MULK
 mdefine_line|#define AK4117_MULK&t;&t;(1&lt;&lt;7)&t;/* mask enable for UNLOCK bit */
 DECL|macro|AK4117_MPAR
@@ -437,7 +437,7 @@ c_func
 (paren
 id|ak4117_t
 op_star
-id|chip
+id|ak4117
 comma
 r_int
 r_char
@@ -458,7 +458,7 @@ c_func
 (paren
 id|ak4117_t
 op_star
-id|chip
+id|ak4117
 )paren
 suffix:semicolon
 r_int
