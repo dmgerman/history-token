@@ -269,7 +269,8 @@ id|irq_action
 )paren
 )paren
 )paren
-r_continue
+r_goto
+id|out_unlock
 suffix:semicolon
 id|seq_printf
 c_func
@@ -401,6 +402,8 @@ l_char|&squot;&bslash;n&squot;
 )paren
 suffix:semicolon
 )brace
+id|out_unlock
+suffix:colon
 id|spin_unlock_irqrestore
 c_func
 (paren
