@@ -1168,10 +1168,6 @@ id|err
 op_assign
 l_int|0
 suffix:semicolon
-r_int
-r_int
-id|eflags
-suffix:semicolon
 id|tmp
 op_assign
 l_int|0
@@ -1414,29 +1410,12 @@ op_amp
 id|sc-&gt;cs
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Iff TF was set because the program is being single-stepped by a&n;&t; * debugger, don&squot;t save that information on the signal stack.. We&n;&t; * don&squot;t want debugging to change state.&n;&t; */
-id|eflags
-op_assign
-id|regs-&gt;eflags
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|current-&gt;ptrace
-op_amp
-id|PT_DTRACE
-)paren
-id|eflags
-op_and_assign
-op_complement
-id|TF_MASK
-suffix:semicolon
 id|err
 op_or_assign
 id|__put_user
 c_func
 (paren
-id|eflags
+id|regs-&gt;eflags
 comma
 op_amp
 id|sc-&gt;eflags
@@ -2008,14 +1987,6 @@ op_assign
 id|__USER_CS
 suffix:semicolon
 multiline_comment|/*&n;&t; * Clear TF when entering the signal handler, but&n;&t; * notify any tracer that was single-stepping it.&n;&t; * The tracer may want to single-step inside the&n;&t; * handler too.&n;&t; */
-r_if
-c_cond
-(paren
-id|regs-&gt;eflags
-op_amp
-id|TF_MASK
-)paren
-(brace
 id|regs-&gt;eflags
 op_and_assign
 op_complement
@@ -2024,9 +1995,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|current-&gt;ptrace
-op_amp
-id|PT_DTRACE
+id|test_thread_flag
+c_func
+(paren
+id|TIF_SINGLESTEP
+)paren
 )paren
 id|ptrace_notify
 c_func
@@ -2034,7 +2007,6 @@ c_func
 id|SIGTRAP
 )paren
 suffix:semicolon
-)brace
 macro_line|#if DEBUG_SIG
 id|printk
 c_func
@@ -2501,14 +2473,6 @@ op_assign
 id|__USER_CS
 suffix:semicolon
 multiline_comment|/*&n;&t; * Clear TF when entering the signal handler, but&n;&t; * notify any tracer that was single-stepping it.&n;&t; * The tracer may want to single-step inside the&n;&t; * handler too.&n;&t; */
-r_if
-c_cond
-(paren
-id|regs-&gt;eflags
-op_amp
-id|TF_MASK
-)paren
-(brace
 id|regs-&gt;eflags
 op_and_assign
 op_complement
@@ -2517,9 +2481,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|current-&gt;ptrace
-op_amp
-id|PT_DTRACE
+id|test_thread_flag
+c_func
+(paren
+id|TIF_SINGLESTEP
+)paren
 )paren
 id|ptrace_notify
 c_func
@@ -2527,7 +2493,6 @@ c_func
 id|SIGTRAP
 )paren
 suffix:semicolon
-)brace
 macro_line|#if DEBUG_SIG
 id|printk
 c_func
