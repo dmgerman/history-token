@@ -827,7 +827,7 @@ mdefine_line|#define KEY_SLOW&t;&t;0x199
 DECL|macro|KEY_SHUFFLE
 mdefine_line|#define KEY_SHUFFLE&t;&t;0x19a
 DECL|macro|KEY_BREAK
-mdefine_line|#define KEY_BREAK&t;&t;0x1ab
+mdefine_line|#define KEY_BREAK&t;&t;0x19b
 DECL|macro|KEY_PREVIOUS
 mdefine_line|#define KEY_PREVIOUS&t;&t;0x19c
 DECL|macro|KEY_DIGITS
@@ -835,7 +835,7 @@ mdefine_line|#define KEY_DIGITS&t;&t;0x19d
 DECL|macro|KEY_TEEN
 mdefine_line|#define KEY_TEEN&t;&t;0x19e
 DECL|macro|KEY_TWEN
-mdefine_line|#define KEY_TWEN&t;&t;0x1af
+mdefine_line|#define KEY_TWEN&t;&t;0x19f
 DECL|macro|KEY_MAX
 mdefine_line|#define KEY_MAX&t;&t;&t;0x1ff
 multiline_comment|/*&n; * Relative axes&n; */
