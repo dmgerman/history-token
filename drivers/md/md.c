@@ -417,8 +417,6 @@ c_func
 id|mddev
 )paren
 suffix:semicolon
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 )brace
 id|spin_unlock
 c_func
@@ -530,8 +528,6 @@ c_func
 op_amp
 id|all_mddevs_lock
 )paren
-suffix:semicolon
-id|MOD_INC_USE_COUNT
 suffix:semicolon
 r_return
 r_new
@@ -15213,6 +15209,12 @@ suffix:semicolon
 id|mddev
 op_assign
 id|disk-&gt;private_data
+suffix:semicolon
+id|export_array
+c_func
+(paren
+id|mddev
+)paren
 suffix:semicolon
 id|del_gendisk
 c_func
