@@ -6027,6 +6027,27 @@ comma
 id|qstring
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|tmp_dentry
+op_eq
+l_int|NULL
+)paren
+(brace
+id|cERROR
+c_func
+(paren
+l_int|1
+comma
+(paren
+l_string|&quot;Failed allocating dentry&quot;
+)paren
+)paren
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
 op_star
 id|ptmp_inode
 op_assign
