@@ -1,4 +1,5 @@
 multiline_comment|/* at1700.c: A network device driver for  the Allied Telesis AT1700.&n;&n;&t;Written 1993-98 by Donald Becker.&n;&n;&t;Copyright 1993 United States Government as represented by the&n;&t;Director, National Security Agency.&n;&n;&t;This software may be used and distributed according to the terms&n;&t;of the GNU General Public License, incorporated herein by reference.&n;&n;&t;The author may be reached as becker@scyld.com, or C/O&n;&t;Scyld Computing Corporation&n;&t;410 Severn Ave., Suite 210&n;&t;Annapolis MD 21403&n;&n;&t;This is a device driver for the Allied Telesis AT1700, and&n;        Fujitsu FMV-181/182/181A/182A/183/184/183A/184A, which are&n;&t;straight-forward Fujitsu MB86965 implementations.&n;&n;&t;Modification for Fujitsu FMV-18X cards is done by Yutaka Tamiya&n;&t;(tamy@flab.fujitsu.co.jp). &n;&n;  Sources:&n;    The Fujitsu MB86965 datasheet.&n;&n;&t;After the initial version of this driver was written Gerry Sawkins of&n;&t;ATI provided their EEPROM configuration code header file.&n;    Thanks to NIIBE Yutaka &lt;gniibe@mri.co.jp&gt; for bug fixes.&n;&n;    MCA bus (AT1720) support by Rene Schmit &lt;rene@bss.lu&gt;&n;&n;  Bugs:&n;&t;The MB86965 has a design flaw that makes all probes unreliable.  Not&n;&t;only is it difficult to detect, it also moves around in I/O space in&n;&t;response to inb()s from other device probes!&n;*/
+multiline_comment|/*&n;&t;99/03/03  Allied Telesis RE1000 Plus support by T.Hagawa&n;&t;99/12/30&t;port to 2.3.35 by K.Takai&n;*/
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
@@ -64,6 +65,7 @@ l_int|0
 )brace
 suffix:semicolon
 multiline_comment|/*&n; *&t;ISA&n; */
+macro_line|#ifndef CONFIG_X86_PC9800
 DECL|variable|__initdata
 r_static
 r_int
@@ -92,6 +94,36 @@ comma
 l_int|0
 )brace
 suffix:semicolon
+macro_line|#else /* CONFIG_X86_PC9800 */
+DECL|variable|__initdata
+r_static
+r_int
+id|at1700_probe_list
+(braket
+)braket
+id|__initdata
+op_assign
+(brace
+l_int|0x1d6
+comma
+l_int|0x1d8
+comma
+l_int|0x1da
+comma
+l_int|0x1d4
+comma
+l_int|0xd4
+comma
+l_int|0xd2
+comma
+l_int|0xd8
+comma
+l_int|0xd0
+comma
+l_int|0
+)brace
+suffix:semicolon
+macro_line|#endif /* CONFIG_X86_PC9800 */
 multiline_comment|/*&n; *&t;MCA&n; */
 macro_line|#ifdef CONFIG_MCA&t;
 DECL|variable|__initdata
@@ -280,6 +312,7 @@ multiline_comment|/* Current length of the Tx queue. */
 )brace
 suffix:semicolon
 multiline_comment|/* Offsets from the base address. */
+macro_line|#ifndef CONFIG_X86_PC9800
 DECL|macro|STATUS
 mdefine_line|#define STATUS&t;&t;&t;0
 DECL|macro|TX_STATUS
@@ -307,6 +340,8 @@ DECL|macro|COL16CNTL
 mdefine_line|#define COL16CNTL&t;&t;11&t;&t;/* Controll Reg for 16 collisions */
 DECL|macro|MODE13
 mdefine_line|#define MODE13&t;&t;&t;13
+DECL|macro|RX_CTRL
+mdefine_line|#define RX_CTRL&t;&t;&t;14
 multiline_comment|/* Configuration registers only on the &squot;865A/B chips. */
 DECL|macro|EEPROM_Ctrl
 mdefine_line|#define EEPROM_Ctrl &t;16
@@ -322,10 +357,66 @@ DECL|macro|IOCONFIG1
 mdefine_line|#define IOCONFIG1&t;&t;19
 DECL|macro|SAPROM
 mdefine_line|#define&t;SAPROM&t;&t;&t;20&t;&t;/* The station address PROM, if no EEPROM. */
+DECL|macro|MODE24
+mdefine_line|#define MODE24&t;&t;&t;24
 DECL|macro|RESET
 mdefine_line|#define RESET&t;&t;&t;31&t;&t;/* Write to reset some parts of the chip. */
 DECL|macro|AT1700_IO_EXTENT
 mdefine_line|#define AT1700_IO_EXTENT&t;32
+DECL|macro|PORT_OFFSET
+mdefine_line|#define PORT_OFFSET(o) (o)
+macro_line|#else /* CONFIG_X86_PC9800 */
+DECL|macro|STATUS
+mdefine_line|#define STATUS&t;&t;&t;(0x0000)
+DECL|macro|TX_STATUS
+mdefine_line|#define TX_STATUS&t;&t;(0x0000)
+DECL|macro|RX_STATUS
+mdefine_line|#define RX_STATUS&t;&t;(0x0001)
+DECL|macro|TX_INTR
+mdefine_line|#define TX_INTR&t;&t;&t;(0x0200)/* Bit-mapped interrupt enable registers. */
+DECL|macro|RX_INTR
+mdefine_line|#define RX_INTR&t;&t;&t;(0x0201)
+DECL|macro|TX_MODE
+mdefine_line|#define TX_MODE&t;&t;&t;(0x0400)
+DECL|macro|RX_MODE
+mdefine_line|#define RX_MODE&t;&t;&t;(0x0401)
+DECL|macro|CONFIG_0
+mdefine_line|#define CONFIG_0&t;&t;(0x0600)/* Misc. configuration settings. */
+DECL|macro|CONFIG_1
+mdefine_line|#define CONFIG_1&t;&t;(0x0601)
+multiline_comment|/* Run-time register bank 2 definitions. */
+DECL|macro|DATAPORT
+mdefine_line|#define DATAPORT&t;&t;(0x0800)/* Word-wide DMA or programmed-I/O dataport. */
+DECL|macro|TX_START
+mdefine_line|#define TX_START&t;&t;(0x0a00)
+DECL|macro|COL16CNTL
+mdefine_line|#define COL16CNTL&t;&t;(0x0a01)/* Controll Reg for 16 collisions */
+DECL|macro|MODE13
+mdefine_line|#define MODE13&t;&t;&t;(0x0c01)
+DECL|macro|RX_CTRL
+mdefine_line|#define RX_CTRL&t;&t;&t;(0x0e00)
+multiline_comment|/* Configuration registers only on the &squot;865A/B chips. */
+DECL|macro|EEPROM_Ctrl
+mdefine_line|#define EEPROM_Ctrl &t;(0x1000)
+DECL|macro|EEPROM_Data
+mdefine_line|#define EEPROM_Data &t;(0x1200)
+DECL|macro|CARDSTATUS
+mdefine_line|#define CARDSTATUS&t;16&t;&t;&t;/* FMV-18x Card Status */
+DECL|macro|CARDSTATUS1
+mdefine_line|#define CARDSTATUS1&t;17&t;&t;&t;/* FMV-18x Card Status */
+DECL|macro|IOCONFIG
+mdefine_line|#define IOCONFIG&t;&t;(0x1400)/* Either read the jumper, or move the I/O. */
+DECL|macro|IOCONFIG1
+mdefine_line|#define IOCONFIG1&t;&t;(0x1600)
+DECL|macro|SAPROM
+mdefine_line|#define&t;SAPROM&t;&t;&t;20&t;&t;/* The station address PROM, if no EEPROM. */
+DECL|macro|MODE24
+mdefine_line|#define&t;MODE24&t;&t;&t;(0x1800)/* The station address PROM, if no EEPROM. */
+DECL|macro|RESET
+mdefine_line|#define RESET&t;&t;&t;(0x1e01)/* Write to reset some parts of the chip. */
+DECL|macro|PORT_OFFSET
+mdefine_line|#define PORT_OFFSET(o) ({ int _o_ = (o); (_o_ &amp; ~1) * 0x100 + (_o_ &amp; 1); })
+macro_line|#endif /* CONFIG_X86_PC9800 */
 DECL|macro|TX_TIMEOUT
 mdefine_line|#define TX_TIMEOUT&t;&t;10
 multiline_comment|/* Index to functions, as function prototypes. */
@@ -733,6 +824,7 @@ id|net_local
 op_star
 id|lp
 suffix:semicolon
+macro_line|#ifndef CONFIG_X86_PC9800
 r_if
 c_cond
 (paren
@@ -751,6 +843,70 @@ r_return
 op_minus
 id|EBUSY
 suffix:semicolon
+macro_line|#else
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+l_int|0x2000
+suffix:semicolon
+id|i
+op_add_assign
+l_int|0x0200
+)paren
+(brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|request_region
+c_func
+(paren
+id|ioaddr
+op_plus
+id|i
+comma
+l_int|2
+comma
+id|dev-&gt;name
+)paren
+)paren
+(brace
+r_while
+c_loop
+(paren
+id|i
+OG
+l_int|0
+)paren
+(brace
+id|i
+op_sub_assign
+l_int|0x0200
+suffix:semicolon
+id|release_region
+c_func
+(paren
+id|ioaddr
+op_plus
+id|i
+comma
+l_int|2
+)paren
+suffix:semicolon
+)brace
+r_return
+op_minus
+id|EBUSY
+suffix:semicolon
+)brace
+)brace
+macro_line|#endif
 multiline_comment|/* Resetting the chip doesn&squot;t reset the ISA interface, so don&squot;t bother.&n;&t;   That means we have to be careful with the register values we probe for.&n;&t;   */
 macro_line|#ifdef notdef
 id|printk
@@ -1165,6 +1321,8 @@ c_cond
 (paren
 id|is_at1700
 )paren
+(brace
+macro_line|#ifndef CONFIG_X86_PC9800
 id|irq
 op_assign
 id|at1700_irqmap
@@ -1194,6 +1352,42 @@ l_int|14
 )paren
 )braket
 suffix:semicolon
+macro_line|#else
+(brace
+r_char
+id|re1000plus_irqmap
+(braket
+l_int|4
+)braket
+op_assign
+(brace
+l_int|3
+comma
+l_int|5
+comma
+l_int|6
+comma
+l_int|12
+)brace
+suffix:semicolon
+id|irq
+op_assign
+id|re1000plus_irqmap
+(braket
+id|inb
+c_func
+(paren
+id|ioaddr
+op_plus
+id|IOCONFIG1
+)paren
+op_rshift
+l_int|6
+)braket
+suffix:semicolon
+)brace
+macro_line|#endif
+)brace
 r_else
 (brace
 multiline_comment|/* Check PnP mode for FMV-183/184/183A/184A. */
@@ -1602,9 +1796,13 @@ id|i
 comma
 id|ioaddr
 op_plus
+id|PORT_OFFSET
+c_func
+(paren
 l_int|8
 op_plus
 id|i
+)paren
 )paren
 suffix:semicolon
 multiline_comment|/* Switch to bank 1 and set the multicast table to accept none. */
@@ -1639,9 +1837,13 @@ l_int|0x00
 comma
 id|ioaddr
 op_plus
+id|PORT_OFFSET
+c_func
+(paren
 l_int|8
 op_plus
 id|i
+)paren
 )paren
 suffix:semicolon
 multiline_comment|/* Switch to bank 2 */
@@ -1656,6 +1858,7 @@ op_plus
 id|CONFIG_1
 )paren
 suffix:semicolon
+macro_line|#ifndef CONFIG_X86_PC9800
 id|outb
 c_func
 (paren
@@ -1666,6 +1869,18 @@ op_plus
 id|MODE13
 )paren
 suffix:semicolon
+macro_line|#else
+id|outb
+c_func
+(paren
+l_int|0
+comma
+id|ioaddr
+op_plus
+id|MODE13
+)paren
+suffix:semicolon
+macro_line|#endif
 id|outb
 c_func
 (paren
@@ -1845,6 +2060,7 @@ l_int|NULL
 suffix:semicolon
 id|err_out
 suffix:colon
+macro_line|#ifndef CONFIG_X86_PC9800
 id|release_region
 c_func
 (paren
@@ -1853,6 +2069,33 @@ comma
 id|AT1700_IO_EXTENT
 )paren
 suffix:semicolon
+macro_line|#else
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+l_int|0x2000
+suffix:semicolon
+id|i
+op_add_assign
+l_int|0x0200
+)paren
+id|release_region
+c_func
+(paren
+id|ioaddr
+op_plus
+id|i
+comma
+l_int|2
+)paren
+suffix:semicolon
+macro_line|#endif
 r_return
 id|ret
 suffix:semicolon
@@ -1868,8 +2111,13 @@ mdefine_line|#define EE_DATA_WRITE&t;0x80&t;/* EEPROM chip data in, in reg. 17. 
 DECL|macro|EE_DATA_READ
 mdefine_line|#define EE_DATA_READ&t;0x80&t;/* EEPROM chip data out, in reg. 17. */
 multiline_comment|/* Delay between EEPROM clock transitions. */
+macro_line|#ifndef CONFIG_X86_PC9800
 DECL|macro|eeprom_delay
 mdefine_line|#define eeprom_delay()&t;do { } while (0)
+macro_line|#else
+DECL|macro|eeprom_delay
+mdefine_line|#define eeprom_delay()&t;__asm__ (&quot;out%B0 %%al,%0&quot; :: &quot;N&quot;(0x5f))
+macro_line|#endif
 multiline_comment|/* The EEPROM commands include the alway-set leading bit. */
 DECL|macro|EE_WRITE_CMD
 mdefine_line|#define EE_WRITE_CMD&t;(5 &lt;&lt; 6)
@@ -2288,59 +2536,69 @@ comma
 id|dev-&gt;name
 comma
 id|inw
+c_func
 (paren
 id|ioaddr
 op_plus
-l_int|0
+id|TX_STATUS
 )paren
 comma
 id|inw
+c_func
 (paren
 id|ioaddr
 op_plus
-l_int|2
+id|TX_INTR
 )paren
 comma
 id|inw
+c_func
 (paren
 id|ioaddr
 op_plus
-l_int|4
+id|TX_MODE
 )paren
 comma
 id|inw
+c_func
 (paren
 id|ioaddr
 op_plus
-l_int|6
+id|CONFIG_0
 )paren
 comma
 id|inw
+c_func
 (paren
 id|ioaddr
 op_plus
-l_int|8
+id|DATAPORT
 )paren
 comma
 id|inw
+c_func
 (paren
 id|ioaddr
 op_plus
-l_int|10
+id|TX_START
 )paren
 comma
 id|inw
+c_func
 (paren
 id|ioaddr
 op_plus
-l_int|12
+id|MODE13
+op_minus
+l_int|1
 )paren
 comma
 id|inw
+c_func
 (paren
 id|ioaddr
 op_plus
-l_int|14
+id|RX_CTRL
 )paren
 )paren
 suffix:semicolon
@@ -2349,12 +2607,13 @@ op_increment
 suffix:semicolon
 multiline_comment|/* ToDo: We should try to restart the adaptor... */
 id|outw
+c_func
 (paren
 l_int|0xffff
 comma
 id|ioaddr
 op_plus
-l_int|24
+id|MODE24
 )paren
 suffix:semicolon
 id|outw
@@ -3091,7 +3350,7 @@ l_int|0x05
 comma
 id|ioaddr
 op_plus
-l_int|14
+id|RX_CTRL
 )paren
 suffix:semicolon
 r_break
@@ -3205,7 +3464,7 @@ l_int|0x05
 comma
 id|ioaddr
 op_plus
-l_int|14
+id|RX_CTRL
 )paren
 suffix:semicolon
 id|lp-&gt;stats.rx_errors
@@ -3266,7 +3525,7 @@ l_int|0x05
 comma
 id|ioaddr
 op_plus
-l_int|14
+id|RX_CTRL
 )paren
 suffix:semicolon
 id|lp-&gt;stats.rx_dropped
@@ -3405,7 +3664,7 @@ l_int|0x05
 comma
 id|ioaddr
 op_plus
-l_int|14
+id|RX_CTRL
 )paren
 suffix:semicolon
 )brace
@@ -3796,15 +4055,12 @@ id|RX_MODE
 suffix:semicolon
 multiline_comment|/* Use normal mode. */
 )brace
-id|save_flags
-c_func
+id|spin_lock_irqsave
 (paren
+op_amp
+id|lp-&gt;lock
+comma
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 r_if
@@ -3877,9 +4133,13 @@ id|i
 comma
 id|ioaddr
 op_plus
+id|PORT_OFFSET
+c_func
+(paren
 l_int|8
 op_plus
 id|i
+)paren
 )paren
 suffix:semicolon
 id|memcpy
@@ -3906,9 +4166,11 @@ id|CONFIG_0
 )paren
 suffix:semicolon
 )brace
-id|restore_flags
-c_func
+id|spin_unlock_irqrestore
 (paren
+op_amp
+id|lp-&gt;lock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -3922,6 +4184,7 @@ r_struct
 id|net_device
 id|dev_at1700
 suffix:semicolon
+macro_line|#ifndef CONFIG_X86_PC9800
 DECL|variable|io
 r_static
 r_int
@@ -3929,6 +4192,15 @@ id|io
 op_assign
 l_int|0x260
 suffix:semicolon
+macro_line|#else
+DECL|variable|io
+r_static
+r_int
+id|io
+op_assign
+l_int|0xd0
+suffix:semicolon
+macro_line|#endif
 DECL|variable|irq
 r_static
 r_int
@@ -4099,6 +4371,7 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
+macro_line|#ifndef CONFIG_X86_PC9800
 id|release_region
 c_func
 (paren
@@ -4107,6 +4380,38 @@ comma
 id|AT1700_IO_EXTENT
 )paren
 suffix:semicolon
+macro_line|#else
+(brace
+r_int
+id|i
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+l_int|0x2000
+suffix:semicolon
+id|i
+op_add_assign
+l_int|0x200
+)paren
+id|release_region
+c_func
+(paren
+id|dev_at1700.base_addr
+op_plus
+id|i
+comma
+l_int|2
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif
 )brace
 macro_line|#endif /* MODULE */
 id|MODULE_LICENSE
