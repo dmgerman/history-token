@@ -24843,6 +24843,7 @@ id|i
 )braket
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_PCI
 r_if
 c_cond
 (paren
@@ -24864,6 +24865,7 @@ dot
 id|pdev
 )paren
 suffix:semicolon
+macro_line|#endif
 )brace
 )brace
 r_if
