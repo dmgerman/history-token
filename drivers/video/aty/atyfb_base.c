@@ -999,7 +999,7 @@ comma
 dot
 id|fb_cursor
 op_assign
-id|atyfb_cursor
+id|soft_cursor
 comma
 macro_line|#ifdef __sparc__
 dot
