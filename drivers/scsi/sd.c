@@ -891,9 +891,10 @@ id|dsk_nr
 comma
 id|part_nr
 comma
-id|block
-comma
 id|this_count
+suffix:semicolon
+id|sector_t
+id|block
 suffix:semicolon
 id|Scsi_Device
 op_star
@@ -955,11 +956,16 @@ comma
 id|printk
 c_func
 (paren
-l_string|&quot;sd_command_init: dsk_nr=%d, block=%d, &quot;
+l_string|&quot;sd_command_init: dsk_nr=%d, block=%llu, &quot;
 l_string|&quot;count=%d&bslash;n&quot;
 comma
 id|dsk_nr
 comma
+(paren
+r_int
+r_int
+r_int
+)paren
 id|block
 comma
 id|this_count
@@ -1075,12 +1081,17 @@ comma
 id|printk
 c_func
 (paren
-l_string|&quot;%s : [part_nr=%d], block=%d&bslash;n&quot;
+l_string|&quot;%s : [part_nr=%d], block=%llu&bslash;n&quot;
 comma
 id|nbuff
 comma
 id|part_nr
 comma
+(paren
+r_int
+r_int
+r_int
+)paren
 id|block
 )paren
 )paren
@@ -2133,12 +2144,12 @@ suffix:colon
 l_int|0
 )paren
 suffix:semicolon
-r_int
+id|sector_t
 id|block_sectors
 op_assign
 l_int|1
 suffix:semicolon
-r_int
+id|sector_t
 id|error_sector
 suffix:semicolon
 macro_line|#if CONFIG_SCSI_LOGGING
@@ -3893,7 +3904,7 @@ id|sdp-&gt;changed
 op_assign
 l_int|1
 suffix:semicolon
-multiline_comment|/* Either no media are present but the drive didnt tell us,&n;&t;&t;   or they are present but the read capacity command fails */
+multiline_comment|/* Either no media are present but the drive didn&squot;t tell us,&n;&t;&t;   or they are present but the read capacity command fails */
 multiline_comment|/* sdkp-&gt;media_present = 0; -- not always correct */
 id|sdkp-&gt;capacity
 op_assign
@@ -3909,6 +3920,9 @@ l_int|1
 op_plus
 (paren
 (paren
+(paren
+id|sector_t
+)paren
 id|buffer
 (braket
 l_int|0
@@ -4047,7 +4061,7 @@ id|hard_sector
 op_assign
 id|sector_size
 suffix:semicolon
-r_int
+id|sector_t
 id|sz
 op_assign
 id|sdkp-&gt;capacity
@@ -4065,6 +4079,9 @@ op_assign
 op_amp
 id|sdp-&gt;request_queue
 suffix:semicolon
+id|sector_t
+id|mb
+suffix:semicolon
 id|blk_queue_hardsect_size
 c_func
 (paren
@@ -4073,32 +4090,59 @@ comma
 id|hard_sector
 )paren
 suffix:semicolon
+multiline_comment|/* avoid 64-bit division on 32-bit platforms */
+id|mb
+op_assign
+id|sz
+op_rshift
+l_int|1
+suffix:semicolon
+id|sector_div
+c_func
+(paren
+id|sz
+comma
+l_int|1250
+)paren
+suffix:semicolon
+id|mb
+op_sub_assign
+id|sz
+op_minus
+l_int|974
+suffix:semicolon
+id|sector_div
+c_func
+(paren
+id|mb
+comma
+l_int|1950
+)paren
+suffix:semicolon
 id|printk
 c_func
 (paren
 id|KERN_NOTICE
 l_string|&quot;SCSI device %s: &quot;
-l_string|&quot;%d %d-byte hdwr sectors (%d MB)&bslash;n&quot;
+l_string|&quot;%llu %d-byte hdwr sectors (%llu MB)&bslash;n&quot;
 comma
 id|diskname
 comma
+(paren
+r_int
+r_int
+r_int
+)paren
 id|sdkp-&gt;capacity
 comma
 id|hard_sector
 comma
 (paren
-id|sz
-op_div
-l_int|2
-op_minus
-id|sz
-op_div
-l_int|1250
-op_plus
-l_int|974
+r_int
+r_int
+r_int
 )paren
-op_div
-l_int|1950
+id|mb
 )paren
 suffix:semicolon
 )brace
@@ -4114,6 +4158,7 @@ id|sdkp-&gt;capacity
 op_lshift_assign
 l_int|3
 suffix:semicolon
+r_else
 r_if
 c_cond
 (paren
@@ -4125,6 +4170,7 @@ id|sdkp-&gt;capacity
 op_lshift_assign
 l_int|2
 suffix:semicolon
+r_else
 r_if
 c_cond
 (paren
@@ -4136,6 +4182,7 @@ id|sdkp-&gt;capacity
 op_lshift_assign
 l_int|1
 suffix:semicolon
+r_else
 r_if
 c_cond
 (paren

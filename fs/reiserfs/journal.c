@@ -4725,8 +4725,13 @@ id|saved_bh
 id|printk
 c_func
 (paren
-l_string|&quot;journal-813: BAD! buffer %lu %cdirty %cjwait, not in a newer tranasction&bslash;n&quot;
+l_string|&quot;journal-813: BAD! buffer %llu %cdirty %cjwait, not in a newer tranasction&bslash;n&quot;
 comma
+(paren
+r_int
+r_int
+r_int
+)paren
 id|saved_bh-&gt;b_blocknr
 comma
 id|was_dirty
@@ -4759,8 +4764,13 @@ id|saved_bh
 id|printk
 c_func
 (paren
-l_string|&quot;clm-2083: locked buffer %lu in flush_journal_list&bslash;n&quot;
+l_string|&quot;clm-2083: locked buffer %llu in flush_journal_list&bslash;n&quot;
 comma
+(paren
+r_int
+r_int
+r_int
+)paren
 id|saved_bh-&gt;b_blocknr
 )paren
 suffix:semicolon
@@ -4828,8 +4838,13 @@ r_else
 id|printk
 c_func
 (paren
-l_string|&quot;clm-2082: Unable to flush buffer %lu in flush_journal_list&bslash;n&quot;
+l_string|&quot;clm-2082: Unable to flush buffer %llu in flush_journal_list&bslash;n&quot;
 comma
+(paren
+r_int
+r_int
+r_int
+)paren
 id|saved_bh-&gt;b_blocknr
 )paren
 suffix:semicolon
@@ -12136,8 +12151,13 @@ id|bh
 id|printk
 c_func
 (paren
-l_string|&quot;journal-1777: buffer %lu bad state %cPREPARED %cLOCKED %cDIRTY %cJDIRTY_WAIT&bslash;n&quot;
+l_string|&quot;journal-1777: buffer %llu bad state %cPREPARED %cLOCKED %cDIRTY %cJDIRTY_WAIT&bslash;n&quot;
 comma
+(paren
+r_int
+r_int
+r_int
+)paren
 id|bh-&gt;b_blocknr
 comma
 id|prepared

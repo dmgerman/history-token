@@ -2224,7 +2224,7 @@ id|sb
 comma
 id|__FUNCTION__
 comma
-l_string|&quot;bad orphan inode %ld!  e2fsck was run?&bslash;n&quot;
+l_string|&quot;bad orphan inode %lu!  e2fsck was run?&bslash;n&quot;
 comma
 id|ino
 )paren
@@ -2233,10 +2233,15 @@ id|printk
 c_func
 (paren
 id|KERN_NOTICE
-l_string|&quot;ext3_test_bit(bit=%d, block=%ld) = %d&bslash;n&quot;
+l_string|&quot;ext3_test_bit(bit=%d, block=%llu) = %d&bslash;n&quot;
 comma
 id|bit
 comma
+(paren
+r_int
+r_int
+r_int
+)paren
 id|bitmap_bh-&gt;b_blocknr
 comma
 id|ext3_test_bit

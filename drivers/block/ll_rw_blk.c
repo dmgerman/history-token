@@ -1859,8 +1859,13 @@ id|REQ_CMD
 id|printk
 c_func
 (paren
-l_string|&quot;sector %lu, nr/cnr %lu/%u&bslash;n&quot;
+l_string|&quot;sector %llu, nr/cnr %lu/%u&bslash;n&quot;
 comma
+(paren
+r_int
+r_int
+r_int
+)paren
 id|rq-&gt;sector
 comma
 id|rq-&gt;nr_sectors
@@ -6105,7 +6110,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;%s: rw=%ld, want=%ld, limit=%Lu&bslash;n&quot;
+l_string|&quot;%s: rw=%ld, want=%Lu, limit=%Lu&bslash;n&quot;
 comma
 id|bdevname
 c_func
@@ -6115,6 +6120,11 @@ id|bio-&gt;bi_bdev
 comma
 id|bio-&gt;bi_rw
 comma
+(paren
+r_int
+r_int
+r_int
+)paren
 id|sector
 op_plus
 id|nr_sectors
@@ -6212,7 +6222,13 @@ id|q-&gt;max_sectors
 id|printk
 c_func
 (paren
-l_string|&quot;bio too big (%u &gt; %u)&bslash;n&quot;
+l_string|&quot;bio too big device %s (%u &gt; %u)&bslash;n&quot;
+comma
+id|bdevname
+c_func
+(paren
+id|bio-&gt;bi_bdev
+)paren
 comma
 id|bio_sectors
 c_func
@@ -6544,7 +6560,7 @@ id|uptodate
 id|printk
 c_func
 (paren
-l_string|&quot;end_request: I/O error, dev %s, sector %lu&bslash;n&quot;
+l_string|&quot;end_request: I/O error, dev %s, sector %llu&bslash;n&quot;
 comma
 id|kdevname
 c_func
@@ -6552,6 +6568,11 @@ c_func
 id|req-&gt;rq_dev
 )paren
 comma
+(paren
+r_int
+r_int
+r_int
+)paren
 id|req-&gt;sector
 )paren
 suffix:semicolon
