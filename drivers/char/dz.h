@@ -330,12 +330,6 @@ id|dz_serial
 op_star
 id|dz_console
 suffix:semicolon
-DECL|variable|serial_driver
-r_static
-r_struct
-id|tty_driver
-id|serial_driver
-suffix:semicolon
 multiline_comment|/*&n; * tmp_buf is used as a temporary buffer by serial_write.  We need to&n; * lock it in case the copy_from_user blocks while swapping in a page,&n; * and some other program tries to do a serial write at the same time.&n; * Since the lock will only come under contention when the system is&n; * swapping and available memory is low, it makes sense to share one&n; * buffer across all the serial ports, since it significantly saves&n; * memory if large numbers of serial ports are open.&n; */
 DECL|variable|tmp_buf
 r_static
