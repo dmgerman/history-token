@@ -27,7 +27,6 @@ DECL|macro|KERNEL_VERSION
 mdefine_line|#define KERNEL_VERSION(a,b,c) (((a) &lt;&lt; 16) | ((b) &lt;&lt; 8) | (c))
 macro_line|#endif
 macro_line|#include &lt;asm/page.h&gt;&t;&t;&t;/* for 2.2.xx &t;&t;&t;*/
-macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 multiline_comment|/* --- General options ------------------------------------------------&t;*/
