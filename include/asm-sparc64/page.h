@@ -281,22 +281,9 @@ macro_line|#endif /* !(__ASSEMBLY__) */
 multiline_comment|/* to align the pointer to the (next) page boundary */
 DECL|macro|PAGE_ALIGN
 mdefine_line|#define PAGE_ALIGN(addr)&t;(((addr)+PAGE_SIZE-1)&amp;PAGE_MASK)
-macro_line|#ifndef __ASSEMBLY__
-multiline_comment|/* Do prdele, look what happens to be in %g4... */
-r_register
-r_int
-r_int
-id|PAGE_OFFSET
-id|asm
-c_func
-(paren
-l_string|&quot;g4&quot;
-)paren
-suffix:semicolon
-macro_line|#else
+multiline_comment|/* We used to stick this into a hard-coded global register (%g4)&n; * but that does not make sense anymore.&n; */
 DECL|macro|PAGE_OFFSET
 mdefine_line|#define PAGE_OFFSET&t;&t;0xFFFFF80000000000
-macro_line|#endif
 DECL|macro|__pa
 mdefine_line|#define __pa(x)&t;&t;&t;((unsigned long)(x) - PAGE_OFFSET)
 DECL|macro|__va
