@@ -7,12 +7,22 @@ macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/security.h&gt;
 DECL|macro|SECURITY_SCAFFOLD_VERSION
 mdefine_line|#define SECURITY_SCAFFOLD_VERSION&t;&quot;1.0.0&quot;
+multiline_comment|/* things that live in dummy.c */
 r_extern
 r_struct
 id|security_operations
 id|dummy_security_ops
 suffix:semicolon
-multiline_comment|/* lives in dummy.c */
+r_extern
+r_void
+id|security_fixup_ops
+(paren
+r_struct
+id|security_operations
+op_star
+id|ops
+)paren
+suffix:semicolon
 DECL|variable|security_ops
 r_struct
 id|security_operations
@@ -20,13 +30,10 @@ op_star
 id|security_ops
 suffix:semicolon
 multiline_comment|/* Initialized to NULL */
-multiline_comment|/* This macro checks that all pointers in a struct are non-NULL.  It &n; * can be fooled by struct padding for object tile alignment and when&n; * pointers to data and pointers to functions aren&squot;t the same size.&n; * Yes it&squot;s ugly, we&squot;ll replace it if it becomes a problem.&n; */
-DECL|macro|VERIFY_STRUCT
-mdefine_line|#define VERIFY_STRUCT(struct_type, s, e) &bslash;&n;&t;do { &bslash;&n;&t;&t;unsigned long * __start = (unsigned long *)(s); &bslash;&n;&t;&t;unsigned long * __end = __start + &bslash;&n;&t;&t;&t;&t;sizeof(struct_type)/sizeof(unsigned long *); &bslash;&n;&t;&t;while (__start != __end) { &bslash;&n;&t;&t;&t;if (!*__start) { &bslash;&n;&t;&t;&t;&t;printk(KERN_INFO &quot;%s is missing something&bslash;n&quot;,&bslash;&n;&t;&t;&t;&t;&t;#struct_type); &bslash;&n;&t;&t;&t;&t;e++; &bslash;&n;&t;&t;&t;&t;break; &bslash;&n;&t;&t;&t;} &bslash;&n;&t;&t;&t;__start++; &bslash;&n;&t;&t;} &bslash;&n;&t;} while (0)
 DECL|function|verify
 r_static
-r_int
 r_inline
+r_int
 id|verify
 (paren
 r_struct
@@ -35,9 +42,6 @@ op_star
 id|ops
 )paren
 (brace
-r_int
-id|err
-suffix:semicolon
 multiline_comment|/* verify the security_operations structure exists */
 r_if
 c_cond
@@ -60,43 +64,11 @@ op_minus
 id|EINVAL
 suffix:semicolon
 )brace
-multiline_comment|/* Perform a little sanity checking on our inputs */
-id|err
-op_assign
-l_int|0
-suffix:semicolon
-multiline_comment|/* This first check scans the whole security_ops struct for&n;&t; * missing structs or functions.&n;&t; *&n;&t; * (There is no further check now, but will leave as is until&n;&t; *  the lazy registration stuff is done -- JM).&n;&t; */
-id|VERIFY_STRUCT
-c_func
+id|security_fixup_ops
 (paren
-r_struct
-id|security_operations
-comma
 id|ops
-comma
-id|err
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|err
-)paren
-(brace
-id|printk
-(paren
-id|KERN_INFO
-l_string|&quot;Not enough functions specified in the &quot;
-l_string|&quot;security_operation structure, %s failed.&bslash;n&quot;
-comma
-id|__FUNCTION__
-)paren
-suffix:semicolon
-r_return
-op_minus
-id|EINVAL
-suffix:semicolon
-)brace
 r_return
 l_int|0
 suffix:semicolon
