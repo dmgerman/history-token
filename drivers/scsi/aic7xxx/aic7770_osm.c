@@ -495,7 +495,18 @@ c_func
 r_void
 )paren
 (brace
-macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,5,0)
+r_if
+c_cond
+(paren
+id|aic7xxx_probe_eisa_vl
+op_ne
+l_int|0
+op_logical_and
+id|aic7770_driver.id_table
+op_ne
+l_int|NULL
+)paren
+(brace
 id|eisa_driver_unregister
 c_func
 (paren
@@ -511,7 +522,7 @@ comma
 id|M_DEVBUF
 )paren
 suffix:semicolon
-macro_line|#endif
+)brace
 )brace
 r_static
 r_int

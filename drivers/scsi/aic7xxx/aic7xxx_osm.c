@@ -2276,6 +2276,13 @@ id|ahc
 suffix:semicolon
 r_int
 id|found
+op_assign
+l_int|0
+suffix:semicolon
+r_int
+id|eisa_err
+comma
+id|pci_err
 suffix:semicolon
 macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,5,0)
 multiline_comment|/*&n;&t; * It is a bug that the upper layer takes&n;&t; * this lock just prior to calling us.&n;&t; */
@@ -2387,25 +2394,14 @@ c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_PCI
-id|found
+id|pci_err
 op_assign
 id|ahc_linux_pci_init
 c_func
 (paren
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|found
-)paren
-r_goto
-id|out
-suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef CONFIG_EISA
-id|found
+id|eisa_err
 op_assign
 id|ahc_linux_eisa_init
 c_func
@@ -2415,21 +2411,15 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|found
+id|pci_err
+op_logical_and
+id|eisa_err
 )paren
 (brace
-macro_line|#ifdef CONFIG_PCI
-id|ahc_linux_pci_exit
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
 r_goto
 id|out
 suffix:semicolon
 )brace
-macro_line|#endif
 multiline_comment|/*&n;&t; * Register with the SCSI layer all&n;&t; * controllers we&squot;ve found.&n;&t; */
 id|TAILQ_FOREACH
 c_func
@@ -2459,6 +2449,8 @@ id|found
 op_increment
 suffix:semicolon
 )brace
+id|out
+suffix:colon
 macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,5,0)
 id|spin_lock_irq
 c_func
@@ -2471,8 +2463,6 @@ macro_line|#endif
 id|aic7xxx_detect_complete
 op_increment
 suffix:semicolon
-id|out
-suffix:colon
 r_return
 (paren
 id|found
@@ -19535,7 +19525,6 @@ suffix:semicolon
 )brace
 r_static
 r_void
-id|__exit
 id|ahc_linux_exit
 c_func
 (paren
@@ -19623,7 +19612,6 @@ macro_line|#endif
 )brace
 r_static
 r_void
-id|__exit
 DECL|function|ahc_linux_exit
 id|ahc_linux_exit
 c_func
@@ -19684,20 +19672,16 @@ id|aic7xxx_driver_template
 )paren
 suffix:semicolon
 macro_line|#endif
-macro_line|#ifdef CONFIG_PCI
 id|ahc_linux_pci_exit
 c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef CONFIG_EISA
 id|ahc_linux_eisa_exit
 c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#endif
 )brace
 DECL|variable|ahc_linux_init
 id|module_init
