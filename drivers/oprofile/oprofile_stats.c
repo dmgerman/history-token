@@ -202,7 +202,7 @@ c_func
 (paren
 id|buf
 comma
-l_int|6
+l_int|10
 comma
 l_string|&quot;cpu%d&quot;
 comma
