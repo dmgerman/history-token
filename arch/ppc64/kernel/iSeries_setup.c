@@ -1275,10 +1275,6 @@ id|ppc_md.setup_arch
 op_assign
 id|iSeries_setup_arch
 suffix:semicolon
-id|ppc_md.setup_residual
-op_assign
-id|iSeries_setup_residual
-suffix:semicolon
 id|ppc_md.get_cpuinfo
 op_assign
 id|iSeries_get_cpuinfo
@@ -2921,66 +2917,6 @@ c_func
 l_string|&quot;Processor version = %x&bslash;n&quot;
 comma
 id|systemcfg-&gt;processor
-)paren
-suffix:semicolon
-)brace
-multiline_comment|/*&n; * int as400_setup_residual()&n; *&n; * Description:&n; *   This routine pretty-prints CPU information gathered from the VPD    &n; *   for use in /proc/cpuinfo                               &n; *&n; * Input(s):&n; *  *buffer - Buffer into which CPU data is to be printed.             &n; *&n; * Output(s):&n; *  *buffer - Buffer with CPU data.&n; */
-DECL|function|iSeries_setup_residual
-r_void
-id|iSeries_setup_residual
-c_func
-(paren
-r_struct
-id|seq_file
-op_star
-id|m
-comma
-r_int
-id|cpu_id
-)paren
-(brace
-id|seq_printf
-c_func
-(paren
-id|m
-comma
-l_string|&quot;clock&bslash;t&bslash;t: %lu.%02luMhz&bslash;n&quot;
-comma
-id|procFreqMhz
-comma
-id|procFreqMhzHundreths
-)paren
-suffix:semicolon
-id|seq_printf
-c_func
-(paren
-id|m
-comma
-l_string|&quot;time base&bslash;t: %lu.%02luMHz&bslash;n&quot;
-comma
-id|tbFreqMhz
-comma
-id|tbFreqMhzHundreths
-)paren
-suffix:semicolon
-id|seq_printf
-c_func
-(paren
-id|m
-comma
-l_string|&quot;i-cache&bslash;t&bslash;t: %d&bslash;n&quot;
-comma
-id|systemcfg-&gt;iCacheL1LineSize
-)paren
-suffix:semicolon
-id|seq_printf
-c_func
-(paren
-id|m
-comma
-l_string|&quot;d-cache&bslash;t&bslash;t: %d&bslash;n&quot;
-comma
-id|systemcfg-&gt;dCacheL1LineSize
 )paren
 suffix:semicolon
 )brace
