@@ -54,7 +54,7 @@ l_int|1
 suffix:semicolon
 macro_line|#endif
 DECL|macro|DEPCA_NDA
-mdefine_line|#define DEPCA_NDA 0xffe0            /* No Device Address */
+mdefine_line|#define DEPCA_NDA 0xffe0&t;/* No Device Address */
 DECL|macro|TX_TIMEOUT
 mdefine_line|#define TX_TIMEOUT (1*HZ)
 multiline_comment|/*&n;** Ethernet PROM defines&n;*/
@@ -64,16 +64,16 @@ DECL|macro|ETH_PROM_SIG
 mdefine_line|#define ETH_PROM_SIG    0xAA5500FFUL
 multiline_comment|/*&n;** Set the number of Tx and Rx buffers. Ensure that the memory requested&n;** here is &lt;= to the amount of shared memory set up by the board switches.&n;** The number of descriptors MUST BE A POWER OF 2.&n;**&n;** total_memory = NUM_RX_DESC*(8+RX_BUFF_SZ) + NUM_TX_DESC*(8+TX_BUFF_SZ)&n;*/
 DECL|macro|NUM_RX_DESC
-mdefine_line|#define NUM_RX_DESC     8               /* Number of RX descriptors */
+mdefine_line|#define NUM_RX_DESC     8&t;/* Number of RX descriptors */
 DECL|macro|NUM_TX_DESC
-mdefine_line|#define NUM_TX_DESC     8               /* Number of TX descriptors */
+mdefine_line|#define NUM_TX_DESC     8&t;/* Number of TX descriptors */
 DECL|macro|RX_BUFF_SZ
-mdefine_line|#define RX_BUFF_SZ&t;1536            /* Buffer size for each Rx buffer */
+mdefine_line|#define RX_BUFF_SZ&t;1536&t;/* Buffer size for each Rx buffer */
 DECL|macro|TX_BUFF_SZ
-mdefine_line|#define TX_BUFF_SZ&t;1536            /* Buffer size for each Tx buffer */
+mdefine_line|#define TX_BUFF_SZ&t;1536&t;/* Buffer size for each Tx buffer */
 multiline_comment|/*&n;** EISA bus defines&n;*/
 DECL|macro|DEPCA_EISA_IO_PORTS
-mdefine_line|#define DEPCA_EISA_IO_PORTS 0x0c00       /* I/O port base address, slot 0 */
+mdefine_line|#define DEPCA_EISA_IO_PORTS 0x0c00&t;/* I/O port base address, slot 0 */
 DECL|macro|MAX_EISA_SLOTS
 mdefine_line|#define MAX_EISA_SLOTS 16
 DECL|macro|EISA_SLOT_INC
@@ -137,13 +137,13 @@ DECL|macro|DEPCA_STRLEN
 mdefine_line|#define DEPCA_STRLEN 16
 DECL|macro|MAX_NUM_DEPCAS
 mdefine_line|#define MAX_NUM_DEPCAS 2
-multiline_comment|/*&n;** Memory Alignment. Each descriptor is 4 longwords long. To force a&n;** particular alignment on the TX descriptor, adjust DESC_SKIP_LEN and&n;** DESC_ALIGN. ALIGN aligns the start address of the private memory area&n;** and hence the RX descriptor ring&squot;s first entry. &n;*/
-DECL|macro|ALIGN4
-mdefine_line|#define ALIGN4      ((u_long)4 - 1)       /* 1 longword align */
-DECL|macro|ALIGN8
-mdefine_line|#define ALIGN8      ((u_long)8 - 1)       /* 2 longword (quadword) align */
-DECL|macro|ALIGN
-mdefine_line|#define ALIGN         ALIGN8              /* Keep the LANCE happy... */
+multiline_comment|/*&n;** Memory Alignment. Each descriptor is 4 longwords long. To force a&n;** particular alignment on the TX descriptor, adjust DESC_SKIP_LEN and&n;** DESC_ALIGN. DEPCA_ALIGN aligns the start address of the private memory area&n;** and hence the RX descriptor ring&squot;s first entry. &n;*/
+DECL|macro|DEPCA_ALIGN4
+mdefine_line|#define DEPCA_ALIGN4      ((u_long)4 - 1)&t;/* 1 longword align */
+DECL|macro|DEPCA_ALIGN8
+mdefine_line|#define DEPCA_ALIGN8      ((u_long)8 - 1)&t;/* 2 longword (quadword) align */
+DECL|macro|DEPCA_ALIGN
+mdefine_line|#define DEPCA_ALIGN         DEPCA_ALIGN8&t;/* Keep the LANCE happy... */
 multiline_comment|/*&n;** The DEPCA Rx and Tx ring descriptors. &n;*/
 DECL|struct|depca_rx_desc
 r_struct
@@ -188,7 +188,7 @@ multiline_comment|/* Errors and TDR info */
 )brace
 suffix:semicolon
 DECL|macro|LA_MASK
-mdefine_line|#define LA_MASK 0x0000ffff      /* LANCE address mask for mapping network RAM&n;&t;&t;&t;&t;   to LANCE memory address space */
+mdefine_line|#define LA_MASK 0x0000ffff&t;/* LANCE address mask for mapping network RAM&n;&t;&t;&t;&t;   to LANCE memory address space */
 multiline_comment|/*&n;** The Lance initialization block, described in databook, in common memory.&n;*/
 DECL|struct|depca_init
 r_struct
@@ -230,7 +230,7 @@ suffix:semicolon
 DECL|macro|DEPCA_PKT_STAT_SZ
 mdefine_line|#define DEPCA_PKT_STAT_SZ 16
 DECL|macro|DEPCA_PKT_BIN_SZ
-mdefine_line|#define DEPCA_PKT_BIN_SZ  128                /* Should be &gt;=100 unless you&n;                                                increase DEPCA_PKT_STAT_SZ */
+mdefine_line|#define DEPCA_PKT_BIN_SZ  128&t;/* Should be &gt;=100 unless you&n;&t;&t;&t;&t;   increase DEPCA_PKT_STAT_SZ */
 DECL|struct|depca_private
 r_struct
 id|depca_private
@@ -496,6 +496,7 @@ suffix:semicolon
 r_static
 r_void
 id|depca_tx_timeout
+c_func
 (paren
 r_struct
 id|net_device
@@ -685,7 +686,7 @@ id|u_long
 id|iobase
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_MCA      
+macro_line|#ifdef CONFIG_MCA
 r_static
 r_void
 id|mca_probe
@@ -889,7 +890,7 @@ id|autoprobed
 comma
 id|loading_module
 suffix:semicolon
-macro_line|#endif /* MODULE */
+macro_line|#endif&t;&t;&t;&t;/* MODULE */
 DECL|variable|name
 r_static
 r_char
@@ -911,20 +912,20 @@ r_static
 r_int
 id|mem
 suffix:semicolon
-multiline_comment|/* For loadable module assignment&n;                                              use insmod mem=0x????? .... */
+multiline_comment|/* For loadable module assignment&n;&t;&t;&t;&t;   use insmod mem=0x????? .... */
 DECL|variable|adapter_name
 r_static
 r_char
 op_star
 id|adapter_name
 suffix:semicolon
-multiline_comment|/* = &squot;&bslash;0&squot;;     If no PROM when loadable module&n;&t;&t;&t;&t;&t;      use insmod adapter_name=DE??? ...&n;&t;&t;&t;&t;&t;      bss initializes this to zero&n;&t;&t;&t;&t;&t;   */
+multiline_comment|/* = &squot;&bslash;0&squot;;     If no PROM when loadable module&n;&t;&t;&t;&t;   use insmod adapter_name=DE??? ...&n;&t;&t;&t;&t;   bss initializes this to zero&n;&t;&t;&t;&t; */
 multiline_comment|/*&n;** Miscellaneous defines...&n;*/
 DECL|macro|STOP_DEPCA
 mdefine_line|#define STOP_DEPCA &bslash;&n;    outw(CSR0, DEPCA_ADDR);&bslash;&n;    outw(STOP, DEPCA_DATA)
+DECL|function|depca_probe
 r_int
 id|__init
-DECL|function|depca_probe
 id|depca_probe
 c_func
 (paren
@@ -981,7 +982,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-macro_line|#ifdef CONFIG_MCA      
+macro_line|#ifdef CONFIG_MCA
 id|mca_probe
 c_func
 (paren
@@ -1036,7 +1037,7 @@ id|iobase
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;    ** Walk the device list to check that at least one device&n;    ** initialised OK&n;    */
+multiline_comment|/*&n;&t;&t;   ** Walk the device list to check that at least one device&n;&t;&t;   ** initialised OK&n;&t;&t; */
 r_for
 c_loop
 (paren
@@ -1083,10 +1084,10 @@ r_return
 id|status
 suffix:semicolon
 )brace
+DECL|function|depca_hw_init
 r_static
 r_int
 id|__init
-DECL|function|depca_hw_init
 id|depca_hw_init
 c_func
 (paren
@@ -1480,7 +1481,7 @@ id|offset
 op_assign
 l_int|0x8000
 suffix:semicolon
-multiline_comment|/* 32kbyte RAM offset*/
+multiline_comment|/* 32kbyte RAM offset */
 id|nicsr
 op_and_assign
 op_complement
@@ -1769,11 +1770,11 @@ op_assign
 (paren
 id|offset
 op_plus
-id|ALIGN
+id|DEPCA_ALIGN
 )paren
 op_amp
 op_complement
-id|ALIGN
+id|DEPCA_ALIGN
 suffix:semicolon
 id|lp-&gt;rx_ring
 op_assign
@@ -2067,6 +2068,10 @@ comma
 id|delay
 )paren
 )paren
+id|yield
+c_func
+(paren
+)paren
 suffix:semicolon
 id|irqnum
 op_assign
@@ -2173,7 +2178,7 @@ id|out_region
 suffix:semicolon
 )brace
 )brace
-macro_line|#endif /* MODULE */
+macro_line|#endif&t;&t;&t;&t;/* MODULE */
 )brace
 r_else
 (brace
@@ -2281,9 +2286,9 @@ id|status
 suffix:semicolon
 )brace
 "&f;"
+DECL|function|depca_open
 r_static
 r_int
-DECL|function|depca_open
 id|depca_open
 c_func
 (paren
@@ -2490,9 +2495,9 @@ id|status
 suffix:semicolon
 )brace
 multiline_comment|/* Initialize the lance Rx and Tx descriptor rings. */
+DECL|function|depca_init_ring
 r_static
 r_void
-DECL|function|depca_init_ring
 id|depca_init_ring
 c_func
 (paren
@@ -2730,6 +2735,7 @@ DECL|function|depca_tx_timeout
 r_static
 r_void
 id|depca_tx_timeout
+c_func
 (paren
 r_struct
 id|net_device
@@ -2743,12 +2749,14 @@ op_assign
 id|dev-&gt;base_addr
 suffix:semicolon
 id|printk
+c_func
 (paren
 l_string|&quot;%s: transmit timed out, status %04x, resetting.&bslash;n&quot;
 comma
 id|dev-&gt;name
 comma
 id|inw
+c_func
 (paren
 id|DEPCA_DATA
 )paren
@@ -2757,11 +2765,13 @@ suffix:semicolon
 id|STOP_DEPCA
 suffix:semicolon
 id|depca_init_ring
+c_func
 (paren
 id|dev
 )paren
 suffix:semicolon
 id|LoadCSRs
+c_func
 (paren
 id|dev
 )paren
@@ -2771,11 +2781,13 @@ op_assign
 id|jiffies
 suffix:semicolon
 id|netif_wake_queue
+c_func
 (paren
 id|dev
 )paren
 suffix:semicolon
 id|InitRestartDepca
+c_func
 (paren
 id|dev
 )paren
@@ -2786,6 +2798,7 @@ DECL|function|depca_start_xmit
 r_static
 r_int
 id|depca_start_xmit
+c_func
 (paren
 r_struct
 id|sk_buff
@@ -2832,6 +2845,7 @@ r_goto
 id|out
 suffix:semicolon
 id|netif_stop_queue
+c_func
 (paren
 id|dev
 )paren
@@ -2846,6 +2860,7 @@ multiline_comment|/* Fill in a Tx ring entry */
 id|status
 op_assign
 id|load_packet
+c_func
 (paren
 id|dev
 comma
@@ -2861,6 +2876,7 @@ id|status
 (brace
 multiline_comment|/* Trigger an immediate send demand. */
 id|outw
+c_func
 (paren
 id|CSR0
 comma
@@ -2868,6 +2884,7 @@ id|DEPCA_ADDR
 )paren
 suffix:semicolon
 id|outw
+c_func
 (paren
 id|INEA
 op_or
@@ -2881,6 +2898,7 @@ op_assign
 id|jiffies
 suffix:semicolon
 id|dev_kfree_skb
+c_func
 (paren
 id|skb
 )paren
@@ -2892,6 +2910,7 @@ c_cond
 id|TX_BUFFS_AVAIL
 )paren
 id|netif_start_queue
+c_func
 (paren
 id|dev
 )paren
@@ -2914,6 +2933,7 @@ DECL|function|depca_interrupt
 r_static
 r_void
 id|depca_interrupt
+c_func
 (paren
 r_int
 id|irq
@@ -2957,6 +2977,7 @@ l_int|NULL
 )paren
 (brace
 id|printk
+c_func
 (paren
 l_string|&quot;depca_interrupt(): irq %d for unknown device.&bslash;n&quot;
 comma
@@ -2980,6 +3001,7 @@ op_assign
 id|dev-&gt;base_addr
 suffix:semicolon
 id|spin_lock
+c_func
 (paren
 op_amp
 id|lp-&gt;lock
@@ -2989,6 +3011,7 @@ multiline_comment|/* mask the DEPCA board interrupts and turn on the LED */
 id|nicsr
 op_assign
 id|inb
+c_func
 (paren
 id|DEPCA_NICSR
 )paren
@@ -3002,6 +3025,7 @@ id|LED
 )paren
 suffix:semicolon
 id|outb
+c_func
 (paren
 id|nicsr
 comma
@@ -3009,6 +3033,7 @@ id|DEPCA_NICSR
 )paren
 suffix:semicolon
 id|outw
+c_func
 (paren
 id|CSR0
 comma
@@ -3018,12 +3043,14 @@ suffix:semicolon
 id|csr0
 op_assign
 id|inw
+c_func
 (paren
 id|DEPCA_DATA
 )paren
 suffix:semicolon
 multiline_comment|/* Acknowledge all of the current interrupt sources ASAP. */
 id|outw
+c_func
 (paren
 id|csr0
 op_amp
@@ -3041,6 +3068,7 @@ id|RINT
 )paren
 multiline_comment|/* Rx interrupt (packet arrived) */
 id|depca_rx
+c_func
 (paren
 id|dev
 )paren
@@ -3054,6 +3082,7 @@ id|TINT
 )paren
 multiline_comment|/* Tx interrupt (packet sent) */
 id|depca_tx
+c_func
 (paren
 id|dev
 )paren
@@ -3076,6 +3105,7 @@ id|dev
 )paren
 (brace
 id|netif_wake_queue
+c_func
 (paren
 id|dev
 )paren
@@ -3095,6 +3125,7 @@ id|LED
 )paren
 suffix:semicolon
 id|outb
+c_func
 (paren
 id|nicsr
 comma
@@ -3102,15 +3133,16 @@ id|DEPCA_NICSR
 )paren
 suffix:semicolon
 id|spin_unlock
+c_func
 (paren
 op_amp
 id|lp-&gt;lock
 )paren
 suffix:semicolon
 )brace
+DECL|function|depca_rx
 r_static
 r_int
-DECL|function|depca_rx
 id|depca_rx
 c_func
 (paren
@@ -3403,7 +3435,7 @@ id|pkt_len
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* &n;&t;  ** Notify the upper protocol layers that there is another &n;&t;  ** packet to handle&n;&t;  */
+multiline_comment|/* &n;&t;&t;&t;&t;&t;   ** Notify the upper protocol layers that there is another &n;&t;&t;&t;&t;&t;   ** packet to handle&n;&t;&t;&t;&t;&t; */
 id|skb-&gt;protocol
 op_assign
 id|eth_type_trans
@@ -3420,7 +3452,7 @@ c_func
 id|skb
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;  ** Update stats&n;&t;  */
+multiline_comment|/*&n;&t;&t;&t;&t;&t;   ** Update stats&n;&t;&t;&t;&t;&t; */
 id|dev-&gt;last_rx
 op_assign
 id|jiffies
@@ -3759,7 +3791,7 @@ id|base
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;    ** Update entry information&n;    */
+multiline_comment|/*&n;&t;&t;   ** Update entry information&n;&t;&t; */
 id|lp-&gt;rx_new
 op_assign
 (paren
@@ -3775,9 +3807,9 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n;** Buffer sent - check for buffer errors.&n;*/
+DECL|function|depca_tx
 r_static
 r_int
-DECL|function|depca_tx
 id|depca_tx
 c_func
 (paren
@@ -3992,9 +4024,9 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|function|depca_close
 r_static
 r_int
-DECL|function|depca_close
 id|depca_close
 c_func
 (paren
@@ -4061,7 +4093,7 @@ id|DEPCA_DATA
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* &n;  ** We stop the DEPCA here -- it occasionally polls&n;  ** memory if we don&squot;t. &n;  */
+multiline_comment|/* &n;&t;   ** We stop the DEPCA here -- it occasionally polls&n;&t;   ** memory if we don&squot;t. &n;&t; */
 id|outw
 c_func
 (paren
@@ -4070,7 +4102,7 @@ comma
 id|DEPCA_DATA
 )paren
 suffix:semicolon
-multiline_comment|/*&n;  ** Give back the ROM in case the user wants to go to DOS&n;  */
+multiline_comment|/*&n;&t;   ** Give back the ROM in case the user wants to go to DOS&n;&t; */
 r_if
 c_cond
 (paren
@@ -4101,7 +4133,7 @@ id|DEPCA_NICSR
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;  ** Free the associated irq&n;  */
+multiline_comment|/*&n;&t;   ** Free the associated irq&n;&t; */
 id|free_irq
 c_func
 (paren
@@ -4402,11 +4434,11 @@ r_return
 id|status
 suffix:semicolon
 )brace
+DECL|function|depca_get_stats
 r_static
 r_struct
 id|net_device_stats
 op_star
-DECL|function|depca_get_stats
 id|depca_get_stats
 c_func
 (paren
@@ -4435,9 +4467,9 @@ id|lp-&gt;stats
 suffix:semicolon
 )brace
 multiline_comment|/*&n;** Set or clear the multicast filter for this adaptor.&n;*/
+DECL|function|set_multicast_list
 r_static
 r_void
-DECL|function|set_multicast_list
 id|set_multicast_list
 c_func
 (paren
@@ -4483,9 +4515,7 @@ id|lp-&gt;tx_old
 op_ne
 id|lp-&gt;tx_new
 )paren
-(brace
 suffix:semicolon
-)brace
 multiline_comment|/* Wait for the ring to empty */
 id|STOP_DEPCA
 suffix:semicolon
@@ -4796,10 +4826,10 @@ suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_MCA
 multiline_comment|/*&n;** Microchannel bus I/O device probe&n;*/
+DECL|function|mca_probe
 r_static
 r_void
 id|__init
-DECL|function|mca_probe
 id|mca_probe
 c_func
 (paren
@@ -4835,7 +4865,7 @@ id|slot
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/*&n;    ** See if we&squot;ve been here before.&n;    */
+multiline_comment|/*&n;&t;   ** See if we&squot;ve been here before.&n;&t; */
 r_if
 c_cond
 (paren
@@ -4861,7 +4891,7 @@ c_cond
 id|MCA_bus
 )paren
 (brace
-multiline_comment|/*&n;&t;** Search for the adapter.  If an address has been given, search &n;&t;** specifically for the card at that address.  Otherwise find the&n;&t;** first card in the system.&n;&t;*/
+multiline_comment|/*&n;&t;&t;   ** Search for the adapter.  If an address has been given, search &n;&t;&t;   ** specifically for the card at that address.  Otherwise find the&n;&t;&t;   ** first card in the system.&n;&t;&t; */
 r_while
 c_loop
 (paren
@@ -4914,7 +4944,7 @@ comma
 l_int|3
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;    ** IO of card is handled by bits 1 and 2 of pos0.    &n;&t;    **&n;&t;    **    bit2 bit1    IO&n;&t;    **       0    0    0x2c00&n;&t;    **       0    1    0x2c10&n;&t;    **       1    0    0x2c20&n;&t;    **       1    1    0x2c30&n;&t;    */
+multiline_comment|/*&n;&t;&t;&t;   ** IO of card is handled by bits 1 and 2 of pos0.    &n;&t;&t;&t;   **&n;&t;&t;&t;   **    bit2 bit1    IO&n;&t;&t;&t;   **       0    0    0x2c00&n;&t;&t;&t;   **       0    1    0x2c10&n;&t;&t;&t;   **       1    0    0x2c20&n;&t;&t;&t;   **       1    1    0x2c30&n;&t;&t;&t; */
 id|where
 op_assign
 (paren
@@ -4952,14 +4982,14 @@ id|iobase
 )paren
 )paren
 (brace
-multiline_comment|/*&n;&t;&t;** Card was found, but not at the right IO location. Continue &n;&t;&t;** scanning from the next MCA slot up for another card.&n;&t;&t;*/
+multiline_comment|/*&n;&t;&t;&t;&t;   ** Card was found, but not at the right IO location. Continue &n;&t;&t;&t;&t;   ** scanning from the next MCA slot up for another card.&n;&t;&t;&t;&t; */
 id|slot
 op_increment
 suffix:semicolon
 r_continue
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t;    ** Found the adapter we were looking for. Now start setting it up.&n;&t;    ** &n;&t;    ** First work on decoding the IRQ.  It&squot;s stored in the lower 4 bits&n;&t;    ** of pos1.  Bits are as follows (from the ADF file):&n;&t;    **&n;&t;    **      Bits           &n;&t;    **   3   2   1   0    IRQ &n;&t;    **   --------------------&n;&t;    **   0   0   1   0     5&n;&t;    **   0   0   0   1     9&n;&t;    **   0   1   0   0    10&n;&t;    **   1   0   0   0    11&n;&t;    **/
+multiline_comment|/*&n;&t;&t;&t;   ** Found the adapter we were looking for. Now start setting it up.&n;&t;&t;&t;   ** &n;&t;&t;&t;   ** First work on decoding the IRQ.  It&squot;s stored in the lower 4 bits&n;&t;&t;&t;   ** of pos1.  Bits are as follows (from the ADF file):&n;&t;&t;&t;   **&n;&t;&t;&t;   **      Bits           &n;&t;&t;&t;   **   3   2   1   0    IRQ &n;&t;&t;&t;   **   --------------------&n;&t;&t;&t;   **   0   0   1   0     5&n;&t;&t;&t;   **   0   0   0   1     9&n;&t;&t;&t;   **   0   1   0   0    10&n;&t;&t;&t;   **   1   0   0   0    11&n;&t;&t;&t;   * */
 id|where
 op_assign
 id|pos
@@ -5026,7 +5056,7 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t;    ** Shared memory address of adapter is stored in bits 3-5 of pos0.&n;&t;    ** They are mapped as follows:&n;&t;    **&n;&t;    **    Bit&n;&t;    **   5  4  3       Memory Addresses&n;&t;    **   0  0  0       C0000-CFFFF (64K)&n;&t;    **   1  0  0       C8000-CFFFF (32K)&n;&t;    **   0  0  1       D0000-DFFFF (64K)&n;&t;    **   1  0  1       D8000-DFFFF (32K)&n;&t;    **   0  1  0       E0000-EFFFF (64K)&n;&t;    **   1  1  0       E8000-EFFFF (32K)&n;&t;    */
+multiline_comment|/*&n;&t;&t;&t;   ** Shared memory address of adapter is stored in bits 3-5 of pos0.&n;&t;&t;&t;   ** They are mapped as follows:&n;&t;&t;&t;   **&n;&t;&t;&t;   **    Bit&n;&t;&t;&t;   **   5  4  3       Memory Addresses&n;&t;&t;&t;   **   0  0  0       C0000-CFFFF (64K)&n;&t;&t;&t;   **   1  0  0       C8000-CFFFF (32K)&n;&t;&t;&t;   **   0  0  1       D0000-DFFFF (64K)&n;&t;&t;&t;   **   1  0  1       D8000-DFFFF (32K)&n;&t;&t;&t;   **   0  1  0       E0000-EFFFF (64K)&n;&t;&t;&t;   **   1  1  0       E8000-EFFFF (32K)&n;&t;&t;&t; */
 id|where
 op_assign
 (paren
@@ -5066,7 +5096,7 @@ op_add_assign
 l_int|0x8000
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t;    ** Get everything allocated and initialized...  (almost just&n;&t;    ** like the ISA and EISA probes)&n;&t;    */
+multiline_comment|/*&n;&t;&t;&t;   ** Get everything allocated and initialized...  (almost just&n;&t;&t;&t;   ** like the ISA and EISA probes)&n;&t;&t;&t; */
 r_if
 c_cond
 (paren
@@ -5079,32 +5109,12 @@ op_ne
 l_int|0
 )paren
 (brace
-multiline_comment|/*&n;&t;&t;** If the MCA configuration says the card should be here,&n;&t;&t;** it really should be here.&n;&t;&t;*/
+multiline_comment|/*&n;&t;&t;&t;&t;   ** If the MCA configuration says the card should be here,&n;&t;&t;&t;&t;   ** it really should be here.&n;&t;&t;&t;&t; */
 id|printk
 c_func
 (paren
 id|KERN_ERR
-"&quot;"
-op_mod
-id|s
-suffix:colon
-id|MCA
-id|reports
-id|card
-id|at
-l_int|0
-id|x
-op_mod
-id|lx
-id|but
-id|it
-id|is
-op_logical_neg
-id|responding
-dot
-"&bslash;"
-id|n
-"&quot;"
+l_string|&quot;%s: MCA reports card at 0x%lx but it is not responding.&bslash;n&quot;
 comma
 id|dev-&gt;name
 comma
@@ -5164,7 +5174,7 @@ op_eq
 l_int|0
 )paren
 (brace
-multiline_comment|/*&n;&t;&t;&t;** Adapter initialized correctly:  Name it in&n;&t;&t;&t;** /proc/mca.&n;&t;&t;&t;*/
+multiline_comment|/*&n;&t;&t;&t;&t;&t;&t;   ** Adapter initialized correctly:  Name it in&n;&t;&t;&t;&t;&t;&t;   ** /proc/mca.&n;&t;&t;&t;&t;&t;&t; */
 id|mca_set_adapter_name
 c_func
 (paren
@@ -5207,7 +5217,7 @@ id|iobase
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t;    ** If this is a probe by a module, return after setting up the&n;&t;    ** given card.&n;&t;    */
+multiline_comment|/*&n;&t;&t;&t;   ** If this is a probe by a module, return after setting up the&n;&t;&t;&t;   ** given card.&n;&t;&t;&t; */
 r_if
 c_cond
 (paren
@@ -5215,7 +5225,7 @@ id|ioaddr
 )paren
 r_return
 suffix:semicolon
-multiline_comment|/*&n;&t;    ** Set up to check the next slot and loop.&n;&t;    */
+multiline_comment|/*&n;&t;&t;&t;   ** Set up to check the next slot and loop.&n;&t;&t;&t; */
 id|slot
 op_increment
 suffix:semicolon
@@ -5226,10 +5236,10 @@ suffix:semicolon
 )brace
 macro_line|#endif
 multiline_comment|/*&n;** ISA bus I/O device probe&n;*/
+DECL|function|isa_probe
 r_static
 r_void
 id|__init
-DECL|function|isa_probe
 id|isa_probe
 c_func
 (paren
@@ -5452,10 +5462,10 @@ r_return
 suffix:semicolon
 )brace
 multiline_comment|/*&n;** EISA bus I/O device probe. Probe from slot 1 since slot 0 is usually&n;** the motherboard. Upto 15 EISA devices are supported.&n;*/
+DECL|function|eisa_probe
 r_static
 r_void
 id|__init
-DECL|function|eisa_probe
 id|eisa_probe
 c_func
 (paren
@@ -5702,12 +5712,12 @@ r_return
 suffix:semicolon
 )brace
 multiline_comment|/*&n;** Search the entire &squot;eth&squot; device list for a fixed probe. If a match isn&squot;t&n;** found then check for an autoprobe or unused device location. If they&n;** are not available then insert a new device structure at the end of&n;** the current list.&n;*/
+DECL|function|alloc_device
 r_static
 r_struct
 id|net_device
 op_star
 id|__init
-DECL|function|alloc_device
 id|alloc_device
 c_func
 (paren
@@ -5946,12 +5956,12 @@ id|dev
 suffix:semicolon
 )brace
 multiline_comment|/*&n;** If at end of eth device list and can&squot;t use current entry, malloc&n;** one up. If memory could not be allocated, print an error message.&n;*/
+DECL|function|insert_device
 r_static
 r_struct
 id|net_device
 op_star
 id|__init
-DECL|function|insert_device
 id|insert_device
 c_func
 (paren
@@ -6083,10 +6093,10 @@ r_return
 id|dev
 suffix:semicolon
 )brace
+DECL|function|depca_dev_index
 r_static
 r_int
 id|__init
-DECL|function|depca_dev_index
 id|depca_dev_index
 c_func
 (paren
@@ -6160,10 +6170,10 @@ id|i
 suffix:semicolon
 )brace
 multiline_comment|/*&n;** Look for a particular board name in the on-board Remote Diagnostics&n;** and Boot (readb) ROM. This will also give us a clue to the network RAM&n;** base address.&n;*/
+DECL|function|DepcaSignature
 r_static
 r_void
 id|__init
-DECL|function|DepcaSignature
 id|DepcaSignature
 c_func
 (paren
@@ -6446,10 +6456,10 @@ r_return
 suffix:semicolon
 )brace
 multiline_comment|/*&n;** Look for a special sequence in the Ethernet station address PROM that&n;** is common across all DEPCA products. Note that the original DEPCA needs&n;** its ROM address counter to be initialized and enabled. Only enable&n;** if the first address octet is a 0x08 - this minimises the chances of&n;** messing around with some other hardware, but it assumes that this DEPCA&n;** card initialized itself correctly.&n;** &n;** Search the Ethernet address ROM for the signature. Since the ROM address&n;** counter can start at an arbitrary point, the search must include the entire&n;** probe sequence length plus the (length_of_the_signature - 1).&n;** Stop the search IMMEDIATELY after the signature is found so that the&n;** PROM address counter is correctly positioned at the start of the&n;** ethernet address for later read out.&n;*/
+DECL|function|DevicePresent
 r_static
 r_int
 id|__init
-DECL|function|DevicePresent
 id|DevicePresent
 c_func
 (paren
@@ -6669,10 +6679,10 @@ id|status
 suffix:semicolon
 )brace
 multiline_comment|/*&n;** The DE100 and DE101 PROM accesses were made non-standard for some bizarre&n;** reason: access the upper half of the PROM with x=0; access the lower half&n;** with x=1.&n;*/
+DECL|function|get_hw_addr
 r_static
 r_int
 id|__init
-DECL|function|get_hw_addr
 id|get_hw_addr
 c_func
 (paren
@@ -6981,7 +6991,7 @@ id|T_OWN
 )paren
 (brace
 multiline_comment|/* Enough room? */
-multiline_comment|/* &n;    ** Caution: the write order is important here... don&squot;t set up the&n;    ** ownership rights until all the other information is in place.&n;    */
+multiline_comment|/* &n;&t;&t;   ** Caution: the write order is important here... don&squot;t set up the&n;&t;&t;   ** ownership rights until all the other information is in place.&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -7369,10 +7379,10 @@ id|status
 suffix:semicolon
 )brace
 multiline_comment|/*&n;** Look for a particular board name in the EISA configuration space&n;*/
+DECL|function|EISA_signature
 r_static
 r_int
 id|__init
-DECL|function|EISA_signature
 id|EISA_signature
 c_func
 (paren
@@ -8307,6 +8317,14 @@ suffix:semicolon
 )brace
 id|tmp
 suffix:semicolon
+r_int
+r_int
+id|flags
+suffix:semicolon
+r_void
+op_star
+id|buf
+suffix:semicolon
 r_switch
 c_cond
 (paren
@@ -8440,9 +8458,11 @@ id|lp-&gt;tx_old
 op_ne
 id|lp-&gt;tx_new
 )paren
-(brace
+id|cpu_relax
+c_func
+(paren
+)paren
 suffix:semicolon
-)brace
 multiline_comment|/* Wait for the ring to empty */
 id|STOP_DEPCA
 suffix:semicolon
@@ -8508,9 +8528,11 @@ id|lp-&gt;tx_old
 op_ne
 id|lp-&gt;tx_new
 )paren
-(brace
+id|cpu_relax
+c_func
+(paren
+)paren
 suffix:semicolon
-)brace
 multiline_comment|/* Wait for the ring to empty */
 id|STOP_DEPCA
 suffix:semicolon
@@ -8581,9 +8603,11 @@ id|lp-&gt;tx_old
 op_ne
 id|lp-&gt;tx_new
 )paren
-(brace
+id|cpu_relax
+c_func
+(paren
+)paren
 suffix:semicolon
-)brace
 multiline_comment|/* Wait for the ring to empty */
 id|STOP_DEPCA
 suffix:semicolon
@@ -8628,6 +8652,22 @@ r_case
 id|DEPCA_SAY_BOO
 suffix:colon
 multiline_comment|/* Say &quot;Boo!&quot; to the kernel log file */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|capable
+c_func
+(paren
+id|CAP_NET_ADMIN
+)paren
+)paren
+(brace
+r_return
+op_minus
+id|EPERM
+suffix:semicolon
+)brace
 id|printk
 c_func
 (paren
@@ -8686,6 +8726,17 @@ id|CAP_NET_ADMIN
 r_return
 op_minus
 id|EPERM
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ioc-&gt;len
+op_ge
+id|HASH_TABLE_LEN
+)paren
+r_return
+op_minus
+id|EINVAL
 suffix:semicolon
 r_if
 c_cond
@@ -8770,16 +8821,62 @@ r_case
 id|DEPCA_GET_STATS
 suffix:colon
 multiline_comment|/* Get the driver statistics */
-id|cli
-c_func
-(paren
-)paren
-suffix:semicolon
 id|ioc-&gt;len
 op_assign
 r_sizeof
 (paren
 id|lp-&gt;pktStats
+)paren
+suffix:semicolon
+id|buf
+op_assign
+id|kmalloc
+c_func
+(paren
+id|ioc-&gt;len
+comma
+id|GFP_KERNEL
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|buf
+)paren
+(brace
+r_return
+op_minus
+id|ENOMEM
+suffix:semicolon
+)brace
+id|spin_lock_irqsave
+c_func
+(paren
+op_amp
+id|lp-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
+id|memcpy
+c_func
+(paren
+id|buf
+comma
+op_amp
+id|lp-&gt;pktStats
+comma
+id|ioc-&gt;len
+)paren
+suffix:semicolon
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|lp-&gt;lock
+comma
+id|flags
 )paren
 suffix:semicolon
 r_if
@@ -8801,9 +8898,10 @@ op_assign
 op_minus
 id|EFAULT
 suffix:semicolon
-id|sti
+id|kfree
 c_func
 (paren
+id|buf
 )paren
 suffix:semicolon
 r_break
@@ -8826,9 +8924,13 @@ r_return
 op_minus
 id|EPERM
 suffix:semicolon
-id|cli
+id|spin_lock_irqsave
 c_func
 (paren
+op_amp
+id|lp-&gt;lock
+comma
+id|flags
 )paren
 suffix:semicolon
 id|memset
@@ -8845,9 +8947,13 @@ id|lp-&gt;pktStats
 )paren
 )paren
 suffix:semicolon
-id|sti
+id|spin_unlock_irqrestore
 c_func
 (paren
+op_amp
+id|lp-&gt;lock
+comma
+id|flags
 )paren
 suffix:semicolon
 r_break
@@ -9008,8 +9114,8 @@ l_string|&quot;DEPCA I/O base address&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* See depca_probe() for autoprobe messages when a module */
-r_int
 DECL|function|init_module
+r_int
 id|init_module
 c_func
 (paren
@@ -9048,8 +9154,8 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-r_void
 DECL|function|cleanup_module
+r_void
 id|cleanup_module
 c_func
 (paren
@@ -9082,7 +9188,7 @@ c_func
 id|lp-&gt;sh_mem
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_MCA      
+macro_line|#ifdef CONFIG_MCA
 r_if
 c_cond
 (paren
@@ -9091,15 +9197,13 @@ op_ne
 op_minus
 l_int|1
 )paren
-(brace
 id|mca_mark_as_unused
 c_func
 (paren
 id|lp-&gt;mca_slot
 )paren
 suffix:semicolon
-)brace
-macro_line|#endif                 
+macro_line|#endif
 id|kfree
 c_func
 (paren
@@ -9124,7 +9228,7 @@ id|DEPCA_TOTAL_SIZE
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif /* MODULE */
+macro_line|#endif&t;&t;&t;&t;/* MODULE */
 id|MODULE_LICENSE
 c_func
 (paren
