@@ -2272,7 +2272,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot; full path: %s for inode 0x%p with count %d dentry: 0x%p d_time %ld at time %ld &quot;
+l_string|&quot;Revalidate full path: %s for inode 0x%p with count %d dentry: 0x%p d_time %ld at time %ld &quot;
 comma
 id|full_path
 comma
@@ -2300,7 +2300,6 @@ multiline_comment|/* BB add check - do not need to revalidate oplocked files */
 r_if
 c_cond
 (paren
-(paren
 id|time_before
 c_func
 (paren
@@ -2311,7 +2310,20 @@ op_plus
 id|HZ
 )paren
 )paren
-op_logical_and
+(brace
+r_if
+c_cond
+(paren
+(paren
+id|S_ISREG
+c_func
+(paren
+id|direntry-&gt;d_inode-&gt;i_mode
+)paren
+op_eq
+l_int|0
+)paren
+op_logical_or
 (paren
 id|direntry-&gt;d_inode-&gt;i_nlink
 op_eq
@@ -2319,16 +2331,6 @@ l_int|1
 )paren
 )paren
 (brace
-id|cFYI
-c_func
-(paren
-l_int|1
-comma
-(paren
-l_string|&quot; Do not need to revalidate &quot;
-)paren
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2349,6 +2351,20 @@ suffix:semicolon
 r_return
 id|rc
 suffix:semicolon
+)brace
+r_else
+(brace
+id|cFYI
+c_func
+(paren
+l_int|1
+comma
+(paren
+l_string|&quot;Have to revalidate file due to hardlinks&quot;
+)paren
+)paren
+suffix:semicolon
+)brace
 )brace
 r_if
 c_cond
