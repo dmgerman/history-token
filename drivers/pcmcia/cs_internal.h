@@ -607,15 +607,6 @@ op_star
 id|ptr
 )paren
 suffix:semicolon
-r_void
-id|cb_release_cis_mem
-c_func
-(paren
-id|socket_info_t
-op_star
-id|s
-)paren
-suffix:semicolon
 multiline_comment|/* In cistpl.c */
 r_int
 id|read_cis_mem

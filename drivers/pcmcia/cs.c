@@ -1899,12 +1899,6 @@ id|s-&gt;socket
 suffix:semicolon
 multiline_comment|/* */
 macro_line|#ifdef CONFIG_CARDBUS
-id|cb_release_cis_mem
-c_func
-(paren
-id|s
-)paren
-suffix:semicolon
 id|cb_free
 c_func
 (paren

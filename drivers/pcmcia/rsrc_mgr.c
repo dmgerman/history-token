@@ -3542,17 +3542,6 @@ id|i
 )braket
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_CARDBUS
-id|cb_release_cis_mem
-c_func
-(paren
-id|socket_table
-(braket
-id|i
-)braket
-)paren
-suffix:semicolon
-macro_line|#endif
 )brace
 )brace
 r_break
