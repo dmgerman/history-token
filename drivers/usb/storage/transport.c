@@ -1590,14 +1590,19 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
+id|srb-&gt;result
+op_assign
+id|SAM_STAT_GOOD
+suffix:semicolon
 multiline_comment|/* Determine if we need to auto-sense&n;&t; *&n;&t; * I normally don&squot;t use a flag like this, but it&squot;s almost impossible&n;&t; * to understand what&squot;s going on here if I don&squot;t.&n;&t; */
 id|need_auto_sense
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/*&n;&t; * If we&squot;re running the CB transport, which is incapable&n;&t; * of determining status on it&squot;s own, we need to auto-sense almost&n;&t; * every time.&n;&t; */
+multiline_comment|/*&n;&t; * If we&squot;re running the CB transport, which is incapable&n;&t; * of determining status on its own, we need to auto-sense&n;&t; * unless the operation involved a data-in transfer.  Devices&n;&t; * can signal data-in errors by stalling the bulk-in pipe.&n;&t; */
 r_if
 c_cond
+(paren
 (paren
 id|us-&gt;protocol
 op_eq
@@ -1606,6 +1611,11 @@ op_logical_or
 id|us-&gt;protocol
 op_eq
 id|US_PR_DPCM_USB
+)paren
+op_logical_and
+id|srb-&gt;sc_data_direction
+op_ne
+id|SCSI_DATA_READ
 )paren
 (brace
 id|US_DEBUGP
@@ -1618,46 +1628,6 @@ id|need_auto_sense
 op_assign
 l_int|1
 suffix:semicolon
-multiline_comment|/* There are some exceptions to this.  Notably, if this is&n;&t;&t; * a UFI device and the command is REQUEST_SENSE or INQUIRY,&n;&t;&t; * then it is impossible to truly determine status.&n;&t;&t; */
-r_if
-c_cond
-(paren
-id|us-&gt;subclass
-op_eq
-id|US_SC_UFI
-op_logical_and
-(paren
-(paren
-id|srb-&gt;cmnd
-(braket
-l_int|0
-)braket
-op_eq
-id|REQUEST_SENSE
-)paren
-op_logical_or
-(paren
-id|srb-&gt;cmnd
-(braket
-l_int|0
-)braket
-op_eq
-id|INQUIRY
-)paren
-)paren
-)paren
-(brace
-id|US_DEBUGP
-c_func
-(paren
-l_string|&quot;** no auto-sense for a special command&bslash;n&quot;
-)paren
-suffix:semicolon
-id|need_auto_sense
-op_assign
-l_int|0
-suffix:semicolon
-)brace
 )brace
 multiline_comment|/*&n;&t; * If we have a failure, we&squot;re going to do a REQUEST_SENSE &n;&t; * automatically.  Note that we differentiate between a command&n;&t; * &quot;failure&quot; and an &quot;error&quot; in the transport mechanism.&n;&t; */
 r_if
@@ -1679,7 +1649,7 @@ op_assign
 l_int|1
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * Also, if we have a short transfer on a command that can&squot;t have&n;&t; * a short transfer, we&squot;re going to do this.&n;&t; */
+multiline_comment|/*&n;&t; * A short transfer on a command where we don&squot;t expect it&n;&t; * is unusual, but it doesn&squot;t mean we need to auto-sense.&n;&t; */
 r_if
 c_cond
 (paren
@@ -1744,10 +1714,6 @@ c_func
 l_string|&quot;-- unexpectedly short transfer&bslash;n&quot;
 )paren
 suffix:semicolon
-id|need_auto_sense
-op_assign
-l_int|1
-suffix:semicolon
 )brace
 multiline_comment|/* Now, if we need to do the auto-sense, let&squot;s do it */
 r_if
@@ -1788,6 +1754,9 @@ suffix:semicolon
 r_int
 r_int
 id|old_serial_number
+suffix:semicolon
+r_int
+id|old_resid
 suffix:semicolon
 id|US_DEBUGP
 c_func
@@ -1914,6 +1883,14 @@ op_xor_assign
 l_int|0x80000000
 suffix:semicolon
 multiline_comment|/* issue the auto-sense command */
+id|old_resid
+op_assign
+id|srb-&gt;resid
+suffix:semicolon
+id|srb-&gt;resid
+op_assign
+l_int|0
+suffix:semicolon
 id|temp_result
 op_assign
 id|us
@@ -1927,6 +1904,10 @@ id|us
 )paren
 suffix:semicolon
 multiline_comment|/* let&squot;s clean up right away */
+id|srb-&gt;resid
+op_assign
+id|old_resid
+suffix:semicolon
 id|srb-&gt;request_buffer
 op_assign
 id|old_request_buffer
@@ -2085,65 +2066,14 @@ id|srb-&gt;result
 op_assign
 id|SAM_STAT_CHECK_CONDITION
 suffix:semicolon
-multiline_comment|/* If things are really okay, then let&squot;s show that */
+multiline_comment|/* If things are really okay, then let&squot;s show that.  Zero&n;&t;&t; * out the sense buffer so the higher layers won&squot;t realize&n;&t;&t; * we did an unsolicited auto-sense. */
 r_if
 c_cond
-(paren
-(paren
-id|srb-&gt;sense_buffer
-(braket
-l_int|2
-)braket
-op_amp
-l_int|0xf
-)paren
-op_eq
-l_int|0x0
-)paren
-id|srb-&gt;result
-op_assign
-id|SAM_STAT_GOOD
-suffix:semicolon
-)brace
-r_else
-multiline_comment|/* if (need_auto_sense) */
-id|srb-&gt;result
-op_assign
-id|SAM_STAT_GOOD
-suffix:semicolon
-multiline_comment|/* Regardless of auto-sense, if we _know_ we have an error&n;&t; * condition, show that in the result code&n;&t; */
-r_if
-c_cond
-(paren
-id|result
-op_eq
-id|USB_STOR_TRANSPORT_FAILED
-)paren
-id|srb-&gt;result
-op_assign
-id|SAM_STAT_CHECK_CONDITION
-suffix:semicolon
-multiline_comment|/* If we think we&squot;re good, then make sure the sense data shows it.&n;&t; * This is necessary because the auto-sense for some devices always&n;&t; * sets byte 0 == 0x70, even if there is no error&n;&t; */
-r_if
-c_cond
-(paren
-(paren
-id|us-&gt;protocol
-op_eq
-id|US_PR_CB
-op_logical_or
-id|us-&gt;protocol
-op_eq
-id|US_PR_DPCM_USB
-)paren
-op_logical_and
 (paren
 id|result
 op_eq
 id|USB_STOR_TRANSPORT_GOOD
-)paren
 op_logical_and
-(paren
 (paren
 id|srb-&gt;sense_buffer
 (braket
@@ -2155,7 +2085,11 @@ l_int|0xf
 op_eq
 l_int|0x0
 )paren
-)paren
+(brace
+id|srb-&gt;result
+op_assign
+id|SAM_STAT_GOOD
+suffix:semicolon
 id|srb-&gt;sense_buffer
 (braket
 l_int|0
@@ -2163,6 +2097,8 @@ l_int|0
 op_assign
 l_int|0x0
 suffix:semicolon
+)brace
+)brace
 r_return
 suffix:semicolon
 multiline_comment|/* abort processing: the bulk-only transport requires a reset&n;&t; * following an abort */
@@ -2415,6 +2351,17 @@ l_string|&quot;CBI data stage result is 0x%x&bslash;n&quot;
 comma
 id|result
 )paren
+suffix:semicolon
+multiline_comment|/* if we stalled the data transfer it means command failed */
+r_if
+c_cond
+(paren
+id|result
+op_eq
+id|USB_STOR_XFER_STALLED
+)paren
+r_return
+id|USB_STOR_TRANSPORT_FAILED
 suffix:semicolon
 r_if
 c_cond
@@ -2716,6 +2663,17 @@ comma
 id|result
 )paren
 suffix:semicolon
+multiline_comment|/* if we stalled the data transfer it means command failed */
+r_if
+c_cond
+(paren
+id|result
+op_eq
+id|USB_STOR_XFER_STALLED
+)paren
+r_return
+id|USB_STOR_TRANSPORT_FAILED
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2866,6 +2824,10 @@ r_int
 id|fake_sense
 op_assign
 l_int|0
+suffix:semicolon
+r_int
+r_int
+id|cswlen
 suffix:semicolon
 multiline_comment|/* set up the command wrapper */
 id|bcb-&gt;Signature
@@ -3109,9 +3071,47 @@ id|bcs
 comma
 id|US_BULK_CS_WRAP_LEN
 comma
-l_int|NULL
+op_amp
+id|cswlen
 )paren
 suffix:semicolon
+multiline_comment|/* Some broken devices add unnecessary zero-length packets to the&n;&t; * end of their data transfers.  Such packets show up as 0-length&n;&t; * CSWs.  If we encounter such a thing, try to read the CSW again.&n;&t; */
+r_if
+c_cond
+(paren
+id|result
+op_eq
+id|USB_STOR_XFER_SHORT
+op_logical_and
+id|cswlen
+op_eq
+l_int|0
+)paren
+(brace
+id|US_DEBUGP
+c_func
+(paren
+l_string|&quot;Received 0-length CSW; retrying...&bslash;n&quot;
+)paren
+suffix:semicolon
+id|result
+op_assign
+id|usb_stor_bulk_transfer_buf
+c_func
+(paren
+id|us
+comma
+id|us-&gt;recv_bulk_pipe
+comma
+id|bcs
+comma
+id|US_BULK_CS_WRAP_LEN
+comma
+op_amp
+id|cswlen
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/* did the attempt to read the CSW fail? */
 r_if
 c_cond

@@ -1442,7 +1442,7 @@ id|ed_alloc
 (paren
 id|ohci
 comma
-id|SLAB_ATOMIC
+id|GFP_ATOMIC
 )paren
 suffix:semicolon
 r_if
@@ -1471,7 +1471,7 @@ id|td_alloc
 (paren
 id|ohci
 comma
-id|SLAB_ATOMIC
+id|GFP_ATOMIC
 )paren
 suffix:semicolon
 r_if

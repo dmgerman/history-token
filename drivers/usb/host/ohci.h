@@ -768,13 +768,13 @@ multiline_comment|/* shadow int_table */
 multiline_comment|/*&n;&t; * memory management for queue data structures&n;&t; */
 DECL|member|td_cache
 r_struct
-id|pci_pool
+id|dma_pool
 op_star
 id|td_cache
 suffix:semicolon
 DECL|member|ed_cache
 r_struct
-id|pci_pool
+id|dma_pool
 op_star
 id|ed_cache
 suffix:semicolon
@@ -827,13 +827,13 @@ DECL|macro|STUB_DEBUG_FILES
 mdefine_line|#define STUB_DEBUG_FILES
 macro_line|#endif&t;/* DEBUG */
 DECL|macro|ohci_dbg
-mdefine_line|#define ohci_dbg(ohci, fmt, args...) &bslash;&n;&t;dev_dbg ((ohci)-&gt;hcd.controller , fmt , ## args )
+mdefine_line|#define ohci_dbg(ohci, fmt, args...) &bslash;&n;&t;dev_dbg ((ohci)-&gt;hcd.self.controller , fmt , ## args )
 DECL|macro|ohci_err
-mdefine_line|#define ohci_err(ohci, fmt, args...) &bslash;&n;&t;dev_err ((ohci)-&gt;hcd.controller , fmt , ## args )
+mdefine_line|#define ohci_err(ohci, fmt, args...) &bslash;&n;&t;dev_err ((ohci)-&gt;hcd.self.controller , fmt , ## args )
 DECL|macro|ohci_info
-mdefine_line|#define ohci_info(ohci, fmt, args...) &bslash;&n;&t;dev_info ((ohci)-&gt;hcd.controller , fmt , ## args )
+mdefine_line|#define ohci_info(ohci, fmt, args...) &bslash;&n;&t;dev_info ((ohci)-&gt;hcd.self.controller , fmt , ## args )
 DECL|macro|ohci_warn
-mdefine_line|#define ohci_warn(ohci, fmt, args...) &bslash;&n;&t;dev_warn ((ohci)-&gt;hcd.controller , fmt , ## args )
+mdefine_line|#define ohci_warn(ohci, fmt, args...) &bslash;&n;&t;dev_warn ((ohci)-&gt;hcd.self.controller , fmt , ## args )
 macro_line|#ifdef OHCI_VERBOSE_DEBUG
 DECL|macro|ohci_vdbg
 macro_line|#&t;define ohci_vdbg ohci_dbg

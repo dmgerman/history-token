@@ -786,7 +786,7 @@ id|USB_REQ_SET_FEATURE
 suffix:colon
 id|dev_dbg
 (paren
-id|hcd-&gt;controller
+id|hcd-&gt;self.controller
 comma
 l_string|&quot;no device features yet yet&bslash;n&quot;
 )paren
@@ -959,7 +959,7 @@ suffix:colon
 singleline_comment|// wValue == urb-&gt;dev-&gt;devaddr
 id|dev_dbg
 (paren
-id|hcd-&gt;controller
+id|hcd-&gt;self.controller
 comma
 l_string|&quot;root hub device address %d&bslash;n&quot;
 comma
@@ -1003,7 +1003,7 @@ id|USB_REQ_SET_FEATURE
 suffix:colon
 id|dev_dbg
 (paren
-id|hcd-&gt;controller
+id|hcd-&gt;self.controller
 comma
 l_string|&quot;no endpoint features yet&bslash;n&quot;
 )paren
@@ -1043,7 +1043,7 @@ id|EPIPE
 suffix:semicolon
 id|dev_dbg
 (paren
-id|hcd-&gt;controller
+id|hcd-&gt;self.controller
 comma
 l_string|&quot;unsupported hub control message (maxchild %d)&bslash;n&quot;
 comma
@@ -1063,7 +1063,7 @@ l_int|0
 suffix:semicolon
 id|dev_dbg
 (paren
-id|hcd-&gt;controller
+id|hcd-&gt;self.controller
 comma
 l_string|&quot;CTRL: TypeReq=0x%x val=0x%x idx=0x%x len=%d ==&gt; %d&bslash;n&quot;
 comma
@@ -1197,7 +1197,7 @@ id|hcd-&gt;state
 (brace
 id|dev_dbg
 (paren
-id|hcd-&gt;controller
+id|hcd-&gt;self.controller
 comma
 l_string|&quot;not queuing rh status urb, stat %d&bslash;n&quot;
 comma
@@ -3114,7 +3114,7 @@ multiline_comment|/* lower level hcd code should use *_dma exclusively,&n;&t; * 
 r_if
 c_cond
 (paren
-id|hcd-&gt;controller-&gt;dma_mask
+id|hcd-&gt;self.controller-&gt;dma_mask
 )paren
 (brace
 r_if
@@ -3136,7 +3136,7 @@ id|urb-&gt;setup_dma
 op_assign
 id|dma_map_single
 (paren
-id|hcd-&gt;controller
+id|hcd-&gt;self.controller
 comma
 id|urb-&gt;setup_packet
 comma
@@ -3167,7 +3167,7 @@ id|urb-&gt;transfer_dma
 op_assign
 id|dma_map_single
 (paren
-id|hcd-&gt;controller
+id|hcd-&gt;self.controller
 comma
 id|urb-&gt;transfer_buffer
 comma
@@ -3325,7 +3325,7 @@ l_int|0
 )paren
 id|dev_dbg
 (paren
-id|hcd-&gt;controller
+id|hcd-&gt;self.controller
 comma
 l_string|&quot;dequeue %p --&gt; %d&bslash;n&quot;
 comma
@@ -3618,7 +3618,7 @@ id|hcd-&gt;saw_irq
 (brace
 id|dev_warn
 (paren
-id|hcd-&gt;controller
+id|hcd-&gt;self.controller
 comma
 l_string|&quot;Unlink after no-IRQ?  &quot;
 l_string|&quot;Different ACPI or APIC settings may help.&quot;
@@ -3652,7 +3652,7 @@ id|in_interrupt
 (brace
 id|dev_dbg
 (paren
-id|hcd-&gt;controller
+id|hcd-&gt;self.controller
 comma
 l_string|&quot;non-async unlink in_interrupt&quot;
 )paren
@@ -4117,7 +4117,7 @@ id|urb
 suffix:semicolon
 id|dev_dbg
 (paren
-id|hcd-&gt;controller
+id|hcd-&gt;self.controller
 comma
 l_string|&quot;shutdown urb %p pipe %08x ep%d%s%s&bslash;n&quot;
 comma
@@ -4321,7 +4321,7 @@ id|dev-&gt;urb_list
 (brace
 id|dev_dbg
 (paren
-id|hcd-&gt;controller
+id|hcd-&gt;self.controller
 comma
 l_string|&quot;free busy dev, %s devnum %d (bug!)&bslash;n&quot;
 comma
@@ -4459,7 +4459,7 @@ multiline_comment|/* lower level hcd code should use *_dma exclusively */
 r_if
 c_cond
 (paren
-id|hcd-&gt;controller-&gt;dma_mask
+id|hcd-&gt;self.controller-&gt;dma_mask
 )paren
 (brace
 r_if
@@ -4479,7 +4479,7 @@ id|URB_NO_SETUP_DMA_MAP
 )paren
 id|dma_unmap_single
 (paren
-id|hcd-&gt;controller
+id|hcd-&gt;self.controller
 comma
 id|urb-&gt;setup_dma
 comma
@@ -4508,7 +4508,7 @@ id|URB_NO_TRANSFER_DMA_MAP
 )paren
 id|dma_unmap_single
 (paren
-id|hcd-&gt;controller
+id|hcd-&gt;self.controller
 comma
 id|urb-&gt;transfer_dma
 comma
@@ -4716,7 +4716,7 @@ id|hcd
 (brace
 id|dev_err
 (paren
-id|hcd-&gt;controller
+id|hcd-&gt;self.controller
 comma
 l_string|&quot;HC died; cleaning up&bslash;n&quot;
 )paren

@@ -144,31 +144,31 @@ id|u32
 id|hcs_params
 suffix:semicolon
 multiline_comment|/* cached register copy */
-multiline_comment|/* per-HC memory pools (could be per-PCI-bus, but ...) */
+multiline_comment|/* per-HC memory pools (could be per-bus, but ...) */
 DECL|member|qh_pool
 r_struct
-id|pci_pool
+id|dma_pool
 op_star
 id|qh_pool
 suffix:semicolon
 multiline_comment|/* qh per active urb */
 DECL|member|qtd_pool
 r_struct
-id|pci_pool
+id|dma_pool
 op_star
 id|qtd_pool
 suffix:semicolon
 multiline_comment|/* one or more per qh */
 DECL|member|itd_pool
 r_struct
-id|pci_pool
+id|dma_pool
 op_star
 id|itd_pool
 suffix:semicolon
 multiline_comment|/* itd per iso urb */
 DECL|member|sitd_pool
 r_struct
-id|pci_pool
+id|dma_pool
 op_star
 id|sitd_pool
 suffix:semicolon
@@ -916,10 +916,10 @@ l_int|32
 )paren
 suffix:semicolon
 multiline_comment|/*-------------------------------------------------------------------------*/
-multiline_comment|/* description of one iso highspeed transaction (up to 3 KB data) */
-DECL|struct|ehci_iso_uframe
+multiline_comment|/* description of one iso transaction (up to 3 KB data if highspeed) */
+DECL|struct|ehci_iso_packet
 r_struct
-id|ehci_iso_uframe
+id|ehci_iso_packet
 (brace
 multiline_comment|/* These will be copied to iTD when scheduling */
 DECL|member|bufp
@@ -937,17 +937,22 @@ id|u8
 id|cross
 suffix:semicolon
 multiline_comment|/* buf crosses pages */
+multiline_comment|/* for full speed OUT splits */
+DECL|member|buf1
+id|u16
+id|buf1
+suffix:semicolon
 )brace
 suffix:semicolon
-multiline_comment|/* temporary schedule data for highspeed packets from iso urbs&n; * each packet is one uframe&squot;s usb transactions, in some itd,&n; * beginning at stream-&gt;next_uframe&n; */
-DECL|struct|ehci_itd_sched
+multiline_comment|/* temporary schedule data for packets from iso urbs (both speeds)&n; * each packet is one logical usb transaction to the device (not TT),&n; * beginning at stream-&gt;next_uframe&n; */
+DECL|struct|ehci_iso_sched
 r_struct
-id|ehci_itd_sched
+id|ehci_iso_sched
 (brace
-DECL|member|itd_list
+DECL|member|td_list
 r_struct
 id|list_head
-id|itd_list
+id|td_list
 suffix:semicolon
 DECL|member|span
 r_int
@@ -955,7 +960,7 @@ id|span
 suffix:semicolon
 DECL|member|packet
 r_struct
-id|ehci_iso_uframe
+id|ehci_iso_packet
 id|packet
 (braket
 l_int|0
@@ -985,23 +990,32 @@ DECL|member|bEndpointAddress
 id|u8
 id|bEndpointAddress
 suffix:semicolon
-DECL|member|itd_list
+DECL|member|highspeed
+id|u8
+id|highspeed
+suffix:semicolon
+DECL|member|depth
+id|u16
+id|depth
+suffix:semicolon
+multiline_comment|/* depth in uframes */
+DECL|member|td_list
 r_struct
 id|list_head
-id|itd_list
+id|td_list
 suffix:semicolon
-multiline_comment|/* queued itds */
-DECL|member|free_itd_list
+multiline_comment|/* queued itds/sitds */
+DECL|member|free_list
 r_struct
 id|list_head
-id|free_itd_list
+id|free_list
 suffix:semicolon
-multiline_comment|/* list of unused itds */
-DECL|member|dev
+multiline_comment|/* list of unused itds/sitds */
+DECL|member|udev
 r_struct
-id|hcd_dev
+id|usb_device
 op_star
-id|dev
+id|udev
 suffix:semicolon
 multiline_comment|/* output of (re)scheduling */
 DECL|member|start
@@ -1019,18 +1033,29 @@ DECL|member|next_uframe
 r_int
 id|next_uframe
 suffix:semicolon
-multiline_comment|/* the rest is derived from the endpoint descriptor,&n;&t; * trusting urb-&gt;interval == (1 &lt;&lt; (epdesc-&gt;bInterval - 1)),&n;&t; * including the extra info for hw_bufp[0..2]&n;&t; */
+DECL|member|splits
+id|u32
+id|splits
+suffix:semicolon
+multiline_comment|/* the rest is derived from the endpoint descriptor,&n;&t; * trusting urb-&gt;interval == f(epdesc-&gt;bInterval) and&n;&t; * including the extra info for hw_bufp[0..2]&n;&t; */
 DECL|member|interval
 id|u8
 id|interval
 suffix:semicolon
 DECL|member|usecs
+DECL|member|c_usecs
 id|u8
 id|usecs
+comma
+id|c_usecs
 suffix:semicolon
 DECL|member|maxp
 id|u16
 id|maxp
+suffix:semicolon
+DECL|member|raw_mask
+id|u16
+id|raw_mask
 suffix:semicolon
 DECL|member|bandwidth
 r_int
@@ -1049,7 +1074,11 @@ DECL|member|buf2
 id|u32
 id|buf2
 suffix:semicolon
-multiline_comment|/* ... sITD won&squot;t use buf[012], and needs TT access ... */
+multiline_comment|/* this is used to initialize sITD&squot;s tt info */
+DECL|member|address
+id|u32
+id|address
+suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/*-------------------------------------------------------------------------*/
@@ -1084,8 +1113,8 @@ DECL|macro|EHCI_ITD_LENGTH
 mdefine_line|#define&t;EHCI_ITD_LENGTH(tok)&t;(((tok)&gt;&gt;16) &amp; 0x0fff)
 DECL|macro|EHCI_ITD_IOC
 mdefine_line|#define&t;EHCI_ITD_IOC&t;&t;(1 &lt;&lt; 15)&t;/* interrupt on complete */
-DECL|macro|ISO_ACTIVE
-mdefine_line|#define ISO_ACTIVE&t;__constant_cpu_to_le32(EHCI_ISOC_ACTIVE)
+DECL|macro|ITD_ACTIVE
+mdefine_line|#define ITD_ACTIVE&t;__constant_cpu_to_le32(EHCI_ISOC_ACTIVE)
 DECL|member|hw_bufp
 id|u32
 id|hw_bufp
@@ -1191,19 +1220,39 @@ id|u32
 id|hw_uframe
 suffix:semicolon
 multiline_comment|/* see EHCI table 3-10 */
-DECL|member|hw_tx_results1
+DECL|member|hw_results
 id|u32
-id|hw_tx_results1
+id|hw_results
 suffix:semicolon
 multiline_comment|/* see EHCI table 3-11 */
-DECL|member|hw_tx_results2
+DECL|macro|SITD_IOC
+mdefine_line|#define&t;SITD_IOC&t;(1 &lt;&lt; 31)&t;/* interrupt on completion */
+DECL|macro|SITD_PAGE
+mdefine_line|#define&t;SITD_PAGE&t;(1 &lt;&lt; 30)&t;/* buffer 0/1 */
+DECL|macro|SITD_LENGTH
+mdefine_line|#define&t;SITD_LENGTH(x)&t;(0x3ff &amp; ((x)&gt;&gt;16))
+DECL|macro|SITD_STS_ACTIVE
+mdefine_line|#define&t;SITD_STS_ACTIVE&t;(1 &lt;&lt; 7)&t;/* HC may execute this */
+DECL|macro|SITD_STS_ERR
+mdefine_line|#define&t;SITD_STS_ERR&t;(1 &lt;&lt; 6)&t;/* error from TT */
+DECL|macro|SITD_STS_DBE
+mdefine_line|#define&t;SITD_STS_DBE&t;(1 &lt;&lt; 5)&t;/* data buffer error (in HC) */
+DECL|macro|SITD_STS_BABBLE
+mdefine_line|#define&t;SITD_STS_BABBLE&t;(1 &lt;&lt; 4)&t;/* device was babbling */
+DECL|macro|SITD_STS_XACT
+mdefine_line|#define&t;SITD_STS_XACT&t;(1 &lt;&lt; 3)&t;/* illegal IN response */
+DECL|macro|SITD_STS_MMF
+mdefine_line|#define&t;SITD_STS_MMF&t;(1 &lt;&lt; 2)&t;/* incomplete split transaction */
+DECL|macro|SITD_STS_STS
+mdefine_line|#define&t;SITD_STS_STS&t;(1 &lt;&lt; 1)&t;/* split transaction state */
+DECL|macro|SITD_ACTIVE
+mdefine_line|#define SITD_ACTIVE&t;__constant_cpu_to_le32(SITD_STS_ACTIVE)
+DECL|member|hw_buf
 id|u32
-id|hw_tx_results2
-suffix:semicolon
-multiline_comment|/* see EHCI table 3-12 */
-DECL|member|hw_tx_results3
-id|u32
-id|hw_tx_results3
+id|hw_buf
+(braket
+l_int|2
+)braket
 suffix:semicolon
 multiline_comment|/* see EHCI table 3-12 */
 DECL|member|hw_backpointer
@@ -1236,23 +1285,27 @@ id|urb
 op_star
 id|urb
 suffix:semicolon
-DECL|member|buf_dma
-id|dma_addr_t
-id|buf_dma
+DECL|member|stream
+r_struct
+id|ehci_iso_stream
+op_star
+id|stream
 suffix:semicolon
-multiline_comment|/* buffer address */
-DECL|member|usecs
-r_int
-r_int
-id|usecs
+multiline_comment|/* endpoint&squot;s queue */
+DECL|member|sitd_list
+r_struct
+id|list_head
+id|sitd_list
 suffix:semicolon
-multiline_comment|/* start bandwidth */
-DECL|member|c_usecs
+multiline_comment|/* list of stream&squot;s sitds */
+DECL|member|frame
 r_int
-r_int
-id|c_usecs
+id|frame
 suffix:semicolon
-multiline_comment|/* completion bandwidth */
+DECL|member|index
+r_int
+id|index
+suffix:semicolon
 )brace
 id|__attribute__
 (paren
