@@ -248,7 +248,7 @@ id|rl
 comma
 id|u8
 op_star
-id|al
+id|al_start
 comma
 r_const
 id|s64
