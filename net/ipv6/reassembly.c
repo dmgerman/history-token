@@ -2455,7 +2455,6 @@ l_int|65535
 op_plus
 l_int|8
 )paren
-(brace
 r_goto
 id|out_oversize
 suffix:semicolon
@@ -2888,6 +2887,7 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
+DECL|function|ipv6_frag_rcv
 r_static
 r_int
 id|ipv6_frag_rcv
@@ -3197,6 +3197,7 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
+DECL|variable|frag_protocol
 r_static
 r_struct
 id|inet6_protocol
@@ -3215,6 +3216,7 @@ id|INET6_PROTO_NOPOLICY
 comma
 )brace
 suffix:semicolon
+DECL|function|ipv6_frag_init
 r_void
 id|__init
 id|ipv6_frag_init
