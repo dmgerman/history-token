@@ -1114,13 +1114,6 @@ op_star
 id|ni
 )paren
 (brace
-r_struct
-id|page
-op_star
-id|page
-op_assign
-id|ni-&gt;page
-suffix:semicolon
 id|ntfs_inode
 op_star
 id|base_ni
@@ -1136,13 +1129,6 @@ suffix:semicolon
 id|BUG_ON
 c_func
 (paren
-op_logical_neg
-id|page
-)paren
-suffix:semicolon
-id|BUG_ON
-c_func
-(paren
 id|NInoAttr
 c_func
 (paren
@@ -1150,11 +1136,14 @@ id|ni
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Set the page containing the mft record dirty.  This also marks the&n;&t; * $MFT inode dirty (I_DIRTY_PAGES).&n;&t; */
-id|__set_page_dirty_nobuffers
+id|mark_ntfs_record_dirty
 c_func
 (paren
-id|page
+id|ni
+comma
+id|ni-&gt;page
+comma
+id|ni-&gt;page_ofs
 )paren
 suffix:semicolon
 multiline_comment|/* Determine the base vfs inode and mark it dirty, too. */
@@ -1572,7 +1561,7 @@ id|block_start
 op_plus
 id|blocksize
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * If the buffer is outside the mft record, just skip it,&n;&t;&t; * clearing it if it is dirty to make sure it is not written&n;&t;&t; * out.  It should never be marked dirty but better be safe.&n;&t;&t; */
+multiline_comment|/* If the buffer is outside the mft record, skip it. */
 r_if
 c_cond
 (paren
@@ -1588,38 +1577,8 @@ op_ge
 id|m_end
 )paren
 )paren
-(brace
-r_if
-c_cond
-(paren
-id|buffer_dirty
-c_func
-(paren
-id|bh
-)paren
-)paren
-(brace
-id|ntfs_warning
-c_func
-(paren
-id|vol-&gt;sb
-comma
-l_string|&quot;Clearing dirty mft &quot;
-l_string|&quot;record page buffer.  %s&quot;
-comma
-id|ntfs_please_email
-)paren
-suffix:semicolon
-id|clear_buffer_dirty
-c_func
-(paren
-id|bh
-)paren
-suffix:semicolon
-)brace
 r_continue
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -2246,7 +2205,7 @@ id|block_start
 op_plus
 id|blocksize
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * If the buffer is outside the mft record, just skip it,&n;&t;&t; * clearing it if it is dirty to make sure it is not written&n;&t;&t; * out.  It should never be marked dirty but better be safe.&n;&t;&t; */
+multiline_comment|/* If the buffer is outside the mft record, skip it. */
 r_if
 c_cond
 (paren
@@ -2262,38 +2221,8 @@ op_ge
 id|m_end
 )paren
 )paren
-(brace
-r_if
-c_cond
-(paren
-id|buffer_dirty
-c_func
-(paren
-id|bh
-)paren
-)paren
-(brace
-id|ntfs_warning
-c_func
-(paren
-id|vol-&gt;sb
-comma
-l_string|&quot;Clearing dirty mft &quot;
-l_string|&quot;record page buffer.  %s&quot;
-comma
-id|ntfs_please_email
-)paren
-suffix:semicolon
-id|clear_buffer_dirty
-c_func
-(paren
-id|bh
-)paren
-suffix:semicolon
-)brace
 r_continue
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
