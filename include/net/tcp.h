@@ -16,6 +16,7 @@ macro_line|#include &lt;linux/cache.h&gt;
 macro_line|#include &lt;linux/percpu.h&gt;
 macro_line|#include &lt;net/checksum.h&gt;
 macro_line|#include &lt;net/sock.h&gt;
+macro_line|#include &lt;net/snmp.h&gt;
 macro_line|#if defined(CONFIG_IPV6) || defined (CONFIG_IPV6_MODULE)
 macro_line|#include &lt;linux/ipv6.h&gt;
 macro_line|#endif
@@ -1567,6 +1568,10 @@ DECL|macro|TCP_INC_STATS_USER
 mdefine_line|#define TCP_INC_STATS_USER(field) &t;SNMP_INC_STATS_USER(tcp_statistics, field)
 DECL|macro|TCP_DEC_STATS
 mdefine_line|#define TCP_DEC_STATS(field)&t;&t;SNMP_DEC_STATS(tcp_statistics, field)
+DECL|macro|TCP_ADD_STATS_BH
+mdefine_line|#define TCP_ADD_STATS_BH(field, val)&t;SNMP_ADD_STATS_BH(tcp_statistics, field, val)
+DECL|macro|TCP_ADD_STATS_USER
+mdefine_line|#define TCP_ADD_STATS_USER(field, val)&t;SNMP_ADD_STATS_USER(tcp_statistics, field, val)
 r_extern
 id|__inline__
 r_void
@@ -4863,6 +4868,23 @@ suffix:semicolon
 r_case
 id|TCP_CLOSE
 suffix:colon
+r_if
+c_cond
+(paren
+id|oldstate
+op_eq
+id|TCP_CLOSE_WAIT
+op_logical_or
+id|oldstate
+op_eq
+id|TCP_ESTABLISHED
+)paren
+id|TCP_INC_STATS
+c_func
+(paren
+id|TcpEstabResets
+)paren
+suffix:semicolon
 id|sk-&gt;prot
 op_member_access_from_pointer
 id|unhash
@@ -7152,6 +7174,59 @@ id|tp-&gt;snd_una
 op_plus
 id|tp-&gt;snd_wnd
 )paren
+)paren
+suffix:semicolon
+)brace
+DECL|function|tcp_mib_init
+r_static
+r_inline
+r_void
+id|tcp_mib_init
+c_func
+(paren
+r_void
+)paren
+(brace
+multiline_comment|/* See RFC 2012 */
+id|TCP_ADD_STATS_USER
+c_func
+(paren
+id|TcpRtoAlgorithm
+comma
+l_int|1
+)paren
+suffix:semicolon
+id|TCP_ADD_STATS_USER
+c_func
+(paren
+id|TcpRtoMin
+comma
+id|TCP_RTO_MIN
+op_star
+l_int|1000
+op_div
+id|HZ
+)paren
+suffix:semicolon
+id|TCP_ADD_STATS_USER
+c_func
+(paren
+id|TcpRtoMax
+comma
+id|TCP_RTO_MAX
+op_star
+l_int|1000
+op_div
+id|HZ
+)paren
+suffix:semicolon
+id|TCP_ADD_STATS_USER
+c_func
+(paren
+id|TcpMaxConn
+comma
+op_minus
+l_int|1
 )paren
 suffix:semicolon
 )brace
