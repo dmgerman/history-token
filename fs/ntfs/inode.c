@@ -485,7 +485,7 @@ id|vi
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * There is no point in keeping bad inodes around if the failure was&n;&t; * due to ENOMEM. We want to be able to retry again layer.&n;&t; */
+multiline_comment|/*&n;&t; * There is no point in keeping bad inodes around if the failure was&n;&t; * due to ENOMEM. We want to be able to retry again later.&n;&t; */
 r_if
 c_cond
 (paren
@@ -1624,6 +1624,8 @@ id|unm_err_out
 suffix:semicolon
 )brace
 multiline_comment|/* Transfer information from mft record into vfs and ntfs inodes. */
+id|vi-&gt;i_generation
+op_assign
 id|ni-&gt;seq_no
 op_assign
 id|le16_to_cpu
@@ -3648,6 +3650,8 @@ id|vi-&gt;i_atime
 op_assign
 id|base_vi-&gt;i_atime
 suffix:semicolon
+id|vi-&gt;i_generation
+op_assign
 id|ni-&gt;seq_no
 op_assign
 id|base_ni-&gt;seq_no
@@ -3773,7 +3777,8 @@ l_string|&quot;or attribute with non-zero flags but &quot;
 l_string|&quot;the attribute is resident (mft_no &quot;
 l_string|&quot;0x%lx, type 0x%x, name_len %i). &quot;
 l_string|&quot;Please report you saw this message &quot;
-l_string|&quot;to linux-ntfs-dev@lists.sf.net&quot;
+l_string|&quot;to linux-ntfs-dev@lists.&quot;
+l_string|&quot;sourceforge.net&quot;
 comma
 id|vi-&gt;i_ino
 comma
@@ -3837,7 +3842,7 @@ l_string|&quot;is compressed (mft_no 0x%lx, &quot;
 l_string|&quot;type 0x%x, name_len %i). &quot;
 l_string|&quot;Please report you saw this &quot;
 l_string|&quot;message to linux-ntfs-dev@&quot;
-l_string|&quot;lists.sf.net&quot;
+l_string|&quot;lists.sourceforge.net&quot;
 comma
 id|vi-&gt;i_ino
 comma
@@ -3884,7 +3889,8 @@ l_string|&quot;data or named data attribute &quot;
 l_string|&quot;(mft_no 0x%lx, type 0x%x, &quot;
 l_string|&quot;name_len %i). Please report &quot;
 l_string|&quot;you saw this message to &quot;
-l_string|&quot;linux-ntfs-dev@lists.sf.net&quot;
+l_string|&quot;linux-ntfs-dev@lists.&quot;
+l_string|&quot;sourceforge.net&quot;
 comma
 id|vi-&gt;i_ino
 comma
@@ -4063,7 +4069,7 @@ l_string|&quot;is encrypted (mft_no 0x%lx, &quot;
 l_string|&quot;type 0x%x, name_len %i). &quot;
 l_string|&quot;Please report you saw this &quot;
 l_string|&quot;message to linux-ntfs-dev@&quot;
-l_string|&quot;lists.sf.net&quot;
+l_string|&quot;lists.sourceforge.net&quot;
 comma
 id|vi-&gt;i_ino
 comma
@@ -4112,7 +4118,7 @@ l_string|&quot;is sparse (mft_no 0x%lx, &quot;
 l_string|&quot;type 0x%x, name_len %i). &quot;
 l_string|&quot;Please report you saw this &quot;
 l_string|&quot;message to linux-ntfs-dev@&quot;
-l_string|&quot;lists.sf.net&quot;
+l_string|&quot;lists.sourceforge.net&quot;
 comma
 id|vi-&gt;i_ino
 comma
@@ -4690,6 +4696,8 @@ id|err_out
 suffix:semicolon
 )brace
 multiline_comment|/* Need this to sanity check attribute list references to $MFT. */
+id|vi-&gt;i_generation
+op_assign
 id|ni-&gt;seq_no
 op_assign
 id|le16_to_cpu
@@ -5238,7 +5246,8 @@ l_string|&quot;BUG: The first $DATA extent &quot;
 l_string|&quot;of $MFT is not in the base &quot;
 l_string|&quot;mft record. Please report &quot;
 l_string|&quot;you saw this message to &quot;
-l_string|&quot;linux-ntfs-dev@lists.sf.net&quot;
+l_string|&quot;linux-ntfs-dev@lists.&quot;
+l_string|&quot;sourceforge.net&quot;
 )paren
 suffix:semicolon
 r_goto
@@ -5560,7 +5569,8 @@ l_string|&quot;failed. BUG or corrupt $MFT. &quot;
 l_string|&quot;Run chkdsk and if no errors &quot;
 l_string|&quot;are found, please report you &quot;
 l_string|&quot;saw this message to &quot;
-l_string|&quot;linux-ntfs-dev@lists.sf.net&quot;
+l_string|&quot;linux-ntfs-dev@lists.&quot;
+l_string|&quot;sourceforge.net&quot;
 )paren
 suffix:semicolon
 id|put_attr_search_ctx
