@@ -16,6 +16,10 @@ DECL|macro|HCI_MAX_BULK_TX
 mdefine_line|#define HCI_MAX_BULK_TX     &t;4
 DECL|macro|HCI_MAX_BULK_RX
 mdefine_line|#define HCI_MAX_BULK_RX     &t;1
+DECL|macro|HCI_MAX_ISOC_RX
+mdefine_line|#define HCI_MAX_ISOC_RX&t;&t;2
+DECL|macro|HCI_MAX_ISOC_TX
+mdefine_line|#define HCI_MAX_ISOC_TX&t;&t;2
 DECL|macro|HCI_MAX_ISOC_FRAMES
 mdefine_line|#define HCI_MAX_ISOC_FRAMES     10
 DECL|struct|_urb_queue
