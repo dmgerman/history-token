@@ -105,7 +105,7 @@ id|written
 op_assign
 l_int|0
 suffix:semicolon
-macro_line|#if defined(__sparc__) || defined(__mc68000__)
+macro_line|#if defined(__sparc__) || (defined(__mc68000__) &amp;&amp; defined(CONFIG_MMU))
 multiline_comment|/* we don&squot;t have page 0 mapped on sparc and m68k.. */
 r_if
 c_cond
@@ -258,7 +258,7 @@ id|read
 op_assign
 l_int|0
 suffix:semicolon
-macro_line|#if defined(__sparc__) || defined(__mc68000__)
+macro_line|#if defined(__sparc__) || (defined(__mc68000__) &amp;&amp; defined(CONFIG_MMU))
 multiline_comment|/* we don&squot;t have page 0 mapped on sparc and m68k.. */
 r_if
 c_cond
@@ -846,7 +846,7 @@ id|high_memory
 op_minus
 id|p
 suffix:semicolon
-macro_line|#if defined(__sparc__) || defined(__mc68000__)
+macro_line|#if defined(__sparc__) || (defined(__mc68000__) &amp;&amp; defined(CONFIG_MMU))
 multiline_comment|/* we don&squot;t have page 0 mapped on sparc and m68k.. */
 r_if
 c_cond
