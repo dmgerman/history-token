@@ -2498,10 +2498,6 @@ comma
 id|jbegin_count
 )paren
 suffix:semicolon
-id|th.t_caller
-op_assign
-l_string|&quot;create&quot;
-suffix:semicolon
 id|retval
 op_assign
 id|reiserfs_new_inode

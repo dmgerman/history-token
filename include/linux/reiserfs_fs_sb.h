@@ -233,13 +233,17 @@ DECL|struct|reiserfs_transaction_handle
 r_struct
 id|reiserfs_transaction_handle
 (brace
-multiline_comment|/* ifdef it. -Hans */
-DECL|member|t_caller
-r_char
+DECL|member|t_super
+r_struct
+id|super_block
 op_star
-id|t_caller
+id|t_super
 suffix:semicolon
-multiline_comment|/* debugging use */
+multiline_comment|/* super for this FS when journal_begin was&n;&t;&t;&t;&t;   called. saves calls to reiserfs_get_super&n;&t;&t;&t;&t;   also used by nested transactions to make&n;&t;&t;&t;&t;   sure they are nesting on the right FS&n;&t;&t;&t;&t;   _must_ be first in the handle&n;&t;&t;&t;&t;*/
+DECL|member|t_refcount
+r_int
+id|t_refcount
+suffix:semicolon
 DECL|member|t_blocks_logged
 r_int
 id|t_blocks_logged
@@ -256,13 +260,12 @@ r_int
 id|t_trans_id
 suffix:semicolon
 multiline_comment|/* sanity check, equals the current trans id */
-DECL|member|t_super
-r_struct
-id|super_block
+DECL|member|t_handle_save
+r_void
 op_star
-id|t_super
+id|t_handle_save
 suffix:semicolon
-multiline_comment|/* super for this FS when journal_begin was &n;                                   called. saves calls to reiserfs_get_super */
+multiline_comment|/* save existing current-&gt;journal_info */
 DECL|member|displace_new_blocks
 r_int
 id|displace_new_blocks

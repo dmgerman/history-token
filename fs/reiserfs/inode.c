@@ -756,6 +756,18 @@ id|len
 op_assign
 id|th-&gt;t_blocks_allocated
 suffix:semicolon
+multiline_comment|/* we cannot restart while nested */
+r_if
+c_cond
+(paren
+id|th-&gt;t_refcount
+OG
+l_int|1
+)paren
+(brace
+r_return
+suffix:semicolon
+)brace
 id|pathrelse
 c_func
 (paren
