@@ -79,6 +79,9 @@ id|pid
 comma
 id|u32
 id|seq
+comma
+id|u16
+id|nlmsg_flags
 )paren
 (brace
 r_struct
@@ -160,6 +163,10 @@ op_star
 id|r
 )paren
 )paren
+suffix:semicolon
+id|nlh-&gt;nlmsg_flags
+op_assign
+id|nlmsg_flags
 suffix:semicolon
 id|r
 op_assign
@@ -1141,6 +1148,8 @@ dot
 id|pid
 comma
 id|nlh-&gt;nlmsg_seq
+comma
+l_int|0
 )paren
 op_le
 l_int|0
@@ -2117,6 +2126,8 @@ dot
 id|pid
 comma
 id|cb-&gt;nlh-&gt;nlmsg_seq
+comma
+id|NLM_F_MULTI
 )paren
 suffix:semicolon
 )brace
@@ -2198,6 +2209,10 @@ op_star
 id|r
 )paren
 )paren
+suffix:semicolon
+id|nlh-&gt;nlmsg_flags
+op_assign
+id|NLM_F_MULTI
 suffix:semicolon
 id|r
 op_assign
