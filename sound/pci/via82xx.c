@@ -9322,6 +9322,24 @@ comma
 dot
 id|device
 op_assign
+l_int|0x8095
+comma
+dot
+id|action
+op_assign
+id|VIA_DXS_ENABLE
+)brace
+comma
+multiline_comment|/* ASUS A7V8X */
+(brace
+dot
+id|vendor
+op_assign
+l_int|0x1043
+comma
+dot
+id|device
+op_assign
 l_int|0x80a1
 comma
 dot
@@ -9349,6 +9367,24 @@ id|VIA_DXS_ENABLE
 )brace
 comma
 multiline_comment|/* ASUS A7V600 */
+(brace
+dot
+id|vendor
+op_assign
+l_int|0x10cf
+comma
+dot
+id|device
+op_assign
+l_int|0x118e
+comma
+dot
+id|action
+op_assign
+id|VIA_DXS_ENABLE
+)brace
+comma
+multiline_comment|/* FSC laptop */
 (brace
 dot
 id|vendor
