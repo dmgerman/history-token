@@ -399,7 +399,7 @@ op_star
 id|chip
 )paren
 suffix:semicolon
-r_void
+id|irqreturn_t
 id|pdacf_interrupt
 c_func
 (paren

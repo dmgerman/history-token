@@ -34,6 +34,7 @@ comma
 id|dev
 comma
 r_return
+id|IRQ_NONE
 )paren
 suffix:semicolon
 r_int
