@@ -2933,7 +2933,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;IBM planar ID: %08x&quot;
+l_string|&quot;IBM planar ID: %02x&quot;
 comma
 id|reg
 )paren
