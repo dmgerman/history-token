@@ -1158,6 +1158,80 @@ suffix:semicolon
 r_break
 suffix:semicolon
 macro_line|#endif
+r_case
+id|PCI_CLASS_BRIDGE_PCI
+suffix:colon
+id|pci_read_config_word
+c_func
+(paren
+id|dev
+comma
+id|PCI_BRIDGE_CONTROL
+comma
+op_amp
+id|status
+)paren
+suffix:semicolon
+id|status
+op_or_assign
+id|PCI_BRIDGE_CTL_PARITY
+op_or
+id|PCI_BRIDGE_CTL_MASTER_ABORT
+suffix:semicolon
+id|status
+op_and_assign
+op_complement
+(paren
+id|PCI_BRIDGE_CTL_BUS_RESET
+op_or
+id|PCI_BRIDGE_CTL_FAST_BACK
+)paren
+suffix:semicolon
+id|pci_write_config_word
+c_func
+(paren
+id|dev
+comma
+id|PCI_BRIDGE_CONTROL
+comma
+id|status
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|PCI_CLASS_BRIDGE_CARDBUS
+suffix:colon
+id|pci_read_config_word
+c_func
+(paren
+id|dev
+comma
+id|PCI_CB_BRIDGE_CONTROL
+comma
+op_amp
+id|status
+)paren
+suffix:semicolon
+id|status
+op_or_assign
+id|PCI_CB_BRIDGE_CTL_PARITY
+op_or
+id|PCI_CB_BRIDGE_CTL_MASTER_ABORT
+suffix:semicolon
+id|pci_write_config_word
+c_func
+(paren
+id|dev
+comma
+id|PCI_CB_BRIDGE_CONTROL
+comma
+id|status
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
 )brace
 multiline_comment|/*&n;&t; * Now walk the devices again, this time setting them up.&n;&t; */
 id|list_for_each_entry
@@ -1271,6 +1345,7 @@ suffix:semicolon
 multiline_comment|/*&n; * Convert from Linux-centric to bus-centric addresses for bridge devices.&n; */
 r_void
 id|__devinit
+DECL|function|pcibios_resource_to_bus
 id|pcibios_resource_to_bus
 c_func
 (paren
@@ -1339,12 +1414,14 @@ id|offset
 suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_HOTPLUG
+DECL|variable|pcibios_fixup_bus
 id|EXPORT_SYMBOL
 c_func
 (paren
 id|pcibios_fixup_bus
 )paren
 suffix:semicolon
+DECL|variable|pcibios_resource_to_bus
 id|EXPORT_SYMBOL
 c_func
 (paren
@@ -1353,6 +1430,7 @@ id|pcibios_resource_to_bus
 suffix:semicolon
 macro_line|#endif
 multiline_comment|/*&n; * This is the standard PCI-PCI bridge swizzling algorithm:&n; *&n; *   Dev: 0  1  2  3&n; *    A   A  B  C  D&n; *    B   B  C  D  A&n; *    C   C  D  A  B&n; *    D   D  A  B  C&n; *        ^^^^^^^^^^ irq pin on bridge&n; */
+DECL|function|pci_std_swizzle
 id|u8
 id|__devinit
 id|pci_std_swizzle
@@ -1418,6 +1496,7 @@ id|dev-&gt;devfn
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Swizzle the device pin each time we cross a bridge.&n; * This might update pin and returns the slot number.&n; */
+DECL|function|pcibios_swizzle
 r_static
 id|u8
 id|__devinit
@@ -1497,6 +1576,7 @@ id|slot
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Map a slot/pin to an IRQ.&n; */
+DECL|function|pcibios_map_irq
 r_static
 r_int
 id|pcibios_map_irq
@@ -1573,6 +1653,7 @@ r_return
 id|irq
 suffix:semicolon
 )brace
+DECL|function|pcibios_init_hw
 r_static
 r_void
 id|__init
@@ -1770,6 +1851,7 @@ suffix:semicolon
 )brace
 )brace
 )brace
+DECL|function|pci_common_init
 r_void
 id|__init
 id|pci_common_init
@@ -1872,6 +1954,7 @@ id|bus
 suffix:semicolon
 )brace
 )brace
+DECL|function|pcibios_setup
 r_char
 op_star
 id|__init
@@ -1909,6 +1992,7 @@ id|str
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * From arch/i386/kernel/pci-i386.c:&n; *&n; * We need to avoid collisions with `mirrored&squot; VGA ports&n; * and other strange ISA hardware, so we always want the&n; * addresses to be allocated in the 0x000-0x0ff region&n; * modulo 0x400.&n; *&n; * Why? Because some silly external IO cards only decode&n; * the low 10 bits of the IO address. The 0x00-0xff region&n; * is reserved for motherboard devices that decode all 16&n; * bits, so it&squot;s ok to allocate at, say, 0x2800-0x28ff,&n; * but we want to try to avoid allocating at 0x2900-0x2bff&n; * which might be mirrored at 0x0100-0x03ff..&n; */
+DECL|function|pcibios_align_resource
 r_void
 id|pcibios_align_resource
 c_func
@@ -1978,6 +2062,7 @@ l_int|1
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * pcibios_enable_device - Enable I/O and memory.&n; * @dev: PCI device to be enabled&n; */
+DECL|function|pcibios_enable_device
 r_int
 id|pcibios_enable_device
 c_func
@@ -2167,6 +2252,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|function|pci_mmap_page_range
 r_int
 id|pci_mmap_page_range
 c_func
