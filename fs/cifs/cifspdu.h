@@ -5163,7 +5163,7 @@ id|__u8
 id|name_len
 suffix:semicolon
 DECL|member|value_len
-id|__u16
+id|__le16
 id|value_len
 suffix:semicolon
 DECL|member|name
@@ -5184,7 +5184,7 @@ r_struct
 id|fealist
 (brace
 DECL|member|list_len
-id|__u32
+id|__le32
 id|list_len
 suffix:semicolon
 DECL|member|list

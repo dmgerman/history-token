@@ -16162,9 +16162,9 @@ op_plus
 id|data_offset
 )paren
 suffix:semicolon
-id|ea_response_data-&gt;list_len
+id|name_len
 op_assign
-id|cpu_to_le32
+id|le32_to_cpu
 c_func
 (paren
 id|ea_response_data-&gt;list_len
@@ -16178,13 +16178,9 @@ comma
 (paren
 l_string|&quot;ea length %d&quot;
 comma
-id|ea_response_data-&gt;list_len
-)paren
-)paren
-suffix:semicolon
 id|name_len
-op_assign
-id|ea_response_data-&gt;list_len
+)paren
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -16233,6 +16229,9 @@ OG
 l_int|0
 )paren
 (brace
+id|__u16
+id|value_len
+suffix:semicolon
 id|name_len
 op_sub_assign
 l_int|4
@@ -16343,9 +16342,9 @@ suffix:semicolon
 id|temp_ptr
 op_increment
 suffix:semicolon
-id|temp_fea-&gt;value_len
+id|value_len
 op_assign
-id|cpu_to_le16
+id|le16_to_cpu
 c_func
 (paren
 id|temp_fea-&gt;value_len
@@ -16353,11 +16352,11 @@ id|temp_fea-&gt;value_len
 suffix:semicolon
 id|name_len
 op_sub_assign
-id|temp_fea-&gt;value_len
+id|value_len
 suffix:semicolon
 id|temp_ptr
 op_add_assign
-id|temp_fea-&gt;value_len
+id|value_len
 suffix:semicolon
 multiline_comment|/* BB check that temp_ptr is still within smb BB*/
 multiline_comment|/* no trailing null to account for in value len */
@@ -16852,9 +16851,9 @@ op_plus
 id|data_offset
 )paren
 suffix:semicolon
-id|ea_response_data-&gt;list_len
+id|name_len
 op_assign
-id|cpu_to_le32
+id|le32_to_cpu
 c_func
 (paren
 id|ea_response_data-&gt;list_len
@@ -16868,13 +16867,9 @@ comma
 (paren
 l_string|&quot;ea length %d&quot;
 comma
-id|ea_response_data-&gt;list_len
-)paren
-)paren
-suffix:semicolon
 id|name_len
-op_assign
-id|ea_response_data-&gt;list_len
+)paren
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -16924,6 +16919,9 @@ OG
 l_int|0
 )paren
 (brace
+id|__u16
+id|value_len
+suffix:semicolon
 id|name_len
 op_sub_assign
 l_int|4
@@ -16932,9 +16930,9 @@ id|temp_ptr
 op_add_assign
 l_int|4
 suffix:semicolon
-id|temp_fea-&gt;value_len
+id|value_len
 op_assign
-id|cpu_to_le16
+id|le16_to_cpu
 c_func
 (paren
 id|temp_fea-&gt;value_len
@@ -16960,7 +16958,7 @@ l_int|0
 multiline_comment|/* found a match */
 id|rc
 op_assign
-id|temp_fea-&gt;value_len
+id|value_len
 suffix:semicolon
 multiline_comment|/* account for prefix user. and trailing null */
 r_if
@@ -17030,11 +17028,11 @@ op_increment
 suffix:semicolon
 id|name_len
 op_sub_assign
-id|temp_fea-&gt;value_len
+id|value_len
 suffix:semicolon
 id|temp_ptr
 op_add_assign
-id|temp_fea-&gt;value_len
+id|value_len
 suffix:semicolon
 multiline_comment|/* no trailing null to account for in value len */
 multiline_comment|/* go on to next EA */
@@ -17454,11 +17452,10 @@ id|count
 suffix:semicolon
 id|parm_data-&gt;list_len
 op_assign
+id|cpu_to_le32
+c_func
 (paren
-id|__u32
-)paren
-(paren
-id|pSMB-&gt;DataCount
+id|count
 )paren
 suffix:semicolon
 id|parm_data-&gt;list
