@@ -2751,7 +2751,7 @@ id|cpus_in_xmon
 id|printf
 c_func
 (paren
-l_string|&quot; %d&quot;
+l_string|&quot; %x&quot;
 comma
 id|cpu
 )paren
