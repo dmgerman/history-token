@@ -1,9 +1,8 @@
-multiline_comment|/*&n; * include/asm-v850/anna.h -- Anna V850E2 evaluation cpu chip/board&n; *&n; *  Copyright (C) 2001,2002  NEC Corporation&n; *  Copyright (C) 2001,2002  Miles Bader &lt;miles@gnu.org&gt;&n; *&n; * This file is subject to the terms and conditions of the GNU General&n; * Public License.  See the file COPYING in the main directory of this&n; * archive for more details.&n; *&n; * Written by Miles Bader &lt;miles@gnu.org&gt;&n; */
+multiline_comment|/*&n; * include/asm-v850/anna.h -- Anna V850E2 evaluation cpu chip/board&n; *&n; *  Copyright (C) 2001,02,03  NEC Electronics Corporation&n; *  Copyright (C) 2001,02,03  Miles Bader &lt;miles@gnu.org&gt;&n; *&n; * This file is subject to the terms and conditions of the GNU General&n; * Public License.  See the file COPYING in the main directory of this&n; * archive for more details.&n; *&n; * Written by Miles Bader &lt;miles@gnu.org&gt;&n; */
 macro_line|#ifndef __V850_ANNA_H__
 DECL|macro|__V850_ANNA_H__
 mdefine_line|#define __V850_ANNA_H__
-DECL|macro|CPU_ARCH
-mdefine_line|#define CPU_ARCH &t;&quot;v850e2&quot;
+macro_line|#include &lt;asm/v850e2.h&gt;&t;&t;/* Based on V850E2 core.  */
 DECL|macro|CPU_MODEL
 mdefine_line|#define CPU_MODEL&t;&quot;v850e2/anna&quot;
 DECL|macro|CPU_MODEL_LONG
@@ -33,54 +32,6 @@ multiline_comment|/* We use on-chip RAM, for a few miscellaneous variables that 
 DECL|macro|R0_RAM_ADDR
 mdefine_line|#define R0_RAM_ADDR&t;&t;&t;0xFFFF8020
 multiline_comment|/* Anna specific control registers.  */
-DECL|macro|ANNA_CSC_ADDR
-mdefine_line|#define ANNA_CSC_ADDR(n)&t;&t;(0xFFFFF060 + (n) * 2)
-DECL|macro|ANNA_CSC
-mdefine_line|#define ANNA_CSC(n)&t;&t;&t;(*(volatile u16 *)ANNA_CSC_ADDR(n))
-DECL|macro|ANNA_BPC_ADDR
-mdefine_line|#define ANNA_BPC_ADDR&t;&t;&t;0xFFFFF064
-DECL|macro|ANNA_BPC
-mdefine_line|#define ANNA_BPC&t;&t;&t;(*(volatile u16 *)ANNA_BPC_ADDR)
-DECL|macro|ANNA_BSC_ADDR
-mdefine_line|#define ANNA_BSC_ADDR&t;&t;&t;0xFFFFF066
-DECL|macro|ANNA_BSC
-mdefine_line|#define ANNA_BSC&t;&t;&t;(*(volatile u16 *)ANNA_BSC_ADDR)
-DECL|macro|ANNA_BEC_ADDR
-mdefine_line|#define ANNA_BEC_ADDR&t;&t;&t;0xFFFFF068
-DECL|macro|ANNA_BEC
-mdefine_line|#define ANNA_BEC&t;&t;&t;(*(volatile u16 *)ANNA_BEC_ADDR)
-DECL|macro|ANNA_BHC_ADDR
-mdefine_line|#define ANNA_BHC_ADDR&t;&t;&t;0xFFFFF06A
-DECL|macro|ANNA_BHC
-mdefine_line|#define ANNA_BHC&t;&t;&t;(*(volatile u16 *)ANNA_BHC_ADDR)
-DECL|macro|ANNA_BCT_ADDR
-mdefine_line|#define ANNA_BCT_ADDR(n)&t;&t;(0xFFFFF480 + (n) * 2)
-DECL|macro|ANNA_BCT
-mdefine_line|#define ANNA_BCT(n)&t;&t;&t;(*(volatile u16 *)ANNA_BCT_ADDR(n))
-DECL|macro|ANNA_DWC_ADDR
-mdefine_line|#define ANNA_DWC_ADDR(n)&t;&t;(0xFFFFF484 + (n) * 2)
-DECL|macro|ANNA_DWC
-mdefine_line|#define ANNA_DWC(n)&t;&t;&t;(*(volatile u16 *)ANNA_DWC_ADDR(n))
-DECL|macro|ANNA_BCC_ADDR
-mdefine_line|#define ANNA_BCC_ADDR&t;&t;&t;0xFFFFF488
-DECL|macro|ANNA_BCC
-mdefine_line|#define ANNA_BCC&t;&t;&t;(*(volatile u16 *)ANNA_BCC_ADDR)
-DECL|macro|ANNA_ASC_ADDR
-mdefine_line|#define ANNA_ASC_ADDR&t;&t;&t;0xFFFFF48A
-DECL|macro|ANNA_ASC
-mdefine_line|#define ANNA_ASC&t;&t;&t;(*(volatile u16 *)ANNA_ASC_ADDR)
-DECL|macro|ANNA_LBS_ADDR
-mdefine_line|#define ANNA_LBS_ADDR&t;&t;&t;0xFFFFF48E
-DECL|macro|ANNA_LBS
-mdefine_line|#define ANNA_LBS&t;&t;&t;(*(volatile u16 *)ANNA_LBS_ADDR)
-DECL|macro|ANNA_SCR3_ADDR
-mdefine_line|#define ANNA_SCR3_ADDR&t;&t;&t;0xFFFFF4AC
-DECL|macro|ANNA_SCR3
-mdefine_line|#define ANNA_SCR3&t;&t;&t;(*(volatile u16 *)ANNA_SCR3_ADDR)
-DECL|macro|ANNA_RFS3_ADDR
-mdefine_line|#define ANNA_RFS3_ADDR&t;&t;&t;0xFFFFF4AE
-DECL|macro|ANNA_RFS3
-mdefine_line|#define ANNA_RFS3&t;&t;&t;(*(volatile u16 *)ANNA_RFS3_ADDR)
 DECL|macro|ANNA_ILBEN_ADDR
 mdefine_line|#define ANNA_ILBEN_ADDR&t;&t;&t;0xFFFFF7F2
 DECL|macro|ANNA_ILBEN
@@ -96,8 +47,6 @@ DECL|macro|ANNA_PORT_PM_ADDR
 mdefine_line|#define ANNA_PORT_PM_ADDR(n)&t;&t;(0xFFFFF410 + (n) * 2)
 DECL|macro|ANNA_PORT_PM
 mdefine_line|#define ANNA_PORT_PM(n)&t;&t;&t;(*(volatile u8 *)ANNA_PORT_PM_ADDR(n))
-multiline_comment|/* NB85E-style interrupt system.  */
-macro_line|#include &lt;asm/nb85e_intc.h&gt;
 multiline_comment|/* Hardware-specific interrupt numbers (in the kernel IRQ namespace).  */
 DECL|macro|IRQ_INTP
 mdefine_line|#define IRQ_INTP(n)&t;(n)&t;/* Pnnn (pin) interrupts 0-15 */
@@ -146,15 +95,18 @@ r_void
 suffix:semicolon
 macro_line|#endif
 multiline_comment|/* Anna UART details (basically the same as the V850E/MA1, but 2 channels).  */
-DECL|macro|NB85E_UART_NUM_CHANNELS
-mdefine_line|#define NB85E_UART_NUM_CHANNELS&t;&t;2
-DECL|macro|NB85E_UART_BASE_FREQ
-mdefine_line|#define NB85E_UART_BASE_FREQ&t;&t;(SYS_CLOCK_FREQ / 2)
-DECL|macro|NB85E_UART_CHIP_NAME
-mdefine_line|#define NB85E_UART_CHIP_NAME &t;&t;&quot;V850E2/NA85E2A&quot;
+DECL|macro|V850E_UART_NUM_CHANNELS
+mdefine_line|#define V850E_UART_NUM_CHANNELS&t;&t;2
+DECL|macro|V850E_UART_BASE_FREQ
+mdefine_line|#define V850E_UART_BASE_FREQ&t;&t;(SYS_CLOCK_FREQ / 2)
+DECL|macro|V850E_UART_CHIP_NAME
+mdefine_line|#define V850E_UART_CHIP_NAME &t;&t;&quot;V850E2/NA85E2A&quot;
+multiline_comment|/* This is the UART channel that&squot;s actually connected on the board.  */
+DECL|macro|V850E_UART_CONSOLE_CHANNEL
+mdefine_line|#define V850E_UART_CONSOLE_CHANNEL&t;1
 multiline_comment|/* This is a function that gets called before configuring the UART.  */
-DECL|macro|NB85E_UART_PRE_CONFIGURE
-mdefine_line|#define NB85E_UART_PRE_CONFIGURE&t;anna_uart_pre_configure
+DECL|macro|V850E_UART_PRE_CONFIGURE
+mdefine_line|#define V850E_UART_PRE_CONFIGURE&t;anna_uart_pre_configure
 macro_line|#ifndef __ASSEMBLY__
 r_extern
 r_void
@@ -173,27 +125,27 @@ suffix:semicolon
 macro_line|#endif
 multiline_comment|/* This board supports RTS/CTS for the on-chip UART, but only for channel 1. */
 multiline_comment|/* CTS for UART channel 1 is pin P37 (bit 7 of port 3).  */
-DECL|macro|NB85E_UART_CTS
-mdefine_line|#define NB85E_UART_CTS(chan)&t;((chan) == 1 ? !(ANNA_PORT_IO(3) &amp; 0x80) : 1)
+DECL|macro|V850E_UART_CTS
+mdefine_line|#define V850E_UART_CTS(chan)&t;((chan) == 1 ? !(ANNA_PORT_IO(3) &amp; 0x80) : 1)
 multiline_comment|/* RTS for UART channel 1 is pin P07 (bit 7 of port 0).  */
-DECL|macro|NB85E_UART_SET_RTS
-mdefine_line|#define NB85E_UART_SET_RTS(chan, val)&t;&t;&t;&t;&t;      &bslash;&n;   do {&t;&t;&t;&t;&t;&t;&t;&t;&t;      &bslash;&n;&t;   if (chan == 1) {&t;&t;&t;&t;&t;&t;      &bslash;&n;&t;&t;   unsigned old = ANNA_PORT_IO(0); &t;&t;&t;      &bslash;&n;&t;&t;   if (val)&t;&t;&t;&t;&t;&t;      &bslash;&n;&t;&t;&t;   ANNA_PORT_IO(0) = old &amp; ~0x80;&t;&t;      &bslash;&n;&t;&t;   else&t;&t;&t;&t;&t;&t;&t;      &bslash;&n;&t;&t;&t;   ANNA_PORT_IO(0) = old | 0x80;&t;&t;      &bslash;&n;&t;   }&t;&t;&t;&t;&t;&t;&t;&t;      &bslash;&n;   } while (0)
+DECL|macro|V850E_UART_SET_RTS
+mdefine_line|#define V850E_UART_SET_RTS(chan, val)&t;&t;&t;&t;&t;      &bslash;&n;   do {&t;&t;&t;&t;&t;&t;&t;&t;&t;      &bslash;&n;&t;   if (chan == 1) {&t;&t;&t;&t;&t;&t;      &bslash;&n;&t;&t;   unsigned old = ANNA_PORT_IO(0); &t;&t;&t;      &bslash;&n;&t;&t;   if (val)&t;&t;&t;&t;&t;&t;      &bslash;&n;&t;&t;&t;   ANNA_PORT_IO(0) = old &amp; ~0x80;&t;&t;      &bslash;&n;&t;&t;   else&t;&t;&t;&t;&t;&t;&t;      &bslash;&n;&t;&t;&t;   ANNA_PORT_IO(0) = old | 0x80;&t;&t;      &bslash;&n;&t;   }&t;&t;&t;&t;&t;&t;&t;&t;      &bslash;&n;   } while (0)
 multiline_comment|/* Timer C details.  */
-DECL|macro|NB85E_TIMER_C_BASE_ADDR
-mdefine_line|#define NB85E_TIMER_C_BASE_ADDR&t;&t;0xFFFFF600
+DECL|macro|V850E_TIMER_C_BASE_ADDR
+mdefine_line|#define V850E_TIMER_C_BASE_ADDR&t;&t;0xFFFFF600
 multiline_comment|/* Timer D details (the Anna actually has 5 of these; should change later). */
-DECL|macro|NB85E_TIMER_D_BASE_ADDR
-mdefine_line|#define NB85E_TIMER_D_BASE_ADDR&t;&t;0xFFFFF540
-DECL|macro|NB85E_TIMER_D_TMD_BASE_ADDR
-mdefine_line|#define NB85E_TIMER_D_TMD_BASE_ADDR &t;(NB85E_TIMER_D_BASE_ADDR + 0x0)
-DECL|macro|NB85E_TIMER_D_CMD_BASE_ADDR
-mdefine_line|#define NB85E_TIMER_D_CMD_BASE_ADDR &t;(NB85E_TIMER_D_BASE_ADDR + 0x2)
-DECL|macro|NB85E_TIMER_D_TMCD_BASE_ADDR
-mdefine_line|#define NB85E_TIMER_D_TMCD_BASE_ADDR &t;(NB85E_TIMER_D_BASE_ADDR + 0x4)
-DECL|macro|NB85E_TIMER_D_BASE_FREQ
-mdefine_line|#define NB85E_TIMER_D_BASE_FREQ&t;&t;SYS_CLOCK_FREQ
-DECL|macro|NB85E_TIMER_D_TMCD_CS_MIN
-mdefine_line|#define NB85E_TIMER_D_TMCD_CS_MIN&t;1 /* min 2^1 divider */
+DECL|macro|V850E_TIMER_D_BASE_ADDR
+mdefine_line|#define V850E_TIMER_D_BASE_ADDR&t;&t;0xFFFFF540
+DECL|macro|V850E_TIMER_D_TMD_BASE_ADDR
+mdefine_line|#define V850E_TIMER_D_TMD_BASE_ADDR &t;(V850E_TIMER_D_BASE_ADDR + 0x0)
+DECL|macro|V850E_TIMER_D_CMD_BASE_ADDR
+mdefine_line|#define V850E_TIMER_D_CMD_BASE_ADDR &t;(V850E_TIMER_D_BASE_ADDR + 0x2)
+DECL|macro|V850E_TIMER_D_TMCD_BASE_ADDR
+mdefine_line|#define V850E_TIMER_D_TMCD_BASE_ADDR &t;(V850E_TIMER_D_BASE_ADDR + 0x4)
+DECL|macro|V850E_TIMER_D_BASE_FREQ
+mdefine_line|#define V850E_TIMER_D_BASE_FREQ&t;&t;SYS_CLOCK_FREQ
+DECL|macro|V850E_TIMER_D_TMCD_CS_MIN
+mdefine_line|#define V850E_TIMER_D_TMCD_CS_MIN&t;1 /* min 2^1 divider */
 multiline_comment|/* For &lt;asm/param.h&gt; */
 macro_line|#ifndef HZ
 DECL|macro|HZ

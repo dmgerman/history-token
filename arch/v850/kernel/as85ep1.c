@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * arch/v850/kernel/as85ep1.c -- AS85EP1 V850E evaluation chip/board&n; *&n; *  Copyright (C) 2002  NEC Corporation&n; *  Copyright (C) 2002  Miles Bader &lt;miles@gnu.org&gt;&n; *&n; * This file is subject to the terms and conditions of the GNU General&n; * Public License.  See the file COPYING in the main directory of this&n; * archive for more details.&n; *&n; * Written by Miles Bader &lt;miles@gnu.org&gt;&n; */
+multiline_comment|/*&n; * arch/v850/kernel/as85ep1.c -- AS85EP1 V850E evaluation chip/board&n; *&n; *  Copyright (C) 2002,03  NEC Electronics Corporation&n; *  Copyright (C) 2002,03  Miles Bader &lt;miles@gnu.org&gt;&n; *&n; * This file is subject to the terms and conditions of the GNU General&n; * Public License.  See the file COPYING in the main directory of this&n; * archive for more details.&n; *&n; * Written by Miles Bader &lt;miles@gnu.org&gt;&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -8,8 +8,8 @@ macro_line|#include &lt;linux/irq.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
-macro_line|#include &lt;asm/nb85e_timer_d.h&gt;
-macro_line|#include &lt;asm/nb85e_uart.h&gt;
+macro_line|#include &lt;asm/v850e_timer_d.h&gt;
+macro_line|#include &lt;asm/v850e_uart.h&gt;
 macro_line|#include &quot;mach.h&quot;
 multiline_comment|/* SRAM and SDRAM are vaguely contiguous (with a big hole in between; see&n;   mach_reserve_bootmem for details); use both as one big area.  */
 DECL|macro|RAM_START
@@ -299,7 +299,7 @@ l_int|0x0
 suffix:semicolon
 multiline_comment|/* &#x1b;$BFbB&quot;L?Na&#x1b;(BRAM&#x1b;$B$O!V&#x1b;(Bread-mode&#x1b;$B!W$K$J$j$^$9&#x1b;(B */
 macro_line|#endif /* !CONFIG_ROM_KERNEL */
-id|nb85e_intc_disable_irqs
+id|v850e_intc_disable_irqs
 (paren
 )paren
 suffix:semicolon
@@ -315,13 +315,6 @@ op_star
 id|cmdline
 )paren
 (brace
-macro_line|#ifdef CONFIG_V850E_NB85E_UART_CONSOLE
-id|nb85e_uart_cons_init
-(paren
-l_int|1
-)paren
-suffix:semicolon
-macro_line|#endif
 id|AS85EP1_PORT_PMC
 (paren
 id|LEDS_PORT
@@ -341,15 +334,6 @@ multiline_comment|/* Make all the bits output pins.  */
 id|mach_tick
 op_assign
 id|as85ep1_led_tick
-suffix:semicolon
-id|ROOT_DEV
-op_assign
-id|MKDEV
-(paren
-id|BLKMEM_MAJOR
-comma
-l_int|0
-)paren
 suffix:semicolon
 )brace
 DECL|function|mach_get_physical_ram
@@ -465,7 +449,7 @@ r_void
 id|mach_gettimeofday
 (paren
 r_struct
-id|timeval
+id|timespec
 op_star
 id|tv
 )paren
@@ -474,7 +458,7 @@ id|tv-&gt;tv_sec
 op_assign
 l_int|0
 suffix:semicolon
-id|tv-&gt;tv_usec
+id|tv-&gt;tv_nsec
 op_assign
 l_int|0
 suffix:semicolon
@@ -491,7 +475,7 @@ id|timer_action
 )paren
 (brace
 multiline_comment|/* Start hardware timer.  */
-id|nb85e_timer_d_configure
+id|v850e_timer_d_configure
 (paren
 l_int|0
 comma
@@ -514,7 +498,7 @@ suffix:semicolon
 DECL|variable|irq_inits
 r_static
 r_struct
-id|nb85e_intc_irq_init
+id|v850e_intc_irq_init
 id|irq_inits
 (braket
 )braket
@@ -636,7 +620,7 @@ id|mach_init_irqs
 r_void
 )paren
 (brace
-id|nb85e_intc_init_irq_types
+id|v850e_intc_init_irq_types
 (paren
 id|irq_inits
 comma

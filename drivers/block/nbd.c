@@ -860,6 +860,11 @@ id|req
 )paren
 )paren
 comma
+(paren
+r_int
+r_int
+r_int
+)paren
 id|req-&gt;sector
 op_lshift
 l_int|9

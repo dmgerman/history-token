@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * include/asm-v850/ma1.h -- V850E/MA1 cpu chip&n; *&n; *  Copyright (C) 2001,02  NEC Corporation&n; *  Copyright (C) 2001,02  Miles Bader &lt;miles@gnu.org&gt;&n; *&n; * This file is subject to the terms and conditions of the GNU General&n; * Public License.  See the file COPYING in the main directory of this&n; * archive for more details.&n; *&n; * Written by Miles Bader &lt;miles@gnu.org&gt;&n; */
+multiline_comment|/*&n; * include/asm-v850/ma1.h -- V850E/MA1 cpu chip&n; *&n; *  Copyright (C) 2001,02,03  NEC Electronics Corporation&n; *  Copyright (C) 2001,02,03  Miles Bader &lt;miles@gnu.org&gt;&n; *&n; * This file is subject to the terms and conditions of the GNU General&n; * Public License.  See the file COPYING in the main directory of this&n; * archive for more details.&n; *&n; * Written by Miles Bader &lt;miles@gnu.org&gt;&n; */
 macro_line|#ifndef __V850_MA1_H__
 DECL|macro|__V850_MA1_H__
 mdefine_line|#define __V850_MA1_H__
@@ -41,11 +41,10 @@ DECL|macro|IRQ_INTST
 mdefine_line|#define IRQ_INTST(n)&t;(0x27 + (n)*4) /* UART 0-2 transmission completion */
 DECL|macro|IRQ_INTST_NUM
 mdefine_line|#define IRQ_INTST_NUM&t;3
-multiline_comment|/* For &lt;asm/irq.h&gt; */
 DECL|macro|NUM_CPU_IRQS
 mdefine_line|#define NUM_CPU_IRQS&t;0x30
 multiline_comment|/* The MA1 has a UART with 3 channels.  */
-DECL|macro|NB85E_UART_NUM_CHANNELS
-mdefine_line|#define NB85E_UART_NUM_CHANNELS&t;3
+DECL|macro|V850E_UART_NUM_CHANNELS
+mdefine_line|#define V850E_UART_NUM_CHANNELS&t;3
 macro_line|#endif /* __V850_MA1_H__ */
 eof

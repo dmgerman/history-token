@@ -1,9 +1,8 @@
-multiline_comment|/*&n; * include/asm-v850/as85ep1.h -- AS85EP1 evaluation CPU chip/board&n; *&n; *  Copyright (C) 2001,2002  NEC Corporation&n; *  Copyright (C) 2001,2002  Miles Bader &lt;miles@gnu.org&gt;&n; *&n; * This file is subject to the terms and conditions of the GNU General&n; * Public License.  See the file COPYING in the main directory of this&n; * archive for more details.&n; *&n; * Written by Miles Bader &lt;miles@gnu.org&gt;&n; */
+multiline_comment|/*&n; * include/asm-v850/as85ep1.h -- AS85EP1 evaluation CPU chip/board&n; *&n; *  Copyright (C) 2001,02,03  NEC Electronics Corporation&n; *  Copyright (C) 2001,02,03  Miles Bader &lt;miles@gnu.org&gt;&n; *&n; * This file is subject to the terms and conditions of the GNU General&n; * Public License.  See the file COPYING in the main directory of this&n; * archive for more details.&n; *&n; * Written by Miles Bader &lt;miles@gnu.org&gt;&n; */
 macro_line|#ifndef __V850_AS85EP1_H__
 DECL|macro|__V850_AS85EP1_H__
 mdefine_line|#define __V850_AS85EP1_H__
-DECL|macro|CPU_ARCH
-mdefine_line|#define CPU_ARCH &t;&quot;v850e&quot;
+macro_line|#include &lt;asm/v850e.h&gt;
 DECL|macro|CPU_MODEL
 mdefine_line|#define CPU_MODEL&t;&quot;as85ep1&quot;
 DECL|macro|CPU_MODEL_LONG
@@ -101,8 +100,6 @@ DECL|macro|AS85EP1_PORT_PMC_ADDR
 mdefine_line|#define AS85EP1_PORT_PMC_ADDR(n) (0xFFFFF440 + (n) * 2)
 DECL|macro|AS85EP1_PORT_PMC
 mdefine_line|#define AS85EP1_PORT_PMC(n)&t;(*(volatile u8 *)AS85EP1_PORT_PMC_ADDR(n))
-multiline_comment|/* NB85E-style interrupt system.  */
-macro_line|#include &lt;asm/nb85e_intc.h&gt;
 multiline_comment|/* Hardware-specific interrupt numbers (in the kernel IRQ namespace).  */
 DECL|macro|IRQ_INTCCC
 mdefine_line|#define IRQ_INTCCC(n)&t;(0x0C + (n))
@@ -137,15 +134,15 @@ r_void
 suffix:semicolon
 macro_line|#endif
 multiline_comment|/* AS85EP1 UART details (basically the same as the V850E/MA1, but 2 channels).  */
-DECL|macro|NB85E_UART_NUM_CHANNELS
-mdefine_line|#define NB85E_UART_NUM_CHANNELS&t;&t;2
-DECL|macro|NB85E_UART_BASE_FREQ
-mdefine_line|#define NB85E_UART_BASE_FREQ&t;&t;(SYS_CLOCK_FREQ / 4)
-DECL|macro|NB85E_UART_CHIP_NAME
-mdefine_line|#define NB85E_UART_CHIP_NAME &t;&t;&quot;V850E/NA85E&quot;
+DECL|macro|V850E_UART_NUM_CHANNELS
+mdefine_line|#define V850E_UART_NUM_CHANNELS&t;&t;2
+DECL|macro|V850E_UART_BASE_FREQ
+mdefine_line|#define V850E_UART_BASE_FREQ&t;&t;(SYS_CLOCK_FREQ / 4)
+DECL|macro|V850E_UART_CHIP_NAME
+mdefine_line|#define V850E_UART_CHIP_NAME &t;&t;&quot;V850E/NA85E&quot;
 multiline_comment|/* This is a function that gets called before configuring the UART.  */
-DECL|macro|NB85E_UART_PRE_CONFIGURE
-mdefine_line|#define NB85E_UART_PRE_CONFIGURE&t;as85ep1_uart_pre_configure
+DECL|macro|V850E_UART_PRE_CONFIGURE
+mdefine_line|#define V850E_UART_PRE_CONFIGURE&t;as85ep1_uart_pre_configure
 macro_line|#ifndef __ASSEMBLY__
 r_extern
 r_void
@@ -164,27 +161,27 @@ suffix:semicolon
 macro_line|#endif
 multiline_comment|/* This board supports RTS/CTS for the on-chip UART, but only for channel 1. */
 multiline_comment|/* CTS for UART channel 1 is pin P54 (bit 4 of port 5).  */
-DECL|macro|NB85E_UART_CTS
-mdefine_line|#define NB85E_UART_CTS(chan)   ((chan) == 1 ? !(AS85EP1_PORT_IO(5) &amp; 0x10) : 1)
+DECL|macro|V850E_UART_CTS
+mdefine_line|#define V850E_UART_CTS(chan)   ((chan) == 1 ? !(AS85EP1_PORT_IO(5) &amp; 0x10) : 1)
 multiline_comment|/* RTS for UART channel 1 is pin P53 (bit 3 of port 5).  */
-DECL|macro|NB85E_UART_SET_RTS
-mdefine_line|#define NB85E_UART_SET_RTS(chan, val)&t;&t;&t;&t;&t;      &bslash;&n;   do {&t;&t;&t;&t;&t;&t;&t;&t;&t;      &bslash;&n;&t;   if (chan == 1) {&t;&t;&t;&t;&t;&t;      &bslash;&n;&t;&t;   unsigned old = AS85EP1_PORT_IO(5); &t;&t;&t;      &bslash;&n;&t;&t;   if (val)&t;&t;&t;&t;&t;&t;      &bslash;&n;&t;&t;&t;   AS85EP1_PORT_IO(5) = old &amp; ~0x8;&t;&t;      &bslash;&n;&t;&t;   else&t;&t;&t;&t;&t;&t;&t;      &bslash;&n;&t;&t;&t;   AS85EP1_PORT_IO(5) = old | 0x8;&t;&t;      &bslash;&n;&t;   }&t;&t;&t;&t;&t;&t;&t;&t;      &bslash;&n;   } while (0)
+DECL|macro|V850E_UART_SET_RTS
+mdefine_line|#define V850E_UART_SET_RTS(chan, val)&t;&t;&t;&t;&t;      &bslash;&n;   do {&t;&t;&t;&t;&t;&t;&t;&t;&t;      &bslash;&n;&t;   if (chan == 1) {&t;&t;&t;&t;&t;&t;      &bslash;&n;&t;&t;   unsigned old = AS85EP1_PORT_IO(5); &t;&t;&t;      &bslash;&n;&t;&t;   if (val)&t;&t;&t;&t;&t;&t;      &bslash;&n;&t;&t;&t;   AS85EP1_PORT_IO(5) = old &amp; ~0x8;&t;&t;      &bslash;&n;&t;&t;   else&t;&t;&t;&t;&t;&t;&t;      &bslash;&n;&t;&t;&t;   AS85EP1_PORT_IO(5) = old | 0x8;&t;&t;      &bslash;&n;&t;   }&t;&t;&t;&t;&t;&t;&t;&t;      &bslash;&n;   } while (0)
 multiline_comment|/* Timer C details.  */
-DECL|macro|NB85E_TIMER_C_BASE_ADDR
-mdefine_line|#define NB85E_TIMER_C_BASE_ADDR&t;&t;0xFFFFF600
+DECL|macro|V850E_TIMER_C_BASE_ADDR
+mdefine_line|#define V850E_TIMER_C_BASE_ADDR&t;&t;0xFFFFF600
 multiline_comment|/* Timer D details (the AS85EP1 actually has 5 of these; should change later). */
-DECL|macro|NB85E_TIMER_D_BASE_ADDR
-mdefine_line|#define NB85E_TIMER_D_BASE_ADDR&t;&t;0xFFFFF540
-DECL|macro|NB85E_TIMER_D_TMD_BASE_ADDR
-mdefine_line|#define NB85E_TIMER_D_TMD_BASE_ADDR &t;(NB85E_TIMER_D_BASE_ADDR + 0x0)
-DECL|macro|NB85E_TIMER_D_CMD_BASE_ADDR
-mdefine_line|#define NB85E_TIMER_D_CMD_BASE_ADDR &t;(NB85E_TIMER_D_BASE_ADDR + 0x2)
-DECL|macro|NB85E_TIMER_D_TMCD_BASE_ADDR
-mdefine_line|#define NB85E_TIMER_D_TMCD_BASE_ADDR &t;(NB85E_TIMER_D_BASE_ADDR + 0x4)
-DECL|macro|NB85E_TIMER_D_BASE_FREQ
-mdefine_line|#define NB85E_TIMER_D_BASE_FREQ&t;&t;SYS_CLOCK_FREQ
-DECL|macro|NB85E_TIMER_D_TMCD_CS_MIN
-mdefine_line|#define NB85E_TIMER_D_TMCD_CS_MIN&t;2 /* min 2^2 divider */
+DECL|macro|V850E_TIMER_D_BASE_ADDR
+mdefine_line|#define V850E_TIMER_D_BASE_ADDR&t;&t;0xFFFFF540
+DECL|macro|V850E_TIMER_D_TMD_BASE_ADDR
+mdefine_line|#define V850E_TIMER_D_TMD_BASE_ADDR &t;(V850E_TIMER_D_BASE_ADDR + 0x0)
+DECL|macro|V850E_TIMER_D_CMD_BASE_ADDR
+mdefine_line|#define V850E_TIMER_D_CMD_BASE_ADDR &t;(V850E_TIMER_D_BASE_ADDR + 0x2)
+DECL|macro|V850E_TIMER_D_TMCD_BASE_ADDR
+mdefine_line|#define V850E_TIMER_D_TMCD_BASE_ADDR &t;(V850E_TIMER_D_BASE_ADDR + 0x4)
+DECL|macro|V850E_TIMER_D_BASE_FREQ
+mdefine_line|#define V850E_TIMER_D_BASE_FREQ&t;&t;SYS_CLOCK_FREQ
+DECL|macro|V850E_TIMER_D_TMCD_CS_MIN
+mdefine_line|#define V850E_TIMER_D_TMCD_CS_MIN&t;2 /* min 2^2 divider */
 multiline_comment|/* For &lt;asm/param.h&gt; */
 macro_line|#ifndef HZ
 DECL|macro|HZ

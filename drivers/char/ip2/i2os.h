@@ -2,8 +2,6 @@ multiline_comment|/*************************************************************
 macro_line|#ifndef I2OS_H    /* To prevent multiple includes */
 DECL|macro|I2OS_H
 mdefine_line|#define I2OS_H 1
-DECL|macro|VERSION
-mdefine_line|#define VERSION(ver,rel,seq) (((ver)&lt;&lt;16) | ((rel)&lt;&lt;8) | (seq))
 singleline_comment|//-------------------------------------------------
 singleline_comment|// Required Includes
 singleline_comment|//-------------------------------------------------
@@ -32,33 +30,6 @@ mdefine_line|#define INSB(port,addr,count)    insb((port),(addr),(((count)+1))&a
 singleline_comment|//--------------------------------------------
 singleline_comment|// Interrupt control
 singleline_comment|//--------------------------------------------
-macro_line|#if LINUX_VERSION_CODE &lt; 0x00020100
-DECL|typedef|spinlock_t
-r_typedef
-r_int
-id|spinlock_t
-suffix:semicolon
-DECL|macro|spin_lock_init
-mdefine_line|#define spin_lock_init() 
-DECL|macro|spin_lock
-mdefine_line|#define spin_lock(a)
-DECL|macro|spin_unlock
-mdefine_line|#define spin_unlock(a)
-DECL|macro|spin_lock_irqsave
-mdefine_line|#define spin_lock_irqsave(a,b)&t;&t;&t;{save_flags((b));cli();}
-DECL|macro|spin_unlock_irqrestore
-mdefine_line|#define spin_unlock_irqrestore(a,b)&t;&t;{restore_flags((b));}
-DECL|macro|write_lock_irqsave
-mdefine_line|#define write_lock_irqsave(a,b)&t;&t;&t;spin_lock_irqsave(a,b)
-DECL|macro|write_unlock_irqrestore
-mdefine_line|#define write_unlock_irqrestore(a,b)&t;spin_unlock_irqrestore(a,b)
-DECL|macro|read_lock_irqsave
-mdefine_line|#define read_lock_irqsave(a,b)&t;&t;&t;spin_lock_irqsave(a,b)
-DECL|macro|read_unlock_irqrestore
-mdefine_line|#define read_unlock_irqrestore(a,b)&t;&t;spin_unlock_irqrestore(a,b)
-macro_line|#endif
-singleline_comment|//#define SAVE_AND_DISABLE_INTS(a,b)&t;spin_lock_irqsave(a,b)
-singleline_comment|//#define RESTORE_INTS(a,b)         &t;spin_unlock_irqrestore(a,b)
 DECL|macro|LOCK_INIT
 mdefine_line|#define LOCK_INIT(a)&t;rwlock_init(a)
 DECL|macro|SAVE_AND_DISABLE_INTS

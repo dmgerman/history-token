@@ -1438,6 +1438,13 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
+multiline_comment|/* always add handle for the whole disk */
+id|devfs_add_partitioned
+c_func
+(paren
+id|disk
+)paren
+suffix:semicolon
 multiline_comment|/* No such device (e.g., media were just removed) */
 r_if
 c_cond
@@ -1488,12 +1495,6 @@ c_func
 id|disk
 comma
 id|bdev
-)paren
-suffix:semicolon
-id|devfs_add_partitioned
-c_func
-(paren
-id|disk
 )paren
 suffix:semicolon
 r_if

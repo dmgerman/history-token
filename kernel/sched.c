@@ -6948,7 +6948,7 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * sys_sched_get_priority_mix - return minimum RT priority.&n; * @policy: scheduling class.&n; *&n; * this syscall returns the minimum rt_priority that can be used&n; * by a given scheduling class.&n; */
+multiline_comment|/**&n; * sys_sched_get_priority_min - return minimum RT priority.&n; * @policy: scheduling class.&n; *&n; * this syscall returns the minimum rt_priority that can be used&n; * by a given scheduling class.&n; */
 DECL|function|sys_sched_get_priority_min
 id|asmlinkage
 r_int
@@ -8887,7 +8887,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;Debug: sleeping function called from illegal&quot;
+l_string|&quot;Debug: sleeping function called from invalid&quot;
 l_string|&quot; context at %s:%d&bslash;n&quot;
 comma
 id|file

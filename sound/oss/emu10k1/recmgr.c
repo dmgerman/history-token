@@ -214,6 +214,11 @@ id|ADCBA
 suffix:semicolon
 id|buffer-&gt;idxreg
 op_assign
+id|card-&gt;is_audigy
+ques
+c_cond
+id|A_ADCIDX_IDX
+suffix:colon
 id|ADCIDX_IDX
 suffix:semicolon
 r_switch
@@ -276,11 +281,18 @@ id|ADCCR_SAMPLERATE_16
 suffix:semicolon
 r_break
 suffix:semicolon
+singleline_comment|// FIXME: audigy supports 12kHz recording
+multiline_comment|/*&n;&t;&t;case ????:&n;&t;&t;&t;buffer-&gt;adcctl = A_ADCCR_SAMPLERATE_12;&n;&t;&t;&t;break;&n;&t;&t;*/
 r_case
 l_int|0x2B11
 suffix:colon
 id|buffer-&gt;adcctl
 op_assign
+id|card-&gt;is_audigy
+ques
+c_cond
+id|A_ADCCR_SAMPLERATE_11
+suffix:colon
 id|ADCCR_SAMPLERATE_11
 suffix:semicolon
 r_break
@@ -290,6 +302,11 @@ l_int|0x1F40
 suffix:colon
 id|buffer-&gt;adcctl
 op_assign
+id|card-&gt;is_audigy
+ques
+c_cond
+id|A_ADCCR_SAMPLERATE_8
+suffix:colon
 id|ADCCR_SAMPLERATE_8
 suffix:semicolon
 r_break
@@ -306,6 +323,11 @@ suffix:semicolon
 )brace
 id|buffer-&gt;adcctl
 op_or_assign
+id|card-&gt;is_audigy
+ques
+c_cond
+id|A_ADCCR_LCHANENABLE
+suffix:colon
 id|ADCCR_LCHANENABLE
 suffix:semicolon
 r_if
@@ -317,6 +339,11 @@ l_int|2
 )paren
 id|buffer-&gt;adcctl
 op_or_assign
+id|card-&gt;is_audigy
+ques
+c_cond
+id|A_ADCCR_RCHANENABLE
+suffix:colon
 id|ADCCR_RCHANENABLE
 suffix:semicolon
 r_break

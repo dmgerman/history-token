@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * arch/v850/kernel/anna.c -- Anna V850E2 evaluation chip/board&n; *&n; *  Copyright (C) 2002  NEC Corporation&n; *  Copyright (C) 2002  Miles Bader &lt;miles@gnu.org&gt;&n; *&n; * This file is subject to the terms and conditions of the GNU General&n; * Public License.  See the file COPYING in the main directory of this&n; * archive for more details.&n; *&n; * Written by Miles Bader &lt;miles@gnu.org&gt;&n; */
+multiline_comment|/*&n; * arch/v850/kernel/anna.c -- Anna V850E2 evaluation chip/board&n; *&n; *  Copyright (C) 2002,03  NEC Electronics Corporation&n; *  Copyright (C) 2002,03  Miles Bader &lt;miles@gnu.org&gt;&n; *&n; * This file is subject to the terms and conditions of the GNU General&n; * Public License.  See the file COPYING in the main directory of this&n; * archive for more details.&n; *&n; * Written by Miles Bader &lt;miles@gnu.org&gt;&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -8,8 +8,8 @@ macro_line|#include &lt;linux/irq.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
-macro_line|#include &lt;asm/nb85e_timer_d.h&gt;
-macro_line|#include &lt;asm/nb85e_uart.h&gt;
+macro_line|#include &lt;asm/v850e_timer_d.h&gt;
+macro_line|#include &lt;asm/v850e_uart.h&gt;
 macro_line|#include &quot;mach.h&quot;
 multiline_comment|/* SRAM and SDRAM are vaguely contiguous (with a big hole in between; see&n;   mach_reserve_bootmem for details); use both as one big area.  */
 DECL|macro|RAM_START
@@ -38,7 +38,7 @@ id|ANNA_ILBEN
 op_assign
 l_int|0
 suffix:semicolon
-id|ANNA_CSC
+id|V850E2_CSC
 c_func
 (paren
 l_int|0
@@ -46,7 +46,7 @@ l_int|0
 op_assign
 l_int|0x402F
 suffix:semicolon
-id|ANNA_CSC
+id|V850E2_CSC
 c_func
 (paren
 l_int|1
@@ -54,24 +54,32 @@ l_int|1
 op_assign
 l_int|0x4000
 suffix:semicolon
-id|ANNA_BPC
+id|V850E2_BPC
 op_assign
 l_int|0
 suffix:semicolon
-id|ANNA_BSC
+id|V850E2_BSC
 op_assign
 l_int|0xAAAA
 suffix:semicolon
-id|ANNA_BEC
+id|V850E2_BEC
 op_assign
 l_int|0
 suffix:semicolon
-id|ANNA_BHC
+macro_line|#if 0
+id|V850E2_BHC
 op_assign
 l_int|0xFFFF
 suffix:semicolon
 multiline_comment|/* icache all memory, dcache all */
-id|ANNA_BCT
+macro_line|#else
+id|V850E2_BHC
+op_assign
+l_int|0
+suffix:semicolon
+multiline_comment|/* cache no memory */
+macro_line|#endif
+id|V850E2_BCT
 c_func
 (paren
 l_int|0
@@ -79,7 +87,7 @@ l_int|0
 op_assign
 l_int|0xB088
 suffix:semicolon
-id|ANNA_BCT
+id|V850E2_BCT
 c_func
 (paren
 l_int|1
@@ -87,7 +95,7 @@ l_int|1
 op_assign
 l_int|0x0008
 suffix:semicolon
-id|ANNA_DWC
+id|V850E2_DWC
 c_func
 (paren
 l_int|0
@@ -95,7 +103,7 @@ l_int|0
 op_assign
 l_int|0x0027
 suffix:semicolon
-id|ANNA_DWC
+id|V850E2_DWC
 c_func
 (paren
 l_int|1
@@ -103,27 +111,35 @@ l_int|1
 op_assign
 l_int|0
 suffix:semicolon
-id|ANNA_BCC
+id|V850E2_BCC
 op_assign
 l_int|0x0006
 suffix:semicolon
-id|ANNA_ASC
+id|V850E2_ASC
 op_assign
 l_int|0
 suffix:semicolon
-id|ANNA_LBS
+id|V850E2_LBS
 op_assign
 l_int|0x0089
 suffix:semicolon
-id|ANNA_SCR3
+id|V850E2_SCR
+c_func
+(paren
+l_int|3
+)paren
 op_assign
 l_int|0x21A9
 suffix:semicolon
-id|ANNA_RFS3
+id|V850E2_RFS
+c_func
+(paren
+l_int|3
+)paren
 op_assign
 l_int|0x8121
 suffix:semicolon
-id|nb85e_intc_disable_irqs
+id|v850e_intc_disable_irqs
 (paren
 )paren
 suffix:semicolon
@@ -139,13 +155,6 @@ op_star
 id|cmdline
 )paren
 (brace
-macro_line|#ifdef CONFIG_V850E_NB85E_UART_CONSOLE
-id|nb85e_uart_cons_init
-(paren
-l_int|1
-)paren
-suffix:semicolon
-macro_line|#endif
 id|ANNA_PORT_PM
 (paren
 id|LEDS_PORT
@@ -243,7 +252,7 @@ id|timer_action
 )paren
 (brace
 multiline_comment|/* Start hardware timer.  */
-id|nb85e_timer_d_configure
+id|v850e_timer_d_configure
 (paren
 l_int|0
 comma
@@ -266,7 +275,7 @@ suffix:semicolon
 DECL|variable|irq_inits
 r_static
 r_struct
-id|nb85e_intc_irq_init
+id|v850e_intc_irq_init
 id|irq_inits
 (braket
 )braket
@@ -432,7 +441,7 @@ id|mach_init_irqs
 r_void
 )paren
 (brace
-id|nb85e_intc_init_irq_types
+id|v850e_intc_init_irq_types
 (paren
 id|irq_inits
 comma

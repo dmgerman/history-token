@@ -182,7 +182,7 @@ mdefine_line|#define IPS_REGISTER_HOSTS(SHT)      (!ips_detect(SHT))
 DECL|macro|IPS_UNREGISTER_HOSTS
 mdefine_line|#define IPS_UNREGISTER_HOSTS(SHT)
 DECL|macro|IPS_ADD_HOST
-mdefine_line|#define IPS_ADD_HOST(shost,device)   scsi_add_host(shost,device)
+mdefine_line|#define IPS_ADD_HOST(shost,device)   do { scsi_add_host(shost,device); scsi_scan_host(shost); } while (0)
 DECL|macro|IPS_REMOVE_HOST
 mdefine_line|#define IPS_REMOVE_HOST(shost)       scsi_remove_host(shost)
 DECL|macro|IPS_SCSI_SET_DEVICE

@@ -9,7 +9,7 @@ macro_line|#include &lt;linux/irq.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;
-macro_line|#include &lt;asm/nb85e_timer_d.h&gt;
+macro_line|#include &lt;asm/v850e_timer_d.h&gt;
 macro_line|#include &quot;mach.h&quot;
 DECL|function|mach_sched_init
 r_void
@@ -23,7 +23,7 @@ id|timer_action
 )paren
 (brace
 multiline_comment|/* Start hardware timer.  */
-id|nb85e_timer_d_configure
+id|v850e_timer_d_configure
 (paren
 l_int|0
 comma
@@ -46,7 +46,7 @@ suffix:semicolon
 DECL|variable|irq_inits
 r_static
 r_struct
-id|nb85e_intc_irq_init
+id|v850e_intc_irq_init
 id|irq_inits
 (braket
 )braket
@@ -185,7 +185,7 @@ id|ma_init_irqs
 r_void
 )paren
 (brace
-id|nb85e_intc_init_irq_types
+id|v850e_intc_init_irq_types
 (paren
 id|irq_inits
 comma

@@ -37,6 +37,8 @@ DECL|macro|SS_XVCARD
 mdefine_line|#define SS_XVCARD&t;0x2000
 DECL|macro|SS_PENDING
 mdefine_line|#define SS_PENDING&t;0x4000
+DECL|macro|SS_ZVCARD
+mdefine_line|#define SS_ZVCARD&t;0x8000
 multiline_comment|/* InquireSocket capabilities */
 DECL|macro|SS_CAP_PAGE_REGS
 mdefine_line|#define SS_CAP_PAGE_REGS&t;0x0001
@@ -631,6 +633,21 @@ r_struct
 id|pccard_operations
 op_star
 id|ops
+suffix:semicolon
+multiline_comment|/* Zoom video behaviour is so chip specific its not worth adding&n;&t;   this to _ops */
+DECL|member|zoom_video
+r_void
+(paren
+op_star
+id|zoom_video
+)paren
+(paren
+r_struct
+id|pcmcia_socket
+op_star
+comma
+r_int
+)paren
 suffix:semicolon
 multiline_comment|/* state thread */
 DECL|member|skt_sem

@@ -231,7 +231,7 @@ r_struct
 id|scsi_mode_data
 (brace
 DECL|member|length
-id|__u16
+id|__u32
 id|length
 suffix:semicolon
 DECL|member|block_descriptor_length

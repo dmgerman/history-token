@@ -99,9 +99,7 @@ id|mtrr_type
 id|type
 )paren
 suffix:semicolon
-DECL|variable|arr3_protected
-r_static
-r_int
+r_extern
 r_int
 id|arr3_protected
 suffix:semicolon
@@ -147,11 +145,7 @@ r_struct
 id|pci_dev
 op_star
 id|dev
-op_assign
-l_int|NULL
 suffix:semicolon
-multiline_comment|/* WTF is this?&n;&t; * Someone, please shoot me.&n;&t; */
-multiline_comment|/* ServerWorks LE chipsets have problems with write-combining &n;&t;   Don&squot;t allow it and leave room for other chipsets to be tagged */
 r_if
 c_cond
 (paren
@@ -172,20 +166,17 @@ op_ne
 l_int|NULL
 )paren
 (brace
+multiline_comment|/* ServerWorks LE chipsets have problems with write-combining &n;&t;&t;   Don&squot;t allow it and leave room for other chipsets to be tagged */
 r_if
 c_cond
-(paren
 (paren
 id|dev-&gt;vendor
 op_eq
 id|PCI_VENDOR_ID_SERVERWORKS
-)paren
 op_logical_and
-(paren
 id|dev-&gt;device
 op_eq
 id|PCI_DEVICE_ID_SERVERWORKS_LE
-)paren
 )paren
 (brace
 id|printk
@@ -193,6 +184,30 @@ c_func
 (paren
 id|KERN_INFO
 l_string|&quot;mtrr: Serverworks LE detected. Write-combining disabled.&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+multiline_comment|/* Intel 450NX errata # 23. Non ascending cachline evictions to&n;&t;&t;   write combining memory may resulting in data corruption */
+r_if
+c_cond
+(paren
+id|dev-&gt;vendor
+op_eq
+id|PCI_VENDOR_ID_INTEL
+op_logical_and
+id|dev-&gt;device
+op_eq
+id|PCI_DEVICE_ID_INTEL_82451NX
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;mtrr: Intel 450NX MMC detected. Write-combining disabled.&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -365,6 +380,7 @@ l_int|NULL
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;mtrr: could not allocate&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -846,7 +862,8 @@ id|MTRR_NUM_TYPES
 id|printk
 c_func
 (paren
-l_string|&quot;mtrr: type: %u illegal&bslash;n&quot;
+id|KERN_WARNING
+l_string|&quot;mtrr: type: %u invalid&bslash;n&quot;
 comma
 id|type
 )paren
@@ -900,6 +917,7 @@ id|size_or_mask
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;mtrr: base or size exceeds the MTRR width&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -1044,6 +1062,7 @@ r_continue
 suffix:semicolon
 id|printk
 (paren
+id|KERN_WARNING
 l_string|&quot;mtrr: type mismatch for %lx000,%lx000 old: %s new: %s&bslash;n&quot;
 comma
 id|base
@@ -1131,6 +1150,7 @@ r_else
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;mtrr: no more MTRRs available&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -1200,12 +1220,14 @@ l_int|1
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;mtrr: size and base must be multiples of 4 kiB&bslash;n&quot;
 )paren
 suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;mtrr: size: 0x%lx  base: 0x%lx&bslash;n&quot;
 comma
 id|size
@@ -1369,6 +1391,7 @@ l_int|0
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;mtrr: no MTRR for %lx000,%lx000 found&bslash;n&quot;
 comma
 id|base
@@ -1392,6 +1415,7 @@ id|max
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;mtrr: register: %d too big&bslash;n&quot;
 comma
 id|reg
@@ -1432,6 +1456,7 @@ id|arr3_protected
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;mtrr: ARR3 cannot be changed&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -1468,6 +1493,7 @@ l_int|1
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;mtrr: MTRR %d not used&bslash;n&quot;
 comma
 id|reg
@@ -1491,6 +1517,7 @@ l_int|1
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;mtrr: reg: %d has count=0&bslash;n&quot;
 comma
 id|reg
@@ -1585,12 +1612,14 @@ l_int|1
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;mtrr: size and base must be multiples of 4 kiB&bslash;n&quot;
 )paren
 suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;mtrr: size: 0x%lx  base: 0x%lx&bslash;n&quot;
 comma
 id|size
@@ -2213,6 +2242,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;mtrr: v%s&bslash;n&quot;
 comma
 id|MTRR_VERSION

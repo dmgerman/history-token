@@ -115,6 +115,7 @@ suffix:semicolon
 multiline_comment|/* Layout pattern */
 DECL|member|seek_samples
 r_int
+r_int
 id|seek_samples
 suffix:semicolon
 DECL|member|last_request_pos
@@ -122,7 +123,7 @@ id|sector_t
 id|last_request_pos
 suffix:semicolon
 DECL|member|seek_total
-id|sector_t
+id|u64
 id|seek_total
 suffix:semicolon
 DECL|member|seek_mean
@@ -1463,6 +1464,19 @@ comma
 r_int
 comma
 r_void
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|blk_requeue_request
+c_func
+(paren
+id|request_queue_t
+op_star
+comma
+r_struct
+id|request
 op_star
 )paren
 suffix:semicolon

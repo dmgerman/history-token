@@ -240,7 +240,7 @@ l_int|15
 id|printk
 c_func
 (paren
-l_string|&quot;Trying to request illegal IRQ&bslash;n&quot;
+l_string|&quot;Trying to request invalid IRQ&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -403,7 +403,7 @@ l_int|15
 id|printk
 c_func
 (paren
-l_string|&quot;Trying to free illegal IRQ&bslash;n&quot;
+l_string|&quot;Trying to free invalid IRQ&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return

@@ -1,11 +1,11 @@
-multiline_comment|/*&n; * include/asm-v850/nb85e_timer_d.c -- `Timer D&squot; component often used&n; *&t;with the NB85E cpu core&n; *&n; *  Copyright (C) 2001,02  NEC Corporation&n; *  Copyright (C) 2001,02  Miles Bader &lt;miles@gnu.org&gt;&n; *&n; * This file is subject to the terms and conditions of the GNU General&n; * Public License.  See the file COPYING in the main directory of this&n; * archive for more details.&n; *&n; * Written by Miles Bader &lt;miles@gnu.org&gt;&n; */
+multiline_comment|/*&n; * include/asm-v850/v850e_timer_d.c -- `Timer D&squot; component often used&n; *&t;with V850E CPUs&n; *&n; *  Copyright (C) 2001,02,03  NEC Electronics Corporation&n; *  Copyright (C) 2001,02,03  Miles Bader &lt;miles@gnu.org&gt;&n; *&n; * This file is subject to the terms and conditions of the GNU General&n; * Public License.  See the file COPYING in the main directory of this&n; * archive for more details.&n; *&n; * Written by Miles Bader &lt;miles@gnu.org&gt;&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
-macro_line|#include &lt;asm/nb85e_utils.h&gt;
-macro_line|#include &lt;asm/nb85e_timer_d.h&gt;
+macro_line|#include &lt;asm/v850e_utils.h&gt;
+macro_line|#include &lt;asm/v850e_timer_d.h&gt;
 multiline_comment|/* Start interval timer TIMER (0-3).  The timer will issue the&n;   corresponding INTCMD interrupt RATE times per second.&n;   This function does not enable the interrupt.  */
-DECL|function|nb85e_timer_d_configure
+DECL|function|v850e_timer_d_configure
 r_void
-id|nb85e_timer_d_configure
+id|v850e_timer_d_configure
 (paren
 r_int
 id|timer
@@ -26,13 +26,13 @@ c_cond
 op_logical_neg
 id|calc_counter_params
 (paren
-id|NB85E_TIMER_D_BASE_FREQ
+id|V850E_TIMER_D_BASE_FREQ
 comma
 id|rate
 comma
-id|NB85E_TIMER_D_TMCD_CS_MIN
+id|V850E_TIMER_D_TMCD_CS_MIN
 comma
-id|NB85E_TIMER_D_TMCD_CS_MAX
+id|V850E_TIMER_D_TMCD_CS_MAX
 comma
 l_int|16
 comma
@@ -55,7 +55,7 @@ comma
 id|rate
 comma
 (paren
-id|NB85E_TIMER_D_BASE_FREQ
+id|V850E_TIMER_D_BASE_FREQ
 op_rshift
 id|divlog2
 )paren
@@ -65,31 +65,31 @@ l_int|16
 suffix:semicolon
 multiline_comment|/* Do the actual hardware timer initialization:  */
 multiline_comment|/* Enable timer.  */
-id|NB85E_TIMER_D_TMCD
+id|V850E_TIMER_D_TMCD
 c_func
 (paren
 id|timer
 )paren
 op_assign
-id|NB85E_TIMER_D_TMCD_CAE
+id|V850E_TIMER_D_TMCD_CAE
 suffix:semicolon
 multiline_comment|/* Set clock divider.  */
-id|NB85E_TIMER_D_TMCD
+id|V850E_TIMER_D_TMCD
 c_func
 (paren
 id|timer
 )paren
 op_assign
-id|NB85E_TIMER_D_TMCD_CAE
+id|V850E_TIMER_D_TMCD_CAE
 op_or
-id|NB85E_TIMER_D_TMCD_CS
+id|V850E_TIMER_D_TMCD_CS
 c_func
 (paren
 id|divlog2
 )paren
 suffix:semicolon
 multiline_comment|/* Set timer compare register.  */
-id|NB85E_TIMER_D_CMD
+id|V850E_TIMER_D_CMD
 c_func
 (paren
 id|timer
@@ -98,21 +98,21 @@ op_assign
 id|count
 suffix:semicolon
 multiline_comment|/* Start counting.  */
-id|NB85E_TIMER_D_TMCD
+id|V850E_TIMER_D_TMCD
 c_func
 (paren
 id|timer
 )paren
 op_assign
-id|NB85E_TIMER_D_TMCD_CAE
+id|V850E_TIMER_D_TMCD_CAE
 op_or
-id|NB85E_TIMER_D_TMCD_CS
+id|V850E_TIMER_D_TMCD_CS
 c_func
 (paren
 id|divlog2
 )paren
 op_or
-id|NB85E_TIMER_D_TMCD_CE
+id|V850E_TIMER_D_TMCD_CE
 suffix:semicolon
 )brace
 eof
