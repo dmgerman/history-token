@@ -170,6 +170,10 @@ c_func
 r_struct
 id|urb
 op_star
+comma
+r_struct
+id|pt_regs
+op_star
 )paren
 suffix:semicolon
 r_extern

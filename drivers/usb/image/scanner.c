@@ -13,6 +13,11 @@ r_struct
 id|urb
 op_star
 id|urb
+comma
+r_struct
+id|pt_regs
+op_star
+id|regs
 )paren
 (brace
 multiline_comment|/*&n; * For the meantime, this is just a placeholder until I figure out what&n; * all I want to do with it -- or somebody else for that matter.&n; */

@@ -229,6 +229,8 @@ macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/hdreg.h&gt;
 macro_line|#include &lt;linux/cdrom.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
+macro_line|#include &lt;linux/blk.h&gt;
+macro_line|#include &lt;linux/blkpg.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 DECL|variable|pf_spin_lock
 r_static
@@ -405,11 +407,6 @@ l_string|&quot;1-7i&quot;
 )paren
 suffix:semicolon
 macro_line|#include &quot;paride.h&quot;
-multiline_comment|/* set up defines for blk.h,  why don&squot;t all drivers do it this way ? */
-DECL|macro|MAJOR_NR
-mdefine_line|#define MAJOR_NR   major
-macro_line|#include &lt;linux/blk.h&gt;
-macro_line|#include &lt;linux/blkpg.h&gt;
 macro_line|#include &quot;pseudo.h&quot;
 multiline_comment|/* constants for faking geometry numbers */
 DECL|macro|PF_FD_MAX
@@ -947,7 +944,7 @@ id|unit
 suffix:semicolon
 id|disk-&gt;major
 op_assign
-id|MAJOR_NR
+id|major
 suffix:semicolon
 id|disk-&gt;first_minor
 op_assign
@@ -4677,7 +4674,7 @@ c_cond
 id|register_blkdev
 c_func
 (paren
-id|MAJOR_NR
+id|major
 comma
 id|name
 comma
@@ -4834,7 +4831,7 @@ suffix:semicolon
 id|unregister_blkdev
 c_func
 (paren
-id|MAJOR_NR
+id|major
 comma
 id|name
 )paren
