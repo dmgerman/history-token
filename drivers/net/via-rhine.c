@@ -1212,14 +1212,6 @@ id|chip_cmd
 suffix:semicolon
 multiline_comment|/* Current setting for ChipCmd */
 multiline_comment|/* These values are keep track of the transceiver/media in use. */
-DECL|member|default_port
-r_int
-r_int
-id|default_port
-suffix:colon
-l_int|4
-suffix:semicolon
-multiline_comment|/* Last dev-&gt;if_port value. */
 DECL|member|tx_thresh
 DECL|member|rx_thresh
 id|u8
@@ -2659,12 +2651,6 @@ id|rp-&gt;mii_if.full_duplex
 op_assign
 l_int|1
 suffix:semicolon
-id|rp-&gt;default_port
-op_assign
-id|option
-op_amp
-l_int|15
-suffix:semicolon
 )brace
 r_if
 c_cond
@@ -2926,12 +2912,6 @@ id|rp-&gt;mii_if.full_duplex
 op_assign
 l_int|1
 suffix:semicolon
-id|rp-&gt;default_port
-op_assign
-id|option
-op_amp
-l_int|0x3ff
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2940,8 +2920,6 @@ op_amp
 l_int|0x330
 )paren
 (brace
-multiline_comment|/* FIXME: shouldn&squot;t someone check this variable? */
-multiline_comment|/* rp-&gt;medialock = 1; */
 id|printk
 c_func
 (paren
@@ -4044,17 +4022,6 @@ id|rp-&gt;mii_if.full_duplex
 op_assign
 l_int|0
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|dev-&gt;if_port
-op_eq
-l_int|0
-)paren
-id|dev-&gt;if_port
-op_assign
-id|rp-&gt;default_port
-suffix:semicolon
 id|writel
 c_func
 (paren
@@ -5073,10 +5040,6 @@ comma
 id|MII_BMSR
 )paren
 )paren
-suffix:semicolon
-id|dev-&gt;if_port
-op_assign
-l_int|0
 suffix:semicolon
 multiline_comment|/* protect against concurrent rx interrupts */
 id|disable_irq
