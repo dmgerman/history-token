@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Resizable virtual memory filesystem for Linux.&n; *&n; * Copyright (C) 2000 Linus Torvalds.&n; *&t;&t; 2000 Transmeta Corp.&n; *&t;&t; 2000-2001 Christoph Rohland&n; *&t;&t; 2000-2001 SAP AG&n; *&t;&t; 2002 Red Hat Inc.&n; * Copyright (C) 2002-2003 Hugh Dickins.&n; * Copyright (C) 2002-2003 VERITAS Software Corporation.&n; * Copyright (C) 2004 Andi Kleen, SuSE Labs&n; *&n; * This file is released under the GPL.&n; */
+multiline_comment|/*&n; * Resizable virtual memory filesystem for Linux.&n; *&n; * Copyright (C) 2000 Linus Torvalds.&n; *&t;&t; 2000 Transmeta Corp.&n; *&t;&t; 2000-2001 Christoph Rohland&n; *&t;&t; 2000-2001 SAP AG&n; *&t;&t; 2002 Red Hat Inc.&n; * Copyright (C) 2002-2004 Hugh Dickins.&n; * Copyright (C) 2002-2004 VERITAS Software Corporation.&n; * Copyright (C) 2004 Andi Kleen, SuSE Labs&n; *&n; * This file is released under the GPL.&n; */
 multiline_comment|/*&n; * This virtual memory filesystem is heavily based on the ramfs. It&n; * extends ramfs by the ability to use swap and honor resource limits&n; * which makes it a completely usable filesystem.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -9632,7 +9632,7 @@ r_if
 c_cond
 (paren
 id|size
-OG
+template_param
 id|SHMEM_MAX_BYTES
 )paren
 r_return
