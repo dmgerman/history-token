@@ -5,7 +5,7 @@ mdefine_line|#define _SSTFB_H_
 multiline_comment|/*&n; *&n; *  Debug Stuff&n; *&n; */
 macro_line|#ifdef SST_DEBUG
 DECL|macro|dprintk
-macro_line|#  define dprintk(X...)&t;printk(KERN_DEBUG &quot;sstfb: &quot; X)
+macro_line|#  define dprintk(X...)&t;&t;printk(&quot;sstfb: &quot; X)
 macro_line|#else
 DECL|macro|dprintk
 macro_line|#  define dprintk(X...)
@@ -76,7 +76,6 @@ macro_line|#ifndef ABS
 DECL|macro|ABS
 macro_line|# define ABS(x)&t;&t;(((x)&lt;0)?-(x):(x))
 macro_line|#endif
-singleline_comment|//void Dump_regs(void);
 multiline_comment|/*&n; *&n; *  Const&n; *&n; */
 multiline_comment|/* pci stuff */
 DECL|macro|PCI_INIT_ENABLE
@@ -264,6 +263,50 @@ DECL|macro|TILES_IN_X_LSB_SHIFT
 macro_line|#  define TILES_IN_X_LSB_SHIFT&t;  30&t;&t;/* v2 */
 DECL|macro|FBIINIT7
 mdefine_line|#define FBIINIT7&t;&t;0x024c&t;&t;/* v2 specific */
+DECL|macro|BLTSRCBASEADDR
+mdefine_line|#define BLTSRCBASEADDR&t;&t;0x02c0&t;/* BitBLT Source base address */
+DECL|macro|BLTDSTBASEADDR
+mdefine_line|#define BLTDSTBASEADDR&t;&t;0x02c4&t;/* BitBLT Destination base address */
+DECL|macro|BLTXYSTRIDES
+mdefine_line|#define BLTXYSTRIDES&t;&t;0x02c8&t;/* BitBLT Source and Destination strides */
+DECL|macro|BLTSRCCHROMARANGE
+mdefine_line|#define BLTSRCCHROMARANGE&t;0x02cc&t;/* BitBLT Source Chroma key range */
+DECL|macro|BLTDSTCHROMARANGE
+mdefine_line|#define BLTDSTCHROMARANGE&t;0x02d0&t;/* BitBLT Destination Chroma key range */
+DECL|macro|BLTCLIPX
+mdefine_line|#define BLTCLIPX&t;&t;0x02d4&t;/* BitBLT Min/Max X clip values */
+DECL|macro|BLTCLIPY
+mdefine_line|#define BLTCLIPY&t;&t;0x02d8&t;/* BitBLT Min/Max Y clip values */
+DECL|macro|BLTSRCXY
+mdefine_line|#define BLTSRCXY&t;&t;0x02e0&t;/* BitBLT Source starting XY coordinates */
+DECL|macro|BLTDSTXY
+mdefine_line|#define BLTDSTXY&t;&t;0x02e4&t;/* BitBLT Destination starting XY coordinates */
+DECL|macro|BLTSIZE
+mdefine_line|#define BLTSIZE&t;&t;&t;0x02e8&t;/* BitBLT width and height */
+DECL|macro|BLTROP
+mdefine_line|#define BLTROP&t;&t;&t;0x02ec&t;/* BitBLT Raster operations */
+DECL|macro|BLTROP_COPY
+macro_line|#  define BLTROP_COPY&t;&t;  0x0cccc
+DECL|macro|BLTROP_INVERT
+macro_line|#  define BLTROP_INVERT&t;&t;  0x05555
+DECL|macro|BLTROP_XOR
+macro_line|#  define BLTROP_XOR&t;&t;  0x06666
+DECL|macro|BLTCOLOR
+mdefine_line|#define BLTCOLOR&t;&t;0x02f0&t;/* BitBLT and foreground background colors */
+DECL|macro|BLTCOMMAND
+mdefine_line|#define BLTCOMMAND&t;&t;0x02f8&t;/* BitBLT command mode (v2 specific) */
+DECL|macro|BLT_SCR2SCR_BITBLT
+macro_line|# define BLT_SCR2SCR_BITBLT&t;  0&t;  /* Screen-to-Screen BitBLT */
+DECL|macro|BLT_CPU2SCR_BITBLT
+macro_line|# define BLT_CPU2SCR_BITBLT&t;  1&t;  /* CPU-to-screen BitBLT */
+DECL|macro|BLT_RECFILL_BITBLT
+macro_line|# define BLT_RECFILL_BITBLT&t;  2&t;  /* BitBLT Rectangle Fill */
+DECL|macro|BLT_16BPP_FMT
+macro_line|# define BLT_16BPP_FMT&t;&t;  2&t;  /* 16 BPP (5-6-5 RGB) */
+DECL|macro|BLTDATA
+mdefine_line|#define BLTDATA&t;&t;&t;0x02fc&t;/* BitBLT data for CPU-to-Screen BitBLTs */
+DECL|macro|LAUNCH_BITBLT
+macro_line|#  define LAUNCH_BITBLT&t;&t;  BIT(31) /* Launch BitBLT in BltCommand, bltDstXY or bltSize */
 multiline_comment|/* Dac Registers */
 DECL|macro|DACREG_WMA
 mdefine_line|#define DACREG_WMA&t;&t;0x0&t;/* pixel write mode address */
@@ -321,7 +364,7 @@ DECL|macro|DACREG_MIR_ATT
 mdefine_line|#define DACREG_MIR_ATT&t;&t;0x84
 DECL|macro|DACREG_DIR_ATT
 mdefine_line|#define DACREG_DIR_ATT&t;&t;0x09
-multiline_comment|/* ics dac specific registers*/
+multiline_comment|/* ics dac specific registers */
 DECL|macro|DACREG_ICS_PLLWMA
 mdefine_line|#define DACREG_ICS_PLLWMA&t;0x04&t;/* PLL write mode address */
 DECL|macro|DACREG_ICS_PLLDATA
@@ -407,9 +450,6 @@ r_int
 id|p
 suffix:semicolon
 )brace
-suffix:semicolon
-r_struct
-id|sstfb_info
 suffix:semicolon
 DECL|struct|dac_switch
 r_struct

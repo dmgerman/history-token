@@ -5471,6 +5471,13 @@ c_func
 id|fb_blank
 )paren
 suffix:semicolon
+DECL|variable|fb_pan_display
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|fb_pan_display
+)paren
+suffix:semicolon
 id|MODULE_LICENSE
 c_func
 (paren
