@@ -148,11 +148,11 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|variable|snmp6_ipv6_list
+DECL|variable|snmp6_ipstats_list
 r_static
 r_struct
 id|snmp_item
-id|snmp6_ipv6_list
+id|snmp6_ipstats_list
 (braket
 )braket
 op_assign
@@ -792,7 +792,7 @@ op_star
 )paren
 id|ipv6_statistics
 comma
-id|snmp6_ipv6_list
+id|snmp6_ipstats_list
 )paren
 suffix:semicolon
 id|snmp6_seq_show_item
