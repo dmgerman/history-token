@@ -364,6 +364,31 @@ r_return
 id|offset
 suffix:semicolon
 )brace
+multiline_comment|/* Relationship between i_mode and the DT_xxx types */
+DECL|function|dt_type
+r_static
+r_inline
+r_int
+r_char
+id|dt_type
+c_func
+(paren
+r_struct
+id|inode
+op_star
+id|inode
+)paren
+(brace
+r_return
+(paren
+id|inode-&gt;i_mode
+op_rshift
+l_int|12
+)paren
+op_amp
+l_int|15
+suffix:semicolon
+)brace
 multiline_comment|/*&n; * Directory is locked and all positive dentries in it are safe, since&n; * for ramfs-type trees they can&squot;t go away without unlink() or rmdir(),&n; * both impossible due to the lock on directory.&n; */
 DECL|function|dcache_readdir
 r_int
@@ -606,7 +631,11 @@ id|filp-&gt;f_pos
 comma
 id|next-&gt;d_inode-&gt;i_ino
 comma
-id|DT_UNKNOWN
+id|dt_type
+c_func
+(paren
+id|next-&gt;d_inode
+)paren
 )paren
 OL
 l_int|0
