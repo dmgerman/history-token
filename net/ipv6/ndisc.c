@@ -4615,7 +4615,8 @@ c_cond
 id|in6_dev-&gt;nd_parms
 )paren
 (brace
-id|__u32
+r_int
+r_int
 id|rtime
 op_assign
 id|ntohl
