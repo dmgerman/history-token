@@ -1701,7 +1701,12 @@ l_int|0x0008
 suffix:semicolon
 id|desc-&gt;wHubCharacteristics
 op_assign
+(paren
+id|__force
+id|__u16
+)paren
 id|cpu_to_hc16
+c_func
 (paren
 id|ohci
 comma
@@ -1904,7 +1909,7 @@ r_int
 id|port
 )paren
 (brace
-id|u32
+id|__hc32
 id|__iomem
 op_star
 id|portstat
