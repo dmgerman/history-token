@@ -167,6 +167,11 @@ id|boot_cpu_data
 suffix:semicolon
 r_extern
 r_struct
+id|cpuinfo_x86
+id|new_cpu_data
+suffix:semicolon
+r_extern
+r_struct
 id|tss_struct
 id|init_tss
 (braket
