@@ -1474,6 +1474,13 @@ id|Scsi_Host
 op_star
 id|shost
 suffix:semicolon
+id|INIT_LIST_HEAD
+c_func
+(paren
+op_amp
+id|shost_tp-&gt;shtp_list
+)paren
+suffix:semicolon
 multiline_comment|/*&n;&t; * Check no detect routine.&n;&t; */
 r_if
 c_cond
