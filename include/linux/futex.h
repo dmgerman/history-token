@@ -14,8 +14,8 @@ r_int
 id|sys_futex
 c_func
 (paren
-r_void
-op_star
+r_int
+r_int
 id|uaddr
 comma
 r_int

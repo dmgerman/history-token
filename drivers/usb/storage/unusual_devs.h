@@ -1080,7 +1080,7 @@ comma
 id|US_FL_FIX_INQUIRY
 )paren
 comma
-multiline_comment|/* Reported by Peter Marks &lt;peter.marks@turner.com&gt;&n; * Like the SIIG unit above, this unit needs an INQUIRY to ask for exactly&n; * 36 bytes of data.  No more, no less. That is the only reason this entry&n; * is needed.&n; */
+multiline_comment|/* Reported by Peter Marks &lt;peter.marks@turner.com&gt;&n; * Like the SIIG unit above, this unit needs an INQUIRY to ask for exactly&n; * 36 bytes of data.  No more, no less. That is the only reason this entry&n; * is needed.&n; *&n; * ST818 slim drives (rev 0.02) don&squot;t need special care.&n;*/
 id|UNUSUAL_DEV
 c_func
 (paren
@@ -1090,7 +1090,7 @@ l_int|0x0702
 comma
 l_int|0x0000
 comma
-l_int|0xffff
+l_int|0x0001
 comma
 l_string|&quot;EagleTec&quot;
 comma
@@ -1835,7 +1835,7 @@ op_or
 id|US_FL_FIX_INQUIRY
 )paren
 comma
-multiline_comment|/* Submitted by Brian Hall &lt;brihall@bigfoot.com&gt;&n; * Needed for START_STOP flag */
+multiline_comment|/* Submitted by Brian Hall &lt;brihall@pcisys.net&gt;&n; * Needed for START_STOP flag */
 id|UNUSUAL_DEV
 c_func
 (paren
@@ -1860,7 +1860,31 @@ comma
 id|US_FL_START_STOP
 )paren
 comma
-multiline_comment|/* Reported by Dan Pilone &lt;pilone@slac.com&gt;&n; * The device needs the flags only.&n; * Also reported by Brian Hall &lt;brihall@bigfoot.com&gt;, again for flags.&n; * I also suspect this device may have a broken serial number.&n; */
+id|UNUSUAL_DEV
+c_func
+(paren
+l_int|0x0c76
+comma
+l_int|0x0005
+comma
+l_int|0x0100
+comma
+l_int|0x0100
+comma
+l_string|&quot;JMTek&quot;
+comma
+l_string|&quot;USBDrive&quot;
+comma
+id|US_SC_SCSI
+comma
+id|US_PR_BULK
+comma
+l_int|NULL
+comma
+id|US_FL_START_STOP
+)paren
+comma
+multiline_comment|/* Reported by Dan Pilone &lt;pilone@slac.com&gt;&n; * The device needs the flags only.&n; * Also reported by Brian Hall &lt;brihall@pcisys.net&gt;, again for flags.&n; * I also suspect this device may have a broken serial number.&n; */
 id|UNUSUAL_DEV
 c_func
 (paren

@@ -1474,6 +1474,10 @@ suffix:semicolon
 id|sys_futex
 c_func
 (paren
+(paren
+r_int
+r_int
+)paren
 id|tsk-&gt;user_tid
 comma
 id|FUTEX_WAKE
