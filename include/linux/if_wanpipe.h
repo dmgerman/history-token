@@ -227,10 +227,6 @@ mdefine_line|#define WAN_PACKET_MR_PROMISC&t;1
 DECL|macro|WAN_PACKET_MR_ALLMULTI
 mdefine_line|#define WAN_PACKET_MR_ALLMULTI&t;2
 macro_line|#ifdef __KERNEL__
-macro_line|#ifndef netdevice_t
-DECL|macro|netdevice_t
-mdefine_line|#define netdevice_t struct net_device
-macro_line|#endif
 multiline_comment|/* Private wanpipe socket structures. */
 DECL|struct|wanpipe_opt
 r_struct
@@ -249,7 +245,8 @@ id|card
 suffix:semicolon
 multiline_comment|/* Card bouded to */
 DECL|member|dev
-id|netdevice_t
+r_struct
+id|net_device
 op_star
 id|dev
 suffix:semicolon
