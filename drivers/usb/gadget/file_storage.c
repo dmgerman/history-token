@@ -15,6 +15,7 @@ macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/compiler.h&gt;
 macro_line|#include &lt;linux/completion.h&gt;
 macro_line|#include &lt;linux/dcache.h&gt;
+macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;linux/fcntl.h&gt;
 macro_line|#include &lt;linux/file.h&gt;
@@ -8006,21 +8007,13 @@ r_break
 suffix:semicolon
 )brace
 multiline_comment|/* Wait for a short time and then try again */
-id|set_current_state
-c_func
-(paren
-id|TASK_INTERRUPTIBLE
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
-id|schedule_timeout
+id|msleep_interruptible
 c_func
 (paren
-id|HZ
-op_div
-l_int|10
+l_int|100
 )paren
 op_ne
 l_int|0
