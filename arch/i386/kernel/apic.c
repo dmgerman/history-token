@@ -325,6 +325,7 @@ id|maxlvt
 OG
 l_int|3
 )paren
+multiline_comment|/* Due to Pentium errata 3AP and 11AP. */
 id|apic_write
 c_func
 (paren
