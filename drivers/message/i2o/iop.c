@@ -884,7 +884,7 @@ r_return
 id|dev
 suffix:semicolon
 r_return
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -3704,7 +3704,7 @@ c_func
 )paren
 suffix:semicolon
 )brace
-macro_line|#if DEBUG
+macro_line|#ifdef DEBUG
 id|i2o_debug_state
 c_func
 (paren

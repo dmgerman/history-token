@@ -7277,7 +7277,7 @@ c_func
 (paren
 id|adapter
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 )brace
@@ -12357,7 +12357,7 @@ c_func
 (paren
 id|adapter
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 )brace

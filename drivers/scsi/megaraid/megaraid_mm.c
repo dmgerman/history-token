@@ -1582,7 +1582,7 @@ l_int|1
 suffix:semicolon
 id|kioc-&gt;buf_vaddr
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|kioc-&gt;buf_paddr
 op_assign
@@ -1925,7 +1925,7 @@ id|mraid_passthru_t
 suffix:semicolon
 id|kioc-&gt;buf_vaddr
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|kioc-&gt;buf_paddr
 op_assign
@@ -1942,7 +1942,7 @@ l_int|0
 suffix:semicolon
 id|kioc-&gt;user_data
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|kioc-&gt;user_data_len
 op_assign
@@ -1950,7 +1950,7 @@ l_int|0
 suffix:semicolon
 id|kioc-&gt;user_pthru
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_return
 id|kioc
@@ -3478,7 +3478,7 @@ id|pool-&gt;handle
 suffix:semicolon
 id|pool-&gt;handle
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 )brace

@@ -9805,7 +9805,7 @@ r_char
 op_star
 id|p
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_int
 id|ch_value
@@ -11630,7 +11630,7 @@ l_int|1
 suffix:semicolon
 id|pReq-&gt;xdi_dma_descriptor_operation.info.descriptor_address
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|pReq-&gt;xdi_dma_descriptor_operation.info.descriptor_magic
 op_assign
@@ -11744,7 +11744,7 @@ id|nr
 suffix:semicolon
 id|pReq-&gt;xdi_dma_descriptor_operation.info.descriptor_address
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|pReq-&gt;xdi_dma_descriptor_operation.info.descriptor_magic
 op_assign
