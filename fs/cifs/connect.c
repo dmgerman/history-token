@@ -974,6 +974,7 @@ c_func
 id|smb_buffer-&gt;smb_buf_length
 )paren
 suffix:semicolon
+multiline_comment|/* Ony read pdu_length after below checks for too short (due&n;&t;&t;   to e.g. int overflow) and too long ie beyond end of buf */
 id|cFYI
 c_func
 (paren
@@ -1115,14 +1116,14 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;Unknown RFC 1001 frame received not 0x00 nor 0x85&quot;
+l_string|&quot;Unknown RFC 1001 frame not 0x00 nor 0x85&quot;
 )paren
 )paren
 suffix:semicolon
 id|cifs_dump_mem
 c_func
 (paren
-l_string|&quot; Received Data is: &quot;
+l_string|&quot; Received Data: &quot;
 comma
 id|temp
 comma
@@ -1262,7 +1263,6 @@ op_add_assign
 id|length
 )paren
 (brace
-multiline_comment|/* Should improve check for buffer overflow with bad pdu_length */
 id|length
 op_assign
 id|sock_recvmsg

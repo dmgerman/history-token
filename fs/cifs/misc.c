@@ -1234,8 +1234,6 @@ id|smb_hdr
 )paren
 op_logical_or
 (paren
-l_int|4
-op_plus
 id|ntohl
 c_func
 (paren
@@ -1245,6 +1243,8 @@ OG
 id|CIFS_MAX_MSGSIZE
 op_plus
 id|MAX_CIFS_HDR_SIZE
+op_minus
+l_int|4
 )paren
 )paren
 (brace
@@ -1309,8 +1309,6 @@ multiline_comment|/* some error cases do not return wct and bcc */
 r_if
 c_cond
 (paren
-l_int|4
-op_plus
 id|ntohl
 c_func
 (paren
@@ -1320,6 +1318,8 @@ OG
 id|CIFS_MAX_MSGSIZE
 op_plus
 id|MAX_CIFS_HDR_SIZE
+op_minus
+l_int|4
 )paren
 id|cERROR
 c_func

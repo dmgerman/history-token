@@ -1615,12 +1615,6 @@ id|clientCanCacheAll
 op_assign
 id|FALSE
 suffix:semicolon
-id|invalidate_remote_inode
-c_func
-(paren
-id|inode
-)paren
-suffix:semicolon
 )brace
 r_if
 c_cond
