@@ -26,7 +26,7 @@ macro_line|#include &quot;mconsole_kern.h&quot;
 macro_line|#include &quot;init.h&quot;
 macro_line|#include &quot;2_5compat.h&quot;
 DECL|macro|MAX_TTYS
-mdefine_line|#define MAX_TTYS (8)
+mdefine_line|#define MAX_TTYS (16)
 multiline_comment|/* ----------------------------------------------------------------------------- */
 multiline_comment|/* Referenced only by tty_driver below - presumably it&squot;s locked correctly&n; * by the tty driver.&n; */
 DECL|variable|console_driver
