@@ -222,6 +222,7 @@ id|udsl_usb_ioctl_lock
 )paren
 suffix:semicolon
 macro_line|#ifdef DEBUG_PACKET
+r_static
 r_int
 id|udsl_print_packet
 (paren
@@ -296,6 +297,7 @@ op_star
 id|skb
 )paren
 suffix:semicolon
+r_static
 r_int
 id|udsl_atm_proc_read
 (paren
@@ -313,6 +315,7 @@ op_star
 id|page
 )paren
 suffix:semicolon
+r_static
 r_void
 id|udsl_atm_processqueue
 (paren
@@ -394,6 +397,7 @@ op_star
 id|intf
 )paren
 suffix:semicolon
+r_static
 r_int
 id|udsl_usb_send_data
 (paren
@@ -483,6 +487,7 @@ suffix:semicolon
 multiline_comment|/************&n;**   ATM   **&n;************/
 multiline_comment|/***************************************************************************&n;*&n;* init functions&n;*&n;****************************************************************************/
 DECL|function|udsl_atm_startdevice
+r_static
 r_struct
 id|atm_dev
 op_star
@@ -551,6 +556,7 @@ id|instance-&gt;atm_dev
 suffix:semicolon
 )brace
 DECL|function|udsl_atm_stopdevice
+r_static
 r_void
 id|udsl_atm_stopdevice
 (paren
@@ -643,6 +649,7 @@ id|MOD_DEC_USE_COUNT
 suffix:semicolon
 )brace
 DECL|function|udsl_atm_set_mac
+r_static
 r_void
 id|udsl_atm_set_mac
 (paren
@@ -679,6 +686,7 @@ suffix:semicolon
 )brace
 multiline_comment|/***************************************************************************&n;*&n;* ATM helper functions&n;*&n;****************************************************************************/
 DECL|function|udsl_atm_alloc_tx
+r_static
 r_struct
 id|sk_buff
 op_star
@@ -734,6 +742,7 @@ l_int|NULL
 suffix:semicolon
 )brace
 DECL|function|udsl_atm_proc_read
+r_static
 r_int
 id|udsl_atm_proc_read
 (paren
@@ -909,6 +918,7 @@ suffix:semicolon
 )brace
 multiline_comment|/***************************************************************************&n;*&n;* ATM DATA functions&n;*&n;****************************************************************************/
 DECL|function|udsl_atm_send
+r_static
 r_int
 id|udsl_atm_send
 (paren
@@ -1102,6 +1112,7 @@ suffix:semicolon
 )brace
 suffix:semicolon
 DECL|function|udsl_atm_processqueue
+r_static
 r_void
 id|udsl_atm_processqueue
 (paren
@@ -1359,6 +1370,7 @@ suffix:semicolon
 )brace
 multiline_comment|/***************************************************************************&n;*&n;* SAR driver entries&n;*&n;****************************************************************************/
 DECL|function|udsl_atm_open
+r_static
 r_int
 id|udsl_atm_open
 (paren
@@ -1526,6 +1538,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|udsl_atm_close
+r_static
 r_void
 id|udsl_atm_close
 (paren
@@ -1619,6 +1632,7 @@ suffix:semicolon
 )brace
 suffix:semicolon
 DECL|function|udsl_atm_ioctl
+r_static
 r_int
 id|udsl_atm_ioctl
 (paren
@@ -1820,6 +1834,7 @@ id|err
 suffix:semicolon
 )brace
 DECL|function|udsl_usb_cancelsends
+r_static
 r_int
 id|udsl_usb_cancelsends
 (paren
@@ -1937,6 +1952,7 @@ suffix:semicolon
 )brace
 multiline_comment|/**** send ******/
 DECL|function|udsl_usb_send_data
+r_static
 r_int
 id|udsl_usb_send_data
 (paren
@@ -2234,6 +2250,7 @@ suffix:semicolon
 )brace
 multiline_comment|/********* receive *******/
 DECL|function|udsl_usb_data_receive
+r_static
 r_void
 id|udsl_usb_data_receive
 (paren
@@ -2443,6 +2460,7 @@ suffix:semicolon
 )brace
 suffix:semicolon
 DECL|function|udsl_usb_data_init
+r_static
 r_int
 id|udsl_usb_data_init
 (paren
@@ -3480,6 +3498,7 @@ suffix:semicolon
 macro_line|#ifdef DEBUG_PACKET
 multiline_comment|/*******************************************************************************&n;*&n;* Debug&n;*&n;*******************************************************************************/
 DECL|function|udsl_print_packet
+r_static
 r_int
 id|udsl_print_packet
 (paren
