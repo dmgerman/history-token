@@ -260,7 +260,9 @@ r_int
 id|argc
 comma
 r_char
+id|__user
 op_star
+id|__user
 op_star
 id|argv
 comma

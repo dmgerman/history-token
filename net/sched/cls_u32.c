@@ -272,23 +272,6 @@ suffix:semicolon
 r_int
 id|i
 suffix:semicolon
-macro_line|#if !defined(__i386__) &amp;&amp; !defined(__mc68000__)
-r_if
-c_cond
-(paren
-(paren
-r_int
-r_int
-)paren
-id|ptr
-op_amp
-l_int|3
-)paren
-r_return
-op_minus
-l_int|1
-suffix:semicolon
-macro_line|#endif
 id|next_ht
 suffix:colon
 id|n

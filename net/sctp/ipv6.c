@@ -2924,6 +2924,7 @@ dot
 id|flags
 op_assign
 id|SCTP_PROTOSW_FLAG
+comma
 )brace
 suffix:semicolon
 DECL|function|sctp6_rcv
@@ -2937,6 +2938,11 @@ id|sk_buff
 op_star
 op_star
 id|pskb
+comma
+r_int
+r_int
+op_star
+id|nhoffp
 )paren
 (brace
 r_return
@@ -2946,6 +2952,12 @@ c_func
 op_star
 id|pskb
 )paren
+ques
+c_cond
+op_minus
+l_int|1
+suffix:colon
+l_int|0
 suffix:semicolon
 )brace
 DECL|variable|sctpv6_protocol
@@ -2966,9 +2978,11 @@ op_assign
 id|sctp_v6_err
 comma
 dot
-id|no_policy
+id|flags
 op_assign
-l_int|1
+id|INET6_PROTO_NOPOLICY
+op_or
+id|INET6_PROTO_FINAL
 comma
 )brace
 suffix:semicolon

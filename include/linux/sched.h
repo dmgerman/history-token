@@ -2405,11 +2405,15 @@ r_char
 op_star
 comma
 r_char
+id|__user
 op_star
+id|__user
 op_star
 comma
 r_char
+id|__user
 op_star
+id|__user
 op_star
 comma
 r_struct

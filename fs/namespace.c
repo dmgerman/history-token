@@ -1833,6 +1833,7 @@ id|sys_umount
 c_func
 (paren
 r_char
+id|__user
 op_star
 id|name
 comma
@@ -1947,6 +1948,7 @@ id|sys_oldumount
 c_func
 (paren
 r_char
+id|__user
 op_star
 id|name
 )paren
@@ -3364,6 +3366,7 @@ id|copy_mount_options
 (paren
 r_const
 r_void
+id|__user
 op_star
 id|data
 comma
@@ -4219,14 +4222,17 @@ id|sys_mount
 c_func
 (paren
 r_char
+id|__user
 op_star
 id|dev_name
 comma
 r_char
+id|__user
 op_star
 id|dir_name
 comma
 r_char
+id|__user
 op_star
 id|type
 comma
@@ -4235,6 +4241,7 @@ r_int
 id|flags
 comma
 r_void
+id|__user
 op_star
 id|data
 )paren
@@ -4754,11 +4761,13 @@ c_func
 (paren
 r_const
 r_char
+id|__user
 op_star
 id|new_root
 comma
 r_const
 r_char
+id|__user
 op_star
 id|put_old
 )paren

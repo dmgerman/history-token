@@ -470,6 +470,14 @@ r_void
 suffix:semicolon
 r_extern
 r_void
+id|t2_kill_arch
+c_func
+(paren
+r_int
+)paren
+suffix:semicolon
+r_extern
+r_void
 id|t2_machine_check
 c_func
 (paren

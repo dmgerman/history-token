@@ -323,23 +323,6 @@ op_assign
 id|skb-&gt;nh.iph
 suffix:semicolon
 macro_line|#endif
-macro_line|#if !defined( __i386__) &amp;&amp; !defined(__mc68000__)
-r_if
-c_cond
-(paren
-(paren
-r_int
-r_int
-)paren
-id|nhptr
-op_amp
-l_int|3
-)paren
-r_return
-op_minus
-l_int|1
-suffix:semicolon
-macro_line|#endif
 id|restart
 suffix:colon
 macro_line|#if RSVP_DST_LEN == 4

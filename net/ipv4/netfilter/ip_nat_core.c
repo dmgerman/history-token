@@ -3131,8 +3131,7 @@ comma
 r_struct
 id|sk_buff
 op_star
-op_star
-id|pskb
+id|skb
 )paren
 (brace
 r_struct
@@ -3157,12 +3156,7 @@ op_assign
 id|__ip_ct_find_proto
 c_func
 (paren
-(paren
-op_star
-id|pskb
-)paren
-op_member_access_from_pointer
-id|nh.iph-&gt;protocol
+id|skb-&gt;nh.iph-&gt;protocol
 )paren
 suffix:semicolon
 r_if
@@ -3179,7 +3173,7 @@ c_func
 (paren
 id|exp
 comma
-id|pskb
+id|skb
 )paren
 suffix:semicolon
 r_return
@@ -3565,6 +3559,7 @@ c_func
 (paren
 id|exp
 comma
+op_star
 id|pskb
 )paren
 )paren

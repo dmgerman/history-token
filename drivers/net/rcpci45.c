@@ -32,11 +32,6 @@ DECL|macro|RUN_AT
 mdefine_line|#define RUN_AT(x) (jiffies + (x))
 DECL|macro|NEW_MULTICAST
 mdefine_line|#define NEW_MULTICAST
-multiline_comment|/* PCI/45 Configuration space values */
-DECL|macro|RC_PCI45_VENDOR_ID
-mdefine_line|#define RC_PCI45_VENDOR_ID  0x4916
-DECL|macro|RC_PCI45_DEVICE_ID
-mdefine_line|#define RC_PCI45_DEVICE_ID  0x1960
 DECL|macro|MAX_ETHER_SIZE
 mdefine_line|#define MAX_ETHER_SIZE        1520
 DECL|macro|MAX_NMBR_RCV_BUFFERS
@@ -238,9 +233,9 @@ id|__devinitdata
 op_assign
 (brace
 (brace
-id|RC_PCI45_VENDOR_ID
+id|PCI_VENDOR_ID_REDCREEK
 comma
-id|RC_PCI45_DEVICE_ID
+id|PCI_DEVICE_ID_RC45
 comma
 id|PCI_ANY_ID
 comma
@@ -578,8 +573,6 @@ id|kmalloc
 id|MSG_BUF_SIZE
 comma
 id|GFP_DMA
-op_or
-id|GFP_ATOMIC
 op_or
 id|GFP_KERNEL
 )paren
@@ -3290,8 +3283,6 @@ comma
 id|GFP_DMA
 op_or
 id|GFP_ATOMIC
-op_or
-id|GFP_KERNEL
 )paren
 suffix:semicolon
 r_if

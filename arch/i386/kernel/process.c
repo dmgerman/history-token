@@ -1116,6 +1116,7 @@ id|info
 comma
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|childregs-&gt;esi
@@ -1992,6 +1993,7 @@ c_func
 (paren
 (paren
 r_char
+id|__user
 op_star
 )paren
 id|regs.ebx
@@ -2026,14 +2028,18 @@ id|filename
 comma
 (paren
 r_char
+id|__user
 op_star
+id|__user
 op_star
 )paren
 id|regs.ecx
 comma
 (paren
 r_char
+id|__user
 op_star
+id|__user
 op_star
 )paren
 id|regs.edx
@@ -2315,6 +2321,7 @@ c_func
 (paren
 r_struct
 id|user_desc
+id|__user
 op_star
 id|u_info
 )paren
@@ -2520,6 +2527,7 @@ c_func
 (paren
 r_struct
 id|user_desc
+id|__user
 op_star
 id|u_info
 )paren

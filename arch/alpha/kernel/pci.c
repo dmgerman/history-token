@@ -8,6 +8,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/bootmem.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/cache.h&gt;
 macro_line|#include &lt;asm/machvec.h&gt;
 macro_line|#include &quot;proto.h&quot;
