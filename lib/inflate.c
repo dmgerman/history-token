@@ -2700,9 +2700,11 @@ l_int|4
 suffix:semicolon
 multiline_comment|/* Input underrun */
 )brace
+multiline_comment|/*&n; * We use `noinline&squot; here to prevent gcc-3.5 from using too much stack space&n; */
 DECL|function|inflate_fixed
 id|STATIC
 r_int
+id|noinline
 id|inflate_fixed
 c_func
 (paren
@@ -2969,9 +2971,11 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * We use `noinline&squot; here to prevent gcc-3.5 from using too much stack space&n; */
 DECL|function|inflate_dynamic
 id|STATIC
 r_int
+id|noinline
 id|inflate_dynamic
 c_func
 (paren
