@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  kernel/sched.c&n; *&n; *  Kernel scheduler and related syscalls&n; *&n; *  Copyright (C) 1991-2002  Linus Torvalds&n; *&n; *  1996-12-23  Modified by Dave Grothe to fix bugs in semaphores and&n; *&t;&t;make semaphores SMP safe&n; *  1998-11-19&t;Implemented schedule_timeout() and related stuff&n; *&t;&t;by Andrea Arcangeli&n; *  2002-01-04&t;New ultra-scalable O(1) scheduler by Ingo Molnar:&n; *&t;&t;hybrid priority-list and round-robin design with&n; *&t;&t;an array-switch method of distributing timeslices&n; *&t;&t;and per-CPU runqueues.  Cleanups and useful suggestions&n; *&t;&t;by Davide Libenzi, preemptible kernel bits by Robert Love.&n; */
+multiline_comment|/*&n; *  kernel/sched.c&n; *&n; *  Kernel scheduler and related syscalls&n; *&n; *  Copyright (C) 1991-2002  Linus Torvalds&n; *&n; *  1996-12-23  Modified by Dave Grothe to fix bugs in semaphores and&n; *&t;&t;make semaphores SMP safe&n; *  1998-11-19&t;Implemented schedule_timeout() and related stuff&n; *&t;&t;by Andrea Arcangeli&n; *  2002-01-04&t;New ultra-scalable O(1) scheduler by Ingo Molnar:&n; *&t;&t;hybrid priority-list and round-robin design with&n; *&t;&t;an array-switch method of distributing timeslices&n; *&t;&t;and per-CPU runqueues.  Cleanups and useful suggestions&n; *&t;&t;by Davide Libenzi, preemptible kernel bits by Robert Love.&n; *  2003-09-03&t;Interactivity tuning by Con Kolivas.&n; */
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/nmi.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -38,13 +38,18 @@ DECL|macro|TASK_USER_PRIO
 mdefine_line|#define TASK_USER_PRIO(p)&t;USER_PRIO((p)-&gt;static_prio)
 DECL|macro|MAX_USER_PRIO
 mdefine_line|#define MAX_USER_PRIO&t;&t;(USER_PRIO(MAX_PRIO))
+DECL|macro|AVG_TIMESLICE
+mdefine_line|#define AVG_TIMESLICE&t;(MIN_TIMESLICE + ((MAX_TIMESLICE - MIN_TIMESLICE) *&bslash;&n;&t;&t;&t;(MAX_PRIO-1-NICE_TO_PRIO(0))/(MAX_USER_PRIO - 1)))
+multiline_comment|/*&n; * Some helpers for converting nanosecond timing to jiffy resolution&n; */
+DECL|macro|NS_TO_JIFFIES
+mdefine_line|#define NS_TO_JIFFIES(TIME)&t;((TIME) / (1000000000 / HZ))
+DECL|macro|JIFFIES_TO_NS
+mdefine_line|#define JIFFIES_TO_NS(TIME)&t;((TIME) * (1000000000 / HZ))
 multiline_comment|/*&n; * These are the &squot;tuning knobs&squot; of the scheduler:&n; *&n; * Minimum timeslice is 10 msecs, default timeslice is 100 msecs,&n; * maximum timeslice is 200 msecs. Timeslices get refilled after&n; * they expire.&n; */
 DECL|macro|MIN_TIMESLICE
 mdefine_line|#define MIN_TIMESLICE&t;&t;( 10 * HZ / 1000)
 DECL|macro|MAX_TIMESLICE
 mdefine_line|#define MAX_TIMESLICE&t;&t;(200 * HZ / 1000)
-DECL|macro|TIMESLICE_GRANULARITY
-mdefine_line|#define TIMESLICE_GRANULARITY&t;(HZ/40 ?: 1)
 DECL|macro|ON_RUNQUEUE_WEIGHT
 mdefine_line|#define ON_RUNQUEUE_WEIGHT&t;30
 DECL|macro|CHILD_PENALTY
@@ -55,23 +60,44 @@ DECL|macro|EXIT_WEIGHT
 mdefine_line|#define EXIT_WEIGHT&t;&t;3
 DECL|macro|PRIO_BONUS_RATIO
 mdefine_line|#define PRIO_BONUS_RATIO&t;25
+DECL|macro|MAX_BONUS
+mdefine_line|#define MAX_BONUS&t;&t;(MAX_USER_PRIO * PRIO_BONUS_RATIO / 100)
 DECL|macro|INTERACTIVE_DELTA
 mdefine_line|#define INTERACTIVE_DELTA&t;2
 DECL|macro|MAX_SLEEP_AVG
-mdefine_line|#define MAX_SLEEP_AVG&t;&t;(1*1000000000)
+mdefine_line|#define MAX_SLEEP_AVG&t;&t;(AVG_TIMESLICE * MAX_BONUS)
 DECL|macro|STARVATION_LIMIT
-mdefine_line|#define STARVATION_LIMIT&t;HZ
+mdefine_line|#define STARVATION_LIMIT&t;(MAX_SLEEP_AVG)
+DECL|macro|NS_MAX_SLEEP_AVG
+mdefine_line|#define NS_MAX_SLEEP_AVG&t;(JIFFIES_TO_NS(MAX_SLEEP_AVG))
 DECL|macro|NODE_THRESHOLD
 mdefine_line|#define NODE_THRESHOLD&t;&t;125
+DECL|macro|CREDIT_LIMIT
+mdefine_line|#define CREDIT_LIMIT&t;&t;100
 multiline_comment|/*&n; * If a task is &squot;interactive&squot; then we reinsert it in the active&n; * array after it has expired its current timeslice. (it will not&n; * continue to run immediately, it will still roundrobin with&n; * other interactive tasks.)&n; *&n; * This part scales the interactivity limit depending on niceness.&n; *&n; * We scale it linearly, offset by the INTERACTIVE_DELTA delta.&n; * Here are a few examples of different nice levels:&n; *&n; *  TASK_INTERACTIVE(-20): [1,1,1,1,1,1,1,1,1,0,0]&n; *  TASK_INTERACTIVE(-10): [1,1,1,1,1,1,1,0,0,0,0]&n; *  TASK_INTERACTIVE(  0): [1,1,1,1,0,0,0,0,0,0,0]&n; *  TASK_INTERACTIVE( 10): [1,1,0,0,0,0,0,0,0,0,0]&n; *  TASK_INTERACTIVE( 19): [0,0,0,0,0,0,0,0,0,0,0]&n; *&n; * (the X axis represents the possible -5 ... 0 ... +5 dynamic&n; *  priority range a task can explore, a value of &squot;1&squot; means the&n; *  task is rated interactive.)&n; *&n; * Ie. nice +19 tasks can never get &squot;interactive&squot; enough to be&n; * reinserted into the active array. And only heavily CPU-hog nice -20&n; * tasks will be expired. Default nice 0 tasks are somewhere between,&n; * it takes some effort for them to get interactive, but it&squot;s not&n; * too hard.&n; */
+DECL|macro|CURRENT_BONUS
+mdefine_line|#define CURRENT_BONUS(p) &bslash;&n;&t;(NS_TO_JIFFIES((p)-&gt;sleep_avg) * MAX_BONUS / &bslash;&n;&t;&t;MAX_SLEEP_AVG)
+macro_line|#ifdef CONFIG_SMP
+DECL|macro|TIMESLICE_GRANULARITY
+mdefine_line|#define TIMESLICE_GRANULARITY(p)&t;(MIN_TIMESLICE * &bslash;&n;&t;&t;(1 &lt;&lt; (((MAX_BONUS - CURRENT_BONUS(p)) ? : 1) - 1)) * &bslash;&n;&t;&t;&t;num_online_cpus())
+macro_line|#else
+DECL|macro|TIMESLICE_GRANULARITY
+mdefine_line|#define TIMESLICE_GRANULARITY(p)&t;(MIN_TIMESLICE * &bslash;&n;&t;&t;(1 &lt;&lt; (((MAX_BONUS - CURRENT_BONUS(p)) ? : 1) - 1)))
+macro_line|#endif
 DECL|macro|SCALE
 mdefine_line|#define SCALE(v1,v1_max,v2_max) &bslash;&n;&t;(v1) * (v2_max) / (v1_max)
 DECL|macro|DELTA
 mdefine_line|#define DELTA(p) &bslash;&n;&t;(SCALE(TASK_NICE(p), 40, MAX_USER_PRIO*PRIO_BONUS_RATIO/100) + &bslash;&n;&t;&t;INTERACTIVE_DELTA)
 DECL|macro|TASK_INTERACTIVE
 mdefine_line|#define TASK_INTERACTIVE(p) &bslash;&n;&t;((p)-&gt;prio &lt;= (p)-&gt;static_prio - DELTA(p))
+DECL|macro|JUST_INTERACTIVE_SLEEP
+mdefine_line|#define JUST_INTERACTIVE_SLEEP(p) &bslash;&n;&t;(JIFFIES_TO_NS(MAX_SLEEP_AVG * &bslash;&n;&t;&t;(MAX_BONUS / 2 + DELTA((p)) + 1) / MAX_BONUS - 1))
+DECL|macro|HIGH_CREDIT
+mdefine_line|#define HIGH_CREDIT(p) &bslash;&n;&t;((p)-&gt;interactive_credit &gt; CREDIT_LIMIT)
+DECL|macro|LOW_CREDIT
+mdefine_line|#define LOW_CREDIT(p) &bslash;&n;&t;((p)-&gt;interactive_credit &lt; -CREDIT_LIMIT)
 DECL|macro|TASK_PREEMPTS_CURR
-mdefine_line|#define TASK_PREEMPTS_CURR(p, rq) &bslash;&n;&t;((p)-&gt;prio &lt; (rq)-&gt;curr-&gt;prio || &bslash;&n;&t;&t;((p)-&gt;prio == (rq)-&gt;curr-&gt;prio &amp;&amp; &bslash;&n;&t;&t;&t;(p)-&gt;time_slice &gt; (rq)-&gt;curr-&gt;time_slice * 2))
+mdefine_line|#define TASK_PREEMPTS_CURR(p, rq) &bslash;&n;&t;((p)-&gt;prio &lt; (rq)-&gt;curr-&gt;prio)
 multiline_comment|/*&n; * BASE_TIMESLICE scales user-nice values [ -20 ... 19 ]&n; * to time slice values.&n; *&n; * The higher a thread&squot;s priority, the bigger timeslices&n; * it gets during one round of execution. But even the lowest&n; * priority thread gets MIN_TIMESLICE worth of execution time.&n; *&n; * task_timeslice() is the interface that is used by the scheduler.&n; */
 DECL|macro|BASE_TIMESLICE
 mdefine_line|#define BASE_TIMESLICE(p) (MIN_TIMESLICE + &bslash;&n;&t;((MAX_TIMESLICE - MIN_TIMESLICE) * (MAX_PRIO-1-(p)-&gt;static_prio)/(MAX_USER_PRIO - 1)))
@@ -699,31 +725,13 @@ id|p-&gt;prio
 suffix:semicolon
 id|bonus
 op_assign
-id|MAX_USER_PRIO
-op_star
-id|PRIO_BONUS_RATIO
-op_star
+id|CURRENT_BONUS
+c_func
 (paren
-id|p-&gt;sleep_avg
-op_div
-l_int|1024
+id|p
 )paren
-op_div
-(paren
-id|MAX_SLEEP_AVG
-op_div
-l_int|1024
-)paren
-op_div
-l_int|100
-suffix:semicolon
-id|bonus
-op_sub_assign
-id|MAX_USER_PRIO
-op_star
-id|PRIO_BONUS_RATIO
-op_div
-l_int|100
+op_minus
+id|MAX_BONUS
 op_div
 l_int|2
 suffix:semicolon
@@ -829,11 +837,11 @@ c_cond
 (paren
 id|__sleep_time
 OG
-id|MAX_SLEEP_AVG
+id|NS_MAX_SLEEP_AVG
 )paren
 id|sleep_time
 op_assign
-id|MAX_SLEEP_AVG
+id|NS_MAX_SLEEP_AVG
 suffix:semicolon
 r_else
 id|sleep_time
@@ -847,47 +855,208 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|likely
+c_func
+(paren
 id|sleep_time
 OG
 l_int|0
 )paren
+)paren
 (brace
-r_int
-r_int
-r_int
-id|sleep_avg
-suffix:semicolon
-multiline_comment|/*&n;&t;&t; * This code gives a bonus to interactive tasks.&n;&t;&t; *&n;&t;&t; * The boost works by updating the &squot;average sleep time&squot;&n;&t;&t; * value here, based on -&gt;timestamp. The more time a task&n;&t;&t; * spends sleeping, the higher the average gets - and the&n;&t;&t; * higher the priority boost gets as well.&n;&t;&t; */
-id|sleep_avg
+multiline_comment|/*&n;&t;&t; * User tasks that sleep a long time are categorised as&n;&t;&t; * idle and will get just interactive status to stay active &amp;&n;&t;&t; * prevent them suddenly becoming cpu hogs and starving&n;&t;&t; * other processes.&n;&t;&t; */
+r_if
+c_cond
+(paren
+id|p-&gt;mm
+op_logical_and
+id|p-&gt;activated
+op_ne
+op_minus
+l_int|1
+op_logical_and
+id|sleep_time
+OG
+id|JUST_INTERACTIVE_SLEEP
+c_func
+(paren
+id|p
+)paren
+)paren
+(brace
+id|p-&gt;sleep_avg
 op_assign
+id|JIFFIES_TO_NS
+c_func
+(paren
+id|MAX_SLEEP_AVG
+op_minus
+id|AVG_TIMESLICE
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|HIGH_CREDIT
+c_func
+(paren
+id|p
+)paren
+)paren
+id|p-&gt;interactive_credit
+op_increment
+suffix:semicolon
+)brace
+r_else
+(brace
+multiline_comment|/*&n;&t;&t;&t; * The lower the sleep avg a task has the more&n;&t;&t;&t; * rapidly it will rise with sleep time.&n;&t;&t;&t; */
+id|sleep_time
+op_mul_assign
+(paren
+id|MAX_BONUS
+op_minus
+id|CURRENT_BONUS
+c_func
+(paren
+id|p
+)paren
+)paren
+ques
+c_cond
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/*&n;&t;&t;&t; * Tasks with low interactive_credit are limited to&n;&t;&t;&t; * one timeslice worth of sleep avg bonus.&n;&t;&t;&t; */
+r_if
+c_cond
+(paren
+id|LOW_CREDIT
+c_func
+(paren
+id|p
+)paren
+op_logical_and
+id|sleep_time
+OG
+id|JIFFIES_TO_NS
+c_func
+(paren
+id|task_timeslice
+c_func
+(paren
+id|p
+)paren
+)paren
+)paren
+id|sleep_time
+op_assign
+id|JIFFIES_TO_NS
+c_func
+(paren
+id|task_timeslice
+c_func
+(paren
+id|p
+)paren
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t;&t;&t; * Non high_credit tasks waking from uninterruptible&n;&t;&t;&t; * sleep are limited in their sleep_avg rise as they&n;&t;&t;&t; * are likely to be cpu hogs waiting on I/O&n;&t;&t;&t; */
+r_if
+c_cond
+(paren
+id|p-&gt;activated
+op_eq
+op_minus
+l_int|1
+op_logical_and
+op_logical_neg
+id|HIGH_CREDIT
+c_func
+(paren
+id|p
+)paren
+op_logical_and
+id|p-&gt;mm
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|p-&gt;sleep_avg
+op_ge
+id|JUST_INTERACTIVE_SLEEP
+c_func
+(paren
+id|p
+)paren
+)paren
+id|sleep_time
+op_assign
+l_int|0
+suffix:semicolon
+r_else
+r_if
+c_cond
+(paren
 id|p-&gt;sleep_avg
 op_plus
 id|sleep_time
-suffix:semicolon
-multiline_comment|/*&n;&t;&t; * &squot;Overflow&squot; bonus ticks go to the waker as well, so the&n;&t;&t; * ticks are not lost. This has the effect of further&n;&t;&t; * boosting tasks that are related to maximum-interactive&n;&t;&t; * tasks.&n;&t;&t; */
-r_if
-c_cond
+op_ge
+id|JUST_INTERACTIVE_SLEEP
+c_func
 (paren
-id|sleep_avg
-OG
-id|MAX_SLEEP_AVG
+id|p
 )paren
-id|sleep_avg
-op_assign
-id|MAX_SLEEP_AVG
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|p-&gt;sleep_avg
-op_ne
-id|sleep_avg
 )paren
 (brace
 id|p-&gt;sleep_avg
 op_assign
-id|sleep_avg
+id|JUST_INTERACTIVE_SLEEP
+c_func
+(paren
+id|p
+)paren
 suffix:semicolon
+id|sleep_time
+op_assign
+l_int|0
+suffix:semicolon
+)brace
+)brace
+multiline_comment|/*&n;&t;&t;&t; * This code gives a bonus to interactive tasks.&n;&t;&t;&t; *&n;&t;&t;&t; * The boost works by updating the &squot;average sleep time&squot;&n;&t;&t;&t; * value here, based on -&gt;timestamp. The more time a task&n;&t;&t;&t; * spends sleeping, the higher the average gets - and the&n;&t;&t;&t; * higher the priority boost gets as well.&n;&t;&t;&t; */
+id|p-&gt;sleep_avg
+op_add_assign
+id|sleep_time
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|p-&gt;sleep_avg
+OG
+id|NS_MAX_SLEEP_AVG
+)paren
+(brace
+id|p-&gt;sleep_avg
+op_assign
+id|NS_MAX_SLEEP_AVG
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|HIGH_CREDIT
+c_func
+(paren
+id|p
+)paren
+)paren
+id|p-&gt;interactive_credit
+op_increment
+suffix:semicolon
+)brace
+)brace
+)brace
 id|p-&gt;prio
 op_assign
 id|effective_prio
@@ -896,8 +1065,6 @@ c_func
 id|p
 )paren
 suffix:semicolon
-)brace
-)brace
 )brace
 multiline_comment|/*&n; * activate_task - move a task to the runqueue and do priority recalculation&n; *&n; * Update all the scheduling statistics stuff. (sleep average&n; * calculation, priority modifiers, etc.)&n; */
 DECL|function|activate_task
@@ -934,7 +1101,15 @@ comma
 id|now
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Tasks which were woken up by interrupts (ie. hw events)&n;&t; * are most likely of interactive nature. So we give them&n;&t; * the credit of extending their sleep time to the period&n;&t; * of time they spend on the runqueue, waiting for execution&n;&t; * on a CPU, first time around:&n;&t; */
+multiline_comment|/*&n;&t; * This checks to make sure it&squot;s not an uninterruptible task&n;&t; * that is now waking up.&n;&t; */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|p-&gt;activated
+)paren
+(brace
+multiline_comment|/*&n;&t;&t; * Tasks which were woken up by interrupts (ie. hw events)&n;&t;&t; * are most likely of interactive nature. So we give them&n;&t;&t; * the credit of extending their sleep time to the period&n;&t;&t; * of time they spend on the runqueue, waiting for execution&n;&t;&t; * on a CPU, first time around:&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -948,11 +1123,12 @@ op_assign
 l_int|2
 suffix:semicolon
 r_else
-multiline_comment|/*&n;&t; * Normal first-time wakeups get a credit too for on-runqueue time,&n;&t; * but it will be weighted down:&n;&t; */
+multiline_comment|/*&n;&t;&t; * Normal first-time wakeups get a credit too for on-runqueue&n;&t;&t; * time, but it will be weighted down:&n;&t;&t; */
 id|p-&gt;activated
 op_assign
 l_int|1
 suffix:semicolon
+)brace
 id|p-&gt;timestamp
 op_assign
 id|now
@@ -1386,9 +1562,17 @@ id|old_state
 op_eq
 id|TASK_UNINTERRUPTIBLE
 )paren
+(brace
 id|rq-&gt;nr_uninterruptible
 op_decrement
 suffix:semicolon
+multiline_comment|/*&n;&t;&t;&t;&t; * Tasks on involuntary sleep don&squot;t earn&n;&t;&t;&t;&t; * sleep_avg beyond just interactive state.&n;&t;&t;&t;&t; */
+id|p-&gt;activated
+op_assign
+op_minus
+l_int|1
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -1615,19 +1799,47 @@ suffix:semicolon
 multiline_comment|/*&n;&t; * We decrease the sleep average of forking parents&n;&t; * and children as well, to keep max-interactive tasks&n;&t; * from forking tasks that are max-interactive.&n;&t; */
 id|current-&gt;sleep_avg
 op_assign
-id|current-&gt;sleep_avg
+id|JIFFIES_TO_NS
+c_func
+(paren
+id|CURRENT_BONUS
+c_func
+(paren
+id|current
+)paren
+op_star
+id|PARENT_PENALTY
 op_div
 l_int|100
 op_star
-id|PARENT_PENALTY
+id|MAX_SLEEP_AVG
+op_div
+id|MAX_BONUS
+)paren
 suffix:semicolon
 id|p-&gt;sleep_avg
 op_assign
-id|p-&gt;sleep_avg
+id|JIFFIES_TO_NS
+c_func
+(paren
+id|CURRENT_BONUS
+c_func
+(paren
+id|p
+)paren
+op_star
+id|CHILD_PENALTY
 op_div
 l_int|100
 op_star
-id|CHILD_PENALTY
+id|MAX_SLEEP_AVG
+op_div
+id|MAX_BONUS
+)paren
+suffix:semicolon
+id|p-&gt;interactive_credit
+op_assign
+l_int|0
 suffix:semicolon
 id|p-&gt;prio
 op_assign
@@ -3301,6 +3513,92 @@ c_func
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * Previously:&n; *&n; * #define CAN_MIGRATE_TASK(p,rq,this_cpu)&t;&bslash;&n; *&t;((!idle || (NS_TO_JIFFIES(now - (p)-&gt;timestamp) &gt; &bslash;&n; *&t;&t;cache_decay_ticks)) &amp;&amp; !task_running(rq, p) &amp;&amp; &bslash;&n; *&t;&t;&t;cpu_isset(this_cpu, (p)-&gt;cpus_allowed))&n; */
+r_static
+r_inline
+r_int
+DECL|function|can_migrate_task
+id|can_migrate_task
+c_func
+(paren
+id|task_t
+op_star
+id|tsk
+comma
+id|runqueue_t
+op_star
+id|rq
+comma
+r_int
+id|this_cpu
+comma
+r_int
+id|idle
+)paren
+(brace
+r_int
+r_int
+id|delta
+op_assign
+id|sched_clock
+c_func
+(paren
+)paren
+op_minus
+id|tsk-&gt;timestamp
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|idle
+op_logical_and
+(paren
+id|delta
+op_le
+id|JIFFIES_TO_NS
+c_func
+(paren
+id|cache_decay_ticks
+)paren
+)paren
+)paren
+r_return
+l_int|0
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|task_running
+c_func
+(paren
+id|rq
+comma
+id|tsk
+)paren
+)paren
+r_return
+l_int|0
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|cpu_isset
+c_func
+(paren
+id|this_cpu
+comma
+id|tsk-&gt;cpus_allowed
+)paren
+)paren
+r_return
+l_int|0
+suffix:semicolon
+r_return
+l_int|1
+suffix:semicolon
+)brace
 multiline_comment|/*&n; * Current runqueue is empty, or rebalance tick: if there is an&n; * inbalance (current runqueue is too short) then pull from&n; * busiest runqueue(s).&n; *&n; * We call this with the current runqueue locked,&n; * irqs disabled.&n; */
 DECL|function|load_balance
 r_static
@@ -3347,11 +3645,6 @@ comma
 op_star
 id|curr
 suffix:semicolon
-r_int
-r_int
-r_int
-id|now
-suffix:semicolon
 id|task_t
 op_star
 id|tmp
@@ -3381,13 +3674,6 @@ id|busiest
 )paren
 r_goto
 id|out
-suffix:semicolon
-id|now
-op_assign
-id|sched_clock
-c_func
-(paren
-)paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * We only want to steal a number of tasks equal to 1/2 the imbalance,&n;&t; * otherwise we&squot;ll just shift the imbalance to the new queue:&n;&t; */
 id|imbalance
@@ -3498,8 +3784,6 @@ id|run_list
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * We do not migrate tasks that are:&n;&t; * 1) running (obviously), or&n;&t; * 2) cannot be migrated to this CPU due to cpus_allowed, or&n;&t; * 3) are cache-hot on their current CPU.&n;&t; */
-DECL|macro|CAN_MIGRATE_TASK
-mdefine_line|#define CAN_MIGRATE_TASK(p,rq,this_cpu)&t;&t;&t;&t;&t;&bslash;&n;&t;((idle || (((now - (p)-&gt;timestamp)&gt;&gt;10) &gt; cache_decay_ticks)) &amp;&amp;&bslash;&n;&t;&t;!task_running(rq, p) &amp;&amp;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;cpu_isset(this_cpu, (p)-&gt;cpus_allowed))
 id|curr
 op_assign
 id|curr-&gt;prev
@@ -3508,7 +3792,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|CAN_MIGRATE_TASK
+id|can_migrate_task
 c_func
 (paren
 id|tmp
@@ -3516,6 +3800,8 @@ comma
 id|busiest
 comma
 id|this_cpu
+comma
+id|idle
 )paren
 )paren
 (brace
@@ -3890,7 +4176,7 @@ id|kstat
 suffix:semicolon
 multiline_comment|/*&n; * We place interactive tasks back into the active array, if possible.&n; *&n; * To guarantee that this does not starve expired tasks we ignore the&n; * interactivity of a task if the first expired task had to wait more&n; * than a &squot;reasonable&squot; amount of time. This deadline timeout is&n; * load-dependent, as the frequency of array switched decreases with&n; * increasing number of running tasks:&n; */
 DECL|macro|EXPIRED_STARVING
-mdefine_line|#define EXPIRED_STARVING(rq) &bslash;&n;&t;&t;(STARVATION_LIMIT &amp;&amp; ((rq)-&gt;expired_timestamp &amp;&amp; &bslash;&n;&t;&t;(jiffies - (rq)-&gt;expired_timestamp &gt;= STARVATION_LIMIT)))
+mdefine_line|#define EXPIRED_STARVING(rq) &bslash;&n;&t;&t;(STARVATION_LIMIT &amp;&amp; ((rq)-&gt;expired_timestamp &amp;&amp; &bslash;&n;&t;&t;(jiffies - (rq)-&gt;expired_timestamp &gt;= &bslash;&n;&t;&t;&t;STARVATION_LIMIT * ((rq)-&gt;nr_running) + 1)))
 multiline_comment|/*&n; * This function gets called by the timer code, with HZ frequency.&n; * We call it with interrupts disabled.&n; *&n; * It also gets called by the fork code, when changing the parent&squot;s&n; * timeslices.&n; */
 DECL|function|scheduler_tick
 r_void
@@ -4242,10 +4528,16 @@ suffix:semicolon
 )brace
 r_else
 (brace
-multiline_comment|/*&n;&t;&t; * Prevent a too long timeslice allowing a task to monopolize&n;&t;&t; * the CPU. We do this by splitting up the timeslice into&n;&t;&t; * smaller pieces.&n;&t;&t; *&n;&t;&t; * Note: this does not mean the task&squot;s timeslices expire or&n;&t;&t; * get lost in any way, they just might be preempted by&n;&t;&t; * another task of equal priority. (one with higher&n;&t;&t; * priority would have preempted this task already.) We&n;&t;&t; * requeue this task to the end of the list on this priority&n;&t;&t; * level, which is in essence a round-robin of tasks with&n;&t;&t; * equal priority.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Prevent a too long timeslice allowing a task to monopolize&n;&t;&t; * the CPU. We do this by splitting up the timeslice into&n;&t;&t; * smaller pieces.&n;&t;&t; *&n;&t;&t; * Note: this does not mean the task&squot;s timeslices expire or&n;&t;&t; * get lost in any way, they just might be preempted by&n;&t;&t; * another task of equal priority. (one with higher&n;&t;&t; * priority would have preempted this task already.) We&n;&t;&t; * requeue this task to the end of the list on this priority&n;&t;&t; * level, which is in essence a round-robin of tasks with&n;&t;&t; * equal priority.&n;&t;&t; *&n;&t;&t; * This only applies to tasks in the interactive&n;&t;&t; * delta range with at least TIMESLICE_GRANULARITY to requeue.&n;&t;&t; */
 r_if
 c_cond
 (paren
+id|TASK_INTERACTIVE
+c_func
+(paren
+id|p
+)paren
+op_logical_and
 op_logical_neg
 (paren
 (paren
@@ -4259,6 +4551,20 @@ id|p-&gt;time_slice
 )paren
 op_mod
 id|TIMESLICE_GRANULARITY
+c_func
+(paren
+id|p
+)paren
+)paren
+op_logical_and
+(paren
+id|p-&gt;time_slice
+op_ge
+id|TIMESLICE_GRANULARITY
+c_func
+(paren
+id|p
+)paren
 )paren
 op_logical_and
 (paren
@@ -4459,7 +4765,7 @@ id|now
 op_minus
 id|prev-&gt;timestamp
 OL
-id|MAX_SLEEP_AVG
+id|NS_MAX_SLEEP_AVG
 )paren
 )paren
 id|run_time
@@ -4471,7 +4777,31 @@ suffix:semicolon
 r_else
 id|run_time
 op_assign
-id|MAX_SLEEP_AVG
+id|NS_MAX_SLEEP_AVG
+suffix:semicolon
+multiline_comment|/*&n;&t; * Tasks with interactive credits get charged less run_time&n;&t; * at high sleep_avg to delay them losing their interactive&n;&t; * status&n;&t; */
+r_if
+c_cond
+(paren
+id|HIGH_CREDIT
+c_func
+(paren
+id|prev
+)paren
+)paren
+id|run_time
+op_div_assign
+(paren
+id|CURRENT_BONUS
+c_func
+(paren
+id|prev
+)paren
+ques
+c_cond
+suffix:colon
+l_int|1
+)paren
 suffix:semicolon
 id|spin_lock_irq
 c_func
@@ -4665,6 +4995,8 @@ r_if
 c_cond
 (paren
 id|next-&gt;activated
+OG
+l_int|0
 )paren
 (brace
 r_int
@@ -4697,10 +5029,6 @@ l_int|100
 op_div
 l_int|128
 suffix:semicolon
-id|next-&gt;activated
-op_assign
-l_int|0
-suffix:semicolon
 id|array
 op_assign
 id|next-&gt;array
@@ -4732,6 +5060,10 @@ id|array
 )paren
 suffix:semicolon
 )brace
+id|next-&gt;activated
+op_assign
+l_int|0
+suffix:semicolon
 id|switch_tasks
 suffix:colon
 id|prefetch
@@ -4768,13 +5100,36 @@ c_cond
 r_int
 )paren
 id|prev-&gt;sleep_avg
-OL
+op_le
 l_int|0
 )paren
+(brace
 id|prev-&gt;sleep_avg
 op_assign
 l_int|0
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|HIGH_CREDIT
+c_func
+(paren
+id|prev
+)paren
+op_logical_or
+id|LOW_CREDIT
+c_func
+(paren
+id|prev
+)paren
+)paren
+)paren
+id|prev-&gt;interactive_credit
+op_decrement
+suffix:semicolon
+)brace
 id|prev-&gt;timestamp
 op_assign
 id|now

@@ -848,6 +848,10 @@ r_int
 r_int
 id|sleep_avg
 suffix:semicolon
+DECL|member|interactive_credit
+r_int
+id|interactive_credit
+suffix:semicolon
 DECL|member|timestamp
 r_int
 r_int
