@@ -9944,11 +9944,7 @@ suffix:semicolon
 multiline_comment|/*&n;&t; * Commands creating/starting a new array:&n;&t; */
 id|mddev
 op_assign
-id|mddev_find
-c_func
-(paren
-id|minor
-)paren
+id|inode-&gt;i_bdev-&gt;bd_inode-&gt;u.generic_ip
 suffix:semicolon
 r_if
 c_cond
@@ -9957,10 +9953,10 @@ op_logical_neg
 id|mddev
 )paren
 (brace
-id|err
-op_assign
-op_minus
-id|ENOMEM
+id|BUG
+c_func
+(paren
+)paren
 suffix:semicolon
 r_goto
 m_abort
@@ -10673,12 +10669,6 @@ suffix:colon
 id|abort_unlock
 suffix:colon
 id|unlock_mddev
-c_func
-(paren
-id|mddev
-)paren
-suffix:semicolon
-id|mddev_put
 c_func
 (paren
 id|mddev
