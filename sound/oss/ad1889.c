@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  Copyright 2001 Randolph Chung &lt;tausq@debian.org&gt;&n; *&n; *  Analog Devices 1889 PCI audio driver (AD1819 AC97-compatible codec)&n; *&n; *   This program is free software; you can redistribute it and/or modify&n; *   it under the terms of the GNU General Public License as published by&n; *   the Free Software Foundation; either version 2 of the License, or&n; *   (at your option) any later version.&n; *&n; *   This program is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *   GNU General Public License for more details.&n; *&n; *   You should have received a copy of the GNU General Public License&n; *   along with this program; if not, write to the Free Software&n; *   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; *   Notes:&n; *   1. Only flat DMA is supported; s-g is not supported right now&n; *&n; *&n;&lt;jsm&gt; tausq: Anyway, to set up sample rates for D to A, you just use the sample rate on the codec. For A to D, you need to set the codec always to 48K (using the split sample rate feature on the codec) and then set the resampler on the AD1889 to the sample rate you want.&n;&lt;jsm&gt; Also, when changing the sample rate on the codec you need to power it down and re power it up for the change to take effect!&n; *&n; * $Id: ad1889.c,v 1.3 2002/10/19 21:31:44 grundler Exp $&n; */
+multiline_comment|/*&n; *  Copyright 2001-2004 Randolph Chung &lt;tausq@debian.org&gt;&n; *&n; *  Analog Devices 1889 PCI audio driver (AD1819 AC97-compatible codec)&n; *&n; *   This program is free software; you can redistribute it and/or modify&n; *   it under the terms of the GNU General Public License as published by&n; *   the Free Software Foundation; either version 2 of the License, or&n; *   (at your option) any later version.&n; *&n; *   This program is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *   GNU General Public License for more details.&n; *&n; *   You should have received a copy of the GNU General Public License&n; *   along with this program; if not, write to the Free Software&n; *   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; *   Notes:&n; *   1. Only flat DMA is supported; s-g is not supported right now&n; *&n; *&n;&lt;jsm&gt; tausq: Anyway, to set up sample rates for D to A, you just use the sample rate on the codec. For A to D, you need to set the codec always to 48K (using the split sample rate feature on the codec) and then set the resampler on the AD1889 to the sample rate you want.&n;&lt;jsm&gt; Also, when changing the sample rate on the codec you need to power it down and re power it up for the change to take effect!&n; *&n; * $Id: ad1889.c,v 1.3 2002/10/19 21:31:44 grundler Exp $&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -37,6 +37,7 @@ mdefine_line|#define AD1889_READL(dev,reg) readl(dev-&gt;regbase + reg)
 DECL|macro|AD1889_WRITEL
 mdefine_line|#define AD1889_WRITEL(dev,reg,val) writel((val), dev-&gt;regbase + reg)
 singleline_comment|//now 100ms
+multiline_comment|/* #define WAIT_10MS()&t;schedule_timeout(HZ/10) */
 DECL|macro|WAIT_10MS
 mdefine_line|#define WAIT_10MS()&t;do { int __i; for (__i = 0; __i &lt; 100; __i++) udelay(1000); } while(0)
 multiline_comment|/* currently only support a single device */
@@ -64,6 +65,21 @@ r_int
 id|rate
 )paren
 (brace
+r_struct
+id|ac97_codec
+op_star
+id|ac97_codec
+op_assign
+id|dev-&gt;ac97_codec
+suffix:semicolon
+id|DBG
+c_func
+(paren
+l_string|&quot;Setting WAV rate to %d&bslash;n&quot;
+comma
+id|rate
+)paren
+suffix:semicolon
 id|dev-&gt;state
 (braket
 id|AD_WAV_STATE
@@ -83,6 +99,36 @@ comma
 id|rate
 )paren
 suffix:semicolon
+multiline_comment|/* Cycle the DAC to enable the new rate */
+id|ac97_codec
+op_member_access_from_pointer
+id|codec_write
+c_func
+(paren
+id|dev-&gt;ac97_codec
+comma
+id|AC97_POWER_CONTROL
+comma
+l_int|0x0200
+)paren
+suffix:semicolon
+id|WAIT_10MS
+c_func
+(paren
+)paren
+suffix:semicolon
+id|ac97_codec
+op_member_access_from_pointer
+id|codec_write
+c_func
+(paren
+id|dev-&gt;ac97_codec
+comma
+id|AC97_POWER_CONTROL
+comma
+l_int|0
+)paren
+suffix:semicolon
 )brace
 DECL|function|ad1889_set_adc_rate
 r_static
@@ -99,6 +145,21 @@ r_int
 id|rate
 )paren
 (brace
+r_struct
+id|ac97_codec
+op_star
+id|ac97_codec
+op_assign
+id|dev-&gt;ac97_codec
+suffix:semicolon
+id|DBG
+c_func
+(paren
+l_string|&quot;Setting ADC rate to %d&bslash;n&quot;
+comma
+id|rate
+)paren
+suffix:semicolon
 id|dev-&gt;state
 (braket
 id|AD_ADC_STATE
@@ -116,6 +177,36 @@ comma
 id|AD_DSRES
 comma
 id|rate
+)paren
+suffix:semicolon
+multiline_comment|/* Cycle the ADC to enable the new rate */
+id|ac97_codec
+op_member_access_from_pointer
+id|codec_write
+c_func
+(paren
+id|dev-&gt;ac97_codec
+comma
+id|AC97_POWER_CONTROL
+comma
+l_int|0x0100
+)paren
+suffix:semicolon
+id|WAIT_10MS
+c_func
+(paren
+)paren
+suffix:semicolon
+id|ac97_codec
+op_member_access_from_pointer
+id|codec_write
+c_func
+(paren
+id|dev-&gt;ac97_codec
+comma
+id|AC97_POWER_CONTROL
+comma
+l_int|0
 )paren
 suffix:semicolon
 )brace
@@ -137,6 +228,14 @@ id|fmt
 id|u16
 id|tmp
 suffix:semicolon
+id|DBG
+c_func
+(paren
+l_string|&quot;Setting WAV format to 0x%x&bslash;n&quot;
+comma
+id|fmt
+)paren
+suffix:semicolon
 id|tmp
 op_assign
 id|AD1889_READW
@@ -151,7 +250,7 @@ r_if
 c_cond
 (paren
 id|fmt
-op_eq
+op_amp
 id|AFMT_S16_LE
 )paren
 (brace
@@ -167,7 +266,7 @@ r_if
 c_cond
 (paren
 id|fmt
-op_eq
+op_amp
 id|AFMT_U8
 )paren
 (brace
@@ -207,6 +306,14 @@ id|fmt
 id|u16
 id|tmp
 suffix:semicolon
+id|DBG
+c_func
+(paren
+l_string|&quot;Setting ADC format to 0x%x&bslash;n&quot;
+comma
+id|fmt
+)paren
+suffix:semicolon
 id|tmp
 op_assign
 id|AD1889_READW
@@ -221,7 +328,7 @@ r_if
 c_cond
 (paren
 id|fmt
-op_eq
+op_amp
 id|AFMT_S16_LE
 )paren
 (brace
@@ -236,7 +343,7 @@ r_if
 c_cond
 (paren
 id|fmt
-op_eq
+op_amp
 id|AFMT_U8
 )paren
 (brace
@@ -360,6 +467,18 @@ suffix:semicolon
 id|dmabuf-&gt;ready
 op_assign
 l_int|1
+suffix:semicolon
+id|DBG
+c_func
+(paren
+l_string|&quot;Starting playback at 0x%p for %ld bytes&bslash;n&quot;
+comma
+id|dmabuf-&gt;rawbuf
+op_plus
+id|dmabuf-&gt;rd_ptr
+comma
+id|dmabuf-&gt;dma_len
+)paren
 suffix:semicolon
 multiline_comment|/* load up the current register set */
 id|AD1889_WRITEL
@@ -915,7 +1034,7 @@ l_int|0
 suffix:semicolon
 id|dmabuf-&gt;rate
 op_assign
-l_int|44100
+l_int|48000
 suffix:semicolon
 )brace
 r_return
@@ -2366,33 +2485,12 @@ c_func
 id|TASK_INTERRUPTIBLE
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
 id|schedule_timeout
 c_func
 (paren
 id|timeout
 op_plus
 l_int|1
-)paren
-)paren
-id|printk
-c_func
-(paren
-id|KERN_WARNING
-l_string|&quot;AD1889 timeout(%ld) r/w %lx/%lx len %lx&bslash;n&quot;
-comma
-id|timeout
-op_plus
-l_int|1
-comma
-id|dmabuf-&gt;rd_ptr
-comma
-id|dmabuf-&gt;wr_ptr
-comma
-id|dmabuf-&gt;dma_len
 )paren
 suffix:semicolon
 r_if
@@ -2922,6 +3020,16 @@ op_star
 )paren
 id|arg
 suffix:semicolon
+id|DBG
+c_func
+(paren
+l_string|&quot;ad1889_ioctl cmd 0x%x arg %lu&bslash;n&quot;
+comma
+id|cmd
+comma
+id|arg
+)paren
+suffix:semicolon
 r_switch
 c_cond
 (paren
@@ -3188,6 +3296,14 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|val
+op_eq
+l_int|0
+)paren
+(brace
+r_if
+c_cond
+(paren
 id|file-&gt;f_mode
 op_amp
 id|FMODE_READ
@@ -3215,6 +3331,16 @@ comma
 id|val
 )paren
 suffix:semicolon
+)brace
+r_else
+(brace
+id|val
+op_assign
+id|AFMT_S16_LE
+op_or
+id|AFMT_U8
+suffix:semicolon
+)brace
 r_return
 id|put_user
 c_func
@@ -3468,7 +3594,7 @@ c_func
 (paren
 id|ad1889_dev
 comma
-l_int|44100
+l_int|48000
 )paren
 suffix:semicolon
 id|ad1889_set_wav_fmt
@@ -4380,12 +4506,15 @@ id|dev
 )paren
 (brace
 id|u16
-id|tmp
+id|tmp16
+suffix:semicolon
+id|u32
+id|tmp32
 suffix:semicolon
 multiline_comment|/* make sure the interrupt bits are setup the way we want */
-id|tmp
+id|tmp32
 op_assign
-id|AD1889_READW
+id|AD1889_READL
 c_func
 (paren
 id|dev
@@ -4393,29 +4522,29 @@ comma
 id|AD_DMAWAVCTRL
 )paren
 suffix:semicolon
-id|tmp
+id|tmp32
 op_and_assign
 op_complement
-l_int|0x00ff
+l_int|0xff
 suffix:semicolon
 multiline_comment|/* flat dma, no sg, mask out the intr bits */
-id|tmp
+id|tmp32
 op_or_assign
-l_int|0x0004
+l_int|0x6
 suffix:semicolon
 multiline_comment|/* intr on count, loop */
-id|AD1889_WRITEW
+id|AD1889_WRITEL
 c_func
 (paren
 id|dev
 comma
 id|AD_DMAWAVCTRL
 comma
-id|tmp
+id|tmp32
 )paren
 suffix:semicolon
 multiline_comment|/* unmute... */
-id|tmp
+id|tmp16
 op_assign
 id|AD1889_READW
 c_func
@@ -4425,7 +4554,7 @@ comma
 id|AD_DSWADA
 )paren
 suffix:semicolon
-id|tmp
+id|tmp16
 op_and_assign
 op_complement
 l_int|0x8080
@@ -4437,7 +4566,7 @@ id|dev
 comma
 id|AD_DSWADA
 comma
-id|tmp
+id|tmp16
 )paren
 suffix:semicolon
 )brace

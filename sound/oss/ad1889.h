@@ -66,11 +66,11 @@ mdefine_line|#define AD_DMAWAVIBC&t;0x9c&t;/* WAV interrupt base count */
 DECL|macro|AD_DMARESCTRL
 mdefine_line|#define AD_DMARESCTRL&t;0xa0&t;/* RES PCI control/status */
 DECL|macro|AD_DMAADCCTRL
-mdefine_line|#define AD_DMAADCCTRL&t;0xa8&t;/* RES PCI control/status */
+mdefine_line|#define AD_DMAADCCTRL&t;0xa8&t;/* ADC PCI control/status */
 DECL|macro|AD_DMASYNCTRL
-mdefine_line|#define AD_DMASYNCTRL&t;0xb0&t;/* RES PCI control/status */
+mdefine_line|#define AD_DMASYNCTRL&t;0xb0&t;/* SYN PCI control/status */
 DECL|macro|AD_DMAWAVCTRL
-mdefine_line|#define AD_DMAWAVCTRL&t;0xb8&t;/* RES PCI control/status */
+mdefine_line|#define AD_DMAWAVCTRL&t;0xb8&t;/* WAV PCI control/status */
 DECL|macro|AD_DMADISR
 mdefine_line|#define AD_DMADISR&t;0xc0&t;/* PCI DMA intr status */
 DECL|macro|AD_DMACHSS
