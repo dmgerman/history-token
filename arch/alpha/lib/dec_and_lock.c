@@ -8,13 +8,7 @@ l_string|&quot;.text&t;&t;&t;&t;&t;&bslash;n&bslash;&n;&t;.global atomic_dec_and
 suffix:semicolon
 r_static
 r_int
-id|__attribute__
-c_func
-(paren
-(paren
-id|unused
-)paren
-)paren
+id|__attribute_used__
 DECL|function|atomic_dec_and_lock_1
 id|atomic_dec_and_lock_1
 c_func
