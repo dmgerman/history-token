@@ -439,6 +439,21 @@ DECL|macro|__NR_sched_setaffinity
 mdefine_line|#define __NR_sched_setaffinity&t;239
 DECL|macro|__NR_sched_getaffinity
 mdefine_line|#define __NR_sched_getaffinity&t;240
+DECL|macro|__NR_security
+mdefine_line|#define __NR_security&t;&t;241&t;/* syscall for security modules */
+multiline_comment|/*&n; * Number 242 is reserved for tux&n; */
+DECL|macro|__NR_io_setup
+mdefine_line|#define __NR_io_setup&t;&t;243
+DECL|macro|__NR_io_destroy
+mdefine_line|#define __NR_io_destroy&t;&t;244
+DECL|macro|__NR_io_getevents
+mdefine_line|#define __NR_io_getevents&t;245
+DECL|macro|__NR_io_submit
+mdefine_line|#define __NR_io_submit&t;&t;246
+DECL|macro|__NR_io_cancel
+mdefine_line|#define __NR_io_cancel&t;&t;247
+DECL|macro|__NR_exit_group
+mdefine_line|#define __NR_exit_group&t;&t;248
 multiline_comment|/* user-visible error numbers are in the range -1 - -122: see &lt;asm-s390/errno.h&gt; */
 DECL|macro|__syscall_return
 mdefine_line|#define __syscall_return(type, res)                          &bslash;&n;do {                                                         &bslash;&n;        if ((unsigned long)(res) &gt;= (unsigned long)(-125)) { &bslash;&n;                errno = -(res);                              &bslash;&n;                res = -1;                                    &bslash;&n;        }                                                    &bslash;&n;        return (type) (res);                                 &bslash;&n;} while (0)
