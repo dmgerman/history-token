@@ -28,10 +28,6 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
-DECL|macro|NS558_ISA
-mdefine_line|#define NS558_ISA&t;1
-DECL|macro|NS558_PNP
-mdefine_line|#define NS558_PNP&t;2
 DECL|variable|ns558_isa_portlist
 r_static
 r_int
@@ -404,9 +400,9 @@ comma
 l_string|&quot;ns558-isa&quot;
 )paren
 )paren
-multiline_comment|/* Don&squot;t disturb anyone */
 r_break
 suffix:semicolon
+multiline_comment|/* Don&squot;t disturb anyone */
 id|outb
 c_func
 (paren
@@ -602,10 +598,6 @@ r_struct
 id|ns558
 )paren
 )paren
-suffix:semicolon
-id|port-&gt;type
-op_assign
-id|NS558_ISA
 suffix:semicolon
 id|port-&gt;size
 op_assign
@@ -1181,10 +1173,6 @@ id|ns558
 )paren
 )paren
 suffix:semicolon
-id|port-&gt;type
-op_assign
-id|NS558_PNP
-suffix:semicolon
 id|port-&gt;size
 op_assign
 id|iolen
@@ -1320,6 +1308,13 @@ id|pnp_driver
 id|ns558_pnp_driver
 suffix:semicolon
 macro_line|#endif
+DECL|variable|pnp_registered
+r_static
+r_int
+id|pnp_registered
+op_assign
+l_int|0
+suffix:semicolon
 DECL|function|ns558_init
 r_static
 r_int
@@ -1335,7 +1330,7 @@ id|i
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/*&n; * Probe for ISA ports.&n; */
+multiline_comment|/*&n; * Probe ISA ports first so that PnP gets to choose free port addresses&n; * not occupied by the ISA ports.&n; */
 r_while
 c_loop
 (paren
@@ -1354,19 +1349,33 @@ op_increment
 )braket
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
 id|pnp_register_driver
 c_func
 (paren
 op_amp
 id|ns558_pnp_driver
 )paren
+op_ge
+l_int|0
+)paren
+id|pnp_registered
+op_assign
+l_int|1
 suffix:semicolon
 r_return
+(paren
 id|list_empty
 c_func
 (paren
 op_amp
 id|ns558_list
+)paren
+op_logical_and
+op_logical_neg
+id|pnp_registered
 )paren
 ques
 c_cond
@@ -1409,21 +1418,6 @@ op_amp
 id|port-&gt;gameport
 )paren
 suffix:semicolon
-r_switch
-c_cond
-(paren
-id|port-&gt;type
-)paren
-(brace
-macro_line|#ifdef CONFIG_PNP
-r_case
-id|NS558_PNP
-suffix:colon
-multiline_comment|/* fall through */
-macro_line|#endif
-r_case
-id|NS558_ISA
-suffix:colon
 id|release_region
 c_func
 (paren
@@ -1447,12 +1441,12 @@ id|port
 suffix:semicolon
 r_break
 suffix:semicolon
-r_default
-suffix:colon
-r_break
-suffix:semicolon
 )brace
-)brace
+r_if
+c_cond
+(paren
+id|pnp_registered
+)paren
 id|pnp_unregister_driver
 c_func
 (paren
