@@ -1668,6 +1668,7 @@ op_increment
 r_if
 c_cond
 (paren
+(paren
 id|snd_hda_param_read
 c_func
 (paren
@@ -1676,6 +1677,9 @@ comma
 id|nid
 comma
 id|AC_PAR_FUNCTION_TYPE
+)paren
+op_amp
+l_int|0xff
 )paren
 op_eq
 id|AC_GRP_AUDIO_FUNCTION
