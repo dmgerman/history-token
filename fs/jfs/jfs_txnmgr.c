@@ -9536,7 +9536,27 @@ op_assign
 op_amp
 id|jfs_ip-&gt;vfs_inode
 suffix:semicolon
-multiline_comment|/*&n;&t;&t;&t; * down_trylock returns 0 on success.  This is&n;&t;&t;&t; * inconsistent with spin_trylock.&n;&t;&t;&t; */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|igrab
+c_func
+(paren
+id|ip
+)paren
+)paren
+(brace
+multiline_comment|/*&n;&t;&t;&t;&t; * Inode is being freed&n;&t;&t;&t;&t; */
+id|list_del_init
+c_func
+(paren
+op_amp
+id|jfs_ip-&gt;anon_inode_list
+)paren
+suffix:semicolon
+)brace
+r_else
 r_if
 c_cond
 (paren
@@ -9593,6 +9613,12 @@ op_amp
 id|jfs_ip-&gt;commit_sem
 )paren
 suffix:semicolon
+id|iput
+c_func
+(paren
+id|ip
+)paren
+suffix:semicolon
 multiline_comment|/*&n;&t;&t;&t;&t; * Just to be safe.  I don&squot;t know how&n;&t;&t;&t;&t; * long we can run without blocking&n;&t;&t;&t;&t; */
 id|cond_resched
 c_func
@@ -9625,6 +9651,22 @@ id|jfs_ip-&gt;anon_inode_list
 comma
 op_amp
 id|TxAnchor.anon_list2
+)paren
+suffix:semicolon
+id|TXN_UNLOCK
+c_func
+(paren
+)paren
+suffix:semicolon
+id|iput
+c_func
+(paren
+id|ip
+)paren
+suffix:semicolon
+id|TXN_LOCK
+c_func
+(paren
 )paren
 suffix:semicolon
 )brace
