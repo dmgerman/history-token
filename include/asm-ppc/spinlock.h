@@ -51,11 +51,11 @@ mdefine_line|#define spin_is_locked(x)&t;((x)-&gt;lock != 0)
 DECL|macro|spin_unlock_wait
 mdefine_line|#define spin_unlock_wait(x)&t;do { barrier(); } while(spin_is_locked(x))
 macro_line|#ifndef SPINLOCK_DEBUG
-DECL|function|spin_lock
+DECL|function|_raw_spin_lock
 r_static
 r_inline
 r_void
-id|spin_lock
+id|_raw_spin_lock
 c_func
 (paren
 id|spinlock_t
@@ -108,11 +108,11 @@ l_string|&quot;memory&quot;
 )paren
 suffix:semicolon
 )brace
-DECL|function|spin_unlock
+DECL|function|_raw_spin_unlock
 r_static
 r_inline
 r_void
-id|spin_unlock
+id|_raw_spin_unlock
 c_func
 (paren
 id|spinlock_t
@@ -136,12 +136,12 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
-DECL|macro|spin_trylock
-mdefine_line|#define spin_trylock(lock) (!test_and_set_bit(0,(lock)))
+DECL|macro|_raw_spin_trylock
+mdefine_line|#define _raw_spin_trylock(lock) (!test_and_set_bit(0,(lock)))
 macro_line|#else
 r_extern
 r_void
-id|_spin_lock
+id|_raw_spin_lock
 c_func
 (paren
 id|spinlock_t
@@ -151,7 +151,7 @@ id|lock
 suffix:semicolon
 r_extern
 r_void
-id|_spin_unlock
+id|_raw_spin_unlock
 c_func
 (paren
 id|spinlock_t
@@ -161,7 +161,7 @@ id|lock
 suffix:semicolon
 r_extern
 r_int
-id|spin_trylock
+id|_raw_spin_trylock
 c_func
 (paren
 id|spinlock_t
@@ -182,10 +182,6 @@ op_star
 id|lock
 )paren
 suffix:semicolon
-DECL|macro|spin_lock
-mdefine_line|#define spin_lock(lp)&t;&t;&t;_spin_lock(lp)
-DECL|macro|spin_unlock
-mdefine_line|#define spin_unlock(lp)&t;&t;&t;_spin_unlock(lp)
 macro_line|#endif
 multiline_comment|/*&n; * Read-write spinlocks, allowing multiple readers&n; * but only one writer.&n; *&n; * NOTE! it is quite common to have readers in interrupts&n; * but no interrupt writers. For those circumstances we&n; * can &quot;mix&quot; irq-safe locks - any writer needs to get a&n; * irq-safe write-lock, but readers can get non-irqsafe&n; * read-locks.&n; */
 r_typedef
@@ -221,11 +217,11 @@ mdefine_line|#define RW_LOCK_UNLOCKED (rwlock_t) { 0 RWLOCK_DEBUG_INIT }
 DECL|macro|rwlock_init
 mdefine_line|#define rwlock_init(lp) do { *(lp) = RW_LOCK_UNLOCKED; } while(0)
 macro_line|#ifndef SPINLOCK_DEBUG
-DECL|function|read_lock
+DECL|function|_raw_read_lock
 r_static
 id|__inline__
 r_void
-id|read_lock
+id|_raw_read_lock
 c_func
 (paren
 id|rwlock_t
@@ -273,11 +269,11 @@ l_string|&quot;memory&quot;
 )paren
 suffix:semicolon
 )brace
-DECL|function|read_unlock
+DECL|function|_raw_read_unlock
 r_static
 id|__inline__
 r_void
-id|read_unlock
+id|_raw_read_unlock
 c_func
 (paren
 id|rwlock_t
@@ -321,11 +317,11 @@ l_string|&quot;memory&quot;
 )paren
 suffix:semicolon
 )brace
-DECL|function|write_lock
+DECL|function|_raw_write_lock
 r_static
 id|__inline__
 r_void
-id|write_lock
+id|_raw_write_lock
 c_func
 (paren
 id|rwlock_t
@@ -379,11 +375,11 @@ l_string|&quot;memory&quot;
 )paren
 suffix:semicolon
 )brace
-DECL|function|write_unlock
+DECL|function|_raw_write_unlock
 r_static
 id|__inline__
 r_void
-id|write_unlock
+id|_raw_write_unlock
 c_func
 (paren
 id|rwlock_t
@@ -410,7 +406,7 @@ suffix:semicolon
 macro_line|#else
 r_extern
 r_void
-id|_read_lock
+id|_raw_read_lock
 c_func
 (paren
 id|rwlock_t
@@ -420,7 +416,7 @@ id|rw
 suffix:semicolon
 r_extern
 r_void
-id|_read_unlock
+id|_raw_read_unlock
 c_func
 (paren
 id|rwlock_t
@@ -430,7 +426,7 @@ id|rw
 suffix:semicolon
 r_extern
 r_void
-id|_write_lock
+id|_raw_write_lock
 c_func
 (paren
 id|rwlock_t
@@ -440,7 +436,7 @@ id|rw
 suffix:semicolon
 r_extern
 r_void
-id|_write_unlock
+id|_raw_write_unlock
 c_func
 (paren
 id|rwlock_t
@@ -448,14 +444,6 @@ op_star
 id|rw
 )paren
 suffix:semicolon
-DECL|macro|read_lock
-mdefine_line|#define read_lock(rw)&t;&t;_read_lock(rw)
-DECL|macro|write_lock
-mdefine_line|#define write_lock(rw)&t;&t;_write_lock(rw)
-DECL|macro|write_unlock
-mdefine_line|#define write_unlock(rw)&t;_write_unlock(rw)
-DECL|macro|read_unlock
-mdefine_line|#define read_unlock(rw)&t;&t;_read_unlock(rw)
 macro_line|#endif
 macro_line|#endif /* __ASM_SPINLOCK_H */
 macro_line|#endif /* __KERNEL__ */

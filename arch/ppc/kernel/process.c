@@ -683,9 +683,9 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
+DECL|function|switch_to
 r_void
-DECL|function|_switch_to
-id|_switch_to
+id|switch_to
 c_func
 (paren
 r_struct
@@ -697,12 +697,6 @@ r_struct
 id|task_struct
 op_star
 r_new
-comma
-r_struct
-id|task_struct
-op_star
-op_star
-id|last
 )paren
 (brace
 r_struct
@@ -784,16 +778,6 @@ id|prev
 suffix:semicolon
 macro_line|#endif /* CONFIG_ALTIVEC */&t;
 macro_line|#endif /* CONFIG_SMP */
-id|current_set
-(braket
-id|smp_processor_id
-c_func
-(paren
-)paren
-)braket
-op_assign
-r_new
-suffix:semicolon
 multiline_comment|/* Avoid the trap.  On smp this this never happens since&n;&t; * we don&squot;t set last_task_used_altivec -- Cort&n;&t; */
 r_if
 c_cond
@@ -824,9 +808,6 @@ op_assign
 op_amp
 id|current-&gt;thread
 suffix:semicolon
-op_star
-id|last
-op_assign
 id|_switch
 c_func
 (paren
@@ -1051,7 +1032,10 @@ c_func
 (paren
 l_string|&quot; CPU: %d&quot;
 comma
-id|current-&gt;processor
+id|smp_processor_id
+c_func
+(paren
+)paren
 )paren
 suffix:semicolon
 macro_line|#endif /* CONFIG_SMP */

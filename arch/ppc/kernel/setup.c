@@ -593,7 +593,7 @@ c_func
 (paren
 id|m
 comma
-l_string|&quot;processor&bslash;t: %lu&bslash;n&quot;
+l_string|&quot;processor&bslash;t: %d&bslash;n&quot;
 comma
 id|i
 )paren

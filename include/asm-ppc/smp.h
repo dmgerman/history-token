@@ -46,7 +46,6 @@ r_struct
 id|cpuinfo_PPC
 id|cpu_data
 (braket
-id|NR_CPUS
 )braket
 suffix:semicolon
 r_extern
@@ -59,7 +58,6 @@ r_int
 r_int
 id|smp_proc_in_lock
 (braket
-id|NR_CPUS
 )braket
 suffix:semicolon
 r_extern
@@ -68,7 +66,6 @@ r_int
 r_int
 id|cpu_callin_map
 (braket
-id|NR_CPUS
 )braket
 suffix:semicolon
 r_extern
@@ -141,7 +138,6 @@ r_extern
 r_int
 id|smp_hw_index
 (braket
-id|NR_CPUS
 )braket
 suffix:semicolon
 DECL|macro|hard_smp_processor_id
