@@ -309,6 +309,20 @@ op_star
 id|alg
 )paren
 suffix:semicolon
+multiline_comment|/*&n; * Algorithm query interface.&n; */
+r_int
+id|crypto_alg_available
+c_func
+(paren
+r_const
+r_char
+op_star
+id|name
+comma
+id|u32
+id|flags
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Transforms: user-instantiated objects which encapsulate algorithms&n; * and core processing logic.  Managed via crypto_alloc_tfm() and&n; * crypto_free_tfm(), as well as the various helpers below.&n; */
 r_struct
 id|crypto_tfm
