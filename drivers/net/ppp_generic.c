@@ -11715,22 +11715,6 @@ c_func
 id|ppp_unregister_compressor
 )paren
 suffix:semicolon
-DECL|variable|all_ppp_units
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|all_ppp_units
-)paren
-suffix:semicolon
-multiline_comment|/* for debugging */
-DECL|variable|all_channels
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|all_channels
-)paren
-suffix:semicolon
-multiline_comment|/* for debugging */
 id|MODULE_LICENSE
 c_func
 (paren

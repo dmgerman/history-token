@@ -7982,12 +7982,12 @@ id|u8
 op_star
 id|payload
 op_assign
-l_int|0
+l_int|NULL
 comma
 op_star
 id|pos
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_int
 id|ret

@@ -193,6 +193,7 @@ id|device
 suffix:semicolon
 macro_line|#ifdef CONFIG_EISA
 DECL|variable|depca_eisa_ids
+r_static
 r_struct
 id|eisa_device_id
 id|depca_eisa_ids
@@ -222,6 +223,7 @@ id|device
 )paren
 suffix:semicolon
 DECL|variable|depca_eisa_driver
+r_static
 r_struct
 id|eisa_driver
 id|depca_eisa_driver

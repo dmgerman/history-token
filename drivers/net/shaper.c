@@ -51,6 +51,7 @@ suffix:semicolon
 DECL|macro|SHAPERCB
 mdefine_line|#define SHAPERCB(skb) ((struct shaper_cb *) ((skb)-&gt;cb))
 DECL|variable|sh_debug
+r_static
 r_int
 id|sh_debug
 suffix:semicolon

@@ -6260,6 +6260,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n;amd8111e crc generator implementation is different from the kernel&n;ether_crc() function.&n;*/
 DECL|function|amd8111e_ether_crc
+r_static
 r_int
 id|amd8111e_ether_crc
 c_func
@@ -7436,6 +7437,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* &n;This function changes the mtu of the device. It restarts the device  to initialize the descriptor with new receive buffers.&n;*/
 DECL|function|amd8111e_change_mtu
+r_static
 r_int
 id|amd8111e_change_mtu
 c_func
