@@ -20,6 +20,7 @@ macro_line|#include &lt;linux/signal.h&gt;
 macro_line|#include &lt;linux/highmem.h&gt;
 macro_line|#include &lt;linux/file.h&gt;
 macro_line|#include &lt;linux/times.h&gt;
+macro_line|#include &lt;linux/cpuset.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
@@ -1176,6 +1177,16 @@ suffix:semicolon
 id|buffer
 op_assign
 id|task_cap
+c_func
+(paren
+id|task
+comma
+id|buffer
+)paren
+suffix:semicolon
+id|buffer
+op_assign
+id|cpuset_task_status_allowed
 c_func
 (paren
 id|task

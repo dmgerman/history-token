@@ -16,6 +16,7 @@ macro_line|#include &lt;linux/notifier.h&gt;
 macro_line|#include &lt;linux/topology.h&gt;
 macro_line|#include &lt;linux/sysctl.h&gt;
 macro_line|#include &lt;linux/cpu.h&gt;
+macro_line|#include &lt;linux/cpuset.h&gt;
 macro_line|#include &lt;linux/nodemask.h&gt;
 macro_line|#include &lt;linux/vmalloc.h&gt;
 macro_line|#include &lt;asm/tlbflush.h&gt;
@@ -3225,6 +3226,18 @@ l_int|0
 )paren
 r_continue
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|cpuset_zone_allowed
+c_func
+(paren
+id|z
+)paren
+)paren
+r_continue
+suffix:semicolon
 id|page
 op_assign
 id|buffered_rmqueue
@@ -3322,6 +3335,18 @@ id|__GFP_HIGH
 )paren
 r_continue
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|cpuset_zone_allowed
+c_func
+(paren
+id|z
+)paren
+)paren
+r_continue
+suffix:semicolon
 id|page
 op_assign
 id|buffered_rmqueue
@@ -3395,6 +3420,18 @@ id|i
 op_increment
 )paren
 (brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|cpuset_zone_allowed
+c_func
+(paren
+id|z
+)paren
+)paren
+r_continue
+suffix:semicolon
 id|page
 op_assign
 id|buffered_rmqueue
@@ -3534,6 +3571,18 @@ id|__GFP_HIGH
 )paren
 r_continue
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|cpuset_zone_allowed
+c_func
+(paren
+id|z
+)paren
+)paren
+r_continue
+suffix:semicolon
 id|page
 op_assign
 id|buffered_rmqueue
@@ -3615,6 +3664,18 @@ comma
 l_int|0
 comma
 l_int|0
+)paren
+)paren
+r_continue
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|cpuset_zone_allowed
+c_func
+(paren
+id|z
 )paren
 )paren
 r_continue
@@ -6344,6 +6405,11 @@ id|num_online_nodes
 c_func
 (paren
 )paren
+)paren
+suffix:semicolon
+id|cpuset_init_current_mems_allowed
+c_func
+(paren
 )paren
 suffix:semicolon
 )brace

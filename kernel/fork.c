@@ -18,6 +18,7 @@ macro_line|#include &lt;linux/binfmts.h&gt;
 macro_line|#include &lt;linux/mman.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/cpu.h&gt;
+macro_line|#include &lt;linux/cpuset.h&gt;
 macro_line|#include &lt;linux/security.h&gt;
 macro_line|#include &lt;linux/swap.h&gt;
 macro_line|#include &lt;linux/syscalls.h&gt;
@@ -4239,6 +4240,12 @@ c_func
 id|p
 comma
 id|current-&gt;parent
+)paren
+suffix:semicolon
+id|cpuset_fork
+c_func
+(paren
+id|p
 )paren
 suffix:semicolon
 id|attach_pid

@@ -20,6 +20,7 @@ macro_line|#include &lt;linux/profile.h&gt;
 macro_line|#include &lt;linux/mount.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/mempolicy.h&gt;
+macro_line|#include &lt;linux/cpuset.h&gt;
 macro_line|#include &lt;linux/syscalls.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/unistd.h&gt;
@@ -3195,6 +3196,12 @@ suffix:semicolon
 id|exit_thread
 c_func
 (paren
+)paren
+suffix:semicolon
+id|cpuset_exit
+c_func
+(paren
+id|tsk
 )paren
 suffix:semicolon
 id|exit_keys

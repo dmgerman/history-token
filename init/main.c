@@ -31,6 +31,7 @@ macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;linux/kallsyms.h&gt;
 macro_line|#include &lt;linux/writeback.h&gt;
 macro_line|#include &lt;linux/cpu.h&gt;
+macro_line|#include &lt;linux/cpuset.h&gt;
 macro_line|#include &lt;linux/efi.h&gt;
 macro_line|#include &lt;linux/unistd.h&gt;
 macro_line|#include &lt;linux/rmap.h&gt;
@@ -1821,6 +1822,11 @@ c_func
 )paren
 suffix:semicolon
 macro_line|#endif
+id|cpuset_init
+c_func
+(paren
+)paren
+suffix:semicolon
 id|check_bugs
 c_func
 (paren
@@ -2258,6 +2264,11 @@ c_func
 )paren
 suffix:semicolon
 id|sched_init_smp
+c_func
+(paren
+)paren
+suffix:semicolon
+id|cpuset_init_smp
 c_func
 (paren
 )paren
