@@ -2234,26 +2234,6 @@ suffix:semicolon
 multiline_comment|/* zero-copy data */
 )brace
 suffix:semicolon
-DECL|struct|nfs4_remove
-r_struct
-id|nfs4_remove
-(brace
-DECL|member|name
-r_struct
-id|qstr
-op_star
-id|name
-suffix:semicolon
-multiline_comment|/* request */
-DECL|member|rm_cinfo
-r_struct
-id|nfs4_change_info
-op_star
-id|rm_cinfo
-suffix:semicolon
-multiline_comment|/* response */
-)brace
-suffix:semicolon
 DECL|struct|nfs4_remove_arg
 r_struct
 id|nfs4_remove_arg
@@ -2427,11 +2407,6 @@ r_struct
 id|nfs4_close
 id|close
 suffix:semicolon
-DECL|member|getattr
-r_struct
-id|nfs4_getattr
-id|getattr
-suffix:semicolon
 DECL|member|open
 r_struct
 id|nfs4_open
@@ -2456,11 +2431,6 @@ DECL|member|readlink
 r_struct
 id|nfs4_readlink
 id|readlink
-suffix:semicolon
-DECL|member|remove
-r_struct
-id|nfs4_remove
-id|remove
 suffix:semicolon
 DECL|member|renew
 r_struct
