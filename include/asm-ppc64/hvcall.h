@@ -106,10 +106,6 @@ DECL|macro|H_XIRR
 mdefine_line|#define H_XIRR&t;&t;&t;0x74
 DECL|macro|H_PERFMON
 mdefine_line|#define H_PERFMON&t;&t;0x7c
-DECL|macro|HSC
-mdefine_line|#define HSC&t;&t;&t;&quot;.long 0x44000022&bslash;n&quot;
-DECL|macro|H_ENTER_r3
-mdefine_line|#define H_ENTER_r3&t;&t;&quot;li&t;3, 0x08&bslash;n&quot;
 multiline_comment|/* plpar_hcall() -- Generic call interface using above opcodes&n; *&n; * The actual call interface is a hypervisor call instruction with&n; * the opcode in R3 and input args in R4-R7.&n; * Status is returned in R3 with variable output values in R4-R11.&n; * Only H_PTE_READ with H_READ_4 uses R6-R11 so we ignore it for now&n; * and return only two out args which MUST ALWAYS BE PROVIDED.&n; */
 r_int
 id|plpar_hcall

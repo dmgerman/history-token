@@ -15,71 +15,6 @@ macro_line|#include &lt;asm/naca.h&gt;
 macro_line|#include &lt;asm/tlbflush.h&gt;
 macro_line|#include &lt;asm/tlb.h&gt;
 macro_line|#include &lt;asm/hvcall.h&gt;
-DECL|function|plpar_pte_enter
-r_int
-id|plpar_pte_enter
-c_func
-(paren
-r_int
-r_int
-id|flags
-comma
-r_int
-r_int
-id|ptex
-comma
-r_int
-r_int
-id|new_pteh
-comma
-r_int
-r_int
-id|new_ptel
-comma
-r_int
-r_int
-op_star
-id|old_pteh_ret
-comma
-r_int
-r_int
-op_star
-id|old_ptel_ret
-)paren
-(brace
-r_int
-r_int
-id|dummy
-comma
-id|ret
-suffix:semicolon
-id|ret
-op_assign
-id|plpar_hcall
-c_func
-(paren
-id|H_ENTER
-comma
-id|flags
-comma
-id|ptex
-comma
-id|new_pteh
-comma
-id|new_ptel
-comma
-id|old_pteh_ret
-comma
-id|old_ptel_ret
-comma
-op_amp
-id|dummy
-)paren
-suffix:semicolon
-r_return
-id|ret
-suffix:semicolon
-)brace
 DECL|function|plpar_pte_remove
 r_int
 id|plpar_pte_remove
@@ -376,10 +311,6 @@ id|buffer
 (brace
 r_int
 r_int
-id|dummy
-suffix:semicolon
-r_int
-r_int
 op_star
 id|lbuf
 op_assign
@@ -392,7 +323,7 @@ id|buffer
 suffix:semicolon
 multiline_comment|/* ToDo: alignment? */
 r_return
-id|plpar_hcall
+id|plpar_hcall_norets
 c_func
 (paren
 id|H_PUT_TERM_CHAR
@@ -410,15 +341,6 @@ id|lbuf
 (braket
 l_int|1
 )braket
-comma
-op_amp
-id|dummy
-comma
-op_amp
-id|dummy
-comma
-op_amp
-id|dummy
 )paren
 suffix:semicolon
 )brace
@@ -1222,10 +1144,6 @@ id|count
 (brace
 r_int
 r_int
-id|dummy
-suffix:semicolon
-r_int
-r_int
 op_star
 id|lbuf
 op_assign
@@ -1241,7 +1159,7 @@ id|ret
 suffix:semicolon
 id|ret
 op_assign
-id|plpar_hcall
+id|plpar_hcall_norets
 c_func
 (paren
 id|H_PUT_TERM_CHAR
@@ -1259,15 +1177,6 @@ id|lbuf
 (braket
 l_int|1
 )braket
-comma
-op_amp
-id|dummy
-comma
-op_amp
-id|dummy
-comma
-op_amp
-id|dummy
 )paren
 suffix:semicolon
 r_if
@@ -1435,6 +1344,12 @@ suffix:semicolon
 id|HPTE
 id|lhpte
 suffix:semicolon
+r_int
+r_int
+id|dummy0
+comma
+id|dummy1
+suffix:semicolon
 multiline_comment|/* Fill in the local HPTE with absolute rpn, avpn and flags */
 id|lhpte.dw1.dword1
 op_assign
@@ -1488,7 +1403,6 @@ suffix:semicolon
 )brace
 multiline_comment|/* Now fill in the actual HPTE */
 multiline_comment|/* Set CEC cookie to 0         */
-multiline_comment|/* Large page = 0              */
 multiline_comment|/* Zero page = 0               */
 multiline_comment|/* I-cache Invalidate = 0      */
 multiline_comment|/* I-cache synchronize = 0     */
@@ -1514,59 +1428,29 @@ op_and_assign
 op_complement
 id|_PAGE_COHERENT
 suffix:semicolon
-id|__asm__
-id|__volatile__
-(paren
-id|H_ENTER_r3
-l_string|&quot;mr    4, %2&bslash;n&quot;
-l_string|&quot;mr    5, %3&bslash;n&quot;
-l_string|&quot;mr    6, %4&bslash;n&quot;
-l_string|&quot;mr    7, %5&bslash;n&quot;
-id|HSC
-l_string|&quot;mr    %0, 3&bslash;n&quot;
-l_string|&quot;mr    %1, 4&bslash;n&quot;
-suffix:colon
-l_string|&quot;=r&quot;
-(paren
 id|lpar_rc
-)paren
+op_assign
+id|plpar_hcall
+c_func
+(paren
+id|H_ENTER
 comma
-l_string|&quot;=r&quot;
-(paren
-id|slot
-)paren
-suffix:colon
-l_string|&quot;r&quot;
-(paren
 id|flags
-)paren
 comma
-l_string|&quot;r&quot;
-(paren
 id|hpte_group
-)paren
 comma
-l_string|&quot;r&quot;
-(paren
 id|lhpte.dw0.dword0
-)paren
 comma
-l_string|&quot;r&quot;
-(paren
 id|lhpte.dw1.dword1
-)paren
-suffix:colon
-l_string|&quot;r3&quot;
 comma
-l_string|&quot;r4&quot;
+op_amp
+id|slot
 comma
-l_string|&quot;r5&quot;
+op_amp
+id|dummy0
 comma
-l_string|&quot;r6&quot;
-comma
-l_string|&quot;r7&quot;
-comma
-l_string|&quot;cc&quot;
+op_amp
+id|dummy1
 )paren
 suffix:semicolon
 r_if
