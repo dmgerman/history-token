@@ -3868,21 +3868,6 @@ id|lip-&gt;li_flags
 op_or_assign
 id|XFS_LI_ABORTED
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|lidp-&gt;lid_flags
-op_amp
-id|XFS_LID_SYNC_UNLOCK
-)paren
-(brace
-id|IOP_UNLOCK
-c_func
-(paren
-id|lip
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/*&n;&t;&t; * Send in the ABORTED flag to the COMMITTED routine&n;&t;&t; * so that it knows whether the transaction was aborted&n;&t;&t; * or not.&n;&t;&t; */
 id|item_lsn
 op_assign
