@@ -3177,8 +3177,6 @@ id|rounds
 op_assign
 l_int|0
 suffix:semicolon
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 id|lock_kernel
 c_func
 (paren
@@ -3359,8 +3357,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -3470,8 +3466,6 @@ id|error
 op_assign
 l_int|0
 suffix:semicolon
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 id|down
 c_func
 (paren
@@ -3575,8 +3569,6 @@ op_amp
 id|rpciod_sema
 )paren
 suffix:semicolon
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 r_return
 id|error
 suffix:semicolon
@@ -3592,8 +3584,6 @@ r_void
 r_int
 r_int
 id|flags
-suffix:semicolon
-id|MOD_INC_USE_COUNT
 suffix:semicolon
 id|down
 c_func
@@ -3749,8 +3739,6 @@ c_func
 op_amp
 id|rpciod_sema
 )paren
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 )brace
 macro_line|#ifdef RPC_DEBUG
