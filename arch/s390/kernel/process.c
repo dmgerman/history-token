@@ -2,6 +2,7 @@ multiline_comment|/*&n; *  arch/s390/kernel/process.c&n; *&n; *  S390 version&n;
 multiline_comment|/*&n; * This file handles the architecture-dependent parts of process handling..&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/compiler.h&gt;
+macro_line|#include &lt;linux/cpu.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -332,6 +333,25 @@ comma
 l_int|15
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_HOTPLUG_CPU
+r_if
+c_cond
+(paren
+id|cpu_is_offline
+c_func
+(paren
+id|smp_processor_id
+c_func
+(paren
+)paren
+)paren
+)paren
+id|cpu_die
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/* &n;&t; * Wait for external, I/O or machine check interrupt and&n;&t; * switch off machine check bit after the wait has ended.&n;&t; */
 id|wait_psw.mask
 op_assign
