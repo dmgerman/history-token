@@ -28,6 +28,7 @@ macro_line|#include &lt;linux/nfsd/xdr3.h&gt;
 macro_line|#endif /* CONFIG_NFSD_V3 */
 macro_line|#include &lt;linux/nfsd/nfsfh.h&gt;
 macro_line|#include &lt;linux/quotaops.h&gt;
+macro_line|#include &lt;linux/dnotify.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 DECL|macro|NFSDDBG_FACILITY
 mdefine_line|#define NFSDDBG_FACILITY&t;&t;NFSDDBG_FILEOP
@@ -2622,6 +2623,14 @@ id|err
 op_assign
 l_int|0
 suffix:semicolon
+id|dnotify_parent
+c_func
+(paren
+id|file.f_dentry
+comma
+id|DN_ACCESS
+)paren
+suffix:semicolon
 )brace
 r_else
 id|err
@@ -2874,6 +2883,12 @@ op_amp
 id|offset
 )paren
 suffix:semicolon
+id|set_fs
+c_func
+(paren
+id|oldfs
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2881,16 +2896,20 @@ id|err
 op_ge
 l_int|0
 )paren
+(brace
 id|nfsdstats.io_write
 op_add_assign
 id|cnt
 suffix:semicolon
-id|set_fs
+id|dnotify_parent
 c_func
 (paren
-id|oldfs
+id|file.f_dentry
+comma
+id|DN_MODIFY
 )paren
 suffix:semicolon
+)brace
 multiline_comment|/* clear setuid/setgid flag after write */
 r_if
 c_cond

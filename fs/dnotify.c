@@ -700,6 +700,13 @@ id|dentry-&gt;d_lock
 suffix:semicolon
 )brace
 )brace
+DECL|variable|dnotify_parent
+id|EXPORT_SYMBOL_GPL
+c_func
+(paren
+id|dnotify_parent
+)paren
+suffix:semicolon
 DECL|function|dnotify_init
 r_static
 r_int
