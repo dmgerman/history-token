@@ -660,6 +660,7 @@ comma
 l_string|&quot;MemTotal:     %8lu kB&bslash;n&quot;
 l_string|&quot;MemFree:      %8lu kB&bslash;n&quot;
 l_string|&quot;MemShared:    %8lu kB&bslash;n&quot;
+l_string|&quot;Buffers:      %8lu kB&bslash;n&quot;
 l_string|&quot;Cached:       %8lu kB&bslash;n&quot;
 l_string|&quot;SwapCached:   %8lu kB&bslash;n&quot;
 l_string|&quot;Active:       %8lu kB&bslash;n&quot;
@@ -699,9 +700,17 @@ comma
 id|K
 c_func
 (paren
+id|i.bufferram
+)paren
+comma
+id|K
+c_func
+(paren
 id|ps.nr_pagecache
 op_minus
 id|swapper_space.nrpages
+op_minus
+id|i.bufferram
 )paren
 comma
 id|K

@@ -1164,6 +1164,14 @@ r_void
 op_star
 )paren
 suffix:semicolon
+r_extern
+r_int
+id|nr_blockdev_pages
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * tag stuff&n; */
 DECL|macro|blk_queue_tag_depth
 mdefine_line|#define blk_queue_tag_depth(q)&t;&t;((q)-&gt;queue_tags-&gt;busy)
