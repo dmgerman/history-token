@@ -180,15 +180,15 @@ id|buf
 comma
 l_string|&quot;%s %d.%d.%d %s&bslash;n&quot;
 comma
-id|DRIVER_NAME
+id|CORE_NAME
 comma
-id|DRIVER_MAJOR
+id|CORE_MAJOR
 comma
-id|DRIVER_MINOR
+id|CORE_MINOR
 comma
-id|DRIVER_PATCHLEVEL
+id|CORE_PATCHLEVEL
 comma
-id|DRIVER_DATE
+id|CORE_DATE
 )paren
 suffix:semicolon
 )brace

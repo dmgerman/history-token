@@ -191,12 +191,26 @@ DECL|macro|INT_1610_STI
 mdefine_line|#define INT_1610_STI&t;&t;(32 + IH2_BASE)
 DECL|macro|INT_1610_STI_WAKEUP
 mdefine_line|#define INT_1610_STI_WAKEUP&t;(33 + IH2_BASE)
+DECL|macro|INT_1610_GPTIMER3
+mdefine_line|#define INT_1610_GPTIMER3&t;(34 + IH2_BASE)
+DECL|macro|INT_1610_GPTIMER4
+mdefine_line|#define INT_1610_GPTIMER4&t;(35 + IH2_BASE)
+DECL|macro|INT_1610_GPTIMER5
+mdefine_line|#define INT_1610_GPTIMER5&t;(36 + IH2_BASE)
+DECL|macro|INT_1610_GPTIMER6
+mdefine_line|#define INT_1610_GPTIMER6&t;(37 + IH2_BASE)
+DECL|macro|INT_1610_GPTIMER7
+mdefine_line|#define INT_1610_GPTIMER7&t;(38 + IH2_BASE)
+DECL|macro|INT_1610_GPTIMER8
+mdefine_line|#define INT_1610_GPTIMER8&t;(39 + IH2_BASE)
 DECL|macro|INT_1610_GPIO_BANK2
 mdefine_line|#define INT_1610_GPIO_BANK2&t;(40 + IH2_BASE)
 DECL|macro|INT_1610_GPIO_BANK3
 mdefine_line|#define INT_1610_GPIO_BANK3&t;(41 + IH2_BASE)
 DECL|macro|INT_1610_MMC2
 mdefine_line|#define INT_1610_MMC2&t;&t;(42 + IH2_BASE)
+DECL|macro|INT_1610_CF
+mdefine_line|#define INT_1610_CF&t;&t;(43 + IH2_BASE)
 DECL|macro|INT_1610_GPIO_BANK4
 mdefine_line|#define INT_1610_GPIO_BANK4&t;(48 + IH2_BASE)
 DECL|macro|INT_1610_SPI

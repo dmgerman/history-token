@@ -60,6 +60,8 @@ DECL|macro|MMC_RSP_R2
 mdefine_line|#define MMC_RSP_R2&t;(MMC_RSP_LONG|MMC_RSP_CRC)
 DECL|macro|MMC_RSP_R3
 mdefine_line|#define MMC_RSP_R3&t;(MMC_RSP_SHORT)
+DECL|macro|MMC_RSP_R6
+mdefine_line|#define MMC_RSP_R6&t;(MMC_RSP_SHORT|MMC_RSP_CRC)
 DECL|member|retries
 r_int
 r_int

@@ -6,9 +6,9 @@ DECL|macro|__M68KNOMMU_MCFCACHE_H
 mdefine_line|#define&t;__M68KNOMMU_MCFCACHE_H
 multiline_comment|/****************************************************************************/
 macro_line|#include &lt;linux/config.h&gt;
-multiline_comment|/*&n; *&t;The different ColdFire families have different cache arrangments.&n; *&t;Everything from a small linstruction only cache, to configurable&n; *&t;data and/or instruction cache, to unified instruction/data, to &n; *&t;harvard style separate instruction and data caches.&n; */
+multiline_comment|/*&n; *&t;The different ColdFire families have different cache arrangments.&n; *&t;Everything from a small instruction only cache, to configurable&n; *&t;data and/or instruction cache, to unified instruction/data, to &n; *&t;harvard style separate instruction and data caches.&n; */
 macro_line|#if defined(CONFIG_M5206) || defined(CONFIG_M5206e) || defined(CONFIG_M5272)
-multiline_comment|/*&n; *&t;Simple verion 2 core cache. These have instruction cache only,&n; *&t;we just need to invalidate it and enable it.&n; */
+multiline_comment|/*&n; *&t;Simple version 2 core cache. These have instruction cache only,&n; *&t;we just need to invalidate it and enable it.&n; */
 dot
 id|macro
 id|CACHE_ENABLE
@@ -193,7 +193,7 @@ dot
 id|endm
 macro_line|#endif /* CONFIG_M5249 || CONFIG_M5307 */
 macro_line|#if defined(CONFIG_M5407)
-multiline_comment|/*&n; *&t;Version 4 cores have a true hardvard style separate instruction&n; *&t;and data cache. Invalidate and enable cache, also enable write&n; *&t;buffers and branch accelerator.&n; */
+multiline_comment|/*&n; *&t;Version 4 cores have a true harvard style separate instruction&n; *&t;and data cache. Invalidate and enable cache, also enable write&n; *&t;buffers and branch accelerator.&n; */
 dot
 id|macro
 id|CACHE_ENABLE

@@ -93,6 +93,9 @@ comma
 DECL|enumerator|TCA_ACT_INDEX
 id|TCA_ACT_INDEX
 comma
+DECL|enumerator|TCA_ACT_STATS
+id|TCA_ACT_STATS
+comma
 DECL|enumerator|__TCA_ACT_MAX
 id|__TCA_ACT_MAX
 )brace

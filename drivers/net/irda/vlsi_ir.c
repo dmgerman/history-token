@@ -2636,7 +2636,7 @@ c_cond
 id|rd-&gt;buf
 )paren
 (brace
-id|ERROR
+id|IRDA_ERROR
 c_func
 (paren
 l_string|&quot;%s: failed to create PCI-MAP for %p&quot;
@@ -2914,7 +2914,7 @@ op_logical_neg
 id|ringarea
 )paren
 (brace
-id|ERROR
+id|IRDA_ERROR
 c_func
 (paren
 l_string|&quot;%s: insufficient memory for descriptor rings&bslash;n&quot;
@@ -3374,7 +3374,7 @@ op_logical_neg
 id|rd-&gt;skb
 )paren
 (brace
-id|WARNING
+id|IRDA_WARNING
 c_func
 (paren
 l_string|&quot;%s: rx packet lost&bslash;n&quot;
@@ -3529,7 +3529,7 @@ id|rd
 )paren
 )paren
 (brace
-id|WARNING
+id|IRDA_WARNING
 c_func
 (paren
 l_string|&quot;%s: driver bug: rx descr race with hw&bslash;n&quot;
@@ -3804,7 +3804,7 @@ l_int|NULL
 )paren
 (brace
 multiline_comment|/* we are in big trouble, if this should ever happen */
-id|ERROR
+id|IRDA_ERROR
 c_func
 (paren
 l_string|&quot;%s: rx ring exhausted!&bslash;n&quot;
@@ -4321,7 +4321,7 @@ id|baudrate
 (brace
 r_default
 suffix:colon
-id|WARNING
+id|IRDA_WARNING
 c_func
 (paren
 l_string|&quot;%s: undefined baudrate %d - fallback to 9600!&bslash;n&quot;
@@ -4525,7 +4525,7 @@ id|IRENABLE_ENRXST
 )paren
 )paren
 (brace
-id|WARNING
+id|IRDA_WARNING
 c_func
 (paren
 l_string|&quot;%s: failed to set %s mode!&bslash;n&quot;
@@ -4577,7 +4577,7 @@ op_ne
 id|nphyctl
 )paren
 (brace
-id|WARNING
+id|IRDA_WARNING
 c_func
 (paren
 l_string|&quot;%s: failed to apply baudrate %d&bslash;n&quot;
@@ -5029,7 +5029,7 @@ id|r-&gt;len
 op_minus
 l_int|5
 )paren
-id|WARNING
+id|IRDA_WARNING
 c_func
 (paren
 l_string|&quot;%s: possible buffer overflow with SIR wrapping!&bslash;n&quot;
@@ -5287,7 +5287,7 @@ id|flags
 suffix:semicolon
 id|drop
 suffix:colon
-id|WARNING
+id|IRDA_WARNING
 c_func
 (paren
 l_string|&quot;%s: dropping packet - %s&bslash;n&quot;
@@ -5945,7 +5945,7 @@ l_int|1
 )paren
 (brace
 multiline_comment|/* explicitly asked for PLL hence bail out */
-id|ERROR
+id|IRDA_ERROR
 c_func
 (paren
 l_string|&quot;%s: no PLL or failed to lock!&bslash;n&quot;
@@ -6228,7 +6228,7 @@ id|pdev
 )paren
 )paren
 (brace
-id|ERROR
+id|IRDA_ERROR
 c_func
 (paren
 l_string|&quot;%s: no valid clock source&bslash;n&quot;
@@ -6808,7 +6808,7 @@ c_func
 id|idev
 )paren
 )paren
-id|ERROR
+id|IRDA_ERROR
 c_func
 (paren
 l_string|&quot;%s: failed to restart hw - %s(%s) unusable!&bslash;n&quot;
@@ -7008,7 +7008,7 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
-id|WARNING
+id|IRDA_WARNING
 c_func
 (paren
 l_string|&quot;%s: notsupp - cmd=%04x&bslash;n&quot;
@@ -7209,7 +7209,7 @@ id|boguscount
 op_le
 l_int|0
 )paren
-id|MESSAGE
+id|IRDA_MESSAGE
 c_func
 (paren
 l_string|&quot;%s: too much work in interrupt!&bslash;n&quot;
@@ -7268,7 +7268,7 @@ id|drivername
 )paren
 )paren
 (brace
-id|WARNING
+id|IRDA_WARNING
 c_func
 (paren
 l_string|&quot;%s: io resource busy&bslash;n&quot;
@@ -7323,7 +7323,7 @@ id|ndev
 )paren
 )paren
 (brace
-id|WARNING
+id|IRDA_WARNING
 c_func
 (paren
 l_string|&quot;%s: couldn&squot;t get IRQ: %d&bslash;n&quot;
@@ -7427,7 +7427,7 @@ c_func
 id|ndev
 )paren
 suffix:semicolon
-id|MESSAGE
+id|IRDA_MESSAGE
 c_func
 (paren
 l_string|&quot;%s: device %s operational&bslash;n&quot;
@@ -7545,7 +7545,7 @@ c_func
 id|idev-&gt;pdev
 )paren
 suffix:semicolon
-id|MESSAGE
+id|IRDA_MESSAGE
 c_func
 (paren
 l_string|&quot;%s: device %s stopped&bslash;n&quot;
@@ -7625,7 +7625,7 @@ id|DMA_MASK_MSTRPAGE
 )paren
 )paren
 (brace
-id|ERROR
+id|IRDA_ERROR
 c_func
 (paren
 l_string|&quot;%s: aborting due to PCI BM-DMA address limitations&bslash;n&quot;
@@ -7783,7 +7783,7 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* hw must be running now */
-id|MESSAGE
+id|IRDA_MESSAGE
 c_func
 (paren
 l_string|&quot;%s: IrDA PCI controller %s detected&bslash;n&quot;
@@ -7823,7 +7823,7 @@ id|IORESOURCE_IO
 )paren
 )paren
 (brace
-id|ERROR
+id|IRDA_ERROR
 c_func
 (paren
 l_string|&quot;%s: bar 0 invalid&quot;
@@ -7855,7 +7855,7 @@ op_eq
 l_int|NULL
 )paren
 (brace
-id|ERROR
+id|IRDA_ERROR
 c_func
 (paren
 l_string|&quot;%s: Unable to allocate device memory.&bslash;n&quot;
@@ -7922,7 +7922,7 @@ OL
 l_int|0
 )paren
 (brace
-id|ERROR
+id|IRDA_ERROR
 c_func
 (paren
 l_string|&quot;%s: register_netdev failed&bslash;n&quot;
@@ -7968,7 +7968,7 @@ op_logical_neg
 id|ent
 )paren
 (brace
-id|WARNING
+id|IRDA_WARNING
 c_func
 (paren
 l_string|&quot;%s: failed to create proc entry&bslash;n&quot;
@@ -7997,7 +7997,7 @@ op_assign
 id|ent
 suffix:semicolon
 )brace
-id|MESSAGE
+id|IRDA_MESSAGE
 c_func
 (paren
 l_string|&quot;%s: registered device %s&bslash;n&quot;
@@ -8098,7 +8098,7 @@ op_logical_neg
 id|ndev
 )paren
 (brace
-id|ERROR
+id|IRDA_ERROR
 c_func
 (paren
 l_string|&quot;%s: lost netdevice?&bslash;n&quot;
@@ -8166,7 +8166,7 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
-id|MESSAGE
+id|IRDA_MESSAGE
 c_func
 (paren
 l_string|&quot;%s: %s removed&bslash;n&quot;
@@ -8221,7 +8221,7 @@ template_param
 l_int|3
 )paren
 (brace
-id|ERROR
+id|IRDA_ERROR
 c_func
 (paren
 l_string|&quot;%s - %s: invalid pm state request: %u&bslash;n&quot;
@@ -8248,7 +8248,7 @@ op_logical_neg
 id|ndev
 )paren
 (brace
-id|ERROR
+id|IRDA_ERROR
 c_func
 (paren
 l_string|&quot;%s - %s: no netdevice &bslash;n&quot;
@@ -8309,7 +8309,7 @@ id|state
 suffix:semicolon
 )brace
 r_else
-id|ERROR
+id|IRDA_ERROR
 c_func
 (paren
 l_string|&quot;%s - %s: invalid suspend request %u -&gt; %u&bslash;n&quot;
@@ -8439,7 +8439,7 @@ op_logical_neg
 id|ndev
 )paren
 (brace
-id|ERROR
+id|IRDA_ERROR
 c_func
 (paren
 l_string|&quot;%s - %s: no netdevice &bslash;n&quot;
@@ -8483,7 +8483,7 @@ op_amp
 id|idev-&gt;sem
 )paren
 suffix:semicolon
-id|WARNING
+id|IRDA_WARNING
 c_func
 (paren
 l_string|&quot;%s - %s: already resumed&bslash;n&quot;
@@ -8521,7 +8521,7 @@ id|idev-&gt;resume_ok
 )paren
 (brace
 multiline_comment|/* should be obsolete now - but used to happen due to:&n;&t;&t; * - pci layer initially setting pdev-&gt;current_state = 4 (unknown)&n;&t;&t; * - pci layer did not walk the save_state-tree (might be APM problem)&n;&t;&t; *   so we could not refuse to suspend from undefined state&n;&t;&t; * - vlsi_irda_suspend detected invalid state and refused to save&n;&t;&t; *   configuration for resume - but was too late to stop suspending&n;&t;&t; * - vlsi_irda_resume got screwed when trying to resume from garbage&n;&t;&t; *&n;&t;&t; * now we explicitly set pdev-&gt;current_state = 0 after enabling the&n;&t;&t; * device and independently resume_ok should catch any garbage config.&n;&t;&t; */
-id|WARNING
+id|IRDA_WARNING
 c_func
 (paren
 l_string|&quot;%s - hm, nothing to resume?&bslash;n&quot;
@@ -8656,7 +8656,7 @@ template_param
 l_int|3
 )paren
 (brace
-id|ERROR
+id|IRDA_ERROR
 c_func
 (paren
 l_string|&quot;%s: invalid clksrc=%d&bslash;n&quot;
@@ -8714,7 +8714,7 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
-id|WARNING
+id|IRDA_WARNING
 c_func
 (paren
 l_string|&quot;%s: invalid %s ringsize %d, using default=8&quot;

@@ -784,7 +784,7 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
-id|ERROR
+id|IRDA_ERROR
 c_func
 (paren
 l_string|&quot;%s(), unknown state %d&bslash;n&quot;

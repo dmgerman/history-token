@@ -3,6 +3,7 @@ macro_line|#ifndef _ROSE_H
 DECL|macro|_ROSE_H
 mdefine_line|#define _ROSE_H 
 macro_line|#include &lt;linux/rose.h&gt;
+macro_line|#include &lt;net/sock.h&gt;
 DECL|macro|ROSE_ADDR_LEN
 mdefine_line|#define&t;ROSE_ADDR_LEN&t;&t;&t;5
 DECL|macro|ROSE_MIN_LEN
@@ -293,9 +294,15 @@ id|rand
 suffix:semicolon
 )brace
 suffix:semicolon
-r_typedef
+DECL|struct|rose_sock
 r_struct
+id|rose_sock
 (brace
+DECL|member|sock
+r_struct
+id|sock
+id|sock
+suffix:semicolon
 DECL|member|source_addr
 DECL|member|dest_addr
 id|rose_address
@@ -437,19 +444,10 @@ r_struct
 id|timer_list
 id|idletimer
 suffix:semicolon
-DECL|member|sk
-r_struct
-id|sock
-op_star
-id|sk
-suffix:semicolon
-multiline_comment|/* Backlink to socket */
-DECL|typedef|rose_cb
 )brace
-id|rose_cb
 suffix:semicolon
 DECL|macro|rose_sk
-mdefine_line|#define rose_sk(__sk) ((rose_cb *)(__sk)-&gt;sk_protinfo)
+mdefine_line|#define rose_sk(sk) ((struct rose_sock *)(sk))
 multiline_comment|/* af_rose.c */
 r_extern
 id|ax25_address

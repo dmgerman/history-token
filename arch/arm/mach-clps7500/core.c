@@ -1614,7 +1614,7 @@ comma
 suffix:semicolon
 DECL|function|clps7500_init
 r_static
-r_int
+r_void
 id|__init
 id|clps7500_init
 c_func
@@ -1622,7 +1622,6 @@ c_func
 r_void
 )paren
 (brace
-r_return
 id|platform_device_register
 c_func
 (paren

@@ -1123,6 +1123,21 @@ op_star
 id|port
 )paren
 suffix:semicolon
+r_int
+id|uart_match_port
+c_func
+(paren
+r_struct
+id|uart_port
+op_star
+id|port1
+comma
+r_struct
+id|uart_port
+op_star
+id|port2
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Power Management&n; */
 r_int
 id|uart_suspend_port

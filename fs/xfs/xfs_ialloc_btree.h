@@ -145,16 +145,13 @@ id|rp
 comma
 r_int
 id|i
-comma
-id|xfs_arch_t
-id|arch
 )paren
 suffix:semicolon
 DECL|macro|XFS_INOBT_IS_FREE
-mdefine_line|#define&t;XFS_INOBT_IS_FREE(rp,i,arch)&t;xfs_inobt_is_free(rp,i,arch)
+mdefine_line|#define&t;XFS_INOBT_IS_FREE(rp,i)&t;xfs_inobt_is_free(rp,i)
 macro_line|#else
 DECL|macro|XFS_INOBT_IS_FREE
-mdefine_line|#define&t;XFS_INOBT_IS_FREE(rp,i,arch)&t;((INT_GET((rp)-&gt;ir_free, arch) &bslash;&n;&t;&t;&t;&t;&t; &amp; XFS_INOBT_MASK(i)) != 0)
+mdefine_line|#define&t;XFS_INOBT_IS_FREE(rp,i)&t;(((rp)-&gt;ir_free &amp; XFS_INOBT_MASK(i)) != 0)
 macro_line|#endif
 macro_line|#if XFS_WANT_FUNCS || (XFS_WANT_SPACE &amp;&amp; XFSSO_XFS_INOBT_SET_FREE)
 r_void
@@ -167,16 +164,13 @@ id|rp
 comma
 r_int
 id|i
-comma
-id|xfs_arch_t
-id|arch
 )paren
 suffix:semicolon
 DECL|macro|XFS_INOBT_SET_FREE
-mdefine_line|#define&t;XFS_INOBT_SET_FREE(rp,i,arch)&t;xfs_inobt_set_free(rp,i,arch)
+mdefine_line|#define&t;XFS_INOBT_SET_FREE(rp,i)&t;xfs_inobt_set_free(rp,i)
 macro_line|#else
 DECL|macro|XFS_INOBT_SET_FREE
-mdefine_line|#define&t;XFS_INOBT_SET_FREE(rp,i,arch)&t;(INT_MOD_EXPR((rp)-&gt;ir_free, arch, |= XFS_INOBT_MASK(i)))
+mdefine_line|#define&t;XFS_INOBT_SET_FREE(rp,i)&t;((rp)-&gt;ir_free |= XFS_INOBT_MASK(i))
 macro_line|#endif
 macro_line|#if XFS_WANT_FUNCS || (XFS_WANT_SPACE &amp;&amp; XFSSO_XFS_INOBT_CLR_FREE)
 r_void
@@ -189,16 +183,13 @@ id|rp
 comma
 r_int
 id|i
-comma
-id|xfs_arch_t
-id|arch
 )paren
 suffix:semicolon
 DECL|macro|XFS_INOBT_CLR_FREE
-mdefine_line|#define&t;XFS_INOBT_CLR_FREE(rp,i,arch)&t;xfs_inobt_clr_free(rp,i,arch)
+mdefine_line|#define&t;XFS_INOBT_CLR_FREE(rp,i)&t;xfs_inobt_clr_free(rp,i)
 macro_line|#else
 DECL|macro|XFS_INOBT_CLR_FREE
-mdefine_line|#define&t;XFS_INOBT_CLR_FREE(rp,i,arch)&t;(INT_MOD_EXPR((rp)-&gt;ir_free, arch, &amp;= ~XFS_INOBT_MASK(i)))
+mdefine_line|#define&t;XFS_INOBT_CLR_FREE(rp,i)&t;((rp)-&gt;ir_free &amp;= ~XFS_INOBT_MASK(i))
 macro_line|#endif
 multiline_comment|/*&n; * Real block structures have a size equal to the disk block size.&n; */
 macro_line|#if XFS_WANT_FUNCS || (XFS_WANT_SPACE &amp;&amp; XFSSO_XFS_INOBT_BLOCK_SIZE)
@@ -478,13 +469,9 @@ multiline_comment|/* output: free inode mask */
 r_int
 op_star
 id|stat
-comma
-multiline_comment|/* output: success/failure */
-id|xfs_arch_t
-id|arch
 )paren
 suffix:semicolon
-multiline_comment|/* output: architecture */
+multiline_comment|/* output: success/failure */
 multiline_comment|/*&n; * Increment cursor by one record at the level.&n; * For nonzero levels the leaf-ward information is untouched.&n; */
 r_int
 multiline_comment|/* error */

@@ -4,6 +4,7 @@ DECL|macro|_NETROM_H
 mdefine_line|#define _NETROM_H 
 macro_line|#include &lt;linux/netrom.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
+macro_line|#include &lt;net/sock.h&gt;
 DECL|macro|NR_NETWORK_LEN
 mdefine_line|#define&t;NR_NETWORK_LEN&t;&t;&t;15
 DECL|macro|NR_TRANSPORT_LEN
@@ -82,9 +83,15 @@ DECL|macro|NR_MAX_WINDOW_SIZE
 mdefine_line|#define NR_MAX_WINDOW_SIZE&t;&t;127&t;&t;&t;/* Maximum Window Allowable - 127 */
 DECL|macro|NR_MAX_PACKET_SIZE
 mdefine_line|#define&t;NR_MAX_PACKET_SIZE&t;&t;236&t;&t;&t;/* Maximum Packet Length - 236 */
-r_typedef
+DECL|struct|nr_sock
 r_struct
+id|nr_sock
 (brace
+DECL|member|sock
+r_struct
+id|sock
+id|sock
+suffix:semicolon
 DECL|member|user_addr
 DECL|member|source_addr
 DECL|member|dest_addr
@@ -207,19 +214,10 @@ r_struct
 id|sk_buff_head
 id|frag_queue
 suffix:semicolon
-DECL|member|sk
-r_struct
-id|sock
-op_star
-id|sk
-suffix:semicolon
-multiline_comment|/* Backlink to socket */
-DECL|typedef|nr_cb
 )brace
-id|nr_cb
 suffix:semicolon
 DECL|macro|nr_sk
-mdefine_line|#define nr_sk(__sk) ((nr_cb *)(__sk)-&gt;sk_protinfo)
+mdefine_line|#define nr_sk(sk) ((struct nr_sock *)(sk))
 DECL|struct|nr_neigh
 r_struct
 id|nr_neigh

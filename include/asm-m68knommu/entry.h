@@ -4,7 +4,7 @@ mdefine_line|#define __M68KNOMMU_ENTRY_H
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/setup.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
-multiline_comment|/*&n; * Stack layout in &squot;ret_from_exception&squot;:&n; *&n; * This allows access to the syscall arguments in registers d1-d5&n; *&n; *&t; 0(sp) - d1&n; *&t; 4(sp) - d2&n; *&t; 8(sp) - d3&n; *&t; C(sp) - d4&n; *&t;10(sp) - d5&n; *&t;14(sp) - a0&n; *&t;18(sp) - a1&n; *&t;1C(sp) - a2&n; *&t;20(sp) - d0&n; *&t;24(sp) - orig_d0&n; *&t;28(sp) - stack adjustment&n; *&t;2C(sp) - [ sr              ] [ format &amp; vector ]&n; *&t;2E(sp) - [ pc              ] [ sr              ]&n; *&t;30(sp) - [ format &amp; vector ] [ pc              ]&n; *&t;&t;  ^^^^^^^^^^^^^^^^^   ^^^^^^^^^^^^^^^^^&n; *&t;&t;&t;M68K&t;&t;  COLDFIRE&n; */
+multiline_comment|/*&n; * Stack layout in &squot;ret_from_exception&squot;:&n; *&n; * This allows access to the syscall arguments in registers d1-d5&n; *&n; *&t; 0(sp) - d1&n; *&t; 4(sp) - d2&n; *&t; 8(sp) - d3&n; *&t; C(sp) - d4&n; *&t;10(sp) - d5&n; *&t;14(sp) - a0&n; *&t;18(sp) - a1&n; *&t;1C(sp) - a2&n; *&t;20(sp) - d0&n; *&t;24(sp) - orig_d0&n; *&t;28(sp) - stack adjustment&n; *&t;2C(sp) - [ sr              ] [ format &amp; vector ]&n; *&t;2E(sp) - [ pc-hiword       ] [ sr              ]&n; *&t;30(sp) - [ pc-loword       ] [ pc-hiword       ]&n; *&t;32(sp) - [ format &amp; vector ] [ pc-loword       ]&n; *&t;&t;  ^^^^^^^^^^^^^^^^^   ^^^^^^^^^^^^^^^^^&n; *&t;&t;&t;M68K&t;&t;  COLDFIRE&n; */
 DECL|macro|ALLOWINT
 mdefine_line|#define ALLOWINT 0xf8ff
 macro_line|#ifdef __ASSEMBLY__
@@ -30,21 +30,6 @@ l_int|5
 id|LENOSYS
 op_assign
 l_int|38
-id|LD0
-op_assign
-l_int|0x20
-id|LORIG_D0
-op_assign
-l_int|0x24
-id|LFORMATVEC
-op_assign
-l_int|0x2c
-id|LSR
-op_assign
-l_int|0x2e
-id|LPC
-op_assign
-l_int|0x30
 DECL|macro|SWITCH_STACK_SIZE
 mdefine_line|#define SWITCH_STACK_SIZE (6*4+4)&t;/* Includes return address */
 multiline_comment|/*&n; * This defines the normal kernel pt-regs layout.&n; *&n; * regs are a2-a6 and d6-d7 preserved by C code&n; * the kernel doesn&squot;t mess with usp unless it needs to&n; */
@@ -86,7 +71,7 @@ op_mod
 id|sp
 "@"
 op_minus
-multiline_comment|/* stk_adj */
+multiline_comment|/* stkadj */
 id|movel
 op_mod
 id|d0
@@ -105,8 +90,18 @@ id|sp
 "@"
 op_minus
 multiline_comment|/* d0 */
-id|subl
-macro_line|#32,%sp&t;&t;&t;/* space for 8 regs */
+id|lea
+op_mod
+id|sp
+"@"
+(paren
+op_minus
+l_int|32
+)paren
+comma
+op_mod
+id|sp
+multiline_comment|/* space for 8 regs */
 id|moveml
 op_mod
 id|d1
@@ -130,35 +125,32 @@ comma
 op_mod
 id|a0
 multiline_comment|/* get usp */
-id|moveml
+id|movel
 op_mod
 id|a0
 "@"
-(paren
 op_minus
-l_int|8
-)paren
-comma
-op_mod
-id|d1
-op_minus
-op_mod
-id|d2
-multiline_comment|/* get exception */
-id|moveml
-op_mod
-id|d1
-op_minus
-op_mod
-id|d2
 comma
 op_mod
 id|sp
 "@"
 (paren
-id|LFORMATVEC
+id|PT_PC
 )paren
-multiline_comment|/* copy exception */
+multiline_comment|/* copy exception program counter */
+id|movel
+op_mod
+id|a0
+"@"
+op_minus
+comma
+op_mod
+id|sp
+"@"
+(paren
+id|PT_FORMATVEC
+)paren
+multiline_comment|/* copy exception format/vector/sr */
 id|bra
 l_float|7f
 l_int|6
@@ -168,7 +160,7 @@ op_mod
 id|sp
 "@"
 op_minus
-multiline_comment|/* stk_adj */
+multiline_comment|/* stkadj */
 id|movel
 op_mod
 id|d0
@@ -187,8 +179,18 @@ id|sp
 "@"
 op_minus
 multiline_comment|/* d0 */
-id|subl
-macro_line|#32,%sp&t;&t;&t;/* space for 7 regs */
+id|lea
+op_mod
+id|sp
+"@"
+(paren
+op_minus
+l_int|32
+)paren
+comma
+op_mod
+id|sp
+multiline_comment|/* space for 8 regs */
 id|moveml
 op_mod
 id|d1
@@ -213,7 +215,7 @@ dot
 id|macro
 id|RESTORE_ALL
 id|btst
-macro_line|#5,%sp@(LSR)&t;&t;/* going user? */
+macro_line|#5,%sp@(PT_SR)&t;&t;/* going user? */
 id|bnes
 l_float|8f
 multiline_comment|/* no, skip */
@@ -225,34 +227,32 @@ comma
 op_mod
 id|a0
 multiline_comment|/* get usp */
-id|moveml
+id|movel
 op_mod
 id|sp
 "@"
 (paren
-id|LFORMATVEC
+id|PT_PC
 )paren
-comma
-op_mod
-id|d1
-op_minus
-op_mod
-id|d2
-multiline_comment|/* copy exception */
-id|moveml
-op_mod
-id|d1
-op_minus
-op_mod
-id|d2
 comma
 op_mod
 id|a0
 "@"
-(paren
 op_minus
-l_int|8
+multiline_comment|/* copy exception program counter */
+id|movel
+op_mod
+id|sp
+"@"
+(paren
+id|PT_FORMATVEC
 )paren
+comma
+op_mod
+id|a0
+"@"
+op_minus
+multiline_comment|/* copy exception format/vector/sr */
 id|moveml
 op_mod
 id|sp
@@ -269,8 +269,17 @@ id|a0
 op_minus
 op_mod
 id|a2
-id|addl
-macro_line|#32,%sp&t;&t;&t;/* space for 8 regs */
+id|lea
+op_mod
+id|sp
+"@"
+(paren
+l_int|32
+)paren
+comma
+op_mod
+id|sp
+multiline_comment|/* space for 8 regs */
 id|movel
 op_mod
 id|sp
@@ -289,7 +298,7 @@ op_plus
 comma
 op_mod
 id|sp
-multiline_comment|/* stk adj */
+multiline_comment|/* stkadj */
 id|addql
 macro_line|#8,%sp&t;&t;&t;/* remove exception */
 id|movel
@@ -325,8 +334,17 @@ id|a0
 op_minus
 op_mod
 id|a2
-id|addl
-macro_line|#32,%sp&t;&t;&t;/* space for 8 regs */
+id|lea
+op_mod
+id|sp
+"@"
+(paren
+l_int|32
+)paren
+comma
+op_mod
+id|sp
+multiline_comment|/* space for 8 regs */
 id|movel
 op_mod
 id|sp
@@ -345,7 +363,7 @@ op_plus
 comma
 op_mod
 id|sp
-multiline_comment|/* stk adj */
+multiline_comment|/* stkadj */
 id|rte
 dot
 id|endm
@@ -360,7 +378,7 @@ op_mod
 id|sp
 "@"
 op_minus
-multiline_comment|/* stk_adj */
+multiline_comment|/* stkadj */
 id|movel
 op_mod
 id|d0
@@ -379,8 +397,18 @@ id|sp
 "@"
 op_minus
 multiline_comment|/* d0 */
-id|subl
-macro_line|#32,%sp&t;&t;&t;/* space for 8 regs */
+id|lea
+op_mod
+id|sp
+"@"
+(paren
+op_minus
+l_int|32
+)paren
+comma
+op_mod
+id|sp
+multiline_comment|/* space for 8 regs */
 id|moveml
 op_mod
 id|d1
@@ -418,8 +446,17 @@ id|a0
 op_minus
 op_mod
 id|a2
-id|addl
-macro_line|#32,%sp&t;&t;&t;/* space for 8 regs */
+id|lea
+op_mod
+id|sp
+"@"
+(paren
+l_int|32
+)paren
+comma
+op_mod
+id|sp
+multiline_comment|/* space for 8 regs */
 id|movel
 op_mod
 id|sp
@@ -438,15 +475,25 @@ op_plus
 comma
 op_mod
 id|sp
-multiline_comment|/* stk adj */
+multiline_comment|/* stkadj */
 id|rte
 dot
 id|endm
 dot
 id|macro
 id|SAVE_SWITCH_STACK
-id|subl
-macro_line|#24,%sp&t;&t;&t;/* 6 regs */
+id|lea
+op_mod
+id|sp
+"@"
+(paren
+op_minus
+l_int|24
+)paren
+comma
+op_mod
+id|sp
+multiline_comment|/* 6 regs */
 id|moveml
 op_mod
 id|a3
@@ -484,8 +531,17 @@ id|d6
 op_minus
 op_mod
 id|d7
-id|addl
-macro_line|#24,%sp&t;&t;&t;/* 6 regs */
+id|lea
+op_mod
+id|sp
+"@"
+(paren
+l_int|24
+)paren
+comma
+op_mod
+id|sp
+multiline_comment|/* 6 regs */
 dot
 id|endm
 multiline_comment|/*&n; * Software copy of the user and kernel stack pointers... Ugh...&n; * Need these to get around ColdFire not having separate kernel&n; * and user stack pointers.&n; */
@@ -505,7 +561,7 @@ op_mod
 id|sp
 "@"
 op_minus
-multiline_comment|/* stk_adj */
+multiline_comment|/* stkadj */
 id|movel
 op_mod
 id|d0
@@ -581,7 +637,7 @@ op_plus
 comma
 op_mod
 id|sp
-multiline_comment|/* stk adj */
+multiline_comment|/* stkadj */
 id|rte
 dot
 id|endm

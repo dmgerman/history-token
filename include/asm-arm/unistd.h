@@ -581,6 +581,8 @@ mdefine_line|#define __NR_keyctl&t;&t;&t;(__NR_SYSCALL_BASE+311)
 macro_line|#if 0 /* reserved for un-muxing ipc */
 mdefine_line|#define __NR_semtimedop&t;&t;&t;(__NR_SYSCALL_BASE+312)
 macro_line|#endif
+DECL|macro|__NR_vserver
+mdefine_line|#define __NR_vserver&t;&t;&t;(__NR_SYSCALL_BASE+313)
 multiline_comment|/*&n; * The following SWIs are ARM private.&n; */
 DECL|macro|__ARM_NR_BASE
 mdefine_line|#define __ARM_NR_BASE&t;&t;&t;(__NR_SYSCALL_BASE+0x0f0000)

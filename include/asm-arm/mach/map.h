@@ -29,19 +29,21 @@ r_struct
 id|meminfo
 suffix:semicolon
 DECL|macro|MT_DEVICE
-mdefine_line|#define MT_DEVICE&t;0
+mdefine_line|#define MT_DEVICE&t;&t;0
 DECL|macro|MT_CACHECLEAN
-mdefine_line|#define MT_CACHECLEAN&t;1
+mdefine_line|#define MT_CACHECLEAN&t;&t;1
 DECL|macro|MT_MINICLEAN
-mdefine_line|#define MT_MINICLEAN&t;2
+mdefine_line|#define MT_MINICLEAN&t;&t;2
 DECL|macro|MT_LOW_VECTORS
-mdefine_line|#define MT_LOW_VECTORS&t;3
+mdefine_line|#define MT_LOW_VECTORS&t;&t;3
 DECL|macro|MT_HIGH_VECTORS
-mdefine_line|#define MT_HIGH_VECTORS&t;4
+mdefine_line|#define MT_HIGH_VECTORS&t;&t;4
 DECL|macro|MT_MEMORY
-mdefine_line|#define MT_MEMORY&t;5
+mdefine_line|#define MT_MEMORY&t;&t;5
 DECL|macro|MT_ROM
-mdefine_line|#define MT_ROM&t;&t;6
+mdefine_line|#define MT_ROM&t;&t;&t;6
+DECL|macro|MT_IXP2000_DEVICE
+mdefine_line|#define MT_IXP2000_DEVICE&t;7
 r_extern
 r_void
 id|create_memmap_holes

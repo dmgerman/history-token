@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Copyright (c) 2000-2003 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.  Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information: Silicon Graphics, Inc., 1600 Amphitheatre Pkwy,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/SGIGPLNoticeExplan/&n; */
+multiline_comment|/*&n; * Copyright (c) 2000-2005 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.  Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information: Silicon Graphics, Inc., 1600 Amphitheatre Pkwy,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/SGIGPLNoticeExplan/&n; */
 macro_line|#include &quot;xfs.h&quot;
 macro_line|#include &quot;xfs_macros.h&quot;
 macro_line|#include &quot;xfs_types.h&quot;
@@ -24,7 +24,7 @@ macro_line|#include &quot;xfs_inode.h&quot;
 macro_line|#include &quot;xfs_quota.h&quot;
 macro_line|#include &quot;xfs_utils.h&quot;
 macro_line|#include &quot;xfs_bit.h&quot;
-multiline_comment|/*&n; * Initialize the inode hash table for the newly mounted file system.&n; * Choose an initial table size based on user specified value, else&n; * use a simple algorithm using the maximum number of inodes as an&n; * indicator for table size, and cap it at 16 pages (gettin&squot; big).&n; */
+multiline_comment|/*&n; * Initialize the inode hash table for the newly mounted file system.&n; * Choose an initial table size based on user specified value, else&n; * use a simple algorithm using the maximum number of inodes as an&n; * indicator for table size, and clamp it between one and some large&n; * number of pages.&n; */
 r_void
 DECL|function|xfs_ihash_init
 id|xfs_ihash_init
@@ -76,15 +76,19 @@ c_func
 (paren
 id|uint
 comma
+l_int|8
+comma
+(paren
 id|xfs_highbit64
 c_func
 (paren
 id|icount
 )paren
+op_plus
+l_int|1
+)paren
 op_div
-l_int|3
-comma
-l_int|8
+l_int|2
 )paren
 suffix:semicolon
 id|mp-&gt;m_ihsize
@@ -96,9 +100,16 @@ id|uint
 comma
 id|mp-&gt;m_ihsize
 comma
-l_int|16
+(paren
+l_int|64
 op_star
-id|PAGE_SIZE
+id|NBPP
+)paren
+op_div
+r_sizeof
+(paren
+id|xfs_ihash_t
+)paren
 )paren
 suffix:semicolon
 )brace
@@ -1579,6 +1590,26 @@ id|inode
 suffix:semicolon
 r_goto
 id|retry
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|is_bad_inode
+c_func
+(paren
+id|inode
+)paren
+)paren
+(brace
+id|iput
+c_func
+(paren
+id|inode
+)paren
+suffix:semicolon
+r_return
+id|EIO
 suffix:semicolon
 )brace
 id|bdp

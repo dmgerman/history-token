@@ -1670,7 +1670,7 @@ l_int|0
 )paren
 )paren
 (brace
-id|MESSAGE
+id|IRDA_MESSAGE
 c_func
 (paren
 l_string|&quot; Overriding FIR address 0x%04x&bslash;n&quot;
@@ -1678,7 +1678,7 @@ comma
 id|ircc_fir
 )paren
 suffix:semicolon
-id|MESSAGE
+id|IRDA_MESSAGE
 c_func
 (paren
 l_string|&quot; Overriding SIR address 0x%04x&bslash;n&quot;
@@ -1720,7 +1720,7 @@ OG
 l_int|0
 )paren
 (brace
-id|MESSAGE
+id|IRDA_MESSAGE
 c_func
 (paren
 l_string|&quot; Overriding configuration address 0x%04x&bslash;n&quot;
@@ -1860,7 +1860,7 @@ id|dev_self
 )paren
 )paren
 (brace
-id|WARNING
+id|IRDA_WARNING
 c_func
 (paren
 l_string|&quot;%s(), too many devices!&bslash;n&quot;
@@ -1892,7 +1892,7 @@ op_logical_neg
 id|dev
 )paren
 (brace
-id|WARNING
+id|IRDA_WARNING
 c_func
 (paren
 l_string|&quot;%s() can&squot;t allocate net device&bslash;n&quot;
@@ -2011,7 +2011,7 @@ op_eq
 l_int|NULL
 )paren
 (brace
-id|ERROR
+id|IRDA_ERROR
 c_func
 (paren
 l_string|&quot;%s, Can&squot;t allocate memory for receive buffer!&bslash;n&quot;
@@ -2046,7 +2046,7 @@ op_eq
 l_int|NULL
 )paren
 (brace
-id|ERROR
+id|IRDA_ERROR
 c_func
 (paren
 l_string|&quot;%s, Can&squot;t allocate memory for transmit buffer!&bslash;n&quot;
@@ -2158,7 +2158,7 @@ c_cond
 id|err
 )paren
 (brace
-id|ERROR
+id|IRDA_ERROR
 c_func
 (paren
 l_string|&quot;%s, Network device registration failed!&bslash;n&quot;
@@ -2191,7 +2191,7 @@ id|self-&gt;pmdev-&gt;data
 op_assign
 id|self
 suffix:semicolon
-id|MESSAGE
+id|IRDA_MESSAGE
 c_func
 (paren
 l_string|&quot;IrDA: Registered device %s&bslash;n&quot;
@@ -2317,7 +2317,7 @@ id|driver_name
 )paren
 )paren
 (brace
-id|WARNING
+id|IRDA_WARNING
 c_func
 (paren
 l_string|&quot;%s: can&squot;t get fir_base of 0x%03x&bslash;n&quot;
@@ -2346,7 +2346,7 @@ id|driver_name
 )paren
 )paren
 (brace
-id|WARNING
+id|IRDA_WARNING
 c_func
 (paren
 l_string|&quot;%s: can&squot;t get sir_base of 0x%03x&bslash;n&quot;
@@ -2456,7 +2456,7 @@ l_int|0xf2
 )paren
 )paren
 (brace
-id|WARNING
+id|IRDA_WARNING
 c_func
 (paren
 l_string|&quot;%s(), addr 0x%04x - no device found!&bslash;n&quot;
@@ -2470,7 +2470,7 @@ r_goto
 id|out3
 suffix:semicolon
 )brace
-id|MESSAGE
+id|IRDA_MESSAGE
 c_func
 (paren
 l_string|&quot;SMsC IrDA Controller found&bslash;n IrCC version %d.%d, &quot;
@@ -2629,7 +2629,7 @@ id|irq
 op_ne
 id|chip_irq
 )paren
-id|MESSAGE
+id|IRDA_MESSAGE
 c_func
 (paren
 l_string|&quot;%s, Overriding IRQ - chip says %d, using %d&bslash;n&quot;
@@ -2666,7 +2666,7 @@ id|dma
 op_ne
 id|chip_dma
 )paren
-id|MESSAGE
+id|IRDA_MESSAGE
 c_func
 (paren
 l_string|&quot;%s, Overriding DMA - chip says %d, using %d&bslash;n&quot;
@@ -2770,7 +2770,7 @@ id|ctrl
 comma
 id|fast
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self
@@ -3044,7 +3044,7 @@ id|ret
 op_assign
 l_int|0
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|dev
@@ -3061,7 +3061,7 @@ id|self
 op_assign
 id|dev-&gt;priv
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self
@@ -3303,7 +3303,7 @@ op_star
 )paren
 id|dev-&gt;priv
 suffix:semicolon
-id|WARNING
+id|IRDA_WARNING
 c_func
 (paren
 l_string|&quot;%s: transmit timed out, changing speed to: %d&bslash;n&quot;
@@ -3399,7 +3399,7 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|dev
@@ -3420,7 +3420,7 @@ op_star
 )paren
 id|dev-&gt;priv
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self
@@ -3605,7 +3605,7 @@ id|ctrl
 comma
 id|fast
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self
@@ -3849,7 +3849,7 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self
@@ -3864,7 +3864,7 @@ id|dev
 op_assign
 id|self-&gt;netdev
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|dev
@@ -4045,7 +4045,7 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self
@@ -4138,7 +4138,7 @@ comma
 id|speed
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self
@@ -4391,7 +4391,7 @@ comma
 id|speed
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self
@@ -4578,7 +4578,7 @@ suffix:semicolon
 r_int
 id|mtt
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|dev
@@ -4599,7 +4599,7 @@ op_star
 )paren
 id|dev-&gt;priv
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self
@@ -5706,7 +5706,7 @@ l_int|2050
 )paren
 )paren
 (brace
-id|WARNING
+id|IRDA_WARNING
 c_func
 (paren
 l_string|&quot;%s(), bogus len=%d&bslash;n&quot;
@@ -5750,7 +5750,7 @@ op_logical_neg
 id|skb
 )paren
 (brace
-id|WARNING
+id|IRDA_WARNING
 c_func
 (paren
 l_string|&quot;%s(), memory squeeze, dropping frame.&bslash;n&quot;
@@ -5837,7 +5837,7 @@ suffix:semicolon
 r_int
 id|iobase
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self
@@ -5997,7 +5997,7 @@ op_star
 )paren
 id|dev-&gt;priv
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self
@@ -6425,7 +6425,7 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self
@@ -6507,7 +6507,7 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|dev
@@ -6529,7 +6529,7 @@ op_star
 )paren
 id|dev-&gt;priv
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self
@@ -6660,7 +6660,7 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-id|WARNING
+id|IRDA_WARNING
 c_func
 (paren
 l_string|&quot;%s(), unable to allocate DMA=%d&bslash;n&quot;
@@ -6716,7 +6716,7 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|dev
@@ -6738,7 +6738,7 @@ op_star
 )paren
 id|dev-&gt;priv
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self
@@ -6813,7 +6813,7 @@ op_star
 id|self
 )paren
 (brace
-id|MESSAGE
+id|IRDA_MESSAGE
 c_func
 (paren
 l_string|&quot;%s, Suspending&bslash;n&quot;
@@ -6866,7 +6866,7 @@ c_func
 id|self-&gt;netdev
 )paren
 suffix:semicolon
-id|MESSAGE
+id|IRDA_MESSAGE
 c_func
 (paren
 l_string|&quot;%s, Waking up&bslash;n&quot;
@@ -6977,7 +6977,7 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self
@@ -7277,7 +7277,7 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self
@@ -7292,7 +7292,7 @@ id|dev
 op_assign
 id|self-&gt;netdev
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|dev
@@ -7503,7 +7503,7 @@ suffix:semicolon
 r_int
 id|fcr
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self
@@ -7714,7 +7714,7 @@ id|UART_LSR_THRE
 )paren
 )paren
 (brace
-id|WARNING
+id|IRDA_WARNING
 c_func
 (paren
 l_string|&quot;%s(), failed, fifo not empty!&bslash;n&quot;
@@ -7804,7 +7804,7 @@ r_int
 r_int
 id|i
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self
@@ -7851,7 +7851,7 @@ id|self-&gt;io.fir_base
 )paren
 )paren
 (brace
-id|MESSAGE
+id|IRDA_MESSAGE
 c_func
 (paren
 l_string|&quot; %s transceiver found&bslash;n&quot;
@@ -7873,7 +7873,7 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-id|MESSAGE
+id|IRDA_MESSAGE
 c_func
 (paren
 l_string|&quot;No transceiver found. Defaulting to %s&bslash;n&quot;
@@ -8318,7 +8318,7 @@ id|SMSCSIOFLAT_UART2MODE_VAL_IRDA
 )paren
 )paren
 (brace
-id|WARNING
+id|IRDA_WARNING
 c_func
 (paren
 l_string|&quot;%s(): IrDA not enabled&bslash;n&quot;
@@ -8410,7 +8410,7 @@ l_int|1
 op_amp
 id|SMSCSIOFLAT_UART2IRQSELECT_MASK
 suffix:semicolon
-id|MESSAGE
+id|IRDA_MESSAGE
 c_func
 (paren
 l_string|&quot;%s(): fir: 0x%02x, sir: 0x%02x, dma: %02d, irq: %d, mode: 0x%02x&bslash;n&quot;
@@ -8963,7 +8963,7 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
-id|MESSAGE
+id|IRDA_MESSAGE
 c_func
 (paren
 l_string|&quot;found SMC SuperIO Chip (devid=0x%02x rev=%02X base=0x%04x): %s%s&bslash;n&quot;
@@ -8987,7 +8987,7 @@ OG
 id|rev
 )paren
 (brace
-id|MESSAGE
+id|IRDA_MESSAGE
 c_func
 (paren
 l_string|&quot;Revision higher than expected&bslash;n&quot;
@@ -9004,7 +9004,7 @@ id|chip-&gt;flags
 op_amp
 id|NoIRDA
 )paren
-id|MESSAGE
+id|IRDA_MESSAGE
 c_func
 (paren
 l_string|&quot;chipset does not support IRDA&bslash;n&quot;
@@ -9047,7 +9047,7 @@ id|driver_name
 )paren
 )paren
 (brace
-id|WARNING
+id|IRDA_WARNING
 c_func
 (paren
 l_string|&quot;%s: can&squot;t get cfg_base of 0x%03x&bslash;n&quot;
@@ -9135,7 +9135,7 @@ id|driver_name
 )paren
 )paren
 (brace
-id|WARNING
+id|IRDA_WARNING
 c_func
 (paren
 l_string|&quot;%s: can&squot;t get cfg_base of 0x%03x&bslash;n&quot;
@@ -9294,7 +9294,7 @@ c_cond
 id|val
 )paren
 (brace
-id|WARNING
+id|IRDA_WARNING
 c_func
 (paren
 l_string|&quot;%s(): ATC: 0x%02x&bslash;n&quot;

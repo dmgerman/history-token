@@ -9,13 +9,13 @@ mdefine_line|#define __mem_pci(a)&t;&t;(a)
 multiline_comment|/*&n; * Pick up VMALLOC_END&n; */
 DECL|macro|___io
 mdefine_line|#define ___io(p)&t;&t;((void __iomem *)((p)+IXP2000_PCI_IO_VIRT_BASE))
-multiline_comment|/*&n; * IXP2000 does not do proper byte-lane conversion for PCI addresses,&n; * so we need to override standard functions.&n; */
+multiline_comment|/*&n; * The IXP2400 before revision B0 asserts byte lanes for PCI I/O&n; * transactions the other way round (MEM transactions don&squot;t have this&n; * issue), so we need to override the standard functions.  B0 and later&n; * have a bit that can be set to 1 to get the &squot;proper&squot; behavior, but&n; * since that isn&squot;t available on the A? revisions we just keep doing&n; * things manually.&n; */
 DECL|macro|alignb
-mdefine_line|#define alignb(addr)&t;&t;(void __iomem *)(((unsigned long)addr &amp; ~3) + (3 - ((unsigned long)addr &amp; 3)))
+mdefine_line|#define alignb(addr)&t;&t;(void __iomem *)((unsigned long)addr ^ 3)
 DECL|macro|alignw
-mdefine_line|#define alignw(addr)&t;&t;(void __iomem *)(((unsigned long)addr &amp; ~2) + (2 - ((unsigned long)addr &amp; 2)))
+mdefine_line|#define alignw(addr)&t;&t;(void __iomem *)((unsigned long)addr ^ 2)
 DECL|macro|outb
-mdefine_line|#define outb(v,p)&t;&t;__raw_writeb(v,alignb(___io(p)))
+mdefine_line|#define outb(v,p)&t;&t;__raw_writeb((v),alignb(___io(p)))
 DECL|macro|outw
 mdefine_line|#define outw(v,p)&t;&t;__raw_writew((v),alignw(___io(p)))
 DECL|macro|outl

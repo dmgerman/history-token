@@ -82,6 +82,20 @@ r_int
 id|mcf_timerlevel
 suffix:semicolon
 multiline_comment|/***************************************************************************/
+multiline_comment|/*&n; *&t;Some platforms need software versions of the GPIO data registers.&n; */
+DECL|variable|ppdata
+r_int
+r_int
+id|ppdata
+suffix:semicolon
+DECL|variable|ledbank
+r_int
+r_char
+id|ledbank
+op_assign
+l_int|0xff
+suffix:semicolon
+multiline_comment|/***************************************************************************/
 multiline_comment|/*&n; *&t;DMA channel base address table.&n; */
 DECL|variable|dma_base_addr
 r_int

@@ -101,6 +101,11 @@ comma
 l_int|0xff
 )brace
 comma
+dot
+id|drop
+op_assign
+id|netpoll_queue
+comma
 )brace
 suffix:semicolon
 DECL|variable|configured

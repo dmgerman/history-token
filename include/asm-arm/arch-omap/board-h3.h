@@ -3,12 +3,8 @@ macro_line|#ifndef __ASM_ARCH_OMAP_H3_H
 DECL|macro|__ASM_ARCH_OMAP_H3_H
 mdefine_line|#define __ASM_ARCH_OMAP_H3_H
 multiline_comment|/* In OMAP1710 H3 the Ethernet is directly connected to CS1 */
-DECL|macro|OMAP1710_ETHR_BASE
-mdefine_line|#define OMAP1710_ETHR_BASE&t;&t;0xE8000000
-DECL|macro|OMAP1710_ETHR_SIZE
-mdefine_line|#define OMAP1710_ETHR_SIZE&t;&t;SZ_4K
 DECL|macro|OMAP1710_ETHR_START
-mdefine_line|#define OMAP1710_ETHR_START&t;&t;0x04000000
+mdefine_line|#define OMAP1710_ETHR_START&t;&t;0x04000300
 multiline_comment|/* Intel STRATA NOR flash at CS3 or CS2B(NAND Boot) */
 DECL|macro|OMAP_NOR_FLASH_SIZE
 mdefine_line|#define OMAP_NOR_FLASH_SIZE             SZ_32M

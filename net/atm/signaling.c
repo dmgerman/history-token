@@ -619,9 +619,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sk-&gt;sk_ack_backlog
-op_eq
-id|sk-&gt;sk_max_ack_backlog
+id|sk_acceptq_is_full
+c_func
+(paren
+id|sk
+)paren
 )paren
 (brace
 id|sigd_enq

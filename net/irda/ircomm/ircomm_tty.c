@@ -442,7 +442,7 @@ op_eq
 l_int|NULL
 )paren
 (brace
-id|ERROR
+id|IRDA_ERROR
 c_func
 (paren
 l_string|&quot;%s(), can&squot;t allocate hashbin!&bslash;n&quot;
@@ -532,7 +532,7 @@ id|driver
 )paren
 )paren
 (brace
-id|ERROR
+id|IRDA_ERROR
 c_func
 (paren
 l_string|&quot;%s(): Couldn&squot;t register serial driver&bslash;n&quot;
@@ -578,7 +578,7 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self
@@ -589,7 +589,7 @@ r_return
 suffix:semicolon
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self-&gt;magic
@@ -655,7 +655,7 @@ c_cond
 id|ret
 )paren
 (brace
-id|ERROR
+id|IRDA_ERROR
 c_func
 (paren
 l_string|&quot;%s(), failed to unregister driver&bslash;n&quot;
@@ -716,7 +716,7 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self
@@ -729,7 +729,7 @@ l_int|1
 suffix:semicolon
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self-&gt;magic
@@ -872,7 +872,7 @@ OL
 l_int|0
 )paren
 (brace
-id|ERROR
+id|IRDA_ERROR
 c_func
 (paren
 l_string|&quot;%s(), error attaching cable!&bslash;n&quot;
@@ -1430,7 +1430,7 @@ op_eq
 l_int|NULL
 )paren
 (brace
-id|ERROR
+id|IRDA_ERROR
 c_func
 (paren
 l_string|&quot;%s(), kmalloc failed!&bslash;n&quot;
@@ -1659,7 +1659,7 @@ id|self-&gt;flags
 )paren
 )paren
 (brace
-id|WARNING
+id|IRDA_WARNING
 c_func
 (paren
 l_string|&quot;%s - got signal while blocking on ASYNC_CLOSING!&bslash;n&quot;
@@ -1865,7 +1865,7 @@ id|tty
 )paren
 r_return
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self
@@ -1876,7 +1876,7 @@ r_return
 suffix:semicolon
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self-&gt;magic
@@ -1972,7 +1972,7 @@ OL
 l_int|0
 )paren
 (brace
-id|ERROR
+id|IRDA_ERROR
 c_func
 (paren
 l_string|&quot;%s(), bad serial port count for ttys%d: %d&bslash;n&quot;
@@ -2170,7 +2170,7 @@ op_star
 )paren
 id|tty-&gt;driver_data
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self
@@ -2181,7 +2181,7 @@ r_return
 suffix:semicolon
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self-&gt;magic
@@ -2499,7 +2499,7 @@ comma
 id|tty-&gt;hw_stopped
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self
@@ -2512,7 +2512,7 @@ l_int|1
 suffix:semicolon
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self-&gt;magic
@@ -2776,7 +2776,7 @@ suffix:semicolon
 r_int
 id|ret
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self
@@ -2789,7 +2789,7 @@ l_int|1
 suffix:semicolon
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self-&gt;magic
@@ -2927,7 +2927,7 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self
@@ -2938,7 +2938,7 @@ r_return
 suffix:semicolon
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self-&gt;magic
@@ -3091,7 +3091,7 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self
@@ -3102,7 +3102,7 @@ r_return
 suffix:semicolon
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self-&gt;magic
@@ -3208,7 +3208,7 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self
@@ -3219,7 +3219,7 @@ r_return
 suffix:semicolon
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self-&gt;magic
@@ -3335,7 +3335,7 @@ id|len
 op_assign
 l_int|0
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self
@@ -3348,7 +3348,7 @@ l_int|1
 suffix:semicolon
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self-&gt;magic
@@ -3408,7 +3408,7 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self
@@ -3419,7 +3419,7 @@ r_return
 suffix:semicolon
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self-&gt;magic
@@ -3579,7 +3579,7 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self
@@ -3590,7 +3590,7 @@ r_return
 suffix:semicolon
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self-&gt;magic
@@ -3741,7 +3741,7 @@ op_star
 )paren
 id|tty-&gt;driver_data
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self
@@ -3752,7 +3752,7 @@ r_return
 suffix:semicolon
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self-&gt;magic
@@ -3802,7 +3802,7 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self
@@ -3813,7 +3813,7 @@ r_return
 suffix:semicolon
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self-&gt;magic
@@ -4054,7 +4054,7 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self
@@ -4067,7 +4067,7 @@ l_int|1
 suffix:semicolon
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self-&gt;magic
@@ -4080,7 +4080,7 @@ l_int|1
 suffix:semicolon
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|skb
@@ -4227,7 +4227,7 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self
@@ -4240,7 +4240,7 @@ l_int|1
 suffix:semicolon
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self-&gt;magic
@@ -4253,7 +4253,7 @@ l_int|1
 suffix:semicolon
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|skb
@@ -4337,7 +4337,7 @@ id|tty_struct
 op_star
 id|tty
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self
@@ -4348,7 +4348,7 @@ r_return
 suffix:semicolon
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self-&gt;magic

@@ -8089,7 +8089,6 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; *&t;Are the two ports equivalent?&n; */
 DECL|function|uart_match_port
-r_static
 r_int
 id|uart_match_port
 c_func
@@ -8162,6 +8161,13 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|variable|uart_match_port
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|uart_match_port
+)paren
+suffix:semicolon
 multiline_comment|/*&n; *&t;Try to find an unused uart_state slot for a port.&n; */
 r_static
 r_struct

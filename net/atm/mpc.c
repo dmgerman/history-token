@@ -2529,6 +2529,7 @@ id|retval
 suffix:semicolon
 )brace
 DECL|function|atm_mpoa_vcc_attach
+r_static
 r_int
 id|atm_mpoa_vcc_attach
 c_func
@@ -3534,6 +3535,7 @@ multiline_comment|/* members not explicitly initialised will be 0 */
 )brace
 suffix:semicolon
 DECL|function|atm_mpoa_mpoad_attach
+r_static
 r_int
 id|atm_mpoa_mpoad_attach
 (paren
@@ -6997,6 +6999,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|atm_mpoa_cleanup
+r_static
 r_void
 id|__exit
 id|atm_mpoa_cleanup

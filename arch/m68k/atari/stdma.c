@@ -21,6 +21,7 @@ macro_line|#include &lt;linux/genhd.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
+macro_line|#include &lt;linux/wait.h&gt;
 macro_line|#include &lt;asm/atari_stdma.h&gt;
 macro_line|#include &lt;asm/atariints.h&gt;
 macro_line|#include &lt;asm/atarihw.h&gt;
@@ -123,21 +124,16 @@ id|flags
 )paren
 suffix:semicolon
 multiline_comment|/* protect lock */
-r_while
-c_loop
-(paren
-id|stdma_locked
-)paren
-(brace
-multiline_comment|/* Since the DMA is used for file system purposes, we&n;&t;&t; have to sleep uninterruptible (there may be locked&n;&t;&t; buffers) */
-id|sleep_on
+multiline_comment|/* Since the DMA is used for file system purposes, we&n;&t; have to sleep uninterruptible (there may be locked&n;&t; buffers) */
+id|wait_event
 c_func
 (paren
-op_amp
 id|stdma_wait
+comma
+op_logical_neg
+id|stdma_locked
 )paren
 suffix:semicolon
-)brace
 id|stdma_locked
 op_assign
 l_int|1

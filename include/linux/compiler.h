@@ -11,6 +11,8 @@ DECL|macro|__safe
 macro_line|# define __safe&t;&t;__attribute__((safe))
 DECL|macro|__force
 macro_line|# define __force&t;__attribute__((force))
+DECL|macro|__nocast
+macro_line|# define __nocast&t;__attribute__((nocast))
 DECL|macro|__iomem
 macro_line|# define __iomem&t;__attribute__((noderef, address_space(2)))
 DECL|macro|__acquires
@@ -52,6 +54,8 @@ DECL|macro|__safe
 macro_line|# define __safe
 DECL|macro|__force
 macro_line|# define __force
+DECL|macro|__nocast
+macro_line|# define __nocast
 DECL|macro|__iomem
 macro_line|# define __iomem
 DECL|macro|__chk_user_ptr

@@ -713,7 +713,7 @@ op_eq
 l_int|0
 )paren
 (brace
-id|WARNING
+id|IRDA_WARNING
 c_func
 (paren
 l_string|&quot;%s(), Detected buggy peer, adjust null PV to 0x1!&bslash;n&quot;
@@ -974,7 +974,7 @@ op_star
 r_new
 )paren
 (brace
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|qos
@@ -985,7 +985,7 @@ r_return
 suffix:semicolon
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 r_new
@@ -1193,7 +1193,7 @@ id|qos-&gt;min_turn_time.value
 r_int
 id|i
 suffix:semicolon
-id|WARNING
+id|IRDA_WARNING
 c_func
 (paren
 l_string|&quot;%s(), Detected buggy peer, adjust mtt to %dus!&bslash;n&quot;
@@ -1342,7 +1342,7 @@ OG
 id|line_capacity
 )paren
 (brace
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|index
@@ -1410,7 +1410,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|WARNING
+id|IRDA_WARNING
 c_func
 (paren
 l_string|&quot;%s(), nothing more we can do!&bslash;n&quot;
@@ -1916,7 +1916,7 @@ op_star
 )paren
 id|instance
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self
@@ -1929,7 +1929,7 @@ l_int|1
 suffix:semicolon
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self-&gt;magic
@@ -2047,7 +2047,7 @@ op_star
 )paren
 id|instance
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self
@@ -2060,7 +2060,7 @@ l_int|1
 suffix:semicolon
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self-&gt;magic
@@ -2161,7 +2161,7 @@ op_star
 )paren
 id|instance
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self
@@ -2174,7 +2174,7 @@ l_int|1
 suffix:semicolon
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self-&gt;magic
@@ -2239,7 +2239,7 @@ op_star
 )paren
 id|instance
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self
@@ -2252,7 +2252,7 @@ l_int|1
 suffix:semicolon
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self-&gt;magic
@@ -2317,7 +2317,7 @@ op_star
 )paren
 id|instance
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self
@@ -2330,7 +2330,7 @@ l_int|1
 suffix:semicolon
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self-&gt;magic
@@ -2395,7 +2395,7 @@ op_star
 )paren
 id|instance
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self
@@ -2408,7 +2408,7 @@ l_int|1
 suffix:semicolon
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self-&gt;magic
@@ -2473,7 +2473,7 @@ op_star
 )paren
 id|instance
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self
@@ -2486,7 +2486,7 @@ l_int|1
 suffix:semicolon
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self-&gt;magic
@@ -2579,7 +2579,7 @@ comma
 l_int|4
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 (paren
@@ -2601,7 +2601,7 @@ l_int|0
 suffix:semicolon
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 (paren
@@ -2716,7 +2716,7 @@ id|qos
 r_int
 id|index
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|qos

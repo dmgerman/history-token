@@ -883,6 +883,9 @@ r_int
 id|setup_serial
 c_func
 (paren
+id|client_handle_t
+id|handle
+comma
 r_struct
 id|serial_info
 op_star
@@ -936,6 +939,15 @@ suffix:semicolon
 id|port.uartclk
 op_assign
 l_int|1843200
+suffix:semicolon
+id|port.dev
+op_assign
+op_amp
+id|handle_to_dev
+c_func
+(paren
+id|handle
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -1384,6 +1396,8 @@ r_return
 id|setup_serial
 c_func
 (paren
+id|handle
+comma
 id|info
 comma
 id|port
@@ -1857,6 +1871,8 @@ r_return
 id|setup_serial
 c_func
 (paren
+id|handle
+comma
 id|info
 comma
 id|link-&gt;io.BasePort1
@@ -2367,6 +2383,8 @@ l_int|3
 id|setup_serial
 c_func
 (paren
+id|handle
+comma
 id|info
 comma
 id|base2
@@ -2390,6 +2408,8 @@ r_else
 id|setup_serial
 c_func
 (paren
+id|handle
+comma
 id|info
 comma
 id|link-&gt;io.BasePort1
@@ -2415,6 +2435,8 @@ suffix:semicolon
 id|setup_serial
 c_func
 (paren
+id|handle
+comma
 id|info
 comma
 id|link-&gt;io.BasePort1
@@ -2452,6 +2474,8 @@ op_increment
 id|setup_serial
 c_func
 (paren
+id|handle
+comma
 id|info
 comma
 id|base2

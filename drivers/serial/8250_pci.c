@@ -14,6 +14,8 @@ macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &quot;8250.h&quot;
+DECL|macro|SERIAL_DEBUG_PCI
+macro_line|#undef SERIAL_DEBUG_PCI
 multiline_comment|/*&n; * Definitions for PCI support.&n; */
 DECL|macro|FL_BASE_MASK
 mdefine_line|#define FL_BASE_MASK&t;&t;0x0007
@@ -7124,6 +7126,22 @@ id|pbn_b2_8_115200
 )brace
 comma
 (brace
+id|PCI_VENDOR_ID_SEALEVEL
+comma
+id|PCI_DEVICE_ID_SEALEVEL_UCOMM8
+comma
+id|PCI_ANY_ID
+comma
+id|PCI_ANY_ID
+comma
+l_int|0
+comma
+l_int|0
+comma
+id|pbn_b2_8_115200
+)brace
+comma
+(brace
 id|PCI_VENDOR_ID_PLX
 comma
 id|PCI_DEVICE_ID_PLX_GTEK_SERIAL2
@@ -8371,6 +8389,22 @@ id|pbn_sgi_ioc3
 )brace
 comma
 multiline_comment|/*&n;&t; * HP Diva card&n;&t; */
+(brace
+id|PCI_VENDOR_ID_HP
+comma
+id|PCI_DEVICE_ID_HP_DIVA
+comma
+id|PCI_VENDOR_ID_HP
+comma
+id|PCI_DEVICE_ID_HP_DIVA_RMP3
+comma
+l_int|0
+comma
+l_int|0
+comma
+id|pbn_b1_1_115200
+)brace
+comma
 (brace
 id|PCI_VENDOR_ID_HP
 comma
