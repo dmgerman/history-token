@@ -3808,10 +3808,6 @@ comma
 id|flags
 )paren
 suffix:semicolon
-id|ei
-op_assign
-id|cp-&gt;err_info
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -3832,6 +3828,10 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
+id|ei
+op_assign
+id|cp-&gt;err_info
+suffix:semicolon
 id|cdb
 (braket
 l_int|0
