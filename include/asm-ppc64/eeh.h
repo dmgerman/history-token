@@ -12,7 +12,7 @@ id|device_node
 suffix:semicolon
 multiline_comment|/* I/O addresses are converted to EEH &quot;tokens&quot; such that a driver will cause&n; * a bad page fault if the address is used directly (i.e. these addresses are&n; * never actually mapped.  Translation between IO &lt;-&gt; EEH region is 1 to 1.&n; */
 DECL|macro|IO_TOKEN_TO_ADDR
-mdefine_line|#define IO_TOKEN_TO_ADDR(token) &bslash;&n;&t;(((unsigned long)(token) &amp; ~(0xfUL &lt;&lt; REGION_SHIFT)) | &bslash;&n;&t;(IO_REGION_ID &lt;&lt; REGION_SHIFT))
+mdefine_line|#define IO_TOKEN_TO_ADDR(token) &bslash;&n;&t;(((unsigned long __force)(token) &amp; ~(0xfUL &lt;&lt; REGION_SHIFT)) | &bslash;&n;&t;(IO_REGION_ID &lt;&lt; REGION_SHIFT))
 DECL|macro|IO_ADDR_TO_TOKEN
 mdefine_line|#define IO_ADDR_TO_TOKEN(addr) &bslash;&n;&t;(((unsigned long)(addr) &amp; ~(0xfUL &lt;&lt; REGION_SHIFT)) | &bslash;&n;&t;(EEH_REGION_ID &lt;&lt; REGION_SHIFT))
 multiline_comment|/* Values for eeh_mode bits in device_node */
@@ -34,7 +34,10 @@ r_int
 id|eeh_check_failure
 c_func
 (paren
+r_const
+r_volatile
 r_void
+id|__iomem
 op_star
 id|token
 comma
@@ -58,6 +61,7 @@ id|dev
 )paren
 suffix:semicolon
 r_void
+id|__iomem
 op_star
 id|eeh_ioremap
 c_func
@@ -67,6 +71,7 @@ r_int
 id|addr
 comma
 r_void
+id|__iomem
 op_star
 id|vaddr
 )paren
@@ -149,7 +154,10 @@ id|u8
 id|eeh_readb
 c_func
 (paren
+r_const
+r_volatile
 r_void
+id|__iomem
 op_star
 id|addr
 )paren
@@ -217,7 +225,9 @@ c_func
 id|u8
 id|val
 comma
+r_volatile
 r_void
+id|__iomem
 op_star
 id|addr
 )paren
@@ -254,7 +264,10 @@ id|u16
 id|eeh_readw
 c_func
 (paren
+r_const
+r_volatile
 r_void
+id|__iomem
 op_star
 id|addr
 )paren
@@ -322,7 +335,9 @@ c_func
 id|u16
 id|val
 comma
+r_volatile
 r_void
+id|__iomem
 op_star
 id|addr
 )paren
@@ -359,7 +374,10 @@ id|u16
 id|eeh_raw_readw
 c_func
 (paren
+r_const
+r_volatile
 r_void
+id|__iomem
 op_star
 id|addr
 )paren
@@ -427,7 +445,9 @@ c_func
 id|u16
 id|val
 comma
+r_volatile
 r_void
+id|__iomem
 op_star
 id|addr
 )paren
@@ -464,7 +484,10 @@ id|u32
 id|eeh_readl
 c_func
 (paren
+r_const
+r_volatile
 r_void
+id|__iomem
 op_star
 id|addr
 )paren
@@ -532,7 +555,9 @@ c_func
 id|u32
 id|val
 comma
+r_volatile
 r_void
+id|__iomem
 op_star
 id|addr
 )paren
@@ -569,7 +594,10 @@ id|u32
 id|eeh_raw_readl
 c_func
 (paren
+r_const
+r_volatile
 r_void
+id|__iomem
 op_star
 id|addr
 )paren
@@ -637,7 +665,9 @@ c_func
 id|u32
 id|val
 comma
+r_volatile
 r_void
+id|__iomem
 op_star
 id|addr
 )paren
@@ -674,7 +704,10 @@ id|u64
 id|eeh_readq
 c_func
 (paren
+r_const
+r_volatile
 r_void
+id|__iomem
 op_star
 id|addr
 )paren
@@ -742,7 +775,9 @@ c_func
 id|u64
 id|val
 comma
+r_volatile
 r_void
+id|__iomem
 op_star
 id|addr
 )paren
@@ -779,7 +814,10 @@ id|u64
 id|eeh_raw_readq
 c_func
 (paren
+r_const
+r_volatile
 r_void
+id|__iomem
 op_star
 id|addr
 )paren
@@ -847,7 +885,9 @@ c_func
 id|u64
 id|val
 comma
+r_volatile
 r_void
+id|__iomem
 op_star
 id|addr
 )paren
@@ -886,7 +926,9 @@ r_void
 id|eeh_memset_io
 c_func
 (paren
+r_volatile
 r_void
+id|__iomem
 op_star
 id|addr
 comma
@@ -1077,7 +1119,10 @@ r_void
 op_star
 id|dest
 comma
+r_const
+r_volatile
 r_void
+id|__iomem
 op_star
 id|src
 comma
@@ -1110,7 +1155,11 @@ op_star
 id|destsave
 op_assign
 id|dest
-comma
+suffix:semicolon
+r_const
+r_volatile
+r_void
+id|__iomem
 op_star
 id|srcsave
 op_assign
@@ -1436,7 +1485,9 @@ r_void
 id|eeh_memcpy_toio
 c_func
 (paren
+r_volatile
 r_void
+id|__iomem
 op_star
 id|dest
 comma
@@ -1755,6 +1806,7 @@ c_func
 (paren
 (paren
 r_void
+id|__iomem
 op_star
 )paren
 (paren
@@ -1871,6 +1923,7 @@ c_func
 (paren
 (paren
 r_void
+id|__iomem
 op_star
 )paren
 (paren
@@ -1987,6 +2040,7 @@ c_func
 (paren
 (paren
 r_void
+id|__iomem
 op_star
 )paren
 (paren
@@ -2110,6 +2164,7 @@ c_func
 (paren
 (paren
 r_void
+id|__iomem
 op_star
 )paren
 (paren
@@ -2193,6 +2248,7 @@ c_func
 (paren
 (paren
 r_void
+id|__iomem
 op_star
 )paren
 (paren
@@ -2276,6 +2332,7 @@ c_func
 (paren
 (paren
 r_void
+id|__iomem
 op_star
 )paren
 (paren

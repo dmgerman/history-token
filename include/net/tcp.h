@@ -3062,20 +3062,6 @@ op_star
 )paren
 suffix:semicolon
 r_extern
-r_int
-id|tcp_transmit_skb
-c_func
-(paren
-r_struct
-id|sock
-op_star
-comma
-r_struct
-id|sk_buff
-op_star
-)paren
-suffix:semicolon
-r_extern
 r_void
 id|tcp_push_one
 c_func
@@ -4985,9 +4971,6 @@ op_star
 comma
 r_int
 r_int
-comma
-r_int
-r_int
 )paren
 suffix:semicolon
 multiline_comment|/* This checks if the data bearing packet SKB (usually sk-&gt;sk_send_head)&n; * should be put on the wire right now.&n; */
@@ -5037,8 +5020,6 @@ id|tcp_set_skb_tso_factor
 c_func
 (paren
 id|skb
-comma
-id|cur_mss
 comma
 id|tp-&gt;mss_cache_std
 )paren

@@ -11226,6 +11226,13 @@ c_func
 id|dev_change_flags
 )paren
 suffix:semicolon
+DECL|variable|dev_change_name
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|dev_change_name
+)paren
+suffix:semicolon
 DECL|variable|dev_set_mtu
 id|EXPORT_SYMBOL
 c_func

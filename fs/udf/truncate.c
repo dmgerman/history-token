@@ -17,13 +17,13 @@ id|inode
 op_star
 id|inode
 comma
-id|lb_addr
+id|kernel_lb_addr
 id|bloc
 comma
 r_int
 id|extoffset
 comma
-id|lb_addr
+id|kernel_lb_addr
 id|eloc
 comma
 r_int8
@@ -41,7 +41,7 @@ r_uint32
 id|nelen
 )paren
 (brace
-id|lb_addr
+id|kernel_lb_addr
 id|neloc
 op_assign
 (brace
@@ -228,7 +228,7 @@ op_star
 id|inode
 )paren
 (brace
-id|lb_addr
+id|kernel_lb_addr
 id|bloc
 comma
 id|eloc
@@ -607,7 +607,7 @@ op_star
 id|inode
 )paren
 (brace
-id|lb_addr
+id|kernel_lb_addr
 id|bloc
 comma
 id|eloc
@@ -1377,7 +1377,7 @@ l_int|30
 )paren
 )paren
 (brace
-id|lb_addr
+id|kernel_lb_addr
 id|neloc
 op_assign
 (brace
@@ -1529,7 +1529,7 @@ l_int|0x00
 comma
 r_sizeof
 (paren
-id|lb_addr
+id|kernel_lb_addr
 )paren
 )paren
 suffix:semicolon

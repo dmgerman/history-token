@@ -23,7 +23,7 @@ comma
 r_uint8
 id|ad_size
 comma
-id|lb_addr
+id|kernel_lb_addr
 id|fe_loc
 comma
 r_int
@@ -325,7 +325,7 @@ id|fileIdentDesc
 op_star
 id|cfi
 comma
-id|lb_addr
+id|kernel_lb_addr
 op_star
 id|bloc
 comma
@@ -333,7 +333,7 @@ r_uint32
 op_star
 id|extoffset
 comma
-id|lb_addr
+id|kernel_lb_addr
 op_star
 id|eloc
 comma

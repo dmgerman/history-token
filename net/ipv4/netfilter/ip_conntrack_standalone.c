@@ -49,6 +49,13 @@ comma
 id|ip_conntrack_stat
 )paren
 suffix:semicolon
+DECL|variable|ip_ct_log_invalid
+r_int
+r_int
+id|ip_ct_log_invalid
+op_assign
+l_int|0
+suffix:semicolon
 DECL|function|kill_proto
 r_static
 r_int
@@ -2225,13 +2232,6 @@ r_int
 id|ip_ct_generic_timeout
 suffix:semicolon
 multiline_comment|/* Log invalid packets of a given protocol */
-DECL|variable|ip_ct_log_invalid
-r_int
-r_int
-id|ip_ct_log_invalid
-op_assign
-l_int|0
-suffix:semicolon
 DECL|variable|log_invalid_proto_min
 r_static
 r_int

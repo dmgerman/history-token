@@ -1247,8 +1247,9 @@ suffix:semicolon
 )brace
 r_else
 (brace
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|dest
 op_assign
 id|tp-&gt;regs
@@ -1291,8 +1292,9 @@ id|u32
 id|val
 )paren
 (brace
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|mbox
 op_assign
 id|tp-&gt;regs
@@ -1340,8 +1342,9 @@ id|u32
 id|val
 )paren
 (brace
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|mbox
 op_assign
 id|tp-&gt;regs
@@ -12971,8 +12974,9 @@ id|tp-&gt;tx_buffers
 id|entry
 )braket
 suffix:semicolon
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|txd
 suffix:semicolon
 id|txd
@@ -14566,10 +14570,12 @@ op_star
 id|tp
 )paren
 (brace
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|start
 comma
+op_star
 id|end
 suffix:semicolon
 id|u32
@@ -38867,8 +38873,9 @@ op_eq
 id|CHIPREV_ID_5701_B5
 )paren
 (brace
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|sram_base
 suffix:semicolon
 multiline_comment|/* Write some dummy words into the SRAM status block&n;&t;&t;&t; * area, see if it reads back correctly.  If the return&n;&t;&t;&t; * value is bad, force enable the PCIX workaround.&n;&t;&t;&t; */
@@ -41846,10 +41853,6 @@ id|tp
 suffix:semicolon
 id|tp-&gt;regs
 op_assign
-(paren
-r_int
-r_int
-)paren
 id|ioremap
 c_func
 (paren
@@ -42547,10 +42550,6 @@ suffix:colon
 id|iounmap
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 id|tp-&gt;regs
 )paren
 suffix:semicolon
@@ -42640,10 +42639,6 @@ suffix:semicolon
 id|iounmap
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 id|tp-&gt;regs
 )paren
 suffix:semicolon

@@ -8,7 +8,7 @@ id|u32
 id|pci_mmcfg_base_addr
 suffix:semicolon
 DECL|macro|mmcfg_virt_addr
-mdefine_line|#define mmcfg_virt_addr (fix_to_virt(FIX_PCIE_MCFG))
+mdefine_line|#define mmcfg_virt_addr ((void __iomem *) fix_to_virt(FIX_PCIE_MCFG))
 multiline_comment|/* The base address of the last MMCONFIG device accessed */
 DECL|variable|mmcfg_last_accessed_device
 r_static

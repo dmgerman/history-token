@@ -3267,15 +3267,24 @@ c_cond
 op_logical_neg
 id|hwif-&gt;rqsize
 )paren
+(brace
+r_if
+c_cond
+(paren
+id|hwif-&gt;no_lba48
+op_logical_or
+id|hwif-&gt;no_lba48_dma
+)paren
 id|hwif-&gt;rqsize
 op_assign
-id|hwif-&gt;no_lba48
-ques
-c_cond
 l_int|256
-suffix:colon
+suffix:semicolon
+r_else
+id|hwif-&gt;rqsize
+op_assign
 l_int|65536
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -3296,7 +3305,7 @@ id|max_sectors
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_PCI
-multiline_comment|/* When we have an IOMMU, we may have a problem where pci_map_sg()&n;&t; * creates segments that don&squot;t completely match our boundary&n;&t; * requirements and thus need to be broken up again. Because it&n;&t; * doesn&squot;t align properly neither, we may actually have to break up&n;&t; * to more segments than what was we got in the first place, a max&n;&t; * worst case is twice as many.&n;&t; * This will be fixed once we teach pci_map_sg() about our boundary&n;&t; * requirements, hopefully soon&n;&t; */
+multiline_comment|/* When we have an IOMMU, we may have a problem where pci_map_sg()&n;&t; * creates segments that don&squot;t completely match our boundary&n;&t; * requirements and thus need to be broken up again. Because it&n;&t; * doesn&squot;t align properly either, we may actually have to break up&n;&t; * to more segments than what was we got in the first place, a max&n;&t; * worst case is twice as many.&n;&t; * This will be fixed once we teach pci_map_sg() about our boundary&n;&t; * requirements, hopefully soon. *FIXME*&n;&t; */
 r_if
 c_cond
 (paren

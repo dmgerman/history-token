@@ -6,7 +6,7 @@ r_struct
 id|ext2_inode_info
 (brace
 DECL|member|i_data
-id|__u32
+id|__le32
 id|i_data
 (braket
 l_int|15

@@ -368,6 +368,11 @@ id|u8
 id|readb
 c_func
 (paren
+(paren
+r_void
+id|__iomem
+op_star
+)paren
 id|port
 )paren
 suffix:semicolon
@@ -389,6 +394,11 @@ id|u16
 id|readw
 c_func
 (paren
+(paren
+r_void
+id|__iomem
+op_star
+)paren
 id|port
 )paren
 suffix:semicolon
@@ -413,6 +423,11 @@ id|count
 id|__ide_mm_insw
 c_func
 (paren
+(paren
+r_void
+id|__iomem
+op_star
+)paren
 id|port
 comma
 id|addr
@@ -438,6 +453,11 @@ id|u32
 id|readl
 c_func
 (paren
+(paren
+r_void
+id|__iomem
+op_star
+)paren
 id|port
 )paren
 suffix:semicolon
@@ -462,6 +482,11 @@ id|count
 id|__ide_mm_insl
 c_func
 (paren
+(paren
+r_void
+id|__iomem
+op_star
+)paren
 id|port
 comma
 id|addr
@@ -488,6 +513,11 @@ c_func
 (paren
 id|value
 comma
+(paren
+r_void
+id|__iomem
+op_star
+)paren
 id|port
 )paren
 suffix:semicolon
@@ -514,6 +544,11 @@ c_func
 (paren
 id|value
 comma
+(paren
+r_void
+id|__iomem
+op_star
+)paren
 id|port
 )paren
 suffix:semicolon
@@ -536,6 +571,11 @@ c_func
 (paren
 id|value
 comma
+(paren
+r_void
+id|__iomem
+op_star
+)paren
 id|port
 )paren
 suffix:semicolon
@@ -560,6 +600,11 @@ id|count
 id|__ide_mm_outsw
 c_func
 (paren
+(paren
+r_void
+id|__iomem
+op_star
+)paren
 id|port
 comma
 id|addr
@@ -586,6 +631,11 @@ c_func
 (paren
 id|value
 comma
+(paren
+r_void
+id|__iomem
+op_star
+)paren
 id|port
 )paren
 suffix:semicolon
@@ -610,6 +660,11 @@ id|count
 id|__ide_mm_outsl
 c_func
 (paren
+(paren
+r_void
+id|__iomem
+op_star
+)paren
 id|port
 comma
 id|addr
@@ -5095,7 +5150,6 @@ r_else
 id|drive-&gt;failures
 op_increment
 suffix:semicolon
-macro_line|#if FANCY_STATUS_DUMPS
 id|printk
 c_func
 (paren
@@ -5195,14 +5249,6 @@ c_func
 l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#else
-id|printk
-c_func
-(paren
-l_string|&quot;failed&bslash;n&quot;
-)paren
-suffix:semicolon
-macro_line|#endif /* FANCY_STATUS_DUMPS */
 )brace
 )brace
 id|hwgroup-&gt;poll_timeout

@@ -443,6 +443,11 @@ c_func
 (paren
 id|tf-&gt;ctl
 comma
+(paren
+r_void
+id|__iomem
+op_star
+)paren
 id|ap-&gt;ioaddr.ctl_addr
 )paren
 suffix:semicolon
@@ -476,6 +481,7 @@ id|tf-&gt;hob_feature
 comma
 (paren
 r_void
+id|__iomem
 op_star
 )paren
 id|ioaddr-&gt;feature_addr
@@ -488,6 +494,7 @@ id|tf-&gt;hob_nsect
 comma
 (paren
 r_void
+id|__iomem
 op_star
 )paren
 id|ioaddr-&gt;nsect_addr
@@ -500,6 +507,7 @@ id|tf-&gt;hob_lbal
 comma
 (paren
 r_void
+id|__iomem
 op_star
 )paren
 id|ioaddr-&gt;lbal_addr
@@ -512,6 +520,7 @@ id|tf-&gt;hob_lbam
 comma
 (paren
 r_void
+id|__iomem
 op_star
 )paren
 id|ioaddr-&gt;lbam_addr
@@ -524,6 +533,7 @@ id|tf-&gt;hob_lbah
 comma
 (paren
 r_void
+id|__iomem
 op_star
 )paren
 id|ioaddr-&gt;lbah_addr
@@ -559,6 +569,7 @@ id|tf-&gt;feature
 comma
 (paren
 r_void
+id|__iomem
 op_star
 )paren
 id|ioaddr-&gt;feature_addr
@@ -571,6 +582,7 @@ id|tf-&gt;nsect
 comma
 (paren
 r_void
+id|__iomem
 op_star
 )paren
 id|ioaddr-&gt;nsect_addr
@@ -583,6 +595,7 @@ id|tf-&gt;lbal
 comma
 (paren
 r_void
+id|__iomem
 op_star
 )paren
 id|ioaddr-&gt;lbal_addr
@@ -595,6 +608,7 @@ id|tf-&gt;lbam
 comma
 (paren
 r_void
+id|__iomem
 op_star
 )paren
 id|ioaddr-&gt;lbam_addr
@@ -607,6 +621,7 @@ id|tf-&gt;lbah
 comma
 (paren
 r_void
+id|__iomem
 op_star
 )paren
 id|ioaddr-&gt;lbah_addr
@@ -644,6 +659,7 @@ id|tf-&gt;device
 comma
 (paren
 r_void
+id|__iomem
 op_star
 )paren
 id|ioaddr-&gt;device_addr
@@ -741,6 +757,7 @@ id|tf-&gt;command
 comma
 (paren
 r_void
+id|__iomem
 op_star
 )paren
 id|ap-&gt;ioaddr.command_addr
@@ -1047,6 +1064,7 @@ c_func
 (paren
 (paren
 r_void
+id|__iomem
 op_star
 )paren
 id|ioaddr-&gt;nsect_addr
@@ -1059,6 +1077,7 @@ c_func
 (paren
 (paren
 r_void
+id|__iomem
 op_star
 )paren
 id|ioaddr-&gt;lbal_addr
@@ -1071,6 +1090,7 @@ c_func
 (paren
 (paren
 r_void
+id|__iomem
 op_star
 )paren
 id|ioaddr-&gt;lbam_addr
@@ -1083,6 +1103,7 @@ c_func
 (paren
 (paren
 r_void
+id|__iomem
 op_star
 )paren
 id|ioaddr-&gt;lbah_addr
@@ -1095,6 +1116,7 @@ c_func
 (paren
 (paren
 r_void
+id|__iomem
 op_star
 )paren
 id|ioaddr-&gt;device_addr
@@ -1115,6 +1137,11 @@ id|tf-&gt;ctl
 op_or
 id|ATA_HOB
 comma
+(paren
+r_void
+id|__iomem
+op_star
+)paren
 id|ap-&gt;ioaddr.ctl_addr
 )paren
 suffix:semicolon
@@ -1125,6 +1152,7 @@ c_func
 (paren
 (paren
 r_void
+id|__iomem
 op_star
 )paren
 id|ioaddr-&gt;error_addr
@@ -1137,6 +1165,7 @@ c_func
 (paren
 (paren
 r_void
+id|__iomem
 op_star
 )paren
 id|ioaddr-&gt;nsect_addr
@@ -1149,6 +1178,7 @@ c_func
 (paren
 (paren
 r_void
+id|__iomem
 op_star
 )paren
 id|ioaddr-&gt;lbal_addr
@@ -1161,6 +1191,7 @@ c_func
 (paren
 (paren
 r_void
+id|__iomem
 op_star
 )paren
 id|ioaddr-&gt;lbam_addr
@@ -1173,6 +1204,7 @@ c_func
 (paren
 (paren
 r_void
+id|__iomem
 op_star
 )paren
 id|ioaddr-&gt;lbah_addr
@@ -1218,6 +1250,7 @@ c_func
 (paren
 (paren
 r_void
+id|__iomem
 op_star
 )paren
 id|ap-&gt;ioaddr.status_addr
@@ -2027,6 +2060,7 @@ l_int|0x55
 comma
 (paren
 r_void
+id|__iomem
 op_star
 )paren
 id|ioaddr-&gt;nsect_addr
@@ -2039,6 +2073,7 @@ l_int|0xaa
 comma
 (paren
 r_void
+id|__iomem
 op_star
 )paren
 id|ioaddr-&gt;lbal_addr
@@ -2051,6 +2086,7 @@ l_int|0xaa
 comma
 (paren
 r_void
+id|__iomem
 op_star
 )paren
 id|ioaddr-&gt;nsect_addr
@@ -2063,6 +2099,7 @@ l_int|0x55
 comma
 (paren
 r_void
+id|__iomem
 op_star
 )paren
 id|ioaddr-&gt;lbal_addr
@@ -2075,6 +2112,7 @@ l_int|0x55
 comma
 (paren
 r_void
+id|__iomem
 op_star
 )paren
 id|ioaddr-&gt;nsect_addr
@@ -2087,6 +2125,7 @@ l_int|0xaa
 comma
 (paren
 r_void
+id|__iomem
 op_star
 )paren
 id|ioaddr-&gt;lbal_addr
@@ -2099,6 +2138,7 @@ c_func
 (paren
 (paren
 r_void
+id|__iomem
 op_star
 )paren
 id|ioaddr-&gt;nsect_addr
@@ -2111,6 +2151,7 @@ c_func
 (paren
 (paren
 r_void
+id|__iomem
 op_star
 )paren
 id|ioaddr-&gt;lbal_addr
@@ -2595,6 +2636,7 @@ id|tmp
 comma
 (paren
 r_void
+id|__iomem
 op_star
 )paren
 id|ap-&gt;ioaddr.device_addr
@@ -4987,6 +5029,7 @@ c_func
 (paren
 (paren
 r_void
+id|__iomem
 op_star
 )paren
 id|ioaddr-&gt;nsect_addr
@@ -4999,6 +5042,7 @@ c_func
 (paren
 (paren
 r_void
+id|__iomem
 op_star
 )paren
 id|ioaddr-&gt;lbal_addr
@@ -5244,6 +5288,11 @@ c_func
 (paren
 id|ap-&gt;ctl
 comma
+(paren
+r_void
+id|__iomem
+op_star
+)paren
 id|ioaddr-&gt;ctl_addr
 )paren
 suffix:semicolon
@@ -5261,6 +5310,11 @@ id|ap-&gt;ctl
 op_or
 id|ATA_SRST
 comma
+(paren
+r_void
+id|__iomem
+op_star
+)paren
 id|ioaddr-&gt;ctl_addr
 )paren
 suffix:semicolon
@@ -5276,6 +5330,11 @@ c_func
 (paren
 id|ap-&gt;ctl
 comma
+(paren
+r_void
+id|__iomem
+op_star
+)paren
 id|ioaddr-&gt;ctl_addr
 )paren
 suffix:semicolon
@@ -5516,6 +5575,11 @@ c_func
 (paren
 id|ap-&gt;ctl
 comma
+(paren
+r_void
+id|__iomem
+op_star
+)paren
 id|ioaddr-&gt;ctl_addr
 )paren
 suffix:semicolon
@@ -5679,6 +5743,11 @@ c_func
 (paren
 id|ap-&gt;ctl
 comma
+(paren
+r_void
+id|__iomem
+op_star
+)paren
 id|ioaddr-&gt;ctl_addr
 )paren
 suffix:semicolon
@@ -7370,11 +7439,13 @@ op_star
 id|buf
 suffix:semicolon
 r_void
+id|__iomem
 op_star
 id|mmio
 op_assign
 (paren
 r_void
+id|__iomem
 op_star
 )paren
 id|ap-&gt;ioaddr.data_addr
@@ -9195,11 +9266,13 @@ id|u8
 id|dmactl
 suffix:semicolon
 r_void
+id|__iomem
 op_star
 id|mmio
 op_assign
 (paren
 r_void
+id|__iomem
 op_star
 )paren
 id|ap-&gt;ioaddr.bmdma_addr
@@ -9293,11 +9366,13 @@ op_assign
 id|qc-&gt;ap
 suffix:semicolon
 r_void
+id|__iomem
 op_star
 id|mmio
 op_assign
 (paren
 r_void
+id|__iomem
 op_star
 )paren
 id|ap-&gt;ioaddr.bmdma_addr
