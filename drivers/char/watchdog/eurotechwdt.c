@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&t;Eurotech CPU-1220/1410 on board WDT driver for Linux 2.4.x&n; *&n; *&t;(c) Copyright 2001 Ascensit &lt;support@ascensit.com&gt;&n; *&t;(c) Copyright 2001 Rodolfo Giometti &lt;giometti@ascensit.com&gt;&n; *&n; *&t;Based on wdt.c.&n; *&t;Original copyright messages:&n; *&n; *      (c) Copyright 1996-1997 Alan Cox &lt;alan@redhat.com&gt;, All Rights Reserved.&n; *                              http://www.redhat.com&n; *&n; *      This program is free software; you can redistribute it and/or&n; *      modify it under the terms of the GNU General Public License&n; *      as published by the Free Software Foundation; either version&n; *      2 of the License, or (at your option) any later version.&n; *&n; *      Neither Alan Cox nor CymruNet Ltd. admit liability nor provide&n; *      warranty for any of this software. This material is provided&n; *      &quot;AS-IS&quot; and at no charge.&n; *&n; *      (c) Copyright 1995    Alan Cox &lt;alan@lxorguk.ukuu.org.uk&gt;*&n; *&n; *      14-Dec-2001 Matt Domsch &lt;Matt_Domsch@dell.com&gt;&n; *          Added nowayout module option to override CONFIG_WATCHDOG_NOWAYOUT&n; *          Added timeout module option to override default&n; */
+multiline_comment|/*&n; *&t;Eurotech CPU-1220/1410 on board WDT driver for Linux 2.4.x&n; *&n; *&t;(c) Copyright 2001 Ascensit &lt;support@ascensit.com&gt;&n; *&t;(c) Copyright 2001 Rodolfo Giometti &lt;giometti@ascensit.com&gt;&n; *&n; *&t;Based on wdt.c.&n; *&t;Original copyright messages:&n; *&n; *&t;(c) Copyright 1996-1997 Alan Cox &lt;alan@redhat.com&gt;, All Rights Reserved.&n; *&t;http://www.redhat.com&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *&t;modify it under the terms of the GNU General Public License&n; *&t;as published by the Free Software Foundation; either version&n; *&t;2 of the License, or (at your option) any later version.&n; *&n; *&t;Neither Alan Cox nor CymruNet Ltd. admit liability nor provide&n; *&t;warranty for any of this software. This material is provided&n; *&t;&quot;AS-IS&quot; and at no charge.&n; *&n; *&t;(c) Copyright 1995 Alan Cox &lt;alan@lxorguk.ukuu.org.uk&gt;&n; *&n; *&t;14-Dec-2001 Matt Domsch &lt;Matt_Domsch@dell.com&gt;&n; *&t;  Added nowayout module option to override CONFIG_WATCHDOG_NOWAYOUT&n; *&t;  Added timeout module option to override default&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -28,7 +28,7 @@ r_static
 id|spinlock_t
 id|eurwdt_lock
 suffix:semicolon
-multiline_comment|/*&n; *      You must set these - there is no sane way to probe for this board.&n; *      You can use wdt=x,y to set these now.&n; */
+multiline_comment|/*&n; * You must set these - there is no sane way to probe for this board.&n; * You can use wdt=x,y to set these now.&n; */
 DECL|variable|io
 r_static
 r_int
@@ -52,7 +52,7 @@ op_assign
 l_string|&quot;int&quot;
 suffix:semicolon
 DECL|macro|WDT_TIMEOUT
-mdefine_line|#define WDT_TIMEOUT&t;&t;60                /* 1 minute */
+mdefine_line|#define WDT_TIMEOUT&t;&t;60&t;/* 1 minute */
 DECL|variable|timeout
 r_static
 r_int
@@ -115,19 +115,19 @@ mdefine_line|#define WDT_CTRL_REG&t;&t;0x30
 DECL|macro|WDT_OUTPIN_CFG
 mdefine_line|#define WDT_OUTPIN_CFG&t;&t;0xe2
 DECL|macro|WDT_EVENT_INT
-mdefine_line|#define WDT_EVENT_INT&t;   0x00
+mdefine_line|#define WDT_EVENT_INT&t;&t;0x00
 DECL|macro|WDT_EVENT_REBOOT
-mdefine_line|#define WDT_EVENT_REBOOT&t;   0x08
+mdefine_line|#define WDT_EVENT_REBOOT&t;0x08
 DECL|macro|WDT_UNIT_SEL
 mdefine_line|#define WDT_UNIT_SEL&t;&t;0xf1
 DECL|macro|WDT_UNIT_SECS
-mdefine_line|#define WDT_UNIT_SECS&t;   0x80
+mdefine_line|#define WDT_UNIT_SECS&t;&t;0x80
 DECL|macro|WDT_TIMEOUT_VAL
 mdefine_line|#define WDT_TIMEOUT_VAL&t;&t;0xf2
 DECL|macro|WDT_TIMER_CFG
 mdefine_line|#define WDT_TIMER_CFG&t;&t;0xf3
 macro_line|#ifndef MODULE
-multiline_comment|/**&n; *      eurwdt_setup:&n; *      @str: command line string&n; *&n; *      Setup options. The board isn&squot;t really probe-able so we have to&n; *      get the user to tell us the configuration. Sane people build it&n; *      modular but the others come here.&n; */
+multiline_comment|/**&n; * eurwdt_setup:&n; * @str: command line string&n; *&n; * Setup options. The board isn&squot;t really probe-able so we have to&n; * get the user to tell us the configuration. Sane people build it&n; * modular but the others come here.&n; */
 DECL|function|eurwdt_setup
 r_static
 r_int
@@ -258,7 +258,7 @@ comma
 l_string|&quot;Eurotech WDT event type (default is `reboot&squot;)&quot;
 )paren
 suffix:semicolon
-multiline_comment|/*&n; *      Programming support&n; */
+multiline_comment|/*&n; * Programming support&n; */
 DECL|function|eurwdt_validate_timeout
 r_static
 r_void
@@ -526,7 +526,7 @@ l_int|0
 suffix:semicolon
 multiline_comment|/* the default timeout */
 )brace
-multiline_comment|/*&n; *      Kernel methods.&n; */
+multiline_comment|/*&n; * Kernel methods.&n; */
 DECL|function|eurwdt_interrupt
 r_void
 id|eurwdt_interrupt
@@ -576,7 +576,7 @@ l_int|NULL
 suffix:semicolon
 macro_line|#endif
 )brace
-multiline_comment|/**&n; *      eurwdt_ping:&n; *&n; *      Reload counter one with the watchdog timeout.&n; */
+multiline_comment|/**&n; * eurwdt_ping:&n; *&n; * Reload counter one with the watchdog timeout.&n; */
 DECL|function|eurwdt_ping
 r_static
 r_void
@@ -594,7 +594,7 @@ id|timeout
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *      eurwdt_write:&n; *      @file: file handle to the watchdog&n; *      @buf: buffer to write (unused as data does not matter here&n; *      @count: count of bytes&n; *      @ppos: pointer to the position to write. No seeks allowed&n; *&n; *      A write to a watchdog device is defined as a keepalive signal. Any&n; *      write of data will do, as we we don&squot;t define content meaning.&n; */
+multiline_comment|/**&n; * eurwdt_write:&n; * @file: file handle to the watchdog&n; * @buf: buffer to write (unused as data does not matter here&n; * @count: count of bytes&n; * @ppos: pointer to the position to write. No seeks allowed&n; *&n; * A write to a watchdog device is defined as a keepalive signal. Any&n; * write of data will do, as we we don&squot;t define content meaning.&n; */
 DECL|function|eurwdt_write
 r_static
 id|ssize_t
@@ -652,7 +652,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *      eurwdt_ioctl:&n; *      @inode: inode of the device&n; *      @file: file handle to the device&n; *      @cmd: watchdog command&n; *      @arg: argument pointer&n; *&n; *      The watchdog API defines a common set of functions for all watchdogs&n; *      according to their available features.&n; */
+multiline_comment|/**&n; * eurwdt_ioctl:&n; * @inode: inode of the device&n; * @file: file handle to the device&n; * @cmd: watchdog command&n; * @arg: argument pointer&n; *&n; * The watchdog API defines a common set of functions for all watchdogs&n; * according to their available features.&n; */
 DECL|function|eurwdt_ioctl
 r_static
 r_int
@@ -827,7 +827,7 @@ l_int|0
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/**&n; *      eurwdt_open:&n; *      @inode: inode of device&n; *      @file: file handle to device&n; *&n; *      The misc device has been opened. The watchdog device is single&n; *      open and on opening we load the counter.&n; */
+multiline_comment|/**&n; * eurwdt_open:&n; * @inode: inode of device&n; * @file: file handle to device&n; *&n; * The misc device has been opened. The watchdog device is single&n; * open and on opening we load the counter.&n; */
 DECL|function|eurwdt_open
 r_static
 r_int
@@ -888,10 +888,8 @@ c_cond
 (paren
 id|nowayout
 )paren
-(brace
 id|MOD_INC_USE_COUNT
 suffix:semicolon
-)brace
 id|eurwdt_is_open
 op_assign
 l_int|1
@@ -928,7 +926,7 @@ id|ENODEV
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/**&n; *      eurwdt_release:&n; *      @inode: inode to board&n; *      @file: file handle to board&n; *&n; *      The watchdog has a configurable API. There is a religious dispute&n; *      between people who want their watchdog to be able to shut down and&n; *      those who want to be sure if the watchdog manager dies the machine&n; *      reboots. In the former case we disable the counters, in the latter&n; *      case you have to open it again very soon.&n; */
+multiline_comment|/**&n; * eurwdt_release:&n; * @inode: inode to board&n; * @file: file handle to board&n; *&n; * The watchdog has a configurable API. There is a religious dispute&n; * between people who want their watchdog to be able to shut down and&n; * those who want to be sure if the watchdog manager dies the machine&n; * reboots. In the former case we disable the counters, in the latter&n; * case you have to open it again very soon.&n; */
 DECL|function|eurwdt_release
 r_static
 r_int
@@ -964,13 +962,11 @@ c_cond
 op_logical_neg
 id|nowayout
 )paren
-(brace
 id|eurwdt_disable_timer
 c_func
 (paren
 )paren
 suffix:semicolon
-)brace
 id|eurwdt_is_open
 op_assign
 l_int|0
@@ -982,7 +978,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *      eurwdt_notify_sys:&n; *      @this: our notifier block&n; *      @code: the event being reported&n; *      @unused: unused&n; *&n; *      Our notifier is called on system shutdowns. We want to turn the card&n; *      off at reboot otherwise the machine will reboot again during memory&n; *      test or worse yet during the following fsck. This would suck, in fact&n; *      trust me - if it happens it does suck.&n; */
+multiline_comment|/**&n; * eurwdt_notify_sys:&n; * @this: our notifier block&n; * @code: the event being reported&n; * @unused: unused&n; *&n; * Our notifier is called on system shutdowns. We want to turn the card&n; * off at reboot otherwise the machine will reboot again during memory&n; * test or worse yet during the following fsck. This would suck, in fact&n; * trust me - if it happens it does suck.&n; */
 DECL|function|eurwdt_notify_sys
 r_static
 r_int
@@ -1026,7 +1022,7 @@ r_return
 id|NOTIFY_DONE
 suffix:semicolon
 )brace
-multiline_comment|/*&n; *      Kernel Interfaces&n; */
+multiline_comment|/*&n; * Kernel Interfaces&n; */
 DECL|variable|eurwdt_fops
 r_static
 r_struct
@@ -1090,7 +1086,7 @@ op_amp
 id|eurwdt_fops
 )brace
 suffix:semicolon
-multiline_comment|/*&n; *      The WDT card needs to learn about soft shutdowns in order to&n; *      turn the timebomb registers off.&n; */
+multiline_comment|/*&n; * The WDT card needs to learn about soft shutdowns in order to&n; * turn the timebomb registers off.&n; */
 DECL|variable|eurwdt_notifier
 r_static
 r_struct
@@ -1105,7 +1101,7 @@ id|eurwdt_notify_sys
 comma
 )brace
 suffix:semicolon
-multiline_comment|/**&n; *      cleanup_module:&n; *&n; *      Unload the watchdog. You cannot do this with any file handles open.&n; *      If your watchdog is set to continue ticking on close and you unload&n; *      it, well it keeps ticking. We won&squot;t get the interrupt but the board&n; *      will not touch PC memory so all is fine. You just have to load a new&n; *      module in 60 seconds or reboot.&n; */
+multiline_comment|/**&n; * cleanup_module:&n; *&n; * Unload the watchdog. You cannot do this with any file handles open.&n; * If your watchdog is set to continue ticking on close and you unload&n; * it, well it keeps ticking. We won&squot;t get the interrupt but the board&n; * will not touch PC memory so all is fine. You just have to load a new&n; * module in 60 seconds or reboot.&n; */
 DECL|function|eurwdt_exit
 r_static
 r_void
@@ -1152,7 +1148,7 @@ l_int|NULL
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *      eurwdt_init:&n; *&n; *      Set up the WDT watchdog board. After grabbing the resources &n; *      we require we need also to unlock the device.&n; *      The open() function will actually kick the board off.&n; */
+multiline_comment|/**&n; * eurwdt_init:&n; *&n; * Set up the WDT watchdog board. After grabbing the resources &n; * we require we need also to unlock the device.&n; * The open() function will actually kick the board off.&n; */
 DECL|function|eurwdt_init
 r_static
 r_int
