@@ -2,7 +2,6 @@ multiline_comment|/**&n; * @file timer_int.c&n; *&n; * @remark Copyright 2002 OP
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/notifier.h&gt;
 macro_line|#include &lt;linux/smp.h&gt;
-macro_line|#include &lt;linux/irq.h&gt;
 macro_line|#include &lt;linux/oprofile.h&gt;
 macro_line|#include &lt;linux/profile.h&gt;
 macro_line|#include &lt;linux/init.h&gt;

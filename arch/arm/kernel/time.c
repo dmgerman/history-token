@@ -152,6 +152,12 @@ op_star
 id|regs
 )paren
 (brace
+id|profile_hook
+c_func
+(paren
+id|regs
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
