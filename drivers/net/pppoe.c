@@ -1295,7 +1295,11 @@ multiline_comment|/* Socket state is unknown, must put skb into backlog. */
 r_if
 c_cond
 (paren
-id|sk-&gt;lock.users
+id|sock_owned_by_user
+c_func
+(paren
+id|sk
+)paren
 op_ne
 l_int|0
 )paren
@@ -1429,7 +1433,11 @@ multiline_comment|/* If the user has locked the socket, just ignore&n;&t;&t; * t
 r_if
 c_cond
 (paren
-id|sk-&gt;lock.users
+id|sock_owned_by_user
+c_func
+(paren
+id|sk
+)paren
 op_eq
 l_int|0
 )paren
