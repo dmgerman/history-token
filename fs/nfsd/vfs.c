@@ -2814,6 +2814,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Sync a file&n; * As this calls fsync (not fdatasync) there is no need for a write_inode&n; * after it.&n; */
 DECL|function|nfsd_dosync
+r_static
 r_inline
 r_void
 id|nfsd_dosync
@@ -2893,6 +2894,7 @@ id|inode-&gt;i_mapping
 )paren
 suffix:semicolon
 )brace
+r_static
 r_void
 DECL|function|nfsd_sync
 id|nfsd_sync
@@ -2944,6 +2946,7 @@ id|inode-&gt;i_sem
 )paren
 suffix:semicolon
 )brace
+r_static
 r_void
 DECL|function|nfsd_sync_dir
 id|nfsd_sync_dir

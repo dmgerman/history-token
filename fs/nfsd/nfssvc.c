@@ -95,6 +95,7 @@ suffix:semicolon
 )brace
 suffix:semicolon
 DECL|variable|nfsd_list
+r_static
 r_struct
 id|list_head
 id|nfsd_list
