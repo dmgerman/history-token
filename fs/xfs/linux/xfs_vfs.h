@@ -63,10 +63,6 @@ id|task_struct
 op_star
 id|vfs_sync_task
 suffix:semicolon
-DECL|member|vfs_sync
-id|wait_queue_head_t
-id|vfs_sync
-suffix:semicolon
 DECL|member|vfs_wait_sync_task
 id|wait_queue_head_t
 id|vfs_wait_sync_task
