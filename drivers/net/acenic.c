@@ -227,6 +227,10 @@ macro_line|#ifndef __devinit
 DECL|macro|__devinit
 mdefine_line|#define __devinit&t;__init
 macro_line|#endif
+macro_line|#ifndef min
+DECL|macro|min
+mdefine_line|#define min(a,b)&t;(((a)&lt;(b))?(a):(b))
+macro_line|#endif
 macro_line|#ifndef SMP_CACHE_BYTES
 DECL|macro|SMP_CACHE_BYTES
 mdefine_line|#define SMP_CACHE_BYTES&t;L1_CACHE_BYTES
@@ -480,6 +484,10 @@ mdefine_line|#define ace_mark_net_bh()&t;&t;&t;{do{} while(0);}
 DECL|macro|ace_if_down
 mdefine_line|#define ace_if_down(dev)&t;&t;&t;{do{} while(0);}
 macro_line|#endif
+macro_line|#ifndef pci_set_dma_mask
+DECL|macro|pci_set_dma_mask
+mdefine_line|#define pci_set_dma_mask(dev, mask)&t;&t;dev-&gt;dma_mask = mask;
+macro_line|#endif
 macro_line|#if (LINUX_VERSION_CODE &gt;= 0x02031b)
 DECL|macro|NEW_NETINIT
 mdefine_line|#define NEW_NETINIT
@@ -667,7 +675,7 @@ id|version
 )braket
 id|__initdata
 op_assign
-l_string|&quot;acenic.c: v0.80 03/08/2001  Jes Sorensen, linux-acenic@SunSITE.dk&bslash;n&quot;
+l_string|&quot;acenic.c: v0.81 04/20/2001  Jes Sorensen, linux-acenic@SunSITE.dk&bslash;n&quot;
 l_string|&quot;                            http://home.cern.ch/~jes/gige/acenic.html&bslash;n&quot;
 suffix:semicolon
 DECL|variable|root_dev
@@ -1547,10 +1555,11 @@ op_minus
 id|ENODEV
 suffix:semicolon
 )brace
+macro_line|#ifdef MODULE
 id|MODULE_AUTHOR
 c_func
 (paren
-l_string|&quot;Jes Sorensen &lt;jes@linuxcare.com&gt;&quot;
+l_string|&quot;Jes Sorensen &lt;jes@trained-monkey.org&gt;&quot;
 )paren
 suffix:semicolon
 id|MODULE_DESCRIPTION
@@ -1643,54 +1652,7 @@ l_int|8
 l_string|&quot;i&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM_DESC
-c_func
-(paren
-id|link
-comma
-l_string|&quot;Acenic/3C985/NetGear link state&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_DESC
-c_func
-(paren
-id|trace
-comma
-l_string|&quot;Acenic/3C985/NetGear firmware trace level&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_DESC
-c_func
-(paren
-id|tx_coal_tick
-comma
-l_string|&quot;Acenic/3C985/NetGear maximum clock ticks to wait for packets&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_DESC
-c_func
-(paren
-id|max_tx_desc
-comma
-l_string|&quot;Acenic/3C985/NetGear maximum number of transmit descriptors&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_DESC
-c_func
-(paren
-id|rx_coal_tick
-comma
-l_string|&quot;Acenic/3C985/NetGear maximum clock ticks to wait for packets&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_DESC
-c_func
-(paren
-id|max_rx_desc
-comma
-l_string|&quot;Acenic/3C985/NetGear maximum number of receive descriptors&quot;
-)paren
-suffix:semicolon
+macro_line|#endif
 DECL|function|ace_module_cleanup
 r_static
 r_void
@@ -2864,7 +2826,7 @@ id|i
 suffix:semicolon
 r_int
 r_char
-id|cache
+id|cache_size
 suffix:semicolon
 id|ap
 op_assign
@@ -3457,17 +3419,17 @@ comma
 id|PCI_CACHE_LINE_SIZE
 comma
 op_amp
-id|cache
+id|cache_size
 )paren
+suffix:semicolon
+id|cache_size
+op_lshift_assign
+l_int|2
 suffix:semicolon
 r_if
 c_cond
 (paren
-(paren
-id|cache
-op_lshift
-l_int|2
-)paren
+id|cache_size
 op_ne
 id|SMP_CACHE_BYTES
 )paren
@@ -3477,13 +3439,32 @@ c_func
 (paren
 id|KERN_INFO
 l_string|&quot;  PCI cache line size set incorrectly &quot;
-l_string|&quot;(%i bytes) by BIOS/FW, correcting to %i&bslash;n&quot;
+l_string|&quot;(%i bytes) by BIOS/FW, &quot;
 comma
-(paren
-id|cache
-op_lshift
-l_int|2
+id|cache_size
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|cache_size
+OG
+id|SMP_CACHE_BYTES
+)paren
+id|printk
+c_func
+(paren
+l_string|&quot;expecting %i&bslash;n&quot;
+comma
+id|SMP_CACHE_BYTES
+)paren
+suffix:semicolon
+r_else
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;correcting to %i&bslash;n&quot;
 comma
 id|SMP_CACHE_BYTES
 )paren
@@ -3500,6 +3481,7 @@ op_rshift
 l_int|2
 )paren
 suffix:semicolon
+)brace
 )brace
 id|pci_state
 op_assign
@@ -3540,6 +3522,29 @@ suffix:colon
 l_int|33
 comma
 id|ap-&gt;pci_latency
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t; * Make sure to enable the 64 bit DMA mask if we&squot;re in a 64bit slot&n;&t; */
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|pci_state
+op_amp
+id|PCI_32BIT
+)paren
+)paren
+id|pci_set_dma_mask
+c_func
+(paren
+id|ap-&gt;pdev
+comma
+(paren
+id|dma_addr_t
+)paren
+op_complement
+l_int|0ULL
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Set the max DMA transfer size. Seems that for most systems&n;&t; * the performance is better when no MAX parameter is&n;&t; * set. However for systems enabling PCI write and invalidate,&n;&t; * DMA writes must be set to the L1 cache line size to get&n;&t; * optimal performance.&n;&t; *&n;&t; * The default is now to turn the PCI write and invalidate off&n;&t; * - that is what Alteon does for NT.&n;&t; */
@@ -3615,13 +3620,6 @@ l_string|&quot;write and invalidate&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef __alpha__
-multiline_comment|/* This maximizes throughput on my alpha. */
-id|tmp
-op_or_assign
-id|DMA_WRITE_MAX_128
-suffix:semicolon
-macro_line|#endif
 )brace
 r_else
 r_if
@@ -3640,13 +3638,6 @@ l_string|&quot;  PCI memory write &amp; invalidate &quot;
 l_string|&quot;enabled by BIOS, enabling counter measures&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#ifdef __alpha__
-multiline_comment|/* All the docs sy MUST NOT. Well, I did.&n;&t;&t;&t; * Nothing terrible happens, if we load wrong size.&n;&t;&t;&t; * Bit w&amp;i still works better!&n;&t;&t;&t; */
-id|tmp
-op_or_assign
-id|DMA_WRITE_MAX_128
-suffix:semicolon
-macro_line|#else
 r_switch
 c_cond
 (paren
@@ -3680,6 +3671,15 @@ id|DMA_WRITE_MAX_64
 suffix:semicolon
 r_break
 suffix:semicolon
+r_case
+l_int|128
+suffix:colon
+id|tmp
+op_or_assign
+id|DMA_WRITE_MAX_128
+suffix:semicolon
+r_break
+suffix:semicolon
 r_default
 suffix:colon
 id|printk
@@ -3709,15 +3709,12 @@ id|ap-&gt;pci_command
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif
 )brace
 )brace
 macro_line|#ifdef __sparc__
 multiline_comment|/*&n;&t; * On this platform, we know what the best dma settings&n;&t; * are.  We use 64-byte maximum bursts, because if we&n;&t; * burst larger than the cache line size (or even cross&n;&t; * a 64byte boundry in a single burst) the UltraSparc&n;&t; * PCI controller will disconnect at 64-byte multiples.&n;&t; *&n;&t; * Read-multiple will be properly enabled above, and when&n;&t; * set will give the PCI controller proper hints about&n;&t; * prefetching.&n;&t; */
 id|tmp
-op_assign
-id|tmp
-op_amp
+op_and_assign
 op_complement
 id|DMA_READ_WRITE_MASK
 suffix:semicolon
@@ -3732,8 +3729,18 @@ suffix:semicolon
 macro_line|#endif
 macro_line|#ifdef __alpha__
 id|tmp
+op_and_assign
+op_complement
+id|DMA_READ_WRITE_MASK
+suffix:semicolon
+id|tmp
 op_or_assign
 id|DMA_READ_MAX_128
+suffix:semicolon
+multiline_comment|/*&n;&t; * All the docs sy MUST NOT. Well, I did.&n;&t; * Nothing terrible happens, if we load wrong size.&n;&t; * Bit w&amp;i still works better!&n;&t; */
+id|tmp
+op_or_assign
+id|DMA_WRITE_MAX_128
 suffix:semicolon
 macro_line|#endif
 id|writel
@@ -12401,5 +12408,5 @@ r_goto
 id|out
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Local variables:&n; * compile-command: &quot;gcc -D__KERNEL__ -DMODULE -I../../include -Wall -Wstrict-prototypes -O2 -fomit-frame-pointer -pipe -fno-strength-reduce -DMODVERSIONS -include ../../include/linux/modversions.h   -c -o acenic.o acenic.c&quot;&n; * End:&n; */
+multiline_comment|/*&n; * Local variables:&n; * compile-command: &quot;gcc -D__SMP__ -D__KERNEL__ -DMODULE -I../../include -Wall -Wstrict-prototypes -O2 -fomit-frame-pointer -pipe -fno-strength-reduce -DMODVERSIONS -include ../../include/linux/modversions.h   -c -o acenic.o acenic.c&quot;&n; * End:&n; */
 eof

@@ -552,9 +552,9 @@ DECL|macro|SRAM_BANK_512K
 mdefine_line|#define SRAM_BANK_512K&t;&t;0x200
 multiline_comment|/*&n; * udelay() values for when clocking the eeprom&n; */
 DECL|macro|ACE_SHORT_DELAY
-mdefine_line|#define ACE_SHORT_DELAY&t;&t;1
+mdefine_line|#define ACE_SHORT_DELAY&t;&t;2
 DECL|macro|ACE_LONG_DELAY
-mdefine_line|#define ACE_LONG_DELAY&t;&t;2
+mdefine_line|#define ACE_LONG_DELAY&t;&t;4
 multiline_comment|/*&n; * Misc Config bits&n; */
 DECL|macro|SYNC_SRAM_TIMING
 mdefine_line|#define SYNC_SRAM_TIMING&t;0x100000

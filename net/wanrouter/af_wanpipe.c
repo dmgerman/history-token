@@ -9063,6 +9063,7 @@ op_eq
 id|WANSOCK_CONNECTED
 )paren
 r_return
+op_minus
 id|EISCONN
 suffix:semicolon
 multiline_comment|/* No reconnect on a seqpacket socket */

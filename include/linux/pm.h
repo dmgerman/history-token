@@ -16,6 +16,10 @@ DECL|enumerator|PM_RESUME
 id|PM_RESUME
 comma
 multiline_comment|/* enter D0 */
+DECL|enumerator|PM_SAVE_STATE
+id|PM_SAVE_STATE
+comma
+multiline_comment|/* save device&squot;s state */
 multiline_comment|/* enable wake-on */
 DECL|enumerator|PM_SET_WAKEUP
 id|PM_SET_WAKEUP

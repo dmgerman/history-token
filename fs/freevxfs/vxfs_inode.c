@@ -30,11 +30,6 @@ id|vxfs_file_operations
 op_assign
 (brace
 dot
-id|llseek
-op_assign
-id|generic_file_llseek
-comma
-dot
 id|read
 op_assign
 id|generic_file_read

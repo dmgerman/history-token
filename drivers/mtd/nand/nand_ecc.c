@@ -1,7 +1,10 @@
-multiline_comment|/*&n; *  drivers/mtd/nand_ecc.c&n; *&n; *  Copyright (C) 2000 Steven J. Hill (sjhill@cotw.com)&n; *                     Toshiba America Electronics Components, Inc.&n; *&n; * $Id: nand_ecc.c,v 1.4 2001/01/03 20:02:20 mgadbois Exp $&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; * This file contains an ECC algorithm from Toshiba that detects and&n; * corrects 1 bit errors in a 256 byte block of data.&n; */
+multiline_comment|/*&n; *  drivers/mtd/nand_ecc.c&n; *&n; *  Copyright (C) 2000 Steven J. Hill (sjhill@cotw.com)&n; *                     Toshiba America Electronics Components, Inc.&n; *&n; * $Id: nand_ecc.c,v 1.6 2001/06/28 10:52:26 dwmw2 Exp $&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; * This file contains an ECC algorithm from Toshiba that detects and&n; * corrects 1 bit errors in a 256 byte block of data.&n; */
 macro_line|#include &lt;linux/types.h&gt;
+macro_line|#include &lt;linux/kernel.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 multiline_comment|/*&n; * Pre-calculated 256-way 1 byte column parity&n; */
 DECL|variable|nand_ecc_precalc_table
+r_static
 r_const
 id|u_char
 id|nand_ecc_precalc_table
@@ -524,6 +527,7 @@ l_int|0x00
 suffix:semicolon
 multiline_comment|/*&n; * Creates non-inverted ECC code from line parity&n; */
 DECL|function|nand_trans_result
+r_static
 r_void
 id|nand_trans_result
 c_func
@@ -1307,4 +1311,18 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
+DECL|variable|nand_calculate_ecc
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|nand_calculate_ecc
+)paren
+suffix:semicolon
+DECL|variable|nand_correct_data
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|nand_correct_data
+)paren
+suffix:semicolon
 eof

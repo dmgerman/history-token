@@ -1494,8 +1494,6 @@ DECL|macro|CAN_DO_IO
 mdefine_line|#define CAN_DO_IO&t;&t;(gfp_mask &amp; __GFP_IO)
 DECL|macro|CAN_DO_BUFFERS
 mdefine_line|#define CAN_DO_BUFFERS&t;&t;(gfp_mask &amp; __GFP_BUFFER)
-DECL|macro|marker_lru
-mdefine_line|#define marker_lru&t;&t;(&amp;marker_page_struct.lru)
 DECL|function|page_launder
 r_int
 id|page_launder
@@ -1508,10 +1506,6 @@ r_int
 id|sync
 )paren
 (brace
-r_static
-r_int
-id|cannot_free_pages
-suffix:semicolon
 r_int
 id|launder_loop
 comma
@@ -1530,17 +1524,6 @@ r_struct
 id|page
 op_star
 id|page
-suffix:semicolon
-multiline_comment|/* Our bookmark of where we are in the inactive_dirty list. */
-r_struct
-id|page
-id|marker_page_struct
-op_assign
-(brace
-id|zone
-suffix:colon
-l_int|NULL
-)brace
 suffix:semicolon
 id|launder_loop
 op_assign
@@ -1563,73 +1546,28 @@ op_amp
 id|pagemap_lru_lock
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * By not scanning all inactive dirty pages we&squot;ll write out&n;&t; * really old dirty pages before evicting newer clean pages.&n;&t; * This should cause some LRU behaviour if we have a large&n;&t; * amount of inactive pages (due to eg. drop behind).&n;&t; *&n;&t; * It also makes us accumulate dirty pages until we have enough&n;&t; * to be worth writing to disk without causing excessive disk&n;&t; * seeks and eliminates the infinite penalty clean pages incurred&n;&t; * vs. dirty pages.&n;&t; */
 id|maxscan
 op_assign
 id|nr_inactive_dirty_pages
-op_div
-l_int|4
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|launder_loop
-)paren
-id|maxscan
-op_mul_assign
-l_int|2
-suffix:semicolon
-id|list_add_tail
-c_func
-(paren
-id|marker_lru
-comma
-op_amp
-id|inactive_dirty_list
-)paren
-suffix:semicolon
-r_for
+r_while
 c_loop
 (paren
-suffix:semicolon
-suffix:semicolon
-)paren
-(brace
+(paren
 id|page_lru
 op_assign
-id|marker_lru-&gt;prev
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|page_lru
-op_eq
+id|inactive_dirty_list.prev
+)paren
+op_ne
 op_amp
 id|inactive_dirty_list
-)paren
-r_break
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_decrement
+op_logical_and
 id|maxscan
-OL
+op_decrement
+OG
 l_int|0
 )paren
-r_break
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|free_shortage
-c_func
-(paren
-)paren
-)paren
-r_break
-suffix:semicolon
+(brace
 id|page
 op_assign
 id|list_entry
@@ -1642,44 +1580,6 @@ id|page
 comma
 id|lru
 )paren
-suffix:semicolon
-multiline_comment|/* Move the bookmark backwards.. */
-id|list_del
-c_func
-(paren
-id|marker_lru
-)paren
-suffix:semicolon
-id|list_add_tail
-c_func
-(paren
-id|marker_lru
-comma
-id|page_lru
-)paren
-suffix:semicolon
-multiline_comment|/* Don&squot;t waste CPU if chances are we cannot free anything. */
-r_if
-c_cond
-(paren
-id|launder_loop
-op_logical_and
-id|maxlaunder
-OL
-l_int|0
-op_logical_and
-id|cannot_free_pages
-)paren
-r_break
-suffix:semicolon
-multiline_comment|/* Skip other people&squot;s marker pages. */
-r_if
-c_cond
-(paren
-op_logical_neg
-id|page-&gt;zone
-)paren
-r_continue
 suffix:semicolon
 multiline_comment|/* Wrong page on list?! (list corruption, should not happen) */
 r_if
@@ -1763,7 +1663,7 @@ suffix:semicolon
 r_continue
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t;&t; * The page is locked. IO in progress?&n;&t;&t; * Skip the page, we&squot;ll take a look when it unlocks.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * The page is locked. IO in progress?&n;&t;&t; * Move it to the back of the list.&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -1774,6 +1674,21 @@ id|page
 )paren
 )paren
 (brace
+id|list_del
+c_func
+(paren
+id|page_lru
+)paren
+suffix:semicolon
+id|list_add
+c_func
+(paren
+id|page_lru
+comma
+op_amp
+id|inactive_dirty_list
+)paren
+suffix:semicolon
 r_continue
 suffix:semicolon
 )brace
@@ -1810,7 +1725,7 @@ id|writepage
 r_goto
 id|page_active
 suffix:semicolon
-multiline_comment|/* First time through? Skip the page. */
+multiline_comment|/* First time through? Move it to the back of the list */
 r_if
 c_cond
 (paren
@@ -1821,6 +1736,21 @@ op_logical_neg
 id|CAN_DO_IO
 )paren
 (brace
+id|list_del
+c_func
+(paren
+id|page_lru
+)paren
+suffix:semicolon
+id|list_add
+c_func
+(paren
+id|page_lru
+comma
+op_amp
+id|inactive_dirty_list
+)paren
+suffix:semicolon
 id|UnlockPage
 c_func
 (paren
@@ -1861,9 +1791,6 @@ c_func
 (paren
 id|page
 )paren
-suffix:semicolon
-id|maxlaunder
-op_decrement
 suffix:semicolon
 multiline_comment|/* And re-start the thing.. */
 id|spin_lock
@@ -1914,13 +1841,21 @@ id|pagemap_lru_lock
 )paren
 suffix:semicolon
 multiline_comment|/* Will we do (asynchronous) IO? */
+id|wait
+op_assign
+l_int|0
+suffix:semicolon
+multiline_comment|/* No IO */
 r_if
 c_cond
 (paren
 id|launder_loop
-op_logical_and
+)paren
+(brace
+r_if
+c_cond
+(paren
 id|maxlaunder
-op_decrement
 op_eq
 l_int|0
 op_logical_and
@@ -1935,9 +1870,8 @@ r_else
 r_if
 c_cond
 (paren
-id|launder_loop
-op_logical_and
 id|maxlaunder
+op_decrement
 OG
 l_int|0
 )paren
@@ -1946,12 +1880,7 @@ op_assign
 l_int|1
 suffix:semicolon
 multiline_comment|/* Async IO */
-r_else
-id|wait
-op_assign
-l_int|0
-suffix:semicolon
-multiline_comment|/* No IO */
+)brace
 multiline_comment|/* Try to free the page buffers. */
 id|clearedbuf
 op_assign
@@ -1979,7 +1908,7 @@ op_logical_neg
 id|clearedbuf
 )paren
 (brace
-id|add_page_to_inactive_dirty_list_marker
+id|add_page_to_inactive_dirty_list
 c_func
 (paren
 id|page
@@ -2137,13 +2066,6 @@ id|page
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/* Remove our marker. */
-id|list_del
-c_func
-(paren
-id|marker_lru
-)paren
-suffix:semicolon
 id|spin_unlock
 c_func
 (paren
@@ -2174,36 +2096,22 @@ id|launder_loop
 op_assign
 l_int|1
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * If we, or the previous process running page_launder(),&n;&t;&t; * managed to free any pages we never do synchronous IO.&n;&t;&t; */
+multiline_comment|/* If we cleaned pages, never do synchronous IO. */
 r_if
 c_cond
 (paren
 id|cleaned_pages
-op_logical_or
-op_logical_neg
-id|cannot_free_pages
 )paren
 id|sync
 op_assign
 l_int|0
-suffix:semicolon
-multiline_comment|/* Else, do synchronous IO (if we are allowed to). */
-r_else
-r_if
-c_cond
-(paren
-id|sync
-)paren
-id|sync
-op_assign
-l_int|1
 suffix:semicolon
 multiline_comment|/* We only do a few &quot;out of order&quot; flushes. */
 id|maxlaunder
 op_assign
 id|MAX_LAUNDER
 suffix:semicolon
-multiline_comment|/* Let bdflush take care of the rest. */
+multiline_comment|/* Kflushd takes care of the rest. */
 id|wakeup_bdflush
 c_func
 (paren
@@ -2214,12 +2122,6 @@ r_goto
 id|dirty_page_rescan
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * If we failed to free pages (because all pages are dirty)&n;&t; * we remember this for the next time. This will prevent us&n;&t; * from wasting too much CPU here.&n;&t; */
-id|cannot_free_pages
-op_assign
-op_logical_neg
-id|cleaned_pages
-suffix:semicolon
 multiline_comment|/* Return the number of pages moved to the inactive_clean list. */
 r_return
 id|cleaned_pages
@@ -2937,7 +2839,7 @@ c_func
 (paren
 id|gfp_mask
 comma
-l_int|1
+id|user
 )paren
 suffix:semicolon
 id|shrink_dcache_memory

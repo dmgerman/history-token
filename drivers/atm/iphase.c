@@ -24,7 +24,6 @@ macro_line|#include &lt;asm/atomic.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;  
 macro_line|#include &lt;asm/string.h&gt;  
 macro_line|#include &lt;asm/byteorder.h&gt;  
-macro_line|#include &lt;math.h&gt;  
 macro_line|#include &lt;linux/vmalloc.h&gt;  
 macro_line|#include &quot;iphase.h&quot;&t;&t;  
 macro_line|#include &quot;suni.h&quot;&t;&t;  
