@@ -563,6 +563,14 @@ r_int
 r_int
 id|dev_tree_size
 suffix:semicolon
+r_int
+r_int
+id|_get_PIR
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 macro_line|#ifdef CONFIG_HMT
 r_struct
 (brace
@@ -582,10 +590,6 @@ id|hmt_thread_data
 (braket
 id|NR_CPUS
 )braket
-op_assign
-(brace
-l_int|0
-)brace
 suffix:semicolon
 macro_line|#endif /* CONFIG_HMT */
 DECL|variable|testString
