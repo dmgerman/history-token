@@ -1,5 +1,5 @@
 multiline_comment|/*&n; * INET&t;&t;An implementation of the TCP/IP protocol suite for the LINUX&n; *&t;&t;operating system.  INET is implemented using the  BSD Socket&n; *&t;&t;interface as the means of communication with the user level.&n; *&n; *&t;&t;Implementation of the Transmission Control Protocol(TCP).&n; *&n; * Version:&t;$Id: tcp_ipv4.c,v 1.240 2002/02/01 22:01:04 davem Exp $&n; *&n; *&t;&t;IPv4 specific functions&n; *&n; *&n; *&t;&t;code split from:&n; *&t;&t;linux/ipv4/tcp.c&n; *&t;&t;linux/ipv4/tcp_input.c&n; *&t;&t;linux/ipv4/tcp_output.c&n; *&n; *&t;&t;See tcp.c for author information&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *      modify it under the terms of the GNU General Public License&n; *      as published by the Free Software Foundation; either version&n; *      2 of the License, or (at your option) any later version.&n; */
-multiline_comment|/*&n; * Changes:&n; *&t;&t;David S. Miller&t;:&t;New socket lookup architecture.&n; *&t;&t;&t;&t;&t;This code is dedicated to John Dyson.&n; *&t;&t;David S. Miller :&t;Change semantics of established hash,&n; *&t;&t;&t;&t;&t;half is devoted to TIME_WAIT sockets&n; *&t;&t;&t;&t;&t;and the rest go in the other half.&n; *&t;&t;Andi Kleen :&t;&t;Add support for syncookies and fixed&n; *&t;&t;&t;&t;&t;some bugs: ip options weren&squot;t passed to&n; *&t;&t;&t;&t;&t;the TCP layer, missed a check for an&n; *&t;&t;&t;&t;&t;ACK bit.&n; *&t;&t;Andi Kleen :&t;&t;Implemented fast path mtu discovery.&n; *&t;     &t;&t;&t;&t;Fixed many serious bugs in the&n; *&t;&t;&t;&t;&t;open_request handling and moved&n; *&t;&t;&t;&t;&t;most of it into the af independent code.&n; *&t;&t;&t;&t;&t;Added tail drop and some other bugfixes.&n; *&t;&t;&t;&t;&t;Added new listen sematics.&n; *&t;&t;Mike McLagan&t;:&t;Routing by source&n; *&t;Juan Jose Ciarlante:&t;&t;ip_dynaddr bits&n; *&t;&t;Andi Kleen:&t;&t;various fixes.&n; *&t;Vitaly E. Lavrov&t;:&t;Transparent proxy revived after year&n; *&t;&t;&t;&t;&t;coma.&n; *&t;Andi Kleen&t;&t;:&t;Fix new listen.&n; *&t;Andi Kleen&t;&t;:&t;Fix accept error reporting.&n; */
+multiline_comment|/*&n; * Changes:&n; *&t;&t;David S. Miller&t;:&t;New socket lookup architecture.&n; *&t;&t;&t;&t;&t;This code is dedicated to John Dyson.&n; *&t;&t;David S. Miller :&t;Change semantics of established hash,&n; *&t;&t;&t;&t;&t;half is devoted to TIME_WAIT sockets&n; *&t;&t;&t;&t;&t;and the rest go in the other half.&n; *&t;&t;Andi Kleen :&t;&t;Add support for syncookies and fixed&n; *&t;&t;&t;&t;&t;some bugs: ip options weren&squot;t passed to&n; *&t;&t;&t;&t;&t;the TCP layer, missed a check for an&n; *&t;&t;&t;&t;&t;ACK bit.&n; *&t;&t;Andi Kleen :&t;&t;Implemented fast path mtu discovery.&n; *&t;     &t;&t;&t;&t;Fixed many serious bugs in the&n; *&t;&t;&t;&t;&t;open_request handling and moved&n; *&t;&t;&t;&t;&t;most of it into the af independent code.&n; *&t;&t;&t;&t;&t;Added tail drop and some other bugfixes.&n; *&t;&t;&t;&t;&t;Added new listen sematics.&n; *&t;&t;Mike McLagan&t;:&t;Routing by source&n; *&t;Juan Jose Ciarlante:&t;&t;ip_dynaddr bits&n; *&t;&t;Andi Kleen:&t;&t;various fixes.&n; *&t;Vitaly E. Lavrov&t;:&t;Transparent proxy revived after year&n; *&t;&t;&t;&t;&t;coma.&n; *&t;Andi Kleen&t;&t;:&t;Fix new listen.&n; *&t;Andi Kleen&t;&t;:&t;Fix accept error reporting.&n; *&t;YOSHIFUJI Hideaki @USAGI and:&t;Support IPV6_V6ONLY socket option, which&n; *&t;Alexey Kuznetsov&t;&t;allow both IPv4 and IPv6 sockets to bind&n; *&t;&t;&t;&t;&t;a single port at the same time.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/fcntl.h&gt;
@@ -11,6 +11,7 @@ macro_line|#include &lt;net/tcp.h&gt;
 macro_line|#include &lt;net/ipv6.h&gt;
 macro_line|#include &lt;net/inet_common.h&gt;
 macro_line|#include &lt;linux/inet.h&gt;
+macro_line|#include &lt;linux/ipv6.h&gt;
 macro_line|#include &lt;linux/stddef.h&gt;
 macro_line|#include &lt;linux/ipsec.h&gt;
 r_extern
@@ -573,6 +574,13 @@ c_cond
 id|sk
 op_ne
 id|sk2
+op_logical_and
+op_logical_neg
+id|ipv6_only_sock
+c_func
+(paren
+id|sk2
+)paren
 op_logical_and
 id|sk-&gt;bound_dev_if
 op_eq
@@ -1687,7 +1695,8 @@ id|hiscore
 suffix:semicolon
 id|hiscore
 op_assign
-l_int|0
+op_minus
+l_int|1
 suffix:semicolon
 r_for
 c_loop
@@ -1717,6 +1726,13 @@ c_cond
 id|inet-&gt;num
 op_eq
 id|hnum
+op_logical_and
+op_logical_neg
+id|ipv6_only_sock
+c_func
+(paren
+id|sk
+)paren
 )paren
 (brace
 id|__u32
@@ -1726,7 +1742,16 @@ id|inet-&gt;rcv_saddr
 suffix:semicolon
 id|score
 op_assign
+(paren
+id|sk-&gt;family
+op_eq
+id|PF_INET
+ques
+c_cond
 l_int|1
+suffix:colon
+l_int|0
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -1744,7 +1769,8 @@ id|daddr
 r_continue
 suffix:semicolon
 id|score
-op_increment
+op_add_assign
+l_int|2
 suffix:semicolon
 )brace
 r_if
@@ -1763,7 +1789,8 @@ id|dif
 r_continue
 suffix:semicolon
 id|score
-op_increment
+op_add_assign
+l_int|2
 suffix:semicolon
 )brace
 r_if
@@ -1771,7 +1798,7 @@ c_cond
 (paren
 id|score
 op_eq
-l_int|3
+l_int|5
 )paren
 r_return
 id|sk
@@ -1876,6 +1903,19 @@ op_logical_or
 id|inet-&gt;rcv_saddr
 op_eq
 id|daddr
+)paren
+op_logical_and
+(paren
+id|sk-&gt;family
+op_eq
+id|PF_INET
+op_logical_or
+op_logical_neg
+id|ipv6_only_sock
+c_func
+(paren
+id|sk
+)paren
 )paren
 op_logical_and
 op_logical_neg

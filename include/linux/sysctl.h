@@ -1316,6 +1316,12 @@ DECL|enumerator|NET_IPV6_ROUTE
 id|NET_IPV6_ROUTE
 op_assign
 l_int|18
+comma
+DECL|enumerator|NET_IPV6_BINDV6ONLY
+id|NET_IPV6_BINDV6ONLY
+op_assign
+l_int|20
+comma
 )brace
 suffix:semicolon
 r_enum

@@ -105,6 +105,11 @@ suffix:semicolon
 suffix:semicolon
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;net/sock.h&gt;
+multiline_comment|/* sysctls */
+r_extern
+r_int
+id|sysctl_ipv6_bindv6only
+suffix:semicolon
 r_extern
 r_struct
 id|ipv6_mib

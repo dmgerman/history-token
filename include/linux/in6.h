@@ -257,6 +257,8 @@ DECL|macro|IPV6_MTU
 mdefine_line|#define IPV6_MTU&t;&t;24
 DECL|macro|IPV6_RECVERR
 mdefine_line|#define IPV6_RECVERR&t;&t;25
+DECL|macro|IPV6_V6ONLY
+mdefine_line|#define IPV6_V6ONLY&t;&t;26
 multiline_comment|/* IPV6_MTU_DISCOVER values */
 DECL|macro|IPV6_PMTUDISC_DONT
 mdefine_line|#define IPV6_PMTUDISC_DONT&t;&t;0
