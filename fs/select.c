@@ -2140,9 +2140,7 @@ c_cond
 id|copy_from_user
 c_func
 (paren
-id|pp
-op_plus
-l_int|1
+id|pp-&gt;entries
 comma
 id|ufds
 op_plus
