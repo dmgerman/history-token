@@ -4213,6 +4213,16 @@ id|old_flags
 op_assign
 id|neigh-&gt;flags
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|neigh-&gt;nud_state
+op_amp
+id|NUD_FAILED
+)paren
+r_goto
+id|out
+suffix:semicolon
 id|neigh_update
 c_func
 (paren
@@ -4295,6 +4305,8 @@ l_int|NULL
 )paren
 suffix:semicolon
 )brace
+id|out
+suffix:colon
 id|neigh_release
 c_func
 (paren
