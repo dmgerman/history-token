@@ -136,7 +136,6 @@ suffix:semicolon
 )brace
 multiline_comment|/* Clean up the proc fs entry for the SCTP protocol. */
 DECL|function|sctp_proc_exit
-id|__exit
 r_void
 id|sctp_proc_exit
 c_func
