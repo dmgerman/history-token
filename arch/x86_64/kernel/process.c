@@ -1899,7 +1899,7 @@ r_volatile
 (paren
 l_string|&quot;movl %%fs,%0&quot;
 suffix:colon
-l_string|&quot;=g&quot;
+l_string|&quot;=r&quot;
 (paren
 id|fsindex
 )paren
@@ -1967,7 +1967,7 @@ r_volatile
 (paren
 l_string|&quot;movl %%gs,%0&quot;
 suffix:colon
-l_string|&quot;=g&quot;
+l_string|&quot;=r&quot;
 (paren
 id|gsindex
 )paren
