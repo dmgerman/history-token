@@ -43,6 +43,10 @@ macro_line|#ifndef ARCH_KMALLOC_MINALIGN
 DECL|macro|ARCH_KMALLOC_MINALIGN
 mdefine_line|#define ARCH_KMALLOC_MINALIGN 0
 macro_line|#endif
+macro_line|#ifndef ARCH_KMALLOC_FLAGS
+DECL|macro|ARCH_KMALLOC_FLAGS
+mdefine_line|#define ARCH_KMALLOC_FLAGS SLAB_HWCACHE_ALIGN
+macro_line|#endif
 multiline_comment|/* Legal flag mask for kmem_cache_create(). */
 macro_line|#if DEBUG
 DECL|macro|CREATE_MASK
@@ -2034,7 +2038,11 @@ id|sizes-&gt;cs_size
 comma
 id|ARCH_KMALLOC_MINALIGN
 comma
+(paren
+id|ARCH_KMALLOC_FLAGS
+op_or
 id|SLAB_PANIC
+)paren
 comma
 l_int|NULL
 comma
@@ -2085,6 +2093,8 @@ comma
 id|ARCH_KMALLOC_MINALIGN
 comma
 (paren
+id|ARCH_KMALLOC_FLAGS
+op_or
 id|SLAB_CACHE_DMA
 op_or
 id|SLAB_PANIC
@@ -3769,7 +3779,7 @@ id|slabp
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * kmem_cache_create - Create a cache.&n; * @name: A string which is used in /proc/slabinfo to identify this cache.&n; * @size: The size of objects to be created in this cache.&n; * @align: The required alignment for the objects.&n; * @flags: SLAB flags&n; * @ctor: A constructor for the objects.&n; * @dtor: A destructor for the objects.&n; *&n; * Returns a ptr to the cache on success, NULL on failure.&n; * Cannot be called within a int, but can be interrupted.&n; * The @ctor is run when new pages are allocated by the cache&n; * and the @dtor is run before the pages are handed back.&n; *&n; * @name must be valid until the cache is destroyed. This implies that&n; * the module calling this has to destroy the cache before getting &n; * unloaded.&n; * &n; * The flags are&n; *&n; * %SLAB_POISON - Poison the slab with a known test pattern (a5a5a5a5)&n; * to catch references to uninitialised memory.&n; *&n; * %SLAB_RED_ZONE - Insert `Red&squot; zones around the allocated memory to check&n; * for buffer overruns.&n; *&n; * %SLAB_NO_REAP - Don&squot;t automatically reap this cache when we&squot;re under&n; * memory pressure.&n; *&n; * %SLAB_HWCACHE_ALIGN - This flag has no effect and will be removed soon.&n; *&n; */
+multiline_comment|/**&n; * kmem_cache_create - Create a cache.&n; * @name: A string which is used in /proc/slabinfo to identify this cache.&n; * @size: The size of objects to be created in this cache.&n; * @align: The required alignment for the objects.&n; * @flags: SLAB flags&n; * @ctor: A constructor for the objects.&n; * @dtor: A destructor for the objects.&n; *&n; * Returns a ptr to the cache on success, NULL on failure.&n; * Cannot be called within a int, but can be interrupted.&n; * The @ctor is run when new pages are allocated by the cache&n; * and the @dtor is run before the pages are handed back.&n; *&n; * @name must be valid until the cache is destroyed. This implies that&n; * the module calling this has to destroy the cache before getting &n; * unloaded.&n; * &n; * The flags are&n; *&n; * %SLAB_POISON - Poison the slab with a known test pattern (a5a5a5a5)&n; * to catch references to uninitialised memory.&n; *&n; * %SLAB_RED_ZONE - Insert `Red&squot; zones around the allocated memory to check&n; * for buffer overruns.&n; *&n; * %SLAB_NO_REAP - Don&squot;t automatically reap this cache when we&squot;re under&n; * memory pressure.&n; *&n; * %SLAB_HWCACHE_ALIGN - Align the objects in this cache to a hardware&n; * cacheline.  This can be beneficial if you&squot;re counting cycles as closely&n; * as davem.&n; */
 id|kmem_cache_t
 op_star
 DECL|function|kmem_cache_create
