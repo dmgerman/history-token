@@ -1574,6 +1574,7 @@ id|nls_table
 op_star
 id|nls
 comma
+r_int
 r_char
 op_star
 id|buf

@@ -18,6 +18,7 @@ macro_line|#include &lt;asm/oplib.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/asi.h&gt;
 macro_line|#include &lt;asm/lsu.h&gt;
+macro_line|#include &lt;asm/sections.h&gt;
 DECL|macro|ELEMENTS
 mdefine_line|#define ELEMENTS(arr) (sizeof (arr)/sizeof (arr[0]))
 r_extern
@@ -1368,11 +1369,6 @@ id|tpc
 op_assign
 id|regs-&gt;tpc
 suffix:semicolon
-r_extern
-r_int
-r_int
-id|_etext
-suffix:semicolon
 multiline_comment|/* Sanity check the PC. */
 r_if
 c_cond
@@ -1388,7 +1384,6 @@ OL
 r_int
 r_int
 )paren
-op_amp
 id|_etext
 )paren
 op_logical_or

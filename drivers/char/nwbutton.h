@@ -124,20 +124,6 @@ r_int
 id|bpcount
 )paren
 suffix:semicolon
-macro_line|#ifdef MODULE
-r_int
-id|init_module
-(paren
-r_void
-)paren
-suffix:semicolon
-r_void
-id|cleanup_module
-(paren
-r_void
-)paren
-suffix:semicolon
-macro_line|#endif /* MODULE */
 macro_line|#else /* Not compiling the driver itself */
 r_extern
 r_int

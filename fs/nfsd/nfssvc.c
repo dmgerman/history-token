@@ -339,6 +339,12 @@ l_int|0
 id|nrservs
 op_decrement
 suffix:semicolon
+id|__module_get
+c_func
+(paren
+id|THIS_MODULE
+)paren
+suffix:semicolon
 id|error
 op_assign
 id|svc_create_thread
@@ -356,8 +362,16 @@ id|error
 OL
 l_int|0
 )paren
+(brace
+id|module_put
+c_func
+(paren
+id|THIS_MODULE
+)paren
+suffix:semicolon
 r_break
 suffix:semicolon
+)brace
 )brace
 id|victim
 op_assign
@@ -604,8 +618,6 @@ comma
 id|allowed_mask
 suffix:semicolon
 multiline_comment|/* Lock module and set up kernel thread */
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 id|lock_kernel
 c_func
 (paren
@@ -994,7 +1006,11 @@ id|rqstp
 )paren
 suffix:semicolon
 multiline_comment|/* Release module */
-id|MOD_DEC_USE_COUNT
+id|module_put_and_exit
+c_func
+(paren
+l_int|0
+)paren
 suffix:semicolon
 )brace
 r_int

@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/profile.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
+macro_line|#include &lt;asm/sections.h&gt;
 multiline_comment|/*&n; * Various low-level irq details needed by irq.c, process.c,&n; * time.c, io_apic.c and smp.c&n; *&n; * Interrupt entry/exit code at both C and assembly level&n; */
 r_extern
 r_int
@@ -261,12 +262,6 @@ r_extern
 id|atomic_t
 id|irq_mis_count
 suffix:semicolon
-r_extern
-r_char
-id|_stext
-comma
-id|_etext
-suffix:semicolon
 DECL|macro|IO_APIC_IRQ
 mdefine_line|#define IO_APIC_IRQ(x) (((x) &gt;= 16) || ((1&lt;&lt;(x)) &amp; io_apic_irqs))
 multiline_comment|/*&n; * The profiling function is SMP safe. (nothing can mess&n; * around with &quot;current&quot;, and the profiling counters are&n; * updated with atomic operations). This is especially&n; * useful with a profiling multiplier != 1&n; */
@@ -347,7 +342,6 @@ op_sub_assign
 r_int
 r_int
 )paren
-op_amp
 id|_stext
 suffix:semicolon
 id|eip

@@ -12,6 +12,7 @@ macro_line|#include &lt;linux/cache.h&gt;
 macro_line|#include &lt;linux/kmod.h&gt;
 macro_line|#include &lt;linux/elf.h&gt;
 macro_line|#include &lt;linux/stringify.h&gt;
+macro_line|#include &lt;asm/local.h&gt;
 macro_line|#include &lt;asm/module.h&gt;
 multiline_comment|/* Not Yet Implemented */
 DECL|macro|MODULE_SUPPORTED_DEVICE
@@ -211,7 +212,7 @@ r_struct
 id|module_ref
 (brace
 DECL|member|count
-id|atomic_t
+id|local_t
 id|count
 suffix:semicolon
 DECL|variable|____cacheline_aligned
@@ -508,6 +509,29 @@ op_star
 id|mod
 )paren
 suffix:semicolon
+r_extern
+r_void
+id|__module_put_and_exit
+c_func
+(paren
+r_struct
+id|module
+op_star
+id|mod
+comma
+r_int
+id|code
+)paren
+id|__attribute__
+c_func
+(paren
+(paren
+id|noreturn
+)paren
+)paren
+suffix:semicolon
+DECL|macro|module_put_and_exit
+mdefine_line|#define module_put_and_exit(code) __module_put_and_exit(THIS_MODULE, code);
 macro_line|#ifdef CONFIG_MODULE_UNLOAD
 r_int
 r_int
@@ -541,13 +565,6 @@ op_star
 id|addr
 )paren
 suffix:semicolon
-multiline_comment|/* We only need protection against local interrupts. */
-macro_line|#ifndef __HAVE_ARCH_LOCAL_INC
-DECL|macro|local_inc
-mdefine_line|#define local_inc(x) atomic_inc(x)
-DECL|macro|local_dec
-mdefine_line|#define local_dec(x) atomic_dec(x)
-macro_line|#endif
 multiline_comment|/* Sometimes we know we already have a refcount, and it&squot;s easier not&n;   to handle the error case (which only happens with rmmod --wait). */
 DECL|function|__module_get
 r_static
@@ -1093,6 +1110,8 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|macro|module_put_and_exit
+mdefine_line|#define module_put_and_exit(code) do_exit(code)
 macro_line|#endif /* CONFIG_MODULES */
 macro_line|#ifdef MODULE
 r_extern
