@@ -43,6 +43,16 @@ mdefine_line|#define&t;OHCI_CONTROL_INIT &bslash;&n;&t; (OHCI_CTRL_CBSR &amp; 0x
 DECL|macro|OHCI_UNLINK_TIMEOUT
 mdefine_line|#define OHCI_UNLINK_TIMEOUT&t; (HZ / 10)
 multiline_comment|/*-------------------------------------------------------------------------*/
+DECL|variable|hcd_name
+r_static
+r_const
+r_char
+id|hcd_name
+(braket
+)braket
+op_assign
+l_string|&quot;ohci-hcd&quot;
+suffix:semicolon
 macro_line|#include &quot;ohci.h&quot;
 DECL|function|disable
 r_static
@@ -923,7 +933,8 @@ id|ohci
 id|u32
 id|temp
 suffix:semicolon
-multiline_comment|/* SMM owns the HC?  not for long! */
+multiline_comment|/* SMM owns the HC?  not for long!&n;&t; * On PA-RISC, PDC can leave IR set incorrectly; ignore it there.&n;&t; */
+macro_line|#ifndef __hppa__
 r_if
 c_cond
 (paren
@@ -936,9 +947,9 @@ op_amp
 id|OHCI_CTRL_IR
 )paren
 (brace
-id|dev_dbg
+id|ohci_dbg
 (paren
-id|ohci-&gt;hcd.controller
+id|ohci
 comma
 l_string|&quot;USB HC TakeOver from BIOS/SMM&bslash;n&quot;
 )paren
@@ -991,9 +1002,9 @@ op_eq
 l_int|0
 )paren
 (brace
-id|dev_err
+id|ohci_err
 (paren
-id|ohci-&gt;hcd.controller
+id|ohci
 comma
 l_string|&quot;USB HC TakeOver failed!&bslash;n&quot;
 )paren
@@ -1005,6 +1016,7 @@ suffix:semicolon
 )brace
 )brace
 )brace
+macro_line|#endif
 multiline_comment|/* Disable HC interrupts */
 id|writel
 (paren
@@ -1014,13 +1026,19 @@ op_amp
 id|ohci-&gt;regs-&gt;intrdisable
 )paren
 suffix:semicolon
-id|dev_dbg
+id|ohci_dbg
 (paren
-id|ohci-&gt;hcd.controller
+id|ohci
 comma
 l_string|&quot;USB HC reset_hc %s: ctrl = 0x%x ;&bslash;n&quot;
 comma
-id|ohci-&gt;hcd.self.bus_name
+id|hcd_to_bus
+(paren
+op_amp
+id|ohci-&gt;hcd
+)paren
+op_member_access_from_pointer
+id|bus_name
 comma
 id|readl
 (paren
@@ -1145,11 +1163,18 @@ id|ohci
 (brace
 id|u32
 id|mask
+comma
+id|tmp
 suffix:semicolon
 r_struct
 id|usb_device
 op_star
 id|udev
+suffix:semicolon
+r_struct
+id|usb_bus
+op_star
+id|bus
 suffix:semicolon
 id|spin_lock_init
 (paren
@@ -1331,24 +1356,57 @@ op_amp
 id|ohci-&gt;regs-&gt;intrenable
 )paren
 suffix:semicolon
-multiline_comment|/* hub power always on: required for AMD-756 and some Mac platforms */
-id|writel
-(paren
-(paren
+multiline_comment|/* handle root hub init quirks ... */
+id|tmp
+op_assign
 id|roothub_a
 (paren
 id|ohci
 )paren
-op_or
-id|RH_A_NPS
-)paren
-op_amp
+suffix:semicolon
+id|tmp
+op_and_assign
 op_complement
 (paren
 id|RH_A_PSM
 op_or
 id|RH_A_OCPM
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ohci-&gt;flags
+op_amp
+id|OHCI_QUIRK_SUPERIO
+)paren
+(brace
+multiline_comment|/* NSC 87560 and maybe others */
+id|tmp
+op_or_assign
+id|RH_A_NOCP
+suffix:semicolon
+id|tmp
+op_and_assign
+op_complement
+(paren
+id|RH_A_POTPGT
+op_or
+id|RH_A_NPS
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
+multiline_comment|/* hub power always on; required for AMD-756 and some&n;&t;&t; * Mac platforms, use this mode everywhere by default&n;&t;&t; */
+id|tmp
+op_or_assign
+id|RH_A_NPS
+suffix:semicolon
+)brace
+id|writel
+(paren
+id|tmp
 comma
 op_amp
 id|ohci-&gt;regs-&gt;roothub.a
@@ -1386,7 +1444,15 @@ l_int|0x1fe
 )paren
 suffix:semicolon
 multiline_comment|/* connect the virtual root hub */
-id|ohci-&gt;hcd.self.root_hub
+id|bus
+op_assign
+id|hcd_to_bus
+(paren
+op_amp
+id|ohci-&gt;hcd
+)paren
+suffix:semicolon
+id|bus-&gt;root_hub
 op_assign
 id|udev
 op_assign
@@ -1394,8 +1460,7 @@ id|usb_alloc_dev
 (paren
 l_int|NULL
 comma
-op_amp
-id|ohci-&gt;hcd.self
+id|bus
 )paren
 suffix:semicolon
 id|ohci-&gt;hcd.state
@@ -1444,11 +1509,10 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|usb_register_root_hub
+id|hcd_register_root
 (paren
-id|udev
-comma
-id|ohci-&gt;hcd.controller
+op_amp
+id|ohci-&gt;hcd
 )paren
 op_ne
 l_int|0
@@ -1459,7 +1523,7 @@ id|usb_put_dev
 id|udev
 )paren
 suffix:semicolon
-id|ohci-&gt;hcd.self.root_hub
+id|bus-&gt;root_hub
 op_assign
 l_int|NULL
 suffix:semicolon
@@ -1894,12 +1958,24 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|ohci-&gt;hcd.self.root_hub
+id|hcd_to_bus
+(paren
+op_amp
+id|ohci-&gt;hcd
+)paren
+op_member_access_from_pointer
+id|root_hub
 )paren
 id|usb_disconnect
 (paren
 op_amp
-id|ohci-&gt;hcd.self.root_hub
+id|hcd_to_bus
+(paren
+op_amp
+id|ohci-&gt;hcd
+)paren
+op_member_access_from_pointer
+id|root_hub
 )paren
 suffix:semicolon
 multiline_comment|/* empty the interrupt branches */
@@ -1985,11 +2061,11 @@ OL
 l_int|0
 )paren
 (brace
-id|err
+id|ohci_err
 (paren
-l_string|&quot;can&squot;t restart %s, %d&quot;
+id|ohci
 comma
-id|ohci-&gt;hcd.self.bus_name
+l_string|&quot;can&squot;t restart, %d&bslash;n&quot;
 comma
 id|temp
 )paren
@@ -1999,11 +2075,11 @@ id|temp
 suffix:semicolon
 )brace
 r_else
-id|dbg
+id|ohci_dbg
 (paren
-l_string|&quot;restart %s completed&quot;
+id|ohci
 comma
-id|ohci-&gt;hcd.self.bus_name
+l_string|&quot;restart complete&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -2012,16 +2088,6 @@ suffix:semicolon
 )brace
 macro_line|#endif
 multiline_comment|/*-------------------------------------------------------------------------*/
-DECL|variable|hcd_name
-r_static
-r_const
-r_char
-id|hcd_name
-(braket
-)braket
-op_assign
-l_string|&quot;ohci-hcd&quot;
-suffix:semicolon
 DECL|macro|DRIVER_INFO
 mdefine_line|#define DRIVER_INFO DRIVER_VERSION &quot; &quot; DRIVER_DESC
 DECL|variable|DRIVER_AUTHOR

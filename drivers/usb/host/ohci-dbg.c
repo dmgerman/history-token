@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * OHCI HCD (Host Controller Driver) for USB.&n; * &n; * (C) Copyright 1999 Roman Weissgaerber &lt;weissg@vienna.at&gt;&n; * (C) Copyright 2000-2002 David Brownell &lt;dbrownell@users.sourceforge.net&gt;&n; * &n; * This file is licenced under the GPL.&n; * $Id: ohci-dbg.c,v 1.4 2002/03/27 20:40:40 dbrownell Exp $&n; */
+multiline_comment|/*&n; * OHCI HCD (Host Controller Driver) for USB.&n; * &n; * (C) Copyright 1999 Roman Weissgaerber &lt;weissg@vienna.at&gt;&n; * (C) Copyright 2000-2002 David Brownell &lt;dbrownell@users.sourceforge.net&gt;&n; * &n; * This file is licenced under the GPL.&n; */
 multiline_comment|/*-------------------------------------------------------------------------*/
 macro_line|#ifdef DEBUG
 DECL|macro|edstring
@@ -1821,8 +1821,6 @@ suffix:semicolon
 )brace
 )brace
 )brace
-DECL|macro|DRIVERFS_DEBUG_FILES
-mdefine_line|#define DRIVERFS_DEBUG_FILES &t;&t;/* only on 2.5 versions */
 macro_line|#else
 DECL|function|ohci_dump
 r_static
@@ -1842,7 +1840,65 @@ id|verbose
 )brace
 macro_line|#endif /* DEBUG */
 multiline_comment|/*-------------------------------------------------------------------------*/
-macro_line|#ifdef DRIVERFS_DEBUG_FILES
+macro_line|#ifdef STUB_DEBUG_FILES
+DECL|function|create_debug_files
+r_static
+r_inline
+r_void
+id|create_debug_files
+(paren
+r_struct
+id|ohci_hcd
+op_star
+id|bus
+)paren
+(brace
+)brace
+DECL|function|remove_debug_files
+r_static
+r_inline
+r_void
+id|remove_debug_files
+(paren
+r_struct
+id|ohci_hcd
+op_star
+id|bus
+)paren
+(brace
+)brace
+macro_line|#else
+DECL|function|dev_to_ohci
+r_static
+r_inline
+r_struct
+id|ohci_hcd
+op_star
+id|dev_to_ohci
+(paren
+r_struct
+id|device
+op_star
+id|dev
+)paren
+(brace
+r_struct
+id|usb_hcd
+op_star
+id|hcd
+op_assign
+id|dev_get_drvdata
+(paren
+id|dev
+)paren
+suffix:semicolon
+r_return
+id|hcd_to_ohci
+(paren
+id|hcd
+)paren
+suffix:semicolon
+)brace
 r_static
 id|ssize_t
 DECL|function|show_list
@@ -2768,9 +2824,9 @@ id|dev_attr_periodic
 )paren
 suffix:semicolon
 singleline_comment|// registers
-id|dev_dbg
+id|ohci_dbg
 (paren
-id|bus-&gt;hcd.controller
+id|bus
 comma
 l_string|&quot;created debug files&bslash;n&quot;
 )paren
@@ -2805,33 +2861,6 @@ id|dev_attr_periodic
 )paren
 suffix:semicolon
 )brace
-macro_line|#else /* empty stubs for creating those files */
-DECL|function|create_debug_files
-r_static
-r_inline
-r_void
-id|create_debug_files
-(paren
-r_struct
-id|ohci_hcd
-op_star
-id|bus
-)paren
-(brace
-)brace
-DECL|function|remove_debug_files
-r_static
-r_inline
-r_void
-id|remove_debug_files
-(paren
-r_struct
-id|ohci_hcd
-op_star
-id|bus
-)paren
-(brace
-)brace
-macro_line|#endif /* DRIVERFS_DEBUG_FILES */
+macro_line|#endif
 multiline_comment|/*-------------------------------------------------------------------------*/
 eof

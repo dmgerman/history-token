@@ -162,7 +162,13 @@ id|urb-&gt;pipe
 r_case
 id|PIPE_ISOCHRONOUS
 suffix:colon
-id|ohci-&gt;hcd.self.bandwidth_isoc_reqs
+id|hcd_to_bus
+(paren
+op_amp
+id|ohci-&gt;hcd
+)paren
+op_member_access_from_pointer
+id|bandwidth_isoc_reqs
 op_decrement
 suffix:semicolon
 r_break
@@ -170,7 +176,13 @@ suffix:semicolon
 r_case
 id|PIPE_INTERRUPT
 suffix:colon
-id|ohci-&gt;hcd.self.bandwidth_int_reqs
+id|hcd_to_bus
+(paren
+op_amp
+id|ohci-&gt;hcd
+)paren
+op_member_access_from_pointer
+id|bandwidth_int_reqs
 op_decrement
 suffix:semicolon
 r_break
@@ -505,7 +517,13 @@ op_add_assign
 id|ed-&gt;load
 suffix:semicolon
 )brace
-id|ohci-&gt;hcd.self.bandwidth_allocated
+id|hcd_to_bus
+(paren
+op_amp
+id|ohci-&gt;hcd
+)paren
+op_member_access_from_pointer
+id|bandwidth_allocated
 op_add_assign
 id|ed-&gt;load
 op_div
@@ -884,18 +902,23 @@ op_sub_assign
 id|ed-&gt;load
 suffix:semicolon
 )brace
-id|ohci-&gt;hcd.self.bandwidth_allocated
+id|hcd_to_bus
+(paren
+op_amp
+id|ohci-&gt;hcd
+)paren
+op_member_access_from_pointer
+id|bandwidth_allocated
 op_sub_assign
 id|ed-&gt;load
 op_div
 id|ed-&gt;interval
 suffix:semicolon
-macro_line|#ifdef OHCI_VERBOSE_DEBUG
-id|dbg
+id|ohci_vdbg
 (paren
-l_string|&quot;%s: unlink %sed %p branch %d [%dus.], interval %d&quot;
+id|ohci
 comma
-id|ohci-&gt;hcd.self.bus_name
+l_string|&quot;unlink %sed %p branch %d [%dus.], interval %d&bslash;n&quot;
 comma
 (paren
 id|ed-&gt;hwINFO
@@ -917,7 +940,6 @@ comma
 id|ed-&gt;interval
 )paren
 suffix:semicolon
-macro_line|#endif
 )brace
 multiline_comment|/* unlink an ed from one of the HC chains. &n; * just the link to the ed is unlinked.&n; * the link from the ed still points to another operational ed or 0&n; * so the HC can eventually finish the processing of the unlinked ed&n; */
 DECL|function|ed_deschedule
@@ -2036,7 +2058,13 @@ r_case
 id|PIPE_INTERRUPT
 suffix:colon
 multiline_comment|/* ... and periodic urbs have extra accounting */
-id|ohci-&gt;hcd.self.bandwidth_int_reqs
+id|hcd_to_bus
+(paren
+op_amp
+id|ohci-&gt;hcd
+)paren
+op_member_access_from_pointer
+id|bandwidth_int_reqs
 op_increment
 suffix:semicolon
 multiline_comment|/* FALLTHROUGH */
@@ -2374,7 +2402,13 @@ id|cnt
 )paren
 suffix:semicolon
 )brace
-id|ohci-&gt;hcd.self.bandwidth_isoc_reqs
+id|hcd_to_bus
+(paren
+op_amp
+id|ohci-&gt;hcd
+)paren
+op_member_access_from_pointer
+id|bandwidth_isoc_reqs
 op_increment
 suffix:semicolon
 r_break
@@ -2529,7 +2563,6 @@ id|cc_to_error
 id|cc
 )braket
 suffix:semicolon
-macro_line|#ifdef VERBOSE_DEBUG
 r_if
 c_cond
 (paren
@@ -2537,9 +2570,11 @@ id|cc
 op_ne
 id|TD_CC_NOERROR
 )paren
-id|dbg
+id|ohci_vdbg
 (paren
-l_string|&quot;  urb %p iso TD %p (%d) len %d CC %d&quot;
+id|ohci
+comma
+l_string|&quot;urb %p iso td %p (%d) len %d cc %d&bslash;n&quot;
 comma
 id|urb
 comma
@@ -2554,7 +2589,6 @@ comma
 id|cc
 )paren
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/* BULK, INT, CONTROL ... drivers see aggregate length/status,&n;&t; * except that &quot;setup&quot; bytes aren&squot;t counted and &quot;short&quot; transfers&n;&t; * might not be reported as errors.&n;&t; */
 )brace
 r_else
@@ -2715,7 +2749,6 @@ op_minus
 id|td-&gt;data_dma
 suffix:semicolon
 )brace
-macro_line|#ifdef VERBOSE_DEBUG
 r_if
 c_cond
 (paren
@@ -2727,9 +2760,11 @@ id|cc
 OL
 l_int|0x0E
 )paren
-id|dbg
+id|ohci_vdbg
 (paren
-l_string|&quot;  urb %p TD %p (%d) CC %d, len=%d/%d&quot;
+id|ohci
+comma
+l_string|&quot;urb %p td %p (%d) cc %d, len=%d/%d&bslash;n&quot;
 comma
 id|urb
 comma
@@ -2746,7 +2781,6 @@ comma
 id|urb-&gt;transfer_buffer_length
 )paren
 suffix:semicolon
-macro_line|#endif
 )brace
 )brace
 multiline_comment|/*-------------------------------------------------------------------------*/
