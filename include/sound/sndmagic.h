@@ -229,8 +229,8 @@ DECL|macro|es1968_t_magic
 mdefine_line|#define es1968_t_magic&t;&t;&t;&t;0xa15a2b01
 DECL|macro|esschan_t_magic
 mdefine_line|#define esschan_t_magic&t;&t;&t;&t;0xa15a2b02
-DECL|macro|via686a_t_magic
-mdefine_line|#define via686a_t_magic&t;&t;&t;&t;0xa15a2c01
+DECL|macro|via82xx_t_magic
+mdefine_line|#define via82xx_t_magic&t;&t;&t;&t;0xa15a2c01
 DECL|macro|pdplus_t_magic
 mdefine_line|#define pdplus_t_magic&t;&t;&t;&t;0xa15a2d01
 DECL|macro|cmipci_t_magic
@@ -255,8 +255,6 @@ DECL|macro|nm256_t_magic
 mdefine_line|#define nm256_t_magic&t;&t;&t;&t;0xa15a3301
 DECL|macro|nm256_dma_t_magic
 mdefine_line|#define nm256_dma_t_magic&t;&t;&t;0xa15a3302
-DECL|macro|via8233_t_magic
-mdefine_line|#define via8233_t_magic&t;&t;&t;&t;0xa15a3401
 DECL|macro|pmac_t_magic
 mdefine_line|#define pmac_t_magic&t;&t;&t;&t;0xa15a3501
 DECL|macro|ali_t_magic

@@ -1580,13 +1580,30 @@ r_int
 r_int
 id|result
 suffix:semicolon
+singleline_comment|// FIXME: volatile is necessary in the following due to a bug of
+singleline_comment|// some gcc versions
+r_volatile
+r_int
+id|ac97_num
+op_assign
+(paren
+(paren
+r_volatile
+id|ac97_t
+op_star
+)paren
+id|ac97
+)paren
+op_member_access_from_pointer
+id|num
+suffix:semicolon
 multiline_comment|/*&n;&t; *  1. Write ACCAD = Command Address Register = 46Ch for AC97 register address&n;&t; *  2. Write ACCDA = Command Data Register = 470h    for data to write to AC97 &n;&t; *  3. Write ACCTL = Control Register = 460h for initiating the write&n;&t; *  4. Read ACCTL = 460h, DCV should be reset by now and 460h = 17h&n;&t; *  5. if DCV not cleared, break and return error&n;&t; *  6. Read ACSTS = Status Register = 464h, check VSTS bit&n;&t; */
 id|snd_cs4281_peekBA0
 c_func
 (paren
 id|chip
 comma
-id|ac97-&gt;num
+id|ac97_num
 ques
 c_cond
 id|BA0_ACSDA2
@@ -1631,7 +1648,7 @@ op_or
 id|BA0_ACCTL_ESYN
 op_or
 (paren
-id|ac97-&gt;num
+id|ac97_num
 ques
 c_cond
 id|BA0_ACCTL_TC
@@ -1727,7 +1744,7 @@ c_func
 (paren
 id|chip
 comma
-id|ac97-&gt;num
+id|ac97_num
 ques
 c_cond
 id|BA0_ACSTS2
@@ -1773,7 +1790,7 @@ c_func
 (paren
 id|chip
 comma
-id|ac97-&gt;num
+id|ac97_num
 ques
 c_cond
 id|BA0_ACSDA2
@@ -8905,6 +8922,14 @@ suffix:semicolon
 id|i
 op_increment
 )paren
+r_if
+c_cond
+(paren
+id|saved_regs
+(braket
+id|i
+)braket
+)paren
 id|chip-&gt;suspend_regs
 (braket
 id|i
@@ -9100,6 +9125,14 @@ id|saved_regs
 suffix:semicolon
 id|i
 op_increment
+)paren
+r_if
+c_cond
+(paren
+id|saved_regs
+(braket
+id|i
+)braket
 )paren
 id|snd_cs4281_pokeBA0
 c_func

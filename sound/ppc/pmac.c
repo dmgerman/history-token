@@ -5623,7 +5623,41 @@ id|sound
 comma
 l_string|&quot;tumbler&quot;
 )paren
-op_logical_or
+)paren
+(brace
+id|chip-&gt;model
+op_assign
+id|PMAC_TUMBLER
+suffix:semicolon
+id|chip-&gt;can_capture
+op_assign
+l_int|0
+suffix:semicolon
+multiline_comment|/* no capture */
+id|chip-&gt;can_duplex
+op_assign
+l_int|0
+suffix:semicolon
+singleline_comment|// chip-&gt;can_byte_swap = 0; /* FIXME: check this */
+id|chip-&gt;num_freqs
+op_assign
+l_int|2
+suffix:semicolon
+id|chip-&gt;freq_table
+op_assign
+id|tumbler_freqs
+suffix:semicolon
+id|chip-&gt;control_mask
+op_assign
+id|MASK_IEPC
+op_or
+l_int|0x11
+suffix:semicolon
+multiline_comment|/* disable IEE */
+)brace
+r_if
+c_cond
+(paren
 id|device_is_compatible
 c_func
 (paren
@@ -5635,7 +5669,7 @@ l_string|&quot;snapper&quot;
 (brace
 id|chip-&gt;model
 op_assign
-id|PMAC_TUMBLER
+id|PMAC_SNAPPER
 suffix:semicolon
 id|chip-&gt;can_capture
 op_assign

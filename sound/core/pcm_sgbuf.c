@@ -216,6 +216,18 @@ id|snd_sg_buf
 op_star
 id|sgbuf
 suffix:semicolon
+multiline_comment|/* return in case, when sgbuf is not initialized */
+r_if
+c_cond
+(paren
+id|substream-&gt;dma_private
+op_eq
+l_int|NULL
+)paren
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
 id|sgbuf
 op_assign
 id|snd_magic_cast

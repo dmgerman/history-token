@@ -13638,6 +13638,15 @@ op_amp
 id|chip-&gt;reg_lock
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_SND_CS46XX_NEW_DSP
+id|init_MUTEX
+c_func
+(paren
+op_amp
+id|chip-&gt;spos_mutex
+)paren
+suffix:semicolon
+macro_line|#endif
 id|chip-&gt;card
 op_assign
 id|card

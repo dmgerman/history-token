@@ -199,9 +199,18 @@ id|keywest_ctx
 OL
 l_int|0
 )paren
+(brace
+id|snd_printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;tumbler: cannot initialize the MCS&bslash;n&quot;
+)paren
+suffix:semicolon
 r_goto
 id|__err
 suffix:semicolon
+)brace
 multiline_comment|/* Tell the i2c layer a new client has arrived */
 r_if
 c_cond
@@ -213,6 +222,13 @@ id|new_client
 )paren
 )paren
 (brace
+id|snd_printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;tumbler: cannot attach i2c client&bslash;n&quot;
+)paren
+suffix:semicolon
 id|err
 op_assign
 op_minus

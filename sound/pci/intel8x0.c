@@ -1000,21 +1000,6 @@ id|ctrl_name
 l_int|32
 )braket
 suffix:semicolon
-DECL|member|dma_playback_size
-r_int
-r_int
-id|dma_playback_size
-suffix:semicolon
-DECL|member|dma_capture_size
-r_int
-r_int
-id|dma_capture_size
-suffix:semicolon
-DECL|member|dma_mic_size
-r_int
-r_int
-id|dma_mic_size
-suffix:semicolon
 DECL|member|irq
 r_int
 id|irq
@@ -1563,7 +1548,6 @@ id|offset
 )paren
 suffix:semicolon
 r_else
-r_return
 id|outb
 c_func
 (paren
@@ -1608,7 +1592,6 @@ id|offset
 )paren
 suffix:semicolon
 r_else
-r_return
 id|outw
 c_func
 (paren
@@ -1653,7 +1636,6 @@ id|offset
 )paren
 suffix:semicolon
 r_else
-r_return
 id|outl
 c_func
 (paren
@@ -1738,7 +1720,6 @@ id|offset
 )paren
 suffix:semicolon
 r_else
-r_return
 id|outw
 c_func
 (paren
@@ -7591,6 +7572,10 @@ id|i
 op_increment
 )paren
 (brace
+id|ac97.num
+op_assign
+id|i
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -9991,6 +9976,14 @@ comma
 id|flags
 )paren
 suffix:semicolon
+multiline_comment|/* trigger */
+r_if
+c_cond
+(paren
+id|chip-&gt;device_type
+op_ne
+id|DEVICE_ALI
+)paren
 id|iputbyte
 c_func
 (paren
@@ -10005,7 +9998,37 @@ op_or
 id|ICH_STARTBM
 )paren
 suffix:semicolon
-multiline_comment|/* trigger */
+r_else
+(brace
+id|iputbyte
+c_func
+(paren
+id|chip
+comma
+id|port
+op_plus
+id|ICH_REG_OFF_CR
+comma
+id|ICH_IOCE
+)paren
+suffix:semicolon
+id|iputbyte
+c_func
+(paren
+id|chip
+comma
+id|ICHREG
+c_func
+(paren
+id|ALI_DMACR
+)paren
+comma
+l_int|1
+op_lshift
+id|ichdev-&gt;ali_slot
+)paren
+suffix:semicolon
+)brace
 id|do_gettimeofday
 c_func
 (paren
@@ -10105,6 +10128,34 @@ op_amp
 id|stop_time
 )paren
 suffix:semicolon
+multiline_comment|/* stop */
+r_if
+c_cond
+(paren
+id|chip-&gt;device_type
+op_eq
+id|DEVICE_ALI
+)paren
+id|iputbyte
+c_func
+(paren
+id|chip
+comma
+id|ICHREG
+c_func
+(paren
+id|ALI_DMACR
+)paren
+comma
+l_int|1
+op_lshift
+(paren
+id|ichdev-&gt;ali_slot
+op_plus
+l_int|8
+)paren
+)paren
+suffix:semicolon
 id|iputbyte
 c_func
 (paren
@@ -10117,7 +10168,6 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-multiline_comment|/* stop */
 multiline_comment|/* reset whole DMA things */
 r_while
 c_loop
@@ -11788,6 +11838,12 @@ comma
 l_int|0x7445
 comma
 l_string|&quot;AMD AMD768&quot;
+)brace
+comma
+(brace
+l_int|0x5455
+comma
+l_string|&quot;ALi M5455&quot;
 )brace
 comma
 (brace

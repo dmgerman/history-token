@@ -739,8 +739,10 @@ DECL|macro|ICE1712_6FIRE_TX2
 mdefine_line|#define ICE1712_6FIRE_TX2&t;&t;0x40&t;/* MIDI2 */
 DECL|macro|ICE1712_6FIRE_RX2
 mdefine_line|#define ICE1712_6FIRE_RX2&t;&t;0x80&t;/* MIDI2 */
+DECL|macro|ICE1712_6FIRE_PCF9554_ADDR
+mdefine_line|#define ICE1712_6FIRE_PCF9554_ADDR&t;(0x40&gt;&gt;1)
 DECL|macro|ICE1712_6FIRE_CS8427_ADDR
-mdefine_line|#define ICE1712_6FIRE_CS8427_ADDR&t;(0x22&gt;&gt;1) /* ?? */
+mdefine_line|#define ICE1712_6FIRE_CS8427_ADDR&t;(0x22&gt;&gt;1)
 multiline_comment|/*&n; * DMA mode values&n; * identical with DMA_XXX on i386 architecture.&n; */
 DECL|macro|ICE1712_DMA_MODE_WRITE
 mdefine_line|#define ICE1712_DMA_MODE_WRITE&t;&t;0x48
@@ -1176,7 +1178,7 @@ id|snd_i2c_device_t
 op_star
 id|pcf8575
 suffix:semicolon
-multiline_comment|/* PCF8575 (EWS88D) */
+multiline_comment|/* PCF8575 (EWS88D) / PCF9554 (6Fire) */
 DECL|member|cs8403_spdif_bits
 r_int
 r_char
@@ -12185,7 +12187,6 @@ id|ice-&gt;ac97
 OL
 l_int|0
 )paren
-(brace
 id|printk
 c_func
 (paren
@@ -12193,8 +12194,6 @@ id|KERN_WARNING
 l_string|&quot;ice1712: cannot initialize ac97 for consumer, skipped&bslash;n&quot;
 )paren
 suffix:semicolon
-singleline_comment|// return err;
-)brace
 r_else
 (brace
 r_if
@@ -12224,10 +12223,10 @@ l_int|0
 r_return
 id|err
 suffix:semicolon
-)brace
 r_return
 l_int|0
 suffix:semicolon
+)brace
 )brace
 multiline_comment|/* hmm.. can we have both consumer and pro ac97 mixers? */
 r_if
@@ -12295,7 +12294,6 @@ id|ice-&gt;ac97
 OL
 l_int|0
 )paren
-(brace
 id|printk
 c_func
 (paren
@@ -12303,8 +12301,7 @@ id|KERN_WARNING
 l_string|&quot;ice1712: cannot initialize pro ac97, skipped&bslash;n&quot;
 )paren
 suffix:semicolon
-singleline_comment|// return err;
-)brace
+r_else
 r_return
 l_int|0
 suffix:semicolon
@@ -16035,7 +16032,7 @@ r_char
 op_star
 id|texts
 (braket
-l_int|4
+l_int|2
 )braket
 op_assign
 (brace
@@ -17428,8 +17425,15 @@ comma
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * DMX 6Fire controls&n; */
-macro_line|#if 0 
-singleline_comment|// XXX not working yet
+DECL|macro|PCF9554_REG_INPUT
+mdefine_line|#define PCF9554_REG_INPUT&t;0
+DECL|macro|PCF9554_REG_OUTPUT
+mdefine_line|#define PCF9554_REG_OUTPUT&t;1
+DECL|macro|PCF9554_REG_POLARITY
+mdefine_line|#define PCF9554_REG_POLARITY&t;2
+DECL|macro|PCF9554_REG_CONFIG
+mdefine_line|#define PCF9554_REG_CONFIG&t;3
+DECL|function|snd_ice1712_6fire_read_pca
 r_static
 r_int
 id|snd_ice1712_6fire_read_pca
@@ -17438,6 +17442,10 @@ c_func
 id|ice1712_t
 op_star
 id|ice
+comma
+r_int
+r_char
+id|reg
 )paren
 (brace
 r_int
@@ -17452,9 +17460,8 @@ id|ice-&gt;i2c
 suffix:semicolon
 id|byte
 op_assign
-l_int|0
+id|reg
 suffix:semicolon
-multiline_comment|/* read port */
 id|snd_i2c_sendbytes
 c_func
 (paren
@@ -17465,6 +17472,10 @@ id|byte
 comma
 l_int|1
 )paren
+suffix:semicolon
+id|byte
+op_assign
+l_int|0
 suffix:semicolon
 r_if
 c_cond
@@ -17489,6 +17500,12 @@ c_func
 id|ice-&gt;i2c
 )paren
 suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;cannot read pca&bslash;n&quot;
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|EIO
@@ -17504,6 +17521,7 @@ r_return
 id|byte
 suffix:semicolon
 )brace
+DECL|function|snd_ice1712_6fire_write_pca
 r_static
 r_int
 id|snd_ice1712_6fire_write_pca
@@ -17512,6 +17530,10 @@ c_func
 id|ice1712_t
 op_star
 id|ice
+comma
+r_int
+r_char
+id|reg
 comma
 r_int
 r_char
@@ -17536,9 +17558,8 @@ id|bytes
 l_int|0
 )braket
 op_assign
-l_int|1
+id|reg
 suffix:semicolon
-multiline_comment|/* write port */
 id|bytes
 (braket
 l_int|1
@@ -17583,6 +17604,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|function|snd_ice1712_6fire_control_info
 r_static
 r_int
 id|snd_ice1712_6fire_control_info
@@ -17617,6 +17639,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|function|snd_ice1712_6fire_control_get
 r_static
 r_int
 id|snd_ice1712_6fire_control_get
@@ -17672,6 +17695,8 @@ id|snd_ice1712_6fire_read_pca
 c_func
 (paren
 id|ice
+comma
+id|PCF9554_REG_OUTPUT
 )paren
 )paren
 OL
@@ -17710,6 +17735,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|function|snd_ice1712_6fire_control_put
 r_static
 r_int
 id|snd_ice1712_6fire_control_put
@@ -17767,6 +17793,8 @@ id|snd_ice1712_6fire_read_pca
 c_func
 (paren
 id|ice
+comma
+id|PCF9554_REG_OUTPUT
 )paren
 )paren
 OL
@@ -17828,6 +17856,8 @@ c_func
 (paren
 id|ice
 comma
+id|PCF9554_REG_OUTPUT
+comma
 (paren
 r_int
 r_char
@@ -17843,28 +17873,318 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-mdefine_line|#define DMX6FIRE_CONTROL(xiface, xname, xshift, xinvert, xaccess) &bslash;&n;{ .iface = xiface,&bslash;&n;  .name = xname,&bslash;&n;  .access = xaccess,&bslash;&n;  .info = snd_ice1712_6fire_control_info,&bslash;&n;  .get = snd_ice1712_6fire_control_get,&bslash;&n;  .put = snd_ice1712_6fire_control_put,&bslash;&n;  .private_value = xshift | (xinvert &lt;&lt; 8),&bslash;&n;}
+DECL|function|snd_ice1712_6fire_select_input_info
+r_static
+r_int
+id|snd_ice1712_6fire_select_input_info
+c_func
+(paren
+id|snd_kcontrol_t
+op_star
+id|kcontrol
+comma
+id|snd_ctl_elem_info_t
+op_star
+id|uinfo
+)paren
+(brace
+r_static
+r_char
+op_star
+id|texts
+(braket
+l_int|4
+)braket
+op_assign
+(brace
+l_string|&quot;Internal&quot;
+comma
+l_string|&quot;Front Input&quot;
+comma
+l_string|&quot;Rear Input&quot;
+comma
+l_string|&quot;Wave Table&quot;
+)brace
+suffix:semicolon
+id|uinfo-&gt;type
+op_assign
+id|SNDRV_CTL_ELEM_TYPE_ENUMERATED
+suffix:semicolon
+id|uinfo-&gt;count
+op_assign
+l_int|1
+suffix:semicolon
+id|uinfo-&gt;value.enumerated.items
+op_assign
+l_int|4
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|uinfo-&gt;value.enumerated.item
+op_ge
+l_int|4
+)paren
+id|uinfo-&gt;value.enumerated.item
+op_assign
+l_int|1
+suffix:semicolon
+id|strcpy
+c_func
+(paren
+id|uinfo-&gt;value.enumerated.name
+comma
+id|texts
+(braket
+id|uinfo-&gt;value.enumerated.item
+)braket
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+DECL|function|snd_ice1712_6fire_select_input_get
+r_static
+r_int
+id|snd_ice1712_6fire_select_input_get
+c_func
+(paren
+id|snd_kcontrol_t
+op_star
+id|kcontrol
+comma
+id|snd_ctl_elem_value_t
+op_star
+id|ucontrol
+)paren
+(brace
+id|ice1712_t
+op_star
+id|ice
+op_assign
+id|snd_kcontrol_chip
+c_func
+(paren
+id|kcontrol
+)paren
+suffix:semicolon
+r_int
+id|data
+suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|data
+op_assign
+id|snd_ice1712_6fire_read_pca
+c_func
+(paren
+id|ice
+comma
+id|PCF9554_REG_OUTPUT
+)paren
+)paren
+OL
+l_int|0
+)paren
+r_return
+id|data
+suffix:semicolon
+id|ucontrol-&gt;value.integer.value
+(braket
+l_int|0
+)braket
+op_assign
+id|data
+op_amp
+l_int|3
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+DECL|function|snd_ice1712_6fire_select_input_put
+r_static
+r_int
+id|snd_ice1712_6fire_select_input_put
+c_func
+(paren
+id|snd_kcontrol_t
+op_star
+id|kcontrol
+comma
+id|snd_ctl_elem_value_t
+op_star
+id|ucontrol
+)paren
+(brace
+id|ice1712_t
+op_star
+id|ice
+op_assign
+id|snd_kcontrol_chip
+c_func
+(paren
+id|kcontrol
+)paren
+suffix:semicolon
+r_int
+id|data
+comma
+id|ndata
+suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|data
+op_assign
+id|snd_ice1712_6fire_read_pca
+c_func
+(paren
+id|ice
+comma
+id|PCF9554_REG_OUTPUT
+)paren
+)paren
+OL
+l_int|0
+)paren
+r_return
+id|data
+suffix:semicolon
+id|ndata
+op_assign
+id|data
+op_amp
+op_complement
+l_int|3
+suffix:semicolon
+id|ndata
+op_or_assign
+(paren
+id|ucontrol-&gt;value.integer.value
+(braket
+l_int|0
+)braket
+op_amp
+l_int|3
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|data
+op_ne
+id|ndata
+)paren
+(brace
+id|snd_ice1712_6fire_write_pca
+c_func
+(paren
+id|ice
+comma
+id|PCF9554_REG_OUTPUT
+comma
+(paren
+r_int
+r_char
+)paren
+id|ndata
+)paren
+suffix:semicolon
+r_return
+l_int|1
+suffix:semicolon
+)brace
+r_return
+l_int|0
+suffix:semicolon
+)brace
+DECL|macro|DMX6FIRE_CONTROL
+mdefine_line|#define DMX6FIRE_CONTROL(xname, xshift, xinvert) &bslash;&n;{ .iface = SNDRV_CTL_ELEM_IFACE_MIXER,&bslash;&n;  .name = xname,&bslash;&n;  .info = snd_ice1712_6fire_control_info,&bslash;&n;  .get = snd_ice1712_6fire_control_get,&bslash;&n;  .put = snd_ice1712_6fire_control_put,&bslash;&n;  .private_value = xshift | (xinvert &lt;&lt; 8),&bslash;&n;}
+DECL|variable|__devinitdata
 r_static
 id|snd_kcontrol_new_t
-id|snd_ice1712_6fire_led
+id|snd_ice1712_6fire_controls
+(braket
+)braket
 id|__devinitdata
 op_assign
+(brace
+(brace
+dot
+id|iface
+op_assign
+id|SNDRV_CTL_ELEM_IFACE_MIXER
+comma
+dot
+id|name
+op_assign
+l_string|&quot;Analog Input Select&quot;
+comma
+dot
+id|info
+op_assign
+id|snd_ice1712_6fire_select_input_info
+comma
+dot
+id|get
+op_assign
+id|snd_ice1712_6fire_select_input_get
+comma
+dot
+id|put
+op_assign
+id|snd_ice1712_6fire_select_input_put
+comma
+)brace
+comma
 id|DMX6FIRE_CONTROL
 c_func
 (paren
-id|SNDRV_CTL_ELEM_IFACE_MIXER
+l_string|&quot;Front Digital Input Switch&quot;
 comma
+l_int|2
+comma
+l_int|0
+)paren
+comma
+singleline_comment|// DMX6FIRE_CONTROL(&quot;Master Clock Select&quot;, 3, 0),
+id|DMX6FIRE_CONTROL
+c_func
+(paren
+l_string|&quot;Optical Digital Input Switch&quot;
+comma
+l_int|4
+comma
+l_int|0
+)paren
+comma
+id|DMX6FIRE_CONTROL
+c_func
+(paren
+l_string|&quot;Phono Analog Input Switch&quot;
+comma
+l_int|5
+comma
+l_int|0
+)paren
+comma
+id|DMX6FIRE_CONTROL
+c_func
+(paren
 l_string|&quot;Breakbox LED&quot;
 comma
 l_int|6
 comma
 l_int|0
-comma
-l_int|0
 )paren
+comma
+)brace
 suffix:semicolon
-macro_line|#endif 
-singleline_comment|// XXX not working yet
 multiline_comment|/*&n; *&n; */
 DECL|function|snd_ice1712_read_i2c
 r_static
@@ -20211,8 +20531,6 @@ suffix:semicolon
 r_case
 id|ICE1712_SUBDEVICE_DMX6FIRE
 suffix:colon
-macro_line|#if 0 
-singleline_comment|// XXX not working yet
 r_if
 c_cond
 (paren
@@ -20226,9 +20544,7 @@ id|ice-&gt;i2c
 comma
 l_string|&quot;PCF9554&quot;
 comma
-l_int|0x40
-op_rshift
-l_int|1
+id|ICE1712_6FIRE_PCF9554_ADDR
 comma
 op_amp
 id|ice-&gt;pcf8575
@@ -20237,9 +20553,19 @@ id|ice-&gt;pcf8575
 OL
 l_int|0
 )paren
+(brace
+id|snd_printk
+c_func
+(paren
+l_string|&quot;PCF9554 initialization failed&bslash;n&quot;
+)paren
+suffix:semicolon
 r_return
 id|err
 suffix:semicolon
+)brace
+macro_line|#if 0 
+singleline_comment|// XXX not working...
 r_if
 c_cond
 (paren
@@ -20251,7 +20577,7 @@ c_func
 (paren
 id|ice-&gt;i2c
 comma
-l_int|0x11
+id|ICE1712_6FIRE_CS8427_ADDR
 comma
 op_amp
 id|ice-&gt;cs8427
@@ -20271,8 +20597,7 @@ r_return
 id|err
 suffix:semicolon
 )brace
-macro_line|#endif 
-singleline_comment|// XXX not working yet
+macro_line|#endif
 r_break
 suffix:semicolon
 r_case
@@ -21783,8 +22108,32 @@ suffix:semicolon
 r_case
 id|ICE1712_SUBDEVICE_DMX6FIRE
 suffix:colon
-macro_line|#if 0 
-singleline_comment|// XXX not working yet
+r_for
+c_loop
+(paren
+id|idx
+op_assign
+l_int|0
+suffix:semicolon
+id|idx
+OL
+r_sizeof
+(paren
+id|snd_ice1712_6fire_controls
+)paren
+op_div
+r_sizeof
+(paren
+id|snd_ice1712_6fire_controls
+(braket
+l_int|0
+)braket
+)paren
+suffix:semicolon
+id|idx
+op_increment
+)paren
+(brace
 id|err
 op_assign
 id|snd_ctl_add
@@ -21796,7 +22145,10 @@ id|snd_ctl_new1
 c_func
 (paren
 op_amp
-id|snd_ice1712_6fire_led
+id|snd_ice1712_6fire_controls
+(braket
+id|idx
+)braket
 comma
 id|ice
 )paren
@@ -21812,7 +22164,7 @@ l_int|0
 r_return
 id|err
 suffix:semicolon
-macro_line|#endif
+)brace
 r_break
 suffix:semicolon
 )brace
