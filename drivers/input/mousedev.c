@@ -2627,6 +2627,9 @@ c_func
 (paren
 id|list-&gt;mousedev-&gt;wait
 comma
+op_logical_neg
+id|list-&gt;mousedev-&gt;exist
+op_logical_or
 id|list-&gt;ready
 op_logical_or
 id|list-&gt;buffer
@@ -2639,6 +2642,16 @@ id|retval
 )paren
 r_return
 id|retval
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|list-&gt;mousedev-&gt;exist
+)paren
+r_return
+op_minus
+id|ENODEV
 suffix:semicolon
 r_if
 c_cond
