@@ -1382,7 +1382,7 @@ r_return
 id|error
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;kobject_set_name - Set the name of an object&n; *&t;@kobj:&t;object.&n; *&t;@name:&t;name. &n; *&n; *&t;If strlen(name) &lt; KOBJ_NAME_LEN, then use a dynamically allocated&n; *&t;string that @kobj-&gt;k_name points to. Otherwise, use the static &n; *&t;@kobj-&gt;name array.&n; */
+multiline_comment|/**&n; *&t;kobject_set_name - Set the name of an object&n; *&t;@kobj:&t;object.&n; *&t;@name:&t;name. &n; *&n; *&t;If strlen(name) &gt;= KOBJ_NAME_LEN, then use a dynamically allocated&n; *&t;string that @kobj-&gt;k_name points to. Otherwise, use the static &n; *&t;@kobj-&gt;name array.&n; */
 DECL|function|kobject_set_name
 r_int
 id|kobject_set_name
