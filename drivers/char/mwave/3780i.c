@@ -1702,6 +1702,7 @@ r_int
 id|usDspBaseIO
 comma
 r_void
+id|__user
 op_star
 id|pvBuffer
 comma
@@ -1715,6 +1716,7 @@ id|ulDSPAddr
 (brace
 r_int
 r_int
+id|__user
 op_star
 id|pusBuffer
 op_assign
@@ -1882,6 +1884,7 @@ r_int
 id|usDspBaseIO
 comma
 r_void
+id|__user
 op_star
 id|pvBuffer
 comma
@@ -1895,6 +1898,7 @@ id|ulDSPAddr
 (brace
 r_int
 r_int
+id|__user
 op_star
 id|pusBuffer
 op_assign
@@ -2062,6 +2066,7 @@ r_int
 id|usDspBaseIO
 comma
 r_void
+id|__user
 op_star
 id|pvBuffer
 comma
@@ -2075,6 +2080,7 @@ id|ulDSPAddr
 (brace
 r_int
 r_int
+id|__user
 op_star
 id|pusBuffer
 op_assign
@@ -2242,6 +2248,7 @@ r_int
 id|usDspBaseIO
 comma
 r_void
+id|__user
 op_star
 id|pvBuffer
 comma
@@ -2255,6 +2262,7 @@ id|ulDSPAddr
 (brace
 r_int
 r_int
+id|__user
 op_star
 id|pusBuffer
 op_assign
@@ -2466,6 +2474,7 @@ r_int
 id|usDspBaseIO
 comma
 r_void
+id|__user
 op_star
 id|pvBuffer
 comma
@@ -2479,6 +2488,7 @@ id|ulDSPAddr
 (brace
 r_int
 r_int
+id|__user
 op_star
 id|pusBuffer
 op_assign
