@@ -587,7 +587,7 @@ mdefine_line|#define spin_is_locked(lock)&t;((void)(lock), 0)
 DECL|macro|_raw_spin_trylock
 mdefine_line|#define _raw_spin_trylock(lock)&t;(((void)(lock), 1))
 DECL|macro|spin_unlock_wait
-mdefine_line|#define spin_unlock_wait(lock)&t;(void)(lock);
+mdefine_line|#define spin_unlock_wait(lock)&t;(void)(lock)
 DECL|macro|_raw_spin_unlock
 mdefine_line|#define _raw_spin_unlock(lock) do { (void)(lock); } while(0)
 macro_line|#endif /* CONFIG_DEBUG_SPINLOCK */
