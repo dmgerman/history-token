@@ -38,6 +38,8 @@ DECL|variable|ports_c
 r_static
 r_int
 id|ports_c
+op_assign
+l_int|0
 suffix:semicolon
 macro_line|#ifdef MODULE_PARM
 id|MODULE_PARM
@@ -2185,16 +2187,9 @@ id|i
 op_assign
 l_int|0
 suffix:semicolon
-(paren
 id|i
 OL
-id|MAX_PORTS
-)paren
-op_logical_and
-id|ports
-(braket
-id|i
-)braket
+id|ports_c
 suffix:semicolon
 id|i
 op_increment
