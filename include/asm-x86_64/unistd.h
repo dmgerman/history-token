@@ -2153,7 +2153,7 @@ comma
 id|sys_ni_syscall
 )paren
 DECL|macro|__NR_mbind
-mdefine_line|#define __NR_mbind &t;&t;&t;237
+mdefine_line|#define __NR_mbind &t;&t;237
 id|__SYSCALL
 c_func
 (paren
@@ -2207,7 +2207,7 @@ comma
 id|sys_mq_timedsend
 )paren
 DECL|macro|__NR_mq_timedreceive
-mdefine_line|#define __NR_mq_timedreceive 243
+mdefine_line|#define __NR_mq_timedreceive&t;243
 id|__SYSCALL
 c_func
 (paren
