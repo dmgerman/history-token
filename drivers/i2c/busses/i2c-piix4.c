@@ -400,7 +400,7 @@ c_func
 op_amp
 id|PIIX4_dev-&gt;dev
 comma
-l_string|&quot;Fixed I2C problem on Force CPCI735&bslash;n&quot;
+l_string|&quot;Worked around buggy BIOS (I2C)&bslash;n&quot;
 )paren
 suffix:semicolon
 id|temp
