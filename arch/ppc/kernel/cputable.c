@@ -839,6 +839,7 @@ comma
 id|COMMON_PPC
 op_or
 id|PPC_FEATURE_ALTIVEC_COMP
+comma
 l_int|32
 comma
 l_int|32
@@ -873,6 +874,7 @@ comma
 id|COMMON_PPC
 op_or
 id|PPC_FEATURE_ALTIVEC_COMP
+comma
 l_int|32
 comma
 l_int|32
@@ -905,6 +907,7 @@ comma
 id|COMMON_PPC
 op_or
 id|PPC_FEATURE_ALTIVEC_COMP
+comma
 l_int|32
 comma
 l_int|32
@@ -980,6 +983,7 @@ comma
 id|COMMON_PPC
 op_or
 id|PPC_FEATURE_ALTIVEC_COMP
+comma
 l_int|32
 comma
 l_int|32
@@ -1014,6 +1018,7 @@ comma
 id|COMMON_PPC
 op_or
 id|PPC_FEATURE_ALTIVEC_COMP
+comma
 l_int|32
 comma
 l_int|32
@@ -1054,6 +1059,7 @@ comma
 id|COMMON_PPC
 op_or
 id|PPC_FEATURE_ALTIVEC_COMP
+comma
 l_int|32
 comma
 l_int|32
@@ -1092,6 +1098,7 @@ comma
 id|COMMON_PPC
 op_or
 id|PPC_FEATURE_ALTIVEC_COMP
+comma
 l_int|32
 comma
 l_int|32
