@@ -1,9 +1,9 @@
 multiline_comment|/*&n; * include/asm-i386/xor.h&n; *&n; * Optimized RAID-5 checksumming functions for MMX and SSE.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * You should have received a copy of the GNU General Public License&n; * (for example /usr/src/linux/COPYING); if not, write to the Free&n; * Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
 multiline_comment|/*&n; * High-speed RAID5 checksumming functions utilizing MMX instructions.&n; * Copyright (C) 1998 Ingo Molnar.&n; */
 DECL|macro|FPU_SAVE
-mdefine_line|#define FPU_SAVE&t;&t;&t;&t;&t;&t;&t;&bslash;&n;  do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (!(current-&gt;flags &amp; PF_USEDFPU))&t;&t;&t;&t;&bslash;&n;&t;&t;__asm__ __volatile__ (&quot; clts;&bslash;n&quot;);&t;&t;&t;&bslash;&n;&t;__asm__ __volatile__ (&quot;fsave %0; fwait&quot;: &quot;=m&quot;(fpu_save[0]));&t;&bslash;&n;  } while (0)
+mdefine_line|#define FPU_SAVE&t;&t;&t;&t;&t;&t;&t;&bslash;&n;  do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (!test_thread_flag(TIF_USEDFPU))&t;&t;&t;&t;&bslash;&n;&t;&t;__asm__ __volatile__ (&quot; clts;&bslash;n&quot;);&t;&t;&t;&bslash;&n;&t;__asm__ __volatile__ (&quot;fsave %0; fwait&quot;: &quot;=m&quot;(fpu_save[0]));&t;&bslash;&n;  } while (0)
 DECL|macro|FPU_RESTORE
-mdefine_line|#define FPU_RESTORE&t;&t;&t;&t;&t;&t;&t;&bslash;&n;  do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__asm__ __volatile__ (&quot;frstor %0&quot;: : &quot;m&quot;(fpu_save[0]));&t;&t;&bslash;&n;&t;if (!(current-&gt;flags &amp; PF_USEDFPU))&t;&t;&t;&t;&bslash;&n;&t;&t;stts();&t;&t;&t;&t;&t;&t;&t;&bslash;&n;  } while (0)
+mdefine_line|#define FPU_RESTORE&t;&t;&t;&t;&t;&t;&t;&bslash;&n;  do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__asm__ __volatile__ (&quot;frstor %0&quot;: : &quot;m&quot;(fpu_save[0]));&t;&t;&bslash;&n;&t;if (!test_thread_flag(TIF_USEDFPU))&t;&t;&t;&t;&bslash;&n;&t;&t;stts();&t;&t;&t;&t;&t;&t;&t;&bslash;&n;  } while (0)
 DECL|macro|LD
 mdefine_line|#define LD(x,y)&t;&t;&quot;       movq   8*(&quot;#x&quot;)(%1), %%mm&quot;#y&quot;   ;&bslash;n&quot;
 DECL|macro|ST

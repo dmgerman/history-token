@@ -119,7 +119,7 @@ mdefine_line|#define cpu_rq(cpu)&t;&t;(runqueues + (cpu))
 DECL|macro|this_rq
 mdefine_line|#define this_rq()&t;&t;cpu_rq(smp_processor_id())
 DECL|macro|task_rq
-mdefine_line|#define task_rq(p)&t;&t;cpu_rq((p)-&gt;cpu)
+mdefine_line|#define task_rq(p)&t;&t;cpu_rq((p)-&gt;thread_info-&gt;cpu)
 DECL|macro|cpu_curr
 mdefine_line|#define cpu_curr(cpu)&t;&t;(cpu_rq(cpu)-&gt;curr)
 DECL|macro|rt_task
@@ -538,21 +538,42 @@ op_star
 id|p
 )paren
 (brace
+macro_line|#ifdef CONFIG_SMP
 r_int
 id|need_resched
+comma
+id|nrpolling
+suffix:semicolon
+multiline_comment|/* minimise the chance of sending an interrupt to poll_idle() */
+id|nrpolling
+op_assign
+id|test_tsk_thread_flag
+c_func
+(paren
+id|p
+comma
+id|TIF_POLLING_NRFLAG
+)paren
 suffix:semicolon
 id|need_resched
 op_assign
-id|p-&gt;work.need_resched
-suffix:semicolon
-id|wmb
+id|test_and_set_tsk_thread_flag
 c_func
 (paren
+id|p
+comma
+id|TIF_NEED_RESCHED
 )paren
 suffix:semicolon
-id|p-&gt;work.need_resched
-op_assign
-l_int|1
+id|nrpolling
+op_or_assign
+id|test_tsk_thread_flag
+c_func
+(paren
+id|p
+comma
+id|TIF_POLLING_NRFLAG
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -560,8 +581,11 @@ c_cond
 op_logical_neg
 id|need_resched
 op_logical_and
+op_logical_neg
+id|nrpolling
+op_logical_and
 (paren
-id|p-&gt;cpu
+id|p-&gt;thread_info-&gt;cpu
 op_ne
 id|smp_processor_id
 c_func
@@ -572,9 +596,17 @@ c_func
 id|smp_send_reschedule
 c_func
 (paren
-id|p-&gt;cpu
+id|p-&gt;thread_info-&gt;cpu
 )paren
 suffix:semicolon
+macro_line|#else
+id|set_tsk_need_resched
+c_func
+(paren
+id|p
+)paren
+suffix:semicolon
+macro_line|#endif
 )brace
 macro_line|#ifdef CONFIG_SMP
 multiline_comment|/*&n; * Wait for a process to unschedule. This is used by the exit() and&n; * ptrace() code.&n; */
@@ -692,7 +724,7 @@ c_func
 id|new_task
 )paren
 suffix:semicolon
-id|new_task-&gt;cpu
+id|new_task-&gt;thread_info-&gt;cpu
 op_assign
 id|smp_processor_id
 c_func
@@ -921,7 +953,7 @@ op_amp
 id|rq-&gt;lock
 )paren
 suffix:semicolon
-id|p-&gt;cpu
+id|p-&gt;thread_info-&gt;cpu
 op_assign
 id|smp_processor_id
 c_func
@@ -1700,7 +1732,7 @@ suffix:semicolon
 id|busiest-&gt;nr_running
 op_decrement
 suffix:semicolon
-id|next-&gt;cpu
+id|next-&gt;thread_info-&gt;cpu
 op_assign
 id|this_cpu
 suffix:semicolon
@@ -1722,9 +1754,10 @@ id|next-&gt;prio
 OL
 id|current-&gt;prio
 )paren
-id|current-&gt;work.need_resched
-op_assign
-l_int|1
+id|set_need_resched
+c_func
+(paren
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -1874,9 +1907,11 @@ op_ne
 id|rq-&gt;active
 )paren
 (brace
-id|p-&gt;work.need_resched
-op_assign
-l_int|1
+id|set_tsk_need_resched
+c_func
+(paren
+id|p
+)paren
 suffix:semicolon
 r_return
 suffix:semicolon
@@ -1925,9 +1960,11 @@ c_func
 id|p-&gt;__nice
 )paren
 suffix:semicolon
-id|p-&gt;work.need_resched
-op_assign
-l_int|1
+id|set_tsk_need_resched
+c_func
+(paren
+id|p
+)paren
 suffix:semicolon
 multiline_comment|/* put it at the end of the queue: */
 id|dequeue_task
@@ -1976,9 +2013,11 @@ comma
 id|rq-&gt;active
 )paren
 suffix:semicolon
-id|p-&gt;work.need_resched
-op_assign
-l_int|1
+id|set_tsk_need_resched
+c_func
+(paren
+id|p
+)paren
 suffix:semicolon
 id|p-&gt;prio
 op_assign
@@ -2321,9 +2360,11 @@ c_func
 id|next
 )paren
 suffix:semicolon
-id|prev-&gt;work.need_resched
-op_assign
-l_int|0
+id|clear_tsk_need_resched
+c_func
+(paren
+id|prev
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -4922,7 +4963,7 @@ id|idle-&gt;state
 op_assign
 id|TASK_RUNNING
 suffix:semicolon
-id|idle-&gt;cpu
+id|idle-&gt;thread_info-&gt;cpu
 op_assign
 id|cpu
 suffix:semicolon
@@ -4934,9 +4975,11 @@ comma
 id|rq
 )paren
 suffix:semicolon
-id|idle-&gt;work.need_resched
-op_assign
-l_int|1
+id|set_tsk_need_resched
+c_func
+(paren
+id|idle
+)paren
 suffix:semicolon
 id|__restore_flags
 c_func

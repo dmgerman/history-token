@@ -163,14 +163,10 @@ suffix:semicolon
 multiline_comment|/*&n;&t; * Deal with another CPU just having chosen a thread to&n;&t; * run here:&n;&t; */
 id|oldval
 op_assign
-id|xchg
+id|test_and_clear_thread_flag
 c_func
 (paren
-op_amp
-id|current-&gt;work.need_resched
-comma
-op_minus
-l_int|1
+id|TIF_NEED_RESCHED
 )paren
 suffix:semicolon
 r_if
@@ -179,21 +175,53 @@ c_cond
 op_logical_neg
 id|oldval
 )paren
+(brace
+id|set_thread_flag
+c_func
+(paren
+id|TIF_POLLING_NRFLAG
+)paren
+suffix:semicolon
 id|asm
 r_volatile
 (paren
 l_string|&quot;2:&quot;
-l_string|&quot;cmpb $-1, %0;&quot;
+l_string|&quot;testl %0, %1;&quot;
 l_string|&quot;rep; nop;&quot;
 l_string|&quot;je 2b;&quot;
 suffix:colon
 suffix:colon
+l_string|&quot;i&quot;
+(paren
+id|_TIF_NEED_RESCHED
+)paren
+comma
 l_string|&quot;m&quot;
 (paren
-id|current-&gt;work.need_resched
+id|current_thread_info
+c_func
+(paren
+)paren
+op_member_access_from_pointer
+id|flags
 )paren
 )paren
 suffix:semicolon
+id|clear_thread_flag
+c_func
+(paren
+id|TIF_POLLING_NRFLAG
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
+id|set_need_resched
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
 )brace
 multiline_comment|/*&n; * The idle thread. There&squot;s no useful work to be&n; * done, so just try to conserve power and have a&n; * low exit latency (ie sit in a loop waiting for&n; * somebody to say that they&squot;d like to reschedule)&n; */
 DECL|function|cpu_idle
@@ -1889,7 +1917,7 @@ op_plus
 r_int
 r_int
 )paren
-id|p
+id|p-&gt;thread_info
 )paren
 )paren
 op_minus
@@ -2235,6 +2263,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
+multiline_comment|/* never put a printk in __switch_to... printk() calls wake_up*() indirectly */
 id|unlazy_fpu
 c_func
 (paren

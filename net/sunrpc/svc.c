@@ -652,9 +652,11 @@ c_cond
 op_logical_neg
 id|port
 )paren
-id|current-&gt;work.sigpending
-op_assign
-l_int|0
+id|clear_thread_flag
+c_func
+(paren
+id|TIF_SIGPENDING
+)paren
 suffix:semicolon
 r_for
 c_loop

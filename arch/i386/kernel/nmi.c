@@ -876,7 +876,7 @@ op_star
 id|regs
 )paren
 (brace
-multiline_comment|/*&n;&t; * Since current-&gt; is always on the stack, and we always switch&n;&t; * the stack NMI-atomically, it&squot;s safe to use smp_processor_id().&n;&t; */
+multiline_comment|/*&n;&t; * Since current_thread_info()-&gt; is always on the stack, and we&n;&t; * always switch the stack NMI-atomically, it&squot;s safe to use&n;&t; * smp_processor_id().&n;&t; */
 r_int
 id|sum
 comma

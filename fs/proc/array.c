@@ -1455,7 +1455,7 @@ id|task-&gt;cnswap
 comma
 id|task-&gt;exit_signal
 comma
-id|task-&gt;cpu
+id|task-&gt;thread_info-&gt;cpu
 )paren
 suffix:semicolon
 r_if

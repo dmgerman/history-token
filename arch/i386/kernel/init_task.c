@@ -40,11 +40,11 @@ c_func
 id|init_mm
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * Initial task structure.&n; *&n; * We need to make sure that this is 8192-byte aligned due to the&n; * way process stacks are handled. This is done by having a special&n; * &quot;init_task&quot; linker map entry..&n; */
-DECL|variable|init_task_union
+multiline_comment|/*&n; * Initial thread structure.&n; *&n; * We need to make sure that this is 8192-byte aligned due to the&n; * way process stacks are handled. This is done by having a special&n; * &quot;init_task&quot; linker map entry..&n; */
+DECL|variable|init_thread_union
 r_union
-id|task_union
-id|init_task_union
+id|thread_union
+id|init_thread_union
 id|__attribute__
 c_func
 (paren
@@ -58,12 +58,24 @@ l_string|&quot;.data.init_task&quot;
 )paren
 op_assign
 (brace
+id|INIT_THREAD_INFO
+c_func
+(paren
+id|init_task
+)paren
+)brace
+suffix:semicolon
+multiline_comment|/*&n; * Initial task structure.&n; *&n; * All other task structs will be allocated on slabs in fork.c&n; */
+DECL|variable|init_task
+r_struct
+id|task_struct
+id|init_task
+op_assign
 id|INIT_TASK
 c_func
 (paren
-id|init_task_union.task
+id|init_task
 )paren
-)brace
 suffix:semicolon
 multiline_comment|/*&n; * per-CPU TSS segments. Threads are completely &squot;soft&squot; on Linux,&n; * no more per-task TSS&squot;s. The TSS size is kept cacheline-aligned&n; * so they are allowed to end up in the .data.cacheline_aligned&n; * section. Since TSS&squot;s are completely CPU-local, we want them&n; * on exact cacheline boundaries, to eliminate cacheline ping-pong.&n; */
 DECL|variable|__cacheline_aligned

@@ -183,7 +183,7 @@ id|p-&gt;pid
 op_assign
 l_int|0
 suffix:semicolon
-id|free_task_struct
+id|put_task_struct
 c_func
 (paren
 id|p
@@ -1812,7 +1812,7 @@ suffix:semicolon
 id|put_exec_domain
 c_func
 (paren
-id|tsk-&gt;exec_domain
+id|tsk-&gt;thread_info-&gt;exec_domain
 )paren
 suffix:semicolon
 r_if

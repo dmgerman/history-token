@@ -20,9 +20,9 @@ mdefine_line|#define USER_DS&t;&t;MAKE_MM_SEG(PAGE_OFFSET)
 DECL|macro|get_ds
 mdefine_line|#define get_ds()&t;(KERNEL_DS)
 DECL|macro|get_fs
-mdefine_line|#define get_fs()&t;(current-&gt;addr_limit)
+mdefine_line|#define get_fs()&t;(current_thread_info()-&gt;addr_limit)
 DECL|macro|set_fs
-mdefine_line|#define set_fs(x)&t;(current-&gt;addr_limit = (x))
+mdefine_line|#define set_fs(x)&t;(current_thread_info()-&gt;addr_limit = (x))
 DECL|macro|segment_eq
 mdefine_line|#define segment_eq(a,b)&t;((a).seg == (b).seg)
 r_extern
@@ -39,10 +39,10 @@ r_int
 )paren
 suffix:semicolon
 DECL|macro|__addr_ok
-mdefine_line|#define __addr_ok(addr) ((unsigned long)(addr) &lt; (current-&gt;addr_limit.seg))
+mdefine_line|#define __addr_ok(addr) ((unsigned long)(addr) &lt; (current_thread_info()-&gt;addr_limit.seg))
 multiline_comment|/*&n; * Uhhuh, this needs 33-bit arithmetic. We have a carry..&n; */
 DECL|macro|__range_ok
-mdefine_line|#define __range_ok(addr,size) ({ &bslash;&n;&t;unsigned long flag,sum; &bslash;&n;&t;asm(&quot;addl %3,%1 ; sbbl %0,%0; cmpl %1,%4; sbbl $0,%0&quot; &bslash;&n;&t;&t;:&quot;=&amp;r&quot; (flag), &quot;=r&quot; (sum) &bslash;&n;&t;&t;:&quot;1&quot; (addr),&quot;g&quot; ((int)(size)),&quot;g&quot; (current-&gt;addr_limit.seg)); &bslash;&n;&t;flag; })
+mdefine_line|#define __range_ok(addr,size) ({ &bslash;&n;&t;unsigned long flag,sum; &bslash;&n;&t;asm(&quot;addl %3,%1 ; sbbl %0,%0; cmpl %1,%4; sbbl $0,%0&quot; &bslash;&n;&t;&t;:&quot;=&amp;r&quot; (flag), &quot;=r&quot; (sum) &bslash;&n;&t;&t;:&quot;1&quot; (addr),&quot;g&quot; ((int)(size)),&quot;g&quot; (current_thread_info()-&gt;addr_limit.seg)); &bslash;&n;&t;flag; })
 macro_line|#ifdef CONFIG_X86_WP_WORKS_OK
 DECL|macro|access_ok
 mdefine_line|#define access_ok(type,addr,size) (__range_ok(addr,size) == 0)
