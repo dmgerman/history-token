@@ -2478,6 +2478,12 @@ id|dev-&gt;tx_queue_len
 op_assign
 l_int|100
 suffix:semicolon
+id|SET_MODULE_OWNER
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
