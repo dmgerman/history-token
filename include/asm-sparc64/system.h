@@ -88,9 +88,9 @@ mdefine_line|#define irqs_disabled()&t;&t;&bslash;&n;({&t;unsigned long flags;&t
 DECL|macro|nop
 mdefine_line|#define nop() &t;&t;__asm__ __volatile__ (&quot;nop&quot;)
 DECL|macro|membar
-mdefine_line|#define membar(type)&t;__asm__ __volatile__ (&quot;membar &quot; type : : : &quot;memory&quot;);
+mdefine_line|#define membar(type)&t;__asm__ __volatile__ (&quot;membar &quot; type : : : &quot;memory&quot;)
 DECL|macro|mb
-mdefine_line|#define mb()&t;&t;&bslash;&n;&t;membar(&quot;#LoadLoad | #LoadStore | #StoreStore | #StoreLoad&quot;);
+mdefine_line|#define mb()&t;&t;&bslash;&n;&t;membar(&quot;#LoadLoad | #LoadStore | #StoreStore | #StoreLoad&quot;)
 DECL|macro|rmb
 mdefine_line|#define rmb()&t;&t;membar(&quot;#LoadLoad&quot;)
 DECL|macro|wmb
@@ -112,11 +112,11 @@ DECL|macro|smp_read_barrier_depends
 mdefine_line|#define smp_read_barrier_depends()&t;read_barrier_depends()
 macro_line|#else
 DECL|macro|smp_mb
-mdefine_line|#define smp_mb()&t;__asm__ __volatile__(&quot;&quot;:::&quot;memory&quot;);
+mdefine_line|#define smp_mb()&t;__asm__ __volatile__(&quot;&quot;:::&quot;memory&quot;)
 DECL|macro|smp_rmb
-mdefine_line|#define smp_rmb()&t;__asm__ __volatile__(&quot;&quot;:::&quot;memory&quot;);
+mdefine_line|#define smp_rmb()&t;__asm__ __volatile__(&quot;&quot;:::&quot;memory&quot;)
 DECL|macro|smp_wmb
-mdefine_line|#define smp_wmb()&t;__asm__ __volatile__(&quot;&quot;:::&quot;memory&quot;);
+mdefine_line|#define smp_wmb()&t;__asm__ __volatile__(&quot;&quot;:::&quot;memory&quot;)
 DECL|macro|smp_read_barrier_depends
 mdefine_line|#define smp_read_barrier_depends()&t;do { } while(0)
 macro_line|#endif
@@ -128,7 +128,7 @@ multiline_comment|/* Performance counter register access. */
 DECL|macro|read_pcr
 mdefine_line|#define read_pcr(__p)  __asm__ __volatile__(&quot;rd&t;%%pcr, %0&quot; : &quot;=r&quot; (__p))
 DECL|macro|write_pcr
-mdefine_line|#define write_pcr(__p) __asm__ __volatile__(&quot;wr&t;%0, 0x0, %%pcr&quot; : : &quot;r&quot; (__p));
+mdefine_line|#define write_pcr(__p) __asm__ __volatile__(&quot;wr&t;%0, 0x0, %%pcr&quot; : : &quot;r&quot; (__p))
 DECL|macro|read_pic
 mdefine_line|#define read_pic(__p)  __asm__ __volatile__(&quot;rd %%pic, %0&quot; : &quot;=r&quot; (__p))
 multiline_comment|/* Blackbird errata workaround.  See commentary in&n; * arch/sparc64/kernel/smp.c:smp_percpu_timer_interrupt()&n; * for more information.&n; */
