@@ -918,6 +918,10 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
+id|system_running
+op_assign
+l_int|0
+suffix:semicolon
 id|device_shutdown
 c_func
 (paren
@@ -970,6 +974,10 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
+id|system_running
+op_assign
+l_int|0
+suffix:semicolon
 id|device_shutdown
 c_func
 (paren
@@ -1008,6 +1016,10 @@ id|SYS_POWER_OFF
 comma
 l_int|NULL
 )paren
+suffix:semicolon
+id|system_running
+op_assign
+l_int|0
 suffix:semicolon
 id|device_shutdown
 c_func
@@ -1098,6 +1110,10 @@ id|SYS_RESTART
 comma
 id|buffer
 )paren
+suffix:semicolon
+id|system_running
+op_assign
+l_int|0
 suffix:semicolon
 id|device_shutdown
 c_func
