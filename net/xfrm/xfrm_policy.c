@@ -1474,10 +1474,6 @@ id|p
 op_ne
 l_int|NULL
 suffix:semicolon
-id|p
-op_assign
-op_amp
-id|pol-&gt;next
 )paren
 (brace
 r_if
@@ -1549,8 +1545,15 @@ id|policy-&gt;priority
 op_ge
 id|pol-&gt;priority
 )paren
+(brace
+id|p
+op_assign
+op_amp
+id|pol-&gt;next
+suffix:semicolon
 r_continue
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
