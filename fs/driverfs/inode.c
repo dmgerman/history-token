@@ -588,6 +588,16 @@ id|mode
 r_int
 id|res
 suffix:semicolon
+id|mode
+op_assign
+(paren
+id|mode
+op_amp
+id|S_IALLUGO
+)paren
+op_or
+id|S_IFREG
+suffix:semicolon
 id|dentry-&gt;d_op
 op_assign
 op_amp
@@ -603,8 +613,6 @@ comma
 id|dentry
 comma
 id|mode
-op_or
-id|S_IFREG
 comma
 l_int|0
 )paren
@@ -1715,11 +1723,6 @@ id|driverfs_dir_inode_operations
 op_assign
 (brace
 dot
-id|create
-op_assign
-id|driverfs_create
-comma
-dot
 id|lookup
 op_assign
 id|simple_lookup
@@ -2552,7 +2555,7 @@ id|entry
 suffix:semicolon
 id|error
 op_assign
-id|vfs_create
+id|driverfs_create
 c_func
 (paren
 id|parent-&gt;dentry-&gt;d_inode
