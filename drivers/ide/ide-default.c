@@ -103,6 +103,18 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
+multiline_comment|/* For the sake of the request layer, we must make sure we have a&n;&t; * correct ready_stat value, that is 0 for ATAPI devices or we will&n;&t; * fail any request like Power Management&n;&t; */
+r_if
+c_cond
+(paren
+id|drive-&gt;media
+op_ne
+id|ide_disk
+)paren
+id|drive-&gt;ready_stat
+op_assign
+l_int|0
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon

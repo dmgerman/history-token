@@ -1,7 +1,7 @@
 multiline_comment|/* message.h: Rx message caching&n; *&n; * Copyright (C) 2002 Red Hat, Inc. All Rights Reserved.&n; * Written by David Howells (dhowells@redhat.com)&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License&n; * as published by the Free Software Foundation; either version&n; * 2 of the License, or (at your option) any later version.&n; */
-macro_line|#ifndef _H_3AD3363A_3A9C_11D6_83D8_0002B3163499
-DECL|macro|_H_3AD3363A_3A9C_11D6_83D8_0002B3163499
-mdefine_line|#define _H_3AD3363A_3A9C_11D6_83D8_0002B3163499
+macro_line|#ifndef _LINUX_RXRPC_MESSAGE_H
+DECL|macro|_LINUX_RXRPC_MESSAGE_H
+mdefine_line|#define _LINUX_RXRPC_MESSAGE_H
 macro_line|#include &lt;rxrpc/packet.h&gt;
 multiline_comment|/*****************************************************************************/
 multiline_comment|/*&n; * Rx message record&n; */
@@ -188,7 +188,7 @@ id|rxrpc_call
 op_star
 id|call
 comma
-id|u8
+r_uint8
 id|type
 comma
 r_int
@@ -226,5 +226,5 @@ op_star
 id|msg
 )paren
 suffix:semicolon
-macro_line|#endif /* _H_3AD3363A_3A9C_11D6_83D8_0002B3163499 */
+macro_line|#endif /* _LINUX_RXRPC_MESSAGE_H */
 eof

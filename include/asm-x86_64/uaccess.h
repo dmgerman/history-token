@@ -524,6 +524,10 @@ op_star
 (paren
 l_int|8
 op_plus
+(paren
+r_char
+op_star
+)paren
 id|dst
 )paren
 comma
@@ -534,6 +538,10 @@ op_star
 (paren
 l_int|8
 op_plus
+(paren
+r_char
+op_star
+)paren
 id|src
 )paren
 comma
@@ -600,6 +608,10 @@ op_star
 (paren
 l_int|8
 op_plus
+(paren
+r_char
+op_star
+)paren
 id|dst
 )paren
 comma
@@ -610,6 +622,10 @@ op_star
 (paren
 l_int|8
 op_plus
+(paren
+r_char
+op_star
+)paren
 id|src
 )paren
 comma

@@ -544,6 +544,8 @@ DECL|macro|__NR_ia32_tgkill
 mdefine_line|#define __NR_ia32_tgkill&t;&t;270
 DECL|macro|__NR_ia32_utimes
 mdefine_line|#define __NR_ia32_utimes&t;&t;271
+DECL|macro|__NR_ia32_fadvise64_64
+mdefine_line|#define __NR_ia32_fadvise64_64&t;&t;272
 DECL|macro|IA32_NR_syscalls
 mdefine_line|#define IA32_NR_syscalls 275&t;/* must be &gt; than biggest syscall! */&t;
 macro_line|#endif /* _ASM_X86_64_IA32_UNISTD_H_ */

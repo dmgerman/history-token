@@ -23,6 +23,22 @@ r_extern
 r_int
 id|acpi_disabled
 suffix:semicolon
+DECL|variable|acpi_lapic
+r_int
+id|acpi_lapic
+op_assign
+l_int|0
+suffix:semicolon
+DECL|variable|acpi_ioapic
+r_int
+id|acpi_ioapic
+op_assign
+l_int|0
+suffix:semicolon
+r_extern
+r_int
+id|disable_apic
+suffix:semicolon
 DECL|macro|PREFIX
 mdefine_line|#define PREFIX&t;&t;&t;&quot;ACPI: &quot;
 multiline_comment|/* --------------------------------------------------------------------------&n;                              Boot-time Configuration&n;   -------------------------------------------------------------------------- */
@@ -82,10 +98,6 @@ l_int|NULL
 suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_X86_LOCAL_APIC
-DECL|variable|acpi_lapic
-r_int
-id|acpi_lapic
-suffix:semicolon
 DECL|variable|__initdata
 r_static
 id|u64
@@ -355,10 +367,6 @@ suffix:semicolon
 )brace
 macro_line|#endif /*CONFIG_X86_LOCAL_APIC*/
 macro_line|#ifdef CONFIG_X86_IO_APIC
-DECL|variable|acpi_ioapic
-r_int
-id|acpi_ioapic
-suffix:semicolon
 r_static
 r_int
 id|__init
@@ -729,6 +737,7 @@ r_return
 id|rsdp_phys
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * acpi_boot_init()&n; *  called from setup_arch(), always.&n; *     1. maps ACPI tables for later use&n; *     2. enumerates lapics&n; *     3. enumerates io-apics&n; *&n; * side effects:&n; *     acpi_lapic = 1 if LAPIC found&n; *     acpi_ioapic = 1 if IOAPIC found&n; *     if (acpi_lapic &amp;&amp; acpi_ioapic) smp_found_config = 1;&n; *     if acpi_blacklisted() acpi_disabled = 1;&n; *     acpi_irq_model=...&n; *     ...&n; *&n; * return value: (currently ignored)&n; *     0: success&n; *     !0: failure&n; */
 r_int
 id|__init
 DECL|function|acpi_boot_init
@@ -741,6 +750,14 @@ r_int
 id|result
 op_assign
 l_int|0
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|acpi_disabled
+)paren
+r_return
+l_int|1
 suffix:semicolon
 multiline_comment|/*&n;&t; * The default interrupt routing model is PIC (8259).  This gets&n;&t; * overriden if IOAPICs are enumerated (below).&n;&t; */
 id|acpi_irq_model
@@ -792,15 +809,6 @@ r_return
 id|result
 suffix:semicolon
 )brace
-r_else
-id|printk
-c_func
-(paren
-id|KERN_NOTICE
-id|PREFIX
-l_string|&quot;BIOS not listed in blacklist&bslash;n&quot;
-)paren
-suffix:semicolon
 r_extern
 r_int
 id|disable_apic
@@ -1009,6 +1017,37 @@ suffix:semicolon
 macro_line|#endif /*CONFIG_X86_LOCAL_APIC*/
 macro_line|#ifdef CONFIG_X86_IO_APIC
 multiline_comment|/* &n;&t; * I/O APIC &n;&t; * --------&n;&t; */
+multiline_comment|/*&n;        * ACPI interpreter is required to complete interrupt setup,&n;        * so if it is off, don&squot;t enumerate the io-apics with ACPI.&n;        * If MPS is present, it will handle them,&n;        * otherwise the system will stay in PIC mode&n;        */
+r_if
+c_cond
+(paren
+id|acpi_disabled
+)paren
+(brace
+r_return
+l_int|1
+suffix:semicolon
+)brace
+multiline_comment|/*&n;&t; * if &quot;noapic&quot; boot option, don&squot;t look for IO-APICs&n;&t; */
+r_if
+c_cond
+(paren
+id|disable_apic
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_INFO
+id|PREFIX
+l_string|&quot;Skipping IOAPIC probe &quot;
+l_string|&quot;due to &squot;noapic&squot; option.&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+l_int|1
+suffix:semicolon
+)brace
 id|result
 op_assign
 id|acpi_table_parse_madt

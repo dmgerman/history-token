@@ -95,6 +95,7 @@ op_assign
 r_void
 op_star
 )paren
+(paren
 id|read_pda
 c_func
 (paren
@@ -104,6 +105,7 @@ op_plus
 id|PDA_STACKOFFSET
 op_minus
 id|THREAD_SIZE
+)paren
 suffix:semicolon
 r_return
 id|ti

@@ -134,6 +134,47 @@ DECL|macro|loadsegment
 mdefine_line|#define loadsegment(seg,value)&t;&bslash;&n;&t;asm volatile(&quot;&bslash;n&quot;&t;&t;&t;&bslash;&n;&t;&t;&quot;1:&bslash;t&quot;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;movl %k0,%%&quot; #seg &quot;&bslash;n&quot;&t;&t;&bslash;&n;&t;&t;&quot;2:&bslash;n&quot;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;.section .fixup,&bslash;&quot;ax&bslash;&quot;&bslash;n&quot;&t;&bslash;&n;&t;&t;&quot;3:&bslash;t&quot;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;movl %1,%%&quot; #seg &quot;&bslash;n&bslash;t&quot; &t;&bslash;&n;&t;&t;&quot;jmp 2b&bslash;n&quot;&t;&t;&t;&bslash;&n;&t;&t;&quot;.previous&bslash;n&quot;&t;&t;&t;&bslash;&n;&t;&t;&quot;.section __ex_table,&bslash;&quot;a&bslash;&quot;&bslash;n&bslash;t&quot;&t;&bslash;&n;&t;&t;&quot;.align 8&bslash;n&bslash;t&quot;&t;&t;&t;&bslash;&n;&t;&t;&quot;.quad 1b,3b&bslash;n&quot;&t;&t;&t;&bslash;&n;&t;&t;&quot;.previous&quot;&t;&t;&t;&bslash;&n;&t;&t;: :&quot;r&quot; (value), &quot;r&quot; (0))
 DECL|macro|set_debug
 mdefine_line|#define set_debug(value,register) &bslash;&n;                __asm__(&quot;movq %0,%%db&quot; #register  &bslash;&n;&t;&t;: /* no output */ &bslash;&n;&t;&t;:&quot;r&quot; ((unsigned long) value))
+macro_line|#ifdef __KERNEL__
+DECL|struct|alt_instr
+r_struct
+id|alt_instr
+(brace
+DECL|member|instr
+id|__u8
+op_star
+id|instr
+suffix:semicolon
+multiline_comment|/* original instruction */
+DECL|member|replacement
+id|__u8
+op_star
+id|replacement
+suffix:semicolon
+DECL|member|cpuid
+id|__u8
+id|cpuid
+suffix:semicolon
+multiline_comment|/* cpuid bit set for replacement */
+DECL|member|instrlen
+id|__u8
+id|instrlen
+suffix:semicolon
+multiline_comment|/* length of original instruction */
+DECL|member|replacementlen
+id|__u8
+id|replacementlen
+suffix:semicolon
+multiline_comment|/* length of new instruction, &lt;= instrlen */
+DECL|member|pad
+id|__u8
+id|pad
+(braket
+l_int|5
+)braket
+suffix:semicolon
+)brace
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/*&n; * Clear and set &squot;TS&squot; bit respectively&n; */
 DECL|macro|clts
 mdefine_line|#define clts() __asm__ __volatile__ (&quot;clts&quot;)

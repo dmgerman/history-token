@@ -133,6 +133,14 @@ id|_edata
 comma
 id|_end
 suffix:semicolon
+macro_line|#ifdef CONFIG_XIP_KERNEL
+r_extern
+r_int
+id|_endtext
+comma
+id|_sdata
+suffix:semicolon
+macro_line|#endif
 DECL|variable|processor_id
 r_int
 r_int
@@ -803,10 +811,17 @@ id|init_mm.end_code
 op_minus
 l_int|1
 suffix:semicolon
+macro_line|#ifdef CONFIG_XIP_KERNEL
+id|kernel_data.start
+op_assign
+id|init_mm.start_data
+suffix:semicolon
+macro_line|#else
 id|kernel_data.start
 op_assign
 id|init_mm.end_code
 suffix:semicolon
+macro_line|#endif
 id|kernel_data.end
 op_assign
 id|init_mm.brk
@@ -1768,7 +1783,9 @@ id|machine_name
 op_assign
 l_string|&quot;UNKNOWN&quot;
 suffix:semicolon
-singleline_comment|//FIXME - this may need altering when we get ROM images working
+singleline_comment|//FIXME - the tag struct is always copied here but this is a block
+singleline_comment|// of RAM that is accidentally reserved along with video RAM. perhaps
+singleline_comment|// it would be a good idea to explicitly reserve this?
 id|tags
 op_assign
 (paren
@@ -1846,6 +1863,7 @@ r_int
 op_amp
 id|_text
 suffix:semicolon
+macro_line|#ifndef CONFIG_XIP_KERNEL
 id|init_mm.end_code
 op_assign
 (paren
@@ -1855,6 +1873,26 @@ r_int
 op_amp
 id|_etext
 suffix:semicolon
+macro_line|#else
+id|init_mm.end_code
+op_assign
+(paren
+r_int
+r_int
+)paren
+op_amp
+id|_endtext
+suffix:semicolon
+id|init_mm.start_data
+op_assign
+(paren
+r_int
+r_int
+)paren
+op_amp
+id|_sdata
+suffix:semicolon
+macro_line|#endif
 id|init_mm.end_data
 op_assign
 (paren

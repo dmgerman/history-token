@@ -118,7 +118,7 @@ r_volatile
 (paren
 l_string|&quot;&t;testq  %[size8],%[size8]&bslash;n&quot;
 l_string|&quot;&t;jz     4f&bslash;n&quot;
-l_string|&quot;0:&t;movnti %[zero],(%[dst])&bslash;n&quot;
+l_string|&quot;0:&t;movq %[zero],(%[dst])&bslash;n&quot;
 l_string|&quot;&t;addq   %[eight],%[dst]&bslash;n&quot;
 l_string|&quot;&t;decl %%ecx ; jnz   0b&bslash;n&quot;
 l_string|&quot;4:&t;movq  %[size1],%%rcx&bslash;n&quot;
@@ -127,7 +127,7 @@ l_string|&quot;&t;jz     2f&bslash;n&quot;
 l_string|&quot;1:&t;movb   %b[zero],(%[dst])&bslash;n&quot;
 l_string|&quot;&t;incq   %[dst]&bslash;n&quot;
 l_string|&quot;&t;decl %%ecx ; jnz  1b&bslash;n&quot;
-l_string|&quot;2:&t;sfence&bslash;n&quot;
+l_string|&quot;2:&bslash;n&quot;
 l_string|&quot;.section .fixup,&bslash;&quot;ax&bslash;&quot;&bslash;n&quot;
 l_string|&quot;3:&t;lea 0(%[size1],%[size8],8),%[size8]&bslash;n&quot;
 l_string|&quot;&t;jmp 2b&bslash;n&quot;

@@ -760,7 +760,11 @@ r_char
 op_star
 id|volname
 comma
-id|afsc_vldb_record_t
+r_int
+id|volnamesz
+comma
+r_struct
+id|afs_cache_vlocation
 op_star
 id|entry
 )paren
@@ -815,9 +819,15 @@ suffix:semicolon
 id|_enter
 c_func
 (paren
-l_string|&quot;,%s,&quot;
+l_string|&quot;,%*.*s,%u,&quot;
+comma
+id|volnamesz
+comma
+id|volnamesz
 comma
 id|volname
+comma
+id|volnamesz
 )paren
 suffix:semicolon
 id|memset
@@ -917,11 +927,7 @@ l_int|1
 dot
 id|iov_len
 op_assign
-id|strlen
-c_func
-(paren
-id|volname
-)paren
+id|volnamesz
 suffix:semicolon
 id|piov
 (braket
@@ -1223,7 +1229,7 @@ id|entry-&gt;srvtmask
 id|loop
 )braket
 op_or_assign
-id|AFSC_VOL_STM_RW
+id|AFS_VOL_VTM_RW
 suffix:semicolon
 r_if
 c_cond
@@ -1237,7 +1243,7 @@ id|entry-&gt;srvtmask
 id|loop
 )braket
 op_or_assign
-id|AFSC_VOL_STM_RO
+id|AFS_VOL_VTM_RO
 suffix:semicolon
 r_if
 c_cond
@@ -1251,7 +1257,7 @@ id|entry-&gt;srvtmask
 id|loop
 )braket
 op_or_assign
-id|AFSC_VOL_STM_BAK
+id|AFS_VOL_VTM_BAK
 suffix:semicolon
 )brace
 id|entry-&gt;vid
@@ -1317,7 +1323,7 @@ id|AFS_VLF_RWEXISTS
 )paren
 id|entry-&gt;vidmask
 op_or_assign
-id|AFSC_VOL_STM_RW
+id|AFS_VOL_VTM_RW
 suffix:semicolon
 r_if
 c_cond
@@ -1328,7 +1334,7 @@ id|AFS_VLF_ROEXISTS
 )paren
 id|entry-&gt;vidmask
 op_or_assign
-id|AFSC_VOL_STM_RO
+id|AFS_VOL_VTM_RO
 suffix:semicolon
 r_if
 c_cond
@@ -1339,7 +1345,7 @@ id|AFS_VLF_BACKEXISTS
 )paren
 id|entry-&gt;vidmask
 op_or_assign
-id|AFSC_VOL_STM_BAK
+id|AFS_VOL_VTM_BAK
 suffix:semicolon
 id|ret
 op_assign
@@ -1356,7 +1362,7 @@ r_goto
 m_abort
 suffix:semicolon
 multiline_comment|/* success */
-id|entry-&gt;ctime
+id|entry-&gt;rtime
 op_assign
 id|get_seconds
 c_func
@@ -1455,7 +1461,8 @@ comma
 id|afs_voltype_t
 id|voltype
 comma
-id|afsc_vldb_record_t
+r_struct
+id|afs_cache_vlocation
 op_star
 id|entry
 )paren
@@ -1860,7 +1867,7 @@ id|entry-&gt;srvtmask
 id|loop
 )braket
 op_or_assign
-id|AFSC_VOL_STM_RW
+id|AFS_VOL_VTM_RW
 suffix:semicolon
 r_if
 c_cond
@@ -1874,7 +1881,7 @@ id|entry-&gt;srvtmask
 id|loop
 )braket
 op_or_assign
-id|AFSC_VOL_STM_RO
+id|AFS_VOL_VTM_RO
 suffix:semicolon
 r_if
 c_cond
@@ -1888,7 +1895,7 @@ id|entry-&gt;srvtmask
 id|loop
 )braket
 op_or_assign
-id|AFSC_VOL_STM_BAK
+id|AFS_VOL_VTM_BAK
 suffix:semicolon
 )brace
 id|entry-&gt;vid
@@ -1954,7 +1961,7 @@ id|AFS_VLF_RWEXISTS
 )paren
 id|entry-&gt;vidmask
 op_or_assign
-id|AFSC_VOL_STM_RW
+id|AFS_VOL_VTM_RW
 suffix:semicolon
 r_if
 c_cond
@@ -1965,7 +1972,7 @@ id|AFS_VLF_ROEXISTS
 )paren
 id|entry-&gt;vidmask
 op_or_assign
-id|AFSC_VOL_STM_RO
+id|AFS_VOL_VTM_RO
 suffix:semicolon
 r_if
 c_cond
@@ -1976,7 +1983,7 @@ id|AFS_VLF_BACKEXISTS
 )paren
 id|entry-&gt;vidmask
 op_or_assign
-id|AFSC_VOL_STM_BAK
+id|AFS_VOL_VTM_BAK
 suffix:semicolon
 id|ret
 op_assign
@@ -2042,27 +2049,27 @@ id|entry-&gt;srvtmask
 l_int|0
 )braket
 op_assign
-id|AFSC_VOL_STM_RO
+id|AFS_VOL_VTM_RO
 suffix:semicolon
 id|entry-&gt;srvtmask
 (braket
 l_int|1
 )braket
 op_assign
-id|AFSC_VOL_STM_RO
+id|AFS_VOL_VTM_RO
 suffix:semicolon
 id|entry-&gt;srvtmask
 (braket
 l_int|2
 )braket
 op_assign
-id|AFSC_VOL_STM_RO
+id|AFS_VOL_VTM_RO
 op_or
-id|AFSC_VOL_STM_RW
+id|AFS_VOL_VTM_RW
 suffix:semicolon
 macro_line|#endif
 multiline_comment|/* success */
-id|entry-&gt;ctime
+id|entry-&gt;rtime
 op_assign
 id|get_seconds
 c_func
@@ -2512,7 +2519,8 @@ id|afs_async_op_t
 op_star
 id|op
 comma
-id|afsc_vldb_record_t
+r_struct
+id|afs_cache_vlocation
 op_star
 id|entry
 )paren
@@ -2684,7 +2692,7 @@ id|entry-&gt;srvtmask
 id|loop
 )braket
 op_or_assign
-id|AFSC_VOL_STM_RW
+id|AFS_VOL_VTM_RW
 suffix:semicolon
 r_if
 c_cond
@@ -2698,7 +2706,7 @@ id|entry-&gt;srvtmask
 id|loop
 )braket
 op_or_assign
-id|AFSC_VOL_STM_RO
+id|AFS_VOL_VTM_RO
 suffix:semicolon
 r_if
 c_cond
@@ -2712,7 +2720,7 @@ id|entry-&gt;srvtmask
 id|loop
 )braket
 op_or_assign
-id|AFSC_VOL_STM_BAK
+id|AFS_VOL_VTM_BAK
 suffix:semicolon
 )brace
 id|entry-&gt;vid
@@ -2778,7 +2786,7 @@ id|AFS_VLF_RWEXISTS
 )paren
 id|entry-&gt;vidmask
 op_or_assign
-id|AFSC_VOL_STM_RW
+id|AFS_VOL_VTM_RW
 suffix:semicolon
 r_if
 c_cond
@@ -2789,7 +2797,7 @@ id|AFS_VLF_ROEXISTS
 )paren
 id|entry-&gt;vidmask
 op_or_assign
-id|AFSC_VOL_STM_RO
+id|AFS_VOL_VTM_RO
 suffix:semicolon
 r_if
 c_cond
@@ -2800,7 +2808,7 @@ id|AFS_VLF_BACKEXISTS
 )paren
 id|entry-&gt;vidmask
 op_or_assign
-id|AFSC_VOL_STM_BAK
+id|AFS_VOL_VTM_BAK
 suffix:semicolon
 id|ret
 op_assign
@@ -2876,27 +2884,27 @@ id|entry-&gt;srvtmask
 l_int|0
 )braket
 op_assign
-id|AFSC_VOL_STM_RO
+id|AFS_VOL_VTM_RO
 suffix:semicolon
 id|entry-&gt;srvtmask
 (braket
 l_int|1
 )braket
 op_assign
-id|AFSC_VOL_STM_RO
+id|AFS_VOL_VTM_RO
 suffix:semicolon
 id|entry-&gt;srvtmask
 (braket
 l_int|2
 )braket
 op_assign
-id|AFSC_VOL_STM_RO
+id|AFS_VOL_VTM_RO
 op_or
-id|AFSC_VOL_STM_RW
+id|AFS_VOL_VTM_RW
 suffix:semicolon
 macro_line|#endif
 multiline_comment|/* success */
-id|entry-&gt;ctime
+id|entry-&gt;rtime
 op_assign
 id|get_seconds
 c_func
@@ -3035,7 +3043,8 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;kAFS: Reply bigger than expected {cst=%u asyn=%d mark=%Zu rdy=%Zu pr=%u%s}&quot;
+l_string|&quot;kAFS: Reply bigger than expected&quot;
+l_string|&quot; {cst=%u asyn=%d mark=%Zu rdy=%Zu pr=%u%s}&quot;
 comma
 id|call-&gt;app_call_state
 comma

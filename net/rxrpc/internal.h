@@ -159,6 +159,11 @@ id|rw_semaphore
 id|rxrpc_conns_sem
 suffix:semicolon
 r_extern
+r_int
+r_int
+id|rxrpc_conn_timeout
+suffix:semicolon
+r_extern
 r_void
 id|rxrpc_conn_do_timeout
 c_func
@@ -190,6 +195,11 @@ r_extern
 r_struct
 id|rw_semaphore
 id|rxrpc_peers_sem
+suffix:semicolon
+r_extern
+r_int
+r_int
+id|rxrpc_peer_timeout
 suffix:semicolon
 r_extern
 r_void

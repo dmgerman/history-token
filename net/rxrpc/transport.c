@@ -611,8 +611,8 @@ comma
 id|trans-&gt;port
 )paren
 suffix:semicolon
-r_if
-c_cond
+id|BUG_ON
+c_func
 (paren
 id|atomic_read
 c_func
@@ -623,12 +623,8 @@ id|trans-&gt;usage
 op_le
 l_int|0
 )paren
-id|BUG
-c_func
-(paren
-)paren
 suffix:semicolon
-multiline_comment|/* to prevent a race, the decrement and the dequeue must be effectively atomic */
+multiline_comment|/* to prevent a race, the decrement and the dequeue must be&n;&t; * effectively atomic */
 id|spin_lock
 c_func
 (paren
@@ -1148,7 +1144,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* end rxrpc_error_report() */
 multiline_comment|/*****************************************************************************/
-multiline_comment|/*&n; * split a message up, allocating message records and filling them in from the contents of a&n; * socket buffer&n; */
+multiline_comment|/*&n; * split a message up, allocating message records and filling them in&n; * from the contents of a socket buffer&n; */
 DECL|function|rxrpc_incoming_msg
 r_static
 r_int
@@ -1619,7 +1615,8 @@ suffix:semicolon
 id|_net
 c_func
 (paren
-l_string|&quot;Rx Split jumbo packet from %s (%08x;%08x,%1x,%d,%s,%02x,%d,%d)&quot;
+l_string|&quot;Rx Split jumbo packet from %s&quot;
+l_string|&quot; (%08x;%08x,%1x,%d,%s,%02x,%d,%d)&quot;
 comma
 id|msg-&gt;hdr.flags
 op_amp
@@ -1890,7 +1887,7 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-multiline_comment|/* we&squot;ll probably need to checksum it (didn&squot;t call sock_recvmsg) */
+multiline_comment|/* we&squot;ll probably need to checksum it (didn&squot;t call&n;&t;&t; * sock_recvmsg) */
 r_if
 c_cond
 (paren
@@ -2014,8 +2011,8 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-r_if
-c_cond
+id|BUG_ON
+c_func
 (paren
 id|list_empty
 c_func
@@ -2023,10 +2020,6 @@ c_func
 op_amp
 id|msgq
 )paren
-)paren
-id|BUG
-c_func
-(paren
 )paren
 suffix:semicolon
 id|msg
@@ -2042,7 +2035,7 @@ comma
 id|link
 )paren
 suffix:semicolon
-multiline_comment|/* locate the record for the peer from which it originated */
+multiline_comment|/* locate the record for the peer from which it&n;&t;&t; * originated */
 id|ret
 op_assign
 id|rxrpc_peer_lookup
@@ -2443,13 +2436,13 @@ suffix:semicolon
 id|mm_segment_t
 id|oldfs
 suffix:semicolon
+r_uint32
+id|_error
+suffix:semicolon
 r_int
 id|len
 comma
 id|ret
-suffix:semicolon
-id|u32
-id|_error
 suffix:semicolon
 id|_enter
 c_func
@@ -2530,13 +2523,13 @@ suffix:semicolon
 id|ahdr.flags
 op_assign
 id|RXRPC_LAST_PACKET
-op_or
-(paren
+suffix:semicolon
+id|ahdr.flags
+op_or_assign
 op_complement
 id|msg-&gt;hdr.flags
 op_amp
 id|RXRPC_CLIENT_INITIATED
-)paren
 suffix:semicolon
 id|iov
 (braket
@@ -2721,7 +2714,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* end rxrpc_trans_immediate_abort() */
 multiline_comment|/*****************************************************************************/
-multiline_comment|/*&n; * receive an ICMP error report and percolate it to all connections heading to the affected&n; * host or port&n; */
+multiline_comment|/*&n; * receive an ICMP error report and percolate it to all connections&n; * heading to the affected host or port&n; */
 DECL|function|rxrpc_trans_receive_error_report
 r_static
 r_void
@@ -2766,13 +2759,13 @@ suffix:semicolon
 id|mm_segment_t
 id|oldfs
 suffix:semicolon
+r_uint16
+id|port
+suffix:semicolon
 r_int
 id|local
 comma
 id|err
-suffix:semicolon
-id|u16
-id|port
 suffix:semicolon
 id|_enter
 c_func
@@ -2949,7 +2942,8 @@ id|sin
 id|printk
 c_func
 (paren
-l_string|&quot;%s: short control message (nlen=%u clen=%Zu fl=%x)&bslash;n&quot;
+l_string|&quot;%s: short control message&quot;
+l_string|&quot; (nlen=%u clen=%Zu fl=%x)&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
@@ -2966,7 +2960,8 @@ suffix:semicolon
 id|_net
 c_func
 (paren
-l_string|&quot;Rx Received control message { len=%Zu level=%u type=%u }&quot;
+l_string|&quot;Rx Received control message&quot;
+l_string|&quot; { len=%Zu level=%u type=%u }&quot;
 comma
 id|emsg.cmsg.cmsg_len
 comma
@@ -2986,7 +2981,8 @@ id|AF_INET
 id|printk
 c_func
 (paren
-l_string|&quot;Rx Ignoring error report with non-INET address (fam=%u)&quot;
+l_string|&quot;Rx Ignoring error report with non-INET address&quot;
+l_string|&quot; (fam=%u)&quot;
 comma
 id|sin.sin_family
 )paren
@@ -3027,7 +3023,8 @@ id|IP_RECVERR
 id|printk
 c_func
 (paren
-l_string|&quot;Rx Ignoring unknown error report { level=%u type=%u }&quot;
+l_string|&quot;Rx Ignoring unknown error report&quot;
+l_string|&quot; { level=%u type=%u }&quot;
 comma
 id|emsg.cmsg.cmsg_level
 comma
@@ -3303,7 +3300,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-multiline_comment|/* find all the connections between this transport and the affected destination */
+multiline_comment|/* find all the connections between this transport and the&n;&t;&t; * affected destination */
 id|INIT_LIST_HEAD
 c_func
 (paren

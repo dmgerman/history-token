@@ -10,13 +10,13 @@ macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
 DECL|typedef|rxrpc_seq_t
 r_typedef
-r_int
+r_uint32
 id|rxrpc_seq_t
 suffix:semicolon
 multiline_comment|/* Rx message sequence number */
 DECL|typedef|rxrpc_serial_t
 r_typedef
-r_int
+r_uint32
 id|rxrpc_serial_t
 suffix:semicolon
 multiline_comment|/* Rx message serial number */

@@ -68,6 +68,7 @@ id|fd
 comma
 r_struct
 id|epoll_event
+id|__user
 op_star
 id|event
 )paren
@@ -82,6 +83,7 @@ id|epfd
 comma
 r_struct
 id|epoll_event
+id|__user
 op_star
 id|events
 comma

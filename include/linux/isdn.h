@@ -133,11 +133,11 @@ mdefine_line|#define ISDN_CMSGLEN&t;     50&t; /* Length of CONNECT-Message to a
 DECL|macro|ISDN_MSNLEN
 mdefine_line|#define ISDN_MSNLEN          32
 DECL|macro|NET_DV
-mdefine_line|#define NET_DV 0x06  /* Data version for isdn_net_ioctl_cfg   */
+mdefine_line|#define NET_DV&t;0x06  /* Data version for isdn_net_ioctl_cfg   */
 DECL|macro|TTY_DV
-mdefine_line|#define TTY_DV 0x06  /* Data version for iprofd etc.          */
+mdefine_line|#define TTY_DV&t;0x06  /* Data version for iprofd etc.          */
 DECL|macro|INF_DV
-mdefine_line|#define INF_DV 0x01  /* Data version for /dev/isdninfo        */
+mdefine_line|#define INF_DV&t;0x01  /* Data version for /dev/isdninfo        */
 r_typedef
 r_struct
 (brace
@@ -1030,10 +1030,10 @@ DECL|typedef|infostruct
 id|infostruct
 suffix:semicolon
 multiline_comment|/* Main driver-data */
-DECL|struct|isdn_devt
+DECL|struct|_isdn_dev_t
 r_typedef
 r_struct
-id|isdn_devt
+id|_isdn_dev_t
 (brace
 DECL|member|flags
 r_int
@@ -1041,7 +1041,6 @@ r_int
 id|flags
 suffix:semicolon
 multiline_comment|/* Bitmapped Flags:           */
-multiline_comment|/*                            */
 DECL|member|channels
 r_int
 id|channels
@@ -1096,14 +1095,18 @@ r_int
 r_int
 id|global_features
 suffix:semicolon
-DECL|typedef|isdn_dev
+DECL|typedef|isdn_dev_t
 )brace
-id|isdn_dev
+id|isdn_dev_t
 suffix:semicolon
 r_extern
-id|isdn_dev
+id|isdn_dev_t
 op_star
-id|dev
+id|get_isdn_dev
+c_func
+(paren
+r_void
+)paren
 suffix:semicolon
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* __ISDN_H__ */

@@ -20,6 +20,7 @@ r_int
 id|type
 comma
 r_char
+id|__user
 op_star
 id|bug
 comma
@@ -102,6 +103,7 @@ op_star
 id|file
 comma
 r_char
+id|__user
 op_star
 id|buf
 comma

@@ -7006,9 +7006,6 @@ r_struct
 id|uart_port
 op_star
 id|port
-comma
-id|u32
-id|level
 )paren
 (brace
 r_struct
@@ -7027,15 +7024,6 @@ op_amp
 id|state-&gt;sem
 )paren
 suffix:semicolon
-r_switch
-c_cond
-(paren
-id|level
-)paren
-(brace
-r_case
-id|SUSPEND_SAVE_STATE
-suffix:colon
 r_if
 c_cond
 (paren
@@ -7095,7 +7083,7 @@ op_amp
 id|port-&gt;lock
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t;&t; * Wait for the transmitter to empty.&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Wait for the transmitter to empty.&n;&t;&t; */
 r_while
 c_loop
 (paren
@@ -7141,12 +7129,7 @@ id|port
 )paren
 suffix:semicolon
 )brace
-r_break
-suffix:semicolon
-r_case
-id|SUSPEND_POWER_DOWN
-suffix:colon
-multiline_comment|/*&n;&t;&t; * Disable the console device before suspending.&n;&t;&t; */
+multiline_comment|/*&n;&t; * Disable the console device before suspending.&n;&t; */
 r_if
 c_cond
 (paren
@@ -7169,9 +7152,6 @@ comma
 l_int|3
 )paren
 suffix:semicolon
-r_break
-suffix:semicolon
-)brace
 id|up
 c_func
 (paren
@@ -7197,9 +7177,6 @@ r_struct
 id|uart_port
 op_star
 id|port
-comma
-id|u32
-id|level
 )paren
 (brace
 r_struct
@@ -7218,15 +7195,6 @@ op_amp
 id|state-&gt;sem
 )paren
 suffix:semicolon
-r_switch
-c_cond
-(paren
-id|level
-)paren
-(brace
-r_case
-id|RESUME_POWER_ON
-suffix:colon
 id|uart_change_pm
 c_func
 (paren
@@ -7235,7 +7203,7 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * Re-enable the console device after suspending.&n;&t;&t; */
+multiline_comment|/*&n;&t; * Re-enable the console device after suspending.&n;&t; */
 r_if
 c_cond
 (paren
@@ -7259,11 +7227,6 @@ op_or_assign
 id|CON_ENABLED
 suffix:semicolon
 )brace
-r_break
-suffix:semicolon
-r_case
-id|RESUME_RESTORE_STATE
-suffix:colon
 r_if
 c_cond
 (paren
@@ -7340,9 +7303,6 @@ c_func
 op_amp
 id|port-&gt;lock
 )paren
-suffix:semicolon
-)brace
-r_break
 suffix:semicolon
 )brace
 id|up

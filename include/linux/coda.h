@@ -683,7 +683,7 @@ mdefine_line|#define VC_MAXDATASIZE&t;    8192
 DECL|macro|VC_MAXMSGSIZE
 mdefine_line|#define VC_MAXMSGSIZE      sizeof(union inputArgs)+sizeof(union outputArgs) +&bslash;&n;                            VC_MAXDATASIZE  
 DECL|macro|CIOC_KERNEL_VERSION
-mdefine_line|#define CIOC_KERNEL_VERSION _IOWR(&squot;c&squot;, 10, sizeof (int))
+mdefine_line|#define CIOC_KERNEL_VERSION _IOWR(&squot;c&squot;, 10, size_t)
 macro_line|#if 0
 mdefine_line|#define CODA_KERNEL_VERSION 0 /* don&squot;t care about kernel version number */
 mdefine_line|#define CODA_KERNEL_VERSION 1 /* The old venus 4.6 compatible interface */

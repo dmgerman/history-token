@@ -374,6 +374,9 @@ id|inode
 op_star
 id|inode
 suffix:semicolon
+r_int
+id|err
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -398,7 +401,6 @@ comma
 id|mode
 )paren
 suffix:semicolon
-r_int
 id|err
 op_assign
 id|PTR_ERR

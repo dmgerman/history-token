@@ -23,7 +23,6 @@ macro_line|#include &lt;asm/sn/pci/pcibr_private.h&gt;
 macro_line|#include &lt;asm/sn/pci/pci_defs.h&gt;
 macro_line|#include &lt;asm/sn/prio.h&gt;
 macro_line|#include &lt;asm/sn/xtalk/xbow.h&gt;
-macro_line|#include &lt;asm/sn/ioc3.h&gt;
 macro_line|#include &lt;asm/sn/io.h&gt;
 macro_line|#include &lt;asm/sn/sn_private.h&gt;
 multiline_comment|/*&n; * global variables to toggle the different levels of pcibr debugging.  &n; *   -pcibr_debug_mask is the mask of the different types of debugging&n; *    you want to enable.  See sys/PCI/pcibr_private.h &n; *   -pcibr_debug_module is the module you want to trace.  By default&n; *    all modules are trace.  For IP35 this value has the format of&n; *    something like &quot;001c10&quot;.  For IP27 this value is a node number,&n; *    i.e. &quot;1&quot;, &quot;2&quot;...  For IP30 this is undefined and should be set to&n; *    &squot;all&squot;.&n; *   -pcibr_debug_widget is the widget you want to trace.  For IP27&n; *    the widget isn&squot;t exposed in the hwpath so use the xio slot num.&n; *    i.e. for &squot;io2&squot; set pcibr_debug_widget to &quot;2&quot;.&n; *   -pcibr_debug_slot is the pci slot you want to trace.&n; */

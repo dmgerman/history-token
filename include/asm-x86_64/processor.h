@@ -893,5 +893,40 @@ DECL|macro|setCx86
 mdefine_line|#define setCx86(reg, data) do { &bslash;&n;&t;outb((reg), 0x22); &bslash;&n;&t;outb((data), 0x23); &bslash;&n;} while (0)
 DECL|macro|stack_current
 mdefine_line|#define stack_current() &bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;struct thread_info *ti;&t;&t;&t;&t;&t;&bslash;&n;&t;asm(&quot;andq %%rsp,%0; &quot;:&quot;=r&quot; (ti) : &quot;0&quot; (CURRENT_MASK));&t;&bslash;&n;&t;ti-&gt;task;&t;&t;&t;&t;&t;&bslash;&n;})
+DECL|macro|ASM_NOP1
+mdefine_line|#define ASM_NOP1 K8_NOP1
+DECL|macro|ASM_NOP2
+mdefine_line|#define ASM_NOP2 K8_NOP2
+DECL|macro|ASM_NOP3
+mdefine_line|#define ASM_NOP3 K8_NOP3
+DECL|macro|ASM_NOP4
+mdefine_line|#define ASM_NOP4 K8_NOP4
+DECL|macro|ASM_NOP5
+mdefine_line|#define ASM_NOP5 K8_NOP5
+DECL|macro|ASM_NOP6
+mdefine_line|#define ASM_NOP6 K8_NOP6
+DECL|macro|ASM_NOP7
+mdefine_line|#define ASM_NOP7 K8_NOP7
+DECL|macro|ASM_NOP8
+mdefine_line|#define ASM_NOP8 K8_NOP8
+multiline_comment|/* Opteron nops */
+DECL|macro|K8_NOP1
+mdefine_line|#define K8_NOP1 &quot;.byte 0x90&bslash;n&quot;
+DECL|macro|K8_NOP2
+mdefine_line|#define K8_NOP2&t;&quot;.byte 0x66,0x90&bslash;n&quot; 
+DECL|macro|K8_NOP3
+mdefine_line|#define K8_NOP3&t;&quot;.byte 0x66,0x66,0x90&bslash;n&quot; 
+DECL|macro|K8_NOP4
+mdefine_line|#define K8_NOP4&t;&quot;.byte 0x66,0x66,0x66,0x90&bslash;n&quot; 
+DECL|macro|K8_NOP5
+mdefine_line|#define K8_NOP5&t;K8_NOP3 K8_NOP2 
+DECL|macro|K8_NOP6
+mdefine_line|#define K8_NOP6&t;K8_NOP3 K8_NOP3
+DECL|macro|K8_NOP7
+mdefine_line|#define K8_NOP7&t;K8_NOP4 K8_NOP3
+DECL|macro|K8_NOP8
+mdefine_line|#define K8_NOP8&t;K8_NOP4 K8_NOP4
+DECL|macro|ASM_NOP_MAX
+mdefine_line|#define ASM_NOP_MAX 8
 macro_line|#endif /* __ASM_X86_64_PROCESSOR_H */
 eof

@@ -7886,7 +7886,6 @@ id|devname
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif
 id|MODULE_LICENSE
 c_func
 (paren
@@ -7907,4 +7906,5 @@ c_func
 id|exit_sdla
 )paren
 suffix:semicolon
+macro_line|#endif
 eof

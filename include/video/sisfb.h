@@ -444,10 +444,11 @@ suffix:semicolon
 multiline_comment|/* TW: Addtional IOCTL for communication sisfb &lt;&gt; X driver                 */
 multiline_comment|/*     If changing this, vgatypes.h must also be changed (for X driver)    */
 multiline_comment|/* TW: ioctl for identifying and giving some info (esp. memory heap start) */
+multiline_comment|/*&n; * NOTE! The ioctl types used to be &quot;size_t&quot; by mistake, but were&n; * really meant to be __u32. Changed to &quot;__u32&quot; even though that&n; * changes the value on 64-bit architectures, because the value&n; * (with a 4-byte size) is also hardwired in vgatypes.h for user&n; * space exports. So &quot;__u32&quot; is actually more compatible, duh!&n; */
 DECL|macro|SISFB_GET_INFO
-mdefine_line|#define SISFB_GET_INFO&t;  &t;_IOR(&squot;n&squot;,0xF8,sizeof(__u32))
+mdefine_line|#define SISFB_GET_INFO&t;  &t;_IOR(&squot;n&squot;,0xF8,__u32)
 DECL|macro|SISFB_GET_VBRSTATUS
-mdefine_line|#define SISFB_GET_VBRSTATUS  &t;_IOR(&squot;n&squot;,0xF9,sizeof(__u32))
+mdefine_line|#define SISFB_GET_VBRSTATUS  &t;_IOR(&squot;n&squot;,0xF9,__u32)
 multiline_comment|/* TW: Structure argument for SISFB_GET_INFO ioctl  */
 DECL|typedef|sisfb_info
 DECL|typedef|psisfb_info

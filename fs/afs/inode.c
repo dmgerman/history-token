@@ -159,21 +159,19 @@ id|inode-&gt;i_size
 op_assign
 id|vnode-&gt;status.size
 suffix:semicolon
-id|inode-&gt;i_atime.tv_sec
-op_assign
-id|inode-&gt;i_mtime.tv_sec
-op_assign
 id|inode-&gt;i_ctime.tv_sec
 op_assign
 id|vnode-&gt;status.mtime_server
 suffix:semicolon
-id|inode-&gt;i_atime.tv_nsec
-op_assign
-id|inode-&gt;i_mtime.tv_nsec
-op_assign
 id|inode-&gt;i_ctime.tv_nsec
 op_assign
 l_int|0
+suffix:semicolon
+id|inode-&gt;i_atime
+op_assign
+id|inode-&gt;i_mtime
+op_assign
+id|inode-&gt;i_ctime
 suffix:semicolon
 id|inode-&gt;i_blksize
 op_assign
@@ -319,7 +317,6 @@ id|data
 op_assign
 id|opaque
 suffix:semicolon
-multiline_comment|/* only match inodes with the same version number */
 r_return
 id|inode-&gt;i_ino
 op_eq
@@ -416,9 +413,8 @@ id|afs_iget_data
 id|data
 op_assign
 (brace
-dot
 id|fid
-op_assign
+suffix:colon
 op_star
 id|fid
 )brace
@@ -429,13 +425,14 @@ op_star
 id|as
 suffix:semicolon
 r_struct
-id|inode
-op_star
-id|inode
-suffix:semicolon
-id|afs_vnode_t
+id|afs_vnode
 op_star
 id|vnode
+suffix:semicolon
+r_struct
+id|inode
+op_star
+id|inode
 suffix:semicolon
 r_int
 id|ret
@@ -554,6 +551,22 @@ r_return
 id|ret
 suffix:semicolon
 )brace
+macro_line|#ifdef AFS_CACHING_SUPPORT
+multiline_comment|/* set up caching before reading the status, as fetch-status reads the&n;&t; * first page of symlinks to see if they&squot;re really mntpts */
+id|cachefs_acquire_cookie
+c_func
+(paren
+id|vnode-&gt;volume-&gt;cache
+comma
+l_int|NULL
+comma
+id|vnode
+comma
+op_amp
+id|vnode-&gt;cache
+)paren
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/* okay... it&squot;s a new inode */
 id|vnode-&gt;flags
 op_or_assign
@@ -592,7 +605,7 @@ suffix:semicolon
 id|_leave
 c_func
 (paren
-l_string|&quot; = 0 [CB { v=%u x=%lu t=%u nix=%u }]&quot;
+l_string|&quot; = 0 [CB { v=%u x=%lu t=%u } c=%p]&quot;
 comma
 id|vnode-&gt;cb_version
 comma
@@ -600,7 +613,7 @@ id|vnode-&gt;cb_timeout.timo_jif
 comma
 id|vnode-&gt;cb_type
 comma
-id|vnode-&gt;nix
+id|vnode-&gt;cache
 )paren
 suffix:semicolon
 r_return
@@ -762,7 +775,7 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-multiline_comment|/* transfer attributes from the inode structure to the stat structure */
+multiline_comment|/* transfer attributes from the inode structure to the stat&n;&t; * structure */
 id|generic_fillattr
 c_func
 (paren
@@ -829,16 +842,12 @@ comma
 id|vnode-&gt;cb_type
 )paren
 suffix:semicolon
-r_if
-c_cond
+id|BUG_ON
+c_func
 (paren
 id|inode-&gt;i_ino
 op_ne
 id|vnode-&gt;fid.vnode
-)paren
-id|BUG
-c_func
-(paren
 )paren
 suffix:semicolon
 id|afs_vnode_give_up_callback
@@ -847,6 +856,20 @@ c_func
 id|vnode
 )paren
 suffix:semicolon
+macro_line|#ifdef AFS_CACHING_SUPPORT
+id|cachefs_relinquish_cookie
+c_func
+(paren
+id|vnode-&gt;cache
+comma
+l_int|0
+)paren
+suffix:semicolon
+id|vnode-&gt;cache
+op_assign
+l_int|NULL
+suffix:semicolon
+macro_line|#endif
 id|_leave
 c_func
 (paren

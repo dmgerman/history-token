@@ -551,6 +551,14 @@ id|afs_cell_t
 op_star
 id|cell
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|server
+)paren
+r_return
+suffix:semicolon
 id|_enter
 c_func
 (paren

@@ -95,10 +95,10 @@ id|packed
 suffix:semicolon
 multiline_comment|/*********************************************************************&n; *&n; * ioctl interface for defining forwarding of connections&n; *&n; ********************************************************************/
 DECL|macro|PPPOEIOCSFWD
-mdefine_line|#define PPPOEIOCSFWD&t;_IOW(0xB1 ,0, sizeof(struct sockaddr_pppox))
+mdefine_line|#define PPPOEIOCSFWD&t;_IOW(0xB1 ,0, size_t)
 DECL|macro|PPPOEIOCDFWD
 mdefine_line|#define PPPOEIOCDFWD&t;_IO(0xB1 ,1)
-multiline_comment|/*#define PPPOEIOCGFWD&t;_IOWR(0xB1,2, sizeof(struct sockaddr_pppox))*/
+multiline_comment|/*#define PPPOEIOCGFWD&t;_IOWR(0xB1,2, size_t)*/
 multiline_comment|/* Codes to identify message types */
 DECL|macro|PADI_CODE
 mdefine_line|#define PADI_CODE&t;0x09

@@ -1550,6 +1550,7 @@ op_star
 comma
 r_const
 r_char
+id|__user
 op_star
 comma
 r_int
@@ -2817,9 +2818,9 @@ id|len
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * This function accesses profiling information. The returned data is&n; * binary: the sampling step and the actual contents of the profile&n; * buffer. Use of the program readprofile is recommended in order to&n; * get meaningful info out of these data.&n; */
-DECL|function|read_profile
 r_static
 id|ssize_t
+DECL|function|read_profile
 id|read_profile
 c_func
 (paren
@@ -2829,6 +2830,7 @@ op_star
 id|file
 comma
 r_char
+id|__user
 op_star
 id|buf
 comma
@@ -3026,6 +3028,7 @@ id|file
 comma
 r_const
 r_char
+id|__user
 op_star
 id|buf
 comma
@@ -3152,6 +3155,7 @@ id|file
 comma
 r_const
 r_char
+id|__user
 op_star
 id|buf
 comma

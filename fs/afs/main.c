@@ -7,6 +7,7 @@ macro_line|#include &lt;rxrpc/rxrpc.h&gt;
 macro_line|#include &lt;rxrpc/transport.h&gt;
 macro_line|#include &lt;rxrpc/call.h&gt;
 macro_line|#include &lt;rxrpc/peer.h&gt;
+macro_line|#include &quot;cache.h&quot;
 macro_line|#include &quot;cell.h&quot;
 macro_line|#include &quot;server.h&quot;
 macro_line|#include &quot;fsclient.h&quot;
@@ -123,6 +124,46 @@ id|afs_cb_hash_lock
 op_assign
 id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
+macro_line|#ifdef AFS_CACHING_SUPPORT
+DECL|variable|afs_cache_ops
+r_static
+r_struct
+id|cachefs_netfs_operations
+id|afs_cache_ops
+op_assign
+(brace
+dot
+id|get_page_cookie
+op_assign
+id|afs_cache_get_page_cookie
+comma
+)brace
+suffix:semicolon
+DECL|variable|afs_cache_netfs
+r_struct
+id|cachefs_netfs
+id|afs_cache_netfs
+op_assign
+(brace
+dot
+id|name
+op_assign
+l_string|&quot;afs&quot;
+comma
+dot
+id|version
+op_assign
+l_int|0
+comma
+dot
+id|ops
+op_assign
+op_amp
+id|afs_cache_ops
+comma
+)brace
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/*****************************************************************************/
 multiline_comment|/*&n; * initialise the AFS client FS module&n; */
 DECL|function|afs_init
@@ -198,6 +239,31 @@ l_int|0
 r_return
 id|ret
 suffix:semicolon
+macro_line|#ifdef AFS_CACHING_SUPPORT
+multiline_comment|/* we want to be able to cache */
+id|ret
+op_assign
+id|cachefs_register_netfs
+c_func
+(paren
+op_amp
+id|afs_cache_netfs
+comma
+op_amp
+id|afs_cache_cell_index_def
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ret
+OL
+l_int|0
+)paren
+r_goto
+id|error
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/* initialise the cell DB */
 id|ret
 op_assign
@@ -214,7 +280,7 @@ OL
 l_int|0
 )paren
 r_goto
-id|error
+id|error_cache
 suffix:semicolon
 multiline_comment|/* start the timeout daemon */
 id|ret
@@ -232,7 +298,7 @@ OL
 l_int|0
 )paren
 r_goto
-id|error
+id|error_cache
 suffix:semicolon
 multiline_comment|/* start the async operation daemon */
 id|ret
@@ -322,8 +388,19 @@ c_func
 (paren
 )paren
 suffix:semicolon
+id|error_cache
+suffix:colon
+macro_line|#ifdef AFS_CACHING_SUPPORT
+id|cachefs_unregister_netfs
+c_func
+(paren
+op_amp
+id|afs_cache_netfs
+)paren
+suffix:semicolon
 id|error
 suffix:colon
+macro_line|#endif
 id|afs_cell_purge
 c_func
 (paren
@@ -393,6 +470,15 @@ c_func
 (paren
 )paren
 suffix:semicolon
+macro_line|#ifdef AFS_CACHING_SUPPORT
+id|cachefs_unregister_netfs
+c_func
+(paren
+op_amp
+id|afs_cache_netfs
+)paren
+suffix:semicolon
+macro_line|#endif
 id|afs_proc_cleanup
 c_func
 (paren
@@ -620,4 +706,160 @@ l_string|&quot;&quot;
 suffix:semicolon
 )brace
 multiline_comment|/* end afs_discarding_peer() */
+multiline_comment|/*****************************************************************************/
+multiline_comment|/*&n; * clear the dead space between task_struct and kernel stack&n; * - called by supplying -finstrument-functions to gcc&n; */
+macro_line|#if 0
+r_void
+id|__cyg_profile_func_enter
+(paren
+r_void
+op_star
+id|this_fn
+comma
+r_void
+op_star
+id|call_site
+)paren
+id|__attribute__
+c_func
+(paren
+(paren
+id|no_instrument_function
+)paren
+)paren
+suffix:semicolon
+r_void
+id|__cyg_profile_func_enter
+(paren
+r_void
+op_star
+id|this_fn
+comma
+r_void
+op_star
+id|call_site
+)paren
+(brace
+id|asm
+r_volatile
+(paren
+l_string|&quot;  movl    %%esp,%%edi     &bslash;n&quot;
+l_string|&quot;  andl    %0,%%edi        &bslash;n&quot;
+l_string|&quot;  addl    %1,%%edi        &bslash;n&quot;
+l_string|&quot;  movl    %%esp,%%ecx     &bslash;n&quot;
+l_string|&quot;  subl    %%edi,%%ecx     &bslash;n&quot;
+l_string|&quot;  shrl    $2,%%ecx        &bslash;n&quot;
+l_string|&quot;  movl    $0xedededed,%%eax     &bslash;n&quot;
+l_string|&quot;  rep stosl               &bslash;n&quot;
+suffix:colon
+suffix:colon
+l_string|&quot;i&quot;
+(paren
+op_complement
+(paren
+id|THREAD_SIZE
+op_minus
+l_int|1
+)paren
+)paren
+comma
+l_string|&quot;i&quot;
+(paren
+r_sizeof
+(paren
+r_struct
+id|thread_info
+)paren
+)paren
+suffix:colon
+l_string|&quot;eax&quot;
+comma
+l_string|&quot;ecx&quot;
+comma
+l_string|&quot;edi&quot;
+comma
+l_string|&quot;memory&quot;
+comma
+l_string|&quot;cc&quot;
+)paren
+suffix:semicolon
+)brace
+r_void
+id|__cyg_profile_func_exit
+c_func
+(paren
+r_void
+op_star
+id|this_fn
+comma
+r_void
+op_star
+id|call_site
+)paren
+id|__attribute__
+c_func
+(paren
+(paren
+id|no_instrument_function
+)paren
+)paren
+suffix:semicolon
+r_void
+id|__cyg_profile_func_exit
+c_func
+(paren
+r_void
+op_star
+id|this_fn
+comma
+r_void
+op_star
+id|call_site
+)paren
+(brace
+id|asm
+r_volatile
+(paren
+l_string|&quot;  movl    %%esp,%%edi     &bslash;n&quot;
+l_string|&quot;  andl    %0,%%edi        &bslash;n&quot;
+l_string|&quot;  addl    %1,%%edi        &bslash;n&quot;
+l_string|&quot;  movl    %%esp,%%ecx     &bslash;n&quot;
+l_string|&quot;  subl    %%edi,%%ecx     &bslash;n&quot;
+l_string|&quot;  shrl    $2,%%ecx        &bslash;n&quot;
+l_string|&quot;  movl    $0xdadadada,%%eax     &bslash;n&quot;
+l_string|&quot;  rep stosl               &bslash;n&quot;
+suffix:colon
+suffix:colon
+l_string|&quot;i&quot;
+(paren
+op_complement
+(paren
+id|THREAD_SIZE
+op_minus
+l_int|1
+)paren
+)paren
+comma
+l_string|&quot;i&quot;
+(paren
+r_sizeof
+(paren
+r_struct
+id|thread_info
+)paren
+)paren
+suffix:colon
+l_string|&quot;eax&quot;
+comma
+l_string|&quot;ecx&quot;
+comma
+l_string|&quot;edi&quot;
+comma
+l_string|&quot;memory&quot;
+comma
+l_string|&quot;cc&quot;
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif
 eof

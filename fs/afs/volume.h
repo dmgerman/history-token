@@ -6,7 +6,7 @@ macro_line|#include &quot;types.h&quot;
 macro_line|#include &quot;fsclient.h&quot;
 macro_line|#include &quot;kafstimod.h&quot;
 macro_line|#include &quot;kafsasyncd.h&quot;
-macro_line|#include &quot;cache-layout.h&quot;
+macro_line|#include &quot;cache.h&quot;
 DECL|macro|__packed
 mdefine_line|#define __packed __attribute__((packed))
 r_typedef
@@ -40,6 +40,107 @@ id|packed
 id|afs_vlocation_upd_t
 suffix:semicolon
 multiline_comment|/*****************************************************************************/
+multiline_comment|/*&n; * entry in the cached volume location catalogue&n; */
+DECL|struct|afs_cache_vlocation
+r_struct
+id|afs_cache_vlocation
+(brace
+DECL|member|name
+r_uint8
+id|name
+(braket
+l_int|64
+)braket
+suffix:semicolon
+multiline_comment|/* volume name (lowercase, padded with NULs) */
+DECL|member|nservers
+r_uint8
+id|nservers
+suffix:semicolon
+multiline_comment|/* number of entries used in servers[] */
+DECL|member|vidmask
+r_uint8
+id|vidmask
+suffix:semicolon
+multiline_comment|/* voltype mask for vid[] */
+DECL|member|srvtmask
+r_uint8
+id|srvtmask
+(braket
+l_int|8
+)braket
+suffix:semicolon
+multiline_comment|/* voltype masks for servers[] */
+DECL|macro|AFS_VOL_VTM_RW
+mdefine_line|#define AFS_VOL_VTM_RW&t;0x01 /* R/W version of the volume is available (on this server) */
+DECL|macro|AFS_VOL_VTM_RO
+mdefine_line|#define AFS_VOL_VTM_RO&t;0x02 /* R/O version of the volume is available (on this server) */
+DECL|macro|AFS_VOL_VTM_BAK
+mdefine_line|#define AFS_VOL_VTM_BAK&t;0x04 /* backup version of the volume is available (on this server) */
+DECL|member|vid
+id|afs_volid_t
+id|vid
+(braket
+l_int|3
+)braket
+suffix:semicolon
+multiline_comment|/* volume IDs for R/W, R/O and Bak volumes */
+DECL|member|servers
+r_struct
+id|in_addr
+id|servers
+(braket
+l_int|8
+)braket
+suffix:semicolon
+multiline_comment|/* fileserver addresses */
+DECL|member|rtime
+id|time_t
+id|rtime
+suffix:semicolon
+multiline_comment|/* last retrieval time */
+)brace
+suffix:semicolon
+macro_line|#ifdef AFS_CACHING_SUPPORT
+r_extern
+r_struct
+id|cachefs_index_def
+id|afs_vlocation_cache_index_def
+suffix:semicolon
+macro_line|#endif
+multiline_comment|/*****************************************************************************/
+multiline_comment|/*&n; * volume -&gt; vnode hash table entry&n; */
+DECL|struct|afs_cache_vhash
+r_struct
+id|afs_cache_vhash
+(brace
+DECL|member|vtype
+id|afs_voltype_t
+id|vtype
+suffix:semicolon
+multiline_comment|/* which volume variation */
+DECL|member|hash_bucket
+r_uint8
+id|hash_bucket
+suffix:semicolon
+multiline_comment|/* which hash bucket this represents */
+)brace
+id|__attribute__
+c_func
+(paren
+(paren
+id|packed
+)paren
+)paren
+suffix:semicolon
+macro_line|#ifdef AFS_CACHING_SUPPORT
+r_extern
+r_struct
+id|cachefs_index_def
+id|afs_volume_cache_index_def
+suffix:semicolon
+macro_line|#endif
+multiline_comment|/*****************************************************************************/
 multiline_comment|/*&n; * AFS volume location record&n; */
 DECL|struct|afs_vlocation
 r_struct
@@ -56,24 +157,30 @@ id|link
 suffix:semicolon
 multiline_comment|/* link in cell volume location list */
 DECL|member|timeout
-id|afs_timer_t
+r_struct
+id|afs_timer
 id|timeout
 suffix:semicolon
 multiline_comment|/* decaching timer */
 DECL|member|cell
-id|afs_cell_t
+r_struct
+id|afs_cell
 op_star
 id|cell
 suffix:semicolon
 multiline_comment|/* cell to which volume belongs */
-DECL|member|caches
+macro_line|#ifdef AFS_CACHING_SUPPORT
+DECL|member|cache
 r_struct
-id|list_head
-id|caches
+id|cachefs_cookie
+op_star
+id|cache
 suffix:semicolon
-multiline_comment|/* backing caches */
+multiline_comment|/* caching cookie */
+macro_line|#endif
 DECL|member|vldb
-id|afsc_vldb_record_t
+r_struct
+id|afs_cache_vlocation
 id|vldb
 suffix:semicolon
 multiline_comment|/* volume information DB record */
@@ -99,12 +206,14 @@ id|read_jif
 suffix:semicolon
 multiline_comment|/* time at which last read from vlserver */
 DECL|member|upd_timer
-id|afs_timer_t
+r_struct
+id|afs_timer
 id|upd_timer
 suffix:semicolon
 multiline_comment|/* update timer */
 DECL|member|upd_op
-id|afs_async_op_t
+r_struct
+id|afs_async_op
 id|upd_op
 suffix:semicolon
 multiline_comment|/* update operation */
@@ -150,7 +259,8 @@ r_int
 id|afs_vlocation_lookup
 c_func
 (paren
-id|afs_cell_t
+r_struct
+id|afs_cell
 op_star
 id|cell
 comma
@@ -159,7 +269,11 @@ r_char
 op_star
 id|name
 comma
-id|afs_vlocation_t
+r_int
+id|namesz
+comma
+r_struct
+id|afs_vlocation
 op_star
 op_star
 id|_vlocation
@@ -172,7 +286,8 @@ r_void
 id|__afs_put_vlocation
 c_func
 (paren
-id|afs_vlocation_t
+r_struct
+id|afs_vlocation
 op_star
 id|vlocation
 )paren
@@ -182,7 +297,8 @@ r_void
 id|afs_put_vlocation
 c_func
 (paren
-id|afs_vlocation_t
+r_struct
+id|afs_vlocation
 op_star
 id|vlocation
 )paren
@@ -192,7 +308,8 @@ r_void
 id|afs_vlocation_do_timeout
 c_func
 (paren
-id|afs_vlocation_t
+r_struct
+id|afs_vlocation
 op_star
 id|vlocation
 )paren
@@ -208,17 +325,28 @@ id|atomic_t
 id|usage
 suffix:semicolon
 DECL|member|cell
-id|afs_cell_t
+r_struct
+id|afs_cell
 op_star
 id|cell
 suffix:semicolon
 multiline_comment|/* cell to which belongs (unrefd ptr) */
 DECL|member|vlocation
-id|afs_vlocation_t
+r_struct
+id|afs_vlocation
 op_star
 id|vlocation
 suffix:semicolon
 multiline_comment|/* volume location */
+macro_line|#ifdef AFS_CACHING_SUPPORT
+DECL|member|cache
+r_struct
+id|cachefs_cookie
+op_star
+id|cache
+suffix:semicolon
+multiline_comment|/* caching cookie */
+macro_line|#endif
 DECL|member|vid
 id|afs_volid_t
 id|vid
@@ -248,7 +376,8 @@ id|rjservers
 suffix:semicolon
 multiline_comment|/* number of servers discarded due to -ENOMEDIUM */
 DECL|member|servers
-id|afs_server_t
+r_struct
+id|afs_server
 op_star
 id|servers
 (braket
@@ -274,10 +403,16 @@ r_char
 op_star
 id|name
 comma
-r_int
-id|ro
+r_struct
+id|afs_cell
+op_star
+id|cell
 comma
-id|afs_volume_t
+r_int
+id|rwpath
+comma
+r_struct
+id|afs_volume
 op_star
 op_star
 id|_volume
@@ -290,7 +425,8 @@ r_void
 id|afs_put_volume
 c_func
 (paren
-id|afs_volume_t
+r_struct
+id|afs_volume
 op_star
 id|volume
 )paren
@@ -300,11 +436,13 @@ r_int
 id|afs_volume_pick_fileserver
 c_func
 (paren
-id|afs_volume_t
+r_struct
+id|afs_volume
 op_star
 id|volume
 comma
-id|afs_server_t
+r_struct
+id|afs_server
 op_star
 op_star
 id|_server
@@ -315,11 +453,13 @@ r_int
 id|afs_volume_release_fileserver
 c_func
 (paren
-id|afs_volume_t
+r_struct
+id|afs_volume
 op_star
 id|volume
 comma
-id|afs_server_t
+r_struct
+id|afs_server
 op_star
 id|server
 comma

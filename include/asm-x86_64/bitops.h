@@ -644,7 +644,9 @@ r_int
 id|find_first_zero_bit
 c_func
 (paren
-r_void
+r_const
+r_int
+r_int
 op_star
 id|addr
 comma
@@ -741,7 +743,9 @@ id|__inline__
 r_int
 id|find_next_zero_bit
 (paren
-r_void
+r_const
+r_int
+r_int
 op_star
 id|addr
 comma
@@ -854,6 +858,12 @@ id|res
 op_assign
 id|find_first_zero_bit
 (paren
+(paren
+r_const
+r_int
+r_int
+op_star
+)paren
 id|p
 comma
 id|size
@@ -890,7 +900,9 @@ r_int
 id|find_first_bit
 c_func
 (paren
-r_void
+r_const
+r_int
+r_int
 op_star
 id|addr
 comma
@@ -969,7 +981,9 @@ r_int
 id|find_next_bit
 c_func
 (paren
-r_void
+r_const
+r_int
+r_int
 op_star
 id|addr
 comma
@@ -1076,6 +1090,12 @@ id|res
 op_assign
 id|find_first_bit
 (paren
+(paren
+r_const
+r_int
+r_int
+op_star
+)paren
 id|p
 comma
 id|size
@@ -1301,6 +1321,7 @@ r_int
 id|sched_find_first_bit
 c_func
 (paren
+r_const
 r_int
 r_int
 op_star

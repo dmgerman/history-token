@@ -183,7 +183,7 @@ id|port
 )brace
 DECL|function|clps711xuart_int_rx
 r_static
-r_void
+id|irqreturn_t
 id|clps711xuart_int_rx
 c_func
 (paren
@@ -346,6 +346,7 @@ id|tty
 )paren
 suffix:semicolon
 r_return
+id|IRQ_HANDLED
 suffix:semicolon
 id|handle_error
 suffix:colon
@@ -485,7 +486,7 @@ suffix:semicolon
 )brace
 DECL|function|clps711xuart_int_tx
 r_static
-r_void
+id|irqreturn_t
 id|clps711xuart_int_tx
 c_func
 (paren
@@ -546,6 +547,7 @@ op_assign
 l_int|0
 suffix:semicolon
 r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 r_if
@@ -573,6 +575,7 @@ l_int|0
 )paren
 suffix:semicolon
 r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 id|count
@@ -669,6 +672,9 @@ id|port
 comma
 l_int|0
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 DECL|function|clps711xuart_tx_empty

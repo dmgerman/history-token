@@ -460,7 +460,7 @@ id|kafsasyncd_async_lock
 )paren
 suffix:semicolon
 multiline_comment|/* fold the busy and attention queues together */
-id|list_splice
+id|list_splice_init
 c_func
 (paren
 op_amp
@@ -468,13 +468,6 @@ id|kafsasyncd_async_busyq
 comma
 op_amp
 id|kafsasyncd_async_attnq
-)paren
-suffix:semicolon
-id|list_del_init
-c_func
-(paren
-op_amp
-id|kafsasyncd_async_busyq
 )paren
 suffix:semicolon
 multiline_comment|/* dequeue kafsasyncd from all their wait queues */
@@ -641,6 +634,16 @@ comma
 id|kafsasyncd_task
 )paren
 suffix:semicolon
+id|add_wait_queue
+c_func
+(paren
+op_amp
+id|op-&gt;call-&gt;waitq
+comma
+op_amp
+id|op-&gt;waiter
+)paren
+suffix:semicolon
 id|list_del
 c_func
 (paren
@@ -762,6 +765,18 @@ op_amp
 id|kafsasyncd_async_lock
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|list_empty
+c_func
+(paren
+op_amp
+id|op-&gt;link
+)paren
+)paren
+(brace
 id|list_del_init
 c_func
 (paren
@@ -769,6 +784,17 @@ op_amp
 id|op-&gt;link
 )paren
 suffix:semicolon
+id|remove_wait_queue
+c_func
+(paren
+op_amp
+id|op-&gt;call-&gt;waitq
+comma
+op_amp
+id|op-&gt;waiter
+)paren
+suffix:semicolon
+)brace
 id|spin_unlock
 c_func
 (paren

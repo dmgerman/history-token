@@ -4,6 +4,7 @@ mdefine_line|#define _ASM_IA64_UACCESS_H
 multiline_comment|/*&n; * This file defines various macros to transfer memory areas across&n; * the user/kernel boundary.  This needs to be done carefully because&n; * this code is executed in kernel mode and uses user-specified&n; * addresses.  Thus, we need to be careful not to let the user to&n; * trick us into accessing kernel memory that would normally be&n; * inaccessible.  This code is also fairly performance sensitive,&n; * so we want to spend as little time doing safety checks as&n; * possible.&n; *&n; * To make matters a bit more interesting, these macros sometimes also&n; * called from within the kernel itself, in which case the address&n; * validity check must be skipped.  The get_fs() macro tells us what&n; * to do: if get_fs()==USER_DS, checking is performed, if&n; * get_fs()==KERNEL_DS, checking is bypassed.&n; *&n; * Note that even if the memory area specified by the user is in a&n; * valid address range, it is still possible that we&squot;ll get a page&n; * fault while accessing it.  This is handled by filling out an&n; * exception handler fixup entry for each instruction that has the&n; * potential to fault.  When such a fault occurs, the page fault&n; * handler checks to see whether the faulting instruction has a fixup&n; * associated and, if so, sets r8 to -EFAULT and clears r9 to 0 and&n; * then resumes execution at the continuation point.&n; *&n; * Copyright (C) 1998, 1999, 2001-2003 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; */
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
+macro_line|#include &lt;asm/intrinsics.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 multiline_comment|/*&n; * For historical reasons, the following macros are grossly misnamed:&n; */
 DECL|macro|KERNEL_DS
@@ -74,6 +75,7 @@ DECL|macro|__put_user
 mdefine_line|#define __put_user(x,ptr)&t;__put_user_nocheck((__typeof__(*(ptr)))(x),(ptr),sizeof(*(ptr)))
 DECL|macro|__get_user
 mdefine_line|#define __get_user(x,ptr)&t;__get_user_nocheck((x),(ptr),sizeof(*(ptr)))
+macro_line|#ifdef ASM_SUPPORTED
 r_extern
 r_void
 id|__get_user_unknown
@@ -379,6 +381,36 @@ l_string|&quot;0&quot;
 id|__pu_err
 )paren
 )paren
+macro_line|#else /* !ASM_SUPPORTED */
+DECL|macro|RELOC_TYPE
+mdefine_line|#define RELOC_TYPE&t;2&t;/* ip-rel */
+DECL|macro|__put_user_xx
+mdefine_line|#define __put_user_xx(val, addr, size, err)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__st_user(&quot;__ex_table&quot;, (unsigned long) addr, size, RELOC_TYPE, (unsigned long) (val));&t;&bslash;&n;&t;(err) = ia64_getreg(_IA64_REG_R8);
+DECL|macro|__get_user_xx
+mdefine_line|#define __get_user_xx(val, addr, size, err)&t;&t;&t;&t;&t;&bslash;&n;&t;__ld_user(&quot;__ex_table&quot;, (unsigned long) addr, size, RELOC_TYPE);&t;&bslash;&n;&t;(err) = ia64_getreg(_IA64_REG_R8);&t;&t;&t;&t;&t;&bslash;&n;&t;(val) = ia64_getreg(_IA64_REG_R9);
+r_extern
+r_void
+id|__get_user_unknown
+(paren
+r_void
+)paren
+suffix:semicolon
+DECL|macro|__get_user_nocheck
+mdefine_line|#define __get_user_nocheck(x, ptr, size)&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;register long __gu_err = 0;&t;&t;&t;&t;&t;&bslash;&n;&t;register long __gu_val = 0;&t;&t;&t;&t;&t;&bslash;&n;&t;const __typeof__(*(ptr)) *__gu_addr = (ptr);&t;&t;&t;&bslash;&n;&t;switch (size) {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;      case 1: case 2: case 4: case 8:&t;&t;&t;&t;&bslash;&n;&t;&t;__get_user_xx(__gu_val, __gu_addr, size, __gu_err);&t;&bslash;&n;&t;&t;break;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;      default:&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__get_user_unknown();&t;&t;&t;&t;&t;&bslash;&n;&t;&t;break;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;        }&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;        (x) = (__typeof__(*(ptr))) __gu_val;&t;&t;&t;&t;&bslash;&n;        __gu_err;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
+DECL|macro|__get_user_check
+mdefine_line|#define __get_user_check(x,ptr,size,segment)&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;register long __gu_err = -EFAULT;&t;&t;&t;&t;&t;&bslash;&n;&t;register long __gu_val  = 0;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;const __typeof__(*(ptr)) *__gu_addr = (ptr);&t;&t;&t;&t;&bslash;&n;&t;if (__access_ok((long) __gu_addr, size, segment)) {&t;&t;&t;&bslash;&n;&t;&t;switch (size) {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;      case 1: case 2: case 4: case 8:&t;&t;&t;&t;&bslash;&n;&t;&t;&t;__get_user_xx(__gu_val, __gu_addr, size, __gu_err);&t;&bslash;&n;&t;&t;&t;break;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;      default:&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;__get_user_unknown(); break;&t;&t;&t;&t;&bslash;&n;&t;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;(x) = (__typeof__(*(ptr))) __gu_val;&t;&t;&t;&t;&t;&bslash;&n;&t;__gu_err;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
+r_extern
+r_void
+id|__put_user_unknown
+(paren
+r_void
+)paren
+suffix:semicolon
+DECL|macro|__put_user_nocheck
+mdefine_line|#define __put_user_nocheck(x, ptr, size)&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;int __pu_err = 0;&t;&t;&t;&t;&t;&bslash;&n;&t;__typeof__(*(ptr)) *__pu_addr = (ptr);&t;&t;&t;&bslash;&n;&t;switch (size) {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;      case 1: case 2: case 4: case 8:&t;&t;&t;&bslash;&n;&t;  &t;__put_user_xx(x, __pu_addr, size, __pu_err);&t;&bslash;&n;&t;&t;break;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;      default:&t;&t;&t;&t;&t;&t;&bslash;&n;&t;  &t;__put_user_unknown(); break;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__pu_err;&t;&t;&t;&t;&t;&t;&bslash;&n;})
+DECL|macro|__put_user_check
+mdefine_line|#define __put_user_check(x,ptr,size,segment)&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;register long __pu_err = -EFAULT;&t;&t;&t;&t;&bslash;&n;&t;__typeof__(*(ptr)) *__pu_addr = (ptr);&t;&t;&t;&t;&bslash;&n;&t;if (__access_ok((long)__pu_addr,size,segment)) {&t;&t;&bslash;&n;&t;&t;switch (size) {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;      case 1: case 2: case 4: case 8:&t;&t;&t;&bslash;&n;&t;&t;&t;__put_user_xx(x,__pu_addr, size, __pu_err);&t;&bslash;&n;&t;&t;&t;break;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;      default:&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;__put_user_unknown(); break;&t;&t;&t;&bslash;&n;&t;&t;}&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__pu_err;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
+macro_line|#endif /* !ASM_SUPPORTED */
 multiline_comment|/*&n; * Complex access routines&n; */
 r_extern
 r_int

@@ -1,0 +1,3 @@
+singleline_comment|//FIXME - nicked from arm32 - check it is correct...
+macro_line|#include &lt;asm-generic/local.h&gt;
+eof

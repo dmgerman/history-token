@@ -49,15 +49,13 @@ dot
 dot
 )paren
 (brace
-DECL|macro|MODULENAME_SIZE
-mdefine_line|#define MODULENAME_SIZE 32
 id|va_list
 id|args
 suffix:semicolon
 r_char
 id|module_name
 (braket
-id|MODULENAME_SIZE
+id|MODULE_NAME_LEN
 )braket
 suffix:semicolon
 r_int
@@ -75,6 +73,8 @@ id|argv
 op_assign
 (brace
 id|modprobe_path
+comma
+l_string|&quot;-q&quot;
 comma
 l_string|&quot;--&quot;
 comma
@@ -131,7 +131,7 @@ c_func
 (paren
 id|module_name
 comma
-id|MODULENAME_SIZE
+id|MODULE_NAME_LEN
 comma
 id|fmt
 comma
@@ -149,7 +149,7 @@ c_cond
 (paren
 id|ret
 op_ge
-id|MODULENAME_SIZE
+id|MODULE_NAME_LEN
 )paren
 r_return
 op_minus

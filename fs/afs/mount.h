@@ -33,7 +33,7 @@ id|nservers
 suffix:semicolon
 multiline_comment|/* number of server addresses listed */
 DECL|member|servers
-id|u_int32_t
+r_uint32
 id|servers
 (braket
 l_int|10

@@ -1945,8 +1945,6 @@ id|pages
 )paren
 suffix:semicolon
 )brace
-DECL|macro|PCI_NO_MERGE
-mdefine_line|#define PCI_NO_MERGE 0
 multiline_comment|/*&n; * DMA map all entries in a scatterlist.&n; * Merge chunks that have page aligned sizes into a continuous mapping. &n;&t;&t; */
 DECL|function|pci_map_sg
 r_int
@@ -2101,7 +2099,8 @@ multiline_comment|/* Can only merge when the last chunk ends on a page &n;&t;&t;
 r_if
 c_cond
 (paren
-id|PCI_NO_MERGE
+op_logical_neg
+id|force_iommu
 op_logical_or
 op_logical_neg
 id|need
