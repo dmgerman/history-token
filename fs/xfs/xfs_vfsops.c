@@ -4523,7 +4523,7 @@ suffix:semicolon
 r_while
 c_loop
 (paren
-id|ip-&gt;i_mnext
+id|ip
 op_ne
 id|mp-&gt;m_inodes
 )paren
