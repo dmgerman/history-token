@@ -1415,6 +1415,13 @@ c_func
 id|xfrm4_tunnel_deregister
 )paren
 suffix:semicolon
+DECL|variable|xfrm4_tunnel_check_size
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|xfrm4_tunnel_check_size
+)paren
+suffix:semicolon
 DECL|variable|xfrm_register_type
 id|EXPORT_SYMBOL
 c_func
