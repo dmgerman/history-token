@@ -34,7 +34,7 @@ r_static
 r_int
 id|enable
 (braket
-l_int|8
+id|SNDRV_CARDS
 )braket
 op_assign
 (brace
