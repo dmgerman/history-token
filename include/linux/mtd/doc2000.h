@@ -127,9 +127,9 @@ DECL|macro|DOC_IOREMAP_LEN
 mdefine_line|#define DOC_IOREMAP_LEN 0x4000
 macro_line|#else
 DECL|macro|ReadDOC_
-mdefine_line|#define ReadDOC_(adr, reg)      readb((void __iomem *)(((unsigned long)adr) + (reg)))
+mdefine_line|#define ReadDOC_(adr, reg)      readb((void __iomem *)(adr) + (reg))
 DECL|macro|WriteDOC_
-mdefine_line|#define WriteDOC_(d, adr, reg)  writeb(d, (void __iomem *)(((unsigned long)adr) + (reg)))
+mdefine_line|#define WriteDOC_(d, adr, reg)  writeb(d, (void __iomem *)(adr) + (reg))
 DECL|macro|DOC_IOREMAP_LEN
 mdefine_line|#define DOC_IOREMAP_LEN 0x2000
 macro_line|#endif
