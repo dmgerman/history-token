@@ -454,12 +454,6 @@ id|acpi_wakeup_address
 )paren
 suffix:semicolon
 )brace
-id|acpi_enter_sleep_state_prep
-c_func
-(paren
-id|state
-)paren
-suffix:semicolon
 id|status
 op_assign
 id|acpi_system_save_state
@@ -480,6 +474,12 @@ id|status
 )paren
 r_return
 id|status
+suffix:semicolon
+id|acpi_enter_sleep_state_prep
+c_func
+(paren
+id|state
+)paren
 suffix:semicolon
 multiline_comment|/* disable interrupts and flush caches */
 id|ACPI_DISABLE_IRQS
@@ -502,13 +502,13 @@ id|state
 )paren
 suffix:semicolon
 multiline_comment|/* Even if we failed to go to sleep, all of the devices are in an suspended&n;&t; * mode. So, we run these unconditionaly to make sure we have a usable system&n;&t; * no matter what.&n;&t; */
-id|acpi_system_restore_state
+id|acpi_leave_sleep_state
 c_func
 (paren
 id|state
 )paren
 suffix:semicolon
-id|acpi_leave_sleep_state
+id|acpi_system_restore_state
 c_func
 (paren
 id|state

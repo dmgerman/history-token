@@ -460,7 +460,7 @@ id|status
 op_assign
 id|acpi_hw_register_read
 (paren
-id|ACPI_MTX_LOCK
+id|ACPI_MTX_DO_NOT_LOCK
 comma
 id|ACPI_REGISTER_PM1_CONTROL
 comma
@@ -530,7 +530,7 @@ id|status
 op_assign
 id|acpi_hw_register_write
 (paren
-id|ACPI_MTX_LOCK
+id|ACPI_MTX_DO_NOT_LOCK
 comma
 id|ACPI_REGISTER_PM1A_CONTROL
 comma
@@ -556,7 +556,7 @@ id|status
 op_assign
 id|acpi_hw_register_write
 (paren
-id|ACPI_MTX_LOCK
+id|ACPI_MTX_DO_NOT_LOCK
 comma
 id|ACPI_REGISTER_PM1B_CONTROL
 comma
@@ -596,7 +596,7 @@ id|status
 op_assign
 id|acpi_hw_register_write
 (paren
-id|ACPI_MTX_LOCK
+id|ACPI_MTX_DO_NOT_LOCK
 comma
 id|ACPI_REGISTER_PM1A_CONTROL
 comma
@@ -622,7 +622,7 @@ id|status
 op_assign
 id|acpi_hw_register_write
 (paren
-id|ACPI_MTX_LOCK
+id|ACPI_MTX_DO_NOT_LOCK
 comma
 id|ACPI_REGISTER_PM1B_CONTROL
 comma
@@ -663,7 +663,7 @@ id|status
 op_assign
 id|acpi_hw_register_write
 (paren
-id|ACPI_MTX_LOCK
+id|ACPI_MTX_DO_NOT_LOCK
 comma
 id|ACPI_REGISTER_PM1_CONTROL
 comma
@@ -698,7 +698,7 @@ comma
 op_amp
 id|in_value
 comma
-id|ACPI_MTX_LOCK
+id|ACPI_MTX_DO_NOT_LOCK
 )paren
 suffix:semicolon
 r_if
@@ -733,7 +733,7 @@ id|ACPI_BITREG_ARB_DISABLE
 comma
 l_int|0
 comma
-id|ACPI_MTX_LOCK
+id|ACPI_MTX_DO_NOT_LOCK
 )paren
 suffix:semicolon
 r_if
@@ -782,7 +782,7 @@ id|ACPI_BITREG_WAKE_STATUS
 comma
 l_int|1
 comma
-id|ACPI_MTX_LOCK
+id|ACPI_MTX_DO_NOT_LOCK
 )paren
 suffix:semicolon
 id|acpi_hw_clear_acpi_status
@@ -831,7 +831,7 @@ comma
 op_amp
 id|in_value
 comma
-id|ACPI_MTX_LOCK
+id|ACPI_MTX_DO_NOT_LOCK
 )paren
 suffix:semicolon
 r_if
