@@ -3109,13 +3109,13 @@ r_goto
 id|out
 suffix:semicolon
 )brace
-multiline_comment|/* Already dying? */
+multiline_comment|/* Doing init or already dying? */
 r_if
 c_cond
 (paren
 id|mod-&gt;state
-op_eq
-id|MODULE_STATE_GOING
+op_ne
+id|MODULE_STATE_LIVE
 )paren
 (brace
 multiline_comment|/* FIXME: if (force), slam module count and wake up&n;                   waiter --RR */
