@@ -3116,4 +3116,11 @@ c_func
 id|dm_table_event
 )paren
 suffix:semicolon
+DECL|variable|dm_table_get_mode
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|dm_table_get_mode
+)paren
+suffix:semicolon
 eof
