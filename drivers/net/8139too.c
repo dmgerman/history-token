@@ -235,39 +235,8 @@ id|RTL8139
 op_assign
 l_int|0
 comma
-DECL|enumerator|RTL8139_CB
-id|RTL8139_CB
-comma
-DECL|enumerator|SMC1211TX
-id|SMC1211TX
-comma
-multiline_comment|/*MPX5030,*/
-DECL|enumerator|DELTA8139
-id|DELTA8139
-comma
-DECL|enumerator|ADDTRON8139
-id|ADDTRON8139
-comma
-DECL|enumerator|DFE538TX
-id|DFE538TX
-comma
-DECL|enumerator|DFE690TXD
-id|DFE690TXD
-comma
-DECL|enumerator|FE2000VX
-id|FE2000VX
-comma
-DECL|enumerator|ALLIED8139
-id|ALLIED8139
-comma
 DECL|enumerator|RTL8129
 id|RTL8129
-comma
-DECL|enumerator|FNW3603TX
-id|FNW3603TX
-comma
-DECL|enumerator|FNW3800TX
-id|FNW3800TX
 comma
 DECL|typedef|board_t
 )brace
@@ -296,56 +265,7 @@ id|__devinitdata
 op_assign
 (brace
 (brace
-l_string|&quot;RealTek RTL8139 Fast Ethernet&quot;
-comma
-id|RTL8139_CAPS
-)brace
-comma
-(brace
-l_string|&quot;RealTek RTL8139B PCI/CardBus&quot;
-comma
-id|RTL8139_CAPS
-)brace
-comma
-(brace
-l_string|&quot;SMC1211TX EZCard 10/100 (RealTek RTL8139)&quot;
-comma
-id|RTL8139_CAPS
-)brace
-comma
-multiline_comment|/*&t;{ MPX5030, &quot;Accton MPX5030 (RealTek RTL8139)&quot;, RTL8139_CAPS },*/
-(brace
-l_string|&quot;Delta Electronics 8139 10/100BaseTX&quot;
-comma
-id|RTL8139_CAPS
-)brace
-comma
-(brace
-l_string|&quot;Addtron Technolgy 8139 10/100BaseTX&quot;
-comma
-id|RTL8139_CAPS
-)brace
-comma
-(brace
-l_string|&quot;D-Link DFE-538TX (RealTek RTL8139)&quot;
-comma
-id|RTL8139_CAPS
-)brace
-comma
-(brace
-l_string|&quot;D-Link DFE-690TXD (RealTek RTL8139)&quot;
-comma
-id|RTL8139_CAPS
-)brace
-comma
-(brace
-l_string|&quot;AboCom FE2000VX (RealTek RTL8139)&quot;
-comma
-id|RTL8139_CAPS
-)brace
-comma
-(brace
-l_string|&quot;Allied Telesyn 8139 CardBus&quot;
+l_string|&quot;RealTek RTL8139&quot;
 comma
 id|RTL8139_CAPS
 )brace
@@ -354,18 +274,6 @@ comma
 l_string|&quot;RealTek RTL8129&quot;
 comma
 id|RTL8129_CAPS
-)brace
-comma
-(brace
-l_string|&quot;Planex FNW-3603-TX 10/100 CardBus&quot;
-comma
-id|RTL8139_CAPS
-)brace
-comma
-(brace
-l_string|&quot;Planex FNW-3800-TX 10/100 CardBus&quot;
-comma
-id|RTL8139_CAPS
 )brace
 comma
 )brace
@@ -408,7 +316,7 @@ l_int|0
 comma
 l_int|0
 comma
-id|RTL8139_CB
+id|RTL8139
 )brace
 comma
 (brace
@@ -424,10 +332,9 @@ l_int|0
 comma
 l_int|0
 comma
-id|SMC1211TX
+id|RTL8139
 )brace
 comma
-multiline_comment|/*&t;{0x1113, 0x1211, PCI_ANY_ID, PCI_ANY_ID, 0, 0, MPX5030 },*/
 (brace
 l_int|0x1500
 comma
@@ -441,7 +348,7 @@ l_int|0
 comma
 l_int|0
 comma
-id|DELTA8139
+id|RTL8139
 )brace
 comma
 (brace
@@ -457,7 +364,7 @@ l_int|0
 comma
 l_int|0
 comma
-id|ADDTRON8139
+id|RTL8139
 )brace
 comma
 (brace
@@ -473,7 +380,7 @@ l_int|0
 comma
 l_int|0
 comma
-id|DFE538TX
+id|RTL8139
 )brace
 comma
 (brace
@@ -489,7 +396,7 @@ l_int|0
 comma
 l_int|0
 comma
-id|DFE690TXD
+id|RTL8139
 )brace
 comma
 (brace
@@ -505,7 +412,7 @@ l_int|0
 comma
 l_int|0
 comma
-id|FE2000VX
+id|RTL8139
 )brace
 comma
 (brace
@@ -521,7 +428,7 @@ l_int|0
 comma
 l_int|0
 comma
-id|ALLIED8139
+id|RTL8139
 )brace
 comma
 (brace
@@ -537,7 +444,7 @@ l_int|0
 comma
 l_int|0
 comma
-id|FNW3603TX
+id|RTL8139
 )brace
 comma
 (brace
@@ -553,7 +460,7 @@ l_int|0
 comma
 l_int|0
 comma
-id|FNW3800TX
+id|RTL8139
 )brace
 comma
 (brace
@@ -639,7 +546,7 @@ l_int|0
 comma
 l_int|0
 comma
-id|DFE538TX
+id|RTL8139
 )brace
 comma
 (brace
@@ -655,7 +562,7 @@ l_int|0
 comma
 l_int|0
 comma
-id|FE2000VX
+id|RTL8139
 )brace
 comma
 (brace
