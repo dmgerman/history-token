@@ -870,7 +870,7 @@ op_assign
 id|serio
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * ps2_handle_ack()&n; */
+multiline_comment|/*&n; * ps2_handle_ack() is supposed to be used in interrupt handler&n; * to properly process ACK/NAK of a command from a PS/2 device.&n; */
 DECL|function|ps2_handle_ack
 r_int
 id|ps2_handle_ack
@@ -939,7 +939,7 @@ multiline_comment|/* Fall through */
 r_default
 suffix:colon
 r_return
-l_int|1
+l_int|0
 suffix:semicolon
 )brace
 r_if
@@ -968,16 +968,26 @@ op_amp
 id|ps2dev-&gt;wait
 )paren
 suffix:semicolon
-r_return
+r_if
+c_cond
+(paren
 id|data
-op_eq
+op_ne
 id|PS2_RET_ACK
-op_logical_or
+)paren
+id|ps2_handle_response
+c_func
+(paren
+id|ps2dev
+comma
 id|data
-op_eq
-id|PS2_RET_NAK
+)paren
+suffix:semicolon
+r_return
+l_int|1
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * ps2_handle_response() is supposed to be used in interrupt handler&n; * to properly store device&squot;s response to a command and notify process&n; * waiting for completion of the command.&n; */
 DECL|function|ps2_handle_response
 r_int
 id|ps2_handle_response
