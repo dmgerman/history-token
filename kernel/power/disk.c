@@ -204,11 +204,6 @@ c_func
 l_string|&quot;|&bslash;n&quot;
 )paren
 suffix:semicolon
-id|blk_run_queues
-c_func
-(paren
-)paren
-suffix:semicolon
 )brace
 DECL|function|platform_finish
 r_static

@@ -616,6 +616,16 @@ DECL|macro|SWAP_AGAIN
 mdefine_line|#define&t;SWAP_AGAIN&t;1
 DECL|macro|SWAP_FAIL
 mdefine_line|#define&t;SWAP_FAIL&t;2
+r_extern
+r_void
+id|swap_unplug_io_fn
+c_func
+(paren
+r_struct
+id|backing_dev_info
+op_star
+)paren
+suffix:semicolon
 macro_line|#ifdef CONFIG_SWAP
 multiline_comment|/* linux/mm/page_io.c */
 r_extern
@@ -892,6 +902,9 @@ r_struct
 id|page
 op_star
 )paren
+suffix:semicolon
+r_struct
+id|backing_dev_info
 suffix:semicolon
 r_extern
 r_struct

@@ -143,6 +143,13 @@ r_struct
 id|address_space
 op_star
 id|mapping
+suffix:semicolon
+id|smp_mb
+c_func
+(paren
+)paren
+suffix:semicolon
+id|mapping
 op_assign
 id|page-&gt;mapping
 suffix:semicolon

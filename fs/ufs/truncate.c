@@ -9,6 +9,7 @@ macro_line|#include &lt;linux/stat.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/buffer_head.h&gt;
+macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &quot;swab.h&quot;
 macro_line|#include &quot;util.h&quot;
@@ -2312,9 +2313,10 @@ id|ufs_sync_inode
 id|inode
 )paren
 suffix:semicolon
-id|blk_run_queues
+id|blk_run_address_space
 c_func
 (paren
+id|inode-&gt;i_mapping
 )paren
 suffix:semicolon
 id|yield

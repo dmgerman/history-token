@@ -6,6 +6,25 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/backing-dev.h&gt;
 macro_line|#include &lt;linux/pagevec.h&gt;
+DECL|function|default_unplug_io_fn
+r_void
+id|default_unplug_io_fn
+c_func
+(paren
+r_struct
+id|backing_dev_info
+op_star
+id|bdi
+)paren
+(brace
+)brace
+DECL|variable|default_unplug_io_fn
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|default_unplug_io_fn
+)paren
+suffix:semicolon
 DECL|variable|default_backing_dev_info
 r_struct
 id|backing_dev_info
@@ -27,6 +46,11 @@ dot
 id|state
 op_assign
 l_int|0
+comma
+dot
+id|unplug_io_fn
+op_assign
+id|default_unplug_io_fn
 comma
 )brace
 suffix:semicolon

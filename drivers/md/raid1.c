@@ -1715,6 +1715,12 @@ id|sector_t
 id|sect
 )paren
 (brace
+id|md_unplug_mddev
+c_func
+(paren
+id|conf-&gt;mddev
+)paren
+suffix:semicolon
 id|spin_lock_irq
 c_func
 (paren
@@ -1845,6 +1851,12 @@ op_assign
 id|conf-&gt;raid_disks
 suffix:semicolon
 multiline_comment|/*&n;&t; * Register the new request and wait if the reconstruction&n;&t; * thread has put up a bar for new requests.&n;&t; * Continue immediately if no resync is active currently.&n;&t; */
+id|md_unplug_mddev
+c_func
+(paren
+id|conf-&gt;mddev
+)paren
+suffix:semicolon
 id|spin_lock_irq
 c_func
 (paren
@@ -2560,6 +2572,12 @@ op_star
 id|conf
 )paren
 (brace
+id|md_unplug_mddev
+c_func
+(paren
+id|conf-&gt;mddev
+)paren
+suffix:semicolon
 id|spin_lock_irq
 c_func
 (paren

@@ -850,11 +850,6 @@ id|__GFP_WAIT
 r_return
 l_int|NULL
 suffix:semicolon
-id|blk_run_queues
-c_func
-(paren
-)paren
-suffix:semicolon
 id|prepare_to_wait
 c_func
 (paren

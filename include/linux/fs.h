@@ -141,6 +141,10 @@ DECL|macro|READA
 mdefine_line|#define READA 2&t;&t;/* read-ahead  - don&squot;t block if no resources */
 DECL|macro|SPECIAL
 mdefine_line|#define SPECIAL 4&t;/* For non-blockdevice requests in request queue */
+DECL|macro|READ_SYNC
+mdefine_line|#define READ_SYNC&t;(READ | (1 &lt;&lt; BIO_RW_SYNC))
+DECL|macro|WRITE_SYNC
+mdefine_line|#define WRITE_SYNC&t;(WRITE | (1 &lt;&lt; BIO_RW_SYNC))
 DECL|macro|SEL_IN
 mdefine_line|#define SEL_IN&t;&t;1
 DECL|macro|SEL_OUT

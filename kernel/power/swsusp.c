@@ -2814,12 +2814,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/* No need to invalidate any vfsmnt list -- &n;&t;&t; * they will be valid after resume, anyway.&n;&t;&t; */
-id|blk_run_queues
-c_func
-(paren
-)paren
-suffix:semicolon
 multiline_comment|/* Save state of all device drivers, and stop them. */
 r_if
 c_cond

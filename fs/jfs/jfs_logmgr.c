@@ -6114,14 +6114,9 @@ suffix:semicolon
 id|submit_bio
 c_func
 (paren
-id|READ
+id|READ_SYNC
 comma
 id|bio
-)paren
-suffix:semicolon
-id|blk_run_queues
-c_func
-(paren
 )paren
 suffix:semicolon
 id|wait_event
@@ -6526,7 +6521,7 @@ id|log-&gt;no_integrity
 id|submit_bio
 c_func
 (paren
-id|WRITE
+id|WRITE_SYNC
 comma
 id|bio
 )paren
@@ -6535,11 +6530,6 @@ id|INCREMENT
 c_func
 (paren
 id|lmStat.submitted
-)paren
-suffix:semicolon
-id|blk_run_queues
-c_func
-(paren
 )paren
 suffix:semicolon
 )brace

@@ -1123,9 +1123,10 @@ comma
 id|flags
 )paren
 suffix:semicolon
-id|blk_run_queues
+id|blk_run_address_space
 c_func
 (paren
+id|dio-&gt;inode-&gt;i_mapping
 )paren
 suffix:semicolon
 id|io_schedule
@@ -3343,9 +3344,10 @@ id|dio
 )paren
 suffix:semicolon
 multiline_comment|/* This can free the dio */
-id|blk_run_queues
+id|blk_run_address_space
 c_func
 (paren
+id|inode-&gt;i_mapping
 )paren
 suffix:semicolon
 r_if

@@ -2828,11 +2828,6 @@ c_func
 r_void
 )paren
 (brace
-id|blk_run_queues
-c_func
-(paren
-)paren
-suffix:semicolon
 r_while
 c_loop
 (paren
@@ -2984,6 +2979,12 @@ id|submit_bio
 c_func
 (paren
 id|rw
+op_or
+(paren
+l_int|1
+op_lshift
+id|BIO_RW_SYNC
+)paren
 comma
 id|bio
 )paren
