@@ -712,6 +712,12 @@ op_assign
 op_amp
 id|hcd_pci_release
 suffix:semicolon
+id|init_timer
+(paren
+op_amp
+id|hcd-&gt;rh_timer
+)paren
+suffix:semicolon
 id|INIT_LIST_HEAD
 (paren
 op_amp
@@ -738,11 +744,22 @@ id|hcd
 OL
 l_int|0
 )paren
+(brace
+id|dev_err
+(paren
+id|hcd-&gt;self.controller
+comma
+l_string|&quot;init error %d&bslash;n&quot;
+comma
+id|retval
+)paren
+suffix:semicolon
 id|usb_hcd_pci_remove
 (paren
 id|dev
 )paren
 suffix:semicolon
+)brace
 r_return
 id|retval
 suffix:semicolon
