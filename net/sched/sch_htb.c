@@ -689,6 +689,34 @@ suffix:semicolon
 multiline_comment|/**&n; * htb_classify - classify a packet into class&n; *&n; * It returns NULL if the packet should be dropped or -1 if the packet&n; * should be passed directly thru. In all other cases leaf class is returned.&n; * We allow direct class selection by classid in priority. The we examine&n; * filters in qdisc and in inner nodes (if higher filter points to the inner&n; * node). If we end up with classid MAJOR:0 we enqueue the skb into special&n; * internal fifo (direct). These packets then go directly thru. If we still &n; * have no valid leaf we try to use MAJOR:default leaf. It still unsuccessfull&n; * then finish and return direct queue.&n; */
 DECL|macro|HTB_DIRECT
 mdefine_line|#define HTB_DIRECT (struct htb_class*)-1
+DECL|function|htb_classid
+r_static
+r_inline
+id|u32
+id|htb_classid
+c_func
+(paren
+r_struct
+id|htb_class
+op_star
+id|cl
+)paren
+(brace
+r_return
+(paren
+id|cl
+op_logical_and
+id|cl
+op_ne
+id|HTB_DIRECT
+)paren
+ques
+c_cond
+id|cl-&gt;classid
+suffix:colon
+id|TC_H_UNSPEC
+suffix:semicolon
+)brace
 DECL|function|htb_classify
 r_static
 r_struct
@@ -2835,12 +2863,11 @@ l_int|1
 comma
 l_string|&quot;htb_enq_ok cl=%X skb=%p&bslash;n&quot;
 comma
+id|htb_classid
+c_func
+(paren
 id|cl
-ques
-c_cond
-id|cl-&gt;classid
-suffix:colon
-l_int|0
+)paren
 comma
 id|skb
 )paren
@@ -2989,12 +3016,11 @@ l_int|1
 comma
 l_string|&quot;htb_req_ok cl=%X skb=%p&bslash;n&quot;
 comma
+id|htb_classid
+c_func
+(paren
 id|cl
-ques
-c_cond
-id|cl-&gt;classid
-suffix:colon
-l_int|0
+)paren
 comma
 id|skb
 )paren
