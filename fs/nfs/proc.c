@@ -1833,6 +1833,10 @@ id|fattr-&gt;valid
 op_assign
 l_int|0
 suffix:semicolon
+id|fhandle-&gt;size
+op_assign
+l_int|0
+suffix:semicolon
 id|status
 op_assign
 id|rpc_call
