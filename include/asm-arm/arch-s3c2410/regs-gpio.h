@@ -742,11 +742,7 @@ DECL|macro|S3C2410_EINFLT2
 mdefine_line|#define S3C2410_EINFLT2&t;   S3C2410_GPIOREG(0x9C)
 DECL|macro|S3C2410_EINFLT3
 mdefine_line|#define S3C2410_EINFLT3&t;   S3C2410_GPIOREG(0xA0)
-multiline_comment|/* mask: 0=enable, 1=disable&n; * 1 bit EINT, 4=EINT4, 23=EINT23&n; * EINT0,1,2,3 are not handled here.&n;*/
-DECL|macro|S3C2410_EINTMASK
-mdefine_line|#define S3C2410_EINTMASK   S3C2410_GPIOREG(0xA4)
-DECL|macro|S3C2410_EINTPEND
-mdefine_line|#define S3C2410_EINTPEND   S3C2410_GPIOREG(0xA8)
+multiline_comment|/* removed EINTxxxx defs from here, not meant for this */
 multiline_comment|/* GSTATUS have miscellaneous information in them&n; *&n; */
 DECL|macro|S3C2410_GSTATUS0
 mdefine_line|#define S3C2410_GSTATUS0   S3C2410_GPIOREG(0x0AC)

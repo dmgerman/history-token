@@ -61,6 +61,13 @@ DECL|macro|ASSERT_WRITE_LOCK
 mdefine_line|#define ASSERT_WRITE_LOCK(x) ARP_NF_ASSERT(down_trylock(&amp;arpt_mutex) != 0)
 macro_line|#include &lt;linux/netfilter_ipv4/lockhelp.h&gt;
 macro_line|#include &lt;linux/netfilter_ipv4/listhelp.h&gt;
+r_static
+id|DECLARE_MUTEX
+c_func
+(paren
+id|arpt_mutex
+)paren
+suffix:semicolon
 DECL|struct|arpt_table_info
 r_struct
 id|arpt_table_info
