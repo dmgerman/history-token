@@ -98,6 +98,10 @@ op_star
 op_star
 id|npda_rip_last
 suffix:semicolon
+DECL|member|bist_lock
+id|spinlock_t
+id|bist_lock
+suffix:semicolon
 multiline_comment|/*&n;&t; * The BTEs on this node are shared by the local cpus&n;&t; */
 DECL|member|bte_if
 r_struct

@@ -31,13 +31,6 @@ id|root_lboard
 id|MAX_COMPACT_NODES
 )braket
 suffix:semicolon
-DECL|variable|klgraph_addr
-id|u64
-id|klgraph_addr
-(braket
-id|MAX_COMPACT_NODES
-)braket
-suffix:semicolon
 DECL|variable|hasmetarouter
 r_static
 r_int
