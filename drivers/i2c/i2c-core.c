@@ -3242,7 +3242,7 @@ op_amp
 id|adapter-&gt;dev
 comma
 l_string|&quot;found normal i2c entry for adapter %d, &quot;
-l_string|&quot;addr %02x&quot;
+l_string|&quot;addr %02x&bslash;n&quot;
 comma
 id|adap_id
 comma
