@@ -1199,12 +1199,12 @@ comma
 id|hpte.dw1.dword1
 )paren
 suffix:semicolon
-r_return
+id|panic
+c_func
 (paren
-l_int|0x8000000000000000
+l_string|&quot;select_hpte_slot found entry already valid&bslash;n&quot;
 )paren
 suffix:semicolon
-multiline_comment|/*&t;&t;&t;panic(&quot;select_hpte_slot found entry already valid&bslash;n&quot;); */
 )brace
 r_if
 c_cond
@@ -2035,49 +2035,6 @@ OL
 l_int|0
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|hpte_slot
-op_eq
-l_int|0x8000000000000000
-)paren
-(brace
-id|udbg_printf
-c_func
-(paren
-l_string|&quot;hash_page: ptep    = 0x%016lx&bslash;n&quot;
-comma
-(paren
-r_int
-r_int
-)paren
-id|ptep
-)paren
-suffix:semicolon
-id|udbg_printf
-c_func
-(paren
-l_string|&quot;hash_page: ea      = 0x%016lx&bslash;n&quot;
-comma
-id|ea
-)paren
-suffix:semicolon
-id|udbg_printf
-c_func
-(paren
-l_string|&quot;hash_page: vpn     = 0x%016lx&bslash;n&quot;
-comma
-id|vpn
-)paren
-suffix:semicolon
-id|panic
-c_func
-(paren
-l_string|&quot;hash_page: hpte already exists&bslash;n&quot;
-)paren
-suffix:semicolon
-)brace
 id|hash
 op_assign
 l_int|1
@@ -3171,8 +3128,6 @@ suffix:semicolon
 r_int
 r_int
 id|hpteflags
-comma
-id|regionid
 suffix:semicolon
 r_int
 id|slot
@@ -3204,18 +3159,14 @@ id|ea
 r_return
 l_int|1
 suffix:semicolon
-id|regionid
-op_assign
+r_switch
+c_cond
+(paren
 id|REGION_ID
 c_func
 (paren
 id|ea
 )paren
-suffix:semicolon
-r_switch
-c_cond
-(paren
-id|regionid
 )paren
 (brace
 r_case
@@ -3819,94 +3770,6 @@ c_func
 id|vpn
 )paren
 suffix:semicolon
-multiline_comment|/* Debug code */
-r_if
-c_cond
-(paren
-id|slot
-op_eq
-l_int|0x8000000000000000
-)paren
-(brace
-r_int
-r_int
-id|xold_pte
-op_assign
-id|pte_val
-c_func
-(paren
-id|old_pte
-)paren
-suffix:semicolon
-r_int
-r_int
-id|xnew_pte
-op_assign
-id|pte_val
-c_func
-(paren
-id|new_pte
-)paren
-suffix:semicolon
-id|udbg_printf
-c_func
-(paren
-l_string|&quot;hash_page: ptep    = 0x%016lx&bslash;n&quot;
-comma
-(paren
-r_int
-r_int
-)paren
-id|ptep
-)paren
-suffix:semicolon
-id|udbg_printf
-c_func
-(paren
-l_string|&quot;hash_page: old_pte = 0x%016lx&bslash;n&quot;
-comma
-id|xold_pte
-)paren
-suffix:semicolon
-id|udbg_printf
-c_func
-(paren
-l_string|&quot;hash_page: new_pte = 0x%016lx&bslash;n&quot;
-comma
-id|xnew_pte
-)paren
-suffix:semicolon
-id|udbg_printf
-c_func
-(paren
-l_string|&quot;hash_page: ea      = 0x%016lx&bslash;n&quot;
-comma
-id|ea
-)paren
-suffix:semicolon
-id|udbg_printf
-c_func
-(paren
-l_string|&quot;hash_page: va      = 0x%016lx&bslash;n&quot;
-comma
-id|va
-)paren
-suffix:semicolon
-id|udbg_printf
-c_func
-(paren
-l_string|&quot;hash_page: access  = 0x%016lx&bslash;n&quot;
-comma
-id|access
-)paren
-suffix:semicolon
-id|panic
-c_func
-(paren
-l_string|&quot;hash_page: hpte already exists&bslash;n&quot;
-)paren
-suffix:semicolon
-)brace
 id|hash_ind
 op_assign
 l_int|0
