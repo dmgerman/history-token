@@ -373,7 +373,7 @@ id|fops
 r_if
 c_cond
 (paren
-id|devfs_should_register_chrdev
+id|devfs_only
 c_func
 (paren
 )paren
@@ -565,7 +565,7 @@ id|name
 r_if
 c_cond
 (paren
-id|devfs_should_register_chrdev
+id|devfs_only
 c_func
 (paren
 )paren

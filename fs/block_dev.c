@@ -2030,7 +2030,7 @@ id|bdops
 r_if
 c_cond
 (paren
-id|devfs_should_register_blkdev
+id|devfs_only
 c_func
 (paren
 )paren
@@ -2178,7 +2178,7 @@ id|name
 r_if
 c_cond
 (paren
-id|devfs_should_unregister_blkdev
+id|devfs_only
 c_func
 (paren
 )paren
