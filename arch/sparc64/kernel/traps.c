@@ -8718,6 +8718,16 @@ comma
 id|cee_stuff
 )paren
 op_logical_or
+id|TI_PRE_COUNT
+op_ne
+m_offsetof
+(paren
+r_struct
+id|thread_info
+comma
+id|preempt_count
+)paren
+op_logical_or
 id|TI_FPREGS
 op_ne
 m_offsetof

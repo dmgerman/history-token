@@ -81,17 +81,21 @@ id|pt_regs
 op_star
 id|kregs
 suffix:semicolon
-DECL|member|utraps
-r_int
-r_int
-op_star
-id|utraps
-suffix:semicolon
 DECL|member|exec_domain
 r_struct
 id|exec_domain
 op_star
 id|exec_domain
+suffix:semicolon
+DECL|member|preempt_count
+r_int
+id|preempt_count
+suffix:semicolon
+DECL|member|utraps
+r_int
+r_int
+op_star
+id|utraps
 suffix:semicolon
 DECL|member|reg_window
 r_struct
@@ -197,30 +201,32 @@ DECL|macro|TI_FAULT_ADDR
 mdefine_line|#define TI_FAULT_ADDR&t;0x00000020
 DECL|macro|TI_KREGS
 mdefine_line|#define TI_KREGS&t;0x00000028
-DECL|macro|TI_UTRAPS
-mdefine_line|#define TI_UTRAPS&t;0x00000030
 DECL|macro|TI_EXEC_DOMAIN
-mdefine_line|#define TI_EXEC_DOMAIN&t;0x00000038
+mdefine_line|#define TI_EXEC_DOMAIN&t;0x00000030
+DECL|macro|TI_PRE_COUNT
+mdefine_line|#define TI_PRE_COUNT&t;0x00000038
+DECL|macro|TI_UTRAPS
+mdefine_line|#define TI_UTRAPS&t;0x00000040
 DECL|macro|TI_REG_WINDOW
-mdefine_line|#define TI_REG_WINDOW&t;0x00000040
+mdefine_line|#define TI_REG_WINDOW&t;0x00000048
 DECL|macro|TI_RWIN_SPTRS
-mdefine_line|#define TI_RWIN_SPTRS&t;0x000003c0&t;
+mdefine_line|#define TI_RWIN_SPTRS&t;0x000003c8&t;
 DECL|macro|TI_GSR
-mdefine_line|#define TI_GSR&t;&t;0x000003f8
+mdefine_line|#define TI_GSR&t;&t;0x00000400
 DECL|macro|TI_XFSR
-mdefine_line|#define TI_XFSR&t;&t;0x00000430
+mdefine_line|#define TI_XFSR&t;&t;0x00000438
 DECL|macro|TI_USER_CNTD0
-mdefine_line|#define TI_USER_CNTD0&t;0x00000468
+mdefine_line|#define TI_USER_CNTD0&t;0x00000470
 DECL|macro|TI_USER_CNTD1
-mdefine_line|#define TI_USER_CNTD1&t;0x00000470
+mdefine_line|#define TI_USER_CNTD1&t;0x00000478
 DECL|macro|TI_KERN_CNTD0
-mdefine_line|#define TI_KERN_CNTD0&t;0x00000478
+mdefine_line|#define TI_KERN_CNTD0&t;0x00000480
 DECL|macro|TI_KERN_CNTD1
-mdefine_line|#define TI_KERN_CNTD1&t;0x00000480
+mdefine_line|#define TI_KERN_CNTD1&t;0x00000488
 DECL|macro|TI_PCR
-mdefine_line|#define TI_PCR&t;&t;0x00000488
+mdefine_line|#define TI_PCR&t;&t;0x00000490
 DECL|macro|TI_CEE_STUFF
-mdefine_line|#define TI_CEE_STUFF&t;0x00000490
+mdefine_line|#define TI_CEE_STUFF&t;0x00000498
 DECL|macro|TI_FPREGS
 mdefine_line|#define TI_FPREGS&t;0x000004c0
 multiline_comment|/* We embed this in the uppermost byte of thread_info-&gt;flags */

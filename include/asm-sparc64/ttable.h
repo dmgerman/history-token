@@ -60,9 +60,9 @@ mdefine_line|#define NETBSD_SYSCALL_TRAP TRAP(netbsd_syscall)
 DECL|macro|BREAKPOINT_TRAP
 mdefine_line|#define BREAKPOINT_TRAP TRAP(breakpoint_trap)
 DECL|macro|TRAP_IRQ
-mdefine_line|#define TRAP_IRQ(routine, level)&t;&t;&t;&bslash;&n;&t;rdpr&t;%pil, %g2;&t;&t;&t;&t;&bslash;&n;&t;wrpr&t;%g0, 15, %pil;&t;&t;&t;&t;&bslash;&n;&t;b,pt&t;%xcc, etrap_irq;&t;&t;&t;&bslash;&n;&t; rd&t;%pc, %g7;&t;&t;&t;&t;&bslash;&n;&t;mov&t;level, %o0;&t;&t;&t;&t;&bslash;&n;&t;call&t;routine;&t;&t;&t;&t;&bslash;&n;&t; add&t;%sp, STACK_BIAS + REGWIN_SZ, %o1;&t;&bslash;&n;&t;ba,a,pt&t;%xcc, rtrap_clr_l6;
+mdefine_line|#define TRAP_IRQ(routine, level)&t;&t;&t;&bslash;&n;&t;rdpr&t;%pil, %g2;&t;&t;&t;&t;&bslash;&n;&t;wrpr&t;%g0, 15, %pil;&t;&t;&t;&t;&bslash;&n;&t;b,pt&t;%xcc, etrap_irq;&t;&t;&t;&bslash;&n;&t; rd&t;%pc, %g7;&t;&t;&t;&t;&bslash;&n;&t;mov&t;level, %o0;&t;&t;&t;&t;&bslash;&n;&t;call&t;routine;&t;&t;&t;&t;&bslash;&n;&t; add&t;%sp, STACK_BIAS + REGWIN_SZ, %o1;&t;&bslash;&n;&t;ba,a,pt&t;%xcc, rtrap_irq;
 DECL|macro|TICK_SMP_IRQ
-mdefine_line|#define TICK_SMP_IRQ&t;&t;&t;&t;&t;&bslash;&n;&t;rdpr&t;%pil, %g2;&t;&t;&t;&t;&bslash;&n;&t;wrpr&t;%g0, 15, %pil;&t;&t;&t;&t;&bslash;&n;&t;sethi&t;%hi(109f), %g7;&t;&t;&t;&t;&bslash;&n;&t;b,pt&t;%xcc, etrap_irq;&t;&t;&t;&bslash;&n;109:&t; or&t;%g7, %lo(109b), %g7;&t;&t;&t;&bslash;&n;&t;call&t;smp_percpu_timer_interrupt;&t;&t;&bslash;&n;&t; add&t;%sp, STACK_BIAS + REGWIN_SZ, %o0;&t;&bslash;&n;&t;ba,a,pt&t;%xcc, rtrap_clr_l6;
+mdefine_line|#define TICK_SMP_IRQ&t;&t;&t;&t;&t;&bslash;&n;&t;rdpr&t;%pil, %g2;&t;&t;&t;&t;&bslash;&n;&t;wrpr&t;%g0, 15, %pil;&t;&t;&t;&t;&bslash;&n;&t;sethi&t;%hi(109f), %g7;&t;&t;&t;&t;&bslash;&n;&t;b,pt&t;%xcc, etrap_irq;&t;&t;&t;&bslash;&n;109:&t; or&t;%g7, %lo(109b), %g7;&t;&t;&t;&bslash;&n;&t;call&t;smp_percpu_timer_interrupt;&t;&t;&bslash;&n;&t; add&t;%sp, STACK_BIAS + REGWIN_SZ, %o0;&t;&bslash;&n;&t;ba,a,pt&t;%xcc, rtrap_irq;
 DECL|macro|TRAP_IVEC
 mdefine_line|#define TRAP_IVEC TRAP_NOSAVE(do_ivec)
 DECL|macro|BTRAP
