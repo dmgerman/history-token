@@ -1054,6 +1054,10 @@ r_struct
 id|dst_entry
 op_star
 id|dst
+comma
+r_int
+r_int
+id|port
 )paren
 (brace
 r_struct
@@ -1071,6 +1075,10 @@ suffix:semicolon
 id|saddr-&gt;v4.sin_family
 op_assign
 id|AF_INET
+suffix:semicolon
+id|saddr-&gt;v4.sin_port
+op_assign
+id|port
 suffix:semicolon
 id|saddr-&gt;v4.sin_addr.s_addr
 op_assign

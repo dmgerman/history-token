@@ -785,6 +785,10 @@ r_struct
 id|dst_entry
 op_star
 id|dst
+comma
+r_int
+r_int
+id|port
 )paren
 (brace
 r_struct
@@ -802,6 +806,10 @@ suffix:semicolon
 id|addr-&gt;sa.sa_family
 op_assign
 id|AF_INET6
+suffix:semicolon
+id|addr-&gt;v6.sin6_port
+op_assign
+id|port
 suffix:semicolon
 id|ipv6_addr_copy
 c_func

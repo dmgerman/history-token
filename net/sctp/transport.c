@@ -642,6 +642,8 @@ op_amp
 id|dst_saddr
 comma
 id|dst
+comma
+id|bp-&gt;port
 )paren
 suffix:semicolon
 r_if

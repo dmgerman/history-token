@@ -521,6 +521,10 @@ r_struct
 id|dst_entry
 op_star
 id|dst
+comma
+r_int
+r_int
+id|port
 )paren
 suffix:semicolon
 DECL|member|cmp_addr
