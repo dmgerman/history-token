@@ -4100,15 +4100,10 @@ c_cond
 (paren
 id|p-&gt;pid
 )paren
-id|per_cpu
+id|__get_cpu_var
 c_func
 (paren
 id|process_counts
-comma
-id|smp_processor_id
-c_func
-(paren
-)paren
 )paren
 op_increment
 suffix:semicolon

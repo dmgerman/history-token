@@ -418,7 +418,7 @@ op_assign
 l_int|NULL
 suffix:semicolon
 DECL|macro|icmp_socket
-mdefine_line|#define icmp_socket&t;per_cpu(__icmp_socket, smp_processor_id())
+mdefine_line|#define icmp_socket&t;__get_cpu_var(__icmp_socket)
 DECL|function|icmp_xmit_lock
 r_static
 id|__inline__
