@@ -2943,7 +2943,6 @@ id|envp_init
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif
 DECL|function|handle_initrd
 r_static
 r_void
@@ -2954,7 +2953,6 @@ c_func
 r_void
 )paren
 (brace
-macro_line|#ifdef CONFIG_BLK_DEV_INITRD
 r_int
 id|error
 suffix:semicolon
@@ -2962,6 +2960,10 @@ r_int
 id|i
 comma
 id|pid
+suffix:semicolon
+id|real_root_dev
+op_assign
+id|ROOT_DEV
 suffix:semicolon
 id|create_dev
 c_func
@@ -3294,9 +3296,7 @@ l_string|&quot;failed&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif
 )brace
-macro_line|#ifdef CONFIG_BLK_DEV_INITRD
 DECL|function|initrd_load
 r_static
 r_int
@@ -3339,12 +3339,32 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
-r_return
+multiline_comment|/* Load the initrd data into /dev/ram0. Execute it as initrd unless&n;&t; * /dev/ram0 is supposed to be our actual root device, in&n;&t; * that case the ram disk is just set up here, and gets&n;&t; * mounted in the normal path. */
+r_if
+c_cond
+(paren
 id|rd_load_image
 c_func
 (paren
 l_string|&quot;/dev/initrd&quot;
 )paren
+op_logical_and
+id|ROOT_DEV
+op_ne
+id|Root_RAM0
+)paren
+(brace
+id|handle_initrd
+c_func
+(paren
+)paren
+suffix:semicolon
+r_return
+l_int|1
+suffix:semicolon
+)brace
+r_return
+l_int|0
 suffix:semicolon
 )brace
 macro_line|#else
@@ -3437,12 +3457,6 @@ id|ROOT_DEV
 op_eq
 id|FLOPPY_MAJOR
 suffix:semicolon
-macro_line|#ifdef CONFIG_BLK_DEV_INITRD
-id|real_root_dev
-op_assign
-id|ROOT_DEV
-suffix:semicolon
-macro_line|#endif
 id|create_dev
 c_func
 (paren
@@ -3472,21 +3486,10 @@ id|initrd_load
 c_func
 (paren
 )paren
-op_logical_and
-id|ROOT_DEV
-op_ne
-id|Root_RAM0
 )paren
-(brace
-id|handle_initrd
-c_func
-(paren
-)paren
-suffix:semicolon
 r_goto
 id|out
 suffix:semicolon
-)brace
 )brace
 r_else
 r_if
