@@ -1705,13 +1705,6 @@ id|s
 suffix:semicolon
 )brace
 )brace
-DECL|variable|kobject_get_path
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|kobject_get_path
-)paren
-suffix:semicolon
 DECL|variable|kobject_init
 id|EXPORT_SYMBOL
 c_func
@@ -1759,13 +1752,6 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|kobject_del
-)paren
-suffix:semicolon
-DECL|variable|kobject_rename
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|kobject_rename
 )paren
 suffix:semicolon
 DECL|variable|kset_register
