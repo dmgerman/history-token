@@ -43,9 +43,6 @@ c_func
 l_string|&quot;AVM Fritz!PCI/PnP ISDN driver&quot;
 )paren
 suffix:semicolon
-singleline_comment|// FIXME temporary hack until I sort out the new PnP stuff
-DECL|macro|__ISAPNP__
-mdefine_line|#define __ISAPNP__
 DECL|variable|__devinitdata
 r_static
 r_struct
@@ -57,38 +54,61 @@ id|__devinitdata
 op_assign
 (brace
 (brace
+dot
+id|vendor
+op_assign
 id|PCI_VENDOR_ID_AVM
 comma
+dot
+id|device
+op_assign
 id|PCI_DEVICE_ID_AVM_A1
 comma
+dot
+id|subvendor
+op_assign
 id|PCI_ANY_ID
 comma
+dot
+id|subdevice
+op_assign
 id|PCI_ANY_ID
 comma
-l_int|0
-comma
-l_int|0
-comma
+dot
+id|driver_data
+op_assign
 (paren
 r_int
 r_int
 )paren
 l_string|&quot;Fritz!Card PCI&quot;
+comma
 )brace
 comma
 (brace
+dot
+id|vendor
+op_assign
 id|PCI_VENDOR_ID_AVM
 comma
+dot
+id|device
+op_assign
 id|PCI_DEVICE_ID_AVM_A1_V2
 comma
+dot
+id|subvendor
+op_assign
 id|PCI_ANY_ID
 comma
+dot
+id|subdevice
+op_assign
 id|PCI_ANY_ID
 comma
-l_int|0
-comma
-l_int|0
-comma
+dot
+id|driver_data
+op_assign
 (paren
 r_int
 r_int
@@ -106,50 +126,6 @@ c_func
 id|pci
 comma
 id|fcpci_ids
-)paren
-suffix:semicolon
-DECL|variable|__devinitdata
-r_static
-r_struct
-id|pnp_card_device_id
-id|fcpnp_ids
-(braket
-)braket
-id|__devinitdata
-op_assign
-(brace
-(brace
-dot
-id|id
-op_assign
-l_string|&quot;AVM0900&quot;
-comma
-dot
-id|driver_data
-op_assign
-(paren
-r_int
-r_int
-)paren
-l_string|&quot;Fritz!Card PnP&quot;
-comma
-dot
-id|devs
-op_assign
-(brace
-(brace
-l_string|&quot;AVM0900&quot;
-)brace
-)brace
-)brace
-)brace
-suffix:semicolon
-id|MODULE_DEVICE_TABLE
-c_func
-(paren
-id|pnp_card
-comma
-id|fcpnp_ids
 )paren
 suffix:semicolon
 DECL|variable|protocol
@@ -3727,7 +3703,7 @@ c_func
 id|adapter
 )paren
 suffix:semicolon
-id|isac_setup
+id|hisax_isac_setup
 c_func
 (paren
 op_amp
@@ -4330,7 +4306,7 @@ id|fcpci_ids
 comma
 )brace
 suffix:semicolon
-macro_line|#ifdef __ISAPNP__
+macro_line|#ifdef CONFIG_PNP_CARD
 DECL|function|fcpnp_probe
 r_static
 r_int
@@ -4345,7 +4321,7 @@ id|card
 comma
 r_const
 r_struct
-id|pnp_card_device_id
+id|pnp_card_id
 op_star
 id|card_id
 )paren
@@ -4557,6 +4533,46 @@ id|adapter
 )paren
 suffix:semicolon
 )brace
+DECL|variable|__devinitdata
+r_static
+r_struct
+id|pnp_card_id
+id|fcpnp_ids
+(braket
+)braket
+id|__devinitdata
+op_assign
+(brace
+(brace
+dot
+id|id
+op_assign
+l_string|&quot;AVM0900&quot;
+comma
+dot
+id|driver_data
+op_assign
+(paren
+r_int
+r_int
+)paren
+l_string|&quot;Fritz!Card PnP&quot;
+comma
+dot
+id|devs
+op_assign
+(brace
+(brace
+l_string|&quot;AVM0900&quot;
+)brace
+)brace
+comma
+)brace
+comma
+(brace
+)brace
+)brace
+suffix:semicolon
 DECL|variable|fcpnp_driver
 r_static
 r_struct
@@ -4603,6 +4619,8 @@ r_void
 (brace
 r_int
 id|retval
+op_assign
+l_int|0
 comma
 id|pci_nr_found
 suffix:semicolon
@@ -4636,7 +4654,7 @@ id|pci_nr_found
 op_assign
 id|retval
 suffix:semicolon
-macro_line|#ifdef __ISAPNP__
+macro_line|#ifdef CONFIG_PNP_CARD
 id|retval
 op_assign
 id|pnpc_register_driver
@@ -4645,11 +4663,6 @@ c_func
 op_amp
 id|fcpnp_driver
 )paren
-suffix:semicolon
-macro_line|#else
-id|retval
-op_assign
-l_int|0
 suffix:semicolon
 macro_line|#endif
 r_if
@@ -4679,7 +4692,7 @@ op_minus
 id|ENODEV
 suffix:semicolon
 r_goto
-id|out_unregister_isapnp
+id|out_unregister_pnp
 suffix:semicolon
 )brace
 macro_line|#endif
@@ -4687,9 +4700,9 @@ r_return
 l_int|0
 suffix:semicolon
 macro_line|#if !defined(CONFIG_HOTPLUG) || defined(MODULE)
-id|out_unregister_isapnp
+id|out_unregister_pnp
 suffix:colon
-macro_line|#ifdef __ISAPNP__
+macro_line|#ifdef CONFIG_PNP_CARD
 id|pnpc_unregister_driver
 c_func
 (paren
@@ -4724,7 +4737,7 @@ c_func
 r_void
 )paren
 (brace
-macro_line|#ifdef __ISAPNP__
+macro_line|#ifdef CONFIG_PNP_CARD
 id|pnpc_unregister_driver
 c_func
 (paren
