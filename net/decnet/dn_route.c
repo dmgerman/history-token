@@ -7521,7 +7521,7 @@ id|rt
 )paren
 r_break
 suffix:semicolon
-id|rcu_read_unlock
+id|rcu_read_unlock_bh
 c_func
 (paren
 )paren

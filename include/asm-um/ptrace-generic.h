@@ -4,7 +4,6 @@ DECL|macro|__UM_PTRACE_GENERIC_H
 mdefine_line|#define __UM_PTRACE_GENERIC_H
 macro_line|#ifndef __ASSEMBLY__
 macro_line|#include &quot;linux/config.h&quot;
-macro_line|#include &quot;asm/current.h&quot;
 DECL|macro|pt_regs
 mdefine_line|#define pt_regs pt_regs_subarch
 DECL|macro|show_regs

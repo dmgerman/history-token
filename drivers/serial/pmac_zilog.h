@@ -87,6 +87,8 @@ DECL|macro|PMACZILOG_FLAG_IS_IRQ_ON
 mdefine_line|#define PMACZILOG_FLAG_IS_IRQ_ON&t;0x00004000
 DECL|macro|PMACZILOG_FLAG_IS_EXTCLK
 mdefine_line|#define PMACZILOG_FLAG_IS_EXTCLK&t;0x00008000
+DECL|macro|PMACZILOG_FLAG_BREAK
+mdefine_line|#define PMACZILOG_FLAG_BREAK&t;&t;0x00010000
 DECL|member|parity_mask
 r_int
 r_char

@@ -3,17 +3,13 @@ macro_line|#ifndef __UM_CURRENT_H
 DECL|macro|__UM_CURRENT_H
 mdefine_line|#define __UM_CURRENT_H
 macro_line|#ifndef __ASSEMBLY__
-r_struct
-id|thread_info
-suffix:semicolon
-macro_line|#include &quot;linux/config.h&quot;
 macro_line|#include &quot;asm/page.h&quot;
-DECL|macro|CURRENT_THREAD
-mdefine_line|#define CURRENT_THREAD(dummy) (((unsigned long) &amp;dummy) &amp; &bslash;&n;&t;&t;&t;        (PAGE_MASK &lt;&lt; CONFIG_KERNEL_STACK_ORDER))
-DECL|macro|current_thread
-mdefine_line|#define current_thread &bslash;&n;&t;({ int dummy; ((struct thread_info *) CURRENT_THREAD(dummy)); })
+macro_line|#include &quot;linux/thread_info.h&quot;
 DECL|macro|current
-mdefine_line|#define current (current_thread-&gt;task)
+mdefine_line|#define current (current_thread_info()-&gt;task)
+multiline_comment|/*Backward compatibility - it&squot;s used inside arch/um.*/
+DECL|macro|current_thread
+mdefine_line|#define current_thread current_thread_info()
 macro_line|#endif /* __ASSEMBLY__ */
 macro_line|#endif
 multiline_comment|/*&n; * Overrides for Emacs so that we follow Linus&squot;s tabbing style.&n; * Emacs will notice this stuff at the end of the file and automatically&n; * adjust the settings for this buffer only.  This must remain at the end&n; * of the file.&n; * ---------------------------------------------------------------------------&n; * Local variables:&n; * c-file-style: &quot;linux&quot;&n; * End:&n; */

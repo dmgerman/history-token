@@ -397,10 +397,6 @@ r_return
 op_minus
 id|EINVAL
 suffix:semicolon
-id|info-&gt;nr_pages
-op_assign
-id|nr_pages
-suffix:semicolon
 id|nr_events
 op_assign
 (paren

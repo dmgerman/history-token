@@ -80,7 +80,7 @@ c_func
 (paren
 id|regs
 comma
-l_int|1
+l_int|0
 )paren
 suffix:semicolon
 id|result
@@ -145,7 +145,7 @@ c_func
 (paren
 id|regs
 comma
-l_int|0
+l_int|1
 )paren
 suffix:semicolon
 id|record_syscall_end
@@ -168,6 +168,9 @@ id|task
 comma
 r_int
 id|pid
+comma
+r_int
+id|local_using_sysemu
 )paren
 (brace
 r_int
@@ -289,6 +292,16 @@ c_func
 (paren
 l_string|&quot;I&squot;m tracing myself and I can&squot;t get out&quot;
 )paren
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|local_using_sysemu
+)paren
+(brace
+r_return
+l_int|1
 suffix:semicolon
 )brace
 r_if

@@ -6059,6 +6059,19 @@ op_star
 id|adap
 )paren
 (brace
+multiline_comment|/* don&squot;t attach on saa7146 based cards,&n;&t;   because dedicated drivers are used */
+r_if
+c_cond
+(paren
+(paren
+id|adap-&gt;id
+op_amp
+id|I2C_ALGO_SAA7146
+)paren
+)paren
+r_return
+l_int|0
+suffix:semicolon
 macro_line|#ifdef I2C_CLASS_TV_ANALOG
 r_if
 c_cond

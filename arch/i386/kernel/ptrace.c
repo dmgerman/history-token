@@ -1381,6 +1381,7 @@ l_int|3
 r_break
 suffix:semicolon
 )brace
+multiline_comment|/* Sanity-check data. Take one half-byte at once with&n;&t;&t;&t;   * check = (val &gt;&gt; (16 + 4*i)) &amp; 0xf. It contains the&n;&t;&t;&t;   * R/Wi and LENi bits; bits 0 and 1 are R/Wi, and bits&n;&t;&t;&t;   * 2 and 3 are LENi. Given a list of invalid values,&n;&t;&t;&t;   * we do mask |= 1 &lt;&lt; invalid_value, so that&n;&t;&t;&t;   * (mask &gt;&gt; check) &amp; 1 is a correct test for invalid&n;&t;&t;&t;   * values.&n;&t;&t;&t;   *&n;&t;&t;&t;   * R/Wi contains the type of the breakpoint /&n;&t;&t;&t;   * watchpoint, LENi contains the length of the watched&n;&t;&t;&t;   * data in the watchpoint case.&n;&t;&t;&t;   *&n;&t;&t;&t;   * The invalid values are:&n;&t;&t;&t;   * - LENi == 0x10 (undefined), so mask |= 0x0f00.&n;&t;&t;&t;   * - R/Wi == 0x10 (break on I/O reads or writes), so&n;&t;&t;&t;   *   mask |= 0x4444.&n;&t;&t;&t;   * - R/Wi == 0x00 &amp;&amp; LENi != 0x00, so we have mask |=&n;&t;&t;&t;   *   0x1110.&n;&t;&t;&t;   *&n;&t;&t;&t;   * Finally, mask = 0x0f00 | 0x4444 | 0x1110 == 0x5f54.&n;&t;&t;&t;   *&n;&t;&t;&t;   * See the Intel Manual &quot;System Programming Guide&quot;,&n;&t;&t;&t;   * 15.2.4&n;&t;&t;&t;   *&n;&t;&t;&t;   * Note that LENi == 0x10 is defined on x86_64 in long&n;&t;&t;&t;   * mode (i.e. even for 32-bit userspace software, but&n;&t;&t;&t;   * 64-bit kernel), so the x86_64 mask value is 0x5454.&n;&t;&t;&t;   * See the AMD manual no. 24593 (AMD64 System&n;&t;&t;&t;   * Programming)*/
 r_if
 c_cond
 (paren

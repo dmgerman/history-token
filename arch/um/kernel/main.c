@@ -13,6 +13,8 @@ macro_line|#include &quot;user_util.h&quot;
 macro_line|#include &quot;kern_util.h&quot;
 macro_line|#include &quot;mem_user.h&quot;
 macro_line|#include &quot;signal_user.h&quot;
+macro_line|#include &quot;time_user.h&quot;
+macro_line|#include &quot;irq_user.h&quot;
 macro_line|#include &quot;user.h&quot;
 macro_line|#include &quot;init.h&quot;
 macro_line|#include &quot;mode.h&quot;

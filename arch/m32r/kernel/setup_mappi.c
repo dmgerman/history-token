@@ -586,7 +586,7 @@ id|M32R_IRQ_SIO1_S
 )paren
 suffix:semicolon
 macro_line|#endif /* CONFIG_SERIAL_M32R_SIO */
-macro_line|#if defined(CONFIG_M32RPCC)
+macro_line|#if defined(CONFIG_M32R_PCC)
 multiline_comment|/* INT1 : pccard0 interrupt */
 id|irq_desc
 (braket

@@ -10058,6 +10058,7 @@ r_return
 id|err
 suffix:semicolon
 )brace
+macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,6,10)
 id|sisfb_get_fix
 c_func
 (paren
@@ -10069,6 +10070,20 @@ comma
 id|info
 )paren
 suffix:semicolon
+macro_line|#else
+id|sisfb_get_fix
+c_func
+(paren
+op_amp
+id|info-&gt;fix
+comma
+op_minus
+l_int|1
+comma
+id|info
+)paren
+suffix:semicolon
+macro_line|#endif
 r_return
 l_int|0
 suffix:semicolon

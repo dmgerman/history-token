@@ -1218,6 +1218,10 @@ DECL|member|dead
 r_int
 id|dead
 suffix:semicolon
+DECL|member|initialized
+r_int
+id|initialized
+suffix:semicolon
 DECL|member|usecount
 r_int
 r_int

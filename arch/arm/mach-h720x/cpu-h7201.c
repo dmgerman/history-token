@@ -8,23 +8,7 @@ macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/arch/irqs.h&gt;
 macro_line|#include &lt;asm/mach/irq.h&gt;
 macro_line|#include &lt;asm/mach/time.h&gt;
-r_extern
-r_int
-r_int
-id|h720x_gettimeoffset
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|__init
-id|h720x_init_irq
-(paren
-r_void
-)paren
-suffix:semicolon
+macro_line|#include &quot;common.h&quot;
 multiline_comment|/*&n; * Timer interrupt handler&n; */
 r_static
 id|irqreturn_t
@@ -109,10 +93,6 @@ c_func
 r_void
 )paren
 (brace
-id|gettimeoffset
-op_assign
-id|h720x_gettimeoffset
-suffix:semicolon
 id|CPU_REG
 (paren
 id|TIMER_VIRT
@@ -163,4 +143,22 @@ id|h7201_timer_irq
 )paren
 suffix:semicolon
 )brace
+DECL|variable|h7201_timer
+r_struct
+id|sys_timer
+id|h7201_timer
+op_assign
+(brace
+dot
+id|init
+op_assign
+id|h7201_init_time
+comma
+dot
+id|offset
+op_assign
+id|h720x_gettimeoffset
+comma
+)brace
+suffix:semicolon
 eof

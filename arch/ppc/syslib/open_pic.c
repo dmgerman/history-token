@@ -937,6 +937,13 @@ suffix:semicolon
 )brace
 macro_line|#endif /* CONFIG_SMP */
 macro_line|#ifdef CONFIG_EPIC_SERIAL_MODE
+multiline_comment|/* On platforms that may use EPIC serial mode, the default is enabled. */
+DECL|variable|epic_serial_mode
+r_int
+id|epic_serial_mode
+op_assign
+l_int|1
+suffix:semicolon
 DECL|function|openpic_eicr_set_clk
 r_static
 r_void
@@ -1659,6 +1666,12 @@ c_func
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_EPIC_SERIAL_MODE
+r_if
+c_cond
+(paren
+id|epic_serial_mode
+)paren
+(brace
 id|openpic_eicr_set_clk
 c_func
 (paren
@@ -1671,6 +1684,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
+)brace
 macro_line|#endif
 id|openpic_set_priority
 c_func
