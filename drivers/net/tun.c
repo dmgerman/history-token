@@ -3638,6 +3638,7 @@ id|tun_set_rx_csum
 )brace
 suffix:semicolon
 DECL|function|tun_init
+r_static
 r_int
 id|__init
 id|tun_init
@@ -3699,6 +3700,7 @@ id|ret
 suffix:semicolon
 )brace
 DECL|function|tun_cleanup
+r_static
 r_void
 id|tun_cleanup
 c_func
