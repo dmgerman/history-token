@@ -12,6 +12,7 @@ macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/i2c.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/apm_bios.h&gt;
+macro_line|#include &lt;linux/dmi.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 DECL|struct|sd
 r_struct
@@ -199,31 +200,43 @@ r_struct
 id|i2c_adapter
 id|piix4_adapter
 suffix:semicolon
-multiline_comment|/*&n; * Get DMI information.&n; */
-DECL|function|ibm_dmi_probe
+DECL|variable|piix4_dmi_table
 r_static
-r_int
-id|__devinit
-id|ibm_dmi_probe
+r_struct
+id|dmi_system_id
+id|__devinitdata
+id|piix4_dmi_table
+(braket
+)braket
+op_assign
+(brace
+(brace
+dot
+id|ident
+op_assign
+l_string|&quot;IBM&quot;
+comma
+dot
+id|matches
+op_assign
+(brace
+id|DMI_MATCH
 c_func
 (paren
-r_void
+id|DMI_SYS_VENDOR
+comma
+l_string|&quot;IBM&quot;
 )paren
-(brace
-macro_line|#ifdef CONFIG_X86
-r_extern
-r_int
-id|is_unsafe_smbus
-suffix:semicolon
-r_return
-id|is_unsafe_smbus
-suffix:semicolon
-macro_line|#else
-r_return
-l_int|0
-suffix:semicolon
-macro_line|#endif
+comma
 )brace
+comma
+)brace
+comma
+(brace
+)brace
+comma
+)brace
+suffix:semicolon
 DECL|function|piix4_setup
 r_static
 r_int
@@ -278,12 +291,14 @@ id|PIIX4_dev
 )paren
 )paren
 suffix:semicolon
+multiline_comment|/* Don&squot;t access SMBus on IBM systems which get corrupted eeproms */
 r_if
 c_cond
 (paren
-id|ibm_dmi_probe
+id|dmi_check_system
 c_func
 (paren
+id|piix4_dmi_table
 )paren
 op_logical_and
 id|PIIX4_dev-&gt;vendor

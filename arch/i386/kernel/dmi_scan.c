@@ -24,10 +24,6 @@ c_func
 id|dmi_broken
 )paren
 suffix:semicolon
-DECL|variable|is_unsafe_smbus
-r_int
-id|is_unsafe_smbus
-suffix:semicolon
 DECL|variable|es7000_plat
 r_int
 id|es7000_plat
@@ -1108,46 +1104,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* &n; * Don&squot;t access SMBus on IBM systems which get corrupted eeproms &n; */
-DECL|function|disable_smbus
-r_static
-id|__init
-r_int
-id|disable_smbus
-c_func
-(paren
-r_struct
-id|dmi_blacklist
-op_star
-id|d
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|is_unsafe_smbus
-op_eq
-l_int|0
-)paren
-(brace
-id|is_unsafe_smbus
-op_assign
-l_int|1
-suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;%s machine detected. Disabling SMBus accesses.&bslash;n&quot;
-comma
-id|d-&gt;ident
-)paren
-suffix:semicolon
-)brace
-r_return
-l_int|0
-suffix:semicolon
-)brace
 multiline_comment|/*&n; *  Check for clue free BIOS implementations who use&n; *  the following QA technique&n; *&n; *      [ Write BIOS Code ]&lt;------&n; *               |                ^&n; *      &lt; Does it Compile &gt;----N--&n; *               |Y               ^&n; *&t;&lt; Does it Boot Win98 &gt;-N--&n; *               |Y&n; *           [Ship It]&n; *&n; *&t;Phoenix A04  08/24/2000 is known bad (Dell Inspiron 5000e)&n; *&t;Phoenix A07  09/29/2000 is known good (Dell Inspiron 5000)&n; */
 DECL|function|broken_apm_power
 r_static
@@ -2178,13 +2134,6 @@ l_string|&quot;DMI not present.&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
-DECL|variable|is_unsafe_smbus
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|is_unsafe_smbus
-)paren
-suffix:semicolon
 multiline_comment|/**&n; *&t;dmi_check_system - check system DMI data&n; *&t;@list: array of dmi_system_id structures to match against&n; *&n; *&t;Walk the blacklist table running matching functions until someone&n; *&t;returns non zero or we hit the end. Callback function is called for&n; *&t;each successfull match. Returns the number of matches.&n; */
 DECL|function|dmi_check_system
 r_int
