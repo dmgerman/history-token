@@ -200,7 +200,7 @@ id|current-&gt;gid
 suffix:semicolon
 id|scm-&gt;creds.pid
 op_assign
-id|current-&gt;pid
+id|current-&gt;tgid
 suffix:semicolon
 r_if
 c_cond
