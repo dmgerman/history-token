@@ -1989,6 +1989,13 @@ multiline_comment|/* The tape drive descriptor */
 r_typedef
 r_struct
 (brace
+DECL|member|name
+r_char
+id|name
+(braket
+l_int|8
+)braket
+suffix:semicolon
 DECL|member|devt
 id|kdev_t
 id|devt
