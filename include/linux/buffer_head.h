@@ -265,14 +265,6 @@ id|bh
 )paren
 suffix:semicolon
 r_void
-id|buffer_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-DECL|variable|init_buffer
-r_void
 id|init_buffer
 c_func
 (paren
@@ -287,6 +279,7 @@ r_void
 op_star
 )paren
 suffix:semicolon
+DECL|variable|set_bh_page
 r_void
 id|set_bh_page
 c_func
