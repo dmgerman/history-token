@@ -1139,10 +1139,9 @@ suffix:semicolon
 )brace
 id|usblp
 op_assign
-id|dev_get_drvdata
+id|usb_get_intfdata
 (paren
-op_amp
-id|intf-&gt;dev
+id|intf
 )paren
 suffix:semicolon
 r_if
@@ -3711,10 +3710,9 @@ comma
 id|usblp-&gt;dev-&gt;descriptor.idProduct
 )paren
 suffix:semicolon
-id|dev_set_drvdata
+id|usb_set_intfdata
 (paren
-op_amp
-id|intf-&gt;dev
+id|intf
 comma
 id|usblp
 )paren
@@ -4525,10 +4523,9 @@ id|usblp
 op_star
 id|usblp
 op_assign
-id|dev_get_drvdata
+id|usb_get_intfdata
 (paren
-op_amp
-id|intf-&gt;dev
+id|intf
 )paren
 suffix:semicolon
 multiline_comment|/* remove device id to disable open() */
@@ -4572,10 +4569,9 @@ id|usblp-&gt;dev
 op_assign
 l_int|NULL
 suffix:semicolon
-id|dev_set_drvdata
+id|usb_set_intfdata
 (paren
-op_amp
-id|intf-&gt;dev
+id|intf
 comma
 l_int|NULL
 )paren
