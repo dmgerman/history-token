@@ -606,7 +606,7 @@ id|mbx_flags
 )paren
 suffix:semicolon
 multiline_comment|/* Wait for either the timer to expire&n;&t;&t; * or the mbox completion interrupt&n;&t;&t; */
-id|down_interruptible
+id|down
 c_func
 (paren
 op_amp

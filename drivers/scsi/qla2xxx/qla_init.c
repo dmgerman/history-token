@@ -6489,12 +6489,6 @@ c_func
 id|ha
 )paren
 suffix:semicolon
-id|qla2x00_config_os
-c_func
-(paren
-id|ha
-)paren
-suffix:semicolon
 multiline_comment|/* If we found all devices then go ready */
 r_if
 c_cond
@@ -6704,10 +6698,6 @@ r_uint16
 id|loop_id
 suffix:semicolon
 multiline_comment|/* ISP23XX         -- 6 bytes. */
-r_uint16
-id|rsvd
-suffix:semicolon
-multiline_comment|/* ISP2XXX         -- 8 bytes. */
 )brace
 op_star
 id|id_list
@@ -11104,6 +11094,20 @@ id|ha
 op_logical_and
 op_logical_neg
 id|IS_QLA2200
+c_func
+(paren
+id|ha
+)paren
+op_logical_and
+op_logical_neg
+id|IS_QLA6312
+c_func
+(paren
+id|ha
+)paren
+op_logical_and
+op_logical_neg
+id|IS_QLA6322
 c_func
 (paren
 id|ha

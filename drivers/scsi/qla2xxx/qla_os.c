@@ -2589,21 +2589,12 @@ comma
 id|ha-&gt;fw_subminor_version
 )paren
 suffix:semicolon
-multiline_comment|/* Workaround till firmware fix. */
 r_if
 c_cond
 (paren
-id|IS_QLA6312
-c_func
-(paren
-id|ha
-)paren
-op_logical_or
-id|IS_QLA6322
-c_func
-(paren
-id|ha
-)paren
+id|ha-&gt;fw_attributes
+op_amp
+id|BIT_9
 )paren
 (brace
 id|strcat

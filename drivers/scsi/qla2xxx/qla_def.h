@@ -37,33 +37,40 @@ macro_line|#else
 DECL|macro|IS_QLA2200
 mdefine_line|#define IS_QLA2200(ha)&t;0
 macro_line|#endif
-macro_line|#if defined(CONFIG_SCSI_QLA23XX) || defined(CONFIG_SCSI_QLA23XX_MODULE)
+macro_line|#if defined(CONFIG_SCSI_QLA2300) || defined(CONFIG_SCSI_QLA2300_MODULE)
 DECL|macro|IS_QLA2300
 mdefine_line|#define IS_QLA2300(ha)&t;((ha)-&gt;pdev-&gt;device == PCI_DEVICE_ID_QLOGIC_ISP2300)
 DECL|macro|IS_QLA2312
 mdefine_line|#define IS_QLA2312(ha)&t;((ha)-&gt;pdev-&gt;device == PCI_DEVICE_ID_QLOGIC_ISP2312)
-DECL|macro|IS_QLA2322
-mdefine_line|#define IS_QLA2322(ha)&t;((ha)-&gt;pdev-&gt;device == PCI_DEVICE_ID_QLOGIC_ISP2322)
-DECL|macro|IS_QLA6312
-mdefine_line|#define IS_QLA6312(ha)&t;((ha)-&gt;pdev-&gt;device == PCI_DEVICE_ID_QLOGIC_ISP6312)
-DECL|macro|IS_QLA6322
-mdefine_line|#define IS_QLA6322(ha)&t;((ha)-&gt;pdev-&gt;device == PCI_DEVICE_ID_QLOGIC_ISP6322)
-DECL|macro|IS_QLA23XX
-mdefine_line|#define IS_QLA23XX(ha)&t;(IS_QLA2300(ha) || IS_QLA2312(ha) || IS_QLA2322(ha) || &bslash;&n;    &t;&t;&t; IS_QLA6312(ha) || IS_QLA6322(ha))
 macro_line|#else
 DECL|macro|IS_QLA2300
 mdefine_line|#define IS_QLA2300(ha)&t;0
 DECL|macro|IS_QLA2312
 mdefine_line|#define IS_QLA2312(ha)&t;0
+macro_line|#endif
+macro_line|#if defined(CONFIG_SCSI_QLA2322) || defined(CONFIG_SCSI_QLA2322_MODULE)
+DECL|macro|IS_QLA2322
+mdefine_line|#define IS_QLA2322(ha)&t;((ha)-&gt;pdev-&gt;device == PCI_DEVICE_ID_QLOGIC_ISP2322)
+macro_line|#else
 DECL|macro|IS_QLA2322
 mdefine_line|#define IS_QLA2322(ha)&t;0
+macro_line|#endif
+macro_line|#if defined(CONFIG_SCSI_QLA6312) || defined(CONFIG_SCSI_QLA6312_MODULE)
+DECL|macro|IS_QLA6312
+mdefine_line|#define IS_QLA6312(ha)&t;((ha)-&gt;pdev-&gt;device == PCI_DEVICE_ID_QLOGIC_ISP6312)
+macro_line|#else
 DECL|macro|IS_QLA6312
 mdefine_line|#define IS_QLA6312(ha)&t;0
+macro_line|#endif
+macro_line|#if defined(CONFIG_SCSI_QLA6322) || defined(CONFIG_SCSI_QLA6322_MODULE)
+DECL|macro|IS_QLA6322
+mdefine_line|#define IS_QLA6322(ha)&t;((ha)-&gt;pdev-&gt;device == PCI_DEVICE_ID_QLOGIC_ISP6322)
+macro_line|#else
 DECL|macro|IS_QLA6322
 mdefine_line|#define IS_QLA6322(ha)&t;0
-DECL|macro|IS_QLA23XX
-mdefine_line|#define IS_QLA23XX(ha)&t;0
 macro_line|#endif
+DECL|macro|IS_QLA23XX
+mdefine_line|#define IS_QLA23XX(ha)&t;(IS_QLA2300(ha) || IS_QLA2312(ha) || IS_QLA2322(ha) || &bslash;&n;    &t;&t;&t; IS_QLA6312(ha) || IS_QLA6322(ha))
 multiline_comment|/*&n; * Only non-ISP2[12]00 have extended addressing support in the firmware.&n; */
 DECL|macro|HAS_EXTENDED_IDS
 mdefine_line|#define HAS_EXTENDED_IDS(ha)&t;(!IS_QLA2100(ha) &amp;&amp; !IS_QLA2200(ha))
