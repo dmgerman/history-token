@@ -2272,7 +2272,7 @@ op_increment
 op_assign
 l_int|5
 suffix:semicolon
-multiline_comment|/* Name server reqeust */
+multiline_comment|/* Name server request */
 op_star
 id|e
 op_increment

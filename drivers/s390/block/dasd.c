@@ -1860,7 +1860,7 @@ id|endtime
 comma
 id|tottime
 suffix:semicolon
-multiline_comment|/* in microsecnds */
+multiline_comment|/* in microseconds */
 r_int
 id|tottimeps
 comma

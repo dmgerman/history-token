@@ -142,7 +142,7 @@ id|authp
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* A reqeust, which was authenticated, has now executed.&n; * Time to finalise the the credentials and verifier&n; * and release and resources&n; */
+multiline_comment|/* A request, which was authenticated, has now executed.&n; * Time to finalise the the credentials and verifier&n; * and release and resources&n; */
 DECL|function|svc_authorise
 r_int
 id|svc_authorise

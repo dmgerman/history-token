@@ -2554,7 +2554,7 @@ id|viadev-&gt;lastpos
 op_assign
 id|res
 suffix:semicolon
-multiline_comment|/* remember the last positiion */
+multiline_comment|/* remember the last position */
 r_if
 c_cond
 (paren
