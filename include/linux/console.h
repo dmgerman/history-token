@@ -518,13 +518,15 @@ DECL|macro|CM_ERASE
 mdefine_line|#define CM_ERASE    (2)
 DECL|macro|CM_MOVE
 mdefine_line|#define CM_MOVE     (3)
-multiline_comment|/*&n; *&t;The interface for a console, or any other device that&n; *&t;wants to capture console messages (printer driver?)&n; */
+multiline_comment|/*&n; * The interface for a console, or any other device that wants to capture&n; * console messages (printer driver?)&n; *&n; * If a console driver is marked CON_BOOT then it will be auto-unregistered&n; * when the first real console is registered.  This is for early-printk drivers.&n; */
 DECL|macro|CON_PRINTBUFFER
 mdefine_line|#define CON_PRINTBUFFER&t;(1)
 DECL|macro|CON_CONSDEV
 mdefine_line|#define CON_CONSDEV&t;(2) /* Last on the command line */
 DECL|macro|CON_ENABLED
 mdefine_line|#define CON_ENABLED&t;(4)
+DECL|macro|CON_BOOT
+mdefine_line|#define CON_BOOT&t;(8)
 DECL|struct|console
 r_struct
 id|console
