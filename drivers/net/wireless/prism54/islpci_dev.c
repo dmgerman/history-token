@@ -18,6 +18,24 @@ DECL|macro|ISL3877_IMAGE_FILE
 mdefine_line|#define ISL3877_IMAGE_FILE&t;&quot;isl3877&quot;
 DECL|macro|ISL3890_IMAGE_FILE
 mdefine_line|#define ISL3890_IMAGE_FILE&t;&quot;isl3890&quot;
+r_static
+r_int
+id|prism54_bring_down
+c_func
+(paren
+id|islpci_private
+op_star
+)paren
+suffix:semicolon
+r_static
+r_int
+id|islpci_alloc_memory
+c_func
+(paren
+id|islpci_private
+op_star
+)paren
+suffix:semicolon
 multiline_comment|/* Temporary dummy MAC address to use until firmware is loaded.&n; * The idea there is that some tools (such as nameif) may query&n; * the MAC address before the netdev is &squot;open&squot;. By using a valid&n; * OUI prefix, they can process the netdev properly.&n; * Of course, this is not the final/real MAC address. It doesn&squot;t&n; * matter, as you are suppose to be able to change it anytime via&n; * ndev-&gt;set_mac_address. Jean II */
 DECL|variable|dummy_mac
 r_const
@@ -1222,6 +1240,7 @@ id|priv
 )paren
 suffix:semicolon
 )brace
+r_static
 r_int
 DECL|function|prism54_bring_down
 id|prism54_bring_down
@@ -1977,6 +1996,7 @@ id|priv-&gt;statistics
 suffix:semicolon
 )brace
 multiline_comment|/******************************************************************************&n;    Network device configuration functions&n;******************************************************************************/
+r_static
 r_int
 DECL|function|islpci_alloc_memory
 id|islpci_alloc_memory

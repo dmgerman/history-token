@@ -124,11 +124,6 @@ DECL|macro|TX_FIFO_THRESH
 mdefine_line|#define TX_FIFO_THRESH 256
 DECL|macro|RX_FIFO_THRESH
 mdefine_line|#define RX_FIFO_THRESH 1&t;&t;/* 0-3, 0==32, 64,96, or 3==128 bytes  */
-macro_line|#if !defined(__OPTIMIZE__)
-macro_line|#warning  You must compile this file with the correct options!
-macro_line|#warning  See the last lines of the source file.
-macro_line|#error You must compile this driver with &quot;-O&quot;.
-macro_line|#endif
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;

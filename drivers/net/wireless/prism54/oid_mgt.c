@@ -3753,7 +3753,6 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/* This will tell you if you are allowed to answer a mlme(ex) request .*/
-r_inline
 r_int
 DECL|function|mgt_mlme_answer
 id|mgt_mlme_answer
@@ -3814,7 +3813,6 @@ id|DOT11_MLME_INTERMEDIATE
 )paren
 suffix:semicolon
 )brace
-r_inline
 r_enum
 id|oid_num_t
 DECL|function|mgt_oidtonum

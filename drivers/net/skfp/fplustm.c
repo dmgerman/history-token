@@ -509,6 +509,7 @@ macro_line|#endif
 )brace
 multiline_comment|/*&n; * write long value into buffer memory over memory data register (MDR),&n; */
 DECL|function|write_mdr
+r_static
 r_void
 id|write_mdr
 c_func
@@ -534,8 +535,9 @@ id|val
 )paren
 suffix:semicolon
 )brace
+macro_line|#if 0
 multiline_comment|/*&n; * read long value from buffer memory over memory data register (MDR),&n; */
-DECL|function|read_mdr
+r_static
 id|u_long
 id|read_mdr
 c_func
@@ -624,6 +626,7 @@ id|p
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif
 multiline_comment|/*&n; * clear buffer memory&n; */
 DECL|function|init_ram
 r_static
@@ -2503,6 +2506,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|formac_rcv_restart
+r_static
 r_void
 id|formac_rcv_restart
 c_func
@@ -4713,46 +4717,6 @@ id|smc
 suffix:semicolon
 )brace
 multiline_comment|/*-------------------------- interface functions ----------------------------*/
-multiline_comment|/*&n; * control ODL output&n; */
-DECL|function|sm_pm_control
-r_void
-id|sm_pm_control
-c_func
-(paren
-r_struct
-id|s_smc
-op_star
-id|smc
-comma
-r_int
-id|mode
-)paren
-(brace
-id|SK_UNUSED
-c_func
-(paren
-id|smc
-)paren
-suffix:semicolon
-multiline_comment|/*&n;&t; * if PCM logic has set LS_REQUEST = Transmit QUIET Line State&n;&t; *&t;/FOTOFF signal turn activ -&gt; ODL disable&n;&t; */
-r_switch
-c_cond
-(paren
-id|mode
-)paren
-(brace
-r_case
-id|PM_TRANSMIT_DISABLE
-suffix:colon
-r_break
-suffix:semicolon
-r_case
-id|PM_TRANSMIT_ENABLE
-suffix:colon
-r_break
-suffix:semicolon
-)brace
-)brace
 multiline_comment|/*&n; * control MAC layer&t;(called by RMT)&n; */
 DECL|function|sm_ma_control
 r_void
