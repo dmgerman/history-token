@@ -1,15 +1,10 @@
-multiline_comment|/*&n; * IBM Hot Plug Controller Driver&n; *&n; * Written By: Jyoti Shah, IBM Corporation&n; *&n; * Copyright (c) 2001,2001 IBM Corp.&n; *&n; * All rights reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or (at&n; * your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE, GOOD TITLE or&n; * NON INFRINGEMENT.  See the GNU General Public License for more&n; * details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; * Send feedback to &lt;gregkh@us.ibm.com&gt;&n; *                  &lt;jshah@us.ibm.com&gt;&n; *&n; */
-singleline_comment|//#include &lt;linux/delay.h&gt;
+multiline_comment|/*&n; * IBM Hot Plug Controller Driver&n; *&n; * Written By: Jyoti Shah, IBM Corporation&n; *&n; * Copyright (c) 2001-2002 IBM Corp.&n; *&n; * All rights reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or (at&n; * your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE, GOOD TITLE or&n; * NON INFRINGEMENT.  See the GNU General Public License for more&n; * details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; * Send feedback to &lt;gregkh@us.ibm.com&gt;&n; *                  &lt;jshah@us.ibm.com&gt;&n; *&n; */
 macro_line|#include &lt;linux/wait.h&gt;
 macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &quot;ibmphp.h&quot;
-DECL|macro|POLL_NO
-mdefine_line|#define POLL_NO&t;&t;0x01
-DECL|macro|POLL_YES
-mdefine_line|#define POLL_YES&t;0x00
 DECL|variable|to_debug
 r_static
 r_int
@@ -110,9 +105,6 @@ singleline_comment|//-----------------------------------------------------------
 singleline_comment|// if bits 20,22,25,26,27,29,30 are OFF return TRUE
 DECL|macro|HPC_I2CSTATUS_CHECK
 mdefine_line|#define HPC_I2CSTATUS_CHECK(s)&t;((u8)((s &amp; 0x00000A76) ? FALSE : TRUE))
-singleline_comment|// return code 0:poll slots, 1-POLL_LATCH_CNT:poll latch register
-DECL|macro|INCREMENT_POLLCNT
-mdefine_line|#define INCREMENT_POLLCNT(i)&t;((i &lt; POLL_LATCH_CNT) ? i++ : (i=0))
 singleline_comment|//----------------------------------------------------------------------------
 singleline_comment|// global variables
 singleline_comment|//----------------------------------------------------------------------------
@@ -126,12 +118,6 @@ r_static
 r_int
 id|tid_poll
 suffix:semicolon
-DECL|variable|stop_polling
-r_static
-r_int
-id|stop_polling
-suffix:semicolon
-singleline_comment|// 2 values: poll, don&squot;t poll
 DECL|variable|sem_hpcaccess
 r_static
 r_struct
@@ -154,13 +140,6 @@ id|semaphore
 id|sem_exit
 suffix:semicolon
 singleline_comment|// make sure polling thread goes away
-DECL|variable|sem_poll
-r_static
-r_struct
-id|semaphore
-id|sem_poll
-suffix:semicolon
-singleline_comment|// make sure poll is idle 
 singleline_comment|//----------------------------------------------------------------------------
 singleline_comment|// local function prototypes
 singleline_comment|//----------------------------------------------------------------------------
@@ -328,16 +307,6 @@ id|init_MUTEX_LOCKED
 op_amp
 id|sem_exit
 )paren
-suffix:semicolon
-id|init_MUTEX_LOCKED
-(paren
-op_amp
-id|sem_poll
-)paren
-suffix:semicolon
-id|stop_polling
-op_assign
-id|POLL_YES
 suffix:semicolon
 id|to_debug
 op_assign
@@ -2545,21 +2514,6 @@ op_amp
 id|semOperations
 )paren
 suffix:semicolon
-id|stop_polling
-op_assign
-id|POLL_NO
-suffix:semicolon
-id|to_debug
-op_assign
-id|TRUE
-suffix:semicolon
-multiline_comment|/* waiting for polling to actually stop */
-id|down
-(paren
-op_amp
-id|sem_poll
-)paren
-suffix:semicolon
 )brace
 multiline_comment|/*----------------------------------------------------------------------&n;* Name:    ibmphp_unlock_operations()&n;*---------------------------------------------------------------------*/
 DECL|function|ibmphp_unlock_operations
@@ -2576,14 +2530,6 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
-id|stop_polling
-op_assign
-id|POLL_YES
-suffix:semicolon
-id|to_debug
-op_assign
-id|FALSE
-suffix:semicolon
 id|up
 (paren
 op_amp
@@ -2599,6 +2545,12 @@ id|__FUNCTION__
 suffix:semicolon
 )brace
 multiline_comment|/*----------------------------------------------------------------------&n;* Name:    poll_hpc()&n;*---------------------------------------------------------------------*/
+DECL|macro|POLL_LATCH_REGISTER
+mdefine_line|#define POLL_LATCH_REGISTER&t;0
+DECL|macro|POLL_SLOTS
+mdefine_line|#define POLL_SLOTS&t;&t;1
+DECL|macro|POLL_SLEEP
+mdefine_line|#define POLL_SLEEP&t;&t;2
 DECL|function|poll_hpc
 r_static
 r_void
@@ -2610,7 +2562,9 @@ r_void
 r_struct
 id|slot
 id|myslot
-comma
+suffix:semicolon
+r_struct
+id|slot
 op_star
 id|pslot
 op_assign
@@ -2624,6 +2578,11 @@ suffix:semicolon
 r_int
 id|rc
 suffix:semicolon
+r_int
+id|poll_state
+op_assign
+id|POLL_LATCH_REGISTER
+suffix:semicolon
 id|u8
 id|oldlatchlow
 op_assign
@@ -2635,7 +2594,7 @@ op_assign
 l_int|0x00
 suffix:semicolon
 r_int
-id|pollcnt
+id|poll_count
 op_assign
 l_int|0
 suffix:semicolon
@@ -2646,7 +2605,9 @@ l_int|0x00
 suffix:semicolon
 id|debug
 (paren
-l_string|&quot;poll_hpc - Entry&bslash;n&quot;
+l_string|&quot;%s - Entry&bslash;n&quot;
+comma
+id|__FUNCTION__
 )paren
 suffix:semicolon
 r_while
@@ -2656,59 +2617,22 @@ op_logical_neg
 id|ibmphp_shutdown
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|stop_polling
-)paren
-(brace
-id|debug
-(paren
-l_string|&quot;poll_hpc - stop_polling&bslash;n&quot;
-)paren
-suffix:semicolon
-id|up
-(paren
-op_amp
-id|sem_poll
-)paren
-suffix:semicolon
-multiline_comment|/* to prevent deadlock */
-r_if
-c_cond
-(paren
-id|ibmphp_shutdown
-)paren
-r_break
-suffix:semicolon
-multiline_comment|/* to make the thread sleep */
+multiline_comment|/* try to get the lock to do some kind of harware access */
 id|down
 (paren
 op_amp
 id|semOperations
 )paren
 suffix:semicolon
-id|up
-(paren
-op_amp
-id|semOperations
-)paren
-suffix:semicolon
-id|debug
-(paren
-l_string|&quot;poll_hpc - after stop_polling sleep&bslash;n&quot;
-)paren
-suffix:semicolon
-)brace
-r_else
-(brace
-r_if
+r_switch
 c_cond
 (paren
-id|pollcnt
+id|poll_state
 )paren
 (brace
-singleline_comment|// only poll the latch register
+r_case
+id|POLL_LATCH_REGISTER
+suffix:colon
 id|oldlatchlow
 op_assign
 id|curlatchlow
@@ -2800,9 +2724,15 @@ suffix:semicolon
 )brace
 )brace
 )brace
-)brace
-r_else
-(brace
+id|poll_state
+op_assign
+id|POLL_SLOTS
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|POLL_SLOTS
+suffix:colon
 id|list_for_each
 (paren
 id|pslotlist
@@ -2811,13 +2741,6 @@ op_amp
 id|ibmphp_slot_head
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|stop_polling
-)paren
-r_break
-suffix:semicolon
 id|pslot
 op_assign
 id|list_entry
@@ -2888,13 +2811,6 @@ id|myslot
 )paren
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-op_logical_neg
-id|stop_polling
-)paren
-(brace
 id|ctrl_count
 op_assign
 l_int|0x00
@@ -2964,11 +2880,36 @@ id|curlatchlow
 suffix:semicolon
 )brace
 )brace
-)brace
-)brace
-id|INCREMENT_POLLCNT
+op_increment
+id|poll_count
+suffix:semicolon
+r_if
+c_cond
 (paren
-id|pollcnt
+id|poll_count
+op_ge
+id|POLL_LATCH_CNT
+)paren
+(brace
+id|poll_count
+op_assign
+l_int|0
+suffix:semicolon
+id|poll_state
+op_assign
+id|POLL_SLEEP
+suffix:semicolon
+)brace
+r_break
+suffix:semicolon
+r_case
+id|POLL_SLEEP
+suffix:colon
+multiline_comment|/* don&squot;t sleep with a lock on the hardware */
+id|up
+(paren
+op_amp
+id|semOperations
 )paren
 suffix:semicolon
 id|long_delay
@@ -2978,15 +2919,40 @@ op_star
 id|HZ
 )paren
 suffix:semicolon
-singleline_comment|// snooze
+id|down
+(paren
+op_amp
+id|semOperations
+)paren
+suffix:semicolon
+id|poll_state
+op_assign
+id|POLL_LATCH_REGISTER
+suffix:semicolon
+r_break
+suffix:semicolon
 )brace
-)brace
+multiline_comment|/* give up the harware semaphore */
 id|up
 (paren
 op_amp
-id|sem_poll
+id|semOperations
 )paren
 suffix:semicolon
+multiline_comment|/* sleep for a short time just for good measure */
+id|set_current_state
+(paren
+id|TASK_INTERRUPTIBLE
+)paren
+suffix:semicolon
+id|schedule_timeout
+(paren
+id|HZ
+op_div
+l_int|10
+)paren
+suffix:semicolon
+)brace
 id|up
 (paren
 op_amp
@@ -2995,7 +2961,9 @@ id|sem_exit
 suffix:semicolon
 id|debug
 (paren
-l_string|&quot;poll_hpc - Exit&bslash;n&quot;
+l_string|&quot;%s - Exit&bslash;n&quot;
+comma
+id|__FUNCTION__
 )paren
 suffix:semicolon
 )brace
@@ -3887,12 +3855,6 @@ id|free_hpc_access
 suffix:semicolon
 id|ibmphp_unlock_operations
 (paren
-)paren
-suffix:semicolon
-id|up
-(paren
-op_amp
-id|sem_poll
 )paren
 suffix:semicolon
 id|up

@@ -20,7 +20,7 @@ mdefine_line|#define get_ctrl_revision(sl, rev) ibmphp_hpc_readslot (sl, READ_RE
 DECL|macro|get_hpc_options
 mdefine_line|#define get_hpc_options(sl, opt) ibmphp_hpc_readslot (sl, READ_HPCOPTIONS, opt)
 DECL|macro|DRIVER_VERSION
-mdefine_line|#define DRIVER_VERSION&t;&quot;0.2&quot;
+mdefine_line|#define DRIVER_VERSION&t;&quot;0.3&quot;
 DECL|macro|DRIVER_DESC
 mdefine_line|#define DRIVER_DESC&t;&quot;IBM Hot Plug PCI Controller Driver&quot;
 DECL|variable|ibmphp_debug
