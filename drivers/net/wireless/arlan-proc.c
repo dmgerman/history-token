@@ -59,6 +59,7 @@ suffix:semicolon
 r_volatile
 r_struct
 id|arlan_shmem
+id|__iomem
 op_star
 id|arlan
 op_assign
@@ -241,6 +242,7 @@ suffix:semicolon
 r_volatile
 r_struct
 id|arlan_shmem
+id|__iomem
 op_star
 id|arlan
 op_assign
@@ -488,6 +490,7 @@ suffix:semicolon
 r_volatile
 r_struct
 id|arlan_shmem
+id|__iomem
 op_star
 id|arlan
 op_assign
@@ -880,6 +883,7 @@ suffix:semicolon
 r_volatile
 r_struct
 id|arlan_shmem
+id|__iomem
 op_star
 id|arlan
 op_assign
@@ -1214,6 +1218,7 @@ suffix:semicolon
 r_volatile
 r_struct
 id|arlan_shmem
+id|__iomem
 op_star
 id|arlan
 op_assign

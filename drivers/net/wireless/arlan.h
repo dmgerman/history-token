@@ -1395,6 +1395,7 @@ suffix:semicolon
 DECL|member|card
 r_struct
 id|arlan_shmem
+id|__iomem
 op_star
 id|card
 suffix:semicolon
@@ -1640,9 +1641,9 @@ mdefine_line|#define TXHEAD(dev) (((struct arlan_private *)netdev_priv(dev))-&gt
 DECL|macro|TXTAIL
 mdefine_line|#define TXTAIL(dev) (((struct arlan_private *)netdev_priv(dev))-&gt;txRing[1])
 DECL|macro|TXBuffStart
-mdefine_line|#define TXBuffStart(dev) &bslash;&n; ((int)(((struct arlan_private *)netdev_priv(dev))-&gt;card)-&gt;txBuffer) - ((int)(((struct arlan_private *)netdev_priv(dev))-&gt;card) )
+mdefine_line|#define TXBuffStart(dev) offsetof(struct arlan_shmem, txBuffer)
 DECL|macro|TXBuffEnd
-mdefine_line|#define TXBuffEnd(dev) &bslash;&n; ((int)(((struct arlan_private *)netdev_priv(dev))-&gt;card)-&gt;rxBuffer) - ((int)(((struct arlan_private *)netdev_priv(dev))-&gt;card)
+mdefine_line|#define TXBuffEnd(dev) offsetof(struct arlan_shmem, xxBuffer)
 DECL|macro|READSHM
 mdefine_line|#define READSHM(to,from,atype) {&bslash;&n;&t;atype tmp;&bslash;&n;&t;memcpy_fromio(&amp;(tmp),&amp;(from),sizeof(atype));&bslash;&n;&t;to = tmp;&bslash;&n;&t;}
 DECL|macro|READSHMEM
