@@ -95,6 +95,9 @@ suffix:colon
 r_case
 id|AML_ARG_OP
 suffix:colon
+r_case
+id|AML_DEBUG_OP
+suffix:colon
 multiline_comment|/* The referenced object is the pseudo-node for the local/arg */
 id|referenced_obj
 op_assign
@@ -107,7 +110,7 @@ suffix:colon
 id|ACPI_REPORT_ERROR
 (paren
 (paren
-l_string|&quot;Unknown Reference subtype in get ref %X&bslash;n&quot;
+l_string|&quot;Unknown Reference opcode in get_reference %X&bslash;n&quot;
 comma
 id|obj_desc-&gt;reference.opcode
 )paren
@@ -136,7 +139,7 @@ suffix:colon
 id|ACPI_REPORT_ERROR
 (paren
 (paren
-l_string|&quot;Invalid descriptor type in get ref: %X&bslash;n&quot;
+l_string|&quot;Invalid descriptor type in get_reference: %X&bslash;n&quot;
 comma
 id|ACPI_GET_DESCRIPTOR_TYPE
 (paren

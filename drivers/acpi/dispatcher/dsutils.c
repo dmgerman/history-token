@@ -13,7 +13,171 @@ id|ACPI_MODULE_NAME
 (paren
 l_string|&quot;dsutils&quot;
 )paren
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ds_clear_implicit_return&n; *&n; * PARAMETERS:  walk_state          - Current State&n; *&n; * RETURN:      None.&n; *&n; * DESCRIPTION: Clear and remove a reference on an implicit return value.  Used&n; *              to delete &quot;stale&quot; return values (if enabled, the return value&n; *              from every operator is saved at least momentarily, in case the&n; *              parent method exits.)&n; *&n; ******************************************************************************/
+r_void
+DECL|function|acpi_ds_clear_implicit_return
+id|acpi_ds_clear_implicit_return
+(paren
+r_struct
+id|acpi_walk_state
+op_star
+id|walk_state
+)paren
+(brace
+id|ACPI_FUNCTION_NAME
+(paren
+l_string|&quot;ds_clear_implicit_return&quot;
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t; * Slack must be enabled for this feature&n;&t; */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|acpi_gbl_enable_interpreter_slack
+)paren
+(brace
+r_return
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|walk_state-&gt;implicit_return_obj
+)paren
+(brace
+multiline_comment|/*&n;&t;&t; * Delete any &quot;stale&quot; implicit return. However, in&n;&t;&t; * complex statements, the implicit return value can be&n;&t;&t; * bubbled up several levels.&n;&t;&t; */
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_DISPATCH
+comma
+l_string|&quot;Removing reference on stale implicit return obj %p&bslash;n&quot;
+comma
+id|walk_state-&gt;implicit_return_obj
+)paren
+)paren
+suffix:semicolon
+id|acpi_ut_remove_reference
+(paren
+id|walk_state-&gt;implicit_return_obj
+)paren
+suffix:semicolon
+id|walk_state-&gt;implicit_return_obj
+op_assign
+l_int|NULL
+suffix:semicolon
+)brace
+)brace
 macro_line|#ifndef ACPI_NO_METHOD_EXECUTION
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ds_do_implicit_return&n; *&n; * PARAMETERS:  return_desc         - The return value&n; *              walk_state          - Current State&n; *              add_reference       - True if a reference should be added to the&n; *                                    return object&n; *&n; * RETURN:      TRUE if implicit return enabled, FALSE otherwise&n; *&n; * DESCRIPTION: Implements the optional &quot;implicit return&quot;.  We save the result&n; *              of every ASL operator and control method invocation in case the&n; *              parent method exit.  Before storing a new return value, we&n; *              delete the previous return value.&n; *&n; ******************************************************************************/
+id|u8
+DECL|function|acpi_ds_do_implicit_return
+id|acpi_ds_do_implicit_return
+(paren
+r_union
+id|acpi_operand_object
+op_star
+id|return_desc
+comma
+r_struct
+id|acpi_walk_state
+op_star
+id|walk_state
+comma
+id|u8
+id|add_reference
+)paren
+(brace
+id|ACPI_FUNCTION_NAME
+(paren
+l_string|&quot;ds_do_implicit_return&quot;
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t; * Slack must be enabled for this feature, and we must&n;&t; * have a valid return object&n;&t; */
+r_if
+c_cond
+(paren
+(paren
+op_logical_neg
+id|acpi_gbl_enable_interpreter_slack
+)paren
+op_logical_or
+(paren
+op_logical_neg
+id|return_desc
+)paren
+)paren
+(brace
+r_return
+(paren
+id|FALSE
+)paren
+suffix:semicolon
+)brace
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_DISPATCH
+comma
+l_string|&quot;Result %p will be implicitly returned; Prev=%p&bslash;n&quot;
+comma
+id|return_desc
+comma
+id|walk_state-&gt;implicit_return_obj
+)paren
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t; * Delete any &quot;stale&quot; implicit return value first. However, in&n;&t; * complex statements, the implicit return value can be&n;&t; * bubbled up several levels, so we don&squot;t clear the value if it&n;&t; * is the same as the return_desc.&n;&t; */
+r_if
+c_cond
+(paren
+id|walk_state-&gt;implicit_return_obj
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|walk_state-&gt;implicit_return_obj
+op_eq
+id|return_desc
+)paren
+(brace
+r_return
+(paren
+id|TRUE
+)paren
+suffix:semicolon
+)brace
+id|acpi_ds_clear_implicit_return
+(paren
+id|walk_state
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/* Save the implicit return value, add a reference if requested */
+id|walk_state-&gt;implicit_return_obj
+op_assign
+id|return_desc
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|add_reference
+)paren
+(brace
+id|acpi_ut_add_reference
+(paren
+id|return_desc
+)paren
+suffix:semicolon
+)brace
+r_return
+(paren
+id|TRUE
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ds_is_result_used&n; *&n; * PARAMETERS:  Op                  - Current Op&n; *              walk_state          - Current State&n; *&n; * RETURN:      TRUE if result is used, FALSE otherwise&n; *&n; * DESCRIPTION: Check if a result object will be used by the parent&n; *&n; ******************************************************************************/
 id|u8
 DECL|function|acpi_ds_is_result_used
@@ -66,7 +230,17 @@ id|TRUE
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * If there is no parent, or the parent is a scope_op, we are executing&n;&t; * at the method level. An executing method typically has no parent,&n;&t; * since each method is parsed separately.  A method invoked externally&n;&t; * via execute_control_method has a scope_op as the parent.&n;&t; */
+multiline_comment|/*&n;&t; * We know that this operator is not a&n;&t; * Return() operator (would not come here.) The following code is the&n;&t; * optional support for a so-called &quot;implicit return&quot;. Some AML code&n;&t; * assumes that the last value of the method is &quot;implicitly&quot; returned&n;&t; * to the caller. Just save the last result as the return value.&n;&t; * NOTE: this is optional because the ASL language does not actually&n;&t; * support this behavior.&n;&t; */
+id|acpi_ds_do_implicit_return
+(paren
+id|walk_state-&gt;result_obj
+comma
+id|walk_state
+comma
+id|TRUE
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t; * Now determine if the parent will use the result&n;&t; *&n;&t; * If there is no parent, or the parent is a scope_op, we are executing&n;&t; * at the method level. An executing method typically has no parent,&n;&t; * since each method is parsed separately.  A method invoked externally&n;&t; * via execute_control_method has a scope_op as the parent.&n;&t; */
 r_if
 c_cond
 (paren
@@ -82,27 +256,13 @@ id|AML_SCOPE_OP
 )paren
 )paren
 (brace
-multiline_comment|/*&n;&t;&t; * If this is the last statement in the method, we know it is not a&n;&t;&t; * Return() operator (would not come here.) The following code is the&n;&t;&t; * optional support for a so-called &quot;implicit return&quot;. Some AML code&n;&t;&t; * assumes that the last value of the method is &quot;implicitly&quot; returned&n;&t;&t; * to the caller. Just save the last result as the return value.&n;&t;&t; * NOTE: this is optional because the ASL language does not actually&n;&t;&t; * support this behavior.&n;&t;&t; */
-r_if
-c_cond
-(paren
-(paren
-id|acpi_gbl_enable_interpreter_slack
-)paren
-op_logical_and
-(paren
-id|walk_state-&gt;parser_state.aml
-op_ge
-id|walk_state-&gt;parser_state.aml_end
-)paren
-)paren
-(brace
+multiline_comment|/* No parent, the return value cannot possibly be used */
 id|ACPI_DEBUG_PRINT
 (paren
 (paren
 id|ACPI_DB_DISPATCH
 comma
-l_string|&quot;Result of [%s] will be implicitly returned&bslash;n&quot;
+l_string|&quot;At Method level, result of [%s] not used&bslash;n&quot;
 comma
 id|acpi_ps_get_opcode_name
 (paren
@@ -111,21 +271,6 @@ id|op-&gt;common.aml_opcode
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* Use the top of the result stack as the implicit return value */
-id|walk_state-&gt;return_desc
-op_assign
-id|walk_state-&gt;results-&gt;results.obj_desc
-(braket
-l_int|0
-)braket
-suffix:semicolon
-id|return_VALUE
-(paren
-id|TRUE
-)paren
-suffix:semicolon
-)brace
-multiline_comment|/* No parent, the return value cannot possibly be used */
 id|return_VALUE
 (paren
 id|FALSE
@@ -430,7 +575,7 @@ id|walk_state
 )paren
 )paren
 (brace
-multiline_comment|/*&n;&t;&t; * Must pop the result stack (obj_desc should be equal to result_obj)&n;&t;&t; */
+multiline_comment|/* Must pop the result stack (obj_desc should be equal to result_obj) */
 id|status
 op_assign
 id|acpi_ds_result_pop
@@ -555,7 +700,7 @@ comma
 id|walk_state
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Remove a reference on each operand on the stack&n;&t; */
+multiline_comment|/* Remove a reference on each operand on the stack */
 r_for
 c_loop
 (paren
@@ -713,7 +858,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t;&t; * All prefixes have been handled, and the name is&n;&t;&t; * in name_string&n;&t;&t; */
+multiline_comment|/* All prefixes have been handled, and the name is in name_string */
 multiline_comment|/*&n;&t;&t; * Special handling for buffer_field declarations. This is a deferred&n;&t;&t; * opcode that unfortunately defines the field name as the last&n;&t;&t; * parameter instead of the first.  We get here when we are performing&n;&t;&t; * the deferred execution, so the actual name of the field is already&n;&t;&t; * in the namespace.  We don&squot;t want to attempt to look it up again&n;&t;&t; * because we may be executing in a different scope than where the&n;&t;&t; * actual opcode exists.&n;&t;&t; */
 r_if
 c_cond
@@ -1186,7 +1331,7 @@ id|AE_OK
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ds_create_operands&n; *&n; * PARAMETERS:  first_arg           - First argument of a parser argument tree&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Convert an operator&squot;s arguments from a parse tree format to&n; *              namespace objects and place those argument object on the object&n; *              stack in preparation for evaluation by the interpreter.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ds_create_operands&n; *&n; * PARAMETERS:  walk_state          - Current state&n; *              first_arg           - First argument of a parser argument tree&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Convert an operator&squot;s arguments from a parse tree format to&n; *              namespace objects and place those argument object on the object&n; *              stack in preparation for evaluation by the interpreter.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ds_create_operands
 id|acpi_ds_create_operands

@@ -912,12 +912,17 @@ id|res-&gt;data.address64.address_length
 suffix:semicolon
 r_break
 suffix:semicolon
+r_case
+id|ACPI_RSTYPE_VENDOR
+suffix:colon
+r_break
+suffix:semicolon
 r_default
 suffix:colon
 id|pnp_warn
 c_func
 (paren
-l_string|&quot;PnPACPI: Alloc type : %d not handle&quot;
+l_string|&quot;PnPACPI: unknown resource type %d&quot;
 comma
 id|res-&gt;id
 )paren
@@ -2108,7 +2113,7 @@ suffix:colon
 id|pnp_warn
 c_func
 (paren
-l_string|&quot;PnPACPI:Option type: %d not handle&quot;
+l_string|&quot;PnPACPI: unknown resource type %d&quot;
 comma
 id|res-&gt;id
 )paren
@@ -3436,7 +3441,9 @@ multiline_comment|/* other type */
 id|pnp_warn
 c_func
 (paren
-l_string|&quot;Invalid type&quot;
+l_string|&quot;unknown resource type %d&quot;
+comma
+id|resource-&gt;id
 )paren
 suffix:semicolon
 r_return

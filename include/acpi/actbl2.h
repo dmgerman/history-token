@@ -131,7 +131,7 @@ suffix:semicolon
 multiline_comment|/* Reserved - must be zero */
 )brace
 suffix:semicolon
-multiline_comment|/*&n; * ACPI 2.0 Generic Address Structure (GAS)&n; */
+multiline_comment|/*&n; * ACPI 2.0+ Generic Address Structure (GAS)&n; */
 DECL|struct|acpi_generic_address
 r_struct
 id|acpi_generic_address
@@ -165,7 +165,7 @@ multiline_comment|/* 64-bit address of struct or register */
 suffix:semicolon
 DECL|macro|FADT_REV2_COMMON
 mdefine_line|#define FADT_REV2_COMMON &bslash;&n;&t;u32                             V1_firmware_ctrl;   /* 32-bit physical address of FACS */ &bslash;&n;&t;u32                             V1_dsdt;            /* 32-bit physical address of DSDT */ &bslash;&n;&t;u8                              reserved1;          /* System Interrupt Model isn&squot;t used in ACPI 2.0*/ &bslash;&n;&t;u8                              prefer_PM_profile;  /* Conveys preferred power management profile to OSPM. */ &bslash;&n;&t;u16                             sci_int;            /* System vector of SCI interrupt */ &bslash;&n;&t;u32                             smi_cmd;            /* Port address of SMI command port */ &bslash;&n;&t;u8                              acpi_enable;        /* Value to write to smi_cmd to enable ACPI */ &bslash;&n;&t;u8                              acpi_disable;       /* Value to write to smi_cmd to disable ACPI */ &bslash;&n;&t;u8                              S4bios_req;         /* Value to write to SMI CMD to enter S4BIOS state */ &bslash;&n;&t;u8                              pstate_cnt;         /* Processor performance state control*/ &bslash;&n;&t;u32                             V1_pm1a_evt_blk;    /* Port address of Power Mgt 1a acpi_event Reg Blk */ &bslash;&n;&t;u32                             V1_pm1b_evt_blk;    /* Port address of Power Mgt 1b acpi_event Reg Blk */ &bslash;&n;&t;u32                             V1_pm1a_cnt_blk;    /* Port address of Power Mgt 1a Control Reg Blk */ &bslash;&n;&t;u32                             V1_pm1b_cnt_blk;    /* Port address of Power Mgt 1b Control Reg Blk */ &bslash;&n;&t;u32                             V1_pm2_cnt_blk;     /* Port address of Power Mgt 2 Control Reg Blk */ &bslash;&n;&t;u32                             V1_pm_tmr_blk;      /* Port address of Power Mgt Timer Ctrl Reg Blk */ &bslash;&n;&t;u32                             V1_gpe0_blk;        /* Port addr of General Purpose acpi_event 0 Reg Blk */ &bslash;&n;&t;u32                             V1_gpe1_blk;        /* Port addr of General Purpose acpi_event 1 Reg Blk */ &bslash;&n;&t;u8                              pm1_evt_len;        /* Byte length of ports at pm1_x_evt_blk */ &bslash;&n;&t;u8                              pm1_cnt_len;        /* Byte length of ports at pm1_x_cnt_blk */ &bslash;&n;&t;u8                              pm2_cnt_len;        /* Byte Length of ports at pm2_cnt_blk */ &bslash;&n;&t;u8                              pm_tm_len;          /* Byte Length of ports at pm_tm_blk */ &bslash;&n;&t;u8                              gpe0_blk_len;       /* Byte Length of ports at gpe0_blk */ &bslash;&n;&t;u8                              gpe1_blk_len;       /* Byte Length of ports at gpe1_blk */ &bslash;&n;&t;u8                              gpe1_base;          /* Offset in gpe model where gpe1 events start */ &bslash;&n;&t;u8                              cst_cnt;            /* Support for the _CST object and C States change notification.*/ &bslash;&n;&t;u16                             plvl2_lat;          /* Worst case HW latency to enter/exit C2 state */ &bslash;&n;&t;u16                             plvl3_lat;          /* Worst case HW latency to enter/exit C3 state */ &bslash;&n;&t;u16                             flush_size;         /* Number of flush strides that need to be read */ &bslash;&n;&t;u16                             flush_stride;       /* Processor&squot;s memory cache line width, in bytes */ &bslash;&n;&t;u8                              duty_offset;        /* Processor&squot;s duty cycle index in processor&squot;s P_CNT reg*/ &bslash;&n;&t;u8                              duty_width;         /* Processor&squot;s duty cycle value bit width in P_CNT register.*/ &bslash;&n;&t;u8                              day_alrm;           /* Index to day-of-month alarm in RTC CMOS RAM */ &bslash;&n;&t;u8                              mon_alrm;           /* Index to month-of-year alarm in RTC CMOS RAM */ &bslash;&n;&t;u8                              century;            /* Index to century in RTC CMOS RAM */ &bslash;&n;&t;u16                             iapc_boot_arch;     /* IA-PC Boot Architecture Flags. See Table 5-10 for description*/
-multiline_comment|/*&n; * ACPI 2.0 Fixed ACPI Description Table (FADT)&n; */
+multiline_comment|/*&n; * ACPI 2.0+ Fixed ACPI Description Table (FADT)&n; */
 DECL|struct|fadt_descriptor_rev2
 r_struct
 id|fadt_descriptor_rev2
@@ -240,7 +240,7 @@ id|tmr_val_ext
 suffix:colon
 l_int|1
 suffix:semicolon
-multiline_comment|/* Indicates tmr_val is 32 bits 0=24-bits*/
+multiline_comment|/* Indicates tmr_val is 32 bits 0=24-bits */
 DECL|member|dock_cap
 id|u32
 id|dock_cap
@@ -254,21 +254,21 @@ id|reset_reg_sup
 suffix:colon
 l_int|1
 suffix:semicolon
-multiline_comment|/* Indicates system supports system reset via the FADT RESET_REG*/
+multiline_comment|/* Indicates system supports system reset via the FADT RESET_REG */
 DECL|member|sealed_case
 id|u32
 id|sealed_case
 suffix:colon
 l_int|1
 suffix:semicolon
-multiline_comment|/* Indicates system has no internal expansion capabilities and case is sealed. */
+multiline_comment|/* Indicates system has no internal expansion capabilities and case is sealed */
 DECL|member|headless
 id|u32
 id|headless
 suffix:colon
 l_int|1
 suffix:semicolon
-multiline_comment|/* Indicates system does not have local video capabilities or local input devices.*/
+multiline_comment|/* Indicates system does not have local video capabilities or local input devices */
 DECL|member|cpu_sw_sleep
 id|u32
 id|cpu_sw_sleep
@@ -276,12 +276,55 @@ suffix:colon
 l_int|1
 suffix:semicolon
 multiline_comment|/* Indicates to OSPM that a processor native instruction */
-multiline_comment|/* Must be executed after writing the SLP_TYPx register. */
+multiline_comment|/* must be executed after writing the SLP_TYPx register */
+multiline_comment|/* ACPI 3.0 flag bits */
+DECL|member|pci_exp_wak
+id|u32
+id|pci_exp_wak
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* System supports PCIEXP_WAKE (STS/EN) bits */
+DECL|member|use_platform_clock
+id|u32
+id|use_platform_clock
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* OSPM should use platform-provided timer */
+DECL|member|S4rtc_sts_valid
+id|u32
+id|S4rtc_sts_valid
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* Contents of RTC_STS valid after S4 wake */
+DECL|member|remote_power_on_capable
+id|u32
+id|remote_power_on_capable
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* System is compatible with remote power on */
+DECL|member|force_apic_cluster_model
+id|u32
+id|force_apic_cluster_model
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* All local APICs must use cluster model */
+DECL|member|force_apic_physical_destination_mode
+id|u32
+id|force_apic_physical_destination_mode
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* all local x_aPICs must use physical dest mode */
 DECL|member|reserved6
 id|u32
 id|reserved6
 suffix:colon
-l_int|18
+l_int|12
 suffix:semicolon
 multiline_comment|/* Reserved - must be zero */
 DECL|member|reset_register
@@ -294,7 +337,7 @@ DECL|member|reset_value
 id|u8
 id|reset_value
 suffix:semicolon
-multiline_comment|/* Value to write to the reset_register port to reset the system. */
+multiline_comment|/* Value to write to the reset_register port to reset the system */
 DECL|member|reserved7
 id|u8
 id|reserved7
@@ -363,7 +406,7 @@ suffix:semicolon
 multiline_comment|/* Extended General Purpose acpi_event 1 Reg Blk address */
 )brace
 suffix:semicolon
-multiline_comment|/* &quot;Downrevved&quot; ACPI 2.0 FADT descriptor */
+multiline_comment|/* &quot;Down-revved&quot; ACPI 2.0 FADT descriptor */
 DECL|struct|fadt_descriptor_rev2_minus
 r_struct
 id|fadt_descriptor_rev2_minus
@@ -401,7 +444,7 @@ suffix:semicolon
 multiline_comment|/* These three bytes must be zero */
 )brace
 suffix:semicolon
-multiline_comment|/* Embedded Controller */
+multiline_comment|/* ECDT - Embedded Controller Boot Resources Table */
 DECL|struct|ec_boot_resources
 r_struct
 id|ec_boot_resources
@@ -437,6 +480,156 @@ l_int|1
 )braket
 suffix:semicolon
 multiline_comment|/* Full namepath of the EC in the ACPI namespace */
+)brace
+suffix:semicolon
+multiline_comment|/* SRAT - System Resource Affinity Table */
+DECL|struct|static_resource_alloc
+r_struct
+id|static_resource_alloc
+(brace
+DECL|member|type
+id|u8
+id|type
+suffix:semicolon
+DECL|member|length
+id|u8
+id|length
+suffix:semicolon
+DECL|member|proximity_domain_lo
+id|u8
+id|proximity_domain_lo
+suffix:semicolon
+DECL|member|apic_id
+id|u8
+id|apic_id
+suffix:semicolon
+DECL|member|enabled
+id|u32
+id|enabled
+suffix:colon
+l_int|1
+suffix:semicolon
+DECL|member|reserved3
+id|u32
+id|reserved3
+suffix:colon
+l_int|31
+suffix:semicolon
+DECL|member|local_sapic_eid
+id|u8
+id|local_sapic_eid
+suffix:semicolon
+DECL|member|proximity_domain_hi
+id|u8
+id|proximity_domain_hi
+(braket
+l_int|3
+)braket
+suffix:semicolon
+DECL|member|reserved4
+id|u32
+id|reserved4
+suffix:semicolon
+)brace
+suffix:semicolon
+DECL|struct|memory_affinity
+r_struct
+id|memory_affinity
+(brace
+DECL|member|type
+id|u8
+id|type
+suffix:semicolon
+DECL|member|length
+id|u8
+id|length
+suffix:semicolon
+DECL|member|proximity_domain
+id|u32
+id|proximity_domain
+suffix:semicolon
+DECL|member|reserved3
+id|u16
+id|reserved3
+suffix:semicolon
+DECL|member|base_address
+id|u64
+id|base_address
+suffix:semicolon
+DECL|member|address_length
+id|u64
+id|address_length
+suffix:semicolon
+DECL|member|reserved4
+id|u32
+id|reserved4
+suffix:semicolon
+DECL|member|enabled
+id|u32
+id|enabled
+suffix:colon
+l_int|1
+suffix:semicolon
+DECL|member|hot_pluggable
+id|u32
+id|hot_pluggable
+suffix:colon
+l_int|1
+suffix:semicolon
+DECL|member|non_volatile
+id|u32
+id|non_volatile
+suffix:colon
+l_int|1
+suffix:semicolon
+DECL|member|reserved5
+id|u32
+id|reserved5
+suffix:colon
+l_int|29
+suffix:semicolon
+DECL|member|reserved6
+id|u64
+id|reserved6
+suffix:semicolon
+)brace
+suffix:semicolon
+DECL|struct|system_resource_affinity
+r_struct
+id|system_resource_affinity
+(brace
+id|ACPI_TABLE_HEADER_DEF
+DECL|member|reserved1
+id|u32
+id|reserved1
+suffix:semicolon
+multiline_comment|/* Must be value &squot;1&squot; */
+DECL|member|reserved2
+id|u64
+id|reserved2
+suffix:semicolon
+)brace
+suffix:semicolon
+multiline_comment|/* SLIT - System Locality Distance Information Table */
+DECL|struct|system_locality_info
+r_struct
+id|system_locality_info
+(brace
+id|ACPI_TABLE_HEADER_DEF
+DECL|member|locality_count
+id|u64
+id|locality_count
+suffix:semicolon
+DECL|member|entry
+id|u8
+id|entry
+(braket
+l_int|1
+)braket
+(braket
+l_int|1
+)braket
+suffix:semicolon
 )brace
 suffix:semicolon
 macro_line|#pragma pack()

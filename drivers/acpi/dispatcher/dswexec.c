@@ -74,6 +74,13 @@ id|acpi_operand_object
 op_star
 id|obj_desc
 suffix:semicolon
+r_union
+id|acpi_operand_object
+op_star
+id|local_obj_desc
+op_assign
+l_int|NULL
+suffix:semicolon
 id|ACPI_FUNCTION_TRACE_PTR
 (paren
 l_string|&quot;ds_get_predicate_value&quot;
@@ -221,13 +228,38 @@ id|AE_AML_NO_OPERAND
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * Result of predicate evaluation currently must&n;&t; * be a number&n;&t; */
+multiline_comment|/*&n;&t; * Result of predicate evaluation must be an Integer&n;&t; * object. Implicitly convert the argument if necessary.&n;&t; */
+id|status
+op_assign
+id|acpi_ex_convert_to_integer
+(paren
+id|obj_desc
+comma
+op_amp
+id|local_obj_desc
+comma
+l_int|16
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ACPI_FAILURE
+(paren
+id|status
+)paren
+)paren
+(brace
+r_goto
+id|cleanup
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
 id|ACPI_GET_OBJECT_TYPE
 (paren
-id|obj_desc
+id|local_obj_desc
 )paren
 op_ne
 id|ACPI_TYPE_INTEGER
@@ -238,7 +270,7 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_ERROR
 comma
-l_string|&quot;Bad predicate (not a number) obj_desc=%p State=%p Type=%X&bslash;n&quot;
+l_string|&quot;Bad predicate (not an integer) obj_desc=%p State=%p Type=%X&bslash;n&quot;
 comma
 id|obj_desc
 comma
@@ -262,14 +294,14 @@ suffix:semicolon
 multiline_comment|/* Truncate the predicate to 32-bits if necessary */
 id|acpi_ex_truncate_for32bit_table
 (paren
-id|obj_desc
+id|local_obj_desc
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Save the result of the predicate evaluation on&n;&t; * the control stack&n;&t; */
 r_if
 c_cond
 (paren
-id|obj_desc-&gt;integer.value
+id|local_obj_desc-&gt;integer.value
 )paren
 (brace
 id|walk_state-&gt;control_state-&gt;common.value
@@ -309,13 +341,27 @@ id|ACPI_DEBUGGER_EXEC
 (paren
 id|acpi_db_display_result_object
 (paren
-id|obj_desc
+id|local_obj_desc
 comma
 id|walk_state
 )paren
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Delete the predicate result object (we know that&n;&t; * we don&squot;t need it anymore)&n;&t; */
+r_if
+c_cond
+(paren
+id|local_obj_desc
+op_ne
+id|obj_desc
+)paren
+(brace
+id|acpi_ut_remove_reference
+(paren
+id|local_obj_desc
+)paren
+suffix:semicolon
+)brace
 id|acpi_ut_remove_reference
 (paren
 id|obj_desc
@@ -645,8 +691,7 @@ suffix:colon
 r_case
 id|AML_CLASS_CREATE
 suffix:colon
-multiline_comment|/* most operators with arguments */
-multiline_comment|/* Start a new result/operand state */
+multiline_comment|/*&n;&t;&t; * Most operators with arguments.&n;&t;&t; * Start a new result/operand state&n;&t;&t; */
 id|status
 op_assign
 id|acpi_ds_result_stack_push
@@ -1097,18 +1142,16 @@ comma
 id|op
 )paren
 suffix:semicolon
+multiline_comment|/* Make sure to properly pop the result stack */
 r_if
 c_cond
 (paren
-id|ACPI_FAILURE
+id|ACPI_SUCCESS
 (paren
 id|status
 )paren
 )paren
 (brace
-r_break
-suffix:semicolon
-)brace
 id|status
 op_assign
 id|acpi_ds_result_stack_pop
@@ -1116,11 +1159,97 @@ id|acpi_ds_result_stack_pop
 id|walk_state
 )paren
 suffix:semicolon
+)brace
+r_else
+r_if
+c_cond
+(paren
+id|status
+op_eq
+id|AE_CTRL_PENDING
+)paren
+(brace
+id|status
+op_assign
+id|acpi_ds_result_stack_pop
+(paren
+id|walk_state
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ACPI_SUCCESS
+(paren
+id|status
+)paren
+)paren
+(brace
+id|status
+op_assign
+id|AE_CTRL_PENDING
+suffix:semicolon
+)brace
+)brace
 r_break
 suffix:semicolon
 r_case
 id|AML_TYPE_METHOD_CALL
 suffix:colon
+multiline_comment|/*&n;&t;&t;&t; * If the method is referenced from within a package&n;&t;&t;&t; * declaration, it is not a invocation of the method, just&n;&t;&t;&t; * a reference to it.&n;&t;&t;&t; */
+r_if
+c_cond
+(paren
+(paren
+id|op-&gt;asl.parent
+)paren
+op_logical_and
+(paren
+(paren
+id|op-&gt;asl.parent-&gt;asl.aml_opcode
+op_eq
+id|AML_PACKAGE_OP
+)paren
+op_logical_or
+(paren
+id|op-&gt;asl.parent-&gt;asl.aml_opcode
+op_eq
+id|AML_VAR_PACKAGE_OP
+)paren
+)paren
+)paren
+(brace
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_DISPATCH
+comma
+l_string|&quot;Method Reference in a Package, Op=%p&bslash;n&quot;
+comma
+id|op
+)paren
+)paren
+suffix:semicolon
+id|op-&gt;common.node
+op_assign
+(paren
+r_struct
+id|acpi_namespace_node
+op_star
+)paren
+id|op-&gt;asl.value.arg-&gt;asl.node-&gt;object
+suffix:semicolon
+id|acpi_ut_add_reference
+(paren
+id|op-&gt;asl.value.arg-&gt;asl.node-&gt;object
+)paren
+suffix:semicolon
+id|return_ACPI_STATUS
+(paren
+id|AE_OK
+)paren
+suffix:semicolon
+)brace
 id|ACPI_DEBUG_PRINT
 (paren
 (paren
@@ -1132,7 +1261,7 @@ id|op
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t;&t; * (AML_METHODCALL) Op-&gt;Value-&gt;Arg-&gt;Node contains&n;&t;&t;&t; * the method Node pointer&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * (AML_METHODCALL) Op-&gt;Asl.Value.Arg-&gt;Asl.Node contains&n;&t;&t;&t; * the method Node pointer&n;&t;&t;&t; */
 multiline_comment|/* next_op points to the op that holds the method name */
 id|next_op
 op_assign
