@@ -11,17 +11,6 @@ r_extern
 r_struct
 id|processor
 (brace
-multiline_comment|/* check for any bugs */
-DECL|member|_check_bugs
-r_void
-(paren
-op_star
-id|_check_bugs
-)paren
-(paren
-r_void
-)paren
-suffix:semicolon
 multiline_comment|/* Set up any processor specifics */
 DECL|member|_proc_init
 r_void
@@ -115,8 +104,6 @@ r_struct
 id|processor
 id|arm3_processor_functions
 suffix:semicolon
-DECL|macro|cpu_check_bugs
-mdefine_line|#define cpu_check_bugs()&t;&t;&t;processor._check_bugs()
 DECL|macro|cpu_proc_init
 mdefine_line|#define cpu_proc_init()&t;&t;&t;&t;processor._proc_init()
 DECL|macro|cpu_proc_fin

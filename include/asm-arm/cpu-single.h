@@ -10,8 +10,6 @@ macro_line|#endif
 DECL|macro|__cpu_fn
 mdefine_line|#define __cpu_fn(name,x)&t;__catify_fn(name,x)
 multiline_comment|/*&n; * If we are supporting multiple CPUs, then we must use a table of&n; * function pointers for this lot.  Otherwise, we can optimise the&n; * table away.&n; */
-DECL|macro|cpu_check_bugs
-mdefine_line|#define cpu_check_bugs&t;&t;&t;__cpu_fn(CPU_NAME,_check_bugs)
 DECL|macro|cpu_proc_init
 mdefine_line|#define cpu_proc_init&t;&t;&t;__cpu_fn(CPU_NAME,_proc_init)
 DECL|macro|cpu_proc_fin
@@ -33,14 +31,6 @@ r_struct
 id|mm_struct
 suffix:semicolon
 multiline_comment|/* declare all the functions as extern */
-r_extern
-r_void
-id|cpu_check_bugs
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 r_extern
 r_void
 id|cpu_proc_init

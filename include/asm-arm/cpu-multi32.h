@@ -24,17 +24,6 @@ r_int
 id|pc
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * check for any bugs&n;&t; */
-DECL|member|_check_bugs
-r_void
-(paren
-op_star
-id|_check_bugs
-)paren
-(paren
-r_void
-)paren
-suffix:semicolon
 multiline_comment|/*&n;&t; * Set up any processor specifics&n;&t; */
 DECL|member|_proc_init
 r_void
@@ -136,8 +125,6 @@ suffix:semicolon
 )brace
 id|processor
 suffix:semicolon
-DECL|macro|cpu_check_bugs
-mdefine_line|#define cpu_check_bugs()&t;&t;processor._check_bugs()
 DECL|macro|cpu_proc_init
 mdefine_line|#define cpu_proc_init()&t;&t;&t;processor._proc_init()
 DECL|macro|cpu_proc_fin
