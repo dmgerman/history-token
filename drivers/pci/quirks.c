@@ -1719,6 +1719,10 @@ comma
 id|quirk_ioapic_rmw
 )paren
 suffix:semicolon
+DECL|variable|pci_msi_quirk
+r_int
+id|pci_msi_quirk
+suffix:semicolon
 DECL|macro|AMD8131_revA0
 mdefine_line|#define AMD8131_revA0        0x01
 DECL|macro|AMD8131_revB0
@@ -1745,6 +1749,17 @@ r_char
 id|revid
 comma
 id|tmp
+suffix:semicolon
+id|pci_msi_quirk
+op_assign
+l_int|1
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;PCI: MSI quirk detected. pci_msi_quirk set.&bslash;n&quot;
+)paren
 suffix:semicolon
 r_if
 c_cond
