@@ -2579,6 +2579,11 @@ id|page_state_convert
 c_func
 (paren
 r_struct
+id|inode
+op_star
+id|inode
+comma
+r_struct
 id|page
 op_star
 id|page
@@ -2591,13 +2596,6 @@ id|unmapped
 )paren
 multiline_comment|/* also implies page uptodate */
 (brace
-r_struct
-id|inode
-op_star
-id|inode
-op_assign
-id|page-&gt;mapping-&gt;host
-suffix:semicolon
 r_struct
 id|buffer_head
 op_star
@@ -4445,6 +4443,8 @@ op_assign
 id|page_state_convert
 c_func
 (paren
+id|inode
+comma
 id|page
 comma
 l_int|1
@@ -4525,6 +4525,13 @@ r_int
 id|gfp_mask
 )paren
 (brace
+r_struct
+id|inode
+op_star
+id|inode
+op_assign
+id|page-&gt;mapping-&gt;host
+suffix:semicolon
 r_int
 id|delalloc
 comma
@@ -4579,6 +4586,8 @@ c_cond
 id|page_state_convert
 c_func
 (paren
+id|inode
+comma
 id|page
 comma
 l_int|0
