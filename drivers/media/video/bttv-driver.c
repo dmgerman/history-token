@@ -18878,7 +18878,7 @@ c_func
 (paren
 id|pci_dev
 comma
-id|device_to_pci_power
+id|pci_choose_state
 c_func
 (paren
 id|pci_dev
