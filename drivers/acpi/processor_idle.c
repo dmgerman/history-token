@@ -1194,7 +1194,7 @@ id|cx-&gt;promotion.state
 op_assign
 id|higher
 suffix:semicolon
-id|cx-&gt;demotion.threshold.ticks
+id|cx-&gt;promotion.threshold.ticks
 op_assign
 id|cx-&gt;latency_ticks
 suffix:semicolon
@@ -1221,7 +1221,7 @@ id|higher-&gt;type
 op_eq
 id|ACPI_STATE_C3
 )paren
-id|cx-&gt;demotion.threshold.bm
+id|cx-&gt;promotion.threshold.bm
 op_assign
 l_int|0x0F
 suffix:semicolon
