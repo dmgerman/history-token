@@ -222,6 +222,20 @@ r_return
 id|err
 suffix:semicolon
 )brace
+r_extern
+r_int
+id|ntfs_extent_mft_record_free
+c_func
+(paren
+id|ntfs_inode
+op_star
+id|ni
+comma
+id|MFT_RECORD
+op_star
+id|m
+)paren
+suffix:semicolon
 macro_line|#endif /* NTFS_RW */
 macro_line|#endif /* _LINUX_NTFS_MFT_H */
 eof
