@@ -1013,7 +1013,7 @@ id|migrate
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n;&t; * The warning below may appear if page_referenced catches the&n;&t; * page in between page_add_{anon,file}_rmap and its replacement&n;&t; * demanded by mremap_moved_anon_page: so remove the warning once&n;&t; * we&squot;re convinced that anonmm rmap really is finding its pages.&n;&t; */
+multiline_comment|/*&n;&t; * The warning below may appear if page_referenced_anon catches&n;&t; * the page in between page_add_anon_rmap and its replacement&n;&t; * demanded by mremap_moved_anon_page: so remove the warning once&n;&t; * we&squot;re convinced that anonmm rmap really is finding its pages.&n;&t; */
 id|WARN_ON
 c_func
 (paren
@@ -1286,7 +1286,6 @@ suffix:semicolon
 multiline_comment|/**&n; * page_referenced - test if the page was referenced&n; * @page: the page to test&n; *&n; * Quick test_and_clear_referenced for all mappings to a page,&n; * returns the number of ptes which referenced the page.&n; * Caller needs to hold the rmap lock.&n; */
 DECL|function|page_referenced
 r_int
-id|fastcall
 id|page_referenced
 c_func
 (paren
@@ -1367,7 +1366,6 @@ suffix:semicolon
 multiline_comment|/**&n; * page_add_anon_rmap - add pte mapping to an anonymous page&n; * @page:&t;the page to add the mapping to&n; * @mm:&t;&t;the mm in which the mapping is added&n; * @address:&t;the user virtual address mapped&n; *&n; * The caller needs to hold the mm-&gt;page_table_lock.&n; */
 DECL|function|page_add_anon_rmap
 r_void
-id|fastcall
 id|page_add_anon_rmap
 c_func
 (paren
@@ -1469,7 +1467,6 @@ suffix:semicolon
 multiline_comment|/**&n; * page_add_file_rmap - add pte mapping to a file page&n; * @page: the page to add the mapping to&n; *&n; * The caller needs to hold the mm-&gt;page_table_lock.&n; */
 DECL|function|page_add_file_rmap
 r_void
-id|fastcall
 id|page_add_file_rmap
 c_func
 (paren
@@ -1542,7 +1539,6 @@ suffix:semicolon
 multiline_comment|/**&n; * page_remove_rmap - take down pte mapping from a page&n; * @page: page to remove mapping from&n; *&n; * Caller needs to hold the mm-&gt;page_table_lock.&n; */
 DECL|function|page_remove_rmap
 r_void
-id|fastcall
 id|page_remove_rmap
 c_func
 (paren
@@ -1632,7 +1628,6 @@ suffix:semicolon
 multiline_comment|/**&n; * mremap_move_anon_rmap - try to note new address of anonymous page&n; * @page:&t;page about to be moved&n; * @address:&t;user virtual address at which it is going to be mapped&n; *&n; * Returns boolean, true if page is not shared, so address updated.&n; *&n; * For mremap&squot;s can_move_one_page: to update address when vma is moved,&n; * provided that anon page is not shared with a parent or child mm.&n; * If it is shared, then caller must take a copy of the page instead:&n; * not very clever, but too rare a case to merit cleverness.&n; */
 DECL|function|mremap_move_anon_rmap
 r_int
-id|fastcall
 id|mremap_move_anon_rmap
 c_func
 (paren
@@ -3049,7 +3044,6 @@ suffix:semicolon
 multiline_comment|/**&n; * try_to_unmap - try to remove all page table mappings to a page&n; * @page: the page to get unmapped&n; *&n; * Tries to remove all the page table entries which are mapping this&n; * page, used in the pageout path.  Caller must hold the page lock&n; * and its rmap lock.  Return values are:&n; *&n; * SWAP_SUCCESS&t;- we succeeded in removing all mappings&n; * SWAP_AGAIN&t;- we missed a trylock, try again later&n; * SWAP_FAIL&t;- the page is unswappable&n; */
 DECL|function|try_to_unmap
 r_int
-id|fastcall
 id|try_to_unmap
 c_func
 (paren

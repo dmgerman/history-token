@@ -3,14 +3,12 @@ DECL|macro|_LINUX_RMAP_H
 mdefine_line|#define _LINUX_RMAP_H
 multiline_comment|/*&n; * Declarations for Reverse Mapping functions in mm/rmap.c&n; * Its structures are declared within that file.&n; */
 macro_line|#include &lt;linux/config.h&gt;
-macro_line|#include &lt;linux/linkage.h&gt;
 DECL|macro|page_map_lock
 mdefine_line|#define page_map_lock(page) &bslash;&n;&t;bit_spin_lock(PG_maplock, (unsigned long *)&amp;(page)-&gt;flags)
 DECL|macro|page_map_unlock
 mdefine_line|#define page_map_unlock(page) &bslash;&n;&t;bit_spin_unlock(PG_maplock, (unsigned long *)&amp;(page)-&gt;flags)
 macro_line|#ifdef CONFIG_MMU
 r_void
-id|fastcall
 id|page_add_anon_rmap
 c_func
 (paren
@@ -24,11 +22,9 @@ op_star
 comma
 r_int
 r_int
-id|addr
 )paren
 suffix:semicolon
 r_void
-id|fastcall
 id|page_add_file_rmap
 c_func
 (paren
@@ -38,7 +34,6 @@ op_star
 )paren
 suffix:semicolon
 r_void
-id|fastcall
 id|page_remove_rmap
 c_func
 (paren
@@ -78,7 +73,6 @@ id|page
 suffix:semicolon
 )brace
 r_int
-id|fastcall
 id|mremap_move_anon_rmap
 c_func
 (paren
@@ -205,7 +199,6 @@ op_star
 suffix:semicolon
 multiline_comment|/*&n; * Called from mm/vmscan.c to handle paging out&n; */
 r_int
-id|fastcall
 id|page_referenced
 c_func
 (paren
@@ -215,7 +208,6 @@ op_star
 )paren
 suffix:semicolon
 r_int
-id|fastcall
 id|try_to_unmap
 c_func
 (paren
