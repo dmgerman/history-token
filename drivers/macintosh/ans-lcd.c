@@ -150,6 +150,7 @@ id|file
 comma
 r_const
 r_char
+id|__user
 op_star
 id|buf
 comma
@@ -163,6 +164,7 @@ id|ppos
 (brace
 r_const
 r_char
+id|__user
 op_star
 id|p
 op_assign
@@ -277,6 +279,7 @@ id|arg
 r_char
 id|ch
 comma
+id|__user
 op_star
 id|temp
 suffix:semicolon
@@ -337,6 +340,7 @@ id|temp
 op_assign
 (paren
 r_char
+id|__user
 op_star
 )paren
 id|arg
