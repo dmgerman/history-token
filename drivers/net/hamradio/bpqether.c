@@ -220,8 +220,6 @@ id|bpq_device_event
 comma
 )brace
 suffix:semicolon
-DECL|macro|MAXBPQDEV
-mdefine_line|#define MAXBPQDEV 100
 DECL|struct|bpqdev
 r_struct
 id|bpqdev
