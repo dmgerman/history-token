@@ -33,10 +33,10 @@ DECL|macro|PROD_MORLEY_SCSI_UNCACHED
 mdefine_line|#define PROD_MORLEY_SCSI_UNCACHED&t;0x0067
 DECL|macro|MANU_CUMANA
 mdefine_line|#define MANU_CUMANA&t;&t;0x003a
-DECL|macro|PROD_CUMANA_SCSI_1
-mdefine_line|#define PROD_CUMANA_SCSI_1&t;&t;0x00a0
 DECL|macro|PROD_CUMANA_SCSI_2
 mdefine_line|#define PROD_CUMANA_SCSI_2&t;&t;0x003a
+DECL|macro|PROD_CUMANA_SCSI_1
+mdefine_line|#define PROD_CUMANA_SCSI_1&t;&t;0x00a0
 DECL|macro|MANU_ICS
 mdefine_line|#define MANU_ICS&t;&t;0x003c
 DECL|macro|PROD_ICS_IDE
@@ -59,6 +59,8 @@ DECL|macro|PROD_I3_ETHERLAN600A
 mdefine_line|#define PROD_I3_ETHERLAN600A&t;&t;0x011e
 DECL|macro|MANU_ANT
 mdefine_line|#define MANU_ANT&t;&t;0x0053
+DECL|macro|PROD_ANT_ETHERM
+mdefine_line|#define PROD_ANT_ETHERM&t;&t;&t;0x00d8
 DECL|macro|PROD_ANT_ETHERB
 mdefine_line|#define PROD_ANT_ETHERB&t;&t;&t;0x00e4
 DECL|macro|MANU_ALSYSTEMS

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * linux/arch/arm/drivers/scsi/arxescsi.c&n; *&n; * Copyright (C) 1997-2000 Russell King, Stefan Hanske&n; *&n; * This driver is based on experimentation.  Hence, it may have made&n; * assumptions about the particular card that I have available, and&n; * may not be reliable!&n; *&n; * Changelog:&n; *  30-08-1997&t;RMK&t;0.0.0&t;Created, READONLY version as cumana_2.c&n; *  22-01-1998&t;RMK&t;0.0.1&t;Updated to 2.1.80&n; *  15-04-1998&t;RMK&t;0.0.1&t;Only do PIO if FAS216 will allow it.&n; *  11-06-1998 &t;SH&t;0.0.2   Changed to support ARXE 16-bit SCSI card&n; *&t;&t;&t;&t;enabled writing&n; *  01-01-2000&t;SH&t;0.1.0   Added *real* pseudo dma writing&n; *&t;&t;&t;&t;(arxescsi_pseudo_dma_write)&n; *  02-04-2000&t;RMK&t;0.1.1&t;Updated for new error handling code.&n; */
+multiline_comment|/*&n; * linux/arch/arm/drivers/scsi/arxescsi.c&n; *&n; * Copyright (C) 1997-2000 Russell King, Stefan Hanske&n; *&n; * This driver is based on experimentation.  Hence, it may have made&n; * assumptions about the particular card that I have available, and&n; * may not be reliable!&n; *&n; * Changelog:&n; *  30-08-1997&t;RMK&t;0.0.0&t;Created, READONLY version as cumana_2.c&n; *  22-01-1998&t;RMK&t;0.0.1&t;Updated to 2.1.80&n; *  15-04-1998&t;RMK&t;0.0.1&t;Only do PIO if FAS216 will allow it.&n; *  11-06-1998 &t;SH&t;0.0.2   Changed to support ARXE 16-bit SCSI card&n; *&t;&t;&t;&t;enabled writing&n; *  01-01-2000&t;SH&t;0.1.0   Added *real* pseudo dma writing&n; *&t;&t;&t;&t;(arxescsi_pseudo_dma_write)&n; *  02-04-2000&t;RMK&t;0.1.1&t;Updated for new error handling code.&n; *  22-10-2000  SH&t;&t;Updated for new registering scheme.&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -9,6 +9,7 @@ macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/unistd.h&gt;
 macro_line|#include &lt;linux/stat.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
@@ -1419,13 +1420,90 @@ r_return
 id|pos
 suffix:semicolon
 )brace
-macro_line|#ifdef MODULE
-DECL|variable|driver_template
+DECL|variable|arxescsi_template
+r_static
 id|Scsi_Host_Template
-id|driver_template
+id|arxescsi_template
 op_assign
 id|ARXEScsi
 suffix:semicolon
-macro_line|#include &quot;../../scsi/scsi_module.c&quot;
-macro_line|#endif
+DECL|function|init_arxe_scsi_driver
+r_static
+r_int
+id|__init
+id|init_arxe_scsi_driver
+c_func
+(paren
+r_void
+)paren
+(brace
+id|arxescsi_template.module
+op_assign
+id|THIS_MODULE
+suffix:semicolon
+id|scsi_register_module
+c_func
+(paren
+id|MODULE_SCSI_HA
+comma
+op_amp
+id|arxescsi_template
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|arxescsi_template.present
+)paren
+r_return
+l_int|0
+suffix:semicolon
+id|scsi_unregister_module
+c_func
+(paren
+id|MODULE_SCSI_HA
+comma
+op_amp
+id|arxescsi_template
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|ENODEV
+suffix:semicolon
+)brace
+DECL|function|exit_arxe_scsi_driver
+r_static
+r_void
+id|__exit
+id|exit_arxe_scsi_driver
+c_func
+(paren
+r_void
+)paren
+(brace
+id|scsi_unregister_module
+c_func
+(paren
+id|MODULE_SCSI_HA
+comma
+op_amp
+id|arxescsi_template
+)paren
+suffix:semicolon
+)brace
+DECL|variable|init_arxe_scsi_driver
+id|module_init
+c_func
+(paren
+id|init_arxe_scsi_driver
+)paren
+suffix:semicolon
+DECL|variable|exit_arxe_scsi_driver
+id|module_exit
+c_func
+(paren
+id|exit_arxe_scsi_driver
+)paren
+suffix:semicolon
 eof

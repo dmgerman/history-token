@@ -154,6 +154,8 @@ suffix:semicolon
 DECL|variable|smp_num_cpus
 r_int
 id|smp_num_cpus
+op_assign
+l_int|1
 suffix:semicolon
 multiline_comment|/* Number that came online.  */
 DECL|variable|__cpu_number_map

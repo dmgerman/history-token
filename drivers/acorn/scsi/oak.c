@@ -15,9 +15,60 @@ macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &quot;../../scsi/scsi.h&quot;
 macro_line|#include &quot;../../scsi/hosts.h&quot;
-macro_line|#include &quot;oak.h&quot;
-macro_line|#include &quot;../../scsi/NCR5380.h&quot;
 macro_line|#include &quot;../../scsi/constants.h&quot;
+DECL|macro|OAKSCSI_PUBLIC_RELEASE
+mdefine_line|#define OAKSCSI_PUBLIC_RELEASE 1
+DECL|macro|NCR5380_read
+mdefine_line|#define NCR5380_read(reg)&t;&t;oakscsi_read(_instance, reg)
+DECL|macro|NCR5380_write
+mdefine_line|#define NCR5380_write(reg, value)&t;oakscsi_write(_instance, reg, value)
+DECL|macro|do_NCR5380_intr
+mdefine_line|#define do_NCR5380_intr&t;&t;&t;do_oakscsi_intr
+DECL|macro|NCR5380_queue_command
+mdefine_line|#define NCR5380_queue_command&t;&t;oakscsi_queue_command
+DECL|macro|NCR5380_abort
+mdefine_line|#define NCR5380_abort&t;&t;&t;oakscsi_abort
+DECL|macro|NCR5380_reset
+mdefine_line|#define NCR5380_reset&t;&t;&t;oakscsi_reset
+DECL|macro|NCR5380_proc_info
+mdefine_line|#define NCR5380_proc_info&t;&t;oakscsi_proc_info
+r_int
+id|NCR5380_proc_info
+c_func
+(paren
+r_char
+op_star
+id|buffer
+comma
+r_char
+op_star
+op_star
+id|start
+comma
+id|off_t
+id|offset
+comma
+r_int
+id|length
+comma
+r_int
+id|hostno
+comma
+r_int
+id|inout
+)paren
+suffix:semicolon
+DECL|macro|NCR5380_implementation_fields
+mdefine_line|#define NCR5380_implementation_fields &bslash;&n;&t;int port, ctrl
+DECL|macro|NCR5380_local_declare
+mdefine_line|#define NCR5380_local_declare() &bslash;&n;        struct Scsi_Host *_instance
+DECL|macro|NCR5380_setup
+mdefine_line|#define NCR5380_setup(instance) &bslash;&n;        _instance = instance
+DECL|macro|BOARD_NORMAL
+mdefine_line|#define BOARD_NORMAL&t;0
+DECL|macro|BOARD_NCR53C400
+mdefine_line|#define BOARD_NCR53C400&t;1
+macro_line|#include &quot;../../scsi/NCR5380.h&quot;
 DECL|macro|START_DMA_INITIATOR_RECEIVE_REG
 macro_line|#undef START_DMA_INITIATOR_RECEIVE_REG
 DECL|macro|START_DMA_INITIATOR_RECEIVE_REG
@@ -292,9 +343,9 @@ c_func
 (paren
 l_string|&quot; options CAN_QUEUE=%d  CMD_PER_LUN=%d release=%d&quot;
 comma
-id|CAN_QUEUE
+id|tpnt-&gt;can_queue
 comma
-id|CMD_PER_LUN
+id|tpnt-&gt;cmd_per_lun
 comma
 id|OAKSCSI_PUBLIC_RELEASE
 )paren
@@ -729,13 +780,142 @@ mdefine_line|#define oakscsi_write(instance,reg,val)&t;(outb((val), (instance)-&
 DECL|macro|STAT
 macro_line|#undef STAT
 macro_line|#include &quot;../../scsi/NCR5380.c&quot;
-macro_line|#ifdef MODULE
-DECL|variable|driver_template
+DECL|variable|oakscsi_template
+r_static
 id|Scsi_Host_Template
-id|driver_template
+id|oakscsi_template
 op_assign
-id|OAK_NCR5380
+(brace
+id|module
+suffix:colon
+id|THIS_MODULE
+comma
+id|proc_info
+suffix:colon
+id|oakscsi_proc_info
+comma
+id|name
+suffix:colon
+l_string|&quot;Oak 16-bit SCSI&quot;
+comma
+id|detect
+suffix:colon
+id|oakscsi_detect
+comma
+id|release
+suffix:colon
+id|oakscsi_release
+comma
+id|info
+suffix:colon
+id|oakscsi_info
+comma
+id|queuecommand
+suffix:colon
+id|oakscsi_queue_command
+comma
+m_abort
+suffix:colon
+id|oakscsi_abort
+comma
+id|reset
+suffix:colon
+id|oakscsi_reset
+comma
+id|can_queue
+suffix:colon
+l_int|16
+comma
+id|this_id
+suffix:colon
+l_int|7
+comma
+id|sg_tablesize
+suffix:colon
+id|SG_ALL
+comma
+id|cmd_per_lun
+suffix:colon
+l_int|2
+comma
+id|use_clustering
+suffix:colon
+id|DISABLE_CLUSTERING
+)brace
 suffix:semicolon
-macro_line|#include &quot;../../scsi/scsi_module.c&quot;
-macro_line|#endif
+DECL|function|oakscsi_init
+r_static
+r_int
+id|__init
+id|oakscsi_init
+c_func
+(paren
+r_void
+)paren
+(brace
+id|scsi_register_module
+c_func
+(paren
+id|MODULE_SCSI_HA
+comma
+op_amp
+id|oakscsi_template
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|oakscsi_template.present
+)paren
+r_return
+l_int|0
+suffix:semicolon
+id|scsi_unregister_module
+c_func
+(paren
+id|MODULE_SCSI_HA
+comma
+op_amp
+id|oakscsi_template
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|ENODEV
+suffix:semicolon
+)brace
+DECL|function|oakscsi_exit
+r_static
+r_void
+id|__exit
+id|oakscsi_exit
+c_func
+(paren
+r_void
+)paren
+(brace
+id|scsi_unregister_module
+c_func
+(paren
+id|MODULE_SCSI_HA
+comma
+op_amp
+id|oakscsi_template
+)paren
+suffix:semicolon
+)brace
+DECL|variable|oakscsi_init
+id|module_init
+c_func
+(paren
+id|oakscsi_init
+)paren
+suffix:semicolon
+DECL|variable|oakscsi_exit
+id|module_exit
+c_func
+(paren
+id|oakscsi_exit
+)paren
+suffix:semicolon
 eof

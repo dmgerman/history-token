@@ -239,6 +239,8 @@ r_struct
 id|emu10k1_card
 op_star
 id|card
+op_assign
+l_int|NULL
 suffix:semicolon
 r_struct
 id|emu10k1_mididevice
@@ -1818,6 +1820,15 @@ suffix:semicolon
 r_default
 suffix:colon
 multiline_comment|/* Unknown message */
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|midi_spinlock
+comma
+id|flags
+)paren
+suffix:semicolon
 r_return
 op_minus
 l_int|1

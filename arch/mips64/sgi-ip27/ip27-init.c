@@ -2010,6 +2010,12 @@ comma
 id|num_cpus
 )paren
 suffix:semicolon
+id|del_from_runqueue
+c_func
+(paren
+id|p
+)paren
+suffix:semicolon
 id|p-&gt;processor
 op_assign
 id|num_cpus
@@ -2019,12 +2025,6 @@ op_assign
 l_int|1
 suffix:semicolon
 multiline_comment|/* we schedule the first task manually */
-id|del_from_runqueue
-c_func
-(paren
-id|p
-)paren
-suffix:semicolon
 id|unhash_process
 c_func
 (paren

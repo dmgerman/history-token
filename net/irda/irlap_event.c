@@ -2431,8 +2431,28 @@ c_func
 id|self
 )paren
 suffix:semicolon
+multiline_comment|/* &n;&t;&t; * Applying the parameters now will make sure we change speed&n;&t;&t; * *after* we have sent the next frame&n;&t;&t; */
+id|irlap_apply_connection_parameters
+c_func
+(paren
+id|self
+comma
+id|FALSE
+)paren
+suffix:semicolon
+multiline_comment|/* &n;&t;&t; * Sending this frame will force a speed change after it has&n;&t;&t; * been sent (i.e. the frame will be sent at 9600).&n;&t;&t; */
+id|irlap_send_ua_response_frame
+c_func
+(paren
+id|self
+comma
+op_amp
+id|self-&gt;qos_rx
+)paren
+suffix:semicolon
 macro_line|#if 0
 multiline_comment|/* &n;&t;&t; * We are allowed to send two frames, but this may increase&n;&t;&t; * the connect latency, so lets not do it for now.&n;&t;&t; */
+multiline_comment|/* What the hell is this ? - Jean II */
 id|irlap_send_ua_response_frame
 c_func
 (paren
@@ -2443,23 +2463,6 @@ id|self-&gt;qos_rx
 )paren
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/* &n;&t;&t; * Applying the parameters now will make sure we change speed&n;&t;&t; * after we have sent the next frame&n;&t;&t; */
-id|irlap_apply_connection_parameters
-c_func
-(paren
-id|self
-)paren
-suffix:semicolon
-multiline_comment|/* &n;&t;&t; * Sending this frame will force a speed change after it has&n;&t;&t; * been sent&n;&t;&t; */
-id|irlap_send_ua_response_frame
-c_func
-(paren
-id|self
-comma
-op_amp
-id|self-&gt;qos_rx
-)paren
-suffix:semicolon
 multiline_comment|/*&n;&t;&t; *  The WD-timer could be set to the duration of the P-timer &n;&t;&t; *  for this case, but it is recommended to use twice the &n;&t;&t; *  value (note 3 IrLAP p. 60). &n;&t;&t; */
 id|irlap_start_wd_timer
 c_func
@@ -2795,6 +2798,15 @@ comma
 id|skb
 )paren
 suffix:semicolon
+multiline_comment|/* Send UA frame and then change link settings */
+id|irlap_apply_connection_parameters
+c_func
+(paren
+id|self
+comma
+id|FALSE
+)paren
+suffix:semicolon
 id|irlap_send_ua_response_frame
 c_func
 (paren
@@ -2802,12 +2814,6 @@ id|self
 comma
 op_amp
 id|self-&gt;qos_rx
-)paren
-suffix:semicolon
-id|irlap_apply_connection_parameters
-c_func
-(paren
-id|self
 )paren
 suffix:semicolon
 id|irlap_next_state
@@ -2915,17 +2921,30 @@ comma
 id|skb
 )paren
 suffix:semicolon
+multiline_comment|/* Set the new link setting *now* (before the rr frame) */
 id|irlap_apply_connection_parameters
 c_func
 (paren
 id|self
+comma
+id|TRUE
 )paren
 suffix:semicolon
 id|self-&gt;retry_count
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* This frame will actually force the speed change */
+multiline_comment|/* Wait for turnaround time to give a chance to the other&n;&t;&t; * device to be ready to receive us.&n;&t;&t; * Note : the time to switch speed is typically larger&n;&t;&t; * than the turnaround time, but as we don&squot;t have the other&n;&t;&t; * side speed switch time, that&squot;s our best guess...&n;&t;&t; * Jean II */
+id|irlap_wait_min_turn_around
+c_func
+(paren
+id|self
+comma
+op_amp
+id|self-&gt;qos_tx
+)paren
+suffix:semicolon
+multiline_comment|/* This frame will actually be sent at the new speed */
 id|irlap_send_rr_frame
 c_func
 (paren
@@ -3474,6 +3493,7 @@ op_amp
 id|self-&gt;final_timer
 )paren
 suffix:semicolon
+multiline_comment|/* Set new link parameters */
 id|irlap_apply_default_connection_parameters
 c_func
 (paren
@@ -7074,6 +7094,7 @@ comma
 id|LAP_NDM
 )paren
 suffix:semicolon
+multiline_comment|/* Send disconnect response */
 id|irlap_wait_min_turn_around
 c_func
 (paren
@@ -7104,6 +7125,7 @@ c_func
 id|self
 )paren
 suffix:semicolon
+multiline_comment|/* Set default link parameters */
 id|irlap_apply_default_connection_parameters
 c_func
 (paren
@@ -7322,6 +7344,7 @@ comma
 id|LAP_NDM
 )paren
 suffix:semicolon
+multiline_comment|/* Send disconnect response */
 id|irlap_wait_min_turn_around
 c_func
 (paren
@@ -7346,6 +7369,7 @@ op_amp
 id|self-&gt;wd_timer
 )paren
 suffix:semicolon
+multiline_comment|/* Set default link parameters */
 id|irlap_apply_default_connection_parameters
 c_func
 (paren

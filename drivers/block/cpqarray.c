@@ -6932,8 +6932,7 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
-(brace
-)brace
+suffix:semicolon
 multiline_comment|/* Nothing to do */
 )brace
 id|io-&gt;rcode

@@ -1991,11 +1991,6 @@ r_struct
 id|matrox_fb_info
 id|matroxfb_global_mxinfo
 suffix:semicolon
-DECL|variable|global_disp
-r_struct
-id|display
-id|global_disp
-suffix:semicolon
 DECL|macro|ACCESS_FBINFO
 mdefine_line|#define ACCESS_FBINFO(x) (matroxfb_global_mxinfo.x)
 DECL|macro|ACCESS_FBINFO2
@@ -2420,13 +2415,8 @@ macro_line|#else
 DECL|macro|mga_setr
 mdefine_line|#define mga_setr(addr,port,val) do { mga_outb(addr, port); mga_outb((addr)+1, val); } while (0)
 macro_line|#endif
-macro_line|#ifdef __LITTLE_ENDIAN
-DECL|macro|mga_fifo
-mdefine_line|#define mga_fifo(n)&t;do {} while (mga_inb(M_FIFOSTATUS) &lt; (n))
-macro_line|#else
 DECL|macro|mga_fifo
 mdefine_line|#define mga_fifo(n)&t;do {} while ((mga_inl(M_FIFOSTATUS) &amp; 0xFF) &lt; (n))
-macro_line|#endif
 DECL|macro|WaitTillIdle
 mdefine_line|#define WaitTillIdle()&t;do {} while (mga_inl(M_STATUS) &amp; 0x10000)
 multiline_comment|/* code speedup */

@@ -31,6 +31,42 @@ id|hash
 suffix:semicolon
 )brace
 suffix:semicolon
+DECL|struct|dentry_stat_t
+r_struct
+id|dentry_stat_t
+(brace
+DECL|member|nr_dentry
+r_int
+id|nr_dentry
+suffix:semicolon
+DECL|member|nr_unused
+r_int
+id|nr_unused
+suffix:semicolon
+DECL|member|age_limit
+r_int
+id|age_limit
+suffix:semicolon
+multiline_comment|/* age in seconds */
+DECL|member|want_pages
+r_int
+id|want_pages
+suffix:semicolon
+multiline_comment|/* pages requested by system */
+DECL|member|dummy
+r_int
+id|dummy
+(braket
+l_int|2
+)braket
+suffix:semicolon
+)brace
+suffix:semicolon
+r_extern
+r_struct
+id|dentry_stat_t
+id|dentry_stat
+suffix:semicolon
 multiline_comment|/* Name hashing routines. Initial hash value */
 DECL|macro|init_name_hash
 mdefine_line|#define init_name_hash()&t;&t;0

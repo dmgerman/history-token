@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: isdn_net.c,v 1.140.6.1 2000/12/10 22:01:04 kai Exp $&n;&n; * Linux ISDN subsystem, network interfaces and related functions (linklevel).&n; *&n; * Copyright 1994-1998  by Fritz Elfert (fritz@isdn4linux.de)&n; * Copyright 1995,96    by Thinking Objects Software GmbH Wuerzburg&n; * Copyright 1995,96    by Michael Hipp (Michael.Hipp@student.uni-tuebingen.de)&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; */
+multiline_comment|/* $Id: isdn_net.c,v 1.140.6.3 2001/02/07 11:31:30 kai Exp $&n;&n; * Linux ISDN subsystem, network interfaces and related functions (linklevel).&n; *&n; * Copyright 1994-1998  by Fritz Elfert (fritz@isdn4linux.de)&n; * Copyright 1995,96    by Thinking Objects Software GmbH Wuerzburg&n; * Copyright 1995,96    by Michael Hipp (Michael.Hipp@student.uni-tuebingen.de)&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 DECL|macro|__NO_VERSION__
 mdefine_line|#define __NO_VERSION__
@@ -344,6 +344,12 @@ op_amp
 id|tq_immediate
 )paren
 suffix:semicolon
+id|mark_bh
+c_func
+(paren
+id|IMMEDIATE_BH
+)paren
+suffix:semicolon
 )brace
 r_else
 (brace
@@ -409,7 +415,7 @@ r_char
 op_star
 id|isdn_net_revision
 op_assign
-l_string|&quot;$Revision: 1.140.6.1 $&quot;
+l_string|&quot;$Revision: 1.140.6.3 $&quot;
 suffix:semicolon
 multiline_comment|/*&n;  * Code for raw-networking over ISDN&n;  */
 r_static
@@ -3796,7 +3802,7 @@ id|skb
 r_if
 c_cond
 (paren
-id|in_interrupt
+id|in_irq
 c_func
 (paren
 )paren
@@ -3821,6 +3827,12 @@ id|lp-&gt;tqueue
 comma
 op_amp
 id|tq_immediate
+)paren
+suffix:semicolon
+id|mark_bh
+c_func
+(paren
+id|IMMEDIATE_BH
 )paren
 suffix:semicolon
 r_return

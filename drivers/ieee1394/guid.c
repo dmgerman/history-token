@@ -701,11 +701,10 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-id|INIT_LIST_HEAD
+id|INIT_TQ_LINK
 c_func
 (paren
-op_amp
-id|greq-&gt;tq.list
+id|greq-&gt;tq
 )paren
 suffix:semicolon
 id|greq-&gt;tq.sync

@@ -1,6 +1,38 @@
 multiline_comment|/*&n; *  linux/arch/arm/mm/fault-common.c&n; *&n; *  Copyright (C) 1995  Linus Torvalds&n; *  Modifications for ARM processor (c) 1995-1999 Russell King&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; */
 macro_line|#include &lt;linux/config.h&gt;
-r_extern
+macro_line|#include &lt;linux/signal.h&gt;
+macro_line|#include &lt;linux/sched.h&gt;
+macro_line|#include &lt;linux/kernel.h&gt;
+macro_line|#include &lt;linux/errno.h&gt;
+macro_line|#include &lt;linux/string.h&gt;
+macro_line|#include &lt;linux/types.h&gt;
+macro_line|#include &lt;linux/ptrace.h&gt;
+macro_line|#include &lt;linux/mman.h&gt;
+macro_line|#include &lt;linux/mm.h&gt;
+macro_line|#include &lt;linux/interrupt.h&gt;
+macro_line|#include &lt;linux/proc_fs.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;asm/system.h&gt;
+macro_line|#include &lt;asm/uaccess.h&gt;
+macro_line|#include &lt;asm/pgtable.h&gt;
+macro_line|#include &lt;asm/unaligned.h&gt;
+macro_line|#ifdef CONFIG_CPU_26
+DECL|macro|FAULT_CODE_WRITE
+mdefine_line|#define FAULT_CODE_WRITE&t;0x02
+DECL|macro|FAULT_CODE_FORCECOW
+mdefine_line|#define FAULT_CODE_FORCECOW&t;0x01
+DECL|macro|DO_COW
+mdefine_line|#define DO_COW(m)&t;&t;((m) &amp; (FAULT_CODE_WRITE|FAULT_CODE_FORCECOW))
+DECL|macro|READ_FAULT
+mdefine_line|#define READ_FAULT(m)&t;&t;(!((m) &amp; FAULT_CODE_WRITE))
+macro_line|#else
+multiline_comment|/*&n; * On 32-bit processors, we define &quot;mode&quot; to be zero when reading,&n; * non-zero when writing.  This now ties up nicely with the polarity&n; * of the 26-bit machines, and also means that we avoid the horrible&n; * gcc code for &quot;int val = !other_val;&quot;.&n; */
+DECL|macro|DO_COW
+mdefine_line|#define DO_COW(m)&t;&t;(m)
+DECL|macro|READ_FAULT
+mdefine_line|#define READ_FAULT(m)&t;&t;(!(m))
+macro_line|#endif
+id|NORET_TYPE
 r_void
 id|die
 c_func
@@ -18,6 +50,7 @@ comma
 r_int
 id|err
 )paren
+id|ATTRIB_NORET
 suffix:semicolon
 multiline_comment|/*&n; * This is useful to dump out the page tables associated with&n; * &squot;addr&squot; in mm &squot;mm&squot;.&n; */
 DECL|function|show_pte
@@ -237,9 +270,9 @@ l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
-DECL|function|__do_page_fault
 r_static
 r_int
+DECL|function|__do_page_fault
 id|__do_page_fault
 c_func
 (paren
@@ -612,7 +645,6 @@ l_int|2
 suffix:semicolon
 )brace
 DECL|function|do_page_fault
-r_static
 r_int
 id|do_page_fault
 c_func

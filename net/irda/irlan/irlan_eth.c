@@ -80,6 +80,10 @@ id|dev-&gt;set_multicast_list
 op_assign
 id|irlan_eth_set_multicast_list
 suffix:semicolon
+id|dev-&gt;features
+op_or_assign
+id|NETIF_F_DYNALLOC
+suffix:semicolon
 id|ether_setup
 c_func
 (paren

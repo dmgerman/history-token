@@ -1257,7 +1257,11 @@ id|EV_REL
 comma
 l_int|0
 comma
+id|BIT
+c_func
+(paren
 id|REL_WHEEL
+)paren
 comma
 l_int|0
 )brace

@@ -60,27 +60,12 @@ suffix:semicolon
 )brace
 r_else
 (brace
-multiline_comment|/* Activate SA1100 watchdog and wait for the trigger... */
-id|OSMR3
+multiline_comment|/* Use on-chip reset capability */
+id|RSRR
 op_assign
-id|OSCR
-op_plus
-l_int|3686400
-op_div
-l_int|2
-suffix:semicolon
-multiline_comment|/* in 1/2 sec */
-id|OWER
-op_or_assign
-id|OWER_WME
-suffix:semicolon
-id|OIER
-op_or_assign
-id|OIER_E3
+id|RSRR_SWR
 suffix:semicolon
 )brace
 )brace
-DECL|macro|arch_power_off
-mdefine_line|#define arch_power_off()&t;do { } while (0)
 macro_line|#endif
 eof

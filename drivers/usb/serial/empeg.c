@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * USB Empeg empeg-car player driver&n; *&n; *&t;Copyright (C) 2000&n; *&t;    Gary Brubaker (xavyer@ix.netcom.com)&n; *&n; *&t;Copyright (C) 1999, 2000&n; *&t;    Greg Kroah-Hartman (greg@kroah.com)&n; *&n; *&t;This program is free software; you can redistribute it and/or modify&n; *&t;it under the terms of the GNU General Public License, as published by&n; *&t;the Free Software Foundation, version 2.&n; *&n; * See Documentation/usb/usb-serial.txt for more information on using this driver&n; * &n; * (12/03/2000) gb&n; *&t;Added port-&gt;tty-&gt;ldisc.set_termios(port-&gt;tty, NULL) to empeg_open()&n; *      This notifies the tty driver that the termios have changed.&n; * &n; * (11/13/2000) gb&n; *&t;Moved tty-&gt;low_latency = 1 from empeg_read_bulk_callback() to empeg_open()&n; *&t;(It only needs to be set once - Doh!)&n; * &n; * (11/11/2000) gb&n; *&t;Updated to work with id_table structure.&n; * &n; * (11/04/2000) gb&n; *&t;Forked this from visor.c, and hacked it up to work with an&n; *&t;Empeg ltd. empeg-car player.  Constructive criticism welcomed.&n; *&t;I would like to say, &squot;Thank You&squot; to Greg Kroah-Hartman for the&n; *&t;use of his code, and for his guidance, advice and patience. :)&n; *&t;A &squot;Thank You&squot; is in order for John Ripley of Empeg ltd for his&n; *&t;advice, and patience too.&n; * &n; */
+multiline_comment|/*&n; * USB Empeg empeg-car player driver&n; *&n; *&t;Copyright (C) 2000&n; *&t;    Gary Brubaker (xavyer@ix.netcom.com)&n; *&n; *&t;Copyright (C) 1999, 2000&n; *&t;    Greg Kroah-Hartman (greg@kroah.com)&n; *&n; *&t;This program is free software; you can redistribute it and/or modify&n; *&t;it under the terms of the GNU General Public License, as published by&n; *&t;the Free Software Foundation, version 2.&n; *&n; * See Documentation/usb/usb-serial.txt for more information on using this driver&n; * &n; * (01/22/2001) gb&n; *&t;Added write_room() and chars_in_buffer() support. &n; * &n; * (12/21/2000) gb&n; *&t;Moved termio stuff inside the port-&gt;active check.&n; *&t;Moved MOD_DEC_USE_COUNT to end of empeg_close().&n; * &n; * (12/03/2000) gb&n; *&t;Added port-&gt;tty-&gt;ldisc.set_termios(port-&gt;tty, NULL) to empeg_open()&n; *&t;This notifies the tty driver that the termios have changed.&n; * &n; * (11/13/2000) gb&n; *&t;Moved tty-&gt;low_latency = 1 from empeg_read_bulk_callback() to empeg_open()&n; *&t;(It only needs to be set once - Doh!)&n; * &n; * (11/11/2000) gb&n; *&t;Updated to work with id_table structure.&n; * &n; * (11/04/2000) gb&n; *&t;Forked this from visor.c, and hacked it up to work with an&n; *&t;Empeg ltd. empeg-car player.  Constructive criticism welcomed.&n; *&t;I would like to say, &squot;Thank You&squot; to Greg Kroah-Hartman for the&n; *&t;use of his code, and for his guidance, advice and patience. :)&n; *&t;A &squot;Thank You&squot; is in order for John Ripley of Empeg ltd for his&n; *&t;advice, and patience too.&n; * &n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -23,9 +23,9 @@ macro_line|#endif
 macro_line|#include &lt;linux/usb.h&gt;
 macro_line|#include &quot;usb-serial.h&quot;
 DECL|macro|EMPEG_VENDOR_ID
-mdefine_line|#define EMPEG_VENDOR_ID                 0x084f
+mdefine_line|#define EMPEG_VENDOR_ID&t;&t;&t;0x084f
 DECL|macro|EMPEG_PRODUCT_ID
-mdefine_line|#define EMPEG_PRODUCT_ID                0x0001
+mdefine_line|#define EMPEG_PRODUCT_ID&t;&t;0x0001
 DECL|macro|MIN
 mdefine_line|#define MIN(a,b)&t;&t;(((a)&lt;(b))?(a):(b))
 multiline_comment|/* function prototypes for an empeg-car player */
@@ -79,6 +79,26 @@ id|buf
 comma
 r_int
 id|count
+)paren
+suffix:semicolon
+r_static
+r_int
+id|empeg_write_room
+(paren
+r_struct
+id|usb_serial_port
+op_star
+id|port
+)paren
+suffix:semicolon
+r_static
+r_int
+id|empeg_chars_in_buffer
+(paren
+r_struct
+id|usb_serial_port
+op_star
+id|port
 )paren
 suffix:semicolon
 r_static
@@ -292,6 +312,14 @@ id|write
 suffix:colon
 id|empeg_write
 comma
+id|write_room
+suffix:colon
+id|empeg_write_room
+comma
+id|chars_in_buffer
+suffix:colon
+id|empeg_chars_in_buffer
+comma
 id|write_bulk_callback
 suffix:colon
 id|empeg_write_bulk_callback
@@ -398,7 +426,14 @@ id|port-&gt;open_count
 suffix:semicolon
 id|MOD_INC_USE_COUNT
 suffix:semicolon
-multiline_comment|/* gb - 2000/11/05&n;&t; *&n;&t; * personally, I think these termios should be set in&n;&t; * empeg_startup(), but it appears doing so leads to one&n;&t; * of those chicken/egg problems. :)&n;&t; *&n;&t; */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|port-&gt;active
+)paren
+(brace
+multiline_comment|/* gb - 2000/11/05&n;&t;&t; * personally, I think these termios should be set in&n;&t;&t; * empeg_startup(), but it appears doing so leads to one&n;&t;&t; * of those chicken/egg problems. :)&n;&t;&t; */
 id|port-&gt;tty-&gt;termios-&gt;c_iflag
 op_and_assign
 op_complement
@@ -453,7 +488,7 @@ id|port-&gt;tty-&gt;termios-&gt;c_cflag
 op_or_assign
 id|CS8
 suffix:semicolon
-multiline_comment|/* gb - 2000/12/03&n;&t; *&n;&t; * Contributed by Borislav Deianov&n;&t; *&n;&t; * Notify the tty driver that the termios have changed!!&n;&t; *&n;&t; */
+multiline_comment|/* gb - 2000/12/03&n;&t;&t; * Contributed by Borislav Deianov&n;&t;&t; * Notify the tty driver that the termios have changed!!&n;&t;&t; */
 id|port-&gt;tty-&gt;ldisc
 dot
 id|set_termios
@@ -464,18 +499,11 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
-multiline_comment|/* gb - 2000/11/05&n;&t; *&n;&t; * force low_latency on&n;&t; *&n;&t; * The tty_flip_buffer_push()&squot;s in empeg_read_bulk_callback() will actually&n;&t; * force the data through if low_latency is set.  Otherwise the pushes are&n;&t; * scheduled; this is bad as it opens up the possibility of dropping bytes&n;&t; * on the floor.  We are trying to sustain high data transfer rates; and&n;&t; * don&squot;t want to drop bytes on the floor.&n;&t; * Moral: use low_latency - drop no bytes - life is good. :)&n;&t; *&n;&t; */
+multiline_comment|/* gb - 2000/11/05&n;&t;&t; * force low_latency on&n;&t;&t; *&n;&t;&t; * The tty_flip_buffer_push()&squot;s in empeg_read_bulk_callback() will actually&n;&t;&t; * force the data through if low_latency is set.  Otherwise the pushes are&n;&t;&t; * scheduled; this is bad as it opens up the possibility of dropping bytes&n;&t;&t; * on the floor.  We are trying to sustain high data transfer rates; and&n;&t;&t; * don&squot;t want to drop bytes on the floor.&n;&t;&t; * Moral: use low_latency - drop no bytes - life is good. :)&n;&t;&t; */
 id|port-&gt;tty-&gt;low_latency
 op_assign
 l_int|1
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|port-&gt;active
-)paren
-(brace
 id|port-&gt;active
 op_assign
 l_int|1
@@ -631,8 +659,6 @@ suffix:semicolon
 op_decrement
 id|port-&gt;open_count
 suffix:semicolon
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -700,6 +726,8 @@ id|flags
 suffix:semicolon
 multiline_comment|/* Uncomment the following line if you want to see some statistics in your syslog */
 multiline_comment|/* info (&quot;Bytes In = %d  Bytes Out = %d&quot;, bytes_in, bytes_out); */
+id|MOD_DEC_USE_COUNT
+suffix:semicolon
 )brace
 DECL|function|empeg_write
 r_static
@@ -943,19 +971,6 @@ id|transfer_size
 )paren
 suffix:semicolon
 )brace
-id|count
-op_assign
-(paren
-id|count
-OG
-id|port-&gt;bulk_out_size
-)paren
-ques
-c_cond
-id|port-&gt;bulk_out_size
-suffix:colon
-id|count
-suffix:semicolon
 multiline_comment|/* build up our urb */
 id|FILL_BULK_URB
 (paren
@@ -1028,6 +1043,203 @@ m_exit
 suffix:colon
 r_return
 id|bytes_sent
+suffix:semicolon
+)brace
+DECL|function|empeg_write_room
+r_static
+r_int
+id|empeg_write_room
+(paren
+r_struct
+id|usb_serial_port
+op_star
+id|port
+)paren
+(brace
+r_int
+r_int
+id|flags
+suffix:semicolon
+r_int
+id|i
+suffix:semicolon
+r_int
+id|room
+op_assign
+l_int|0
+suffix:semicolon
+id|dbg
+c_func
+(paren
+id|__FUNCTION__
+l_string|&quot; - port %d&quot;
+comma
+id|port-&gt;number
+)paren
+suffix:semicolon
+id|spin_lock_irqsave
+(paren
+op_amp
+id|port-&gt;port_lock
+comma
+id|flags
+)paren
+suffix:semicolon
+multiline_comment|/* tally up the number of bytes available */
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+id|NUM_URBS
+suffix:semicolon
+op_increment
+id|i
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|write_urb_pool
+(braket
+id|i
+)braket
+op_member_access_from_pointer
+id|status
+op_ne
+op_minus
+id|EINPROGRESS
+)paren
+(brace
+id|room
+op_add_assign
+id|URB_TRANSFER_BUFFER_SIZE
+suffix:semicolon
+)brace
+)brace
+id|spin_unlock_irqrestore
+(paren
+op_amp
+id|port-&gt;port_lock
+comma
+id|flags
+)paren
+suffix:semicolon
+id|dbg
+c_func
+(paren
+id|__FUNCTION__
+l_string|&quot; - returns %d&quot;
+comma
+id|room
+)paren
+suffix:semicolon
+r_return
+(paren
+id|room
+)paren
+suffix:semicolon
+)brace
+DECL|function|empeg_chars_in_buffer
+r_static
+r_int
+id|empeg_chars_in_buffer
+(paren
+r_struct
+id|usb_serial_port
+op_star
+id|port
+)paren
+(brace
+r_int
+r_int
+id|flags
+suffix:semicolon
+r_int
+id|i
+suffix:semicolon
+r_int
+id|chars
+op_assign
+l_int|0
+suffix:semicolon
+id|dbg
+c_func
+(paren
+id|__FUNCTION__
+l_string|&quot; - port %d&quot;
+comma
+id|port-&gt;number
+)paren
+suffix:semicolon
+id|spin_lock_irqsave
+(paren
+op_amp
+id|port-&gt;port_lock
+comma
+id|flags
+)paren
+suffix:semicolon
+multiline_comment|/* tally up the number of bytes waiting */
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+id|NUM_URBS
+suffix:semicolon
+op_increment
+id|i
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|write_urb_pool
+(braket
+id|i
+)braket
+op_member_access_from_pointer
+id|status
+op_eq
+op_minus
+id|EINPROGRESS
+)paren
+(brace
+id|chars
+op_add_assign
+id|URB_TRANSFER_BUFFER_SIZE
+suffix:semicolon
+)brace
+)brace
+id|spin_unlock_irqrestore
+(paren
+op_amp
+id|port-&gt;port_lock
+comma
+id|flags
+)paren
+suffix:semicolon
+id|dbg
+(paren
+id|__FUNCTION__
+l_string|&quot; - returns %d&quot;
+comma
+id|chars
+)paren
+suffix:semicolon
+r_return
+(paren
+id|chars
+)paren
 suffix:semicolon
 )brace
 DECL|function|empeg_write_bulk_callback
@@ -1272,7 +1484,6 @@ id|tty
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* gb - 2000/11/13&n;&t;&t;&t; * This doesn&squot;t push the data through unless tty-&gt;low_latency is set.&n;&t;&t;&t; */
 id|tty_insert_flip_char
 c_func
 (paren

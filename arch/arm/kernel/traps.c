@@ -442,7 +442,7 @@ ques
 c_cond
 l_string|&quot;(%0*x) &quot;
 suffix:colon
-l_string|&quot;%0*x&quot;
+l_string|&quot;%0*x &quot;
 comma
 id|width
 comma
@@ -575,7 +575,7 @@ id|fp
 id|printk
 c_func
 (paren
-l_string|&quot;invalid frame pointer %08lx&quot;
+l_string|&quot;invalid frame pointer 0x%08x&quot;
 comma
 id|fp
 )paren

@@ -18,32 +18,9 @@ macro_line|#include &lt;linux/stddef.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
-multiline_comment|/*&n; * Temporary debugging help until all code is converted to the new&n; * waitqueue usage.&n; */
+multiline_comment|/*&n; * Debug control.  Slow but useful.&n; */
 DECL|macro|WAITQUEUE_DEBUG
 mdefine_line|#define WAITQUEUE_DEBUG 0
-macro_line|#if WAITQUEUE_DEBUG
-r_extern
-r_int
-id|printk
-c_func
-(paren
-r_const
-r_char
-op_star
-id|fmt
-comma
-dot
-dot
-dot
-)paren
-suffix:semicolon
-DECL|macro|WQ_BUG
-mdefine_line|#define WQ_BUG() do { &bslash;&n;&t;printk(&quot;wq bug, forcing oops.&bslash;n&quot;); &bslash;&n;&t;BUG(); &bslash;&n;} while (0)
-DECL|macro|CHECK_MAGIC
-mdefine_line|#define CHECK_MAGIC(x) if (x != (long)&amp;(x)) &bslash;&n;&t;{ printk(&quot;bad magic %lx (should be %lx), &quot;, (long)x, (long)&amp;(x)); WQ_BUG(); }
-DECL|macro|CHECK_MAGIC_WQHEAD
-mdefine_line|#define CHECK_MAGIC_WQHEAD(x) do { &bslash;&n;&t;if (x-&gt;__magic != (long)&amp;(x-&gt;__magic)) { &bslash;&n;&t;&t;printk(&quot;bad magic %lx (should be %lx, creator %lx), &quot;, &bslash;&n;&t;&t;&t;x-&gt;__magic, (long)&amp;(x-&gt;__magic), x-&gt;__creator); &bslash;&n;&t;&t;WQ_BUG(); &bslash;&n;&t;} &bslash;&n;} while (0)
-macro_line|#endif
 DECL|struct|__wait_queue
 r_struct
 id|__wait_queue
@@ -161,11 +138,36 @@ r_struct
 id|__wait_queue_head
 id|wait_queue_head_t
 suffix:semicolon
+multiline_comment|/*&n; * Debugging macros.  We eschew `do { } while (0)&squot; because gcc can generate&n; * spurious .aligns.&n; */
+macro_line|#if WAITQUEUE_DEBUG
+DECL|macro|WQ_BUG
+mdefine_line|#define WQ_BUG()&t;BUG()
+DECL|macro|CHECK_MAGIC
+mdefine_line|#define CHECK_MAGIC(x)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;if ((x) != (long)&amp;(x)) {&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;printk(&quot;bad magic %lx (should be %lx), &quot;,&t;&t;&bslash;&n;&t;&t;&t;&t;(long)x, (long)&amp;(x));&t;&t;&t;&t;&bslash;&n;&t;&t;&t;WQ_BUG();&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;} while (0)
+DECL|macro|CHECK_MAGIC_WQHEAD
+mdefine_line|#define CHECK_MAGIC_WQHEAD(x)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;if ((x)-&gt;__magic != (long)&amp;((x)-&gt;__magic)) {&t;&t;&t;&bslash;&n;&t;&t;&t;printk(&quot;bad magic %lx (should be %lx, creator %lx), &quot;,&t;&bslash;&n;&t;&t;&t;(x)-&gt;__magic, (long)&amp;((x)-&gt;__magic), (x)-&gt;__creator);&t;&bslash;&n;&t;&t;&t;WQ_BUG();&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;} while (0)
+DECL|macro|WQ_CHECK_LIST_HEAD
+mdefine_line|#define WQ_CHECK_LIST_HEAD(list) &t;&t;&t;&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;if (!list-&gt;next || !list-&gt;prev)&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;WQ_BUG();&t;&t;&t;&t;&t;&t;&bslash;&n;&t;} while(0)
+DECL|macro|WQ_NOTE_WAKER
+mdefine_line|#define WQ_NOTE_WAKER(tsk)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;tsk-&gt;__waker = (long)__builtin_return_address(0);&t;&t;&bslash;&n;&t;} while (0)
+macro_line|#else
+DECL|macro|WQ_BUG
+mdefine_line|#define WQ_BUG()
+DECL|macro|CHECK_MAGIC
+mdefine_line|#define CHECK_MAGIC(x)
+DECL|macro|CHECK_MAGIC_WQHEAD
+mdefine_line|#define CHECK_MAGIC_WQHEAD(x)
+DECL|macro|WQ_CHECK_LIST_HEAD
+mdefine_line|#define WQ_CHECK_LIST_HEAD(list)
+DECL|macro|WQ_NOTE_WAKER
+mdefine_line|#define WQ_NOTE_WAKER(tsk)
+macro_line|#endif
+multiline_comment|/*&n; * Macros for declaration and initialisaton of the datatypes&n; */
 macro_line|#if WAITQUEUE_DEBUG
 DECL|macro|__WAITQUEUE_DEBUG_INIT
-macro_line|# define __WAITQUEUE_DEBUG_INIT(name) &bslash;&n;&t;&t;, (long)&amp;(name).__magic, 0
+macro_line|# define __WAITQUEUE_DEBUG_INIT(name) (long)&amp;(name).__magic, 0
 DECL|macro|__WAITQUEUE_HEAD_DEBUG_INIT
-macro_line|# define __WAITQUEUE_HEAD_DEBUG_INIT(name) &bslash;&n;&t;&t;, (long)&amp;(name).__magic, (long)&amp;(name).__magic
+macro_line|# define __WAITQUEUE_HEAD_DEBUG_INIT(name) (long)&amp;(name).__magic, (long)&amp;(name).__magic
 macro_line|#else
 DECL|macro|__WAITQUEUE_DEBUG_INIT
 macro_line|# define __WAITQUEUE_DEBUG_INIT(name)
@@ -173,11 +175,11 @@ DECL|macro|__WAITQUEUE_HEAD_DEBUG_INIT
 macro_line|# define __WAITQUEUE_HEAD_DEBUG_INIT(name)
 macro_line|#endif
 DECL|macro|__WAITQUEUE_INITIALIZER
-mdefine_line|#define __WAITQUEUE_INITIALIZER(name,task) &bslash;&n;&t;{ 0x0, task, { NULL, NULL } __WAITQUEUE_DEBUG_INIT(name)}
+mdefine_line|#define __WAITQUEUE_INITIALIZER(name, tsk) {&t;&t;&t;&t;&bslash;&n;&t;task:&t;&t;tsk,&t;&t;&t;&t;&t;&t;&bslash;&n;&t;task_list:&t;{ NULL, NULL },&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t; __WAITQUEUE_DEBUG_INIT(name)}
 DECL|macro|DECLARE_WAITQUEUE
-mdefine_line|#define DECLARE_WAITQUEUE(name,task) &bslash;&n;&t;wait_queue_t name = __WAITQUEUE_INITIALIZER(name,task)
+mdefine_line|#define DECLARE_WAITQUEUE(name, tsk)&t;&t;&t;&t;&t;&bslash;&n;&t;wait_queue_t name = __WAITQUEUE_INITIALIZER(name, tsk)
 DECL|macro|__WAIT_QUEUE_HEAD_INITIALIZER
-mdefine_line|#define __WAIT_QUEUE_HEAD_INITIALIZER(name) &bslash;&n;{ WAITQUEUE_RW_LOCK_UNLOCKED, { &amp;(name).task_list, &amp;(name).task_list } &bslash;&n;&t;&t;__WAITQUEUE_HEAD_DEBUG_INIT(name)}
+mdefine_line|#define __WAIT_QUEUE_HEAD_INITIALIZER(name) {&t;&t;&t;&t;&bslash;&n;&t;lock:&t;&t;WAITQUEUE_RW_LOCK_UNLOCKED,&t;&t;&t;&bslash;&n;&t;task_list:&t;{ &amp;(name).task_list, &amp;(name).task_list },&t;&bslash;&n;&t;&t;&t;__WAITQUEUE_HEAD_DEBUG_INIT(name)}
 DECL|macro|DECLARE_WAIT_QUEUE_HEAD
 mdefine_line|#define DECLARE_WAIT_QUEUE_HEAD(name) &bslash;&n;&t;wait_queue_head_t name = __WAIT_QUEUE_HEAD_INITIALIZER(name)
 DECL|function|init_waitqueue_head

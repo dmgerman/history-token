@@ -433,18 +433,6 @@ op_star
 )paren
 suffix:semicolon
 macro_line|#endif
-r_extern
-r_int
-id|inodes_stat
-(braket
-)braket
-suffix:semicolon
-r_extern
-r_int
-id|dentry_stat
-(braket
-)braket
-suffix:semicolon
 multiline_comment|/* The default sysctl tables: */
 DECL|variable|root_table
 r_static

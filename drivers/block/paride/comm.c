@@ -1,4 +1,4 @@
-multiline_comment|/* &n;        comm.c    (c) 1997-8  Grant R. Guenther &lt;grant@torque.net&gt;&n;                              Under the terms of the GNU public license.&n;&n;&t;comm.c is a low-level protocol driver for some older models&n;&t;of the DataStor &quot;Commuter&quot; parallel to IDE adapter.  Some of&n;&t;the parallel port devices marketed by Arista currently&n;&t;use this adapter.&n;*/
+multiline_comment|/* &n;        comm.c    (c) 1997-8  Grant R. Guenther &lt;grant@torque.net&gt;&n;                              Under the terms of the GNU General Public License.&n;&n;&t;comm.c is a low-level protocol driver for some older models&n;&t;of the DataStor &quot;Commuter&quot; parallel to IDE adapter.  Some of&n;&t;the parallel port devices marketed by Arista currently&n;&t;use this adapter.&n;*/
 multiline_comment|/* Changes:&n;&n;&t;1.01&t;GRG 1998.05.05  init_proto, release_proto&n;&n;*/
 DECL|macro|COMM_VERSION
 mdefine_line|#define COMM_VERSION      &quot;1.01&quot;

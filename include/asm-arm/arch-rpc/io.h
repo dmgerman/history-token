@@ -4,6 +4,15 @@ DECL|macro|__ASM_ARM_ARCH_IO_H
 mdefine_line|#define __ASM_ARM_ARCH_IO_H
 DECL|macro|IO_SPACE_LIMIT
 mdefine_line|#define IO_SPACE_LIMIT 0xffffffff
+multiline_comment|/*&n; * GCC is totally crap at loading/storing data.  We try to persuade it&n; * to do the right thing by using these whereever possible instead of&n; * the above.&n; */
+DECL|macro|__arch_base_getb
+mdefine_line|#define __arch_base_getb(b,o)&t;&t;&t;&bslash;&n; ({&t;&t;&t;&t;&t;&t;&bslash;&n;&t;unsigned int v, r = (b);&t;&t;&bslash;&n;&t;__asm__ __volatile__(&t;&t;&t;&bslash;&n;&t;&t;&quot;ldrb&t;%0, [%1, %2]&quot;&t;&t;&bslash;&n;&t;&t;: &quot;=r&quot; (v)&t;&t;&t;&bslash;&n;&t;&t;: &quot;r&quot; (r), &quot;Ir&quot; (o));&t;&t;&bslash;&n;&t;v;&t;&t;&t;&t;&t;&bslash;&n; })
+DECL|macro|__arch_base_getl
+mdefine_line|#define __arch_base_getl(b,o)&t;&t;&t;&bslash;&n; ({&t;&t;&t;&t;&t;&t;&bslash;&n;&t;unsigned int v, r = (b);&t;&t;&bslash;&n;&t;__asm__ __volatile__(&t;&t;&t;&bslash;&n;&t;&t;&quot;ldr&t;%0, [%1, %2]&quot;&t;&t;&bslash;&n;&t;&t;: &quot;=r&quot; (v)&t;&t;&t;&bslash;&n;&t;&t;: &quot;r&quot; (r), &quot;Ir&quot; (o));&t;&t;&bslash;&n;&t;v;&t;&t;&t;&t;&t;&bslash;&n; })
+DECL|macro|__arch_base_putb
+mdefine_line|#define __arch_base_putb(v,b,o)&t;&t;&t;&bslash;&n; ({&t;&t;&t;&t;&t;&t;&bslash;&n;&t;unsigned int r = (b);&t;&t;&t;&bslash;&n;&t;__asm__ __volatile__(&t;&t;&t;&bslash;&n;&t;&t;&quot;strb&t;%0, [%1, %2]&quot;&t;&t;&bslash;&n;&t;&t;:&t;&t;&t;&t;&bslash;&n;&t;&t;: &quot;r&quot; (v), &quot;r&quot; (r), &quot;Ir&quot; (o));&t;&bslash;&n; })
+DECL|macro|__arch_base_putl
+mdefine_line|#define __arch_base_putl(v,b,o)&t;&t;&t;&bslash;&n; ({&t;&t;&t;&t;&t;&t;&bslash;&n;&t;unsigned int r = (b);&t;&t;&t;&bslash;&n;&t;__asm__ __volatile__(&t;&t;&t;&bslash;&n;&t;&t;&quot;str&t;%0, [%1, %2]&quot;&t;&t;&bslash;&n;&t;&t;:&t;&t;&t;&t;&bslash;&n;&t;&t;: &quot;r&quot; (v), &quot;r&quot; (r), &quot;Ir&quot; (o));&t;&bslash;&n; })
 multiline_comment|/*&n; * We use two different types of addressing - PC style addresses, and ARM&n; * addresses.  PC style accesses the PC hardware with the normal PC IO&n; * addresses, eg 0x3f8 for serial#1.  ARM addresses are 0x80000000+&n; * and are translated to the start of IO.  Note that all addresses are&n; * shifted left!&n; */
 DECL|macro|__PORT_PCIO
 mdefine_line|#define __PORT_PCIO(x)&t;(!((x) &amp; 0x80000000))
@@ -190,7 +199,7 @@ l_string|&quot;cc&quot;
 suffix:semicolon
 )brace
 DECL|macro|DECLARE_DYN_IN
-mdefine_line|#define DECLARE_DYN_IN(sz,fnsuffix,instr)&t;&t;&t;&t;&t;&bslash;&n;extern __inline__ unsigned sz __in##fnsuffix (unsigned int port)&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;unsigned long temp, value;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__asm__ __volatile__(&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;tst&t;%2, #0x80000000&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;mov&t;%0, %4&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;addeq&t;%0, %0, %3&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;ldr&quot; ##instr## &quot;&t;%1, [%0, %2, lsl #2]&t;@ in&quot;###fnsuffix&t;&bslash;&n;&t;: &quot;=&amp;r&quot; (temp), &quot;=r&quot; (value)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;: &quot;r&quot; (port), &quot;Ir&quot; (PCIO_BASE - IO_BASE), &quot;Ir&quot; (IO_BASE)&t;&t;&bslash;&n;&t;: &quot;cc&quot;);&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;return (unsigned sz)value;&t;&t;&t;&t;&t;&t;&bslash;&n;}
+mdefine_line|#define DECLARE_DYN_IN(sz,fnsuffix,instr)&t;&t;&t;&t;&t;&bslash;&n;extern __inline__ unsigned sz __in##fnsuffix (unsigned int port)&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;unsigned long temp, value;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__asm__ __volatile__(&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;tst&t;%2, #0x80000000&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;mov&t;%0, %4&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;addeq&t;%0, %0, %3&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;ldr&quot; instr &quot;&t;%1, [%0, %2, lsl #2]&t;@ in&quot; #fnsuffix&t;&t;&t;&bslash;&n;&t;: &quot;=&amp;r&quot; (temp), &quot;=r&quot; (value)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;: &quot;r&quot; (port), &quot;Ir&quot; (PCIO_BASE - IO_BASE), &quot;Ir&quot; (IO_BASE)&t;&t;&bslash;&n;&t;: &quot;cc&quot;);&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;return (unsigned sz)value;&t;&t;&t;&t;&t;&t;&bslash;&n;}
 DECL|function|__ioaddr
 r_extern
 id|__inline__
@@ -312,14 +321,8 @@ DECL|macro|outl
 mdefine_line|#define outl(v,p)&t;(__builtin_constant_p((p)) ? __outlc(v,p) : __outl(v,p))
 DECL|macro|__ioaddr
 mdefine_line|#define __ioaddr(p)&t;(__builtin_constant_p((p)) ? __ioaddr(p)  : __ioaddrc(p))
-multiline_comment|/*&n; * Translated address IO functions&n; *&n; * IO address has already been translated to a virtual address&n; */
-DECL|macro|outb_t
-mdefine_line|#define outb_t(v,p)&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;(*(volatile unsigned char *)(p) = (v))
-DECL|macro|inb_t
-mdefine_line|#define inb_t(p)&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;(*(volatile unsigned char *)(p))
-DECL|macro|outl_t
-mdefine_line|#define outl_t(v,p)&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;(*(volatile unsigned long *)(p) = (v))
-DECL|macro|inl_t
-mdefine_line|#define inl_t(p)&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;(*(volatile unsigned long *)(p))
+multiline_comment|/* the following macro is depreciated */
+DECL|macro|ioaddr
+mdefine_line|#define ioaddr(port)&t;&t;&t;__ioaddr((port))
 macro_line|#endif
 eof

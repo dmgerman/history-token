@@ -1,4 +1,4 @@
-multiline_comment|/* &n;        aten.c  (c) 1997-8  Grant R. Guenther &lt;grant@torque.net&gt;&n;                            Under the terms of the GNU public license.&n;&n;&t;aten.c is a low-level protocol driver for the ATEN EH-100&n;&t;parallel port adapter.  The EH-100 supports 4-bit and 8-bit&n;        modes only.  There is also an EH-132 which supports EPP mode&n;        transfers.  The EH-132 is not yet supported.&n;&n;*/
+multiline_comment|/* &n;        aten.c  (c) 1997-8  Grant R. Guenther &lt;grant@torque.net&gt;&n;                            Under the terms of the GNU General Public License.&n;&n;&t;aten.c is a low-level protocol driver for the ATEN EH-100&n;&t;parallel port adapter.  The EH-100 supports 4-bit and 8-bit&n;        modes only.  There is also an EH-132 which supports EPP mode&n;        transfers.  The EH-132 is not yet supported.&n;&n;*/
 multiline_comment|/* Changes:&n;&n;&t;1.01&t;GRG 1998.05.05&t;init_proto, release_proto&n;&n;*/
 DECL|macro|ATEN_VERSION
 mdefine_line|#define ATEN_VERSION      &quot;1.01&quot;

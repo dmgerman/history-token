@@ -215,6 +215,12 @@ l_int|0
 )paren
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+l_int|NULL
+op_eq
+(paren
 id|SRpnt
 op_assign
 id|scsi_allocate_request
@@ -222,7 +228,20 @@ c_func
 (paren
 id|dev
 )paren
+)paren
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;SCSI internal ioctl failed, no memory&bslash;n&quot;
+)paren
 suffix:semicolon
+r_return
+op_minus
+id|ENOMEM
+suffix:semicolon
+)brace
 id|SRpnt-&gt;sr_data_direction
 op_assign
 id|SCSI_DATA_NONE

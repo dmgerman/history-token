@@ -510,6 +510,44 @@ l_int|NULL
 suffix:semicolon
 )paren
 suffix:semicolon
+multiline_comment|/* The IrLMP spec (IrLMP 1.1 p10) says that we have the right to&n;&t; * use only 0x01-0x6F. Of course, we can use LSAP_ANY as well.&n;&t; * JeanII */
+r_if
+c_cond
+(paren
+(paren
+id|stsap_sel
+op_ne
+id|LSAP_ANY
+)paren
+op_logical_and
+(paren
+(paren
+id|stsap_sel
+OL
+l_int|0x01
+)paren
+op_logical_or
+(paren
+id|stsap_sel
+op_ge
+l_int|0x70
+)paren
+)paren
+)paren
+(brace
+id|IRDA_DEBUG
+c_func
+(paren
+l_int|0
+comma
+id|__FUNCTION__
+l_string|&quot;(), invalid tsap!&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+l_int|NULL
+suffix:semicolon
+)brace
 id|self
 op_assign
 id|kmalloc
@@ -5637,7 +5675,7 @@ id|buf
 op_plus
 id|len
 comma
-l_string|&quot;  tx packets: %d, &quot;
+l_string|&quot;  tx packets: %ld, &quot;
 comma
 id|self-&gt;stats.tx_packets
 )paren
@@ -5651,7 +5689,7 @@ id|buf
 op_plus
 id|len
 comma
-l_string|&quot;rx packets: %d, &quot;
+l_string|&quot;rx packets: %ld, &quot;
 comma
 id|self-&gt;stats.rx_packets
 )paren

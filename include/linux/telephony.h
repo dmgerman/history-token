@@ -15,6 +15,16 @@ mdefine_line|#define PHONE_VENDOR_DIGI         4
 DECL|macro|PHONE_VENDOR_FRANKLIN
 mdefine_line|#define PHONE_VENDOR_FRANKLIN     5
 multiline_comment|/******************************************************************************&n; *  Vendor Summary Information Area&n; *&n; *  Quicknet Technologies, Inc. - makes low density analog telephony cards&n; *    with audio compression, POTS and PSTN interfaces (www.quicknet.net)&n; *&n; *  (other vendors following this API shuld add a short description of&n; *  the telephony products they support under Linux)&n; *&n; *****************************************************************************/
+DECL|macro|QTI_PHONEJACK
+mdefine_line|#define QTI_PHONEJACK&t;&t;100
+DECL|macro|QTI_LINEJACK
+mdefine_line|#define QTI_LINEJACK&t;&t;300
+DECL|macro|QTI_PHONEJACK_LITE
+mdefine_line|#define QTI_PHONEJACK_LITE&t;400
+DECL|macro|QTI_PHONEJACK_PCI
+mdefine_line|#define QTI_PHONEJACK_PCI&t;500
+DECL|macro|QTI_PHONECARD
+mdefine_line|#define QTI_PHONECARD&t;&t;600
 multiline_comment|/******************************************************************************&n;*&n;* The capabilities ioctls can inform you of the capabilities of each phone&n;* device installed in your system.  The PHONECTL_CAPABILITIES ioctl&n;* returns an integer value indicating the number of capabilities the   &n;* device has.  The PHONECTL_CAPABILITIES_LIST will fill an array of &n;* capability structs with all of it&squot;s capabilities.  The&n;* PHONECTL_CAPABILITIES_CHECK takes a single capability struct and returns&n;* a TRUE if the device has that capability, otherwise it returns false.&n;* &n;******************************************************************************/
 r_typedef
 r_enum

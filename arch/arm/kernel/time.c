@@ -310,6 +310,8 @@ id|leds_event
 )paren
 suffix:semicolon
 macro_line|#endif
+macro_line|#endif
+macro_line|#ifdef CONFIG_LEDS_TIMER
 DECL|function|do_leds
 r_static
 r_void
@@ -318,47 +320,6 @@ c_func
 (paren
 r_void
 )paren
-(brace
-macro_line|#ifdef CONFIG_LEDS_CPU
-(brace
-r_static
-r_int
-id|last_pid
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|current-&gt;pid
-op_ne
-id|last_pid
-)paren
-(brace
-id|last_pid
-op_assign
-id|current-&gt;pid
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|last_pid
-)paren
-id|leds_event
-c_func
-(paren
-id|led_idle_end
-)paren
-suffix:semicolon
-r_else
-id|leds_event
-c_func
-(paren
-id|led_idle_start
-)paren
-suffix:semicolon
-)brace
-)brace
-macro_line|#endif
-macro_line|#ifdef CONFIG_LEDS_TIMER
 (brace
 r_static
 r_int
@@ -387,8 +348,6 @@ id|led_timer
 )paren
 suffix:semicolon
 )brace
-)brace
-macro_line|#endif
 )brace
 macro_line|#else
 DECL|macro|do_leds

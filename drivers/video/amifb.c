@@ -4484,7 +4484,7 @@ r_return
 id|i
 suffix:semicolon
 )brace
-macro_line|#endif */ DEBUG */
+macro_line|#endif&t;/* DEBUG */
 )brace
 r_return
 op_minus

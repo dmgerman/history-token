@@ -1,5 +1,5 @@
 multiline_comment|/* pcnet32.c: An AMD PCnet32 ethernet driver for linux. */
-multiline_comment|/*&n; *&t;Copyright 1996-1999 Thomas Bogendoerfer&n; * &n; *&t;Derived from the lance driver written 1993,1994,1995 by Donald Becker.&n; * &n; *&t;Copyright 1993 United States Government as represented by the&n; *&t;Director, National Security Agency.&n; * &n; *&t;This software may be used and distributed according to the terms&n; *&t;of the GNU Public License, incorporated herein by reference.&n; *&n; *&t;This driver is for PCnet32 and PCnetPCI based ethercards&n; */
+multiline_comment|/*&n; *&t;Copyright 1996-1999 Thomas Bogendoerfer&n; * &n; *&t;Derived from the lance driver written 1993,1994,1995 by Donald Becker.&n; * &n; *&t;Copyright 1993 United States Government as represented by the&n; *&t;Director, National Security Agency.&n; * &n; *&t;This software may be used and distributed according to the terms&n; *&t;of the GNU General Public License, incorporated herein by reference.&n; *&n; *&t;This driver is for PCnet32 and PCnetPCI based ethercards&n; */
 DECL|variable|version
 r_static
 r_const
@@ -3492,7 +3492,7 @@ r_if
 c_cond
 (paren
 id|lp-&gt;mii
-op_amp
+op_logical_and
 op_logical_neg
 (paren
 id|lp-&gt;options

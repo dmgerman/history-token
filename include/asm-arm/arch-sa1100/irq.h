@@ -1,6 +1,7 @@
-multiline_comment|/*&n; * linux/include/asm-arm/arch-sa1100/irq.h&n; *&n; * Copyright (C) 1996-1999 Russell king&n; * Copyright (C) 1999 Hugo Fiennes&n; *&n; * Changelog:&n; *   22-08-1998&t;RMK&t;Restructured IRQ routines&n; *   06-01-1999&t;HBF&t;SA1100 twiddles&n; *   12-02-1999&t;NP&t;added ICCR&n; *   17-02-1999&t;NP&t;empeg henry ugly hacks now in a separate file ;)&n; *   11-08-1999&t;PD&t;SA1101 support added&n; *   25-09-1999&t;RMK&t;Merged into main ARM tree, cleaned up&n; *   12-05-2000 NP&t;IRQ dispatcher handler for GPIO 11 to 27.&n; *   26-05-2000 JD&t;SA-1111 support added&n; */
+multiline_comment|/*&n; * linux/include/asm-arm/arch-sa1100/irq.h&n; *&n; * Copyright (C) 1996-1999 Russell king&n; * Copyright (C) 1999 Hugo Fiennes&n; *&n; * Changelog:&n; *   22-08-1998&t;RMK&t;Restructured IRQ routines&n; *   06-01-1999&t;HBF&t;SA1100 twiddles&n; *   12-02-1999&t;NP&t;added ICCR&n; *   17-02-1999&t;NP&t;empeg henry ugly hacks now in a separate file ;)&n; *   11-08-1999&t;PD&t;SA1101 support added&n; *   25-09-1999&t;RMK&t;Merged into main ARM tree, cleaned up&n; *   12-05-2000 NP&t;IRQ dispatcher handler for GPIOs 11 to 27.&n; *   26-05-2000 JD&t;SA-1111 support added&n; *   01-06-2000 NP&t;GraphicsClient external IRQ dispatcher&n; *   09-10-2000 NP&t;Fixed lost interrupts on GPIOs 11 to 27.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
+macro_line|#include &lt;asm/hardware.h&gt;
 macro_line|#include &lt;asm/mach-types.h&gt;
 DECL|macro|fixup_irq
 mdefine_line|#define fixup_irq(x)&t;(x)
@@ -236,7 +237,7 @@ l_int|0xfffff800
 )paren
 )paren
 (brace
-multiline_comment|/*&n;&t;&t; * We don&squot;t want to clear GRER/GFER when the corresponding&n;&t;&t; * IRQ is masked because we could miss a level transition&n;&t;&t; * i.e. an IRQ which need servicing as soon as it is &n;&t;&t; * unmasked.  However, such situation should happen only&n;&t;&t; * during the loop below.  Thus all IRQs which aren&squot;t &n;&t;&t; * enabled at this point are considered spurious.  Those &n;&t;&t; * are cleared but only de-activated if they happened twice.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * We don&squot;t want to clear GRER/GFER when the corresponding&n;&t;&t; * IRQ is masked because we could miss a level transition&n;&t;&t; * i.e. an IRQ which need servicing as soon as it is &n;&t;&t; * unmasked.  However, such situation should happen only&n;&t;&t; * during the loop below.  Thus all IRQs which aren&squot;t &n;&t;&t; * enabled at this point are considered spurious.  Those &n;&t;&t; * are cleared but only de-activated if they happen twice.&n;&t;&t; */
 id|spurious
 op_assign
 id|irq
@@ -376,6 +377,11 @@ id|irq
 )paren
 )paren
 suffix:semicolon
+id|GPIO_11_27_spurious
+op_and_assign
+op_complement
+id|mask
+suffix:semicolon
 id|GPIO_11_27_enabled
 op_and_assign
 op_complement
@@ -397,9 +403,9 @@ r_int
 id|irq
 )paren
 (brace
-id|GPIO_11_27_enabled
-op_and_assign
-op_complement
+r_int
+id|mask
+op_assign
 (paren
 l_int|1
 op_lshift
@@ -409,6 +415,16 @@ c_func
 id|irq
 )paren
 )paren
+suffix:semicolon
+id|GPIO_11_27_spurious
+op_and_assign
+op_complement
+id|mask
+suffix:semicolon
+id|GPIO_11_27_enabled
+op_and_assign
+op_complement
+id|mask
 suffix:semicolon
 )brace
 DECL|function|sa1100_unmask_GPIO11_27_irq
@@ -435,13 +451,56 @@ id|irq
 )paren
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|GPIO_11_27_spurious
+op_amp
+id|mask
+)paren
+(brace
+multiline_comment|/* &n;&t;&t; * We don&squot;t want to miss an interrupt that would have occured&n;&t;&t; * while it was masked.  Simulate it if it is the case.&n;&t;&t; */
+r_int
+id|state
+op_assign
+id|GPLR
+suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+(paren
+id|state
+op_amp
+id|GPIO_IRQ_rising_edge
+)paren
+op_or
+(paren
+op_complement
+id|state
+op_amp
+id|GPIO_IRQ_falling_edge
+)paren
+)paren
+op_amp
+id|mask
+)paren
+(brace
+id|do_IRQ
+c_func
+(paren
+id|irq
+comma
+l_int|NULL
+)paren
+suffix:semicolon
+multiline_comment|/* we are being called again from do_IRQ() so ... */
+r_return
+suffix:semicolon
+)brace
+)brace
 id|GPIO_11_27_enabled
 op_or_assign
-id|mask
-suffix:semicolon
-id|GPIO_11_27_spurious
-op_and_assign
-op_complement
 id|mask
 suffix:semicolon
 id|GRER
@@ -930,7 +989,7 @@ id|SA_INTERRUPT
 )brace
 suffix:semicolon
 macro_line|#endif
-macro_line|#if defined(CONFIG_SA1100_GRAPHICSCLIENT) || defined(CONFIG_SA1100_THINCLIENT)
+macro_line|#if defined(CONFIG_SA1100_GRAPHICSCLIENT)
 multiline_comment|/*&n; * IRQ handler for the ThinClient/GraphicsClient external IRQ controller&n; */
 DECL|function|ADS_IRQ_demux
 r_static
@@ -1734,16 +1793,11 @@ suffix:semicolon
 )brace
 )brace
 macro_line|#endif
-macro_line|#if defined(CONFIG_SA1100_GRAPHICSCLIENT) || defined(CONFIG_SA1100_THINCLIENT)
+macro_line|#if defined(CONFIG_SA1100_GRAPHICSCLIENT)
 r_if
 c_cond
 (paren
 id|machine_is_graphicsclient
-c_func
-(paren
-)paren
-op_logical_or
-id|machine_is_thinclient
 c_func
 (paren
 )paren

@@ -349,6 +349,6 @@ DECL|macro|y
 macro_line|#undef y
 DECL|macro|x
 macro_line|#undef x
-macro_line|#endif STATISTICS
-macro_line|#endif LINUX_CM206_H
+macro_line|#endif /* STATISTICS */
+macro_line|#endif /* LINUX_CM206_H */
 eof

@@ -343,6 +343,7 @@ DECL|member|speed
 id|__u32
 id|speed
 suffix:semicolon
+multiline_comment|/* Link speed */
 DECL|member|qos_tx
 r_struct
 id|qos_info
@@ -382,6 +383,11 @@ r_int
 id|bofs_count
 suffix:semicolon
 multiline_comment|/* Negotiated extra BOFs */
+DECL|member|next_bofs
+r_int
+id|next_bofs
+suffix:semicolon
+multiline_comment|/* Negotiated extra BOFs after next frame */
 macro_line|#ifdef CONFIG_IRDA_COMPRESSION
 DECL|member|compressor
 r_struct
@@ -794,6 +800,9 @@ r_struct
 id|irlap_cb
 op_star
 id|self
+comma
+r_int
+id|now
 )paren
 suffix:semicolon
 r_void

@@ -45,7 +45,7 @@ r_int
 r_int
 id|totalram_pages
 suffix:semicolon
-DECL|variable|swapper_pg_dir
+r_extern
 id|pgd_t
 id|swapper_pg_dir
 (braket
@@ -1421,7 +1421,7 @@ c_func
 (paren
 id|pgdat
 comma
-l_int|0xc0000000
+id|PAGE_OFFSET
 comma
 l_int|0x00014000
 )paren
@@ -1576,22 +1576,31 @@ id|map_pg
 op_assign
 id|bootmap_pfn
 suffix:semicolon
+multiline_comment|/*&n;&t; * Initialise the bootmem nodes.&n;&t; *&n;&t; * What we really want to do is:&n;&t; *&n;&t; *   unmap_all_regions_except_kernel();&n;&t; *   for_each_node_in_reverse_order(node) {&n;&t; *     map_node(node);&n;&t; *     allocate_bootmem_map(node);&n;&t; *     init_bootmem_node(node);&n;&t; *     free_bootmem_node(node);&n;&t; *   }&n;&t; *&n;&t; * but this is a 2.5-type change.  For now, we just set&n;&t; * the nodes up in reverse order.&n;&t; *&n;&t; * (we could also do with rolling bootmem_init and paging_init&n;&t; * into one generic &quot;memory_init&quot; type function).&n;&t; */
+id|np
+op_add_assign
+id|numnodes
+op_minus
+l_int|1
+suffix:semicolon
 r_for
 c_loop
 (paren
 id|node
 op_assign
+id|numnodes
+op_minus
+l_int|1
+suffix:semicolon
+id|node
+op_ge
 l_int|0
 suffix:semicolon
 id|node
-OL
-id|numnodes
-suffix:semicolon
-id|node
-op_increment
+op_decrement
 comma
 id|np
-op_increment
+op_decrement
 )paren
 (brace
 multiline_comment|/*&n;&t;&t; * If there are no pages in this node, ignore it.&n;&t;&t; * Note that node 0 must always have some pages.&n;&t;&t; */

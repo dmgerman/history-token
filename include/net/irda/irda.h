@@ -321,11 +321,11 @@ id|magic_t
 id|magic
 suffix:semicolon
 multiline_comment|/* Be sure that we can trust the information */
-DECL|member|speed
+DECL|member|next_speed
 id|__u32
-id|speed
+id|next_speed
 suffix:semicolon
-multiline_comment|/* The Speed this frame should be sent with */
+multiline_comment|/* The Speed to be set *after* this frame */
 DECL|member|mtt
 id|__u16
 id|mtt
@@ -336,6 +336,11 @@ id|__u16
 id|xbofs
 suffix:semicolon
 multiline_comment|/* Number of xbofs required, used by SIR mode */
+DECL|member|next_xbofs
+id|__u16
+id|next_xbofs
+suffix:semicolon
+multiline_comment|/* Number of xbofs required *after* this frame */
 DECL|member|context
 r_void
 op_star

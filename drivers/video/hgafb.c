@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * linux/drivers/video/hgafb.c -- Hercules graphics adaptor frame buffer device&n; * &n; *      Created 25 Nov 1999 by Ferenc Bakonyi (fero@drama.obuda.kando.hu)&n; *      Based on skeletonfb.c by Geert Uytterhoeven and&n; *               mdacon.c by Andrew Apted&n; *&n; * History:&n; *&n; * - Revision 0.1.6 (17 Aug 2000): new style structs&n; *                                 documentation&n; * - Revision 0.1.5 (13 Mar 2000): spinlocks instead of saveflags();cli();etc&n; *                                 minor fixes&n; * - Revision 0.1.4 (24 Jan 2000): fixed a bug in hga_card_detect() for &n; *                                  HGA-only systems&n; * - Revision 0.1.3 (22 Jan 2000): modified for the new fb_info structure&n; *                                 screen is cleared after rmmod&n; *                                 virtual resolutions&n; *                                 kernel parameter &squot;video=hga:font:{fontname}&squot;&n; *                                 module parameter &squot;font={fontname}&squot;&n; *                                 module parameter &squot;nologo={0|1}&squot;&n; *                                 the most important: boot logo :)&n; * - Revision 0.1.0  (6 Dec 1999): faster scrolling and minor fixes&n; * - First release  (25 Nov 1999)&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file COPYING in the main directory of this archive&n; * for more details.&n; */
+multiline_comment|/*&n; * linux/drivers/video/hgafb.c -- Hercules graphics adaptor frame buffer device&n; * &n; *      Created 25 Nov 1999 by Ferenc Bakonyi (fero@drama.obuda.kando.hu)&n; *      Based on skeletonfb.c by Geert Uytterhoeven and&n; *               mdacon.c by Andrew Apted&n; *&n; * History:&n; *&n; * - Revision 0.1.7 (23 Jan 2001): fix crash resulting from MDA only cards &n; *&t;&t;&t;&t;   being detected as Hercules.&t; (Paul G.)&n; * - Revision 0.1.6 (17 Aug 2000): new style structs&n; *                                 documentation&n; * - Revision 0.1.5 (13 Mar 2000): spinlocks instead of saveflags();cli();etc&n; *                                 minor fixes&n; * - Revision 0.1.4 (24 Jan 2000): fixed a bug in hga_card_detect() for &n; *                                  HGA-only systems&n; * - Revision 0.1.3 (22 Jan 2000): modified for the new fb_info structure&n; *                                 screen is cleared after rmmod&n; *                                 virtual resolutions&n; *                                 kernel parameter &squot;video=hga:font:{fontname}&squot;&n; *                                 module parameter &squot;font={fontname}&squot;&n; *                                 module parameter &squot;nologo={0|1}&squot;&n; *                                 the most important: boot logo :)&n; * - Revision 0.1.0  (6 Dec 1999): faster scrolling and minor fixes&n; * - First release  (25 Nov 1999)&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file COPYING in the main directory of this archive&n; * for more details.&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
@@ -1447,10 +1447,12 @@ r_if
 c_cond
 (paren
 id|p_save
-op_ne
+op_eq
 id|q_save
 )paren
-(brace
+r_return
+l_int|0
+suffix:semicolon
 r_switch
 c_cond
 (paren
@@ -1501,7 +1503,6 @@ l_string|&quot;Hercules&quot;
 suffix:semicolon
 r_break
 suffix:semicolon
-)brace
 )brace
 r_return
 l_int|1

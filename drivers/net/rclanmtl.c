@@ -1,26 +1,9 @@
 multiline_comment|/*&n;** *************************************************************************&n;**&n;**&n;**     R C L A N M T L . C             $Revision: 6 $&n;**&n;**&n;**  RedCreek I2O LAN Message Transport Layer program module.&n;**&n;**  ---------------------------------------------------------------------&n;**  ---     Copyright (c) 1997-1999, RedCreek Communications Inc.     ---&n;**  ---                   All rights reserved.                        ---&n;**  ---------------------------------------------------------------------&n;**&n;**  File Description:&n;**&n;**  Host side I2O (Intelligent I/O) LAN message transport layer.&n;**&n;**  This program is free software; you can redistribute it and/or modify&n;**  it under the terms of the GNU General Public License as published by&n;**  the Free Software Foundation; either version 2 of the License, or&n;**  (at your option) any later version.&n;&n;**  This program is distributed in the hope that it will be useful,&n;**  but WITHOUT ANY WARRANTY; without even the implied warranty of&n;**  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;**  GNU General Public License for more details.&n;&n;**  You should have received a copy of the GNU General Public License&n;**  along with this program; if not, write to the Free Software&n;**  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n;**&n;** 1998-1999, LAN API was modified and enhanced by Alice Hennessy.&n;**&n;** Sometime in 1997, LAN API was written from scratch by Wendell Nichols.&n;** *************************************************************************&n;*/
 DECL|macro|DEBUG
-macro_line|#undef DEBUG
+mdefine_line|#define DEBUG 1
 DECL|macro|RC_LINUX_MODULE
 mdefine_line|#define RC_LINUX_MODULE
 macro_line|#include &quot;rclanmtl.h&quot;
-DECL|macro|dprintf
-mdefine_line|#define dprintf kprintf
-r_extern
-r_int
-id|printk
-c_func
-(paren
-r_const
-r_char
-op_star
-id|fmt
-comma
-dot
-dot
-dot
-)paren
-suffix:semicolon
 multiline_comment|/* RedCreek LAN device Target ID */
 DECL|macro|RC_LAN_TARGET_ID
 mdefine_line|#define RC_LAN_TARGET_ID  0x10 
@@ -283,9 +266,8 @@ mdefine_line|#define RC_PRIVATE_GET_LINK_SPEED   0x0008
 DECL|macro|RC_PRIVATE_GET_FIRMWARE_REV
 mdefine_line|#define RC_PRIVATE_GET_FIRMWARE_REV 0x0009
 multiline_comment|/* #define RC_PRIVATE_GET_MAC_ADDR     0x000A */
-multiline_comment|/**/
 DECL|macro|RC_PRIVATE_GET_IP_AND_MASK
-mdefine_line|#define RC_PRIVATE_GET_IP_AND_MASK  0x000B /**/
+mdefine_line|#define RC_PRIVATE_GET_IP_AND_MASK  0x000B 
 DECL|macro|RC_PRIVATE_DEBUG_MSG
 mdefine_line|#define RC_PRIVATE_DEBUG_MSG        0x000C
 DECL|macro|RC_PRIVATE_REPORT_DRIVER_CAPABILITY
@@ -354,244 +336,7 @@ DECL|macro|MSG_FRAME_SIZE
 mdefine_line|#define MSG_FRAME_SIZE  512
 DECL|macro|NMBR_MSG_FRAMES
 mdefine_line|#define NMBR_MSG_FRAMES 30
-multiline_comment|/*&n;**  Message Unit CSR definitions for RedCreek PCI45 board&n;*/
-DECL|struct|tag_rcatu
-r_typedef
-r_struct
-id|tag_rcatu
-(brace
-DECL|member|APICRegSel
-r_volatile
-r_int
-r_int
-id|APICRegSel
-suffix:semicolon
-multiline_comment|/* APIC Register Select */
-DECL|member|reserved0
-r_volatile
-r_int
-r_int
-id|reserved0
-suffix:semicolon
-DECL|member|APICWinReg
-r_volatile
-r_int
-r_int
-id|APICWinReg
-suffix:semicolon
-multiline_comment|/* APIC Window Register */
-DECL|member|reserved1
-r_volatile
-r_int
-r_int
-id|reserved1
-suffix:semicolon
-DECL|member|InMsgReg0
-r_volatile
-r_int
-r_int
-id|InMsgReg0
-suffix:semicolon
-multiline_comment|/* inbound message register 0 */
-DECL|member|InMsgReg1
-r_volatile
-r_int
-r_int
-id|InMsgReg1
-suffix:semicolon
-multiline_comment|/* inbound message register 1 */
-DECL|member|OutMsgReg0
-r_volatile
-r_int
-r_int
-id|OutMsgReg0
-suffix:semicolon
-multiline_comment|/* outbound message register 0 */
-DECL|member|OutMsgReg1
-r_volatile
-r_int
-r_int
-id|OutMsgReg1
-suffix:semicolon
-multiline_comment|/* outbound message register 1 */
-DECL|member|InDoorReg
-r_volatile
-r_int
-r_int
-id|InDoorReg
-suffix:semicolon
-multiline_comment|/* inbound doorbell register */
-DECL|member|InIntStat
-r_volatile
-r_int
-r_int
-id|InIntStat
-suffix:semicolon
-multiline_comment|/* inbound interrupt status register */
-DECL|member|InIntMask
-r_volatile
-r_int
-r_int
-id|InIntMask
-suffix:semicolon
-multiline_comment|/* inbound interrupt mask register */
-DECL|member|OutDoorReg
-r_volatile
-r_int
-r_int
-id|OutDoorReg
-suffix:semicolon
-multiline_comment|/* outbound doorbell register */
-DECL|member|OutIntStat
-r_volatile
-r_int
-r_int
-id|OutIntStat
-suffix:semicolon
-multiline_comment|/* outbound interrupt status register */
-DECL|member|OutIntMask
-r_volatile
-r_int
-r_int
-id|OutIntMask
-suffix:semicolon
-multiline_comment|/* outbound interrupt mask register */
-DECL|member|reserved2
-r_volatile
-r_int
-r_int
-id|reserved2
-suffix:semicolon
-DECL|member|reserved3
-r_volatile
-r_int
-r_int
-id|reserved3
-suffix:semicolon
-DECL|member|InQueue
-r_volatile
-r_int
-r_int
-id|InQueue
-suffix:semicolon
-multiline_comment|/* inbound queue port */
-DECL|member|OutQueue
-r_volatile
-r_int
-r_int
-id|OutQueue
-suffix:semicolon
-multiline_comment|/* outbound queue port */
-DECL|member|reserved4
-r_volatile
-r_int
-r_int
-id|reserved4
-suffix:semicolon
-DECL|member|reserver5
-r_volatile
-r_int
-r_int
-id|reserver5
-suffix:semicolon
-multiline_comment|/* RedCreek extension */
-DECL|member|EtherMacLow
-r_volatile
-r_int
-r_int
-id|EtherMacLow
-suffix:semicolon
-DECL|member|EtherMacHi
-r_volatile
-r_int
-r_int
-id|EtherMacHi
-suffix:semicolon
-DECL|member|IPaddr
-r_volatile
-r_int
-r_int
-id|IPaddr
-suffix:semicolon
-DECL|member|IPmask
-r_volatile
-r_int
-r_int
-id|IPmask
-suffix:semicolon
-)brace
-DECL|typedef|ATU
-DECL|typedef|PATU
-id|ATU
-comma
-op_star
-id|PATU
-suffix:semicolon
-multiline_comment|/* &n; ** typedef PAB&n; **&n; ** PCI Adapter Block - holds instance specific information and is located&n; ** in a reserved space at the start of the message buffer allocated by user.&n; */
-r_typedef
-r_struct
-(brace
-DECL|member|p_atu
-id|PATU
-id|p_atu
-suffix:semicolon
-multiline_comment|/* ptr to  ATU register block */
-DECL|member|pPci45LinBaseAddr
-id|PU8
-id|pPci45LinBaseAddr
-suffix:semicolon
-DECL|member|pLinOutMsgBlock
-id|PU8
-id|pLinOutMsgBlock
-suffix:semicolon
-DECL|member|outMsgBlockPhyAddr
-id|U32
-id|outMsgBlockPhyAddr
-suffix:semicolon
-DECL|member|pTransCallbackFunc
-id|PFNTXCALLBACK
-id|pTransCallbackFunc
-suffix:semicolon
-DECL|member|pRecvCallbackFunc
-id|PFNRXCALLBACK
-id|pRecvCallbackFunc
-suffix:semicolon
-DECL|member|pRebootCallbackFunc
-id|PFNCALLBACK
-id|pRebootCallbackFunc
-suffix:semicolon
-DECL|member|pCallbackFunc
-id|PFNCALLBACK
-id|pCallbackFunc
-suffix:semicolon
-DECL|member|IOPState
-id|U16
-id|IOPState
-suffix:semicolon
-DECL|member|InboundMFrameSize
-id|U16
-id|InboundMFrameSize
-suffix:semicolon
-)brace
-DECL|typedef|PAB
-DECL|typedef|PPAB
-id|PAB
-comma
-op_star
-id|PPAB
-suffix:semicolon
 multiline_comment|/* &n; ** in reserved space right after PAB in host memory is area for returning&n; ** values from card &n; */
-multiline_comment|/* &n; ** Array of pointers to PCI Adapter Blocks.&n; ** Indexed by a zero based (0-31) interface number.&n; */
-DECL|macro|MAX_ADAPTERS
-mdefine_line|#define MAX_ADAPTERS 32
-DECL|variable|PCIAdapterBlock
-r_static
-id|PPAB
-id|PCIAdapterBlock
-(braket
-id|MAX_ADAPTERS
-)braket
-suffix:semicolon
 multiline_comment|/*&n;** typedef NICSTAT&n;**&n;** Data structure for NIC statistics retruned from PCI card.  Data copied from&n;** here to user allocated RCLINKSTATS (see rclanmtl.h) structure.&n;*/
 DECL|struct|tag_NicStat
 r_typedef
@@ -758,26 +503,16 @@ id|PPAB
 id|pPab
 )paren
 suffix:semicolon
-multiline_comment|/* 1st 100h bytes of message block is reserved for messenger instance */
-DECL|macro|ADAPTER_BLOCK_RESERVED_SPACE
-mdefine_line|#define ADAPTER_BLOCK_RESERVED_SPACE 0x100
-multiline_comment|/*&n;** =========================================================================&n;** RCInitI2OMsgLayer()&n;**&n;** Initialize the RedCreek I2O Module and adapter.&n;**&n;** Inputs:  AdapterID - interface number from 0 to 15&n;**          pciBaseAddr - virual base address of PCI (set by BIOS)&n;**          p_msgbuf - virual address to private message block (min. 16K)&n;**          p_phymsgbuf - physical address of private message block&n;**          TransmitCallbackFunction - address of transmit callback function&n;**          ReceiveCallbackFunction  - address of receive  callback function&n;**&n;** private message block is allocated by user.  It must be in locked pages.&n;** p_msgbuf and p_phymsgbuf point to the same location.  Must be contigous&n;** memory block of a minimum of 16K byte and long word aligned.&n;** =========================================================================&n;*/
+multiline_comment|/*&n;** =========================================================================&n;** RCInitI2OMsgLayer()&n;**&n;** Initialize the RedCreek I2O Module and adapter.&n;**&n;** Inputs:  dev - the devices net_device struct&n;**          TransmitCallbackFunction - address of transmit callback function&n;**          ReceiveCallbackFunction  - address of receive  callback function&n;**&n;** private message block is allocated by user.  It must be in locked pages.&n;** p_msgbuf and p_phymsgbuf point to the same location.  Must be contigous&n;** memory block of a minimum of 16K byte and long word aligned.&n;** =========================================================================&n;*/
 id|RC_RETURN
 DECL|function|RCInitI2OMsgLayer
 id|RCInitI2OMsgLayer
 c_func
 (paren
-id|U16
-id|AdapterID
-comma
-id|U32
-id|pciBaseAddr
-comma
-id|PU8
-id|p_msgbuf
-comma
-id|PU8
-id|p_phymsgbuf
+r_struct
+id|net_device
+op_star
+id|dev
 comma
 id|PFNTXCALLBACK
 id|TransmitCallbackFunction
@@ -795,35 +530,73 @@ suffix:semicolon
 id|PPAB
 id|pPab
 suffix:semicolon
-macro_line|#ifdef DEBUG
-id|kprintf
+id|U32
+id|pciBaseAddr
+op_assign
+id|dev-&gt;base_addr
+suffix:semicolon
+id|PDPA
+id|pDpa
+op_assign
+id|dev-&gt;priv
+suffix:semicolon
+id|PU8
+id|p_msgbuf
+op_assign
+id|pDpa-&gt;PLanApiPA
+suffix:semicolon
+id|PU8
+id|p_phymsgbuf
+op_assign
+(paren
+id|PU8
+)paren
+id|virt_to_bus
 c_func
 (paren
-l_string|&quot;InitI2O: Adapter:0x%04.4ux ATU:0x%08.8ulx msgbuf:0x%08.8ulx phymsgbuf:0x%08.8ulx&bslash;n&quot;
-l_string|&quot;TransmitCallbackFunction:0x%08.8ulx  ReceiveCallbackFunction:0x%08.8ulx&bslash;n&quot;
+(paren
+r_void
+op_star
+)paren
+id|p_msgbuf
+)paren
+suffix:semicolon
+id|dprintk
+c_func
+(paren
+l_string|&quot;InitI2O: Adapter:0x%04ux ATU:0x%08ulx msgbuf:0x%08ulx phymsgbuf:0x%08ulx&bslash;n&quot;
+l_string|&quot;TransmitCallbackFunction:0x%08ulx  ReceiveCallbackFunction:0x%08ulx&bslash;n&quot;
 comma
-id|AdapterID
+id|pDpa-&gt;id
 comma
 id|pciBaseAddr
 comma
+(paren
+id|u32
+)paren
 id|p_msgbuf
 comma
+(paren
+id|u32
+)paren
 id|p_phymsgbuf
 comma
+(paren
+id|u32
+)paren
 id|TransmitCallbackFunction
 comma
+(paren
+id|u32
+)paren
 id|ReceiveCallbackFunction
 )paren
 suffix:semicolon
-macro_line|#endif /* DEBUG */
 multiline_comment|/* Check if this interface already initialized - if so, shut it down */
 r_if
 c_cond
 (paren
-id|PCIAdapterBlock
-(braket
-id|AdapterID
-)braket
+id|pDpa-&gt;pPab
 op_ne
 l_int|NULL
 )paren
@@ -831,27 +604,72 @@ l_int|NULL
 id|printk
 c_func
 (paren
-l_string|&quot;PCIAdapterBlock[%d]!=NULL&bslash;n&quot;
+id|KERN_WARNING
+l_string|&quot;(rcpci45 driver:) pDpa-&gt;pPab [%d] != NULL&bslash;n&quot;
 comma
-id|AdapterID
+id|pDpa-&gt;id
 )paren
 suffix:semicolon
-singleline_comment|//        RCResetLANCard(AdapterID, 0, (PU32)NULL, (PFNCALLBACK)NULL);
-id|PCIAdapterBlock
-(braket
-id|AdapterID
-)braket
+multiline_comment|/*          RCResetLANCard(pDpa-&gt;id, 0, (PU32)NULL, (PFNCALLBACK)NULL); */
+id|pDpa-&gt;pPab
 op_assign
 l_int|NULL
 suffix:semicolon
 )brace
-multiline_comment|/* &n;    ** store adapter instance values in adapter block.&n;    ** Adapter block is at beginning of message buffer&n;    */
+multiline_comment|/* store adapter instance values in adapter block.&n;     * Adapter block is at beginning of message buffer */
 id|pPab
 op_assign
+id|kmalloc
+c_func
 (paren
-id|PPAB
+r_sizeof
+(paren
+op_star
+id|pPab
 )paren
-id|p_msgbuf
+comma
+id|GFP_KERNEL
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|pPab
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;(rcpci45 driver:) RCInitI2OMsgLayer: Could not allocate memory for PAB struct!&bslash;n&quot;
+)paren
+suffix:semicolon
+id|result
+op_assign
+id|RC_RTN_MALLOC_ERROR
+suffix:semicolon
+r_goto
+id|err_out
+suffix:semicolon
+)brace
+id|memset
+c_func
+(paren
+id|pPab
+comma
+l_int|0
+comma
+r_sizeof
+(paren
+op_star
+id|pPab
+)paren
+)paren
+suffix:semicolon
+id|pDpa-&gt;pPab
+op_assign
+id|pPab
 suffix:semicolon
 id|pPab-&gt;p_atu
 op_assign
@@ -867,28 +685,20 @@ id|PU8
 )paren
 id|pciBaseAddr
 suffix:semicolon
-multiline_comment|/* Set outbound message frame addr - skip over Adapter Block */
+multiline_comment|/* Set outbound message frame addr */
 id|pPab-&gt;outMsgBlockPhyAddr
 op_assign
 (paren
 id|U32
 )paren
-(paren
 id|p_phymsgbuf
-op_plus
-id|ADAPTER_BLOCK_RESERVED_SPACE
-)paren
 suffix:semicolon
 id|pPab-&gt;pLinOutMsgBlock
 op_assign
 (paren
 id|PU8
 )paren
-(paren
 id|p_msgbuf
-op_plus
-id|ADAPTER_BLOCK_RESERVED_SPACE
-)paren
 suffix:semicolon
 multiline_comment|/* store callback function addresses */
 id|pPab-&gt;pTransCallbackFunc
@@ -926,8 +736,8 @@ id|result
 op_ne
 id|RC_RTN_NO_ERROR
 )paren
-r_return
-id|result
+r_goto
+id|err_out_dealloc
 suffix:semicolon
 r_if
 c_cond
@@ -940,13 +750,14 @@ id|I2O_IOP_STATE_OPERATIONAL
 id|printk
 c_func
 (paren
-l_string|&quot;pPab-&gt;IOPState == op: resetting adapter&bslash;n&quot;
+id|KERN_INFO
+l_string|&quot;(rcpci45 driver:) pPab-&gt;IOPState == op: resetting adapter&bslash;n&quot;
 )paren
 suffix:semicolon
 id|RCResetLANCard
 c_func
 (paren
-id|AdapterID
+id|dev
 comma
 l_int|0
 comma
@@ -977,8 +788,8 @@ id|result
 op_ne
 id|RC_RTN_NO_ERROR
 )paren
-r_return
-id|result
+r_goto
+id|err_out_dealloc
 suffix:semicolon
 id|result
 op_assign
@@ -995,18 +806,24 @@ id|result
 op_ne
 id|RC_RTN_NO_ERROR
 )paren
-r_return
-id|result
-suffix:semicolon
-id|PCIAdapterBlock
-(braket
-id|AdapterID
-)braket
-op_assign
-id|pPab
+r_goto
+id|err_out_dealloc
 suffix:semicolon
 r_return
 id|RC_RTN_NO_ERROR
+suffix:semicolon
+id|err_out_dealloc
+suffix:colon
+id|kfree
+c_func
+(paren
+id|pPab
+)paren
+suffix:semicolon
+id|err_out
+suffix:colon
+r_return
+id|result
 suffix:semicolon
 )brace
 multiline_comment|/*&n;** =========================================================================&n;** Disable and Enable I2O interrupts.  I2O interrupts are enabled at Init time&n;** but can be disabled and re-enabled through these two function calls.&n;** Packets will still be put into any posted received buffers and packets will&n;** be sent through RCI2OSendPacket() functions.  Disabling I2O interrupts&n;** will prevent hardware interrupt to host even though the outbound I2O msg&n;** queue is not emtpy.&n;** =========================================================================&n;*/
@@ -1017,19 +834,23 @@ id|RC_RETURN
 id|RCDisableI2OInterrupts
 c_func
 (paren
-id|U16
-id|AdapterID
+r_struct
+id|net_device
+op_star
+id|dev
 )paren
 (brace
 id|PPAB
 id|pPab
-suffix:semicolon
-id|pPab
 op_assign
-id|PCIAdapterBlock
-(braket
-id|AdapterID
-)braket
+(paren
+(paren
+id|PDPA
+)paren
+id|dev-&gt;priv
+)paren
+op_member_access_from_pointer
+id|pPab
 suffix:semicolon
 r_if
 c_cond
@@ -1054,19 +875,23 @@ id|RC_RETURN
 id|RCEnableI2OInterrupts
 c_func
 (paren
-id|U16
-id|AdapterID
+r_struct
+id|net_device
+op_star
+id|dev
 )paren
 (brace
 id|PPAB
 id|pPab
-suffix:semicolon
-id|pPab
 op_assign
-id|PCIAdapterBlock
-(braket
-id|AdapterID
-)braket
+(paren
+(paren
+id|PDPA
+)paren
+id|dev-&gt;priv
+)paren
+op_member_access_from_pointer
+id|pPab
 suffix:semicolon
 r_if
 c_cond
@@ -1093,8 +918,10 @@ DECL|function|RCI2OSendPacket
 id|RCI2OSendPacket
 c_func
 (paren
-id|U16
-id|AdapterID
+r_struct
+id|net_device
+op_star
+id|dev
 comma
 id|U32
 id|InitiatorContext
@@ -1114,21 +941,21 @@ id|size
 suffix:semicolon
 id|PPAB
 id|pPab
+op_assign
+(paren
+(paren
+id|PDPA
+)paren
+id|dev-&gt;priv
+)paren
+op_member_access_from_pointer
+id|pPab
 suffix:semicolon
-macro_line|#ifdef DEBUG
-id|kprintf
+id|dprintk
 c_func
 (paren
 l_string|&quot;RCI2OSendPacket()...&bslash;n&quot;
 )paren
-suffix:semicolon
-macro_line|#endif /* DEBUG */
-id|pPab
-op_assign
-id|PCIAdapterBlock
-(braket
-id|AdapterID
-)braket
 suffix:semicolon
 r_if
 c_cond
@@ -1154,14 +981,12 @@ op_eq
 l_int|0xFFFFFFFF
 )paren
 (brace
-macro_line|#ifdef DEBUG
-id|kprintf
+id|dprintk
 c_func
 (paren
 l_string|&quot;RCI2OSendPacket(): Inbound Free Q empty!&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#endif /* DEBUG */
 r_return
 id|RC_RTN_FREE_Q_EMPTY
 suffix:semicolon
@@ -1200,14 +1025,12 @@ l_int|1
 )paren
 multiline_comment|/* error processing TCB - send NOP msg */
 (brace
-macro_line|#ifdef DEBUG
-id|kprintf
+id|dprintk
 c_func
 (paren
 l_string|&quot;RCI2OSendPacket(): Error Rrocess TCB!&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#endif /* DEBUG */
 id|pMsg
 (braket
 l_int|0
@@ -1301,8 +1124,10 @@ DECL|function|RCPostRecvBuffers
 id|RCPostRecvBuffers
 c_func
 (paren
-id|U16
-id|AdapterID
+r_struct
+id|net_device
+op_star
+id|dev
 comma
 id|PRCTCB
 id|pTransCtrlBlock
@@ -1319,23 +1144,23 @@ id|size
 suffix:semicolon
 id|PPAB
 id|pPab
+op_assign
+(paren
+(paren
+id|PDPA
+)paren
+id|dev-&gt;priv
+)paren
+op_member_access_from_pointer
+id|pPab
 suffix:semicolon
-macro_line|#ifdef DEBUG
-id|kprintf
+id|dprintk
 c_func
 (paren
 l_string|&quot;RCPostRecvBuffers()...&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#endif /* DEBUG */
 multiline_comment|/* search for DeviceHandle */
-id|pPab
-op_assign
-id|PCIAdapterBlock
-(braket
-id|AdapterID
-)braket
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1360,14 +1185,12 @@ op_eq
 l_int|0xFFFFFFFF
 )paren
 (brace
-macro_line|#ifdef DEBUG
-id|kprintf
+id|dprintk
 c_func
 (paren
 l_string|&quot;RCPostRecvBuffers(): Inbound Free Q empty!&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#endif /* DEBUG */
 r_return
 id|RC_RTN_FREE_Q_EMPTY
 suffix:semicolon
@@ -1406,8 +1229,7 @@ l_int|1
 )paren
 multiline_comment|/* error prcessing TCB - send 3 DWORD private msg == NOP */
 (brace
-macro_line|#ifdef DEBUG
-id|kprintf
+id|dprintk
 c_func
 (paren
 l_string|&quot;RCPostRecvBuffers(): Error Processing TCB! size = %d&bslash;n&quot;
@@ -1415,7 +1237,6 @@ comma
 id|size
 )paren
 suffix:semicolon
-macro_line|#endif /* DEBUG */
 id|pMsg
 (braket
 l_int|0
@@ -1518,8 +1339,10 @@ DECL|function|RCProcI2OMsgQ
 id|RCProcI2OMsgQ
 c_func
 (paren
-id|U16
-id|AdapterID
+r_struct
+id|net_device
+op_star
+id|dev
 )paren
 (brace
 id|U32
@@ -1536,19 +1359,21 @@ id|count
 suffix:semicolon
 id|PPAB
 id|pPab
+op_assign
+(paren
+(paren
+id|PDPA
+)paren
+id|dev-&gt;priv
+)paren
+op_member_access_from_pointer
+id|pPab
 suffix:semicolon
 r_int
 r_char
 id|debug_msg
 (braket
 l_int|20
-)braket
-suffix:semicolon
-id|pPab
-op_assign
-id|PCIAdapterBlock
-(braket
-id|AdapterID
 )braket
 suffix:semicolon
 r_if
@@ -1589,8 +1414,23 @@ id|PU32
 )paren
 id|p8Msg
 suffix:semicolon
-singleline_comment|//printk(&quot; msg: 0x%x  0x%x &bslash;n&quot;, p8Msg[7], p32[5]);
-multiline_comment|/* &n;        ** Send Packet Reply Msg&n;        */
+id|dprintk
+c_func
+(paren
+l_string|&quot;msg: 0x%x  0x%x &bslash;n&quot;
+comma
+id|p8Msg
+(braket
+l_int|7
+)braket
+comma
+id|p32
+(braket
+l_int|5
+)braket
+)paren
+suffix:semicolon
+multiline_comment|/* Send Packet Reply Msg */
 r_if
 c_cond
 (paren
@@ -1601,8 +1441,8 @@ id|p8Msg
 l_int|7
 )braket
 )paren
-multiline_comment|/* function code byte */
 (brace
+multiline_comment|/* function code byte */
 id|count
 op_assign
 op_star
@@ -1641,11 +1481,10 @@ id|p32
 op_plus
 l_int|5
 comma
-id|AdapterID
+id|dev
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* &n;        ** Receive Packet Reply Msg */
 r_else
 r_if
 c_cond
@@ -1658,23 +1497,32 @@ l_int|7
 )braket
 )paren
 (brace
-macro_line|#ifdef DEBUG    
-id|kprintf
+multiline_comment|/* Receive Packet Reply Msg */
+id|dprintk
 c_func
 (paren
-l_string|&quot;I2O_RECV_REPLY pPab:0x%08.8ulx p8Msg:0x%08.8ulx p32:0x%08.8ulx&bslash;n&quot;
+l_string|&quot;I2O_RECV_REPLY pPab:0x%08ulx p8Msg:0x%08ulx p32:0x%08ulx&bslash;n&quot;
 comma
+(paren
+id|u32
+)paren
 id|pPab
 comma
+(paren
+id|u32
+)paren
 id|p8Msg
 comma
+(paren
+id|u32
+)paren
 id|p32
 )paren
 suffix:semicolon
-id|kprintf
+id|dprintk
 c_func
 (paren
-l_string|&quot;msg: 0x%08.8ulx:0x%08.8ulx:0x%08.8ulx:0x%08.8ulx&bslash;n&quot;
+l_string|&quot;msg: 0x%08ulx:0x%08ulx:0x%08ulx:0x%08ulx&bslash;n&quot;
 comma
 id|p32
 (braket
@@ -1697,10 +1545,10 @@ l_int|3
 )braket
 )paren
 suffix:semicolon
-id|kprintf
+id|dprintk
 c_func
 (paren
-l_string|&quot;     0x%08.8ulx:0x%08.8ulx:0x%08.8ulx:0x%08.8ulx&bslash;n&quot;
+l_string|&quot;     0x%08ulx:0x%08ulx:0x%08ulx:0x%08ulx&bslash;n&quot;
 comma
 id|p32
 (braket
@@ -1723,10 +1571,10 @@ l_int|7
 )braket
 )paren
 suffix:semicolon
-id|kprintf
+id|dprintk
 c_func
 (paren
-l_string|&quot;     0x%08.8ulx:0X%08.8ulx:0x%08.8ulx:0x%08.8ulx&bslash;n&quot;
+l_string|&quot;     0x%08ulx:0X%08ulx:0x%08ulx:0x%08ulx&bslash;n&quot;
 comma
 id|p32
 (braket
@@ -1749,7 +1597,6 @@ l_int|11
 )braket
 )paren
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/*  status, count, buckets remaining, packetParmBlock, adapter */
 (paren
 op_star
@@ -1775,7 +1622,7 @@ id|p32
 op_plus
 l_int|6
 comma
-id|AdapterID
+id|dev
 )paren
 suffix:semicolon
 )brace
@@ -1797,13 +1644,11 @@ id|p8Msg
 l_int|7
 )braket
 )paren
-(brace
 r_if
 c_cond
 (paren
 id|pPab-&gt;pCallbackFunc
 )paren
-(brace
 (paren
 op_star
 id|pPab-&gt;pCallbackFunc
@@ -1818,12 +1663,10 @@ l_int|0
 comma
 l_int|0
 comma
-id|AdapterID
+id|dev
 )paren
 suffix:semicolon
-)brace
 r_else
-(brace
 id|pPab-&gt;pCallbackFunc
 op_assign
 (paren
@@ -1831,9 +1674,6 @@ id|PFNCALLBACK
 )paren
 l_int|1
 suffix:semicolon
-)brace
-singleline_comment|//PCIAdapterBlock[AdapterID] = 0;
-)brace
 r_else
 r_if
 c_cond
@@ -1846,7 +1686,22 @@ l_int|7
 )braket
 )paren
 (brace
-singleline_comment|//printk(&quot;i2o private 0x%x, 0x%x &bslash;n&quot;, p8Msg[7], p32[5]);
+id|dprintk
+c_func
+(paren
+l_string|&quot;i2o private 0x%x, 0x%x &bslash;n&quot;
+comma
+id|p8Msg
+(braket
+l_int|7
+)braket
+comma
+id|p32
+(braket
+l_int|5
+)braket
+)paren
+suffix:semicolon
 r_switch
 c_cond
 (paren
@@ -1863,7 +1718,12 @@ id|msgFlag
 op_assign
 l_int|1
 suffix:semicolon
-multiline_comment|/*printk(&quot;Received I2O_PRIVATE msg&bslash;n&quot;);*/
+id|dprintk
+c_func
+(paren
+l_string|&quot;Received I2O_PRIVATE msg&bslash;n&quot;
+)paren
+suffix:semicolon
 id|debug_msg
 (braket
 l_int|15
@@ -2119,8 +1979,11 @@ l_int|16
 op_assign
 l_char|&squot;&bslash;0&squot;
 suffix:semicolon
-id|printk
+id|dprintk
+c_func
 (paren
+l_string|&quot;%s&quot;
+comma
 id|debug_msg
 )paren
 suffix:semicolon
@@ -2129,7 +1992,7 @@ suffix:semicolon
 r_case
 id|RC_PRIVATE_REBOOT
 suffix:colon
-id|printk
+id|dprintk
 c_func
 (paren
 l_string|&quot;Adapter reboot initiated...&bslash;n&quot;
@@ -2140,7 +2003,6 @@ c_cond
 (paren
 id|pPab-&gt;pRebootCallbackFunc
 )paren
-(brace
 (paren
 op_star
 id|pPab-&gt;pRebootCallbackFunc
@@ -2152,10 +2014,9 @@ l_int|0
 comma
 l_int|0
 comma
-id|AdapterID
+id|dev
 )paren
 suffix:semicolon
-)brace
 r_break
 suffix:semicolon
 r_default
@@ -2163,7 +2024,8 @@ suffix:colon
 id|printk
 c_func
 (paren
-l_string|&quot;Unknown private I2O msg received: 0x%lx&bslash;n&quot;
+id|KERN_WARNING
+l_string|&quot;(rcpci45 driver:) Unknown private I2O msg received: 0x%x&bslash;n&quot;
 comma
 id|p32
 (braket
@@ -2177,7 +2039,6 @@ suffix:semicolon
 )brace
 multiline_comment|/* &n;        ** Process other Msg&squot;s&n;        */
 r_else
-(brace
 id|ProcessOutboundI2OMsg
 c_func
 (paren
@@ -2186,7 +2047,6 @@ comma
 id|phyAddrMsg
 )paren
 suffix:semicolon
-)brace
 multiline_comment|/* return MFA to outbound free Q*/
 id|pPab-&gt;p_atu-&gt;OutQueue
 op_assign
@@ -2205,8 +2065,10 @@ DECL|function|RCGetLinkStatistics
 id|RCGetLinkStatistics
 c_func
 (paren
-id|U16
-id|AdapterID
+r_struct
+id|net_device
+op_star
+id|dev
 comma
 id|P_RCLINKSTATS
 id|StatsReturnAddr
@@ -2240,15 +2102,17 @@ id|i
 suffix:semicolon
 id|PPAB
 id|pPab
-suffix:semicolon
-multiline_comment|/*kprintf(&quot;Get82558Stats() StatsReturnAddr:0x%08.8ulx&bslash;n&quot;, StatsReturnAddr);*/
-id|pPab
 op_assign
-id|PCIAdapterBlock
-(braket
-id|AdapterID
-)braket
+(paren
+(paren
+id|PDPA
+)paren
+id|dev-&gt;priv
+)paren
+op_member_access_from_pointer
+id|pPab
 suffix:semicolon
+multiline_comment|/*dprintk(&quot;Get82558Stats() StatsReturnAddr:0x%08ulx&bslash;n&quot;, StatsReturnAddr); */
 r_if
 c_cond
 (paren
@@ -2271,14 +2135,12 @@ op_eq
 l_int|0xFFFFFFFF
 )paren
 (brace
-macro_line|#ifdef DEBUG
-id|kprintf
+id|dprintk
 c_func
 (paren
 l_string|&quot;Get8255XStats(): Inbound Free Q empty!&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 r_return
 id|RC_RTN_FREE_Q_EMPTY
 suffix:semicolon
@@ -2295,8 +2157,8 @@ op_plus
 id|msgOffset
 )paren
 suffix:semicolon
-multiline_comment|/*dprintf(&quot;Get82558Stats - pMsg = 0x%08ulx, InQ msgOffset = 0x%08ulx&bslash;n&quot;, pMsg, msgOffset);*/
-multiline_comment|/*dprintf(&quot;Get82558Stats - pMsg = 0x%08X, InQ msgOffset = 0x%08X&bslash;n&quot;, pMsg, msgOffset);*/
+multiline_comment|/*dprintk(&quot;Get82558Stats - pMsg = 0x%08ulx, InQ msgOffset = 0x%08ulx&bslash;n&quot;, pMsg, msgOffset);*/
+multiline_comment|/*dprintk(&quot;Get82558Stats - pMsg = 0x%08X, InQ msgOffset = 0x%08X&bslash;n&quot;, pMsg, msgOffset);*/
 id|pMsg
 (braket
 l_int|0
@@ -2353,36 +2215,20 @@ l_int|5
 )braket
 op_assign
 id|pPab-&gt;outMsgBlockPhyAddr
-op_minus
-id|ADAPTER_BLOCK_RESERVED_SPACE
-op_plus
-r_sizeof
-(paren
-id|PAB
-)paren
 suffix:semicolon
 id|p32
 op_assign
 (paren
 id|PU32
 )paren
-(paren
-id|pPab-&gt;pLinOutMsgBlock
-op_minus
-id|ADAPTER_BLOCK_RESERVED_SPACE
-op_plus
-r_sizeof
-(paren
-id|PAB
-)paren
-)paren
+id|pPab-&gt;outMsgBlockPhyAddr
 suffix:semicolon
 id|pStats
 op_assign
 (paren
 id|P_NICSTAT
 )paren
-id|p32
+id|pPab-&gt;pLinOutMsgBlock
 suffix:semicolon
 id|pStats-&gt;dump_status
 op_assign
@@ -2415,19 +2261,10 @@ id|WaitCallback
 (paren
 )paren
 suffix:semicolon
-r_for
-c_loop
+id|udelay
+c_func
 (paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-l_int|1000
-suffix:semicolon
-id|i
-op_increment
+l_int|10
 )paren
 suffix:semicolon
 r_if
@@ -2447,14 +2284,12 @@ id|timeout
 op_decrement
 )paren
 (brace
-macro_line|#ifdef DEBUG
-id|kprintf
+id|dprintk
 c_func
 (paren
 l_string|&quot;RCGet82558Stats() Timeout waiting for NIC statistics&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 r_return
 id|RC_RTN_MSG_REPLY_TIMEOUT
 suffix:semicolon
@@ -2510,8 +2345,10 @@ DECL|function|RCGetLinkStatus
 id|RCGetLinkStatus
 c_func
 (paren
-id|U16
-id|AdapterID
+r_struct
+id|net_device
+op_star
+id|dev
 comma
 id|PU32
 id|ReturnAddr
@@ -2537,14 +2374,26 @@ id|p32
 suffix:semicolon
 id|PPAB
 id|pPab
-suffix:semicolon
-multiline_comment|/*kprintf(&quot;Get82558LinkStatus() ReturnPhysAddr:0x%08.8ulx&bslash;n&quot;, ReturnAddr);*/
-id|pPab
 op_assign
-id|PCIAdapterBlock
-(braket
-id|AdapterID
-)braket
+(paren
+(paren
+id|PDPA
+)paren
+id|dev-&gt;priv
+)paren
+op_member_access_from_pointer
+id|pPab
+suffix:semicolon
+id|dprintk
+c_func
+(paren
+l_string|&quot;Get82558LinkStatus() ReturnPhysAddr:0x%08ulx&bslash;n&quot;
+comma
+(paren
+id|u32
+)paren
+id|ReturnAddr
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -2568,14 +2417,12 @@ op_eq
 l_int|0xFFFFFFFF
 )paren
 (brace
-macro_line|#ifdef DEBUG
-id|dprintf
+id|dprintk
 c_func
 (paren
 l_string|&quot;Get82558LinkStatus(): Inbound Free Q empty!&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 r_return
 id|RC_RTN_FREE_Q_EMPTY
 suffix:semicolon
@@ -2592,8 +2439,8 @@ op_plus
 id|msgOffset
 )paren
 suffix:semicolon
-multiline_comment|/*dprintf(&quot;Get82558LinkStatus - pMsg = 0x%08ulx, InQ msgOffset = 0x%08ulx&bslash;n&quot;, pMsg, msgOffset);*/
-multiline_comment|/*dprintf(&quot;Get82558LinkStatus - pMsg = 0x%08X, InQ msgOffset = 0x%08X&bslash;n&quot;, pMsg, msgOffset);*/
+multiline_comment|/*dprintk(&quot;Get82558LinkStatus - pMsg = 0x%08ulx, InQ msgOffset = 0x%08ulx&bslash;n&quot;, pMsg, msgOffset);*/
+multiline_comment|/*dprintk(&quot;Get82558LinkStatus - pMsg = 0x%08X, InQ msgOffset = 0x%08X&bslash;n&quot;, pMsg, msgOffset);*/
 id|pMsg
 (braket
 l_int|0
@@ -2650,29 +2497,13 @@ l_int|5
 )braket
 op_assign
 id|pPab-&gt;outMsgBlockPhyAddr
-op_minus
-id|ADAPTER_BLOCK_RESERVED_SPACE
-op_plus
-r_sizeof
-(paren
-id|PAB
-)paren
 suffix:semicolon
 id|p32
 op_assign
 (paren
 id|PU32
 )paren
-(paren
 id|pPab-&gt;pLinOutMsgBlock
-op_minus
-id|ADAPTER_BLOCK_RESERVED_SPACE
-op_plus
-r_sizeof
-(paren
-id|PAB
-)paren
-)paren
 suffix:semicolon
 op_star
 id|p32
@@ -2694,9 +2525,6 @@ c_loop
 l_int|1
 )paren
 (brace
-id|U32
-id|i
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2709,19 +2537,10 @@ id|WaitCallback
 (paren
 )paren
 suffix:semicolon
-r_for
-c_loop
+id|udelay
+c_func
 (paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-l_int|1000
-suffix:semicolon
-id|i
-op_increment
+l_int|10
 )paren
 suffix:semicolon
 r_if
@@ -2742,14 +2561,12 @@ id|timeout
 op_decrement
 )paren
 (brace
-macro_line|#ifdef DEBUG
-id|kprintf
+id|dprintk
 c_func
 (paren
 l_string|&quot;Timeout waiting for link status&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#endif    
 r_return
 id|RC_RTN_MSG_REPLY_TIMEOUT
 suffix:semicolon
@@ -2772,23 +2589,25 @@ DECL|function|RCGetMAC
 id|RCGetMAC
 c_func
 (paren
-id|U16
-id|AdapterID
-comma
-id|PU8
-id|mac
+r_struct
+id|net_device
+op_star
+id|dev
 comma
 id|PFNWAITCALLBACK
 id|WaitCallback
 )paren
 (brace
 r_int
-id|i
-comma
 id|timeout
 suffix:semicolon
 id|U32
 id|off
+suffix:semicolon
+id|PU8
+id|mac
+op_assign
+id|dev-&gt;dev_addr
 suffix:semicolon
 id|PU32
 id|p
@@ -2801,16 +2620,18 @@ l_int|2
 suffix:semicolon
 id|PPAB
 id|pPab
+op_assign
+(paren
+(paren
+id|PDPA
+)paren
+id|dev-&gt;priv
+)paren
+op_member_access_from_pointer
+id|pPab
 suffix:semicolon
 id|PATU
 id|p_atu
-suffix:semicolon
-id|pPab
-op_assign
-id|PCIAdapterBlock
-(braket
-id|AdapterID
-)braket
 suffix:semicolon
 r_if
 c_cond
@@ -2861,8 +2682,7 @@ op_plus
 id|off
 )paren
 suffix:semicolon
-macro_line|#ifdef RCDEBUG
-id|printk
+id|dprintk
 c_func
 (paren
 l_string|&quot;RCGetMAC: p_atu 0x%08x, off 0x%08x, p 0x%08x&bslash;n&quot;
@@ -2883,7 +2703,6 @@ id|uint
 id|p
 )paren
 suffix:semicolon
-macro_line|#endif /* RCDEBUG */
 multiline_comment|/* setup private message */
 id|p
 (braket
@@ -2941,8 +2760,7 @@ op_assign
 id|off
 suffix:semicolon
 multiline_comment|/* send it to the I2O device */
-macro_line|#ifdef RCDEBUG
-id|printk
+id|dprintk
 c_func
 (paren
 l_string|&quot;RCGetMAC: p_atu 0x%08x, off 0x%08x, p 0x%08x&bslash;n&quot;
@@ -2963,7 +2781,6 @@ id|uint
 id|p
 )paren
 suffix:semicolon
-macro_line|#endif /* RCDEBUG */
 multiline_comment|/* wait for the rcpci45 board to update the info */
 id|timeout
 op_assign
@@ -2989,19 +2806,10 @@ id|WaitCallback
 (paren
 )paren
 suffix:semicolon
-r_for
-c_loop
+id|udelay
+c_func
 (paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-l_int|1000
-suffix:semicolon
-id|i
-op_increment
+l_int|10
 )paren
 suffix:semicolon
 r_if
@@ -3056,9 +2864,17 @@ comma
 l_int|6
 )paren
 suffix:semicolon
-macro_line|#ifdef RCDEBUG
-singleline_comment|//    printk(&quot;rc_getmac: 0x%X&bslash;n&quot;, ptr);
-macro_line|#endif /* RCDEBUG */
+id|dprintk
+c_func
+(paren
+l_string|&quot;rc_getmac: 0x%x&bslash;n&quot;
+comma
+(paren
+id|u32
+)paren
+id|mac
+)paren
+suffix:semicolon
 r_return
 id|RC_RTN_NO_ERROR
 suffix:semicolon
@@ -3069,8 +2885,10 @@ DECL|function|RCSetMAC
 id|RCSetMAC
 c_func
 (paren
-id|U16
-id|AdapterID
+r_struct
+id|net_device
+op_star
+id|dev
 comma
 id|PU8
 id|mac
@@ -3084,13 +2902,15 @@ id|pMsg
 suffix:semicolon
 id|PPAB
 id|pPab
-suffix:semicolon
-id|pPab
 op_assign
-id|PCIAdapterBlock
-(braket
-id|AdapterID
-)braket
+(paren
+(paren
+id|PDPA
+)paren
+id|dev-&gt;priv
+)paren
+op_member_access_from_pointer
+id|pPab
 suffix:semicolon
 r_if
 c_cond
@@ -3225,8 +3045,10 @@ DECL|function|RCSetLinkSpeed
 id|RCSetLinkSpeed
 c_func
 (paren
-id|U16
-id|AdapterID
+r_struct
+id|net_device
+op_star
+id|dev
 comma
 id|U16
 id|LinkSpeedCode
@@ -3240,13 +3062,15 @@ id|pMsg
 suffix:semicolon
 id|PPAB
 id|pPab
-suffix:semicolon
-id|pPab
 op_assign
-id|PCIAdapterBlock
-(braket
-id|AdapterID
-)braket
+(paren
+(paren
+id|PDPA
+)paren
+id|dev-&gt;priv
+)paren
+op_member_access_from_pointer
+id|pPab
 suffix:semicolon
 r_if
 c_cond
@@ -3359,8 +3183,10 @@ DECL|function|RCSetPromiscuousMode
 id|RCSetPromiscuousMode
 c_func
 (paren
-id|U16
-id|AdapterID
+r_struct
+id|net_device
+op_star
+id|dev
 comma
 id|U16
 id|Mode
@@ -3374,13 +3200,15 @@ id|pMsg
 suffix:semicolon
 id|PPAB
 id|pPab
-suffix:semicolon
-id|pPab
 op_assign
-id|PCIAdapterBlock
-(braket
-id|AdapterID
-)braket
+(paren
+(paren
+id|PDPA
+)paren
+id|dev-&gt;priv
+)paren
+op_member_access_from_pointer
+id|pPab
 suffix:semicolon
 r_if
 c_cond
@@ -3493,8 +3321,10 @@ DECL|function|RCGetPromiscuousMode
 id|RCGetPromiscuousMode
 c_func
 (paren
-id|U16
-id|AdapterID
+r_struct
+id|net_device
+op_star
+id|dev
 comma
 id|PU32
 id|pMode
@@ -3517,13 +3347,15 @@ id|p32
 suffix:semicolon
 id|PPAB
 id|pPab
-suffix:semicolon
-id|pPab
 op_assign
-id|PCIAdapterBlock
-(braket
-id|AdapterID
-)braket
+(paren
+(paren
+id|PDPA
+)paren
+id|dev-&gt;priv
+)paren
+op_member_access_from_pointer
+id|pPab
 suffix:semicolon
 id|msgOffset
 op_assign
@@ -3537,10 +3369,11 @@ op_eq
 l_int|0xFFFFFFFF
 )paren
 (brace
-id|kprintf
+id|printk
 c_func
 (paren
-l_string|&quot;RCGetLinkSpeed(): Inbound Free Q empty!&bslash;n&quot;
+id|KERN_WARNING
+l_string|&quot;(rcpci45 driver:) RCGetLinkSpeed(): Inbound Free Q empty!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -3566,16 +3399,7 @@ op_assign
 r_volatile
 id|PU32
 )paren
-(paren
 id|pPab-&gt;pLinOutMsgBlock
-op_minus
-id|ADAPTER_BLOCK_RESERVED_SPACE
-op_plus
-r_sizeof
-(paren
-id|PAB
-)paren
-)paren
 suffix:semicolon
 id|p32
 (braket
@@ -3643,13 +3467,6 @@ l_int|5
 )braket
 op_assign
 id|pPab-&gt;outMsgBlockPhyAddr
-op_minus
-id|ADAPTER_BLOCK_RESERVED_SPACE
-op_plus
-r_sizeof
-(paren
-id|PAB
-)paren
 suffix:semicolon
 multiline_comment|/* post to Inbound Post Q */
 id|pPab-&gt;p_atu-&gt;InQueue
@@ -3667,9 +3484,6 @@ c_loop
 l_int|1
 )paren
 (brace
-r_int
-id|i
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -3682,22 +3496,13 @@ id|WaitCallback
 (paren
 )paren
 suffix:semicolon
-r_for
-c_loop
+id|udelay
+c_func
 (paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-l_int|1000
-suffix:semicolon
-id|i
-op_increment
+l_int|10
 )paren
-multiline_comment|/* please don&squot;t hog the bus!!! */
 suffix:semicolon
+multiline_comment|/* please don&squot;t hog the bus!!! */
 r_if
 c_cond
 (paren
@@ -3718,16 +3523,16 @@ id|timeout
 op_decrement
 )paren
 (brace
-id|kprintf
+id|dprintk
 c_func
 (paren
 l_string|&quot;Timeout waiting for promiscuous mode from adapter&bslash;n&quot;
 )paren
 suffix:semicolon
-id|kprintf
+id|dprintk
 c_func
 (paren
-l_string|&quot;0x%8.8lx&bslash;n&quot;
+l_string|&quot;0x%8x&bslash;n&quot;
 comma
 id|p32
 (braket
@@ -3770,8 +3575,10 @@ DECL|function|RCSetBroadcastMode
 id|RCSetBroadcastMode
 c_func
 (paren
-id|U16
-id|AdapterID
+r_struct
+id|net_device
+op_star
+id|dev
 comma
 id|U16
 id|Mode
@@ -3785,13 +3592,15 @@ id|pMsg
 suffix:semicolon
 id|PPAB
 id|pPab
-suffix:semicolon
-id|pPab
 op_assign
-id|PCIAdapterBlock
-(braket
-id|AdapterID
-)braket
+(paren
+(paren
+id|PDPA
+)paren
+id|dev-&gt;priv
+)paren
+op_member_access_from_pointer
+id|pPab
 suffix:semicolon
 r_if
 c_cond
@@ -3904,8 +3713,10 @@ DECL|function|RCGetBroadcastMode
 id|RCGetBroadcastMode
 c_func
 (paren
-id|U16
-id|AdapterID
+r_struct
+id|net_device
+op_star
+id|dev
 comma
 id|PU32
 id|pMode
@@ -3928,13 +3739,15 @@ id|p32
 suffix:semicolon
 id|PPAB
 id|pPab
-suffix:semicolon
-id|pPab
 op_assign
-id|PCIAdapterBlock
-(braket
-id|AdapterID
-)braket
+(paren
+(paren
+id|PDPA
+)paren
+id|dev-&gt;priv
+)paren
+op_member_access_from_pointer
+id|pPab
 suffix:semicolon
 id|msgOffset
 op_assign
@@ -3948,10 +3761,11 @@ op_eq
 l_int|0xFFFFFFFF
 )paren
 (brace
-id|kprintf
+id|printk
 c_func
 (paren
-l_string|&quot;RCGetLinkSpeed(): Inbound Free Q empty!&bslash;n&quot;
+id|KERN_WARNING
+l_string|&quot;(rcpci45 driver:) RCGetLinkSpeed(): Inbound Free Q empty!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -3977,16 +3791,7 @@ op_assign
 r_volatile
 id|PU32
 )paren
-(paren
 id|pPab-&gt;pLinOutMsgBlock
-op_minus
-id|ADAPTER_BLOCK_RESERVED_SPACE
-op_plus
-r_sizeof
-(paren
-id|PAB
-)paren
-)paren
 suffix:semicolon
 id|p32
 (braket
@@ -4054,13 +3859,6 @@ l_int|5
 )braket
 op_assign
 id|pPab-&gt;outMsgBlockPhyAddr
-op_minus
-id|ADAPTER_BLOCK_RESERVED_SPACE
-op_plus
-r_sizeof
-(paren
-id|PAB
-)paren
 suffix:semicolon
 multiline_comment|/* post to Inbound Post Q */
 id|pPab-&gt;p_atu-&gt;InQueue
@@ -4078,9 +3876,6 @@ c_loop
 l_int|1
 )paren
 (brace
-r_int
-id|i
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -4093,22 +3888,13 @@ id|WaitCallback
 (paren
 )paren
 suffix:semicolon
-r_for
-c_loop
+id|udelay
+c_func
 (paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-l_int|1000
-suffix:semicolon
-id|i
-op_increment
+l_int|10
 )paren
-multiline_comment|/* please don&squot;t hog the bus!!! */
 suffix:semicolon
+multiline_comment|/* please don&squot;t hog the bus!!! */
 r_if
 c_cond
 (paren
@@ -4129,16 +3915,18 @@ id|timeout
 op_decrement
 )paren
 (brace
-id|kprintf
+id|printk
 c_func
 (paren
-l_string|&quot;Timeout waiting for promiscuous mode from adapter&bslash;n&quot;
+id|KERN_WARNING
+l_string|&quot;(rcpci45 driver:) Timeout waiting for promiscuous mode from adapter&bslash;n&quot;
 )paren
 suffix:semicolon
-id|kprintf
+id|printk
 c_func
 (paren
-l_string|&quot;0x%8.8lx&bslash;n&quot;
+id|KERN_WARNING
+l_string|&quot;(rcpci45 driver:) 0x%8x&bslash;n&quot;
 comma
 id|p32
 (braket
@@ -4181,8 +3969,10 @@ DECL|function|RCGetLinkSpeed
 id|RCGetLinkSpeed
 c_func
 (paren
-id|U16
-id|AdapterID
+r_struct
+id|net_device
+op_star
+id|dev
 comma
 id|PU32
 id|pLinkSpeedCode
@@ -4208,13 +3998,15 @@ id|IOPLinkSpeed
 suffix:semicolon
 id|PPAB
 id|pPab
-suffix:semicolon
-id|pPab
 op_assign
-id|PCIAdapterBlock
-(braket
-id|AdapterID
-)braket
+(paren
+(paren
+id|PDPA
+)paren
+id|dev-&gt;priv
+)paren
+op_member_access_from_pointer
+id|pPab
 suffix:semicolon
 id|msgOffset
 op_assign
@@ -4228,10 +4020,11 @@ op_eq
 l_int|0xFFFFFFFF
 )paren
 (brace
-id|kprintf
+id|printk
 c_func
 (paren
-l_string|&quot;RCGetLinkSpeed(): Inbound Free Q empty!&bslash;n&quot;
+id|KERN_WARNING
+l_string|&quot;(rcpci45 driver:) RCGetLinkSpeed(): Inbound Free Q empty!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -4257,16 +4050,7 @@ op_assign
 r_volatile
 id|PU32
 )paren
-(paren
 id|pPab-&gt;pLinOutMsgBlock
-op_minus
-id|ADAPTER_BLOCK_RESERVED_SPACE
-op_plus
-r_sizeof
-(paren
-id|PAB
-)paren
-)paren
 suffix:semicolon
 id|p32
 (braket
@@ -4334,13 +4118,6 @@ l_int|5
 )braket
 op_assign
 id|pPab-&gt;outMsgBlockPhyAddr
-op_minus
-id|ADAPTER_BLOCK_RESERVED_SPACE
-op_plus
-r_sizeof
-(paren
-id|PAB
-)paren
 suffix:semicolon
 multiline_comment|/* post to Inbound Post Q */
 id|pPab-&gt;p_atu-&gt;InQueue
@@ -4358,9 +4135,6 @@ c_loop
 l_int|1
 )paren
 (brace
-r_int
-id|i
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -4373,22 +4147,13 @@ id|WaitCallback
 (paren
 )paren
 suffix:semicolon
-r_for
-c_loop
+id|udelay
+c_func
 (paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-l_int|1000
-suffix:semicolon
-id|i
-op_increment
+l_int|10
 )paren
-multiline_comment|/* please don&squot;t hog the bus!!! */
 suffix:semicolon
+multiline_comment|/* please don&squot;t hog the bus!!! */
 r_if
 c_cond
 (paren
@@ -4409,16 +4174,16 @@ id|timeout
 op_decrement
 )paren
 (brace
-id|kprintf
+id|dprintk
 c_func
 (paren
 l_string|&quot;Timeout waiting for link speed from IOP&bslash;n&quot;
 )paren
 suffix:semicolon
-id|kprintf
+id|dprintk
 c_func
 (paren
-l_string|&quot;0x%8.8lx&bslash;n&quot;
+l_string|&quot;0x%8x&bslash;n&quot;
 comma
 id|p32
 (braket
@@ -4459,14 +4224,16 @@ r_return
 id|RC_RTN_NO_ERROR
 suffix:semicolon
 )brace
-multiline_comment|/*&n;** =========================================================================&n;** RCReportDriverCapability(U16 AdapterID, U32 capability)&n;**&n;** Currently defined bits:&n;** WARM_REBOOT_CAPABLE   0x01&n;**&n;** =========================================================================&n;*/
+multiline_comment|/*&n;** =========================================================================&n;** RCReportDriverCapability(struct net_device *dev, U32 capability)&n;**&n;** Currently defined bits:&n;** WARM_REBOOT_CAPABLE   0x01&n;**&n;** =========================================================================&n;*/
 id|RC_RETURN
 DECL|function|RCReportDriverCapability
 id|RCReportDriverCapability
 c_func
 (paren
-id|U16
-id|AdapterID
+r_struct
+id|net_device
+op_star
+id|dev
 comma
 id|U32
 id|capability
@@ -4480,13 +4247,15 @@ id|pMsg
 suffix:semicolon
 id|PPAB
 id|pPab
-suffix:semicolon
-id|pPab
 op_assign
-id|PCIAdapterBlock
-(braket
-id|AdapterID
-)braket
+(paren
+(paren
+id|PDPA
+)paren
+id|dev-&gt;priv
+)paren
+op_member_access_from_pointer
+id|pPab
 suffix:semicolon
 r_if
 c_cond
@@ -4598,8 +4367,10 @@ DECL|function|RCGetFirmwareVer
 id|RCGetFirmwareVer
 c_func
 (paren
-id|U16
-id|AdapterID
+r_struct
+id|net_device
+op_star
+id|dev
 comma
 id|PU8
 id|pFirmString
@@ -4622,13 +4393,15 @@ id|p32
 suffix:semicolon
 id|PPAB
 id|pPab
-suffix:semicolon
-id|pPab
 op_assign
-id|PCIAdapterBlock
-(braket
-id|AdapterID
-)braket
+(paren
+(paren
+id|PDPA
+)paren
+id|dev-&gt;priv
+)paren
+op_member_access_from_pointer
+id|pPab
 suffix:semicolon
 id|msgOffset
 op_assign
@@ -4642,7 +4415,7 @@ op_eq
 l_int|0xFFFFFFFF
 )paren
 (brace
-id|kprintf
+id|dprintk
 c_func
 (paren
 l_string|&quot;RCGetFirmwareVer(): Inbound Free Q empty!&bslash;n&quot;
@@ -4671,16 +4444,7 @@ op_assign
 r_volatile
 id|PU32
 )paren
-(paren
 id|pPab-&gt;pLinOutMsgBlock
-op_minus
-id|ADAPTER_BLOCK_RESERVED_SPACE
-op_plus
-r_sizeof
-(paren
-id|PAB
-)paren
-)paren
 suffix:semicolon
 id|p32
 (braket
@@ -4748,13 +4512,6 @@ l_int|5
 )braket
 op_assign
 id|pPab-&gt;outMsgBlockPhyAddr
-op_minus
-id|ADAPTER_BLOCK_RESERVED_SPACE
-op_plus
-r_sizeof
-(paren
-id|PAB
-)paren
 suffix:semicolon
 multiline_comment|/* post to Inbound Post Q */
 id|pPab-&gt;p_atu-&gt;InQueue
@@ -4772,9 +4529,6 @@ c_loop
 l_int|1
 )paren
 (brace
-r_int
-id|i
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -4787,22 +4541,13 @@ id|WaitCallback
 (paren
 )paren
 suffix:semicolon
-r_for
-c_loop
+id|udelay
+c_func
 (paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-l_int|1000
-suffix:semicolon
-id|i
-op_increment
+l_int|10
 )paren
-multiline_comment|/* please don&squot;t hog the bus!!! */
 suffix:semicolon
+multiline_comment|/* please don&squot;t hog the bus!!! */
 r_if
 c_cond
 (paren
@@ -4823,7 +4568,7 @@ id|timeout
 op_decrement
 )paren
 (brace
-id|kprintf
+id|dprintk
 c_func
 (paren
 l_string|&quot;Timeout waiting for link speed from IOP&bslash;n&quot;
@@ -4855,8 +4600,10 @@ DECL|function|RCResetLANCard
 id|RCResetLANCard
 c_func
 (paren
-id|U16
-id|AdapterID
+r_struct
+id|net_device
+op_star
+id|dev
 comma
 id|U16
 id|ResourceFlags
@@ -4877,21 +4624,20 @@ id|pMsg
 suffix:semicolon
 id|PPAB
 id|pPab
-suffix:semicolon
-r_int
-id|i
+op_assign
+(paren
+(paren
+id|PDPA
+)paren
+id|dev-&gt;priv
+)paren
+op_member_access_from_pointer
+id|pPab
 suffix:semicolon
 r_int
 id|timeout
 op_assign
 l_int|0
-suffix:semicolon
-id|pPab
-op_assign
-id|PCIAdapterBlock
-(braket
-id|AdapterID
-)braket
 suffix:semicolon
 r_if
 c_cond
@@ -5006,25 +4752,16 @@ l_int|NULL
 id|RCProcI2OMsgQ
 c_func
 (paren
-id|AdapterID
+id|dev
 )paren
 suffix:semicolon
-r_for
-c_loop
+id|udelay
+c_func
 (paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-l_int|100000
-suffix:semicolon
-id|i
-op_increment
+l_int|1000
 )paren
-multiline_comment|/* please don&squot;t hog the bus!!! */
 suffix:semicolon
+multiline_comment|/* please don&squot;t hog the bus!!! */
 id|timeout
 op_increment
 suffix:semicolon
@@ -5069,8 +4806,10 @@ DECL|function|RCResetIOP
 id|RCResetIOP
 c_func
 (paren
-id|U16
-id|AdapterID
+r_struct
+id|net_device
+op_star
+id|dev
 )paren
 (brace
 id|U32
@@ -5083,17 +4822,19 @@ id|pMsg
 suffix:semicolon
 id|PPAB
 id|pPab
+op_assign
+(paren
+(paren
+id|PDPA
+)paren
+id|dev-&gt;priv
+)paren
+op_member_access_from_pointer
+id|pPab
 suffix:semicolon
 r_volatile
 id|PU32
 id|p32
-suffix:semicolon
-id|pPab
-op_assign
-id|PCIAdapterBlock
-(braket
-id|AdapterID
-)braket
 suffix:semicolon
 id|msgOffset
 op_assign
@@ -5186,13 +4927,6 @@ l_int|6
 )braket
 op_assign
 id|pPab-&gt;outMsgBlockPhyAddr
-op_minus
-id|ADAPTER_BLOCK_RESERVED_SPACE
-op_plus
-r_sizeof
-(paren
-id|PAB
-)paren
 suffix:semicolon
 id|pMsg
 (braket
@@ -5216,16 +4950,7 @@ op_assign
 r_volatile
 id|PU32
 )paren
-(paren
 id|pPab-&gt;pLinOutMsgBlock
-op_minus
-id|ADAPTER_BLOCK_RESERVED_SPACE
-op_plus
-r_sizeof
-(paren
-id|PAB
-)paren
-)paren
 suffix:semicolon
 id|p32
 (braket
@@ -5257,25 +4982,13 @@ c_loop
 l_int|1
 )paren
 (brace
-r_int
-id|i
-suffix:semicolon
-r_for
-c_loop
+id|udelay
+c_func
 (paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-l_int|1000
-suffix:semicolon
-id|i
-op_increment
+l_int|10
 )paren
-multiline_comment|/* please don&squot;t hog the bus!!! */
 suffix:semicolon
+multiline_comment|/* please don&squot;t hog the bus!!! */
 r_if
 c_cond
 (paren
@@ -5299,7 +5012,7 @@ id|timeout
 op_decrement
 )paren
 (brace
-id|printk
+id|dprintk
 c_func
 (paren
 l_string|&quot;RCResetIOP timeout&bslash;n&quot;
@@ -5320,8 +5033,10 @@ DECL|function|RCShutdownLANCard
 id|RCShutdownLANCard
 c_func
 (paren
-id|U16
-id|AdapterID
+r_struct
+id|net_device
+op_star
+id|dev
 comma
 id|U16
 id|ResourceFlags
@@ -5342,21 +5057,20 @@ id|off
 suffix:semicolon
 id|PPAB
 id|pPab
-suffix:semicolon
-r_int
-id|i
+op_assign
+(paren
+(paren
+id|PDPA
+)paren
+id|dev-&gt;priv
+)paren
+op_member_access_from_pointer
+id|pPab
 suffix:semicolon
 r_int
 id|timeout
 op_assign
 l_int|0
-suffix:semicolon
-id|pPab
-op_assign
-id|PCIAdapterBlock
-(braket
-id|AdapterID
-)braket
 suffix:semicolon
 r_if
 c_cond
@@ -5471,25 +5185,16 @@ l_int|NULL
 id|RCProcI2OMsgQ
 c_func
 (paren
-id|AdapterID
+id|dev
 )paren
 suffix:semicolon
-r_for
-c_loop
+id|udelay
+c_func
 (paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-l_int|100000
-suffix:semicolon
-id|i
-op_increment
+l_int|1000
 )paren
-multiline_comment|/* please don&squot;t hog the bus!!! */
 suffix:semicolon
+multiline_comment|/* please don&squot;t hog the bus!!! */
 id|timeout
 op_increment
 suffix:semicolon
@@ -5504,7 +5209,8 @@ l_int|10000
 id|printk
 c_func
 (paren
-l_string|&quot;RCShutdownLANCard(): timeout&bslash;n&quot;
+id|KERN_WARNING
+l_string|&quot;(rcpci45 driver:) RCShutdownLANCard(): timeout&bslash;n&quot;
 )paren
 suffix:semicolon
 r_break
@@ -5540,8 +5246,10 @@ DECL|function|RCSetRavlinIPandMask
 id|RCSetRavlinIPandMask
 c_func
 (paren
-id|U16
-id|AdapterID
+r_struct
+id|net_device
+op_star
+id|dev
 comma
 id|U32
 id|ipAddr
@@ -5559,13 +5267,15 @@ id|off
 suffix:semicolon
 id|PPAB
 id|pPab
-suffix:semicolon
-id|pPab
 op_assign
-id|PCIAdapterBlock
-(braket
-id|AdapterID
-)braket
+(paren
+(paren
+id|PDPA
+)paren
+id|dev-&gt;priv
+)paren
+op_member_access_from_pointer
+id|pPab
 suffix:semicolon
 r_if
 c_cond
@@ -5684,8 +5394,10 @@ DECL|function|RCGetRavlinIPandMask
 id|RCGetRavlinIPandMask
 c_func
 (paren
-id|U16
-id|AdapterID
+r_struct
+id|net_device
+op_star
+id|dev
 comma
 id|PU32
 id|pIpAddr
@@ -5698,8 +5410,6 @@ id|WaitCallback
 )paren
 (brace
 r_int
-id|i
-comma
 id|timeout
 suffix:semicolon
 id|U32
@@ -5712,29 +5422,32 @@ id|p32
 suffix:semicolon
 id|PPAB
 id|pPab
+op_assign
+(paren
+(paren
+id|PDPA
+)paren
+id|dev-&gt;priv
+)paren
+op_member_access_from_pointer
+id|pPab
 suffix:semicolon
 id|PATU
 id|p_atu
 suffix:semicolon
-macro_line|#ifdef DEBUG
-id|kprintf
+id|dprintk
 c_func
 (paren
-l_string|&quot;RCGetRavlinIPandMask: pIpAddr is 0x%08.8ulx, *IpAddr is 0x%08.8ulx&bslash;n&quot;
+l_string|&quot;RCGetRavlinIPandMask: pIpAddr is 0x%08ulx, *IpAddr is 0x%08ulx&bslash;n&quot;
 comma
+(paren
+id|u32
+)paren
 id|pIpAddr
 comma
 op_star
 id|pIpAddr
 )paren
-suffix:semicolon
-macro_line|#endif /* DEBUG */
-id|pPab
-op_assign
-id|PCIAdapterBlock
-(braket
-id|AdapterID
-)braket
 suffix:semicolon
 r_if
 c_cond
@@ -5771,16 +5484,7 @@ op_assign
 r_volatile
 id|PU32
 )paren
-(paren
 id|pPab-&gt;pLinOutMsgBlock
-op_minus
-id|ADAPTER_BLOCK_RESERVED_SPACE
-op_plus
-r_sizeof
-(paren
-id|PAB
-)paren
-)paren
 suffix:semicolon
 op_star
 id|p32
@@ -5798,20 +5502,24 @@ op_plus
 id|off
 )paren
 suffix:semicolon
-macro_line|#ifdef DEBUG
-id|kprintf
+id|dprintk
 c_func
 (paren
-l_string|&quot;RCGetRavlinIPandMask: p_atu 0x%08.8ulx, off 0x%08.8ulx, p32 0x%08.8ulx&bslash;n&quot;
+l_string|&quot;RCGetRavlinIPandMask: p_atu 0x%08ulx, off 0x%08ulx, p32 0x%08ulx&bslash;n&quot;
 comma
+(paren
+id|u32
+)paren
 id|p_atu
 comma
 id|off
 comma
+(paren
+id|u32
+)paren
 id|p32
 )paren
 suffix:semicolon
-macro_line|#endif /* DEBUG */
 multiline_comment|/* setup private message */
 id|pMsg
 (braket
@@ -5870,33 +5578,30 @@ l_int|5
 )braket
 op_assign
 id|pPab-&gt;outMsgBlockPhyAddr
-op_minus
-id|ADAPTER_BLOCK_RESERVED_SPACE
-op_plus
-r_sizeof
-(paren
-id|PAB
-)paren
 suffix:semicolon
 id|p_atu-&gt;InQueue
 op_assign
 id|off
 suffix:semicolon
 multiline_comment|/* send it to the I2O device */
-macro_line|#ifdef DEBUG
-id|kprintf
+id|dprintk
 c_func
 (paren
-l_string|&quot;RCGetRavlinIPandMask: p_atu 0x%08.8ulx, off 0x%08.8ulx, p32 0x%08.8ulx&bslash;n&quot;
+l_string|&quot;RCGetRavlinIPandMask: p_atu 0x%08ulx, off 0x%08ulx, p32 0x%08ulx&bslash;n&quot;
 comma
+(paren
+id|u32
+)paren
 id|p_atu
 comma
 id|off
 comma
+(paren
+id|u32
+)paren
 id|p32
 )paren
 suffix:semicolon
-macro_line|#endif /* DEBUG */
 multiline_comment|/* wait for the rcpci45 board to update the info */
 id|timeout
 op_assign
@@ -5923,19 +5628,10 @@ id|WaitCallback
 (paren
 )paren
 suffix:semicolon
-r_for
-c_loop
+id|udelay
+c_func
 (paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-l_int|1000
-suffix:semicolon
-id|i
-op_increment
+l_int|10
 )paren
 suffix:semicolon
 r_if
@@ -5946,27 +5642,21 @@ id|timeout
 op_decrement
 )paren
 (brace
-macro_line|#ifdef DEBUG
-id|kprintf
+id|dprintk
 c_func
 (paren
 l_string|&quot;RCGetRavlinIPandMask: Timeout&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#endif /* DEBUG */
 r_return
 id|RC_RTN_MSG_REPLY_TIMEOUT
 suffix:semicolon
 )brace
 )brace
-macro_line|#ifdef DEBUG
-id|kprintf
+id|dprintk
 c_func
 (paren
-l_string|&quot;RCGetRavlinIPandMask: after time out&bslash;n&quot;
-comma
-"&bslash;"
-l_string|&quot;p32[0] (IpAddr) 0x%08.8ulx, p32[1] (IPmask) 0x%08.8ulx&bslash;n&quot;
+l_string|&quot;RCGetRavlinIPandMask: after time out&bslash;np32[0] (IpAddr) 0x%08ulx, p32[1] (IPmask) 0x%08ulx&bslash;n&quot;
 comma
 id|p32
 (braket
@@ -5979,7 +5669,6 @@ l_int|1
 )braket
 )paren
 suffix:semicolon
-macro_line|#endif /* DEBUG */
 multiline_comment|/* send IP and mask to user&squot;s space  */
 op_star
 id|pIpAddr
@@ -5997,19 +5686,20 @@ id|p32
 l_int|1
 )braket
 suffix:semicolon
-macro_line|#ifdef DEBUG
-id|kprintf
+id|dprintk
 c_func
 (paren
-l_string|&quot;RCGetRavlinIPandMask: pIpAddr is 0x%08.8ulx, *IpAddr is 0x%08.8ulx&bslash;n&quot;
+l_string|&quot;RCGetRavlinIPandMask: pIpAddr is 0x%08ulx, *IpAddr is 0x%08ulx&bslash;n&quot;
 comma
+(paren
+id|u32
+)paren
 id|pIpAddr
 comma
 op_star
 id|pIpAddr
 )paren
 suffix:semicolon
-macro_line|#endif /* DEBUG */
 r_return
 id|RC_RTN_NO_ERROR
 suffix:semicolon
@@ -6055,14 +5745,12 @@ op_eq
 l_int|0xFFFFFFFF
 )paren
 (brace
-macro_line|#ifdef DEBUG
-id|kprintf
+id|dprintk
 c_func
 (paren
 l_string|&quot;SendI2OOutboundQInitMsg(): Inbound Free Q empty!&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#endif /* DEBUG */
 r_return
 id|RC_RTN_FREE_Q_EMPTY
 suffix:semicolon
@@ -6079,18 +5767,19 @@ op_plus
 id|msgOffset
 )paren
 suffix:semicolon
-macro_line|#ifdef DEBUG
-id|kprintf
+id|dprintk
 c_func
 (paren
-l_string|&quot;SendI2OOutboundQInitMsg - pMsg = 0x%08.8ulx, InQ msgOffset = 0x%08.8ulx&bslash;n&quot;
+l_string|&quot;SendI2OOutboundQInitMsg - pMsg = 0x%08ulx, InQ msgOffset = 0x%08ulx&bslash;n&quot;
 comma
+(paren
+id|u32
+)paren
 id|pMsg
 comma
 id|msgOffset
 )paren
 suffix:semicolon
-macro_line|#endif /* DEBUG */
 id|pMsg
 (braket
 l_int|0
@@ -6165,13 +5854,6 @@ l_int|7
 )braket
 op_assign
 id|pPab-&gt;outMsgBlockPhyAddr
-op_minus
-id|ADAPTER_BLOCK_RESERVED_SPACE
-op_plus
-r_sizeof
-(paren
-id|PAB
-)paren
 suffix:semicolon
 multiline_comment|/* virual pointer to return buffer - clear first two dwords */
 id|p32
@@ -6179,16 +5861,7 @@ op_assign
 (paren
 id|PU32
 )paren
-(paren
 id|pPab-&gt;pLinOutMsgBlock
-op_minus
-id|ADAPTER_BLOCK_RESERVED_SPACE
-op_plus
-r_sizeof
-(paren
-id|PAB
-)paren
-)paren
 suffix:semicolon
 id|p32
 (braket
@@ -6213,22 +5886,13 @@ c_loop
 l_int|1
 )paren
 (brace
-r_for
-c_loop
+id|udelay
+c_func
 (paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-l_int|1000
-suffix:semicolon
-id|i
-op_increment
+l_int|10
 )paren
-multiline_comment|/* please don&squot;t hog the bus!!! */
 suffix:semicolon
+multiline_comment|/* please don&squot;t hog the bus!!! */
 r_if
 c_cond
 (paren
@@ -6247,14 +5911,12 @@ id|timeout
 op_decrement
 )paren
 (brace
-macro_line|#ifdef DEBUG
-id|kprintf
+id|dprintk
 c_func
 (paren
 l_string|&quot;Timeout wait for InitOutQ InPrgress status from IOP&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#endif /* DEBUG */
 r_return
 id|RC_RTN_NO_I2O_STATUS
 suffix:semicolon
@@ -6270,22 +5932,13 @@ c_loop
 l_int|1
 )paren
 (brace
-r_for
-c_loop
+id|udelay
+c_func
 (paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-l_int|1000
-suffix:semicolon
-id|i
-op_increment
+l_int|10
 )paren
-multiline_comment|/* please don&squot;t hog the bus!!! */
 suffix:semicolon
+multiline_comment|/* please don&squot;t hog the bus!!! */
 r_if
 c_cond
 (paren
@@ -6306,14 +5959,12 @@ id|timeout
 op_decrement
 )paren
 (brace
-macro_line|#ifdef DEBUG
-id|kprintf
+id|dprintk
 c_func
 (paren
 l_string|&quot;Timeout wait for InitOutQ Complete status from IOP&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#endif /* DEBUG */
 r_return
 id|RC_RTN_NO_I2O_STATUS
 suffix:semicolon
@@ -6379,8 +6030,7 @@ id|msgOffset
 op_assign
 id|pPab-&gt;p_atu-&gt;InQueue
 suffix:semicolon
-macro_line|#ifdef DEBUG
-id|printk
+id|dprintk
 c_func
 (paren
 l_string|&quot;GetI2OStatus: msg offset = 0x%x&bslash;n&quot;
@@ -6388,7 +6038,6 @@ comma
 id|msgOffset
 )paren
 suffix:semicolon
-macro_line|#endif /* DEBUG */
 r_if
 c_cond
 (paren
@@ -6397,14 +6046,12 @@ op_eq
 l_int|0xFFFFFFFF
 )paren
 (brace
-macro_line|#ifdef DEBUG
-id|kprintf
+id|dprintk
 c_func
 (paren
 l_string|&quot;GetI2OStatus(): Inbound Free Q empty!&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#endif /* DEBUG */
 r_return
 id|RC_RTN_FREE_Q_EMPTY
 suffix:semicolon
@@ -6484,13 +6131,6 @@ l_int|6
 )braket
 op_assign
 id|pPab-&gt;outMsgBlockPhyAddr
-op_minus
-id|ADAPTER_BLOCK_RESERVED_SPACE
-op_plus
-r_sizeof
-(paren
-id|PAB
-)paren
 suffix:semicolon
 id|pMsg
 (braket
@@ -6514,16 +6154,7 @@ op_assign
 r_volatile
 id|PU32
 )paren
-(paren
 id|pPab-&gt;pLinOutMsgBlock
-op_minus
-id|ADAPTER_BLOCK_RESERVED_SPACE
-op_plus
-r_sizeof
-(paren
-id|PAB
-)paren
-)paren
 suffix:semicolon
 id|p32
 (braket
@@ -6539,12 +6170,14 @@ l_int|1
 op_assign
 l_int|0
 suffix:semicolon
-macro_line|#ifdef DEBUG
-id|kprintf
+id|dprintk
 c_func
 (paren
-l_string|&quot;GetI2OStatus - pMsg:0x%08.8ulx, msgOffset:0x%08.8ulx, [1]:0x%08.8ulx, [6]:0x%08.8ulx&bslash;n&quot;
+l_string|&quot;GetI2OStatus - pMsg:0x%08ulx, msgOffset:0x%08ulx, [1]:0x%08ulx, [6]:0x%08ulx&bslash;n&quot;
 comma
+(paren
+id|u32
+)paren
 id|pMsg
 comma
 id|msgOffset
@@ -6560,22 +6193,22 @@ l_int|6
 )braket
 )paren
 suffix:semicolon
-macro_line|#endif /* DEBUG */
 multiline_comment|/* post to Inbound Post Q */
 id|pPab-&gt;p_atu-&gt;InQueue
 op_assign
 id|msgOffset
 suffix:semicolon
-macro_line|#ifdef DEBUG
-id|kprintf
+id|dprintk
 c_func
 (paren
-l_string|&quot;Return status to p32 = 0x%08.8ulx&bslash;n&quot;
+l_string|&quot;Return status to p32 = 0x%08ulx&bslash;n&quot;
 comma
+(paren
+id|u32
+)paren
 id|p32
 )paren
 suffix:semicolon
-macro_line|#endif /* DEBUG */
 multiline_comment|/* wait for response */
 id|timeout
 op_assign
@@ -6587,25 +6220,13 @@ c_loop
 l_int|1
 )paren
 (brace
-r_int
-id|i
-suffix:semicolon
-r_for
-c_loop
+id|udelay
+c_func
 (paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-l_int|1000
-suffix:semicolon
-id|i
-op_increment
+l_int|10
 )paren
-multiline_comment|/* please don&squot;t hog the bus!!! */
 suffix:semicolon
+multiline_comment|/* please don&squot;t hog the bus!!! */
 r_if
 c_cond
 (paren
@@ -6629,17 +6250,16 @@ id|timeout
 op_decrement
 )paren
 (brace
-macro_line|#ifdef DEBUG
-id|kprintf
+id|dprintk
 c_func
 (paren
 l_string|&quot;Timeout waiting for status from IOP&bslash;n&quot;
 )paren
 suffix:semicolon
-id|kprintf
+id|dprintk
 c_func
 (paren
-l_string|&quot;0x%08.8ulx:0x%08.8ulx:0x%08.8ulx:0x%08.8ulx&bslash;n&quot;
+l_string|&quot;0x%08ulx:0x%08ulx:0x%08ulx:0x%08ulx&bslash;n&quot;
 comma
 id|p32
 (braket
@@ -6662,10 +6282,10 @@ l_int|3
 )braket
 )paren
 suffix:semicolon
-id|kprintf
+id|dprintk
 c_func
 (paren
-l_string|&quot;0x%08.8ulx:0x%08.8ulx:0x%08.8ulx:0x%08.8ulx&bslash;n&quot;
+l_string|&quot;0x%08ulx:0x%08ulx:0x%08ulx:0x%08ulx&bslash;n&quot;
 comma
 id|p32
 (braket
@@ -6688,10 +6308,10 @@ l_int|7
 )braket
 )paren
 suffix:semicolon
-id|kprintf
+id|dprintk
 c_func
 (paren
-l_string|&quot;0x%08.8ulx:0x%08.8ulx:0x%08.8ulx:0x%08.8ulx&bslash;n&quot;
+l_string|&quot;0x%08ulx:0x%08ulx:0x%08ulx:0x%08ulx&bslash;n&quot;
 comma
 id|p32
 (braket
@@ -6714,17 +6334,15 @@ l_int|11
 )braket
 )paren
 suffix:semicolon
-macro_line|#endif /* DEBUG */
 r_return
 id|RC_RTN_NO_I2O_STATUS
 suffix:semicolon
 )brace
 )brace
-macro_line|#ifdef DEBUG
-id|kprintf
+id|dprintk
 c_func
 (paren
-l_string|&quot;0x%08.8ulx:0x%08.8ulx:0x%08.8ulx:0x%08.8ulx&bslash;n&quot;
+l_string|&quot;0x%08ulx:0x%08ulx:0x%08ulx:0x%08ulx&bslash;n&quot;
 comma
 id|p32
 (braket
@@ -6747,10 +6365,10 @@ l_int|3
 )braket
 )paren
 suffix:semicolon
-id|kprintf
+id|dprintk
 c_func
 (paren
-l_string|&quot;0x%08.8ulx:0x%08.8ulx:0x%08.8ulx:0x%08.8ulx&bslash;n&quot;
+l_string|&quot;0x%08ulx:0x%08ulx:0x%08ulx:0x%08ulx&bslash;n&quot;
 comma
 id|p32
 (braket
@@ -6773,10 +6391,10 @@ l_int|7
 )braket
 )paren
 suffix:semicolon
-id|kprintf
+id|dprintk
 c_func
 (paren
-l_string|&quot;0x%08.8ulx:0x%08.8ulx:0x%08.8ulx:0x%08.8ulx&bslash;n&quot;
+l_string|&quot;0x%08ulx:0x%08ulx:0x%08ulx:0x%08ulx&bslash;n&quot;
 comma
 id|p32
 (braket
@@ -6799,7 +6417,6 @@ l_int|11
 )braket
 )paren
 suffix:semicolon
-macro_line|#endif /* DEBUG */
 multiline_comment|/* get IOP state */
 id|pPab-&gt;IOPState
 op_assign
@@ -6827,18 +6444,16 @@ id|p32
 l_int|6
 )braket
 suffix:semicolon
-macro_line|#ifdef DEBUG
-id|kprintf
+id|dprintk
 c_func
 (paren
-l_string|&quot;IOP state 0x%02.2x InFrameSize = 0x%04.4x&bslash;n&quot;
+l_string|&quot;IOP state 0x%02x InFrameSize = 0x%04x&bslash;n&quot;
 comma
 id|pPab-&gt;IOPState
 comma
 id|pPab-&gt;InboundMFrameSize
 )paren
 suffix:semicolon
-macro_line|#endif /* DEBUG */
 r_return
 id|RC_RTN_NO_ERROR
 suffix:semicolon
@@ -6857,7 +6472,6 @@ id|pPab
 id|U32
 id|msgOffset
 suffix:semicolon
-singleline_comment|// timeout;
 r_volatile
 id|PU32
 id|pMsg
@@ -6874,14 +6488,12 @@ op_eq
 l_int|0xFFFFFFFF
 )paren
 (brace
-macro_line|#ifdef DEBUG
-id|kprintf
+id|dprintk
 c_func
 (paren
 l_string|&quot;SendEnableSysMsg(): Inbound Free Q empty!&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#endif /* DEBUG */
 r_return
 id|RC_RTN_FREE_Q_EMPTY
 suffix:semicolon
@@ -6898,18 +6510,19 @@ op_plus
 id|msgOffset
 )paren
 suffix:semicolon
-macro_line|#ifdef DEBUG
-id|kprintf
+id|dprintk
 c_func
 (paren
-l_string|&quot;SendEnableSysMsg - pMsg = 0x%08.8ulx, InQ msgOffset = 0x%08.8ulx&bslash;n&quot;
+l_string|&quot;SendEnableSysMsg - pMsg = 0x%08ulx, InQ msgOffset = 0x%08ulx&bslash;n&quot;
 comma
+(paren
+id|u32
+)paren
 id|pMsg
 comma
 id|msgOffset
 )paren
 suffix:semicolon
-macro_line|#endif /* DEBUG */
 id|pMsg
 (braket
 l_int|0
@@ -7021,17 +6634,16 @@ id|nmbrDwords
 op_assign
 l_int|0
 suffix:semicolon
-macro_line|#ifdef DEBUG
-id|kprintf
+id|dprintk
 c_func
 (paren
 l_string|&quot;FillI2OMsgSGLFromTCBX&bslash;n&quot;
 )paren
 suffix:semicolon
-id|kprintf
+id|dprintk
 c_func
 (paren
-l_string|&quot;TCB  0x%08.8ulx:0x%08.8ulx:0x%08.8ulx:0x%08.8ulx:0x%08.8ulx&bslash;n&quot;
+l_string|&quot;TCB  0x%08ulx:0x%08ulx:0x%08ulx:0x%08ulx:0x%08ulx&bslash;n&quot;
 comma
 id|pTCB
 (braket
@@ -7059,17 +6671,22 @@ l_int|4
 )braket
 )paren
 suffix:semicolon
-id|kprintf
+id|dprintk
 c_func
 (paren
-l_string|&quot;pTCB 0x%08.8ulx, pMsg 0x%08.8ulx&bslash;n&quot;
+l_string|&quot;pTCB 0x%08ulx, pMsg 0x%08ulx&bslash;n&quot;
 comma
+(paren
+id|u32
+)paren
 id|pTCB
 comma
+(paren
+id|u32
+)paren
 id|pMsg
 )paren
 suffix:semicolon
-macro_line|#endif /* DEBUG */
 id|nmbrBuffers
 op_assign
 op_star
@@ -7304,7 +6921,7 @@ suffix:semicolon
 id|PU32
 id|p32
 suffix:semicolon
-singleline_comment|//  U16 count;
+multiline_comment|/*      U16 count; */
 id|p8Msg
 op_assign
 id|pPab-&gt;pLinOutMsgBlock
@@ -7322,23 +6939,28 @@ id|PU32
 )paren
 id|p8Msg
 suffix:semicolon
-macro_line|#ifdef DEBUG
-id|kprintf
+id|dprintk
 c_func
 (paren
-l_string|&quot;VXD: ProcessOutboundI2OMsg - pPab 0x%08.8ulx, phyAdr 0x%08.8ulx, linAdr 0x%08.8ulx&bslash;n&quot;
+l_string|&quot;VXD: ProcessOutboundI2OMsg - pPab 0x%08ulx, phyAdr 0x%08ulx, linAdr 0x%08ulx&bslash;n&quot;
 comma
+(paren
+id|u32
+)paren
 id|pPab
 comma
 id|phyAddrMsg
 comma
+(paren
+id|u32
+)paren
 id|p8Msg
 )paren
 suffix:semicolon
-id|kprintf
+id|dprintk
 c_func
 (paren
-l_string|&quot;msg :0x%08.8ulx:0x%08.8ulx:0x%08.8ulx:0x%08.8ulx&bslash;n&quot;
+l_string|&quot;msg :0x%08ulx:0x%08ulx:0x%08ulx:0x%08ulx&bslash;n&quot;
 comma
 id|p32
 (braket
@@ -7361,10 +6983,10 @@ l_int|3
 )braket
 )paren
 suffix:semicolon
-id|kprintf
+id|dprintk
 c_func
 (paren
-l_string|&quot;msg :0x%08.8ulx:0x%08.8ulx:0x%08.8ulx:0x%08.8ulx&bslash;n&quot;
+l_string|&quot;msg :0x%08ulx:0x%08ulx:0x%08ulx:0x%08ulx&bslash;n&quot;
 comma
 id|p32
 (braket
@@ -7387,7 +7009,6 @@ l_int|7
 )braket
 )paren
 suffix:semicolon
-macro_line|#endif /* DEBUG */
 r_if
 c_cond
 (paren
@@ -7401,14 +7022,12 @@ op_ne
 id|I2O_REPLY_STATUS_SUCCESS
 )paren
 (brace
-macro_line|#ifdef DEBUG
-id|kprintf
+id|dprintk
 c_func
 (paren
 l_string|&quot;Message reply status not success&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#endif /* DEBUG */
 r_return
 suffix:semicolon
 )brace
@@ -7429,14 +7048,12 @@ id|msgFlag
 op_assign
 l_int|1
 suffix:semicolon
-macro_line|#ifdef DEBUG
-id|kprintf
+id|dprintk
 c_func
 (paren
 l_string|&quot;Received I2O_EXEC_SYS_TAB_SET reply&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#endif /* DEBUG */
 r_break
 suffix:semicolon
 r_case
@@ -7446,14 +7063,12 @@ id|msgFlag
 op_assign
 l_int|1
 suffix:semicolon
-macro_line|#ifdef DEBUG
-id|kprintf
+id|dprintk
 c_func
 (paren
 l_string|&quot;Received I2O_EXEC_HRT_GET reply&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#endif /* DEBUG */
 r_break
 suffix:semicolon
 r_case
@@ -7463,14 +7078,12 @@ id|msgFlag
 op_assign
 l_int|1
 suffix:semicolon
-macro_line|#ifdef DEBUG
-id|kprintf
+id|dprintk
 c_func
 (paren
 l_string|&quot;Received I2O_EXEC_LCT_NOTIFY reply&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#endif /* DEBUG */
 r_break
 suffix:semicolon
 r_case
@@ -7480,26 +7093,22 @@ id|msgFlag
 op_assign
 l_int|1
 suffix:semicolon
-macro_line|#ifdef DEBUG
-id|kprintf
+id|dprintk
 c_func
 (paren
 l_string|&quot;Received I2O_EXEC_SYS_ENABLE reply&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#endif /* DEBUG */
 r_break
 suffix:semicolon
 r_default
 suffix:colon
-macro_line|#ifdef DEBUG
-id|kprintf
+id|dprintk
 c_func
 (paren
 l_string|&quot;Received UNKNOWN reply&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#endif /* DEBUG */
 r_break
 suffix:semicolon
 )brace

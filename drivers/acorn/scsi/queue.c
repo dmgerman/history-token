@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/malloc.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &quot;../../scsi/scsi.h&quot;
 id|MODULE_AUTHOR
 c_func
@@ -977,6 +978,7 @@ suffix:semicolon
 macro_line|#ifdef MODULE
 DECL|function|init_module
 r_int
+id|__init
 id|init_module
 (paren
 r_void
@@ -988,6 +990,7 @@ suffix:semicolon
 )brace
 DECL|function|cleanup_module
 r_void
+id|__exit
 id|cleanup_module
 (paren
 r_void

@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: netjet.c,v 1.24.6.1 2000/12/06 16:59:20 kai Exp $&n; *&n; * netjet.c     low level stuff for Traverse Technologie NETJet ISDN cards&n; *&n; * Author     Karsten Keil (keil@isdn4linux.de)&n; *&n; * Thanks to Traverse Technologie Australia for documents and informations&n; *&n; * This file is (c) under GNU PUBLIC LICENSE&n; *&n; */
+multiline_comment|/* $Id: netjet.c,v 1.24.6.2 2000/12/17 22:45:11 kai Exp $&n; *&n; * netjet.c     low level stuff for Traverse Technologie NETJet ISDN cards&n; *&n; * Author     Karsten Keil (keil@isdn4linux.de)&n; *&n; * Thanks to Traverse Technologie Australia for documents and informations&n; *&n; * This file is (c) under GNU PUBLIC LICENSE&n; *&n; */
 DECL|macro|__NO_VERSION__
 mdefine_line|#define __NO_VERSION__
 macro_line|#include &lt;linux/init.h&gt;
@@ -9,22 +9,15 @@ macro_line|#include &quot;isdnl1.h&quot;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/ppp_defs.h&gt;
+macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &quot;netjet.h&quot;
-macro_line|#ifndef bus_to_virt
-DECL|macro|bus_to_virt
-mdefine_line|#define bus_to_virt (u_int *)
-macro_line|#endif
-macro_line|#ifndef virt_to_bus
-DECL|macro|virt_to_bus
-mdefine_line|#define virt_to_bus (u_int)
-macro_line|#endif
 DECL|variable|NETjet_revision
 r_const
 r_char
 op_star
 id|NETjet_revision
 op_assign
-l_string|&quot;$Revision: 1.24.6.1 $&quot;
+l_string|&quot;$Revision: 1.24.6.2 $&quot;
 suffix:semicolon
 multiline_comment|/* Interface functions */
 id|u_char

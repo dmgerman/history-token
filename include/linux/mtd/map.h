@@ -1,5 +1,5 @@
 multiline_comment|/* Overhauled routines for dealing with different mmap regions of flash */
-multiline_comment|/* $Id: map.h,v 1.10 2000/12/04 13:18:33 dwmw2 Exp $ */
+multiline_comment|/* $Id: map.h,v 1.10.2.2 2001/01/09 00:44:51 dwmw2 Exp $ */
 macro_line|#ifndef __LINUX_MTD_MAP_H__
 DECL|macro|__LINUX_MTD_MAP_H__
 mdefine_line|#define __LINUX_MTD_MAP_H__
@@ -172,6 +172,10 @@ op_star
 id|set_vpp
 )paren
 (paren
+r_struct
+id|map_info
+op_star
+comma
 r_int
 )paren
 suffix:semicolon
@@ -399,8 +403,8 @@ id|mtd
 suffix:semicolon
 )brace
 DECL|macro|ENABLE_VPP
-mdefine_line|#define ENABLE_VPP(map) do { if(map-&gt;set_vpp) map-&gt;set_vpp(1); } while(0)
+mdefine_line|#define ENABLE_VPP(map) do { if(map-&gt;set_vpp) map-&gt;set_vpp(map, 1); } while(0)
 DECL|macro|DISABLE_VPP
-mdefine_line|#define DISABLE_VPP(map) do { if(map-&gt;set_vpp) map-&gt;set_vpp(0); } while(0)
+mdefine_line|#define DISABLE_VPP(map) do { if(map-&gt;set_vpp) map-&gt;set_vpp(map, 0); } while(0)
 macro_line|#endif /* __LINUX_MTD_MAP_H__ */
 eof

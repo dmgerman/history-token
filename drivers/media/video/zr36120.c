@@ -8758,6 +8758,12 @@ op_minus
 id|EINVAL
 )paren
 (brace
+id|iounmap
+c_func
+(paren
+id|ztv-&gt;zoran_mem
+)paren
+suffix:semicolon
 id|printk
 c_func
 (paren
@@ -8794,9 +8800,17 @@ id|result
 OL
 l_int|0
 )paren
+(brace
+id|iounmap
+c_func
+(paren
+id|ztv-&gt;zoran_mem
+)paren
+suffix:semicolon
 r_return
 id|result
 suffix:semicolon
+)brace
 multiline_comment|/* Enable bus-mastering */
 id|pci_set_master
 c_func

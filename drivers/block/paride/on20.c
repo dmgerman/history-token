@@ -1,4 +1,4 @@
-multiline_comment|/* &n;&t;on20.c&t;(c) 1996-8  Grant R. Guenther &lt;grant@torque.net&gt;&n;&t;&t;            Under the terms of the GNU public license.&n;&n;        on20.c is a low-level protocol driver for the&n;        Onspec 90c20 parallel to IDE adapter. &n;*/
+multiline_comment|/* &n;&t;on20.c&t;(c) 1996-8  Grant R. Guenther &lt;grant@torque.net&gt;&n;&t;&t;            Under the terms of the GNU General Public License.&n;&n;        on20.c is a low-level protocol driver for the&n;        Onspec 90c20 parallel to IDE adapter. &n;*/
 multiline_comment|/* Changes:&n;&n;        1.01    GRG 1998.05.06 init_proto, release_proto&n;&n;*/
 DECL|macro|ON20_VERSION
 mdefine_line|#define&t;ON20_VERSION&t;&quot;1.01&quot;

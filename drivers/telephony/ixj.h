@@ -162,17 +162,6 @@ DECL|typedef|IXJ_CBYTE
 )def_block
 id|IXJ_CBYTE
 suffix:semicolon
-r_int
-id|ixj_WriteDSPCommand
-c_func
-(paren
-r_int
-r_int
-comma
-r_int
-id|board
-)paren
-suffix:semicolon
 multiline_comment|/******************************************************************************&n;*&n;*  This structure represents the Hardware Control Register of the CT8020/8021&n;*  The CT8020 is used in the Internet PhoneJACK, and the 8021 in the&n;*  Internet LineJACK&n;*&n;******************************************************************************/
 r_typedef
 r_struct
@@ -4446,6 +4435,17 @@ suffix:semicolon
 DECL|typedef|IXJ
 )brace
 id|IXJ
+suffix:semicolon
+r_int
+id|ixj_WriteDSPCommand
+c_func
+(paren
+r_int
+r_int
+comma
+id|IXJ
+op_star
+)paren
 suffix:semicolon
 DECL|typedef|IXJ_REGFUNC
 r_typedef

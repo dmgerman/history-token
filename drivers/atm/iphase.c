@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n;         iphase.c: Device driver for Interphase ATM PCI adapter cards &n;                    Author: Peter Wang  &lt;pwang@iphase.com&gt;            &n;                   Interphase Corporation  &lt;www.iphase.com&gt;           &n;                               Version: 1.0                           &n;*******************************************************************************&n;      &n;      This software may be used and distributed according to the terms&n;      of the GNU Public License (GPL), incorporated herein by reference.&n;      Drivers based on this skeleton fall under the GPL and must retain&n;      the authorship (implicit copyright) notice.&n;&n;      This program is distributed in the hope that it will be useful, but&n;      WITHOUT ANY WARRANTY; without even the implied warranty of&n;      MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU&n;      General Public License for more details.&n;      &n;      Modified from an incomplete driver for Interphase 5575 1KVC 1M card which &n;      was originally written by Monalisa Agrawal at UNH. Now this driver &n;      supports a variety of varients of Interphase ATM PCI (i)Chip adapter &n;      card family (See www.iphase.com/products/ClassSheet.cfm?ClassID=ATM) &n;      in terms of PHY type, the size of control memory and the size of &n;      packet memory. The followings are the change log and history:&n;     &n;          Bugfix the Mona&squot;s UBR driver.&n;          Modify the basic memory allocation and dma logic.&n;          Port the driver to the latest kernel from 2.0.46.&n;          Complete the ABR logic of the driver, and added the ABR work-&n;              around for the hardware anormalies.&n;          Add the CBR support.&n;&t;  Add the flow control logic to the driver to allow rate-limit VC.&n;          Add 4K VC support to the board with 512K control memory.&n;          Add the support of all the variants of the Interphase ATM PCI &n;          (i)Chip adapter cards including x575 (155M OC3 and UTP155), x525&n;          (25M UTP25) and x531 (DS3 and E3).&n;          Add SMP support.&n;&n;      Support and updates available at: ftp://ftp.iphase.com/pub/atm&n;&n;*******************************************************************************/
+multiline_comment|/******************************************************************************&n;         iphase.c: Device driver for Interphase ATM PCI adapter cards &n;                    Author: Peter Wang  &lt;pwang@iphase.com&gt;            &n;                   Interphase Corporation  &lt;www.iphase.com&gt;           &n;                               Version: 1.0                           &n;*******************************************************************************&n;      &n;      This software may be used and distributed according to the terms&n;      of the GNU General Public License (GPL), incorporated herein by reference.&n;      Drivers based on this skeleton fall under the GPL and must retain&n;      the authorship (implicit copyright) notice.&n;&n;      This program is distributed in the hope that it will be useful, but&n;      WITHOUT ANY WARRANTY; without even the implied warranty of&n;      MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU&n;      General Public License for more details.&n;      &n;      Modified from an incomplete driver for Interphase 5575 1KVC 1M card which &n;      was originally written by Monalisa Agrawal at UNH. Now this driver &n;      supports a variety of varients of Interphase ATM PCI (i)Chip adapter &n;      card family (See www.iphase.com/products/ClassSheet.cfm?ClassID=ATM) &n;      in terms of PHY type, the size of control memory and the size of &n;      packet memory. The followings are the change log and history:&n;     &n;          Bugfix the Mona&squot;s UBR driver.&n;          Modify the basic memory allocation and dma logic.&n;          Port the driver to the latest kernel from 2.0.46.&n;          Complete the ABR logic of the driver, and added the ABR work-&n;              around for the hardware anormalies.&n;          Add the CBR support.&n;&t;  Add the flow control logic to the driver to allow rate-limit VC.&n;          Add 4K VC support to the board with 512K control memory.&n;          Add the support of all the variants of the Interphase ATM PCI &n;          (i)Chip adapter cards including x575 (155M OC3 and UTP155), x525&n;          (25M UTP25) and x531 (DS3 and E3).&n;          Add SMP support.&n;&n;      Support and updates available at: ftp://ftp.iphase.com/pub/atm&n;&n;*******************************************************************************/
 macro_line|#ifdef IA_MODULE
 DECL|macro|MODULE
 mdefine_line|#define MODULE
@@ -88,24 +88,6 @@ id|ia_dev
 (braket
 l_int|8
 )braket
-op_assign
-(brace
-l_int|NULL
-comma
-l_int|NULL
-comma
-l_int|NULL
-comma
-l_int|NULL
-comma
-l_int|NULL
-comma
-l_int|NULL
-comma
-l_int|NULL
-comma
-l_int|NULL
-)brace
 suffix:semicolon
 DECL|variable|_ia_dev
 r_static
@@ -116,24 +98,6 @@ id|_ia_dev
 (braket
 l_int|8
 )braket
-op_assign
-(brace
-l_int|NULL
-comma
-l_int|NULL
-comma
-l_int|NULL
-comma
-l_int|NULL
-comma
-l_int|NULL
-comma
-l_int|NULL
-comma
-l_int|NULL
-comma
-l_int|NULL
-)brace
 suffix:semicolon
 DECL|variable|iadev_count
 r_static
@@ -4880,7 +4844,7 @@ id|suni_pm7345-&gt;suni_rxcp_intr_en_sts
 op_or_assign
 id|SUNI_OOCDE
 suffix:semicolon
-macro_line|#endif __SNMP__
+macro_line|#endif /* __SNMP__ */
 r_return
 suffix:semicolon
 )brace
@@ -11313,6 +11277,19 @@ comma
 id|GFP_KERNEL
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|iadev-&gt;testTable
+(braket
+id|i
+)braket
+)paren
+r_return
+op_minus
+id|ENOMEM
+suffix:semicolon
 id|iadev-&gt;testTable
 (braket
 id|i
@@ -12585,9 +12562,21 @@ c_cond
 (paren
 id|error
 )paren
+(brace
+id|iounmap
+c_func
+(paren
+(paren
+r_void
+op_star
+)paren
+id|iadev-&gt;base
+)paren
+suffix:semicolon
 r_return
 id|error
 suffix:semicolon
+)brace
 id|printk
 c_func
 (paren
@@ -12643,6 +12632,16 @@ id|dev
 )paren
 )paren
 (brace
+id|iounmap
+c_func
+(paren
+(paren
+r_void
+op_star
+)paren
+id|iadev-&gt;base
+)paren
+suffix:semicolon
 id|printk
 c_func
 (paren
@@ -15570,6 +15569,9 @@ c_func
 (paren
 id|skb
 )paren
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 )brace
 r_if

@@ -91,6 +91,11 @@ id|machine_is_nanoengine
 c_func
 (paren
 )paren
+op_logical_or
+id|machine_is_pangolin
+c_func
+(paren
+)paren
 )paren
 id|serial_port
 op_assign
@@ -121,6 +126,11 @@ c_func
 )paren
 op_logical_or
 id|machine_is_lart
+c_func
+(paren
+)paren
+op_logical_or
+id|machine_is_sherman
 c_func
 (paren
 )paren

@@ -3028,6 +3028,15 @@ comma
 id|GFP_KERNEL
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|hwgroup
+)paren
+r_return
+l_int|1
+suffix:semicolon
 id|memset
 c_func
 (paren

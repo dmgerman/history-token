@@ -1046,6 +1046,22 @@ id|tty-&gt;disc_data
 op_assign
 l_int|0
 suffix:semicolon
+multiline_comment|/* We are not using any dongle anymore! */
+r_if
+c_cond
+(paren
+id|self-&gt;dongle
+)paren
+id|irda_device_dongle_cleanup
+c_func
+(paren
+id|self-&gt;dongle
+)paren
+suffix:semicolon
+id|self-&gt;dongle
+op_assign
+l_int|NULL
+suffix:semicolon
 multiline_comment|/* Remove netdevice */
 r_if
 c_cond
@@ -1070,22 +1086,6 @@ c_func
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* We are not using any dongle anymore! */
-r_if
-c_cond
-(paren
-id|self-&gt;dongle
-)paren
-id|irda_device_dongle_cleanup
-c_func
-(paren
-id|self-&gt;dongle
-)paren
-suffix:semicolon
-id|self-&gt;dongle
-op_assign
-l_int|NULL
-suffix:semicolon
 multiline_comment|/* Remove speed changing task if any */
 r_if
 c_cond
@@ -2314,7 +2314,7 @@ id|actual
 op_assign
 l_int|0
 suffix:semicolon
-id|__u32
+id|__s32
 id|speed
 suffix:semicolon
 id|self
@@ -2346,20 +2346,29 @@ id|dev
 )paren
 suffix:semicolon
 multiline_comment|/* Check if we need to change the speed */
+id|speed
+op_assign
+id|irda_get_next_speed
+c_func
+(paren
+id|skb
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
 (paren
 id|speed
-op_assign
-id|irda_get_speed
-c_func
-(paren
-id|skb
-)paren
-)paren
 op_ne
 id|self-&gt;io.speed
+)paren
+op_logical_and
+(paren
+id|speed
+op_ne
+op_minus
+l_int|1
+)paren
 )paren
 (brace
 multiline_comment|/* Check for empty frame */
@@ -2386,6 +2395,12 @@ r_void
 op_star
 )paren
 id|speed
+)paren
+suffix:semicolon
+id|dev_kfree_skb
+c_func
+(paren
+id|skb
 )paren
 suffix:semicolon
 r_return

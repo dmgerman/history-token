@@ -253,6 +253,11 @@ r_char
 id|is_cons
 suffix:semicolon
 multiline_comment|/* Is this our console. */
+DECL|member|is_internal_modem
+r_char
+id|is_internal_modem
+suffix:semicolon
+multiline_comment|/* is connected to an internal modem */
 DECL|member|is_cobalt_modem
 r_char
 id|is_cobalt_modem

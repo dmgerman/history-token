@@ -874,6 +874,7 @@ r_int
 r_int
 id|waiting
 suffix:semicolon
+multiline_comment|/* long req&squot;d for set_bit --RR */
 DECL|member|waitprev
 r_struct
 id|pardevice

@@ -1,8 +1,44 @@
 multiline_comment|/*&n; *  linux/include/asm-arm/mach/arch.h&n; *&n; *  Copyright (C) 2000 Russell King&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; */
 multiline_comment|/*&n; * The size of struct machine_desc&n; *   (for assembler code)&n; */
 DECL|macro|SIZEOF_MACHINE_DESC
-mdefine_line|#define SIZEOF_MACHINE_DESC&t;44
+mdefine_line|#define SIZEOF_MACHINE_DESC&t;56
 macro_line|#ifndef __ASSEMBLY__
+r_extern
+r_void
+id|setup_initrd
+c_func
+(paren
+r_int
+r_int
+id|start
+comma
+r_int
+r_int
+id|size
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|setup_ramdisk
+c_func
+(paren
+r_int
+id|doload
+comma
+r_int
+id|prompt
+comma
+r_int
+id|start
+comma
+r_int
+r_int
+id|rd_sz
+)paren
+suffix:semicolon
+r_struct
+id|tagtable
+suffix:semicolon
 DECL|struct|machine_desc
 r_struct
 id|machine_desc
@@ -81,14 +117,6 @@ suffix:colon
 l_int|1
 suffix:semicolon
 multiline_comment|/* never has lp2&t;*/
-DECL|member|broken_hlt
-r_int
-r_int
-id|broken_hlt
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* hlt is broken&t;*/
 DECL|member|soft_reboot
 r_int
 r_int
@@ -97,6 +125,19 @@ suffix:colon
 l_int|1
 suffix:semicolon
 multiline_comment|/* soft reboot&t;&t;*/
+DECL|member|tagtable
+r_const
+r_struct
+id|tagtable
+op_star
+id|tagtable
+suffix:semicolon
+multiline_comment|/* tag table&t;&t;*/
+DECL|member|tagsize
+r_int
+id|tagsize
+suffix:semicolon
+multiline_comment|/* tag table size&t;*/
 DECL|member|fixup
 r_void
 (paren
@@ -132,11 +173,21 @@ r_void
 )paren
 suffix:semicolon
 multiline_comment|/* IO mapping function&t;*/
+DECL|member|init_irq
+r_void
+(paren
+op_star
+id|init_irq
+)paren
+(paren
+r_void
+)paren
+suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * Set of macros to define architecture features.  This is built into&n; * a table by the linker.&n; */
 DECL|macro|MACHINE_START
-mdefine_line|#define MACHINE_START(_type,_name)&t;&t;&bslash;&n;const struct machine_desc __mach_desc_##_type&t;&bslash;&n; __attribute__((__section__(&quot;.arch.info&quot;))) = {&t;&bslash;&n;&t;nr:&t;&t;MACH_TYPE_##_type##,&t;&bslash;&n;&t;name:&t;&t;_name,
+mdefine_line|#define MACHINE_START(_type,_name)&t;&t;&bslash;&n;const struct machine_desc __mach_desc_##_type&t;&bslash;&n; __attribute__((__section__(&quot;.arch.info&quot;))) = {&t;&bslash;&n;&t;nr:&t;&t;MACH_TYPE_##_type,&t;&bslash;&n;&t;name:&t;&t;_name,
 DECL|macro|MAINTAINER
 mdefine_line|#define MAINTAINER(n)
 DECL|macro|BOOT_MEM
@@ -146,15 +197,17 @@ mdefine_line|#define BOOT_PARAMS(_params)&t;&t;&t;&bslash;&n;&t;param_offset:&t;
 DECL|macro|VIDEO
 mdefine_line|#define VIDEO(_start,_end)&t;&t;&t;&bslash;&n;&t;video_start:&t;_start,&t;&t;&t;&bslash;&n;&t;video_end:&t;_end,
 DECL|macro|DISABLE_PARPORT
-mdefine_line|#define DISABLE_PARPORT(_n)&t;&t;&t;&bslash;&n;&t;reserve_lp##_n##:&t;1,
+mdefine_line|#define DISABLE_PARPORT(_n)&t;&t;&t;&bslash;&n;&t;reserve_lp##_n:&t;1,
 DECL|macro|BROKEN_HLT
-mdefine_line|#define BROKEN_HLT&t;&t;&t;&t;&bslash;&n;&t;broken_hlt:&t;1,
+mdefine_line|#define BROKEN_HLT /* unused */
 DECL|macro|SOFT_REBOOT
 mdefine_line|#define SOFT_REBOOT&t;&t;&t;&t;&bslash;&n;&t;soft_reboot:&t;1,
 DECL|macro|FIXUP
 mdefine_line|#define FIXUP(_func)&t;&t;&t;&t;&bslash;&n;&t;fixup:&t;&t;_func,
 DECL|macro|MAPIO
 mdefine_line|#define MAPIO(_func)&t;&t;&t;&t;&bslash;&n;&t;map_io:&t;&t;_func,
+DECL|macro|INITIRQ
+mdefine_line|#define INITIRQ(_func)&t;&t;&t;&t;&bslash;&n;&t;init_irq:&t;_func,
 DECL|macro|MACHINE_END
 mdefine_line|#define MACHINE_END&t;&t;&t;&t;&bslash;&n;};
 macro_line|#endif

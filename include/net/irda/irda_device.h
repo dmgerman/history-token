@@ -808,14 +808,14 @@ id|mtt
 suffix:semicolon
 )brace
 macro_line|#endif
-multiline_comment|/*&n; * Function irda_get_speed (skb)&n; *&n; *    Extact the speed this frame should be sent out with from the skb&n; *&n; */
-DECL|macro|irda_get_speed
-mdefine_line|#define irda_get_speed(skb) (&t;                                        &bslash;&n;&t;(((struct irda_skb_cb*) skb-&gt;cb)-&gt;magic == LAP_MAGIC) ? &t;&bslash;&n;                  ((struct irda_skb_cb *)(skb-&gt;cb))-&gt;speed : 9600 &t;&bslash;&n;)
+multiline_comment|/*&n; * Function irda_get_next_speed (skb)&n; *&n; *    Extract the speed that should be set *after* this frame from the skb&n; *&n; * Note : return -1 for user space frames&n; */
+DECL|macro|irda_get_next_speed
+mdefine_line|#define irda_get_next_speed(skb) (&t;                                        &bslash;&n;&t;(((struct irda_skb_cb*) skb-&gt;cb)-&gt;magic == LAP_MAGIC) ? &t;&bslash;&n;                  ((struct irda_skb_cb *)(skb-&gt;cb))-&gt;next_speed : -1 &t;&bslash;&n;)
 macro_line|#if 0
 r_extern
 r_inline
 id|__u32
-id|irda_get_speed
+id|irda_get_next_speed
 c_func
 (paren
 r_struct
@@ -847,7 +847,8 @@ id|LAP_MAGIC
 )paren
 id|speed
 op_assign
-l_int|9600
+op_minus
+l_int|1
 suffix:semicolon
 r_else
 id|speed
@@ -863,12 +864,18 @@ id|skb-&gt;cb
 )paren
 )paren
 op_member_access_from_pointer
-id|speed
+id|next_speed
 suffix:semicolon
 r_return
 id|speed
 suffix:semicolon
 )brace
 macro_line|#endif
+multiline_comment|/*&n; * Function irda_get_next_xbofs (skb)&n; *&n; *    Extract the xbofs that should be set for this frame from the skb&n; *&n; * Note : default to 10 for user space frames&n; */
+DECL|macro|irda_get_xbofs
+mdefine_line|#define irda_get_xbofs(skb) (&t;                                        &bslash;&n;&t;(((struct irda_skb_cb*) skb-&gt;cb)-&gt;magic == LAP_MAGIC) ? &t;&bslash;&n;                  ((struct irda_skb_cb *)(skb-&gt;cb))-&gt;xbofs : 10 &t;&bslash;&n;)
+multiline_comment|/*&n; * Function irda_get_next_xbofs (skb)&n; *&n; *    Extract the xbofs that should be set *after* this frame from the skb&n; *&n; * Note : return -1 for user space frames&n; */
+DECL|macro|irda_get_next_xbofs
+mdefine_line|#define irda_get_next_xbofs(skb) (&t;                                        &bslash;&n;&t;(((struct irda_skb_cb*) skb-&gt;cb)-&gt;magic == LAP_MAGIC) ? &t;&bslash;&n;                  ((struct irda_skb_cb *)(skb-&gt;cb))-&gt;next_xbofs : -1 &t;&bslash;&n;)
 macro_line|#endif /* IRDA_DEVICE_H */
 eof

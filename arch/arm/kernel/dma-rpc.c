@@ -50,15 +50,15 @@ mdefine_line|#define TRANSFER_SIZE&t;2
 DECL|macro|CURA
 mdefine_line|#define CURA&t;(0)
 DECL|macro|ENDA
-mdefine_line|#define ENDA&t;((IOMD_IO0ENDA - IOMD_IO0CURA) &lt;&lt; 2)
+mdefine_line|#define ENDA&t;(IOMD_IO0ENDA - IOMD_IO0CURA)
 DECL|macro|CURB
-mdefine_line|#define CURB&t;((IOMD_IO0CURB - IOMD_IO0CURA) &lt;&lt; 2)
+mdefine_line|#define CURB&t;(IOMD_IO0CURB - IOMD_IO0CURA)
 DECL|macro|ENDB
-mdefine_line|#define ENDB&t;((IOMD_IO0ENDB - IOMD_IO0CURA) &lt;&lt; 2)
+mdefine_line|#define ENDB&t;(IOMD_IO0ENDB - IOMD_IO0CURA)
 DECL|macro|CR
-mdefine_line|#define CR&t;((IOMD_IO0CR - IOMD_IO0CURA) &lt;&lt; 2)
+mdefine_line|#define CR&t;(IOMD_IO0CR - IOMD_IO0CURA)
 DECL|macro|ST
-mdefine_line|#define ST&t;((IOMD_IO0ST - IOMD_IO0CURA) &lt;&lt; 2)
+mdefine_line|#define ST&t;(IOMD_IO0ST - IOMD_IO0CURA)
 DECL|macro|state_prog_a
 mdefine_line|#define state_prog_a&t;0
 DECL|macro|state_wait_a
@@ -234,7 +234,7 @@ op_star
 id|dma
 )paren
 (brace
-id|outl_t
+id|iomd_writel
 c_func
 (paren
 id|sg-&gt;dma_address
@@ -244,7 +244,7 @@ op_plus
 id|CURA
 )paren
 suffix:semicolon
-id|outl_t
+id|iomd_writel
 c_func
 (paren
 id|sg-&gt;length
@@ -272,7 +272,7 @@ op_star
 id|dma
 )paren
 (brace
-id|outl_t
+id|iomd_writel
 c_func
 (paren
 id|sg-&gt;dma_address
@@ -282,7 +282,7 @@ op_plus
 id|CURB
 )paren
 suffix:semicolon
-id|outl_t
+id|iomd_writel
 c_func
 (paren
 id|sg-&gt;length
@@ -372,7 +372,7 @@ id|state_wait_a
 suffix:colon
 id|status
 op_assign
-id|inb_t
+id|iomd_readb
 c_func
 (paren
 id|dma-&gt;dma_base
@@ -476,7 +476,7 @@ id|state_wait_b
 suffix:colon
 id|status
 op_assign
-id|inb_t
+id|iomd_readb
 c_func
 (paren
 id|dma-&gt;dma_base
@@ -724,7 +724,7 @@ id|PCI_DMA_TODEVICE
 )paren
 suffix:semicolon
 )brace
-id|outb_t
+id|iomd_writeb
 c_func
 (paren
 id|DMA_CR_C
@@ -750,7 +750,7 @@ id|ctrl
 op_or_assign
 id|DMA_CR_D
 suffix:semicolon
-id|outb_t
+id|iomd_writeb
 c_func
 (paren
 id|ctrl
@@ -799,7 +799,7 @@ id|dma-&gt;dma_irq
 suffix:semicolon
 id|ctrl
 op_assign
-id|inb_t
+id|iomd_readb
 c_func
 (paren
 id|dma_base
@@ -807,7 +807,7 @@ op_plus
 id|CR
 )paren
 suffix:semicolon
-id|outb_t
+id|iomd_writeb
 c_func
 (paren
 id|ctrl
@@ -885,7 +885,7 @@ l_int|0
 suffix:semicolon
 id|tcr
 op_assign
-id|inb
+id|iomd_readb
 c_func
 (paren
 id|IOMD_DMATCR
@@ -982,7 +982,7 @@ suffix:colon
 r_break
 suffix:semicolon
 )brace
-id|outb
+id|iomd_writeb
 c_func
 (paren
 id|tcr
@@ -1131,11 +1131,7 @@ id|dma-&gt;buf.address
 suffix:semicolon
 id|regs.ARM_fp
 op_assign
-(paren
-r_int
-r_int
-)paren
-id|PCIO_FLOPPYDMABASE
+id|FLOPPYDMA_BASE
 suffix:semicolon
 r_if
 c_cond
@@ -1172,7 +1168,7 @@ op_amp
 id|regs
 )paren
 suffix:semicolon
-id|enable_irq
+id|enable_fiq
 c_func
 (paren
 id|dma-&gt;dma_irq
@@ -1193,7 +1189,7 @@ op_star
 id|dma
 )paren
 (brace
-id|disable_irq
+id|disable_fiq
 c_func
 (paren
 id|dma-&gt;dma_irq
@@ -1309,7 +1305,7 @@ op_star
 id|dma
 )paren
 (brace
-id|outb
+id|iomd_writeb
 c_func
 (paren
 l_int|0
@@ -1317,7 +1313,7 @@ comma
 id|IOMD_IO0CR
 )paren
 suffix:semicolon
-id|outb
+id|iomd_writeb
 c_func
 (paren
 l_int|0
@@ -1325,7 +1321,7 @@ comma
 id|IOMD_IO1CR
 )paren
 suffix:semicolon
-id|outb
+id|iomd_writeb
 c_func
 (paren
 l_int|0
@@ -1333,7 +1329,7 @@ comma
 id|IOMD_IO2CR
 )paren
 suffix:semicolon
-id|outb
+id|iomd_writeb
 c_func
 (paren
 l_int|0
@@ -1341,7 +1337,7 @@ comma
 id|IOMD_IO3CR
 )paren
 suffix:semicolon
-id|outb
+id|iomd_writeb
 c_func
 (paren
 l_int|0xa0
@@ -1356,11 +1352,7 @@ id|DMA_0
 dot
 id|dma_base
 op_assign
-id|ioaddr
-c_func
-(paren
 id|IOMD_IO0CURA
-)paren
 suffix:semicolon
 id|dma
 (braket
@@ -1388,11 +1380,7 @@ id|DMA_1
 dot
 id|dma_base
 op_assign
-id|ioaddr
-c_func
-(paren
 id|IOMD_IO1CURA
-)paren
 suffix:semicolon
 id|dma
 (braket
@@ -1420,11 +1408,7 @@ id|DMA_2
 dot
 id|dma_base
 op_assign
-id|ioaddr
-c_func
-(paren
 id|IOMD_IO2CURA
-)paren
 suffix:semicolon
 id|dma
 (braket
@@ -1452,11 +1436,7 @@ id|DMA_3
 dot
 id|dma_base
 op_assign
-id|ioaddr
-c_func
-(paren
 id|IOMD_IO3CURA
-)paren
 suffix:semicolon
 id|dma
 (braket
@@ -1484,11 +1464,7 @@ id|DMA_S0
 dot
 id|dma_base
 op_assign
-id|ioaddr
-c_func
-(paren
 id|IOMD_SD0CURA
-)paren
 suffix:semicolon
 id|dma
 (braket
@@ -1516,11 +1492,7 @@ id|DMA_S1
 dot
 id|dma_base
 op_assign
-id|ioaddr
-c_func
-(paren
 id|IOMD_SD1CURA
-)paren
 suffix:semicolon
 id|dma
 (braket
@@ -1548,7 +1520,7 @@ id|DMA_VIRTUAL_FLOPPY
 dot
 id|dma_irq
 op_assign
-l_int|64
+id|FIQ_FLOPPYDATA
 suffix:semicolon
 id|dma
 (braket
@@ -1571,7 +1543,7 @@ op_amp
 id|sound_dma_ops
 suffix:semicolon
 multiline_comment|/*&n;&t; * Setup DMA channels 2,3 to be for podules&n;&t; * and channels 0,1 for internal devices&n;&t; */
-id|outb
+id|iomd_writeb
 c_func
 (paren
 id|DMA_EXT_IO3

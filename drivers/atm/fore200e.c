@@ -8361,6 +8361,16 @@ id|ok
 comma
 id|i
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|prom
+)paren
+r_return
+op_minus
+id|ENOMEM
+suffix:semicolon
 id|ok
 op_assign
 id|fore200e-&gt;bus

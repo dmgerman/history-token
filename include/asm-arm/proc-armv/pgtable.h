@@ -227,7 +227,7 @@ mdefine_line|#define pte_dirty(pte)&t;&t;&t;(pte_val(pte) &amp; L_PTE_DIRTY)
 DECL|macro|pte_young
 mdefine_line|#define pte_young(pte)&t;&t;&t;(pte_val(pte) &amp; L_PTE_YOUNG)
 DECL|macro|PTE_BIT_FUNC
-mdefine_line|#define PTE_BIT_FUNC(fn,op)&t;&t;&t;&bslash;&n;extern inline pte_t pte_##fn##(pte_t pte) { pte_val(pte) op##; return pte; }
+mdefine_line|#define PTE_BIT_FUNC(fn,op)&t;&t;&t;&bslash;&n;extern inline pte_t pte_##fn(pte_t pte) { pte_val(pte) op; return pte; }
 multiline_comment|/*PTE_BIT_FUNC(rdprotect, &amp;= ~L_PTE_USER);*/
 multiline_comment|/*PTE_BIT_FUNC(mkread,    |= L_PTE_USER);*/
 id|PTE_BIT_FUNC
@@ -316,5 +316,8 @@ op_complement
 id|L_PTE_CACHEABLE
 )paren
 suffix:semicolon
+multiline_comment|/*&n; * Mark the prot value as uncacheable and unbufferable.&n; */
+DECL|macro|pgprot_noncached
+mdefine_line|#define pgprot_noncached(prot)&t;__pgprot(pgprot_val(prot) &amp; ~(L_PTE_CACHEABLE | L_PTE_BUFFERABLE))
 macro_line|#endif /* __ASM_PROC_PGTABLE_H */
 eof

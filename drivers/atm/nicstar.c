@@ -85,7 +85,7 @@ mdefine_line|#define ALIGN_BUS_ADDR(addr, alignment) &bslash;&n;        ((((u32)
 DECL|macro|ALIGN_ADDRESS
 mdefine_line|#define ALIGN_ADDRESS(addr, alignment) &bslash;&n;        bus_to_virt(ALIGN_BUS_ADDR(virt_to_bus(addr), alignment))
 DECL|macro|CEIL
-macro_line|#undef CEIL(d)
+macro_line|#undef CEIL
 macro_line|#ifndef ATM_SKB
 DECL|macro|ATM_SKB
 mdefine_line|#define ATM_SKB(s) (&amp;(s)-&gt;atm)

@@ -119,6 +119,8 @@ DECL|macro|TIOCMIWAIT
 mdefine_line|#define TIOCMIWAIT&t;0x545C&t;/* wait for a change on serial input line(s) */
 DECL|macro|TIOCGICOUNT
 mdefine_line|#define TIOCGICOUNT&t;0x545D&t;/* read serial port inline interrupt counts */
+DECL|macro|FIOQSIZE
+mdefine_line|#define FIOQSIZE&t;0x545E
 multiline_comment|/* Used for packet mode */
 DECL|macro|TIOCPKT_DATA
 mdefine_line|#define TIOCPKT_DATA&t;&t; 0

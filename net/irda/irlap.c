@@ -3338,7 +3338,7 @@ id|self-&gt;qos_rx
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Function irlap_apply_default_connection_parameters (void)&n; *&n; *    Use the default connection and transmission parameters&n; * &n; */
+multiline_comment|/*&n; * Function irlap_apply_default_connection_parameters (void, now)&n; *&n; *    Use the default connection and transmission parameters&n; * &n; */
 DECL|function|irlap_apply_default_connection_parameters
 r_void
 id|irlap_apply_default_connection_parameters
@@ -3381,6 +3381,16 @@ r_return
 suffix:semicolon
 )paren
 suffix:semicolon
+multiline_comment|/* xbofs : Default value in NDM */
+id|self-&gt;next_bofs
+op_assign
+l_int|12
+suffix:semicolon
+id|self-&gt;bofs_count
+op_assign
+l_int|12
+suffix:semicolon
+multiline_comment|/* NDM Speed is 9600 */
 id|irlap_change_speed
 c_func
 (paren
@@ -3399,11 +3409,6 @@ id|self-&gt;netdev
 comma
 id|TRUE
 )paren
-suffix:semicolon
-multiline_comment|/* Default value in NDM */
-id|self-&gt;bofs_count
-op_assign
-l_int|12
 suffix:semicolon
 multiline_comment|/* &n;&t; * Generate random connection address for this session, which must&n;&t; * be 7 bits wide and different from 0x00 and 0xfe &n;&t; */
 r_while
@@ -3528,7 +3533,7 @@ op_assign
 id|FALSE
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Function irlap_apply_connection_parameters (qos)&n; *&n; *    Initialize IrLAP with the negotiated QoS values&n; *&n; */
+multiline_comment|/*&n; * Function irlap_apply_connection_parameters (qos, now)&n; *&n; *    Initialize IrLAP with the negotiated QoS values&n; *&n; * If &squot;now&squot; is false, the speed and xbofs will be changed after the next&n; * frame is sent.&n; * If &squot;now&squot; is true, the speed and xbofs is changed immediately&n; */
 DECL|function|irlap_apply_connection_parameters
 r_void
 id|irlap_apply_connection_parameters
@@ -3538,6 +3543,9 @@ r_struct
 id|irlap_cb
 op_star
 id|self
+comma
+r_int
+id|now
 )paren
 (brace
 id|IRDA_DEBUG
@@ -3571,6 +3579,23 @@ r_return
 suffix:semicolon
 )paren
 suffix:semicolon
+multiline_comment|/* Set the negociated xbofs value */
+id|self-&gt;next_bofs
+op_assign
+id|self-&gt;qos_tx.additional_bofs.value
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|now
+)paren
+(brace
+id|self-&gt;bofs_count
+op_assign
+id|self-&gt;next_bofs
+suffix:semicolon
+)brace
+multiline_comment|/* Set the negociated link speed (may need the new xbofs value) */
 id|irlap_change_speed
 c_func
 (paren
@@ -3578,7 +3603,7 @@ id|self
 comma
 id|self-&gt;qos_tx.baud_rate.value
 comma
-id|FALSE
+id|now
 )paren
 suffix:semicolon
 id|self-&gt;window_size
@@ -3588,10 +3613,6 @@ suffix:semicolon
 id|self-&gt;window
 op_assign
 id|self-&gt;qos_tx.window_size.value
-suffix:semicolon
-id|self-&gt;bofs_count
-op_assign
-id|self-&gt;qos_tx.additional_bofs.value
 suffix:semicolon
 multiline_comment|/*&n;&t; *  Calculate how many bytes it is possible to transmit before the&n;&t; *  link must be turned around&n;&t; */
 id|self-&gt;line_capacity

@@ -194,17 +194,6 @@ op_star
 id|qos
 )paren
 suffix:semicolon
-id|__u32
-id|irlap_min_turn_time_in_bytes
-c_func
-(paren
-id|__u32
-id|speed
-comma
-id|__u32
-id|min_turn_time
-)paren
-suffix:semicolon
 r_int
 id|msb_index
 c_func
@@ -223,5 +212,10 @@ op_star
 id|qos
 )paren
 suffix:semicolon
+multiline_comment|/* So simple, how could we not inline those two ?&n; * Note : one byte is 10 bits if you include start and stop bits&n; * Jean II */
+DECL|macro|irlap_min_turn_time_in_bytes
+mdefine_line|#define irlap_min_turn_time_in_bytes(speed, min_turn_time) (&t;&bslash;&n;&t;speed * min_turn_time / 10000000&t;&t;&t;&bslash;&n;)
+DECL|macro|irlap_xbofs_in_usec
+mdefine_line|#define irlap_xbofs_in_usec(speed, xbofs) (&t;&t;&t;&bslash;&n;&t;xbofs * 10000000 / speed&t;&t;&t;&t;&bslash;&n;)
 macro_line|#endif
 eof

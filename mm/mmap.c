@@ -8,6 +8,7 @@ macro_line|#include &lt;linux/swapctl.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/file.h&gt;
+macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
 multiline_comment|/* description of effects of mapping type and prot in current implementation.&n; * this is due to the limited x86 page protection hardware.  The expected&n; * behavior is in parens:&n; *&n; * map_type&t;prot&n; *&t;&t;PROT_NONE&t;PROT_READ&t;PROT_WRITE&t;PROT_EXEC&n; * MAP_SHARED&t;r: (no) no&t;r: (yes) yes&t;r: (no) yes&t;r: (no) yes&n; *&t;&t;w: (no) no&t;w: (no) no&t;w: (yes) yes&t;w: (no) no&n; *&t;&t;x: (no) no&t;x: (no) yes&t;x: (no) yes&t;x: (yes) yes&n; *&t;&t;&n; * MAP_PRIVATE&t;r: (no) no&t;r: (yes) yes&t;r: (no) yes&t;r: (no) yes&n; *&t;&t;w: (no) no&t;w: (no) no&t;w: (copy) copy&t;w: (no) no&n; *&t;&t;x: (no) no&t;x: (no) yes&t;x: (no) yes&t;x: (yes) yes&n; *&n; */
@@ -108,6 +109,35 @@ suffix:semicolon
 id|free
 op_add_assign
 id|nr_swap_pages
+suffix:semicolon
+multiline_comment|/*&n;&t; * The code below doesn&squot;t account for free space in the inode&n;&t; * and dentry slab cache, slab cache fragmentation, inodes and&n;&t; * dentries which will become freeable under VM load, etc.&n;&t; * Lets just hope all these (complex) factors balance out...&n;&t; */
+id|free
+op_add_assign
+(paren
+id|dentry_stat.nr_unused
+op_star
+r_sizeof
+(paren
+r_struct
+id|dentry
+)paren
+)paren
+op_rshift
+id|PAGE_SHIFT
+suffix:semicolon
+id|free
+op_add_assign
+(paren
+id|inodes_stat.nr_unused
+op_star
+r_sizeof
+(paren
+r_struct
+id|inode
+)paren
+)paren
+op_rshift
+id|PAGE_SHIFT
 suffix:semicolon
 r_return
 id|free

@@ -275,6 +275,12 @@ op_assign
 id|data_size
 suffix:semicolon
 )brace
+id|INIT_TQ_HEAD
+c_func
+(paren
+id|packet-&gt;complete_tq
+)paren
+suffix:semicolon
 id|INIT_LIST_HEAD
 c_func
 (paren

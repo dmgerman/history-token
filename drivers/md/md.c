@@ -10434,8 +10434,7 @@ id|done
 suffix:semicolon
 r_default
 suffix:colon
-(brace
-)brace
+suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * Commands creating/starting a new array:&n;&t; */
 id|mddev
@@ -10487,8 +10486,7 @@ suffix:semicolon
 )brace
 r_default
 suffix:colon
-(brace
-)brace
+suffix:semicolon
 )brace
 r_switch
 c_cond
@@ -10706,8 +10704,7 @@ id|done
 suffix:semicolon
 r_default
 suffix:colon
-(brace
-)brace
+suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * Commands querying/configuring an existing array:&n;&t; */
 r_if
@@ -15127,6 +15124,7 @@ id|md_setup_args
 id|md__initdata
 suffix:semicolon
 multiline_comment|/*&n; * Parse the command-line parameters given our kernel, but do not&n; * actually try to invoke the MD device now; that is handled by&n; * md_setup_drive after the low-level disk drivers have initialised.&n; *&n; * 27/11/1999: Fixed to work correctly with the 2.3 kernel (which&n; *             assigns the task of parsing integer arguments to the&n; *             invoked program now).  Added ability to initialise all&n; *             the MD devices (by specifying multiple &quot;md=&quot; lines)&n; *             instead of just one.  -- KTK&n; * 18May2000: Added support for persistant-superblock arrays:&n; *             md=n,0,factor,fault,device-list   uses RAID0 for device n&n; *             md=n,-1,factor,fault,device-list  uses LINEAR for device n&n; *             md=n,device-list      reads a RAID superblock from the devices&n; *             elements in device-list are read by name_to_kdev_t so can be&n; *             a hex number or something like /dev/hda1 /dev/sdb&n; */
+macro_line|#ifndef MODULE
 r_extern
 id|kdev_t
 id|name_to_kdev_t
@@ -15548,6 +15546,7 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
+macro_line|#endif /* !MODULE */
 DECL|function|md_setup_drive
 r_void
 id|md__init

@@ -54,7 +54,7 @@ id|cb-&gt;mtt
 op_assign
 id|self-&gt;mtt_required
 suffix:semicolon
-id|cb-&gt;speed
+id|cb-&gt;next_speed
 op_assign
 id|self-&gt;speed
 suffix:semicolon
@@ -68,6 +68,10 @@ id|cb-&gt;xbofs
 op_assign
 id|self-&gt;bofs_count
 suffix:semicolon
+id|cb-&gt;next_xbofs
+op_assign
+id|self-&gt;next_bofs
+suffix:semicolon
 id|cb-&gt;xbofs_delay
 op_assign
 id|self-&gt;xbofs_delay
@@ -76,6 +80,11 @@ multiline_comment|/* Reset XBOF&squot;s delay (used only for getting min turn ti
 id|self-&gt;xbofs_delay
 op_assign
 l_int|0
+suffix:semicolon
+multiline_comment|/* Put the correct xbofs value for the next packet */
+id|self-&gt;bofs_count
+op_assign
+id|self-&gt;next_bofs
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Function irlap_queue_xmit (self, skb)&n; *&n; *    A little wrapper for dev_queue_xmit, so we can insert some common&n; *    code into it.&n; */

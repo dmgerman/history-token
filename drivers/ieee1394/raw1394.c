@@ -154,6 +154,12 @@ op_amp
 id|req-&gt;list
 )paren
 suffix:semicolon
+id|INIT_TQ_LINK
+c_func
+(paren
+id|req-&gt;tq
+)paren
+suffix:semicolon
 id|req-&gt;tq.routine
 op_assign
 (paren

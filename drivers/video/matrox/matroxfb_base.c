@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&n; * Hardware accelerated Matrox Millennium I, II, Mystique, G100, G200 and G400&n; *&n; * (c) 1998,1999,2000 Petr Vandrovec &lt;vandrove@vc.cvut.cz&gt;&n; *&n; * Version: 1.50 2000/08/10&n; *&n; * MTRR stuff: 1998 Tom Rini &lt;trini@kernel.crashing.org&gt;&n; *&n; * Contributors: &quot;menion?&quot; &lt;menion@mindless.com&gt;&n; *                     Betatesting, fixes, ideas&n; *&n; *               &quot;Kurt Garloff&quot; &lt;garloff@suse.de&gt;&n; *                     Betatesting, fixes, ideas, videomodes, videomodes timmings&n; *&n; *               &quot;Tom Rini&quot; &lt;trini@kernel.crashing.org&gt;&n; *                     MTRR stuff, PPC cleanups, betatesting, fixes, ideas&n; *&n; *               &quot;Bibek Sahu&quot; &lt;scorpio@dodds.net&gt;&n; *                     Access device through readb|w|l and write b|w|l&n; *                     Extensive debugging stuff&n; *&n; *               &quot;Daniel Haun&quot; &lt;haund@usa.net&gt;&n; *                     Testing, hardware cursor fixes&n; *&n; *               &quot;Scott Wood&quot; &lt;sawst46+@pitt.edu&gt;&n; *                     Fixes&n; *&n; *               &quot;Gerd Knorr&quot; &lt;kraxel@goldbach.isdn.cs.tu-berlin.de&gt;&n; *                     Betatesting&n; *&n; *               &quot;Kelly French&quot; &lt;targon@hazmat.com&gt;&n; *               &quot;Fernando Herrera&quot; &lt;fherrera@eurielec.etsit.upm.es&gt;&n; *                     Betatesting, bug reporting&n; *&n; *               &quot;Pablo Bianucci&quot; &lt;pbian@pccp.com.ar&gt;&n; *                     Fixes, ideas, betatesting&n; *&n; *               &quot;Inaky Perez Gonzalez&quot; &lt;inaky@peloncho.fis.ucm.es&gt;&n; *                     Fixes, enhandcements, ideas, betatesting&n; *&n; *               &quot;Ryuichi Oikawa&quot; &lt;roikawa@rr.iiij4u.or.jp&gt;&n; *                     PPC betatesting, PPC support, backward compatibility&n; *&n; *               &quot;Paul Womar&quot; &lt;Paul@pwomar.demon.co.uk&gt;&n; *               &quot;Owen Waller&quot; &lt;O.Waller@ee.qub.ac.uk&gt;&n; *                     PPC betatesting&n; *&n; *               &quot;Thomas Pornin&quot; &lt;pornin@bolet.ens.fr&gt;&n; *                     Alpha betatesting&n; *&n; *               &quot;Pieter van Leuven&quot; &lt;pvl@iae.nl&gt;&n; *               &quot;Ulf Jaenicke-Roessler&quot; &lt;ujr@physik.phy.tu-dresden.de&gt;&n; *                     G100 testing&n; *&n; *               &quot;H. Peter Arvin&quot; &lt;hpa@transmeta.com&gt;&n; *                     Ideas&n; *&n; *               &quot;Cort Dougan&quot; &lt;cort@cs.nmt.edu&gt;&n; *                     CHRP fixes and PReP cleanup&n; *&n; *               &quot;Mark Vojkovich&quot; &lt;mvojkovi@ucsd.edu&gt;&n; *                     G400 support&n; *&n; *               &quot;Samuel Hocevar&quot; &lt;sam@via.ecp.fr&gt;&n; *                     Fixes&n; *&n; *               &quot;Anton Altaparmakov&quot; &lt;AntonA@bigfoot.com&gt;&n; *                     G400 MAX/non-MAX distinction&n; *&n; *               &quot;Ken Aaker&quot; &lt;kdaaker@rchland.vnet.ibm.com&gt;&n; *                     memtype extension (needed for GXT130P RS/6000 adapter)&n; *&n; * (following author is not in any relation with this code, but his code&n; *  is included in this driver)&n; *&n; * Based on framebuffer driver for VBE 2.0 compliant graphic boards&n; *     (c) 1998 Gerd Knorr &lt;kraxel@cs.tu-berlin.de&gt;&n; *&n; * (following author is not in any relation with this code, but his ideas&n; *  were used when writting this driver)&n; *&n; *&t;&t; FreeVBE/AF (Matrox), &quot;Shawn Hargreaves&quot; &lt;shawn@talula.demon.co.uk&gt;&n; *&n; */
+multiline_comment|/*&n; *&n; * Hardware accelerated Matrox Millennium I, II, Mystique, G100, G200 and G400&n; *&n; * (c) 1998-2001 Petr Vandrovec &lt;vandrove@vc.cvut.cz&gt;&n; *&n; * Version: 1.52 2001/02/02&n; *&n; * MTRR stuff: 1998 Tom Rini &lt;trini@kernel.crashing.org&gt;&n; *&n; * Contributors: &quot;menion?&quot; &lt;menion@mindless.com&gt;&n; *                     Betatesting, fixes, ideas&n; *&n; *               &quot;Kurt Garloff&quot; &lt;garloff@suse.de&gt;&n; *                     Betatesting, fixes, ideas, videomodes, videomodes timmings&n; *&n; *               &quot;Tom Rini&quot; &lt;trini@kernel.crashing.org&gt;&n; *                     MTRR stuff, PPC cleanups, betatesting, fixes, ideas&n; *&n; *               &quot;Bibek Sahu&quot; &lt;scorpio@dodds.net&gt;&n; *                     Access device through readb|w|l and write b|w|l&n; *                     Extensive debugging stuff&n; *&n; *               &quot;Daniel Haun&quot; &lt;haund@usa.net&gt;&n; *                     Testing, hardware cursor fixes&n; *&n; *               &quot;Scott Wood&quot; &lt;sawst46+@pitt.edu&gt;&n; *                     Fixes&n; *&n; *               &quot;Gerd Knorr&quot; &lt;kraxel@goldbach.isdn.cs.tu-berlin.de&gt;&n; *                     Betatesting&n; *&n; *               &quot;Kelly French&quot; &lt;targon@hazmat.com&gt;&n; *               &quot;Fernando Herrera&quot; &lt;fherrera@eurielec.etsit.upm.es&gt;&n; *                     Betatesting, bug reporting&n; *&n; *               &quot;Pablo Bianucci&quot; &lt;pbian@pccp.com.ar&gt;&n; *                     Fixes, ideas, betatesting&n; *&n; *               &quot;Inaky Perez Gonzalez&quot; &lt;inaky@peloncho.fis.ucm.es&gt;&n; *                     Fixes, enhandcements, ideas, betatesting&n; *&n; *               &quot;Ryuichi Oikawa&quot; &lt;roikawa@rr.iiij4u.or.jp&gt;&n; *                     PPC betatesting, PPC support, backward compatibility&n; *&n; *               &quot;Paul Womar&quot; &lt;Paul@pwomar.demon.co.uk&gt;&n; *               &quot;Owen Waller&quot; &lt;O.Waller@ee.qub.ac.uk&gt;&n; *                     PPC betatesting&n; *&n; *               &quot;Thomas Pornin&quot; &lt;pornin@bolet.ens.fr&gt;&n; *                     Alpha betatesting&n; *&n; *               &quot;Pieter van Leuven&quot; &lt;pvl@iae.nl&gt;&n; *               &quot;Ulf Jaenicke-Roessler&quot; &lt;ujr@physik.phy.tu-dresden.de&gt;&n; *                     G100 testing&n; *&n; *               &quot;H. Peter Arvin&quot; &lt;hpa@transmeta.com&gt;&n; *                     Ideas&n; *&n; *               &quot;Cort Dougan&quot; &lt;cort@cs.nmt.edu&gt;&n; *                     CHRP fixes and PReP cleanup&n; *&n; *               &quot;Mark Vojkovich&quot; &lt;mvojkovi@ucsd.edu&gt;&n; *                     G400 support&n; *&n; *               &quot;Samuel Hocevar&quot; &lt;sam@via.ecp.fr&gt;&n; *                     Fixes&n; *&n; *               &quot;Anton Altaparmakov&quot; &lt;AntonA@bigfoot.com&gt;&n; *                     G400 MAX/non-MAX distinction&n; *&n; *               &quot;Ken Aaker&quot; &lt;kdaaker@rchland.vnet.ibm.com&gt;&n; *                     memtype extension (needed for GXT130P RS/6000 adapter)&n; *&n; * (following author is not in any relation with this code, but his code&n; *  is included in this driver)&n; *&n; * Based on framebuffer driver for VBE 2.0 compliant graphic boards&n; *     (c) 1998 Gerd Knorr &lt;kraxel@cs.tu-berlin.de&gt;&n; *&n; * (following author is not in any relation with this code, but his ideas&n; *  were used when writting this driver)&n; *&n; *&t;&t; FreeVBE/AF (Matrox), &quot;Shawn Hargreaves&quot; &lt;shawn@talula.demon.co.uk&gt;&n; *&n; */
 multiline_comment|/* make checkconfig does not check included files... */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &quot;matroxfb_base.h&quot;
@@ -7391,18 +7391,15 @@ DECL|macro|DEVF_VIDEO64BIT
 mdefine_line|#define DEVF_VIDEO64BIT&t;&t;0x0001
 DECL|macro|DEVF_SWAPS
 mdefine_line|#define&t;DEVF_SWAPS&t;&t;0x0002
-DECL|macro|DEVF_MILLENNIUM
-mdefine_line|#define DEVF_MILLENNIUM&t;&t;0x0004
-DECL|macro|DEVF_MILLENNIUM2
-mdefine_line|#define&t;DEVF_MILLENNIUM2&t;0x0008
+multiline_comment|/* #define DEVF_recycled&t;0x0004 */
+multiline_comment|/* #define DEVF_recycled&t;0x0008 */
 DECL|macro|DEVF_CROSS4MB
 mdefine_line|#define DEVF_CROSS4MB&t;&t;0x0010
 DECL|macro|DEVF_TEXT4B
 mdefine_line|#define DEVF_TEXT4B&t;&t;0x0020
 DECL|macro|DEVF_DDC_8_2
 mdefine_line|#define DEVF_DDC_8_2&t;&t;0x0040
-DECL|macro|DEVF_DMA
-mdefine_line|#define DEVF_DMA&t;&t;0x0080
+multiline_comment|/* #define DEVF_recycled&t;0x0080 */
 DECL|macro|DEVF_SUPPORT32MB
 mdefine_line|#define DEVF_SUPPORT32MB&t;0x0100
 DECL|macro|DEVF_ANY_VXRES
@@ -7493,8 +7490,6 @@ l_int|0
 comma
 l_int|0
 comma
-id|DEVF_MILLENNIUM
-op_or
 id|DEVF_TEXT4B
 comma
 l_int|230000
@@ -7516,10 +7511,6 @@ l_int|0
 comma
 l_int|0
 comma
-id|DEVF_MILLENNIUM
-op_or
-id|DEVF_MILLENNIUM2
-op_or
 id|DEVF_SWAPS
 comma
 l_int|220000
@@ -7541,10 +7532,6 @@ l_int|0
 comma
 l_int|0
 comma
-id|DEVF_MILLENNIUM
-op_or
-id|DEVF_MILLENNIUM2
-op_or
 id|DEVF_SWAPS
 comma
 l_int|250000
@@ -7569,6 +7556,8 @@ comma
 l_int|0
 comma
 id|DEVF_VIDEO64BIT
+op_or
+id|DEVF_CROSS4MB
 comma
 l_int|180000
 comma
@@ -7592,6 +7581,8 @@ comma
 id|DEVF_VIDEO64BIT
 op_or
 id|DEVF_SWAPS
+op_or
+id|DEVF_CROSS4MB
 comma
 l_int|220000
 comma
@@ -9657,7 +9648,7 @@ id|pixclock
 suffix:semicolon
 )brace
 multiline_comment|/* FIXME: Where to move this?! */
-macro_line|#if defined(CONFIG_PPC)
+macro_line|#if defined(CONFIG_ALL_PPC)
 macro_line|#if defined(CONFIG_FB_COMPAT_XPMAC)
 id|strcpy
 c_func
@@ -9702,58 +9693,19 @@ id|fbcon
 )paren
 suffix:semicolon
 macro_line|#endif
+macro_line|#ifndef MODULE
 r_if
 c_cond
 (paren
-(paren
-id|xres
-op_le
-l_int|640
-)paren
-op_logical_and
-(paren
-id|yres
-op_le
-l_int|480
-)paren
+id|_machine
+op_eq
+id|_MACH_Pmac
 )paren
 (brace
 r_struct
 id|fb_var_screeninfo
 id|var
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|default_vmode
-op_eq
-id|VMODE_NVRAM
-)paren
-(brace
-id|default_vmode
-op_assign
-id|nvram_read_byte
-c_func
-(paren
-id|NV_VMODE
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|default_vmode
-op_le
-l_int|0
-op_logical_or
-id|default_vmode
-OG
-id|VMODE_MAX
-)paren
-id|default_vmode
-op_assign
-id|VMODE_CHOOSE
-suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -9769,6 +9721,7 @@ id|default_vmode
 op_assign
 id|VMODE_640_480_60
 suffix:semicolon
+macro_line|#ifdef CONFIG_NVRAM
 r_if
 c_cond
 (paren
@@ -9784,6 +9737,7 @@ c_func
 id|NV_CMODE
 )paren
 suffix:semicolon
+macro_line|#endif
 r_if
 c_cond
 (paren
@@ -9821,14 +9775,15 @@ id|var.yoffset
 op_assign
 l_int|0
 suffix:semicolon
+multiline_comment|/* Note: mac_vmode_to_var() does not set all parameters */
 id|vesafb_defined
 op_assign
 id|var
 suffix:semicolon
-multiline_comment|/* Note: mac_vmode_to_var() doesnot set all parameters */
 )brace
 )brace
-macro_line|#endif /* CONFIG_PPC */
+macro_line|#endif /* !MODULE */
+macro_line|#endif /* CONFIG_ALL_PPC */
 id|vesafb_defined.xres_virtual
 op_assign
 id|vesafb_defined.xres
@@ -10591,6 +10546,11 @@ r_int
 id|registered
 op_assign
 l_int|0
+suffix:semicolon
+r_static
+r_struct
+id|display
+id|global_disp
 suffix:semicolon
 macro_line|#endif
 id|DBG
@@ -14398,13 +14358,13 @@ multiline_comment|/* *************************** init module code **************
 id|MODULE_AUTHOR
 c_func
 (paren
-l_string|&quot;(c) 1998,1999 Petr Vandrovec &lt;vandrove@vc.cvut.cz&gt;&quot;
+l_string|&quot;(c) 1998-2001 Petr Vandrovec &lt;vandrove@vc.cvut.cz&gt;&quot;
 )paren
 suffix:semicolon
 id|MODULE_DESCRIPTION
 c_func
 (paren
-l_string|&quot;Accelerated FBDev driver for Matrox Millennium/Mystique/G100/G200/G400&quot;
+l_string|&quot;Accelerated FBDev driver for Matrox Millennium/Mystique/G100/G200/G400/G450&quot;
 )paren
 suffix:semicolon
 id|MODULE_PARM

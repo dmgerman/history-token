@@ -32,5 +32,5 @@ DECL|macro|MAPPED_KERN_RO_TO_K0
 mdefine_line|#define MAPPED_KERN_RO_TO_K0(x)&t;PHYS_TO_K0(MAPPED_KERN_RO_TO_PHYS(x))
 DECL|macro|MAPPED_KERN_RW_TO_K0
 mdefine_line|#define MAPPED_KERN_RW_TO_K0(x)&t;PHYS_TO_K0(MAPPED_KERN_RW_TO_PHYS(x))
-macro_line|#endif __ASM_SN_MAPPED_KERNEL_H
+macro_line|#endif /* __ASM_SN_MAPPED_KERNEL_H  */
 eof

@@ -2,9 +2,36 @@ multiline_comment|/*&n; *  linux/include/asm-arm/io.h&n; *&n; *  Copyright (C) 1
 macro_line|#ifndef __ASM_ARM_IO_H
 DECL|macro|__ASM_ARM_IO_H
 mdefine_line|#define __ASM_ARM_IO_H
+macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/types.h&gt;
+macro_line|#include &lt;asm/memory.h&gt;
 macro_line|#include &lt;asm/arch/hardware.h&gt;
+multiline_comment|/*&n; * Generic virtual read/write.  Note that we don&squot;t support half-word&n; * read/writes.  We define __arch_*[bl] here, and leave __arch_*w&n; * to the architecture specific code.&n; */
+DECL|macro|__arch_getb
+mdefine_line|#define __arch_getb(a)&t;&t;(*(volatile unsigned char *)(a))
+DECL|macro|__arch_getl
+mdefine_line|#define __arch_getl(a)&t;&t;(*(volatile unsigned int  *)(a))
+DECL|macro|__arch_putb
+mdefine_line|#define __arch_putb(v,a)&t;(*(volatile unsigned char *)(a) = (v))
+DECL|macro|__arch_putl
+mdefine_line|#define __arch_putl(v,a)&t;(*(volatile unsigned int  *)(a) = (v))
+multiline_comment|/*&n; * Now, pick up the machine-defined IO definitions&n; */
 macro_line|#include &lt;asm/arch/io.h&gt;
+multiline_comment|/*&n; * IO definitions.  We define {out,in}[bwl] if __io is defined by&n; * the machine.  Otherwise, these definitions are left for the&n; * machine specific header files to pick up.&n; */
+macro_line|#ifdef __io
+DECL|macro|outb
+mdefine_line|#define outb(v,p)&t;&t;&t;__arch_putb(v,__io(p))
+DECL|macro|outw
+mdefine_line|#define outw(v,p)&t;&t;&t;__arch_putw(v,__io(p))
+DECL|macro|outl
+mdefine_line|#define outl(v,p)&t;&t;&t;__arch_putl(v,__io(p))
+DECL|macro|inb
+mdefine_line|#define inb(p)&t;&t;&t;&t;__arch_getb(__io(p))
+DECL|macro|inw
+mdefine_line|#define inw(p)&t;&t;&t;&t;__arch_getw(__io(p))
+DECL|macro|inl
+mdefine_line|#define inl(p)&t;&t;&t;&t;__arch_getl(__io(p))
+macro_line|#endif
 DECL|macro|outb_p
 mdefine_line|#define outb_p(val,port)&t;&t;outb((val),(port))
 DECL|macro|outw_p
@@ -134,12 +161,7 @@ DECL|macro|insw_p
 mdefine_line|#define insw_p(port,to,len)&t;&t;insw(port,to,len)
 DECL|macro|insl_p
 mdefine_line|#define insl_p(port,to,len)&t;&t;insl(port,to,len)
-macro_line|#ifdef __KERNEL__
-macro_line|#include &lt;asm/memory.h&gt;
-multiline_comment|/* the following macro is depreciated */
-DECL|macro|ioaddr
-mdefine_line|#define ioaddr(port)&t;&t;&t;__ioaddr((port))
-multiline_comment|/*&n; * ioremap and friends&n; */
+multiline_comment|/*&n; * ioremap and friends.&n; *&n; * ioremap takes a PCI memory address, as specified in&n; * linux/Documentation/IO-mapping.txt.  If you want a&n; * physical address, use __ioremap instead.&n; */
 r_extern
 r_void
 op_star
@@ -168,6 +190,11 @@ op_star
 id|addr
 )paren
 suffix:semicolon
+multiline_comment|/*&n; * Generic ioremap support.&n; *&n; * Define:&n; *  iomem_valid_addr(off,size)&n; *  iomem_to_phys(off)&n; */
+macro_line|#ifdef iomem_valid_addr
+DECL|macro|__arch_ioremap
+mdefine_line|#define __arch_ioremap(off,sz,nocache)&t;&t;&t;&t;&bslash;&n; ({&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;unsigned long _off = (off), _size = (sz);&t;&t;&bslash;&n;&t;void *_ret = (void *)0;&t;&t;&t;&t;&t;&bslash;&n;&t;if (iomem_valid_addr(_off, _size))&t;&t;&t;&bslash;&n;&t;&t;_ret = __ioremap(iomem_to_phys(_off),_size,0);&t;&bslash;&n;&t;_ret;&t;&t;&t;&t;&t;&t;&t;&bslash;&n; })
+macro_line|#endif
 DECL|macro|ioremap
 mdefine_line|#define ioremap(off,sz)&t;&t;&t;__arch_ioremap((off),(sz),0)
 DECL|macro|ioremap_nocache
@@ -218,17 +245,31 @@ r_int
 id|rw
 )paren
 suffix:semicolon
-r_extern
-r_void
-id|__readwrite_bug
-c_func
-(paren
-r_const
-r_char
-op_star
-id|fn
-)paren
-suffix:semicolon
+DECL|macro|__raw_writeb
+mdefine_line|#define __raw_writeb(v,a)&t;&t;__arch_putb(v,a)
+DECL|macro|__raw_writew
+mdefine_line|#define __raw_writew(v,a)&t;&t;__arch_putw(v,a)
+DECL|macro|__raw_writel
+mdefine_line|#define __raw_writel(v,a)&t;&t;__arch_putl(v,a)
+DECL|macro|__raw_readb
+mdefine_line|#define __raw_readb(a)&t;&t;&t;__arch_getb(a)
+DECL|macro|__raw_readw
+mdefine_line|#define __raw_readw(a)&t;&t;&t;__arch_getw(a)
+DECL|macro|__raw_readl
+mdefine_line|#define __raw_readl(a)&t;&t;&t;__arch_getl(a)
+multiline_comment|/*&n; * The compiler seems to be incapable of optimising constants&n; * properly.  Spell it out to the compiler in some cases.&n; * These are only valid for small values of &quot;off&quot; (&lt; 1&lt;&lt;12)&n; */
+DECL|macro|__raw_base_writeb
+mdefine_line|#define __raw_base_writeb(val,base,off)&t;__arch_base_putb(val,base,off)
+DECL|macro|__raw_base_writew
+mdefine_line|#define __raw_base_writew(val,base,off)&t;__arch_base_putw(val,base,off)
+DECL|macro|__raw_base_writel
+mdefine_line|#define __raw_base_writel(val,base,off)&t;__arch_base_putl(val,base,off)
+DECL|macro|__raw_base_readb
+mdefine_line|#define __raw_base_readb(base,off)&t;__arch_base_getb(base,off)
+DECL|macro|__raw_base_readw
+mdefine_line|#define __raw_base_readw(base,off)&t;__arch_base_getw(base,off)
+DECL|macro|__raw_base_readl
+mdefine_line|#define __raw_base_readl(base,off)&t;__arch_base_getl(base,off)
 multiline_comment|/*&n; * String version of IO memory access ops:&n; */
 r_extern
 r_void
@@ -272,32 +313,31 @@ comma
 r_int
 )paren
 suffix:semicolon
-DECL|macro|__raw_writeb
-mdefine_line|#define __raw_writeb(val,addr)&t;&t;__arch_putb(val,addr)
-DECL|macro|__raw_writew
-mdefine_line|#define __raw_writew(val,addr)&t;&t;__arch_putw(val,addr)
-DECL|macro|__raw_writel
-mdefine_line|#define __raw_writel(val,addr)&t;&t;__arch_putl(val,addr)
-DECL|macro|__raw_readb
-mdefine_line|#define __raw_readb(addr)&t;&t;__arch_getb(addr)
-DECL|macro|__raw_readw
-mdefine_line|#define __raw_readw(addr)&t;&t;__arch_getw(addr)
-DECL|macro|__raw_readl
-mdefine_line|#define __raw_readl(addr)&t;&t;__arch_getl(addr)
-multiline_comment|/*&n; * If this architecture has PCI memory IO, then define the read/write&n; * macros.&n; */
+r_extern
+r_void
+id|__readwrite_bug
+c_func
+(paren
+r_const
+r_char
+op_star
+id|fn
+)paren
+suffix:semicolon
+multiline_comment|/*&n; * If this architecture has PCI memory IO, then define the read/write&n; * macros.  These should only be used with the cookie passed from&n; * ioremap.&n; */
 macro_line|#ifdef __mem_pci
 DECL|macro|readb
-mdefine_line|#define readb(addr)&t;&t;&t;__arch_getb(__mem_pci(addr))
+mdefine_line|#define readb(addr)&t;&t;&t;__raw_readb(__mem_pci(addr))
 DECL|macro|readw
-mdefine_line|#define readw(addr)&t;&t;&t;__arch_getw(__mem_pci(addr))
+mdefine_line|#define readw(addr)&t;&t;&t;__raw_readw(__mem_pci(addr))
 DECL|macro|readl
-mdefine_line|#define readl(addr)&t;&t;&t;__arch_getl(__mem_pci(addr))
+mdefine_line|#define readl(addr)&t;&t;&t;__raw_readl(__mem_pci(addr))
 DECL|macro|writeb
-mdefine_line|#define writeb(val,addr)&t;&t;__arch_putb(val,__mem_pci(addr))
+mdefine_line|#define writeb(val,addr)&t;&t;__raw_writeb(val,__mem_pci(addr))
 DECL|macro|writew
-mdefine_line|#define writew(val,addr)&t;&t;__arch_putw(val,__mem_pci(addr))
+mdefine_line|#define writew(val,addr)&t;&t;__raw_writew(val,__mem_pci(addr))
 DECL|macro|writel
-mdefine_line|#define writel(val,addr)&t;&t;__arch_putl(val,__mem_pci(addr))
+mdefine_line|#define writel(val,addr)&t;&t;__raw_writel(val,__mem_pci(addr))
 DECL|macro|memset_io
 mdefine_line|#define memset_io(a,b,c)&t;&t;_memset_io(__mem_pci(a),(b),(c))
 DECL|macro|memcpy_fromio
@@ -393,20 +433,23 @@ mdefine_line|#define eth_io_copy_and_sum(a,b,c,d)&t;__readwrite_bug(&quot;eth_io
 DECL|macro|check_signature
 mdefine_line|#define check_signature(io,sig,len)&t;(0)
 macro_line|#endif&t;/* __mem_pci */
+multiline_comment|/*&n; * remap a physical address `phys&squot; of size `size&squot; with page protection `prot&squot;&n; * into virtual address `from&squot;&n; */
+DECL|macro|io_remap_page_range
+mdefine_line|#define io_remap_page_range(from,phys,size,prot) &bslash;&n;&t;&t;remap_page_range(from,phys,size,prot)
 multiline_comment|/*&n; * If this architecture has ISA IO, then define the isa_read/isa_write&n; * macros.&n; */
 macro_line|#ifdef __mem_isa
 DECL|macro|isa_readb
-mdefine_line|#define isa_readb(addr)&t;&t;&t;__arch_getb(__mem_isa(addr))
+mdefine_line|#define isa_readb(addr)&t;&t;&t;__raw_readb(__mem_isa(addr))
 DECL|macro|isa_readw
-mdefine_line|#define isa_readw(addr)&t;&t;&t;__arch_getw(__mem_isa(addr))
+mdefine_line|#define isa_readw(addr)&t;&t;&t;__raw_readw(__mem_isa(addr))
 DECL|macro|isa_readl
-mdefine_line|#define isa_readl(addr)&t;&t;&t;__arch_getl(__mem_isa(addr))
+mdefine_line|#define isa_readl(addr)&t;&t;&t;__raw_readl(__mem_isa(addr))
 DECL|macro|isa_writeb
-mdefine_line|#define isa_writeb(val,addr)&t;&t;__arch_putb(val,__mem_isa(addr))
+mdefine_line|#define isa_writeb(val,addr)&t;&t;__raw_writeb(val,__mem_isa(addr))
 DECL|macro|isa_writew
-mdefine_line|#define isa_writew(val,addr)&t;&t;__arch_putw(val,__mem_isa(addr))
+mdefine_line|#define isa_writew(val,addr)&t;&t;__raw_writew(val,__mem_isa(addr))
 DECL|macro|isa_writel
-mdefine_line|#define isa_writel(val,addr)&t;&t;__arch_putl(val,__mem_isa(addr))
+mdefine_line|#define isa_writel(val,addr)&t;&t;__raw_writel(val,__mem_isa(addr))
 DECL|macro|isa_memset_io
 mdefine_line|#define isa_memset_io(a,b,c)&t;&t;_memset_io(__mem_isa(a),(b),(c))
 DECL|macro|isa_memcpy_fromio

@@ -29,10 +29,9 @@ mdefine_line|#define EXT_COUNTERS 1
 multiline_comment|/************************************************************************/
 multiline_comment|/* Header files&t;&t;&t;&t;&t;&t;&t;&t;*/
 macro_line|#include &lt;linux/config.h&gt;
-macro_line|#ifdef MODULE
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
-macro_line|#endif
+macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/segment.h&gt;
@@ -952,8 +951,6 @@ r_struct
 id|strip
 op_star
 id|struct_strip_list
-op_assign
-l_int|NULL
 suffix:semicolon
 multiline_comment|/************************************************************************/
 multiline_comment|/* Macros&t;&t;&t;&t;&t;&t;&t;&t;*/
@@ -988,8 +985,8 @@ r_int
 id|InterruptStatus
 suffix:semicolon
 DECL|function|DisableInterrupts
-r_extern
-id|__inline__
+r_static
+r_inline
 id|InterruptStatus
 id|DisableInterrupts
 c_func
@@ -1016,8 +1013,8 @@ id|x
 suffix:semicolon
 )brace
 DECL|function|RestoreInterrupts
-r_extern
-id|__inline__
+r_static
+r_inline
 r_void
 id|RestoreInterrupts
 c_func
@@ -10099,14 +10096,10 @@ id|dev-&gt;rebuild_header
 op_assign
 id|strip_rebuild_header
 suffix:semicolon
-multiline_comment|/*  dev-&gt;type_trans            unused */
-multiline_comment|/*  dev-&gt;set_multicast_list   unused */
 id|dev-&gt;set_mac_address
 op_assign
 id|dev_set_mac_address
 suffix:semicolon
-multiline_comment|/*  dev-&gt;do_ioctl             unused */
-multiline_comment|/*  dev-&gt;set_config           unused */
 id|dev-&gt;get_stats
 op_assign
 id|strip_get_stats
@@ -10511,10 +10504,8 @@ op_complement
 id|HUPCL
 suffix:semicolon
 multiline_comment|/* Don&squot;t close on hup */
-macro_line|#ifdef MODULE
 id|MOD_INC_USE_COUNT
 suffix:semicolon
-macro_line|#endif
 id|printk
 c_func
 (paren
@@ -10567,13 +10558,6 @@ id|STRIP_MAGIC
 )paren
 r_return
 suffix:semicolon
-id|dev_close
-c_func
-(paren
-op_amp
-id|strip_info-&gt;dev
-)paren
-suffix:semicolon
 id|unregister_netdev
 c_func
 (paren
@@ -10608,10 +10592,8 @@ id|tty-&gt;disc_data
 op_assign
 l_int|NULL
 suffix:semicolon
-macro_line|#ifdef MODULE
 id|MOD_DEC_USE_COUNT
 suffix:semicolon
-macro_line|#endif
 )brace
 multiline_comment|/************************************************************************/
 multiline_comment|/* Perform I/O control calls on an active STRIP channel.&t;&t;*/
@@ -10799,94 +10781,86 @@ suffix:semicolon
 )brace
 multiline_comment|/************************************************************************/
 multiline_comment|/* Initialization&t;&t;&t;&t;&t;&t;&t;*/
-multiline_comment|/*&n; * Initialize the STRIP driver.&n; * This routine is called at boot time, to bootstrap the multi-channel&n; * STRIP driver&n; */
-DECL|function|strip_init_ctrl_dev
-r_int
-id|strip_init_ctrl_dev
-c_func
-(paren
-r_struct
-id|net_device
-op_star
-id|dummy
-)paren
-(brace
+DECL|variable|strip_ldisc
 r_static
 r_struct
 id|tty_ldisc
 id|strip_ldisc
+op_assign
+(brace
+id|magic
+suffix:colon
+id|TTY_LDISC_MAGIC
+comma
+id|name
+suffix:colon
+l_string|&quot;strip&quot;
+comma
+id|open
+suffix:colon
+id|strip_open
+comma
+id|close
+suffix:colon
+id|strip_close
+comma
+id|ioctl
+suffix:colon
+id|strip_ioctl
+comma
+id|receive_buf
+suffix:colon
+id|strip_receive_buf
+comma
+id|receive_room
+suffix:colon
+id|strip_receive_room
+comma
+id|write_wakeup
+suffix:colon
+id|strip_write_some_more
+comma
+)brace
 suffix:semicolon
+multiline_comment|/*&n; * Initialize the STRIP driver.&n; * This routine is called at boot time, to bootstrap the multi-channel&n; * STRIP driver&n; */
+DECL|variable|__initdata
+r_static
+r_const
+r_char
+id|signon
+(braket
+)braket
+id|__initdata
+op_assign
+id|KERN_INFO
+l_string|&quot;STRIP: Version %s (unlimited channels)&bslash;n&quot;
+suffix:semicolon
+DECL|function|strip_init_driver
+r_static
+r_int
+id|__init
+id|strip_init_driver
+c_func
+(paren
+r_void
+)paren
+(brace
 r_int
 id|status
 suffix:semicolon
 id|printk
 c_func
 (paren
-id|KERN_INFO
-l_string|&quot;STRIP: Version %s (unlimited channels)&bslash;n&quot;
+id|signon
 comma
 id|StripVersion
 )paren
 suffix:semicolon
 multiline_comment|/*&n;     * Fill in our line protocol discipline, and register it&n;     */
-id|memset
-c_func
+r_if
+c_cond
 (paren
-op_amp
-id|strip_ldisc
-comma
-l_int|0
-comma
-r_sizeof
 (paren
-id|strip_ldisc
-)paren
-)paren
-suffix:semicolon
-id|strip_ldisc.magic
-op_assign
-id|TTY_LDISC_MAGIC
-suffix:semicolon
-id|strip_ldisc.flags
-op_assign
-l_int|0
-suffix:semicolon
-id|strip_ldisc.open
-op_assign
-id|strip_open
-suffix:semicolon
-id|strip_ldisc.close
-op_assign
-id|strip_close
-suffix:semicolon
-id|strip_ldisc.read
-op_assign
-l_int|NULL
-suffix:semicolon
-id|strip_ldisc.write
-op_assign
-l_int|NULL
-suffix:semicolon
-id|strip_ldisc.ioctl
-op_assign
-id|strip_ioctl
-suffix:semicolon
-id|strip_ldisc.poll
-op_assign
-l_int|NULL
-suffix:semicolon
-id|strip_ldisc.receive_buf
-op_assign
-id|strip_receive_buf
-suffix:semicolon
-id|strip_ldisc.receive_room
-op_assign
-id|strip_receive_room
-suffix:semicolon
-id|strip_ldisc.write_wakeup
-op_assign
-id|strip_write_some_more
-suffix:semicolon
 id|status
 op_assign
 id|tty_register_ldisc
@@ -10897,15 +10871,8 @@ comma
 op_amp
 id|strip_ldisc
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|status
-op_ne
-l_int|0
 )paren
-(brace
+)paren
 id|printk
 c_func
 (paren
@@ -10915,9 +10882,9 @@ comma
 id|status
 )paren
 suffix:semicolon
-)brace
 multiline_comment|/*&n;     * Register the status file with /proc&n;     */
 id|proc_net_create
+c_func
 (paren
 l_string|&quot;strip&quot;
 comma
@@ -10928,40 +10895,34 @@ comma
 id|get_status_info
 )paren
 suffix:semicolon
-macro_line|#ifdef MODULE
 r_return
 id|status
 suffix:semicolon
-macro_line|#else
-multiline_comment|/* Return &quot;not found&quot;, so that dev_init() will unlink&n;     * the placeholder device entry for us.&n;     */
-r_return
-op_minus
-id|ENODEV
-suffix:semicolon
-macro_line|#endif
 )brace
-multiline_comment|/************************************************************************/
-multiline_comment|/* From here down is only used when compiled as an external module&t;*/
-macro_line|#ifdef MODULE
-DECL|function|init_module
-r_int
-id|init_module
+DECL|variable|strip_init_driver
+id|module_init
 c_func
 (paren
-r_void
-)paren
-(brace
-r_return
-id|strip_init_ctrl_dev
-c_func
-(paren
-l_int|0
+id|strip_init_driver
 )paren
 suffix:semicolon
-)brace
-DECL|function|cleanup_module
+DECL|variable|__exitdata
+r_static
+r_const
+r_char
+id|signoff
+(braket
+)braket
+id|__exitdata
+op_assign
+id|KERN_INFO
+l_string|&quot;STRIP: Module Unloaded&bslash;n&quot;
+suffix:semicolon
+DECL|function|strip_exit_driver
+r_static
 r_void
-id|cleanup_module
+id|__exit
+id|strip_exit_driver
 c_func
 (paren
 r_void
@@ -10983,6 +10944,7 @@ id|struct_strip_list
 suffix:semicolon
 multiline_comment|/* Unregister with the /proc/net file here. */
 id|proc_net_remove
+c_func
 (paren
 l_string|&quot;strip&quot;
 )paren
@@ -11014,10 +10976,33 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-id|KERN_INFO
-l_string|&quot;STRIP: Module Unloaded&bslash;n&quot;
+id|signoff
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif /* MODULE */
+DECL|variable|strip_exit_driver
+id|module_exit
+c_func
+(paren
+id|strip_exit_driver
+)paren
+suffix:semicolon
+id|MODULE_AUTHOR
+c_func
+(paren
+l_string|&quot;Stuart Cheshire &lt;cheshire@cs.stanford.edu&gt;&quot;
+)paren
+suffix:semicolon
+id|MODULE_DESCRIPTION
+c_func
+(paren
+l_string|&quot;Starmode Radio IP (STRIP) Device Driver&quot;
+)paren
+suffix:semicolon
+id|MODULE_SUPPORTED_DEVICE
+c_func
+(paren
+l_string|&quot;Starmode Radio IP (STRIP) modem&quot;
+)paren
+suffix:semicolon
 eof

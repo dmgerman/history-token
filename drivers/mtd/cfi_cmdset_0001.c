@@ -3552,12 +3552,6 @@ op_assign
 id|FL_PM_SUSPENDED
 suffix:semicolon
 multiline_comment|/* No need to wake_up() on this state change - &n;&t;&t;&t; * as the whole point is that nobody can do anything&n;&t;&t;&t; * with the chip now anyway.&n;&t;&t;&t; */
-id|spin_unlock_bh
-c_func
-(paren
-id|chip-&gt;mutex
-)paren
-suffix:semicolon
 r_break
 suffix:semicolon
 r_default
@@ -3570,6 +3564,12 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
+id|spin_unlock_bh
+c_func
+(paren
+id|chip-&gt;mutex
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/* Unlock the chips again */
 r_for

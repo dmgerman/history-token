@@ -3302,7 +3302,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#endif MULTISESSION
+macro_line|#endif /* MULTISESSION */
 DECL|function|update_toc
 r_static
 r_int
@@ -3460,7 +3460,7 @@ c_func
 )paren
 suffix:semicolon
 multiline_comment|/* Here disk_info.multi is set */
-macro_line|#endif MULTISESSION
+macro_line|#endif /* MULTISESSION */
 r_if
 c_cond
 (paren
@@ -6675,12 +6675,12 @@ comma
 id|disk_info.last_session.frame
 )paren
 suffix:semicolon
-macro_line|#endif DEBUG_MULTIS
+macro_line|#endif /* DEBUG_MULTIS */
 r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#endif MULTISESSION
+macro_line|#endif /* MULTISESSION */
 DECL|function|cdromreset
 r_static
 r_int
@@ -8225,7 +8225,7 @@ comma
 id|optcd_setup
 )paren
 suffix:semicolon
-macro_line|#endif MODULE
+macro_line|#endif /* MODULE */
 multiline_comment|/* Test for presence of drive and initialize it. Called at boot time&n;   or during module initialisation. */
 DECL|function|optcd_init
 r_int

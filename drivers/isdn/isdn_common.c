@@ -1,6 +1,7 @@
-multiline_comment|/* $Id: isdn_common.c,v 1.114 2000/11/25 17:00:59 kai Exp $&n;&n; * Linux ISDN subsystem, common used functions (linklevel).&n; *&n; * Copyright 1994-1999  by Fritz Elfert (fritz@isdn4linux.de)&n; * Copyright 1995,96    Thinking Objects Software GmbH Wuerzburg&n; * Copyright 1995,96    by Michael Hipp (Michael.Hipp@student.uni-tuebingen.de)&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; */
+multiline_comment|/* $Id: isdn_common.c,v 1.114.6.6 2001/02/07 11:31:30 kai Exp $&n;&n; * Linux ISDN subsystem, common used functions (linklevel).&n; *&n; * Copyright 1994-1999  by Fritz Elfert (fritz@isdn4linux.de)&n; * Copyright 1995,96    Thinking Objects Software GmbH Wuerzburg&n; * Copyright 1995,96    by Michael Hipp (Michael.Hipp@student.uni-tuebingen.de)&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/poll.h&gt;
 macro_line|#include &lt;linux/vmalloc.h&gt;
@@ -37,7 +38,7 @@ r_char
 op_star
 id|isdn_revision
 op_assign
-l_string|&quot;$Revision: 1.114 $&quot;
+l_string|&quot;$Revision: 1.114.6.6 $&quot;
 suffix:semicolon
 r_extern
 r_char
@@ -10214,34 +10215,6 @@ id|ret
 suffix:semicolon
 )brace
 r_int
-DECL|function|register_isdn_module
-id|register_isdn_module
-c_func
-(paren
-id|isdn_module
-op_star
-id|m
-)paren
-(brace
-r_return
-l_int|0
-suffix:semicolon
-)brace
-r_int
-DECL|function|unregister_isdn_module
-id|unregister_isdn_module
-c_func
-(paren
-id|isdn_module
-op_star
-id|m
-)paren
-(brace
-r_return
-l_int|0
-suffix:semicolon
-)brace
-r_int
 DECL|function|isdn_add_channels
 id|isdn_add_channels
 c_func
@@ -11103,20 +11076,6 @@ c_func
 id|register_isdn
 )paren
 suffix:semicolon
-DECL|variable|register_isdn_module
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|register_isdn_module
-)paren
-suffix:semicolon
-DECL|variable|unregister_isdn_module
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|unregister_isdn_module
-)paren
-suffix:semicolon
 macro_line|#ifdef CONFIG_ISDN_PPP
 DECL|variable|isdn_ppp_register_compressor
 id|EXPORT_SYMBOL
@@ -11450,25 +11409,6 @@ l_int|1
 suffix:semicolon
 )brace
 multiline_comment|/*&n; *****************************************************************************&n; * And now the modules code.&n; *****************************************************************************&n; */
-r_extern
-r_int
-id|printk
-c_func
-(paren
-r_const
-r_char
-op_star
-id|fmt
-comma
-dot
-dot
-dot
-)paren
-suffix:semicolon
-macro_line|#ifdef MODULE
-DECL|macro|isdn_init
-mdefine_line|#define isdn_init init_module
-macro_line|#endif
 r_static
 r_char
 op_star
@@ -11905,8 +11845,10 @@ suffix:semicolon
 )brace
 macro_line|#endif  /* CONFIG_DEVFS_FS */
 multiline_comment|/*&n; * Allocate and initialize all data, register modem-devices&n; */
-r_int
 DECL|function|isdn_init
+r_static
+r_int
+id|__init
 id|isdn_init
 c_func
 (paren
@@ -12422,11 +12364,12 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#ifdef MODULE
 multiline_comment|/*&n; * Unload module&n; */
+DECL|function|isdn_exit
+r_static
 r_void
-DECL|function|cleanup_module
-id|cleanup_module
+id|__exit
+id|isdn_exit
 c_func
 (paren
 r_void
@@ -12653,5 +12596,18 @@ l_string|&quot;ISDN-subsystem unloaded&bslash;n&quot;
 suffix:semicolon
 )brace
 )brace
-macro_line|#endif
+DECL|variable|isdn_init
+id|module_init
+c_func
+(paren
+id|isdn_init
+)paren
+suffix:semicolon
+DECL|variable|isdn_exit
+id|module_exit
+c_func
+(paren
+id|isdn_exit
+)paren
+suffix:semicolon
 eof

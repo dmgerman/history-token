@@ -1,11 +1,11 @@
-multiline_comment|/*&n; * $Id: kernelcapi.h,v 1.8.6.1 2000/11/28 09:36:56 kai Exp $&n; * &n; * Kernel CAPI 2.0 Interface for Linux&n; * &n; * (c) Copyright 1997 by Carsten Paeth (calle@calle.in-berlin.de)&n; * &n; */
+multiline_comment|/*&n; * $Id: kernelcapi.h,v 1.8.6.2 2001/02/07 11:31:31 kai Exp $&n; * &n; * Kernel CAPI 2.0 Interface for Linux&n; * &n; * (c) Copyright 1997 by Carsten Paeth (calle@calle.in-berlin.de)&n; * &n; */
 macro_line|#ifndef __KERNELCAPI_H__
 DECL|macro|__KERNELCAPI_H__
 mdefine_line|#define __KERNELCAPI_H__
 DECL|macro|CAPI_MAXAPPL
-mdefine_line|#define CAPI_MAXAPPL&t;20&t;/* maximum number of applications  */
+mdefine_line|#define CAPI_MAXAPPL&t;128&t;/* maximum number of applications  */
 DECL|macro|CAPI_MAXCONTR
-mdefine_line|#define CAPI_MAXCONTR&t;10&t;/* maximum number of controller    */
+mdefine_line|#define CAPI_MAXCONTR&t;16&t;/* maximum number of controller    */
 DECL|macro|CAPI_MAXDATAWINDOW
 mdefine_line|#define CAPI_MAXDATAWINDOW&t;8
 DECL|struct|kcapi_flagdef

@@ -133,12 +133,16 @@ id|dev
 )paren
 suffix:semicolon
 multiline_comment|/* ------------------------------------------------------------------------- */
-DECL|variable|version
+DECL|variable|__initdata
 r_static
+r_const
 r_char
-op_star
 id|version
+(braket
+)braket
+id|__initdata
 op_assign
+id|KERN_INFO
 l_string|&quot;ether1 ethernet driver (c) 2000 Russell King v1.07&bslash;n&quot;
 suffix:semicolon
 DECL|macro|BUS_16
@@ -3034,8 +3038,6 @@ op_star
 )paren
 id|dev-&gt;priv
 suffix:semicolon
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -3053,14 +3055,10 @@ comma
 id|dev
 )paren
 )paren
-(brace
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 r_return
 op_minus
 id|EAGAIN
 suffix:semicolon
-)brace
 id|memset
 (paren
 op_amp
@@ -3090,8 +3088,6 @@ id|dev-&gt;irq
 comma
 id|dev
 )paren
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 r_return
 op_minus
@@ -4672,8 +4668,6 @@ comma
 id|dev
 )paren
 suffix:semicolon
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -4751,9 +4745,6 @@ l_int|0
 )paren
 id|printk
 (paren
-id|KERN_INFO
-l_string|&quot;%s&quot;
-comma
 id|version
 )paren
 suffix:semicolon
@@ -4820,6 +4811,12 @@ id|dev
 r_goto
 id|out
 suffix:semicolon
+id|SET_MODULE_OWNER
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
 id|dev-&gt;base_addr
 op_assign
 id|ecard_address
@@ -4884,19 +4881,17 @@ op_eq
 l_int|0
 )paren
 r_goto
-id|free_dev
+id|release
 suffix:semicolon
 id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;%s: ether1 at %lx, IRQ%d, ether address &quot;
+l_string|&quot;%s: ether1 in slot %d, &quot;
 comma
 id|dev-&gt;name
 comma
-id|dev-&gt;base_addr
-comma
-id|dev-&gt;irq
+id|ec-&gt;slot_no
 )paren
 suffix:semicolon
 r_for
@@ -4929,26 +4924,21 @@ id|i
 suffix:semicolon
 id|printk
 (paren
-id|i
-op_eq
-l_int|0
-ques
-c_cond
-l_string|&quot; %02x&quot;
-suffix:colon
-id|i
-op_eq
-l_int|5
-ques
-c_cond
-l_string|&quot;:%02x&bslash;n&quot;
-suffix:colon
-l_string|&quot;:%02x&quot;
+l_string|&quot;%2.2x%c&quot;
 comma
 id|dev-&gt;dev_addr
 (braket
 id|i
 )braket
+comma
+id|i
+op_eq
+l_int|5
+ques
+c_cond
+l_char|&squot;&bslash;n&squot;
+suffix:colon
+l_char|&squot;:&squot;
 )paren
 suffix:semicolon
 )brace
@@ -4962,7 +4952,7 @@ id|dev
 )paren
 )paren
 r_goto
-id|free_dev
+id|release
 suffix:semicolon
 id|dev-&gt;open
 op_assign
@@ -4999,7 +4989,7 @@ suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
-id|free_dev
+id|release
 suffix:colon
 id|release_region
 c_func
@@ -5019,6 +5009,8 @@ comma
 l_int|4096
 )paren
 suffix:semicolon
+id|free
+suffix:colon
 id|unregister_netdev
 c_func
 (paren

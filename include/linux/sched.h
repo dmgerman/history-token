@@ -1503,7 +1503,7 @@ id|timeout
 )paren
 suffix:semicolon
 r_extern
-r_void
+r_int
 id|FASTCALL
 c_func
 (paren

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * sound/sscape.c&n; *&n; * Low level driver for Ensoniq SoundScape&n; *&n; *&n; * Copyright (C) by Hannu Savolainen 1993-1997&n; *&n; * OSS/Free for Linux is distributed under the GNU GENERAL PUBLIC LICENSE (GPL)&n; * Version 2 (June 1991). See the &quot;COPYING&quot; file distributed with this software&n; * for more info.&n; *&n; *&n; * Thomas Sailer   &t;: ioctl code reworked (vmalloc/vfree removed)&n; * Sergey Smitienko&t;: ensoniq p&squot;n&squot;p support&n; * Christoph Hellwig&t;: adapted to module_init/module_exit&n; * Bartlomiej Zolnierkiewicz : added __init to attach_sscape()&n; */
+multiline_comment|/*&n; * sound/sscape.c&n; *&n; * Low level driver for Ensoniq SoundScape&n; *&n; *&n; * Copyright (C) by Hannu Savolainen 1993-1997&n; *&n; * OSS/Free for Linux is distributed under the GNU GENERAL PUBLIC LICENSE (GPL)&n; * Version 2 (June 1991). See the &quot;COPYING&quot; file distributed with this software&n; * for more info.&n; *&n; *&n; * Thomas Sailer   &t;: ioctl code reworked (vmalloc/vfree removed)&n; * Sergey Smitienko&t;: ensoniq p&squot;n&squot;p support&n; * Christoph Hellwig&t;: adapted to module_init/module_exit&n; * Bartlomiej Zolnierkiewicz : added __init to attach_sscape()&n; * Chris Rankin&t;&t;: Specify that this module owns the coprocessor&n; * Arnaldo C. de Melo&t;: added missing restore_flags in sscape_pnp_upload_file&n; */
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &quot;sound_config.h&quot;
@@ -2344,6 +2344,8 @@ op_assign
 (brace
 l_string|&quot;SoundScape M68K&quot;
 comma
+id|THIS_MODULE
+comma
 id|sscape_coproc_open
 comma
 id|sscape_coproc_close
@@ -2528,9 +2530,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|sscape_is_pnp
-op_eq
-l_int|0
 )paren
 (brace
 id|save_flags
@@ -4163,9 +4164,17 @@ l_int|0
 op_eq
 l_int|0
 )paren
+(brace
+id|restore_flags
+c_func
+(paren
+id|flags
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
+)brace
 )brace
 id|restore_flags
 c_func
@@ -4920,9 +4929,10 @@ id|devc
 comma
 l_int|0x84
 comma
-l_int|0x32
+l_int|0x64
 )paren
 suffix:semicolon
+multiline_comment|/* MIDI volume */
 id|sscape_write_host_ctrl2
 c_func
 (paren
@@ -4930,9 +4940,10 @@ id|devc
 comma
 l_int|0x86
 comma
-l_int|0x32
+l_int|0x64
 )paren
 suffix:semicolon
+multiline_comment|/* MIDI volume?? */
 id|sscape_write_host_ctrl2
 c_func
 (paren
@@ -6004,22 +6015,6 @@ l_int|1
 )paren
 op_or
 l_int|0x20
-)paren
-suffix:semicolon
-id|release_region
-c_func
-(paren
-id|devc-&gt;codec
-comma
-l_int|2
-)paren
-suffix:semicolon
-id|release_region
-c_func
-(paren
-id|devc-&gt;base
-comma
-l_int|8
 )paren
 suffix:semicolon
 r_return

@@ -59,35 +59,10 @@ c_func
 id|dentry_unused
 )paren
 suffix:semicolon
-r_struct
-(brace
-DECL|member|nr_dentry
-r_int
-id|nr_dentry
-suffix:semicolon
-DECL|member|nr_unused
-r_int
-id|nr_unused
-suffix:semicolon
-DECL|member|age_limit
-r_int
-id|age_limit
-suffix:semicolon
-multiline_comment|/* age in seconds */
-DECL|member|want_pages
-r_int
-id|want_pages
-suffix:semicolon
-multiline_comment|/* pages requested by system */
-DECL|member|dummy
-r_int
-id|dummy
-(braket
-l_int|2
-)braket
-suffix:semicolon
+multiline_comment|/* Statistics gathering. */
 DECL|variable|dentry_stat
-)brace
+r_struct
+id|dentry_stat_t
 id|dentry_stat
 op_assign
 (brace

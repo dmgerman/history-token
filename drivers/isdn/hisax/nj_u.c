@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: nj_u.c,v 2.8.6.1 2000/11/29 16:00:14 kai Exp $ &n; *&n; * This file is (c) under GNU PUBLIC LICENSE&n; *&n; */
+multiline_comment|/* $Id: nj_u.c,v 2.8.6.2 2001/02/07 11:31:31 kai Exp $ &n; *&n; * This file is (c) under GNU PUBLIC LICENSE&n; *&n; */
 DECL|macro|__NO_VERSION__
 mdefine_line|#define __NO_VERSION__
 macro_line|#include &lt;linux/config.h&gt;
@@ -16,7 +16,7 @@ r_char
 op_star
 id|NETjet_U_revision
 op_assign
-l_string|&quot;$Revision: 2.8.6.1 $&quot;
+l_string|&quot;$Revision: 2.8.6.2 $&quot;
 suffix:semicolon
 DECL|function|dummyrr
 r_static
@@ -769,6 +769,12 @@ id|dev_netjet
 )paren
 r_return
 l_int|0
+suffix:semicolon
+id|pci_set_master
+c_func
+(paren
+id|dev_netjet
+)paren
 suffix:semicolon
 id|cs-&gt;irq
 op_assign

@@ -9,16 +9,18 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/signal.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
-macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/blk.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/ecard.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
+macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &quot;../../scsi/scsi.h&quot;
 macro_line|#include &quot;../../scsi/hosts.h&quot;
-macro_line|#include &quot;cumana_1.h&quot;
-macro_line|#include &quot;../../scsi/NCR5380.h&quot;
 macro_line|#include &quot;../../scsi/constants.h&quot;
+macro_line|#include &lt;scsi/scsicam.h&gt;
+DECL|macro|CUMANASCSI_PUBLIC_RELEASE
+mdefine_line|#define CUMANASCSI_PUBLIC_RELEASE 1
 DECL|variable|cumanascsi_cids
 r_static
 r_const
@@ -41,6 +43,57 @@ l_int|0xffff
 )brace
 )brace
 suffix:semicolon
+DECL|macro|NCR5380_implementation_fields
+mdefine_line|#define NCR5380_implementation_fields &bslash;&n;    int port, ctrl
+DECL|macro|NCR5380_local_declare
+mdefine_line|#define NCR5380_local_declare() &bslash;&n;        struct Scsi_Host *_instance
+DECL|macro|NCR5380_setup
+mdefine_line|#define NCR5380_setup(instance) &bslash;&n;        _instance = instance
+DECL|macro|NCR5380_read
+mdefine_line|#define NCR5380_read(reg) cumanascsi_read(_instance, reg)
+DECL|macro|NCR5380_write
+mdefine_line|#define NCR5380_write(reg, value) cumanascsi_write(_instance, reg, value)
+DECL|macro|do_NCR5380_intr
+mdefine_line|#define do_NCR5380_intr do_cumanascsi_intr
+DECL|macro|NCR5380_queue_command
+mdefine_line|#define NCR5380_queue_command cumanascsi_queue_command
+DECL|macro|NCR5380_abort
+mdefine_line|#define NCR5380_abort cumanascsi_abort
+DECL|macro|NCR5380_reset
+mdefine_line|#define NCR5380_reset cumanascsi_reset
+DECL|macro|NCR5380_proc_info
+mdefine_line|#define NCR5380_proc_info cumanascsi_proc_info
+r_int
+id|NCR5380_proc_info
+c_func
+(paren
+r_char
+op_star
+id|buffer
+comma
+r_char
+op_star
+op_star
+id|start
+comma
+id|off_t
+id|offset
+comma
+r_int
+id|length
+comma
+r_int
+id|hostno
+comma
+r_int
+id|inout
+)paren
+suffix:semicolon
+DECL|macro|BOARD_NORMAL
+mdefine_line|#define BOARD_NORMAL&t;0
+DECL|macro|BOARD_NCR53C400
+mdefine_line|#define BOARD_NCR53C400&t;1
+macro_line|#include &quot;../../scsi/NCR5380.h&quot;
 multiline_comment|/*&n; * Function : cumanascsi_setup(char *str, int *ints)&n; *&n; * Purpose : LILO command line initialization of the overrides array,&n; *&n; * Inputs : str - unused, ints - array of integer parameters with ints[0]&n; *&t;equal to the number of ints.&n; *&n; */
 DECL|function|cumanascsi_setup
 r_void
@@ -326,9 +379,9 @@ c_func
 (paren
 l_string|&quot; options CAN_QUEUE=%d CMD_PER_LUN=%d release=%d&quot;
 comma
-id|CAN_QUEUE
+id|tpnt-&gt;can_queue
 comma
-id|CMD_PER_LUN
+id|tpnt-&gt;cmd_per_lun
 comma
 id|CUMANASCSI_PUBLIC_RELEASE
 )paren
@@ -1723,13 +1776,146 @@ suffix:semicolon
 DECL|macro|CTRL
 macro_line|#undef CTRL
 macro_line|#include &quot;../../scsi/NCR5380.c&quot;
-macro_line|#ifdef MODULE
-DECL|variable|driver_template
+DECL|variable|cumanascsi_template
+r_static
 id|Scsi_Host_Template
-id|driver_template
+id|cumanascsi_template
 op_assign
-id|CUMANA_NCR5380
+(brace
+id|module
+suffix:colon
+id|THIS_MODULE
+comma
+id|name
+suffix:colon
+l_string|&quot;Cumana 16-bit SCSI&quot;
+comma
+id|detect
+suffix:colon
+id|cumanascsi_detect
+comma
+id|release
+suffix:colon
+id|cumanascsi_release
+comma
+id|info
+suffix:colon
+id|cumanascsi_info
+comma
+id|queuecommand
+suffix:colon
+id|cumanascsi_queue_command
+comma
+m_abort
+suffix:colon
+id|cumanascsi_abort
+comma
+id|reset
+suffix:colon
+id|cumanascsi_reset
+comma
+id|bios_param
+suffix:colon
+id|scsicam_bios_param
+comma
+id|can_queue
+suffix:colon
+l_int|16
+comma
+id|this_id
+suffix:colon
+l_int|7
+comma
+id|sg_tablesize
+suffix:colon
+id|SG_ALL
+comma
+id|cmd_per_lun
+suffix:colon
+l_int|2
+comma
+id|unchecked_isa_dma
+suffix:colon
+l_int|0
+comma
+id|use_clustering
+suffix:colon
+id|DISABLE_CLUSTERING
+)brace
 suffix:semicolon
-macro_line|#include &quot;../../scsi/scsi_module.c&quot;
-macro_line|#endif
+DECL|function|cumanascsi_init
+r_static
+r_int
+id|__init
+id|cumanascsi_init
+c_func
+(paren
+r_void
+)paren
+(brace
+id|scsi_register_module
+c_func
+(paren
+id|MODULE_SCSI_HA
+comma
+op_amp
+id|cumanascsi_template
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|cumanascsi_template.present
+)paren
+r_return
+l_int|0
+suffix:semicolon
+id|scsi_unregister_module
+c_func
+(paren
+id|MODULE_SCSI_HA
+comma
+op_amp
+id|cumanascsi_template
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|ENODEV
+suffix:semicolon
+)brace
+DECL|function|cumanascsi_exit
+r_static
+r_void
+id|__exit
+id|cumanascsi_exit
+c_func
+(paren
+r_void
+)paren
+(brace
+id|scsi_unregister_module
+c_func
+(paren
+id|MODULE_SCSI_HA
+comma
+op_amp
+id|cumanascsi_template
+)paren
+suffix:semicolon
+)brace
+DECL|variable|cumanascsi_init
+id|module_init
+c_func
+(paren
+id|cumanascsi_init
+)paren
+suffix:semicolon
+DECL|variable|cumanascsi_exit
+id|module_exit
+c_func
+(paren
+id|cumanascsi_exit
+)paren
+suffix:semicolon
 eof

@@ -67,25 +67,9 @@ op_assign
 id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
 multiline_comment|/*&n; * Statistics gathering..&n; */
-r_struct
-(brace
-DECL|member|nr_inodes
-r_int
-id|nr_inodes
-suffix:semicolon
-DECL|member|nr_unused
-r_int
-id|nr_unused
-suffix:semicolon
-DECL|member|dummy
-r_int
-id|dummy
-(braket
-l_int|5
-)braket
-suffix:semicolon
 DECL|variable|inodes_stat
-)brace
+r_struct
+id|inodes_stat_t
 id|inodes_stat
 suffix:semicolon
 DECL|variable|inode_cachep

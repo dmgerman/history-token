@@ -4,6 +4,11 @@ DECL|macro|_ASM_DELAY_H
 mdefine_line|#define _ASM_DELAY_H
 macro_line|#include &lt;linux/config.h&gt;
 r_extern
+r_int
+r_int
+id|loops_per_sec
+suffix:semicolon
+r_extern
 id|__inline__
 r_void
 DECL|function|__delay

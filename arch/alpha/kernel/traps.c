@@ -5109,6 +5109,7 @@ id|regs
 )paren
 (brace
 multiline_comment|/* We only get here for OSF system calls, minus #112;&n;&t;   the rest go to sys_ni_syscall.  */
+macro_line|#if 0
 id|printk
 c_func
 (paren
@@ -5123,6 +5124,7 @@ comma
 id|a2
 )paren
 suffix:semicolon
+macro_line|#endif
 r_return
 op_minus
 id|ENOSYS

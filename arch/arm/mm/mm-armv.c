@@ -1224,7 +1224,7 @@ c_loop
 (paren
 id|virt
 op_amp
-l_int|1048575
+l_int|0xfffff
 op_logical_or
 (paren
 id|virt
@@ -1232,7 +1232,7 @@ op_plus
 id|off
 )paren
 op_amp
-l_int|1048575
+l_int|0xfffff
 )paren
 op_logical_and
 id|length

@@ -3002,22 +3002,19 @@ op_or_assign
 id|_CACHE_UNCACHED
 suffix:semicolon
 macro_line|#elif defined(__arm__)
-macro_line|#if defined(CONFIG_CPU_32) &amp;&amp; !defined(CONFIG_ARCH_ACORN)
-multiline_comment|/* On Acorn architectures, we want to keep the framebuffer&n;&t; * cached.&n;&t; */
-id|pgprot_val
+id|vma-&gt;vm_page_prot
+op_assign
+id|pgprot_noncached
 c_func
 (paren
 id|vma-&gt;vm_page_prot
 )paren
-op_and_assign
-op_complement
-(paren
-id|PTE_CACHEABLE
-op_or
-id|PTE_BUFFERABLE
-)paren
 suffix:semicolon
-macro_line|#endif
+multiline_comment|/* This is an IO map - tell maydump to skip this VMA */
+id|vma-&gt;vm_flags
+op_or_assign
+id|VM_IO
+suffix:semicolon
 macro_line|#elif defined(__sh__)
 id|pgprot_val
 c_func

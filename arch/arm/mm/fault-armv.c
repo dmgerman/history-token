@@ -16,12 +16,6 @@ macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/unaligned.h&gt;
-DECL|macro|FAULT_CODE_READ
-mdefine_line|#define FAULT_CODE_READ&t;&t;0x02
-DECL|macro|DO_COW
-mdefine_line|#define DO_COW(m)&t;&t;(!((m) &amp; FAULT_CODE_READ))
-DECL|macro|READ_FAULT
-mdefine_line|#define READ_FAULT(m)&t;&t;((m) &amp; FAULT_CODE_READ)
 r_extern
 r_void
 id|die_if_kernel
@@ -41,63 +35,39 @@ r_int
 id|err
 )paren
 suffix:semicolon
-macro_line|#include &quot;fault-common.c&quot;
-macro_line|#ifdef DEBUG
-DECL|function|sp_valid
-r_static
+r_extern
+r_void
+id|show_pte
+c_func
+(paren
+r_struct
+id|mm_struct
+op_star
+id|mm
+comma
 r_int
-id|sp_valid
+r_int
+id|addr
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|do_page_fault
 c_func
 (paren
 r_int
 r_int
+id|addr
+comma
+r_int
+id|mode
+comma
+r_struct
+id|pt_regs
 op_star
-id|sp
+id|regs
 )paren
-(brace
-r_int
-r_int
-id|addr
-op_assign
-(paren
-r_int
-r_int
-)paren
-id|sp
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|addr
-op_ge
-l_int|0xb0000000
-op_logical_and
-id|addr
-OL
-l_int|0xd0000000
-)paren
-r_return
-l_int|1
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|addr
-op_ge
-l_int|0x03ff0000
-op_logical_and
-id|addr
-OL
-l_int|0x04000000
-)paren
-r_return
-l_int|1
-suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-)brace
-macro_line|#endif
 macro_line|#ifdef CONFIG_ALIGNMENT_TRAP
 multiline_comment|/*&n; * 32-bit misaligned trap handler (c) 1998 San Mehat (CCC) -July 1998&n; * /proc/sys/debug/alignment, modified and integrated into&n; * Linux 2.1 by Russell King&n; *&n; * NOTE!!! This is not portable onto the ARM6/ARM7 processors yet.  Also,&n; * it seems to give a severe performance impact (1 abort/ms - NW runs at&n; * ARM6 speeds) with GCC 2.7.2.2 - needs checking with a later GCC/EGCS.&n; *&n; * IMHO, I don&squot;t think that the trap handler is advantageous on ARM6,7&n; * processors (they&squot;ll run like an ARM3).  We&squot;ll see.&n; */
 DECL|macro|CODING_BITS
@@ -629,6 +599,34 @@ op_sub_assign
 id|offset.un
 suffix:semicolon
 )brace
+multiline_comment|/*&n;&t;&t;&t; * This is a &quot;hint&quot; - we already have eaddr worked out by the&n;&t;&t;&t; * processor for us.&n;&t;&t;&t; */
+r_if
+c_cond
+(paren
+id|addr
+op_ne
+id|eaddr
+)paren
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;LDRHSTRH: PC = %08lx, instr = %08x, &quot;
+l_string|&quot;addr = %08lx, eaddr = %08lx&bslash;n&quot;
+comma
+id|instruction_pointer
+c_func
+(paren
+id|regs
+)paren
+comma
+id|instr
+comma
+id|addr
+comma
+id|eaddr
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -968,6 +966,7 @@ l_int|1
 suffix:semicolon
 )brace
 )brace
+multiline_comment|/*&n;&t;&t; * This is a &quot;hint&quot; - we already have eaddr worked out by the&n;&t;&t; * processor for us.&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -978,7 +977,9 @@ id|eaddr
 id|printk
 c_func
 (paren
-l_string|&quot;PC = %08lx, instr = %08x, addr = %08lx, eaddr = %08lx&bslash;n&quot;
+id|KERN_ERR
+l_string|&quot;LDRSTR: PC = %08lx, instr = %08x, &quot;
+l_string|&quot;addr = %08lx, eaddr = %08lx&bslash;n&quot;
 comma
 id|instruction_pointer
 c_func
@@ -1164,6 +1165,34 @@ id|instr
 id|eaddr
 op_sub_assign
 id|nr_regs
+suffix:semicolon
+multiline_comment|/*&n;&t;&t; * This is a &quot;hint&quot; - we already have eaddr worked out by the&n;&t;&t; * processor for us.&n;&t;&t; */
+r_if
+c_cond
+(paren
+id|addr
+op_ne
+id|eaddr
+)paren
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;LDMSTM: PC = %08lx, instr = %08x, &quot;
+l_string|&quot;addr = %08lx, eaddr = %08lx&bslash;n&quot;
+comma
+id|instruction_pointer
+c_func
+(paren
+id|regs
+)paren
+comma
+id|instr
+comma
+id|addr
+comma
+id|eaddr
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -1381,7 +1410,7 @@ macro_line|#else
 DECL|macro|do_alignment
 mdefine_line|#define do_alignment NULL
 macro_line|#endif
-macro_line|#ifdef CONFIG_DEBUG_USER
+multiline_comment|/*&n; * Some section permission faults need to be handled gracefully, for&n; * instance, when they happen due to a __{get,put}_user during an oops).&n; * In this case, we should return an error to the __{get,put}_user caller&n; * instead of causing another oops.  We should also fixup this fault as&n; * the user could pass a pointer to a section to the kernel.&n; */
 r_static
 r_int
 DECL|function|do_sect_fault
@@ -1401,6 +1430,10 @@ op_star
 id|regs
 )paren
 (brace
+r_int
+r_int
+id|fixup
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1411,6 +1444,7 @@ id|regs
 )paren
 )paren
 (brace
+macro_line|#ifdef CONFIG_DEBUG_USER
 id|printk
 c_func
 (paren
@@ -1424,127 +1458,63 @@ comma
 id|error_code
 )paren
 suffix:semicolon
-macro_line|#ifdef DEBUG
-(brace
-r_int
-r_int
-id|i
-comma
-id|j
-suffix:semicolon
-r_int
-r_int
-op_star
-id|sp
-suffix:semicolon
-id|sp
-op_assign
-(paren
-r_int
-r_int
-op_star
-)paren
-(paren
-id|regs-&gt;ARM_sp
-op_minus
-l_int|128
-)paren
-suffix:semicolon
-r_for
-c_loop
-(paren
-id|j
-op_assign
-l_int|0
-suffix:semicolon
-id|j
-OL
-l_int|20
-op_logical_and
-id|sp_valid
-c_func
-(paren
-id|sp
-)paren
-suffix:semicolon
-id|j
-op_increment
-)paren
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot;%p: &quot;
-comma
-id|sp
-)paren
-suffix:semicolon
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-l_int|8
-op_logical_and
-id|sp_valid
-c_func
-(paren
-id|sp
-)paren
-suffix:semicolon
-id|i
-op_add_assign
-l_int|1
-comma
-id|sp
-op_increment
-)paren
-id|printk
-c_func
-(paren
-l_string|&quot;%08lx &quot;
-comma
-op_star
-id|sp
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;&bslash;n&quot;
-)paren
+macro_line|#endif
+r_goto
+id|fail
 suffix:semicolon
 )brace
-id|show_regs
+id|fixup
+op_assign
+id|search_exception_table
+c_func
+(paren
+id|instruction_pointer
 c_func
 (paren
 id|regs
 )paren
-suffix:semicolon
-id|c_backtrace
-c_func
-(paren
-id|regs-&gt;ARM_fp
-comma
-id|regs-&gt;ARM_cpsr
 )paren
 suffix:semicolon
-)brace
+r_if
+c_cond
+(paren
+id|fixup
+op_ne
+l_int|0
+)paren
+(brace
+macro_line|#ifdef DEBUG
+id|printk
+c_func
+(paren
+id|KERN_DEBUG
+l_string|&quot;%s: Exception at [&lt;%lx&gt;] addr=%lx (fixup: %lx)&bslash;n&quot;
+comma
+id|tsk-&gt;comm
+comma
+id|regs-&gt;ARM_pc
+comma
+id|addr
+comma
+id|fixup
+)paren
+suffix:semicolon
 macro_line|#endif
+id|regs-&gt;ARM_pc
+op_assign
+id|fixup
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
 )brace
+id|fail
+suffix:colon
 r_return
 l_int|1
 suffix:semicolon
 multiline_comment|/* not fixed up */
 )brace
-macro_line|#else
-DECL|macro|do_sect_fault
-mdefine_line|#define do_sect_fault NULL
-macro_line|#endif
 DECL|struct|fsr_info
 r_static
 r_const
@@ -1717,10 +1687,6 @@ l_string|&quot;page permission fault&quot;
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * Currently dropped down to debug level&n; */
-DECL|macro|BUG_PROC_MSG
-mdefine_line|#define BUG_PROC_MSG &bslash;&n;  KERN_DEBUG &quot;Weird data abort (%08X).&bslash;n&quot; &bslash;&n;  KERN_DEBUG &quot;Please see http:
-singleline_comment|//www.arm.linux.org.uk/state.html for &quot; &bslash;
-l_string|&quot;more information&bslash;n&quot;
 id|asmlinkage
 r_void
 DECL|function|do_DataAbort
@@ -1757,6 +1723,7 @@ op_amp
 l_int|15
 )paren
 suffix:semicolon
+macro_line|#if defined(CONFIG_CPU_SA110) || defined(CONFIG_CPU_SA1100)
 r_if
 c_cond
 (paren
@@ -1765,8 +1732,29 @@ op_eq
 id|regs-&gt;ARM_pc
 )paren
 r_goto
-id|weirdness
+id|sa1_weirdness
 suffix:semicolon
+macro_line|#endif
+macro_line|#if defined(CONFIG_CPU_ARM720T) &amp;&amp; defined(CONFIG_ALIGNMENT_TRAP)
+r_if
+c_cond
+(paren
+id|addr
+op_amp
+l_int|3
+op_logical_and
+(paren
+id|fsr
+op_amp
+l_int|13
+)paren
+op_ne
+l_int|1
+)paren
+r_goto
+id|arm720_weirdness
+suffix:semicolon
+macro_line|#endif
 r_if
 c_cond
 (paren
@@ -1837,7 +1825,8 @@ l_int|0
 suffix:semicolon
 r_return
 suffix:semicolon
-id|weirdness
+macro_line|#if defined(CONFIG_CPU_SA110) || defined(CONFIG_CPU_SA1100)
+id|sa1_weirdness
 suffix:colon
 r_if
 c_cond
@@ -1860,13 +1849,11 @@ c_cond
 (paren
 id|first
 )paren
-multiline_comment|/*&n;&t;&t;&t; * I want statistical information on this problem,&n;&t;&t;&t; * but we don&squot;t want to hastle the users too much.&n;&t;&t;&t; */
 id|printk
 c_func
 (paren
-id|BUG_PROC_MSG
-comma
-id|fsr
+id|KERN_DEBUG
+l_string|&quot;Weird data abort detected&bslash;n&quot;
 )paren
 suffix:semicolon
 id|first
@@ -1897,6 +1884,124 @@ id|regs
 r_goto
 id|bad
 suffix:semicolon
+r_return
+suffix:semicolon
+macro_line|#endif
+macro_line|#if defined(CONFIG_CPU_ARM720T) &amp;&amp; defined(CONFIG_ALIGNMENT_TRAP)
+id|arm720_weirdness
+suffix:colon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|user_mode
+c_func
+(paren
+id|regs
+)paren
+)paren
+(brace
+r_int
+r_int
+id|instr
+suffix:semicolon
+id|instr
+op_assign
+op_star
+(paren
+r_int
+r_int
+op_star
+)paren
+id|instruction_pointer
+c_func
+(paren
+id|regs
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|instr
+op_amp
+l_int|0x04400000
+)paren
+op_ne
+l_int|0x04400000
+)paren
+(brace
+r_static
+r_int
+id|first
+op_assign
+l_int|1
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|first
+)paren
+id|printk
+c_func
+(paren
+l_string|&quot;Mis-reported alignment fault at &quot;
+l_string|&quot;0x%08lx, fsr 0x%02x, code 0x%02x, &quot;
+l_string|&quot;PC = 0x%08lx, instr = 0x%08lx&bslash;n&quot;
+comma
+id|addr
+comma
+id|fsr
+comma
+id|error_code
+comma
+id|regs-&gt;ARM_pc
+comma
+id|instr
+)paren
+suffix:semicolon
+id|first
+op_assign
+l_int|0
+suffix:semicolon
+id|cpu_tlb_invalidate_all
+c_func
+(paren
+)paren
+suffix:semicolon
+id|cpu_cache_clean_invalidate_all
+c_func
+(paren
+)paren
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
+)brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|inf-&gt;fn
+op_logical_or
+id|inf
+op_member_access_from_pointer
+id|fn
+c_func
+(paren
+id|addr
+comma
+id|error_code
+comma
+id|regs
+)paren
+)paren
+r_goto
+id|bad
+suffix:semicolon
+r_return
+suffix:semicolon
+macro_line|#endif
 )brace
 id|asmlinkage
 r_int
@@ -1919,7 +2024,7 @@ c_func
 (paren
 id|addr
 comma
-id|FAULT_CODE_READ
+l_int|0
 comma
 id|regs
 )paren

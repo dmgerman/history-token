@@ -1,4 +1,4 @@
-multiline_comment|/*&n;    Written 1994 by David C. Davies.&n;&n;    Copyright 1994 Digital Equipment Corporation.&n;&n;    This software may be used and distributed according to  the terms of the&n;    GNU Public License, incorporated herein by reference.&n;&n;    The author may    be  reached as davies@wanton.lkg.dec.com  or   Digital&n;    Equipment Corporation, 550 King Street, Littleton MA 01460.&n;&n;    =========================================================================&n;*/
+multiline_comment|/*&n;    Written 1994 by David C. Davies.&n;&n;    Copyright 1994 Digital Equipment Corporation.&n;&n;    This software may be used and distributed according to  the terms of the&n;    GNU General Public License, incorporated herein by reference.&n;&n;    The author may    be  reached as davies@wanton.lkg.dec.com  or   Digital&n;    Equipment Corporation, 550 King Street, Littleton MA 01460.&n;&n;    =========================================================================&n;*/
 multiline_comment|/*&n;** I/O Address Register Map&n;*/
 DECL|macro|EWRK3_CSR
 mdefine_line|#define EWRK3_CSR    iobase+0x00   /* Control and Status Register */

@@ -3582,6 +3582,17 @@ multiline_comment|/* FallThrough */
 r_case
 l_int|1
 suffix:colon
+r_if
+c_cond
+(paren
+id|PageReserved
+c_func
+(paren
+id|old_page
+)paren
+)paren
+r_break
+suffix:semicolon
 id|flush_cache_page
 c_func
 (paren

@@ -1,4 +1,4 @@
-multiline_comment|/* &n;        dstr.c    (c) 1997-8  Grant R. Guenther &lt;grant@torque.net&gt;&n;                              Under the terms of the GNU public license.&n;&n;        dstr.c is a low-level protocol driver for the &n;        DataStor EP2000 parallel to IDE adapter chip.&n;&n;*/
+multiline_comment|/* &n;        dstr.c    (c) 1997-8  Grant R. Guenther &lt;grant@torque.net&gt;&n;                              Under the terms of the GNU General Public License.&n;&n;        dstr.c is a low-level protocol driver for the &n;        DataStor EP2000 parallel to IDE adapter chip.&n;&n;*/
 multiline_comment|/* Changes:&n;&n;        1.01    GRG 1998.05.06 init_proto, release_proto&n;&n;*/
 DECL|macro|DSTR_VERSION
 mdefine_line|#define DSTR_VERSION      &quot;1.01&quot;

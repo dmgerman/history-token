@@ -79,11 +79,6 @@ id|waittime
 )paren
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/* Currently unused - delete in v2.5.x after purging from drivers */
-DECL|macro|load_8390_module
-mdefine_line|#define load_8390_module(driver)&t;0
-DECL|macro|unload_8390_module
-mdefine_line|#define unload_8390_module()&t;&t;do { } while (0)
 r_extern
 r_int
 id|ethdev_init
@@ -259,7 +254,8 @@ id|bigendian
 suffix:colon
 l_int|1
 suffix:semicolon
-multiline_comment|/* 16-bit big endian mode */
+multiline_comment|/* 16-bit big endian mode. Do NOT */
+multiline_comment|/* set this on random 8390 clones! */
 DECL|member|txing
 r_int
 id|txing

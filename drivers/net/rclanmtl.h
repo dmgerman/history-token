@@ -4,46 +4,28 @@ DECL|macro|RCLANMTL_H
 mdefine_line|#define RCLANMTL_H
 multiline_comment|/* Linux specific includes */
 macro_line|#include &lt;asm/types.h&gt;
-DECL|macro|kprintf
-mdefine_line|#define kprintf printk
 macro_line|#ifdef RC_LINUX_MODULE     /* linux modules need non-library version of string functions */
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#else
 macro_line|#include &lt;string.h&gt;
 macro_line|#endif
-multiline_comment|/* PCI/45 Configuration space values */
-DECL|macro|RC_PCI45_VENDOR_ID
-mdefine_line|#define RC_PCI45_VENDOR_ID  0x4916
-DECL|macro|RC_PCI45_DEVICE_ID
-mdefine_line|#define RC_PCI45_DEVICE_ID  0x1960
-multiline_comment|/* RedCreek API function return values */
-DECL|macro|RC_RTN_NO_ERROR
-mdefine_line|#define RC_RTN_NO_ERROR             0
-DECL|macro|RC_RTN_I2O_NOT_INIT
-mdefine_line|#define RC_RTN_I2O_NOT_INIT         1
-DECL|macro|RC_RTN_FREE_Q_EMPTY
-mdefine_line|#define RC_RTN_FREE_Q_EMPTY         2
-DECL|macro|RC_RTN_TCB_ERROR
-mdefine_line|#define RC_RTN_TCB_ERROR            3
-DECL|macro|RC_RTN_TRANSACTION_ERROR
-mdefine_line|#define RC_RTN_TRANSACTION_ERROR    4
-DECL|macro|RC_RTN_ADAPTER_ALREADY_INIT
-mdefine_line|#define RC_RTN_ADAPTER_ALREADY_INIT 5
-DECL|macro|RC_RTN_MALLOC_ERROR
-mdefine_line|#define RC_RTN_MALLOC_ERROR         6
-DECL|macro|RC_RTN_ADPTR_NOT_REGISTERED
-mdefine_line|#define RC_RTN_ADPTR_NOT_REGISTERED 7
-DECL|macro|RC_RTN_MSG_REPLY_TIMEOUT
-mdefine_line|#define RC_RTN_MSG_REPLY_TIMEOUT    8
-DECL|macro|RC_RTN_NO_I2O_STATUS
-mdefine_line|#define RC_RTN_NO_I2O_STATUS        9
-DECL|macro|RC_RTN_NO_FIRM_VER
-mdefine_line|#define RC_RTN_NO_FIRM_VER         10
-DECL|macro|RC_RTN_NO_LINK_SPEED
-mdefine_line|#define RC_RTN_NO_LINK_SPEED       11
-multiline_comment|/* Driver capability flags */
-DECL|macro|WARM_REBOOT_CAPABLE
-mdefine_line|#define WARM_REBOOT_CAPABLE      0x01
+macro_line|#include &lt;linux/delay.h&gt; /* for udelay() */
+macro_line|#include &lt;linux/netdevice.h&gt;
+macro_line|#include &lt;linux/if_ether.h&gt;
+macro_line|#include &lt;linux/etherdevice.h&gt;
+macro_line|#include &lt;linux/skbuff.h&gt;
+macro_line|#include &lt;asm/io.h&gt;
+multiline_comment|/* Debug stuff. Define for debug output */
+DECL|macro|RCDEBUG
+mdefine_line|#define RCDEBUG
+macro_line|#ifdef RCDEBUG
+DECL|macro|dprintk
+mdefine_line|#define dprintk(args...) printk(KERN_DEBUG &quot;(rcpci45 driver:) &quot; args)
+macro_line|#else
+DECL|macro|dprintk
+mdefine_line|#define dprintk(args...) { }
+macro_line|#endif
+multiline_comment|/* Typedefs */
 multiline_comment|/* scalar data types */
 DECL|typedef|U8
 r_typedef
@@ -145,8 +127,9 @@ comma
 id|PU32
 id|PacketDescBlock
 comma
-id|U16
-id|AdapterID
+r_struct
+id|net_device
+op_star
 )paren
 suffix:semicolon
 multiline_comment|/* &n; ** type PFNCALLBACK &n; **&n; ** Pointer to user&squot;s generic callback function.  This user function&n; ** can be passed to LANReset or LANShutdown and is called when the &n; ** the reset or shutdown is complete.&n; ** Param1 and Param2 are invalid for LANReset and LANShutdown.&n; */
@@ -167,10 +150,337 @@ comma
 id|U32
 id|Param2
 comma
-id|U16
-id|AdapterID
+r_struct
+id|net_device
+op_star
+id|dev
 )paren
 suffix:semicolon
+multiline_comment|/*&n;**  Message Unit CSR definitions for RedCreek PCI45 board&n;*/
+DECL|struct|tag_rcatu
+r_typedef
+r_struct
+id|tag_rcatu
+(brace
+DECL|member|APICRegSel
+r_volatile
+r_int
+r_int
+id|APICRegSel
+suffix:semicolon
+multiline_comment|/* APIC Register Select */
+DECL|member|reserved0
+r_volatile
+r_int
+r_int
+id|reserved0
+suffix:semicolon
+DECL|member|APICWinReg
+r_volatile
+r_int
+r_int
+id|APICWinReg
+suffix:semicolon
+multiline_comment|/* APIC Window Register */
+DECL|member|reserved1
+r_volatile
+r_int
+r_int
+id|reserved1
+suffix:semicolon
+DECL|member|InMsgReg0
+r_volatile
+r_int
+r_int
+id|InMsgReg0
+suffix:semicolon
+multiline_comment|/* inbound message register 0 */
+DECL|member|InMsgReg1
+r_volatile
+r_int
+r_int
+id|InMsgReg1
+suffix:semicolon
+multiline_comment|/* inbound message register 1 */
+DECL|member|OutMsgReg0
+r_volatile
+r_int
+r_int
+id|OutMsgReg0
+suffix:semicolon
+multiline_comment|/* outbound message register 0 */
+DECL|member|OutMsgReg1
+r_volatile
+r_int
+r_int
+id|OutMsgReg1
+suffix:semicolon
+multiline_comment|/* outbound message register 1 */
+DECL|member|InDoorReg
+r_volatile
+r_int
+r_int
+id|InDoorReg
+suffix:semicolon
+multiline_comment|/* inbound doorbell register */
+DECL|member|InIntStat
+r_volatile
+r_int
+r_int
+id|InIntStat
+suffix:semicolon
+multiline_comment|/* inbound interrupt status register */
+DECL|member|InIntMask
+r_volatile
+r_int
+r_int
+id|InIntMask
+suffix:semicolon
+multiline_comment|/* inbound interrupt mask register */
+DECL|member|OutDoorReg
+r_volatile
+r_int
+r_int
+id|OutDoorReg
+suffix:semicolon
+multiline_comment|/* outbound doorbell register */
+DECL|member|OutIntStat
+r_volatile
+r_int
+r_int
+id|OutIntStat
+suffix:semicolon
+multiline_comment|/* outbound interrupt status register */
+DECL|member|OutIntMask
+r_volatile
+r_int
+r_int
+id|OutIntMask
+suffix:semicolon
+multiline_comment|/* outbound interrupt mask register */
+DECL|member|reserved2
+r_volatile
+r_int
+r_int
+id|reserved2
+suffix:semicolon
+DECL|member|reserved3
+r_volatile
+r_int
+r_int
+id|reserved3
+suffix:semicolon
+DECL|member|InQueue
+r_volatile
+r_int
+r_int
+id|InQueue
+suffix:semicolon
+multiline_comment|/* inbound queue port */
+DECL|member|OutQueue
+r_volatile
+r_int
+r_int
+id|OutQueue
+suffix:semicolon
+multiline_comment|/* outbound queue port */
+DECL|member|reserved4
+r_volatile
+r_int
+r_int
+id|reserved4
+suffix:semicolon
+DECL|member|reserver5
+r_volatile
+r_int
+r_int
+id|reserver5
+suffix:semicolon
+multiline_comment|/* RedCreek extension */
+DECL|member|EtherMacLow
+r_volatile
+r_int
+r_int
+id|EtherMacLow
+suffix:semicolon
+DECL|member|EtherMacHi
+r_volatile
+r_int
+r_int
+id|EtherMacHi
+suffix:semicolon
+DECL|member|IPaddr
+r_volatile
+r_int
+r_int
+id|IPaddr
+suffix:semicolon
+DECL|member|IPmask
+r_volatile
+r_int
+r_int
+id|IPmask
+suffix:semicolon
+DECL|typedef|PATU
+)brace
+op_star
+id|PATU
+suffix:semicolon
+multiline_comment|/* &n; ** typedef PAB&n; **&n; ** PCI Adapter Block - holds instance specific information.&n; */
+r_typedef
+r_struct
+(brace
+DECL|member|p_atu
+id|PATU
+id|p_atu
+suffix:semicolon
+multiline_comment|/* ptr to  ATU register block */
+DECL|member|pPci45LinBaseAddr
+id|PU8
+id|pPci45LinBaseAddr
+suffix:semicolon
+DECL|member|pLinOutMsgBlock
+id|PU8
+id|pLinOutMsgBlock
+suffix:semicolon
+DECL|member|outMsgBlockPhyAddr
+id|U32
+id|outMsgBlockPhyAddr
+suffix:semicolon
+DECL|member|pTransCallbackFunc
+id|PFNTXCALLBACK
+id|pTransCallbackFunc
+suffix:semicolon
+DECL|member|pRecvCallbackFunc
+id|PFNRXCALLBACK
+id|pRecvCallbackFunc
+suffix:semicolon
+DECL|member|pRebootCallbackFunc
+id|PFNCALLBACK
+id|pRebootCallbackFunc
+suffix:semicolon
+DECL|member|pCallbackFunc
+id|PFNCALLBACK
+id|pCallbackFunc
+suffix:semicolon
+DECL|member|IOPState
+id|U16
+id|IOPState
+suffix:semicolon
+DECL|member|InboundMFrameSize
+id|U16
+id|InboundMFrameSize
+suffix:semicolon
+DECL|typedef|PPAB
+)brace
+op_star
+id|PPAB
+suffix:semicolon
+multiline_comment|/*&n; * Driver Private Area, DPA.&n; */
+r_typedef
+r_struct
+(brace
+DECL|member|id
+id|U8
+id|id
+suffix:semicolon
+multiline_comment|/* the AdapterID */
+multiline_comment|/* These two field are basically for the RCioctl function.&n;     * I could not determine if they could be avoided. (RAA)*/
+DECL|member|pci_addr
+id|U32
+id|pci_addr
+suffix:semicolon
+multiline_comment|/* the pci address of the adapter */
+DECL|member|pci_addr_len
+id|U32
+id|pci_addr_len
+suffix:semicolon
+DECL|member|timer
+r_struct
+id|timer_list
+id|timer
+suffix:semicolon
+multiline_comment|/*  timer */
+DECL|member|stats
+r_struct
+id|net_device_stats
+id|stats
+suffix:semicolon
+multiline_comment|/* the statistics structure */
+DECL|member|numOutRcvBuffers
+r_int
+r_int
+id|numOutRcvBuffers
+suffix:semicolon
+multiline_comment|/* number of outstanding receive buffers*/
+DECL|member|shutdown
+r_int
+r_char
+id|shutdown
+suffix:semicolon
+DECL|member|reboot
+r_int
+r_char
+id|reboot
+suffix:semicolon
+DECL|member|nexus
+r_int
+r_char
+id|nexus
+suffix:semicolon
+DECL|member|msgbuf
+id|PU8
+id|msgbuf
+suffix:semicolon
+multiline_comment|/* Pointer to Lan Api Private Area */
+DECL|member|PLanApiPA
+id|PU8
+id|PLanApiPA
+suffix:semicolon
+multiline_comment|/* Pointer to Lan Api Private Area (aligned) */
+DECL|member|pPab
+id|PPAB
+id|pPab
+suffix:semicolon
+multiline_comment|/* Pointer to the PCI Adapter Block */
+DECL|typedef|PDPA
+)brace
+op_star
+id|PDPA
+suffix:semicolon
+multiline_comment|/* PCI/45 Configuration space values */
+DECL|macro|RC_PCI45_VENDOR_ID
+mdefine_line|#define RC_PCI45_VENDOR_ID  0x4916
+DECL|macro|RC_PCI45_DEVICE_ID
+mdefine_line|#define RC_PCI45_DEVICE_ID  0x1960
+multiline_comment|/* RedCreek API function return values */
+DECL|macro|RC_RTN_NO_ERROR
+mdefine_line|#define RC_RTN_NO_ERROR             0
+DECL|macro|RC_RTN_I2O_NOT_INIT
+mdefine_line|#define RC_RTN_I2O_NOT_INIT         1
+DECL|macro|RC_RTN_FREE_Q_EMPTY
+mdefine_line|#define RC_RTN_FREE_Q_EMPTY         2
+DECL|macro|RC_RTN_TCB_ERROR
+mdefine_line|#define RC_RTN_TCB_ERROR            3
+DECL|macro|RC_RTN_TRANSACTION_ERROR
+mdefine_line|#define RC_RTN_TRANSACTION_ERROR    4
+DECL|macro|RC_RTN_ADAPTER_ALREADY_INIT
+mdefine_line|#define RC_RTN_ADAPTER_ALREADY_INIT 5
+DECL|macro|RC_RTN_MALLOC_ERROR
+mdefine_line|#define RC_RTN_MALLOC_ERROR         6
+DECL|macro|RC_RTN_ADPTR_NOT_REGISTERED
+mdefine_line|#define RC_RTN_ADPTR_NOT_REGISTERED 7
+DECL|macro|RC_RTN_MSG_REPLY_TIMEOUT
+mdefine_line|#define RC_RTN_MSG_REPLY_TIMEOUT    8
+DECL|macro|RC_RTN_NO_I2O_STATUS
+mdefine_line|#define RC_RTN_NO_I2O_STATUS        9
+DECL|macro|RC_RTN_NO_FIRM_VER
+mdefine_line|#define RC_RTN_NO_FIRM_VER         10
+DECL|macro|RC_RTN_NO_LINK_SPEED
+mdefine_line|#define RC_RTN_NO_LINK_SPEED       11
+multiline_comment|/* Driver capability flags */
+DECL|macro|WARM_REBOOT_CAPABLE
+mdefine_line|#define WARM_REBOOT_CAPABLE      0x01
 multiline_comment|/*&n;** Status - Transmit and Receive callback status word &n;**&n;** A 32 bit Status is returned to the TX and RX callback functions.  This value&n;** contains both the reply status and the detailed status as follows:&n;**&n;**  32    24     16            0&n;**  +------+------+------------+&n;**  | Reply|      |  Detailed  |&n;**  |Status|   0  |   Status   |&n;**  +------+------+------------+&n;**&n;** Reply Status and Detailed Status of zero indicates No Errors.&n;*/
 multiline_comment|/* reply message status defines */
 DECL|macro|I2O_REPLY_STATUS_SUCCESS
@@ -242,22 +552,15 @@ id|PU32
 id|PRCTCB
 suffix:semicolon
 multiline_comment|/*&n;** -------------------------------------------------------------------------&n;** Exported functions comprising the API to the LAN I2O message transport layer&n;** -------------------------------------------------------------------------&n;*/
-multiline_comment|/*&n; ** InitRCI2OMsgLayer()&n; ** &n; ** Called once prior to using the I2O LAN message transport layer.  User &n; ** provides both the physical and virual address of a locked page buffer &n; ** that is used as a private buffer for the RedCreek I2O message&n; ** transport layer.  This buffer must be a contigous memory block of a &n; ** minimum of 16K bytes and long word aligned.  The user also must provide&n; ** the base address of the RedCreek PCI adapter assigned by BIOS or operating&n; ** system.  The user provided value AdapterID is a zero based index of the&n; ** Ravlin 45/PCI adapter.  This interface number is used in all subsequent API&n; ** calls to identify which adpapter for which the function is intended.  &n; ** Up to sixteen interfaces are supported with this API.&n; **&n; ** Inputs:  AdapterID - interface number from 0 to 15&n; **          pciBaseAddr - virual base address of PCI (set by BIOS)&n; **          p_msgbuf - virual address to private message block (min. 16K)&n; **          p_phymsgbuf - physical address of private message block&n; **          TransmitCallbackFunction - address of user&squot;s TX callback function&n; **          ReceiveCallbackFunction  - address of user&squot;s RX callback function&n; **&n; */
+multiline_comment|/*&n; ** InitRCI2OMsgLayer()&n; ** &n; ** Called once prior to using the I2O LAN message transport layer.  User &n; ** provides both the physical and virual address of a locked page buffer &n; ** that is used as a private buffer for the RedCreek I2O message&n; ** transport layer.  This buffer must be a contigous memory block of a &n; ** minimum of 16K bytes and long word aligned.  The user also must provide&n; ** the base address of the RedCreek PCI adapter assigned by BIOS or operating&n; ** system.  &n; **&n; ** Inputs:  dev - the net_device struct for the device.&n; **          TransmitCallbackFunction - address of user&squot;s TX callback function&n; **          ReceiveCallbackFunction  - address of user&squot;s RX callback function&n; **          RebootCallbackFunction  - address of user&squot;s reboot callback function&n; **&n; */
 id|RC_RETURN
 id|RCInitI2OMsgLayer
 c_func
 (paren
-id|U16
-id|AdapterID
-comma
-id|U32
-id|pciBaseAddr
-comma
-id|PU8
-id|p_msgbuf
-comma
-id|PU8
-id|p_phymsgbuf
+r_struct
+id|net_device
+op_star
+id|dev
 comma
 id|PFNTXCALLBACK
 id|TransmitCallbackFunction
@@ -274,8 +577,10 @@ id|RC_RETURN
 id|RCSetRavlinIPandMask
 c_func
 (paren
-id|U16
-id|AdapterID
+r_struct
+id|net_device
+op_star
+id|dev
 comma
 id|U32
 id|ipAddr
@@ -289,8 +594,10 @@ id|RC_RETURN
 id|RCGetRavlinIPandMask
 c_func
 (paren
-id|U16
-id|AdapterID
+r_struct
+id|net_device
+op_star
+id|dev
 comma
 id|PU32
 id|pIpAddr
@@ -307,8 +614,10 @@ r_void
 id|RCProcI2OMsgQ
 c_func
 (paren
-id|U16
-id|AdapterID
+r_struct
+id|net_device
+op_star
+id|dev
 )paren
 suffix:semicolon
 multiline_comment|/*&n; ** Disable and Enable I2O interrupts.  I2O interrupts are enabled at Init time&n; ** but can be disabled and re-enabled through these two function calls.&n; ** Packets will still be put into any posted recieved buffers and packets will&n; ** be sent through RCI2OSendPacket() functions.  Disabling I2O interrupts&n; ** will prevent hardware interrupt to host even though the outbound I2O msg&n; ** queue is not emtpy.&n; */
@@ -316,16 +625,20 @@ id|RC_RETURN
 id|RCEnableI2OInterrupts
 c_func
 (paren
-id|U16
-id|adapterID
+r_struct
+id|net_device
+op_star
+id|dev
 )paren
 suffix:semicolon
 id|RC_RETURN
 id|RCDisableI2OInterrupts
 c_func
 (paren
-id|U16
-id|AdapterID
+r_struct
+id|net_device
+op_star
+id|dev
 )paren
 suffix:semicolon
 multiline_comment|/* &n; ** RCPostRecvBuffers()&n; ** &n; ** Post user&squot;s page locked buffers for use by the PCI adapter to&n; ** return ethernet packets received from the LAN.  Transaction Control Block,&n; ** provided by user, contains buffer descriptor(s) which includes a buffer&n; ** context number along with buffer size and physical address.  See TCB above.&n; ** The buffer context and actual packet length are returned to the &n; ** ReceiveCallbackFunction when packets have been received.  Buffers posted&n; ** to the RedCreek adapter are considered owned by the adapter until the&n; ** context is return to user through the ReceiveCallbackFunction.&n; */
@@ -333,8 +646,10 @@ id|RC_RETURN
 id|RCPostRecvBuffers
 c_func
 (paren
-id|U16
-id|AdapterID
+r_struct
+id|net_device
+op_star
+id|dev
 comma
 id|PRCTCB
 id|pTransactionCtrlBlock
@@ -347,8 +662,10 @@ id|RC_RETURN
 id|RCI2OSendPacket
 c_func
 (paren
-id|U16
-id|AdapterID
+r_struct
+id|net_device
+op_star
+id|dev
 comma
 id|U32
 id|context
@@ -456,8 +773,10 @@ id|RC_RETURN
 id|RCGetLinkStatistics
 c_func
 (paren
-id|U16
-id|AdapterID
+r_struct
+id|net_device
+op_star
+id|dev
 comma
 id|P_RCLINKSTATS
 id|StatsReturnAddr
@@ -471,8 +790,10 @@ id|RC_RETURN
 id|RCGetLinkStatus
 c_func
 (paren
-id|U16
-id|AdapterID
+r_struct
+id|net_device
+op_star
+id|dev
 comma
 id|PU32
 id|pReturnStatus
@@ -491,11 +812,10 @@ id|RC_RETURN
 id|RCGetMAC
 c_func
 (paren
-id|U16
-id|AdapterID
-comma
-id|PU8
-id|mac
+r_struct
+id|net_device
+op_star
+id|dev
 comma
 id|PFNWAITCALLBACK
 id|WaitCallback
@@ -506,8 +826,10 @@ id|RC_RETURN
 id|RCSetMAC
 c_func
 (paren
-id|U16
-id|AdapterID
+r_struct
+id|net_device
+op_star
+id|dev
 comma
 id|PU8
 id|mac
@@ -518,8 +840,10 @@ id|RC_RETURN
 id|RCSetLinkSpeed
 c_func
 (paren
-id|U16
-id|AdapterID
+r_struct
+id|net_device
+op_star
+id|dev
 comma
 id|U16
 id|LinkSpeedCode
@@ -552,8 +876,10 @@ id|RC_RETURN
 id|RCGetLinkSpeed
 c_func
 (paren
-id|U16
-id|AdapterID
+r_struct
+id|net_device
+op_star
+id|dev
 comma
 id|PU32
 id|pLinkSpeedCode
@@ -562,7 +888,7 @@ id|PFNWAITCALLBACK
 id|WaitCallback
 )paren
 suffix:semicolon
-multiline_comment|/*&n;** =========================================================================&n;** RCSetPromiscuousMode(U16 AdapterID, U16 Mode)&n;**&n;** Defined values for Mode:&n;**  0 - turn off promiscuous mode&n;**  1 - turn on  promiscuous mode&n;**&n;** =========================================================================&n;*/
+multiline_comment|/*&n;** =========================================================================&n;** RCSetPromiscuousMode(struct net_device *dev, U16 Mode)&n;**&n;** Defined values for Mode:&n;**  0 - turn off promiscuous mode&n;**  1 - turn on  promiscuous mode&n;**&n;** =========================================================================&n;*/
 DECL|macro|PROMISCUOUS_MODE_OFF
 mdefine_line|#define PROMISCUOUS_MODE_OFF 0
 DECL|macro|PROMISCUOUS_MODE_ON
@@ -571,20 +897,24 @@ id|RC_RETURN
 id|RCSetPromiscuousMode
 c_func
 (paren
-id|U16
-id|AdapterID
+r_struct
+id|net_device
+op_star
+id|dev
 comma
 id|U16
 id|Mode
 )paren
 suffix:semicolon
-multiline_comment|/*&n;** =========================================================================&n;** RCGetPromiscuousMode(U16 AdapterID, PU32 pMode, PFNWAITCALLBACK WaitCallback)&n;**&n;** get promiscuous mode setting&n;**&n;** Possible return values placed in pMode:&n;**  0 = promisuous mode not set&n;**  1 = promisuous mode is set&n;**&n;** =========================================================================&n;*/
+multiline_comment|/*&n;** =========================================================================&n;** RCGetPromiscuousMode(struct net_device *dev, PU32 pMode, PFNWAITCALLBACK WaitCallback)&n;**&n;** get promiscuous mode setting&n;**&n;** Possible return values placed in pMode:&n;**  0 = promisuous mode not set&n;**  1 = promisuous mode is set&n;**&n;** =========================================================================&n;*/
 id|RC_RETURN
 id|RCGetPromiscuousMode
 c_func
 (paren
-id|U16
-id|AdapterID
+r_struct
+id|net_device
+op_star
+id|dev
 comma
 id|PU32
 id|pMode
@@ -593,7 +923,7 @@ id|PFNWAITCALLBACK
 id|WaitCallback
 )paren
 suffix:semicolon
-multiline_comment|/*&n;** =========================================================================&n;** RCSetBroadcastMode(U16 AdapterID, U16 Mode)&n;**&n;** Defined values for Mode:&n;**  0 - turn off promiscuous mode&n;**  1 - turn on  promiscuous mode&n;**&n;** =========================================================================&n;*/
+multiline_comment|/*&n;** =========================================================================&n;** RCSetBroadcastMode(struct net_device *dev, U16 Mode)&n;**&n;** Defined values for Mode:&n;**  0 - turn off promiscuous mode&n;**  1 - turn on  promiscuous mode&n;**&n;** =========================================================================&n;*/
 DECL|macro|BROADCAST_MODE_OFF
 mdefine_line|#define BROADCAST_MODE_OFF 0
 DECL|macro|BROADCAST_MODE_ON
@@ -602,20 +932,24 @@ id|RC_RETURN
 id|RCSetBroadcastMode
 c_func
 (paren
-id|U16
-id|AdapterID
+r_struct
+id|net_device
+op_star
+id|dev
 comma
 id|U16
 id|Mode
 )paren
 suffix:semicolon
-multiline_comment|/*&n;** =========================================================================&n;** RCGetBroadcastMode(U16 AdapterID, PU32 pMode, PFNWAITCALLBACK WaitCallback)&n;**&n;** get broadcast mode setting&n;**&n;** Possible return values placed in pMode:&n;**  0 = broadcast mode not set&n;**  1 = broadcast mode is set&n;**&n;** =========================================================================&n;*/
+multiline_comment|/*&n;** =========================================================================&n;** RCGetBroadcastMode(struct net_device *dev, PU32 pMode, PFNWAITCALLBACK WaitCallback)&n;**&n;** get broadcast mode setting&n;**&n;** Possible return values placed in pMode:&n;**  0 = broadcast mode not set&n;**  1 = broadcast mode is set&n;**&n;** =========================================================================&n;*/
 id|RC_RETURN
 id|RCGetBroadcastMode
 c_func
 (paren
-id|U16
-id|AdapterID
+r_struct
+id|net_device
+op_star
+id|dev
 comma
 id|PU32
 id|pMode
@@ -624,13 +958,15 @@ id|PFNWAITCALLBACK
 id|WaitCallback
 )paren
 suffix:semicolon
-multiline_comment|/*&n;** =========================================================================&n;** RCReportDriverCapability(U16 AdapterID, U32 capability)&n;**&n;** Currently defined bits:&n;** WARM_REBOOT_CAPABLE   0x01&n;**&n;** =========================================================================&n;*/
+multiline_comment|/*&n;** =========================================================================&n;** RCReportDriverCapability(struct net_device *dev, U32 capability)&n;**&n;** Currently defined bits:&n;** WARM_REBOOT_CAPABLE   0x01&n;**&n;** =========================================================================&n;*/
 id|RC_RETURN
 id|RCReportDriverCapability
 c_func
 (paren
-id|U16
-id|AdapterID
+r_struct
+id|net_device
+op_star
+id|dev
 comma
 id|U32
 id|capability
@@ -641,8 +977,10 @@ id|RC_RETURN
 id|RCGetFirmwareVer
 c_func
 (paren
-id|U16
-id|AdapterID
+r_struct
+id|net_device
+op_star
+id|dev
 comma
 id|PU8
 id|pFirmString
@@ -662,8 +1000,10 @@ id|RC_RETURN
 id|RCResetLANCard
 c_func
 (paren
-id|U16
-id|AdapterID
+r_struct
+id|net_device
+op_star
+id|dev
 comma
 id|U16
 id|ResourceFlags
@@ -680,8 +1020,10 @@ id|RC_RETURN
 id|RCShutdownLANCard
 c_func
 (paren
-id|U16
-id|AdapterID
+r_struct
+id|net_device
+op_star
+id|dev
 comma
 id|U16
 id|ResourceFlags
@@ -698,8 +1040,10 @@ id|RC_RETURN
 id|RCResetIOP
 c_func
 (paren
-id|U16
-id|AdapterID
+r_struct
+id|net_device
+op_star
+id|dev
 )paren
 suffix:semicolon
 macro_line|#endif /* RCLANMTL_H */

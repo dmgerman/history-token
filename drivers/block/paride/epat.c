@@ -1,4 +1,4 @@
-multiline_comment|/* &n;        epat.c  (c) 1997-8  Grant R. Guenther &lt;grant@torque.net&gt;&n;                            Under the terms of the GNU public license.&n;&n;&t;This is the low level protocol driver for the EPAT parallel&n;        to IDE adapter from Shuttle Technologies.  This adapter is&n;        used in many popular parallel port disk products such as the&n;        SyQuest EZ drives, the Avatar Shark and the Imation SuperDisk.&n;&t;&n;*/
+multiline_comment|/* &n;        epat.c  (c) 1997-8  Grant R. Guenther &lt;grant@torque.net&gt;&n;                            Under the terms of the GNU General Public License.&n;&n;&t;This is the low level protocol driver for the EPAT parallel&n;        to IDE adapter from Shuttle Technologies.  This adapter is&n;        used in many popular parallel port disk products such as the&n;        SyQuest EZ drives, the Avatar Shark and the Imation SuperDisk.&n;&t;&n;*/
 multiline_comment|/* Changes:&n;&n;        1.01    GRG 1998.05.06 init_proto, release_proto&n;&n;*/
 DECL|macro|EPAT_VERSION
 mdefine_line|#define EPAT_VERSION      &quot;1.01&quot;

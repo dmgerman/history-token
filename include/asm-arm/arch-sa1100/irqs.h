@@ -111,7 +111,7 @@ DECL|macro|SA1100_IRQ_TO_GPIO
 mdefine_line|#define SA1100_IRQ_TO_GPIO(i) &t;(((i) &lt; 11) ? (i) : GPIO_11_27_IRQ(i))
 DECL|macro|NR_IRQS
 mdefine_line|#define&t;NR_IRQS&t;&t;(IRQ_GPIO27 + 1)
-macro_line|#if defined(CONFIG_SA1100_GRAPHICSCLIENT) || defined(CONFIG_SA1100_THINCLIENT)
+macro_line|#if defined(CONFIG_SA1100_GRAPHICSCLIENT)
 DECL|macro|ADS_EXT_IRQ
 mdefine_line|#define ADS_EXT_IRQ(x)&t;(IRQ_GPIO27 + 1 + (x))
 DECL|macro|NR_IRQS

@@ -382,6 +382,12 @@ op_amp
 id|h-&gt;tlabel_lock
 )paren
 suffix:semicolon
+id|INIT_TQ_LINK
+c_func
+(paren
+id|h-&gt;timeout_tq
+)paren
+suffix:semicolon
 id|h-&gt;timeout_tq.routine
 op_assign
 (paren

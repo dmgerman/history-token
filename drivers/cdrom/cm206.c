@@ -5658,8 +5658,7 @@ l_int|16
 suffix:semicolon
 r_default
 suffix:colon
-(brace
-)brace
+suffix:semicolon
 )brace
 )brace
 multiline_comment|/* This function probes for the adapter card. It returns the base&n;   address if it has found the adapter card. One can specify a base &n;   port to probe specifically, or 0 which means span all possible&n;   bases. &n;&n;   Linus says it is too dangerous to use writes for probing, so we&n;   stick with pure reads for a while. Hope that 8 possible ranges,&n;   check_region, 15 bits of one port and 6 of another make things&n;   likely enough to accept the region on the first hit...&n; */

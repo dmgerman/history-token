@@ -406,6 +406,7 @@ c_func
 id|fdc_wait
 )paren
 suffix:semicolon
+multiline_comment|/* long req&squot;d for set_bit --RR */
 DECL|variable|changed_floppies
 DECL|variable|fake_change
 r_static

@@ -582,7 +582,7 @@ r_struct
 id|net_device
 op_star
 )paren
-id|in
+id|out
 comma
 (paren
 op_star

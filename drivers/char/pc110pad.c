@@ -12,6 +12,7 @@ macro_line|#include &lt;linux/poll.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/signal.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
@@ -26,23 +27,28 @@ id|pc110pad_params
 id|default_params
 op_assign
 (brace
+id|mode
+suffix:colon
 id|PC110PAD_PS2
 comma
-multiline_comment|/* read mode */
+id|bounce_interval
+suffix:colon
 l_int|50
 id|MS
 comma
-multiline_comment|/* bounce interval */
+id|tap_interval
+suffix:colon
 l_int|200
 id|MS
 comma
-multiline_comment|/* tap interval */
+id|irq
+suffix:colon
 l_int|10
 comma
-multiline_comment|/* IRQ */
+id|io
+suffix:colon
 l_int|0x15E0
 comma
-multiline_comment|/* I/O port */
 )brace
 suffix:semicolon
 DECL|variable|current_params
@@ -172,6 +178,7 @@ id|recent_transition
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;pc110pad: tap_timeout but no recent transition!&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -2076,23 +2083,51 @@ id|miscdevice
 id|pc110_pad
 op_assign
 (brace
+id|minor
+suffix:colon
 id|PC110PAD_MINOR
 comma
+id|name
+suffix:colon
 l_string|&quot;pc110 pad&quot;
 comma
+id|fops
+suffix:colon
 op_amp
 id|pad_fops
+comma
 )brace
 suffix:semicolon
-multiline_comment|/**&n; *&t;pc110pad_init:&n; *&n; *&t;We configure the pad with the default parameters (that is PS/2 &n; *&t;emulation mode. We then claim the needed I/O and interrupt resources.&n; *&t;Finally as a matter of paranoia we turn the pad off until we are&n; *&t;asked to open it by an application.&n; */
-DECL|function|pc110pad_init
+multiline_comment|/**&n; *&t;pc110pad_init_driver:&n; *&n; *&t;We configure the pad with the default parameters (that is PS/2 &n; *&t;emulation mode. We then claim the needed I/O and interrupt resources.&n; *&t;Finally as a matter of paranoia we turn the pad off until we are&n; *&t;asked to open it by an application.&n; */
+DECL|variable|__initdata
+r_static
+r_const
+r_char
+id|banner
+(braket
+)braket
+id|__initdata
+op_assign
+id|KERN_INFO
+l_string|&quot;PC110 digitizer pad at 0x%X, irq %d.&bslash;n&quot;
+suffix:semicolon
+DECL|function|pc110pad_init_driver
+r_static
 r_int
-id|pc110pad_init
+id|__init
+id|pc110pad_init_driver
 c_func
 (paren
 r_void
 )paren
 (brace
+id|init_MUTEX
+c_func
+(paren
+op_amp
+id|reader_lock
+)paren
+suffix:semicolon
 id|current_params
 op_assign
 id|default_params
@@ -2118,6 +2153,7 @@ l_int|0
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;pc110pad: Unable to get IRQ.&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -2129,18 +2165,22 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|check_region
+op_logical_neg
+id|request_region
 c_func
 (paren
 id|current_params.io
 comma
 l_int|4
+comma
+l_string|&quot;pc110pad&quot;
 )paren
 )paren
 (brace
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;pc110pad: I/O area in use.&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -2157,16 +2197,6 @@ op_minus
 id|EBUSY
 suffix:semicolon
 )brace
-id|request_region
-c_func
-(paren
-id|current_params.io
-comma
-l_int|4
-comma
-l_string|&quot;pc110pad&quot;
-)paren
-suffix:semicolon
 id|init_waitqueue_head
 c_func
 (paren
@@ -2177,7 +2207,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;PC110 digitizer pad at 0x%X, irq %d.&bslash;n&quot;
+id|banner
 comma
 id|current_params.io
 comma
@@ -2206,12 +2236,12 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#ifdef MODULE
-multiline_comment|/**&n; *&t;pc110pad_unload:&n; *&n; *&t;Free the resources we acquired when the module was loaded. We also&n; *&t;turn the pad off to be sure we don&squot;t leave it using power.&n; */
-DECL|function|pc110pad_unload
+multiline_comment|/*&n; *&t;pc110pad_exit_driver:&n; *&n; *&t;Free the resources we acquired when the module was loaded. We also&n; *&t;turn the pad off to be sure we don&squot;t leave it using power.&n; */
+DECL|function|pc110pad_exit_driver
 r_static
 r_void
-id|pc110pad_unload
+id|__exit
+id|pc110pad_exit_driver
 c_func
 (paren
 r_void
@@ -2233,7 +2263,6 @@ c_cond
 (paren
 id|current_params.irq
 )paren
-(brace
 id|free_irq
 c_func
 (paren
@@ -2242,7 +2271,6 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-)brace
 id|current_params.irq
 op_assign
 l_int|0
@@ -2263,41 +2291,18 @@ id|pc110_pad
 )paren
 suffix:semicolon
 )brace
-DECL|function|init_module
-r_int
-id|init_module
+DECL|variable|pc110pad_init_driver
+id|module_init
 c_func
 (paren
-r_void
-)paren
-(brace
-id|init_MUTEX
-c_func
-(paren
-op_amp
-id|reader_lock
+id|pc110pad_init_driver
 )paren
 suffix:semicolon
-r_return
-id|pc110pad_init
+DECL|variable|pc110pad_exit_driver
+id|module_exit
 c_func
 (paren
+id|pc110pad_exit_driver
 )paren
 suffix:semicolon
-)brace
-DECL|function|cleanup_module
-r_void
-id|cleanup_module
-c_func
-(paren
-r_void
-)paren
-(brace
-id|pc110pad_unload
-c_func
-(paren
-)paren
-suffix:semicolon
-)brace
-macro_line|#endif
 eof

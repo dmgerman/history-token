@@ -1,4 +1,4 @@
-multiline_comment|/*&n;&t;setup.h&t;   (c) 1997-8   Grant R. Guenther &lt;grant@torque.net&gt;&n;&t;&t;                Under the terms of the GNU public license.&n;&n;        This is a table driven setup function for kernel modules&n;        using the module.variable=val,... command line notation.&n;&n;*/
+multiline_comment|/*&n;&t;setup.h&t;   (c) 1997-8   Grant R. Guenther &lt;grant@torque.net&gt;&n;&t;&t;                Under the terms of the GNU General Public License.&n;&n;        This is a table driven setup function for kernel modules&n;        using the module.variable=val,... command line notation.&n;&n;*/
 multiline_comment|/* Changes:&n;&n;&t;1.01&t;GRG 1998.05.05&t;Allow negative and defaulted values&n;&n;*/
 macro_line|#include &lt;linux/ctype.h&gt;
 macro_line|#include &lt;linux/string.h&gt;

@@ -5,7 +5,13 @@ mdefine_line|#define __LINUX_USB_SERIAL_MCT_U232_H
 DECL|macro|MCT_U232_VID
 mdefine_line|#define MCT_U232_VID&t;                0x0711&t;/* Vendor Id */
 DECL|macro|MCT_U232_PID
-mdefine_line|#define MCT_U232_PID&t;                0x0210&t;/* Product Id */
+mdefine_line|#define MCT_U232_PID&t;                0x0210&t;/* Original MCT Product Id */
+multiline_comment|/* U232-P25, Sitecom */
+DECL|macro|MCT_U232_SITECOM_PID
+mdefine_line|#define MCT_U232_SITECOM_PID&t;&t;0x0230&t;/* Sitecom Product Id */
+multiline_comment|/* DU-H3SP USB BAY hub */
+DECL|macro|MCT_U232_DU_H3SP_PID
+mdefine_line|#define MCT_U232_DU_H3SP_PID&t;&t;0x0200&t;/* D-Link DU-H3SP USB BAY */
 multiline_comment|/*&n; * Vendor Request Interface&n; */
 DECL|macro|MCT_U232_SET_REQUEST_TYPE
 mdefine_line|#define MCT_U232_SET_REQUEST_TYPE&t;0x40

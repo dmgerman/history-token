@@ -1,5 +1,5 @@
 multiline_comment|/* drivers/net/eepro100.c: An Intel i82557-559 Ethernet driver for Linux. */
-multiline_comment|/*&n;   NOTICE: For use with late 2.3 kernels only.&n;   May not compile for kernels 2.3.43-47.&n;&t;Written 1996-1999 by Donald Becker.&n;&n;&t;The driver also contains updates by different kernel developers&n;&t;(see incomplete list below).&n;&t;Current maintainer is Andrey V. Savochkin &lt;saw@saw.sw.com.sg&gt;.&n;&t;Please use this email address and linux-kernel mailing list for bug reports.&n;&n;&t;This software may be used and distributed according to the terms&n;&t;of the GNU Public License, incorporated herein by reference.&n;&n;&t;This driver is for the Intel EtherExpress Pro100 (Speedo3) design.&n;&t;It should work with all i82557/558/559 boards.&n;&n;&t;Version history:&n;&t;1998 Apr - 2000 Feb  Andrey V. Savochkin &lt;saw@saw.sw.com.sg&gt;&n;&t;&t;Serious fixes for multicast filter list setting, TX timeout routine;&n;&t;&t;RX ring refilling logic;  other stuff&n;&t;2000 Feb  Jeff Garzik &lt;jgarzik@mandrakesoft.com&gt;&n;&t;&t;Convert to new PCI driver interface&n;&t;2000 Mar 24  Dragan Stancevic &lt;visitor@valinux.com&gt;&n;&t;&t;Disabled FC and ER, to avoid lockups when when we get FCP interrupts.&n;&t;2000 Jul 17 Goutham Rao &lt;goutham.rao@intel.com&gt;&n;&t;&t;PCI DMA API fixes, adding pci_dma_sync_single calls where neccesary&n;*/
+multiline_comment|/*&n;   NOTICE: For use with late 2.3 kernels only.&n;   May not compile for kernels 2.3.43-47.&n;&t;Written 1996-1999 by Donald Becker.&n;&n;&t;The driver also contains updates by different kernel developers&n;&t;(see incomplete list below).&n;&t;Current maintainer is Andrey V. Savochkin &lt;saw@saw.sw.com.sg&gt;.&n;&t;Please use this email address and linux-kernel mailing list for bug reports.&n;&n;&t;This software may be used and distributed according to the terms&n;&t;of the GNU General Public License, incorporated herein by reference.&n;&n;&t;This driver is for the Intel EtherExpress Pro100 (Speedo3) design.&n;&t;It should work with all i82557/558/559 boards.&n;&n;&t;Version history:&n;&t;1998 Apr - 2000 Feb  Andrey V. Savochkin &lt;saw@saw.sw.com.sg&gt;&n;&t;&t;Serious fixes for multicast filter list setting, TX timeout routine;&n;&t;&t;RX ring refilling logic;  other stuff&n;&t;2000 Feb  Jeff Garzik &lt;jgarzik@mandrakesoft.com&gt;&n;&t;&t;Convert to new PCI driver interface&n;&t;2000 Mar 24  Dragan Stancevic &lt;visitor@valinux.com&gt;&n;&t;&t;Disabled FC and ER, to avoid lockups when when we get FCP interrupts.&n;&t;2000 Jul 17 Goutham Rao &lt;goutham.rao@intel.com&gt;&n;&t;&t;PCI DMA API fixes, adding pci_dma_sync_single calls where neccesary&n;*/
 DECL|variable|version
 r_static
 r_const
@@ -1305,6 +1305,7 @@ r_char
 id|acpi_pwr
 suffix:semicolon
 DECL|member|rx_mode
+r_int
 r_char
 id|rx_mode
 suffix:semicolon
@@ -2821,11 +2822,15 @@ multiline_comment|/* Timeout for set-test. */
 r_if
 c_cond
 (paren
+(paren
 id|eeprom
 (braket
 l_int|3
 )braket
 op_amp
+l_int|0x03
+)paren
+op_ne
 l_int|0x03
 )paren
 id|printk

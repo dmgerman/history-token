@@ -17,7 +17,6 @@ macro_line|#include &lt;linux/etherdevice.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;linux/rtnetlink.h&gt;
 macro_line|#include &lt;linux/if_arp.h&gt;
-macro_line|#include &lt;linux/if_slip.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/ip.h&gt;
 macro_line|#include &lt;linux/tcp.h&gt;
@@ -80,7 +79,7 @@ DECL|macro|SIXP_RESYNC_TIMEOUT
 mdefine_line|#define SIXP_RESYNC_TIMEOUT&t;&t;500&t;/* in 10 ms */
 multiline_comment|/* 6pack configuration. */
 DECL|macro|SIXP_NRUNIT
-mdefine_line|#define SIXP_NRUNIT&t;&t;&t;256&t;/* MAX number of 6pack channels */
+mdefine_line|#define SIXP_NRUNIT&t;&t;&t;31      /* MAX number of 6pack channels */
 DECL|macro|SIXP_MTU
 mdefine_line|#define SIXP_MTU&t;&t;&t;256&t;/* Default MTU */
 DECL|enum|sixpack_flags
@@ -269,25 +268,10 @@ id|resync_t
 suffix:semicolon
 )brace
 suffix:semicolon
-multiline_comment|/* should later be moved to include/net/ax25.h */
 DECL|macro|AX25_6PACK_HEADER_LEN
 mdefine_line|#define AX25_6PACK_HEADER_LEN 0
 DECL|macro|SIXPACK_MAGIC
 mdefine_line|#define SIXPACK_MAGIC 0x5304
-DECL|variable|__initdata
-r_static
-r_const
-r_char
-id|banner
-(braket
-)braket
-id|__initdata
-op_assign
-id|KERN_INFO
-l_string|&quot;AX.25: 6pack driver, &quot;
-id|SIXPACK_VERSION
-l_string|&quot; (dynamic channels, max=%d)&bslash;n&quot;
-suffix:semicolon
 DECL|struct|sixpack_ctrl
 r_typedef
 r_struct
@@ -323,11 +307,21 @@ op_assign
 id|SIXP_NRUNIT
 suffix:semicolon
 multiline_comment|/* Can be overridden with insmod! */
-DECL|variable|sp_ldisc
-r_static
-r_struct
-id|tty_ldisc
-id|sp_ldisc
+id|MODULE_PARM
+c_func
+(paren
+id|sixpack_maxdev
+comma
+l_string|&quot;i&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|sixpack_maxdev
+comma
+l_string|&quot;number of 6PACK devices&quot;
+)paren
 suffix:semicolon
 r_static
 r_void
@@ -2703,7 +2697,120 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/* Fill in our line protocol discipline */
+DECL|variable|sp_ldisc
+r_static
+r_struct
+id|tty_ldisc
+id|sp_ldisc
+op_assign
+(brace
+id|magic
+suffix:colon
+id|TTY_LDISC_MAGIC
+comma
+id|name
+suffix:colon
+l_string|&quot;6pack&quot;
+comma
+id|open
+suffix:colon
+id|sixpack_open
+comma
+id|close
+suffix:colon
+id|sixpack_close
+comma
+id|ioctl
+suffix:colon
+(paren
+r_int
+(paren
+op_star
+)paren
+(paren
+r_struct
+id|tty_struct
+op_star
+comma
+r_struct
+id|file
+op_star
+comma
+r_int
+r_int
+comma
+r_int
+r_int
+)paren
+)paren
+id|sixpack_ioctl
+comma
+id|receive_buf
+suffix:colon
+id|sixpack_receive_buf
+comma
+id|receive_room
+suffix:colon
+id|sixpack_receive_room
+comma
+id|write_wakeup
+suffix:colon
+id|sixpack_write_wakeup
+comma
+)brace
+suffix:semicolon
 multiline_comment|/* Initialize 6pack control device -- register 6pack line discipline */
+DECL|variable|__initdata
+r_static
+r_const
+r_char
+id|msg_banner
+(braket
+)braket
+id|__initdata
+op_assign
+id|KERN_INFO
+l_string|&quot;AX.25: 6pack driver, &quot;
+id|SIXPACK_VERSION
+l_string|&quot; (dynamic channels, max=%d)&bslash;n&quot;
+suffix:semicolon
+DECL|variable|__initdata
+r_static
+r_const
+r_char
+id|msg_invparm
+(braket
+)braket
+id|__initdata
+op_assign
+id|KERN_ERR
+l_string|&quot;6pack: sixpack_maxdev parameter too large.&bslash;n&quot;
+suffix:semicolon
+DECL|variable|__initdata
+r_static
+r_const
+r_char
+id|msg_nomem
+(braket
+)braket
+id|__initdata
+op_assign
+id|KERN_ERR
+l_string|&quot;6pack: can&squot;t allocate sixpack_ctrls[] array! No 6pack available.&bslash;n&quot;
+suffix:semicolon
+DECL|variable|__initdata
+r_static
+r_const
+r_char
+id|msg_regfail
+(braket
+)braket
+id|__initdata
+op_assign
+id|KERN_ERR
+l_string|&quot;6pack: can&squot;t register line discipline (err = %d)&bslash;n&quot;
+suffix:semicolon
 DECL|function|sixpack_init_driver
 r_static
 r_int
@@ -2717,6 +2824,7 @@ r_void
 r_int
 id|status
 suffix:semicolon
+multiline_comment|/* Do sanity checks on maximum device parameter. */
 r_if
 c_cond
 (paren
@@ -2728,11 +2836,35 @@ id|sixpack_maxdev
 op_assign
 l_int|4
 suffix:semicolon
-multiline_comment|/* Sanity */
+r_if
+c_cond
+(paren
+id|sixpack_maxdev
+op_star
+r_sizeof
+(paren
+r_void
+op_star
+)paren
+op_ge
+id|KMALLOC_MAXSIZE
+)paren
+(brace
 id|printk
 c_func
 (paren
-id|banner
+id|msg_invparm
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|ENFILE
+suffix:semicolon
+)brace
+id|printk
+c_func
+(paren
+id|msg_banner
 comma
 id|sixpack_maxdev
 )paren
@@ -2769,8 +2901,7 @@ l_int|NULL
 id|printk
 c_func
 (paren
-id|KERN_WARNING
-l_string|&quot;6pack: Can&squot;t allocate sixpack_ctrls[] array!  Uaargh! (-&gt; No 6pack available)&bslash;n&quot;
+id|msg_nomem
 )paren
 suffix:semicolon
 r_return
@@ -2796,76 +2927,7 @@ id|sixpack_maxdev
 )paren
 suffix:semicolon
 multiline_comment|/* Pointers */
-multiline_comment|/* Fill in our line protocol discipline, and register it */
-id|sp_ldisc.magic
-op_assign
-id|TTY_LDISC_MAGIC
-suffix:semicolon
-id|sp_ldisc.name
-op_assign
-l_string|&quot;6pack&quot;
-suffix:semicolon
-id|sp_ldisc.flags
-op_assign
-l_int|0
-suffix:semicolon
-id|sp_ldisc.open
-op_assign
-id|sixpack_open
-suffix:semicolon
-id|sp_ldisc.close
-op_assign
-id|sixpack_close
-suffix:semicolon
-id|sp_ldisc.read
-op_assign
-l_int|NULL
-suffix:semicolon
-id|sp_ldisc.write
-op_assign
-l_int|NULL
-suffix:semicolon
-id|sp_ldisc.ioctl
-op_assign
-(paren
-r_int
-(paren
-op_star
-)paren
-(paren
-r_struct
-id|tty_struct
-op_star
-comma
-r_struct
-id|file
-op_star
-comma
-r_int
-r_int
-comma
-r_int
-r_int
-)paren
-)paren
-id|sixpack_ioctl
-suffix:semicolon
-id|sp_ldisc.poll
-op_assign
-l_int|NULL
-suffix:semicolon
-id|sp_ldisc.receive_buf
-op_assign
-id|sixpack_receive_buf
-suffix:semicolon
-id|sp_ldisc.receive_room
-op_assign
-id|sixpack_receive_room
-suffix:semicolon
-id|sp_ldisc.write_wakeup
-op_assign
-id|sixpack_write_wakeup
-suffix:semicolon
+multiline_comment|/* Register the provided line protocol discipline */
 r_if
 c_cond
 (paren
@@ -2888,8 +2950,7 @@ l_int|0
 id|printk
 c_func
 (paren
-id|KERN_WARNING
-l_string|&quot;6pack: can&squot;t register line discipline (err = %d)&bslash;n&quot;
+id|msg_regfail
 comma
 id|status
 )paren
@@ -2905,11 +2966,23 @@ r_return
 id|status
 suffix:semicolon
 )brace
-DECL|function|sixpack_cleanup_driver
+DECL|variable|__exitdata
+r_static
+r_const
+r_char
+id|msg_unregfail
+(braket
+)braket
+id|__exitdata
+op_assign
+id|KERN_ERR
+l_string|&quot;6pack: can&squot;t unregister line discipline (err = %d)&bslash;n&quot;
+suffix:semicolon
+DECL|function|sixpack_exit_driver
 r_static
 r_void
 id|__exit
-id|sixpack_cleanup_driver
+id|sixpack_exit_driver
 c_func
 (paren
 r_void
@@ -2917,6 +2990,29 @@ r_void
 (brace
 r_int
 id|i
+suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|i
+op_assign
+id|tty_register_ldisc
+c_func
+(paren
+id|N_6PACK
+comma
+l_int|NULL
+)paren
+)paren
+)paren
+id|printk
+c_func
+(paren
+id|msg_unregfail
+comma
+id|i
+)paren
 suffix:semicolon
 r_for
 c_loop
@@ -2985,30 +3081,6 @@ id|kfree
 c_func
 (paren
 id|sixpack_ctrls
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-(paren
-id|i
-op_assign
-id|tty_register_ldisc
-c_func
-(paren
-id|N_6PACK
-comma
-l_int|NULL
-)paren
-)paren
-)paren
-id|printk
-c_func
-(paren
-id|KERN_WARNING
-l_string|&quot;6pack: can&squot;t unregister line discipline (err = %d)&bslash;n&quot;
-comma
-id|i
 )paren
 suffix:semicolon
 )brace
@@ -4585,22 +4657,6 @@ c_func
 l_string|&quot;6pack driver for AX.25&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
-c_func
-(paren
-id|sixpack_maxdev
-comma
-l_string|&quot;i&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_DESC
-c_func
-(paren
-id|sixpack_maxdev
-comma
-l_string|&quot;number of 6PACK devices&quot;
-)paren
-suffix:semicolon
 DECL|variable|sixpack_init_driver
 id|module_init
 c_func
@@ -4608,11 +4664,11 @@ c_func
 id|sixpack_init_driver
 )paren
 suffix:semicolon
-DECL|variable|sixpack_cleanup_driver
+DECL|variable|sixpack_exit_driver
 id|module_exit
 c_func
 (paren
-id|sixpack_cleanup_driver
+id|sixpack_exit_driver
 )paren
 suffix:semicolon
 eof

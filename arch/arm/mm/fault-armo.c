@@ -12,17 +12,59 @@ macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
-DECL|macro|FAULT_CODE_FORCECOW
-mdefine_line|#define FAULT_CODE_FORCECOW&t;0x80
+DECL|macro|FAULT_CODE_LDRSTRPOST
+mdefine_line|#define FAULT_CODE_LDRSTRPOST&t;0x80
+DECL|macro|FAULT_CODE_LDRSTRPRE
+mdefine_line|#define FAULT_CODE_LDRSTRPRE&t;0x40
+DECL|macro|FAULT_CODE_LDRSTRREG
+mdefine_line|#define FAULT_CODE_LDRSTRREG&t;0x20
+DECL|macro|FAULT_CODE_LDMSTM
+mdefine_line|#define FAULT_CODE_LDMSTM&t;0x10
+DECL|macro|FAULT_CODE_LDCSTC
+mdefine_line|#define FAULT_CODE_LDCSTC&t;0x08
 DECL|macro|FAULT_CODE_PREFETCH
 mdefine_line|#define FAULT_CODE_PREFETCH&t;0x04
 DECL|macro|FAULT_CODE_WRITE
 mdefine_line|#define FAULT_CODE_WRITE&t;0x02
+DECL|macro|FAULT_CODE_FORCECOW
+mdefine_line|#define FAULT_CODE_FORCECOW&t;0x01
 DECL|macro|DO_COW
 mdefine_line|#define DO_COW(m)&t;&t;((m) &amp; (FAULT_CODE_WRITE|FAULT_CODE_FORCECOW))
 DECL|macro|READ_FAULT
 mdefine_line|#define READ_FAULT(m)&t;&t;(!((m) &amp; FAULT_CODE_WRITE))
-macro_line|#include &quot;fault-common.c&quot;
+r_extern
+r_int
+id|do_page_fault
+c_func
+(paren
+r_int
+r_int
+id|addr
+comma
+r_int
+id|mode
+comma
+r_struct
+id|pt_regs
+op_star
+id|regs
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|show_pte
+c_func
+(paren
+r_struct
+id|mm_struct
+op_star
+id|mm
+comma
+r_int
+r_int
+id|addr
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Handle a data abort.  Note that we have to handle a range of addresses&n; * on ARM2/3 for ldm.  If both pages are zero-mapped, then we have to force&n; * a copy-on-write.  However, on the second page, we always force COW.&n; */
 id|asmlinkage
 r_void

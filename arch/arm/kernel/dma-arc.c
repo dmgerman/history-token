@@ -116,9 +116,10 @@ id|dma-&gt;buf.address
 )paren
 suffix:semicolon
 multiline_comment|/* Sets data pointer up */
-id|enable_irq
+id|enable_fiq
+c_func
 (paren
-l_int|64
+id|FIQ_FLOPPYDATA
 )paren
 suffix:semicolon
 id|restore_flags
@@ -208,10 +209,9 @@ id|dma-&gt;buf.address
 )paren
 suffix:semicolon
 multiline_comment|/* Sets data pointer up */
-id|enable_irq
+id|enable_fiq
 (paren
-l_int|64
-)paren
+id|FIQ_FLOPPYDATA
 suffix:semicolon
 id|restore_flags
 c_func
@@ -403,7 +403,7 @@ op_star
 id|dma
 )paren
 (brace
-id|disable_irq
+id|disable_fiq
 c_func
 (paren
 id|dma-&gt;dma_irq
@@ -652,7 +652,7 @@ op_amp
 id|regs
 )paren
 suffix:semicolon
-id|enable_irq
+id|enable_fiq
 c_func
 (paren
 id|dma-&gt;dma_irq
@@ -673,7 +673,7 @@ op_star
 id|dma
 )paren
 (brace
-id|disable_irq
+id|disable_fiq
 c_func
 (paren
 id|dma-&gt;dma_irq
@@ -778,7 +778,7 @@ id|DMA_VIRTUAL_FLOPPY0
 dot
 id|dma_irq
 op_assign
-l_int|64
+id|FIQ_FLOPPYDATA
 suffix:semicolon
 id|dma
 (braket
@@ -797,7 +797,7 @@ id|DMA_VIRTUAL_FLOPPY1
 dot
 id|dma_irq
 op_assign
-l_int|65
+l_int|1
 suffix:semicolon
 id|dma
 (braket
@@ -828,7 +828,7 @@ id|DMA_VIRTUAL_FLOPPY0
 dot
 id|dma_irq
 op_assign
-l_int|64
+id|FIQ_FLOPPYDATA
 suffix:semicolon
 id|dma
 (braket

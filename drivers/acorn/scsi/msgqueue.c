@@ -2,6 +2,7 @@ multiline_comment|/*&n; *  linux/drivers/acorn/scsi/msgqueue.c&n; *&n; *  Copyri
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/stddef.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &quot;msgqueue.h&quot;
 id|MODULE_AUTHOR
 c_func
@@ -339,7 +340,7 @@ c_func
 id|ap
 comma
 r_int
-r_char
+r_int
 )paren
 suffix:semicolon
 id|va_end
@@ -489,6 +490,7 @@ suffix:semicolon
 macro_line|#ifdef MODULE
 DECL|function|init_module
 r_int
+id|__init
 id|init_module
 c_func
 (paren
@@ -501,6 +503,7 @@ suffix:semicolon
 )brace
 DECL|function|cleanup_module
 r_void
+id|__exit
 id|cleanup_module
 c_func
 (paren

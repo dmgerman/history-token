@@ -89,7 +89,7 @@ DECL|macro|EC_DEFAULT_SPDIF1_SEL
 mdefine_line|#define EC_DEFAULT_SPDIF1_SEL 0x4
 DECL|macro|HC_EA
 mdefine_line|#define HC_EA 0x01L
-multiline_comment|/* ECARD state structure.  This structure maintains the state&n; * for various portions of the the ECARD&squot;s onboard hardware.&n; */
+multiline_comment|/* ECARD state structure.  This structure maintains the state&n; * for various portions of the ECARD&squot;s onboard hardware.&n; */
 DECL|struct|ecard_state
 r_struct
 id|ecard_state

@@ -156,6 +156,7 @@ id|bss_start
 op_plus
 id|bss_len
 suffix:semicolon
+macro_line|#if 0
 id|printk
 c_func
 (paren
@@ -170,6 +171,7 @@ comma
 id|bss_len
 )paren
 suffix:semicolon
+macro_line|#endif
 id|unlock_kernel
 c_func
 (paren

@@ -391,5 +391,8 @@ suffix:semicolon
 )brace
 DECL|macro|pte_alloc_kernel
 mdefine_line|#define pte_alloc_kernel        pte_alloc
+multiline_comment|/*&n; * We don&squot;t store cache state bits in the page table here.&n; */
+DECL|macro|pgprot_noncached
+mdefine_line|#define pgprot_noncached(prot)&t;(prot)
 macro_line|#endif /* __ASM_PROC_PGTABLE_H */
 eof

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Copyright 2000 by Hans Reiser, licensing governed by reiserfs/README&n; */
+multiline_comment|/*&n; * Copyright 2000 by Hans Reiser, licensing governed by reiserfs/README&n; *&n; * Trivial changes by Alan Cox to remove EHASHCOLLISION for compatibility&n; *&n; * Trivial Changes:&n; * Rights granted to Hans Reiser to redistribute under other terms providing&n; * he accepts all liability including but not limited to patent, fitness&n; * for purpose, and direct or indirect claims arising from failure to perform.&n; *&n; * NO WARRANTY&n; */
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -1824,9 +1824,9 @@ id|path
 suffix:semicolon
 r_return
 op_minus
-id|EHASHCOLLISION
+id|EBUSY
 suffix:semicolon
-singleline_comment|//EBADSLT
+singleline_comment|//HASHCOLLISION;//EBADSLT
 )brace
 multiline_comment|/* adjust offset of directory enrty */
 id|deh-&gt;deh_offset
@@ -1909,7 +1909,7 @@ id|path
 suffix:semicolon
 r_return
 op_minus
-id|EHASHCOLLISION
+id|EBUSY
 suffix:semicolon
 )brace
 )brace

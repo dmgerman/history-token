@@ -322,10 +322,14 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-multiline_comment|/* Address may have changed! */
+multiline_comment|/* Addresses may have changed! */
 id|self-&gt;saddr
 op_assign
 id|saddr
+suffix:semicolon
+id|self-&gt;daddr
+op_assign
+id|daddr
 suffix:semicolon
 r_if
 c_cond

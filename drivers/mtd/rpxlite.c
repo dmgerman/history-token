@@ -406,6 +406,16 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+id|iounmap
+c_func
+(paren
+(paren
+r_void
+op_star
+)paren
+id|rpxlite_map.map_priv_1
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|ENXIO

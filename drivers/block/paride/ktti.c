@@ -1,4 +1,4 @@
-multiline_comment|/* &n;        ktti.c        (c) 1998  Grant R. Guenther &lt;grant@torque.net&gt;&n;                          Under the terms of the GNU public license.&n;&n;&t;ktti.c is a low-level protocol driver for the KT Technology&n;&t;parallel port adapter.  This adapter is used in the &quot;PHd&quot; &n;        portable hard-drives.  As far as I can tell, this device&n;&t;supports 4-bit mode _only_.  &n;&n;*/
+multiline_comment|/* &n;        ktti.c        (c) 1998  Grant R. Guenther &lt;grant@torque.net&gt;&n;                          Under the terms of the GNU General Public License.&n;&n;&t;ktti.c is a low-level protocol driver for the KT Technology&n;&t;parallel port adapter.  This adapter is used in the &quot;PHd&quot; &n;        portable hard-drives.  As far as I can tell, this device&n;&t;supports 4-bit mode _only_.  &n;&n;*/
 DECL|macro|KTTI_VERSION
 mdefine_line|#define KTTI_VERSION      &quot;1.0&quot;
 macro_line|#include &lt;linux/module.h&gt;

@@ -6087,6 +6087,10 @@ c_func
 id|skb
 )paren
 suffix:semicolon
+id|ppp-&gt;dev-&gt;last_rx
+op_assign
+id|jiffies
+suffix:semicolon
 )brace
 )brace
 r_return
@@ -9965,7 +9969,7 @@ op_ne
 l_int|0
 )paren
 r_goto
-id|outw
+id|outwl
 suffix:semicolon
 id|ppp_lock
 c_func
@@ -10058,7 +10062,7 @@ c_func
 id|ppp
 )paren
 suffix:semicolon
-id|outw
+id|outwl
 suffix:colon
 id|write_unlock_bh
 c_func
@@ -10226,6 +10230,7 @@ id|pch
 suffix:semicolon
 )brace
 DECL|function|ppp_cleanup
+r_static
 r_void
 id|__exit
 id|ppp_cleanup

@@ -83,6 +83,7 @@ l_string|&quot;i3 EtherH driver&quot;
 suffix:semicolon
 DECL|variable|__initdata
 r_static
+r_const
 r_char
 id|version
 (braket
@@ -1196,8 +1197,6 @@ op_star
 id|dev
 )paren
 (brace
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1215,14 +1214,10 @@ comma
 id|dev
 )paren
 )paren
-(brace
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 r_return
 op_minus
 id|EAGAIN
 suffix:semicolon
-)brace
 multiline_comment|/*&n;&t; * Make sure that we aren&squot;t going to change the&n;&t; * media type on the next reset - we are about to&n;&t; * do automedia manually now.&n;&t; */
 id|ei_status.interface_num
 op_assign
@@ -1324,8 +1319,6 @@ comma
 id|dev
 )paren
 suffix:semicolon
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -1415,17 +1408,14 @@ id|expansioncard_ops_t
 id|etherh_ops
 op_assign
 (brace
+id|irqenable
+suffix:colon
 id|etherh_irq_enable
 comma
+id|irqdisable
+suffix:colon
 id|etherh_irq_disable
 comma
-l_int|NULL
-comma
-l_int|NULL
-comma
-l_int|NULL
-comma
-l_int|NULL
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * Initialisation&n; */
@@ -1812,6 +1802,12 @@ id|dev
 )paren
 r_goto
 id|out
+suffix:semicolon
+id|SET_MODULE_OWNER
+c_func
+(paren
+id|dev
+)paren
 suffix:semicolon
 id|etherh_addr
 c_func

@@ -52,6 +52,11 @@ DECL|variable|cyclecounter_available
 r_char
 id|cyclecounter_available
 suffix:semicolon
+DECL|variable|loops_per_sec
+r_int
+r_int
+id|loops_per_sec
+suffix:semicolon
 multiline_comment|/*&n; * Set if box has EISA slots.&n; */
 DECL|variable|EISA_bus
 r_int

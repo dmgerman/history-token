@@ -2448,6 +2448,12 @@ id|SDpnt-&gt;starved
 op_assign
 l_int|0
 suffix:semicolon
+r_if
+c_cond
+(paren
+l_int|NULL
+op_eq
+(paren
 id|SRpnt
 op_assign
 id|scsi_allocate_request
@@ -2455,7 +2461,19 @@ c_func
 (paren
 id|SDpnt
 )paren
+)paren
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;scan_scsis_single: no memory&bslash;n&quot;
+)paren
 suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
 multiline_comment|/*&n;&t; * We used to do a TEST_UNIT_READY before the INQUIRY but that was &n;&t; * not really necessary.  Spec recommends using INQUIRY to scan for&n;&t; * devices (and TEST_UNIT_READY to poll for media change). - Paul G.&n;&t; */
 id|SCSI_LOG_SCAN_BUS
 c_func

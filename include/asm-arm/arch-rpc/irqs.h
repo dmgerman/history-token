@@ -51,6 +51,9 @@ DECL|macro|FIQ_EXPANSIONCARD
 mdefine_line|#define FIQ_EXPANSIONCARD&t;6
 DECL|macro|FIQ_FORCE
 mdefine_line|#define FIQ_FORCE&t;&t;7
+multiline_comment|/*&n; * This is the offset of the FIQ &quot;IRQ&quot; numbers&n; */
+DECL|macro|FIQ_START
+mdefine_line|#define FIQ_START&t;&t;64
 DECL|macro|IRQ_TIMER
 mdefine_line|#define IRQ_TIMER&t;&t;IRQ_TIMER0
 eof

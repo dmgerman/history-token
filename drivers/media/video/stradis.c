@@ -12441,9 +12441,17 @@ id|result
 OL
 l_int|0
 )paren
+(brace
+id|iounmap
+c_func
+(paren
+id|saa-&gt;saa7146_mem
+)paren
+suffix:semicolon
 r_return
 id|result
 suffix:semicolon
+)brace
 id|pci_set_master
 c_func
 (paren
@@ -12464,10 +12472,18 @@ id|VFL_TYPE_GRABBER
 OL
 l_int|0
 )paren
+(brace
+id|iounmap
+c_func
+(paren
+id|saa-&gt;saa7146_mem
+)paren
+suffix:semicolon
 r_return
 op_minus
 l_int|1
 suffix:semicolon
+)brace
 macro_line|#if 0
 multiline_comment|/* i2c generic interface is currently BROKEN */
 id|i2c_register_bus

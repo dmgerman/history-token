@@ -55,6 +55,9 @@ id|edge_mask
 suffix:semicolon
 macro_line|#endif
 multiline_comment|/*&n; * Implementation specifics&n; */
+macro_line|#ifdef CONFIG_SA1100_PANGOLIN
+macro_line|#include &quot;pangolin.h&quot;
+macro_line|#endif
 macro_line|#ifdef CONFIG_SA1100_ASSABET
 macro_line|#include &quot;assabet.h&quot;
 macro_line|#else
@@ -69,9 +72,6 @@ macro_line|#include &quot;empeg.h&quot;
 macro_line|#endif
 macro_line|#ifdef CONFIG_SA1100_BITSY
 macro_line|#include &quot;bitsy.h&quot;
-macro_line|#endif
-macro_line|#if defined(CONFIG_SA1100_THINCLIENT)
-macro_line|#include &quot;thinclient.h&quot;
 macro_line|#endif
 macro_line|#if defined(CONFIG_SA1100_GRAPHICSCLIENT)
 macro_line|#include &quot;graphicsclient.h&quot;

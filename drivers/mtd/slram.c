@@ -836,6 +836,21 @@ c_func
 l_string|&quot;Failed to register new device&bslash;n&quot;
 )paren
 suffix:semicolon
+id|iounmap
+c_func
+(paren
+(paren
+(paren
+r_struct
+id|mypriv
+op_star
+)paren
+id|mymtd-&gt;priv
+)paren
+op_member_access_from_pointer
+id|start
+)paren
+suffix:semicolon
 id|kfree
 c_func
 (paren

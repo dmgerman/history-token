@@ -194,6 +194,14 @@ id|phyid
 comma
 id|isroot
 suffix:semicolon
+DECL|member|selfid_size
+r_int
+id|selfid_size
+suffix:semicolon
+DECL|member|phy_reg0
+r_int
+id|phy_reg0
+suffix:semicolon
 DECL|member|phy_reg_lock
 id|spinlock_t
 id|phy_reg_lock
@@ -677,12 +685,12 @@ DECL|macro|FIFO_SIZES
 mdefine_line|#define FIFO_SIZES                        0xa00
 DECL|macro|FIFO_CONTROL
 mdefine_line|#define FIFO_CONTROL                      0xa10
-DECL|macro|GRF_FLUSH
-mdefine_line|#define GRF_FLUSH                         (1&lt;&lt;4)
-DECL|macro|ITF_FLUSH
-mdefine_line|#define ITF_FLUSH                         (1&lt;&lt;3)
-DECL|macro|ATF_FLUSH
-mdefine_line|#define ATF_FLUSH                         (1&lt;&lt;2)
+DECL|macro|FIFO_CONTROL_GRF_FLUSH
+mdefine_line|#define FIFO_CONTROL_GRF_FLUSH            (1&lt;&lt;4)
+DECL|macro|FIFO_CONTROL_ITF_FLUSH
+mdefine_line|#define FIFO_CONTROL_ITF_FLUSH            (1&lt;&lt;3)
+DECL|macro|FIFO_CONTROL_ATF_FLUSH
+mdefine_line|#define FIFO_CONTROL_ATF_FLUSH            (1&lt;&lt;2)
 DECL|macro|FIFO_XMIT_THRESHOLD
 mdefine_line|#define FIFO_XMIT_THRESHOLD               0xa14
 DECL|macro|DMA0_WORD0_CMP_VALUE
@@ -740,10 +748,10 @@ DECL|macro|DMA_WORD1_CMP_MATCH_BROADCAST
 mdefine_line|#define DMA_WORD1_CMP_MATCH_BROADCAST     (1&lt;&lt;14)
 DECL|macro|DMA_WORD1_CMP_MATCH_BUS_BCAST
 mdefine_line|#define DMA_WORD1_CMP_MATCH_BUS_BCAST     (1&lt;&lt;13)
-DECL|macro|DMA_WORD1_CMP_MATCH_NODE_BCAST
-mdefine_line|#define DMA_WORD1_CMP_MATCH_NODE_BCAST    (1&lt;&lt;12)
-DECL|macro|DMA_WORD1_CMP_MATCH_LOCAL
-mdefine_line|#define DMA_WORD1_CMP_MATCH_LOCAL         (1&lt;&lt;11)
+DECL|macro|DMA_WORD1_CMP_MATCH_LOCAL_NODE
+mdefine_line|#define DMA_WORD1_CMP_MATCH_LOCAL_NODE    (1&lt;&lt;12)
+DECL|macro|DMA_WORD1_CMP_MATCH_EXACT
+mdefine_line|#define DMA_WORD1_CMP_MATCH_EXACT         (1&lt;&lt;11)
 DECL|macro|DMA_WORD1_CMP_ENABLE_SELF_ID
 mdefine_line|#define DMA_WORD1_CMP_ENABLE_SELF_ID      (1&lt;&lt;10)
 DECL|macro|DMA_WORD1_CMP_ENABLE_MASTER

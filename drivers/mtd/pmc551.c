@@ -3014,6 +3014,12 @@ id|KERN_NOTICE
 l_string|&quot;pmc551: Failed to register new device&bslash;n&quot;
 )paren
 suffix:semicolon
+id|iounmap
+c_func
+(paren
+id|priv-&gt;start
+)paren
+suffix:semicolon
 id|kfree
 c_func
 (paren

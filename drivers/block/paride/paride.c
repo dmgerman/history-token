@@ -1,4 +1,4 @@
-multiline_comment|/* &n;        paride.c  (c) 1997-8  Grant R. Guenther &lt;grant@torque.net&gt;&n;                              Under the terms of the GNU public license.&n;&n;&t;This is the base module for the family of device drivers&n;        that support parallel port IDE devices.  &n;&n;*/
+multiline_comment|/* &n;        paride.c  (c) 1997-8  Grant R. Guenther &lt;grant@torque.net&gt;&n;                              Under the terms of the GNU General Public License.&n;&n;&t;This is the base module for the family of device drivers&n;        that support parallel port IDE devices.  &n;&n;*/
 multiline_comment|/* Changes:&n;&n;&t;1.01&t;GRG 1998.05.03&t;Use spinlocks&n;&t;1.02&t;GRG 1998.05.05  init_proto, release_proto, ktti&n;&t;1.03&t;GRG 1998.08.15  eliminate compiler warning&n;&t;1.04    GRG 1998.11.28  added support for FRIQ &n;&t;1.05    TMW 2000.06.06  use parport_find_number instead of&n;&t;&t;&t;&t;parport_enumerate&n;*/
 DECL|macro|PI_VERSION
 mdefine_line|#define PI_VERSION      &quot;1.05&quot;

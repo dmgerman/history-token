@@ -10,6 +10,7 @@ macro_line|#include &lt;linux/unistd.h&gt;
 macro_line|#include &lt;linux/stat.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/dma.h&gt;
@@ -17,7 +18,8 @@ macro_line|#include &lt;asm/ecard.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &quot;../../scsi/sd.h&quot;
 macro_line|#include &quot;../../scsi/hosts.h&quot;
-macro_line|#include &quot;eesox.h&quot;
+macro_line|#include &quot;fas216.h&quot;
+macro_line|#include &lt;scsi/scsicam.h&gt;
 multiline_comment|/* Configuration */
 DECL|macro|EESOX_XTALFREQ
 mdefine_line|#define EESOX_XTALFREQ&t;&t;40
@@ -118,6 +120,55 @@ l_int|1
 comma
 l_int|1
 )brace
+suffix:semicolon
+DECL|macro|NR_SG
+mdefine_line|#define NR_SG&t;256
+DECL|struct|control
+r_struct
+id|control
+(brace
+DECL|member|io_port
+r_int
+r_int
+id|io_port
+suffix:semicolon
+DECL|member|control
+r_int
+r_int
+id|control
+suffix:semicolon
+)brace
+suffix:semicolon
+r_typedef
+r_struct
+(brace
+DECL|member|info
+id|FAS216_Info
+id|info
+suffix:semicolon
+DECL|member|control
+r_struct
+id|control
+id|control
+suffix:semicolon
+DECL|member|dmaarea
+r_int
+r_int
+id|dmaarea
+suffix:semicolon
+multiline_comment|/* Pseudo DMA area&t;*/
+DECL|member|sg
+r_struct
+id|scatterlist
+id|sg
+(braket
+id|NR_SG
+)braket
+suffix:semicolon
+multiline_comment|/* Scatter DMA list&t;*/
+DECL|typedef|EESOXScsi_Info
+)brace
+id|EESOXScsi_Info
 suffix:semicolon
 multiline_comment|/* Prototype: void eesoxscsi_irqenable(ec, irqnr)&n; * Purpose  : Enable interrupts on EESOX SCSI card&n; * Params   : ec    - expansion card structure&n; *          : irqnr - interrupt number&n; */
 r_static
@@ -2106,13 +2157,162 @@ r_return
 id|pos
 suffix:semicolon
 )brace
-macro_line|#ifdef MODULE
-DECL|variable|driver_template
+DECL|variable|eesox_template
+r_static
 id|Scsi_Host_Template
-id|driver_template
+id|eesox_template
 op_assign
-id|EESOXSCSI
+(brace
+id|module
+suffix:colon
+id|THIS_MODULE
+comma
+id|proc_info
+suffix:colon
+id|eesoxscsi_proc_info
+comma
+id|name
+suffix:colon
+l_string|&quot;EESOX SCSI&quot;
+comma
+id|detect
+suffix:colon
+id|eesoxscsi_detect
+comma
+id|release
+suffix:colon
+id|eesoxscsi_release
+comma
+id|info
+suffix:colon
+id|eesoxscsi_info
+comma
+id|bios_param
+suffix:colon
+id|scsicam_bios_param
+comma
+id|can_queue
+suffix:colon
+l_int|1
+comma
+id|this_id
+suffix:colon
+l_int|7
+comma
+id|sg_tablesize
+suffix:colon
+id|SG_ALL
+comma
+id|cmd_per_lun
+suffix:colon
+l_int|1
+comma
+id|use_clustering
+suffix:colon
+id|DISABLE_CLUSTERING
+comma
+id|command
+suffix:colon
+id|fas216_command
+comma
+id|queuecommand
+suffix:colon
+id|fas216_queue_command
+comma
+id|eh_host_reset_handler
+suffix:colon
+id|fas216_eh_host_reset
+comma
+id|eh_bus_reset_handler
+suffix:colon
+id|fas216_eh_bus_reset
+comma
+id|eh_device_reset_handler
+suffix:colon
+id|fas216_eh_device_reset
+comma
+id|eh_abort_handler
+suffix:colon
+id|fas216_eh_abort
+comma
+id|use_new_eh_code
+suffix:colon
+l_int|1
+)brace
 suffix:semicolon
-macro_line|#include &quot;../../scsi/scsi_module.c&quot;
-macro_line|#endif
+DECL|function|eesox_init
+r_static
+r_int
+id|__init
+id|eesox_init
+c_func
+(paren
+r_void
+)paren
+(brace
+id|scsi_register_module
+c_func
+(paren
+id|MODULE_SCSI_HA
+comma
+op_amp
+id|eesox_template
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|eesox_template.present
+)paren
+r_return
+l_int|0
+suffix:semicolon
+id|scsi_unregister_module
+c_func
+(paren
+id|MODULE_SCSI_HA
+comma
+op_amp
+id|eesox_template
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|ENODEV
+suffix:semicolon
+)brace
+DECL|function|eesox_exit
+r_static
+r_void
+id|__exit
+id|eesox_exit
+c_func
+(paren
+r_void
+)paren
+(brace
+id|scsi_unregister_module
+c_func
+(paren
+id|MODULE_SCSI_HA
+comma
+op_amp
+id|eesox_template
+)paren
+suffix:semicolon
+)brace
+DECL|variable|eesox_init
+id|module_init
+c_func
+(paren
+id|eesox_init
+)paren
+suffix:semicolon
+DECL|variable|eesox_exit
+id|module_exit
+c_func
+(paren
+id|eesox_exit
+)paren
+suffix:semicolon
 eof

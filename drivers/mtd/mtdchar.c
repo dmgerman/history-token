@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Almost: $Id: mtdchar.c,v 1.21 2000/12/09 21:15:12 dwmw2 Exp $&n; * (With some of the compatibility for previous kernels taken out)&n; *&n; * Character-device access to raw MTD devices.&n; *&n; */
+multiline_comment|/*&n; * $Id: mtdchar.c,v 1.21.2.3 2001/01/09 00:18:31 dwmw2 Exp $&n; *&n; * Character-device access to raw MTD devices.&n; *&n; */
 macro_line|#include &lt;linux/mtd/compatmac.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -1928,20 +1928,6 @@ r_void
 )paren
 (brace
 macro_line|#ifdef CONFIG_DEVFS_FS
-r_int
-id|i
-suffix:semicolon
-r_char
-id|name
-(braket
-l_int|8
-)braket
-suffix:semicolon
-r_struct
-id|mtd_info
-op_star
-id|mtd
-suffix:semicolon
 r_if
 c_cond
 (paren

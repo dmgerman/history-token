@@ -6594,12 +6594,8 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;z8530drv: warning, cannot reserve vector latch port 0x%x&bslash;n, disabled.&quot;
+l_string|&quot;z8530drv: warning, cannot reserve vector latch port 0x%lx&bslash;n, disabled.&quot;
 comma
-(paren
-r_int
-r_int
-)paren
 id|hwcfg.vector_latch
 )paren
 suffix:semicolon

@@ -14,9 +14,10 @@ macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &quot;../../scsi/scsi.h&quot;
 macro_line|#include &quot;../../scsi/hosts.h&quot;
-macro_line|#include &quot;ecoscsi.h&quot;
 macro_line|#include &quot;../../scsi/NCR5380.h&quot;
 macro_line|#include &quot;../../scsi/constants.h&quot;
+DECL|macro|ECOSCSI_PUBLIC_RELEASE
+mdefine_line|#define ECOSCSI_PUBLIC_RELEASE 1
 DECL|function|ecoscsi_read
 r_static
 r_char
@@ -835,14 +836,190 @@ suffix:semicolon
 macro_line|#endif
 DECL|macro|STAT
 macro_line|#undef STAT
-macro_line|#include &quot;../../scsi/NCR5380.c&quot;
-macro_line|#ifdef MODULE
-DECL|variable|driver_template
-id|Scsi_Host_Template
-id|driver_template
-op_assign
-id|ECOSCSI_NCR5380
+macro_line|#ifndef HOSTS_C
+DECL|macro|NCR5380_implementation_fields
+mdefine_line|#define NCR5380_implementation_fields &bslash;&n;    int port, ctrl
+DECL|macro|NCR5380_local_declare
+mdefine_line|#define NCR5380_local_declare() &bslash;&n;        struct Scsi_Host *_instance
+DECL|macro|NCR5380_setup
+mdefine_line|#define NCR5380_setup(instance) &bslash;&n;        _instance = instance
+DECL|macro|NCR5380_read
+mdefine_line|#define NCR5380_read(reg) ecoscsi_read(_instance, reg)
+DECL|macro|NCR5380_write
+mdefine_line|#define NCR5380_write(reg, value) ecoscsi_write(_instance, reg, value)
+DECL|macro|do_NCR5380_intr
+mdefine_line|#define do_NCR5380_intr do_ecoscsi_intr
+DECL|macro|NCR5380_queue_command
+mdefine_line|#define NCR5380_queue_command ecoscsi_queue_command
+DECL|macro|NCR5380_abort
+mdefine_line|#define NCR5380_abort ecoscsi_abort
+DECL|macro|NCR5380_reset
+mdefine_line|#define NCR5380_reset ecoscsi_reset
+DECL|macro|NCR5380_proc_info
+mdefine_line|#define NCR5380_proc_info ecoscsi_proc_info
+r_int
+id|NCR5380_proc_info
+c_func
+(paren
+r_char
+op_star
+id|buffer
+comma
+r_char
+op_star
+op_star
+id|start
+comma
+id|off_t
+id|offset
+comma
+r_int
+id|length
+comma
+r_int
+id|hostno
+comma
+r_int
+id|inout
+)paren
 suffix:semicolon
-macro_line|#include &quot;../../scsi/scsi_module.c&quot;
-macro_line|#endif
+DECL|macro|BOARD_NORMAL
+mdefine_line|#define BOARD_NORMAL&t;0
+DECL|macro|BOARD_NCR53C400
+mdefine_line|#define BOARD_NCR53C400&t;1
+macro_line|#include &quot;../../scsi/NCR5380.c&quot;
+DECL|variable|ecoscsi_template
+r_static
+id|Scsi_Host_Template
+id|ecoscsi_template
+op_assign
+(brace
+id|module
+suffix:colon
+id|THIS_MODULE
+comma
+id|name
+suffix:colon
+l_string|&quot;Serial Port EcoSCSI NCR5380&quot;
+comma
+id|detect
+suffix:colon
+id|ecoscsi_detect
+comma
+id|release
+suffix:colon
+id|ecoscsi_release
+comma
+id|info
+suffix:colon
+id|ecoscsi_info
+comma
+id|queuecommand
+suffix:colon
+id|ecoscsi_queue_command
+comma
+m_abort
+suffix:colon
+id|ecoscsi_abort
+comma
+id|reset
+suffix:colon
+id|ecoscsi_reset
+comma
+id|can_queue
+suffix:colon
+l_int|16
+comma
+id|this_id
+suffix:colon
+l_int|7
+comma
+id|sg_tablesize
+suffix:colon
+id|SG_ALL
+comma
+id|cmd_per_lun
+suffix:colon
+l_int|2
+comma
+id|use_clustering
+suffix:colon
+id|DISABLE_CLUSTERING
+)brace
+suffix:semicolon
+DECL|function|ecoscsi_init
+r_static
+r_int
+id|__init
+id|ecoscsi_init
+c_func
+(paren
+r_void
+)paren
+(brace
+id|scsi_register_module
+c_func
+(paren
+id|MODULE_SCSI_HA
+comma
+op_amp
+id|ecoscsi_template
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ecoscsi_template.present
+)paren
+r_return
+l_int|0
+suffix:semicolon
+id|scsi_unregister_module
+c_func
+(paren
+id|MODULE_SCSI_HA
+comma
+op_amp
+id|ecoscsi_template
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|ENODEV
+suffix:semicolon
+)brace
+DECL|function|ecoscsi_exit
+r_static
+r_void
+id|__exit
+id|ecoscsi_exit
+c_func
+(paren
+r_void
+)paren
+(brace
+id|scsi_unregister_module
+c_func
+(paren
+id|MODULE_SCSI_HA
+comma
+op_amp
+id|ecoscsi_template
+)paren
+suffix:semicolon
+)brace
+DECL|variable|ecoscsi_init
+id|module_init
+c_func
+(paren
+id|ecoscsi_init
+)paren
+suffix:semicolon
+DECL|variable|ecoscsi_exit
+id|module_exit
+c_func
+(paren
+id|ecoscsi_exit
+)paren
+suffix:semicolon
 eof

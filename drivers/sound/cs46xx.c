@@ -108,6 +108,14 @@ op_assign
 l_int|1
 suffix:semicolon
 multiline_comment|/* levels range from 1-9 */
+id|MODULE_PARM
+c_func
+(paren
+id|cs_debuglevel
+comma
+l_string|&quot;i&quot;
+)paren
+suffix:semicolon
 DECL|variable|cs_debugmask
 r_static
 r_int
@@ -119,6 +127,14 @@ op_or
 id|CS_ERROR
 suffix:semicolon
 multiline_comment|/* use CS_DBGOUT with various mask values */
+id|MODULE_PARM
+c_func
+(paren
+id|cs_debugmask
+comma
+l_string|&quot;i&quot;
+)paren
+suffix:semicolon
 macro_line|#endif
 DECL|macro|DMABUF_DEFAULTORDER
 mdefine_line|#define DMABUF_DEFAULTORDER 3
@@ -130,7 +146,6 @@ id|defaultorder
 op_assign
 id|DMABUF_DEFAULTORDER
 suffix:semicolon
-macro_line|#if MODULE
 id|MODULE_PARM
 c_func
 (paren
@@ -139,36 +154,31 @@ comma
 l_string|&quot;i&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
-c_func
-(paren
-id|cs_debuglevel
-comma
-l_string|&quot;i&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM
-c_func
-(paren
-id|cs_debugmask
-comma
-l_string|&quot;i&quot;
-)paren
-suffix:semicolon
-macro_line|#endif
 DECL|variable|external_amp
 r_static
 r_int
 id|external_amp
-op_assign
-l_int|0
+suffix:semicolon
+id|MODULE_PARM
+c_func
+(paren
+id|external_amp
+comma
+l_string|&quot;i&quot;
+)paren
 suffix:semicolon
 DECL|variable|thinkpad
 r_static
 r_int
 id|thinkpad
-op_assign
-l_int|0
+suffix:semicolon
+id|MODULE_PARM
+c_func
+(paren
+id|thinkpad
+comma
+l_string|&quot;i&quot;
+)paren
 suffix:semicolon
 multiline_comment|/* An instance of the 4610 channel */
 DECL|struct|cs_channel
@@ -753,8 +763,6 @@ r_struct
 id|cs_card
 op_star
 id|devs
-op_assign
-l_int|NULL
 suffix:semicolon
 r_static
 r_int
@@ -830,8 +838,8 @@ id|origin
 )paren
 suffix:semicolon
 DECL|function|ld2
-r_extern
-id|__inline__
+r_static
+r_inline
 r_int
 id|ld2
 c_func
@@ -3767,8 +3775,8 @@ suffix:semicolon
 )brace
 multiline_comment|/* get current playback/recording dma buffer pointer (byte offset from LBA),&n;   called with spinlock held! */
 DECL|function|cs_get_dma_addr
-r_extern
-id|__inline__
+r_static
+r_inline
 r_int
 id|cs_get_dma_addr
 c_func
@@ -3992,8 +4000,8 @@ suffix:semicolon
 )brace
 multiline_comment|/* Stop recording (lock held) */
 DECL|function|__stop_adc
-r_extern
-id|__inline__
+r_static
+r_inline
 r_void
 id|__stop_adc
 c_func
@@ -4259,8 +4267,8 @@ suffix:semicolon
 )brace
 multiline_comment|/* stop playback (lock held) */
 DECL|function|__stop_dac
-r_extern
-id|__inline__
+r_static
+r_inline
 r_void
 id|__stop_dac
 c_func
@@ -8339,6 +8347,10 @@ id|file_operations
 id|cs_midi_fops
 op_assign
 (brace
+id|owner
+suffix:colon
+id|THIS_MODULE
+comma
 id|llseek
 suffix:colon
 id|cs_llseek
@@ -15213,6 +15225,10 @@ id|file_operations
 id|cs461x_fops
 op_assign
 (brace
+id|owner
+suffix:colon
+id|THIS_MODULE
+comma
 id|llseek
 suffix:colon
 id|cs_llseek
@@ -15775,6 +15791,8 @@ id|file
 (brace
 r_int
 id|i
+op_assign
+l_int|0
 suffix:semicolon
 r_int
 id|minor
@@ -16208,6 +16226,10 @@ id|file_operations
 id|cs_mixer_fops
 op_assign
 (brace
+id|owner
+suffix:colon
+id|THIS_MODULE
+comma
 id|llseek
 suffix:colon
 id|cs_llseek
@@ -19255,10 +19277,39 @@ c_func
 l_string|&quot;Crystal SoundFusion Audio Support&quot;
 )paren
 suffix:semicolon
-DECL|function|cs_probe
+DECL|variable|__initdata
+r_static
+r_char
+id|banner
+(braket
+)braket
+id|__initdata
+op_assign
+id|KERN_INFO
+l_string|&quot;Crystal 4280/461x + AC97 Audio, version &quot;
+id|DRIVER_VERSION
+l_string|&quot;, &quot;
+id|__TIME__
+l_string|&quot; &quot;
+id|__DATE__
+l_string|&quot;&bslash;n&quot;
+suffix:semicolon
+DECL|variable|__initdata
+r_static
+r_char
+id|fndmsg
+(braket
+)braket
+id|__initdata
+op_assign
+id|KERN_INFO
+l_string|&quot;cs461x: Found %d audio device(s).&bslash;n&quot;
+suffix:semicolon
+DECL|function|cs_init_driver
+r_static
 r_int
 id|__init
-id|cs_probe
+id|cs_init_driver
 c_func
 (paren
 r_void
@@ -19293,14 +19344,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-id|KERN_INFO
-l_string|&quot;Crystal 4280/461x + AC97 Audio, version &quot;
-id|DRIVER_VERSION
-l_string|&quot;, &quot;
-id|__TIME__
-l_string|&quot; &quot;
-id|__DATE__
-l_string|&quot;&bslash;n&quot;
+id|banner
 )paren
 suffix:semicolon
 r_while
@@ -19411,52 +19455,27 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-id|KERN_INFO
-l_string|&quot;cs461x: Found %d audio device(s).&bslash;n&quot;
+id|fndmsg
 comma
 id|foundone
 )paren
 suffix:semicolon
 r_return
 id|foundone
-suffix:semicolon
-)brace
-DECL|function|init_module
-r_int
-id|__init
-id|init_module
-c_func
-(paren
-r_void
-)paren
-(brace
-r_if
+ques
 c_cond
-(paren
-id|cs_probe
-c_func
-(paren
-)paren
-op_eq
 l_int|0
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;cs461x: No devices found.&bslash;n&quot;
-)paren
+suffix:colon
+op_minus
+id|ENODEV
 suffix:semicolon
 )brace
-r_return
-l_int|0
-suffix:semicolon
-)brace
-DECL|function|cleanup_module
+DECL|function|cs_exit_driver
+r_static
 r_void
 id|__exit
-id|cleanup_module
+id|cs_exit_driver
+c_func
 (paren
 r_void
 )paren
@@ -19496,20 +19515,18 @@ id|next
 suffix:semicolon
 )brace
 )brace
-id|MODULE_PARM
+DECL|variable|cs_init_driver
+id|module_init
 c_func
 (paren
-id|external_amp
-comma
-l_string|&quot;i&quot;
+id|cs_init_driver
 )paren
 suffix:semicolon
-id|MODULE_PARM
+DECL|variable|cs_exit_driver
+id|module_exit
 c_func
 (paren
-id|thinkpad
-comma
-l_string|&quot;i&quot;
+id|cs_exit_driver
 )paren
 suffix:semicolon
 eof

@@ -425,6 +425,7 @@ suffix:semicolon
 )brace
 id|ReplUnitTable
 suffix:colon
+suffix:semicolon
 )brace
 r_if
 c_cond
@@ -2786,6 +2787,7 @@ suffix:semicolon
 )brace
 id|examine_ReplUnitTable
 suffix:colon
+suffix:semicolon
 )brace
 multiline_comment|/* second pass to format unreferenced blocks  and init free block count */
 id|s-&gt;numfreeEUNs

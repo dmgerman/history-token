@@ -3,10 +3,6 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/hardware.h&gt;
 macro_line|#include &lt;asm/mach-types.h&gt;
-DECL|macro|PCMCIA_IO_0_BASE
-mdefine_line|#define PCMCIA_IO_0_BASE 0xe0000000
-DECL|macro|PCMCIA_IO_1_BASE
-mdefine_line|#define PCMCIA_IO_1_BASE 0xe4000000
 multiline_comment|/*&n; * Set up a hw structure for a specified data port, control port and IRQ.&n; * This should follow whatever the default interface uses.&n; */
 r_static
 id|__inline__

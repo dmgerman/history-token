@@ -1,12 +1,4 @@
 multiline_comment|/*&n; *  linux/drivers/acorn/net/ether3.c&n; *&n; *  Copyright (C) 1995-2000 Russell King&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; * SEEQ nq8005 ethernet driver for Acorn/ANT Ether3 card&n; *  for Acorn machines&n; *&n; * By Russell King, with some suggestions from borris@ant.co.uk&n; *&n; * Changelog:&n; * 1.04&t;RMK&t;29/02/1996&t;Won&squot;t pass packets that are from our ethernet&n; *&t;&t;&t;&t;address up to the higher levels - they&squot;re&n; *&t;&t;&t;&t;silently ignored.  I/F can now be put into&n; *&t;&t;&t;&t;multicast mode.  Receiver routine optimised.&n; * 1.05&t;RMK&t;30/02/1996&t;Now claims interrupt at open when part of&n; *&t;&t;&t;&t;the kernel rather than when a module.&n; * 1.06&t;RMK&t;02/03/1996&t;Various code cleanups&n; * 1.07&t;RMK&t;13/10/1996&t;Optimised interrupt routine and transmit&n; *&t;&t;&t;&t;routines.&n; * 1.08&t;RMK&t;14/10/1996&t;Fixed problem with too many packets,&n; *&t;&t;&t;&t;prevented the kernel message about dropped&n; *&t;&t;&t;&t;packets appearing too many times a second.&n; *&t;&t;&t;&t;Now does not disable all IRQs, only the IRQ&n; *&t;&t;&t;&t;used by this card.&n; * 1.09&t;RMK&t;10/11/1996&t;Only enables TX irq when buffer space is low,&n; *&t;&t;&t;&t;but we still service the TX queue if we get a&n; *&t;&t;&t;&t;RX interrupt.&n; * 1.10&t;RMK&t;15/07/1997&t;Fixed autoprobing of NQ8004.&n; * 1.11&t;RMK&t;16/11/1997&t;Fixed autoprobing of NQ8005A.&n; * 1.12&t;RMK&t;31/12/1997&t;Removed reference to dev_tint for Linux 2.1.&n; *      RMK&t;27/06/1998&t;Changed asm/delay.h to linux/delay.h.&n; * 1.13&t;RMK&t;29/06/1998&t;Fixed problem with transmission of packets.&n; *&t;&t;&t;&t;Chip seems to have a bug in, whereby if the&n; *&t;&t;&t;&t;packet starts two bytes from the end of the&n; *&t;&t;&t;&t;buffer, it corrupts the receiver chain, and&n; *&t;&t;&t;&t;never updates the transmit status correctly.&n; * 1.14&t;RMK&t;07/01/1998&t;Added initial code for ETHERB addressing.&n; * 1.15&t;RMK&t;30/04/1999&t;More fixes to the transmit routine for buggy&n; *&t;&t;&t;&t;hardware.&n; * 1.16&t;RMK&t;10/02/2000&t;Updated for 2.3.43&n; * 1.17&t;RMK&t;13/05/2000&t;Updated for 2.3.99-pre8&n; */
-DECL|variable|version
-r_static
-r_char
-op_star
-id|version
-op_assign
-l_string|&quot;ether3 ethernet driver (c) 1995-2000 R.M.King v1.17&bslash;n&quot;
-suffix:semicolon
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -29,6 +21,17 @@ macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/ecard.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
+DECL|variable|__initdata
+r_static
+r_const
+r_char
+id|version
+(braket
+)braket
+id|__initdata
+op_assign
+l_string|&quot;ether3 ethernet driver (c) 1995-2000 R.M.King v1.17&bslash;n&quot;
+suffix:semicolon
 macro_line|#include &quot;ether3.h&quot;
 DECL|variable|net_debug
 r_static
@@ -66,7 +69,6 @@ comma
 id|PROD_ANT_ETHERB
 )brace
 comma
-multiline_comment|/* trial - will etherb work? */
 (brace
 l_int|0xffff
 comma
@@ -212,29 +214,6 @@ DECL|macro|BUS_8
 mdefine_line|#define BUS_8&t;&t;1
 DECL|macro|BUS_UNKNOWN
 mdefine_line|#define BUS_UNKNOWN&t;0
-multiline_comment|/*&n; * I&squot;m not sure what address we should default to if the internal one&n; * is corrupted...&n; */
-DECL|variable|def_eth_addr
-r_int
-r_char
-id|def_eth_addr
-(braket
-l_int|6
-)braket
-op_assign
-(brace
-l_int|0x00
-comma
-l_char|&squot;L&squot;
-comma
-l_char|&squot;i&squot;
-comma
-l_char|&squot;n&squot;
-comma
-l_char|&squot;u&squot;
-comma
-l_char|&squot;x&squot;
-)brace
-suffix:semicolon
 multiline_comment|/* --------------------------------------------------------------------------- */
 r_typedef
 r_enum
@@ -603,7 +582,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Read the ethernet address string from the on board rom.&n; * This is an ascii string!!!&n; */
 r_static
-r_void
+r_int
 id|__init
 DECL|function|ether3_addr
 id|ether3_addr
@@ -720,6 +699,7 @@ op_eq
 l_int|6
 )paren
 r_return
+l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* I wonder if we should even let the user continue in this case&n;&t; *   - no, it would be better to disable the device&n;&t; */
@@ -730,15 +710,9 @@ id|KERN_ERR
 l_string|&quot;ether3: Couldn&squot;t read a valid MAC address from card.&bslash;n&quot;
 )paren
 suffix:semicolon
-id|memcpy
-c_func
-(paren
-id|addr
-comma
-id|def_eth_addr
-comma
-l_int|6
-)paren
+r_return
+op_minus
+id|ENODEV
 suffix:semicolon
 )brace
 multiline_comment|/* --------------------------------------------------------------------------- */
@@ -1704,8 +1678,6 @@ op_star
 id|dev
 )paren
 (brace
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1723,14 +1695,10 @@ comma
 id|dev
 )paren
 )paren
-(brace
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 r_return
 op_minus
 id|EAGAIN
 suffix:semicolon
-)brace
 id|ether3_init_for_open
 c_func
 (paren
@@ -1839,8 +1807,6 @@ id|dev-&gt;irq
 comma
 id|dev
 )paren
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 r_return
 l_int|0
@@ -3608,6 +3574,9 @@ id|ec-&gt;irqmask
 op_assign
 l_int|0xf0
 suffix:semicolon
+r_if
+c_cond
+(paren
 id|ether3_addr
 c_func
 (paren
@@ -3615,6 +3584,10 @@ id|dev-&gt;dev_addr
 comma
 id|ec
 )paren
+)paren
+id|name
+op_assign
+l_int|NULL
 suffix:semicolon
 r_return
 id|name
@@ -3689,6 +3662,12 @@ id|dev
 r_goto
 id|out
 suffix:semicolon
+id|SET_MODULE_OWNER
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
 id|name
 op_assign
 id|ether3_get_dev
@@ -3699,7 +3678,20 @@ comma
 id|ec
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|name
+)paren
+r_goto
+id|free
+suffix:semicolon
 multiline_comment|/*&n;&t; * this will not fail - the nature of the bus ensures this&n;&t; */
+r_if
+c_cond
+(paren
+op_logical_neg
 id|request_region
 c_func
 (paren
@@ -3709,6 +3701,9 @@ l_int|128
 comma
 id|dev-&gt;name
 )paren
+)paren
+r_goto
+id|free
 suffix:semicolon
 id|priv
 op_assign
@@ -3838,15 +3833,13 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;%s: %s at %lx, IRQ%d, ether address &quot;
+l_string|&quot;%s: %s in slot %d, &quot;
 comma
 id|dev-&gt;name
 comma
 id|name
 comma
-id|dev-&gt;base_addr
-comma
-id|dev-&gt;irq
+id|ec-&gt;slot_no
 )paren
 suffix:semicolon
 r_for
@@ -3866,19 +3859,21 @@ op_increment
 id|printk
 c_func
 (paren
-id|i
-op_eq
-l_int|5
-ques
-c_cond
-l_string|&quot;%2.2x&bslash;n&quot;
-suffix:colon
-l_string|&quot;%2.2x:&quot;
+l_string|&quot;%2.2x%c&quot;
 comma
 id|dev-&gt;dev_addr
 (braket
 id|i
 )braket
+comma
+id|i
+op_eq
+l_int|5
+ques
+c_cond
+l_char|&squot;&bslash;n&squot;
+suffix:colon
+l_char|&squot;:&squot;
 )paren
 suffix:semicolon
 r_if
@@ -3938,6 +3933,8 @@ comma
 l_int|128
 )paren
 suffix:semicolon
+id|free
+suffix:colon
 id|unregister_netdev
 c_func
 (paren

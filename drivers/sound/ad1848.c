@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * sound/ad1848.c&n; *&n; * The low level driver for the AD1848/CS4248 codec chip which&n; * is used for example in the MS Sound System.&n; *&n; * The CS4231 which is used in the GUS MAX and some other cards is&n; * upwards compatible with AD1848 and this driver is able to drive it.&n; *&n; * CS4231A and AD1845 are upward compatible with CS4231. However&n; * the new features of these chips are different.&n; *&n; * CS4232 is a PnP audio chip which contains a CS4231A (and SB, MPU).&n; * CS4232A is an improved version of CS4232.&n; *&n; *&n; *&n; * Copyright (C) by Hannu Savolainen 1993-1997&n; *&n; * OSS/Free for Linux is distributed under the GNU GENERAL PUBLIC LICENSE (GPL)&n; * Version 2 (June 1991). See the &quot;COPYING&quot; file distributed with this software&n; * for more info.&n; *&n; *&n; * Thomas Sailer&t;: ioctl code reworked (vmalloc/vfree removed)&n; *&t;&t;&t;  general sleep/wakeup clean up.&n; * Alan Cox&t;&t;: reformatted. Fixed SMP bugs. Moved to kernel alloc/free&n; *&t;&t;          of irqs. Use dev_id.&n; * Christoph Hellwig&t;: adapted to module_init/module_exit&n; * Aki Laukkanen&t;: added power management support&n; *&n; * Status:&n; *&t;&t;Tested. Believed fully functional.&n; */
+multiline_comment|/*&n; * sound/ad1848.c&n; *&n; * The low level driver for the AD1848/CS4248 codec chip which&n; * is used for example in the MS Sound System.&n; *&n; * The CS4231 which is used in the GUS MAX and some other cards is&n; * upwards compatible with AD1848 and this driver is able to drive it.&n; *&n; * CS4231A and AD1845 are upward compatible with CS4231. However&n; * the new features of these chips are different.&n; *&n; * CS4232 is a PnP audio chip which contains a CS4231A (and SB, MPU).&n; * CS4232A is an improved version of CS4232.&n; *&n; *&n; *&n; * Copyright (C) by Hannu Savolainen 1993-1997&n; *&n; * OSS/Free for Linux is distributed under the GNU GENERAL PUBLIC LICENSE (GPL)&n; * Version 2 (June 1991). See the &quot;COPYING&quot; file distributed with this software&n; * for more info.&n; *&n; *&n; * Thomas Sailer&t;: ioctl code reworked (vmalloc/vfree removed)&n; *&t;&t;&t;  general sleep/wakeup clean up.&n; * Alan Cox&t;&t;: reformatted. Fixed SMP bugs. Moved to kernel alloc/free&n; *&t;&t;          of irqs. Use dev_id.&n; * Christoph Hellwig&t;: adapted to module_init/module_exit&n; * Aki Laukkanen&t;: added power management support&n; * Arnaldo C. de Melo&t;: added missing restore_flags in ad1848_resume&n; *&n; * Status:&n; *&t;&t;Tested. Believed fully functional.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -8914,15 +8914,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|owner
-)paren
-id|ad1848_audio_driver.owner
-op_assign
-id|owner
-suffix:semicolon
-r_if
-c_cond
-(paren
 (paren
 id|my_dev
 op_assign
@@ -8993,6 +8984,20 @@ id|mixer_dev
 op_assign
 op_minus
 l_int|1
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|owner
+)paren
+id|audio_devs
+(braket
+id|my_dev
+)braket
+op_member_access_from_pointer
+id|d-&gt;owner
+op_assign
+id|owner
 suffix:semicolon
 id|memset
 c_func
@@ -9375,6 +9380,20 @@ op_member_access_from_pointer
 id|mixer_dev
 op_assign
 id|e
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|owner
+)paren
+id|mixer_devs
+(braket
+id|e
+)braket
+op_member_access_from_pointer
+id|owner
+op_assign
+id|owner
 suffix:semicolon
 )brace
 r_return
@@ -12831,6 +12850,12 @@ id|KERN_ERR
 l_string|&quot;MSS: Bad IRQ %d&bslash;n&quot;
 comma
 id|devc-&gt;irq
+)paren
+suffix:semicolon
+id|restore_flags
+c_func
+(paren
+id|flags
 )paren
 suffix:semicolon
 r_return

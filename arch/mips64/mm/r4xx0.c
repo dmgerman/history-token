@@ -8147,7 +8147,6 @@ r_int
 id|regs-&gt;cp0_cause
 )paren
 suffix:semicolon
-singleline_comment|//{static int x = 3; x--; if(!x) while(1);}
 )brace
 multiline_comment|/* Detect and size the various r4k caches. */
 DECL|function|probe_icache

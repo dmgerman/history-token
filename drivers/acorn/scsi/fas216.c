@@ -9,6 +9,7 @@ macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/unistd.h&gt;
 macro_line|#include &lt;linux/stat.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
@@ -10523,6 +10524,7 @@ suffix:semicolon
 macro_line|#ifdef MODULE
 DECL|function|init_module
 r_int
+id|__init
 id|init_module
 c_func
 (paren
@@ -10535,6 +10537,7 @@ suffix:semicolon
 )brace
 DECL|function|cleanup_module
 r_void
+id|__exit
 id|cleanup_module
 c_func
 (paren

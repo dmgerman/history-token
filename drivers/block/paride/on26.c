@@ -1,4 +1,4 @@
-multiline_comment|/* &n;        on26.c    (c) 1997-8  Grant R. Guenther &lt;grant@torque.net&gt;&n;                              Under the terms of the GNU public license.&n;&n;        on26.c is a low-level protocol driver for the &n;        OnSpec 90c26 parallel to IDE adapter chip.&n;&n;*/
+multiline_comment|/* &n;        on26.c    (c) 1997-8  Grant R. Guenther &lt;grant@torque.net&gt;&n;                              Under the terms of the GNU General Public License.&n;&n;        on26.c is a low-level protocol driver for the &n;        OnSpec 90c26 parallel to IDE adapter chip.&n;&n;*/
 multiline_comment|/* Changes:&n;&n;        1.01    GRG 1998.05.06 init_proto, release_proto&n;&t;1.02    GRG 1998.09.23 updates for the -E rev chip&n;&t;1.03    GRG 1998.12.14 fix for slave drives&n;&t;1.04    GRG 1998.12.20 yet another bug fix&n;&n;*/
 DECL|macro|ON26_VERSION
 mdefine_line|#define ON26_VERSION      &quot;1.04&quot;
