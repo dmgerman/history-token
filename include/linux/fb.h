@@ -477,11 +477,16 @@ id|__u32
 id|vmode
 suffix:semicolon
 multiline_comment|/* see FB_VMODE_*&t;&t;*/
+DECL|member|rotate
+id|__u32
+id|rotate
+suffix:semicolon
+multiline_comment|/* angle we rotate counter clockwise */
 DECL|member|reserved
 id|__u32
 id|reserved
 (braket
-l_int|6
+l_int|5
 )braket
 suffix:semicolon
 multiline_comment|/* Reserved for future compatibility */
@@ -1144,6 +1149,23 @@ r_struct
 id|fbcursor
 op_star
 id|cursor
+)paren
+suffix:semicolon
+multiline_comment|/* Rotates the display */
+DECL|member|fb_rotate
+r_void
+(paren
+op_star
+id|fb_rotate
+)paren
+(paren
+r_struct
+id|fb_info
+op_star
+id|info
+comma
+r_int
+id|angle
 )paren
 suffix:semicolon
 multiline_comment|/* perform polling on fb device */

@@ -1933,6 +1933,17 @@ id|src
 op_assign
 l_int|NULL
 suffix:semicolon
+multiline_comment|/* We want rotation but lack hardware to do it for us. */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|p-&gt;fbops-&gt;fb_rotate
+op_logical_and
+id|p-&gt;var.rotate
+)paren
+(brace
+)brace
 id|vxres
 op_assign
 id|p-&gt;var.xres_virtual
