@@ -3189,6 +3189,7 @@ op_minus
 id|EBUSY
 suffix:semicolon
 )brace
+macro_line|#ifdef DEBUG
 multiline_comment|/*&n; *&t;pagebuf_lock_value&n; *&n; *&t;Return lock value for a pagebuf&n; */
 r_int
 DECL|function|pagebuf_lock_value
@@ -3209,6 +3210,7 @@ id|pb-&gt;pb_sema.count
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif
 multiline_comment|/*&n; *&t;pagebuf_lock&n; *&n; *&t;pagebuf_lock locks a buffer object.  Note that this in no way&n; *&t;locks the underlying pages, so it is only useful for synchronizing&n; *&t;concurrent use of page buffer objects, not for synchronizing independent&n; *&t;access to the underlying pages.&n; */
 r_int
 DECL|function|pagebuf_lock
