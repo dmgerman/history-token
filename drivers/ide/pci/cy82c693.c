@@ -459,6 +459,7 @@ macro_line|#endif /* CY82C693_DEBUG_INFO */
 )brace
 multiline_comment|/* &n; * used to set DMA mode for CY82C693 (single and multi modes)&n; */
 DECL|function|cy82c693_ide_dma_on
+r_static
 r_int
 id|cy82c693_ide_dma_on
 (paren

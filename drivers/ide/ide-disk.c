@@ -2022,6 +2022,7 @@ id|err
 suffix:semicolon
 )brace
 DECL|function|idedisk_error
+r_static
 id|ide_startstop_t
 id|idedisk_error
 (paren
@@ -2374,6 +2375,7 @@ id|ide_stopped
 suffix:semicolon
 )brace
 DECL|function|idedisk_abort
+r_static
 id|ide_startstop_t
 id|idedisk_abort
 c_func
