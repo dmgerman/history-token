@@ -5056,7 +5056,7 @@ id|buf
 comma
 l_string|&quot;%s rev %d.%d&bslash;n&quot;
 comma
-l_string|&quot;Hewlett Packard zx1 SBA&quot;
+l_string|&quot;Hewlett-Packard zx1 SBA&quot;
 comma
 (paren
 (paren
