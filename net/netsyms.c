@@ -51,7 +51,6 @@ macro_line|#if defined(CONFIG_INET_ESP) || defined(CONFIG_INET_ESP_MODULE) || de
 macro_line|#include &lt;net/esp.h&gt;
 macro_line|#endif
 macro_line|#endif
-macro_line|#include &lt;linux/rtnetlink.h&gt;
 macro_line|#ifdef CONFIG_IPX_MODULE
 r_extern
 r_struct
@@ -768,20 +767,6 @@ id|ip_getsockopt
 )paren
 suffix:semicolon
 macro_line|#endif /* CONFIG_IP_SCTP_MODULE */
-DECL|variable|rtattr_parse
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|rtattr_parse
-)paren
-suffix:semicolon
-DECL|variable|__rta_fill
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|__rta_fill
-)paren
-suffix:semicolon
 multiline_comment|/* Used by at least ipip.c.  */
 DECL|variable|ipv4_config
 id|EXPORT_SYMBOL
@@ -933,55 +918,6 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|__kill_fasync
-)paren
-suffix:semicolon
-DECL|variable|rtnl
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|rtnl
-)paren
-suffix:semicolon
-DECL|variable|rtnetlink_links
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|rtnetlink_links
-)paren
-suffix:semicolon
-DECL|variable|rtnetlink_dump_ifinfo
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|rtnetlink_dump_ifinfo
-)paren
-suffix:semicolon
-DECL|variable|rtnetlink_put_metrics
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|rtnetlink_put_metrics
-)paren
-suffix:semicolon
-DECL|variable|rtnl_sem
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|rtnl_sem
-)paren
-suffix:semicolon
-DECL|variable|rtnl_lock
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|rtnl_lock
-)paren
-suffix:semicolon
-DECL|variable|rtnl_unlock
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|rtnl_unlock
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_HIPPI
