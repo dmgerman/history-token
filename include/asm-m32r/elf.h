@@ -214,7 +214,7 @@ DECL|macro|ELF_ET_DYN_BASE
 mdefine_line|#define ELF_ET_DYN_BASE         (TASK_SIZE / 3 * 2)
 multiline_comment|/* regs is struct pt_regs, pr_reg is elf_gregset_t (which is&n;   now struct_user_regs, they are different) */
 DECL|macro|ELF_CORE_COPY_REGS
-mdefine_line|#define ELF_CORE_COPY_REGS(pr_reg, regs)  &bslash;&n;&t;memcpy((char *)&amp;pr_reg, (char *)&amp;regs, sizeof (struct pt_regs));
+mdefine_line|#define ELF_CORE_COPY_REGS(pr_reg, regs)  &bslash;&n;&t;memcpy((char *)pr_reg, (char *)regs, sizeof (struct pt_regs));
 multiline_comment|/* This yields a mask that user programs can use to figure out what&n;   instruction set this CPU supports.  */
 DECL|macro|ELF_HWCAP
 mdefine_line|#define ELF_HWCAP&t;(0)
