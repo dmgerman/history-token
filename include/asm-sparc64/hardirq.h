@@ -64,14 +64,16 @@ DECL|macro|irq_exit
 mdefine_line|#define irq_exit()&t;&t;(preempt_count() -= IRQ_OFFSET)
 macro_line|#ifndef CONFIG_SMP
 DECL|macro|synchronize_irq
-macro_line|# define synchronize_irq()&t;barrier()
+macro_line|# define synchronize_irq(irq)&t;barrier()
 macro_line|#else
 r_extern
 r_void
 id|synchronize_irq
 c_func
 (paren
-r_void
+r_int
+r_int
+id|irq
 )paren
 suffix:semicolon
 macro_line|#endif
