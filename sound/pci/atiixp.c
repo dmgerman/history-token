@@ -31,13 +31,7 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
-id|MODULE_CLASSES
-c_func
-(paren
-l_string|&quot;{sound}&quot;
-)paren
-suffix:semicolon
-id|MODULE_DEVICES
+id|MODULE_SUPPORTED_DEVICE
 c_func
 (paren
 l_string|&quot;{{ATI,IXP150/200/250/300}}&quot;
@@ -150,14 +144,6 @@ comma
 l_string|&quot;Index value for ATI IXP controller.&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|index
-comma
-id|SNDRV_INDEX_DESC
-)paren
-suffix:semicolon
 id|module_param_array
 c_func
 (paren
@@ -176,14 +162,6 @@ c_func
 id|id
 comma
 l_string|&quot;ID string for ATI IXP controller.&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|id
-comma
-id|SNDRV_ID_DESC
 )paren
 suffix:semicolon
 id|module_param_array
@@ -206,14 +184,6 @@ comma
 l_string|&quot;Enable audio part of ATI IXP controller.&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|enable
-comma
-id|SNDRV_ENABLE_DESC
-)paren
-suffix:semicolon
 id|module_param_array
 c_func
 (paren
@@ -234,15 +204,6 @@ comma
 l_string|&quot;AC&squot;97 codec clock (default 48000Hz).&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|ac97_clock
-comma
-id|SNDRV_ENABLED
-l_string|&quot;,default:48000&quot;
-)paren
-suffix:semicolon
 id|module_param_array
 c_func
 (paren
@@ -261,16 +222,6 @@ c_func
 id|spdif_aclink
 comma
 l_string|&quot;S/PDIF over AC-link.&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|spdif_aclink
-comma
-id|SNDRV_ENABLED
-l_string|&quot;,&quot;
-id|SNDRV_BOOLEAN_TRUE_DESC
 )paren
 suffix:semicolon
 multiline_comment|/*&n; */

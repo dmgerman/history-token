@@ -38,13 +38,7 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
-id|MODULE_CLASSES
-c_func
-(paren
-l_string|&quot;{sound}&quot;
-)paren
-suffix:semicolon
-id|MODULE_DEVICES
+id|MODULE_SUPPORTED_DEVICE
 c_func
 (paren
 l_string|&quot;{&quot;
@@ -157,14 +151,6 @@ comma
 l_string|&quot;Index value for ICE1712 soundcard.&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|index
-comma
-id|SNDRV_INDEX_DESC
-)paren
-suffix:semicolon
 id|module_param_array
 c_func
 (paren
@@ -183,14 +169,6 @@ c_func
 id|id
 comma
 l_string|&quot;ID string for ICE1712 soundcard.&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|id
-comma
-id|SNDRV_ID_DESC
 )paren
 suffix:semicolon
 id|module_param_array
@@ -213,14 +191,6 @@ comma
 l_string|&quot;Enable ICE1712 soundcard.&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|enable
-comma
-id|SNDRV_ENABLE_DESC
-)paren
-suffix:semicolon
 id|module_param_array
 c_func
 (paren
@@ -241,16 +211,6 @@ comma
 l_string|&quot;Enable Midiman M-Audio Delta Omni I/O support.&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|omni
-comma
-id|SNDRV_ENABLED
-l_string|&quot;,&quot;
-id|SNDRV_ENABLE_DESC
-)paren
-suffix:semicolon
 id|module_param_array
 c_func
 (paren
@@ -269,15 +229,6 @@ c_func
 id|cs8427_timeout
 comma
 l_string|&quot;Define reset timeout for cs8427 chip in msec resolution.&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|cs8427_timeout
-comma
-id|SNDRV_ENABLED
-l_string|&quot;, allows:{{1,1000}},default=500,skill:advanced&quot;
 )paren
 suffix:semicolon
 id|module_param_array

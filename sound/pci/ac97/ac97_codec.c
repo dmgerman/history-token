@@ -54,14 +54,6 @@ comma
 l_string|&quot;Enable AC97 ADC/DAC Loopback Control&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|enable_loopback
-comma
-id|SNDRV_BOOLEAN_FALSE_DESC
-)paren
-suffix:semicolon
 multiline_comment|/*&n;&n; */
 r_typedef
 r_struct

@@ -32,13 +32,7 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
-id|MODULE_CLASSES
-c_func
-(paren
-l_string|&quot;{sound}&quot;
-)paren
-suffix:semicolon
-id|MODULE_DEVICES
+id|MODULE_SUPPORTED_DEVICE
 c_func
 (paren
 l_string|&quot;{{Intel,82801AA-ICH},&quot;
@@ -133,14 +127,6 @@ comma
 l_string|&quot;Index value for Intel i8x0 modemcard.&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|index
-comma
-id|SNDRV_INDEX_DESC
-)paren
-suffix:semicolon
 id|module_param_array
 c_func
 (paren
@@ -159,14 +145,6 @@ c_func
 id|id
 comma
 l_string|&quot;ID string for Intel i8x0 modemcard.&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|id
-comma
-id|SNDRV_ID_DESC
 )paren
 suffix:semicolon
 id|module_param_array
@@ -189,14 +167,6 @@ comma
 l_string|&quot;Enable Intel i8x0 modemcard.&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|enable
-comma
-id|SNDRV_ENABLE_DESC
-)paren
-suffix:semicolon
 id|module_param_array
 c_func
 (paren
@@ -215,15 +185,6 @@ c_func
 id|ac97_clock
 comma
 l_string|&quot;AC&squot;97 codec clock (0 = auto-detect).&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|ac97_clock
-comma
-id|SNDRV_ENABLED
-l_string|&quot;,default:0&quot;
 )paren
 suffix:semicolon
 multiline_comment|/*&n; *  Direct registers&n; */

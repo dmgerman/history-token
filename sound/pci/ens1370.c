@@ -44,12 +44,6 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
-id|MODULE_CLASSES
-c_func
-(paren
-l_string|&quot;{sound}&quot;
-)paren
-suffix:semicolon
 macro_line|#ifdef CHIP1370
 id|MODULE_DESCRIPTION
 c_func
@@ -57,7 +51,7 @@ c_func
 l_string|&quot;Ensoniq AudioPCI ES1370&quot;
 )paren
 suffix:semicolon
-id|MODULE_DEVICES
+id|MODULE_SUPPORTED_DEVICE
 c_func
 (paren
 l_string|&quot;{{Ensoniq,AudioPCI-97 ES1370},&quot;
@@ -72,7 +66,7 @@ c_func
 l_string|&quot;Ensoniq/Creative AudioPCI ES1371+&quot;
 )paren
 suffix:semicolon
-id|MODULE_DEVICES
+id|MODULE_SUPPORTED_DEVICE
 c_func
 (paren
 l_string|&quot;{{Ensoniq,AudioPCI ES1371/73},&quot;
@@ -168,14 +162,6 @@ comma
 l_string|&quot;Index value for Ensoniq AudioPCI soundcard.&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|index
-comma
-id|SNDRV_INDEX_DESC
-)paren
-suffix:semicolon
 id|module_param_array
 c_func
 (paren
@@ -196,14 +182,6 @@ comma
 l_string|&quot;ID string for Ensoniq AudioPCI soundcard.&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|id
-comma
-id|SNDRV_ID_DESC
-)paren
-suffix:semicolon
 id|module_param_array
 c_func
 (paren
@@ -222,14 +200,6 @@ c_func
 id|enable
 comma
 l_string|&quot;Enable Ensoniq AudioPCI soundcard.&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|enable
-comma
-id|SNDRV_ENABLE_DESC
 )paren
 suffix:semicolon
 macro_line|#ifdef SUPPORT_JOYSTICK
@@ -254,15 +224,6 @@ comma
 l_string|&quot;Joystick port address.&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|joystick_port
-comma
-id|SNDRV_ENABLED
-l_string|&quot;,allows:{{0},{1},{0x200},{0x208},{0x210},{0x218}},dialog:list&quot;
-)paren
-suffix:semicolon
 macro_line|#else
 id|module_param_array
 c_func
@@ -282,16 +243,6 @@ c_func
 id|joystick
 comma
 l_string|&quot;Enable joystick.&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|joystick
-comma
-id|SNDRV_ENABLED
-l_string|&quot;,&quot;
-id|SNDRV_BOOLEAN_FALSE_DESC
 )paren
 suffix:semicolon
 macro_line|#endif

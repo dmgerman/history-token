@@ -38,13 +38,7 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
-id|MODULE_CLASSES
-c_func
-(paren
-l_string|&quot;{sound}&quot;
-)paren
-suffix:semicolon
-id|MODULE_DEVICES
+id|MODULE_SUPPORTED_DEVICE
 c_func
 (paren
 l_string|&quot;{{C-Media,CMI8738},&quot;
@@ -166,14 +160,6 @@ comma
 l_string|&quot;Index value for C-Media PCI soundcard.&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|index
-comma
-id|SNDRV_INDEX_DESC
-)paren
-suffix:semicolon
 id|module_param_array
 c_func
 (paren
@@ -192,14 +178,6 @@ c_func
 id|id
 comma
 l_string|&quot;ID string for C-Media PCI soundcard.&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|id
-comma
-id|SNDRV_ID_DESC
 )paren
 suffix:semicolon
 id|module_param_array
@@ -222,14 +200,6 @@ comma
 l_string|&quot;Enable C-Media PCI soundcard.&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|enable
-comma
-id|SNDRV_ENABLE_DESC
-)paren
-suffix:semicolon
 id|module_param_array
 c_func
 (paren
@@ -250,15 +220,6 @@ comma
 l_string|&quot;MPU-401 port.&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|mpu_port
-comma
-id|SNDRV_ENABLED
-l_string|&quot;,allows:{{0},{0x330},{0x320},{0x310},{0x300}},dialog:list&quot;
-)paren
-suffix:semicolon
 id|module_param_array
 c_func
 (paren
@@ -277,15 +238,6 @@ c_func
 id|fm_port
 comma
 l_string|&quot;FM port.&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|fm_port
-comma
-id|SNDRV_ENABLED
-l_string|&quot;,allows:{{0},{0x388},{0x3c8},{0x3e0},{0x3e8}},dialog:list&quot;
 )paren
 suffix:semicolon
 id|module_param_array
@@ -327,15 +279,6 @@ c_func
 id|joystick_port
 comma
 l_string|&quot;Joystick port address.&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|joystick_port
-comma
-id|SNDRV_ENABLED
-l_string|&quot;,allows:{{0},{1},{0x200},{0x201}},dialog:list&quot;
 )paren
 suffix:semicolon
 macro_line|#endif

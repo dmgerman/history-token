@@ -26,13 +26,7 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
-id|MODULE_CLASSES
-c_func
-(paren
-l_string|&quot;{sound}&quot;
-)paren
-suffix:semicolon
-id|MODULE_DEVICES
+id|MODULE_SUPPORTED_DEVICE
 c_func
 (paren
 l_string|&quot;{{Cirrus Logic,Sound Fusion (CS4280)},&quot;
@@ -175,14 +169,6 @@ comma
 l_string|&quot;Index value for the CS46xx soundcard.&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|index
-comma
-id|SNDRV_INDEX_DESC
-)paren
-suffix:semicolon
 id|module_param_array
 c_func
 (paren
@@ -201,14 +187,6 @@ c_func
 id|id
 comma
 l_string|&quot;ID string for the CS46xx soundcard.&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|id
-comma
-id|SNDRV_ID_DESC
 )paren
 suffix:semicolon
 id|module_param_array
@@ -231,14 +209,6 @@ comma
 l_string|&quot;Enable CS46xx soundcard.&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|enable
-comma
-id|SNDRV_ENABLE_DESC
-)paren
-suffix:semicolon
 id|module_param_array
 c_func
 (paren
@@ -257,16 +227,6 @@ c_func
 id|external_amp
 comma
 l_string|&quot;Force to enable external amplifer.&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|external_amp
-comma
-id|SNDRV_ENABLED
-l_string|&quot;,&quot;
-id|SNDRV_BOOLEAN_FALSE_DESC
 )paren
 suffix:semicolon
 id|module_param_array
@@ -289,16 +249,6 @@ comma
 l_string|&quot;Force to enable Thinkpad&squot;s CLKRUN control.&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|thinkpad
-comma
-id|SNDRV_ENABLED
-l_string|&quot;,&quot;
-id|SNDRV_BOOLEAN_FALSE_DESC
-)paren
-suffix:semicolon
 id|module_param_array
 c_func
 (paren
@@ -317,16 +267,6 @@ c_func
 id|mmap_valid
 comma
 l_string|&quot;Support OSS mmap.&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|mmap_valid
-comma
-id|SNDRV_ENABLED
-l_string|&quot;,&quot;
-id|SNDRV_BOOLEAN_TRUE_DESC
 )paren
 suffix:semicolon
 DECL|variable|snd_cs46xx_ids

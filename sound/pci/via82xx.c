@@ -37,13 +37,7 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
-id|MODULE_CLASSES
-c_func
-(paren
-l_string|&quot;{sound}&quot;
-)paren
-suffix:semicolon
-id|MODULE_DEVICES
+id|MODULE_SUPPORTED_DEVICE
 c_func
 (paren
 l_string|&quot;{{VIA,VT82C686A/B/C,pci},{VIA,VT8233A/C,8235}}&quot;
@@ -186,14 +180,6 @@ comma
 l_string|&quot;Index value for VIA 82xx bridge.&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|index
-comma
-id|SNDRV_INDEX_DESC
-)paren
-suffix:semicolon
 id|module_param_array
 c_func
 (paren
@@ -212,14 +198,6 @@ c_func
 id|id
 comma
 l_string|&quot;ID string for VIA 82xx bridge.&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|id
-comma
-id|SNDRV_ID_DESC
 )paren
 suffix:semicolon
 id|module_param_array
@@ -242,14 +220,6 @@ comma
 l_string|&quot;Enable audio part of VIA 82xx bridge.&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|enable
-comma
-id|SNDRV_ENABLE_DESC
-)paren
-suffix:semicolon
 id|module_param_array
 c_func
 (paren
@@ -268,14 +238,6 @@ c_func
 id|mpu_port
 comma
 l_string|&quot;MPU-401 port. (VT82C686x only)&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|mpu_port
-comma
-id|SNDRV_PORT_DESC
 )paren
 suffix:semicolon
 macro_line|#ifdef SUPPORT_JOYSTICK
@@ -299,16 +261,6 @@ comma
 l_string|&quot;Enable joystick. (VT82C686x only)&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|joystick
-comma
-id|SNDRV_ENABLE_DESC
-l_string|&quot;,&quot;
-id|SNDRV_BOOLEAN_FALSE_DESC
-)paren
-suffix:semicolon
 macro_line|#endif
 id|module_param_array
 c_func
@@ -328,15 +280,6 @@ c_func
 id|ac97_clock
 comma
 l_string|&quot;AC&squot;97 codec clock (default 48000Hz).&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|ac97_clock
-comma
-id|SNDRV_ENABLED
-l_string|&quot;,default:48000&quot;
 )paren
 suffix:semicolon
 id|module_param_array
@@ -359,15 +302,6 @@ comma
 l_string|&quot;AC&squot;97 workaround for strange hardware.&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|ac97_quirk
-comma
-id|SNDRV_ENABLED
-l_string|&quot;,allows:{{-1,4}},dialog:list,default:-1&quot;
-)paren
-suffix:semicolon
 id|module_param_array
 c_func
 (paren
@@ -386,15 +320,6 @@ c_func
 id|dxs_support
 comma
 l_string|&quot;Support for DXS channels (0 = auto, 1 = enable, 2 = disable, 3 = 48k only, 4 = no VRA)&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|dxs_support
-comma
-id|SNDRV_ENABLED
-l_string|&quot;,allows:{{0,4}},dialog:list&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* pci ids */

@@ -23,19 +23,13 @@ c_func
 l_string|&quot;ESS Maestro&quot;
 )paren
 suffix:semicolon
-id|MODULE_CLASSES
-c_func
-(paren
-l_string|&quot;{sound}&quot;
-)paren
-suffix:semicolon
 id|MODULE_LICENSE
 c_func
 (paren
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
-id|MODULE_DEVICES
+id|MODULE_SUPPORTED_DEVICE
 c_func
 (paren
 l_string|&quot;{{ESS,Maestro 2e},&quot;
@@ -263,14 +257,6 @@ id|CARD_NAME
 l_string|&quot; soundcard.&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|index
-comma
-id|SNDRV_INDEX_DESC
-)paren
-suffix:semicolon
 id|module_param_array
 c_func
 (paren
@@ -291,14 +277,6 @@ comma
 l_string|&quot;ID string for &quot;
 id|CARD_NAME
 l_string|&quot; soundcard.&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|id
-comma
-id|SNDRV_ID_DESC
 )paren
 suffix:semicolon
 id|module_param_array
@@ -323,14 +301,6 @@ id|CARD_NAME
 l_string|&quot; soundcard.&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|enable
-comma
-id|SNDRV_ENABLE_DESC
-)paren
-suffix:semicolon
 id|module_param_array
 c_func
 (paren
@@ -349,15 +319,6 @@ c_func
 id|total_bufsize
 comma
 l_string|&quot;Total buffer size in kB.&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|total_bufsize
-comma
-id|SNDRV_ENABLED
-l_string|&quot;,allows:{{1,4096}},skill:advanced&quot;
 )paren
 suffix:semicolon
 id|module_param_array
@@ -382,15 +343,6 @@ id|CARD_NAME
 l_string|&quot; soundcard.&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|pcm_substreams_p
-comma
-id|SNDRV_ENABLED
-l_string|&quot;,allows:{{1,8}}&quot;
-)paren
-suffix:semicolon
 id|module_param_array
 c_func
 (paren
@@ -411,15 +363,6 @@ comma
 l_string|&quot;PCM Capture substreams for &quot;
 id|CARD_NAME
 l_string|&quot; soundcard.&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|pcm_substreams_c
-comma
-id|SNDRV_ENABLED
-l_string|&quot;,allows:{{0,8}}&quot;
 )paren
 suffix:semicolon
 id|module_param_array
@@ -444,14 +387,6 @@ id|CARD_NAME
 l_string|&quot; soundcard.  (0 = auto-detect)&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|clock
-comma
-id|SNDRV_ENABLED
-)paren
-suffix:semicolon
 id|module_param_array
 c_func
 (paren
@@ -470,15 +405,6 @@ c_func
 id|use_pm
 comma
 l_string|&quot;Toggle power-management.  (0 = off, 1 = on, 2 = auto)&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|use_pm
-comma
-id|SNDRV_ENABLED
-l_string|&quot;,allows:{{0,1,2}},default:2,skill:advanced&quot;
 )paren
 suffix:semicolon
 id|module_param_array
@@ -501,15 +427,6 @@ comma
 l_string|&quot;Enable MPU401.  (0 = off, 1 = on, 2 = auto)&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|enable_mpu
-comma
-id|SNDRV_ENABLED
-l_string|&quot;,allows:{{0,2}},default:2&quot;
-)paren
-suffix:semicolon
 macro_line|#ifdef SUPPORT_JOYSTICK
 id|module_param_array
 c_func
@@ -529,16 +446,6 @@ c_func
 id|joystick
 comma
 l_string|&quot;Enable joystick.&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|joystick
-comma
-id|SNDRV_ENABLED
-l_string|&quot;,&quot;
-id|SNDRV_BOOLEAN_FALSE_DESC
 )paren
 suffix:semicolon
 macro_line|#endif

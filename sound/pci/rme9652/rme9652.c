@@ -98,14 +98,6 @@ comma
 l_string|&quot;Index value for RME Digi9652 (Hammerfall) soundcard.&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|index
-comma
-id|SNDRV_INDEX_DESC
-)paren
-suffix:semicolon
 id|module_param_array
 c_func
 (paren
@@ -124,14 +116,6 @@ c_func
 id|id
 comma
 l_string|&quot;ID string for RME Digi9652 (Hammerfall) soundcard.&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|id
-comma
-id|SNDRV_ID_DESC
 )paren
 suffix:semicolon
 id|module_param_array
@@ -154,14 +138,6 @@ comma
 l_string|&quot;Enable/disable specific RME96{52,36} soundcards.&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|enable
-comma
-id|SNDRV_ENABLE_DESC
-)paren
-suffix:semicolon
 id|module_param_array
 c_func
 (paren
@@ -182,16 +158,6 @@ comma
 l_string|&quot;Enable precise pointer (doesn&squot;t work reliably).&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|precise_ptr
-comma
-id|SNDRV_ENABLED
-l_string|&quot;,&quot;
-id|SNDRV_BOOLEAN_FALSE_DESC
-)paren
-suffix:semicolon
 id|MODULE_AUTHOR
 c_func
 (paren
@@ -210,13 +176,7 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
-id|MODULE_CLASSES
-c_func
-(paren
-l_string|&quot;{sound}&quot;
-)paren
-suffix:semicolon
-id|MODULE_DEVICES
+id|MODULE_SUPPORTED_DEVICE
 c_func
 (paren
 l_string|&quot;{{RME,Hammerfall},&quot;

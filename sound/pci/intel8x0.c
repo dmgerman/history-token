@@ -35,13 +35,7 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
-id|MODULE_CLASSES
-c_func
-(paren
-l_string|&quot;{sound}&quot;
-)paren
-suffix:semicolon
-id|MODULE_DEVICES
+id|MODULE_SUPPORTED_DEVICE
 c_func
 (paren
 l_string|&quot;{{Intel,82801AA-ICH},&quot;
@@ -195,14 +189,6 @@ comma
 l_string|&quot;Index value for Intel i8x0 soundcard.&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|index
-comma
-id|SNDRV_INDEX_DESC
-)paren
-suffix:semicolon
 id|module_param_array
 c_func
 (paren
@@ -221,14 +207,6 @@ c_func
 id|id
 comma
 l_string|&quot;ID string for Intel i8x0 soundcard.&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|id
-comma
-id|SNDRV_ID_DESC
 )paren
 suffix:semicolon
 id|module_param_array
@@ -251,14 +229,6 @@ comma
 l_string|&quot;Enable Intel i8x0 soundcard.&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|enable
-comma
-id|SNDRV_ENABLE_DESC
-)paren
-suffix:semicolon
 id|module_param_array
 c_func
 (paren
@@ -279,15 +249,6 @@ comma
 l_string|&quot;AC&squot;97 codec clock (0 = auto-detect).&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|ac97_clock
-comma
-id|SNDRV_ENABLED
-l_string|&quot;,default:0&quot;
-)paren
-suffix:semicolon
 id|module_param_array
 c_func
 (paren
@@ -306,15 +267,6 @@ c_func
 id|ac97_quirk
 comma
 l_string|&quot;AC&squot;97 workaround for strange hardware.&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|ac97_quirk
-comma
-id|SNDRV_ENABLED
-l_string|&quot;,allows:{{-1,4}},dialog:list,default:-1&quot;
 )paren
 suffix:semicolon
 macro_line|#ifdef SUPPORT_JOYSTICK
@@ -338,16 +290,6 @@ comma
 l_string|&quot;Enable joystick for Intel i8x0 soundcard.&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|joystick
-comma
-id|SNDRV_ENABLED
-l_string|&quot;,&quot;
-id|SNDRV_BOOLEAN_FALSE_DESC
-)paren
-suffix:semicolon
 macro_line|#endif
 macro_line|#ifdef SUPPORT_MIDI
 id|module_param_array
@@ -368,15 +310,6 @@ c_func
 id|mpu_port
 comma
 l_string|&quot;MPU401 port # for Intel i8x0 driver.&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|mpu_port
-comma
-id|SNDRV_ENABLED
-l_string|&quot;,allows:{{0},{0x330},{0x300}},dialog:list&quot;
 )paren
 suffix:semicolon
 macro_line|#endif
