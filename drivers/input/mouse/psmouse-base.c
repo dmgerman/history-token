@@ -762,10 +762,6 @@ comma
 id|regs
 )paren
 suffix:semicolon
-id|psmouse-&gt;pktcnt
-op_assign
-l_int|0
-suffix:semicolon
 r_goto
 id|out
 suffix:semicolon
