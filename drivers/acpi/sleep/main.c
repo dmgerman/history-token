@@ -1,6 +1,4 @@
 multiline_comment|/*&n; * sleep.c - ACPI sleep support.&n; * &n; *  Copyright (c) 2000-2002 Patrick Mochel&n; *&n; *  Portions are&n; *  Copyright (C) 2001, 2002 Andy Grover &lt;andrew.grover@intel.com&gt;&n; *  Copyright (C) 2001, 2002 Paul Diefenbaugh &lt;paul.s.diefenbaugh@intel.com&gt;&n; */
-macro_line|#include &lt;linux/kernel.h&gt;
-macro_line|#include &lt;linux/sysrq.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/irq.h&gt;
 macro_line|#include &lt;linux/pm.h&gt;
@@ -518,58 +516,6 @@ r_return
 id|status
 suffix:semicolon
 )brace
-macro_line|#if defined(CONFIG_MAGIC_SYSRQ) &amp;&amp; defined(CONFIG_PM)
-multiline_comment|/* Simple wrapper calling power down function. */
-DECL|function|acpi_sysrq_power_off
-r_static
-r_void
-id|acpi_sysrq_power_off
-c_func
-(paren
-r_int
-id|key
-comma
-r_struct
-id|pt_regs
-op_star
-id|pt_regs
-comma
-r_struct
-id|tty_struct
-op_star
-id|tty
-)paren
-(brace
-id|acpi_power_off
-c_func
-(paren
-)paren
-suffix:semicolon
-)brace
-DECL|variable|sysrq_acpi_poweroff_op
-r_struct
-id|sysrq_key_op
-id|sysrq_acpi_poweroff_op
-op_assign
-(brace
-dot
-id|handler
-op_assign
-op_amp
-id|acpi_sysrq_power_off
-comma
-dot
-id|help_msg
-op_assign
-l_string|&quot;Off&quot;
-comma
-dot
-id|action_msg
-op_assign
-l_string|&quot;Power Off&bslash;n&quot;
-)brace
-suffix:semicolon
-macro_line|#endif  /* CONFIG_MAGIC_SYSRQ */
 DECL|function|acpi_sleep_init
 r_static
 r_int
@@ -700,15 +646,6 @@ id|ACPI_STATE_S5
 id|pm_power_off
 op_assign
 id|acpi_power_off
-suffix:semicolon
-id|register_sysrq_key
-c_func
-(paren
-l_char|&squot;o&squot;
-comma
-op_amp
-id|sysrq_acpi_poweroff_op
-)paren
 suffix:semicolon
 multiline_comment|/* workaround: some systems don&squot;t claim S4 support, but they&n;                   do support S5 (power-down). That is all we need, so&n;&t;&t;   indicate support. */
 id|sleep_states
