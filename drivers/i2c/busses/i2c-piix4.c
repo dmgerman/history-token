@@ -1796,6 +1796,12 @@ id|retval
 r_return
 id|retval
 suffix:semicolon
+multiline_comment|/* set up the driverfs linkage to our parent device */
+id|piix4_adapter.dev.parent
+op_assign
+op_amp
+id|dev-&gt;dev
+suffix:semicolon
 id|sprintf
 c_func
 (paren

@@ -1751,6 +1751,12 @@ op_minus
 id|ENODEV
 suffix:semicolon
 )brace
+multiline_comment|/* set up the driverfs linkage to our parent device */
+id|ali15x3_adapter.dev.parent
+op_assign
+op_amp
+id|dev-&gt;dev
+suffix:semicolon
 id|sprintf
 c_func
 (paren
@@ -1761,15 +1767,13 @@ comma
 id|ali15x3_smba
 )paren
 suffix:semicolon
+r_return
 id|i2c_add_adapter
 c_func
 (paren
 op_amp
 id|ali15x3_adapter
 )paren
-suffix:semicolon
-r_return
-l_int|0
 suffix:semicolon
 )brace
 DECL|function|ali15x3_remove

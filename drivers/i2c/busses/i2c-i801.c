@@ -2672,6 +2672,12 @@ op_minus
 id|ENODEV
 suffix:semicolon
 )brace
+multiline_comment|/* set up the driverfs linkage to our parent device */
+id|i801_adapter.dev.parent
+op_assign
+op_amp
+id|dev-&gt;dev
+suffix:semicolon
 id|sprintf
 c_func
 (paren
@@ -2682,6 +2688,7 @@ comma
 id|i801_smba
 )paren
 suffix:semicolon
+r_return
 id|i2c_add_adapter
 c_func
 (paren

@@ -199,6 +199,44 @@ op_amp
 id|adap-&gt;list
 )paren
 suffix:semicolon
+multiline_comment|/* Add the adapter to the driver core.&n;&t; * If the parent pointer is not set up,&n;&t; * we add this adapter to the legacy bus.&n;&t; */
+r_if
+c_cond
+(paren
+id|adap-&gt;dev.parent
+op_eq
+l_int|NULL
+)paren
+id|adap-&gt;dev.parent
+op_assign
+op_amp
+id|legacy_bus
+suffix:semicolon
+id|sprintf
+c_func
+(paren
+id|adap-&gt;dev.bus_id
+comma
+l_string|&quot;i2c-%d&quot;
+comma
+id|i
+)paren
+suffix:semicolon
+id|strcpy
+c_func
+(paren
+id|adap-&gt;dev.name
+comma
+l_string|&quot;i2c controller&quot;
+)paren
+suffix:semicolon
+id|device_register
+c_func
+(paren
+op_amp
+id|adap-&gt;dev
+)paren
+suffix:semicolon
 multiline_comment|/* inform drivers of new adapters */
 r_for
 c_loop
@@ -515,6 +553,14 @@ id|i2cproc_remove
 c_func
 (paren
 id|i
+)paren
+suffix:semicolon
+multiline_comment|/* clean up the sysfs representation */
+id|device_unregister
+c_func
+(paren
+op_amp
+id|adap-&gt;dev
 )paren
 suffix:semicolon
 id|adapters

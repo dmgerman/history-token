@@ -757,6 +757,12 @@ DECL|member|retries
 r_int
 id|retries
 suffix:semicolon
+DECL|member|dev
+r_struct
+id|device
+id|dev
+suffix:semicolon
+multiline_comment|/* the adapter device */
 macro_line|#ifdef CONFIG_PROC_FS 
 multiline_comment|/* No need to set this when you initialize the adapter          */
 DECL|member|inode
@@ -766,6 +772,8 @@ suffix:semicolon
 macro_line|#endif /* def CONFIG_PROC_FS */
 )brace
 suffix:semicolon
+DECL|macro|to_i2c_adapter
+mdefine_line|#define to_i2c_adapter(d) container_of(d, struct i2c_adapter, dev)
 multiline_comment|/*flags for the driver struct: */
 DECL|macro|I2C_DF_NOTIFY
 mdefine_line|#define I2C_DF_NOTIFY&t;0x01&t;&t;/* notify on bus (de/a)ttaches &t;*/
