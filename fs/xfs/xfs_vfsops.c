@@ -2181,11 +2181,6 @@ l_int|1
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Drop the reference count, and then&n;&t; * run the vnode through vn_remove.&n;&t; */
-id|rvp-&gt;v_flag
-op_or_assign
-id|VPURGE
-suffix:semicolon
-multiline_comment|/* OK for vn_purge */
 id|VN_RELE
 c_func
 (paren

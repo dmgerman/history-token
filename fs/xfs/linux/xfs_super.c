@@ -3274,10 +3274,6 @@ id|__return_address
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; * Do all our cleanup, and remove this vnode.&n;&t;&t; */
-id|vp-&gt;v_flag
-op_or_assign
-id|VPURGE
-suffix:semicolon
 id|vn_remove
 c_func
 (paren

@@ -3815,10 +3815,6 @@ r_int
 id|rip-&gt;i_ino
 )paren
 suffix:semicolon
-id|rvp-&gt;v_flag
-op_or_assign
-id|VPURGE
-suffix:semicolon
 id|xfs_iunlock
 c_func
 (paren
@@ -3998,10 +3994,6 @@ l_string|&quot;&quot;
 )paren
 )paren
 suffix:semicolon
-id|rvp-&gt;v_flag
-op_or_assign
-id|VPURGE
-suffix:semicolon
 id|VN_RELE
 c_func
 (paren
@@ -4049,10 +4041,6 @@ id|CE_WARN
 comma
 l_string|&quot;XFS: failed to read RT inodes&quot;
 )paren
-suffix:semicolon
-id|rvp-&gt;v_flag
-op_or_assign
-id|VPURGE
 suffix:semicolon
 id|VMAP
 c_func

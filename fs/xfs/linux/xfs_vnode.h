@@ -179,8 +179,6 @@ DECL|macro|VENF_LOCKING
 mdefine_line|#define VENF_LOCKING&t;0x10000000&t;/* enf. mode FR locking in effect */
 DECL|macro|VOPLOCK
 mdefine_line|#define VOPLOCK&t;&t;0x20000000&t;/* oplock set on the vnode&t;*/
-DECL|macro|VPURGE
-mdefine_line|#define VPURGE&t;&t;0x40000000&t;/* In the linux &squot;put&squot; thread&t;*/
 DECL|enum|vrwlock
 DECL|enumerator|VRWLOCK_NONE
 DECL|enumerator|VRWLOCK_READ
