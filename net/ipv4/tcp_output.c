@@ -752,7 +752,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|tp-&gt;rcv_wscale
+id|tp-&gt;rx_opt.rcv_wscale
 )paren
 id|new_win
 op_assign
@@ -775,14 +775,14 @@ comma
 (paren
 l_int|65535U
 op_lshift
-id|tp-&gt;rcv_wscale
+id|tp-&gt;rx_opt.rcv_wscale
 )paren
 )paren
 suffix:semicolon
 multiline_comment|/* RFC1323 scaling applied */
 id|new_win
 op_rshift_assign
-id|tp-&gt;rcv_wscale
+id|tp-&gt;rx_opt.rcv_wscale
 suffix:semicolon
 multiline_comment|/* If we advertise zero window, disable fast path. */
 r_if
@@ -976,7 +976,7 @@ r_else
 r_if
 c_cond
 (paren
-id|tp-&gt;eff_sacks
+id|tp-&gt;rx_opt.eff_sacks
 )paren
 (brace
 multiline_comment|/* A SACK is 2 pad bytes, a 2 byte header, plus&n;&t;&t;&t; * 2 32-bit sequence numbers for each SACK block.&n;&t;&t;&t; */
@@ -986,7 +986,7 @@ op_add_assign
 id|TCPOLEN_SACK_BASE_ALIGNED
 op_plus
 (paren
-id|tp-&gt;eff_sacks
+id|tp-&gt;rx_opt.eff_sacks
 op_star
 id|TCPOLEN_SACK_PERBLOCK
 )paren
@@ -1219,11 +1219,11 @@ op_amp
 id|SYSCTL_FLAG_WSCALE
 )paren
 comma
-id|tp-&gt;rcv_wscale
+id|tp-&gt;rx_opt.rcv_wscale
 comma
 id|tcb-&gt;when
 comma
-id|tp-&gt;ts_recent
+id|tp-&gt;rx_opt.ts_recent
 )paren
 suffix:semicolon
 )brace
@@ -2495,7 +2495,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* This function synchronize snd mss to current pmtu/exthdr set.&n;&n;   tp-&gt;user_mss is mss set by user by TCP_MAXSEG. It does NOT counts&n;   for TCP options, but includes only bare TCP header.&n;&n;   tp-&gt;mss_clamp is mss negotiated at connection setup.&n;   It is minumum of user_mss and mss received with SYN.&n;   It also does not include TCP options.&n;&n;   tp-&gt;pmtu_cookie is last pmtu, seen by this function.&n;&n;   tp-&gt;mss_cache is current effective sending mss, including&n;   all tcp options except for SACKs. It is evaluated,&n;   taking into account current pmtu, but never exceeds&n;   tp-&gt;mss_clamp.&n;&n;   NOTE1. rfc1122 clearly states that advertised MSS&n;   DOES NOT include either tcp or ip options.&n;&n;   NOTE2. tp-&gt;pmtu_cookie and tp-&gt;mss_cache are READ ONLY outside&n;   this function.&t;&t;&t;--ANK (980731)&n; */
+multiline_comment|/* This function synchronize snd mss to current pmtu/exthdr set.&n;&n;   tp-&gt;rx_opt.user_mss is mss set by user by TCP_MAXSEG. It does NOT counts&n;   for TCP options, but includes only bare TCP header.&n;&n;   tp-&gt;rx_opt.mss_clamp is mss negotiated at connection setup.&n;   It is minumum of user_mss and mss received with SYN.&n;   It also does not include TCP options.&n;&n;   tp-&gt;pmtu_cookie is last pmtu, seen by this function.&n;&n;   tp-&gt;mss_cache is current effective sending mss, including&n;   all tcp options except for SACKs. It is evaluated,&n;   taking into account current pmtu, but never exceeds&n;   tp-&gt;rx_opt.mss_clamp.&n;&n;   NOTE1. rfc1122 clearly states that advertised MSS&n;   DOES NOT include either tcp or ip options.&n;&n;   NOTE2. tp-&gt;pmtu_cookie and tp-&gt;mss_cache are READ ONLY outside&n;   this function.&t;&t;&t;--ANK (980731)&n; */
 DECL|function|tcp_sync_mss
 r_int
 r_int
@@ -2574,11 +2574,11 @@ c_cond
 (paren
 id|mss_now
 OG
-id|tp-&gt;mss_clamp
+id|tp-&gt;rx_opt.mss_clamp
 )paren
 id|mss_now
 op_assign
-id|tp-&gt;mss_clamp
+id|tp-&gt;rx_opt.mss_clamp
 suffix:semicolon
 multiline_comment|/* Now subtract optional transport overhead */
 id|mss_now
@@ -2865,7 +2865,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|tp-&gt;eff_sacks
+id|tp-&gt;rx_opt.eff_sacks
 )paren
 id|mss_now
 op_sub_assign
@@ -2873,7 +2873,7 @@ op_sub_assign
 id|TCPOLEN_SACK_BASE_ALIGNED
 op_plus
 (paren
-id|tp-&gt;eff_sacks
+id|tp-&gt;rx_opt.eff_sacks
 op_star
 id|TCPOLEN_SACK_PERBLOCK
 )paren
@@ -3220,7 +3220,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|tp-&gt;rcv_wscale
+id|tp-&gt;rx_opt.rcv_wscale
 )paren
 (brace
 id|window
@@ -3235,10 +3235,10 @@ c_cond
 (paren
 id|window
 op_rshift
-id|tp-&gt;rcv_wscale
+id|tp-&gt;rx_opt.rcv_wscale
 )paren
 op_lshift
-id|tp-&gt;rcv_wscale
+id|tp-&gt;rx_opt.rcv_wscale
 )paren
 op_ne
 id|window
@@ -3250,13 +3250,13 @@ op_assign
 (paren
 id|window
 op_rshift
-id|tp-&gt;rcv_wscale
+id|tp-&gt;rx_opt.rcv_wscale
 )paren
 op_plus
 l_int|1
 )paren
 op_lshift
-id|tp-&gt;rcv_wscale
+id|tp-&gt;rx_opt.rcv_wscale
 )paren
 suffix:semicolon
 )brace
@@ -3629,7 +3629,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|tp-&gt;sack_ok
+id|tp-&gt;rx_opt.sack_ok
 op_logical_and
 id|tp-&gt;sacked_out
 )paren
@@ -4705,7 +4705,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|tp-&gt;sack_ok
+id|tp-&gt;rx_opt.sack_ok
 )paren
 r_return
 suffix:semicolon
@@ -5913,11 +5913,11 @@ multiline_comment|/* If user gave his TCP_MAXSEG, record it to clamp */
 r_if
 c_cond
 (paren
-id|tp-&gt;user_mss
+id|tp-&gt;rx_opt.user_mss
 )paren
-id|tp-&gt;mss_clamp
+id|tp-&gt;rx_opt.mss_clamp
 op_assign
-id|tp-&gt;user_mss
+id|tp-&gt;rx_opt.user_mss
 suffix:semicolon
 id|tp-&gt;max_window
 op_assign
@@ -5985,7 +5985,7 @@ comma
 id|tp-&gt;advmss
 op_minus
 (paren
-id|tp-&gt;ts_recent_stamp
+id|tp-&gt;rx_opt.ts_recent_stamp
 ques
 c_cond
 id|tp-&gt;tcp_header_len
@@ -6008,7 +6008,7 @@ comma
 id|sysctl_tcp_window_scaling
 comma
 op_amp
-id|tp-&gt;rcv_wscale
+id|tp-&gt;rx_opt.rcv_wscale
 )paren
 suffix:semicolon
 id|tp-&gt;rcv_ssthresh

@@ -1898,8 +1898,13 @@ comma
 id|stacr
 )paren
 suffix:semicolon
+id|count
+op_assign
+l_int|0
+suffix:semicolon
 r_while
 c_loop
+(paren
 (paren
 (paren
 (paren
@@ -1910,6 +1915,7 @@ c_func
 (paren
 op_amp
 id|emacp-&gt;em0stacr
+)paren
 )paren
 op_amp
 id|EMAC_STACR_OC
@@ -1922,7 +1928,7 @@ op_logical_and
 id|count
 op_increment
 OL
-l_int|5000
+id|MDIO_DELAY
 )paren
 )paren
 id|udelay
@@ -3743,12 +3749,6 @@ comma
 id|flags
 )paren
 suffix:semicolon
-id|restore_flags
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
 r_return
 op_minus
 id|EBUSY
@@ -5456,7 +5456,11 @@ suffix:semicolon
 multiline_comment|/* Default is MTU=1500 + Ethernet overhead */
 id|ep-&gt;rx_buffer_size
 op_assign
-id|ENET_DEF_BUF_SIZE
+id|dev-&gt;mtu
+op_plus
+id|ENET_HEADER_SIZE
+op_plus
+id|ENET_FCS_SIZE
 suffix:semicolon
 id|emac_rx_fill
 c_func

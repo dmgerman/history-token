@@ -31,8 +31,9 @@ op_star
 id|dev
 suffix:semicolon
 DECL|member|base
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|base
 suffix:semicolon
 DECL|member|open
@@ -1149,10 +1150,6 @@ suffix:semicolon
 multiline_comment|/*&n;&t; * Our parent device has already mapped the region.&n;&t; */
 id|ps2if-&gt;base
 op_assign
-(paren
-r_int
-r_int
-)paren
 id|dev-&gt;mapbase
 suffix:semicolon
 id|sa1111_enable_device

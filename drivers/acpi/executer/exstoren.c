@@ -272,6 +272,9 @@ id|status
 op_assign
 id|AE_OK
 suffix:semicolon
+id|acpi_object_type
+id|original_src_type
+suffix:semicolon
 id|ACPI_FUNCTION_TRACE_PTR
 (paren
 l_string|&quot;ex_store_object_to_object&quot;
@@ -308,13 +311,17 @@ id|status
 )paren
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
+id|original_src_type
+op_assign
 id|ACPI_GET_OBJECT_TYPE
 (paren
 id|source_desc
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|original_src_type
 op_ne
 id|ACPI_GET_OBJECT_TYPE
 (paren
@@ -363,7 +370,7 @@ op_eq
 id|actual_src_desc
 )paren
 (brace
-multiline_comment|/*&n;&t;&t;&t; * No conversion was performed.  Return the source_desc as the&n;&t;&t;&t; * new object.&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * No conversion was performed. Return the source_desc as the&n;&t;&t;&t; * new object.&n;&t;&t;&t; */
 op_star
 id|new_desc
 op_assign
@@ -418,10 +425,13 @@ suffix:semicolon
 r_case
 id|ACPI_TYPE_BUFFER
 suffix:colon
+multiline_comment|/*&n;&t;&t; * Note: There is different store behavior depending on the original&n;&t;&t; * source type&n;&t;&t; */
 id|status
 op_assign
 id|acpi_ex_store_buffer_to_buffer
 (paren
+id|original_src_type
+comma
 id|actual_src_desc
 comma
 id|dest_desc

@@ -3,7 +3,21 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/ctype.h&gt;
 macro_line|#include &lt;linux/pnp.h&gt;
 macro_line|#include &lt;linux/pnpbios.h&gt;
+macro_line|#ifdef CONFIG_PCI
 macro_line|#include &lt;linux/pci.h&gt;
+macro_line|#else
+DECL|function|pcibios_penalize_isa_irq
+r_inline
+r_void
+id|pcibios_penalize_isa_irq
+c_func
+(paren
+r_int
+id|irq
+)paren
+(brace
+)brace
+macro_line|#endif /* CONFIG_PCI */
 macro_line|#include &quot;pnpbios.h&quot;
 multiline_comment|/* standard resource tags */
 DECL|macro|SMALL_TAG_PNPVERNO
