@@ -6283,6 +6283,10 @@ id|dev-&gt;base_addr
 op_assign
 id|map-&gt;base_addr
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
 id|request_region
 c_func
 (paren
@@ -6292,7 +6296,22 @@ id|SDLA_IO_EXTENTS
 comma
 id|dev-&gt;name
 )paren
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;SDLA: io-port 0x%04lx in use &bslash;n&quot;
+comma
+id|dev-&gt;base_addr
+)paren
 suffix:semicolon
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
+)brace
 multiline_comment|/* test for card types, S502A, S502E, S507, S508                 */
 multiline_comment|/* these tests shut down the card completely, so clear the state */
 id|flp-&gt;type
