@@ -49,7 +49,7 @@ suffix:semicolon
 multiline_comment|/* on-disk position of directory entry or 0 */
 DECL|member|i_fat_hash
 r_struct
-id|list_head
+id|hlist_node
 id|i_fat_hash
 suffix:semicolon
 multiline_comment|/* hash by i_location */
