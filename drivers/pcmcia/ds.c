@@ -2292,7 +2292,7 @@ id|sprintf
 (paren
 id|p_dev-&gt;dev.bus_id
 comma
-l_string|&quot;pcmcia%d.%d&quot;
+l_string|&quot;%d.%d&quot;
 comma
 id|p_dev-&gt;socket-&gt;sock
 comma
