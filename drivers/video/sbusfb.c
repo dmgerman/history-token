@@ -1163,7 +1163,7 @@ id|rects
 l_int|2
 )braket
 op_assign
-id|fb-&gt;var.xres_virtual
+id|fb-&gt;info.var.xres_virtual
 suffix:semicolon
 id|rects
 (braket
@@ -1198,14 +1198,14 @@ id|rects
 l_int|7
 )braket
 op_assign
-id|fb-&gt;var.yres_virtual
+id|fb-&gt;info.var.yres_virtual
 suffix:semicolon
 id|rects
 (braket
 l_int|8
 )braket
 op_assign
-id|fb-&gt;var.xres_virtual
+id|fb-&gt;info.var.xres_virtual
 op_minus
 id|fb-&gt;x_margin
 suffix:semicolon
@@ -1221,14 +1221,14 @@ id|rects
 l_int|10
 )braket
 op_assign
-id|fb-&gt;var.xres_virtual
+id|fb-&gt;info.var.xres_virtual
 suffix:semicolon
 id|rects
 (braket
 l_int|11
 )braket
 op_assign
-id|fb-&gt;var.yres_virtual
+id|fb-&gt;info.var.yres_virtual
 suffix:semicolon
 id|rects
 (braket
@@ -1242,7 +1242,7 @@ id|rects
 l_int|13
 )braket
 op_assign
-id|fb-&gt;var.yres_virtual
+id|fb-&gt;info.var.yres_virtual
 op_minus
 id|fb-&gt;y_margin
 suffix:semicolon
@@ -1251,7 +1251,7 @@ id|rects
 l_int|14
 )braket
 op_assign
-id|fb-&gt;var.xres_virtual
+id|fb-&gt;info.var.xres_virtual
 op_minus
 id|fb-&gt;x_margin
 suffix:semicolon
@@ -1260,7 +1260,7 @@ id|rects
 l_int|15
 )braket
 op_assign
-id|fb-&gt;var.yres_virtual
+id|fb-&gt;info.var.yres_virtual
 suffix:semicolon
 (paren
 op_star
@@ -1296,14 +1296,14 @@ id|skip_bytes
 op_assign
 id|fb-&gt;y_margin
 op_star
-id|fb-&gt;var.xres_virtual
+id|fb-&gt;info.var.xres_virtual
 suffix:semicolon
 r_int
 id|scr_size
 op_assign
-id|fb-&gt;var.xres_virtual
+id|fb-&gt;info.var.xres_virtual
 op_star
-id|fb-&gt;var.yres_virtual
+id|fb-&gt;info.var.yres_virtual
 suffix:semicolon
 r_int
 id|h
@@ -1316,12 +1316,12 @@ id|size
 suffix:semicolon
 id|he
 op_assign
-id|fb-&gt;var.yres
+id|fb-&gt;info.var.yres
 suffix:semicolon
 r_if
 c_cond
 (paren
-id|fb-&gt;var.bits_per_pixel
+id|fb-&gt;info.var.bits_per_pixel
 op_eq
 l_int|1
 )paren
@@ -1376,7 +1376,7 @@ l_int|8
 suffix:semicolon
 id|incr
 op_assign
-id|fb-&gt;var.xres_virtual
+id|fb-&gt;info.var.xres_virtual
 op_div
 l_int|8
 suffix:semicolon
@@ -1434,7 +1434,7 @@ op_plus
 id|fb-&gt;x_margin
 )paren
 suffix:semicolon
-id|memset
+id|fb_memset
 (paren
 id|fb_base
 comma
@@ -1451,7 +1451,7 @@ op_minus
 id|fb-&gt;x_margin
 )paren
 suffix:semicolon
-id|memset
+id|fb_memset
 (paren
 id|fb_base
 op_plus
@@ -1476,7 +1476,7 @@ id|fb-&gt;x_margin
 suffix:semicolon
 id|incr
 op_assign
-id|fb-&gt;var.xres_virtual
+id|fb-&gt;info.var.xres_virtual
 suffix:semicolon
 id|size
 op_assign
@@ -1510,7 +1510,7 @@ comma
 id|h
 op_increment
 )paren
-id|memset
+id|fb_memset
 (paren
 id|q
 comma
@@ -5556,12 +5556,12 @@ suffix:semicolon
 id|fix
 op_assign
 op_amp
-id|fb-&gt;fix
+id|fb-&gt;info.fix
 suffix:semicolon
 id|var
 op_assign
 op_amp
-id|fb-&gt;var
+id|fb-&gt;info.var
 suffix:semicolon
 id|disp
 op_assign
@@ -5631,7 +5631,7 @@ l_int|0
 op_assign
 id|fbtype
 suffix:semicolon
-macro_line|#ifndef __sparc_v9__
+macro_line|#ifdef CONFIG_SPARC32
 id|fb-&gt;info.screen_base
 op_assign
 (paren
