@@ -811,7 +811,12 @@ comma
 (paren
 id|speed
 op_eq
-id|speedstep_low_freq
+id|speedstep_freqs
+(braket
+id|SPEEDSTEP_LOW
+)braket
+dot
+id|frequency
 )paren
 ques
 c_cond
