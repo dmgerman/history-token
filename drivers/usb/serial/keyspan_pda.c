@@ -2747,7 +2747,6 @@ r_void
 op_star
 )paren
 (paren
-op_amp
 id|serial-&gt;port
 (braket
 l_int|0
