@@ -20,8 +20,9 @@ DECL|macro|GG2_ROM_BASE1
 mdefine_line|#define GG2_ROM_BASE1&t;&t;0xff800000&t;/* ROM bank 1 */
 multiline_comment|/*&n;     *  GG2 specific PCI Registers&n;     */
 r_extern
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|gg2_pci_config_base
 suffix:semicolon
 multiline_comment|/* kernel virtual address */

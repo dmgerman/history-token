@@ -104,6 +104,7 @@ suffix:semicolon
 )brace
 macro_line|#endif /* CONFIG_IP_MULTIPLE_TABLES */
 DECL|function|fib_flush
+r_static
 r_void
 id|fib_flush
 c_func
@@ -2675,6 +2676,7 @@ id|NOTIFY_DONE
 suffix:semicolon
 )brace
 DECL|variable|fib_inetaddr_notifier
+r_static
 r_struct
 id|notifier_block
 id|fib_inetaddr_notifier
@@ -2688,6 +2690,7 @@ comma
 )brace
 suffix:semicolon
 DECL|variable|fib_netdev_notifier
+r_static
 r_struct
 id|notifier_block
 id|fib_netdev_notifier

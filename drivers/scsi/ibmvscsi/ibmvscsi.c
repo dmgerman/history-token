@@ -2,6 +2,7 @@ multiline_comment|/* -----------------------------------------------------------
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;linux/dma-mapping.h&gt;
+macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;asm/vio.h&gt;
 macro_line|#include &lt;scsi/scsi.h&gt;
 macro_line|#include &lt;scsi/scsi_cmnd.h&gt;
@@ -4778,18 +4779,10 @@ l_int|0
 suffix:semicolon
 )paren
 (brace
-id|set_current_state
+id|msleep
 c_func
 (paren
-id|TASK_UNINTERRUPTIBLE
-)paren
-suffix:semicolon
-id|schedule_timeout
-c_func
-(paren
-id|HZ
-op_div
-l_int|100
+l_int|10
 )paren
 suffix:semicolon
 )brace

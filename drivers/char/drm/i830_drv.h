@@ -2,6 +2,26 @@ multiline_comment|/* i830_drv.h -- Private header for the I830 driver -*- linux-
 macro_line|#ifndef _I830_DRV_H_
 DECL|macro|_I830_DRV_H_
 mdefine_line|#define _I830_DRV_H_
+multiline_comment|/* General customization:&n; */
+DECL|macro|DRIVER_AUTHOR
+mdefine_line|#define DRIVER_AUTHOR&t;&t;&quot;VA Linux Systems Inc.&quot;
+DECL|macro|DRIVER_NAME
+mdefine_line|#define DRIVER_NAME&t;&t;&quot;i830&quot;
+DECL|macro|DRIVER_DESC
+mdefine_line|#define DRIVER_DESC&t;&t;&quot;Intel 830M&quot;
+DECL|macro|DRIVER_DATE
+mdefine_line|#define DRIVER_DATE&t;&t;&quot;20021108&quot;
+multiline_comment|/* Interface history:&n; *&n; * 1.1: Original.&n; * 1.2: ?&n; * 1.3: New irq emit/wait ioctls.&n; *      New pageflip ioctl.&n; *      New getparam ioctl.&n; *      State for texunits 3&amp;4 in sarea.&n; *      New (alternative) layout for texture state.&n; */
+DECL|macro|DRIVER_MAJOR
+mdefine_line|#define DRIVER_MAJOR&t;&t;1
+DECL|macro|DRIVER_MINOR
+mdefine_line|#define DRIVER_MINOR&t;&t;3
+DECL|macro|DRIVER_PATCHLEVEL
+mdefine_line|#define DRIVER_PATCHLEVEL&t;2
+multiline_comment|/* Driver will work either way: IRQ&squot;s save cpu time when waiting for&n; * the card, but are subject to subtle interactions between bios,&n; * hardware and the driver.&n; */
+multiline_comment|/* XXX: Add vblank support? */
+DECL|macro|USE_IRQS
+mdefine_line|#define USE_IRQS 0
 DECL|struct|drm_i830_buf_priv
 r_typedef
 r_struct
@@ -306,6 +326,10 @@ r_void
 id|i830_reclaim_buffers
 c_func
 (paren
+id|drm_device_t
+op_star
+id|dev
+comma
 r_struct
 id|file
 op_star
@@ -657,6 +681,41 @@ suffix:semicolon
 r_extern
 r_void
 id|i830_driver_irq_uninstall
+c_func
+(paren
+id|drm_device_t
+op_star
+id|dev
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|i830_driver_pretakedown
+c_func
+(paren
+id|drm_device_t
+op_star
+id|dev
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|i830_driver_release
+c_func
+(paren
+id|drm_device_t
+op_star
+id|dev
+comma
+r_struct
+id|file
+op_star
+id|filp
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|i830_driver_dma_quiescent
 c_func
 (paren
 id|drm_device_t

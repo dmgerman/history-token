@@ -64,14 +64,6 @@ op_star
 id|irqstackptr
 suffix:semicolon
 multiline_comment|/* top of irqstack */
-DECL|member|level4_pgt
-r_int
-r_int
-r_volatile
-op_star
-id|level4_pgt
-suffix:semicolon
-multiline_comment|/* Per CPU top level page table */
 DECL|member|__softirq_pending
 r_int
 r_int

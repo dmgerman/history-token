@@ -1431,6 +1431,29 @@ c_func
 r_void
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_ACPI_HOTPLUG_CPU
+multiline_comment|/* Arch dependent functions for cpu hotplug support */
+r_int
+id|acpi_map_lsapic
+c_func
+(paren
+id|acpi_handle
+id|handle
+comma
+r_int
+op_star
+id|pcpu
+)paren
+suffix:semicolon
+r_int
+id|acpi_unmap_lsapic
+c_func
+(paren
+r_int
+id|cpu
+)paren
+suffix:semicolon
+macro_line|#endif /* CONFIG_ACPI_HOTPLUG_CPU */
 r_extern
 r_int
 id|acpi_mp_config
@@ -1755,6 +1778,32 @@ id|new_limit
 )paren
 (brace
 r_return
+suffix:semicolon
+)brace
+macro_line|#endif
+macro_line|#ifdef CONFIG_ACPI_NUMA
+r_int
+id|acpi_get_pxm
+c_func
+(paren
+id|acpi_handle
+id|handle
+)paren
+suffix:semicolon
+macro_line|#else
+DECL|function|acpi_get_pxm
+r_static
+r_inline
+r_int
+id|acpi_get_pxm
+c_func
+(paren
+id|acpi_handle
+id|handle
+)paren
+(brace
+r_return
+l_int|0
 suffix:semicolon
 )brace
 macro_line|#endif

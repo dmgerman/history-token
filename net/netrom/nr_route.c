@@ -65,6 +65,7 @@ op_assign
 id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
 DECL|function|nr_node_get
+r_static
 r_struct
 id|nr_node
 op_star
@@ -150,6 +151,7 @@ id|found
 suffix:semicolon
 )brace
 DECL|function|nr_neigh_get_dev
+r_static
 r_struct
 id|nr_neigh
 op_star

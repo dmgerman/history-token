@@ -1233,6 +1233,7 @@ op_star
 id|id
 )paren
 (brace
+r_return
 id|ide_setup_pci_device
 c_func
 (paren
@@ -1241,9 +1242,6 @@ comma
 op_amp
 id|ns87415_chipset
 )paren
-suffix:semicolon
-r_return
-l_int|0
 suffix:semicolon
 )brace
 DECL|variable|ns87415_pci_tbl

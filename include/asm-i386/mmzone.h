@@ -135,8 +135,6 @@ DECL|macro|pfn_to_page
 mdefine_line|#define pfn_to_page(pfn)&t;&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;unsigned long __pfn = pfn;&t;&t;&t;&t;&t;&bslash;&n;&t;int __node  = pfn_to_nid(__pfn);&t;&t;&t;&t;&bslash;&n;&t;&amp;node_mem_map(__node)[node_localnr(__pfn,__node)];&t;&t;&bslash;&n;})
 DECL|macro|page_to_pfn
 mdefine_line|#define page_to_pfn(pg)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;struct page *__page = pg;&t;&t;&t;&t;&t;&bslash;&n;&t;struct zone *__zone = page_zone(__page);&t;&t;&t;&bslash;&n;&t;(unsigned long)(__page - __zone-&gt;zone_mem_map)&t;&t;&t;&bslash;&n;&t;&t;+ __zone-&gt;zone_start_pfn;&t;&t;&t;&t;&bslash;&n;})
-DECL|macro|pmd_page
-mdefine_line|#define pmd_page(pmd)&t;&t;(pfn_to_page(pmd_val(pmd) &gt;&gt; PAGE_SHIFT))
 macro_line|#ifdef CONFIG_X86_NUMAQ            /* we have contiguous memory on NUMA-Q */
 DECL|macro|pfn_valid
 mdefine_line|#define pfn_valid(pfn)          ((pfn) &lt; num_physpages)

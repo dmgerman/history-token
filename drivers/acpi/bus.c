@@ -67,21 +67,6 @@ suffix:semicolon
 DECL|macro|STRUCT_TO_INT
 mdefine_line|#define STRUCT_TO_INT(s)&t;(*((int*)&amp;s))
 multiline_comment|/* --------------------------------------------------------------------------&n;                                Device Management&n;   -------------------------------------------------------------------------- */
-r_extern
-r_void
-id|acpi_bus_data_handler
-(paren
-id|acpi_handle
-id|handle
-comma
-id|u32
-id|function
-comma
-r_void
-op_star
-id|context
-)paren
-suffix:semicolon
 r_int
 DECL|function|acpi_bus_get_device
 id|acpi_bus_get_device
@@ -158,7 +143,7 @@ c_func
 (paren
 id|ACPI_DB_WARN
 comma
-l_string|&quot;Error getting context for object [%p]&bslash;n&quot;
+l_string|&quot;No context for object [%p]&bslash;n&quot;
 comma
 id|handle
 )paren

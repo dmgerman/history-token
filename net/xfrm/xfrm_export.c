@@ -357,13 +357,6 @@ c_func
 id|xfrm_ealg_get_byidx
 )paren
 suffix:semicolon
-DECL|variable|xfrm_calg_get_byidx
-id|EXPORT_SYMBOL_GPL
-c_func
-(paren
-id|xfrm_calg_get_byidx
-)paren
-suffix:semicolon
 DECL|variable|xfrm_aalg_get_byid
 id|EXPORT_SYMBOL_GPL
 c_func

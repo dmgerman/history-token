@@ -2,6 +2,7 @@ multiline_comment|/*&n; * This file is subject to the terms and conditions of th
 macro_line|#ifndef _ASM_PGTABLE_H
 DECL|macro|_ASM_PGTABLE_H
 mdefine_line|#define _ASM_PGTABLE_H
+macro_line|#include &lt;asm-generic/4level-fixup.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#ifdef CONFIG_MIPS32
 macro_line|#include &lt;asm/pgtable-32.h&gt;

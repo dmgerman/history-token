@@ -5,7 +5,7 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/ide.h&gt;
 r_static
-r_void
+r_int
 id|init_setup_opti621
 c_func
 (paren

@@ -1269,7 +1269,12 @@ id|status
 id|ACPI_REPORT_ERROR
 (paren
 (paren
-l_string|&quot;acpi_ev_gpe_dispatch: Unable to clear GPE[%2X]&bslash;n&quot;
+l_string|&quot;acpi_ev_gpe_dispatch: %s, Unable to clear GPE[%2X]&bslash;n&quot;
+comma
+id|acpi_format_exception
+(paren
+id|status
+)paren
 comma
 id|gpe_number
 )paren
@@ -1360,7 +1365,12 @@ id|status
 id|ACPI_REPORT_ERROR
 (paren
 (paren
-l_string|&quot;acpi_ev_gpe_dispatch: Unable to clear GPE[%2X]&bslash;n&quot;
+l_string|&quot;acpi_ev_gpe_dispatch: %s, Unable to clear GPE[%2X]&bslash;n&quot;
+comma
+id|acpi_format_exception
+(paren
+id|status
+)paren
 comma
 id|gpe_number
 )paren
@@ -1398,7 +1408,12 @@ id|status
 id|ACPI_REPORT_ERROR
 (paren
 (paren
-l_string|&quot;acpi_ev_gpe_dispatch: Unable to disable GPE[%2X]&bslash;n&quot;
+l_string|&quot;acpi_ev_gpe_dispatch: %s, Unable to disable GPE[%2X]&bslash;n&quot;
+comma
+id|acpi_format_exception
+(paren
+id|status
+)paren
 comma
 id|gpe_number
 )paren
@@ -1411,11 +1426,8 @@ id|ACPI_INTERRUPT_NOT_HANDLED
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t;&t; * Execute the method associated with the GPE&n;&t;&t; * NOTE: Level-triggered GPEs are cleared after the method completes.&n;&t;&t; */
-r_if
-c_cond
-(paren
-id|ACPI_FAILURE
-(paren
+id|status
+op_assign
 id|acpi_os_queue_for_execution
 (paren
 id|OSD_PRIORITY_GPE
@@ -1424,13 +1436,25 @@ id|acpi_ev_asynch_execute_gpe_method
 comma
 id|gpe_event_info
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ACPI_FAILURE
+(paren
+id|status
 )paren
 )paren
 (brace
 id|ACPI_REPORT_ERROR
 (paren
 (paren
-l_string|&quot;acpi_ev_gpe_dispatch: Unable to queue handler for GPE[%2X], event is disabled&bslash;n&quot;
+l_string|&quot;acpi_ev_gpe_dispatch: %s, Unable to queue handler for GPE[%2X] - event disabled&bslash;n&quot;
+comma
+id|acpi_format_exception
+(paren
+id|status
+)paren
 comma
 id|gpe_number
 )paren
@@ -1471,7 +1495,12 @@ id|status
 id|ACPI_REPORT_ERROR
 (paren
 (paren
-l_string|&quot;acpi_ev_gpe_dispatch: Unable to disable GPE[%2X]&bslash;n&quot;
+l_string|&quot;acpi_ev_gpe_dispatch: %s, Unable to disable GPE[%2X]&bslash;n&quot;
+comma
+id|acpi_format_exception
+(paren
+id|status
+)paren
 comma
 id|gpe_number
 )paren

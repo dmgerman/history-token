@@ -165,6 +165,20 @@ id|proc_irda
 suffix:semicolon
 macro_line|#endif /* CONFIG_PROC_FS */
 r_static
+r_struct
+id|irlan_cb
+op_star
+id|irlan_open
+c_func
+(paren
+id|__u32
+id|saddr
+comma
+id|__u32
+id|daddr
+)paren
+suffix:semicolon
+r_static
 r_void
 id|__irlan_close
 c_func
@@ -204,6 +218,28 @@ id|value_array
 comma
 id|__u16
 id|value_len
+)paren
+suffix:semicolon
+r_static
+r_void
+id|irlan_open_unicast_addr
+c_func
+(paren
+r_struct
+id|irlan_cb
+op_star
+id|self
+)paren
+suffix:semicolon
+r_static
+r_void
+id|irlan_get_unicast_addr
+c_func
+(paren
+r_struct
+id|irlan_cb
+op_star
+id|self
 )paren
 suffix:semicolon
 r_void
@@ -446,6 +482,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Function irlan_open (void)&n; *&n; *    Open new instance of a client/provider, we should only register the &n; *    network device if this instance is ment for a particular client/provider&n; */
 DECL|function|irlan_open
+r_static
 r_struct
 id|irlan_cb
 op_star
@@ -831,6 +868,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Function irlan_connect_indication (instance, sap, qos, max_sdu_size, skb)&n; *&n; *    Here we receive the connect indication for the data channel&n; *&n; */
 DECL|function|irlan_connect_indication
+r_static
 r_void
 id|irlan_connect_indication
 c_func
@@ -1020,6 +1058,7 @@ suffix:semicolon
 multiline_comment|/* Clear reason */
 )brace
 DECL|function|irlan_connect_confirm
+r_static
 r_void
 id|irlan_connect_confirm
 c_func
@@ -1172,6 +1211,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Function irlan_client_disconnect_indication (handle)&n; *&n; *    Callback function for the IrTTP layer. Indicates a disconnection of&n; *    the specified connection (handle)&n; */
 DECL|function|irlan_disconnect_indication
+r_static
 r_void
 id|irlan_disconnect_indication
 c_func
@@ -2074,6 +2114,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Function irlan_ctrl_data_request (self, skb)&n; *&n; *    This function makes sure that commands on the control channel is being&n; *    sent in a command/response fashion&n; */
 DECL|function|irlan_ctrl_data_request
+r_static
 r_void
 id|irlan_ctrl_data_request
 c_func
@@ -2502,6 +2543,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Function irlan_open_unicast_addr (self)&n; *&n; *    Make IrLAN provider accept ethernet frames addressed to the unicast &n; *    address.&n; *&n; */
 DECL|function|irlan_open_unicast_addr
+r_static
 r_void
 id|irlan_open_unicast_addr
 c_func
@@ -2972,6 +3014,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Function irlan_get_unicast_addr (self)&n; *&n; *    Retrieves the unicast address from the IrLAN provider. This address&n; *    will be inserted into the devices structure, so the ethernet layer&n; *    can construct its packets.&n; *&n; */
 DECL|function|irlan_get_unicast_addr
+r_static
 r_void
 id|irlan_get_unicast_addr
 c_func

@@ -654,15 +654,6 @@ comma
 r_int
 )paren
 suffix:semicolon
-r_void
-id|rpc_free
-c_func
-(paren
-r_struct
-id|rpc_task
-op_star
-)paren
-suffix:semicolon
 r_int
 id|rpciod_up
 c_func

@@ -2,6 +2,7 @@ multiline_comment|/*&n; * CRIS pgtable.h - macros and functions to manipulate pa
 macro_line|#ifndef _CRIS_PGTABLE_H
 DECL|macro|_CRIS_PGTABLE_H
 mdefine_line|#define _CRIS_PGTABLE_H
+macro_line|#include &lt;asm-generic/4level-fixup.h&gt;
 macro_line|#ifndef __ASSEMBLY__
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;

@@ -454,6 +454,7 @@ id|ETH_P_802_2
 suffix:semicolon
 )brace
 DECL|function|eth_header_parse
+r_static
 r_int
 id|eth_header_parse
 c_func

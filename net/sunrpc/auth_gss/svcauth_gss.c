@@ -2015,6 +2015,7 @@ comma
 l_int|0
 )paren
 suffix:semicolon
+r_static
 r_struct
 id|rsc
 op_star
@@ -5049,6 +5050,7 @@ id|gd
 suffix:semicolon
 )brace
 DECL|variable|svcauthops_gss
+r_static
 r_struct
 id|auth_ops
 id|svcauthops_gss

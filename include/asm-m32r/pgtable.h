@@ -1,6 +1,7 @@
 macro_line|#ifndef _ASM_M32R_PGTABLE_H
 DECL|macro|_ASM_M32R_PGTABLE_H
 mdefine_line|#define _ASM_M32R_PGTABLE_H
+macro_line|#include &lt;asm-generic/4level-fixup.h&gt;
 multiline_comment|/* $Id$ */
 multiline_comment|/*&n; * The Linux memory management assumes a three-level page table setup. On&n; * the M32R, we use that, but &quot;fold&quot; the mid level into the top-level page&n; * table, so that we physically have the same two-level page table as the&n; * M32R mmu expects.&n; *&n; * This file contains the functions and defines necessary to modify and use&n; * the M32R page table tree.&n; */
 multiline_comment|/* CAUTION!: If you change macro definitions in this file, you might have to&n; * change arch/m32r/mmu.S manually.&n; */

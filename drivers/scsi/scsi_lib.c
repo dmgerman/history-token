@@ -366,6 +366,13 @@ l_int|1
 )paren
 suffix:semicolon
 )brace
+DECL|variable|scsi_do_req
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|scsi_do_req
+)paren
+suffix:semicolon
 DECL|function|scsi_wait_done
 r_static
 r_void
@@ -541,6 +548,13 @@ id|sreq
 )paren
 suffix:semicolon
 )brace
+DECL|variable|scsi_wait_req
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|scsi_wait_req
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Function:    scsi_init_cmd_errh()&n; *&n; * Purpose:     Initialize cmd fields related to error handling.&n; *&n; * Arguments:   cmd&t;- command that is ready to be queued.&n; *&n; * Returns:     Nothing&n; *&n; * Notes:       This function has the job of initializing a number of&n; *              fields related to error handling.   Typically this will&n; *              be called once for each command, as required.&n; */
 DECL|function|scsi_init_cmd_errh
 r_static
@@ -1819,7 +1833,7 @@ id|sshdr
 )paren
 )paren
 (brace
-multiline_comment|/*&n;&t;&t;&t;&t; * SG_IO wants to know about deferred errors&n;&t;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t;&t; * SG_IO wants current and deferred errors&n;&t;&t;&t;&t; */
 r_int
 id|len
 op_assign
@@ -2183,7 +2197,8 @@ suffix:colon
 id|printk
 c_func
 (paren
-l_string|&quot;scsi%d: ERROR on channel %d, id %d, lun %d, CDB: &quot;
+id|KERN_INFO
+l_string|&quot;Volume overflow &lt;%d %d %d %d&gt; CDB: &quot;
 comma
 id|cmd-&gt;device-&gt;host-&gt;host_no
 comma
@@ -2273,7 +2288,9 @@ id|result
 id|printk
 c_func
 (paren
-l_string|&quot;SCSI error : &lt;%d %d %d %d&gt; return code = 0x%x&bslash;n&quot;
+id|KERN_INFO
+l_string|&quot;SCSI error : &lt;%d %d %d %d&gt; return code &quot;
+l_string|&quot;= 0x%x&bslash;n&quot;
 comma
 id|cmd-&gt;device-&gt;host-&gt;host_no
 comma
@@ -2338,6 +2355,13 @@ l_int|1
 suffix:semicolon
 )brace
 )brace
+DECL|variable|scsi_io_completion
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|scsi_io_completion
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Function:    scsi_init_io()&n; *&n; * Purpose:     SCSI I/O initialize function.&n; *&n; * Arguments:   cmd   - Command descriptor we wish to initialize&n; *&n; * Returns:     0 on success&n; *&t;&t;BLKPREP_DEFER if the failure is retryable&n; *&t;&t;BLKPREP_KILL if the failure is fatal&n; */
 DECL|function|scsi_init_io
 r_static
@@ -3755,6 +3779,13 @@ r_return
 id|bounce_limit
 suffix:semicolon
 )brace
+DECL|variable|scsi_calculate_bounce_limit
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|scsi_calculate_bounce_limit
+)paren
+suffix:semicolon
 DECL|function|scsi_alloc_queue
 r_struct
 id|request_queue
@@ -3914,6 +3945,13 @@ op_assign
 l_int|1
 suffix:semicolon
 )brace
+DECL|variable|scsi_block_requests
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|scsi_block_requests
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Function:    scsi_unblock_requests()&n; *&n; * Purpose:     Utility function used by low-level drivers to allow further&n; *&t;&t;commands from being queued to the device.&n; *&n; * Arguments:   shost       - Host in question&n; *&n; * Returns:     Nothing&n; *&n; * Lock status: No locks are assumed held.&n; *&n; * Notes:       There is no timer nor any other means by which the requests&n; *&t;&t;get unblocked other than the low-level driver calling&n; *&t;&t;scsi_unblock_requests().&n; *&n; *&t;&t;This is done as an API function so that changes to the&n; *&t;&t;internals of the scsi mid-layer won&squot;t require wholesale&n; *&t;&t;changes to drivers that use this feature.&n; */
 DECL|function|scsi_unblock_requests
 r_void
@@ -3937,6 +3975,13 @@ id|shost
 )paren
 suffix:semicolon
 )brace
+DECL|variable|scsi_unblock_requests
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|scsi_unblock_requests
+)paren
+suffix:semicolon
 DECL|function|scsi_init_queue
 r_int
 id|__init
@@ -4506,6 +4551,13 @@ r_return
 id|sreq-&gt;sr_result
 suffix:semicolon
 )brace
+DECL|variable|__scsi_mode_sense
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|__scsi_mode_sense
+)paren
+suffix:semicolon
 multiline_comment|/**&n; *&t;scsi_mode_sense - issue a mode sense, falling back from 10 to &n; *&t;&t;six bytes if necessary.&n; *&t;@sdev:&t;scsi device to send command to.&n; *&t;@dbd:&t;set if mode sense will disable block descriptors in the return&n; *&t;@modepage: mode page being requested&n; *&t;@buffer: request buffer (may not be smaller than eight bytes)&n; *&t;@len:&t;length of request buffer.&n; *&t;@timeout: command timeout&n; *&t;@retries: number of retries before failing&n; *&n; *&t;Returns zero if unsuccessful, or the header offset (either 4&n; *&t;or 8 depending on whether a six or ten byte command was&n; *&t;issued) if successful.&n; **/
 r_int
 DECL|function|scsi_mode_sense
@@ -4601,6 +4653,13 @@ r_return
 id|ret
 suffix:semicolon
 )brace
+DECL|variable|scsi_mode_sense
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|scsi_mode_sense
+)paren
+suffix:semicolon
 r_int
 DECL|function|scsi_test_unit_ready
 id|scsi_test_unit_ready
@@ -4699,31 +4758,40 @@ op_amp
 id|DRIVER_SENSE
 )paren
 op_logical_and
-(paren
-(paren
-id|sreq-&gt;sr_sense_buffer
-(braket
-l_int|2
-)braket
-op_amp
-l_int|0x0f
+id|sdev-&gt;removable
 )paren
+(brace
+r_struct
+id|scsi_sense_hdr
+id|sshdr
+suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|scsi_request_normalize_sense
+c_func
+(paren
+id|sreq
+comma
+op_amp
+id|sshdr
+)paren
+)paren
+op_logical_and
+(paren
+(paren
+id|sshdr.sense_key
 op_eq
 id|UNIT_ATTENTION
+)paren
 op_logical_or
 (paren
-id|sreq-&gt;sr_sense_buffer
-(braket
-l_int|2
-)braket
-op_amp
-l_int|0x0f
-)paren
+id|sshdr.sense_key
 op_eq
 id|NOT_READY
 )paren
-op_logical_and
-id|sdev-&gt;removable
+)paren
 )paren
 (brace
 id|sdev-&gt;changed
@@ -4734,6 +4802,7 @@ id|sreq-&gt;sr_result
 op_assign
 l_int|0
 suffix:semicolon
+)brace
 )brace
 id|result
 op_assign
@@ -4875,6 +4944,9 @@ suffix:colon
 r_case
 id|SDEV_QUIESCE
 suffix:colon
+r_case
+id|SDEV_BLOCK
+suffix:colon
 r_break
 suffix:semicolon
 r_default
@@ -4973,6 +5045,11 @@ l_int|0
 suffix:semicolon
 id|illegal
 suffix:colon
+id|SCSI_LOG_ERROR_RECOVERY
+c_func
+(paren
+l_int|1
+comma
 id|dev_printk
 c_func
 (paren
@@ -4995,11 +5072,6 @@ c_func
 id|state
 )paren
 )paren
-suffix:semicolon
-id|WARN_ON
-c_func
-(paren
-l_int|1
 )paren
 suffix:semicolon
 r_return

@@ -1,5 +1,4 @@
 multiline_comment|/* i830_dma.c -- DMA support for the I830 -*- linux-c -*-&n; *&n; * Copyright 2002 Tungsten Graphics, Inc.&n; * All Rights Reserved.&n; *&n; * Permission is hereby granted, free of charge, to any person obtaining a&n; * copy of this software and associated documentation files (the &quot;Software&quot;),&n; * to deal in the Software without restriction, including without limitation&n; * the rights to use, copy, modify, merge, publish, distribute, sublicense,&n; * and/or sell copies of the Software, and to permit persons to whom the&n; * Software is furnished to do so, subject to the following conditions:&n; * &n; * The above copyright notice and this permission notice (including the next&n; * paragraph) shall be included in all copies or substantial portions of the&n; * Software.&n; * &n; * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR&n; * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,&n; * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL&n; * TUNGSTEN GRAPHICS AND/OR ITS SUPPLIERS BE LIABLE FOR ANY CLAIM, DAMAGES OR&n; * OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,&n; * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER&n; * DEALINGS IN THE SOFTWARE.&n; *&n; * Authors: Keith Whitwell &lt;keith@tungstengraphics.com&gt;&n; *&n; */
-macro_line|#include &quot;i830.h&quot;
 macro_line|#include &quot;drmP.h&quot;
 macro_line|#include &quot;drm.h&quot;
 macro_line|#include &quot;i830_drm.h&quot;
@@ -417,28 +416,14 @@ suffix:semicolon
 r_int
 id|result
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|_DRM_LOCK_IS_HELD
+id|LOCK_TEST_WITH_RETURN
 c_func
 (paren
-id|dev-&gt;lock.hw_lock-&gt;lock
-)paren
-)paren
-(brace
-id|DRM_ERROR
-c_func
-(paren
-l_string|&quot;i830_irq_emit called without lock held&bslash;n&quot;
+id|dev
+comma
+id|filp
 )paren
 suffix:semicolon
-r_return
-op_minus
-id|EINVAL
-suffix:semicolon
-)brace
 r_if
 c_cond
 (paren

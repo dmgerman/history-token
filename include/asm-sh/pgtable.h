@@ -1,6 +1,7 @@
 macro_line|#ifndef __ASM_SH_PGTABLE_H
 DECL|macro|__ASM_SH_PGTABLE_H
 mdefine_line|#define __ASM_SH_PGTABLE_H
+macro_line|#include &lt;asm-generic/4level-fixup.h&gt;
 multiline_comment|/*&n; * Copyright (C) 1999 Niibe Yutaka&n; * Copyright (C) 2002, 2003, 2004 Paul Mundt&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/pgtable-2level.h&gt;

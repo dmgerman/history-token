@@ -604,6 +604,13 @@ id|access_bit_width
 )paren
 suffix:semicolon
 multiline_comment|/* 1, 2, 4,  8 */
+id|obj_desc-&gt;common_field.access_bit_width
+op_assign
+(paren
+id|u8
+)paren
+id|access_bit_width
+suffix:semicolon
 multiline_comment|/*&n;&t; * base_byte_offset is the address of the start of the field within the&n;&t; * region.  It is the byte address of the first *datum* (field-width data&n;&t; * unit) of the field. (i.e., the first datum that contains at least the&n;&t; * first *bit* of the field.)&n;&t; *&n;&t; * Note: byte_alignment is always either equal to the access_bit_width or 8&n;&t; * (Byte access), and it defines the addressing granularity of the parent&n;&t; * region or buffer.&n;&t; */
 id|nearest_byte_address
 op_assign
@@ -637,46 +644,6 @@ id|ACPI_MUL_8
 (paren
 id|obj_desc-&gt;common_field.base_byte_offset
 )paren
-)paren
-suffix:semicolon
-multiline_comment|/*&n;&t; * Valid bits -- the number of bits that compose a partial datum,&n;&t; * 1) At the end of the field within the region (arbitrary starting bit&n;&t; *    offset)&n;&t; * 2) At the end of a buffer used to contain the field (starting offset&n;&t; *    always zero)&n;&t; */
-id|obj_desc-&gt;common_field.end_field_valid_bits
-op_assign
-(paren
-id|u8
-)paren
-(paren
-(paren
-id|obj_desc-&gt;common_field.start_field_bit_offset
-op_plus
-id|field_bit_length
-)paren
-op_mod
-id|access_bit_width
-)paren
-suffix:semicolon
-multiline_comment|/* start_buffer_bit_offset always = 0 */
-id|obj_desc-&gt;common_field.end_buffer_valid_bits
-op_assign
-(paren
-id|u8
-)paren
-(paren
-id|field_bit_length
-op_mod
-id|access_bit_width
-)paren
-suffix:semicolon
-multiline_comment|/*&n;&t; * datum_valid_bits is the number of valid field bits in the first&n;&t; * field datum.&n;&t; */
-id|obj_desc-&gt;common_field.datum_valid_bits
-op_assign
-(paren
-id|u8
-)paren
-(paren
-id|access_bit_width
-op_minus
-id|obj_desc-&gt;common_field.start_field_bit_offset
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Does the entire field fit within a single field access element? (datum)&n;&t; * (i.e., without crossing a datum boundary)&n;&t; */

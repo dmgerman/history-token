@@ -2160,6 +2160,7 @@ c_func
 (paren
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|arg
@@ -2260,6 +2261,7 @@ c_func
 (paren
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|arg
@@ -2403,6 +2405,7 @@ id|p
 comma
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|arg
@@ -2537,11 +2540,13 @@ suffix:colon
 multiline_comment|/**&n;&t;&t; *  for now we only fill the status field. the parameters&n;&t;&t; *  are trivial to fill as soon FE_GET_FRONTEND is done.&n;&t;&t; */
 r_struct
 id|dvb_frontend_event
+id|__user
 op_star
 id|e
 op_assign
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|arg

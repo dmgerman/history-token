@@ -1,6 +1,7 @@
 macro_line|#ifndef _PARISC_PGTABLE_H
 DECL|macro|_PARISC_PGTABLE_H
 mdefine_line|#define _PARISC_PGTABLE_H
+macro_line|#include &lt;asm-generic/4level-fixup.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/fixmap.h&gt;
 macro_line|#ifndef __ASSEMBLY__

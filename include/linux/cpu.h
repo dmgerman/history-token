@@ -44,6 +44,22 @@ id|node
 op_star
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_HOTPLUG_CPU
+r_extern
+r_void
+id|unregister_cpu
+c_func
+(paren
+r_struct
+id|cpu
+op_star
+comma
+r_struct
+id|node
+op_star
+)paren
+suffix:semicolon
+macro_line|#endif
 r_struct
 id|notifier_block
 suffix:semicolon

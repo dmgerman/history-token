@@ -98,8 +98,12 @@ suffix:semicolon
 )brace
 id|pgprot_t
 suffix:semicolon
+DECL|macro|pmd_val
+mdefine_line|#define pmd_val(x)&t;((x).pmd)
 DECL|macro|pte_val
 mdefine_line|#define pte_val(x)&t;((x).pte_low | ((unsigned long long)(x).pte_high &lt;&lt; 32))
+DECL|macro|__pmd
+mdefine_line|#define __pmd(x) ((pmd_t) { (x) } )
 DECL|macro|HPAGE_SHIFT
 mdefine_line|#define HPAGE_SHIFT&t;21
 macro_line|#else
@@ -114,18 +118,6 @@ id|pte_low
 suffix:semicolon
 )brace
 id|pte_t
-suffix:semicolon
-DECL|member|pmd
-DECL|typedef|pmd_t
-r_typedef
-r_struct
-(brace
-r_int
-r_int
-id|pmd
-suffix:semicolon
-)brace
-id|pmd_t
 suffix:semicolon
 DECL|member|pgd
 DECL|typedef|pgd_t
@@ -170,16 +162,12 @@ mdefine_line|#define HUGETLB_PAGE_ORDER&t;(HPAGE_SHIFT - PAGE_SHIFT)
 DECL|macro|HAVE_ARCH_HUGETLB_UNMAPPED_AREA
 mdefine_line|#define HAVE_ARCH_HUGETLB_UNMAPPED_AREA
 macro_line|#endif
-DECL|macro|pmd_val
-mdefine_line|#define pmd_val(x)&t;((x).pmd)
 DECL|macro|pgd_val
 mdefine_line|#define pgd_val(x)&t;((x).pgd)
 DECL|macro|pgprot_val
 mdefine_line|#define pgprot_val(x)&t;((x).pgprot)
 DECL|macro|__pte
 mdefine_line|#define __pte(x) ((pte_t) { (x) } )
-DECL|macro|__pmd
-mdefine_line|#define __pmd(x) ((pmd_t) { (x) } )
 DECL|macro|__pgd
 mdefine_line|#define __pgd(x) ((pgd_t) { (x) } )
 DECL|macro|__pgprot

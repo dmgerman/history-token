@@ -379,7 +379,7 @@ suffix:semicolon
 id|MODULE_DESCRIPTION
 c_func
 (paren
-l_string|&quot;QLogic ISP2300 FC-SCSI Host Bus Adapter driver&quot;
+l_string|&quot;QLogic ISP23xx FC-SCSI Host Bus Adapter driver&quot;
 )paren
 suffix:semicolon
 id|MODULE_LICENSE

@@ -1469,7 +1469,7 @@ id|processor_id
 suffix:colon
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Determine which PCI read method to use&n;&t; */
+multiline_comment|/*&n;&t; * Determine which PCI read method to use.&n;&t; * Rev 0 IXP425 requires workaround.&n;&t; */
 r_if
 c_cond
 (paren
@@ -1479,12 +1479,18 @@ id|processor_id
 op_amp
 l_int|0xf
 )paren
+op_logical_and
+op_logical_neg
+id|cpu_is_ixp46x
+c_func
+(paren
+)paren
 )paren
 (brace
 id|printk
 c_func
 (paren
-l_string|&quot;PCI: IXP4xx A0 silicon detected - &quot;
+l_string|&quot;PCI: IXP42x A0 silicon detected - &quot;
 l_string|&quot;PCI Non-Prefetch Workaround Enabled&bslash;n&quot;
 )paren
 suffix:semicolon

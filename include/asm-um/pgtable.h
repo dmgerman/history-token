@@ -2,6 +2,7 @@ multiline_comment|/* &n; * Copyright (C) 2000, 2001, 2002 Jeff Dike (jdike@karay
 macro_line|#ifndef __UM_PGTABLE_H
 DECL|macro|__UM_PGTABLE_H
 mdefine_line|#define __UM_PGTABLE_H
+macro_line|#include &lt;asm-generic/4level-fixup.h&gt;
 macro_line|#include &quot;linux/sched.h&quot;
 macro_line|#include &quot;asm/processor.h&quot;
 macro_line|#include &quot;asm/page.h&quot;

@@ -174,25 +174,21 @@ op_amp
 id|next-&gt;cpu_vm_mask
 )paren
 suffix:semicolon
-multiline_comment|/* Re-load page tables */
-op_star
-id|read_pda
-c_func
+id|asm
+r_volatile
 (paren
-id|level4_pgt
-)paren
-op_assign
+l_string|&quot;movq %0,%%cr3&quot;
+op_scope_resolution
+l_string|&quot;r&quot;
+(paren
 id|__pa
 c_func
 (paren
 id|next-&gt;pgd
 )paren
-op_or
-id|_PAGE_TABLE
-suffix:semicolon
-id|__flush_tlb
-c_func
-(paren
+)paren
+suffix:colon
+l_string|&quot;memory&quot;
 )paren
 suffix:semicolon
 r_if

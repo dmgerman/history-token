@@ -248,6 +248,7 @@ id|pregs
 suffix:semicolon
 multiline_comment|/* Debugging routines */
 DECL|struct|esp_cmdstrings
+r_static
 r_struct
 id|esp_cmdstrings
 (brace
@@ -2173,6 +2174,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* This places the ESP into a known state at boot time. */
 DECL|function|esp_bootup_reset
+r_static
 r_void
 id|esp_bootup_reset
 c_func
@@ -5119,46 +5121,6 @@ suffix:semicolon
 )brace
 r_return
 l_int|0
-suffix:semicolon
-)brace
-multiline_comment|/* Only queuing supported in this ESP driver. */
-DECL|function|esp_command
-r_int
-id|esp_command
-c_func
-(paren
-id|Scsi_Cmnd
-op_star
-id|SCpnt
-)paren
-(brace
-macro_line|#ifdef DEBUG_ESP
-r_struct
-id|NCR_ESP
-op_star
-id|esp
-op_assign
-(paren
-r_struct
-id|NCR_ESP
-op_star
-)paren
-id|SCpnt-&gt;device-&gt;host-&gt;hostdata
-suffix:semicolon
-macro_line|#endif
-id|ESPLOG
-c_func
-(paren
-(paren
-l_string|&quot;esp%d: esp_command() called...&bslash;n&quot;
-comma
-id|esp-&gt;esp_id
-)paren
-)paren
-suffix:semicolon
-r_return
-op_minus
-l_int|1
 suffix:semicolon
 )brace
 multiline_comment|/* Dump driver state. */

@@ -123,7 +123,7 @@ mdefine_line|#define MPUTIM_FREE&t;&t;(1&lt;&lt;6)
 DECL|macro|MPUTIM_CLOCK_ENABLE
 mdefine_line|#define MPUTIM_CLOCK_ENABLE&t;(1&lt;&lt;5)
 DECL|macro|MPUTIM_PTV_MASK
-mdefine_line|#define MPUTIM_PTV_MASK&t;&t;(0x7&lt;&lt;PTV_BIT)
+mdefine_line|#define MPUTIM_PTV_MASK&t;&t;(0x7&lt;&lt;MPUTIM_PTV_BIT)
 DECL|macro|MPUTIM_PTV_BIT
 mdefine_line|#define MPUTIM_PTV_BIT&t;&t;2
 DECL|macro|MPUTIM_AR

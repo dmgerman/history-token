@@ -2,6 +2,7 @@ multiline_comment|/*&n; *  linux/include/asm-arm/pgtable.h&n; *&n; *  Copyright 
 macro_line|#ifndef _ASMARM_PGTABLE_H
 DECL|macro|_ASMARM_PGTABLE_H
 mdefine_line|#define _ASMARM_PGTABLE_H
+macro_line|#include &lt;asm-generic/4level-fixup.h&gt;
 macro_line|#include &lt;asm/memory.h&gt;
 macro_line|#include &lt;asm/proc-fns.h&gt;
 macro_line|#include &lt;asm/arch/vmalloc.h&gt;

@@ -1,6 +1,7 @@
 macro_line|#ifndef _H8300_PGTABLE_H
 DECL|macro|_H8300_PGTABLE_H
 mdefine_line|#define _H8300_PGTABLE_H
+macro_line|#include &lt;asm-generic/4level-fixup.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;

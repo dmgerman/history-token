@@ -2143,6 +2143,12 @@ suffix:colon
 r_case
 id|PCI_DEVICE_ID_INTEL_ICH6_1
 suffix:colon
+r_case
+id|PCI_DEVICE_ID_INTEL_ICH7_0
+suffix:colon
+r_case
+id|PCI_DEVICE_ID_INTEL_ICH7_1
+suffix:colon
 id|r-&gt;name
 op_assign
 l_string|&quot;PIIX/ICH&quot;
@@ -4540,7 +4546,7 @@ id|pin
 suffix:semicolon
 r_extern
 r_int
-id|interrupt_line_quirk
+id|via_interrupt_line_quirk
 suffix:semicolon
 r_struct
 id|pci_dev
@@ -4837,7 +4843,7 @@ r_else
 r_if
 c_cond
 (paren
-id|interrupt_line_quirk
+id|via_interrupt_line_quirk
 )paren
 id|pci_write_config_byte
 c_func

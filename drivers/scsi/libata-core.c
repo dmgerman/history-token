@@ -5,6 +5,7 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
+macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/highmem.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/blkdev.h&gt;
@@ -6937,6 +6938,50 @@ id|ATA_PRD_EOT
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/**&n; *&t;ata_check_atapi_dma - Check whether ATAPI DMA can be supported&n; *&t;@qc: Metadata associated with taskfile to check&n; *&n; *&t;LOCKING:&n; *&t;RETURNS: 0 when ATAPI DMA can be used&n; *               nonzero otherwise&n; */
+DECL|function|ata_check_atapi_dma
+r_int
+id|ata_check_atapi_dma
+c_func
+(paren
+r_struct
+id|ata_queued_cmd
+op_star
+id|qc
+)paren
+(brace
+r_struct
+id|ata_port
+op_star
+id|ap
+op_assign
+id|qc-&gt;ap
+suffix:semicolon
+r_int
+id|rc
+op_assign
+l_int|0
+suffix:semicolon
+multiline_comment|/* Assume ATAPI DMA is OK by default */
+r_if
+c_cond
+(paren
+id|ap-&gt;ops-&gt;check_atapi_dma
+)paren
+id|rc
+op_assign
+id|ap-&gt;ops
+op_member_access_from_pointer
+id|check_atapi_dma
+c_func
+(paren
+id|qc
+)paren
+suffix:semicolon
+r_return
+id|rc
+suffix:semicolon
+)brace
 multiline_comment|/**&n; *&t;ata_qc_prep - Prepare taskfile for submission&n; *&t;@qc: Metadata associated with taskfile to be prepared&n; *&n; *&t;LOCKING:&n; *&t;spin_lock_irqsave(host_set lock)&n; */
 DECL|function|ata_qc_prep
 r_void
@@ -8746,6 +8791,11 @@ id|ap-&gt;pio_task_state
 )paren
 (brace
 r_case
+id|PIO_ST_IDLE
+suffix:colon
+r_return
+suffix:semicolon
+r_case
 id|PIO_ST
 suffix:colon
 id|ata_pio_block
@@ -8795,31 +8845,9 @@ c_func
 id|ap
 )paren
 suffix:semicolon
-r_break
+r_return
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-(paren
-id|ap-&gt;pio_task_state
-op_ne
-id|PIO_ST_IDLE
-)paren
-op_logical_and
-(paren
-id|ap-&gt;pio_task_state
-op_ne
-id|PIO_ST_TMOUT
-)paren
-op_logical_and
-(paren
-id|ap-&gt;pio_task_state
-op_ne
-id|PIO_ST_ERR
-)paren
-)paren
-(brace
 r_if
 c_cond
 (paren
@@ -8846,7 +8874,6 @@ op_amp
 id|ap-&gt;pio_task
 )paren
 suffix:semicolon
-)brace
 )brace
 DECL|function|atapi_request_sense
 r_static
@@ -8884,13 +8911,6 @@ suffix:semicolon
 r_int
 r_int
 id|flags
-suffix:semicolon
-r_int
-id|using_pio
-op_assign
-id|dev-&gt;flags
-op_amp
-id|ATA_DFLAG_PIO
 suffix:semicolon
 r_int
 id|rc
@@ -8988,12 +9008,6 @@ id|qc-&gt;tf.command
 op_assign
 id|ATA_CMD_PACKET
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|using_pio
-)paren
-(brace
 id|qc-&gt;tf.protocol
 op_assign
 id|ATA_PROT_ATAPI
@@ -9022,18 +9036,6 @@ id|qc-&gt;nbytes
 op_assign
 id|SCSI_SENSE_BUFFERSIZE
 suffix:semicolon
-)brace
-r_else
-(brace
-id|qc-&gt;tf.protocol
-op_assign
-id|ATA_PROT_ATAPI_DMA
-suffix:semicolon
-id|qc-&gt;tf.feature
-op_or_assign
-id|ATAPI_PKT_DMA
-suffix:semicolon
-)brace
 id|qc-&gt;waiting
 op_assign
 op_amp

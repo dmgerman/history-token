@@ -193,11 +193,6 @@ DECL|macro|ACPI_SHIFT_RIGHT_64
 mdefine_line|#define ACPI_SHIFT_RIGHT_64(n_hi, n_lo) &bslash;&n;    asm(&quot;shrl   $1,%2;&quot;             &bslash;&n;        &quot;rcrl   $1,%3;&quot;             &bslash;&n;        :&quot;=r&quot;(n_hi), &quot;=r&quot;(n_lo)     &bslash;&n;        :&quot;0&quot;(n_hi), &quot;1&quot;(n_lo))
 multiline_comment|/*&n; * Refer Intel ACPI _PDC support document for bit definitions&n; */
 DECL|macro|ACPI_PDC_EST_CAPABILITY_SMP
-mdefine_line|#define ACPI_PDC_EST_CAPABILITY_SMP&t;0xa
-DECL|macro|ACPI_PDC_EST_CAPABILITY_MSR
-mdefine_line|#define ACPI_PDC_EST_CAPABILITY_MSR&t;0x1
-multiline_comment|/*&n; * Refer Intel ACPI _PDC support document for bit definitions&n; */
-DECL|macro|ACPI_PDC_EST_CAPABILITY_SMP
 mdefine_line|#define ACPI_PDC_EST_CAPABILITY_SMP &t;0xa
 DECL|macro|ACPI_PDC_EST_CAPABILITY_MSR
 mdefine_line|#define ACPI_PDC_EST_CAPABILITY_MSR&t;0x1

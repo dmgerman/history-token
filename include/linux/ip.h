@@ -214,10 +214,27 @@ suffix:semicolon
 suffix:semicolon
 DECL|macro|optlength
 mdefine_line|#define optlength(opt) (sizeof(struct ip_options) + opt-&gt;optlen)
-DECL|struct|inet_opt
 r_struct
-id|inet_opt
+id|ipv6_pinfo
+suffix:semicolon
+DECL|struct|inet_sock
+r_struct
+id|inet_sock
 (brace
+multiline_comment|/* sk and pinet6 has to be the first two members of inet_sock */
+DECL|member|sk
+r_struct
+id|sock
+id|sk
+suffix:semicolon
+macro_line|#if defined(CONFIG_IPV6) || defined(CONFIG_IPV6_MODULE)
+DECL|member|pinet6
+r_struct
+id|ipv6_pinfo
+op_star
+id|pinet6
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/* Socket demultiplex comparisons on incoming packets. */
 DECL|member|daddr
 id|__u32
@@ -368,39 +385,11 @@ suffix:semicolon
 suffix:semicolon
 DECL|macro|IPCORK_OPT
 mdefine_line|#define IPCORK_OPT&t;1&t;/* ip-options has been held in ipcork.opt */
-r_struct
-id|ipv6_pinfo
-suffix:semicolon
-multiline_comment|/* WARNING: don&squot;t change the layout of the members in inet_sock! */
-DECL|struct|inet_sock
-r_struct
-id|inet_sock
-(brace
-DECL|member|sk
-r_struct
-id|sock
-id|sk
-suffix:semicolon
-macro_line|#if defined(CONFIG_IPV6) || defined(CONFIG_IPV6_MODULE)
-DECL|member|pinet6
-r_struct
-id|ipv6_pinfo
-op_star
-id|pinet6
-suffix:semicolon
-macro_line|#endif
-DECL|member|inet
-r_struct
-id|inet_opt
-id|inet
-suffix:semicolon
-)brace
-suffix:semicolon
 DECL|function|inet_sk
 r_static
 r_inline
 r_struct
-id|inet_opt
+id|inet_sock
 op_star
 id|inet_sk
 c_func
@@ -409,21 +398,16 @@ r_const
 r_struct
 id|sock
 op_star
-id|__sk
+id|sk
 )paren
 (brace
 r_return
-op_amp
-(paren
 (paren
 r_struct
 id|inet_sock
 op_star
 )paren
-id|__sk
-)paren
-op_member_access_from_pointer
-id|inet
+id|sk
 suffix:semicolon
 )brace
 macro_line|#endif

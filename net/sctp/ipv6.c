@@ -2394,7 +2394,7 @@ id|asoc
 )paren
 (brace
 r_struct
-id|inet_opt
+id|inet_sock
 op_star
 id|inet
 op_assign
@@ -2410,7 +2410,7 @@ op_star
 id|newsk
 suffix:semicolon
 r_struct
-id|inet_opt
+id|inet_sock
 op_star
 id|newinet
 suffix:semicolon
@@ -2521,7 +2521,7 @@ op_star
 )paren
 id|newsk
 suffix:semicolon
-id|newsctp6sk-&gt;pinet6
+id|newsctp6sk-&gt;inet.pinet6
 op_assign
 op_amp
 id|newsctp6sk-&gt;inet6

@@ -89,6 +89,9 @@ suffix:colon
 r_case
 id|PCI_DEVICE_ID_INTEL_ICH6_19
 suffix:colon
+r_case
+id|PCI_DEVICE_ID_INTEL_ICH7_21
+suffix:colon
 id|mode
 op_assign
 l_int|3
@@ -1437,6 +1440,9 @@ suffix:colon
 r_case
 id|PCI_DEVICE_ID_INTEL_ICH6_19
 suffix:colon
+r_case
+id|PCI_DEVICE_ID_INTEL_ICH7_21
+suffix:colon
 (brace
 r_int
 r_int
@@ -1737,7 +1743,7 @@ suffix:semicolon
 multiline_comment|/**&n; *&t;init_setup_piix&t;&t;-&t;callback for IDE initialize&n; *&t;@dev: PIIX PCI device&n; *&t;@d: IDE pci info&n; *&n; *&t;Enable the xp fixup for the PIIX controller and then perform&n; *&t;a standard ide PCI setup&n; */
 DECL|function|init_setup_piix
 r_static
-r_void
+r_int
 id|__devinit
 id|init_setup_piix
 c_func
@@ -1752,6 +1758,7 @@ op_star
 id|d
 )paren
 (brace
+r_return
 id|ide_setup_pci_device
 c_func
 (paren
@@ -1791,6 +1798,7 @@ id|piix_pci_info
 id|id-&gt;driver_data
 )braket
 suffix:semicolon
+r_return
 id|d
 op_member_access_from_pointer
 id|init_setup
@@ -1800,9 +1808,6 @@ id|dev
 comma
 id|d
 )paren
-suffix:semicolon
-r_return
-l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/**&n; *&t;piix_check_450nx&t;-&t;Check for problem 450NX setup&n; *&t;&n; *&t;Check for the present of 450NX errata #19 and errata #25. If&n; *&t;they are found, disable use of DMA IDE&n; */
@@ -2286,6 +2291,22 @@ comma
 l_int|0
 comma
 l_int|20
+)brace
+comma
+(brace
+id|PCI_VENDOR_ID_INTEL
+comma
+id|PCI_DEVICE_ID_INTEL_ICH7_21
+comma
+id|PCI_ANY_ID
+comma
+id|PCI_ANY_ID
+comma
+l_int|0
+comma
+l_int|0
+comma
+l_int|21
 )brace
 comma
 (brace

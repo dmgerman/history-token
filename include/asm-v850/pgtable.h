@@ -1,6 +1,7 @@
 macro_line|#ifndef __V850_PGTABLE_H__
 DECL|macro|__V850_PGTABLE_H__
 mdefine_line|#define __V850_PGTABLE_H__
+macro_line|#include &lt;asm-generic/4level-fixup.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 DECL|macro|pgd_present

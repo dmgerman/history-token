@@ -533,8 +533,6 @@ r_struct
 id|php_ctlr_state_s
 op_star
 id|php_ctlr_list_head
-op_assign
-l_int|0
 suffix:semicolon
 multiline_comment|/* HPC state linked list */
 DECL|variable|ctlr_seq_num

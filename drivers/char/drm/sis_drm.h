@@ -2,18 +2,34 @@ macro_line|#ifndef __SIS_DRM_H__
 DECL|macro|__SIS_DRM_H__
 mdefine_line|#define __SIS_DRM_H__
 multiline_comment|/* SiS specific ioctls */
+DECL|macro|NOT_USED_0_3
+mdefine_line|#define NOT_USED_0_3
+DECL|macro|DRM_SIS_FB_ALLOC
+mdefine_line|#define DRM_SIS_FB_ALLOC&t;0x04
+DECL|macro|DRM_SIS_FB_FREE
+mdefine_line|#define DRM_SIS_FB_FREE&t;        0x05
+DECL|macro|NOT_USED_6_12
+mdefine_line|#define NOT_USED_6_12
+DECL|macro|DRM_SIS_AGP_INIT
+mdefine_line|#define DRM_SIS_AGP_INIT&t;0x13
+DECL|macro|DRM_SIS_AGP_ALLOC
+mdefine_line|#define DRM_SIS_AGP_ALLOC&t;0x14
+DECL|macro|DRM_SIS_AGP_FREE
+mdefine_line|#define DRM_SIS_AGP_FREE&t;0x15
+DECL|macro|DRM_SIS_FB_INIT
+mdefine_line|#define DRM_SIS_FB_INIT&t;        0x16
 DECL|macro|DRM_IOCTL_SIS_FB_ALLOC
-mdefine_line|#define DRM_IOCTL_SIS_FB_ALLOC&t;&t;DRM_IOWR(0x44, drm_sis_mem_t)
+mdefine_line|#define DRM_IOCTL_SIS_FB_ALLOC&t;&t;DRM_IOWR(DRM_COMMAND_BASE + DRM_SIS_FB_ALLOC, drm_sis_mem_t)
 DECL|macro|DRM_IOCTL_SIS_FB_FREE
-mdefine_line|#define DRM_IOCTL_SIS_FB_FREE&t;&t;DRM_IOW( 0x45, drm_sis_mem_t)
+mdefine_line|#define DRM_IOCTL_SIS_FB_FREE&t;&t;DRM_IOW( DRM_COMMAND_BASE + DRM_SIS_FB_FREE, drm_sis_mem_t)
 DECL|macro|DRM_IOCTL_SIS_AGP_INIT
-mdefine_line|#define DRM_IOCTL_SIS_AGP_INIT&t;&t;DRM_IOWR(0x53, drm_sis_agp_t)
+mdefine_line|#define DRM_IOCTL_SIS_AGP_INIT&t;&t;DRM_IOWR(DRM_COMMAND_BASE + DRM_SIS_AGP_INIT, drm_sis_agp_t)
 DECL|macro|DRM_IOCTL_SIS_AGP_ALLOC
-mdefine_line|#define DRM_IOCTL_SIS_AGP_ALLOC&t;&t;DRM_IOWR(0x54, drm_sis_mem_t)
+mdefine_line|#define DRM_IOCTL_SIS_AGP_ALLOC&t;&t;DRM_IOWR(DRM_COMMAND_BASE + DRM_SIS_AGP_ALLOC, drm_sis_mem_t)
 DECL|macro|DRM_IOCTL_SIS_AGP_FREE
-mdefine_line|#define DRM_IOCTL_SIS_AGP_FREE&t;&t;DRM_IOW( 0x55, drm_sis_mem_t)
+mdefine_line|#define DRM_IOCTL_SIS_AGP_FREE&t;&t;DRM_IOW( DRM_COMMAND_BASE + DRM_SIS_AGP_FREE, drm_sis_mem_t)
 DECL|macro|DRM_IOCTL_SIS_FB_INIT
-mdefine_line|#define DRM_IOCTL_SIS_FB_INIT&t;&t;DRM_IOW( 0x56, drm_sis_fb_t)
+mdefine_line|#define DRM_IOCTL_SIS_FB_INIT&t;&t;DRM_IOW( DRM_COMMAND_BASE + DRM_SIS_FB_INIT, drm_sis_fb_t)
 multiline_comment|/*&n;#define DRM_IOCTL_SIS_FLIP&t;&t;DRM_IOW( 0x48, drm_sis_flip_t)&n;#define DRM_IOCTL_SIS_FLIP_INIT&t;&t;DRM_IO(  0x49)&n;#define DRM_IOCTL_SIS_FLIP_FINAL&t;DRM_IO(  0x50)&n;*/
 r_typedef
 r_struct

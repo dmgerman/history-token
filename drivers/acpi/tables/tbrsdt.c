@@ -513,6 +513,10 @@ op_amp
 id|address
 )paren
 suffix:semicolon
+id|table_info.type
+op_assign
+id|ACPI_TABLE_XSDT
+suffix:semicolon
 id|status
 op_assign
 id|acpi_tb_get_table

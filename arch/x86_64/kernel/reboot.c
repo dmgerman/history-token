@@ -203,7 +203,7 @@ id|init_level4_pgt
 l_int|0
 )braket
 op_assign
-id|__pml4
+id|__pgd
 c_func
 (paren
 id|__pa

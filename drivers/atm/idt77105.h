@@ -118,16 +118,6 @@ id|dev
 )paren
 id|__init
 suffix:semicolon
-r_int
-id|idt77105_stop
-c_func
-(paren
-r_struct
-id|atm_dev
-op_star
-id|dev
-)paren
-suffix:semicolon
 macro_line|#endif
 multiline_comment|/*&n; * Tunable parameters&n; */
 multiline_comment|/* Time between samples of the hardware cell counters. Should be &lt;= 1 sec */

@@ -296,6 +296,7 @@ r_extern
 r_volatile
 r_struct
 id|OpenPIC
+id|__iomem
 op_star
 id|OpenPIC
 suffix:semicolon

@@ -463,36 +463,66 @@ id|drm_i810_sarea_t
 suffix:semicolon
 multiline_comment|/* WARNING: If you change any of these defines, make sure to change the&n; * defines in the Xserver file (xf86drmMga.h)&n; */
 multiline_comment|/* i810 specific ioctls&n; * The device specific ioctl range is 0x40 to 0x79.&n; */
+DECL|macro|DRM_I810_INIT
+mdefine_line|#define DRM_I810_INIT&t;&t;0x00
+DECL|macro|DRM_I810_VERTEX
+mdefine_line|#define DRM_I810_VERTEX&t;&t;0x01
+DECL|macro|DRM_I810_CLEAR
+mdefine_line|#define DRM_I810_CLEAR&t;&t;0x02
+DECL|macro|DRM_I810_FLUSH
+mdefine_line|#define DRM_I810_FLUSH&t;&t;0x03
+DECL|macro|DRM_I810_GETAGE
+mdefine_line|#define DRM_I810_GETAGE&t;&t;0x04
+DECL|macro|DRM_I810_GETBUF
+mdefine_line|#define DRM_I810_GETBUF&t;&t;0x05
+DECL|macro|DRM_I810_SWAP
+mdefine_line|#define DRM_I810_SWAP&t;&t;0x06
+DECL|macro|DRM_I810_COPY
+mdefine_line|#define DRM_I810_COPY&t;&t;0x07
+DECL|macro|DRM_I810_DOCOPY
+mdefine_line|#define DRM_I810_DOCOPY&t;&t;0x08
+DECL|macro|DRM_I810_OV0INFO
+mdefine_line|#define DRM_I810_OV0INFO&t;0x09
+DECL|macro|DRM_I810_FSTATUS
+mdefine_line|#define DRM_I810_FSTATUS&t;0x0a
+DECL|macro|DRM_I810_OV0FLIP
+mdefine_line|#define DRM_I810_OV0FLIP&t;0x0b
+DECL|macro|DRM_I810_MC
+mdefine_line|#define DRM_I810_MC&t;&t;0x0c
+DECL|macro|DRM_I810_RSTATUS
+mdefine_line|#define DRM_I810_RSTATUS&t;0x0d
+DECL|macro|DRM_I810_FLIP
+mdefine_line|#define DRM_I810_FLIP&t;&t;0x0e
 DECL|macro|DRM_IOCTL_I810_INIT
-mdefine_line|#define DRM_IOCTL_I810_INIT&t;&t;DRM_IOW( 0x40, drm_i810_init_t)
+mdefine_line|#define DRM_IOCTL_I810_INIT&t;&t;DRM_IOW( DRM_COMMAND_BASE + DRM_I810_INIT, drm_i810_init_t)
 DECL|macro|DRM_IOCTL_I810_VERTEX
-mdefine_line|#define DRM_IOCTL_I810_VERTEX&t;&t;DRM_IOW( 0x41, drm_i810_vertex_t)
+mdefine_line|#define DRM_IOCTL_I810_VERTEX&t;&t;DRM_IOW( DRM_COMMAND_BASE + DRM_I810_VERTEX, drm_i810_vertex_t)
 DECL|macro|DRM_IOCTL_I810_CLEAR
-mdefine_line|#define DRM_IOCTL_I810_CLEAR&t;&t;DRM_IOW( 0x42, drm_i810_clear_t)
+mdefine_line|#define DRM_IOCTL_I810_CLEAR&t;&t;DRM_IOW( DRM_COMMAND_BASE + DRM_I810_CLEAR, drm_i810_clear_t)
 DECL|macro|DRM_IOCTL_I810_FLUSH
-mdefine_line|#define DRM_IOCTL_I810_FLUSH&t;&t;DRM_IO(  0x43)
+mdefine_line|#define DRM_IOCTL_I810_FLUSH&t;&t;DRM_IO(  DRM_COMMAND_BASE + DRM_I810_FLUSH)
 DECL|macro|DRM_IOCTL_I810_GETAGE
-mdefine_line|#define DRM_IOCTL_I810_GETAGE&t;&t;DRM_IO(  0x44)
+mdefine_line|#define DRM_IOCTL_I810_GETAGE&t;&t;DRM_IO(  DRM_COMMAND_BASE + DRM_I810_GETAGE)
 DECL|macro|DRM_IOCTL_I810_GETBUF
-mdefine_line|#define DRM_IOCTL_I810_GETBUF&t;&t;DRM_IOWR(0x45, drm_i810_dma_t)
+mdefine_line|#define DRM_IOCTL_I810_GETBUF&t;&t;DRM_IOWR(DRM_COMMAND_BASE + DRM_I810_GETBUF, drm_i810_dma_t)
 DECL|macro|DRM_IOCTL_I810_SWAP
-mdefine_line|#define DRM_IOCTL_I810_SWAP&t;&t;DRM_IO(  0x46)
+mdefine_line|#define DRM_IOCTL_I810_SWAP&t;&t;DRM_IO(  DRM_COMMAND_BASE + DRM_I810_SWAP)
 DECL|macro|DRM_IOCTL_I810_COPY
-mdefine_line|#define DRM_IOCTL_I810_COPY&t;&t;DRM_IOW( 0x47, drm_i810_copy_t)
+mdefine_line|#define DRM_IOCTL_I810_COPY&t;&t;DRM_IOW( DRM_COMMAND_BASE + DRM_I810_COPY, drm_i810_copy_t)
 DECL|macro|DRM_IOCTL_I810_DOCOPY
-mdefine_line|#define DRM_IOCTL_I810_DOCOPY&t;&t;DRM_IO(  0x48)
+mdefine_line|#define DRM_IOCTL_I810_DOCOPY&t;&t;DRM_IO(  DRM_COMMAND_BASE + DRM_I810_DOCOPY)
 DECL|macro|DRM_IOCTL_I810_OV0INFO
-mdefine_line|#define DRM_IOCTL_I810_OV0INFO&t;&t;DRM_IOR( 0x49, drm_i810_overlay_t)
+mdefine_line|#define DRM_IOCTL_I810_OV0INFO&t;&t;DRM_IOR( DRM_COMMAND_BASE + DRM_I810_OV0INFO, drm_i810_overlay_t)
 DECL|macro|DRM_IOCTL_I810_FSTATUS
-mdefine_line|#define DRM_IOCTL_I810_FSTATUS&t;&t;DRM_IO ( 0x4a)
+mdefine_line|#define DRM_IOCTL_I810_FSTATUS&t;&t;DRM_IO ( DRM_COMMAND_BASE + DRM_I810_FSTATUS)
 DECL|macro|DRM_IOCTL_I810_OV0FLIP
-mdefine_line|#define DRM_IOCTL_I810_OV0FLIP&t;&t;DRM_IO ( 0x4b)
+mdefine_line|#define DRM_IOCTL_I810_OV0FLIP&t;&t;DRM_IO ( DRM_COMMAND_BASE + DRM_I810_OV0FLIP)
 DECL|macro|DRM_IOCTL_I810_MC
-mdefine_line|#define DRM_IOCTL_I810_MC&t;&t;DRM_IOW( 0x4c, drm_i810_mc_t)
+mdefine_line|#define DRM_IOCTL_I810_MC&t;&t;DRM_IOW( DRM_COMMAND_BASE + DRM_I810_MC, drm_i810_mc_t)
 DECL|macro|DRM_IOCTL_I810_RSTATUS
-mdefine_line|#define DRM_IOCTL_I810_RSTATUS&t;&t;DRM_IO ( 0x4d )
+mdefine_line|#define DRM_IOCTL_I810_RSTATUS&t;&t;DRM_IO ( DRM_COMMAND_BASE + DRM_I810_RSTATUS)
 DECL|macro|DRM_IOCTL_I810_FLIP
-mdefine_line|#define DRM_IOCTL_I810_FLIP             DRM_IO ( 0x4e )
+mdefine_line|#define DRM_IOCTL_I810_FLIP             DRM_IO ( DRM_COMMAND_BASE + DRM_I810_FLIP)
 DECL|struct|_drm_i810_clear
 r_typedef
 r_struct

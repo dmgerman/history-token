@@ -581,7 +581,6 @@ id|u32
 id|flags
 )paren
 suffix:semicolon
-macro_line|#ifdef ACPI_FUTURE_USAGE
 id|acpi_status
 id|acpi_clear_event
 (paren
@@ -589,6 +588,7 @@ id|u32
 id|event
 )paren
 suffix:semicolon
+macro_line|#ifdef ACPI_FUTURE_USAGE
 id|acpi_status
 id|acpi_get_event_status
 (paren
