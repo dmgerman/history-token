@@ -5370,11 +5370,9 @@ op_amp
 id|pbd_delwrite_queue
 )paren
 suffix:semicolon
-id|pb-&gt;pb_flushtime
+id|pb-&gt;pb_queuetime
 op_assign
 id|jiffies
-op_plus
-id|xfs_age_buffer
 suffix:semicolon
 id|spin_unlock
 c_func
@@ -5666,7 +5664,9 @@ c_func
 (paren
 id|jiffies
 comma
-id|pb-&gt;pb_flushtime
+id|pb-&gt;pb_queuetime
+op_plus
+id|xfs_age_buffer
 )paren
 )paren
 (brace

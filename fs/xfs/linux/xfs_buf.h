@@ -374,12 +374,12 @@ id|semaphore
 id|pb_sema
 suffix:semicolon
 multiline_comment|/* semaphore for lockables  */
-DECL|member|pb_flushtime
+DECL|member|pb_queuetime
 r_int
 r_int
-id|pb_flushtime
+id|pb_queuetime
 suffix:semicolon
-multiline_comment|/* time to flush pagebuf    */
+multiline_comment|/* time buffer was queued   */
 DECL|member|pb_pin_count
 id|atomic_t
 id|pb_pin_count
