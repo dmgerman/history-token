@@ -4789,8 +4789,6 @@ id|cmap
 suffix:semicolon
 r_int
 id|i
-comma
-id|rc
 suffix:semicolon
 r_if
 c_cond
@@ -5127,7 +5125,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|rc
+id|i
 op_assign
 id|fb_cursor
 c_func
@@ -5148,7 +5146,7 @@ c_func
 )paren
 suffix:semicolon
 r_return
-id|rc
+id|i
 suffix:semicolon
 macro_line|#ifdef CONFIG_FRAMEBUFFER_CONSOLE
 r_case
