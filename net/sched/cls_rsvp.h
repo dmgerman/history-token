@@ -2507,6 +2507,8 @@ op_minus
 l_int|1
 )braket
 op_logical_and
+id|pinfo
+op_logical_and
 id|pinfo-&gt;protocol
 op_eq
 id|s-&gt;protocol
@@ -2770,6 +2772,12 @@ id|s-&gt;dst
 )paren
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|pinfo
+)paren
+(brace
 id|s-&gt;dpi
 op_assign
 id|pinfo-&gt;dpi
@@ -2782,6 +2790,7 @@ id|s-&gt;tunnelid
 op_assign
 id|pinfo-&gt;tunnelid
 suffix:semicolon
+)brace
 r_for
 c_loop
 (paren
