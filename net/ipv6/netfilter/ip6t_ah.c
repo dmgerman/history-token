@@ -187,7 +187,7 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/*DEBUGP(&quot;IPv6 AH entered&bslash;n&quot;);*/
-multiline_comment|/* if (opt-&gt;auth == 0) return 0;&n;       * It does not filled on output */
+multiline_comment|/* if (opt-&gt;auth == 0) return 0;&n;&t;* It does not filled on output */
 multiline_comment|/* type of the 1st exthdr */
 id|nexthdr
 op_assign
@@ -242,9 +242,6 @@ c_cond
 (paren
 id|len
 OL
-(paren
-r_int
-)paren
 r_sizeof
 (paren
 r_struct
@@ -262,10 +259,8 @@ id|nexthdr
 op_eq
 id|NEXTHDR_NONE
 )paren
-(brace
 r_break
 suffix:semicolon
-)brace
 multiline_comment|/* ESP -&gt; evaluate */
 r_if
 c_cond
@@ -274,10 +269,8 @@ id|nexthdr
 op_eq
 id|NEXTHDR_ESP
 )paren
-(brace
 r_break
 suffix:semicolon
-)brace
 id|hp
 op_assign
 id|skb_header_pointer
@@ -312,12 +305,10 @@ id|nexthdr
 op_eq
 id|NEXTHDR_FRAGMENT
 )paren
-(brace
 id|hdrlen
 op_assign
 l_int|8
 suffix:semicolon
-)brace
 r_else
 r_if
 c_cond
@@ -398,8 +389,6 @@ suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
-r_break
-suffix:semicolon
 )brace
 id|nexthdr
 op_assign
@@ -447,9 +436,6 @@ c_cond
 (paren
 id|len
 OL
-(paren
-r_int
-)paren
 r_sizeof
 (paren
 r_struct
