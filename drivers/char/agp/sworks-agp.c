@@ -2100,6 +2100,21 @@ id|pdev-&gt;device
 )paren
 (brace
 r_case
+l_int|0x0006
+suffix:colon
+multiline_comment|/* ServerWorks CNB20HE&n;&t;&t;Fail silently.*/
+id|printk
+(paren
+id|KERN_ERR
+id|PFX
+l_string|&quot;Detected ServerWorks CNB20HE chipset: No AGP present.&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|ENODEV
+suffix:semicolon
+r_case
 id|PCI_DEVICE_ID_SERVERWORKS_HE
 suffix:colon
 r_case
