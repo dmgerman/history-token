@@ -17,6 +17,7 @@ macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/time.h&gt;&t;&t;/* struct timeval */
 macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;linux/bitops.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;net/sock.h&gt;&t;&t;/* struct sock */
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
