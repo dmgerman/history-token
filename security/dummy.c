@@ -1768,7 +1768,7 @@ comma
 dot
 id|acct
 op_assign
-id|dummy_act
+id|dummy_acct
 comma
 dot
 id|capable
