@@ -20,10 +20,6 @@ macro_line|#ifndef __HAVE_MULTIPLE_DMA_QUEUES
 DECL|macro|__HAVE_MULTIPLE_DMA_QUEUES
 mdefine_line|#define __HAVE_MULTIPLE_DMA_QUEUES&t;0
 macro_line|#endif
-macro_line|#ifndef __HAVE_DMA_SCHEDULE
-DECL|macro|__HAVE_DMA_SCHEDULE
-mdefine_line|#define __HAVE_DMA_SCHEDULE&t;&t;0
-macro_line|#endif
 macro_line|#ifndef __HAVE_COUNTERS
 DECL|macro|__HAVE_COUNTERS
 mdefine_line|#define __HAVE_COUNTERS&t;&t;&t;0
@@ -5003,19 +4999,6 @@ comma
 id|DRM_KERNEL_CONTEXT
 )paren
 suffix:semicolon
-macro_line|#if __HAVE_DMA_SCHEDULE
-id|DRM
-c_func
-(paren
-id|dma_schedule
-)paren
-(paren
-id|dev
-comma
-l_int|1
-)paren
-suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
