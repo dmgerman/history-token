@@ -1141,6 +1141,10 @@ id|pglen
 op_sub_assign
 id|base
 suffix:semicolon
+id|base
+op_add_assign
+id|xdr-&gt;page_base
+suffix:semicolon
 id|ppage
 op_add_assign
 id|base
@@ -1156,13 +1160,6 @@ suffix:semicolon
 )paren
 (brace
 id|flush_dcache_page
-c_func
-(paren
-op_star
-id|ppage
-)paren
-suffix:semicolon
-id|flush_page_to_ram
 c_func
 (paren
 op_star
