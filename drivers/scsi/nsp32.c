@@ -1309,7 +1309,6 @@ r_int
 )paren
 suffix:semicolon
 r_static
-r_inline
 r_void
 id|nsp32_prom_set
 (paren
@@ -1322,7 +1321,6 @@ r_int
 )paren
 suffix:semicolon
 r_static
-r_inline
 r_int
 id|nsp32_prom_get
 (paren
@@ -11715,7 +11713,6 @@ suffix:semicolon
 )brace
 DECL|function|nsp32_prom_set
 r_static
-r_inline
 r_void
 id|nsp32_prom_set
 c_func
@@ -11789,7 +11786,6 @@ suffix:semicolon
 )brace
 DECL|function|nsp32_prom_get
 r_static
-r_inline
 r_int
 id|nsp32_prom_get
 c_func

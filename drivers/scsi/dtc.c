@@ -1392,6 +1392,12 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
+id|NCR5380_exit
+c_func
+(paren
+id|shost
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren

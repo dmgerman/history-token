@@ -301,13 +301,6 @@ c_func
 id|scsi_free_host_dev
 )paren
 suffix:semicolon
-DECL|variable|scsi_sleep
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|scsi_sleep
-)paren
-suffix:semicolon
 DECL|variable|scsi_io_completion
 id|EXPORT_SYMBOL
 c_func
@@ -315,11 +308,11 @@ c_func
 id|scsi_io_completion
 )paren
 suffix:semicolon
-DECL|variable|scsi_add_device
+DECL|variable|__scsi_add_device
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|scsi_add_device
+id|__scsi_add_device
 )paren
 suffix:semicolon
 DECL|variable|scsi_remove_device

@@ -9,7 +9,6 @@ macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
-macro_line|#include &quot;scsi3.h&quot;&t;&t;/* SCSI defines */
 macro_line|#include &quot;lsi/mpi_type.h&quot;
 macro_line|#include &quot;lsi/mpi.h&quot;&t;&t;/* Fusion MPI(nterface) basic defs */
 macro_line|#include &quot;lsi/mpi_ioc.h&quot;&t;/* Fusion MPT IOC(ontroller) defs */
@@ -31,9 +30,9 @@ DECL|macro|COPYRIGHT
 mdefine_line|#define COPYRIGHT&t;&quot;Copyright (c) 1999-2004 &quot; MODULEAUTHOR
 macro_line|#endif
 DECL|macro|MPT_LINUX_VERSION_COMMON
-mdefine_line|#define MPT_LINUX_VERSION_COMMON&t;&quot;3.01.09&quot;
+mdefine_line|#define MPT_LINUX_VERSION_COMMON&t;&quot;3.01.16&quot;
 DECL|macro|MPT_LINUX_PACKAGE_NAME
-mdefine_line|#define MPT_LINUX_PACKAGE_NAME&t;&t;&quot;@(#)mptlinux-3.01.09&quot;
+mdefine_line|#define MPT_LINUX_PACKAGE_NAME&t;&t;&quot;@(#)mptlinux-3.01.16&quot;
 DECL|macro|WHAT_MAGIC_STRING
 mdefine_line|#define WHAT_MAGIC_STRING&t;&t;&quot;@&quot; &quot;(&quot; &quot;#&quot; &quot;)&quot;
 DECL|macro|show_mptmod_ver
@@ -506,51 +505,6 @@ DECL|typedef|Q_TRACKER
 )brace
 id|Q_TRACKER
 suffix:semicolon
-DECL|struct|_MPT_DONE_Q
-r_typedef
-r_struct
-id|_MPT_DONE_Q
-(brace
-DECL|member|forw
-r_struct
-id|_MPT_DONE_Q
-op_star
-id|forw
-suffix:semicolon
-DECL|member|back
-r_struct
-id|_MPT_DONE_Q
-op_star
-id|back
-suffix:semicolon
-DECL|member|argp
-r_void
-op_star
-id|argp
-suffix:semicolon
-DECL|typedef|MPT_DONE_Q
-)brace
-id|MPT_DONE_Q
-suffix:semicolon
-DECL|struct|_DONE_Q_TRACKER
-r_typedef
-r_struct
-id|_DONE_Q_TRACKER
-(brace
-DECL|member|head
-id|MPT_DONE_Q
-op_star
-id|head
-suffix:semicolon
-DECL|member|tail
-id|MPT_DONE_Q
-op_star
-id|tail
-suffix:semicolon
-DECL|typedef|DONE_Q_TRACKER
-)brace
-id|DONE_Q_TRACKER
-suffix:semicolon
 multiline_comment|/*&n; *  Chip-specific stuff... FC929 delineates break between&n; *  FC and Parallel SCSI parts. Do NOT re-order.&n; */
 r_typedef
 r_enum
@@ -768,6 +722,15 @@ DECL|typedef|ScsiCmndTracker
 )brace
 id|ScsiCmndTracker
 suffix:semicolon
+multiline_comment|/* VirtDevice negoFlags field */
+DECL|macro|MPT_TARGET_NO_NEGO_WIDE
+mdefine_line|#define MPT_TARGET_NO_NEGO_WIDE&t;&t;0x01
+DECL|macro|MPT_TARGET_NO_NEGO_SYNC
+mdefine_line|#define MPT_TARGET_NO_NEGO_SYNC&t;&t;0x02
+DECL|macro|MPT_TARGET_NO_NEGO_QAS
+mdefine_line|#define MPT_TARGET_NO_NEGO_QAS&t;&t;0x04
+DECL|macro|MPT_TAPE_NEGO_IDP
+mdefine_line|#define MPT_TAPE_NEGO_IDP     &t;&t;0x08
 multiline_comment|/*&n; *&t;VirtDevice - FC LUN device or SCSI target device&n; *&t;(used to be FCSCSI_TARGET)&n; */
 DECL|struct|_VirtDevice
 r_typedef
@@ -830,12 +793,12 @@ DECL|member|maxWidth
 id|u8
 id|maxWidth
 suffix:semicolon
-multiline_comment|/* 0 if narrow, 1 if wide*/
+multiline_comment|/* 0 if narrow, 1 if wide */
 DECL|member|negoFlags
 id|u8
 id|negoFlags
 suffix:semicolon
-multiline_comment|/* bit field, 0 if WDTR/SDTR/QAS allowed */
+multiline_comment|/* bit field, see above */
 DECL|member|raidVolume
 id|u8
 id|raidVolume
@@ -971,12 +934,6 @@ DECL|macro|MPT_TARGET_FLAGS_VALID_56
 mdefine_line|#define MPT_TARGET_FLAGS_VALID_56&t;0x10
 DECL|macro|MPT_TARGET_FLAGS_SAF_TE_ISSUED
 mdefine_line|#define MPT_TARGET_FLAGS_SAF_TE_ISSUED&t;0x20
-DECL|macro|MPT_TARGET_NO_NEGO_WIDE
-mdefine_line|#define MPT_TARGET_NO_NEGO_WIDE&t;&t;0x01
-DECL|macro|MPT_TARGET_NO_NEGO_SYNC
-mdefine_line|#define MPT_TARGET_NO_NEGO_SYNC&t;&t;0x02
-DECL|macro|MPT_TARGET_NO_NEGO_QAS
-mdefine_line|#define MPT_TARGET_NO_NEGO_QAS&t;&t;0x04
 DECL|struct|_VirtDevTracker
 r_typedef
 r_struct
@@ -1124,6 +1081,11 @@ id|timer_list
 id|TMtimer
 suffix:semicolon
 multiline_comment|/* timer function for this adapter */
+DECL|member|sem_ioc
+r_struct
+id|semaphore
+id|sem_ioc
+suffix:semicolon
 DECL|typedef|MPT_IOCTL
 )brace
 id|MPT_IOCTL
@@ -1392,44 +1354,19 @@ DECL|member|active
 r_int
 id|active
 suffix:semicolon
-DECL|member|fifo_pool
+DECL|member|alloc
 id|u8
 op_star
-id|fifo_pool
+id|alloc
 suffix:semicolon
-multiline_comment|/* dma pool for fifo&squot;s */
-DECL|member|fifo_pool_dma
+multiline_comment|/* frames alloc ptr */
+DECL|member|alloc_dma
 id|dma_addr_t
-id|fifo_pool_dma
+id|alloc_dma
 suffix:semicolon
-DECL|member|fifo_pool_sz
-r_int
-id|fifo_pool_sz
-suffix:semicolon
-multiline_comment|/* allocated size */
-DECL|member|chain_alloc
-id|u8
-op_star
-id|chain_alloc
-suffix:semicolon
-multiline_comment|/* chain buffer alloc ptr */
-DECL|member|chain_alloc_dma
-id|dma_addr_t
-id|chain_alloc_dma
-suffix:semicolon
-DECL|member|chain_alloc_sz
-r_int
-id|chain_alloc_sz
-suffix:semicolon
-DECL|member|reply_alloc
-id|u8
-op_star
-id|reply_alloc
-suffix:semicolon
-multiline_comment|/* Reply frames alloc ptr */
-DECL|member|reply_alloc_dma
-id|dma_addr_t
-id|reply_alloc_dma
+DECL|member|alloc_sz
+id|u32
+id|alloc_sz
 suffix:semicolon
 DECL|member|reply_frames
 id|MPT_FRAME_HDR
@@ -1437,10 +1374,6 @@ op_star
 id|reply_frames
 suffix:semicolon
 multiline_comment|/* Reply msg frames - rounded up! */
-DECL|member|reply_frames_dma
-id|dma_addr_t
-id|reply_frames_dma
-suffix:semicolon
 DECL|member|reply_frames_low_dma
 id|u32
 id|reply_frames_low_dma
@@ -1455,20 +1388,52 @@ r_int
 id|reply_sz
 suffix:semicolon
 multiline_comment|/* Reply frame size */
+DECL|member|num_chain
+r_int
+id|num_chain
+suffix:semicolon
+multiline_comment|/* Number of chain buffers */
+multiline_comment|/* Pool of buffers for chaining. ReqToChain&n;&t;&t; * and ChainToChain track index of chain buffers.&n;&t;&t; * ChainBuffer (DMA) virt/phys addresses.&n;&t;&t; * FreeChainQ (lock) locking mechanisms.&n;&t;&t; */
+DECL|member|ReqToChain
+r_int
+op_star
+id|ReqToChain
+suffix:semicolon
+DECL|member|RequestNB
+r_int
+op_star
+id|RequestNB
+suffix:semicolon
+DECL|member|ChainToChain
+r_int
+op_star
+id|ChainToChain
+suffix:semicolon
+DECL|member|ChainBuffer
+id|u8
+op_star
+id|ChainBuffer
+suffix:semicolon
+DECL|member|ChainBufferDMA
+id|dma_addr_t
+id|ChainBufferDMA
+suffix:semicolon
+DECL|member|FreeChainQ
+id|MPT_Q_TRACKER
+id|FreeChainQ
+suffix:semicolon
+DECL|member|FreeChainQlock
+id|spinlock_t
+id|FreeChainQlock
+suffix:semicolon
 DECL|member|chip_type
 id|CHIP_TYPE
 id|chip_type
 suffix:semicolon
 multiline_comment|/* We (host driver) get to manage our own RequestQueue! */
-DECL|member|req_alloc
-id|u8
-op_star
-id|req_alloc
-suffix:semicolon
-multiline_comment|/* Request frames alloc ptr */
-DECL|member|req_alloc_dma
+DECL|member|req_frames_dma
 id|dma_addr_t
-id|req_alloc_dma
+id|req_frames_dma
 suffix:semicolon
 DECL|member|req_frames
 id|MPT_FRAME_HDR
@@ -1476,10 +1441,6 @@ op_star
 id|req_frames
 suffix:semicolon
 multiline_comment|/* Request msg frames - rounded up! */
-DECL|member|req_frames_dma
-id|dma_addr_t
-id|req_frames_dma
-suffix:semicolon
 DECL|member|req_frames_low_dma
 id|u32
 id|req_frames_low_dma
@@ -1648,6 +1609,10 @@ id|u32
 id|mfcnt
 suffix:semicolon
 macro_line|#endif
+DECL|member|NB_for_64_byte_frame
+id|u32
+id|NB_for_64_byte_frame
+suffix:semicolon
 DECL|member|hs_req
 id|u32
 id|hs_req
@@ -1722,17 +1687,28 @@ id|u8
 id|reload_fw
 suffix:semicolon
 multiline_comment|/* Force a FW Reload on next reset */
+DECL|member|NBShiftFactor
+id|u8
+id|NBShiftFactor
+suffix:semicolon
+multiline_comment|/* NB Shift Factor based on Block Size (Facts)  */
 DECL|member|pad1
 id|u8
 id|pad1
 (braket
-l_int|5
+l_int|4
 )braket
 suffix:semicolon
 DECL|member|list
 r_struct
 id|list_head
 id|list
+suffix:semicolon
+DECL|member|netdev
+r_struct
+id|net_device
+op_star
+id|netdev
 suffix:semicolon
 DECL|typedef|MPT_ADAPTER
 )brace
@@ -1899,12 +1875,12 @@ macro_line|#else
 DECL|macro|dexitprintk
 mdefine_line|#define dexitprintk(x)
 macro_line|#endif
-macro_line|#ifdef MPT_DEBUG_RESET
-DECL|macro|drsprintk
-mdefine_line|#define drsprintk(x)  printk x
+macro_line|#if defined MPT_DEBUG_FAIL || defined (MPT_DEBUG_SG)
+DECL|macro|dfailprintk
+mdefine_line|#define dfailprintk(x) printk x
 macro_line|#else
-DECL|macro|drsprintk
-mdefine_line|#define drsprintk(x)
+DECL|macro|dfailprintk
+mdefine_line|#define dfailprintk(x)
 macro_line|#endif
 macro_line|#ifdef MPT_DEBUG_HANDSHAKE
 DECL|macro|dhsprintk
@@ -1913,13 +1889,31 @@ macro_line|#else
 DECL|macro|dhsprintk
 mdefine_line|#define dhsprintk(x)
 macro_line|#endif
+macro_line|#ifdef MPT_DEBUG_EVENTS
+DECL|macro|devtprintk
+mdefine_line|#define devtprintk(x)  printk x
+macro_line|#else
+DECL|macro|devtprintk
+mdefine_line|#define devtprintk(x)
+macro_line|#endif
+macro_line|#ifdef MPT_DEBUG_RESET
+DECL|macro|drsprintk
+mdefine_line|#define drsprintk(x)  printk x
+macro_line|#else
+DECL|macro|drsprintk
+mdefine_line|#define drsprintk(x)
+macro_line|#endif
 singleline_comment|//#if defined(MPT_DEBUG) || defined(MPT_DEBUG_MSG_FRAME)
 macro_line|#if defined(MPT_DEBUG_MSG_FRAME)
 DECL|macro|dmfprintk
 mdefine_line|#define dmfprintk(x)  printk x
+DECL|macro|DBG_DUMP_REQUEST_FRAME
+mdefine_line|#define DBG_DUMP_REQUEST_FRAME(mfp) &bslash;&n;&t;{&t;int  i, n = 24;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;u32 *m = (u32 *)(mfp);&t;&t;&t;&t;&t;&bslash;&n;&t;&t;for (i=0; i&lt;n; i++) {&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;if (i &amp;&amp; ((i%8)==0))&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;printk(&quot;&bslash;n&quot;);&t;&t;&t;&t;&bslash;&n;&t;&t;&t;printk(&quot;%08x &quot;, le32_to_cpu(m[i]));&t;&t;&bslash;&n;&t;&t;}&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;printk(&quot;&bslash;n&quot;);&t;&t;&t;&t;&t;&t;&bslash;&n;&t;}
 macro_line|#else
 DECL|macro|dmfprintk
 mdefine_line|#define dmfprintk(x)
+DECL|macro|DBG_DUMP_REQUEST_FRAME
+mdefine_line|#define DBG_DUMP_REQUEST_FRAME(mfp)
 macro_line|#endif
 macro_line|#ifdef MPT_DEBUG_IRQ
 DECL|macro|dirqprintk
@@ -1949,6 +1943,13 @@ macro_line|#else
 DECL|macro|ddvprintk
 mdefine_line|#define ddvprintk(x)
 macro_line|#endif
+macro_line|#ifdef MPT_DEBUG_NEGO
+DECL|macro|dnegoprintk
+mdefine_line|#define dnegoprintk(x)  printk x
+macro_line|#else
+DECL|macro|dnegoprintk
+mdefine_line|#define dnegoprintk(x)
+macro_line|#endif
 macro_line|#if defined(MPT_DEBUG_DV) || defined(MPT_DEBUG_DV_TINY)
 DECL|macro|ddvtprintk
 mdefine_line|#define ddvtprintk(x)  printk x
@@ -1963,12 +1964,27 @@ macro_line|#else
 DECL|macro|dctlprintk
 mdefine_line|#define dctlprintk(x)
 macro_line|#endif
-macro_line|#ifdef MPT_DEBUG_RESET
+macro_line|#ifdef MPT_DEBUG_REPLY
+DECL|macro|dreplyprintk
+mdefine_line|#define dreplyprintk(x) printk x
+macro_line|#else
+DECL|macro|dreplyprintk
+mdefine_line|#define dreplyprintk(x)
+macro_line|#endif
+macro_line|#ifdef MPT_DEBUG_TM
 DECL|macro|dtmprintk
 mdefine_line|#define dtmprintk(x) printk x
+DECL|macro|DBG_DUMP_TM_REQUEST_FRAME
+mdefine_line|#define DBG_DUMP_TM_REQUEST_FRAME(mfp) &bslash;&n;&t;{&t;u32 *m = (u32 *)(mfp);&t;&t;&t;&t;&t;&bslash;&n;&t;&t;int  i, n = 13;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;printk(&quot;TM_REQUEST:&bslash;n&quot;);&t;&t;&t;&t;&bslash;&n;&t;&t;for (i=0; i&lt;n; i++) {&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;if (i &amp;&amp; ((i%8)==0))&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;printk(&quot;&bslash;n&quot;);&t;&t;&t;&t;&bslash;&n;&t;&t;&t;printk(&quot;%08x &quot;, le32_to_cpu(m[i]));&t;&t;&bslash;&n;&t;&t;}&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;printk(&quot;&bslash;n&quot;);&t;&t;&t;&t;&t;&t;&bslash;&n;&t;}
+DECL|macro|DBG_DUMP_TM_REPLY_FRAME
+mdefine_line|#define DBG_DUMP_TM_REPLY_FRAME(mfp) &bslash;&n;&t;{&t;u32 *m = (u32 *)(mfp);&t;&t;&t;&t;&t;&bslash;&n;&t;&t;int  i, n = (le32_to_cpu(m[0]) &amp; 0x00FF0000) &gt;&gt; 16;&t;&bslash;&n;&t;&t;printk(&quot;TM_REPLY MessageLength=%d:&bslash;n&quot;, n);&t;&t;&bslash;&n;&t;&t;for (i=0; i&lt;n; i++) {&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;if (i &amp;&amp; ((i%8)==0))&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;printk(&quot;&bslash;n&quot;);&t;&t;&t;&t;&bslash;&n;&t;&t;&t;printk(&quot; %08x&quot;, le32_to_cpu(m[i]));&t;&t;&bslash;&n;&t;&t;}&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;printk(&quot;&bslash;n&quot;);&t;&t;&t;&t;&t;&t;&bslash;&n;&t;}
 macro_line|#else
 DECL|macro|dtmprintk
 mdefine_line|#define dtmprintk(x)
+DECL|macro|DBG_DUMP_TM_REQUEST_FRAME
+mdefine_line|#define DBG_DUMP_TM_REQUEST_FRAME(mfp)
+DECL|macro|DBG_DUMP_TM_REPLY_FRAME
+mdefine_line|#define DBG_DUMP_TM_REPLY_FRAME(mfp)
 macro_line|#endif
 macro_line|#ifdef MPT_DEBUG_NEH
 DECL|macro|nehprintk
@@ -2021,6 +2037,12 @@ DECL|macro|DBG_DUMP_REQUEST_FRAME_HDR
 mdefine_line|#define DBG_DUMP_REQUEST_FRAME_HDR(mfp)
 macro_line|#endif
 multiline_comment|/*=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*/
+DECL|macro|SCSI_STD_SENSE_BYTES
+mdefine_line|#define SCSI_STD_SENSE_BYTES    18
+DECL|macro|SCSI_STD_INQUIRY_BYTES
+mdefine_line|#define SCSI_STD_INQUIRY_BYTES  36
+DECL|macro|SCSI_MAX_INQUIRY_BYTES
+mdefine_line|#define SCSI_MAX_INQUIRY_BYTES  96
 multiline_comment|/*&n; * MPT_SCSI_HOST defines - Used by the IOCTL and the SCSI drivers&n; * Private to the driver.&n; */
 multiline_comment|/* LOCAL structure and fields used when processing&n; * internally generated commands. These include:&n; * bus scan, dv and config requests.&n; */
 DECL|struct|_MPT_LOCAL_REPLY
@@ -2117,34 +2139,6 @@ op_star
 op_star
 id|ScsiLookup
 suffix:semicolon
-multiline_comment|/* Pool of buffers for chaining. ReqToChain&n;&t;&t; * and ChainToChain track index of chain buffers.&n;&t;&t; * ChainBuffer (DMA) virt/phys addresses.&n;&t;&t; * FreeChainQ (lock) locking mechanisms.&n;&t;&t; */
-DECL|member|ReqToChain
-r_int
-op_star
-id|ReqToChain
-suffix:semicolon
-DECL|member|ChainToChain
-r_int
-op_star
-id|ChainToChain
-suffix:semicolon
-DECL|member|ChainBuffer
-id|u8
-op_star
-id|ChainBuffer
-suffix:semicolon
-DECL|member|ChainBufferDMA
-id|dma_addr_t
-id|ChainBufferDMA
-suffix:semicolon
-DECL|member|FreeChainQ
-id|MPT_Q_TRACKER
-id|FreeChainQ
-suffix:semicolon
-DECL|member|FreeChainQlock
-id|spinlock_t
-id|FreeChainQlock
-suffix:semicolon
 DECL|member|qtag_tick
 id|u32
 id|qtag_tick
@@ -2173,51 +2167,14 @@ id|TMtimer
 suffix:semicolon
 multiline_comment|/* Timer for TM commands ONLY */
 multiline_comment|/* Pool of memory for holding SCpnts before doing&n;&t;&t; * OS callbacks. freeQ is the free pool.&n;&t;&t; */
-DECL|member|memQ
-id|u8
-op_star
-id|memQ
-suffix:semicolon
-DECL|member|freeQ
-id|DONE_Q_TRACKER
-id|freeQ
-suffix:semicolon
-DECL|member|doneQ
-id|DONE_Q_TRACKER
-id|doneQ
-suffix:semicolon
-multiline_comment|/* Holds Linux formmatted requests */
-DECL|member|pendingQ
-id|DONE_Q_TRACKER
-id|pendingQ
-suffix:semicolon
-multiline_comment|/* Holds MPI formmatted requests */
 DECL|member|taskQ
 id|MPT_Q_TRACKER
 id|taskQ
 suffix:semicolon
 multiline_comment|/* TM request Q */
-DECL|member|freedoneQlock
-id|spinlock_t
-id|freedoneQlock
-suffix:semicolon
 DECL|member|taskQcnt
 r_int
 id|taskQcnt
-suffix:semicolon
-DECL|member|num_chain
-r_int
-id|num_chain
-suffix:semicolon
-multiline_comment|/* Number of chain buffers */
-DECL|member|max_sge
-r_int
-id|max_sge
-suffix:semicolon
-multiline_comment|/* Max No of SGE*/
-DECL|member|numTMrequests
-id|u8
-id|numTMrequests
 suffix:semicolon
 DECL|member|tmPending
 id|u8
@@ -2250,7 +2207,7 @@ DECL|member|rsvd
 id|u8
 id|rsvd
 (braket
-l_int|1
+l_int|2
 )braket
 suffix:semicolon
 DECL|member|tmPtr
@@ -2570,33 +2527,6 @@ id|cb_idx
 )paren
 suffix:semicolon
 r_extern
-r_int
-id|mpt_register_ascqops_strings
-c_func
-(paren
-r_void
-op_star
-id|ascqTable
-comma
-r_int
-id|ascqtbl_sz
-comma
-r_const
-r_char
-op_star
-op_star
-id|opsTable
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|mpt_deregister_ascqops_strings
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
 id|MPT_FRAME_HDR
 op_star
 id|mpt_get_msg_frame
@@ -2615,9 +2545,6 @@ r_void
 id|mpt_free_msg_frame
 c_func
 (paren
-r_int
-id|handle
-comma
 id|MPT_ADAPTER
 op_star
 id|ioc
@@ -2894,22 +2821,6 @@ r_int
 id|mpt_stm_index
 suffix:semicolon
 multiline_comment|/* needed by mptstm.c */
-r_extern
-r_void
-op_star
-id|mpt_v_ASCQ_TablePtr
-suffix:semicolon
-r_extern
-r_const
-r_char
-op_star
-op_star
-id|mpt_ScsiOpcodesPtr
-suffix:semicolon
-r_extern
-r_int
-id|mpt_ASCQ_TableSz
-suffix:semicolon
 multiline_comment|/*=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*/
 macro_line|#endif&t;&t;/* } __KERNEL__ */
 multiline_comment|/*&n; *  More (public) macros...&n; */

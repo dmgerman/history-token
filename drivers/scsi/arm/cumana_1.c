@@ -1746,6 +1746,12 @@ comma
 id|host
 )paren
 suffix:semicolon
+id|NCR5380_exit
+c_func
+(paren
+id|host
+)paren
+suffix:semicolon
 id|release_region
 c_func
 (paren
