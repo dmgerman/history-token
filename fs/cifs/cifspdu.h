@@ -3814,6 +3814,8 @@ DECL|macro|SMB_QUERY_FS_ATTRIBUTE_INFO
 mdefine_line|#define SMB_QUERY_FS_ATTRIBUTE_INFO 0x105
 DECL|macro|SMB_QUERY_CIFS_UNIX_INFO
 mdefine_line|#define SMB_QUERY_CIFS_UNIX_INFO    0x200
+DECL|macro|SMB_QUERY_POSIX_FS_INFO
+mdefine_line|#define SMB_QUERY_POSIX_FS_INFO     0x201
 DECL|macro|SMB_QUERY_LABEL_INFO
 mdefine_line|#define SMB_QUERY_LABEL_INFO        0x3ea
 DECL|macro|SMB_QUERY_FS_QUOTA_INFO
@@ -4366,6 +4368,53 @@ DECL|macro|CIFS_UNIX_POSIX_ACL_CAP
 mdefine_line|#define CIFS_UNIX_POSIX_ACL_CAP         0x00000002
 DECL|macro|CIFS_UNIX_XATTR_CAP
 mdefine_line|#define CIFS_UNIX_XATTR_CAP             0x00000004 /*support for new namespace*/
+r_typedef
+r_struct
+(brace
+multiline_comment|/* For undefined values return -1 in that field */
+DECL|member|OptimalTransferSize
+id|__le32
+id|OptimalTransferSize
+suffix:semicolon
+multiline_comment|/* bsize on some os, iosize on other os */
+DECL|member|BlockSize
+id|__le32
+id|BlockSize
+suffix:semicolon
+DECL|member|TotalBlocks
+id|__le64
+id|TotalBlocks
+suffix:semicolon
+multiline_comment|/* redundant but easy to return */
+DECL|member|BlocksAvail
+id|__le64
+id|BlocksAvail
+suffix:semicolon
+multiline_comment|/* redundant but easy to return */
+DECL|member|UserBlocksAvail
+id|__le64
+id|UserBlocksAvail
+suffix:semicolon
+multiline_comment|/* bavail */
+DECL|member|TotalFileNodes
+id|__le64
+id|TotalFileNodes
+suffix:semicolon
+DECL|member|FreeFileNodes
+id|__le64
+id|FreeFileNodes
+suffix:semicolon
+DECL|member|FileSysIdentifier
+id|__le64
+id|FileSysIdentifier
+suffix:semicolon
+multiline_comment|/* fsid */
+multiline_comment|/* NB Namelen comes from FILE_SYSTEM_ATTRIBUTE_INFO call */
+multiline_comment|/* NB flags can come from FILE_SYSTEM_DEVICE_INFO call   */
+DECL|typedef|FILE_SYSTEM_POSIX_INFO
+)brace
+id|FILE_SYSTEM_POSIX_INFO
+suffix:semicolon
 multiline_comment|/* DeviceType Flags */
 DECL|macro|FILE_DEVICE_CD_ROM
 mdefine_line|#define FILE_DEVICE_CD_ROM              0x00000002
