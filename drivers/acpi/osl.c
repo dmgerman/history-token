@@ -1989,6 +1989,7 @@ id|acpi_status
 DECL|function|acpi_os_write_pci_configuration
 id|acpi_os_write_pci_configuration
 (paren
+r_struct
 id|acpi_pci_id
 op_star
 id|pci_id
@@ -2013,6 +2014,7 @@ id|acpi_status
 DECL|function|acpi_os_read_pci_configuration
 id|acpi_os_read_pci_configuration
 (paren
+r_struct
 id|acpi_pci_id
 op_star
 id|pci_id
@@ -2033,6 +2035,26 @@ r_return
 id|AE_SUPPORT
 )paren
 suffix:semicolon
+)brace
+r_void
+DECL|function|acpi_os_derive_pci_id
+id|acpi_os_derive_pci_id
+(paren
+id|acpi_handle
+id|rhandle
+comma
+multiline_comment|/* upper bound  */
+id|acpi_handle
+id|chandle
+comma
+multiline_comment|/* current node */
+r_struct
+id|acpi_pci_id
+op_star
+op_star
+id|id
+)paren
+(brace
 )brace
 macro_line|#endif /*CONFIG_ACPI_PCI*/
 r_static
