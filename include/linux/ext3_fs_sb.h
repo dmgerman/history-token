@@ -179,6 +179,10 @@ DECL|member|s_first_ino
 r_int
 id|s_first_ino
 suffix:semicolon
+DECL|member|s_next_generation
+id|u32
+id|s_next_generation
+suffix:semicolon
 multiline_comment|/* Journaling */
 DECL|member|s_journal_inode
 r_struct
