@@ -188,7 +188,7 @@ comma
 l_int|0x00409200
 )brace
 suffix:semicolon
-multiline_comment|/*&n; * At some point we want to use this stack frame pointer to unwind&n; * after PnP BIOS oopses. &n; */
+multiline_comment|/*&n; * At some point we want to use this stack frame pointer to unwind&n; * after PnP BIOS oopses.&n; */
 DECL|variable|pnp_bios_fault_esp
 id|u32
 id|pnp_bios_fault_esp

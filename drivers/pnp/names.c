@@ -92,10 +92,12 @@ id|i
 )paren
 )paren
 (brace
-id|sprintf
+id|snprintf
 c_func
 (paren
 id|name
+comma
+id|DEVICE_NAME_SIZE
 comma
 l_string|&quot;%s&quot;
 comma

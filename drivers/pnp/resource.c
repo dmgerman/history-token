@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * resource.c - Contains functions for registering and analyzing resource information&n; *&n; * based on isapnp.c resource management (c) Jaroslav Kysela &lt;perex@suse.cz&gt;&n; * Copyright 2002 Adam Belay &lt;ambx1@neo.rr.com&gt;&n; *&n; */
+multiline_comment|/*&n; * resource.c - Contains functions for registering and analyzing resource information&n; *&n; * based on isapnp.c resource management (c) Jaroslav Kysela &lt;perex@suse.cz&gt;&n; * Copyright 2003 Adam Belay &lt;ambx1@neo.rr.com&gt;&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
@@ -2908,7 +2908,7 @@ r_if
 c_cond
 (paren
 id|depnum
-op_le
+OL
 l_int|0
 op_logical_or
 op_logical_neg
@@ -3040,6 +3040,16 @@ id|dma-&gt;next
 suffix:semicolon
 )brace
 multiline_comment|/* dependent */
+r_if
+c_cond
+(paren
+id|depnum
+op_eq
+l_int|0
+)paren
+r_return
+l_int|1
+suffix:semicolon
 id|res
 op_assign
 id|pnp_find_resources
@@ -3284,13 +3294,6 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|pnp_add_mem_resource
-)paren
-suffix:semicolon
-DECL|variable|pnp_add_mem32_resource
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|pnp_add_mem32_resource
 )paren
 suffix:semicolon
 DECL|variable|pnp_init_resource_table

@@ -43,7 +43,7 @@ mdefine_line|#define LARGE_TAG_UNICODESTR&t;&t;0x03
 DECL|macro|LARGE_TAG_VENDOR
 mdefine_line|#define LARGE_TAG_VENDOR&t;&t;0x04
 DECL|macro|LARGE_TAG_MEM32
-mdefine_line|#define LARGE_TAG_MEM32&t;&t;0x05
+mdefine_line|#define LARGE_TAG_MEM32&t;&t;&t;0x05
 DECL|macro|LARGE_TAG_FIXEDMEM32
 mdefine_line|#define LARGE_TAG_FIXEDMEM32&t;&t;0x06
 multiline_comment|/**&n; * pnp_is_active - Determines if a device is active based on its current resources&n; * @dev: pointer to the desired PnP device&n; *&n; */
@@ -646,6 +646,14 @@ r_break
 suffix:semicolon
 )brace
 r_case
+id|LARGE_TAG_VENDOR
+suffix:colon
+(brace
+multiline_comment|/* do nothing */
+r_break
+suffix:semicolon
+)brace
+r_case
 id|LARGE_TAG_MEM32
 suffix:colon
 (brace
@@ -1020,6 +1028,14 @@ comma
 id|size
 )paren
 suffix:semicolon
+r_break
+suffix:semicolon
+)brace
+r_case
+id|SMALL_TAG_VENDOR
+suffix:colon
+(brace
+multiline_comment|/* do nothing */
 r_break
 suffix:semicolon
 )brace

@@ -4555,14 +4555,6 @@ op_plus
 id|tmp
 )paren
 suffix:semicolon
-id|pnp_info
-c_func
-(paren
-l_string|&quot;dma %d&quot;
-comma
-id|tmp
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -6026,7 +6018,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|variable|isapnp_init
-id|subsys_initcall
+id|device_initcall
 c_func
 (paren
 id|isapnp_init

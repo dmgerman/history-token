@@ -323,6 +323,11 @@ op_assign
 l_string|&quot;system&quot;
 comma
 dot
+id|flags
+op_assign
+id|PNP_DRIVER_DO_NOT_ACTIVATE
+comma
+dot
 id|id_table
 op_assign
 id|pnp_dev_table
