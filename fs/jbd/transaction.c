@@ -330,7 +330,14 @@ r_goto
 id|repeat
 suffix:semicolon
 )brace
-multiline_comment|/* If there is not enough space left in the log to write all&n;&t; * potential buffers requested by this operation, we need to&n;&t; * stall pending a log checkpoint to free some more log&n;&t; * space. */
+multiline_comment|/*&n;&t; * If there is not enough space left in the log to write all potential&n;&t; * buffers requested by this operation, we need to stall pending a log&n;&t; * checkpoint to free some more log space.&n;&t; */
+id|spin_lock
+c_func
+(paren
+op_amp
+id|transaction-&gt;t_handle_lock
+)paren
+suffix:semicolon
 id|needed
 op_assign
 id|transaction-&gt;t_outstanding_credits
@@ -346,6 +353,13 @@ id|journal-&gt;j_max_transaction_buffers
 )paren
 (brace
 multiline_comment|/* If the current transaction is already too large, then&n;&t;&t; * start to commit it: we can then go back and attach&n;&t;&t; * this handle to a new transaction. */
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|transaction-&gt;t_handle_lock
+)paren
+suffix:semicolon
 id|jbd_debug
 c_func
 (paren
@@ -426,6 +440,13 @@ comma
 id|handle
 )paren
 suffix:semicolon
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|transaction-&gt;t_handle_lock
+)paren
+suffix:semicolon
 id|log_wait_for_space
 c_func
 (paren
@@ -443,13 +464,6 @@ id|handle-&gt;h_transaction
 op_assign
 id|transaction
 suffix:semicolon
-id|spin_lock
-c_func
-(paren
-op_amp
-id|transaction-&gt;t_handle_lock
-)paren
-suffix:semicolon
 id|transaction-&gt;t_outstanding_credits
 op_add_assign
 id|nblocks
@@ -459,13 +473,6 @@ op_increment
 suffix:semicolon
 id|transaction-&gt;t_handle_count
 op_increment
-suffix:semicolon
-id|spin_unlock
-c_func
-(paren
-op_amp
-id|transaction-&gt;t_handle_lock
-)paren
 suffix:semicolon
 id|jbd_debug
 c_func
@@ -485,6 +492,13 @@ c_func
 (paren
 id|journal
 )paren
+)paren
+suffix:semicolon
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|transaction-&gt;t_handle_lock
 )paren
 suffix:semicolon
 id|unlock_journal
@@ -704,6 +718,7 @@ multiline_comment|/**&n; * int journal_extend() - extend buffer credits.&n; * @h
 DECL|function|journal_extend
 r_int
 id|journal_extend
+c_func
 (paren
 id|handle_t
 op_star
@@ -786,6 +801,13 @@ suffix:semicolon
 id|lock_kernel
 c_func
 (paren
+)paren
+suffix:semicolon
+id|spin_lock
+c_func
+(paren
+op_amp
+id|transaction-&gt;t_handle_lock
 )paren
 suffix:semicolon
 id|wanted
@@ -874,6 +896,13 @@ id|nblocks
 suffix:semicolon
 id|unlock
 suffix:colon
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|transaction-&gt;t_handle_lock
+)paren
+suffix:semicolon
 id|unlock_kernel
 c_func
 (paren
@@ -3867,13 +3896,6 @@ id|journal-&gt;j_wait_transaction_locked
 )paren
 suffix:semicolon
 )brace
-id|spin_unlock
-c_func
-(paren
-op_amp
-id|transaction-&gt;t_handle_lock
-)paren
-suffix:semicolon
 multiline_comment|/* Move callbacks from the handle to the transaction. */
 id|list_splice
 c_func
@@ -3909,6 +3931,13 @@ id|tid_t
 id|tid
 op_assign
 id|transaction-&gt;t_tid
+suffix:semicolon
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|transaction-&gt;t_handle_lock
+)paren
 suffix:semicolon
 id|jbd_debug
 c_func
@@ -3951,6 +3980,16 @@ c_func
 id|journal
 comma
 id|tid
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|transaction-&gt;t_handle_lock
 )paren
 suffix:semicolon
 )brace
