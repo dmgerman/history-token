@@ -1203,6 +1203,7 @@ l_int|8
 )paren
 suffix:semicolon
 macro_line|#if 0 /* FIXME: should be catched elsewhere ... */
+multiline_comment|/* this dubious code which helped on some cards does not work for&n;&t; * the pinnacle 300i */
 multiline_comment|/* Only send the tuning request if the tuner doesn&squot;t have the requested&n;&t; * parameters already set.  Enhances tuning time and prevents stream&n;&t; * breakup when retuning the same transponder. */
 r_for
 c_loop
@@ -1755,6 +1756,7 @@ op_star
 id|fe-&gt;demodulator_priv
 suffix:semicolon
 macro_line|#if 1
+multiline_comment|/* the pinnacle 300i loses lock if the STATUS_x registers&n;&t; * are polled too often... */
 r_int
 id|val
 suffix:semicolon
