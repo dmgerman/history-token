@@ -566,6 +566,12 @@ r_struct
 id|ipv6_devstat
 id|stats
 suffix:semicolon
+DECL|member|tstamp
+r_int
+r_int
+id|tstamp
+suffix:semicolon
+multiline_comment|/* ipv6InterfaceTable update timestamp */
 )brace
 suffix:semicolon
 r_extern

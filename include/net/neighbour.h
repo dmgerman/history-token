@@ -33,6 +33,9 @@ macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;asm/atomic.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;linux/err.h&gt;
+macro_line|#ifdef CONFIG_SYSCTL
+macro_line|#include &lt;linux/sysctl.h&gt;
+macro_line|#endif
 DECL|macro|NUD_IN_TIMER
 mdefine_line|#define NUD_IN_TIMER&t;(NUD_INCOMPLETE|NUD_DELAY|NUD_PROBE)
 DECL|macro|NUD_VALID
@@ -1047,6 +1050,10 @@ comma
 r_char
 op_star
 id|p_name
+comma
+id|proc_handler
+op_star
+id|proc_handler
 )paren
 suffix:semicolon
 r_extern

@@ -1031,10 +1031,37 @@ DECL|enumerator|IFLA_INET6_MCAST
 id|IFLA_INET6_MCAST
 comma
 multiline_comment|/* MC things. What of them?&t;*/
+DECL|enumerator|IFLA_INET6_CACHEINFO
+id|IFLA_INET6_CACHEINFO
+comma
+multiline_comment|/* time values and max reasm size */
+)brace
+suffix:semicolon
+DECL|struct|ifla_cacheinfo
+r_struct
+id|ifla_cacheinfo
+(brace
+DECL|member|max_reasm_len
+id|__u32
+id|max_reasm_len
+suffix:semicolon
+DECL|member|tstamp
+id|__u32
+id|tstamp
+suffix:semicolon
+multiline_comment|/* ipv6InterfaceTable updated timestamp */
+DECL|member|reachable_time
+id|__u32
+id|reachable_time
+suffix:semicolon
+DECL|member|retrans_time
+id|__u32
+id|retrans_time
+suffix:semicolon
 )brace
 suffix:semicolon
 DECL|macro|IFLA_INET6_MAX
-mdefine_line|#define IFLA_INET6_MAX&t;IFLA_INET6_MCAST
+mdefine_line|#define IFLA_INET6_MAX&t;IFLA_INET6_CACHEINFO
 multiline_comment|/*****************************************************************&n; *&t;&t;Traffic control messages.&n; ****/
 DECL|struct|tcmsg
 r_struct
@@ -1125,6 +1152,8 @@ DECL|macro|RTMGRP_IPV6_MROUTE
 mdefine_line|#define RTMGRP_IPV6_MROUTE&t;0x200
 DECL|macro|RTMGRP_IPV6_ROUTE
 mdefine_line|#define RTMGRP_IPV6_ROUTE&t;0x400
+DECL|macro|RTMGRP_IPV6_IFINFO
+mdefine_line|#define RTMGRP_IPV6_IFINFO&t;0x800
 DECL|macro|RTMGRP_DECnet_IFADDR
 mdefine_line|#define RTMGRP_DECnet_IFADDR    0x1000
 DECL|macro|RTMGRP_DECnet_ROUTE
