@@ -2810,9 +2810,10 @@ id|status
 op_assign
 l_int|0
 suffix:semicolon
-id|current-&gt;used_math
-op_assign
-l_int|0
+id|clear_used_math
+c_func
+(paren
+)paren
 suffix:semicolon
 id|mxcsr_feature_mask_init
 c_func

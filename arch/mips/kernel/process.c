@@ -155,9 +155,10 @@ id|regs-&gt;cp0_status
 op_assign
 id|status
 suffix:semicolon
-id|current-&gt;used_math
-op_assign
-l_int|0
+id|clear_used_math
+c_func
+(paren
+)paren
 suffix:semicolon
 id|lose_fpu
 c_func

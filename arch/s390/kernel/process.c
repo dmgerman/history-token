@@ -674,9 +674,10 @@ c_func
 r_void
 )paren
 (brace
-id|current-&gt;used_math
-op_assign
-l_int|0
+id|clear_used_math
+c_func
+(paren
+)paren
 suffix:semicolon
 id|clear_tsk_thread_flag
 c_func

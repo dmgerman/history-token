@@ -634,9 +634,10 @@ id|CPU_HAS_FPU
 r_return
 l_int|0
 suffix:semicolon
-id|tsk-&gt;used_math
-op_assign
-l_int|1
+id|set_used_math
+c_func
+(paren
+)paren
 suffix:semicolon
 r_return
 id|__copy_from_user
@@ -709,7 +710,10 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|tsk-&gt;used_math
+id|used_math
+c_func
+(paren
+)paren
 )paren
 (brace
 id|__put_user
@@ -735,9 +739,10 @@ id|sc-&gt;sc_ownedfp
 )paren
 suffix:semicolon
 multiline_comment|/* This will cause a &quot;finit&quot; to be triggered by the next&n;&t;   attempted FPU operation by the &squot;current&squot; process.&n;&t;   */
-id|tsk-&gt;used_math
-op_assign
-l_int|0
+id|clear_used_math
+c_func
+(paren
+)paren
 suffix:semicolon
 id|unlazy_fpu
 c_func
@@ -1011,9 +1016,10 @@ comma
 id|regs
 )paren
 suffix:semicolon
-id|tsk-&gt;used_math
-op_assign
-l_int|0
+id|clear_used_math
+c_func
+(paren
+)paren
 suffix:semicolon
 id|__get_user
 (paren

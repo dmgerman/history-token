@@ -1565,6 +1565,9 @@ id|err
 op_assign
 l_int|0
 suffix:semicolon
+id|__u32
+id|used_math
+suffix:semicolon
 multiline_comment|/* Always make any pending restarted system calls return -EINTR */
 id|current_thread_info
 c_func
@@ -1803,10 +1806,16 @@ op_or_assign
 id|__get_user
 c_func
 (paren
-id|current-&gt;used_math
+id|used_math
 comma
 op_amp
 id|sc-&gt;sc_used_math
+)paren
+suffix:semicolon
+id|conditional_used_math
+c_func
+(paren
+id|used_math
 )paren
 suffix:semicolon
 id|preempt_disable
@@ -1817,7 +1826,10 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|current-&gt;used_math
+id|used_math
+c_func
+(paren
+)paren
 )paren
 (brace
 multiline_comment|/* restore fpu context if we have used it before */
@@ -2882,7 +2894,12 @@ op_or_assign
 id|__put_user
 c_func
 (paren
-id|current-&gt;used_math
+op_logical_neg
+op_logical_neg
+id|used_math
+c_func
+(paren
+)paren
 comma
 op_amp
 id|sc-&gt;sc_used_math
@@ -2892,7 +2909,10 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|current-&gt;used_math
+id|used_math
+c_func
+(paren
+)paren
 )paren
 r_goto
 id|out

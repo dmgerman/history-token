@@ -1357,9 +1357,10 @@ id|status
 op_assign
 l_int|0
 suffix:semicolon
-id|current-&gt;used_math
-op_assign
-l_int|0
+id|clear_used_math
+c_func
+(paren
+)paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_MMU
 multiline_comment|/* Set up MMU */

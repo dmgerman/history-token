@@ -321,7 +321,10 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|current-&gt;used_math
+id|used_math
+c_func
+(paren
+)paren
 )paren
 (brace
 id|fpload
@@ -342,9 +345,10 @@ op_amp
 id|init_fpuregs.hard
 )paren
 suffix:semicolon
-id|current-&gt;used_math
-op_assign
-l_int|1
+id|set_used_math
+c_func
+(paren
+)paren
 suffix:semicolon
 )brace
 id|release_fpu

@@ -2164,9 +2164,11 @@ op_star
 id|ufp
 )paren
 (brace
-id|tsk-&gt;used_math
-op_assign
-l_int|1
+id|set_stopped_child_used_math
+c_func
+(paren
+id|tsk
+)paren
 suffix:semicolon
 r_return
 id|copy_from_user
