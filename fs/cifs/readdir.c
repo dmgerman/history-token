@@ -2153,7 +2153,7 @@ id|qstring.len
 comma
 id|file-&gt;f_pos
 comma
-id|inum
+id|tmp_inode-&gt;i_ino
 comma
 id|obj_type
 )paren
