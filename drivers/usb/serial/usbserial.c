@@ -3449,7 +3449,7 @@ op_star
 id|port
 )paren
 suffix:semicolon
-id|schedule_tasks
+id|schedule_task
 c_func
 (paren
 op_amp
