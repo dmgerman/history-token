@@ -1194,6 +1194,13 @@ l_int|1
 )paren
 suffix:semicolon
 )brace
+DECL|variable|smp_ptlb_all
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|smp_ptlb_all
+)paren
+suffix:semicolon
 macro_line|#endif /* ! CONFIG_ARCH_S390X */
 multiline_comment|/*&n; * this function sends a &squot;reschedule&squot; IPI to another CPU.&n; * it goes straight through and wastes no time serializing&n; * anything. Worst case is that we lose a reschedule ...&n; */
 DECL|function|smp_send_reschedule

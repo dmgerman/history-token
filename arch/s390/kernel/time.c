@@ -80,6 +80,7 @@ r_void
 (brace
 r_return
 (paren
+(paren
 id|get_clock
 c_func
 (paren
@@ -87,8 +88,11 @@ c_func
 op_minus
 id|jiffies_timer_cc
 )paren
+op_star
+l_int|1000
+)paren
 op_rshift
-l_int|2
+l_int|12
 suffix:semicolon
 )brace
 DECL|function|tod_to_timeval

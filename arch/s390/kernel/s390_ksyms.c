@@ -179,6 +179,13 @@ c_func
 id|strpbrk
 )paren
 suffix:semicolon
+DECL|variable|strcpy
+id|EXPORT_SYMBOL_NOVERS
+c_func
+(paren
+id|strcpy
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * binfmt_elf loader &n; */
 r_extern
 r_int
