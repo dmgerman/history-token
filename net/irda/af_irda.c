@@ -8389,6 +8389,13 @@ id|self-&gt;errno
 op_assign
 l_int|0
 suffix:semicolon
+id|init_timer
+c_func
+(paren
+op_amp
+id|self-&gt;watchdog
+)paren
+suffix:semicolon
 id|self-&gt;watchdog.function
 op_assign
 id|irda_discovery_timeout

@@ -1877,6 +1877,9 @@ id|daddr
 comma
 id|u32
 id|saddr
+comma
+r_int
+id|create
 )paren
 (brace
 r_struct
@@ -1955,6 +1958,10 @@ op_logical_and
 id|reqid
 op_eq
 id|x-&gt;props.reqid
+op_logical_and
+id|x-&gt;km.state
+op_eq
+id|XFRM_STATE_ACQ
 )paren
 (brace
 r_if
@@ -1970,9 +1977,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|x-&gt;km.state
-op_ne
-id|XFRM_STATE_ACQ
+id|x-&gt;id.spi
 )paren
 r_continue
 suffix:semicolon
@@ -2002,6 +2007,8 @@ r_else
 r_if
 c_cond
 (paren
+id|create
+op_logical_and
 (paren
 id|x0
 op_assign

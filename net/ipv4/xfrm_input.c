@@ -439,7 +439,7 @@ c_cond
 (paren
 id|iph-&gt;protocol
 op_ne
-id|IPPROTO_IP
+id|IPPROTO_IPIP
 )paren
 r_goto
 id|drop

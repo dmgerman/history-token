@@ -677,6 +677,9 @@ mdefine_line|#define symbol_put(x) do { } while(0)
 DECL|macro|symbol_put_addr
 mdefine_line|#define symbol_put_addr(p) do { } while(0)
 macro_line|#endif /* CONFIG_MODULE_UNLOAD */
+multiline_comment|/* This is a #define so the string doesn&squot;t get put in every .o file */
+DECL|macro|module_name
+mdefine_line|#define module_name(mod)&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&bslash;&n;&t;struct module *__mod = (mod);&t;&t;&bslash;&n;&t;__mod ? __mod-&gt;name : &quot;kernel&quot;;&t;&t;&bslash;&n;})
 DECL|macro|__unsafe
 mdefine_line|#define __unsafe(mod)&t;&t;&t;&t;&t;&t;&t;     &bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;     &bslash;&n;&t;if (mod &amp;&amp; !(mod)-&gt;unsafe) {&t;&t;&t;&t;&t;     &bslash;&n;&t;&t;printk(KERN_WARNING&t;&t;&t;&t;&t;     &bslash;&n;&t;&t;       &quot;Module %s cannot be unloaded due to unsafe usage in&quot; &bslash;&n;&t;&t;       &quot; %s:%u&bslash;n&quot;, (mod)-&gt;name, __FILE__, __LINE__);&t;     &bslash;&n;&t;&t;(mod)-&gt;unsafe = 1;&t;&t;&t;&t;&t;     &bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;     &bslash;&n;} while(0)
 macro_line|#else /* !CONFIG_MODULES... */
@@ -697,6 +700,8 @@ DECL|macro|try_module_get
 mdefine_line|#define try_module_get(module) 1
 DECL|macro|module_put
 mdefine_line|#define module_put(module) do { } while(0)
+DECL|macro|module_name
+mdefine_line|#define module_name(mod) &quot;kernel&quot;
 DECL|macro|__unsafe
 mdefine_line|#define __unsafe(mod)
 macro_line|#endif /* CONFIG_MODULES */

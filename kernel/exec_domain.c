@@ -833,16 +833,11 @@ id|ep-&gt;pers_high
 comma
 id|ep-&gt;name
 comma
-macro_line|#ifdef CONFIG_MODULES
+id|module_name
+c_func
+(paren
 id|ep-&gt;module
-ques
-c_cond
-id|ep-&gt;module-&gt;name
-suffix:colon
-l_string|&quot;kernel&quot;
-macro_line|#else
-l_string|&quot;kernel&quot;
-macro_line|#endif
+)paren
 )paren
 suffix:semicolon
 id|read_unlock
