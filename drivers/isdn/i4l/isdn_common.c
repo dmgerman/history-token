@@ -12246,6 +12246,11 @@ c_func
 (paren
 )paren
 suffix:semicolon
+id|isdn_net_init_module
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon

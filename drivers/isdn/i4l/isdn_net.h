@@ -27,6 +27,14 @@ mdefine_line|#define CISCO_SLARP_REPLY     1
 DECL|macro|CISCO_SLARP_KEEPALIVE
 mdefine_line|#define CISCO_SLARP_KEEPALIVE 2
 r_extern
+r_void
+id|isdn_net_init_module
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
 r_int
 id|isdn_net_new
 c_func
