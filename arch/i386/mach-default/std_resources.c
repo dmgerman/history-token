@@ -1,8 +1,9 @@
-multiline_comment|/*&n; *  include/asm-i386/mach-default/mach_resources.h&n; *&n; *  Machine specific resource allocation for generic.&n; *  Split out from setup.c by Osamu Tomita &lt;tomita@cinet.co.jp&gt;&n; */
-macro_line|#ifndef _MACH_RESOURCES_H
-DECL|macro|_MACH_RESOURCES_H
-mdefine_line|#define _MACH_RESOURCES_H
+multiline_comment|/*&n; *  Machine specific resource allocation for generic.&n; *  Split out from setup.c by Osamu Tomita &lt;tomita@cinet.co.jp&gt;&n; */
+macro_line|#include &lt;linux/ioport.h&gt;
+macro_line|#include &lt;asm/io.h&gt;
+macro_line|#include &lt;asm/std_resources.h&gt;
 DECL|variable|standard_io_resources
+r_static
 r_struct
 id|resource
 id|standard_io_resources
@@ -145,15 +146,13 @@ id|IORESOURCE_BUSY
 suffix:semicolon
 DECL|macro|romsignature
 mdefine_line|#define romsignature(x) (*(unsigned short *)(x) == 0xaa55)
-DECL|function|probe_video_rom
-r_static
-r_inline
+DECL|function|probe_roms
 r_void
-id|probe_video_rom
+id|__init
+id|probe_roms
 c_func
 (paren
-r_int
-id|roms
+r_void
 )paren
 (brace
 r_int
@@ -164,6 +163,22 @@ r_int
 r_char
 op_star
 id|romstart
+suffix:semicolon
+r_int
+id|roms
+op_assign
+l_int|1
+suffix:semicolon
+id|request_resource
+c_func
+(paren
+op_amp
+id|iomem_resource
+comma
+id|rom_resources
+op_plus
+l_int|0
+)paren
 suffix:semicolon
 multiline_comment|/* Video ROM is standard at C000:0000 - C7FF:0000, check signature */
 r_for
@@ -219,27 +234,6 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-)brace
-DECL|function|probe_extension_roms
-r_static
-r_inline
-r_void
-id|probe_extension_roms
-c_func
-(paren
-r_int
-id|roms
-)paren
-(brace
-r_int
-r_int
-id|base
-suffix:semicolon
-r_int
-r_char
-op_star
-id|romstart
-suffix:semicolon
 multiline_comment|/* Extension roms at C800:0000 - DFFF:0000 */
 r_for
 c_loop
@@ -478,9 +472,8 @@ suffix:semicolon
 )brace
 )brace
 DECL|function|request_graphics_resource
-r_static
-r_inline
 r_void
+id|__init
 id|request_graphics_resource
 c_func
 (paren
@@ -498,5 +491,42 @@ id|vram_resource
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif /* !_MACH_RESOURCES_H */
+DECL|function|request_standard_io_resources
+r_void
+id|__init
+id|request_standard_io_resources
+c_func
+(paren
+r_void
+)paren
+(brace
+r_int
+id|i
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+id|STANDARD_IO_RESOURCES
+suffix:semicolon
+id|i
+op_increment
+)paren
+id|request_resource
+c_func
+(paren
+op_amp
+id|ioport_resource
+comma
+id|standard_io_resources
+op_plus
+id|i
+)paren
+suffix:semicolon
+)brace
 eof
