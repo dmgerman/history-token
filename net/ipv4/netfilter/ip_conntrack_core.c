@@ -2424,6 +2424,12 @@ id|expected-&gt;sibling
 op_assign
 id|conntrack
 suffix:semicolon
+macro_line|#if CONFIG_IP_NF_CONNTRACK_MARK
+id|conntrack-&gt;mark
+op_assign
+id|expected-&gt;expectant-&gt;mark
+suffix:semicolon
+macro_line|#endif
 id|LIST_DELETE
 c_func
 (paren

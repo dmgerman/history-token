@@ -412,6 +412,13 @@ DECL|member|nat
 id|nat
 suffix:semicolon
 macro_line|#endif /* CONFIG_IP_NF_NAT_NEEDED */
+macro_line|#if defined(CONFIG_IP_NF_CONNTRACK_MARK)
+DECL|member|mark
+r_int
+r_int
+id|mark
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/* Traversed often, so hopefully in different cacheline to top */
 multiline_comment|/* These are my tuples; original and reply */
 DECL|member|tuplehash
