@@ -121,15 +121,6 @@ op_star
 id|q
 )paren
 (brace
-id|u_long
-id|start
-comma
-id|len
-comma
-id|addr
-comma
-id|size
-suffix:semicolon
 r_while
 c_loop
 (paren
