@@ -29,8 +29,6 @@ DECL|variable|mm_cachebits
 r_int
 r_int
 id|mm_cachebits
-op_assign
-l_int|0
 suffix:semicolon
 DECL|variable|mm_cachebits
 id|EXPORT_SYMBOL

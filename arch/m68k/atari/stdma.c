@@ -30,8 +30,6 @@ DECL|variable|stdma_locked
 r_static
 r_int
 id|stdma_locked
-op_assign
-l_int|0
 suffix:semicolon
 multiline_comment|/* the semaphore */
 multiline_comment|/* int func to be called */
@@ -52,16 +50,12 @@ r_struct
 id|pt_regs
 op_star
 )paren
-op_assign
-l_int|NULL
 suffix:semicolon
 DECL|variable|stdma_isr_data
 r_static
 r_void
 op_star
 id|stdma_isr_data
-op_assign
-l_int|NULL
 suffix:semicolon
 multiline_comment|/* data passed to isr */
 r_static

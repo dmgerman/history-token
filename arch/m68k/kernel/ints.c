@@ -35,20 +35,52 @@ id|SYS_IRQS
 )braket
 op_assign
 (brace
+(braket
+l_int|0
+)braket
+op_assign
 l_string|&quot;spurious int&quot;
 comma
+(braket
+l_int|1
+)braket
+op_assign
 l_string|&quot;int1 handler&quot;
 comma
+(braket
+l_int|2
+)braket
+op_assign
 l_string|&quot;int2 handler&quot;
 comma
+(braket
+l_int|3
+)braket
+op_assign
 l_string|&quot;int3 handler&quot;
 comma
+(braket
+l_int|4
+)braket
+op_assign
 l_string|&quot;int4 handler&quot;
 comma
+(braket
+l_int|5
+)braket
+op_assign
 l_string|&quot;int5 handler&quot;
 comma
+(braket
+l_int|6
+)braket
+op_assign
 l_string|&quot;int6 handler&quot;
 comma
+(braket
+l_int|7
+)braket
+op_assign
 l_string|&quot;int7 handler&quot;
 )brace
 suffix:semicolon

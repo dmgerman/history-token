@@ -79,8 +79,6 @@ DECL|variable|mem_init_done
 r_static
 r_int
 id|mem_init_done
-op_assign
-l_int|0
 suffix:semicolon
 multiline_comment|/* set if kernel is in ST-RAM */
 DECL|variable|kernel_in_stram
@@ -138,8 +136,6 @@ r_static
 id|BLOCK
 op_star
 id|alloc_list
-op_assign
-l_int|NULL
 suffix:semicolon
 multiline_comment|/* We can&squot;t always use kmalloc() to allocate BLOCK structures, since&n; * stram_alloc() can be called rather early. So we need some pool of&n; * statically allocated structures. 20 of them is more than enough, so in most&n; * cases we never should need to call kmalloc(). */
 DECL|macro|N_STATIC_BLOCKS
@@ -208,22 +204,16 @@ DECL|variable|stat_swap_read
 r_static
 r_int
 id|stat_swap_read
-op_assign
-l_int|0
 suffix:semicolon
 DECL|variable|stat_swap_write
 r_static
 r_int
 id|stat_swap_write
-op_assign
-l_int|0
 suffix:semicolon
 DECL|variable|stat_swap_force
 r_static
 r_int
 id|stat_swap_force
-op_assign
-l_int|0
 suffix:semicolon
 macro_line|#endif /* DO_PROC */
 macro_line|#endif /* CONFIG_STRAM_SWAP */
@@ -3347,8 +3337,6 @@ DECL|variable|refcnt
 r_static
 r_int
 id|refcnt
-op_assign
-l_int|0
 suffix:semicolon
 DECL|function|do_stram_request
 r_static

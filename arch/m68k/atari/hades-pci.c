@@ -1037,15 +1037,31 @@ l_int|4
 )braket
 op_assign
 (brace
+(braket
+l_int|0
+)braket
+op_assign
 id|IRQ_TT_MFP_IO0
 comma
 multiline_comment|/* Slot 0. */
+(braket
+l_int|1
+)braket
+op_assign
 id|IRQ_TT_MFP_IO1
 comma
 multiline_comment|/* Slot 1. */
+(braket
+l_int|2
+)braket
+op_assign
 id|IRQ_TT_MFP_SCC
 comma
 multiline_comment|/* Slot 2. */
+(braket
+l_int|3
+)braket
+op_assign
 id|IRQ_TT_MFP_SCSIDMA
 multiline_comment|/* Slot 3. */
 )brace

@@ -61,8 +61,6 @@ DECL|variable|rtc_status
 r_static
 r_char
 id|rtc_status
-op_assign
-l_int|0
 suffix:semicolon
 DECL|function|rtc_ioctl
 r_static

@@ -319,14 +319,44 @@ id|apollo_models
 )braket
 op_assign
 (brace
+(braket
+id|APOLLO_DN3000
+op_minus
+id|APOLLO_DN3000
+)braket
+op_assign
 l_string|&quot;DN3000 (Otter)&quot;
 comma
+(braket
+id|APOLLO_DN3010
+op_minus
+id|APOLLO_DN3000
+)braket
+op_assign
 l_string|&quot;DN3010 (Otter)&quot;
 comma
+(braket
+id|APOLLO_DN3500
+op_minus
+id|APOLLO_DN3000
+)braket
+op_assign
 l_string|&quot;DN3500 (Cougar II)&quot;
 comma
+(braket
+id|APOLLO_DN4000
+op_minus
+id|APOLLO_DN3000
+)braket
+op_assign
 l_string|&quot;DN4000 (Mink)&quot;
 comma
+(braket
+id|APOLLO_DN4500
+op_minus
+id|APOLLO_DN3000
+)braket
+op_assign
 l_string|&quot;DN4500 (Roadrunner)&quot;
 )brace
 suffix:semicolon

@@ -46,12 +46,18 @@ l_int|16
 )braket
 op_assign
 (brace
-l_int|0
-comma
+(braket
+l_int|1
+)braket
+op_assign
 op_minus
 l_int|1
 comma
 multiline_comment|/* sizeof(((struct frame *)0)-&gt;un.fmt1), */
+(braket
+l_int|2
+)braket
+op_assign
 r_sizeof
 (paren
 (paren
@@ -66,6 +72,10 @@ op_member_access_from_pointer
 id|un.fmt2
 )paren
 comma
+(braket
+l_int|3
+)braket
+op_assign
 r_sizeof
 (paren
 (paren
@@ -80,6 +90,10 @@ op_member_access_from_pointer
 id|un.fmt3
 )paren
 comma
+(braket
+l_int|4
+)braket
+op_assign
 r_sizeof
 (paren
 (paren
@@ -94,14 +108,26 @@ op_member_access_from_pointer
 id|un.fmt4
 )paren
 comma
+(braket
+l_int|5
+)braket
+op_assign
 op_minus
 l_int|1
 comma
 multiline_comment|/* sizeof(((struct frame *)0)-&gt;un.fmt5), */
+(braket
+l_int|6
+)braket
+op_assign
 op_minus
 l_int|1
 comma
 multiline_comment|/* sizeof(((struct frame *)0)-&gt;un.fmt6), */
+(braket
+l_int|7
+)braket
+op_assign
 r_sizeof
 (paren
 (paren
@@ -116,10 +142,18 @@ op_member_access_from_pointer
 id|un.fmt7
 )paren
 comma
+(braket
+l_int|8
+)braket
+op_assign
 op_minus
 l_int|1
 comma
 multiline_comment|/* sizeof(((struct frame *)0)-&gt;un.fmt8), */
+(braket
+l_int|9
+)braket
+op_assign
 r_sizeof
 (paren
 (paren
@@ -134,6 +168,10 @@ op_member_access_from_pointer
 id|un.fmt9
 )paren
 comma
+(braket
+l_int|10
+)braket
+op_assign
 r_sizeof
 (paren
 (paren
@@ -148,6 +186,10 @@ op_member_access_from_pointer
 id|un.fmta
 )paren
 comma
+(braket
+l_int|11
+)braket
+op_assign
 r_sizeof
 (paren
 (paren
@@ -162,18 +204,34 @@ op_member_access_from_pointer
 id|un.fmtb
 )paren
 comma
+(braket
+l_int|12
+)braket
+op_assign
 op_minus
 l_int|1
 comma
 multiline_comment|/* sizeof(((struct frame *)0)-&gt;un.fmtc), */
+(braket
+l_int|13
+)braket
+op_assign
 op_minus
 l_int|1
 comma
 multiline_comment|/* sizeof(((struct frame *)0)-&gt;un.fmtd), */
+(braket
+l_int|14
+)braket
+op_assign
 op_minus
 l_int|1
 comma
 multiline_comment|/* sizeof(((struct frame *)0)-&gt;un.fmte), */
+(braket
+l_int|15
+)braket
+op_assign
 op_minus
 l_int|1
 comma
@@ -724,8 +782,6 @@ r_static
 r_int
 r_char
 id|fpu_version
-op_assign
-l_int|0
 suffix:semicolon
 multiline_comment|/* version number of fpu, set by setup_frame */
 DECL|function|restore_fpu_state
