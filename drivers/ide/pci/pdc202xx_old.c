@@ -4314,7 +4314,7 @@ id|hwif-&gt;pci_dev-&gt;device
 op_eq
 id|PCI_DEVICE_ID_PROMISE_20265
 )paren
-id|hwif-&gt;addressing
+id|hwif-&gt;no_lba48
 op_assign
 (paren
 id|hwif-&gt;channel

@@ -841,7 +841,7 @@ id|dev
 op_assign
 id|hwif-&gt;pci_dev
 suffix:semicolon
-id|hwif-&gt;addressing
+id|hwif-&gt;no_lba48
 op_assign
 l_int|1
 suffix:semicolon

@@ -3208,9 +3208,9 @@ id|hwif-&gt;rqsize
 op_assign
 id|old_hwif.rqsize
 suffix:semicolon
-id|hwif-&gt;addressing
+id|hwif-&gt;no_lba48
 op_assign
-id|old_hwif.addressing
+id|old_hwif.no_lba48
 suffix:semicolon
 macro_line|#ifndef CONFIG_BLK_DEV_IDECS
 id|hwif-&gt;irq

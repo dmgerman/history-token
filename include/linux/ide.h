@@ -3340,11 +3340,6 @@ r_int
 id|rqsize
 suffix:semicolon
 multiline_comment|/* max sectors per request */
-DECL|member|addressing
-r_int
-id|addressing
-suffix:semicolon
-multiline_comment|/* hosts addressing */
 DECL|member|irq
 r_int
 id|irq
@@ -3484,6 +3479,13 @@ suffix:colon
 l_int|1
 suffix:semicolon
 multiline_comment|/* 1=ATA-66 capable, 0=default */
+DECL|member|no_lba48
+r_int
+id|no_lba48
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* 1 = cannot do LBA48 */
 DECL|member|no_dsc
 r_int
 id|no_dsc

@@ -3280,7 +3280,7 @@ id|hwif-&gt;rqsize
 )paren
 id|hwif-&gt;rqsize
 op_assign
-id|hwif-&gt;addressing
+id|hwif-&gt;no_lba48
 ques
 c_cond
 l_int|256

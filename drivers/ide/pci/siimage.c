@@ -4621,7 +4621,7 @@ id|hwif-&gt;hw.sata_misc
 suffix:semicolon
 )brace
 macro_line|#ifdef SIIMAGE_BUFFERED_TASKFILE
-id|hwif-&gt;addressing
+id|hwif-&gt;no_lba48
 op_assign
 l_int|1
 suffix:semicolon

@@ -655,9 +655,9 @@ id|hwif2-&gt;rqsize
 op_assign
 l_int|127
 suffix:semicolon
-id|hwif-&gt;addressing
+id|hwif-&gt;no_lba48
 op_assign
-id|hwif2-&gt;addressing
+id|hwif2-&gt;no_lba48
 op_assign
 l_int|1
 suffix:semicolon
