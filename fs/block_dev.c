@@ -2374,6 +2374,8 @@ c_func
 (paren
 id|bdev
 )paren
+op_logical_and
+id|bdev-&gt;bd_invalidated
 )paren
 (brace
 id|rescan_partitions

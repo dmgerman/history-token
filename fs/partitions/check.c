@@ -2202,15 +2202,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
-id|bdev-&gt;bd_invalidated
-)paren
-r_return
-l_int|0
-suffix:semicolon
-r_if
-c_cond
-(paren
 id|bdev-&gt;bd_part_count
 )paren
 r_return
