@@ -6047,7 +6047,7 @@ op_star
 )paren
 suffix:semicolon
 macro_line|#include &lt;linux/err.h&gt;
-multiline_comment|/*&n; * The bitmask for a lookup event:&n; *  - follow links at the end&n; *  - require a directory&n; *  - ending slashes ok even for nonexistent files&n; *  - internal &quot;there are more path compnents&quot; flag&n; */
+multiline_comment|/*&n; * The bitmask for a lookup event:&n; *  - follow links at the end&n; *  - require a directory&n; *  - ending slashes ok even for nonexistent files&n; *  - internal &quot;there are more path compnents&quot; flag&n; *  - locked when lookup done with dcache_lock held&n; */
 DECL|macro|LOOKUP_FOLLOW
 mdefine_line|#define LOOKUP_FOLLOW&t;&t;(1)
 DECL|macro|LOOKUP_DIRECTORY
@@ -6058,6 +6058,8 @@ DECL|macro|LOOKUP_PARENT
 mdefine_line|#define LOOKUP_PARENT&t;&t;(16)
 DECL|macro|LOOKUP_NOALT
 mdefine_line|#define LOOKUP_NOALT&t;&t;(32)
+DECL|macro|LOOKUP_LOCKED
+mdefine_line|#define LOOKUP_LOCKED&t;&t;(64)
 multiline_comment|/*&n; * Type of the last component on LOOKUP_PARENT&n; */
 DECL|enumerator|LAST_NORM
 DECL|enumerator|LAST_ROOT
@@ -6205,6 +6207,26 @@ r_int
 id|FASTCALL
 c_func
 (paren
+id|path_lookup
+c_func
+(paren
+r_const
+r_char
+op_star
+comma
+r_int
+comma
+r_struct
+id|nameidata
+op_star
+)paren
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|FASTCALL
+c_func
+(paren
 id|link_path_walk
 c_func
 (paren
@@ -6218,59 +6240,6 @@ op_star
 )paren
 )paren
 suffix:semicolon
-DECL|function|path_lookup
-r_static
-r_inline
-r_int
-id|path_lookup
-c_func
-(paren
-r_const
-r_char
-op_star
-id|path
-comma
-r_int
-id|flags
-comma
-r_struct
-id|nameidata
-op_star
-id|nd
-)paren
-(brace
-r_int
-id|error
-op_assign
-l_int|0
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|path_init
-c_func
-(paren
-id|path
-comma
-id|flags
-comma
-id|nd
-)paren
-)paren
-id|error
-op_assign
-id|path_walk
-c_func
-(paren
-id|path
-comma
-id|nd
-)paren
-suffix:semicolon
-r_return
-id|error
-suffix:semicolon
-)brace
 r_extern
 r_void
 id|path_release
