@@ -125,6 +125,11 @@ id|list_head
 id|list
 suffix:semicolon
 multiline_comment|/* ports on this IRQ */
+DECL|member|rev
+r_int
+r_int
+id|rev
+suffix:semicolon
 DECL|member|acr
 r_int
 r_char
@@ -134,11 +139,6 @@ DECL|member|ier
 r_int
 r_char
 id|ier
-suffix:semicolon
-DECL|member|rev
-r_int
-r_char
-id|rev
 suffix:semicolon
 DECL|member|lcr
 r_int
@@ -159,7 +159,7 @@ suffix:semicolon
 multiline_comment|/* mask of forced bits */
 DECL|member|lsr_break_flag
 r_int
-r_int
+r_char
 id|lsr_break_flag
 suffix:semicolon
 multiline_comment|/*&n;&t; * We provide a per-port pm hook.&n;&t; */
