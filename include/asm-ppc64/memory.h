@@ -93,8 +93,8 @@ DECL|macro|HMT_LOW
 mdefine_line|#define HMT_LOW
 DECL|macro|HMT_MEDIUM
 mdefine_line|#define HMT_MEDIUM
-DECL|macro|HMT_LOW
-mdefine_line|#define HMT_LOW
+DECL|macro|HMT_HIGH
+mdefine_line|#define HMT_HIGH
 macro_line|#endif
 macro_line|#endif
 eof
