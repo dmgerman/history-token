@@ -36,7 +36,6 @@ c_func
 r_void
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_SMP
 DECL|function|flush_cache_all
 r_static
 r_inline
@@ -47,7 +46,7 @@ c_func
 r_void
 )paren
 (brace
-id|smp_call_function
+id|on_each_cpu
 c_func
 (paren
 (paren
@@ -69,16 +68,7 @@ comma
 l_int|1
 )paren
 suffix:semicolon
-id|flush_cache_all_local
-c_func
-(paren
-)paren
-suffix:semicolon
 )brace
-macro_line|#else
-DECL|macro|flush_cache_all
-mdefine_line|#define flush_cache_all flush_cache_all_local
-macro_line|#endif
 multiline_comment|/* The following value needs to be tuned and probably scaled with the&n; * cache size.&n; */
 DECL|macro|FLUSH_THRESHOLD
 mdefine_line|#define FLUSH_THRESHOLD 0x80000

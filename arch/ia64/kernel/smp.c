@@ -616,7 +616,7 @@ id|smp_flush_tlb_all
 r_void
 )paren
 (brace
-id|smp_call_function
+id|on_each_cpu
 c_func
 (paren
 (paren
@@ -638,11 +638,6 @@ comma
 l_int|1
 )paren
 suffix:semicolon
-id|local_flush_tlb_all
-c_func
-(paren
-)paren
-suffix:semicolon
 )brace
 r_void
 DECL|function|smp_flush_tlb_mm
@@ -654,12 +649,6 @@ op_star
 id|mm
 )paren
 (brace
-id|local_finish_flush_tlb_mm
-c_func
-(paren
-id|mm
-)paren
-suffix:semicolon
 multiline_comment|/* this happens for the common case of a single-threaded fork():  */
 r_if
 c_cond
@@ -681,10 +670,18 @@ op_eq
 l_int|1
 )paren
 )paren
+(brace
+id|local_finish_flush_tlb_mm
+c_func
+(paren
+id|mm
+)paren
+suffix:semicolon
 r_return
 suffix:semicolon
+)brace
 multiline_comment|/*&n;&t; * We could optimize this further by using mm-&gt;cpu_vm_mask to track which CPUs&n;&t; * have been running in the address space.  It&squot;s not clear that this is worth the&n;&t; * trouble though: to avoid races, we have to raise the IPI on the target CPU&n;&t; * anyhow, and once a CPU is interrupted, the cost of local_flush_tlb_all() is&n;&t; * rather trivial.&n;&t; */
-id|smp_call_function
+id|on_each_cpu
 c_func
 (paren
 (paren

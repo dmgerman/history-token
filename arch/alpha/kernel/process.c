@@ -398,8 +398,7 @@ id|args.restart_cmd
 op_assign
 id|restart_cmd
 suffix:semicolon
-macro_line|#ifdef CONFIG_SMP
-id|smp_call_function
+id|on_each_cpu
 c_func
 (paren
 id|common_shutdown_1
@@ -410,14 +409,6 @@ comma
 l_int|1
 comma
 l_int|0
-)paren
-suffix:semicolon
-macro_line|#endif
-id|common_shutdown_1
-c_func
-(paren
-op_amp
-id|args
 )paren
 suffix:semicolon
 )brace

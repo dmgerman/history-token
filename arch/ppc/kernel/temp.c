@@ -646,8 +646,7 @@ op_plus
 id|shrink_timer
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_SMP
-id|smp_call_function
+id|on_each_cpu
 c_func
 (paren
 id|tau_timeout
@@ -657,13 +656,6 @@ comma
 l_int|1
 comma
 l_int|0
-)paren
-suffix:semicolon
-macro_line|#endif
-id|tau_timeout
-c_func
-(paren
-l_int|NULL
 )paren
 suffix:semicolon
 )brace
@@ -785,8 +777,7 @@ op_amp
 id|tau_timer
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_SMP
-id|smp_call_function
+id|on_each_cpu
 c_func
 (paren
 id|TAU_init_smp
@@ -796,13 +787,6 @@ comma
 l_int|1
 comma
 l_int|0
-)paren
-suffix:semicolon
-macro_line|#endif
-id|TAU_init_smp
-c_func
-(paren
-l_int|NULL
 )paren
 suffix:semicolon
 id|printk

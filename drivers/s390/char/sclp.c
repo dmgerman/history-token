@@ -1733,7 +1733,7 @@ id|cpu_quiesce_map
 op_assign
 id|cpu_online_map
 suffix:semicolon
-id|smp_call_function
+id|on_each_cpu
 c_func
 (paren
 id|do_load_quiesce_psw
@@ -1743,12 +1743,6 @@ comma
 l_int|0
 comma
 l_int|0
-)paren
-suffix:semicolon
-id|do_load_quiesce_psw
-c_func
-(paren
-l_int|NULL
 )paren
 suffix:semicolon
 )brace

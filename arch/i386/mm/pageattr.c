@@ -741,8 +741,7 @@ c_func
 r_void
 )paren
 (brace
-macro_line|#ifdef CONFIG_SMP 
-id|smp_call_function
+id|on_each_cpu
 c_func
 (paren
 id|flush_kernel_map
@@ -752,13 +751,6 @@ comma
 l_int|1
 comma
 l_int|1
-)paren
-suffix:semicolon
-macro_line|#endif&t;
-id|flush_kernel_map
-c_func
-(paren
-l_int|NULL
 )paren
 suffix:semicolon
 )brace

@@ -4117,7 +4117,7 @@ op_amp
 id|sid_lock
 )paren
 suffix:semicolon
-id|smp_call_function
+id|on_each_cpu
 c_func
 (paren
 (paren
@@ -4137,11 +4137,6 @@ comma
 l_int|1
 comma
 l_int|1
-)paren
-suffix:semicolon
-id|flush_tlb_all_local
-c_func
-(paren
 )paren
 suffix:semicolon
 r_if

@@ -4046,7 +4046,7 @@ id|print_all_local_APICs
 r_void
 )paren
 (brace
-id|smp_call_function
+id|on_each_cpu
 c_func
 (paren
 id|print_local_APIC
@@ -4056,12 +4056,6 @@ comma
 l_int|1
 comma
 l_int|1
-)paren
-suffix:semicolon
-id|print_local_APIC
-c_func
-(paren
-l_int|NULL
 )paren
 suffix:semicolon
 )brace

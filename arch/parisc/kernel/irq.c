@@ -78,7 +78,6 @@ op_assign
 id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
 multiline_comment|/* protect IRQ regions */
-macro_line|#ifdef CONFIG_SMP
 DECL|function|cpu_set_eiem
 r_static
 r_void
@@ -101,7 +100,6 @@ id|info
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif
 DECL|function|disable_cpu_irq
 r_static
 r_inline
@@ -132,13 +130,7 @@ op_and_assign
 op_complement
 id|eirr_bit
 suffix:semicolon
-id|set_eiem
-c_func
-(paren
-id|cpu_eiem
-)paren
-suffix:semicolon
-id|smp_call_function
+id|on_each_cpu
 c_func
 (paren
 id|cpu_set_eiem
@@ -192,7 +184,7 @@ id|cpu_eiem
 op_or_assign
 id|eirr_bit
 suffix:semicolon
-id|smp_call_function
+id|on_each_cpu
 c_func
 (paren
 id|cpu_set_eiem
@@ -206,12 +198,6 @@ comma
 l_int|1
 comma
 l_int|1
-)paren
-suffix:semicolon
-id|set_eiem
-c_func
-(paren
-id|cpu_eiem
 )paren
 suffix:semicolon
 )brace
@@ -248,7 +234,7 @@ op_or_assign
 id|eirr_bit
 suffix:semicolon
 multiline_comment|/* NOTE: sending an IPI will cause do_cpu_irq_mask() to&n;&t;** handle *any* unmasked pending interrupts.&n;&t;** ie We don&squot;t need to check for pending interrupts here.&n;&t;*/
-id|smp_call_function
+id|on_each_cpu
 c_func
 (paren
 id|cpu_set_eiem
@@ -262,12 +248,6 @@ comma
 l_int|1
 comma
 l_int|1
-)paren
-suffix:semicolon
-id|set_eiem
-c_func
-(paren
-id|cpu_eiem
 )paren
 suffix:semicolon
 )brace

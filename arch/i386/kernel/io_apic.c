@@ -6027,7 +6027,7 @@ id|print_all_local_APICs
 r_void
 )paren
 (brace
-id|smp_call_function
+id|on_each_cpu
 c_func
 (paren
 id|print_local_APIC
@@ -6037,12 +6037,6 @@ comma
 l_int|1
 comma
 l_int|1
-)paren
-suffix:semicolon
-id|print_local_APIC
-c_func
-(paren
-l_int|NULL
 )paren
 suffix:semicolon
 )brace
@@ -7644,7 +7638,7 @@ id|KERN_INFO
 l_string|&quot;activating NMI Watchdog ...&quot;
 )paren
 suffix:semicolon
-id|smp_call_function
+id|on_each_cpu
 c_func
 (paren
 id|enable_NMI_through_LVT0
@@ -7654,12 +7648,6 @@ comma
 l_int|1
 comma
 l_int|1
-)paren
-suffix:semicolon
-id|enable_NMI_through_LVT0
-c_func
-(paren
-l_int|NULL
 )paren
 suffix:semicolon
 id|printk

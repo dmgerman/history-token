@@ -213,16 +213,16 @@ c_cond
 id|reload
 )paren
 (brace
-id|load_LDT
-c_func
-(paren
-id|pc
-)paren
-suffix:semicolon
 macro_line|#ifdef CONFIG_SMP
 id|preempt_disable
 c_func
 (paren
+)paren
+suffix:semicolon
+id|load_LDT
+c_func
+(paren
+id|pc
 )paren
 suffix:semicolon
 r_if
@@ -254,6 +254,13 @@ suffix:semicolon
 id|preempt_enable
 c_func
 (paren
+)paren
+suffix:semicolon
+macro_line|#else
+id|load_LDT
+c_func
+(paren
+id|pc
 )paren
 suffix:semicolon
 macro_line|#endif

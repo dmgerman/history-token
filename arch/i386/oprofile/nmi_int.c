@@ -361,7 +361,7 @@ r_void
 )paren
 (brace
 multiline_comment|/* We walk a thin line between law and rape here.&n;&t; * We need to be careful to install our NMI handler&n;&t; * without actually triggering any NMIs as this will&n;&t; * break the core code horrifically.&n;&t; */
-id|smp_call_function
+id|on_each_cpu
 c_func
 (paren
 id|nmi_cpu_setup
@@ -371,12 +371,6 @@ comma
 l_int|0
 comma
 l_int|1
-)paren
-suffix:semicolon
-id|nmi_cpu_setup
-c_func
-(paren
-l_int|0
 )paren
 suffix:semicolon
 id|set_nmi_callback
@@ -620,7 +614,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|smp_call_function
+id|on_each_cpu
 c_func
 (paren
 id|nmi_cpu_shutdown
@@ -630,12 +624,6 @@ comma
 l_int|0
 comma
 l_int|1
-)paren
-suffix:semicolon
-id|nmi_cpu_shutdown
-c_func
-(paren
-l_int|0
 )paren
 suffix:semicolon
 )brace
@@ -683,7 +671,7 @@ c_func
 r_void
 )paren
 (brace
-id|smp_call_function
+id|on_each_cpu
 c_func
 (paren
 id|nmi_cpu_start
@@ -693,12 +681,6 @@ comma
 l_int|0
 comma
 l_int|1
-)paren
-suffix:semicolon
-id|nmi_cpu_start
-c_func
-(paren
-l_int|0
 )paren
 suffix:semicolon
 r_return
@@ -749,7 +731,7 @@ c_func
 r_void
 )paren
 (brace
-id|smp_call_function
+id|on_each_cpu
 c_func
 (paren
 id|nmi_cpu_stop
@@ -759,12 +741,6 @@ comma
 l_int|0
 comma
 l_int|1
-)paren
-suffix:semicolon
-id|nmi_cpu_stop
-c_func
-(paren
-l_int|0
 )paren
 suffix:semicolon
 )brace
