@@ -746,6 +746,10 @@ id|uref.report_id
 op_assign
 id|report-&gt;id
 suffix:semicolon
+id|uref.field_index
+op_assign
+id|HID_FIELD_INDEX_NONE
+suffix:semicolon
 id|hiddev_send_event
 c_func
 (paren

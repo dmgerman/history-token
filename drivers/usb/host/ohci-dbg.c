@@ -1246,7 +1246,11 @@ id|controller
 comma
 l_string|&quot;hcca frame #%04x&bslash;n&quot;
 comma
-id|controller-&gt;hcca-&gt;frame_no
+id|OHCI_FRAME_NO
+c_func
+(paren
+id|controller-&gt;hcca
+)paren
 )paren
 suffix:semicolon
 id|ohci_dump_roothub
@@ -1286,15 +1290,18 @@ r_static
 r_void
 id|ohci_dump_td
 (paren
+r_const
 r_struct
 id|ohci_hcd
 op_star
 id|ohci
 comma
+r_const
 r_char
 op_star
 id|label
 comma
+r_const
 r_struct
 id|td
 op_star
@@ -1314,7 +1321,7 @@ id|ohci_dbg
 (paren
 id|ohci
 comma
-l_string|&quot;%s td %p%s; urb %p index %d; hw next td %08x&quot;
+l_string|&quot;%s td %p%s; urb %p index %d; hw next td %08x&bslash;n&quot;
 comma
 id|label
 comma
@@ -1459,7 +1466,7 @@ id|ohci_dbg
 (paren
 id|ohci
 comma
-l_string|&quot;     info %08x CC=%x %s DI=%d %s %s&quot;
+l_string|&quot;     info %08x CC=%x %s DI=%d %s %s&bslash;n&quot;
 comma
 id|tmp
 comma
@@ -1514,7 +1521,7 @@ id|ohci_dbg
 (paren
 id|ohci
 comma
-l_string|&quot;     cbp %08x be %08x (len %d)&quot;
+l_string|&quot;     cbp %08x be %08x (len %d)&bslash;n&quot;
 comma
 id|cbp
 comma
@@ -1544,7 +1551,7 @@ id|ohci_dbg
 (paren
 id|ohci
 comma
-l_string|&quot;     info %08x CC=%x FC=%d DI=%d SF=%04x&quot;
+l_string|&quot;  info %08x CC=%x FC=%d DI=%d SF=%04x&bslash;n&quot;
 comma
 id|tmp
 comma
@@ -1579,7 +1586,7 @@ id|ohci_dbg
 (paren
 id|ohci
 comma
-l_string|&quot;     bp0 %08x be %08x&quot;
+l_string|&quot;  bp0 %08x be %08x&bslash;n&quot;
 comma
 id|le32_to_cpup
 (paren
@@ -1639,7 +1646,7 @@ id|ohci_dbg
 (paren
 id|ohci
 comma
-l_string|&quot;       psw [%d] = %2x, CC=%x %s=%d&quot;
+l_string|&quot;    psw [%d] = %2x, CC=%x %s=%d&bslash;n&quot;
 comma
 id|i
 comma
@@ -1679,15 +1686,18 @@ id|unused
 DECL|function|ohci_dump_ed
 id|ohci_dump_ed
 (paren
+r_const
 r_struct
 id|ohci_hcd
 op_star
 id|ohci
 comma
+r_const
 r_char
 op_star
 id|label
 comma
+r_const
 r_struct
 id|ed
 op_star
@@ -1712,7 +1722,7 @@ id|ohci_dbg
 (paren
 id|ohci
 comma
-l_string|&quot;%s, ed %p state 0x%x type %s; next ed %08x&quot;
+l_string|&quot;%s, ed %p state 0x%x type %s; next ed %08x&bslash;n&quot;
 comma
 id|label
 comma
@@ -1768,7 +1778,7 @@ id|ohci_dbg
 (paren
 id|ohci
 comma
-l_string|&quot;  info %08x MAX=%d%s%s%s%s EP=%d%s DEV=%d&quot;
+l_string|&quot;  info %08x MAX=%d%s%s%s%s EP=%d%s DEV=%d&bslash;n&quot;
 comma
 id|le32_to_cpu
 (paren
@@ -1855,7 +1865,7 @@ id|ohci_dbg
 (paren
 id|ohci
 comma
-l_string|&quot;  tds: head %08x %s%s tail %08x%s&quot;
+l_string|&quot;  tds: head %08x %s%s tail %08x%s&bslash;n&quot;
 comma
 id|tmp
 op_assign
@@ -2780,6 +2790,27 @@ op_amp
 id|ed-&gt;hwINFO
 )paren
 suffix:semicolon
+r_struct
+id|list_head
+op_star
+id|entry
+suffix:semicolon
+r_int
+id|qlen
+op_assign
+l_int|0
+suffix:semicolon
+multiline_comment|/* qlen measured here in TDs, not urbs */
+id|list_for_each
+(paren
+id|entry
+comma
+op_amp
+id|ed-&gt;td_list
+)paren
+id|qlen
+op_increment
+suffix:semicolon
 id|temp
 op_assign
 id|snprintf
@@ -2788,7 +2819,7 @@ id|next
 comma
 id|size
 comma
-l_string|&quot; (%cs dev%d%s ep%d%s&quot;
+l_string|&quot; (%cs dev%d ep%d%s-%s qlen %u&quot;
 l_string|&quot; max %d %08x%s%s)&quot;
 comma
 (paren
@@ -2805,17 +2836,6 @@ comma
 id|scratch
 op_amp
 l_int|0x7f
-comma
-(paren
-id|info
-op_amp
-id|ED_ISO
-)paren
-ques
-c_cond
-l_string|&quot; iso&quot;
-suffix:colon
-l_string|&quot;&quot;
 comma
 (paren
 id|scratch
@@ -2836,6 +2856,19 @@ l_string|&quot;in&quot;
 suffix:colon
 l_string|&quot;out&quot;
 comma
+(paren
+id|info
+op_amp
+id|ED_ISO
+)paren
+ques
+c_cond
+l_string|&quot;iso&quot;
+suffix:colon
+l_string|&quot;int&quot;
+comma
+id|qlen
+comma
 l_int|0x03ff
 op_amp
 (paren
@@ -2853,7 +2886,7 @@ id|ED_SKIP
 )paren
 ques
 c_cond
-l_string|&quot; s&quot;
+l_string|&quot; K&quot;
 suffix:colon
 l_string|&quot;&quot;
 comma
@@ -2877,7 +2910,6 @@ id|next
 op_add_assign
 id|temp
 suffix:semicolon
-singleline_comment|// FIXME some TD info too
 r_if
 c_cond
 (paren
@@ -3109,7 +3141,11 @@ id|size
 comma
 l_string|&quot;hcca frame 0x%04x&bslash;n&quot;
 comma
-id|ohci-&gt;hcca-&gt;frame_no
+id|OHCI_FRAME_NO
+c_func
+(paren
+id|ohci-&gt;hcca
+)paren
 )paren
 suffix:semicolon
 multiline_comment|/* other registers mostly affect frame timings */

@@ -286,11 +286,6 @@ suffix:semicolon
 )brace
 r_return
 id|len
-ques
-c_cond
-l_int|1
-suffix:colon
-l_int|0
 suffix:semicolon
 )brace
 DECL|variable|ident

@@ -1543,7 +1543,12 @@ c_func
 r_void
 )paren
 (brace
-id|current-&gt;thread.w_saved
+id|current_thread_info
+c_func
+(paren
+)paren
+op_member_access_from_pointer
+id|w_saved
 op_assign
 l_int|0
 suffix:semicolon
@@ -2064,16 +2069,6 @@ suffix:semicolon
 id|ti-&gt;kwim
 op_assign
 id|current-&gt;thread.fork_kwim
-suffix:semicolon
-multiline_comment|/* This is used for sun4c only */
-id|atomic_set
-c_func
-(paren
-op_amp
-id|p-&gt;thread.refcount
-comma
-l_int|1
-)paren
 suffix:semicolon
 r_if
 c_cond

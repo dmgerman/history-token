@@ -550,7 +550,7 @@ id|file-&gt;f_vfsmnt
 comma
 id|file-&gt;f_dentry
 comma
-l_string|&quot; &bslash;t&bslash;n&bslash;&bslash;&quot;
+l_string|&quot;&quot;
 )paren
 suffix:semicolon
 )brace

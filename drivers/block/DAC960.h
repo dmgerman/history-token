@@ -8841,6 +8841,13 @@ r_struct
 id|request_queue
 op_star
 id|RequestQueue
+(braket
+id|DAC960_MaxLogicalDrives
+)braket
+suffix:semicolon
+DECL|member|req_q_index
+r_int
+id|req_q_index
 suffix:semicolon
 DECL|member|queue_lock
 id|spinlock_t

@@ -6119,7 +6119,8 @@ r_int
 id|addr
 comma
 r_int
-id|unused
+op_star
+id|type
 )paren
 (brace
 id|Sg_fd
@@ -6357,6 +6358,16 @@ id|page
 suffix:semicolon
 multiline_comment|/* increment page count */
 )brace
+r_if
+c_cond
+(paren
+id|type
+)paren
+op_star
+id|type
+op_assign
+id|VM_FAULT_MINOR
+suffix:semicolon
 r_return
 id|page
 suffix:semicolon
@@ -16008,6 +16019,13 @@ id|module_exit
 c_func
 (paren
 id|exit_sg
+)paren
+suffix:semicolon
+DECL|variable|SCSI_GENERIC_MAJOR
+id|MODULE_ALIAS_CHARDEV_MAJOR
+c_func
+(paren
+id|SCSI_GENERIC_MAJOR
 )paren
 suffix:semicolon
 eof

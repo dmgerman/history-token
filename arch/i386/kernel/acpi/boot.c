@@ -2,6 +2,7 @@ multiline_comment|/*&n; *  boot.c - Architecture-Specific Low-Level ACPI Boot Su
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/acpi.h&gt;
+macro_line|#include &lt;linux/efi.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/io_apic.h&gt;
 macro_line|#include &lt;asm/apic.h&gt;
@@ -918,6 +919,38 @@ id|rsdp_phys
 op_assign
 l_int|0
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|efi_enabled
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|efi.acpi20
+)paren
+r_return
+id|__pa
+c_func
+(paren
+id|efi.acpi20
+)paren
+suffix:semicolon
+r_else
+r_if
+c_cond
+(paren
+id|efi.acpi
+)paren
+r_return
+id|__pa
+c_func
+(paren
+id|efi.acpi
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/*&n;&t; * Scan memory looking for the RSDP signature. First search EBDA (low&n;&t; * memory) paragraphs and then search upper memory (E0000-FFFFF).&n;&t; */
 id|rsdp_phys
 op_assign

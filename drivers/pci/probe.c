@@ -2529,6 +2529,12 @@ comma
 id|devfn
 )paren
 suffix:semicolon
+id|pci_scan_msi_device
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren

@@ -1570,6 +1570,11 @@ id|timer_tsc
 op_assign
 (brace
 dot
+id|name
+op_assign
+l_string|&quot;tsc&quot;
+comma
+dot
 id|init
 op_assign
 id|init_tsc

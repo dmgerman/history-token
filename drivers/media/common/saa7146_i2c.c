@@ -968,6 +968,7 @@ op_assign
 l_int|0
 suffix:semicolon
 r_int
+r_int
 id|timeout
 suffix:semicolon
 multiline_comment|/* write out i2c-command */
@@ -1172,9 +1173,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|time_after
+c_func
+(paren
 id|jiffies
-OG
+comma
 id|timeout
+)paren
 )paren
 (brace
 id|printk
@@ -1239,9 +1244,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|time_after
+c_func
+(paren
 id|jiffies
-OG
+comma
 id|timeout
+)paren
 )paren
 (brace
 multiline_comment|/* this is normal when probing the bus&n;&t;&t;&t;&t; * (no answer from nonexisistant device...)&n;&t;&t;&t;&t; */

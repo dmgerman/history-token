@@ -26,7 +26,8 @@ r_int
 id|address
 comma
 r_int
-id|write_access
+op_star
+id|type
 )paren
 (brace
 id|alpha_agp_info
@@ -101,6 +102,16 @@ c_func
 (paren
 id|page
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|type
+)paren
+op_star
+id|type
+op_assign
+id|VM_FAULT_MINOR
 suffix:semicolon
 r_return
 id|page

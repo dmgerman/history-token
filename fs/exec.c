@@ -3322,6 +3322,11 @@ id|ch
 comma
 id|retval
 suffix:semicolon
+r_struct
+id|files_struct
+op_star
+id|files
+suffix:semicolon
 multiline_comment|/*&n;&t; * Make sure we have a private signal table and that&n;&t; * we are unassociated from the previous thread group.&n;&t; */
 id|retval
 op_assign
@@ -3329,6 +3334,27 @@ id|de_thread
 c_func
 (paren
 id|current
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|retval
+)paren
+r_goto
+id|out
+suffix:semicolon
+multiline_comment|/*&n;&t; * Make sure we have private file handles. Ask the&n;&t; * fork helper to do the work for us and the exit&n;&t; * helper to do the cleanup of the old one.&n;&t; */
+id|files
+op_assign
+id|current-&gt;files
+suffix:semicolon
+multiline_comment|/* refcounted so safe to hold */
+id|retval
+op_assign
+id|unshare_files
+c_func
+(paren
 )paren
 suffix:semicolon
 r_if
@@ -3354,7 +3380,7 @@ c_cond
 id|retval
 )paren
 r_goto
-id|out
+id|mmap_failed
 suffix:semicolon
 id|bprm-&gt;mm
 op_assign
@@ -3362,6 +3388,18 @@ l_int|NULL
 suffix:semicolon
 multiline_comment|/* We&squot;re using it now */
 multiline_comment|/* This is the point of no return */
+id|steal_locks
+c_func
+(paren
+id|files
+)paren
+suffix:semicolon
+id|put_files_struct
+c_func
+(paren
+id|files
+)paren
+suffix:semicolon
 id|current-&gt;sas_ss_sp
 op_assign
 id|current-&gt;sas_ss_size
@@ -3499,6 +3537,18 @@ id|current
 suffix:semicolon
 r_return
 l_int|0
+suffix:semicolon
+id|mmap_failed
+suffix:colon
+id|put_files_struct
+c_func
+(paren
+id|current-&gt;files
+)paren
+suffix:semicolon
+id|current-&gt;files
+op_assign
+id|files
 suffix:semicolon
 id|out
 suffix:colon

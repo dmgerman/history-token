@@ -1,6 +1,6 @@
 multiline_comment|/*&n; * Support for VIA 82Cxxx Audio Codecs&n; * Copyright 1999,2000 Jeff Garzik&n; *&n; * Updated to support the VIA 8233/8235 audio subsystem&n; * Alan Cox &lt;alan@redhat.com&gt; (C) Copyright 2002, 2003 Red Hat Inc&n; *&n; * Distributed under the GNU GENERAL PUBLIC LICENSE (GPL) Version 2.&n; * See the &quot;COPYING&quot; file distributed with this software for more info.&n; * NO WARRANTY&n; *&n; * For a list of known bugs (errata) and documentation,&n; * see via-audio.pdf in linux/Documentation/DocBook.&n; * If this documentation does not exist, run &quot;make pdfdocs&quot;.&n; */
 DECL|macro|VIA_VERSION
-mdefine_line|#define VIA_VERSION&t;&quot;1.9.1-ac3-2.5&quot;
+mdefine_line|#define VIA_VERSION&t;&quot;1.9.1-ac4-2.5&quot;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -3713,13 +3713,6 @@ suffix:semicolon
 multiline_comment|/* unknown */
 r_default
 suffix:colon
-id|printk
-(paren
-id|KERN_WARNING
-id|PFX
-l_string|&quot;unknown number of channels&bslash;n&quot;
-)paren
-suffix:semicolon
 id|val
 op_assign
 op_minus
@@ -6861,7 +6854,8 @@ r_int
 id|address
 comma
 r_int
-id|write_access
+op_star
+id|type
 )paren
 (brace
 r_struct
@@ -6895,7 +6889,7 @@ id|wr
 suffix:semicolon
 id|DPRINTK
 (paren
-l_string|&quot;ENTER, start %lXh, ofs %lXh, pgoff %ld, addr %lXh, wr %d&bslash;n&quot;
+l_string|&quot;ENTER, start %lXh, ofs %lXh, pgoff %ld, addr %lXh&bslash;n&quot;
 comma
 id|vma-&gt;vm_start
 comma
@@ -6912,8 +6906,6 @@ op_rshift
 id|PAGE_SHIFT
 comma
 id|address
-comma
-id|write_access
 )paren
 suffix:semicolon
 r_if
@@ -7089,6 +7081,16 @@ id|get_page
 (paren
 id|dmapage
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|type
+)paren
+op_star
+id|type
+op_assign
+id|VM_FAULT_MINOR
 suffix:semicolon
 r_return
 id|dmapage
@@ -12182,6 +12184,7 @@ id|rc
 op_logical_and
 id|rc
 op_ne
+op_minus
 id|ERESTARTSYS
 )paren
 multiline_comment|/* Nobody needs to know about ^C */

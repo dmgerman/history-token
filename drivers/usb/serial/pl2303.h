@@ -7,6 +7,8 @@ DECL|macro|PL2303_PRODUCT_ID_RSAQ2
 mdefine_line|#define PL2303_PRODUCT_ID_RSAQ2&t;0x04bb
 DECL|macro|ATEN_VENDOR_ID
 mdefine_line|#define ATEN_VENDOR_ID&t;&t;0x0557
+DECL|macro|ATEN_VENDOR_ID2
+mdefine_line|#define ATEN_VENDOR_ID2&t;&t;0x0547
 DECL|macro|ATEN_PRODUCT_ID
 mdefine_line|#define ATEN_PRODUCT_ID&t;&t;0x2008
 DECL|macro|IODATA_VENDOR_ID

@@ -6980,8 +6980,8 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* i365_set_mem_map */
+macro_line|#if 0 /* driver model ordering issue */
 multiline_comment|/*======================================================================&n;&n;    Routines for accessing socket information and register dumps via&n;    /sys/class/pcmcia_socket/...&n;    &n;======================================================================*/
-DECL|function|show_info
 r_static
 id|ssize_t
 id|show_info
@@ -7032,7 +7032,6 @@ id|s-&gt;psock
 )paren
 suffix:semicolon
 )brace
-DECL|function|show_exca
 r_static
 id|ssize_t
 id|show_exca
@@ -7216,6 +7215,7 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
+macro_line|#endif
 multiline_comment|/*====================================================================*/
 multiline_comment|/* this is horribly ugly... proper locking needs to be done here at &n; * some time... */
 DECL|macro|LOCKED
@@ -8055,6 +8055,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
+macro_line|#if 0 /* driver model ordering issue */
 id|class_device_create_file
 c_func
 (paren
@@ -8085,6 +8086,7 @@ op_amp
 id|class_device_attr_exca
 )paren
 suffix:semicolon
+macro_line|#endif
 )brace
 multiline_comment|/* Finally, schedule a polling interrupt */
 r_if

@@ -3572,4 +3572,10 @@ c_func
 id|utf8_wcstombs
 )paren
 suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;Dual BSD/GPL&quot;
+)paren
+suffix:semicolon
 eof

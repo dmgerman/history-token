@@ -1651,10 +1651,13 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot; cdsize = 0x%lx (expected 0x%lx)&bslash;n&quot;
+l_string|&quot; cdsize = 0x%x (expected 0x%x)&bslash;n&quot;
 comma
 id|len
 op_minus
+(paren
+r_int
+)paren
 r_sizeof
 (paren
 r_struct

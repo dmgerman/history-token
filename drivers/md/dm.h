@@ -237,6 +237,9 @@ id|result
 comma
 r_int
 id|mode
+comma
+r_int
+id|num_targets
 )paren
 suffix:semicolon
 r_void
