@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * $Id: ixp4xx.c,v 1.3 2004/07/12 22:38:29 dwmw2 Exp $&n; *&n; * drivers/mtd/maps/ixp4xx.c&n; *&n; * MTD Map file for IXP4XX based systems. Please do not make per-board&n; * changes in here. If your board needs special setup, do it in your&n; * platform level code in arch/arm/mach-ixp4xx/board-setup.c&n; *&n; * Original Author: Intel Corporation&n; * Maintainer: Deepak Saxena &lt;dsaxena@mvista.com&gt;&n; *&n; * Copyright (C) 2002 Intel Corporation&n; * Copyright (C) 2003-2004 MontaVista Software, Inc.&n; *&n; */
+multiline_comment|/*&n; * $Id: ixp4xx.c,v 1.4 2004/08/31 22:55:51 dsaxena Exp $&n; *&n; * drivers/mtd/maps/ixp4xx.c&n; *&n; * MTD Map file for IXP4XX based systems. Please do not make per-board&n; * changes in here. If your board needs special setup, do it in your&n; * platform level code in arch/arm/mach-ixp4xx/board-setup.c&n; *&n; * Original Author: Intel Corporation&n; * Maintainer: Deepak Saxena &lt;dsaxena@mvista.com&gt;&n; *&n; * Copyright (C) 2002 Intel Corporation&n; * Copyright (C) 2003-2004 MontaVista Software, Inc.&n; *&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -320,6 +320,9 @@ op_amp
 id|dev-&gt;dev
 )paren
 suffix:semicolon
+id|map_word
+id|d
+suffix:semicolon
 id|dev_set_drvdata
 c_func
 (paren
@@ -341,13 +344,20 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * This is required for a soft reboot to work.&n;&t; */
+id|d.x
+(braket
+l_int|0
+)braket
+op_assign
+l_int|0xff
+suffix:semicolon
 id|ixp4xx_write16
 c_func
 (paren
 op_amp
 id|info-&gt;map
 comma
-l_int|0xff
+id|d
 comma
 l_int|0x55
 op_star
