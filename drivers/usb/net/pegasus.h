@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Copyright (c) 1999-2002 Petko Manolov - Petkan (petkan@users.sourceforge.net)&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; */
+multiline_comment|/*&n; * Copyright (c) 1999-2002 Petko Manolov - Petkan (petkan@users.sourceforge.net)&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as published&n; * by the Free Software Foundation.&n; */
 macro_line|#ifndef&t;PEGASUS_DEV
 DECL|macro|PEGASUS_II
 mdefine_line|#define&t;PEGASUS_II&t;&t;0x80000000
@@ -6,6 +6,8 @@ DECL|macro|HAS_HOME_PNA
 mdefine_line|#define&t;HAS_HOME_PNA&t;&t;0x40000000
 DECL|macro|PEGASUS_MTU
 mdefine_line|#define&t;PEGASUS_MTU&t;&t;1536
+DECL|macro|RX_SKBS
+mdefine_line|#define&t;RX_SKBS&t;&t;&t;4
 DECL|macro|EPROM_WRITE
 mdefine_line|#define&t;EPROM_WRITE&t;&t;0x01
 DECL|macro|EPROM_READ
@@ -242,6 +244,15 @@ comma
 op_star
 id|intr_urb
 suffix:semicolon
+DECL|member|rx_pool
+r_struct
+id|sk_buff
+op_star
+id|rx_pool
+(braket
+id|RX_SKBS
+)braket
+suffix:semicolon
 DECL|member|rx_skb
 r_struct
 id|sk_buff
@@ -261,6 +272,10 @@ DECL|member|sem
 r_struct
 id|semaphore
 id|sem
+suffix:semicolon
+DECL|member|rx_pool_lock
+id|spinlock_t
+id|rx_pool_lock
 suffix:semicolon
 DECL|member|intr_buff
 r_int
