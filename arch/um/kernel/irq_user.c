@@ -326,6 +326,14 @@ comma
 id|irq_fd-&gt;id
 )paren
 suffix:semicolon
+id|free_irq_by_irq_and_dev
+c_func
+(paren
+id|irq_fd-&gt;irq
+comma
+id|irq_fd-&gt;id
+)paren
+suffix:semicolon
 )brace
 )brace
 )brace
