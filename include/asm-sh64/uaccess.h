@@ -375,6 +375,9 @@ mdefine_line|#define ARCH_HAS_SEARCH_EXTABLE
 multiline_comment|/* If gcc inlines memset, it will use st.q instructions.  Therefore, we need&n;   kmalloc allocations to be 8-byte aligned.  Without this, the alignment&n;   becomes BYTE_PER_WORD i.e. only 4 (since sizeof(long)==sizeof(void*)==4 on&n;   sh64 at the moment). */
 DECL|macro|ARCH_KMALLOC_MINALIGN
 mdefine_line|#define ARCH_KMALLOC_MINALIGN 8
+multiline_comment|/*&n; * We want 8-byte alignment for the slab caches as well, otherwise we have&n; * the same BYTES_PER_WORD (sizeof(void *)) min align in kmem_cache_create().&n; */
+DECL|macro|ARCH_SLAB_MINALIGN
+mdefine_line|#define ARCH_SLAB_MINALIGN 8
 multiline_comment|/* Returns 0 if exception not found and fixup.unit otherwise.  */
 r_extern
 r_int
