@@ -125,8 +125,6 @@ id|sum
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * the same as csum_partial, but copies from user space (but on MIPS&n; * we have just one address space, so this is identical to the above)&n; *&n; * this is obsolete and will go away.&n; */
-DECL|macro|csum_partial_copy_fromuser
-mdefine_line|#define csum_partial_copy_fromuser csum_partial_copy
 r_int
 r_int
 id|csum_partial_copy

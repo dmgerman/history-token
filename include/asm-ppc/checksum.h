@@ -60,11 +60,9 @@ mdefine_line|#define csum_partial_copy_from_user(src, dst, len, sum, errp)&t;&bs
 multiline_comment|/* FIXME: this needs to be written to really do no check -- Cort */
 DECL|macro|csum_partial_copy_nocheck
 mdefine_line|#define csum_partial_copy_nocheck(src, dst, len, sum)&t;&bslash;&n;&t;csum_partial_copy_generic((src), (dst), (len), (sum), 0, 0)     
-multiline_comment|/*&n; * Old versions which ignore errors.&n; */
+multiline_comment|/*&n; * Old version which ignore errors.&n; * it will go away soon.&n; */
 DECL|macro|csum_partial_copy
 mdefine_line|#define csum_partial_copy(src, dst, len, sum)&t;&bslash;&n;&t;csum_partial_copy_generic((src), (dst), (len), (sum), 0, 0)
-DECL|macro|csum_partial_copy_fromuser
-mdefine_line|#define csum_partial_copy_fromuser(src, dst, len, sum)&t;&bslash;&n;&t;csum_partial_copy_generic((src), (dst), (len), (sum), 0, 0)
 multiline_comment|/*&n; * turns a 32-bit partial checksum (e.g. from csum_partial) into a&n; * 1&squot;s complement 16-bit checksum.&n; */
 DECL|function|csum_fold
 r_static

@@ -68,7 +68,7 @@ r_int
 id|sum
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * the same as csum_partial, but copies from src to dst while it&n; * checksums&n; */
+multiline_comment|/*&n; * the same as csum_partial, but copies from src to dst while it&n; * checksums&n; *&n; * csum_partial_copy will go away soon.&n; */
 r_int
 r_int
 id|csum_partial_copy
@@ -122,33 +122,7 @@ op_star
 id|dst_err
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * the same as csum_partial, but copies from user space.&n; */
-r_int
-r_int
-id|csum_partial_copy_fromuser
-c_func
-(paren
-r_const
-r_char
-op_star
-id|src
-comma
-r_char
-op_star
-id|dst
-comma
-r_int
-id|len
-comma
-r_int
-r_int
-id|sum
-comma
-r_int
-op_star
-id|src_err
-)paren
-suffix:semicolon
+multiline_comment|/*&n; * the same as csum_partial, but copies from src to dst while it&n; * checksums.&n; */
 r_int
 r_int
 id|csum_partial_copy_nocheck

@@ -138,7 +138,7 @@ r_return
 id|sum
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * the same as csum_partial, but copies from src while it&n; * checksums&n; *&n; * here even more important to align src and dst on a 32-bit (or even&n; * better 64-bit) boundary&n; */
+multiline_comment|/*&n; * the same as csum_partial, but copies from src while it&n; * checksums&n; *&n; * here even more important to align src and dst on a 32-bit (or even&n; * better 64-bit) boundary&n; *&n; * this will go away soon.&n; */
 r_static
 r_inline
 r_int
