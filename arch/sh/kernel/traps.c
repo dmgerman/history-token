@@ -1,5 +1,6 @@
 multiline_comment|/* $Id: traps.c,v 1.5 2000/02/27 08:27:55 gniibe Exp $&n; *&n; *  linux/arch/sh/traps.c&n; *&n; *  SuperH version: Copyright (C) 1999 Niibe Yutaka&n; *                  Copyright (C) 2000 Philipp Rumpf&n; *                  Copyright (C) 2000 David Howells&n; */
 multiline_comment|/*&n; * &squot;Traps.c&squot; handles hardware traps and faults after we have saved some&n; * state in &squot;entry.S&squot;.&n; */
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/string.h&gt;

@@ -5,6 +5,7 @@ DECL|macro|_LVM_H_INCLUDE
 mdefine_line|#define _LVM_H_INCLUDE
 DECL|macro|_LVM_KERNEL_H_VERSION
 mdefine_line|#define&t;_LVM_KERNEL_H_VERSION&t;&quot;LVM 0.9.1_beta2 (18/01/2001)&quot;
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
 multiline_comment|/*&n; * preprocessor definitions&n; */
 multiline_comment|/* if you like emergency reset code in the driver */

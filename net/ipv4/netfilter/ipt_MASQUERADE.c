@@ -1,4 +1,5 @@
 multiline_comment|/* Masquerade.  Simple mapping which alters range to a local IP address&n;   (depending on route). */
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/ip.h&gt;
 macro_line|#include &lt;linux/timer.h&gt;
