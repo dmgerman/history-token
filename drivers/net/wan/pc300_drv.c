@@ -21876,4 +21876,23 @@ c_func
 id|cpc_cleanup_module
 )paren
 suffix:semicolon
+id|MODULE_DESCRIPTION
+c_func
+(paren
+l_string|&quot;Cyclades-PC300 cards driver&quot;
+)paren
+suffix:semicolon
+id|MODULE_AUTHOR
+c_func
+(paren
+l_string|&quot;Author: Ivan Passos &lt;ivan@cyclades.com&gt;&bslash;r&bslash;n&quot;
+l_string|&quot;Maintainer: Henrique Gobbi &lt;henrique.gobbi@cyclades.com&quot;
+)paren
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 eof
