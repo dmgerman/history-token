@@ -1,6 +1,7 @@
 multiline_comment|/*&n; * drivers/power/process.c - Functions for saving/restoring console.&n; *&n; * Originally from swsusp.&n; */
 macro_line|#include &lt;linux/vt_kern.h&gt;
 macro_line|#include &lt;linux/kbd_kern.h&gt;
+macro_line|#include &lt;linux/console.h&gt;
 macro_line|#include &quot;power.h&quot;
 DECL|variable|new_loglevel
 r_static
@@ -39,6 +40,11 @@ op_assign
 id|new_loglevel
 suffix:semicolon
 macro_line|#ifdef SUSPEND_CONSOLE
+id|acquire_console_sem
+c_func
+(paren
+)paren
+suffix:semicolon
 id|orig_fgconsole
 op_assign
 id|fg_console
@@ -52,14 +58,26 @@ c_func
 id|SUSPEND_CONSOLE
 )paren
 )paren
+(brace
 multiline_comment|/* we can&squot;t have a free VC for now. Too bad,&n;&t;   * we don&squot;t want to mess the screen for now. */
+id|release_console_sem
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 l_int|1
 suffix:semicolon
+)brace
 id|set_console
 c_func
 (paren
 id|SUSPEND_CONSOLE
+)paren
+suffix:semicolon
+id|release_console_sem
+c_func
+(paren
 )paren
 suffix:semicolon
 r_if
@@ -108,17 +126,20 @@ op_assign
 id|orig_loglevel
 suffix:semicolon
 macro_line|#ifdef SUSPEND_CONSOLE
+id|acquire_console_sem
+c_func
+(paren
+)paren
+suffix:semicolon
 id|set_console
 c_func
 (paren
 id|orig_fgconsole
 )paren
 suffix:semicolon
-multiline_comment|/* FIXME: &n;&t; * This following part is left over from swsusp. Is it really needed?&n;&t; */
-id|update_screen
+id|release_console_sem
 c_func
 (paren
-id|fg_console
 )paren
 suffix:semicolon
 macro_line|#endif
