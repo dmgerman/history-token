@@ -836,7 +836,6 @@ c_func
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * The System Vectors&n; */
-macro_line|#if defined(CONFIG_ALPHA_GENERIC) || defined(CONFIG_ALPHA_ALCOR)
 DECL|variable|__initmv
 r_struct
 id|alpha_machine_vector
@@ -943,8 +942,6 @@ c_func
 (paren
 id|alcor
 )paren
-macro_line|#endif
-macro_line|#if defined(CONFIG_ALPHA_GENERIC) || defined(CONFIG_ALPHA_XLT)
 r_struct
 id|alpha_machine_vector
 id|xlt_mv
@@ -1045,10 +1042,5 @@ id|XLT_GRU_INT_REQ_BITS
 )brace
 )brace
 suffix:semicolon
-id|ALIAS_MV
-c_func
-(paren
-id|xlt
-)paren
-macro_line|#endif
+multiline_comment|/* No alpha_mv alias for XLT, since we compile it in unconditionally&n;   with ALCOR; setup_arch knows how to cope.  */
 eof
