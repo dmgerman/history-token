@@ -307,6 +307,14 @@ id|page
 )paren
 )paren
 suffix:semicolon
+id|BUG_ON
+c_func
+(paren
+id|page-&gt;pte_chain
+op_ne
+l_int|NULL
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren

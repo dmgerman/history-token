@@ -509,17 +509,17 @@ op_star
 id|page
 )paren
 (brace
-multiline_comment|/* Leave it on the LRU if it gets converted into anonymous buffers */
+multiline_comment|/* Drop fs-specific data so the page might become freeable. */
 r_if
 c_cond
 (paren
-op_logical_neg
 id|PagePrivate
 c_func
 (paren
 id|page
 )paren
-op_logical_or
+op_logical_and
+op_logical_neg
 id|do_invalidatepage
 c_func
 (paren
@@ -528,15 +528,6 @@ comma
 l_int|0
 )paren
 )paren
-(brace
-id|lru_cache_del
-c_func
-(paren
-id|page
-)paren
-suffix:semicolon
-)brace
-r_else
 (brace
 r_if
 c_cond
@@ -2447,7 +2438,7 @@ c_func
 id|wait_on_page_bit
 )paren
 suffix:semicolon
-multiline_comment|/**&n; * unlock_page() - unlock a locked page&n; *&n; * @page: the page&n; *&n; * Unlocks the page and wakes up sleepers in ___wait_on_page_locked().&n; * Also wakes sleepers in wait_on_page_writeback() because the wakeup&n; * mechananism between PageLocked pages and PageWriteback pages is shared.&n; * But that&squot;s OK - sleepers in wait_on_page_writeback() just go back to sleep.&n; *&n; * The first mb is necessary to safely close the critical section opened by the&n; * TryLockPage(), the second mb is necessary to enforce ordering between&n; * the clear_bit and the read of the waitqueue (to avoid SMP races with a&n; * parallel wait_on_page_locked()).&n; */
+multiline_comment|/**&n; * unlock_page() - unlock a locked page&n; *&n; * @page: the page&n; *&n; * Unlocks the page and wakes up sleepers in ___wait_on_page_locked().&n; * Also wakes sleepers in wait_on_page_writeback() because the wakeup&n; * mechananism between PageLocked pages and PageWriteback pages is shared.&n; * But that&squot;s OK - sleepers in wait_on_page_writeback() just go back to sleep.&n; *&n; * The first mb is necessary to safely close the critical section opened by the&n; * TestSetPageLocked(), the second mb is necessary to enforce ordering between&n; * the clear_bit and the read of the waitqueue (to avoid SMP races with a&n; * parallel wait_on_page_locked()).&n; */
 DECL|function|unlock_page
 r_void
 id|unlock_page

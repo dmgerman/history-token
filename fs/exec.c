@@ -15,6 +15,7 @@ macro_line|#include &lt;linux/highmem.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/personality.h&gt;
 macro_line|#include &lt;linux/binfmts.h&gt;
+macro_line|#include &lt;linux/swap.h&gt;
 DECL|macro|__NO_VERSION__
 mdefine_line|#define __NO_VERSION__
 macro_line|#include &lt;linux/module.h&gt;
@@ -1112,6 +1113,14 @@ id|PAGE_COPY
 )paren
 )paren
 )paren
+)paren
+suffix:semicolon
+id|page_add_rmap
+c_func
+(paren
+id|page
+comma
+id|pte
 )paren
 suffix:semicolon
 id|pte_unmap

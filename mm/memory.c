@@ -12,6 +12,7 @@ macro_line|#include &lt;linux/iobuf.h&gt;
 macro_line|#include &lt;linux/highmem.h&gt;
 macro_line|#include &lt;linux/pagemap.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
+macro_line|#include &lt;asm/rmap.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/tlb.h&gt;
 macro_line|#include &lt;asm/tlbflush.h&gt;
@@ -120,7 +121,7 @@ id|dir
 r_struct
 id|page
 op_star
-id|pte
+id|page
 suffix:semicolon
 r_if
 c_cond
@@ -161,7 +162,7 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-id|pte
+id|page
 op_assign
 id|pmd_page
 c_func
@@ -176,12 +177,18 @@ c_func
 id|dir
 )paren
 suffix:semicolon
+id|pgtable_remove_rmap
+c_func
+(paren
+id|page
+)paren
+suffix:semicolon
 id|pte_free_tlb
 c_func
 (paren
 id|tlb
 comma
-id|pte
+id|page
 )paren
 suffix:semicolon
 )brace
@@ -454,6 +461,16 @@ r_goto
 id|out
 suffix:semicolon
 )brace
+id|pgtable_add_rmap
+c_func
+(paren
+r_new
+comma
+id|mm
+comma
+id|address
+)paren
+suffix:semicolon
 id|pmd_populate
 c_func
 (paren
@@ -581,6 +598,20 @@ r_goto
 id|out
 suffix:semicolon
 )brace
+id|pgtable_add_rmap
+c_func
+(paren
+id|virt_to_page
+c_func
+(paren
+r_new
+)paren
+comma
+id|mm
+comma
+id|address
+)paren
+suffix:semicolon
 id|pmd_populate_kernel
 c_func
 (paren
@@ -949,6 +980,7 @@ id|pte
 r_goto
 id|cont_copy_pte_range_noset
 suffix:semicolon
+multiline_comment|/* pte contains position in swap, so copy. */
 r_if
 c_cond
 (paren
@@ -970,10 +1002,26 @@ id|pte
 )paren
 )paren
 suffix:semicolon
+id|set_pte
+c_func
+(paren
+id|dst_pte
+comma
+id|pte
+)paren
+suffix:semicolon
 r_goto
-id|cont_copy_pte_range
+id|cont_copy_pte_range_noset
 suffix:semicolon
 )brace
+id|ptepage
+op_assign
+id|pte_page
+c_func
+(paren
+id|pte
+)paren
+suffix:semicolon
 id|pfn
 op_assign
 id|pte_pfn
@@ -1020,12 +1068,6 @@ r_if
 c_cond
 (paren
 id|cow
-op_logical_and
-id|pte_write
-c_func
-(paren
-id|pte
-)paren
 )paren
 (brace
 id|ptep_set_wrprotect
@@ -1081,6 +1123,14 @@ c_func
 id|dst_pte
 comma
 id|pte
+)paren
+suffix:semicolon
+id|page_add_rmap
+c_func
+(paren
+id|ptepage
+comma
+id|dst_pte
 )paren
 suffix:semicolon
 id|cont_copy_pte_range_noset
@@ -1429,6 +1479,14 @@ id|page
 suffix:semicolon
 id|tlb-&gt;freed
 op_increment
+suffix:semicolon
+id|page_remove_rmap
+c_func
+(paren
+id|page
+comma
+id|ptep
+)paren
 suffix:semicolon
 id|tlb_remove_page
 c_func
@@ -4448,6 +4506,14 @@ id|old_page
 op_increment
 id|mm-&gt;rss
 suffix:semicolon
+id|page_remove_rmap
+c_func
+(paren
+id|old_page
+comma
+id|page_table
+)paren
+suffix:semicolon
 id|break_cow
 c_func
 (paren
@@ -4456,6 +4522,14 @@ comma
 id|new_page
 comma
 id|address
+comma
+id|page_table
+)paren
+suffix:semicolon
+id|page_add_rmap
+c_func
+(paren
+id|new_page
 comma
 id|page_table
 )paren
@@ -5329,6 +5403,14 @@ comma
 id|pte
 )paren
 suffix:semicolon
+id|page_add_rmap
+c_func
+(paren
+id|page
+comma
+id|page_table
+)paren
+suffix:semicolon
 multiline_comment|/* No need to invalidate - it was non-present before */
 id|update_mmu_cache
 c_func
@@ -5393,6 +5475,17 @@ id|addr
 id|pte_t
 id|entry
 suffix:semicolon
+r_struct
+id|page
+op_star
+id|page
+op_assign
+id|ZERO_PAGE
+c_func
+(paren
+id|addr
+)paren
+suffix:semicolon
 multiline_comment|/* Read-only mapping of ZERO_PAGE. */
 id|entry
 op_assign
@@ -5419,11 +5512,6 @@ c_cond
 id|write_access
 )paren
 (brace
-r_struct
-id|page
-op_star
-id|page
-suffix:semicolon
 multiline_comment|/* Allocate our own private page. */
 id|pte_unmap
 c_func
@@ -5557,6 +5645,15 @@ comma
 id|entry
 )paren
 suffix:semicolon
+id|page_add_rmap
+c_func
+(paren
+id|page
+comma
+id|page_table
+)paren
+suffix:semicolon
+multiline_comment|/* ignores ZERO_PAGE */
 id|pte_unmap
 c_func
 (paren
@@ -5856,6 +5953,14 @@ c_func
 id|page_table
 comma
 id|entry
+)paren
+suffix:semicolon
+id|page_add_rmap
+c_func
+(paren
+id|new_page
+comma
+id|page_table
 )paren
 suffix:semicolon
 id|pte_unmap
