@@ -100,6 +100,8 @@ DECL|macro|ZX1_IOC_ID
 mdefine_line|#define ZX1_IOC_ID&t;((PCI_DEVICE_ID_HP_ZX1_IOC &lt;&lt; 16) | PCI_VENDOR_ID_HP)
 DECL|macro|REO_IOC_ID
 mdefine_line|#define REO_IOC_ID&t;((PCI_DEVICE_ID_HP_REO_IOC &lt;&lt; 16) | PCI_VENDOR_ID_HP)
+DECL|macro|SX1000_IOC_ID
+mdefine_line|#define SX1000_IOC_ID&t;((PCI_DEVICE_ID_HP_SX1000_IOC &lt;&lt; 16) | PCI_VENDOR_ID_HP)
 DECL|macro|ZX1_IOC_OFFSET
 mdefine_line|#define ZX1_IOC_OFFSET&t;0x1000&t;/* ACPI reports SBA, we want IOC */
 DECL|macro|IOC_FUNC_ID
@@ -5168,6 +5170,12 @@ comma
 id|REO_IOC_ID
 comma
 l_string|&quot;REO&quot;
+)brace
+comma
+(brace
+id|SX1000_IOC_ID
+comma
+l_string|&quot;sx1000&quot;
 )brace
 comma
 )brace
