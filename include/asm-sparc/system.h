@@ -292,11 +292,11 @@ mdefine_line|#define set_mb(__var, __value)  do { __var = __value; mb(); } while
 DECL|macro|set_wmb
 mdefine_line|#define set_wmb(__var, __value) set_mb(__var, __value)
 DECL|macro|smp_mb
-mdefine_line|#define smp_mb()&t;__asm__ __volatile__(&quot;&quot;:::&quot;memory&quot;);
+mdefine_line|#define smp_mb()&t;__asm__ __volatile__(&quot;&quot;:::&quot;memory&quot;)
 DECL|macro|smp_rmb
-mdefine_line|#define smp_rmb()&t;__asm__ __volatile__(&quot;&quot;:::&quot;memory&quot;);
+mdefine_line|#define smp_rmb()&t;__asm__ __volatile__(&quot;&quot;:::&quot;memory&quot;)
 DECL|macro|smp_wmb
-mdefine_line|#define smp_wmb()&t;__asm__ __volatile__(&quot;&quot;:::&quot;memory&quot;);
+mdefine_line|#define smp_wmb()&t;__asm__ __volatile__(&quot;&quot;:::&quot;memory&quot;)
 DECL|macro|smp_read_barrier_depends
 mdefine_line|#define smp_read_barrier_depends()&t;do { } while(0)
 DECL|macro|nop
