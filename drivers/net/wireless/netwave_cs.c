@@ -803,6 +803,11 @@ r_struct
 id|net_device
 id|dev
 suffix:semicolon
+DECL|member|spinlock
+id|spinlock_t
+id|spinlock
+suffix:semicolon
+multiline_comment|/* Serialize access to the hardware (SMP) */
 DECL|member|node
 id|dev_node_t
 id|node
@@ -1130,15 +1135,13 @@ op_assign
 op_amp
 id|priv-&gt;iw_stats
 suffix:semicolon
-id|save_flags
+id|spin_lock_irqsave
 c_func
 (paren
+op_amp
+id|priv-&gt;spinlock
+comma
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 id|netwave_snapshot
@@ -1199,9 +1202,12 @@ id|wstats-&gt;discard.misc
 op_assign
 l_int|0L
 suffix:semicolon
-id|restore_flags
+id|spin_unlock_irqrestore
 c_func
 (paren
+op_amp
+id|priv-&gt;spinlock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -1414,6 +1420,14 @@ suffix:semicolon
 id|link-&gt;conf.Present
 op_assign
 id|PRESENT_OPTION
+suffix:semicolon
+multiline_comment|/* Netwave private struct init. link/dev/node already taken care of,&n;     * other stuff zero&squot;d - Jean II */
+id|spin_lock_init
+c_func
+(paren
+op_amp
+id|priv-&gt;spinlock
+)paren
 suffix:semicolon
 multiline_comment|/* Netwave specific entries in the device structure */
 id|dev-&gt;hard_start_xmit
@@ -1923,15 +1937,13 @@ op_assign
 id|priv-&gt;ramBase
 suffix:semicolon
 multiline_comment|/* Disable interrupts &amp; save flags */
-id|save_flags
+id|spin_lock_irqsave
 c_func
 (paren
+op_amp
+id|priv-&gt;spinlock
+comma
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 macro_line|#if WIRELESS_EXT &gt; 8
@@ -2041,9 +2053,12 @@ l_int|3
 suffix:semicolon
 )brace
 multiline_comment|/* ReEnable interrupts &amp; restore flags */
-id|restore_flags
+id|spin_unlock_irqrestore
 c_func
 (paren
+op_amp
+id|priv-&gt;spinlock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -2158,15 +2173,13 @@ op_assign
 id|priv-&gt;ramBase
 suffix:semicolon
 multiline_comment|/* Disable interrupts &amp; save flags */
-id|save_flags
+id|spin_lock_irqsave
 c_func
 (paren
+op_amp
+id|priv-&gt;spinlock
+comma
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 id|scramble_key
@@ -2248,9 +2261,12 @@ l_int|3
 )paren
 suffix:semicolon
 multiline_comment|/* ReEnable interrupts &amp; restore flags */
-id|restore_flags
+id|spin_unlock_irqrestore
 c_func
 (paren
+op_amp
+id|priv-&gt;spinlock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -2585,15 +2601,13 @@ op_assign
 id|priv-&gt;ramBase
 suffix:semicolon
 multiline_comment|/* Disable interrupts &amp; save flags */
-id|save_flags
+id|spin_lock_irqsave
 c_func
 (paren
+op_amp
+id|priv-&gt;spinlock
+comma
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 multiline_comment|/* Take snapshot of environment */
@@ -2635,9 +2649,12 @@ op_assign
 id|jiffies
 suffix:semicolon
 multiline_comment|/* ReEnable interrupts &amp; restore flags */
-id|restore_flags
+id|spin_unlock_irqrestore
 c_func
 (paren
+op_amp
+id|priv-&gt;spinlock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -4920,15 +4937,13 @@ op_assign
 id|dev-&gt;base_addr
 suffix:semicolon
 multiline_comment|/* Disable interrupts &amp; save flags */
-id|save_flags
+id|spin_lock_irqsave
 c_func
 (paren
+op_amp
+id|priv-&gt;spinlock
+comma
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 multiline_comment|/* Check if there are transmit buffers available */
@@ -4966,9 +4981,12 @@ comma
 id|dev-&gt;name
 )paren
 suffix:semicolon
-id|restore_flags
+id|spin_unlock_irqrestore
 c_func
 (paren
+op_amp
+id|priv-&gt;spinlock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -5203,9 +5221,12 @@ op_plus
 l_int|3
 )paren
 suffix:semicolon
-id|restore_flags
+id|spin_unlock_irqrestore
 c_func
 (paren
+op_amp
+id|priv-&gt;spinlock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -5939,28 +5960,11 @@ op_star
 id|dev
 )paren
 (brace
-r_int
-r_int
-id|flags
-suffix:semicolon
-id|save_flags
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
-)paren
-suffix:semicolon
-multiline_comment|/*     netwave_private *priv = (netwave_private*) dev-&gt;priv;&n;    priv-&gt;stats.rx_packets = readb(priv-&gt;ramBase + 0x18e); &n;    priv-&gt;stats.tx_packets = readb(priv-&gt;ramBase + 0x18f); */
-id|restore_flags
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
+singleline_comment|//unsigned long flags;
+multiline_comment|/*     netwave_private *priv = (netwave_private*) dev-&gt;priv; */
+singleline_comment|//spin_lock_irqsave(&amp;priv-&gt;spinlock, flags);
+multiline_comment|/*    priv-&gt;stats.rx_packets = readb(priv-&gt;ramBase + 0x18e); &n;    priv-&gt;stats.tx_packets = readb(priv-&gt;ramBase + 0x18f); */
+singleline_comment|//spin_unlock_irqrestore(&amp;priv-&gt;spinlock, flags);
 )brace
 DECL|function|netwave_rx
 r_static
