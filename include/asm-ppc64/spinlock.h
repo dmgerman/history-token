@@ -463,6 +463,8 @@ DECL|macro|spin_unlock_wait
 mdefine_line|#define spin_unlock_wait(x)    do { cpu_relax(); } while(spin_is_locked(x))
 DECL|macro|rwlock_init
 mdefine_line|#define rwlock_init(x)         do { *(x) = RW_LOCK_UNLOCKED; } while(0)
+DECL|macro|rwlock_is_locked
+mdefine_line|#define rwlock_is_locked(x)&t;((x)-&gt;lock)
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* __ASM_SPINLOCK_H */
 eof
