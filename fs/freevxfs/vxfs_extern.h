@@ -126,7 +126,7 @@ op_star
 suffix:semicolon
 r_extern
 r_void
-id|vxfs_put_inode
+id|vxfs_clear_inode
 c_func
 (paren
 r_struct
