@@ -1598,6 +1598,11 @@ id|delpol
 )paren
 r_break
 suffix:semicolon
+id|p
+op_assign
+op_amp
+id|pol-&gt;next
+suffix:semicolon
 )brace
 r_if
 c_cond

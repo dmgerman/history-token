@@ -1,4 +1,4 @@
-multiline_comment|/* drivers/char/s3c2410_rtc.c&n; *&n; * Copyright (c) 2004 Simtec Electronics &lt;linux@simtec.co.uk&gt;&n; *&t;&t;      http://www.simtec.co.uk/products/SWLINUX/&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; * S3C2410 Internal RTC Driver&n; *&n; *  Changelog:&n; *&t;08-Nov-2004&t;BJD&t;Initial creation&n; *&t;12-Nov-2004&t;BJD&t;Added periodic IRQ and PM code&n;*/
+multiline_comment|/* drivers/char/s3c2410_rtc.c&n; *&n; * Copyright (c) 2004 Simtec Electronics &lt;linux@simtec.co.uk&gt;&n; *&t;&t;      http://www.simtec.co.uk/products/SWLINUX/&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; * S3C2410 Internal RTC Driver&n; *&n; *  Changelog:&n; *&t;08-Nov-2004&t;BJD&t;Initial creation&n; *&t;12-Nov-2004&t;BJD&t;Added periodic IRQ and PM code&n; *&t;22-Nov-2004&t;BJD&t;Sign-test on alarm code to check for &lt;0&n;*/
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
@@ -837,11 +837,11 @@ suffix:semicolon
 id|pr_debug
 c_func
 (paren
-l_string|&quot;s3c2410_rtc_setalarm: %d, %02x.%02x.%02x %02x/%02x/%02x&bslash;n&quot;
+l_string|&quot;s3c2410_rtc_setalarm: %d, %02x/%02x/%02x %02x.%02x.%02x&bslash;n&quot;
 comma
 id|alrm-&gt;enabled
 comma
-id|tm-&gt;tm_year
+id|tm-&gt;tm_mday
 op_amp
 l_int|0xff
 comma
@@ -849,13 +849,17 @@ id|tm-&gt;tm_mon
 op_amp
 l_int|0xff
 comma
-id|tm-&gt;tm_mday
+id|tm-&gt;tm_year
 op_amp
 l_int|0xff
 comma
 id|tm-&gt;tm_hour
+op_amp
+l_int|0xff
 comma
 id|tm-&gt;tm_min
+op_amp
+l_int|0xff
 comma
 id|tm-&gt;tm_sec
 )paren
@@ -892,6 +896,10 @@ c_cond
 id|tm-&gt;tm_sec
 OL
 l_int|60
+op_logical_and
+id|tm-&gt;tm_sec
+op_ge
+l_int|0
 )paren
 (brace
 id|alrm_en
@@ -917,6 +925,10 @@ c_cond
 id|tm-&gt;tm_min
 OL
 l_int|60
+op_logical_and
+id|tm-&gt;tm_min
+op_ge
+l_int|0
 )paren
 (brace
 id|alrm_en
@@ -942,6 +954,10 @@ c_cond
 id|tm-&gt;tm_hour
 OL
 l_int|24
+op_logical_and
+id|tm-&gt;tm_hour
+op_ge
+l_int|0
 )paren
 (brace
 id|alrm_en
