@@ -250,9 +250,6 @@ multiline_comment|/* check the busy bit in the media-bay ide interface&n;   (ass
 DECL|macro|MB_IDE_READY
 mdefine_line|#define MB_IDE_READY(i)&t;((readb(media_bays[i].cd_base + 0x70) &amp; 0x80) == 0)
 macro_line|#endif
-multiline_comment|/* Note: All delays are not in milliseconds and converted to HZ relative&n; * values by the macro below&n; */
-DECL|macro|MS_TO_HZ
-mdefine_line|#define MS_TO_HZ(ms)&t;((ms * HZ + 999) / 1000)
 multiline_comment|/*&n; * Wait that number of ms between each step in normal polling mode&n; */
 DECL|macro|MB_POLL_DELAY
 mdefine_line|#define MB_POLL_DELAY&t;25
@@ -1380,7 +1377,7 @@ suffix:semicolon
 )brace
 id|bay-&gt;timer
 op_assign
-id|MS_TO_HZ
+id|msecs_to_jiffies
 c_func
 (paren
 id|MB_POWER_DELAY
@@ -1429,7 +1426,7 @@ id|bay-&gt;content_id
 (brace
 id|bay-&gt;value_count
 op_add_assign
-id|MS_TO_HZ
+id|msecs_to_jiffies
 c_func
 (paren
 id|MB_POLL_DELAY
@@ -1440,7 +1437,7 @@ c_cond
 (paren
 id|bay-&gt;value_count
 op_ge
-id|MS_TO_HZ
+id|msecs_to_jiffies
 c_func
 (paren
 id|MB_STABLE_DELAY
@@ -1999,7 +1996,7 @@ l_int|0
 (brace
 id|bay-&gt;timer
 op_sub_assign
-id|MS_TO_HZ
+id|msecs_to_jiffies
 c_func
 (paren
 id|MB_POLL_DELAY
@@ -2067,7 +2064,7 @@ suffix:semicolon
 )brace
 id|bay-&gt;timer
 op_assign
-id|MS_TO_HZ
+id|msecs_to_jiffies
 c_func
 (paren
 id|MB_RESET_DELAY
@@ -2102,7 +2099,7 @@ id|bay
 suffix:semicolon
 id|bay-&gt;timer
 op_assign
-id|MS_TO_HZ
+id|msecs_to_jiffies
 c_func
 (paren
 id|MB_SETUP_DELAY
@@ -2173,7 +2170,7 @@ id|bay
 suffix:semicolon
 id|bay-&gt;timer
 op_assign
-id|MS_TO_HZ
+id|msecs_to_jiffies
 c_func
 (paren
 id|MB_IDE_WAIT
@@ -2210,7 +2207,7 @@ id|mb_ide_resetting
 suffix:colon
 id|bay-&gt;timer
 op_assign
-id|MS_TO_HZ
+id|msecs_to_jiffies
 c_func
 (paren
 id|MB_IDE_TIMEOUT
@@ -2414,7 +2411,7 @@ l_int|0
 )paren
 id|bay-&gt;timer
 op_sub_assign
-id|MS_TO_HZ
+id|msecs_to_jiffies
 c_func
 (paren
 id|MB_POLL_DELAY
@@ -2650,18 +2647,10 @@ id|lock
 )paren
 suffix:semicolon
 )brace
-id|current-&gt;state
-op_assign
-id|TASK_INTERRUPTIBLE
-suffix:semicolon
-id|schedule_timeout
-c_func
-(paren
-id|MS_TO_HZ
+id|msleep_interruptible
 c_func
 (paren
 id|MB_POLL_DELAY
-)paren
 )paren
 suffix:semicolon
 r_if
@@ -2885,7 +2874,7 @@ id|bay
 suffix:semicolon
 id|bay-&gt;value_count
 op_assign
-id|MS_TO_HZ
+id|msecs_to_jiffies
 c_func
 (paren
 id|MB_STABLE_DELAY
@@ -3145,7 +3134,7 @@ id|bay-&gt;content_id
 suffix:semicolon
 id|bay-&gt;value_count
 op_assign
-id|MS_TO_HZ
+id|msecs_to_jiffies
 c_func
 (paren
 id|MB_STABLE_DELAY
@@ -3153,7 +3142,7 @@ id|MB_STABLE_DELAY
 suffix:semicolon
 id|bay-&gt;timer
 op_assign
-id|MS_TO_HZ
+id|msecs_to_jiffies
 c_func
 (paren
 id|MB_POWER_DELAY
