@@ -30,15 +30,19 @@ DECL|macro|_MAP_UNALIGNED
 mdefine_line|#define _MAP_UNALIGNED&t;0x0800
 multiline_comment|/* These are linux-specific */
 DECL|macro|MAP_GROWSDOWN
-mdefine_line|#define MAP_GROWSDOWN&t;0x1000&t;&t;/* stack-like segment */
+mdefine_line|#define MAP_GROWSDOWN&t;0x01000&t;&t;/* stack-like segment */
 DECL|macro|MAP_DENYWRITE
-mdefine_line|#define MAP_DENYWRITE&t;0x2000&t;&t;/* ETXTBSY */
+mdefine_line|#define MAP_DENYWRITE&t;0x02000&t;&t;/* ETXTBSY */
 DECL|macro|MAP_EXECUTABLE
-mdefine_line|#define MAP_EXECUTABLE&t;0x4000&t;&t;/* mark it as an executable */
+mdefine_line|#define MAP_EXECUTABLE&t;0x04000&t;&t;/* mark it as an executable */
 DECL|macro|MAP_LOCKED
-mdefine_line|#define MAP_LOCKED&t;0x8000&t;&t;/* lock the mapping */
+mdefine_line|#define MAP_LOCKED&t;0x08000&t;&t;/* lock the mapping */
 DECL|macro|MAP_NORESERVE
 mdefine_line|#define MAP_NORESERVE&t;0x10000&t;&t;/* don&squot;t check for reservations */
+DECL|macro|MAP_POPULATE
+mdefine_line|#define MAP_POPULATE&t;0x20000&t;&t;/* populate (prefault) pagetables */
+DECL|macro|MAP_NONBLOCK
+mdefine_line|#define MAP_NONBLOCK&t;0x40000&t;&t;/* do not block on IO */
 DECL|macro|MS_ASYNC
 mdefine_line|#define MS_ASYNC&t;1&t;&t;/* sync memory asynchronously */
 DECL|macro|MS_SYNC
