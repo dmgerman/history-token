@@ -992,6 +992,7 @@ mdefine_line|#define find_next_zero_bit(p,sz,off)&t;_find_next_zero_bit_be(p,sz,
 DECL|macro|WORD_BITOFF_TO_LE
 mdefine_line|#define WORD_BITOFF_TO_LE(x)&t;&t;((x) ^ 0x18)
 macro_line|#endif
+macro_line|#if __LINUX_ARM_ARCH__ &lt; 5
 multiline_comment|/*&n; * ffz = Find First Zero in word. Undefined if no zero exists,&n; * so code should check against ~0UL first..&n; */
 DECL|function|ffz
 r_static
@@ -1215,6 +1216,27 @@ mdefine_line|#define fls(x) generic_fls(x)
 multiline_comment|/*&n; * ffs: find first bit set. This is defined the same way as&n; * the libc and compiler builtin ffs routines, therefore&n; * differs in spirit from the above ffz (man ffs).&n; */
 DECL|macro|ffs
 mdefine_line|#define ffs(x) generic_ffs(x)
+macro_line|#else
+multiline_comment|/*&n; * On ARMv5 and above those functions can be implemented around&n; * the clz instruction for much better code efficiency.&n; */
+r_extern
+id|__inline__
+r_int
+id|generic_fls
+c_func
+(paren
+r_int
+id|x
+)paren
+suffix:semicolon
+DECL|macro|fls
+mdefine_line|#define fls(x) &bslash;&n;&t;( __builtin_constant_p(x) ? generic_fls(x) : &bslash;&n;&t;  ({ int __r; asm(&quot;clz%?&bslash;t%0, %1&quot; : &quot;=r&quot;(__r) : &quot;r&quot;(x)); 32-__r; }) )
+DECL|macro|ffs
+mdefine_line|#define ffs(x) ({ unsigned long __t = (x); fls(__t &amp; -__t); })
+DECL|macro|__ffs
+mdefine_line|#define __ffs(x) (ffs(x) - 1)
+DECL|macro|ffz
+mdefine_line|#define ffz(x) __ffs( ~(x) )
+macro_line|#endif
 multiline_comment|/*&n; * Find first bit set in a 168-bit bitmap, where the first&n; * 128 bits are unlikely to be set.&n; */
 DECL|function|sched_find_first_bit
 r_static
