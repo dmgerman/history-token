@@ -240,9 +240,9 @@ DECL|macro|XFS_DM_EXIT
 mdefine_line|#define XFS_DM_EXIT(fstype)&t;xfs_dm_exit(fstype)
 macro_line|#else
 DECL|macro|XFS_DM_INIT
-mdefine_line|#define XFS_DM_INIT()
+mdefine_line|#define XFS_DM_INIT(fstype)
 DECL|macro|XFS_DM_EXIT
-mdefine_line|#define XFS_DM_EXIT()
+mdefine_line|#define XFS_DM_EXIT(fstype)
 macro_line|#endif
 macro_line|#endif  /* __XFS_DMAPI_H__ */
 eof
