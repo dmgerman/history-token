@@ -29,6 +29,7 @@ macro_line|#include &lt;linux/mtio.h&gt;
 macro_line|#include &lt;linux/cdrom.h&gt;
 macro_line|#include &lt;linux/loop.h&gt;
 macro_line|#include &lt;linux/auto_fs.h&gt;
+macro_line|#include &lt;linux/auto_fs4.h&gt;
 macro_line|#include &lt;linux/devfs_fs.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/vt_kern.h&gt;
@@ -24139,6 +24140,12 @@ id|COMPATIBLE_IOCTL
 c_func
 (paren
 id|AUTOFS_IOC_EXPIRE
+)paren
+comma
+id|COMPATIBLE_IOCTL
+c_func
+(paren
+id|AUTOFS_IOC_EXPIRE_MULTI
 )paren
 comma
 multiline_comment|/* DEVFS */
