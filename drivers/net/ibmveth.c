@@ -4150,10 +4150,16 @@ op_logical_neg
 id|mac_addr_p
 )paren
 (brace
-id|ibmveth_error_printk
+id|printk
 c_func
 (paren
-l_string|&quot;Can&squot;t find VETH_MAC_ADDR attribute&bslash;n&quot;
+id|KERN_ERR
+l_string|&quot;(%s:%3.3d) ERROR: Can&squot;t find VETH_MAC_ADDR &quot;
+l_string|&quot;attribute&bslash;n&quot;
+comma
+id|__FILE__
+comma
+id|__LINE__
 )paren
 suffix:semicolon
 r_return
@@ -4184,10 +4190,16 @@ op_logical_neg
 id|mcastFilterSize_p
 )paren
 (brace
-id|ibmveth_error_printk
+id|printk
 c_func
 (paren
-l_string|&quot;Can&squot;t find VETH_MCAST_FILTER_SIZE attribute&bslash;n&quot;
+id|KERN_ERR
+l_string|&quot;(%s:%3.3d) ERROR: Can&squot;t find &quot;
+l_string|&quot;VETH_MCAST_FILTER_SIZE attribute&bslash;n&quot;
+comma
+id|__FILE__
+comma
+id|__LINE__
 )paren
 suffix:semicolon
 r_return

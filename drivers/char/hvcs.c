@@ -977,6 +977,8 @@ id|flags
 suffix:semicolon
 r_int
 id|got
+op_assign
+l_int|0
 suffix:semicolon
 r_int
 id|i
@@ -2727,6 +2729,8 @@ r_struct
 id|hvcs_struct
 op_star
 id|hvcsd
+op_assign
+l_int|NULL
 suffix:semicolon
 r_int
 r_int
@@ -4286,7 +4290,8 @@ id|hvcs_tty_driver
 )paren
 suffix:semicolon
 r_return
-id|rc
+op_minus
+id|EIO
 suffix:semicolon
 )brace
 id|hvcs_pi_buff

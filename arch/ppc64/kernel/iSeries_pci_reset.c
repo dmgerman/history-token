@@ -129,7 +129,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|WaitDelay
+id|DelayTime
 op_eq
 l_int|0
 )paren
