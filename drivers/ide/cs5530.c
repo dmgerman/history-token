@@ -1547,6 +1547,8 @@ comma
 id|flags
 suffix:colon
 id|ATA_F_DMA
+op_or
+id|ATA_F_FDMA
 )brace
 suffix:semicolon
 DECL|function|init_cs5530
