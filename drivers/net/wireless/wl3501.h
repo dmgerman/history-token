@@ -1498,6 +1498,14 @@ id|keep_essid
 l_int|34
 )braket
 suffix:semicolon
+DECL|member|nick
+r_int
+r_char
+id|nick
+(braket
+l_int|32
+)braket
+suffix:semicolon
 DECL|member|chan
 id|u8
 id|chan
