@@ -3,6 +3,7 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/dnotify.h&gt;
 macro_line|#include &lt;linux/kobject.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
+macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#include &quot;sysfs.h&quot;
 DECL|macro|to_subsys
 mdefine_line|#define to_subsys(k) container_of(k,struct subsystem,kset.kobj)
@@ -195,6 +196,11 @@ id|sysfs_ops
 op_star
 id|ops
 suffix:semicolon
+DECL|member|sem
+r_struct
+id|semaphore
+id|sem
+suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/**&n; *&t;fill_read_buffer - allocate and fill buffer from object.&n; *&t;@dentry:&t;dentry pointer.&n; *&t;@buffer:&t;data buffer for file.&n; *&n; *&t;Allocate @buffer-&gt;page, if it hasn&squot;t been already, then call the&n; *&t;kobject&squot;s show() method to fill the buffer with this attribute&squot;s &n; *&t;data. &n; *&t;This is called only once, on the file&squot;s first read. &n; */
@@ -356,6 +362,17 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_star
+id|ppos
+OG
+id|buffer-&gt;count
+)paren
+r_return
+l_int|0
+suffix:semicolon
+r_if
+c_cond
+(paren
 id|count
 OG
 (paren
@@ -445,12 +462,26 @@ id|retval
 op_assign
 l_int|0
 suffix:semicolon
+id|down
+c_func
+(paren
+op_amp
+id|buffer-&gt;sem
+)paren
+suffix:semicolon
 r_if
 c_cond
+(paren
 (paren
 op_logical_neg
 op_star
 id|ppos
+)paren
+op_logical_or
+(paren
+op_logical_neg
+id|buffer-&gt;page
+)paren
 )paren
 (brace
 r_if
@@ -468,8 +499,8 @@ id|buffer
 )paren
 )paren
 )paren
-r_return
-id|retval
+r_goto
+id|out
 suffix:semicolon
 )brace
 id|pr_debug
@@ -487,7 +518,8 @@ comma
 id|buffer-&gt;page
 )paren
 suffix:semicolon
-r_return
+id|retval
+op_assign
 id|flush_read_buffer
 c_func
 (paren
@@ -499,6 +531,18 @@ id|count
 comma
 id|ppos
 )paren
+suffix:semicolon
+id|out
+suffix:colon
+id|up
+c_func
+(paren
+op_amp
+id|buffer-&gt;sem
+)paren
+suffix:semicolon
+r_return
+id|retval
 suffix:semicolon
 )brace
 multiline_comment|/**&n; *&t;fill_write_buffer - copy buffer from userspace.&n; *&t;@buffer:&t;data buffer for file.&n; *&t;@userbuf:&t;data from user.&n; *&t;@count:&t;&t;number of bytes in @userbuf.&n; *&n; *&t;Allocate @buffer-&gt;page if it hasn&squot;t been already, then&n; *&t;copy the user-supplied buffer into it.&n; */
@@ -688,6 +732,13 @@ id|buffer
 op_assign
 id|file-&gt;private_data
 suffix:semicolon
+id|down
+c_func
+(paren
+op_amp
+id|buffer-&gt;sem
+)paren
+suffix:semicolon
 id|count
 op_assign
 id|fill_write_buffer
@@ -730,6 +781,13 @@ op_star
 id|ppos
 op_add_assign
 id|count
+suffix:semicolon
+id|up
+c_func
+(paren
+op_amp
+id|buffer-&gt;sem
+)paren
 suffix:semicolon
 r_return
 id|count
@@ -947,6 +1005,13 @@ r_sizeof
 r_struct
 id|sysfs_buffer
 )paren
+)paren
+suffix:semicolon
+id|init_MUTEX
+c_func
+(paren
+op_amp
+id|buffer-&gt;sem
 )paren
 suffix:semicolon
 id|buffer-&gt;ops
