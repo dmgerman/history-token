@@ -2,6 +2,7 @@ multiline_comment|/*&n; * TTUSB DEC Driver&n; *&n; * Copyright (C) 2003 Alex Woo
 macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
