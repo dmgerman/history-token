@@ -87,7 +87,7 @@ multiline_comment|/* AES/IEC958 subframe bits */
 suffix:semicolon
 multiline_comment|/****************************************************************************&n; *                                                                          *&n; *      Section for driver hardware dependent interface - /dev/snd/hw?      *&n; *                                                                          *&n; ****************************************************************************/
 DECL|macro|SNDRV_HWDEP_VERSION
-mdefine_line|#define SNDRV_HWDEP_VERSION&t;&t;SNDRV_PROTOCOL_VERSION(1, 0, 0)
+mdefine_line|#define SNDRV_HWDEP_VERSION&t;&t;SNDRV_PROTOCOL_VERSION(1, 0, 1)
 DECL|enum|sndrv_hwdep_iface
 r_enum
 id|sndrv_hwdep_iface
@@ -123,11 +123,15 @@ DECL|enumerator|SNDRV_HWDEP_IFACE_SSCAPE
 id|SNDRV_HWDEP_IFACE_SSCAPE
 comma
 multiline_comment|/* Ensoniq SoundScape ISA card (MC68EC000) */
+DECL|enumerator|SNDRV_HWDEP_IFACE_VX
+id|SNDRV_HWDEP_IFACE_VX
+comma
+multiline_comment|/* Digigram VX cards */
 multiline_comment|/* Don&squot;t forget to change the following: */
 DECL|enumerator|SNDRV_HWDEP_IFACE_LAST
 id|SNDRV_HWDEP_IFACE_LAST
 op_assign
-id|SNDRV_HWDEP_IFACE_SSCAPE
+id|SNDRV_HWDEP_IFACE_VX
 comma
 )brace
 suffix:semicolon
@@ -181,6 +185,94 @@ suffix:semicolon
 multiline_comment|/* reserved for future */
 )brace
 suffix:semicolon
+multiline_comment|/* generic DSP loader */
+DECL|struct|sndrv_hwdep_dsp_status
+r_struct
+id|sndrv_hwdep_dsp_status
+(brace
+DECL|member|version
+r_int
+r_int
+id|version
+suffix:semicolon
+multiline_comment|/* R: driver-specific version */
+DECL|member|id
+r_int
+r_char
+id|id
+(braket
+l_int|32
+)braket
+suffix:semicolon
+multiline_comment|/* R: driver-specific ID string */
+DECL|member|num_dsps
+r_int
+r_int
+id|num_dsps
+suffix:semicolon
+multiline_comment|/* R: number of DSP images to transfer */
+DECL|member|dsp_loaded
+r_int
+r_int
+id|dsp_loaded
+suffix:semicolon
+multiline_comment|/* R: bit flags indicating the loaded DSPs */
+DECL|member|chip_ready
+r_int
+r_int
+id|chip_ready
+suffix:semicolon
+multiline_comment|/* R: 1 = initialization finished */
+DECL|member|reserved
+r_int
+r_char
+id|reserved
+(braket
+l_int|16
+)braket
+suffix:semicolon
+multiline_comment|/* reserved for future use */
+)brace
+suffix:semicolon
+DECL|struct|sndrv_hwdep_dsp_image
+r_struct
+id|sndrv_hwdep_dsp_image
+(brace
+DECL|member|index
+r_int
+r_int
+id|index
+suffix:semicolon
+multiline_comment|/* W: DSP index */
+DECL|member|name
+r_int
+r_char
+id|name
+(braket
+l_int|64
+)braket
+suffix:semicolon
+multiline_comment|/* W: ID (e.g. file name) */
+DECL|member|image
+r_int
+r_char
+op_star
+id|image
+suffix:semicolon
+multiline_comment|/* W: binary image */
+DECL|member|length
+r_int
+id|length
+suffix:semicolon
+multiline_comment|/* W: size of image in bytes */
+DECL|member|driver_data
+r_int
+r_int
+id|driver_data
+suffix:semicolon
+multiline_comment|/* W: driver-specific data */
+)brace
+suffix:semicolon
 r_enum
 (brace
 DECL|enumerator|SNDRV_HWDEP_IOCTL_PVERSION
@@ -208,11 +300,38 @@ r_struct
 id|sndrv_hwdep_info
 )paren
 comma
+DECL|enumerator|SNDRV_HWDEP_IOCTL_DSP_STATUS
+id|SNDRV_HWDEP_IOCTL_DSP_STATUS
+op_assign
+id|_IOR
+c_func
+(paren
+l_char|&squot;H&squot;
+comma
+l_int|0x02
+comma
+r_struct
+id|sndrv_hwdep_dsp_status
+)paren
+comma
+DECL|enumerator|SNDRV_HWDEP_IOCTL_DSP_LOAD
+id|SNDRV_HWDEP_IOCTL_DSP_LOAD
+op_assign
+id|_IOW
+c_func
+(paren
+l_char|&squot;H&squot;
+comma
+l_int|0x03
+comma
+r_struct
+id|sndrv_hwdep_dsp_image
+)paren
 )brace
 suffix:semicolon
 multiline_comment|/*****************************************************************************&n; *                                                                           *&n; *             Digital Audio (PCM) interface - /dev/snd/pcm??                *&n; *                                                                           *&n; *****************************************************************************/
 DECL|macro|SNDRV_PCM_VERSION
-mdefine_line|#define SNDRV_PCM_VERSION&t;&t;SNDRV_PROTOCOL_VERSION(2, 0, 3)
+mdefine_line|#define SNDRV_PCM_VERSION&t;&t;SNDRV_PROTOCOL_VERSION(2, 0, 4)
 DECL|typedef|sndrv_pcm_uframes_t
 r_typedef
 r_int
@@ -1564,6 +1683,19 @@ c_func
 l_char|&squot;A&squot;
 comma
 l_int|0x48
+)paren
+comma
+DECL|enumerator|SNDRV_PCM_IOCTL_FORWARD
+id|SNDRV_PCM_IOCTL_FORWARD
+op_assign
+id|_IOW
+c_func
+(paren
+l_char|&squot;A&squot;
+comma
+l_int|0x49
+comma
+id|sndrv_pcm_uframes_t
 )paren
 comma
 DECL|enumerator|SNDRV_PCM_IOCTL_WRITEI_FRAMES

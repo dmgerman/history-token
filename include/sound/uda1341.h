@@ -1,7 +1,10 @@
 multiline_comment|/*&n; *  linux/include/linux/l3/uda1341.h&n; *&n; * Philips UDA1341 mixer device driver for ALSA&n; *&n; * Copyright (c) 2002 Tomas Kasparek &lt;tomas.kasparek@seznam.cz&gt;&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License.&n; *&n; * History:&n; *&n; * 2002-03-13 Tomas Kasparek Initial release - based on uda1341.h from OSS&n; * 2002-03-30 Tomas Kasparek Proc filesystem support, complete mixer and DSP&n; *                           features support&n; */
-multiline_comment|/* $Id: uda1341.h,v 1.2 2002/04/17 07:53:22 perex Exp $ */
+multiline_comment|/* $Id: uda1341.h,v 1.4 2003/02/25 12:48:16 perex Exp $ */
 DECL|macro|UDA1341_ALSA_NAME
 mdefine_line|#define UDA1341_ALSA_NAME &quot;snd-uda1341&quot;
+multiline_comment|/*&n; * Default rate set after inicialization&n; */
+DECL|macro|AUDIO_RATE_DEFAULT
+mdefine_line|#define AUDIO_RATE_DEFAULT&t;44100
 multiline_comment|/*&n; * UDA1341 L3 address and command types&n; */
 DECL|macro|UDA1341_L3ADDR
 mdefine_line|#define UDA1341_L3ADDR&t;&t;5
