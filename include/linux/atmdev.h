@@ -258,6 +258,12 @@ macro_line|#include &lt;net/sock.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
 macro_line|#ifdef CONFIG_PROC_FS
 macro_line|#include &lt;linux/proc_fs.h&gt;
+r_extern
+r_struct
+id|proc_dir_entry
+op_star
+id|atm_proc_root
+suffix:semicolon
 macro_line|#endif
 DECL|struct|k_atm_aal_stats
 r_struct
