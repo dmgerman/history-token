@@ -7964,15 +7964,6 @@ id|sock_no_sendpage
 comma
 )brace
 suffix:semicolon
-macro_line|#include &lt;linux/smp_lock.h&gt;
-id|SOCKOPS_WRAP
-c_func
-(paren
-id|ax25_proto
-comma
-id|PF_AX25
-)paren
-suffix:semicolon
 multiline_comment|/*&n; *&t;Called by socket.c on kernel start up&n; */
 DECL|variable|ax25_packet_type
 r_static
