@@ -12285,6 +12285,7 @@ comma
 (brace
 l_int|0
 comma
+op_minus
 l_int|1
 )brace
 comma
