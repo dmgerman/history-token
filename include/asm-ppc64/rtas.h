@@ -459,6 +459,37 @@ c_func
 r_void
 )paren
 suffix:semicolon
+multiline_comment|/* Given an RTAS status code of 9900..9905 compute the hinted delay */
+r_int
+r_int
+id|rtas_extended_busy_delay_time
+c_func
+(paren
+r_int
+id|status
+)paren
+suffix:semicolon
+DECL|function|rtas_is_extended_busy
+r_static
+r_inline
+r_int
+id|rtas_is_extended_busy
+c_func
+(paren
+r_int
+id|status
+)paren
+(brace
+r_return
+id|status
+op_ge
+l_int|9900
+op_logical_and
+id|status
+op_le
+l_int|9909
+suffix:semicolon
+)brace
 multiline_comment|/* Some RTAS ops require a data buffer and that buffer must be &lt; 4G.&n; * Rather than having a memory allocator, just use this buffer&n; * (get the lock first), make the RTAS call.  Copy the data instead&n; * of holding the buffer for long.&n; */
 DECL|macro|RTAS_DATA_BUF_SIZE
 mdefine_line|#define RTAS_DATA_BUF_SIZE 1024
