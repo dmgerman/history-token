@@ -52,7 +52,7 @@ id|cnt
 suffix:semicolon
 multiline_comment|/* 1: */
 DECL|member|name
-m_wchar_t
+id|__le16
 id|name
 (braket
 l_int|15
@@ -97,7 +97,7 @@ id|namlen
 suffix:semicolon
 multiline_comment|/* 1: */
 DECL|member|name
-m_wchar_t
+id|__le16
 id|name
 (braket
 l_int|11
@@ -120,7 +120,7 @@ r_struct
 id|ldtentry
 (brace
 DECL|member|inumber
-id|u32
+id|__le32
 id|inumber
 suffix:semicolon
 multiline_comment|/* 4: 4-byte aligned */
@@ -135,7 +135,7 @@ id|namlen
 suffix:semicolon
 multiline_comment|/* 1: */
 DECL|member|name
-m_wchar_t
+id|__le16
 id|name
 (braket
 l_int|11
@@ -143,7 +143,7 @@ l_int|11
 suffix:semicolon
 multiline_comment|/* 22: 2-byte aligned */
 DECL|member|index
-id|u32
+id|__le32
 id|index
 suffix:semicolon
 multiline_comment|/* 4: index into dir_table */
@@ -188,7 +188,7 @@ id|addr1
 suffix:semicolon
 multiline_comment|/* 1: upper 8 bits of leaf page address */
 DECL|member|addr2
-id|u32
+id|__le32
 id|addr2
 suffix:semicolon
 multiline_comment|/* 4: lower 32 bits of leaf page address -OR-&n;&t;&t;&t;&t;   index of next entry when this entry was deleted */
@@ -242,7 +242,7 @@ id|freelist
 suffix:semicolon
 multiline_comment|/* 1: freelist header */
 DECL|member|idotdot
-id|u32
+id|__le32
 id|idotdot
 suffix:semicolon
 multiline_comment|/* 4: parent inode number */
@@ -284,12 +284,12 @@ r_union
 r_struct
 (brace
 DECL|member|next
-id|s64
+id|__le64
 id|next
 suffix:semicolon
 multiline_comment|/* 8: next sibling */
 DECL|member|prev
-id|s64
+id|__le64
 id|prev
 suffix:semicolon
 multiline_comment|/* 8: previous sibling */
