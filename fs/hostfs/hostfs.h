@@ -21,10 +21,12 @@ DECL|macro|HOSTFS_ATTR_ATIME_SET
 mdefine_line|#define HOSTFS_ATTR_ATIME_SET&t;128
 DECL|macro|HOSTFS_ATTR_MTIME_SET
 mdefine_line|#define HOSTFS_ATTR_MTIME_SET&t;256
+multiline_comment|/* These two are unused by hostfs. */
 DECL|macro|HOSTFS_ATTR_FORCE
 mdefine_line|#define HOSTFS_ATTR_FORCE&t;512&t;/* Not a change, but a change it */
 DECL|macro|HOSTFS_ATTR_ATTR_FLAG
 mdefine_line|#define HOSTFS_ATTR_ATTR_FLAG&t;1024
+multiline_comment|/* If you are very careful, you&squot;ll notice that these two are missing:&n; *&n; * #define ATTR_KILL_SUID&t;2048&n; * #define ATTR_KILL_SGID&t;4096&n; *&n; * and this is because they were added in 2.5 development in this patch:&n; *&n; * http://linux.bkbits.net:8080/linux-2.5/&n; * cset@3caf4a12k4XgDzK7wyK-TGpSZ9u2Ww?nav=index.html&n; * |src/.|src/include|src/include/linux|related/include/linux/fs.h&n; *&n; * Actually, they are not needed by most -&gt;setattr() methods - they are set by&n; * callers of notify_change() to notify that the setuid/setgid bits must be&n; * dropped.&n; * notify_change() will delete those flags, make sure attr-&gt;ia_valid &amp; ATTR_MODE&n; * is on, and remove the appropriate bits from attr-&gt;ia_mode (attr is a&n; * &quot;struct iattr *&quot;). -BlaisorBlade&n; */
 DECL|struct|hostfs_iattr
 r_struct
 id|hostfs_iattr
