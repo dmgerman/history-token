@@ -10,6 +10,7 @@ macro_line|#include &lt;linux/sunrpc/clnt.h&gt;
 macro_line|#include &lt;linux/sunrpc/auth.h&gt;
 macro_line|#include &lt;linux/sunrpc/auth_gss.h&gt;
 macro_line|#include &lt;linux/sunrpc/gss_err.h&gt;
+macro_line|#include &lt;linux/workqueue.h&gt;
 macro_line|#include &lt;linux/sunrpc/rpc_pipe_fs.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 DECL|variable|authgss_ops

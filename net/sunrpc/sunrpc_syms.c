@@ -12,6 +12,7 @@ macro_line|#include &lt;linux/sunrpc/clnt.h&gt;
 macro_line|#include &lt;linux/sunrpc/svc.h&gt;
 macro_line|#include &lt;linux/sunrpc/svcsock.h&gt;
 macro_line|#include &lt;linux/sunrpc/auth.h&gt;
+macro_line|#include &lt;linux/workqueue.h&gt;
 macro_line|#include &lt;linux/sunrpc/rpc_pipe_fs.h&gt;
 multiline_comment|/* RPC scheduler */
 DECL|variable|rpc_execute

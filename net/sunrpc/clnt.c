@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/in.h&gt;
 macro_line|#include &lt;linux/utsname.h&gt;
 macro_line|#include &lt;linux/sunrpc/clnt.h&gt;
+macro_line|#include &lt;linux/workqueue.h&gt;
 macro_line|#include &lt;linux/sunrpc/rpc_pipe_fs.h&gt;
 macro_line|#include &lt;linux/nfs.h&gt;
 DECL|macro|RPC_SLACK_SPACE

@@ -132,6 +132,11 @@ id|rpc_pipe_ops
 op_star
 id|ops
 suffix:semicolon
+DECL|member|queue_timeout
+r_struct
+id|work_struct
+id|queue_timeout
+suffix:semicolon
 )brace
 suffix:semicolon
 r_static
