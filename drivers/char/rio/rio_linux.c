@@ -1896,7 +1896,6 @@ suffix:semicolon
 multiline_comment|/* The &quot;dev&quot; argument isn&squot;t used. */
 id|rc
 op_assign
-op_minus
 id|riocontrol
 (paren
 id|p
