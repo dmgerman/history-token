@@ -1107,12 +1107,6 @@ id|presto_cache_add
 c_func
 (paren
 id|cache
-comma
-id|to_kdev_t
-c_func
-(paren
-id|sb-&gt;s_dev
-)paren
 )paren
 suffix:semicolon
 id|err
