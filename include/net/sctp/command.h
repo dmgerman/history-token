@@ -185,6 +185,10 @@ DECL|enumerator|SCTP_CMD_RTO_PENDING
 id|SCTP_CMD_RTO_PENDING
 comma
 multiline_comment|/* Set transport&squot;s rto_pending. */
+DECL|enumerator|SCTP_CMD_CHUNK_PD
+id|SCTP_CMD_CHUNK_PD
+comma
+multiline_comment|/* Partial data delivery considerations. */
 DECL|enumerator|SCTP_CMD_LAST
 id|SCTP_CMD_LAST
 DECL|typedef|sctp_verb_t
@@ -265,7 +269,8 @@ op_star
 id|init
 suffix:semicolon
 DECL|member|ulpevent
-id|sctp_ulpevent_t
+r_struct
+id|sctp_ulpevent
 op_star
 id|ulpevent
 suffix:semicolon
@@ -487,7 +492,8 @@ c_func
 (paren
 id|ULPEVENT
 comma
-id|sctp_ulpevent_t
+r_struct
+id|sctp_ulpevent
 op_star
 comma
 id|ulpevent

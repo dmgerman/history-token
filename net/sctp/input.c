@@ -730,7 +730,8 @@ id|sctp_chunk_t
 op_star
 id|chunk
 suffix:semicolon
-id|sctp_inqueue_t
+r_struct
+id|sctp_inq
 op_star
 id|inqueue
 suffix:semicolon
@@ -748,7 +749,7 @@ op_assign
 op_amp
 id|chunk-&gt;rcvr-&gt;inqueue
 suffix:semicolon
-id|sctp_push_inqueue
+id|sctp_inq_push
 c_func
 (paren
 id|inqueue

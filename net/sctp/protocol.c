@@ -268,13 +268,6 @@ c_cond
 id|addr
 )paren
 (brace
-id|INIT_LIST_HEAD
-c_func
-(paren
-op_amp
-id|addr-&gt;list
-)paren
-suffix:semicolon
 id|addr-&gt;a.v4.sin_family
 op_assign
 id|AF_INET
@@ -1943,7 +1936,8 @@ r_void
 id|sctp_inet_event_msgname
 c_func
 (paren
-id|sctp_ulpevent_t
+r_struct
+id|sctp_ulpevent
 op_star
 id|event
 comma
