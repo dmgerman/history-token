@@ -199,10 +199,11 @@ id|cached
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Associate a virtual page frame with a given physical page frame &n; * and protection flags for that frame.&n; */
-DECL|function|set_pte_phys
+DECL|function|set_pte_pfn
 r_static
 r_void
-id|set_pte_phys
+id|set_pte_pfn
+c_func
 (paren
 r_int
 r_int
@@ -210,7 +211,7 @@ id|vaddr
 comma
 r_int
 r_int
-id|phys
+id|pfn
 comma
 id|pgprot_t
 id|flags
@@ -296,7 +297,7 @@ comma
 id|vaddr
 )paren
 suffix:semicolon
-multiline_comment|/* &lt;phys,flags&gt; stored as-is, to permit clearing entries */
+multiline_comment|/* &lt;pfn,flags&gt; stored as-is, to permit clearing entries */
 id|set_pte
 c_func
 (paren
@@ -305,9 +306,7 @@ comma
 id|pfn_pte
 c_func
 (paren
-id|phys
-op_rshift
-id|PAGE_SHIFT
+id|pfn
 comma
 id|flags
 )paren
@@ -363,12 +362,14 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-id|set_pte_phys
+id|set_pte_pfn
 c_func
 (paren
 id|address
 comma
 id|phys
+op_rshift
+id|PAGE_SHIFT
 comma
 id|flags
 )paren

@@ -961,10 +961,10 @@ id|pgd_base
 op_assign
 id|swapper_pg_dir
 suffix:semicolon
+macro_line|#if CONFIG_X86_PAE
 r_int
 id|i
 suffix:semicolon
-macro_line|#if CONFIG_X86_PAE
 multiline_comment|/* Init entries of the first-level page table to the zero page */
 r_for
 c_loop
