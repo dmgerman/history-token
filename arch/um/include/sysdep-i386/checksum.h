@@ -79,7 +79,7 @@ op_star
 id|err_ptr
 )paren
 suffix:semicolon
-multiline_comment|/*&n; *&t;Note: when you get a NULL pointer exception here this means someone&n; *&t;passed in an incorrect kernel address to one of these functions.&n; *&n; *&t;If you use these functions directly please don&squot;t forget the&n; *&t;verify_area().&n; */
+multiline_comment|/*&n; *&t;Note: when you get a NULL pointer exception here this means someone&n; *&t;passed in an incorrect kernel address to one of these functions.&n; *&n; *&t;If you use these functions directly please don&squot;t forget the&n; *&t;access_ok().&n; */
 r_static
 id|__inline__
 DECL|function|csum_partial_copy_nocheck

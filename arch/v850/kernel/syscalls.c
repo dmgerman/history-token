@@ -128,7 +128,8 @@ c_cond
 (paren
 id|ret
 op_assign
-id|verify_area
+id|access_ok
+c_func
 (paren
 id|VERIFY_READ
 comma
@@ -139,6 +140,12 @@ r_sizeof
 r_int
 )paren
 )paren
+ques
+c_cond
+l_int|0
+suffix:colon
+op_minus
+id|EFAULT
 )paren
 op_logical_or
 (paren
@@ -230,7 +237,8 @@ c_cond
 (paren
 id|ret
 op_assign
-id|verify_area
+id|access_ok
+c_func
 (paren
 id|VERIFY_READ
 comma
@@ -241,6 +249,12 @@ r_sizeof
 id|tmp
 )paren
 )paren
+ques
+c_cond
+l_int|0
+suffix:colon
+op_minus
+id|EFAULT
 )paren
 op_logical_or
 (paren
@@ -374,7 +388,7 @@ c_cond
 (paren
 id|ret
 op_assign
-id|verify_area
+id|access_ok
 c_func
 (paren
 id|VERIFY_WRITE
@@ -390,6 +404,12 @@ r_sizeof
 id|ulong
 )paren
 )paren
+ques
+c_cond
+l_int|0
+suffix:colon
+op_minus
+id|EFAULT
 )paren
 )paren
 r_break

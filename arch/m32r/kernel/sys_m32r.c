@@ -711,10 +711,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-(paren
-id|ret
-op_assign
-id|verify_area
+op_logical_neg
+id|access_ok
 c_func
 (paren
 id|VERIFY_WRITE
@@ -732,9 +730,9 @@ id|ulong
 )paren
 )paren
 )paren
-)paren
 r_return
-id|ret
+op_minus
+id|EFAULT
 suffix:semicolon
 id|ret
 op_assign

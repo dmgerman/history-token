@@ -321,7 +321,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|verify_area
+op_logical_neg
+id|access_ok
 c_func
 (paren
 id|VERIFY_READ
@@ -421,7 +422,8 @@ id|oact
 r_if
 c_cond
 (paren
-id|verify_area
+op_logical_neg
+id|access_ok
 c_func
 (paren
 id|VERIFY_WRITE
@@ -871,7 +873,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|verify_area
+op_logical_neg
+id|access_ok
 c_func
 (paren
 id|VERIFY_READ
@@ -1060,7 +1063,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|verify_area
+op_logical_neg
+id|access_ok
 c_func
 (paren
 id|VERIFY_READ

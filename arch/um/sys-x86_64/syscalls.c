@@ -92,7 +92,8 @@ multiline_comment|/* XXX This should check VERIFY_WRITE depending on func, check
 r_if
 c_cond
 (paren
-id|verify_area
+op_logical_neg
+id|access_ok
 c_func
 (paren
 id|VERIFY_READ
@@ -102,12 +103,10 @@ comma
 id|bytecount
 )paren
 )paren
-(brace
 r_return
 op_minus
 id|EFAULT
 suffix:semicolon
-)brace
 r_return
 id|modify_ldt
 c_func

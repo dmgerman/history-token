@@ -1144,7 +1144,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|verify_area
+op_logical_neg
+id|access_ok
 c_func
 (paren
 id|VERIFY_WRITE
@@ -1158,11 +1159,9 @@ id|frame
 )paren
 )paren
 )paren
-(brace
 r_return
 l_int|1
 suffix:semicolon
-)brace
 id|restorer
 op_assign
 (paren
@@ -1478,7 +1477,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|verify_area
+op_logical_neg
+id|access_ok
 c_func
 (paren
 id|VERIFY_WRITE
@@ -1492,11 +1492,9 @@ id|frame
 )paren
 )paren
 )paren
-(brace
 r_return
 l_int|1
 suffix:semicolon
-)brace
 id|restorer
 op_assign
 (paren
