@@ -400,9 +400,10 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/* end afs_rxvl_aemap() */
+macro_line|#if 0
 multiline_comment|/*****************************************************************************/
-multiline_comment|/*&n; * probe a volume location server to see if it is still alive&n; */
-DECL|function|afs_rxvl_probe
+multiline_comment|/*&n; * probe a volume location server to see if it is still alive -- unused&n; */
+r_static
 r_int
 id|afs_rxvl_probe
 c_func
@@ -745,6 +746,7 @@ id|ret
 suffix:semicolon
 )brace
 multiline_comment|/* end afs_rxvl_probe() */
+macro_line|#endif
 multiline_comment|/*****************************************************************************/
 multiline_comment|/*&n; * look up a volume location database entry by name&n; */
 DECL|function|afs_rxvl_get_entry_by_name
