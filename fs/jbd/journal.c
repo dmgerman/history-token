@@ -1290,10 +1290,11 @@ l_int|1
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Allocation code for the journal file.  Manage the space left in the&n; * journal, so that we can begin checkpointing when appropriate.&n; */
-multiline_comment|/*&n; * log_space_left: Return the number of free blocks left in the journal.&n; *&n; * Called with the journal already locked.&n; */
-DECL|function|log_space_left
+multiline_comment|/*&n; * __log_space_left: Return the number of free blocks left in the journal.&n; *&n; * Called with the journal already locked.&n; *&n; * Called under j_state_lock&n; */
+DECL|function|__log_space_left
 r_int
-id|log_space_left
+id|__log_space_left
+c_func
 (paren
 id|journal_t
 op_star
@@ -1305,7 +1306,14 @@ id|left
 op_assign
 id|journal-&gt;j_free
 suffix:semicolon
-multiline_comment|/* Be pessimistic here about the number of those free blocks&n;&t; * which might be required for log descriptor control blocks. */
+id|assert_spin_locked
+c_func
+(paren
+op_amp
+id|journal-&gt;j_state_lock
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t; * Be pessimistic here about the number of those free blocks which&n;&t; * might be required for log descriptor control blocks.&n;&t; */
 DECL|macro|MIN_LOG_RESERVED_BLOCKS
 mdefine_line|#define MIN_LOG_RESERVED_BLOCKS 32 /* Allow for rounding errors */
 id|left

@@ -2054,10 +2054,10 @@ r_int
 id|n
 )paren
 suffix:semicolon
-multiline_comment|/* The log thread user interface:&n; *&n; * Request space in the current transaction, and force transaction commit&n; * transitions on demand.&n; */
-r_extern
+multiline_comment|/*&n; * The log thread user interface:&n; *&n; * Request space in the current transaction, and force transaction commit&n; * transitions on demand.&n; */
 r_int
-id|log_space_left
+id|__log_space_left
+c_func
 (paren
 id|journal_t
 op_star
@@ -2095,9 +2095,8 @@ comma
 r_int
 )paren
 suffix:semicolon
-r_extern
 r_void
-id|log_wait_for_space
+id|__log_wait_for_space
 c_func
 (paren
 id|journal_t

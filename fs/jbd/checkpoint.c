@@ -170,10 +170,10 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * log_wait_for_space: wait until there is space in the journal.&n; *&n; * Called with the journal already locked, but it will be unlocked if we have&n; * to wait for a checkpoint to free up some space in the log.&n; */
-DECL|function|log_wait_for_space
+multiline_comment|/*&n; * __log_wait_for_space: wait until there is space in the journal.&n; *&n; * Called under j-state_lock *only*.  It will be unlocked if we have to wait&n; * for a checkpoint to free up some space in the log.&n; */
+DECL|function|__log_wait_for_space
 r_void
-id|log_wait_for_space
+id|__log_wait_for_space
 c_func
 (paren
 id|journal_t
@@ -184,10 +184,17 @@ r_int
 id|nblocks
 )paren
 (brace
+id|assert_spin_locked
+c_func
+(paren
+op_amp
+id|journal-&gt;j_state_lock
+)paren
+suffix:semicolon
 r_while
 c_loop
 (paren
-id|log_space_left
+id|__log_space_left
 c_func
 (paren
 id|journal
@@ -211,6 +218,13 @@ c_func
 id|journal
 )paren
 suffix:semicolon
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|journal-&gt;j_state_lock
+)paren
+suffix:semicolon
 id|down
 c_func
 (paren
@@ -224,11 +238,18 @@ c_func
 id|journal
 )paren
 suffix:semicolon
-multiline_comment|/* Test again, another process may have checkpointed&n;&t;&t; * while we were waiting for the checkpoint lock */
+multiline_comment|/*&n;&t;&t; * Test again, another process may have checkpointed while we&n;&t;&t; * were waiting for the checkpoint lock&n;&t;&t; */
+id|spin_lock
+c_func
+(paren
+op_amp
+id|journal-&gt;j_state_lock
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
-id|log_space_left
+id|__log_space_left
 c_func
 (paren
 id|journal
@@ -237,12 +258,26 @@ OL
 id|nblocks
 )paren
 (brace
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|journal-&gt;j_state_lock
+)paren
+suffix:semicolon
 id|log_do_checkpoint
 c_func
 (paren
 id|journal
 comma
 id|nblocks
+)paren
+suffix:semicolon
+id|spin_lock
+c_func
+(paren
+op_amp
+id|journal-&gt;j_state_lock
 )paren
 suffix:semicolon
 )brace
@@ -936,7 +971,7 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Perform an actual checkpoint.  We don&squot;t write out only enough to&n; * satisfy the current blocked requests: rather we submit a reasonably&n; * sized chunk of the outstanding data to disk at once for&n; * efficiency.  log_wait_for_space() will retry if we didn&squot;t free enough.&n; * &n; * However, we _do_ take into account the amount requested so that once&n; * the IO has been queued, we can return as soon as enough of it has&n; * completed to disk.  &n; *&n; * The journal should be locked before calling this function.&n; */
+multiline_comment|/*&n; * Perform an actual checkpoint.  We don&squot;t write out only enough to&n; * satisfy the current blocked requests: rather we submit a reasonably&n; * sized chunk of the outstanding data to disk at once for&n; * efficiency.  __log_wait_for_space() will retry if we didn&squot;t free enough.&n; * &n; * However, we _do_ take into account the amount requested so that once&n; * the IO has been queued, we can return as soon as enough of it has&n; * completed to disk.  &n; *&n; * The journal should be locked before calling this function.&n; */
 multiline_comment|/* @@@ `nblocks&squot; is unused.  Should it be used? */
 DECL|function|log_do_checkpoint
 r_int
