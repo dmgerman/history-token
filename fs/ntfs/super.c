@@ -5185,26 +5185,30 @@ id|super_operations
 id|ntfs_mount_sops
 op_assign
 (brace
+dot
 id|alloc_inode
-suffix:colon
+op_assign
 id|ntfs_alloc_big_inode
 comma
-multiline_comment|/* VFS: Allocate a new inode. */
+multiline_comment|/* VFS: Allocate new inode. */
+dot
 id|destroy_inode
-suffix:colon
+op_assign
 id|ntfs_destroy_big_inode
 comma
-multiline_comment|/* VFS: Deallocate an inode. */
+multiline_comment|/* VFS: Deallocate inode. */
+dot
 id|read_inode
-suffix:colon
+op_assign
 id|ntfs_read_inode_mount
 comma
-multiline_comment|/* VFS: Load inode from disk,&n;&t;&t;&t;&t;&t;&t;   called from iget(). */
+multiline_comment|/* VFS: Load inode from disk,&n;&t;&t;&t;&t;&t;&t;     called from iget(). */
+dot
 id|clear_inode
-suffix:colon
+op_assign
 id|ntfs_clear_big_inode
 comma
-multiline_comment|/* VFS: Called when an inode is&n;&t;&t;&t;&t;&t;&t;   removed from memory. */
+multiline_comment|/* VFS: Called when inode is&n;&t;&t;&t;&t;&t;&t;     removed from memory. */
 )brace
 suffix:semicolon
 multiline_comment|/**&n; * The complete super operations.&n; */
@@ -5214,56 +5218,61 @@ id|super_operations
 id|ntfs_sops
 op_assign
 (brace
+dot
 id|alloc_inode
-suffix:colon
+op_assign
 id|ntfs_alloc_big_inode
 comma
-multiline_comment|/* VFS: Allocate a new inode. */
+multiline_comment|/* VFS: Allocate new inode. */
+dot
 id|destroy_inode
-suffix:colon
+op_assign
 id|ntfs_destroy_big_inode
 comma
-multiline_comment|/* VFS: Deallocate an inode. */
-id|dirty_inode
-suffix:colon
-id|ntfs_dirty_inode
-comma
-multiline_comment|/* VFS: Called from&n;&t;&t;&t;&t;&t;&t;   __mark_inode_dirty(). */
-singleline_comment|//write_inode:&t;NULL,&t;&t;/* VFS: Write dirty inode to disk. */
+multiline_comment|/* VFS: Deallocate inode. */
+singleline_comment|//.dirty_inode&t;= ntfs_dirty_inode,&t;  /* VFS: Called from
+singleline_comment|//&t;&t;&t;&t;&t;     __mark_inode_dirty(). */
+singleline_comment|//.write_inode&t;= NULL,&t;&t;  /* VFS: Write dirty inode to disk. */
+dot
 id|put_inode
-suffix:colon
+op_assign
 id|ntfs_put_inode
 comma
-multiline_comment|/* VFS: Called just before the inode&n;&t;&t;&t;&t;&t;   reference count is decreased. */
-singleline_comment|//delete_inode:&t;NULL,&t;&t;/* VFS: Delete inode from disk. Called
-singleline_comment|//&t;&t;&t;&t;   when i_count becomes 0 and i_nlink is
-singleline_comment|//&t;&t;&t;&t;   also 0. */
+multiline_comment|/* VFS: Called just before the inode&n;&t;&t;&t;&t;&t;     reference count is decreased. */
+singleline_comment|//.delete_inode&t;= NULL,&t;&t;  /* VFS: Delete inode from disk. Called
+singleline_comment|//&t;&t;&t;&t;     when i_count becomes 0 and i_nlink
+singleline_comment|//&t;&t;&t;&t;     is also 0. */
+dot
 id|put_super
-suffix:colon
+op_assign
 id|ntfs_put_super
 comma
 multiline_comment|/* Syscall: umount. */
-singleline_comment|//write_super:&t;NULL,&t;&t;/* Flush dirty super block to disk. */
-singleline_comment|//write_super_lockfs:&t;NULL,&t;/* ? */
-singleline_comment|//unlockfs:&t;NULL,&t;&t;/* ? */
+singleline_comment|//write_super&t;= NULL,&t;&t;  /* Flush dirty super block to disk. */
+singleline_comment|//write_super_lockfs&t;= NULL,&t;  /* ? */
+singleline_comment|//unlockfs&t;= NULL,&t;&t;  /* ? */
+dot
 id|statfs
-suffix:colon
+op_assign
 id|ntfs_statfs
 comma
 multiline_comment|/* Syscall: statfs */
+dot
 id|remount_fs
-suffix:colon
+op_assign
 id|ntfs_remount
 comma
 multiline_comment|/* Syscall: mount -o remount. */
+dot
 id|clear_inode
-suffix:colon
+op_assign
 id|ntfs_clear_big_inode
 comma
 multiline_comment|/* VFS: Called when an inode is&n;&t;&t;&t;&t;&t;&t;   removed from memory. */
-singleline_comment|//umount_begin:&t;NULL,&t;&t;/* Forced umount. */
+singleline_comment|//.umount_begin&t;= NULL,&t;&t;     /* Forced umount. */
+dot
 id|show_options
-suffix:colon
+op_assign
 id|ntfs_show_options
 comma
 multiline_comment|/* Show mount options in proc. */
@@ -6148,7 +6157,7 @@ multiline_comment|/* Copied from fs/super.c. I just love this message. (-; */
 id|printk
 c_func
 (paren
-l_string|&quot;VFS: Busy inodes after umount. Self-destruct in 5 &quot;
+l_string|&quot;NTFS: Busy inodes after umount. Self-destruct in 5 &quot;
 l_string|&quot;seconds.  Have a nice day...&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -6335,24 +6344,29 @@ id|file_system_type
 id|ntfs_fs_type
 op_assign
 (brace
+dot
 id|owner
-suffix:colon
+op_assign
 id|THIS_MODULE
 comma
+dot
 id|name
-suffix:colon
+op_assign
 l_string|&quot;ntfs&quot;
 comma
+dot
 id|get_sb
-suffix:colon
+op_assign
 id|ntfs_get_sb
 comma
+dot
 id|kill_sb
-suffix:colon
+op_assign
 id|kill_block_super
 comma
+dot
 id|fs_flags
-suffix:colon
+op_assign
 id|FS_REQUIRES_DEV
 comma
 )brace

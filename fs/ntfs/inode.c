@@ -789,6 +789,7 @@ suffix:semicolon
 )brace
 DECL|function|ntfs_alloc_extent_inode
 r_static
+r_inline
 id|ntfs_inode
 op_star
 id|ntfs_alloc_extent_inode
@@ -799,6 +800,14 @@ r_void
 (brace
 id|ntfs_inode
 op_star
+id|ni
+suffix:semicolon
+id|ntfs_debug
+c_func
+(paren
+l_string|&quot;Entering.&quot;
+)paren
+suffix:semicolon
 id|ni
 op_assign
 (paren
@@ -811,12 +820,6 @@ c_func
 id|ntfs_inode_cache
 comma
 id|SLAB_NOFS
-)paren
-suffix:semicolon
-id|ntfs_debug
-c_func
-(paren
-l_string|&quot;Entering.&quot;
 )paren
 suffix:semicolon
 r_if
@@ -1067,6 +1070,7 @@ suffix:semicolon
 )brace
 DECL|function|ntfs_init_big_inode
 r_static
+r_inline
 r_void
 id|ntfs_init_big_inode
 c_func
@@ -1109,6 +1113,7 @@ r_return
 suffix:semicolon
 )brace
 DECL|function|ntfs_new_extent_inode
+r_inline
 id|ntfs_inode
 op_star
 id|ntfs_new_extent_inode
@@ -1476,7 +1481,7 @@ l_int|0
 suffix:semicolon
 multiline_comment|/* NO, it is not an extended system file. */
 )brace
-multiline_comment|/**&n; * ntfs_read_locked_inode - read an inode from its device&n; * @vi:&t;&t;inode to read&n; *&n; * ntfs_read_locked_inode() is called from the ntfs_iget() to read the inode&n; * described by @vi into memory from the device.&n; *&n; * The only fields in @vi that we need to/can look at when the function is&n; * called are i_sb, pointing to the mounted device&squot;s super block, and i_ino,&n; * the number of the inode to load. If this is a fake inode, i.e. NInoAttr(),&n; * then the fields type, name, and name_len are also valid, and describe the&n; * attribute which this fake inode represents.&n; *&n; * ntfs_read_locked_inode() maps, pins and locks the mft record number i_ino&n; * for reading and sets up the necessary @vi fields as well as initializing&n; * the ntfs inode.&n; *&n; * Q: What locks are held when the function is called?&n; * A: i_state has I_LOCK set, hence the inode is locked, also&n; *    i_count is set to 1, so it is not going to go away&n; *    i_flags is set to 0 and we have no business touching it. Only an ioctl()&n; *    is allowed to write to them. We should of course be honouring them but&n; *    we need to do that using the IS_* macros defined in include/linux/fs.h.&n; *    In any case ntfs_read_locked_inode() has nothing to do with i_flags.&n; *&n; * Return 0 on success and -errno on error. In the error case, the inode will&n; * have had make_bad_inode() executed on it.&n; */
+multiline_comment|/**&n; * ntfs_read_locked_inode - read an inode from its device&n; * @vi:&t;&t;inode to read&n; *&n; * ntfs_read_locked_inode() is called from ntfs_iget() to read the inode&n; * described by @vi into memory from the device.&n; *&n; * The only fields in @vi that we need to/can look at when the function is&n; * called are i_sb, pointing to the mounted device&squot;s super block, and i_ino,&n; * the number of the inode to load. If this is a fake inode, i.e. NInoAttr(),&n; * then the fields type, name, and name_len are also valid, and describe the&n; * attribute which this fake inode represents.&n; *&n; * ntfs_read_locked_inode() maps, pins and locks the mft record number i_ino&n; * for reading and sets up the necessary @vi fields as well as initializing&n; * the ntfs inode.&n; *&n; * Q: What locks are held when the function is called?&n; * A: i_state has I_LOCK set, hence the inode is locked, also&n; *    i_count is set to 1, so it is not going to go away&n; *    i_flags is set to 0 and we have no business touching it. Only an ioctl()&n; *    is allowed to write to them. We should of course be honouring them but&n; *    we need to do that using the IS_* macros defined in include/linux/fs.h.&n; *    In any case ntfs_read_locked_inode() has nothing to do with i_flags.&n; *&n; * Return 0 on success and -errno on error. In the error case, the inode will&n; * have had make_bad_inode() executed on it.&n; */
 DECL|function|ntfs_read_locked_inode
 r_static
 r_int
