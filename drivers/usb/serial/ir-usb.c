@@ -1796,7 +1796,6 @@ l_int|0x0f
 OG
 l_int|0
 )paren
-(brace
 id|ir_baud
 op_assign
 op_star
@@ -1804,7 +1803,6 @@ id|data
 op_amp
 l_int|0x0f
 suffix:semicolon
-)brace
 id|usb_serial_debug_data
 (paren
 id|__FILE__

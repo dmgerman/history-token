@@ -3216,6 +3216,7 @@ c_loop
 id|n
 op_decrement
 )paren
+(brace
 r_if
 c_cond
 (paren
@@ -3228,6 +3229,7 @@ id|value
 r_return
 l_int|0
 suffix:semicolon
+)brace
 r_return
 op_minus
 l_int|1
@@ -6126,6 +6128,14 @@ DECL|macro|USB_VENDOR_ID_TOPMAX
 mdefine_line|#define USB_VENDOR_ID_TOPMAX           0x0663
 DECL|macro|USB_DEVICE_ID_TOPMAX_COBRAPAD
 mdefine_line|#define USB_DEVICE_ID_TOPMAX_COBRAPAD  0x0103
+DECL|macro|USB_VENDOR_ID_HAPP
+mdefine_line|#define USB_VENDOR_ID_HAPP             0x078b
+DECL|macro|USB_DEVICE_ID_UGCI_DRIVING
+mdefine_line|#define USB_DEVICE_ID_UGCI_DRIVING     0x0010
+DECL|macro|USB_DEVICE_ID_UGCI_FLYING
+mdefine_line|#define USB_DEVICE_ID_UGCI_FLYING      0x0020
+DECL|macro|USB_DEVICE_ID_UGCI_FIGHTING
+mdefine_line|#define USB_DEVICE_ID_UGCI_FIGHTING    0x0030
 DECL|macro|USB_VENDOR_ID_MGE
 mdefine_line|#define USB_VENDOR_ID_MGE              0x0463
 DECL|macro|USB_DEVICE_ID_MGE_UPS
@@ -6313,6 +6323,14 @@ comma
 id|USB_VENDOR_ID_WACOM
 comma
 id|USB_DEVICE_ID_WACOM_INTUOS2
+comma
+id|HID_QUIRK_IGNORE
+)brace
+comma
+(brace
+id|USB_VENDOR_ID_WACOM
+comma
+id|USB_DEVICE_ID_WACOM_INTUOS2
 op_plus
 l_int|1
 comma
@@ -6345,16 +6363,6 @@ comma
 id|USB_DEVICE_ID_WACOM_INTUOS2
 op_plus
 l_int|4
-comma
-id|HID_QUIRK_IGNORE
-)brace
-comma
-(brace
-id|USB_VENDOR_ID_WACOM
-comma
-id|USB_DEVICE_ID_WACOM_INTUOS2
-op_plus
-l_int|5
 comma
 id|HID_QUIRK_IGNORE
 )brace
@@ -6443,6 +6451,30 @@ comma
 id|USB_VENDOR_ID_TOPMAX
 comma
 id|USB_DEVICE_ID_TOPMAX_COBRAPAD
+comma
+id|HID_QUIRK_BADPAD
+)brace
+comma
+(brace
+id|USB_VENDOR_ID_HAPP
+comma
+id|USB_DEVICE_ID_UGCI_DRIVING
+comma
+id|HID_QUIRK_BADPAD
+)brace
+comma
+(brace
+id|USB_VENDOR_ID_HAPP
+comma
+id|USB_DEVICE_ID_UGCI_FLYING
+comma
+id|HID_QUIRK_BADPAD
+)brace
+comma
+(brace
+id|USB_VENDOR_ID_HAPP
+comma
+id|USB_DEVICE_ID_UGCI_FIGHTING
 comma
 id|HID_QUIRK_BADPAD
 )brace
