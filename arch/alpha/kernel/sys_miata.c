@@ -850,6 +850,7 @@ c_func
 id|mode
 )paren
 suffix:semicolon
+macro_line|#ifndef ALPHA_RESTORE_SRM_SETUP
 r_switch
 c_cond
 (paren
@@ -898,6 +899,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
+macro_line|#endif
 )brace
 multiline_comment|/*&n; * The System Vector&n; */
 DECL|variable|__initmv
