@@ -327,6 +327,20 @@ c_func
 id|scsi_device_put
 )paren
 suffix:semicolon
+DECL|variable|scsi_add_device
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|scsi_add_device
+)paren
+suffix:semicolon
+DECL|variable|scsi_remove_device
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|scsi_remove_device
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * This symbol is for the highlevel drivers (e.g. sg) only.&n; */
 DECL|variable|scsi_reset_provider
 id|EXPORT_SYMBOL

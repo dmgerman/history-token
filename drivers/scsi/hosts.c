@@ -770,45 +770,6 @@ id|sdev
 r_return
 l_int|1
 suffix:semicolon
-multiline_comment|/*&n;&t; * Next we detach the high level drivers from the Scsi_Device&n;&t; * structures&n;&t; */
-id|list_for_each_entry
-c_func
-(paren
-id|sdev
-comma
-op_amp
-id|shost-&gt;my_devices
-comma
-id|siblings
-)paren
-(brace
-id|scsi_detach_device
-c_func
-(paren
-id|sdev
-)paren
-suffix:semicolon
-multiline_comment|/* If something still attached, punt */
-r_if
-c_cond
-(paren
-id|sdev-&gt;attached
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;Attached usage count = %d&bslash;n&quot;
-comma
-id|sdev-&gt;attached
-)paren
-suffix:semicolon
-r_return
-l_int|1
-suffix:semicolon
-)brace
-)brace
 id|scsi_forget_host
 c_func
 (paren
