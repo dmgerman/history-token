@@ -10802,6 +10802,14 @@ suffix:semicolon
 id|BTFIXUPSET_HALF
 c_func
 (paren
+id|pte_readi
+comma
+id|SRMMU_NOREAD
+)paren
+suffix:semicolon
+id|BTFIXUPSET_HALF
+c_func
+(paren
 id|pte_writei
 comma
 id|SRMMU_WRITE

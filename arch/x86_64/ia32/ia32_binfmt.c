@@ -447,7 +447,11 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|tsk-&gt;used_math
+id|tsk_used_math
+c_func
+(paren
+id|tsk
+)paren
 )paren
 r_return
 l_int|0
@@ -559,7 +563,11 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|t-&gt;used_math
+id|tsk_used_math
+c_func
+(paren
+id|t
+)paren
 )paren
 r_return
 l_int|0

@@ -84,6 +84,10 @@ id|efi_partition
 comma
 multiline_comment|/* this must come before msdos */
 macro_line|#endif
+macro_line|#ifdef CONFIG_SGI_PARTITION
+id|sgi_partition
+comma
+macro_line|#endif
 macro_line|#ifdef CONFIG_LDM_PARTITION
 id|ldm_partition
 comma
@@ -116,10 +120,6 @@ comma
 macro_line|#endif
 macro_line|#ifdef CONFIG_MAC_PARTITION
 id|mac_partition
-comma
-macro_line|#endif
-macro_line|#ifdef CONFIG_SGI_PARTITION
-id|sgi_partition
 comma
 macro_line|#endif
 macro_line|#ifdef CONFIG_ULTRIX_PARTITION

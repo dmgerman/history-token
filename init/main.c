@@ -1282,18 +1282,12 @@ c_func
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Re-enable preemption but disable interrupts to make sure&n;&t; * we dont get preempted until we schedule() in cpu_idle().&n;&t; */
-id|local_irq_disable
+id|unlock_kernel
 c_func
 (paren
 )paren
 suffix:semicolon
 id|preempt_enable_no_resched
-c_func
-(paren
-)paren
-suffix:semicolon
-id|unlock_kernel
 c_func
 (paren
 )paren

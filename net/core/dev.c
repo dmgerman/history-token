@@ -35,6 +35,7 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kallsyms.h&gt;
 macro_line|#include &lt;linux/netpoll.h&gt;
 macro_line|#include &lt;linux/rcupdate.h&gt;
+macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#ifdef CONFIG_NET_RADIO
 macro_line|#include &lt;linux/wireless.h&gt;&t;&t;/* Note : will define WIRELESS_EXT */
 macro_line|#include &lt;net/iw_handler.h&gt;
@@ -9513,16 +9514,10 @@ op_assign
 id|jiffies
 suffix:semicolon
 )brace
-id|current-&gt;state
-op_assign
-id|TASK_INTERRUPTIBLE
-suffix:semicolon
-id|schedule_timeout
+id|msleep
 c_func
 (paren
-id|HZ
-op_div
-l_int|4
+l_int|250
 )paren
 suffix:semicolon
 r_if

@@ -13,6 +13,7 @@ macro_line|#include &lt;linux/atmdev.h&gt;
 macro_line|#include &lt;linux/sonet.h&gt;
 macro_line|#include &lt;linux/atm_suni.h&gt;
 macro_line|#include &lt;linux/dma-mapping.h&gt;
+macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/string.h&gt;
 macro_line|#include &lt;asm/page.h&gt;

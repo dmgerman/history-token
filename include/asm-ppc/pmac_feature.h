@@ -101,6 +101,8 @@ DECL|macro|PMAC_MB_OLD_CORE99
 mdefine_line|#define PMAC_MB_OLD_CORE99&t;&t;0x00000004
 DECL|macro|PMAC_MB_MOBILE
 mdefine_line|#define PMAC_MB_MOBILE&t;&t;&t;0x00000008
+DECL|macro|PMAC_MB_MAY_SLEEP
+mdefine_line|#define PMAC_MB_MAY_SLEEP&t;&t;0x00000010
 multiline_comment|/*&n; * Feature calls supported on pmac&n; *&n; */
 multiline_comment|/*&n; * Use this inline wrapper&n; */
 r_struct
@@ -208,7 +210,7 @@ mdefine_line|#define PMAC_FTR_1394_ENABLE&t;&t;PMAC_FTR_DEF(13)
 multiline_comment|/* PMAC_FTR_1394_CABLE_POWER&t;(struct device_node* node, 0, int value)&n; * enable/disable the firewire cable power supply of the uninorth&n; * firewire cell&n; */
 DECL|macro|PMAC_FTR_1394_CABLE_POWER
 mdefine_line|#define PMAC_FTR_1394_CABLE_POWER&t;PMAC_FTR_DEF(14)
-multiline_comment|/* PMAC_FTR_SLEEP_STATE&t;&t;(struct device_node* node, 0, int value)&n; * set the sleep state of the motherboard.&n; * Pass -1 as value to query for sleep capability&n; */
+multiline_comment|/* PMAC_FTR_SLEEP_STATE&t;&t;(struct device_node* node, 0, int value)&n; * set the sleep state of the motherboard.&n; *&n; * Pass -1 as value to query for sleep capability&n; * Pass 1 to set IOs to sleep&n; * Pass 0 to set IOs to wake&n; */
 DECL|macro|PMAC_FTR_SLEEP_STATE
 mdefine_line|#define PMAC_FTR_SLEEP_STATE&t;&t;PMAC_FTR_DEF(15)
 multiline_comment|/* PMAC_FTR_GET_MB_INFO&t;&t;(NULL, selector, 0)&n; *&n; * returns some motherboard infos.&n; * selector: 0  - model id&n; *           1  - model flags (capabilities)&n; *           2  - model name (cast to const char *)&n; */
@@ -232,6 +234,9 @@ mdefine_line|#define PMAC_FTR_ENABLE_MPIC&t;&t;PMAC_FTR_DEF(19)
 multiline_comment|/* PMAC_FTR_AACK_DELAY_ENABLE&t;(NULL, int enable, 0)&n; *&n; * Enable/disable the AACK delay on the northbridge for systems using DFS&n; */
 DECL|macro|PMAC_FTR_AACK_DELAY_ENABLE
 mdefine_line|#define PMAC_FTR_AACK_DELAY_ENABLE     &t;PMAC_FTR_DEF(20)
+multiline_comment|/* PMAC_FTR_DEVICE_CAN_WAKE&n; *&n; * Used by video drivers to inform system that they can actually perform&n; * wakeup from sleep&n; */
+DECL|macro|PMAC_FTR_DEVICE_CAN_WAKE
+mdefine_line|#define PMAC_FTR_DEVICE_CAN_WAKE&t;PMAC_FTR_DEF(22)
 multiline_comment|/* Don&squot;t use those directly, they are for the sake of pmac_setup.c */
 r_extern
 r_int
@@ -250,6 +255,36 @@ suffix:semicolon
 r_extern
 r_void
 id|pmac_feature_init
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+multiline_comment|/* Video suspend tweak */
+r_extern
+r_void
+id|pmac_set_early_video_resume
+c_func
+(paren
+r_void
+(paren
+op_star
+id|proc
+)paren
+(paren
+r_void
+op_star
+id|data
+)paren
+comma
+r_void
+op_star
+id|data
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|pmac_call_early_video_resume
 c_func
 (paren
 r_void

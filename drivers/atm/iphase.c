@@ -12,6 +12,7 @@ macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;  
 macro_line|#include &lt;linux/uio.h&gt;  
 macro_line|#include &lt;linux/init.h&gt;  
+macro_line|#include &lt;linux/wait.h&gt;
 macro_line|#include &lt;asm/system.h&gt;  
 macro_line|#include &lt;asm/io.h&gt;  
 macro_line|#include &lt;asm/atomic.h&gt;  
@@ -13533,6 +13534,12 @@ op_star
 id|vcc
 )paren
 (brace
+id|DEFINE_WAIT
+c_func
+(paren
+id|wait
+)paren
+suffix:semicolon
 id|u16
 op_star
 id|vc_table
@@ -13564,9 +13571,6 @@ r_int
 id|closetime
 comma
 id|flags
-suffix:semicolon
-r_int
-id|ctimeout
 suffix:semicolon
 id|iadev
 op_assign
@@ -13638,13 +13642,32 @@ id|ATM_NONE
 id|iadev-&gt;close_pending
 op_increment
 suffix:semicolon
-id|sleep_on_timeout
+id|prepare_to_wait
 c_func
 (paren
 op_amp
 id|iadev-&gt;timeout_wait
 comma
+op_amp
+id|wait
+comma
+id|TASK_UNINTERRUPTIBLE
+)paren
+suffix:semicolon
+id|schedule_timeout
+c_func
+(paren
 l_int|50
+)paren
+suffix:semicolon
+id|finish_wait
+c_func
+(paren
+op_amp
+id|iadev-&gt;timeout_wait
+comma
+op_amp
+id|wait
 )paren
 suffix:semicolon
 id|spin_lock_irqsave
@@ -13758,10 +13781,6 @@ suffix:semicolon
 )paren
 id|closetime
 op_assign
-id|jiffies
-suffix:semicolon
-id|ctimeout
-op_assign
 l_int|300000
 op_div
 id|ia_vcc-&gt;pcr
@@ -13769,34 +13788,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|ctimeout
+id|closetime
 op_eq
 l_int|0
 )paren
-id|ctimeout
+id|closetime
 op_assign
 l_int|1
-suffix:semicolon
-r_while
-c_loop
-(paren
-id|ia_vcc-&gt;vc_desc_cnt
-OG
-l_int|0
-)paren
-(brace
-r_if
-c_cond
-(paren
-(paren
-id|jiffies
-op_minus
-id|closetime
-)paren
-op_ge
-id|ctimeout
-)paren
-r_break
 suffix:semicolon
 id|spin_unlock_irqrestore
 c_func
@@ -13807,11 +13805,18 @@ comma
 id|flags
 )paren
 suffix:semicolon
-id|sleep_on
+id|wait_event_timeout
 c_func
 (paren
-op_amp
 id|iadev-&gt;close_wait
+comma
+(paren
+id|ia_vcc-&gt;vc_desc_cnt
+op_le
+l_int|0
+)paren
+comma
+id|closetime
 )paren
 suffix:semicolon
 id|spin_lock_irqsave
@@ -13823,7 +13828,6 @@ comma
 id|flags
 )paren
 suffix:semicolon
-)brace
 id|iadev-&gt;close_pending
 op_decrement
 suffix:semicolon

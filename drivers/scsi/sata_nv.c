@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  sata_nv.c - NVIDIA nForce SATA&n; *&n; *  Copyright 2004 NVIDIA Corp.  All rights reserved.&n; *  Copyright 2004 Andrew Chew&n; *&n; *  The contents of this file are subject to the Open&n; *  Software License version 1.1 that can be found at&n; *  http://www.opensource.org/licenses/osl-1.1.txt and is included herein&n; *  by reference.&n; *&n; *  Alternatively, the contents of this file may be used under the terms&n; *  of the GNU General Public License version 2 (the &quot;GPL&quot;) as distributed&n; *  in the kernel source COPYING file, in which case the provisions of&n; *  the GPL are applicable instead of the above.  If you wish to allow&n; *  the use of your version of this file only under the terms of the&n; *  GPL and not to allow others to use your version of this file under&n; *  the OSL, indicate your decision by deleting the provisions above and&n; *  replace them with the notice and other provisions required by the GPL.&n; *  If you do not delete the provisions above, a recipient may use your&n; *  version of this file under either the OSL or the GPL.&n; *&n; *  0.03&n; *     - Fixed a bug where the hotplug handlers for non-CK804/MCP04 were using&n; *       mmio_base, which is only set for the CK804/MCP04 case.&n; *&n; *  0.02&n; *     - Added support for CK804 SATA controller.&n; *&n; *  0.01&n; *     - Initial revision.&n; */
+multiline_comment|/*&n; *  sata_nv.c - NVIDIA nForce SATA&n; *&n; *  Copyright 2004 NVIDIA Corp.  All rights reserved.&n; *  Copyright 2004 Andrew Chew&n; *&n; *  The contents of this file are subject to the Open&n; *  Software License version 1.1 that can be found at&n; *  http://www.opensource.org/licenses/osl-1.1.txt and is included herein&n; *  by reference.&n; *&n; *  Alternatively, the contents of this file may be used under the terms&n; *  of the GNU General Public License version 2 (the &quot;GPL&quot;) as distributed&n; *  in the kernel source COPYING file, in which case the provisions of&n; *  the GPL are applicable instead of the above.  If you wish to allow&n; *  the use of your version of this file only under the terms of the&n; *  GPL and not to allow others to use your version of this file under&n; *  the OSL, indicate your decision by deleting the provisions above and&n; *  replace them with the notice and other provisions required by the GPL.&n; *  If you do not delete the provisions above, a recipient may use your&n; *  version of this file under either the OSL or the GPL.&n; *&n; *  0.06&n; *     - Added generic SATA support by using a pci_device_id that filters on&n; *       the IDE storage class code.&n; *&n; *  0.03&n; *     - Fixed a bug where the hotplug handlers for non-CK804/MCP04 were using&n; *       mmio_base, which is only set for the CK804/MCP04 case.&n; *&n; *  0.02&n; *     - Added support for CK804 SATA controller.&n; *&n; *  0.01&n; *     - Initial revision.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -13,7 +13,7 @@ macro_line|#include &lt;linux/libata.h&gt;
 DECL|macro|DRV_NAME
 mdefine_line|#define DRV_NAME&t;&t;&t;&quot;sata_nv&quot;
 DECL|macro|DRV_VERSION
-mdefine_line|#define DRV_VERSION&t;&t;&t;&quot;0.5&quot;
+mdefine_line|#define DRV_VERSION&t;&t;&t;&quot;0.6&quot;
 DECL|macro|NV_PORTS
 mdefine_line|#define NV_PORTS&t;&t;&t;2
 DECL|macro|NV_PIO_MASK
@@ -231,6 +231,9 @@ DECL|enum|nv_host_type
 r_enum
 id|nv_host_type
 (brace
+DECL|enumerator|GENERIC
+id|GENERIC
+comma
 DECL|enumerator|NFORCE2
 id|NFORCE2
 comma
@@ -363,6 +366,24 @@ id|CK804
 )brace
 comma
 (brace
+id|PCI_VENDOR_ID_NVIDIA
+comma
+id|PCI_ANY_ID
+comma
+id|PCI_ANY_ID
+comma
+id|PCI_ANY_ID
+comma
+id|PCI_CLASS_STORAGE_IDE
+op_lshift
+l_int|8
+comma
+l_int|0xffff00
+comma
+id|GENERIC
+)brace
+comma
+(brace
 l_int|0
 comma
 )brace
@@ -379,11 +400,6 @@ DECL|member|host_type
 r_enum
 id|nv_host_type
 id|host_type
-suffix:semicolon
-DECL|member|host_flags
-r_int
-r_int
-id|host_flags
 suffix:semicolon
 DECL|member|enable_hotplug
 r_void
@@ -439,12 +455,30 @@ op_assign
 dot
 id|host_type
 op_assign
-id|NFORCE2
+id|GENERIC
 comma
 dot
-id|host_flags
+id|enable_hotplug
 op_assign
-l_int|0x00000000
+l_int|NULL
+comma
+dot
+id|disable_hotplug
+op_assign
+l_int|NULL
+comma
+dot
+id|check_hotplug
+op_assign
+l_int|NULL
+comma
+)brace
+comma
+(brace
+dot
+id|host_type
+op_assign
+id|NFORCE2
 comma
 dot
 id|enable_hotplug
@@ -470,11 +504,6 @@ op_assign
 id|NFORCE3
 comma
 dot
-id|host_flags
-op_assign
-l_int|0x00000000
-comma
-dot
 id|enable_hotplug
 op_assign
 id|nv_enable_hotplug
@@ -496,11 +525,6 @@ dot
 id|host_type
 op_assign
 id|CK804
-comma
-dot
-id|host_flags
-op_assign
-id|NV_HOST_FLAGS_SCR_MMIO
 comma
 dot
 id|enable_hotplug
@@ -530,6 +554,11 @@ r_struct
 id|nv_host_desc
 op_star
 id|host_desc
+suffix:semicolon
+DECL|member|host_flags
+r_int
+r_int
+id|host_flags
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -1043,7 +1072,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|host-&gt;host_desc-&gt;host_flags
+id|host-&gt;host_flags
 op_amp
 id|NV_HOST_FLAGS_SCR_MMIO
 )paren
@@ -1051,6 +1080,10 @@ r_return
 id|readl
 c_func
 (paren
+(paren
+r_void
+op_star
+)paren
 id|ap-&gt;ioaddr.scr_addr
 op_plus
 (paren
@@ -1119,7 +1152,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|host-&gt;host_desc-&gt;host_flags
+id|host-&gt;host_flags
 op_amp
 id|NV_HOST_FLAGS_SCR_MMIO
 )paren
@@ -1128,6 +1161,10 @@ c_func
 (paren
 id|val
 comma
+(paren
+r_void
+op_star
+)paren
 id|ap-&gt;ioaddr.scr_addr
 op_plus
 (paren
@@ -1232,6 +1269,43 @@ id|probe_ent
 suffix:semicolon
 r_int
 id|rc
+suffix:semicolon
+id|u32
+id|bar
+suffix:semicolon
+singleline_comment|// Make sure this is a SATA controller by counting the number of bars
+singleline_comment|// (NVIDIA SATA controllers will always have six bars).  Otherwise,
+singleline_comment|// it&squot;s an IDE controller and we ignore it.
+r_for
+c_loop
+(paren
+id|bar
+op_assign
+l_int|0
+suffix:semicolon
+id|bar
+OL
+l_int|6
+suffix:semicolon
+id|bar
+op_increment
+)paren
+r_if
+c_cond
+(paren
+id|pci_resource_start
+c_func
+(paren
+id|pdev
+comma
+id|bar
+)paren
+op_eq
+l_int|0
+)paren
+r_return
+op_minus
+id|ENODEV
 suffix:semicolon
 r_if
 c_cond
@@ -1373,6 +1447,20 @@ id|host
 r_goto
 id|err_out_free_ent
 suffix:semicolon
+id|memset
+c_func
+(paren
+id|host
+comma
+l_int|0
+comma
+r_sizeof
+(paren
+r_struct
+id|nv_host
+)paren
+)paren
+suffix:semicolon
 id|host-&gt;host_desc
 op_assign
 op_amp
@@ -1388,7 +1476,24 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|host-&gt;host_desc-&gt;host_flags
+id|pci_resource_flags
+c_func
+(paren
+id|pdev
+comma
+l_int|5
+)paren
+op_amp
+id|IORESOURCE_MEM
+)paren
+id|host-&gt;host_flags
+op_or_assign
+id|NV_HOST_FLAGS_SCR_MMIO
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|host-&gt;host_flags
 op_amp
 id|NV_HOST_FLAGS_SCR_MMIO
 )paren
@@ -1556,7 +1661,7 @@ suffix:colon
 r_if
 c_cond
 (paren
-id|host-&gt;host_desc-&gt;host_flags
+id|host-&gt;host_flags
 op_amp
 id|NV_HOST_FLAGS_SCR_MMIO
 )paren

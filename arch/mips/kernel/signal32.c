@@ -223,7 +223,6 @@ mdefine_line|#define DEBUG_SIG 0
 DECL|macro|_BLOCKABLE
 mdefine_line|#define _BLOCKABLE (~(sigmask(SIGKILL) | sigmask(SIGSTOP)))
 r_extern
-id|asmlinkage
 r_int
 id|do_signal32
 c_func
@@ -1544,7 +1543,6 @@ suffix:semicolon
 )brace
 DECL|function|restore_sigcontext32
 r_static
-id|asmlinkage
 r_int
 id|restore_sigcontext32
 c_func
@@ -1564,6 +1562,9 @@ r_int
 id|err
 op_assign
 l_int|0
+suffix:semicolon
+id|__u32
+id|used_math
 suffix:semicolon
 multiline_comment|/* Always make any pending restarted system calls return -EINTR */
 id|current_thread_info
@@ -1803,10 +1804,16 @@ op_or_assign
 id|__get_user
 c_func
 (paren
-id|current-&gt;used_math
+id|used_math
 comma
 op_amp
 id|sc-&gt;sc_used_math
+)paren
+suffix:semicolon
+id|conditional_used_math
+c_func
+(paren
+id|used_math
 )paren
 suffix:semicolon
 id|preempt_disable
@@ -1817,7 +1824,10 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|current-&gt;used_math
+id|used_math
+c_func
+(paren
+)paren
 )paren
 (brace
 multiline_comment|/* restore fpu context if we have used it before */
@@ -1905,7 +1915,6 @@ l_int|2
 suffix:semicolon
 multiline_comment|/* signal trampoline */
 DECL|member|rs_info
-r_struct
 id|compat_siginfo_t
 id|rs_info
 suffix:semicolon
@@ -2187,10 +2196,19 @@ r_return
 id|err
 suffix:semicolon
 )brace
-DECL|function|sys32_sigreturn
-id|asmlinkage
-r_void
+DECL|variable|sys32_sigreturn
+id|save_static_function
+c_func
+(paren
 id|sys32_sigreturn
+)paren
+suffix:semicolon
+id|__attribute_used__
+id|noinline
+r_static
+r_void
+DECL|function|_sys32_sigreturn
+id|_sys32_sigreturn
 c_func
 (paren
 id|nabi_no_regargs
@@ -2360,10 +2378,19 @@ id|current
 )paren
 suffix:semicolon
 )brace
-DECL|function|sys32_rt_sigreturn
-id|asmlinkage
-r_void
+DECL|variable|sys32_rt_sigreturn
+id|save_static_function
+c_func
+(paren
 id|sys32_rt_sigreturn
+)paren
+suffix:semicolon
+id|__attribute_used__
+id|noinline
+r_static
+r_void
+DECL|function|_sys32_rt_sigreturn
+id|_sys32_rt_sigreturn
 c_func
 (paren
 id|nabi_no_regargs
@@ -2882,7 +2909,12 @@ op_or_assign
 id|__put_user
 c_func
 (paren
-id|current-&gt;used_math
+op_logical_neg
+op_logical_neg
+id|used_math
+c_func
+(paren
+)paren
 comma
 op_amp
 id|sc-&gt;sc_used_math
@@ -2892,7 +2924,10 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|current-&gt;used_math
+id|used_math
+c_func
+(paren
+)paren
 )paren
 r_goto
 id|out
@@ -3794,7 +3829,6 @@ suffix:semicolon
 )brace
 )brace
 DECL|function|do_signal32
-id|asmlinkage
 r_int
 id|do_signal32
 c_func

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&n; * linux/drivers/s390/net/qeth_sys.c ($Revision: 1.48 $)&n; *&n; * Linux on zSeries OSA Express and HiperSockets support&n; * This file contains code related to sysfs.&n; *&n; * Copyright 2000,2003 IBM Corporation&n; *&n; * Author(s): Thomas Spatzier &lt;tspat@de.ibm.com&gt;&n; * &t;      Frank Pavlic &lt;pavlic@de.ibm.com&gt;&n; *&n; */
+multiline_comment|/*&n; *&n; * linux/drivers/s390/net/qeth_sys.c ($Revision: 1.49 $)&n; *&n; * Linux on zSeries OSA Express and HiperSockets support&n; * This file contains code related to sysfs.&n; *&n; * Copyright 2000,2003 IBM Corporation&n; *&n; * Author(s): Thomas Spatzier &lt;tspat@de.ibm.com&gt;&n; * &t;      Frank Pavlic &lt;pavlic@de.ibm.com&gt;&n; *&n; */
 macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/rwsem.h&gt;
 macro_line|#include &lt;asm/ebcdic.h&gt;
@@ -11,7 +11,7 @@ r_char
 op_star
 id|VERSION_QETH_SYS_C
 op_assign
-l_string|&quot;$Revision: 1.48 $&quot;
+l_string|&quot;$Revision: 1.49 $&quot;
 suffix:semicolon
 multiline_comment|/*****************************************************************************/
 multiline_comment|/*                                                                           */
@@ -2549,44 +2549,16 @@ c_cond
 (paren
 (paren
 id|i
-op_eq
+op_ne
 l_int|0
 )paren
-op_logical_or
+op_logical_and
 (paren
 id|i
-op_eq
+op_ne
 l_int|1
 )paren
 )paren
-(brace
-id|card-&gt;options.fake_ll
-op_assign
-id|i
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|card-&gt;dev
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|i
-)paren
-id|card-&gt;dev-&gt;hard_header
-op_assign
-id|qeth_fake_header
-suffix:semicolon
-r_else
-id|card-&gt;dev-&gt;hard_header
-op_assign
-l_int|NULL
-suffix:semicolon
-)brace
-)brace
-r_else
 (brace
 id|PRINT_WARN
 c_func
@@ -2599,6 +2571,10 @@ op_minus
 id|EINVAL
 suffix:semicolon
 )brace
+id|card-&gt;options.fake_ll
+op_assign
+id|i
+suffix:semicolon
 r_return
 id|count
 suffix:semicolon

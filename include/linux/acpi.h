@@ -1848,5 +1848,9 @@ l_int|0
 suffix:semicolon
 )brace
 macro_line|#endif
+r_extern
+r_int
+id|pnpacpi_disabled
+suffix:semicolon
 macro_line|#endif /*_LINUX_ACPI_H*/
 eof

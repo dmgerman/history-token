@@ -238,6 +238,7 @@ suffix:semicolon
 r_extern
 id|asmlinkage
 r_void
+op_star
 id|restore_user_regs
 c_func
 (paren
@@ -246,6 +247,10 @@ r_struct
 id|user_context
 op_star
 id|target
+comma
+dot
+dot
+dot
 )paren
 suffix:semicolon
 DECL|macro|copy_segments

@@ -225,6 +225,15 @@ comma
 id|HPET_T0_CFG
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t; * Some systems seems to need two writes to HPET_T0_CMP,&n;&t; * to get interrupts working&n;&t; */
+id|hpet_writel
+c_func
+(paren
+id|tick
+comma
+id|HPET_T0_CMP
+)paren
+suffix:semicolon
 id|hpet_writel
 c_func
 (paren

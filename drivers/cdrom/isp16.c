@@ -138,15 +138,6 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-macro_line|#ifdef MODULE
-r_void
-id|isp16_exit
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-macro_line|#endif
 DECL|macro|ISP16_IN
 mdefine_line|#define ISP16_IN(p) (outb(isp16_ctrl,ISP16_CTRL_PORT), inb(p))
 DECL|macro|ISP16_OUT
@@ -262,6 +253,7 @@ suffix:semicolon
 macro_line|#endif&t;&t;&t;&t;/* MODULE */
 multiline_comment|/*&n; *  ISP16 initialisation.&n; *&n; */
 DECL|function|isp16_init
+r_static
 r_int
 id|__init
 id|isp16_init
@@ -1249,6 +1241,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|isp16_exit
+r_static
 r_void
 id|__exit
 id|isp16_exit
@@ -1273,7 +1266,6 @@ l_string|&quot;ISP16: module released.&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef MODULE
 DECL|variable|isp16_init
 id|module_init
 c_func
@@ -1281,7 +1273,6 @@ c_func
 id|isp16_init
 )paren
 suffix:semicolon
-macro_line|#endif
 DECL|variable|isp16_exit
 id|module_exit
 c_func

@@ -1,5 +1,4 @@
 multiline_comment|/*&n; * MIPS-specific semaphore code.&n; *&n; * Copyright (C) 1999 Cort Dougan &lt;cort@cs.nmt.edu&gt;&n; * Copyright (C) 2004 Ralf Baechle &lt;ralf@linux-mips.org&gt;&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License&n; * as published by the Free Software Foundation; either version&n; * 2 of the License, or (at your option) any later version.&n; *&n; * April 2001 - Reworked by Paul Mackerras &lt;paulus@samba.org&gt;&n; * to eliminate the SMP races in the old version between the updates&n; * of `count&squot; and `waking&squot;.  Now we use negative `count&squot; values to&n; * indicate that some process(es) are waiting for the semaphore.&n; */
-macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -126,10 +125,11 @@ suffix:semicolon
 r_else
 (brace
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|semaphore_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 r_int
 r_int

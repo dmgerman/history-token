@@ -203,6 +203,8 @@ DECL|macro|MACH_TANBAC_TB0226
 mdefine_line|#define  MACH_TANBAC_TB0226&t;6&t;/* TANBAC TB0226 (Mbase) */
 DECL|macro|MACH_TANBAC_TB0229
 mdefine_line|#define  MACH_TANBAC_TB0229&t;7&t;/* TANBAC TB0229 (VR4131DIMM) */
+DECL|macro|MACH_NEC_CMBVR4133
+mdefine_line|#define  MACH_NEC_CMBVR4133&t;8&t;/* CMB VR4133 Board */
 DECL|macro|MACH_GROUP_HP_LJ
 mdefine_line|#define MACH_GROUP_HP_LJ&t;20&t;/* Hewlett Packard LaserJet&t;*/
 DECL|macro|MACH_HP_LASERJET

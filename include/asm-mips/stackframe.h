@@ -272,7 +272,7 @@ id|kernelsp
 id|k1
 )paren
 macro_line|#endif
-macro_line|#ifdef CONFIG_MIPS64
+macro_line|#if defined(CONFIG_MIPS64) &amp;&amp; !defined(CONFIG_BUILD_ELF64)
 id|MFC0
 id|k1
 comma
@@ -329,6 +329,30 @@ id|kernelsp
 id|k1
 )paren
 macro_line|#endif
+macro_line|#if defined(CONFIG_MIPS64) &amp;&amp; defined(CONFIG_BUILD_ELF64)
+id|MFC0
+id|k1
+comma
+id|CP0_CONTEXT
+id|dsrl
+id|k1
+comma
+l_int|23
+id|dsll
+id|k1
+comma
+id|k1
+comma
+l_int|3
+id|LONG_L
+id|k1
+comma
+id|kernelsp
+c_func
+(paren
+id|k1
+)paren
+macro_line|#endif
 dot
 id|endm
 dot
@@ -364,7 +388,7 @@ c_func
 id|temp
 )paren
 macro_line|#endif
-macro_line|#ifdef CONFIG_MIPS64
+macro_line|#if defined(CONFIG_MIPS64) &amp;&amp; !defined(CONFIG_BUILD_ELF64)
 id|lw
 "&bslash;"
 id|temp
@@ -405,6 +429,32 @@ c_func
 (paren
 id|kernelsp
 )paren
+(paren
+"&bslash;"
+id|temp
+)paren
+macro_line|#endif
+macro_line|#if defined(CONFIG_MIPS64) &amp;&amp; defined(CONFIG_BUILD_ELF64)
+id|lw
+"&bslash;"
+id|temp
+comma
+id|TI_CPU
+c_func
+(paren
+id|gp
+)paren
+id|dsll
+"&bslash;"
+id|temp
+comma
+l_int|3
+id|LONG_S
+"&bslash;"
+id|stackp
+comma
+id|kernelsp
+c_func
 (paren
 "&bslash;"
 id|temp
@@ -460,6 +510,9 @@ id|SAVE_SOME
 dot
 id|set
 id|push
+dot
+id|set
+id|noat
 dot
 id|set
 id|reorder
@@ -1324,8 +1377,8 @@ dot
 id|macro
 id|RESTORE_ALL
 id|RESTORE_TEMP
-id|RESTORE_AT
 id|RESTORE_STATIC
+id|RESTORE_AT
 id|RESTORE_SOME
 id|RESTORE_SP
 dot
@@ -1334,8 +1387,8 @@ dot
 id|macro
 id|RESTORE_ALL_AND_RET
 id|RESTORE_TEMP
-id|RESTORE_AT
 id|RESTORE_STATIC
+id|RESTORE_AT
 id|RESTORE_SOME
 id|RESTORE_SP_AND_RET
 dot

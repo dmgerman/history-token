@@ -117,6 +117,8 @@ DECL|macro|TIF_NEED_RESCHED
 mdefine_line|#define TIF_NEED_RESCHED&t;3&t;/* rescheduling necessary */
 DECL|macro|TIF_POLLING_NRFLAG
 mdefine_line|#define TIF_POLLING_NRFLAG&t;4&t;/* true if poll_idle() is polling&n;&t;&t;&t;&t;&t;   TIF_NEED_RESCHED */
+DECL|macro|TIF_MEMDIE
+mdefine_line|#define TIF_MEMDIE&t;&t;5
 multiline_comment|/* as above, but as bit values */
 DECL|macro|_TIF_SYSCALL_TRACE
 mdefine_line|#define _TIF_SYSCALL_TRACE&t;(1&lt;&lt;TIF_SYSCALL_TRACE)

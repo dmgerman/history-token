@@ -557,6 +557,16 @@ id|ATA_CMD_PACKET
 op_assign
 l_int|0xA0
 comma
+DECL|enumerator|ATA_CMD_VERIFY
+id|ATA_CMD_VERIFY
+op_assign
+l_int|0x40
+comma
+DECL|enumerator|ATA_CMD_VERIFY_EXT
+id|ATA_CMD_VERIFY_EXT
+op_assign
+l_int|0x42
+comma
 multiline_comment|/* SETFEATURES stuff */
 DECL|enumerator|SETFEATURES_XFER
 id|SETFEATURES_XFER

@@ -429,7 +429,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
 id|pci_write_config_word
 c_func
 (paren
@@ -439,6 +438,8 @@ id|ACPI_BASE
 comma
 id|sis5595_base
 )paren
+op_ne
+id|PCIBIOS_SUCCESSFUL
 )paren
 r_goto
 id|error
@@ -446,7 +447,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
 id|pci_read_config_word
 c_func
 (paren
@@ -457,6 +457,8 @@ comma
 op_amp
 id|a
 )paren
+op_ne
+id|PCIBIOS_SUCCESSFUL
 )paren
 r_goto
 id|error
@@ -496,7 +498,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
 id|pci_read_config_byte
 c_func
 (paren
@@ -507,6 +508,8 @@ comma
 op_amp
 id|val
 )paren
+op_ne
+id|PCIBIOS_SUCCESSFUL
 )paren
 r_goto
 id|error
@@ -535,7 +538,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
 id|pci_write_config_byte
 c_func
 (paren
@@ -547,6 +549,8 @@ id|val
 op_or
 l_int|0x80
 )paren
+op_ne
+id|PCIBIOS_SUCCESSFUL
 )paren
 r_goto
 id|error
@@ -554,7 +558,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
 id|pci_read_config_byte
 c_func
 (paren
@@ -565,6 +568,8 @@ comma
 op_amp
 id|val
 )paren
+op_ne
+id|PCIBIOS_SUCCESSFUL
 )paren
 r_goto
 id|error

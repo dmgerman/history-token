@@ -352,6 +352,23 @@ suffix:semicolon
 )brace
 r_else
 (brace
+r_if
+c_cond
+(paren
+id|p_dma_ch-&gt;int_on_final_sg
+)paren
+(brace
+multiline_comment|/* mask out all dma interrupts, except error, on tail&n;&t;&t;&t;before adding new tail. */
+id|psgl-&gt;ptail-&gt;control_count
+op_and_assign
+op_complement
+(paren
+id|SG_TCI_ENABLE
+op_or
+id|SG_ETI_ENABLE
+)paren
+suffix:semicolon
+)brace
 id|psgl-&gt;ptail-&gt;next
 op_assign
 id|psgl-&gt;ptail_dma
@@ -746,6 +763,8 @@ op_star
 l_int|0x8
 )paren
 )paren
+op_amp
+id|SG_COUNT_MASK
 suffix:semicolon
 r_if
 c_cond
@@ -1123,6 +1142,8 @@ id|dmanr
 id|sgl_list_info_t
 op_star
 id|psgl
+op_assign
+l_int|NULL
 suffix:semicolon
 id|dma_addr_t
 id|dma_addr
@@ -1139,6 +1160,9 @@ id|dmanr
 suffix:semicolon
 r_uint32
 id|sg_command
+suffix:semicolon
+r_uint32
+id|ctc_settings
 suffix:semicolon
 r_void
 op_star
@@ -1340,6 +1364,32 @@ op_assign
 id|SG_ERI_ENABLE
 op_or
 id|SG_LINK
+suffix:semicolon
+multiline_comment|/* keep control count register settings */
+id|ctc_settings
+op_assign
+id|mfdcr
+c_func
+(paren
+id|DCRN_DMACT0
+op_plus
+(paren
+id|dmanr
+op_star
+l_int|0x8
+)paren
+)paren
+op_amp
+(paren
+id|DMA_CTC_BSIZ_MSK
+op_or
+id|DMA_CTC_BTEN
+)paren
+suffix:semicolon
+multiline_comment|/*burst mode settings*/
+id|psgl-&gt;sgl_control
+op_or_assign
+id|ctc_settings
 suffix:semicolon
 r_if
 c_cond

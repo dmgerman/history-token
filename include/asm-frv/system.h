@@ -13,23 +13,30 @@ mdefine_line|#define prepare_to_switch()    do { } while(0)
 multiline_comment|/*&n; * switch_to(prev, next) should switch from task `prev&squot; to `next&squot;&n; * `prev&squot; will never be the same as `next&squot;.&n; * The `mb&squot; is to tell GCC not to cache `current&squot; across this call.&n; */
 r_extern
 id|asmlinkage
-r_void
+r_struct
+id|task_struct
+op_star
 id|__switch_to
 c_func
 (paren
 r_struct
 id|thread_struct
 op_star
-id|prev
+id|prev_thread
 comma
 r_struct
 id|thread_struct
 op_star
-id|next
+id|next_thread
+comma
+r_struct
+id|task_struct
+op_star
+id|prev
 )paren
 suffix:semicolon
 DECL|macro|switch_to
-mdefine_line|#define switch_to(prev, next, last)&t;&t;&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;prev-&gt;thread.sched_lr = (unsigned long) __builtin_return_address(0);&t;&bslash;&n;&t;__switch_to(&amp;prev-&gt;thread, &amp;next-&gt;thread);&t;&t;&t;&t;&bslash;&n;&t;mb();&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;} while(0)
+mdefine_line|#define switch_to(prev, next, last)&t;&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;(prev)-&gt;thread.sched_lr =&t;&t;&t;&t;&t;&bslash;&n;&t;&t;(unsigned long) __builtin_return_address(0);&t;&t;&bslash;&n;&t;(last) = __switch_to(&amp;(prev)-&gt;thread, &amp;(next)-&gt;thread, (prev));&t;&bslash;&n;&t;mb();&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;} while(0)
 multiline_comment|/*&n; * interrupt flag manipulation&n; */
 DECL|macro|local_irq_disable
 mdefine_line|#define local_irq_disable()&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;unsigned long psr;&t;&t;&t;&t;&bslash;&n;&t;asm volatile(&quot;&t;movsg&t;psr,%0&t;&t;&bslash;n&quot;&t;&bslash;&n;&t;&t;     &quot;&t;andi&t;%0,%2,%0&t;&bslash;n&quot;&t;&bslash;&n;&t;&t;     &quot;&t;ori&t;%0,%1,%0&t;&bslash;n&quot;&t;&bslash;&n;&t;&t;     &quot;&t;movgs&t;%0,psr&t;&t;&bslash;n&quot;&t;&bslash;&n;&t;&t;     : &quot;=r&quot;(psr)&t;&t;&t;&bslash;&n;&t;&t;     : &quot;i&quot; (PSR_PIL_14), &quot;i&quot; (~PSR_PIL)&t;&bslash;&n;&t;&t;     : &quot;memory&quot;);&t;&t;&t;&bslash;&n;} while(0)

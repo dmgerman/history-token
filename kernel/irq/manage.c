@@ -5,6 +5,27 @@ macro_line|#include &lt;linux/random.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &quot;internals.h&quot;
 macro_line|#ifdef CONFIG_SMP
+DECL|variable|irq_affinity
+id|cpumask_t
+id|irq_affinity
+(braket
+id|NR_IRQS
+)braket
+op_assign
+(brace
+(braket
+l_int|0
+dot
+dot
+dot
+id|NR_IRQS
+op_minus
+l_int|1
+)braket
+op_assign
+id|CPU_MASK_ALL
+)brace
+suffix:semicolon
 multiline_comment|/**&n; *&t;synchronize_irq - wait for pending IRQ handlers (on other CPUs)&n; *&n; *&t;This function waits for any pending IRQ handlers for this interrupt&n; *&t;to complete before returning. If you use this function while&n; *&t;holding a resource the IRQ handler may need you will deadlock.&n; *&n; *&t;This function may be called - with care - from IRQ context.&n; */
 DECL|function|synchronize_irq
 r_void

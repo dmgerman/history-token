@@ -155,10 +155,11 @@ id|SB1250_NR_IRQS
 )braket
 suffix:semicolon
 DECL|variable|sb1250_imr_lock
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|sb1250_imr_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|function|sb1250_mask_irq
 r_void
@@ -190,7 +191,7 @@ id|flags
 suffix:semicolon
 id|cur_ints
 op_assign
-id|____raw_readq
+id|__bus_readq
 c_func
 (paren
 id|IOADDR
@@ -219,7 +220,7 @@ op_lshift
 id|irq
 )paren
 suffix:semicolon
-id|____raw_writeq
+id|__bus_writeq
 c_func
 (paren
 id|cur_ints
@@ -277,7 +278,7 @@ id|flags
 suffix:semicolon
 id|cur_ints
 op_assign
-id|____raw_readq
+id|__bus_readq
 c_func
 (paren
 id|IOADDR
@@ -307,7 +308,7 @@ op_lshift
 id|irq
 )paren
 suffix:semicolon
-id|____raw_writeq
+id|__bus_writeq
 c_func
 (paren
 id|cur_ints
@@ -459,7 +460,7 @@ id|irq
 suffix:semicolon
 id|cur_ints
 op_assign
-id|____raw_readq
+id|__bus_readq
 c_func
 (paren
 id|IOADDR
@@ -513,7 +514,7 @@ op_lshift
 id|irq
 )paren
 suffix:semicolon
-id|____raw_writeq
+id|__bus_writeq
 c_func
 (paren
 id|cur_ints
@@ -548,7 +549,7 @@ id|int_on
 multiline_comment|/* unmask for the new CPU */
 id|cur_ints
 op_assign
-id|____raw_readq
+id|__bus_readq
 c_func
 (paren
 id|IOADDR
@@ -578,7 +579,7 @@ op_lshift
 id|irq
 )paren
 suffix:semicolon
-id|____raw_writeq
+id|__bus_writeq
 c_func
 (paren
 id|cur_ints
@@ -717,7 +718,7 @@ suffix:semicolon
 multiline_comment|/*&n;&t; * If the interrupt was an HT interrupt, now is the time to&n;&t; * clear it.  NOTE: we assume the HT bridge was set up to&n;&t; * deliver the interrupts to all CPUs (which makes affinity&n;&t; * changing easier for us)&n;&t; */
 id|pending
 op_assign
-id|__raw_readq
+id|bus_readq
 c_func
 (paren
 id|IOADDR
@@ -792,7 +793,7 @@ id|i
 suffix:semicolon
 macro_line|#endif
 multiline_comment|/*&n;&t;&t;&t; * Clear for all CPUs so an affinity switch&n;&t;&t;&t; * doesn&squot;t find an old status&n;&t;&t;&t; */
-id|__raw_writeq
+id|bus_writeq
 c_func
 (paren
 id|pending
@@ -1192,7 +1193,7 @@ op_increment
 )paren
 (brace
 multiline_comment|/* was I0 */
-id|__raw_writeq
+id|bus_writeq
 c_func
 (paren
 id|IMR_IP2_VAL
@@ -1216,7 +1217,7 @@ l_int|3
 )paren
 )paren
 suffix:semicolon
-id|__raw_writeq
+id|bus_writeq
 c_func
 (paren
 id|IMR_IP2_VAL
@@ -1248,7 +1249,7 @@ c_func
 suffix:semicolon
 multiline_comment|/*&n;&t; * Map the high 16 bits of the mailbox registers to IP[3], for&n;&t; * inter-cpu messages&n;&t; */
 multiline_comment|/* Was I1 */
-id|__raw_writeq
+id|bus_writeq
 c_func
 (paren
 id|IMR_IP3_VAL
@@ -1272,7 +1273,7 @@ l_int|3
 )paren
 )paren
 suffix:semicolon
-id|__raw_writeq
+id|bus_writeq
 c_func
 (paren
 id|IMR_IP3_VAL
@@ -1297,10 +1298,10 @@ l_int|3
 )paren
 suffix:semicolon
 multiline_comment|/* Clear the mailboxes.  The firmware may leave them dirty */
-id|__raw_writeq
+id|bus_writeq
 c_func
 (paren
-l_int|0xffffffffffffffff
+l_int|0xffffffffffffffffULL
 comma
 id|IOADDR
 c_func
@@ -1315,10 +1316,10 @@ id|R_IMR_MAILBOX_CLR_CPU
 )paren
 )paren
 suffix:semicolon
-id|__raw_writeq
+id|bus_writeq
 c_func
 (paren
-l_int|0xffffffffffffffff
+l_int|0xffffffffffffffffULL
 comma
 id|IOADDR
 c_func
@@ -1355,7 +1356,7 @@ op_lshift
 id|K_INT_MBOX_0
 )paren
 suffix:semicolon
-id|__raw_writeq
+id|bus_writeq
 c_func
 (paren
 id|tmp
@@ -1373,7 +1374,7 @@ id|R_IMR_INTERRUPT_MASK
 )paren
 )paren
 suffix:semicolon
-id|__raw_writeq
+id|bus_writeq
 c_func
 (paren
 id|tmp
@@ -1444,7 +1445,7 @@ l_int|0
 suffix:semicolon
 macro_line|#endif
 multiline_comment|/* Setup uart 1 settings, mapper */
-id|__raw_writeq
+id|bus_writeq
 c_func
 (paren
 id|M_DUART_IMR_BRK
@@ -1466,7 +1467,7 @@ c_func
 id|kgdb_irq
 )paren
 suffix:semicolon
-id|__raw_writeq
+id|bus_writeq
 c_func
 (paren
 id|IMR_IP6_VAL

@@ -650,8 +650,8 @@ id|ENODEV
 suffix:semicolon
 )brace
 r_int
-DECL|function|cio_start
-id|cio_start
+DECL|function|cio_start_key
+id|cio_start_key
 (paren
 r_struct
 id|subchannel
@@ -667,8 +667,12 @@ comma
 multiline_comment|/* logical channel prog addr */
 id|__u8
 id|lpm
-)paren
+comma
 multiline_comment|/* logical path mask */
+id|__u8
+id|key
+)paren
+multiline_comment|/* storage key */
 (brace
 r_char
 id|dbf_txt
@@ -753,6 +757,13 @@ op_assign
 l_int|0
 suffix:semicolon
 macro_line|#endif
+id|sch-&gt;orb.key
+op_assign
+id|key
+op_rshift
+l_int|4
+suffix:semicolon
+multiline_comment|/* issue &quot;Start Subchannel&quot; */
 id|sch-&gt;orb.cpa
 op_assign
 (paren
@@ -763,7 +774,6 @@ id|__pa
 id|cpa
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Issue &quot;Start subchannel&quot; and process condition code&n;&t; */
 id|ccode
 op_assign
 id|ssch
@@ -774,6 +784,7 @@ op_amp
 id|sch-&gt;orb
 )paren
 suffix:semicolon
+multiline_comment|/* process condition code */
 id|sprintf
 (paren
 id|dbf_txt
@@ -832,6 +843,38 @@ id|lpm
 )paren
 suffix:semicolon
 )brace
+)brace
+r_int
+DECL|function|cio_start
+id|cio_start
+(paren
+r_struct
+id|subchannel
+op_star
+id|sch
+comma
+r_struct
+id|ccw1
+op_star
+id|cpa
+comma
+id|__u8
+id|lpm
+)paren
+(brace
+r_return
+id|cio_start_key
+c_func
+(paren
+id|sch
+comma
+id|cpa
+comma
+id|lpm
+comma
+id|default_storage_key
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/*&n; * resume suspended I/O operation&n; */
 r_int

@@ -12,7 +12,6 @@ macro_line|#include &lt;linux/ioctl.h&gt;
 macro_line|#include &lt;linux/dcache.h&gt;
 macro_line|#include &lt;linux/stat.h&gt;
 macro_line|#include &lt;linux/cache.h&gt;
-macro_line|#include &lt;linux/prio_tree.h&gt;
 macro_line|#include &lt;linux/kobject.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
 r_struct
@@ -306,6 +305,7 @@ mdefine_line|#define FIGETBSZ   _IO(0x00,2)&t;/* get the block size used for bma
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/radix-tree.h&gt;
+macro_line|#include &lt;linux/prio_tree.h&gt;
 macro_line|#include &lt;linux/audit.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
@@ -4760,6 +4760,47 @@ id|context
 )paren
 suffix:semicolon
 )brace
+suffix:semicolon
+r_extern
+r_struct
+id|dentry
+op_star
+id|find_exported_dentry
+c_func
+(paren
+r_struct
+id|super_block
+op_star
+id|sb
+comma
+r_void
+op_star
+id|obj
+comma
+r_void
+op_star
+id|parent
+comma
+r_int
+(paren
+op_star
+id|acceptable
+)paren
+(paren
+r_void
+op_star
+id|context
+comma
+r_struct
+id|dentry
+op_star
+id|de
+)paren
+comma
+r_void
+op_star
+id|context
+)paren
 suffix:semicolon
 DECL|struct|file_system_type
 r_struct

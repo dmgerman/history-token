@@ -1944,7 +1944,7 @@ id|err_p1
 suffix:semicolon
 id|drm_class
 op_assign
-id|class_simple_create
+id|drm_sysfs_create
 c_func
 (paren
 id|THIS_MODULE
@@ -2035,7 +2035,7 @@ l_int|0
 suffix:semicolon
 id|err_p3
 suffix:colon
-id|class_simple_destroy
+id|drm_sysfs_destroy
 c_func
 (paren
 id|drm_class
@@ -2090,7 +2090,7 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
-id|class_simple_destroy
+id|drm_sysfs_destroy
 c_func
 (paren
 id|drm_class
@@ -2384,7 +2384,7 @@ id|nr
 op_ge
 id|DRM_COMMAND_BASE
 )paren
-op_logical_or
+op_logical_and
 (paren
 id|nr
 OL

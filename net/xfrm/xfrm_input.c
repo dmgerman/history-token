@@ -1,5 +1,6 @@
 multiline_comment|/*&n; * xfrm_input.c&n; *&n; * Changes:&n; * &t;YOSHIFUJI Hideaki @USAGI&n; * &t;&t;Split up af-specific portion&n; * &t;&n; */
 macro_line|#include &lt;linux/slab.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;net/ip.h&gt;
 macro_line|#include &lt;net/xfrm.h&gt;
 DECL|variable|secpath_cachep
@@ -56,6 +57,13 @@ id|sp
 )paren
 suffix:semicolon
 )brace
+DECL|variable|__secpath_destroy
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|__secpath_destroy
+)paren
+suffix:semicolon
 DECL|function|secpath_dup
 r_struct
 id|sec_path
@@ -159,6 +167,13 @@ r_return
 id|sp
 suffix:semicolon
 )brace
+DECL|variable|secpath_dup
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|secpath_dup
+)paren
+suffix:semicolon
 multiline_comment|/* Fetch spi and seq from ipsec header */
 DECL|function|xfrm_parse_spi
 r_int
@@ -350,6 +365,13 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|variable|xfrm_parse_spi
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|xfrm_parse_spi
+)paren
+suffix:semicolon
 DECL|function|xfrm_input_init
 r_void
 id|__init

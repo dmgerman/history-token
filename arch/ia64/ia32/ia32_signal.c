@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * IA32 Architecture-specific signal handling support.&n; *&n; * Copyright (C) 1999, 2001-2002 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; * Copyright (C) 1999 Arun Sharma &lt;arun.sharma@intel.com&gt;&n; * Copyright (C) 2000 VA Linux Co&n; * Copyright (C) 2000 Don Dugger &lt;n0ano@valinux.com&gt;&n; *&n; * Derived from i386 and Alpha versions.&n; */
+multiline_comment|/*&n; * IA32 Architecture-specific signal handling support.&n; *&n; * Copyright (C) 1999, 2001-2002, 2005 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; * Copyright (C) 1999 Arun Sharma &lt;arun.sharma@intel.com&gt;&n; * Copyright (C) 2000 VA Linux Co&n; * Copyright (C) 2000 Don Dugger &lt;n0ano@valinux.com&gt;&n; *&n; * Derived from i386 and Alpha versions.&n; */
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
@@ -5640,24 +5640,11 @@ comma
 r_int
 id|arg7
 comma
-r_int
-r_int
-id|stack
+r_struct
+id|pt_regs
+id|regs
 )paren
 (brace
-r_struct
-id|pt_regs
-op_star
-id|regs
-op_assign
-(paren
-r_struct
-id|pt_regs
-op_star
-)paren
-op_amp
-id|stack
-suffix:semicolon
 r_int
 r_int
 id|esp
@@ -5666,7 +5653,7 @@ op_assign
 r_int
 r_int
 )paren
-id|regs-&gt;r12
+id|regs.r12
 suffix:semicolon
 r_struct
 id|sigframe_ia32
@@ -5796,6 +5783,7 @@ c_cond
 id|restore_sigcontext_ia32
 c_func
 (paren
+op_amp
 id|regs
 comma
 op_amp
@@ -5854,24 +5842,11 @@ comma
 r_int
 id|arg7
 comma
-r_int
-r_int
-id|stack
+r_struct
+id|pt_regs
+id|regs
 )paren
 (brace
-r_struct
-id|pt_regs
-op_star
-id|regs
-op_assign
-(paren
-r_struct
-id|pt_regs
-op_star
-)paren
-op_amp
-id|stack
-suffix:semicolon
 r_int
 r_int
 id|esp
@@ -5880,7 +5855,7 @@ op_assign
 r_int
 r_int
 )paren
-id|regs-&gt;r12
+id|regs.r12
 suffix:semicolon
 r_struct
 id|rt_sigframe_ia32
@@ -5986,6 +5961,7 @@ c_cond
 id|restore_sigcontext_ia32
 c_func
 (paren
+op_amp
 id|regs
 comma
 op_amp

@@ -54,21 +54,6 @@ op_assign
 l_int|8
 comma
 dot
-id|red.length
-op_assign
-l_int|8
-comma
-dot
-id|green.length
-op_assign
-l_int|8
-comma
-dot
-id|blue.length
-op_assign
-l_int|8
-comma
-dot
 id|activate
 op_assign
 id|FB_ACTIVATE_NOW
@@ -129,12 +114,6 @@ op_assign
 l_int|1024
 comma
 )brace
-suffix:semicolon
-multiline_comment|/* Reference to machine type set in arch/mips/dec/prom/identify.c, KM */
-r_extern
-r_int
-r_int
-id|mips_machtype
 suffix:semicolon
 multiline_comment|/* Handle the funny Inmos RamDAC/video controller ... */
 DECL|function|maxinefb_ims332_write_register
@@ -402,6 +381,16 @@ op_assign
 id|THIS_MODULE
 comma
 dot
+id|fb_get_fix
+op_assign
+id|gen_get_fix
+comma
+dot
+id|fb_get_var
+op_assign
+id|gen_get_var
+comma
+dot
 id|fb_setcolreg
 op_assign
 id|maxinefb_setcolreg
@@ -437,10 +426,8 @@ c_func
 r_void
 )paren
 (brace
-r_volatile
 r_int
-r_char
-op_star
+r_int
 id|fboff
 suffix:semicolon
 r_int
@@ -516,6 +503,12 @@ id|fboff
 op_increment
 )paren
 op_star
+(paren
+r_volatile
+r_int
+r_char
+op_star
+)paren
 id|fboff
 op_assign
 l_int|0x0

@@ -3799,6 +3799,10 @@ id|mode_t
 id|mode
 op_assign
 id|S_IFREG
+op_or
+id|S_IRUSR
+op_or
+id|S_IWUSR
 suffix:semicolon
 r_struct
 id|proc_dir_entry

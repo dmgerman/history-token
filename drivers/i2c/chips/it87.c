@@ -1,4 +1,4 @@
-multiline_comment|/*&n;    it87.c - Part of lm_sensors, Linux kernel modules for hardware&n;             monitoring.&n;&n;    Supports: IT8705F  Super I/O chip w/LPC interface&n;              IT8712F  Super I/O chip w/LPC interface &amp; SMbus&n;              Sis950   A clone of the IT8705F&n;&n;    Copyright (C) 2001 Chris Gauthron &lt;chrisg@0-in.com&gt; &n;    Largely inspired by lm78.c of the same package&n;&n;    This program is free software; you can redistribute it and/or modify&n;    it under the terms of the GNU General Public License as published by&n;    the Free Software Foundation; either version 2 of the License, or&n;    (at your option) any later version.&n;&n;    This program is distributed in the hope that it will be useful,&n;    but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;    GNU General Public License for more details.&n;&n;    You should have received a copy of the GNU General Public License&n;    along with this program; if not, write to the Free Software&n;    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n;*/
+multiline_comment|/*&n;    it87.c - Part of lm_sensors, Linux kernel modules for hardware&n;             monitoring.&n;&n;    Supports: IT8705F  Super I/O chip w/LPC interface &amp; SMBus&n;              IT8712F  Super I/O chip w/LPC interface &amp; SMBus&n;              Sis950   A clone of the IT8705F&n;&n;    Copyright (C) 2001 Chris Gauthron &lt;chrisg@0-in.com&gt; &n;    Largely inspired by lm78.c of the same package&n;&n;    This program is free software; you can redistribute it and/or modify&n;    it under the terms of the GNU General Public License as published by&n;    the Free Software Foundation; either version 2 of the License, or&n;    (at your option) any later version.&n;&n;    This program is distributed in the hope that it will be useful,&n;    but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;    GNU General Public License for more details.&n;&n;    You should have received a copy of the GNU General Public License&n;    along with this program; if not, write to the Free Software&n;    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n;*/
 multiline_comment|/*&n;    djg@pdp8.net David Gesswein 7/18/01&n;    Modified to fix bug with not all alarms enabled.&n;    Added ability to read battery voltage and select temperature sensor&n;    type at module load time.&n;*/
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -18,22 +18,6 @@ id|normal_i2c
 )braket
 op_assign
 (brace
-l_int|0x20
-comma
-l_int|0x21
-comma
-l_int|0x22
-comma
-l_int|0x23
-comma
-l_int|0x24
-comma
-l_int|0x25
-comma
-l_int|0x26
-comma
-l_int|0x27
-comma
 l_int|0x28
 comma
 l_int|0x29

@@ -15,6 +15,7 @@ macro_line|#include &lt;linux/tcp.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/dma-mapping.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
+macro_line|#include &lt;asm/irq.h&gt;
 DECL|macro|RTL8169_VERSION
 mdefine_line|#define RTL8169_VERSION &quot;1.6LK&quot;
 DECL|macro|MODULENAME

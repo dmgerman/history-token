@@ -623,6 +623,11 @@ id|hh_cache
 op_star
 id|hh
 suffix:semicolon
+id|smp_rmb
+c_func
+(paren
+)paren
+suffix:semicolon
 id|again
 suffix:colon
 id|neigh

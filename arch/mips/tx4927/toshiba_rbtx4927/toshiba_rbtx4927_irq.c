@@ -290,12 +290,12 @@ id|irq
 )paren
 suffix:semicolon
 macro_line|#endif
-DECL|variable|toshiba_rbtx4927_ioc_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|toshiba_rbtx4927_ioc_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|macro|TOSHIBA_RBTX4927_IOC_NAME
 mdefine_line|#define TOSHIBA_RBTX4927_IOC_NAME &quot;RBTX4927-IOC&quot;
@@ -1733,7 +1733,7 @@ c_func
 r_void
 )paren
 suffix:semicolon
-id|cli
+id|local_irq_disable
 c_func
 (paren
 )paren

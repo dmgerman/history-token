@@ -3443,7 +3443,7 @@ multiline_comment|/* We submit to the hardware if:&n;&t; *&n;&t; *&t;1) we&squot
 r_if
 c_cond
 (paren
-id|smp_processor_id
+id|_smp_processor_id
 c_func
 (paren
 )paren

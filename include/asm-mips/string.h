@@ -5,6 +5,7 @@ mdefine_line|#define _ASM_STRING_H
 macro_line|#include &lt;linux/config.h&gt;
 multiline_comment|/*&n; * Most of the inline functions are rather naive implementations so I just&n; * didn&squot;t bother updating them for 64-bit ...&n; */
 macro_line|#ifdef CONFIG_MIPS32
+macro_line|#ifndef IN_STRING_C
 DECL|macro|__HAVE_ARCH_STRCPY
 mdefine_line|#define __HAVE_ARCH_STRCPY
 DECL|function|strcpy
@@ -239,6 +240,7 @@ r_return
 id|__res
 suffix:semicolon
 )brace
+macro_line|#endif /* !defined(IN_STRING_C) */
 DECL|macro|__HAVE_ARCH_STRNCMP
 mdefine_line|#define __HAVE_ARCH_STRNCMP
 r_static

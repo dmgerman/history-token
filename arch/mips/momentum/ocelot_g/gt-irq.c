@@ -1,4 +1,5 @@
 multiline_comment|/*&n; *&n; * Copyright 2002 Momentum Computer&n; * Author: mdharm@momenco.com&n; *&n; * arch/mips/momentum/ocelot_g/gt_irq.c&n; *     Interrupt routines for gt64240.  Currently it only handles timer irq.&n; *&n; * This program is free software; you can redistribute  it and/or modify it&n; * under  the terms of  the GNU General  Public License as published by the&n; * Free Software Foundation;  either version 2 of the  License, or (at your&n; * option) any later version.&n; */
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;

@@ -152,6 +152,8 @@ DECL|macro|TIF_POLLING_NRFLAG
 mdefine_line|#define TIF_POLLING_NRFLAG&t;17&t;/* true if poll_idle() is polling &n;&t;&t;&t;&t;&t;   TIF_NEED_RESCHED */
 DECL|macro|TIF_31BIT
 mdefine_line|#define TIF_31BIT&t;&t;18&t;/* 32bit process */ 
+DECL|macro|TIF_MEMDIE
+mdefine_line|#define TIF_MEMDIE&t;&t;19
 DECL|macro|_TIF_SYSCALL_TRACE
 mdefine_line|#define _TIF_SYSCALL_TRACE&t;(1&lt;&lt;TIF_SYSCALL_TRACE)
 DECL|macro|_TIF_NOTIFY_RESUME

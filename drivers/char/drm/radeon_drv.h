@@ -10,17 +10,124 @@ mdefine_line|#define DRIVER_NAME&t;&t;&quot;radeon&quot;
 DECL|macro|DRIVER_DESC
 mdefine_line|#define DRIVER_DESC&t;&t;&quot;ATI Radeon&quot;
 DECL|macro|DRIVER_DATE
-mdefine_line|#define DRIVER_DATE&t;&t;&quot;20020828&quot;
+mdefine_line|#define DRIVER_DATE&t;&t;&quot;20050125&quot;
+multiline_comment|/* Interface history:&n; *&n; * 1.1 - ??&n; * 1.2 - Add vertex2 ioctl (keith)&n; *     - Add stencil capability to clear ioctl (gareth, keith)&n; *     - Increase MAX_TEXTURE_LEVELS (brian)&n; * 1.3 - Add cmdbuf ioctl (keith)&n; *     - Add support for new radeon packets (keith)&n; *     - Add getparam ioctl (keith)&n; *     - Add flip-buffers ioctl, deprecate fullscreen foo (keith).&n; * 1.4 - Add scratch registers to get_param ioctl.&n; * 1.5 - Add r200 packets to cmdbuf ioctl&n; *     - Add r200 function to init ioctl&n; *     - Add &squot;scalar2&squot; instruction to cmdbuf&n; * 1.6 - Add static GART memory manager&n; *       Add irq handler (won&squot;t be turned on unless X server knows to)&n; *       Add irq ioctls and irq_active getparam.&n; *       Add wait command for cmdbuf ioctl&n; *       Add GART offset query for getparam&n; * 1.7 - Add support for cube map registers: R200_PP_CUBIC_FACES_[0..5]&n; *       and R200_PP_CUBIC_OFFSET_F1_[0..5].&n; *       Added packets R200_EMIT_PP_CUBIC_FACES_[0..5] and&n; *       R200_EMIT_PP_CUBIC_OFFSETS_[0..5].  (brian)&n; * 1.8 - Remove need to call cleanup ioctls on last client exit (keith)&n; *       Add &squot;GET&squot; queries for starting additional clients on different VT&squot;s.&n; * 1.9 - Add DRM_IOCTL_RADEON_CP_RESUME ioctl.&n; *       Add texture rectangle support for r100.&n; * 1.10- Add SETPARAM ioctl; first parameter to set is FB_LOCATION, which&n; *       clients use to tell the DRM where they think the framebuffer is &n; *       located in the card&squot;s address space&n; * 1.11- Add packet R200_EMIT_RB3D_BLENDCOLOR to support GL_EXT_blend_color&n; *       and GL_EXT_blend_[func|equation]_separate on r200&n; * 1.12- Add R300 CP microcode support - this just loads the CP on r300&n; *       (No 3D support yet - just microcode loading)&n; * 1.13- Add packet R200_EMIT_TCL_POINT_SPRITE_CNTL for ARB_point_parameters&n; *     - Add hyperz support, add hyperz flags to clear ioctl.&n; * 1.14- Add support for color tiling&n; *     - Add R100/R200 surface allocation/free support&n; */
 DECL|macro|DRIVER_MAJOR
 mdefine_line|#define DRIVER_MAJOR&t;&t;1
 DECL|macro|DRIVER_MINOR
-mdefine_line|#define DRIVER_MINOR&t;&t;11
+mdefine_line|#define DRIVER_MINOR&t;&t;14
 DECL|macro|DRIVER_PATCHLEVEL
 mdefine_line|#define DRIVER_PATCHLEVEL&t;0
 DECL|macro|GET_RING_HEAD
 mdefine_line|#define GET_RING_HEAD(dev_priv)&t;&t;DRM_READ32(  (dev_priv)-&gt;ring_rptr, 0 )
 DECL|macro|SET_RING_HEAD
 mdefine_line|#define SET_RING_HEAD(dev_priv,val)&t;DRM_WRITE32( (dev_priv)-&gt;ring_rptr, 0, (val) )
+multiline_comment|/*&n; * Radeon chip families&n; */
+DECL|enum|radeon_family
+r_enum
+id|radeon_family
+(brace
+DECL|enumerator|CHIP_R100
+id|CHIP_R100
+comma
+DECL|enumerator|CHIP_RS100
+id|CHIP_RS100
+comma
+DECL|enumerator|CHIP_RV100
+id|CHIP_RV100
+comma
+DECL|enumerator|CHIP_R200
+id|CHIP_R200
+comma
+DECL|enumerator|CHIP_RV200
+id|CHIP_RV200
+comma
+DECL|enumerator|CHIP_RS200
+id|CHIP_RS200
+comma
+DECL|enumerator|CHIP_R250
+id|CHIP_R250
+comma
+DECL|enumerator|CHIP_RS250
+id|CHIP_RS250
+comma
+DECL|enumerator|CHIP_RV250
+id|CHIP_RV250
+comma
+DECL|enumerator|CHIP_RV280
+id|CHIP_RV280
+comma
+DECL|enumerator|CHIP_R300
+id|CHIP_R300
+comma
+DECL|enumerator|CHIP_RS300
+id|CHIP_RS300
+comma
+DECL|enumerator|CHIP_RV350
+id|CHIP_RV350
+comma
+DECL|enumerator|CHIP_LAST
+id|CHIP_LAST
+comma
+)brace
+suffix:semicolon
+DECL|enum|radeon_cp_microcode_version
+r_enum
+id|radeon_cp_microcode_version
+(brace
+DECL|enumerator|UCODE_R100
+id|UCODE_R100
+comma
+DECL|enumerator|UCODE_R200
+id|UCODE_R200
+comma
+DECL|enumerator|UCODE_R300
+id|UCODE_R300
+comma
+)brace
+suffix:semicolon
+multiline_comment|/*&n; * Chip flags&n; */
+DECL|enum|radeon_chip_flags
+r_enum
+id|radeon_chip_flags
+(brace
+DECL|enumerator|CHIP_FAMILY_MASK
+id|CHIP_FAMILY_MASK
+op_assign
+l_int|0x0000ffffUL
+comma
+DECL|enumerator|CHIP_FLAGS_MASK
+id|CHIP_FLAGS_MASK
+op_assign
+l_int|0xffff0000UL
+comma
+DECL|enumerator|CHIP_IS_MOBILITY
+id|CHIP_IS_MOBILITY
+op_assign
+l_int|0x00010000UL
+comma
+DECL|enumerator|CHIP_IS_IGP
+id|CHIP_IS_IGP
+op_assign
+l_int|0x00020000UL
+comma
+DECL|enumerator|CHIP_SINGLE_CRTC
+id|CHIP_SINGLE_CRTC
+op_assign
+l_int|0x00040000UL
+comma
+DECL|enumerator|CHIP_IS_AGP
+id|CHIP_IS_AGP
+op_assign
+l_int|0x00080000UL
+comma
+DECL|enumerator|CHIP_HAS_HIERZ
+id|CHIP_HAS_HIERZ
+op_assign
+l_int|0x00100000UL
+comma
+)brace
+suffix:semicolon
 DECL|struct|drm_radeon_freelist
 r_typedef
 r_struct
@@ -157,6 +264,54 @@ suffix:semicolon
 multiline_comment|/* 0: free, -1: heap, other: real files */
 )brace
 suffix:semicolon
+DECL|struct|radeon_surface
+r_struct
+id|radeon_surface
+(brace
+DECL|member|refcount
+r_int
+id|refcount
+suffix:semicolon
+DECL|member|lower
+id|u32
+id|lower
+suffix:semicolon
+DECL|member|upper
+id|u32
+id|upper
+suffix:semicolon
+DECL|member|flags
+id|u32
+id|flags
+suffix:semicolon
+)brace
+suffix:semicolon
+DECL|struct|radeon_virt_surface
+r_struct
+id|radeon_virt_surface
+(brace
+DECL|member|surface_index
+r_int
+id|surface_index
+suffix:semicolon
+DECL|member|lower
+id|u32
+id|lower
+suffix:semicolon
+DECL|member|upper
+id|u32
+id|upper
+suffix:semicolon
+DECL|member|flags
+id|u32
+id|flags
+suffix:semicolon
+DECL|member|filp
+id|DRMFILE
+id|filp
+suffix:semicolon
+)brace
+suffix:semicolon
 DECL|struct|drm_radeon_private
 r_typedef
 r_struct
@@ -224,9 +379,9 @@ DECL|member|usec_timeout
 r_int
 id|usec_timeout
 suffix:semicolon
-DECL|member|is_r200
+DECL|member|microcode_version
 r_int
-id|is_r200
+id|microcode_version
 suffix:semicolon
 DECL|member|is_pci
 r_int
@@ -421,6 +576,30 @@ DECL|member|swi_emitted
 id|atomic_t
 id|swi_emitted
 suffix:semicolon
+DECL|member|surfaces
+r_struct
+id|radeon_surface
+id|surfaces
+(braket
+id|RADEON_MAX_SURFACES
+)braket
+suffix:semicolon
+DECL|member|virt_surfaces
+r_struct
+id|radeon_virt_surface
+id|virt_surfaces
+(braket
+l_int|2
+op_star
+id|RADEON_MAX_SURFACES
+)braket
+suffix:semicolon
+multiline_comment|/* starting from here on, data is preserved accross an open */
+DECL|member|flags
+r_uint32
+id|flags
+suffix:semicolon
+multiline_comment|/* see radeon_chip_flags */
 DECL|typedef|drm_radeon_private_t
 )brace
 id|drm_radeon_private_t
@@ -575,6 +754,32 @@ op_star
 id|dev
 )paren
 suffix:semicolon
+r_extern
+r_int
+id|radeon_driver_preinit
+c_func
+(paren
+r_struct
+id|drm_device
+op_star
+id|dev
+comma
+r_int
+r_int
+id|flags
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|radeon_driver_postcleanup
+c_func
+(paren
+r_struct
+id|drm_device
+op_star
+id|dev
+)paren
+suffix:semicolon
 multiline_comment|/* radeon_state.c */
 r_extern
 r_int
@@ -720,6 +925,22 @@ r_struct
 id|mem_block
 op_star
 id|heap
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|radeon_surface_alloc
+c_func
+(paren
+id|DRM_IOCTL_ARGS
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|radeon_surface_free
+c_func
+(paren
+id|DRM_IOCTL_ARGS
 )paren
 suffix:semicolon
 multiline_comment|/* radeon_irq.c */
@@ -1175,8 +1396,12 @@ DECL|macro|RADEON_STENCIL_ENABLE
 macro_line|#&t;define RADEON_STENCIL_ENABLE&t;&t;(1 &lt;&lt; 7)
 DECL|macro|RADEON_Z_ENABLE
 macro_line|#&t;define RADEON_Z_ENABLE&t;&t;&t;(1 &lt;&lt; 8)
+DECL|macro|RADEON_ZBLOCK16
+macro_line|#&t;define RADEON_ZBLOCK16&t;&t;&t;(1 &lt;&lt; 15)
 DECL|macro|RADEON_RB3D_DEPTHOFFSET
 mdefine_line|#define RADEON_RB3D_DEPTHOFFSET&t;&t;0x1c24
+DECL|macro|RADEON_RB3D_DEPTHCLEARVALUE
+mdefine_line|#define RADEON_RB3D_DEPTHCLEARVALUE&t;0x3230
 DECL|macro|RADEON_RB3D_DEPTHPITCH
 mdefine_line|#define RADEON_RB3D_DEPTHPITCH&t;&t;0x1c28
 DECL|macro|RADEON_RB3D_PLANEMASK
@@ -1201,6 +1426,8 @@ DECL|macro|RADEON_Z_TEST_MASK
 macro_line|#&t;define RADEON_Z_TEST_MASK&t;&t;(7 &lt;&lt; 4)
 DECL|macro|RADEON_Z_TEST_ALWAYS
 macro_line|#&t;define RADEON_Z_TEST_ALWAYS&t;&t;(7 &lt;&lt; 4)
+DECL|macro|RADEON_Z_HIERARCHY_ENABLE
+macro_line|#&t;define RADEON_Z_HIERARCHY_ENABLE&t;(1 &lt;&lt; 8)
 DECL|macro|RADEON_STENCIL_TEST_ALWAYS
 macro_line|#&t;define RADEON_STENCIL_TEST_ALWAYS&t;(7 &lt;&lt; 12)
 DECL|macro|RADEON_STENCIL_S_FAIL_REPLACE
@@ -1209,8 +1436,14 @@ DECL|macro|RADEON_STENCIL_ZPASS_REPLACE
 macro_line|#&t;define RADEON_STENCIL_ZPASS_REPLACE&t;(2 &lt;&lt; 20)
 DECL|macro|RADEON_STENCIL_ZFAIL_REPLACE
 macro_line|#&t;define RADEON_STENCIL_ZFAIL_REPLACE&t;(2 &lt;&lt; 24)
+DECL|macro|RADEON_Z_COMPRESSION_ENABLE
+macro_line|#&t;define RADEON_Z_COMPRESSION_ENABLE&t;(1 &lt;&lt; 28)
+DECL|macro|RADEON_FORCE_Z_DIRTY
+macro_line|#&t;define RADEON_FORCE_Z_DIRTY&t;&t;(1 &lt;&lt; 29)
 DECL|macro|RADEON_Z_WRITE_ENABLE
 macro_line|#&t;define RADEON_Z_WRITE_ENABLE&t;&t;(1 &lt;&lt; 30)
+DECL|macro|RADEON_Z_DECOMPRESSION_ENABLE
+macro_line|#&t;define RADEON_Z_DECOMPRESSION_ENABLE&t;(1 &lt;&lt; 31)
 DECL|macro|RADEON_RBBM_SOFT_RESET
 mdefine_line|#define RADEON_RBBM_SOFT_RESET&t;&t;0x00f0
 DECL|macro|RADEON_SOFT_RESET_CP
@@ -1365,6 +1598,8 @@ DECL|macro|RADEON_SURFACE0_LOWER_BOUND
 mdefine_line|#define RADEON_SURFACE0_LOWER_BOUND&t;0x0b04
 DECL|macro|RADEON_SURFACE0_UPPER_BOUND
 mdefine_line|#define RADEON_SURFACE0_UPPER_BOUND&t;0x0b08
+DECL|macro|RADEON_SURF_ADDRESS_FIXED_MASK
+macro_line|#&t;define RADEON_SURF_ADDRESS_FIXED_MASK&t;(0x3ff &lt;&lt; 0)
 DECL|macro|RADEON_SURFACE1_INFO
 mdefine_line|#define RADEON_SURFACE1_INFO&t;&t;0x0b1c
 DECL|macro|RADEON_SURFACE1_LOWER_BOUND
@@ -1420,7 +1655,7 @@ macro_line|#&t;define RADEON_WAIT_3D_IDLECLEAN&t;&t;(1 &lt;&lt; 17)
 DECL|macro|RADEON_WAIT_HOST_IDLECLEAN
 macro_line|#&t;define RADEON_WAIT_HOST_IDLECLEAN&t;(1 &lt;&lt; 18)
 DECL|macro|RADEON_RB3D_ZMASKOFFSET
-mdefine_line|#define RADEON_RB3D_ZMASKOFFSET&t;&t;0x1c34
+mdefine_line|#define RADEON_RB3D_ZMASKOFFSET&t;&t;0x3234
 DECL|macro|RADEON_RB3D_ZSTENCILCNTL
 mdefine_line|#define RADEON_RB3D_ZSTENCILCNTL&t;0x1c2c
 DECL|macro|RADEON_DEPTH_FORMAT_16BIT_INT_Z
@@ -1511,6 +1746,10 @@ DECL|macro|RADEON_3D_DRAW_INDX
 macro_line|#&t;define RADEON_3D_DRAW_INDX&t;&t;0x00002A00
 DECL|macro|RADEON_3D_LOAD_VBPNTR
 macro_line|#&t;define RADEON_3D_LOAD_VBPNTR&t;&t;0x00002F00
+DECL|macro|RADEON_3D_CLEAR_ZMASK
+macro_line|#&t;define RADEON_3D_CLEAR_ZMASK&t;&t;0x00003200
+DECL|macro|RADEON_3D_CLEAR_HIZ
+macro_line|#&t;define RADEON_3D_CLEAR_HIZ&t;&t;0x00003700
 DECL|macro|RADEON_CNTL_HOSTDATA_BLT
 macro_line|#&t;define RADEON_CNTL_HOSTDATA_BLT&t;&t;0x00009400
 DECL|macro|RADEON_CNTL_PAINT_MULTI
@@ -1801,6 +2040,8 @@ DECL|macro|R200_RE_CNTL
 mdefine_line|#define R200_RE_CNTL                      0x1c50 
 DECL|macro|R200_RB3D_BLENDCOLOR
 mdefine_line|#define R200_RB3D_BLENDCOLOR              0x3218
+DECL|macro|R200_SE_TCL_POINT_SPRITE_CNTL
+mdefine_line|#define R200_SE_TCL_POINT_SPRITE_CNTL     0x22c4
 multiline_comment|/* Constants */
 DECL|macro|RADEON_MAX_USEC_TIMEOUT
 mdefine_line|#define RADEON_MAX_USEC_TIMEOUT&t;&t;100000&t;/* 100 ms */
@@ -1897,7 +2138,7 @@ DECL|macro|OUT_RING
 mdefine_line|#define OUT_RING( x ) do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if ( RADEON_VERBOSE ) {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;DRM_INFO( &quot;   OUT_RING( 0x%08x ) at 0x%x&bslash;n&quot;,&t;&t;&bslash;&n;&t;&t;&t;   (unsigned int)(x), write );&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;ring[write++] = (x);&t;&t;&t;&t;&t;&t;&bslash;&n;&t;write &amp;= mask;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;} while (0)
 DECL|macro|OUT_RING_REG
 mdefine_line|#define OUT_RING_REG( reg, val ) do {&t;&t;&t;&t;&t;&bslash;&n;&t;OUT_RING( CP_PACKET0( reg, 0 ) );&t;&t;&t;&t;&bslash;&n;&t;OUT_RING( val );&t;&t;&t;&t;&t;&t;&bslash;&n;} while (0)
-DECL|macro|OUT_RING_USER_TABLE
-mdefine_line|#define OUT_RING_USER_TABLE( tab, sz ) do {&t;&t;&t;&bslash;&n;&t;int _size = (sz);&t;&t;&t;&t;&t;&bslash;&n;&t;int __user *_tab = (tab);&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (write + _size &gt; mask) {&t;&t;&t;&t;&bslash;&n;&t;&t;int i = (mask+1) - write;&t;&t;&t;&bslash;&n;&t;&t;if (DRM_COPY_FROM_USER_UNCHECKED( (int *)(ring+write),&t;&bslash;&n;&t;&t;&t;&t;      _tab, i*4 ))&t;&t;&bslash;&n;&t;&t;&t;return DRM_ERR(EFAULT);&t;&t;&bslash;&n;&t;&t;write = 0;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;_size -= i;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;_tab += i;&t;&t;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (_size &amp;&amp; DRM_COPY_FROM_USER_UNCHECKED( (int *)(ring+write),&t;&bslash;&n;&t;&t;&t;               _tab, _size*4 ))&t;&t;&bslash;&n;&t;&t;return DRM_ERR(EFAULT);&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;write += _size;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;write &amp;= mask;&t;&t;&t;&t;&t;&t;&bslash;&n;} while (0)
+DECL|macro|OUT_RING_TABLE
+mdefine_line|#define OUT_RING_TABLE( tab, sz ) do {&t;&t;&t;&t;&t;&bslash;&n;&t;int _size = (sz);&t;&t;&t;&t;&t;&bslash;&n;&t;int *_tab = (int *)(tab);&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (write + _size &gt; mask) {&t;&t;&t;&t;&bslash;&n;&t;&t;int _i = (mask+1) - write;&t;&t;&t;&bslash;&n;&t;&t;_size -= _i;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;while (_i &gt; 0 ) {&t;&t;&t;&t;&bslash;&n;&t;&t;&t;*(int *)(ring + write) = *_tab++;&t;&bslash;&n;&t;&t;&t;write++;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;_i--;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;}&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;write = 0;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;_tab += _i;&t;&t;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;while (_size &gt; 0) {&t;&t;&t;&t;&t;&bslash;&n;&t;&t;*(ring + write) = *_tab++;&t;&t;&t;&bslash;&n;&t;&t;write++;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;_size--;&t;&t;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;write &amp;= mask;&t;&t;&t;&t;&t;&t;&bslash;&n;} while (0)
 macro_line|#endif /* __RADEON_DRV_H__ */
 eof

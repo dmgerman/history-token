@@ -16,19 +16,6 @@ macro_line|#include &lt;asm/reboot.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/au1000.h&gt;
 macro_line|#include &lt;asm/csb250.h&gt;
-macro_line|#ifdef CONFIG_USB_OHCI
-singleline_comment|// Enable the workaround for the OHCI DoneHead
-singleline_comment|// register corruption problem.
-DECL|macro|CONFIG_AU1000_OHCI_FIX
-mdefine_line|#define CONFIG_AU1000_OHCI_FIX
-macro_line|#endif
-macro_line|#ifdef CONFIG_RTC
-r_extern
-r_struct
-id|rtc_ops
-id|csb250_rtc_ops
-suffix:semicolon
-macro_line|#endif
 r_extern
 r_int
 (paren
@@ -692,11 +679,6 @@ id|SYS_POWERCTRL
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_RTC
-id|rtc_ops
-op_assign
-op_amp
-id|csb250_rtc_ops
-suffix:semicolon
 singleline_comment|// Enable the RTC if not already enabled
 r_if
 c_cond

@@ -248,7 +248,7 @@ op_assign
 id|min_t
 c_func
 (paren
-id|ssize_t
+r_int
 comma
 id|PROC_BLOCK_SIZE
 comma

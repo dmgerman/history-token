@@ -87,6 +87,9 @@ l_string|&quot;256Mb&quot;
 suffix:semicolon
 macro_line|#endif
 )brace
+r_return
+l_string|&quot;unknown&quot;
+suffix:semicolon
 )brace
 DECL|macro|BARRIER
 mdefine_line|#define BARRIER()&t;&t;&t;&t;&t;&bslash;&n;&t;__asm__ __volatile__(&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;.set&bslash;tnoreorder&bslash;n&bslash;t&quot;&t;&t;&t;&bslash;&n;&t;&t;&quot;nop;nop;nop;nop;nop;nop;nop&bslash;n&bslash;t&quot;&t;&bslash;&n;&t;&t;&quot;.set&bslash;treorder&quot;);
@@ -674,7 +677,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;page_dir == %08lx&bslash;n&quot;
+l_string|&quot;page_dir == %016lx&bslash;n&quot;
 comma
 (paren
 r_int
@@ -696,7 +699,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;pgd == %08lx, &quot;
+l_string|&quot;pgd == %016lx&bslash;n&quot;
 comma
 (paren
 r_int
@@ -718,7 +721,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;pmd == %08lx, &quot;
+l_string|&quot;pmd == %016lx&bslash;n&quot;
 comma
 (paren
 r_int
@@ -740,7 +743,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;pte == %08lx, &quot;
+l_string|&quot;pte == %016lx&bslash;n&quot;
 comma
 (paren
 r_int

@@ -49,9 +49,9 @@ mdefine_line|#define DRV_MODULE_NAME&t;&t;&quot;tg3&quot;
 DECL|macro|PFX
 mdefine_line|#define PFX DRV_MODULE_NAME&t;&quot;: &quot;
 DECL|macro|DRV_MODULE_VERSION
-mdefine_line|#define DRV_MODULE_VERSION&t;&quot;3.19&quot;
+mdefine_line|#define DRV_MODULE_VERSION&t;&quot;3.21&quot;
 DECL|macro|DRV_MODULE_RELDATE
-mdefine_line|#define DRV_MODULE_RELDATE&t;&quot;January 26, 2005&quot;
+mdefine_line|#define DRV_MODULE_RELDATE&t;&quot;February 8, 2005&quot;
 DECL|macro|TG3_DEF_MAC_MODE
 mdefine_line|#define TG3_DEF_MAC_MODE&t;0
 DECL|macro|TG3_DEF_RX_MODE
@@ -4097,7 +4097,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-r_int
+id|u32
 id|no_gpio2
 suffix:semicolon
 id|u32
@@ -4123,13 +4123,9 @@ suffix:semicolon
 multiline_comment|/* On 5753 and variants, GPIO2 cannot be used. */
 id|no_gpio2
 op_assign
-(paren
 id|tp-&gt;nic_sram_data_cfg
 op_amp
 id|NIC_SRAM_DATA_CFG_NO_GPIO2
-)paren
-op_ne
-l_int|0
 suffix:semicolon
 id|grc_local_ctrl
 op_assign
@@ -4176,35 +4172,9 @@ l_int|100
 )paren
 suffix:semicolon
 id|grc_local_ctrl
-op_assign
-id|GRC_LCLCTRL_GPIO_OE0
-op_or
-id|GRC_LCLCTRL_GPIO_OE1
-op_or
-id|GRC_LCLCTRL_GPIO_OE2
-op_or
+op_or_assign
 id|GRC_LCLCTRL_GPIO_OUTPUT0
-op_or
-id|GRC_LCLCTRL_GPIO_OUTPUT1
-op_or
-id|GRC_LCLCTRL_GPIO_OUTPUT2
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|no_gpio2
-)paren
-(brace
-id|grc_local_ctrl
-op_and_assign
-op_complement
-(paren
-id|GRC_LCLCTRL_GPIO_OE2
-op_or
-id|GRC_LCLCTRL_GPIO_OUTPUT2
-)paren
-suffix:semicolon
-)brace
 id|tw32_f
 c_func
 (paren
@@ -4220,18 +4190,6 @@ c_func
 (paren
 l_int|100
 )paren
-suffix:semicolon
-id|grc_local_ctrl
-op_assign
-id|GRC_LCLCTRL_GPIO_OE0
-op_or
-id|GRC_LCLCTRL_GPIO_OE1
-op_or
-id|GRC_LCLCTRL_GPIO_OE2
-op_or
-id|GRC_LCLCTRL_GPIO_OUTPUT0
-op_or
-id|GRC_LCLCTRL_GPIO_OUTPUT1
 suffix:semicolon
 r_if
 c_cond
@@ -4240,6 +4198,11 @@ op_logical_neg
 id|no_gpio2
 )paren
 (brace
+id|grc_local_ctrl
+op_and_assign
+op_complement
+id|GRC_LCLCTRL_GPIO_OUTPUT2
+suffix:semicolon
 id|tw32_f
 c_func
 (paren
@@ -9356,6 +9319,8 @@ id|port_a
 op_assign
 l_int|0
 suffix:semicolon
+multiline_comment|/* preserve bits 0-11,13,14 for signal pre-emphasis */
+multiline_comment|/* preserve bits 20-23 for voltage regulator */
 id|serdes_cfg
 op_assign
 id|tr32
@@ -9364,31 +9329,7 @@ c_func
 id|MAC_SERDES_CFG
 )paren
 op_amp
-(paren
-(paren
-l_int|1
-op_lshift
-l_int|23
-)paren
-op_or
-(paren
-l_int|1
-op_lshift
-l_int|22
-)paren
-op_or
-(paren
-l_int|1
-op_lshift
-l_int|21
-)paren
-op_or
-(paren
-l_int|1
-op_lshift
-l_int|20
-)paren
-)paren
+l_int|0x00f06fff
 suffix:semicolon
 )brace
 id|sg_dig_ctrl
@@ -9437,12 +9378,12 @@ id|port_a
 )paren
 id|val
 op_or_assign
-l_int|0xc010880
+l_int|0xc010000
 suffix:semicolon
 r_else
 id|val
 op_or_assign
-l_int|0x4010880
+l_int|0x4010000
 suffix:semicolon
 id|tw32_f
 c_func
@@ -9532,7 +9473,7 @@ id|MAC_SERDES_CFG
 comma
 id|serdes_cfg
 op_or
-l_int|0xc011880
+l_int|0xc011000
 )paren
 suffix:semicolon
 id|tw32_f
@@ -9765,12 +9706,12 @@ id|port_a
 )paren
 id|val
 op_or_assign
-l_int|0xc010880
+l_int|0xc010000
 suffix:semicolon
 r_else
 id|val
 op_or_assign
-l_int|0x4010880
+l_int|0x4010000
 suffix:semicolon
 id|tw32_f
 c_func
@@ -9795,6 +9736,9 @@ c_func
 l_int|40
 )paren
 suffix:semicolon
+multiline_comment|/* Link parallel detection - link is up */
+multiline_comment|/* only if we have PCS_SYNC and not */
+multiline_comment|/* receiving config code words */
 id|mac_status
 op_assign
 id|tr32
@@ -9806,9 +9750,18 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
 id|mac_status
 op_amp
 id|MAC_STATUS_PCS_SYNCED
+)paren
+op_logical_and
+op_logical_neg
+(paren
+id|mac_status
+op_amp
+id|MAC_STATUS_RCVD_CFG
+)paren
 )paren
 (brace
 id|tg3_setup_flow_control
@@ -28244,6 +28197,7 @@ id|TG3_FLG2_PHY_SERDES
 r_if
 c_cond
 (paren
+(paren
 id|GET_ASIC_REV
 c_func
 (paren
@@ -28252,8 +28206,17 @@ id|tp-&gt;pci_chip_rev_id
 op_eq
 id|ASIC_REV_5704
 )paren
+op_logical_and
+op_logical_neg
+(paren
+id|tp-&gt;tg3_flags2
+op_amp
+id|TG3_FLG2_SERDES_PREEMPHASIS
+)paren
+)paren
 (brace
 multiline_comment|/* Set drive transmission level to 1.2V  */
+multiline_comment|/* only if the signal pre-emphasis bit is not set  */
 id|val
 op_assign
 id|tr32
@@ -38582,6 +38545,17 @@ id|tp-&gt;nic_sram_data_cfg
 op_assign
 id|nic_cfg
 suffix:semicolon
+id|tg3_read_mem
+c_func
+(paren
+id|tp
+comma
+id|NIC_SRAM_DATA_CFG_2
+comma
+op_amp
+id|cfg2
+)paren
+suffix:semicolon
 id|eeprom_signature_found
 op_assign
 l_int|1
@@ -38682,19 +38656,10 @@ op_eq
 id|ASIC_REV_5750
 )paren
 (brace
-id|tg3_read_mem
-c_func
-(paren
-id|tp
-comma
-id|NIC_SRAM_DATA_CFG_2
-comma
+id|led_cfg
+op_assign
+id|cfg2
 op_amp
-id|led_cfg
-)paren
-suffix:semicolon
-id|led_cfg
-op_and_assign
 (paren
 id|NIC_SRAM_DATA_CFG_LED_MODE_MASK
 op_or
@@ -38908,17 +38873,6 @@ id|tp-&gt;tg3_flags
 op_or_assign
 id|TG3_FLAG_SERDES_WOL_CAP
 suffix:semicolon
-id|tg3_read_mem
-c_func
-(paren
-id|tp
-comma
-id|NIC_SRAM_DATA_PHY_ID
-comma
-op_amp
-id|cfg2
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -38933,6 +38887,23 @@ l_int|17
 id|tp-&gt;tg3_flags2
 op_or_assign
 id|TG3_FLG2_CAPACITIVE_COUPLING
+suffix:semicolon
+multiline_comment|/* serdes signal pre-emphasis in register 0x590 set by */
+multiline_comment|/* bootcode if bit 18 is set */
+r_if
+c_cond
+(paren
+id|cfg2
+op_amp
+(paren
+l_int|1
+op_lshift
+l_int|18
+)paren
+)paren
+id|tp-&gt;tg3_flags2
+op_or_assign
+id|TG3_FLG2_SERDES_PREEMPHASIS
 suffix:semicolon
 )brace
 multiline_comment|/* Reading the PHY ID register can conflict with ASF&n;&t; * firwmare access to the PHY hardware.&n;&t; */

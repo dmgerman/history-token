@@ -319,6 +319,7 @@ id|__copy_tofrom_user
 c_func
 (paren
 (paren
+id|__force
 r_void
 id|__user
 op_star
@@ -508,6 +509,7 @@ c_func
 id|to
 comma
 (paren
+id|__force
 r_const
 r_void
 id|__user

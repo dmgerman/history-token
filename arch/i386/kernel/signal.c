@@ -767,7 +767,10 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|me-&gt;used_math
+id|used_math
+c_func
+(paren
+)paren
 )paren
 (brace
 id|clear_fpu
@@ -776,9 +779,10 @@ c_func
 id|me
 )paren
 suffix:semicolon
-id|me-&gt;used_math
-op_assign
-l_int|0
+id|clear_used_math
+c_func
+(paren
+)paren
 suffix:semicolon
 )brace
 )brace

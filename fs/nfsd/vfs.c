@@ -2621,7 +2621,7 @@ id|inode
 op_assign
 id|dentry-&gt;d_inode
 suffix:semicolon
-multiline_comment|/* Disallow access to files with the append-only bit set or&n;&t; * with mandatory locking enabled&n;&t; */
+multiline_comment|/* Disallow write access to files with the append-only bit set&n;&t; * or any access when mandatory locking enabled&n;&t; */
 id|err
 op_assign
 id|nfserr_perm
@@ -2634,7 +2634,19 @@ c_func
 (paren
 id|inode
 )paren
-op_logical_or
+op_logical_and
+(paren
+id|access
+op_amp
+id|MAY_WRITE
+)paren
+)paren
+r_goto
+id|out
+suffix:semicolon
+r_if
+c_cond
+(paren
 id|IS_ISMNDLK
 c_func
 (paren

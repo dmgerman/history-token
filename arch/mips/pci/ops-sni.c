@@ -11,7 +11,7 @@ id|set_config_address
 c_func
 (paren
 r_int
-r_char
+r_int
 id|busno
 comma
 r_int
@@ -25,12 +25,6 @@ id|reg
 r_if
 c_cond
 (paren
-(paren
-id|busno
-OG
-l_int|255
-)paren
-op_logical_or
 (paren
 id|devfn
 OG

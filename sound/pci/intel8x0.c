@@ -43,6 +43,7 @@ l_string|&quot;{Intel,82801CA-ICH3},&quot;
 l_string|&quot;{Intel,82801DB-ICH4},&quot;
 l_string|&quot;{Intel,ICH5},&quot;
 l_string|&quot;{Intel,ICH6},&quot;
+l_string|&quot;{Intel,ICH7},&quot;
 l_string|&quot;{Intel,6300ESB},&quot;
 l_string|&quot;{Intel,MX440},&quot;
 l_string|&quot;{SiS,SI7012},&quot;
@@ -323,6 +324,10 @@ macro_line|#endif
 macro_line|#ifndef PCI_DEVICE_ID_INTEL_ICH6_3
 DECL|macro|PCI_DEVICE_ID_INTEL_ICH6_3
 mdefine_line|#define PCI_DEVICE_ID_INTEL_ICH6_3&t;0x266e
+macro_line|#endif
+macro_line|#ifndef PCI_DEVICE_ID_INTEL_ICH7_20
+DECL|macro|PCI_DEVICE_ID_INTEL_ICH7_20
+mdefine_line|#define PCI_DEVICE_ID_INTEL_ICH7_20&t;0x27de
 macro_line|#endif
 macro_line|#ifndef PCI_DEVICE_ID_SI_7012
 DECL|macro|PCI_DEVICE_ID_SI_7012
@@ -1452,6 +1457,23 @@ id|DEVICE_INTEL_ICH4
 )brace
 comma
 multiline_comment|/* ICH6 */
+(brace
+l_int|0x8086
+comma
+l_int|0x27de
+comma
+id|PCI_ANY_ID
+comma
+id|PCI_ANY_ID
+comma
+l_int|0
+comma
+l_int|0
+comma
+id|DEVICE_INTEL_ICH4
+)brace
+comma
+multiline_comment|/* ICH7 */
 (brace
 l_int|0x8086
 comma
@@ -8239,17 +8261,17 @@ comma
 dot
 id|device
 op_assign
-l_int|0x129d
+l_int|0x088c
 comma
 dot
 id|name
 op_assign
-l_string|&quot;HP xw8000&quot;
+l_string|&quot;HP nc8000&quot;
 comma
 dot
 id|type
 op_assign
-id|AC97_TUNE_HP_ONLY
+id|AC97_TUNE_MUTE_LED
 )brace
 comma
 (brace
@@ -8266,12 +8288,34 @@ comma
 dot
 id|name
 op_assign
-l_string|&quot;HP NC6000&quot;
+l_string|&quot;HP nc6000&quot;
 comma
 dot
 id|type
 op_assign
 id|AC97_TUNE_MUTE_LED
+)brace
+comma
+(brace
+dot
+id|vendor
+op_assign
+l_int|0x103c
+comma
+dot
+id|device
+op_assign
+l_int|0x129d
+comma
+dot
+id|name
+op_assign
+l_string|&quot;HP xw8000&quot;
+comma
+dot
+id|type
+op_assign
+id|AC97_TUNE_HP_ONLY
 )brace
 comma
 (brace
@@ -13346,6 +13390,12 @@ comma
 id|PCI_DEVICE_ID_INTEL_ICH6_3
 comma
 l_string|&quot;Intel ICH6&quot;
+)brace
+comma
+(brace
+id|PCI_DEVICE_ID_INTEL_ICH7_20
+comma
+l_string|&quot;Intel ICH7&quot;
 )brace
 comma
 (brace

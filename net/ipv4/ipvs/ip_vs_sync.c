@@ -3,6 +3,7 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/net.h&gt;
 macro_line|#include &lt;linux/completion.h&gt;
+macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;linux/in.h&gt;
 macro_line|#include &lt;linux/igmp.h&gt;                 /* for ip_mc_join_group */
@@ -2428,16 +2429,10 @@ id|stop_master_sync
 )paren
 r_break
 suffix:semicolon
-id|__set_current_state
+id|ssleep
 c_func
 (paren
-id|TASK_INTERRUPTIBLE
-)paren
-suffix:semicolon
-id|schedule_timeout
-c_func
-(paren
-id|HZ
+l_int|1
 )paren
 suffix:semicolon
 )brace
@@ -2645,16 +2640,10 @@ id|stop_backup_sync
 )paren
 r_break
 suffix:semicolon
-id|__set_current_state
+id|ssleep
 c_func
 (paren
-id|TASK_INTERRUPTIBLE
-)paren
-suffix:semicolon
-id|schedule_timeout
-c_func
-(paren
-id|HZ
+l_int|1
 )paren
 suffix:semicolon
 )brace
@@ -3092,14 +3081,10 @@ comma
 id|pid
 )paren
 suffix:semicolon
-id|current-&gt;state
-op_assign
-id|TASK_UNINTERRUPTIBLE
-suffix:semicolon
-id|schedule_timeout
+id|ssleep
 c_func
 (paren
-id|HZ
+l_int|1
 )paren
 suffix:semicolon
 r_goto
@@ -3256,14 +3241,10 @@ comma
 id|pid
 )paren
 suffix:semicolon
-id|current-&gt;state
-op_assign
-id|TASK_UNINTERRUPTIBLE
-suffix:semicolon
-id|schedule_timeout
+id|ssleep
 c_func
 (paren
-id|HZ
+l_int|1
 )paren
 suffix:semicolon
 r_goto

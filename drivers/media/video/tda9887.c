@@ -1138,9 +1138,9 @@ l_int|0x40
 )paren
 ques
 c_cond
-l_string|&quot;high&quot;
+l_string|&quot;high (inactive)&quot;
 suffix:colon
-l_string|&quot;low&quot;
+l_string|&quot;low (active)&quot;
 )paren
 suffix:semicolon
 id|printk
@@ -1158,9 +1158,9 @@ l_int|0x80
 )paren
 ques
 c_cond
-l_string|&quot;high&quot;
+l_string|&quot;high (inactive)&quot;
 suffix:colon
-l_string|&quot;low&quot;
+l_string|&quot;low (active)&quot;
 )paren
 suffix:semicolon
 id|printk
@@ -2445,6 +2445,14 @@ id|buf
 )paren
 )paren
 suffix:semicolon
+id|tda9887_set_tvnorm
+c_func
+(paren
+id|t
+comma
+id|buf
+)paren
+suffix:semicolon
 id|buf
 (braket
 l_int|1
@@ -2458,14 +2466,6 @@ l_int|1
 )braket
 op_or_assign
 id|cOutputPort2Inactive
-suffix:semicolon
-id|tda9887_set_tvnorm
-c_func
-(paren
-id|t
-comma
-id|buf
-)paren
 suffix:semicolon
 r_if
 c_cond
@@ -2500,6 +2500,8 @@ comma
 id|buf
 )paren
 suffix:semicolon
+macro_line|#if 0
+multiline_comment|/* This as-is breaks some cards, must be fixed in a&n;&t; * card-specific way, probably using TDA9887_SET_CONFIG to&n;&t;  * turn on/off port2 */
 r_if
 c_cond
 (paren
@@ -2518,6 +2520,7 @@ op_complement
 id|cOutputPort2Inactive
 suffix:semicolon
 )brace
+macro_line|#endif
 id|dprintk
 c_func
 (paren

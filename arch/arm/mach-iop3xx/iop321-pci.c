@@ -619,7 +619,7 @@ suffix:semicolon
 id|DBG
 c_func
 (paren
-l_string|&quot;&bslash;tATU: IOP321_ATUCMD=0x%04x&bslash;n&quot;
+l_string|&quot;ATU: IOP321_ATUCMD=0x%04x&bslash;n&quot;
 comma
 op_star
 id|IOP321_ATUCMD
@@ -628,7 +628,7 @@ suffix:semicolon
 id|DBG
 c_func
 (paren
-l_string|&quot;&bslash;tATU: IOP321_OMWTVR0=0x%04x, IOP321_OIOWTVR=0x%04x&bslash;n&quot;
+l_string|&quot;ATU: IOP321_OMWTVR0=0x%04x, IOP321_OIOWTVR=0x%04x&bslash;n&quot;
 comma
 op_star
 id|IOP321_OMWTVR0
@@ -640,7 +640,7 @@ suffix:semicolon
 id|DBG
 c_func
 (paren
-l_string|&quot;&bslash;tATU: IOP321_ATUCR=0x%08x&bslash;n&quot;
+l_string|&quot;ATU: IOP321_ATUCR=0x%08x&bslash;n&quot;
 comma
 op_star
 id|IOP321_ATUCR
@@ -649,7 +649,7 @@ suffix:semicolon
 id|DBG
 c_func
 (paren
-l_string|&quot;&bslash;tATU: IOP321_IABAR0=0x%08x IOP321_IALR0=0x%08x IOP321_IATVR0=%08x&bslash;n&quot;
+l_string|&quot;ATU: IOP321_IABAR0=0x%08x IOP321_IALR0=0x%08x IOP321_IATVR0=%08x&bslash;n&quot;
 comma
 op_star
 id|IOP321_IABAR0
@@ -664,7 +664,28 @@ suffix:semicolon
 id|DBG
 c_func
 (paren
-l_string|&quot;&bslash;tATU: IOP321_ERBAR=0x%08x IOP321_ERLR=0x%08x IOP321_ERTVR=%08x&bslash;n&quot;
+l_string|&quot;ATU: IOP321_OMWTVR0=0x%08x&bslash;n&quot;
+comma
+op_star
+id|IOP321_OMWTVR0
+)paren
+suffix:semicolon
+id|DBG
+c_func
+(paren
+l_string|&quot;ATU: IOP321_IABAR1=0x%08x IOP321_IALR1=0x%08x&bslash;n&quot;
+comma
+op_star
+id|IOP321_IABAR1
+comma
+op_star
+id|IOP321_IALR1
+)paren
+suffix:semicolon
+id|DBG
+c_func
+(paren
+l_string|&quot;ATU: IOP321_ERBAR=0x%08x IOP321_ERLR=0x%08x IOP321_ERTVR=%08x&bslash;n&quot;
 comma
 op_star
 id|IOP321_ERBAR
@@ -679,7 +700,7 @@ suffix:semicolon
 id|DBG
 c_func
 (paren
-l_string|&quot;&bslash;tATU: IOP321_IABAR2=0x%08x IOP321_IALR2=0x%08x IOP321_IATVR2=%08x&bslash;n&quot;
+l_string|&quot;ATU: IOP321_IABAR2=0x%08x IOP321_IALR2=0x%08x IOP321_IATVR2=%08x&bslash;n&quot;
 comma
 op_star
 id|IOP321_IABAR2
@@ -694,7 +715,7 @@ suffix:semicolon
 id|DBG
 c_func
 (paren
-l_string|&quot;&bslash;tATU: IOP321_IABAR3=0x%08x IOP321_IALR3=0x%08x IOP321_IATVR3=%08x&bslash;n&quot;
+l_string|&quot;ATU: IOP321_IABAR3=0x%08x IOP321_IALR3=0x%08x IOP321_IATVR3=%08x&bslash;n&quot;
 comma
 op_star
 id|IOP321_IABAR3
@@ -706,56 +727,6 @@ op_star
 id|IOP321_IATVR3
 )paren
 suffix:semicolon
-macro_line|#if 0
-id|hook_fault_code
-c_func
-(paren
-l_int|4
-comma
-id|iop321_pci_abort
-comma
-id|SIGBUS
-comma
-l_string|&quot;external abort on linefetch&quot;
-)paren
-suffix:semicolon
-id|hook_fault_code
-c_func
-(paren
-l_int|6
-comma
-id|iop321_pci_abort
-comma
-id|SIGBUS
-comma
-l_string|&quot;external abort on linefetch&quot;
-)paren
-suffix:semicolon
-id|hook_fault_code
-c_func
-(paren
-l_int|8
-comma
-id|iop321_pci_abort
-comma
-id|SIGBUS
-comma
-l_string|&quot;external abort on non-linefetch&quot;
-)paren
-suffix:semicolon
-id|hook_fault_code
-c_func
-(paren
-l_int|10
-comma
-id|iop321_pci_abort
-comma
-id|SIGBUS
-comma
-l_string|&quot;external abort on non-linefetch&quot;
-)paren
-suffix:semicolon
-macro_line|#endif
 id|hook_fault_code
 c_func
 (paren

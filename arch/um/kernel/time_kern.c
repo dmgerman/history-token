@@ -20,6 +20,8 @@ macro_line|#include &quot;os.h&quot;
 DECL|variable|jiffies_64
 id|u64
 id|jiffies_64
+op_assign
+id|INITIAL_JIFFIES
 suffix:semicolon
 DECL|variable|jiffies_64
 id|EXPORT_SYMBOL

@@ -1,4 +1,6 @@
-multiline_comment|/*&n; * Export MIPS-specific functions needed for loadable modules.&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1996, 97, 98, 99, 2000, 01, 03 by Ralf Baechle&n; * Copyright (C) 1999, 2000, 01 Silicon Graphics, Inc.&n; */
+multiline_comment|/*&n; * Export MIPS-specific functions needed for loadable modules.&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1996, 97, 98, 99, 2000, 01, 03, 04, 05 by Ralf Baechle&n; * Copyright (C) 1999, 2000, 01 Silicon Graphics, Inc.&n; */
+macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/checksum.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
@@ -276,4 +278,13 @@ c_func
 id|invalid_pte_table
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_GENERIC_IRQ_PROBE
+DECL|variable|probe_irq_mask
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|probe_irq_mask
+)paren
+suffix:semicolon
+macro_line|#endif
 eof

@@ -10,7 +10,6 @@ macro_line|#include &lt;linux/ide.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
-macro_line|#include &quot;piix.h&quot;
 DECL|variable|no_piix_dma
 r_static
 r_int
@@ -1746,34 +1745,223 @@ op_assign
 id|hwif-&gt;autodma
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;init_setup_piix&t;&t;-&t;callback for IDE initialize&n; *&t;@dev: PIIX PCI device&n; *&t;@d: IDE pci info&n; *&n; *&t;Enable the xp fixup for the PIIX controller and then perform&n; *&t;a standard ide PCI setup&n; */
-DECL|function|init_setup_piix
+DECL|macro|DECLARE_PIIX_DEV
+mdefine_line|#define DECLARE_PIIX_DEV(name_str) &bslash;&n;&t;{&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;.name&t;&t;= name_str,&t;&t;&bslash;&n;&t;&t;.init_chipset&t;= init_chipset_piix,&t;&bslash;&n;&t;&t;.init_hwif&t;= init_hwif_piix,&t;&bslash;&n;&t;&t;.channels&t;= 2,&t;&t;&t;&bslash;&n;&t;&t;.autodma&t;= AUTODMA,&t;&t;&bslash;&n;&t;&t;.enablebits&t;= {{0x41,0x80,0x80}, {0x43,0x80,0x80}}, &bslash;&n;&t;&t;.bootable&t;= ON_BOARD,&t;&t;&bslash;&n;&t;}
+DECL|variable|__devinitdata
 r_static
-r_int
-id|__devinit
-id|init_setup_piix
-c_func
-(paren
-r_struct
-id|pci_dev
-op_star
-id|dev
-comma
 id|ide_pci_device_t
-op_star
-id|d
-)paren
+id|piix_pci_info
+(braket
+)braket
+id|__devinitdata
+op_assign
 (brace
-r_return
-id|ide_setup_pci_device
+multiline_comment|/*  0 */
+id|DECLARE_PIIX_DEV
 c_func
 (paren
-id|dev
-comma
-id|d
+l_string|&quot;PIIXa&quot;
 )paren
-suffix:semicolon
+comma
+multiline_comment|/*  1 */
+id|DECLARE_PIIX_DEV
+c_func
+(paren
+l_string|&quot;PIIXb&quot;
+)paren
+comma
+(brace
+multiline_comment|/* 2 */
+dot
+id|name
+op_assign
+l_string|&quot;MPIIX&quot;
+comma
+dot
+id|init_hwif
+op_assign
+id|init_hwif_piix
+comma
+dot
+id|channels
+op_assign
+l_int|2
+comma
+dot
+id|autodma
+op_assign
+id|NODMA
+comma
+dot
+id|enablebits
+op_assign
+(brace
+(brace
+l_int|0x6D
+comma
+l_int|0x80
+comma
+l_int|0x80
 )brace
+comma
+(brace
+l_int|0x6F
+comma
+l_int|0x80
+comma
+l_int|0x80
+)brace
+)brace
+comma
+dot
+id|bootable
+op_assign
+id|ON_BOARD
+comma
+)brace
+comma
+multiline_comment|/*  3 */
+id|DECLARE_PIIX_DEV
+c_func
+(paren
+l_string|&quot;PIIX3&quot;
+)paren
+comma
+multiline_comment|/*  4 */
+id|DECLARE_PIIX_DEV
+c_func
+(paren
+l_string|&quot;PIIX4&quot;
+)paren
+comma
+multiline_comment|/*  5 */
+id|DECLARE_PIIX_DEV
+c_func
+(paren
+l_string|&quot;ICH0&quot;
+)paren
+comma
+multiline_comment|/*  6 */
+id|DECLARE_PIIX_DEV
+c_func
+(paren
+l_string|&quot;PIIX4&quot;
+)paren
+comma
+multiline_comment|/*  7 */
+id|DECLARE_PIIX_DEV
+c_func
+(paren
+l_string|&quot;ICH&quot;
+)paren
+comma
+multiline_comment|/*  8 */
+id|DECLARE_PIIX_DEV
+c_func
+(paren
+l_string|&quot;PIIX4&quot;
+)paren
+comma
+multiline_comment|/*  9 */
+id|DECLARE_PIIX_DEV
+c_func
+(paren
+l_string|&quot;PIIX4&quot;
+)paren
+comma
+multiline_comment|/* 10 */
+id|DECLARE_PIIX_DEV
+c_func
+(paren
+l_string|&quot;ICH2&quot;
+)paren
+comma
+multiline_comment|/* 11 */
+id|DECLARE_PIIX_DEV
+c_func
+(paren
+l_string|&quot;ICH2M&quot;
+)paren
+comma
+multiline_comment|/* 12 */
+id|DECLARE_PIIX_DEV
+c_func
+(paren
+l_string|&quot;ICH3M&quot;
+)paren
+comma
+multiline_comment|/* 13 */
+id|DECLARE_PIIX_DEV
+c_func
+(paren
+l_string|&quot;ICH3&quot;
+)paren
+comma
+multiline_comment|/* 14 */
+id|DECLARE_PIIX_DEV
+c_func
+(paren
+l_string|&quot;ICH4&quot;
+)paren
+comma
+multiline_comment|/* 15 */
+id|DECLARE_PIIX_DEV
+c_func
+(paren
+l_string|&quot;ICH5&quot;
+)paren
+comma
+multiline_comment|/* 16 */
+id|DECLARE_PIIX_DEV
+c_func
+(paren
+l_string|&quot;C-ICH&quot;
+)paren
+comma
+multiline_comment|/* 17 */
+id|DECLARE_PIIX_DEV
+c_func
+(paren
+l_string|&quot;ICH4&quot;
+)paren
+comma
+multiline_comment|/* 18 */
+id|DECLARE_PIIX_DEV
+c_func
+(paren
+l_string|&quot;ICH5-SATA&quot;
+)paren
+comma
+multiline_comment|/* 19 */
+id|DECLARE_PIIX_DEV
+c_func
+(paren
+l_string|&quot;ICH5&quot;
+)paren
+comma
+multiline_comment|/* 20 */
+id|DECLARE_PIIX_DEV
+c_func
+(paren
+l_string|&quot;ICH6&quot;
+)paren
+comma
+multiline_comment|/* 21 */
+id|DECLARE_PIIX_DEV
+c_func
+(paren
+l_string|&quot;ICH7&quot;
+)paren
+comma
+multiline_comment|/* 22 */
+id|DECLARE_PIIX_DEV
+c_func
+(paren
+l_string|&quot;ICH4&quot;
+)paren
+comma
+)brace
+suffix:semicolon
 multiline_comment|/**&n; *&t;piix_init_one&t;-&t;called when a PIIX is found&n; *&t;@dev: the piix device&n; *&t;@id: the matching pci id&n; *&n; *&t;Called when the PCI registration layer (or the IDE initialization)&n; *&t;finds a device matching our IDE device tables.&n; */
 DECL|function|piix_init_one
 r_static
@@ -1805,9 +1993,7 @@ id|id-&gt;driver_data
 )braket
 suffix:semicolon
 r_return
-id|d
-op_member_access_from_pointer
-id|init_setup
+id|ide_setup_pci_device
 c_func
 (paren
 id|dev

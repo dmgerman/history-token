@@ -326,6 +326,12 @@ DECL|macro|RW_LOCK_UNLOCKED
 mdefine_line|#define RW_LOCK_UNLOCKED (rwlock_t) { 0, 0 }
 DECL|macro|rwlock_init
 mdefine_line|#define rwlock_init(x)&t;do { *(x) = RW_LOCK_UNLOCKED; } while(0)
+multiline_comment|/**&n; * read_can_lock - would read_trylock() succeed?&n; * @lock: the rwlock in question.&n; */
+DECL|macro|read_can_lock
+mdefine_line|#define read_can_lock(x) ((int)(x)-&gt;lock &gt;= 0)
+multiline_comment|/**&n; * write_can_lock - would write_trylock() succeed?&n; * @lock: the rwlock in question.&n; */
+DECL|macro|write_can_lock
+mdefine_line|#define write_can_lock(x) ((x)-&gt;lock == 0)
 macro_line|#ifndef __s390x__
 DECL|macro|_raw_read_lock
 mdefine_line|#define _raw_read_lock(rw)   &bslash;&n;        asm volatile(&quot;   l     2,0(%1)&bslash;n&quot;   &bslash;&n;                     &quot;   j     1f&bslash;n&quot;     &bslash;&n;                     &quot;0: diag  0,0,68&bslash;n&quot; &bslash;&n;                     &quot;1: la    2,0(2)&bslash;n&quot;     /* clear high (=write) bit */ &bslash;&n;                     &quot;   la    3,1(2)&bslash;n&quot;     /* one more reader */ &bslash;&n;                     &quot;   cs    2,3,0(%1)&bslash;n&quot;  /* try to write new value */ &bslash;&n;                     &quot;   jl    0b&quot;       &bslash;&n;                     : &quot;=m&quot; ((rw)-&gt;lock) : &quot;a&quot; (&amp;(rw)-&gt;lock), &bslash;&n;&t;&t;       &quot;m&quot; ((rw)-&gt;lock) : &quot;2&quot;, &quot;3&quot;, &quot;cc&quot;, &quot;memory&quot; )

@@ -574,8 +574,8 @@ mdefine_line|#define VPTE_COLOR(address)&t;&t;0
 DECL|macro|DCACHE_COLOR
 mdefine_line|#define DCACHE_COLOR(address)&t;&t;0
 macro_line|#endif
-DECL|macro|pgd_populate
-mdefine_line|#define pgd_populate(MM, PGD, PMD)&t;pgd_set(PGD, PMD)
+DECL|macro|pud_populate
+mdefine_line|#define pud_populate(MM, PUD, PMD)&t;pud_set(PUD, PMD)
 DECL|function|pmd_alloc_one_fast
 r_static
 id|__inline__

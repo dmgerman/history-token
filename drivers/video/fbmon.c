@@ -763,7 +763,7 @@ l_int|0
 suffix:semicolon
 )brace
 r_return
-l_int|1
+id|err
 suffix:semicolon
 )brace
 DECL|function|parse_vendor_block

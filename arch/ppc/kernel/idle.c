@@ -62,18 +62,13 @@ c_func
 (paren
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_SMP
 r_else
 (brace
-macro_line|#ifdef CONFIG_SMP
 id|set_thread_flag
 c_func
 (paren
 id|TIF_POLLING_NRFLAG
-)paren
-suffix:semicolon
-id|local_irq_enable
-c_func
-(paren
 )paren
 suffix:semicolon
 r_while
@@ -96,14 +91,8 @@ c_func
 id|TIF_POLLING_NRFLAG
 )paren
 suffix:semicolon
-macro_line|#else
-id|local_irq_enable
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
 )brace
+macro_line|#endif
 )brace
 r_if
 c_cond

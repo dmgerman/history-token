@@ -109,7 +109,6 @@ multiline_comment|/* kernel&squot;s sigset_t */
 suffix:semicolon
 macro_line|#endif /* _MIPS_SIM == _MIPS_SIM_ABI32 */
 macro_line|#if _MIPS_SIM == _MIPS_SIM_ABI64 || _MIPS_SIM == _MIPS_SIM_NABI32
-macro_line|#include &lt;linux/types.h&gt;
 multiline_comment|/*&n; * Keep this struct definition in sync with the sigcontext fragment&n; * in arch/mips/tools/offset.c&n; *&n; * Warning: this structure illdefined with sc_badvaddr being just an unsigned&n; * int so it was changed to unsigned long in 2.6.0-test1.  This may break&n; * binary compatibility - no prisoners.&n; */
 DECL|struct|sigcontext
 r_struct
@@ -179,6 +178,7 @@ suffix:semicolon
 )brace
 suffix:semicolon
 macro_line|#ifdef __KERNEL__
+macro_line|#include &lt;linux/posix_types.h&gt;
 DECL|struct|sigcontext32
 r_struct
 id|sigcontext32

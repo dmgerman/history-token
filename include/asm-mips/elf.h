@@ -26,8 +26,10 @@ DECL|macro|EF_MIPS_ABI_O64
 mdefine_line|#define EF_MIPS_ABI_O64&t;&t;0x00002000&t;/* O32 extended for 64 bit.  */
 DECL|macro|PT_MIPS_REGINFO
 mdefine_line|#define PT_MIPS_REGINFO&t;&t;0x70000000
+DECL|macro|PT_MIPS_RTPROC
+mdefine_line|#define PT_MIPS_RTPROC&t;&t;0x70000001
 DECL|macro|PT_MIPS_OPTIONS
-mdefine_line|#define PT_MIPS_OPTIONS&t;&t;0x70000001
+mdefine_line|#define PT_MIPS_OPTIONS&t;&t;0x70000002
 multiline_comment|/* Flags in the e_flags field of the header */
 DECL|macro|EF_MIPS_NOREORDER
 mdefine_line|#define EF_MIPS_NOREORDER&t;0x00000001
@@ -56,11 +58,13 @@ mdefine_line|#define DT_MIPS_IVERSION&t;0x70000004
 DECL|macro|DT_MIPS_FLAGS
 mdefine_line|#define DT_MIPS_FLAGS&t;&t;0x70000005
 DECL|macro|RHF_NONE
-mdefine_line|#define RHF_NONE&t;&t;  0
+mdefine_line|#define RHF_NONE&t;0x00000000
 DECL|macro|RHF_HARDWAY
-mdefine_line|#define RHF_HARDWAY&t;&t;  1
+mdefine_line|#define RHF_HARDWAY&t;0x00000001
 DECL|macro|RHF_NOTPOT
-mdefine_line|#define RHF_NOTPOT&t;&t;  2
+mdefine_line|#define RHF_NOTPOT&t;0x00000002
+DECL|macro|RHF_SGI_ONLY
+mdefine_line|#define RHF_SGI_ONLY&t;0x00000010
 DECL|macro|DT_MIPS_BASE_ADDRESS
 mdefine_line|#define DT_MIPS_BASE_ADDRESS&t;0x70000006
 DECL|macro|DT_MIPS_CONFLICT
@@ -236,16 +240,45 @@ macro_line|#ifdef CONFIG_MIPS64
 DECL|macro|SET_PERSONALITY
 mdefine_line|#define SET_PERSONALITY(ex, ibcs2)&t;&t;&t;&t;&bslash;&n;do {&t;current-&gt;thread.mflags &amp;= ~MF_ABI_MASK;&t;&t;&t;&bslash;&n;&t;if ((ex).e_ident[EI_CLASS] == ELFCLASS32) {&t;&t;&bslash;&n;&t;&t;if ((((ex).e_flags &amp; EF_MIPS_ABI2) != 0) &amp;&amp;&t;&bslash;&n;&t;&t;     ((ex).e_flags &amp; EF_MIPS_ABI) == 0)&t;&t;&bslash;&n;&t;&t;&t;current-&gt;thread.mflags |= MF_N32;&t;&bslash;&n;&t;&t;else&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;current-&gt;thread.mflags |= MF_O32;&t;&bslash;&n;&t;} else&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;current-&gt;thread.mflags |= MF_N64;&t;&t;&bslash;&n;&t;if (ibcs2)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;set_personality(PER_SVR4);&t;&t;&t;&bslash;&n;&t;else if (current-&gt;personality != PER_LINUX32)&t;&t;&bslash;&n;&t;&t;set_personality(PER_LINUX);&t;&t;&t;&bslash;&n;} while (0)
 macro_line|#endif /* CONFIG_MIPS64 */
+r_extern
+r_void
+id|dump_regs
+c_func
+(paren
+id|elf_greg_t
+op_star
+comma
+r_struct
+id|pt_regs
+op_star
+id|regs
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|dump_task_fpu
+c_func
+(paren
+r_struct
+id|task_struct
+op_star
+comma
+id|elf_fpregset_t
+op_star
+)paren
+suffix:semicolon
+DECL|macro|ELF_CORE_COPY_REGS
+mdefine_line|#define ELF_CORE_COPY_REGS(elf_regs, regs)&t;&t;&t;&bslash;&n;&t;dump_regs((elf_greg_t *)&amp;(elf_regs), regs);
+DECL|macro|ELF_CORE_COPY_FPREGS
+mdefine_line|#define ELF_CORE_COPY_FPREGS(tsk, elf_fpregs)&t;&t;&t;&bslash;&n;&t;dump_task_fpu(tsk, elf_fpregs)
 macro_line|#endif /* __KERNEL__ */
 multiline_comment|/* This one accepts IRIX binaries.  */
 DECL|macro|irix_elf_check_arch
-mdefine_line|#define irix_elf_check_arch(hdr)&t;((hdr)-&gt;e_machine == EM_MIPS)
+mdefine_line|#define irix_elf_check_arch(hdr)&t;((hdr)-&gt;e_flags &amp; RHF_SGI_ONLY)
 DECL|macro|USE_ELF_CORE_DUMP
 mdefine_line|#define USE_ELF_CORE_DUMP
 DECL|macro|ELF_EXEC_PAGESIZE
 mdefine_line|#define ELF_EXEC_PAGESIZE&t;PAGE_SIZE
-DECL|macro|ELF_CORE_COPY_REGS
-mdefine_line|#define ELF_CORE_COPY_REGS(_dest,_regs)&t;&t;&t;&t;&bslash;&n;&t;memcpy((char *) &amp;_dest, (char *) _regs,&t;&t;&t;&bslash;&n;&t;       sizeof(struct pt_regs));
 multiline_comment|/* This yields a mask that user programs can use to figure out what&n;   instruction set this cpu supports.  This could be done in userspace,&n;   but it&squot;s not easy, and we&squot;ve already done it here.  */
 DECL|macro|ELF_HWCAP
 mdefine_line|#define ELF_HWCAP       (0)

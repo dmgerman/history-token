@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: mntfunc.c,v 1.19.6.2 2004/08/28 20:03:53 armin Exp $&n; *&n; * Driver for Eicon DIVA Server ISDN cards.&n; * Maint module&n; *&n; * Copyright 2000-2003 by Armin Schindler (mac@melware.de)&n; * Copyright 2000-2003 Cytronics &amp; Melware (info@melware.de)&n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; */
+multiline_comment|/* $Id: mntfunc.c,v 1.19.6.4 2005/01/31 12:22:20 armin Exp $&n; *&n; * Driver for Eicon DIVA Server ISDN cards.&n; * Maint module&n; *&n; * Copyright 2000-2003 by Armin Schindler (mac@melware.de)&n; * Copyright 2000-2003 Cytronics &amp; Melware (info@melware.de)&n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; */
 macro_line|#include &quot;platform.h&quot;
 macro_line|#include &quot;di_defs.h&quot;
 macro_line|#include &quot;divasync.h&quot;
@@ -917,9 +917,11 @@ id|data
 r_if
 c_cond
 (paren
-id|copy_from_user
+id|diva_os_copy_from_user
 c_func
 (paren
+l_int|NULL
+comma
 id|data
 comma
 (paren
@@ -993,8 +995,10 @@ l_int|0
 r_if
 c_cond
 (paren
-id|copy_to_user
+id|diva_os_copy_to_user
 (paren
+l_int|NULL
+comma
 id|buf
 comma
 id|data

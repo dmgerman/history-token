@@ -5703,6 +5703,10 @@ id|entry1-&gt;e_hash
 op_ne
 id|entry2-&gt;e_hash
 op_logical_or
+id|entry1-&gt;e_name_index
+op_ne
+id|entry2-&gt;e_name_index
+op_logical_or
 id|entry1-&gt;e_name_len
 op_ne
 id|entry2-&gt;e_name_len

@@ -6204,6 +6204,8 @@ multiline_comment|/* No extra segments required for sends */
 r_break
 suffix:semicolon
 )brace
+r_break
+suffix:semicolon
 r_case
 id|UD
 suffix:colon

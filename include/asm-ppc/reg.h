@@ -438,6 +438,14 @@ DECL|macro|L2CR_L2BYP
 mdefine_line|#define L2CR_L2BYP&t;&t;0x00002000&t;/* L2 DLL bypass */
 DECL|macro|L2CR_L2IP
 mdefine_line|#define L2CR_L2IP&t;&t;0x00000001&t;/* L2 GI in progress */
+DECL|macro|L2CR_L2IO_745x
+mdefine_line|#define L2CR_L2IO_745x&t;&t;0x00100000&t;/* L2 instr. only (745x) */
+DECL|macro|L2CR_L2DO_745x
+mdefine_line|#define L2CR_L2DO_745x&t;&t;0x00010000&t;/* L2 data only (745x) */
+DECL|macro|L2CR_L2REP_745x
+mdefine_line|#define L2CR_L2REP_745x&t;&t;0x00001000&t;/* L2 repl. algorithm (745x) */
+DECL|macro|L2CR_L2HWF_745x
+mdefine_line|#define L2CR_L2HWF_745x&t;&t;0x00000800&t;/* L2 hardware flush (745x) */
 DECL|macro|SPRN_L3CR
 mdefine_line|#define SPRN_L3CR&t;&t;0x3FA&t;/* Level 3 Cache Control Regsiter */
 DECL|macro|L3CR_L3E
@@ -601,7 +609,7 @@ mdefine_line|#define MMCR0_PMC2_ITLB&t;&t;0x7
 DECL|macro|MMCR0_PMC2_LOADMISSTIME
 mdefine_line|#define MMCR0_PMC2_LOADMISSTIME&t;0x5
 DECL|macro|MMCR0_PMXE
-mdefine_line|#define MMCR0_PMXE&t;&t;(1 &lt;&lt; 26)
+mdefine_line|#define MMCR0_PMXE&t;(1 &lt;&lt; 26)
 multiline_comment|/* Short-hand versions for a number of the above SPRNs */
 DECL|macro|CTR
 mdefine_line|#define CTR&t;SPRN_CTR&t;/* Counter Register */

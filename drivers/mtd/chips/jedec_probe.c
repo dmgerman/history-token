@@ -5539,8 +5539,9 @@ id|NumEraseRegions
 op_assign
 l_int|1
 comma
+dot
 id|regions
-suffix:colon
+op_assign
 (brace
 id|ERASEINFO
 c_func
@@ -5596,8 +5597,9 @@ id|NumEraseRegions
 op_assign
 l_int|1
 comma
+dot
 id|regions
-suffix:colon
+op_assign
 (brace
 id|ERASEINFO
 c_func

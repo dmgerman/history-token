@@ -16,7 +16,7 @@ DECL|macro|NFSSERVCTL
 mdefine_line|#define NFSSERVCTL sys_ni_syscall
 macro_line|#endif
 DECL|macro|LAST_GENERIC_SYSCALL
-mdefine_line|#define LAST_GENERIC_SYSCALL __NR_vperfctr_read
+mdefine_line|#define LAST_GENERIC_SYSCALL __NR_keyctl
 macro_line|#if LAST_GENERIC_SYSCALL &gt; LAST_ARCH_SYSCALL
 DECL|macro|LAST_SYSCALL
 mdefine_line|#define LAST_SYSCALL LAST_GENERIC_SYSCALL
@@ -122,31 +122,7 @@ id|sys_set_mempolicy
 suffix:semicolon
 r_extern
 id|syscall_handler_t
-id|sys_sys_kexec_load
-suffix:semicolon
-r_extern
-id|syscall_handler_t
 id|sys_sys_setaltroot
-suffix:semicolon
-r_extern
-id|syscall_handler_t
-id|sys_vperfctr_open
-suffix:semicolon
-r_extern
-id|syscall_handler_t
-id|sys_vperfctr_control
-suffix:semicolon
-r_extern
-id|syscall_handler_t
-id|sys_vperfctr_unlink
-suffix:semicolon
-r_extern
-id|syscall_handler_t
-id|sys_vperfctr_iresume
-suffix:semicolon
-r_extern
-id|syscall_handler_t
-id|sys_vperfctr_read
 suffix:semicolon
 DECL|variable|sys_call_table
 id|syscall_handler_t
@@ -2219,7 +2195,7 @@ op_assign
 id|syscall_handler_t
 op_star
 )paren
-id|sys_kexec_load
+id|sys_ni_syscall
 comma
 (braket
 id|__NR_waitid
@@ -2231,18 +2207,16 @@ op_star
 )paren
 id|sys_waitid
 comma
-macro_line|#if 0
 (braket
-id|__NR_sys_setaltroot
+l_int|285
 )braket
 op_assign
 (paren
 id|syscall_handler_t
 op_star
 )paren
-id|sys_sys_setaltroot
+id|sys_ni_syscall
 comma
-macro_line|#endif
 (braket
 id|__NR_add_key
 )braket
@@ -2273,56 +2247,6 @@ op_star
 )paren
 id|sys_keyctl
 comma
-(braket
-id|__NR_vperfctr_open
-)braket
-op_assign
-(paren
-id|syscall_handler_t
-op_star
-)paren
-id|sys_vperfctr_open
-comma
-(braket
-id|__NR_vperfctr_control
-)braket
-op_assign
-(paren
-id|syscall_handler_t
-op_star
-)paren
-id|sys_vperfctr_control
-comma
-(braket
-id|__NR_vperfctr_unlink
-)braket
-op_assign
-(paren
-id|syscall_handler_t
-op_star
-)paren
-id|sys_vperfctr_unlink
-comma
-(braket
-id|__NR_vperfctr_iresume
-)braket
-op_assign
-(paren
-id|syscall_handler_t
-op_star
-)paren
-id|sys_vperfctr_iresume
-comma
-(braket
-id|__NR_vperfctr_read
-)braket
-op_assign
-(paren
-id|syscall_handler_t
-op_star
-)paren
-id|sys_vperfctr_read
-comma
 id|ARCH_SYSCALLS
 (braket
 id|LAST_SYSCALL
@@ -2341,5 +2265,4 @@ op_star
 id|sys_ni_syscall
 )brace
 suffix:semicolon
-multiline_comment|/*&n; * Overrides for Emacs so that we follow Linus&squot;s tabbing style.&n; * Emacs will notice this stuff at the end of the file and automatically&n; * adjust the settings for this buffer only.  This must remain at the end&n; * of the file.&n; * ---------------------------------------------------------------------------&n; * Local variables:&n; * c-file-style: &quot;linux&quot;&n; * End:&n; */
 eof

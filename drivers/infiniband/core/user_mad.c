@@ -43,6 +43,16 @@ DECL|enumerator|IB_UMAD_MAX_AGENTS
 id|IB_UMAD_MAX_AGENTS
 op_assign
 l_int|32
+comma
+DECL|enumerator|IB_UMAD_MAJOR
+id|IB_UMAD_MAJOR
+op_assign
+l_int|231
+comma
+DECL|enumerator|IB_UMAD_MINOR_BASE
+id|IB_UMAD_MINOR_BASE
+op_assign
+l_int|0
 )brace
 suffix:semicolon
 DECL|struct|ib_umad_port
@@ -203,8 +213,17 @@ id|mapping
 suffix:semicolon
 DECL|variable|base_dev
 r_static
+r_const
 id|dev_t
 id|base_dev
+op_assign
+id|MKDEV
+c_func
+(paren
+id|IB_UMAD_MAJOR
+comma
+id|IB_UMAD_MINOR_BASE
+)paren
 suffix:semicolon
 DECL|variable|map_lock
 r_static
@@ -3570,13 +3589,10 @@ id|map_lock
 suffix:semicolon
 id|ret
 op_assign
-id|alloc_chrdev_region
+id|register_chrdev_region
 c_func
 (paren
-op_amp
 id|base_dev
-comma
-l_int|0
 comma
 id|IB_UMAD_MAX_PORTS
 op_star
@@ -3595,7 +3611,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;user_mad: couldn&squot;t get device number&bslash;n&quot;
+l_string|&quot;user_mad: couldn&squot;t register device number&bslash;n&quot;
 )paren
 suffix:semicolon
 r_goto

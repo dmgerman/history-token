@@ -1609,11 +1609,12 @@ c_func
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * If Linux enabled the LAPIC against the BIOS default&n; * disable it down before re-entering the BIOS on shutdown.&n; * Otherwise the BIOS may get confused and not power-off.&n; */
-r_void
 DECL|function|lapic_shutdown
+r_void
 id|lapic_shutdown
 c_func
 (paren
+r_void
 )paren
 (brace
 r_if

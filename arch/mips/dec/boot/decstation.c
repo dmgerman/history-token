@@ -1,5 +1,4 @@
 multiline_comment|/*&n; * arch/mips/dec/decstation.c&n; */
-macro_line|#include &lt;linux/config.h&gt;
 DECL|macro|RELOC
 mdefine_line|#define RELOC
 DECL|macro|INITRD
