@@ -5893,7 +5893,7 @@ id|i
 )braket
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Request an OF device resource. Currently handles child of PCI devices,&n; * or other nodes attached to the root node. Ultimately, put some&n; * link to resources in the OF node.&n; * WARNING: out_resource-&gt;name should be initialized before calling this&n; * function.&n; */
+multiline_comment|/*&n; * Request an OF device resource. Currently handles child of PCI devices,&n; * or other nodes attached to the root node. Ultimately, put some&n; * link to resources in the OF node.&n; */
 r_struct
 id|resource
 op_star
@@ -6245,6 +6245,10 @@ suffix:semicolon
 r_int
 r_int
 id|iomask
+comma
+id|start
+comma
+id|end
 suffix:semicolon
 r_struct
 id|device_node
@@ -6401,7 +6405,7 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;request_OF_resource(%s), parent not found&bslash;n&quot;
+l_string|&quot;release_OF_resource(%s), parent not found&bslash;n&quot;
 comma
 id|node-&gt;name
 )paren
@@ -6411,10 +6415,32 @@ op_minus
 id|ENODEV
 suffix:semicolon
 )brace
-multiline_comment|/* Find us in the parent */
+multiline_comment|/* Find us in the parent and its childs */
 id|res
 op_assign
 id|parent-&gt;child
+suffix:semicolon
+id|start
+op_assign
+id|node-&gt;addrs
+(braket
+id|index
+)braket
+dot
+id|address
+suffix:semicolon
+id|end
+op_assign
+id|start
+op_plus
+id|node-&gt;addrs
+(braket
+id|index
+)braket
+dot
+id|size
+op_minus
+l_int|1
 suffix:semicolon
 r_while
 c_loop
@@ -6427,30 +6453,36 @@ c_cond
 (paren
 id|res-&gt;start
 op_eq
-id|node-&gt;addrs
-(braket
-id|index
-)braket
-dot
-id|address
+id|start
 op_logical_and
 id|res-&gt;end
 op_eq
+id|end
+op_logical_and
 (paren
-id|res-&gt;start
-op_plus
-id|node-&gt;addrs
-(braket
-id|index
-)braket
-dot
-id|size
-op_minus
-l_int|1
+id|res-&gt;flags
+op_amp
+id|IORESOURCE_BUSY
 )paren
 )paren
 r_break
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|res-&gt;start
+op_le
+id|start
+op_logical_and
+id|res-&gt;end
+op_ge
+id|end
+)paren
+id|res
+op_assign
+id|res-&gt;child
+suffix:semicolon
+r_else
 id|res
 op_assign
 id|res-&gt;sibling
