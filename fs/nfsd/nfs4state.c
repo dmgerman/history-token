@@ -5608,7 +5608,7 @@ suffix:semicolon
 multiline_comment|/*&n;&t;* To finish the open response, we just need to set the rflags.&n;&t;*/
 id|open-&gt;op_rflags
 op_assign
-l_int|0
+id|NFS4_OPEN_RESULT_LOCKTYPE_POSIX
 suffix:semicolon
 r_if
 c_cond
