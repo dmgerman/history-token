@@ -103,8 +103,6 @@ id|panic_blink
 r_int
 id|time
 )paren
-op_assign
-id|no_blink
 suffix:semicolon
 DECL|variable|panic_blink
 id|EXPORT_SYMBOL
@@ -226,6 +224,16 @@ l_int|0
 comma
 id|buf
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|panic_blink
+)paren
+id|panic_blink
+op_assign
+id|no_blink
 suffix:semicolon
 r_if
 c_cond
