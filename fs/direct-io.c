@@ -3215,6 +3215,25 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/* end iovec loop */
+r_if
+c_cond
+(paren
+id|ret
+op_eq
+op_minus
+id|ENOTBLK
+op_logical_and
+id|rw
+op_eq
+id|WRITE
+)paren
+(brace
+multiline_comment|/*&n;&t;&t; * The remaining part of the request will be&n;&t;&t; * be handled by buffered I/O when we return&n;&t;&t; */
+id|ret
+op_assign
+l_int|0
+suffix:semicolon
+)brace
 multiline_comment|/*&n;&t; * There may be some unwritten disk at the end of a part-written&n;&t; * fs-block-sized block.  Go zero that now.&n;&t; */
 id|dio_zero_block
 c_func
@@ -3584,25 +3603,6 @@ c_func
 (paren
 id|dio
 )paren
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-id|ret
-op_eq
-op_minus
-id|ENOTBLK
-op_logical_and
-id|rw
-op_eq
-id|WRITE
-)paren
-(brace
-multiline_comment|/*&n;&t;&t; * The entire request will be be handled by buffered I/O&n;&t;&t; * when we return&n;&t;&t; */
-id|ret
-op_assign
-l_int|0
 suffix:semicolon
 )brace
 r_return

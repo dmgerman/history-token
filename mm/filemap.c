@@ -7262,7 +7262,10 @@ suffix:semicolon
 id|buf
 op_assign
 id|iov-&gt;iov_base
+op_plus
+id|written
 suffix:semicolon
+multiline_comment|/* handle partial DIO write */
 r_do
 (brace
 r_int
