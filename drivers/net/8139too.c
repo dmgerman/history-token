@@ -6613,6 +6613,12 @@ r_int
 r_int
 id|entry
 suffix:semicolon
+r_int
+r_int
+id|len
+op_assign
+id|skb-&gt;len
+suffix:semicolon
 multiline_comment|/* Calculate the next Tx descriptor entry. */
 id|entry
 op_assign
@@ -6626,7 +6632,7 @@ c_cond
 id|likely
 c_func
 (paren
-id|skb-&gt;len
+id|len
 OL
 id|TX_BUF_SIZE
 )paren
@@ -6688,14 +6694,15 @@ id|u32
 comma
 id|tp-&gt;tx_flag
 op_or
+id|max
+c_func
 (paren
-id|skb-&gt;len
-op_ge
-id|ETH_ZLEN
-ques
-c_cond
-id|skb-&gt;len
-suffix:colon
+id|len
+comma
+(paren
+r_int
+r_int
+)paren
 id|ETH_ZLEN
 )paren
 )paren
@@ -6737,13 +6744,11 @@ id|tp-&gt;lock
 suffix:semicolon
 id|DPRINTK
 (paren
-l_string|&quot;%s: Queued Tx packet at %p size %u to slot %d.&bslash;n&quot;
+l_string|&quot;%s: Queued Tx packet size %u to slot %d.&bslash;n&quot;
 comma
 id|dev-&gt;name
 comma
-id|skb-&gt;data
-comma
-id|skb-&gt;len
+id|len
 comma
 id|entry
 )paren
