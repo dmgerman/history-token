@@ -64,10 +64,11 @@ id|input_dev
 id|sparcspkr_dev
 suffix:semicolon
 DECL|variable|beep_lock
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|beep_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|function|init_sparcspkr_struct
 r_static

@@ -390,12 +390,12 @@ id|request_queue
 op_star
 id|cm206_queue
 suffix:semicolon
-DECL|variable|cm206_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|cm206_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 multiline_comment|/* First, we define some polling functions. These are actually&n;   only being used in the initialization. */
 DECL|function|send_command_polled

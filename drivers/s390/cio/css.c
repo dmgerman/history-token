@@ -1121,12 +1121,12 @@ c_func
 id|slow_subchannels_head
 )paren
 suffix:semicolon
-DECL|variable|slow_subchannel_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|slow_subchannel_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 r_static
 r_void

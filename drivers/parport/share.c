@@ -40,12 +40,12 @@ c_func
 id|portlist
 )paren
 suffix:semicolon
-DECL|variable|parportlist_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|parportlist_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 multiline_comment|/* list of all allocated ports, sorted by -&gt;number */
 r_static
@@ -55,12 +55,12 @@ c_func
 id|all_ports
 )paren
 suffix:semicolon
-DECL|variable|full_list_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|full_list_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 r_static
 id|LIST_HEAD

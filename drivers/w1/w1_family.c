@@ -4,10 +4,11 @@ macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &quot;w1_family.h&quot;
 DECL|variable|w1_flock
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|w1_flock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 r_static
 id|LIST_HEAD

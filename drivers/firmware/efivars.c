@@ -43,12 +43,12 @@ id|EFIVARS_VERSION
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * efivars_lock protects two things:&n; * 1) efivar_list - adds, removals, reads, writes&n; * 2) efi.[gs]et_variable() calls.&n; * It must not be held when creating sysfs entries or calling kmalloc.&n; * efi.get_next_variable() is only called from efivars_init(),&n; * which is protected by the BKL, so that path is safe.&n; */
-DECL|variable|efivars_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|efivars_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 r_static
 id|LIST_HEAD

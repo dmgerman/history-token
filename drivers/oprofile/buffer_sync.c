@@ -30,12 +30,12 @@ id|marked_cpus
 op_assign
 id|CPU_MASK_NONE
 suffix:semicolon
-DECL|variable|task_mortuary
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|task_mortuary
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 r_void
 id|process_task_mortuary

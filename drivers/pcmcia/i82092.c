@@ -823,12 +823,12 @@ l_string|&quot;i82092aa_pci_remove&quot;
 )paren
 suffix:semicolon
 )brace
-DECL|variable|port_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|port_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 multiline_comment|/* basic value read/write functions */
 DECL|function|indirect_read

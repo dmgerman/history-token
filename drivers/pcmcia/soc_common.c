@@ -624,12 +624,12 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-DECL|variable|status_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|status_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|function|soc_common_check_status
 r_static
