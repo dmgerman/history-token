@@ -51,14 +51,8 @@ comma
 id|SLEEP_SAVE_OSMR3
 comma
 DECL|enumerator|SLEEP_SAVE_GPDR
-DECL|enumerator|SLEEP_SAVE_GRER
-DECL|enumerator|SLEEP_SAVE_GFER
 DECL|enumerator|SLEEP_SAVE_GAFR
 id|SLEEP_SAVE_GPDR
-comma
-id|SLEEP_SAVE_GRER
-comma
-id|SLEEP_SAVE_GFER
 comma
 id|SLEEP_SAVE_GAFR
 comma
@@ -73,9 +67,6 @@ comma
 id|SLEEP_SAVE_PPAR
 comma
 id|SLEEP_SAVE_PSDR
-comma
-DECL|enumerator|SLEEP_SAVE_ICMR
-id|SLEEP_SAVE_ICMR
 comma
 DECL|enumerator|SLEEP_SAVE_Ser1SDCR0
 id|SLEEP_SAVE_Ser1SDCR0
@@ -150,18 +141,6 @@ suffix:semicolon
 id|SAVE
 c_func
 (paren
-id|GRER
-)paren
-suffix:semicolon
-id|SAVE
-c_func
-(paren
-id|GFER
-)paren
-suffix:semicolon
-id|SAVE
-c_func
-(paren
 id|GAFR
 )paren
 suffix:semicolon
@@ -194,25 +173,6 @@ c_func
 (paren
 id|Ser1SDCR0
 )paren
-suffix:semicolon
-id|SAVE
-c_func
-(paren
-id|ICMR
-)paren
-suffix:semicolon
-multiline_comment|/* ... maybe a global variable initialized by arch code to set this? */
-id|GRER
-op_assign
-id|PWER
-suffix:semicolon
-id|GFER
-op_assign
-l_int|0
-suffix:semicolon
-id|GEDR
-op_assign
-id|GEDR
 suffix:semicolon
 multiline_comment|/* Clear previous reset status */
 id|RCSR
@@ -240,20 +200,24 @@ c_func
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/* ensure not to come back here if it wasn&squot;t intended */
+multiline_comment|/*&n;&t; * Ensure not to come back here if it wasn&squot;t intended&n;&t; */
 id|PSPR
 op_assign
 l_int|0
 suffix:semicolon
-macro_line|#ifdef DEBUG
-id|printk
-c_func
-(paren
-id|KERN_DEBUG
-l_string|&quot;*** made it back from resume&bslash;n&quot;
-)paren
+multiline_comment|/*&n;&t; * Ensure interrupt sources are disabled; we will re-init&n;&t; * the interrupt subsystem via the device manager.&n;&t; */
+id|ICLR
+op_assign
+l_int|0
 suffix:semicolon
-macro_line|#endif
+id|ICCR
+op_assign
+l_int|1
+suffix:semicolon
+id|ICMR
+op_assign
+l_int|0
+suffix:semicolon
 multiline_comment|/* restore registers */
 id|RESTORE
 c_func
@@ -264,25 +228,8 @@ suffix:semicolon
 id|RESTORE
 c_func
 (paren
-id|GRER
-)paren
-suffix:semicolon
-id|RESTORE
-c_func
-(paren
-id|GFER
-)paren
-suffix:semicolon
-id|RESTORE
-c_func
-(paren
 id|GAFR
 )paren
-suffix:semicolon
-multiline_comment|/* clear any edge detect bit */
-id|GEDR
-op_assign
-id|GEDR
 suffix:semicolon
 id|RESTORE
 c_func
@@ -314,6 +261,7 @@ c_func
 id|Ser1SDCR0
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t; * Clear the peripheral sleep-hold bit.&n;&t; */
 id|PSSR
 op_assign
 id|PSSR_PH
@@ -352,20 +300,6 @@ id|RESTORE
 c_func
 (paren
 id|OIER
-)paren
-suffix:semicolon
-id|ICLR
-op_assign
-l_int|0
-suffix:semicolon
-id|ICCR
-op_assign
-l_int|1
-suffix:semicolon
-id|RESTORE
-c_func
-(paren
-id|ICMR
 )paren
 suffix:semicolon
 multiline_comment|/* restore current time */
