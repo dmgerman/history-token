@@ -1021,6 +1021,20 @@ id|vm_area_struct
 op_star
 )paren
 suffix:semicolon
+r_extern
+r_int
+id|hugetlb_prefault
+c_func
+(paren
+r_struct
+id|address_space
+op_star
+comma
+r_struct
+id|vm_area_struct
+op_star
+)paren
+suffix:semicolon
 macro_line|#else
 DECL|macro|is_vm_hugetlb_page
 mdefine_line|#define is_vm_hugetlb_page(vma) (0)
