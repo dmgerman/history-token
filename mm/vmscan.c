@@ -827,6 +827,7 @@ op_assign
 id|page-&gt;mapping
 suffix:semicolon
 )brace
+macro_line|#endif /* CONFIG_SWAP */
 multiline_comment|/*&n;&t;&t; * The page is mapped into the page tables of one or more&n;&t;&t; * processes. Try to unmap it here.&n;&t;&t; */
 r_if
 c_cond
@@ -881,7 +882,6 @@ suffix:semicolon
 multiline_comment|/* try to free the page below */
 )brace
 )brace
-macro_line|#endif /* CONFIG_SWAP */
 id|pte_chain_unlock
 c_func
 (paren
