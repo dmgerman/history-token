@@ -7638,6 +7638,18 @@ op_amp
 id|nd.dentry-&gt;d_inode-&gt;i_sem
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|inode
+)paren
+id|iput
+c_func
+(paren
+id|inode
+)paren
+suffix:semicolon
+multiline_comment|/* truncate the inode here */
 id|exit1
 suffix:colon
 id|path_release
@@ -7655,18 +7667,6 @@ c_func
 id|name
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|inode
-)paren
-id|iput
-c_func
-(paren
-id|inode
-)paren
-suffix:semicolon
-multiline_comment|/* truncate the inode here */
 r_return
 id|error
 suffix:semicolon
