@@ -1,4 +1,4 @@
-multiline_comment|/* SCTP kernel reference Implementation&n; * (C) Copyright IBM Corp. 2001, 2003&n; * Copyright (C) 1999-2001 Cisco, Motorola&n; *&n; * This file is part of the SCTP kernel reference Implementation&n; *&n; * These are the definitions needed for the command object.&n; *&n; * The SCTP reference implementation  is free software;&n; * you can redistribute it and/or modify it under the terms of&n; * the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * the SCTP reference implementation  is distributed in the hope that it&n; * will be useful, but WITHOUT ANY WARRANTY; without even the implied&n; *                 ************************&n; * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; * See the GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with GNU CC; see the file COPYING.  If not, write to&n; * the Free Software Foundation, 59 Temple Place - Suite 330,&n; * Boston, MA 02111-1307, USA.&n; *&n; * Please send any bug reports or fixes you make to one of the&n; * following email addresses:&n; *&n; * La Monte H.P. Yarroll &lt;piggy@acm.org&gt;&n; * Karl Knutson &lt;karl@athena.chicago.il.us&gt;&n; * Ardelle Fan &lt;ardelle.fan@intel.com&gt;&n; *&n; * Any bugs reported given to us we will try to fix... any fixes shared will&n; * be incorporated into the next SCTP release.&n; */
+multiline_comment|/* SCTP kernel reference Implementation&n; * (C) Copyright IBM Corp. 2001, 2004&n; * Copyright (C) 1999-2001 Cisco, Motorola&n; *&n; * This file is part of the SCTP kernel reference Implementation&n; *&n; * These are the definitions needed for the command object.&n; *&n; * The SCTP reference implementation  is free software;&n; * you can redistribute it and/or modify it under the terms of&n; * the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * the SCTP reference implementation  is distributed in the hope that it&n; * will be useful, but WITHOUT ANY WARRANTY; without even the implied&n; *                 ************************&n; * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; * See the GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with GNU CC; see the file COPYING.  If not, write to&n; * the Free Software Foundation, 59 Temple Place - Suite 330,&n; * Boston, MA 02111-1307, USA.&n; *&n; * Please send any bug reports or fixes you make to one of the&n; * following email addresses:&n; *&n; * La Monte H.P. Yarroll &lt;piggy@acm.org&gt;&n; * Karl Knutson &lt;karl@athena.chicago.il.us&gt;&n; * Ardelle Fan &lt;ardelle.fan@intel.com&gt;&n; * Sridhar Samudrala &lt;sri@us.ibm.com&gt;&n; *&n; * Any bugs reported given to us we will try to fix... any fixes shared will&n; * be incorporated into the next SCTP release.&n; */
 macro_line|#ifndef __net_sctp_command_h__
 DECL|macro|__net_sctp_command_h__
 mdefine_line|#define __net_sctp_command_h__
@@ -197,6 +197,14 @@ DECL|enumerator|SCTP_CMD_PROCESS_OPERR
 id|SCTP_CMD_PROCESS_OPERR
 comma
 multiline_comment|/* Process an ERROR chunk. */
+DECL|enumerator|SCTP_CMD_REPORT_FWDTSN
+id|SCTP_CMD_REPORT_FWDTSN
+comma
+multiline_comment|/* Report new cumulative TSN Ack. */
+DECL|enumerator|SCTP_CMD_PROCESS_FWDTSN
+id|SCTP_CMD_PROCESS_FWDTSN
+comma
+multiline_comment|/* Skips were reported, so process further. */
 DECL|enumerator|SCTP_CMD_LAST
 id|SCTP_CMD_LAST
 DECL|typedef|sctp_verb_t

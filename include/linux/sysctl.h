@@ -2293,15 +2293,10 @@ id|NET_SCTP_ADDIP_ENABLE
 op_assign
 l_int|13
 comma
-DECL|enumerator|NET_SCTP_RMEM
-id|NET_SCTP_RMEM
+DECL|enumerator|NET_SCTP_PRSCTP_ENABLE
+id|NET_SCTP_PRSCTP_ENABLE
 op_assign
 l_int|14
-comma
-DECL|enumerator|NET_SCTP_WMEM
-id|NET_SCTP_WMEM
-op_assign
-l_int|15
 comma
 )brace
 suffix:semicolon
