@@ -7212,12 +7212,6 @@ op_minus
 id|ret
 )paren
 suffix:semicolon
-id|kfree
-c_func
-(paren
-id|privbuf
-)paren
-suffix:semicolon
 )brace
 r_else
 (brace
@@ -7230,12 +7224,6 @@ comma
 id|iop-&gt;name
 )paren
 suffix:semicolon
-id|kfree
-c_func
-(paren
-id|privbuf
-)paren
-suffix:semicolon
 )brace
 id|i2o_status_get
 c_func
@@ -7244,6 +7232,12 @@ id|iop
 )paren
 suffix:semicolon
 singleline_comment|// Entered READY state
+id|kfree
+c_func
+(paren
+id|privbuf
+)paren
+suffix:semicolon
 r_return
 id|ret
 suffix:semicolon

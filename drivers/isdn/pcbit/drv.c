@@ -4323,6 +4323,12 @@ id|KERN_WARNING
 l_string|&quot;kmalloc failed&bslash;n&quot;
 )paren
 suffix:semicolon
+id|kfree
+c_func
+(paren
+id|ptr
+)paren
+suffix:semicolon
 r_return
 suffix:semicolon
 )brace

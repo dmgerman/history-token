@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * linux/drivers/char/pcmcia/synclink_cs.c&n; *&n; * $Id: synclink_cs.c,v 4.6 2003/04/21 17:46:55 paulkf Exp $&n; *&n; * Device driver for Microgate SyncLink PC Card&n; * multiprotocol serial adapter.&n; *&n; * written by Paul Fulghum for Microgate Corporation&n; * paulkf@microgate.com&n; *&n; * Microgate and SyncLink are trademarks of Microgate Corporation&n; *&n; * This code is released under the GNU General Public License (GPL)&n; *&n; * THIS SOFTWARE IS PROVIDED ``AS IS&squot;&squot; AND ANY EXPRESS OR IMPLIED&n; * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES&n; * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE&n; * DISCLAIMED.  IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT,&n; * INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES&n; * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR&n; * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)&n; * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,&n; * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)&n; * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED&n; * OF THE POSSIBILITY OF SUCH DAMAGE.&n; */
+multiline_comment|/*&n; * linux/drivers/char/pcmcia/synclink_cs.c&n; *&n; * $Id: synclink_cs.c,v 4.10 2003/05/13 16:06:03 paulkf Exp $&n; *&n; * Device driver for Microgate SyncLink PC Card&n; * multiprotocol serial adapter.&n; *&n; * written by Paul Fulghum for Microgate Corporation&n; * paulkf@microgate.com&n; *&n; * Microgate and SyncLink are trademarks of Microgate Corporation&n; *&n; * This code is released under the GNU General Public License (GPL)&n; *&n; * THIS SOFTWARE IS PROVIDED ``AS IS&squot;&squot; AND ANY EXPRESS OR IMPLIED&n; * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES&n; * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE&n; * DISCLAIMED.  IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT,&n; * INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES&n; * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR&n; * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)&n; * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,&n; * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)&n; * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED&n; * OF THE POSSIBILITY OF SUCH DAMAGE.&n; */
 DECL|macro|VERSION
 mdefine_line|#define VERSION(ver,rel,seq) (((ver)&lt;&lt;16) | ((rel)&lt;&lt;8) | (seq))
 macro_line|#if defined(__i386__)
@@ -1268,7 +1268,7 @@ id|info
 )paren
 suffix:semicolon
 r_static
-r_void
+id|irqreturn_t
 id|mgslpc_isr
 c_func
 (paren
@@ -1537,6 +1537,24 @@ l_int|0
 comma
 )brace
 suffix:semicolon
+DECL|variable|dosyncppp
+r_static
+r_int
+id|dosyncppp
+(braket
+id|MAX_DEVICE_COUNT
+)braket
+op_assign
+(brace
+l_int|1
+comma
+l_int|1
+comma
+l_int|1
+comma
+l_int|1
+)brace
+suffix:semicolon
 multiline_comment|/* The old way: bit map of interrupts to choose from */
 multiline_comment|/* This means pick from 15, 14, 12, 11, 10, 9, 7, 5, 4, and 3 */
 DECL|variable|irq_mask
@@ -1622,6 +1640,20 @@ id|MAX_DEVICE_COUNT
 l_string|&quot;i&quot;
 )paren
 suffix:semicolon
+id|MODULE_PARM
+c_func
+(paren
+id|dosyncppp
+comma
+l_string|&quot;1-&quot;
+id|__MODULE_STRING
+c_func
+(paren
+id|MAX_DEVICE_COUNT
+)paren
+l_string|&quot;i&quot;
+)paren
+suffix:semicolon
 id|MODULE_LICENSE
 c_func
 (paren
@@ -1642,7 +1674,7 @@ r_char
 op_star
 id|driver_version
 op_assign
-l_string|&quot;$Revision: 4.6 $&quot;
+l_string|&quot;$Revision: 4.10 $&quot;
 suffix:semicolon
 DECL|variable|serial_driver
 DECL|variable|callout_driver
@@ -2013,25 +2045,6 @@ op_assign
 id|info
 suffix:semicolon
 multiline_comment|/* Initialize the dev_link_t structure */
-id|init_timer
-c_func
-(paren
-op_amp
-id|link-&gt;release
-)paren
-suffix:semicolon
-id|link-&gt;release.function
-op_assign
-op_amp
-id|mgslpc_release
-suffix:semicolon
-id|link-&gt;release.data
-op_assign
-(paren
-id|u_long
-)paren
-id|link
-suffix:semicolon
 multiline_comment|/* Interrupt setup */
 id|link-&gt;irq.Attributes
 op_assign
@@ -3106,17 +3119,13 @@ id|stop
 op_assign
 l_int|1
 suffix:semicolon
-id|mod_timer
+id|mgslpc_release
 c_func
 (paren
-op_amp
-id|link-&gt;release
-comma
-id|jiffies
-op_plus
-id|HZ
-op_div
-l_int|20
+(paren
+id|u_long
+)paren
+id|link
 )paren
 suffix:semicolon
 )brace
@@ -5518,7 +5527,7 @@ suffix:semicolon
 multiline_comment|/* Interrupt service routine entry point.&n; * &t;&n; * Arguments:&n; * &n; * irq     interrupt number that caused interrupt&n; * dev_id  device ID supplied during interrupt registration&n; * regs    interrupted processor context&n; */
 DECL|function|mgslpc_isr
 r_static
-r_void
+id|irqreturn_t
 id|mgslpc_isr
 c_func
 (paren
@@ -5582,6 +5591,7 @@ op_logical_neg
 id|info
 )paren
 r_return
+id|IRQ_NONE
 suffix:semicolon
 r_if
 c_cond
@@ -5594,6 +5604,7 @@ id|DEV_CONFIG
 )paren
 )paren
 r_return
+id|IRQ_HANDLED
 suffix:semicolon
 id|spin_lock
 c_func
@@ -6045,6 +6056,9 @@ id|__LINE__
 comma
 id|irq
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 multiline_comment|/* Initialize and start device.&n; */
@@ -13665,10 +13679,12 @@ id|maxframe
 id|info-&gt;line
 )braket
 suffix:semicolon
-singleline_comment|//&t;&t;info-&gt;dosyncppp = dosyncppp[info-&gt;line];
 id|info-&gt;dosyncppp
 op_assign
-l_int|1
+id|dosyncppp
+(braket
+id|info-&gt;line
+)braket
 suffix:semicolon
 )brace
 id|mgslpc_device_count
@@ -14296,13 +14312,6 @@ op_ne
 l_int|NULL
 )paren
 (brace
-id|del_timer
-c_func
-(paren
-op_amp
-id|dev_list-&gt;release
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren

@@ -267,6 +267,7 @@ id|user
 )paren
 (brace
 r_int
+r_int
 id|flags
 suffix:semicolon
 r_int
@@ -358,6 +359,7 @@ id|ipmi_user_t
 id|user
 )paren
 (brace
+r_int
 r_int
 id|flags
 suffix:semicolon

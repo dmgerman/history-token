@@ -1292,8 +1292,16 @@ c_cond
 op_logical_neg
 id|p
 )paren
+(brace
+id|kfree
+c_func
+(paren
+id|d
+)paren
+suffix:semicolon
 r_return
 suffix:semicolon
+)brace
 id|p-&gt;data
 op_assign
 id|vfd

@@ -4078,12 +4078,14 @@ r_int
 id|max_cpus
 )paren
 (brace
+macro_line|#ifdef CONFIG_X86_IO_APIC
 id|setup_ioapic_dest
 c_func
 (paren
 id|TARGET_CPUS
 )paren
 suffix:semicolon
+macro_line|#endif
 id|zap_low_mappings
 c_func
 (paren

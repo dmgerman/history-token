@@ -709,6 +709,12 @@ c_func
 l_string|&quot;failed to register interrupt notify handler&bslash;n&quot;
 )paren
 suffix:semicolon
+id|kfree
+c_func
+(paren
+id|newfunc
+)paren
+suffix:semicolon
 r_return
 id|status
 suffix:semicolon

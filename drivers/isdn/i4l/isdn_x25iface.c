@@ -894,6 +894,17 @@ id|cprot-&gt;net_dev
 )paren
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|skb
+)paren
+id|dev_kfree_skb
+c_func
+(paren
+id|skb
+)paren
+suffix:semicolon
 r_return
 op_minus
 l_int|1

@@ -9,6 +9,7 @@ macro_line|#include &lt;linux/fcntl.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/pagemap.h&gt;
+macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/highmem.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/binfmts.h&gt;
@@ -19,26 +20,6 @@ macro_line|#include &lt;asm/mmu_context.h&gt;
 macro_line|#ifdef CONFIG_KMOD
 macro_line|#include &lt;linux/kmod.h&gt;
 macro_line|#endif
-r_extern
-r_void
-id|put_dirty_page
-c_func
-(paren
-r_struct
-id|task_struct
-op_star
-id|tsk
-comma
-r_struct
-id|page
-op_star
-id|page
-comma
-r_int
-r_int
-id|address
-)paren
-suffix:semicolon
 DECL|macro|STACK_TOP
 macro_line|#undef STACK_TOP
 DECL|macro|STACK_TOP
@@ -288,6 +269,8 @@ comma
 id|page
 comma
 id|stack_base
+comma
+id|PAGE_COPY
 )paren
 suffix:semicolon
 )brace
