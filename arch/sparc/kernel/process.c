@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
+macro_line|#include &lt;linux/kallsyms.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/stddef.h&gt;
 macro_line|#include &lt;linux/unistd.h&gt;
@@ -666,7 +667,7 @@ id|printk
 c_func
 (paren
 l_string|&quot;CPU[%d]: ARGS[%08lx,%08lx,%08lx,%08lx,%08lx,%08lx] &quot;
-l_string|&quot;FP[%08lx] CALLER[%08lx]&bslash;n&quot;
+l_string|&quot;FP[%08lx] CALLER[%08lx]: &quot;
 comma
 id|cpu
 comma
@@ -704,6 +705,17 @@ id|rw-&gt;ins
 (braket
 l_int|6
 )braket
+comma
+id|rw-&gt;ins
+(braket
+l_int|7
+)braket
+)paren
+suffix:semicolon
+id|print_symbol
+c_func
+(paren
+l_string|&quot;%s&bslash;n&quot;
 comma
 id|rw-&gt;ins
 (braket
@@ -1105,6 +1117,14 @@ c_func
 )paren
 )paren
 suffix:semicolon
+id|print_symbol
+c_func
+(paren
+l_string|&quot;PC: &lt;%s&gt;&bslash;n&quot;
+comma
+id|r-&gt;pc
+)paren
+suffix:semicolon
 id|printk
 c_func
 (paren
@@ -1190,6 +1210,17 @@ id|r-&gt;u_regs
 (braket
 l_int|14
 )braket
+comma
+id|r-&gt;u_regs
+(braket
+l_int|15
+)braket
+)paren
+suffix:semicolon
+id|print_symbol
+c_func
+(paren
+l_string|&quot;RPC: &lt;%s&gt;&bslash;n&quot;
 comma
 id|r-&gt;u_regs
 (braket
@@ -1413,7 +1444,15 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;[%08lx] &quot;
+l_string|&quot;[%08lx : &quot;
+comma
+id|pc
+)paren
+suffix:semicolon
+id|print_symbol
+c_func
+(paren
+l_string|&quot;%s ] &quot;
 comma
 id|pc
 )paren
