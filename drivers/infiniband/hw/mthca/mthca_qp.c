@@ -5457,7 +5457,7 @@ c_cond
 op_logical_neg
 id|sqp-&gt;qp.ibqp.qp_num
 )paren
-id|ib_cached_pkey_get
+id|ib_get_cached_pkey
 c_func
 (paren
 op_amp
@@ -5472,7 +5472,7 @@ id|sqp-&gt;ud_header.bth.pkey
 )paren
 suffix:semicolon
 r_else
-id|ib_cached_pkey_get
+id|ib_get_cached_pkey
 c_func
 (paren
 op_amp

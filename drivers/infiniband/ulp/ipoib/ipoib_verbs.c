@@ -74,7 +74,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|ib_cached_pkey_find
+id|ib_find_cached_pkey
 c_func
 (paren
 id|priv-&gt;ca
@@ -326,7 +326,7 @@ suffix:semicolon
 multiline_comment|/*&n;&t; * Search through the port P_Key table for the requested pkey value.&n;&t; * The port has to be assigned to the respective IB partition in&n;&t; * advance.&n;&t; */
 id|ret
 op_assign
-id|ib_cached_pkey_find
+id|ib_find_cached_pkey
 c_func
 (paren
 id|priv-&gt;ca

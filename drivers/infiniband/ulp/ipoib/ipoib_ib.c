@@ -2691,7 +2691,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|ib_cached_pkey_find
+id|ib_find_cached_pkey
 c_func
 (paren
 id|priv-&gt;ca
