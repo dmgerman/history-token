@@ -1244,7 +1244,7 @@ c_func
 (paren
 id|data-&gt;int_urb
 comma
-id|GFP_KERNEL
+id|GFP_ATOMIC
 )paren
 suffix:semicolon
 )brace

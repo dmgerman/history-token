@@ -15,6 +15,8 @@ DECL|macro|ATI_REMOTE_PRODUCT_ID
 mdefine_line|#define ATI_REMOTE_PRODUCT_ID &t;0x004
 DECL|macro|LOLA_REMOTE_PRODUCT_ID
 mdefine_line|#define LOLA_REMOTE_PRODUCT_ID &t;0x002
+DECL|macro|MEDION_REMOTE_PRODUCT_ID
+mdefine_line|#define MEDION_REMOTE_PRODUCT_ID 0x006
 DECL|macro|DRIVER_VERSION
 mdefine_line|#define DRIVER_VERSION &t;        &quot;2.2.1&quot;
 DECL|macro|DRIVER_AUTHOR
@@ -110,6 +112,16 @@ c_func
 id|ATI_REMOTE_VENDOR_ID
 comma
 id|LOLA_REMOTE_PRODUCT_ID
+)paren
+)brace
+comma
+(brace
+id|USB_DEVICE
+c_func
+(paren
+id|ATI_REMOTE_VENDOR_ID
+comma
+id|MEDION_REMOTE_PRODUCT_ID
 )paren
 )brace
 comma
@@ -3733,6 +3745,12 @@ op_logical_and
 id|udev-&gt;descriptor.idProduct
 op_ne
 id|LOLA_REMOTE_PRODUCT_ID
+)paren
+op_logical_and
+(paren
+id|udev-&gt;descriptor.idProduct
+op_ne
+id|MEDION_REMOTE_PRODUCT_ID
 )paren
 )paren
 )paren
