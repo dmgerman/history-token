@@ -3124,11 +3124,7 @@ id|ENOMEM
 suffix:semicolon
 id|ax25
 op_assign
-id|ax25_sk
-c_func
-(paren
-id|sk
-)paren
+id|sk-&gt;sk_protinfo
 op_assign
 id|ax25_create_cb
 c_func
@@ -3486,11 +3482,7 @@ id|ax25_digi
 )paren
 suffix:semicolon
 )brace
-id|ax25_sk
-c_func
-(paren
-id|sk
-)paren
+id|sk-&gt;sk_protinfo
 op_assign
 id|ax25
 suffix:semicolon

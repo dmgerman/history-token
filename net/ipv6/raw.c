@@ -181,9 +181,9 @@ op_star
 id|node
 suffix:semicolon
 r_int
-id|addr_type
+id|is_multicast
 op_assign
-id|ipv6_addr_type
+id|ipv6_addr_is_multicast
 c_func
 (paren
 id|loc_addr
@@ -274,11 +274,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-(paren
-id|addr_type
-op_amp
-id|IPV6_ADDR_MULTICAST
-)paren
+id|is_multicast
 op_logical_and
 id|inet6_mc_check
 c_func

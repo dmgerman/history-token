@@ -664,7 +664,6 @@ id|sent_at
 suffix:semicolon
 DECL|typedef|sctp_sender_hb_info_t
 )brace
-id|sctp_sender_hb_info_t
 id|__attribute__
 c_func
 (paren
@@ -672,6 +671,7 @@ c_func
 id|packed
 )paren
 )paren
+id|sctp_sender_hb_info_t
 suffix:semicolon
 multiline_comment|/*&n; *  RFC 2960 1.3.2 Sequenced Delivery within Streams&n; *&n; *  The term &quot;stream&quot; is used in SCTP to refer to a sequence of user&n; *  messages that are to be delivered to the upper-layer protocol in&n; *  order with respect to other messages within the same stream.  This is&n; *  in contrast to its usage in TCP, where it refers to a sequence of&n; *  bytes (in this document a byte is assumed to be eight bits).&n; *  ...&n; *&n; *  This is the structure we use to track both our outbound and inbound&n; *  SSN, or Stream Sequence Numbers.&n; */
 DECL|struct|sctp_stream

@@ -185,11 +185,7 @@ id|out
 suffix:semicolon
 id|nr
 op_assign
-id|nr_sk
-c_func
-(paren
-id|sk
-)paren
+id|sk-&gt;sk_protinfo
 op_assign
 id|kmalloc
 c_func

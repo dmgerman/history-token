@@ -1,5 +1,5 @@
 multiline_comment|/* This file contains all the functions required for the standalone&n;   ip_conntrack module.&n;&n;   These are not required by the compatibility layer.&n;*/
-multiline_comment|/* (c) 1999 Paul `Rusty&squot; Russell.  Licenced under the GNU General&n;   Public Licence. */
+multiline_comment|/* (C) 1999-2001 Paul `Rusty&squot; Russell&n; * (C) 2002-2004 Netfilter Core Team &lt;coreteam@netfilter.org&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/ip.h&gt;
@@ -689,6 +689,13 @@ id|finished
 suffix:semicolon
 )brace
 multiline_comment|/* Now iterate through expecteds. */
+id|READ_LOCK
+c_func
+(paren
+op_amp
+id|ip_conntrack_expect_tuple_lock
+)paren
+suffix:semicolon
 id|list_for_each
 c_func
 (paren
@@ -753,10 +760,19 @@ op_assign
 id|last_len
 suffix:semicolon
 r_goto
-id|finished
+id|finished_expects
 suffix:semicolon
 )brace
 )brace
+id|finished_expects
+suffix:colon
+id|READ_UNLOCK
+c_func
+(paren
+op_amp
+id|ip_conntrack_expect_tuple_lock
+)paren
+suffix:semicolon
 id|finished
 suffix:colon
 id|READ_UNLOCK

@@ -1,4 +1,5 @@
-multiline_comment|/* Kernel module to match various things tied to sockets associated with&n;   locally generated outgoing packets.&n;&n;   Copyright (C) 2000,2001 Marc Boucher&n; */
+multiline_comment|/* Kernel module to match various things tied to sockets associated with&n;   locally generated outgoing packets. */
+multiline_comment|/* (C) 2000-2001 Marc Boucher &lt;marc@mbsi.ca&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;linux/file.h&gt;
