@@ -677,21 +677,21 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|ide_wait_stat
+id|ata_status_poll
 c_func
 (paren
-op_amp
-id|startstop
-comma
 id|drive
-comma
-l_int|NULL
 comma
 id|DATA_READY
 comma
 id|BAD_W_STAT
 comma
 id|WAIT_DRQ
+comma
+l_int|NULL
+comma
+op_amp
+id|startstop
 )paren
 )paren
 (brace
@@ -1557,7 +1557,8 @@ op_le
 l_int|0
 )paren
 (brace
-id|ide_end_request
+multiline_comment|/* FIXME: no queue locking above! */
+id|ata_end_request
 c_func
 (paren
 id|drive
@@ -1713,6 +1714,10 @@ op_star
 id|rq
 )paren
 (brace
+r_int
+r_int
+id|flags
+suffix:semicolon
 r_struct
 id|ata_channel
 op_star
@@ -1747,17 +1752,6 @@ id|ch-&gt;poll_timeout
 )paren
 )paren
 (brace
-r_int
-r_int
-id|flags
-suffix:semicolon
-r_struct
-id|ata_channel
-op_star
-id|ch
-op_assign
-id|drive-&gt;channel
-suffix:semicolon
 multiline_comment|/* FIXME: this locking should encompass the above&n;&t;&t;&t; * register file access too.&n;&t;&t;&t; */
 id|spin_lock_irqsave
 c_func
@@ -1834,7 +1828,16 @@ id|drive-&gt;name
 )paren
 suffix:semicolon
 macro_line|#endif
-id|__ide_end_request
+multiline_comment|/* FIXME: this locking should encompass the above&n;&t; * register file access too.&n;&t; */
+id|spin_lock_irqsave
+c_func
+(paren
+id|ch-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
+id|__ata_end_request
 c_func
 (paren
 id|drive
@@ -1844,6 +1847,14 @@ comma
 l_int|1
 comma
 id|rq-&gt;nr_sectors
+)paren
+suffix:semicolon
+id|spin_unlock_irqrestore
+c_func
+(paren
+id|ch-&gt;lock
+comma
+id|flags
 )paren
 suffix:semicolon
 r_return
@@ -2459,7 +2470,7 @@ comma
 l_string|&quot;pdc4030 bad flags&quot;
 )paren
 suffix:semicolon
-id|ide_end_request
+id|ata_end_request
 c_func
 (paren
 id|drive
@@ -2677,21 +2688,21 @@ multiline_comment|/*&n; * Strategy on write is:&n; *&t;look for the DRQ that sho
 r_if
 c_cond
 (paren
-id|ide_wait_stat
+id|ata_status_poll
 c_func
 (paren
-op_amp
-id|startstop
-comma
 id|drive
-comma
-id|rq
 comma
 id|DATA_READY
 comma
 id|drive-&gt;bad_wstat
 comma
 id|WAIT_DRQ
+comma
+id|rq
+comma
+op_amp
+id|startstop
 )paren
 )paren
 (brace
@@ -2740,7 +2751,8 @@ id|KERN_ERR
 l_string|&quot;pdc4030: command not READ or WRITE! Huh?&bslash;n&quot;
 )paren
 suffix:semicolon
-id|ide_end_request
+multiline_comment|/* FIXME: This should already run under the lock. */
+id|ata_end_request
 c_func
 (paren
 id|drive

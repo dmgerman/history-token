@@ -1532,6 +1532,7 @@ id|drive-&gt;de
 )paren
 (brace
 id|devfs_unregister
+c_func
 (paren
 id|drive-&gt;de
 )paren
@@ -4921,7 +4922,8 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;flushing ide devices: &quot;
+id|KERN_INFO
+l_string|&quot;flushing ATA/ATAPI devices: &quot;
 )paren
 suffix:semicolon
 r_for
@@ -5021,6 +5023,7 @@ id|event
 op_ne
 id|SYS_RESTART
 )paren
+(brace
 r_if
 c_cond
 (paren
@@ -5046,6 +5049,7 @@ id|drive
 )paren
 r_continue
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -5123,23 +5127,7 @@ c_func
 (paren
 l_int|NULL
 comma
-l_string|&quot;ata&quot;
-comma
-l_int|NULL
-)paren
-suffix:semicolon
-id|devfs_mk_symlink
-c_func
-(paren
-l_int|NULL
-comma
 l_string|&quot;ide&quot;
-comma
-id|DEVFS_FL_DEFAULT
-comma
-l_string|&quot;ata&quot;
-comma
-l_int|NULL
 comma
 l_int|NULL
 )paren

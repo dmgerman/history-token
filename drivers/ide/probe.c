@@ -1506,7 +1506,7 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Similar to ide_wait_stat(), except it never calls ata_error internally.&n; * This is a kludge to handle the new ide_config_drive_speed() function,&n; * and should not otherwise be used anywhere.  Eventually, the tuneproc&squot;s&n; * should be updated to return ide_startstop_t, in which case we can get&n; * rid of this abomination again.  :)   -ml&n; *&n; * It is gone..........&n; *&n; * const char *msg == consider adding for verbose errors.&n; */
+multiline_comment|/* FIXME: Channel lock should be held.&n; */
 DECL|function|ide_config_drive_speed
 r_int
 id|ide_config_drive_speed
@@ -1574,8 +1574,7 @@ l_int|2
 )paren
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/*&n;&t; * Don&squot;t use ide_wait_cmd here - it will attempt to set_geometry and&n;&t; * recalibrate, but for some reason these don&squot;t work at this point&n;&t; * (lost interrupt).&n;&t; */
-multiline_comment|/*&n;         * Select the drive, and issue the SETFEATURES command&n;         */
+multiline_comment|/* Don&squot;t use ide_wait_cmd here - it will attempt to set_geometry and&n;&t; * recalibrate, but for some reason these don&squot;t work at this point&n;&t; * (lost interrupt).&n;         *&n;         * Select the drive, and issue the SETFEATURES command&n;         */
 id|disable_irq
 c_func
 (paren
@@ -1662,84 +1661,14 @@ c_func
 l_int|1
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Wait for drive to become non-BUSY&n;&t; */
-r_if
-c_cond
-(paren
-op_logical_neg
-id|ata_status
+id|ata_busy_poll
 c_func
 (paren
 id|drive
 comma
-l_int|0
-comma
-id|BUSY_STAT
-)paren
-)paren
-(brace
-r_int
-r_int
-id|flags
-comma
-id|timeout
-suffix:semicolon
-id|__save_flags
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
-multiline_comment|/* local CPU only */
-id|ide__sti
-c_func
-(paren
-)paren
-suffix:semicolon
-multiline_comment|/* local CPU only -- for jiffies */
-id|timeout
-op_assign
-id|jiffies
-op_plus
 id|WAIT_CMD
-suffix:semicolon
-r_while
-c_loop
-(paren
-op_logical_neg
-id|ata_status
-c_func
-(paren
-id|drive
-comma
-l_int|0
-comma
-id|BUSY_STAT
-)paren
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|time_after
-c_func
-(paren
-id|jiffies
-comma
-id|timeout
-)paren
-)paren
-r_break
-suffix:semicolon
-)brace
-id|__restore_flags
-c_func
-(paren
-id|flags
 )paren
 suffix:semicolon
-multiline_comment|/* local CPU only */
-)brace
 multiline_comment|/*&n;&t; * Allow status to settle, then read it again.&n;&t; * A few rare drives vastly violate the 400ns spec here,&n;&t; * so we&squot;ll wait up to 10usec for a &quot;good&quot; status&n;&t; * rather than expensively fail things immediately.&n;&t; * This fix courtesy of Matthew Faupel &amp; Niccolo Rigacci.&n;&t; */
 r_for
 c_loop
