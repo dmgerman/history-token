@@ -15122,6 +15122,7 @@ id|PARPORT_DMA_NOFIFO
 )paren
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_PCI
 DECL|function|parport_init_mode_setup
 r_static
 r_int
@@ -15129,7 +15130,6 @@ id|__init
 id|parport_init_mode_setup
 c_func
 (paren
-r_const
 r_char
 op_star
 id|str
@@ -15223,6 +15223,7 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
+macro_line|#endif
 macro_line|#ifdef MODULE
 DECL|variable|irq
 r_static
@@ -15246,7 +15247,6 @@ id|PARPORT_PC_MAX_PORTS
 suffix:semicolon
 DECL|variable|init_mode
 r_static
-r_const
 r_char
 op_star
 id|init_mode
@@ -15351,6 +15351,7 @@ l_int|0644
 )paren
 suffix:semicolon
 macro_line|#endif
+macro_line|#ifdef CONFIG_PCI
 id|MODULE_PARM_DESC
 c_func
 (paren
@@ -15367,6 +15368,7 @@ comma
 l_string|&quot;s&quot;
 )paren
 suffix:semicolon
+macro_line|#endif
 DECL|function|parse_parport_params
 r_static
 r_int
@@ -15384,6 +15386,7 @@ suffix:semicolon
 r_int
 id|val
 suffix:semicolon
+macro_line|#ifdef CONFIG_PCI
 r_if
 c_cond
 (paren
@@ -15395,6 +15398,7 @@ c_func
 id|init_mode
 )paren
 suffix:semicolon
+macro_line|#endif
 r_for
 c_loop
 (paren
@@ -15878,6 +15882,7 @@ id|parport_setup
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * Acceptable parameters:&n; *&n; * parport_init_mode=[spp|ps2|epp|ecp|ecpepp]&n; */
+macro_line|#ifdef CONFIG_PCI
 id|__setup
 c_func
 (paren
@@ -15886,6 +15891,7 @@ comma
 id|parport_init_mode_setup
 )paren
 suffix:semicolon
+macro_line|#endif
 macro_line|#endif
 multiline_comment|/* &quot;Parser&quot; ends here */
 DECL|function|parport_pc_init

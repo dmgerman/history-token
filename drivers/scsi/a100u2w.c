@@ -4597,9 +4597,12 @@ id|pHCB-&gt;HCS_BIOS
 op_assign
 id|bios
 suffix:semicolon
+id|spin_lock_init
+c_func
+(paren
+op_amp
 id|pHCB-&gt;BitAllocFlagLock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 multiline_comment|/* Get total memory needed for SCB */
 id|sz

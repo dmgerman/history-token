@@ -2374,8 +2374,6 @@ r_else
 (brace
 id|mnt-&gt;file_mode
 op_assign
-id|mnt-&gt;dir_mode
-op_assign
 id|S_IRWXU
 op_or
 id|S_IRGRP
@@ -2388,8 +2386,6 @@ id|S_IXOTH
 op_or
 id|S_IFREG
 suffix:semicolon
-id|mnt-&gt;dir_mode
-op_assign
 id|mnt-&gt;dir_mode
 op_assign
 id|S_IRWXU

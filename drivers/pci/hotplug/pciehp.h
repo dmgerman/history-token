@@ -555,17 +555,6 @@ DECL|macro|msg_button_cancel
 mdefine_line|#define msg_button_cancel&t;&quot;PCI slot #%d - action canceled due to button press.&bslash;n&quot;
 DECL|macro|msg_button_ignore
 mdefine_line|#define msg_button_ignore&t;&quot;PCI slot #%d - button press ignored.  (action in progress...)&bslash;n&quot;
-multiline_comment|/* sysfs function for the hotplug controller info */
-r_extern
-r_void
-id|pciehp_create_ctrl_files
-(paren
-r_struct
-id|controller
-op_star
-id|ctrl
-)paren
-suffix:semicolon
 multiline_comment|/* controller functions */
 r_extern
 r_int

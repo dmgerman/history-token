@@ -4,6 +4,8 @@ DECL|macro|_LINUX_MOUNT_H
 mdefine_line|#define _LINUX_MOUNT_H
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/list.h&gt;
+macro_line|#include &lt;linux/spinlock.h&gt;
+macro_line|#include &lt;asm/atomic.h&gt;
 DECL|macro|MNT_NOSUID
 mdefine_line|#define MNT_NOSUID&t;1
 DECL|macro|MNT_NODEV

@@ -423,6 +423,13 @@ id|select_no_atn
 suffix:colon
 l_int|1
 suffix:semicolon
+DECL|member|fix_capacity
+r_int
+id|fix_capacity
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* READ_CAPACITY is too high by 1 */
 DECL|member|device_blocked
 r_int
 r_int

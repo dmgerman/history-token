@@ -771,31 +771,6 @@ comma
 id|US_FL_FIX_INQUIRY
 )paren
 comma
-multiline_comment|/* Reported by Iacopo Spalletti &lt;avvisi@spalletti.it&gt; */
-id|UNUSUAL_DEV
-c_func
-(paren
-l_int|0x052b
-comma
-l_int|0x1807
-comma
-l_int|0x0100
-comma
-l_int|0x0100
-comma
-l_string|&quot;Tekom Technologies, Inc&quot;
-comma
-l_string|&quot;300_CAMERA&quot;
-comma
-id|US_SC_DEVICE
-comma
-id|US_PR_DEVICE
-comma
-l_int|NULL
-comma
-id|US_FL_IGNORE_RESIDUE
-)paren
-comma
 multiline_comment|/* Yakumo Mega Image 37&n; * Submitted by Stephan Fuhrmann &lt;atomenergie@t-online.de&gt; */
 id|UNUSUAL_DEV
 c_func
@@ -821,6 +796,31 @@ comma
 id|US_FL_IGNORE_RESIDUE
 )paren
 comma
+multiline_comment|/* Reported by Iacopo Spalletti &lt;avvisi@spalletti.it&gt; */
+id|UNUSUAL_DEV
+c_func
+(paren
+l_int|0x052b
+comma
+l_int|0x1807
+comma
+l_int|0x0100
+comma
+l_int|0x0100
+comma
+l_string|&quot;Tekom Technologies, Inc&quot;
+comma
+l_string|&quot;300_CAMERA&quot;
+comma
+id|US_SC_DEVICE
+comma
+id|US_PR_DEVICE
+comma
+l_int|NULL
+comma
+id|US_FL_IGNORE_RESIDUE
+)paren
+comma
 multiline_comment|/* Yakumo Mega Image 47&n; * Reported by Bjoern Paetzel &lt;kolrabi@kolrabi.de&gt; */
 id|UNUSUAL_DEV
 c_func
@@ -828,6 +828,31 @@ c_func
 l_int|0x052b
 comma
 l_int|0x1905
+comma
+l_int|0x0100
+comma
+l_int|0x0100
+comma
+l_string|&quot;Tekom Technologies, Inc&quot;
+comma
+l_string|&quot;400_CAMERA&quot;
+comma
+id|US_SC_DEVICE
+comma
+id|US_PR_DEVICE
+comma
+l_int|NULL
+comma
+id|US_FL_IGNORE_RESIDUE
+)paren
+comma
+multiline_comment|/* Reported by Paul Ortyl &lt;ortylp@3miasto.net&gt;&n; * Note that it&squot;s similar to the device above, only different prodID */
+id|UNUSUAL_DEV
+c_func
+(paren
+l_int|0x052b
+comma
+l_int|0x1911
 comma
 l_int|0x0100
 comma

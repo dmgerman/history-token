@@ -1880,6 +1880,12 @@ c_func
 (paren
 )paren
 suffix:semicolon
+id|DQUOT_OFF
+c_func
+(paren
+id|sb
+)paren
+suffix:semicolon
 id|retval
 op_assign
 id|do_remount_sb

@@ -798,6 +798,7 @@ r_char
 op_star
 id|name
 suffix:semicolon
+multiline_comment|/* &n;&t; * First, try the static array &n;&t; */
 id|va_start
 c_func
 (paren
@@ -806,7 +807,6 @@ comma
 id|fmt
 )paren
 suffix:semicolon
-multiline_comment|/* &n;&t; * First, try the static array &n;&t; */
 id|need
 op_assign
 id|vsnprintf
@@ -818,6 +818,12 @@ id|limit
 comma
 id|fmt
 comma
+id|args
+)paren
+suffix:semicolon
+id|va_end
+c_func
+(paren
 id|args
 )paren
 suffix:semicolon
@@ -867,6 +873,14 @@ r_goto
 id|Done
 suffix:semicolon
 )brace
+id|va_start
+c_func
+(paren
+id|args
+comma
+id|fmt
+)paren
+suffix:semicolon
 id|need
 op_assign
 id|vsnprintf
@@ -878,6 +892,12 @@ id|limit
 comma
 id|fmt
 comma
+id|args
+)paren
+suffix:semicolon
+id|va_end
+c_func
+(paren
 id|args
 )paren
 suffix:semicolon
@@ -929,12 +949,6 @@ id|name
 suffix:semicolon
 id|Done
 suffix:colon
-id|va_end
-c_func
-(paren
-id|args
-)paren
-suffix:semicolon
 r_return
 id|error
 suffix:semicolon

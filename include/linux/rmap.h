@@ -267,6 +267,9 @@ op_star
 comma
 r_int
 id|is_locked
+comma
+r_int
+id|ignore_token
 )paren
 suffix:semicolon
 r_int
@@ -301,7 +304,7 @@ mdefine_line|#define anon_vma_prepare(vma)&t;(0)
 DECL|macro|anon_vma_link
 mdefine_line|#define anon_vma_link(vma)&t;do {} while (0)
 DECL|macro|page_referenced
-mdefine_line|#define page_referenced(page,l)&t;TestClearPageReferenced(page)
+mdefine_line|#define page_referenced(page,l,i) TestClearPageReferenced(page)
 DECL|macro|try_to_unmap
 mdefine_line|#define try_to_unmap(page)&t;SWAP_FAIL
 macro_line|#endif&t;/* CONFIG_MMU */
