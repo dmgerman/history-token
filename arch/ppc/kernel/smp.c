@@ -1470,7 +1470,7 @@ id|pt_regs
 suffix:semicolon
 id|p
 op_assign
-id|do_fork
+id|copy_process
 c_func
 (paren
 id|CLONE_VM
