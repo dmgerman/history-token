@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *   (c) 2003, 2004 Advanced Micro Devices, Inc.&n; *  Your use of this code is subject to the terms and conditions of the&n; *  GNU general public license version 2. See &quot;COPYING&quot; or&n; *  http://www.gnu.org/licenses/gpl.html&n; *&n; *  Support : paul.devriendt@amd.com&n; *&n; *  Based on the powernow-k7.c module written by Dave Jones.&n; *  (C) 2003 Dave Jones &lt;davej@codemonkey.org.uk&gt; on behalf of SuSE Labs&n; *  (C) 2004 Dominik Brodowski &lt;linux@brodo.de&gt;&n; *  (C) 2004 Pavel Machek &lt;pavel@suse.cz&gt;&n; *  Licensed under the terms of the GNU GPL License version 2.&n; *  Based upon datasheets &amp; sample CPUs kindly provided by AMD.&n; *&n; *  Valuable input gratefully received from Dave Jones, Pavel Machek,&n; *  Dominik Brodowski, and others.&n; *  Processor information obtained from Chapter 9 (Power and Thermal Management)&n; *  of the &quot;BIOS and Kernel Developer&squot;s Guide for the AMD Athlon 64 and AMD&n; *  Opteron Processors&quot; available for download from www.amd.com&n; */
+multiline_comment|/*&n; *   (c) 2003, 2004 Advanced Micro Devices, Inc.&n; *  Your use of this code is subject to the terms and conditions of the&n; *  GNU general public license version 2. See &quot;COPYING&quot; or&n; *  http://www.gnu.org/licenses/gpl.html&n; *&n; *  Support : paul.devriendt@amd.com&n; *&n; *  Based on the powernow-k7.c module written by Dave Jones.&n; *  (C) 2003 Dave Jones &lt;davej@codemonkey.org.uk&gt; on behalf of SuSE Labs&n; *  (C) 2004 Dominik Brodowski &lt;linux@brodo.de&gt;&n; *  (C) 2004 Pavel Machek &lt;pavel@suse.cz&gt;&n; *  Licensed under the terms of the GNU GPL License version 2.&n; *  Based upon datasheets &amp; sample CPUs kindly provided by AMD.&n; *&n; *  Valuable input gratefully received from Dave Jones, Pavel Machek,&n; *  Dominik Brodowski, and others.&n; *  Processor information obtained from Chapter 9 (Power and Thermal Management)&n; *  of the &quot;BIOS and Kernel Developer&squot;s Guide for the AMD Athlon 64 and AMD&n; *  Opteron Processors&quot; available for download from www.amd.com&n; *&n; *  Tables for specific CPUs can be infrerred from&n; *&t;http://www.amd.com/us-en/assets/content_type/white_papers_and_tech_docs/30430.pdf&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/smp.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -104,7 +104,7 @@ op_star
 l_int|25
 suffix:semicolon
 )brace
-multiline_comment|/* Return the vco fid for an input fid */
+multiline_comment|/* Return the vco fid for an input fid&n; *&n; * Each &quot;low&quot; fid has corresponding &quot;high&quot; fid, and you can get to &quot;low&quot; fids&n; * only from corresponding high fids. This returns &quot;high&quot; fid corresponding to&n; * &quot;low&quot; one.&n; */
 DECL|function|convert_fid_to_vco_fid
 r_static
 id|u32
@@ -979,9 +979,21 @@ suffix:semicolon
 r_while
 c_loop
 (paren
+(paren
 id|rvosteps
 OG
 l_int|0
+)paren
+op_logical_and
+(paren
+(paren
+id|data-&gt;rvo
+op_plus
+id|data-&gt;currvid
+)paren
+OG
+id|reqvid
+)paren
 )paren
 (brace
 r_if
@@ -1098,14 +1110,11 @@ id|reqfid
 (brace
 id|u32
 id|vcoreqfid
-suffix:semicolon
-id|u32
+comma
 id|vcocurrfid
-suffix:semicolon
-id|u32
+comma
 id|vcofiddiff
-suffix:semicolon
-id|u32
+comma
 id|savevid
 op_assign
 id|data-&gt;currvid
@@ -2010,7 +2019,7 @@ c_func
 (paren
 id|KERN_ERR
 id|PFX
-l_string|&quot;fid %d invalid : 0x%x&bslash;n&quot;
+l_string|&quot;two low fids - %d : 0x%x&bslash;n&quot;
 comma
 id|j
 comma
@@ -2704,7 +2713,7 @@ suffix:semicolon
 )brace
 id|data-&gt;vstable
 op_assign
-id|psb-&gt;voltagestabilizationtime
+id|psb-&gt;vstable
 suffix:semicolon
 id|dprintk
 c_func
@@ -2801,12 +2810,12 @@ c_func
 (paren
 l_string|&quot;numpst: 0x%x&bslash;n&quot;
 comma
-id|psb-&gt;numpst
+id|psb-&gt;num_tables
 )paren
 suffix:semicolon
 id|cpst
 op_assign
-id|psb-&gt;numpst
+id|psb-&gt;num_tables
 suffix:semicolon
 r_if
 c_cond
@@ -2909,7 +2918,7 @@ id|psb-&gt;maxvid
 suffix:semicolon
 id|data-&gt;numps
 op_assign
-id|psb-&gt;numpstates
+id|psb-&gt;numps
 suffix:semicolon
 id|dprintk
 c_func
@@ -4625,6 +4634,12 @@ id|PFX
 l_string|&quot;invalid powernow_table&bslash;n&quot;
 )paren
 suffix:semicolon
+id|powernow_k8_cpu_exit_acpi
+c_func
+(paren
+id|data
+)paren
+suffix:semicolon
 id|kfree
 c_func
 (paren
@@ -4683,6 +4698,12 @@ suffix:semicolon
 id|schedule
 c_func
 (paren
+)paren
+suffix:semicolon
+id|powernow_k8_cpu_exit_acpi
+c_func
+(paren
+id|data
 )paren
 suffix:semicolon
 id|kfree
