@@ -456,6 +456,12 @@ op_assign
 l_int|62
 comma
 multiline_comment|/* dir: pty driver */
+DECL|enumerator|KERN_NGROUPS_MAX
+id|KERN_NGROUPS_MAX
+op_assign
+l_int|63
+comma
+multiline_comment|/* int: NGROUPS_MAX */
 )brace
 suffix:semicolon
 multiline_comment|/* CTL_VM names: */
