@@ -1604,22 +1604,10 @@ id|HFCSX_RESET
 )paren
 suffix:semicolon
 multiline_comment|/* Reset On */
-id|set_current_state
+id|msleep
 c_func
-(paren
-id|TASK_UNINTERRUPTIBLE
-)paren
-suffix:semicolon
-id|schedule_timeout
-c_func
-(paren
 (paren
 l_int|30
-op_star
-id|HZ
-)paren
-op_div
-l_int|1000
 )paren
 suffix:semicolon
 multiline_comment|/* Timeout 30ms */
@@ -7232,22 +7220,10 @@ comma
 id|flags
 )paren
 suffix:semicolon
-id|set_current_state
+id|msleep
 c_func
-(paren
-id|TASK_UNINTERRUPTIBLE
-)paren
-suffix:semicolon
-id|schedule_timeout
-c_func
-(paren
 (paren
 l_int|80
-op_star
-id|HZ
-)paren
-op_div
-l_int|1000
 )paren
 suffix:semicolon
 multiline_comment|/* Timeout 80ms */
