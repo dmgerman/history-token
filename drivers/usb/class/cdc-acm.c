@@ -3170,6 +3170,12 @@ c_func
 id|acm-&gt;writeurb
 )paren
 suffix:semicolon
+id|flush_scheduled_work
+c_func
+(paren
+)paren
+suffix:semicolon
+multiline_comment|/* wait for acm_softint */
 id|kfree
 c_func
 (paren
