@@ -6,32 +6,6 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;scsi/scsi_host.h&gt;
-r_extern
-r_void
-id|scsi_report_bus_reset
-c_func
-(paren
-r_struct
-id|Scsi_Host
-op_star
-comma
-r_int
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|scsi_report_device_reset
-c_func
-(paren
-r_struct
-id|Scsi_Host
-op_star
-comma
-r_int
-comma
-r_int
-)paren
-suffix:semicolon
 DECL|struct|scsi_driver
 r_struct
 id|scsi_driver
