@@ -1892,10 +1892,6 @@ id|tty_ldisc
 op_star
 id|ld
 suffix:semicolon
-r_int
-r_int
-id|flags
-suffix:semicolon
 r_if
 c_cond
 (paren
