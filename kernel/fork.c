@@ -1172,12 +1172,6 @@ c_func
 id|tmp
 )paren
 suffix:semicolon
-id|vma_prio_tree_init
-c_func
-(paren
-id|tmp
-)paren
-suffix:semicolon
 id|file
 op_assign
 id|tmp-&gt;vm_file

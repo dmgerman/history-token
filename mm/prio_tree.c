@@ -1806,6 +1806,14 @@ id|old
 )paren
 )paren
 suffix:semicolon
+id|vma-&gt;shared.vm_set.head
+op_assign
+l_int|NULL
+suffix:semicolon
+id|vma-&gt;shared.vm_set.parent
+op_assign
+l_int|NULL
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1882,6 +1890,10 @@ r_struct
 id|vm_area_struct
 op_star
 id|old
+suffix:semicolon
+id|vma-&gt;shared.vm_set.head
+op_assign
+l_int|NULL
 suffix:semicolon
 id|ptr
 op_assign
