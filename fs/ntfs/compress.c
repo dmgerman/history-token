@@ -50,17 +50,24 @@ DECL|typedef|ntfs_compression_constants
 )brace
 id|ntfs_compression_constants
 suffix:semicolon
-multiline_comment|/**&n; * ntfs_compression_buffers - per-CPU buffers for the decompression engine.&n; */
-DECL|variable|ntfs_compression_buffers
+multiline_comment|/**&n; * ntfs_compression_buffer - one buffer for the decompression engine.&n; */
+DECL|variable|ntfs_compression_buffer
 r_static
 id|u8
 op_star
-op_star
-id|ntfs_compression_buffers
+id|ntfs_compression_buffer
 op_assign
 l_int|NULL
 suffix:semicolon
-multiline_comment|/**&n; * allocate_compression_buffers - allocate the per-CPU decompression buffers&n; *&n; * Allocate the per-CPU buffers for the decompression engine.&n; *&n; * Caller has to hold the ntfs_lock semaphore.&n; *&n; * Return 0 on success or -ENOMEM if the allocations failed.&n; */
+multiline_comment|/* This spinlock which protects it */
+DECL|variable|ntfs_cb_lock
+r_static
+id|spinlock_t
+id|ntfs_cb_lock
+op_assign
+id|SPIN_LOCK_UNLOCKED
+suffix:semicolon
+multiline_comment|/**&n; * allocate_compression_buffers - allocate the decompression buffers&n; *&n; * Caller has to hold the ntfs_lock semaphore.&n; *&n; * Return 0 on success or -ENOMEM if the allocations failed.&n; */
 DECL|function|allocate_compression_buffers
 r_int
 id|allocate_compression_buffers
@@ -77,64 +84,11 @@ suffix:semicolon
 id|BUG_ON
 c_func
 (paren
-id|ntfs_compression_buffers
+id|ntfs_compression_buffer
 )paren
 suffix:semicolon
-id|ntfs_compression_buffers
+id|ntfs_compression_buffer
 op_assign
-(paren
-id|u8
-op_star
-op_star
-)paren
-id|kmalloc
-c_func
-(paren
-id|smp_num_cpus
-op_star
-r_sizeof
-(paren
-id|u8
-op_star
-)paren
-comma
-id|GFP_KERNEL
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|ntfs_compression_buffers
-)paren
-r_return
-op_minus
-id|ENOMEM
-suffix:semicolon
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-id|smp_num_cpus
-suffix:semicolon
-id|i
-op_increment
-)paren
-(brace
-id|ntfs_compression_buffers
-(braket
-id|i
-)braket
-op_assign
-(paren
-id|u8
-op_star
-)paren
 id|vmalloc
 c_func
 (paren
@@ -145,60 +99,17 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|ntfs_compression_buffers
-(braket
-id|i
-)braket
+id|ntfs_compression_buffer
 )paren
-r_break
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-id|i
-op_eq
-id|smp_num_cpus
-)paren
-r_return
-l_int|0
-suffix:semicolon
-multiline_comment|/* Allocation failed, cleanup and return error. */
-r_for
-c_loop
-(paren
-id|j
-op_assign
-l_int|0
-suffix:semicolon
-id|j
-OL
-id|i
-suffix:semicolon
-id|j
-op_increment
-)paren
-id|vfree
-c_func
-(paren
-id|ntfs_compression_buffers
-(braket
-id|j
-)braket
-)paren
-suffix:semicolon
-id|kfree
-c_func
-(paren
-id|ntfs_compression_buffers
-)paren
-suffix:semicolon
 r_return
 op_minus
 id|ENOMEM
 suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
 )brace
-multiline_comment|/**&n; * free_compression_buffers - free the per-CPU decompression buffers&n; *&n; * Free the per-CPU buffers used by the decompression engine.&n; *&n; * Caller has to hold the ntfs_lock semaphore.&n; */
+multiline_comment|/**&n; * free_compression_buffers - free the decompression buffers&n; *&n; * Caller has to hold the ntfs_lock semaphore.&n; */
 DECL|function|free_compression_buffers
 r_void
 id|free_compression_buffers
@@ -214,39 +125,16 @@ id|BUG_ON
 c_func
 (paren
 op_logical_neg
-id|ntfs_compression_buffers
+id|ntfs_compression_buffer
 )paren
 suffix:semicolon
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-id|smp_num_cpus
-suffix:semicolon
-id|i
-op_increment
-)paren
 id|vfree
 c_func
 (paren
-id|ntfs_compression_buffers
-(braket
-id|i
-)braket
+id|ntfs_compression_buffer
 )paren
 suffix:semicolon
-id|kfree
-c_func
-(paren
-id|ntfs_compression_buffers
-)paren
-suffix:semicolon
-id|ntfs_compression_buffers
+id|ntfs_compression_buffer
 op_assign
 l_int|NULL
 suffix:semicolon
@@ -442,10 +330,12 @@ l_int|0
 suffix:semicolon
 id|return_error
 suffix:colon
-multiline_comment|/* We can sleep from now on, so we reenable preemption. */
-id|preempt_enable
+multiline_comment|/* We can sleep from now on, so we drop lock. */
+id|spin_unlock
 c_func
 (paren
+op_amp
+id|ntfs_cb_lock
 )paren
 suffix:semicolon
 multiline_comment|/* Second stage: finalize completed pages. */
@@ -2030,21 +1920,17 @@ r_goto
 id|read_err
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * Get the compression buffer corresponding to the current CPU. We must&n;&t; * not sleep any more until we are finished with the compression buffer.&n;&t; * If on a preemptible kernel, now disable preemption.&n;&t; */
-id|preempt_disable
+multiline_comment|/*&n;&t; * Get the compression buffer. We must not sleep any more&n;&t; * until we are finished with it.  */
+id|spin_lock
 c_func
 (paren
+op_amp
+id|ntfs_cb_lock
 )paren
 suffix:semicolon
 id|cb
 op_assign
-id|ntfs_compression_buffers
-(braket
-id|smp_processor_id
-c_func
-(paren
-)paren
-)braket
+id|ntfs_compression_buffer
 suffix:semicolon
 id|BUG_ON
 c_func
@@ -2185,10 +2071,12 @@ c_func
 l_string|&quot;Found sparse compression block.&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* We can sleep from now on, so we reenable preemption. */
-id|preempt_enable
+multiline_comment|/* We can sleep from now on, so we drop lock. */
+id|spin_unlock
 c_func
 (paren
+op_amp
+id|ntfs_cb_lock
 )paren
 suffix:semicolon
 r_if
@@ -2546,10 +2434,12 @@ op_assign
 id|cb_max_ofs
 suffix:semicolon
 )brace
-multiline_comment|/* We can sleep from now on, so we reenable preemption. */
-id|preempt_enable
+multiline_comment|/* We can sleep from now on, so drop lock. */
+id|spin_unlock
 c_func
 (paren
+op_amp
+id|ntfs_cb_lock
 )paren
 suffix:semicolon
 multiline_comment|/* Second stage: finalize pages. */
@@ -2697,7 +2587,7 @@ id|cb
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * We can sleep from now on, preemption already reenabled by&n;&t;&t; * ntfs_decompess.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * We can sleep from now on, lock already dropped by&n;&t;&t; * ntfs_decompress.  */
 r_if
 c_cond
 (paren

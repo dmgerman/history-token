@@ -694,9 +694,13 @@ comma
 l_int|20
 )paren
 suffix:semicolon
+multiline_comment|/* FIXME: Is this bogus? --RR */
 id|sh-&gt;num_cpus
 op_assign
-id|smp_num_cpus
+id|num_online_cpus
+c_func
+(paren
+)paren
 suffix:semicolon
 id|sh-&gt;page_size
 op_assign
@@ -4188,7 +4192,10 @@ c_cond
 (paren
 id|sh-&gt;num_cpus
 op_ne
-id|smp_num_cpus
+id|num_online_cpus
+c_func
+(paren
+)paren
 )paren
 (brace
 r_return

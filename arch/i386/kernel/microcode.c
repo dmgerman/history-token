@@ -506,7 +506,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|smp_num_cpus
+id|NR_CPUS
 suffix:semicolon
 id|i
 op_increment
@@ -1514,7 +1514,7 @@ op_assign
 id|kmalloc
 c_func
 (paren
-id|smp_num_cpus
+id|NR_CPUS
 op_star
 r_sizeof
 (paren
@@ -1631,7 +1631,7 @@ r_else
 (brace
 id|mc_fsize
 op_assign
-id|smp_num_cpus
+id|NR_CPUS
 op_star
 r_sizeof
 (paren
@@ -1726,7 +1726,7 @@ id|mc_applied
 r_int
 id|bytes
 op_assign
-id|smp_num_cpus
+id|NR_CPUS
 op_star
 r_sizeof
 (paren

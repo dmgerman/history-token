@@ -26,17 +26,17 @@ mdefine_line|#define CHECKSUM_HW 1
 DECL|macro|CHECKSUM_UNNECESSARY
 mdefine_line|#define CHECKSUM_UNNECESSARY 2
 DECL|macro|SKB_DATA_ALIGN
-mdefine_line|#define SKB_DATA_ALIGN(X)&t;(((X) + (SMP_CACHE_BYTES-1)) &amp; ~(SMP_CACHE_BYTES-1))
+mdefine_line|#define SKB_DATA_ALIGN(X)&t;(((X) + (SMP_CACHE_BYTES - 1)) &amp; &bslash;&n;&t;&t;&t;&t; ~(SMP_CACHE_BYTES - 1))
 DECL|macro|SKB_MAX_ORDER
-mdefine_line|#define SKB_MAX_ORDER(X,ORDER)&t;(((PAGE_SIZE&lt;&lt;(ORDER)) - (X) - sizeof(struct skb_shared_info))&amp;~(SMP_CACHE_BYTES-1))
+mdefine_line|#define SKB_MAX_ORDER(X, ORDER)&t;(((PAGE_SIZE &lt;&lt; (ORDER)) - (X) - &bslash;&n;&t;&t;&t;&t;  sizeof(struct skb_shared_info)) &amp; &bslash;&n;&t;&t;&t;&t;  ~(SMP_CACHE_BYTES - 1))
 DECL|macro|SKB_MAX_HEAD
-mdefine_line|#define SKB_MAX_HEAD(X)&t;&t;(SKB_MAX_ORDER((X),0))
+mdefine_line|#define SKB_MAX_HEAD(X)&t;&t;(SKB_MAX_ORDER((X), 0))
 DECL|macro|SKB_MAX_ALLOC
-mdefine_line|#define SKB_MAX_ALLOC&t;&t;(SKB_MAX_ORDER(0,2))
+mdefine_line|#define SKB_MAX_ALLOC&t;&t;(SKB_MAX_ORDER(0, 2))
 multiline_comment|/* A. Checksumming of received packets by device.&n; *&n; *&t;NONE: device failed to checksum this packet.&n; *&t;&t;skb-&gt;csum is undefined.&n; *&n; *&t;UNNECESSARY: device parsed packet and wouldbe verified checksum.&n; *&t;&t;skb-&gt;csum is undefined.&n; *&t;      It is bad option, but, unfortunately, many of vendors do this.&n; *&t;      Apparently with secret goal to sell you new device, when you&n; *&t;      will add new protocol to your host. F.e. IPv6. 8)&n; *&n; *&t;HW: the most generic way. Device supplied checksum of _all_&n; *&t;    the packet as seen by netif_rx in skb-&gt;csum.&n; *&t;    NOTE: Even if device supports only some protocols, but&n; *&t;    is able to produce some skb-&gt;csum, it MUST use HW,&n; *&t;    not UNNECESSARY.&n; *&n; * B. Checksumming on output.&n; *&n; *&t;NONE: skb is checksummed by protocol or csum is not required.&n; *&n; *&t;HW: device is required to csum packet as seen by hard_start_xmit&n; *&t;from skb-&gt;h.raw to the end and to record the checksum&n; *&t;at skb-&gt;h.raw+skb-&gt;csum.&n; *&n; *&t;Device must show its capabilities in dev-&gt;features, set&n; *&t;at device setup time.&n; *&t;NETIF_F_HW_CSUM&t;- it is clever device, it is able to checksum&n; *&t;&t;&t;  everything.&n; *&t;NETIF_F_NO_CSUM - loopback or reliable single hop media.&n; *&t;NETIF_F_IP_CSUM - device is dumb. It is able to csum only&n; *&t;&t;&t;  TCP/UDP over IPv4. Sigh. Vendors like this&n; *&t;&t;&t;  way by an unknown reason. Though, see comment above&n; *&t;&t;&t;  about CHECKSUM_UNNECESSARY. 8)&n; *&n; *&t;Any questions? No questions, good. &t;&t;--ANK&n; */
 macro_line|#ifdef __i386__
 DECL|macro|NET_CALLER
-mdefine_line|#define NET_CALLER(arg) (*(((void**)&amp;arg)-1))
+mdefine_line|#define NET_CALLER(arg) (*(((void **)&amp;arg) - 1))
 macro_line|#else
 DECL|macro|NET_CALLER
 mdefine_line|#define NET_CALLER(arg) __builtin_return_address(0)
@@ -164,6 +164,7 @@ id|MAX_SKB_FRAGS
 suffix:semicolon
 )brace
 suffix:semicolon
+multiline_comment|/** &n; *&t;struct sk_buff - socket buffer&n; *&t;@next: Next buffer in list&n; *&t;@prev: Previous buffer in list&n; *&t;@list: List we are on&n; *&t;@sk: Socket we are owned by&n; *&t;@stamp: Time we arrived&n; *&t;@dev: Device we arrived on/are leaving by&n; *&t;@h: Transport layer header&n; *&t;@nh: Network layer header&n; *&t;@mac: Link layer header&n; *&t;@dst: FIXME: Describe this field&n; *&t;@cb: Control buffer. Free for use by every layer. Put private vars here&n; *&t;@len: Length of actual data&n; *&t;@data_len: Data length&n; *&t;@csum: Checksum&n; *&t;@__unused: Dead field, may be reused&n; *&t;@cloned: Head may be cloned (check refcnt to be sure)&n; *&t;@pkt_type: Packet class&n; *&t;@ip_summed: Driver fed us an IP checksum&n; *&t;@priority: Packet queueing priority&n; *&t;@users: User count - see {datagram,tcp}.c&n; *&t;@protocol: Packet protocol from driver&n; *&t;@security: Security level of packet&n; *&t;@truesize: Buffer size &n; *&t;@head: Head of buffer&n; *&t;@data: Data head pointer&n; *&t;@tail: Tail pointer&n; *&t;@end: End pointer&n; *&t;@destructor: Destruct function&n; *&t;@nfmark: Can be used for communication between hooks&n; *&t;@nfcache: Cache info&n; *&t;@nfct: Associated connection, if any&n; *&t;@nf_debug: Netfilter debugging&n; *&t;@tc_index: Traffic control index&n; */
 DECL|struct|sk_buff
 r_struct
 id|sk_buff
@@ -175,42 +176,35 @@ id|sk_buff
 op_star
 id|next
 suffix:semicolon
-multiline_comment|/* Next buffer in list &t;&t;&t;&t;*/
 DECL|member|prev
 r_struct
 id|sk_buff
 op_star
 id|prev
 suffix:semicolon
-multiline_comment|/* Previous buffer in list &t;&t;&t;*/
 DECL|member|list
 r_struct
 id|sk_buff_head
 op_star
 id|list
 suffix:semicolon
-multiline_comment|/* List we are on&t;&t;&t;&t;*/
 DECL|member|sk
 r_struct
 id|sock
 op_star
 id|sk
 suffix:semicolon
-multiline_comment|/* Socket we are owned by &t;&t;&t;*/
 DECL|member|stamp
 r_struct
 id|timeval
 id|stamp
 suffix:semicolon
-multiline_comment|/* Time we arrived&t;&t;&t;&t;*/
 DECL|member|dev
 r_struct
 id|net_device
 op_star
 id|dev
 suffix:semicolon
-multiline_comment|/* Device we arrived on/are leaving by&t;&t;*/
-multiline_comment|/* Transport layer header */
 r_union
 (brace
 DECL|member|th
@@ -259,7 +253,6 @@ DECL|member|h
 )brace
 id|h
 suffix:semicolon
-multiline_comment|/* Network layer header */
 r_union
 (brace
 DECL|member|iph
@@ -296,7 +289,6 @@ DECL|member|nh
 )brace
 id|nh
 suffix:semicolon
-multiline_comment|/* Link layer header */
 r_union
 (brace
 DECL|member|ethernet
@@ -321,7 +313,7 @@ id|dst_entry
 op_star
 id|dst
 suffix:semicolon
-multiline_comment|/* &n;&t; * This is the control buffer. It is free to use for every&n;&t; * layer. Please put your private variables there. If you&n;&t; * want to keep them across layers you have to do a skb_clone()&n;&t; * first. This is owned by whoever has the skb queued ATM.&n;&t; */
+multiline_comment|/*&n;&t; * This is the control buffer. It is free to use for every&n;&t; * layer. Please put your private variables there. If you&n;&t; * want to keep them across layers you have to do a skb_clone()&n;&t; * first. This is owned by whoever has the skb queued ATM.&n;&t; */
 DECL|member|cb
 r_char
 id|cb
@@ -333,93 +325,66 @@ DECL|member|len
 r_int
 r_int
 id|len
-suffix:semicolon
-multiline_comment|/* Length of actual data&t;&t;&t;*/
+comma
 DECL|member|data_len
-r_int
-r_int
 id|data_len
-suffix:semicolon
+comma
 DECL|member|csum
-r_int
-r_int
 id|csum
 suffix:semicolon
-multiline_comment|/* Checksum &t;&t;&t;&t;&t;*/
 DECL|member|__unused
 r_int
 r_char
 id|__unused
 comma
-multiline_comment|/* Dead field, may be reused&t;&t;&t;*/
 DECL|member|cloned
 id|cloned
 comma
-multiline_comment|/* head may be cloned (check refcnt to be sure). */
 DECL|member|pkt_type
 id|pkt_type
 comma
-multiline_comment|/* Packet class&t;&t;&t;&t;&t;*/
 DECL|member|ip_summed
 id|ip_summed
 suffix:semicolon
-multiline_comment|/* Driver fed us an IP checksum&t;&t;&t;*/
 DECL|member|priority
 id|__u32
 id|priority
 suffix:semicolon
-multiline_comment|/* Packet queueing priority&t;&t;&t;*/
 DECL|member|users
 id|atomic_t
 id|users
 suffix:semicolon
-multiline_comment|/* User count - see datagram.c,tcp.c &t;&t;*/
 DECL|member|protocol
 r_int
 r_int
 id|protocol
-suffix:semicolon
-multiline_comment|/* Packet protocol from driver. &t;&t;*/
+comma
 DECL|member|security
-r_int
-r_int
 id|security
 suffix:semicolon
-multiline_comment|/* Security level of packet&t;&t;&t;*/
 DECL|member|truesize
 r_int
 r_int
 id|truesize
 suffix:semicolon
-multiline_comment|/* Buffer size &t;&t;&t;&t;&t;*/
 DECL|member|head
 r_int
 r_char
 op_star
 id|head
-suffix:semicolon
-multiline_comment|/* Head of buffer &t;&t;&t;&t;*/
+comma
 DECL|member|data
-r_int
-r_char
 op_star
 id|data
-suffix:semicolon
-multiline_comment|/* Data head pointer&t;&t;&t;&t;*/
+comma
 DECL|member|tail
-r_int
-r_char
 op_star
 id|tail
-suffix:semicolon
-multiline_comment|/* Tail pointer&t;&t;&t;&t;&t;*/
+comma
 DECL|member|end
-r_int
-r_char
 op_star
 id|end
 suffix:semicolon
-multiline_comment|/* End pointer&t;&t;&t;&t;&t;*/
 DECL|member|destructor
 r_void
 (paren
@@ -430,22 +395,19 @@ id|destructor
 r_struct
 id|sk_buff
 op_star
+id|skb
 )paren
 suffix:semicolon
-multiline_comment|/* Destruct function&t;&t;*/
 macro_line|#ifdef CONFIG_NETFILTER
-multiline_comment|/* Can be used for communication between hooks. */
 DECL|member|nfmark
 r_int
 r_int
 id|nfmark
 suffix:semicolon
-multiline_comment|/* Cache info */
 DECL|member|nfcache
 id|__u32
 id|nfcache
 suffix:semicolon
-multiline_comment|/* Associated connection, if any */
 DECL|member|nfct
 r_struct
 id|nf_ct_info
@@ -459,9 +421,8 @@ r_int
 id|nf_debug
 suffix:semicolon
 macro_line|#endif
-macro_line|#endif /*CONFIG_NETFILTER*/
+macro_line|#endif /* CONFIG_NETFILTER */
 macro_line|#if defined(CONFIG_HIPPI)
-(def_block
 r_union
 (brace
 DECL|member|ifield
@@ -470,7 +431,6 @@ id|ifield
 suffix:semicolon
 DECL|member|private
 )brace
-)def_block
 r_private
 suffix:semicolon
 macro_line|#endif
@@ -693,7 +653,6 @@ id|list
 )paren
 (brace
 r_return
-(paren
 id|list-&gt;next
 op_eq
 (paren
@@ -702,7 +661,6 @@ id|sk_buff
 op_star
 )paren
 id|list
-)paren
 suffix:semicolon
 )brace
 multiline_comment|/**&n; *&t;skb_get - reference buffer&n; *&t;@skb: buffer to reference&n; *&n; *&t;Makes another reference to a socket buffer and returns a pointer&n; *&t;to the buffer.&n; */
@@ -732,7 +690,7 @@ r_return
 id|skb
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * If users==1, we are the only owner and are can avoid redundant&n; * atomic change.&n; */
+multiline_comment|/*&n; * If users == 1, we are the only owner and are can avoid redundant&n; * atomic change.&n; */
 multiline_comment|/**&n; *&t;kfree_skb - free an sk_buff&n; *&t;@skb: buffer to free&n; *&n; *&t;Drop a reference to the buffer and free it if the usage count has&n; *&t;hit zero.&n; */
 DECL|function|kfree_skb
 r_static
@@ -861,7 +819,6 @@ id|skb
 )paren
 (brace
 r_return
-(paren
 id|atomic_read
 c_func
 (paren
@@ -870,10 +827,9 @@ id|skb-&gt;users
 )paren
 op_ne
 l_int|1
-)paren
 suffix:semicolon
 )brace
-multiline_comment|/** &n; *&t;skb_share_check - check if buffer is shared and if so clone it&n; *&t;@skb: buffer to check&n; *&t;@pri: priority for memory allocation&n; *&t;&n; *&t;If the buffer is shared the buffer is cloned and the old copy&n; *&t;drops a reference. A new clone with a single reference is returned.&n; *&t;If the buffer is not shared the original buffer is returned. When&n; *&t;being called from interrupt status or with spinlocks held pri must&n; *&t;be GFP_ATOMIC.&n; *&n; *&t;NULL is returned on a memory allocation failure.&n; */
+multiline_comment|/**&n; *&t;skb_share_check - check if buffer is shared and if so clone it&n; *&t;@skb: buffer to check&n; *&t;@pri: priority for memory allocation&n; *&n; *&t;If the buffer is shared the buffer is cloned and the old copy&n; *&t;drops a reference. A new clone with a single reference is returned.&n; *&t;If the buffer is not shared the original buffer is returned. When&n; *&t;being called from interrupt status or with spinlocks held pri must&n; *&t;be GFP_ATOMIC.&n; *&n; *&t;NULL is returned on a memory allocation failure.&n; */
 DECL|function|skb_share_check
 r_static
 r_inline
@@ -906,8 +862,6 @@ r_struct
 id|sk_buff
 op_star
 id|nskb
-suffix:semicolon
-id|nskb
 op_assign
 id|skb_clone
 c_func
@@ -923,7 +877,8 @@ c_func
 id|skb
 )paren
 suffix:semicolon
-r_return
+id|skb
+op_assign
 id|nskb
 suffix:semicolon
 )brace
@@ -951,15 +906,9 @@ r_int
 id|pri
 )paren
 (brace
-r_struct
-id|sk_buff
-op_star
-id|nskb
-suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
 id|skb_cloned
 c_func
 (paren
@@ -967,10 +916,9 @@ id|skb
 )paren
 )paren
 (brace
-r_return
-id|skb
-suffix:semicolon
-)brace
+r_struct
+id|sk_buff
+op_star
 id|nskb
 op_assign
 id|skb_copy
@@ -988,8 +936,13 @@ id|skb
 )paren
 suffix:semicolon
 multiline_comment|/* Free our shared copy */
-r_return
+id|skb
+op_assign
 id|nskb
+suffix:semicolon
+)brace
+r_return
+id|skb
 suffix:semicolon
 )brace
 multiline_comment|/**&n; *&t;skb_peek&n; *&t;@list_: list to peek at&n; *&n; *&t;Peek an &amp;sk_buff. Unlike most other operations you _MUST_&n; *&t;be careful with this one. A peek leaves the buffer on the&n; *&t;list and someone else may run off with it. You must hold&n; *&t;the appropriate locks or have a private queue to do this.&n; *&n; *&t;Returns %NULL for an empty list or a pointer to the head element.&n; *&t;The reference count is not incremented and the reference is therefore&n; *&t;volatile. Use with caution.&n; */
@@ -1096,7 +1049,7 @@ r_return
 id|list
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;skb_queue_len&t;- get queue length&n; *&t;@list_: list to measure&n; *&n; *&t;Return the length of an &amp;sk_buff queue. &n; */
+multiline_comment|/**&n; *&t;skb_queue_len&t;- get queue length&n; *&t;@list_: list to measure&n; *&n; *&t;Return the length of an &amp;sk_buff queue.&n; */
 DECL|function|skb_queue_len
 r_static
 r_inline
@@ -1136,13 +1089,6 @@ id|list-&gt;lock
 suffix:semicolon
 id|list-&gt;prev
 op_assign
-(paren
-r_struct
-id|sk_buff
-op_star
-)paren
-id|list
-suffix:semicolon
 id|list-&gt;next
 op_assign
 (paren
@@ -1215,8 +1161,6 @@ id|prev
 suffix:semicolon
 id|next-&gt;prev
 op_assign
-id|newsk
-suffix:semicolon
 id|prev-&gt;next
 op_assign
 id|newsk
@@ -1329,8 +1273,6 @@ id|prev
 suffix:semicolon
 id|next-&gt;prev
 op_assign
-id|newsk
-suffix:semicolon
 id|prev-&gt;next
 op_assign
 id|newsk
@@ -1459,8 +1401,6 @@ id|next
 suffix:semicolon
 id|result-&gt;next
 op_assign
-l_int|NULL
-suffix:semicolon
 id|result-&gt;prev
 op_assign
 l_int|NULL
@@ -1568,8 +1508,6 @@ id|prev
 suffix:semicolon
 id|next-&gt;prev
 op_assign
-id|newsk
-suffix:semicolon
 id|prev-&gt;next
 op_assign
 id|newsk
@@ -1758,8 +1696,6 @@ id|skb-&gt;prev
 suffix:semicolon
 id|skb-&gt;next
 op_assign
-l_int|NULL
-suffix:semicolon
 id|skb-&gt;prev
 op_assign
 l_int|NULL
@@ -1777,7 +1713,7 @@ op_assign
 id|next
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;skb_unlink&t;-&t;remove a buffer from a list&n; *&t;@skb: buffer to remove&n; *&n; *&t;Place a packet after a given packet in a list. The list locks are taken&n; *&t;and this function is atomic with respect to other list locked calls&n; *&t;&n; *&t;Works even without knowing the list it is sitting on, which can be &n; *&t;handy at times. It also means that THE LIST MUST EXIST when you &n; *&t;unlink. Thus a list must have its contents unlinked before it is&n; *&t;destroyed.&n; */
+multiline_comment|/**&n; *&t;skb_unlink&t;-&t;remove a buffer from a list&n; *&t;@skb: buffer to remove&n; *&n; *&t;Place a packet after a given packet in a list. The list locks are taken&n; *&t;and this function is atomic with respect to other list locked calls&n; *&n; *&t;Works even without knowing the list it is sitting on, which can be&n; *&t;handy at times. It also means that THE LIST MUST EXIST when you&n; *&t;unlink. Thus a list must have its contents unlinked before it is&n; *&t;destroyed.&n; */
 DECL|function|skb_unlink
 r_static
 r_inline
@@ -1824,7 +1760,6 @@ id|skb-&gt;list
 op_eq
 id|list
 )paren
-(brace
 id|__skb_unlink
 c_func
 (paren
@@ -1833,7 +1768,6 @@ comma
 id|skb-&gt;list
 )paren
 suffix:semicolon
-)brace
 id|spin_unlock_irqrestore
 c_func
 (paren
@@ -1984,11 +1918,11 @@ id|skb-&gt;data_len
 suffix:semicolon
 )brace
 DECL|macro|SKB_PAGE_ASSERT
-mdefine_line|#define SKB_PAGE_ASSERT(skb) do { if (skb_shinfo(skb)-&gt;nr_frags) BUG(); } while (0)
+mdefine_line|#define SKB_PAGE_ASSERT(skb) do { if (skb_shinfo(skb)-&gt;nr_frags) &bslash;&n;&t;&t;&t;&t;&t;BUG(); } while (0)
 DECL|macro|SKB_FRAG_ASSERT
-mdefine_line|#define SKB_FRAG_ASSERT(skb) do { if (skb_shinfo(skb)-&gt;frag_list) BUG(); } while (0)
+mdefine_line|#define SKB_FRAG_ASSERT(skb) do { if (skb_shinfo(skb)-&gt;frag_list) &bslash;&n;&t;&t;&t;&t;&t;BUG(); } while (0)
 DECL|macro|SKB_LINEAR_ASSERT
-mdefine_line|#define SKB_LINEAR_ASSERT(skb) do { if (skb_is_nonlinear(skb)) BUG(); } while (0)
+mdefine_line|#define SKB_LINEAR_ASSERT(skb) do { if (skb_is_nonlinear(skb)) &bslash;&n;&t;&t;&t;&t;&t;BUG(); } while (0)
 multiline_comment|/*&n; *&t;Add data to an sk_buff&n; */
 DECL|function|__skb_put
 r_static
@@ -2034,7 +1968,7 @@ r_return
 id|tmp
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;skb_put - add data to a buffer&n; *&t;@skb: buffer to use &n; *&t;@len: amount of data to add&n; *&n; *&t;This function extends the used data area of the buffer. If this would&n; *&t;exceed the total buffer size the kernel will panic. A pointer to the&n; *&t;first byte of the extra data is returned.&n; */
+multiline_comment|/**&n; *&t;skb_put - add data to a buffer&n; *&t;@skb: buffer to use&n; *&t;@len: amount of data to add&n; *&n; *&t;This function extends the used data area of the buffer. If this would&n; *&t;exceed the total buffer size the kernel will panic. A pointer to the&n; *&t;first byte of the extra data is returned.&n; */
 DECL|function|skb_put
 r_static
 r_inline
@@ -2082,7 +2016,6 @@ id|skb-&gt;tail
 OG
 id|skb-&gt;end
 )paren
-(brace
 id|skb_over_panic
 c_func
 (paren
@@ -2096,7 +2029,6 @@ c_func
 )paren
 )paren
 suffix:semicolon
-)brace
 r_return
 id|tmp
 suffix:semicolon
@@ -2132,7 +2064,7 @@ r_return
 id|skb-&gt;data
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;skb_push - add data to the start of a buffer&n; *&t;@skb: buffer to use &n; *&t;@len: amount of data to add&n; *&n; *&t;This function extends the used data area of the buffer at the buffer&n; *&t;start. If this would exceed the total buffer headroom the kernel will&n; *&t;panic. A pointer to the first byte of the extra data is returned.&n; */
+multiline_comment|/**&n; *&t;skb_push - add data to the start of a buffer&n; *&t;@skb: buffer to use&n; *&t;@len: amount of data to add&n; *&n; *&t;This function extends the used data area of the buffer at the buffer&n; *&t;start. If this would exceed the total buffer headroom the kernel will&n; *&t;panic. A pointer to the first byte of the extra data is returned.&n; */
 DECL|function|skb_push
 r_static
 r_inline
@@ -2167,7 +2099,6 @@ id|skb-&gt;data
 OL
 id|skb-&gt;head
 )paren
-(brace
 id|skb_under_panic
 c_func
 (paren
@@ -2181,7 +2112,6 @@ c_func
 )paren
 )paren
 suffix:semicolon
-)brace
 r_return
 id|skb-&gt;data
 suffix:semicolon
@@ -2226,7 +2156,7 @@ op_add_assign
 id|len
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;skb_pull - remove data from the start of a buffer&n; *&t;@skb: buffer to use &n; *&t;@len: amount of data to remove&n; *&n; *&t;This function removes data from the start of a buffer, returning&n; *&t;the memory to the headroom. A pointer to the next data in the buffer&n; *&t;is returned. Once the data has been pulled future pushes will overwrite&n; *&t;the old data.&n; */
+multiline_comment|/**&n; *&t;skb_pull - remove data from the start of a buffer&n; *&t;@skb: buffer to use&n; *&t;@len: amount of data to remove&n; *&n; *&t;This function removes data from the start of a buffer, returning&n; *&t;the memory to the headroom. A pointer to the next data in the buffer&n; *&t;is returned. Once the data has been pulled future pushes will overwrite&n; *&t;the old data.&n; */
 DECL|function|skb_pull
 r_static
 r_inline
@@ -2246,17 +2176,16 @@ r_int
 id|len
 )paren
 (brace
-r_if
-c_cond
+r_return
 (paren
 id|len
 OG
 id|skb-&gt;len
 )paren
-r_return
+ques
+c_cond
 l_int|NULL
-suffix:semicolon
-r_return
+suffix:colon
 id|__skb_pull
 c_func
 (paren
@@ -2311,6 +2240,7 @@ c_func
 id|skb
 )paren
 op_logical_and
+op_logical_neg
 id|__pskb_pull_tail
 c_func
 (paren
@@ -2324,8 +2254,6 @@ c_func
 id|skb
 )paren
 )paren
-op_eq
-l_int|NULL
 )paren
 r_return
 l_int|NULL
@@ -2359,17 +2287,16 @@ r_int
 id|len
 )paren
 (brace
-r_if
-c_cond
+r_return
 (paren
 id|len
 OG
 id|skb-&gt;len
 )paren
-r_return
+ques
+c_cond
 l_int|NULL
-suffix:semicolon
-r_return
+suffix:colon
 id|__pskb_pull
 c_func
 (paren
@@ -2421,7 +2348,6 @@ r_return
 l_int|0
 suffix:semicolon
 r_return
-(paren
 id|__pskb_pull_tail
 c_func
 (paren
@@ -2437,7 +2363,6 @@ id|skb
 )paren
 op_ne
 l_int|NULL
-)paren
 suffix:semicolon
 )brace
 multiline_comment|/**&n; *&t;skb_headroom - bytes at buffer head&n; *&t;@skb: buffer to check&n; *&n; *&t;Return the number of bytes of free space at the head of an &amp;sk_buff.&n; */
@@ -2572,7 +2497,6 @@ id|len
 suffix:semicolon
 )brace
 r_else
-(brace
 id|___pskb_trim
 c_func
 (paren
@@ -2583,7 +2507,6 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-)brace
 )brace
 multiline_comment|/**&n; *&t;skb_trim - remove end from a buffer&n; *&t;@skb: buffer to alter&n; *&t;@len: new length&n; *&n; *&t;Cut the length of a buffer down by removing data from the tail. If&n; *&t;the buffer is already under the length specified it is not modified.&n; */
 DECL|function|skb_trim
@@ -2610,7 +2533,6 @@ id|skb-&gt;len
 OG
 id|len
 )paren
-(brace
 id|__skb_trim
 c_func
 (paren
@@ -2619,7 +2541,6 @@ comma
 id|len
 )paren
 suffix:semicolon
-)brace
 )brace
 DECL|function|__pskb_trim
 r_static
@@ -2659,8 +2580,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-r_else
-(brace
 r_return
 id|___pskb_trim
 c_func
@@ -2672,7 +2591,6 @@ comma
 l_int|1
 )paren
 suffix:semicolon
-)brace
 )brace
 DECL|function|pskb_trim
 r_static
@@ -2691,14 +2609,14 @@ r_int
 id|len
 )paren
 (brace
-r_if
-c_cond
+r_return
 (paren
 id|len
 OL
 id|skb-&gt;len
 )paren
-r_return
+ques
+c_cond
 id|__pskb_trim
 c_func
 (paren
@@ -2706,8 +2624,7 @@ id|skb
 comma
 id|len
 )paren
-suffix:semicolon
-r_return
+suffix:colon
 l_int|0
 suffix:semicolon
 )brace
@@ -2747,7 +2664,7 @@ op_assign
 l_int|NULL
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;skb_purge - empty a list&n; *&t;@list: list to empty&n; *&n; *&t;Delete all buffers on an &amp;sk_buff list. Each buffer is removed from&n; *&t;the list and one reference dropped. This function takes the list&n; *&t;lock and is atomic with respect to other list locking functions.&n; */
+multiline_comment|/**&n; *&t;skb_queue_purge - empty a list&n; *&t;@list: list to empty&n; *&n; *&t;Delete all buffers on an &amp;sk_buff list. Each buffer is removed from&n; *&t;the list and one reference dropped. This function takes the list&n; *&t;lock and is atomic with respect to other list locking functions.&n; */
 DECL|function|skb_queue_purge
 r_static
 r_inline
@@ -2788,7 +2705,7 @@ id|skb
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;__skb_purge - empty a list&n; *&t;@list: list to empty&n; *&n; *&t;Delete all buffers on an &amp;sk_buff list. Each buffer is removed from&n; *&t;the list and one reference dropped. This function does not take the&n; *&t;list lock and the caller must hold the relevant locks to use it.&n; */
+multiline_comment|/**&n; *&t;__skb_queue_purge - empty a list&n; *&t;@list: list to empty&n; *&n; *&t;Delete all buffers on an &amp;sk_buff list. Each buffer is removed from&n; *&t;the list and one reference dropped. This function does not take the&n; *&t;list lock and the caller must hold the relevant locks to use it.&n; */
 DECL|function|__skb_queue_purge
 r_static
 r_inline
@@ -2851,8 +2768,6 @@ r_struct
 id|sk_buff
 op_star
 id|skb
-suffix:semicolon
-id|skb
 op_assign
 id|alloc_skb
 c_func
@@ -2907,10 +2822,10 @@ id|GFP_ATOMIC
 suffix:semicolon
 )brace
 multiline_comment|/**&n; *&t;skb_cow - copy header of skb when it is required&n; *&t;@skb: buffer to cow&n; *&t;@headroom: needed headroom&n; *&n; *&t;If the skb passed lacks sufficient headroom or its data part&n; *&t;is shared, data is reallocated. If reallocation fails, an error&n; *&t;is returned and original skb is not changed.&n; *&n; *&t;The result is skb with writable area skb-&gt;head...skb-&gt;tail&n; *&t;and at least @headroom of space at head.&n; */
+DECL|function|skb_cow
 r_static
 r_inline
 r_int
-DECL|function|skb_cow
 id|skb_cow
 c_func
 (paren
@@ -2990,7 +2905,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;skb_linearize - convert paged skb to linear one&n; *&t;@skb: buffer to linarize&n; *&t;@gfp: allocation mode&n; *&n; *&t;If there is no free memory -ENOMEM is returned, otherwise zero&n; *&t;is returned and the old skb data released.  */
+multiline_comment|/**&n; *&t;skb_linearize - convert paged skb to linear one&n; *&t;@skb: buffer to linarize&n; *&t;@gfp: allocation mode&n; *&n; *&t;If there is no free memory -ENOMEM is returned, otherwise zero&n; *&t;is returned and the old skb data released.&n; */
 r_int
 id|skb_linearize
 c_func
@@ -3077,7 +2992,7 @@ suffix:semicolon
 macro_line|#endif
 )brace
 DECL|macro|skb_queue_walk
-mdefine_line|#define skb_queue_walk(queue, skb) &bslash;&n;&t;&t;for (skb = (queue)-&gt;next;&t;&t;&t;&bslash;&n;&t;&t;     (skb != (struct sk_buff *)(queue));&t;&bslash;&n;&t;&t;     skb=skb-&gt;next)
+mdefine_line|#define skb_queue_walk(queue, skb) &bslash;&n;&t;&t;for (skb = (queue)-&gt;next;&t;&t;&t;&bslash;&n;&t;&t;     (skb != (struct sk_buff *)(queue));&t;&bslash;&n;&t;&t;     skb = skb-&gt;next)
 r_extern
 r_struct
 id|sk_buff
@@ -3337,10 +3252,10 @@ id|mtu
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_NETFILTER
+DECL|function|nf_conntrack_put
 r_static
 r_inline
 r_void
-DECL|function|nf_conntrack_put
 id|nf_conntrack_put
 c_func
 (paren
@@ -3371,10 +3286,10 @@ id|nfct-&gt;master
 )paren
 suffix:semicolon
 )brace
+DECL|function|nf_conntrack_get
 r_static
 r_inline
 r_void
-DECL|function|nf_conntrack_get
 id|nf_conntrack_get
 c_func
 (paren
