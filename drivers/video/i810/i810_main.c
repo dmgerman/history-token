@@ -9656,26 +9656,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|agp_intel_init
-c_func
-(paren
-)paren
-)paren
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot;i810fb_init: cannot initialize intel agpgart&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-op_minus
-id|ENODEV
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
 id|pci_register_driver
 c_func
 (paren
