@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  linux/kernel/cpufreq.c&n; *&n; *  Copyright (C) 2001 Russell King&n; *            (C) 2002 - 2003 Dominik Brodowski &lt;linux@brodo.de&gt;&n; *&n; *  $Id: cpufreq.c,v 1.59 2003/01/20 17:31:48 db Exp $&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; */
+multiline_comment|/*&n; *  linux/drivers/cpufreq/cpufreq.c&n; *&n; *  Copyright (C) 2001 Russell King&n; *            (C) 2002 - 2003 Dominik Brodowski &lt;linux@brodo.de&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
