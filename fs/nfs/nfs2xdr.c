@@ -1097,7 +1097,7 @@ c_func
 (paren
 id|KERN_WARNING
 l_string|&quot;NFS: READ reply header overflowed:&quot;
-l_string|&quot;length %d &gt; %d&bslash;n&quot;
+l_string|&quot;length %d &gt; %Zu&bslash;n&quot;
 comma
 id|hdrlen
 comma
@@ -1857,7 +1857,7 @@ c_func
 (paren
 id|KERN_WARNING
 l_string|&quot;NFS: READDIR reply header overflowed:&quot;
-l_string|&quot;length %d &gt; %d&bslash;n&quot;
+l_string|&quot;length %d &gt; %Zu&bslash;n&quot;
 comma
 id|hdrlen
 comma

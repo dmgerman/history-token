@@ -210,6 +210,10 @@ id|map-&gt;page
 comma
 l_int|NULL
 comma
+(paren
+r_void
+op_star
+)paren
 id|page
 )paren
 )paren

@@ -2513,9 +2513,11 @@ id|pbmap.pbm_delta
 suffix:semicolon
 id|bh_result-&gt;b_size
 op_assign
-id|min
+id|min_t
 c_func
 (paren
+id|ssize_t
+comma
 id|size
 comma
 id|blocks
