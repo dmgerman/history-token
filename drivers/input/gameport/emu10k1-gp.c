@@ -55,14 +55,13 @@ l_int|32
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|variable|__devinitdata
+DECL|variable|emu_tbl
 r_static
 r_struct
 id|pci_device_id
 id|emu_tbl
 (braket
 )braket
-id|__devinitdata
 op_assign
 (brace
 (brace

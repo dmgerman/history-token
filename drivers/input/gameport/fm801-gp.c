@@ -552,14 +552,13 @@ id|gp
 suffix:semicolon
 )brace
 )brace
-DECL|variable|__devinitdata
+DECL|variable|fm801_gp_id_table
 r_static
 r_struct
 id|pci_device_id
 id|fm801_gp_id_table
 (braket
 )braket
-id|__devinitdata
 op_assign
 (brace
 (brace

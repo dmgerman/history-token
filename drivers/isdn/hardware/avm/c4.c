@@ -28,14 +28,13 @@ r_static
 r_int
 id|suppress_pollack
 suffix:semicolon
-DECL|variable|__devinitdata
+DECL|variable|c4_pci_tbl
 r_static
 r_struct
 id|pci_device_id
 id|c4_pci_tbl
 (braket
 )braket
-id|__devinitdata
 op_assign
 (brace
 (brace

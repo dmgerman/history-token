@@ -710,14 +710,13 @@ comma
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * PCI device ID table&n; */
-DECL|variable|__devinitdata
+DECL|variable|mtd_pci_ids
 r_static
 r_struct
 id|pci_device_id
 id|mtd_pci_ids
 (braket
 )braket
-id|__devinitdata
 op_assign
 (brace
 (brace

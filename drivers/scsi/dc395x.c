@@ -23650,14 +23650,13 @@ l_int|NULL
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Table which identifies the PCI devices which&n; * are handled by this device driver.&n; */
-DECL|variable|__devinitdata
+DECL|variable|dc395x_pci_table
 r_static
 r_struct
 id|pci_device_id
 id|dc395x_pci_table
 (braket
 )braket
-id|__devinitdata
 op_assign
 (brace
 (brace

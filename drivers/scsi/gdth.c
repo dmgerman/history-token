@@ -2899,14 +2899,13 @@ suffix:semicolon
 )brace
 macro_line|#if LINUX_VERSION_CODE &gt;= 0x20363
 multiline_comment|/* Vortex only makes RAID controllers.&n; * We do not really want to specify all 550 ids here, so wildcard match.&n; */
-DECL|variable|__devinitdata
+DECL|variable|gdthtable
 r_static
 r_struct
 id|pci_device_id
 id|gdthtable
 (braket
 )braket
-id|__devinitdata
 op_assign
 (brace
 (brace

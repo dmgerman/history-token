@@ -4785,14 +4785,13 @@ id|RESUME_RESTORE_STATE
 )paren
 suffix:semicolon
 )brace
-DECL|variable|__devinitdata
+DECL|variable|yenta_table
 r_static
 r_struct
 id|pci_device_id
 id|yenta_table
 (braket
 )braket
-id|__devinitdata
 op_assign
 (brace
 (brace

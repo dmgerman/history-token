@@ -610,7 +610,6 @@ suffix:semicolon
 DECL|function|zt5550_hc_init_one
 r_static
 r_int
-id|__devinit
 id|zt5550_hc_init_one
 (paren
 r_struct
@@ -926,14 +925,13 @@ c_func
 )paren
 suffix:semicolon
 )brace
-DECL|variable|__devinitdata
+DECL|variable|zt5550_hc_pci_tbl
 r_static
 r_struct
 id|pci_device_id
 id|zt5550_hc_pci_tbl
 (braket
 )braket
-id|__devinitdata
 op_assign
 (brace
 (brace
