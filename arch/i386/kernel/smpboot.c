@@ -1301,6 +1301,11 @@ c_func
 (paren
 )paren
 suffix:semicolon
+id|local_irq_disable
+c_func
+(paren
+)paren
+suffix:semicolon
 multiline_comment|/*&n;&t; * Allow the master to continue.&n;&t; */
 id|set_bit
 c_func
@@ -4251,10 +4256,17 @@ op_amp
 id|smp_commenced_mask
 )paren
 )paren
+(brace
+id|local_irq_enable
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|ENOSYS
 suffix:semicolon
+)brace
 multiline_comment|/* In case one didn&squot;t come up */
 r_if
 c_cond
@@ -4269,9 +4281,21 @@ op_amp
 id|cpu_callin_map
 )paren
 )paren
+(brace
+id|local_irq_enable
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|EIO
+suffix:semicolon
+)brace
+id|local_irq_enable
+c_func
+(paren
+)paren
 suffix:semicolon
 multiline_comment|/* Unleash the CPU! */
 id|set_bit
