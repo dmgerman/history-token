@@ -26,30 +26,38 @@ DECL|macro|UNW_LOG_HASH_SIZE
 mdefine_line|#define UNW_LOG_HASH_SIZE&t;(UNW_LOG_CACHE_SIZE + 1)
 DECL|macro|UNW_HASH_SIZE
 mdefine_line|#define UNW_HASH_SIZE&t;&t;(1 &lt;&lt; UNW_LOG_HASH_SIZE)
-DECL|macro|UNW_DEBUG
-mdefine_line|#define UNW_DEBUG&t;0
 DECL|macro|UNW_STATS
 mdefine_line|#define UNW_STATS&t;0&t;/* WARNING: this disabled interrupts for long time-spans!! */
-macro_line|#if UNW_DEBUG
+macro_line|#ifdef UNW_DEBUG
 DECL|variable|unw_debug_level
 r_static
 r_int
+r_int
 id|unw_debug_level
 op_assign
-l_int|255
+id|UNW_DEBUG
 suffix:semicolon
-DECL|macro|debug
-macro_line|# define debug(level,format...)&t;if (unw_debug_level &gt; level) printk(format)
-DECL|macro|dprintk
-macro_line|# define dprintk(format...)&t;printk(format)
+macro_line|#  ifdef CONFIG_KDB
+macro_line|#    include &lt;linux/kdb.h&gt;
+DECL|macro|UNW_DEBUG_ON
+macro_line|#    define UNW_DEBUG_ON(n)&t;(unw_debug_level &gt;= n &amp;&amp; !KDB_IS_RUNNING())
+DECL|macro|UNW_DPRINT
+macro_line|#    define UNW_DPRINT(n, ...)&t;if (UNW_DEBUG_ON(n)) kdb_printf(__VA_ARGS__)
+macro_line|#  else&t;/* !CONFIG_KDB */
+DECL|macro|UNW_DEBUG_ON
+macro_line|#    define UNW_DEBUG_ON(n)&t;unw_debug_level &gt;= n
+multiline_comment|/* Do not code a printk level, not all debug lines end in newline */
+DECL|macro|UNW_DPRINT
+macro_line|#    define UNW_DPRINT(n, ...)  if (UNW_DEBUG_ON(n)) printk(__VA_ARGS__)
+macro_line|#  endif /* CONFIG_KDB */
 DECL|macro|inline
-macro_line|# define inline
-macro_line|#else
-DECL|macro|debug
-macro_line|# define debug(level,format...)
-DECL|macro|dprintk
-macro_line|# define dprintk(format...)
-macro_line|#endif
+macro_line|#  define inline
+macro_line|#else /* !UNW_DEBUG */
+DECL|macro|UNW_DEBUG_ON
+macro_line|#  define UNW_DEBUG_ON(n)  0
+DECL|macro|UNW_DPRINT
+macro_line|#  define UNW_DPRINT(n, ...)
+macro_line|#endif /* UNW_DEBUG */
 macro_line|#if UNW_STATS
 DECL|macro|STAT
 macro_line|# define STAT(x...)&t;x
@@ -175,7 +183,7 @@ id|cache
 id|UNW_CACHE_SIZE
 )braket
 suffix:semicolon
-macro_line|# if UNW_DEBUG
+macro_line|# ifdef UNW_DEBUG
 DECL|member|preg_name
 r_const
 r_char
@@ -871,7 +879,7 @@ op_minus
 l_int|1
 )brace
 comma
-macro_line|#if UNW_DEBUG
+macro_line|#ifdef UNW_DEBUG
 dot
 id|preg_name
 op_assign
@@ -1094,10 +1102,14 @@ l_int|16
 )paren
 suffix:semicolon
 r_else
-id|dprintk
+id|UNW_DPRINT
 c_func
 (paren
-l_string|&quot;unwind: bad scratch reg r%lu&bslash;n&quot;
+l_int|0
+comma
+l_string|&quot;unwind.%s: bad scratch reg r%lu&bslash;n&quot;
+comma
+id|__FUNCTION__
 comma
 id|reg
 )paren
@@ -1131,9 +1143,11 @@ op_logical_neg
 id|info-&gt;pt
 )paren
 (brace
-id|dprintk
+id|UNW_DPRINT
 c_func
 (paren
+l_int|0
+comma
 l_string|&quot;unwind.%s: sp 0x%lx pt 0x%lx, set to 0x%lx&bslash;n&quot;
 comma
 id|func
@@ -1152,6 +1166,23 @@ op_assign
 id|info-&gt;sp
 op_minus
 l_int|16
+suffix:semicolon
+)brace
+r_else
+(brace
+id|UNW_DPRINT
+c_func
+(paren
+l_int|3
+comma
+l_string|&quot;unwind.%s: sp 0x%lx pt 0x%lx&bslash;n&quot;
+comma
+id|func
+comma
+id|info-&gt;sp
+comma
+id|info-&gt;pt
+)paren
 suffix:semicolon
 )brace
 )brace
@@ -1212,10 +1243,14 @@ op_ge
 l_int|127
 )paren
 (brace
-id|dprintk
+id|UNW_DPRINT
 c_func
 (paren
-l_string|&quot;unwind: trying to access non-existent r%u&bslash;n&quot;
+l_int|0
+comma
+l_string|&quot;unwind.%s: trying to access non-existent r%u&bslash;n&quot;
+comma
+id|__FUNCTION__
 comma
 id|regnum
 )paren
@@ -1427,11 +1462,15 @@ op_ge
 id|info-&gt;regstk.top
 )paren
 (brace
-id|dprintk
+id|UNW_DPRINT
 c_func
 (paren
-l_string|&quot;unwind: %p outside of regstk &quot;
+l_int|0
+comma
+l_string|&quot;unwind.%s: %p outside of regstk &quot;
 l_string|&quot;[0x%lx-0x%lx)&bslash;n&quot;
+comma
+id|__FUNCTION__
 comma
 (paren
 r_void
@@ -1628,10 +1667,14 @@ op_ge
 id|info-&gt;regstk.top
 )paren
 (brace
-id|dprintk
+id|UNW_DPRINT
 c_func
 (paren
-l_string|&quot;unwind: ignoring attempt to access register outside of rbs&bslash;n&quot;
+l_int|0
+comma
+l_string|&quot;unwind.%s: ignoring attempt to access register outside of rbs&bslash;n&quot;
+comma
+id|__FUNCTION__
 )paren
 suffix:semicolon
 r_return
@@ -1881,10 +1924,14 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
-id|dprintk
+id|UNW_DPRINT
 c_func
 (paren
-l_string|&quot;unwind: trying to access non-existent b%u&bslash;n&quot;
+l_int|0
+comma
+l_string|&quot;unwind.%s: trying to access non-existent b%u&bslash;n&quot;
+comma
+id|__FUNCTION__
 comma
 id|regnum
 )paren
@@ -1964,10 +2011,14 @@ op_ge
 l_int|126
 )paren
 (brace
-id|dprintk
+id|UNW_DPRINT
 c_func
 (paren
-l_string|&quot;unwind: trying to access non-existent f%u&bslash;n&quot;
+l_int|0
+comma
+l_string|&quot;unwind.%s: trying to access non-existent f%u&bslash;n&quot;
+comma
+id|__FUNCTION__
 comma
 id|regnum
 )paren
@@ -2446,10 +2497,14 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
-id|dprintk
+id|UNW_DPRINT
 c_func
 (paren
-l_string|&quot;unwind: trying to access non-existent ar%u&bslash;n&quot;
+l_int|0
+comma
+l_string|&quot;unwind.%s: trying to access non-existent ar%u&bslash;n&quot;
+comma
+id|__FUNCTION__
 comma
 id|regnum
 )paren
@@ -2983,10 +3038,14 @@ suffix:colon
 r_break
 suffix:semicolon
 )brace
-id|dprintk
+id|UNW_DPRINT
 c_func
 (paren
-l_string|&quot;unwind: bad abreg=0x%x&bslash;n&quot;
+l_int|0
+comma
+l_string|&quot;unwind.%s: bad abreg=0x%x&bslash;n&quot;
+comma
+id|__FUNCTION__
 comma
 id|abreg
 )paren
@@ -3172,10 +3231,14 @@ r_return
 suffix:semicolon
 )brace
 )brace
-id|dprintk
+id|UNW_DPRINT
 c_func
 (paren
-l_string|&quot;unwind: excess spill!&bslash;n&quot;
+l_int|0
+comma
+l_string|&quot;unwind.%s: excess spill!&bslash;n&quot;
+comma
+id|__FUNCTION__
 )paren
 suffix:semicolon
 )brace
@@ -3715,15 +3778,31 @@ id|context
 op_eq
 l_char|&squot;i&squot;
 )paren
+(brace
 id|sr-&gt;flags
 op_or_assign
 id|UNW_FLAG_INTERRUPT_FRAME
 suffix:semicolon
-r_else
-id|dprintk
+id|UNW_DPRINT
 c_func
 (paren
-l_string|&quot;unwind: ignoring unwabi(abi=0x%x,context=0x%x)&bslash;n&quot;
+l_int|3
+comma
+l_string|&quot;unwind.%s: interrupt frame&bslash;n&quot;
+comma
+id|__FUNCTION__
+)paren
+suffix:semicolon
+)brace
+r_else
+id|UNW_DPRINT
+c_func
+(paren
+l_int|0
+comma
+l_string|&quot;unwind%s: ignoring unwabi(abi=0x%x,context=0x%x)&bslash;n&quot;
+comma
+id|__FUNCTION__
 comma
 id|abi
 comma
@@ -5456,6 +5535,19 @@ id|ip
 comma
 id|pr
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|UNW_DEBUG_ON
+c_func
+(paren
+l_int|0
+)paren
+)paren
+r_return
+l_int|0
+suffix:semicolon
+multiline_comment|/* Always regenerate scripts in debug mode */
 id|STAT
 c_func
 (paren
@@ -5901,10 +5993,14 @@ op_ge
 id|UNW_MAX_SCRIPT_LEN
 )paren
 (brace
-id|dprintk
+id|UNW_DPRINT
 c_func
 (paren
-l_string|&quot;unwind: script exceeds maximum size of %u instructions!&bslash;n&quot;
+l_int|0
+comma
+l_string|&quot;unwind.%s: script exceeds maximum size of %u instructions!&bslash;n&quot;
+comma
+id|__FUNCTION__
 comma
 id|UNW_MAX_SCRIPT_LEN
 )paren
@@ -6039,10 +6135,14 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
-id|dprintk
+id|UNW_DPRINT
 c_func
 (paren
-l_string|&quot;unwind: don&squot;t know how to emit nat info for where = %u&bslash;n&quot;
+l_int|0
+comma
+l_string|&quot;unwind.%s: don&squot;t know how to emit nat info for where = %u&bslash;n&quot;
+comma
+id|__FUNCTION__
 comma
 id|r-&gt;where
 )paren
@@ -6323,10 +6423,14 @@ l_int|6
 )paren
 suffix:semicolon
 r_else
-id|dprintk
+id|UNW_DPRINT
 c_func
 (paren
-l_string|&quot;unwind: kernel may not touch f%lu&bslash;n&quot;
+l_int|0
+comma
+l_string|&quot;unwind.%s: kernel may not touch f%lu&bslash;n&quot;
+comma
+id|__FUNCTION__
 comma
 id|rval
 )paren
@@ -6439,10 +6543,14 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
-id|dprintk
+id|UNW_DPRINT
 c_func
 (paren
-l_string|&quot;unwind: register %u has unexpected `where&squot; value of %u&bslash;n&quot;
+l_int|0
+comma
+l_string|&quot;unwind%s: register %u has unexpected `where&squot; value of %u&bslash;n&quot;
+comma
+id|__FUNCTION__
 comma
 id|i
 comma
@@ -6778,6 +6886,18 @@ id|sr.pr_val
 op_assign
 id|info-&gt;pr
 suffix:semicolon
+id|UNW_DPRINT
+c_func
+(paren
+l_int|3
+comma
+l_string|&quot;unwind.%s: ip 0x%lx&bslash;n&quot;
+comma
+id|__FUNCTION__
+comma
+id|ip
+)paren
+suffix:semicolon
 id|script
 op_assign
 id|script_new
@@ -6793,10 +6913,14 @@ op_logical_neg
 id|script
 )paren
 (brace
-id|dprintk
+id|UNW_DPRINT
 c_func
 (paren
-l_string|&quot;unwind: failed to create unwind script&bslash;n&quot;
+l_int|0
+comma
+l_string|&quot;unwind.%s: failed to create unwind script&bslash;n&quot;
+comma
+id|__FUNCTION__
 )paren
 suffix:semicolon
 id|STAT
@@ -6889,10 +7013,14 @@ id|e
 )paren
 (brace
 multiline_comment|/* no info, return default unwinder (leaf proc, no mem stack, no saved regs)  */
-id|dprintk
+id|UNW_DPRINT
 c_func
 (paren
-l_string|&quot;unwind: no unwind info for ip=0x%lx (prev ip=0x%lx)&bslash;n&quot;
+l_int|1
+comma
+l_string|&quot;unwind.%s: no unwind info for ip=0x%lx (prev ip=0x%lx)&bslash;n&quot;
+comma
+id|__FUNCTION__
 comma
 id|ip
 comma
@@ -7203,12 +7331,42 @@ id|val
 op_assign
 id|sr.return_link_reg
 suffix:semicolon
-)brace
-macro_line|#if UNW_DEBUG
-id|printk
+id|UNW_DPRINT
 c_func
 (paren
-l_string|&quot;unwind: state record for func 0x%lx, t=%u:&bslash;n&quot;
+l_int|1
+comma
+l_string|&quot;unwind.%s: using default for rp at ip=0x%lx where=%d val=0x%lx&bslash;n&quot;
+comma
+id|__FUNCTION__
+comma
+id|ip
+comma
+id|sr.curr.reg
+(braket
+id|UNW_REG_RP
+)braket
+dot
+id|where
+comma
+id|sr.curr.reg
+(braket
+id|UNW_REG_RP
+)braket
+dot
+id|val
+)paren
+suffix:semicolon
+)brace
+macro_line|#ifdef UNW_DEBUG
+id|UNW_DPRINT
+c_func
+(paren
+l_int|1
+comma
+l_string|&quot;unwind.%s: state record for func 0x%lx, t=%u:&bslash;n&quot;
+comma
+id|__FUNCTION__
 comma
 id|table-&gt;segment_base
 op_plus
@@ -7246,9 +7404,11 @@ op_ne
 id|UNW_WHEN_NEVER
 )paren
 (brace
-id|printk
+id|UNW_DPRINT
 c_func
 (paren
+l_int|1
+comma
 l_string|&quot;  %s &lt;- &quot;
 comma
 id|unw.preg_name
@@ -7268,9 +7428,11 @@ id|r-&gt;where
 r_case
 id|UNW_WHERE_GR
 suffix:colon
-id|printk
+id|UNW_DPRINT
 c_func
 (paren
+l_int|1
+comma
 l_string|&quot;r%lu&quot;
 comma
 id|r-&gt;val
@@ -7281,9 +7443,11 @@ suffix:semicolon
 r_case
 id|UNW_WHERE_FR
 suffix:colon
-id|printk
+id|UNW_DPRINT
 c_func
 (paren
+l_int|1
+comma
 l_string|&quot;f%lu&quot;
 comma
 id|r-&gt;val
@@ -7294,9 +7458,11 @@ suffix:semicolon
 r_case
 id|UNW_WHERE_BR
 suffix:colon
-id|printk
+id|UNW_DPRINT
 c_func
 (paren
+l_int|1
+comma
 l_string|&quot;b%lu&quot;
 comma
 id|r-&gt;val
@@ -7307,9 +7473,11 @@ suffix:semicolon
 r_case
 id|UNW_WHERE_SPREL
 suffix:colon
-id|printk
+id|UNW_DPRINT
 c_func
 (paren
+l_int|1
+comma
 l_string|&quot;[sp+0x%lx]&quot;
 comma
 id|r-&gt;val
@@ -7320,9 +7488,11 @@ suffix:semicolon
 r_case
 id|UNW_WHERE_PSPREL
 suffix:colon
-id|printk
+id|UNW_DPRINT
 c_func
 (paren
+l_int|1
+comma
 l_string|&quot;[psp+0x%lx]&quot;
 comma
 id|r-&gt;val
@@ -7333,9 +7503,11 @@ suffix:semicolon
 r_case
 id|UNW_WHERE_NONE
 suffix:colon
-id|printk
+id|UNW_DPRINT
 c_func
 (paren
+l_int|1
+comma
 l_string|&quot;%s+0x%lx&quot;
 comma
 id|unw.preg_name
@@ -7352,9 +7524,11 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
-id|printk
+id|UNW_DPRINT
 c_func
 (paren
+l_int|1
+comma
 l_string|&quot;BADWHERE(%d)&quot;
 comma
 id|r-&gt;where
@@ -7363,9 +7537,11 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-id|printk
+id|UNW_DPRINT
 c_func
 (paren
+l_int|1
+comma
 l_string|&quot;&bslash;t&bslash;t%d&bslash;n&quot;
 comma
 id|r-&gt;when
@@ -7887,9 +8063,11 @@ id|dst
 op_assign
 l_int|0
 suffix:semicolon
-id|dprintk
+id|UNW_DPRINT
 c_func
 (paren
+l_int|0
+comma
 l_string|&quot;unwind.%s: no state-&gt;pt, dst=%ld, val=%ld&bslash;n&quot;
 comma
 id|__FUNCTION__
@@ -8010,7 +8188,7 @@ suffix:semicolon
 r_case
 id|UNW_INSN_LOAD
 suffix:colon
-macro_line|#if UNW_DEBUG
+macro_line|#ifdef UNW_DEBUG
 r_if
 c_cond
 (paren
@@ -8037,12 +8215,14 @@ OL
 id|TASK_SIZE
 )paren
 (brace
-id|debug
+id|UNW_DPRINT
 c_func
 (paren
-l_int|1
+l_int|0
 comma
-l_string|&quot;unwind: rejecting bad psp=0x%lx&bslash;n&quot;
+l_string|&quot;unwind.%s: rejecting bad psp=0x%lx&bslash;n&quot;
+comma
+id|__FUNCTION__
 comma
 id|s
 (braket
@@ -8203,12 +8383,15 @@ id|TASK_SIZE
 )paren
 (brace
 multiline_comment|/* don&squot;t let obviously bad addresses pollute the cache */
-id|debug
+multiline_comment|/* FIXME: should really be level 0 but it occurs too often. KAO */
+id|UNW_DPRINT
 c_func
 (paren
 l_int|1
 comma
-l_string|&quot;unwind: rejecting bad ip=0x%lx&bslash;n&quot;
+l_string|&quot;unwind.%s: rejecting bad ip=0x%lx&bslash;n&quot;
+comma
+id|__FUNCTION__
 comma
 id|info-&gt;ip
 )paren
@@ -8252,10 +8435,14 @@ op_logical_neg
 id|scr
 )paren
 (brace
-id|dprintk
+id|UNW_DPRINT
 c_func
 (paren
-l_string|&quot;unwind: failed to locate/build unwind script for ip %lx&bslash;n&quot;
+l_int|0
+comma
+l_string|&quot;unwind.%s: failed to locate/build unwind script for ip %lx&bslash;n&quot;
+comma
+id|__FUNCTION__
 comma
 id|info-&gt;ip
 )paren
@@ -8391,12 +8578,15 @@ op_logical_neg
 id|info-&gt;rp_loc
 )paren
 (brace
-id|debug
+multiline_comment|/* FIXME: should really be level 0 but it occurs too often. KAO */
+id|UNW_DPRINT
 c_func
 (paren
 l_int|1
 comma
-l_string|&quot;unwind: failed to locate return link (ip=0x%lx)!&bslash;n&quot;
+l_string|&quot;unwind.%s: failed to locate return link (ip=0x%lx)!&bslash;n&quot;
+comma
+id|__FUNCTION__
 comma
 id|info-&gt;ip
 )paren
@@ -8443,12 +8633,14 @@ id|PAGE_SIZE
 )paren
 (brace
 multiline_comment|/*&n;&t;&t; * We don&squot;t have unwind info for the gate page, so we consider that part&n;&t;&t; * of user-space for the purpose of unwinding.&n;&t;&t; */
-id|debug
+id|UNW_DPRINT
 c_func
 (paren
-l_int|1
+l_int|2
 comma
-l_string|&quot;unwind: reached user-space (ip=0x%lx)&bslash;n&quot;
+l_string|&quot;unwind.%s: reached user-space (ip=0x%lx)&bslash;n&quot;
+comma
+id|__FUNCTION__
 comma
 id|ip
 )paren
@@ -8485,10 +8677,14 @@ op_logical_neg
 id|info-&gt;pfs_loc
 )paren
 (brace
-id|dprintk
+id|UNW_DPRINT
 c_func
 (paren
-l_string|&quot;unwind: failed to locate ar.pfs!&bslash;n&quot;
+l_int|0
+comma
+l_string|&quot;unwind.%s: failed to locate ar.pfs!&bslash;n&quot;
+comma
+id|__FUNCTION__
 )paren
 suffix:semicolon
 id|STAT
@@ -8587,6 +8783,18 @@ id|ar_pfs
 )paren
 )paren
 suffix:semicolon
+id|UNW_DPRINT
+c_func
+(paren
+l_int|3
+comma
+l_string|&quot;unwind.%s: interrupt_frame pt 0x%lx&bslash;n&quot;
+comma
+id|__FUNCTION__
+comma
+id|info-&gt;pt
+)paren
+suffix:semicolon
 )brace
 r_else
 id|num_regs
@@ -8629,10 +8837,14 @@ template_param
 id|info-&gt;regstk.top
 )paren
 (brace
-id|dprintk
+id|UNW_DPRINT
 c_func
 (paren
-l_string|&quot;unwind: bsp (0x%lx) out of range [0x%lx-0x%lx]&bslash;n&quot;
+l_int|0
+comma
+l_string|&quot;unwind.%s: bsp (0x%lx) out of range [0x%lx-0x%lx]&bslash;n&quot;
+comma
+id|__FUNCTION__
 comma
 id|info-&gt;bsp
 comma
@@ -8678,10 +8890,14 @@ template_param
 id|info-&gt;memstk.limit
 )paren
 (brace
-id|dprintk
+id|UNW_DPRINT
 c_func
 (paren
-l_string|&quot;unwind: sp (0x%lx) out of range [0x%lx-0x%lx]&bslash;n&quot;
+l_int|0
+comma
+l_string|&quot;unwind.%s: sp (0x%lx) out of range [0x%lx-0x%lx]&bslash;n&quot;
+comma
+id|__FUNCTION__
 comma
 id|info-&gt;sp
 comma
@@ -8730,10 +8946,14 @@ op_eq
 id|prev_bsp
 )paren
 (brace
-id|dprintk
+id|UNW_DPRINT
 c_func
 (paren
-l_string|&quot;unwind: ip, sp, bsp remain unchanged; stopping here (ip=0x%lx)&bslash;n&quot;
+l_int|0
+comma
+l_string|&quot;unwind.%s: ip, sp, bsp remain unchanged; stopping here (ip=0x%lx)&bslash;n&quot;
+comma
+id|__FUNCTION__
 comma
 id|ip
 )paren
@@ -8858,10 +9078,14 @@ op_amp
 id|ip
 )paren
 suffix:semicolon
-id|dprintk
+id|UNW_DPRINT
 c_func
 (paren
-l_string|&quot;unwind: failed to read return pointer (ip=0x%lx)&bslash;n&quot;
+l_int|0
+comma
+l_string|&quot;unwind.%s: failed to read return pointer (ip=0x%lx)&bslash;n&quot;
+comma
+id|__FUNCTION__
 comma
 id|ip
 )paren
@@ -8894,10 +9118,14 @@ op_amp
 id|ip
 )paren
 suffix:semicolon
-id|dprintk
+id|UNW_DPRINT
 c_func
 (paren
-l_string|&quot;unwind: failed to unwind to user-level (ip=0x%lx)&bslash;n&quot;
+l_int|0
+comma
+l_string|&quot;unwind.%s: failed to unwind to user-level (ip=0x%lx)&bslash;n&quot;
+comma
+id|__FUNCTION__
 comma
 id|ip
 )paren
@@ -9134,6 +9362,68 @@ id|info-&gt;pr
 op_assign
 id|sw-&gt;pr
 suffix:semicolon
+id|UNW_DPRINT
+c_func
+(paren
+l_int|3
+comma
+l_string|&quot;unwind.%s&bslash;n&quot;
+l_string|&quot;  rbslimit 0x%lx&bslash;n&quot;
+l_string|&quot;  rbstop   0x%lx&bslash;n&quot;
+l_string|&quot;  stklimit 0x%lx&bslash;n&quot;
+l_string|&quot;  stktop   0x%lx&bslash;n&quot;
+l_string|&quot;  task     0x%lx&bslash;n&quot;
+l_string|&quot;  sw       0x%lx&bslash;n&quot;
+comma
+id|__FUNCTION__
+comma
+id|rbslimit
+comma
+id|rbstop
+comma
+id|stklimit
+comma
+id|stktop
+comma
+(paren
+r_int
+r_int
+)paren
+(paren
+id|info-&gt;task
+)paren
+comma
+(paren
+r_int
+r_int
+)paren
+(paren
+id|info-&gt;sw
+)paren
+)paren
+suffix:semicolon
+id|UNW_DPRINT
+c_func
+(paren
+l_int|3
+comma
+l_string|&quot;  sp/psp   0x%lx&bslash;n&quot;
+l_string|&quot;  sol      0x%lx&bslash;n&quot;
+l_string|&quot;  bsp      0x%lx&bslash;n&quot;
+l_string|&quot;  ip       0x%lx&bslash;n&quot;
+l_string|&quot;  pr       0x%lx&bslash;n&quot;
+comma
+id|info-&gt;sp
+comma
+id|sol
+comma
+id|info-&gt;bsp
+comma
+id|info-&gt;ip
+comma
+id|info-&gt;pr
+)paren
+suffix:semicolon
 id|find_save_locs
 c_func
 (paren
@@ -9189,6 +9479,16 @@ op_star
 id|t-&gt;thread.ksp
 op_plus
 l_int|16
+)paren
+suffix:semicolon
+id|UNW_DPRINT
+c_func
+(paren
+l_int|1
+comma
+l_string|&quot;unwind.%s&bslash;n&quot;
+comma
+id|__FUNCTION__
 )paren
 suffix:semicolon
 id|unw_init_frame_info
@@ -9356,10 +9656,14 @@ op_le
 l_int|0
 )paren
 (brace
-id|dprintk
+id|UNW_DPRINT
 c_func
 (paren
-l_string|&quot;unwind: ignoring attempt to insert empty unwind table&bslash;n&quot;
+l_int|0
+comma
+l_string|&quot;unwind.%s: ignoring attempt to insert empty unwind table&bslash;n&quot;
+comma
+id|__FUNCTION__
 )paren
 suffix:semicolon
 r_return
@@ -9474,10 +9778,14 @@ op_logical_neg
 id|handle
 )paren
 (brace
-id|dprintk
+id|UNW_DPRINT
 c_func
 (paren
-l_string|&quot;unwind: ignoring attempt to remove non-existent unwind table&bslash;n&quot;
+l_int|0
+comma
+l_string|&quot;unwind.%s: ignoring attempt to remove non-existent unwind table&bslash;n&quot;
+comma
+id|__FUNCTION__
 )paren
 suffix:semicolon
 r_return
@@ -9496,10 +9804,14 @@ op_amp
 id|unw.kernel_table
 )paren
 (brace
-id|dprintk
+id|UNW_DPRINT
 c_func
 (paren
-l_string|&quot;unwind: sorry, freeing the kernel&squot;s unwind table is a no-can-do!&bslash;n&quot;
+l_int|0
+comma
+l_string|&quot;unwind.%s: sorry, freeing the kernel&squot;s unwind table is a no-can-do!&bslash;n&quot;
+comma
+id|__FUNCTION__
 )paren
 suffix:semicolon
 r_return
@@ -9551,10 +9863,14 @@ op_logical_neg
 id|prev
 )paren
 (brace
-id|dprintk
+id|UNW_DPRINT
 c_func
 (paren
-l_string|&quot;unwind: failed to find unwind table %p&bslash;n&quot;
+l_int|0
+comma
+l_string|&quot;unwind.%s: failed to find unwind table %p&bslash;n&quot;
+comma
+id|__FUNCTION__
 comma
 (paren
 r_void
