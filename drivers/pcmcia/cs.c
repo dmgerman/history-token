@@ -9186,13 +9186,6 @@ c_func
 id|pcmcia_get_next_client
 )paren
 suffix:semicolon
-DECL|variable|pcmcia_get_first_region
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|pcmcia_get_first_region
-)paren
-suffix:semicolon
 DECL|variable|pcmcia_get_first_tuple
 id|EXPORT_SYMBOL
 c_func
@@ -9205,13 +9198,6 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|pcmcia_get_first_window
-)paren
-suffix:semicolon
-DECL|variable|pcmcia_get_next_region
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|pcmcia_get_next_region
 )paren
 suffix:semicolon
 DECL|variable|pcmcia_get_next_tuple

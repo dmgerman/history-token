@@ -7684,6 +7684,13 @@ r_return
 id|ret
 suffix:semicolon
 )brace
+DECL|variable|read_tuple
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|read_tuple
+)paren
+suffix:semicolon
 multiline_comment|/*======================================================================&n;&n;    This tries to determine if a card has a sensible CIS.  It returns&n;    the number of tuples in the CIS, or 0 if the CIS looks bad.  The&n;    checks include making sure several critical tuples are present and&n;    valid; seeing if the total number of tuples is reasonable; and&n;    looking for tuples that use reserved codes.&n;    &n;======================================================================*/
 DECL|function|pcmcia_validate_cis
 r_int

@@ -53,7 +53,6 @@ l_string|&quot;Dual MPL/GPL&quot;
 suffix:semicolon
 macro_line|#ifdef DEBUG
 DECL|variable|pc_debug
-r_static
 r_int
 id|pc_debug
 suffix:semicolon
@@ -5227,4 +5226,10 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
+id|MODULE_ALIAS
+c_func
+(paren
+l_string|&quot;ds&quot;
+)paren
+suffix:semicolon
 eof

@@ -15,6 +15,19 @@ macro_line|#include &lt;pcmcia/cs.h&gt;
 macro_line|#include &lt;pcmcia/bulkmem.h&gt;
 macro_line|#include &lt;pcmcia/cistpl.h&gt;
 macro_line|#include &quot;cs_internal.h&quot;
+macro_line|#ifdef DEBUG
+r_extern
+r_int
+id|pc_debug
+suffix:semicolon
+DECL|macro|cs_socket_name
+mdefine_line|#define cs_socket_name(skt)&t;((skt)-&gt;dev.class_id)
+DECL|macro|ds_dbg
+mdefine_line|#define ds_dbg(skt, lvl, fmt, arg...) do {&t;&t;&bslash;&n;&t;if (pc_debug &gt;= lvl)&t;&t;&t;&t;&bslash;&n;&t;&t;printk(KERN_DEBUG &quot;ds: %s: &quot; fmt, &t;&bslash;&n;&t;&t;       cs_socket_name(skt) , ## arg);&t;&bslash;&n;} while (0)
+macro_line|#else
+DECL|macro|ds_dbg
+mdefine_line|#define ds_dbg(lvl, fmt, arg...) do { } while (0)
+macro_line|#endif
 multiline_comment|/*======================================================================&n;&n;    This stuff is used by Card Services to initialize the table of&n;    region info used for subsequent calls to GetFirstRegion and&n;    GetNextRegion.&n;    &n;======================================================================*/
 DECL|function|setup_regions
 r_static
@@ -57,7 +70,7 @@ suffix:semicolon
 id|memory_handle_t
 id|r
 suffix:semicolon
-id|cs_dbg
+id|ds_dbg
 c_func
 (paren
 id|SOCKET
@@ -146,7 +159,7 @@ id|jedec.nid
 )paren
 )paren
 (brace
-id|cs_dbg
+id|ds_dbg
 c_func
 (paren
 id|SOCKET
@@ -205,7 +218,7 @@ id|geo.ngeo
 )paren
 )paren
 (brace
-id|cs_dbg
+id|ds_dbg
 c_func
 (paren
 id|SOCKET
@@ -637,6 +650,13 @@ id|rgn
 suffix:semicolon
 )brace
 multiline_comment|/* get_first_region */
+DECL|variable|pcmcia_get_first_region
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|pcmcia_get_first_region
+)paren
+suffix:semicolon
 DECL|function|pcmcia_get_next_region
 r_int
 id|pcmcia_get_next_region
@@ -675,4 +695,11 @@ id|rgn
 suffix:semicolon
 )brace
 multiline_comment|/* get_next_region */
+DECL|variable|pcmcia_get_next_region
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|pcmcia_get_next_region
+)paren
+suffix:semicolon
 eof
