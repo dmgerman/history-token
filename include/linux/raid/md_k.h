@@ -20,8 +20,10 @@ DECL|macro|MULTIPATH
 mdefine_line|#define MULTIPATH         7UL
 DECL|macro|RAID6
 mdefine_line|#define RAID6&t;&t;  8UL
+DECL|macro|RAID10
+mdefine_line|#define&t;RAID10&t;&t;  9UL
 DECL|macro|MAX_PERSONALITY
-mdefine_line|#define MAX_PERSONALITY   9UL
+mdefine_line|#define MAX_PERSONALITY   10UL
 DECL|macro|LEVEL_MULTIPATH
 mdefine_line|#define&t;LEVEL_MULTIPATH&t;&t;(-4)
 DECL|macro|LEVEL_LINEAR
@@ -95,6 +97,12 @@ id|RAID6
 suffix:colon
 r_return
 l_int|6
+suffix:semicolon
+r_case
+id|RAID10
+suffix:colon
+r_return
+l_int|10
 suffix:semicolon
 )brace
 id|BUG
@@ -174,6 +182,12 @@ l_int|6
 suffix:colon
 r_return
 id|RAID6
+suffix:semicolon
+r_case
+l_int|10
+suffix:colon
+r_return
+id|RAID10
 suffix:semicolon
 )brace
 r_return
