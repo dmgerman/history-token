@@ -83,7 +83,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ev_update_gpe_enable_masks&n; *&n; * PARAMETERS:  gpe_event_info          - GPE to update&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Updates GPE register enable masks based on the GPE type&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ev_update_gpe_enable_masks&n; *&n; * PARAMETERS:  gpe_event_info          - GPE to update&n; *              Type                    - What to do: ACPI_GPE_DISABLE or&n; *                                        ACPI_GPE_ENABLE&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Updates GPE register enable masks based on the GPE type&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ev_update_gpe_enable_masks
 id|acpi_ev_update_gpe_enable_masks
@@ -240,7 +240,7 @@ id|AE_OK
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ev_enable_gpe&n; *&n; * PARAMETERS:  gpe_event_info          - GPE to enable&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Enable a GPE based on the GPE type&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ev_enable_gpe&n; *&n; * PARAMETERS:  gpe_event_info          - GPE to enable&n; *              write_to_hardware       - Enable now, or just mark data structs&n; *                                        (WAKE GPEs should be deferred)&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Enable a GPE based on the GPE type&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ev_enable_gpe
 id|acpi_ev_enable_gpe
@@ -1501,7 +1501,7 @@ id|ACPI_INTERRUPT_HANDLED
 suffix:semicolon
 )brace
 macro_line|#ifdef ACPI_GPE_NOTIFY_CHECK
-multiline_comment|/*******************************************************************************&n; * NOT USED, PROTOTYPE ONLY AND WILL PROBABLY BE REMOVED&n; *&n; * FUNCTION:    acpi_ev_check_for_wake_only_gpe&n; *&n; * PARAMETERS:  gpe_event_info  - info for this GPE&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Determine if a a GPE is &quot;wake-only&quot;.&n; *&n; *              Called from Notify() code in interpreter when a &quot;device_wake&quot;&n; *              Notify comes in.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; * TBD: NOT USED, PROTOTYPE ONLY AND WILL PROBABLY BE REMOVED&n; *&n; * FUNCTION:    acpi_ev_check_for_wake_only_gpe&n; *&n; * PARAMETERS:  gpe_event_info  - info for this GPE&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Determine if a a GPE is &quot;wake-only&quot;.&n; *&n; *              Called from Notify() code in interpreter when a &quot;device_wake&quot;&n; *              Notify comes in.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ev_check_for_wake_only_gpe
 id|acpi_ev_check_for_wake_only_gpe
