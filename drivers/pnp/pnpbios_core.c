@@ -171,9 +171,9 @@ l_string|&quot;.previous&t;&t;&bslash;n&quot;
 )paren
 suffix:semicolon
 DECL|macro|Q_SET_SEL
-mdefine_line|#define Q_SET_SEL(selname, address, size) &bslash;&n;set_base (gdt [(selname) &gt;&gt; 3], __va((u32)(address))); &bslash;&n;set_limit (gdt [(selname) &gt;&gt; 3], size)
+mdefine_line|#define Q_SET_SEL(cpu, selname, address, size) &bslash;&n;set_base(cpu_gdt_table[cpu][(selname) &gt;&gt; 3], __va((u32)(address))); &bslash;&n;_set_limit(&amp;cpu_gdt_table[cpu][(selname) &gt;&gt; 3], size)
 DECL|macro|Q2_SET_SEL
-mdefine_line|#define Q2_SET_SEL(selname, address, size) &bslash;&n;set_base (gdt [(selname) &gt;&gt; 3], (u32)(address)); &bslash;&n;set_limit (gdt [(selname) &gt;&gt; 3], size)
+mdefine_line|#define Q2_SET_SEL(cpu, selname, address, size) &bslash;&n;set_base(cpu_gdt_table[cpu][(selname) &gt;&gt; 3], (u32)(address)); &bslash;&n;_set_limit((char *)&amp;cpu_gdt_table[cpu][(selname) &gt;&gt; 3], size)
 multiline_comment|/*&n; * At some point we want to use this stack frame pointer to unwind&n; * after PnP BIOS oopses. &n; */
 DECL|variable|pnp_bios_fault_esp
 id|u32
@@ -268,6 +268,7 @@ comma
 id|flags
 )paren
 suffix:semicolon
+multiline_comment|/* The lock prevents us bouncing CPU here */
 r_if
 c_cond
 (paren
@@ -276,6 +277,11 @@ id|ts1_size
 id|Q2_SET_SEL
 c_func
 (paren
+id|smp_processor_id
+c_func
+(paren
+)paren
+comma
 id|PNP_TS1
 comma
 id|ts1_base
@@ -291,6 +297,11 @@ id|ts2_size
 id|Q2_SET_SEL
 c_func
 (paren
+id|smp_processor_id
+c_func
+(paren
+)paren
+comma
 id|PNP_TS2
 comma
 id|ts2_base
@@ -5057,9 +5068,38 @@ comma
 id|check-&gt;fields.pm16dseg
 )paren
 suffix:semicolon
+id|pnp_bios_callpoint.offset
+op_assign
+id|check-&gt;fields.pm16offset
+suffix:semicolon
+id|pnp_bios_callpoint.segment
+op_assign
+id|PNP_CS16
+suffix:semicolon
+id|pnp_bios_hdr
+op_assign
+id|check
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+id|NR_CPUS
+suffix:semicolon
+id|i
+op_increment
+)paren
+(brace
 id|Q2_SET_SEL
 c_func
 (paren
+id|i
+comma
 id|PNP_CS32
 comma
 op_amp
@@ -5073,6 +5113,8 @@ suffix:semicolon
 id|Q_SET_SEL
 c_func
 (paren
+id|i
+comma
 id|PNP_CS16
 comma
 id|check-&gt;fields.pm16cseg
@@ -5085,6 +5127,8 @@ suffix:semicolon
 id|Q_SET_SEL
 c_func
 (paren
+id|i
+comma
 id|PNP_DS
 comma
 id|check-&gt;fields.pm16dseg
@@ -5094,18 +5138,7 @@ op_star
 l_int|1024
 )paren
 suffix:semicolon
-id|pnp_bios_callpoint.offset
-op_assign
-id|check-&gt;fields.pm16offset
-suffix:semicolon
-id|pnp_bios_callpoint.segment
-op_assign
-id|PNP_CS16
-suffix:semicolon
-id|pnp_bios_hdr
-op_assign
-id|check
-suffix:semicolon
+)brace
 r_break
 suffix:semicolon
 )brace
