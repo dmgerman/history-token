@@ -859,6 +859,13 @@ comma
 l_int|0
 )brace
 comma
+multiline_comment|/* U.S. Robotics 56K FAX INT */
+(brace
+l_string|&quot;USR3050&quot;
+comma
+l_int|0
+)brace
+comma
 multiline_comment|/* U.S. Robotics 56K Voice INT PnP */
 (brace
 l_string|&quot;USR3070&quot;
