@@ -4988,7 +4988,7 @@ id|LogInfo
 l_int|4
 )braket
 suffix:semicolon
-id|WRITE_WORD
+id|PUT_WORD
 c_func
 (paren
 op_amp
@@ -5015,7 +5015,7 @@ l_int|8
 )paren
 )paren
 suffix:semicolon
-id|WRITE_WORD
+id|PUT_WORD
 c_func
 (paren
 op_amp
@@ -5041,7 +5041,7 @@ l_int|8
 )paren
 )paren
 suffix:semicolon
-id|WRITE_WORD
+id|PUT_WORD
 c_func
 (paren
 op_amp
@@ -5067,7 +5067,7 @@ l_int|8
 )paren
 )paren
 suffix:semicolon
-id|WRITE_WORD
+id|PUT_WORD
 c_func
 (paren
 op_amp
@@ -5130,7 +5130,7 @@ id|LogInfo
 l_int|3
 )braket
 suffix:semicolon
-id|WRITE_WORD
+id|PUT_WORD
 c_func
 (paren
 op_amp
@@ -5157,7 +5157,7 @@ l_int|8
 )paren
 )paren
 suffix:semicolon
-id|WRITE_WORD
+id|PUT_WORD
 c_func
 (paren
 op_amp
@@ -5183,7 +5183,7 @@ l_int|8
 )paren
 )paren
 suffix:semicolon
-id|WRITE_WORD
+id|PUT_WORD
 c_func
 (paren
 op_amp
@@ -5266,7 +5266,7 @@ id|LogInfo
 l_int|4
 )braket
 suffix:semicolon
-id|WRITE_WORD
+id|PUT_WORD
 c_func
 (paren
 op_amp
@@ -5293,7 +5293,7 @@ l_int|8
 )paren
 )paren
 suffix:semicolon
-id|WRITE_WORD
+id|PUT_WORD
 c_func
 (paren
 op_amp
@@ -5319,7 +5319,7 @@ l_int|8
 )paren
 )paren
 suffix:semicolon
-id|WRITE_WORD
+id|PUT_WORD
 c_func
 (paren
 op_amp
@@ -5345,7 +5345,7 @@ l_int|8
 )paren
 )paren
 suffix:semicolon
-id|WRITE_WORD
+id|PUT_WORD
 c_func
 (paren
 op_amp

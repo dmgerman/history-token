@@ -156,7 +156,7 @@ multiline_comment|/*&n; * check for trapped MIPS 3xxx CPU, dump only exception f
 r_if
 c_cond
 (paren
-id|READ_DWORD
+id|GET_DWORD
 c_func
 (paren
 op_amp
@@ -204,7 +204,7 @@ id|regs
 l_int|0
 )braket
 op_assign
-id|READ_DWORD
+id|GET_DWORD
 c_func
 (paren
 op_amp
@@ -225,7 +225,7 @@ id|regs
 l_int|1
 )braket
 op_assign
-id|READ_DWORD
+id|GET_DWORD
 c_func
 (paren
 op_amp
@@ -246,7 +246,7 @@ id|regs
 l_int|2
 )braket
 op_assign
-id|READ_DWORD
+id|GET_DWORD
 c_func
 (paren
 op_amp
@@ -267,7 +267,7 @@ id|regs
 l_int|3
 )braket
 op_assign
-id|READ_DWORD
+id|GET_DWORD
 c_func
 (paren
 op_amp

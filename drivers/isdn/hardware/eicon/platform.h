@@ -918,7 +918,7 @@ DECL|macro|IMPLEMENT_MARKED_OK_AFTER_FC
 mdefine_line|#define IMPLEMENT_MARKED_OK_AFTER_FC 1
 DECL|macro|DIVA_IDI_RX_DMA
 mdefine_line|#define DIVA_IDI_RX_DMA 1
-multiline_comment|/*&n;** endian macros&n;*/
+multiline_comment|/*&n;** endian macros&n;**&n;** If only...  In some cases we did use them for endianness conversion;&n;** unfortunately, other uses were real iomem accesses.&n;*/
 DECL|macro|READ_WORD
 mdefine_line|#define READ_WORD(addr)   readw(addr)
 DECL|macro|READ_DWORD
@@ -927,6 +927,114 @@ DECL|macro|WRITE_WORD
 mdefine_line|#define WRITE_WORD(addr,v)  writew(v,addr)
 DECL|macro|WRITE_DWORD
 mdefine_line|#define WRITE_DWORD(addr,v) writel(v,addr)
+DECL|function|GET_WORD
+r_static
+r_inline
+id|__u16
+id|GET_WORD
+c_func
+(paren
+r_void
+op_star
+id|addr
+)paren
+(brace
+r_return
+id|le16_to_cpu
+c_func
+(paren
+op_star
+(paren
+id|__le16
+op_star
+)paren
+id|addr
+)paren
+suffix:semicolon
+)brace
+DECL|function|GET_DWORD
+r_static
+r_inline
+id|__u32
+id|GET_DWORD
+c_func
+(paren
+r_void
+op_star
+id|addr
+)paren
+(brace
+r_return
+id|le32_to_cpu
+c_func
+(paren
+op_star
+(paren
+id|__le32
+op_star
+)paren
+id|addr
+)paren
+suffix:semicolon
+)brace
+DECL|function|PUT_WORD
+r_static
+r_inline
+r_void
+id|PUT_WORD
+c_func
+(paren
+r_void
+op_star
+id|addr
+comma
+id|__u16
+id|v
+)paren
+(brace
+op_star
+(paren
+id|__le16
+op_star
+)paren
+id|addr
+op_assign
+id|cpu_to_le16
+c_func
+(paren
+id|v
+)paren
+suffix:semicolon
+)brace
+DECL|function|PUT_DWORD
+r_static
+r_inline
+r_void
+id|PUT_DWORD
+c_func
+(paren
+r_void
+op_star
+id|addr
+comma
+id|__u32
+id|v
+)paren
+(brace
+op_star
+(paren
+id|__le32
+op_star
+)paren
+id|addr
+op_assign
+id|cpu_to_le32
+c_func
+(paren
+id|v
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/*&n;** 32/64 bit macors&n;*/
 macro_line|#ifdef BITS_PER_LONG
 macro_line|#if BITS_PER_LONG &gt; 32 

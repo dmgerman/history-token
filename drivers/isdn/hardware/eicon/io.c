@@ -302,7 +302,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|READ_WORD
+id|GET_WORD
 c_func
 (paren
 op_amp
@@ -331,7 +331,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|READ_WORD
+id|GET_WORD
 c_func
 (paren
 op_amp
@@ -382,7 +382,7 @@ op_assign
 id|dword
 )paren
 (paren
-id|READ_WORD
+id|GET_WORD
 c_func
 (paren
 op_amp
@@ -432,7 +432,7 @@ l_int|2
 id|logOut
 op_assign
 (paren
-id|READ_WORD
+id|GET_WORD
 c_func
 (paren
 op_amp
