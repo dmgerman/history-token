@@ -23,7 +23,7 @@ macro_line|#include &quot;zoran_card.h&quot;
 macro_line|#include &quot;zoran_device.h&quot;
 macro_line|#include &quot;zoran_procfs.h&quot;
 DECL|macro|I2C_NAME
-mdefine_line|#define I2C_NAME(x) (x)-&gt;dev.name
+mdefine_line|#define I2C_NAME(x) (x)-&gt;name
 r_extern
 r_const
 r_struct

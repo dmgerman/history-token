@@ -1582,9 +1582,9 @@ c_func
 (paren
 l_string|&quot;tvmixer: %s (%s) registered with minor %d&bslash;n&quot;
 comma
-id|client-&gt;dev.name
+id|client-&gt;name
 comma
-id|client-&gt;adapter-&gt;dev.name
+id|client-&gt;adapter-&gt;name
 comma
 id|minor
 )paren

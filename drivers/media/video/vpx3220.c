@@ -11,7 +11,7 @@ macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/i2c.h&gt;
 macro_line|#include &lt;linux/i2c-dev.h&gt;
 DECL|macro|I2C_NAME
-mdefine_line|#define I2C_NAME(x) (x)-&gt;dev.name
+mdefine_line|#define I2C_NAME(x) (x)-&gt;name
 macro_line|#include &lt;linux/videodev.h&gt;
 macro_line|#include &lt;linux/video_decoder.h&gt;
 DECL|macro|I2C_VPX3220
