@@ -2730,7 +2730,7 @@ id|vnode_t
 op_star
 id|rvp
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_int
 id|readio_log

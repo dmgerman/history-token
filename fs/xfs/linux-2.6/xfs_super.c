@@ -1987,7 +1987,7 @@ l_int|2
 suffix:semicolon
 id|dotdot.d_inode
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|cvp
 op_assign

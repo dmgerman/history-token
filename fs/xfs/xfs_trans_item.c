@@ -776,7 +776,7 @@ l_int|0
 suffix:semicolon
 multiline_comment|/* NOTREACHED */
 r_return
-l_int|0
+l_int|NULL
 suffix:semicolon
 multiline_comment|/* keep gcc quite */
 )brace

@@ -289,7 +289,7 @@ l_string|&quot;fs/xfs/xqmstat&quot;
 comma
 l_int|0
 comma
-l_int|0
+l_int|NULL
 comma
 id|xfs_qm_read_stats
 comma
@@ -303,7 +303,7 @@ l_string|&quot;fs/xfs/xqm&quot;
 comma
 l_int|0
 comma
-l_int|0
+l_int|NULL
 comma
 id|xfs_qm_read_xfsquota
 comma

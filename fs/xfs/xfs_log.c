@@ -1310,7 +1310,7 @@ suffix:semicolon
 macro_line|#endif
 id|cb-&gt;cb_next
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|spl
 op_assign
@@ -1353,7 +1353,7 @@ id|XLOG_STATE_WANT_SYNC
 suffix:semicolon
 id|cb-&gt;cb_next
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 op_star
 (paren
@@ -1987,7 +1987,7 @@ suffix:semicolon
 id|xfs_log_ticket_t
 id|tic
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|xfs_lsn_t
 id|lsn
@@ -4646,7 +4646,7 @@ l_int|0
 dot
 id|i_addr
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|reg
 (braket
@@ -6975,7 +6975,7 @@ l_int|0
 suffix:semicolon
 id|iclog-&gt;ic_callback
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 multiline_comment|/* don&squot;t need to free */
 multiline_comment|/*&n;&t;&t;&t; * If the number of ops in this iclog indicate it just&n;&t;&t;&t; * contains the dummy transaction, we can&n;&t;&t;&t; * change state into IDLE (the second time around).&n;&t;&t;&t; * Otherwise we should change the state into&n;&t;&t;&t; * NEED a dummy.&n;&t;&t;&t; * We don&squot;t need to cover the dummy.&n;&t;&t;&t; */
@@ -7574,7 +7574,7 @@ id|iclog-&gt;ic_callback
 suffix:semicolon
 id|iclog-&gt;ic_callback
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|LOG_UNLOCK
 c_func
@@ -10960,7 +10960,7 @@ suffix:semicolon
 )brace
 id|t_list-&gt;t_next
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|log-&gt;l_tail
 op_assign
@@ -11015,7 +11015,7 @@ macro_line|#else
 multiline_comment|/* When we debug, it is easier if tickets are cycled */
 id|ticket-&gt;t_next
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_if
 c_cond

@@ -1052,7 +1052,7 @@ id|cur
 comma
 id|level
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 id|cur-&gt;bc_nlevels
