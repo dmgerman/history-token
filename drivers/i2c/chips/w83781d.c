@@ -4,7 +4,7 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/i2c.h&gt;
-macro_line|#include &lt;linux/i2c-proc.h&gt;
+macro_line|#include &lt;linux/i2c-sensor.h&gt;
 macro_line|#include &lt;linux/i2c-vid.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 multiline_comment|/* RT Table support #defined so we can take it out if it gets bothersome */
@@ -758,10 +758,6 @@ id|adapter
 comma
 r_int
 id|address
-comma
-r_int
-r_int
-id|flags
 comma
 r_int
 id|kind
@@ -3385,10 +3381,6 @@ id|adapter
 comma
 r_int
 id|address
-comma
-r_int
-r_int
-id|flags
 comma
 r_int
 id|kind
