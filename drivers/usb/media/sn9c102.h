@@ -21,6 +21,8 @@ DECL|macro|SN9C102_DEBUG_LEVEL
 mdefine_line|#define SN9C102_DEBUG_LEVEL       2
 DECL|macro|SN9C102_MAX_DEVICES
 mdefine_line|#define SN9C102_MAX_DEVICES       64
+DECL|macro|SN9C102_PRESERVE_IMGSCALE
+mdefine_line|#define SN9C102_PRESERVE_IMGSCALE 0
 DECL|macro|SN9C102_MAX_FRAMES
 mdefine_line|#define SN9C102_MAX_FRAMES        32
 DECL|macro|SN9C102_URBS
@@ -41,9 +43,9 @@ mdefine_line|#define SN9C102_AUTHOR_EMAIL    &quot;&lt;luca.risolia@studio.unibo
 DECL|macro|SN9C102_MODULE_LICENSE
 mdefine_line|#define SN9C102_MODULE_LICENSE  &quot;GPL&quot;
 DECL|macro|SN9C102_MODULE_VERSION
-mdefine_line|#define SN9C102_MODULE_VERSION  &quot;1:1.07&quot;
+mdefine_line|#define SN9C102_MODULE_VERSION  &quot;1:1.08&quot;
 DECL|macro|SN9C102_MODULE_VERSION_CODE
-mdefine_line|#define SN9C102_MODULE_VERSION_CODE  KERNEL_VERSION(1, 0, 7)
+mdefine_line|#define SN9C102_MODULE_VERSION_CODE  KERNEL_VERSION(1, 0, 8)
 id|SN9C102_ID_TABLE
 suffix:semicolon
 id|SN9C102_SENSOR_TABLE

@@ -2385,9 +2385,7 @@ id|int_callback
 comma
 id|kaweth
 comma
-id|HZ
-op_div
-l_int|4
+l_int|8
 )paren
 suffix:semicolon
 id|kaweth-&gt;irq_urb-&gt;transfer_dma

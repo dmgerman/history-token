@@ -33,7 +33,7 @@ macro_line|#include &lt;linux/etherdevice.h&gt;
 macro_line|#include &lt;linux/ethtool.h&gt;
 macro_line|#include &quot;gadget_chips.h&quot;
 multiline_comment|/*-------------------------------------------------------------------------*/
-multiline_comment|/*&n; * Ethernet gadget driver -- with CDC and non-CDC options&n; *&n; * CDC Ethernet is the standard USB solution for sending Ethernet frames&n; * using USB.  Real hardware tends to use the same framing protocol but look&n; * different for control features.  This driver strongly prefers to use&n; * this USB-IF standard as its open-systems interoperability solution;&n; * most host side USB stacks (except from Microsoft) support it.&n; *&n; * There&squot;s some hardware that can&squot;t talk CDC.  We make that hardware&n; * implement a &quot;minimalist&quot; vendor-agnostic CDC core:  same framing, but&n; * link-level setup only requires activating the configuration.&n; * Linux supports it, but other host operating systems may not.&n; * (This is a subset of CDC Ethernet.)&n; *&n; * A third option is also in use.  Rather than CDC Ethernet, or something&n; * simpler, Microsoft pushes their own approach: RNDIS.  The published&n; * RNDIS specs are ambiguous and appear to be incomplete, and are also&n; * needlessly complex.&n; */
+multiline_comment|/*&n; * Ethernet gadget driver -- with CDC and non-CDC options&n; * Builds on hardware support for a full duplex link.&n; *&n; * CDC Ethernet is the standard USB solution for sending Ethernet frames&n; * using USB.  Real hardware tends to use the same framing protocol but look&n; * different for control features.  This driver strongly prefers to use&n; * this USB-IF standard as its open-systems interoperability solution;&n; * most host side USB stacks (except from Microsoft) support it.&n; *&n; * There&squot;s some hardware that can&squot;t talk CDC.  We make that hardware&n; * implement a &quot;minimalist&quot; vendor-agnostic CDC core:  same framing, but&n; * link-level setup only requires activating the configuration.&n; * Linux supports it, but other host operating systems may not.&n; * (This is a subset of CDC Ethernet.)&n; *&n; * A third option is also in use.  Rather than CDC Ethernet, or something&n; * simpler, Microsoft pushes their own approach: RNDIS.  The published&n; * RNDIS specs are ambiguous and appear to be incomplete, and are also&n; * needlessly complex.&n; */
 DECL|macro|DRIVER_DESC
 mdefine_line|#define DRIVER_DESC&t;&t;&quot;Ethernet Gadget&quot;
 DECL|macro|DRIVER_VERSION
@@ -443,6 +443,10 @@ macro_line|#endif
 macro_line|#ifdef CONFIG_USB_GADGET_SH
 DECL|macro|DEV_CONFIG_SUBSET
 mdefine_line|#define&t;DEV_CONFIG_SUBSET
+macro_line|#endif
+macro_line|#ifdef CONFIG_USB_GADGET_LH7A40X
+DECL|macro|DEV_CONFIG_CDC
+mdefine_line|#define DEV_CONFIG_CDC
 macro_line|#endif
 macro_line|#ifdef CONFIG_USB_GADGET_SA1100
 multiline_comment|/* use non-CDC for backwards compatibility */
@@ -2295,7 +2299,7 @@ l_int|1
 )braket
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/* static strings, in iso 8859/1 */
+multiline_comment|/* static strings, in UTF-8 */
 DECL|variable|strings
 r_static
 r_struct
@@ -2462,9 +2466,9 @@ op_logical_neg
 id|hs
 suffix:semicolon
 DECL|macro|which_fn
-mdefine_line|#define which_fn(t)&t;(hs ? &amp; hs_ ## t ## _function : &amp; fs_ ## t ## _function)
+mdefine_line|#define which_fn(t)&t;(hs ? hs_ ## t ## _function : fs_ ## t ## _function)
 macro_line|#else
-mdefine_line|#define&t;which_fn(t)&t;(&amp; fs_ ## t ## _function)
+mdefine_line|#define&t;which_fn(t)&t;(fs_ ## t ## _function)
 macro_line|#endif
 r_if
 c_cond
@@ -2498,13 +2502,6 @@ id|rndis_config
 suffix:semicolon
 id|function
 op_assign
-(paren
-r_const
-r_struct
-id|usb_descriptor_header
-op_star
-op_star
-)paren
 id|which_fn
 (paren
 id|rndis
@@ -2521,13 +2518,6 @@ id|eth_config
 suffix:semicolon
 id|function
 op_assign
-(paren
-r_const
-r_struct
-id|usb_descriptor_header
-op_star
-op_star
-)paren
 id|which_fn
 (paren
 id|eth
@@ -8159,6 +8149,25 @@ op_assign
 id|__constant_cpu_to_le16
 (paren
 l_int|0x0208
+)paren
+suffix:semicolon
+)brace
+r_else
+r_if
+c_cond
+(paren
+id|gadget_is_lh7a40x
+c_func
+(paren
+id|gadget
+)paren
+)paren
+(brace
+id|device_desc.bcdDevice
+op_assign
+id|__constant_cpu_to_le16
+(paren
+l_int|0x0209
 )paren
 suffix:semicolon
 )brace

@@ -12,6 +12,7 @@ macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/stddef.h&gt;
+macro_line|#include &lt;linux/compiler.h&gt;
 macro_line|#include &lt;linux/ioctl.h&gt;
 macro_line|#include &lt;linux/poll.h&gt;
 macro_line|#include &lt;linux/stat.h&gt;
@@ -8508,8 +8509,13 @@ op_and_assign
 op_complement
 l_int|15L
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|SN9C102_PRESERVE_IMGSCALE
+)paren
 (brace
-multiline_comment|/* calculate the actual scaling factor */
+multiline_comment|/* Calculate the actual scaling factor */
 id|u32
 id|a
 comma
@@ -8566,6 +8572,11 @@ suffix:colon
 l_int|1
 suffix:semicolon
 )brace
+r_else
+id|scale
+op_assign
+l_int|1
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -10346,8 +10357,7 @@ suffix:semicolon
 id|list_del
 c_func
 (paren
-op_amp
-id|cam-&gt;outqueue
+id|cam-&gt;outqueue.next
 )paren
 suffix:semicolon
 id|spin_unlock_irqrestore

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * USB PhidgetServo driver 1.0&n; *&n; * Copyright (C) 2004 Sean Young &lt;sean@mess.org&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This is a driver for the USB PhidgetServo version 2.0 and 3.0 servo &n; * controllers available at: http://www.phidgets.com/ &n; *&n; * Note that the driver takes input as: degrees.minutes&n; * -23 &lt; degrees &lt; 203&n; * 0 &lt; minutes &lt; 59&n; *&n; * CAUTION: Generally you should use 0 &lt; degrees &lt; 180 as anything else&n; * is probably beyond the range of your servo and may damage it.&n; *&n; * Jun 16, 2004: Sean Young &lt;sean@mess.org&gt;&n; *  - cleanups&n; *  - was using memory after kfree()&n; */
+multiline_comment|/*&n; * USB PhidgetServo driver 1.0&n; *&n; * Copyright (C) 2004 Sean Young &lt;sean@mess.org&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This is a driver for the USB PhidgetServo version 2.0 and 3.0 servo &n; * controllers available at: http://www.phidgets.com/ &n; *&n; * Note that the driver takes input as: degrees.minutes&n; *&n; * CAUTION: Generally you should use 0 &lt; degrees &lt; 180 as anything else&n; * is probably beyond the range of your servo and may damage it.&n; *&n; * Jun 16, 2004: Sean Young &lt;sean@mess.org&gt;&n; *  - cleanups&n; *  - was using memory after kfree()&n; * Aug 8, 2004: Sean Young &lt;sean@mess.org&gt;&n; *  - set the highest angle as high as the hardware allows, there are &n; *    some odd servos out there&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#ifdef CONFIG_USB_DEBUG
 DECL|macro|DEBUG
@@ -178,6 +178,17 @@ r_int
 r_char
 op_star
 id|buffer
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|degrees
+template_param
+l_int|362
+)paren
+r_return
+op_minus
+id|EINVAL
 suffix:semicolon
 id|buffer
 op_assign
@@ -463,6 +474,17 @@ r_char
 op_star
 id|buffer
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|degrees
+template_param
+l_int|278
+)paren
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
 id|buffer
 op_assign
 id|kmalloc
@@ -602,7 +624,7 @@ id|retval
 suffix:semicolon
 )brace
 DECL|macro|show_set
-mdefine_line|#define show_set(value)&t;&bslash;&n;static ssize_t set_servo##value (struct device *dev,&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;const char *buf, size_t count)&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;int degrees, minutes, retval;&t;&t;&t;&t;&t;&bslash;&n;&t;struct usb_interface *intf = to_usb_interface (dev);&t;&t;&bslash;&n;&t;struct phidget_servo *servo = usb_get_intfdata (intf);&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;minutes = 0;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;/* must at least convert degrees */&t;&t;&t;&t;&bslash;&n;&t;if (sscanf (buf, &quot;%d.%d&quot;, &amp;degrees, &amp;minutes) &lt; 1) {&t;&t;&bslash;&n;&t;&t;return -EINVAL;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (degrees &lt; -23 || degrees &gt; (180 + 23) ||&t;&t;&t;&bslash;&n;&t;    minutes &lt; 0 || minutes &gt; 59) {&t;&t;&t;&t;&bslash;&n;&t;&t;return -EINVAL;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (servo-&gt;type &amp; SERVO_VERSION_30)&t;&t;&t;&t;&bslash;&n;&t;&t;retval = change_position_v30 (servo, value, degrees, &t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;minutes);&t;&bslash;&n;&t;else &t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;retval = change_position_v20 (servo, value, degrees, &t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;minutes);&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;return retval &lt; 0 ? retval : count;&t;&t;&t;&t;&bslash;&n;}&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;static ssize_t show_servo##value (struct device *dev, char *buf) &t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;struct usb_interface *intf = to_usb_interface (dev);&t;&t;&bslash;&n;&t;struct phidget_servo *servo = usb_get_intfdata (intf);&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;return sprintf (buf, &quot;%d.%02d&bslash;n&quot;, servo-&gt;degrees[value],&t;&bslash;&n;&t;&t;&t;&t;servo-&gt;minutes[value]);&t;&t;&t;&bslash;&n;}&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;static DEVICE_ATTR(servo##value, S_IWUGO | S_IRUGO,&t;&t;&t;&bslash;&n;&t;  show_servo##value, set_servo##value);
+mdefine_line|#define show_set(value)&t;&bslash;&n;static ssize_t set_servo##value (struct device *dev,&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;const char *buf, size_t count)&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;int degrees, minutes, retval;&t;&t;&t;&t;&t;&bslash;&n;&t;struct usb_interface *intf = to_usb_interface (dev);&t;&t;&bslash;&n;&t;struct phidget_servo *servo = usb_get_intfdata (intf);&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;minutes = 0;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;/* must at least convert degrees */&t;&t;&t;&t;&bslash;&n;&t;if (sscanf (buf, &quot;%d.%d&quot;, &amp;degrees, &amp;minutes) &lt; 1) {&t;&t;&bslash;&n;&t;&t;return -EINVAL;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (minutes &lt; 0 || minutes &gt; 59) &t;&t;&t;&t;&bslash;&n;&t;&t;return -EINVAL;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (servo-&gt;type &amp; SERVO_VERSION_30)&t;&t;&t;&t;&bslash;&n;&t;&t;retval = change_position_v30 (servo, value, degrees, &t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;minutes);&t;&bslash;&n;&t;else &t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;retval = change_position_v20 (servo, value, degrees, &t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;minutes);&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;return retval &lt; 0 ? retval : count;&t;&t;&t;&t;&bslash;&n;}&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;static ssize_t show_servo##value (struct device *dev, char *buf) &t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;struct usb_interface *intf = to_usb_interface (dev);&t;&t;&bslash;&n;&t;struct phidget_servo *servo = usb_get_intfdata (intf);&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;return sprintf (buf, &quot;%d.%02d&bslash;n&quot;, servo-&gt;degrees[value],&t;&bslash;&n;&t;&t;&t;&t;servo-&gt;minutes[value]);&t;&t;&t;&bslash;&n;}&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;static DEVICE_ATTR(servo##value, S_IWUGO | S_IRUGO,&t;&t;&t;&bslash;&n;&t;  show_servo##value, set_servo##value);
 id|show_set
 c_func
 (paren
