@@ -239,7 +239,7 @@ op_ne
 l_int|NULL
 )paren
 (brace
-multiline_comment|/* Neighbour record may be discarded if:&n;&t;&t;&t;   - nobody refers to it.&n;&t;&t;&t;   - it is not permanent&n;&t;&t;&t;   - (NEW and probably wrong)&n;&t;&t;&t;     INCOMPLETE entries are kept at least for&n;&t;&t;&t;     n-&gt;parms-&gt;retrans_time, otherwise we could&n;&t;&t;&t;     flood network with resolution requests.&n;&t;&t;&t;     It is not clear, what is better table overflow&n;&t;&t;&t;     or flooding.&n;&t;&t;&t; */
+multiline_comment|/* Neighbour record may be discarded if:&n;&t;&t;&t; * - nobody refers to it.&n;&t;&t;&t; * - it is not permanent&n;&t;&t;&t; */
 id|write_lock
 c_func
 (paren
@@ -264,22 +264,6 @@ op_logical_neg
 id|n-&gt;nud_state
 op_amp
 id|NUD_PERMANENT
-)paren
-op_logical_and
-(paren
-id|n-&gt;nud_state
-op_ne
-id|NUD_INCOMPLETE
-op_logical_or
-id|time_after
-c_func
-(paren
-id|jiffies
-comma
-id|n-&gt;used
-op_plus
-id|n-&gt;parms-&gt;retrans_time
-)paren
 )paren
 )paren
 (brace
