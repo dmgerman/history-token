@@ -4640,12 +4640,24 @@ op_logical_and
 id|reserve_sba_gart
 )paren
 (brace
-id|DBG_INIT
+id|printk
 c_func
 (paren
-l_string|&quot;%s: AGP device found, reserving half of IOVA for GART support&bslash;n&quot;
+id|KERN_INFO
+id|PFX
+l_string|&quot;reserving %dMb of IOVA space at 0x%lx for agpgart&bslash;n&quot;
 comma
-id|__FUNCTION__
+id|ioc-&gt;iov_size
+op_div
+l_int|2
+op_rshift
+l_int|20
+comma
+id|ioc-&gt;ibase
+op_plus
+id|ioc-&gt;iov_size
+op_div
+l_int|2
 )paren
 suffix:semicolon
 id|ioc-&gt;pdir_size
