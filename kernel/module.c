@@ -5595,6 +5595,13 @@ id|module_dummy_usage
 op_assign
 l_int|1
 suffix:semicolon
+DECL|variable|module_dummy_usage
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|module_dummy_usage
+)paren
+suffix:semicolon
 multiline_comment|/* Call this at boot */
 DECL|variable|init
 id|__initcall
