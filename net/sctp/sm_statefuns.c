@@ -5126,59 +5126,23 @@ id|sctp_errhdr_t
 op_star
 id|err
 suffix:semicolon
+multiline_comment|/* Process the error here */
+multiline_comment|/* FUTURE FIXME:  When PR-SCTP related and other optional&n;&t; * parms are emitted, this will have to change to handle multiple&n;&t; * errors.&n;&t; */
+id|sctp_walk_errors
+c_func
+(paren
 id|err
-op_assign
-(paren
-id|sctp_errhdr_t
-op_star
+comma
+id|chunk-&gt;chunk_hdr
 )paren
-(paren
-id|chunk-&gt;skb-&gt;data
-)paren
-suffix:semicolon
-multiline_comment|/* If we have gotten too many failures, give up.  */
+(brace
 r_if
 c_cond
 (paren
-l_int|1
-op_plus
-id|asoc-&gt;counters
-(braket
-id|SCTP_COUNTER_INIT_ERROR
-)braket
-OG
-id|asoc-&gt;max_init_attempts
-)paren
-(brace
-multiline_comment|/* INIT_FAILED will issue an ulpevent.  */
-id|sctp_add_cmd_sf
-c_func
-(paren
-id|commands
-comma
-id|SCTP_CMD_INIT_FAILED
-comma
-id|SCTP_U32
-c_func
-(paren
-id|err-&gt;cause
-)paren
-)paren
-suffix:semicolon
-r_return
-id|SCTP_DISPOSITION_DELETE_TCB
-suffix:semicolon
-)brace
-multiline_comment|/* Process the error here */
-r_switch
-c_cond
-(paren
-id|err-&gt;cause
-)paren
-(brace
-r_case
 id|SCTP_ERROR_STALE_COOKIE
-suffix:colon
+op_eq
+id|err-&gt;cause
+)paren
 r_return
 id|sctp_sf_do_5_2_6_stale
 c_func
@@ -5194,8 +5158,7 @@ comma
 id|commands
 )paren
 suffix:semicolon
-r_default
-suffix:colon
+)brace
 r_return
 id|sctp_sf_pdiscard
 c_func
@@ -5211,7 +5174,6 @@ comma
 id|commands
 )paren
 suffix:semicolon
-)brace
 )brace
 multiline_comment|/*&n; * Handle a Stale COOKIE Error&n; *&n; * Section: 5.2.6 Handle Stale COOKIE Error&n; * If the association is in the COOKIE-ECHOED state, the endpoint may elect&n; * one of the following three alternatives.&n; * ...&n; * 3) Send a new INIT chunk to the endpoint, adding a Cookie&n; *    Preservative parameter requesting an extension to the lifetime of&n; *    the State Cookie. When calculating the time extension, an&n; *    implementation SHOULD use the RTT information measured based on the&n; *    previous COOKIE ECHO / ERROR exchange, and should add no more&n; *    than 1 second beyond the measured RTT, due to long State Cookie&n; *    lifetimes making the endpoint more subject to a replay attack.&n; *&n; * Verification Tag:  Not explicit, but safe to ignore.&n; *&n; * Inputs&n; * (endpoint, asoc, chunk)&n; *&n; * Outputs&n; * (asoc, reply_msg, msg_up, timers, counters)&n; *&n; * The return value is the disposition of the chunk.&n; */
 DECL|function|sctp_sf_do_5_2_6_stale
