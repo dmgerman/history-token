@@ -1454,6 +1454,12 @@ op_assign
 l_int|NULL
 suffix:semicolon
 )brace
+id|kfree
+c_func
+(paren
+id|ahp
+)paren
+suffix:semicolon
 )brace
 DECL|variable|ah6_type
 r_static

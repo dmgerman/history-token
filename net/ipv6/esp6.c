@@ -2104,6 +2104,12 @@ op_assign
 l_int|NULL
 suffix:semicolon
 )brace
+id|kfree
+c_func
+(paren
+id|esp
+)paren
+suffix:semicolon
 )brace
 DECL|function|esp6_init_state
 r_int
