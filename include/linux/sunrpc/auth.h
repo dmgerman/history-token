@@ -42,7 +42,7 @@ id|rpc_cred
 (brace
 DECL|member|cr_hash
 r_struct
-id|list_head
+id|hlist_node
 id|cr_hash
 suffix:semicolon
 multiline_comment|/* hash chain */
@@ -101,7 +101,7 @@ id|rpc_auth
 (brace
 DECL|member|au_credcache
 r_struct
-id|list_head
+id|hlist_head
 id|au_credcache
 (braket
 id|RPC_CREDCACHE_NR
