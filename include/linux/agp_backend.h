@@ -63,7 +63,8 @@ r_int
 id|mode
 suffix:semicolon
 DECL|member|aper_base
-id|off_t
+r_int
+r_int
 id|aper_base
 suffix:semicolon
 DECL|member|aper_size

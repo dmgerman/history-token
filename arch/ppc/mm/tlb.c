@@ -144,7 +144,7 @@ op_complement
 id|PAGE_MASK
 )paren
 op_lshift
-l_int|9
+l_int|10
 )paren
 suffix:semicolon
 id|flush_hash_pages
