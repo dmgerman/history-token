@@ -612,7 +612,22 @@ comma
 id|index
 )paren
 suffix:semicolon
+id|hwif-&gt;irq
+op_assign
+id|hwif-&gt;hw.irq
+op_assign
+id|ide_init_default_irq
+c_func
+(paren
+id|hwif-&gt;io_ports
+(braket
+id|IDE_DATA_OFFSET
+)braket
+)paren
+suffix:semicolon
 )brace
+multiline_comment|/* OBSOLETE: still needed on arm26 and arm */
+macro_line|#ifdef CONFIG_ARM
 multiline_comment|/* Add default hw interfaces */
 id|initializing
 op_assign
@@ -627,6 +642,7 @@ id|initializing
 op_assign
 l_int|0
 suffix:semicolon
+macro_line|#endif
 )brace
 multiline_comment|/*&n; * ide_system_bus_speed() returns what we think is the system VESA/PCI&n; * bus speed (in MHz).  This is used for calculating interface PIO timings.&n; * The default is 40 for known PCI systems, 50 otherwise.&n; * The &quot;idebus=xx&quot; parameter can be used to override this value.&n; * The actual value to be used is computed/displayed the first time through.&n; */
 DECL|function|ide_system_bus_speed

@@ -98,6 +98,8 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
+DECL|macro|ide_init_default_irq
+mdefine_line|#define ide_init_default_irq(base)&t;(0)
 multiline_comment|/*&n; * This registers the standard ports for this architecture with the IDE&n; * driver.&n; */
 DECL|function|ide_init_default_hwifs
 r_static

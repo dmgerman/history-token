@@ -92,18 +92,8 @@ l_string|&quot;ide_init_hwif_ports: must not be called&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * This registers the standard ports for this architecture with the IDE&n; * driver.&n; */
-DECL|function|ide_init_default_hwifs
-r_static
-id|__inline__
-r_void
-id|ide_init_default_hwifs
-c_func
-(paren
-r_void
-)paren
-(brace
-)brace
+DECL|macro|ide_init_default_irq
+mdefine_line|#define ide_init_default_irq(base)&t;(0)
 multiline_comment|/*&n; * Get rid of defs from io.h - ide has its private and conflicting versions&n; * Since so far no single m68k platform uses ISA/PCI I/O space for IDE, we&n; * always use the `raw&squot; MMIO versions&n; */
 DECL|macro|inb
 macro_line|#undef inb

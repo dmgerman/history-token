@@ -122,19 +122,8 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* There are no standard ports. */
-DECL|function|ide_init_default_hwifs
-r_static
-r_inline
-r_void
-id|ide_init_default_hwifs
-c_func
-(paren
-r_void
-)paren
-(brace
-suffix:semicolon
-)brace
+DECL|macro|ide_init_default_irq
+mdefine_line|#define ide_init_default_irq(base)&t;(0)
 DECL|macro|ide_request_irq
 mdefine_line|#define ide_request_irq(irq,hand,flg,dev,id)&t;request_irq((irq),(hand),(flg),(dev),(id))
 DECL|macro|ide_free_irq

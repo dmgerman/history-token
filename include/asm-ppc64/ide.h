@@ -149,17 +149,8 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|ide_init_default_hwifs
-r_static
-id|__inline__
-r_void
-id|ide_init_default_hwifs
-c_func
-(paren
-r_void
-)paren
-(brace
-)brace
+DECL|macro|ide_init_default_irq
+mdefine_line|#define ide_init_default_irq(base)&t;(0)
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* __ASMPPC64_IDE_H */
 eof

@@ -79,17 +79,8 @@ id|irq
 )paren
 (brace
 )brace
-DECL|function|ide_init_default_hwifs
-r_static
-r_inline
-r_void
-id|ide_init_default_hwifs
-c_func
-(paren
-r_void
-)paren
-(brace
-)brace
+DECL|macro|ide_init_default_irq
+mdefine_line|#define ide_init_default_irq(base)&t;(0)
 DECL|macro|MAX_HWIFS
 mdefine_line|#define MAX_HWIFS&t;1
 DECL|macro|__ide_mm_insw
