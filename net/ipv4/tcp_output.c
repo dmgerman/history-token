@@ -2700,7 +2700,7 @@ id|GFP_ATOMIC
 )paren
 r_break
 suffix:semicolon
-multiline_comment|/* Advance the send_head.  This one is sent out. */
+multiline_comment|/* Advance the send_head.  This one is sent out.&n;&t;&t;&t; * This call will increment packets_out.&n;&t;&t;&t; */
 id|update_send_head
 c_func
 (paren
@@ -3753,6 +3753,20 @@ OG
 id|cur_mss
 )paren
 (brace
+r_int
+id|old_factor
+op_assign
+id|TCP_SKB_CB
+c_func
+(paren
+id|skb
+)paren
+op_member_access_from_pointer
+id|tso_factor
+suffix:semicolon
+r_int
+id|new_factor
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -3772,13 +3786,34 @@ id|ENOMEM
 suffix:semicolon
 multiline_comment|/* We&squot;ll try again later. */
 multiline_comment|/* New SKB created, account for it. */
+id|new_factor
+op_assign
+id|TCP_SKB_CB
+c_func
+(paren
+id|skb
+)paren
+op_member_access_from_pointer
+id|tso_factor
+suffix:semicolon
+id|tcp_dec_pcount_explicit
+c_func
+(paren
+op_amp
+id|tp-&gt;packets_out
+comma
+id|new_factor
+op_minus
+id|old_factor
+)paren
+suffix:semicolon
 id|tcp_inc_pcount
 c_func
 (paren
 op_amp
 id|tp-&gt;packets_out
 comma
-id|skb
+id|skb-&gt;next
 )paren
 suffix:semicolon
 )brace
