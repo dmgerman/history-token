@@ -483,6 +483,26 @@ id|scsi_device
 op_star
 )paren
 suffix:semicolon
+r_extern
+r_void
+id|scsi_free_shost
+c_func
+(paren
+r_struct
+id|Scsi_Host
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|scsi_host_get
+c_func
+(paren
+r_struct
+id|Scsi_Host
+op_star
+)paren
+suffix:semicolon
 multiline_comment|/* scsi_sysfs.c */
 r_extern
 r_int
