@@ -3157,7 +3157,7 @@ op_assign
 dot
 id|name
 op_assign
-l_string|&quot;SA1111&quot;
+l_string|&quot;sa1111&quot;
 comma
 dot
 id|bus

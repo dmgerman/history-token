@@ -675,7 +675,7 @@ op_assign
 dot
 id|name
 op_assign
-l_string|&quot;NEPONSET&quot;
+l_string|&quot;neponset&quot;
 comma
 dot
 id|bus
