@@ -767,36 +767,6 @@ l_int|0x400
 )paren
 suffix:semicolon
 multiline_comment|/* leave lower 10 bits untouched */
-macro_line|#if 1
-r_if
-c_cond
-(paren
-id|ide_check_region
-c_func
-(paren
-id|compat
-op_plus
-l_int|2
-comma
-l_int|1
-)paren
-)paren
-id|printk
-c_func
-(paren
-l_string|&quot;Aieee %s: ide_check_region failure at 0x%04x&bslash;n&quot;
-comma
-id|hwif-&gt;name
-comma
-(paren
-id|compat
-op_plus
-l_int|2
-)paren
-)paren
-suffix:semicolon
-multiline_comment|/*&n;&t;&t;&t; * The region check is not needed; however.........&n;&t;&t;&t; * Since this is the checked in ide-probe.c,&n;&t;&t;&t; * this is only an assignment.&n;&t;&t;&t; */
-macro_line|#endif
 id|hwif-&gt;io_ports
 (braket
 id|IDE_CONTROL_OFFSET

@@ -201,10 +201,10 @@ multiline_comment|/* THIS was formerly 2.2.x pci=reverse */
 macro_line|#endif
 macro_line|#if defined(__mc68000__) || defined(CONFIG_APUS)
 multiline_comment|/*&n; * This is used by the Atari code to obtain access to the IDE interrupt,&n; * which is shared between several drivers.&n; */
-DECL|variable|ide_intr_lock
+DECL|variable|irq_lock
 r_static
 r_int
-id|ide_intr_lock
+id|irq_lock
 suffix:semicolon
 macro_line|#endif
 DECL|variable|noautodma
@@ -1688,8 +1688,8 @@ id|hwif
 op_assign
 id|drive-&gt;channel
 suffix:semicolon
-id|byte
-id|tmp
+id|u8
+id|stat
 suffix:semicolon
 r_if
 c_cond
@@ -1698,7 +1698,7 @@ op_logical_neg
 id|OK_STAT
 c_func
 (paren
-id|tmp
+id|stat
 op_assign
 id|GET_STAT
 c_func
@@ -1761,7 +1761,7 @@ l_string|&quot;%s: reset timed-out, status=0x%02x&bslash;n&quot;
 comma
 id|hwif-&gt;name
 comma
-id|tmp
+id|stat
 )paren
 suffix:semicolon
 id|drive-&gt;failures
@@ -1782,7 +1782,7 @@ r_if
 c_cond
 (paren
 (paren
-id|tmp
+id|stat
 op_assign
 id|GET_ERR
 c_func
@@ -1806,80 +1806,76 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|drive-&gt;failures
-op_increment
-suffix:semicolon
 r_char
 op_star
 id|msg
-op_assign
-l_string|&quot;&quot;
 suffix:semicolon
 macro_line|#if FANCY_STATUS_DUMPS
+id|u8
+id|val
+suffix:semicolon
+r_static
+r_const
+r_char
+op_star
+id|messages
+(braket
+l_int|5
+)braket
+op_assign
+(brace
+l_string|&quot; passed&quot;
+comma
+l_string|&quot; formatter device&quot;
+comma
+l_string|&quot; sector buffer&quot;
+comma
+l_string|&quot; ECC circuitry&quot;
+comma
+l_string|&quot; controlling MPU error&quot;
+)brace
+suffix:semicolon
 id|printk
 c_func
 (paren
 l_string|&quot;master:&quot;
 )paren
 suffix:semicolon
-r_switch
-c_cond
-(paren
-id|tmp
+id|val
+op_assign
+id|stat
 op_amp
 l_int|0x7f
-)paren
-(brace
-r_case
-l_int|1
-suffix:colon
-id|msg
-op_assign
-l_string|&quot; passed&quot;
 suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-l_int|2
-suffix:colon
-id|msg
-op_assign
-l_string|&quot; formatter device&quot;
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-l_int|3
-suffix:colon
-id|msg
-op_assign
-l_string|&quot; sector buffer&quot;
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-l_int|4
-suffix:colon
-id|msg
-op_assign
-l_string|&quot; ECC circuitry&quot;
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-l_int|5
-suffix:colon
-id|msg
-op_assign
-l_string|&quot; controlling MPU error&quot;
-suffix:semicolon
-r_break
-suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
-id|tmp
+id|val
+op_ge
+l_int|1
+op_logical_and
+id|val
+op_le
+l_int|5
+)paren
+id|msg
+op_assign
+id|messages
+(braket
+id|val
+op_minus
+l_int|1
+)braket
+suffix:semicolon
+r_else
+id|msg
+op_assign
+l_string|&quot;&quot;
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|stat
 op_amp
 l_int|0x80
 )paren
@@ -1897,8 +1893,11 @@ l_string|&quot;%s error [%02x]&bslash;n&quot;
 comma
 id|msg
 comma
-id|tmp
+id|stat
 )paren
+suffix:semicolon
+id|drive-&gt;failures
+op_increment
 suffix:semicolon
 )brace
 )brace
@@ -2579,10 +2578,11 @@ c_func
 )paren
 suffix:semicolon
 multiline_comment|/* local CPU only */
+macro_line|#if !(FANCY_STATUS_DUMPS)
 id|printk
 c_func
 (paren
-l_string|&quot;%s: %s: status=0x%02x&quot;
+l_string|&quot;%s: %s: status=0x%02x&bslash;n&quot;
 comma
 id|drive-&gt;name
 comma
@@ -2591,12 +2591,19 @@ comma
 id|stat
 )paren
 suffix:semicolon
-macro_line|#if FANCY_STATUS_DUMPS
+macro_line|#else
 id|printk
 c_func
 (paren
 l_string|&quot; { &quot;
 )paren
+suffix:semicolon
+(brace
+r_char
+op_star
+id|msg
+op_assign
+l_string|&quot;&quot;
 suffix:semicolon
 r_if
 c_cond
@@ -2605,11 +2612,9 @@ id|stat
 op_amp
 id|BUSY_STAT
 )paren
-id|printk
-c_func
-(paren
-l_string|&quot;Busy &quot;
-)paren
+id|msg
+op_assign
+l_string|&quot;Busy&quot;
 suffix:semicolon
 r_else
 (brace
@@ -2620,11 +2625,9 @@ id|stat
 op_amp
 id|READY_STAT
 )paren
-id|printk
-c_func
-(paren
-l_string|&quot;DriveReady &quot;
-)paren
+id|msg
+op_assign
+l_string|&quot;DriveReady&quot;
 suffix:semicolon
 r_if
 c_cond
@@ -2633,11 +2636,9 @@ id|stat
 op_amp
 id|WRERR_STAT
 )paren
-id|printk
-c_func
-(paren
-l_string|&quot;DeviceFault &quot;
-)paren
+id|msg
+op_assign
+l_string|&quot;DeviceFault&quot;
 suffix:semicolon
 r_if
 c_cond
@@ -2646,11 +2647,9 @@ id|stat
 op_amp
 id|SEEK_STAT
 )paren
-id|printk
-c_func
-(paren
-l_string|&quot;SeekComplete &quot;
-)paren
+id|msg
+op_assign
+l_string|&quot;SeekComplete&quot;
 suffix:semicolon
 r_if
 c_cond
@@ -2659,11 +2658,9 @@ id|stat
 op_amp
 id|DRQ_STAT
 )paren
-id|printk
-c_func
-(paren
-l_string|&quot;DataRequest &quot;
-)paren
+id|msg
+op_assign
+l_string|&quot;DataRequest&quot;
 suffix:semicolon
 r_if
 c_cond
@@ -2672,11 +2669,9 @@ id|stat
 op_amp
 id|ECC_STAT
 )paren
-id|printk
-c_func
-(paren
-l_string|&quot;CorrectedError &quot;
-)paren
+id|msg
+op_assign
+l_string|&quot;CorrectedError&quot;
 suffix:semicolon
 r_if
 c_cond
@@ -2685,11 +2680,9 @@ id|stat
 op_amp
 id|INDEX_STAT
 )paren
-id|printk
-c_func
-(paren
-l_string|&quot;Index &quot;
-)paren
+id|msg
+op_assign
+l_string|&quot;Index&quot;
 suffix:semicolon
 r_if
 c_cond
@@ -2698,26 +2691,21 @@ id|stat
 op_amp
 id|ERR_STAT
 )paren
-id|printk
-c_func
-(paren
-l_string|&quot;Error &quot;
-)paren
+id|msg
+op_assign
+l_string|&quot;Error&quot;
 suffix:semicolon
+)brace
 )brace
 id|printk
 c_func
 (paren
-l_string|&quot;}&quot;
+l_string|&quot;%s }&bslash;n&quot;
+comma
+id|msg
 )paren
 suffix:semicolon
 macro_line|#endif
-id|printk
-c_func
-(paren
-l_string|&quot;&bslash;n&quot;
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -4914,22 +4902,25 @@ r_void
 id|ide_do_request
 c_func
 (paren
-id|ide_hwgroup_t
+r_struct
+id|ata_channel
 op_star
-id|hwgroup
+id|ch
 comma
 r_int
 id|masked_irq
 )paren
 (brace
-id|ide_drive_t
+id|ide_hwgroup_t
 op_star
-id|drive
+id|hwgroup
+op_assign
+id|ch-&gt;hwgroup
 suffix:semicolon
 r_struct
-id|ata_channel
+id|ata_device
 op_star
-id|hwif
+id|drive
 suffix:semicolon
 id|ide_startstop_t
 id|startstop
@@ -4943,9 +4934,9 @@ id|ide_get_lock
 c_func
 (paren
 op_amp
-id|ide_intr_lock
+id|irq_lock
 comma
-id|ide_intr
+id|ata_irq_request
 comma
 id|hwgroup
 )paren
@@ -5044,7 +5035,7 @@ c_cond
 id|sleep
 )paren
 (brace
-multiline_comment|/*&n;&t;&t;&t;&t; * Take a short snooze, and then wake up this hwgroup again.&n;&t;&t;&t;&t; * This gives other hwgroups on the same a chance to&n;&t;&t;&t;&t; * play fairly with us, just in case there are big differences&n;&t;&t;&t;&t; * in relative throughputs.. don&squot;t want to hog the cpu too much.&n;&t;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t;&t; * Take a short snooze, and then wake up this&n;&t;&t;&t;&t; * hwgroup again.  This gives other hwgroups on&n;&t;&t;&t;&t; * the same a chance to play fairly with us,&n;&t;&t;&t;&t; * just in case there are big differences in&n;&t;&t;&t;&t; * relative throughputs.. don&squot;t want to hog the&n;&t;&t;&t;&t; * cpu too much.&n;&t;&t;&t;&t; */
 r_if
 c_cond
 (paren
@@ -5108,12 +5099,12 @@ multiline_comment|/* we purposely leave hwgroup busy while sleeping */
 )brace
 r_else
 (brace
-multiline_comment|/* Ugly, but how can we sleep for the lock otherwise? perhaps from tq_disk? */
+multiline_comment|/* Ugly, but how can we sleep for the lock&n;&t;&t;&t;&t; * otherwise? perhaps from tq_disk? */
 id|ide_release_lock
 c_func
 (paren
 op_amp
-id|ide_intr_lock
+id|irq_lock
 )paren
 suffix:semicolon
 multiline_comment|/* for atari only */
@@ -5131,7 +5122,7 @@ r_return
 suffix:semicolon
 multiline_comment|/* no more work for this hwgroup (for now) */
 )brace
-id|hwif
+id|ch
 op_assign
 id|drive-&gt;channel
 suffix:semicolon
@@ -5140,23 +5131,23 @@ c_cond
 (paren
 id|hwgroup-&gt;hwif-&gt;sharing_irq
 op_logical_and
-id|hwif
+id|ch
 op_ne
 id|hwgroup-&gt;hwif
 op_logical_and
-id|hwif-&gt;io_ports
+id|ch-&gt;io_ports
 (braket
 id|IDE_CONTROL_OFFSET
 )braket
 )paren
 (brace
-multiline_comment|/* set nIEN for previous hwif */
+multiline_comment|/* set nIEN for previous channel */
 r_if
 c_cond
 (paren
-id|hwif-&gt;intrproc
+id|ch-&gt;intrproc
 )paren
-id|hwif
+id|ch
 op_member_access_from_pointer
 id|intrproc
 c_func
@@ -5176,7 +5167,7 @@ id|ctl
 op_or
 l_int|2
 comma
-id|hwif-&gt;io_ports
+id|ch-&gt;io_ports
 (braket
 id|IDE_CONTROL_OFFSET
 )braket
@@ -5185,7 +5176,7 @@ suffix:semicolon
 )brace
 id|hwgroup-&gt;hwif
 op_assign
-id|hwif
+id|ch
 suffix:semicolon
 id|hwgroup-&gt;drive
 op_assign
@@ -5226,20 +5217,20 @@ op_amp
 id|drive-&gt;queue
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * Some systems have trouble with IDE IRQs arriving while&n;&t;&t; * the driver is still setting things up.  So, here we disable&n;&t;&t; * the IRQ used by this interface while the request is being started.&n;&t;&t; * This may look bad at first, but pretty much the same thing&n;&t;&t; * happens anyway when any interrupt comes in, IDE or otherwise&n;&t;&t; *  -- the kernel masks the IRQ while it is being handled.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Some systems have trouble with IDE IRQs arriving while the&n;&t;&t; * driver is still setting things up.  So, here we disable the&n;&t;&t; * IRQ used by this interface while the request is being&n;&t;&t; * started.  This may look bad at first, but pretty much the&n;&t;&t; * same thing happens anyway when any interrupt comes in, IDE&n;&t;&t; * or otherwise -- the kernel masks the IRQ while it is being&n;&t;&t; * handled.&n;&t;&t; */
 r_if
 c_cond
 (paren
 id|masked_irq
 op_logical_and
-id|hwif-&gt;irq
+id|ch-&gt;irq
 op_ne
 id|masked_irq
 )paren
 id|disable_irq_nosync
 c_func
 (paren
-id|hwif-&gt;irq
+id|ch-&gt;irq
 )paren
 suffix:semicolon
 id|spin_unlock
@@ -5277,14 +5268,14 @@ c_cond
 (paren
 id|masked_irq
 op_logical_and
-id|hwif-&gt;irq
+id|ch-&gt;irq
 op_ne
 id|masked_irq
 )paren
 id|enable_irq
 c_func
 (paren
-id|hwif-&gt;irq
+id|ch-&gt;irq
 )paren
 suffix:semicolon
 r_if
@@ -5319,7 +5310,7 @@ id|dev
 r_struct
 id|ata_channel
 op_star
-id|channel
+id|ch
 op_assign
 (paren
 r_struct
@@ -5340,7 +5331,7 @@ suffix:semicolon
 multiline_comment|/* FIXME: ALLERT: This discriminates between master and slave! */
 r_return
 op_amp
-id|channel-&gt;drives
+id|ch-&gt;drives
 (braket
 id|DEVICE_NR
 c_func
@@ -5354,7 +5345,6 @@ dot
 id|queue
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Passes the stuff to ide_do_request&n; */
 DECL|function|do_ide_request
 r_void
 id|do_ide_request
@@ -5374,7 +5364,7 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * un-busy the hwgroup etc, and clear any pending DMA status. we want to&n; * retry the current request in PIO mode instead of risking tossing it&n; * all away&n; */
+multiline_comment|/*&n; * Un-busy the hwgroup etc, and clear any pending DMA status. we want to&n; * retry the current request in PIO mode instead of risking tossing it&n; * all away&n; */
 DECL|function|ide_dma_timeout_retry
 r_void
 id|ide_dma_timeout_retry
@@ -5772,9 +5762,6 @@ c_cond
 (paren
 id|drive-&gt;waiting_for_dma
 )paren
-(paren
-r_void
-)paren
 id|hwgroup-&gt;hwif
 op_member_access_from_pointer
 id|dmaproc
@@ -5893,7 +5880,7 @@ suffix:semicolon
 id|ide_do_request
 c_func
 (paren
-id|hwgroup
+id|hwgroup-&gt;hwif
 comma
 l_int|0
 )paren
@@ -6042,9 +6029,9 @@ id|hwgroup-&gt;hwif
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * entry point for all interrupts, caller does __cli() for us&n; */
-DECL|function|ide_intr
+DECL|function|ata_irq_request
 r_void
-id|ide_intr
+id|ata_irq_request
 c_func
 (paren
 r_int
@@ -6052,7 +6039,7 @@ id|irq
 comma
 r_void
 op_star
-id|dev_id
+id|data
 comma
 r_struct
 id|pt_regs
@@ -6060,26 +6047,25 @@ op_star
 id|regs
 )paren
 (brace
-r_int
-r_int
-id|flags
+r_struct
+id|ata_channel
+op_star
+id|ch
+op_assign
+id|data
 suffix:semicolon
 id|ide_hwgroup_t
 op_star
 id|hwgroup
 op_assign
-(paren
-id|ide_hwgroup_t
-op_star
-)paren
-id|dev_id
+id|ch-&gt;hwgroup
+suffix:semicolon
+r_int
+r_int
+id|flags
 suffix:semicolon
 r_struct
-id|ata_channel
-op_star
-id|hwif
-suffix:semicolon
-id|ide_drive_t
+id|ata_device
 op_star
 id|drive
 suffix:semicolon
@@ -6099,7 +6085,7 @@ comma
 id|flags
 )paren
 suffix:semicolon
-id|hwif
+id|ch
 op_assign
 id|hwgroup-&gt;hwif
 suffix:semicolon
@@ -6110,7 +6096,7 @@ op_logical_neg
 id|ide_ack_intr
 c_func
 (paren
-id|hwif
+id|ch
 )paren
 )paren
 r_goto
@@ -6132,26 +6118,28 @@ op_ne
 l_int|0
 )paren
 (brace
+macro_line|#if 0
 id|printk
 c_func
 (paren
 id|KERN_INFO
 l_string|&quot;ide: unexpected interrupt %d %d&bslash;n&quot;
 comma
-id|hwif-&gt;unit
+id|ch-&gt;unit
 comma
 id|irq
 )paren
 suffix:semicolon
+macro_line|#endif
 multiline_comment|/*&n;&t;&t; * Not expecting an interrupt from this drive.&n;&t;&t; * That means this could be:&n;&t;&t; *&t;(1) an interrupt from another PCI device&n;&t;&t; *&t;sharing the same PCI INT# as us.&n;&t;&t; * or&t;(2) a drive just entered sleep or standby mode,&n;&t;&t; *&t;and is interrupting to let us know.&n;&t;&t; * or&t;(3) a spurious interrupt of unknown origin.&n;&t;&t; *&n;&t;&t; * For PCI, we cannot tell the difference,&n;&t;&t; * so in that case we just ignore it and hope it goes away.&n;&t;&t; */
 macro_line|#ifdef CONFIG_BLK_DEV_IDEPCI
 r_if
 c_cond
 (paren
-id|hwif-&gt;pci_dev
+id|ch-&gt;pci_dev
 op_logical_and
 op_logical_neg
-id|hwif-&gt;pci_dev-&gt;vendor
+id|ch-&gt;pci_dev-&gt;vendor
 )paren
 macro_line|#endif
 (brace
@@ -6172,7 +6160,7 @@ multiline_comment|/*&n;&t;&t;&t; * Whack the status register, just in case we ha
 id|IN_BYTE
 c_func
 (paren
-id|hwif-&gt;io_ports
+id|ch-&gt;io_ports
 (braket
 id|IDE_STATUS_OFFSET
 )braket
@@ -6233,9 +6221,12 @@ id|hwgroup-&gt;flags
 id|printk
 c_func
 (paren
-l_string|&quot;%s: ide_intr: hwgroup was not busy??&bslash;n&quot;
+id|KERN_ERR
+l_string|&quot;%s: %s: hwgroup was not busy!?&bslash;n&quot;
 comma
 id|drive-&gt;name
+comma
+id|__FUNCTION__
 )paren
 suffix:semicolon
 id|hwgroup-&gt;handler
@@ -6259,7 +6250,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|hwif-&gt;unmask
+id|ch-&gt;unmask
 )paren
 id|ide__sti
 c_func
@@ -6325,9 +6316,9 @@ suffix:semicolon
 id|ide_do_request
 c_func
 (paren
-id|hwgroup
+id|ch
 comma
-id|hwif-&gt;irq
+id|ch-&gt;irq
 )paren
 suffix:semicolon
 )brace
@@ -6336,9 +6327,11 @@ r_else
 id|printk
 c_func
 (paren
-l_string|&quot;%s: ide_intr: huh? expected NULL handler on exit&bslash;n&quot;
+l_string|&quot;%s: %s: huh? expected NULL handler on exit&bslash;n&quot;
 comma
 id|drive-&gt;name
+comma
+id|__FUNCTION__
 )paren
 suffix:semicolon
 )brace
@@ -6676,7 +6669,7 @@ suffix:semicolon
 id|ide_do_request
 c_func
 (paren
-id|hwgroup
+id|drive-&gt;channel
 comma
 l_int|0
 )paren
@@ -7443,7 +7436,7 @@ c_cond
 id|hwif-&gt;straight8
 )paren
 (brace
-id|ide_release_region
+id|release_region
 c_func
 (paren
 id|hwif-&gt;io_ports
@@ -7465,7 +7458,7 @@ id|hwif-&gt;io_ports
 id|IDE_DATA_OFFSET
 )braket
 )paren
-id|ide_release_region
+id|release_region
 c_func
 (paren
 id|hwif-&gt;io_ports
@@ -7484,7 +7477,7 @@ id|hwif-&gt;io_ports
 id|IDE_ERROR_OFFSET
 )braket
 )paren
-id|ide_release_region
+id|release_region
 c_func
 (paren
 id|hwif-&gt;io_ports
@@ -7503,7 +7496,7 @@ id|hwif-&gt;io_ports
 id|IDE_NSECTOR_OFFSET
 )braket
 )paren
-id|ide_release_region
+id|release_region
 c_func
 (paren
 id|hwif-&gt;io_ports
@@ -7522,7 +7515,7 @@ id|hwif-&gt;io_ports
 id|IDE_SECTOR_OFFSET
 )braket
 )paren
-id|ide_release_region
+id|release_region
 c_func
 (paren
 id|hwif-&gt;io_ports
@@ -7541,7 +7534,7 @@ id|hwif-&gt;io_ports
 id|IDE_LCYL_OFFSET
 )braket
 )paren
-id|ide_release_region
+id|release_region
 c_func
 (paren
 id|hwif-&gt;io_ports
@@ -7560,7 +7553,7 @@ id|hwif-&gt;io_ports
 id|IDE_HCYL_OFFSET
 )braket
 )paren
-id|ide_release_region
+id|release_region
 c_func
 (paren
 id|hwif-&gt;io_ports
@@ -7579,7 +7572,7 @@ id|hwif-&gt;io_ports
 id|IDE_SELECT_OFFSET
 )braket
 )paren
-id|ide_release_region
+id|release_region
 c_func
 (paren
 id|hwif-&gt;io_ports
@@ -7598,7 +7591,7 @@ id|hwif-&gt;io_ports
 id|IDE_STATUS_OFFSET
 )braket
 )paren
-id|ide_release_region
+id|release_region
 c_func
 (paren
 id|hwif-&gt;io_ports
@@ -7618,7 +7611,7 @@ id|hwif-&gt;io_ports
 id|IDE_CONTROL_OFFSET
 )braket
 )paren
-id|ide_release_region
+id|release_region
 c_func
 (paren
 id|hwif-&gt;io_ports
@@ -7638,7 +7631,7 @@ id|hwif-&gt;io_ports
 id|IDE_IRQ_OFFSET
 )braket
 )paren
-id|ide_release_region
+id|release_region
 c_func
 (paren
 id|hwif-&gt;io_ports
@@ -13888,13 +13881,6 @@ c_func
 id|ide_timer_expiry
 )paren
 suffix:semicolon
-DECL|variable|ide_intr
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|ide_intr
-)paren
-suffix:semicolon
 DECL|variable|ide_get_queue
 id|EXPORT_SYMBOL
 c_func
@@ -14553,7 +14539,7 @@ id|ide_get_lock
 c_func
 (paren
 op_amp
-id|ide_intr_lock
+id|irq_lock
 comma
 l_int|NULL
 comma
@@ -14611,7 +14597,7 @@ id|ide_release_lock
 c_func
 (paren
 op_amp
-id|ide_intr_lock
+id|irq_lock
 )paren
 suffix:semicolon
 multiline_comment|/* for atari only */
