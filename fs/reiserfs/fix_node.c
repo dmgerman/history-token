@@ -10073,9 +10073,6 @@ id|CARRY_ON
 r_goto
 id|repeat
 suffix:semicolon
-r_return
-id|n_ret_value
-suffix:semicolon
 )brace
 r_if
 c_cond
@@ -10134,9 +10131,6 @@ id|CARRY_ON
 r_goto
 id|repeat
 suffix:semicolon
-r_return
-id|n_ret_value
-suffix:semicolon
 )brace
 r_if
 c_cond
@@ -10163,9 +10157,6 @@ suffix:semicolon
 r_goto
 id|repeat
 suffix:semicolon
-r_return
-id|n_ret_value
-suffix:semicolon
 )brace
 r_if
 c_cond
@@ -10188,9 +10179,6 @@ id|CARRY_ON
 r_goto
 id|repeat
 suffix:semicolon
-r_return
-id|n_ret_value
-suffix:semicolon
 )brace
 r_if
 c_cond
@@ -10212,9 +10200,6 @@ id|CARRY_ON
 (brace
 r_goto
 id|repeat
-suffix:semicolon
-r_return
-id|n_ret_value
 suffix:semicolon
 multiline_comment|/* No disk space, or schedule occurred and&n;&t;&t;&t;&t;   analysis may be invalid and needs to be redone. */
 )brace
