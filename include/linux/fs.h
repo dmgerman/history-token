@@ -1533,16 +1533,6 @@ r_void
 op_star
 id|private_data
 suffix:semicolon
-multiline_comment|/* file callback list */
-DECL|member|f_cblock
-id|rwlock_t
-id|f_cblock
-suffix:semicolon
-DECL|member|f_cblist
-r_struct
-id|list_head
-id|f_cblist
-suffix:semicolon
 )brace
 suffix:semicolon
 r_extern
