@@ -8,6 +8,7 @@ macro_line|#include &lt;linux/poll.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/vmalloc.h&gt;
 macro_line|#include &lt;linux/wrapper.h&gt;
+macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &quot;pwc.h&quot;
 macro_line|#include &quot;pwc-ioctl.h&quot;
@@ -581,135 +582,6 @@ multiline_comment|/*************************************************************
 multiline_comment|/* Okay, this is some magic that I worked out and the reasoning behind it...&n;&n;   The biggest problem with any USB device is of course: &quot;what to do &n;   when the user unplugs the device while it is in use by an application?&quot;&n;   We have several options:&n;   1) Curse them with the 7 plagues when they do (requires divine intervention)&n;   2) Tell them not to (won&squot;t work: they&squot;ll do it anyway)&n;   3) Oops the kernel (this will have a negative effect on a user&squot;s uptime)&n;   4) Do something sensible.&n;   &n;   Of course, we go for option 4.&n;&n;   It happens that this device will be linked to two times, once from&n;   usb_device and once from the video_device in their respective &squot;private&squot;&n;   pointers. This is done when the device is probed() and all initialization&n;   succeeded. The pwc_device struct links back to both structures.&n;&n;   When a device is unplugged while in use it will be removed from the &n;   list of known USB devices; I also de-register as a V4L device, but &n;   unfortunately I can&squot;t free the memory since the struct is still in use&n;   by the file descriptor. This free-ing is then deferend until the first&n;   opportunity. Crude, but it works.&n;   &n;   A small &squot;advantage&squot; is that if a user unplugs the cam and plugs it back&n;   in, it should get assigned the same video device minor, but unfortunately&n;   it&squot;s non-trivial to re-link the cam back to the video device... (that &n;   would surely be magic! :))&n;*/
 multiline_comment|/***************************************************************************/
 multiline_comment|/* Private functions */
-multiline_comment|/* Memory management functions, nicked from cpia.c, which nicked them from&n;   bttv.c. So far, I&squot;ve counted duplication of this code 6 times &n;   (bttv, cpia, ibmcam, ov511, pwc, ieee1394).&n; */
-multiline_comment|/* Given PGD from the address space&squot;s page table, return the kernel&n; * virtual mapping of the physical memory mapped at ADR.&n; */
-DECL|function|uvirt_to_kva
-r_static
-r_inline
-r_int
-r_int
-id|uvirt_to_kva
-c_func
-(paren
-id|pgd_t
-op_star
-id|pgd
-comma
-r_int
-r_int
-id|adr
-)paren
-(brace
-r_int
-r_int
-id|ret
-op_assign
-l_int|0UL
-suffix:semicolon
-id|pmd_t
-op_star
-id|pmd
-suffix:semicolon
-id|pte_t
-op_star
-id|ptep
-comma
-id|pte
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|pgd_none
-c_func
-(paren
-op_star
-id|pgd
-)paren
-)paren
-(brace
-id|pmd
-op_assign
-id|pmd_offset
-c_func
-(paren
-id|pgd
-comma
-id|adr
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|pmd_none
-c_func
-(paren
-op_star
-id|pmd
-)paren
-)paren
-(brace
-id|ptep
-op_assign
-id|pte_offset
-c_func
-(paren
-id|pmd
-comma
-id|adr
-)paren
-suffix:semicolon
-id|pte
-op_assign
-op_star
-id|ptep
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|pte_present
-c_func
-(paren
-id|pte
-)paren
-)paren
-(brace
-id|ret
-op_assign
-(paren
-r_int
-r_int
-)paren
-id|page_address
-c_func
-(paren
-id|pte_page
-c_func
-(paren
-id|pte
-)paren
-)paren
-suffix:semicolon
-id|ret
-op_or_assign
-(paren
-id|adr
-op_amp
-(paren
-id|PAGE_SIZE
-op_minus
-l_int|1
-)paren
-)paren
-suffix:semicolon
-)brace
-)brace
-)brace
-r_return
-id|ret
-suffix:semicolon
-)brace
 multiline_comment|/* Here we want the physical address of the memory.&n; * This is used when initializing the contents of the&n; * area and marking the pages as reserved.&n; */
 DECL|function|kvirt_to_pa
 r_static
@@ -742,7 +614,10 @@ id|adr
 suffix:semicolon
 id|kva
 op_assign
-id|uvirt_to_kva
+id|page_address
+c_func
+(paren
+id|vmalloc_to_page
 c_func
 (paren
 id|pgd_offset_k
@@ -752,6 +627,7 @@ id|va
 )paren
 comma
 id|va
+)paren
 )paren
 suffix:semicolon
 id|ret

@@ -1769,6 +1769,22 @@ r_int
 id|addr
 )paren
 suffix:semicolon
+r_extern
+r_struct
+id|page
+op_star
+id|vmalloc_to_page
+c_func
+(paren
+id|pgd_t
+op_star
+id|pgd
+comma
+r_int
+r_int
+id|adr
+)paren
+suffix:semicolon
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif
 eof
