@@ -1783,7 +1783,7 @@ r_if
 c_cond
 (paren
 id|acpi_fadt.plvl2_lat
-op_ge
+OG
 id|ACPI_PROCESSOR_MAX_C2_LATENCY
 )paren
 id|ACPI_DEBUG_PRINT
@@ -1868,7 +1868,7 @@ r_if
 c_cond
 (paren
 id|acpi_fadt.plvl3_lat
-op_ge
+OG
 id|ACPI_PROCESSOR_MAX_C3_LATENCY
 )paren
 id|ACPI_DEBUG_PRINT
