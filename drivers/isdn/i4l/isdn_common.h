@@ -17,15 +17,15 @@ macro_line|#undef  ISDN_DEBUG_MODEM_VOICE
 DECL|macro|ISDN_DEBUG_AT
 macro_line|#undef  ISDN_DEBUG_AT
 DECL|macro|ISDN_DEBUG_NET_DUMP
-macro_line|#undef  ISDN_DEBUG_NET_DUMP
+mdefine_line|#define  ISDN_DEBUG_NET_DUMP
 DECL|macro|ISDN_DEBUG_NET_DIAL
-macro_line|#undef  ISDN_DEBUG_NET_DIAL
+mdefine_line|#define  ISDN_DEBUG_NET_DIAL
 DECL|macro|ISDN_DEBUG_NET_ICALL
-macro_line|#undef  ISDN_DEBUG_NET_ICALL
+mdefine_line|#define  ISDN_DEBUG_NET_ICALL
 DECL|macro|ISDN_DEBUG_STATCALLB
-macro_line|#undef  ISDN_DEBUG_STATCALLB
+mdefine_line|#define  ISDN_DEBUG_STATCALLB
 DECL|macro|ISDN_DEBUG_COMMAND
-macro_line|#undef  ISDN_DEBUG_COMMAND
+mdefine_line|#define  ISDN_DEBUG_COMMAND
 macro_line|#ifdef ISDN_DEBUG_NET_DIAL
 DECL|macro|dbg_net_dial
 mdefine_line|#define dbg_net_dial(arg...) printk(KERN_DEBUG arg)

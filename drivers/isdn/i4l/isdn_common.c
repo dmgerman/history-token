@@ -2215,7 +2215,7 @@ c_func
 (paren
 id|cmd.parm.setup.eazmsn
 comma
-id|p-&gt;local.msn
+id|p-&gt;mlp-&gt;msn
 )paren
 suffix:semicolon
 id|isdn_slot_command

@@ -592,17 +592,14 @@ id|receive
 r_struct
 id|isdn_net_local_s
 op_star
-id|lp
 comma
 r_struct
 id|isdn_net_dev_s
 op_star
-id|idev
 comma
 r_struct
 id|sk_buff
 op_star
-id|skb
 )paren
 suffix:semicolon
 DECL|member|connected
@@ -613,9 +610,8 @@ id|connected
 )paren
 (paren
 r_struct
-id|isdn_net_local_s
+id|isdn_net_dev_s
 op_star
-id|lp
 )paren
 suffix:semicolon
 DECL|member|disconnected
@@ -626,9 +622,8 @@ id|disconnected
 )paren
 (paren
 r_struct
-id|isdn_net_local_s
+id|isdn_net_dev_s
 op_star
-id|lp
 )paren
 suffix:semicolon
 DECL|member|bind
@@ -639,9 +634,8 @@ id|bind
 )paren
 (paren
 r_struct
-id|isdn_net_local_s
+id|isdn_net_dev_s
 op_star
-id|lp
 )paren
 suffix:semicolon
 DECL|member|unbind
@@ -652,9 +646,8 @@ id|unbind
 )paren
 (paren
 r_struct
-id|isdn_net_local_s
+id|isdn_net_dev_s
 op_star
-id|lp
 )paren
 suffix:semicolon
 DECL|member|init
@@ -667,7 +660,6 @@ id|init
 r_struct
 id|isdn_net_local_s
 op_star
-id|lp
 )paren
 suffix:semicolon
 DECL|member|cleanup
@@ -680,7 +672,6 @@ id|cleanup
 r_struct
 id|isdn_net_local_s
 op_star
-id|lp
 )paren
 suffix:semicolon
 DECL|member|open
@@ -693,7 +684,6 @@ id|open
 r_struct
 id|isdn_net_local_s
 op_star
-id|lp
 )paren
 suffix:semicolon
 DECL|member|close
@@ -706,7 +696,6 @@ id|close
 r_struct
 id|isdn_net_local_s
 op_star
-id|lp
 )paren
 suffix:semicolon
 )brace
@@ -736,11 +725,6 @@ r_int
 id|flags
 suffix:semicolon
 multiline_comment|/* Connection-flags                 */
-DECL|member|dialretry
-r_int
-id|dialretry
-suffix:semicolon
-multiline_comment|/* Counter for Dialout-retries      */
 DECL|member|dialmax
 r_int
 id|dialmax
@@ -820,13 +804,12 @@ suffix:semicolon
 multiline_comment|/* List of remote-phonenumbers      */
 multiline_comment|/* phone[0] = Incoming Numbers      */
 multiline_comment|/* phone[1] = Outgoing Numbers      */
-DECL|member|netdev
+DECL|member|slaves
 r_struct
-id|isdn_net_dev_s
-op_star
-id|netdev
+id|list_head
+id|slaves
 suffix:semicolon
-multiline_comment|/* Ptr to netdev                    */
+multiline_comment|/* list of all bundled channels     */
 DECL|member|online
 r_struct
 id|list_head
@@ -910,10 +893,6 @@ r_typedef
 r_struct
 id|isdn_net_dev_s
 (brace
-DECL|member|local
-id|isdn_net_local
-id|local
-suffix:semicolon
 DECL|member|isdn_slot
 r_int
 id|isdn_slot
@@ -972,6 +951,11 @@ r_int
 id|dialwait_timer
 suffix:semicolon
 multiline_comment|/* earliest next dialing-attempt   */
+DECL|member|dialretry
+r_int
+id|dialretry
+suffix:semicolon
+multiline_comment|/* Counter for Dialout-retries      */
 DECL|member|cps
 r_int
 id|cps
@@ -1064,12 +1048,12 @@ r_struct
 id|tasklet_struct
 id|tlet
 suffix:semicolon
-DECL|member|master
+DECL|member|mlp
 id|isdn_net_local
 op_star
-id|master
+id|mlp
 suffix:semicolon
-multiline_comment|/* Ptr to Master device for slaves  */
+multiline_comment|/* Ptr to master device for all devs*/
 DECL|member|slave
 r_struct
 id|isdn_net_dev_s
@@ -1077,6 +1061,12 @@ op_star
 id|slave
 suffix:semicolon
 multiline_comment|/* Ptr to Slave device for masters  */
+DECL|member|slaves
+r_struct
+id|list_head
+id|slaves
+suffix:semicolon
+multiline_comment|/* Members of local-&gt;slaves         */
 DECL|member|online
 r_struct
 id|list_head
