@@ -1120,7 +1120,35 @@ id|us-&gt;dev_semaphore
 )paren
 )paren
 suffix:semicolon
+multiline_comment|/* don&squot;t do anything if we are disconnecting */
+r_if
+c_cond
+(paren
+id|test_bit
+c_func
+(paren
+id|US_FLIDX_DISCONNECTING
+comma
+op_amp
+id|us-&gt;flags
+)paren
+)paren
+(brace
+id|US_DEBUGP
+c_func
+(paren
+l_string|&quot;No command during disconnect&bslash;n&quot;
+)paren
+suffix:semicolon
+id|us-&gt;srb-&gt;result
+op_assign
+id|DID_BAD_TARGET
+op_lshift
+l_int|16
+suffix:semicolon
+)brace
 multiline_comment|/* reject the command if the direction indicator &n;&t;&t; * is UNKNOWN&n;&t;&t; */
+r_else
 r_if
 c_cond
 (paren
