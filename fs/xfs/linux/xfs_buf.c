@@ -1471,6 +1471,10 @@ id|all_mapped
 op_assign
 l_int|1
 suffix:semicolon
+id|rval
+op_assign
+l_int|0
+suffix:semicolon
 r_goto
 id|mapit
 suffix:semicolon
@@ -1500,11 +1504,9 @@ id|rval
 r_return
 id|rval
 suffix:semicolon
-id|rval
+id|all_mapped
 op_assign
-id|pi
-op_assign
-l_int|0
+l_int|1
 suffix:semicolon
 id|blocksize
 op_assign
@@ -1536,9 +1538,9 @@ suffix:semicolon
 r_for
 c_loop
 (paren
-id|all_mapped
+id|pi
 op_assign
-l_int|1
+l_int|0
 suffix:semicolon
 id|pi
 OL
