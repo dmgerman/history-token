@@ -426,6 +426,7 @@ id|WD_WDRST
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;pcwd: Previous reboot was caused by the card.&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -440,12 +441,14 @@ id|WD_T110
 id|printk
 c_func
 (paren
+id|KERN_EMERG
 l_string|&quot;pcwd: Card senses a CPU Overheat.  Panicking!&bslash;n&quot;
 )paren
 suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_EMERG
 l_string|&quot;pcwd: CPU Overheat.&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -479,6 +482,7 @@ id|WD_T110
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;pcwd: Cold boot sense.&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -495,6 +499,7 @@ l_int|0x01
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;pcwd: Previous reboot was caused by the card.&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -509,12 +514,14 @@ l_int|0x04
 id|printk
 c_func
 (paren
+id|KERN_EMERG
 l_string|&quot;pcwd: Card senses a CPU Overheat.  Panicking!&bslash;n&quot;
 )paren
 suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_EMERG
 l_string|&quot;pcwd: CPU Overheat.&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -548,6 +555,7 @@ l_int|0x04
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;pcwd: Cold boot sense.&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -1133,6 +1141,7 @@ l_int|0
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;pcwd: Could not disable card.&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -1198,6 +1207,7 @@ l_int|0x10
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;pcwd: Could not enable card.&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -2159,6 +2169,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;pcwd: v%s Ken Hollis (kenji@bitgate.com)&bslash;n&quot;
 comma
 id|WD_VER
@@ -2234,6 +2245,7 @@ id|found
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;pcwd: No card detected, or port not available.&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -2271,6 +2283,7 @@ id|PCWD_REVISION_A
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;pcwd: PC Watchdog (REV.A) detected at port 0x%03x&bslash;n&quot;
 comma
 id|current_readport
@@ -2287,6 +2300,7 @@ id|PCWD_REVISION_C
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;pcwd: PC Watchdog (REV.C) detected at port 0x%03x (Firmware version: %s)&bslash;n&quot;
 comma
 id|current_readport
@@ -2319,6 +2333,7 @@ id|supports_temp
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;pcwd: Temperature Option Detected.&bslash;n&quot;
 )paren
 suffix:semicolon
