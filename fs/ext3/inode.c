@@ -3669,6 +3669,11 @@ id|ret
 op_assign
 l_int|0
 suffix:semicolon
+r_struct
+id|buffer_head
+op_star
+id|next
+suffix:semicolon
 r_for
 c_loop
 (paren
@@ -3699,9 +3704,13 @@ id|block_end
 comma
 id|bh
 op_assign
-id|bh-&gt;b_this_page
+id|next
 )paren
 (brace
+id|next
+op_assign
+id|bh-&gt;b_this_page
+suffix:semicolon
 id|block_end
 op_assign
 id|block_start
