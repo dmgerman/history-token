@@ -6573,6 +6573,11 @@ id|skb-&gt;len
 suffix:semicolon
 r_break
 suffix:semicolon
+r_case
+id|RFCOMM_NSC
+suffix:colon
+r_break
+suffix:semicolon
 r_default
 suffix:colon
 id|BT_ERR
@@ -7175,9 +7180,9 @@ c_func
 (paren
 id|d-&gt;session
 comma
-id|d-&gt;dlci
-comma
 l_int|1
+comma
+id|d-&gt;dlci
 comma
 id|d-&gt;v24_sig
 )paren
