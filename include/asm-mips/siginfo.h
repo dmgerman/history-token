@@ -271,6 +271,8 @@ DECL|macro|SI_MESGQ
 mdefine_line|#define SI_MESGQ&t;-4&t;/* sent by real time mesq state change */
 DECL|macro|SI_SIGIO
 mdefine_line|#define SI_SIGIO&t;-5&t;/* sent by queued SIGIO */
+DECL|macro|SI_TKILL
+mdefine_line|#define SI_TKILL&t;-6&t;/* sent by tkill system call */
 DECL|macro|SI_FROMUSER
 mdefine_line|#define SI_FROMUSER(siptr)&t;((siptr)-&gt;si_code &lt;= 0)
 DECL|macro|SI_FROMKERNEL

@@ -446,6 +446,10 @@ DECL|macro|__NR_getdents64
 mdefine_line|#define __NR_getdents64&t;&t;&t;(__NR_Linux + 219)
 DECL|macro|__NR_fcntl64
 mdefine_line|#define __NR_fcntl64&t;&t;&t;(__NR_Linux + 220)
+DECL|macro|__NR_gettid
+mdefine_line|#define __NR_gettid&t;&t;&t;(__NR_Linux + 221)
+DECL|macro|__NR_tkill
+mdefine_line|#define __NR_tkill&t;&t;&t;(__NR_Linux + 222)
 multiline_comment|/*&n; * Offset of the last Linux flavoured syscall&n; */
 DECL|macro|__NR_Linux_syscalls
 mdefine_line|#define __NR_Linux_syscalls&t;&t;220

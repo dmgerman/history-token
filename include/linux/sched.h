@@ -1763,6 +1763,20 @@ op_star
 )paren
 suffix:semicolon
 r_extern
+r_void
+id|sig_exit
+c_func
+(paren
+r_int
+comma
+r_int
+comma
+r_struct
+id|siginfo
+op_star
+)paren
+suffix:semicolon
+r_extern
 r_int
 id|dequeue_signal
 c_func
@@ -2894,8 +2908,12 @@ DECL|macro|SET_LINKS
 mdefine_line|#define SET_LINKS(p) do { &bslash;&n;&t;(p)-&gt;next_task = &amp;init_task; &bslash;&n;&t;(p)-&gt;prev_task = init_task.prev_task; &bslash;&n;&t;init_task.prev_task-&gt;next_task = (p); &bslash;&n;&t;init_task.prev_task = (p); &bslash;&n;&t;(p)-&gt;p_ysptr = NULL; &bslash;&n;&t;if (((p)-&gt;p_osptr = (p)-&gt;p_pptr-&gt;p_cptr) != NULL) &bslash;&n;&t;&t;(p)-&gt;p_osptr-&gt;p_ysptr = p; &bslash;&n;&t;(p)-&gt;p_pptr-&gt;p_cptr = p; &bslash;&n;&t;} while (0)
 DECL|macro|for_each_task
 mdefine_line|#define for_each_task(p) &bslash;&n;&t;for (p = &amp;init_task ; (p = p-&gt;next_task) != &amp;init_task ; )
+DECL|macro|for_each_thread
+mdefine_line|#define for_each_thread(task) &bslash;&n;&t;for (task = next_thread(current) ; task != current ; task = next_thread(task))
 DECL|macro|next_thread
 mdefine_line|#define next_thread(p) &bslash;&n;&t;list_entry((p)-&gt;thread_group.next, struct task_struct, thread_group)
+DECL|macro|thread_group_leader
+mdefine_line|#define thread_group_leader(p)&t;(p-&gt;pid == p-&gt;tgid)
 DECL|function|unhash_process
 r_static
 r_inline

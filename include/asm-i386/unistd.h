@@ -476,6 +476,8 @@ DECL|macro|__NR_lremovexattr
 mdefine_line|#define __NR_lremovexattr&t;236
 DECL|macro|__NR_fremovexattr
 mdefine_line|#define __NR_fremovexattr&t;237
+DECL|macro|__NR_tkill
+mdefine_line|#define __NR_tkill&t;&t;238
 multiline_comment|/* user-visible error numbers are in the range -1 - -124: see &lt;asm-i386/errno.h&gt; */
 DECL|macro|__syscall_return
 mdefine_line|#define __syscall_return(type, res) &bslash;&n;do { &bslash;&n;&t;if ((unsigned long)(res) &gt;= (unsigned long)(-125)) { &bslash;&n;&t;&t;errno = -(res); &bslash;&n;&t;&t;res = -1; &bslash;&n;&t;} &bslash;&n;&t;return (type) (res); &bslash;&n;} while (0)

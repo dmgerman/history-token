@@ -391,6 +391,8 @@ DECL|macro|__NR_getunwind
 mdefine_line|#define __NR_getunwind&t;&t;&t;1215
 DECL|macro|__NR_readahead
 mdefine_line|#define __NR_readahead&t;&t;&t;1216
+DECL|macro|__NR_tkill
+mdefine_line|#define __NR_tkill&t;&t;&t;1217
 macro_line|#if !defined(__ASSEMBLY__) &amp;&amp; !defined(ASSEMBLER)
 r_extern
 r_int
