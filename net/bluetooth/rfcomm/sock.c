@@ -708,17 +708,6 @@ c_func
 id|d
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|sk-&gt;sk_protinfo
-)paren
-id|kfree
-c_func
-(paren
-id|sk-&gt;sk_protinfo
-)paren
-suffix:semicolon
 )brace
 DECL|function|rfcomm_sock_cleanup_listen
 r_static

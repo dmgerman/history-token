@@ -58,7 +58,7 @@ id|priv
 op_assign
 id|dev-&gt;priv
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|priv
@@ -71,7 +71,7 @@ l_int|1
 suffix:semicolon
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|priv-&gt;magic
@@ -121,7 +121,7 @@ id|tty_struct
 op_star
 id|tty
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|priv
@@ -132,7 +132,7 @@ r_return
 suffix:semicolon
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|priv-&gt;magic
@@ -223,7 +223,7 @@ suffix:semicolon
 r_int
 id|cflag
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|priv
@@ -236,7 +236,7 @@ l_int|1
 suffix:semicolon
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|priv-&gt;magic
@@ -436,7 +436,7 @@ id|clear
 op_assign
 l_int|0
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|priv
@@ -449,7 +449,7 @@ l_int|1
 suffix:semicolon
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|priv-&gt;magic
@@ -491,7 +491,7 @@ op_or_assign
 id|TIOCM_DTR
 suffix:semicolon
 multiline_comment|/*&n;&t; * We can&squot;t use ioctl() because it expects a non-null file structure,&n;&t; * and we don&squot;t have that here.&n;&t; * This function is not yet defined for all tty driver, so&n;&t; * let&squot;s be careful... Jean II&n;&t; */
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|priv-&gt;tty-&gt;driver-&gt;tiocmset
@@ -560,7 +560,7 @@ suffix:semicolon
 r_int
 id|writelen
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|priv
@@ -573,7 +573,7 @@ l_int|1
 suffix:semicolon
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|priv-&gt;magic
@@ -697,7 +697,7 @@ suffix:semicolon
 r_int
 id|i
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|priv
@@ -708,7 +708,7 @@ r_return
 suffix:semicolon
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|priv-&gt;magic
@@ -744,7 +744,7 @@ op_logical_neg
 id|dev
 )paren
 (brace
-id|WARNING
+id|IRDA_WARNING
 c_func
 (paren
 l_string|&quot;%s(), not ready yet!&bslash;n&quot;
@@ -835,7 +835,7 @@ id|priv
 op_assign
 id|tty-&gt;disc_data
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|priv
@@ -847,7 +847,7 @@ l_int|0
 suffix:semicolon
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|priv-&gt;magic
@@ -884,7 +884,7 @@ id|priv
 op_assign
 id|tty-&gt;disc_data
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|priv
@@ -895,7 +895,7 @@ r_return
 suffix:semicolon
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|priv-&gt;magic
@@ -1327,7 +1327,7 @@ id|err
 op_assign
 l_int|0
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|priv
@@ -1340,7 +1340,7 @@ id|ENODEV
 suffix:semicolon
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|priv-&gt;magic
@@ -1369,7 +1369,7 @@ id|dev
 op_assign
 id|priv-&gt;dev
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|dev
@@ -1432,7 +1432,7 @@ suffix:semicolon
 r_case
 id|IRTTY_IOCGET
 suffix:colon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|dev-&gt;netdev
@@ -1774,7 +1774,7 @@ id|priv
 op_assign
 id|tty-&gt;disc_data
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|priv
@@ -1785,7 +1785,7 @@ r_return
 suffix:semicolon
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|priv-&gt;magic
@@ -1965,7 +1965,7 @@ id|irda_ldisc
 op_ne
 l_int|0
 )paren
-id|ERROR
+id|IRDA_ERROR
 c_func
 (paren
 l_string|&quot;IrDA: can&squot;t register line discipline (err = %d)&bslash;n&quot;
@@ -2006,7 +2006,7 @@ l_int|NULL
 )paren
 )paren
 (brace
-id|ERROR
+id|IRDA_ERROR
 c_func
 (paren
 l_string|&quot;%s(), can&squot;t unregister line discipline (err = %d)&bslash;n&quot;

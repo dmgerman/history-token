@@ -583,7 +583,7 @@ op_star
 )paren
 id|data
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self
@@ -594,7 +594,7 @@ r_return
 suffix:semicolon
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self-&gt;magic
@@ -634,7 +634,7 @@ r_int
 id|timeout
 )paren
 (brace
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self
@@ -645,7 +645,7 @@ r_return
 suffix:semicolon
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self-&gt;magic
@@ -1084,7 +1084,7 @@ id|ret
 op_assign
 l_int|0
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self
@@ -1097,7 +1097,7 @@ l_int|1
 suffix:semicolon
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self-&gt;magic
@@ -1119,7 +1119,7 @@ id|event
 r_case
 id|CONNECT_REQUEST
 suffix:colon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self-&gt;netdev
@@ -1256,7 +1256,7 @@ suffix:semicolon
 r_case
 id|DISCOVERY_REQUEST
 suffix:colon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|info
@@ -1278,9 +1278,9 @@ id|self-&gt;media_busy
 id|IRDA_DEBUG
 c_func
 (paren
-l_int|0
+l_int|1
 comma
-l_string|&quot;%s(), media busy!&bslash;n&quot;
+l_string|&quot;%s(), DISCOVERY_REQUEST: media busy!&bslash;n&quot;
 comma
 id|__FUNCTION__
 )paren
@@ -1350,7 +1350,7 @@ suffix:semicolon
 r_case
 id|RECV_DISCOVERY_XID_CMD
 suffix:colon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|info
@@ -1790,7 +1790,7 @@ id|ret
 op_assign
 l_int|0
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self
@@ -1803,7 +1803,7 @@ l_int|1
 suffix:semicolon
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self-&gt;magic
@@ -1825,7 +1825,7 @@ id|event
 r_case
 id|RECV_DISCOVERY_XID_RSP
 suffix:colon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|info
@@ -1838,7 +1838,7 @@ l_int|1
 suffix:semicolon
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|info-&gt;discovery
@@ -1870,12 +1870,12 @@ op_logical_neg
 id|self-&gt;discovery_log
 )paren
 (brace
-id|WARNING
+id|IRDA_WARNING
 c_func
 (paren
 l_string|&quot;%s: discovery log is gone! &quot;
-l_string|&quot;maybe the discovery timeout has been set to &quot;
-l_string|&quot;short?&bslash;n&quot;
+l_string|&quot;maybe the discovery timeout has been set&quot;
+l_string|&quot; to short?&bslash;n&quot;
 comma
 id|__FUNCTION__
 )paren
@@ -1907,7 +1907,7 @@ r_case
 id|RECV_DISCOVERY_XID_CMD
 suffix:colon
 multiline_comment|/* Yes, it is possible to receive those frames in this mode.&n;&t;&t; * Note that most often the last discovery request won&squot;t&n;&t;&t; * occur here but in NDM state (see my comment there).&n;&t;&t; * What should we do ?&n;&t;&t; * Not much. We are currently performing our own discovery,&n;&t;&t; * therefore we can&squot;t answer those frames. We don&squot;t want&n;&t;&t; * to change state either. We just pass the info to&n;&t;&t; * IrLMP who will put it in the log (and post an event).&n;&t;&t; * Jean II&n;&t;&t; */
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|info
@@ -2162,7 +2162,7 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self
@@ -2175,7 +2175,7 @@ l_int|1
 suffix:semicolon
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self-&gt;magic
@@ -2222,7 +2222,7 @@ suffix:semicolon
 r_case
 id|RECV_DISCOVERY_XID_CMD
 suffix:colon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|info
@@ -2411,7 +2411,7 @@ id|event
 )braket
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self
@@ -2424,7 +2424,7 @@ l_int|1
 suffix:semicolon
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self-&gt;magic
@@ -2458,7 +2458,7 @@ id|snrm_frame
 )paren
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self-&gt;netdev
@@ -2668,7 +2668,7 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self
@@ -2681,7 +2681,7 @@ l_int|1
 suffix:semicolon
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self-&gt;magic
@@ -2791,7 +2791,7 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|skb
@@ -2803,7 +2803,7 @@ l_int|0
 suffix:semicolon
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|info
@@ -2841,7 +2841,7 @@ c_func
 id|self
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self-&gt;netdev
@@ -2951,7 +2951,7 @@ id|self
 )paren
 suffix:semicolon
 multiline_comment|/* Negotiate connection parameters */
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|skb-&gt;len
@@ -2976,7 +2976,7 @@ id|ua_frame
 )paren
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self-&gt;netdev
@@ -3611,7 +3611,7 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self
@@ -3624,7 +3624,7 @@ l_int|1
 suffix:semicolon
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self-&gt;magic
@@ -3831,7 +3831,7 @@ op_assign
 id|FALSE
 suffix:semicolon
 macro_line|#endif /* CONFIG_IRDA_FAST_RR */
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|info
@@ -4580,7 +4580,7 @@ op_eq
 id|NR_UNEXPECTED
 )paren
 (brace
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|info
@@ -4694,7 +4694,7 @@ suffix:semicolon
 r_case
 id|RECV_RNR_RSP
 suffix:colon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|info
@@ -5151,7 +5151,7 @@ id|event
 )braket
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self
@@ -5164,7 +5164,7 @@ l_int|1
 suffix:semicolon
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self-&gt;magic
@@ -5368,7 +5368,7 @@ id|event
 )braket
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self
@@ -5381,7 +5381,7 @@ l_int|1
 suffix:semicolon
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self-&gt;magic
@@ -5499,7 +5499,7 @@ op_amp
 id|self-&gt;qos_tx
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self-&gt;netdev
@@ -5733,7 +5733,7 @@ id|event
 )braket
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self
@@ -5746,7 +5746,7 @@ id|ENODEV
 suffix:semicolon
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self-&gt;magic
@@ -6129,7 +6129,7 @@ id|event
 )braket
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self
@@ -6142,7 +6142,7 @@ l_int|1
 suffix:semicolon
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self-&gt;magic
@@ -7508,7 +7508,7 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self
@@ -7521,7 +7521,7 @@ id|ENODEV
 suffix:semicolon
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self-&gt;magic
@@ -7797,7 +7797,7 @@ id|event
 )braket
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self
@@ -7810,7 +7810,7 @@ id|ENODEV
 suffix:semicolon
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self-&gt;magic

@@ -13176,6 +13176,11 @@ id|bond_dev-&gt;features
 op_or_assign
 id|NETIF_F_VLAN_CHALLENGED
 suffix:semicolon
+multiline_comment|/* don&squot;t acquire bond device&squot;s xmit_lock when &n;&t; * transmitting */
+id|bond_dev-&gt;features
+op_or_assign
+id|NETIF_F_LLTX
+suffix:semicolon
 multiline_comment|/* By default, we declare the bond to be fully&n;&t; * VLAN hardware accelerated capable. Special&n;&t; * care is taken in the various xmit functions&n;&t; * when there are slaves that are not hw accel&n;&t; * capable&n;&t; */
 id|bond_dev-&gt;vlan_rx_register
 op_assign

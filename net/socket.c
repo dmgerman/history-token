@@ -3845,11 +3845,6 @@ op_eq
 l_int|NULL
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|fna
-)paren
 id|kfree
 c_func
 (paren
