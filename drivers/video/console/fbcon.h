@@ -7,6 +7,8 @@ macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/vt_buffer.h&gt;
 macro_line|#include &lt;linux/vt_kern.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
+DECL|macro|FBCON_FLAGS_INIT
+mdefine_line|#define FBCON_FLAGS_INIT 1
 multiline_comment|/*&n;    *    This is the interface between the low-level console driver and the&n;    *    low-level frame buffer device&n;    */
 DECL|struct|display
 r_struct
@@ -308,6 +310,10 @@ suffix:semicolon
 DECL|member|graphics
 r_int
 id|graphics
+suffix:semicolon
+DECL|member|flags
+r_int
+id|flags
 suffix:semicolon
 DECL|member|cursor_data
 r_char
