@@ -693,22 +693,22 @@ id|p
 )paren
 (brace
 r_return
+(paren
 id|p
 (braket
 id|nr
 op_rshift
 l_int|5
 )braket
-op_amp
-(paren
-l_int|1UL
-op_lshift
+op_rshift
 (paren
 id|nr
 op_amp
 l_int|31
 )paren
 )paren
+op_amp
+l_int|1UL
 suffix:semicolon
 )brace
 multiline_comment|/*&n; *  A note about Endian-ness.&n; *  -------------------------&n; *&n; * When the ARM is put into big endian mode via CR15, the processor&n; * merely swaps the order of bytes within words, thus:&n; *&n; *          ------------ physical data bus bits -----------&n; *          D31 ... D24  D23 ... D16  D15 ... D8  D7 ... D0&n; * little     byte 3       byte 2       byte 1      byte 0&n; * big        byte 0       byte 1       byte 2      byte 3&n; *&n; * This means that reading a 32-bit word at address 0 returns the same&n; * value irrespective of the endian mode bit.&n; *&n; * Peripheral devices should be connected with the data bus reversed in&n; * &quot;Big Endian&quot; mode.  ARM Application Note 61 is applicable, and is&n; * available from http://www.arm.com/.&n; *&n; * The following assumes that the data bus connectivity for big endian&n; * mode has been followed.&n; *&n; * Note that bit 0 is defined to be 32-bit word bit 0, not byte 0 bit 0.&n; */
