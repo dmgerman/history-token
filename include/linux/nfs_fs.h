@@ -1604,13 +1604,17 @@ suffix:semicolon
 multiline_comment|/* nfs4proc.c */
 r_extern
 r_int
-id|nfs4_proc_renew
+id|nfs4_proc_async_renew
 c_func
 (paren
 r_struct
 id|nfs_server
 op_star
 id|server
+comma
+r_struct
+id|rpc_cred
+op_star
 )paren
 suffix:semicolon
 r_extern

@@ -102,10 +102,12 @@ suffix:semicolon
 r_else
 (brace
 multiline_comment|/* Queue an asynchronous RENEW. */
-id|nfs4_proc_renew
+id|nfs4_proc_async_renew
 c_func
 (paren
 id|server
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 id|timeout
