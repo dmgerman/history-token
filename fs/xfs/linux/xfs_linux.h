@@ -201,6 +201,22 @@ DECL|macro|howmany
 mdefine_line|#define howmany(x, y)&t;(((x)+((y)-1))/(y))
 DECL|macro|roundup
 mdefine_line|#define roundup(x, y)&t;((((x)+((y)-1))/(y))*(y))
+DECL|function|xfs_stack_trace
+r_static
+r_inline
+r_void
+id|xfs_stack_trace
+c_func
+(paren
+r_void
+)paren
+(brace
+id|dump_stack
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/* Move the kernel do_div definition off to one side */
 macro_line|#if defined __i386__
 multiline_comment|/* For ia32 we need to pull some tricks to get past various versions&n; * of the compiler which do not like us using do_div in the middle&n; * of large functions.&n; */
