@@ -16,6 +16,14 @@ id|ops
 suffix:semicolon
 r_extern
 r_void
+id|nmi_exit
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
 id|timer_init
 c_func
 (paren
@@ -60,5 +68,22 @@ suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
+)brace
+DECL|function|oprofile_arch_exit
+r_void
+id|__exit
+id|oprofile_arch_exit
+c_func
+(paren
+r_void
+)paren
+(brace
+macro_line|#ifdef CONFIG_X86_LOCAL_APIC
+id|nmi_exit
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif
 )brace
 eof
