@@ -1335,8 +1335,8 @@ suffix:semicolon
 )brace
 id|asmlinkage
 r_int
-DECL|function|sys_ptrace
-id|sys_ptrace
+DECL|function|do_sys_ptrace
+id|do_sys_ptrace
 c_func
 (paren
 r_int
@@ -1351,14 +1351,9 @@ comma
 r_int
 id|data
 comma
-r_int
-id|a4
-comma
-r_int
-id|a5
-comma
 r_struct
 id|pt_regs
+op_star
 id|regs
 )paren
 (brace
@@ -1647,7 +1642,7 @@ id|tmp
 r_goto
 id|out
 suffix:semicolon
-id|regs.r0
+id|regs-&gt;r0
 op_assign
 l_int|0
 suffix:semicolon
@@ -1664,7 +1659,7 @@ multiline_comment|/* Read register number ADDR. */
 r_case
 id|PTRACE_PEEKUSR
 suffix:colon
-id|regs.r0
+id|regs-&gt;r0
 op_assign
 l_int|0
 suffix:semicolon
