@@ -84,6 +84,10 @@ id|__u64
 id|ki_user_data
 suffix:semicolon
 multiline_comment|/* user&squot;s data for completion */
+DECL|member|ki_pos
+id|loff_t
+id|ki_pos
+suffix:semicolon
 DECL|member|private
 r_int
 r_private

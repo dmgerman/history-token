@@ -380,8 +380,6 @@ r_if
 c_cond
 (paren
 id|file-&gt;f_op
-op_logical_and
-id|file-&gt;f_op-&gt;read
 )paren
 (brace
 r_struct
@@ -1968,18 +1966,6 @@ id|offset
 suffix:semicolon
 r_int
 id|result
-op_assign
-op_minus
-id|ENOSYS
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|file-&gt;f_op-&gt;read
-)paren
-r_goto
-id|fail
 suffix:semicolon
 id|old_fs
 op_assign
@@ -1999,9 +1985,7 @@ c_func
 suffix:semicolon
 id|result
 op_assign
-id|file-&gt;f_op
-op_member_access_from_pointer
-id|read
+id|vfs_read
 c_func
 (paren
 id|file
@@ -2020,8 +2004,6 @@ c_func
 id|old_fs
 )paren
 suffix:semicolon
-id|fail
-suffix:colon
 r_return
 id|result
 suffix:semicolon
