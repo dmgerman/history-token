@@ -1324,7 +1324,7 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Attempt tp put the current chunk of &squot;cur_page&squot; into the current BIO.  If&n; * that was successful then update final_block_in_bio and take a ref against&n; * the just-added page.&n; */
+multiline_comment|/*&n; * Attempt to put the current chunk of &squot;cur_page&squot; into the current BIO.  If&n; * that was successful then update final_block_in_bio and take a ref against&n; * the just-added page.&n; *&n; * Return zero on success.  Non-zero means the caller needs to start a new BIO.&n; */
 DECL|function|dio_bio_add_page
 r_static
 r_int
@@ -1384,6 +1384,13 @@ suffix:semicolon
 id|ret
 op_assign
 l_int|0
+suffix:semicolon
+)brace
+r_else
+(brace
+id|ret
+op_assign
+l_int|1
 suffix:semicolon
 )brace
 r_return
