@@ -1784,10 +1784,25 @@ op_logical_and
 id|info-&gt;si_sys_private
 )paren
 (brace
+multiline_comment|/*&n;&t;&t; * Release the siglock to ensure proper locking order&n;&t;&t; * of timer locks outside of siglocks.  Note, we leave&n;&t;&t; * irqs disabled here, since the posix-timers code is&n;&t;&t; * about to disable them again anyway.&n;&t;&t; */
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|tsk-&gt;sighand-&gt;siglock
+)paren
+suffix:semicolon
 id|do_schedule_next_timer
 c_func
 (paren
 id|info
+)paren
+suffix:semicolon
+id|spin_lock
+c_func
+(paren
+op_amp
+id|tsk-&gt;sighand-&gt;siglock
 )paren
 suffix:semicolon
 )brace
