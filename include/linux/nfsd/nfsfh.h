@@ -104,7 +104,7 @@ DECL|member|fh_pad
 id|__u32
 id|fh_pad
 (braket
-id|NFS3_FHSIZE
+id|NFS4_FHSIZE
 op_div
 l_int|4
 )braket
