@@ -2855,7 +2855,9 @@ id|interface-&gt;dev.bus_id
 l_int|0
 )braket
 comma
-l_string|&quot;if%d&quot;
+l_string|&quot;%s:%d&quot;
+comma
+id|dev-&gt;devpath
 comma
 id|interface-&gt;altsetting-&gt;bInterfaceNumber
 )paren
