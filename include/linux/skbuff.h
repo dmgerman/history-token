@@ -107,8 +107,9 @@ suffix:semicolon
 r_struct
 id|sk_buff
 suffix:semicolon
+multiline_comment|/* To allow 64K frame to be packed as single skb without frag_list */
 DECL|macro|MAX_SKB_FRAGS
-mdefine_line|#define MAX_SKB_FRAGS 6
+mdefine_line|#define MAX_SKB_FRAGS (65536/PAGE_SIZE + 2)
 DECL|typedef|skb_frag_t
 r_typedef
 r_struct
@@ -148,6 +149,16 @@ DECL|member|nr_frags
 r_int
 r_int
 id|nr_frags
+suffix:semicolon
+DECL|member|tso_size
+r_int
+r_int
+id|tso_size
+suffix:semicolon
+DECL|member|tso_segs
+r_int
+r_int
+id|tso_segs
 suffix:semicolon
 DECL|member|frag_list
 r_struct
