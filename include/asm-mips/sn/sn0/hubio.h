@@ -1049,27 +1049,19 @@ DECL|macro|ICRBN_A_CERR_SHFT
 mdefine_line|#define ICRBN_A_CERR_SHFT&t;54
 DECL|macro|ICRBN_A_ERR_MASK
 mdefine_line|#define ICRBN_A_ERR_MASK&t;0x3ff
+macro_line|#if 0&t;/* Disabled, this causes namespace polution and break allmodconfig */
 multiline_comment|/*&n; * Easy access macros.&n; */
-DECL|macro|a_error
 mdefine_line|#define&t;a_error&t;&t;icrba_fields_s.error
-DECL|macro|a_ecode
 mdefine_line|#define&t;a_ecode&t;&t;icrba_fields_s.ecode
-DECL|macro|a_lnetuce
 mdefine_line|#define&t;a_lnetuce&t;icrba_fields_s.lnetuce
-DECL|macro|a_mark
 mdefine_line|#define&t;a_mark&t;&t;icrba_fields_s.mark
-DECL|macro|a_xerr
 mdefine_line|#define&t;a_xerr&t;&t;icrba_fields_s.xerr
-DECL|macro|a_sidn
 mdefine_line|#define&t;a_sidn&t;&t;icrba_fields_s.sidn
-DECL|macro|a_tnum
 mdefine_line|#define&t;a_tnum&t;&t;icrba_fields_s.tnum
-DECL|macro|a_addr
 mdefine_line|#define&t;a_addr&t;&t;icrba_fields_s.addr
-DECL|macro|a_valid
 mdefine_line|#define&t;a_valid&t;&t;icrba_fields_s.valid
-DECL|macro|a_iow
 mdefine_line|#define&t;a_iow&t;&t;icrba_fields_s.iow
+macro_line|#endif
 macro_line|#endif /* !__ASSEMBLY__ */
 DECL|macro|IIO_ICRB_ADDR_SHFT
 mdefine_line|#define&t;IIO_ICRB_ADDR_SHFT&t;2&t;/* Shift to get proper address */
