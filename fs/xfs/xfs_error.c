@@ -1098,7 +1098,7 @@ id|CE_ALERT
 comma
 id|mp
 comma
-l_string|&quot;XFS internal error %s at line %d of file %s.  Caller 0x%x&bslash;n&quot;
+l_string|&quot;XFS internal error %s at line %d of file %s.  Caller 0x%p&bslash;n&quot;
 comma
 id|tag
 comma
@@ -1117,7 +1117,7 @@ c_func
 (paren
 id|CE_ALERT
 comma
-l_string|&quot;XFS internal error %s at line %d of file %s.  Caller 0x%x&bslash;n&quot;
+l_string|&quot;XFS internal error %s at line %d of file %s.  Caller 0x%p&bslash;n&quot;
 comma
 id|tag
 comma
