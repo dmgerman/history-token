@@ -7630,7 +7630,6 @@ op_amp
 id|bp-&gt;tx_timeout
 )paren
 suffix:semicolon
-multiline_comment|/*     bp-&gt;timeout_active = 0; */
 id|ret
 op_assign
 id|request_irq
