@@ -2114,6 +2114,10 @@ DECL|macro|GPIO_MD_MASK_DIR
 mdefine_line|#define GPIO_MD_MASK_DIR&t;0x080
 DECL|macro|GPIO_MD_MASK_FN
 mdefine_line|#define GPIO_MD_MASK_FN&t;&t;0x300
+DECL|macro|GPIO_DFLT_LOW
+mdefine_line|#define GPIO_DFLT_LOW&t;&t;0x400
+DECL|macro|GPIO_DFLT_HIGH
+mdefine_line|#define GPIO_DFLT_HIGH&t;&t;0x800
 DECL|macro|GPIO1_RTS_MD
 mdefine_line|#define GPIO1_RTS_MD&t;&t;( 1 | GPIO_ALT_FN_1_IN)
 DECL|macro|GPIO6_MMCCLK_MD
