@@ -647,6 +647,19 @@ comma
 )brace
 comma
 (brace
+dot
+id|device_id
+op_assign
+id|PCI_DEVICE_ID_SI_655
+comma
+dot
+id|chipset_name
+op_assign
+l_string|&quot;655&quot;
+comma
+)brace
+comma
+(brace
 )brace
 comma
 multiline_comment|/* dummy final entry, always present */
