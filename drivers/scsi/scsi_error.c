@@ -4141,7 +4141,7 @@ suffix:semicolon
 )brace
 multiline_comment|/**&n; * scsi_error_handler - Handle errors/timeouts of SCSI cmds.&n; * @data:&t;Host for which we are running.&n; *&n; * Notes:&n; *    This is always run in the context of a kernel thread.  The idea is&n; *    that we start this thing up when the kernel starts up (one per host&n; *    that we detect), and it immediately goes to sleep and waits for some&n; *    event (i.e. failure).  When this takes place, we have the job of&n; *    trying to unjam the bus and restarting things.&n; **/
 DECL|function|scsi_error_handler
-r_void
+r_int
 id|scsi_error_handler
 c_func
 (paren
@@ -4355,6 +4355,9 @@ id|shost-&gt;eh_notify
 comma
 l_int|0
 )paren
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Function:    scsi_report_bus_reset()&n; *&n; * Purpose:     Utility function used by low-level drivers to report that&n; *&t;&t;they have observed a bus reset on the bus being handled.&n; *&n; * Arguments:   shost       - Host in question&n; *&t;&t;channel     - channel on which reset was observed.&n; *&n; * Returns:     Nothing&n; *&n; * Lock status: No locks are assumed held.&n; *&n; * Notes:       This only needs to be called if the reset is one which&n; *&t;&t;originates from an unknown location.  Resets originated&n; *&t;&t;by the mid-level itself don&squot;t need to call this, but there&n; *&t;&t;should be no harm.&n; *&n; *&t;&t;The main purpose of this is to make sure that a CHECK_CONDITION&n; *&t;&t;is properly treated.&n; */
