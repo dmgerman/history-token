@@ -1380,6 +1380,11 @@ c_cond
 id|error
 op_ne
 l_int|0
+op_logical_and
+id|printk_ratelimit
+c_func
+(paren
+)paren
 )paren
 (brace
 id|printk
@@ -1522,6 +1527,11 @@ id|in_interrupt
 c_func
 (paren
 )paren
+op_logical_and
+id|printk_ratelimit
+c_func
+(paren
+)paren
 )paren
 (brace
 id|printk
@@ -1584,6 +1594,11 @@ c_cond
 id|error
 op_ne
 l_int|0
+op_logical_and
+id|printk_ratelimit
+c_func
+(paren
+)paren
 )paren
 (brace
 id|printk
@@ -1791,6 +1806,11 @@ c_cond
 id|error
 op_ne
 l_int|0
+op_logical_and
+id|printk_ratelimit
+c_func
+(paren
+)paren
 )paren
 id|printk
 c_func
