@@ -8,11 +8,14 @@ macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/string.h&gt; 
 macro_line|#include &lt;linux/pm.h&gt;
 macro_line|#include &lt;linux/device.h&gt;
+macro_line|#include &lt;linux/mtd/mtd.h&gt;
+macro_line|#include &lt;linux/mtd/partitions.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/hardware.h&gt;
 macro_line|#include &lt;asm/setup.h&gt;
 macro_line|#include &lt;asm/mach-types.h&gt;
 macro_line|#include &lt;asm/mach/arch.h&gt;
+macro_line|#include &lt;asm/mach/flash.h&gt;
 macro_line|#include &lt;asm/mach/map.h&gt;
 macro_line|#include &lt;asm/mach/serial_sa1100.h&gt;
 macro_line|#include &lt;asm/arch/simpad.h&gt;
@@ -240,6 +243,157 @@ id|simpad_uart_pm
 comma
 )brace
 suffix:semicolon
+DECL|variable|simpad_partitions
+r_static
+r_struct
+id|mtd_partition
+id|simpad_partitions
+(braket
+)braket
+op_assign
+(brace
+(brace
+dot
+id|name
+op_assign
+l_string|&quot;SIMpad boot firmware&quot;
+comma
+dot
+id|size
+op_assign
+l_int|0x00080000
+comma
+dot
+id|offset
+op_assign
+l_int|0
+comma
+dot
+id|mask_flags
+op_assign
+id|MTD_WRITEABLE
+comma
+)brace
+comma
+(brace
+dot
+id|name
+op_assign
+l_string|&quot;SIMpad kernel&quot;
+comma
+dot
+id|size
+op_assign
+l_int|0x0010000
+comma
+dot
+id|offset
+op_assign
+id|MTDPART_OFS_APPEND
+comma
+)brace
+comma
+(brace
+dot
+id|name
+op_assign
+l_string|&quot;SIMpad root jffs2&quot;
+comma
+dot
+id|size
+op_assign
+id|MTDPART_SIZ_FULL
+comma
+dot
+id|offset
+op_assign
+id|MTDPART_OFS_APPEND
+comma
+)brace
+)brace
+suffix:semicolon
+DECL|variable|simpad_flash_data
+r_static
+r_struct
+id|flash_platform_data
+id|simpad_flash_data
+op_assign
+(brace
+dot
+id|map_name
+op_assign
+l_string|&quot;cfi_probe&quot;
+comma
+dot
+id|parts
+op_assign
+id|simpad_partitions
+comma
+dot
+id|nr_parts
+op_assign
+id|ARRAY_SIZE
+c_func
+(paren
+id|simpad_partitions
+)paren
+comma
+)brace
+suffix:semicolon
+DECL|variable|simpad_flash_resources
+r_static
+r_struct
+id|resource
+id|simpad_flash_resources
+(braket
+)braket
+op_assign
+(brace
+(brace
+dot
+id|start
+op_assign
+id|SA1100_CS0_PHYS
+comma
+dot
+id|end
+op_assign
+id|SA1100_CS0_PHYS
+op_plus
+id|SZ_16M
+op_minus
+l_int|1
+comma
+dot
+id|flags
+op_assign
+id|IORESOURCE_MEM
+comma
+)brace
+comma
+(brace
+dot
+id|start
+op_assign
+id|SA1100_CS1_PHYS
+comma
+dot
+id|end
+op_assign
+id|SA1100_CS1_PHYS
+op_plus
+id|SZ_16M
+op_minus
+l_int|1
+comma
+dot
+id|flags
+op_assign
+id|IORESOURCE_MEM
+comma
+)brace
+)brace
+suffix:semicolon
 DECL|function|simpad_map_io
 r_static
 r_void
@@ -353,6 +507,21 @@ suffix:semicolon
 id|PSDR
 op_assign
 l_int|0
+suffix:semicolon
+id|sa11x0_set_flash_data
+c_func
+(paren
+op_amp
+id|simpad_flash_data
+comma
+id|simpad_flash_resources
+comma
+id|ARRAY_SIZE
+c_func
+(paren
+id|simpad_flash_resources
+)paren
+)paren
 suffix:semicolon
 )brace
 DECL|function|simpad_power_off
