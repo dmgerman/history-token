@@ -49,7 +49,7 @@ id|version
 )braket
 id|__devinitdata
 op_assign
-l_string|&quot;$Rev: 1198 $ Ben Collins &lt;bcollins@debian.org&gt;&quot;
+l_string|&quot;$Rev: 1224 $ Ben Collins &lt;bcollins@debian.org&gt;&quot;
 suffix:semicolon
 DECL|struct|fragment_info
 r_struct
@@ -7703,7 +7703,7 @@ id|strcpy
 (paren
 id|info.version
 comma
-l_string|&quot;$Rev: 1198 $&quot;
+l_string|&quot;$Rev: 1224 $&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* FIXME XXX provide sane businfo */
