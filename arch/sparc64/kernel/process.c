@@ -2966,11 +2966,6 @@ r_int
 id|stack_size
 )paren
 (brace
-r_struct
-id|task_struct
-op_star
-id|p
-suffix:semicolon
 r_int
 r_int
 id|parent_tid_ptr
@@ -3034,8 +3029,7 @@ l_int|0xffffffff
 suffix:semicolon
 )brace
 )brace
-id|p
-op_assign
+r_return
 id|do_fork
 c_func
 (paren
@@ -3059,22 +3053,6 @@ op_star
 )paren
 id|child_tid_ptr
 )paren
-suffix:semicolon
-r_return
-id|IS_ERR
-c_func
-(paren
-id|p
-)paren
-ques
-c_cond
-id|PTR_ERR
-c_func
-(paren
-id|p
-)paren
-suffix:colon
-id|p-&gt;pid
 suffix:semicolon
 )brace
 multiline_comment|/* Copy a Sparc thread.  The fork() return value conventions&n; * under SunOS are nothing short of bletcherous:&n; * Parent --&gt;  %o0 == childs  pid, %o1 == 0&n; * Child  --&gt;  %o0 == parents pid, %o1 == 1&n; */

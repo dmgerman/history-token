@@ -47,6 +47,7 @@ macro_line|#include &lt;asm/ebus.h&gt;
 macro_line|#endif
 macro_line|#include &lt;asm/a.out.h&gt;
 macro_line|#include &lt;asm/io-unit.h&gt;
+macro_line|#include &lt;asm/bug.h&gt;
 r_extern
 id|spinlock_t
 id|rtc_lock
@@ -1397,6 +1398,15 @@ c_func
 id|udiv
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_DEBUG_BUGVERBOSE
+DECL|variable|do_BUG
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|do_BUG
+)paren
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/* Sun Power Management Idle Handler */
 DECL|variable|pm_idle
 id|EXPORT_SYMBOL

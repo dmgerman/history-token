@@ -2228,6 +2228,34 @@ id|current
 )paren
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_DEBUG_BUGVERBOSE
+DECL|function|do_BUG
+r_void
+id|do_BUG
+c_func
+(paren
+r_const
+r_char
+op_star
+id|file
+comma
+r_int
+id|line
+)paren
+(brace
+singleline_comment|// bust_spinlocks(1);   XXX Not in our original BUG()
+id|printk
+c_func
+(paren
+l_string|&quot;kernel BUG at %s:%d!&bslash;n&quot;
+comma
+id|file
+comma
+id|line
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif
 multiline_comment|/* Since we have our mappings set up, on multiprocessors we can spin them&n; * up here so that timer interrupts work during initialization.&n; */
 r_extern
 r_void
