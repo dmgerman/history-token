@@ -25,10 +25,6 @@ id|unused
 )paren
 suffix:semicolon
 r_extern
-id|__u16
-id|boot_cpu_addr
-suffix:semicolon
-r_extern
 r_volatile
 r_int
 id|__cpu_logical_map
@@ -1496,6 +1492,9 @@ r_int
 id|curr_cpu
 comma
 id|num_cpus
+suffix:semicolon
+id|__u16
+id|boot_cpu_addr
 suffix:semicolon
 id|boot_cpu_addr
 op_assign

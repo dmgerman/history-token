@@ -87,10 +87,6 @@ DECL|macro|CHUNK_READ_WRITE
 mdefine_line|#define CHUNK_READ_WRITE 0
 DECL|macro|CHUNK_READ_ONLY
 mdefine_line|#define CHUNK_READ_ONLY 1
-DECL|variable|boot_cpu_addr
-id|__u16
-id|boot_cpu_addr
-suffix:semicolon
 DECL|variable|cpus_initialized
 r_int
 id|cpus_initialized
@@ -1933,16 +1929,12 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|boot_cpu_addr
-op_assign
-id|S390_lowcore.cpu_data.cpu_addr
-suffix:semicolon
 id|__cpu_logical_map
 (braket
 l_int|0
 )braket
 op_assign
-id|boot_cpu_addr
+id|S390_lowcore.cpu_data.cpu_addr
 suffix:semicolon
 multiline_comment|/*&n;&t; * Create kernel page tables and switch to virtual addressing.&n;&t; */
 id|paging_init
