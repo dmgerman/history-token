@@ -148,27 +148,10 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|struct|snmp6_item
-r_struct
-id|snmp6_item
-(brace
-DECL|member|name
-r_char
-op_star
-id|name
-suffix:semicolon
-DECL|member|offset
-r_int
-id|offset
-suffix:semicolon
-)brace
-suffix:semicolon
-DECL|macro|SNMP6_SENTINEL
-mdefine_line|#define SNMP6_SENTINEL&t;{ .name = NULL, .offset = 0 }
 DECL|variable|snmp6_ipv6_list
 r_static
 r_struct
-id|snmp6_item
+id|snmp_item
 id|snmp6_ipv6_list
 (braket
 )braket
@@ -176,7 +159,7 @@ op_assign
 (brace
 multiline_comment|/* ipv6 mib according to RFC 2465 */
 DECL|macro|SNMP6_GEN
-mdefine_line|#define SNMP6_GEN(x) { .name = #x , .offset = offsetof(struct ipv6_mib, x) }
+mdefine_line|#define SNMP6_GEN(x)&t;SNMP_ITEM(struct ipv6_mib, x, &quot;Ip6&quot; #x)
 id|SNMP6_GEN
 c_func
 (paren
@@ -311,13 +294,13 @@ id|Ip6OutMcastPkts
 comma
 DECL|macro|SNMP6_GEN
 macro_line|#undef SNMP6_GEN
-id|SNMP6_SENTINEL
+id|SNMP_ITEM_SENTINEL
 )brace
 suffix:semicolon
 DECL|variable|snmp6_icmp6_list
 r_static
 r_struct
-id|snmp6_item
+id|snmp_item
 id|snmp6_icmp6_list
 (braket
 )braket
@@ -325,7 +308,7 @@ op_assign
 (brace
 multiline_comment|/* icmpv6 mib according to RFC 2466&n;&n;   Exceptions:  {In|Out}AdminProhibs are removed, because I see&n;                no good reasons to account them separately&n;&t;&t;of another dest.unreachs.&n;&t;&t;OutErrs is zero identically.&n;&t;&t;OutEchos too.&n;&t;&t;OutRouterAdvertisements too.&n;&t;&t;OutGroupMembQueries too.&n; */
 DECL|macro|SNMP6_GEN
-mdefine_line|#define SNMP6_GEN(x) { .name = #x , .offset = offsetof(struct icmpv6_mib, x) }
+mdefine_line|#define SNMP6_GEN(x)&t;SNMP_ITEM(struct icmpv6_mib, x, #x)
 id|SNMP6_GEN
 c_func
 (paren
@@ -496,20 +479,20 @@ id|Icmp6OutGroupMembReductions
 comma
 DECL|macro|SNMP6_GEN
 macro_line|#undef SNMP6_GEN
-id|SNMP6_SENTINEL
+id|SNMP_ITEM_SENTINEL
 )brace
 suffix:semicolon
 DECL|variable|snmp6_udp6_list
 r_static
 r_struct
-id|snmp6_item
+id|snmp_item
 id|snmp6_udp6_list
 (braket
 )braket
 op_assign
 (brace
 DECL|macro|SNMP6_GEN
-mdefine_line|#define SNMP6_GEN(x) { .name = &quot;Udp6&quot; #x , .offset = offsetof(struct udp_mib, Udp##x) }
+mdefine_line|#define SNMP6_GEN(x)&t;SNMP_ITEM(struct udp_mib, Udp##x, &quot;Udp6&quot; #x)
 id|SNMP6_GEN
 c_func
 (paren
@@ -536,7 +519,7 @@ id|OutDatagrams
 comma
 DECL|macro|SNMP6_GEN
 macro_line|#undef SNMP6_GEN
-id|SNMP6_SENTINEL
+id|SNMP_ITEM_SENTINEL
 )brace
 suffix:semicolon
 r_static
@@ -677,7 +660,7 @@ op_star
 id|mib
 comma
 r_struct
-id|snmp6_item
+id|snmp_item
 op_star
 id|itemlist
 )paren

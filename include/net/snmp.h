@@ -5,6 +5,25 @@ mdefine_line|#define _SNMP_H
 macro_line|#include &lt;linux/cache.h&gt;
 multiline_comment|/*&n; *&t;We use all unsigned longs. Linux will soon be so reliable that even these&n; *&t;will rapidly get too small 8-). Seriously consider the IpInReceives count&n; *&t;on the 20Gb/s + networks people expect in a few years time!&n; */
 multiline_comment|/* &n; * The rule for padding: &n; * Best is power of two because then the right structure can be found by a simple&n; * shift. The structure should be always cache line aligned.&n; * gcc needs n=alignto(cachelinesize, popcnt(sizeof(bla_mib))) shift/add instructions&n; * to emulate multiply in case it is not power-of-two. Currently n is always &lt;=3 for&n; * all sizes so simple cache line alignment is enough. &n; * &n; * The best solution would be a global CPU local area , especially on 64 and 128byte &n; * cacheline machine it makes a *lot* of sense -AK&n; */
+DECL|struct|snmp_item
+r_struct
+id|snmp_item
+(brace
+DECL|member|name
+r_char
+op_star
+id|name
+suffix:semicolon
+DECL|member|offset
+r_int
+id|offset
+suffix:semicolon
+)brace
+suffix:semicolon
+DECL|macro|SNMP_ITEM
+mdefine_line|#define SNMP_ITEM(mib,entry,procname)&t;{&t;&bslash;&n;&t;.name = procname,&t;&t;&t;&bslash;&n;&t;.offset = offsetof(mib, entry),&t;&t;&bslash;&n;}
+DECL|macro|SNMP_ITEM_SENTINEL
+mdefine_line|#define SNMP_ITEM_SENTINEL {&t;&t;&t;&bslash;&n;&t;.name = NULL,&t;&t;&t;&t;&bslash;&n;&t;.offset = 0,&t;&t;&t;&t;&bslash;&n;}
 multiline_comment|/*&n; * RFC 1213:  MIB-II&n; * RFC 2011 (updates 1213):  SNMPv2-MIB-IP&n; * RFC 2863:  Interfaces Group MIB&n; */
 DECL|struct|ip_mib
 r_struct
