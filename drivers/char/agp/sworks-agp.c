@@ -1173,7 +1173,7 @@ c_cond
 (paren
 id|cap_ptr
 op_ne
-l_int|0x00
+l_int|0
 )paren
 (brace
 r_do
@@ -1227,7 +1227,7 @@ op_logical_and
 (paren
 id|cap_ptr
 op_ne
-l_int|0x00
+l_int|0
 )paren
 )paren
 suffix:semicolon
@@ -2339,6 +2339,7 @@ suffix:semicolon
 )brace
 )brace
 DECL|function|serverworks_setup
+r_static
 r_int
 id|__init
 id|serverworks_setup
@@ -2611,10 +2612,6 @@ id|pci_dev
 op_star
 id|bridge_dev
 suffix:semicolon
-id|agp_bridge.dev
-op_assign
-id|dev
-suffix:semicolon
 multiline_comment|/* Everything is on func 1 here so we are hardcoding function one */
 id|bridge_dev
 op_assign
@@ -2658,6 +2655,10 @@ op_minus
 id|ENODEV
 suffix:semicolon
 )brace
+id|agp_bridge.dev
+op_assign
+id|dev
+suffix:semicolon
 r_switch
 c_cond
 (paren
@@ -2728,6 +2729,7 @@ suffix:semicolon
 DECL|function|agp_serverworks_probe
 r_static
 r_int
+id|__init
 id|agp_serverworks_probe
 (paren
 r_struct
@@ -2832,6 +2834,7 @@ suffix:semicolon
 DECL|variable|agp_serverworks_pci_driver
 r_static
 r_struct
+id|__initdata
 id|pci_driver
 id|agp_serverworks_pci_driver
 op_assign
