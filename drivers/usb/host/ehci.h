@@ -663,6 +663,67 @@ id|packed
 )paren
 )paren
 suffix:semicolon
+multiline_comment|/* Appendix C, Debug port ... intended for use with special &quot;debug devices&quot;&n; * that can help if there&squot;s no serial console.  (nonstandard enumeration.)&n; */
+DECL|struct|ehci_dbg_port
+r_struct
+id|ehci_dbg_port
+(brace
+DECL|member|control
+id|u32
+id|control
+suffix:semicolon
+DECL|macro|DBGP_OWNER
+mdefine_line|#define DBGP_OWNER&t;(1&lt;&lt;30)
+DECL|macro|DBGP_ENABLED
+mdefine_line|#define DBGP_ENABLED&t;(1&lt;&lt;28)
+DECL|macro|DBGP_DONE
+mdefine_line|#define DBGP_DONE&t;(1&lt;&lt;16)
+DECL|macro|DBGP_INUSE
+mdefine_line|#define DBGP_INUSE&t;(1&lt;&lt;10)
+DECL|macro|DBGP_ERRCODE
+mdefine_line|#define DBGP_ERRCODE(x)&t;(((x)&gt;&gt;7)&amp;0x0f)
+DECL|macro|DBGP_ERR_BAD
+macro_line|#&t;define DBGP_ERR_BAD&t;1
+DECL|macro|DBGP_ERR_SIGNAL
+macro_line|#&t;define DBGP_ERR_SIGNAL&t;2
+DECL|macro|DBGP_ERROR
+mdefine_line|#define DBGP_ERROR&t;(1&lt;&lt;6)
+DECL|macro|DBGP_GO
+mdefine_line|#define DBGP_GO&t;&t;(1&lt;&lt;5)
+DECL|macro|DBGP_OUT
+mdefine_line|#define DBGP_OUT&t;(1&lt;&lt;4)
+DECL|macro|DBGP_LEN
+mdefine_line|#define DBGP_LEN(x)&t;(((x)&gt;&gt;0)&amp;0x0f)
+DECL|member|pids
+id|u32
+id|pids
+suffix:semicolon
+DECL|macro|DBGP_PID_GET
+mdefine_line|#define DBGP_PID_GET(x)&t;&t;(((x)&gt;&gt;16)&amp;0xff)
+DECL|macro|DBGP_PID_SET
+mdefine_line|#define DBGP_PID_SET(data,tok)&t;(((data)&lt;&lt;8)|(tok));
+DECL|member|data03
+id|u32
+id|data03
+suffix:semicolon
+DECL|member|data47
+id|u32
+id|data47
+suffix:semicolon
+DECL|member|address
+id|u32
+id|address
+suffix:semicolon
+DECL|macro|DBGP_EPADDR
+mdefine_line|#define DBGP_EPADDR(dev,ep)&t;(((dev)&lt;&lt;8)|(ep));
+)brace
+id|__attribute__
+(paren
+(paren
+id|packed
+)paren
+)paren
+suffix:semicolon
 multiline_comment|/*-------------------------------------------------------------------------*/
 DECL|macro|QTD_NEXT
 mdefine_line|#define&t;QTD_NEXT(dma)&t;cpu_to_le32((u32)dma)
