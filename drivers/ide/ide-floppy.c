@@ -7342,10 +7342,6 @@ id|drive-&gt;driver_data
 op_assign
 id|floppy
 suffix:semicolon
-id|drive-&gt;ready_stat
-op_assign
-l_int|0
-suffix:semicolon
 id|memset
 c_func
 (paren

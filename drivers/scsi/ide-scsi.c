@@ -3637,10 +3637,6 @@ op_member_access_from_pointer
 id|busy
 op_increment
 suffix:semicolon
-id|drive-&gt;ready_stat
-op_assign
-l_int|0
-suffix:semicolon
 r_if
 c_cond
 (paren

@@ -674,6 +674,11 @@ id|drive-&gt;media
 op_assign
 id|type
 suffix:semicolon
+multiline_comment|/* an ATAPI device ignores DRDY */
+id|drive-&gt;ready_stat
+op_assign
+l_int|0
+suffix:semicolon
 r_return
 suffix:semicolon
 )brace

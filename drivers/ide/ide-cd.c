@@ -12006,10 +12006,6 @@ id|drive-&gt;special.all
 op_assign
 l_int|0
 suffix:semicolon
-id|drive-&gt;ready_stat
-op_assign
-l_int|0
-suffix:semicolon
 id|CDROM_STATE_FLAGS
 c_func
 (paren

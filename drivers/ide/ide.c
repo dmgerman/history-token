@@ -6830,6 +6830,11 @@ id|drive-&gt;media
 op_assign
 id|ide_cdrom
 suffix:semicolon
+multiline_comment|/* an ATAPI device ignores DRDY */
+id|drive-&gt;ready_stat
+op_assign
+l_int|0
+suffix:semicolon
 id|hwif-&gt;noprobe
 op_assign
 l_int|0
@@ -6937,6 +6942,10 @@ multiline_comment|/* cyl,head,sect */
 id|drive-&gt;media
 op_assign
 id|ide_disk
+suffix:semicolon
+id|drive-&gt;ready_stat
+op_assign
+id|READY_STAT
 suffix:semicolon
 id|drive-&gt;cyl
 op_assign

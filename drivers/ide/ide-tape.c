@@ -17287,11 +17287,6 @@ id|drive-&gt;driver_data
 op_assign
 id|tape
 suffix:semicolon
-multiline_comment|/* An ATAPI device ignores DRDY */
-id|drive-&gt;ready_stat
-op_assign
-l_int|0
-suffix:semicolon
 id|drive-&gt;dsc_overlap
 op_assign
 l_int|1
