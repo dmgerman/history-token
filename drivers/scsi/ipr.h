@@ -140,6 +140,8 @@ mdefine_line|#define IPR_IOA_RES_HANDLE&t;&t;&t;&t;0xffffffff
 DECL|macro|IPR_IOA_RES_ADDR
 mdefine_line|#define IPR_IOA_RES_ADDR&t;&t;&t;&t;0x00ffffff
 multiline_comment|/*&n; * Adapter Commands&n; */
+DECL|macro|IPR_QUERY_RSRC_STATE
+mdefine_line|#define IPR_QUERY_RSRC_STATE&t;&t;&t;&t;0xC2
 DECL|macro|IPR_RESET_DEVICE
 mdefine_line|#define IPR_RESET_DEVICE&t;&t;&t;&t;0xC3
 DECL|macro|IPR_RESET_TYPE_SELECT
