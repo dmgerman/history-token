@@ -17997,7 +17997,7 @@ mdefine_line|#define TG3_TSO_FW_TEXT_ADDR&t;&t;0x08000000
 DECL|macro|TG3_TSO_FW_TEXT_LEN
 mdefine_line|#define TG3_TSO_FW_TEXT_LEN&t;&t;0x1a90
 DECL|macro|TG3_TSO_FW_RODATA_ADDR
-mdefine_line|#define TG3_TSO_FW_RODATA_ADDR&t;&t;0x08001a900
+mdefine_line|#define TG3_TSO_FW_RODATA_ADDR&t;&t;0x08001a90
 DECL|macro|TG3_TSO_FW_RODATA_LEN
 mdefine_line|#define TG3_TSO_FW_RODATA_LEN&t;&t;0x60
 DECL|macro|TG3_TSO_FW_DATA_ADDR
