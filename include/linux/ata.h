@@ -468,6 +468,12 @@ op_assign
 id|ATA_REG_NSECT
 comma
 multiline_comment|/* ATA device commands */
+DECL|enumerator|ATA_CMD_CHK_POWER
+id|ATA_CMD_CHK_POWER
+op_assign
+l_int|0xE5
+comma
+multiline_comment|/* check power mode */
 DECL|enumerator|ATA_CMD_EDD
 id|ATA_CMD_EDD
 op_assign
@@ -853,6 +859,8 @@ DECL|macro|ata_id_has_lba48
 mdefine_line|#define ata_id_has_lba48(dev)&t;((dev)-&gt;id[83] &amp; (1 &lt;&lt; 10))
 DECL|macro|ata_id_has_wcache
 mdefine_line|#define ata_id_has_wcache(dev)&t;((dev)-&gt;id[82] &amp; (1 &lt;&lt; 5))
+DECL|macro|ata_id_has_pm
+mdefine_line|#define ata_id_has_pm(dev)&t;((dev)-&gt;id[82] &amp; (1 &lt;&lt; 3))
 DECL|macro|ata_id_has_lba
 mdefine_line|#define ata_id_has_lba(dev)&t;((dev)-&gt;id[49] &amp; (1 &lt;&lt; 8))
 DECL|macro|ata_id_has_dma

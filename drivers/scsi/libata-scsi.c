@@ -2449,7 +2449,7 @@ suffix:semicolon
 id|n_sectors
 op_decrement
 suffix:semicolon
-multiline_comment|/* one off */
+multiline_comment|/* ATA TotalUserSectors - 1 */
 id|tmp
 op_assign
 id|n_sectors
@@ -2466,6 +2466,7 @@ op_eq
 id|READ_CAPACITY
 )paren
 (brace
+multiline_comment|/* sector count, 32-bit */
 id|rbuf
 (braket
 l_int|0
@@ -2512,6 +2513,7 @@ l_int|3
 op_assign
 id|tmp
 suffix:semicolon
+multiline_comment|/* sector size */
 id|tmp
 op_assign
 id|ATA_SECT_SIZE
@@ -2535,6 +2537,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
+multiline_comment|/* sector count, 64-bit */
 id|rbuf
 (braket
 l_int|2
@@ -2633,6 +2636,7 @@ l_int|9
 op_assign
 id|tmp
 suffix:semicolon
+multiline_comment|/* sector size */
 id|tmp
 op_assign
 id|ATA_SECT_SIZE
@@ -3409,7 +3413,6 @@ l_int|0
 r_case
 id|TEST_UNIT_READY
 suffix:colon
-multiline_comment|/* FIXME: correct? */
 r_case
 id|FORMAT_UNIT
 suffix:colon

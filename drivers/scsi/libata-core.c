@@ -8993,6 +8993,7 @@ c_cond
 id|qc-&gt;tf.protocol
 )paren
 (brace
+multiline_comment|/* BMDMA completion */
 r_case
 id|ATA_PROT_DMA
 suffix:colon
@@ -9078,13 +9079,14 @@ l_int|1
 suffix:semicolon
 r_break
 suffix:semicolon
+multiline_comment|/* command completion, but no data xfer */
+multiline_comment|/* FIXME: a shared interrupt _will_ cause a non-data command&n;&t; * to be completed prematurely, with an error.&n;&t; *&n;&t; * This doesn&squot;t matter right now, since we aren&squot;t sending&n;&t; * non-data commands down this pipe except in development&n;&t; * situations.&n;&t; */
 r_case
 id|ATA_PROT_ATAPI
 suffix:colon
 r_case
 id|ATA_PROT_NODATA
 suffix:colon
-multiline_comment|/* command completion, but no data xfer */
 id|status
 op_assign
 id|ata_busy_wait
