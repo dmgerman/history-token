@@ -8354,8 +8354,6 @@ id|pci_save_state
 c_func
 (paren
 id|pdev
-comma
-id|idev-&gt;cfg_space
 )paren
 suffix:semicolon
 r_if
@@ -8546,8 +8544,6 @@ id|pci_restore_state
 c_func
 (paren
 id|pdev
-comma
-id|idev-&gt;cfg_space
 )paren
 suffix:semicolon
 id|vlsi_start_hw

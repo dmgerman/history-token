@@ -415,7 +415,7 @@ r_void
 (brace
 id|speedstep_chipset_dev
 op_assign
-id|pci_find_subsys
+id|pci_get_subsys
 c_func
 (paren
 id|PCI_VENDOR_ID_INTEL
@@ -440,7 +440,7 @@ suffix:semicolon
 multiline_comment|/* 4-M */
 id|speedstep_chipset_dev
 op_assign
-id|pci_find_subsys
+id|pci_get_subsys
 c_func
 (paren
 id|PCI_VENDOR_ID_INTEL
@@ -465,7 +465,7 @@ suffix:semicolon
 multiline_comment|/* 3-M */
 id|speedstep_chipset_dev
 op_assign
-id|pci_find_subsys
+id|pci_get_subsys
 c_func
 (paren
 id|PCI_VENDOR_ID_INTEL
@@ -499,7 +499,7 @@ l_int|0
 suffix:semicolon
 id|hostbridge
 op_assign
-id|pci_find_subsys
+id|pci_get_subsys
 c_func
 (paren
 id|PCI_VENDOR_ID_INTEL
@@ -553,10 +553,22 @@ id|speedstep_chipset_dev
 op_assign
 l_int|NULL
 suffix:semicolon
+id|pci_dev_put
+c_func
+(paren
+id|hostbridge
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
 )brace
+id|pci_dev_put
+c_func
+(paren
+id|hostbridge
+)paren
+suffix:semicolon
 r_return
 l_int|2
 suffix:semicolon
@@ -1215,10 +1227,18 @@ c_func
 (paren
 )paren
 )paren
+(brace
+id|pci_dev_put
+c_func
+(paren
+id|speedstep_chipset_dev
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|EINVAL
 suffix:semicolon
+)brace
 r_return
 id|cpufreq_register_driver
 c_func
@@ -1239,6 +1259,12 @@ c_func
 r_void
 )paren
 (brace
+id|pci_dev_put
+c_func
+(paren
+id|speedstep_chipset_dev
+)paren
+suffix:semicolon
 id|cpufreq_unregister_driver
 c_func
 (paren

@@ -150,13 +150,6 @@ id|pci_dev
 op_star
 id|dev
 suffix:semicolon
-DECL|member|regs
-id|u32
-id|regs
-(braket
-l_int|16
-)braket
-suffix:semicolon
 )brace
 suffix:semicolon
 r_extern

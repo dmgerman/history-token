@@ -2831,13 +2831,6 @@ r_struct
 id|ipr_interrupts
 id|regs
 suffix:semicolon
-DECL|member|pci_cfg_buf
-id|u32
-id|pci_cfg_buf
-(braket
-l_int|64
-)braket
-suffix:semicolon
 DECL|member|saved_pcix_cmd_reg
 id|u16
 id|saved_pcix_cmd_reg

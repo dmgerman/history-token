@@ -1188,16 +1188,6 @@ r_char
 id|msgin_len
 suffix:semicolon
 multiline_comment|/* msginbuf length  */
-macro_line|#ifdef CONFIG_PM
-DECL|member|PciState
-id|u32
-id|PciState
-(braket
-l_int|16
-)braket
-suffix:semicolon
-multiline_comment|/* save PCI state to this area */
-macro_line|#endif
 DECL|typedef|nsp32_hw_data
 )brace
 id|nsp32_hw_data

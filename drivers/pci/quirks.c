@@ -39,7 +39,7 @@ c_loop
 (paren
 id|d
 op_assign
-id|pci_find_device
+id|pci_get_device
 c_func
 (paren
 id|PCI_VENDOR_ID_INTEL
@@ -397,7 +397,7 @@ suffix:semicolon
 multiline_comment|/* Ok we have a potential problem chipset here. Now see if we have&n;&t;   a buggy southbridge */
 id|p
 op_assign
-id|pci_find_device
+id|pci_get_device
 c_func
 (paren
 id|PCI_VENDOR_ID_VIA
@@ -435,14 +435,15 @@ id|rev
 template_param
 l_int|0x42
 )paren
-r_return
+r_goto
+m_exit
 suffix:semicolon
 )brace
 r_else
 (brace
 id|p
 op_assign
-id|pci_find_device
+id|pci_get_device
 c_func
 (paren
 id|PCI_VENDOR_ID_VIA
@@ -460,7 +461,8 @@ op_eq
 l_int|NULL
 )paren
 multiline_comment|/* No problem parts */
-r_return
+r_goto
+m_exit
 suffix:semicolon
 id|pci_read_config_byte
 c_func
@@ -481,7 +483,8 @@ id|rev
 template_param
 l_int|0x12
 )paren
-r_return
+r_goto
+m_exit
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; *&t;Ok we have the problem. Now set the PCI master grant to &n;&t; *&t;occur every master grant. The apparent bug is that under high&n;&t; *&t;PCI load (quite common in Linux of course) you can get data&n;&t; *&t;loss when the CPU is held off the bus for 3 bus master requests&n;&t; *&t;This happens to include the IDE controllers....&n;&t; *&n;&t; *&t;VIA only apply this fix when an SB Live! is present but under&n;&t; *&t;both Linux and Windows this isnt enough, and we have seen&n;&t; *&t;corruption without SB Live! but with things like 3 UDMA IDE&n;&t; *&t;controllers. So we ignore that bit of the VIA recommendation..&n;&t; */
@@ -529,6 +532,14 @@ c_func
 (paren
 id|KERN_INFO
 l_string|&quot;Applying VIA southbridge workaround.&bslash;n&quot;
+)paren
+suffix:semicolon
+m_exit
+suffix:colon
+id|pci_dev_put
+c_func
+(paren
+id|p
 )paren
 suffix:semicolon
 )brace
@@ -1934,7 +1945,7 @@ id|new_irq
 suffix:semicolon
 )brace
 )brace
-id|DECLARE_PCI_FIXUP_FINAL
+id|DECLARE_PCI_FIXUP_ENABLE
 c_func
 (paren
 id|PCI_VENDOR_ID_VIA
@@ -1944,7 +1955,7 @@ comma
 id|quirk_via_irqpic
 )paren
 suffix:semicolon
-id|DECLARE_PCI_FIXUP_FINAL
+id|DECLARE_PCI_FIXUP_ENABLE
 c_func
 (paren
 id|PCI_VENDOR_ID_VIA
@@ -1954,7 +1965,7 @@ comma
 id|quirk_via_irqpic
 )paren
 suffix:semicolon
-id|DECLARE_PCI_FIXUP_FINAL
+id|DECLARE_PCI_FIXUP_ENABLE
 c_func
 (paren
 id|PCI_VENDOR_ID_VIA
@@ -4117,7 +4128,6 @@ id|PCI_ANY_ID
 id|pr_debug
 c_func
 (paren
-id|KERN_INFO
 l_string|&quot;PCI: Calling quirk %p for %s&bslash;n&quot;
 comma
 id|f-&gt;hook
@@ -4168,6 +4178,20 @@ r_extern
 r_struct
 id|pci_fixup
 id|__end_pci_fixups_final
+(braket
+)braket
+suffix:semicolon
+r_extern
+r_struct
+id|pci_fixup
+id|__start_pci_fixups_enable
+(braket
+)braket
+suffix:semicolon
+r_extern
+r_struct
+id|pci_fixup
+id|__end_pci_fixups_enable
 (braket
 )braket
 suffix:semicolon
@@ -4223,6 +4247,19 @@ suffix:semicolon
 id|end
 op_assign
 id|__end_pci_fixups_final
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|pci_fixup_enable
+suffix:colon
+id|start
+op_assign
+id|__start_pci_fixups_enable
+suffix:semicolon
+id|end
+op_assign
+id|__end_pci_fixups_enable
 suffix:semicolon
 r_break
 suffix:semicolon

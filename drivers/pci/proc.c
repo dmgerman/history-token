@@ -1704,6 +1704,7 @@ id|show_device
 )brace
 suffix:semicolon
 DECL|variable|proc_bus_pci_dir
+r_static
 r_struct
 id|proc_dir_entry
 op_star
@@ -2776,7 +2777,7 @@ c_loop
 (paren
 id|dev
 op_assign
-id|pci_find_device
+id|pci_get_device
 c_func
 (paren
 id|PCI_ANY_ID
@@ -2833,13 +2834,6 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|pci_proc_detach_bus
-)paren
-suffix:semicolon
-DECL|variable|proc_bus_pci_dir
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|proc_bus_pci_dir
 )paren
 suffix:semicolon
 macro_line|#endif

@@ -12243,7 +12243,7 @@ op_assign
 l_int|0
 suffix:semicolon
 r_return
-id|pci_module_init
+id|pci_register_driver
 (paren
 op_amp
 id|net2280_pci_driver

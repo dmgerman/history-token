@@ -21,8 +21,8 @@ r_struct
 id|serial_struct
 id|serial
 suffix:semicolon
-r_int
-r_char
+r_void
+id|__iomem
 op_star
 id|iomem_base
 suffix:semicolon

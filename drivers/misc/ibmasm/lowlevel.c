@@ -158,6 +158,7 @@ op_star
 id|dev_id
 suffix:semicolon
 r_void
+id|__iomem
 op_star
 id|base_address
 op_assign

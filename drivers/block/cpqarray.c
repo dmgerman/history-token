@@ -3024,7 +3024,6 @@ id|DRIVER_NAME
 l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* TODO: If it&squot;s an eisa only system, will rc return negative? */
 id|rc
 op_assign
 id|pci_register_driver
@@ -3038,8 +3037,6 @@ r_if
 c_cond
 (paren
 id|rc
-OL
-l_int|0
 )paren
 r_return
 id|rc

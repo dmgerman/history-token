@@ -1298,7 +1298,7 @@ c_loop
 (paren
 id|pdev
 op_assign
-id|pci_find_class
+id|pci_get_class
 c_func
 (paren
 id|PCI_CLASS_NETWORK_OTHER
@@ -1461,6 +1461,12 @@ comma
 id|SBNI_IO_EXTENT
 )paren
 suffix:semicolon
+id|pci_dev_put
+c_func
+(paren
+id|pdev
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|EIO
@@ -1487,6 +1493,13 @@ id|dev
 comma
 op_amp
 id|pdev-&gt;dev
+)paren
+suffix:semicolon
+multiline_comment|/* not the best thing to do, but this is all messed up &n;&t;&t;&t;   for hotplug systems anyway... */
+id|pci_dev_put
+c_func
+(paren
+id|pdev
 )paren
 suffix:semicolon
 r_return

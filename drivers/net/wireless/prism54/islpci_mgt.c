@@ -1095,7 +1095,7 @@ id|MGMT_FRAME_SIZE
 suffix:semicolon
 )brace
 multiline_comment|/* Ensure the results of device DMA are visible to the CPU. */
-id|pci_dma_sync_single
+id|pci_dma_sync_single_for_cpu
 c_func
 (paren
 id|priv-&gt;pdev

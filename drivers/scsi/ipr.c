@@ -18034,8 +18034,6 @@ id|pci_restore_state
 c_func
 (paren
 id|ioa_cfg-&gt;pdev
-comma
-id|ioa_cfg-&gt;pci_cfg_buf
 )paren
 suffix:semicolon
 r_if
@@ -20929,8 +20927,6 @@ id|pci_save_state
 c_func
 (paren
 id|pdev
-comma
-id|ioa_cfg-&gt;pci_cfg_buf
 )paren
 suffix:semicolon
 r_if
