@@ -637,82 +637,6 @@ id|dmi_ident
 id|DMI_STRING_MAX
 )braket
 suffix:semicolon
-macro_line|#ifdef CONFIG_ACPI_BOOT
-multiline_comment|/* print some information suitable for a blacklist entry. */
-DECL|function|dmi_dump_system
-r_static
-r_void
-id|dmi_dump_system
-c_func
-(paren
-r_void
-)paren
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot;DMI: BIOS: %.40s, %.40s, %.40s&bslash;n&quot;
-comma
-id|dmi_ident
-(braket
-id|DMI_BIOS_VENDOR
-)braket
-comma
-id|dmi_ident
-(braket
-id|DMI_BIOS_VERSION
-)braket
-comma
-id|dmi_ident
-(braket
-id|DMI_BIOS_DATE
-)braket
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;DMI: System: %.40s, %.40s, %.40s&bslash;n&quot;
-comma
-id|dmi_ident
-(braket
-id|DMI_SYS_VENDOR
-)braket
-comma
-id|dmi_ident
-(braket
-id|DMI_PRODUCT_NAME
-)braket
-comma
-id|dmi_ident
-(braket
-id|DMI_PRODUCT_VERSION
-)braket
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;DMI: Board: %.40s, %.40s, %.40s&bslash;n&quot;
-comma
-id|dmi_ident
-(braket
-id|DMI_BOARD_VENDOR
-)braket
-comma
-id|dmi_ident
-(braket
-id|DMI_BOARD_NAME
-)braket
-comma
-id|dmi_ident
-(braket
-id|DMI_BOARD_VERSION
-)braket
-)paren
-suffix:semicolon
-)brace
-macro_line|#endif
 multiline_comment|/*&n; *&t;Save a DMI string&n; */
 DECL|function|dmi_save_ident
 r_static
@@ -2467,34 +2391,4 @@ c_func
 id|is_unsafe_smbus
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_MOUNT_ROOT_FAILED_MSG
-multiline_comment|/*&n; * mount_root_failed_msg()&n; *&n; * Called from mount_block_root() upon failure to mount root.&n; * architecture dependent to give different platforms&n; * the opportunity to print different handy messages&n; * On x86 this lives here b/c it dumps out some DMI info.&n; */
-r_void
-DECL|function|mount_root_failed_msg
-id|mount_root_failed_msg
-c_func
-(paren
-r_void
-)paren
-(brace
-macro_line|#ifdef&t;CONFIG_ACPI_BOOT
-id|printk
-(paren
-l_string|&quot;Try booting with pci=noacpi, acpi=ht, &quot;
-l_string|&quot;or acpi=off on the command line.&bslash;n&quot;
-)paren
-suffix:semicolon
-id|printk
-(paren
-l_string|&quot;If one helps, please report the following lines:&bslash;n&quot;
-)paren
-suffix:semicolon
-id|dmi_dump_system
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
-)brace
-macro_line|#endif&t;/* CONFIG_MOUNT_ROOT_FAILED_MSG */
 eof
