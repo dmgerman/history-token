@@ -12,8 +12,8 @@ DECL|macro|omap_get_id
 mdefine_line|#define omap_get_id() ((*(volatile unsigned int *)(0xfffed404)) &gt;&gt; 12) &amp; ID_MASK
 r_static
 r_void
-DECL|function|puts
-id|puts
+DECL|function|putstr
+id|putstr
 c_func
 (paren
 r_const

@@ -17,6 +17,9 @@ macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/mach/irq.h&gt;
 macro_line|#include &lt;asm/hardware/sa1111.h&gt;
+macro_line|#ifdef CONFIG_ARCH_PXA
+macro_line|#include &lt;asm/arch/pxa-regs.h&gt;
+macro_line|#endif
 r_extern
 r_void
 id|__init

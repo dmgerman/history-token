@@ -15,6 +15,7 @@ macro_line|#include &lt;asm/leds.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/mach/irq.h&gt;
 macro_line|#include &lt;asm/mach/time.h&gt;
+macro_line|#include &lt;asm/arch/pxa-regs.h&gt;
 DECL|function|pxa_get_rtc_time
 r_static
 r_inline

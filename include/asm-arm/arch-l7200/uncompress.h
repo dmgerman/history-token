@@ -54,10 +54,10 @@ l_int|0x00
 )paren
 suffix:semicolon
 )brace
-DECL|function|puts
+DECL|function|putstr
 r_static
 r_void
-id|puts
+id|putstr
 c_func
 (paren
 r_const
