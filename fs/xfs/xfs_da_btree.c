@@ -7805,8 +7805,6 @@ id|namelen
 id|xfs_dahash_t
 id|hash
 suffix:semicolon
-DECL|macro|ROTL
-mdefine_line|#define&t;ROTL(x,y)&t;(((x) &lt;&lt; (y)) | ((x) &gt;&gt; (32 - (y))))
 macro_line|#ifdef SLOWVERSION
 multiline_comment|/*&n;&t; * This is the old one-byte-at-a-time version.&n;&t; */
 r_for
@@ -7823,14 +7821,13 @@ suffix:semicolon
 id|namelen
 op_decrement
 )paren
-(brace
 id|hash
 op_assign
 op_star
 id|name
 op_increment
 op_xor
-id|ROTL
+id|rol32
 c_func
 (paren
 id|hash
@@ -7838,7 +7835,6 @@ comma
 l_int|7
 )paren
 suffix:semicolon
-)brace
 r_return
 id|hash
 suffix:semicolon
@@ -7863,7 +7859,6 @@ id|name
 op_add_assign
 l_int|4
 )paren
-(brace
 id|hash
 op_assign
 (paren
@@ -7902,7 +7897,7 @@ op_lshift
 l_int|0
 )paren
 op_xor
-id|ROTL
+id|rol32
 c_func
 (paren
 id|hash
@@ -7912,7 +7907,6 @@ op_star
 l_int|4
 )paren
 suffix:semicolon
-)brace
 multiline_comment|/*&n;&t; * Now do the rest of the characters.&n;&t; */
 r_switch
 c_cond
@@ -7951,7 +7945,7 @@ op_lshift
 l_int|0
 )paren
 op_xor
-id|ROTL
+id|rol32
 c_func
 (paren
 id|hash
@@ -7983,7 +7977,7 @@ op_lshift
 l_int|0
 )paren
 op_xor
-id|ROTL
+id|rol32
 c_func
 (paren
 id|hash
@@ -8006,7 +8000,7 @@ op_lshift
 l_int|0
 )paren
 op_xor
-id|ROTL
+id|rol32
 c_func
 (paren
 id|hash
@@ -8025,8 +8019,6 @@ suffix:semicolon
 )brace
 multiline_comment|/* NOTREACHED */
 macro_line|#endif
-DECL|macro|ROTL
-macro_line|#undef ROTL
 r_return
 l_int|0
 suffix:semicolon

@@ -43,14 +43,6 @@ suffix:semicolon
 )brace
 suffix:semicolon
 r_extern
-r_struct
-id|channel_path
-op_star
-id|chps
-(braket
-)braket
-suffix:semicolon
-r_extern
 r_void
 id|s390_process_css
 c_func

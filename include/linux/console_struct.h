@@ -83,6 +83,12 @@ r_int
 r_int
 id|vc_screenbuf_size
 suffix:semicolon
+DECL|member|vc_mode
+r_int
+r_char
+id|vc_mode
+suffix:semicolon
+multiline_comment|/* KD_TEXT, ... */
 multiline_comment|/* attributes for all characters on screen */
 DECL|member|vc_attr
 r_int
@@ -206,6 +212,24 @@ op_star
 id|vc_tty
 suffix:semicolon
 multiline_comment|/* TTY we are attached to */
+multiline_comment|/* data for manual vt switching */
+DECL|member|vt_mode
+r_struct
+id|vt_mode
+id|vt_mode
+suffix:semicolon
+DECL|member|vt_pid
+r_int
+id|vt_pid
+suffix:semicolon
+DECL|member|vt_newvt
+r_int
+id|vt_newvt
+suffix:semicolon
+DECL|member|paste_wait
+id|wait_queue_head_t
+id|paste_wait
+suffix:semicolon
 multiline_comment|/* mode flags */
 DECL|member|vc_charset
 r_int
@@ -477,12 +501,6 @@ op_star
 id|vc_uni_pagedir_loc
 suffix:semicolon
 multiline_comment|/* [!] Location of uni_pagedir variable for this console */
-DECL|member|vc_vt
-r_struct
-id|vt_struct
-op_star
-id|vc_vt
-suffix:semicolon
 multiline_comment|/* additional information is in vt_kern.h */
 )brace
 suffix:semicolon

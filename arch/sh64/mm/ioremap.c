@@ -795,6 +795,8 @@ dot
 id|start
 op_assign
 id|IOBASE_VADDR
+op_plus
+id|PAGE_SIZE
 comma
 dot
 id|end

@@ -35,8 +35,10 @@ c_func
 r_int
 id|m
 comma
-r_int
-id|currcons
+r_struct
+id|vc_data
+op_star
+id|vc
 )paren
 suffix:semicolon
 r_extern

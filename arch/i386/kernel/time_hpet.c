@@ -334,10 +334,11 @@ c_func
 id|HPET_ID
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * We are checking for value &squot;1&squot; or more in number field.&n;&t; * So, we are OK with HPET_EMULATE_RTC part too, where we need&n;&t; * to have atleast 2 timers.&n;&t; */
+multiline_comment|/*&n;&t; * We are checking for value &squot;1&squot; or more in number field if&n;&t; * CONFIG_HPET_EMULATE_RTC is set because we will need an&n;&t; * additional timer for RTC emulation.&n;&t; * However, we can do with one timer otherwise using the&n;&t; * the single HPET timer for system time.&n;&t; */
 r_if
 c_cond
 (paren
+macro_line|#ifdef CONFIG_HPET_EMULATE_RTC
 op_logical_neg
 (paren
 id|id
@@ -345,6 +346,7 @@ op_amp
 id|HPET_ID_NUMBER
 )paren
 op_logical_or
+macro_line|#endif
 op_logical_neg
 (paren
 id|id

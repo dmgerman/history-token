@@ -3369,6 +3369,10 @@ op_assign
 op_amp
 id|wait
 suffix:semicolon
+id|rq.end_io
+op_assign
+id|blk_end_sync_rq
+suffix:semicolon
 id|blk_insert_request
 c_func
 (paren

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * C-Brick Serial Port (and console) driver for SGI Altix machines.&n; *&n; * This driver is NOT suitable for talking to the l1-controller for&n; * anything other than &squot;console activities&squot; --- please use the l1&n; * driver for that.&n; *&n; *&n; * Copyright (c) 2004 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License&n; * as published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.  Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU General Public&n; * License along with this program; if not, write the Free Software&n; * Foundation, Inc., 59 Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information:  Silicon Graphics, Inc., 1500 Crittenden Lane,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/NoticeExplan&n; */
+multiline_comment|/*&n; * C-Brick Serial Port (and console) driver for SGI Altix machines.&n; *&n; * This driver is NOT suitable for talking to the l1-controller for&n; * anything other than &squot;console activities&squot; --- please use the l1&n; * driver for that.&n; *&n; *&n; * Copyright (c) 2004-2005 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License&n; * as published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.  Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU General Public&n; * License along with this program; if not, write the Free Software&n; * Foundation, Inc., 59 Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information:  Silicon Graphics, Inc., 1500 Crittenden Lane,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/NoticeExplan&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
@@ -175,6 +175,11 @@ r_static
 r_struct
 id|sn_cons_port
 id|sal_console_port
+suffix:semicolon
+DECL|variable|sn_process_input
+r_static
+r_int
+id|sn_process_input
 suffix:semicolon
 multiline_comment|/* Only used if USE_DYNAMIC_MINOR is set to 1 */
 DECL|variable|misc
@@ -1769,6 +1774,11 @@ comma
 id|flags
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|sn_process_input
+)paren
 id|sn_receive_chars
 c_func
 (paren
@@ -2379,6 +2389,10 @@ id|sal_console_port
 )paren
 suffix:semicolon
 )brace
+id|sn_process_input
+op_assign
+l_int|1
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon

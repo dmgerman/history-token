@@ -36,14 +36,12 @@ l_int|4
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|macro|rol
-mdefine_line|#define rol(n,x) ( ((x) &lt;&lt; (n)) | ((x) &gt;&gt; (32-(n))) )
 DECL|macro|F1
-mdefine_line|#define F1(D,r,m)  (  (I = ((m) + (D))), (I=rol((r),I)),   &bslash;&n;    (((s1[I &gt;&gt; 24] ^ s2[(I&gt;&gt;16)&amp;0xff]) - s3[(I&gt;&gt;8)&amp;0xff]) + s4[I&amp;0xff]) )
+mdefine_line|#define F1(D,r,m)  (  (I = ((m) + (D))), (I=rol32(I,(r))),   &bslash;&n;    (((s1[I &gt;&gt; 24] ^ s2[(I&gt;&gt;16)&amp;0xff]) - s3[(I&gt;&gt;8)&amp;0xff]) + s4[I&amp;0xff]) )
 DECL|macro|F2
-mdefine_line|#define F2(D,r,m)  (  (I = ((m) ^ (D))), (I=rol((r),I)),   &bslash;&n;    (((s1[I &gt;&gt; 24] - s2[(I&gt;&gt;16)&amp;0xff]) + s3[(I&gt;&gt;8)&amp;0xff]) ^ s4[I&amp;0xff]) )
+mdefine_line|#define F2(D,r,m)  (  (I = ((m) ^ (D))), (I=rol32(I,(r))),   &bslash;&n;    (((s1[I &gt;&gt; 24] - s2[(I&gt;&gt;16)&amp;0xff]) + s3[(I&gt;&gt;8)&amp;0xff]) ^ s4[I&amp;0xff]) )
 DECL|macro|F3
-mdefine_line|#define F3(D,r,m)  (  (I = ((m) - (D))), (I=rol((r),I)),   &bslash;&n;    (((s1[I &gt;&gt; 24] + s2[(I&gt;&gt;16)&amp;0xff]) ^ s3[(I&gt;&gt;8)&amp;0xff]) - s4[I&amp;0xff]) )
+mdefine_line|#define F3(D,r,m)  (  (I = ((m) - (D))), (I=rol32(I,(r))),   &bslash;&n;    (((s1[I &gt;&gt; 24] + s2[(I&gt;&gt;16)&amp;0xff]) ^ s3[(I&gt;&gt;8)&amp;0xff]) - s4[I&amp;0xff]) )
 DECL|variable|s1
 r_static
 r_const

@@ -6,7 +6,7 @@ macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &lt;linux/key.h&gt;
 multiline_comment|/*&n; * UID task count cache, to get fast user lookup in &quot;alloc_uid&quot;&n; * when changing user ID&squot;s (ie setuid() and friends).&n; */
 DECL|macro|UIDHASH_BITS
-mdefine_line|#define UIDHASH_BITS&t;&t;8
+mdefine_line|#define UIDHASH_BITS (CONFIG_BASE_SMALL ? 3 : 8)
 DECL|macro|UIDHASH_SZ
 mdefine_line|#define UIDHASH_SZ&t;&t;(1 &lt;&lt; UIDHASH_BITS)
 DECL|macro|UIDHASH_MASK

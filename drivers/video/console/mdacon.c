@@ -1317,18 +1317,16 @@ id|mda_num_lines
 suffix:semicolon
 )brace
 r_else
-(brace
 id|vc_resize
 c_func
 (paren
-id|c-&gt;vc_num
+id|c
 comma
 id|mda_num_columns
 comma
 id|mda_num_lines
 )paren
 suffix:semicolon
-)brace
 multiline_comment|/* make the first MDA console visible */
 r_if
 c_cond

@@ -386,7 +386,7 @@ op_star
 id|info
 comma
 r_int
-id|current
+id|curr
 )paren
 suffix:semicolon
 r_static
@@ -3050,7 +3050,7 @@ op_star
 id|info
 comma
 r_int
-id|current
+id|curr
 )paren
 (brace
 r_volatile
@@ -3070,7 +3070,7 @@ id|cd
 op_assign
 id|info-&gt;rx_cmds
 (braket
-id|current
+id|curr
 )braket
 suffix:semicolon
 singleline_comment|//printk(KERN_DEBUG &quot;SCC: rxdma_start&bslash;n&quot;);

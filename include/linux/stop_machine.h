@@ -5,7 +5,7 @@ multiline_comment|/* &quot;Bogolock&quot;: stop the entire machine, disable inte
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/cpu.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
-macro_line|#ifdef CONFIG_SMP
+macro_line|#if defined(CONFIG_STOP_MACHINE) &amp;&amp; defined(CONFIG_SMP)
 multiline_comment|/**&n; * stop_machine_run: freeze the machine on all CPUs and run this function&n; * @fn: the function to run&n; * @data: the data ptr for the @fn()&n; * @cpu: the cpu to run @fn() on (or any, if @cpu == NR_CPUS.&n; *&n; * Description: This causes a thread to be scheduled on every other cpu,&n; * each of which disables interrupts, and finally interrupts are disabled&n; * on the current CPU.  The result is that noone is holding a spinlock&n; * or inside any other preempt-disabled region when @fn() runs.&n; *&n; * This can be thought of as a very heavy write lock, equivalent to&n; * grabbing every spinlock in the kernel. */
 r_int
 id|stop_machine_run

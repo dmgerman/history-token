@@ -141,10 +141,6 @@ r_struct
 id|buffer_head
 op_star
 id|bh
-comma
-r_int
-op_star
-id|credits
 )paren
 (brace
 r_int
@@ -156,8 +152,6 @@ c_func
 id|handle
 comma
 id|bh
-comma
-id|credits
 )paren
 suffix:semicolon
 r_if
@@ -203,10 +197,6 @@ r_struct
 id|buffer_head
 op_star
 id|bh
-comma
-r_int
-op_star
-id|credits
 )paren
 (brace
 r_int
@@ -218,8 +208,6 @@ c_func
 id|handle
 comma
 id|bh
-comma
-id|credits
 )paren
 suffix:semicolon
 r_if
@@ -260,9 +248,6 @@ r_struct
 id|buffer_head
 op_star
 id|bh
-comma
-r_int
-id|credits
 )paren
 (brace
 id|journal_release_buffer
@@ -271,8 +256,6 @@ c_func
 id|handle
 comma
 id|bh
-comma
-id|credits
 )paren
 suffix:semicolon
 )brace
@@ -507,11 +490,9 @@ id|err
 suffix:semicolon
 )brace
 DECL|macro|ext3_journal_get_undo_access
-mdefine_line|#define ext3_journal_get_undo_access(handle, bh, credits) &bslash;&n;&t;__ext3_journal_get_undo_access(__FUNCTION__, (handle), (bh), (credits))
+mdefine_line|#define ext3_journal_get_undo_access(handle, bh) &bslash;&n;&t;__ext3_journal_get_undo_access(__FUNCTION__, (handle), (bh))
 DECL|macro|ext3_journal_get_write_access
-mdefine_line|#define ext3_journal_get_write_access(handle, bh) &bslash;&n;&t;__ext3_journal_get_write_access(__FUNCTION__, (handle), (bh), NULL)
-DECL|macro|ext3_journal_get_write_access_credits
-mdefine_line|#define ext3_journal_get_write_access_credits(handle, bh, credits) &bslash;&n;&t;__ext3_journal_get_write_access(__FUNCTION__, (handle), (bh), (credits))
+mdefine_line|#define ext3_journal_get_write_access(handle, bh) &bslash;&n;&t;__ext3_journal_get_write_access(__FUNCTION__, (handle), (bh))
 DECL|macro|ext3_journal_revoke
 mdefine_line|#define ext3_journal_revoke(handle, blocknr, bh) &bslash;&n;&t;__ext3_journal_revoke(__FUNCTION__, (handle), (blocknr), (bh))
 DECL|macro|ext3_journal_get_create_access

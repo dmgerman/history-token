@@ -102,46 +102,14 @@ id|y
 )paren
 suffix:semicolon
 )brace
-DECL|function|RORu32
-r_static
-r_inline
-id|u32
-id|RORu32
-c_func
-(paren
-id|u32
-id|x
-comma
-id|u32
-id|y
-)paren
-(brace
-r_return
-(paren
-id|x
-op_rshift
-id|y
-)paren
-op_or
-(paren
-id|x
-op_lshift
-(paren
-l_int|32
-op_minus
-id|y
-)paren
-)paren
-suffix:semicolon
-)brace
 DECL|macro|e0
-mdefine_line|#define e0(x)       (RORu32(x, 2) ^ RORu32(x,13) ^ RORu32(x,22))
+mdefine_line|#define e0(x)       (ror32(x, 2) ^ ror32(x,13) ^ ror32(x,22))
 DECL|macro|e1
-mdefine_line|#define e1(x)       (RORu32(x, 6) ^ RORu32(x,11) ^ RORu32(x,25))
+mdefine_line|#define e1(x)       (ror32(x, 6) ^ ror32(x,11) ^ ror32(x,25))
 DECL|macro|s0
-mdefine_line|#define s0(x)       (RORu32(x, 7) ^ RORu32(x,18) ^ (x &gt;&gt; 3))
+mdefine_line|#define s0(x)       (ror32(x, 7) ^ ror32(x,18) ^ (x &gt;&gt; 3))
 DECL|macro|s1
-mdefine_line|#define s1(x)       (RORu32(x,17) ^ RORu32(x,19) ^ (x &gt;&gt; 10))
+mdefine_line|#define s1(x)       (ror32(x,17) ^ ror32(x,19) ^ (x &gt;&gt; 10))
 DECL|macro|H0
 mdefine_line|#define H0         0x6a09e667
 DECL|macro|H1

@@ -58,26 +58,6 @@ id|mtrr_if
 op_assign
 l_int|NULL
 suffix:semicolon
-DECL|variable|mtrr_if_name
-id|__initdata
-r_char
-op_star
-id|mtrr_if_name
-(braket
-)braket
-op_assign
-(brace
-l_string|&quot;none&quot;
-comma
-l_string|&quot;Intel&quot;
-comma
-l_string|&quot;AMD K6&quot;
-comma
-l_string|&quot;Cyrix ARR&quot;
-comma
-l_string|&quot;Centaur MCR&quot;
-)brace
-suffix:semicolon
 r_static
 r_void
 id|set_mtrr
@@ -251,6 +231,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*  This function returns the number of variable MTRRs  */
 DECL|function|set_num_var_ranges
+r_static
 r_void
 id|__init
 id|set_num_var_ranges

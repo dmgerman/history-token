@@ -817,7 +817,7 @@ suffix:semicolon
 id|con_clear_unimap
 c_func
 (paren
-id|conp-&gt;vc_num
+id|conp
 comma
 l_int|NULL
 )paren
@@ -825,7 +825,7 @@ suffix:semicolon
 id|con_set_unimap
 c_func
 (paren
-id|conp-&gt;vc_num
+id|conp
 comma
 id|k
 comma
@@ -835,7 +835,7 @@ suffix:semicolon
 id|con_protect_unimap
 c_func
 (paren
-id|conp-&gt;vc_num
+id|conp
 comma
 l_int|1
 )paren
@@ -918,7 +918,7 @@ l_int|1
 id|con_free_unimap
 c_func
 (paren
-id|conp-&gt;vc_num
+id|conp
 )paren
 suffix:semicolon
 id|conp-&gt;vc_uni_pagedir_loc
@@ -975,7 +975,7 @@ l_int|1
 id|vc_resize
 c_func
 (paren
-id|conp-&gt;vc_num
+id|conp
 comma
 id|pw
 op_plus
@@ -1014,7 +1014,7 @@ l_int|1
 id|con_free_unimap
 c_func
 (paren
-id|conp-&gt;vc_num
+id|conp
 )paren
 suffix:semicolon
 id|conp-&gt;vc_uni_pagedir_loc
@@ -1025,7 +1025,7 @@ suffix:semicolon
 id|con_set_default_unimap
 c_func
 (paren
-id|conp-&gt;vc_num
+id|conp
 )paren
 suffix:semicolon
 )brace

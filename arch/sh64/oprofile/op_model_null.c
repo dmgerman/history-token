@@ -12,7 +12,6 @@ c_func
 r_struct
 id|oprofile_operations
 op_star
-op_star
 id|ops
 )paren
 (brace

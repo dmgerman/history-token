@@ -3,6 +3,76 @@ DECL|macro|_linux_POSIX_TIMERS_H
 mdefine_line|#define _linux_POSIX_TIMERS_H
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
+macro_line|#include &lt;linux/sched.h&gt;
+DECL|union|cpu_time_count
+r_union
+id|cpu_time_count
+(brace
+DECL|member|cpu
+id|cputime_t
+id|cpu
+suffix:semicolon
+DECL|member|sched
+r_int
+r_int
+r_int
+id|sched
+suffix:semicolon
+)brace
+suffix:semicolon
+DECL|struct|cpu_timer_list
+r_struct
+id|cpu_timer_list
+(brace
+DECL|member|entry
+r_struct
+id|list_head
+id|entry
+suffix:semicolon
+DECL|member|expires
+DECL|member|incr
+r_union
+id|cpu_time_count
+id|expires
+comma
+id|incr
+suffix:semicolon
+DECL|member|task
+r_struct
+id|task_struct
+op_star
+id|task
+suffix:semicolon
+DECL|member|firing
+r_int
+id|firing
+suffix:semicolon
+)brace
+suffix:semicolon
+DECL|macro|CPUCLOCK_PID
+mdefine_line|#define CPUCLOCK_PID(clock)&t;&t;((pid_t) ~((clock) &gt;&gt; 3))
+DECL|macro|CPUCLOCK_PERTHREAD
+mdefine_line|#define CPUCLOCK_PERTHREAD(clock) &bslash;&n;&t;(((clock) &amp; (clockid_t) CPUCLOCK_PERTHREAD_MASK) != 0)
+DECL|macro|CPUCLOCK_PID_MASK
+mdefine_line|#define CPUCLOCK_PID_MASK&t;7
+DECL|macro|CPUCLOCK_PERTHREAD_MASK
+mdefine_line|#define CPUCLOCK_PERTHREAD_MASK&t;4
+DECL|macro|CPUCLOCK_WHICH
+mdefine_line|#define CPUCLOCK_WHICH(clock)&t;((clock) &amp; (clockid_t) CPUCLOCK_CLOCK_MASK)
+DECL|macro|CPUCLOCK_CLOCK_MASK
+mdefine_line|#define CPUCLOCK_CLOCK_MASK&t;3
+DECL|macro|CPUCLOCK_PROF
+mdefine_line|#define CPUCLOCK_PROF&t;&t;0
+DECL|macro|CPUCLOCK_VIRT
+mdefine_line|#define CPUCLOCK_VIRT&t;&t;1
+DECL|macro|CPUCLOCK_SCHED
+mdefine_line|#define CPUCLOCK_SCHED&t;&t;2
+DECL|macro|CPUCLOCK_MAX
+mdefine_line|#define CPUCLOCK_MAX&t;&t;3
+DECL|macro|MAKE_PROCESS_CPUCLOCK
+mdefine_line|#define MAKE_PROCESS_CPUCLOCK(pid, clock) &bslash;&n;&t;((~(clockid_t) (pid) &lt;&lt; 3) | (clockid_t) (clock))
+DECL|macro|MAKE_THREAD_CPUCLOCK
+mdefine_line|#define MAKE_THREAD_CPUCLOCK(tid, clock) &bslash;&n;&t;MAKE_PROCESS_CPUCLOCK((tid), (clock) | CPUCLOCK_PERTHREAD_MASK)
 multiline_comment|/* POSIX.1b interval timer structure. */
 DECL|struct|k_itimer
 r_struct
@@ -43,6 +113,8 @@ r_int
 id|it_requeue_pending
 suffix:semicolon
 multiline_comment|/* waiting to requeue this timer */
+DECL|macro|REQUEUE_PENDING
+mdefine_line|#define REQUEUE_PENDING 1
 DECL|member|it_sigev_notify
 r_int
 id|it_sigev_notify
@@ -58,12 +130,6 @@ id|sigval_t
 id|it_sigev_value
 suffix:semicolon
 multiline_comment|/* value word of sigevent struct */
-DECL|member|it_incr
-r_int
-r_int
-id|it_incr
-suffix:semicolon
-multiline_comment|/* interval specified in jiffies */
 DECL|member|it_process
 r_struct
 id|task_struct
@@ -71,11 +137,6 @@ op_star
 id|it_process
 suffix:semicolon
 multiline_comment|/* process to send signal to */
-DECL|member|it_timer
-r_struct
-id|timer_list
-id|it_timer
-suffix:semicolon
 DECL|member|sigq
 r_struct
 id|sigqueue
@@ -83,6 +144,15 @@ op_star
 id|sigq
 suffix:semicolon
 multiline_comment|/* signal queue entry. */
+r_union
+(brace
+r_struct
+(brace
+DECL|member|timer
+r_struct
+id|timer_list
+id|timer
+suffix:semicolon
 DECL|member|abs_timer_entry
 r_struct
 id|list_head
@@ -95,6 +165,51 @@ id|timespec
 id|wall_to_prev
 suffix:semicolon
 multiline_comment|/* wall_to_monotonic used when set */
+DECL|member|incr
+r_int
+r_int
+id|incr
+suffix:semicolon
+multiline_comment|/* interval in jiffies */
+DECL|member|real
+)brace
+id|real
+suffix:semicolon
+DECL|member|cpu
+r_struct
+id|cpu_timer_list
+id|cpu
+suffix:semicolon
+r_struct
+(brace
+DECL|member|clock
+r_int
+r_int
+id|clock
+suffix:semicolon
+DECL|member|node
+r_int
+r_int
+id|node
+suffix:semicolon
+DECL|member|incr
+r_int
+r_int
+id|incr
+suffix:semicolon
+DECL|member|expires
+r_int
+r_int
+id|expires
+suffix:semicolon
+DECL|member|mmtimer
+)brace
+id|mmtimer
+suffix:semicolon
+DECL|member|it
+)brace
+id|it
+suffix:semicolon
 )brace
 suffix:semicolon
 DECL|struct|k_clock_abs
@@ -121,6 +236,22 @@ r_int
 id|res
 suffix:semicolon
 multiline_comment|/* in nano seconds */
+DECL|member|clock_getres
+r_int
+(paren
+op_star
+id|clock_getres
+)paren
+(paren
+id|clockid_t
+id|which_clock
+comma
+r_struct
+id|timespec
+op_star
+id|tp
+)paren
+suffix:semicolon
 DECL|member|abs_struct
 r_struct
 id|k_clock_abs
@@ -134,6 +265,9 @@ op_star
 id|clock_set
 )paren
 (paren
+id|clockid_t
+id|which_clock
+comma
 r_struct
 id|timespec
 op_star
@@ -147,6 +281,9 @@ op_star
 id|clock_get
 )paren
 (paren
+id|clockid_t
+id|which_clock
+comma
 r_struct
 id|timespec
 op_star
@@ -173,7 +310,7 @@ op_star
 id|nsleep
 )paren
 (paren
-r_int
+id|clockid_t
 id|which_clock
 comma
 r_int
@@ -182,7 +319,6 @@ comma
 r_struct
 id|timespec
 op_star
-id|t
 )paren
 suffix:semicolon
 DECL|member|timer_set
@@ -224,6 +360,8 @@ op_star
 id|timr
 )paren
 suffix:semicolon
+DECL|macro|TIMER_RETRY
+mdefine_line|#define TIMER_RETRY 1
 DECL|member|timer_get
 r_void
 (paren
@@ -248,7 +386,7 @@ r_void
 id|register_posix_clock
 c_func
 (paren
-r_int
+id|clockid_t
 id|clock_id
 comma
 r_struct
@@ -272,8 +410,7 @@ r_int
 id|do_posix_clock_nonanosleep
 c_func
 (paren
-r_int
-id|which_clock
+id|clockid_t
 comma
 r_int
 id|flags
@@ -281,13 +418,14 @@ comma
 r_struct
 id|timespec
 op_star
-id|t
 )paren
 suffix:semicolon
 r_int
 id|do_posix_clock_nosettime
 c_func
 (paren
+id|clockid_t
+comma
 r_struct
 id|timespec
 op_star
@@ -324,6 +462,161 @@ mdefine_line|#define posix_get_now(now) (now)-&gt;jiffies = jiffies;
 DECL|macro|posix_time_before
 mdefine_line|#define posix_time_before(timer, now) &bslash;&n;                      time_before((timer)-&gt;expires, (now)-&gt;jiffies)
 DECL|macro|posix_bump_timer
-mdefine_line|#define posix_bump_timer(timr, now)&t;&t;&t;&t;&t;&bslash;&n;         do {&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;              long delta, orun;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;      delta = now.jiffies - (timr)-&gt;it_timer.expires;&t;&t;&bslash;&n;              if (delta &gt;= 0) {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;           orun = 1 + (delta / (timr)-&gt;it_incr);&t;&t;&bslash;&n;&t;          (timr)-&gt;it_timer.expires += orun * (timr)-&gt;it_incr;&t;&bslash;&n;                  (timr)-&gt;it_overrun += orun;&t;&t;&t;&t;&bslash;&n;              }&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;            }while (0)
+mdefine_line|#define posix_bump_timer(timr, now)&t;&t;&t;&t;&t;&bslash;&n;         do {&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;              long delta, orun;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;      delta = now.jiffies - (timr)-&gt;it.real.timer.expires;&t;&bslash;&n;              if (delta &gt;= 0) {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;           orun = 1 + (delta / (timr)-&gt;it.real.incr);&t;&t;&bslash;&n;&t;          (timr)-&gt;it.real.timer.expires +=&t;&t;&t;&bslash;&n;&t;&t;&t; orun * (timr)-&gt;it.real.incr;&t;&t;&t;&bslash;&n;                  (timr)-&gt;it_overrun += orun;&t;&t;&t;&t;&bslash;&n;              }&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;            }while (0)
+r_int
+id|posix_cpu_clock_getres
+c_func
+(paren
+id|clockid_t
+id|which_clock
+comma
+r_struct
+id|timespec
+op_star
+)paren
+suffix:semicolon
+r_int
+id|posix_cpu_clock_get
+c_func
+(paren
+id|clockid_t
+id|which_clock
+comma
+r_struct
+id|timespec
+op_star
+)paren
+suffix:semicolon
+r_int
+id|posix_cpu_clock_set
+c_func
+(paren
+id|clockid_t
+id|which_clock
+comma
+r_const
+r_struct
+id|timespec
+op_star
+id|tp
+)paren
+suffix:semicolon
+r_int
+id|posix_cpu_timer_create
+c_func
+(paren
+r_struct
+id|k_itimer
+op_star
+)paren
+suffix:semicolon
+r_int
+id|posix_cpu_nsleep
+c_func
+(paren
+id|clockid_t
+comma
+r_int
+comma
+r_struct
+id|timespec
+op_star
+)paren
+suffix:semicolon
+r_int
+id|posix_cpu_timer_set
+c_func
+(paren
+r_struct
+id|k_itimer
+op_star
+comma
+r_int
+comma
+r_struct
+id|itimerspec
+op_star
+comma
+r_struct
+id|itimerspec
+op_star
+)paren
+suffix:semicolon
+r_int
+id|posix_cpu_timer_del
+c_func
+(paren
+r_struct
+id|k_itimer
+op_star
+)paren
+suffix:semicolon
+r_void
+id|posix_cpu_timer_get
+c_func
+(paren
+r_struct
+id|k_itimer
+op_star
+comma
+r_struct
+id|itimerspec
+op_star
+)paren
+suffix:semicolon
+r_void
+id|posix_cpu_timer_schedule
+c_func
+(paren
+r_struct
+id|k_itimer
+op_star
+)paren
+suffix:semicolon
+r_void
+id|run_posix_cpu_timers
+c_func
+(paren
+r_struct
+id|task_struct
+op_star
+)paren
+suffix:semicolon
+r_void
+id|posix_cpu_timers_exit
+c_func
+(paren
+r_struct
+id|task_struct
+op_star
+)paren
+suffix:semicolon
+r_void
+id|posix_cpu_timers_exit_group
+c_func
+(paren
+r_struct
+id|task_struct
+op_star
+)paren
+suffix:semicolon
+r_void
+id|set_process_cpu_timer
+c_func
+(paren
+r_struct
+id|task_struct
+op_star
+comma
+r_int
+r_int
+comma
+id|cputime_t
+op_star
+comma
+id|cputime_t
+op_star
+)paren
+suffix:semicolon
 macro_line|#endif
 eof

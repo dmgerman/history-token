@@ -777,29 +777,46 @@ id|hw_interrupt_type
 id|vic_irq_type
 op_assign
 (brace
+dot
+r_typename
+op_assign
 l_string|&quot;VIC-level&quot;
 comma
+dot
+id|startup
+op_assign
 id|startup_vic_irq
 comma
-multiline_comment|/* startup */
+dot
+id|shutdown
+op_assign
 id|disable_vic_irq
 comma
-multiline_comment|/* shutdown */
+dot
+id|enable
+op_assign
 id|enable_vic_irq
 comma
-multiline_comment|/* enable */
+dot
+id|disable
+op_assign
 id|disable_vic_irq
 comma
-multiline_comment|/* disable */
+dot
+id|ack
+op_assign
 id|before_handle_vic_irq
 comma
-multiline_comment|/* ack */
+dot
+id|end
+op_assign
 id|after_handle_vic_irq
 comma
-multiline_comment|/* end */
+dot
+id|set_affinity
+op_assign
 id|set_vic_irq_affinity
 comma
-multiline_comment|/* affinity */
 )brace
 suffix:semicolon
 multiline_comment|/* used to count up as CPUs are brought on line (starts at 0) */

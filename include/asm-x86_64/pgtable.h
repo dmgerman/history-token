@@ -1121,6 +1121,9 @@ r_return
 id|pte
 suffix:semicolon
 )brace
+r_struct
+id|vm_area_struct
+suffix:semicolon
 DECL|function|ptep_test_and_clear_dirty
 r_static
 r_inline

@@ -10,6 +10,7 @@ macro_line|#include &lt;linux/notifier.h&gt;
 macro_line|#include &lt;linux/thread_info.h&gt;
 macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/jiffies.h&gt;
+macro_line|#include &lt;linux/posix-timers.h&gt;
 macro_line|#include &lt;linux/cpu.h&gt;
 macro_line|#include &lt;linux/syscalls.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
@@ -33,9 +34,9 @@ mdefine_line|#define time_interpolator_update(x)
 macro_line|#endif
 multiline_comment|/*&n; * per-CPU timer vector definitions:&n; */
 DECL|macro|TVN_BITS
-mdefine_line|#define TVN_BITS 6
+mdefine_line|#define TVN_BITS (CONFIG_BASE_SMALL ? 4 : 6)
 DECL|macro|TVR_BITS
-mdefine_line|#define TVR_BITS 8
+mdefine_line|#define TVR_BITS (CONFIG_BASE_SMALL ? 6 : 8)
 DECL|macro|TVN_SIZE
 mdefine_line|#define TVN_SIZE (1 &lt;&lt; TVN_BITS)
 DECL|macro|TVR_SIZE
@@ -2936,6 +2937,12 @@ suffix:semicolon
 id|scheduler_tick
 c_func
 (paren
+)paren
+suffix:semicolon
+id|run_posix_cpu_timers
+c_func
+(paren
+id|p
 )paren
 suffix:semicolon
 )brace

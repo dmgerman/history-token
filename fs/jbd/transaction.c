@@ -1422,10 +1422,6 @@ id|jh
 comma
 r_int
 id|force_copy
-comma
-r_int
-op_star
-id|credits
 )paren
 (brace
 r_struct
@@ -1660,30 +1656,6 @@ suffix:semicolon
 id|jh-&gt;b_next_transaction
 op_assign
 id|transaction
-suffix:semicolon
-id|J_ASSERT_JH
-c_func
-(paren
-id|jh
-comma
-id|handle-&gt;h_buffer_credits
-OG
-l_int|0
-)paren
-suffix:semicolon
-id|handle-&gt;h_buffer_credits
-op_decrement
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|credits
-)paren
-(paren
-op_star
-id|credits
-)paren
-op_increment
 suffix:semicolon
 r_goto
 id|done
@@ -1941,28 +1913,6 @@ op_assign
 id|transaction
 suffix:semicolon
 )brace
-id|J_ASSERT
-c_func
-(paren
-id|handle-&gt;h_buffer_credits
-OG
-l_int|0
-)paren
-suffix:semicolon
-id|handle-&gt;h_buffer_credits
-op_decrement
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|credits
-)paren
-(paren
-op_star
-id|credits
-)paren
-op_increment
-suffix:semicolon
 multiline_comment|/*&n;&t; * Finally, if the buffer is not journaled right now, we need to make&n;&t; * sure it doesn&squot;t get written to disk before the caller actually&n;&t; * commits the new data&n;&t; */
 r_if
 c_cond
@@ -2183,10 +2133,6 @@ r_struct
 id|buffer_head
 op_star
 id|bh
-comma
-r_int
-op_star
-id|credits
 )paren
 (brace
 r_struct
@@ -2214,8 +2160,6 @@ comma
 id|jh
 comma
 l_int|0
-comma
-id|credits
 )paren
 suffix:semicolon
 id|journal_put_journal_head
@@ -2376,19 +2320,6 @@ id|jh
 )paren
 )paren
 suffix:semicolon
-id|J_ASSERT_JH
-c_func
-(paren
-id|jh
-comma
-id|handle-&gt;h_buffer_credits
-OG
-l_int|0
-)paren
-suffix:semicolon
-id|handle-&gt;h_buffer_credits
-op_decrement
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2498,10 +2429,6 @@ r_struct
 id|buffer_head
 op_star
 id|bh
-comma
-r_int
-op_star
-id|credits
 )paren
 (brace
 r_int
@@ -2543,8 +2470,6 @@ comma
 id|jh
 comma
 l_int|1
-comma
-id|credits
 )paren
 suffix:semicolon
 r_if
@@ -3140,6 +3065,33 @@ c_func
 id|bh
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|jh-&gt;b_modified
+op_eq
+l_int|0
+)paren
+(brace
+multiline_comment|/*&n;&t;&t; * This buffer&squot;s got modified and becoming part&n;&t;&t; * of the transaction. This needs to be done&n;&t;&t; * once a transaction -bzzz&n;&t;&t; */
+id|jh-&gt;b_modified
+op_assign
+l_int|1
+suffix:semicolon
+id|J_ASSERT_JH
+c_func
+(paren
+id|jh
+comma
+id|handle-&gt;h_buffer_credits
+OG
+l_int|0
+)paren
+suffix:semicolon
+id|handle-&gt;h_buffer_credits
+op_decrement
+suffix:semicolon
+)brace
 multiline_comment|/*&n;&t; * fastpath, to avoid expensive locking.  If this buffer is already&n;&t; * on the running transaction&squot;s metadata list there is nothing to do.&n;&t; * Nobody can take it off again because there is a handle open.&n;&t; * I _think_ we&squot;re OK here with SMP barriers - a mistaken decision will&n;&t; * result in this test being false, so we go in and take the locks.&n;&t; */
 r_if
 c_cond
@@ -3288,7 +3240,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* &n; * journal_release_buffer: undo a get_write_access without any buffer&n; * updates, if the update decided in the end that it didn&squot;t need access.&n; *&n; * The caller passes in the number of credits which should be put back for&n; * this buffer (zero or one).&n; *&n; * We leave the buffer attached to t_reserved_list because even though this&n; * handle doesn&squot;t want it, some other concurrent handle may want to journal&n; * this buffer.  If that handle is curently in between get_write_access() and&n; * journal_dirty_metadata() then it expects the buffer to be reserved.  If&n; * we were to rip it off t_reserved_list here, the other handle will explode&n; * when journal_dirty_metadata is presented with a non-reserved buffer.&n; *&n; * If nobody really wants to journal this buffer then it will be thrown&n; * away at the start of commit.&n; */
+multiline_comment|/* &n; * journal_release_buffer: undo a get_write_access without any buffer&n; * updates, if the update decided in the end that it didn&squot;t need access.&n; *&n; */
 r_void
 DECL|function|journal_release_buffer
 id|journal_release_buffer
@@ -3302,9 +3254,6 @@ r_struct
 id|buffer_head
 op_star
 id|bh
-comma
-r_int
-id|credits
 )paren
 (brace
 id|BUFFER_TRACE
@@ -3314,10 +3263,6 @@ id|bh
 comma
 l_string|&quot;entry&quot;
 )paren
-suffix:semicolon
-id|handle-&gt;h_buffer_credits
-op_add_assign
-id|credits
 suffix:semicolon
 )brace
 multiline_comment|/** &n; * void journal_forget() - bforget() for potentially-journaled buffers.&n; * @handle: transaction handle&n; * @bh:     bh to &squot;forget&squot;&n; *&n; * We can only do the bforget if there are no commits pending against the&n; * buffer.  If the buffer is dirty in the current running transaction we&n; * can safely unlink it. &n; *&n; * bh may not be a journalled buffer at all - it may be a non-JBD&n; * buffer which came off the hashtable.  Check for this.&n; *&n; * Decrements bh-&gt;b_count by one.&n; * &n; * Allow this call even if the handle has aborted --- it may be part of&n; * the caller&squot;s cleanup after an abort.&n; */
@@ -3351,6 +3296,11 @@ r_struct
 id|journal_head
 op_star
 id|jh
+suffix:semicolon
+r_int
+id|drop_reserve
+op_assign
+l_int|0
 suffix:semicolon
 r_int
 id|err
@@ -3425,6 +3375,11 @@ r_goto
 id|not_jbd
 suffix:semicolon
 )brace
+multiline_comment|/*&n;&t; * The buffer&squot;s going from the transaction, we must drop&n;&t; * all references -bzzz&n;&t; */
+id|jh-&gt;b_modified
+op_assign
+l_int|0
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -3468,6 +3423,10 @@ c_func
 (paren
 id|jh
 )paren
+suffix:semicolon
+id|drop_reserve
+op_assign
+l_int|1
 suffix:semicolon
 multiline_comment|/* &n;&t;&t; * We are no longer going to journal this buffer.&n;&t;&t; * However, the commit of this transaction is still&n;&t;&t; * important to the buffer: the delete that we are now&n;&t;&t; * processing might obsolete an old log entry, so by&n;&t;&t; * committing, we can satisfy the buffer&squot;s checkpoint.&n;&t;&t; *&n;&t;&t; * So, if we have a checkpoint on the buffer, we should&n;&t;&t; * now refile the buffer on our BJ_Forget list so that&n;&t;&t; * we know to remove the checkpoint after we commit. &n;&t;&t; */
 r_if
@@ -3531,8 +3490,8 @@ c_func
 id|bh
 )paren
 suffix:semicolon
-r_return
-l_int|0
+r_goto
+id|drop
 suffix:semicolon
 )brace
 )brace
@@ -3584,6 +3543,10 @@ id|jh-&gt;b_next_transaction
 op_assign
 l_int|NULL
 suffix:semicolon
+id|drop_reserve
+op_assign
+l_int|1
+suffix:semicolon
 )brace
 )brace
 id|not_jbd
@@ -3607,6 +3570,19 @@ c_func
 id|bh
 )paren
 suffix:semicolon
+id|drop
+suffix:colon
+r_if
+c_cond
+(paren
+id|drop_reserve
+)paren
+(brace
+multiline_comment|/* no need to reserve log space for this block -bzzz */
+id|handle-&gt;h_buffer_credits
+op_increment
+suffix:semicolon
+)brace
 r_return
 id|err
 suffix:semicolon

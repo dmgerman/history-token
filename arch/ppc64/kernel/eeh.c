@@ -2731,9 +2731,6 @@ c_cond
 (paren
 op_logical_neg
 id|dn
-op_logical_or
-op_logical_neg
-id|eeh_subsystem_enabled
 )paren
 r_return
 suffix:semicolon

@@ -22,8 +22,9 @@ id|kobj_map
 op_star
 id|cdev_map
 suffix:semicolon
+multiline_comment|/* degrade to linked list for small systems */
 DECL|macro|MAX_PROBE_HASH
-mdefine_line|#define MAX_PROBE_HASH 255&t;/* random */
+mdefine_line|#define MAX_PROBE_HASH (CONFIG_BASE_SMALL ? 1 : 255)
 r_static
 id|DEFINE_RWLOCK
 c_func

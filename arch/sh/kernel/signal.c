@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: signal.c,v 1.21 2004/06/28 13:18:44 doyu Exp $&n; *&n; *  linux/arch/sh/kernel/signal.c&n; *&n; *  Copyright (C) 1991, 1992  Linus Torvalds&n; *&n; *  1997-11-28  Modified for POSIX.1b signals by Richard Henderson&n; *&n; *  SuperH version:  Copyright (C) 1999, 2000  Niibe Yutaka &amp; Kaz Kojima&n; *&n; */
+multiline_comment|/*&n; *  linux/arch/sh/kernel/signal.c&n; *&n; *  Copyright (C) 1991, 1992  Linus Torvalds&n; *&n; *  1997-11-28  Modified for POSIX.1b signals by Richard Henderson&n; *&n; *  SuperH version:  Copyright (C) 1999, 2000  Niibe Yutaka &amp; Kaz Kojima&n; *&n; */
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/smp.h&gt;
@@ -1715,20 +1715,21 @@ id|frame_size
 r_if
 c_cond
 (paren
-(paren
 id|ka-&gt;sa.sa_flags
 op_amp
 id|SA_ONSTACK
 )paren
-op_ne
-l_int|0
-op_logical_and
-op_logical_neg
-id|on_sig_stack
+(brace
+r_if
+c_cond
+(paren
+id|sas_ss_flags
 c_func
 (paren
 id|sp
 )paren
+op_eq
+l_int|0
 )paren
 id|sp
 op_assign
@@ -1736,6 +1737,7 @@ id|current-&gt;sas_ss_sp
 op_plus
 id|current-&gt;sas_ss_size
 suffix:semicolon
+)brace
 r_return
 (paren
 r_void

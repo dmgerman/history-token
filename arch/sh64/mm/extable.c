@@ -9,8 +9,14 @@ r_int
 id|copy_user_memcpy
 comma
 id|copy_user_memcpy_end
-comma
+suffix:semicolon
+r_extern
+r_void
 id|__copy_user_fixup
+c_func
+(paren
+r_void
+)paren
 suffix:semicolon
 DECL|variable|__copy_user_fixup_ex
 r_static

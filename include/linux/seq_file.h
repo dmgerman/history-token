@@ -45,6 +45,10 @@ DECL|member|index
 id|loff_t
 id|index
 suffix:semicolon
+DECL|member|version
+id|loff_t
+id|version
+suffix:semicolon
 DECL|member|sem
 r_struct
 id|semaphore

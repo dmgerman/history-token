@@ -2347,7 +2347,19 @@ op_eq
 id|dev-&gt;slave_count
 op_logical_and
 id|rn
-op_logical_and
+)paren
+(brace
+id|tmp
+op_assign
+id|cpu_to_le64
+c_func
+(paren
+id|rn
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
 (paren
 (paren
 id|rn
@@ -2366,7 +2378,7 @@ id|u8
 op_star
 )paren
 op_amp
-id|rn
+id|tmp
 comma
 l_int|7
 )paren
@@ -2386,6 +2398,7 @@ op_amp
 id|rn
 )paren
 suffix:semicolon
+)brace
 )brace
 id|atomic_dec
 c_func

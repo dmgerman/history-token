@@ -2,8 +2,13 @@ multiline_comment|/*&n; * include/asm-sh/cpu-sh3/freq.h&n; *&n; * Copyright (C) 
 macro_line|#ifndef __ASM_CPU_SH3_FREQ_H
 DECL|macro|__ASM_CPU_SH3_FREQ_H
 mdefine_line|#define __ASM_CPU_SH3_FREQ_H
+macro_line|#if defined(CONFIG_CPU_SUBTYPE_SH7300)
+DECL|macro|FRQCR
+mdefine_line|#define FRQCR&t;&t;&t;0xa415ff80
+macro_line|#else
 DECL|macro|FRQCR
 mdefine_line|#define FRQCR&t;&t;&t;0xffffff80
+macro_line|#endif
 DECL|macro|MIN_DIVISOR_NR
 mdefine_line|#define MIN_DIVISOR_NR&t;&t;0
 DECL|macro|MAX_DIVISOR_NR

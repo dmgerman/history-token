@@ -1371,7 +1371,7 @@ l_int|1
 id|con_free_unimap
 c_func
 (paren
-id|c-&gt;vc_num
+id|c
 )paren
 suffix:semicolon
 id|c-&gt;vc_uni_pagedir_loc
@@ -1398,7 +1398,7 @@ id|p
 id|con_set_default_unimap
 c_func
 (paren
-id|c-&gt;vc_num
+id|c
 )paren
 suffix:semicolon
 )brace
@@ -1467,7 +1467,7 @@ suffix:semicolon
 id|con_free_unimap
 c_func
 (paren
-id|c-&gt;vc_num
+id|c
 )paren
 suffix:semicolon
 )brace
@@ -1479,7 +1479,7 @@ suffix:semicolon
 id|con_set_default_unimap
 c_func
 (paren
-id|c-&gt;vc_num
+id|c
 )paren
 suffix:semicolon
 )brace
@@ -4263,7 +4263,7 @@ suffix:semicolon
 id|vc_resize
 c_func
 (paren
-id|c-&gt;vc_num
+id|c
 comma
 l_int|0
 comma

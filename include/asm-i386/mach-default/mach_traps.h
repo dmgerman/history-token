@@ -2,6 +2,7 @@ multiline_comment|/*&n; *  include/asm-i386/mach-default/mach_traps.h&n; *&n; * 
 macro_line|#ifndef _MACH_TRAPS_H
 DECL|macro|_MACH_TRAPS_H
 mdefine_line|#define _MACH_TRAPS_H
+macro_line|#include &lt;asm/mc146818rtc.h&gt;
 DECL|function|clear_mem_error
 r_static
 r_inline
@@ -62,6 +63,35 @@ c_func
 r_void
 )paren
 (brace
+r_int
+id|old_reg
+op_assign
+op_minus
+l_int|1
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|do_i_have_lock_cmos
+c_func
+(paren
+)paren
+)paren
+id|old_reg
+op_assign
+id|current_lock_cmos_reg
+c_func
+(paren
+)paren
+suffix:semicolon
+r_else
+id|lock_cmos
+c_func
+(paren
+l_int|0
+)paren
+suffix:semicolon
+multiline_comment|/* register doesn&squot;t matter here */
 id|outb
 c_func
 (paren
@@ -92,6 +122,27 @@ l_int|0x71
 )paren
 suffix:semicolon
 multiline_comment|/* dummy */
+r_if
+c_cond
+(paren
+id|old_reg
+op_ge
+l_int|0
+)paren
+id|outb
+c_func
+(paren
+id|old_reg
+comma
+l_int|0x70
+)paren
+suffix:semicolon
+r_else
+id|unlock_cmos
+c_func
+(paren
+)paren
+suffix:semicolon
 )brace
 macro_line|#endif /* !_MACH_TRAPS_H */
 eof

@@ -6,6 +6,7 @@ DECL|struct|w1_reg_num
 r_struct
 id|w1_reg_num
 (brace
+macro_line|#if defined(__LITTLE_ENDIAN_BITFIELD)
 DECL|member|family
 id|__u64
 id|family
@@ -22,6 +23,23 @@ id|crc
 suffix:colon
 l_int|8
 suffix:semicolon
+macro_line|#elif defined(__BIG_ENDIAN_BITFIELD)
+id|__u64
+id|crc
+suffix:colon
+l_int|8
+comma
+id|id
+suffix:colon
+l_int|48
+comma
+id|family
+suffix:colon
+l_int|8
+suffix:semicolon
+macro_line|#else
+macro_line|#error &quot;Please fix &lt;asm/byteorder.h&gt;&quot;
+macro_line|#endif
 )brace
 suffix:semicolon
 macro_line|#ifdef __KERNEL__

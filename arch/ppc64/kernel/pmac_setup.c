@@ -708,7 +708,6 @@ id|c
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif /* CONFIG_BOOTX_TEXT */
 DECL|function|init_boot_display
 r_static
 r_void
@@ -908,6 +907,7 @@ r_return
 suffix:semicolon
 )brace
 )brace
+macro_line|#endif /* CONFIG_BOOTX_TEXT */
 multiline_comment|/* &n; * Early initialization.&n; */
 DECL|function|pmac_init_early
 r_void

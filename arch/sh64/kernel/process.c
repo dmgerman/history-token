@@ -3623,7 +3623,7 @@ r_void
 )paren
 (brace
 multiline_comment|/* See arch/sparc/kernel/process.c for the precedent for doing this -- RPC.&n;&n;&t;   The SH-5 FPU save/restore approach relies on last_task_used_math&n;&t;   pointing to a live task_struct.  When another task tries to use the&n;&t;   FPU for the 1st time, the FPUDIS trap handling (see&n;&t;   arch/sh64/kernel/fpu.c) will save the existing FPU state to the&n;&t;   FP regs field within last_task_used_math before re-loading the new&n;&t;   task&squot;s FPU state (or initialising it if the FPU has been used&n;&t;   before).  So if last_task_used_math is stale, and its page has already been&n;&t;   re-allocated for another use, the consequences are rather grim. Unless we&n;&t;   null it here, there is no other path through which it would get safely&n;&t;   nulled. */
-macro_line|#ifndef CONFIG_NOFPU_SUPPORT
+macro_line|#ifdef CONFIG_SH_FPU
 r_if
 c_cond
 (paren
@@ -3648,7 +3648,7 @@ r_void
 )paren
 (brace
 multiline_comment|/* Called by fs/exec.c (flush_old_exec) to remove traces of a&n;&t; * previously running executable. */
-macro_line|#ifndef CONFIG_NOFPU_SUPPORT
+macro_line|#ifdef CONFIG_SH_FPU
 r_if
 c_cond
 (paren
@@ -3735,7 +3735,7 @@ op_star
 id|fpu
 )paren
 (brace
-macro_line|#ifndef CONFIG_NOFPU_SUPPORT
+macro_line|#ifdef CONFIG_SH_FPU
 r_int
 id|fpvalid
 suffix:semicolon
@@ -3872,7 +3872,7 @@ r_int
 id|se
 suffix:semicolon
 multiline_comment|/* Sign extension */
-macro_line|#ifndef CONFIG_NOFPU_SUPPORT
+macro_line|#ifdef CONFIG_SH_FPU
 r_if
 c_cond
 (paren
@@ -4701,7 +4701,7 @@ op_amp
 id|tasklist_lock
 )paren
 suffix:semicolon
-id|for_each_task
+id|for_each_process
 c_func
 (paren
 id|p
@@ -4762,7 +4762,7 @@ id|buf
 op_plus
 id|len
 comma
-l_string|&quot;%5d : %02x&bslash;n&quot;
+l_string|&quot;%5d : %02lx&bslash;n&quot;
 comma
 id|pid
 comma

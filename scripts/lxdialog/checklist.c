@@ -1563,9 +1563,11 @@ comma
 id|TRUE
 )paren
 suffix:semicolon
-id|scroll
+id|wscrl
 (paren
 id|list
+comma
+l_int|1
 )paren
 suffix:semicolon
 id|scrollok

@@ -610,17 +610,6 @@ id|ENODATA
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Newly created object.. Need to mark it private */
-id|REISERFS_I
-c_func
-(paren
-id|xadir-&gt;d_inode
-)paren
-op_member_access_from_pointer
-id|i_flags
-op_or_assign
-id|i_priv_object
-suffix:semicolon
 )brace
 id|dput
 (paren
@@ -836,17 +825,6 @@ r_goto
 id|out
 suffix:semicolon
 )brace
-multiline_comment|/* Newly created object.. Need to mark it private */
-id|REISERFS_I
-c_func
-(paren
-id|xafile-&gt;d_inode
-)paren
-op_member_access_from_pointer
-id|i_flags
-op_or_assign
-id|i_priv_object
-suffix:semicolon
 )brace
 id|out
 suffix:colon
@@ -5479,15 +5457,10 @@ op_assign
 op_amp
 id|xattr_lookup_poison_ops
 suffix:semicolon
-id|REISERFS_I
-c_func
+id|reiserfs_mark_inode_private
 (paren
 id|dentry-&gt;d_inode
 )paren
-op_member_access_from_pointer
-id|i_flags
-op_or_assign
-id|i_priv_object
 suffix:semicolon
 id|REISERFS_SB
 c_func
