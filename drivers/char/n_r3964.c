@@ -452,53 +452,66 @@ id|tty_ldisc
 id|tty_ldisc_N_R3964
 op_assign
 (brace
+dot
+id|owner
+op_assign
+id|THIS_MODULE
+comma
+dot
+id|magic
+op_assign
 id|TTY_LDISC_MAGIC
 comma
-multiline_comment|/* magic */
+dot
+id|name
+op_assign
 l_string|&quot;R3964&quot;
 comma
-multiline_comment|/* name */
-l_int|0
-comma
-multiline_comment|/* num */
-l_int|0
-comma
-multiline_comment|/* flags */
+dot
+id|open
+op_assign
 id|r3964_open
 comma
-multiline_comment|/* open */
+dot
+id|close
+op_assign
 id|r3964_close
 comma
-multiline_comment|/* close */
-l_int|0
-comma
-multiline_comment|/* flush_buffer */
-l_int|0
-comma
-multiline_comment|/* chars_in_buffer */
+dot
+id|read
+op_assign
 id|r3964_read
 comma
-multiline_comment|/* read */
+dot
+id|write
+op_assign
 id|r3964_write
 comma
-multiline_comment|/* write */
+dot
+id|ioctl
+op_assign
 id|r3964_ioctl
 comma
-multiline_comment|/* ioctl */
+dot
+id|set_termios
+op_assign
 id|r3964_set_termios
 comma
-multiline_comment|/* set_termios */
+dot
+id|poll
+op_assign
 id|r3964_poll
 comma
-multiline_comment|/* poll */
+dot
+id|receive_buf
+op_assign
 id|r3964_receive_buf
 comma
-multiline_comment|/* receive_buf */
+dot
+id|receive_room
+op_assign
 id|r3964_receive_room
 comma
-multiline_comment|/* receive_room */
-l_int|0
-multiline_comment|/* write_wakeup */
 )brace
 suffix:semicolon
 DECL|function|dump_block
@@ -3873,8 +3886,6 @@ id|r3964_info
 op_star
 id|pInfo
 suffix:semicolon
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 id|TRACE_L
 c_func
 (paren
@@ -4415,8 +4426,6 @@ r_int
 )paren
 id|pInfo
 )paren
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 )brace
 DECL|function|r3964_read
