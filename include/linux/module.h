@@ -96,8 +96,6 @@ id|symbol
 suffix:semicolon
 DECL|macro|symbol_get
 mdefine_line|#define symbol_get(x) ((typeof(&amp;x))(__symbol_get(#x)))
-DECL|macro|symbol_put
-mdefine_line|#define symbol_put(x) __symbol_put(#x)
 multiline_comment|/* For every exported symbol, place a struct in the __ksymtab section */
 DECL|macro|EXPORT_SYMBOL
 mdefine_line|#define EXPORT_SYMBOL(sym)&t;&t;&t;&t;&bslash;&n;&t;const struct kernel_symbol __ksymtab_##sym&t;&bslash;&n;&t;__attribute__((section(&quot;__ksymtab&quot;)))&t;&t;&bslash;&n;&t;= { (unsigned long)&amp;sym, #sym }
@@ -488,6 +486,8 @@ op_star
 id|symbol
 )paren
 suffix:semicolon
+DECL|macro|symbol_put
+mdefine_line|#define symbol_put(x) __symbol_put(#x)
 r_void
 id|symbol_put_addr
 c_func
@@ -691,6 +691,8 @@ DECL|macro|symbol_get
 mdefine_line|#define symbol_get(x) (&amp;(x))
 DECL|macro|symbol_put
 mdefine_line|#define symbol_put(x) do { } while(0)
+DECL|macro|symbol_put_addr
+mdefine_line|#define symbol_put_addr(x) do { } while(0)
 DECL|macro|try_module_get
 mdefine_line|#define try_module_get(module) 1
 DECL|macro|module_put
