@@ -9475,7 +9475,7 @@ c_cond
 id|len
 )paren
 (brace
-macro_line|#if 0 &amp;&amp; WIRELESS_EXT &gt; 15
+macro_line|#if WIRELESS_EXT &gt; 15
 macro_line|#ifdef IW_WIRELESS_SPY&t;&t;/* defined in iw_handler.h */
 r_if
 c_cond
