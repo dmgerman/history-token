@@ -153,6 +153,20 @@ r_int
 id|len
 )paren
 suffix:semicolon
+multiline_comment|/* Called when a conntrack entry is destroyed */
+DECL|member|destroy
+r_void
+(paren
+op_star
+id|destroy
+)paren
+(paren
+r_struct
+id|ip_conntrack
+op_star
+id|conntrack
+)paren
+suffix:semicolon
 multiline_comment|/* Module (if any) which this is connected to. */
 DECL|member|me
 r_struct
