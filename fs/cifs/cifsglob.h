@@ -290,6 +290,14 @@ id|cryptKey
 id|CIFS_CRYPTO_KEY_SIZE
 )braket
 suffix:semicolon
+DECL|member|workstation_RFC1001_name
+r_char
+id|workstation_RFC1001_name
+(braket
+l_int|16
+)braket
+suffix:semicolon
+multiline_comment|/* 16th byte is always zero */
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * The following is our shortcut to user information.  We surface the uid,&n; * and name. We always get the password on the fly in case it&n; * has changed. We also hang a list of sessions owned by this user off here. &n; */
@@ -425,14 +433,6 @@ l_int|2
 )braket
 suffix:semicolon
 multiline_comment|/* BB make bigger for tcp names - will ipv6 and sctp addresses fit here?? */
-DECL|member|workstation_RFC1001_name
-r_char
-id|workstation_RFC1001_name
-(braket
-l_int|15
-)braket
-suffix:semicolon
-multiline_comment|/* 16th byte is always zero */
 DECL|member|userName
 r_char
 id|userName
