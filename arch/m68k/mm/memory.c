@@ -13,11 +13,7 @@ macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/traps.h&gt;
-macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;
-macro_line|#ifdef CONFIG_AMIGA
-macro_line|#include &lt;asm/amigahw.h&gt;
-macro_line|#endif
 multiline_comment|/* ++andreas: {get,free}_pointer_table rewritten to use unused fields from&n;   struct page instead of separately kmalloced struct.  Stolen from&n;   arch/sparc/mm/srmmu.c ... */
 DECL|typedef|ptable_desc
 r_typedef
