@@ -4129,6 +4129,14 @@ id|PMINFO2
 suffix:semicolon
 )brace
 )brace
+id|ACCESS_FBINFO
+c_func
+(paren
+id|initialized
+)paren
+op_assign
+l_int|1
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -10178,8 +10186,18 @@ id|fbcon.fix.id
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Tony: If this driver is to be mapped to the console, then&n;&t; *       fbcon will automatically do a set_par for us.  The code below&n;&t; *       may not be needed.&n;&t; */
 multiline_comment|/* there is no console on this fb... but we have to initialize hardware&n;&t; * until someone tells me what is proper thing to do */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|ACCESS_FBINFO
+c_func
+(paren
+id|initialized
+)paren
+)paren
+(brace
 id|printk
 c_func
 (paren
@@ -10193,7 +10211,7 @@ id|fbcon.node
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* We have to use FB_ACTIVATE_FORCE, as we had to put vesafb_defined to the fbcon.var&n;&t; * already before, so register_framebuffer works correctly. */
+multiline_comment|/* We have to use FB_ACTIVATE_FORCE, as we had to put vesafb_defined to the fbcon.var&n; &t;&t; * already before, so register_framebuffer works correctly. */
 id|vesafb_defined.activate
 op_or_assign
 id|FB_ACTIVATE_FORCE
@@ -10212,6 +10230,7 @@ op_amp
 id|vesafb_defined
 )paren
 suffix:semicolon
+)brace
 r_return
 l_int|0
 suffix:semicolon

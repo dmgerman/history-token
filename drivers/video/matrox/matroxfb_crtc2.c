@@ -2047,6 +2047,10 @@ id|m2info
 )paren
 suffix:semicolon
 )brace
+id|m2info-&gt;initialized
+op_assign
+l_int|1
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -3359,6 +3363,12 @@ op_minus
 id|ENXIO
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|m2info-&gt;initialized
+)paren
 id|fb_set_var
 c_func
 (paren

@@ -18,6 +18,10 @@ DECL|member|fbcon_registered
 r_int
 id|fbcon_registered
 suffix:semicolon
+DECL|member|initialized
+r_int
+id|initialized
+suffix:semicolon
 DECL|member|primary_dev
 r_struct
 id|matrox_fb_info
