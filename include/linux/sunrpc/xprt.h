@@ -9,15 +9,15 @@ macro_line|#include &lt;linux/sunrpc/sched.h&gt;
 macro_line|#include &lt;linux/sunrpc/xdr.h&gt;
 multiline_comment|/*&n; * The transport code maintains an estimate on the maximum number of out-&n; * standing RPC requests, using a smoothed version of the congestion&n; * avoidance implemented in 44BSD. This is basically the Van Jacobson&n; * congestion algorithm: If a retransmit occurs, the congestion window is&n; * halved; otherwise, it is incremented by 1/cwnd when&n; *&n; *&t;-&t;a reply is received and&n; *&t;-&t;a full number of requests are outstanding and&n; *&t;-&t;the congestion window hasn&squot;t been updated recently.&n; *&n; * Upper procedures may check whether a request would block waiting for&n; * a free RPC slot by using the RPC_CONGESTED() macro.&n; *&n; * Note: on machines with low memory we should probably use a smaller&n; * MAXREQS value: At 32 outstanding reqs with 8 megs of RAM, fragment&n; * reassembly will frequently run out of memory.&n; */
 DECL|macro|RPC_MAXCONG
-mdefine_line|#define RPC_MAXCONG&t;&t;16
+mdefine_line|#define RPC_MAXCONG&t;&t;(16)
 DECL|macro|RPC_MAXREQS
-mdefine_line|#define RPC_MAXREQS&t;&t;(RPC_MAXCONG + 1)
+mdefine_line|#define RPC_MAXREQS&t;&t;RPC_MAXCONG
 DECL|macro|RPC_CWNDSCALE
-mdefine_line|#define RPC_CWNDSCALE&t;&t;256
+mdefine_line|#define RPC_CWNDSCALE&t;&t;(256)
 DECL|macro|RPC_MAXCWND
 mdefine_line|#define RPC_MAXCWND&t;&t;(RPC_MAXCONG * RPC_CWNDSCALE)
 DECL|macro|RPC_INITCWND
-mdefine_line|#define RPC_INITCWND&t;&t;RPC_CWNDSCALE
+mdefine_line|#define RPC_INITCWND&t;&t;(RPC_MAXCWND &gt;&gt; 1)
 DECL|macro|RPCXPRT_CONGESTED
 mdefine_line|#define RPCXPRT_CONGESTED(xprt) ((xprt)-&gt;cong &gt;= (xprt)-&gt;cwnd)
 multiline_comment|/* Default timeout values */
@@ -227,12 +227,6 @@ r_int
 id|cwnd
 suffix:semicolon
 multiline_comment|/* congestion window */
-DECL|member|congtime
-r_int
-r_int
-id|congtime
-suffix:semicolon
-multiline_comment|/* hold cwnd until then */
 DECL|member|sending
 r_struct
 id|rpc_wait_queue
