@@ -686,20 +686,6 @@ op_star
 id|SCpnt
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * Prototypes for functions in scsi_queue.c&n; */
-r_extern
-r_int
-id|scsi_mlqueue_insert
-c_func
-(paren
-id|Scsi_Cmnd
-op_star
-id|cmd
-comma
-r_int
-id|reason
-)paren
-suffix:semicolon
 multiline_comment|/*&n; * Prototypes for functions in scsi_lib.c&n; */
 r_extern
 r_int

@@ -359,7 +359,15 @@ c_func
 (paren
 id|bio
 comma
+id|bio-&gt;bi_size
+comma
 id|uptodate
+ques
+c_cond
+l_int|0
+suffix:colon
+op_minus
+id|EIO
 )paren
 suffix:semicolon
 id|mempool_free
@@ -372,7 +380,7 @@ id|conf-&gt;pool
 suffix:semicolon
 )brace
 DECL|function|multipath_end_request
-r_void
+r_int
 id|multipath_end_request
 c_func
 (paren
@@ -380,6 +388,13 @@ r_struct
 id|bio
 op_star
 id|bio
+comma
+r_int
+r_int
+id|bytes_done
+comma
+r_int
+id|error
 )paren
 (brace
 r_int
@@ -428,6 +443,14 @@ id|mp_bh-&gt;path
 )braket
 dot
 id|rdev
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|bio-&gt;bi_size
+)paren
+r_return
+l_int|1
 suffix:semicolon
 r_if
 c_cond
@@ -482,6 +505,7 @@ id|rdev-&gt;nr_pending
 )paren
 suffix:semicolon
 r_return
+l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * This routine returns the disk from which the requested read should&n; * be done.&n; */
