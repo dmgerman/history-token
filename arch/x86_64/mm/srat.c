@@ -777,6 +777,12 @@ id|compute_hash_shift
 c_func
 (paren
 id|nodes
+comma
+id|nodes_weight
+c_func
+(paren
+id|nodes_parsed
+)paren
 )paren
 suffix:semicolon
 r_if

@@ -663,6 +663,8 @@ id|compute_hash_shift
 c_func
 (paren
 id|nodes
+comma
+id|numnodes
 )paren
 suffix:semicolon
 r_if
