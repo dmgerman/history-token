@@ -7,8 +7,8 @@ macro_line|#include &quot;asm/uaccess.h&quot;
 macro_line|#include &quot;asm/unistd.h&quot;
 macro_line|#include &quot;frame_kern.h&quot;
 macro_line|#include &quot;signal_user.h&quot;
-macro_line|#include &quot;ptrace_user.h&quot;
 macro_line|#include &quot;sigcontext.h&quot;
+macro_line|#include &quot;registers.h&quot;
 macro_line|#include &quot;mode.h&quot;
 macro_line|#ifdef CONFIG_MODE_SKAS
 macro_line|#include &quot;skas.h&quot;
@@ -230,7 +230,7 @@ id|sc.trapno
 suffix:semicolon
 id|err
 op_assign
-id|ptrace_setfpregs
+id|restore_fp_registers
 c_func
 (paren
 id|userspace_pid
@@ -460,7 +460,7 @@ id|regs-&gt;regs.skas.trap_type
 suffix:semicolon
 id|err
 op_assign
-id|ptrace_getfpregs
+id|save_fp_registers
 c_func
 (paren
 id|userspace_pid

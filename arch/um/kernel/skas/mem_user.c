@@ -1,7 +1,6 @@
 multiline_comment|/* &n; * Copyright (C) 2002 Jeff Dike (jdike@karaya.com)&n; * Licensed under the GPL&n; */
 macro_line|#include &lt;errno.h&gt;
 macro_line|#include &lt;sys/mman.h&gt;
-macro_line|#include &lt;sys/ptrace.h&gt;
 macro_line|#include &quot;mem_user.h&quot;
 macro_line|#include &quot;mem.h&quot;
 macro_line|#include &quot;user.h&quot;

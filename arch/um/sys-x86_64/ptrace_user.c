@@ -1,10 +1,7 @@
 multiline_comment|/*&n; * Copyright 2003 PathScale, Inc.&n; *&n; * Licensed under the GPL&n; */
 macro_line|#include &lt;stddef.h&gt;
 macro_line|#include &lt;errno.h&gt;
-DECL|macro|__FRAME_OFFSETS
-mdefine_line|#define __FRAME_OFFSETS
-macro_line|#include &lt;sys/ptrace.h&gt;
-macro_line|#include &lt;asm/ptrace.h&gt;
+macro_line|#include &quot;ptrace_user.h&quot;
 macro_line|#include &quot;user.h&quot;
 macro_line|#include &quot;kern_constants.h&quot;
 DECL|function|ptrace_getregs
@@ -150,7 +147,7 @@ c_cond
 id|ptrace
 c_func
 (paren
-id|PTRACE_POKEUSER
+id|PTRACE_POKEUSR
 comma
 id|pid
 comma
@@ -176,7 +173,7 @@ c_cond
 id|ptrace
 c_func
 (paren
-id|PTRACE_POKEUSER
+id|PTRACE_POKEUSR
 comma
 id|pid
 comma
@@ -201,7 +198,7 @@ c_cond
 id|ptrace
 c_func
 (paren
-id|PTRACE_POKEUSER
+id|PTRACE_POKEUSR
 comma
 id|pid
 comma

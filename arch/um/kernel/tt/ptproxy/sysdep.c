@@ -5,7 +5,6 @@ macro_line|#include &lt;stdlib.h&gt;
 macro_line|#include &lt;signal.h&gt;
 macro_line|#include &lt;errno.h&gt;
 macro_line|#include &lt;sys/types.h&gt;
-macro_line|#include &lt;sys/ptrace.h&gt;
 macro_line|#include &lt;linux/unistd.h&gt;
 macro_line|#include &quot;ptrace_user.h&quot;
 macro_line|#include &quot;user_util.h&quot;
@@ -45,7 +44,7 @@ op_assign
 id|ptrace
 c_func
 (paren
-id|PTRACE_PEEKUSER
+id|PTRACE_PEEKUSR
 comma
 id|pid
 comma
@@ -60,7 +59,7 @@ op_assign
 id|ptrace
 c_func
 (paren
-id|PTRACE_PEEKUSER
+id|PTRACE_PEEKUSR
 comma
 id|pid
 comma
@@ -75,7 +74,7 @@ op_assign
 id|ptrace
 c_func
 (paren
-id|PTRACE_PEEKUSER
+id|PTRACE_PEEKUSR
 comma
 id|pid
 comma
@@ -90,7 +89,7 @@ op_assign
 id|ptrace
 c_func
 (paren
-id|PTRACE_PEEKUSER
+id|PTRACE_PEEKUSR
 comma
 id|pid
 comma
@@ -105,7 +104,7 @@ op_assign
 id|ptrace
 c_func
 (paren
-id|PTRACE_PEEKUSER
+id|PTRACE_PEEKUSR
 comma
 id|pid
 comma
@@ -118,7 +117,7 @@ r_return
 id|ptrace
 c_func
 (paren
-id|PTRACE_PEEKUSER
+id|PTRACE_PEEKUSR
 comma
 id|pid
 comma
@@ -147,7 +146,7 @@ c_cond
 id|ptrace
 c_func
 (paren
-id|PTRACE_POKEUSER
+id|PTRACE_POKEUSR
 comma
 id|pid
 comma
@@ -195,7 +194,7 @@ op_logical_or
 id|ptrace
 c_func
 (paren
-id|PTRACE_POKEUSER
+id|PTRACE_POKEUSR
 comma
 id|pid
 comma
@@ -249,7 +248,7 @@ id|result
 id|ptrace
 c_func
 (paren
-id|PTRACE_POKEUSER
+id|PTRACE_POKEUSR
 comma
 id|pid
 comma
@@ -296,7 +295,7 @@ c_cond
 id|ptrace
 c_func
 (paren
-id|PTRACE_POKEUSER
+id|PTRACE_POKEUSR
 comma
 id|pid
 comma

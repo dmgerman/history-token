@@ -2,7 +2,6 @@ multiline_comment|/* &n; * Copyright (C) 2000, 2001, 2002 Jeff Dike (jdike@karay
 macro_line|#include &lt;unistd.h&gt;
 macro_line|#include &lt;signal.h&gt;
 macro_line|#include &lt;errno.h&gt;
-macro_line|#include &lt;sys/ptrace.h&gt;
 macro_line|#include &lt;asm/unistd.h&gt;
 macro_line|#include &quot;sysdep/ptrace.h&quot;
 macro_line|#include &quot;sigcontext.h&quot;
@@ -269,7 +268,7 @@ c_cond
 id|ptrace
 c_func
 (paren
-id|PTRACE_POKEUSER
+id|PTRACE_POKEUSR
 comma
 id|pid
 comma

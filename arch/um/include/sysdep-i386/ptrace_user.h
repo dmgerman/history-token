@@ -2,6 +2,8 @@ multiline_comment|/* &n; * Copyright (C) 2002 Jeff Dike (jdike@karaya.com)&n; * 
 macro_line|#ifndef __SYSDEP_I386_PTRACE_USER_H__
 DECL|macro|__SYSDEP_I386_PTRACE_USER_H__
 mdefine_line|#define __SYSDEP_I386_PTRACE_USER_H__
+macro_line|#include &lt;sys/ptrace.h&gt;
+macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;asm/ptrace.h&gt;
 DECL|macro|PT_OFFSET
 mdefine_line|#define PT_OFFSET(r) ((r) * sizeof(long))
@@ -37,10 +39,6 @@ DECL|macro|FP_FRAME_SIZE
 mdefine_line|#define FP_FRAME_SIZE (27)
 DECL|macro|FPX_FRAME_SIZE
 mdefine_line|#define FPX_FRAME_SIZE (128)
-DECL|macro|MAX_REG_OFFSET
-mdefine_line|#define MAX_REG_OFFSET (FRAME_SIZE_OFFSET)
-DECL|macro|MAX_REG_NR
-mdefine_line|#define MAX_REG_NR (FRAME_SIZE)
 macro_line|#ifdef PTRACE_GETREGS
 DECL|macro|UM_HAVE_GETREGS
 mdefine_line|#define UM_HAVE_GETREGS
@@ -65,14 +63,5 @@ macro_line|#ifdef PTRACE_SETFPXREGS
 DECL|macro|UM_HAVE_SETFPXREGS
 mdefine_line|#define UM_HAVE_SETFPXREGS
 macro_line|#endif
-r_extern
-r_void
-id|update_debugregs
-c_func
-(paren
-r_int
-id|seq
-)paren
-suffix:semicolon
 macro_line|#endif
 eof

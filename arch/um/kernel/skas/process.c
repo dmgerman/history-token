@@ -6,8 +6,6 @@ macro_line|#include &lt;signal.h&gt;
 macro_line|#include &lt;setjmp.h&gt;
 macro_line|#include &lt;sched.h&gt;
 macro_line|#include &lt;sys/wait.h&gt;
-macro_line|#include &lt;sys/ptrace.h&gt;
-macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;sys/mman.h&gt;
 macro_line|#include &lt;sys/user.h&gt;
 macro_line|#include &lt;asm/unistd.h&gt;
@@ -189,7 +187,7 @@ op_assign
 id|ptrace
 c_func
 (paren
-id|PTRACE_POKEUSER
+id|PTRACE_POKEUSR
 comma
 id|pid
 comma

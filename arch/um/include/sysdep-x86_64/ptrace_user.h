@@ -4,6 +4,8 @@ DECL|macro|__SYSDEP_X86_64_PTRACE_USER_H__
 mdefine_line|#define __SYSDEP_X86_64_PTRACE_USER_H__
 DECL|macro|__FRAME_OFFSETS
 mdefine_line|#define __FRAME_OFFSETS
+macro_line|#include &lt;sys/ptrace.h&gt;
+macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;asm/ptrace.h&gt;
 DECL|macro|__FRAME_OFFSETS
 macro_line|#undef __FRAME_OFFSETS
@@ -51,10 +53,6 @@ DECL|macro|PT_ORIG_RAX_OFFSET
 mdefine_line|#define PT_ORIG_RAX_OFFSET (ORIG_RAX)
 DECL|macro|PT_ORIG_RAX
 mdefine_line|#define PT_ORIG_RAX(regs) ((regs)[PT_INDEX(ORIG_RAX)])
-DECL|macro|MAX_REG_OFFSET
-mdefine_line|#define MAX_REG_OFFSET (FRAME_SIZE)
-DECL|macro|MAX_REG_NR
-mdefine_line|#define MAX_REG_NR ((MAX_REG_OFFSET) / sizeof(unsigned long))
 multiline_comment|/* x86_64 FC3 doesn&squot;t define this in /usr/include/linux/ptrace.h even though&n; * it&squot;s defined in the kernel&squot;s include/linux/ptrace.h. Additionally, use the&n; * 2.4 name and value for 2.4 host compatibility.&n; */
 macro_line|#ifndef PTRACE_OLDSETOPTIONS
 DECL|macro|PTRACE_OLDSETOPTIONS
