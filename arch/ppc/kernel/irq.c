@@ -86,12 +86,6 @@ l_int|1
 op_assign
 (brace
 dot
-id|handler
-op_assign
-op_amp
-id|no_irq_type
-comma
-dot
 id|lock
 op_assign
 id|SPIN_LOCK_UNLOCKED
