@@ -567,10 +567,6 @@ comma
 id|skb
 )paren
 suffix:semicolon
-id|urb-&gt;transfer_flags
-op_assign
-id|USB_QUEUE_BULK
-suffix:semicolon
 id|skb_queue_tail
 c_func
 (paren
@@ -1323,8 +1319,6 @@ id|skb
 suffix:semicolon
 id|urb-&gt;transfer_flags
 op_assign
-id|USB_QUEUE_BULK
-op_or
 id|USB_ZERO_PACKET
 suffix:semicolon
 id|BT_DBG

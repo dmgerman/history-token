@@ -4578,11 +4578,6 @@ comma
 id|edge_port
 )paren
 suffix:semicolon
-multiline_comment|/* set the USB_BULK_QUEUE flag so that we can shove a bunch of urbs at once down the pipe */
-id|urb-&gt;transfer_flags
-op_or_assign
-id|USB_QUEUE_BULK
-suffix:semicolon
 id|urb-&gt;dev
 op_assign
 id|edge_serial-&gt;serial-&gt;dev
@@ -8563,11 +8558,6 @@ id|edge_bulk_out_cmd_callback
 comma
 id|edge_port
 )paren
-suffix:semicolon
-multiline_comment|/* set the USB_BULK_QUEUE flag so that we can shove a bunch of urbs at once down the pipe */
-id|urb-&gt;transfer_flags
-op_or_assign
-id|USB_QUEUE_BULK
 suffix:semicolon
 id|edge_port-&gt;commandPending
 op_assign

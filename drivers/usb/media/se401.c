@@ -2557,10 +2557,6 @@ comma
 id|se401
 )paren
 suffix:semicolon
-id|urb-&gt;transfer_flags
-op_or_assign
-id|USB_QUEUE_BULK
-suffix:semicolon
 id|se401-&gt;urb
 (braket
 id|i
