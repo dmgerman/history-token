@@ -9676,7 +9676,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|file-&gt;f_op-&gt;ioctl
+id|file-&gt;f_op-&gt;unlocked_ioctl
 op_ne
 id|dv1394_ioctl
 )paren
@@ -9823,7 +9823,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|file-&gt;f_op-&gt;ioctl
+id|file-&gt;f_op-&gt;unlocked_ioctl
 op_ne
 id|dv1394_ioctl
 )paren
@@ -9977,9 +9977,6 @@ r_int
 id|arg
 )paren
 (brace
-r_int
-id|err
-suffix:semicolon
 r_switch
 c_cond
 (paren
