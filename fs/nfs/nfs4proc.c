@@ -12708,7 +12708,7 @@ c_func
 (paren
 id|state
 comma
-id|F_SETLK64
+id|F_SETLK
 comma
 id|request
 comma
