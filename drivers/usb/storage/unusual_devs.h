@@ -957,31 +957,6 @@ comma
 id|US_FL_FIX_INQUIRY
 )paren
 comma
-multiline_comment|/* Enable USB storage access to the MMC/SD and CompactFlash cards inside the&n; * Pontis SP600 MP3 player (entry found on http://www.pontis.de/).&n; */
-id|UNUSUAL_DEV
-c_func
-(paren
-l_int|0x09bc
-comma
-l_int|0x0003
-comma
-l_int|0x0000
-comma
-l_int|0x9999
-comma
-l_string|&quot;PONTIS&quot;
-comma
-l_string|&quot;SP600&quot;
-comma
-id|US_SC_SCSI
-comma
-id|US_PR_BULK
-comma
-l_int|NULL
-comma
-id|US_FL_START_STOP
-)paren
-comma
 macro_line|#ifdef CONFIG_USB_STORAGE_ISD200
 id|UNUSUAL_DEV
 c_func
