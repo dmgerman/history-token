@@ -22,7 +22,7 @@ mdefine_line|#define UDF_EXTENT_FLAG_MASK&t;0xC0000000
 DECL|macro|UDF_NAME_PAD
 mdefine_line|#define UDF_NAME_PAD&t;&t;4
 DECL|macro|UDF_NAME_LEN
-mdefine_line|#define UDF_NAME_LEN&t;&t;255
+mdefine_line|#define UDF_NAME_LEN&t;&t;256
 DECL|macro|UDF_PATH_LEN
 mdefine_line|#define UDF_PATH_LEN&t;&t;1023
 DECL|macro|udf_file_entry_alloc_offset
@@ -107,27 +107,6 @@ id|eoffset
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|struct|udf_directory_record
-r_struct
-id|udf_directory_record
-(brace
-DECL|member|d_parent
-r_uint32
-id|d_parent
-suffix:semicolon
-DECL|member|d_inode
-r_uint32
-id|d_inode
-suffix:semicolon
-DECL|member|d_name
-r_uint32
-id|d_name
-(braket
-l_int|255
-)braket
-suffix:semicolon
-)brace
-suffix:semicolon
 DECL|struct|udf_vds_record
 r_struct
 id|udf_vds_record
@@ -169,6 +148,8 @@ r_uint8
 id|u_name
 (braket
 id|UDF_NAME_LEN
+op_minus
+l_int|2
 )braket
 suffix:semicolon
 DECL|member|u_len
@@ -629,16 +610,6 @@ comma
 r_int
 )paren
 suffix:semicolon
-r_extern
-r_void
-id|udf_discard_prealloc
-c_func
-(paren
-r_struct
-id|inode
-op_star
-)paren
-suffix:semicolon
 multiline_comment|/* misc.c */
 r_extern
 r_int
@@ -705,11 +676,6 @@ comma
 r_uint32
 comma
 r_uint8
-comma
-r_struct
-id|buffer_head
-op_star
-op_star
 )paren
 suffix:semicolon
 r_extern
@@ -726,11 +692,6 @@ comma
 r_uint32
 comma
 r_uint8
-comma
-r_struct
-id|buffer_head
-op_star
-op_star
 )paren
 suffix:semicolon
 r_extern
@@ -779,22 +740,6 @@ c_func
 r_struct
 id|buffer_head
 op_star
-)paren
-suffix:semicolon
-r_extern
-r_uint32
-id|udf64_low32
-c_func
-(paren
-r_uint64
-)paren
-suffix:semicolon
-r_extern
-r_uint32
-id|udf64_high32
-c_func
-(paren
-r_uint64
 )paren
 suffix:semicolon
 r_extern
@@ -1025,6 +970,16 @@ op_star
 )paren
 suffix:semicolon
 multiline_comment|/* truncate.c */
+r_extern
+r_void
+id|udf_discard_prealloc
+c_func
+(paren
+r_struct
+id|inode
+op_star
+)paren
+suffix:semicolon
 r_extern
 r_void
 id|udf_truncate_extents
