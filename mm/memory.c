@@ -6337,6 +6337,8 @@ r_struct
 id|address_space
 op_star
 id|mapping
+op_assign
+l_int|NULL
 suffix:semicolon
 id|pte_t
 id|entry
@@ -6348,6 +6350,8 @@ id|pte_chain
 suffix:semicolon
 r_int
 id|sequence
+op_assign
+l_int|0
 suffix:semicolon
 r_int
 id|ret
@@ -6391,6 +6395,12 @@ op_amp
 id|mm-&gt;page_table_lock
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|vma-&gt;vm_file
+)paren
+(brace
 id|mapping
 op_assign
 id|vma-&gt;vm_file-&gt;f_dentry-&gt;d_inode-&gt;i_mapping
@@ -6404,6 +6414,7 @@ op_amp
 id|mapping-&gt;truncate_count
 )paren
 suffix:semicolon
+)brace
 id|smp_rmb
 c_func
 (paren
@@ -6546,6 +6557,9 @@ multiline_comment|/*&n;&t; * For a file-backed vma, someone could have truncated
 r_if
 c_cond
 (paren
+id|mapping
+op_logical_and
+(paren
 id|unlikely
 c_func
 (paren
@@ -6556,6 +6570,7 @@ c_func
 (paren
 op_amp
 id|mapping-&gt;truncate_count
+)paren
 )paren
 )paren
 )paren
