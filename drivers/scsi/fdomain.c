@@ -12,6 +12,7 @@ macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/stat.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
+macro_line|#include &lt;scsi/scsicam.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &quot;scsi.h&quot;
@@ -5491,61 +5492,9 @@ r_int
 id|drive
 suffix:semicolon
 r_int
-r_char
-id|buf
-(braket
-l_int|512
-op_plus
-r_sizeof
-(paren
-id|Scsi_Ioctl_Command
-)paren
-)braket
-suffix:semicolon
-id|Scsi_Ioctl_Command
-op_star
-id|sic
-op_assign
-(paren
-id|Scsi_Ioctl_Command
-op_star
-)paren
-id|buf
-suffix:semicolon
-r_int
 id|size
 op_assign
 id|capacity
-suffix:semicolon
-r_int
-r_char
-op_star
-id|data
-op_assign
-id|sic-&gt;data
-suffix:semicolon
-r_int
-r_char
-id|do_read
-(braket
-)braket
-op_assign
-(brace
-id|READ_6
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|1
-comma
-l_int|0
-)brace
-suffix:semicolon
-r_int
-id|retcode
 suffix:semicolon
 r_int
 r_int
@@ -5784,66 +5733,40 @@ r_else
 (brace
 multiline_comment|/* 3.4 BIOS (and up?) */
 multiline_comment|/* This algorithm was provided by Future Domain (much thanks!). */
-id|sic-&gt;inlen
+r_int
+r_char
+op_star
+id|p
 op_assign
-l_int|0
-suffix:semicolon
-multiline_comment|/* zero bytes out */
-id|sic-&gt;outlen
-op_assign
-l_int|512
-suffix:semicolon
-multiline_comment|/* one sector in */
-id|memcpy
+id|scsi_bios_ptable
 c_func
 (paren
-id|data
-comma
-id|do_read
-comma
-r_sizeof
-(paren
-id|do_read
-)paren
-)paren
-suffix:semicolon
-id|retcode
-op_assign
-id|kernel_scsi_ioctl
-c_func
-(paren
-id|sdev
-comma
-id|SCSI_IOCTL_SEND_COMMAND
-comma
-id|sic
+id|bdev
 )paren
 suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
-id|retcode
-multiline_comment|/* SCSI command ok */
+id|p
 op_logical_and
-id|data
+id|p
 (braket
-l_int|511
+l_int|65
 )braket
 op_eq
 l_int|0xaa
 op_logical_and
-id|data
+id|p
 (braket
-l_int|510
+l_int|64
 )braket
 op_eq
 l_int|0x55
 multiline_comment|/* Partition table valid */
 op_logical_and
-id|data
+id|p
 (braket
-l_int|0x1c2
+l_int|4
 )braket
 )paren
 (brace
@@ -5854,9 +5777,9 @@ id|info_array
 l_int|0
 )braket
 op_assign
-id|data
+id|p
 (braket
-l_int|0x1c3
+l_int|5
 )braket
 op_plus
 l_int|1
@@ -5867,9 +5790,9 @@ id|info_array
 l_int|1
 )braket
 op_assign
-id|data
+id|p
 (braket
-l_int|0x1c4
+l_int|6
 )braket
 op_amp
 l_int|0x3f
@@ -5980,6 +5903,12 @@ id|info_array
 (braket
 l_int|1
 )braket
+)paren
+suffix:semicolon
+id|kfree
+c_func
+(paren
+id|p
 )paren
 suffix:semicolon
 )brace
