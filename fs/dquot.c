@@ -2657,12 +2657,6 @@ id|dquot-&gt;dq_count
 )paren
 op_le
 l_int|1
-op_logical_and
-id|dquot_dirty
-c_func
-(paren
-id|dquot
-)paren
 )paren
 r_return
 l_int|1
