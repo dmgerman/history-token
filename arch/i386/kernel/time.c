@@ -304,6 +304,33 @@ c_func
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* monotonic_clock(): returns # of nanoseconds passed since time_init()&n; *&t;&t;Note: This function is required to return accurate&n; *&t;&t;time even in the absence of multiple timer ticks.&n; */
+DECL|function|monotonic_clock
+r_int
+r_int
+r_int
+id|monotonic_clock
+c_func
+(paren
+r_void
+)paren
+(brace
+r_return
+id|timer
+op_member_access_from_pointer
+id|monotonic_clock
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
+DECL|variable|monotonic_clock
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|monotonic_clock
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * In order to set the CMOS clock precisely, set_rtc_mmss has to be&n; * called 500 ms after the second nowtime has started, because when&n; * nowtime is written into the registers of the CMOS clock, it will&n; * jump to the next second precisely 500 ms later. Check the Motorola&n; * MC146818A or Dallas DS12887 data sheet for details.&n; *&n; * BUG: This routine does not handle hour overflow properly; it just&n; *      sets the minutes. Usually you&squot;ll only notice that after reboot!&n; */
 DECL|function|set_rtc_mmss
 r_static
