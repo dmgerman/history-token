@@ -18,13 +18,11 @@ macro_line|#ifdef CONFIG_SYSCTL
 macro_line|#include &lt;linux/sysctl.h&gt;
 macro_line|#endif
 DECL|macro|skb_origaddr
-mdefine_line|#define skb_origaddr(skb)&t; (((struct bridge_skb_cb *) &bslash;&n;&t;&t;&t;&t; (skb-&gt;cb))-&gt;daddr.ipv4)
+mdefine_line|#define skb_origaddr(skb)&t; (((struct bridge_skb_cb *) &bslash;&n;&t;&t;&t;&t; (skb-&gt;nf_bridge-&gt;data))-&gt;daddr.ipv4)
 DECL|macro|store_orig_dstaddr
 mdefine_line|#define store_orig_dstaddr(skb)&t; (skb_origaddr(skb) = (skb)-&gt;nh.iph-&gt;daddr)
 DECL|macro|dnat_took_place
 mdefine_line|#define dnat_took_place(skb)&t; (skb_origaddr(skb) != (skb)-&gt;nh.iph-&gt;daddr)
-DECL|macro|clear_cb
-mdefine_line|#define clear_cb(skb)&t;&t; (memset(&amp;skb_origaddr(skb), 0, &bslash;&n;&t;&t;&t;&t; sizeof(struct bridge_skb_cb)))
 DECL|macro|has_bridge_parent
 mdefine_line|#define has_bridge_parent(device)&t;((device)-&gt;br_port != NULL)
 DECL|macro|bridge_parent
@@ -506,12 +504,6 @@ id|skb-&gt;dev
 op_assign
 id|nf_bridge-&gt;physindev
 suffix:semicolon
-id|clear_cb
-c_func
-(paren
-id|skb
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -594,12 +586,6 @@ id|skb-&gt;dst
 )paren
 suffix:semicolon
 )brace
-id|clear_cb
-c_func
-(paren
-id|skb
-)paren
-suffix:semicolon
 id|skb-&gt;dev
 op_assign
 id|nf_bridge-&gt;physindev

@@ -236,7 +236,7 @@ id|skb-&gt;data
 op_minus
 l_int|18
 comma
-id|skb-&gt;nf_bridge-&gt;hh
+id|skb-&gt;nf_bridge-&gt;data
 comma
 l_int|18
 )paren
@@ -258,7 +258,7 @@ id|skb-&gt;data
 op_minus
 l_int|16
 comma
-id|skb-&gt;nf_bridge-&gt;hh
+id|skb-&gt;nf_bridge-&gt;data
 comma
 l_int|16
 )paren
@@ -301,7 +301,7 @@ suffix:semicolon
 id|memcpy
 c_func
 (paren
-id|skb-&gt;nf_bridge-&gt;hh
+id|skb-&gt;nf_bridge-&gt;data
 comma
 id|skb-&gt;data
 op_minus

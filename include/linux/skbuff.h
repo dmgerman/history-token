@@ -111,10 +111,10 @@ r_int
 r_int
 id|mask
 suffix:semicolon
-DECL|member|hh
+DECL|member|data
 r_int
 r_int
-id|hh
+id|data
 (braket
 l_int|32
 op_div
