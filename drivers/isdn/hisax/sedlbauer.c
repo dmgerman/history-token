@@ -2170,12 +2170,6 @@ op_eq
 id|SEDL_CHIP_ISAC_ISAR
 )paren
 (brace
-id|clear_pending_isac_ints
-c_func
-(paren
-id|cs
-)paren
-suffix:semicolon
 id|writereg
 c_func
 (paren
@@ -2200,32 +2194,6 @@ c_func
 id|cs
 )paren
 suffix:semicolon
-multiline_comment|/* Reenable all IRQ */
-id|cs
-op_member_access_from_pointer
-id|writeisac
-c_func
-(paren
-id|cs
-comma
-id|ISAC_MASK
-comma
-l_int|0
-)paren
-suffix:semicolon
-multiline_comment|/* RESET Receiver and Transmitter */
-id|cs
-op_member_access_from_pointer
-id|writeisac
-c_func
-(paren
-id|cs
-comma
-id|ISAC_CMDR
-comma
-l_int|0x41
-)paren
-suffix:semicolon
 )brace
 r_else
 (brace
@@ -2233,8 +2201,6 @@ id|inithscxisac
 c_func
 (paren
 id|cs
-comma
-l_int|3
 )paren
 suffix:semicolon
 )brace

@@ -722,8 +722,6 @@ id|inithscxisac
 c_func
 (paren
 id|cs
-comma
-l_int|1
 )paren
 suffix:semicolon
 id|cs-&gt;hw.spt.res_irq
@@ -739,14 +737,6 @@ op_plus
 id|SPORTSTER_RES_IRQ
 comma
 id|cs-&gt;hw.spt.res_irq
-)paren
-suffix:semicolon
-id|inithscxisac
-c_func
-(paren
-id|cs
-comma
-l_int|2
 )paren
 suffix:semicolon
 r_return

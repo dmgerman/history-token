@@ -783,14 +783,6 @@ suffix:semicolon
 r_case
 id|CARD_INIT
 suffix:colon
-id|inithscxisac
-c_func
-(paren
-id|cs
-comma
-l_int|1
-)paren
-suffix:semicolon
 id|byteout
 c_func
 (paren
@@ -811,8 +803,6 @@ id|inithscxisac
 c_func
 (paren
 id|cs
-comma
-l_int|2
 )paren
 suffix:semicolon
 r_return

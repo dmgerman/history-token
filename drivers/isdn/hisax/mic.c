@@ -814,19 +814,10 @@ suffix:semicolon
 r_case
 id|CARD_INIT
 suffix:colon
-id|inithscx
-c_func
-(paren
-id|cs
-)paren
-suffix:semicolon
-multiline_comment|/* /RTSA := ISAC RST */
 id|inithscxisac
 c_func
 (paren
 id|cs
-comma
-l_int|3
 )paren
 suffix:semicolon
 r_return
