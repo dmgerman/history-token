@@ -20,7 +20,7 @@ mdefine_line|#define PAGE_CACHE_ALIGN(addr)&t;(((addr)+PAGE_CACHE_SIZE-1)&amp;PA
 DECL|macro|page_cache_get
 mdefine_line|#define page_cache_get(x)&t;get_page(x)
 DECL|macro|page_cache_release
-mdefine_line|#define page_cache_release(x)&t;__free_page(x)
+mdefine_line|#define page_cache_release(x)&t;free_lru_page(x)
 DECL|function|page_cache_alloc
 r_static
 r_inline

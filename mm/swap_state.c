@@ -446,16 +446,7 @@ id|page
 )paren
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|exclusive_swap_page
-c_func
-(paren
-id|page
-)paren
-)paren
-id|delete_from_swap_cache
+id|remove_exclusive_swap_page
 c_func
 (paren
 id|page
@@ -468,7 +459,7 @@ id|page
 )paren
 suffix:semicolon
 )brace
-id|free_lru_page
+id|page_cache_release
 c_func
 (paren
 id|page

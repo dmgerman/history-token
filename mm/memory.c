@@ -3944,18 +3944,7 @@ suffix:semicolon
 multiline_comment|/* Recheck swapcachedness once the page is locked */
 id|can_reuse
 op_assign
-id|exclusive_swap_page
-c_func
-(paren
-id|old_page
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|can_reuse
-)paren
-id|delete_from_swap_cache
+id|remove_exclusive_swap_page
 c_func
 (paren
 id|old_page
@@ -4075,7 +4064,7 @@ comma
 id|address
 )paren
 suffix:semicolon
-id|free_lru_page
+id|page_cache_release
 c_func
 (paren
 id|old_page
@@ -4145,7 +4134,7 @@ op_amp
 id|mm-&gt;page_table_lock
 )paren
 suffix:semicolon
-id|free_lru_page
+id|page_cache_release
 c_func
 (paren
 id|new_page
@@ -4184,7 +4173,7 @@ l_int|1
 suffix:semicolon
 id|no_mem
 suffix:colon
-id|free_lru_page
+id|page_cache_release
 c_func
 (paren
 id|old_page
@@ -4832,12 +4821,6 @@ id|orig_pte
 )paren
 )paren
 (brace
-id|UnlockPage
-c_func
-(paren
-id|page
-)paren
-suffix:semicolon
 id|page_cache_release
 c_func
 (paren
@@ -5362,7 +5345,7 @@ suffix:semicolon
 r_else
 (brace
 multiline_comment|/* One of our sibling threads was faster, back out. */
-id|free_lru_page
+id|page_cache_release
 c_func
 (paren
 id|new_page
