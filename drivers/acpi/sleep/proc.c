@@ -1758,7 +1758,7 @@ l_int|0
 suffix:semicolon
 )brace
 r_static
-r_int
+id|ssize_t
 DECL|function|acpi_system_write_wakeup_device
 id|acpi_system_write_wakeup_device
 (paren
@@ -1769,6 +1769,7 @@ id|file
 comma
 r_const
 r_char
+id|__user
 op_star
 id|buffer
 comma

@@ -503,6 +503,14 @@ comma
 op_star
 id|next
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|acpi_disabled
+)paren
+r_return
+l_int|0
+suffix:semicolon
 id|printk
 c_func
 (paren
