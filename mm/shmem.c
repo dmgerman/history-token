@@ -1571,10 +1571,10 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|PageLaunder
-c_func
 (paren
-id|page
+id|current-&gt;flags
+op_amp
+id|PF_MEMALLOC
 )paren
 )paren
 r_return

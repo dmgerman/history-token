@@ -1690,7 +1690,7 @@ id|page-&gt;mapping
 r_goto
 id|page_mapped
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * The page is locked. IO in progress?&n;&t;&t; * Move it to the back of the list.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * IO in progress? Leave it at the back of the list.&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -1708,17 +1708,9 @@ id|page
 r_if
 c_cond
 (paren
-id|PageLaunder
-c_func
-(paren
-id|page
-)paren
-op_logical_and
-(paren
 id|gfp_mask
 op_amp
 id|__GFP_FS
-)paren
 )paren
 (brace
 id|page_cache_get

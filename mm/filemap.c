@@ -1603,11 +1603,9 @@ multiline_comment|/* Only activate on memory-pressure, not fsync.. */
 r_if
 c_cond
 (paren
-id|PageLaunder
-c_func
-(paren
-id|page
-)paren
+id|current-&gt;flags
+op_amp
+id|PF_MEMALLOC
 )paren
 (brace
 id|activate_page
@@ -2508,12 +2506,6 @@ op_star
 id|waitqueue
 op_assign
 id|page_waitqueue
-c_func
-(paren
-id|page
-)paren
-suffix:semicolon
-id|ClearPageLaunder
 c_func
 (paren
 id|page
