@@ -1579,10 +1579,6 @@ r_int
 id|timeout
 )paren
 suffix:semicolon
-macro_line|#ifndef MIN
-DECL|macro|MIN
-mdefine_line|#define MIN(a,b)&t;((a) &lt; (b) ? (a) : (b))
-macro_line|#endif
 multiline_comment|/* PCMCIA prototypes */
 r_static
 r_void
@@ -4638,17 +4634,19 @@ id|fifo_count
 (brace
 id|c
 op_assign
-id|MIN
+id|min
 c_func
 (paren
 l_int|2
 comma
-id|MIN
+id|min_t
 c_func
 (paren
+r_int
+comma
 id|fifo_count
 comma
-id|MIN
+id|min
 c_func
 (paren
 id|info-&gt;tx_count
@@ -7076,12 +7074,12 @@ suffix:semicolon
 (brace
 id|c
 op_assign
-id|MIN
+id|min
 c_func
 (paren
 id|count
 comma
-id|MIN
+id|min
 c_func
 (paren
 id|TXBUFSIZE
@@ -11327,9 +11325,12 @@ id|timeout
 )paren
 id|char_time
 op_assign
-id|MIN
+id|min_t
 c_func
 (paren
+r_int
+r_int
+comma
 id|char_time
 comma
 id|timeout
