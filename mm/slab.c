@@ -807,9 +807,9 @@ mdefine_line|#define&t;MAX_GFP_ORDER&t;8&t;/* up to 1Mb */
 macro_line|#endif
 multiline_comment|/*&n; * Do not go above this order unless 0 objects fit into the slab.&n; */
 DECL|macro|BREAK_GFP_ORDER_HI
-mdefine_line|#define&t;BREAK_GFP_ORDER_HI&t;2
+mdefine_line|#define&t;BREAK_GFP_ORDER_HI&t;1
 DECL|macro|BREAK_GFP_ORDER_LO
-mdefine_line|#define&t;BREAK_GFP_ORDER_LO&t;1
+mdefine_line|#define&t;BREAK_GFP_ORDER_LO&t;0
 DECL|variable|slab_break_gfp_order
 r_static
 r_int
