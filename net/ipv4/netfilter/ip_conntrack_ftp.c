@@ -116,7 +116,7 @@ r_char
 suffix:semicolon
 r_static
 r_int
-id|try_espv_response
+id|try_epsv_response
 c_func
 (paren
 r_const
@@ -276,7 +276,7 @@ l_char|&squot;)&squot;
 comma
 id|IP_CT_FTP_EPSV
 comma
-id|try_espv_response
+id|try_epsv_response
 comma
 )brace
 comma
@@ -782,10 +782,10 @@ l_int|4
 suffix:semicolon
 )brace
 multiline_comment|/* Returns 0, or length of numbers: |||6446| */
-DECL|function|try_espv_response
+DECL|function|try_epsv_response
 r_static
 r_int
-id|try_espv_response
+id|try_epsv_response
 c_func
 (paren
 r_const
