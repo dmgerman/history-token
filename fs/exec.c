@@ -3388,6 +3388,12 @@ l_int|NULL
 suffix:semicolon
 multiline_comment|/* We&squot;re using it now */
 multiline_comment|/* This is the point of no return */
+id|steal_locks
+c_func
+(paren
+id|files
+)paren
+suffix:semicolon
 id|put_files_struct
 c_func
 (paren

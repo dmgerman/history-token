@@ -2622,6 +2622,12 @@ c_cond
 id|files
 )paren
 (brace
+id|steal_locks
+c_func
+(paren
+id|files
+)paren
+suffix:semicolon
 id|put_files_struct
 c_func
 (paren
