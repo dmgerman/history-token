@@ -3,7 +3,7 @@ macro_line|#ifdef __KERNEL__
 macro_line|#ifndef __PPC_ASM_PMAC_FEATURE_H
 DECL|macro|__PPC_ASM_PMAC_FEATURE_H
 mdefine_line|#define __PPC_ASM_PMAC_FEATURE_H
-macro_line|#include &lt;asm/macio_asic.h&gt;
+macro_line|#include &lt;asm/macio.h&gt;
 multiline_comment|/*&n; * Known Mac motherboard models&n; * &n; * Please, report any error here to benh@kernel.crashing.org, thanks !&n; * &n; * Note that I don&squot;t fully maintain this list for Core99 &amp; MacRISC2&n; * and I&squot;m considering removing all NewWorld entries from it and&n; * entirely rely on the model string.&n; */
 multiline_comment|/* PowerSurge are the first generation of PCI Pmacs. This include&n; * all of the Grand-Central based machines. We currently don&squot;t&n; * differenciate most of them.&n; */
 DECL|macro|PMAC_TYPE_PSURGE

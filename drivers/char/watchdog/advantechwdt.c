@@ -14,6 +14,8 @@ macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 DECL|macro|WATCHDOG_NAME
 mdefine_line|#define WATCHDOG_NAME &quot;Advantech WDT&quot;
+DECL|macro|PFX
+mdefine_line|#define PFX WATCHDOG_NAME &quot;: &quot;
 DECL|macro|WATCHDOG_TIMEOUT
 mdefine_line|#define WATCHDOG_TIMEOUT 60&t;&t;/* 60 sec default timeout */
 DECL|variable|advwdt_is_open
@@ -101,7 +103,13 @@ c_func
 (paren
 id|timeout
 comma
-l_string|&quot;Watchdog timeout in seconds. 1&lt;= timeout &lt;=63, default=60.&quot;
+l_string|&quot;Watchdog timeout in seconds. 1&lt;= timeout &lt;=63, default=&quot;
+id|__MODULE_STRING
+c_func
+(paren
+id|WATCHDOG_TIMEOUT
+)paren
+l_string|&quot;.&quot;
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_WATCHDOG_NOWAYOUT
@@ -639,8 +647,8 @@ id|printk
 c_func
 (paren
 id|KERN_CRIT
-id|WATCHDOG_NAME
-l_string|&quot;: Unexpected close, not stopping watchdog!&bslash;n&quot;
+id|PFX
+l_string|&quot;Unexpected close, not stopping watchdog!&bslash;n&quot;
 )paren
 suffix:semicolon
 id|advwdt_ping
@@ -835,8 +843,8 @@ suffix:semicolon
 id|printk
 (paren
 id|KERN_INFO
-id|WATCHDOG_NAME
-l_string|&quot;: timeout value must be 1&lt;=x&lt;=63, using %d&bslash;n&quot;
+id|PFX
+l_string|&quot;timeout value must be 1&lt;=x&lt;=63, using %d&bslash;n&quot;
 comma
 id|timeout
 )paren
@@ -868,8 +876,8 @@ id|WATCHDOG_NAME
 id|printk
 (paren
 id|KERN_ERR
-id|WATCHDOG_NAME
-l_string|&quot;: I/O address 0x%04x already in use&bslash;n&quot;
+id|PFX
+l_string|&quot;I/O address 0x%04x already in use&bslash;n&quot;
 comma
 id|wdt_stop
 )paren
@@ -902,8 +910,8 @@ id|WATCHDOG_NAME
 id|printk
 (paren
 id|KERN_ERR
-id|WATCHDOG_NAME
-l_string|&quot;: I/O address 0x%04x already in use&bslash;n&quot;
+id|PFX
+l_string|&quot;I/O address 0x%04x already in use&bslash;n&quot;
 comma
 id|wdt_start
 )paren
@@ -937,8 +945,8 @@ l_int|0
 id|printk
 (paren
 id|KERN_ERR
-id|WATCHDOG_NAME
-l_string|&quot;: cannot register reboot notifier (err=%d)&bslash;n&quot;
+id|PFX
+l_string|&quot;cannot register reboot notifier (err=%d)&bslash;n&quot;
 comma
 id|ret
 )paren
@@ -967,8 +975,8 @@ l_int|0
 id|printk
 (paren
 id|KERN_ERR
-id|WATCHDOG_NAME
-l_string|&quot;: cannot register miscdev on minor=%d (err=%d)&bslash;n&quot;
+id|PFX
+l_string|&quot;cannot register miscdev on minor=%d (err=%d)&bslash;n&quot;
 comma
 id|WATCHDOG_MINOR
 comma
@@ -982,8 +990,8 @@ suffix:semicolon
 id|printk
 (paren
 id|KERN_INFO
-id|WATCHDOG_NAME
-l_string|&quot;: initialized. timeout=%d sec (nowayout=%d)&bslash;n&quot;
+id|PFX
+l_string|&quot;initialized. timeout=%d sec (nowayout=%d)&bslash;n&quot;
 comma
 id|timeout
 comma
