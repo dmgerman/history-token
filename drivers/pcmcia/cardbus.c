@@ -1127,43 +1127,6 @@ id|s-&gt;cap.cb_dev-&gt;subordinate-&gt;number
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*=====================================================================&n;&n;    cb_config() has the job of allocating all system resources that&n;    a Cardbus card requires.  Rather than using the CIS (which seems&n;    to not always be present), it treats the card as an ordinary PCI&n;    device, and probes the base address registers to determine each&n;    function&squot;s IO and memory space needs.&n;&n;    It is called from the RequestIO card service.&n;    &n;======================================================================*/
-DECL|function|cb_config
-r_int
-id|cb_config
-c_func
-(paren
-id|socket_info_t
-op_star
-id|s
-)paren
-(brace
-r_return
-id|CS_SUCCESS
-suffix:semicolon
-)brace
-multiline_comment|/*======================================================================&n;&n;    cb_release() releases all the system resources (IO and memory&n;    space, and interrupt) committed for a Cardbus card by a prior call&n;    to cb_config().&n;&n;    It is called from the ReleaseIO() service.&n;    &n;======================================================================*/
-DECL|function|cb_release
-r_void
-id|cb_release
-c_func
-(paren
-id|socket_info_t
-op_star
-id|s
-)paren
-(brace
-id|DEBUG
-c_func
-(paren
-l_int|0
-comma
-l_string|&quot;cs: cb_release(bus %d)&bslash;n&quot;
-comma
-id|s-&gt;cap.cb_dev-&gt;subordinate-&gt;number
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/*=====================================================================&n;&n;    cb_enable() has the job of configuring a socket for a Cardbus&n;    card, and initializing the card&squot;s PCI configuration registers.&n;&n;    It first sets up the Cardbus bridge windows, for IO and memory&n;    accesses.  Then, it initializes each card function&squot;s base address&n;    registers, interrupt line register, and command register.&n;&n;    It is called as part of the RequestConfiguration card service.&n;    It should be called after a previous call to cb_config() (via the&n;    RequestIO service).&n;    &n;======================================================================*/
 DECL|function|cb_enable
 r_void
