@@ -2572,7 +2572,19 @@ op_assign
 id|ATTR_NORMAL
 suffix:semicolon
 multiline_comment|/* XP does not handle ATTR_POSIX_SEMANTICS */
-multiline_comment|/*if ((omode &amp; S_IWUGO) == 0)&n;&t;&t;pSMB-&gt;FileAttributes |= ATTR_READONLY;*/
+multiline_comment|/* but it helps speed up case sensitive checks for other&n;&t;servers such as Samba */
+r_if
+c_cond
+(paren
+id|tcon-&gt;ses-&gt;capabilities
+op_amp
+id|CAP_UNIX
+)paren
+id|pSMB-&gt;FileAttributes
+op_or_assign
+id|ATTR_POSIX_SEMANTICS
+suffix:semicolon
+multiline_comment|/* if ((omode &amp; S_IWUGO) == 0)&n;&t;&t;pSMB-&gt;FileAttributes |= ATTR_READONLY;*/
 multiline_comment|/*  Above line causes problems due to vfs splitting create into two&n;&t;&t;pieces - need to set mode after file created not while it is&n;&t;&t;being created */
 id|pSMB-&gt;FileAttributes
 op_assign
