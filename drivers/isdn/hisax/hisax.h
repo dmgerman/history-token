@@ -2510,16 +2510,6 @@ DECL|member|nt_timer
 r_int
 id|nt_timer
 suffix:semicolon
-DECL|member|pci_bus
-r_int
-r_char
-id|pci_bus
-suffix:semicolon
-DECL|member|pci_device_fn
-r_int
-r_char
-id|pci_device_fn
-suffix:semicolon
 DECL|member|pci_io
 r_int
 r_char

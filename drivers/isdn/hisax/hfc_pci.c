@@ -382,19 +382,12 @@ l_int|0
 )paren
 suffix:semicolon
 multiline_comment|/* Reset Off */
-id|pcibios_write_config_word
+id|pci_disable_device
 c_func
 (paren
-id|cs-&gt;hw.hfcpci.pci_bus
-comma
-id|cs-&gt;hw.hfcpci.pci_device_fn
-comma
-id|PCI_COMMAND
-comma
-l_int|0
+id|cs-&gt;hw.hfcpci.pdev
 )paren
 suffix:semicolon
-multiline_comment|/* disable memory mapped ports + busmaster */
 id|del_timer
 c_func
 (paren
@@ -451,19 +444,12 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|pcibios_write_config_word
+id|pci_disable_device
 c_func
 (paren
-id|cs-&gt;hw.hfcpci.pci_bus
-comma
-id|cs-&gt;hw.hfcpci.pci_device_fn
-comma
-id|PCI_COMMAND
-comma
-id|PCI_ENA_MEMIO
+id|cs-&gt;hw.hfcpci.pdev
 )paren
 suffix:semicolon
-multiline_comment|/* enable memory mapped ports, disable busmaster */
 id|cs-&gt;hw.hfcpci.int_m2
 op_assign
 l_int|0
@@ -486,21 +472,12 @@ id|KERN_INFO
 l_string|&quot;HFC_PCI: resetting card&bslash;n&quot;
 )paren
 suffix:semicolon
-id|pcibios_write_config_word
+id|pci_set_master
 c_func
 (paren
-id|cs-&gt;hw.hfcpci.pci_bus
-comma
-id|cs-&gt;hw.hfcpci.pci_device_fn
-comma
-id|PCI_COMMAND
-comma
-id|PCI_ENA_MEMIO
-op_plus
-id|PCI_ENA_MASTER
+id|cs-&gt;hw.hfcpci.pdev
 )paren
 suffix:semicolon
-multiline_comment|/* enable memory ports + busmaster */
 id|Write_hfc
 c_func
 (paren
@@ -9611,14 +9588,6 @@ op_assign
 id|tmp_hfcpci
 suffix:semicolon
 multiline_comment|/* old device */
-id|cs-&gt;hw.hfcpci.pci_bus
-op_assign
-id|dev_hfcpci-&gt;bus-&gt;number
-suffix:semicolon
-id|cs-&gt;hw.hfcpci.pci_device_fn
-op_assign
-id|dev_hfcpci-&gt;devfn
-suffix:semicolon
 id|cs-&gt;irq
 op_assign
 id|dev_hfcpci-&gt;irq
@@ -9718,8 +9687,6 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* Allocate memory for FIFOS */
-multiline_comment|/* Because the HFC-PCI needs a 32K physical alignment, we */
-multiline_comment|/* need to allocate the double mem and align the address */
 id|cs-&gt;hw.hfcpci.fifos
 op_assign
 id|pci_alloc_consistent
@@ -9751,12 +9718,10 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-id|pcibios_write_config_dword
+id|pci_write_config_dword
 c_func
 (paren
-id|cs-&gt;hw.hfcpci.pci_bus
-comma
-id|cs-&gt;hw.hfcpci.pci_device_fn
+id|cs-&gt;hw.hfcpci.pdev
 comma
 l_int|0x80
 comma
@@ -9819,19 +9784,6 @@ id|HFCPCI_CHIP_ID
 )paren
 )paren
 suffix:semicolon
-id|pcibios_write_config_word
-c_func
-(paren
-id|cs-&gt;hw.hfcpci.pci_bus
-comma
-id|cs-&gt;hw.hfcpci.pci_device_fn
-comma
-id|PCI_COMMAND
-comma
-id|PCI_ENA_MEMIO
-)paren
-suffix:semicolon
-multiline_comment|/* enable memory mapped ports, disable busmaster */
 id|cs-&gt;hw.hfcpci.int_m2
 op_assign
 l_int|0
