@@ -834,6 +834,11 @@ id|xfrm_policy
 op_star
 id|next
 suffix:semicolon
+DECL|member|list
+r_struct
+id|list_head
+id|list
+suffix:semicolon
 multiline_comment|/* This lock only affects elements except for entry. */
 DECL|member|lock
 id|rwlock_t

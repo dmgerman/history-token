@@ -10515,12 +10515,6 @@ c_func
 id|xp
 )paren
 suffix:semicolon
-id|xfrm_pol_put
-c_func
-(paren
-id|xp
-)paren
-suffix:semicolon
 )brace
 r_return
 id|err
@@ -10737,6 +10731,7 @@ c_func
 id|xp
 )paren
 suffix:semicolon
+r_else
 id|xfrm_pol_put
 c_func
 (paren

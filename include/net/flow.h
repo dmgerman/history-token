@@ -260,6 +260,16 @@ id|resolver
 )paren
 suffix:semicolon
 r_extern
+r_void
+id|flow_cache_flush
+c_func
+(paren
+r_void
+op_star
+id|object
+)paren
+suffix:semicolon
+r_extern
 id|atomic_t
 id|flow_cache_genid
 suffix:semicolon
