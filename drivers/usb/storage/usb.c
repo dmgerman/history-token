@@ -3451,42 +3451,10 @@ c_func
 id|intf
 )paren
 suffix:semicolon
-r_struct
-id|scsi_device
-op_star
-id|sdev
-suffix:semicolon
 id|US_DEBUGP
 c_func
 (paren
 l_string|&quot;storage_disconnect() called&bslash;n&quot;
-)paren
-suffix:semicolon
-multiline_comment|/* Set devices offline -- need host lock for this */
-id|scsi_lock
-c_func
-(paren
-id|us-&gt;host
-)paren
-suffix:semicolon
-id|list_for_each_entry
-c_func
-(paren
-id|sdev
-comma
-op_amp
-id|us-&gt;host-&gt;my_devices
-comma
-id|siblings
-)paren
-id|sdev-&gt;online
-op_assign
-l_int|0
-suffix:semicolon
-id|scsi_unlock
-c_func
-(paren
-id|us-&gt;host
 )paren
 suffix:semicolon
 multiline_comment|/* Prevent new USB transfers and stop the current command */
@@ -3512,31 +3480,12 @@ c_func
 id|us
 )paren
 suffix:semicolon
-multiline_comment|/* Begin the SCSI host removal sequence */
-r_if
-c_cond
-(paren
 id|scsi_remove_host
 c_func
 (paren
 id|us-&gt;host
 )paren
-)paren
-(brace
-id|US_DEBUGP
-c_func
-(paren
-l_string|&quot;-- SCSI refused to remove the host&bslash;n&quot;
-)paren
 suffix:semicolon
-id|BUG
-c_func
-(paren
-)paren
-suffix:semicolon
-r_return
-suffix:semicolon
-)brace
 multiline_comment|/* TODO: somehow, wait for the device to&n;&t; * be &squot;idle&squot; (tasklet completion) */
 multiline_comment|/* Release all our other resources */
 id|usb_stor_release_resources
