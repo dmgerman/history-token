@@ -48,7 +48,6 @@ suffix:semicolon
 suffix:semicolon
 DECL|function|md5_transform
 r_static
-r_inline
 r_void
 id|md5_transform
 c_func

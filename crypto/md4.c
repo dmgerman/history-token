@@ -38,6 +38,7 @@ suffix:semicolon
 suffix:semicolon
 DECL|function|lshift
 r_static
+r_inline
 id|u32
 id|lshift
 c_func
@@ -249,7 +250,6 @@ suffix:semicolon
 )brace
 DECL|function|md4_transform
 r_static
-r_inline
 r_void
 id|md4_transform
 c_func
