@@ -11854,7 +11854,7 @@ id|ENOMEM
 suffix:semicolon
 )brace
 DECL|macro|MAX_WAIT_CNT
-mdefine_line|#define MAX_WAIT_CNT 10000
+mdefine_line|#define MAX_WAIT_CNT 1000
 multiline_comment|/* To stop a block, clear the enable bit and poll till it&n; * clears.  tp-&gt;lock is held.&n; */
 DECL|function|tg3_stop_block
 r_static
