@@ -2480,11 +2480,6 @@ suffix:semicolon
 )brace
 id|error
 suffix:colon
-r_if
-c_cond
-(paren
-id|p
-)paren
 id|vfree
 c_func
 (paren
@@ -2934,13 +2929,6 @@ id|seq
 op_assign
 id|file-&gt;private_data
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|seq
-op_member_access_from_pointer
-r_private
-)paren
 id|vfree
 c_func
 (paren
