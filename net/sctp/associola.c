@@ -546,6 +546,11 @@ id|asoc-&gt;peer.sack_needed
 op_assign
 l_int|1
 suffix:semicolon
+multiline_comment|/* Assume that the peer recongizes ASCONF until reported otherwise&n;&t; * via an ERROR chunk.&n;&t; */
+id|asoc-&gt;peer.asconf_capable
+op_assign
+l_int|1
+suffix:semicolon
 multiline_comment|/* Create an input queue.  */
 id|sctp_inq_init
 c_func

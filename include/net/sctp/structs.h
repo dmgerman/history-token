@@ -3772,6 +3772,11 @@ id|__u8
 id|hostname_address
 suffix:semicolon
 multiline_comment|/* Peer understands DNS addresses? */
+multiline_comment|/* Does peer support ADDIP? */
+DECL|member|asconf_capable
+id|__u8
+id|asconf_capable
+suffix:semicolon
 DECL|member|i
 r_struct
 id|sctp_inithdr
