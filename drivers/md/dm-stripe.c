@@ -368,6 +368,16 @@ op_minus
 l_int|1
 )paren
 )paren
+op_logical_or
+(paren
+id|chunk_size
+OL
+(paren
+id|PAGE_SIZE
+op_rshift
+id|SECTOR_SHIFT
+)paren
+)paren
 )paren
 (brace
 id|ti-&gt;error
