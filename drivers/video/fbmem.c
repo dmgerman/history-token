@@ -2971,7 +2971,7 @@ id|vma-&gt;vm_page_prot
 op_or_assign
 id|SUN3_PAGE_NOCACHE
 suffix:semicolon
-macro_line|#else
+macro_line|#elif defined(CONFIG_MMU)
 r_if
 c_cond
 (paren
