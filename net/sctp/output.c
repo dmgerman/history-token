@@ -1322,6 +1322,13 @@ id|__u32
 id|max_burst_bytes
 suffix:semicolon
 r_struct
+id|sctp_association
+op_star
+id|asoc
+op_assign
+id|transport-&gt;asoc
+suffix:semicolon
+r_struct
 id|sctp_opt
 op_star
 id|sp
@@ -1329,7 +1336,7 @@ op_assign
 id|sctp_sk
 c_func
 (paren
-id|transport-&gt;asoc-&gt;base.sk
+id|asoc-&gt;base.sk
 )paren
 suffix:semicolon
 r_struct
@@ -1338,16 +1345,16 @@ op_star
 id|q
 op_assign
 op_amp
-id|transport-&gt;asoc-&gt;outqueue
+id|asoc-&gt;outqueue
 suffix:semicolon
 multiline_comment|/* RFC 2960 6.1  Transmission of DATA Chunks&n;&t; *&n;&t; * A) At any given time, the data sender MUST NOT transmit new data to&n;&t; * any destination transport address if its peer&squot;s rwnd indicates&n;&t; * that the peer has no buffer space (i.e. rwnd is 0, see Section&n;&t; * 6.2.1).  However, regardless of the value of rwnd (including if it&n;&t; * is 0), the data sender can always have one DATA chunk in flight to&n;&t; * the receiver if allowed by cwnd (see rule B below).  This rule&n;&t; * allows the sender to probe for a change in rwnd that the sender&n;&t; * missed due to the SACK having been lost in transit from the data&n;&t; * receiver to the data sender.&n;&t; */
 id|rwnd
 op_assign
-id|transport-&gt;asoc-&gt;peer.rwnd
+id|asoc-&gt;peer.rwnd
 suffix:semicolon
 id|inflight
 op_assign
-id|transport-&gt;asoc-&gt;outqueue.outstanding_bytes
+id|asoc-&gt;outqueue.outstanding_bytes
 suffix:semicolon
 id|datasize
 op_assign
@@ -1386,9 +1393,9 @@ suffix:semicolon
 multiline_comment|/* sctpimpguide-05 2.14.2&n;&t; * D) When the time comes for the sender to&n;&t; * transmit new DATA chunks, the protocol parameter Max.Burst MUST&n;&t; * first be applied to limit how many new DATA chunks may be sent.&n;&t; * The limit is applied by adjusting cwnd as follows:&n;&t; * &t;if ((flightsize + Max.Burst * MTU) &lt; cwnd)&n;&t; *&t;&t;cwnd = flightsize + Max.Burst * MTU&n;&t; */
 id|max_burst_bytes
 op_assign
-id|transport-&gt;asoc-&gt;max_burst
+id|asoc-&gt;max_burst
 op_star
-id|transport-&gt;asoc-&gt;pmtu
+id|asoc-&gt;pmtu
 suffix:semicolon
 r_if
 c_cond
@@ -1454,7 +1461,7 @@ r_goto
 id|finish
 suffix:semicolon
 )brace
-multiline_comment|/* Nagle&squot;s algorithm to solve small-packet problem:&n;&t; * inhibit the sending of new chunks when new outgoing data arrives &n;&t; * if any proeviously transmitted data on the connection remains&n;&t; * unacknowledged. Unless the connection was previously idle. Check &n;&t; * whether the connection is idle. No outstanding means idle, flush&n;&t; * it. If outstanding bytes are less than half cwnd, the connection&n;&t; * is not in the state of congestion, so also flush it. &n;&t; */
+multiline_comment|/* Nagle&squot;s algorithm to solve small-packet problem:&n;&t; * Inhibit the sending of new chunks when new outgoing data arrives&n;&t; * if any previously transmitted data on the connection remains&n;&t; * unacknowledged.&n;&t; */
 r_if
 c_cond
 (paren
@@ -1462,26 +1469,26 @@ op_logical_neg
 id|sp-&gt;nodelay
 op_logical_and
 id|q-&gt;outstanding_bytes
-op_ge
-id|transport-&gt;cwnd
-op_rshift
-l_int|1
 )paren
 (brace
-multiline_comment|/* Check whether this chunk and all the rest of pending &n;&t;&t; * data will fit or whether we&squot;ll choose to delay in&n;&t;&t; * hopes of bundling a full sized packet. &n;&t;&t; */
-r_if
-c_cond
-(paren
-(paren
+r_int
+id|len
+op_assign
 id|datasize
 op_plus
 id|q-&gt;out_qlen
-)paren
+suffix:semicolon
+multiline_comment|/* Check whether this chunk and all the rest of pending&n;&t;&t; * data will fit or delay in hopes of bundling a full&n;&t;&t; * sized packet.&n;&t;&t; */
+r_if
+c_cond
+(paren
+id|len
 OL
-id|transport-&gt;asoc-&gt;frag_point
+id|asoc-&gt;pmtu
+op_minus
+id|SCTP_IP_OVERHEAD
 )paren
 (brace
-multiline_comment|/* If the the chunk should be delay&n;&t;&t;&t; * for future sending, we could not&n;&t;&t;&t; * append it.&n;&t;&t;&t; */
 id|retval
 op_assign
 id|SCTP_XMIT_NAGLE_DELAY
@@ -1497,7 +1504,7 @@ op_add_assign
 id|datasize
 suffix:semicolon
 multiline_comment|/* Keep track of how many bytes are in flight to the receiver. */
-id|transport-&gt;asoc-&gt;outqueue.outstanding_bytes
+id|asoc-&gt;outqueue.outstanding_bytes
 op_add_assign
 id|datasize
 suffix:semicolon
@@ -1509,20 +1516,16 @@ id|datasize
 OL
 id|rwnd
 )paren
-(brace
 id|rwnd
 op_sub_assign
 id|datasize
 suffix:semicolon
-)brace
 r_else
-(brace
 id|rwnd
 op_assign
 l_int|0
 suffix:semicolon
-)brace
-id|transport-&gt;asoc-&gt;peer.rwnd
+id|asoc-&gt;peer.rwnd
 op_assign
 id|rwnd
 suffix:semicolon
