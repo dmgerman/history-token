@@ -27,7 +27,6 @@ macro_line|#include &quot;xfs_dir2_data.h&quot;
 macro_line|#include &quot;xfs_dir2_leaf.h&quot;
 macro_line|#include &quot;xfs_dir2_block.h&quot;
 macro_line|#include &quot;xfs_dir2_node.h&quot;
-macro_line|#include &quot;xfs_dir2_sf.h&quot;
 macro_line|#include &quot;xfs_dir2_trace.h&quot;
 macro_line|#include &quot;xfs_error.h&quot;
 macro_line|#include &quot;xfs_bit.h&quot;

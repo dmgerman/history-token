@@ -9,7 +9,6 @@ macro_line|#include &quot;xfs_sb.h&quot;
 macro_line|#include &quot;xfs_dir.h&quot;
 macro_line|#include &quot;xfs_dmapi.h&quot;
 macro_line|#include &quot;xfs_mount.h&quot;
-macro_line|#include &quot;xfs_log.h&quot;
 macro_line|#include &quot;xfs_trans_priv.h&quot;
 macro_line|#include &quot;xfs_error.h&quot;
 id|STATIC

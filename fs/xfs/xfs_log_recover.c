@@ -23,7 +23,6 @@ macro_line|#include &quot;xfs_inode_item.h&quot;
 macro_line|#include &quot;xfs_inode.h&quot;
 macro_line|#include &quot;xfs_ialloc_btree.h&quot;
 macro_line|#include &quot;xfs_ialloc.h&quot;
-macro_line|#include &quot;xfs_error.h&quot;
 macro_line|#include &quot;xfs_log_priv.h&quot;
 macro_line|#include &quot;xfs_buf_item.h&quot;
 macro_line|#include &quot;xfs_alloc_btree.h&quot;

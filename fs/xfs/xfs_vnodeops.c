@@ -35,7 +35,6 @@ macro_line|#include &quot;xfs_quota.h&quot;
 macro_line|#include &quot;xfs_utils.h&quot;
 macro_line|#include &quot;xfs_trans_space.h&quot;
 macro_line|#include &quot;xfs_dir_leaf.h&quot;
-macro_line|#include &quot;xfs_dmapi.h&quot;
 macro_line|#include &quot;xfs_mac.h&quot;
 macro_line|#include &quot;xfs_log_priv.h&quot;
 multiline_comment|/*&n; * The maximum pathlen is 1024 bytes. Since the minimum file system&n; * blocksize is 512 bytes, we can get a max of 2 extents back from&n; * bmapi.&n; */

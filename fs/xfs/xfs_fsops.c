@@ -22,7 +22,6 @@ macro_line|#include &quot;xfs_itable.h&quot;
 macro_line|#include &quot;xfs_rw.h&quot;
 macro_line|#include &quot;xfs_trans_space.h&quot;
 macro_line|#include &quot;xfs_rtalloc.h&quot;
-macro_line|#include &quot;xfs_dir.h&quot;
 macro_line|#include &quot;xfs_dir2.h&quot;
 macro_line|#include &quot;xfs_attr_sf.h&quot;
 macro_line|#include &quot;xfs_dir_sf.h&quot;

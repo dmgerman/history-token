@@ -20,7 +20,6 @@ macro_line|#include &quot;xfs_attr_sf.h&quot;
 macro_line|#include &quot;xfs_dir_sf.h&quot;
 macro_line|#include &quot;xfs_dir2_sf.h&quot;
 macro_line|#include &quot;xfs_dinode.h&quot;
-macro_line|#include &quot;xfs_dmapi.h&quot;
 macro_line|#include &quot;xfs_inode_item.h&quot;
 macro_line|#include &quot;xfs_inode.h&quot;
 macro_line|#include &quot;xfs_itable.h&quot;

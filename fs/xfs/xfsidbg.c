@@ -45,7 +45,6 @@ macro_line|#include &quot;xfs_log_recover.h&quot;
 macro_line|#include &quot;xfs_rw.h&quot;
 macro_line|#include &quot;xfs_bit.h&quot;
 macro_line|#include &quot;xfs_quota.h&quot;
-macro_line|#include &quot;xfs_log_recover.h&quot;
 macro_line|#include &quot;quota/xfs_qm.h&quot;
 id|MODULE_AUTHOR
 c_func
