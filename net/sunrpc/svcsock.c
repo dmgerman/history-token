@@ -441,6 +441,15 @@ r_goto
 id|out_unlock
 suffix:semicolon
 )brace
+id|set_bit
+c_func
+(paren
+id|SOCK_NOSPACE
+comma
+op_amp
+id|svsk-&gt;sk_sock-&gt;flags
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -504,6 +513,15 @@ r_goto
 id|out_unlock
 suffix:semicolon
 )brace
+id|clear_bit
+c_func
+(paren
+id|SOCK_NOSPACE
+comma
+op_amp
+id|svsk-&gt;sk_sock-&gt;flags
+)paren
+suffix:semicolon
 multiline_comment|/* Mark socket as busy. It will remain in this state until the&n;&t; * server has processed all pending data and put the socket back&n;&t; * on the idle list.&n;&t; */
 id|set_bit
 c_func
