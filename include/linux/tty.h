@@ -567,7 +567,7 @@ r_int
 id|session
 suffix:semicolon
 DECL|member|device
-id|kdev_t
+id|dev_t
 id|device
 suffix:semicolon
 DECL|member|flags

@@ -362,7 +362,7 @@ r_int
 r_int
 id|major
 op_assign
-id|major
+id|MAJOR
 c_func
 (paren
 id|tty-&gt;device

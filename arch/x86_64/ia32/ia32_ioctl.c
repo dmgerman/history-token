@@ -17536,11 +17536,7 @@ r_return
 id|put_user
 c_func
 (paren
-id|kdev_t_to_nr
-c_func
-(paren
 id|real_tty-&gt;device
-)paren
 comma
 id|ptr
 )paren

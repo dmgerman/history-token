@@ -224,7 +224,7 @@ r_char
 id|leased
 suffix:semicolon
 DECL|member|line
-id|kdev_t
+id|dev_t
 id|line
 suffix:semicolon
 DECL|member|pid
