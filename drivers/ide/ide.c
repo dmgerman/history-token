@@ -676,10 +676,17 @@ r_else
 r_if
 c_cond
 (paren
-id|pci_present
+id|pci_find_device
 c_func
 (paren
+id|PCI_ANY_ID
+comma
+id|PCI_ANY_ID
+comma
+l_int|NULL
 )paren
+op_ne
+l_int|NULL
 )paren
 (brace
 multiline_comment|/* safe default value for PCI */
