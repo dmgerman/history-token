@@ -3108,6 +3108,10 @@ r_case
 l_int|0x1751
 suffix:colon
 multiline_comment|/* M2N notebook */
+r_case
+l_int|0x1821
+suffix:colon
+multiline_comment|/* M5N notebook */
 id|asus_hides_smbus
 op_assign
 l_int|1
