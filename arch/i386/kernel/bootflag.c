@@ -128,7 +128,9 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;Simple Boot Flag 0x%x&bslash;n&quot;
+l_string|&quot;Simple Boot Flag at 0x%x set to 0x%x&bslash;n&quot;
+comma
+id|sbf_port
 comma
 id|v
 )paren
