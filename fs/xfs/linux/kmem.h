@@ -8,7 +8,7 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/vmalloc.h&gt;
 multiline_comment|/*&n; * Cutoff point to use vmalloc instead of kmalloc.&n; */
 DECL|macro|MAX_SLAB_SIZE
-mdefine_line|#define MAX_SLAB_SIZE&t;0x10000
+mdefine_line|#define MAX_SLAB_SIZE&t;0x20000
 multiline_comment|/*&n; * XFS uses slightly different names for these due to the&n; * IRIX heritage.&n; */
 DECL|macro|kmem_zone
 mdefine_line|#define&t;kmem_zone&t;kmem_cache_s
