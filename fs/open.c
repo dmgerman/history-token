@@ -3801,7 +3801,7 @@ op_minus
 id|EPERM
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Called when an inode is about to be open.&n; * We use this to disallow opening RW large files on 32bit systems if&n; * the caller didn&squot;t specify O_LARGEFILE.  On 64bit systems we force&n; * on this flag in sys_open.&n; */
+multiline_comment|/*&n; * Called when an inode is about to be open.&n; * We use this to disallow opening large files on 32bit systems if&n; * the caller didn&squot;t specify O_LARGEFILE.  On 64bit systems we force&n; * on this flag in sys_open.&n; */
 DECL|function|generic_file_open
 r_int
 id|generic_file_open

@@ -727,7 +727,7 @@ DECL|member|page_lock
 id|spinlock_t
 id|page_lock
 suffix:semicolon
-multiline_comment|/* and rwlock protecting it */
+multiline_comment|/* and spinlock protecting it */
 DECL|member|clean_pages
 r_struct
 id|list_head
