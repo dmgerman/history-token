@@ -47,7 +47,6 @@ l_string|&quot;yam&quot;
 suffix:semicolon
 DECL|variable|__initdata
 r_static
-r_const
 r_char
 id|yam_drvinfo
 (braket

@@ -9,7 +9,7 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
-macro_line|#include &lt;errno.h&gt;
+macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &quot;adapter.h&quot;
 macro_line|#include &quot;uxio.h&quot;
 macro_line|#ifdef MODULE

@@ -39,6 +39,12 @@ c_func
 l_string|&quot;Driver for Compaq Smart Array Controller 5300&quot;
 )paren
 suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 macro_line|#include &quot;cciss_cmd.h&quot;
 macro_line|#include &quot;cciss.h&quot;
 macro_line|#include &lt;linux/cciss_ioctl.h&gt;

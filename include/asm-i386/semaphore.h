@@ -269,6 +269,7 @@ l_string|&quot;memory&quot;
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * Interruptible try to acquire a semaphore.  If we obtained&n; * it, return zero.  If we were interrupted, returns -EINTR&n; */
 DECL|function|down_interruptible
 r_static
 r_inline
@@ -331,6 +332,7 @@ r_return
 id|result
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * Non-blockingly attempt to down() a semaphore.&n; * Returns zero if we acquired it&n; */
 DECL|function|down_trylock
 r_static
 r_inline

@@ -22,6 +22,12 @@ c_func
 l_string|&quot;Analog joystick and gamepad driver for Linux&quot;
 )paren
 suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Option parsing.&n; */
 DECL|macro|ANALOG_PORTS
 mdefine_line|#define ANALOG_PORTS&t;&t;16

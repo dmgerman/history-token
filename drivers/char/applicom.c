@@ -1,6 +1,6 @@
 multiline_comment|/* Derived from Applicom driver ac.c for SCO Unix                            */
 multiline_comment|/* Ported by David Woodhouse, Axiom (Cambridge) Ltd.                         */
-multiline_comment|/* Dave@mvhi.com  30/8/98                                                    */
+multiline_comment|/* dwmw2@redhat.com  30/8/98                                                 */
 multiline_comment|/* $Id: ac.c,v 1.30 2000/03/22 16:03:57 dwmw2 Exp $&t;&t;&t;     */
 multiline_comment|/* This module is for Linux 2.1 and 2.2 series kernels.                      */
 multiline_comment|/*****************************************************************************/
@@ -95,6 +95,12 @@ c_func
 l_string|&quot;Driver for Applicom Profibus card&quot;
 )paren
 suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
@@ -134,6 +140,7 @@ l_string|&quot;ac&quot;
 )paren
 suffix:semicolon
 DECL|struct|applicom_board
+r_static
 r_struct
 id|applicom_board
 (brace
@@ -227,20 +234,6 @@ id|DeviceErrorCount
 suffix:semicolon
 multiline_comment|/* number of device error     */
 r_static
-id|loff_t
-id|ac_llseek
-c_func
-(paren
-r_struct
-id|file
-op_star
-comma
-id|loff_t
-comma
-r_int
-)paren
-suffix:semicolon
-r_static
 id|ssize_t
 id|ac_read
 (paren
@@ -311,6 +304,7 @@ op_star
 )paren
 suffix:semicolon
 DECL|variable|ac_fops
+r_static
 r_struct
 id|file_operations
 id|ac_fops
@@ -322,7 +316,7 @@ id|THIS_MODULE
 comma
 id|llseek
 suffix:colon
-id|ac_llseek
+id|no_llseek
 comma
 id|read
 suffix:colon
@@ -339,6 +333,7 @@ comma
 )brace
 suffix:semicolon
 DECL|variable|ac_miscdev
+r_static
 r_struct
 id|miscdevice
 id|ac_miscdev
@@ -359,6 +354,7 @@ id|dummy
 suffix:semicolon
 multiline_comment|/* dev_id for request_irq() */
 DECL|function|ac_register_board
+r_static
 r_int
 id|ac_register_board
 c_func
@@ -997,6 +993,7 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/* Now try the specified ISA cards */
+macro_line|#warning &quot;LEAK&quot;
 id|RamIO
 op_assign
 id|ioremap
@@ -1508,29 +1505,6 @@ id|applicom_init
 )paren
 suffix:semicolon
 macro_line|#endif
-DECL|function|ac_llseek
-r_static
-id|loff_t
-id|ac_llseek
-c_func
-(paren
-r_struct
-id|file
-op_star
-id|file
-comma
-id|loff_t
-id|offset
-comma
-r_int
-id|origin
-)paren
-(brace
-r_return
-op_minus
-id|ESPIPE
-suffix:semicolon
-)brace
 DECL|function|ac_write
 r_static
 id|ssize_t
@@ -2040,9 +2014,11 @@ id|EIO
 suffix:semicolon
 )brace
 multiline_comment|/* Place ourselves on the wait queue */
-id|current-&gt;state
-op_assign
+id|set_current_state
+c_func
+(paren
 id|TASK_INTERRUPTIBLE
+)paren
 suffix:semicolon
 id|add_wait_queue
 c_func
@@ -2156,6 +2132,12 @@ dot
 id|mutex
 comma
 id|flags
+)paren
+suffix:semicolon
+id|set_current_state
+c_func
+(paren
+id|TASK_INTERRUPTIBLE
 )paren
 suffix:semicolon
 )brace
@@ -2825,7 +2807,7 @@ l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/* Je suis stupide. DW. */
+macro_line|#warning &quot;Je suis stupide. DW. - copy*user in cli&quot;
 r_if
 c_cond
 (paren
@@ -3000,9 +2982,11 @@ l_int|1
 )paren
 (brace
 multiline_comment|/* Stick ourself on the wait queue */
-id|current-&gt;state
-op_assign
+id|set_current_state
+c_func
+(paren
 id|TASK_INTERRUPTIBLE
+)paren
 suffix:semicolon
 id|add_wait_queue
 c_func
@@ -3105,9 +3089,11 @@ comma
 id|flags
 )paren
 suffix:semicolon
-id|current-&gt;state
-op_assign
+id|set_current_state
+c_func
+(paren
 id|TASK_RUNNING
+)paren
 suffix:semicolon
 id|remove_wait_queue
 c_func
@@ -3161,9 +3147,11 @@ comma
 id|flags
 )paren
 suffix:semicolon
-id|current-&gt;state
-op_assign
+id|set_current_state
+c_func
+(paren
 id|TASK_RUNNING
+)paren
 suffix:semicolon
 id|remove_wait_queue
 c_func

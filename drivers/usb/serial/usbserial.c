@@ -4220,11 +4220,9 @@ multiline_comment|/* initialize some parts of the port structures */
 multiline_comment|/* we don&squot;t use num_ports here cauz some devices have more endpoint pairs than ports */
 id|max_endpoints
 op_assign
-id|max_t
+id|max
 c_func
 (paren
-r_int
-comma
 id|num_bulk_in
 comma
 id|num_bulk_out
@@ -4232,11 +4230,9 @@ id|num_bulk_out
 suffix:semicolon
 id|max_endpoints
 op_assign
-id|max_t
+id|max
 c_func
 (paren
-r_int
-comma
 id|max_endpoints
 comma
 id|num_interrupt_in
@@ -4244,13 +4240,14 @@ id|num_interrupt_in
 suffix:semicolon
 id|max_endpoints
 op_assign
-id|max_t
+id|max
 c_func
 (paren
-r_int
-comma
 id|max_endpoints
 comma
+(paren
+r_int
+)paren
 id|serial-&gt;num_ports
 )paren
 suffix:semicolon

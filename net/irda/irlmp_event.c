@@ -481,6 +481,13 @@ id|__FUNCTION__
 l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
+multiline_comment|/* We always cleanup the log (active &amp; passive discovery) */
+id|irlmp_do_expiry
+c_func
+(paren
+)paren
+suffix:semicolon
+multiline_comment|/* Active discovery is conditional */
 r_if
 c_cond
 (paren
@@ -691,18 +698,6 @@ id|self-&gt;irlap
 comma
 op_amp
 id|irlmp-&gt;discovery_cmd
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-id|LM_LAP_DISCOVERY_CONFIRM
-suffix:colon
-multiline_comment|/* irlmp_next_station_state( LMP_READY); */
-id|irlmp_discovery_confirm
-c_func
-(paren
-id|irlmp-&gt;cachelog
 )paren
 suffix:semicolon
 r_break
@@ -938,6 +933,28 @@ id|self-&gt;lsaps
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* Note : by the time we get there (LAP retries and co),&n;&t;&t; * the lsaps may already have gone. This avoid getting stuck&n;&t;&t; * forever in LAP_ACTIVE state - Jean II */
+r_if
+c_cond
+(paren
+id|HASHBIN_GET_SIZE
+c_func
+(paren
+id|self-&gt;lsaps
+)paren
+op_eq
+l_int|0
+)paren
+(brace
+id|irlmp_start_idle_timer
+c_func
+(paren
+id|self
+comma
+id|LM_IDLE_TIMEOUT
+)paren
+suffix:semicolon
+)brace
 r_break
 suffix:semicolon
 r_case
@@ -1003,6 +1020,28 @@ id|hashbin_get_next
 c_func
 (paren
 id|self-&gt;lsaps
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/* Note : by the time we get there (LAP retries and co),&n;&t;&t; * the lsaps may already have gone. This avoid getting stuck&n;&t;&t; * forever in LAP_ACTIVE state - Jean II */
+r_if
+c_cond
+(paren
+id|HASHBIN_GET_SIZE
+c_func
+(paren
+id|self-&gt;lsaps
+)paren
+op_eq
+l_int|0
+)paren
+(brace
+id|irlmp_start_idle_timer
+c_func
+(paren
+id|self
+comma
+id|LM_IDLE_TIMEOUT
 )paren
 suffix:semicolon
 )brace
@@ -1329,14 +1368,49 @@ id|self-&gt;lsaps
 OG
 l_int|0
 )paren
+(brace
+multiline_comment|/* Make sure the timer has sensible value (the user&n;&t;&t;&t; * may have set it) - Jean II */
+r_if
+c_cond
+(paren
+id|sysctl_lap_keepalive_time
+OL
+l_int|100
+)paren
+(brace
+multiline_comment|/* 100ms */
+id|sysctl_lap_keepalive_time
+op_assign
+l_int|100
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|sysctl_lap_keepalive_time
+OG
+l_int|10000
+)paren
+(brace
+multiline_comment|/* 10s */
+id|sysctl_lap_keepalive_time
+op_assign
+l_int|10000
+suffix:semicolon
+)brace
 id|irlmp_start_idle_timer
 c_func
 (paren
 id|self
 comma
-id|LM_IDLE_TIMEOUT
+id|sysctl_lap_keepalive_time
+op_star
+id|HZ
+op_div
+l_int|1000
 )paren
 suffix:semicolon
+)brace
 r_else
 (brace
 multiline_comment|/* No more connections, so close IrLAP */

@@ -26,6 +26,12 @@ c_func
 l_string|&quot;Hardware-level driver for the COMX and HICOMX adapters&bslash;n&quot;
 )paren
 suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 DECL|macro|COMX_readw
 mdefine_line|#define&t;COMX_readw(dev, offset)&t;(readw(dev-&gt;mem_start + offset + &bslash;&n;&t;(unsigned int)(((struct comx_privdata *)&bslash;&n;&t;((struct comx_channel *)dev-&gt;priv)-&gt;HW_privdata)-&gt;channel) &bslash;&n;&t;* COMX_CHANNEL_OFFSET))
 DECL|macro|COMX_WRITE

@@ -1,5 +1,6 @@
 multiline_comment|/*&n; *  linux/drivers/video/vgacon.c -- Low level VGA based console driver&n; *&n; *&t;Created 28 Sep 1997 by Geert Uytterhoeven&n; *&n; *&t;Rewritten by Martin Mares &lt;mj@ucw.cz&gt;, July 1998&n; *&n; *  This file is based on the old console.c, vga.c and vesa_blank.c drivers.&n; *&n; *&t;Copyright (C) 1991, 1992  Linus Torvalds&n; *&t;&t;&t;    1995  Jay Estabrook&n; *&n; *&t;User definable mapping table and font loading by Eugene G. Crosser,&n; *&t;&lt;crosser@average.org&gt;&n; *&n; *&t;Improved loadable font/UTF-8 support by H. Peter Anvin&n; *&t;Feb-Sep 1995 &lt;peter.anvin@linux.org&gt;&n; *&n; *&t;Colour palette handling, by Simon Tatham&n; *&t;17-Jun-95 &lt;sgt20@cam.ac.uk&gt;&n; *&n; *&t;if 512 char mode is already enabled don&squot;t re-enable it,&n; *&t;because it causes screen to flicker, by Mitja Horvat&n; *&t;5-May-96 &lt;mitja.horvat@guest.arnes.si&gt;&n; *&n; *&t;Use 2 outw instead of 4 outb_p to reduce erroneous text&n; *&t;flashing on RHS of screen during heavy console scrolling .&n; *&t;Oct 1996, Paul Gortmaker.&n; *&n; *&n; *  This file is subject to the terms and conditions of the GNU General Public&n; *  License.  See the file COPYING in the main directory of this archive for&n; *  more details.&n; */
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
@@ -5061,5 +5062,11 @@ suffix:colon
 id|vgacon_invert_region
 comma
 )brace
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
 suffix:semicolon
 eof

@@ -11,6 +11,37 @@ DECL|macro|memset
 macro_line|#undef memset
 DECL|macro|memcpy
 macro_line|#undef memcpy
+multiline_comment|/*&n; * Why do we do this? Don&squot;t ask me..&n; *&n; * Incomprehensible are the ways of bootloaders.&n; */
+r_static
+r_void
+op_star
+id|memset
+c_func
+(paren
+r_void
+op_star
+comma
+r_int
+comma
+r_int
+)paren
+suffix:semicolon
+r_static
+r_void
+op_star
+id|memcpy
+c_func
+(paren
+r_void
+op_star
+comma
+id|__const
+r_void
+op_star
+comma
+r_int
+)paren
+suffix:semicolon
 DECL|macro|memzero
 mdefine_line|#define memzero(s, n)     memset ((s), 0, (n))
 DECL|typedef|uch
@@ -753,6 +784,7 @@ l_int|1
 suffix:semicolon
 )brace
 DECL|function|memset
+r_static
 r_void
 op_star
 id|memset
@@ -808,6 +840,7 @@ id|s
 suffix:semicolon
 )brace
 DECL|function|memcpy
+r_static
 r_void
 op_star
 id|memcpy

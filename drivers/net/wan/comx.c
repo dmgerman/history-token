@@ -31,6 +31,12 @@ c_func
 l_string|&quot;Common code for the COMX synchronous serial adapters&quot;
 )paren
 suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 r_extern
 r_int
 id|comx_hw_comx_init

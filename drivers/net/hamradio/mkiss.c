@@ -27,7 +27,6 @@ macro_line|#include &lt;linux/tcp.h&gt;
 macro_line|#endif
 DECL|variable|__initdata
 r_static
-r_const
 r_char
 id|banner
 (braket

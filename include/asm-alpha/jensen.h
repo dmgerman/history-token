@@ -965,10 +965,28 @@ c_func
 r_int
 r_int
 id|addr
+comma
+r_int
+r_int
+id|size
 )paren
 (brace
 r_return
 id|addr
+suffix:semicolon
+)brace
+DECL|function|jensen_iounmap
+id|__EXTERN_INLINE
+r_void
+id|jensen_iounmap
+c_func
+(paren
+r_int
+r_int
+id|addr
+)paren
+(brace
+r_return
 suffix:semicolon
 )brace
 DECL|function|jensen_is_ioaddr
@@ -1024,6 +1042,8 @@ DECL|macro|__writeq
 mdefine_line|#define __writeq&t;jensen_writeq
 DECL|macro|__ioremap
 mdefine_line|#define __ioremap&t;jensen_ioremap
+DECL|macro|__iounmap
+mdefine_line|#define __iounmap(a)&t;jensen_iounmap((unsigned long)a)
 DECL|macro|__is_ioaddr
 mdefine_line|#define __is_ioaddr&t;jensen_is_ioaddr
 multiline_comment|/*&n; * The above have so much overhead that it probably doesn&squot;t make&n; * sense to have them inlined (better icache behaviour).&n; */

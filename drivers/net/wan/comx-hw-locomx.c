@@ -27,6 +27,12 @@ c_func
 l_string|&quot;Hardware driver for the LoCOMX board&quot;
 )paren
 suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 DECL|macro|RX_DMA
 mdefine_line|#define RX_DMA 3
 DECL|macro|TX_DMA

@@ -3235,15 +3235,11 @@ c_func
 (paren
 id|PPP_INFO
 comma
-l_string|&quot;IrTTP not ready ! (%d-0x%X)&bslash;n&quot;
+l_string|&quot;IrTTP not ready ! (%d-%d)&bslash;n&quot;
 comma
 id|self-&gt;ttp_open
 comma
-(paren
-r_int
-r_int
-)paren
-id|self-&gt;tsap
+id|self-&gt;ttp_connect
 )paren
 suffix:semicolon
 multiline_comment|/* Note : we can either drop the packet or block the packet.&n;       *&n;       * Blocking the packet allow us a better connection time,&n;       * because by calling ppp_output_wakeup() we can have&n;       * ppp_generic resending the LCP request immediately to us,&n;       * rather than waiting for one of pppd periodic transmission of&n;       * LCP request.&n;       *&n;       * On the other hand, if we block all packet, all those periodic&n;       * transmissions of pppd accumulate in ppp_generic, creating a&n;       * backlog of LCP request. When we eventually connect later on,&n;       * we have to transmit all this backlog before we can connect&n;       * proper (if we don&squot;t timeout before).&n;       *&n;       * The current strategy is as follow :&n;       * While we are attempting to connect, we block packets to get&n;       * a better connection time.&n;       * If we fail to connect, we drain the queue and start dropping packets&n;       */
@@ -3252,7 +3248,7 @@ multiline_comment|/* If we are attempting to connect */
 r_if
 c_cond
 (paren
-id|self-&gt;tsap
+id|self-&gt;ttp_connect
 )paren
 (brace
 multiline_comment|/* Blocking packet, ppp_generic will retry later */

@@ -2,6 +2,7 @@ multiline_comment|/*&n;&t;The all defines and part of code (such as cs461x_*) ar
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/gameport.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
@@ -12,7 +13,15 @@ c_func
 l_string|&quot;Victor Krapivin &lt;vik@belcaf.minsk.by&gt;&quot;
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;These options are experimental&n;&n;#define COOKED_MODE&n;#define CS461X_FULL_MAP&n;&n;*/
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t;These options are experimental&n;&n;#define CS461X_FULL_MAP&n;*/
+DECL|macro|COOKED_MODE
+mdefine_line|#define COOKED_MODE
 macro_line|#ifndef PCI_VENDOR_ID_CIRRUS
 DECL|macro|PCI_VENDOR_ID_CIRRUS
 mdefine_line|#define PCI_VENDOR_ID_CIRRUS            0x1013
@@ -1068,16 +1077,6 @@ id|gameport
 )paren
 )paren
 suffix:semicolon
-id|port-&gt;io
-op_assign
-op_minus
-l_int|1
-suffix:semicolon
-id|port-&gt;size
-op_assign
-op_minus
-l_int|1
-suffix:semicolon
 id|pdev-&gt;driver_data
 op_assign
 id|port
@@ -1127,30 +1126,9 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;gameport%d: CS461x PCI&quot;
+l_string|&quot;gameport%d: CS461x Gameport speed %d kHz&bslash;n&quot;
 comma
 id|port-&gt;number
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|port-&gt;size
-OG
-l_int|1
-)paren
-id|printk
-c_func
-(paren
-l_string|&quot; size %d&quot;
-comma
-id|port-&gt;size
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot; speed %d kHz&bslash;n&quot;
 comma
 id|port-&gt;speed
 )paren

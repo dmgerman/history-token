@@ -463,17 +463,16 @@ id|entry
 (brace
 r_return
 (paren
-r_int
-)paren
-id|NTFS_GETU8
+id|NTFS_GETU16
 c_func
 (paren
 id|entry
 op_plus
-l_int|12
+l_int|0xc
 )paren
 op_amp
 l_int|1
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/* True if it is not the &squot;end of dir&squot; entry. */
@@ -490,22 +489,18 @@ id|entry
 )paren
 (brace
 r_return
+op_logical_neg
 (paren
-r_int
-)paren
-(paren
-id|NTFS_GETU8
+id|NTFS_GETU16
 c_func
 (paren
 id|entry
 op_plus
-l_int|12
+l_int|0xc
 )paren
 op_amp
 l_int|2
 )paren
-op_eq
-l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Removed RACE for allocating index blocks. But stil not too happy.&n; * There might be more races afterwards. (AIA)&n; */
@@ -4153,6 +4148,9 @@ op_star
 id|param
 )paren
 (brace
+id|s64
+id|ib_ofs
+suffix:semicolon
 r_char
 op_star
 id|buf
@@ -4173,15 +4171,11 @@ op_star
 id|vol
 suffix:semicolon
 r_int
-id|length
-comma
-id|block
-comma
 id|byte
 comma
 id|bit
 comma
-id|error
+id|err
 op_assign
 l_int|0
 suffix:semicolon
@@ -4189,9 +4183,16 @@ id|u32
 id|start
 comma
 id|finish
+comma
+id|ibs
+comma
+id|max_size
 suffix:semicolon
 id|ntfs_io
 id|io
+suffix:semicolon
+id|u8
+id|ibs_bits
 suffix:semicolon
 r_if
 c_cond
@@ -4227,7 +4228,7 @@ id|ntfs_error
 c_func
 (paren
 id|__FUNCTION__
-l_string|&quot;(): Inode %lx has no volume. &quot;
+l_string|&quot;(): Inode 0x%lx has no volume. &quot;
 l_string|&quot;Returning -EINVAL.&bslash;n&quot;
 comma
 id|ino-&gt;i_number
@@ -4259,10 +4260,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 op_star
 id|p_high
-op_eq
-l_int|0
 )paren
 (brace
 multiline_comment|/* We are still in the index root. */
@@ -4271,7 +4271,7 @@ op_assign
 id|ntfs_malloc
 c_func
 (paren
-id|length
+id|io.size
 op_assign
 id|vol-&gt;mft_record_size
 )paren
@@ -4294,11 +4294,7 @@ id|io.param
 op_assign
 id|buf
 suffix:semicolon
-id|io.size
-op_assign
-id|length
-suffix:semicolon
-id|error
+id|err
 op_assign
 id|ntfs_read_attr
 c_func
@@ -4318,12 +4314,17 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|error
+id|err
+op_logical_or
+op_logical_neg
+id|io.size
 )paren
 r_goto
 id|read_err_ret
 suffix:semicolon
 id|ino-&gt;u.index.recordsize
+op_assign
+id|ibs
 op_assign
 id|NTFS_GETU32
 c_func
@@ -4359,6 +4360,16 @@ l_string|&quot;(): Unsorted 2: In index &quot;
 l_string|&quot;root.&bslash;n&quot;
 )paren
 suffix:semicolon
+id|ibs_bits
+op_assign
+id|ffs
+c_func
+(paren
+id|ibs
+)paren
+op_minus
+l_int|1
+suffix:semicolon
 multiline_comment|/* Compensate for faked &quot;.&quot; and &quot;..&quot;. */
 id|start
 op_assign
@@ -4368,7 +4379,9 @@ suffix:semicolon
 r_else
 (brace
 multiline_comment|/* We are in an index record. */
-id|length
+id|io.size
+op_assign
+id|ibs
 op_assign
 id|ino-&gt;u.index.recordsize
 suffix:semicolon
@@ -4377,7 +4390,7 @@ op_assign
 id|ntfs_malloc
 c_func
 (paren
-id|length
+id|ibs
 )paren
 suffix:semicolon
 r_if
@@ -4390,6 +4403,16 @@ r_return
 op_minus
 id|ENOMEM
 suffix:semicolon
+id|ibs_bits
+op_assign
+id|ffs
+c_func
+(paren
+id|ibs
+)paren
+op_minus
+l_int|1
+suffix:semicolon
 id|io.fn_put
 op_assign
 id|ntfs_put
@@ -4398,19 +4421,22 @@ id|io.param
 op_assign
 id|buf
 suffix:semicolon
-id|io.size
+multiline_comment|/*&n;&t;&t; * 0 is index root, index allocation starts at 1 and works in&n;&t;&t; * units of index block size (ibs).&n;&t;&t; */
+id|ib_ofs
 op_assign
-id|length
-suffix:semicolon
-multiline_comment|/* 0 is index root, index allocation starts with 4. */
-id|block
-op_assign
+(paren
+id|s64
+)paren
+(paren
 op_star
 id|p_high
 op_minus
-id|ino-&gt;u.index.clusters_per_record
+l_int|1
+)paren
+op_lshift
+id|ibs_bits
 suffix:semicolon
-id|error
+id|err
 op_assign
 id|ntfs_read_attr
 c_func
@@ -4421,12 +4447,7 @@ id|vol-&gt;at_index_allocation
 comma
 id|I30
 comma
-(paren
-id|__s64
-)paren
-id|block
-op_lshift
-id|vol-&gt;cluster_size_bits
+id|ib_ofs
 comma
 op_amp
 id|io
@@ -4435,11 +4456,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|error
+id|err
 op_logical_or
 id|io.size
 op_ne
-id|length
+id|ibs
 )paren
 r_goto
 id|read_err_ret
@@ -4461,10 +4482,14 @@ id|ntfs_error
 c_func
 (paren
 id|__FUNCTION__
-l_string|&quot;(): Block 0x%x is not an &quot;
-l_string|&quot;index record. Returning -ENOTDIR.&bslash;n&quot;
+l_string|&quot;(): Index block 0x%x is not &quot;
+l_string|&quot;an index record. Returning &quot;
+l_string|&quot;-ENOTDIR.&bslash;n&quot;
 comma
-id|block
+op_star
+id|p_high
+op_minus
+l_int|1
 )paren
 suffix:semicolon
 id|ntfs_free
@@ -4482,6 +4507,8 @@ id|entry
 op_assign
 id|buf
 op_plus
+l_int|0x18
+op_plus
 id|NTFS_GETU16
 c_func
 (paren
@@ -4489,8 +4516,6 @@ id|buf
 op_plus
 l_int|0x18
 )paren
-op_plus
-l_int|0x18
 suffix:semicolon
 id|ntfs_debug
 c_func
@@ -4517,6 +4542,14 @@ r_for
 c_loop
 (paren
 suffix:semicolon
+id|entry
+OL
+(paren
+id|buf
+op_plus
+id|ibs
+)paren
+op_logical_and
 id|ntfs_entry_is_used
 c_func
 (paren
@@ -4585,7 +4618,7 @@ r_if
 c_cond
 (paren
 (paren
-id|error
+id|err
 op_assign
 id|cb
 c_func
@@ -4682,7 +4715,7 @@ op_logical_neg
 id|attr
 )paren
 (brace
-multiline_comment|/* Directory does not have index allocation. */
+multiline_comment|/* Directory does not have index bitmap and index allocation. */
 op_star
 id|p_high
 op_assign
@@ -4703,14 +4736,41 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+id|max_size
+op_assign
+id|attr-&gt;size
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|max_size
+OG
+l_int|0x7fff
+op_rshift
+l_int|3
+)paren
+(brace
+id|ntfs_error
+c_func
+(paren
+id|__FUNCTION__
+l_string|&quot;(): Directory too large. Visible &quot;
+l_string|&quot;length is truncated.&bslash;n&quot;
+)paren
+suffix:semicolon
+id|max_size
+op_assign
+l_int|0x7fff
+op_rshift
+l_int|3
+suffix:semicolon
+)brace
 id|buf
 op_assign
 id|ntfs_malloc
 c_func
 (paren
-id|length
-op_assign
-id|attr-&gt;size
+id|max_size
 )paren
 suffix:semicolon
 r_if
@@ -4729,9 +4789,9 @@ id|buf
 suffix:semicolon
 id|io.size
 op_assign
-id|length
+id|max_size
 suffix:semicolon
-id|error
+id|err
 op_assign
 id|ntfs_read_attr
 c_func
@@ -4751,11 +4811,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|error
+id|err
 op_logical_or
 id|io.size
 op_ne
-id|length
+id|max_size
 )paren
 r_goto
 id|read_err_ret
@@ -4800,28 +4860,102 @@ op_minus
 id|EIO
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|attr-&gt;resident
+)paren
+(brace
+id|ntfs_free
+c_func
+(paren
+id|buf
+)paren
+suffix:semicolon
+id|ntfs_debug
+c_func
+(paren
+id|DEBUG_DIR3
+comma
+id|__FUNCTION__
+l_string|&quot;(): Unsorted 9.5: IA is &quot;
+l_string|&quot;resident. Not allowed. Returning EINVAL.&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
+)brace
 multiline_comment|/* Loop while going through non-allocated index records. */
-r_do
+id|max_size
+op_lshift_assign
+l_int|3
+suffix:semicolon
+r_while
+c_loop
+(paren
+l_int|1
+)paren
 (brace
 r_if
 c_cond
 (paren
+op_increment
+op_star
+id|p_high
+op_ge
+l_int|0x7fff
+)paren
+(brace
+id|ntfs_error
+c_func
+(paren
+id|__FUNCTION__
+l_string|&quot;(): Unsorted 10: Directory &quot;
+l_string|&quot;inode 0x%lx overflowed the maximum &quot;
+l_string|&quot;number of index allocation buffers &quot;
+l_string|&quot;the driver can cope with. Pretending &quot;
+l_string|&quot;to be at end of directory.&bslash;n&quot;
+comma
+id|ino-&gt;i_number
+)paren
+suffix:semicolon
+r_goto
+id|fake_eod
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+op_star
+id|p_high
+OG
+id|max_size
+op_logical_or
 (paren
 id|s64
 )paren
 op_star
 id|p_high
 op_lshift
-id|vol-&gt;cluster_size_bits
+id|ibs_bits
 OG
 id|attr-&gt;initialized
 )paren
 (brace
+id|fake_eod
+suffix:colon
 multiline_comment|/* No more index records. */
 op_star
 id|p_high
 op_assign
 l_int|0x7fff
+suffix:semicolon
+op_star
+id|p_low
+op_assign
+l_int|0
 suffix:semicolon
 id|ntfs_free
 c_func
@@ -4835,31 +4969,27 @@ c_func
 id|DEBUG_DIR3
 comma
 id|__FUNCTION__
-l_string|&quot;(): Unsorted 10: &quot;
-l_string|&quot;No more index records. Returning 0, &quot;
-l_string|&quot;p_high 0x7fff, p_low 0x%x.&bslash;n&quot;
-comma
-op_star
-id|p_low
+l_string|&quot;(): Unsorted &quot;
+l_string|&quot;10.5: No more index records. &quot;
+l_string|&quot;Returning 0, p_high 0x7fff, p_low &quot;
+l_string|&quot;0.&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
 )brace
-op_star
-id|p_high
-op_add_assign
-id|ino-&gt;u.index.clusters_per_record
-suffix:semicolon
 id|byte
 op_assign
+(paren
+id|ntfs_cluster_t
+)paren
+(paren
 op_star
 id|p_high
-op_div
-id|ino-&gt;u.index.clusters_per_record
 op_minus
 l_int|1
+)paren
 suffix:semicolon
 id|bit
 op_assign
@@ -4872,16 +5002,12 @@ l_int|7
 )paren
 suffix:semicolon
 id|byte
-op_assign
-id|byte
-op_rshift
+op_rshift_assign
 l_int|3
 suffix:semicolon
-)brace
-r_while
-c_loop
+r_if
+c_cond
 (paren
-op_logical_neg
 (paren
 id|buf
 (braket
@@ -4891,6 +5017,9 @@ op_amp
 id|bit
 )paren
 )paren
+r_break
+suffix:semicolon
+)brace
 suffix:semicolon
 id|ntfs_debug
 c_func
@@ -4923,9 +5052,9 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|error
+id|err
 )paren
-id|error
+id|err
 op_assign
 op_minus
 id|EIO
@@ -4936,7 +5065,7 @@ c_func
 id|__FUNCTION__
 l_string|&quot;(): Read failed. Returning error code %i.&bslash;n&quot;
 comma
-id|error
+id|err
 )paren
 suffix:semicolon
 id|ntfs_free
@@ -4946,7 +5075,7 @@ id|buf
 )paren
 suffix:semicolon
 r_return
-id|error
+id|err
 suffix:semicolon
 )brace
 DECL|function|ntfs_dir_add

@@ -126,12 +126,15 @@ multiline_comment|/* Attribute value */
 suffix:semicolon
 r_char
 op_star
-id|strdup
+id|strndup
 c_func
 (paren
 r_char
 op_star
 id|str
+comma
+r_int
+id|max
 )paren
 suffix:semicolon
 r_struct

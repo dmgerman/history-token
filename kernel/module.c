@@ -825,19 +825,13 @@ id|__stop___ksymtab
 op_minus
 id|__start___ksymtab
 suffix:semicolon
-macro_line|#ifdef __alpha__
-id|__asm__
+id|arch_init_modules
 c_func
 (paren
-l_string|&quot;stq $29,%0&quot;
-suffix:colon
-l_string|&quot;=m&quot;
-(paren
-id|kernel_module.gp
-)paren
+op_amp
+id|kernel_module
 )paren
 suffix:semicolon
-macro_line|#endif
 )brace
 multiline_comment|/*&n; * Copy the name of a module from user space.&n; */
 r_static
@@ -1781,36 +1775,6 @@ r_goto
 id|err2
 suffix:semicolon
 )brace
-macro_line|#ifdef __alpha__
-r_if
-c_cond
-(paren
-op_logical_neg
-id|mod_bound
-c_func
-(paren
-id|mod-&gt;gp
-op_minus
-l_int|0x8000
-comma
-l_int|0
-comma
-id|mod
-)paren
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;init_module: mod-&gt;gp out of bounds.&bslash;n&quot;
-)paren
-suffix:semicolon
-r_goto
-id|err2
-suffix:semicolon
-)brace
-macro_line|#endif
 r_if
 c_cond
 (paren

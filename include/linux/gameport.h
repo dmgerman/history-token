@@ -1,9 +1,10 @@
 macro_line|#ifndef _GAMEPORT_H
 DECL|macro|_GAMEPORT_H
 mdefine_line|#define _GAMEPORT_H
-multiline_comment|/*&n; * $Id: gameport.h,v 1.8 2000/06/03 20:18:52 vojtech Exp $&n; *&n; *  Copyright (c) 1999-2000 Vojtech Pavlik&n; *&n; *  Sponsored by SuSE&n; */
-multiline_comment|/*&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or &n; * (at your option) any later version.&n; * &n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; * &n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; * &n; * Should you need to contact me, the author, you can do so either by&n; * e-mail - mail your message to &lt;vojtech@ucw.cz&gt;, or by paper mail:&n; * Vojtech Pavlik, Ucitelska 1576, Prague 8, 182 00 Czech Republic&n; */
+multiline_comment|/*&n; * $Id: gameport.h,v 1.11 2001/04/26 10:24:46 vojtech Exp $&n; *&n; *  Copyright (c) 1999-2000 Vojtech Pavlik&n; *&n; *  Sponsored by SuSE&n; */
+multiline_comment|/*&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; *&n; * Should you need to contact me, the author, you can do so either by&n; * e-mail - mail your message to &lt;vojtech@ucw.cz&gt;, or by paper mail:&n; * Vojtech Pavlik, Ucitelska 1576, Prague 8, 182 00 Czech Republic&n; */
 macro_line|#include &lt;linux/sched.h&gt;
+macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 r_struct
 id|gameport
@@ -17,11 +18,6 @@ r_void
 op_star
 r_private
 suffix:semicolon
-DECL|member|driver
-r_void
-op_star
-id|driver
-suffix:semicolon
 DECL|member|number
 r_int
 id|number
@@ -30,10 +26,6 @@ DECL|member|io
 r_int
 id|io
 suffix:semicolon
-DECL|member|size
-r_int
-id|size
-suffix:semicolon
 DECL|member|speed
 r_int
 id|speed
@@ -41,16 +33,6 @@ suffix:semicolon
 DECL|member|fuzz
 r_int
 id|fuzz
-suffix:semicolon
-DECL|member|type
-r_int
-id|type
-suffix:semicolon
-DECL|member|pci
-r_struct
-id|pci_dev
-op_star
-id|pci
 suffix:semicolon
 DECL|member|trigger
 r_void
@@ -237,6 +219,7 @@ op_star
 id|gameport
 )paren
 suffix:semicolon
+macro_line|#if defined(CONFIG_INPUT_GAMEPORT) || defined(CONFIG_INPUT_GAMEPORT_MODULE)
 r_void
 id|gameport_register_port
 c_func
@@ -257,6 +240,38 @@ op_star
 id|gameport
 )paren
 suffix:semicolon
+macro_line|#else
+DECL|function|gameport_register_port
+r_void
+id|__inline__
+id|gameport_register_port
+c_func
+(paren
+r_struct
+id|gameport
+op_star
+id|gameport
+)paren
+(brace
+r_return
+suffix:semicolon
+)brace
+DECL|function|gameport_unregister_port
+r_void
+id|__inline__
+id|gameport_unregister_port
+c_func
+(paren
+r_struct
+id|gameport
+op_star
+id|gameport
+)paren
+(brace
+r_return
+suffix:semicolon
+)brace
+macro_line|#endif
 r_void
 id|gameport_register_device
 c_func
@@ -283,12 +298,6 @@ DECL|macro|GAMEPORT_MODE_RAW
 mdefine_line|#define GAMEPORT_MODE_RAW&t;&t;1
 DECL|macro|GAMEPORT_MODE_COOKED
 mdefine_line|#define GAMEPORT_MODE_COOKED&t;&t;2
-DECL|macro|GAMEPORT_ISA
-mdefine_line|#define GAMEPORT_ISA       0
-DECL|macro|GAMEPORT_PNP
-mdefine_line|#define GAMEPORT_PNP       1
-DECL|macro|GAMEPORT_EXT
-mdefine_line|#define GAMEPORT_EXT       2
 DECL|macro|GAMEPORT_ID_VENDOR_ANALOG
 mdefine_line|#define GAMEPORT_ID_VENDOR_ANALOG&t;0x0001
 DECL|macro|GAMEPORT_ID_VENDOR_MADCATZ

@@ -805,8 +805,7 @@ op_assign
 id|b
 suffix:semicolon
 )brace
-DECL|function|irongate_ioremap
-id|__EXTERN_INLINE
+r_extern
 r_int
 r_int
 id|irongate_ioremap
@@ -815,14 +814,22 @@ c_func
 r_int
 r_int
 id|addr
+comma
+r_int
+r_int
+id|size
 )paren
-(brace
-r_return
-id|addr
-op_plus
-id|IRONGATE_MEM
 suffix:semicolon
-)brace
+r_extern
+r_void
+id|irongate_iounmap
+c_func
+(paren
+r_int
+r_int
+id|addr
+)paren
+suffix:semicolon
 DECL|function|irongate_is_ioaddr
 id|__EXTERN_INLINE
 r_int
@@ -878,7 +885,9 @@ mdefine_line|#define __writel(x,a)&t;&t;irongate_writel((x),(unsigned long)(a))
 DECL|macro|__writeq
 mdefine_line|#define __writeq(x,a)&t;&t;irongate_writeq((x),(unsigned long)(a))
 DECL|macro|__ioremap
-mdefine_line|#define __ioremap(a)&t;&t;irongate_ioremap((unsigned long)(a))
+mdefine_line|#define __ioremap(a,s)&t;&t;irongate_ioremap((unsigned long)(a),(s))
+DECL|macro|__iounmap
+mdefine_line|#define __iounmap(a)&t;&t;irongate_iounmap((unsigned long)(a))
 DECL|macro|__is_ioaddr
 mdefine_line|#define __is_ioaddr(a)&t;&t;irongate_is_ioaddr((unsigned long)(a))
 DECL|macro|inb

@@ -184,6 +184,12 @@ DECL|macro|CG6_THC_MISC_INT
 mdefine_line|#define CG6_THC_MISC_INT             (1 &lt;&lt; 4)
 DECL|macro|CG6_THC_MISC_INIT
 mdefine_line|#define CG6_THC_MISC_INIT            0x9f
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 multiline_comment|/* The contents are unknown */
 DECL|struct|cg6_tec
 r_struct

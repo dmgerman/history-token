@@ -25621,6 +25621,12 @@ c_func
 l_string|&quot;Theodore Ts&squot;o &lt;tytso@mit.edu&gt;&quot;
 )paren
 suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * ------------------------------------------------------------&n; * Serial console driver&n; * ------------------------------------------------------------&n; */
 macro_line|#ifdef CONFIG_SERIAL_CONSOLE
 DECL|macro|BOTH_EMPTY

@@ -3076,4 +3076,10 @@ c_func
 id|exit_serial_cs
 )paren
 suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 eof

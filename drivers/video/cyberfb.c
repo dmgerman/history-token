@@ -6031,6 +6031,12 @@ l_int|8
 suffix:semicolon
 macro_line|#endif
 macro_line|#ifdef MODULE
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 DECL|function|init_module
 r_int
 id|init_module

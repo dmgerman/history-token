@@ -1,13 +1,14 @@
 macro_line|#ifndef _INPUT_H
 DECL|macro|_INPUT_H
 mdefine_line|#define _INPUT_H
-multiline_comment|/*&n; * $Id: input.h,v 1.18 2000/07/25 21:36:56 vojtech Exp $&n; *&n; *  Copyright (c) 1999-2000 Vojtech Pavlik&n; *&n; *  Sponsored by SuSE&n; */
-multiline_comment|/*&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or &n; * (at your option) any later version.&n; * &n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; * &n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; * &n; * Should you need to contact me, the author, you can do so either by&n; * e-mail - mail your message to &lt;vojtech@suse.cz&gt;, or by paper mail:&n; * Vojtech Pavlik, Ucitelska 1576, Prague 8, 182 00 Czech Republic&n; */
+multiline_comment|/*&n; * $Id: input.h,v 1.34 2001/05/28 09:06:44 vojtech Exp $&n; *&n; *  Copyright (c) 1999-2000 Vojtech Pavlik&n; *&n; *  Sponsored by SuSE&n; */
+multiline_comment|/*&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; *&n; * Should you need to contact me, the author, you can do so either by&n; * e-mail - mail your message to &lt;vojtech@suse.cz&gt;, or by paper mail:&n; * Vojtech Pavlik, Ucitelska 1576, Prague 8, 182 00 Czech Republic&n; */
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/time.h&gt;
 macro_line|#else
 macro_line|#include &lt;sys/time.h&gt;
 macro_line|#include &lt;sys/ioctl.h&gt;
+macro_line|#include &lt;asm/types.h&gt;
 macro_line|#endif
 multiline_comment|/*&n; * The event structure itself&n; */
 DECL|struct|input_event
@@ -41,7 +42,7 @@ DECL|macro|EV_VERSION
 mdefine_line|#define EV_VERSION&t;&t;0x010000
 multiline_comment|/*&n; * IOCTLs (0x00 - 0x7f)&n; */
 DECL|macro|EVIOCGVERSION
-mdefine_line|#define EVIOCGVERSION&t;&t;_IOR(&squot;E&squot;, 0x01, int)                    /* get driver version */
+mdefine_line|#define EVIOCGVERSION&t;&t;_IOR(&squot;E&squot;, 0x01, int)&t;&t;&t;/* get driver version */
 DECL|macro|EVIOCGID
 mdefine_line|#define EVIOCGID&t;&t;_IOR(&squot;E&squot;, 0x02, short[4])&t;&t;/* get device ID */
 DECL|macro|EVIOCGREP
@@ -56,10 +57,22 @@ DECL|macro|EVIOCGKEY
 mdefine_line|#define EVIOCGKEY&t;&t;_IOR(&squot;E&squot;, 0x05, int[2])&t;&t;&t;/* get key value */
 DECL|macro|EVIOCGNAME
 mdefine_line|#define EVIOCGNAME(len)&t;&t;_IOC(_IOC_READ, &squot;E&squot;, 0x06, len)&t;&t;/* get device name */
+DECL|macro|EVIOCGBUS
+mdefine_line|#define EVIOCGBUS&t;&t;_IOR(&squot;E&squot;, 0x07, short[4])&t;&t;/* get bus address */
 DECL|macro|EVIOCGBIT
 mdefine_line|#define EVIOCGBIT(ev,len)&t;_IOC(_IOC_READ, &squot;E&squot;, 0x20 + ev, len)&t;/* get event bits */
 DECL|macro|EVIOCGABS
-mdefine_line|#define EVIOCGABS(abs)&t;&t;_IOR(&squot;E&squot;, 0x40 + abs, int[5])&t;&t;/* get abs value/limits */ 
+mdefine_line|#define EVIOCGABS(abs)&t;&t;_IOR(&squot;E&squot;, 0x40 + abs, int[5])&t;&t;/* get abs value/limits */
+DECL|macro|EVIOCSFF
+mdefine_line|#define EVIOCSFF&t;&t;_IOC(_IOC_WRITE, &squot;E&squot;, 0x80, sizeof(struct ff_effect))&t;/* send a force effect to a force feedback device */
+DECL|macro|EVIOCRMFF
+mdefine_line|#define EVIOCRMFF&t;&t;_IOW(&squot;E&squot;, 0x81, int)&t;&t;&t;/* Erase a force effect */
+DECL|macro|EVIOCSGAIN
+mdefine_line|#define EVIOCSGAIN&t;&t;_IOW(&squot;E&squot;, 0x82, unsigned short)&t;&t;/* Set overall gain */
+DECL|macro|EVIOCSAUTOCENTER
+mdefine_line|#define EVIOCSAUTOCENTER&t;_IOW(&squot;E&squot;, 0x83, unsigned short)&t;&t;/* Enable or disable auto-centering */
+DECL|macro|EVIOCGEFFECTS
+mdefine_line|#define EVIOCGEFFECTS&t;&t;_IOR(&squot;E&squot;, 0x84, int)&t;&t;&t;/* Report number of effects playable at the same time */
 multiline_comment|/*&n; * Event types&n; */
 DECL|macro|EV_RST
 mdefine_line|#define EV_RST&t;&t;&t;0x00
@@ -69,325 +82,329 @@ DECL|macro|EV_REL
 mdefine_line|#define EV_REL&t;&t;&t;0x02
 DECL|macro|EV_ABS
 mdefine_line|#define EV_ABS&t;&t;&t;0x03
+DECL|macro|EV_MSC
+mdefine_line|#define EV_MSC&t;&t;&t;0x04
 DECL|macro|EV_LED
 mdefine_line|#define EV_LED&t;&t;&t;0x11
 DECL|macro|EV_SND
 mdefine_line|#define EV_SND&t;&t;&t;0x12
 DECL|macro|EV_REP
 mdefine_line|#define EV_REP&t;&t;&t;0x14
+DECL|macro|EV_FF
+mdefine_line|#define EV_FF&t;&t;&t;0x15
 DECL|macro|EV_MAX
 mdefine_line|#define EV_MAX&t;&t;&t;0x1f
 multiline_comment|/*&n; * Keys and buttons&n; */
 DECL|macro|KEY_RESERVED
-mdefine_line|#define KEY_RESERVED&t;&t;0&t;&t;
+mdefine_line|#define KEY_RESERVED&t;&t;0
 DECL|macro|KEY_ESC
-mdefine_line|#define KEY_ESC&t;&t;&t;1&t;&t;
+mdefine_line|#define KEY_ESC&t;&t;&t;1
 DECL|macro|KEY_1
-mdefine_line|#define KEY_1&t;&t;&t;2&t;&t;
+mdefine_line|#define KEY_1&t;&t;&t;2
 DECL|macro|KEY_2
-mdefine_line|#define KEY_2&t;&t;&t;3&t;&t;
+mdefine_line|#define KEY_2&t;&t;&t;3
 DECL|macro|KEY_3
-mdefine_line|#define KEY_3&t;&t;&t;4&t;&t;
+mdefine_line|#define KEY_3&t;&t;&t;4
 DECL|macro|KEY_4
-mdefine_line|#define KEY_4&t;&t;&t;5&t;&t;
+mdefine_line|#define KEY_4&t;&t;&t;5
 DECL|macro|KEY_5
-mdefine_line|#define KEY_5&t;&t;&t;6&t;&t;
+mdefine_line|#define KEY_5&t;&t;&t;6
 DECL|macro|KEY_6
-mdefine_line|#define KEY_6&t;&t;&t;7&t;&t;
+mdefine_line|#define KEY_6&t;&t;&t;7
 DECL|macro|KEY_7
-mdefine_line|#define KEY_7&t;&t;&t;8&t;&t;
+mdefine_line|#define KEY_7&t;&t;&t;8
 DECL|macro|KEY_8
-mdefine_line|#define KEY_8&t;&t;&t;9&t;&t;
+mdefine_line|#define KEY_8&t;&t;&t;9
 DECL|macro|KEY_9
-mdefine_line|#define KEY_9&t;&t;&t;10&t;&t;
+mdefine_line|#define KEY_9&t;&t;&t;10
 DECL|macro|KEY_0
-mdefine_line|#define KEY_0&t;&t;&t;11&t;&t;
+mdefine_line|#define KEY_0&t;&t;&t;11
 DECL|macro|KEY_MINUS
-mdefine_line|#define KEY_MINUS&t;&t;12&t;&t;
+mdefine_line|#define KEY_MINUS&t;&t;12
 DECL|macro|KEY_EQUAL
-mdefine_line|#define KEY_EQUAL&t;&t;13&t;&t;
+mdefine_line|#define KEY_EQUAL&t;&t;13
 DECL|macro|KEY_BACKSPACE
-mdefine_line|#define KEY_BACKSPACE&t;&t;14&t;&t;
+mdefine_line|#define KEY_BACKSPACE&t;&t;14
 DECL|macro|KEY_TAB
-mdefine_line|#define KEY_TAB&t;&t;&t;15&t;&t;
+mdefine_line|#define KEY_TAB&t;&t;&t;15
 DECL|macro|KEY_Q
-mdefine_line|#define KEY_Q&t;&t;&t;16&t;&t;
+mdefine_line|#define KEY_Q&t;&t;&t;16
 DECL|macro|KEY_W
-mdefine_line|#define KEY_W&t;&t;&t;17&t;&t;
+mdefine_line|#define KEY_W&t;&t;&t;17
 DECL|macro|KEY_E
-mdefine_line|#define KEY_E&t;&t;&t;18&t;&t;
+mdefine_line|#define KEY_E&t;&t;&t;18
 DECL|macro|KEY_R
-mdefine_line|#define KEY_R&t;&t;&t;19&t;&t;
+mdefine_line|#define KEY_R&t;&t;&t;19
 DECL|macro|KEY_T
-mdefine_line|#define KEY_T&t;&t;&t;20&t;&t;
+mdefine_line|#define KEY_T&t;&t;&t;20
 DECL|macro|KEY_Y
-mdefine_line|#define KEY_Y&t;&t;&t;21&t;&t;
+mdefine_line|#define KEY_Y&t;&t;&t;21
 DECL|macro|KEY_U
-mdefine_line|#define KEY_U&t;&t;&t;22&t;&t;
+mdefine_line|#define KEY_U&t;&t;&t;22
 DECL|macro|KEY_I
-mdefine_line|#define KEY_I&t;&t;&t;23&t;&t;
+mdefine_line|#define KEY_I&t;&t;&t;23
 DECL|macro|KEY_O
-mdefine_line|#define KEY_O&t;&t;&t;24&t;&t;
+mdefine_line|#define KEY_O&t;&t;&t;24
 DECL|macro|KEY_P
-mdefine_line|#define KEY_P&t;&t;&t;25&t;&t;
+mdefine_line|#define KEY_P&t;&t;&t;25
 DECL|macro|KEY_LEFTBRACE
-mdefine_line|#define KEY_LEFTBRACE&t;&t;26&t;&t;
+mdefine_line|#define KEY_LEFTBRACE&t;&t;26
 DECL|macro|KEY_RIGHTBRACE
-mdefine_line|#define KEY_RIGHTBRACE&t;&t;27&t;&t;
+mdefine_line|#define KEY_RIGHTBRACE&t;&t;27
 DECL|macro|KEY_ENTER
-mdefine_line|#define KEY_ENTER&t;&t;28&t;&t;
+mdefine_line|#define KEY_ENTER&t;&t;28
 DECL|macro|KEY_LEFTCTRL
-mdefine_line|#define KEY_LEFTCTRL&t;&t;29&t;&t;
+mdefine_line|#define KEY_LEFTCTRL&t;&t;29
 DECL|macro|KEY_A
-mdefine_line|#define KEY_A&t;&t;&t;30&t;&t;
+mdefine_line|#define KEY_A&t;&t;&t;30
 DECL|macro|KEY_S
-mdefine_line|#define KEY_S&t;&t;&t;31&t;&t;
+mdefine_line|#define KEY_S&t;&t;&t;31
 DECL|macro|KEY_D
-mdefine_line|#define KEY_D&t;&t;&t;32&t;&t;
+mdefine_line|#define KEY_D&t;&t;&t;32
 DECL|macro|KEY_F
-mdefine_line|#define KEY_F&t;&t;&t;33&t;&t;
+mdefine_line|#define KEY_F&t;&t;&t;33
 DECL|macro|KEY_G
-mdefine_line|#define KEY_G&t;&t;&t;34&t;&t;
+mdefine_line|#define KEY_G&t;&t;&t;34
 DECL|macro|KEY_H
-mdefine_line|#define KEY_H&t;&t;&t;35&t;&t;
+mdefine_line|#define KEY_H&t;&t;&t;35
 DECL|macro|KEY_J
-mdefine_line|#define KEY_J&t;&t;&t;36&t;&t;
+mdefine_line|#define KEY_J&t;&t;&t;36
 DECL|macro|KEY_K
-mdefine_line|#define KEY_K&t;&t;&t;37&t;&t;
+mdefine_line|#define KEY_K&t;&t;&t;37
 DECL|macro|KEY_L
-mdefine_line|#define KEY_L&t;&t;&t;38&t;&t;
+mdefine_line|#define KEY_L&t;&t;&t;38
 DECL|macro|KEY_SEMICOLON
-mdefine_line|#define KEY_SEMICOLON&t;&t;39&t;&t;
+mdefine_line|#define KEY_SEMICOLON&t;&t;39
 DECL|macro|KEY_APOSTROPHE
-mdefine_line|#define KEY_APOSTROPHE&t;&t;40&t;&t;
+mdefine_line|#define KEY_APOSTROPHE&t;&t;40
 DECL|macro|KEY_GRAVE
-mdefine_line|#define KEY_GRAVE&t;&t;41&t;&t;
+mdefine_line|#define KEY_GRAVE&t;&t;41
 DECL|macro|KEY_LEFTSHIFT
-mdefine_line|#define KEY_LEFTSHIFT&t;&t;42&t;&t;
+mdefine_line|#define KEY_LEFTSHIFT&t;&t;42
 DECL|macro|KEY_BACKSLASH
-mdefine_line|#define KEY_BACKSLASH&t;&t;43&t;&t;
+mdefine_line|#define KEY_BACKSLASH&t;&t;43
 DECL|macro|KEY_Z
-mdefine_line|#define KEY_Z&t;&t;&t;44&t;&t;
+mdefine_line|#define KEY_Z&t;&t;&t;44
 DECL|macro|KEY_X
-mdefine_line|#define KEY_X&t;&t;&t;45&t;&t;
+mdefine_line|#define KEY_X&t;&t;&t;45
 DECL|macro|KEY_C
-mdefine_line|#define KEY_C&t;&t;&t;46&t;&t;
+mdefine_line|#define KEY_C&t;&t;&t;46
 DECL|macro|KEY_V
-mdefine_line|#define KEY_V&t;&t;&t;47&t;&t;
+mdefine_line|#define KEY_V&t;&t;&t;47
 DECL|macro|KEY_B
-mdefine_line|#define KEY_B&t;&t;&t;48&t;&t;
+mdefine_line|#define KEY_B&t;&t;&t;48
 DECL|macro|KEY_N
-mdefine_line|#define KEY_N&t;&t;&t;49&t;&t;
+mdefine_line|#define KEY_N&t;&t;&t;49
 DECL|macro|KEY_M
-mdefine_line|#define KEY_M&t;&t;&t;50&t;&t;
+mdefine_line|#define KEY_M&t;&t;&t;50
 DECL|macro|KEY_COMMA
-mdefine_line|#define KEY_COMMA&t;&t;51&t;&t;
+mdefine_line|#define KEY_COMMA&t;&t;51
 DECL|macro|KEY_DOT
-mdefine_line|#define KEY_DOT&t;&t;&t;52&t;&t;
+mdefine_line|#define KEY_DOT&t;&t;&t;52
 DECL|macro|KEY_SLASH
-mdefine_line|#define KEY_SLASH&t;&t;53&t;&t;
+mdefine_line|#define KEY_SLASH&t;&t;53
 DECL|macro|KEY_RIGHTSHIFT
-mdefine_line|#define KEY_RIGHTSHIFT&t;&t;54&t;&t;
+mdefine_line|#define KEY_RIGHTSHIFT&t;&t;54
 DECL|macro|KEY_KPASTERISK
-mdefine_line|#define KEY_KPASTERISK&t;&t;55&t;&t;
+mdefine_line|#define KEY_KPASTERISK&t;&t;55
 DECL|macro|KEY_LEFTALT
-mdefine_line|#define KEY_LEFTALT&t;&t;56&t;&t;
+mdefine_line|#define KEY_LEFTALT&t;&t;56
 DECL|macro|KEY_SPACE
-mdefine_line|#define KEY_SPACE&t;&t;57&t;&t;
+mdefine_line|#define KEY_SPACE&t;&t;57
 DECL|macro|KEY_CAPSLOCK
-mdefine_line|#define KEY_CAPSLOCK&t;&t;58&t;&t;
+mdefine_line|#define KEY_CAPSLOCK&t;&t;58
 DECL|macro|KEY_F1
-mdefine_line|#define KEY_F1&t;&t;&t;59&t;&t;
+mdefine_line|#define KEY_F1&t;&t;&t;59
 DECL|macro|KEY_F2
-mdefine_line|#define KEY_F2&t;&t;&t;60&t;&t;
+mdefine_line|#define KEY_F2&t;&t;&t;60
 DECL|macro|KEY_F3
-mdefine_line|#define KEY_F3&t;&t;&t;61&t;&t;
+mdefine_line|#define KEY_F3&t;&t;&t;61
 DECL|macro|KEY_F4
-mdefine_line|#define KEY_F4&t;&t;&t;62&t;&t;
+mdefine_line|#define KEY_F4&t;&t;&t;62
 DECL|macro|KEY_F5
-mdefine_line|#define KEY_F5&t;&t;&t;63&t;&t;
+mdefine_line|#define KEY_F5&t;&t;&t;63
 DECL|macro|KEY_F6
-mdefine_line|#define KEY_F6&t;&t;&t;64&t;&t;
+mdefine_line|#define KEY_F6&t;&t;&t;64
 DECL|macro|KEY_F7
-mdefine_line|#define KEY_F7&t;&t;&t;65&t;&t;
+mdefine_line|#define KEY_F7&t;&t;&t;65
 DECL|macro|KEY_F8
-mdefine_line|#define KEY_F8&t;&t;&t;66&t;&t;
+mdefine_line|#define KEY_F8&t;&t;&t;66
 DECL|macro|KEY_F9
-mdefine_line|#define KEY_F9&t;&t;&t;67&t;&t;
+mdefine_line|#define KEY_F9&t;&t;&t;67
 DECL|macro|KEY_F10
-mdefine_line|#define KEY_F10&t;&t;&t;68&t;&t;
+mdefine_line|#define KEY_F10&t;&t;&t;68
 DECL|macro|KEY_NUMLOCK
-mdefine_line|#define KEY_NUMLOCK&t;&t;69&t;&t;
+mdefine_line|#define KEY_NUMLOCK&t;&t;69
 DECL|macro|KEY_SCROLLLOCK
-mdefine_line|#define KEY_SCROLLLOCK&t;&t;70&t;&t;
+mdefine_line|#define KEY_SCROLLLOCK&t;&t;70
 DECL|macro|KEY_KP7
-mdefine_line|#define KEY_KP7&t;&t;&t;71&t;&t;
+mdefine_line|#define KEY_KP7&t;&t;&t;71
 DECL|macro|KEY_KP8
-mdefine_line|#define KEY_KP8&t;&t;&t;72&t;&t;
+mdefine_line|#define KEY_KP8&t;&t;&t;72
 DECL|macro|KEY_KP9
-mdefine_line|#define KEY_KP9&t;&t;&t;73&t;&t;
+mdefine_line|#define KEY_KP9&t;&t;&t;73
 DECL|macro|KEY_KPMINUS
-mdefine_line|#define KEY_KPMINUS&t;&t;74&t;&t;
+mdefine_line|#define KEY_KPMINUS&t;&t;74
 DECL|macro|KEY_KP4
-mdefine_line|#define KEY_KP4&t;&t;&t;75&t;&t;
+mdefine_line|#define KEY_KP4&t;&t;&t;75
 DECL|macro|KEY_KP5
-mdefine_line|#define KEY_KP5&t;&t;&t;76&t;&t;
+mdefine_line|#define KEY_KP5&t;&t;&t;76
 DECL|macro|KEY_KP6
-mdefine_line|#define KEY_KP6&t;&t;&t;77&t;&t;
+mdefine_line|#define KEY_KP6&t;&t;&t;77
 DECL|macro|KEY_KPPLUS
-mdefine_line|#define KEY_KPPLUS&t;&t;78&t;&t;
+mdefine_line|#define KEY_KPPLUS&t;&t;78
 DECL|macro|KEY_KP1
-mdefine_line|#define KEY_KP1&t;&t;&t;79&t;&t;
+mdefine_line|#define KEY_KP1&t;&t;&t;79
 DECL|macro|KEY_KP2
-mdefine_line|#define KEY_KP2&t;&t;&t;80&t;&t;
+mdefine_line|#define KEY_KP2&t;&t;&t;80
 DECL|macro|KEY_KP3
-mdefine_line|#define KEY_KP3&t;&t;&t;81&t;&t;
+mdefine_line|#define KEY_KP3&t;&t;&t;81
 DECL|macro|KEY_KP0
-mdefine_line|#define KEY_KP0&t;&t;&t;82&t;&t;
+mdefine_line|#define KEY_KP0&t;&t;&t;82
 DECL|macro|KEY_KPDOT
-mdefine_line|#define KEY_KPDOT&t;&t;83&t;&t;
+mdefine_line|#define KEY_KPDOT&t;&t;83
 DECL|macro|KEY_103RD
 mdefine_line|#define KEY_103RD&t;&t;84
 DECL|macro|KEY_F13
-mdefine_line|#define KEY_F13&t;&t;&t;85&t;&t;
+mdefine_line|#define KEY_F13&t;&t;&t;85
 DECL|macro|KEY_102ND
-mdefine_line|#define KEY_102ND&t;&t;86&t;&t;
+mdefine_line|#define KEY_102ND&t;&t;86
 DECL|macro|KEY_F11
-mdefine_line|#define KEY_F11&t;&t;&t;87&t;&t;
+mdefine_line|#define KEY_F11&t;&t;&t;87
 DECL|macro|KEY_F12
-mdefine_line|#define KEY_F12&t;&t;&t;88&t;&t;
+mdefine_line|#define KEY_F12&t;&t;&t;88
 DECL|macro|KEY_F14
-mdefine_line|#define KEY_F14&t;&t;&t;89&t;&t;
+mdefine_line|#define KEY_F14&t;&t;&t;89
 DECL|macro|KEY_F15
-mdefine_line|#define KEY_F15&t;&t;&t;90&t;&t;
+mdefine_line|#define KEY_F15&t;&t;&t;90
 DECL|macro|KEY_F16
-mdefine_line|#define KEY_F16&t;&t;&t;91&t;&t;
+mdefine_line|#define KEY_F16&t;&t;&t;91
 DECL|macro|KEY_F17
-mdefine_line|#define KEY_F17&t;&t;&t;92&t;&t;
+mdefine_line|#define KEY_F17&t;&t;&t;92
 DECL|macro|KEY_F18
-mdefine_line|#define KEY_F18&t;&t;&t;93&t;&t;
+mdefine_line|#define KEY_F18&t;&t;&t;93
 DECL|macro|KEY_F19
-mdefine_line|#define KEY_F19&t;&t;&t;94&t;&t;
+mdefine_line|#define KEY_F19&t;&t;&t;94
 DECL|macro|KEY_F20
-mdefine_line|#define KEY_F20&t;&t;&t;95&t;&t;
+mdefine_line|#define KEY_F20&t;&t;&t;95
 DECL|macro|KEY_KPENTER
-mdefine_line|#define KEY_KPENTER&t;&t;96&t;&t;
+mdefine_line|#define KEY_KPENTER&t;&t;96
 DECL|macro|KEY_RIGHTCTRL
-mdefine_line|#define KEY_RIGHTCTRL&t;&t;97&t;&t;
+mdefine_line|#define KEY_RIGHTCTRL&t;&t;97
 DECL|macro|KEY_KPSLASH
-mdefine_line|#define KEY_KPSLASH&t;&t;98&t;&t;
+mdefine_line|#define KEY_KPSLASH&t;&t;98
 DECL|macro|KEY_SYSRQ
-mdefine_line|#define KEY_SYSRQ&t;&t;99&t;&t;
+mdefine_line|#define KEY_SYSRQ&t;&t;99
 DECL|macro|KEY_RIGHTALT
-mdefine_line|#define KEY_RIGHTALT&t;&t;100&t;&t;
+mdefine_line|#define KEY_RIGHTALT&t;&t;100
 DECL|macro|KEY_LINEFEED
-mdefine_line|#define KEY_LINEFEED&t;&t;101&t;&t;
+mdefine_line|#define KEY_LINEFEED&t;&t;101
 DECL|macro|KEY_HOME
-mdefine_line|#define KEY_HOME&t;&t;102&t;&t;
+mdefine_line|#define KEY_HOME&t;&t;102
 DECL|macro|KEY_UP
-mdefine_line|#define KEY_UP&t;&t;&t;103&t;&t;
+mdefine_line|#define KEY_UP&t;&t;&t;103
 DECL|macro|KEY_PAGEUP
-mdefine_line|#define KEY_PAGEUP&t;&t;104&t;&t;
+mdefine_line|#define KEY_PAGEUP&t;&t;104
 DECL|macro|KEY_LEFT
-mdefine_line|#define KEY_LEFT&t;&t;105&t;&t;
+mdefine_line|#define KEY_LEFT&t;&t;105
 DECL|macro|KEY_RIGHT
-mdefine_line|#define KEY_RIGHT&t;&t;106&t;&t;
+mdefine_line|#define KEY_RIGHT&t;&t;106
 DECL|macro|KEY_END
-mdefine_line|#define KEY_END&t;&t;&t;107&t;&t;
+mdefine_line|#define KEY_END&t;&t;&t;107
 DECL|macro|KEY_DOWN
-mdefine_line|#define KEY_DOWN&t;&t;108&t;&t;
+mdefine_line|#define KEY_DOWN&t;&t;108
 DECL|macro|KEY_PAGEDOWN
-mdefine_line|#define KEY_PAGEDOWN&t;&t;109&t;&t;
+mdefine_line|#define KEY_PAGEDOWN&t;&t;109
 DECL|macro|KEY_INSERT
-mdefine_line|#define KEY_INSERT&t;&t;110&t;&t;
+mdefine_line|#define KEY_INSERT&t;&t;110
 DECL|macro|KEY_DELETE
-mdefine_line|#define KEY_DELETE&t;&t;111&t;&t;
+mdefine_line|#define KEY_DELETE&t;&t;111
 DECL|macro|KEY_MACRO
-mdefine_line|#define KEY_MACRO&t;&t;112&t;&t;
+mdefine_line|#define KEY_MACRO&t;&t;112
 DECL|macro|KEY_MUTE
-mdefine_line|#define KEY_MUTE&t;&t;113&t;&t;
+mdefine_line|#define KEY_MUTE&t;&t;113
 DECL|macro|KEY_VOLUMEDOWN
-mdefine_line|#define KEY_VOLUMEDOWN&t;&t;114&t;&t;
+mdefine_line|#define KEY_VOLUMEDOWN&t;&t;114
 DECL|macro|KEY_VOLUMEUP
-mdefine_line|#define KEY_VOLUMEUP&t;&t;115&t;&t;
+mdefine_line|#define KEY_VOLUMEUP&t;&t;115
 DECL|macro|KEY_POWER
-mdefine_line|#define KEY_POWER&t;&t;116&t;&t;
+mdefine_line|#define KEY_POWER&t;&t;116
 DECL|macro|KEY_KPEQUAL
-mdefine_line|#define KEY_KPEQUAL&t;&t;117&t;&t;
+mdefine_line|#define KEY_KPEQUAL&t;&t;117
 DECL|macro|KEY_KPPLUSMINUS
-mdefine_line|#define KEY_KPPLUSMINUS&t;&t;118&t;&t;
+mdefine_line|#define KEY_KPPLUSMINUS&t;&t;118
 DECL|macro|KEY_PAUSE
-mdefine_line|#define KEY_PAUSE&t;&t;119&t;&t;
+mdefine_line|#define KEY_PAUSE&t;&t;119
 DECL|macro|KEY_F21
-mdefine_line|#define KEY_F21&t;&t;&t;120&t;&t;
+mdefine_line|#define KEY_F21&t;&t;&t;120
 DECL|macro|KEY_F22
-mdefine_line|#define KEY_F22&t;&t;&t;121&t;&t;
+mdefine_line|#define KEY_F22&t;&t;&t;121
 DECL|macro|KEY_F23
-mdefine_line|#define KEY_F23&t;&t;&t;122&t;&t;
+mdefine_line|#define KEY_F23&t;&t;&t;122
 DECL|macro|KEY_F24
-mdefine_line|#define KEY_F24&t;&t;&t;123&t;&t;
+mdefine_line|#define KEY_F24&t;&t;&t;123
 DECL|macro|KEY_KPCOMMA
 mdefine_line|#define KEY_KPCOMMA&t;&t;124
 DECL|macro|KEY_LEFTMETA
-mdefine_line|#define KEY_LEFTMETA&t;&t;125&t;&t;
+mdefine_line|#define KEY_LEFTMETA&t;&t;125
 DECL|macro|KEY_RIGHTMETA
-mdefine_line|#define KEY_RIGHTMETA&t;&t;126&t;&t;
+mdefine_line|#define KEY_RIGHTMETA&t;&t;126
 DECL|macro|KEY_COMPOSE
-mdefine_line|#define KEY_COMPOSE&t;&t;127&t;&t;
+mdefine_line|#define KEY_COMPOSE&t;&t;127
 DECL|macro|KEY_STOP
-mdefine_line|#define KEY_STOP&t;&t;128&t;&t;
+mdefine_line|#define KEY_STOP&t;&t;128
 DECL|macro|KEY_AGAIN
-mdefine_line|#define KEY_AGAIN&t;&t;129&t;&t;
+mdefine_line|#define KEY_AGAIN&t;&t;129
 DECL|macro|KEY_PROPS
-mdefine_line|#define KEY_PROPS&t;&t;130&t;&t;
+mdefine_line|#define KEY_PROPS&t;&t;130
 DECL|macro|KEY_UNDO
-mdefine_line|#define KEY_UNDO&t;&t;131&t;&t;
+mdefine_line|#define KEY_UNDO&t;&t;131
 DECL|macro|KEY_FRONT
-mdefine_line|#define KEY_FRONT&t;&t;132&t;&t;
+mdefine_line|#define KEY_FRONT&t;&t;132
 DECL|macro|KEY_COPY
-mdefine_line|#define KEY_COPY&t;&t;133&t;&t;
+mdefine_line|#define KEY_COPY&t;&t;133
 DECL|macro|KEY_OPEN
-mdefine_line|#define KEY_OPEN&t;&t;134&t;&t;
+mdefine_line|#define KEY_OPEN&t;&t;134
 DECL|macro|KEY_PASTE
-mdefine_line|#define KEY_PASTE&t;&t;135&t;&t;
+mdefine_line|#define KEY_PASTE&t;&t;135
 DECL|macro|KEY_FIND
-mdefine_line|#define KEY_FIND&t;&t;136&t;&t;
+mdefine_line|#define KEY_FIND&t;&t;136
 DECL|macro|KEY_CUT
-mdefine_line|#define KEY_CUT&t;&t;&t;137&t;&t;
+mdefine_line|#define KEY_CUT&t;&t;&t;137
 DECL|macro|KEY_HELP
-mdefine_line|#define KEY_HELP&t;&t;138&t;&t;
+mdefine_line|#define KEY_HELP&t;&t;138
 DECL|macro|KEY_MENU
-mdefine_line|#define KEY_MENU&t;&t;139&t;&t;
+mdefine_line|#define KEY_MENU&t;&t;139
 DECL|macro|KEY_CALC
-mdefine_line|#define KEY_CALC&t;&t;140&t;&t;
+mdefine_line|#define KEY_CALC&t;&t;140
 DECL|macro|KEY_SETUP
-mdefine_line|#define KEY_SETUP&t;&t;141&t;&t;
+mdefine_line|#define KEY_SETUP&t;&t;141
 DECL|macro|KEY_SLEEP
-mdefine_line|#define KEY_SLEEP&t;&t;142&t;&t;
+mdefine_line|#define KEY_SLEEP&t;&t;142
 DECL|macro|KEY_WAKEUP
-mdefine_line|#define KEY_WAKEUP&t;&t;143&t;&t;
+mdefine_line|#define KEY_WAKEUP&t;&t;143
 DECL|macro|KEY_FILE
-mdefine_line|#define KEY_FILE&t;&t;144&t;&t;
+mdefine_line|#define KEY_FILE&t;&t;144
 DECL|macro|KEY_SENDFILE
-mdefine_line|#define KEY_SENDFILE&t;&t;145&t;&t;
+mdefine_line|#define KEY_SENDFILE&t;&t;145
 DECL|macro|KEY_DELETEFILE
-mdefine_line|#define KEY_DELETEFILE&t;&t;146&t;&t;
+mdefine_line|#define KEY_DELETEFILE&t;&t;146
 DECL|macro|KEY_XFER
-mdefine_line|#define KEY_XFER&t;&t;147&t;&t;
+mdefine_line|#define KEY_XFER&t;&t;147
 DECL|macro|KEY_PROG1
-mdefine_line|#define KEY_PROG1&t;&t;148&t;&t;
+mdefine_line|#define KEY_PROG1&t;&t;148
 DECL|macro|KEY_PROG2
-mdefine_line|#define KEY_PROG2&t;&t;149&t;&t;
+mdefine_line|#define KEY_PROG2&t;&t;149
 DECL|macro|KEY_WWW
-mdefine_line|#define KEY_WWW&t;&t;&t;150&t;&t;
+mdefine_line|#define KEY_WWW&t;&t;&t;150
 DECL|macro|KEY_MSDOS
-mdefine_line|#define KEY_MSDOS&t;&t;151&t;&t;
+mdefine_line|#define KEY_MSDOS&t;&t;151
 DECL|macro|KEY_COFFEE
-mdefine_line|#define KEY_COFFEE&t;&t;152&t;&t;
+mdefine_line|#define KEY_COFFEE&t;&t;152
 DECL|macro|KEY_DIRECTION
-mdefine_line|#define KEY_DIRECTION&t;&t;153&t;&t;
+mdefine_line|#define KEY_DIRECTION&t;&t;153
 DECL|macro|KEY_CYCLEWINDOWS
-mdefine_line|#define KEY_CYCLEWINDOWS&t;154&t;&t;
+mdefine_line|#define KEY_CYCLEWINDOWS&t;154
 DECL|macro|KEY_MAIL
 mdefine_line|#define KEY_MAIL&t;&t;155
 DECL|macro|KEY_BOOKMARKS
@@ -399,25 +416,27 @@ mdefine_line|#define KEY_BACK&t;&t;158
 DECL|macro|KEY_FORWARD
 mdefine_line|#define KEY_FORWARD&t;&t;159
 DECL|macro|KEY_CLOSECD
-mdefine_line|#define KEY_CLOSECD&t;&t;160&t;&t;
+mdefine_line|#define KEY_CLOSECD&t;&t;160
 DECL|macro|KEY_EJECTCD
-mdefine_line|#define KEY_EJECTCD&t;&t;161&t;&t;
+mdefine_line|#define KEY_EJECTCD&t;&t;161
 DECL|macro|KEY_EJECTCLOSECD
-mdefine_line|#define KEY_EJECTCLOSECD&t;162&t;&t;
+mdefine_line|#define KEY_EJECTCLOSECD&t;162
 DECL|macro|KEY_NEXTSONG
-mdefine_line|#define KEY_NEXTSONG&t;&t;163&t;&t;
+mdefine_line|#define KEY_NEXTSONG&t;&t;163
 DECL|macro|KEY_PLAYPAUSE
-mdefine_line|#define KEY_PLAYPAUSE&t;&t;164&t;&t;
+mdefine_line|#define KEY_PLAYPAUSE&t;&t;164
 DECL|macro|KEY_PREVIOUSSONG
-mdefine_line|#define KEY_PREVIOUSSONG&t;165&t;&t;
+mdefine_line|#define KEY_PREVIOUSSONG&t;165
 DECL|macro|KEY_STOPCD
-mdefine_line|#define KEY_STOPCD&t;&t;166&t;&t;
+mdefine_line|#define KEY_STOPCD&t;&t;166
 DECL|macro|KEY_RECORD
-mdefine_line|#define KEY_RECORD&t;&t;167&t;&t;
+mdefine_line|#define KEY_RECORD&t;&t;167
 DECL|macro|KEY_REWIND
-mdefine_line|#define KEY_REWIND&t;&t;168&t;&t;
+mdefine_line|#define KEY_REWIND&t;&t;168
 DECL|macro|KEY_PHONE
 mdefine_line|#define KEY_PHONE&t;&t;169
+DECL|macro|KEY_ISO
+mdefine_line|#define KEY_ISO&t;&t;&t;170
 DECL|macro|KEY_CONFIG
 mdefine_line|#define KEY_CONFIG&t;&t;171
 DECL|macro|KEY_HOMEPAGE
@@ -474,8 +493,20 @@ DECL|macro|KEY_LANG8
 mdefine_line|#define KEY_LANG8&t;&t;197
 DECL|macro|KEY_LANG9
 mdefine_line|#define KEY_LANG9&t;&t;198
+DECL|macro|KEY_PLAYCD
+mdefine_line|#define KEY_PLAYCD&t;&t;200
+DECL|macro|KEY_PAUSECD
+mdefine_line|#define KEY_PAUSECD&t;&t;201
+DECL|macro|KEY_PROG3
+mdefine_line|#define KEY_PROG3&t;&t;202
+DECL|macro|KEY_PROG4
+mdefine_line|#define KEY_PROG4&t;&t;203
+DECL|macro|KEY_SUSPEND
+mdefine_line|#define KEY_SUSPEND&t;&t;205
+DECL|macro|KEY_CLOSE
+mdefine_line|#define KEY_CLOSE&t;&t;206
 DECL|macro|KEY_UNKNOWN
-mdefine_line|#define KEY_UNKNOWN&t;&t;200
+mdefine_line|#define KEY_UNKNOWN&t;&t;220
 DECL|macro|BTN_MISC
 mdefine_line|#define BTN_MISC&t;&t;0x100
 DECL|macro|BTN_0
@@ -540,6 +571,8 @@ DECL|macro|BTN_BASE5
 mdefine_line|#define BTN_BASE5&t;&t;0x12a
 DECL|macro|BTN_BASE6
 mdefine_line|#define BTN_BASE6&t;&t;0x12b
+DECL|macro|BTN_DEAD
+mdefine_line|#define BTN_DEAD&t;&t;0x12f
 DECL|macro|BTN_GAMEPAD
 mdefine_line|#define BTN_GAMEPAD&t;&t;0x130
 DECL|macro|BTN_A
@@ -568,6 +601,10 @@ DECL|macro|BTN_START
 mdefine_line|#define BTN_START&t;&t;0x13b
 DECL|macro|BTN_MODE
 mdefine_line|#define BTN_MODE&t;&t;0x13c
+DECL|macro|BTN_THUMBL
+mdefine_line|#define BTN_THUMBL&t;&t;0x13d
+DECL|macro|BTN_THUMBR
+mdefine_line|#define BTN_THUMBR&t;&t;0x13e
 DECL|macro|BTN_DIGI
 mdefine_line|#define BTN_DIGI&t;&t;0x140
 DECL|macro|BTN_TOOL_PEN
@@ -662,6 +699,11 @@ DECL|macro|ABS_MISC
 mdefine_line|#define ABS_MISC&t;&t;0x1c
 DECL|macro|ABS_MAX
 mdefine_line|#define ABS_MAX&t;&t;&t;0x1f
+multiline_comment|/*&n; * Misc events&n; */
+DECL|macro|MSC_SERIAL
+mdefine_line|#define MSC_SERIAL&t;&t;0x00
+DECL|macro|MSC_MAX
+mdefine_line|#define MSC_MAX&t;&t;&t;0x07
 multiline_comment|/*&n; * LEDs&n; */
 DECL|macro|LED_NUML
 mdefine_line|#define LED_NUML&t;&t;0x00
@@ -673,6 +715,14 @@ DECL|macro|LED_COMPOSE
 mdefine_line|#define LED_COMPOSE&t;&t;0x03
 DECL|macro|LED_KANA
 mdefine_line|#define LED_KANA&t;&t;0x04
+DECL|macro|LED_SLEEP
+mdefine_line|#define LED_SLEEP&t;&t;0x05
+DECL|macro|LED_SUSPEND
+mdefine_line|#define LED_SUSPEND&t;&t;0x06
+DECL|macro|LED_MUTE
+mdefine_line|#define LED_MUTE&t;&t;0x07
+DECL|macro|LED_MISC
+mdefine_line|#define LED_MISC&t;&t;0x08
 DECL|macro|LED_MAX
 mdefine_line|#define LED_MAX&t;&t;&t;0x0f
 multiline_comment|/*&n; * Autorepeat values&n; */
@@ -722,6 +772,262 @@ DECL|macro|BUS_ADB
 mdefine_line|#define BUS_ADB&t;&t;&t;0x17
 DECL|macro|BUS_I2C
 mdefine_line|#define BUS_I2C&t;&t;&t;0x18
+multiline_comment|/*&n; * Structures used in ioctls to upload effects to a device&n; * The first structures are not passed directly by using ioctls.&n; * They are sub-structures of the actually sent structure (called ff_effect)&n; */
+DECL|struct|ff_replay
+r_struct
+id|ff_replay
+(brace
+DECL|member|length
+id|__u16
+id|length
+suffix:semicolon
+multiline_comment|/* Duration of an effect */
+DECL|member|delay
+id|__u16
+id|delay
+suffix:semicolon
+multiline_comment|/* Time to wait before to start playing an effect */
+)brace
+suffix:semicolon
+DECL|struct|ff_trigger
+r_struct
+id|ff_trigger
+(brace
+DECL|member|button
+id|__u16
+id|button
+suffix:semicolon
+multiline_comment|/* Number of button triggering an effect */
+DECL|member|interval
+id|__u16
+id|interval
+suffix:semicolon
+multiline_comment|/* Time to wait before an effect can be re-triggered */
+)brace
+suffix:semicolon
+DECL|struct|ff_shape
+r_struct
+id|ff_shape
+(brace
+DECL|member|attack_length
+id|__u16
+id|attack_length
+suffix:semicolon
+multiline_comment|/* Duration of attack */
+DECL|member|attack_level
+id|__s16
+id|attack_level
+suffix:semicolon
+multiline_comment|/* Level at beginning of attack */
+DECL|member|fade_length
+id|__u16
+id|fade_length
+suffix:semicolon
+multiline_comment|/* Duration of fade */
+DECL|member|fade_level
+id|__s16
+id|fade_level
+suffix:semicolon
+multiline_comment|/* Level at end of fade */
+)brace
+suffix:semicolon
+multiline_comment|/* FF_CONSTANT */
+DECL|struct|ff_constant_effect
+r_struct
+id|ff_constant_effect
+(brace
+DECL|member|level
+id|__s16
+id|level
+suffix:semicolon
+multiline_comment|/* Strength of effect */
+DECL|member|direction
+id|__u16
+id|direction
+suffix:semicolon
+multiline_comment|/* Direction of effect (see periodic effects) */
+DECL|member|shape
+r_struct
+id|ff_shape
+id|shape
+suffix:semicolon
+)brace
+suffix:semicolon
+multiline_comment|/* FF_SPRING of FF_FRICTION */
+DECL|struct|ff_interactive_effect
+r_struct
+id|ff_interactive_effect
+(brace
+multiline_comment|/* Axis along which effect must be created. If null, the field named direction&n; * is used&n; * It is a bit array (ie to enable axes X and Y, use BIT(ABS_X) | BIT(ABS_Y)&n; */
+DECL|member|axis
+id|__u16
+id|axis
+suffix:semicolon
+DECL|member|direction
+id|__u16
+id|direction
+suffix:semicolon
+DECL|member|right_saturation
+id|__s16
+id|right_saturation
+suffix:semicolon
+multiline_comment|/* Max level when joystick is on the right */
+DECL|member|left_saturation
+id|__s16
+id|left_saturation
+suffix:semicolon
+multiline_comment|/* Max level when joystick in on the left */
+DECL|member|right_coeff
+id|__s16
+id|right_coeff
+suffix:semicolon
+multiline_comment|/* Indicates how fast the force grows when the&n;&t;&t;&t;&t;   joystick moves to the right */
+DECL|member|left_coeff
+id|__s16
+id|left_coeff
+suffix:semicolon
+multiline_comment|/* Same for left side */
+DECL|member|deadband
+id|__u16
+id|deadband
+suffix:semicolon
+multiline_comment|/* Size of area where no force is produced */
+DECL|member|center
+id|__s16
+id|center
+suffix:semicolon
+multiline_comment|/* Position of dead dead zone */
+)brace
+suffix:semicolon
+multiline_comment|/* FF_PERIODIC */
+DECL|struct|ff_periodic_effect
+r_struct
+id|ff_periodic_effect
+(brace
+DECL|member|waveform
+id|__u16
+id|waveform
+suffix:semicolon
+multiline_comment|/* Kind of wave (sine, square...) */
+DECL|member|period
+id|__u16
+id|period
+suffix:semicolon
+DECL|member|magnitude
+id|__s16
+id|magnitude
+suffix:semicolon
+multiline_comment|/* Peak value */
+DECL|member|offset
+id|__s16
+id|offset
+suffix:semicolon
+multiline_comment|/* Mean value of wave (roughly) */
+DECL|member|phase
+id|__u16
+id|phase
+suffix:semicolon
+multiline_comment|/* &squot;Horizontal&squot; shift */
+DECL|member|direction
+id|__u16
+id|direction
+suffix:semicolon
+multiline_comment|/* Direction. 0 deg -&gt; 0x0000&n;&t;&t;&t;&t;&t;     90 deg -&gt; 0x4000 */
+DECL|member|shape
+r_struct
+id|ff_shape
+id|shape
+suffix:semicolon
+)brace
+suffix:semicolon
+multiline_comment|/*&n; * Structure sent through ioctl from the application to the driver&n; */
+DECL|struct|ff_effect
+r_struct
+id|ff_effect
+(brace
+DECL|member|type
+id|__u16
+id|type
+suffix:semicolon
+multiline_comment|/* Following field denotes the unique id assigned to an effect.&n; * It is set by the driver.&n; */
+DECL|member|id
+id|__s16
+id|id
+suffix:semicolon
+DECL|member|trigger
+r_struct
+id|ff_trigger
+id|trigger
+suffix:semicolon
+DECL|member|replay
+r_struct
+id|ff_replay
+id|replay
+suffix:semicolon
+r_union
+(brace
+DECL|member|constant
+r_struct
+id|ff_constant_effect
+id|constant
+suffix:semicolon
+DECL|member|periodic
+r_struct
+id|ff_periodic_effect
+id|periodic
+suffix:semicolon
+DECL|member|interactive
+r_struct
+id|ff_interactive_effect
+id|interactive
+suffix:semicolon
+DECL|member|u
+)brace
+id|u
+suffix:semicolon
+)brace
+suffix:semicolon
+multiline_comment|/*&n; * Buttons that can trigger effects.  Use for example FF_BTN(BTN_TRIGGER) to&n; * access the bitmap.&n; */
+DECL|macro|FF_BTN
+mdefine_line|#define FF_BTN(x)&t;((x) - BTN_MISC + FF_BTN_OFFSET)
+DECL|macro|FF_BTN_OFFSET
+mdefine_line|#define FF_BTN_OFFSET&t;0x00
+multiline_comment|/*&n; * Force feedback axis mappings. Use FF_ABS() to access the bitmap.&n; */
+DECL|macro|FF_ABS
+mdefine_line|#define FF_ABS(x)&t;((x) + FF_ABS_OFFSET)
+DECL|macro|FF_ABS_OFFSET
+mdefine_line|#define FF_ABS_OFFSET&t;0x40
+multiline_comment|/*&n; * Force feedback effect types&n; */
+DECL|macro|FF_RUMBLE
+mdefine_line|#define FF_RUMBLE&t;0x50
+DECL|macro|FF_PERIODIC
+mdefine_line|#define FF_PERIODIC&t;0x51
+DECL|macro|FF_CONSTANT
+mdefine_line|#define FF_CONSTANT&t;0x52
+DECL|macro|FF_SPRING
+mdefine_line|#define FF_SPRING&t;0x53
+DECL|macro|FF_FRICTION
+mdefine_line|#define FF_FRICTION&t;0x54
+multiline_comment|/*&n; * Force feedback periodic effect types&n; */
+DECL|macro|FF_SQUARE
+mdefine_line|#define FF_SQUARE&t;0x58
+DECL|macro|FF_TRIANGLE
+mdefine_line|#define FF_TRIANGLE&t;0x59
+DECL|macro|FF_SINE
+mdefine_line|#define FF_SINE&t;&t;0x5a
+DECL|macro|FF_SAW_UP
+mdefine_line|#define FF_SAW_UP&t;0x5b
+DECL|macro|FF_SAW_DOWN
+mdefine_line|#define FF_SAW_DOWN&t;0x5c
+DECL|macro|FF_CUSTOM
+mdefine_line|#define FF_CUSTOM&t;0x5d
+multiline_comment|/*&n; * Set ff device properties&n; */
+DECL|macro|FF_GAIN
+mdefine_line|#define FF_GAIN&t;&t;0x60
+DECL|macro|FF_AUTOCENTER
+mdefine_line|#define FF_AUTOCENTER&t;0x61
+DECL|macro|FF_MAX
+mdefine_line|#define FF_MAX&t;&t;0x7f
 macro_line|#ifdef __KERNEL__
 multiline_comment|/*&n; * In-kernel definitions.&n; */
 macro_line|#include &lt;linux/sched.h&gt;
@@ -818,6 +1124,18 @@ id|ABS_MAX
 )paren
 )braket
 suffix:semicolon
+DECL|member|mscbit
+r_int
+r_int
+id|mscbit
+(braket
+id|NBITS
+c_func
+(paren
+id|MSC_MAX
+)paren
+)braket
+suffix:semicolon
 DECL|member|ledbit
 r_int
 r_int
@@ -841,6 +1159,22 @@ c_func
 id|SND_MAX
 )paren
 )braket
+suffix:semicolon
+DECL|member|ffbit
+r_int
+r_int
+id|ffbit
+(braket
+id|NBITS
+c_func
+(paren
+id|FF_MAX
+)paren
+)braket
+suffix:semicolon
+DECL|member|ff_effects_max
+r_int
+id|ff_effects_max
 suffix:semicolon
 DECL|member|keycodemax
 r_int
@@ -1005,6 +1339,40 @@ id|code
 comma
 r_int
 id|value
+)paren
+suffix:semicolon
+DECL|member|upload_effect
+r_int
+(paren
+op_star
+id|upload_effect
+)paren
+(paren
+r_struct
+id|input_dev
+op_star
+id|dev
+comma
+r_struct
+id|ff_effect
+op_star
+id|effect
+)paren
+suffix:semicolon
+DECL|member|erase_effect
+r_int
+(paren
+op_star
+id|erase_effect
+)paren
+(paren
+r_struct
+id|input_dev
+op_star
+id|dev
+comma
+r_int
+id|effect_id
 )paren
 suffix:semicolon
 DECL|member|handle

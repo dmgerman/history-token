@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * $Id: sidewinder.c,v 1.18 2001/02/28 07:09:30 vojtech Exp $&n; *&n; *  Copyright (c) 1998-2000 Vojtech Pavlik&n; *&n; *  Sponsored by SuSE&n; */
+multiline_comment|/*&n; * $Id: sidewinder.c,v 1.20 2001/05/19 08:14:54 vojtech Exp $&n; *&n; *  Copyright (c) 1998-2001 Vojtech Pavlik&n; *&n; *  Sponsored by SuSE&n; */
 multiline_comment|/*&n; * Microsoft SideWinder joystick family driver for Linux&n; */
 multiline_comment|/*&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or &n; * (at your option) any later version.&n; * &n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; * &n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; * &n; * Should you need to contact me, the author, you can do so either by&n; * e-mail - mail your message to &lt;vojtech@suse.cz&gt;, or by paper mail:&n; * Vojtech Pavlik, Ucitelska 1576, Prague 8, 182 00 Czech Republic&n; */
 macro_line|#include &lt;linux/delay.h&gt;
@@ -3309,6 +3309,18 @@ id|GAMEPORT_MODE_RAW
 r_goto
 id|fail1
 suffix:semicolon
+id|dbg
+c_func
+(paren
+l_string|&quot;Init 0: Opened gameport %d, io %#x, speed %d&quot;
+comma
+id|gameport-&gt;number
+comma
+id|gameport-&gt;io
+comma
+id|gameport-&gt;speed
+)paren
+suffix:semicolon
 id|i
 op_assign
 id|sw_read_packet
@@ -4377,6 +4389,12 @@ id|module_exit
 c_func
 (paren
 id|sw_exit
+)paren
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
 eof

@@ -52,7 +52,6 @@ macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 DECL|variable|__initdata
 r_static
-r_const
 r_char
 id|banner
 (braket

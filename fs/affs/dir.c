@@ -596,7 +596,7 @@ suffix:semicolon
 )brace
 id|namelen
 op_assign
-id|MIN
+id|min
 c_func
 (paren
 id|AFFS_TAIL
@@ -612,6 +612,9 @@ id|name
 l_int|0
 )braket
 comma
+(paren
+id|u8
+)paren
 l_int|30
 )paren
 suffix:semicolon

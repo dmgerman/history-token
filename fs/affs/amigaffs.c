@@ -2392,12 +2392,12 @@ id|dentry
 r_int
 id|len
 op_assign
-id|MIN
+id|min
 c_func
 (paren
 id|dentry-&gt;d_name.len
 comma
-l_int|30
+l_int|30u
 )paren
 suffix:semicolon
 op_star

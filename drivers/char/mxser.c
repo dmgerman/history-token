@@ -263,6 +263,12 @@ c_func
 l_string|&quot;MOXA Smartio Family Multiport Board Device Driver&quot;
 )paren
 suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
@@ -294,6 +300,8 @@ id|verbose
 comma
 l_string|&quot;i&quot;
 )paren
+suffix:semicolon
+id|EXPORT_NO_SYMBOLS
 suffix:semicolon
 DECL|struct|mxser_hwconf
 r_struct

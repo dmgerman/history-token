@@ -5681,7 +5681,6 @@ comma
 suffix:semicolon
 DECL|variable|__initdata
 r_static
-r_const
 r_char
 id|banner
 (braket
@@ -5770,6 +5769,12 @@ c_func
 id|debug
 comma
 l_string|&quot;1i&quot;
+)paren
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
 eof

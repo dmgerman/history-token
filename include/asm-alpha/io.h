@@ -297,7 +297,9 @@ macro_line|# define __writel(v,a)&t;alpha_mv.mv_writel((v),(unsigned long)(a))
 DECL|macro|__writeq
 macro_line|# define __writeq(v,a)&t;alpha_mv.mv_writeq((v),(unsigned long)(a))
 DECL|macro|__ioremap
-macro_line|# define __ioremap(a)&t;alpha_mv.mv_ioremap((unsigned long)(a))
+macro_line|# define __ioremap(a,s)&t;alpha_mv.mv_ioremap((unsigned long)(a),(s))
+DECL|macro|__iounmap
+macro_line|# define __iounmap(a)   alpha_mv.mv_iounmap((unsigned long)(a))
 DECL|macro|__is_ioaddr
 macro_line|# define __is_ioaddr(a)&t;alpha_mv.mv_is_ioaddr((unsigned long)(a))
 DECL|macro|inb
@@ -737,7 +739,7 @@ id|addr
 suffix:semicolon
 macro_line|#endif /* __KERNEL__ */
 macro_line|#ifdef __KERNEL__
-multiline_comment|/*&n; * On Alpha, we have the whole of I/O space mapped at all times, but&n; * at odd and sometimes discontinuous addresses.  Note that the &n; * discontinuities are all across busses, so we need not care for that&n; * for any one device.&n; *&n; * Map the I/O space address into the kernel&squot;s virtual address space.&n; */
+multiline_comment|/*&n; * On Alpha, we have the whole of I/O space mapped at all times, but&n; * at odd and sometimes discontinuous addresses.  Note that the &n; * discontinuities are all across busses, so we need not care for that&n; * for any one device.&n; *&n; * The DRM drivers need to be able to map contiguously a (potentially)&n; * discontiguous set of I/O pages. This set of pages is scatter-gather&n; * mapped contiguously from the perspective of the bus, but we can&squot;t&n; * directly access DMA addresses from the CPU, these addresses need to&n; * have a real ioremap. Therefore, iounmap and the size argument to&n; * ioremap are needed to give the platforms the ability to fully implement&n; * ioremap.&n; *&n; * Map the I/O space address into the kernel&squot;s virtual address space.&n; */
 DECL|function|ioremap
 r_static
 r_inline
@@ -764,6 +766,8 @@ id|__ioremap
 c_func
 (paren
 id|offset
+comma
+id|size
 )paren
 suffix:semicolon
 )brace
@@ -779,6 +783,12 @@ op_star
 id|addr
 )paren
 (brace
+id|__iounmap
+c_func
+(paren
+id|addr
+)paren
+suffix:semicolon
 )brace
 DECL|function|ioremap_nocache
 r_static
@@ -1238,23 +1248,23 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * ISA space is mapped to some machine-specific location on Alpha.&n; * Call into the existing hooks to get the address translated.&n; */
 DECL|macro|isa_readb
-mdefine_line|#define isa_readb(a)&t;&t;&t;readb(__ioremap(a))
+mdefine_line|#define isa_readb(a)&t;&t;&t;readb(__ioremap((a),1))
 DECL|macro|isa_readw
-mdefine_line|#define isa_readw(a)&t;&t;&t;readw(__ioremap(a))
+mdefine_line|#define isa_readw(a)&t;&t;&t;readw(__ioremap((a),2))
 DECL|macro|isa_readl
-mdefine_line|#define isa_readl(a)&t;&t;&t;readl(__ioremap(a))
+mdefine_line|#define isa_readl(a)&t;&t;&t;readl(__ioremap((a),4))
 DECL|macro|isa_writeb
-mdefine_line|#define isa_writeb(b,a)&t;&t;&t;writeb((b),__ioremap(a))
+mdefine_line|#define isa_writeb(b,a)&t;&t;&t;writeb((b),__ioremap((a),1))
 DECL|macro|isa_writew
-mdefine_line|#define isa_writew(w,a)&t;&t;&t;writew((w),__ioremap(a))
+mdefine_line|#define isa_writew(w,a)&t;&t;&t;writew((w),__ioremap((a),2))
 DECL|macro|isa_writel
-mdefine_line|#define isa_writel(l,a)&t;&t;&t;writel((l),__ioremap(a))
+mdefine_line|#define isa_writel(l,a)&t;&t;&t;writel((l),__ioremap((a),4))
 DECL|macro|isa_memset_io
-mdefine_line|#define isa_memset_io(a,b,c)&t;&t;memset_io(__ioremap(a),(b),(c))
+mdefine_line|#define isa_memset_io(a,b,c)&t;&t;memset_io(__ioremap((a),(c)),(b),(c))
 DECL|macro|isa_memcpy_fromio
-mdefine_line|#define isa_memcpy_fromio(a,b,c)&t;memcpy_fromio((a),__ioremap(b),(c))
+mdefine_line|#define isa_memcpy_fromio(a,b,c)&t;memcpy_fromio((a),__ioremap((b),(c)),(c))
 DECL|macro|isa_memcpy_toio
-mdefine_line|#define isa_memcpy_toio(a,b,c)&t;&t;memcpy_toio(__ioremap(a),(b),(c))
+mdefine_line|#define isa_memcpy_toio(a,b,c)&t;&t;memcpy_toio(__ioremap((a),(c)),(b),(c))
 r_static
 r_inline
 r_int

@@ -46,6 +46,12 @@ DECL|macro|CG3_SR_ID_MONO
 mdefine_line|#define CG3_SR_ID_MONO          0x02
 DECL|macro|CG3_SR_ID_MONO_ECL
 mdefine_line|#define CG3_SR_ID_MONO_ECL      0x03
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 DECL|enum|cg3_type
 r_enum
 id|cg3_type

@@ -37,6 +37,12 @@ c_func
 l_string|&quot;Driver for Compaq Smart2 Array Controllers&quot;
 )paren
 suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 DECL|macro|MAJOR_NR
 mdefine_line|#define MAJOR_NR COMPAQ_SMART2_MAJOR
 macro_line|#include &lt;linux/blk.h&gt;

@@ -3,6 +3,12 @@ macro_line|#ifndef _LINUX_MOUNT_H
 DECL|macro|_LINUX_MOUNT_H
 mdefine_line|#define _LINUX_MOUNT_H
 macro_line|#ifdef __KERNEL__
+DECL|macro|MNT_NOSUID
+mdefine_line|#define MNT_NOSUID&t;1
+DECL|macro|MNT_NODEV
+mdefine_line|#define MNT_NODEV&t;2
+DECL|macro|MNT_NOEXEC
+mdefine_line|#define MNT_NOEXEC&t;4
 DECL|struct|vfsmount
 r_struct
 id|vfsmount

@@ -1,7 +1,7 @@
 macro_line|#ifndef __HID_H
 DECL|macro|__HID_H
 mdefine_line|#define __HID_H
-multiline_comment|/*&n; * $Id: hid.h,v 1.7 2000/05/31 22:57:48 vojtech Exp $&n; *&n; *  Copyright (c) 1999 Andreas Gal&n; *  Copyright (c) 2000 Vojtech Pavlik&n; *&n; *  Sponsored by SuSE&n; */
+multiline_comment|/*&n; * $Id: hid.h,v 1.10 2001/05/10 15:56:07 vojtech Exp $&n; *&n; *  Copyright (c) 1999 Andreas Gal&n; *  Copyright (c) 2000-2001 Vojtech Pavlik&n; *&n; *  Sponsored by SuSE&n; */
 multiline_comment|/*&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; *&n; * Should you need to contact me, the author, you can do so either by&n; * e-mail - mail your message to &lt;vojtech@suse.cz&gt;, or by paper mail:&n; * Vojtech Pavlik, Ucitelska 1576, Prague 8, 182 00 Czech Republic&n; */
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
@@ -260,6 +260,8 @@ DECL|macro|HID_MAX_DESCRIPTOR_SIZE
 mdefine_line|#define HID_MAX_DESCRIPTOR_SIZE&t;&t;4096
 DECL|macro|HID_MAX_USAGES
 mdefine_line|#define HID_MAX_USAGES&t;&t;&t;1024
+DECL|macro|HID_MAX_APPLICATIONS
+mdefine_line|#define HID_MAX_APPLICATIONS&t;&t;16
 DECL|struct|hid_local
 r_struct
 id|hid_local
@@ -345,6 +347,11 @@ r_int
 id|logical
 suffix:semicolon
 multiline_comment|/* logical usage for this field */
+DECL|member|application
+r_int
+id|application
+suffix:semicolon
+multiline_comment|/* application usage for this field */
 DECL|member|usage
 r_struct
 id|hid_usage
@@ -462,6 +469,18 @@ r_int
 id|size
 suffix:semicolon
 multiline_comment|/* size of the report (bits) */
+DECL|member|idx
+r_int
+id|idx
+suffix:semicolon
+multiline_comment|/* where we&squot;re in data */
+DECL|member|data
+r_int
+r_char
+op_star
+id|data
+suffix:semicolon
+multiline_comment|/* data for multi-packet reports */
 DECL|member|device
 r_struct
 id|hid_device
@@ -518,6 +537,10 @@ id|HID_BUFFER_SIZE
 suffix:semicolon
 )brace
 suffix:semicolon
+DECL|macro|HID_CLAIMED_INPUT
+mdefine_line|#define HID_CLAIMED_INPUT&t;1
+DECL|macro|HID_CLAIMED_HIDDEV
+mdefine_line|#define HID_CLAIMED_HIDDEV&t;2
 DECL|struct|hid_device
 r_struct
 id|hid_device
@@ -535,8 +558,16 @@ suffix:semicolon
 DECL|member|application
 r_int
 id|application
+(braket
+id|HID_MAX_APPLICATIONS
+)braket
 suffix:semicolon
-multiline_comment|/* HID application, i.e. Digitizer */
+multiline_comment|/* List of HID applications */
+DECL|member|maxapplication
+r_int
+id|maxapplication
+suffix:semicolon
+multiline_comment|/* Number of applications */
 DECL|member|version
 r_int
 id|version
@@ -605,22 +636,38 @@ comma
 id|outtail
 suffix:semicolon
 multiline_comment|/* Tx buffer head &amp; tail */
+DECL|member|claimed
+r_int
+id|claimed
+suffix:semicolon
+multiline_comment|/* Claimed by hidinput, hiddev? */
+DECL|member|quirks
+r_int
+id|quirks
+suffix:semicolon
+multiline_comment|/* Various quirks the device can pull on us */
 DECL|member|input
 r_struct
 id|input_dev
 id|input
 suffix:semicolon
-multiline_comment|/* input device structure */
+multiline_comment|/* The input structure */
+DECL|member|hiddev
+r_void
+op_star
+id|hiddev
+suffix:semicolon
+multiline_comment|/* The hiddev structure */
+DECL|member|minor
+r_int
+id|minor
+suffix:semicolon
+multiline_comment|/* Hiddev minor number */
 DECL|member|open
 r_int
 id|open
 suffix:semicolon
-multiline_comment|/* is the device open by input? */
-DECL|member|quirks
-r_int
-id|quirks
-suffix:semicolon
-multiline_comment|/* Various nasty tricks the device can pull on us */
+multiline_comment|/* is the device open by anyone? */
 DECL|member|name
 r_char
 id|name
@@ -741,5 +788,139 @@ id|packed
 )paren
 )paren
 suffix:semicolon
+r_void
+id|hidinput_hid_event
+c_func
+(paren
+r_struct
+id|hid_device
+op_star
+comma
+r_struct
+id|hid_field
+op_star
+comma
+r_struct
+id|hid_usage
+op_star
+comma
+id|__s32
+)paren
+suffix:semicolon
+r_int
+id|hidinput_connect
+c_func
+(paren
+r_struct
+id|hid_device
+op_star
+)paren
+suffix:semicolon
+r_void
+id|hidinput_disconnect
+c_func
+(paren
+r_struct
+id|hid_device
+op_star
+)paren
+suffix:semicolon
+macro_line|#ifdef DEBUG
+macro_line|#include &quot;hid-debug.h&quot;
+macro_line|#else
+DECL|macro|hid_dump_input
+mdefine_line|#define hid_dump_input(a,b)&t;do { } while (0)
+DECL|macro|hid_dump_device
+mdefine_line|#define hid_dump_device(c)&t;do { } while (0)
 macro_line|#endif
+macro_line|#endif
+DECL|macro|IS_INPUT_APPLICATION
+mdefine_line|#define IS_INPUT_APPLICATION(a) ((a &gt;= 0x00010000) &amp;&amp; (a &lt;= 0x00010008))
+r_int
+id|hid_open
+c_func
+(paren
+r_struct
+id|hid_device
+op_star
+)paren
+suffix:semicolon
+r_void
+id|hid_close
+c_func
+(paren
+r_struct
+id|hid_device
+op_star
+)paren
+suffix:semicolon
+r_int
+id|hid_find_field
+c_func
+(paren
+r_struct
+id|hid_device
+op_star
+comma
+r_int
+r_int
+comma
+r_int
+r_int
+comma
+r_struct
+id|hid_field
+op_star
+op_star
+)paren
+suffix:semicolon
+r_int
+id|hid_set_field
+c_func
+(paren
+r_struct
+id|hid_field
+op_star
+comma
+r_int
+comma
+id|__s32
+)paren
+suffix:semicolon
+r_void
+id|hid_write_report
+c_func
+(paren
+r_struct
+id|hid_device
+op_star
+comma
+r_struct
+id|hid_report
+op_star
+)paren
+suffix:semicolon
+r_void
+id|hid_read_report
+c_func
+(paren
+r_struct
+id|hid_device
+op_star
+comma
+r_struct
+id|hid_report
+op_star
+)paren
+suffix:semicolon
+r_void
+id|hid_init_reports
+c_func
+(paren
+r_struct
+id|hid_device
+op_star
+id|hid
+)paren
+suffix:semicolon
 eof

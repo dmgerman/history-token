@@ -25,6 +25,12 @@ c_func
 l_string|&quot;Cisco-HDLC / Synchronous PPP driver for the COMX sync serial boards&quot;
 )paren
 suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 DECL|variable|syncppp_protocol
 r_static
 r_struct

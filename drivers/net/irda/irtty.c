@@ -3176,6 +3176,19 @@ op_star
 )paren
 id|dev-&gt;priv
 suffix:semicolon
+r_struct
+id|tty_struct
+op_star
+id|tty
+op_assign
+id|self-&gt;tty
+suffix:semicolon
+r_char
+id|hwname
+(braket
+l_int|16
+)braket
+suffix:semicolon
 id|ASSERT
 c_func
 (paren
@@ -3227,6 +3240,27 @@ comma
 id|FALSE
 )paren
 suffix:semicolon
+multiline_comment|/* Give self a hardware name */
+id|sprintf
+c_func
+(paren
+id|hwname
+comma
+l_string|&quot;%s%d&quot;
+comma
+id|tty-&gt;driver.name
+comma
+id|MINOR
+c_func
+(paren
+id|tty-&gt;device
+)paren
+op_minus
+id|tty-&gt;driver.minor_start
+op_plus
+id|tty-&gt;driver.name_base
+)paren
+suffix:semicolon
 multiline_comment|/* &n;&t; * Open new IrLAP layer instance, now that everything should be&n;&t; * initialized properly &n;&t; */
 id|self-&gt;irlap
 op_assign
@@ -3237,6 +3271,8 @@ id|dev
 comma
 op_amp
 id|self-&gt;qos
+comma
+id|hwname
 )paren
 suffix:semicolon
 id|MOD_INC_USE_COUNT

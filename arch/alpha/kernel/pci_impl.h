@@ -19,7 +19,7 @@ DECL|macro|XL_DEFAULT_MEM_BASE
 mdefine_line|#define XL_DEFAULT_MEM_BASE ((16+2)*1024*1024) /* 16M to 64M-1 is avail */
 multiline_comment|/*&n; * APECS and LCA have only 34 bits for physical addresses, thus limiting PCI&n; * bus memory addresses for SPARSE access to be less than 128Mb.&n; */
 DECL|macro|APECS_AND_LCA_DEFAULT_MEM_BASE
-mdefine_line|#define APECS_AND_LCA_DEFAULT_MEM_BASE ((32+2)*1024*1024)
+mdefine_line|#define APECS_AND_LCA_DEFAULT_MEM_BASE ((16+2)*1024*1024)
 multiline_comment|/*&n; * Because the MCPCIA core logic supports more bits for physical addresses,&n; * it should allow an expanded range of SPARSE memory addresses.&n; * However, we do not use them all, in order to avoid the HAE manipulation&n; * that would be needed.&n; */
 DECL|macro|MCPCIA_DEFAULT_MEM_BASE
 mdefine_line|#define MCPCIA_DEFAULT_MEM_BASE ((32+2)*1024*1024)
@@ -85,6 +85,8 @@ id|hose
 suffix:semicolon
 DECL|macro|IOMMU_INVALID_PTE
 mdefine_line|#define IOMMU_INVALID_PTE 0x2 /* 32:63 bits MBZ */
+DECL|macro|IOMMU_RESERVED_PTE
+mdefine_line|#define IOMMU_RESERVED_PTE 0xface
 DECL|member|ptes
 r_int
 r_int
@@ -228,5 +230,65 @@ r_char
 id|pci_hae0_name
 (braket
 )braket
+suffix:semicolon
+r_extern
+r_int
+id|iommu_reserve
+c_func
+(paren
+r_struct
+id|pci_iommu_arena
+op_star
+comma
+r_int
+comma
+r_int
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|iommu_release
+c_func
+(paren
+r_struct
+id|pci_iommu_arena
+op_star
+comma
+r_int
+comma
+r_int
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|iommu_bind
+c_func
+(paren
+r_struct
+id|pci_iommu_arena
+op_star
+comma
+r_int
+comma
+r_int
+comma
+r_int
+r_int
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|iommu_unbind
+c_func
+(paren
+r_struct
+id|pci_iommu_arena
+op_star
+comma
+r_int
+comma
+r_int
+)paren
 suffix:semicolon
 eof

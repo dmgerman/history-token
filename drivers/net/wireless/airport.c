@@ -4,7 +4,7 @@ macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/ptrace.h&gt;
-macro_line|#include &lt;linux/malloc.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
@@ -26,7 +26,6 @@ macro_line|#include &quot;hermes.h&quot;
 macro_line|#include &quot;orinoco.h&quot;
 DECL|variable|__initdata
 r_static
-r_const
 r_char
 id|version
 (braket
@@ -45,6 +44,12 @@ id|MODULE_DESCRIPTION
 c_func
 (paren
 l_string|&quot;Driver for the Apple Airport wireless card.&quot;
+)paren
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;Dual MPL/GPL&quot;
 )paren
 suffix:semicolon
 DECL|struct|dldwd_card

@@ -4,10 +4,14 @@ macro_line|#ifndef _ALPHA_KEYBOARD_H
 DECL|macro|_ALPHA_KEYBOARD_H
 mdefine_line|#define _ALPHA_KEYBOARD_H
 macro_line|#ifdef __KERNEL__
+macro_line|#include &lt;linux/kernel.h&gt;
+macro_line|#include &lt;linux/ioport.h&gt;
+macro_line|#include &lt;linux/kd.h&gt;
+macro_line|#include &lt;asm/io.h&gt;
 DECL|macro|KEYBOARD_IRQ
-mdefine_line|#define KEYBOARD_IRQ&t;&t;&t;1
+mdefine_line|#define KEYBOARD_IRQ                    1
 DECL|macro|DISABLE_KBD_DURING_INTERRUPTS
-mdefine_line|#define DISABLE_KBD_DURING_INTERRUPTS&t;0
+mdefine_line|#define DISABLE_KBD_DURING_INTERRUPTS   0
 r_extern
 r_int
 id|pckbd_setkeycode

@@ -196,6 +196,40 @@ id|cpu_present_mask
 suffix:semicolon
 DECL|macro|cpu_online_map
 mdefine_line|#define cpu_online_map cpu_present_mask
+r_extern
+r_int
+id|smp_call_function_on_cpu
+c_func
+(paren
+r_void
+(paren
+op_star
+id|func
+)paren
+(paren
+r_void
+op_star
+id|info
+)paren
+comma
+r_void
+op_star
+id|info
+comma
+r_int
+id|retry
+comma
+r_int
+id|wait
+comma
+r_int
+r_int
+id|cpu
+)paren
+suffix:semicolon
+macro_line|#else /* CONFIG_SMP */
+DECL|macro|smp_call_function_on_cpu
+mdefine_line|#define smp_call_function_on_cpu(func,info,retry,wait,cpu)    ({ 0; })
 macro_line|#endif /* CONFIG_SMP */
 DECL|macro|NO_PROC_ID
 mdefine_line|#define NO_PROC_ID&t;(-1)

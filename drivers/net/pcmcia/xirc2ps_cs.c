@@ -9012,6 +9012,9 @@ l_int|9
 suffix:semicolon
 DECL|macro|MAYBE_SET
 macro_line|#undef  MAYBE_SET(X,Y)
+r_return
+l_int|0
+suffix:semicolon
 )brace
 id|__setup
 c_func

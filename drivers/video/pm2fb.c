@@ -13616,6 +13616,12 @@ suffix:semicolon
 )def_block
 multiline_comment|/***************************************************************************&n; * Begin of module functions&n; ***************************************************************************/
 macro_line|#ifdef MODULE
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 DECL|variable|mode
 r_static
 r_char

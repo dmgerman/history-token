@@ -126,7 +126,7 @@ singleline_comment|//
 singleline_comment|// TxCredits value below which driver won&squot;t bother sending (to prevent too many small writes).
 singleline_comment|// Send only if above 25%
 DECL|macro|EDGE_FW_GET_TX_CREDITS_SEND_THRESHOLD
-mdefine_line|#define EDGE_FW_GET_TX_CREDITS_SEND_THRESHOLD(InitialCredit)&t;(max_t(int, ((InitialCredit) / 4), EDGE_FW_BULK_MAX_PACKET_SIZE))
+mdefine_line|#define EDGE_FW_GET_TX_CREDITS_SEND_THRESHOLD(InitialCredit)&t;(max(((InitialCredit) / 4), EDGE_FW_BULK_MAX_PACKET_SIZE))
 DECL|macro|EDGE_FW_BULK_MAX_PACKET_SIZE
 mdefine_line|#define&t;EDGE_FW_BULK_MAX_PACKET_SIZE&t;&t;64&t;
 singleline_comment|// Max Packet Size for Bulk In Endpoint (EP1)

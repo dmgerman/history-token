@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * $Id: a3d.c,v 1.10 2000/05/29 11:19:50 vojtech Exp $&n; *&n; *  Copyright (c) 1998-2000 Vojtech Pavlik&n; *&n; *  Sponsored by SuSE&n; */
+multiline_comment|/*&n; * $Id: a3d.c,v 1.14 2001/04/26 10:24:46 vojtech Exp $&n; *&n; *  Copyright (c) 1998-2001 Vojtech Pavlik&n; *&n; *  Sponsored by SuSE&n; */
 multiline_comment|/*&n; * FP-Gaming Assasin 3D joystick driver for Linux&n; */
 multiline_comment|/*&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; *&n; * Should you need to contact me, the author, you can do so either by&n; * e-mail - mail your message to &lt;vojtech@suse.cz&gt;, or by paper mail:&n; * Vojtech Pavlik, Ucitelska 1576, Prague 8, 182 00 Czech Republic&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -1330,7 +1330,9 @@ id|a3d
 op_star
 id|a3d
 op_assign
-id|gameport-&gt;driver
+id|gameport
+op_member_access_from_pointer
+r_private
 suffix:semicolon
 r_int
 id|i
@@ -1401,7 +1403,9 @@ id|a3d
 op_star
 id|a3d
 op_assign
-id|gameport-&gt;driver
+id|gameport
+op_member_access_from_pointer
+r_private
 suffix:semicolon
 r_if
 c_cond
@@ -1454,7 +1458,9 @@ id|a3d
 op_star
 id|a3d
 op_assign
-id|gameport-&gt;driver
+id|gameport
+op_member_access_from_pointer
+r_private
 suffix:semicolon
 r_if
 c_cond
@@ -2103,7 +2109,9 @@ c_func
 id|BTN_MIDDLE
 )paren
 suffix:semicolon
-id|a3d-&gt;adc.driver
+id|a3d-&gt;adc
+dot
+r_private
 op_assign
 id|a3d
 suffix:semicolon
@@ -2122,10 +2130,6 @@ suffix:semicolon
 id|a3d-&gt;adc.fuzz
 op_assign
 l_int|1
-suffix:semicolon
-id|a3d-&gt;adc.type
-op_assign
-id|GAMEPORT_EXT
 suffix:semicolon
 id|a3d_read
 c_func
@@ -2359,6 +2363,12 @@ id|module_exit
 c_func
 (paren
 id|a3d_exit
+)paren
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
 eof

@@ -3887,10 +3887,12 @@ suffix:semicolon
 singleline_comment|// calculate number of bytes to put in fifo
 id|copySize
 op_assign
-id|min_t
+id|min
+(paren
 (paren
 r_int
-comma
+r_int
+)paren
 id|count
 comma
 (paren
@@ -3948,10 +3950,8 @@ id|fifo-&gt;head
 suffix:semicolon
 id|firsthalf
 op_assign
-id|min_t
+id|min
 (paren
-r_int
-comma
 id|bytesleft
 comma
 id|copySize
@@ -4431,10 +4431,8 @@ id|fifo-&gt;tail
 suffix:semicolon
 id|firsthalf
 op_assign
-id|min_t
+id|min
 (paren
-r_int
-comma
 id|bytesleft
 comma
 id|count

@@ -1179,6 +1179,10 @@ id|cia_ioremap
 c_func
 (paren
 id|CIA_BROKEN_TBIA_BASE
+comma
+l_int|32768
+op_star
+l_int|4
 )paren
 suffix:semicolon
 id|cia_readl
@@ -1211,6 +1215,12 @@ c_func
 id|bus_addr
 op_plus
 l_int|0x18000
+)paren
+suffix:semicolon
+id|cia_iounmap
+c_func
+(paren
+id|bus_addr
 )paren
 suffix:semicolon
 multiline_comment|/* Restore normal PCI operation.  */
@@ -1422,6 +1432,10 @@ comma
 id|use_tbia_try2
 op_assign
 l_int|0
+suffix:semicolon
+r_int
+r_int
+id|bus_addr
 suffix:semicolon
 multiline_comment|/* pyxis -- tbia is broken */
 r_if
@@ -1659,6 +1673,19 @@ c_func
 (paren
 )paren
 suffix:semicolon
+multiline_comment|/* Get a usable bus address */
+id|bus_addr
+op_assign
+id|cia_ioremap
+c_func
+(paren
+id|addr0
+comma
+l_int|8
+op_star
+id|PAGE_SIZE
+)paren
+suffix:semicolon
 multiline_comment|/* First, verify we can read back what we&squot;ve written.  If&n;&t;   this fails, we can&squot;t be sure of any of the other testing&n;&t;   we&squot;re going to do, so bail.  */
 multiline_comment|/* ??? Actually, we could do the work with machine checks.&n;&t;   By passing this register update test, we pretty much&n;&t;   guarantee that cia_pci_tbi_try1 works.  If this test&n;&t;   fails, cia_pci_tbi_try2 might still work.  */
 id|temp
@@ -1810,11 +1837,7 @@ op_assign
 id|cia_readl
 c_func
 (paren
-id|cia_ioremap
-c_func
-(paren
-id|addr0
-)paren
+id|bus_addr
 )paren
 suffix:semicolon
 id|mb
@@ -1989,15 +2012,11 @@ op_assign
 id|cia_readl
 c_func
 (paren
-id|cia_ioremap
-c_func
-(paren
-id|addr0
+id|bus_addr
 op_plus
 l_int|4
 op_star
 id|PAGE_SIZE
-)paren
 )paren
 suffix:semicolon
 id|mb
@@ -2112,15 +2131,11 @@ op_assign
 id|cia_readl
 c_func
 (paren
-id|cia_ioremap
-c_func
-(paren
-id|addr0
+id|bus_addr
 op_plus
 l_int|5
 op_star
 id|PAGE_SIZE
-)paren
 )paren
 suffix:semicolon
 id|mb
@@ -2224,15 +2239,11 @@ op_assign
 id|cia_readl
 c_func
 (paren
-id|cia_ioremap
-c_func
-(paren
-id|addr0
+id|bus_addr
 op_plus
 l_int|6
 op_star
 id|PAGE_SIZE
-)paren
 )paren
 suffix:semicolon
 id|mb
@@ -2371,6 +2382,13 @@ l_int|1
 suffix:semicolon
 m_exit
 suffix:colon
+multiline_comment|/* unmap the bus addr */
+id|cia_iounmap
+c_func
+(paren
+id|bus_addr
+)paren
+suffix:semicolon
 multiline_comment|/* Restore normal PCI operation.  */
 id|mb
 c_func

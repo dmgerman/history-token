@@ -698,6 +698,13 @@ id|mask
 )paren
 suffix:semicolon
 r_void
+id|irlmp_do_expiry
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_void
 id|irlmp_do_discovery
 c_func
 (paren
@@ -885,6 +892,11 @@ r_extern
 r_int
 id|sysctl_discovery
 suffix:semicolon
+r_extern
+r_int
+id|sysctl_lap_keepalive_time
+suffix:semicolon
+multiline_comment|/* in ms, default is LM_IDLE_TIMEOUT */
 r_extern
 r_struct
 id|irlmp_cb

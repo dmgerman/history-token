@@ -111,6 +111,12 @@ comma
 l_string|&quot;SCSI bus termination&quot;
 )paren
 suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Use term=0,1,0,0,0 to turn terminators on/off&n; */
 DECL|variable|term
 r_static

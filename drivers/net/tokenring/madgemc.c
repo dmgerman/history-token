@@ -3078,6 +3078,12 @@ suffix:semicolon
 multiline_comment|/* unlock_tms380_module(); */
 )brace
 macro_line|#endif /* MODULE */
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 "&f;"
 multiline_comment|/*&n; * Local variables:&n; *  compile-command: &quot;gcc -DMODVERSIONS  -DMODULE -D__KERNEL__ -Wall -Wstrict-prototypes -O6 -fomit-frame-pointer -I/usr/src/linux/drivers/net/tokenring/ -c madgemc.c&quot;&n; *  alt-compile-command: &quot;gcc -DMODULE -D__KERNEL__ -Wall -Wstrict-prototypes -O6 -fomit-frame-pointer -I/usr/src/linux/drivers/net/tokenring/ -c madgemc.c&quot;&n; *  c-set-style &quot;K&amp;R&quot;&n; *  c-indent-level: 8&n; *  c-basic-offset: 8&n; *  tab-width: 8&n; * End:&n; */
 eof

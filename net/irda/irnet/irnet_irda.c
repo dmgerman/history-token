@@ -1307,7 +1307,7 @@ suffix:semicolon
 multiline_comment|/* May be set via control channel */
 id|self-&gt;rsaddr
 op_assign
-l_int|0x0
+id|DEV_ADDR_ANY
 suffix:semicolon
 multiline_comment|/* May be set via control channel */
 id|self-&gt;daddr
@@ -1317,7 +1317,7 @@ suffix:semicolon
 multiline_comment|/* Until we get connected */
 id|self-&gt;saddr
 op_assign
-l_int|0x0
+id|DEV_ADDR_ANY
 suffix:semicolon
 multiline_comment|/* Until we get connected */
 id|self-&gt;max_sdu_size_rx

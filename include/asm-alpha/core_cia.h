@@ -1152,12 +1152,37 @@ c_func
 r_int
 r_int
 id|addr
+comma
+r_int
+r_int
+id|size
+id|__attribute__
+c_func
+(paren
+(paren
+id|unused
+)paren
+)paren
 )paren
 (brace
 r_return
 id|addr
 op_plus
 id|CIA_DENSE_MEM
+suffix:semicolon
+)brace
+DECL|function|cia_iounmap
+id|__EXTERN_INLINE
+r_void
+id|cia_iounmap
+c_func
+(paren
+r_int
+r_int
+id|addr
+)paren
+(brace
+r_return
 suffix:semicolon
 )brace
 DECL|function|cia_bwx_readb
@@ -1362,12 +1387,30 @@ c_func
 r_int
 r_int
 id|addr
+comma
+r_int
+r_int
+id|size
 )paren
 (brace
 r_return
 id|addr
 op_plus
 id|CIA_BW_MEM
+suffix:semicolon
+)brace
+DECL|function|cia_bwx_iounmap
+id|__EXTERN_INLINE
+r_void
+id|cia_bwx_iounmap
+c_func
+(paren
+r_int
+r_int
+id|addr
+)paren
+(brace
+r_return
 suffix:semicolon
 )brace
 DECL|function|cia_is_ioaddr
@@ -1430,7 +1473,9 @@ macro_line|# define __writel(x,a)&t;&t;cia_bwx_writel((x),(unsigned long)(a))
 DECL|macro|__writeq
 macro_line|# define __writeq(x,a)&t;&t;cia_bwx_writeq((x),(unsigned long)(a))
 DECL|macro|__ioremap
-macro_line|# define __ioremap(a)&t;&t;cia_bwx_ioremap((unsigned long)(a))
+macro_line|# define __ioremap(a,s)&t;&t;cia_bwx_ioremap((unsigned long)(a),(s))
+DECL|macro|__iounmap
+macro_line|# define __iounmap(a)           cia_bwx_iounmap((unsigned long)(a))
 DECL|macro|inb
 macro_line|# define inb(p)&t;&t;&t;__inb(p)
 DECL|macro|inw
@@ -1489,7 +1534,9 @@ macro_line|# define __writel(x,a)&t;&t;cia_writel((x),(unsigned long)(a))
 DECL|macro|__writeq
 macro_line|# define __writeq(x,a)&t;&t;cia_writeq((x),(unsigned long)(a))
 DECL|macro|__ioremap
-macro_line|# define __ioremap(a)&t;&t;cia_ioremap((unsigned long)(a))
+macro_line|# define __ioremap(a,s)&t;&t;cia_ioremap((unsigned long)(a),(s))
+DECL|macro|__iounmap
+macro_line|# define __iounmap(a)           cia_iounmap((unsigned long)(a))
 DECL|macro|__raw_readl
 macro_line|# define __raw_readl(a)&t;&t;__readl(a)
 DECL|macro|__raw_readq

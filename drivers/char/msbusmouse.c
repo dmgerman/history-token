@@ -566,4 +566,13 @@ c_func
 (paren
 id|ms_bus_mouse_exit
 )paren
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
+DECL|variable|EXPORT_NO_SYMBOLS
+id|EXPORT_NO_SYMBOLS
+suffix:semicolon
 eof

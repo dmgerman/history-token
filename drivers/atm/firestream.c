@@ -429,10 +429,12 @@ multiline_comment|/* -1 signals end of list */
 suffix:semicolon
 multiline_comment|/* Safetyfeature: If the card interrupts more than this number of times&n;   in a jiffy (1/100th of a second) then we just disable the interrupt and&n;   print a message. This prevents the system from hanging. &n;&n;   150000 packets per second is close to the limit a PC is going to have&n;   anyway. We therefore have to disable this for production. -- REW */
 DECL|macro|IRQ_RATE_LIMIT
-macro_line|#undef IRQ_RATE_LIMIT 100
+macro_line|#undef IRQ_RATE_LIMIT 
+singleline_comment|// 100
 multiline_comment|/* Interrupts work now. Unlike serial cards, ATM cards don&squot;t work all&n;   that great without interrupts. -- REW */
 DECL|macro|FS_POLL_FREQ
-macro_line|#undef FS_POLL_FREQ 100
+macro_line|#undef FS_POLL_FREQ 
+singleline_comment|// 100
 multiline_comment|/* &n;   This driver can spew a whole lot of debugging output at you. If you&n;   need maximum performance, you should disable the DEBUG define. To&n;   aid in debugging in the field, I&squot;m leaving the compile-time debug&n;   features enabled, and disable them &quot;runtime&quot;. That allows me to&n;   instruct people with problems to enable debugging without requiring&n;   them to recompile... -- REW&n;*/
 DECL|macro|DEBUG
 mdefine_line|#define DEBUG
@@ -7708,14 +7710,6 @@ c_func
 id|atm_dev
 )paren
 suffix:semicolon
-id|err_out_free_fs_dev
-suffix:colon
-id|kfree
-c_func
-(paren
-id|fs_dev
-)paren
-suffix:semicolon
 id|err_out
 suffix:colon
 r_return
@@ -8589,5 +8583,13 @@ c_func
 (paren
 id|firestream_cleanup_module
 )paren
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
+id|EXPORT_NO_SYMBOLS
 suffix:semicolon
 eof

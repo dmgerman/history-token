@@ -1359,6 +1359,12 @@ l_int|0
 suffix:semicolon
 )brace
 macro_line|#ifdef MODULE
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 DECL|variable|uPD98402_init
 id|EXPORT_SYMBOL
 c_func

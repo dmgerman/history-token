@@ -1536,10 +1536,8 @@ r_break
 suffix:semicolon
 )brace
 )brace
-macro_line|#ifdef MODULE
 id|MOD_DEC_USE_COUNT
 suffix:semicolon
-macro_line|#endif /* MODULE */
 r_return
 l_int|0
 suffix:semicolon
@@ -1556,6 +1554,12 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|idt77105_stop
+)paren
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
 macro_line|#ifdef MODULE

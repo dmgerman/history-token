@@ -137,6 +137,15 @@ suffix:semicolon
 r_int
 id|err
 suffix:semicolon
+id|IRDA_DEBUG
+c_func
+(paren
+l_int|3
+comma
+id|__FUNCTION__
+l_string|&quot;()&bslash;n&quot;
+)paren
+suffix:semicolon
 id|self
 op_assign
 (paren
@@ -248,15 +257,6 @@ id|sock
 op_star
 id|sk
 suffix:semicolon
-id|IRDA_DEBUG
-c_func
-(paren
-l_int|2
-comma
-id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
-)paren
-suffix:semicolon
 id|self
 op_assign
 (paren
@@ -265,6 +265,17 @@ id|irda_sock
 op_star
 )paren
 id|instance
+suffix:semicolon
+id|IRDA_DEBUG
+c_func
+(paren
+l_int|2
+comma
+id|__FUNCTION__
+l_string|&quot;(%p)&bslash;n&quot;
+comma
+id|self
+)paren
 suffix:semicolon
 id|sk
 op_assign
@@ -312,6 +323,12 @@ l_int|1
 suffix:semicolon
 )brace
 multiline_comment|/* Close our TSAP.&n;&t; * If we leave it open, IrLMP put it back into the list of&n;&t; * unconnected LSAPs. The problem is that any incoming request&n;&t; * can then be matched to this socket (and it will be, because&n;&t; * it is at the head of the list). This would prevent any&n;&t; * listening socket waiting on the same TSAP to get those requests.&n;&t; * Some apps forget to close sockets, or hang to it a bit too long,&n;&t; * so we may stay in this dead state long enough to be noticed...&n;&t; * Note : all socket function do check sk-&gt;state, so we are safe...&n;&t; * Jean II&n;&t; */
+r_if
+c_cond
+(paren
+id|self-&gt;tsap
+)paren
+(brace
 id|irttp_close_tsap
 c_func
 (paren
@@ -322,6 +339,7 @@ id|self-&gt;tsap
 op_assign
 l_int|NULL
 suffix:semicolon
+)brace
 multiline_comment|/* Note : once we are there, there is not much you want to do&n;&t; * with the socket anymore, apart from closing it.&n;&t; * For example, bind() and connect() won&squot;t reset sk-&gt;err,&n;&t; * sk-&gt;shutdown and sk-&gt;dead to valid values...&n;&t; * Jean II&n;&t; */
 )brace
 multiline_comment|/*&n; * Function irda_connect_confirm (instance, sap, qos, max_sdu_size, skb)&n; *&n; *    Connections has been confirmed by the remote device&n; *&n; */
@@ -366,15 +384,6 @@ id|sock
 op_star
 id|sk
 suffix:semicolon
-id|IRDA_DEBUG
-c_func
-(paren
-l_int|2
-comma
-id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
-)paren
-suffix:semicolon
 id|self
 op_assign
 (paren
@@ -383,6 +392,17 @@ id|irda_sock
 op_star
 )paren
 id|instance
+suffix:semicolon
+id|IRDA_DEBUG
+c_func
+(paren
+l_int|2
+comma
+id|__FUNCTION__
+l_string|&quot;(%p)&bslash;n&quot;
+comma
+id|self
+)paren
 suffix:semicolon
 id|sk
 op_assign
@@ -572,15 +592,6 @@ id|sock
 op_star
 id|sk
 suffix:semicolon
-id|IRDA_DEBUG
-c_func
-(paren
-l_int|2
-comma
-id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
-)paren
-suffix:semicolon
 id|self
 op_assign
 (paren
@@ -589,6 +600,17 @@ id|irda_sock
 op_star
 )paren
 id|instance
+suffix:semicolon
+id|IRDA_DEBUG
+c_func
+(paren
+l_int|2
+comma
+id|__FUNCTION__
+l_string|&quot;(%p)&bslash;n&quot;
+comma
+id|self
+)paren
 suffix:semicolon
 id|sk
 op_assign
@@ -988,15 +1010,6 @@ id|irda_sock
 op_star
 id|self
 suffix:semicolon
-id|IRDA_DEBUG
-c_func
-(paren
-l_int|2
-comma
-id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
-)paren
-suffix:semicolon
 id|self
 op_assign
 (paren
@@ -1023,6 +1036,17 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
+id|IRDA_DEBUG
+c_func
+(paren
+l_int|2
+comma
+id|__FUNCTION__
+l_string|&quot;(%p)&bslash;n&quot;
+comma
+id|self
+)paren
+suffix:semicolon
 multiline_comment|/* We probably don&squot;t need to make any more queries */
 id|iriap_close
 c_func
@@ -1505,7 +1529,9 @@ c_func
 l_int|2
 comma
 id|__FUNCTION__
-l_string|&quot;(), name=%s&bslash;n&quot;
+l_string|&quot;(%p, %s)&bslash;n&quot;
+comma
+id|self
 comma
 id|name
 )paren
@@ -1555,6 +1581,19 @@ comma
 id|irda_getvalue_confirm
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|self-&gt;iriap
+op_eq
+l_int|NULL
+)paren
+(brace
+r_return
+op_minus
+id|ENOMEM
+suffix:semicolon
+)brace
 multiline_comment|/* Treat unexpected signals as disconnect */
 id|self-&gt;errno
 op_assign
@@ -2287,15 +2326,6 @@ suffix:semicolon
 r_int
 id|err
 suffix:semicolon
-id|IRDA_DEBUG
-c_func
-(paren
-l_int|2
-comma
-id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
-)paren
-suffix:semicolon
 id|self
 op_assign
 id|sk-&gt;protinfo.irda
@@ -2311,6 +2341,17 @@ r_return
 op_minus
 l_int|1
 suffix:semicolon
+)paren
+suffix:semicolon
+id|IRDA_DEBUG
+c_func
+(paren
+l_int|2
+comma
+id|__FUNCTION__
+l_string|&quot;(%p)&bslash;n&quot;
+comma
+id|self
 )paren
 suffix:semicolon
 r_if
@@ -2924,18 +2965,20 @@ suffix:semicolon
 r_int
 id|err
 suffix:semicolon
+id|self
+op_assign
+id|sk-&gt;protinfo.irda
+suffix:semicolon
 id|IRDA_DEBUG
 c_func
 (paren
 l_int|2
 comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
-)paren
-suffix:semicolon
+l_string|&quot;(%p)&bslash;n&quot;
+comma
 id|self
-op_assign
-id|sk-&gt;protinfo.irda
+)paren
 suffix:semicolon
 multiline_comment|/* Don&squot;t allow connect for Ultra sockets */
 r_if
@@ -3367,7 +3410,7 @@ op_minus
 id|ESOCKTNOSUPPORT
 suffix:semicolon
 )brace
-multiline_comment|/* Allocate socket */
+multiline_comment|/* Allocate networking socket */
 r_if
 c_cond
 (paren
@@ -3391,6 +3434,7 @@ r_return
 op_minus
 id|ENOMEM
 suffix:semicolon
+multiline_comment|/* Allocate IrDA socket */
 id|self
 op_assign
 id|kmalloc
@@ -3413,7 +3457,8 @@ op_eq
 l_int|NULL
 )paren
 (brace
-id|kfree
+id|sk_free
+c_func
 (paren
 id|sk
 )paren
@@ -3437,6 +3482,17 @@ id|irda_sock
 )paren
 )paren
 suffix:semicolon
+id|IRDA_DEBUG
+c_func
+(paren
+l_int|2
+comma
+id|__FUNCTION__
+l_string|&quot;() : self is %p&bslash;n&quot;
+comma
+id|self
+)paren
+suffix:semicolon
 id|init_waitqueue_head
 c_func
 (paren
@@ -3444,14 +3500,7 @@ op_amp
 id|self-&gt;query_wait
 )paren
 suffix:semicolon
-id|self-&gt;sk
-op_assign
-id|sk
-suffix:semicolon
-id|sk-&gt;protinfo.irda
-op_assign
-id|self
-suffix:semicolon
+multiline_comment|/* Initialise networking socket struct */
 id|sock_init_data
 c_func
 (paren
@@ -3459,6 +3508,24 @@ id|sock
 comma
 id|sk
 )paren
+suffix:semicolon
+multiline_comment|/* Note : set sk-&gt;refcnt to 1 */
+id|sk-&gt;family
+op_assign
+id|PF_IRDA
+suffix:semicolon
+id|sk-&gt;protocol
+op_assign
+id|protocol
+suffix:semicolon
+multiline_comment|/* Link networking socket and IrDA socket structs together */
+id|sk-&gt;protinfo.irda
+op_assign
+id|self
+suffix:semicolon
+id|self-&gt;sk
+op_assign
+id|sk
 suffix:semicolon
 r_switch
 c_cond
@@ -3553,10 +3620,6 @@ op_minus
 id|ESOCKTNOSUPPORT
 suffix:semicolon
 )brace
-id|sk-&gt;protocol
-op_assign
-id|protocol
-suffix:semicolon
 multiline_comment|/* Register as a client with IrLMP */
 id|self-&gt;ckey
 op_assign
@@ -3620,7 +3683,9 @@ c_func
 l_int|2
 comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
+l_string|&quot;(%p)&bslash;n&quot;
+comma
+id|self
 )paren
 suffix:semicolon
 id|ASSERT
@@ -3794,25 +3859,44 @@ c_func
 id|sk
 )paren
 suffix:semicolon
-id|sk-&gt;dead
-op_assign
-l_int|1
-suffix:semicolon
+multiline_comment|/* Destroy IrDA socket */
 id|irda_destroy_socket
 c_func
 (paren
 id|sk-&gt;protinfo.irda
 )paren
 suffix:semicolon
+multiline_comment|/* Prevent sock_def_destruct() to create havoc */
+id|sk-&gt;protinfo.irda
+op_assign
+l_int|NULL
+suffix:semicolon
+id|sock_orphan
+c_func
+(paren
+id|sk
+)paren
+suffix:semicolon
 id|sock-&gt;sk
 op_assign
 l_int|NULL
 suffix:semicolon
-id|sk-&gt;socket
-op_assign
-l_int|NULL
+multiline_comment|/* Purge queues (see sock_init_data()) */
+id|skb_queue_purge
+c_func
+(paren
+op_amp
+id|sk-&gt;receive_queue
+)paren
 suffix:semicolon
-multiline_comment|/* Not used, but we should do this. */
+multiline_comment|/* Destroy networking socket if we are the last reference on it,&n;&t; * i.e. if(sk-&gt;refcnt == 0) -&gt; sk_free(sk) */
+id|sock_put
+c_func
+(paren
+id|sk
+)paren
+suffix:semicolon
+multiline_comment|/* Notes on socket locking and deallocation... - Jean II&n;&t; * In theory we should put pairs of sock_hold() / sock_put() to&n;&t; * prevent the socket to be destroyed whenever there is an&n;&t; * outstanding request or outstanding incomming packet or event.&n;&t; *&n;&t; * 1) This may include IAS request, both in connect and getsockopt.&n;&t; * Unfortunately, the situation is a bit more messy than it looks,&n;&t; * because we close iriap and kfree(self) above.&n;&t; * &n;&t; * 2) This may include selective discovery in getsockopt.&n;&t; * Same stuff as above, irlmp registration and self are gone.&n;&t; *&n;&t; * Probably 1 and 2 may not matter, because it&squot;s all triggered&n;&t; * by a process and the socket layer already prevent the&n;&t; * socket to go away while a process is holding it, through&n;&t; * sockfd_put() and fput()...&n;&t; *&n;&t; * 3) This may include deferred TSAP closure. In particular,&n;&t; * we may receive a late irda_disconnect_indication()&n;&t; * Fortunately, (tsap_cb *)-&gt;close_pend should protect us&n;&t; * from that.&n;&t; *&n;&t; * I did some testing on SMP, and it looks solid. And the socket&n;&t; * memory leak is now gone... - Jean II&n;&t; */
 r_return
 l_int|0
 suffix:semicolon
@@ -5317,15 +5401,6 @@ id|sk
 op_assign
 id|sock-&gt;sk
 suffix:semicolon
-id|IRDA_DEBUG
-c_func
-(paren
-l_int|0
-comma
-id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
-)paren
-suffix:semicolon
 id|self
 op_assign
 id|sk-&gt;protinfo.irda
@@ -5341,6 +5416,17 @@ r_return
 op_minus
 l_int|1
 suffix:semicolon
+)paren
+suffix:semicolon
+id|IRDA_DEBUG
+c_func
+(paren
+l_int|1
+comma
+id|__FUNCTION__
+l_string|&quot;(%p)&bslash;n&quot;
+comma
+id|self
 )paren
 suffix:semicolon
 id|sk-&gt;state
@@ -6057,6 +6143,17 @@ r_return
 op_minus
 l_int|1
 suffix:semicolon
+)paren
+suffix:semicolon
+id|IRDA_DEBUG
+c_func
+(paren
+l_int|2
+comma
+id|__FUNCTION__
+l_string|&quot;(%p)&bslash;n&quot;
+comma
+id|self
 )paren
 suffix:semicolon
 r_if
@@ -6951,6 +7048,17 @@ suffix:semicolon
 id|self
 op_assign
 id|sk-&gt;protinfo.irda
+suffix:semicolon
+id|IRDA_DEBUG
+c_func
+(paren
+l_int|2
+comma
+id|__FUNCTION__
+l_string|&quot;(%p)&bslash;n&quot;
+comma
+id|self
+)paren
 suffix:semicolon
 r_if
 c_cond

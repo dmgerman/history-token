@@ -8,7 +8,7 @@ macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/ptrace.h&gt;
-macro_line|#include &lt;linux/malloc.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
@@ -43,7 +43,7 @@ r_char
 op_star
 id|version
 op_assign
-l_string|&quot;$Revision: 1.1.18.1 $&quot;
+l_string|&quot;$Revision: 1.2 $&quot;
 suffix:semicolon
 DECL|macro|DEBUG
 mdefine_line|#define DEBUG(n, args...) if (pc_debug&gt;(n)) printk(KERN_DEBUG args);
@@ -86,6 +86,12 @@ id|MODULE_DESCRIPTION
 c_func
 (paren
 l_string|&quot;Support for Cisco/Aironet 802.11 wireless ethernet &bslash;&n;                   cards.  This is the module that links the PCMCIA card &bslash;&n;&t;&t;   with the airo module.&quot;
+)paren
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;Dual BSD/GPL&quot;
 )paren
 suffix:semicolon
 id|MODULE_SUPPORTED_DEVICE

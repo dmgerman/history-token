@@ -1216,6 +1216,7 @@ op_assign
 id|irq
 suffix:semicolon
 )brace
+macro_line|#ifdef MODULE
 r_static
 r_int
 id|__init
@@ -1272,6 +1273,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+macro_line|#endif
 r_static
 r_int
 id|__init

@@ -4679,6 +4679,12 @@ suffix:semicolon
 r_int
 id|iobase
 suffix:semicolon
+r_char
+id|hwname
+(braket
+l_int|32
+)braket
+suffix:semicolon
 id|__u8
 id|set
 suffix:semicolon
@@ -4856,6 +4862,17 @@ c_func
 id|dev
 )paren
 suffix:semicolon
+multiline_comment|/* Give self a hardware name */
+id|sprintf
+c_func
+(paren
+id|hwname
+comma
+l_string|&quot;w83977af @ 0x%03x&quot;
+comma
+id|self-&gt;io.fir_base
+)paren
+suffix:semicolon
 multiline_comment|/* &n;&t; * Open new IrLAP layer instance, now that everything should be&n;&t; * initialized properly &n;&t; */
 id|self-&gt;irlap
 op_assign
@@ -4866,6 +4883,8 @@ id|dev
 comma
 op_amp
 id|self-&gt;qos
+comma
+id|hwname
 )paren
 suffix:semicolon
 id|MOD_INC_USE_COUNT

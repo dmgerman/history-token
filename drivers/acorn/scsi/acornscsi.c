@@ -12021,4 +12021,12 @@ c_func
 id|acornscsi_exit
 )paren
 suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
+id|EXPORT_NO_SYMBOLS
+suffix:semicolon
 eof

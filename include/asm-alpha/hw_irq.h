@@ -20,6 +20,12 @@ id|i
 )paren
 (brace
 )brace
+r_extern
+r_volatile
+r_int
+r_int
+id|irq_err_count
+suffix:semicolon
 macro_line|#ifdef CONFIG_ALPHA_GENERIC
 DECL|macro|ACTUAL_NR_IRQS
 mdefine_line|#define ACTUAL_NR_IRQS&t;alpha_mv.nr_irqs

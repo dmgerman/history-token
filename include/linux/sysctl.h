@@ -110,7 +110,7 @@ id|CTL_BUS
 op_assign
 l_int|8
 comma
-multiline_comment|/* Buses */
+multiline_comment|/* Busses */
 DECL|enumerator|CTL_ABI
 id|CTL_ABI
 op_assign
@@ -377,7 +377,14 @@ DECL|enumerator|KERN_S390_USER_DEBUG_LOGGING
 id|KERN_S390_USER_DEBUG_LOGGING
 op_assign
 l_int|51
+comma
 multiline_comment|/* int: dumps of user faults */
+DECL|enumerator|KERN_CORE_USES_PID
+id|KERN_CORE_USES_PID
+op_assign
+l_int|52
+comma
+multiline_comment|/* int: use core or core.%pid */
 )brace
 suffix:semicolon
 multiline_comment|/* CTL_VM names: */
@@ -1704,6 +1711,11 @@ DECL|enumerator|NET_DECNET_CONF
 id|NET_DECNET_CONF
 op_assign
 l_int|10
+comma
+DECL|enumerator|NET_DECNET_NO_FC_MAX_CWND
+id|NET_DECNET_NO_FC_MAX_CWND
+op_assign
+l_int|11
 comma
 DECL|enumerator|NET_DECNET_DEBUG_LEVEL
 id|NET_DECNET_DEBUG_LEVEL

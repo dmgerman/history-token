@@ -834,10 +834,8 @@ suffix:semicolon
 )brace
 id|transfer_size
 op_assign
-id|min_t
+id|min
 (paren
-r_int
-comma
 id|count
 comma
 id|URB_TRANSFER_BUFFER_SIZE

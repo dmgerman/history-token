@@ -1436,10 +1436,10 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|IS_NOEXEC
-c_func
 (paren
-id|inode
+id|nd.mnt-&gt;mnt_flags
+op_amp
+id|MNT_NOEXEC
 )paren
 op_logical_and
 id|S_ISREG
@@ -2476,7 +2476,7 @@ id|mode
 op_assign
 id|inode-&gt;i_mode
 suffix:semicolon
-multiline_comment|/* Huh? We had already checked for MAY_EXEC, WTF do we check this? */
+multiline_comment|/*&n;&t; * Check execute perms again - if the caller has CAP_DAC_OVERRIDE,&n;&t; * vfs_permission lets a non-executable through&n;&t; */
 r_if
 c_cond
 (paren
@@ -2515,10 +2515,10 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|IS_NOSUID
-c_func
 (paren
-id|inode
+id|bprm-&gt;file-&gt;f_vfsmnt-&gt;mnt_flags
+op_amp
+id|MNT_NOSUID
 )paren
 )paren
 (brace

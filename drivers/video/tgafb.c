@@ -5744,6 +5744,12 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n;     *  Modularisation&n;     */
 macro_line|#ifdef MODULE
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 DECL|variable|tgafb_init
 id|module_init
 c_func

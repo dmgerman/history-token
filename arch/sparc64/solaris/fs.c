@@ -2430,6 +2430,11 @@ id|report_statvfs
 c_func
 (paren
 r_struct
+id|vfsmount
+op_star
+id|mnt
+comma
+r_struct
 id|inode
 op_star
 id|inode
@@ -2466,7 +2471,7 @@ op_assign
 id|vfs_statfs
 c_func
 (paren
-id|inode-&gt;i_sb
+id|mnt-&gt;mnt_sb
 comma
 op_amp
 id|s
@@ -2484,7 +2489,7 @@ r_char
 op_star
 id|p
 op_assign
-id|inode-&gt;i_sb-&gt;s_type-&gt;name
+id|mnt-&gt;mnt_sb-&gt;s_type-&gt;name
 suffix:semicolon
 r_int
 id|i
@@ -2526,11 +2531,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|IS_NOSUID
-c_func
-(paren
-id|inode
-)paren
+id|mnt-&gt;mnt_flags
+op_amp
+id|MNT_NOSUID
 )paren
 id|i
 op_or_assign
@@ -2679,6 +2682,11 @@ id|report_statvfs64
 c_func
 (paren
 r_struct
+id|vfsmount
+op_star
+id|mnt
+comma
+r_struct
 id|inode
 op_star
 id|inode
@@ -2715,7 +2723,7 @@ op_assign
 id|vfs_statfs
 c_func
 (paren
-id|inode-&gt;i_sb
+id|mnt-&gt;mnt_sb
 comma
 op_amp
 id|s
@@ -2733,7 +2741,7 @@ r_char
 op_star
 id|p
 op_assign
-id|inode-&gt;i_sb-&gt;s_type-&gt;name
+id|mnt-&gt;mnt_sb-&gt;s_type-&gt;name
 suffix:semicolon
 r_int
 id|i
@@ -2775,11 +2783,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|IS_NOSUID
-c_func
-(paren
-id|inode
-)paren
+id|mnt-&gt;mnt_flags
+op_amp
+id|MNT_NOSUID
 )paren
 id|i
 op_or_assign
@@ -2980,6 +2986,8 @@ op_assign
 id|report_statvfs
 c_func
 (paren
+id|nd.mnt
+comma
 id|inode
 comma
 id|buf
@@ -3043,6 +3051,8 @@ op_assign
 id|report_statvfs
 c_func
 (paren
+id|file-&gt;f_vfsmnt
+comma
 id|file-&gt;f_dentry-&gt;d_inode
 comma
 id|buf
@@ -3123,6 +3133,8 @@ op_assign
 id|report_statvfs64
 c_func
 (paren
+id|nd.mnt
+comma
 id|inode
 comma
 id|buf
@@ -3196,6 +3208,8 @@ op_assign
 id|report_statvfs64
 c_func
 (paren
+id|file-&gt;f_vfsmnt
+comma
 id|file-&gt;f_dentry-&gt;d_inode
 comma
 id|buf

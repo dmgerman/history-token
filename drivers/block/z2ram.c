@@ -1219,6 +1219,12 @@ l_int|0
 suffix:semicolon
 )brace
 macro_line|#if defined(MODULE)
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 r_int
 DECL|function|init_module
 id|init_module

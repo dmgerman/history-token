@@ -24,7 +24,6 @@ macro_line|#include &lt;linux/ctype.h&gt;
 macro_line|#include &quot;ewrk3.h&quot;
 DECL|variable|__initdata
 r_static
-r_const
 r_char
 id|version
 (braket

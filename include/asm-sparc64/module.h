@@ -23,5 +23,7 @@ id|addr
 suffix:semicolon
 DECL|macro|module_arch_init
 mdefine_line|#define module_arch_init(x)&t;(0)
+DECL|macro|arch_init_modules
+mdefine_line|#define arch_init_modules(x)&t;do { } while (0)
 macro_line|#endif /* _ASM_SPARC64_MODULE_H */
 eof

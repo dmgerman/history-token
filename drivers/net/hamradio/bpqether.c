@@ -31,7 +31,6 @@ macro_line|#include &lt;net/arp.h&gt;
 macro_line|#include &lt;linux/bpqether.h&gt;
 DECL|variable|__initdata
 r_static
-r_const
 r_char
 id|banner
 (braket

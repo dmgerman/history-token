@@ -9489,6 +9489,12 @@ comma
 l_string|&quot;i&quot;
 )paren
 suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 macro_line|#endif /* MODULE */
 multiline_comment|/*&n; * You can setup up to 4 boards (current value of RC_NBOARD)&n; * by specifying &quot;iobase=0xXXX iobase1=0xXXX ...&quot; as insmod parameter.&n; *&n; */
 DECL|function|riscom8_init_module

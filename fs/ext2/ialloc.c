@@ -558,12 +558,18 @@ id|ino
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Note: we must free any quota before locking the superblock,&n;&t; * as writing the quota to disk may need the lock as well.&n;&t; */
-id|DQUOT_INIT
+r_if
+c_cond
+(paren
+op_logical_neg
+id|is_bad_inode
 c_func
 (paren
 id|inode
 )paren
-suffix:semicolon
+)paren
+(brace
+multiline_comment|/* Quota is already initialized in iput() */
 id|DQUOT_FREE_INODE
 c_func
 (paren
@@ -578,6 +584,7 @@ c_func
 id|inode
 )paren
 suffix:semicolon
+)brace
 id|lock_super
 (paren
 id|sb
@@ -1721,13 +1728,15 @@ id|inode
 )paren
 )paren
 (brace
-id|sb-&gt;dq_op
-op_member_access_from_pointer
-id|drop
+id|DQUOT_DROP
 c_func
 (paren
 id|inode
 )paren
+suffix:semicolon
+id|inode-&gt;i_flags
+op_or_assign
+id|S_NOQUOTA
 suffix:semicolon
 id|inode-&gt;i_nlink
 op_assign
@@ -1764,6 +1773,12 @@ id|unlock_super
 c_func
 (paren
 id|sb
+)paren
+suffix:semicolon
+id|make_bad_inode
+c_func
+(paren
+id|inode
 )paren
 suffix:semicolon
 id|iput

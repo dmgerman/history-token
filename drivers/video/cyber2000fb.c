@@ -6617,6 +6617,12 @@ id|cyberpro_driver
 suffix:semicolon
 )brace
 macro_line|#ifdef MODULE
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 DECL|variable|cyber2000fb_init
 id|module_init
 c_func

@@ -87,6 +87,12 @@ comma
 l_string|&quot;SCSI bus termination&quot;
 )paren
 suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 DECL|variable|ecs
 r_static
 r_struct

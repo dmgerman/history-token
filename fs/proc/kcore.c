@@ -123,7 +123,7 @@ r_struct
 id|user
 id|dump
 suffix:semicolon
-macro_line|#if defined (__i386__) || defined (__mc68000__)
+macro_line|#if defined (__i386__) || defined (__mc68000__) || defined(__x86_64__)
 DECL|macro|FIRST_MAPPED
 macro_line|#&t;define FIRST_MAPPED&t;PAGE_SIZE&t;/* we don&squot;t have page 0 mapped on x86.. */
 macro_line|#else
@@ -160,7 +160,7 @@ op_rshift
 id|PAGE_SHIFT
 )paren
 suffix:semicolon
-macro_line|#if defined (__i386__)
+macro_line|#if defined (__i386__) || defined(__x86_64__)
 id|dump.start_code
 op_assign
 id|PAGE_OFFSET
@@ -1727,7 +1727,7 @@ id|vmlist_lock
 )paren
 suffix:semicolon
 multiline_comment|/* where page 0 not mapped, write zeros into buffer */
-macro_line|#if defined (__i386__) || defined (__mc68000__)
+macro_line|#if defined (__i386__) || defined (__mc68000__) || defined(__x86_64__)
 r_if
 c_cond
 (paren

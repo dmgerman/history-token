@@ -196,6 +196,12 @@ r_void
 )paren
 (brace
 )brace
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 macro_line|#else&t;
 singleline_comment|// !MODULE 
 macro_line|#ifndef NULL

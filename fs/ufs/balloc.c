@@ -1390,6 +1390,11 @@ comma
 id|tmp
 )paren
 suffix:semicolon
+id|unlock_super
+(paren
+id|sb
+)paren
+suffix:semicolon
 r_return
 (paren
 r_int

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * $Id: hid-debug.h,v 1.2 2000/05/29 10:54:53 vojtech Exp $&n; *&n; *  (c) 1999 Andreas Gal&t;&lt;gal@cs.uni-magdeburg.de&gt;&n; *  (c) 2000 Vojtech Pavlik&t;&lt;vojtech@suse.cz&gt;&n; *&n; *  Some debug stuff for the HID parser.&n; *&n; *  Sponsored by SuSE&n; */
+multiline_comment|/*&n; * $Id: hid-debug.h,v 1.3 2001/05/10 15:56:07 vojtech Exp $&n; *&n; *  (c) 1999 Andreas Gal&t;&t;&lt;gal@cs.uni-magdeburg.de&gt;&n; *  (c) 2000-2001 Vojtech Pavlik&t;&lt;vojtech@suse.cz&gt;&n; *&n; *  Some debug stuff for the HID parser.&n; *&n; *  Sponsored by SuSE&n; */
 multiline_comment|/*&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; *&n; * Should you need to contact me, the author, you can do so either by&n; * e-mail - mail your message to &lt;vojtech@suse.cz&gt;, or by paper mail:&n; * Vojtech Pavlik, Ucitelska 1576, Prague 8, 182 00 Czech Republic&n; */
 DECL|struct|hid_usage_entry
 r_struct
@@ -1281,6 +1281,7 @@ l_string|&quot;)&bslash;n&quot;
 suffix:semicolon
 )brace
 DECL|function|hid_dump_device
+r_static
 r_void
 id|hid_dump_device
 c_func
@@ -1326,6 +1327,21 @@ comma
 l_string|&quot;FEATURE&quot;
 )brace
 suffix:semicolon
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+id|device-&gt;maxapplication
+suffix:semicolon
+id|i
+op_increment
+)paren
+(brace
 id|printk
 c_func
 (paren
@@ -1336,6 +1352,9 @@ id|resolv_usage
 c_func
 (paren
 id|device-&gt;application
+(braket
+id|i
+)braket
 )paren
 suffix:semicolon
 id|printk
@@ -1344,6 +1363,7 @@ c_func
 l_string|&quot;)&bslash;n&quot;
 )paren
 suffix:semicolon
+)brace
 r_for
 c_loop
 (paren
@@ -1483,6 +1503,7 @@ suffix:semicolon
 )brace
 )brace
 DECL|function|hid_dump_input
+r_static
 r_void
 id|hid_dump_input
 c_func
@@ -1499,7 +1520,7 @@ id|value
 id|printk
 c_func
 (paren
-l_string|&quot;hidd: input &quot;
+l_string|&quot;hid-debug: input &quot;
 )paren
 suffix:semicolon
 id|resolv_usage

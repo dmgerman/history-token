@@ -2,25 +2,16 @@ multiline_comment|/*************************************************************
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;&t;/* printk(), and other useful stuff */
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/stddef.h&gt;&t;/* offsetof(), etc. */
 macro_line|#include &lt;linux/errno.h&gt;&t;/* return codes */
 macro_line|#include &lt;linux/string.h&gt;&t;/* inline memset(), etc. */
-macro_line|#include &lt;linux/slab.h&gt;&t;/* kmalloc(), kfree() */
+macro_line|#include &lt;linux/slab.h&gt;&t;&t;/* kmalloc(), kfree() */
 macro_line|#include &lt;linux/wanrouter.h&gt;&t;/* WAN router definitions */
 macro_line|#include &lt;linux/wanpipe.h&gt;&t;/* WANPIPE common user API definitions */
 macro_line|#include &lt;linux/if_arp.h&gt;&t;/* ARPHRD_* defines */
-macro_line|#if defined(LINUX_2_4)
 macro_line|#include &lt;linux/inetdevice.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
-macro_line|#elif defined(LINUX_2_1)
-macro_line|#include &lt;linux/inetdevice.h&gt;
-macro_line|#include &lt;asm/uaccess.h&gt;
-macro_line|#else
-macro_line|#include &lt;net/route.h&gt;          /* Adding new route entries */
-macro_line|#include &lt;asm/segment.h&gt;
-DECL|macro|test_and_set_bit
-mdefine_line|#define test_and_set_bit set_bit
-macro_line|#endif
 macro_line|#include &lt;linux/in.h&gt;&t;&t;/* sockaddr_in */
 macro_line|#include &lt;linux/inet.h&gt;&t;
 macro_line|#include &lt;linux/if.h&gt;
@@ -1161,4 +1152,10 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 eof

@@ -1699,10 +1699,8 @@ suffix:semicolon
 )brace
 id|buffer_size
 op_assign
-id|min_t
+id|min
 (paren
-r_int
-comma
 id|count
 comma
 id|bluetooth-&gt;bulk_out_buffer_size

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * $Id: lightning.c,v 1.7 2000/05/24 19:36:03 vojtech Exp $&n; *&n; *  Copyright (c) 1998-2000 Vojtech Pavlik&n; *&n; *  Sponsored by SuSE&n; */
+multiline_comment|/*&n; * $Id: lightning.c,v 1.13 2001/04/26 10:24:46 vojtech Exp $&n; *&n; *  Copyright (c) 1998-2001 Vojtech Pavlik&n; *&n; *  Sponsored by SuSE&n; */
 multiline_comment|/*&n; * PDPI Lightning 4 gamecard driver for Linux.&n; */
 multiline_comment|/*&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or &n; * (at your option) any later version.&n; * &n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; * &n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; * &n; * Should you need to contact me, the author, you can do so either by&n; * e-mail - mail your message to &lt;vojtech@suse.cz&gt;, or by paper mail:&n; * Vojtech Pavlik, Ucitelska 1576, Prague 8, 182 00 Czech Republic&n; */
 macro_line|#include &lt;asm/io.h&gt;
@@ -34,6 +34,12 @@ id|MODULE_AUTHOR
 c_func
 (paren
 l_string|&quot;Vojtech Pavlik &lt;vojtech@suse.cz&gt;&quot;
+)paren
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
 DECL|struct|l4
@@ -131,7 +137,9 @@ id|l4
 op_star
 id|l4
 op_assign
-id|gameport-&gt;driver
+id|gameport
+op_member_access_from_pointer
+r_private
 suffix:semicolon
 r_int
 r_char
@@ -346,7 +354,9 @@ id|l4
 op_star
 id|l4
 op_assign
-id|gameport-&gt;driver
+id|gameport
+op_member_access_from_pointer
+r_private
 suffix:semicolon
 r_if
 c_cond
@@ -762,7 +772,9 @@ id|l4
 op_star
 id|l4
 op_assign
-id|gameport-&gt;driver
+id|gameport
+op_member_access_from_pointer
+r_private
 suffix:semicolon
 r_if
 c_cond
@@ -1214,7 +1226,9 @@ op_assign
 op_amp
 id|l4-&gt;gameport
 suffix:semicolon
-id|gameport-&gt;driver
+id|gameport
+op_member_access_from_pointer
+r_private
 op_assign
 id|l4
 suffix:semicolon
@@ -1230,10 +1244,6 @@ id|gameport-&gt;calibrate
 op_assign
 id|l4_calibrate
 suffix:semicolon
-id|gameport-&gt;type
-op_assign
-id|GAMEPORT_EXT
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1243,16 +1253,10 @@ op_logical_and
 op_logical_neg
 id|j
 )paren
-(brace
 id|gameport-&gt;io
 op_assign
 id|L4_PORT
 suffix:semicolon
-id|gameport-&gt;size
-op_assign
-l_int|1
-suffix:semicolon
-)brace
 r_if
 c_cond
 (paren

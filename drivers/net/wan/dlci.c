@@ -2393,4 +2393,22 @@ l_int|NULL
 suffix:semicolon
 )brace
 macro_line|#endif /* MODULE */
+id|MODULE_AUTHOR
+c_func
+(paren
+l_string|&quot;Mike McLagan&quot;
+)paren
+suffix:semicolon
+id|MODULE_DESCRIPTION
+c_func
+(paren
+l_string|&quot;Frame Relay DLCI layer&quot;
+)paren
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 eof

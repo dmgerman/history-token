@@ -23,7 +23,6 @@ DECL|macro|BUDDHA_BASE3
 mdefine_line|#define BUDDHA_BASE3&t;0xc00
 DECL|variable|__initdata
 r_static
-r_const
 id|u_int
 id|buddha_bases
 (braket
@@ -96,7 +95,6 @@ DECL|macro|BUDDHA_IRQ3
 mdefine_line|#define BUDDHA_IRQ3&t;0xf80
 DECL|variable|__initdata
 r_static
-r_const
 r_int
 id|buddha_irqports
 (braket

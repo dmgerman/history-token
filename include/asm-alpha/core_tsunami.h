@@ -1083,12 +1083,37 @@ c_func
 r_int
 r_int
 id|addr
+comma
+r_int
+r_int
+id|size
+id|__attribute__
+c_func
+(paren
+(paren
+id|unused
+)paren
+)paren
 )paren
 (brace
 r_return
 id|addr
 op_plus
 id|TSUNAMI_MEM_BIAS
+suffix:semicolon
+)brace
+DECL|function|tsunami_iounmap
+id|__EXTERN_INLINE
+r_void
+id|tsunami_iounmap
+c_func
+(paren
+r_int
+r_int
+id|addr
+)paren
+(brace
+r_return
 suffix:semicolon
 )brace
 DECL|function|tsunami_is_ioaddr
@@ -1338,7 +1363,9 @@ mdefine_line|#define __writel(x,a)&t;&t;tsunami_writel((x),(unsigned long)(a))
 DECL|macro|__writeq
 mdefine_line|#define __writeq(x,a)&t;&t;tsunami_writeq((x),(unsigned long)(a))
 DECL|macro|__ioremap
-mdefine_line|#define __ioremap(a)&t;&t;tsunami_ioremap((unsigned long)(a))
+mdefine_line|#define __ioremap(a,s)&t;&t;tsunami_ioremap((unsigned long)(a),(s))
+DECL|macro|__iounmap
+mdefine_line|#define __iounmap(a)&t;&t;tsunami_iounmap((unsigned long)(a))
 DECL|macro|__is_ioaddr
 mdefine_line|#define __is_ioaddr(a)&t;&t;tsunami_is_ioaddr((unsigned long)(a))
 DECL|macro|inb

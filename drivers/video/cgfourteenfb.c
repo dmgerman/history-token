@@ -104,6 +104,12 @@ DECL|macro|CG14_MCR_PIXMODE_16
 mdefine_line|#define CG14_MCR_PIXMODE_16&t;&t;2
 DECL|macro|CG14_MCR_PIXMODE_32
 mdefine_line|#define CG14_MCR_PIXMODE_32&t;&t;3
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 DECL|struct|cg14_regs
 r_struct
 id|cg14_regs

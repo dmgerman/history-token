@@ -12,20 +12,6 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &quot;sound_config.h&quot;
 macro_line|#include &lt;linux/wavefront.h&gt;
-multiline_comment|/*&n; *&t;This sucks, hopefully it&squot;ll get standardised&n; */
-macro_line|#if defined(__alpha__)
-macro_line|#ifdef CONFIG_SMP
-DECL|macro|LOOPS_PER_TICK
-mdefine_line|#define LOOPS_PER_TICK cpu_data[smp_processor_id()].loops_per_jiffy
-macro_line|#else
-DECL|macro|LOOPS_PER_TICK
-mdefine_line|#define LOOPS_PER_TICK&t;loops_per_jiffy
-macro_line|#endif
-macro_line|#endif
-macro_line|#if defined(__i386__)
-DECL|macro|LOOPS_PER_TICK
-mdefine_line|#define LOOPS_PER_TICK current_cpu_data.loops_per_jiffy
-macro_line|#endif
 DECL|macro|_MIDI_SYNTH_C_
 mdefine_line|#define _MIDI_SYNTH_C_
 DECL|macro|MIDI_SYNTH_NAME
@@ -126,27 +112,29 @@ op_assign
 l_string|&quot;/etc/sound/wavefront.os&quot;
 suffix:semicolon
 multiline_comment|/* where to find a processed&n;&t;&t;&t;&t;&t;     version of the WaveFront OS&n;&t;&t;&t;&t;&t;  */
-DECL|variable|wait_usecs
+DECL|variable|wait_polls
 r_int
-id|wait_usecs
+id|wait_polls
 op_assign
-l_int|150
+l_int|2000
 suffix:semicolon
-multiline_comment|/* This magic number seems to give pretty optimal&n;&t;&t;&t; throughput based on my limited experimentation.&n;&t;&t;&t; If you want to play around with it and find a better&n;&t;&t;&t; value, be my guest. Remember, the idea is to&n;&t;&t;&t; get a number that causes us to just busy wait&n;&t;&t;&t; for as many WaveFront commands as possible, without&n;&t;&t;&t; coming up with a number so large that we hog the&n;&t;&t;&t; whole CPU.&n;&n;&t;&t;&t; Specifically, with this number, out of about 134,000&n;&t;&t;&t; status waits, only about 250 result in a sleep.&n;&t;&t;      */
-DECL|variable|sleep_interval
+multiline_comment|/* This is a number of tries we poll the status register&n;&t;&t;&t;   before resorting to sleeping. WaveFront being an ISA&n;&t;&t;&t;   card each poll takes about 1.2us. So before going to&n;&t;&t;&t;   sleep we wait up to 2.4ms in a loop.&n;&t;&t;&t;*/
+DECL|variable|sleep_length
 r_int
-id|sleep_interval
+id|sleep_length
 op_assign
+id|HZ
+op_div
 l_int|100
 suffix:semicolon
-multiline_comment|/* HZ/sleep_interval seconds per sleep */
+multiline_comment|/* This says how long we&squot;re going to sleep between polls.&n;&t;&t;&t;      10ms sounds reasonable for fast response.&n;&t;&t;&t;   */
 DECL|variable|sleep_tries
 r_int
 id|sleep_tries
 op_assign
 l_int|50
 suffix:semicolon
-multiline_comment|/* number of times we&squot;ll try to sleep */
+multiline_comment|/* Wait for status 0.5 seconds total. */
 DECL|variable|reset_time
 r_int
 id|reset_time
@@ -195,7 +183,7 @@ suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
-id|wait_usecs
+id|wait_polls
 comma
 l_string|&quot;i&quot;
 )paren
@@ -203,7 +191,7 @@ suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
-id|sleep_interval
+id|sleep_length
 comma
 l_string|&quot;i&quot;
 )paren
@@ -1261,33 +1249,6 @@ suffix:semicolon
 )brace
 r_static
 r_int
-DECL|function|wavefront_sleep
-id|wavefront_sleep
-(paren
-r_int
-id|limit
-)paren
-(brace
-id|current-&gt;state
-op_assign
-id|TASK_INTERRUPTIBLE
-suffix:semicolon
-id|schedule_timeout
-c_func
-(paren
-id|limit
-)paren
-suffix:semicolon
-r_return
-id|signal_pending
-c_func
-(paren
-id|current
-)paren
-suffix:semicolon
-)brace
-r_static
-r_int
 DECL|function|wavefront_wait
 id|wavefront_wait
 (paren
@@ -1298,37 +1259,6 @@ id|mask
 r_int
 id|i
 suffix:semicolon
-r_static
-r_int
-id|short_loop_cnt
-op_assign
-l_int|0
-suffix:semicolon
-multiline_comment|/* Compute the loop count that lets us sleep for about the&n;&t;   right amount of time, cache issues, bus speeds and all&n;&t;   other issues being unequal but largely irrelevant.&n;&t;*/
-r_if
-c_cond
-(paren
-id|short_loop_cnt
-op_eq
-l_int|0
-)paren
-(brace
-id|short_loop_cnt
-op_assign
-id|wait_usecs
-op_star
-(paren
-id|LOOPS_PER_TICK
-op_div
-(paren
-l_int|1000000
-op_div
-id|HZ
-)paren
-)paren
-suffix:semicolon
-)brace
-multiline_comment|/* Spin for a short period of time, because &gt;99% of all&n;&t;   requests to the WaveFront can be serviced inline like this.&n;&t;*/
 r_for
 c_loop
 (paren
@@ -1338,12 +1268,11 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|short_loop_cnt
+id|wait_polls
 suffix:semicolon
 id|i
 op_increment
 )paren
-(brace
 r_if
 c_cond
 (paren
@@ -1354,12 +1283,9 @@ c_func
 op_amp
 id|mask
 )paren
-(brace
 r_return
 l_int|1
 suffix:semicolon
-)brace
-)brace
 r_for
 c_loop
 (paren
@@ -1386,32 +1312,48 @@ op_amp
 id|mask
 )paren
 (brace
+id|set_current_state
+c_func
+(paren
+id|TASK_RUNNING
+)paren
+suffix:semicolon
 r_return
 l_int|1
 suffix:semicolon
 )brace
+id|set_current_state
+c_func
+(paren
+id|TASK_INTERRUPTIBLE
+)paren
+suffix:semicolon
+id|schedule_timeout
+c_func
+(paren
+id|sleep_length
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
-id|wavefront_sleep
+id|signal_pending
+c_func
 (paren
-id|HZ
-op_div
-id|sleep_interval
+id|current
 )paren
 )paren
-(brace
-r_return
-(paren
-l_int|0
-)paren
+r_break
 suffix:semicolon
 )brace
-)brace
-r_return
+id|set_current_state
+c_func
 (paren
-l_int|0
+id|TASK_RUNNING
 )paren
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 )brace
 r_static

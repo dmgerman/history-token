@@ -4,6 +4,7 @@ mdefine_line|#define __i386_UACCESS_H
 multiline_comment|/*&n; * User space memory access functions&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
+macro_line|#include &lt;linux/prefetch.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 DECL|macro|VERIFY_READ
 mdefine_line|#define VERIFY_READ 0
@@ -369,6 +370,12 @@ r_int
 id|n
 )paren
 (brace
+id|prefetch
+c_func
+(paren
+id|from
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren

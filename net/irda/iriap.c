@@ -1331,6 +1331,8 @@ r_int
 id|name_len
 comma
 id|attr_len
+comma
+id|skb_len
 suffix:semicolon
 id|__u8
 op_star
@@ -1397,12 +1399,44 @@ op_star
 id|HZ
 )paren
 suffix:semicolon
+id|name_len
+op_assign
+id|strlen
+c_func
+(paren
+id|name
+)paren
+suffix:semicolon
+multiline_comment|/* Up to IAS_MAX_CLASSNAME = 60 */
+id|attr_len
+op_assign
+id|strlen
+c_func
+(paren
+id|attr
+)paren
+suffix:semicolon
+multiline_comment|/* Up to IAS_MAX_ATTRIBNAME = 60 */
+id|skb_len
+op_assign
+id|self-&gt;max_header_size
+op_plus
+l_int|2
+op_plus
+id|name_len
+op_plus
+l_int|1
+op_plus
+id|attr_len
+op_plus
+l_int|4
+suffix:semicolon
 id|skb
 op_assign
 id|dev_alloc_skb
 c_func
 (paren
-l_int|64
+id|skb_len
 )paren
 suffix:semicolon
 r_if
@@ -1414,22 +1448,6 @@ id|skb
 r_return
 op_minus
 id|ENOMEM
-suffix:semicolon
-id|name_len
-op_assign
-id|strlen
-c_func
-(paren
-id|name
-)paren
-suffix:semicolon
-id|attr_len
-op_assign
-id|strlen
-c_func
-(paren
-id|attr
-)paren
 suffix:semicolon
 multiline_comment|/* Reserve space for MUX and LAP header */
 id|skb_reserve
@@ -1834,17 +1852,6 @@ comma
 id|value_len
 )paren
 suffix:semicolon
-id|ASSERT
-c_func
-(paren
-id|value_len
-OL
-l_int|64
-comma
-r_return
-suffix:semicolon
-)paren
-suffix:semicolon
 multiline_comment|/* Make sure the string is null-terminated */
 id|fp
 (braket
@@ -1867,6 +1874,7 @@ op_plus
 id|n
 )paren
 suffix:semicolon
+multiline_comment|/* Will truncate to IAS_MAX_STRING bytes */
 id|value
 op_assign
 id|irias_new_string_value
@@ -1906,17 +1914,7 @@ id|n
 op_add_assign
 l_int|2
 suffix:semicolon
-id|ASSERT
-c_func
-(paren
-id|value_len
-op_le
-l_int|55
-comma
-r_return
-suffix:semicolon
-)paren
-suffix:semicolon
+multiline_comment|/* Will truncate to IAS_MAX_OCTET_STRING bytes */
 id|value
 op_assign
 id|irias_new_octseq_value
@@ -2472,15 +2470,21 @@ suffix:semicolon
 r_char
 id|name
 (braket
-l_int|64
+id|IAS_MAX_CLASSNAME
+op_plus
+l_int|1
 )braket
 suffix:semicolon
+multiline_comment|/* 60 bytes */
 r_char
 id|attr
 (braket
-l_int|64
+id|IAS_MAX_ATTRIBNAME
+op_plus
+l_int|1
 )braket
 suffix:semicolon
+multiline_comment|/* 60 bytes */
 id|__u8
 op_star
 id|fp
@@ -4066,7 +4070,9 @@ id|buf
 op_plus
 id|len
 comma
-l_string|&quot;octet sequence&bslash;n&quot;
+l_string|&quot;octet sequence (%d bytes)&bslash;n&quot;
+comma
+id|attrib-&gt;value-&gt;len
 )paren
 suffix:semicolon
 r_break

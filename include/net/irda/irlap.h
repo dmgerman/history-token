@@ -58,11 +58,23 @@ DECL|member|magic
 id|magic_t
 id|magic
 suffix:semicolon
+multiline_comment|/* Device we are attached to */
 DECL|member|netdev
 r_struct
 id|net_device
 op_star
 id|netdev
+suffix:semicolon
+DECL|member|hw_name
+r_char
+id|hw_name
+(braket
+l_int|2
+op_star
+id|IFNAMSIZ
+op_plus
+l_int|1
+)braket
 suffix:semicolon
 multiline_comment|/* Connection state */
 DECL|member|state
@@ -379,6 +391,10 @@ r_struct
 id|qos_info
 op_star
 id|qos
+comma
+r_char
+op_star
+id|hw_name
 )paren
 suffix:semicolon
 r_void

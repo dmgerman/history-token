@@ -1639,7 +1639,6 @@ DECL|macro|NUM_TOTAL_MODES
 mdefine_line|#define NUM_TOTAL_MODES  ARRAY_SIZE(ami_modedb)
 DECL|variable|__initdata
 r_static
-r_const
 r_char
 op_star
 id|mode_option
@@ -14245,6 +14244,12 @@ suffix:semicolon
 )brace
 )brace
 macro_line|#ifdef MODULE
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 DECL|function|init_module
 r_int
 id|init_module

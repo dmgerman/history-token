@@ -1,4 +1,7 @@
-multiline_comment|/******************************************************************************&n; *&n; *    ixjuser.h&n; *&n; *    Device Driver for the Internet PhoneJACK and&n; *    Internet LineJACK Telephony Cards.&n; *&n; *    (c) Copyright 1999 Quicknet Technologies, Inc.&n; *&n; *    This program is free software; you can redistribute it and/or&n; *    modify it under the terms of the GNU General Public License&n; *    as published by the Free Software Foundation; either version&n; *    2 of the License, or (at your option) any later version.&n; *&n; * Author:          Ed Okerson, &lt;eokerson@quicknet.net&gt;&n; *    &n; * Contributors:    Greg Herlein, &lt;gherlein@quicknet.net&gt;&n; *                  David W. Erhart, &lt;derhart@quicknet.net&gt;&n; *                  John Sellers, &lt;jsellers@quicknet.net&gt;&n; *                  Mike Preston, &lt;mpreston@quicknet.net&gt;&n; *&n; * More information about the hardware related to this driver can be found&n; * at our website:    http://www.quicknet.net&n; *&n; * Fixes:&n; *&n; * IN NO EVENT SHALL QUICKNET TECHNOLOGIES, INC. BE LIABLE TO ANY PARTY FOR&n; * DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES ARISING OUT&n; * OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF QUICKNET&n; * TECHNOLOGIES, INC.HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.&n; *&n; * QUICKNET TECHNOLOGIES, INC. SPECIFICALLY DISCLAIMS ANY WARRANTIES,&n; * INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY&n; * AND FITNESS FOR A PARTICULAR PURPOSE.  THE SOFTWARE PROVIDED HEREUNDER IS&n; * ON AN &quot;AS IS&quot; BASIS, AND QUICKNET TECHNOLOGIES, INC. HAS NO OBLIGATION &n; * TO PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.&n; *&n; *****************************************************************************/
+macro_line|#ifndef __LINUX_IXJUSER_H
+DECL|macro|__LINUX_IXJUSER_H
+mdefine_line|#define __LINUX_IXJUSER_H
+multiline_comment|/******************************************************************************&n; *&n; *    ixjuser.h&n; *&n; * Device Driver for Quicknet Technologies, Inc.&squot;s Telephony cards&n; * including the Internet PhoneJACK, Internet PhoneJACK Lite,&n; * Internet PhoneJACK PCI, Internet LineJACK, Internet PhoneCARD and&n; * SmartCABLE&n; *&n; *    (c) Copyright 1999-2001  Quicknet Technologies, Inc.&n; *&n; *    This program is free software; you can redistribute it and/or&n; *    modify it under the terms of the GNU General Public License&n; *    as published by the Free Software Foundation; either version&n; *    2 of the License, or (at your option) any later version.&n; *&n; * Author:          Ed Okerson, &lt;eokerson@quicknet.net&gt;&n; *    &n; * Contributors:    Greg Herlein, &lt;gherlein@quicknet.net&gt;&n; *                  David W. Erhart, &lt;derhart@quicknet.net&gt;&n; *                  John Sellers, &lt;jsellers@quicknet.net&gt;&n; *                  Mike Preston, &lt;mpreston@quicknet.net&gt;&n; *&n; * More information about the hardware related to this driver can be found&n; * at our website:    http://www.quicknet.net&n; *&n; * Fixes:&n; *&n; * IN NO EVENT SHALL QUICKNET TECHNOLOGIES, INC. BE LIABLE TO ANY PARTY FOR&n; * DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES ARISING OUT&n; * OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF QUICKNET&n; * TECHNOLOGIES, INC.HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.&n; *&n; * QUICKNET TECHNOLOGIES, INC. SPECIFICALLY DISCLAIMS ANY WARRANTIES,&n; * INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY&n; * AND FITNESS FOR A PARTICULAR PURPOSE.  THE SOFTWARE PROVIDED HEREUNDER IS&n; * ON AN &quot;AS IS&quot; BASIS, AND QUICKNET TECHNOLOGIES, INC. HAS NO OBLIGATION &n; * TO PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.&n; *&n; *****************************************************************************/
 DECL|variable|ixjuser_h_rcsid
 r_static
 r_char
@@ -6,10 +9,10 @@ id|ixjuser_h_rcsid
 (braket
 )braket
 op_assign
-l_string|&quot;$Id: ixjuser.h,v 3.11 2000/03/30 22:06:48 eokerson Exp $&quot;
+l_string|&quot;$Id: ixjuser.h,v 4.1 2001/08/05 00:17:37 craigs Exp $&quot;
 suffix:semicolon
-macro_line|#include &quot;telephony.h&quot;
-multiline_comment|/******************************************************************************&n;*&n;* IOCTL&squot;s used for the Quicknet Cards&n;*&n;* If you use the IXJCTL_TESTRAM command, the card must be power cycled to&n;* reset the SRAM values before futher use.&n;*&n;******************************************************************************/
+macro_line|#include &lt;linux/telephony.h&gt;
+multiline_comment|/******************************************************************************&n;*&n;* IOCTL&squot;s used for the Quicknet Telephony Cards&n;*&n;* If you use the IXJCTL_TESTRAM command, the card must be power cycled to&n;* reset the SRAM values before futher use.&n;*&n;******************************************************************************/
 DECL|macro|IXJCTL_DSP_RESET
 mdefine_line|#define IXJCTL_DSP_RESET &t;&t;_IO  (&squot;q&squot;, 0xC0)
 DECL|macro|IXJCTL_RING
@@ -376,6 +379,8 @@ id|IXJ_FILTER_CADENCE
 suffix:semicolon
 DECL|macro|IXJCTL_SET_FILTER
 mdefine_line|#define IXJCTL_SET_FILTER&t;&t;_IOW (&squot;q&squot;, 0xC7, IXJ_FILTER *)
+DECL|macro|IXJCTL_SET_FILTER_RAW
+mdefine_line|#define IXJCTL_SET_FILTER_RAW&t;&t;_IOW (&squot;q&squot;, 0xDD, IXJ_FILTER_RAW *)
 DECL|macro|IXJCTL_GET_FILTER_HIST
 mdefine_line|#define IXJCTL_GET_FILTER_HIST&t;&t;_IOW (&squot;q&squot;, 0xC8, int)
 DECL|macro|IXJCTL_FILTER_CADENCE
@@ -1119,7 +1124,7 @@ DECL|macro|IXJCTL_PLAY_VOLUME
 mdefine_line|#define IXJCTL_PLAY_VOLUME&t;&t;PHONE_PLAY_VOLUME
 DECL|macro|IXJCTL_PLAY_LEVEL
 mdefine_line|#define IXJCTL_PLAY_LEVEL&t;&t;PHONE_PLAY_LEVEL
-multiline_comment|/******************************************************************************&n;*&n;* This group of IOCTLs deal with the Acoustic Echo Cancellation settings&n;* of the DSP&n;*&n;* Issueing the IXJCTL_AEC_START command with a value of AEC_OFF has the&n;* same effect as IXJCTL_AEC_STOP.  This is to simplify slider bar&n;* controls.  IXJCTL_AEC_GET_LEVEL returns the current setting of the AEC.&n;******************************************************************************/
+multiline_comment|/******************************************************************************&n;*&n;* This group of IOCTLs deal with the Acoustic Echo Cancellation settings&n;* of the DSP&n;*&n;* Issuing the IXJCTL_AEC_START command with a value of AEC_OFF has the&n;* same effect as IXJCTL_AEC_STOP.  This is to simplify slider bar&n;* controls.  IXJCTL_AEC_GET_LEVEL returns the current setting of the AEC.&n;******************************************************************************/
 DECL|macro|IXJCTL_AEC_START
 mdefine_line|#define IXJCTL_AEC_START&t;&t;_IOW (&squot;q&squot;, 0xCB, int)
 DECL|macro|IXJCTL_AEC_STOP
@@ -1136,7 +1141,9 @@ DECL|macro|AEC_HIGH
 mdefine_line|#define AEC_HIGH  3
 DECL|macro|AEC_AUTO
 mdefine_line|#define AEC_AUTO  4
-multiline_comment|/******************************************************************************&n;*&n;* Call Progress Tones, DTMF, etc.&n;* IXJCTL_DTMF_OOB determines if dtmf signaling is sent as Out-Of-Band&n;* only.  If you pass a 1, dtmf is suppressed from the audio stream.&n;* Tone on and off times are in 250 microsecond intervals so&n;* ioctl(ixj1, IXJCTL_SET_TONE_ON_TIME, 360);&n;* will set the tone on time of board ixj1 to 360 * 250us = 90ms&n;* the default values of tone on and off times is 840 or 210ms&n;******************************************************************************/
+DECL|macro|AEC_AGC
+mdefine_line|#define AEC_AGC   5
+multiline_comment|/******************************************************************************&n;*&n;* Call Progress Tones, DTMF, etc.&n;* IXJCTL_DTMF_OOB determines if DTMF signaling is sent as Out-Of-Band&n;* only.  If you pass a 1, DTMF is suppressed from the audio stream.&n;* Tone on and off times are in 250 microsecond intervals so&n;* ioctl(ixj1, IXJCTL_SET_TONE_ON_TIME, 360);&n;* will set the tone on time of board ixj1 to 360 * 250us = 90ms&n;* the default values of tone on and off times is 840 or 210ms&n;******************************************************************************/
 DECL|macro|IXJCTL_DTMF_READY
 mdefine_line|#define IXJCTL_DTMF_READY&t;&t;PHONE_DTMF_READY
 DECL|macro|IXJCTL_GET_DTMF
@@ -1167,16 +1174,16 @@ DECL|macro|IXJCTL_DIALTONE
 mdefine_line|#define IXJCTL_DIALTONE&t;&t;&t;PHONE_DIALTONE
 DECL|macro|IXJCTL_CPT_STOP
 mdefine_line|#define IXJCTL_CPT_STOP&t;&t;&t;PHONE_CPT_STOP
-multiline_comment|/******************************************************************************&n;* LineJack specific IOCTLs&n;*&n;* The lsb 4 bits of the LED argument represent the state of each of the 4&n;* LED&squot;s on the LineJack&n;******************************************************************************/
+multiline_comment|/******************************************************************************&n;* LineJACK specific IOCTLs&n;*&n;* The lsb 4 bits of the LED argument represent the state of each of the 4&n;* LED&squot;s on the LineJACK&n;******************************************************************************/
 DECL|macro|IXJCTL_SET_LED
 mdefine_line|#define IXJCTL_SET_LED&t;&t;&t;_IOW (&squot;q&squot;, 0xCE, int)
 DECL|macro|IXJCTL_MIXER
 mdefine_line|#define IXJCTL_MIXER&t;&t;&t;_IOW (&squot;q&squot;, 0xCF, int)
 multiline_comment|/******************************************************************************&n;* &n;* The master volume controls use attenuation with 32 levels from 0 to -62dB&n;* with steps of 2dB each, the defines should be OR&squot;ed together then sent&n;* as the parameter to the mixer command to change the mixer settings.&n;* &n;******************************************************************************/
 DECL|macro|MIXER_MASTER_L
-mdefine_line|#define MIXER_MASTER_L&t;&t;0x0100
+mdefine_line|#define MIXER_MASTER_L&t;&t;0x0000
 DECL|macro|MIXER_MASTER_R
-mdefine_line|#define MIXER_MASTER_R&t;&t;0x0200
+mdefine_line|#define MIXER_MASTER_R&t;&t;0x0100
 DECL|macro|ATT00DB
 mdefine_line|#define ATT00DB&t;&t;&t;0x00
 DECL|macro|ATT02DB
@@ -1347,14 +1354,11 @@ multiline_comment|/*************************************************************
 DECL|macro|IXJCTL_DAA_COEFF_SET
 mdefine_line|#define IXJCTL_DAA_COEFF_SET&t;&t;_IOW (&squot;q&squot;, 0xD0, int)
 DECL|macro|DAA_US
-mdefine_line|#define DAA_US &t;&t;1&t;
-singleline_comment|//PITA 8kHz
+mdefine_line|#define DAA_US &t;&t;1&t;/*PITA 8kHz */
 DECL|macro|DAA_UK
-mdefine_line|#define DAA_UK &t;&t;2&t;
-singleline_comment|//ISAR34 8kHz
+mdefine_line|#define DAA_UK &t;&t;2&t;/*ISAR34 8kHz */
 DECL|macro|DAA_FRANCE
-mdefine_line|#define DAA_FRANCE &t;3&t;
-singleline_comment|//
+mdefine_line|#define DAA_FRANCE &t;3&t;/* */
 DECL|macro|DAA_GERMANY
 mdefine_line|#define DAA_GERMANY&t;4
 DECL|macro|DAA_AUSTRALIA
@@ -1390,26 +1394,19 @@ multiline_comment|/*************************************************************
 DECL|macro|IXJCTL_DAA_AGAIN
 mdefine_line|#define IXJCTL_DAA_AGAIN&t;&t;_IOW (&squot;q&squot;, 0xD2, int)
 DECL|macro|AGRR00DB
-mdefine_line|#define AGRR00DB&t;0x00&t;
-singleline_comment|// Analog gain in receive direction 0dB
+mdefine_line|#define AGRR00DB&t;0x00&t;/* Analog gain in receive direction 0dB */
 DECL|macro|AGRR3_5DB
-mdefine_line|#define AGRR3_5DB&t;0x10&t;
-singleline_comment|// Analog gain in receive direction 3.5dB
+mdefine_line|#define AGRR3_5DB&t;0x10&t;/* Analog gain in receive direction 3.5dB */
 DECL|macro|AGRR06DB
-mdefine_line|#define AGRR06DB&t;0x30&t;
-singleline_comment|// Analog gain in receive direction 6dB
+mdefine_line|#define AGRR06DB&t;0x30&t;/* Analog gain in receive direction 6dB */
 DECL|macro|AGX00DB
-mdefine_line|#define AGX00DB&t;&t;0x00&t;
-singleline_comment|// Analog gain in transmit direction 0dB
+mdefine_line|#define AGX00DB&t;&t;0x00&t;/* Analog gain in transmit direction 0dB */
 DECL|macro|AGX_6DB
-mdefine_line|#define AGX_6DB&t;&t;0x04&t;
-singleline_comment|// Analog gain in transmit direction -6dB
+mdefine_line|#define AGX_6DB&t;&t;0x04&t;/* Analog gain in transmit direction -6dB */
 DECL|macro|AGX3_5DB
-mdefine_line|#define AGX3_5DB&t;0x08&t;
-singleline_comment|// Analog gain in transmit direction 3.5dB
+mdefine_line|#define AGX3_5DB&t;0x08&t;/* Analog gain in transmit direction 3.5dB */
 DECL|macro|AGX_2_5B
-mdefine_line|#define AGX_2_5B&t;0x0C&t;
-singleline_comment|// Analog gain in transmit direction -2.5dB
+mdefine_line|#define AGX_2_5B&t;0x0C&t;/* Analog gain in transmit direction -2.5dB */
 DECL|macro|IXJCTL_PSTN_LINETEST
 mdefine_line|#define IXJCTL_PSTN_LINETEST&t;&t;_IO  (&squot;q&squot;, 0xD3)
 DECL|macro|IXJCTL_CID
@@ -1441,9 +1438,119 @@ DECL|macro|IXJCTL_DRYBUFFER_READ
 mdefine_line|#define IXJCTL_DRYBUFFER_READ&t;&t;_IOR (&squot;q&squot;, 0xE6, unsigned long)
 DECL|macro|IXJCTL_DRYBUFFER_CLEAR
 mdefine_line|#define IXJCTL_DRYBUFFER_CLEAR&t;&t;_IO  (&squot;q&squot;, 0xE7)
+DECL|macro|IXJCTL_DTMF_PRESCALE
+mdefine_line|#define IXJCTL_DTMF_PRESCALE&t;&t;_IOW (&squot;q&squot;, 0xE8, int)
+multiline_comment|/******************************************************************************&n;*&n;* This ioctl allows the user application to control what events the driver&n;* will send signals for, and what signals it will send for which event.&n;* By default, if signaling is enabled, all events will send SIGIO when&n;* they occur.  To disable signals for an event set the signal to 0.&n;*&n;******************************************************************************/
+r_typedef
+r_enum
+(brace
+DECL|enumerator|SIG_DTMF_READY
+id|SIG_DTMF_READY
+comma
+DECL|enumerator|SIG_HOOKSTATE
+id|SIG_HOOKSTATE
+comma
+DECL|enumerator|SIG_FLASH
+id|SIG_FLASH
+comma
+DECL|enumerator|SIG_PSTN_RING
+id|SIG_PSTN_RING
+comma
+DECL|enumerator|SIG_CALLER_ID
+id|SIG_CALLER_ID
+comma
+DECL|enumerator|SIG_PSTN_WINK
+id|SIG_PSTN_WINK
+comma
+DECL|enumerator|SIG_F0
+DECL|enumerator|SIG_F1
+DECL|enumerator|SIG_F2
+DECL|enumerator|SIG_F3
+id|SIG_F0
+comma
+id|SIG_F1
+comma
+id|SIG_F2
+comma
+id|SIG_F3
+comma
+DECL|enumerator|SIG_FC0
+DECL|enumerator|SIG_FC1
+DECL|enumerator|SIG_FC2
+DECL|enumerator|SIG_FC3
+id|SIG_FC0
+comma
+id|SIG_FC1
+comma
+id|SIG_FC2
+comma
+id|SIG_FC3
+comma
+DECL|enumerator|SIG_READ_READY
+id|SIG_READ_READY
+op_assign
+l_int|33
+comma
+DECL|enumerator|SIG_WRITE_READY
+id|SIG_WRITE_READY
+op_assign
+l_int|34
+DECL|typedef|IXJ_SIGEVENT
+)brace
+id|IXJ_SIGEVENT
+suffix:semicolon
+r_typedef
+r_struct
+(brace
+DECL|member|event
+r_int
+r_int
+id|event
+suffix:semicolon
+DECL|member|signal
+r_int
+id|signal
+suffix:semicolon
+DECL|typedef|IXJ_SIGDEF
+)brace
+id|IXJ_SIGDEF
+suffix:semicolon
+DECL|macro|IXJCTL_SIGCTL
+mdefine_line|#define IXJCTL_SIGCTL&t;&t;&t;_IOW (&squot;q&squot;, 0xE9, IXJ_SIGDEF *)
+multiline_comment|/******************************************************************************&n;*&n;* These ioctls allow the user application to change the gain in the &n;* Smart Cable of the Internet Phone Card.  Sending -1 as a value will cause&n;* return value to be the current setting.  Valid values to set are 0x00 - 0x1F&n;*&n;* 11111 = +12 dB&n;* 10111 =   0 dB&n;* 00000 = -34.5 dB&n;*&n;* IXJCTL_SC_RXG sets the Receive gain&n;* IXJCTL_SC_TXG sets the Transmit gain&n;*&n;******************************************************************************/
+DECL|macro|IXJCTL_SC_RXG
+mdefine_line|#define IXJCTL_SC_RXG&t;&t;&t;_IOW (&squot;q&squot;, 0xEA, int)
+DECL|macro|IXJCTL_SC_TXG
+mdefine_line|#define IXJCTL_SC_TXG&t;&t;&t;_IOW (&squot;q&squot;, 0xEB, int)
 multiline_comment|/******************************************************************************&n;*&n;* The intercom IOCTL&squot;s short the output from one card to the input of the&n;* other and vice versa (actually done in the DSP read function).  It is only&n;* necessary to execute the IOCTL on one card, but it is necessary to have&n;* both devices open to be able to detect hook switch changes.  The record&n;* codec and rate of each card must match the playback codec and rate of&n;* the other card for this to work properly.&n;*&n;******************************************************************************/
 DECL|macro|IXJCTL_INTERCOM_START
 mdefine_line|#define IXJCTL_INTERCOM_START &t;&t;_IOW (&squot;q&squot;, 0xFD, int)
 DECL|macro|IXJCTL_INTERCOM_STOP
 mdefine_line|#define IXJCTL_INTERCOM_STOP  &t;&t;_IOW (&squot;q&squot;, 0xFE, int)
+multiline_comment|/******************************************************************************&n; *&n; * new structure for accessing raw filter information&n; *&n; ******************************************************************************/
+r_typedef
+r_struct
+(brace
+DECL|member|filter
+r_int
+r_int
+id|filter
+suffix:semicolon
+DECL|member|enable
+r_char
+id|enable
+suffix:semicolon
+DECL|member|coeff
+r_int
+r_int
+id|coeff
+(braket
+l_int|19
+)braket
+suffix:semicolon
+DECL|typedef|IXJ_FILTER_RAW
+)brace
+id|IXJ_FILTER_RAW
+suffix:semicolon
+macro_line|#endif
 eof

@@ -7327,7 +7327,7 @@ suffix:semicolon
 id|IRDA_DEBUG
 c_func
 (paren
-l_int|0
+l_int|1
 comma
 id|__FUNCTION__
 l_string|&quot;()&bslash;n&quot;
@@ -7457,6 +7457,15 @@ suffix:semicolon
 r_case
 id|WD_TIMER_EXPIRED
 suffix:colon
+multiline_comment|/* Always switch state before calling upper layers */
+id|irlap_next_state
+c_func
+(paren
+id|self
+comma
+id|LAP_NDM
+)paren
+suffix:semicolon
 id|irlap_apply_default_connection_parameters
 c_func
 (paren

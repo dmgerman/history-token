@@ -703,6 +703,12 @@ id|NS_MAX_CARDS
 l_string|&quot;s&quot;
 )paren
 suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 multiline_comment|/* Functions*******************************************************************/
 macro_line|#ifdef MODULE
 DECL|function|init_module

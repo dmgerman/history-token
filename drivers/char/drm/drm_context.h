@@ -753,6 +753,8 @@ suffix:semicolon
 id|drm_map_list_t
 op_star
 id|r_list
+op_assign
+l_int|NULL
 suffix:semicolon
 r_struct
 id|list_head

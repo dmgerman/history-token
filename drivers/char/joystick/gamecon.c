@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * $Id: gamecon.c,v 1.11 2000/11/01 12:38:53 vojtech Exp $&n; *&n; *  Copyright (c) 1999-2000 Vojtech Pavlik&n; *&n; *  Based on the work of:&n; *  &t;Andree Borrmann&t;&t;John Dahlstrom&n; *  &t;David Kuder&t;&t;Nathan Hand&n; *&n; *  Sponsored by SuSE&n; */
+multiline_comment|/*&n; * $Id: gamecon.c,v 1.14 2001/04/29 22:42:14 vojtech Exp $&n; *&n; *  Copyright (c) 1999-2001 Vojtech Pavlik&n; *&n; *  Based on the work of:&n; *  &t;Andree Borrmann&t;&t;John Dahlstrom&n; *  &t;David Kuder&t;&t;Nathan Hand&n; *&n; *  Sponsored by SuSE&n; */
 multiline_comment|/*&n; * NES, SNES, N64, Multi1, Multi2, PSX gamepad driver for Linux&n; */
 multiline_comment|/*&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or &n; * (at your option) any later version.&n; * &n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; * &n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; *&n; * Should you need to contact me, the author, you can do so either by&n; * e-mail - mail your message to &lt;vojtech@suse.cz&gt;, or by paper mail:&n; * Vojtech Pavlik, Ucitelska 1576, Prague 8, 182 00 Czech Republic&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -11,6 +11,12 @@ id|MODULE_AUTHOR
 c_func
 (paren
 l_string|&quot;Vojtech Pavlik &lt;vojtech@suse.cz&gt;&quot;
+)paren
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
 id|MODULE_PARM
@@ -83,7 +89,7 @@ r_int
 r_char
 id|pads
 (braket
-id|GC_PSX
+id|GC_MAX
 op_plus
 l_int|1
 )braket
@@ -787,9 +793,9 @@ id|BTN_START
 comma
 id|BTN_SELECT
 comma
-id|BTN_THUMB
+id|BTN_THUMBL
 comma
-id|BTN_THUMB2
+id|BTN_THUMBR
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * gc_psx_command() writes 8bit command and reads 8bit data from&n; * the psx pad.&n; */
@@ -1495,8 +1501,6 @@ comma
 id|ABS_X
 comma
 op_logical_neg
-op_minus
-op_logical_neg
 (paren
 id|s
 op_amp
@@ -1526,8 +1530,6 @@ id|i
 comma
 id|ABS_Y
 comma
-op_logical_neg
-op_minus
 op_logical_neg
 (paren
 id|s

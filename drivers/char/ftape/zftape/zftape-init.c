@@ -74,6 +74,12 @@ c_func
 l_string|&quot;char-major-27&quot;
 )paren
 suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 multiline_comment|/*      Global vars.&n; */
 DECL|variable|zft_cmpr_ops
 r_struct

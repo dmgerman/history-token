@@ -1377,11 +1377,9 @@ suffix:semicolon
 multiline_comment|/* len must be a multiple of 4, so commands are not split */
 id|len
 op_assign
-id|min_t
+id|min
 c_func
 (paren
-r_int
-comma
 id|count
 comma
 id|oob_port-&gt;bulk_out_size
@@ -1646,11 +1644,9 @@ multiline_comment|/* guarantee the write will send buffered data first, */
 multiline_comment|/* so commands are in order with data and not split */
 id|len
 op_assign
-id|min_t
+id|min
 c_func
 (paren
-r_int
-comma
 id|count
 comma
 id|port-&gt;bulk_out_size
@@ -2480,11 +2476,9 @@ suffix:semicolon
 multiline_comment|/* send any buffered chars from throttle time on to tty subsystem */
 id|len
 op_assign
-id|min_t
+id|min
 c_func
 (paren
-r_int
-comma
 id|priv-&gt;dp_in_buf_len
 comma
 id|TTY_FLIPBUF_SIZE
@@ -4069,24 +4063,24 @@ suffix:semicolon
 multiline_comment|/* copy user data (which can sleep) before getting spin lock */
 id|count
 op_assign
-id|min_t
+id|min
 c_func
 (paren
-r_int
-comma
-l_int|64
-comma
-id|min_t
-c_func
-(paren
-r_int
-comma
 id|count
 comma
 id|port-&gt;bulk_out_size
 op_minus
 l_int|2
 )paren
+suffix:semicolon
+id|count
+op_assign
+id|min
+c_func
+(paren
+l_int|64
+comma
+id|count
 )paren
 suffix:semicolon
 r_if
@@ -4192,11 +4186,9 @@ multiline_comment|/* allow space for any buffered data and for new data, up to *
 multiline_comment|/* transfer buffer size - 2 (for command and length bytes) */
 id|new_len
 op_assign
-id|min_t
+id|min
 c_func
 (paren
-r_int
-comma
 id|count
 comma
 id|port-&gt;bulk_out_size
@@ -6859,11 +6851,9 @@ id|throttled
 (brace
 id|len
 op_assign
-id|min_t
+id|min
 c_func
 (paren
-r_int
-comma
 id|len
 comma
 id|DIGI_IN_BUF_SIZE
@@ -6913,11 +6903,9 @@ r_else
 (brace
 id|len
 op_assign
-id|min_t
+id|min
 c_func
 (paren
-r_int
-comma
 id|len
 comma
 id|TTY_FLIPBUF_SIZE

@@ -13142,5 +13142,11 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 multiline_comment|/****** End *****************************************************************/
 eof

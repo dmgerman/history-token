@@ -2377,6 +2377,13 @@ c_func
 id|snprintf
 )paren
 suffix:semicolon
+DECL|variable|sscanf
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|sscanf
+)paren
+suffix:semicolon
 DECL|variable|vsprintf
 id|EXPORT_SYMBOL
 c_func
@@ -2389,6 +2396,13 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|vsnprintf
+)paren
+suffix:semicolon
+DECL|variable|vsscanf
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|vsscanf
 )paren
 suffix:semicolon
 DECL|variable|kdevname

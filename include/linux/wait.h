@@ -16,11 +16,17 @@ macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/stddef.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 multiline_comment|/*&n; * Debug control.  Slow but useful.&n; */
+macro_line|#if defined(CONFIG_DEBUG_WAITQ)
+DECL|macro|WAITQUEUE_DEBUG
+mdefine_line|#define WAITQUEUE_DEBUG 1
+macro_line|#else
 DECL|macro|WAITQUEUE_DEBUG
 mdefine_line|#define WAITQUEUE_DEBUG 0
+macro_line|#endif
 DECL|struct|__wait_queue
 r_struct
 id|__wait_queue

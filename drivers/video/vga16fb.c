@@ -4812,6 +4812,12 @@ suffix:semicolon
 multiline_comment|/* XXX unshare VGA regions */
 )brace
 macro_line|#ifdef MODULE
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 DECL|variable|vga16fb_init
 id|module_init
 c_func

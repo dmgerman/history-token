@@ -1,4 +1,4 @@
-multiline_comment|/*****************************************************************************&n; *&n; * Filename:      irda-usb.h&n; * Version:       0.8&n; * Description:   IrDA-USB Driver&n; * Status:        Experimental &n; * Author:        Dag Brattli &lt;dag@brattli.net&gt;&n; *&n; *      Copyright (C) 2001, Dag Brattli &lt;dag@brattli.net&gt;&n; *&t;Copyright (C) 2000, Roman Weissgaerber &lt;weissg@vienna.at&gt;&n; *          &n; *&t;This program is free software; you can redistribute it and/or modify&n; *&t;it under the terms of the GNU General Public License as published by&n; *&t;the Free Software Foundation; either version 2 of the License, or&n; *&t;(at your option) any later version.&n; *&n; *&t;This program is distributed in the hope that it will be useful,&n; *&t;but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *&t;MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *&t;GNU General Public License for more details.&n; *&n; *&t;You should have received a copy of the GNU General Public License&n; *&t;along with this program; if not, write to the Free Software&n; *&t;Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; *****************************************************************************/
+multiline_comment|/*****************************************************************************&n; *&n; * Filename:      irda-usb.h&n; * Version:       0.9a&n; * Description:   IrDA-USB Driver&n; * Status:        Experimental &n; * Author:        Dag Brattli &lt;dag@brattli.net&gt;&n; *&n; *&t;Copyright (C) 2001, Roman Weissgaerber &lt;weissg@vienna.at&gt;&n; *      Copyright (C) 2000, Dag Brattli &lt;dag@brattli.net&gt;&n; *      Copyright (C) 2001, Jean Tourrilhes &lt;jt@hpl.hp.com&gt;&n; *          &n; *&t;This program is free software; you can redistribute it and/or modify&n; *&t;it under the terms of the GNU General Public License as published by&n; *&t;the Free Software Foundation; either version 2 of the License, or&n; *&t;(at your option) any later version.&n; *&n; *&t;This program is distributed in the hope that it will be useful,&n; *&t;but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *&t;MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *&t;GNU General Public License for more details.&n; *&n; *&t;You should have received a copy of the GNU General Public License&n; *&t;along with this program; if not, write to the Free Software&n; *&t;Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; *****************************************************************************/
 macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;net/irda/irda.h&gt;
 macro_line|#include &lt;net/irda/irlap.h&gt;
@@ -9,13 +9,25 @@ DECL|macro|IRDA_USB_MAX_MTU
 mdefine_line|#define IRDA_USB_MAX_MTU 2051
 DECL|macro|IRDA_USB_SPEED_MTU
 mdefine_line|#define IRDA_USB_SPEED_MTU 64&t;&t;/* Weird, but work like this */
-multiline_comment|/*&n; * Maximum number of URB on the Rx and Tx path, a number larger than 1&n; * is required for handling back-to-back (brickwalled) frames &n; */
+multiline_comment|/* Maximum number of active URB on the Rx path&n; * This is the amount of buffers the we keep between the USB harware and the&n; * IrDA stack.&n; *&n; * Note : the network layer does also queue the packets between us and the&n; * IrDA stack, and is actually pretty fast and efficient in doing that.&n; * Therefore, we don&squot;t need to have a large number of URBs, and we can&n; * perfectly live happy with only one. We certainly don&squot;t need to keep the&n; * full IrTTP window around here...&n; * I repeat for those who have trouble to understand : 1 URB is plenty&n; * good enough to handle back-to-back (brickwalled) frames. I tried it,&n; * it works (it&squot;s the hardware that has trouble doing it).&n; *&n; * Having 2 URBs would allow the USB stack to process one URB while we take&n; * care of the other and then swap the URBs...&n; * On the other hand, increasing the number of URB will have penalities&n; * in term of latency and will interact with the link management in IrLAP...&n; * Jean II */
 DECL|macro|IU_MAX_ACTIVE_RX_URBS
-mdefine_line|#define IU_MAX_ACTIVE_RX_URBS 1
+mdefine_line|#define IU_MAX_ACTIVE_RX_URBS&t;1&t;/* Don&squot;t touch !!! */
+multiline_comment|/* When a Rx URB is passed back to us, we can&squot;t reuse it immediately,&n; * because it may still be referenced by the USB layer. Therefore we&n; * need to keep one extra URB in the Rx path.&n; * Jean II */
 DECL|macro|IU_MAX_RX_URBS
-mdefine_line|#define IU_MAX_RX_URBS&t;(IU_MAX_ACTIVE_RX_URBS + 1) 
-DECL|macro|IU_MAX_TX_URBS
-mdefine_line|#define IU_MAX_TX_URBS  1
+mdefine_line|#define IU_MAX_RX_URBS&t;(IU_MAX_ACTIVE_RX_URBS + 1)
+multiline_comment|/* Various ugly stuff to try to workaround generic problems */
+multiline_comment|/* The USB layer should send empty frames at the end of packets multiple&n; * of the frame size. As it doesn&squot;t do it by default, we need to do it&n; * ourselves... See also following option. */
+DECL|macro|IU_BUG_KICK_TX
+macro_line|#undef IU_BUG_KICK_TX
+multiline_comment|/* Use the USB_ZERO_PACKET flag instead of sending empty frame (above)&n; * Work only with usb-uhci.o so far. Please fix uhic.c and usb-ohci.c */
+DECL|macro|IU_USE_USB_ZERO_FLAG
+mdefine_line|#define IU_USE_USB_ZERO_FLAG
+multiline_comment|/* Send speed command in case of timeout, just for trying to get things sane */
+DECL|macro|IU_BUG_KICK_TIMEOUT
+mdefine_line|#define IU_BUG_KICK_TIMEOUT
+multiline_comment|/* Show the USB class descriptor */
+DECL|macro|IU_DUMP_CLASS_DESC
+macro_line|#undef IU_DUMP_CLASS_DESC 
 multiline_comment|/* Inbound header */
 DECL|macro|MEDIA_BUSY
 mdefine_line|#define MEDIA_BUSY    0x80
@@ -37,21 +49,26 @@ DECL|macro|SPEED_1152000
 mdefine_line|#define SPEED_1152000 0x08
 DECL|macro|SPEED_4000000
 mdefine_line|#define SPEED_4000000 0x09
-multiline_comment|/* device_info flags in struct usb_device_id */
+multiline_comment|/* Basic capabilities */
 DECL|macro|IUC_DEFAULT
 mdefine_line|#define IUC_DEFAULT&t;0x00&t;/* Basic device compliant with 1.0 spec */
+multiline_comment|/* Main bugs */
 DECL|macro|IUC_SPEED_BUG
 mdefine_line|#define IUC_SPEED_BUG&t;0x01&t;/* Device doesn&squot;t set speed after the frame */
-DECL|macro|IUC_SIR_ONLY
-mdefine_line|#define IUC_SIR_ONLY&t;0x02&t;/* Device doesn&squot;t behave at FIR speeds */
-DECL|macro|IUC_SMALL_PKT
-mdefine_line|#define IUC_SMALL_PKT&t;0x04&t;/* Device doesn&squot;t behave with big Rx packets */
 DECL|macro|IUC_NO_WINDOW
-mdefine_line|#define IUC_NO_WINDOW&t;0x08&t;/* Device doesn&squot;t behave with big Rx window */
+mdefine_line|#define IUC_NO_WINDOW&t;0x02&t;/* Device doesn&squot;t behave with big Rx window */
+DECL|macro|IUC_NO_TURN
+mdefine_line|#define IUC_NO_TURN&t;0x04&t;/* Device doesn&squot;t do turnaround by itself */
+multiline_comment|/* Not currently used */
+DECL|macro|IUC_SIR_ONLY
+mdefine_line|#define IUC_SIR_ONLY&t;0x08&t;/* Device doesn&squot;t behave at FIR speeds */
+DECL|macro|IUC_SMALL_PKT
+mdefine_line|#define IUC_SMALL_PKT&t;0x10&t;/* Device doesn&squot;t behave with big Rx packets */
 DECL|macro|IUC_MAX_WINDOW
-mdefine_line|#define IUC_MAX_WINDOW&t;0x10&t;/* Device underestimate the Rx window */
+mdefine_line|#define IUC_MAX_WINDOW&t;0x20&t;/* Device underestimate the Rx window */
 DECL|macro|IUC_MAX_XBOFS
-mdefine_line|#define IUC_MAX_XBOFS&t;0x20&t;/* Device need more xbofs than advertised */
+mdefine_line|#define IUC_MAX_XBOFS&t;0x40&t;/* Device need more xbofs than advertised */
+multiline_comment|/* USB class definitions */
 DECL|macro|USB_IRDA_HEADER
 mdefine_line|#define USB_IRDA_HEADER   0x01
 DECL|macro|USB_CLASS_IRDA
@@ -149,17 +166,25 @@ id|capability
 suffix:semicolon
 multiline_comment|/* Capability of the hardware */
 DECL|member|bulk_in_ep
-DECL|member|bulk_out_ep
 id|__u8
 id|bulk_in_ep
-comma
+suffix:semicolon
+multiline_comment|/* Rx Endpoint assignments */
+DECL|member|bulk_out_ep
+id|__u8
 id|bulk_out_ep
 suffix:semicolon
-multiline_comment|/* Endpoint assignments */
+multiline_comment|/* Tx Endpoint assignments */
 DECL|member|bulk_out_mtu
 id|__u16
 id|bulk_out_mtu
 suffix:semicolon
+multiline_comment|/* Max Tx packet size in bytes */
+DECL|member|bulk_int_ep
+id|__u8
+id|bulk_int_ep
+suffix:semicolon
+multiline_comment|/* Interrupt Endpoint assignments */
 DECL|member|wait_q
 id|wait_queue_head_t
 id|wait_q
@@ -174,11 +199,11 @@ id|IU_MAX_RX_URBS
 )braket
 suffix:semicolon
 multiline_comment|/* URBs used to receive data frames */
-DECL|member|rx_idle_urb
+DECL|member|idle_rx_urb
 r_struct
 id|urb
 op_star
-id|rx_idle_urb
+id|idle_rx_urb
 suffix:semicolon
 multiline_comment|/* Pointer to idle URB in Rx path */
 DECL|member|tx_urb
@@ -193,6 +218,14 @@ id|urb
 id|speed_urb
 suffix:semicolon
 multiline_comment|/* URB used to send speed commands */
+macro_line|#ifdef IU_BUG_KICK_TX
+DECL|member|empty_urb
+r_struct
+id|urb
+id|empty_urb
+suffix:semicolon
+multiline_comment|/* URB used to send empty commands */
+macro_line|#endif IU_BUG_KICK_TX
 DECL|member|netdev
 r_struct
 id|net_device
@@ -223,6 +256,12 @@ op_star
 id|tx_list
 suffix:semicolon
 multiline_comment|/* Queued transmit skb&squot;s */
+DECL|member|speed_buff
+r_char
+op_star
+id|speed_buff
+suffix:semicolon
+multiline_comment|/* Buffer for speed changes */
 DECL|member|stamp
 r_struct
 id|timeval

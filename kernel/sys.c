@@ -4529,7 +4529,7 @@ r_if
 c_cond
 (paren
 id|sig
-OG
+template_param
 id|_NSIG
 )paren
 (brace

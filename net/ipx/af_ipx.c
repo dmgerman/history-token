@@ -10585,7 +10585,6 @@ l_int|0x37
 suffix:semicolon
 DECL|variable|__initdata
 r_static
-r_const
 r_char
 id|banner
 (braket

@@ -441,7 +441,6 @@ id|hw
 )paren
 suffix:semicolon
 multiline_comment|/****** Global Data **********************************************************&n; * Note: All data must be explicitly initialized!!!&n; */
-macro_line|#ifdef LINUX_2_4
 DECL|variable|__initdata
 r_static
 r_struct
@@ -476,7 +475,12 @@ comma
 id|sdladrv_pci_tbl
 )paren
 suffix:semicolon
-macro_line|#endif
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 multiline_comment|/* private data */
 DECL|variable|modname
 r_static

@@ -127,6 +127,12 @@ comma
 id|lmc_pci_tbl
 )paren
 suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 macro_line|#endif
 r_int
 id|lmc_probe_fake

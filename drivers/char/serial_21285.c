@@ -2189,4 +2189,12 @@ id|rs285_cons
 suffix:semicolon
 )brace
 macro_line|#endif&t;/* CONFIG_SERIAL_21285_CONSOLE */
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
+id|EXPORT_NO_SYMBOLS
+suffix:semicolon
 eof

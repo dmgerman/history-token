@@ -330,6 +330,9 @@ mdefine_line|#define MOD_CAN_QUERY(mod) (((mod)-&gt;flags &amp; (MOD_RUNNING | M
 multiline_comment|/* When struct module is extended, we must test whether the new member&n;   is present in the header received from insmod before we can use it.  &n;   This function returns true if the member is present.  */
 DECL|macro|mod_member_present
 mdefine_line|#define mod_member_present(mod,member) &t;&t;&t;&t;&t;&bslash;&n;&t;((unsigned long)(&amp;((struct module *)0L)-&gt;member + 1)&t;&t;&bslash;&n;&t; &lt;= (mod)-&gt;size_of_struct)
+multiline_comment|/*&n; * Ditto for archdata.  Assumes mod-&gt;archdata_start and mod-&gt;archdata_end&n; * are validated elsewhere.&n; */
+DECL|macro|mod_archdata_member_present
+mdefine_line|#define mod_archdata_member_present(mod, type, member)&t;&t;&t;&bslash;&n;&t;(((unsigned long)(&amp;((type *)0L)-&gt;member) +&t;&t;&t;&bslash;&n;&t;  sizeof(((type *)0L)-&gt;member)) &lt;=&t;&t;&t;&t;&bslash;&n;&t; ((mod)-&gt;archdata_end - (mod)-&gt;archdata_start))
 multiline_comment|/* Check if an address p with number of entries n is within the body of module m */
 DECL|macro|mod_bound
 mdefine_line|#define mod_bound(p, n, m) ((unsigned long)(p) &gt;= ((unsigned long)(m) + ((m)-&gt;size_of_struct)) &amp;&amp; &bslash;&n;&t;         (unsigned long)((p)+(n)) &lt;= (unsigned long)(m) + (m)-&gt;size)

@@ -582,8 +582,6 @@ id|AFFS_INODE-&gt;i_ext_lock
 )paren
 suffix:semicolon
 )brace
-DECL|macro|MIN
-mdefine_line|#define MIN(a, b) ({&t;&t;&bslash;&n;&t;typeof(a) _a = (a);&t;&bslash;&n;&t;typeof(b) _b = (b);&t;&bslash;&n;&t;_a &lt; _b ? _a : _b;&t;&bslash;&n;})&t;
 macro_line|#ifdef __LITTLE_ENDIAN
 DECL|macro|BO_EXBITS
 mdefine_line|#define BO_EXBITS&t;0x18UL

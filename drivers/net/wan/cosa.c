@@ -607,6 +607,12 @@ c_func
 l_string|&quot;Modular driver for the COSA or SRP synchronous card&quot;
 )paren
 suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 macro_line|#endif
 multiline_comment|/* I use this mainly for testing purposes */
 macro_line|#ifdef COSA_SLOW_IO

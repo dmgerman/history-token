@@ -10,7 +10,84 @@ macro_line|#include &lt;asm/gentrap.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/unaligned.h&gt;
 macro_line|#include &lt;asm/sysinfo.h&gt;
+macro_line|#include &lt;asm/hwrpb.h&gt;
 macro_line|#include &quot;proto.h&quot;
+multiline_comment|/* data/code implementing a work-around for some SRMs which&n;   mishandle opDEC faults&n;*/
+DECL|variable|opDEC_testing
+r_static
+r_int
+id|opDEC_testing
+op_assign
+l_int|0
+suffix:semicolon
+DECL|variable|opDEC_fix
+r_static
+r_int
+id|opDEC_fix
+op_assign
+l_int|0
+suffix:semicolon
+DECL|variable|opDEC_test_pc
+r_static
+r_int
+r_int
+id|opDEC_test_pc
+op_assign
+l_int|0
+suffix:semicolon
+r_static
+r_void
+DECL|function|opDEC_check
+id|opDEC_check
+c_func
+(paren
+r_void
+)paren
+(brace
+r_int
+r_int
+id|test_pc
+suffix:semicolon
+id|lock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
+id|opDEC_testing
+op_assign
+l_int|1
+suffix:semicolon
+id|__asm__
+id|__volatile__
+c_func
+(paren
+l_string|&quot;       br      %0,1f&bslash;n&quot;
+l_string|&quot;1:     addq    %0,8,%0&bslash;n&quot;
+l_string|&quot;       stq     %0,%1&bslash;n&quot;
+l_string|&quot;       cvttq/svm $f31,$f31&bslash;n&quot;
+suffix:colon
+l_string|&quot;=&amp;r&quot;
+(paren
+id|test_pc
+)paren
+comma
+l_string|&quot;=m&quot;
+(paren
+id|opDEC_test_pc
+)paren
+suffix:colon
+)paren
+suffix:semicolon
+id|opDEC_testing
+op_assign
+l_int|0
+suffix:semicolon
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
 r_void
 DECL|function|dik_show_regs
 id|dik_show_regs
@@ -203,7 +280,7 @@ c_func
 suffix:semicolon
 macro_line|#endif
 )brace
-DECL|variable|ireg_name
+macro_line|#if 0
 r_static
 r_char
 op_star
@@ -277,6 +354,7 @@ comma
 l_string|&quot;zero&quot;
 )brace
 suffix:semicolon
+macro_line|#endif
 r_static
 r_void
 DECL|function|dik_show_code
@@ -987,6 +1065,17 @@ id|pt_regs
 id|regs
 )paren
 (brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|opDEC_testing
+op_logical_or
+id|type
+op_ne
+l_int|4
+)paren
+(brace
 id|die_if_kernel
 c_func
 (paren
@@ -1009,6 +1098,7 @@ comma
 l_int|0
 )paren
 suffix:semicolon
+)brace
 r_switch
 c_cond
 (paren
@@ -1194,6 +1284,32 @@ op_eq
 id|IMPLVER_EV4
 )paren
 (brace
+multiline_comment|/* The some versions of SRM do not handle&n;&t;&t;&t;   the opDEC properly - they return the PC of the&n;&t;&t;&t;   opDEC fault, not the instruction after as the&n;&t;&t;&t;   Alpha architecture requires.  Here we fix it up.&n;&t;&t;&t;   We do this by intentionally causing an opDEC&n;&t;&t;&t;   fault during the boot sequence and testing if&n;&t;&t;&t;   we get the correct PC.  If not, we set a flag&n;&t;&t;&t;   to correct it every time through.&n;&t;&t;&t;*/
+r_if
+c_cond
+(paren
+id|opDEC_testing
+op_logical_and
+id|regs.pc
+op_eq
+id|opDEC_test_pc
+)paren
+(brace
+id|opDEC_fix
+op_assign
+l_int|4
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;opDEC fixup enabled.&bslash;n&quot;
+)paren
+suffix:semicolon
+)brace
+id|regs.pc
+op_add_assign
+id|opDEC_fix
+suffix:semicolon
 multiline_comment|/* EV4 does not implement anything except normal&n;&t;&t;&t;   rounding.  Everything else will come here as&n;&t;&t;&t;   an illegal instruction.  Emulate them.  */
 r_if
 c_cond
@@ -1235,7 +1351,7 @@ l_int|1
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* There is an ifdef in the PALcode in MILO that enables a &n;   &quot;kernel debugging entry point&quot; as an unprivilaged call_pal.&n;&n;   We don&squot;t want to have anything to do with it, but unfortunately&n;   several versions of MILO included in distributions have it enabled,&n;   and if we don&squot;t put something on the entry point we&squot;ll oops.  */
+multiline_comment|/* There is an ifdef in the PALcode in MILO that enables a &n;   &quot;kernel debugging entry point&quot; as an unpriviledged call_pal.&n;&n;   We don&squot;t want to have anything to do with it, but unfortunately&n;   several versions of MILO included in distributions have it enabled,&n;   and if we don&squot;t put something on the entry point we&squot;ll oops.  */
 id|asmlinkage
 r_void
 DECL|function|do_entDbg
@@ -3796,5 +3912,23 @@ comma
 l_int|6
 )paren
 suffix:semicolon
+multiline_comment|/* Hack for Multia (UDB) and JENSEN: some of their SRMs have&n;&t; * a bug in the handling of the opDEC fault.  Fix it up if so.&n;&t; */
+r_if
+c_cond
+(paren
+id|implver
+c_func
+(paren
+)paren
+op_eq
+id|IMPLVER_EV4
+)paren
+(brace
+id|opDEC_check
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
 )brace
 eof

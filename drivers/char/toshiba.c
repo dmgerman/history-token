@@ -69,6 +69,12 @@ comma
 l_string|&quot;i&quot;
 )paren
 suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 r_static
 r_int
 id|tosh_get_info

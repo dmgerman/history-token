@@ -9,7 +9,7 @@ macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/miscdevice.h&gt;
 macro_line|#include &lt;linux/watchdog.h&gt;
-macro_line|#include &lt;linux/malloc.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/fcntl.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
@@ -138,6 +138,12 @@ id|MODULE_DESCRIPTION
 c_func
 (paren
 l_string|&quot;MachZ ZF-Logic Watchdog driver&quot;
+)paren
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
 id|MODULE_PARM

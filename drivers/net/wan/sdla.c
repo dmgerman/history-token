@@ -7615,6 +7615,12 @@ comma
 id|sdla_init
 )brace
 suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 DECL|function|init_module
 r_int
 id|init_module

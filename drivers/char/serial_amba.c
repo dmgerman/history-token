@@ -8312,4 +8312,12 @@ id|ambauart_cons
 suffix:semicolon
 )brace
 macro_line|#endif /* CONFIG_SERIAL_AMBA_CONSOLE */
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
+id|EXPORT_NO_SYMBOLS
+suffix:semicolon
 eof

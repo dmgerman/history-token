@@ -1302,19 +1302,15 @@ r_return
 suffix:semicolon
 )paren
 suffix:semicolon
-multiline_comment|/* Just handle it the same way as a discovery confirm */
-id|irlmp_do_lap_event
+multiline_comment|/* Just handle it the same way as a discovery confirm,&n;&t; * bypass the LM_LAP state machine (see below) */
+id|irlmp_discovery_confirm
 c_func
 (paren
-id|self
-comma
-id|LM_LAP_DISCOVERY_CONFIRM
-comma
-l_int|NULL
+id|irlmp-&gt;cachelog
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Function irlmp_link_discovery_indication (self, log)&n; *&n; *    Device is discovering us&n; *&n; * It&squot;s not an answer to our own discoveries, just another device trying&n; * to perform discovery, but we don&squot;t want to miss the opportunity&n; * to exploit this information, because :&n; *&t;o We may not actively perform discovery (just passive discovery)&n; *&t;o This type of discovery is much more reliable. In some cases, it&n; *&t;  seem that less than 50% of our discoveries get an answer, while&n; *&t;  we always get ~100% of these.&n; *&t;o Make faster discovery, statistically divide time of discovery&n; *&t;  events by 2 (important for the latency aspect and user feel)&n; * However, when both devices discover each other, they might attempt to&n; * connect to each other, and it would create collisions on the medium.&n; * The trick here is to defer the event by a little delay to avoid both&n; * devices to jump in exactly at the same time...&n; *&n; * The delay is currently set to 0.25s, which leave enough time to perform&n; * a connection and don&squot;t interfer with next discovery (the lowest discovery&n; * period/timeout that may be set is 1s). The message triggering this&n; * event was the last of the discovery, so the medium is now free...&n; * Maybe more testing is needed to get the value right...&n; */
+multiline_comment|/*&n; * Function irlmp_link_discovery_indication (self, log)&n; *&n; *    Device is discovering us&n; *&n; * It&squot;s not an answer to our own discoveries, just another device trying&n; * to perform discovery, but we don&squot;t want to miss the opportunity&n; * to exploit this information, because :&n; *&t;o We may not actively perform discovery (just passive discovery)&n; *&t;o This type of discovery is much more reliable. In some cases, it&n; *&t;  seem that less than 50% of our discoveries get an answer, while&n; *&t;  we always get ~100% of these.&n; *&t;o Make faster discovery, statistically divide time of discovery&n; *&t;  events by 2 (important for the latency aspect and user feel)&n; *&t;o Even is we do active discovery, the other node might not&n; *&t;  answer our discoveries (ex: Palm).&n; *&n; * However, when both devices discover each other, they might attempt to&n; * connect to each other following the discovery event, and it would create&n; * collisions on the medium (SNRM battle).&n; * The trick here is to defer the event by a little delay to avoid both&n; * devices to jump in exactly at the same time...&n; *&n; * The delay is currently set to 0.25s, which leave enough time to perform&n; * a connection and don&squot;t interfer with next discovery (the lowest discovery&n; * period/timeout that may be set is 1s). The message triggering this&n; * event was the last of the discovery, so the medium is now free...&n; * Maybe more testing is needed to get the value right...&n;&n; * One more problem : the other node might do only a single discovery&n; * and connect immediately to us, and we would receive only a single&n; * discovery indication event, and because of the delay, it will arrive&n; * while the LAP is connected. That&squot;s another good reason to&n; * bypass the LM_LAP state machine ;-)&n; *&n; * Jean II&n; */
 DECL|function|irlmp_link_discovery_indication
 r_void
 id|irlmp_link_discovery_indication
@@ -1488,15 +1484,11 @@ id|disco_delay
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Propagate event to the state machine */
-id|irlmp_do_lap_event
+multiline_comment|/* Propagate event to various LSAPs registered for it.&n;&t; * We bypass the LM_LAP state machine because&n;&t; *&t;1) We do it regardless of the LM_LAP state&n;&t; *&t;2) It doesn&squot;t affect the LM_LAP state&n;&t; *&t;3) Faster, slimer, simpler, ...&n;&t; * Jean II */
+id|irlmp_discovery_confirm
 c_func
 (paren
-id|self
-comma
-id|LM_LAP_DISCOVERY_CONFIRM
-comma
-l_int|NULL
+id|irlmp-&gt;cachelog
 )paren
 suffix:semicolon
 )brace

@@ -2507,6 +2507,18 @@ suffix:semicolon
 )brace
 id|EXPORT_NO_SYMBOLS
 suffix:semicolon
+id|MODULE_DESCRIPTION
+c_func
+(paren
+l_string|&quot;Amiga filesystem support for Linux&quot;
+)paren
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 id|module_init
 c_func
 (paren

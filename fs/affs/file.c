@@ -2602,7 +2602,7 @@ id|bh
 suffix:semicolon
 id|tmp
 op_assign
-id|MIN
+id|min
 c_func
 (paren
 id|bsize
@@ -2777,7 +2777,7 @@ id|bh
 suffix:semicolon
 id|tmp
 op_assign
-id|MIN
+id|min
 c_func
 (paren
 id|bsize
@@ -2929,7 +2929,7 @@ id|out
 suffix:semicolon
 id|tmp
 op_assign
-id|MIN
+id|min
 c_func
 (paren
 id|bsize
@@ -3629,7 +3629,7 @@ id|bh
 suffix:semicolon
 id|tmp
 op_assign
-id|MIN
+id|min
 c_func
 (paren
 id|bsize
@@ -4027,7 +4027,7 @@ id|out
 suffix:semicolon
 id|tmp
 op_assign
-id|MIN
+id|min
 c_func
 (paren
 id|bsize

@@ -3282,4 +3282,22 @@ suffix:semicolon
 )brace
 macro_line|#endif
 multiline_comment|/***************************** End of Functions *********************/
+id|MODULE_AUTHOR
+c_func
+(paren
+l_string|&quot;Enver Haase&quot;
+)paren
+suffix:semicolon
+id|MODULE_DESCRIPTION
+c_func
+(paren
+l_string|&quot;Amiga A2232 multi-serial board driver&quot;
+)paren
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 eof

@@ -4741,7 +4741,6 @@ l_int|0
 suffix:semicolon
 )brace
 macro_line|#ifdef MODULE
-macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VER(2,1,18)
 id|MODULE_AUTHOR
 c_func
 (paren
@@ -4754,7 +4753,12 @@ c_func
 l_string|&quot;Compression routines for zftape. Uses the lzrw3 algorithm by Ross Williams&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VER(2,1,18)
 DECL|function|can_unload
 r_static

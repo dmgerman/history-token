@@ -10825,7 +10825,6 @@ suffix:semicolon
 multiline_comment|/*&n; * Initialize the STRIP driver.&n; * This routine is called at boot time, to bootstrap the multi-channel&n; * STRIP driver&n; */
 DECL|variable|__initdata
 r_static
-r_const
 r_char
 id|signon
 (braket

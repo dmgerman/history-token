@@ -24,7 +24,13 @@ id|MODULE_DESCRIPTION
 c_func
 (paren
 l_string|&quot;Frame Relay protocol implementation for the COMX drivers&quot;
-l_string|&quot;for Linux kernel 2.2.X&quot;
+l_string|&quot;for Linux kernel 2.4.X&quot;
+)paren
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
 DECL|macro|FRAD_UI

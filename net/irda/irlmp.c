@@ -46,6 +46,16 @@ op_assign
 l_int|6
 suffix:semicolon
 multiline_comment|/* 6 slots by default */
+DECL|variable|sysctl_lap_keepalive_time
+r_int
+id|sysctl_lap_keepalive_time
+op_assign
+id|LM_IDLE_TIMEOUT
+op_star
+l_int|1000
+op_div
+id|HZ
+suffix:semicolon
 DECL|variable|sysctl_devname
 r_char
 id|sysctl_devname
@@ -2608,7 +2618,88 @@ id|userdata
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n; * Function irlmp_do_discovery (nslots)&n; *&n; *    Do some discovery on all links&n; *&n; */
+multiline_comment|/*&n; * Function irlmp_do_expiry (void)&n; *&n; *    Do a cleanup of the discovery log (remove old entries)&n; *&n; * Note : separate from irlmp_do_discovery() so that we can handle&n; * passive discovery properly.&n; */
+DECL|function|irlmp_do_expiry
+r_void
+id|irlmp_do_expiry
+c_func
+(paren
+)paren
+(brace
+r_struct
+id|lap_cb
+op_star
+id|lap
+suffix:semicolon
+multiline_comment|/*&n;&t; * Expire discovery on all links which are *not* connected.&n;&t; * On links which are connected, we can&squot;t do discovery&n;&t; * anymore and can&squot;t refresh the log, so we freeze the&n;&t; * discovery log to keep info about the device we are&n;&t; * connected to. - Jean II&n;&t; */
+id|lap
+op_assign
+(paren
+r_struct
+id|lap_cb
+op_star
+)paren
+id|hashbin_get_first
+c_func
+(paren
+id|irlmp-&gt;links
+)paren
+suffix:semicolon
+r_while
+c_loop
+(paren
+id|lap
+op_ne
+l_int|NULL
+)paren
+(brace
+id|ASSERT
+c_func
+(paren
+id|lap-&gt;magic
+op_eq
+id|LMP_LAP_MAGIC
+comma
+r_return
+suffix:semicolon
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|lap-&gt;lap_state
+op_eq
+id|LAP_STANDBY
+)paren
+(brace
+multiline_comment|/* Expire discoveries discovered on this link */
+id|irlmp_expire_discoveries
+c_func
+(paren
+id|irlmp-&gt;cachelog
+comma
+id|lap-&gt;saddr
+comma
+id|FALSE
+)paren
+suffix:semicolon
+)brace
+id|lap
+op_assign
+(paren
+r_struct
+id|lap_cb
+op_star
+)paren
+id|hashbin_get_next
+c_func
+(paren
+id|irlmp-&gt;links
+)paren
+suffix:semicolon
+)brace
+)brace
+multiline_comment|/*&n; * Function irlmp_do_discovery (nslots)&n; *&n; *    Do some discovery on all links&n; *&n; * Note : log expiry is done above.&n; */
 DECL|function|irlmp_do_discovery
 r_void
 id|irlmp_do_discovery
@@ -2739,17 +2830,6 @@ op_eq
 id|LAP_STANDBY
 )paren
 (brace
-multiline_comment|/* Expire discoveries discovered on this link */
-id|irlmp_expire_discoveries
-c_func
-(paren
-id|irlmp-&gt;cachelog
-comma
-id|lap-&gt;saddr
-comma
-id|FALSE
-)paren
-suffix:semicolon
 multiline_comment|/* Try to discover */
 id|irlmp_do_lap_event
 c_func
@@ -2819,6 +2899,7 @@ c_func
 id|nslots
 )paren
 suffix:semicolon
+multiline_comment|/* Note : we never do expiry here. Expiry will run on the&n;&t; * discovery timer regardless of the state of sysctl_discovery&n;&t; * Jean II */
 )brace
 multiline_comment|/*&n; * Function irlmp_get_discoveries (pn, mask)&n; *&n; *    Return the current discovery log&n; *&n; */
 DECL|function|irlmp_get_discoveries

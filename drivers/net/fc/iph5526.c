@@ -125,6 +125,12 @@ comma
 id|iph5526_pci_tbl
 )paren
 suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 DECL|macro|MAX_FC_CARDS
 mdefine_line|#define MAX_FC_CARDS 2
 DECL|variable|fc

@@ -16,6 +16,12 @@ c_func
 l_string|&quot;SCSI message queue handling&quot;
 )paren
 suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Function: struct msgqueue_entry *mqe_alloc(MsgQueue_t *msgq)&n; * Purpose : Allocate a message queue entry&n; * Params  : msgq - message queue to claim entry for&n; * Returns : message queue entry or NULL.&n; */
 DECL|function|mqe_alloc
 r_static

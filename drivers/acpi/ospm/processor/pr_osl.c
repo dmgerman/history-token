@@ -20,6 +20,12 @@ c_func
 l_string|&quot;ACPI Component Architecture (CA) - IA32 Processor Driver&quot;
 )paren
 suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 DECL|macro|PR_PROC_ROOT
 mdefine_line|#define PR_PROC_ROOT&t;&t;&quot;processor&quot;
 DECL|macro|PR_PROC_STATUS

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * $Id: stinger.c,v 1.1 2000/07/17 10:42:14 vojtech Exp $&n; *&n; *  Copyright (c) 2000 Vojtech Pavlik&n; *  Copyright (c) 2000 Mark Fletcher&n; *&n; *  Sponsored by SuSE&n; */
+multiline_comment|/*&n; * $Id: stinger.c,v 1.4 2001/05/23 09:25:02 vojtech Exp $&n; *&n; *  Copyright (c) 2000-2001 Vojtech Pavlik&n; *  Copyright (c) 2000 Mark Fletcher&n; *&n; *  Sponsored by SuSE&n; */
 multiline_comment|/*&n; * Gravis Stinger gamepad driver for Linux&n; */
 multiline_comment|/*&n; * This program is free warftware; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; *&n; *  Should you need to contact me, the author, you can do so either by&n; * e-mail - mail your message to &lt;vojtech@ucw.cz&gt;, or by paper mail:&n; * Vojtech Pavlik, Ucitelska 1576, Prague 8, 182 00 Czech Republic&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -292,7 +292,6 @@ comma
 id|ABS_X
 comma
 (paren
-(paren
 id|data
 (braket
 l_int|1
@@ -314,7 +313,6 @@ op_lshift
 l_int|6
 )paren
 )paren
-)paren
 suffix:semicolon
 id|input_report_abs
 c_func
@@ -327,16 +325,6 @@ comma
 (paren
 id|data
 (braket
-l_int|2
-)braket
-op_amp
-l_int|0x3F
-)paren
-op_minus
-(paren
-(paren
-id|data
-(braket
 l_int|0
 )braket
 op_amp
@@ -345,6 +333,14 @@ l_int|0x02
 op_lshift
 l_int|5
 )paren
+op_minus
+(paren
+id|data
+(braket
+l_int|2
+)braket
+op_amp
+l_int|0x3F
 )paren
 )paren
 suffix:semicolon
@@ -831,6 +827,12 @@ id|module_exit
 c_func
 (paren
 id|stinger_exit
+)paren
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
 eof

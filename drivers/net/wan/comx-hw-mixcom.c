@@ -28,6 +28,12 @@ c_func
 l_string|&quot;Hardware-level driver for the serial port of the MixCom board&quot;
 )paren
 suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 DECL|macro|MIXCOM_DATA
 mdefine_line|#define MIXCOM_DATA(d) ((struct mixcom_privdata *)(COMX_CHANNEL(d)-&gt; &bslash;&n;&t;HW_privdata))
 DECL|macro|MIXCOM_BOARD_BASE

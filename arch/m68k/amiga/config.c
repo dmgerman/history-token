@@ -63,7 +63,6 @@ id|amiga_hw_present
 suffix:semicolon
 DECL|variable|__initdata
 r_static
-r_const
 r_char
 id|s_a500
 (braket
@@ -74,7 +73,6 @@ l_string|&quot;A500&quot;
 suffix:semicolon
 DECL|variable|__initdata
 r_static
-r_const
 r_char
 id|s_a500p
 (braket
@@ -85,7 +83,6 @@ l_string|&quot;A500+&quot;
 suffix:semicolon
 DECL|variable|__initdata
 r_static
-r_const
 r_char
 id|s_a600
 (braket
@@ -96,7 +93,6 @@ l_string|&quot;A600&quot;
 suffix:semicolon
 DECL|variable|__initdata
 r_static
-r_const
 r_char
 id|s_a1000
 (braket
@@ -107,7 +103,6 @@ l_string|&quot;A1000&quot;
 suffix:semicolon
 DECL|variable|__initdata
 r_static
-r_const
 r_char
 id|s_a1200
 (braket
@@ -118,7 +113,6 @@ l_string|&quot;A1200&quot;
 suffix:semicolon
 DECL|variable|__initdata
 r_static
-r_const
 r_char
 id|s_a2000
 (braket
@@ -129,7 +123,6 @@ l_string|&quot;A2000&quot;
 suffix:semicolon
 DECL|variable|__initdata
 r_static
-r_const
 r_char
 id|s_a2500
 (braket
@@ -140,7 +133,6 @@ l_string|&quot;A2500&quot;
 suffix:semicolon
 DECL|variable|__initdata
 r_static
-r_const
 r_char
 id|s_a3000
 (braket
@@ -151,7 +143,6 @@ l_string|&quot;A3000&quot;
 suffix:semicolon
 DECL|variable|__initdata
 r_static
-r_const
 r_char
 id|s_a3000t
 (braket
@@ -162,7 +153,6 @@ l_string|&quot;A3000T&quot;
 suffix:semicolon
 DECL|variable|__initdata
 r_static
-r_const
 r_char
 id|s_a3000p
 (braket
@@ -173,7 +163,6 @@ l_string|&quot;A3000+&quot;
 suffix:semicolon
 DECL|variable|__initdata
 r_static
-r_const
 r_char
 id|s_a4000
 (braket
@@ -184,7 +173,6 @@ l_string|&quot;A4000&quot;
 suffix:semicolon
 DECL|variable|__initdata
 r_static
-r_const
 r_char
 id|s_a4000t
 (braket
@@ -195,7 +183,6 @@ l_string|&quot;A4000T&quot;
 suffix:semicolon
 DECL|variable|__initdata
 r_static
-r_const
 r_char
 id|s_cdtv
 (braket
@@ -206,7 +193,6 @@ l_string|&quot;CDTV&quot;
 suffix:semicolon
 DECL|variable|__initdata
 r_static
-r_const
 r_char
 id|s_cd32
 (braket
@@ -217,7 +203,6 @@ l_string|&quot;CD32&quot;
 suffix:semicolon
 DECL|variable|__initdata
 r_static
-r_const
 r_char
 id|s_draco
 (braket
@@ -228,7 +213,6 @@ l_string|&quot;Draco&quot;
 suffix:semicolon
 DECL|variable|__initdata
 r_static
-r_const
 r_char
 op_star
 id|amiga_models

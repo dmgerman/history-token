@@ -413,6 +413,12 @@ c_func
 l_string|&quot;QIC-117 driver for QIC-40/80/3010/3020 floppy tape drives.&quot;
 )paren
 suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 macro_line|#endif
 multiline_comment|/*  Called by modules package when installing the driver&n; */
 DECL|function|init_module

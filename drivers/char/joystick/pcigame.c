@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * $Id: pcigame.c,v 1.6 2000/05/25 12:05:24 vojtech Exp $&n; *&n; *  Copyright (c) 2000 Vojtech Pavlik&n; *&n; *  Based on the work of:&n; *&t;Raymond Ingles&n; *&n; *  Sponsored by SuSE&n; */
+multiline_comment|/*&n; * $Id: pcigame.c,v 1.10 2001/04/26 10:24:46 vojtech Exp $&n; *&n; *  Copyright (c) 2000-2001 Vojtech Pavlik&n; *&n; *  Based on the work of:&n; *&t;Raymond Ingles&n; *&n; *  Sponsored by SuSE&n; */
 multiline_comment|/*&n; * Trident 4DWave and Aureal Vortex gameport driver for Linux&n; */
 multiline_comment|/*&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; *&n; * Should you need to contact me, the author, you can do so either by&n; * e-mail - mail your message to &lt;vojtech@suse.cz&gt;, or by paper mail:&n; * Vojtech Pavlik, Ucitelska 1576, Prague 8, 182 00 Czech Republic&n; */
 macro_line|#include &lt;asm/io.h&gt;
@@ -161,7 +161,9 @@ id|pcigame
 op_star
 id|pcigame
 op_assign
-id|gameport-&gt;driver
+id|gameport
+op_member_access_from_pointer
+r_private
 suffix:semicolon
 r_return
 id|readb
@@ -190,7 +192,9 @@ id|pcigame
 op_star
 id|pcigame
 op_assign
-id|gameport-&gt;driver
+id|gameport
+op_member_access_from_pointer
+r_private
 suffix:semicolon
 id|writeb
 c_func
@@ -228,7 +232,9 @@ id|pcigame
 op_star
 id|pcigame
 op_assign
-id|gameport-&gt;driver
+id|gameport
+op_member_access_from_pointer
+r_private
 suffix:semicolon
 r_int
 id|i
@@ -326,7 +332,9 @@ id|pcigame
 op_star
 id|pcigame
 op_assign
-id|gameport-&gt;driver
+id|gameport
+op_member_access_from_pointer
+r_private
 suffix:semicolon
 r_switch
 c_cond
@@ -462,13 +470,11 @@ id|dev-&gt;driver_data
 op_assign
 id|pcigame
 suffix:semicolon
-id|pcigame-&gt;gameport.driver
+id|pcigame-&gt;gameport
+dot
+r_private
 op_assign
 id|pcigame
-suffix:semicolon
-id|pcigame-&gt;gameport.type
-op_assign
-id|GAMEPORT_EXT
 suffix:semicolon
 id|pcigame-&gt;gameport.fuzz
 op_assign
@@ -777,6 +783,12 @@ id|module_exit
 c_func
 (paren
 id|pcigame_exit
+)paren
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
 eof

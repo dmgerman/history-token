@@ -2763,7 +2763,6 @@ suffix:semicolon
 multiline_comment|/* Initialize 6pack control device -- register 6pack line discipline */
 DECL|variable|__initdata
 r_static
-r_const
 r_char
 id|msg_banner
 (braket
@@ -2777,7 +2776,6 @@ l_string|&quot; (dynamic channels, max=%d)&bslash;n&quot;
 suffix:semicolon
 DECL|variable|__initdata
 r_static
-r_const
 r_char
 id|msg_invparm
 (braket
@@ -2789,7 +2787,6 @@ l_string|&quot;6pack: sixpack_maxdev parameter too large.&bslash;n&quot;
 suffix:semicolon
 DECL|variable|__initdata
 r_static
-r_const
 r_char
 id|msg_nomem
 (braket
@@ -2801,7 +2798,6 @@ l_string|&quot;6pack: can&squot;t allocate sixpack_ctrls[] array! No 6pack avail
 suffix:semicolon
 DECL|variable|__initdata
 r_static
-r_const
 r_char
 id|msg_regfail
 (braket

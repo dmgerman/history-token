@@ -8,7 +8,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kbd_kern.h&gt;
-macro_line|#if defined(CONFIG_X86) || defined(CONFIG_IA64) || defined(__alpha__) || &bslash;&n;    defined(__mips__) || defined(CONFIG_SPARC64) || defined(CONFIG_SUPERH) || &bslash;&n;    defined(CONFIG_PPC) || defined(__mc68000__)
+macro_line|#if defined(CONFIG_X86) || defined(CONFIG_IA64) || defined(__alpha__) || &bslash;&n;    defined(__mips__) || defined(CONFIG_SPARC64) || defined(CONFIG_SUPERH) || &bslash;&n;    defined(CONFIG_PPC) || defined(__mc68000__) || defined(__hppa__) || &bslash;&n;    defined(__arm__)
 DECL|variable|x86_sysrq_alt
 r_static
 r_int
@@ -1494,15 +1494,7 @@ c_func
 id|handle
 )paren
 suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;keybdev.c: Adding keyboard: input%d&bslash;n&quot;
-comma
-id|dev-&gt;number
-)paren
-suffix:semicolon
+singleline_comment|//&t;printk(KERN_INFO &quot;keybdev.c: Adding keyboard: input%d&bslash;n&quot;, dev-&gt;number);
 r_return
 id|handle
 suffix:semicolon
@@ -1519,15 +1511,7 @@ op_star
 id|handle
 )paren
 (brace
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;keybdev.c: Removing keyboard: input%d&bslash;n&quot;
-comma
-id|handle-&gt;dev-&gt;number
-)paren
-suffix:semicolon
+singleline_comment|//&t;printk(KERN_INFO &quot;keybdev.c: Removing keyboard: input%d&bslash;n&quot;, handle-&gt;dev-&gt;number);
 id|input_close_device
 c_func
 (paren

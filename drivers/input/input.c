@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * $Id: input.c,v 1.7 2000/05/28 17:31:36 vojtech Exp $&n; *&n; *  Copyright (c) 1999-2000 Vojtech Pavlik&n; *&n; *  The input layer module itself&n; *&n; *  Sponsored by SuSE&n; */
+multiline_comment|/*&n; * $Id: input.c,v 1.20 2001/05/17 15:50:27 vojtech Exp $&n; *&n; *  Copyright (c) 1999-2001 Vojtech Pavlik&n; *&n; *  The input layer module itself&n; *&n; *  Sponsored by SuSE&n; */
 multiline_comment|/*&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or &n; * (at your option) any later version.&n; * &n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; * &n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; * &n; * Should you need to contact me, the author, you can do so either by&n; * e-mail - mail your message to &lt;vojtech@suse.cz&gt;, or by paper mail:&n; * Vojtech Pavlik, Ucitelska 1576, Prague 8, 182 00 Czech Republic&n; */
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -514,6 +514,29 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
+id|EV_MSC
+suffix:colon
+r_if
+c_cond
+(paren
+id|code
+OG
+id|MSC_MAX
+op_logical_or
+op_logical_neg
+id|test_bit
+c_func
+(paren
+id|code
+comma
+id|dev-&gt;mscbit
+)paren
+)paren
+r_return
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
 id|EV_LED
 suffix:colon
 r_if
@@ -684,36 +707,31 @@ id|value
 suffix:semicolon
 r_break
 suffix:semicolon
-)brace
-multiline_comment|/*&n; * Add randomness.&n; */
-macro_line|#if 0 /* BUG */
-id|add_input_randomness
-c_func
+r_case
+id|EV_FF
+suffix:colon
+r_if
+c_cond
 (paren
-(paren
-(paren
-r_int
-r_int
+id|dev-&gt;event
 )paren
 id|dev
-)paren
-op_xor
+op_member_access_from_pointer
+id|event
+c_func
 (paren
+id|dev
+comma
 id|type
-op_lshift
-l_int|24
-)paren
-op_xor
-(paren
+comma
 id|code
-op_lshift
-l_int|16
-)paren
-op_xor
+comma
 id|value
 )paren
 suffix:semicolon
-macro_line|#endif
+r_break
+suffix:semicolon
+)brace
 multiline_comment|/*&n; * Distribute the event to handler modules.&n; */
 r_while
 c_loop

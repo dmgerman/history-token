@@ -20,6 +20,12 @@ c_func
 l_string|&quot;ACPI Component Architecture (CA) - Embedded Controller Driver&quot;
 )paren
 suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 macro_line|#ifdef ACPI_DEBUG
 DECL|variable|dbg_layer
 r_static

@@ -9,5 +9,7 @@ DECL|macro|module_unmap
 mdefine_line|#define module_unmap(x)&t;&t;vfree(x)
 DECL|macro|module_arch_init
 mdefine_line|#define module_arch_init(x)&t;(0)
+DECL|macro|arch_init_modules
+mdefine_line|#define arch_init_modules(x)&t;do { } while (0)
 macro_line|#endif /* _ASM_PPC_MODULE_H */
 eof

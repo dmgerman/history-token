@@ -3755,4 +3755,10 @@ id|PBOOK_SLEEP_OK
 suffix:semicolon
 )brace
 macro_line|#endif /* CONFIG_PMAC_PBOOK */
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 eof

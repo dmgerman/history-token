@@ -163,9 +163,9 @@ DECL|macro|MS_BIND
 mdefine_line|#define MS_BIND&t;&t;4096
 DECL|macro|MS_NOUSER
 mdefine_line|#define MS_NOUSER&t;(1&lt;&lt;31)
-multiline_comment|/*&n; * Flags that can be altered by MS_REMOUNT&n; */
+multiline_comment|/*&n; * Superblock flags that can be altered by MS_REMOUNT&n; */
 DECL|macro|MS_RMT_MASK
-mdefine_line|#define MS_RMT_MASK&t;(MS_RDONLY|MS_NOSUID|MS_NODEV|MS_NOEXEC|&bslash;&n;&t;&t;&t;MS_SYNCHRONOUS|MS_MANDLOCK|MS_NOATIME|MS_NODIRATIME)
+mdefine_line|#define MS_RMT_MASK&t;(MS_RDONLY|MS_SYNCHRONOUS|MS_MANDLOCK|MS_NOATIME|&bslash;&n;&t;&t;&t; MS_NODIRATIME)
 multiline_comment|/*&n; * Old magic mount flag and mask&n; */
 DECL|macro|MS_MGC_VAL
 mdefine_line|#define MS_MGC_VAL 0xC0ED0000
@@ -184,23 +184,21 @@ DECL|macro|S_IMMUTABLE
 mdefine_line|#define S_IMMUTABLE&t;16&t;/* Immutable file */
 DECL|macro|S_DEAD
 mdefine_line|#define S_DEAD&t;&t;32&t;/* removed, but still open directory */
+DECL|macro|S_NOQUOTA
+mdefine_line|#define S_NOQUOTA&t;64&t;/* Inode is not counted to quota */
 multiline_comment|/*&n; * Note that nosuid etc flags are inode-specific: setting some file-system&n; * flags just means all the inodes inherit those flags by default. It might be&n; * possible to override it selectively if you really wanted to with some&n; * ioctl() that is not currently implemented.&n; *&n; * Exception: MS_RDONLY is always applied to the entire file system.&n; *&n; * Unfortunately, it is possible to change a filesystems flags with it mounted&n; * with files in use.  This means that all of the inodes will not have their&n; * i_flags updated.  Hence, i_flags no longer inherit the superblock mount&n; * flags, so these have to be checked separately. -- rmk@arm.uk.linux.org&n; */
 DECL|macro|__IS_FLG
 mdefine_line|#define __IS_FLG(inode,flg) ((inode)-&gt;i_sb-&gt;s_flags &amp; (flg))
 DECL|macro|IS_RDONLY
 mdefine_line|#define IS_RDONLY(inode) ((inode)-&gt;i_sb-&gt;s_flags &amp; MS_RDONLY)
-DECL|macro|IS_NOSUID
-mdefine_line|#define IS_NOSUID(inode)&t;__IS_FLG(inode, MS_NOSUID)
-DECL|macro|IS_NODEV
-mdefine_line|#define IS_NODEV(inode)&t;&t;__IS_FLG(inode, MS_NODEV)
-DECL|macro|IS_NOEXEC
-mdefine_line|#define IS_NOEXEC(inode)&t;__IS_FLG(inode, MS_NOEXEC)
 DECL|macro|IS_SYNC
 mdefine_line|#define IS_SYNC(inode)&t;&t;(__IS_FLG(inode, MS_SYNCHRONOUS) || ((inode)-&gt;i_flags &amp; S_SYNC))
 DECL|macro|IS_MANDLOCK
 mdefine_line|#define IS_MANDLOCK(inode)&t;__IS_FLG(inode, MS_MANDLOCK)
 DECL|macro|IS_QUOTAINIT
 mdefine_line|#define IS_QUOTAINIT(inode)&t;((inode)-&gt;i_flags &amp; S_QUOTA)
+DECL|macro|IS_NOQUOTA
+mdefine_line|#define IS_NOQUOTA(inode)&t;((inode)-&gt;i_flags &amp; S_NOQUOTA)
 DECL|macro|IS_APPEND
 mdefine_line|#define IS_APPEND(inode)&t;((inode)-&gt;i_flags &amp; S_APPEND)
 DECL|macro|IS_IMMUTABLE

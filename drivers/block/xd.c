@@ -1793,10 +1793,8 @@ id|target
 )braket
 op_decrement
 suffix:semicolon
-macro_line|#ifdef MODULE
 id|MOD_DEC_USE_COUNT
 suffix:semicolon
-macro_line|#endif /* MODULE */
 )brace
 r_return
 l_int|0
@@ -7041,6 +7039,12 @@ c_func
 id|nodma
 comma
 l_string|&quot;i&quot;
+)paren
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
 DECL|function|xd_done

@@ -619,18 +619,6 @@ op_star
 id|dev
 )paren
 suffix:semicolon
-multiline_comment|/* Gigabit Ethernet adapters */
-r_extern
-r_int
-id|yellowfin_probe
-c_func
-(paren
-r_struct
-id|net_device
-op_star
-id|dev
-)paren
-suffix:semicolon
 multiline_comment|/* Detachable devices (&quot;pocket adaptors&quot;) */
 r_extern
 r_int
@@ -653,17 +641,6 @@ op_star
 )paren
 suffix:semicolon
 multiline_comment|/* FDDI adapters */
-r_extern
-r_int
-id|apfddi_init
-c_func
-(paren
-r_struct
-id|net_device
-op_star
-id|dev
-)paren
-suffix:semicolon
 r_extern
 r_int
 id|skfp_probe

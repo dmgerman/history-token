@@ -1818,7 +1818,6 @@ comma
 suffix:semicolon
 DECL|variable|__initdata
 r_static
-r_const
 r_char
 id|banner
 (braket
@@ -2007,6 +2006,12 @@ id|MODULE_DESCRIPTION
 c_func
 (paren
 l_string|&quot;The unofficial LAPB over Ethernet driver&quot;
+)paren
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
 eof

@@ -20,6 +20,12 @@ c_func
 l_string|&quot;ACPI Component Architecture (CA) - Control Method Battery Driver&quot;
 )paren
 suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 DECL|macro|BT_PROC_ROOT
 mdefine_line|#define BT_PROC_ROOT&t;&t;&quot;battery&quot;
 DECL|macro|BT_PROC_STATUS

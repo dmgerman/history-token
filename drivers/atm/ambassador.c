@@ -54,7 +54,6 @@ DECL|macro|UCODE1
 mdefine_line|#define UCODE1(x,y) UCODE2(x ## y)
 DECL|variable|ucode_start
 r_static
-r_const
 id|u32
 id|__initdata
 id|ucode_start
@@ -63,7 +62,6 @@ macro_line|#include UCODE(start)
 suffix:semicolon
 DECL|variable|ucode_regions
 r_static
-r_const
 id|region
 id|__initdata
 id|ucode_regions
@@ -81,7 +79,6 @@ l_int|0
 suffix:semicolon
 DECL|variable|ucode_data
 r_static
-r_const
 id|u32
 id|__initdata
 id|ucode_data
@@ -10293,6 +10290,12 @@ id|MODULE_DESCRIPTION
 c_func
 (paren
 id|description_string
+)paren
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
 id|MODULE_PARM

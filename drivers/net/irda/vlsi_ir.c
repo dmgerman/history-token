@@ -3071,6 +3071,12 @@ id|pdev
 op_assign
 id|idev-&gt;pdev
 suffix:semicolon
+r_char
+id|hwname
+(braket
+l_int|32
+)braket
+suffix:semicolon
 r_int
 id|err
 suffix:semicolon
@@ -3298,6 +3304,14 @@ suffix:colon
 l_string|&quot;short&quot;
 )paren
 suffix:semicolon
+id|sprintf
+c_func
+(paren
+id|hwname
+comma
+l_string|&quot;VLSI-FIR&quot;
+)paren
+suffix:semicolon
 id|idev-&gt;irlap
 op_assign
 id|irlap_open
@@ -3307,6 +3321,8 @@ id|ndev
 comma
 op_amp
 id|idev-&gt;qos
+comma
+id|hwname
 )paren
 suffix:semicolon
 id|netif_start_queue

@@ -149,13 +149,20 @@ mdefine_line|#define IRLMP_WAITDEVICE&t;11&t;/* Wait for a new discovery */
 DECL|macro|IRTTP_MAX_SDU_SIZE
 mdefine_line|#define IRTTP_MAX_SDU_SIZE IRLMP_MAX_SDU_SIZE /* Compatibility */
 DECL|macro|IAS_MAX_STRING
-mdefine_line|#define IAS_MAX_STRING         256
+mdefine_line|#define IAS_MAX_STRING         256&t;/* See IrLMP 1.1, 4.3.3.2 */
 DECL|macro|IAS_MAX_OCTET_STRING
-mdefine_line|#define IAS_MAX_OCTET_STRING  1024
+mdefine_line|#define IAS_MAX_OCTET_STRING  1024&t;/* See IrLMP 1.1, 4.3.3.2 */
 DECL|macro|IAS_MAX_CLASSNAME
-mdefine_line|#define IAS_MAX_CLASSNAME       64
+mdefine_line|#define IAS_MAX_CLASSNAME       60&t;/* See IrLMP 1.1, 4.3.1 */
 DECL|macro|IAS_MAX_ATTRIBNAME
-mdefine_line|#define IAS_MAX_ATTRIBNAME     256
+mdefine_line|#define IAS_MAX_ATTRIBNAME      60&t;/* See IrLMP 1.1, 4.3.3.1 */
+DECL|macro|IAS_MAX_ATTRIBNUMBER
+mdefine_line|#define IAS_MAX_ATTRIBNUMBER   256&t;/* See IrLMP 1.1, 4.3.3.1 */
+multiline_comment|/* For user space backward compatibility - may be fixed in kernel 2.5.X&n; * Note : need 60+1 (&squot;&bslash;0&squot;), make it 64 for alignement - Jean II */
+DECL|macro|IAS_EXPORT_CLASSNAME
+mdefine_line|#define IAS_EXPORT_CLASSNAME       64
+DECL|macro|IAS_EXPORT_ATTRIBNAME
+mdefine_line|#define IAS_EXPORT_ATTRIBNAME     256
 multiline_comment|/* Attribute type needed for struct irda_ias_set */
 DECL|macro|IAS_MISSING
 mdefine_line|#define IAS_MISSING 0
@@ -259,14 +266,14 @@ DECL|member|irda_class_name
 r_char
 id|irda_class_name
 (braket
-id|IAS_MAX_CLASSNAME
+id|IAS_EXPORT_CLASSNAME
 )braket
 suffix:semicolon
 DECL|member|irda_attrib_name
 r_char
 id|irda_attrib_name
 (braket
-id|IAS_MAX_ATTRIBNAME
+id|IAS_EXPORT_ATTRIBNAME
 )braket
 suffix:semicolon
 DECL|member|irda_attrib_type

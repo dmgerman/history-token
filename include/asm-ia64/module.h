@@ -11,6 +11,8 @@ DECL|macro|module_unmap
 mdefine_line|#define module_unmap(x)&t;&t;ia64_module_unmap(x)
 DECL|macro|module_arch_init
 mdefine_line|#define module_arch_init(x)&t;ia64_module_init(x)
+DECL|macro|arch_init_modules
+mdefine_line|#define arch_init_modules(x)&t;do { } while (0)
 multiline_comment|/*&n; * This must match in size and layout the data created by&n; * modutils/obj/obj-ia64.c&n; */
 DECL|struct|archdata
 r_struct
@@ -107,7 +109,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;arch_init_module: archdata-&gt;unw_table must be zero.&bslash;n&quot;
+l_string|&quot;module_arch_init: archdata-&gt;unw_table must be zero.&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -133,7 +135,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;arch_init_module: archdata-&gt;gp out of bounds.&bslash;n&quot;
+l_string|&quot;module_arch_init: archdata-&gt;gp out of bounds.&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -159,7 +161,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;arch_init_module: archdata-&gt;unw_start out of bounds.&bslash;n&quot;
+l_string|&quot;module_arch_init: archdata-&gt;unw_start out of bounds.&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -185,7 +187,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;arch_init_module: archdata-&gt;unw_end out of bounds.&bslash;n&quot;
+l_string|&quot;module_arch_init: archdata-&gt;unw_end out of bounds.&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -211,7 +213,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;arch_init_module: archdata-&gt;unw_table out of bounds.&bslash;n&quot;
+l_string|&quot;module_arch_init: archdata-&gt;unw_table out of bounds.&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return

@@ -4258,11 +4258,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|IS_NODEV
-c_func
-(paren
-id|inode
-)paren
+id|nd-&gt;mnt-&gt;mnt_flags
+op_amp
+id|MNT_NODEV
 )paren
 r_goto
 m_exit

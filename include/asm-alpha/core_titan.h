@@ -1513,12 +1513,37 @@ c_func
 r_int
 r_int
 id|addr
+comma
+r_int
+r_int
+id|size
+id|__attribute__
+c_func
+(paren
+(paren
+id|unused
+)paren
+)paren
 )paren
 (brace
 r_return
 id|addr
 op_plus
 id|TITAN_MEM_BIAS
+suffix:semicolon
+)brace
+DECL|function|titan_iounmap
+id|__EXTERN_INLINE
+r_void
+id|titan_iounmap
+c_func
+(paren
+r_int
+r_int
+id|addr
+)paren
+(brace
+r_return
 suffix:semicolon
 )brace
 DECL|function|titan_is_ioaddr
@@ -1740,49 +1765,51 @@ DECL|macro|vulp
 macro_line|#undef vulp
 macro_line|#ifdef __WANT_IO_DEF
 DECL|macro|__inb
-mdefine_line|#define __inb&t;&t;titan_inb
+mdefine_line|#define __inb(p)&t;&t;titan_inb((unsigned long)(p))
 DECL|macro|__inw
-mdefine_line|#define __inw&t;&t;titan_inw
+mdefine_line|#define __inw(p)&t;&t;titan_inw((unsigned long)(p))
 DECL|macro|__inl
-mdefine_line|#define __inl&t;&t;titan_inl
+mdefine_line|#define __inl(p)&t;&t;titan_inl((unsigned long)(p))
 DECL|macro|__outb
-mdefine_line|#define __outb&t;&t;titan_outb
+mdefine_line|#define __outb(x,p)&t;&t;titan_outb((x),(unsigned long)(p))
 DECL|macro|__outw
-mdefine_line|#define __outw&t;&t;titan_outw
+mdefine_line|#define __outw(x,p)&t;&t;titan_outw((x),(unsigned long)(p))
 DECL|macro|__outl
-mdefine_line|#define __outl&t;&t;titan_outl
+mdefine_line|#define __outl(x,p)&t;&t;titan_outl((x),(unsigned long)(p))
 DECL|macro|__readb
-mdefine_line|#define __readb&t;&t;titan_readb
+mdefine_line|#define __readb(a)&t;&t;titan_readb((unsigned long)(a))
 DECL|macro|__readw
-mdefine_line|#define __readw&t;&t;titan_readw
-DECL|macro|__writeb
-mdefine_line|#define __writeb&t;titan_writeb
-DECL|macro|__writew
-mdefine_line|#define __writew&t;titan_writew
+mdefine_line|#define __readw(a)&t;&t;titan_readw((unsigned long)(a))
 DECL|macro|__readl
-mdefine_line|#define __readl&t;&t;titan_readl
+mdefine_line|#define __readl(a)&t;&t;titan_readl((unsigned long)(a))
 DECL|macro|__readq
-mdefine_line|#define __readq&t;&t;titan_readq
+mdefine_line|#define __readq(a)&t;&t;titan_readq((unsigned long)(a))
+DECL|macro|__writeb
+mdefine_line|#define __writeb(x,a)&t;&t;titan_writeb((x),(unsigned long)(a))
+DECL|macro|__writew
+mdefine_line|#define __writew(x,a)&t;&t;titan_writew((x),(unsigned long)(a))
 DECL|macro|__writel
-mdefine_line|#define __writel&t;titan_writel
+mdefine_line|#define __writel(x,a)&t;&t;titan_writel((x),(unsigned long)(a))
 DECL|macro|__writeq
-mdefine_line|#define __writeq&t;titan_writeq
+mdefine_line|#define __writeq(x,a)&t;&t;titan_writeq((x),(unsigned long)(a))
 DECL|macro|__ioremap
-mdefine_line|#define __ioremap&t;titan_ioremap
+mdefine_line|#define __ioremap(a,s)&t;&t;titan_ioremap((unsigned long)(a),(s))
+DECL|macro|__iounmap
+mdefine_line|#define __iounmap(a)&t;&t;titan_iounmap((unsigned long)(a))
 DECL|macro|__is_ioaddr
-mdefine_line|#define __is_ioaddr&t;titan_is_ioaddr
+mdefine_line|#define __is_ioaddr(a)&t;&t;titan_is_ioaddr((unsigned long)(a))
 DECL|macro|inb
-mdefine_line|#define inb(port) &t;__inb((port))
+mdefine_line|#define inb(port) &t;&t;__inb((port))
 DECL|macro|inw
-mdefine_line|#define inw(port) &t;__inw((port))
+mdefine_line|#define inw(port) &t;&t;__inw((port))
 DECL|macro|inl
-mdefine_line|#define inl(port) &t;__inl((port))
+mdefine_line|#define inl(port) &t;&t;__inl((port))
 DECL|macro|outb
-mdefine_line|#define outb(v, port) &t;__outb((v),(port))
+mdefine_line|#define outb(v, port) &t;&t;__outb((v),(port))
 DECL|macro|outw
-mdefine_line|#define outw(v, port) &t;__outw((v),(port))
+mdefine_line|#define outw(v, port) &t;&t;__outw((v),(port))
 DECL|macro|outl
-mdefine_line|#define outl(v, port) &t;__outl((v),(port))
+mdefine_line|#define outl(v, port) &t;&t;__outl((v),(port))
 DECL|macro|__raw_readb
 mdefine_line|#define __raw_readb(a)&t;&t;__readb((unsigned long)(a))
 DECL|macro|__raw_readw

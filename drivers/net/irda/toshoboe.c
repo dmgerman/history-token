@@ -1669,6 +1669,12 @@ id|toshoboe_cb
 op_star
 id|self
 suffix:semicolon
+r_char
+id|hwname
+(braket
+l_int|32
+)braket
+suffix:semicolon
 id|IRDA_DEBUG
 (paren
 l_int|4
@@ -1772,6 +1778,17 @@ c_func
 id|dev
 )paren
 suffix:semicolon
+multiline_comment|/* Give self a hardware name */
+id|sprintf
+c_func
+(paren
+id|hwname
+comma
+l_string|&quot;Toshiba-FIR @ 0x%03x&quot;
+comma
+id|self-&gt;base
+)paren
+suffix:semicolon
 multiline_comment|/* &n;   * Open new IrLAP layer instance, now that everything should be&n;   * initialized properly &n;   */
 id|self-&gt;irlap
 op_assign
@@ -1782,6 +1799,8 @@ id|dev
 comma
 op_amp
 id|self-&gt;qos
+comma
+id|hwname
 )paren
 suffix:semicolon
 id|self-&gt;open
