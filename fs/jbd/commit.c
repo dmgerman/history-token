@@ -1845,6 +1845,10 @@ c_func
 id|bh
 )paren
 suffix:semicolon
+r_goto
+id|wait_for_iobuf
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -1864,10 +1868,6 @@ op_assign
 op_minus
 id|EIO
 suffix:semicolon
-r_goto
-id|wait_for_iobuf
-suffix:semicolon
-)brace
 id|clear_buffer_jwrite
 c_func
 (paren
@@ -2081,6 +2081,10 @@ c_func
 id|bh
 )paren
 suffix:semicolon
+r_goto
+id|wait_for_ctlbuf
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -2100,10 +2104,6 @@ op_assign
 op_minus
 id|EIO
 suffix:semicolon
-r_goto
-id|wait_for_ctlbuf
-suffix:semicolon
-)brace
 id|BUFFER_TRACE
 c_func
 (paren
