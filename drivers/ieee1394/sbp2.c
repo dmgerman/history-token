@@ -29,17 +29,14 @@ macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/scatterlist.h&gt;
 macro_line|#include &quot;../scsi/scsi.h&quot;
 macro_line|#include &quot;../scsi/hosts.h&quot;
-macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,5,47)
-macro_line|#include &quot;../scsi/sd.h&quot;
-macro_line|#endif
 macro_line|#include &quot;ieee1394.h&quot;
 macro_line|#include &quot;ieee1394_types.h&quot;
 macro_line|#include &quot;ieee1394_core.h&quot;
+macro_line|#include &quot;nodemgr.h&quot;
 macro_line|#include &quot;hosts.h&quot;
 macro_line|#include &quot;nodemgr.h&quot;
 macro_line|#include &quot;highlevel.h&quot;
 macro_line|#include &quot;ieee1394_transactions.h&quot;
-macro_line|#include &quot;ieee1394_hotplug.h&quot;
 macro_line|#include &quot;sbp2.h&quot;
 DECL|variable|__devinitdata
 r_static
@@ -49,7 +46,7 @@ id|version
 )braket
 id|__devinitdata
 op_assign
-l_string|&quot;$Rev: 912 $ James Goodwin &lt;jamesg@filanet.com&gt;&quot;
+l_string|&quot;$Rev: 919 $ James Goodwin &lt;jamesg@filanet.com&gt;&quot;
 suffix:semicolon
 multiline_comment|/*&n; * Module load parameter definitions&n; */
 multiline_comment|/*&n; * Change max_speed on module load if you have a bad IEEE-1394&n; * controller that has trouble running 2KB packets at 400mb.&n; *&n; * NOTE: On certain OHCI parts I have seen short packets on async transmit&n; * (probably due to PCI latency/throughput issues with the part). You can&n; * bump down the speed if you are running into problems.&n; */
@@ -9259,31 +9256,6 @@ suffix:semicolon
 )brace
 macro_line|#endif
 multiline_comment|/*&n;&t; * Tell scsi stack that we&squot;re done with this command&n;&t; */
-macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,5,0)
-id|spin_lock_irqsave
-c_func
-(paren
-op_amp
-id|io_request_lock
-comma
-id|flags
-)paren
-suffix:semicolon
-id|done
-(paren
-id|SCpnt
-)paren
-suffix:semicolon
-id|spin_unlock_irqrestore
-c_func
-(paren
-op_amp
-id|io_request_lock
-comma
-id|flags
-)paren
-suffix:semicolon
-macro_line|#else
 id|spin_lock_irqsave
 c_func
 (paren
@@ -9305,7 +9277,6 @@ comma
 id|flags
 )paren
 suffix:semicolon
-macro_line|#endif
 r_return
 suffix:semicolon
 )brace

@@ -1,7 +1,7 @@
-multiline_comment|/*&n; * Copyright (c) 2000-2003 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.&t; Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information: Silicon Graphics, Inc., 1600 Amphitheatre Pkwy,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/SGIGPLNoticeExplan/&n; */
+multiline_comment|/*&n; * Copyright (c) 2000-2003 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.  Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information: Silicon Graphics, Inc., 1600 Amphitheatre Pkwy,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/SGIGPLNoticeExplan/&n; */
 macro_line|#ifndef __XFS_TYPES_H__
 DECL|macro|__XFS_TYPES_H__
-mdefine_line|#define __XFS_TYPES_H__
+mdefine_line|#define&t;__XFS_TYPES_H__
 macro_line|#ifdef __KERNEL__
 multiline_comment|/*&n; * POSIX Extensions&n; */
 DECL|typedef|uchar_t
@@ -361,36 +361,36 @@ suffix:semicolon
 multiline_comment|/* architecture of an xfs fs */
 multiline_comment|/*&n; * Null values for the types.&n; */
 DECL|macro|NULLDFSBNO
-mdefine_line|#define NULLDFSBNO&t;((xfs_dfsbno_t)-1)
+mdefine_line|#define&t;NULLDFSBNO&t;((xfs_dfsbno_t)-1)
 DECL|macro|NULLDRFSBNO
-mdefine_line|#define NULLDRFSBNO&t;((xfs_drfsbno_t)-1)
+mdefine_line|#define&t;NULLDRFSBNO&t;((xfs_drfsbno_t)-1)
 DECL|macro|NULLDRTBNO
-mdefine_line|#define NULLDRTBNO&t;((xfs_drtbno_t)-1)
+mdefine_line|#define&t;NULLDRTBNO&t;((xfs_drtbno_t)-1)
 DECL|macro|NULLDFILOFF
-mdefine_line|#define NULLDFILOFF&t;((xfs_dfiloff_t)-1)
+mdefine_line|#define&t;NULLDFILOFF&t;((xfs_dfiloff_t)-1)
 DECL|macro|NULLFSBLOCK
-mdefine_line|#define NULLFSBLOCK&t;((xfs_fsblock_t)-1)
+mdefine_line|#define&t;NULLFSBLOCK&t;((xfs_fsblock_t)-1)
 DECL|macro|NULLRFSBLOCK
-mdefine_line|#define NULLRFSBLOCK&t;((xfs_rfsblock_t)-1)
+mdefine_line|#define&t;NULLRFSBLOCK&t;((xfs_rfsblock_t)-1)
 DECL|macro|NULLRTBLOCK
-mdefine_line|#define NULLRTBLOCK&t;((xfs_rtblock_t)-1)
+mdefine_line|#define&t;NULLRTBLOCK&t;((xfs_rtblock_t)-1)
 DECL|macro|NULLFILEOFF
-mdefine_line|#define NULLFILEOFF&t;((xfs_fileoff_t)-1)
+mdefine_line|#define&t;NULLFILEOFF&t;((xfs_fileoff_t)-1)
 DECL|macro|NULLAGBLOCK
-mdefine_line|#define NULLAGBLOCK&t;((xfs_agblock_t)-1)
+mdefine_line|#define&t;NULLAGBLOCK&t;((xfs_agblock_t)-1)
 DECL|macro|NULLAGNUMBER
-mdefine_line|#define NULLAGNUMBER&t;((xfs_agnumber_t)-1)
+mdefine_line|#define&t;NULLAGNUMBER&t;((xfs_agnumber_t)-1)
 DECL|macro|NULLEXTNUM
-mdefine_line|#define NULLEXTNUM&t;((xfs_extnum_t)-1)
+mdefine_line|#define&t;NULLEXTNUM&t;((xfs_extnum_t)-1)
 DECL|macro|NULLCOMMITLSN
 mdefine_line|#define NULLCOMMITLSN&t;((xfs_lsn_t)-1)
 multiline_comment|/*&n; * Max values for extlen, extnum, aextnum.&n; */
 DECL|macro|MAXEXTLEN
-mdefine_line|#define MAXEXTLEN&t;((xfs_extlen_t)0x001fffff)&t;/* 21 bits */
+mdefine_line|#define&t;MAXEXTLEN&t;((xfs_extlen_t)0x001fffff)&t;/* 21 bits */
 DECL|macro|MAXEXTNUM
-mdefine_line|#define MAXEXTNUM&t;((xfs_extnum_t)0x7fffffff)&t;/* signed int */
+mdefine_line|#define&t;MAXEXTNUM&t;((xfs_extnum_t)0x7fffffff)&t;/* signed int */
 DECL|macro|MAXAEXTNUM
-mdefine_line|#define MAXAEXTNUM&t;((xfs_aextnum_t)0x7fff)&t;&t;/* signed short */
+mdefine_line|#define&t;MAXAEXTNUM&t;((xfs_aextnum_t)0x7fff)&t;&t;/* signed short */
 multiline_comment|/*&n; * MAXNAMELEN is the length (including the terminating null) of&n; * the longest permissible file (component) name.&n; */
 DECL|macro|MAXNAMELEN
 mdefine_line|#define MAXNAMELEN&t;256

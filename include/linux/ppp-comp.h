@@ -3,6 +3,9 @@ multiline_comment|/*&n; *  ==FILEVERSION 980319==&n; *&n; *  NOTE TO MAINTAINERS
 macro_line|#ifndef _NET_PPP_COMP_H
 DECL|macro|_NET_PPP_COMP_H
 mdefine_line|#define _NET_PPP_COMP_H
+r_struct
+id|module
+suffix:semicolon
 multiline_comment|/*&n; * The following symbols control whether we include code for&n; * various compression methods.&n; */
 macro_line|#ifndef DO_BSD_COMPRESS
 DECL|macro|DO_BSD_COMPRESS
@@ -291,6 +294,13 @@ id|compstat
 op_star
 id|stats
 )paren
+suffix:semicolon
+multiline_comment|/* Used in locking compressor modules */
+DECL|member|owner
+r_struct
+id|module
+op_star
+id|owner
 suffix:semicolon
 )brace
 suffix:semicolon

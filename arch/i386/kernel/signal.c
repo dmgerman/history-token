@@ -11,9 +11,11 @@ macro_line|#include &lt;linux/unistd.h&gt;
 macro_line|#include &lt;linux/stddef.h&gt;
 macro_line|#include &lt;linux/personality.h&gt;
 macro_line|#include &lt;linux/suspend.h&gt;
+macro_line|#include &lt;linux/elf.h&gt;
 macro_line|#include &lt;asm/ucontext.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/i387.h&gt;
+macro_line|#include &quot;sigframe.h&quot;
 DECL|macro|DEBUG_SIG
 mdefine_line|#define DEBUG_SIG 0
 DECL|macro|_BLOCKABLE
@@ -517,96 +519,6 @@ id|regs-&gt;esp
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Do a signal return; undo the signal stack.&n; */
-DECL|struct|sigframe
-r_struct
-id|sigframe
-(brace
-DECL|member|pretcode
-r_char
-op_star
-id|pretcode
-suffix:semicolon
-DECL|member|sig
-r_int
-id|sig
-suffix:semicolon
-DECL|member|sc
-r_struct
-id|sigcontext
-id|sc
-suffix:semicolon
-DECL|member|fpstate
-r_struct
-id|_fpstate
-id|fpstate
-suffix:semicolon
-DECL|member|extramask
-r_int
-r_int
-id|extramask
-(braket
-id|_NSIG_WORDS
-op_minus
-l_int|1
-)braket
-suffix:semicolon
-DECL|member|retcode
-r_char
-id|retcode
-(braket
-l_int|8
-)braket
-suffix:semicolon
-)brace
-suffix:semicolon
-DECL|struct|rt_sigframe
-r_struct
-id|rt_sigframe
-(brace
-DECL|member|pretcode
-r_char
-op_star
-id|pretcode
-suffix:semicolon
-DECL|member|sig
-r_int
-id|sig
-suffix:semicolon
-DECL|member|pinfo
-r_struct
-id|siginfo
-op_star
-id|pinfo
-suffix:semicolon
-DECL|member|puc
-r_void
-op_star
-id|puc
-suffix:semicolon
-DECL|member|info
-r_struct
-id|siginfo
-id|info
-suffix:semicolon
-DECL|member|uc
-r_struct
-id|ucontext
-id|uc
-suffix:semicolon
-DECL|member|fpstate
-r_struct
-id|_fpstate
-id|fpstate
-suffix:semicolon
-DECL|member|retcode
-r_char
-id|retcode
-(braket
-l_int|8
-)braket
-suffix:semicolon
-)brace
-suffix:semicolon
 r_static
 r_int
 DECL|function|restore_sigcontext
@@ -1695,6 +1607,13 @@ l_int|8ul
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* These symbols are defined with the addresses in the vsyscall page.&n;   See vsyscall-sigreturn.S.  */
+r_extern
+r_void
+id|__kernel_sigreturn
+comma
+id|__kernel_rt_sigreturn
+suffix:semicolon
 DECL|function|setup_frame
 r_static
 r_void
@@ -1887,19 +1806,8 @@ id|give_sigsegv
 suffix:semicolon
 id|restorer
 op_assign
-(paren
-r_void
-op_star
-)paren
-(paren
-id|fix_to_virt
-c_func
-(paren
-id|FIX_VSYSCALL
-)paren
-op_plus
-l_int|32
-)paren
+op_amp
+id|__kernel_sigreturn
 suffix:semicolon
 r_if
 c_cond
@@ -2345,19 +2253,8 @@ suffix:semicolon
 multiline_comment|/* Set up to return from userspace.  */
 id|restorer
 op_assign
-(paren
-r_void
-op_star
-)paren
-(paren
-id|fix_to_virt
-c_func
-(paren
-id|FIX_VSYSCALL
-)paren
-op_plus
-l_int|64
-)paren
+op_amp
+id|__kernel_rt_sigreturn
 suffix:semicolon
 r_if
 c_cond

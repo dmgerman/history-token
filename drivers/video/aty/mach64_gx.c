@@ -1,6 +1,7 @@
 multiline_comment|/*&n; *  ATI Mach64 GX Support&n; */
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/fb.h&gt;
+macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;video/mach64.h&gt;
 macro_line|#include &quot;atyfb.h&quot;
@@ -2230,9 +2231,6 @@ comma
 id|u32
 id|vclk_per
 comma
-id|u32
-id|vclk_per
-comma
 id|u8
 id|bpp
 comma
@@ -2765,9 +2763,6 @@ r_struct
 id|fb_info
 op_star
 id|info
-comma
-id|u32
-id|vclk_per
 comma
 id|u32
 id|vclk_per

@@ -4247,6 +4247,11 @@ op_assign
 id|PF_LLC
 comma
 dot
+id|owner
+op_assign
+id|THIS_MODULE
+comma
+dot
 id|release
 op_assign
 id|llc_ui_release

@@ -9323,6 +9323,23 @@ r_int
 id|uptodate
 )paren
 (brace
+r_int
+r_int
+id|nr_sectors
+op_assign
+id|current_count_sectors
+suffix:semicolon
+multiline_comment|/* current_count_sectors can be zero if transfer failed */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|uptodate
+)paren
+id|nr_sectors
+op_assign
+id|req-&gt;current_nr_sectors
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -9333,7 +9350,7 @@ id|req
 comma
 id|uptodate
 comma
-id|current_count_sectors
+id|nr_sectors
 )paren
 )paren
 r_return
@@ -16107,9 +16124,11 @@ r_if
 c_cond
 (paren
 op_logical_neg
+(paren
 id|filp-&gt;f_flags
 op_amp
 id|O_NDELAY
+)paren
 )paren
 (brace
 r_if

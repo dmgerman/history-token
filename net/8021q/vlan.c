@@ -161,11 +161,6 @@ id|ETH_P_8021Q
 )paren
 comma
 dot
-id|dev
-op_assign
-l_int|NULL
-comma
-dot
 id|func
 op_assign
 id|vlan_skb_recv
@@ -178,12 +173,9 @@ op_assign
 r_void
 op_star
 )paren
-(paren
-op_minus
 l_int|1
-)paren
 comma
-multiline_comment|/* Set here &squot;(void *)1&squot; when this code can SHARE SKBs */
+multiline_comment|/* understands shared skb */
 )brace
 suffix:semicolon
 multiline_comment|/* End of global variables definitions. */

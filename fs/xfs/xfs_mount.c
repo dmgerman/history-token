@@ -1,5 +1,34 @@
-multiline_comment|/*&n; * Copyright (c) 2000-2003 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.&t; Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information: Silicon Graphics, Inc., 1600 Amphitheatre Pkwy,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/SGIGPLNoticeExplan/&n; */
-macro_line|#include &lt;xfs.h&gt;
+multiline_comment|/*&n; * Copyright (c) 2000-2003 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.  Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information: Silicon Graphics, Inc., 1600 Amphitheatre Pkwy,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/SGIGPLNoticeExplan/&n; */
+macro_line|#include &quot;xfs.h&quot;
+macro_line|#include &quot;xfs_macros.h&quot;
+macro_line|#include &quot;xfs_types.h&quot;
+macro_line|#include &quot;xfs_inum.h&quot;
+macro_line|#include &quot;xfs_log.h&quot;
+macro_line|#include &quot;xfs_trans.h&quot;
+macro_line|#include &quot;xfs_sb.h&quot;
+macro_line|#include &quot;xfs_ag.h&quot;
+macro_line|#include &quot;xfs_dir.h&quot;
+macro_line|#include &quot;xfs_dir2.h&quot;
+macro_line|#include &quot;xfs_dmapi.h&quot;
+macro_line|#include &quot;xfs_mount.h&quot;
+macro_line|#include &quot;xfs_alloc_btree.h&quot;
+macro_line|#include &quot;xfs_bmap_btree.h&quot;
+macro_line|#include &quot;xfs_ialloc_btree.h&quot;
+macro_line|#include &quot;xfs_btree.h&quot;
+macro_line|#include &quot;xfs_ialloc.h&quot;
+macro_line|#include &quot;xfs_attr_sf.h&quot;
+macro_line|#include &quot;xfs_dir_sf.h&quot;
+macro_line|#include &quot;xfs_dir2_sf.h&quot;
+macro_line|#include &quot;xfs_dinode.h&quot;
+macro_line|#include &quot;xfs_inode.h&quot;
+macro_line|#include &quot;xfs_alloc.h&quot;
+macro_line|#include &quot;xfs_rtalloc.h&quot;
+macro_line|#include &quot;xfs_bmap.h&quot;
+macro_line|#include &quot;xfs_error.h&quot;
+macro_line|#include &quot;xfs_bit.h&quot;
+macro_line|#include &quot;xfs_rw.h&quot;
+macro_line|#include &quot;xfs_quota.h&quot;
+macro_line|#include &quot;xfs_fsops.h&quot;
 id|STATIC
 r_void
 id|xfs_mount_log_sbunit
@@ -30,22 +59,6 @@ op_star
 id|mp
 )paren
 suffix:semicolon
-DECL|variable|xfs_uuidtabmon
-id|mutex_t
-id|xfs_uuidtabmon
-suffix:semicolon
-multiline_comment|/* monitor for uuidtab */
-DECL|variable|xfs_uuidtab_size
-id|STATIC
-r_int
-id|xfs_uuidtab_size
-suffix:semicolon
-DECL|variable|xfs_uuidtab
-id|STATIC
-id|uuid_t
-op_star
-id|xfs_uuidtab
-suffix:semicolon
 r_void
 id|xfs_xlatesb
 c_func
@@ -74,7 +87,7 @@ DECL|member|type
 r_int
 id|type
 suffix:semicolon
-multiline_comment|/* 0 = integer&n;&t;&t;     * 1 = binary / string (no translation)&n;&t;&t;     */
+multiline_comment|/* 0 = integer&n;&t;&t;* 1 = binary / string (no translation)&n;&t;&t;*/
 DECL|variable|xfs_sb_info
 )brace
 id|xfs_sb_info
@@ -1560,7 +1573,7 @@ op_assign
 id|index
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * xfs_xlatesb&n; *&n; *     data&t;  - on disk version of sb&n; *     sb&t;  - a superblock&n; *     dir&t;  - conversion direction: &lt;0 - convert sb to buf&n; *&t;&t;&t;&t;&t;  &gt;0 - convert buf to sb&n; *     arch&t;  - architecture to read/write from/to buf&n; *     fields&t;  - which fields to copy (bitmask)&n; */
+multiline_comment|/*&n; * xfs_xlatesb&n; *&n; *     data       - on disk version of sb&n; *     sb         - a superblock&n; *     dir        - conversion direction: &lt;0 - convert sb to buf&n; *                                        &gt;0 - convert buf to sb&n; *     arch       - architecture to read/write from/to buf&n; *     fields     - which fields to copy (bitmask)&n; */
 r_void
 DECL|function|xfs_xlatesb
 id|xfs_xlatesb
@@ -3087,7 +3100,7 @@ id|mp-&gt;m_maxicount
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/*&n;&t; * XFS uses the uuid from the superblock as the unique&n;&t; * identifier for fsid.&t; We can not use the uuid from the volume&n;&t; * since a single partition filesystem is identical to a single&n;&t; * partition volume/filesystem.&n;&t; */
+multiline_comment|/*&n;&t; * XFS uses the uuid from the superblock as the unique&n;&t; * identifier for fsid.  We can not use the uuid from the volume&n;&t; * since a single partition filesystem is identical to a single&n;&t; * partition volume/filesystem.&n;&t; */
 r_if
 c_cond
 (paren
@@ -4829,7 +4842,7 @@ id|CE_ALERT
 comma
 id|mp
 comma
-l_string|&quot;Superblock write error detected while unmounting.&t; Filesystem may not be marked shared readonly&quot;
+l_string|&quot;Superblock write error detected while unmounting.  Filesystem may not be marked shared readonly&quot;
 )paren
 suffix:semicolon
 )brace
@@ -5751,7 +5764,7 @@ id|EINVAL
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n; * xfs_mod_incore_sb() is used to change a field in the in-core&n; * superblock structure by the specified delta.&t; This modification&n; * is protected by the SB_LOCK.&t; Just use the xfs_mod_incore_sb_unlocked()&n; * routine to do the work.&n; */
+multiline_comment|/*&n; * xfs_mod_incore_sb() is used to change a field in the in-core&n; * superblock structure by the specified delta.  This modification&n; * is protected by the SB_LOCK.  Just use the xfs_mod_incore_sb_unlocked()&n; * routine to do the work.&n; */
 r_int
 DECL|function|xfs_mod_incore_sb
 id|xfs_mod_incore_sb
@@ -5888,7 +5901,7 @@ id|msbp
 op_increment
 )paren
 (brace
-multiline_comment|/*&n;&t;&t; * Apply the delta at index n.&t;If it fails, break&n;&t;&t; * from the loop so we&squot;ll fall into the undo loop&n;&t;&t; * below.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Apply the delta at index n.  If it fails, break&n;&t;&t; * from the loop so we&squot;ll fall into the undo loop&n;&t;&t; * below.&n;&t;&t; */
 id|status
 op_assign
 id|xfs_mod_incore_sb_unlocked
@@ -5915,7 +5928,7 @@ r_break
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n;&t; * If we didn&squot;t complete the loop above, then back out&n;&t; * any changes made to the superblock.&t;If you add code&n;&t; * between the loop above and here, make sure that you&n;&t; * preserve the value of status. Loop back until&n;&t; * we step below the beginning of the array.  Make sure&n;&t; * we don&squot;t touch anything back there.&n;&t; */
+multiline_comment|/*&n;&t; * If we didn&squot;t complete the loop above, then back out&n;&t; * any changes made to the superblock.  If you add code&n;&t; * between the loop above and here, make sure that you&n;&t; * preserve the value of status. Loop back until&n;&t; * we step below the beginning of the array.  Make sure&n;&t; * we don&squot;t touch anything back there.&n;&t; */
 r_if
 c_cond
 (paren
@@ -6110,7 +6123,7 @@ op_assign
 l_int|NULL
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * See if the uuid is unique among mounted xfs filesystems.&n; * Mount fails if UUID is nil or a FS with the same UUID is already&n; * mounted&n; */
+multiline_comment|/*&n; * See if the UUID is unique among mounted XFS filesystems.&n; * Mount fails if UUID is nil or a FS with the same UUID is already mounted.&n; */
 id|STATIC
 r_int
 DECL|function|xfs_uuid_mount
@@ -6122,12 +6135,6 @@ op_star
 id|mp
 )paren
 (brace
-r_int
-id|hole
-suffix:semicolon
-r_int
-id|i
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -6154,70 +6161,15 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
-id|mutex_lock
-c_func
-(paren
-op_amp
-id|xfs_uuidtabmon
-comma
-id|PVFS
-)paren
-suffix:semicolon
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0
-comma
-id|hole
-op_assign
-op_minus
-l_int|1
-suffix:semicolon
-id|i
-OL
-id|xfs_uuidtab_size
-suffix:semicolon
-id|i
-op_increment
-)paren
-(brace
 r_if
 c_cond
 (paren
-id|uuid_is_nil
-c_func
-(paren
-op_amp
-id|xfs_uuidtab
-(braket
-id|i
-)braket
-)paren
-)paren
-(brace
-id|hole
-op_assign
-id|i
-suffix:semicolon
-r_continue
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-id|uuid_equal
+op_logical_neg
+id|uuid_table_insert
 c_func
 (paren
 op_amp
 id|mp-&gt;m_sb.sb_uuid
-comma
-op_amp
-id|xfs_uuidtab
-(braket
-id|i
-)braket
 )paren
 )paren
 (brace
@@ -6231,82 +6183,16 @@ comma
 id|mp-&gt;m_fsname
 )paren
 suffix:semicolon
-id|mutex_unlock
-c_func
-(paren
-op_amp
-id|xfs_uuidtabmon
-)paren
-suffix:semicolon
 r_return
 op_minus
 l_int|1
 suffix:semicolon
 )brace
-)brace
-r_if
-c_cond
-(paren
-id|hole
-OL
-l_int|0
-)paren
-(brace
-id|xfs_uuidtab
-op_assign
-id|kmem_realloc
-c_func
-(paren
-id|xfs_uuidtab
-comma
-(paren
-id|xfs_uuidtab_size
-op_plus
-l_int|1
-)paren
-op_star
-r_sizeof
-(paren
-op_star
-id|xfs_uuidtab
-)paren
-comma
-id|xfs_uuidtab_size
-op_star
-r_sizeof
-(paren
-op_star
-id|xfs_uuidtab
-)paren
-comma
-id|KM_SLEEP
-)paren
-suffix:semicolon
-id|hole
-op_assign
-id|xfs_uuidtab_size
-op_increment
-suffix:semicolon
-)brace
-id|xfs_uuidtab
-(braket
-id|hole
-)braket
-op_assign
-id|mp-&gt;m_sb.sb_uuid
-suffix:semicolon
-id|mutex_unlock
-c_func
-(paren
-op_amp
-id|xfs_uuidtabmon
-)paren
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Remove filesystem from the uuid table.&n; */
+multiline_comment|/*&n; * Remove filesystem from the UUID table.&n; */
 id|STATIC
 r_void
 DECL|function|xfs_uuid_unmount
@@ -6318,93 +6204,11 @@ op_star
 id|mp
 )paren
 (brace
-r_int
-id|i
-suffix:semicolon
-id|mutex_lock
-c_func
-(paren
-op_amp
-id|xfs_uuidtabmon
-comma
-id|PVFS
-)paren
-suffix:semicolon
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-id|xfs_uuidtab_size
-suffix:semicolon
-id|i
-op_increment
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|uuid_is_nil
-c_func
-(paren
-op_amp
-id|xfs_uuidtab
-(braket
-id|i
-)braket
-)paren
-)paren
-r_continue
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|uuid_equal
+id|uuid_table_remove
 c_func
 (paren
 op_amp
 id|mp-&gt;m_sb.sb_uuid
-comma
-op_amp
-id|xfs_uuidtab
-(braket
-id|i
-)braket
-)paren
-)paren
-r_continue
-suffix:semicolon
-id|uuid_create_nil
-c_func
-(paren
-op_amp
-id|xfs_uuidtab
-(braket
-id|i
-)braket
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
-)brace
-id|ASSERT
-c_func
-(paren
-id|i
-OL
-id|xfs_uuidtab_size
-)paren
-suffix:semicolon
-id|mutex_unlock
-c_func
-(paren
-op_amp
-id|xfs_uuidtabmon
 )paren
 suffix:semicolon
 )brace
@@ -6492,9 +6296,6 @@ comma
 id|fields
 )paren
 suffix:semicolon
-(paren
-r_void
-)paren
 id|xfs_trans_commit
 c_func
 (paren
@@ -6638,11 +6439,9 @@ r_int
 id|level
 )paren
 (brace
-id|SPLDECL
-c_func
-(paren
+r_int
+r_int
 id|s
-)paren
 suffix:semicolon
 r_if
 c_cond

@@ -1,10 +1,10 @@
-multiline_comment|/*&n; * Copyright (c) 2000-2002 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.&t; Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information: Silicon Graphics, Inc., 1600 Amphitheatre Pkwy,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/SGIGPLNoticeExplan/&n; */
-macro_line|#ifndef __XFS_LOG_PRIV_H__
+multiline_comment|/*&n; * Copyright (c) 2000-2002 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.  Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information: Silicon Graphics, Inc., 1600 Amphitheatre Pkwy,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/SGIGPLNoticeExplan/&n; */
+macro_line|#ifndef&t;__XFS_LOG_PRIV_H__
 DECL|macro|__XFS_LOG_PRIV_H__
 mdefine_line|#define __XFS_LOG_PRIV_H__
 macro_line|#if defined(XFS_ALL_TRACE)
 DECL|macro|XFS_LOG_TRACE
-mdefine_line|#define XFS_LOG_TRACE
+mdefine_line|#define&t;XFS_LOG_TRACE
 macro_line|#endif
 macro_line|#if !defined(DEBUG)
 DECL|macro|XFS_LOG_TRACE
@@ -118,7 +118,7 @@ DECL|macro|XLOG_GRANT_SUB_SPACE
 mdefine_line|#define XLOG_GRANT_SUB_SPACE(log,bytes,type)&t;&bslash;&n;&t;xlog_grant_sub_space(log,bytes,type)
 macro_line|#else
 DECL|macro|XLOG_GRANT_SUB_SPACE
-mdefine_line|#define XLOG_GRANT_SUB_SPACE(log,bytes,type)&t;&t;&t;&t;&bslash;&n;    {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (type == &squot;w&squot;) {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;(log)-&gt;l_grant_write_bytes -= (bytes);&t;&t;&t;&bslash;&n;&t;&t;if ((log)-&gt;l_grant_write_bytes &lt; 0) {&t;&t;&t;&bslash;&n;&t;&t;&t;(log)-&gt;l_grant_write_bytes += (log)-&gt;l_logsize; &bslash;&n;&t;&t;&t;(log)-&gt;l_grant_write_cycle--;&t;&t;&t;&bslash;&n;&t;&t;}&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;} else {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;(log)-&gt;l_grant_reserve_bytes -= (bytes);&t;&t;&bslash;&n;&t;&t;if ((log)-&gt;l_grant_reserve_bytes &lt; 0) {&t;&t;&t;&bslash;&n;&t;&t;&t;(log)-&gt;l_grant_reserve_bytes += (log)-&gt;l_logsize;&bslash;&n;&t;&t;&t;(log)-&gt;l_grant_reserve_cycle--;&t;&t;&t;&bslash;&n;&t;&t;}&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t; }&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;    }
+mdefine_line|#define XLOG_GRANT_SUB_SPACE(log,bytes,type)&t;&t;&t;&t;&bslash;&n;    {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (type == &squot;w&squot;) {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;(log)-&gt;l_grant_write_bytes -= (bytes);&t;&t;&t;&bslash;&n;&t;&t;if ((log)-&gt;l_grant_write_bytes &lt; 0) {&t;&t;&t;&bslash;&n;&t;&t;&t;(log)-&gt;l_grant_write_bytes += (log)-&gt;l_logsize;&t;&bslash;&n;&t;&t;&t;(log)-&gt;l_grant_write_cycle--;&t;&t;&t;&bslash;&n;&t;&t;}&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;} else {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;(log)-&gt;l_grant_reserve_bytes -= (bytes);&t;&t;&bslash;&n;&t;&t;if ((log)-&gt;l_grant_reserve_bytes &lt; 0) {&t;&t;&t;&bslash;&n;&t;&t;&t;(log)-&gt;l_grant_reserve_bytes += (log)-&gt;l_logsize;&bslash;&n;&t;&t;&t;(log)-&gt;l_grant_reserve_cycle--;&t;&t;&t;&bslash;&n;&t;&t;}&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t; }&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;    }
 macro_line|#endif
 macro_line|#if XFS_WANT_FUNCS || (XFS_WANT_SPACE &amp;&amp; XFSSO_XLOG_GRANT_ADD_SPACE)
 r_void
@@ -141,7 +141,7 @@ DECL|macro|XLOG_GRANT_ADD_SPACE
 mdefine_line|#define XLOG_GRANT_ADD_SPACE(log,bytes,type)&t;&bslash;&n;&t;xlog_grant_add_space(log,bytes,type)
 macro_line|#else
 DECL|macro|XLOG_GRANT_ADD_SPACE
-mdefine_line|#define XLOG_GRANT_ADD_SPACE(log,bytes,type)&t;&t;&t;&t;&bslash;&n;    {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (type == &squot;w&squot;) {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;(log)-&gt;l_grant_write_bytes += (bytes);&t;&t;&t;&bslash;&n;&t;&t;if ((log)-&gt;l_grant_write_bytes &gt; (log)-&gt;l_logsize) {&t;&bslash;&n;&t;&t;&t;(log)-&gt;l_grant_write_bytes -= (log)-&gt;l_logsize; &bslash;&n;&t;&t;&t;(log)-&gt;l_grant_write_cycle++;&t;&t;&t;&bslash;&n;&t;&t;}&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;} else {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;(log)-&gt;l_grant_reserve_bytes += (bytes);&t;&t;&bslash;&n;&t;&t;if ((log)-&gt;l_grant_reserve_bytes &gt; (log)-&gt;l_logsize) {&t;&bslash;&n;&t;&t;&t;(log)-&gt;l_grant_reserve_bytes -= (log)-&gt;l_logsize;&bslash;&n;&t;&t;&t;(log)-&gt;l_grant_reserve_cycle++;&t;&t;&t;&bslash;&n;&t;&t;}&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t; }&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;    }
+mdefine_line|#define XLOG_GRANT_ADD_SPACE(log,bytes,type)&t;&t;&t;&t;&bslash;&n;    {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (type == &squot;w&squot;) {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;(log)-&gt;l_grant_write_bytes += (bytes);&t;&t;&t;&bslash;&n;&t;&t;if ((log)-&gt;l_grant_write_bytes &gt; (log)-&gt;l_logsize) {&t;&bslash;&n;&t;&t;&t;(log)-&gt;l_grant_write_bytes -= (log)-&gt;l_logsize;&t;&bslash;&n;&t;&t;&t;(log)-&gt;l_grant_write_cycle++;&t;&t;&t;&bslash;&n;&t;&t;}&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;} else {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;(log)-&gt;l_grant_reserve_bytes += (bytes);&t;&t;&bslash;&n;&t;&t;if ((log)-&gt;l_grant_reserve_bytes &gt; (log)-&gt;l_logsize) {&t;&bslash;&n;&t;&t;&t;(log)-&gt;l_grant_reserve_bytes -= (log)-&gt;l_logsize;&bslash;&n;&t;&t;&t;(log)-&gt;l_grant_reserve_cycle++;&t;&t;&t;&bslash;&n;&t;&t;}&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t; }&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;    }
 macro_line|#endif
 DECL|macro|XLOG_INS_TICKETQ
 mdefine_line|#define XLOG_INS_TICKETQ(q,tic)&t;&t;&t;&t;&bslash;&n;    {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (q) {&t;&t;&t;&t;&t;&bslash;&n;&t;&t;(tic)-&gt;t_next&t;    = (q);&t;&t;&bslash;&n;&t;&t;(tic)-&gt;t_prev&t;    = (q)-&gt;t_prev;&t;&bslash;&n;&t;&t;(q)-&gt;t_prev-&gt;t_next = (tic);&t;&t;&bslash;&n;&t;&t;(q)-&gt;t_prev&t;    = (tic);&t;&t;&bslash;&n;&t;} else {&t;&t;&t;&t;&t;&bslash;&n;&t;&t;(tic)-&gt;t_prev = (tic)-&gt;t_next = (tic);&t;&bslash;&n;&t;&t;(q) = (tic);&t;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&bslash;&n;&t;(tic)-&gt;t_flags |= XLOG_TIC_IN_Q;&t;&t;&bslash;&n;    }
@@ -215,7 +215,7 @@ mdefine_line|#define XLOG_CHKSUM_MISMATCH&t;0x1&t;/* used only during recovery *
 DECL|macro|XLOG_ACTIVE_RECOVERY
 mdefine_line|#define XLOG_ACTIVE_RECOVERY&t;0x2&t;/* in the middle of recovery */
 DECL|macro|XLOG_RECOVERY_NEEDED
-mdefine_line|#define XLOG_RECOVERY_NEEDED&t;0x4&t;/* log was recovered */
+mdefine_line|#define&t;XLOG_RECOVERY_NEEDED&t;0x4&t;/* log was recovered */
 DECL|macro|XLOG_IO_ERROR
 mdefine_line|#define XLOG_IO_ERROR&t;&t;0x8&t;/* log hit an I/O error, and being&n;&t;&t;&t;&t;&t;   shutdown */
 DECL|typedef|xlog_tid_t
@@ -253,7 +253,7 @@ id|xlog_ticket
 op_star
 id|t_next
 suffix:semicolon
-multiline_comment|/*&t;&t;&t;&t; : 4 */
+multiline_comment|/*&t;&t;&t;         : 4 */
 DECL|member|t_prev
 r_struct
 id|xlog_ticket
@@ -275,7 +275,7 @@ DECL|member|t_unit_res
 r_int
 id|t_unit_res
 suffix:semicolon
-multiline_comment|/* unit reservation in bytes&t; : 4 */
+multiline_comment|/* unit reservation in bytes    : 4 */
 DECL|member|t_ocnt
 id|__uint8_t
 id|t_ocnt
@@ -420,12 +420,12 @@ DECL|member|h_fmt
 r_int
 id|h_fmt
 suffix:semicolon
-multiline_comment|/* format of log record&t;&t;&t;:  4 */
+multiline_comment|/* format of log record                 :  4 */
 DECL|member|h_fs_uuid
 id|uuid_t
 id|h_fs_uuid
 suffix:semicolon
-multiline_comment|/* uuid of FS&t;&t;&t;&t;: 16 */
+multiline_comment|/* uuid of FS                           : 16 */
 DECL|member|h_size
 r_int
 id|h_size
@@ -460,7 +460,7 @@ DECL|typedef|xlog_rec_ext_header_t
 id|xlog_rec_ext_header_t
 suffix:semicolon
 macro_line|#ifdef __KERNEL__
-multiline_comment|/*&n; * - A log record header is 512 bytes.&t;There is plenty of room to grow the&n; *&t;xlog_rec_header_t into the reserved space.&n; * - ic_data follows, so a write to disk can start at the beginning of&n; *&t;the iclog.&n; * - ic_forcesema is used to implement synchronous forcing of the iclog to disk.&n; * - ic_next is the pointer to the next iclog in the ring.&n; * - ic_bp is a pointer to the buffer used to write this incore log to disk.&n; * - ic_log is a pointer back to the global log structure.&n; * - ic_callback is a linked list of callback function/argument pairs to be&n; *&t;called after an iclog finishes writing.&n; * - ic_size is the full size of the header plus data.&n; * - ic_offset is the current number of bytes written to in this iclog.&n; * - ic_refcnt is bumped when someone is writing to the log.&n; * - ic_state is the state of the iclog.&n; */
+multiline_comment|/*&n; * - A log record header is 512 bytes.  There is plenty of room to grow the&n; *&t;xlog_rec_header_t into the reserved space.&n; * - ic_data follows, so a write to disk can start at the beginning of&n; *&t;the iclog.&n; * - ic_forcesema is used to implement synchronous forcing of the iclog to disk.&n; * - ic_next is the pointer to the next iclog in the ring.&n; * - ic_bp is a pointer to the buffer used to write this incore log to disk.&n; * - ic_log is a pointer back to the global log structure.&n; * - ic_callback is a linked list of callback function/argument pairs to be&n; *&t;called after an iclog finishes writing.&n; * - ic_size is the full size of the header plus data.&n; * - ic_offset is the current number of bytes written to in this iclog.&n; * - ic_refcnt is bumped when someone is writing to the log.&n; * - ic_state is the state of the iclog.&n; */
 DECL|struct|xlog_iclog_fields
 r_typedef
 r_struct
@@ -601,35 +601,35 @@ id|xlog_in_core_t
 suffix:semicolon
 multiline_comment|/*&n; * Defines to save our code from this glop.&n; */
 DECL|macro|ic_forcesema
-mdefine_line|#define ic_forcesema&t;hic_fields.ic_forcesema
+mdefine_line|#define&t;ic_forcesema&t;hic_fields.ic_forcesema
 DECL|macro|ic_writesema
 mdefine_line|#define ic_writesema&t;hic_fields.ic_writesema
 DECL|macro|ic_next
-mdefine_line|#define ic_next&t;&t;hic_fields.ic_next
+mdefine_line|#define&t;ic_next&t;&t;hic_fields.ic_next
 DECL|macro|ic_prev
-mdefine_line|#define ic_prev&t;&t;hic_fields.ic_prev
+mdefine_line|#define&t;ic_prev&t;&t;hic_fields.ic_prev
 DECL|macro|ic_bp
-mdefine_line|#define ic_bp&t;&t;hic_fields.ic_bp
+mdefine_line|#define&t;ic_bp&t;&t;hic_fields.ic_bp
 DECL|macro|ic_log
-mdefine_line|#define ic_log&t;&t;hic_fields.ic_log
+mdefine_line|#define&t;ic_log&t;&t;hic_fields.ic_log
 DECL|macro|ic_callback
-mdefine_line|#define ic_callback&t;hic_fields.ic_callback
+mdefine_line|#define&t;ic_callback&t;hic_fields.ic_callback
 DECL|macro|ic_callback_tail
-mdefine_line|#define ic_callback_tail hic_fields.ic_callback_tail
+mdefine_line|#define&t;ic_callback_tail hic_fields.ic_callback_tail
 DECL|macro|ic_trace
-mdefine_line|#define ic_trace&t;hic_fields.ic_trace
+mdefine_line|#define&t;ic_trace&t;hic_fields.ic_trace
 DECL|macro|ic_size
-mdefine_line|#define ic_size&t;&t;hic_fields.ic_size
+mdefine_line|#define&t;ic_size&t;&t;hic_fields.ic_size
 DECL|macro|ic_offset
-mdefine_line|#define ic_offset&t;hic_fields.ic_offset
+mdefine_line|#define&t;ic_offset&t;hic_fields.ic_offset
 DECL|macro|ic_refcnt
-mdefine_line|#define ic_refcnt&t;hic_fields.ic_refcnt
+mdefine_line|#define&t;ic_refcnt&t;hic_fields.ic_refcnt
 DECL|macro|ic_roundoff
-mdefine_line|#define ic_roundoff&t;hic_fields.ic_roundoff
+mdefine_line|#define&t;ic_roundoff&t;hic_fields.ic_roundoff
 DECL|macro|ic_bwritecnt
-mdefine_line|#define ic_bwritecnt&t;hic_fields.ic_bwritecnt
+mdefine_line|#define&t;ic_bwritecnt&t;hic_fields.ic_bwritecnt
 DECL|macro|ic_state
-mdefine_line|#define ic_state&t;hic_fields.ic_state
+mdefine_line|#define&t;ic_state&t;hic_fields.ic_state
 DECL|macro|ic_datap
 mdefine_line|#define ic_datap&t;hic_fields.ic_datap
 DECL|macro|ic_header

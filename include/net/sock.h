@@ -5,6 +5,7 @@ mdefine_line|#define _SOCK_H
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/cache.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;&t;/* struct sk_buff */
 macro_line|#include &lt;linux/security.h&gt;
@@ -424,6 +425,12 @@ op_star
 id|user_data
 suffix:semicolon
 multiline_comment|/* Callbacks */
+DECL|member|owner
+r_struct
+id|module
+op_star
+id|owner
+suffix:semicolon
 DECL|member|state_change
 r_void
 (paren
@@ -916,6 +923,52 @@ id|NR_CPUS
 suffix:semicolon
 )brace
 suffix:semicolon
+DECL|function|sk_set_owner
+r_static
+id|__inline__
+r_void
+id|sk_set_owner
+c_func
+(paren
+r_struct
+id|sock
+op_star
+id|sk
+comma
+r_struct
+id|module
+op_star
+id|owner
+)paren
+(brace
+multiline_comment|/*&n;&t; * One should use sk_set_owner just once, after struct sock creation,&n;&t; * be it shortly after sk_alloc or after a function that returns a new&n;&t; * struct sock (and that down the call chain called sk_alloc), e.g. the&n;&t; * IPv4 and IPv6 modules share tcp_create_openreq_child, so if&n;&t; * tcp_create_openreq_child called sk_set_owner IPv6 would have to&n;&t; * change the ownership of this struct sock, with one not needed&n;&t; * transient sk_set_owner call.&n;&t; */
+r_if
+c_cond
+(paren
+id|unlikely
+c_func
+(paren
+id|sk-&gt;owner
+op_ne
+l_int|NULL
+)paren
+)paren
+id|BUG
+c_func
+(paren
+)paren
+suffix:semicolon
+id|sk-&gt;owner
+op_assign
+id|owner
+suffix:semicolon
+id|__module_get
+c_func
+(paren
+id|owner
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/* Called with local bh disabled */
 DECL|function|sock_prot_inc_use
 r_static

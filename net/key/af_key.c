@@ -587,6 +587,14 @@ comma
 id|sk
 )paren
 suffix:semicolon
+id|sk_set_owner
+c_func
+(paren
+id|sk
+comma
+id|THIS_MODULE
+)paren
+suffix:semicolon
 id|err
 op_assign
 op_minus
@@ -14491,6 +14499,11 @@ dot
 id|family
 op_assign
 id|PF_KEY
+comma
+dot
+id|owner
+op_assign
+id|THIS_MODULE
 comma
 multiline_comment|/* Operations that make no sense on pfkey sockets. */
 dot

@@ -1,7 +1,7 @@
-multiline_comment|/*&n; * Copyright (c) 2000-2002 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.&t; Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information: Silicon Graphics, Inc., 1600 Amphitheatre Pkwy,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/SGIGPLNoticeExplan/&n; */
-macro_line|#ifndef __XFS_TRANS_H__
+multiline_comment|/*&n; * Copyright (c) 2000-2002 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.  Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information: Silicon Graphics, Inc., 1600 Amphitheatre Pkwy,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/SGIGPLNoticeExplan/&n; */
+macro_line|#ifndef&t;__XFS_TRANS_H__
 DECL|macro|__XFS_TRANS_H__
-mdefine_line|#define __XFS_TRANS_H__
+mdefine_line|#define&t;__XFS_TRANS_H__
 multiline_comment|/*&n; * This is the structure written in the log at the head of&n; * every transaction. It identifies the type and id of the&n; * transaction, and contains the number of items logged by&n; * the transaction so we know how many to expect during recovery.&n; *&n; * Do not change the below structure without redoing the code in&n; * xlog_recover_add_to_trans() and xlog_recover_add_to_cont_trans().&n; */
 DECL|struct|xfs_trans_header
 r_typedef
@@ -33,30 +33,30 @@ DECL|typedef|xfs_trans_header_t
 id|xfs_trans_header_t
 suffix:semicolon
 DECL|macro|XFS_TRANS_HEADER_MAGIC
-mdefine_line|#define XFS_TRANS_HEADER_MAGIC&t;0x5452414e&t;/* TRAN */
+mdefine_line|#define&t;XFS_TRANS_HEADER_MAGIC&t;0x5452414e&t;/* TRAN */
 multiline_comment|/*&n; * Log item types.&n; */
 DECL|macro|XFS_LI_5_3_BUF
-mdefine_line|#define XFS_LI_5_3_BUF&t;&t;0x1234&t;/* v1 bufs, 1-block inode buffers */
+mdefine_line|#define&t;XFS_LI_5_3_BUF&t;&t;0x1234&t;/* v1 bufs, 1-block inode buffers */
 DECL|macro|XFS_LI_5_3_INODE
-mdefine_line|#define XFS_LI_5_3_INODE&t;0x1235&t;/* 1-block inode buffers */
+mdefine_line|#define&t;XFS_LI_5_3_INODE&t;0x1235&t;/* 1-block inode buffers */
 DECL|macro|XFS_LI_EFI
-mdefine_line|#define XFS_LI_EFI&t;&t;0x1236
+mdefine_line|#define&t;XFS_LI_EFI&t;&t;0x1236
 DECL|macro|XFS_LI_EFD
-mdefine_line|#define XFS_LI_EFD&t;&t;0x1237
+mdefine_line|#define&t;XFS_LI_EFD&t;&t;0x1237
 DECL|macro|XFS_LI_IUNLINK
-mdefine_line|#define XFS_LI_IUNLINK&t;&t;0x1238
+mdefine_line|#define&t;XFS_LI_IUNLINK&t;&t;0x1238
 DECL|macro|XFS_LI_6_1_INODE
-mdefine_line|#define XFS_LI_6_1_INODE&t;0x1239&t;/* 4K non-aligned inode bufs */
+mdefine_line|#define&t;XFS_LI_6_1_INODE&t;0x1239&t;/* 4K non-aligned inode bufs */
 DECL|macro|XFS_LI_6_1_BUF
-mdefine_line|#define XFS_LI_6_1_BUF&t;&t;0x123a&t;/* v1, 4K inode buffers */
+mdefine_line|#define&t;XFS_LI_6_1_BUF&t;&t;0x123a&t;/* v1, 4K inode buffers */
 DECL|macro|XFS_LI_INODE
-mdefine_line|#define XFS_LI_INODE&t;&t;0x123b&t;/* aligned ino chunks, var-size ibufs */
+mdefine_line|#define&t;XFS_LI_INODE&t;&t;0x123b&t;/* aligned ino chunks, var-size ibufs */
 DECL|macro|XFS_LI_BUF
-mdefine_line|#define XFS_LI_BUF&t;&t;0x123c&t;/* v2 bufs, variable sized inode bufs */
+mdefine_line|#define&t;XFS_LI_BUF&t;&t;0x123c&t;/* v2 bufs, variable sized inode bufs */
 DECL|macro|XFS_LI_DQUOT
-mdefine_line|#define XFS_LI_DQUOT&t;&t;0x123d
+mdefine_line|#define&t;XFS_LI_DQUOT&t;&t;0x123d
 DECL|macro|XFS_LI_QUOTAOFF
-mdefine_line|#define XFS_LI_QUOTAOFF&t;&t;0x123e
+mdefine_line|#define&t;XFS_LI_QUOTAOFF&t;&t;0x123e
 multiline_comment|/*&n; * Transaction types.  Used to distinguish types of buffers.&n; */
 DECL|macro|XFS_TRANS_SETATTR_NOT_SIZE
 mdefine_line|#define XFS_TRANS_SETATTR_NOT_SIZE&t;1
@@ -91,23 +91,23 @@ mdefine_line|#define XFS_TRANS_STRAT_WRITE&t;&t;15
 DECL|macro|XFS_TRANS_DIOSTRAT
 mdefine_line|#define XFS_TRANS_DIOSTRAT&t;&t;16
 DECL|macro|XFS_TRANS_WRITE_SYNC
-mdefine_line|#define XFS_TRANS_WRITE_SYNC&t;&t;17
+mdefine_line|#define&t;XFS_TRANS_WRITE_SYNC&t;&t;17
 DECL|macro|XFS_TRANS_WRITEID
-mdefine_line|#define XFS_TRANS_WRITEID&t;&t;18
+mdefine_line|#define&t;XFS_TRANS_WRITEID&t;&t;18
 DECL|macro|XFS_TRANS_ADDAFORK
-mdefine_line|#define XFS_TRANS_ADDAFORK&t;&t;19
+mdefine_line|#define&t;XFS_TRANS_ADDAFORK&t;&t;19
 DECL|macro|XFS_TRANS_ATTRINVAL
-mdefine_line|#define XFS_TRANS_ATTRINVAL&t;&t;20
+mdefine_line|#define&t;XFS_TRANS_ATTRINVAL&t;&t;20
 DECL|macro|XFS_TRANS_ATRUNCATE
-mdefine_line|#define XFS_TRANS_ATRUNCATE&t;&t;21
+mdefine_line|#define&t;XFS_TRANS_ATRUNCATE&t;&t;21
 DECL|macro|XFS_TRANS_ATTR_SET
-mdefine_line|#define XFS_TRANS_ATTR_SET&t;&t;22
+mdefine_line|#define&t;XFS_TRANS_ATTR_SET&t;&t;22
 DECL|macro|XFS_TRANS_ATTR_RM
-mdefine_line|#define XFS_TRANS_ATTR_RM&t;&t;23
+mdefine_line|#define&t;XFS_TRANS_ATTR_RM&t;&t;23
 DECL|macro|XFS_TRANS_ATTR_FLAG
-mdefine_line|#define XFS_TRANS_ATTR_FLAG&t;&t;24
+mdefine_line|#define&t;XFS_TRANS_ATTR_FLAG&t;&t;24
 DECL|macro|XFS_TRANS_CLEAR_AGI_BUCKET
-mdefine_line|#define XFS_TRANS_CLEAR_AGI_BUCKET&t;25
+mdefine_line|#define&t;XFS_TRANS_CLEAR_AGI_BUCKET&t;25
 DECL|macro|XFS_TRANS_QM_SBCHANGE
 mdefine_line|#define XFS_TRANS_QM_SBCHANGE&t;&t;26
 multiline_comment|/*&n; * Dummy entries since we use the transaction type to index into the&n; * trans_type[] in xlog_recover_print_trans_head()&n; */
@@ -132,13 +132,13 @@ mdefine_line|#define XFS_TRANS_SB_UNIT&t;&t;35
 DECL|macro|XFS_TRANS_FSYNC_TS
 mdefine_line|#define XFS_TRANS_FSYNC_TS&t;&t;36
 DECL|macro|XFS_TRANS_GROWFSRT_ALLOC
-mdefine_line|#define XFS_TRANS_GROWFSRT_ALLOC&t;37
+mdefine_line|#define&t;XFS_TRANS_GROWFSRT_ALLOC&t;37
 DECL|macro|XFS_TRANS_GROWFSRT_ZERO
-mdefine_line|#define XFS_TRANS_GROWFSRT_ZERO&t;&t;38
+mdefine_line|#define&t;XFS_TRANS_GROWFSRT_ZERO&t;&t;38
 DECL|macro|XFS_TRANS_GROWFSRT_FREE
-mdefine_line|#define XFS_TRANS_GROWFSRT_FREE&t;&t;39
+mdefine_line|#define&t;XFS_TRANS_GROWFSRT_FREE&t;&t;39
 DECL|macro|XFS_TRANS_SWAPEXT
-mdefine_line|#define XFS_TRANS_SWAPEXT&t;&t;40
+mdefine_line|#define&t;XFS_TRANS_SWAPEXT&t;&t;40
 multiline_comment|/* new transaction types need to be reflected in xfs_logprint(8) */
 macro_line|#ifdef __KERNEL__
 r_struct
@@ -310,7 +310,7 @@ DECL|typedef|xfs_log_item_t
 id|xfs_log_item_t
 suffix:semicolon
 DECL|macro|XFS_LI_IN_AIL
-mdefine_line|#define XFS_LI_IN_AIL&t;0x1
+mdefine_line|#define&t;XFS_LI_IN_AIL&t;0x1
 DECL|macro|XFS_LI_ABORTED
 mdefine_line|#define XFS_LI_ABORTED&t;0x2
 DECL|struct|xfs_item_ops
@@ -494,13 +494,13 @@ DECL|macro|IOP_COMMITTING
 mdefine_line|#define IOP_COMMITTING(ip, lsn) (*(ip)-&gt;li_ops-&gt;iop_committing)(ip, lsn)
 multiline_comment|/*&n; * Return values for the IOP_TRYLOCK() routines.&n; */
 DECL|macro|XFS_ITEM_SUCCESS
-mdefine_line|#define XFS_ITEM_SUCCESS&t;0
+mdefine_line|#define&t;XFS_ITEM_SUCCESS&t;0
 DECL|macro|XFS_ITEM_PINNED
-mdefine_line|#define XFS_ITEM_PINNED&t;&t;1
+mdefine_line|#define&t;XFS_ITEM_PINNED&t;&t;1
 DECL|macro|XFS_ITEM_LOCKED
-mdefine_line|#define XFS_ITEM_LOCKED&t;&t;2
+mdefine_line|#define&t;XFS_ITEM_LOCKED&t;&t;2
 DECL|macro|XFS_ITEM_FLUSHING
-mdefine_line|#define XFS_ITEM_FLUSHING&t;3
+mdefine_line|#define&t;XFS_ITEM_FLUSHING&t;3
 DECL|macro|XFS_ITEM_PUSHBUF
 mdefine_line|#define XFS_ITEM_PUSHBUF&t;4
 macro_line|#endif&t;/* __KERNEL__ */
@@ -543,7 +543,7 @@ DECL|macro|XFS_LID_BUF_STALE
 mdefine_line|#define XFS_LID_BUF_STALE&t;0x8
 multiline_comment|/*&n; * This structure is used to maintain a chunk list of log_item_desc&n; * structures. The free field is a bitmask indicating which descriptors&n; * in this chunk&squot;s array are free.  The unused field is the first value&n; * not used since this chunk was allocated.&n; */
 DECL|macro|XFS_LIC_NUM_SLOTS
-mdefine_line|#define XFS_LIC_NUM_SLOTS&t;15
+mdefine_line|#define&t;XFS_LIC_NUM_SLOTS&t;15
 DECL|struct|xfs_log_item_chunk
 r_typedef
 r_struct
@@ -575,10 +575,10 @@ DECL|typedef|xfs_log_item_chunk_t
 id|xfs_log_item_chunk_t
 suffix:semicolon
 DECL|macro|XFS_LIC_MAX_SLOT
-mdefine_line|#define XFS_LIC_MAX_SLOT&t;(XFS_LIC_NUM_SLOTS - 1)
+mdefine_line|#define&t;XFS_LIC_MAX_SLOT&t;(XFS_LIC_NUM_SLOTS - 1)
 DECL|macro|XFS_LIC_FREEMASK
-mdefine_line|#define XFS_LIC_FREEMASK&t;((1 &lt;&lt; XFS_LIC_NUM_SLOTS) - 1)
-multiline_comment|/*&n; * Initialize the given chunk.&t;Set the chunk&squot;s free descriptor mask&n; * to indicate that all descriptors are free.  The caller gets to set&n; * lic_unused to the right value (0 matches all free).&t;The&n; * lic_descs.lid_index values are set up as each desc is allocated.&n; */
+mdefine_line|#define&t;XFS_LIC_FREEMASK&t;((1 &lt;&lt; XFS_LIC_NUM_SLOTS) - 1)
+multiline_comment|/*&n; * Initialize the given chunk.  Set the chunk&squot;s free descriptor mask&n; * to indicate that all descriptors are free.  The caller gets to set&n; * lic_unused to the right value (0 matches all free).  The&n; * lic_descs.lid_index values are set up as each desc is allocated.&n; */
 macro_line|#if XFS_WANT_FUNCS || (XFS_WANT_SPACE &amp;&amp; XFSSO_XFS_LIC_INIT)
 r_void
 id|xfs_lic_init
@@ -590,10 +590,10 @@ id|cp
 )paren
 suffix:semicolon
 DECL|macro|XFS_LIC_INIT
-mdefine_line|#define XFS_LIC_INIT(cp)&t;xfs_lic_init(cp)
+mdefine_line|#define&t;XFS_LIC_INIT(cp)&t;xfs_lic_init(cp)
 macro_line|#else
 DECL|macro|XFS_LIC_INIT
-mdefine_line|#define XFS_LIC_INIT(cp)&t;((cp)-&gt;lic_free = XFS_LIC_FREEMASK)
+mdefine_line|#define&t;XFS_LIC_INIT(cp)&t;((cp)-&gt;lic_free = XFS_LIC_FREEMASK)
 macro_line|#endif
 macro_line|#if XFS_WANT_FUNCS || (XFS_WANT_SPACE &amp;&amp; XFSSO_XFS_LIC_INIT_SLOT)
 r_void
@@ -609,10 +609,10 @@ id|slot
 )paren
 suffix:semicolon
 DECL|macro|XFS_LIC_INIT_SLOT
-mdefine_line|#define XFS_LIC_INIT_SLOT(cp,slot)&t;xfs_lic_init_slot(cp, slot)
+mdefine_line|#define&t;XFS_LIC_INIT_SLOT(cp,slot)&t;xfs_lic_init_slot(cp, slot)
 macro_line|#else
 DECL|macro|XFS_LIC_INIT_SLOT
-mdefine_line|#define XFS_LIC_INIT_SLOT(cp,slot)&t;&bslash;&n;&t;((cp)-&gt;lic_descs[slot].lid_index = (unsigned char)(slot))
+mdefine_line|#define&t;XFS_LIC_INIT_SLOT(cp,slot)&t;&bslash;&n;&t;((cp)-&gt;lic_descs[slot].lid_index = (unsigned char)(slot))
 macro_line|#endif
 macro_line|#if XFS_WANT_FUNCS || (XFS_WANT_SPACE &amp;&amp; XFSSO_XFS_LIC_VACANCY)
 r_int
@@ -625,10 +625,10 @@ id|cp
 )paren
 suffix:semicolon
 DECL|macro|XFS_LIC_VACANCY
-mdefine_line|#define XFS_LIC_VACANCY(cp)&t;&t;xfs_lic_vacancy(cp)
+mdefine_line|#define&t;XFS_LIC_VACANCY(cp)&t;&t;xfs_lic_vacancy(cp)
 macro_line|#else
 DECL|macro|XFS_LIC_VACANCY
-mdefine_line|#define XFS_LIC_VACANCY(cp)&t;&t;(((cp)-&gt;lic_free) &amp; XFS_LIC_FREEMASK)
+mdefine_line|#define&t;XFS_LIC_VACANCY(cp)&t;&t;(((cp)-&gt;lic_free) &amp; XFS_LIC_FREEMASK)
 macro_line|#endif
 macro_line|#if XFS_WANT_FUNCS || (XFS_WANT_SPACE &amp;&amp; XFSSO_XFS_LIC_ALL_FREE)
 r_void
@@ -641,10 +641,10 @@ id|cp
 )paren
 suffix:semicolon
 DECL|macro|XFS_LIC_ALL_FREE
-mdefine_line|#define XFS_LIC_ALL_FREE(cp)&t;&t;xfs_lic_all_free(cp)
+mdefine_line|#define&t;XFS_LIC_ALL_FREE(cp)&t;&t;xfs_lic_all_free(cp)
 macro_line|#else
 DECL|macro|XFS_LIC_ALL_FREE
-mdefine_line|#define XFS_LIC_ALL_FREE(cp)&t;&t;((cp)-&gt;lic_free = XFS_LIC_FREEMASK)
+mdefine_line|#define&t;XFS_LIC_ALL_FREE(cp)&t;&t;((cp)-&gt;lic_free = XFS_LIC_FREEMASK)
 macro_line|#endif
 macro_line|#if XFS_WANT_FUNCS || (XFS_WANT_SPACE &amp;&amp; XFSSO_XFS_LIC_ARE_ALL_FREE)
 r_int
@@ -657,10 +657,10 @@ id|cp
 )paren
 suffix:semicolon
 DECL|macro|XFS_LIC_ARE_ALL_FREE
-mdefine_line|#define XFS_LIC_ARE_ALL_FREE(cp)&t;xfs_lic_are_all_free(cp)
+mdefine_line|#define&t;XFS_LIC_ARE_ALL_FREE(cp)&t;xfs_lic_are_all_free(cp)
 macro_line|#else
 DECL|macro|XFS_LIC_ARE_ALL_FREE
-mdefine_line|#define XFS_LIC_ARE_ALL_FREE(cp)&t;(((cp)-&gt;lic_free &amp; XFS_LIC_FREEMASK) ==&bslash;&n;&t;&t;&t;&t;&t;XFS_LIC_FREEMASK)
+mdefine_line|#define&t;XFS_LIC_ARE_ALL_FREE(cp)&t;(((cp)-&gt;lic_free &amp; XFS_LIC_FREEMASK) ==&bslash;&n;&t;&t;&t;&t;&t;XFS_LIC_FREEMASK)
 macro_line|#endif
 macro_line|#if XFS_WANT_FUNCS || (XFS_WANT_SPACE &amp;&amp; XFSSO_XFS_LIC_ISFREE)
 r_int
@@ -676,10 +676,10 @@ id|slot
 )paren
 suffix:semicolon
 DECL|macro|XFS_LIC_ISFREE
-mdefine_line|#define XFS_LIC_ISFREE(cp,slot) xfs_lic_isfree(cp,slot)
+mdefine_line|#define&t;XFS_LIC_ISFREE(cp,slot)&t;xfs_lic_isfree(cp,slot)
 macro_line|#else
 DECL|macro|XFS_LIC_ISFREE
-mdefine_line|#define XFS_LIC_ISFREE(cp,slot) ((cp)-&gt;lic_free &amp; (1 &lt;&lt; (slot)))
+mdefine_line|#define&t;XFS_LIC_ISFREE(cp,slot)&t;((cp)-&gt;lic_free &amp; (1 &lt;&lt; (slot)))
 macro_line|#endif
 macro_line|#if XFS_WANT_FUNCS || (XFS_WANT_SPACE &amp;&amp; XFSSO_XFS_LIC_CLAIM)
 r_void
@@ -695,10 +695,10 @@ id|slot
 )paren
 suffix:semicolon
 DECL|macro|XFS_LIC_CLAIM
-mdefine_line|#define XFS_LIC_CLAIM(cp,slot)&t;&t;xfs_lic_claim(cp,slot)
+mdefine_line|#define&t;XFS_LIC_CLAIM(cp,slot)&t;&t;xfs_lic_claim(cp,slot)
 macro_line|#else
 DECL|macro|XFS_LIC_CLAIM
-mdefine_line|#define XFS_LIC_CLAIM(cp,slot)&t;&t;((cp)-&gt;lic_free &amp;= ~(1 &lt;&lt; (slot)))
+mdefine_line|#define&t;XFS_LIC_CLAIM(cp,slot)&t;&t;((cp)-&gt;lic_free &amp;= ~(1 &lt;&lt; (slot)))
 macro_line|#endif
 macro_line|#if XFS_WANT_FUNCS || (XFS_WANT_SPACE &amp;&amp; XFSSO_XFS_LIC_RELSE)
 r_void
@@ -714,10 +714,10 @@ id|slot
 )paren
 suffix:semicolon
 DECL|macro|XFS_LIC_RELSE
-mdefine_line|#define XFS_LIC_RELSE(cp,slot)&t;&t;xfs_lic_relse(cp,slot)
+mdefine_line|#define&t;XFS_LIC_RELSE(cp,slot)&t;&t;xfs_lic_relse(cp,slot)
 macro_line|#else
 DECL|macro|XFS_LIC_RELSE
-mdefine_line|#define XFS_LIC_RELSE(cp,slot)&t;&t;((cp)-&gt;lic_free |= 1 &lt;&lt; (slot))
+mdefine_line|#define&t;XFS_LIC_RELSE(cp,slot)&t;&t;((cp)-&gt;lic_free |= 1 &lt;&lt; (slot))
 macro_line|#endif
 macro_line|#if XFS_WANT_FUNCS || (XFS_WANT_SPACE &amp;&amp; XFSSO_XFS_LIC_SLOT)
 id|xfs_log_item_desc_t
@@ -734,10 +734,10 @@ id|slot
 )paren
 suffix:semicolon
 DECL|macro|XFS_LIC_SLOT
-mdefine_line|#define XFS_LIC_SLOT(cp,slot)&t;&t;xfs_lic_slot(cp,slot)
+mdefine_line|#define&t;XFS_LIC_SLOT(cp,slot)&t;&t;xfs_lic_slot(cp,slot)
 macro_line|#else
 DECL|macro|XFS_LIC_SLOT
-mdefine_line|#define XFS_LIC_SLOT(cp,slot)&t;&t;(&amp;((cp)-&gt;lic_descs[slot]))
+mdefine_line|#define&t;XFS_LIC_SLOT(cp,slot)&t;&t;(&amp;((cp)-&gt;lic_descs[slot]))
 macro_line|#endif
 macro_line|#if XFS_WANT_FUNCS || (XFS_WANT_SPACE &amp;&amp; XFSSO_XFS_LIC_DESC_TO_SLOT)
 r_int
@@ -750,10 +750,10 @@ id|dp
 )paren
 suffix:semicolon
 DECL|macro|XFS_LIC_DESC_TO_SLOT
-mdefine_line|#define XFS_LIC_DESC_TO_SLOT(dp)&t;xfs_lic_desc_to_slot(dp)
+mdefine_line|#define&t;XFS_LIC_DESC_TO_SLOT(dp)&t;xfs_lic_desc_to_slot(dp)
 macro_line|#else
 DECL|macro|XFS_LIC_DESC_TO_SLOT
-mdefine_line|#define XFS_LIC_DESC_TO_SLOT(dp)&t;((uint)((dp)-&gt;lid_index))
+mdefine_line|#define&t;XFS_LIC_DESC_TO_SLOT(dp)&t;((uint)((dp)-&gt;lid_index))
 macro_line|#endif
 multiline_comment|/*&n; * Calculate the address of a chunk given a descriptor pointer:&n; * dp - dp-&gt;lid_index give the address of the start of the lic_descs array.&n; * From this we subtract the offset of the lic_descs field in a chunk.&n; * All of this yields the address of the chunk, which is&n; * cast to a chunk pointer.&n; */
 macro_line|#if XFS_WANT_FUNCS || (XFS_WANT_SPACE &amp;&amp; XFSSO_XFS_LIC_DESC_TO_CHUNK)
@@ -768,10 +768,10 @@ id|dp
 )paren
 suffix:semicolon
 DECL|macro|XFS_LIC_DESC_TO_CHUNK
-mdefine_line|#define XFS_LIC_DESC_TO_CHUNK(dp)&t;xfs_lic_desc_to_chunk(dp)
+mdefine_line|#define&t;XFS_LIC_DESC_TO_CHUNK(dp)&t;xfs_lic_desc_to_chunk(dp)
 macro_line|#else
 DECL|macro|XFS_LIC_DESC_TO_CHUNK
-mdefine_line|#define XFS_LIC_DESC_TO_CHUNK(dp)&t;((xfs_log_item_chunk_t*) &bslash;&n;&t;&t;&t;&t;&t;(((xfs_caddr_t)((dp) - (dp)-&gt;lid_index)) -&bslash;&n;&t;&t;&t;&t;&t;(xfs_caddr_t)(((xfs_log_item_chunk_t*) &bslash;&n;&t;&t;&t;&t;&t;0)-&gt;lic_descs)))
+mdefine_line|#define&t;XFS_LIC_DESC_TO_CHUNK(dp)&t;((xfs_log_item_chunk_t*) &bslash;&n;&t;&t;&t;&t;&t;(((xfs_caddr_t)((dp) - (dp)-&gt;lid_index)) -&bslash;&n;&t;&t;&t;&t;&t;(xfs_caddr_t)(((xfs_log_item_chunk_t*) &bslash;&n;&t;&t;&t;&t;&t;0)-&gt;lic_descs)))
 macro_line|#endif
 macro_line|#ifdef __KERNEL__
 multiline_comment|/*&n; * This structure is used to maintain a list of block ranges that have been&n; * freed in the transaction.  The ranges are listed in the perag[] busy list&n; * between when they&squot;re freed and the transaction is committed to disk.&n; */
@@ -828,19 +828,19 @@ DECL|typedef|xfs_log_busy_chunk_t
 id|xfs_log_busy_chunk_t
 suffix:semicolon
 DECL|macro|XFS_LBC_MAX_SLOT
-mdefine_line|#define XFS_LBC_MAX_SLOT&t;(XFS_LBC_NUM_SLOTS - 1)
+mdefine_line|#define&t;XFS_LBC_MAX_SLOT&t;(XFS_LBC_NUM_SLOTS - 1)
 DECL|macro|XFS_LBC_FREEMASK
-mdefine_line|#define XFS_LBC_FREEMASK&t;((1U &lt;&lt; XFS_LBC_NUM_SLOTS) - 1)
+mdefine_line|#define&t;XFS_LBC_FREEMASK&t;((1U &lt;&lt; XFS_LBC_NUM_SLOTS) - 1)
 DECL|macro|XFS_LBC_INIT
-mdefine_line|#define XFS_LBC_INIT(cp)&t;((cp)-&gt;lbc_free = XFS_LBC_FREEMASK)
+mdefine_line|#define&t;XFS_LBC_INIT(cp)&t;((cp)-&gt;lbc_free = XFS_LBC_FREEMASK)
 DECL|macro|XFS_LBC_CLAIM
-mdefine_line|#define XFS_LBC_CLAIM(cp, slot) ((cp)-&gt;lbc_free &amp;= ~(1 &lt;&lt; (slot)))
+mdefine_line|#define&t;XFS_LBC_CLAIM(cp, slot)&t;((cp)-&gt;lbc_free &amp;= ~(1 &lt;&lt; (slot)))
 DECL|macro|XFS_LBC_SLOT
-mdefine_line|#define XFS_LBC_SLOT(cp, slot)&t;(&amp;((cp)-&gt;lbc_busy[(slot)]))
+mdefine_line|#define&t;XFS_LBC_SLOT(cp, slot)&t;(&amp;((cp)-&gt;lbc_busy[(slot)]))
 DECL|macro|XFS_LBC_VACANCY
-mdefine_line|#define XFS_LBC_VACANCY(cp)&t;(((cp)-&gt;lbc_free) &amp; XFS_LBC_FREEMASK)
+mdefine_line|#define&t;XFS_LBC_VACANCY(cp)&t;(((cp)-&gt;lbc_free) &amp; XFS_LBC_FREEMASK)
 DECL|macro|XFS_LBC_ISFREE
-mdefine_line|#define XFS_LBC_ISFREE(cp, slot) ((cp)-&gt;lbc_free &amp; (1 &lt;&lt; (slot)))
+mdefine_line|#define&t;XFS_LBC_ISFREE(cp, slot) ((cp)-&gt;lbc_free &amp; (1 &lt;&lt; (slot)))
 multiline_comment|/*&n; * This is the type of function which can be given to xfs_trans_callback()&n; * to be called upon the transaction&squot;s commit to disk.&n; */
 DECL|typedef|xfs_trans_callback_t
 r_typedef
@@ -950,7 +950,7 @@ DECL|member|t_commit_lsn
 id|xfs_lsn_t
 id|t_commit_lsn
 suffix:semicolon
-multiline_comment|/* log seq num of end of &n;&t;&t;&t;&t;&t;&t; * transaction. */
+multiline_comment|/* log seq num of end of&n;&t;&t;&t;&t;&t;&t; * transaction. */
 DECL|member|t_mountp
 r_struct
 id|xfs_mount
@@ -1100,251 +1100,251 @@ id|xfs_trans_t
 suffix:semicolon
 macro_line|#endif&t;/* __KERNEL__ */
 DECL|macro|XFS_TRANS_MAGIC
-mdefine_line|#define XFS_TRANS_MAGIC&t;&t;0x5452414E&t;/* &squot;TRAN&squot; */
+mdefine_line|#define&t;XFS_TRANS_MAGIC&t;&t;0x5452414E&t;/* &squot;TRAN&squot; */
 multiline_comment|/*&n; * Values for t_flags.&n; */
 DECL|macro|XFS_TRANS_DIRTY
-mdefine_line|#define XFS_TRANS_DIRTY&t;&t;0x01&t;/* something needs to be logged */
+mdefine_line|#define&t;XFS_TRANS_DIRTY&t;&t;0x01&t;/* something needs to be logged */
 DECL|macro|XFS_TRANS_SB_DIRTY
-mdefine_line|#define XFS_TRANS_SB_DIRTY&t;0x02&t;/* superblock is modified */
+mdefine_line|#define&t;XFS_TRANS_SB_DIRTY&t;0x02&t;/* superblock is modified */
 DECL|macro|XFS_TRANS_PERM_LOG_RES
-mdefine_line|#define XFS_TRANS_PERM_LOG_RES&t;0x04&t;/* xact took a permanent log res */
+mdefine_line|#define&t;XFS_TRANS_PERM_LOG_RES&t;0x04&t;/* xact took a permanent log res */
 DECL|macro|XFS_TRANS_SYNC
-mdefine_line|#define XFS_TRANS_SYNC&t;&t;0x08&t;/* make commit synchronous */
+mdefine_line|#define&t;XFS_TRANS_SYNC&t;&t;0x08&t;/* make commit synchronous */
 DECL|macro|XFS_TRANS_DQ_DIRTY
 mdefine_line|#define XFS_TRANS_DQ_DIRTY&t;0x10&t;/* at least one dquot in trx dirty */
 DECL|macro|XFS_TRANS_RESERVE
-mdefine_line|#define XFS_TRANS_RESERVE&t;0x20&t;/* OK to use reserved data blocks */
+mdefine_line|#define XFS_TRANS_RESERVE&t;0x20    /* OK to use reserved data blocks */
 multiline_comment|/*&n; * Values for call flags parameter.&n; */
 DECL|macro|XFS_TRANS_NOSLEEP
-mdefine_line|#define XFS_TRANS_NOSLEEP&t;&t;0x1
+mdefine_line|#define&t;XFS_TRANS_NOSLEEP&t;&t;0x1
 DECL|macro|XFS_TRANS_WAIT
-mdefine_line|#define XFS_TRANS_WAIT&t;&t;&t;0x2
+mdefine_line|#define&t;XFS_TRANS_WAIT&t;&t;&t;0x2
 DECL|macro|XFS_TRANS_RELEASE_LOG_RES
-mdefine_line|#define XFS_TRANS_RELEASE_LOG_RES&t;0x4
+mdefine_line|#define&t;XFS_TRANS_RELEASE_LOG_RES&t;0x4
 DECL|macro|XFS_TRANS_ABORT
-mdefine_line|#define XFS_TRANS_ABORT&t;&t;&t;0x8
+mdefine_line|#define&t;XFS_TRANS_ABORT&t;&t;&t;0x8
 multiline_comment|/*&n; * Field values for xfs_trans_mod_sb.&n; */
 DECL|macro|XFS_TRANS_SB_ICOUNT
-mdefine_line|#define XFS_TRANS_SB_ICOUNT&t;&t;0x00000001
+mdefine_line|#define&t;XFS_TRANS_SB_ICOUNT&t;&t;0x00000001
 DECL|macro|XFS_TRANS_SB_IFREE
-mdefine_line|#define XFS_TRANS_SB_IFREE&t;&t;0x00000002
+mdefine_line|#define&t;XFS_TRANS_SB_IFREE&t;&t;0x00000002
 DECL|macro|XFS_TRANS_SB_FDBLOCKS
-mdefine_line|#define XFS_TRANS_SB_FDBLOCKS&t;&t;0x00000004
+mdefine_line|#define&t;XFS_TRANS_SB_FDBLOCKS&t;&t;0x00000004
 DECL|macro|XFS_TRANS_SB_RES_FDBLOCKS
-mdefine_line|#define XFS_TRANS_SB_RES_FDBLOCKS&t;0x00000008
+mdefine_line|#define&t;XFS_TRANS_SB_RES_FDBLOCKS&t;0x00000008
 DECL|macro|XFS_TRANS_SB_FREXTENTS
-mdefine_line|#define XFS_TRANS_SB_FREXTENTS&t;&t;0x00000010
+mdefine_line|#define&t;XFS_TRANS_SB_FREXTENTS&t;&t;0x00000010
 DECL|macro|XFS_TRANS_SB_RES_FREXTENTS
-mdefine_line|#define XFS_TRANS_SB_RES_FREXTENTS&t;0x00000020
+mdefine_line|#define&t;XFS_TRANS_SB_RES_FREXTENTS&t;0x00000020
 DECL|macro|XFS_TRANS_SB_DBLOCKS
-mdefine_line|#define XFS_TRANS_SB_DBLOCKS&t;&t;0x00000040
+mdefine_line|#define&t;XFS_TRANS_SB_DBLOCKS&t;&t;0x00000040
 DECL|macro|XFS_TRANS_SB_AGCOUNT
-mdefine_line|#define XFS_TRANS_SB_AGCOUNT&t;&t;0x00000080
+mdefine_line|#define&t;XFS_TRANS_SB_AGCOUNT&t;&t;0x00000080
 DECL|macro|XFS_TRANS_SB_IMAXPCT
-mdefine_line|#define XFS_TRANS_SB_IMAXPCT&t;&t;0x00000100
+mdefine_line|#define&t;XFS_TRANS_SB_IMAXPCT&t;&t;0x00000100
 DECL|macro|XFS_TRANS_SB_REXTSIZE
-mdefine_line|#define XFS_TRANS_SB_REXTSIZE&t;&t;0x00000200
+mdefine_line|#define&t;XFS_TRANS_SB_REXTSIZE&t;&t;0x00000200
 DECL|macro|XFS_TRANS_SB_RBMBLOCKS
-mdefine_line|#define XFS_TRANS_SB_RBMBLOCKS&t;&t;0x00000400
+mdefine_line|#define&t;XFS_TRANS_SB_RBMBLOCKS&t;&t;0x00000400
 DECL|macro|XFS_TRANS_SB_RBLOCKS
-mdefine_line|#define XFS_TRANS_SB_RBLOCKS&t;&t;0x00000800
+mdefine_line|#define&t;XFS_TRANS_SB_RBLOCKS&t;&t;0x00000800
 DECL|macro|XFS_TRANS_SB_REXTENTS
-mdefine_line|#define XFS_TRANS_SB_REXTENTS&t;&t;0x00001000
+mdefine_line|#define&t;XFS_TRANS_SB_REXTENTS&t;&t;0x00001000
 DECL|macro|XFS_TRANS_SB_REXTSLOG
-mdefine_line|#define XFS_TRANS_SB_REXTSLOG&t;&t;0x00002000
+mdefine_line|#define&t;XFS_TRANS_SB_REXTSLOG&t;&t;0x00002000
 multiline_comment|/*&n; * Various log reservation values.&n; * These are based on the size of the file system block&n; * because that is what most transactions manipulate.&n; * Each adds in an additional 128 bytes per item logged to&n; * try to account for the overhead of the transaction mechanism.&n; *&n; * Note:&n; * Most of the reservations underestimate the number of allocation&n; * groups into which they could free extents in the xfs_bmap_finish()&n; * call.  This is because the number in the worst case is quite high&n; * and quite unusual.  In order to fix this we need to change&n; * xfs_bmap_finish() to free extents in only a single AG at a time.&n; * This will require changes to the EFI code as well, however, so that&n; * the EFI for the extents not freed is logged again in each transaction.&n; * See bug 261917.&n; */
 multiline_comment|/*&n; * Per-extent log reservation for the allocation btree changes&n; * involved in freeing or allocating an extent.&n; * 2 trees * (2 blocks/level * max depth - 1) * block size&n; */
 DECL|macro|XFS_ALLOCFREE_LOG_RES
-mdefine_line|#define XFS_ALLOCFREE_LOG_RES(mp,nx) &bslash;&n;&t;((nx) * (2 * XFS_FSB_TO_B((mp), 2 * XFS_AG_MAXLEVELS(mp) - 1)))
+mdefine_line|#define&t;XFS_ALLOCFREE_LOG_RES(mp,nx) &bslash;&n;&t;((nx) * (2 * XFS_FSB_TO_B((mp), 2 * XFS_AG_MAXLEVELS(mp) - 1)))
 DECL|macro|XFS_ALLOCFREE_LOG_COUNT
-mdefine_line|#define XFS_ALLOCFREE_LOG_COUNT(mp,nx) &bslash;&n;&t;((nx) * (2 * (2 * XFS_AG_MAXLEVELS(mp) - 1)))
+mdefine_line|#define&t;XFS_ALLOCFREE_LOG_COUNT(mp,nx) &bslash;&n;&t;((nx) * (2 * (2 * XFS_AG_MAXLEVELS(mp) - 1)))
 multiline_comment|/*&n; * Per-directory log reservation for any directory change.&n; * dir blocks: (1 btree block per level + data block + free block) * dblock size&n; * bmap btree: (levels + 2) * max depth * block size&n; * v2 directory blocks can be fragmented below the dirblksize down to the fsb&n; * size, so account for that in the DAENTER macros.&n; */
 DECL|macro|XFS_DIROP_LOG_RES
-mdefine_line|#define XFS_DIROP_LOG_RES(mp)&t;&bslash;&n;&t;(XFS_FSB_TO_B(mp, XFS_DAENTER_BLOCKS(mp, XFS_DATA_FORK)) + &bslash;&n;&t; (XFS_FSB_TO_B(mp, XFS_DAENTER_BMAPS(mp, XFS_DATA_FORK) + 1)))
+mdefine_line|#define&t;XFS_DIROP_LOG_RES(mp)&t;&bslash;&n;&t;(XFS_FSB_TO_B(mp, XFS_DAENTER_BLOCKS(mp, XFS_DATA_FORK)) + &bslash;&n;&t; (XFS_FSB_TO_B(mp, XFS_DAENTER_BMAPS(mp, XFS_DATA_FORK) + 1)))
 DECL|macro|XFS_DIROP_LOG_COUNT
-mdefine_line|#define XFS_DIROP_LOG_COUNT(mp) &bslash;&n;&t;(XFS_DAENTER_BLOCKS(mp, XFS_DATA_FORK) + &bslash;&n;&t; XFS_DAENTER_BMAPS(mp, XFS_DATA_FORK) + 1)
+mdefine_line|#define&t;XFS_DIROP_LOG_COUNT(mp)&t;&bslash;&n;&t;(XFS_DAENTER_BLOCKS(mp, XFS_DATA_FORK) + &bslash;&n;&t; XFS_DAENTER_BMAPS(mp, XFS_DATA_FORK) + 1)
 multiline_comment|/*&n; * In a write transaction we can allocate a maximum of 2&n; * extents.  This gives:&n; *    the inode getting the new extents: inode size&n; *    the inode&bslash;&squot;s bmap btree: max depth * block size&n; *    the agfs of the ags from which the extents are allocated: 2 * sector&n; *    the superblock free block counter: sector size&n; *    the allocation btrees: 2 exts * 2 trees * (2 * max depth - 1) * block size&n; * And the bmap_finish transaction can free bmap blocks in a join:&n; *    the agfs of the ags containing the blocks: 2 * sector size&n; *    the agfls of the ags containing the blocks: 2 * sector size&n; *    the super block free block counter: sector size&n; *    the allocation btrees: 2 exts * 2 trees * (2 * max depth - 1) * block size&n; */
 DECL|macro|XFS_CALC_WRITE_LOG_RES
 mdefine_line|#define XFS_CALC_WRITE_LOG_RES(mp) &bslash;&n;&t;(MAX( &bslash;&n;&t; ((mp)-&gt;m_sb.sb_inodesize + &bslash;&n;&t;  XFS_FSB_TO_B((mp), XFS_BM_MAXLEVELS(mp, XFS_DATA_FORK)) + &bslash;&n;&t;  (2 * (mp)-&gt;m_sb.sb_sectsize) + &bslash;&n;&t;  (mp)-&gt;m_sb.sb_sectsize + &bslash;&n;&t;  XFS_ALLOCFREE_LOG_RES(mp, 2) + &bslash;&n;&t;  (128 * (4 + XFS_BM_MAXLEVELS(mp, XFS_DATA_FORK) + XFS_ALLOCFREE_LOG_COUNT(mp, 2)))),&bslash;&n;&t; ((2 * (mp)-&gt;m_sb.sb_sectsize) + &bslash;&n;&t;  (2 * (mp)-&gt;m_sb.sb_sectsize) + &bslash;&n;&t;  (mp)-&gt;m_sb.sb_sectsize + &bslash;&n;&t;  XFS_ALLOCFREE_LOG_RES(mp, 2) + &bslash;&n;&t;  (128 * (5 + XFS_ALLOCFREE_LOG_COUNT(mp, 2))))))
 DECL|macro|XFS_WRITE_LOG_RES
-mdefine_line|#define XFS_WRITE_LOG_RES(mp)&t;((mp)-&gt;m_reservations.tr_write)
+mdefine_line|#define&t;XFS_WRITE_LOG_RES(mp)&t;((mp)-&gt;m_reservations.tr_write)
 multiline_comment|/*&n; * In truncating a file we free up to two extents at once.  We can modify:&n; *    the inode being truncated: inode size&n; *    the inode&bslash;&squot;s bmap btree: (max depth + 1) * block size&n; * And the bmap_finish transaction can free the blocks and bmap blocks:&n; *    the agf for each of the ags: 4 * sector size&n; *    the agfl for each of the ags: 4 * sector size&n; *    the super block to reflect the freed blocks: sector size&n; *    worst case split in allocation btrees per extent assuming 4 extents:&n; *&t;&t;4 exts * 2 trees * (2 * max depth - 1) * block size&n; */
 DECL|macro|XFS_CALC_ITRUNCATE_LOG_RES
-mdefine_line|#define XFS_CALC_ITRUNCATE_LOG_RES(mp) &bslash;&n;&t;(MAX( &bslash;&n;&t; ((mp)-&gt;m_sb.sb_inodesize + &bslash;&n;&t;  XFS_FSB_TO_B((mp), XFS_BM_MAXLEVELS(mp, XFS_DATA_FORK) + 1) + &bslash;&n;&t;  (128 * (2 + XFS_BM_MAXLEVELS(mp, XFS_DATA_FORK)))), &bslash;&n;&t; ((4 * (mp)-&gt;m_sb.sb_sectsize) + &bslash;&n;&t;  (4 * (mp)-&gt;m_sb.sb_sectsize) + &bslash;&n;&t;  (mp)-&gt;m_sb.sb_sectsize + &bslash;&n;&t;  XFS_ALLOCFREE_LOG_RES(mp, 4) + &bslash;&n;&t;  (128 * (9 + XFS_ALLOCFREE_LOG_COUNT(mp, 4))))))
+mdefine_line|#define&t;XFS_CALC_ITRUNCATE_LOG_RES(mp) &bslash;&n;&t;(MAX( &bslash;&n;&t; ((mp)-&gt;m_sb.sb_inodesize + &bslash;&n;&t;  XFS_FSB_TO_B((mp), XFS_BM_MAXLEVELS(mp, XFS_DATA_FORK) + 1) + &bslash;&n;&t;  (128 * (2 + XFS_BM_MAXLEVELS(mp, XFS_DATA_FORK)))), &bslash;&n;&t; ((4 * (mp)-&gt;m_sb.sb_sectsize) + &bslash;&n;&t;  (4 * (mp)-&gt;m_sb.sb_sectsize) + &bslash;&n;&t;  (mp)-&gt;m_sb.sb_sectsize + &bslash;&n;&t;  XFS_ALLOCFREE_LOG_RES(mp, 4) + &bslash;&n;&t;  (128 * (9 + XFS_ALLOCFREE_LOG_COUNT(mp, 4))))))
 DECL|macro|XFS_ITRUNCATE_LOG_RES
-mdefine_line|#define XFS_ITRUNCATE_LOG_RES(mp)   ((mp)-&gt;m_reservations.tr_itruncate)
+mdefine_line|#define&t;XFS_ITRUNCATE_LOG_RES(mp)   ((mp)-&gt;m_reservations.tr_itruncate)
 multiline_comment|/*&n; * In renaming a files we can modify:&n; *    the four inodes involved: 4 * inode size&n; *    the two directory btrees: 2 * (max depth + v2) * dir block size&n; *    the two directory bmap btrees: 2 * max depth * block size&n; * And the bmap_finish transaction can free dir and bmap blocks (two sets&n; *&t;of bmap blocks) giving:&n; *    the agf for the ags in which the blocks live: 3 * sector size&n; *    the agfl for the ags in which the blocks live: 3 * sector size&n; *    the superblock for the free block count: sector size&n; *    the allocation btrees: 3 exts * 2 trees * (2 * max depth - 1) * block size&n; */
 DECL|macro|XFS_CALC_RENAME_LOG_RES
-mdefine_line|#define XFS_CALC_RENAME_LOG_RES(mp) &bslash;&n;&t;(MAX( &bslash;&n;&t; ((4 * (mp)-&gt;m_sb.sb_inodesize) + &bslash;&n;&t;  (2 * XFS_DIROP_LOG_RES(mp)) + &bslash;&n;&t;  (128 * (4 + 2 * XFS_DIROP_LOG_COUNT(mp)))), &bslash;&n;&t; ((3 * (mp)-&gt;m_sb.sb_sectsize) + &bslash;&n;&t;  (3 * (mp)-&gt;m_sb.sb_sectsize) + &bslash;&n;&t;  (mp)-&gt;m_sb.sb_sectsize + &bslash;&n;&t;  XFS_ALLOCFREE_LOG_RES(mp, 3) + &bslash;&n;&t;  (128 * (7 + XFS_ALLOCFREE_LOG_COUNT(mp, 3))))))
+mdefine_line|#define&t;XFS_CALC_RENAME_LOG_RES(mp) &bslash;&n;&t;(MAX( &bslash;&n;&t; ((4 * (mp)-&gt;m_sb.sb_inodesize) + &bslash;&n;&t;  (2 * XFS_DIROP_LOG_RES(mp)) + &bslash;&n;&t;  (128 * (4 + 2 * XFS_DIROP_LOG_COUNT(mp)))), &bslash;&n;&t; ((3 * (mp)-&gt;m_sb.sb_sectsize) + &bslash;&n;&t;  (3 * (mp)-&gt;m_sb.sb_sectsize) + &bslash;&n;&t;  (mp)-&gt;m_sb.sb_sectsize + &bslash;&n;&t;  XFS_ALLOCFREE_LOG_RES(mp, 3) + &bslash;&n;&t;  (128 * (7 + XFS_ALLOCFREE_LOG_COUNT(mp, 3))))))
 DECL|macro|XFS_RENAME_LOG_RES
-mdefine_line|#define XFS_RENAME_LOG_RES(mp)&t;((mp)-&gt;m_reservations.tr_rename)
+mdefine_line|#define&t;XFS_RENAME_LOG_RES(mp)&t;((mp)-&gt;m_reservations.tr_rename)
 multiline_comment|/*&n; * For creating a link to an inode:&n; *    the parent directory inode: inode size&n; *    the linked inode: inode size&n; *    the directory btree could split: (max depth + v2) * dir block size&n; *    the directory bmap btree could join or split: (max depth + v2) * blocksize&n; * And the bmap_finish transaction can free some bmap blocks giving:&n; *    the agf for the ag in which the blocks live: sector size&n; *    the agfl for the ag in which the blocks live: sector size&n; *    the superblock for the free block count: sector size&n; *    the allocation btrees: 2 trees * (2 * max depth - 1) * block size&n; */
 DECL|macro|XFS_CALC_LINK_LOG_RES
-mdefine_line|#define XFS_CALC_LINK_LOG_RES(mp) &bslash;&n;&t;(MAX( &bslash;&n;&t; ((mp)-&gt;m_sb.sb_inodesize + &bslash;&n;&t;  (mp)-&gt;m_sb.sb_inodesize + &bslash;&n;&t;  XFS_DIROP_LOG_RES(mp) + &bslash;&n;&t;  (128 * (2 + XFS_DIROP_LOG_COUNT(mp)))), &bslash;&n;&t; ((mp)-&gt;m_sb.sb_sectsize + &bslash;&n;&t;  (mp)-&gt;m_sb.sb_sectsize + &bslash;&n;&t;  (mp)-&gt;m_sb.sb_sectsize + &bslash;&n;&t;  XFS_ALLOCFREE_LOG_RES(mp, 1) + &bslash;&n;&t;  (128 * (3 + XFS_ALLOCFREE_LOG_COUNT(mp, 1))))))
+mdefine_line|#define&t;XFS_CALC_LINK_LOG_RES(mp) &bslash;&n;&t;(MAX( &bslash;&n;&t; ((mp)-&gt;m_sb.sb_inodesize + &bslash;&n;&t;  (mp)-&gt;m_sb.sb_inodesize + &bslash;&n;&t;  XFS_DIROP_LOG_RES(mp) + &bslash;&n;&t;  (128 * (2 + XFS_DIROP_LOG_COUNT(mp)))), &bslash;&n;&t; ((mp)-&gt;m_sb.sb_sectsize + &bslash;&n;&t;  (mp)-&gt;m_sb.sb_sectsize + &bslash;&n;&t;  (mp)-&gt;m_sb.sb_sectsize + &bslash;&n;&t;  XFS_ALLOCFREE_LOG_RES(mp, 1) + &bslash;&n;&t;  (128 * (3 + XFS_ALLOCFREE_LOG_COUNT(mp, 1))))))
 DECL|macro|XFS_LINK_LOG_RES
-mdefine_line|#define XFS_LINK_LOG_RES(mp)&t;((mp)-&gt;m_reservations.tr_link)
+mdefine_line|#define&t;XFS_LINK_LOG_RES(mp)&t;((mp)-&gt;m_reservations.tr_link)
 multiline_comment|/*&n; * For removing a directory entry we can modify:&n; *    the parent directory inode: inode size&n; *    the removed inode: inode size&n; *    the directory btree could join: (max depth + v2) * dir block size&n; *    the directory bmap btree could join or split: (max depth + v2) * blocksize&n; * And the bmap_finish transaction can free the dir and bmap blocks giving:&n; *    the agf for the ag in which the blocks live: 2 * sector size&n; *    the agfl for the ag in which the blocks live: 2 * sector size&n; *    the superblock for the free block count: sector size&n; *    the allocation btrees: 2 exts * 2 trees * (2 * max depth - 1) * block size&n; */
 DECL|macro|XFS_CALC_REMOVE_LOG_RES
-mdefine_line|#define XFS_CALC_REMOVE_LOG_RES(mp)&t;&bslash;&n;&t;(MAX( &bslash;&n;&t; ((mp)-&gt;m_sb.sb_inodesize + &bslash;&n;&t;  (mp)-&gt;m_sb.sb_inodesize + &bslash;&n;&t;  XFS_DIROP_LOG_RES(mp) + &bslash;&n;&t;  (128 * (2 + XFS_DIROP_LOG_COUNT(mp)))), &bslash;&n;&t; ((2 * (mp)-&gt;m_sb.sb_sectsize) + &bslash;&n;&t;  (2 * (mp)-&gt;m_sb.sb_sectsize) + &bslash;&n;&t;  (mp)-&gt;m_sb.sb_sectsize + &bslash;&n;&t;  XFS_ALLOCFREE_LOG_RES(mp, 2) + &bslash;&n;&t;  (128 * (5 + XFS_ALLOCFREE_LOG_COUNT(mp, 2))))))
+mdefine_line|#define&t;XFS_CALC_REMOVE_LOG_RES(mp)&t;&bslash;&n;&t;(MAX( &bslash;&n;&t; ((mp)-&gt;m_sb.sb_inodesize + &bslash;&n;&t;  (mp)-&gt;m_sb.sb_inodesize + &bslash;&n;&t;  XFS_DIROP_LOG_RES(mp) + &bslash;&n;&t;  (128 * (2 + XFS_DIROP_LOG_COUNT(mp)))), &bslash;&n;&t; ((2 * (mp)-&gt;m_sb.sb_sectsize) + &bslash;&n;&t;  (2 * (mp)-&gt;m_sb.sb_sectsize) + &bslash;&n;&t;  (mp)-&gt;m_sb.sb_sectsize + &bslash;&n;&t;  XFS_ALLOCFREE_LOG_RES(mp, 2) + &bslash;&n;&t;  (128 * (5 + XFS_ALLOCFREE_LOG_COUNT(mp, 2))))))
 DECL|macro|XFS_REMOVE_LOG_RES
-mdefine_line|#define XFS_REMOVE_LOG_RES(mp)&t;((mp)-&gt;m_reservations.tr_remove)
+mdefine_line|#define&t;XFS_REMOVE_LOG_RES(mp)&t;((mp)-&gt;m_reservations.tr_remove)
 multiline_comment|/*&n; * For symlink we can modify:&n; *    the parent directory inode: inode size&n; *    the new inode: inode size&n; *    the inode btree entry: 1 block&n; *    the directory btree: (max depth + v2) * dir block size&n; *    the directory inode&bslash;&squot;s bmap btree: (max depth + v2) * block size&n; *    the blocks for the symlink: 1 KB&n; * Or in the first xact we allocate some inodes giving:&n; *    the agi and agf of the ag getting the new inodes: 2 * sectorsize&n; *    the inode blocks allocated: XFS_IALLOC_BLOCKS * blocksize&n; *    the inode btree: max depth * blocksize&n; *    the allocation btrees: 2 trees * (2 * max depth - 1) * block size&n; */
 DECL|macro|XFS_CALC_SYMLINK_LOG_RES
-mdefine_line|#define XFS_CALC_SYMLINK_LOG_RES(mp)&t;&t;&bslash;&n;&t;(MAX( &bslash;&n;&t; ((mp)-&gt;m_sb.sb_inodesize + &bslash;&n;&t;  (mp)-&gt;m_sb.sb_inodesize + &bslash;&n;&t;  XFS_FSB_TO_B(mp, 1) + &bslash;&n;&t;  XFS_DIROP_LOG_RES(mp) + &bslash;&n;&t;  1024 + &bslash;&n;&t;  (128 * (4 + XFS_DIROP_LOG_COUNT(mp)))), &bslash;&n;&t; (2 * (mp)-&gt;m_sb.sb_sectsize + &bslash;&n;&t;  XFS_FSB_TO_B((mp), XFS_IALLOC_BLOCKS((mp))) + &bslash;&n;&t;  XFS_FSB_TO_B((mp), XFS_IN_MAXLEVELS(mp)) + &bslash;&n;&t;  XFS_ALLOCFREE_LOG_RES(mp, 1) + &bslash;&n;&t;  (128 * (2 + XFS_IALLOC_BLOCKS(mp) + XFS_IN_MAXLEVELS(mp) + &bslash;&n;&t;   XFS_ALLOCFREE_LOG_COUNT(mp, 1))))))
+mdefine_line|#define&t;XFS_CALC_SYMLINK_LOG_RES(mp)&t;&t;&bslash;&n;&t;(MAX( &bslash;&n;&t; ((mp)-&gt;m_sb.sb_inodesize + &bslash;&n;&t;  (mp)-&gt;m_sb.sb_inodesize + &bslash;&n;&t;  XFS_FSB_TO_B(mp, 1) + &bslash;&n;&t;  XFS_DIROP_LOG_RES(mp) + &bslash;&n;&t;  1024 + &bslash;&n;&t;  (128 * (4 + XFS_DIROP_LOG_COUNT(mp)))), &bslash;&n;&t; (2 * (mp)-&gt;m_sb.sb_sectsize + &bslash;&n;&t;  XFS_FSB_TO_B((mp), XFS_IALLOC_BLOCKS((mp))) + &bslash;&n;&t;  XFS_FSB_TO_B((mp), XFS_IN_MAXLEVELS(mp)) + &bslash;&n;&t;  XFS_ALLOCFREE_LOG_RES(mp, 1) + &bslash;&n;&t;  (128 * (2 + XFS_IALLOC_BLOCKS(mp) + XFS_IN_MAXLEVELS(mp) + &bslash;&n;&t;   XFS_ALLOCFREE_LOG_COUNT(mp, 1))))))
 DECL|macro|XFS_SYMLINK_LOG_RES
-mdefine_line|#define XFS_SYMLINK_LOG_RES(mp) ((mp)-&gt;m_reservations.tr_symlink)
+mdefine_line|#define&t;XFS_SYMLINK_LOG_RES(mp)&t;((mp)-&gt;m_reservations.tr_symlink)
 multiline_comment|/*&n; * For create we can modify:&n; *    the parent directory inode: inode size&n; *    the new inode: inode size&n; *    the inode btree entry: block size&n; *    the superblock for the nlink flag: sector size&n; *    the directory btree: (max depth + v2) * dir block size&n; *    the directory inode&bslash;&squot;s bmap btree: (max depth + v2) * block size&n; * Or in the first xact we allocate some inodes giving:&n; *    the agi and agf of the ag getting the new inodes: 2 * sectorsize&n; *    the superblock for the nlink flag: sector size&n; *    the inode blocks allocated: XFS_IALLOC_BLOCKS * blocksize&n; *    the inode btree: max depth * blocksize&n; *    the allocation btrees: 2 trees * (max depth - 1) * block size&n; */
 DECL|macro|XFS_CALC_CREATE_LOG_RES
-mdefine_line|#define XFS_CALC_CREATE_LOG_RES(mp)&t;&t;&bslash;&n;&t;(MAX( &bslash;&n;&t; ((mp)-&gt;m_sb.sb_inodesize + &bslash;&n;&t;  (mp)-&gt;m_sb.sb_inodesize + &bslash;&n;&t;  (mp)-&gt;m_sb.sb_sectsize + &bslash;&n;&t;  XFS_FSB_TO_B(mp, 1) + &bslash;&n;&t;  XFS_DIROP_LOG_RES(mp) + &bslash;&n;&t;  (128 * (3 + XFS_DIROP_LOG_COUNT(mp)))), &bslash;&n;&t; (3 * (mp)-&gt;m_sb.sb_sectsize + &bslash;&n;&t;  XFS_FSB_TO_B((mp), XFS_IALLOC_BLOCKS((mp))) + &bslash;&n;&t;  XFS_FSB_TO_B((mp), XFS_IN_MAXLEVELS(mp)) + &bslash;&n;&t;  XFS_ALLOCFREE_LOG_RES(mp, 1) + &bslash;&n;&t;  (128 * (2 + XFS_IALLOC_BLOCKS(mp) + XFS_IN_MAXLEVELS(mp) + &bslash;&n;&t;   XFS_ALLOCFREE_LOG_COUNT(mp, 1))))))
+mdefine_line|#define&t;XFS_CALC_CREATE_LOG_RES(mp)&t;&t;&bslash;&n;&t;(MAX( &bslash;&n;&t; ((mp)-&gt;m_sb.sb_inodesize + &bslash;&n;&t;  (mp)-&gt;m_sb.sb_inodesize + &bslash;&n;&t;  (mp)-&gt;m_sb.sb_sectsize + &bslash;&n;&t;  XFS_FSB_TO_B(mp, 1) + &bslash;&n;&t;  XFS_DIROP_LOG_RES(mp) + &bslash;&n;&t;  (128 * (3 + XFS_DIROP_LOG_COUNT(mp)))), &bslash;&n;&t; (3 * (mp)-&gt;m_sb.sb_sectsize + &bslash;&n;&t;  XFS_FSB_TO_B((mp), XFS_IALLOC_BLOCKS((mp))) + &bslash;&n;&t;  XFS_FSB_TO_B((mp), XFS_IN_MAXLEVELS(mp)) + &bslash;&n;&t;  XFS_ALLOCFREE_LOG_RES(mp, 1) + &bslash;&n;&t;  (128 * (2 + XFS_IALLOC_BLOCKS(mp) + XFS_IN_MAXLEVELS(mp) + &bslash;&n;&t;   XFS_ALLOCFREE_LOG_COUNT(mp, 1))))))
 DECL|macro|XFS_CREATE_LOG_RES
-mdefine_line|#define XFS_CREATE_LOG_RES(mp)&t;((mp)-&gt;m_reservations.tr_create)
+mdefine_line|#define&t;XFS_CREATE_LOG_RES(mp)&t;((mp)-&gt;m_reservations.tr_create)
 multiline_comment|/*&n; * Making a new directory is the same as creating a new file.&n; */
 DECL|macro|XFS_CALC_MKDIR_LOG_RES
-mdefine_line|#define XFS_CALC_MKDIR_LOG_RES(mp)&t;XFS_CALC_CREATE_LOG_RES(mp)
+mdefine_line|#define&t;XFS_CALC_MKDIR_LOG_RES(mp)&t;XFS_CALC_CREATE_LOG_RES(mp)
 DECL|macro|XFS_MKDIR_LOG_RES
-mdefine_line|#define XFS_MKDIR_LOG_RES(mp)&t;((mp)-&gt;m_reservations.tr_mkdir)
+mdefine_line|#define&t;XFS_MKDIR_LOG_RES(mp)&t;((mp)-&gt;m_reservations.tr_mkdir)
 multiline_comment|/*&n; * In freeing an inode we can modify:&n; *    the inode being freed: inode size&n; *    the super block free inode counter: sector size&n; *    the agi hash list and counters: sector size&n; *    the inode btree entry: block size&n; *    the on disk inode before ours in the agi hash list: inode cluster size&n; */
 DECL|macro|XFS_CALC_IFREE_LOG_RES
-mdefine_line|#define XFS_CALC_IFREE_LOG_RES(mp) &bslash;&n;&t;((mp)-&gt;m_sb.sb_inodesize + &bslash;&n;&t; (mp)-&gt;m_sb.sb_sectsize + &bslash;&n;&t; (mp)-&gt;m_sb.sb_sectsize + &bslash;&n;&t; XFS_FSB_TO_B((mp), 1) + &bslash;&n;&t; MAX((__uint16_t)XFS_FSB_TO_B((mp), 1), XFS_INODE_CLUSTER_SIZE(mp)) + &bslash;&n;&t; (128 * 5))
+mdefine_line|#define&t;XFS_CALC_IFREE_LOG_RES(mp) &bslash;&n;&t;((mp)-&gt;m_sb.sb_inodesize + &bslash;&n;&t; (mp)-&gt;m_sb.sb_sectsize + &bslash;&n;&t; (mp)-&gt;m_sb.sb_sectsize + &bslash;&n;&t; XFS_FSB_TO_B((mp), 1) + &bslash;&n;&t; MAX((__uint16_t)XFS_FSB_TO_B((mp), 1), XFS_INODE_CLUSTER_SIZE(mp)) + &bslash;&n;&t; (128 * 5))
 DECL|macro|XFS_IFREE_LOG_RES
-mdefine_line|#define XFS_IFREE_LOG_RES(mp)&t;((mp)-&gt;m_reservations.tr_ifree)
+mdefine_line|#define&t;XFS_IFREE_LOG_RES(mp)&t;((mp)-&gt;m_reservations.tr_ifree)
 multiline_comment|/*&n; * When only changing the inode we log the inode and possibly the superblock&n; * We also add a bit of slop for the transaction stuff.&n; */
 DECL|macro|XFS_CALC_ICHANGE_LOG_RES
-mdefine_line|#define XFS_CALC_ICHANGE_LOG_RES(mp)&t;((mp)-&gt;m_sb.sb_inodesize + &bslash;&n;&t;&t;&t;&t;&t; (mp)-&gt;m_sb.sb_sectsize + 512)
+mdefine_line|#define&t;XFS_CALC_ICHANGE_LOG_RES(mp)&t;((mp)-&gt;m_sb.sb_inodesize + &bslash;&n;&t;&t;&t;&t;&t; (mp)-&gt;m_sb.sb_sectsize + 512)
 DECL|macro|XFS_ICHANGE_LOG_RES
-mdefine_line|#define XFS_ICHANGE_LOG_RES(mp) ((mp)-&gt;m_reservations.tr_ichange)
+mdefine_line|#define&t;XFS_ICHANGE_LOG_RES(mp)&t;((mp)-&gt;m_reservations.tr_ichange)
 multiline_comment|/*&n; * Growing the data section of the filesystem.&n; *&t;superblock&n; *&t;agi and agf&n; *&t;allocation btrees&n; */
 DECL|macro|XFS_CALC_GROWDATA_LOG_RES
-mdefine_line|#define XFS_CALC_GROWDATA_LOG_RES(mp) &bslash;&n;&t;((mp)-&gt;m_sb.sb_sectsize * 3 + &bslash;&n;&t; XFS_ALLOCFREE_LOG_RES(mp, 1) + &bslash;&n;&t; (128 * (3 + XFS_ALLOCFREE_LOG_COUNT(mp, 1))))
+mdefine_line|#define&t;XFS_CALC_GROWDATA_LOG_RES(mp) &bslash;&n;&t;((mp)-&gt;m_sb.sb_sectsize * 3 + &bslash;&n;&t; XFS_ALLOCFREE_LOG_RES(mp, 1) + &bslash;&n;&t; (128 * (3 + XFS_ALLOCFREE_LOG_COUNT(mp, 1))))
 DECL|macro|XFS_GROWDATA_LOG_RES
-mdefine_line|#define XFS_GROWDATA_LOG_RES(mp)    ((mp)-&gt;m_reservations.tr_growdata)
+mdefine_line|#define&t;XFS_GROWDATA_LOG_RES(mp)    ((mp)-&gt;m_reservations.tr_growdata)
 multiline_comment|/*&n; * Growing the rt section of the filesystem.&n; * In the first set of transactions (ALLOC) we allocate space to the&n; * bitmap or summary files.&n; *&t;superblock: sector size&n; *&t;agf of the ag from which the extent is allocated: sector size&n; *&t;bmap btree for bitmap/summary inode: max depth * blocksize&n; *&t;bitmap/summary inode: inode size&n; *&t;allocation btrees for 1 block alloc: 2 * (2 * maxdepth - 1) * blocksize&n; */
 DECL|macro|XFS_CALC_GROWRTALLOC_LOG_RES
-mdefine_line|#define XFS_CALC_GROWRTALLOC_LOG_RES(mp) &bslash;&n;&t;(2 * (mp)-&gt;m_sb.sb_sectsize + &bslash;&n;&t; XFS_FSB_TO_B((mp), XFS_BM_MAXLEVELS(mp, XFS_DATA_FORK)) + &bslash;&n;&t; (mp)-&gt;m_sb.sb_inodesize + &bslash;&n;&t; XFS_ALLOCFREE_LOG_RES(mp, 1) + &bslash;&n;&t; (128 * &bslash;&n;&t;  (3 + XFS_BM_MAXLEVELS(mp, XFS_DATA_FORK) + &bslash;&n;&t;   XFS_ALLOCFREE_LOG_COUNT(mp, 1))))
+mdefine_line|#define&t;XFS_CALC_GROWRTALLOC_LOG_RES(mp) &bslash;&n;&t;(2 * (mp)-&gt;m_sb.sb_sectsize + &bslash;&n;&t; XFS_FSB_TO_B((mp), XFS_BM_MAXLEVELS(mp, XFS_DATA_FORK)) + &bslash;&n;&t; (mp)-&gt;m_sb.sb_inodesize + &bslash;&n;&t; XFS_ALLOCFREE_LOG_RES(mp, 1) + &bslash;&n;&t; (128 * &bslash;&n;&t;  (3 + XFS_BM_MAXLEVELS(mp, XFS_DATA_FORK) + &bslash;&n;&t;   XFS_ALLOCFREE_LOG_COUNT(mp, 1))))
 DECL|macro|XFS_GROWRTALLOC_LOG_RES
-mdefine_line|#define XFS_GROWRTALLOC_LOG_RES(mp)&t;((mp)-&gt;m_reservations.tr_growrtalloc)
+mdefine_line|#define&t;XFS_GROWRTALLOC_LOG_RES(mp)&t;((mp)-&gt;m_reservations.tr_growrtalloc)
 multiline_comment|/*&n; * Growing the rt section of the filesystem.&n; * In the second set of transactions (ZERO) we zero the new metadata blocks.&n; *&t;one bitmap/summary block: blocksize&n; */
 DECL|macro|XFS_CALC_GROWRTZERO_LOG_RES
-mdefine_line|#define XFS_CALC_GROWRTZERO_LOG_RES(mp) &bslash;&n;&t;((mp)-&gt;m_sb.sb_blocksize + 128)
+mdefine_line|#define&t;XFS_CALC_GROWRTZERO_LOG_RES(mp) &bslash;&n;&t;((mp)-&gt;m_sb.sb_blocksize + 128)
 DECL|macro|XFS_GROWRTZERO_LOG_RES
-mdefine_line|#define XFS_GROWRTZERO_LOG_RES(mp)&t;((mp)-&gt;m_reservations.tr_growrtzero)
+mdefine_line|#define&t;XFS_GROWRTZERO_LOG_RES(mp)&t;((mp)-&gt;m_reservations.tr_growrtzero)
 multiline_comment|/*&n; * Growing the rt section of the filesystem.&n; * In the third set of transactions (FREE) we update metadata without&n; * allocating any new blocks.&n; *&t;superblock: sector size&n; *&t;bitmap inode: inode size&n; *&t;summary inode: inode size&n; *&t;one bitmap block: blocksize&n; *&t;summary blocks: new summary size&n; */
 DECL|macro|XFS_CALC_GROWRTFREE_LOG_RES
-mdefine_line|#define XFS_CALC_GROWRTFREE_LOG_RES(mp) &bslash;&n;&t;((mp)-&gt;m_sb.sb_sectsize + &bslash;&n;&t; 2 * (mp)-&gt;m_sb.sb_inodesize + &bslash;&n;&t; (mp)-&gt;m_sb.sb_blocksize + &bslash;&n;&t; (mp)-&gt;m_rsumsize + &bslash;&n;&t; (128 * 5))
+mdefine_line|#define&t;XFS_CALC_GROWRTFREE_LOG_RES(mp) &bslash;&n;&t;((mp)-&gt;m_sb.sb_sectsize + &bslash;&n;&t; 2 * (mp)-&gt;m_sb.sb_inodesize + &bslash;&n;&t; (mp)-&gt;m_sb.sb_blocksize + &bslash;&n;&t; (mp)-&gt;m_rsumsize + &bslash;&n;&t; (128 * 5))
 DECL|macro|XFS_GROWRTFREE_LOG_RES
-mdefine_line|#define XFS_GROWRTFREE_LOG_RES(mp)&t;((mp)-&gt;m_reservations.tr_growrtfree)
+mdefine_line|#define&t;XFS_GROWRTFREE_LOG_RES(mp)&t;((mp)-&gt;m_reservations.tr_growrtfree)
 multiline_comment|/*&n; * Logging the inode modification timestamp on a synchronous write.&n; *&t;inode&n; */
 DECL|macro|XFS_CALC_SWRITE_LOG_RES
-mdefine_line|#define XFS_CALC_SWRITE_LOG_RES(mp) &bslash;&n;&t;((mp)-&gt;m_sb.sb_inodesize + 128)
+mdefine_line|#define&t;XFS_CALC_SWRITE_LOG_RES(mp) &bslash;&n;&t;((mp)-&gt;m_sb.sb_inodesize + 128)
 DECL|macro|XFS_SWRITE_LOG_RES
-mdefine_line|#define XFS_SWRITE_LOG_RES(mp)&t;((mp)-&gt;m_reservations.tr_swrite)
+mdefine_line|#define&t;XFS_SWRITE_LOG_RES(mp)&t;((mp)-&gt;m_reservations.tr_swrite)
 multiline_comment|/*&n; * Logging the inode timestamps on an fsync -- same as SWRITE&n; * as long as SWRITE logs the entire inode core&n; */
 DECL|macro|XFS_FSYNC_TS_LOG_RES
-mdefine_line|#define XFS_FSYNC_TS_LOG_RES(mp)&t;((mp)-&gt;m_reservations.tr_swrite)
+mdefine_line|#define XFS_FSYNC_TS_LOG_RES(mp)        ((mp)-&gt;m_reservations.tr_swrite)
 multiline_comment|/*&n; * Logging the inode mode bits when writing a setuid/setgid file&n; *&t;inode&n; */
 DECL|macro|XFS_CALC_WRITEID_LOG_RES
-mdefine_line|#define XFS_CALC_WRITEID_LOG_RES(mp) &bslash;&n;&t;((mp)-&gt;m_sb.sb_inodesize + 128)
+mdefine_line|#define&t;XFS_CALC_WRITEID_LOG_RES(mp) &bslash;&n;&t;((mp)-&gt;m_sb.sb_inodesize + 128)
 DECL|macro|XFS_WRITEID_LOG_RES
-mdefine_line|#define XFS_WRITEID_LOG_RES(mp) ((mp)-&gt;m_reservations.tr_swrite)
+mdefine_line|#define&t;XFS_WRITEID_LOG_RES(mp)&t;((mp)-&gt;m_reservations.tr_swrite)
 multiline_comment|/*&n; * Converting the inode from non-attributed to attributed.&n; *&t;the inode being converted: inode size&n; *&t;agf block and superblock (for block allocation)&n; *&t;the new block (directory sized)&n; *&t;bmap blocks for the new directory block&n; *&t;allocation btrees&n; */
 DECL|macro|XFS_CALC_ADDAFORK_LOG_RES
-mdefine_line|#define XFS_CALC_ADDAFORK_LOG_RES(mp)&t;&bslash;&n;&t;((mp)-&gt;m_sb.sb_inodesize + &bslash;&n;&t; (mp)-&gt;m_sb.sb_sectsize * 2 + &bslash;&n;&t; (mp)-&gt;m_dirblksize + &bslash;&n;&t; (XFS_DIR_IS_V1(mp) ? 0 : &bslash;&n;&t;    XFS_FSB_TO_B(mp, (XFS_DAENTER_BMAP1B(mp, XFS_DATA_FORK) + 1))) + &bslash;&n;&t; XFS_ALLOCFREE_LOG_RES(mp, 1) + &bslash;&n;&t; (128 * (4 + &bslash;&n;&t;&t; (XFS_DIR_IS_V1(mp) ? 0 : &bslash;&n;&t;&t;&t; XFS_DAENTER_BMAP1B(mp, XFS_DATA_FORK) + 1) + &bslash;&n;&t;&t; XFS_ALLOCFREE_LOG_COUNT(mp, 1))))
+mdefine_line|#define&t;XFS_CALC_ADDAFORK_LOG_RES(mp)&t;&bslash;&n;&t;((mp)-&gt;m_sb.sb_inodesize + &bslash;&n;&t; (mp)-&gt;m_sb.sb_sectsize * 2 + &bslash;&n;&t; (mp)-&gt;m_dirblksize + &bslash;&n;&t; (XFS_DIR_IS_V1(mp) ? 0 : &bslash;&n;&t;    XFS_FSB_TO_B(mp, (XFS_DAENTER_BMAP1B(mp, XFS_DATA_FORK) + 1))) + &bslash;&n;&t; XFS_ALLOCFREE_LOG_RES(mp, 1) + &bslash;&n;&t; (128 * (4 + &bslash;&n;&t;&t; (XFS_DIR_IS_V1(mp) ? 0 : &bslash;&n;&t;&t;&t; XFS_DAENTER_BMAP1B(mp, XFS_DATA_FORK) + 1) + &bslash;&n;&t;&t; XFS_ALLOCFREE_LOG_COUNT(mp, 1))))
 DECL|macro|XFS_ADDAFORK_LOG_RES
-mdefine_line|#define XFS_ADDAFORK_LOG_RES(mp)&t;((mp)-&gt;m_reservations.tr_addafork)
+mdefine_line|#define&t;XFS_ADDAFORK_LOG_RES(mp)&t;((mp)-&gt;m_reservations.tr_addafork)
 multiline_comment|/*&n; * Removing the attribute fork of a file&n; *    the inode being truncated: inode size&n; *    the inode&bslash;&squot;s bmap btree: max depth * block size&n; * And the bmap_finish transaction can free the blocks and bmap blocks:&n; *    the agf for each of the ags: 4 * sector size&n; *    the agfl for each of the ags: 4 * sector size&n; *    the super block to reflect the freed blocks: sector size&n; *    worst case split in allocation btrees per extent assuming 4 extents:&n; *&t;&t;4 exts * 2 trees * (2 * max depth - 1) * block size&n; */
 DECL|macro|XFS_CALC_ATTRINVAL_LOG_RES
-mdefine_line|#define XFS_CALC_ATTRINVAL_LOG_RES(mp)&t;&bslash;&n;&t;(MAX( &bslash;&n;&t; ((mp)-&gt;m_sb.sb_inodesize + &bslash;&n;&t;  XFS_FSB_TO_B((mp), XFS_BM_MAXLEVELS(mp, XFS_ATTR_FORK)) + &bslash;&n;&t;  (128 * (1 + XFS_BM_MAXLEVELS(mp, XFS_ATTR_FORK)))), &bslash;&n;&t; ((4 * (mp)-&gt;m_sb.sb_sectsize) + &bslash;&n;&t;  (4 * (mp)-&gt;m_sb.sb_sectsize) + &bslash;&n;&t;  (mp)-&gt;m_sb.sb_sectsize + &bslash;&n;&t;  XFS_ALLOCFREE_LOG_RES(mp, 4) + &bslash;&n;&t;  (128 * (9 + XFS_ALLOCFREE_LOG_COUNT(mp, 4))))))
+mdefine_line|#define&t;XFS_CALC_ATTRINVAL_LOG_RES(mp)&t;&bslash;&n;&t;(MAX( &bslash;&n;&t; ((mp)-&gt;m_sb.sb_inodesize + &bslash;&n;&t;  XFS_FSB_TO_B((mp), XFS_BM_MAXLEVELS(mp, XFS_ATTR_FORK)) + &bslash;&n;&t;  (128 * (1 + XFS_BM_MAXLEVELS(mp, XFS_ATTR_FORK)))), &bslash;&n;&t; ((4 * (mp)-&gt;m_sb.sb_sectsize) + &bslash;&n;&t;  (4 * (mp)-&gt;m_sb.sb_sectsize) + &bslash;&n;&t;  (mp)-&gt;m_sb.sb_sectsize + &bslash;&n;&t;  XFS_ALLOCFREE_LOG_RES(mp, 4) + &bslash;&n;&t;  (128 * (9 + XFS_ALLOCFREE_LOG_COUNT(mp, 4))))))
 DECL|macro|XFS_ATTRINVAL_LOG_RES
-mdefine_line|#define XFS_ATTRINVAL_LOG_RES(mp)&t;((mp)-&gt;m_reservations.tr_attrinval)
+mdefine_line|#define&t;XFS_ATTRINVAL_LOG_RES(mp)&t;((mp)-&gt;m_reservations.tr_attrinval)
 multiline_comment|/*&n; * Setting an attribute.&n; *&t;the inode getting the attribute&n; *&t;the superblock for allocations&n; *&t;the agfs extents are allocated from&n; *&t;the attribute btree * max depth&n; *&t;the inode allocation btree&n; * Since attribute transaction space is dependent on the size of the attribute,&n; * the calculation is done partially at mount time and partially at runtime.&n; */
 DECL|macro|XFS_CALC_ATTRSET_LOG_RES
-mdefine_line|#define XFS_CALC_ATTRSET_LOG_RES(mp)&t;&bslash;&n;&t;((mp)-&gt;m_sb.sb_inodesize + &bslash;&n;&t; (mp)-&gt;m_sb.sb_sectsize + &bslash;&n;&t;  XFS_FSB_TO_B((mp), XFS_DA_NODE_MAXDEPTH) + &bslash;&n;&t;  (128 * (2 + XFS_DA_NODE_MAXDEPTH)))
+mdefine_line|#define&t;XFS_CALC_ATTRSET_LOG_RES(mp)&t;&bslash;&n;&t;((mp)-&gt;m_sb.sb_inodesize + &bslash;&n;&t; (mp)-&gt;m_sb.sb_sectsize + &bslash;&n;&t;  XFS_FSB_TO_B((mp), XFS_DA_NODE_MAXDEPTH) + &bslash;&n;&t;  (128 * (2 + XFS_DA_NODE_MAXDEPTH)))
 DECL|macro|XFS_ATTRSET_LOG_RES
-mdefine_line|#define XFS_ATTRSET_LOG_RES(mp, ext)&t;&bslash;&n;&t;((mp)-&gt;m_reservations.tr_attrset + &bslash;&n;&t; (ext * (mp)-&gt;m_sb.sb_sectsize) + &bslash;&n;&t; (ext * XFS_FSB_TO_B((mp), XFS_BM_MAXLEVELS(mp, XFS_ATTR_FORK))) + &bslash;&n;&t; (128 * (ext + (ext * XFS_BM_MAXLEVELS(mp, XFS_ATTR_FORK)))))
+mdefine_line|#define&t;XFS_ATTRSET_LOG_RES(mp, ext)&t;&bslash;&n;&t;((mp)-&gt;m_reservations.tr_attrset + &bslash;&n;&t; (ext * (mp)-&gt;m_sb.sb_sectsize) + &bslash;&n;&t; (ext * XFS_FSB_TO_B((mp), XFS_BM_MAXLEVELS(mp, XFS_ATTR_FORK))) + &bslash;&n;&t; (128 * (ext + (ext * XFS_BM_MAXLEVELS(mp, XFS_ATTR_FORK)))))
 multiline_comment|/*&n; * Removing an attribute.&n; *    the inode: inode size&n; *    the attribute btree could join: max depth * block size&n; *    the inode bmap btree could join or split: max depth * block size&n; * And the bmap_finish transaction can free the attr blocks freed giving:&n; *    the agf for the ag in which the blocks live: 2 * sector size&n; *    the agfl for the ag in which the blocks live: 2 * sector size&n; *    the superblock for the free block count: sector size&n; *    the allocation btrees: 2 exts * 2 trees * (2 * max depth - 1) * block size&n; */
 DECL|macro|XFS_CALC_ATTRRM_LOG_RES
-mdefine_line|#define XFS_CALC_ATTRRM_LOG_RES(mp)&t;&bslash;&n;&t;(MAX( &bslash;&n;&t;  ((mp)-&gt;m_sb.sb_inodesize + &bslash;&n;&t;  XFS_FSB_TO_B((mp), XFS_DA_NODE_MAXDEPTH) + &bslash;&n;&t;  XFS_FSB_TO_B((mp), XFS_BM_MAXLEVELS(mp, XFS_ATTR_FORK)) + &bslash;&n;&t;  (128 * (1 + XFS_DA_NODE_MAXDEPTH + XFS_BM_MAXLEVELS(mp, XFS_DATA_FORK)))), &bslash;&n;&t; ((2 * (mp)-&gt;m_sb.sb_sectsize) + &bslash;&n;&t;  (2 * (mp)-&gt;m_sb.sb_sectsize) + &bslash;&n;&t;  (mp)-&gt;m_sb.sb_sectsize + &bslash;&n;&t;  XFS_ALLOCFREE_LOG_RES(mp, 2) + &bslash;&n;&t;  (128 * (5 + XFS_ALLOCFREE_LOG_COUNT(mp, 2))))))
+mdefine_line|#define&t;XFS_CALC_ATTRRM_LOG_RES(mp)&t;&bslash;&n;&t;(MAX( &bslash;&n;&t;  ((mp)-&gt;m_sb.sb_inodesize + &bslash;&n;&t;  XFS_FSB_TO_B((mp), XFS_DA_NODE_MAXDEPTH) + &bslash;&n;&t;  XFS_FSB_TO_B((mp), XFS_BM_MAXLEVELS(mp, XFS_ATTR_FORK)) + &bslash;&n;&t;  (128 * (1 + XFS_DA_NODE_MAXDEPTH + XFS_BM_MAXLEVELS(mp, XFS_DATA_FORK)))), &bslash;&n;&t; ((2 * (mp)-&gt;m_sb.sb_sectsize) + &bslash;&n;&t;  (2 * (mp)-&gt;m_sb.sb_sectsize) + &bslash;&n;&t;  (mp)-&gt;m_sb.sb_sectsize + &bslash;&n;&t;  XFS_ALLOCFREE_LOG_RES(mp, 2) + &bslash;&n;&t;  (128 * (5 + XFS_ALLOCFREE_LOG_COUNT(mp, 2))))))
 DECL|macro|XFS_ATTRRM_LOG_RES
-mdefine_line|#define XFS_ATTRRM_LOG_RES(mp)&t;((mp)-&gt;m_reservations.tr_attrrm)
+mdefine_line|#define&t;XFS_ATTRRM_LOG_RES(mp)&t;((mp)-&gt;m_reservations.tr_attrrm)
 multiline_comment|/*&n; * Clearing a bad agino number in an agi hash bucket.&n; */
 DECL|macro|XFS_CALC_CLEAR_AGI_BUCKET_LOG_RES
-mdefine_line|#define XFS_CALC_CLEAR_AGI_BUCKET_LOG_RES(mp) &bslash;&n;&t;((mp)-&gt;m_sb.sb_sectsize + 128)
+mdefine_line|#define&t;XFS_CALC_CLEAR_AGI_BUCKET_LOG_RES(mp) &bslash;&n;&t;((mp)-&gt;m_sb.sb_sectsize + 128)
 DECL|macro|XFS_CLEAR_AGI_BUCKET_LOG_RES
-mdefine_line|#define XFS_CLEAR_AGI_BUCKET_LOG_RES(mp)  ((mp)-&gt;m_reservations.tr_clearagi)
+mdefine_line|#define&t;XFS_CLEAR_AGI_BUCKET_LOG_RES(mp)  ((mp)-&gt;m_reservations.tr_clearagi)
 multiline_comment|/*&n; * Various log count values.&n; */
 DECL|macro|XFS_DEFAULT_LOG_COUNT
-mdefine_line|#define XFS_DEFAULT_LOG_COUNT&t;&t;1
+mdefine_line|#define&t;XFS_DEFAULT_LOG_COUNT&t;&t;1
 DECL|macro|XFS_DEFAULT_PERM_LOG_COUNT
-mdefine_line|#define XFS_DEFAULT_PERM_LOG_COUNT&t;2
+mdefine_line|#define&t;XFS_DEFAULT_PERM_LOG_COUNT&t;2
 DECL|macro|XFS_ITRUNCATE_LOG_COUNT
-mdefine_line|#define XFS_ITRUNCATE_LOG_COUNT&t;&t;2
+mdefine_line|#define&t;XFS_ITRUNCATE_LOG_COUNT&t;&t;2
 DECL|macro|XFS_CREATE_LOG_COUNT
-mdefine_line|#define XFS_CREATE_LOG_COUNT&t;&t;2
+mdefine_line|#define&t;XFS_CREATE_LOG_COUNT&t;&t;2
 DECL|macro|XFS_MKDIR_LOG_COUNT
-mdefine_line|#define XFS_MKDIR_LOG_COUNT&t;&t;3
+mdefine_line|#define&t;XFS_MKDIR_LOG_COUNT&t;&t;3
 DECL|macro|XFS_SYMLINK_LOG_COUNT
-mdefine_line|#define XFS_SYMLINK_LOG_COUNT&t;&t;3
+mdefine_line|#define&t;XFS_SYMLINK_LOG_COUNT&t;&t;3
 DECL|macro|XFS_REMOVE_LOG_COUNT
-mdefine_line|#define XFS_REMOVE_LOG_COUNT&t;&t;2
+mdefine_line|#define&t;XFS_REMOVE_LOG_COUNT&t;&t;2
 DECL|macro|XFS_LINK_LOG_COUNT
-mdefine_line|#define XFS_LINK_LOG_COUNT&t;&t;2
+mdefine_line|#define&t;XFS_LINK_LOG_COUNT&t;&t;2
 DECL|macro|XFS_RENAME_LOG_COUNT
-mdefine_line|#define XFS_RENAME_LOG_COUNT&t;&t;2
+mdefine_line|#define&t;XFS_RENAME_LOG_COUNT&t;&t;2
 DECL|macro|XFS_WRITE_LOG_COUNT
-mdefine_line|#define XFS_WRITE_LOG_COUNT&t;&t;2
+mdefine_line|#define&t;XFS_WRITE_LOG_COUNT&t;&t;2
 DECL|macro|XFS_ADDAFORK_LOG_COUNT
-mdefine_line|#define XFS_ADDAFORK_LOG_COUNT&t;&t;2
+mdefine_line|#define&t;XFS_ADDAFORK_LOG_COUNT&t;&t;2
 DECL|macro|XFS_ATTRINVAL_LOG_COUNT
-mdefine_line|#define XFS_ATTRINVAL_LOG_COUNT&t;&t;1
+mdefine_line|#define&t;XFS_ATTRINVAL_LOG_COUNT&t;&t;1
 DECL|macro|XFS_ATTRSET_LOG_COUNT
-mdefine_line|#define XFS_ATTRSET_LOG_COUNT&t;&t;3
+mdefine_line|#define&t;XFS_ATTRSET_LOG_COUNT&t;&t;3
 DECL|macro|XFS_ATTRRM_LOG_COUNT
-mdefine_line|#define XFS_ATTRRM_LOG_COUNT&t;&t;3
+mdefine_line|#define&t;XFS_ATTRRM_LOG_COUNT&t;&t;3
 multiline_comment|/*&n; * Here we centralize the specification of XFS meta-data buffer&n; * reference count values.  This determine how hard the buffer&n; * cache tries to hold onto the buffer.&n; */
 DECL|macro|XFS_AGF_REF
-mdefine_line|#define XFS_AGF_REF&t;&t;4
+mdefine_line|#define&t;XFS_AGF_REF&t;&t;4
 DECL|macro|XFS_AGI_REF
-mdefine_line|#define XFS_AGI_REF&t;&t;4
+mdefine_line|#define&t;XFS_AGI_REF&t;&t;4
 DECL|macro|XFS_AGFL_REF
-mdefine_line|#define XFS_AGFL_REF&t;&t;3
+mdefine_line|#define&t;XFS_AGFL_REF&t;&t;3
 DECL|macro|XFS_INO_BTREE_REF
-mdefine_line|#define XFS_INO_BTREE_REF&t;3
+mdefine_line|#define&t;XFS_INO_BTREE_REF&t;3
 DECL|macro|XFS_ALLOC_BTREE_REF
-mdefine_line|#define XFS_ALLOC_BTREE_REF&t;2
+mdefine_line|#define&t;XFS_ALLOC_BTREE_REF&t;2
 DECL|macro|XFS_BMAP_BTREE_REF
-mdefine_line|#define XFS_BMAP_BTREE_REF&t;2
+mdefine_line|#define&t;XFS_BMAP_BTREE_REF&t;2
 DECL|macro|XFS_DIR_BTREE_REF
-mdefine_line|#define XFS_DIR_BTREE_REF&t;2
+mdefine_line|#define&t;XFS_DIR_BTREE_REF&t;2
 DECL|macro|XFS_ATTR_BTREE_REF
-mdefine_line|#define XFS_ATTR_BTREE_REF&t;1
+mdefine_line|#define&t;XFS_ATTR_BTREE_REF&t;1
 DECL|macro|XFS_INO_REF
-mdefine_line|#define XFS_INO_REF&t;&t;1
+mdefine_line|#define&t;XFS_INO_REF&t;&t;1
 DECL|macro|XFS_DQUOT_REF
-mdefine_line|#define XFS_DQUOT_REF&t;&t;1
+mdefine_line|#define&t;XFS_DQUOT_REF&t;&t;1
 macro_line|#ifdef __KERNEL__
 multiline_comment|/*&n; * XFS transaction mechanism exported interfaces that are&n; * actually macros.&n; */
 DECL|macro|xfs_trans_get_log_res
-mdefine_line|#define xfs_trans_get_log_res(tp)&t;((tp)-&gt;t_log_res)
+mdefine_line|#define&t;xfs_trans_get_log_res(tp)&t;((tp)-&gt;t_log_res)
 DECL|macro|xfs_trans_get_log_count
-mdefine_line|#define xfs_trans_get_log_count(tp)&t;((tp)-&gt;t_log_count)
+mdefine_line|#define&t;xfs_trans_get_log_count(tp)&t;((tp)-&gt;t_log_count)
 DECL|macro|xfs_trans_get_block_res
-mdefine_line|#define xfs_trans_get_block_res(tp)&t;((tp)-&gt;t_blk_res)
+mdefine_line|#define&t;xfs_trans_get_block_res(tp)&t;((tp)-&gt;t_blk_res)
 DECL|macro|xfs_trans_set_sync
-mdefine_line|#define xfs_trans_set_sync(tp)&t;&t;((tp)-&gt;t_flags |= XFS_TRANS_SYNC)
+mdefine_line|#define&t;xfs_trans_set_sync(tp)&t;&t;((tp)-&gt;t_flags |= XFS_TRANS_SYNC)
 macro_line|#ifdef DEBUG
 DECL|macro|xfs_trans_agblocks_delta
-mdefine_line|#define xfs_trans_agblocks_delta(tp, d) ((tp)-&gt;t_ag_freeblks_delta += (long)d)
+mdefine_line|#define&t;xfs_trans_agblocks_delta(tp, d)&t;((tp)-&gt;t_ag_freeblks_delta += (long)d)
 DECL|macro|xfs_trans_agflist_delta
-mdefine_line|#define xfs_trans_agflist_delta(tp, d)&t;((tp)-&gt;t_ag_flist_delta += (long)d)
+mdefine_line|#define&t;xfs_trans_agflist_delta(tp, d)&t;((tp)-&gt;t_ag_flist_delta += (long)d)
 DECL|macro|xfs_trans_agbtree_delta
-mdefine_line|#define xfs_trans_agbtree_delta(tp, d)&t;((tp)-&gt;t_ag_btree_delta += (long)d)
+mdefine_line|#define&t;xfs_trans_agbtree_delta(tp, d)&t;((tp)-&gt;t_ag_btree_delta += (long)d)
 macro_line|#else
 DECL|macro|xfs_trans_agblocks_delta
-mdefine_line|#define xfs_trans_agblocks_delta(tp, d)
+mdefine_line|#define&t;xfs_trans_agblocks_delta(tp, d)
 DECL|macro|xfs_trans_agflist_delta
-mdefine_line|#define xfs_trans_agflist_delta(tp, d)
+mdefine_line|#define&t;xfs_trans_agflist_delta(tp, d)
 DECL|macro|xfs_trans_agbtree_delta
-mdefine_line|#define xfs_trans_agbtree_delta(tp, d)
+mdefine_line|#define&t;xfs_trans_agbtree_delta(tp, d)
 macro_line|#endif
 multiline_comment|/*&n; * XFS transaction mechanism exported interfaces.&n; */
 r_void

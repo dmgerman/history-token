@@ -303,6 +303,7 @@ l_int|1
 suffix:semicolon
 DECL|member|tex_age
 r_int
+r_int
 id|tex_age
 (braket
 id|R128_NR_TEX_HEAPS

@@ -2193,48 +2193,80 @@ id|compressor
 id|ppp_deflate
 op_assign
 (brace
+dot
+id|compress_proto
+op_assign
 id|CI_DEFLATE
 comma
-multiline_comment|/* compress_proto */
+dot
+id|comp_alloc
+op_assign
 id|z_comp_alloc
 comma
-multiline_comment|/* comp_alloc */
+dot
+id|comp_free
+op_assign
 id|z_comp_free
 comma
-multiline_comment|/* comp_free */
+dot
+id|comp_init
+op_assign
 id|z_comp_init
 comma
-multiline_comment|/* comp_init */
+dot
+id|comp_reset
+op_assign
 id|z_comp_reset
 comma
-multiline_comment|/* comp_reset */
+dot
+id|compress
+op_assign
 id|z_compress
 comma
-multiline_comment|/* compress */
+dot
+id|comp_stat
+op_assign
 id|z_comp_stats
 comma
-multiline_comment|/* comp_stat */
+dot
+id|decomp_alloc
+op_assign
 id|z_decomp_alloc
 comma
-multiline_comment|/* decomp_alloc */
+dot
+id|decomp_free
+op_assign
 id|z_decomp_free
 comma
-multiline_comment|/* decomp_free */
+dot
+id|decomp_init
+op_assign
 id|z_decomp_init
 comma
-multiline_comment|/* decomp_init */
+dot
+id|decomp_reset
+op_assign
 id|z_decomp_reset
 comma
-multiline_comment|/* decomp_reset */
+dot
+id|decompress
+op_assign
 id|z_decompress
 comma
-multiline_comment|/* decompress */
+dot
+id|incomp
+op_assign
 id|z_incomp
 comma
-multiline_comment|/* incomp */
+dot
+id|decomp_stat
+op_assign
 id|z_comp_stats
 comma
-multiline_comment|/* decomp_stat */
+dot
+id|owner
+op_assign
+id|THIS_MODULE
 )brace
 suffix:semicolon
 DECL|variable|ppp_deflate_draft
@@ -2243,48 +2275,80 @@ id|compressor
 id|ppp_deflate_draft
 op_assign
 (brace
+dot
+id|compress_proto
+op_assign
 id|CI_DEFLATE_DRAFT
 comma
-multiline_comment|/* compress_proto */
+dot
+id|comp_alloc
+op_assign
 id|z_comp_alloc
 comma
-multiline_comment|/* comp_alloc */
+dot
+id|comp_free
+op_assign
 id|z_comp_free
 comma
-multiline_comment|/* comp_free */
+dot
+id|comp_init
+op_assign
 id|z_comp_init
 comma
-multiline_comment|/* comp_init */
+dot
+id|comp_reset
+op_assign
 id|z_comp_reset
 comma
-multiline_comment|/* comp_reset */
+dot
+id|compress
+op_assign
 id|z_compress
 comma
-multiline_comment|/* compress */
+dot
+id|comp_stat
+op_assign
 id|z_comp_stats
 comma
-multiline_comment|/* comp_stat */
+dot
+id|decomp_alloc
+op_assign
 id|z_decomp_alloc
 comma
-multiline_comment|/* decomp_alloc */
+dot
+id|decomp_free
+op_assign
 id|z_decomp_free
 comma
-multiline_comment|/* decomp_free */
+dot
+id|decomp_init
+op_assign
 id|z_decomp_init
 comma
-multiline_comment|/* decomp_init */
+dot
+id|decomp_reset
+op_assign
 id|z_decomp_reset
 comma
-multiline_comment|/* decomp_reset */
+dot
+id|decompress
+op_assign
 id|z_decompress
 comma
-multiline_comment|/* decompress */
+dot
+id|incomp
+op_assign
 id|z_incomp
 comma
-multiline_comment|/* incomp */
+dot
+id|decomp_stat
+op_assign
 id|z_comp_stats
 comma
-multiline_comment|/* decomp_stat */
+dot
+id|owner
+op_assign
+id|THIS_MODULE
 )brace
 suffix:semicolon
 DECL|function|deflate_init

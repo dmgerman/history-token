@@ -1,7 +1,7 @@
-multiline_comment|/*&n; * Copyright (c) 2000-2002 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.&t; Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information: Silicon Graphics, Inc., 1600 Amphitheatre Pkwy,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/SGIGPLNoticeExplan/&n; */
+multiline_comment|/*&n; * Copyright (c) 2000-2002 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.  Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information: Silicon Graphics, Inc., 1600 Amphitheatre Pkwy,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/SGIGPLNoticeExplan/&n; */
 macro_line|#ifndef __XFS_AG_H__
 DECL|macro|__XFS_AG_H__
-mdefine_line|#define __XFS_AG_H__
+mdefine_line|#define&t;__XFS_AG_H__
 multiline_comment|/*&n; * Allocation group header&n; * This is divided into three structures, placed in sequential 512-byte&n; * buffers after a copy of the superblock (also in a 512-byte buffer).&n; */
 r_struct
 id|xfs_buf
@@ -13,13 +13,13 @@ r_struct
 id|xfs_trans
 suffix:semicolon
 DECL|macro|XFS_AGF_MAGIC
-mdefine_line|#define XFS_AGF_MAGIC&t;0x58414746&t;/* &squot;XAGF&squot; */
+mdefine_line|#define&t;XFS_AGF_MAGIC&t;0x58414746&t;/* &squot;XAGF&squot; */
 DECL|macro|XFS_AGI_MAGIC
-mdefine_line|#define XFS_AGI_MAGIC&t;0x58414749&t;/* &squot;XAGI&squot; */
+mdefine_line|#define&t;XFS_AGI_MAGIC&t;0x58414749&t;/* &squot;XAGI&squot; */
 DECL|macro|XFS_AGF_VERSION
-mdefine_line|#define XFS_AGF_VERSION 1
+mdefine_line|#define&t;XFS_AGF_VERSION&t;1
 DECL|macro|XFS_AGI_VERSION
-mdefine_line|#define XFS_AGI_VERSION 1
+mdefine_line|#define&t;XFS_AGI_VERSION&t;1
 macro_line|#if XFS_WANT_FUNCS || (XFS_WANT_SPACE &amp;&amp; XFSSO_XFS_AGF_GOOD_VERSION)
 r_int
 id|xfs_agf_good_version
@@ -30,7 +30,7 @@ id|v
 )paren
 suffix:semicolon
 DECL|macro|XFS_AGF_GOOD_VERSION
-mdefine_line|#define XFS_AGF_GOOD_VERSION(v) xfs_agf_good_version(v)
+mdefine_line|#define&t;XFS_AGF_GOOD_VERSION(v)&t;xfs_agf_good_version(v)
 macro_line|#else
 DECL|macro|XFS_AGF_GOOD_VERSION
 mdefine_line|#define XFS_AGF_GOOD_VERSION(v)&t;&t;((v) == XFS_AGF_VERSION)
@@ -45,14 +45,14 @@ id|v
 )paren
 suffix:semicolon
 DECL|macro|XFS_AGI_GOOD_VERSION
-mdefine_line|#define XFS_AGI_GOOD_VERSION(v) xfs_agi_good_version(v)
+mdefine_line|#define&t;XFS_AGI_GOOD_VERSION(v)&t;xfs_agi_good_version(v)
 macro_line|#else
 DECL|macro|XFS_AGI_GOOD_VERSION
 mdefine_line|#define XFS_AGI_GOOD_VERSION(v)&t;&t;((v) == XFS_AGI_VERSION)
 macro_line|#endif
 multiline_comment|/*&n; * Btree number 0 is bno, 1 is cnt.  This value gives the size of the&n; * arrays below.&n; */
 DECL|macro|XFS_BTNUM_AGF
-mdefine_line|#define XFS_BTNUM_AGF&t;((int)XFS_BTNUM_CNTi + 1)
+mdefine_line|#define&t;XFS_BTNUM_AGF&t;((int)XFS_BTNUM_CNTi + 1)
 multiline_comment|/*&n; * The second word of agf_levels in the first a.g. overlaps the EFS&n; * superblock&squot;s magic number.  Since the magic numbers valid for EFS&n; * are &gt; 64k, our value cannot be confused for an EFS superblock&squot;s.&n; */
 DECL|struct|xfs_agf
 r_typedef
@@ -137,31 +137,31 @@ DECL|typedef|xfs_agf_t
 id|xfs_agf_t
 suffix:semicolon
 DECL|macro|XFS_AGF_MAGICNUM
-mdefine_line|#define XFS_AGF_MAGICNUM&t;0x00000001
+mdefine_line|#define&t;XFS_AGF_MAGICNUM&t;0x00000001
 DECL|macro|XFS_AGF_VERSIONNUM
-mdefine_line|#define XFS_AGF_VERSIONNUM&t;0x00000002
+mdefine_line|#define&t;XFS_AGF_VERSIONNUM&t;0x00000002
 DECL|macro|XFS_AGF_SEQNO
-mdefine_line|#define XFS_AGF_SEQNO&t;&t;0x00000004
+mdefine_line|#define&t;XFS_AGF_SEQNO&t;&t;0x00000004
 DECL|macro|XFS_AGF_LENGTH
-mdefine_line|#define XFS_AGF_LENGTH&t;&t;0x00000008
+mdefine_line|#define&t;XFS_AGF_LENGTH&t;&t;0x00000008
 DECL|macro|XFS_AGF_ROOTS
-mdefine_line|#define XFS_AGF_ROOTS&t;&t;0x00000010
+mdefine_line|#define&t;XFS_AGF_ROOTS&t;&t;0x00000010
 DECL|macro|XFS_AGF_LEVELS
-mdefine_line|#define XFS_AGF_LEVELS&t;&t;0x00000020
+mdefine_line|#define&t;XFS_AGF_LEVELS&t;&t;0x00000020
 DECL|macro|XFS_AGF_FLFIRST
-mdefine_line|#define XFS_AGF_FLFIRST&t;&t;0x00000040
+mdefine_line|#define&t;XFS_AGF_FLFIRST&t;&t;0x00000040
 DECL|macro|XFS_AGF_FLLAST
-mdefine_line|#define XFS_AGF_FLLAST&t;&t;0x00000080
+mdefine_line|#define&t;XFS_AGF_FLLAST&t;&t;0x00000080
 DECL|macro|XFS_AGF_FLCOUNT
-mdefine_line|#define XFS_AGF_FLCOUNT&t;&t;0x00000100
+mdefine_line|#define&t;XFS_AGF_FLCOUNT&t;&t;0x00000100
 DECL|macro|XFS_AGF_FREEBLKS
-mdefine_line|#define XFS_AGF_FREEBLKS&t;0x00000200
+mdefine_line|#define&t;XFS_AGF_FREEBLKS&t;0x00000200
 DECL|macro|XFS_AGF_LONGEST
-mdefine_line|#define XFS_AGF_LONGEST&t;&t;0x00000400
+mdefine_line|#define&t;XFS_AGF_LONGEST&t;&t;0x00000400
 DECL|macro|XFS_AGF_NUM_BITS
-mdefine_line|#define XFS_AGF_NUM_BITS&t;11
+mdefine_line|#define&t;XFS_AGF_NUM_BITS&t;11
 DECL|macro|XFS_AGF_ALL_BITS
-mdefine_line|#define XFS_AGF_ALL_BITS&t;((1 &lt;&lt; XFS_AGF_NUM_BITS) - 1)
+mdefine_line|#define&t;XFS_AGF_ALL_BITS&t;((1 &lt;&lt; XFS_AGF_NUM_BITS) - 1)
 multiline_comment|/* disk block (xfs_daddr_t) in the AG */
 DECL|macro|XFS_AGF_DADDR
 mdefine_line|#define XFS_AGF_DADDR(mp)&t;((xfs_daddr_t)(1 &lt;&lt; (mp)-&gt;m_sectbb_log))
@@ -177,14 +177,14 @@ id|mp
 )paren
 suffix:semicolon
 DECL|macro|XFS_AGF_BLOCK
-mdefine_line|#define XFS_AGF_BLOCK(mp)&t;xfs_agf_block(mp)
+mdefine_line|#define&t;XFS_AGF_BLOCK(mp)&t;xfs_agf_block(mp)
 macro_line|#else
 DECL|macro|XFS_AGF_BLOCK
 mdefine_line|#define XFS_AGF_BLOCK(mp)&t;XFS_HDR_BLOCK(mp, XFS_AGF_DADDR(mp))
 macro_line|#endif
 multiline_comment|/*&n; * Size of the unlinked inode hash table in the agi.&n; */
 DECL|macro|XFS_AGI_UNLINKED_BUCKETS
-mdefine_line|#define XFS_AGI_UNLINKED_BUCKETS&t;64
+mdefine_line|#define&t;XFS_AGI_UNLINKED_BUCKETS&t;64
 DECL|struct|xfs_agi
 r_typedef
 r_struct
@@ -255,31 +255,31 @@ DECL|typedef|xfs_agi_t
 id|xfs_agi_t
 suffix:semicolon
 DECL|macro|XFS_AGI_MAGICNUM
-mdefine_line|#define XFS_AGI_MAGICNUM&t;0x00000001
+mdefine_line|#define&t;XFS_AGI_MAGICNUM&t;0x00000001
 DECL|macro|XFS_AGI_VERSIONNUM
-mdefine_line|#define XFS_AGI_VERSIONNUM&t;0x00000002
+mdefine_line|#define&t;XFS_AGI_VERSIONNUM&t;0x00000002
 DECL|macro|XFS_AGI_SEQNO
-mdefine_line|#define XFS_AGI_SEQNO&t;&t;0x00000004
+mdefine_line|#define&t;XFS_AGI_SEQNO&t;&t;0x00000004
 DECL|macro|XFS_AGI_LENGTH
-mdefine_line|#define XFS_AGI_LENGTH&t;&t;0x00000008
+mdefine_line|#define&t;XFS_AGI_LENGTH&t;&t;0x00000008
 DECL|macro|XFS_AGI_COUNT
-mdefine_line|#define XFS_AGI_COUNT&t;&t;0x00000010
+mdefine_line|#define&t;XFS_AGI_COUNT&t;&t;0x00000010
 DECL|macro|XFS_AGI_ROOT
-mdefine_line|#define XFS_AGI_ROOT&t;&t;0x00000020
+mdefine_line|#define&t;XFS_AGI_ROOT&t;&t;0x00000020
 DECL|macro|XFS_AGI_LEVEL
-mdefine_line|#define XFS_AGI_LEVEL&t;&t;0x00000040
+mdefine_line|#define&t;XFS_AGI_LEVEL&t;&t;0x00000040
 DECL|macro|XFS_AGI_FREECOUNT
-mdefine_line|#define XFS_AGI_FREECOUNT&t;0x00000080
+mdefine_line|#define&t;XFS_AGI_FREECOUNT&t;0x00000080
 DECL|macro|XFS_AGI_NEWINO
-mdefine_line|#define XFS_AGI_NEWINO&t;&t;0x00000100
+mdefine_line|#define&t;XFS_AGI_NEWINO&t;&t;0x00000100
 DECL|macro|XFS_AGI_DIRINO
-mdefine_line|#define XFS_AGI_DIRINO&t;&t;0x00000200
+mdefine_line|#define&t;XFS_AGI_DIRINO&t;&t;0x00000200
 DECL|macro|XFS_AGI_UNLINKED
-mdefine_line|#define XFS_AGI_UNLINKED&t;0x00000400
+mdefine_line|#define&t;XFS_AGI_UNLINKED&t;0x00000400
 DECL|macro|XFS_AGI_NUM_BITS
-mdefine_line|#define XFS_AGI_NUM_BITS&t;11
+mdefine_line|#define&t;XFS_AGI_NUM_BITS&t;11
 DECL|macro|XFS_AGI_ALL_BITS
-mdefine_line|#define XFS_AGI_ALL_BITS&t;((1 &lt;&lt; XFS_AGI_NUM_BITS) - 1)
+mdefine_line|#define&t;XFS_AGI_ALL_BITS&t;((1 &lt;&lt; XFS_AGI_NUM_BITS) - 1)
 multiline_comment|/* disk block (xfs_daddr_t) in the AG */
 DECL|macro|XFS_AGI_DADDR
 mdefine_line|#define XFS_AGI_DADDR(mp)&t;((xfs_daddr_t)(2 &lt;&lt; (mp)-&gt;m_sectbb_log))
@@ -295,7 +295,7 @@ id|mp
 )paren
 suffix:semicolon
 DECL|macro|XFS_AGI_BLOCK
-mdefine_line|#define XFS_AGI_BLOCK(mp)&t;xfs_agi_block(mp)
+mdefine_line|#define&t;XFS_AGI_BLOCK(mp)&t;xfs_agi_block(mp)
 macro_line|#else
 DECL|macro|XFS_AGI_BLOCK
 mdefine_line|#define XFS_AGI_BLOCK(mp)&t;XFS_HDR_BLOCK(mp, XFS_AGI_DADDR(mp))
@@ -315,7 +315,7 @@ id|mp
 )paren
 suffix:semicolon
 DECL|macro|XFS_AGFL_BLOCK
-mdefine_line|#define XFS_AGFL_BLOCK(mp)&t;xfs_agfl_block(mp)
+mdefine_line|#define&t;XFS_AGFL_BLOCK(mp)&t;xfs_agfl_block(mp)
 macro_line|#else
 DECL|macro|XFS_AGFL_BLOCK
 mdefine_line|#define XFS_AGFL_BLOCK(mp)&t;XFS_HDR_BLOCK(mp, XFS_AGFL_DADDR(mp))
@@ -453,11 +453,11 @@ DECL|typedef|xfs_perag_t
 id|xfs_perag_t
 suffix:semicolon
 DECL|macro|XFS_AG_MIN_BYTES
-mdefine_line|#define XFS_AG_MIN_BYTES&t;(1LL &lt;&lt; 24)&t;/* 16 MB */
+mdefine_line|#define&t;XFS_AG_MIN_BYTES&t;(1LL &lt;&lt; 24)&t;/* 16 MB */
 DECL|macro|XFS_AG_BEST_BYTES
-mdefine_line|#define XFS_AG_BEST_BYTES&t;(1LL &lt;&lt; 30)&t;/*  1 GB */
+mdefine_line|#define&t;XFS_AG_BEST_BYTES&t;(1LL &lt;&lt; 30)&t;/*  1 GB */
 DECL|macro|XFS_AG_MAX_BYTES
-mdefine_line|#define XFS_AG_MAX_BYTES&t;(1LL &lt;&lt; 32)&t;/*  4 GB */
+mdefine_line|#define&t;XFS_AG_MAX_BYTES&t;(1LL &lt;&lt; 32)&t;/*  4 GB */
 macro_line|#if XFS_WANT_FUNCS || (XFS_WANT_SPACE &amp;&amp; XFSSO_XFS_AG_MIN_BLOCKS)
 id|xfs_extlen_t
 id|xfs_ag_min_blocks
@@ -468,10 +468,10 @@ id|bl
 )paren
 suffix:semicolon
 DECL|macro|XFS_AG_MIN_BLOCKS
-mdefine_line|#define XFS_AG_MIN_BLOCKS(bl)&t;&t;xfs_ag_min_blocks(bl)
+mdefine_line|#define&t;XFS_AG_MIN_BLOCKS(bl)&t;&t;xfs_ag_min_blocks(bl)
 macro_line|#else
 DECL|macro|XFS_AG_MIN_BLOCKS
-mdefine_line|#define XFS_AG_MIN_BLOCKS(bl)&t;((xfs_extlen_t)(XFS_AG_MIN_BYTES &gt;&gt; bl))
+mdefine_line|#define&t;XFS_AG_MIN_BLOCKS(bl)&t;((xfs_extlen_t)(XFS_AG_MIN_BYTES &gt;&gt; bl))
 macro_line|#endif
 macro_line|#if XFS_WANT_FUNCS || (XFS_WANT_SPACE &amp;&amp; XFSSO_XFS_AG_BEST_BLOCKS)
 id|xfs_extlen_t
@@ -486,7 +486,7 @@ id|blks
 )paren
 suffix:semicolon
 DECL|macro|XFS_AG_BEST_BLOCKS
-mdefine_line|#define XFS_AG_BEST_BLOCKS(bl,blks)&t;xfs_ag_best_blocks(bl,blks)
+mdefine_line|#define&t;XFS_AG_BEST_BLOCKS(bl,blks)&t;xfs_ag_best_blocks(bl,blks)
 macro_line|#else
 multiline_comment|/*--#define XFS_AG_BEST_BLOCKS(bl) ((xfs_extlen_t)(XFS_AG_BEST_BYTES &gt;&gt; bl))*/
 multiline_comment|/*&n; * Best is XFS_AG_BEST_BLOCKS at and below 64 Gigabyte filesystems, and&n; * XFS_AG_MAX_BLOCKS above 64 Gigabytes.&n; */
@@ -503,13 +503,13 @@ id|bl
 )paren
 suffix:semicolon
 DECL|macro|XFS_AG_MAX_BLOCKS
-mdefine_line|#define XFS_AG_MAX_BLOCKS(bl)&t;&t;xfs_ag_max_blocks(bl)
+mdefine_line|#define&t;XFS_AG_MAX_BLOCKS(bl)&t;&t;xfs_ag_max_blocks(bl)
 macro_line|#else
 DECL|macro|XFS_AG_MAX_BLOCKS
-mdefine_line|#define XFS_AG_MAX_BLOCKS(bl)&t;((xfs_extlen_t)(XFS_AG_MAX_BYTES &gt;&gt; bl))
+mdefine_line|#define&t;XFS_AG_MAX_BLOCKS(bl)&t;((xfs_extlen_t)(XFS_AG_MAX_BYTES &gt;&gt; bl))
 macro_line|#endif
 DECL|macro|XFS_MAX_AGNUMBER
-mdefine_line|#define XFS_MAX_AGNUMBER&t;((xfs_agnumber_t)(NULLAGNUMBER - 1))
+mdefine_line|#define&t;XFS_MAX_AGNUMBER&t;((xfs_agnumber_t)(NULLAGNUMBER - 1))
 macro_line|#if XFS_WANT_FUNCS || (XFS_WANT_SPACE &amp;&amp; XFSSO_XFS_AG_MAXLEVELS)
 r_int
 id|xfs_ag_maxlevels
@@ -522,10 +522,10 @@ id|mp
 )paren
 suffix:semicolon
 DECL|macro|XFS_AG_MAXLEVELS
-mdefine_line|#define XFS_AG_MAXLEVELS(mp)&t;&t;xfs_ag_maxlevels(mp)
+mdefine_line|#define&t;XFS_AG_MAXLEVELS(mp)&t;&t;xfs_ag_maxlevels(mp)
 macro_line|#else
 DECL|macro|XFS_AG_MAXLEVELS
-mdefine_line|#define XFS_AG_MAXLEVELS(mp)&t;((mp)-&gt;m_ag_maxlevels)
+mdefine_line|#define&t;XFS_AG_MAXLEVELS(mp)&t;((mp)-&gt;m_ag_maxlevels)
 macro_line|#endif
 macro_line|#if XFS_WANT_FUNCS || (XFS_WANT_SPACE &amp;&amp; XFSSO_XFS_MIN_FREELIST)
 r_int
@@ -543,10 +543,10 @@ id|mp
 )paren
 suffix:semicolon
 DECL|macro|XFS_MIN_FREELIST
-mdefine_line|#define XFS_MIN_FREELIST(a,mp)&t;&t;xfs_min_freelist(a,mp)
+mdefine_line|#define&t;XFS_MIN_FREELIST(a,mp)&t;&t;xfs_min_freelist(a,mp)
 macro_line|#else
 DECL|macro|XFS_MIN_FREELIST
-mdefine_line|#define XFS_MIN_FREELIST(a,mp)&t;&bslash;&n;&t;XFS_MIN_FREELIST_RAW(&t;&bslash;&n;&t;&t;INT_GET((a)-&gt;agf_levels[XFS_BTNUM_BNOi], ARCH_CONVERT), &bslash;&n;&t;&t;INT_GET((a)-&gt;agf_levels[XFS_BTNUM_CNTi], ARCH_CONVERT), mp)
+mdefine_line|#define&t;XFS_MIN_FREELIST(a,mp)&t;&bslash;&n;&t;XFS_MIN_FREELIST_RAW(&t;&bslash;&n;&t;&t;INT_GET((a)-&gt;agf_levels[XFS_BTNUM_BNOi], ARCH_CONVERT), &bslash;&n;&t;&t;INT_GET((a)-&gt;agf_levels[XFS_BTNUM_CNTi], ARCH_CONVERT), mp)
 macro_line|#endif
 macro_line|#if XFS_WANT_FUNCS || (XFS_WANT_SPACE &amp;&amp; XFSSO_XFS_MIN_FREELIST_PAG)
 r_int
@@ -564,10 +564,10 @@ id|mp
 )paren
 suffix:semicolon
 DECL|macro|XFS_MIN_FREELIST_PAG
-mdefine_line|#define XFS_MIN_FREELIST_PAG(pag,mp)&t;xfs_min_freelist_pag(pag,mp)
+mdefine_line|#define&t;XFS_MIN_FREELIST_PAG(pag,mp)&t;xfs_min_freelist_pag(pag,mp)
 macro_line|#else
 DECL|macro|XFS_MIN_FREELIST_PAG
-mdefine_line|#define XFS_MIN_FREELIST_PAG(pag,mp)&t;&bslash;&n;&t;XFS_MIN_FREELIST_RAW((uint_t)(pag)-&gt;pagf_levels[XFS_BTNUM_BNOi], &bslash;&n;&t;&t;&t;     (uint_t)(pag)-&gt;pagf_levels[XFS_BTNUM_CNTi], mp)
+mdefine_line|#define&t;XFS_MIN_FREELIST_PAG(pag,mp)&t;&bslash;&n;&t;XFS_MIN_FREELIST_RAW((uint_t)(pag)-&gt;pagf_levels[XFS_BTNUM_BNOi], &bslash;&n;&t;&t;&t;     (uint_t)(pag)-&gt;pagf_levels[XFS_BTNUM_CNTi], mp)
 macro_line|#endif
 macro_line|#if XFS_WANT_FUNCS || (XFS_WANT_SPACE &amp;&amp; XFSSO_XFS_MIN_FREELIST_RAW)
 r_int
@@ -587,10 +587,10 @@ id|mp
 )paren
 suffix:semicolon
 DECL|macro|XFS_MIN_FREELIST_RAW
-mdefine_line|#define XFS_MIN_FREELIST_RAW(bl,cl,mp)&t;xfs_min_freelist_raw(bl,cl,mp)
+mdefine_line|#define&t;XFS_MIN_FREELIST_RAW(bl,cl,mp)&t;xfs_min_freelist_raw(bl,cl,mp)
 macro_line|#else
 DECL|macro|XFS_MIN_FREELIST_RAW
-mdefine_line|#define XFS_MIN_FREELIST_RAW(bl,cl,mp)&t;&bslash;&n;&t;(MIN(bl + 1, XFS_AG_MAXLEVELS(mp)) + &bslash;&n;&t; MIN(cl + 1, XFS_AG_MAXLEVELS(mp)))
+mdefine_line|#define&t;XFS_MIN_FREELIST_RAW(bl,cl,mp)&t;&bslash;&n;&t;(MIN(bl + 1, XFS_AG_MAXLEVELS(mp)) + &bslash;&n;&t; MIN(cl + 1, XFS_AG_MAXLEVELS(mp)))
 macro_line|#endif
 macro_line|#if XFS_WANT_FUNCS || (XFS_WANT_SPACE &amp;&amp; XFSSO_XFS_AGB_TO_FSB)
 id|xfs_fsblock_t
@@ -613,7 +613,7 @@ DECL|macro|XFS_AGB_TO_FSB
 mdefine_line|#define XFS_AGB_TO_FSB(mp,agno,agbno)&t;xfs_agb_to_fsb(mp,agno,agbno)
 macro_line|#else
 DECL|macro|XFS_AGB_TO_FSB
-mdefine_line|#define XFS_AGB_TO_FSB(mp,agno,agbno) &bslash;&n;&t;(((xfs_fsblock_t)(agno) &lt;&lt; (mp)-&gt;m_sb.sb_agblklog) | (agbno))
+mdefine_line|#define&t;XFS_AGB_TO_FSB(mp,agno,agbno) &bslash;&n;&t;(((xfs_fsblock_t)(agno) &lt;&lt; (mp)-&gt;m_sb.sb_agblklog) | (agbno))
 macro_line|#endif
 macro_line|#if XFS_WANT_FUNCS || (XFS_WANT_SPACE &amp;&amp; XFSSO_XFS_FSB_TO_AGNO)
 id|xfs_agnumber_t
@@ -630,10 +630,10 @@ id|fsbno
 )paren
 suffix:semicolon
 DECL|macro|XFS_FSB_TO_AGNO
-mdefine_line|#define XFS_FSB_TO_AGNO(mp,fsbno)&t;xfs_fsb_to_agno(mp,fsbno)
+mdefine_line|#define&t;XFS_FSB_TO_AGNO(mp,fsbno)&t;xfs_fsb_to_agno(mp,fsbno)
 macro_line|#else
 DECL|macro|XFS_FSB_TO_AGNO
-mdefine_line|#define XFS_FSB_TO_AGNO(mp,fsbno) &bslash;&n;&t;((xfs_agnumber_t)((fsbno) &gt;&gt; (mp)-&gt;m_sb.sb_agblklog))
+mdefine_line|#define&t;XFS_FSB_TO_AGNO(mp,fsbno) &bslash;&n;&t;((xfs_agnumber_t)((fsbno) &gt;&gt; (mp)-&gt;m_sb.sb_agblklog))
 macro_line|#endif
 macro_line|#if XFS_WANT_FUNCS || (XFS_WANT_SPACE &amp;&amp; XFSSO_XFS_FSB_TO_AGBNO)
 id|xfs_agblock_t
@@ -650,10 +650,10 @@ id|fsbno
 )paren
 suffix:semicolon
 DECL|macro|XFS_FSB_TO_AGBNO
-mdefine_line|#define XFS_FSB_TO_AGBNO(mp,fsbno)&t;xfs_fsb_to_agbno(mp,fsbno)
+mdefine_line|#define&t;XFS_FSB_TO_AGBNO(mp,fsbno)&t;xfs_fsb_to_agbno(mp,fsbno)
 macro_line|#else
 DECL|macro|XFS_FSB_TO_AGBNO
-mdefine_line|#define XFS_FSB_TO_AGBNO(mp,fsbno) &bslash;&n;&t;((xfs_agblock_t)((fsbno) &amp; XFS_MASK32LO((mp)-&gt;m_sb.sb_agblklog)))
+mdefine_line|#define&t;XFS_FSB_TO_AGBNO(mp,fsbno) &bslash;&n;&t;((xfs_agblock_t)((fsbno) &amp; XFS_MASK32LO((mp)-&gt;m_sb.sb_agblklog)))
 macro_line|#endif
 macro_line|#if XFS_WANT_FUNCS || (XFS_WANT_SPACE &amp;&amp; XFSSO_XFS_AGB_TO_DADDR)
 id|xfs_daddr_t
@@ -673,10 +673,10 @@ id|agbno
 )paren
 suffix:semicolon
 DECL|macro|XFS_AGB_TO_DADDR
-mdefine_line|#define XFS_AGB_TO_DADDR(mp,agno,agbno) xfs_agb_to_daddr(mp,agno,agbno)
+mdefine_line|#define&t;XFS_AGB_TO_DADDR(mp,agno,agbno)&t;xfs_agb_to_daddr(mp,agno,agbno)
 macro_line|#else
 DECL|macro|XFS_AGB_TO_DADDR
-mdefine_line|#define XFS_AGB_TO_DADDR(mp,agno,agbno) &bslash;&n;&t;((xfs_daddr_t)(XFS_FSB_TO_BB(mp, &bslash;&n;&t;&t;(xfs_fsblock_t)(agno) * (mp)-&gt;m_sb.sb_agblocks + (agbno))))
+mdefine_line|#define&t;XFS_AGB_TO_DADDR(mp,agno,agbno) &bslash;&n;&t;((xfs_daddr_t)(XFS_FSB_TO_BB(mp, &bslash;&n;&t;&t;(xfs_fsblock_t)(agno) * (mp)-&gt;m_sb.sb_agblocks + (agbno))))
 macro_line|#endif
 multiline_comment|/*&n; * XFS_DADDR_TO_AGNO and XFS_DADDR_TO_AGBNO moved to xfs_mount.h&n; * to avoid header file ordering change&n; */
 macro_line|#if XFS_WANT_FUNCS || (XFS_WANT_SPACE &amp;&amp; XFSSO_XFS_AG_DADDR)
@@ -697,10 +697,10 @@ id|d
 )paren
 suffix:semicolon
 DECL|macro|XFS_AG_DADDR
-mdefine_line|#define XFS_AG_DADDR(mp,agno,d)&t;&t;xfs_ag_daddr(mp,agno,d)
+mdefine_line|#define&t;XFS_AG_DADDR(mp,agno,d)&t;&t;xfs_ag_daddr(mp,agno,d)
 macro_line|#else
 DECL|macro|XFS_AG_DADDR
-mdefine_line|#define XFS_AG_DADDR(mp,agno,d) (XFS_AGB_TO_DADDR(mp, agno, 0) + (d))
+mdefine_line|#define&t;XFS_AG_DADDR(mp,agno,d)&t;(XFS_AGB_TO_DADDR(mp, agno, 0) + (d))
 macro_line|#endif
 macro_line|#if XFS_WANT_FUNCS || (XFS_WANT_SPACE &amp;&amp; XFSSO_XFS_BUF_TO_AGF)
 id|xfs_agf_t
@@ -715,10 +715,10 @@ id|bp
 )paren
 suffix:semicolon
 DECL|macro|XFS_BUF_TO_AGF
-mdefine_line|#define XFS_BUF_TO_AGF(bp)&t;&t;xfs_buf_to_agf(bp)
+mdefine_line|#define&t;XFS_BUF_TO_AGF(bp)&t;&t;xfs_buf_to_agf(bp)
 macro_line|#else
 DECL|macro|XFS_BUF_TO_AGF
-mdefine_line|#define XFS_BUF_TO_AGF(bp)&t;((xfs_agf_t *)XFS_BUF_PTR(bp))
+mdefine_line|#define&t;XFS_BUF_TO_AGF(bp)&t;((xfs_agf_t *)XFS_BUF_PTR(bp))
 macro_line|#endif
 macro_line|#if XFS_WANT_FUNCS || (XFS_WANT_SPACE &amp;&amp; XFSSO_XFS_BUF_TO_AGI)
 id|xfs_agi_t
@@ -733,10 +733,10 @@ id|bp
 )paren
 suffix:semicolon
 DECL|macro|XFS_BUF_TO_AGI
-mdefine_line|#define XFS_BUF_TO_AGI(bp)&t;&t;xfs_buf_to_agi(bp)
+mdefine_line|#define&t;XFS_BUF_TO_AGI(bp)&t;&t;xfs_buf_to_agi(bp)
 macro_line|#else
 DECL|macro|XFS_BUF_TO_AGI
-mdefine_line|#define XFS_BUF_TO_AGI(bp)&t;((xfs_agi_t *)XFS_BUF_PTR(bp))
+mdefine_line|#define&t;XFS_BUF_TO_AGI(bp)&t;((xfs_agi_t *)XFS_BUF_PTR(bp))
 macro_line|#endif
 macro_line|#if XFS_WANT_FUNCS || (XFS_WANT_SPACE &amp;&amp; XFSSO_XFS_BUF_TO_AGFL)
 id|xfs_agfl_t
@@ -751,10 +751,10 @@ id|bp
 )paren
 suffix:semicolon
 DECL|macro|XFS_BUF_TO_AGFL
-mdefine_line|#define XFS_BUF_TO_AGFL(bp)&t;&t;xfs_buf_to_agfl(bp)
+mdefine_line|#define&t;XFS_BUF_TO_AGFL(bp)&t;&t;xfs_buf_to_agfl(bp)
 macro_line|#else
 DECL|macro|XFS_BUF_TO_AGFL
-mdefine_line|#define XFS_BUF_TO_AGFL(bp)&t;((xfs_agfl_t *)XFS_BUF_PTR(bp))
+mdefine_line|#define&t;XFS_BUF_TO_AGFL(bp)&t;((xfs_agfl_t *)XFS_BUF_PTR(bp))
 macro_line|#endif
 multiline_comment|/*&n; * For checking for bad ranges of xfs_daddr_t&squot;s, covering multiple&n; * allocation groups or a single xfs_daddr_t that&squot;s a superblock copy.&n; */
 macro_line|#if XFS_WANT_FUNCS || (XFS_WANT_SPACE &amp;&amp; XFSSO_XFS_AG_CHECK_DADDR)
@@ -775,10 +775,10 @@ id|len
 )paren
 suffix:semicolon
 DECL|macro|XFS_AG_CHECK_DADDR
-mdefine_line|#define XFS_AG_CHECK_DADDR(mp,d,len)&t;xfs_ag_check_daddr(mp,d,len)
+mdefine_line|#define&t;XFS_AG_CHECK_DADDR(mp,d,len)&t;xfs_ag_check_daddr(mp,d,len)
 macro_line|#else
 DECL|macro|XFS_AG_CHECK_DADDR
-mdefine_line|#define XFS_AG_CHECK_DADDR(mp,d,len)&t;&bslash;&n;&t;((len) == 1 ? &bslash;&n;&t;    ASSERT((d) == XFS_SB_DADDR || &bslash;&n;&t;&t;   XFS_DADDR_TO_AGBNO(mp, d) != XFS_SB_DADDR) : &bslash;&n;&t;    ASSERT(XFS_DADDR_TO_AGNO(mp, d) == &bslash;&n;&t;&t;   XFS_DADDR_TO_AGNO(mp, (d) + (len) - 1)))
+mdefine_line|#define&t;XFS_AG_CHECK_DADDR(mp,d,len)&t;&bslash;&n;&t;((len) == 1 ? &bslash;&n;&t;    ASSERT((d) == XFS_SB_DADDR || &bslash;&n;&t;&t;   XFS_DADDR_TO_AGBNO(mp, d) != XFS_SB_DADDR) : &bslash;&n;&t;    ASSERT(XFS_DADDR_TO_AGNO(mp, d) == &bslash;&n;&t;&t;   XFS_DADDR_TO_AGNO(mp, (d) + (len) - 1)))
 macro_line|#endif
 macro_line|#endif&t;/* __XFS_AG_H__ */
 eof

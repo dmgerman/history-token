@@ -1,6 +1,18 @@
-multiline_comment|/*&n; * Copyright (c) 2000-2001 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.&t; Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information: Silicon Graphics, Inc., 1600 Amphitheatre Pkwy,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/SGIGPLNoticeExplan/&n; */
+multiline_comment|/*&n; * Copyright (c) 2000-2001 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.  Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information: Silicon Graphics, Inc., 1600 Amphitheatre Pkwy,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/SGIGPLNoticeExplan/&n; */
 multiline_comment|/*&n; * This file contains the implementation of the xfs_efi_log_item&n; * and xfs_efd_log_item items.&n; */
-macro_line|#include &lt;xfs.h&gt;
+macro_line|#include &quot;xfs.h&quot;
+macro_line|#include &quot;xfs_macros.h&quot;
+macro_line|#include &quot;xfs_types.h&quot;
+macro_line|#include &quot;xfs_inum.h&quot;
+macro_line|#include &quot;xfs_log.h&quot;
+macro_line|#include &quot;xfs_trans.h&quot;
+macro_line|#include &quot;xfs_buf_item.h&quot;
+macro_line|#include &quot;xfs_sb.h&quot;
+macro_line|#include &quot;xfs_dir.h&quot;
+macro_line|#include &quot;xfs_dmapi.h&quot;
+macro_line|#include &quot;xfs_mount.h&quot;
+macro_line|#include &quot;xfs_trans_priv.h&quot;
+macro_line|#include &quot;xfs_extfree_item.h&quot;
 DECL|variable|xfs_efi_zone
 id|kmem_zone_t
 op_star
@@ -502,7 +514,7 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * The EFI is logged only once and cannot be moved in the log, so&n; * simply return the lsn at which it&squot;s been logged.  The canceled&n; * flag is not paid any attention here.&t; Checking for that is delayed&n; * until the EFI is unpinned.&n; */
+multiline_comment|/*&n; * The EFI is logged only once and cannot be moved in the log, so&n; * simply return the lsn at which it&squot;s been logged.  The canceled&n; * flag is not paid any attention here.  Checking for that is delayed&n; * until the EFI is unpinned.&n; */
 multiline_comment|/*ARGSUSED*/
 id|STATIC
 id|xfs_lsn_t
@@ -522,7 +534,7 @@ r_return
 id|lsn
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * This is called when the transaction logging the EFI is aborted.&n; * Free up the EFI and return.&t;No need to clean up the slot for&n; * the item in the transaction.&t; That was done by the unpin code&n; * which is called prior to this routine in the abort/fs-shutdown path.&n; */
+multiline_comment|/*&n; * This is called when the transaction logging the EFI is aborted.&n; * Free up the EFI and return.  No need to clean up the slot for&n; * the item in the transaction.  That was done by the unpin code&n; * which is called prior to this routine in the abort/fs-shutdown path.&n; */
 id|STATIC
 r_void
 DECL|function|xfs_efi_item_abort
@@ -595,7 +607,7 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * There isn&squot;t much you can do to push on an efi item.&t;It is simply&n; * stuck waiting for all of its corresponding efd items to be&n; * committed to disk.&n; */
+multiline_comment|/*&n; * There isn&squot;t much you can do to push on an efi item.  It is simply&n; * stuck waiting for all of its corresponding efd items to be&n; * committed to disk.&n; */
 multiline_comment|/*ARGSUSED*/
 id|STATIC
 r_void
@@ -952,7 +964,7 @@ id|efip
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * This is called by the efd item code below to release references to&n; * the given efi item.&t;Each efd calls this with the number of&n; * extents that it has logged, and when the sum of these reaches&n; * the total number of extents logged by this efi item we can free&n; * the efi item.&n; *&n; * Freeing the efi item requires that we remove it from the AIL.&n; * We&squot;ll use the AIL lock to protect our counters as well as&n; * the removal from the AIL.&n; */
+multiline_comment|/*&n; * This is called by the efd item code below to release references to&n; * the given efi item.  Each efd calls this with the number of&n; * extents that it has logged, and when the sum of these reaches&n; * the total number of extents logged by this efi item we can free&n; * the efi item.&n; *&n; * Freeing the efi item requires that we remove it from the AIL.&n; * We&squot;ll use the AIL lock to protect our counters as well as&n; * the removal from the AIL.&n; */
 r_void
 DECL|function|xfs_efi_release
 id|xfs_efi_release
@@ -1560,7 +1572,7 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * The transaction of which this EFD is a part has been aborted.&n; * Inform its companion EFI of this fact and then clean up after&n; * ourselves.  No need to clean up the slot for the item in the&n; * transaction.&t; That was done by the unpin code which is called&n; * prior to this routine in the abort/fs-shutdown path.&n; */
+multiline_comment|/*&n; * The transaction of which this EFD is a part has been aborted.&n; * Inform its companion EFI of this fact and then clean up after&n; * ourselves.  No need to clean up the slot for the item in the&n; * transaction.  That was done by the unpin code which is called&n; * prior to this routine in the abort/fs-shutdown path.&n; */
 id|STATIC
 r_void
 DECL|function|xfs_efd_item_abort
@@ -1651,7 +1663,7 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * There isn&squot;t much you can do to push on an efd item.&t;It is simply&n; * stuck waiting for the log to be flushed to disk.&n; */
+multiline_comment|/*&n; * There isn&squot;t much you can do to push on an efd item.  It is simply&n; * stuck waiting for the log to be flushed to disk.&n; */
 multiline_comment|/*ARGSUSED*/
 id|STATIC
 r_void

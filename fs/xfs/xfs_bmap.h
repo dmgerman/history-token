@@ -1,7 +1,7 @@
-multiline_comment|/*&n; * Copyright (c) 2000-2003 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.&t; Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information: Silicon Graphics, Inc., 1600 Amphitheatre Pkwy,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/SGIGPLNoticeExplan/&n; */
+multiline_comment|/*&n; * Copyright (c) 2000-2003 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.  Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information: Silicon Graphics, Inc., 1600 Amphitheatre Pkwy,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/SGIGPLNoticeExplan/&n; */
 macro_line|#ifndef __XFS_BMAP_H__
 DECL|macro|__XFS_BMAP_H__
-mdefine_line|#define __XFS_BMAP_H__
+mdefine_line|#define&t;__XFS_BMAP_H__
 r_struct
 id|getbmap
 suffix:semicolon
@@ -71,10 +71,10 @@ DECL|typedef|xfs_bmap_free_t
 id|xfs_bmap_free_t
 suffix:semicolon
 DECL|macro|XFS_BMAP_MAX_NMAP
-mdefine_line|#define XFS_BMAP_MAX_NMAP&t;4
+mdefine_line|#define&t;XFS_BMAP_MAX_NMAP&t;4
 multiline_comment|/*&n; * Flags for xfs_bmapi&n; */
 DECL|macro|XFS_BMAPI_WRITE
-mdefine_line|#define XFS_BMAPI_WRITE&t;&t;0x001&t;/* write operation: allocate space */
+mdefine_line|#define&t;XFS_BMAPI_WRITE&t;&t;0x001&t;/* write operation: allocate space */
 DECL|macro|XFS_BMAPI_DELAY
 mdefine_line|#define XFS_BMAPI_DELAY&t;&t;0x002&t;/* delayed write operation */
 DECL|macro|XFS_BMAPI_ENTIRE
@@ -90,12 +90,12 @@ mdefine_line|#define XFS_BMAPI_ASYNC&t;&t;0x040&t;/* bunmapi xactions can be asy
 DECL|macro|XFS_BMAPI_RSVBLOCKS
 mdefine_line|#define XFS_BMAPI_RSVBLOCKS&t;0x080&t;/* OK to alloc. reserved data blocks */
 DECL|macro|XFS_BMAPI_PREALLOC
-mdefine_line|#define XFS_BMAPI_PREALLOC&t;0x100&t;/* preallocation op: unwritten space */
+mdefine_line|#define&t;XFS_BMAPI_PREALLOC&t;0x100&t;/* preallocation op: unwritten space */
 DECL|macro|XFS_BMAPI_IGSTATE
-mdefine_line|#define XFS_BMAPI_IGSTATE&t;0x200&t;/* Ignore state - */
+mdefine_line|#define&t;XFS_BMAPI_IGSTATE&t;0x200&t;/* Ignore state - */
 multiline_comment|/* combine contig. space */
 DECL|macro|XFS_BMAPI_CONTIG
-mdefine_line|#define XFS_BMAPI_CONTIG&t;0x400&t;/* must allocate only one extent */
+mdefine_line|#define&t;XFS_BMAPI_CONTIG&t;0x400&t;/* must allocate only one extent */
 macro_line|#if XFS_WANT_FUNCS || (XFS_WANT_SPACE &amp;&amp; XFSSO_XFS_BMAPI_AFLAG)
 r_int
 id|xfs_bmapi_aflag
@@ -106,32 +106,32 @@ id|w
 )paren
 suffix:semicolon
 DECL|macro|XFS_BMAPI_AFLAG
-mdefine_line|#define XFS_BMAPI_AFLAG(w)&t;xfs_bmapi_aflag(w)
+mdefine_line|#define&t;XFS_BMAPI_AFLAG(w)&t;xfs_bmapi_aflag(w)
 macro_line|#else
 DECL|macro|XFS_BMAPI_AFLAG
-mdefine_line|#define XFS_BMAPI_AFLAG(w)&t;((w) == XFS_ATTR_FORK ? XFS_BMAPI_ATTRFORK : 0)
+mdefine_line|#define&t;XFS_BMAPI_AFLAG(w)&t;((w) == XFS_ATTR_FORK ? XFS_BMAPI_ATTRFORK : 0)
 macro_line|#endif
 multiline_comment|/*&n; * Special values for xfs_bmbt_irec_t br_startblock field.&n; */
 DECL|macro|DELAYSTARTBLOCK
-mdefine_line|#define DELAYSTARTBLOCK&t;&t;((xfs_fsblock_t)-1LL)
+mdefine_line|#define&t;DELAYSTARTBLOCK&t;&t;((xfs_fsblock_t)-1LL)
 DECL|macro|HOLESTARTBLOCK
-mdefine_line|#define HOLESTARTBLOCK&t;&t;((xfs_fsblock_t)-2LL)
+mdefine_line|#define&t;HOLESTARTBLOCK&t;&t;((xfs_fsblock_t)-2LL)
 multiline_comment|/*&n; * Trace operations for bmap extent tracing&n; */
 DECL|macro|XFS_BMAP_KTRACE_DELETE
-mdefine_line|#define XFS_BMAP_KTRACE_DELETE&t;1
+mdefine_line|#define&t;XFS_BMAP_KTRACE_DELETE&t;1
 DECL|macro|XFS_BMAP_KTRACE_INSERT
-mdefine_line|#define XFS_BMAP_KTRACE_INSERT&t;2
+mdefine_line|#define&t;XFS_BMAP_KTRACE_INSERT&t;2
 DECL|macro|XFS_BMAP_KTRACE_PRE_UP
-mdefine_line|#define XFS_BMAP_KTRACE_PRE_UP&t;3
+mdefine_line|#define&t;XFS_BMAP_KTRACE_PRE_UP&t;3
 DECL|macro|XFS_BMAP_KTRACE_POST_UP
-mdefine_line|#define XFS_BMAP_KTRACE_POST_UP 4
+mdefine_line|#define&t;XFS_BMAP_KTRACE_POST_UP&t;4
 DECL|macro|XFS_BMAP_TRACE_SIZE
-mdefine_line|#define XFS_BMAP_TRACE_SIZE&t;4096&t;/* size of global trace buffer */
+mdefine_line|#define&t;XFS_BMAP_TRACE_SIZE&t;4096&t;/* size of global trace buffer */
 DECL|macro|XFS_BMAP_KTRACE_SIZE
-mdefine_line|#define XFS_BMAP_KTRACE_SIZE&t;32&t;/* size of per-inode trace buffer */
+mdefine_line|#define&t;XFS_BMAP_KTRACE_SIZE&t;32&t;/* size of per-inode trace buffer */
 macro_line|#if defined(XFS_ALL_TRACE)
 DECL|macro|XFS_BMAP_TRACE
-mdefine_line|#define XFS_BMAP_TRACE
+mdefine_line|#define&t;XFS_BMAP_TRACE
 macro_line|#endif
 macro_line|#if !defined(DEBUG)
 DECL|macro|XFS_BMAP_TRACE
@@ -152,10 +152,10 @@ id|fbp
 )paren
 suffix:semicolon
 DECL|macro|XFS_BMAP_INIT
-mdefine_line|#define XFS_BMAP_INIT(flp,fbp)&t;xfs_bmap_init(flp,fbp)
+mdefine_line|#define&t;XFS_BMAP_INIT(flp,fbp)&t;xfs_bmap_init(flp,fbp)
 macro_line|#else
 DECL|macro|XFS_BMAP_INIT
-mdefine_line|#define XFS_BMAP_INIT(flp,fbp)&t;&bslash;&n;&t;((flp)-&gt;xbf_first = NULL, (flp)-&gt;xbf_count = 0, &bslash;&n;&t; (flp)-&gt;xbf_low = 0, *(fbp) = NULLFSBLOCK)
+mdefine_line|#define&t;XFS_BMAP_INIT(flp,fbp)&t;&bslash;&n;&t;((flp)-&gt;xbf_first = NULL, (flp)-&gt;xbf_count = 0, &bslash;&n;&t; (flp)-&gt;xbf_low = 0, *(fbp) = NULLFSBLOCK)
 macro_line|#endif
 multiline_comment|/*&n; * Argument structure for xfs_bmap_alloc.&n; */
 DECL|struct|xfs_bmalloca
@@ -321,7 +321,7 @@ id|ip
 )paren
 suffix:semicolon
 multiline_comment|/* incore inode */
-multiline_comment|/*&n; * Compute and fill in the value of the maximum depth of a bmap btree&n; * in this filesystem.&t;Done once, during mount.&n; */
+multiline_comment|/*&n; * Compute and fill in the value of the maximum depth of a bmap btree&n; * in this filesystem.  Done once, during mount.&n; */
 r_void
 id|xfs_bmap_compute_maxlevels
 c_func
@@ -520,7 +520,7 @@ suffix:semicolon
 multiline_comment|/* data or attr fork */
 macro_line|#else
 DECL|macro|xfs_bmap_trace_exlist
-mdefine_line|#define xfs_bmap_trace_exlist(f,ip,c,w)
+mdefine_line|#define&t;xfs_bmap_trace_exlist(f,ip,c,w)
 macro_line|#endif
 multiline_comment|/*&n; * Map file blocks to filesystem blocks.&n; * File range is given by the bno/len pair.&n; * Adds blocks to file if a write (&quot;flags &amp; XFS_BMAPI_WRITE&quot; set)&n; * into a hole or past eof.&n; * Only allocates blocks from a single allocation group,&n; * to avoid locking problems.&n; * The returned value in &quot;firstblock&quot; from the first call in a transaction&n; * must be remembered and presented to subsequent calls in &quot;firstblock&quot;.&n; * An upper bound for the number of blocks to be allocated is supplied to&n; * the first call in &quot;total&quot;; if no allocation group has that many free&n; * blocks then the call will fail (return NULLFSBLOCK in &quot;firstblock&quot;).&n; */
 r_int
@@ -610,7 +610,7 @@ id|bno
 )paren
 suffix:semicolon
 multiline_comment|/* starting file offs. mapped */
-multiline_comment|/*&n; * Unmap (remove) blocks from a file.&n; * If nexts is nonzero then the number of extents to remove is limited to&n; * that value.&t;If not all extents in the block range can be removed then&n; * *done is set.&n; */
+multiline_comment|/*&n; * Unmap (remove) blocks from a file.&n; * If nexts is nonzero then the number of extents to remove is limited to&n; * that value.  If not all extents in the block range can be removed then&n; * *done is set.&n; */
 r_int
 multiline_comment|/* error */
 id|xfs_bunmapi
