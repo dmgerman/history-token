@@ -2783,6 +2783,14 @@ r_return
 op_minus
 id|EIO
 suffix:semicolon
+id|fs_check_frozen
+c_func
+(paren
+id|vp-&gt;v_vfsp
+comma
+id|SB_FREEZE_WRITE
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
