@@ -5429,6 +5429,11 @@ id|pt_prev
 op_assign
 l_int|NULL
 suffix:semicolon
+id|rcu_read_lock
+c_func
+(paren
+)paren
+suffix:semicolon
 macro_line|#ifdef CONFIG_NET_CLS_ACT
 r_if
 c_cond
@@ -5446,21 +5451,11 @@ c_func
 id|skb-&gt;tc_verd
 )paren
 suffix:semicolon
-id|rcu_read_lock
-c_func
-(paren
-)paren
-suffix:semicolon
 r_goto
 id|ncls
 suffix:semicolon
 )brace
 macro_line|#endif
-id|rcu_read_lock
-c_func
-(paren
-)paren
-suffix:semicolon
 id|list_for_each_entry_rcu
 c_func
 (paren
