@@ -416,14 +416,14 @@ id|__kernel_size_t
 )paren
 suffix:semicolon
 DECL|variable|memcpy
-id|EXPORT_SYMBOL_NOVERS
+id|EXPORT_SYMBOL
 c_func
 (paren
 id|memcpy
 )paren
 suffix:semicolon
 DECL|variable|memset
-id|EXPORT_SYMBOL_NOVERS
+id|EXPORT_SYMBOL
 c_func
 (paren
 id|memset

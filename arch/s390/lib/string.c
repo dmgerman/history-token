@@ -151,7 +151,7 @@ id|s
 suffix:semicolon
 )brace
 DECL|variable|strlen
-id|EXPORT_SYMBOL_NOVERS
+id|EXPORT_SYMBOL
 c_func
 (paren
 id|strlen
@@ -185,7 +185,7 @@ id|s
 suffix:semicolon
 )brace
 DECL|variable|strnlen
-id|EXPORT_SYMBOL_NOVERS
+id|EXPORT_SYMBOL
 c_func
 (paren
 id|strnlen
@@ -256,7 +256,7 @@ id|ret
 suffix:semicolon
 )brace
 DECL|variable|strcpy
-id|EXPORT_SYMBOL_NOVERS
+id|EXPORT_SYMBOL
 c_func
 (paren
 id|strcpy
@@ -337,7 +337,7 @@ id|ret
 suffix:semicolon
 )brace
 DECL|variable|strlcpy
-id|EXPORT_SYMBOL_NOVERS
+id|EXPORT_SYMBOL
 c_func
 (paren
 id|strlcpy
@@ -405,7 +405,7 @@ id|dest
 suffix:semicolon
 )brace
 DECL|variable|strncpy
-id|EXPORT_SYMBOL_NOVERS
+id|EXPORT_SYMBOL
 c_func
 (paren
 id|strncpy
@@ -492,7 +492,7 @@ id|ret
 suffix:semicolon
 )brace
 DECL|variable|strcat
-id|EXPORT_SYMBOL_NOVERS
+id|EXPORT_SYMBOL
 c_func
 (paren
 id|strcat
@@ -598,7 +598,7 @@ id|res
 suffix:semicolon
 )brace
 DECL|variable|strlcat
-id|EXPORT_SYMBOL_NOVERS
+id|EXPORT_SYMBOL
 c_func
 (paren
 id|strlcat
@@ -669,7 +669,7 @@ id|dest
 suffix:semicolon
 )brace
 DECL|variable|strncat
-id|EXPORT_SYMBOL_NOVERS
+id|EXPORT_SYMBOL
 c_func
 (paren
 id|strncat
@@ -748,7 +748,7 @@ id|ret
 suffix:semicolon
 )brace
 DECL|variable|strcmp
-id|EXPORT_SYMBOL_NOVERS
+id|EXPORT_SYMBOL
 c_func
 (paren
 id|strcmp
@@ -825,7 +825,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|variable|strrchr
-id|EXPORT_SYMBOL_NOVERS
+id|EXPORT_SYMBOL
 c_func
 (paren
 id|strrchr
@@ -1022,7 +1022,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|variable|strstr
-id|EXPORT_SYMBOL_NOVERS
+id|EXPORT_SYMBOL
 c_func
 (paren
 id|strstr
@@ -1106,7 +1106,7 @@ id|ret
 suffix:semicolon
 )brace
 DECL|variable|memchr
-id|EXPORT_SYMBOL_NOVERS
+id|EXPORT_SYMBOL
 c_func
 (paren
 id|memchr
@@ -1262,7 +1262,7 @@ id|ret
 suffix:semicolon
 )brace
 DECL|variable|memcmp
-id|EXPORT_SYMBOL_NOVERS
+id|EXPORT_SYMBOL
 c_func
 (paren
 id|memcmp
@@ -1342,7 +1342,7 @@ id|ret
 suffix:semicolon
 )brace
 DECL|variable|memscan
-id|EXPORT_SYMBOL_NOVERS
+id|EXPORT_SYMBOL
 c_func
 (paren
 id|memscan
@@ -1381,7 +1381,7 @@ id|n
 suffix:semicolon
 )brace
 DECL|variable|memcpy
-id|EXPORT_SYMBOL_NOVERS
+id|EXPORT_SYMBOL
 c_func
 (paren
 id|memcpy
@@ -1418,7 +1418,7 @@ id|n
 suffix:semicolon
 )brace
 DECL|variable|bcopy
-id|EXPORT_SYMBOL_NOVERS
+id|EXPORT_SYMBOL
 c_func
 (paren
 id|bcopy
@@ -1502,7 +1502,7 @@ id|s
 suffix:semicolon
 )brace
 DECL|variable|memset
-id|EXPORT_SYMBOL_NOVERS
+id|EXPORT_SYMBOL
 c_func
 (paren
 id|memset

@@ -700,7 +700,7 @@ r_void
 )paren
 suffix:semicolon
 DECL|variable|_mcount
-id|EXPORT_SYMBOL_NOVERS
+id|EXPORT_SYMBOL
 c_func
 (paren
 id|_mcount
@@ -1866,7 +1866,7 @@ id|pfn_to_page
 suffix:semicolon
 multiline_comment|/* No version information on this, heavily used in inline asm,&n; * and will always be &squot;void __ret_efault(void)&squot;.&n; */
 DECL|variable|__ret_efault
-id|EXPORT_SYMBOL_NOVERS
+id|EXPORT_SYMBOL
 c_func
 (paren
 id|__ret_efault
@@ -1874,35 +1874,35 @@ id|__ret_efault
 suffix:semicolon
 multiline_comment|/* No version information on these, as gcc produces such symbols. */
 DECL|variable|memcmp
-id|EXPORT_SYMBOL_NOVERS
+id|EXPORT_SYMBOL
 c_func
 (paren
 id|memcmp
 )paren
 suffix:semicolon
 DECL|variable|memcpy
-id|EXPORT_SYMBOL_NOVERS
+id|EXPORT_SYMBOL
 c_func
 (paren
 id|memcpy
 )paren
 suffix:semicolon
 DECL|variable|memset
-id|EXPORT_SYMBOL_NOVERS
+id|EXPORT_SYMBOL
 c_func
 (paren
 id|memset
 )paren
 suffix:semicolon
 DECL|variable|memmove
-id|EXPORT_SYMBOL_NOVERS
+id|EXPORT_SYMBOL
 c_func
 (paren
 id|memmove
 )paren
 suffix:semicolon
 DECL|variable|strncmp
-id|EXPORT_SYMBOL_NOVERS
+id|EXPORT_SYMBOL
 c_func
 (paren
 id|strncmp
@@ -1946,7 +1946,7 @@ r_void
 suffix:semicolon
 multiline_comment|/* RAID code needs this */
 DECL|variable|VISenter
-id|EXPORT_SYMBOL_NOVERS
+id|EXPORT_SYMBOL
 c_func
 (paren
 id|VISenter

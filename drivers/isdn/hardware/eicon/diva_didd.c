@@ -119,14 +119,14 @@ op_assign
 l_int|NULL
 suffix:semicolon
 DECL|variable|DIVA_DIDD_Read
-id|EXPORT_SYMBOL_NOVERS
+id|EXPORT_SYMBOL
 c_func
 (paren
 id|DIVA_DIDD_Read
 )paren
 suffix:semicolon
 DECL|variable|proc_net_eicon
-id|EXPORT_SYMBOL_NOVERS
+id|EXPORT_SYMBOL
 c_func
 (paren
 id|proc_net_eicon
