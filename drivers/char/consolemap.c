@@ -7,7 +7,6 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/consolemap.h&gt;
-macro_line|#include &lt;linux/console_struct.h&gt;
 macro_line|#include &lt;linux/vt_kern.h&gt;
 DECL|variable|translations
 r_static

@@ -95,6 +95,12 @@ r_int
 id|vc_hi_font_mask
 suffix:semicolon
 multiline_comment|/* [#] Attribute set for upper 256 chars of font or 0 if not supported */
+DECL|member|vc_font
+r_struct
+id|console_font_op
+id|vc_font
+suffix:semicolon
+multiline_comment|/* Current VC font set */
 DECL|member|vc_video_erase_char
 r_int
 r_int

@@ -476,7 +476,7 @@ id|b-&gt;adapter.name
 comma
 id|name
 comma
-id|GET_FB_IDX
+id|minor
 c_func
 (paren
 id|minfo-&gt;fbcon.node
