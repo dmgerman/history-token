@@ -1404,6 +1404,8 @@ id|usb_submit_urb
 c_func
 (paren
 id|oob_port-&gt;write_urb
+comma
+id|GFP_KERNEL
 )paren
 )paren
 op_eq
@@ -1736,6 +1738,8 @@ id|usb_submit_urb
 c_func
 (paren
 id|port-&gt;write_urb
+comma
+id|GFP_KERNEL
 )paren
 )paren
 op_eq
@@ -2057,6 +2061,8 @@ id|usb_submit_urb
 c_func
 (paren
 id|oob_port-&gt;write_urb
+comma
+id|GFP_KERNEL
 )paren
 )paren
 op_eq
@@ -2527,6 +2533,8 @@ id|usb_submit_urb
 c_func
 (paren
 id|port-&gt;read_urb
+comma
+id|GFP_KERNEL
 )paren
 suffix:semicolon
 )brace
@@ -4265,6 +4273,8 @@ id|usb_submit_urb
 c_func
 (paren
 id|port-&gt;write_urb
+comma
+id|GFP_KERNEL
 )paren
 )paren
 op_eq
@@ -4615,6 +4625,8 @@ id|usb_submit_urb
 c_func
 (paren
 id|port-&gt;write_urb
+comma
+id|GFP_KERNEL
 )paren
 )paren
 op_eq
@@ -5760,6 +5772,8 @@ id|usb_submit_urb
 c_func
 (paren
 id|port-&gt;read_urb
+comma
+id|GFP_KERNEL
 )paren
 )paren
 op_ne
@@ -6491,6 +6505,8 @@ id|usb_submit_urb
 c_func
 (paren
 id|urb
+comma
+id|GFP_KERNEL
 )paren
 )paren
 op_ne
