@@ -10799,12 +10799,6 @@ comma
 id|bytes_to_copy
 )paren
 suffix:semicolon
-id|flush_page_to_ram
-c_func
-(paren
-id|page
-)paren
-suffix:semicolon
 id|kunmap
 c_func
 (paren

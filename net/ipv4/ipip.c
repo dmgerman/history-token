@@ -23,6 +23,7 @@ macro_line|#include &lt;net/icmp.h&gt;
 macro_line|#include &lt;net/protocol.h&gt;
 macro_line|#include &lt;net/ipip.h&gt;
 macro_line|#include &lt;net/inet_ecn.h&gt;
+macro_line|#include &lt;net/xfrm.h&gt;
 DECL|macro|HASH_SIZE
 mdefine_line|#define HASH_SIZE  16
 DECL|macro|HASH
@@ -1019,8 +1020,9 @@ id|sk_buff
 op_star
 id|skb
 comma
-id|u32
-id|info
+r_void
+op_star
+id|__unused
 )paren
 (brace
 macro_line|#ifndef I_WISH_WORLD_WERE_PERFECT
@@ -1741,7 +1743,7 @@ c_func
 r_struct
 id|iphdr
 op_star
-id|iph
+id|outer_iph
 comma
 r_struct
 id|sk_buff
@@ -1749,25 +1751,32 @@ op_star
 id|skb
 )paren
 (brace
+r_struct
+id|iphdr
+op_star
+id|inner_iph
+op_assign
+id|skb-&gt;nh.iph
+suffix:semicolon
 r_if
 c_cond
 (paren
 id|INET_ECN_is_ce
 c_func
 (paren
-id|iph-&gt;tos
+id|outer_iph-&gt;tos
 )paren
 op_logical_and
 id|INET_ECN_is_not_ce
 c_func
 (paren
-id|skb-&gt;nh.iph-&gt;tos
+id|inner_iph-&gt;tos
 )paren
 )paren
 id|IP_ECN_set_ce
 c_func
 (paren
-id|iph
+id|inner_iph
 )paren
 suffix:semicolon
 )brace
@@ -1954,28 +1963,11 @@ op_amp
 id|ipip_lock
 )paren
 suffix:semicolon
-id|icmp_send
-c_func
-(paren
-id|skb
-comma
-id|ICMP_DEST_UNREACH
-comma
-id|ICMP_PROT_UNREACH
-comma
-l_int|0
-)paren
-suffix:semicolon
 id|out
 suffix:colon
-id|kfree_skb
-c_func
-(paren
-id|skb
-)paren
-suffix:semicolon
 r_return
-l_int|0
+op_minus
+l_int|1
 suffix:semicolon
 )brace
 multiline_comment|/*&n; *&t;This function assumes it is being called from dev_queue_xmit()&n; *&t;and that skb is filled properly by that function.&n; */
@@ -3708,11 +3700,11 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|variable|ipip_protocol
+DECL|variable|ipip_handler
 r_static
 r_struct
-id|inet_protocol
-id|ipip_protocol
+id|xfrm_tunnel
+id|ipip_handler
 op_assign
 (brace
 dot
@@ -3756,13 +3748,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|inet_add_protocol
+id|xfrm4_tunnel_register
 c_func
 (paren
 op_amp
-id|ipip_protocol
-comma
-id|IPPROTO_IPIP
+id|ipip_handler
 )paren
 OL
 l_int|0
@@ -3772,7 +3762,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;ipip init: can&squot;t add protocol&bslash;n&quot;
+l_string|&quot;ipip init: can&squot;t register tunnel&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -3820,13 +3810,11 @@ r_void
 r_if
 c_cond
 (paren
-id|inet_del_protocol
+id|xfrm4_tunnel_deregister
 c_func
 (paren
 op_amp
-id|ipip_protocol
-comma
-id|IPPROTO_IPIP
+id|ipip_handler
 )paren
 OL
 l_int|0
@@ -3835,7 +3823,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;ipip close: can&squot;t remove protocol&bslash;n&quot;
+l_string|&quot;ipip close: can&squot;t deregister tunnel&bslash;n&quot;
 )paren
 suffix:semicolon
 id|unregister_netdev

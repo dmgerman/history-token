@@ -1420,8 +1420,12 @@ macro_line|#endif /* __KERNEL__ */
 macro_line|#ifdef __KERNEL__
 DECL|macro|ext2_set_bit
 mdefine_line|#define ext2_set_bit(nr,addr) &bslash;&n;&t;__test_and_set_bit((nr),(unsigned long*)addr)
+DECL|macro|ext2_set_bit_atomic
+mdefine_line|#define ext2_set_bit_atomic(lock,nr,addr) &bslash;&n;&t;        test_and_set_bit((nr),(unsigned long*)addr)
 DECL|macro|ext2_clear_bit
 mdefine_line|#define ext2_clear_bit(nr, addr) &bslash;&n;&t;__test_and_clear_bit((nr),(unsigned long*)addr)
+DECL|macro|ext2_clear_bit_atomic
+mdefine_line|#define ext2_clear_bit_atomic(lock,nr,addr) &bslash;&n;&t;        test_and_clear_bit((nr),(unsigned long*)addr)
 DECL|macro|ext2_test_bit
 mdefine_line|#define ext2_test_bit(nr, addr)      test_bit((nr),(unsigned long*)addr)
 DECL|macro|ext2_find_first_zero_bit

@@ -835,14 +835,10 @@ op_amp
 id|svc_expkey_cache
 )paren
 suffix:semicolon
-id|svc_export_put
+id|exp_put
 c_func
 (paren
-op_amp
-id|exp-&gt;h
-comma
-op_amp
-id|svc_export_cache
+id|exp
 )paren
 suffix:semicolon
 id|err
@@ -3054,13 +3050,6 @@ r_struct
 id|nameidata
 id|nd
 suffix:semicolon
-r_struct
-id|inode
-op_star
-id|inode
-op_assign
-l_int|NULL
-suffix:semicolon
 r_int
 id|err
 suffix:semicolon
@@ -3162,10 +3151,6 @@ id|err
 r_goto
 id|out_unlock
 suffix:semicolon
-id|inode
-op_assign
-id|nd.dentry-&gt;d_inode
-suffix:semicolon
 id|err
 op_assign
 op_minus
@@ -3227,8 +3212,6 @@ r_if
 c_cond
 (paren
 id|exp
-op_ne
-l_int|NULL
 )paren
 (brace
 multiline_comment|/* just a flags/id/fsid update */
@@ -3273,7 +3256,7 @@ op_assign
 id|check_export
 c_func
 (paren
-id|inode
+id|nd.dentry-&gt;d_inode
 comma
 id|nxp-&gt;ex_flags
 )paren
@@ -3875,6 +3858,12 @@ c_func
 (paren
 op_amp
 id|fh
+)paren
+suffix:semicolon
+id|exp_put
+c_func
+(paren
+id|exp
 )paren
 suffix:semicolon
 id|out

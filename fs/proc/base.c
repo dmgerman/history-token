@@ -471,7 +471,7 @@ c_cond
 id|files
 )paren
 (brace
-id|read_lock
+id|spin_lock
 c_func
 (paren
 op_amp
@@ -512,7 +512,7 @@ c_func
 id|file-&gt;f_dentry
 )paren
 suffix:semicolon
-id|read_unlock
+id|spin_unlock
 c_func
 (paren
 op_amp
@@ -529,7 +529,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-id|read_unlock
+id|spin_unlock
 c_func
 (paren
 op_amp
@@ -3252,7 +3252,7 @@ id|files
 r_goto
 id|out
 suffix:semicolon
-id|read_lock
+id|spin_lock
 c_func
 (paren
 op_amp
@@ -3299,7 +3299,7 @@ id|fd
 )paren
 r_continue
 suffix:semicolon
-id|read_unlock
+id|spin_unlock
 c_func
 (paren
 op_amp
@@ -3383,7 +3383,7 @@ OL
 l_int|0
 )paren
 (brace
-id|read_lock
+id|spin_lock
 c_func
 (paren
 op_amp
@@ -3393,7 +3393,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-id|read_lock
+id|spin_lock
 c_func
 (paren
 op_amp
@@ -3401,7 +3401,7 @@ id|files-&gt;file_lock
 )paren
 suffix:semicolon
 )brace
-id|read_unlock
+id|spin_unlock
 c_func
 (paren
 op_amp
@@ -3998,7 +3998,7 @@ c_cond
 id|files
 )paren
 (brace
-id|read_lock
+id|spin_lock
 c_func
 (paren
 op_amp
@@ -4017,7 +4017,7 @@ id|fd
 )paren
 )paren
 (brace
-id|read_unlock
+id|spin_unlock
 c_func
 (paren
 op_amp
@@ -4034,7 +4034,7 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
-id|read_unlock
+id|spin_unlock
 c_func
 (paren
 op_amp
@@ -4456,7 +4456,7 @@ id|inode-&gt;i_mode
 op_assign
 id|S_IFLNK
 suffix:semicolon
-id|read_lock
+id|spin_lock
 c_func
 (paren
 op_amp
@@ -4508,7 +4508,7 @@ id|S_IWUSR
 op_or
 id|S_IXUSR
 suffix:semicolon
-id|read_unlock
+id|spin_unlock
 c_func
 (paren
 op_amp
@@ -4570,7 +4570,7 @@ l_int|NULL
 suffix:semicolon
 id|out_unlock2
 suffix:colon
-id|read_unlock
+id|spin_unlock
 c_func
 (paren
 op_amp

@@ -529,13 +529,19 @@ op_assign
 DECL|macro|CACHE
 mdefine_line|#define CACHE(x) { .cs_size = (x) },
 macro_line|#include &lt;linux/kmalloc_sizes.h&gt;
+(brace
+l_int|0
+comma
+)brace
 DECL|macro|CACHE
 macro_line|#undef CACHE
 )brace
 suffix:semicolon
 multiline_comment|/* Must match cache_sizes above. Out of line to keep cache footprint low. */
+DECL|struct|cache_names
 r_static
 r_struct
+id|cache_names
 (brace
 DECL|member|name
 r_char
@@ -1417,8 +1423,19 @@ c_func
 r_void
 )paren
 (brace
-r_int
-id|i
+r_struct
+id|cache_sizes
+op_star
+id|sizes
+op_assign
+id|malloc_sizes
+suffix:semicolon
+r_struct
+id|cache_names
+op_star
+id|names
+op_assign
+id|cache_names
 suffix:semicolon
 multiline_comment|/*&n;&t; * Fragmentation resistance on low memory - only use bigger&n;&t; * page orders on machines with more than 32MB of memory.&n;&t; */
 r_if
@@ -1438,46 +1455,19 @@ id|slab_break_gfp_order
 op_assign
 id|BREAK_GFP_ORDER_HI
 suffix:semicolon
-r_for
+r_while
 c_loop
 (paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-id|ARRAY_SIZE
-c_func
-(paren
-id|malloc_sizes
-)paren
-suffix:semicolon
-id|i
-op_increment
+id|sizes-&gt;cs_size
 )paren
 (brace
-r_struct
-id|cache_sizes
-op_star
-id|sizes
-op_assign
-id|malloc_sizes
-op_plus
-id|i
-suffix:semicolon
 multiline_comment|/* For performance, all the general caches are L1 aligned.&n;&t;&t; * This should be particularly beneficial on SMP boxes, as it&n;&t;&t; * eliminates &quot;false sharing&quot;.&n;&t;&t; * Note for systems short on memory removing the alignment will&n;&t;&t; * allow tighter packing of the smaller caches. */
 id|sizes-&gt;cs_cachep
 op_assign
 id|kmem_cache_create
 c_func
 (paren
-id|cache_names
-(braket
-id|i
-)braket
-dot
-id|name
+id|names-&gt;name
 comma
 id|sizes-&gt;cs_size
 comma
@@ -1538,12 +1528,7 @@ op_assign
 id|kmem_cache_create
 c_func
 (paren
-id|cache_names
-(braket
-id|i
-)braket
-dot
-id|name_dma
+id|names-&gt;name_dma
 comma
 id|sizes-&gt;cs_size
 comma
@@ -1568,6 +1553,12 @@ id|BUG
 c_func
 (paren
 )paren
+suffix:semicolon
+id|sizes
+op_increment
+suffix:semicolon
+id|names
+op_increment
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * The generic caches are running - time to kick out the&n;&t; * bootstrap cpucaches.&n;&t; */

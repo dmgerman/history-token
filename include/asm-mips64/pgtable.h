@@ -9,7 +9,7 @@ macro_line|#include &lt;linux/linkage.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/mmzone.h&gt;
 macro_line|#include &lt;asm/cachectl.h&gt;
-multiline_comment|/* Cache flushing:&n; *&n; *  - flush_cache_all() flushes entire cache&n; *  - flush_cache_mm(mm) flushes the specified mm context&squot;s cache lines&n; *  - flush_cache_page(mm, vmaddr) flushes a single page&n; *  - flush_cache_range(vma, start, end) flushes a range of pages&n; *  - flush_page_to_ram(page) write back kernel page to ram&n; */
+multiline_comment|/* Cache flushing:&n; *&n; *  - flush_cache_all() flushes entire cache&n; *  - flush_cache_mm(mm) flushes the specified mm context&squot;s cache lines&n; *  - flush_cache_page(mm, vmaddr) flushes a single page&n; *  - flush_cache_range(vma, start, end) flushes a range of pages&n; */
 r_extern
 r_void
 (paren
@@ -76,8 +76,6 @@ id|page
 suffix:semicolon
 DECL|macro|flush_cache_all
 mdefine_line|#define flush_cache_all()&t;&t;do { } while(0)
-DECL|macro|flush_dcache_page
-mdefine_line|#define flush_dcache_page(page)&t;&t;do { } while (0)
 macro_line|#ifndef CONFIG_CPU_R10000
 DECL|macro|flush_cache_mm
 mdefine_line|#define flush_cache_mm(mm)&t;&t;_flush_cache_mm(mm)
@@ -85,8 +83,8 @@ DECL|macro|flush_cache_range
 mdefine_line|#define flush_cache_range(vma,start,end) _flush_cache_range(vma,start,end)
 DECL|macro|flush_cache_page
 mdefine_line|#define flush_cache_page(vma,page)&t;_flush_cache_page(vma, page)
-DECL|macro|flush_page_to_ram
-mdefine_line|#define flush_page_to_ram(page)&t;&t;_flush_page_to_ram(page)
+DECL|macro|flush_dcache_page
+mdefine_line|#define flush_dcache_page(page)&t;&t;_flush_page_to_ram(page)
 DECL|macro|flush_icache_range
 mdefine_line|#define flush_icache_range(start, end)&t;_flush_cache_l1()
 DECL|macro|flush_icache_user_range
@@ -110,8 +108,8 @@ DECL|macro|flush_cache_range
 mdefine_line|#define flush_cache_range(vma,start,end) do { } while(0)
 DECL|macro|flush_cache_page
 mdefine_line|#define flush_cache_page(vma,page)&t;do { } while(0)
-DECL|macro|flush_page_to_ram
-mdefine_line|#define flush_page_to_ram(page)&t;&t;do { } while(0)
+DECL|macro|flush_dcache_page
+mdefine_line|#define flush_dcache_page(page)&t;&t;do { } while(0)
 DECL|macro|flush_icache_range
 mdefine_line|#define flush_icache_range(start, end)&t;_flush_cache_l1()
 DECL|macro|flush_icache_user_range

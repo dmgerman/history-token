@@ -3694,14 +3694,8 @@ id|page_not_uptodate
 suffix:semicolon
 id|success
 suffix:colon
-multiline_comment|/*&n;&t; * Found the page and have a reference on it, need to check sharing&n;&t; * and possibly copy it over to another page..&n;&t; */
+multiline_comment|/*&n;&t; * Found the page and have a reference on it.&n;&t; */
 id|mark_page_accessed
-c_func
-(paren
-id|page
-)paren
-suffix:semicolon
-id|flush_page_to_ram
 c_func
 (paren
 id|page
@@ -4029,14 +4023,8 @@ id|page_not_uptodate
 suffix:semicolon
 id|success
 suffix:colon
-multiline_comment|/*&n;&t; * Found the page and have a reference on it, need to check sharing&n;&t; * and possibly copy it over to another page..&n;&t; */
+multiline_comment|/*&n;&t; * Found the page and have a reference on it.&n;&t; */
 id|mark_page_accessed
-c_func
-(paren
-id|page
-)paren
-suffix:semicolon
-id|flush_page_to_ram
 c_func
 (paren
 id|page

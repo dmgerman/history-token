@@ -205,7 +205,7 @@ id|nfds
 op_assign
 id|files-&gt;max_fds
 suffix:semicolon
-id|write_unlock
+id|spin_unlock
 c_func
 (paren
 op_amp
@@ -298,7 +298,7 @@ c_func
 id|nfds
 )paren
 suffix:semicolon
-id|write_lock
+id|spin_lock
 c_func
 (paren
 op_amp
@@ -404,7 +404,7 @@ op_star
 )paren
 )paren
 suffix:semicolon
-id|write_unlock
+id|spin_unlock
 c_func
 (paren
 op_amp
@@ -419,7 +419,7 @@ comma
 id|i
 )paren
 suffix:semicolon
-id|write_lock
+id|spin_lock
 c_func
 (paren
 op_amp
@@ -431,7 +431,7 @@ suffix:semicolon
 r_else
 (brace
 multiline_comment|/* Somebody expanded the array while we slept ... */
-id|write_unlock
+id|spin_unlock
 c_func
 (paren
 op_amp
@@ -446,7 +446,7 @@ comma
 id|nfds
 )paren
 suffix:semicolon
-id|write_lock
+id|spin_lock
 c_func
 (paren
 op_amp
@@ -632,7 +632,7 @@ id|nfds
 op_assign
 id|files-&gt;max_fdset
 suffix:semicolon
-id|write_unlock
+id|spin_unlock
 c_func
 (paren
 op_amp
@@ -709,7 +709,7 @@ c_func
 id|nfds
 )paren
 suffix:semicolon
-id|write_lock
+id|spin_lock
 c_func
 (paren
 op_amp
@@ -856,7 +856,7 @@ comma
 id|new_execset
 )paren
 suffix:semicolon
-id|write_unlock
+id|spin_unlock
 c_func
 (paren
 op_amp
@@ -877,7 +877,7 @@ comma
 id|nfds
 )paren
 suffix:semicolon
-id|write_lock
+id|spin_lock
 c_func
 (paren
 op_amp
@@ -891,7 +891,7 @@ suffix:semicolon
 multiline_comment|/* Somebody expanded the array while we slept ... */
 id|out
 suffix:colon
-id|write_unlock
+id|spin_unlock
 c_func
 (paren
 op_amp
@@ -924,7 +924,7 @@ comma
 id|nfds
 )paren
 suffix:semicolon
-id|write_lock
+id|spin_lock
 c_func
 (paren
 op_amp

@@ -339,12 +339,6 @@ suffix:semicolon
 id|mm-&gt;rss
 op_increment
 suffix:semicolon
-id|flush_page_to_ram
-c_func
-(paren
-id|page
-)paren
-suffix:semicolon
 id|flush_icache_page
 c_func
 (paren

@@ -689,7 +689,7 @@ id|files
 op_assign
 id|current-&gt;files
 suffix:semicolon
-id|read_lock
+id|spin_lock
 c_func
 (paren
 op_amp
@@ -715,7 +715,7 @@ c_func
 id|file
 )paren
 suffix:semicolon
-id|read_unlock
+id|spin_unlock
 c_func
 (paren
 op_amp

@@ -2399,7 +2399,7 @@ l_int|1
 suffix:semicolon
 id|newf-&gt;file_lock
 op_assign
-id|RW_LOCK_UNLOCKED
+id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
 id|newf-&gt;next_fd
 op_assign
@@ -2448,7 +2448,7 @@ id|newf-&gt;max_fdset
 op_assign
 l_int|0
 suffix:semicolon
-id|write_lock
+id|spin_lock
 c_func
 (paren
 op_amp
@@ -2467,7 +2467,7 @@ op_minus
 l_int|1
 )paren
 suffix:semicolon
-id|write_unlock
+id|spin_unlock
 c_func
 (paren
 op_amp
@@ -2483,7 +2483,7 @@ r_goto
 id|out_release
 suffix:semicolon
 )brace
-id|read_lock
+id|spin_lock
 c_func
 (paren
 op_amp
@@ -2513,7 +2513,7 @@ OG
 id|nfds
 )paren
 (brace
-id|read_unlock
+id|spin_unlock
 c_func
 (paren
 op_amp
@@ -2524,7 +2524,7 @@ id|newf-&gt;max_fds
 op_assign
 l_int|0
 suffix:semicolon
-id|write_lock
+id|spin_lock
 c_func
 (paren
 op_amp
@@ -2543,7 +2543,7 @@ op_minus
 l_int|1
 )paren
 suffix:semicolon
-id|write_unlock
+id|spin_unlock
 c_func
 (paren
 op_amp
@@ -2562,7 +2562,7 @@ id|nfds
 op_assign
 id|newf-&gt;max_fds
 suffix:semicolon
-id|read_lock
+id|spin_lock
 c_func
 (paren
 op_amp
@@ -2644,7 +2644,7 @@ op_assign
 id|f
 suffix:semicolon
 )brace
-id|read_unlock
+id|spin_unlock
 c_func
 (paren
 op_amp
