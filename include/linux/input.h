@@ -601,6 +601,8 @@ DECL|macro|KEY_BRIGHTNESSDOWN
 mdefine_line|#define KEY_BRIGHTNESSDOWN&t;224
 DECL|macro|KEY_BRIGHTNESSUP
 mdefine_line|#define KEY_BRIGHTNESSUP&t;225
+DECL|macro|KEY_MEDIA
+mdefine_line|#define KEY_MEDIA&t;&t;226
 DECL|macro|KEY_UNKNOWN
 mdefine_line|#define KEY_UNKNOWN&t;&t;240
 DECL|macro|BTN_MISC
