@@ -68,7 +68,7 @@ mdefine_line|#define ARPHRD_RAWHDLC&t;518&t;&t;/* Raw HDLC&t;&t;&t;*/
 DECL|macro|ARPHRD_TUNNEL
 mdefine_line|#define ARPHRD_TUNNEL&t;768&t;&t;/* IPIP tunnel&t;&t;&t;*/
 DECL|macro|ARPHRD_TUNNEL6
-mdefine_line|#define ARPHRD_TUNNEL6&t;769&t;&t;/* IPIP6 tunnel&t;&t;&t;*/
+mdefine_line|#define ARPHRD_TUNNEL6&t;769&t;&t;/* IP6IP6 tunnel       &t;&t;*/
 DECL|macro|ARPHRD_FRAD
 mdefine_line|#define ARPHRD_FRAD&t;770             /* Frame Relay Access Device    */
 DECL|macro|ARPHRD_SKIP
