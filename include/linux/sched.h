@@ -1393,7 +1393,7 @@ DECL|macro|PF_LESS_THROTTLE
 mdefine_line|#define PF_LESS_THROTTLE 0x01000000&t;/* Throttle me less: I clena memory */
 macro_line|#ifdef CONFIG_SMP
 r_extern
-r_void
+r_int
 id|set_cpus_allowed
 c_func
 (paren
@@ -1407,8 +1407,26 @@ id|new_mask
 )paren
 suffix:semicolon
 macro_line|#else
-DECL|macro|set_cpus_allowed
-macro_line|# define set_cpus_allowed(p, new_mask) do { } while (0)
+DECL|function|set_cpus_allowed
+r_static
+r_inline
+r_int
+id|set_cpus_allowed
+c_func
+(paren
+id|task_t
+op_star
+id|p
+comma
+r_int
+r_int
+id|new_mask
+)paren
+(brace
+r_return
+l_int|0
+suffix:semicolon
+)brace
 macro_line|#endif
 macro_line|#ifdef CONFIG_NUMA
 r_extern

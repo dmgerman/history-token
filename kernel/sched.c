@@ -6384,20 +6384,6 @@ r_return
 op_minus
 id|EFAULT
 suffix:semicolon
-id|new_mask
-op_and_assign
-id|cpu_online_map
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|new_mask
-)paren
-r_return
-op_minus
-id|EINVAL
-suffix:semicolon
 id|read_lock
 c_func
 (paren
@@ -6478,8 +6464,6 @@ id|out_unlock
 suffix:semicolon
 id|retval
 op_assign
-l_int|0
-suffix:semicolon
 id|set_cpus_allowed
 c_func
 (paren
@@ -7802,7 +7786,7 @@ id|migration_req_t
 suffix:semicolon
 multiline_comment|/*&n; * Change a given task&squot;s CPU affinity. Migrate the thread to a&n; * proper CPU and schedule it away if the CPU it&squot;s executing on&n; * is removed from the allowed bitmask.&n; *&n; * NOTE: the caller must have a valid reference to the task, the&n; * task must not exit() &amp; deallocate itself prematurely.  The&n; * call is not atomic; no spinlocks may be held.&n; */
 DECL|function|set_cpus_allowed
-r_void
+r_int
 id|set_cpus_allowed
 c_func
 (paren
@@ -7826,23 +7810,21 @@ id|runqueue_t
 op_star
 id|rq
 suffix:semicolon
-macro_line|#if 0 /* FIXME: Grab cpu_lock, return error on this case. --RR */
-id|new_mask
-op_and_assign
-id|cpu_online_map
-suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
-id|new_mask
-)paren
-id|BUG
+id|any_online_cpu
 c_func
 (paren
+id|new_mask
 )paren
+op_eq
+id|NR_CPUS
+)paren
+r_return
+op_minus
+id|EINVAL
 suffix:semicolon
-macro_line|#endif
 id|rq
 op_assign
 id|task_rq_lock
@@ -7885,6 +7867,7 @@ id|flags
 )paren
 suffix:semicolon
 r_return
+l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * If the task is not on a runqueue (and not running), then&n;&t; * it is sufficient to simply update the task&squot;s cpu field.&n;&t; */
@@ -7926,6 +7909,7 @@ id|flags
 )paren
 suffix:semicolon
 r_return
+l_int|0
 suffix:semicolon
 )brace
 id|init_completion
@@ -7970,6 +7954,9 @@ c_func
 op_amp
 id|req.done
 )paren
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* Move (not current) task off this cpu, onto dest cpu. */
