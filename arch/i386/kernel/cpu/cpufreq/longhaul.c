@@ -1,6 +1,6 @@
 multiline_comment|/*&n; *  (C) 2001-2004  Dave Jones. &lt;davej@codemonkey.org.uk&gt;&n; *  (C) 2002  Padraig Brady. &lt;padraig@antefacto.com&gt;&n; *&n; *  Licensed under the terms of the GNU GPL License version 2.&n; *  Based upon datasheets &amp; sample CPUs kindly provided by VIA.&n; *&n; *  VIA have currently 2 different versions of Longhaul.&n; *  Version 1 (Longhaul) uses the BCR2 MSR at 0x1147.&n; *   It is present only in Samuel 1, Samuel 2 and Ezra.&n; *  Version 2 (Powersaver) uses the POWERSAVER MSR at 0x110a.&n; *   It is present in Ezra-T, Nehemiah and above.&n; *   In addition to scaling multiplier, it can also scale voltage.&n; *   There is provision for scaling FSB too, but this doesn&squot;t work&n; *   too well in practice.&n; *&n; *  BIG FAT DISCLAIMER: Work in progress code. Possibly *dangerous*&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
-macro_line|#include &lt;linux/module.h&gt; 
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/cpufreq.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
@@ -368,23 +368,8 @@ comma
 id|CPUFREQ_PRECHANGE
 )paren
 suffix:semicolon
-id|dprintk
-(paren
-id|KERN_INFO
-id|PFX
-l_string|&quot;FSB:%d Mult:%d.%dx&bslash;n&quot;
-comma
-id|fsb
-comma
-id|mult
-op_div
-l_int|10
-comma
-id|mult
-op_mod
-l_int|10
-)paren
-suffix:semicolon
+singleline_comment|//&t;dprintk (KERN_INFO PFX &quot;FSB:%d Mult:%d.%dx&bslash;n&quot;, fsb,
+singleline_comment|//&t;&t;&t;&t;mult/10, mult%10);
 r_switch
 c_cond
 (paren
