@@ -1238,12 +1238,6 @@ comma
 id|slot-&gt;dn-&gt;full_name
 )paren
 suffix:semicolon
-id|dealloc_slot_struct
-c_func
-(paren
-id|slot
-)paren
-suffix:semicolon
 r_return
 (paren
 op_minus
