@@ -493,6 +493,7 @@ c_func
 (paren
 r_struct
 id|vm86_struct
+id|__user
 op_star
 id|v86
 )paren
@@ -644,6 +645,7 @@ id|subfunction
 comma
 r_struct
 id|vm86plus_struct
+id|__user
 op_star
 id|v86
 )paren
@@ -796,6 +798,7 @@ op_assign
 (paren
 r_struct
 id|vm86_struct
+id|__user
 op_star
 )paren
 id|v86
