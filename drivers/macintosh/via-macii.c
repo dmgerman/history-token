@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/adb.h&gt;
+macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;asm/macintosh.h&gt;
 macro_line|#include &lt;asm/macints.h&gt;
 macro_line|#include &lt;asm/machw.h&gt;
@@ -415,15 +416,10 @@ suffix:semicolon
 r_int
 id|err
 suffix:semicolon
-id|save_flags
+id|local_irq_save
 c_func
 (paren
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 id|err
@@ -469,7 +465,7 @@ id|macii_state
 op_assign
 id|idle
 suffix:semicolon
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -644,15 +640,10 @@ l_int|0
 )paren
 )paren
 suffix:semicolon
-id|save_flags
+id|local_irq_save
 c_func
 (paren
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 id|req.next
@@ -664,7 +655,7 @@ op_assign
 op_amp
 id|req
 suffix:semicolon
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -742,15 +733,10 @@ l_int|0
 )paren
 )paren
 suffix:semicolon
-id|save_flags
+id|local_irq_save
 c_func
 (paren
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 r_if
@@ -797,7 +783,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -914,15 +900,10 @@ id|req-&gt;reply_len
 op_assign
 l_int|0
 suffix:semicolon
-id|save_flags
+id|local_irq_save
 c_func
 (paren
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 r_if
@@ -965,7 +946,7 @@ c_func
 )paren
 suffix:semicolon
 )brace
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -1030,15 +1011,10 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-id|save_flags
+id|local_irq_save
 c_func
 (paren
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 r_if
@@ -1061,7 +1037,7 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -1170,15 +1146,10 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-id|save_flags
+id|local_irq_save
 c_func
 (paren
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 multiline_comment|/* &n;&t; * IRQ signaled ?? (means ADB controller wants to send, or might &n;&t; * be end of packet if we were reading)&n;&t; */
@@ -1249,7 +1220,7 @@ op_assign
 id|req
 suffix:semicolon
 multiline_comment|/* set ADB status here ? */
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -1334,7 +1305,7 @@ id|data_index
 op_assign
 l_int|2
 suffix:semicolon
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -1379,15 +1350,10 @@ op_assign
 id|status
 suffix:semicolon
 multiline_comment|/* prevent races due to SCSI enabling ints */
-id|save_flags
+id|local_irq_save
 c_func
 (paren
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 r_if
@@ -1396,7 +1362,7 @@ c_cond
 id|driver_running
 )paren
 (brace
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -2288,7 +2254,7 @@ id|driver_running
 op_assign
 l_int|0
 suffix:semicolon
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags

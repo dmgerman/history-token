@@ -10,10 +10,10 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/stat.h&gt;
+macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &quot;scsi.h&quot;
 macro_line|#include &quot;hosts.h&quot;
 macro_line|#include &quot;NCR53C9x.h&quot;
-macro_line|#include &quot;fastlane.h&quot;
 macro_line|#include &lt;linux/zorro.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/amigaints.h&gt;
@@ -24,6 +24,64 @@ macro_line|#if 0
 multiline_comment|/* Let this defined unless you really need to enable DMA IRQ one day */
 mdefine_line|#define NODMAIRQ
 macro_line|#endif
+multiline_comment|/* The controller registers can be found in the Z2 config area at these&n; * offsets:&n; */
+DECL|macro|FASTLANE_ESP_ADDR
+mdefine_line|#define FASTLANE_ESP_ADDR 0x1000001
+DECL|macro|FASTLANE_DMA_ADDR
+mdefine_line|#define FASTLANE_DMA_ADDR 0x1000041
+multiline_comment|/* The Fastlane DMA interface */
+DECL|struct|fastlane_dma_registers
+r_struct
+id|fastlane_dma_registers
+(brace
+DECL|member|cond_reg
+r_volatile
+r_int
+r_char
+id|cond_reg
+suffix:semicolon
+multiline_comment|/* DMA status  (ro) [0x0000] */
+DECL|macro|ctrl_reg
+mdefine_line|#define ctrl_reg  cond_reg&t;&t;&t;/* DMA control (wo) [0x0000] */
+DECL|member|dmapad1
+r_int
+r_char
+id|dmapad1
+(braket
+l_int|0x3f
+)braket
+suffix:semicolon
+DECL|member|clear_strobe
+r_volatile
+r_int
+r_char
+id|clear_strobe
+suffix:semicolon
+multiline_comment|/* DMA clear   (wo) [0x0040] */
+)brace
+suffix:semicolon
+multiline_comment|/* DMA status bits */
+DECL|macro|FASTLANE_DMA_MINT
+mdefine_line|#define FASTLANE_DMA_MINT  0x80
+DECL|macro|FASTLANE_DMA_IACT
+mdefine_line|#define FASTLANE_DMA_IACT  0x40
+DECL|macro|FASTLANE_DMA_CREQ
+mdefine_line|#define FASTLANE_DMA_CREQ  0x20
+multiline_comment|/* DMA control bits */
+DECL|macro|FASTLANE_DMA_FCODE
+mdefine_line|#define FASTLANE_DMA_FCODE 0xa0
+DECL|macro|FASTLANE_DMA_MASK
+mdefine_line|#define FASTLANE_DMA_MASK  0xf3
+DECL|macro|FASTLANE_DMA_LED
+mdefine_line|#define FASTLANE_DMA_LED   0x10&t;/* HD led control 1 = on */
+DECL|macro|FASTLANE_DMA_WRITE
+mdefine_line|#define FASTLANE_DMA_WRITE 0x08 /* 1 = write */
+DECL|macro|FASTLANE_DMA_ENABLE
+mdefine_line|#define FASTLANE_DMA_ENABLE 0x04 /* Enable DMA */
+DECL|macro|FASTLANE_DMA_EDI
+mdefine_line|#define FASTLANE_DMA_EDI   0x02&t;/* Enable DMA IRQ ? */
+DECL|macro|FASTLANE_DMA_ESI
+mdefine_line|#define FASTLANE_DMA_ESI   0x01&t;/* Enable SCSI IRQ */
 r_static
 r_int
 id|dma_bytes_sent
@@ -447,7 +505,7 @@ op_assign
 r_int
 r_int
 )paren
-id|ioremap_nocache
+id|z_ioremap
 c_func
 (paren
 id|board
@@ -618,7 +676,7 @@ l_int|0
 suffix:semicolon
 id|err_unmap
 suffix:colon
-id|iounmap
+id|z_iounmap
 c_func
 (paren
 (paren
@@ -1337,15 +1395,6 @@ suffix:semicolon
 )brace
 DECL|macro|HOSTS_C
 mdefine_line|#define HOSTS_C
-macro_line|#include &quot;fastlane.h&quot;
-DECL|variable|driver_template
-r_static
-id|Scsi_Host_Template
-id|driver_template
-op_assign
-id|SCSI_FASTLANE
-suffix:semicolon
-macro_line|#include &quot;scsi_module.c&quot;
 DECL|function|fastlane_esp_release
 r_int
 id|fastlane_esp_release
@@ -1418,6 +1467,79 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
+DECL|variable|driver_template
+r_static
+id|Scsi_Host_Template
+id|driver_template
+op_assign
+(brace
+dot
+id|proc_name
+op_assign
+l_string|&quot;esp-fastlane&quot;
+comma
+dot
+id|proc_info
+op_assign
+id|esp_proc_info
+comma
+dot
+id|name
+op_assign
+l_string|&quot;Fastlane SCSI&quot;
+comma
+dot
+id|detect
+op_assign
+id|fastlane_esp_detect
+comma
+dot
+id|release
+op_assign
+id|fastlane_esp_release
+comma
+dot
+id|queuecommand
+op_assign
+id|esp_queue
+comma
+dot
+id|eh_abort_handler
+op_assign
+id|esp_abort
+comma
+dot
+id|eh_bus_reset_handler
+op_assign
+id|esp_reset
+comma
+dot
+id|can_queue
+op_assign
+l_int|7
+comma
+dot
+id|this_id
+op_assign
+l_int|7
+comma
+dot
+id|sg_tablesize
+op_assign
+id|SG_ALL
+comma
+dot
+id|cmd_per_lun
+op_assign
+l_int|1
+comma
+dot
+id|use_clustering
+op_assign
+id|ENABLE_CLUSTERING
+)brace
+suffix:semicolon
+macro_line|#include &quot;scsi_module.c&quot;
 id|MODULE_LICENSE
 c_func
 (paren

@@ -361,6 +361,10 @@ DECL|member|regs
 id|wd33c93_regs
 id|regs
 suffix:semicolon
+DECL|member|lock
+id|spinlock_t
+id|lock
+suffix:semicolon
 DECL|member|clock_freq
 id|uchar
 id|clock_freq

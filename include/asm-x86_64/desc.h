@@ -716,7 +716,7 @@ id|cpu_gdt_table
 id|cpu
 )braket
 (braket
-id|GDT_ENTRY_TSS
+id|GDT_ENTRY_LDT
 )braket
 comma
 (paren

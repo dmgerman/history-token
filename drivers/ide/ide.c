@@ -102,14 +102,6 @@ r_int
 id|ide_scan_direction
 suffix:semicolon
 multiline_comment|/* THIS was formerly 2.2.x pci=reverse */
-macro_line|#ifdef IDE_ARCH_LOCK
-multiline_comment|/*&n; * ide_lock is used by the Atari code to obtain access to the IDE interrupt,&n; * which is shared between several drivers.&n; */
-DECL|variable|ide_intr_lock
-r_static
-r_int
-id|ide_intr_lock
-suffix:semicolon
-macro_line|#endif /* IDE_ARCH_LOCK */
 macro_line|#ifdef CONFIG_IDEDMA_AUTO
 DECL|variable|noautodma
 r_int
@@ -8682,9 +8674,6 @@ id|IDE_DATA_OFFSET
 id|ide_get_lock
 c_func
 (paren
-op_amp
-id|ide_intr_lock
-comma
 l_int|NULL
 comma
 l_int|NULL
@@ -8715,8 +8704,6 @@ id|IDE_DATA_OFFSET
 id|ide_release_lock
 c_func
 (paren
-op_amp
-id|ide_intr_lock
 )paren
 suffix:semicolon
 multiline_comment|/* for atari only */

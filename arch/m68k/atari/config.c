@@ -2022,15 +2022,10 @@ id|atari_dont_touch_floppy_select
 )paren
 r_return
 suffix:semicolon
-id|save_flags
+id|local_irq_save
 c_func
 (paren
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 id|sound_ym.rd_data_reg_sel
@@ -2060,7 +2055,7 @@ op_or
 l_int|0x02
 )paren
 suffix:semicolon
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -2133,7 +2128,7 @@ op_assign
 id|ACIA_RESET
 suffix:semicolon
 multiline_comment|/* processor independent: turn off interrupts and reset the VBR;&n;     * the caches must be left enabled, else prefetching the final jump&n;     * instruction doesn&squot;t work. */
-id|cli
+id|local_irq_disable
 c_func
 (paren
 )paren

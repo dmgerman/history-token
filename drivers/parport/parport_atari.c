@@ -2,6 +2,7 @@ multiline_comment|/* Low-level parallel port routines for the Atari builtin port
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/parport.h&gt;
+macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;asm/setup.h&gt;
 macro_line|#include &lt;asm/atarihw.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
@@ -36,15 +37,10 @@ r_int
 r_char
 id|data
 suffix:semicolon
-id|save_flags
+id|local_irq_save
 c_func
 (paren
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 id|sound_ym.rd_data_reg_sel
@@ -55,7 +51,7 @@ id|data
 op_assign
 id|sound_ym.rd_data_reg_sel
 suffix:semicolon
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -85,15 +81,10 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-id|save_flags
+id|local_irq_save
 c_func
 (paren
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 id|sound_ym.rd_data_reg_sel
@@ -104,7 +95,7 @@ id|sound_ym.wd_data
 op_assign
 id|data
 suffix:semicolon
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -134,15 +125,10 @@ id|control
 op_assign
 l_int|0
 suffix:semicolon
-id|save_flags
+id|local_irq_save
 c_func
 (paren
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 id|sound_ym.rd_data_reg_sel
@@ -167,7 +153,7 @@ id|control
 op_assign
 id|PARPORT_CONTROL_STROBE
 suffix:semicolon
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -197,15 +183,10 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-id|save_flags
+id|local_irq_save
 c_func
 (paren
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 id|sound_ym.rd_data_reg_sel
@@ -241,7 +222,7 @@ op_lshift
 l_int|5
 )paren
 suffix:semicolon
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -473,15 +454,10 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-id|save_flags
+id|local_irq_save
 c_func
 (paren
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 multiline_comment|/* Soundchip port B as output. */
@@ -495,7 +471,7 @@ id|sound_ym.rd_data_reg_sel
 op_or
 l_int|0x40
 suffix:semicolon
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -519,15 +495,10 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-id|save_flags
+id|local_irq_save
 c_func
 (paren
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 multiline_comment|/* Soundchip port B as input. */
@@ -542,7 +513,7 @@ op_amp
 op_complement
 l_int|0x40
 suffix:semicolon
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -657,15 +628,10 @@ c_cond
 id|MACH_IS_ATARI
 )paren
 (brace
-id|save_flags
+id|local_irq_save
 c_func
 (paren
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 multiline_comment|/* Soundchip port A/B as output. */
@@ -698,7 +664,7 @@ op_lshift
 l_int|5
 )paren
 suffix:semicolon
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags

@@ -77,7 +77,7 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-id|save_and_cli
+id|local_irq_save
 c_func
 (paren
 id|flags
@@ -223,7 +223,7 @@ op_complement
 id|C_READ
 suffix:semicolon
 )brace
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags

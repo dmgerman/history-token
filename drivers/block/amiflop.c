@@ -17,6 +17,7 @@ macro_line|#include &lt;linux/amifdreg.h&gt;
 macro_line|#include &lt;linux/amifd.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/buffer_head.h&gt;
+macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;asm/setup.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/amigahw.h&gt;
@@ -563,15 +564,10 @@ OG
 l_int|0
 )paren
 (brace
-id|save_flags
+id|local_irq_save
 c_func
 (paren
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 r_while
@@ -592,7 +588,7 @@ id|ms_busy
 op_assign
 l_int|0
 suffix:semicolon
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -697,15 +693,10 @@ id|fdc_nested
 )paren
 suffix:semicolon
 macro_line|#endif
-id|save_flags
+id|local_irq_save
 c_func
 (paren
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 r_while
@@ -732,7 +723,7 @@ suffix:semicolon
 id|fdc_nested
 op_increment
 suffix:semicolon
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -994,14 +985,10 @@ c_func
 id|drive
 )paren
 suffix:semicolon
-id|save_flags
-(paren
-id|flags
-)paren
-suffix:semicolon
-id|sti
+id|local_irq_save
 c_func
 (paren
+id|flags
 )paren
 suffix:semicolon
 id|selected
@@ -1045,7 +1032,7 @@ id|ciab.prb
 op_assign
 id|prb
 suffix:semicolon
-id|restore_flags
+id|local_irq_restore
 (paren
 id|flags
 )paren
@@ -7043,15 +7030,10 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-id|save_flags
+id|local_irq_save
 c_func
 (paren
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 r_if
@@ -7062,7 +7044,7 @@ op_ne
 l_int|2
 )paren
 (brace
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -7123,7 +7105,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -7646,14 +7628,10 @@ id|repeat
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t;&t;&t; * setup a callback to write the track buffer&n;&t;&t;&t; * after a short (1 tick) delay.&n;&t;&t;&t; */
-id|save_flags
-(paren
-id|flags
-)paren
-suffix:semicolon
-id|cli
+id|local_irq_save
 c_func
 (paren
+id|flags
 )paren
 suffix:semicolon
 id|floppy-&gt;dirty
@@ -7686,7 +7664,8 @@ op_plus
 id|drive
 )paren
 suffix:semicolon
-id|restore_flags
+id|local_irq_restore
+c_func
 (paren
 id|flags
 )paren
@@ -8557,15 +8536,10 @@ id|EROFS
 suffix:semicolon
 )brace
 )brace
-id|save_flags
+id|local_irq_save
 c_func
 (paren
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 id|fd_ref
@@ -8597,7 +8571,7 @@ l_int|0
 id|MOD_INC_USE_COUNT
 suffix:semicolon
 macro_line|#endif
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags

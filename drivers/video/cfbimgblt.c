@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  Generic BitBLT function for frame buffer with packed pixels of any depth.&n; *&n; *      Copyright (C)  June 1999 James Simmons&n; *&n; *  This file is subject to the terms and conditions of the GNU General Public&n; *  License.  See the file COPYING in the main directory of this archive for&n; *  more details.&n; *&n; * NOTES:&n; *&n; *    This function copys a image from system memory to video memory. The&n; *  image can be a bitmap where each 0 represents the background color and&n; *  each 1 represents the foreground color. Great for font handling. It can&n; *  also be a color image. This is determined by image_depth. The color image&n; *  must be laid out exactly in the same format as the framebuffer. Yes I know&n; *  their are cards with hardware that coverts images of various depths to the&n; *  framebuffer depth. But not every card has this. All images must be rounded&n; *  up to the nearest byte. For example a bitmap 12 bits wide must be two &n; *  bytes width. &n; *&n; *  FIXME&n; *  The code for 24 bit is horrible. It copies byte by byte size instead of&n; *  longs like the other sizes. Needs to be optimized.&n; *  &n; *  Tony: &n; *  Incorporate mask tables similar to fbcon-cfb*.c in 2.4 API.  This speeds &n; *  up the code significantly.&n; *  &n; *  Code for depths not multiples of BITS_PER_LONG is still kludgy, which is&n; *  still processed a bit at a time.   &n; *&n; *  Also need to add code to deal with cards endians that are different than&n; *  the native cpu endians. I also need to deal with MSB position in the word.&n; *&n; */
+multiline_comment|/*&n; *  Generic BitBLT function for frame buffer with packed pixels of any depth.&n; *&n; *      Copyright (C)  June 1999 James Simmons&n; *&n; *  This file is subject to the terms and conditions of the GNU General Public&n; *  License.  See the file COPYING in the main directory of this archive for&n; *  more details.&n; *&n; * NOTES:&n; *&n; *    This function copys a image from system memory to video memory. The&n; *  image can be a bitmap where each 0 represents the background color and&n; *  each 1 represents the foreground color. Great for font handling. It can&n; *  also be a color image. This is determined by image_depth. The color image&n; *  must be laid out exactly in the same format as the framebuffer. Yes I know&n; *  their are cards with hardware that coverts images of various depths to the&n; *  framebuffer depth. But not every card has this. All images must be rounded&n; *  up to the nearest byte. For example a bitmap 12 bits wide must be two &n; *  bytes width. &n; *&n; *  FIXME&n; *  The code for 24 bit is horrible. It copies byte by byte size instead of&n; *  words like the other sizes. Needs to be optimized.&n; *  &n; *  Tony: &n; *  Incorporate mask tables similar to fbcon-cfb*.c in 2.4 API.  This speeds &n; *  up the code significantly.&n; *  &n; *  Code for depths not multiples of BITS_PER_WORD is still kludgy, which is&n; *  still processed a bit at a time.   &n; *&n; *  Also need to add code to deal with cards endians that are different than&n; *  the native cpu endians. I also need to deal with MSB position in the word.&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
@@ -13,9 +13,15 @@ macro_line|#else
 DECL|macro|DPRINTK
 mdefine_line|#define DPRINTK(fmt, args...)
 macro_line|#endif
+multiline_comment|/* The following code can *not* handle a 64-bit long.  */
+DECL|macro|WORD
+mdefine_line|#define WORD u32
+DECL|macro|BITS_PER_WORD
+mdefine_line|#define BITS_PER_WORD 32
 DECL|variable|cfb_tab8
 r_static
-id|u32
+id|WORD
+r_const
 id|cfb_tab8
 (braket
 )braket
@@ -92,7 +98,8 @@ macro_line|#endif
 suffix:semicolon
 DECL|variable|cfb_tab16
 r_static
-id|u32
+id|WORD
+r_const
 id|cfb_tab16
 (braket
 )braket
@@ -121,7 +128,8 @@ macro_line|#endif
 suffix:semicolon
 DECL|variable|cfb_tab32
 r_static
-id|u32
+id|WORD
+r_const
 id|cfb_tab32
 (braket
 )braket
@@ -132,7 +140,7 @@ comma
 l_int|0xffffffff
 )brace
 suffix:semicolon
-macro_line|#if BITS_PER_LONG == 32
+macro_line|#if BITS_PER_WORD == 32
 DECL|macro|FB_WRITEL
 mdefine_line|#define FB_WRITEL fb_writel
 DECL|macro|FB_READL
@@ -145,7 +153,7 @@ mdefine_line|#define FB_READL  fb_readq
 macro_line|#endif 
 macro_line|#if defined (__BIG_ENDIAN)
 DECL|macro|LEFT_POS
-mdefine_line|#define LEFT_POS(bpp)          (BITS_PER_LONG - bpp)
+mdefine_line|#define LEFT_POS(bpp)          (BITS_PER_WORD - bpp)
 DECL|macro|NEXT_POS
 mdefine_line|#define NEXT_POS(pos, bpp)     ((pos) -= (bpp))
 DECL|macro|SHIFT_HIGH
@@ -183,12 +191,10 @@ id|u8
 op_star
 id|dst1
 comma
-r_int
-r_int
+id|WORD
 id|start_index
 comma
-r_int
-r_int
+id|WORD
 id|pitch_index
 )paren
 (brace
@@ -198,8 +204,7 @@ id|i
 comma
 id|n
 suffix:semicolon
-r_int
-r_int
+id|WORD
 id|bitmask
 op_assign
 id|SHIFT_LOW
@@ -208,25 +213,22 @@ c_func
 op_complement
 l_int|0UL
 comma
-id|BITS_PER_LONG
+id|BITS_PER_WORD
 op_minus
 id|p-&gt;var.bits_per_pixel
 )paren
 suffix:semicolon
-r_int
-r_int
+id|u32
 op_star
 id|palette
 op_assign
 (paren
-r_int
-r_int
+id|u32
 op_star
 )paren
 id|p-&gt;pseudo_palette
 suffix:semicolon
-r_int
-r_int
+id|WORD
 op_star
 id|dst
 comma
@@ -241,11 +243,10 @@ id|val
 comma
 id|shift
 suffix:semicolon
-r_int
-r_int
+id|WORD
 id|null_bits
 op_assign
-id|BITS_PER_LONG
+id|BITS_PER_WORD
 op_minus
 id|p-&gt;var.bits_per_pixel
 suffix:semicolon
@@ -258,8 +259,7 @@ suffix:semicolon
 id|dst2
 op_assign
 (paren
-r_int
-r_int
+id|WORD
 op_star
 )paren
 id|dst1
@@ -283,8 +283,7 @@ suffix:semicolon
 id|dst
 op_assign
 (paren
-r_int
-r_int
+id|WORD
 op_star
 )paren
 id|dst1
@@ -303,8 +302,7 @@ c_cond
 id|start_index
 )paren
 (brace
-r_int
-r_int
+id|WORD
 id|start_mask
 op_assign
 op_complement
@@ -416,7 +414,7 @@ c_func
 (paren
 id|color
 comma
-id|BITS_PER_LONG
+id|BITS_PER_WORD
 op_minus
 id|shift
 )paren
@@ -429,7 +427,7 @@ suffix:semicolon
 id|shift
 op_and_assign
 (paren
-id|BITS_PER_LONG
+id|BITS_PER_WORD
 op_minus
 l_int|1
 )paren
@@ -444,8 +442,7 @@ c_cond
 id|shift
 )paren
 (brace
-r_int
-r_int
+id|WORD
 id|end_mask
 op_assign
 id|SHIFT_HIGH
@@ -500,7 +497,6 @@ id|dst2
 suffix:semicolon
 (paren
 r_int
-r_int
 )paren
 id|dst1
 op_and_assign
@@ -508,8 +504,7 @@ op_complement
 (paren
 r_sizeof
 (paren
-r_int
-r_int
+id|WORD
 )paren
 op_minus
 l_int|1
@@ -521,7 +516,7 @@ id|pitch_index
 suffix:semicolon
 id|start_index
 op_and_assign
-id|BITS_PER_LONG
+id|BITS_PER_WORD
 op_minus
 l_int|1
 suffix:semicolon
@@ -549,25 +544,20 @@ id|u8
 op_star
 id|dst1
 comma
-r_int
-r_int
+id|WORD
 id|fgcolor
 comma
-r_int
-r_int
+id|WORD
 id|bgcolor
 comma
-r_int
-r_int
+id|WORD
 id|start_index
 comma
-r_int
-r_int
+id|WORD
 id|pitch_index
 )paren
 (brace
-r_int
-r_int
+id|WORD
 id|i
 comma
 id|j
@@ -576,8 +566,7 @@ id|l
 op_assign
 l_int|8
 suffix:semicolon
-r_int
-r_int
+id|WORD
 id|shift
 comma
 id|color
@@ -586,8 +575,7 @@ id|bpp
 op_assign
 id|p-&gt;var.bits_per_pixel
 suffix:semicolon
-r_int
-r_int
+id|WORD
 op_star
 id|dst
 comma
@@ -600,11 +588,10 @@ id|pitch
 op_assign
 id|p-&gt;fix.line_length
 suffix:semicolon
-r_int
-r_int
+id|WORD
 id|null_bits
 op_assign
-id|BITS_PER_LONG
+id|BITS_PER_WORD
 op_minus
 id|bpp
 suffix:semicolon
@@ -617,8 +604,7 @@ suffix:semicolon
 id|dst2
 op_assign
 (paren
-r_int
-r_int
+id|WORD
 op_star
 )paren
 id|dst1
@@ -650,8 +636,7 @@ suffix:semicolon
 id|dst
 op_assign
 (paren
-r_int
-r_int
+id|WORD
 op_star
 )paren
 id|dst1
@@ -663,8 +648,7 @@ c_cond
 id|start_index
 )paren
 (brace
-r_int
-r_int
+id|WORD
 id|start_mask
 op_assign
 op_complement
@@ -772,7 +756,7 @@ c_func
 (paren
 id|color
 comma
-id|BITS_PER_LONG
+id|BITS_PER_WORD
 op_minus
 id|shift
 )paren
@@ -785,7 +769,7 @@ suffix:semicolon
 id|shift
 op_and_assign
 (paren
-id|BITS_PER_LONG
+id|BITS_PER_WORD
 op_minus
 l_int|1
 )paren
@@ -814,8 +798,7 @@ c_cond
 id|shift
 )paren
 (brace
-r_int
-r_int
+id|WORD
 id|end_mask
 op_assign
 id|SHIFT_HIGH
@@ -870,7 +853,6 @@ id|dst2
 suffix:semicolon
 (paren
 r_int
-r_int
 )paren
 id|dst1
 op_and_assign
@@ -878,8 +860,7 @@ op_complement
 (paren
 r_sizeof
 (paren
-r_int
-r_int
+id|WORD
 )paren
 op_minus
 l_int|1
@@ -891,7 +872,7 @@ id|pitch_index
 suffix:semicolon
 id|start_index
 op_and_assign
-id|BITS_PER_LONG
+id|BITS_PER_WORD
 op_minus
 l_int|1
 suffix:semicolon
@@ -919,12 +900,10 @@ id|u8
 op_star
 id|dst1
 comma
-r_int
-r_int
+id|WORD
 id|fgcolor
 comma
-r_int
-r_int
+id|WORD
 id|bgcolor
 )paren
 (brace
@@ -941,16 +920,14 @@ l_int|8
 comma
 id|n
 suffix:semicolon
-r_int
-r_int
+id|WORD
 id|bit_mask
 comma
 id|end_mask
 comma
 id|eorx
 suffix:semicolon
-r_int
-r_int
+id|WORD
 id|fgx
 op_assign
 id|fgcolor
@@ -965,8 +942,7 @@ id|bpp
 op_assign
 id|p-&gt;var.bits_per_pixel
 suffix:semicolon
-r_int
-r_int
+id|WORD
 id|tmp
 op_assign
 (paren
@@ -977,18 +953,16 @@ id|bpp
 op_minus
 l_int|1
 suffix:semicolon
-r_int
-r_int
+id|WORD
 id|ppw
 op_assign
-id|BITS_PER_LONG
+id|BITS_PER_WORD
 op_div
 id|bpp
 comma
 id|ppos
 suffix:semicolon
-r_int
-r_int
+id|WORD
 op_star
 id|dst
 suffix:semicolon
@@ -1134,8 +1108,7 @@ suffix:semicolon
 id|dst
 op_assign
 (paren
-r_int
-r_int
+id|WORD
 op_star
 )paren
 id|dst1
@@ -1330,8 +1303,7 @@ id|vxres
 comma
 id|vyres
 suffix:semicolon
-r_int
-r_int
+id|WORD
 id|fgcolor
 comma
 id|bgcolor
@@ -1344,14 +1316,12 @@ id|pitch_index
 op_assign
 l_int|0
 suffix:semicolon
-r_int
-r_int
+id|WORD
 id|bpl
 op_assign
 r_sizeof
 (paren
-r_int
-r_int
+id|WORD
 )paren
 comma
 id|bpp
@@ -1473,7 +1443,7 @@ op_assign
 id|bitstart
 op_amp
 (paren
-id|BITS_PER_LONG
+id|BITS_PER_WORD
 op_minus
 l_int|1
 )paren
@@ -1576,7 +1546,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|BITS_PER_LONG
+id|BITS_PER_WORD
 op_mod
 id|bpp
 op_eq

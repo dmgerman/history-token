@@ -114,6 +114,8 @@ DECL|macro|cpu_has_pae
 mdefine_line|#define cpu_has_pae&t;&t;boot_cpu_has(X86_FEATURE_PAE)
 DECL|macro|cpu_has_pge
 mdefine_line|#define cpu_has_pge&t;&t;boot_cpu_has(X86_FEATURE_PGE)
+DECL|macro|cpu_has_sse2
+mdefine_line|#define cpu_has_sse2&t;&t;boot_cpu_has(X86_FEATURE_XMM2)
 DECL|macro|cpu_has_apic
 mdefine_line|#define cpu_has_apic&t;&t;boot_cpu_has(X86_FEATURE_APIC)
 DECL|macro|cpu_has_sep

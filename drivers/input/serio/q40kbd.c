@@ -4,6 +4,7 @@ multiline_comment|/*&n; * This program is free software; you can redistribute it
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/serio.h&gt;
+macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;asm/keyboard.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
@@ -57,9 +58,6 @@ op_star
 id|port
 )paren
 (brace
-r_return
-l_int|0
-suffix:semicolon
 )brace
 DECL|variable|q40kbd_port
 r_static
@@ -119,10 +117,6 @@ op_star
 id|regs
 )paren
 (brace
-r_int
-r_int
-id|flags
-suffix:semicolon
 r_if
 c_cond
 (paren

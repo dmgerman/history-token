@@ -489,6 +489,20 @@ l_string|&quot;Kernel compiled for PMMX+, assumes a local APIC without the read-
 )paren
 suffix:semicolon
 macro_line|#endif
+macro_line|#ifdef CONFIG_X86_SSE2
+r_if
+c_cond
+(paren
+op_logical_neg
+id|cpu_has_sse2
+)paren
+id|panic
+c_func
+(paren
+l_string|&quot;Kernel compiled for SSE2, CPU doesn&squot;t have it.&quot;
+)paren
+suffix:semicolon
+macro_line|#endif
 )brace
 DECL|function|check_bugs
 r_static

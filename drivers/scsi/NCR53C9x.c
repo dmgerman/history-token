@@ -2904,6 +2904,13 @@ id|esp-&gt;snip
 op_assign
 l_int|0
 suffix:semicolon
+id|init_waitqueue_head
+c_func
+(paren
+op_amp
+id|esp-&gt;reset_queue
+)paren
+suffix:semicolon
 id|esp-&gt;fas_premature_intr_workaround
 op_assign
 l_int|0
@@ -4317,87 +4324,6 @@ id|target
 op_assign
 id|SCptr-&gt;target
 suffix:semicolon
-multiline_comment|/*&n;&t; * If esp_dev == NULL then we need to allocate a struct for our data&n;&t; */
-r_if
-c_cond
-(paren
-op_logical_neg
-id|esp_dev
-)paren
-(brace
-id|esp_dev
-op_assign
-id|kmalloc
-c_func
-(paren
-r_sizeof
-(paren
-r_struct
-id|esp_device
-)paren
-comma
-id|GFP_ATOMIC
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|esp_dev
-)paren
-(brace
-multiline_comment|/* We&squot;re SOL.  Print a message and bail */
-id|printk
-c_func
-(paren
-id|KERN_WARNING
-l_string|&quot;esp: no mem for esp_device %d/%d&bslash;n&quot;
-comma
-id|target
-comma
-id|lun
-)paren
-suffix:semicolon
-id|esp-&gt;current_SC
-op_assign
-l_int|NULL
-suffix:semicolon
-id|SCptr-&gt;result
-op_assign
-id|DID_ERROR
-op_lshift
-l_int|16
-suffix:semicolon
-id|SCptr
-op_member_access_from_pointer
-id|done
-c_func
-(paren
-id|SCptr
-)paren
-suffix:semicolon
-r_return
-suffix:semicolon
-)brace
-id|memset
-c_func
-(paren
-id|esp_dev
-comma
-l_int|0
-comma
-r_sizeof
-(paren
-r_struct
-id|esp_device
-)paren
-)paren
-suffix:semicolon
-id|SDptr-&gt;hostdata
-op_assign
-id|esp_dev
-suffix:semicolon
-)brace
 id|esp-&gt;snip
 op_assign
 l_int|0
@@ -5627,7 +5553,7 @@ l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Abort a command. */
+multiline_comment|/* Abort a command.  The host_lock is acquired by caller. */
 DECL|function|esp_abort
 r_int
 id|esp_abort
@@ -5713,7 +5639,7 @@ id|ESP_CMD_SATN
 )paren
 suffix:semicolon
 r_return
-id|SCSI_ABORT_PENDING
+id|SUCCESS
 suffix:semicolon
 )brace
 multiline_comment|/* If it is still in the issue queue then we can safely&n;&t; * call the completion routine and report abort success.&n;&t; */
@@ -5858,7 +5784,7 @@ id|esp
 suffix:semicolon
 )brace
 r_return
-id|SCSI_ABORT_SUCCESS
+id|SUCCESS
 suffix:semicolon
 )brace
 )brace
@@ -5886,10 +5812,10 @@ id|esp
 suffix:semicolon
 )brace
 r_return
-id|SCSI_ABORT_BUSY
+id|FAILED
 suffix:semicolon
 )brace
-multiline_comment|/* It&squot;s disconnected, we have to reconnect to re-establish&n;&t; * the nexus and tell the device to abort.  However, we really&n;&t; * cannot &squot;reconnect&squot; per se, therefore we tell the upper layer&n;&t; * the safest thing we can.  This is, wait a bit, if nothing&n;&t; * happens, we are really hung so reset the bus.&n;&t; */
+multiline_comment|/* It&squot;s disconnected, we have to reconnect to re-establish&n;&t; * the nexus and tell the device to abort.  However, we really&n;&t; * cannot &squot;reconnect&squot; per se.  Don&squot;t try to be fancy, just&n;&t; * indicate failure, which causes our caller to reset the whole&n;&t; * bus.&n;&t; */
 r_if
 c_cond
 (paren
@@ -5906,7 +5832,7 @@ id|esp
 suffix:semicolon
 )brace
 r_return
-id|SCSI_ABORT_SNOOZE
+id|FAILED
 suffix:semicolon
 )brace
 multiline_comment|/* We&squot;ve sent ESP_CMD_RS to the ESP, the interrupt had just&n; * arrived indicating the end of the SCSI bus reset.  Our job&n; * is to clean out the command queues and begin re-execution&n; * of SCSI commands once more.&n; */
@@ -6026,6 +5952,13 @@ id|esp-&gt;resetting_bus
 op_assign
 l_int|0
 suffix:semicolon
+id|wake_up
+c_func
+(paren
+op_amp
+id|esp-&gt;reset_queue
+)paren
+suffix:semicolon
 multiline_comment|/* Ok, now it is safe to get commands going once more. */
 r_if
 c_cond
@@ -6089,7 +6022,7 @@ r_return
 id|do_intr_end
 suffix:semicolon
 )brace
-multiline_comment|/* Reset ESP chip, reset hanging bus, then kill active and&n; * disconnected commands for targets without soft reset.&n; */
+multiline_comment|/* Reset ESP chip, reset hanging bus, then kill active and&n; * disconnected commands for targets without soft reset.&n; *&n; * The host_lock is acquired by caller.&n; */
 DECL|function|esp_reset
 r_int
 id|esp_reset
@@ -6098,10 +6031,6 @@ c_func
 id|Scsi_Cmnd
 op_star
 id|SCptr
-comma
-r_int
-r_int
-id|how
 )paren
 (brace
 r_struct
@@ -6127,8 +6056,32 @@ comma
 id|esp-&gt;eregs
 )paren
 suffix:semicolon
+id|spin_unlock_irq
+c_func
+(paren
+id|esp-&gt;ehost-&gt;host_lock
+)paren
+suffix:semicolon
+id|wait_event
+c_func
+(paren
+id|esp-&gt;reset_queue
+comma
+(paren
+id|esp-&gt;resetting_bus
+op_eq
+l_int|0
+)paren
+)paren
+suffix:semicolon
+id|spin_lock_irq
+c_func
+(paren
+id|esp-&gt;ehost-&gt;host_lock
+)paren
+suffix:semicolon
 r_return
-id|SCSI_RESET_PENDING
+id|SUCCESS
 suffix:semicolon
 )brace
 multiline_comment|/* Internal ESP done function. */
@@ -7589,15 +7542,10 @@ l_string|&quot;&bslash;r&quot;
 suffix:semicolon
 macro_line|#endif
 macro_line|#if 0
-id|save_flags
+id|local_irq_save
 c_func
 (paren
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -7993,7 +7941,7 @@ l_string|&quot;done! &bslash;n&quot;
 )paren
 suffix:semicolon
 macro_line|#if 0
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
