@@ -3199,7 +3199,7 @@ multiline_comment|/* Register with IP layer.  */
 DECL|variable|sctp_protocol
 r_static
 r_struct
-id|inet_protocol
+id|net_protocol
 id|sctp_protocol
 op_assign
 (brace

@@ -3064,7 +3064,7 @@ suffix:semicolon
 DECL|variable|esp4_protocol
 r_static
 r_struct
-id|inet_protocol
+id|net_protocol
 id|esp4_protocol
 op_assign
 (brace
