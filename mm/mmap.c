@@ -1249,12 +1249,6 @@ op_star
 id|rb_parent
 )paren
 (brace
-id|vma_prio_tree_init
-c_func
-(paren
-id|vma
-)paren
-suffix:semicolon
 id|__vma_link_list
 c_func
 (paren
@@ -1277,12 +1271,6 @@ comma
 id|rb_link
 comma
 id|rb_parent
-)paren
-suffix:semicolon
-id|__vma_link_file
-c_func
-(paren
-id|vma
 )paren
 suffix:semicolon
 id|__anon_vma_link
@@ -1373,6 +1361,12 @@ comma
 id|rb_parent
 )paren
 suffix:semicolon
+id|__vma_link_file
+c_func
+(paren
+id|vma
+)paren
+suffix:semicolon
 id|anon_vma_unlock
 c_func
 (paren
@@ -1409,7 +1403,7 @@ id|mm
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Insert vm structure into process list sorted by address and into the&n; * inode&squot;s i_mmap tree. The caller should hold mm-&gt;mmap_sem and&n; * -&gt;f_mappping-&gt;i_mmap_lock if vm_file is non-NULL.&n; */
+multiline_comment|/*&n; * Helper for vma_adjust in the split_vma insert case:&n; * insert vm structure into list and rbtree and anon_vma,&n; * but it has already been inserted into prio_tree earlier.&n; */
 r_static
 r_void
 DECL|function|__insert_vm_struct
@@ -1491,22 +1485,8 @@ comma
 id|rb_parent
 )paren
 suffix:semicolon
-id|mark_mm_hugetlb
-c_func
-(paren
-id|mm
-comma
-id|vma
-)paren
-suffix:semicolon
 id|mm-&gt;map_count
 op_increment
-suffix:semicolon
-id|validate_mm
-c_func
-(paren
-id|mm
-)paren
 suffix:semicolon
 )brace
 r_static
@@ -1763,6 +1743,20 @@ op_amp
 id|mapping-&gt;i_mmap_lock
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|insert
+)paren
+(brace
+multiline_comment|/*&n;&t;&t;&t; * Put into prio_tree now, so instantiated pages&n;&t;&t;&t; * are visible to arm/parisc __flush_dcache_page&n;&t;&t;&t; * throughout; but we cannot insert into address&n;&t;&t;&t; * space until vma start or end is updated.&n;&t;&t;&t; */
+id|__vma_link_file
+c_func
+(paren
+id|insert
+)paren
+suffix:semicolon
+)brace
 )brace
 multiline_comment|/*&n;&t; * When changing only vma-&gt;vm_end, we don&squot;t really need&n;&t; * anon_vma lock: but is that case worth optimizing out?&n;&t; */
 r_if
@@ -5894,6 +5888,12 @@ op_assign
 op_star
 id|vma
 suffix:semicolon
+id|vma_prio_tree_init
+c_func
+(paren
+r_new
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -7294,6 +7294,12 @@ id|new_vma
 op_assign
 op_star
 id|vma
+suffix:semicolon
+id|vma_prio_tree_init
+c_func
+(paren
+id|new_vma
+)paren
 suffix:semicolon
 id|pol
 op_assign
