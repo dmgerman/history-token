@@ -46,7 +46,7 @@ macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#include &lt;asm/hvcall.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
-macro_line|#include &lt;asm/pci_dma.h&gt;
+macro_line|#include &lt;asm/iommu.h&gt;
 macro_line|#include &lt;asm/vio.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
@@ -4244,7 +4244,7 @@ l_int|6
 suffix:semicolon
 id|adapter-&gt;liobn
 op_assign
-id|dev-&gt;tce_table-&gt;index
+id|dev-&gt;iommu_table-&gt;it_index
 suffix:semicolon
 id|netdev-&gt;irq
 op_assign
