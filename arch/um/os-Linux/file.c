@@ -985,6 +985,7 @@ r_int
 id|owner
 )paren
 (brace
+multiline_comment|/* XXX This should do F_GETFL first */
 r_if
 c_cond
 (paren
