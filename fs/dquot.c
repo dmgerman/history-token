@@ -188,7 +188,7 @@ id|actqf
 op_logical_and
 op_logical_neg
 id|try_module_get
-suffix:colon
+c_func
 (paren
 id|actqf-&gt;qf_owner
 )paren
