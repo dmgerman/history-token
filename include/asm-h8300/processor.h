@@ -105,7 +105,7 @@ mdefine_line|#define INIT_THREAD  { &bslash;&n;&t;sizeof(init_stack) + (unsigned
 multiline_comment|/*&n; * Do necessary setup to start up a newly executed thread.&n; *&n; * pass the data segment into user programs if it exists,&n; * it can&squot;t hurt anything as far as I can tell&n; */
 macro_line|#if defined(__H8300H__)
 DECL|macro|start_thread
-mdefine_line|#define start_thread(_regs, _pc, _usp)&t;&t;&t;        &bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;        &bslash;&n;&t;set_fs(USER_DS);           /* reads from user space */  &bslash;&n;  &t;(_regs)-&gt;pc = (_pc);&t;&t;&t;&t;        &bslash;&n;&t;(_regs)-&gt;ccr &amp;= 0x00;&t;   /* clear kernel flag */      &bslash;&n;} while(0)
+mdefine_line|#define start_thread(_regs, _pc, _usp)&t;&t;&t;        &bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;        &bslash;&n;&t;set_fs(USER_DS);           /* reads from user space */  &bslash;&n;  &t;(_regs)-&gt;pc = (_pc);&t;&t;&t;&t;        &bslash;&n;&t;(_regs)-&gt;ccr &amp;= 0x00;&t;   /* clear kernel flag */      &bslash;&n;&t;wrusp((unsigned long)(_usp) - sizeof(unsigned long)*3);&t;&bslash;&n;} while(0)
 macro_line|#endif
 macro_line|#if defined(__H8300S__)
 DECL|macro|start_thread
