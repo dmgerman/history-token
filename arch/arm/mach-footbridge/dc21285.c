@@ -200,6 +200,8 @@ id|devfn
 suffix:semicolon
 id|u32
 id|v
+op_assign
+l_int|0xffffffff
 suffix:semicolon
 r_if
 c_cond
@@ -291,11 +293,6 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-r_else
-id|v
-op_assign
-l_int|0xffffffff
-suffix:semicolon
 op_star
 id|value
 op_assign

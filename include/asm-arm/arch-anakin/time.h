@@ -3,7 +3,7 @@ macro_line|#ifndef __ASM_ARCH_TIME_H
 DECL|macro|__ASM_ARCH_TIME_H
 mdefine_line|#define __ASM_ARCH_TIME_H
 r_static
-r_void
+id|irqreturn_t
 DECL|function|anakin_timer_interrupt
 id|anakin_timer_interrupt
 c_func
@@ -26,6 +26,9 @@ c_func
 (paren
 id|regs
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 DECL|function|time_init

@@ -4,9 +4,9 @@ macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/hardware.h&gt;
 DECL|macro|update_rtc
 mdefine_line|#define update_rtc()
-DECL|function|timer_interrupt
 r_static
-r_void
+id|irqreturn_t
+DECL|function|timer_interrupt
 id|timer_interrupt
 (paren
 r_int
@@ -48,6 +48,9 @@ c_func
 (paren
 id|regs
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 DECL|function|time_init
