@@ -11945,7 +11945,13 @@ id|atomic_read
 c_func
 (paren
 op_amp
-id|vcc-&gt;sk-&gt;sk_wmem_alloc
+id|sk_atm
+c_func
+(paren
+id|vcc
+)paren
+op_member_access_from_pointer
+id|sk_wmem_alloc
 )paren
 )paren
 OG

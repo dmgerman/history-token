@@ -2582,7 +2582,13 @@ c_func
 id|skb-&gt;truesize
 comma
 op_amp
-id|flow-&gt;vcc-&gt;sk-&gt;sk_wmem_alloc
+id|sk_atm
+c_func
+(paren
+id|flow-&gt;vcc
+)paren
+op_member_access_from_pointer
+id|sk_wmem_alloc
 )paren
 suffix:semicolon
 multiline_comment|/* atm.atm_options are already set by atm_tc_enqueue */
