@@ -1,29 +1,6 @@
 macro_line|#ifndef _RADEON_H
 DECL|macro|_RADEON_H
 mdefine_line|#define _RADEON_H
-multiline_comment|/* radeon PCI ids */
-DECL|macro|PCI_DEVICE_ID_RADEON_QD
-mdefine_line|#define PCI_DEVICE_ID_RADEON_QD&t;&t;0x5144
-DECL|macro|PCI_DEVICE_ID_RADEON_QE
-mdefine_line|#define PCI_DEVICE_ID_RADEON_QE&t;&t;0x5145
-DECL|macro|PCI_DEVICE_ID_RADEON_QF
-mdefine_line|#define PCI_DEVICE_ID_RADEON_QF&t;&t;0x5146
-DECL|macro|PCI_DEVICE_ID_RADEON_QG
-mdefine_line|#define PCI_DEVICE_ID_RADEON_QG&t;&t;0x5147
-DECL|macro|PCI_DEVICE_ID_RADEON_QY
-mdefine_line|#define PCI_DEVICE_ID_RADEON_QY&t;&t;0x5159
-DECL|macro|PCI_DEVICE_ID_RADEON_QZ
-mdefine_line|#define PCI_DEVICE_ID_RADEON_QZ&t;&t;0x515a
-DECL|macro|PCI_DEVICE_ID_RADEON_LW
-mdefine_line|#define PCI_DEVICE_ID_RADEON_LW&t;&t;0x4c57
-DECL|macro|PCI_DEVICE_ID_RADEON_LY
-mdefine_line|#define PCI_DEVICE_ID_RADEON_LY&t;&t;0x4c59
-DECL|macro|PCI_DEVICE_ID_RADEON_LZ
-mdefine_line|#define PCI_DEVICE_ID_RADEON_LZ&t;&t;0x4c5a
-DECL|macro|PCI_DEVICE_ID_RADEON_QL
-mdefine_line|#define PCI_DEVICE_ID_RADEON_QL&t;&t;0x514c
-DECL|macro|PCI_DEVICE_ID_RADEON_QW
-mdefine_line|#define PCI_DEVICE_ID_RADEON_QW&t;&t;0x5157
 DECL|macro|RADEON_REGSIZE
 mdefine_line|#define RADEON_REGSIZE&t;&t;&t;0x4000
 DECL|macro|MM_INDEX
