@@ -1673,15 +1673,7 @@ id|__NR_tuxcall
 comma
 id|sys_ni_syscall
 )paren
-DECL|macro|__NR_security
-mdefine_line|#define __NR_security&t;&t;&t;185 /* reserved for LSM/security */
-id|__SYSCALL
-c_func
-(paren
-id|__NR_security
-comma
-id|sys_ni_syscall
-)paren
+multiline_comment|/* 165 currently unused */
 DECL|macro|__NR_gettid
 mdefine_line|#define __NR_gettid&t;&t;186
 id|__SYSCALL

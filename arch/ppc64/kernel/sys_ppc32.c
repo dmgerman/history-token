@@ -38,6 +38,7 @@ macro_line|#include &lt;linux/highuid.h&gt;
 macro_line|#include &lt;linux/mman.h&gt;
 macro_line|#include &lt;linux/sysctl.h&gt;
 macro_line|#include &lt;linux/binfmts.h&gt;
+macro_line|#include &lt;linux/security.h&gt;
 macro_line|#include &lt;asm/types.h&gt;
 macro_line|#include &lt;asm/ipc.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
@@ -18187,21 +18188,19 @@ l_int|0
 r_goto
 id|out_mm
 suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
 id|retval
 op_assign
-id|security_ops
-op_member_access_from_pointer
-id|bprm_alloc_security
+id|security_bprm_alloc
 c_func
 (paren
 op_amp
 id|bprm
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|retval
+)paren
 )paren
 r_goto
 id|out
@@ -18319,9 +18318,7 @@ l_int|0
 )paren
 (brace
 multiline_comment|/* execve success */
-id|security_ops
-op_member_access_from_pointer
-id|bprm_free_security
+id|security_bprm_free
 c_func
 (paren
 op_amp
@@ -18377,9 +18374,7 @@ c_cond
 (paren
 id|bprm.security
 )paren
-id|security_ops
-op_member_access_from_pointer
-id|bprm_free_security
+id|security_bprm_free
 c_func
 (paren
 op_amp

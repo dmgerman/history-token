@@ -829,10 +829,6 @@ id|sys_getdents64
 suffix:semicolon
 r_extern
 id|syscall_handler_t
-id|sys_security
-suffix:semicolon
-r_extern
-id|syscall_handler_t
 id|sys_gettid
 suffix:semicolon
 r_extern
@@ -2177,12 +2173,6 @@ id|__NR_getdents64
 )braket
 op_assign
 id|sys_getdents64
-comma
-(braket
-id|__NR_security
-)braket
-op_assign
-id|sys_security
 comma
 (braket
 id|__NR_gettid

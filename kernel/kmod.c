@@ -12,6 +12,7 @@ macro_line|#include &lt;linux/namespace.h&gt;
 macro_line|#include &lt;linux/completion.h&gt;
 macro_line|#include &lt;linux/file.h&gt;
 macro_line|#include &lt;linux/workqueue.h&gt;
+macro_line|#include &lt;linux/security.h&gt;
 macro_line|#include &lt;linux/mount.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 r_extern
@@ -428,9 +429,7 @@ id|curtask-&gt;fsgid
 op_assign
 l_int|0
 suffix:semicolon
-id|security_ops
-op_member_access_from_pointer
-id|task_kmod_set_label
+id|security_task_kmod_set_label
 c_func
 (paren
 )paren

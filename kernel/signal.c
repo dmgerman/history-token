@@ -11,6 +11,7 @@ macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/binfmts.h&gt;
+macro_line|#include &lt;linux/security.h&gt;
 macro_line|#include &lt;asm/param.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/siginfo.h&gt;
@@ -2445,11 +2446,13 @@ id|t
 r_goto
 id|out
 suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
 id|ret
 op_assign
-id|security_ops
-op_member_access_from_pointer
-id|task_kill
+id|security_task_kill
 c_func
 (paren
 id|t
@@ -2458,11 +2461,7 @@ id|info
 comma
 id|sig
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ret
+)paren
 )paren
 r_goto
 id|out
