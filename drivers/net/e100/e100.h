@@ -30,6 +30,7 @@ macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &lt;linux/if.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/ip.h&gt;
+macro_line|#include &lt;linux/if_vlan.h&gt;
 DECL|macro|E100_REGS_LEN
 mdefine_line|#define E100_REGS_LEN 1
 multiline_comment|/*&n; *  Configure parameters for buffers per controller.&n; *  If the machine this is being used on is a faster machine (i.e. &gt; 150MHz)&n; *  and running on a 10MBS network then more queueing of data occurs. This&n; *  may indicate the some of the numbers below should be adjusted.  Here are&n; *  some typical numbers:&n; *                             MAX_TCB 64&n; *                             MAX_RFD 64&n; *  The default numbers give work well on most systems tests so no real&n; *  adjustments really need to take place.  Also, if the machine is connected&n; *  to a 100MBS network the numbers described above can be lowered from the&n; *  defaults as considerably less data will be queued.&n; */
@@ -490,8 +491,8 @@ DECL|macro|CB_STATUS_COMPLETE
 mdefine_line|#define CB_STATUS_COMPLETE      BIT_15&t;/* CB Complete Bit */
 DECL|macro|CB_STATUS_OK
 mdefine_line|#define CB_STATUS_OK            BIT_13&t;/* CB OK Bit */
-DECL|macro|CB_STATUS_UNDERRUN
-mdefine_line|#define CB_STATUS_UNDERRUN      BIT_12&t;/* CB A Bit */
+DECL|macro|CB_STATUS_VLAN
+mdefine_line|#define CB_STATUS_VLAN          BIT_12 /* CB Valn detected Bit */
 DECL|macro|CB_STATUS_FAIL
 mdefine_line|#define CB_STATUS_FAIL          BIT_11&t;/* CB Fail (F) Bit */
 multiline_comment|/*misc command bits */
@@ -2025,6 +2026,12 @@ DECL|struct|e100_private
 r_struct
 id|e100_private
 (brace
+DECL|member|vlgrp
+r_struct
+id|vlan_group
+op_star
+id|vlgrp
+suffix:semicolon
 DECL|member|flags
 id|u32
 id|flags

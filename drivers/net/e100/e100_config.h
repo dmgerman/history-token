@@ -306,5 +306,20 @@ id|u8
 id|enable
 )paren
 suffix:semicolon
+r_extern
+r_void
+id|e100_config_vlan_drop
+c_func
+(paren
+r_struct
+id|e100_private
+op_star
+id|bdp
+comma
+r_int
+r_char
+id|enable
+)paren
+suffix:semicolon
 macro_line|#endif /* _E100_CONFIG_INC_ */
 eof
