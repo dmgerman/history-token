@@ -1722,7 +1722,6 @@ id|bdp-&gt;config_lock
 suffix:semicolon
 )brace
 macro_line|#endif
-macro_line|#ifdef ETHTOOL_TEST
 multiline_comment|/**&n; * e100_config_loopback_mode&n; * @bdp: atapter&squot;s private data struct&n; * @mode: loopback mode(phy/mac/none)&n; *&n; */
 r_int
 r_char
@@ -2110,5 +2109,4 @@ r_return
 id|bc_changed
 suffix:semicolon
 )brace
-macro_line|#endif
 eof
