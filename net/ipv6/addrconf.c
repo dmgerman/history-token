@@ -15342,6 +15342,14 @@ id|addrconf_sysctl.addrconf_vars
 comma
 )brace
 comma
+(brace
+dot
+id|ctl_name
+op_assign
+l_int|0
+comma
+multiline_comment|/* sentinel */
+)brace
 )brace
 comma
 dot
@@ -15371,6 +15379,14 @@ id|addrconf_sysctl.addrconf_dev
 comma
 )brace
 comma
+(brace
+dot
+id|ctl_name
+op_assign
+l_int|0
+comma
+multiline_comment|/* sentinel */
+)brace
 )brace
 comma
 dot
@@ -15400,6 +15416,14 @@ id|addrconf_sysctl.addrconf_conf_dir
 comma
 )brace
 comma
+(brace
+dot
+id|ctl_name
+op_assign
+l_int|0
+comma
+multiline_comment|/* sentinel */
+)brace
 )brace
 comma
 dot
@@ -15429,6 +15453,14 @@ id|addrconf_sysctl.addrconf_proto_dir
 comma
 )brace
 comma
+(brace
+dot
+id|ctl_name
+op_assign
+l_int|0
+comma
+multiline_comment|/* sentinel */
+)brace
 )brace
 comma
 )brace
