@@ -1244,6 +1244,8 @@ id|mp-&gt;m_sb.sb_uquotino
 comma
 l_int|0
 comma
+l_int|0
+comma
 op_amp
 id|qip
 comma
@@ -1304,6 +1306,8 @@ comma
 l_int|NULL
 comma
 id|mp-&gt;m_sb.sb_gquotino
+comma
+l_int|0
 comma
 l_int|0
 comma
@@ -1867,6 +1871,8 @@ id|mp-&gt;m_sb.sb_uquotino
 comma
 l_int|0
 comma
+l_int|0
+comma
 op_amp
 id|uip
 comma
@@ -1902,6 +1908,8 @@ comma
 l_int|NULL
 comma
 id|mp-&gt;m_sb.sb_gquotino
+comma
+l_int|0
 comma
 l_int|0
 comma
@@ -5391,6 +5399,8 @@ comma
 l_int|NULL
 comma
 id|ino
+comma
+l_int|0
 comma
 id|lock_flags
 comma

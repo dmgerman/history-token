@@ -177,6 +177,17 @@ comma
 l_int|1
 )brace
 comma
+dot
+id|rotorstep
+op_assign
+(brace
+l_int|1
+comma
+l_int|1
+comma
+l_int|255
+)brace
+comma
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * Global system credential structure.&n; */

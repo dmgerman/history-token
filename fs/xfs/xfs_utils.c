@@ -232,6 +232,8 @@ id|inum
 comma
 l_int|0
 comma
+l_int|0
+comma
 id|ipp
 comma
 l_int|0

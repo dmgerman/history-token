@@ -1668,7 +1668,6 @@ op_star
 )paren
 suffix:semicolon
 r_static
-r_inline
 r_void
 id|mxser_receive_chars
 c_func
@@ -1682,7 +1681,6 @@ op_star
 )paren
 suffix:semicolon
 r_static
-r_inline
 r_void
 id|mxser_transmit_chars
 c_func
@@ -1693,7 +1691,6 @@ op_star
 )paren
 suffix:semicolon
 r_static
-r_inline
 r_void
 id|mxser_check_modem_status
 c_func
@@ -9703,7 +9700,6 @@ suffix:semicolon
 )brace
 DECL|function|mxser_receive_chars
 r_static
-r_inline
 r_void
 id|mxser_receive_chars
 c_func
@@ -10278,7 +10274,6 @@ suffix:semicolon
 )brace
 DECL|function|mxser_transmit_chars
 r_static
-r_inline
 r_void
 id|mxser_transmit_chars
 c_func
@@ -10584,7 +10579,6 @@ suffix:semicolon
 )brace
 DECL|function|mxser_check_modem_status
 r_static
-r_inline
 r_void
 id|mxser_check_modem_status
 c_func

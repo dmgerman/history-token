@@ -514,10 +514,6 @@ DECL|member|ic_refcnt
 r_int
 id|ic_refcnt
 suffix:semicolon
-DECL|member|ic_roundoff
-r_int
-id|ic_roundoff
-suffix:semicolon
 DECL|member|ic_bwritecnt
 r_int
 id|ic_bwritecnt
@@ -603,8 +599,6 @@ DECL|macro|ic_offset
 mdefine_line|#define&t;ic_offset&t;hic_fields.ic_offset
 DECL|macro|ic_refcnt
 mdefine_line|#define&t;ic_refcnt&t;hic_fields.ic_refcnt
-DECL|macro|ic_roundoff
-mdefine_line|#define&t;ic_roundoff&t;hic_fields.ic_roundoff
 DECL|macro|ic_bwritecnt
 mdefine_line|#define&t;ic_bwritecnt&t;hic_fields.ic_bwritecnt
 DECL|macro|ic_state
@@ -720,11 +714,6 @@ r_int
 id|l_logBBsize
 suffix:semicolon
 multiline_comment|/* size of log in BB chunks */
-DECL|member|l_roundoff
-r_int
-id|l_roundoff
-suffix:semicolon
-multiline_comment|/* round off error of iclogs */
 DECL|member|l_curr_cycle
 r_int
 id|l_curr_cycle
@@ -940,6 +929,8 @@ comma
 id|xlog_in_core_t
 op_star
 id|iclog
+comma
+r_int
 )paren
 suffix:semicolon
 r_extern
