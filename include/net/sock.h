@@ -76,6 +76,7 @@ id|socket_lock_t
 suffix:semicolon
 DECL|macro|sock_lock_init
 mdefine_line|#define sock_lock_init(__sk) &bslash;&n;do {&t;spin_lock_init(&amp;((__sk)-&gt;lock.slock)); &bslash;&n;&t;(__sk)-&gt;lock.owner = NULL; &bslash;&n;&t;init_waitqueue_head(&amp;((__sk)-&gt;lock.wq)); &bslash;&n;} while(0)
+multiline_comment|/**&n;  *&t;struct sock - network layer representation of sockets&n;  *&t;@state - Connection state&n;  *&t;@zapped&t;- ax25 &amp; ipx means !linked&n;  *&t;@reuse - %SO_REUSEADDR setting&n;  *&t;@shutdown - mask of %SEND_SHUTDOWN and/or %RCV_SHUTDOWN&n;  *&t;@bound_dev_if - bound device index if != 0&n;  *&t;@next - main hash linkage for various protocol lookup tables&n;  *&t;@pprev - main hash linkage for various protocol lookup tables&n;  *&t;@bind_next - main hash linkage for various protocol lookup tables&n;  *&t;@bind_pprev - main hash linkage for various protocol lookup tables&n;  *&t;@refcnt - reference count&n;  *&t;@family - network address family&n;  *&t;@use_write_queue - wheter to call sk-&gt;write_space(sk) in sock_wfree&n;  *&t;@userlocks - %SO_SNDBUF and %SO_RCVBUF settings&n;  *&t;@lock -&t;synchronizer&n;  *&t;@rcvbuf - size of receive buffer in bytes&n;  *&t;@sleep - sock wait queue&n;  *&t;@dst_cache - destination cache&n;  *&t;@dst_lock - destination cache lock&n;  *&t;@policy - flow policy&n;  *&t;@rmem_alloc - receive queue bytes committed&n;  *&t;@receive_queue - incoming packets&n;  *&t;@wmem_alloc - transmit queue bytes committed&n;  *&t;@write_queue - Packet sending queue&n;  *&t;@omem_alloc - &quot;o&quot; is &quot;option&quot; or &quot;other&quot;&n;  *&t;@wmem_queued - persistent queue size&n;  *&t;@forward_alloc - space allocated forward&n;  *&t;@allocation - allocation mode&n;  *&t;@sndbuf - size of send buffer in bytes&n;  *&t;@prev - pointer to previous sock in the list this sock is in&n;  *&t;@flags - %SO_LINGER (l_onoff), %SO_BROADCAST, %SO_KEEPALIVE, %SO_OOBINLINE settings&n;  *&t;@no_check - %SO_NO_CHECK setting, wether or not checkup packets&n;  *&t;@debug - %SO_DEBUG setting&n;  *&t;@rcvtstamp - %SO_TIMESTAMP setting&n;  *&t;@no_largesend - whether to sent large segments or not&n;  *&t;@route_caps - route capabilities (e.g. %NETIF_F_TSO)&n;  *&t;@lingertime - %SO_LINGER l_linger setting&n;  *&t;@hashent - hash entry in several tables (e.g. tcp_ehash)&n;  *&t;@pair - socket pair (e.g. AF_UNIX/unix_peer)&n;  *&t;@backlog - always used with the per-socket spinlock held&n;  *&t;@callback_lock - used with the callbacks in the end of this struct&n;  *&t;@error_queue - rarely used&n;  *&t;@prot - protocol handlers inside a network family&n;  *&t;@err - last error&n;  *&t;@err_soft - errors that don&squot;t cause failure but are the cause of a persistent failure not just &squot;timed out&squot;&n;  *&t;@ack_backlog - current listen backlog&n;  *&t;@max_ack_backlog - listen backlog set in listen()&n;  *&t;@priority - %SO_PRIORITY setting&n;  *&t;@type - socket type (%SOCK_STREAM, etc)&n;  *&t;@localroute - route locally only, %SO_DONTROUTE setting&n;  *&t;@protocol - which protocol this socket belongs in this network family&n;  *&t;@peercred - %SO_PEERCRED setting&n;  *&t;@rcvlowat - %SO_RCVLOWAT setting&n;  *&t;@rcvtimeo - %SO_RCVTIMEO setting&n;  *&t;@sndtimeo - %SO_SNDTIMEO setting&n;  *&t;@filter - socket filtering instructions&n;  *&t;@protinfo - private area, net family specific, when not using slab&n;  *&t;@slab - the slabcache this instance was allocated from&n;  *&t;@timer - sock cleanup timer&n;  *&t;@stamp - time stamp of last packet received&n;  *&t;@socket - Identd and reporting IO signals&n;  *&t;@user_data - RPC layer private data&n;  *&t;@owner - module that owns this socket&n;  *&t;@state_change - callback to indicate change in the state of the sock&n;  *&t;@data_ready - callback to indicate there is data to be processed&n;  *&t;@write_space - callback to indicate there is bf sending space available&n;  *&t;@error_report - callback to indicate errors (e.g. %MSG_ERRQUEUE)&n;  *&t;@backlog_rcv - callback to process the backlog&n;  *&t;@destruct - called at sock freeing time, i.e. when all refcnt == 0&n; */
 DECL|struct|sock
 r_struct
 id|sock
@@ -87,17 +88,14 @@ r_int
 r_char
 id|state
 comma
-multiline_comment|/* Connection state */
 DECL|member|zapped
 id|zapped
 suffix:semicolon
-multiline_comment|/* ax25 &amp; ipx means !linked */
 DECL|member|reuse
 r_int
 r_char
 id|reuse
 suffix:semicolon
-multiline_comment|/* SO_REUSEADDR setting */
 DECL|member|shutdown
 r_int
 r_char
@@ -107,8 +105,6 @@ DECL|member|bound_dev_if
 r_int
 id|bound_dev_if
 suffix:semicolon
-multiline_comment|/* Bound device index if != 0 */
-multiline_comment|/* Main hash linkage for various protocol lookup tables. */
 DECL|member|next
 r_struct
 id|sock
@@ -139,13 +135,11 @@ DECL|member|refcnt
 id|atomic_t
 id|refcnt
 suffix:semicolon
-multiline_comment|/* Reference count&t;&t;&t;*/
 DECL|member|family
 r_int
 r_int
 id|family
 suffix:semicolon
-multiline_comment|/* Address family */
 multiline_comment|/* End of struct sock/struct tcp_tw_bucket shared layout */
 DECL|member|use_write_queue
 r_int
@@ -161,25 +155,21 @@ DECL|member|lock
 id|socket_lock_t
 id|lock
 suffix:semicolon
-multiline_comment|/* Synchronizer...&t;&t;&t;*/
 DECL|member|rcvbuf
 r_int
 id|rcvbuf
 suffix:semicolon
-multiline_comment|/* Size of receive buffer in bytes&t;*/
 DECL|member|sleep
 id|wait_queue_head_t
 op_star
 id|sleep
 suffix:semicolon
-multiline_comment|/* Sock wait queue&t;&t;&t;*/
 DECL|member|dst_cache
 r_struct
 id|dst_entry
 op_star
 id|dst_cache
 suffix:semicolon
-multiline_comment|/* Destination cache&t;&t;&t;*/
 DECL|member|dst_lock
 id|rwlock_t
 id|dst_lock
@@ -197,50 +187,41 @@ DECL|member|rmem_alloc
 id|atomic_t
 id|rmem_alloc
 suffix:semicolon
-multiline_comment|/* Receive queue bytes committed&t;*/
 DECL|member|receive_queue
 r_struct
 id|sk_buff_head
 id|receive_queue
 suffix:semicolon
-multiline_comment|/* Incoming packets&t;&t;&t;*/
 DECL|member|wmem_alloc
 id|atomic_t
 id|wmem_alloc
 suffix:semicolon
-multiline_comment|/* Transmit queue bytes committed&t;*/
 DECL|member|write_queue
 r_struct
 id|sk_buff_head
 id|write_queue
 suffix:semicolon
-multiline_comment|/* Packet sending queue&t;&t;&t;*/
 DECL|member|omem_alloc
 id|atomic_t
 id|omem_alloc
 suffix:semicolon
-multiline_comment|/* &quot;o&quot; is &quot;option&quot; or &quot;other&quot; */
 DECL|member|wmem_queued
 r_int
 id|wmem_queued
 suffix:semicolon
-multiline_comment|/* Persistent queue size */
 DECL|member|forward_alloc
 r_int
 id|forward_alloc
 suffix:semicolon
-multiline_comment|/* Space allocated forward. */
 DECL|member|allocation
 r_int
 r_int
 id|allocation
 suffix:semicolon
-multiline_comment|/* Allocation mode&t;&t;&t;*/
 DECL|member|sndbuf
 r_int
 id|sndbuf
 suffix:semicolon
-multiline_comment|/* Size of send buffer in bytes&t;&t;*/
 DECL|member|prev
 r_struct
 id|sock
@@ -290,7 +271,7 @@ id|sock
 op_star
 id|pair
 suffix:semicolon
-multiline_comment|/* The backlog queue is special, it is always used with&n;&t; * the per-socket spinlock held and requires low latency&n;&t; * access.  Therefore we special case it&squot;s implementation.&n;&t; */
+multiline_comment|/*&n;&t; * The backlog queue is special, it is always used with&n;&t; * the per-socket spinlock held and requires low latency&n;&t; * access. Therefore we special case it&squot;s implementation.&n;&t; */
 r_struct
 (brace
 DECL|member|head
@@ -313,7 +294,6 @@ DECL|member|callback_lock
 id|rwlock_t
 id|callback_lock
 suffix:semicolon
-multiline_comment|/* Error queue, rarely used. */
 DECL|member|error_queue
 r_struct
 id|sk_buff_head
@@ -326,13 +306,12 @@ op_star
 id|prot
 suffix:semicolon
 DECL|member|err
-DECL|member|err_soft
 r_int
 id|err
 comma
+DECL|member|err_soft
 id|err_soft
 suffix:semicolon
-multiline_comment|/* Soft holds errors that don&squot;t&n;&t;&t;&t;&t;&t;&t;   cause failure but are the cause&n;&t;&t;&t;&t;&t;&t;   of a persistent failure not just&n;&t;&t;&t;&t;&t;&t;   &squot;timed out&squot; */
 DECL|member|ack_backlog
 r_int
 r_int
@@ -357,7 +336,6 @@ r_int
 r_char
 id|localroute
 suffix:semicolon
-multiline_comment|/* Route locally only */
 DECL|member|protocol
 r_int
 r_char
@@ -380,51 +358,43 @@ DECL|member|sndtimeo
 r_int
 id|sndtimeo
 suffix:semicolon
-multiline_comment|/* Socket Filtering Instructions */
 DECL|member|filter
 r_struct
 id|sk_filter
 op_star
 id|filter
 suffix:semicolon
-multiline_comment|/* This is where all the private (optional) areas that don&squot;t&n;&t; * overlap will eventually live. &n;&t; */
 DECL|member|protinfo
 r_void
 op_star
 id|protinfo
 suffix:semicolon
-multiline_comment|/* The slabcache this instance was allocated from, it is sk_cachep for most&n;&t; * protocols, but a private slab for protocols such as IPv4, IPv6, SPX&n;&t; * and Unix.&n;&t; */
 DECL|member|slab
 id|kmem_cache_t
 op_star
 id|slab
 suffix:semicolon
-multiline_comment|/* This part is used for the timeout functions. */
 DECL|member|timer
 r_struct
 id|timer_list
 id|timer
 suffix:semicolon
-multiline_comment|/* This is the sock cleanup timer. */
 DECL|member|stamp
 r_struct
 id|timeval
 id|stamp
 suffix:semicolon
-multiline_comment|/* Identd and reporting IO signals */
 DECL|member|socket
 r_struct
 id|socket
 op_star
 id|socket
 suffix:semicolon
-multiline_comment|/* RPC layer private data */
 DECL|member|user_data
 r_void
 op_star
 id|user_data
 suffix:semicolon
-multiline_comment|/* Callbacks */
 DECL|member|owner
 r_struct
 id|module
