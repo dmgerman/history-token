@@ -839,11 +839,6 @@ c_func
 (paren
 id|io-&gt;bio
 comma
-id|io-&gt;error
-ques
-c_cond
-l_int|0
-suffix:colon
 id|io-&gt;bio-&gt;bi_size
 comma
 id|io-&gt;error
@@ -885,16 +880,14 @@ id|io
 op_assign
 id|bio-&gt;bi_private
 suffix:semicolon
-multiline_comment|/*&n;&t; * Only call dec_pending if the clone has completely&n;&t; * finished.  If a partial io errors I&squot;m assuming it won&squot;t&n;&t; * be requeued.  FIXME: check this.&n;&t; */
 r_if
 c_cond
 (paren
-id|error
-op_logical_or
-op_logical_neg
 id|bio-&gt;bi_size
 )paren
-(brace
+r_return
+l_int|1
+suffix:semicolon
 id|dec_pending
 c_func
 (paren
@@ -909,7 +902,6 @@ c_func
 id|bio
 )paren
 suffix:semicolon
-)brace
 r_return
 l_int|0
 suffix:semicolon
@@ -1607,7 +1599,7 @@ c_func
 (paren
 id|bio
 comma
-l_int|0
+id|bio-&gt;bi_size
 )paren
 suffix:semicolon
 r_return
@@ -1637,7 +1629,7 @@ c_func
 (paren
 id|bio
 comma
-l_int|0
+id|bio-&gt;bi_size
 )paren
 suffix:semicolon
 r_return
