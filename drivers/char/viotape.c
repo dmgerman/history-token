@@ -15,6 +15,8 @@ macro_line|#include &lt;linux/cdev.h&gt;
 macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
 macro_line|#include &lt;linux/major.h&gt;
 macro_line|#include &lt;linux/completion.h&gt;
+macro_line|#include &lt;linux/proc_fs.h&gt;
+macro_line|#include &lt;linux/seq_file.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/ioctls.h&gt;
 macro_line|#include &lt;asm/iSeries/vio.h&gt;
@@ -22,7 +24,7 @@ macro_line|#include &lt;asm/iSeries/HvLpEvent.h&gt;
 macro_line|#include &lt;asm/iSeries/HvCallEvent.h&gt;
 macro_line|#include &lt;asm/iSeries/HvLpConfig.h&gt;
 DECL|macro|VIOTAPE_VERSION
-mdefine_line|#define VIOTAPE_VERSION&t;&t;&quot;1.1&quot;
+mdefine_line|#define VIOTAPE_VERSION&t;&t;&quot;1.2&quot;
 DECL|macro|VIOTAPE_MAXREQ
 mdefine_line|#define VIOTAPE_MAXREQ&t;&t;1
 DECL|macro|VIOTAPE_KERN_WARN
@@ -903,6 +905,146 @@ id|file
 op_star
 id|file
 )paren
+suffix:semicolon
+multiline_comment|/* procfs support */
+DECL|function|proc_viotape_show
+r_static
+r_int
+id|proc_viotape_show
+c_func
+(paren
+r_struct
+id|seq_file
+op_star
+id|m
+comma
+r_void
+op_star
+id|v
+)paren
+(brace
+r_int
+id|i
+suffix:semicolon
+id|seq_printf
+c_func
+(paren
+id|m
+comma
+l_string|&quot;viotape driver version &quot;
+id|VIOTAPE_VERSION
+l_string|&quot;&bslash;n&quot;
+)paren
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+id|viotape_numdev
+suffix:semicolon
+id|i
+op_increment
+)paren
+(brace
+id|seq_printf
+c_func
+(paren
+id|m
+comma
+l_string|&quot;viotape device %d is iSeries resource %10.10s&quot;
+l_string|&quot;type %4.4s, model %3.3s&bslash;n&quot;
+comma
+id|i
+comma
+id|viotape_unitinfo
+(braket
+id|i
+)braket
+dot
+id|rsrcname
+comma
+id|viotape_unitinfo
+(braket
+id|i
+)braket
+dot
+id|type
+comma
+id|viotape_unitinfo
+(braket
+id|i
+)braket
+dot
+id|model
+)paren
+suffix:semicolon
+)brace
+r_return
+l_int|0
+suffix:semicolon
+)brace
+DECL|function|proc_viotape_open
+r_static
+r_int
+id|proc_viotape_open
+c_func
+(paren
+r_struct
+id|inode
+op_star
+id|inode
+comma
+r_struct
+id|file
+op_star
+id|file
+)paren
+(brace
+r_return
+id|single_open
+c_func
+(paren
+id|file
+comma
+id|proc_viotape_show
+comma
+l_int|NULL
+)paren
+suffix:semicolon
+)brace
+DECL|variable|proc_viotape_operations
+r_static
+r_struct
+id|file_operations
+id|proc_viotape_operations
+op_assign
+(brace
+dot
+id|open
+op_assign
+id|proc_viotape_open
+comma
+dot
+id|read
+op_assign
+id|seq_read
+comma
+dot
+id|llseek
+op_assign
+id|seq_lseek
+comma
+dot
+id|release
+op_assign
+id|single_release
+comma
+)brace
 suffix:semicolon
 multiline_comment|/* Decode the device minor number into its parts */
 DECL|function|get_dev_info
@@ -3724,6 +3866,11 @@ suffix:semicolon
 r_int
 id|i
 suffix:semicolon
+r_struct
+id|proc_dir_entry
+op_star
+id|e
+suffix:semicolon
 id|op_struct_list
 op_assign
 l_int|NULL
@@ -4152,6 +4299,36 @@ id|model
 )paren
 suffix:semicolon
 )brace
+id|e
+op_assign
+id|create_proc_entry
+c_func
+(paren
+l_string|&quot;iSeries/viotape&quot;
+comma
+id|S_IFREG
+op_or
+id|S_IRUGO
+comma
+l_int|NULL
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|e
+)paren
+(brace
+id|e-&gt;owner
+op_assign
+id|THIS_MODULE
+suffix:semicolon
+id|e-&gt;proc_fops
+op_assign
+op_amp
+id|proc_viotape_operations
+suffix:semicolon
+)brace
 r_return
 l_int|0
 suffix:semicolon
@@ -4326,6 +4503,14 @@ r_int
 id|i
 comma
 id|ret
+suffix:semicolon
+id|remove_proc_entry
+c_func
+(paren
+l_string|&quot;iSeries/viotape&quot;
+comma
+l_int|NULL
+)paren
 suffix:semicolon
 r_for
 c_loop

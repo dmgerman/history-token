@@ -181,19 +181,6 @@ suffix:semicolon
 )brace
 )brace
 )brace
-DECL|function|show_trace_task
-r_void
-id|show_trace_task
-c_func
-(paren
-r_struct
-id|task_struct
-op_star
-id|tsk
-)paren
-(brace
-multiline_comment|/* TODO, this is not really useful since its called from&n;&t; * SysRq-T and we don&squot;t have a keyboard.. :) &n;&t; */
-)brace
 multiline_comment|/*&n; * These constants are for searching for possible module text&n; * segments. MODULE_RANGE is a guess of how much space is likely&n; * to be vmalloced.&n; */
 DECL|macro|MODULE_RANGE
 mdefine_line|#define MODULE_RANGE (8*1024*1024)

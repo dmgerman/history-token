@@ -1592,14 +1592,7 @@ c_func
 (paren
 id|APIC_LVTPC
 comma
-id|apic_read
-c_func
-(paren
-id|APIC_LVTPC
-)paren
-op_amp
-op_complement
-id|APIC_LVT_MASKED
+id|APIC_DM_NMI
 )paren
 suffix:semicolon
 )brace

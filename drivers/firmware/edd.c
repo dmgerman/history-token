@@ -144,7 +144,7 @@ id|EDDMAXNR
 )braket
 suffix:semicolon
 DECL|macro|EDD_DEVICE_ATTR
-mdefine_line|#define EDD_DEVICE_ATTR(_name,_mode,_show,_test) &bslash;&n;struct edd_attribute edd_attr_##_name = { &t;&bslash;&n;&t;.attr = {.name = __stringify(_name), .mode = _mode },&t;&bslash;&n;&t;.show&t;= _show,&t;&t;&t;&t;&bslash;&n;&t;.test&t;= _test,&t;&t;&t;&t;&bslash;&n;};
+mdefine_line|#define EDD_DEVICE_ATTR(_name,_mode,_show,_test) &bslash;&n;struct edd_attribute edd_attr_##_name = { &t;&bslash;&n;&t;.attr = {.name = __stringify(_name), .mode = _mode, .owner = THIS_MODULE },&t;&bslash;&n;&t;.show&t;= _show,&t;&t;&t;&t;&bslash;&n;&t;.test&t;= _test,&t;&t;&t;&t;&bslash;&n;};
 r_static
 r_inline
 r_struct

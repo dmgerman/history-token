@@ -21,6 +21,10 @@ DECL|macro|NUM_ACRS
 mdefine_line|#define NUM_ACRS      16    
 DECL|macro|TASK31_SIZE
 mdefine_line|#define TASK31_SIZE&t;&t;(0x80000000UL)
+DECL|macro|TASK_SIZE
+macro_line|#undef TASK_SIZE
+DECL|macro|TASK_SIZE
+mdefine_line|#define TASK_SIZE TASK31_SIZE
 multiline_comment|/* For SVR4/S390 the function pointer to be registered with `atexit` is&n;   passed in R14. */
 DECL|macro|ELF_PLAT_INIT
 mdefine_line|#define ELF_PLAT_INIT(_r, load_addr) &bslash;&n;&t;do { &bslash;&n;&t;_r-&gt;gprs[14] = 0; &bslash;&n;&t;set_thread_flag(TIF_31BIT); &bslash;&n;&t;} while(0)

@@ -127,7 +127,7 @@ r_void
 )paren
 (brace
 multiline_comment|/*&n; * On ix86 platforms touching the i8042 data register region can do really&n; * bad things. Because of this the region is always reserved on ix86 boxes.&n; */
-macro_line|#if !defined(__i386__) &amp;&amp; !defined(__sh__) &amp;&amp; !defined(__alpha__) &amp;&amp; !defined(__x86_64__)
+macro_line|#if !defined(__i386__) &amp;&amp; !defined(__sh__) &amp;&amp; !defined(__alpha__) &amp;&amp; !defined(__x86_64__) &amp;&amp; !defined(__mips__)
 r_if
 c_cond
 (paren

@@ -1235,7 +1235,7 @@ r_return
 id|error
 suffix:semicolon
 )brace
-multiline_comment|/* ioctl32 stuff, used by sparc64, parisc, s390x, ppc64, x86_64 */
+multiline_comment|/* ioctl32 stuff, used by sparc64, parisc, s390x, ppc64, x86_64, MIPS */
 DECL|macro|IOCTL_HASHSIZE
 mdefine_line|#define IOCTL_HASHSIZE 256
 DECL|variable|ioctl32_hash_table
