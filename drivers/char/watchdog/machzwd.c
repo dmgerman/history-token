@@ -1257,6 +1257,11 @@ op_assign
 id|THIS_MODULE
 comma
 dot
+id|llseek
+op_assign
+id|no_llseek
+comma
+dot
 id|write
 op_assign
 id|zf_write

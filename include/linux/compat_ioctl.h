@@ -2840,8 +2840,12 @@ c_func
 (paren
 id|ATMMPC_DATA
 )paren
-multiline_comment|/* Big W */
-multiline_comment|/* WIOC_GETSUPPORT not yet implemented -E */
+multiline_comment|/* Watchdog */
+id|COMPATIBLE_IOCTL
+c_func
+(paren
+id|WDIOC_GETSUPPORT
+)paren
 id|COMPATIBLE_IOCTL
 c_func
 (paren
@@ -2866,6 +2870,16 @@ id|COMPATIBLE_IOCTL
 c_func
 (paren
 id|WDIOC_KEEPALIVE
+)paren
+id|COMPATIBLE_IOCTL
+c_func
+(paren
+id|WDIOC_SETTIMEOUT
+)paren
+id|COMPATIBLE_IOCTL
+c_func
+(paren
+id|WDIOC_GETTIMEOUT
 )paren
 multiline_comment|/* Big R */
 id|COMPATIBLE_IOCTL
