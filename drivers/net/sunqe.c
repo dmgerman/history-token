@@ -2006,7 +2006,7 @@ suffix:semicolon
 multiline_comment|/* Interrupts for all QE&squot;s get filtered out via the QEC master controller,&n; * so we just run through each qe and check to see who is signaling&n; * and thus needs to be serviced.&n; */
 DECL|function|qec_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|qec_interrupt
 c_func
 (paren
@@ -2208,6 +2208,9 @@ id|channel
 op_increment
 suffix:semicolon
 )brace
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 DECL|function|qe_open
 r_static

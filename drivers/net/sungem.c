@@ -3335,7 +3335,7 @@ suffix:semicolon
 )brace
 DECL|function|gem_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|gem_interrupt
 c_func
 (paren
@@ -3451,6 +3451,9 @@ c_func
 op_amp
 id|gp-&gt;lock
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 DECL|function|gem_tx_timeout
