@@ -1434,35 +1434,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * ASUS K7V-RM has broken ACPI table defining sleep modes&n; */
-DECL|function|broken_acpi_Sx
-r_static
-id|__init
-r_int
-id|broken_acpi_Sx
-c_func
-(paren
-r_struct
-id|dmi_blacklist
-op_star
-id|d
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_WARNING
-l_string|&quot;Detected ASUS mainboard with broken ACPI sleep table&bslash;n&quot;
-)paren
-suffix:semicolon
-id|dmi_broken
-op_or_assign
-id|BROKEN_ACPI_Sx
-suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-)brace
 multiline_comment|/*&n; * Toshiba keyboard likes to repeat keys when they are not repeated.&n; */
 DECL|function|broken_toshiba_keyboard
 r_static

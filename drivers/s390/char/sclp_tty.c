@@ -741,7 +741,7 @@ suffix:semicolon
 r_case
 id|TIOCSCLPSDELIM
 suffix:colon
-multiline_comment|/*&n;&t;&t; * set special character used for seperating upper and&n;&t;&t; * lower case, 0x00 disables this feature&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * set special character used for separating upper and&n;&t;&t; * lower case, 0x00 disables this feature&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -768,7 +768,7 @@ suffix:semicolon
 r_case
 id|TIOCSCLPGDELIM
 suffix:colon
-multiline_comment|/*&n;&t;&t; * get special character used for seperating upper and&n;&t;&t; * lower case, 0x00 disables this feature&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * get special character used for separating upper and&n;&t;&t; * lower case, 0x00 disables this feature&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -1964,7 +1964,7 @@ r_break
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n; * get a EBCDIC string in upper/lower case,&n; * find out characters in lower/upper case seperated by a special character,&n; * modifiy original string,&n; * returns length of resulting string&n; */
+multiline_comment|/*&n; * get a EBCDIC string in upper/lower case,&n; * find out characters in lower/upper case separated by a special character,&n; * modifiy original string,&n; * returns length of resulting string&n; */
 r_static
 r_int
 DECL|function|sclp_switch_cases

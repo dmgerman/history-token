@@ -834,15 +834,6 @@ DECL|member|dev
 id|dev_t
 id|dev
 suffix:semicolon
-DECL|member|openers
-id|atomic_t
-id|openers
-suffix:semicolon
-DECL|member|sem
-r_struct
-id|semaphore
-id|sem
-suffix:semicolon
 )brace
 suffix:semicolon
 DECL|struct|block_device

@@ -466,7 +466,7 @@ op_logical_or
 id|atomic_read
 (paren
 op_amp
-id|current-&gt;sig-&gt;count
+id|current-&gt;sighand-&gt;count
 )paren
 OG
 l_int|1
@@ -916,6 +916,16 @@ dot
 id|capable
 op_assign
 id|cap_capable
+comma
+dot
+id|netlink_send
+op_assign
+id|cap_netlink_send
+comma
+dot
+id|netlink_recv
+op_assign
+id|cap_netlink_recv
 comma
 dot
 id|bprm_compute_creds

@@ -7675,7 +7675,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* Format: modulename size refcount deps&n;&n;   Where refcount is a number or -, and deps is a comma-separated list&n;   of depends or -.&n;*/
+multiline_comment|/* Format: modulename size refcount deps address&n;&n;   Where refcount is a number or -, and deps is a comma-separated list&n;   of depends or -.&n;*/
 DECL|variable|modules_op
 r_struct
 id|seq_operations

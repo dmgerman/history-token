@@ -36,7 +36,7 @@ macro_line|#include &lt;asm/segment.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/delay.h&gt;
 macro_line|#include &lt;asm/svinto.h&gt;
-multiline_comment|/* non-arch dependant serial structures are in linux/serial.h */
+multiline_comment|/* non-arch dependent serial structures are in linux/serial.h */
 macro_line|#include &lt;linux/serial.h&gt;
 multiline_comment|/* while we keep our own stuff (struct e100_serial) in a local .h file */
 macro_line|#include &quot;serial.h&quot;

@@ -3217,8 +3217,10 @@ comma
 id|id2
 suffix:semicolon
 r_int
+r_int
 id|idx
-comma
+suffix:semicolon
+r_int
 id|err
 suffix:semicolon
 id|memset

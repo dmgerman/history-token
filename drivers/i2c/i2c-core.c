@@ -42,7 +42,7 @@ c_func
 id|adap_lock
 )paren
 suffix:semicolon
-DECL|variable|driver_lock
+r_static
 id|DECLARE_MUTEX
 c_func
 (paren

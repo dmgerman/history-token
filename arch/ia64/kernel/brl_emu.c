@@ -594,6 +594,7 @@ multiline_comment|/*&n;&t;&t; *  The target address contains unimplemented bits.
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;Woah! Unimplemented Instruction Address Trap!&bslash;n&quot;
 )paren
 suffix:semicolon

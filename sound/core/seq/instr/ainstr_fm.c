@@ -98,6 +98,9 @@ c_cond
 (paren
 id|len
 OL
+(paren
+r_int
+)paren
 r_sizeof
 (paren
 id|ix
@@ -409,6 +412,9 @@ c_cond
 (paren
 id|len
 OL
+(paren
+r_int
+)paren
 r_sizeof
 (paren
 id|ix

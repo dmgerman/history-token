@@ -187,6 +187,7 @@ op_star
 id|info
 )paren
 (brace
+macro_line|#ifdef __i386__
 r_int
 id|offset
 suffix:semicolon
@@ -293,6 +294,7 @@ id|pmi_start
 )paren
 suffix:semicolon
 multiline_comment|/* EDI */
+macro_line|#endif
 r_return
 l_int|0
 suffix:semicolon
@@ -316,6 +318,7 @@ r_int
 id|blue
 )paren
 (brace
+macro_line|#ifdef __i386__
 r_struct
 (brace
 id|u_char
@@ -448,6 +451,7 @@ id|dac_val
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif
 )brace
 DECL|function|vesafb_setcolreg
 r_static
@@ -1013,6 +1017,12 @@ id|FB_VISUAL_PSEUDOCOLOR
 suffix:colon
 id|FB_VISUAL_TRUECOLOR
 suffix:semicolon
+macro_line|#ifndef __i386__
+id|screen_info.vesapm_seg
+op_assign
+l_int|0
+suffix:semicolon
+macro_line|#endif
 r_if
 c_cond
 (paren

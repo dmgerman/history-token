@@ -624,11 +624,6 @@ r_break
 suffix:semicolon
 )brace
 )brace
-id|blk_run_queues
-c_func
-(paren
-)paren
-suffix:semicolon
 )brace
 multiline_comment|/*&n; * Start writeback of `nr_pages&squot; pages.  If `nr_pages&squot; is zero, write back&n; * the whole world.  Returns 0 if a pdflush thread was dispatched.  Returns&n; * -1 if all pdflush threads were busy.&n; */
 DECL|function|wakeup_bdflush
@@ -849,11 +844,6 @@ op_minus
 id|wbc.nr_to_write
 suffix:semicolon
 )brace
-id|blk_run_queues
-c_func
-(paren
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren

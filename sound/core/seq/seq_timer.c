@@ -249,8 +249,6 @@ id|snd_seq_timer_stop
 c_func
 (paren
 id|t
-comma
-l_int|0
 )paren
 suffix:semicolon
 id|snd_seq_timer_reset
@@ -407,10 +405,6 @@ comma
 r_int
 r_int
 id|ticks
-comma
-r_void
-op_star
-id|data
 )paren
 (brace
 r_int
@@ -425,7 +419,7 @@ op_assign
 id|queue_t
 op_star
 )paren
-id|data
+id|timeri-&gt;callback_data
 suffix:semicolon
 id|seq_timer_t
 op_star
@@ -608,6 +602,10 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
+r_int
+r_int
+)paren
 id|tempo
 op_ne
 id|tmr-&gt;tempo
@@ -1234,9 +1232,6 @@ c_func
 id|seq_timer_t
 op_star
 id|tmr
-comma
-r_int
-id|in_callback
 )paren
 (brace
 r_if
@@ -1262,18 +1257,6 @@ id|tmr-&gt;running
 op_assign
 l_int|0
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|in_callback
-)paren
-id|snd_timer_del
-c_func
-(paren
-id|tmr-&gt;timeri
-)paren
-suffix:semicolon
-r_else
 id|snd_timer_stop
 c_func
 (paren
@@ -1400,9 +1383,6 @@ c_func
 id|seq_timer_t
 op_star
 id|tmr
-comma
-r_int
-id|in_callback
 )paren
 (brace
 r_if
@@ -1424,8 +1404,6 @@ id|snd_seq_timer_stop
 c_func
 (paren
 id|tmr
-comma
-id|in_callback
 )paren
 suffix:semicolon
 id|snd_seq_timer_reset
@@ -1480,9 +1458,6 @@ c_func
 id|seq_timer_t
 op_star
 id|tmr
-comma
-r_int
-id|in_callback
 )paren
 (brace
 r_if

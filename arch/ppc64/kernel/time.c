@@ -715,11 +715,6 @@ id|cpu
 op_assign
 id|lpaca-&gt;xPacaIndex
 suffix:semicolon
-r_struct
-id|ItLpQueue
-op_star
-id|lpq
-suffix:semicolon
 id|irq_enter
 c_func
 (paren
@@ -849,6 +844,10 @@ id|next_dec
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_PPC_ISERIES
+(brace
+r_struct
+id|ItLpQueue
+op_star
 id|lpq
 op_assign
 id|lpaca-&gt;lpQueuePtr
@@ -874,6 +873,7 @@ comma
 id|regs
 )paren
 suffix:semicolon
+)brace
 macro_line|#endif
 id|irq_exit
 c_func

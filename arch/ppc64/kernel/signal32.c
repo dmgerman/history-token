@@ -422,7 +422,7 @@ id|spin_lock_irq
 c_func
 (paren
 op_amp
-id|current-&gt;sig-&gt;siglock
+id|current-&gt;sighand-&gt;siglock
 )paren
 suffix:semicolon
 id|current-&gt;blocked
@@ -438,7 +438,7 @@ id|spin_unlock_irq
 c_func
 (paren
 op_amp
-id|current-&gt;sig-&gt;siglock
+id|current-&gt;sighand-&gt;siglock
 )paren
 suffix:semicolon
 r_if
@@ -1336,7 +1336,7 @@ id|spin_lock_irq
 c_func
 (paren
 op_amp
-id|current-&gt;sig-&gt;siglock
+id|current-&gt;sighand-&gt;siglock
 )paren
 suffix:semicolon
 id|current-&gt;blocked
@@ -1352,7 +1352,7 @@ id|spin_unlock_irq
 c_func
 (paren
 op_amp
-id|current-&gt;sig-&gt;siglock
+id|current-&gt;sighand-&gt;siglock
 )paren
 suffix:semicolon
 multiline_comment|/* If currently owning the floating point - give them up */
@@ -3483,6 +3483,21 @@ r_return
 id|ret
 suffix:semicolon
 )brace
+r_extern
+r_int
+id|do_signal
+c_func
+(paren
+id|sigset_t
+op_star
+id|oldset
+comma
+r_struct
+id|pt_regs
+op_star
+id|regs
+)paren
+suffix:semicolon
 DECL|function|sys32_rt_sigsuspend
 r_int
 id|sys32_rt_sigsuspend
@@ -3687,7 +3702,7 @@ id|spin_lock_irq
 c_func
 (paren
 op_amp
-id|current-&gt;sig-&gt;siglock
+id|current-&gt;sighand-&gt;siglock
 )paren
 suffix:semicolon
 id|saveset
@@ -3707,7 +3722,7 @@ id|spin_unlock_irq
 c_func
 (paren
 op_amp
-id|current-&gt;sig-&gt;siglock
+id|current-&gt;sighand-&gt;siglock
 )paren
 suffix:semicolon
 id|regs-&gt;result
@@ -4302,7 +4317,7 @@ op_star
 id|ka
 op_assign
 op_amp
-id|current-&gt;sig-&gt;action
+id|current-&gt;sighand-&gt;action
 (braket
 id|sig
 op_minus
@@ -4730,7 +4745,7 @@ id|spin_lock_irq
 c_func
 (paren
 op_amp
-id|current-&gt;sig-&gt;siglock
+id|current-&gt;sighand-&gt;siglock
 )paren
 suffix:semicolon
 id|sigorsets
@@ -4764,7 +4779,7 @@ id|spin_unlock_irq
 c_func
 (paren
 op_amp
-id|current-&gt;sig-&gt;siglock
+id|current-&gt;sighand-&gt;siglock
 )paren
 suffix:semicolon
 )brace
@@ -5136,7 +5151,7 @@ l_int|0
 id|ka
 op_assign
 op_amp
-id|current-&gt;sig-&gt;action
+id|current-&gt;sighand-&gt;action
 (braket
 id|signr
 op_minus

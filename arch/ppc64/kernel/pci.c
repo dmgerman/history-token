@@ -1612,7 +1612,7 @@ op_plus
 l_int|1
 suffix:semicolon
 )brace
-multiline_comment|/* Call machine dependant fixup */
+multiline_comment|/* Call machine dependent fixup */
 r_if
 c_cond
 (paren

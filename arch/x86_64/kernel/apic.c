@@ -3121,7 +3121,6 @@ DECL|macro|APIC_DIVISOR
 macro_line|#undef APIC_DIVISOR
 multiline_comment|/*&n; * Local timer interrupt handler. It does both profiling and&n; * process statistics/rescheduling.&n; *&n; * We do profiling in every local tick, statistics/rescheduling&n; * happen only every &squot;profiling multiplier&squot; ticks. The default&n; * multiplier is 1 and it can be changed by writing the new multiplier&n; * value into /proc/profile.&n; */
 DECL|function|smp_local_timer_interrupt
-r_inline
 r_void
 id|smp_local_timer_interrupt
 c_func

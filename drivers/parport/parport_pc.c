@@ -14217,7 +14217,6 @@ suffix:semicolon
 macro_line|#else
 DECL|variable|parport_pc_pnp_driver
 r_static
-r_const
 r_struct
 id|pnp_driver
 id|parport_pc_pnp_driver

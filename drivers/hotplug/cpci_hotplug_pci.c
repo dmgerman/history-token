@@ -1060,7 +1060,7 @@ id|irq_pin
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * Need to explicitly set irq field to 0 so that it&squot;ll get assigned&n;&t; * by the pcibios platform dependant code called by pci_enable_device.&n;&t; */
+multiline_comment|/*&n;&t; * Need to explicitly set irq field to 0 so that it&squot;ll get assigned&n;&t; * by the pcibios platform dependent code called by pci_enable_device.&n;&t; */
 id|dev-&gt;irq
 op_assign
 l_int|0

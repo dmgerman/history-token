@@ -254,6 +254,15 @@ macro_line|#ifndef PCI_DEVICE_ID_VT1724
 DECL|macro|PCI_DEVICE_ID_VT1724
 mdefine_line|#define PCI_DEVICE_ID_VT1724&t;&t;0x1724
 macro_line|#endif
+r_enum
+(brace
+DECL|enumerator|TYPE_ICE1712
+DECL|enumerator|TYPE_VT1724
+id|TYPE_ICE1712
+comma
+id|TYPE_VT1724
+)brace
+suffix:semicolon
 DECL|variable|__devinitdata
 r_static
 r_struct
@@ -277,8 +286,7 @@ l_int|0
 comma
 l_int|0
 comma
-l_int|0
-comma
+id|TYPE_ICE1712
 )brace
 comma
 multiline_comment|/* ICE1712 */
@@ -295,8 +303,7 @@ l_int|0
 comma
 l_int|0
 comma
-l_int|0
-comma
+id|TYPE_VT1724
 )brace
 comma
 multiline_comment|/* VT1724 */
@@ -15733,6 +15740,9 @@ op_star
 id|pci
 comma
 r_int
+id|vt1724
+comma
+r_int
 id|omni
 comma
 id|ice1712_t
@@ -15788,9 +15798,8 @@ multiline_comment|/* VT1724 does not have 28bit DMA transfer limit */
 r_if
 c_cond
 (paren
-id|pci-&gt;device
-op_eq
-id|PCI_DEVICE_ID_ICE_1712
+op_logical_neg
+id|vt1724
 )paren
 (brace
 multiline_comment|/* check, if we can restrict PCI DMA transfers to 28 bits */
@@ -15859,16 +15868,14 @@ r_return
 op_minus
 id|ENOMEM
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|pci-&gt;device
-op_eq
-id|PCI_DEVICE_ID_VT1724
-)paren
 id|ice-&gt;vt1724
 op_assign
+id|vt1724
+ques
+c_cond
 l_int|1
+suffix:colon
+l_int|0
 suffix:semicolon
 id|ice-&gt;omni
 op_assign
@@ -16704,6 +16711,9 @@ l_int|0
 comma
 id|err
 suffix:semicolon
+r_int
+id|chip_type
+suffix:semicolon
 r_struct
 id|snd_ice1712_card_info
 op_star
@@ -16773,12 +16783,16 @@ r_return
 op_minus
 id|ENOMEM
 suffix:semicolon
+id|chip_type
+op_assign
+id|pci_id-&gt;driver_data
+suffix:semicolon
 r_if
 c_cond
 (paren
-id|pci-&gt;device
+id|chip_type
 op_eq
-id|PCI_DEVICE_ID_ICE_1712
+id|TYPE_ICE1712
 )paren
 (brace
 id|strcpy
@@ -16829,6 +16843,8 @@ c_func
 id|card
 comma
 id|pci
+comma
+id|chip_type
 comma
 id|omni
 (braket

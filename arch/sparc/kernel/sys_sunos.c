@@ -886,7 +886,7 @@ id|spin_lock_irq
 c_func
 (paren
 op_amp
-id|current-&gt;sig-&gt;siglock
+id|current-&gt;sighand-&gt;siglock
 )paren
 suffix:semicolon
 id|old
@@ -916,7 +916,7 @@ id|spin_unlock_irq
 c_func
 (paren
 op_amp
-id|current-&gt;sig-&gt;siglock
+id|current-&gt;sighand-&gt;siglock
 )paren
 suffix:semicolon
 r_return
@@ -943,7 +943,7 @@ id|spin_lock_irq
 c_func
 (paren
 op_amp
-id|current-&gt;sig-&gt;siglock
+id|current-&gt;sighand-&gt;siglock
 )paren
 suffix:semicolon
 id|retval
@@ -973,7 +973,7 @@ id|spin_unlock_irq
 c_func
 (paren
 op_amp
-id|current-&gt;sig-&gt;siglock
+id|current-&gt;sighand-&gt;siglock
 )paren
 suffix:semicolon
 r_return
@@ -5298,7 +5298,7 @@ op_logical_and
 id|oact
 )paren
 (brace
-multiline_comment|/* In the clone() case we could copy half consistant&n;&t;&t; * state to the user, however this could sleep and&n;&t;&t; * deadlock us if we held the signal lock on SMP.  So for&n;&t;&t; * now I take the easy way out and do no locking.&n;&t;&t; * But then again we don&squot;t support SunOS lwp&squot;s anyways ;-)&n;&t;&t; */
+multiline_comment|/* In the clone() case we could copy half consistent&n;&t;&t; * state to the user, however this could sleep and&n;&t;&t; * deadlock us if we held the signal lock on SMP.  So for&n;&t;&t; * now I take the easy way out and do no locking.&n;&t;&t; * But then again we don&squot;t support SunOS lwp&squot;s anyways ;-)&n;&t;&t; */
 id|old_ka.sa.sa_flags
 op_xor_assign
 id|SUNOS_SV_INTERRUPT

@@ -3607,7 +3607,7 @@ id|pci_set_master
 id|pdev
 )paren
 suffix:semicolon
-multiline_comment|/*&n;         * Make sure it&squot;s the correct card.  CHECK SUBVENDOR ID!&n;         * There are lots of tulip&squot;s out there.&n;         * Also check the region of registers we will soon be&n;         * poking, to make sure no one else has reserved them.&n;         * This prevents taking someone else&squot;s device.&n;         *&n;         * Check either the subvendor or the subdevice, some systems reverse&n;         * the setting in the bois, seems to be version and arch dependant?&n;         * Fix the two variables&n;         *&n;         */
+multiline_comment|/*&n;         * Make sure it&squot;s the correct card.  CHECK SUBVENDOR ID!&n;         * There are lots of tulip&squot;s out there.&n;         * Also check the region of registers we will soon be&n;         * poking, to make sure no one else has reserved them.&n;         * This prevents taking someone else&squot;s device.&n;         *&n;         * Check either the subvendor or the subdevice, some systems reverse&n;         * the setting in the bois, seems to be version and arch dependent?&n;         * Fix the two variables&n;         *&n;         */
 r_if
 c_cond
 (paren

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Platform dependent support for DIG64 platforms.&n; *&n; * Copyright (C) 1999 Intel Corp.&n; * Copyright (C) 1999, 2001 Hewlett-Packard Co&n; * Copyright (C) 1999, 2001 David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; * Copyright (C) 1999 VA Linux Systems&n; * Copyright (C) 1999 Walt Drummond &lt;drummond@valinux.com&gt;&n; * Copyright (C) 1999 Vijay Chander &lt;vijay@engr.sgi.com&gt;&n; */
+multiline_comment|/*&n; * Platform dependent support for DIG64 platforms.&n; *&n; * Copyright (C) 1999 Intel Corp.&n; * Copyright (C) 1999, 2001 Hewlett-Packard Co&n; * Copyright (C) 1999, 2001, 2003 David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; * Copyright (C) 1999 VA Linux Systems&n; * Copyright (C) 1999 Walt Drummond &lt;drummond@valinux.com&gt;&n; * Copyright (C) 1999 Vijay Chander &lt;vijay@engr.sgi.com&gt;&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
@@ -86,6 +86,7 @@ id|ia64_boot_param-&gt;console_info.num_cols
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;dig_setup: warning: invalid screen-info, guessing 80x25&bslash;n&quot;
 )paren
 suffix:semicolon

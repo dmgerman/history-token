@@ -876,11 +876,13 @@ op_star
 id|card
 suffix:semicolon
 r_int
+r_int
 id|idx
 comma
-id|err
-comma
 id|max
+suffix:semicolon
+r_int
+id|err
 suffix:semicolon
 id|snd_assert
 c_func

@@ -5877,7 +5877,7 @@ id|TRUE
 suffix:semicolon
 )paren
 suffix:semicolon
-multiline_comment|/* Careful for priority inversions here !&n;&t;&t; * All other uses of attrib spinlock are independant of&n;&t;&t; * the object spinlock, so we are safe. Jean II */
+multiline_comment|/* Careful for priority inversions here !&n;&t;&t; * All other uses of attrib spinlock are independent of&n;&t;&t; * the object spinlock, so we are safe. Jean II */
 id|spin_lock
 c_func
 (paren
@@ -6595,7 +6595,7 @@ comma
 l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* Careful for priority inversions here !&n;&t;&t; * All other uses of attrib spinlock are independant of&n;&t;&t; * the object spinlock, so we are safe. Jean II */
+multiline_comment|/* Careful for priority inversions here !&n;&t;&t; * All other uses of attrib spinlock are independent of&n;&t;&t; * the object spinlock, so we are safe. Jean II */
 id|spin_lock
 c_func
 (paren

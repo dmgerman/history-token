@@ -1362,7 +1362,7 @@ r_int
 id|bits_wide
 )paren
 (brace
-multiline_comment|/* XXX FIXME : bits_wide indicates how wide the transaction&n;&t;** data is allowed to be...we may need a different virt_irq&n;&t;** if this one won&squot;t work. Another reason to index virtual&n;&t;** irq&squot;s into a table which can manage CPU/IRQ bit seperately.&n;&t;*/
+multiline_comment|/* XXX FIXME : bits_wide indicates how wide the transaction&n;&t;** data is allowed to be...we may need a different virt_irq&n;&t;** if this one won&squot;t work. Another reason to index virtual&n;&t;** irq&squot;s into a table which can manage CPU/IRQ bit separately.&n;&t;*/
 r_if
 c_cond
 (paren

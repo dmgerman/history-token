@@ -4219,9 +4219,9 @@ id|dst_channels
 comma
 id|dst_channels_final
 )paren
+)paren
 OL
 l_int|0
-)paren
 )paren
 r_return
 id|err

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Extensible Firmware Interface&n; *&n; * Based on Extensible Firmware Interface Specification version 0.9 April 30, 1999&n; *&n; * Copyright (C) 1999 VA Linux Systems&n; * Copyright (C) 1999 Walt Drummond &lt;drummond@valinux.com&gt;&n; * Copyright (C) 1999-2002 Hewlett-Packard Co.&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; *&t;Stephane Eranian &lt;eranian@hpl.hp.com&gt;&n; *&n; * All EFI Runtime Services are not implemented yet as EFI only&n; * supports physical mode addressing on SoftSDV. This is to be fixed&n; * in a future version.  --drummond 1999-07-20&n; *&n; * Implemented EFI runtime services and virtual mode calls.  --davidm&n; *&n; * Goutham Rao: &lt;goutham.rao@intel.com&gt;&n; *&t;Skip non-WB memory and ignore empty memory ranges.&n; */
+multiline_comment|/*&n; * Extensible Firmware Interface&n; *&n; * Based on Extensible Firmware Interface Specification version 0.9 April 30, 1999&n; *&n; * Copyright (C) 1999 VA Linux Systems&n; * Copyright (C) 1999 Walt Drummond &lt;drummond@valinux.com&gt;&n; * Copyright (C) 1999-2003 Hewlett-Packard Co.&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; *&t;Stephane Eranian &lt;eranian@hpl.hp.com&gt;&n; *&n; * All EFI Runtime Services are not implemented yet as EFI only&n; * supports physical mode addressing on SoftSDV. This is to be fixed&n; * in a future version.  --drummond 1999-07-20&n; *&n; * Implemented EFI runtime services and virtual mode calls.  --davidm&n; *&n; * Goutham Rao: &lt;goutham.rao@intel.com&gt;&n; *&t;Skip non-WB memory and ignore empty memory ranges.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -12,22 +12,6 @@ macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 DECL|macro|EFI_DEBUG
 mdefine_line|#define EFI_DEBUG&t;0
-macro_line|#ifdef CONFIG_HUGETLB_PAGE
-multiline_comment|/* By default at total of 512MB is reserved huge pages. */
-DECL|macro|HTLBZONE_SIZE_DEFAULT
-mdefine_line|#define HTLBZONE_SIZE_DEFAULT  0x20000000
-DECL|variable|htlbzone_pages
-r_int
-r_int
-id|htlbzone_pages
-op_assign
-(paren
-id|HTLBZONE_SIZE_DEFAULT
-op_rshift
-id|HPAGE_SHIFT
-)paren
-suffix:semicolon
-macro_line|#endif
 r_extern
 id|efi_status_t
 id|efi_call_phys
@@ -888,6 +872,7 @@ id|prev.start
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;Oops: EFI memory table not ordered!&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -1141,6 +1126,7 @@ id|mask
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;%s: no need to install ITR for PAL code&bslash;n&quot;
 comma
 id|__FUNCTION__
@@ -1180,6 +1166,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;CPU %d: mapping PAL code [0x%lx-0x%lx) into [0x%lx-0x%lx)&bslash;n&quot;
 comma
 id|smp_processor_id
@@ -1398,111 +1385,6 @@ id|cp
 suffix:semicolon
 )brace
 )brace
-macro_line|#ifdef CONFIG_HUGETLB_PAGE
-multiline_comment|/* Just duplicating the above algo for lpzone start */
-r_for
-c_loop
-(paren
-id|cp
-op_assign
-id|saved_command_line
-suffix:semicolon
-op_star
-id|cp
-suffix:semicolon
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|memcmp
-c_func
-(paren
-id|cp
-comma
-l_string|&quot;lpmem=&quot;
-comma
-l_int|6
-)paren
-op_eq
-l_int|0
-)paren
-(brace
-id|cp
-op_add_assign
-l_int|6
-suffix:semicolon
-id|htlbzone_pages
-op_assign
-id|memparse
-c_func
-(paren
-id|cp
-comma
-op_amp
-id|end
-)paren
-suffix:semicolon
-id|htlbzone_pages
-op_assign
-(paren
-id|htlbzone_pages
-op_rshift
-id|HPAGE_SHIFT
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|end
-op_ne
-id|cp
-)paren
-r_break
-suffix:semicolon
-id|cp
-op_assign
-id|end
-suffix:semicolon
-)brace
-r_else
-(brace
-r_while
-c_loop
-(paren
-op_star
-id|cp
-op_ne
-l_char|&squot; &squot;
-op_logical_and
-op_star
-id|cp
-)paren
-op_increment
-id|cp
-suffix:semicolon
-r_while
-c_loop
-(paren
-op_star
-id|cp
-op_eq
-l_char|&squot; &squot;
-)paren
-op_increment
-id|cp
-suffix:semicolon
-)brace
-)brace
-id|printk
-c_func
-(paren
-l_string|&quot;Total HugeTLB_Page memory pages requested  0x%lx &bslash;n&quot;
-comma
-id|htlbzone_pages
-)paren
-suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -1514,6 +1396,7 @@ l_int|0UL
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;Ignoring memory above %luMB&bslash;n&quot;
 comma
 id|mem_limit
@@ -1572,6 +1455,7 @@ l_int|0
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;Warning: EFI system table major version mismatch: &quot;
 l_string|&quot;got %d.%02d, expected %d.%02d&bslash;n&quot;
 comma
@@ -1655,6 +1539,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;EFI v%u.%.02u by %s:&quot;
 comma
 id|efi.systab-&gt;hdr.revision
@@ -2268,6 +2153,7 @@ macro_line|#else
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;EFI_MEMORY_WC mapping&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -2322,6 +2208,7 @@ macro_line|#else
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;EFI_MEMORY_WT mapping&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -2373,7 +2260,9 @@ id|EFI_SUCCESS
 id|printk
 c_func
 (paren
-l_string|&quot;Warning: unable to switch EFI into virtual mode (status=%lu)&bslash;n&quot;
+id|KERN_WARNING
+l_string|&quot;warning: unable to switch EFI into virtual mode &quot;
+l_string|&quot;(status=%lu)&bslash;n&quot;
 comma
 id|status
 )paren

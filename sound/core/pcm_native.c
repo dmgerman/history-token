@@ -9304,6 +9304,9 @@ c_cond
 (paren
 id|frames
 OG
+(paren
+id|snd_pcm_uframes_t
+)paren
 id|hw_avail
 )paren
 id|frames
@@ -9497,6 +9500,9 @@ c_cond
 (paren
 id|frames
 OG
+(paren
+id|snd_pcm_uframes_t
+)paren
 id|hw_avail
 )paren
 id|frames
@@ -13578,6 +13584,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
+r_int
+)paren
 id|size
 OG
 id|dma_bytes

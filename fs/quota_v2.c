@@ -1845,6 +1845,12 @@ id|err
 op_assign
 id|blk
 suffix:semicolon
+id|freedqbuf
+c_func
+(paren
+id|buf
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon

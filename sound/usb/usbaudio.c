@@ -336,6 +336,7 @@ suffix:semicolon
 multiline_comment|/* format type */
 DECL|member|channels
 r_int
+r_int
 id|channels
 suffix:semicolon
 multiline_comment|/* # channels */
@@ -383,6 +384,7 @@ multiline_comment|/* rate bitmasks */
 DECL|member|rate_min
 DECL|member|rate_max
 r_int
+r_int
 id|rate_min
 comma
 id|rate_max
@@ -390,10 +392,12 @@ suffix:semicolon
 multiline_comment|/* min/max rates */
 DECL|member|nr_rates
 r_int
+r_int
 id|nr_rates
 suffix:semicolon
 multiline_comment|/* number of rate table entries */
 DECL|member|rate_table
+r_int
 r_int
 op_star
 id|rate_table
@@ -654,20 +658,24 @@ suffix:semicolon
 multiline_comment|/* running status */
 DECL|member|hwptr
 r_int
+r_int
 id|hwptr
 suffix:semicolon
 multiline_comment|/* free frame position in the buffer (only for playback) */
 DECL|member|hwptr_done
+r_int
 r_int
 id|hwptr_done
 suffix:semicolon
 multiline_comment|/* processed frame position in the buffer */
 DECL|member|transfer_sched
 r_int
+r_int
 id|transfer_sched
 suffix:semicolon
 multiline_comment|/* scheduled frames since last period (for playback) */
 DECL|member|transfer_done
+r_int
 r_int
 id|transfer_done
 suffix:semicolon
@@ -685,6 +693,7 @@ id|unlink_mask
 suffix:semicolon
 multiline_comment|/* bitmask of unlinked urbs */
 DECL|member|nurbs
+r_int
 r_int
 id|nurbs
 suffix:semicolon
@@ -729,6 +738,7 @@ id|formats
 suffix:semicolon
 multiline_comment|/* format bitmasks (all or&squot;ed) */
 DECL|member|num_formats
+r_int
 r_int
 id|num_formats
 suffix:semicolon
@@ -1220,9 +1230,11 @@ op_star
 id|cp
 suffix:semicolon
 r_int
-id|stride
-comma
 id|i
+suffix:semicolon
+r_int
+r_int
+id|stride
 comma
 id|len
 comma
@@ -1367,12 +1379,14 @@ id|runtime-&gt;buffer_size
 )paren
 (brace
 r_int
+r_int
 id|cnt
 op_assign
 id|runtime-&gt;buffer_size
 op_minus
 id|oldptr
 suffix:semicolon
+r_int
 r_int
 id|blen
 op_assign
@@ -1594,10 +1608,11 @@ id|urb
 )paren
 (brace
 r_int
+id|i
+suffix:semicolon
+r_int
 r_int
 id|f
-comma
-id|i
 comma
 id|found
 suffix:semicolon
@@ -1752,6 +1767,7 @@ id|stride
 comma
 id|offs
 suffix:semicolon
+r_int
 r_int
 id|counts
 suffix:semicolon
@@ -2276,9 +2292,9 @@ id|substream-&gt;runtime
 comma
 id|urb
 )paren
+)paren
 OL
 l_int|0
-)paren
 op_logical_or
 (paren
 id|err
@@ -2488,8 +2504,10 @@ id|subs
 )paren
 (brace
 r_int
+r_int
 id|i
-comma
+suffix:semicolon
+r_int
 id|alive
 suffix:semicolon
 id|subs-&gt;running
@@ -2674,8 +2692,10 @@ id|runtime
 )paren
 (brace
 r_int
+r_int
 id|i
-comma
+suffix:semicolon
+r_int
 id|err
 suffix:semicolon
 r_for
@@ -2993,8 +3013,10 @@ op_assign
 id|HZ
 suffix:semicolon
 r_int
+r_int
 id|i
-comma
+suffix:semicolon
+r_int
 id|alive
 suffix:semicolon
 r_do
@@ -3404,6 +3426,7 @@ id|runtime
 )paren
 (brace
 r_int
+r_int
 id|maxsize
 comma
 id|n
@@ -3417,6 +3440,7 @@ id|subs-&gt;direction
 op_eq
 id|SNDRV_PCM_STREAM_PLAYBACK
 suffix:semicolon
+r_int
 r_int
 id|npacks
 (braket
@@ -4143,6 +4167,7 @@ id|fp
 suffix:semicolon
 r_else
 (brace
+r_int
 r_int
 id|i
 suffix:semicolon
@@ -5005,6 +5030,10 @@ op_logical_and
 id|ep
 op_ne
 (paren
+r_int
+r_int
+)paren
+(paren
 id|get_endpoint
 c_func
 (paren
@@ -5025,6 +5054,10 @@ id|is_playback
 op_logical_and
 id|ep
 op_ne
+(paren
+r_int
+r_int
+)paren
 (paren
 id|get_endpoint
 c_func
@@ -5630,10 +5663,12 @@ id|SNDRV_PCM_HW_PARAM_RATE
 )paren
 suffix:semicolon
 r_int
+r_int
 id|rmin
 comma
 id|rmax
-comma
+suffix:semicolon
+r_int
 id|changed
 suffix:semicolon
 id|hwc_debug
@@ -5883,10 +5918,12 @@ id|SNDRV_PCM_HW_PARAM_CHANNELS
 )paren
 suffix:semicolon
 r_int
+r_int
 id|rmin
 comma
 id|rmax
-comma
+suffix:semicolon
+r_int
 id|changed
 suffix:semicolon
 id|hwc_debug
@@ -7825,6 +7862,7 @@ suffix:semicolon
 r_else
 (brace
 r_int
+r_int
 id|i
 suffix:semicolon
 id|snd_iprintf
@@ -7911,6 +7949,7 @@ c_cond
 id|subs-&gt;running
 )paren
 (brace
+r_int
 r_int
 id|i
 suffix:semicolon
@@ -9853,6 +9892,7 @@ suffix:semicolon
 multiline_comment|/* this table corresponds to the SNDRV_PCM_RATE_XXX bit */
 r_static
 r_int
+r_int
 id|conv_rates
 (braket
 )braket
@@ -9965,6 +10005,7 @@ op_add_assign
 l_int|3
 )paren
 (brace
+r_int
 r_int
 id|rate
 op_assign
@@ -10493,7 +10534,7 @@ r_void
 op_star
 )paren
 op_minus
-l_int|1
+l_int|1L
 )paren
 suffix:semicolon
 r_continue
@@ -10571,7 +10612,7 @@ r_void
 op_star
 )paren
 op_minus
-l_int|1
+l_int|1L
 )paren
 suffix:semicolon
 )brace
@@ -10798,7 +10839,7 @@ id|quirk
 )paren
 (brace
 r_struct
-id|usb_config_descriptor
+id|usb_host_config
 op_star
 id|config
 op_assign
@@ -10838,7 +10879,13 @@ c_cond
 (paren
 id|quirk-&gt;ifnum
 op_ge
-id|config-&gt;bNumInterfaces
+id|get_cfg_desc
+c_func
+(paren
+id|config
+)paren
+op_member_access_from_pointer
+id|bNumInterfaces
 )paren
 r_continue
 suffix:semicolon
@@ -10907,7 +10954,7 @@ r_void
 op_star
 )paren
 op_minus
-l_int|1
+l_int|1L
 )paren
 suffix:semicolon
 )brace
@@ -12373,7 +12420,7 @@ r_void
 op_star
 )paren
 op_minus
-l_int|1
+l_int|1L
 )paren
 r_return
 suffix:semicolon

@@ -106,7 +106,7 @@ r_int
 id|flags
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * Set SV_WAIT_SIG in sv_wait_flags to let the sv_wait be interrupted by signals.&n; *&n; * timeout is how long to wait before giving up, or 0 to wait&n; * indefinately.  It is given in jiffies, and is relative.&n; *&n; * The associated lock must be locked on entry.  It is unlocked on return.&n; *&n; * Return values:&n; *&n; * n &lt; 0 : interrupted,  -n jiffies remaining on timeout, or -1 if timeout == 0&n; * n = 0 : timeout expired&n; * n &gt; 0 : sv_signal()&squot;d, n jiffies remaining on timeout, or 1 if timeout == 0&n; */
+multiline_comment|/*&n; * Set SV_WAIT_SIG in sv_wait_flags to let the sv_wait be interrupted by signals.&n; *&n; * timeout is how long to wait before giving up, or 0 to wait&n; * indefinitely.  It is given in jiffies, and is relative.&n; *&n; * The associated lock must be locked on entry.  It is unlocked on return.&n; *&n; * Return values:&n; *&n; * n &lt; 0 : interrupted,  -n jiffies remaining on timeout, or -1 if timeout == 0&n; * n = 0 : timeout expired&n; * n &gt; 0 : sv_signal()&squot;d, n jiffies remaining on timeout, or 1 if timeout == 0&n; */
 r_extern
 r_int
 r_int

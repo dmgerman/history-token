@@ -820,6 +820,8 @@ id|SNDRV_SEQ_PORT_TYPE_MIDI_GM
 op_or
 id|SNDRV_SEQ_PORT_TYPE_SYNTH
 comma
+l_int|16
+comma
 id|name
 )paren
 suffix:semicolon

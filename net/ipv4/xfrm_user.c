@@ -12,6 +12,7 @@ macro_line|#include &lt;linux/rtnetlink.h&gt;
 macro_line|#include &lt;linux/pfkeyv2.h&gt;
 macro_line|#include &lt;linux/ipsec.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/security.h&gt;
 macro_line|#include &lt;net/sock.h&gt;
 macro_line|#include &lt;net/xfrm.h&gt;
 DECL|variable|xfrm_nl
@@ -3764,19 +3765,10 @@ multiline_comment|/* All operations require privileges, even GET */
 r_if
 c_cond
 (paren
-op_logical_neg
-id|cap_raised
-c_func
-(paren
-id|NETLINK_CB
+id|security_netlink_recv
 c_func
 (paren
 id|skb
-)paren
-dot
-id|eff_cap
-comma
-id|CAP_NET_ADMIN
 )paren
 )paren
 (brace

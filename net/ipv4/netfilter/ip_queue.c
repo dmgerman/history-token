@@ -13,6 +13,7 @@ macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/brlock.h&gt;
 macro_line|#include &lt;linux/sysctl.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
+macro_line|#include &lt;linux/security.h&gt;
 macro_line|#include &lt;net/sock.h&gt;
 macro_line|#include &lt;net/route.h&gt;
 DECL|macro|IPQ_QMAX_DEFAULT
@@ -1984,22 +1985,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
-id|cap_raised
-c_func
-(paren
-id|NETLINK_CB
+id|security_netlink_recv
 c_func
 (paren
 id|skb
 )paren
-dot
-id|eff_cap
-comma
-id|CAP_NET_ADMIN
 )paren
-)paren
-(brace
 id|RCV_SKB_FAIL
 c_func
 (paren
@@ -2007,7 +1998,6 @@ op_minus
 id|EPERM
 )paren
 suffix:semicolon
-)brace
 id|write_lock_bh
 c_func
 (paren

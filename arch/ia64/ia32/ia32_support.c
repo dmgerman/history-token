@@ -406,13 +406,6 @@ c_func
 )paren
 suffix:semicolon
 multiline_comment|/* LDT and TSS depend on CPU number: */
-id|nr
-op_assign
-id|smp_processor_id
-c_func
-(paren
-)paren
-suffix:semicolon
 id|eflag
 op_assign
 id|t-&gt;thread.eflag

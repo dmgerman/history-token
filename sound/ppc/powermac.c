@@ -567,6 +567,7 @@ id|chip-&gt;initialized
 op_assign
 l_int|1
 suffix:semicolon
+macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,5,0)
 r_if
 c_cond
 (paren
@@ -578,6 +579,7 @@ c_func
 id|chip
 )paren
 suffix:semicolon
+macro_line|#endif
 r_if
 c_cond
 (paren
@@ -639,9 +641,9 @@ id|snd_pmac_probe
 c_func
 (paren
 )paren
+)paren
 OL
 l_int|0
-)paren
 )paren
 (brace
 macro_line|#ifdef MODULE

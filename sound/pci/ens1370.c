@@ -8032,9 +8032,11 @@ id|ak4531_t
 id|ak4531
 suffix:semicolon
 r_int
-id|err
-comma
+r_int
 id|idx
+suffix:semicolon
+r_int
+id|err
 suffix:semicolon
 multiline_comment|/* try reset AK4531 */
 id|outw
@@ -8195,6 +8197,7 @@ id|ensoniq
 )paren
 (brace
 r_static
+r_int
 r_int
 id|last_jiffies
 op_assign

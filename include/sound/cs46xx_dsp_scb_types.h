@@ -317,12 +317,12 @@ id|_mix2_ostream_spb_t
 (brace
 multiline_comment|/* 16b.16b integer.frac approximation to the&n;&t;   number of 3 sample triplets to output each&n;&t;   frame. (approximation must be floor, to&n;&t;   insure that the fractional error is always&n;&t;   positive)&n;&t;*/
 DECL|member|outTripletsPerFrame
-r_int
+id|u32
 id|outTripletsPerFrame
 suffix:semicolon
 multiline_comment|/* 16b.16b integer.frac accumulated number of&n;&t;   output triplets since the start of group &n;&t;*/
 DECL|member|accumOutTriplets
-r_int
+id|u32
 id|accumOutTriplets
 suffix:semicolon
 DECL|typedef|mix2_ostream_spb_t
@@ -895,12 +895,12 @@ id|vdec_input_buf_strm_config
 suffix:semicolon
 multiline_comment|/* inputBufStrmConfig: rsConfig for the input buffer to the decimator&n;&t;   (buffer size = 64 dwords) */
 DECL|member|vdec_coef_increment
-r_int
+id|u32
 id|vdec_coef_increment
 suffix:semicolon
 multiline_comment|/* coefIncrement = - 128.0 / decimationFactor (as a 32Q15 number) */
 DECL|member|vdec_accumphi
-r_int
+id|u32
 id|vdec_accumphi
 suffix:semicolon
 multiline_comment|/* accumPhi: accumulated fractional phase increment (6.26) */

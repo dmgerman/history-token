@@ -5993,7 +5993,7 @@ r_if
 c_cond
 (paren
 id|board
-OG
+op_ge
 id|SX_NBOARD
 op_logical_or
 op_logical_neg
@@ -10607,7 +10607,7 @@ r_while
 c_loop
 (paren
 id|i
-op_le
+OL
 id|SX_NBOARD
 )paren
 (brace

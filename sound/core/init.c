@@ -1331,9 +1331,14 @@ id|spos
 op_ne
 l_char|&squot;&bslash;0&squot;
 op_logical_and
+(paren
+r_int
+)paren
+(paren
 id|id
 op_minus
 id|card-&gt;id
+)paren
 OL
 r_sizeof
 (paren
@@ -1491,6 +1496,9 @@ r_else
 r_if
 c_cond
 (paren
+(paren
+r_int
+)paren
 id|len
 op_le
 r_sizeof
@@ -1526,6 +1534,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
+r_int
+)paren
 id|len
 op_le
 r_sizeof

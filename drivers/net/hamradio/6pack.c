@@ -211,10 +211,10 @@ r_int
 r_char
 id|tx_delay
 suffix:semicolon
-DECL|member|persistance
+DECL|member|persistence
 r_int
 r_char
-id|persistance
+id|persistence
 suffix:semicolon
 DECL|member|slottime
 r_int
@@ -1131,7 +1131,7 @@ suffix:semicolon
 r_case
 l_int|2
 suffix:colon
-id|sp-&gt;persistance
+id|sp-&gt;persistence
 op_assign
 id|p
 (braket
@@ -1526,7 +1526,7 @@ op_logical_and
 (paren
 id|random
 OL
-id|sp-&gt;persistance
+id|sp-&gt;persistence
 )paren
 )paren
 (brace
@@ -1847,7 +1847,7 @@ id|sp-&gt;tx_delay
 op_assign
 id|SIXP_TXDELAY
 suffix:semicolon
-id|sp-&gt;persistance
+id|sp-&gt;persistence
 op_assign
 id|SIXP_PERSIST
 suffix:semicolon

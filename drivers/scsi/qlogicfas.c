@@ -1154,7 +1154,7 @@ multiline_comment|/*&t;outb(0x99, qbase + 5);&t;*/
 id|outb
 c_func
 (paren
-id|cmd-&gt;target
+id|cmd-&gt;device-&gt;id
 comma
 id|qbase
 op_plus
@@ -2233,7 +2233,7 @@ multiline_comment|/*&n;&t; *&t;Non-irq version&n;&t; */
 r_if
 c_cond
 (paren
-id|cmd-&gt;target
+id|cmd-&gt;device-&gt;id
 op_eq
 id|qinitid
 )paren
@@ -2302,7 +2302,7 @@ op_star
 r_if
 c_cond
 (paren
-id|cmd-&gt;target
+id|cmd-&gt;device-&gt;id
 op_eq
 id|qinitid
 )paren

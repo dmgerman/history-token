@@ -1159,6 +1159,7 @@ op_star
 id|params
 comma
 r_int
+r_int
 id|best_rate
 )paren
 (brace
@@ -1170,6 +1171,7 @@ id|snd_pcm_hw_params_t
 op_star
 id|save
 suffix:semicolon
+r_int
 r_int
 id|rate
 suffix:semicolon
@@ -1284,6 +1286,9 @@ c_cond
 (paren
 id|ret
 op_eq
+(paren
+r_int
+)paren
 id|rate
 )paren
 (brace
@@ -3760,6 +3765,9 @@ OG
 l_int|0
 ques
 c_cond
+(paren
+id|snd_pcm_sframes_t
+)paren
 id|xfer
 suffix:colon
 op_minus
@@ -3817,6 +3825,9 @@ OG
 l_int|0
 ques
 c_cond
+(paren
+id|snd_pcm_sframes_t
+)paren
 id|xfer
 suffix:colon
 id|tmp
@@ -3864,6 +3875,9 @@ OG
 l_int|0
 ques
 c_cond
+(paren
+id|snd_pcm_sframes_t
+)paren
 id|xfer
 suffix:colon
 id|tmp
@@ -4205,6 +4219,9 @@ OG
 l_int|0
 ques
 c_cond
+(paren
+id|snd_pcm_sframes_t
+)paren
 id|xfer
 suffix:colon
 id|tmp
@@ -4261,6 +4278,9 @@ OG
 l_int|0
 ques
 c_cond
+(paren
+id|snd_pcm_sframes_t
+)paren
 id|xfer
 suffix:colon
 op_minus
@@ -4316,6 +4336,9 @@ OG
 l_int|0
 ques
 c_cond
+(paren
+id|snd_pcm_sframes_t
+)paren
 id|xfer
 suffix:colon
 id|tmp
@@ -4917,6 +4940,7 @@ id|snd_pcm_oss_file_t
 op_star
 id|pcm_oss_file
 comma
+r_int
 r_int
 id|channels
 )paren
@@ -11637,6 +11661,9 @@ id|dsp_map
 id|pcm-&gt;card-&gt;number
 )braket
 op_eq
+(paren
+r_int
+)paren
 id|pcm-&gt;device
 )paren
 (brace
@@ -11729,6 +11756,9 @@ id|adsp_map
 id|pcm-&gt;card-&gt;number
 )braket
 op_eq
+(paren
+r_int
+)paren
 id|pcm-&gt;device
 )paren
 (brace
@@ -11864,6 +11894,9 @@ id|dsp_map
 id|pcm-&gt;card-&gt;number
 )braket
 op_eq
+(paren
+r_int
+)paren
 id|pcm-&gt;device
 )paren
 (brace

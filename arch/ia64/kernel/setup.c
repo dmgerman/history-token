@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Architecture-specific setup.&n; *&n; * Copyright (C) 1998-2001 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; *&t;Stephane Eranian &lt;eranian@hpl.hp.com&gt;&n; * Copyright (C) 2000, Rohit Seth &lt;rohit.seth@intel.com&gt;&n; * Copyright (C) 1999 VA Linux Systems&n; * Copyright (C) 1999 Walt Drummond &lt;drummond@valinux.com&gt;&n; *&n; * 11/12/01 D.Mosberger Convert get_cpuinfo() to seq_file based show_cpuinfo().&n; * 04/04/00 D.Mosberger renamed cpu_initialized to cpu_online_map&n; * 03/31/00 R.Seth&t;cpu_initialized and current-&gt;processor fixes&n; * 02/04/00 D.Mosberger&t;some more get_cpuinfo fixes...&n; * 02/01/00 R.Seth&t;fixed get_cpuinfo for SMP&n; * 01/07/99 S.Eranian&t;added the support for command line argument&n; * 06/24/99 W.Drummond&t;added boot_cpu_data.&n; */
+multiline_comment|/*&n; * Architecture-specific setup.&n; *&n; * Copyright (C) 1998-2001, 2003 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; *&t;Stephane Eranian &lt;eranian@hpl.hp.com&gt;&n; * Copyright (C) 2000, Rohit Seth &lt;rohit.seth@intel.com&gt;&n; * Copyright (C) 1999 VA Linux Systems&n; * Copyright (C) 1999 Walt Drummond &lt;drummond@valinux.com&gt;&n; *&n; * 11/12/01 D.Mosberger Convert get_cpuinfo() to seq_file based show_cpuinfo().&n; * 04/04/00 D.Mosberger renamed cpu_initialized to cpu_online_map&n; * 03/31/00 R.Seth&t;cpu_initialized and current-&gt;processor fixes&n; * 02/04/00 D.Mosberger&t;some more get_cpuinfo fixes...&n; * 02/01/00 R.Seth&t;fixed get_cpuinfo for SMP&n; * 01/07/99 S.Eranian&t;added the support for command line argument&n; * 06/24/99 W.Drummond&t;added boot_cpu_data.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/acpi.h&gt;
@@ -454,6 +454,7 @@ id|PAGE_OFFSET
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;warning: skipping physical page 0&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -1248,6 +1249,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;Initial ramdisk at: 0x%lx (%lu bytes)&bslash;n&quot;
 comma
 id|initrd_start
@@ -1484,12 +1486,15 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;No I/O port range found in EFI memory map, falling back to AR.KR0&bslash;n&quot;
+id|KERN_INFO
+l_string|&quot;No I/O port range found in EFI memory map, falling back &quot;
+l_string|&quot;to AR.KR0&bslash;n&quot;
 )paren
 suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;I/O port base = 0x%lx&bslash;n&quot;
 comma
 id|phys_iobase
@@ -2326,6 +2331,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;CPU %d: %lu virtual and %lu physical address bits&bslash;n&quot;
 comma
 id|smp_processor_id
@@ -2840,6 +2846,7 @@ r_else
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;cpu_init: PAL VM summary failed, assuming 18 RID bits&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -2904,8 +2911,11 @@ l_int|0
 )paren
 (brace
 id|printk
+c_func
 (paren
-l_string|&quot;cpu_init: PAL RSE info failed, assuming 96 physical stacked regs&bslash;n&quot;
+id|KERN_WARNING
+l_string|&quot;cpu_init: PAL RSE info failed; assuming 96 physical &quot;
+l_string|&quot;stacked regs&bslash;n&quot;
 )paren
 suffix:semicolon
 id|num_phys_stacked
@@ -2931,5 +2941,141 @@ c_func
 (paren
 )paren
 suffix:semicolon
+)brace
+r_void
+DECL|function|check_bugs
+id|check_bugs
+(paren
+r_void
+)paren
+(brace
+r_extern
+r_int
+id|__start___mckinley_e9_bundles
+(braket
+)braket
+suffix:semicolon
+r_extern
+r_int
+id|__end___mckinley_e9_bundles
+(braket
+)braket
+suffix:semicolon
+id|u64
+op_star
+id|bundle
+suffix:semicolon
+r_int
+op_star
+id|wp
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|local_cpu_data-&gt;family
+op_eq
+l_int|0x1f
+op_logical_and
+id|local_cpu_data-&gt;model
+op_eq
+l_int|0
+)paren
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;check_bugs: leaving McKinley Errata 9 workaround enabled&bslash;n&quot;
+)paren
+suffix:semicolon
+r_else
+(brace
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;check_bugs: McKinley Errata 9 workaround not needed; &quot;
+l_string|&quot;disabling it&bslash;n&quot;
+)paren
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|wp
+op_assign
+id|__start___mckinley_e9_bundles
+suffix:semicolon
+id|wp
+OL
+id|__end___mckinley_e9_bundles
+suffix:semicolon
+op_increment
+id|wp
+)paren
+(brace
+id|bundle
+op_assign
+(paren
+id|u64
+op_star
+)paren
+(paren
+(paren
+r_char
+op_star
+)paren
+id|wp
+op_plus
+op_star
+id|wp
+)paren
+suffix:semicolon
+multiline_comment|/* install a bundle of NOPs: */
+id|bundle
+(braket
+l_int|0
+)braket
+op_assign
+l_int|0x0000000100000000
+suffix:semicolon
+id|bundle
+(braket
+l_int|1
+)braket
+op_assign
+l_int|0x0004000000000200
+suffix:semicolon
+id|ia64_fc
+c_func
+(paren
+id|bundle
+)paren
+suffix:semicolon
+)brace
+id|ia64_insn_group_barrier
+c_func
+(paren
+)paren
+suffix:semicolon
+id|ia64_sync_i
+c_func
+(paren
+)paren
+suffix:semicolon
+id|ia64_insn_group_barrier
+c_func
+(paren
+)paren
+suffix:semicolon
+id|ia64_srlz_i
+c_func
+(paren
+)paren
+suffix:semicolon
+id|ia64_insn_group_barrier
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
 )brace
 eof

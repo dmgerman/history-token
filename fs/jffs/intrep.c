@@ -13917,13 +13917,13 @@ c_func
 id|c-&gt;gc_task
 )paren
 suffix:semicolon
-id|current-&gt;session
-op_assign
+id|set_special_pids
+c_func
+(paren
 l_int|1
-suffix:semicolon
-id|current-&gt;pgrp
-op_assign
+comma
 l_int|1
+)paren
 suffix:semicolon
 id|init_completion
 c_func
@@ -13937,7 +13937,7 @@ id|spin_lock_irq
 c_func
 (paren
 op_amp
-id|current-&gt;sig-&gt;siglock
+id|current-&gt;sighand-&gt;siglock
 )paren
 suffix:semicolon
 id|siginitsetinv
@@ -13979,7 +13979,7 @@ id|spin_unlock_irq
 c_func
 (paren
 op_amp
-id|current-&gt;sig-&gt;siglock
+id|current-&gt;sighand-&gt;siglock
 )paren
 suffix:semicolon
 id|strcpy
@@ -14053,7 +14053,7 @@ id|spin_lock_irq
 c_func
 (paren
 op_amp
-id|current-&gt;sig-&gt;siglock
+id|current-&gt;sighand-&gt;siglock
 )paren
 suffix:semicolon
 id|signr
@@ -14072,7 +14072,7 @@ id|spin_unlock_irq
 c_func
 (paren
 op_amp
-id|current-&gt;sig-&gt;siglock
+id|current-&gt;sighand-&gt;siglock
 )paren
 suffix:semicolon
 r_switch

@@ -438,9 +438,6 @@ c_func
 id|seq_timer_t
 op_star
 id|tmr
-comma
-r_int
-id|in_callback
 )paren
 suffix:semicolon
 r_int
@@ -450,9 +447,6 @@ c_func
 id|seq_timer_t
 op_star
 id|tmr
-comma
-r_int
-id|in_callback
 )paren
 suffix:semicolon
 r_int
@@ -462,9 +456,6 @@ c_func
 id|seq_timer_t
 op_star
 id|tmr
-comma
-r_int
-id|in_callback
 )paren
 suffix:semicolon
 r_int

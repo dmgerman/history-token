@@ -195,7 +195,7 @@ id|sym_shcb
 op_star
 id|shcb_p
 suffix:semicolon
-multiline_comment|/*&n; *  Define a reference to the O/S dependant IO request.&n; */
+multiline_comment|/*&n; *  Define a reference to the O/S dependent IO request.&n; */
 DECL|typedef|cam_ccb_p
 r_typedef
 id|Scsi_Cmnd
