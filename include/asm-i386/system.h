@@ -700,9 +700,9 @@ DECL|macro|set_wmb
 mdefine_line|#define set_wmb(var, value) do { var = value; wmb(); } while (0)
 multiline_comment|/* interrupt control.. */
 DECL|macro|local_save_flags
-mdefine_line|#define local_save_flags(x)&t;__asm__ __volatile__(&quot;pushfl ; popl %0&quot;:&quot;=g&quot; (x): /* no input */)
+mdefine_line|#define local_save_flags(x)&t;do { typecheck(unsigned long,x); __asm__ __volatile__(&quot;pushfl ; popl %0&quot;:&quot;=g&quot; (x): /* no input */); } while (0)
 DECL|macro|local_irq_restore
-mdefine_line|#define local_irq_restore(x) &t;__asm__ __volatile__(&quot;pushl %0 ; popfl&quot;: /* no output */ :&quot;g&quot; (x):&quot;memory&quot;, &quot;cc&quot;)
+mdefine_line|#define local_irq_restore(x) &t;do { typecheck(unsigned long,x); __asm__ __volatile__(&quot;pushl %0 ; popfl&quot;: /* no output */ :&quot;g&quot; (x):&quot;memory&quot;, &quot;cc&quot;); } while (0)
 DECL|macro|local_irq_disable
 mdefine_line|#define local_irq_disable() &t;__asm__ __volatile__(&quot;cli&quot;: : :&quot;memory&quot;)
 DECL|macro|local_irq_enable
