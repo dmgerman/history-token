@@ -2364,6 +2364,52 @@ suffix:semicolon
 r_int
 id|data_interface_num
 suffix:semicolon
+r_int
+r_int
+id|quirks
+suffix:semicolon
+multiline_comment|/* handle quirks deadly to normal probing*/
+id|quirks
+op_assign
+(paren
+r_int
+r_int
+)paren
+id|id-&gt;driver_info
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|quirks
+op_eq
+id|NO_UNION_NORMAL
+)paren
+(brace
+id|data_interface
+op_assign
+id|usb_ifnum_to_if
+c_func
+(paren
+id|usb_dev
+comma
+l_int|1
+)paren
+suffix:semicolon
+id|control_interface
+op_assign
+id|usb_ifnum_to_if
+c_func
+(paren
+id|usb_dev
+comma
+l_int|0
+)paren
+suffix:semicolon
+r_goto
+id|skip_normal_probe
+suffix:semicolon
+)brace
+multiline_comment|/* normal probing*/
 r_if
 c_cond
 (paren
@@ -2725,6 +2771,8 @@ comma
 l_string|&quot;Seperate call control interface. That is not fully supported.&quot;
 )paren
 suffix:semicolon
+id|skip_normal_probe
+suffix:colon
 r_if
 c_cond
 (paren
@@ -3748,6 +3796,25 @@ id|acm_ids
 )braket
 op_assign
 (brace
+multiline_comment|/* quirky and broken devices */
+(brace
+id|USB_DEVICE
+c_func
+(paren
+l_int|0x0870
+comma
+l_int|0x0001
+)paren
+comma
+multiline_comment|/* Metricom GS Modem */
+dot
+id|driver_info
+op_assign
+id|NO_UNION_NORMAL
+comma
+multiline_comment|/* has no union descriptor */
+)brace
+comma
 multiline_comment|/* control interfaces with various AT-command sets */
 (brace
 id|USB_INTERFACE_INFO
