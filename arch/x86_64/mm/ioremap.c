@@ -685,6 +685,10 @@ id|area
 r_return
 l_int|NULL
 suffix:semicolon
+id|area-&gt;phys_addr
+op_assign
+id|phys_addr
+suffix:semicolon
 id|addr
 op_assign
 id|area-&gt;addr

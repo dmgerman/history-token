@@ -2662,8 +2662,9 @@ multiline_comment|/**&n; *&t;init_hwif_piix&t;&t;-&t;fill in the hwif for the PI
 DECL|function|init_hwif_piix
 r_static
 r_void
-id|__init
+id|__devinit
 id|init_hwif_piix
+c_func
 (paren
 id|ide_hwif_t
 op_star
@@ -2918,8 +2919,9 @@ multiline_comment|/**&n; *&t;init_setup_piix&t;&t;-&t;callback for IDE initializ
 DECL|function|init_setup_piix
 r_static
 r_void
-id|__init
+id|__devinit
 id|init_setup_piix
+c_func
 (paren
 r_struct
 id|pci_dev
@@ -2988,7 +2990,7 @@ multiline_comment|/**&n; *&t;piix_check_450nx&t;-&t;Check for problem 450NX setu
 DECL|function|piix_check_450nx
 r_static
 r_void
-id|__init
+id|__devinit
 id|piix_check_450nx
 c_func
 (paren

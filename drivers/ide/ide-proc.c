@@ -838,8 +838,6 @@ macro_line|#endif&t;/* CONFIG_BLK_DEV_IDEPCI */
 r_else
 (brace
 multiline_comment|/* not pci */
-macro_line|#if !defined(__mc68000__) &amp;&amp; !defined(CONFIG_APUS)
-multiline_comment|/*&n;* Geert Uytterhoeven&n;*&n;* unless you can explain me what it really does.&n;* On m68k, we don&squot;t have outw() and outl() yet,&n;* and I need a good reason to implement it.&n;* &n;* BTW, IMHO the main remaining portability problem with the IDE driver &n;* is that it mixes IO (ioport) and MMIO (iomem) access on different platforms.&n;* &n;* I think all accesses should be done using&n;* &n;*     ide_in[bwl](ide_device_instance, offset)&n;*     ide_out[bwl](ide_device_instance, value, offset)&n;* &n;* so the architecture specific code can #define ide_{in,out}[bwl] to the&n;* appropriate function.&n;* &n;*/
 r_switch
 c_cond
 (paren
@@ -892,7 +890,6 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-macro_line|#endif /* !__mc68000__ &amp;&amp; !CONFIG_APUS */
 )brace
 )brace
 id|spin_unlock_irqrestore
