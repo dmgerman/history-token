@@ -1644,13 +1644,6 @@ op_star
 id|kobj
 )paren
 (brace
-r_struct
-id|kobject
-op_star
-id|ret
-op_assign
-id|kobj
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1677,13 +1670,8 @@ id|kobj-&gt;refcount
 )paren
 suffix:semicolon
 )brace
-r_else
-id|ret
-op_assign
-l_int|NULL
-suffix:semicolon
 r_return
-id|ret
+id|kobj
 suffix:semicolon
 )brace
 multiline_comment|/**&n; *&t;kobject_cleanup - free kobject resources. &n; *&t;@kobj:&t;object.&n; */
