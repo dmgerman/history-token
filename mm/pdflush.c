@@ -94,7 +94,6 @@ id|when_i_went_to_sleep
 suffix:semicolon
 )brace
 suffix:semicolon
-multiline_comment|/*&n; * preemption is disabled in pdflush.  There was a bug in preempt&n; * which was causing pdflush to get flipped into state TASK_RUNNING&n; * when it performed a spin_unlock.  That bug is probably fixed,&n; * but play it safe.  The preempt-off paths are very short.&n; */
 DECL|function|__pdflush
 r_static
 r_int
@@ -166,11 +165,6 @@ id|my_work-&gt;who
 op_assign
 id|current
 suffix:semicolon
-id|preempt_disable
-c_func
-(paren
-)paren
-suffix:semicolon
 id|spin_lock_irq
 c_func
 (paren
@@ -226,22 +220,12 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|preempt_enable
-c_func
-(paren
-)paren
-suffix:semicolon
 (paren
 op_star
 id|my_work-&gt;fn
 )paren
 (paren
 id|my_work-&gt;arg0
-)paren
-suffix:semicolon
-id|preempt_disable
-c_func
-(paren
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; * Thread creation: For how long have there been zero&n;&t;&t; * available threads?&n;&t;&t; */
@@ -357,11 +341,6 @@ c_func
 (paren
 op_amp
 id|pdflush_lock
-)paren
-suffix:semicolon
-id|preempt_enable
-c_func
-(paren
 )paren
 suffix:semicolon
 r_return
