@@ -721,7 +721,7 @@ c_cond
 (paren
 id|eoc
 op_eq
-l_int|0
+l_int|NULL
 )paren
 (brace
 r_if
