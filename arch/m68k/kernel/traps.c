@@ -5336,6 +5336,11 @@ comma
 id|nr
 )paren
 suffix:semicolon
+id|print_modules
+c_func
+(paren
+)paren
+suffix:semicolon
 id|printk
 c_func
 (paren
