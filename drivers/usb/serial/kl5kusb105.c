@@ -760,9 +760,7 @@ id|status_buf
 comma
 id|KLSI_STATUSBUF_LEN
 comma
-l_int|10
-op_star
-id|HZ
+l_int|10000
 )paren
 suffix:semicolon
 r_if
