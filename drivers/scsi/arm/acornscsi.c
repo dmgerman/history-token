@@ -254,7 +254,7 @@ c_cond
 (paren
 id|reg
 op_eq
-id|ASR
+id|SBIC_ASR
 )paren
 (brace
 r_return
@@ -315,7 +315,7 @@ c_func
 (paren
 id|io_port
 comma
-id|TXADRHI
+id|DMAC_TXADRHI
 )paren
 op_lshift
 l_int|16
@@ -325,7 +325,7 @@ c_func
 (paren
 id|io_port
 comma
-id|TXADRMD
+id|DMAC_TXADRMD
 )paren
 op_lshift
 l_int|8
@@ -335,7 +335,7 @@ c_func
 (paren
 id|io_port
 comma
-id|TXADRLO
+id|DMAC_TXADRLO
 )paren
 suffix:semicolon
 )brace
@@ -369,7 +369,7 @@ c_func
 (paren
 id|host-&gt;dma.io_port
 comma
-id|MODECON
+id|DMAC_MODECON
 )paren
 suffix:semicolon
 id|addr
@@ -387,7 +387,7 @@ c_func
 (paren
 id|host-&gt;dma.io_port
 comma
-id|TXCNTHI
+id|DMAC_TXCNTHI
 )paren
 op_lshift
 l_int|8
@@ -397,7 +397,7 @@ c_func
 (paren
 id|host-&gt;dma.io_port
 comma
-id|TXCNTLO
+id|DMAC_TXCNTLO
 )paren
 suffix:semicolon
 id|printk
@@ -426,7 +426,7 @@ c_func
 (paren
 id|host-&gt;dma.io_port
 comma
-id|MASKREG
+id|DMAC_MASKREG
 )paren
 )paren
 suffix:semicolon
@@ -489,7 +489,7 @@ c_func
 (paren
 id|host-&gt;scsi.io_port
 comma
-id|TRANSCNTH
+id|SBIC_TRANSCNTH
 )paren
 op_lshift
 l_int|16
@@ -552,7 +552,7 @@ c_func
 (paren
 id|host-&gt;scsi.io_port
 comma
-id|ASR
+id|SBIC_ASR
 )paren
 suffix:semicolon
 r_if
@@ -638,7 +638,7 @@ c_func
 (paren
 id|host-&gt;scsi.io_port
 comma
-id|CMND
+id|SBIC_CMND
 comma
 id|command
 )paren
@@ -813,7 +813,7 @@ c_func
 (paren
 id|host-&gt;scsi.io_port
 comma
-id|ASR
+id|SBIC_ASR
 )paren
 suffix:semicolon
 id|sbic_arm_read
@@ -821,7 +821,7 @@ c_func
 (paren
 id|host-&gt;scsi.io_port
 comma
-id|SSR
+id|SBIC_SSR
 )paren
 suffix:semicolon
 multiline_comment|/* setup sbic - WD33C93A */
@@ -830,7 +830,7 @@ c_func
 (paren
 id|host-&gt;scsi.io_port
 comma
-id|OWNID
+id|SBIC_OWNID
 comma
 id|OWNID_EAF
 op_or
@@ -842,7 +842,7 @@ c_func
 (paren
 id|host-&gt;scsi.io_port
 comma
-id|CMND
+id|SBIC_CMND
 comma
 id|CMND_RESET
 )paren
@@ -901,7 +901,7 @@ c_func
 (paren
 id|host-&gt;scsi.io_port
 comma
-id|ASR
+id|SBIC_ASR
 )paren
 suffix:semicolon
 r_if
@@ -912,7 +912,7 @@ c_func
 (paren
 id|host-&gt;scsi.io_port
 comma
-id|SSR
+id|SBIC_SSR
 )paren
 op_ne
 l_int|0x01
@@ -931,7 +931,7 @@ c_func
 (paren
 id|host-&gt;scsi.io_port
 comma
-id|CTRL
+id|SBIC_CTRL
 comma
 id|INIT_SBICDMA
 op_or
@@ -943,7 +943,7 @@ c_func
 (paren
 id|host-&gt;scsi.io_port
 comma
-id|TIMEOUT
+id|SBIC_TIMEOUT
 comma
 id|TIMEOUT_TIME
 )paren
@@ -953,7 +953,7 @@ c_func
 (paren
 id|host-&gt;scsi.io_port
 comma
-id|SYNCHTRANSFER
+id|SBIC_SYNCHTRANSFER
 comma
 id|SYNCHTRANSFER_2DBA
 )paren
@@ -963,7 +963,7 @@ c_func
 (paren
 id|host-&gt;scsi.io_port
 comma
-id|SOURCEID
+id|SBIC_SOURCEID
 comma
 id|SOURCEID_ER
 op_or
@@ -988,7 +988,7 @@ c_func
 (paren
 id|host-&gt;dma.io_port
 comma
-id|INIT
+id|DMAC_INIT
 comma
 l_int|0
 )paren
@@ -999,7 +999,7 @@ c_func
 (paren
 id|host-&gt;dma.io_port
 comma
-id|INIT
+id|DMAC_INIT
 comma
 id|INIT_8BIT
 )paren
@@ -1009,7 +1009,7 @@ c_func
 (paren
 id|host-&gt;dma.io_port
 comma
-id|CHANNEL
+id|DMAC_CHANNEL
 comma
 id|CHANNEL_0
 )paren
@@ -1019,7 +1019,7 @@ c_func
 (paren
 id|host-&gt;dma.io_port
 comma
-id|DEVCON0
+id|DMAC_DEVCON0
 comma
 id|INIT_DEVCON0
 )paren
@@ -1029,7 +1029,7 @@ c_func
 (paren
 id|host-&gt;dma.io_port
 comma
-id|DEVCON1
+id|DMAC_DEVCON1
 comma
 id|INIT_DEVCON1
 )paren
@@ -3065,7 +3065,7 @@ c_func
 (paren
 id|host-&gt;scsi.io_port
 comma
-id|ASR
+id|SBIC_ASR
 )paren
 op_amp
 (paren
@@ -3083,7 +3083,7 @@ c_func
 (paren
 id|host-&gt;scsi.io_port
 comma
-id|DESTID
+id|SBIC_DESTID
 comma
 id|SCpnt-&gt;device-&gt;id
 )paren
@@ -3093,7 +3093,7 @@ c_func
 (paren
 id|host-&gt;scsi.io_port
 comma
-id|CMND
+id|SBIC_CMND
 comma
 id|CMND_SELWITHATN
 )paren
@@ -3281,7 +3281,7 @@ c_func
 (paren
 id|host-&gt;scsi.io_port
 comma
-id|SOURCEID
+id|SBIC_SOURCEID
 comma
 id|SOURCEID_ER
 op_or
@@ -3987,7 +3987,7 @@ c_func
 (paren
 id|host-&gt;dma.io_port
 comma
-id|MASKREG
+id|DMAC_MASKREG
 comma
 id|MASK_ON
 )paren
@@ -4047,7 +4047,7 @@ c_func
 (paren
 id|host-&gt;dma.io_port
 comma
-id|MASKREG
+id|DMAC_MASKREG
 comma
 id|MASK_ON
 )paren
@@ -4173,7 +4173,7 @@ c_func
 (paren
 id|host-&gt;dma.io_port
 comma
-id|TXCNTLO
+id|DMAC_TXCNTLO
 comma
 id|length
 )paren
@@ -4183,7 +4183,7 @@ c_func
 (paren
 id|host-&gt;dma.io_port
 comma
-id|TXCNTHI
+id|DMAC_TXCNTHI
 comma
 id|length
 op_rshift
@@ -4195,7 +4195,7 @@ c_func
 (paren
 id|host-&gt;dma.io_port
 comma
-id|TXADRLO
+id|DMAC_TXADRLO
 comma
 id|address
 )paren
@@ -4205,7 +4205,7 @@ c_func
 (paren
 id|host-&gt;dma.io_port
 comma
-id|TXADRMD
+id|DMAC_TXADRMD
 comma
 id|address
 op_rshift
@@ -4217,7 +4217,7 @@ c_func
 (paren
 id|host-&gt;dma.io_port
 comma
-id|TXADRHI
+id|DMAC_TXADRHI
 comma
 l_int|0
 )paren
@@ -4227,7 +4227,7 @@ c_func
 (paren
 id|host-&gt;dma.io_port
 comma
-id|MODECON
+id|DMAC_MODECON
 comma
 id|mode
 )paren
@@ -4237,7 +4237,7 @@ c_func
 (paren
 id|host-&gt;dma.io_port
 comma
-id|MASKREG
+id|DMAC_MASKREG
 comma
 id|MASK_OFF
 )paren
@@ -4281,7 +4281,7 @@ c_func
 (paren
 id|host-&gt;dma.io_port
 comma
-id|MASKREG
+id|DMAC_MASKREG
 comma
 id|MASK_ON
 )paren
@@ -4459,7 +4459,7 @@ c_func
 (paren
 id|host-&gt;dma.io_port
 comma
-id|MASKREG
+id|DMAC_MASKREG
 comma
 id|MASK_ON
 )paren
@@ -4593,7 +4593,7 @@ c_func
 (paren
 id|host-&gt;dma.io_port
 comma
-id|TXCNTLO
+id|DMAC_TXCNTLO
 comma
 id|length
 )paren
@@ -4603,7 +4603,7 @@ c_func
 (paren
 id|host-&gt;dma.io_port
 comma
-id|TXCNTHI
+id|DMAC_TXCNTHI
 comma
 id|length
 op_rshift
@@ -4615,7 +4615,7 @@ c_func
 (paren
 id|host-&gt;dma.io_port
 comma
-id|TXADRLO
+id|DMAC_TXADRLO
 comma
 id|address
 )paren
@@ -4625,7 +4625,7 @@ c_func
 (paren
 id|host-&gt;dma.io_port
 comma
-id|TXADRMD
+id|DMAC_TXADRMD
 comma
 id|address
 op_rshift
@@ -4637,7 +4637,7 @@ c_func
 (paren
 id|host-&gt;dma.io_port
 comma
-id|TXADRHI
+id|DMAC_TXADRHI
 comma
 l_int|0
 )paren
@@ -4647,7 +4647,7 @@ c_func
 (paren
 id|host-&gt;dma.io_port
 comma
-id|MASKREG
+id|DMAC_MASKREG
 comma
 id|MASK_OFF
 )paren
@@ -4685,7 +4685,7 @@ c_func
 (paren
 id|host-&gt;dma.io_port
 comma
-id|STATUS
+id|DMAC_STATUS
 )paren
 op_amp
 id|STATUS_RQ0
@@ -4704,7 +4704,7 @@ c_func
 (paren
 id|host-&gt;dma.io_port
 comma
-id|TXCNTLO
+id|DMAC_TXCNTLO
 comma
 l_int|0
 )paren
@@ -4714,7 +4714,7 @@ c_func
 (paren
 id|host-&gt;dma.io_port
 comma
-id|TXCNTHI
+id|DMAC_TXCNTHI
 comma
 l_int|0
 )paren
@@ -4724,7 +4724,7 @@ c_func
 (paren
 id|host-&gt;dma.io_port
 comma
-id|TXADRLO
+id|DMAC_TXADRLO
 comma
 l_int|0
 )paren
@@ -4734,7 +4734,7 @@ c_func
 (paren
 id|host-&gt;dma.io_port
 comma
-id|TXADRMD
+id|DMAC_TXADRMD
 comma
 l_int|0
 )paren
@@ -4744,7 +4744,7 @@ c_func
 (paren
 id|host-&gt;dma.io_port
 comma
-id|TXADRHI
+id|DMAC_TXADRHI
 comma
 l_int|0
 )paren
@@ -4754,7 +4754,7 @@ c_func
 (paren
 id|host-&gt;dma.io_port
 comma
-id|MASKREG
+id|DMAC_MASKREG
 comma
 id|MASK_OFF
 )paren
@@ -4890,7 +4890,7 @@ c_func
 (paren
 id|host-&gt;dma.io_port
 comma
-id|TXADRLO
+id|DMAC_TXADRLO
 comma
 id|transferred
 )paren
@@ -4900,7 +4900,7 @@ c_func
 (paren
 id|host-&gt;dma.io_port
 comma
-id|TXADRMD
+id|DMAC_TXADRMD
 comma
 id|transferred
 op_rshift
@@ -4912,7 +4912,7 @@ c_func
 (paren
 id|host-&gt;dma.io_port
 comma
-id|TXADRHI
+id|DMAC_TXADRHI
 comma
 id|transferred
 op_rshift
@@ -4995,7 +4995,7 @@ c_func
 (paren
 id|host-&gt;scsi.io_port
 comma
-id|ASR
+id|SBIC_ASR
 )paren
 suffix:semicolon
 r_if
@@ -5015,7 +5015,7 @@ c_func
 (paren
 id|host-&gt;scsi.io_port
 comma
-id|DATA
+id|SBIC_DATA
 comma
 id|bytes
 (braket
@@ -5095,7 +5095,7 @@ c_func
 (paren
 id|host-&gt;scsi.io_port
 comma
-id|TRANSCNTH
+id|SBIC_TRANSCNTH
 comma
 l_int|0
 )paren
@@ -5246,7 +5246,7 @@ c_func
 (paren
 id|host-&gt;scsi.io_port
 comma
-id|DATA
+id|SBIC_DATA
 comma
 id|NOP
 )paren
@@ -5308,7 +5308,7 @@ c_func
 (paren
 id|host-&gt;scsi.io_port
 comma
-id|DATA
+id|SBIC_DATA
 comma
 id|msg-&gt;msg
 (braket
@@ -5341,7 +5341,7 @@ c_func
 (paren
 id|host-&gt;scsi.io_port
 comma
-id|TRANSCNTH
+id|SBIC_TRANSCNTH
 comma
 l_int|0
 )paren
@@ -5527,7 +5527,7 @@ c_func
 (paren
 id|host-&gt;scsi.io_port
 comma
-id|DATA
+id|SBIC_DATA
 )paren
 suffix:semicolon
 )brace
@@ -5579,7 +5579,7 @@ c_func
 (paren
 id|host-&gt;scsi.io_port
 comma
-id|DATA
+id|SBIC_DATA
 )paren
 suffix:semicolon
 multiline_comment|/* wait for MSGIN-XFER-PAUSED */
@@ -5602,7 +5602,7 @@ c_func
 (paren
 id|host-&gt;scsi.io_port
 comma
-id|SSR
+id|SBIC_SSR
 )paren
 suffix:semicolon
 r_return
@@ -5755,7 +5755,7 @@ c_func
 (paren
 id|host-&gt;scsi.io_port
 comma
-id|SSR
+id|SBIC_SSR
 )paren
 suffix:semicolon
 )brace
@@ -6104,7 +6104,7 @@ c_func
 (paren
 id|host-&gt;scsi.io_port
 comma
-id|SYNCHTRANSFER
+id|SBIC_SYNCHTRANSFER
 comma
 id|host-&gt;device
 (braket
@@ -6337,7 +6337,7 @@ c_func
 (paren
 id|host-&gt;scsi.io_port
 comma
-id|SYNCHTRANSFER
+id|SBIC_SYNCHTRANSFER
 comma
 id|host-&gt;device
 (braket
@@ -6811,7 +6811,7 @@ c_func
 (paren
 id|host-&gt;scsi.io_port
 comma
-id|SYNCHTRANSFER
+id|SBIC_SYNCHTRANSFER
 comma
 id|host-&gt;device
 (braket
@@ -6891,7 +6891,7 @@ c_func
 (paren
 id|host-&gt;scsi.io_port
 comma
-id|SOURCEID
+id|SBIC_SOURCEID
 )paren
 suffix:semicolon
 r_if
@@ -6953,7 +6953,7 @@ c_func
 (paren
 id|host-&gt;scsi.io_port
 comma
-id|DATA
+id|SBIC_DATA
 )paren
 op_amp
 l_int|7
@@ -7374,7 +7374,7 @@ c_func
 (paren
 id|host-&gt;scsi.io_port
 comma
-id|CMND
+id|SBIC_CMND
 comma
 id|CMND_ASSERTATN
 )paren
@@ -7448,7 +7448,7 @@ c_func
 (paren
 id|host-&gt;scsi.io_port
 comma
-id|ASR
+id|SBIC_ASR
 )paren
 suffix:semicolon
 r_if
@@ -7471,7 +7471,7 @@ c_func
 (paren
 id|host-&gt;scsi.io_port
 comma
-id|SSR
+id|SBIC_SSR
 )paren
 suffix:semicolon
 macro_line|#if (DEBUG &amp; DEBUG_PHASES)
@@ -7543,7 +7543,7 @@ c_func
 (paren
 id|host-&gt;scsi.io_port
 comma
-id|OWNID
+id|SBIC_OWNID
 comma
 id|OWNID_EAF
 op_or
@@ -7555,7 +7555,7 @@ c_func
 (paren
 id|host-&gt;scsi.io_port
 comma
-id|CMND
+id|SBIC_CMND
 comma
 id|CMND_RESET
 )paren
@@ -7572,7 +7572,7 @@ c_func
 (paren
 id|host-&gt;scsi.io_port
 comma
-id|CTRL
+id|SBIC_CTRL
 comma
 id|INIT_SBICDMA
 op_or
@@ -7584,7 +7584,7 @@ c_func
 (paren
 id|host-&gt;scsi.io_port
 comma
-id|TIMEOUT
+id|SBIC_TIMEOUT
 comma
 id|TIMEOUT_TIME
 )paren
@@ -7594,7 +7594,7 @@ c_func
 (paren
 id|host-&gt;scsi.io_port
 comma
-id|SYNCHTRANSFER
+id|SBIC_SYNCHTRANSFER
 comma
 id|SYNCHTRANSFER_2DBA
 )paren
@@ -7604,7 +7604,7 @@ c_func
 (paren
 id|host-&gt;scsi.io_port
 comma
-id|SOURCEID
+id|SBIC_SOURCEID
 comma
 id|SOURCEID_ER
 op_or
@@ -7679,7 +7679,7 @@ c_func
 (paren
 id|host-&gt;scsi.io_port
 comma
-id|ASR
+id|SBIC_ASR
 )paren
 suffix:semicolon
 r_if
@@ -7701,7 +7701,7 @@ c_func
 (paren
 id|host-&gt;scsi.io_port
 comma
-id|SSR
+id|SBIC_SSR
 )paren
 suffix:semicolon
 id|ADD_STATUS
@@ -10001,7 +10001,7 @@ c_func
 (paren
 id|host-&gt;scsi.io_port
 comma
-id|CMND
+id|SBIC_CMND
 comma
 id|CMND_DISCONNECT
 )paren
@@ -10118,7 +10118,7 @@ c_func
 (paren
 id|host-&gt;scsi.io_port
 comma
-id|ASR
+id|SBIC_ASR
 )paren
 suffix:semicolon
 id|ssr
@@ -10128,7 +10128,7 @@ c_func
 (paren
 id|host-&gt;scsi.io_port
 comma
-id|SSR
+id|SBIC_SSR
 )paren
 suffix:semicolon
 id|printk
@@ -10339,7 +10339,7 @@ c_func
 (paren
 id|host-&gt;scsi.io_port
 comma
-id|ASR
+id|SBIC_ASR
 )paren
 suffix:semicolon
 id|ssr
@@ -10349,7 +10349,7 @@ c_func
 (paren
 id|host-&gt;scsi.io_port
 comma
-id|SSR
+id|SBIC_SSR
 )paren
 suffix:semicolon
 id|printk
