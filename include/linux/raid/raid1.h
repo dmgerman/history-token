@@ -30,10 +30,6 @@ DECL|member|write_only
 r_int
 id|write_only
 suffix:semicolon
-DECL|member|spare
-r_int
-id|spare
-suffix:semicolon
 )brace
 suffix:semicolon
 DECL|typedef|r1bio_t
@@ -78,11 +74,6 @@ DECL|member|thread
 id|mdk_thread_t
 op_star
 id|thread
-suffix:semicolon
-DECL|member|spare
-id|mirror_info_t
-op_star
-id|spare
 suffix:semicolon
 DECL|member|device_lock
 id|spinlock_t

@@ -158,10 +158,6 @@ DECL|member|write_only
 r_int
 id|write_only
 suffix:semicolon
-DECL|member|spare
-r_int
-id|spare
-suffix:semicolon
 )brace
 suffix:semicolon
 DECL|struct|raid5_private_data

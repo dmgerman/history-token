@@ -680,10 +680,9 @@ DECL|member|active
 id|atomic_t
 id|active
 suffix:semicolon
-DECL|member|spare
-id|mdk_rdev_t
-op_star
-id|spare
+DECL|member|spares
+r_int
+id|spares
 suffix:semicolon
 DECL|member|degraded
 r_int
@@ -824,30 +823,6 @@ r_int
 id|number
 )paren
 suffix:semicolon
-DECL|member|spare_write
-r_int
-(paren
-op_star
-id|spare_write
-)paren
-(paren
-id|mddev_t
-op_star
-id|mddev
-)paren
-suffix:semicolon
-DECL|member|spare_inactive
-r_int
-(paren
-op_star
-id|spare_inactive
-)paren
-(paren
-id|mddev_t
-op_star
-id|mddev
-)paren
-suffix:semicolon
 DECL|member|spare_active
 r_int
 (paren
@@ -945,8 +920,6 @@ mdefine_line|#define ITERATE_RDEV(mddev,rdev,tmp)&t;&t;&t;&t;&t;&bslash;&n;&t;IT
 multiline_comment|/*&n; * Iterates through &squot;pending RAID disks&squot;&n; */
 DECL|macro|ITERATE_RDEV_PENDING
 mdefine_line|#define ITERATE_RDEV_PENDING(rdev,tmp)&t;&t;&t;&t;&t;&bslash;&n;&t;ITERATE_RDEV_GENERIC(pending_raid_disks,rdev,tmp)
-DECL|macro|xchg_values
-mdefine_line|#define xchg_values(x,y) do { __typeof__(x) __tmp = x; &bslash;&n;&t;&t;&t;&t;x = y; y = __tmp; } while (0)
 DECL|struct|mdk_thread_s
 r_typedef
 r_struct
