@@ -2660,6 +2660,10 @@ r_case
 op_minus
 id|ENOTCONN
 suffix:colon
+id|req-&gt;rq_bytes_sent
+op_assign
+l_int|0
+suffix:semicolon
 r_if
 c_cond
 (paren
