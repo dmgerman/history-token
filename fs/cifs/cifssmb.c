@@ -183,11 +183,6 @@ r_struct
 id|nls_table
 op_star
 id|nls_codepage
-op_assign
-id|load_nls_default
-c_func
-(paren
-)paren
 suffix:semicolon
 multiline_comment|/* Give Demultiplex thread up to 10 seconds to &n;&t;&t;&t;&t;&t;reconnect, should be greater than cifs socket&n;&t;&t;&t;&t;&t;timeout which is 7 seconds */
 r_while
@@ -239,10 +234,14 @@ id|CifsExiting
 )paren
 )paren
 (brace
-id|unload_nls
+id|cFYI
 c_func
 (paren
-id|nls_codepage
+l_int|1
+comma
+(paren
+l_string|&quot;gave up waiting on reconnect in smb_init&quot;
+)paren
 )paren
 suffix:semicolon
 r_return
@@ -257,6 +256,13 @@ multiline_comment|/* TCP session is reestablished now */
 r_break
 suffix:semicolon
 )brace
+id|nls_codepage
+op_assign
+id|load_nls_default
+c_func
+(paren
+)paren
+suffix:semicolon
 multiline_comment|/* need to prevent multiple threads trying to&n;&t;&t;simultaneously reconnect the same SMB session */
 id|down
 c_func
