@@ -73,8 +73,6 @@ DECL|variable|max_midi_devs
 r_static
 r_int
 id|max_midi_devs
-op_assign
-l_int|0
 suffix:semicolon
 DECL|variable|midi_devs
 r_static

@@ -4094,6 +4094,13 @@ c_func
 id|bh_cachep
 )paren
 suffix:semicolon
+DECL|variable|d_genocide
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|d_genocide
+)paren
+suffix:semicolon
 r_extern
 r_void
 id|bdev_cache_init

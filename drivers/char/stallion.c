@@ -10632,25 +10632,33 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|check_region
+op_logical_neg
+id|request_region
 c_func
 (paren
 id|brdp-&gt;ioaddr1
 comma
 id|brdp-&gt;iosize1
+comma
+id|name
 )paren
 )paren
 (brace
 id|printk
 c_func
 (paren
-l_string|&quot;STALLION: Warning, board %d I/O address %x conflicts &quot;
-l_string|&quot;with another device&bslash;n&quot;
+id|KERN_WARNING
+l_string|&quot;STALLION: Warning, board %d I/O address &quot;
+l_string|&quot;%x conflicts with another device&bslash;n&quot;
 comma
 id|brdp-&gt;brdnr
 comma
 id|brdp-&gt;ioaddr1
 )paren
+suffix:semicolon
+r_return
+op_minus
+id|EBUSY
 suffix:semicolon
 )brace
 r_if
@@ -10660,31 +10668,57 @@ id|brdp-&gt;iosize2
 OG
 l_int|0
 )paren
-(brace
 r_if
 c_cond
 (paren
-id|check_region
+op_logical_neg
+id|request_region
 c_func
 (paren
 id|brdp-&gt;ioaddr2
 comma
 id|brdp-&gt;iosize2
+comma
+id|name
 )paren
 )paren
 (brace
 id|printk
 c_func
 (paren
-l_string|&quot;STALLION: Warning, board %d I/O address %x &quot;
-l_string|&quot;conflicts with another device&bslash;n&quot;
+id|KERN_WARNING
+l_string|&quot;STALLION: Warning, board %d I/O &quot;
+l_string|&quot;address %x conflicts with another device&bslash;n&quot;
 comma
 id|brdp-&gt;brdnr
 comma
 id|brdp-&gt;ioaddr2
 )paren
 suffix:semicolon
-)brace
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;STALLION: Warning, also &quot;
+l_string|&quot;releasing board %d I/O address %x &bslash;n&quot;
+comma
+id|brdp-&gt;brdnr
+comma
+id|brdp-&gt;ioaddr1
+)paren
+suffix:semicolon
+id|release_region
+c_func
+(paren
+id|brdp-&gt;ioaddr1
+comma
+id|brdp-&gt;iosize1
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|EBUSY
+suffix:semicolon
 )brace
 multiline_comment|/*&n; *&t;Everything looks OK, so let&squot;s go ahead and probe for the hardware.&n; */
 id|brdp-&gt;clk
@@ -10787,33 +10821,6 @@ id|ENODEV
 suffix:semicolon
 )brace
 multiline_comment|/*&n; *&t;We have verfied that the board is actually present, so now we&n; *&t;can complete the setup.&n; */
-id|request_region
-c_func
-(paren
-id|brdp-&gt;ioaddr1
-comma
-id|brdp-&gt;iosize1
-comma
-id|name
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|brdp-&gt;iosize2
-OG
-l_int|0
-)paren
-id|request_region
-c_func
-(paren
-id|brdp-&gt;ioaddr2
-comma
-id|brdp-&gt;iosize2
-comma
-id|name
-)paren
-suffix:semicolon
 id|panelp
 op_assign
 (paren
@@ -10844,7 +10851,9 @@ l_int|NULL
 id|printk
 c_func
 (paren
-l_string|&quot;STALLION: failed to allocate memory (size=%d)&bslash;n&quot;
+id|KERN_WARNING
+l_string|&quot;STALLION: failed to allocate memory &quot;
+l_string|&quot;(size=%d)&bslash;n&quot;
 comma
 r_sizeof
 (paren
@@ -11415,80 +11424,39 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-multiline_comment|/*&n; *&t;Check boards for possible IO address conflicts. We won&squot;t actually&n; *&t;do anything about it here, just issue a warning...&n; */
-id|conflict
-op_assign
-id|check_region
+multiline_comment|/*&n; *&t;Check boards for possible IO address conflicts and return fail status &n; * &t;if an IO conflict found.&n; */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|request_region
 c_func
 (paren
 id|brdp-&gt;ioaddr1
 comma
 id|brdp-&gt;iosize1
-)paren
-ques
-c_cond
-id|brdp-&gt;ioaddr1
-suffix:colon
-l_int|0
-suffix:semicolon
-r_if
-c_cond
-(paren
-(paren
-id|conflict
-op_eq
-l_int|0
-)paren
-op_logical_and
-(paren
-id|brdp-&gt;iosize2
-OG
-l_int|0
-)paren
-)paren
-id|conflict
-op_assign
-id|check_region
-c_func
-(paren
-id|brdp-&gt;ioaddr2
 comma
-id|brdp-&gt;iosize2
+id|name
 )paren
-ques
-c_cond
-id|brdp-&gt;ioaddr2
-suffix:colon
-l_int|0
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|conflict
 )paren
 (brace
 id|printk
 c_func
 (paren
-l_string|&quot;STALLION: Warning, board %d I/O address %x conflicts &quot;
-l_string|&quot;with another device&bslash;n&quot;
+id|KERN_WARNING
+l_string|&quot;STALLION: Warning, board %d I/O address &quot;
+l_string|&quot;%x conflicts with another device&bslash;n&quot;
 comma
 id|brdp-&gt;brdnr
 comma
-id|conflict
+id|brdp-&gt;ioaddr1
 )paren
+suffix:semicolon
+r_return
+op_minus
+id|EBUSY
 suffix:semicolon
 )brace
-id|request_region
-c_func
-(paren
-id|brdp-&gt;ioaddr1
-comma
-id|brdp-&gt;iosize1
-comma
-id|name
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -11496,6 +11464,10 @@ id|brdp-&gt;iosize2
 OG
 l_int|0
 )paren
+r_if
+c_cond
+(paren
+op_logical_neg
 id|request_region
 c_func
 (paren
@@ -11505,7 +11477,45 @@ id|brdp-&gt;iosize2
 comma
 id|name
 )paren
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;STALLION: Warning, board %d I/O &quot;
+l_string|&quot;address %x conflicts with another device&bslash;n&quot;
+comma
+id|brdp-&gt;brdnr
+comma
+id|brdp-&gt;ioaddr2
+)paren
 suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;STALLION: Warning, also &quot;
+l_string|&quot;releasing board %d I/O address %x &bslash;n&quot;
+comma
+id|brdp-&gt;brdnr
+comma
+id|brdp-&gt;ioaddr1
+)paren
+suffix:semicolon
+id|release_region
+c_func
+(paren
+id|brdp-&gt;ioaddr1
+comma
+id|brdp-&gt;iosize1
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|EBUSY
+suffix:semicolon
+)brace
 multiline_comment|/*&n; *&t;Scan through the secondary io address space looking for panels.&n; *&t;As we find&squot;em allocate and initialize panel structures for each.&n; */
 id|brdp-&gt;clk
 op_assign

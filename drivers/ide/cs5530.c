@@ -14,7 +14,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/ide.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
-macro_line|#include &quot;ide_modes.h&quot;
+macro_line|#include &quot;ata-timing.h&quot;
 DECL|macro|DISPLAY_CS5530_TIMINGS
 mdefine_line|#define DISPLAY_CS5530_TIMINGS
 macro_line|#if defined(DISPLAY_CS5530_TIMINGS) &amp;&amp; defined(CONFIG_PROC_FS)
@@ -435,37 +435,38 @@ c_func
 id|hwif
 )paren
 suffix:semicolon
-r_static
-id|byte
-id|modes
-(braket
-l_int|5
-)braket
-op_assign
-(brace
-id|XFER_PIO_0
-comma
-id|XFER_PIO_1
-comma
-id|XFER_PIO_2
-comma
-id|XFER_PIO_3
-comma
-id|XFER_PIO_4
-)brace
-suffix:semicolon
+r_if
+c_cond
+(paren
+id|pio
+op_eq
+l_int|255
+)paren
 id|pio
 op_assign
-id|ide_get_best_pio_mode
+id|ata_timing_mode
 c_func
 (paren
 id|drive
 comma
+id|XFER_PIO
+op_or
+id|XFER_EPIO
+)paren
+suffix:semicolon
+r_else
+id|pio
+op_assign
+id|XFER_PIO_0
+op_plus
+id|min_t
+c_func
+(paren
+id|byte
+comma
 id|pio
 comma
 l_int|4
-comma
-l_int|NULL
 )paren
 suffix:semicolon
 r_if
@@ -477,10 +478,7 @@ c_func
 (paren
 id|drive
 comma
-id|modes
-(braket
 id|pio
-)braket
 )paren
 )paren
 (brace

@@ -1,4 +1,4 @@
-multiline_comment|/*******************************************************************************&n;&n;This software program is available to you under a choice of one of two &n;licenses. You may choose to be licensed under either the GNU General Public &n;License (GPL) Version 2, June 1991, available at &n;http://www.fsf.org/copyleft/gpl.html, or the Intel BSD + Patent License, the &n;text of which follows:&n;&n;Recipient has requested a license and Intel Corporation (&quot;Intel&quot;) is willing&n;to grant a license for the software entitled Linux Base Driver for the &n;Intel(R) PRO/100 Family of Adapters (e100) (the &quot;Software&quot;) being provided &n;by Intel Corporation. The following definitions apply to this license:&n;&n;&quot;Licensed Patents&quot; means patent claims licensable by Intel Corporation which &n;are necessarily infringed by the use of sale of the Software alone or when &n;combined with the operating system referred to below.&n;&n;&quot;Recipient&quot; means the party to whom Intel delivers this Software.&n;&n;&quot;Licensee&quot; means Recipient and those third parties that receive a license to &n;any operating system available under the GNU Public License version 2.0 or &n;later.&n;&n;Copyright (c) 1999 - 2002 Intel Corporation.&n;All rights reserved.&n;&n;The license is provided to Recipient and Recipient&squot;s Licensees under the &n;following terms.&n;&n;Redistribution and use in source and binary forms of the Software, with or &n;without modification, are permitted provided that the following conditions &n;are met:&n;&n;Redistributions of source code of the Software may retain the above &n;copyright notice, this list of conditions and the following disclaimer.&n;&n;Redistributions in binary form of the Software may reproduce the above &n;copyright notice, this list of conditions and the following disclaimer in &n;the documentation and/or materials provided with the distribution.&n;&n;Neither the name of Intel Corporation nor the names of its contributors &n;shall be used to endorse or promote products derived from this Software &n;without specific prior written permission.&n;&n;Intel hereby grants Recipient and Licensees a non-exclusive, worldwide, &n;royalty-free patent license under Licensed Patents to make, use, sell, offer &n;to sell, import and otherwise transfer the Software, if any, in source code &n;and object code form. This license shall include changes to the Software &n;that are error corrections or other minor changes to the Software that do &n;not add functionality or features when the Software is incorporated in any &n;version of an operating system that has been distributed under the GNU &n;General Public License 2.0 or later. This patent license shall apply to the &n;combination of the Software and any operating system licensed under the GNU &n;Public License version 2.0 or later if, at the time Intel provides the &n;Software to Recipient, such addition of the Software to the then publicly &n;available versions of such operating systems available under the GNU Public &n;License version 2.0 or later (whether in gold, beta or alpha form) causes &n;such combination to be covered by the Licensed Patents. The patent license &n;shall not apply to any other combinations which include the Software. NO &n;hardware per se is licensed hereunder.&n;&n;THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS &quot;AS IS&quot; &n;AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE &n;IMPLIED WARRANTIES OF MECHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE &n;ARE DISCLAIMED. IN NO EVENT SHALL INTEL OR IT CONTRIBUTORS BE LIABLE FOR ANY &n;DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES &n;(INCLUDING, BUT NOT LIMITED, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; &n;ANY LOSS OF USE; DATA, OR PROFITS; OR BUSINESS INTERUPTION) HOWEVER CAUSED &n;AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY OR &n;TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE &n;OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.&n;*******************************************************************************/
+multiline_comment|/*******************************************************************************&n;&n;This software program is available to you under a choice of one of two &n;licenses. You may choose to be licensed under either the GNU General Public &n;License 2.0, June 1991, available at http://www.fsf.org/copyleft/gpl.html, &n;or the Intel BSD + Patent License, the text of which follows:&n;&n;Recipient has requested a license and Intel Corporation (&quot;Intel&quot;) is willing&n;to grant a license for the software entitled Linux Base Driver for the &n;Intel(R) PRO/100 Family of Adapters (e100) (the &quot;Software&quot;) being provided &n;by Intel Corporation. The following definitions apply to this license:&n;&n;&quot;Licensed Patents&quot; means patent claims licensable by Intel Corporation which &n;are necessarily infringed by the use of sale of the Software alone or when &n;combined with the operating system referred to below.&n;&n;&quot;Recipient&quot; means the party to whom Intel delivers this Software.&n;&n;&quot;Licensee&quot; means Recipient and those third parties that receive a license to &n;any operating system available under the GNU General Public License 2.0 or &n;later.&n;&n;Copyright (c) 1999 - 2002 Intel Corporation.&n;All rights reserved.&n;&n;The license is provided to Recipient and Recipient&squot;s Licensees under the &n;following terms.&n;&n;Redistribution and use in source and binary forms of the Software, with or &n;without modification, are permitted provided that the following conditions &n;are met:&n;&n;Redistributions of source code of the Software may retain the above &n;copyright notice, this list of conditions and the following disclaimer.&n;&n;Redistributions in binary form of the Software may reproduce the above &n;copyright notice, this list of conditions and the following disclaimer in &n;the documentation and/or materials provided with the distribution.&n;&n;Neither the name of Intel Corporation nor the names of its contributors &n;shall be used to endorse or promote products derived from this Software &n;without specific prior written permission.&n;&n;Intel hereby grants Recipient and Licensees a non-exclusive, worldwide, &n;royalty-free patent license under Licensed Patents to make, use, sell, offer &n;to sell, import and otherwise transfer the Software, if any, in source code &n;and object code form. This license shall include changes to the Software &n;that are error corrections or other minor changes to the Software that do &n;not add functionality or features when the Software is incorporated in any &n;version of an operating system that has been distributed under the GNU &n;General Public License 2.0 or later. This patent license shall apply to the &n;combination of the Software and any operating system licensed under the GNU &n;General Public License 2.0 or later if, at the time Intel provides the &n;Software to Recipient, such addition of the Software to the then publicly &n;available versions of such operating systems available under the GNU General &n;Public License 2.0 or later (whether in gold, beta or alpha form) causes &n;such combination to be covered by the Licensed Patents. The patent license &n;shall not apply to any other combinations which include the Software. NO &n;hardware per se is licensed hereunder.&n;&n;THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS &quot;AS IS&quot; &n;AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE &n;IMPLIED WARRANTIES OF MECHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE &n;ARE DISCLAIMED. IN NO EVENT SHALL INTEL OR IT CONTRIBUTORS BE LIABLE FOR ANY &n;DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES &n;(INCLUDING, BUT NOT LIMITED, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; &n;ANY LOSS OF USE; DATA, OR PROFITS; OR BUSINESS INTERUPTION) HOWEVER CAUSED &n;AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY OR &n;TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE &n;OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.&n;*******************************************************************************/
 macro_line|#ifndef _E100_INC_
 DECL|macro|_E100_INC_
 mdefine_line|#define _E100_INC_
@@ -32,39 +32,21 @@ macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/ip.h&gt;
 multiline_comment|/*&n; *  Configure parameters for buffers per controller.&n; *  If the machine this is being used on is a faster machine (i.e. &gt; 150MHz)&n; *  and running on a 10MBS network then more queueing of data occurs. This&n; *  may indicate the some of the numbers below should be adjusted.  Here are&n; *  some typical numbers:&n; *                             MAX_TCB 64&n; *                             MAX_RFD 64&n; *  The default numbers give work well on most systems tests so no real&n; *  adjustments really need to take place.  Also, if the machine is connected&n; *  to a 100MBS network the numbers described above can be lowered from the&n; *  defaults as considerably less data will be queued.&n; */
-DECL|macro|MAX_TCB
-mdefine_line|#define MAX_TCB        64&t;/* number of transmit control blocks */
-DECL|macro|MAX_TBD
-mdefine_line|#define MAX_TBD        MAX_TCB
 DECL|macro|TX_FRAME_CNT
 mdefine_line|#define TX_FRAME_CNT   8&t;/* consecutive transmit frames per interrupt */
 multiline_comment|/* TX_FRAME_CNT must be less than MAX_TCB    */
-DECL|macro|MAX_RFD
-mdefine_line|#define MAX_RFD      64
 DECL|macro|E100_DEFAULT_TCB
-mdefine_line|#define E100_DEFAULT_TCB   MAX_TCB
+mdefine_line|#define E100_DEFAULT_TCB   64
 DECL|macro|E100_MIN_TCB
 mdefine_line|#define E100_MIN_TCB       2*TX_FRAME_CNT + 3&t;/* make room for at least 2 interrupts */
-macro_line|#ifdef __ia64__
-multiline_comment|/* We can&squot;t use too many DMAble buffers on IA64 machines with &gt;4 GB mem */
-DECL|macro|E100_MAX_TCB
-mdefine_line|#define E100_MAX_TCB       64
-macro_line|#else
 DECL|macro|E100_MAX_TCB
 mdefine_line|#define E100_MAX_TCB       1024
-macro_line|#endif /*  __ia64__ */
 DECL|macro|E100_DEFAULT_RFD
-mdefine_line|#define E100_DEFAULT_RFD   MAX_RFD
+mdefine_line|#define E100_DEFAULT_RFD   64
 DECL|macro|E100_MIN_RFD
 mdefine_line|#define E100_MIN_RFD       8
-macro_line|#ifdef __ia64__
-multiline_comment|/* We can&squot;t use too many DMAble buffers on IA64 machines with &gt;4 GB mem */
-DECL|macro|E100_MAX_RFD
-mdefine_line|#define E100_MAX_RFD       64
-macro_line|#else
 DECL|macro|E100_MAX_RFD
 mdefine_line|#define E100_MAX_RFD       1024
-macro_line|#endif /*  __ia64__ */
 DECL|macro|E100_DEFAULT_XSUM
 mdefine_line|#define E100_DEFAULT_XSUM         true
 DECL|macro|E100_DEFAULT_BER
@@ -79,11 +61,6 @@ DECL|macro|E100_DEFAULT_UCODE
 mdefine_line|#define E100_DEFAULT_UCODE        true
 DECL|macro|TX_THRSHLD
 mdefine_line|#define TX_THRSHLD     8
-multiline_comment|/* sleep time is at least 50 ms, in jiffies */
-DECL|macro|SLEEP_TIME
-mdefine_line|#define SLEEP_TIME ((HZ / 20) + 1)
-DECL|macro|CUS_TIMEOUT
-mdefine_line|#define CUS_TIMEOUT 1000
 multiline_comment|/* IFS parameters */
 DECL|macro|MIN_NUMBER_OF_TRANSMITS_100
 mdefine_line|#define MIN_NUMBER_OF_TRANSMITS_100 1000
@@ -690,10 +667,6 @@ DECL|macro|RFD_POINTER
 mdefine_line|#define RFD_POINTER(skb,bdp)      ((rfd_t *) (((unsigned char *)((skb)-&gt;data))-((bdp)-&gt;rfd_size)))
 DECL|macro|SKB_RFD_STATUS
 mdefine_line|#define SKB_RFD_STATUS(skb,bdp)   ((RFD_POINTER((skb),(bdp)))-&gt;rfd_header.cb_status)
-DECL|macro|GET_SKB_DMA_ADDR
-mdefine_line|#define GET_SKB_DMA_ADDR(skb)&t;&t;( *(dma_addr_t *)( (skb)-&gt;cb) )
-DECL|macro|SET_SKB_DMA_ADDR
-mdefine_line|#define SET_SKB_DMA_ADDR(skb,dma_addr)&t;( *(dma_addr_t *)( (skb)-&gt;cb) = (dma_addr) )
 multiline_comment|/* ====================================================================== */
 multiline_comment|/*                              82557                                     */
 multiline_comment|/* ====================================================================== */
@@ -1531,6 +1504,8 @@ DECL|macro|IPCB_INSERTVLAN_ENABLE
 mdefine_line|#define IPCB_INSERTVLAN_ENABLE &t;&t;BIT_1
 DECL|macro|IPCB_IP_ACTIVATION_DEFAULT
 mdefine_line|#define IPCB_IP_ACTIVATION_DEFAULT      IPCB_HARDWAREPARSING_ENABLE
+DECL|macro|FOLD_CSUM
+mdefine_line|#define FOLD_CSUM(_XSUM)  ((((_XSUM &lt;&lt; 16) | (_XSUM &gt;&gt; 16)) + _XSUM) &gt;&gt; 16)
 multiline_comment|/* Transmit Buffer Descriptor (TBD)*/
 DECL|struct|_tbd_t
 r_typedef
@@ -2373,6 +2348,15 @@ id|u16
 id|ip_lbytes
 suffix:semicolon
 macro_line|#endif
+macro_line|#ifdef CONFIG_PM
+DECL|member|pci_state
+id|u32
+id|pci_state
+(braket
+l_int|16
+)braket
+suffix:semicolon
+macro_line|#endif
 )brace
 suffix:semicolon
 DECL|macro|E100_AUTONEG
@@ -2511,6 +2495,42 @@ r_struct
 id|e100_private
 op_star
 id|bdp
+)paren
+suffix:semicolon
+macro_line|#ifndef yield
+DECL|macro|yield
+mdefine_line|#define yield()&t;&t;&t;&t;&t;&bslash;&n;        do {&t;&t;&t;&t;&t;&bslash;&n;                current-&gt;policy |= SCHED_YIELD;&t;&bslash;&n;                schedule();&t;&t;&t;&bslash;&n;        } while (0)                                     
+macro_line|#endif
+r_extern
+r_void
+id|e100_deisolate_driver
+c_func
+(paren
+r_struct
+id|e100_private
+op_star
+id|bdp
+comma
+id|u8
+id|recover
+comma
+id|u8
+id|full_reset
+)paren
+suffix:semicolon
+r_extern
+r_int
+r_char
+id|e100_hw_reset_recover
+c_func
+(paren
+r_struct
+id|e100_private
+op_star
+id|bdp
+comma
+id|u32
+id|reset_cmd
 )paren
 suffix:semicolon
 macro_line|#endif

@@ -3242,6 +3242,17 @@ r_int
 )paren
 id|t
 suffix:semicolon
+id|t-&gt;kregs-&gt;u_regs
+(braket
+id|UREG_G4
+)braket
+op_assign
+(paren
+r_int
+r_int
+)paren
+id|t-&gt;task
+suffix:semicolon
 )brace
 r_else
 (brace

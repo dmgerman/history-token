@@ -1,20 +1,20 @@
-multiline_comment|/******************************************************************************&n; *&n; * Name: acstruct.h - Internal structs&n; *       $Revision: 10 $&n; *&n; *****************************************************************************/
-multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/******************************************************************************&n; *&n; * Name: acstruct.h - Internal structs&n; *       $Revision: 16 $&n; *&n; *****************************************************************************/
+multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#ifndef __ACSTRUCT_H__
 DECL|macro|__ACSTRUCT_H__
 mdefine_line|#define __ACSTRUCT_H__
 multiline_comment|/*****************************************************************************&n; *&n; * Tree walking typedefs and structs&n; *&n; ****************************************************************************/
 multiline_comment|/*&n; * Walk state - current state of a parse tree walk.  Used for both a leisurely stroll through&n; * the tree (for whatever reason), and for control method execution.&n; */
-DECL|macro|NEXT_OP_DOWNWARD
-mdefine_line|#define NEXT_OP_DOWNWARD    1
-DECL|macro|NEXT_OP_UPWARD
-mdefine_line|#define NEXT_OP_UPWARD      2
-DECL|macro|WALK_NON_METHOD
-mdefine_line|#define WALK_NON_METHOD     0
-DECL|macro|WALK_METHOD
-mdefine_line|#define WALK_METHOD         1
-DECL|macro|WALK_METHOD_RESTART
-mdefine_line|#define WALK_METHOD_RESTART 2
+DECL|macro|ACPI_NEXT_OP_DOWNWARD
+mdefine_line|#define ACPI_NEXT_OP_DOWNWARD    1
+DECL|macro|ACPI_NEXT_OP_UPWARD
+mdefine_line|#define ACPI_NEXT_OP_UPWARD      2
+DECL|macro|ACPI_WALK_NON_METHOD
+mdefine_line|#define ACPI_WALK_NON_METHOD     0
+DECL|macro|ACPI_WALK_METHOD
+mdefine_line|#define ACPI_WALK_METHOD         1
+DECL|macro|ACPI_WALK_METHOD_RESTART
+mdefine_line|#define ACPI_WALK_METHOD_RESTART 2
 DECL|struct|acpi_walk_state
 r_typedef
 r_struct
@@ -59,11 +59,6 @@ DECL|member|walk_type
 id|u8
 id|walk_type
 suffix:semicolon
-DECL|member|current_sync_level
-id|u16
-id|current_sync_level
-suffix:semicolon
-multiline_comment|/* Mutex Sync (nested acquire) level */
 DECL|member|opcode
 id|u16
 id|opcode
@@ -87,6 +82,11 @@ id|u32
 id|method_breakpoint
 suffix:semicolon
 multiline_comment|/* For single stepping */
+DECL|member|user_breakpoint
+id|u32
+id|user_breakpoint
+suffix:semicolon
+multiline_comment|/* User AML breakpoint */
 DECL|member|parse_flags
 id|u32
 id|parse_flags
@@ -226,7 +226,6 @@ op_star
 id|scope_info
 suffix:semicolon
 multiline_comment|/* Stack of nested scopes */
-multiline_comment|/* TBD: Obsolete with removal of WALK procedure ? */
 DECL|member|prev_op
 id|acpi_parse_object
 op_star
@@ -247,11 +246,10 @@ DECL|member|ascending_callback
 id|acpi_parse_upwards
 id|ascending_callback
 suffix:semicolon
-DECL|member|walk_list
-r_struct
-id|acpi_walk_list
+DECL|member|thread
+id|ACPI_THREAD_STATE
 op_star
-id|walk_list
+id|thread
 suffix:semicolon
 DECL|member|next
 r_struct
@@ -263,26 +261,6 @@ multiline_comment|/* Next Walk_state in list */
 DECL|typedef|acpi_walk_state
 )brace
 id|acpi_walk_state
-suffix:semicolon
-multiline_comment|/*&n; * Walk list - head of a tree of walk states.  Multiple walk states are created when there&n; * are nested control methods executing.&n; */
-DECL|struct|acpi_walk_list
-r_typedef
-r_struct
-id|acpi_walk_list
-(brace
-DECL|member|walk_state
-id|acpi_walk_state
-op_star
-id|walk_state
-suffix:semicolon
-DECL|member|acquired_mutex_list
-id|ACPI_OBJECT_MUTEX
-id|acquired_mutex_list
-suffix:semicolon
-multiline_comment|/* List of all currently acquired mutexes */
-DECL|typedef|acpi_walk_list
-)brace
-id|acpi_walk_list
 suffix:semicolon
 multiline_comment|/* Info used by Acpi_ps_init_objects */
 DECL|struct|acpi_init_walk_info
@@ -323,7 +301,7 @@ DECL|typedef|acpi_init_walk_info
 )brace
 id|acpi_init_walk_info
 suffix:semicolon
-multiline_comment|/* Info used by TBD */
+multiline_comment|/* Info used by Acpi_ns_initialize_devices */
 DECL|struct|acpi_device_walk_info
 r_typedef
 r_struct

@@ -35,6 +35,11 @@ r_int
 id|cpu
 suffix:semicolon
 multiline_comment|/* cpu we&squot;re on */
+DECL|member|preempt_count
+r_int
+id|preempt_count
+suffix:semicolon
+multiline_comment|/* not used at present */
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * macros/functions for gaining access to the thread information structure&n; */

@@ -11,22 +11,6 @@ macro_line|#include &quot;seq_clientmgr.h&quot;
 macro_line|#include &quot;seq_fifo.h&quot;
 macro_line|#include &quot;seq_timer.h&quot;
 macro_line|#include &quot;seq_info.h&quot;
-macro_line|#ifdef SNDRV_SEQ_SYNC_SUPPORT
-multiline_comment|/* FIXME: this should be in a header file */
-r_void
-id|snd_seq_sync_info_read
-c_func
-(paren
-id|queue_t
-op_star
-id|q
-comma
-id|snd_info_buffer_t
-op_star
-id|buffer
-)paren
-suffix:semicolon
-macro_line|#endif
 r_static
 r_void
 id|snd_seq_check_queue_in_tasklet
@@ -59,8 +43,6 @@ DECL|variable|num_queues
 r_static
 r_int
 id|num_queues
-op_assign
-l_int|0
 suffix:semicolon
 DECL|function|snd_seq_queue_get_cur_queues
 r_int
@@ -464,27 +446,6 @@ id|q-&gt;klocked
 op_assign
 l_int|0
 suffix:semicolon
-macro_line|#ifdef SNDRV_SEQ_SYNC_SUPPORT
-id|q-&gt;master_lock
-op_assign
-id|RW_LOCK_UNLOCKED
-suffix:semicolon
-id|q-&gt;slave_lock
-op_assign
-id|RW_LOCK_UNLOCKED
-suffix:semicolon
-id|INIT_LIST_HEAD
-c_func
-(paren
-op_amp
-id|q-&gt;master_head
-)paren
-suffix:semicolon
-id|q-&gt;slave.format
-op_assign
-l_int|0
-suffix:semicolon
-macro_line|#endif
 r_return
 id|q
 suffix:semicolon
@@ -501,21 +462,6 @@ op_star
 id|q
 )paren
 (brace
-macro_line|#ifdef SNDRV_SEQ_SYNC_SUPPORT
-r_if
-c_cond
-(paren
-id|q-&gt;info_flags
-op_amp
-id|SNDRV_SEQ_QUEUE_FLG_SYNC
-)paren
-id|snd_seq_sync_delete_port
-c_func
-(paren
-id|q
-)paren
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/* stop and release the timer */
 id|snd_seq_timer_stop
 c_func
@@ -710,33 +656,6 @@ l_int|1
 )paren
 suffix:semicolon
 multiline_comment|/* use this queue */
-macro_line|#ifdef SNDRV_SEQ_SYNC_SUPPORT
-r_if
-c_cond
-(paren
-id|q-&gt;info_flags
-op_amp
-id|SNDRV_SEQ_QUEUE_FLG_SYNC
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|snd_seq_sync_create_port
-c_func
-(paren
-id|q
-)paren
-OL
-l_int|0
-)paren
-id|q-&gt;info_flags
-op_and_assign
-op_complement
-id|SNDRV_SEQ_QUEUE_FLG_SYNC
-suffix:semicolon
-)brace
-macro_line|#endif
 r_return
 id|q-&gt;queue
 suffix:semicolon
@@ -2084,14 +2003,6 @@ comma
 id|info-&gt;skew_base
 )paren
 suffix:semicolon
-macro_line|#ifdef SNDRV_SEQ_SYNC_SUPPORT
-id|snd_seq_sync_update_tempo
-c_func
-(paren
-id|q
-)paren
-suffix:semicolon
-macro_line|#endif
 id|queue_access_unlock
 c_func
 (paren
@@ -2843,39 +2754,6 @@ id|hop
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef SNDRV_SEQ_SYNC_SUPPORT
-r_if
-c_cond
-(paren
-id|q-&gt;info_flags
-op_amp
-id|SNDRV_SEQ_QUEUE_FLG_SYNC
-)paren
-(brace
-multiline_comment|/* broadcast events also to slave clients */
-id|sev.source
-op_assign
-id|q-&gt;sync_port
-suffix:semicolon
-id|sev.dest.client
-op_assign
-id|SNDRV_SEQ_ADDRESS_SUBSCRIBERS
-suffix:semicolon
-id|snd_seq_kernel_client_dispatch
-c_func
-(paren
-id|SNDRV_SEQ_CLIENT_SYSTEM
-comma
-op_amp
-id|sev
-comma
-id|atomic
-comma
-id|hop
-)paren
-suffix:semicolon
-)brace
-macro_line|#endif
 )brace
 multiline_comment|/*&n; * process a received queue-control event.&n; * this function is exported for seq_sync.c.&n; */
 DECL|function|snd_seq_queue_process_event
@@ -2930,14 +2808,6 @@ comma
 l_int|1
 )paren
 suffix:semicolon
-macro_line|#ifdef SNDRV_SEQ_SYNC_SUPPORT
-id|snd_seq_sync_clear
-c_func
-(paren
-id|q
-)paren
-suffix:semicolon
-macro_line|#endif
 id|snd_seq_timer_start
 c_func
 (paren
@@ -2958,26 +2828,6 @@ comma
 id|hop
 )paren
 suffix:semicolon
-macro_line|#ifdef SNDRV_SEQ_SYNC_SUPPORT
-id|q-&gt;flags
-op_and_assign
-op_complement
-id|SNDRV_SEQ_QUEUE_FLG_SYNC_LOST
-suffix:semicolon
-id|snd_seq_sync_check
-c_func
-(paren
-id|q
-comma
-l_int|0
-comma
-id|atomic
-comma
-id|hop
-)paren
-suffix:semicolon
-multiline_comment|/* trigger the first signal */
-macro_line|#endif
 r_break
 suffix:semicolon
 r_case
@@ -3003,25 +2853,6 @@ comma
 id|hop
 )paren
 suffix:semicolon
-macro_line|#ifdef SNDRV_SEQ_SYNC_SUPPORT
-id|q-&gt;flags
-op_and_assign
-op_complement
-id|SNDRV_SEQ_QUEUE_FLG_SYNC_LOST
-suffix:semicolon
-id|snd_seq_sync_check
-c_func
-(paren
-id|q
-comma
-l_int|0
-comma
-id|atomic
-comma
-id|hop
-)paren
-suffix:semicolon
-macro_line|#endif
 r_break
 suffix:semicolon
 r_case
@@ -3060,14 +2891,6 @@ comma
 id|ev-&gt;data.queue.param.value
 )paren
 suffix:semicolon
-macro_line|#ifdef SNDRV_SEQ_SYNC_SUPPORT
-id|snd_seq_sync_update_tempo
-c_func
-(paren
-id|q
-)paren
-suffix:semicolon
-macro_line|#endif
 id|queue_broadcast_event
 c_func
 (paren
@@ -3101,20 +2924,6 @@ op_eq
 l_int|0
 )paren
 (brace
-macro_line|#ifdef SNDRV_SEQ_SYNC_SUPPORT
-id|snd_seq_sync_update_tick
-c_func
-(paren
-id|q
-comma
-l_int|0
-comma
-id|atomic
-comma
-id|hop
-)paren
-suffix:semicolon
-macro_line|#endif
 id|queue_broadcast_event
 c_func
 (paren
@@ -3149,20 +2958,6 @@ op_eq
 l_int|0
 )paren
 (brace
-macro_line|#ifdef SNDRV_SEQ_SYNC_SUPPORT
-id|snd_seq_sync_update_time
-c_func
-(paren
-id|q
-comma
-l_int|0
-comma
-id|atomic
-comma
-id|hop
-)paren
-suffix:semicolon
-macro_line|#endif
 id|queue_broadcast_event
 c_func
 (paren
@@ -3545,16 +3340,6 @@ comma
 l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#ifdef SNDRV_SEQ_SYNC_SUPPORT
-id|snd_seq_sync_info_read
-c_func
-(paren
-id|q
-comma
-id|buffer
-)paren
-suffix:semicolon
-macro_line|#endif
 id|queuefree
 c_func
 (paren

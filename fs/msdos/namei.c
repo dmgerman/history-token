@@ -1,6 +1,4 @@
 multiline_comment|/*&n; *  linux/fs/msdos/namei.c&n; *&n; *  Written 1992,1993 by Werner Almesberger&n; *  Hidden files 1995 by Albert Cahalan &lt;albert@ccs.neu.edu&gt; &lt;adc@coe.neu.edu&gt;&n; *  Rewritten for constant inumbers 1999 by Al Viro&n; */
-DECL|macro|__NO_VERSION__
-mdefine_line|#define __NO_VERSION__
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/msdos_fs.h&gt;
@@ -78,25 +76,6 @@ suffix:semicolon
 multiline_comment|/* GEMDOS is less restrictive */
 DECL|macro|bad_if_strict
 mdefine_line|#define&t;bad_if_strict(opts) ((opts)-&gt;atari ? bad_if_strict_atari : bad_if_strict_pc)
-multiline_comment|/* Must die */
-DECL|function|msdos_put_super
-r_void
-id|msdos_put_super
-c_func
-(paren
-r_struct
-id|super_block
-op_star
-id|sb
-)paren
-(brace
-id|fat_put_super
-c_func
-(paren
-id|sb
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/***** Formats an MS-DOS file name. Rejects invalid names. */
 DECL|function|msdos_format_name
 r_static
@@ -3278,24 +3257,12 @@ r_int
 id|silent
 )paren
 (brace
-r_struct
-id|super_block
-op_star
+r_int
 id|res
-suffix:semicolon
-id|MSDOS_SB
-c_func
-(paren
-id|sb
-)paren
-op_member_access_from_pointer
-id|options.isvfat
-op_assign
-l_int|0
 suffix:semicolon
 id|res
 op_assign
-id|fat_read_super
+id|fat_fill_super
 c_func
 (paren
 id|sb
@@ -3306,35 +3273,24 @@ id|silent
 comma
 op_amp
 id|msdos_dir_inode_operations
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|IS_ERR
-c_func
-(paren
-id|res
-)paren
-)paren
-r_return
-id|PTR_ERR
-c_func
-(paren
-id|res
+comma
+l_int|0
 )paren
 suffix:semicolon
 r_if
 c_cond
 (paren
 id|res
-op_eq
-l_int|NULL
 )paren
 (brace
 r_if
 c_cond
 (paren
+id|res
+op_eq
+op_minus
+id|EINVAL
+op_logical_and
 op_logical_neg
 id|silent
 )paren
@@ -3349,8 +3305,7 @@ id|sb-&gt;s_id
 )paren
 suffix:semicolon
 r_return
-op_minus
-id|EINVAL
+id|res
 suffix:semicolon
 )brace
 id|sb-&gt;s_root-&gt;d_op

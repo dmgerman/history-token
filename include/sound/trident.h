@@ -297,6 +297,15 @@ DECL|macro|NX_SPESO
 mdefine_line|#define NX_SPESO                    0x2c
 DECL|macro|NX_SPCSTATUS
 mdefine_line|#define NX_SPCSTATUS                0x64
+multiline_comment|/* Joystick */
+DECL|macro|GAMEPORT_GCR
+mdefine_line|#define GAMEPORT_GCR                0x30
+DECL|macro|GAMEPORT_MODE_ADC
+mdefine_line|#define GAMEPORT_MODE_ADC           0x80
+DECL|macro|GAMEPORT_LEGACY
+mdefine_line|#define GAMEPORT_LEGACY             0x31
+DECL|macro|GAMEPORT_AXES
+mdefine_line|#define GAMEPORT_AXES               0x34
 multiline_comment|/* NX Specific Registers */
 DECL|macro|NX_TLBC
 mdefine_line|#define NX_TLBC                     0x6c
@@ -1421,6 +1430,12 @@ id|snd_info_entry_t
 op_star
 id|proc_entry
 suffix:semicolon
+DECL|member|gameport
+r_struct
+id|snd_trident_gameport
+op_star
+id|gameport
+suffix:semicolon
 )brace
 suffix:semicolon
 r_int
@@ -1453,6 +1468,15 @@ id|rtrident
 suffix:semicolon
 r_int
 id|snd_trident_free
+c_func
+(paren
+id|trident_t
+op_star
+id|trident
+)paren
+suffix:semicolon
+r_void
+id|snd_trident_gameport
 c_func
 (paren
 id|trident_t

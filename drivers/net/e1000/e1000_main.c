@@ -922,7 +922,11 @@ id|e1000_probe
 comma
 id|remove
 suffix:colon
+id|__devexit_p
+c_func
+(paren
 id|e1000_remove
+)paren
 comma
 multiline_comment|/* Power Managment Hooks */
 id|suspend

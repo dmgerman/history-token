@@ -1,5 +1,5 @@
-multiline_comment|/******************************************************************************&n; *&n; * Name: acdispat.h - dispatcher (parser to interpreter interface)&n; *       $Revision: 45 $&n; *&n; *****************************************************************************/
-multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/******************************************************************************&n; *&n; * Name: acdispat.h - dispatcher (parser to interpreter interface)&n; *       $Revision: 51 $&n; *&n; *****************************************************************************/
+multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#ifndef _ACDISPAT_H_
 DECL|macro|_ACDISPAT_H_
 mdefine_line|#define _ACDISPAT_H_
@@ -106,8 +106,9 @@ id|acpi_walk_state
 op_star
 id|walk_state
 comma
-id|u32
-id|has_result_obj
+id|acpi_operand_object
+op_star
+id|result_obj
 )paren
 suffix:semicolon
 id|acpi_status
@@ -182,6 +183,18 @@ id|walk_state
 suffix:semicolon
 id|acpi_status
 id|acpi_ds_create_buffer_field
+(paren
+id|acpi_parse_object
+op_star
+id|op
+comma
+id|acpi_walk_state
+op_star
+id|walk_state
+)paren
+suffix:semicolon
+id|acpi_status
+id|acpi_ds_init_field_objects
 (paren
 id|acpi_parse_object
 op_star
@@ -301,7 +314,7 @@ op_star
 id|obj_desc
 )paren
 suffix:semicolon
-id|acpi_object_type8
+id|acpi_object_type
 id|acpi_ds_method_data_get_type
 (paren
 id|u16
@@ -364,8 +377,7 @@ op_star
 id|walk_state
 )paren
 suffix:semicolon
-id|acpi_namespace_node
-op_star
+id|acpi_status
 id|acpi_ds_method_data_get_node
 (paren
 id|u16
@@ -377,6 +389,11 @@ comma
 id|acpi_walk_state
 op_star
 id|walk_state
+comma
+id|acpi_namespace_node
+op_star
+op_star
+id|node
 )paren
 suffix:semicolon
 id|acpi_status
@@ -388,7 +405,7 @@ id|walk_state
 )paren
 suffix:semicolon
 id|acpi_status
-id|acpi_ds_method_data_set_entry
+id|acpi_ds_method_data_set_value
 (paren
 id|u16
 id|opcode
@@ -416,9 +433,9 @@ suffix:semicolon
 id|acpi_status
 id|acpi_ds_call_control_method
 (paren
-id|acpi_walk_list
+id|ACPI_THREAD_STATE
 op_star
-id|walk_list
+id|thread
 comma
 id|acpi_walk_state
 op_star
@@ -663,24 +680,6 @@ op_star
 id|walk_state
 )paren
 suffix:semicolon
-id|acpi_object_type8
-id|acpi_ds_map_opcode_to_data_type
-(paren
-id|u16
-id|opcode
-comma
-id|u32
-op_star
-id|out_flags
-)paren
-suffix:semicolon
-id|acpi_object_type8
-id|acpi_ds_map_named_opcode_to_data_type
-(paren
-id|u16
-id|opcode
-)paren
-suffix:semicolon
 multiline_comment|/*&n; * dswscope - Scope Stack manipulation&n; */
 id|acpi_status
 id|acpi_ds_scope_stack_push
@@ -689,7 +688,7 @@ id|acpi_namespace_node
 op_star
 id|node
 comma
-id|acpi_object_type8
+id|acpi_object_type
 id|type
 comma
 id|acpi_walk_state
@@ -729,9 +728,9 @@ id|acpi_operand_object
 op_star
 id|mth_desc
 comma
-id|acpi_walk_list
+id|ACPI_THREAD_STATE
 op_star
-id|walk_list
+id|thread
 )paren
 suffix:semicolon
 id|acpi_status
@@ -801,9 +800,9 @@ id|acpi_walk_state
 op_star
 id|acpi_ds_pop_walk_state
 (paren
-id|acpi_walk_list
+id|ACPI_THREAD_STATE
 op_star
-id|walk_list
+id|thread
 )paren
 suffix:semicolon
 r_void
@@ -813,9 +812,9 @@ id|acpi_walk_state
 op_star
 id|walk_state
 comma
-id|acpi_walk_list
+id|ACPI_THREAD_STATE
 op_star
-id|walk_list
+id|thread
 )paren
 suffix:semicolon
 id|acpi_status
@@ -846,9 +845,9 @@ id|acpi_walk_state
 op_star
 id|acpi_ds_get_current_walk_state
 (paren
-id|acpi_walk_list
+id|ACPI_THREAD_STATE
 op_star
-id|walk_list
+id|thread
 )paren
 suffix:semicolon
 r_void

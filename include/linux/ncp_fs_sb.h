@@ -196,8 +196,6 @@ id|flags
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|macro|ncp_sb_info
-mdefine_line|#define ncp_sb_info&t;ncp_server
 DECL|macro|NCP_FLAG_UTF8
 mdefine_line|#define NCP_FLAG_UTF8&t;1
 DECL|macro|NCP_CLR_FLAG

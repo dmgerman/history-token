@@ -2,6 +2,7 @@ multiline_comment|/* &n;    tuner.h - definition for different tuners&n;&n;    C
 macro_line|#ifndef _TUNER_H
 DECL|macro|_TUNER_H
 mdefine_line|#define _TUNER_H
+macro_line|#include &quot;id.h&quot;
 DECL|macro|TUNER_TEMIC_PAL
 mdefine_line|#define TUNER_TEMIC_PAL     0        /* 4002 FH5 (3X 7756, 9483) */
 DECL|macro|TUNER_PHILIPS_PAL_I

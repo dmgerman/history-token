@@ -30,6 +30,7 @@ DECL|macro|EFS_BLOCKSIZE
 mdefine_line|#define&t;EFS_BLOCKSIZE&t;&t;(1 &lt;&lt; EFS_BLOCKSIZE_BITS)
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/efs_fs_i.h&gt;
+macro_line|#include &lt;linux/efs_fs_sb.h&gt;
 macro_line|#include &lt;linux/efs_dir.h&gt;
 macro_line|#ifndef MIN
 DECL|macro|MIN
@@ -67,8 +68,25 @@ id|vfs_inode
 )paren
 suffix:semicolon
 )brace
-DECL|macro|SUPER_INFO
-mdefine_line|#define SUPER_INFO(s)&t;&t;&t;&t;&amp;((s)-&gt;u.efs_sb)
+DECL|function|SUPER_INFO
+r_static
+r_inline
+r_struct
+id|efs_sb_info
+op_star
+id|SUPER_INFO
+c_func
+(paren
+r_struct
+id|super_block
+op_star
+id|sb
+)paren
+(brace
+r_return
+id|sb-&gt;u.generic_sbp
+suffix:semicolon
+)brace
 r_extern
 r_struct
 id|inode_operations

@@ -7,11 +7,11 @@ macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/smb.h&gt;
 multiline_comment|/* structure access macros */
 DECL|macro|server_from_inode
-mdefine_line|#define server_from_inode(inode) (&amp;(inode)-&gt;i_sb-&gt;u.smbfs_sb)
+mdefine_line|#define server_from_inode(inode) SMB_SB((inode)-&gt;i_sb)
 DECL|macro|server_from_dentry
-mdefine_line|#define server_from_dentry(dentry) (&amp;(dentry)-&gt;d_sb-&gt;u.smbfs_sb)
+mdefine_line|#define server_from_dentry(dentry) SMB_SB((dentry)-&gt;d_sb)
 DECL|macro|SB_of
-mdefine_line|#define SB_of(server) ((struct super_block *) ((char *)(server) - &bslash;&n;&t;(unsigned long)(&amp;((struct super_block *)0)-&gt;u.smbfs_sb)))
+mdefine_line|#define SB_of(server) ((server)-&gt;super_block)
 DECL|struct|smb_sb_info
 r_struct
 id|smb_sb_info
@@ -114,6 +114,12 @@ r_struct
 id|smb_ops
 op_star
 id|ops
+suffix:semicolon
+DECL|member|super_block
+r_struct
+id|super_block
+op_star
+id|super_block
 suffix:semicolon
 )brace
 suffix:semicolon

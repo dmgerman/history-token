@@ -12,7 +12,7 @@ macro_line|#include &lt;linux/hdreg.h&gt;
 macro_line|#include &lt;linux/ide.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
-macro_line|#include &quot;ide_modes.h&quot;
+macro_line|#include &quot;ata-timing.h&quot;
 multiline_comment|/* #define DEBUG */
 multiline_comment|/* remove comments for DEBUG messages */
 multiline_comment|/*&n; * The special i/o-port that HT-6560B uses to configuration:&n; *    bit0 (0x01): &quot;1&quot; selects secondary interface&n; *    bit2 (0x04): &quot;1&quot; enables FIFO function&n; *    bit5 (0x20): &quot;1&quot; enables prefetched data read function  (???)&n; *&n; * The special i/o-port that HT-6560A uses to configuration:&n; *    bit0 (0x01): &quot;1&quot; selects secondary interface&n; *    bit1 (0x02): &quot;1&quot; enables prefetched data read function&n; *    bit2 (0x04): &quot;0&quot; enables multi-master system&t;      (?)&n; *    bit3 (0x08): &quot;1&quot; 3 cycle time, &quot;0&quot; 2 cycle time&t;      (?)&n; */
@@ -405,8 +405,10 @@ id|active_cycles
 comma
 id|recovery_cycles
 suffix:semicolon
-id|ide_pio_data_t
-id|d
+r_struct
+id|ata_timing
+op_star
+id|t
 suffix:semicolon
 r_if
 c_cond
@@ -414,43 +416,60 @@ c_cond
 id|pio
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|pio
+op_eq
+l_int|255
+)paren
 id|pio
 op_assign
-id|ide_get_best_pio_mode
+id|ata_timing_mode
 c_func
 (paren
 id|drive
 comma
+id|XFER_PIO
+op_or
+id|XFER_EPIO
+)paren
+suffix:semicolon
+r_else
+id|pio
+op_assign
+id|XFER_PIO_0
+op_plus
+id|min_t
+c_func
+(paren
+id|byte
+comma
 id|pio
 comma
-l_int|5
-comma
-op_amp
-id|d
+l_int|4
+)paren
+suffix:semicolon
+id|t
+op_assign
+id|ata_timing_data
+c_func
+(paren
+id|pio
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; *  Just like opti621.c we try to calculate the&n;&t;&t; *  actual cycle time for recovery and activity&n;&t;&t; *  according system bus speed.&n;&t;&t; */
 id|active_time
 op_assign
-id|ide_pio_timings
-(braket
-id|pio
-)braket
-dot
-id|active_time
+id|t-&gt;active
 suffix:semicolon
 id|recovery_time
 op_assign
-id|d.cycle_time
+id|t-&gt;cycle
 op_minus
 id|active_time
 op_minus
-id|ide_pio_timings
-(braket
-id|pio
-)braket
-dot
-id|setup_time
+id|t-&gt;setup
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; *  Cycle times should be Vesa bus cycles&n;&t;&t; */
 id|active_cycles
@@ -532,6 +551,8 @@ comma
 id|drive-&gt;name
 comma
 id|pio
+op_minus
+id|XFER_PIO_0
 comma
 id|recovery_cycles
 comma

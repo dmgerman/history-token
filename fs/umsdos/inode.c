@@ -185,7 +185,7 @@ op_assign
 l_int|NULL
 suffix:semicolon
 )brace
-id|msdos_put_super
+id|fat_put_super
 (paren
 id|sb
 )paren

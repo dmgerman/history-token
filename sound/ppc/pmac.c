@@ -6270,9 +6270,6 @@ c_func
 id|pmac_t
 op_star
 id|chip
-comma
-r_int
-id|can_schedule
 )paren
 (brace
 r_int
@@ -6289,8 +6286,6 @@ id|snd_power_lock
 c_func
 (paren
 id|card
-comma
-id|can_schedule
 )paren
 suffix:semicolon
 r_if
@@ -6405,9 +6400,6 @@ c_func
 id|pmac_t
 op_star
 id|chip
-comma
-r_int
-id|can_schedule
 )paren
 (brace
 id|snd_card_t
@@ -6420,8 +6412,6 @@ id|snd_power_lock
 c_func
 (paren
 id|card
-comma
-id|can_schedule
 )paren
 suffix:semicolon
 r_if
@@ -6586,8 +6576,6 @@ id|snd_pmac_suspend
 c_func
 (paren
 id|chip
-comma
-l_int|0
 )paren
 suffix:semicolon
 r_break
@@ -6599,8 +6587,6 @@ id|snd_pmac_resume
 c_func
 (paren
 id|chip
-comma
-l_int|0
 )paren
 suffix:semicolon
 r_break
@@ -6770,8 +6756,6 @@ id|snd_pmac_resume
 c_func
 (paren
 id|chip
-comma
-l_int|1
 )paren
 suffix:semicolon
 r_break
@@ -6786,8 +6770,6 @@ id|snd_pmac_suspend
 c_func
 (paren
 id|chip
-comma
-l_int|1
 )paren
 suffix:semicolon
 r_break

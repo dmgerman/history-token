@@ -1,11 +1,11 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: nswalk - Functions for walking the ACPI namespace&n; *              $Revision: 26 $&n; *&n; *****************************************************************************/
-multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: nswalk - Functions for walking the ACPI namespace&n; *              $Revision: 32 $&n; *&n; *****************************************************************************/
+multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acinterp.h&quot;
 macro_line|#include &quot;acnamesp.h&quot;
 DECL|macro|_COMPONENT
 mdefine_line|#define _COMPONENT          ACPI_NAMESPACE
-id|MODULE_NAME
+id|ACPI_MODULE_NAME
 (paren
 l_string|&quot;nswalk&quot;
 )paren
@@ -15,7 +15,7 @@ op_star
 DECL|function|acpi_ns_get_next_node
 id|acpi_ns_get_next_node
 (paren
-id|acpi_object_type8
+id|acpi_object_type
 id|type
 comma
 id|acpi_namespace_node
@@ -33,7 +33,7 @@ id|next_node
 op_assign
 l_int|NULL
 suffix:semicolon
-id|FUNCTION_ENTRY
+id|ACPI_FUNCTION_ENTRY
 (paren
 )paren
 suffix:semicolon
@@ -127,7 +127,7 @@ id|acpi_status
 DECL|function|acpi_ns_walk_namespace
 id|acpi_ns_walk_namespace
 (paren
-id|acpi_object_type8
+id|acpi_object_type
 id|type
 comma
 id|acpi_handle
@@ -163,13 +163,13 @@ id|acpi_namespace_node
 op_star
 id|parent_node
 suffix:semicolon
-id|acpi_object_type8
+id|acpi_object_type
 id|child_type
 suffix:semicolon
 id|u32
 id|level
 suffix:semicolon
-id|FUNCTION_TRACE
+id|ACPI_FUNCTION_TRACE
 (paren
 l_string|&quot;Ns_walk_namespace&quot;
 )paren
@@ -265,11 +265,28 @@ c_cond
 id|unlock_before_callback
 )paren
 (brace
+id|status
+op_assign
 id|acpi_ut_release_mutex
 (paren
 id|ACPI_MTX_NAMESPACE
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|ACPI_FAILURE
+(paren
+id|status
+)paren
+)paren
+(brace
+id|return_ACPI_STATUS
+(paren
+id|status
+)paren
+suffix:semicolon
+)brace
 )brace
 id|status
 op_assign
@@ -290,11 +307,28 @@ c_cond
 id|unlock_before_callback
 )paren
 (brace
+id|status
+op_assign
 id|acpi_ut_acquire_mutex
 (paren
 id|ACPI_MTX_NAMESPACE
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|ACPI_FAILURE
+(paren
+id|status
+)paren
+)paren
+(brace
+id|return_ACPI_STATUS
+(paren
+id|status
+)paren
+suffix:semicolon
+)brace
 )brace
 r_switch
 c_cond
@@ -320,8 +354,6 @@ id|return_ACPI_STATUS
 id|AE_OK
 )paren
 suffix:semicolon
-r_break
-suffix:semicolon
 r_default
 suffix:colon
 multiline_comment|/* All others are valid exceptions */
@@ -329,8 +361,6 @@ id|return_ACPI_STATUS
 (paren
 id|status
 )paren
-suffix:semicolon
-r_break
 suffix:semicolon
 )brace
 )brace
@@ -391,7 +421,7 @@ id|parent_node
 suffix:semicolon
 id|parent_node
 op_assign
-id|acpi_ns_get_parent_object
+id|acpi_ns_get_parent_node
 (paren
 id|parent_node
 )paren

@@ -4281,12 +4281,6 @@ c_func
 id|HDIO_GET_IDENTITY
 )paren
 comma
-id|IOCTL32_DEFAULT
-c_func
-(paren
-id|HDIO_DRIVE_RESET
-)paren
-comma
 singleline_comment|// HDIO_TRISTATE_HWIF&t;&t;&t;&t;/* not implemented */
 singleline_comment|// HDIO_DRIVE_TASK&t;&t;&t;&t;/* To do, need specs */
 id|IOCTL32_DEFAULT

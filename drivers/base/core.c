@@ -26,7 +26,7 @@ l_string|&quot;root&quot;
 comma
 id|name
 suffix:colon
-l_string|&quot;System Root&quot;
+l_string|&quot;System root&quot;
 comma
 )brace
 suffix:semicolon
@@ -86,6 +86,8 @@ DECL|variable|device_lock
 r_static
 id|spinlock_t
 id|device_lock
+op_assign
+id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
 multiline_comment|/**&n; * device_register - register a device&n; * @dev:&t;pointer to the device structure&n; *&n; * First, make sure that the device has a parent, create&n; * a directory for it, then add it to the parent&squot;s list of&n; * children.&n; */
 DECL|function|device_register
@@ -390,21 +392,6 @@ r_void
 (brace
 r_int
 id|error
-op_assign
-l_int|0
-suffix:semicolon
-id|DBG
-c_func
-(paren
-l_string|&quot;DEV: Initialising Device Tree&bslash;n&quot;
-)paren
-suffix:semicolon
-id|spin_lock_init
-c_func
-(paren
-op_amp
-id|device_lock
-)paren
 suffix:semicolon
 id|error
 op_assign
@@ -422,24 +409,24 @@ id|error
 id|panic
 c_func
 (paren
-l_string|&quot;DEV: could not initialise driverfs&bslash;n&quot;
+l_string|&quot;DEV: could not initialize driverfs&quot;
 )paren
 suffix:semicolon
 r_return
 id|error
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-(paren
 id|error
 op_assign
 id|device_init_root
 c_func
 (paren
 )paren
-)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|error
 )paren
 id|printk
 c_func
@@ -455,7 +442,7 @@ id|error
 suffix:semicolon
 )brace
 DECL|variable|device_init
-id|subsys_initcall
+id|core_initcall
 c_func
 (paren
 id|device_init

@@ -30,8 +30,6 @@ DECL|variable|enable_loopback
 r_static
 r_int
 id|enable_loopback
-op_assign
-l_int|0
 suffix:semicolon
 id|MODULE_PARM
 c_func

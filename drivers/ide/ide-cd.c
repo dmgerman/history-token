@@ -5446,7 +5446,7 @@ op_amp
 id|REQ_SPECIAL
 )paren
 (brace
-multiline_comment|/*&n;&t;&t; * right now this can only be a reset...&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * FIXME: Kill REQ_SEPCIAL and replace it will command commands&n;&t;&t; * queued at the request queue instead as suggested (abd&n;&t;&t; * rightly so) by Linus.&n;&t;&t; *&n;&t;&t; * right now this can only be a reset...&n;&t;&t; */
 id|cdrom_end_request
 c_func
 (paren
@@ -5456,11 +5456,7 @@ l_int|1
 )paren
 suffix:semicolon
 r_return
-id|ide_do_reset
-c_func
-(paren
-id|drive
-)paren
+id|ide_stopped
 suffix:semicolon
 )brace
 r_else

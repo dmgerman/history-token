@@ -1,5 +1,5 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: exstoren - AML Interpreter object store support,&n; *                        Store to Node (namespace object)&n; *              $Revision: 40 $&n; *&n; *****************************************************************************/
-multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: exstoren - AML Interpreter object store support,&n; *                        Store to Node (namespace object)&n; *              $Revision: 46 $&n; *&n; *****************************************************************************/
+multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acparser.h&quot;
 macro_line|#include &quot;acdispat.h&quot;
@@ -9,7 +9,7 @@ macro_line|#include &quot;acnamesp.h&quot;
 macro_line|#include &quot;actables.h&quot;
 DECL|macro|_COMPONENT
 mdefine_line|#define _COMPONENT          ACPI_EXECUTER
-id|MODULE_NAME
+id|ACPI_MODULE_NAME
 (paren
 l_string|&quot;exstoren&quot;
 )paren
@@ -23,7 +23,7 @@ op_star
 op_star
 id|source_desc_ptr
 comma
-id|acpi_object_type8
+id|acpi_object_type
 id|target_type
 comma
 id|acpi_walk_state
@@ -43,20 +43,18 @@ id|status
 op_assign
 id|AE_OK
 suffix:semicolon
-id|FUNCTION_TRACE
+id|ACPI_FUNCTION_TRACE
 (paren
 l_string|&quot;Ex_resolve_object&quot;
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Ensure we have a Source that can be stored in the target&n;&t; */
+multiline_comment|/*&n;&t; * Ensure we have a Target that can be stored to&n;&t; */
 r_switch
 c_cond
 (paren
 id|target_type
 )paren
 (brace
-multiline_comment|/* This case handles the &quot;interchangeable&quot; types Integer, String, and Buffer. */
-multiline_comment|/*&n;&t; * These cases all require only Integers or values that&n;&t; * can be converted to Integers (Strings or Buffers)&n;&t; */
 r_case
 id|ACPI_TYPE_BUFFER_FIELD
 suffix:colon
@@ -69,7 +67,7 @@ suffix:colon
 r_case
 id|INTERNAL_TYPE_INDEX_FIELD
 suffix:colon
-multiline_comment|/*&n;&t; * Stores into a Field/Region or into a Buffer/String&n;&t; * are all essentially the same.&n;&t; */
+multiline_comment|/*&n;&t;&t; * These cases all require only Integers or values that&n;&t;&t; * can be converted to Integers (Strings or Buffers)&n;&t;&t; */
 r_case
 id|ACPI_TYPE_INTEGER
 suffix:colon
@@ -79,31 +77,16 @@ suffix:colon
 r_case
 id|ACPI_TYPE_BUFFER
 suffix:colon
-multiline_comment|/* TBD: FIX - check for source==REF, resolve, then check type */
-multiline_comment|/*&n;&t;&t; * If Source_desc is not a valid type, try to resolve it to one.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Stores into a Field/Region or into a Integer/Buffer/String&n;&t;&t; * are all essentially the same.  This case handles the&n;&t;&t; * &quot;interchangeable&quot; types Integer, String, and Buffer.&n;&t;&t; */
 r_if
 c_cond
 (paren
-(paren
 id|source_desc-&gt;common.type
-op_ne
-id|ACPI_TYPE_INTEGER
-)paren
-op_logical_and
-(paren
-id|source_desc-&gt;common.type
-op_ne
-id|ACPI_TYPE_BUFFER
-)paren
-op_logical_and
-(paren
-id|source_desc-&gt;common.type
-op_ne
-id|ACPI_TYPE_STRING
-)paren
+op_eq
+id|INTERNAL_TYPE_REFERENCE
 )paren
 (brace
-multiline_comment|/*&n;&t;&t;&t; * Initially not a valid type, convert&n;&t;&t;&t; */
+multiline_comment|/* Resolve a reference object first */
 id|status
 op_assign
 id|acpi_ex_resolve_to_value
@@ -116,11 +99,20 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|ACPI_SUCCESS
+id|ACPI_FAILURE
 (paren
 id|status
 )paren
-op_logical_and
+)paren
+(brace
+r_break
+suffix:semicolon
+)brace
+)brace
+multiline_comment|/*&n;&t;&t; * Must have a Integer, Buffer, or String&n;&t;&t; */
+r_if
+c_cond
+(paren
 (paren
 id|source_desc-&gt;common.type
 op_ne
@@ -140,7 +132,7 @@ id|ACPI_TYPE_STRING
 )paren
 )paren
 (brace
-multiline_comment|/*&n;&t;&t;&t;&t; * Conversion successful but still not a valid type&n;&t;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * Conversion successful but still not a valid type&n;&t;&t;&t; */
 id|ACPI_DEBUG_PRINT
 (paren
 (paren
@@ -150,12 +142,7 @@ l_string|&quot;Cannot assign type %s to %s (must be type Int/Str/Buf)&bslash;n&q
 comma
 id|acpi_ut_get_type_name
 (paren
-(paren
-op_star
-id|source_desc_ptr
-)paren
-op_member_access_from_pointer
-id|common.type
+id|source_desc-&gt;common.type
 )paren
 comma
 id|acpi_ut_get_type_name
@@ -169,7 +156,6 @@ id|status
 op_assign
 id|AE_AML_OPERAND_TYPE
 suffix:semicolon
-)brace
 )brace
 r_break
 suffix:semicolon
@@ -207,22 +193,23 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ex_store_object&n; *&n; * PARAMETERS:  Source_desc         - Object to store&n; *              Target_type         - Current type of the target&n; *              Target_desc_ptr     - Pointer to the target&n; *              Walk_state          - Current walk state&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: &quot;Store&quot; an object to another object.  This may include&n; *              converting the source type to the target type (implicit&n; *              conversion), and a copy of the value of the source to&n; *              the target.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ex_store_object_to_object&n; *&n; * PARAMETERS:  Source_desc         - Object to store&n; *              Dest_desc           - Object to recieve a copy of the source&n; *              New_desc            - New object if Dest_desc is obsoleted&n; *              Walk_state          - Current walk state&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: &quot;Store&quot; an object to another object.  This may include&n; *              converting the source type to the target type (implicit&n; *              conversion), and a copy of the value of the source to&n; *              the target.&n; *&n; *              The Assignment of an object to another (not named) object&n; *              is handled here.&n; *              The Source passed in will replace the current value (if any)&n; *              with the input value.&n; *&n; *              When storing into an object the data is converted to the&n; *              target object type then stored in the object.  This means&n; *              that the target object type (for an initialized target) will&n; *              not be changed by a store operation.&n; *&n; *              This module allows destination types of Number, String,&n; *              Buffer, and Package.&n; *&n; *              Assumes parameters are already validated.  NOTE: Source_desc&n; *              resolution (from a reference object) must be performed by&n; *              the caller if necessary.&n; *&n; ******************************************************************************/
 id|acpi_status
-DECL|function|acpi_ex_store_object
-id|acpi_ex_store_object
+DECL|function|acpi_ex_store_object_to_object
+id|acpi_ex_store_object_to_object
 (paren
 id|acpi_operand_object
 op_star
 id|source_desc
 comma
-id|acpi_object_type8
-id|target_type
+id|acpi_operand_object
+op_star
+id|dest_desc
 comma
 id|acpi_operand_object
 op_star
 op_star
-id|target_desc_ptr
+id|new_desc
 comma
 id|acpi_walk_state
 op_star
@@ -231,30 +218,68 @@ id|walk_state
 (brace
 id|acpi_operand_object
 op_star
-id|target_desc
-op_assign
-op_star
-id|target_desc_ptr
+id|actual_src_desc
 suffix:semicolon
 id|acpi_status
 id|status
 op_assign
 id|AE_OK
 suffix:semicolon
-id|FUNCTION_TRACE
+id|ACPI_FUNCTION_TRACE_PTR
 (paren
-l_string|&quot;Ex_store_object&quot;
+l_string|&quot;Acpi_ex_store_object_to_object&quot;
+comma
+id|source_desc
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Perform the &quot;implicit conversion&quot; of the source to the current type&n;&t; * of the target - As per the ACPI specification.&n;&t; *&n;&t; * If no conversion performed, Source_desc is left alone, otherwise it&n;&t; * is updated with a new object.&n;&t; */
+id|actual_src_desc
+op_assign
+id|source_desc
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|dest_desc
+)paren
+(brace
+multiline_comment|/*&n;&t;&t; * There is no destination object (An uninitialized node or&n;&t;&t; * package element), so we can simply copy the source object&n;&t;&t; * creating a new destination object&n;&t;&t; */
+id|status
+op_assign
+id|acpi_ut_copy_iobject_to_iobject
+(paren
+id|actual_src_desc
+comma
+id|new_desc
+comma
+id|walk_state
+)paren
+suffix:semicolon
+id|return_ACPI_STATUS
+(paren
+id|status
+)paren
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|source_desc-&gt;common.type
+op_ne
+id|dest_desc-&gt;common.type
+)paren
+(brace
+multiline_comment|/*&n;&t;&t; * The source type does not match the type of the destination.&n;&t;&t; * Perform the &quot;implicit conversion&quot; of the source to the current type&n;&t;&t; * of the target as per the ACPI specification.&n;&t;&t; *&n;&t;&t; * If no conversion performed, Actual_src_desc = Source_desc.&n;&t;&t; * Otherwise, Actual_src_desc is a temporary object to hold the&n;&t;&t; * converted object.&n;&t;&t; */
 id|status
 op_assign
 id|acpi_ex_convert_to_target_type
 (paren
-id|target_type
+id|dest_desc-&gt;common.type
+comma
+id|source_desc
 comma
 op_amp
-id|source_desc
+id|actual_src_desc
 comma
 id|walk_state
 )paren
@@ -274,38 +299,25 @@ id|status
 )paren
 suffix:semicolon
 )brace
+)brace
 multiline_comment|/*&n;&t; * We now have two objects of identical types, and we can perform a&n;&t; * copy of the *value* of the source object.&n;&t; */
 r_switch
 c_cond
 (paren
-id|target_type
+id|dest_desc-&gt;common.type
 )paren
 (brace
 r_case
-id|ACPI_TYPE_ANY
-suffix:colon
-r_case
-id|INTERNAL_TYPE_DEF_ANY
-suffix:colon
-multiline_comment|/*&n;&t;&t; * The target namespace node is uninitialized (has no target object),&n;&t;&t; * and will take on the type of the source object&n;&t;&t; */
-op_star
-id|target_desc_ptr
-op_assign
-id|source_desc
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
 id|ACPI_TYPE_INTEGER
 suffix:colon
-id|target_desc-&gt;integer.value
+id|dest_desc-&gt;integer.value
 op_assign
-id|source_desc-&gt;integer.value
+id|actual_src_desc-&gt;integer.value
 suffix:semicolon
 multiline_comment|/* Truncate value if we are executing from a 32-bit ACPI table */
 id|acpi_ex_truncate_for32bit_table
 (paren
-id|target_desc
+id|dest_desc
 comma
 id|walk_state
 )paren
@@ -317,11 +329,11 @@ id|ACPI_TYPE_STRING
 suffix:colon
 id|status
 op_assign
-id|acpi_ex_copy_string_to_string
+id|acpi_ex_store_string_to_string
 (paren
-id|source_desc
+id|actual_src_desc
 comma
-id|target_desc
+id|dest_desc
 )paren
 suffix:semicolon
 r_break
@@ -331,11 +343,11 @@ id|ACPI_TYPE_BUFFER
 suffix:colon
 id|status
 op_assign
-id|acpi_ex_copy_buffer_to_buffer
+id|acpi_ex_store_buffer_to_buffer
 (paren
-id|source_desc
+id|actual_src_desc
 comma
-id|target_desc
+id|dest_desc
 )paren
 suffix:semicolon
 r_break
@@ -343,10 +355,17 @@ suffix:semicolon
 r_case
 id|ACPI_TYPE_PACKAGE
 suffix:colon
-multiline_comment|/*&n;&t;&t; * TBD: [Unhandled] Not real sure what to do here&n;&t;&t; */
 id|status
 op_assign
-id|AE_NOT_IMPLEMENTED
+id|acpi_ut_copy_iobject_to_iobject
+(paren
+id|actual_src_desc
+comma
+op_amp
+id|dest_desc
+comma
+id|walk_state
+)paren
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -362,7 +381,7 @@ l_string|&quot;Store into type %s not implemented&bslash;n&quot;
 comma
 id|acpi_ut_get_type_name
 (paren
-id|target_type
+id|dest_desc-&gt;common.type
 )paren
 )paren
 )paren
@@ -374,6 +393,26 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|actual_src_desc
+op_ne
+id|source_desc
+)paren
+(brace
+multiline_comment|/* Delete the intermediate (temporary) source object */
+id|acpi_ut_remove_reference
+(paren
+id|actual_src_desc
+)paren
+suffix:semicolon
+)brace
+op_star
+id|new_desc
+op_assign
+id|dest_desc
+suffix:semicolon
 id|return_ACPI_STATUS
 (paren
 id|status

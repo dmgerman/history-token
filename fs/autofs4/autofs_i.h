@@ -410,11 +410,6 @@ suffix:semicolon
 r_extern
 r_struct
 id|file_operations
-id|autofs4_dir_operations
-suffix:semicolon
-r_extern
-r_struct
-id|file_operations
 id|autofs4_root_operations
 suffix:semicolon
 multiline_comment|/* Initializing function */

@@ -2748,10 +2748,12 @@ id|dev
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * pdev_set_mwi - arch helper function for pcibios_set_mwi&n; * @dev: the PCI device for which MWI is enabled&n; *&n; * Helper function for implementation the arch-specific pcibios_set_mwi&n; * function.  Originally copied from drivers/net/acenic.c.&n; * Copyright 1998-2001 by Jes Sorensen, &lt;jes@trained-monkey.org&gt;.&n; *&n; * RETURNS: An appriopriate -ERRNO error value on eror, or zero for success.&n; */
+macro_line|#ifndef HAVE_ARCH_PCI_MWI
+multiline_comment|/**&n; * pci_generic_prep_mwi - helper function for pci_set_mwi&n; * @dev: the PCI device for which MWI is enabled&n; *&n; * Helper function for generic implementation of pcibios_prep_mwi&n; * function.  Originally copied from drivers/net/acenic.c.&n; * Copyright 1998-2001 by Jes Sorensen, &lt;jes@trained-monkey.org&gt;.&n; *&n; * RETURNS: An appropriate -ERRNO error value on eror, or zero for success.&n; */
+r_static
 r_int
-DECL|function|pdev_set_mwi
-id|pdev_set_mwi
+DECL|function|pci_generic_prep_mwi
+id|pci_generic_prep_mwi
 c_func
 (paren
 r_struct
@@ -2796,8 +2798,8 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;PCI: %s PCI cache line size set incorrectly &quot;
-l_string|&quot;(%i bytes) by BIOS/FW, &quot;
+l_string|&quot;PCI: %s PCI cache line size set &quot;
+l_string|&quot;incorrectly (%i bytes) by BIOS/FW, &quot;
 comma
 id|dev-&gt;slot_name
 comma
@@ -2854,6 +2856,7 @@ r_return
 id|rc
 suffix:semicolon
 )brace
+macro_line|#endif /* !HAVE_ARCH_PCI_MWI */
 multiline_comment|/**&n; * pci_set_mwi - enables memory-write-validate PCI transaction&n; * @dev: the PCI device for which MWI is enabled&n; *&n; * Enables the Memory-Write-Invalidate transaction in %PCI_COMMAND,&n; * and then calls @pcibios_set_mwi to do the needed arch specific&n; * operations or a generic mwi-prep function.&n; *&n; * RETURNS: An appriopriate -ERRNO error value on eror, or zero for success.&n; */
 r_int
 DECL|function|pci_set_mwi
@@ -2875,7 +2878,7 @@ suffix:semicolon
 macro_line|#ifdef HAVE_ARCH_PCI_MWI
 id|rc
 op_assign
-id|pcibios_set_mwi
+id|pcibios_prep_mwi
 c_func
 (paren
 id|dev
@@ -2884,7 +2887,7 @@ suffix:semicolon
 macro_line|#else
 id|rc
 op_assign
-id|pdev_set_mwi
+id|pci_generic_prep_mwi
 c_func
 (paren
 id|dev
@@ -3322,6 +3325,13 @@ id|l
 op_amp
 id|PCI_BASE_ADDRESS_MEM_MASK
 suffix:semicolon
+id|res-&gt;flags
+op_or_assign
+id|l
+op_amp
+op_complement
+id|PCI_BASE_ADDRESS_MEM_MASK
+suffix:semicolon
 id|sz
 op_assign
 id|pci_size
@@ -3339,6 +3349,13 @@ id|res-&gt;start
 op_assign
 id|l
 op_amp
+id|PCI_BASE_ADDRESS_IO_MASK
+suffix:semicolon
+id|res-&gt;flags
+op_or_assign
+id|l
+op_amp
+op_complement
 id|PCI_BASE_ADDRESS_IO_MASK
 suffix:semicolon
 id|sz
@@ -3366,12 +3383,6 @@ id|sz
 suffix:semicolon
 id|res-&gt;flags
 op_or_assign
-(paren
-id|l
-op_amp
-l_int|0xf
-)paren
-op_or
 id|pci_calc_resource_flags
 c_func
 (paren
@@ -6617,10 +6628,6 @@ DECL|member|size
 r_int
 id|size
 suffix:semicolon
-DECL|member|flags
-r_int
-id|flags
-suffix:semicolon
 DECL|member|dev
 r_struct
 id|pci_dev
@@ -6677,8 +6684,7 @@ DECL|macro|POOL_TIMEOUT_JIFFIES
 mdefine_line|#define&t;POOL_TIMEOUT_JIFFIES&t;((100 /* msec */ * HZ) / 1000)
 DECL|macro|POOL_POISON_BYTE
 mdefine_line|#define&t;POOL_POISON_BYTE&t;0xa7
-singleline_comment|// #define CONFIG_PCIPOOL_DEBUG
-multiline_comment|/**&n; * pci_pool_create - Creates a pool of pci consistent memory blocks, for dma.&n; * @name: name of pool, for diagnostics&n; * @pdev: pci device that will be doing the DMA&n; * @size: size of the blocks in this pool.&n; * @align: alignment requirement for blocks; must be a power of two&n; * @allocation: returned blocks won&squot;t cross this boundary (or zero)&n; * @flags: SLAB_* flags (not all are supported).&n; *&n; * Returns a pci allocation pool with the requested characteristics, or&n; * null if one can&squot;t be created.  Given one of these pools, pci_pool_alloc()&n; * may be used to allocate memory.  Such memory will all have &quot;consistent&quot;&n; * DMA mappings, accessible by the device and its driver without using&n; * cache flushing primitives.  The actual size of blocks allocated may be&n; * larger than requested because of alignment.&n; *&n; * If allocation is nonzero, objects returned from pci_pool_alloc() won&squot;t&n; * cross that size boundary.  This is useful for devices which have&n; * addressing restrictions on individual DMA transfers, such as not crossing&n; * boundaries of 4KBytes.&n; */
+multiline_comment|/**&n; * pci_pool_create - Creates a pool of pci consistent memory blocks, for dma.&n; * @name: name of pool, for diagnostics&n; * @pdev: pci device that will be doing the DMA&n; * @size: size of the blocks in this pool.&n; * @align: alignment requirement for blocks; must be a power of two&n; * @allocation: returned blocks won&squot;t cross this boundary (or zero)&n; * @mem_flags: SLAB_* flags.&n; *&n; * Returns a pci allocation pool with the requested characteristics, or&n; * null if one can&squot;t be created.  Given one of these pools, pci_pool_alloc()&n; * may be used to allocate memory.  Such memory will all have &quot;consistent&quot;&n; * DMA mappings, accessible by the device and its driver without using&n; * cache flushing primitives.  The actual size of blocks allocated may be&n; * larger than requested because of alignment.&n; *&n; * If allocation is nonzero, objects returned from pci_pool_alloc() won&squot;t&n; * cross that size boundary.  This is useful for devices which have&n; * addressing restrictions on individual DMA transfers, such as not crossing&n; * boundaries of 4KBytes.&n; */
 r_struct
 id|pci_pool
 op_star
@@ -6705,7 +6711,7 @@ r_int
 id|allocation
 comma
 r_int
-id|flags
+id|mem_flags
 )paren
 (brace
 r_struct
@@ -6825,19 +6831,13 @@ r_sizeof
 op_star
 id|retval
 comma
-id|flags
+id|mem_flags
 )paren
 )paren
 )paren
 r_return
 id|retval
 suffix:semicolon
-macro_line|#ifdef&t;CONFIG_PCIPOOL_DEBUG
-id|flags
-op_or_assign
-id|SLAB_POISON
-suffix:semicolon
-macro_line|#endif
 id|strncpy
 (paren
 id|retval-&gt;name
@@ -6878,10 +6878,6 @@ id|retval-&gt;size
 op_assign
 id|size
 suffix:semicolon
-id|retval-&gt;flags
-op_assign
-id|flags
-suffix:semicolon
 id|retval-&gt;allocation
 op_assign
 id|allocation
@@ -6898,29 +6894,6 @@ op_amp
 id|retval-&gt;waitq
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_PCIPOOL_DEBUG
-id|printk
-(paren
-id|KERN_DEBUG
-l_string|&quot;pcipool create %s/%s size %d, %d/page (%d alloc)&bslash;n&quot;
-comma
-id|pdev
-ques
-c_cond
-id|pdev-&gt;slot_name
-suffix:colon
-l_int|NULL
-comma
-id|retval-&gt;name
-comma
-id|size
-comma
-id|retval-&gt;blocks_per_page
-comma
-id|allocation
-)paren
-suffix:semicolon
-macro_line|#endif
 r_return
 id|retval
 suffix:semicolon
@@ -7027,13 +7000,7 @@ id|mapsize
 )paren
 suffix:semicolon
 singleline_comment|// bit set == free
-r_if
-c_cond
-(paren
-id|pool-&gt;flags
-op_amp
-id|SLAB_POISON
-)paren
+macro_line|#ifdef&t;CONFIG_DEBUG_SLAB
 id|memset
 (paren
 id|page-&gt;vaddr
@@ -7043,6 +7010,7 @@ comma
 id|pool-&gt;allocation
 )paren
 suffix:semicolon
+macro_line|#endif
 id|list_add
 (paren
 op_amp
@@ -7135,13 +7103,7 @@ id|dma
 op_assign
 id|page-&gt;dma
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|pool-&gt;flags
-op_amp
-id|SLAB_POISON
-)paren
+macro_line|#ifdef&t;CONFIG_DEBUG_SLAB
 id|memset
 (paren
 id|page-&gt;vaddr
@@ -7151,6 +7113,7 @@ comma
 id|pool-&gt;allocation
 )paren
 suffix:semicolon
+macro_line|#endif
 id|pci_free_consistent
 (paren
 id|pool-&gt;dev
@@ -7189,23 +7152,6 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-macro_line|#ifdef CONFIG_PCIPOOL_DEBUG
-id|printk
-(paren
-id|KERN_DEBUG
-l_string|&quot;pcipool destroy %s/%s&bslash;n&quot;
-comma
-id|pool-&gt;dev
-ques
-c_cond
-id|pool-&gt;dev-&gt;slot_name
-suffix:colon
-l_int|NULL
-comma
-id|pool-&gt;name
-)paren
-suffix:semicolon
-macro_line|#endif
 id|spin_lock_irqsave
 (paren
 op_amp
@@ -7775,7 +7721,27 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-macro_line|#ifdef&t;CONFIG_PCIPOOL_DEBUG
+id|block
+op_assign
+id|dma
+op_minus
+id|page-&gt;dma
+suffix:semicolon
+id|block
+op_div_assign
+id|pool-&gt;size
+suffix:semicolon
+id|map
+op_assign
+id|block
+op_div
+id|BITS_PER_LONG
+suffix:semicolon
+id|block
+op_mod_assign
+id|BITS_PER_LONG
+suffix:semicolon
+macro_line|#ifdef&t;CONFIG_DEBUG_SLAB
 r_if
 c_cond
 (paren
@@ -7822,28 +7788,6 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-macro_line|#endif
-id|block
-op_assign
-id|dma
-op_minus
-id|page-&gt;dma
-suffix:semicolon
-id|block
-op_div_assign
-id|pool-&gt;size
-suffix:semicolon
-id|map
-op_assign
-id|block
-op_div
-id|BITS_PER_LONG
-suffix:semicolon
-id|block
-op_mod_assign
-id|BITS_PER_LONG
-suffix:semicolon
-macro_line|#ifdef&t;CONFIG_PCIPOOL_DEBUG
 r_if
 c_cond
 (paren
@@ -7879,14 +7823,6 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-macro_line|#endif
-r_if
-c_cond
-(paren
-id|pool-&gt;flags
-op_amp
-id|SLAB_POISON
-)paren
 id|memset
 (paren
 id|vaddr
@@ -7896,6 +7832,7 @@ comma
 id|pool-&gt;size
 )paren
 suffix:semicolon
+macro_line|#endif
 id|spin_lock_irqsave
 (paren
 op_amp
@@ -8225,13 +8162,6 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|pci_clear_mwi
-)paren
-suffix:semicolon
-DECL|variable|pdev_set_mwi
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|pdev_set_mwi
 )paren
 suffix:semicolon
 DECL|variable|pci_set_dma_mask

@@ -1,5 +1,5 @@
-multiline_comment|/*******************************************************************************&n; *&n; * Module Name: dbfileio - Debugger file I/O commands.  These can&squot;t usually&n; *              be used when running the debugger in Ring 0 (Kernel mode)&n; *              $Revision: 53 $&n; *&n; ******************************************************************************/
-multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/*******************************************************************************&n; *&n; * Module Name: dbfileio - Debugger file I/O commands.  These can&squot;t usually&n; *              be used when running the debugger in Ring 0 (Kernel mode)&n; *              $Revision: 59 $&n; *&n; ******************************************************************************/
+multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acdebug.h&quot;
 macro_line|#include &quot;acnamesp.h&quot;
@@ -9,7 +9,7 @@ macro_line|#include &quot;actables.h&quot;
 macro_line|#ifdef ENABLE_DEBUGGER
 DECL|macro|_COMPONENT
 mdefine_line|#define _COMPONENT          ACPI_DEBUGGER
-id|MODULE_NAME
+id|ACPI_MODULE_NAME
 (paren
 l_string|&quot;dbfileio&quot;
 )paren
@@ -32,7 +32,7 @@ op_assign
 l_int|NULL
 suffix:semicolon
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_db_match_argument&n; *&n; * PARAMETERS:  User_argument           - User command line&n; *              Arguments               - Array of commands to match against&n; *&n; * RETURN:      Index into command array or ACPI_TYPE_NOT_FOUND if not found&n; *&n; * DESCRIPTION: Search command array for a command match&n; *&n; ******************************************************************************/
-id|acpi_object_type8
+id|acpi_object_type
 DECL|function|acpi_db_match_argument
 id|acpi_db_match_argument
 (paren
@@ -89,7 +89,7 @@ op_increment
 r_if
 c_cond
 (paren
-id|STRSTR
+id|ACPI_STRSTR
 (paren
 id|arguments
 (braket
@@ -111,9 +111,6 @@ id|name
 (brace
 r_return
 (paren
-(paren
-id|acpi_object_type8
-)paren
 id|i
 )paren
 suffix:semicolon
@@ -201,7 +198,7 @@ comma
 id|name
 )paren
 suffix:semicolon
-id|STRCPY
+id|ACPI_STRCPY
 (paren
 id|acpi_gbl_db_debug_filename
 comma
@@ -340,7 +337,7 @@ multiline_comment|/* We only support a limited number of table types */
 r_if
 c_cond
 (paren
-id|STRNCMP
+id|ACPI_STRNCMP
 (paren
 (paren
 r_char
@@ -353,7 +350,7 @@ comma
 l_int|4
 )paren
 op_logical_and
-id|STRNCMP
+id|ACPI_STRNCMP
 (paren
 (paren
 r_char
@@ -366,7 +363,7 @@ comma
 l_int|4
 )paren
 op_logical_and
-id|STRNCMP
+id|ACPI_STRNCMP
 (paren
 (paren
 r_char
@@ -385,7 +382,7 @@ id|acpi_os_printf
 l_string|&quot;Table signature is invalid&bslash;n&quot;
 )paren
 suffix:semicolon
-id|DUMP_BUFFER
+id|ACPI_DUMP_BUFFER
 (paren
 op_amp
 id|table_header
@@ -468,7 +465,7 @@ id|table_header
 )paren
 suffix:semicolon
 multiline_comment|/* Copy the header to the buffer */
-id|MEMCPY
+id|ACPI_MEMCPY
 (paren
 op_star
 id|table_ptr
@@ -580,7 +577,7 @@ suffix:semicolon
 id|acpi_table_desc
 id|table_info
 suffix:semicolon
-id|FUNCTION_TRACE
+id|ACPI_FUNCTION_TRACE
 (paren
 l_string|&quot;Ae_local_load_table&quot;
 )paren
@@ -793,7 +790,7 @@ c_cond
 (paren
 id|status
 op_eq
-id|AE_EXIST
+id|AE_ALREADY_EXISTS
 )paren
 (brace
 id|acpi_os_printf
@@ -818,11 +815,6 @@ id|status
 )paren
 suffix:semicolon
 )brace
-id|acpi_os_free
-(paren
-id|acpi_gbl_db_table_ptr
-)paren
-suffix:semicolon
 r_return
 (paren
 id|status

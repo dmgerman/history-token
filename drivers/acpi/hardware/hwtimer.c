@@ -1,10 +1,10 @@
-multiline_comment|/******************************************************************************&n; *&n; * Name: hwtimer.c - ACPI Power Management Timer Interface&n; *              $Revision: 14 $&n; *&n; *****************************************************************************/
-multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/******************************************************************************&n; *&n; * Name: hwtimer.c - ACPI Power Management Timer Interface&n; *              $Revision: 19 $&n; *&n; *****************************************************************************/
+multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;achware.h&quot;
 DECL|macro|_COMPONENT
 mdefine_line|#define _COMPONENT          ACPI_HARDWARE
-id|MODULE_NAME
+id|ACPI_MODULE_NAME
 (paren
 l_string|&quot;hwtimer&quot;
 )paren
@@ -18,7 +18,7 @@ op_star
 id|resolution
 )paren
 (brace
-id|FUNCTION_TRACE
+id|ACPI_FUNCTION_TRACE
 (paren
 l_string|&quot;Acpi_get_timer_resolution&quot;
 )paren
@@ -74,7 +74,7 @@ op_star
 id|ticks
 )paren
 (brace
-id|FUNCTION_TRACE
+id|ACPI_FUNCTION_TRACE
 (paren
 l_string|&quot;Acpi_get_timer&quot;
 )paren
@@ -134,27 +134,16 @@ id|delta_ticks
 op_assign
 l_int|0
 suffix:semicolon
-id|u32
-id|seconds
-op_assign
-l_int|0
+id|uint64_overlay
+id|normalized_ticks
 suffix:semicolon
-id|u32
-id|milliseconds
-op_assign
-l_int|0
+id|acpi_status
+id|status
 suffix:semicolon
-id|u32
-id|microseconds
-op_assign
-l_int|0
+id|acpi_integer
+id|out_quotient
 suffix:semicolon
-id|u32
-id|remainder
-op_assign
-l_int|0
-suffix:semicolon
-id|FUNCTION_TRACE
+id|ACPI_FUNCTION_TRACE
 (paren
 l_string|&quot;Acpi_get_timer_duration&quot;
 )paren
@@ -197,7 +186,6 @@ OG
 id|end_ticks
 )paren
 (brace
-multiline_comment|/* 24-bit Timer */
 r_if
 c_cond
 (paren
@@ -206,6 +194,7 @@ op_eq
 id|acpi_gbl_FADT-&gt;tmr_val_ext
 )paren
 (brace
+multiline_comment|/* 24-bit Timer */
 id|delta_ticks
 op_assign
 (paren
@@ -223,9 +212,9 @@ l_int|0x00FFFFFF
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* 32-bit Timer */
 r_else
 (brace
+multiline_comment|/* 32-bit Timer */
 id|delta_ticks
 op_assign
 (paren
@@ -251,75 +240,44 @@ id|AE_OK
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * Compute Duration:&n;&t; * -----------------&n;&t; * Since certain compilers (gcc/Linux, argh!) don&squot;t support 64-bit&n;&t; * divides in kernel-space we have to do some trickery to preserve&n;&t; * accuracy while using 32-bit math.&n;&t; *&n;&t; * TBD: Change to use 64-bit math when supported.&n;&t; *&n;&t; * The process is as follows:&n;&t; *  1. Compute the number of seconds by dividing Delta Ticks by&n;&t; *     the timer frequency.&n;&t; *  2. Compute the number of milliseconds in the remainder from step #1&n;&t; *     by multiplying by 1000 and then dividing by the timer frequency.&n;&t; *  3. Compute the number of microseconds in the remainder from step #2&n;&t; *     by multiplying by 1000 and then dividing by the timer frequency.&n;&t; *  4. Add the results from steps 1, 2, and 3 to get the total duration.&n;&t; *&n;&t; * Example: The time elapsed for Delta_ticks = 0xFFFFFFFF should be&n;&t; *          1199864031 microseconds.  This is computed as follows:&n;&t; *          Step #1: Seconds = 1199; Remainder = 3092840&n;&t; *          Step #2: Milliseconds = 864; Remainder = 113120&n;&t; *          Step #3: Microseconds = 31; Remainder = &lt;don&squot;t care!&gt;&n;&t; */
-multiline_comment|/* Step #1 */
-id|seconds
+multiline_comment|/*&n;&t; * Compute Duration:&n;&t; * -----------------&n;&t; *&n;&t; * Requires a 64-bit divide:&n;&t; *&n;&t; * Time_elapsed = (Delta_ticks * 1000000) / PM_TIMER_FREQUENCY;&n;&t; */
+id|normalized_ticks.full
 op_assign
+(paren
+(paren
+id|u64
+)paren
 id|delta_ticks
-op_div
-id|PM_TIMER_FREQUENCY
-suffix:semicolon
-id|remainder
-op_assign
-id|delta_ticks
-op_mod
-id|PM_TIMER_FREQUENCY
-suffix:semicolon
-multiline_comment|/* Step #2 */
-id|milliseconds
-op_assign
-(paren
-id|remainder
-op_star
-l_int|1000
 )paren
-op_div
-id|PM_TIMER_FREQUENCY
-suffix:semicolon
-id|remainder
-op_assign
-(paren
-id|remainder
-op_star
-l_int|1000
-)paren
-op_mod
-id|PM_TIMER_FREQUENCY
-suffix:semicolon
-multiline_comment|/* Step #3 */
-id|microseconds
-op_assign
-(paren
-id|remainder
-op_star
-l_int|1000
-)paren
-op_div
-id|PM_TIMER_FREQUENCY
-suffix:semicolon
-multiline_comment|/* Step #4 */
-op_star
-id|time_elapsed
-op_assign
-id|seconds
 op_star
 l_int|1000000
 suffix:semicolon
-op_star
-id|time_elapsed
-op_add_assign
-id|milliseconds
-op_star
-l_int|1000
+id|status
+op_assign
+id|acpi_ut_short_divide
+(paren
+op_amp
+id|normalized_ticks.full
+comma
+id|PM_TIMER_FREQUENCY
+comma
+op_amp
+id|out_quotient
+comma
+l_int|NULL
+)paren
 suffix:semicolon
 op_star
 id|time_elapsed
-op_add_assign
-id|microseconds
+op_assign
+(paren
+id|u32
+)paren
+id|out_quotient
 suffix:semicolon
 id|return_ACPI_STATUS
 (paren
-id|AE_OK
+id|status
 )paren
 suffix:semicolon
 )brace

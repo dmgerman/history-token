@@ -1806,15 +1806,11 @@ id|tsz
 suffix:semicolon
 )brace
 macro_line|#endif
-multiline_comment|/* fill the remainder of the buffer from kernel VM space */
+multiline_comment|/*&n;&t; * Fill the remainder of the buffer from kernel VM space.&n;&t; * We said in the ELF header that the data which starts&n;&t; * at &squot;elf_buflen&squot; is virtual address PAGE_OFFSET. --rmk&n;&t; */
 id|start
 op_assign
-(paren
-r_int
-r_int
-)paren
-id|__va
-c_func
+id|PAGE_OFFSET
+op_plus
 (paren
 op_star
 id|fpos

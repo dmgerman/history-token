@@ -1,36 +1,44 @@
 macro_line|#ifndef __UDF_DECL_H
 DECL|macro|__UDF_DECL_H
 mdefine_line|#define __UDF_DECL_H
-macro_line|#include &lt;linux/udf_167.h&gt;
-macro_line|#include &lt;linux/udf_udf.h&gt;
-macro_line|#include &quot;udfend.h&quot;
 macro_line|#include &lt;linux/udf_fs.h&gt;
-macro_line|#ifdef __KERNEL__
+macro_line|#include &quot;ecma_167.h&quot;
+macro_line|#include &quot;osta_udf.h&quot;
+macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
-macro_line|#include &lt;linux/fs.h&gt;
+macro_line|#include &lt;linux/udf_fs_i.h&gt;
+macro_line|#include &lt;linux/udf_fs_sb.h&gt;
+macro_line|#ifndef LINUX_VERSION_CODE
+macro_line|#include &lt;linux/version.h&gt;
+macro_line|#endif
 macro_line|#if !defined(CONFIG_UDF_FS) &amp;&amp; !defined(CONFIG_UDF_FS_MODULE)
 DECL|macro|CONFIG_UDF_FS_MODULE
 mdefine_line|#define CONFIG_UDF_FS_MODULE
-macro_line|#include &lt;linux/udf_fs_sb.h&gt;
-macro_line|#include &lt;linux/udf_fs_i.h&gt;
 macro_line|#endif
+macro_line|#include &quot;udfend.h&quot;
 DECL|macro|udf_fixed_to_variable
 mdefine_line|#define udf_fixed_to_variable(x) ( ( ( (x) &gt;&gt; 5 ) * 39 ) + ( (x) &amp; 0x0000001F ) )
 DECL|macro|udf_variable_to_fixed
 mdefine_line|#define udf_variable_to_fixed(x) ( ( ( (x) / 39 ) &lt;&lt; 5 ) + ( (x) % 39 ) )
+DECL|macro|UDF_EXTENT_LENGTH_MASK
+mdefine_line|#define UDF_EXTENT_LENGTH_MASK&t;0x3FFFFFFF
+DECL|macro|UDF_EXTENT_FLAG_MASK
+mdefine_line|#define UDF_EXTENT_FLAG_MASK&t;0xC0000000
+DECL|macro|UDF_NAME_PAD
+mdefine_line|#define UDF_NAME_PAD&t;&t;4
+DECL|macro|UDF_NAME_LEN
+mdefine_line|#define UDF_NAME_LEN&t;&t;255
+DECL|macro|UDF_PATH_LEN
+mdefine_line|#define UDF_PATH_LEN&t;&t;1023
 DECL|macro|CURRENT_UTIME
 mdefine_line|#define CURRENT_UTIME&t;(xtime.tv_usec)
 DECL|macro|udf_file_entry_alloc_offset
-mdefine_line|#define udf_file_entry_alloc_offset(inode)&bslash;&n;&t;((UDF_I_EXTENDED_FE(inode) ?&bslash;&n;&t;&t;sizeof(struct ExtendedFileEntry) :&bslash;&n;&t;&t;sizeof(struct FileEntry)) + UDF_I_LENEATTR(inode))
+mdefine_line|#define udf_file_entry_alloc_offset(inode)&bslash;&n;&t;((UDF_I_EXTENDED_FE(inode) ?&bslash;&n;&t;&t;sizeof(struct extendedFileEntry) :&bslash;&n;&t;&t;sizeof(struct fileEntry)) + UDF_I_LENEATTR(inode))
 DECL|macro|udf_ext0_offset
-mdefine_line|#define udf_ext0_offset(inode)&bslash;&n;&t;(UDF_I_ALLOCTYPE(inode) == ICB_FLAG_AD_IN_ICB ?&bslash;&n;&t;&t;udf_file_entry_alloc_offset(inode) : 0)
+mdefine_line|#define udf_ext0_offset(inode)&bslash;&n;&t;(UDF_I_ALLOCTYPE(inode) == ICBTAG_FLAG_AD_IN_ICB ?&bslash;&n;&t;&t;udf_file_entry_alloc_offset(inode) : 0)
 DECL|macro|udf_get_lb_pblock
 mdefine_line|#define udf_get_lb_pblock(sb,loc,offset) udf_get_pblock((sb), (loc).logicalBlockNum, (loc).partitionReferenceNum, (offset))
-macro_line|#else
-macro_line|#include &lt;sys/types.h&gt;
-macro_line|#endif /* __KERNEL__ */
-macro_line|#ifdef __KERNEL__
 r_struct
 id|dentry
 suffix:semicolon
@@ -107,21 +115,20 @@ id|eoffset
 suffix:semicolon
 )brace
 suffix:semicolon
-macro_line|#endif /* __KERNEL__ */
 DECL|struct|udf_directory_record
 r_struct
 id|udf_directory_record
 (brace
 DECL|member|d_parent
-id|Uint32
+r_uint32
 id|d_parent
 suffix:semicolon
 DECL|member|d_inode
-id|Uint32
+r_uint32
 id|d_inode
 suffix:semicolon
 DECL|member|d_name
-id|Uint32
+r_uint32
 id|d_name
 (braket
 l_int|255
@@ -134,46 +141,26 @@ r_struct
 id|udf_vds_record
 (brace
 DECL|member|block
-id|Uint32
+r_uint32
 id|block
 suffix:semicolon
 DECL|member|volDescSeqNum
-id|Uint32
+r_uint32
 id|volDescSeqNum
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|struct|ktm
+DECL|struct|generic_desc
 r_struct
-id|ktm
+id|generic_desc
 (brace
-DECL|member|tm_sec
-r_int
-id|tm_sec
+DECL|member|descTag
+id|tag
+id|descTag
 suffix:semicolon
-DECL|member|tm_min
-r_int
-id|tm_min
-suffix:semicolon
-DECL|member|tm_hour
-r_int
-id|tm_hour
-suffix:semicolon
-DECL|member|tm_mday
-r_int
-id|tm_mday
-suffix:semicolon
-DECL|member|tm_mon
-r_int
-id|tm_mon
-suffix:semicolon
-DECL|member|tm_year
-r_int
-id|tm_year
-suffix:semicolon
-DECL|member|tm_isdst
-r_int
-id|tm_isdst
+DECL|member|volDescSeqNum
+r_uint32
+id|volDescSeqNum
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -182,32 +169,22 @@ r_struct
 id|ustr
 (brace
 DECL|member|u_cmpID
-id|Uint8
+r_uint8
 id|u_cmpID
 suffix:semicolon
 DECL|member|u_name
-id|Uint8
+r_uint8
 id|u_name
 (braket
 id|UDF_NAME_LEN
 )braket
 suffix:semicolon
 DECL|member|u_len
-id|Uint8
+r_uint8
 id|u_len
-suffix:semicolon
-DECL|member|padding
-id|Uint8
-id|padding
-suffix:semicolon
-DECL|member|u_hash
-r_int
-r_int
-id|u_hash
 suffix:semicolon
 )brace
 suffix:semicolon
-macro_line|#ifdef __KERNEL__
 multiline_comment|/* super.c */
 r_extern
 r_void
@@ -265,21 +242,21 @@ op_star
 id|inode
 comma
 r_struct
-id|FileIdentDesc
+id|fileIdentDesc
 op_star
 comma
 r_struct
-id|FileIdentDesc
+id|fileIdentDesc
 op_star
 comma
 r_struct
 id|udf_fileident_bh
 op_star
 comma
-id|Uint8
+r_uint8
 op_star
 comma
-id|Uint8
+r_uint8
 op_star
 )paren
 suffix:semicolon
@@ -465,7 +442,7 @@ r_int
 )paren
 suffix:semicolon
 r_extern
-id|Sint8
+r_int8
 id|inode_bmap
 c_func
 (paren
@@ -478,16 +455,16 @@ comma
 id|lb_addr
 op_star
 comma
-id|Uint32
+r_uint32
 op_star
 comma
 id|lb_addr
 op_star
 comma
-id|Uint32
+r_uint32
 op_star
 comma
-id|Uint32
+r_uint32
 op_star
 comma
 r_struct
@@ -497,7 +474,7 @@ op_star
 )paren
 suffix:semicolon
 r_extern
-id|Sint8
+r_int8
 id|udf_add_aext
 c_func
 (paren
@@ -513,7 +490,7 @@ op_star
 comma
 id|lb_addr
 comma
-id|Uint32
+r_uint32
 comma
 r_struct
 id|buffer_head
@@ -524,7 +501,7 @@ r_int
 )paren
 suffix:semicolon
 r_extern
-id|Sint8
+r_int8
 id|udf_write_aext
 c_func
 (paren
@@ -539,7 +516,7 @@ op_star
 comma
 id|lb_addr
 comma
-id|Uint32
+r_uint32
 comma
 r_struct
 id|buffer_head
@@ -549,7 +526,7 @@ r_int
 )paren
 suffix:semicolon
 r_extern
-id|Sint8
+r_int8
 id|udf_insert_aext
 c_func
 (paren
@@ -563,7 +540,7 @@ r_int
 comma
 id|lb_addr
 comma
-id|Uint32
+r_uint32
 comma
 r_struct
 id|buffer_head
@@ -571,7 +548,7 @@ op_star
 )paren
 suffix:semicolon
 r_extern
-id|Sint8
+r_int8
 id|udf_delete_aext
 c_func
 (paren
@@ -585,7 +562,7 @@ r_int
 comma
 id|lb_addr
 comma
-id|Uint32
+r_uint32
 comma
 r_struct
 id|buffer_head
@@ -593,7 +570,7 @@ op_star
 )paren
 suffix:semicolon
 r_extern
-id|Sint8
+r_int8
 id|udf_next_aext
 c_func
 (paren
@@ -610,7 +587,7 @@ comma
 id|lb_addr
 op_star
 comma
-id|Uint32
+r_uint32
 op_star
 comma
 r_struct
@@ -622,7 +599,7 @@ r_int
 )paren
 suffix:semicolon
 r_extern
-id|Sint8
+r_int8
 id|udf_current_aext
 c_func
 (paren
@@ -639,7 +616,7 @@ comma
 id|lb_addr
 op_star
 comma
-id|Uint32
+r_uint32
 op_star
 comma
 r_struct
@@ -712,7 +689,7 @@ r_int
 suffix:semicolon
 r_extern
 r_struct
-id|GenericAttrFormat
+id|genericFormat
 op_star
 id|udf_add_extendedattr
 c_func
@@ -721,11 +698,11 @@ r_struct
 id|inode
 op_star
 comma
-id|Uint32
+r_uint32
 comma
-id|Uint32
+r_uint32
 comma
-id|Uint8
+r_uint8
 comma
 r_struct
 id|buffer_head
@@ -735,7 +712,7 @@ op_star
 suffix:semicolon
 r_extern
 r_struct
-id|GenericAttrFormat
+id|genericFormat
 op_star
 id|udf_get_extendedattr
 c_func
@@ -744,9 +721,9 @@ r_struct
 id|inode
 op_star
 comma
-id|Uint32
+r_uint32
 comma
-id|Uint8
+r_uint8
 comma
 r_struct
 id|buffer_head
@@ -765,11 +742,11 @@ r_struct
 id|super_block
 op_star
 comma
-id|Uint32
+r_uint32
 comma
-id|Uint32
+r_uint32
 comma
-id|Uint16
+r_uint16
 op_star
 )paren
 suffix:semicolon
@@ -786,26 +763,10 @@ op_star
 comma
 id|lb_addr
 comma
-id|Uint32
+r_uint32
 comma
-id|Uint16
+r_uint16
 op_star
-)paren
-suffix:semicolon
-r_extern
-r_struct
-id|buffer_head
-op_star
-id|udf_read_untagged
-c_func
-(paren
-r_struct
-id|super_block
-op_star
-comma
-id|Uint32
-comma
-id|Uint32
 )paren
 suffix:semicolon
 r_extern
@@ -843,7 +804,7 @@ op_star
 suffix:semicolon
 multiline_comment|/* partition.c */
 r_extern
-id|Uint32
+r_uint32
 id|udf_get_pblock
 c_func
 (paren
@@ -851,15 +812,15 @@ r_struct
 id|super_block
 op_star
 comma
-id|Uint32
+r_uint32
 comma
-id|Uint16
+r_uint16
 comma
-id|Uint32
+r_uint32
 )paren
 suffix:semicolon
 r_extern
-id|Uint32
+r_uint32
 id|udf_get_pblock_virt15
 c_func
 (paren
@@ -867,15 +828,15 @@ r_struct
 id|super_block
 op_star
 comma
-id|Uint32
+r_uint32
 comma
-id|Uint16
+r_uint16
 comma
-id|Uint32
+r_uint32
 )paren
 suffix:semicolon
 r_extern
-id|Uint32
+r_uint32
 id|udf_get_pblock_virt20
 c_func
 (paren
@@ -883,15 +844,15 @@ r_struct
 id|super_block
 op_star
 comma
-id|Uint32
+r_uint32
 comma
-id|Uint16
+r_uint16
 comma
-id|Uint32
+r_uint32
 )paren
 suffix:semicolon
 r_extern
-id|Uint32
+r_uint32
 id|udf_get_pblock_spar15
 c_func
 (paren
@@ -899,11 +860,11 @@ r_struct
 id|super_block
 op_star
 comma
-id|Uint32
+r_uint32
 comma
-id|Uint16
+r_uint16
 comma
-id|Uint32
+r_uint32
 )paren
 suffix:semicolon
 r_extern
@@ -931,10 +892,10 @@ r_struct
 id|super_block
 op_star
 comma
-id|Uint8
+r_uint8
 op_star
 comma
-id|Uint8
+r_uint8
 op_star
 comma
 r_int
@@ -994,9 +955,9 @@ op_star
 comma
 id|lb_addr
 comma
-id|Uint32
+r_uint32
 comma
-id|Uint32
+r_uint32
 )paren
 suffix:semicolon
 r_extern
@@ -1012,11 +973,11 @@ r_struct
 id|inode
 op_star
 comma
-id|Uint16
+r_uint16
 comma
-id|Uint32
+r_uint32
 comma
-id|Uint32
+r_uint32
 )paren
 suffix:semicolon
 r_extern
@@ -1032,9 +993,9 @@ r_struct
 id|inode
 op_star
 comma
-id|Uint16
+r_uint16
 comma
-id|Uint32
+r_uint32
 comma
 r_int
 op_star
@@ -1071,7 +1032,7 @@ r_int
 suffix:semicolon
 multiline_comment|/* directory.c */
 r_extern
-id|Uint8
+r_uint8
 op_star
 id|udf_filead_read
 c_func
@@ -1080,10 +1041,10 @@ r_struct
 id|inode
 op_star
 comma
-id|Uint8
+r_uint8
 op_star
 comma
-id|Uint8
+r_uint8
 comma
 id|lb_addr
 comma
@@ -1104,7 +1065,7 @@ op_star
 suffix:semicolon
 r_extern
 r_struct
-id|FileIdentDesc
+id|fileIdentDesc
 op_star
 id|udf_fileident_read
 c_func
@@ -1121,22 +1082,22 @@ id|udf_fileident_bh
 op_star
 comma
 r_struct
-id|FileIdentDesc
+id|fileIdentDesc
 op_star
 comma
 id|lb_addr
 op_star
 comma
-id|Uint32
+r_uint32
 op_star
 comma
 id|lb_addr
 op_star
 comma
-id|Uint32
+r_uint32
 op_star
 comma
-id|Uint32
+r_uint32
 op_star
 comma
 r_struct
@@ -1145,15 +1106,13 @@ op_star
 op_star
 )paren
 suffix:semicolon
-macro_line|#endif /* __KERNEL__ */
-multiline_comment|/* Miscellaneous UDF Prototypes */
 multiline_comment|/* unicode.c */
 r_extern
 r_int
 id|udf_ustr_to_dchars
 c_func
 (paren
-id|Uint8
+r_uint8
 op_star
 comma
 r_const
@@ -1169,7 +1128,7 @@ r_int
 id|udf_ustr_to_char
 c_func
 (paren
-id|Uint8
+r_uint8
 op_star
 comma
 r_const
@@ -1206,7 +1165,7 @@ id|ustr
 op_star
 comma
 r_const
-id|Uint8
+r_uint8
 op_star
 comma
 r_int
@@ -1222,7 +1181,7 @@ id|ustr
 op_star
 comma
 r_const
-id|Uint8
+r_uint8
 op_star
 comma
 r_int
@@ -1249,15 +1208,15 @@ r_int
 id|udf_translate_to_linux
 c_func
 (paren
-id|Uint8
+r_uint8
 op_star
 comma
-id|Uint8
+r_uint8
 op_star
 comma
 r_int
 comma
-id|Uint8
+r_uint8
 op_star
 comma
 r_int
@@ -1322,7 +1281,6 @@ comma
 r_int
 )paren
 suffix:semicolon
-macro_line|#ifdef __KERNEL__
 r_extern
 r_int
 id|udf_CS0toNLS
@@ -1360,36 +1318,35 @@ comma
 r_int
 )paren
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/* crc.c */
 r_extern
-id|Uint16
+r_uint16
 id|udf_crc
 c_func
 (paren
-id|Uint8
+r_uint8
 op_star
 comma
-id|Uint32
+r_uint32
 comma
-id|Uint16
+r_uint16
 )paren
 suffix:semicolon
 multiline_comment|/* misc.c */
 r_extern
-id|Uint32
+r_uint32
 id|udf64_low32
 c_func
 (paren
-id|Uint64
+r_uint64
 )paren
 suffix:semicolon
 r_extern
-id|Uint32
+r_uint32
 id|udf64_high32
 c_func
 (paren
-id|Uint64
+r_uint64
 )paren
 suffix:semicolon
 r_extern
@@ -1411,13 +1368,13 @@ c_func
 r_char
 op_star
 comma
-id|Uint16
+r_uint16
 comma
-id|Uint16
+r_uint16
 comma
-id|Uint16
+r_uint16
 comma
-id|Uint32
+r_uint32
 comma
 r_int
 )paren
@@ -1452,19 +1409,10 @@ comma
 r_int
 )paren
 suffix:semicolon
-r_extern
-id|time_t
-id|udf_converttime
-(paren
-r_struct
-id|ktm
-op_star
-)paren
-suffix:semicolon
 multiline_comment|/* directory.c */
 r_extern
 r_struct
-id|FileIdentDesc
+id|fileIdentDesc
 op_star
 id|udf_get_fileident
 c_func
@@ -1540,16 +1488,16 @@ r_int
 )paren
 suffix:semicolon
 r_extern
-id|Uint8
+r_uint8
 op_star
 id|udf_get_filead
 c_func
 (paren
 r_struct
-id|FileEntry
+id|fileEntry
 op_star
 comma
-id|Uint8
+r_uint8
 op_star
 comma
 r_int

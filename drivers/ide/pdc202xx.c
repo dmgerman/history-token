@@ -15,7 +15,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/ide.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
-macro_line|#include &quot;ide_modes.h&quot;
+macro_line|#include &quot;ata-timing.h&quot;
 DECL|macro|PDC202XX_DEBUG_DRIVE_INFO
 mdefine_line|#define PDC202XX_DEBUG_DRIVE_INFO&t;&t;0
 DECL|macro|PDC202XX_DECODE_REGISTER_INFO
@@ -4361,33 +4361,38 @@ id|speed
 op_assign
 l_int|0x00
 suffix:semicolon
-id|pio
-op_assign
+r_if
+c_cond
 (paren
 id|pio
 op_eq
-l_int|5
+l_int|255
 )paren
-ques
-c_cond
-l_int|4
-suffix:colon
-id|pio
-suffix:semicolon
 id|speed
 op_assign
-id|XFER_PIO_0
-op_plus
-id|ide_get_best_pio_mode
+id|ata_timing_mode
 c_func
 (paren
 id|drive
 comma
-l_int|255
+id|XFER_PIO
+op_or
+id|XFER_EPIO
+)paren
+suffix:semicolon
+r_else
+id|speed
+op_assign
+id|XFER_PIO_0
+op_plus
+id|min_t
+c_func
+(paren
+id|byte
 comma
 id|pio
 comma
-l_int|NULL
+l_int|4
 )paren
 suffix:semicolon
 r_return

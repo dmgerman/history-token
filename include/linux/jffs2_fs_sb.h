@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: jffs2_fs_sb.h,v 1.25 2002/03/08 15:11:24 dwmw2 Exp $ */
+multiline_comment|/* $Id: jffs2_fs_sb.h,v 1.26 2002/03/17 10:18:42 dwmw2 Exp $ */
 macro_line|#ifndef _JFFS2_FS_SB
 DECL|macro|_JFFS2_FS_SB
 mdefine_line|#define _JFFS2_FS_SB
@@ -233,6 +233,12 @@ suffix:semicolon
 DECL|member|wbuf_pagesize
 r_uint32
 id|wbuf_pagesize
+suffix:semicolon
+multiline_comment|/* OS-private pointer for getting back to master superblock info */
+DECL|member|os_priv
+r_void
+op_star
+id|os_priv
 suffix:semicolon
 )brace
 suffix:semicolon

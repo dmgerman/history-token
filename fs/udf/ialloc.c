@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * ialloc.c&n; *&n; * PURPOSE&n; *&t;Inode allocation handling routines for the OSTA-UDF(tm) filesystem.&n; *&n; * CONTACTS&n; *&t;E-mail regarding any portion of the Linux UDF file system should be&n; *&t;directed to the development team mailing list (run by majordomo):&n; *&t;&t;linux_udf@hpesjro.fc.hp.com&n; *&n; * COPYRIGHT&n; *&t;This file is distributed under the terms of the GNU General Public&n; *&t;License (GPL). Copies of the GPL can be obtained from:&n; *&t;&t;ftp://prep.ai.mit.edu/pub/gnu/GPL&n; *&t;Each contributing author retains all rights to their own work.&n; *&n; *  (C) 1998-2000 Ben Fennema&n; *&n; * HISTORY&n; *&n; *  02/24/99 blf  Created.&n; *&n; */
+multiline_comment|/*&n; * ialloc.c&n; *&n; * PURPOSE&n; *&t;Inode allocation handling routines for the OSTA-UDF(tm) filesystem.&n; *&n; * CONTACTS&n; *&t;E-mail regarding any portion of the Linux UDF file system should be&n; *&t;directed to the development team mailing list (run by majordomo):&n; *&t;&t;linux_udf@hpesjro.fc.hp.com&n; *&n; * COPYRIGHT&n; *&t;This file is distributed under the terms of the GNU General Public&n; *&t;License (GPL). Copies of the GPL can be obtained from:&n; *&t;&t;ftp://prep.ai.mit.edu/pub/gnu/GPL&n; *&t;Each contributing author retains all rights to their own work.&n; *&n; *  (C) 1998-2001 Ben Fennema&n; *&n; * HISTORY&n; *&n; *  02/24/99 blf  Created.&n; *&n; */
 macro_line|#include &quot;udfdecl.h&quot;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/locks.h&gt;
@@ -204,7 +204,7 @@ suffix:semicolon
 r_int
 id|block
 suffix:semicolon
-id|Uint32
+r_uint32
 id|start
 op_assign
 id|UDF_I_LOCATION
@@ -346,18 +346,18 @@ id|sb
 )paren
 (brace
 r_struct
-id|LogicalVolHeaderDesc
+id|logicalVolHeaderDesc
 op_star
 id|lvhd
 suffix:semicolon
-id|Uint64
+r_uint64
 id|uniqueID
 suffix:semicolon
 id|lvhd
 op_assign
 (paren
 r_struct
-id|LogicalVolHeaderDesc
+id|logicalVolHeaderDesc
 op_star
 )paren
 (paren
@@ -640,7 +640,7 @@ c_func
 id|inode
 )paren
 op_assign
-id|ICB_FLAG_AD_IN_ICB
+id|ICBTAG_FLAG_AD_IN_ICB
 suffix:semicolon
 r_else
 r_if
@@ -660,7 +660,7 @@ c_func
 id|inode
 )paren
 op_assign
-id|ICB_FLAG_AD_SHORT
+id|ICBTAG_FLAG_AD_SHORT
 suffix:semicolon
 r_else
 id|UDF_I_ALLOCTYPE
@@ -669,7 +669,7 @@ c_func
 id|inode
 )paren
 op_assign
-id|ICB_FLAG_AD_LONG
+id|ICBTAG_FLAG_AD_LONG
 suffix:semicolon
 id|inode-&gt;i_mtime
 op_assign

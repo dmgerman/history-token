@@ -265,6 +265,10 @@ comma
 id|second
 suffix:semicolon
 multiline_comment|/* sound carrier */
+DECL|member|input
+r_int
+id|input
+suffix:semicolon
 DECL|member|muted
 r_int
 id|muted
@@ -2507,6 +2511,33 @@ r_int
 id|mode
 )paren
 (brace
+r_static
+r_char
+op_star
+id|strmode
+(braket
+)braket
+op_assign
+(brace
+l_string|&quot;0&quot;
+comma
+l_string|&quot;mono&quot;
+comma
+l_string|&quot;stereo&quot;
+comma
+l_string|&quot;3&quot;
+comma
+l_string|&quot;lang1&quot;
+comma
+l_string|&quot;5&quot;
+comma
+l_string|&quot;6&quot;
+comma
+l_string|&quot;7&quot;
+comma
+l_string|&quot;lang2&quot;
+)brace
+suffix:semicolon
 r_struct
 id|msp3400c
 op_star
@@ -2538,9 +2569,12 @@ suffix:colon
 id|dprintk
 c_func
 (paren
-l_string|&quot;msp3400: FM setstereo: %d&bslash;n&quot;
+l_string|&quot;msp3400: FM setstereo: %s&bslash;n&quot;
 comma
+id|strmode
+(braket
 id|mode
+)braket
 )paren
 suffix:semicolon
 id|msp3400c_setcarrier
@@ -2608,9 +2642,12 @@ suffix:colon
 id|dprintk
 c_func
 (paren
-l_string|&quot;msp3400: SAT setstereo: %d&bslash;n&quot;
+l_string|&quot;msp3400: SAT setstereo: %s&bslash;n&quot;
 comma
+id|strmode
+(braket
 id|mode
+)braket
 )paren
 suffix:semicolon
 r_switch
@@ -2726,9 +2763,12 @@ suffix:colon
 id|dprintk
 c_func
 (paren
-l_string|&quot;msp3400: NICAM setstereo: %d&bslash;n&quot;
+l_string|&quot;msp3400: NICAM setstereo: %s&bslash;n&quot;
 comma
+id|strmode
+(braket
 id|mode
+)braket
 )paren
 suffix:semicolon
 id|msp3400c_setcarrier
@@ -2758,9 +2798,12 @@ suffix:colon
 id|dprintk
 c_func
 (paren
-l_string|&quot;msp3400: BTSC setstereo: %d&bslash;n&quot;
+l_string|&quot;msp3400: BTSC setstereo: %s&bslash;n&quot;
 comma
+id|strmode
+(braket
 id|mode
+)braket
 )paren
 suffix:semicolon
 id|nicam
@@ -2775,9 +2818,12 @@ suffix:colon
 id|dprintk
 c_func
 (paren
-l_string|&quot;msp3400: extern setstereo: %d&bslash;n&quot;
+l_string|&quot;msp3400: extern setstereo: %s&bslash;n&quot;
 comma
+id|strmode
+(braket
 id|mode
+)braket
 )paren
 suffix:semicolon
 id|nicam
@@ -2792,9 +2838,12 @@ suffix:colon
 id|dprintk
 c_func
 (paren
-l_string|&quot;msp3400: FM-Radio setstereo: %d&bslash;n&quot;
+l_string|&quot;msp3400: FM-Radio setstereo: %s&bslash;n&quot;
 comma
+id|strmode
+(braket
 id|mode
+)braket
 )paren
 suffix:semicolon
 r_break
@@ -3349,7 +3398,7 @@ c_cond
 (paren
 id|val
 OG
-l_int|32768
+l_int|32767
 )paren
 id|val
 op_sub_assign
@@ -4253,7 +4302,7 @@ c_cond
 (paren
 id|val
 OG
-l_int|32768
+l_int|32767
 )paren
 id|val
 op_sub_assign
@@ -4464,7 +4513,7 @@ c_cond
 (paren
 id|val
 OG
-l_int|32768
+l_int|32767
 )paren
 id|val
 op_sub_assign
@@ -6428,6 +6477,10 @@ id|name
 suffix:colon
 l_string|&quot;(unset)&quot;
 comma
+id|flags
+suffix:colon
+id|I2C_CLIENT_ALLOW_USE
+comma
 id|driver
 suffix:colon
 op_amp
@@ -6615,6 +6668,11 @@ suffix:semicolon
 id|msp-&gt;treble
 op_assign
 l_int|32768
+suffix:semicolon
+id|msp-&gt;input
+op_assign
+op_minus
+l_int|1
 suffix:semicolon
 r_for
 c_loop
@@ -7309,6 +7367,21 @@ op_star
 id|sarg
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_star
+id|sarg
+op_eq
+id|msp-&gt;input
+)paren
+r_break
+suffix:semicolon
+id|msp-&gt;input
+op_assign
+op_star
+id|sarg
+suffix:semicolon
 r_switch
 c_cond
 (paren
@@ -7457,6 +7530,13 @@ suffix:semicolon
 r_case
 id|AUDC_SET_RADIO
 suffix:colon
+id|dprintk
+c_func
+(paren
+id|KERN_DEBUG
+l_string|&quot;msp34xx: AUDC_SET_RADIO&bslash;n&quot;
+)paren
+suffix:semicolon
 id|msp-&gt;norm
 op_assign
 id|VIDEO_MODE_RADIO
@@ -7691,6 +7771,13 @@ id|va
 op_assign
 id|arg
 suffix:semicolon
+id|dprintk
+c_func
+(paren
+id|KERN_DEBUG
+l_string|&quot;msp34xx: VIDIOCGAUDIO&bslash;n&quot;
+)paren
+suffix:semicolon
 id|va-&gt;flags
 op_or_assign
 id|VIDEO_AUDIO_VOLUME
@@ -7811,6 +7898,13 @@ op_star
 id|va
 op_assign
 id|arg
+suffix:semicolon
+id|dprintk
+c_func
+(paren
+id|KERN_DEBUG
+l_string|&quot;msp34xx: VIDIOCSAUDIO&bslash;n&quot;
+)paren
 suffix:semicolon
 id|msp-&gt;muted
 op_assign
@@ -7939,6 +8033,13 @@ suffix:semicolon
 id|dprintk
 c_func
 (paren
+id|KERN_DEBUG
+l_string|&quot;msp34xx: VIDIOCSCHAN&bslash;n&quot;
+)paren
+suffix:semicolon
+id|dprintk
+c_func
+(paren
 l_string|&quot;msp34xx: switching to TV mode&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -7954,6 +8055,13 @@ id|VIDIOCSFREQ
 suffix:colon
 (brace
 multiline_comment|/* new channel -- kick audio carrier scan */
+id|dprintk
+c_func
+(paren
+id|KERN_DEBUG
+l_string|&quot;msp34xx: VIDIOCSFREQ&bslash;n&quot;
+)paren
+suffix:semicolon
 id|msp_wake_thread
 c_func
 (paren
@@ -7975,6 +8083,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* ----------------------------------------------------------------------- */
 DECL|function|msp3400_init_module
+r_static
 r_int
 id|msp3400_init_module
 c_func
@@ -7994,6 +8103,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|msp3400_cleanup_module
+r_static
 r_void
 id|msp3400_cleanup_module
 c_func

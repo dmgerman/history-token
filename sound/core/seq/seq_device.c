@@ -126,8 +126,6 @@ DECL|variable|num_ops
 r_static
 r_int
 id|num_ops
-op_assign
-l_int|0
 suffix:semicolon
 r_static
 id|DECLARE_MUTEX

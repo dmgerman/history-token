@@ -1,12 +1,12 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: nsinit - namespace initialization&n; *              $Revision: 33 $&n; *&n; *****************************************************************************/
-multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: nsinit - namespace initialization&n; *              $Revision: 41 $&n; *&n; *****************************************************************************/
+multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acnamesp.h&quot;
 macro_line|#include &quot;acdispat.h&quot;
 macro_line|#include &quot;acinterp.h&quot;
 DECL|macro|_COMPONENT
 mdefine_line|#define _COMPONENT          ACPI_NAMESPACE
-id|MODULE_NAME
+id|ACPI_MODULE_NAME
 (paren
 l_string|&quot;nsinit&quot;
 )paren
@@ -24,7 +24,7 @@ suffix:semicolon
 id|acpi_init_walk_info
 id|info
 suffix:semicolon
-id|FUNCTION_TRACE
+id|ACPI_FUNCTION_TRACE
 (paren
 l_string|&quot;Ns_initialize_objects&quot;
 )paren
@@ -168,7 +168,7 @@ suffix:semicolon
 id|acpi_device_walk_info
 id|info
 suffix:semicolon
-id|FUNCTION_TRACE
+id|ACPI_FUNCTION_TRACE
 (paren
 l_string|&quot;Ns_initialize_devices&quot;
 )paren
@@ -277,7 +277,7 @@ op_star
 id|return_value
 )paren
 (brace
-id|acpi_object_type8
+id|acpi_object_type
 id|type
 suffix:semicolon
 id|acpi_status
@@ -307,7 +307,7 @@ id|acpi_operand_object
 op_star
 id|obj_desc
 suffix:semicolon
-id|PROC_NAME
+id|ACPI_FUNCTION_NAME
 (paren
 l_string|&quot;Ns_init_one_object&quot;
 )paren
@@ -325,7 +325,10 @@ id|obj_handle
 suffix:semicolon
 id|obj_desc
 op_assign
-id|node-&gt;object
+id|acpi_ns_get_attached_object
+(paren
+id|node
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -627,7 +630,7 @@ op_star
 )paren
 id|context
 suffix:semicolon
-id|FUNCTION_TRACE
+id|ACPI_FUNCTION_TRACE
 (paren
 l_string|&quot;Ns_init_one_device&quot;
 )paren
@@ -656,11 +659,28 @@ suffix:semicolon
 id|info-&gt;device_count
 op_increment
 suffix:semicolon
+id|status
+op_assign
 id|acpi_ut_acquire_mutex
 (paren
 id|ACPI_MTX_NAMESPACE
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|ACPI_FAILURE
+(paren
+id|status
+)paren
+)paren
+(brace
+id|return_ACPI_STATUS
+(paren
+id|status
+)paren
+suffix:semicolon
+)brace
 id|node
 op_assign
 id|acpi_ns_map_handle_to_node
@@ -675,24 +695,44 @@ op_logical_neg
 id|node
 )paren
 (brace
+(paren
+r_void
+)paren
 id|acpi_ut_release_mutex
 (paren
 id|ACPI_MTX_NAMESPACE
 )paren
 suffix:semicolon
-r_return
+id|return_ACPI_STATUS
 (paren
 id|AE_BAD_PARAMETER
 )paren
 suffix:semicolon
 )brace
+id|status
+op_assign
 id|acpi_ut_release_mutex
 (paren
 id|ACPI_MTX_NAMESPACE
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|ACPI_FAILURE
+(paren
+id|status
+)paren
+)paren
+(brace
+id|return_ACPI_STATUS
+(paren
+id|status
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/*&n;&t; * Run _STA to determine if we can run _INI on the device.&n;&t; */
-id|DEBUG_EXEC
+id|ACPI_DEBUG_EXEC
 (paren
 id|acpi_ut_display_init_pathname
 (paren
@@ -751,7 +791,7 @@ id|AE_CTRL_DEPTH
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * The device is present. Run _INI.&n;&t; */
-id|DEBUG_EXEC
+id|ACPI_DEBUG_EXEC
 (paren
 id|acpi_ut_display_init_pathname
 (paren
@@ -804,7 +844,7 @@ id|NATIVE_CHAR
 op_star
 id|scope_name
 op_assign
-id|acpi_ns_get_table_pathname
+id|acpi_ns_get_external_pathname
 (paren
 id|obj_handle
 )paren

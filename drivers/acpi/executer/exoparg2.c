@@ -1,5 +1,5 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: exoparg2 - AML execution - opcodes with 2 arguments&n; *              $Revision: 97 $&n; *&n; *****************************************************************************/
-multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: exoparg2 - AML execution - opcodes with 2 arguments&n; *              $Revision: 104 $&n; *&n; *****************************************************************************/
+multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acparser.h&quot;
 macro_line|#include &quot;acnamesp.h&quot;
@@ -9,7 +9,7 @@ macro_line|#include &quot;amlcode.h&quot;
 macro_line|#include &quot;acdispat.h&quot;
 DECL|macro|_COMPONENT
 mdefine_line|#define _COMPONENT          ACPI_EXECUTER
-id|MODULE_NAME
+id|ACPI_MODULE_NAME
 (paren
 l_string|&quot;exoparg2&quot;
 )paren
@@ -44,7 +44,7 @@ id|status
 op_assign
 id|AE_OK
 suffix:semicolon
-id|FUNCTION_TRACE_STR
+id|ACPI_FUNCTION_TRACE_STR
 (paren
 l_string|&quot;Ex_opcode_2A_0T_0R&quot;
 comma
@@ -77,19 +77,7 @@ id|operand
 l_int|0
 )braket
 suffix:semicolon
-multiline_comment|/* The node must refer to a device or thermal zone */
-r_if
-c_cond
-(paren
-id|node
-op_logical_and
-id|operand
-(braket
-l_int|1
-)braket
-)paren
-multiline_comment|/* TBD: is this check necessary? */
-(brace
+multiline_comment|/* The node must refer to a device or thermal zone or processor */
 r_switch
 c_cond
 (paren
@@ -102,7 +90,10 @@ suffix:colon
 r_case
 id|ACPI_TYPE_THERMAL
 suffix:colon
-multiline_comment|/*&n;&t;&t;&t;&t; * Dispatch the notify to the appropriate handler&n;&t;&t;&t;&t; * NOTE: the request is queued for execution after this method&n;&t;&t;&t;&t; * completes.  The notify handlers are NOT invoked synchronously&n;&t;&t;&t;&t; * from this thread -- because handlers may in turn run other&n;&t;&t;&t;&t; * control methods.&n;&t;&t;&t;&t; */
+r_case
+id|ACPI_TYPE_PROCESSOR
+suffix:colon
+multiline_comment|/*&n;&t;&t;&t; * Dispatch the notify to the appropriate handler&n;&t;&t;&t; * NOTE: the request is queued for execution after this method&n;&t;&t;&t; * completes.  The notify handlers are NOT invoked synchronously&n;&t;&t;&t; * from this thread -- because handlers may in turn run other&n;&t;&t;&t; * control methods.&n;&t;&t;&t; */
 id|status
 op_assign
 id|acpi_ev_queue_notify_request
@@ -142,12 +133,11 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-)brace
 r_break
 suffix:semicolon
 r_default
 suffix:colon
-id|REPORT_ERROR
+id|ACPI_REPORT_ERROR
 (paren
 (paren
 l_string|&quot;Acpi_ex_opcode_2A_0T_0R: Unknown opcode %X&bslash;n&quot;
@@ -203,7 +193,7 @@ suffix:semicolon
 id|acpi_status
 id|status
 suffix:semicolon
-id|FUNCTION_TRACE_STR
+id|ACPI_FUNCTION_TRACE_STR
 (paren
 l_string|&quot;Ex_opcode_2A_2T_1R&quot;
 comma
@@ -313,7 +303,7 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
-id|REPORT_ERROR
+id|ACPI_REPORT_ERROR
 (paren
 (paren
 l_string|&quot;Acpi_ex_opcode_2A_2T_1R: Unknown opcode %X&bslash;n&quot;
@@ -328,8 +318,6 @@ id|AE_AML_BAD_OPCODE
 suffix:semicolon
 r_goto
 id|cleanup
-suffix:semicolon
-r_break
 suffix:semicolon
 )brace
 multiline_comment|/* Store the results to the target reference operands */
@@ -461,7 +449,7 @@ id|status
 op_assign
 id|AE_OK
 suffix:semicolon
-id|FUNCTION_TRACE_STR
+id|ACPI_FUNCTION_TRACE_STR
 (paren
 l_string|&quot;Ex_opcode_2A_1T_1R&quot;
 comma
@@ -760,7 +748,23 @@ suffix:colon
 multiline_comment|/* Concatenate_res_template (Buffer, Buffer, Result) (ACPI 2.0) */
 id|status
 op_assign
-id|AE_NOT_IMPLEMENTED
+id|acpi_ex_concat_template
+(paren
+id|operand
+(braket
+l_int|0
+)braket
+comma
+id|operand
+(braket
+l_int|1
+)braket
+comma
+op_amp
+id|return_desc
+comma
+id|walk_state
+)paren
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -1027,11 +1031,9 @@ suffix:semicolon
 r_goto
 id|cleanup
 suffix:semicolon
-r_break
-suffix:semicolon
 r_default
 suffix:colon
-id|REPORT_ERROR
+id|ACPI_REPORT_ERROR
 (paren
 (paren
 l_string|&quot;Acpi_ex_opcode_2A_1T_1R: Unknown opcode %X&bslash;n&quot;
@@ -1152,7 +1154,7 @@ id|logical_result
 op_assign
 id|FALSE
 suffix:semicolon
-id|FUNCTION_TRACE_STR
+id|ACPI_FUNCTION_TRACE_STR
 (paren
 l_string|&quot;Ex_opcode_2A_0T_1R&quot;
 comma
@@ -1308,7 +1310,7 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
-id|REPORT_ERROR
+id|ACPI_REPORT_ERROR
 (paren
 (paren
 l_string|&quot;Acpi_ex_opcode_2A_0T_1R: Unknown opcode %X&bslash;n&quot;
@@ -1323,8 +1325,6 @@ id|AE_AML_BAD_OPCODE
 suffix:semicolon
 r_goto
 id|cleanup
-suffix:semicolon
-r_break
 suffix:semicolon
 )brace
 id|store_logical_result

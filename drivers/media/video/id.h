@@ -29,8 +29,13 @@ macro_line|#ifndef  I2C_DRIVERID_TDA7432
 DECL|macro|I2C_DRIVERID_TDA7432
 macro_line|# define I2C_DRIVERID_TDA7432 I2C_DRIVERID_EXP0+6
 macro_line|#endif
-macro_line|#ifndef  I2C_DRIVERID_TDA9874A
-DECL|macro|I2C_DRIVERID_TDA9874A
-macro_line|# define I2C_DRIVERID_TDA9874A I2C_DRIVERID_EXP0+7
+macro_line|#ifndef  I2C_DRIVERID_TDA9874
+DECL|macro|I2C_DRIVERID_TDA9874
+macro_line|# define I2C_DRIVERID_TDA9874 I2C_DRIVERID_EXP0+7
+macro_line|#endif
+multiline_comment|/* algorithms */
+macro_line|#ifndef I2C_ALGO_SAA7134
+DECL|macro|I2C_ALGO_SAA7134
+macro_line|# define I2C_ALGO_SAA7134 0x090000
 macro_line|#endif
 eof

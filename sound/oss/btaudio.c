@@ -1,4 +1,4 @@
-multiline_comment|/*&n;    btaudio - bt878 audio dma driver for linux 2.4.x&n;&n;    (c) 2000 Gerd Knorr &lt;kraxel@bytesex.org&gt;&n;&n;    This program is free software; you can redistribute it and/or modify&n;    it under the terms of the GNU General Public License as published by&n;    the Free Software Foundation; either version 2 of the License, or&n;    (at your option) any later version.&n;&n;    This program is distributed in the hope that it will be useful,&n;    but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;    GNU General Public License for more details.&n;&n;    You should have received a copy of the GNU General Public License&n;    along with this program; if not, write to the Free Software&n;    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n;&n;*/
+multiline_comment|/*&n;    btaudio - bt878 audio dma driver for linux 2.4.x&n;&n;    (c) 2000-2002 Gerd Knorr &lt;kraxel@bytesex.org&gt;&n;&n;    This program is free software; you can redistribute it and/or modify&n;    it under the terms of the GNU General Public License as published by&n;    the Free Software Foundation; either version 2 of the License, or&n;    (at your option) any later version.&n;&n;    This program is distributed in the hope that it will be useful,&n;    but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;    GNU General Public License for more details.&n;&n;    You should have received a copy of the GNU General Public License&n;    along with this program; if not, write to the Free Software&n;    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n;&n;*/
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
@@ -13,6 +13,7 @@ macro_line|#include &lt;linux/poll.h&gt;
 macro_line|#include &lt;linux/sound.h&gt;
 macro_line|#include &lt;linux/soundcard.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
+macro_line|#include &lt;linux/kdev_t.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 multiline_comment|/* mmio access */
@@ -313,6 +314,14 @@ r_int
 id|irq_debug
 op_assign
 l_int|0
+suffix:semicolon
+DECL|variable|latency
+r_static
+r_int
+id|latency
+op_assign
+op_minus
+l_int|1
 suffix:semicolon
 DECL|variable|digital
 r_static
@@ -3427,7 +3436,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|analog
+id|bta-&gt;analog
 )paren
 (brace
 r_if
@@ -3516,7 +3525,7 @@ multiline_comment|/* Returns a mask */
 r_if
 c_cond
 (paren
-id|analog
+id|bta-&gt;analog
 )paren
 r_return
 id|put_user
@@ -3581,7 +3590,7 @@ id|AFMT_QUERY
 r_if
 c_cond
 (paren
-id|analog
+id|bta-&gt;analog
 )paren
 id|bta-&gt;bits
 op_assign
@@ -3953,7 +3962,7 @@ r_if
 c_cond
 (paren
 l_int|0
-op_eq
+op_ne
 id|bta-&gt;read_count
 )paren
 id|mask
@@ -4420,7 +4429,7 @@ r_int
 r_char
 id|revision
 comma
-id|latency
+id|lat
 suffix:semicolon
 r_int
 id|rc
@@ -4487,6 +4496,22 @@ comma
 id|GFP_ATOMIC
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|bta
+)paren
+(brace
+id|rc
+op_assign
+op_minus
+id|ENOMEM
+suffix:semicolon
+r_goto
+id|fail0
+suffix:semicolon
+)brace
 id|memset
 c_func
 (paren
@@ -4589,6 +4614,35 @@ op_amp
 id|bta-&gt;readq
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_minus
+l_int|1
+op_ne
+id|latency
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;btaudio: setting pci latency timer to %d&bslash;n&quot;
+comma
+id|latency
+)paren
+suffix:semicolon
+id|pci_write_config_byte
+c_func
+(paren
+id|pci_dev
+comma
+id|PCI_LATENCY_TIMER
+comma
+id|latency
+)paren
+suffix:semicolon
+)brace
 id|pci_read_config_byte
 c_func
 (paren
@@ -4608,7 +4662,7 @@ comma
 id|PCI_LATENCY_TIMER
 comma
 op_amp
-id|latency
+id|lat
 )paren
 suffix:semicolon
 id|printk
@@ -4639,11 +4693,11 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;irq: %d, latency: %d, memory: 0x%lx&bslash;n&quot;
+l_string|&quot;irq: %d, latency: %d, mmio: 0x%lx&bslash;n&quot;
 comma
 id|bta-&gt;irq
 comma
-id|latency
+id|lat
 comma
 id|bta-&gt;mem
 )paren
@@ -4764,6 +4818,17 @@ r_goto
 id|fail2
 suffix:semicolon
 )brace
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;btaudio: registered device dsp%d [digital]&bslash;n&quot;
+comma
+id|bta-&gt;dsp_digital
+op_rshift
+l_int|4
+)paren
+suffix:semicolon
 )brace
 r_if
 c_cond
@@ -4805,6 +4870,17 @@ r_goto
 id|fail3
 suffix:semicolon
 )brace
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;btaudio: registered device dsp%d [analog]&bslash;n&quot;
+comma
+id|bta-&gt;dsp_analog
+op_rshift
+l_int|4
+)paren
+suffix:semicolon
 id|rc
 op_assign
 id|bta-&gt;mixer_dev
@@ -4839,25 +4915,18 @@ r_goto
 id|fail4
 suffix:semicolon
 )brace
-)brace
-r_if
-c_cond
-(paren
-id|debug
-)paren
 id|printk
 c_func
 (paren
-id|KERN_DEBUG
-l_string|&quot;btaudio: minors: digital=%d, analog=%d, mixer=%d&bslash;n&quot;
-comma
-id|bta-&gt;dsp_digital
-comma
-id|bta-&gt;dsp_analog
+id|KERN_INFO
+l_string|&quot;btaudio: registered device mixer%d&bslash;n&quot;
 comma
 id|bta-&gt;mixer_dev
+op_rshift
+l_int|4
 )paren
 suffix:semicolon
+)brace
 multiline_comment|/* hook into linked list */
 id|bta-&gt;next
 op_assign
@@ -4911,6 +4980,14 @@ id|bta
 suffix:semicolon
 id|fail1
 suffix:colon
+id|kfree
+c_func
+(paren
+id|bta
+)paren
+suffix:semicolon
+id|fail0
+suffix:colon
 id|release_mem_region
 c_func
 (paren
@@ -4929,12 +5006,6 @@ id|pci_dev
 comma
 l_int|0
 )paren
-)paren
-suffix:semicolon
-id|kfree
-c_func
-(paren
-id|bta
 )paren
 suffix:semicolon
 r_return
@@ -5199,6 +5270,7 @@ comma
 )brace
 suffix:semicolon
 DECL|function|btaudio_init_module
+r_static
 r_int
 id|btaudio_init_module
 c_func
@@ -5212,10 +5284,10 @@ c_func
 id|KERN_INFO
 l_string|&quot;btaudio: driver version 0.6 loaded [%s%s%s]&bslash;n&quot;
 comma
-id|analog
+id|digital
 ques
 c_cond
-l_string|&quot;analog&quot;
+l_string|&quot;digital&quot;
 suffix:colon
 l_string|&quot;&quot;
 comma
@@ -5228,10 +5300,10 @@ l_string|&quot;+&quot;
 suffix:colon
 l_string|&quot;&quot;
 comma
-id|digital
+id|analog
 ques
 c_cond
-l_string|&quot;digital&quot;
+l_string|&quot;analog&quot;
 suffix:colon
 l_string|&quot;&quot;
 )paren
@@ -5246,6 +5318,7 @@ id|btaudio_pci_driver
 suffix:semicolon
 )brace
 DECL|function|btaudio_cleanup_module
+r_static
 r_void
 id|btaudio_cleanup_module
 c_func
@@ -5339,6 +5412,22 @@ c_func
 id|rate
 comma
 l_string|&quot;i&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM
+c_func
+(paren
+id|latency
+comma
+l_string|&quot;i&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|latency
+comma
+l_string|&quot;pci latency timer&quot;
 )paren
 suffix:semicolon
 id|MODULE_DEVICE_TABLE

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * USB Compaq iPAQ driver&n; *&n; *&t;Copyright (C) 2001 - 2002&n; *&t;    Ganesh Varadarajan &lt;ganesh@veritas.com&gt;&n; *&n; *&t;This program is free software; you can redistribute it and/or modify&n; *&t;it under the terms of the GNU General Public License as published by&n; *&t;the Free Software Foundation; either version 2 of the License, or&n; *&t;(at your option) any later version.&n; *&n; * (25/2/2002) ganesh&n; * &t;Added support for the HP Jornada 548 and 568. Completely untested.&n; * &t;Thanks to info from Heath Robinson and Arieh Davidoff.&n; */
+multiline_comment|/*&n; * USB Compaq iPAQ driver&n; *&n; *&t;Copyright (C) 2001 - 2002&n; *&t;    Ganesh Varadarajan &lt;ganesh@veritas.com&gt;&n; *&n; *&t;This program is free software; you can redistribute it and/or modify&n; *&t;it under the terms of the GNU General Public License as published by&n; *&t;the Free Software Foundation; either version 2 of the License, or&n; *&t;(at your option) any later version.&n; *&n; * (8/3/2002) ganesh&n; * &t;The ipaq sometimes emits a &squot;&bslash;0&squot; before the CLIENT string. At this&n; * &t;point of time, the ppp ldisc is not yet attached to the tty, so&n; * &t;n_tty echoes &quot;^ &quot; to the ipaq, which messes up the chat. In 2.5.6-pre2&n; * &t;this causes a panic because echo_char() tries to sleep in interrupt&n; * &t;context.&n; * &t;The fix is to tell the upper layers that this is a raw device so that&n; * &t;echoing is suppressed. Thanks to Lyle Lindholm for a detailed bug&n; * &t;report.&n; *&n; * (25/2/2002) ganesh&n; * &t;Added support for the HP Jornada 548 and 568. Completely untested.&n; * &t;Thanks to info from Heath Robinson and Arieh Davidoff.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -602,6 +602,14 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n;&t;&t; * Force low latency on. This will immediately push data to the line&n;&t;&t; * discipline instead of queueing.&n;&t;&t; */
 id|port-&gt;tty-&gt;low_latency
+op_assign
+l_int|1
+suffix:semicolon
+id|port-&gt;tty-&gt;raw
+op_assign
+l_int|1
+suffix:semicolon
+id|port-&gt;tty-&gt;real_raw
 op_assign
 l_int|1
 suffix:semicolon
@@ -1211,7 +1219,7 @@ c_func
 (paren
 id|port-&gt;read_urb
 comma
-id|GFP_KERNEL
+id|GFP_ATOMIC
 )paren
 suffix:semicolon
 r_if
@@ -1841,7 +1849,7 @@ c_func
 (paren
 id|urb
 comma
-id|GFP_KERNEL
+id|GFP_ATOMIC
 )paren
 suffix:semicolon
 r_if

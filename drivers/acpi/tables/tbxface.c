@@ -1,12 +1,12 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: tbxface - Public interfaces to the ACPI subsystem&n; *                         ACPI table oriented interfaces&n; *              $Revision: 45 $&n; *&n; *****************************************************************************/
-multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: tbxface - Public interfaces to the ACPI subsystem&n; *                         ACPI table oriented interfaces&n; *              $Revision: 51 $&n; *&n; *****************************************************************************/
+multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acnamesp.h&quot;
 macro_line|#include &quot;acinterp.h&quot;
 macro_line|#include &quot;actables.h&quot;
 DECL|macro|_COMPONENT
 mdefine_line|#define _COMPONENT          ACPI_TABLES
-id|MODULE_NAME
+id|ACPI_MODULE_NAME
 (paren
 l_string|&quot;tbxface&quot;
 )paren
@@ -29,7 +29,7 @@ id|number_of_tables
 op_assign
 l_int|0
 suffix:semicolon
-id|FUNCTION_TRACE
+id|ACPI_FUNCTION_TRACE
 (paren
 l_string|&quot;Acpi_load_tables&quot;
 )paren
@@ -54,7 +54,7 @@ id|status
 )paren
 )paren
 (brace
-id|REPORT_ERROR
+id|ACPI_REPORT_ERROR
 (paren
 (paren
 l_string|&quot;Acpi_load_tables: Could not get RSDP, %s&bslash;n&quot;
@@ -87,7 +87,7 @@ id|status
 )paren
 )paren
 (brace
-id|REPORT_ERROR
+id|ACPI_REPORT_ERROR
 (paren
 (paren
 l_string|&quot;Acpi_load_tables: RSDP Failed validation: %s&bslash;n&quot;
@@ -121,7 +121,7 @@ id|status
 )paren
 )paren
 (brace
-id|REPORT_ERROR
+id|ACPI_REPORT_ERROR
 (paren
 (paren
 l_string|&quot;Acpi_load_tables: Could not load RSDT: %s&bslash;n&quot;
@@ -156,7 +156,7 @@ id|status
 )paren
 )paren
 (brace
-id|REPORT_ERROR
+id|ACPI_REPORT_ERROR
 (paren
 (paren
 l_string|&quot;Acpi_load_tables: Error getting required tables (DSDT/FADT/FACS): %s&bslash;n&quot;
@@ -197,7 +197,7 @@ id|status
 )paren
 )paren
 (brace
-id|REPORT_ERROR
+id|ACPI_REPORT_ERROR
 (paren
 (paren
 l_string|&quot;Acpi_load_tables: Could not load namespace: %s&bslash;n&quot;
@@ -220,7 +220,7 @@ id|AE_OK
 suffix:semicolon
 id|error_exit
 suffix:colon
-id|REPORT_ERROR
+id|ACPI_REPORT_ERROR
 (paren
 (paren
 l_string|&quot;Acpi_load_tables: Could not load tables: %s&bslash;n&quot;
@@ -254,7 +254,7 @@ suffix:semicolon
 id|acpi_table_desc
 id|table_info
 suffix:semicolon
-id|FUNCTION_TRACE
+id|ACPI_FUNCTION_TRACE
 (paren
 l_string|&quot;Acpi_load_table&quot;
 )paren
@@ -333,6 +333,40 @@ id|status
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* Convert the table to common format if necessary */
+r_switch
+c_cond
+(paren
+id|table_info.type
+)paren
+(brace
+r_case
+id|ACPI_TABLE_FADT
+suffix:colon
+id|status
+op_assign
+id|acpi_tb_convert_table_fadt
+(paren
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|ACPI_TABLE_FACS
+suffix:colon
+id|status
+op_assign
+id|acpi_tb_build_common_facs
+(paren
+op_amp
+id|table_info
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_default
+suffix:colon
+multiline_comment|/* Load table into namespace if it contains executable AML */
 id|status
 op_assign
 id|acpi_ns_load_table
@@ -342,6 +376,9 @@ comma
 id|acpi_gbl_root_node
 )paren
 suffix:semicolon
+r_break
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -355,11 +392,6 @@ multiline_comment|/* Uninstall table and free the buffer */
 id|acpi_tb_uninstall_table
 (paren
 id|table_info.installed_desc
-)paren
-suffix:semicolon
-id|return_ACPI_STATUS
-(paren
-id|status
 )paren
 suffix:semicolon
 )brace
@@ -382,7 +414,7 @@ id|acpi_table_desc
 op_star
 id|list_head
 suffix:semicolon
-id|FUNCTION_TRACE
+id|ACPI_FUNCTION_TRACE
 (paren
 l_string|&quot;Acpi_unload_table&quot;
 )paren
@@ -467,7 +499,7 @@ suffix:semicolon
 id|acpi_status
 id|status
 suffix:semicolon
-id|FUNCTION_TRACE
+id|ACPI_FUNCTION_TRACE
 (paren
 l_string|&quot;Acpi_get_table_header&quot;
 )paren
@@ -510,7 +542,7 @@ id|ACPI_TABLE_MAX
 )paren
 op_logical_or
 (paren
-id|IS_SINGLE_TABLE
+id|ACPI_IS_SINGLE_TABLE
 (paren
 id|acpi_gbl_acpi_table_data
 (braket
@@ -576,7 +608,7 @@ id|AE_NOT_EXIST
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * Copy the header to the caller&squot;s buffer&n;&t; */
-id|MEMCPY
+id|ACPI_MEMCPY
 (paren
 (paren
 r_void
@@ -626,43 +658,47 @@ id|acpi_status
 id|status
 suffix:semicolon
 id|u32
-id|ret_buf_len
+id|table_length
 suffix:semicolon
-id|FUNCTION_TRACE
+id|ACPI_FUNCTION_TRACE
 (paren
 l_string|&quot;Acpi_get_table&quot;
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; *  If we have a buffer, we must have a length too&n;&t; */
+multiline_comment|/* Parameter validation */
 r_if
 c_cond
-(paren
 (paren
 id|instance
 op_eq
 l_int|0
 )paren
-op_logical_or
+(brace
+id|return_ACPI_STATUS
 (paren
-op_logical_neg
+id|AE_BAD_PARAMETER
+)paren
+suffix:semicolon
+)brace
+id|status
+op_assign
+id|acpi_ut_validate_buffer
+(paren
 id|ret_buffer
 )paren
-op_logical_or
+suffix:semicolon
+r_if
+c_cond
 (paren
+id|ACPI_FAILURE
 (paren
-op_logical_neg
-id|ret_buffer-&gt;pointer
-)paren
-op_logical_and
-(paren
-id|ret_buffer-&gt;length
-)paren
+id|status
 )paren
 )paren
 (brace
 id|return_ACPI_STATUS
 (paren
-id|AE_BAD_PARAMETER
+id|status
 )paren
 suffix:semicolon
 )brace
@@ -677,7 +713,7 @@ id|ACPI_TABLE_MAX
 )paren
 op_logical_or
 (paren
-id|IS_SINGLE_TABLE
+id|ACPI_IS_SINGLE_TABLE
 (paren
 id|acpi_gbl_acpi_table_data
 (braket
@@ -742,7 +778,7 @@ id|AE_NOT_EXIST
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * Got a table ptr, assume it&squot;s ok and copy it to the user&squot;s buffer&n;&t; */
+multiline_comment|/* Get the table length */
 r_if
 c_cond
 (paren
@@ -752,7 +788,7 @@ id|ACPI_TABLE_RSDP
 )paren
 (brace
 multiline_comment|/*&n;&t;&t; *  RSD PTR is the only &quot;table&quot; without a header&n;&t;&t; */
-id|ret_buf_len
+id|table_length
 op_assign
 r_sizeof
 (paren
@@ -762,35 +798,38 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|ret_buf_len
+id|table_length
 op_assign
 id|tbl_ptr-&gt;length
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * Verify we have space in the caller&squot;s buffer for the table&n;&t; */
+multiline_comment|/* Validate/Allocate/Clear caller buffer */
+id|status
+op_assign
+id|acpi_ut_initialize_buffer
+(paren
+id|ret_buffer
+comma
+id|table_length
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
-id|ret_buffer-&gt;length
-OL
-id|ret_buf_len
+id|ACPI_FAILURE
+(paren
+id|status
+)paren
 )paren
 (brace
-id|ret_buffer-&gt;length
-op_assign
-id|ret_buf_len
-suffix:semicolon
 id|return_ACPI_STATUS
 (paren
-id|AE_BUFFER_OVERFLOW
+id|status
 )paren
 suffix:semicolon
 )brace
-id|ret_buffer-&gt;length
-op_assign
-id|ret_buf_len
-suffix:semicolon
-id|MEMCPY
+multiline_comment|/* Copy the table to the buffer */
+id|ACPI_MEMCPY
 (paren
 (paren
 r_void
@@ -804,7 +843,7 @@ op_star
 )paren
 id|tbl_ptr
 comma
-id|ret_buf_len
+id|table_length
 )paren
 suffix:semicolon
 id|return_ACPI_STATUS

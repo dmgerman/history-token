@@ -48,7 +48,9 @@ l_string|&quot;{Intel,82801BA},&quot;
 l_string|&quot;{Intel,ICH3},&quot;
 l_string|&quot;{Intel,MX440},&quot;
 l_string|&quot;{SiS,SI7012},&quot;
-l_string|&quot;{NVidia,NForce Audio}}&quot;
+l_string|&quot;{NVidia,NForce Audio},&quot;
+l_string|&quot;{AMD,AMD768},&quot;
+l_string|&quot;{AMD,AMD8111}}&quot;
 )paren
 suffix:semicolon
 DECL|macro|SUPPORT_JOYSTICK
@@ -909,9 +911,9 @@ id|DEVICE_INTEL
 comma
 multiline_comment|/* NFORCE */
 (brace
-l_int|0x764d
-comma
 l_int|0x1022
+comma
+l_int|0x764d
 comma
 id|PCI_ANY_ID
 comma
@@ -925,6 +927,23 @@ id|DEVICE_INTEL
 )brace
 comma
 multiline_comment|/* AMD8111 */
+(brace
+l_int|0x1022
+comma
+l_int|0x7445
+comma
+id|PCI_ANY_ID
+comma
+id|PCI_ANY_ID
+comma
+l_int|0
+comma
+l_int|0
+comma
+id|DEVICE_INTEL
+)brace
+comma
+multiline_comment|/* AMD768 */
 (brace
 l_int|0
 comma
@@ -6676,9 +6695,15 @@ l_string|&quot;NVidia NForce&quot;
 )brace
 comma
 (brace
-l_int|0x1022
+l_int|0x764d
 comma
-l_string|&quot;AMD-8111&quot;
+l_string|&quot;AMD AMD8111&quot;
+)brace
+comma
+(brace
+l_int|0x7445
+comma
+l_string|&quot;AMD AMD768&quot;
 )brace
 comma
 (brace
@@ -6711,8 +6736,6 @@ id|id
 r_static
 r_int
 id|dev
-op_assign
-l_int|0
 suffix:semicolon
 id|snd_card_t
 op_star
@@ -7245,8 +7268,6 @@ id|id
 r_static
 r_int
 id|dev
-op_assign
-l_int|0
 suffix:semicolon
 r_if
 c_cond

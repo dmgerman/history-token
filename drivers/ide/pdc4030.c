@@ -2039,9 +2039,6 @@ op_star
 )paren
 id|task-&gt;tfRegister
 suffix:semicolon
-id|ide_startstop_t
-id|startstop
-suffix:semicolon
 r_int
 r_int
 id|timeout
@@ -2528,8 +2525,6 @@ id|hd_drive_hob_hdr
 )paren
 )paren
 suffix:semicolon
-id|args.command_type
-op_assign
 id|ide_cmd_type_parser
 c_func
 (paren
@@ -2537,6 +2532,7 @@ op_amp
 id|args
 )paren
 suffix:semicolon
+multiline_comment|/* We don&squot;t use the generic inerrupt handlers here? */
 id|args.prehandler
 op_assign
 l_int|NULL
@@ -2545,17 +2541,8 @@ id|args.handler
 op_assign
 l_int|NULL
 suffix:semicolon
-id|args.posthandler
-op_assign
-l_int|NULL
-suffix:semicolon
 id|args.rq
 op_assign
-(paren
-r_struct
-id|request
-op_star
-)paren
 id|rq
 suffix:semicolon
 id|args.block
@@ -2568,10 +2555,6 @@ l_int|NULL
 suffix:semicolon
 id|rq-&gt;special
 op_assign
-(paren
-id|ide_task_t
-op_star
-)paren
 op_amp
 id|args
 suffix:semicolon

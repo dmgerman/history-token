@@ -6,7 +6,7 @@ macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/ide.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
-macro_line|#include &quot;ide_modes.h&quot;
+macro_line|#include &quot;ata-timing.h&quot;
 multiline_comment|/* the current version */
 DECL|macro|CY82_VERSION
 mdefine_line|#define CY82_VERSION&t;&quot;CY82C693U driver v0.34 99-13-12 Andreas S. Krebs (akrebs@altavista.net)&quot;
@@ -159,10 +159,25 @@ op_star
 id|p_pclk
 )paren
 (brace
+r_struct
+id|ata_timing
+op_star
+id|t
+suffix:semicolon
 r_int
 id|clk1
 comma
 id|clk2
+suffix:semicolon
+id|t
+op_assign
+id|ata_timing_data
+c_func
+(paren
+id|XFER_PIO_0
+op_plus
+id|pio
+)paren
 suffix:semicolon
 multiline_comment|/* we don&squot;t check against CY82C693&squot;s min and max speed,&n;&t; * so you can play with the idebus=xx parameter&n;&t; */
 r_if
@@ -185,12 +200,7 @@ id|byte
 id|calc_clk
 c_func
 (paren
-id|ide_pio_timings
-(braket
-id|pio
-)braket
-dot
-id|setup_time
+id|t-&gt;setup
 comma
 id|system_bus_speed
 )paren
@@ -201,12 +211,7 @@ op_assign
 id|calc_clk
 c_func
 (paren
-id|ide_pio_timings
-(braket
-id|pio
-)braket
-dot
-id|active_time
+id|t-&gt;active
 comma
 id|system_bus_speed
 )paren
@@ -214,26 +219,11 @@ suffix:semicolon
 multiline_comment|/* calc recovery timing */
 id|clk2
 op_assign
-id|ide_pio_timings
-(braket
-id|pio
-)braket
-dot
-id|cycle_time
+id|t-&gt;cycle
 op_minus
-id|ide_pio_timings
-(braket
-id|pio
-)braket
-dot
-id|active_time
+id|t-&gt;active
 op_minus
-id|ide_pio_timings
-(braket
-id|pio
-)braket
-dot
-id|setup_time
+id|t-&gt;setup
 suffix:semicolon
 id|clk2
 op_assign
@@ -256,7 +246,7 @@ op_or
 id|clk2
 suffix:semicolon
 multiline_comment|/* combine active and recovery clocks */
-multiline_comment|/* note: we use the same values for 16bit IOR and IOW&n;         *&t;those are all the same, since I don&squot;t have other&n;&t; *&t;timings than those from ide_modes.h&n;&t; */
+multiline_comment|/* note: we use the same values for 16bit IOR and IOW&n;         *&t;those are all the same, since I don&squot;t have other&n;&t; *&t;timings than those from ata-timing.h&n;&t; */
 id|p_pclk-&gt;time_16r
 op_assign
 (paren
@@ -855,17 +845,17 @@ macro_line|#endif /* CY82C693_DEBUG_LOGS */
 multiline_comment|/* first let&squot;s calc the pio modes */
 id|pio
 op_assign
-id|ide_get_best_pio_mode
+id|ata_timing_mode
 c_func
 (paren
 id|drive
 comma
-id|pio
-comma
-id|CY82C693_MAX_PIO
-comma
-l_int|NULL
+id|XFER_PIO
+op_or
+id|XFER_EPIO
 )paren
+op_minus
+id|XFER_PIO_0
 suffix:semicolon
 macro_line|#if CY82C693_DEBUG_INFO
 id|printk

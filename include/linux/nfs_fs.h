@@ -6,8 +6,10 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/in.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/pagemap.h&gt;
+macro_line|#include &lt;linux/nfs_fs_sb.h&gt;
 macro_line|#include &lt;linux/sunrpc/debug.h&gt;
 macro_line|#include &lt;linux/sunrpc/auth.h&gt;
+macro_line|#include &lt;linux/sunrpc/clnt.h&gt;
 macro_line|#include &lt;linux/nfs.h&gt;
 macro_line|#include &lt;linux/nfs2.h&gt;
 macro_line|#include &lt;linux/nfs3.h&gt;
@@ -215,10 +217,12 @@ id|vfs_inode
 )paren
 suffix:semicolon
 )brace
+DECL|macro|NFS_SB
+mdefine_line|#define NFS_SB(s)&t;&t;((struct nfs_server *)(s-&gt;u.generic_sbp))
 DECL|macro|NFS_FH
 mdefine_line|#define NFS_FH(inode)&t;&t;&t;(&amp;NFS_I(inode)-&gt;fh)
 DECL|macro|NFS_SERVER
-mdefine_line|#define NFS_SERVER(inode)&t;&t;(&amp;(inode)-&gt;i_sb-&gt;u.nfs_sb.s_server)
+mdefine_line|#define NFS_SERVER(inode)&t;&t;(NFS_SB(inode-&gt;i_sb))
 DECL|macro|NFS_CLIENT
 mdefine_line|#define NFS_CLIENT(inode)&t;&t;(NFS_SERVER(inode)-&gt;client)
 DECL|macro|NFS_PROTO
@@ -1329,6 +1333,74 @@ r_void
 suffix:semicolon
 DECL|macro|nfs_wait_event
 mdefine_line|#define nfs_wait_event(clnt, wq, condition)&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;int __retval = 0;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (clnt-&gt;cl_intr) {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;sigset_t oldmask;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;rpc_clnt_sigmask(clnt, &amp;oldmask);&t;&t;&t;&bslash;&n;&t;&t;__retval = wait_event_interruptible(wq, condition);&t;&bslash;&n;&t;&t;rpc_clnt_sigunmask(clnt, &amp;oldmask);&t;&t;&t;&bslash;&n;&t;} else&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;wait_event(wq, condition);&t;&t;&t;&t;&bslash;&n;&t;__retval;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
+macro_line|#ifdef CONFIG_NFS_V3
+DECL|macro|NFS_JUKEBOX_RETRY_TIME
+mdefine_line|#define NFS_JUKEBOX_RETRY_TIME (5 * HZ)
+r_static
+r_inline
+r_int
+DECL|function|nfs_async_handle_jukebox
+id|nfs_async_handle_jukebox
+c_func
+(paren
+r_struct
+id|rpc_task
+op_star
+id|task
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|task-&gt;tk_status
+op_ne
+op_minus
+id|EJUKEBOX
+)paren
+r_return
+l_int|0
+suffix:semicolon
+id|task-&gt;tk_status
+op_assign
+l_int|0
+suffix:semicolon
+id|rpc_restart_call
+c_func
+(paren
+id|task
+)paren
+suffix:semicolon
+id|rpc_delay
+c_func
+(paren
+id|task
+comma
+id|NFS_JUKEBOX_RETRY_TIME
+)paren
+suffix:semicolon
+r_return
+l_int|1
+suffix:semicolon
+)brace
+macro_line|#else
+r_static
+r_inline
+r_int
+DECL|function|nfs_async_handle_jukebox
+id|nfs_async_handle_jukebox
+c_func
+(paren
+r_struct
+id|rpc_task
+op_star
+id|task
+)paren
+(brace
+r_return
+l_int|0
+suffix:semicolon
+)brace
+macro_line|#endif /* CONFIG_NFS_V3 */
 macro_line|#endif /* __KERNEL__ */
 multiline_comment|/*&n; * NFS debug flags&n; */
 DECL|macro|NFSDBG_VFS

@@ -2498,6 +2498,17 @@ op_star
 id|eapd_switch
 suffix:semicolon
 multiline_comment|/* for amplifier hack */
+DECL|member|accept_valid
+r_int
+id|accept_valid
+suffix:semicolon
+multiline_comment|/* accept mmap valid (for OSS) */
+DECL|member|gameport
+r_struct
+id|snd_cs46xx_gameport
+op_star
+id|gameport
+suffix:semicolon
 macro_line|#ifdef CONFIG_PM
 DECL|member|pm_dev
 r_struct
@@ -2574,6 +2585,15 @@ id|snd_rawmidi_t
 op_star
 op_star
 id|rmidi
+)paren
+suffix:semicolon
+r_void
+id|snd_cs46xx_gameport
+c_func
+(paren
+id|cs46xx_t
+op_star
+id|chip
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_PM

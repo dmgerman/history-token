@@ -263,7 +263,8 @@ DECL|macro|__NR_sendfile64
 mdefine_line|#define __NR_sendfile64         140 /* adjtime under SunOS                         */
 DECL|macro|__NR_getpeername
 mdefine_line|#define __NR_getpeername        141 /* Common                                      */
-multiline_comment|/* #define __NR_gethostid       142    SunOS Specific                              */
+DECL|macro|__NR_futex
+mdefine_line|#define __NR_futex              142 /* gethostid under SunOS                       */
 DECL|macro|__NR_gettid
 mdefine_line|#define __NR_gettid             143 /* ENOSYS under SunOS                          */
 DECL|macro|__NR_getrlimit

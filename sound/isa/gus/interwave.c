@@ -5446,8 +5446,6 @@ id|port
 r_static
 r_int
 id|dev
-op_assign
-l_int|0
 suffix:semicolon
 r_int
 id|res
@@ -5555,8 +5553,6 @@ id|id
 r_static
 r_int
 id|dev
-op_assign
-l_int|0
 suffix:semicolon
 r_int
 id|res

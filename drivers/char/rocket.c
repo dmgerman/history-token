@@ -595,13 +595,13 @@ c_func
 (paren
 id|badmagic
 comma
-id|MAJOR
+id|major
 c_func
 (paren
 id|device
 )paren
 comma
-id|MINOR
+id|minor
 c_func
 (paren
 id|device
@@ -3581,7 +3581,7 @@ id|page
 suffix:semicolon
 id|line
 op_assign
-id|MINOR
+id|minor
 c_func
 (paren
 id|tty-&gt;device

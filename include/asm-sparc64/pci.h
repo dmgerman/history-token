@@ -443,6 +443,20 @@ r_int
 id|write_combine
 )paren
 suffix:semicolon
+multiline_comment|/* Platform specific MWI support. */
+DECL|macro|HAVE_ARCH_PCI_MWI
+mdefine_line|#define HAVE_ARCH_PCI_MWI
+r_extern
+r_int
+id|pcibios_prep_mwi
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+id|dev
+)paren
+suffix:semicolon
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* __SPARC64_PCI_H */
 eof

@@ -350,7 +350,8 @@ c_func
 (paren
 r_int
 comma
-r_void
+r_struct
+id|nfsctl_arg
 op_star
 comma
 r_void

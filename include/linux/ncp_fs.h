@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/in.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/ncp_fs_i.h&gt;
+macro_line|#include &lt;linux/ncp_fs_sb.h&gt;
 macro_line|#include &lt;linux/ipx.h&gt;
 macro_line|#include &lt;linux/ncp_no.h&gt;
 multiline_comment|/*&n; * ioctl commands&n; */
@@ -412,8 +413,25 @@ suffix:semicolon
 multiline_comment|/* Guess, what 0x564c is :-) */
 DECL|macro|NCP_SUPER_MAGIC
 mdefine_line|#define NCP_SUPER_MAGIC  0x564c
-DECL|macro|NCP_SBP
-mdefine_line|#define NCP_SBP(sb)&t;&t;(&amp;((sb)-&gt;u.ncpfs_sb))
+DECL|function|NCP_SBP
+r_static
+r_inline
+r_struct
+id|ncp_server
+op_star
+id|NCP_SBP
+c_func
+(paren
+r_struct
+id|super_block
+op_star
+id|sb
+)paren
+(brace
+r_return
+id|sb-&gt;u.generic_sbp
+suffix:semicolon
+)brace
 DECL|macro|NCP_SERVER
 mdefine_line|#define NCP_SERVER(inode)&t;NCP_SBP((inode)-&gt;i_sb)
 DECL|function|NCP_FINFO

@@ -1,5 +1,5 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: evmisc - ACPI device notification handler dispatch&n; *                       and ACPI Global Lock support&n; *              $Revision: 35 $&n; *&n; *****************************************************************************/
-multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: evmisc - ACPI device notification handler dispatch&n; *                       and ACPI Global Lock support&n; *              $Revision: 47 $&n; *&n; *****************************************************************************/
+multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acevents.h&quot;
 macro_line|#include &quot;acnamesp.h&quot;
@@ -7,10 +7,81 @@ macro_line|#include &quot;acinterp.h&quot;
 macro_line|#include &quot;achware.h&quot;
 DECL|macro|_COMPONENT
 mdefine_line|#define _COMPONENT          ACPI_EVENTS
-id|MODULE_NAME
+id|ACPI_MODULE_NAME
 (paren
 l_string|&quot;evmisc&quot;
 )paren
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ev_get_gpe_register_index&n; *&n; * PARAMETERS:  Gpe_number      - Raw GPE number&n; *&n; * RETURN:      None.&n; *&n; * DESCRIPTION: Returns the register index (index into the GPE register info&n; *              table) associated with this GPE.&n; *&n; ******************************************************************************/
+id|u32
+DECL|function|acpi_ev_get_gpe_register_index
+id|acpi_ev_get_gpe_register_index
+(paren
+id|u32
+id|gpe_number
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|gpe_number
+OG
+id|acpi_gbl_gpe_number_max
+)paren
+(brace
+r_return
+(paren
+id|ACPI_GPE_INVALID
+)paren
+suffix:semicolon
+)brace
+r_return
+(paren
+id|ACPI_DIV_8
+(paren
+id|acpi_gbl_gpe_number_to_index
+(braket
+id|gpe_number
+)braket
+dot
+id|number_index
+)paren
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ev_get_gpe_number_index&n; *&n; * PARAMETERS:  Gpe_number      - Raw GPE number&n; *&n; * RETURN:      None.&n; *&n; * DESCRIPTION: Returns the number index (index into the GPE number info table)&n; *              associated with this GPE.&n; *&n; ******************************************************************************/
+id|u32
+DECL|function|acpi_ev_get_gpe_number_index
+id|acpi_ev_get_gpe_number_index
+(paren
+id|u32
+id|gpe_number
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|gpe_number
+OG
+id|acpi_gbl_gpe_number_max
+)paren
+(brace
+r_return
+(paren
+id|ACPI_GPE_INVALID
+)paren
+suffix:semicolon
+)brace
+r_return
+(paren
+id|acpi_gbl_gpe_number_to_index
+(braket
+id|gpe_number
+)braket
+dot
+id|number_index
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ev_queue_notify_request&n; *&n; * PARAMETERS:&n; *&n; * RETURN:      None.&n; *&n; * DESCRIPTION: Dispatch a device notification event to a previously&n; *              installed handler.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ev_queue_notify_request
@@ -43,7 +114,7 @@ id|status
 op_assign
 id|AE_OK
 suffix:semicolon
-id|PROC_NAME
+id|ACPI_FUNCTION_NAME
 (paren
 l_string|&quot;Ev_queue_notify_request&quot;
 )paren
@@ -169,7 +240,7 @@ c_cond
 (paren
 id|notify_value
 op_le
-id|MAX_SYS_NOTIFY
+id|ACPI_MAX_SYS_NOTIFY
 )paren
 (brace
 id|handler_obj
@@ -194,7 +265,7 @@ c_cond
 (paren
 id|notify_value
 op_le
-id|MAX_SYS_NOTIFY
+id|ACPI_MAX_SYS_NOTIFY
 )paren
 (brace
 id|handler_obj
@@ -223,7 +294,7 @@ op_logical_and
 (paren
 id|notify_value
 op_le
-id|MAX_SYS_NOTIFY
+id|ACPI_MAX_SYS_NOTIFY
 )paren
 )paren
 op_logical_or
@@ -233,7 +304,7 @@ op_logical_and
 (paren
 id|notify_value
 OG
-id|MAX_SYS_NOTIFY
+id|ACPI_MAX_SYS_NOTIFY
 )paren
 )paren
 op_logical_or
@@ -333,6 +404,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ev_notify_dispatch&n; *&n; * PARAMETERS:&n; *&n; * RETURN:      None.&n; *&n; * DESCRIPTION: Dispatch a device notification event to a previously&n; *              installed handler.&n; *&n; ******************************************************************************/
 r_void
+id|ACPI_SYSTEM_XFACE
 DECL|function|acpi_ev_notify_dispatch
 id|acpi_ev_notify_dispatch
 (paren
@@ -366,7 +438,7 @@ id|acpi_operand_object
 op_star
 id|handler_obj
 suffix:semicolon
-id|FUNCTION_ENTRY
+id|ACPI_FUNCTION_ENTRY
 (paren
 )paren
 suffix:semicolon
@@ -376,7 +448,7 @@ c_cond
 (paren
 id|notify_info-&gt;notify.value
 op_le
-id|MAX_SYS_NOTIFY
+id|ACPI_MAX_SYS_NOTIFY
 )paren
 (brace
 multiline_comment|/* Global system notification handler */
@@ -463,6 +535,7 @@ suffix:semicolon
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ev_global_lock_thread&n; *&n; * RETURN:      None&n; *&n; * DESCRIPTION: Invoked by SCI interrupt handler upon acquisition of the&n; *              Global Lock.  Simply signal all threads that are waiting&n; *              for the lock.&n; *&n; ******************************************************************************/
 r_static
 r_void
+id|ACPI_SYSTEM_XFACE
 DECL|function|acpi_ev_global_lock_thread
 id|acpi_ev_global_lock_thread
 (paren
@@ -504,18 +577,10 @@ id|acquired
 op_assign
 id|FALSE
 suffix:semicolon
-r_void
-op_star
-id|global_lock
-suffix:semicolon
 multiline_comment|/*&n;&t; * Attempt to get the lock&n;&t; * If we don&squot;t get it now, it will be marked pending and we will&n;&t; * take another interrupt when it becomes free.&n;&t; */
-id|global_lock
-op_assign
-id|acpi_gbl_FACS-&gt;global_lock
-suffix:semicolon
 id|ACPI_ACQUIRE_GLOBAL_LOCK
 (paren
-id|global_lock
+id|acpi_gbl_common_fACS.global_lock
 comma
 id|acquired
 )paren
@@ -544,7 +609,7 @@ suffix:semicolon
 )brace
 r_return
 (paren
-id|INTERRUPT_HANDLED
+id|ACPI_INTERRUPT_HANDLED
 )paren
 suffix:semicolon
 )brace
@@ -559,7 +624,7 @@ r_void
 id|acpi_status
 id|status
 suffix:semicolon
-id|FUNCTION_TRACE
+id|ACPI_FUNCTION_TRACE
 (paren
 l_string|&quot;Ev_init_global_lock_handler&quot;
 )paren
@@ -579,7 +644,7 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * If the global lock does not exist on this platform, the attempt&n;&t; * to enable GBL_STS will fail (the GBL_EN bit will not stick)&n;&t; * Map to AE_OK, but mark global lock as not present.&n;&t; * Any attempt to actually use the global lock will be flagged&n;&t; * with an error.&n;&t; */
+multiline_comment|/*&n;&t; * If the global lock does not exist on this platform, the attempt&n;&t; * to enable GBL_STATUS will fail (the GBL_ENABLE bit will not stick)&n;&t; * Map to AE_OK, but mark global lock as not present.&n;&t; * Any attempt to actually use the global lock will be flagged&n;&t; * with an error.&n;&t; */
 r_if
 c_cond
 (paren
@@ -607,9 +672,9 @@ multiline_comment|/*************************************************************
 id|acpi_status
 DECL|function|acpi_ev_acquire_global_lock
 id|acpi_ev_acquire_global_lock
-c_func
 (paren
-r_void
+id|u32
+id|timeout
 )paren
 (brace
 id|acpi_status
@@ -622,11 +687,7 @@ id|acquired
 op_assign
 id|FALSE
 suffix:semicolon
-r_void
-op_star
-id|global_lock
-suffix:semicolon
-id|FUNCTION_TRACE
+id|ACPI_FUNCTION_TRACE
 (paren
 l_string|&quot;Ev_acquire_global_lock&quot;
 )paren
@@ -649,7 +710,7 @@ multiline_comment|/* One more thread wants the global lock */
 id|acpi_gbl_global_lock_thread_count
 op_increment
 suffix:semicolon
-multiline_comment|/* If we (OS side) have the hardware lock already, we are done */
+multiline_comment|/* If we (OS side vs. BIOS side) have the hardware lock already, we are done */
 r_if
 c_cond
 (paren
@@ -662,28 +723,10 @@ id|AE_OK
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Only if the FACS is valid */
-r_if
-c_cond
-(paren
-op_logical_neg
-id|acpi_gbl_FACS
-)paren
-(brace
-id|return_ACPI_STATUS
-(paren
-id|AE_OK
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/* We must acquire the actual hardware lock */
-id|global_lock
-op_assign
-id|acpi_gbl_FACS-&gt;global_lock
-suffix:semicolon
 id|ACPI_ACQUIRE_GLOBAL_LOCK
 (paren
-id|global_lock
+id|acpi_gbl_common_fACS.global_lock
 comma
 id|acquired
 )paren
@@ -700,7 +743,7 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_INFO
 comma
-l_string|&quot;Acquired the Global Lock&bslash;n&quot;
+l_string|&quot;Acquired the HW Global Lock&bslash;n&quot;
 )paren
 )paren
 suffix:semicolon
@@ -724,14 +767,14 @@ l_string|&quot;Waiting for the HW Global Lock&bslash;n&quot;
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;  * Acquire the global lock semaphore first.&n;&t;  * Since this wait will block, we must release the interpreter&n;&t;  */
+multiline_comment|/*&n;&t; * Acquire the global lock semaphore first.&n;&t; * Since this wait will block, we must release the interpreter&n;&t; */
 id|status
 op_assign
 id|acpi_ex_system_wait_semaphore
 (paren
 id|acpi_gbl_global_lock_semaphore
 comma
-id|ACPI_UINT32_MAX
+id|timeout
 )paren
 suffix:semicolon
 id|return_ACPI_STATUS
@@ -753,11 +796,7 @@ id|pending
 op_assign
 id|FALSE
 suffix:semicolon
-r_void
-op_star
-id|global_lock
-suffix:semicolon
-id|FUNCTION_TRACE
+id|ACPI_FUNCTION_TRACE
 (paren
 l_string|&quot;Ev_release_global_lock&quot;
 )paren
@@ -769,11 +808,11 @@ op_logical_neg
 id|acpi_gbl_global_lock_thread_count
 )paren
 (brace
-id|REPORT_WARNING
+id|ACPI_REPORT_WARNING
 c_func
 (paren
 (paren
-l_string|&quot;Global Lock has not be acquired, cannot release&bslash;n&quot;
+l_string|&quot;Cannot release HW Global Lock, it has not been acquired&bslash;n&quot;
 )paren
 )paren
 suffix:semicolon
@@ -784,22 +823,20 @@ multiline_comment|/* One fewer thread has the global lock */
 id|acpi_gbl_global_lock_thread_count
 op_decrement
 suffix:semicolon
-multiline_comment|/* Have all threads released the lock? */
 r_if
 c_cond
 (paren
-op_logical_neg
 id|acpi_gbl_global_lock_thread_count
 )paren
 (brace
-multiline_comment|/*&n;&t;&t; * No more threads holding lock, we can do the actual hardware&n;&t;&t; * release&n;&t;&t; */
-id|global_lock
-op_assign
-id|acpi_gbl_FACS-&gt;global_lock
+multiline_comment|/* There are still some threads holding the lock, cannot release */
+id|return_VOID
 suffix:semicolon
+)brace
+multiline_comment|/*&n;&t; * No more threads holding lock, we can do the actual hardware&n;&t; * release&n;&t; */
 id|ACPI_RELEASE_GLOBAL_LOCK
 (paren
-id|global_lock
+id|acpi_gbl_common_fACS.global_lock
 comma
 id|pending
 )paren
@@ -808,25 +845,87 @@ id|acpi_gbl_global_lock_acquired
 op_assign
 id|FALSE
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * If the pending bit was set, we must write GBL_RLS to the control&n;&t;&t; * register&n;&t;&t; */
+multiline_comment|/*&n;&t; * If the pending bit was set, we must write GBL_RLS to the control&n;&t; * register&n;&t; */
 r_if
 c_cond
 (paren
 id|pending
 )paren
 (brace
-id|acpi_hw_register_bit_access
+id|acpi_hw_bit_register_write
 (paren
-id|ACPI_WRITE
-comma
-id|ACPI_MTX_LOCK
-comma
-id|GBL_RLS
+id|ACPI_BITREG_GLOBAL_LOCK_RELEASE
 comma
 l_int|1
+comma
+id|ACPI_MTX_LOCK
 )paren
 suffix:semicolon
 )brace
+id|return_VOID
+suffix:semicolon
+)brace
+multiline_comment|/******************************************************************************&n; *&n; * FUNCTION:    Acpi_ev_terminate&n; *&n; * PARAMETERS:  none&n; *&n; * RETURN:      none&n; *&n; * DESCRIPTION: free memory allocated for table storage.&n; *&n; ******************************************************************************/
+r_void
+DECL|function|acpi_ev_terminate
+id|acpi_ev_terminate
+(paren
+r_void
+)paren
+(brace
+id|ACPI_FUNCTION_TRACE
+(paren
+l_string|&quot;Ev_terminate&quot;
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t; * Free global tables, etc.&n;&t; */
+r_if
+c_cond
+(paren
+id|acpi_gbl_gpe_register_info
+)paren
+(brace
+id|ACPI_MEM_FREE
+(paren
+id|acpi_gbl_gpe_register_info
+)paren
+suffix:semicolon
+id|acpi_gbl_gpe_register_info
+op_assign
+l_int|NULL
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|acpi_gbl_gpe_number_info
+)paren
+(brace
+id|ACPI_MEM_FREE
+(paren
+id|acpi_gbl_gpe_number_info
+)paren
+suffix:semicolon
+id|acpi_gbl_gpe_number_info
+op_assign
+l_int|NULL
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|acpi_gbl_gpe_number_to_index
+)paren
+(brace
+id|ACPI_MEM_FREE
+(paren
+id|acpi_gbl_gpe_number_to_index
+)paren
+suffix:semicolon
+id|acpi_gbl_gpe_number_to_index
+op_assign
+l_int|NULL
+suffix:semicolon
 )brace
 id|return_VOID
 suffix:semicolon

@@ -1676,6 +1676,17 @@ comma
 id|task-&gt;tk_status
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|nfs_async_handle_jukebox
+c_func
+(paren
+id|task
+)paren
+)paren
+r_return
+suffix:semicolon
 id|nfs_refresh_inode
 c_func
 (paren

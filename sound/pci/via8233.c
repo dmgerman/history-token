@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *   ALSA driver for VIA VT8233 (South Bridge)&n; *&n; *&t;Copyright (c) 2000 Jaroslav Kysela &lt;perex@suse.cz&gt;,&n; *                         Tjeerd.Mulder@fujitsu-siemens.com&n; *&n; *   This program is free software; you can redistribute it and/or modify&n; *   it under the terms of the GNU General Public License as published by&n; *   the Free Software Foundation; either version 2 of the License, or&n; *   (at your option) any later version.&n; *&n; *   This program is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *   GNU General Public License for more details.&n; *&n; *   You should have received a copy of the GNU General Public License&n; *   along with this program; if not, write to the Free Software&n; *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA&n; *&n; */
+multiline_comment|/*&n; *   ALSA driver for VIA VT8233 (South Bridge)&n; *&n; *&t;Copyright (c) 2000 Tjeerd.Mulder@fujitsu-siemens.com&n; *&t;This driver is based on VIA686 code by Jaroslav Kysela &lt;perex@suse.cz&gt;&n; *&n; *   This program is free software; you can redistribute it and/or modify&n; *   it under the terms of the GNU General Public License as published by&n; *   the Free Software Foundation; either version 2 of the License, or&n; *   (at your option) any later version.&n; *&n; *   This program is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *   GNU General Public License for more details.&n; *&n; *   You should have received a copy of the GNU General Public License&n; *   along with this program; if not, write to the Free Software&n; *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA&n; *&n; */
 macro_line|#include &lt;sound/driver.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
@@ -468,10 +468,6 @@ suffix:semicolon
 DECL|member|reg_lock
 id|spinlock_t
 id|reg_lock
-suffix:semicolon
-DECL|member|update_lock
-id|spinlock_t
-id|update_lock
 suffix:semicolon
 DECL|member|proc_entry
 id|snd_info_entry_t
@@ -1816,26 +1812,6 @@ suffix:semicolon
 r_int
 r_int
 id|tmp
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|inb
-c_func
-(paren
-id|VIAREG
-c_func
-(paren
-id|chip
-comma
-id|PLAYBACK_STATUS
-)paren
-)paren
-op_amp
-id|VIA_REG_STAT_ACTIVE
-)paren
-r_return
-l_int|0
 suffix:semicolon
 id|snd_ac97_set_rate
 c_func
@@ -3440,13 +3416,6 @@ op_amp
 id|chip-&gt;reg_lock
 )paren
 suffix:semicolon
-id|spin_lock_init
-c_func
-(paren
-op_amp
-id|chip-&gt;update_lock
-)paren
-suffix:semicolon
 id|chip-&gt;card
 op_assign
 id|card
@@ -3779,8 +3748,6 @@ id|id
 r_static
 r_int
 id|dev
-op_assign
-l_int|0
 suffix:semicolon
 id|snd_card_t
 op_star

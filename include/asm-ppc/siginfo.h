@@ -229,7 +229,7 @@ mdefine_line|#define __SI_RT&t;&t;0
 DECL|macro|__SI_CODE
 mdefine_line|#define __SI_CODE(T,N)&t;(N)
 macro_line|#endif
-multiline_comment|/*&n; * si_code values&n; * Digital reserves positive values for kernel-generated signals.&n; */
+multiline_comment|/*&n; * si_code values&n; */
 DECL|macro|SI_USER
 mdefine_line|#define SI_USER&t;&t;0&t;&t;/* sent by kill, sigsend, raise */
 DECL|macro|SI_KERNEL
@@ -246,6 +246,8 @@ DECL|macro|SI_SIGIO
 mdefine_line|#define SI_SIGIO&t;-5&t;&t;/* sent by queued SIGIO */
 DECL|macro|SI_TKILL
 mdefine_line|#define SI_TKILL&t;-6&t;&t;/* sent by tkill system call */
+DECL|macro|SI_DETHREAD
+mdefine_line|#define SI_DETHREAD&t;-7&t;&t;/* sent by execve() killing subsidiary threads */
 DECL|macro|SI_FROMUSER
 mdefine_line|#define SI_FROMUSER(siptr)&t;((siptr)-&gt;si_code &lt;= 0)
 DECL|macro|SI_FROMKERNEL

@@ -1,5 +1,5 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: utobject - ACPI object create/delete/size/cache routines&n; *              $Revision: 57 $&n; *&n; *****************************************************************************/
-multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: utobject - ACPI object create/delete/size/cache routines&n; *              $Revision: 68 $&n; *&n; *****************************************************************************/
+multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acinterp.h&quot;
 macro_line|#include &quot;acnamesp.h&quot;
@@ -7,7 +7,7 @@ macro_line|#include &quot;actables.h&quot;
 macro_line|#include &quot;amlcode.h&quot;
 DECL|macro|_COMPONENT
 mdefine_line|#define _COMPONENT          ACPI_UTILITIES
-id|MODULE_NAME
+id|ACPI_MODULE_NAME
 (paren
 l_string|&quot;utobject&quot;
 )paren
@@ -27,7 +27,7 @@ comma
 id|u32
 id|component_id
 comma
-id|acpi_object_type8
+id|acpi_object_type
 id|type
 )paren
 (brace
@@ -35,7 +35,11 @@ id|acpi_operand_object
 op_star
 id|object
 suffix:semicolon
-id|FUNCTION_TRACE_STR
+id|acpi_operand_object
+op_star
+id|second_object
+suffix:semicolon
+id|ACPI_FUNCTION_TRACE_STR
 (paren
 l_string|&quot;Ut_create_internal_object_dbg&quot;
 comma
@@ -64,16 +68,76 @@ op_logical_neg
 id|object
 )paren
 (brace
-multiline_comment|/* Allocation failure */
 id|return_PTR
 (paren
 l_int|NULL
 )paren
 suffix:semicolon
 )brace
+r_switch
+c_cond
+(paren
+id|type
+)paren
+(brace
+r_case
+id|ACPI_TYPE_REGION
+suffix:colon
+r_case
+id|ACPI_TYPE_BUFFER_FIELD
+suffix:colon
+multiline_comment|/* These types require a secondary object */
+id|second_object
+op_assign
+id|acpi_ut_allocate_object_desc_dbg
+(paren
+id|module_name
+comma
+id|line_number
+comma
+id|component_id
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|second_object
+)paren
+(brace
+id|acpi_ut_delete_object_desc
+(paren
+id|object
+)paren
+suffix:semicolon
+id|return_PTR
+(paren
+l_int|NULL
+)paren
+suffix:semicolon
+)brace
+id|second_object-&gt;common.type
+op_assign
+id|INTERNAL_TYPE_EXTRA
+suffix:semicolon
+id|second_object-&gt;common.reference_count
+op_assign
+l_int|1
+suffix:semicolon
+multiline_comment|/* Link the second object to the first */
+id|object-&gt;common.next_object
+op_assign
+id|second_object
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
 multiline_comment|/* Save the object type in the object descriptor */
 id|object-&gt;common.type
 op_assign
+(paren
+id|u8
+)paren
 id|type
 suffix:semicolon
 multiline_comment|/* Init the reference count */
@@ -98,7 +162,7 @@ op_star
 id|object
 )paren
 (brace
-id|PROC_NAME
+id|ACPI_FUNCTION_NAME
 (paren
 l_string|&quot;Ut_valid_internal_object&quot;
 )paren
@@ -127,30 +191,27 @@ id|FALSE
 suffix:semicolon
 )brace
 multiline_comment|/* Check the descriptor type field */
-r_if
+r_switch
 c_cond
 (paren
-op_logical_neg
-id|VALID_DESCRIPTOR_TYPE
+id|ACPI_GET_DESCRIPTOR_TYPE
 (paren
 id|object
-comma
+)paren
+)paren
+(brace
+r_case
 id|ACPI_DESC_TYPE_INTERNAL
-)paren
-)paren
-(brace
-multiline_comment|/* Not an ACPI internal object, do some further checking */
-r_if
-c_cond
+suffix:colon
+multiline_comment|/* The object appears to be a valid acpi_operand_object  */
+r_return
 (paren
-id|VALID_DESCRIPTOR_TYPE
-(paren
-id|object
-comma
+id|TRUE
+)paren
+suffix:semicolon
+r_case
 id|ACPI_DESC_TYPE_NAMED
-)paren
-)paren
-(brace
+suffix:colon
 id|ACPI_DEBUG_PRINT
 (paren
 (paren
@@ -162,19 +223,11 @@ id|object
 )paren
 )paren
 suffix:semicolon
-)brace
-r_else
-r_if
-c_cond
-(paren
-id|VALID_DESCRIPTOR_TYPE
-(paren
-id|object
-comma
+r_break
+suffix:semicolon
+r_case
 id|ACPI_DESC_TYPE_PARSER
-)paren
-)paren
-(brace
+suffix:colon
 id|ACPI_DEBUG_PRINT
 (paren
 (paren
@@ -186,9 +239,10 @@ id|object
 )paren
 )paren
 suffix:semicolon
-)brace
-r_else
-(brace
+r_break
+suffix:semicolon
+r_default
+suffix:colon
 id|ACPI_DEBUG_PRINT
 (paren
 (paren
@@ -200,17 +254,12 @@ id|object
 )paren
 )paren
 suffix:semicolon
+r_break
+suffix:semicolon
 )brace
 r_return
 (paren
 id|FALSE
-)paren
-suffix:semicolon
-)brace
-multiline_comment|/* The object appears to be a valid acpi_operand_object  */
-r_return
-(paren
-id|TRUE
 )paren
 suffix:semicolon
 )brace
@@ -235,7 +284,7 @@ id|acpi_operand_object
 op_star
 id|object
 suffix:semicolon
-id|FUNCTION_TRACE
+id|ACPI_FUNCTION_TRACE
 (paren
 l_string|&quot;Ut_allocate_object_desc_dbg&quot;
 )paren
@@ -254,7 +303,7 @@ op_logical_neg
 id|object
 )paren
 (brace
-id|_REPORT_ERROR
+id|_ACPI_REPORT_ERROR
 (paren
 id|module_name
 comma
@@ -274,9 +323,12 @@ l_int|NULL
 suffix:semicolon
 )brace
 multiline_comment|/* Mark the descriptor type */
-id|object-&gt;common.data_type
-op_assign
+id|ACPI_SET_DESCRIPTOR_TYPE
+(paren
+id|object
+comma
 id|ACPI_DESC_TYPE_INTERNAL
+)paren
 suffix:semicolon
 id|ACPI_DEBUG_PRINT
 (paren
@@ -310,7 +362,7 @@ op_star
 id|object
 )paren
 (brace
-id|FUNCTION_TRACE_PTR
+id|ACPI_FUNCTION_TRACE_PTR
 (paren
 l_string|&quot;Ut_delete_object_desc&quot;
 comma
@@ -321,7 +373,10 @@ multiline_comment|/* Object must be an acpi_operand_object  */
 r_if
 c_cond
 (paren
-id|object-&gt;common.data_type
+id|ACPI_GET_DESCRIPTOR_TYPE
+(paren
+id|object
+)paren
 op_ne
 id|ACPI_DESC_TYPE_INTERNAL
 )paren
@@ -358,7 +413,7 @@ id|acpi_ut_delete_object_cache
 r_void
 )paren
 (brace
-id|FUNCTION_TRACE
+id|ACPI_FUNCTION_TRACE
 (paren
 l_string|&quot;Ut_delete_object_cache&quot;
 )paren
@@ -380,12 +435,12 @@ id|acpi_operand_object
 op_star
 id|internal_object
 comma
-id|u32
+id|ACPI_SIZE
 op_star
 id|obj_length
 )paren
 (brace
-id|u32
+id|ACPI_SIZE
 id|length
 suffix:semicolon
 id|acpi_status
@@ -393,7 +448,7 @@ id|status
 op_assign
 id|AE_OK
 suffix:semicolon
-id|FUNCTION_TRACE_PTR
+id|ACPI_FUNCTION_TRACE_PTR
 (paren
 l_string|&quot;Ut_get_simple_object_size&quot;
 comma
@@ -430,22 +485,19 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|VALID_DESCRIPTOR_TYPE
+id|ACPI_GET_DESCRIPTOR_TYPE
 (paren
 id|internal_object
-comma
-id|ACPI_DESC_TYPE_NAMED
 )paren
+op_eq
+id|ACPI_DESC_TYPE_NAMED
 )paren
 (brace
 multiline_comment|/* Object is a named object (reference), just return the length */
 op_star
 id|obj_length
 op_assign
-(paren
-id|u32
-)paren
-id|ROUND_UP_TO_NATIVE_WORD
+id|ACPI_ROUND_UP_TO_NATIVE_WORD
 (paren
 id|length
 )paren
@@ -498,15 +550,46 @@ suffix:semicolon
 r_case
 id|INTERNAL_TYPE_REFERENCE
 suffix:colon
-multiline_comment|/*&n;&t;&t; * The only type that should be here is internal opcode NAMEPATH_OP -- since&n;&t;&t; * this means an object reference&n;&t;&t; */
-r_if
+r_switch
 c_cond
 (paren
 id|internal_object-&gt;reference.opcode
-op_ne
-id|AML_INT_NAMEPATH_OP
 )paren
 (brace
+r_case
+id|AML_ZERO_OP
+suffix:colon
+r_case
+id|AML_ONE_OP
+suffix:colon
+r_case
+id|AML_ONES_OP
+suffix:colon
+r_case
+id|AML_REVISION_OP
+suffix:colon
+multiline_comment|/* These Constant opcodes will be resolved to Integers */
+r_break
+suffix:semicolon
+r_case
+id|AML_INT_NAMEPATH_OP
+suffix:colon
+multiline_comment|/*&n;&t;&t;&t; * Get the actual length of the full pathname to this object.&n;&t;&t;&t; * The reference will be converted to the pathname to the object&n;&t;&t;&t; */
+id|length
+op_add_assign
+id|ACPI_ROUND_UP_TO_NATIVE_WORD
+(paren
+id|acpi_ns_get_pathname_length
+(paren
+id|internal_object-&gt;reference.node
+)paren
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_default
+suffix:colon
+multiline_comment|/*&n;&t;&t;&t; * No other reference opcodes are supported.&n;&t;&t;&t; * Notably, Locals and Args are not supported, by this may be&n;&t;&t;&t; * required eventually.&n;&t;&t;&t; */
 id|ACPI_DEBUG_PRINT
 (paren
 (paren
@@ -524,19 +607,7 @@ id|status
 op_assign
 id|AE_TYPE
 suffix:semicolon
-)brace
-r_else
-(brace
-multiline_comment|/*&n;&t;&t;&t; * Get the actual length of the full pathname to this object.&n;&t;&t;&t; * The reference will be converted to the pathname to the object&n;&t;&t;&t; */
-id|length
-op_add_assign
-id|ROUND_UP_TO_NATIVE_WORD
-(paren
-id|acpi_ns_get_pathname_length
-(paren
-id|internal_object-&gt;reference.node
-)paren
-)paren
+r_break
 suffix:semicolon
 )brace
 r_break
@@ -567,10 +638,7 @@ multiline_comment|/*&n;&t; * Account for the space required by the object rounde
 op_star
 id|obj_length
 op_assign
-(paren
-id|u32
-)paren
-id|ROUND_UP_TO_NATIVE_WORD
+id|ACPI_ROUND_UP_TO_NATIVE_WORD
 (paren
 id|length
 )paren
@@ -617,7 +685,7 @@ op_star
 )paren
 id|context
 suffix:semicolon
-id|u32
+id|ACPI_SIZE
 id|object_space
 suffix:semicolon
 r_switch
@@ -627,7 +695,7 @@ id|object_type
 )paren
 (brace
 r_case
-l_int|0
+id|ACPI_COPY_TYPE_SIMPLE
 suffix:colon
 multiline_comment|/*&n;&t;&t; * Simple object - just get the size (Null object/entry is handled&n;&t;&t; * here also) and sum it into the running package length&n;&t;&t; */
 id|status
@@ -662,9 +730,9 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-l_int|1
+id|ACPI_COPY_TYPE_PACKAGE
 suffix:colon
-multiline_comment|/* Package - nothing much to do here, let the walk handle it */
+multiline_comment|/* Package object - nothing much to do here, let the walk handle it */
 id|info-&gt;num_packages
 op_increment
 suffix:semicolon
@@ -673,13 +741,6 @@ op_assign
 l_int|NULL
 suffix:semicolon
 r_break
-suffix:semicolon
-r_default
-suffix:colon
-r_return
-(paren
-id|AE_BAD_PARAMETER
-)paren
 suffix:semicolon
 )brace
 r_return
@@ -697,7 +758,7 @@ id|acpi_operand_object
 op_star
 id|internal_object
 comma
-id|u32
+id|ACPI_SIZE
 op_star
 id|obj_length
 )paren
@@ -708,7 +769,7 @@ suffix:semicolon
 id|acpi_pkg_info
 id|info
 suffix:semicolon
-id|FUNCTION_TRACE_PTR
+id|ACPI_FUNCTION_TRACE_PTR
 (paren
 l_string|&quot;Ut_get_package_object_size&quot;
 comma
@@ -741,10 +802,25 @@ op_amp
 id|info
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|ACPI_FAILURE
+(paren
+id|status
+)paren
+)paren
+(brace
+id|return_ACPI_STATUS
+(paren
+id|status
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/*&n;&t; * We have handled all of the objects in all levels of the package.&n;&t; * just add the length of the package objects themselves.&n;&t; * Round up to the next machine word.&n;&t; */
 id|info.length
 op_add_assign
-id|ROUND_UP_TO_NATIVE_WORD
+id|ACPI_ROUND_UP_TO_NATIVE_WORD
 (paren
 r_sizeof
 (paren
@@ -776,7 +852,7 @@ id|acpi_operand_object
 op_star
 id|internal_object
 comma
-id|u32
+id|ACPI_SIZE
 op_star
 id|obj_length
 )paren
@@ -784,7 +860,7 @@ id|obj_length
 id|acpi_status
 id|status
 suffix:semicolon
-id|FUNCTION_ENTRY
+id|ACPI_FUNCTION_ENTRY
 (paren
 )paren
 suffix:semicolon
@@ -792,21 +868,18 @@ r_if
 c_cond
 (paren
 (paren
-id|VALID_DESCRIPTOR_TYPE
+id|ACPI_GET_DESCRIPTOR_TYPE
 (paren
 id|internal_object
-comma
-id|ACPI_DESC_TYPE_INTERNAL
 )paren
+op_eq
+id|ACPI_DESC_TYPE_INTERNAL
 )paren
 op_logical_and
 (paren
-id|IS_THIS_OBJECT_TYPE
-(paren
-id|internal_object
-comma
+id|internal_object-&gt;common.type
+op_eq
 id|ACPI_TYPE_PACKAGE
-)paren
 )paren
 )paren
 (brace

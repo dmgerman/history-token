@@ -1,17 +1,9 @@
 multiline_comment|/*&n; * directory.c&n; *&n; * PURPOSE&n; *&t;Directory related functions&n; *&n; * CONTACTS&n; *&t;E-mail regarding any portion of the Linux UDF file system should be&n; *&t;directed to the development team mailing list (run by majordomo):&n; *&t;&t;linux_udf@hpesjro.fc.hp.com&n; *&n; * COPYRIGHT&n; *&t;This file is distributed under the terms of the GNU General Public&n; *&t;License (GPL). Copies of the GPL can be obtained from:&n; *&t;&t;ftp://prep.ai.mit.edu/pub/gnu/GPL&n; *&t;Each contributing author retains all rights to their own work.&n; */
 macro_line|#include &quot;udfdecl.h&quot;
-macro_line|#if defined(__linux__) &amp;&amp; defined(__KERNEL__)
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
-macro_line|#include &lt;linux/udf_fs.h&gt;
-macro_line|#else
-macro_line|#include &lt;sys/types.h&gt;
-macro_line|#include &lt;stdio.h&gt;
-macro_line|#include &lt;unistd.h&gt;
-macro_line|#endif
-macro_line|#ifdef __KERNEL__
 DECL|function|udf_filead_read
-id|Uint8
+r_uint8
 op_star
 id|udf_filead_read
 c_func
@@ -21,11 +13,11 @@ id|inode
 op_star
 id|dir
 comma
-id|Uint8
+r_uint8
 op_star
 id|tmpad
 comma
-id|Uint8
+r_uint8
 id|ad_size
 comma
 id|lb_addr
@@ -59,7 +51,7 @@ suffix:semicolon
 r_int
 id|block
 suffix:semicolon
-id|Uint8
+r_uint8
 op_star
 id|ad
 suffix:semicolon
@@ -74,7 +66,7 @@ suffix:semicolon
 id|ad
 op_assign
 (paren
-id|Uint8
+r_uint8
 op_star
 )paren
 (paren
@@ -199,7 +191,7 @@ id|memcpy
 c_func
 (paren
 (paren
-id|Uint8
+r_uint8
 op_star
 )paren
 id|ad
@@ -272,7 +264,7 @@ id|memcpy
 c_func
 (paren
 (paren
-id|Uint8
+r_uint8
 op_star
 )paren
 id|ad
@@ -304,7 +296,7 @@ id|ad
 suffix:semicolon
 )brace
 r_struct
-id|FileIdentDesc
+id|fileIdentDesc
 op_star
 DECL|function|udf_fileident_read
 id|udf_fileident_read
@@ -325,7 +317,7 @@ op_star
 id|fibh
 comma
 r_struct
-id|FileIdentDesc
+id|fileIdentDesc
 op_star
 id|cfi
 comma
@@ -333,7 +325,7 @@ id|lb_addr
 op_star
 id|bloc
 comma
-id|Uint32
+r_uint32
 op_star
 id|extoffset
 comma
@@ -341,11 +333,11 @@ id|lb_addr
 op_star
 id|eloc
 comma
-id|Uint32
+r_uint32
 op_star
 id|elen
 comma
-id|Uint32
+r_uint32
 op_star
 id|offset
 comma
@@ -357,7 +349,7 @@ id|bh
 )paren
 (brace
 r_struct
-id|FileIdentDesc
+id|fileIdentDesc
 op_star
 id|fi
 suffix:semicolon
@@ -418,7 +410,11 @@ comma
 l_int|1
 )paren
 op_ne
-id|EXTENT_RECORDED_ALLOCATED
+(paren
+id|EXT_RECORDED_ALLOCATED
+op_rshift
+l_int|30
+)paren
 )paren
 (brace
 r_return
@@ -750,13 +746,13 @@ id|memcpy
 c_func
 (paren
 (paren
-id|Uint8
+r_uint8
 op_star
 )paren
 id|cfi
 comma
 (paren
-id|Uint8
+r_uint8
 op_star
 )paren
 id|fi
@@ -764,7 +760,7 @@ comma
 r_sizeof
 (paren
 r_struct
-id|FileIdentDesc
+id|fileIdentDesc
 )paren
 )paren
 suffix:semicolon
@@ -805,7 +801,11 @@ comma
 l_int|1
 )paren
 op_ne
-id|EXTENT_RECORDED_ALLOCATED
+(paren
+id|EXT_RECORDED_ALLOCATED
+op_rshift
+l_int|30
+)paren
 )paren
 (brace
 r_return
@@ -889,7 +889,7 @@ c_cond
 r_sizeof
 (paren
 r_struct
-id|FileIdentDesc
+id|fileIdentDesc
 )paren
 OG
 op_minus
@@ -903,13 +903,13 @@ id|memcpy
 c_func
 (paren
 (paren
-id|Uint8
+r_uint8
 op_star
 )paren
 id|cfi
 comma
 (paren
-id|Uint8
+r_uint8
 op_star
 )paren
 id|fi
@@ -922,7 +922,7 @@ id|memcpy
 c_func
 (paren
 (paren
-id|Uint8
+r_uint8
 op_star
 )paren
 id|cfi
@@ -934,7 +934,7 @@ comma
 r_sizeof
 (paren
 r_struct
-id|FileIdentDesc
+id|fileIdentDesc
 )paren
 op_plus
 id|fibh-&gt;soffset
@@ -946,7 +946,7 @@ op_assign
 r_sizeof
 (paren
 r_struct
-id|FileIdentDesc
+id|fileIdentDesc
 )paren
 op_plus
 id|cfi-&gt;lengthFileIdent
@@ -993,13 +993,13 @@ id|memcpy
 c_func
 (paren
 (paren
-id|Uint8
+r_uint8
 op_star
 )paren
 id|cfi
 comma
 (paren
-id|Uint8
+r_uint8
 op_star
 )paren
 id|fi
@@ -1007,7 +1007,7 @@ comma
 r_sizeof
 (paren
 r_struct
-id|FileIdentDesc
+id|fileIdentDesc
 )paren
 )paren
 suffix:semicolon
@@ -1017,9 +1017,8 @@ r_return
 id|fi
 suffix:semicolon
 )brace
-macro_line|#endif
 r_struct
-id|FileIdentDesc
+id|fileIdentDesc
 op_star
 DECL|function|udf_get_fileident
 id|udf_get_fileident
@@ -1038,14 +1037,14 @@ id|offset
 )paren
 (brace
 r_struct
-id|FileIdentDesc
+id|fileIdentDesc
 op_star
 id|fi
 suffix:semicolon
 r_int
 id|lengthThisIdent
 suffix:semicolon
-id|Uint8
+r_uint8
 op_star
 id|ptr
 suffix:semicolon
@@ -1066,7 +1065,6 @@ id|offset
 )paren
 )paren
 (brace
-macro_line|#ifdef __KERNEL__
 id|udf_debug
 c_func
 (paren
@@ -1077,7 +1075,6 @@ comma
 id|offset
 )paren
 suffix:semicolon
-macro_line|#endif
 r_return
 l_int|NULL
 suffix:semicolon
@@ -1114,7 +1111,7 @@ id|fi
 op_assign
 (paren
 r_struct
-id|FileIdentDesc
+id|fileIdentDesc
 op_star
 )paren
 id|ptr
@@ -1128,14 +1125,13 @@ c_func
 id|fi-&gt;descTag.tagIdent
 )paren
 op_ne
-id|TID_FILE_IDENT_DESC
+id|TAG_IDENT_FID
 )paren
 (brace
-macro_line|#ifdef __KERNEL__
 id|udf_debug
 c_func
 (paren
-l_string|&quot;0x%x != TID_FILE_IDENT_DESC&bslash;n&quot;
+l_string|&quot;0x%x != TAG_IDENT_FID&bslash;n&quot;
 comma
 id|le16_to_cpu
 c_func
@@ -1159,13 +1155,12 @@ r_int
 r_sizeof
 (paren
 r_struct
-id|FileIdentDesc
+id|fileIdentDesc
 )paren
 comma
 id|bufsize
 )paren
 suffix:semicolon
-macro_line|#endif
 r_return
 l_int|NULL
 suffix:semicolon
@@ -1180,7 +1175,7 @@ op_plus
 r_sizeof
 (paren
 r_struct
-id|FileIdentDesc
+id|fileIdentDesc
 )paren
 )paren
 OG
@@ -1192,7 +1187,7 @@ op_assign
 r_sizeof
 (paren
 r_struct
-id|FileIdentDesc
+id|fileIdentDesc
 )paren
 suffix:semicolon
 )brace
@@ -1202,7 +1197,7 @@ op_assign
 r_sizeof
 (paren
 r_struct
-id|FileIdentDesc
+id|fileIdentDesc
 )paren
 op_plus
 id|fi-&gt;lengthFileIdent
@@ -1268,11 +1263,11 @@ op_star
 id|ext
 suffix:semicolon
 r_struct
-id|FileEntry
+id|fileEntry
 op_star
 id|fe
 suffix:semicolon
-id|Uint8
+r_uint8
 op_star
 id|ptr
 suffix:semicolon
@@ -1290,7 +1285,6 @@ id|offset
 )paren
 )paren
 (brace
-macro_line|#ifdef __KERNEL__
 id|printk
 c_func
 (paren
@@ -1298,7 +1292,6 @@ id|KERN_ERR
 l_string|&quot;udf: udf_get_fileextent() invalidparms&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 r_return
 l_int|NULL
 suffix:semicolon
@@ -1307,7 +1300,7 @@ id|fe
 op_assign
 (paren
 r_struct
-id|FileEntry
+id|fileEntry
 op_star
 )paren
 id|buffer
@@ -1321,14 +1314,13 @@ c_func
 id|fe-&gt;descTag.tagIdent
 )paren
 op_ne
-id|TID_FILE_ENTRY
+id|TAG_IDENT_FE
 )paren
 (brace
-macro_line|#ifdef __KERNEL__
 id|udf_debug
 c_func
 (paren
-l_string|&quot;0x%x != TID_FILE_ENTRY&bslash;n&quot;
+l_string|&quot;0x%x != TAG_IDENT_FE&bslash;n&quot;
 comma
 id|le16_to_cpu
 c_func
@@ -1337,7 +1329,6 @@ id|fe-&gt;descTag.tagIdent
 )paren
 )paren
 suffix:semicolon
-macro_line|#endif
 r_return
 l_int|NULL
 suffix:semicolon
@@ -1345,7 +1336,7 @@ suffix:semicolon
 id|ptr
 op_assign
 (paren
-id|Uint8
+r_uint8
 op_star
 )paren
 (paren
@@ -1434,7 +1425,7 @@ id|short_ad
 op_star
 id|sa
 suffix:semicolon
-id|Uint8
+r_uint8
 op_star
 id|ptr
 suffix:semicolon
@@ -1452,7 +1443,6 @@ id|offset
 )paren
 )paren
 (brace
-macro_line|#ifdef __KERNEL__
 id|printk
 c_func
 (paren
@@ -1460,7 +1450,6 @@ id|KERN_ERR
 l_string|&quot;udf: udf_get_fileshortad() invalidparms&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 r_return
 l_int|NULL
 suffix:semicolon
@@ -1468,7 +1457,7 @@ suffix:semicolon
 id|ptr
 op_assign
 (paren
-id|Uint8
+r_uint8
 op_star
 )paren
 id|buffer
@@ -1564,7 +1553,7 @@ id|long_ad
 op_star
 id|la
 suffix:semicolon
-id|Uint8
+r_uint8
 op_star
 id|ptr
 suffix:semicolon
@@ -1582,7 +1571,6 @@ id|offset
 )paren
 )paren
 (brace
-macro_line|#ifdef __KERNEL__
 id|printk
 c_func
 (paren
@@ -1590,7 +1578,6 @@ id|KERN_ERR
 l_string|&quot;udf: udf_get_filelongad() invalidparms&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 r_return
 l_int|NULL
 suffix:semicolon
@@ -1598,7 +1585,7 @@ suffix:semicolon
 id|ptr
 op_assign
 (paren
-id|Uint8
+r_uint8
 op_star
 )paren
 id|buffer

@@ -1,20 +1,16 @@
 multiline_comment|/*&n; * unicode.c&n; *&n; * PURPOSE&n; *&t;Routines for converting between UTF-8 and OSTA Compressed Unicode.&n; *      Also handles filename mangling&n; *&n; * DESCRIPTION&n; *&t;OSTA Compressed Unicode is explained in the OSTA UDF specification.&n; *&t;&t;http://www.osta.org/&n; *&t;UTF-8 is explained in the IETF RFC XXXX.&n; *&t;&t;ftp://ftp.internic.net/rfc/rfcxxxx.txt&n; *&n; * CONTACTS&n; *&t;E-mail regarding any portion of the Linux UDF file system should be&n; *&t;directed to the development team&squot;s mailing list (run by majordomo):&n; *&t;&t;linux_udf@hpesjro.fc.hp.com&n; *&n; * COPYRIGHT&n; *&t;This file is distributed under the terms of the GNU General Public&n; *&t;License (GPL). Copies of the GPL can be obtained from:&n; *&t;&t;ftp://prep.ai.mit.edu/pub/gnu/GPL&n; *&t;Each contributing author retains all rights to their own work.&n; */
-macro_line|#ifdef __KERNEL__
+macro_line|#include &quot;udfdecl.h&quot;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/string.h&gt;&t;/* for memset */
 macro_line|#include &lt;linux/nls.h&gt;
 macro_line|#include &lt;linux/udf_fs.h&gt;
 macro_line|#include &quot;udf_sb.h&quot;
-macro_line|#else
-macro_line|#include &lt;string.h&gt;
-macro_line|#endif
-macro_line|#include &quot;udfdecl.h&quot;
 DECL|function|udf_ustr_to_dchars
 r_int
 id|udf_ustr_to_dchars
 c_func
 (paren
-id|Uint8
+r_uint8
 op_star
 id|dest
 comma
@@ -85,7 +81,7 @@ r_int
 id|udf_ustr_to_char
 c_func
 (paren
-id|Uint8
+r_uint8
 op_star
 id|dest
 comma
@@ -206,7 +202,7 @@ op_star
 id|dest
 comma
 r_const
-id|Uint8
+r_uint8
 op_star
 id|src
 comma
@@ -299,7 +295,7 @@ op_star
 id|dest
 comma
 r_const
-id|Uint8
+r_uint8
 op_star
 id|src
 comma
@@ -625,14 +621,14 @@ op_star
 id|ocu_i
 )paren
 (brace
-id|Uint8
+r_uint8
 op_star
 id|ocu
 suffix:semicolon
-id|Uint32
+r_uint32
 id|c
 suffix:semicolon
-id|Uint8
+r_uint8
 id|cmp_id
 comma
 id|ocu_len
@@ -706,7 +702,6 @@ l_int|16
 )paren
 )paren
 (brace
-macro_line|#ifdef __KERNEL__
 id|printk
 c_func
 (paren
@@ -718,7 +713,6 @@ comma
 id|ocu_i-&gt;u_name
 )paren
 suffix:semicolon
-macro_line|#endif
 r_return
 l_int|0
 suffix:semicolon
@@ -793,7 +787,7 @@ op_increment
 )braket
 op_assign
 (paren
-id|Uint8
+r_uint8
 )paren
 id|c
 suffix:semicolon
@@ -813,7 +807,7 @@ op_increment
 )braket
 op_assign
 (paren
-id|Uint8
+r_uint8
 )paren
 (paren
 l_int|0xc0
@@ -832,7 +826,7 @@ op_increment
 )braket
 op_assign
 (paren
-id|Uint8
+r_uint8
 )paren
 (paren
 l_int|0x80
@@ -854,7 +848,7 @@ op_increment
 )braket
 op_assign
 (paren
-id|Uint8
+r_uint8
 )paren
 (paren
 l_int|0xe0
@@ -873,7 +867,7 @@ op_increment
 )braket
 op_assign
 (paren
-id|Uint8
+r_uint8
 )paren
 (paren
 l_int|0x80
@@ -896,7 +890,7 @@ op_increment
 )braket
 op_assign
 (paren
-id|Uint8
+r_uint8
 )paren
 (paren
 l_int|0x80
@@ -913,14 +907,6 @@ suffix:semicolon
 id|utf_o-&gt;u_cmpID
 op_assign
 l_int|8
-suffix:semicolon
-id|utf_o-&gt;u_hash
-op_assign
-l_int|0L
-suffix:semicolon
-id|utf_o-&gt;padding
-op_assign
-l_int|0
 suffix:semicolon
 r_return
 id|utf_o-&gt;u_len
@@ -1016,7 +1002,7 @@ op_increment
 id|c
 op_assign
 (paren
-id|Uint8
+r_uint8
 )paren
 id|utf-&gt;u_name
 (braket
@@ -1225,7 +1211,7 @@ l_int|0
 )braket
 op_assign
 (paren
-id|Uint8
+r_uint8
 )paren
 l_int|0x10U
 suffix:semicolon
@@ -1252,7 +1238,7 @@ id|u_len
 )braket
 op_assign
 (paren
-id|Uint8
+r_uint8
 )paren
 (paren
 id|utf_char
@@ -1268,7 +1254,7 @@ id|u_len
 )braket
 op_assign
 (paren
-id|Uint8
+r_uint8
 )paren
 (paren
 id|utf_char
@@ -1285,7 +1271,6 @@ id|utf_cnt
 (brace
 id|error_out
 suffix:colon
-macro_line|#ifdef __KERNEL__
 id|printk
 c_func
 (paren
@@ -1293,7 +1278,6 @@ id|KERN_ERR
 l_string|&quot;udf: bad UTF-8 character&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 r_return
 l_int|0
 suffix:semicolon
@@ -1306,7 +1290,7 @@ l_int|1
 )braket
 op_assign
 (paren
-id|Uint8
+r_uint8
 )paren
 id|u_len
 op_plus
@@ -1318,7 +1302,6 @@ op_plus
 l_int|1
 suffix:semicolon
 )brace
-macro_line|#ifdef __KERNEL__
 DECL|function|udf_CS0toNLS
 r_int
 id|udf_CS0toNLS
@@ -1340,14 +1323,14 @@ op_star
 id|ocu_i
 )paren
 (brace
-id|Uint8
+r_uint8
 op_star
 id|ocu
 suffix:semicolon
-id|Uint32
+r_uint32
 id|c
 suffix:semicolon
-id|Uint8
+r_uint8
 id|cmp_id
 comma
 id|ocu_len
@@ -1516,14 +1499,6 @@ id|utf_o-&gt;u_cmpID
 op_assign
 l_int|8
 suffix:semicolon
-id|utf_o-&gt;u_hash
-op_assign
-l_int|0L
-suffix:semicolon
-id|utf_o-&gt;padding
-op_assign
-l_int|0
-suffix:semicolon
 r_return
 id|utf_o-&gt;u_len
 suffix:semicolon
@@ -1558,7 +1533,7 @@ id|i
 comma
 id|max_val
 suffix:semicolon
-id|Uint16
+r_uint16
 id|uni_char
 suffix:semicolon
 r_int
@@ -1663,7 +1638,7 @@ l_int|0
 )braket
 op_assign
 (paren
-id|Uint8
+r_uint8
 )paren
 l_int|0x10U
 suffix:semicolon
@@ -1686,7 +1661,7 @@ id|u_len
 )braket
 op_assign
 (paren
-id|Uint8
+r_uint8
 )paren
 (paren
 id|uni_char
@@ -1705,7 +1680,7 @@ id|u_len
 )braket
 op_assign
 (paren
-id|Uint8
+r_uint8
 )paren
 (paren
 id|uni_char
@@ -1722,7 +1697,7 @@ l_int|1
 )braket
 op_assign
 (paren
-id|Uint8
+r_uint8
 )paren
 id|u_len
 op_plus
@@ -1744,11 +1719,11 @@ id|super_block
 op_star
 id|sb
 comma
-id|Uint8
+r_uint8
 op_star
 id|sname
 comma
-id|Uint8
+r_uint8
 op_star
 id|dname
 comma
@@ -1907,7 +1882,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#endif
 DECL|macro|ILLEGAL_CHAR_MARK
 mdefine_line|#define ILLEGAL_CHAR_MARK&t;&squot;_&squot;
 DECL|macro|EXT_MARK
@@ -1921,18 +1895,18 @@ r_int
 id|udf_translate_to_linux
 c_func
 (paren
-id|Uint8
+r_uint8
 op_star
 id|newName
 comma
-id|Uint8
+r_uint8
 op_star
 id|udfName
 comma
 r_int
 id|udfLen
 comma
-id|Uint8
+r_uint8
 op_star
 id|fidName
 comma
@@ -1968,11 +1942,11 @@ r_int
 r_int
 id|valueCRC
 suffix:semicolon
-id|Uint8
+r_uint8
 id|curr
 suffix:semicolon
 r_const
-id|Uint8
+r_uint8
 id|hexChar
 (braket
 )braket
@@ -2180,7 +2154,7 @@ c_cond
 id|needsCRC
 )paren
 (brace
-id|Uint8
+r_uint8
 id|ext
 (braket
 id|EXT_SIZE

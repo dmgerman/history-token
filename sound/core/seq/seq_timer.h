@@ -108,22 +108,6 @@ r_int
 r_int
 id|skew_base
 suffix:semicolon
-macro_line|#ifdef SNDRV_SEQ_SYNC_SUPPORT
-DECL|member|sync_start
-r_int
-id|sync_start
-suffix:semicolon
-DECL|member|sync_last_tm
-r_struct
-id|timeval
-id|sync_last_tm
-suffix:semicolon
-DECL|member|sync_time_diff
-r_int
-r_int
-id|sync_time_diff
-suffix:semicolon
-macro_line|#endif
 DECL|member|last_update
 r_struct
 id|timeval
@@ -557,21 +541,5 @@ op_star
 id|tmr
 )paren
 suffix:semicolon
-macro_line|#ifdef SNDRV_SEQ_SYNC_SUPPORT
-id|u64
-id|snd_seq_timer_get_cur_nsec
-c_func
-(paren
-id|seq_timer_t
-op_star
-id|tmr
-comma
-r_struct
-id|timeval
-op_star
-id|tm
-)paren
-suffix:semicolon
-macro_line|#endif
 macro_line|#endif
 eof

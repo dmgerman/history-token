@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * symlink.c&n; *&n; * PURPOSE&n; *&t;Symlink handling routines for the OSTA-UDF(tm) filesystem.&n; *&n; * CONTACTS&n; *&t;E-mail regarding any portion of the Linux UDF file system should be&n; *&t;directed to the development team mailing list (run by majordomo):&n; *&t;&t;linux_udf@hpesjro.fc.hp.com&n; *&n; * COPYRIGHT&n; *&t;This file is distributed under the terms of the GNU General Public&n; *&t;License (GPL). Copies of the GPL can be obtained from:&n; *&t;&t;ftp://prep.ai.mit.edu/pub/gnu/GPL&n; *&t;Each contributing author retains all rights to their own work.&n; *&n; *  (C) 1998-2000 Ben Fennema&n; *  (C) 1999 Stelias Computing Inc &n; *&n; * HISTORY&n; *&n; *  04/16/99 blf  Created.&n; *&n; */
+multiline_comment|/*&n; * symlink.c&n; *&n; * PURPOSE&n; *&t;Symlink handling routines for the OSTA-UDF(tm) filesystem.&n; *&n; * CONTACTS&n; *&t;E-mail regarding any portion of the Linux UDF file system should be&n; *&t;directed to the development team mailing list (run by majordomo):&n; *&t;&t;linux_udf@hpesjro.fc.hp.com&n; *&n; * COPYRIGHT&n; *&t;This file is distributed under the terms of the GNU General Public&n; *&t;License (GPL). Copies of the GPL can be obtained from:&n; *&t;&t;ftp://prep.ai.mit.edu/pub/gnu/GPL&n; *&t;Each contributing author retains all rights to their own work.&n; *&n; *  (C) 1998-2001 Ben Fennema&n; *  (C) 1999 Stelias Computing Inc &n; *&n; * HISTORY&n; *&n; *  04/16/99 blf  Created.&n; *&n; */
 macro_line|#include &quot;udfdecl.h&quot;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
@@ -30,7 +30,7 @@ id|to
 )paren
 (brace
 r_struct
-id|PathComponent
+id|pathComponent
 op_star
 id|pc
 suffix:semicolon
@@ -57,7 +57,7 @@ id|pc
 op_assign
 (paren
 r_struct
-id|PathComponent
+id|pathComponent
 op_star
 )paren
 (paren
@@ -164,7 +164,7 @@ op_add_assign
 r_sizeof
 (paren
 r_struct
-id|PathComponent
+id|pathComponent
 )paren
 op_plus
 id|pc-&gt;lengthComponentIdent
@@ -261,7 +261,7 @@ c_func
 id|inode
 )paren
 op_eq
-id|ICB_FLAG_AD_IN_ICB
+id|ICBTAG_FLAG_AD_IN_ICB
 )paren
 (brace
 id|bh

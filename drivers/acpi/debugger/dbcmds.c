@@ -1,5 +1,5 @@
-multiline_comment|/*******************************************************************************&n; *&n; * Module Name: dbcmds - debug commands and output routines&n; *              $Revision: 66 $&n; *&n; ******************************************************************************/
-multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/*******************************************************************************&n; *&n; * Module Name: dbcmds - debug commands and output routines&n; *              $Revision: 79 $&n; *&n; ******************************************************************************/
+multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acparser.h&quot;
 macro_line|#include &quot;acdispat.h&quot;
@@ -14,7 +14,7 @@ macro_line|#include &quot;acresrc.h&quot;
 macro_line|#ifdef ENABLE_DEBUGGER
 DECL|macro|_COMPONENT
 mdefine_line|#define _COMPONENT          ACPI_DEBUGGER
-id|MODULE_NAME
+id|ACPI_MODULE_NAME
 (paren
 l_string|&quot;dbcmds&quot;
 )paren
@@ -96,7 +96,7 @@ l_int|NULL
 multiline_comment|/* Must be null terminated */
 )brace
 suffix:semicolon
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_db_walk_for_references&n; *&n; * PARAMETERS:  Callback from Walk_namespace&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Check if this namespace object refers to the target object&n; *              that is passed in as the context value.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_db_walk_for_references&n; *&n; * PARAMETERS:  Callback from Walk_namespace&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Check if this namespace object refers to the target object&n; *              that is passed in as the context value.&n; *&n; * Note: Currently doesn&squot;t check subobjects within the Node&squot;s object&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_db_walk_for_references
 id|acpi_db_walk_for_references
@@ -163,7 +163,10 @@ multiline_comment|/* Check for match against the object attached to the node */
 r_if
 c_cond
 (paren
-id|node-&gt;object
+id|acpi_ns_get_attached_object
+(paren
+id|node
+)paren
 op_eq
 id|obj_desc
 )paren
@@ -171,31 +174,6 @@ id|obj_desc
 id|acpi_os_printf
 (paren
 l_string|&quot;Reference at Node-&gt;Object %p [%4.4s]&bslash;n&quot;
-comma
-id|node
-comma
-op_amp
-id|node-&gt;name
-)paren
-suffix:semicolon
-)brace
-multiline_comment|/* Check first child for a match */
-multiline_comment|/* TBD: [Investigate] probably now obsolete with new datastructure */
-r_if
-c_cond
-(paren
-id|node-&gt;child
-op_eq
-(paren
-r_void
-op_star
-)paren
-id|obj_desc
-)paren
-(brace
-id|acpi_os_printf
-(paren
-l_string|&quot;Reference at Node-&gt;Child %p [%4.4s]&bslash;n&quot;
 comma
 id|node
 comma
@@ -227,17 +205,16 @@ suffix:semicolon
 multiline_comment|/* Convert string to object pointer */
 id|obj_desc
 op_assign
+id|ACPI_TO_POINTER
 (paren
-id|acpi_operand_object
-op_star
-)paren
-id|STRTOUL
+id|ACPI_STRTOUL
 (paren
 id|object_arg
 comma
 l_int|NULL
 comma
 l_int|16
+)paren
 )paren
 suffix:semicolon
 multiline_comment|/* Search all nodes in namespace */
@@ -421,7 +398,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|STRNCMP
+id|ACPI_STRNCMP
 (paren
 id|table_arg
 comma
@@ -532,7 +509,7 @@ suffix:semicolon
 multiline_comment|/* Get and verify the breakpoint address */
 id|address
 op_assign
-id|STRTOUL
+id|ACPI_STRTOUL
 (paren
 id|location
 comma
@@ -560,7 +537,7 @@ id|op-&gt;aml_offset
 suffix:semicolon
 )brace
 multiline_comment|/* Save breakpoint in current walk */
-id|walk_state-&gt;method_breakpoint
+id|walk_state-&gt;user_breakpoint
 op_assign
 id|address
 suffix:semicolon
@@ -644,7 +621,7 @@ id|statements
 (brace
 id|num_statements
 op_assign
-id|STRTOUL
+id|ACPI_STRTOUL
 (paren
 id|statements
 comma
@@ -720,16 +697,16 @@ l_int|0x39
 (brace
 id|subtree_entry
 op_assign
+id|ACPI_TO_POINTER
 (paren
-id|acpi_handle
-)paren
-id|STRTOUL
+id|ACPI_STRTOUL
 (paren
 id|start_arg
 comma
 l_int|NULL
 comma
 l_int|16
+)paren
 )paren
 suffix:semicolon
 r_if
@@ -760,15 +737,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
-id|VALID_DESCRIPTOR_TYPE
-(paren
+id|ACPI_GET_DESCRIPTOR_TYPE
 (paren
 id|subtree_entry
 )paren
-comma
+op_ne
 id|ACPI_DESC_TYPE_NAMED
-)paren
 )paren
 (brace
 id|acpi_os_printf
@@ -815,7 +789,7 @@ id|depth_arg
 (brace
 id|max_depth
 op_assign
-id|STRTOUL
+id|ACPI_STRTOUL
 (paren
 id|depth_arg
 comma
@@ -828,7 +802,7 @@ suffix:semicolon
 )brace
 id|acpi_db_set_output_destination
 (paren
-id|DB_DUPLICATE_OUTPUT
+id|ACPI_DB_DUPLICATE_OUTPUT
 )paren
 suffix:semicolon
 id|acpi_os_printf
@@ -841,7 +815,7 @@ suffix:semicolon
 multiline_comment|/* Display the subtree */
 id|acpi_db_set_output_destination
 (paren
-id|DB_REDIRECTABLE_OUTPUT
+id|ACPI_DB_REDIRECTABLE_OUTPUT
 )paren
 suffix:semicolon
 id|acpi_ns_dump_objects
@@ -859,7 +833,7 @@ id|subtree_entry
 suffix:semicolon
 id|acpi_db_set_output_destination
 (paren
-id|DB_CONSOLE_OUTPUT
+id|ACPI_DB_CONSOLE_OUTPUT
 )paren
 suffix:semicolon
 )brace
@@ -895,7 +869,7 @@ op_assign
 (paren
 id|u16
 )paren
-id|STRTOUL
+id|ACPI_STRTOUL
 (paren
 id|owner_arg
 comma
@@ -913,7 +887,7 @@ id|depth_arg
 (brace
 id|max_depth
 op_assign
-id|STRTOUL
+id|ACPI_STRTOUL
 (paren
 id|depth_arg
 comma
@@ -925,7 +899,7 @@ suffix:semicolon
 )brace
 id|acpi_db_set_output_destination
 (paren
-id|DB_DUPLICATE_OUTPUT
+id|ACPI_DB_DUPLICATE_OUTPUT
 )paren
 suffix:semicolon
 id|acpi_os_printf
@@ -938,7 +912,7 @@ suffix:semicolon
 multiline_comment|/* Display the subtree */
 id|acpi_db_set_output_destination
 (paren
-id|DB_REDIRECTABLE_OUTPUT
+id|ACPI_DB_REDIRECTABLE_OUTPUT
 )paren
 suffix:semicolon
 id|acpi_ns_dump_objects
@@ -956,7 +930,7 @@ id|subtree_entry
 suffix:semicolon
 id|acpi_db_set_output_destination
 (paren
-id|DB_CONSOLE_OUTPUT
+id|ACPI_DB_CONSOLE_OUTPUT
 )paren
 suffix:semicolon
 )brace
@@ -1065,7 +1039,7 @@ op_star
 id|obj_desc
 suffix:semicolon
 multiline_comment|/* Validate Type_arg */
-id|STRUPR
+id|ACPI_STRUPR
 (paren
 id|type_arg
 )paren
@@ -1106,7 +1080,7 @@ suffix:semicolon
 multiline_comment|/* Get the index and value */
 id|index
 op_assign
-id|STRTOUL
+id|ACPI_STRTOUL
 (paren
 id|index_arg
 comma
@@ -1117,7 +1091,7 @@ l_int|16
 suffix:semicolon
 id|value
 op_assign
-id|STRTOUL
+id|ACPI_STRTOUL
 (paren
 id|value_arg
 comma
@@ -1332,17 +1306,12 @@ suffix:semicolon
 id|acpi_status
 id|status
 suffix:semicolon
-id|u32
-id|buf_size
-suffix:semicolon
-id|NATIVE_CHAR
+id|acpi_buffer
 id|buffer
-(braket
-l_int|64
-)braket
 suffix:semicolon
 id|obj_desc
 op_assign
+id|acpi_ns_get_attached_object
 (paren
 (paren
 id|acpi_namespace_node
@@ -1350,23 +1319,12 @@ op_star
 )paren
 id|obj_handle
 )paren
-op_member_access_from_pointer
-id|object
-suffix:semicolon
-id|buf_size
-op_assign
-r_sizeof
-(paren
-id|buffer
-)paren
-op_div
-r_sizeof
-(paren
-op_star
-id|buffer
-)paren
 suffix:semicolon
 multiline_comment|/* Get and display the full pathname to this object */
+id|buffer.length
+op_assign
+id|ACPI_ALLOCATE_LOCAL_BUFFER
+suffix:semicolon
 id|status
 op_assign
 id|acpi_ns_handle_to_pathname
@@ -1374,8 +1332,6 @@ id|acpi_ns_handle_to_pathname
 id|obj_handle
 comma
 op_amp
-id|buf_size
-comma
 id|buffer
 )paren
 suffix:semicolon
@@ -1405,7 +1361,12 @@ id|acpi_os_printf
 (paren
 l_string|&quot;%32s&quot;
 comma
-id|buffer
+id|buffer.pointer
+)paren
+suffix:semicolon
+id|ACPI_MEM_FREE
+(paren
+id|buffer.pointer
 )paren
 suffix:semicolon
 multiline_comment|/* Display short information about the object */
@@ -1526,7 +1487,7 @@ op_star
 id|display_count_arg
 )paren
 (brace
-id|acpi_object_type8
+id|acpi_object_type
 id|type
 suffix:semicolon
 multiline_comment|/* Get the object type */
@@ -1560,7 +1521,7 @@ suffix:semicolon
 )brace
 id|acpi_db_set_output_destination
 (paren
-id|DB_DUPLICATE_OUTPUT
+id|ACPI_DB_DUPLICATE_OUTPUT
 )paren
 suffix:semicolon
 id|acpi_os_printf
@@ -1575,7 +1536,7 @@ id|type
 suffix:semicolon
 id|acpi_db_set_output_destination
 (paren
-id|DB_REDIRECTABLE_OUTPUT
+id|ACPI_DB_REDIRECTABLE_OUTPUT
 )paren
 suffix:semicolon
 multiline_comment|/* Walk the namespace from the root */
@@ -1601,7 +1562,7 @@ l_int|NULL
 suffix:semicolon
 id|acpi_db_set_output_destination
 (paren
-id|DB_CONSOLE_OUTPUT
+id|ACPI_DB_CONSOLE_OUTPUT
 )paren
 suffix:semicolon
 r_return
@@ -1647,14 +1608,8 @@ suffix:semicolon
 id|u32
 id|i
 suffix:semicolon
-id|u32
-id|buf_size
-suffix:semicolon
-id|NATIVE_CHAR
+id|acpi_buffer
 id|buffer
-(braket
-l_int|96
-)braket
 suffix:semicolon
 multiline_comment|/* Check for a name match */
 r_for
@@ -1724,18 +1679,9 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/* Get the full pathname to this object */
-id|buf_size
+id|buffer.length
 op_assign
-r_sizeof
-(paren
-id|buffer
-)paren
-op_div
-r_sizeof
-(paren
-op_star
-id|buffer
-)paren
+id|ACPI_ALLOCATE_LOCAL_BUFFER
 suffix:semicolon
 id|status
 op_assign
@@ -1744,8 +1690,6 @@ id|acpi_ns_handle_to_pathname
 id|obj_handle
 comma
 op_amp
-id|buf_size
-comma
 id|buffer
 )paren
 suffix:semicolon
@@ -1772,7 +1716,7 @@ id|acpi_os_printf
 (paren
 l_string|&quot;%32s (%p) - %s&bslash;n&quot;
 comma
-id|buffer
+id|buffer.pointer
 comma
 id|obj_handle
 comma
@@ -1788,6 +1732,11 @@ id|obj_handle
 op_member_access_from_pointer
 id|type
 )paren
+)paren
+suffix:semicolon
+id|ACPI_MEM_FREE
+(paren
+id|buffer.pointer
 )paren
 suffix:semicolon
 )brace
@@ -1810,7 +1759,7 @@ id|name_arg
 r_if
 c_cond
 (paren
-id|STRLEN
+id|ACPI_STRLEN
 (paren
 id|name_arg
 )paren
@@ -1847,7 +1796,7 @@ l_int|NULL
 suffix:semicolon
 id|acpi_db_set_output_destination
 (paren
-id|DB_CONSOLE_OUTPUT
+id|ACPI_DB_CONSOLE_OUTPUT
 )paren
 suffix:semicolon
 r_return
@@ -1866,6 +1815,13 @@ op_star
 id|name
 )paren
 (brace
+id|acpi_status
+id|status
+suffix:semicolon
+id|acpi_namespace_node
+op_star
+id|node
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1895,7 +1851,6 @@ id|acpi_db_prep_namestring
 id|name
 )paren
 suffix:semicolon
-multiline_comment|/* TBD: [Future] Validate scope here */
 r_if
 c_cond
 (paren
@@ -1907,14 +1862,42 @@ op_eq
 l_char|&squot;&bslash;&bslash;&squot;
 )paren
 (brace
-id|STRCPY
+multiline_comment|/* Validate new scope from the root */
+id|status
+op_assign
+id|acpi_ns_get_node_by_path
+(paren
+id|name
+comma
+id|acpi_gbl_root_node
+comma
+id|ACPI_NS_NO_UPSEARCH
+comma
+op_amp
+id|node
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ACPI_FAILURE
+(paren
+id|status
+)paren
+)paren
+(brace
+r_goto
+id|error_exit
+suffix:semicolon
+)brace
+id|ACPI_STRCPY
 (paren
 id|acpi_gbl_db_scope_buf
 comma
 id|name
 )paren
 suffix:semicolon
-id|STRCAT
+id|ACPI_STRCAT
 (paren
 id|acpi_gbl_db_scope_buf
 comma
@@ -1924,14 +1907,42 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|STRCAT
+multiline_comment|/* Validate new scope relative to old scope */
+id|status
+op_assign
+id|acpi_ns_get_node_by_path
+(paren
+id|name
+comma
+id|acpi_gbl_db_scope_node
+comma
+id|ACPI_NS_NO_UPSEARCH
+comma
+op_amp
+id|node
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ACPI_FAILURE
+(paren
+id|status
+)paren
+)paren
+(brace
+r_goto
+id|error_exit
+suffix:semicolon
+)brace
+id|ACPI_STRCAT
 (paren
 id|acpi_gbl_db_scope_buf
 comma
 id|name
 )paren
 suffix:semicolon
-id|STRCAT
+id|ACPI_STRCAT
 (paren
 id|acpi_gbl_db_scope_buf
 comma
@@ -1939,11 +1950,31 @@ l_string|&quot;&bslash;&bslash;&quot;
 )paren
 suffix:semicolon
 )brace
+id|acpi_gbl_db_scope_node
+op_assign
+id|node
+suffix:semicolon
 id|acpi_os_printf
 (paren
 l_string|&quot;New scope: %s&bslash;n&quot;
 comma
 id|acpi_gbl_db_scope_buf
+)paren
+suffix:semicolon
+r_return
+suffix:semicolon
+id|error_exit
+suffix:colon
+id|acpi_os_printf
+(paren
+l_string|&quot;Could not attach scope: %s, %s&bslash;n&quot;
+comma
+id|name
+comma
+id|acpi_format_exception
+(paren
+id|status
+)paren
 )paren
 suffix:semicolon
 )brace
@@ -1970,23 +2001,26 @@ id|return_obj
 suffix:semicolon
 id|acpi_db_set_output_destination
 (paren
-id|DB_REDIRECTABLE_OUTPUT
+id|ACPI_DB_REDIRECTABLE_OUTPUT
 )paren
+suffix:semicolon
+id|acpi_dbg_level
+op_or_assign
+id|ACPI_LV_RESOURCES
 suffix:semicolon
 multiline_comment|/* Convert string to object pointer */
 id|obj_desc
 op_assign
+id|ACPI_TO_POINTER
 (paren
-id|acpi_operand_object
-op_star
-)paren
-id|STRTOUL
+id|ACPI_STRTOUL
 (paren
 id|object_arg
 comma
 l_int|NULL
 comma
 l_int|16
+)paren
 )paren
 suffix:semicolon
 multiline_comment|/* Prepare for a return object of arbitrary size */
@@ -2181,6 +2215,9 @@ id|status
 )paren
 )paren
 suffix:semicolon
+r_goto
+id|get_prs
+suffix:semicolon
 )brace
 r_else
 (brace
@@ -2192,6 +2229,39 @@ op_star
 )paren
 id|acpi_gbl_db_buffer
 )paren
+suffix:semicolon
+)brace
+id|status
+op_assign
+id|acpi_set_current_resources
+(paren
+id|obj_desc
+comma
+op_amp
+id|return_obj
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ACPI_FAILURE
+(paren
+id|status
+)paren
+)paren
+(brace
+id|acpi_os_printf
+(paren
+l_string|&quot;Acpi_set_current_resources failed: %s&bslash;n&quot;
+comma
+id|acpi_format_exception
+(paren
+id|status
+)paren
+)paren
+suffix:semicolon
+r_goto
+id|get_prs
 suffix:semicolon
 )brace
 multiline_comment|/* _PRS */
@@ -2301,7 +2371,7 @@ id|cleanup
 suffix:colon
 id|acpi_db_set_output_destination
 (paren
-id|DB_CONSOLE_OUTPUT
+id|ACPI_DB_CONSOLE_OUTPUT
 )paren
 suffix:semicolon
 r_return

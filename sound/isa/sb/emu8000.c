@@ -14,32 +14,6 @@ macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;sound/control.h&gt;
 macro_line|#include &lt;sound/initval.h&gt;
-macro_line|#if 0
-id|MODULE_AUTHOR
-c_func
-(paren
-l_string|&quot;Takashi Iwai, Steve Ratcliffe&quot;
-)paren
-suffix:semicolon
-id|MODULE_DESCRIPTION
-c_func
-(paren
-l_string|&quot;Routines for control of EMU8000 chip&quot;
-)paren
-suffix:semicolon
-id|MODULE_LICENSE
-c_func
-(paren
-l_string|&quot;GPL&quot;
-)paren
-suffix:semicolon
-id|MODULE_CLASSES
-c_func
-(paren
-l_string|&quot;{sound}&quot;
-)paren
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/*&n; * emu8000 register controls&n; */
 multiline_comment|/*&n; * The following routines read and write registers on the emu8000.  They&n; * should always be called via the EMU8000*READ/WRITE macros and never&n; * directly.  The macros handle the port number and command word.&n; */
 multiline_comment|/* Write a word */
@@ -590,7 +564,7 @@ suffix:semicolon
 multiline_comment|/*&n; */
 r_static
 r_void
-multiline_comment|/*__init*/
+id|__init
 DECL|function|snd_emu8000_read_wait
 id|snd_emu8000_read_wait
 c_func
@@ -644,7 +618,7 @@ suffix:semicolon
 multiline_comment|/*&n; */
 r_static
 r_void
-multiline_comment|/*__init*/
+id|__init
 DECL|function|snd_emu8000_write_wait
 id|snd_emu8000_write_wait
 c_func
@@ -698,7 +672,7 @@ suffix:semicolon
 multiline_comment|/*&n; * detect a card at the given port&n; */
 r_static
 r_int
-multiline_comment|/*__init*/
+id|__init
 DECL|function|snd_emu8000_detect
 id|snd_emu8000_detect
 c_func
@@ -788,7 +762,7 @@ suffix:semicolon
 multiline_comment|/*&n; * intiailize audio channels&n; */
 r_static
 r_void
-multiline_comment|/*__init*/
+id|__init
 DECL|function|init_audio
 id|init_audio
 c_func
@@ -1063,7 +1037,7 @@ suffix:semicolon
 multiline_comment|/*&n; * initialize DMA address&n; */
 r_static
 r_void
-multiline_comment|/*__init*/
+id|__init
 DECL|function|init_dma
 id|init_dma
 c_func
@@ -2186,7 +2160,7 @@ suffix:semicolon
 multiline_comment|/* send an initialization array&n; * Taken from the oss driver, not obvious from the doc how this&n; * is meant to work&n; */
 r_static
 r_void
-multiline_comment|/*__init*/
+id|__init
 DECL|function|send_array
 id|send_array
 c_func
@@ -2334,7 +2308,7 @@ mdefine_line|#define NELEM(arr) (sizeof(arr)/sizeof((arr)[0]))
 multiline_comment|/*&n; * Send initialization arrays to start up, this just follows the&n; * initialisation sequence in the adip.&n; */
 r_static
 r_void
-multiline_comment|/*__init*/
+id|__init
 DECL|function|init_arrays
 id|init_arrays
 c_func
@@ -2463,7 +2437,7 @@ mdefine_line|#define UNIQUE_ID2&t;0x9d53
 multiline_comment|/*&n; * Size the onboard memory.&n; * This is written so as not to need arbitary delays after the write. It&n; * seems that the only way to do this is to use the one channel and keep&n; * reallocating between read and write.&n; */
 r_static
 r_void
-multiline_comment|/*__init*/
+id|__init
 DECL|function|size_dram
 id|size_dram
 c_func
@@ -3075,7 +3049,7 @@ suffix:semicolon
 multiline_comment|/*&n; * The main initialization routine.&n; */
 r_static
 r_void
-multiline_comment|/*__init*/
+id|__init
 DECL|function|snd_emu8000_init_hw
 id|snd_emu8000_init_hw
 c_func
@@ -4069,6 +4043,7 @@ id|SNDRV_EMU8000_CHORUS_NUMBERS
 id|snd_printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;illegal chorus mode %d for uploading&bslash;n&quot;
 comma
 id|mode
@@ -5114,6 +5089,7 @@ id|SNDRV_EMU8000_REVERB_NUMBERS
 id|snd_printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;illegal reverb mode %d for uploading&bslash;n&quot;
 comma
 id|mode
@@ -6102,7 +6078,7 @@ suffix:semicolon
 multiline_comment|/*&n; * create and attach mixer elements for WaveTable treble/bass controls&n; */
 r_static
 r_int
-multiline_comment|/*__init*/
+id|__init
 DECL|function|snd_emu8000_create_mixer
 id|snd_emu8000_create_mixer
 c_func
@@ -6369,8 +6345,8 @@ id|hw
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * initialize and register emu8000 synth device.&n; */
-multiline_comment|/*exported*/
 r_int
+id|__init
 DECL|function|snd_emu8000_new
 id|snd_emu8000_new
 c_func
@@ -6735,13 +6711,6 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * exported stuff&n; */
-DECL|variable|snd_emu8000_new
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|snd_emu8000_new
-)paren
-suffix:semicolon
 DECL|variable|snd_emu8000_poke
 id|EXPORT_SYMBOL
 c_func
@@ -6819,40 +6788,4 @@ c_func
 id|snd_emu8000_update_equalizer
 )paren
 suffix:semicolon
-macro_line|#if 0
-multiline_comment|/*&n; *  INIT part&n; */
-r_static
-r_int
-id|__init
-id|alsa_emu8000_init
-c_func
-(paren
-r_void
-)paren
-(brace
-r_return
-l_int|0
-suffix:semicolon
-)brace
-r_static
-r_void
-id|__exit
-id|alsa_emu8000_exit
-c_func
-(paren
-r_void
-)paren
-(brace
-)brace
-id|module_init
-c_func
-(paren
-id|alsa_emu8000_init
-)paren
-id|module_exit
-c_func
-(paren
-id|alsa_emu8000_exit
-)paren
-macro_line|#endif
 eof

@@ -1677,10 +1677,7 @@ l_string|&quot;ide-scsi: CoD != 0 in idescsi_pc_intr&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
-id|ide_do_reset
-(paren
-id|drive
-)paren
+id|ide_stopped
 suffix:semicolon
 )brace
 r_if
@@ -2021,10 +2018,7 @@ l_string|&quot;ide-scsi: (IO,CoD) != (0,1) while issuing a packet command&bslash
 )paren
 suffix:semicolon
 r_return
-id|ide_do_reset
-(paren
-id|drive
-)paren
+id|ide_stopped
 suffix:semicolon
 )brace
 id|ide_set_handler
