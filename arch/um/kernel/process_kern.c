@@ -1221,10 +1221,6 @@ c_func
 id|disable_hlt
 )paren
 suffix:semicolon
-r_extern
-r_int
-id|signal_frame_size
-suffix:semicolon
 DECL|function|um_kmalloc
 r_void
 op_star

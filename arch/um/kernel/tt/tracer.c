@@ -21,7 +21,6 @@ macro_line|#include &quot;user_util.h&quot;
 macro_line|#include &quot;mem_user.h&quot;
 macro_line|#include &quot;process.h&quot;
 macro_line|#include &quot;kern_util.h&quot;
-macro_line|#include &quot;frame.h&quot;
 macro_line|#include &quot;chan_user.h&quot;
 macro_line|#include &quot;ptrace_user.h&quot;
 macro_line|#include &quot;mode.h&quot;
@@ -854,11 +853,6 @@ r_int
 id|pt_syscall_parm
 comma
 id|local_using_sysemu
-suffix:semicolon
-id|capture_signal_stack
-c_func
-(paren
-)paren
 suffix:semicolon
 id|signal
 c_func
