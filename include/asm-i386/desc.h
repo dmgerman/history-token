@@ -39,6 +39,11 @@ id|packed
 )paren
 )paren
 suffix:semicolon
+DECL|member|pad
+r_int
+r_int
+id|pad
+suffix:semicolon
 )brace
 id|__attribute__
 (paren

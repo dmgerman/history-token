@@ -1247,7 +1247,7 @@ id|user_stack
 id|STACK_SIZE
 )braket
 comma
-id|__KERNEL_DS
+id|__BOOT_DS
 )brace
 suffix:semicolon
 DECL|function|setup_normal_output_buffer
