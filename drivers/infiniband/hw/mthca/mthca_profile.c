@@ -1269,6 +1269,8 @@ id|i
 dot
 id|num
 suffix:semicolon
+r_break
+suffix:semicolon
 r_case
 id|MTHCA_RES_UARC
 suffix:colon
@@ -1300,6 +1302,8 @@ id|request-&gt;num_uar
 )paren
 op_minus
 l_int|1
+suffix:semicolon
+r_break
 suffix:semicolon
 r_default
 suffix:colon
