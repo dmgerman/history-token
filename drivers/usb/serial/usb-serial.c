@@ -2612,6 +2612,8 @@ op_assign
 id|type-&gt;probe
 (paren
 id|serial
+comma
+id|id
 )paren
 suffix:semicolon
 id|module_put
