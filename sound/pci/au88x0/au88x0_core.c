@@ -13812,22 +13812,9 @@ id|codec-&gt;private_data
 suffix:semicolon
 r_int
 r_int
-id|flags
-suffix:semicolon
-r_int
-r_int
 id|lifeboat
 op_assign
 l_int|0
-suffix:semicolon
-id|spin_lock_irqsave
-c_func
-(paren
-op_amp
-id|card-&gt;lock
-comma
-id|flags
-)paren
 suffix:semicolon
 multiline_comment|/* wait for transactions to clear */
 r_while
@@ -13867,15 +13854,6 @@ c_func
 (paren
 id|KERN_ERR
 l_string|&quot;vortex: ac97 codec stuck busy&bslash;n&quot;
-)paren
-suffix:semicolon
-id|spin_unlock_irqrestore
-c_func
-(paren
-op_amp
-id|card-&gt;lock
-comma
-id|flags
 )paren
 suffix:semicolon
 r_return
@@ -13922,15 +13900,6 @@ comma
 id|VORTEX_CODEC_IO
 )paren
 suffix:semicolon
-id|spin_unlock_irqrestore
-c_func
-(paren
-op_amp
-id|card-&gt;lock
-comma
-id|flags
-)paren
-suffix:semicolon
 )brace
 DECL|function|vortex_codec_read
 r_static
@@ -13964,22 +13933,9 @@ comma
 id|data
 suffix:semicolon
 r_int
-r_int
-id|flags
-suffix:semicolon
-r_int
 id|lifeboat
 op_assign
 l_int|0
-suffix:semicolon
-id|spin_lock_irqsave
-c_func
-(paren
-op_amp
-id|card-&gt;lock
-comma
-id|flags
-)paren
 suffix:semicolon
 multiline_comment|/* wait for transactions to clear */
 r_while
@@ -14021,15 +13977,6 @@ id|KERN_ERR
 l_string|&quot;vortex: ac97 codec stuck busy&bslash;n&quot;
 )paren
 suffix:semicolon
-id|spin_unlock_irqrestore
-c_func
-(paren
-op_amp
-id|card-&gt;lock
-comma
-id|flags
-)paren
-suffix:semicolon
 r_return
 l_int|0xffff
 suffix:semicolon
@@ -14059,6 +14006,7 @@ id|read_addr
 )paren
 suffix:semicolon
 multiline_comment|/* wait for address */
+r_do
 (brace
 id|udelay
 c_func
@@ -14092,15 +14040,6 @@ id|KERN_ERR
 l_string|&quot;vortex: ac97 address never arrived&bslash;n&quot;
 )paren
 suffix:semicolon
-id|spin_unlock_irqrestore
-c_func
-(paren
-op_amp
-id|card-&gt;lock
-comma
-id|flags
-)paren
-suffix:semicolon
 r_return
 l_int|0xffff
 suffix:semicolon
@@ -14120,16 +14059,6 @@ id|addr
 op_lshift
 id|VORTEX_CODEC_ADDSHIFT
 )paren
-)paren
-suffix:semicolon
-multiline_comment|/* Unlock. */
-id|spin_unlock_irqrestore
-c_func
-(paren
-op_amp
-id|card-&gt;lock
-comma
-id|flags
 )paren
 suffix:semicolon
 multiline_comment|/* return data. */
