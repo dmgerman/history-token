@@ -2569,7 +2569,7 @@ op_logical_neg
 (paren
 id|urb-&gt;transfer_flags
 op_amp
-id|USB_DISABLE_SPD
+id|URB_SHORT_NOT_OK
 )paren
 )paren
 id|info
