@@ -1120,7 +1120,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|printk
+id|dprintk
 c_func
 (paren
 id|KERN_INFO
@@ -1132,7 +1132,7 @@ comma
 id|maxmult
 )paren
 suffix:semicolon
-id|printk
+id|dprintk
 c_func
 (paren
 id|KERN_INFO
