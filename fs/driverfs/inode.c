@@ -1161,7 +1161,7 @@ r_struct
 id|driver_file_entry
 op_star
 )paren
-id|file-&gt;private_data
+id|file-&gt;f_dentry-&gt;d_fsdata
 suffix:semicolon
 r_if
 c_cond
@@ -1401,7 +1401,7 @@ r_struct
 id|driver_file_entry
 op_star
 )paren
-id|file-&gt;private_data
+id|file-&gt;f_dentry-&gt;d_fsdata
 suffix:semicolon
 r_if
 c_cond
@@ -1721,7 +1721,7 @@ r_struct
 id|driver_file_entry
 op_star
 )paren
-id|inode-&gt;u.generic_ip
+id|filp-&gt;f_dentry-&gt;d_fsdata
 suffix:semicolon
 r_if
 c_cond
@@ -1746,10 +1746,6 @@ c_func
 (paren
 id|dev
 )paren
-suffix:semicolon
-id|filp-&gt;private_data
-op_assign
-id|entry
 suffix:semicolon
 r_return
 l_int|0
@@ -1789,7 +1785,7 @@ r_struct
 id|driver_file_entry
 op_star
 )paren
-id|filp-&gt;private_data
+id|filp-&gt;f_dentry-&gt;d_fsdata
 suffix:semicolon
 r_if
 c_cond
@@ -2731,14 +2727,6 @@ op_logical_neg
 id|error
 )paren
 (brace
-id|dentry-&gt;d_inode-&gt;u.generic_ip
-op_assign
-(paren
-r_void
-op_star
-)paren
-id|entry
-suffix:semicolon
 id|entry-&gt;parent
 op_assign
 id|parent
