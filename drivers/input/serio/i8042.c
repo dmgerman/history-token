@@ -9,9 +9,6 @@ macro_line|#include &lt;linux/reboot.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/serio.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
-DECL|macro|DEBUG
-macro_line|#undef DEBUG
-macro_line|#include &quot;i8042.h&quot;
 id|MODULE_AUTHOR
 c_func
 (paren
@@ -95,6 +92,9 @@ r_static
 r_int
 id|i8042_dumbkbd
 suffix:semicolon
+DECL|macro|DEBUG
+macro_line|#undef DEBUG
+macro_line|#include &quot;i8042.h&quot;
 DECL|variable|i8042_lock
 id|spinlock_t
 id|i8042_lock
@@ -898,7 +898,7 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
-l_string|&quot;%02x &lt;- i8042 (return)&bslash;n&quot;
+l_string|&quot;%02x &lt;- i8042 (return)&quot;
 comma
 id|param
 (braket
@@ -1304,11 +1304,6 @@ id|i8042_kbd_values
 op_assign
 (brace
 dot
-id|irq
-op_assign
-id|I8042_KBD_IRQ
-comma
-dot
 id|irqen
 op_assign
 id|I8042_CTR_KBDINT
@@ -1383,11 +1378,6 @@ id|i8042_values
 id|i8042_aux_values
 op_assign
 (brace
-dot
-id|irq
-op_assign
-id|I8042_AUX_IRQ
-comma
 dot
 id|irqen
 op_assign
@@ -2663,7 +2653,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * Internal loopback test - filters out AT-type i8042&squot;s&n; */
+multiline_comment|/*&n; * Internal loopback test - filters out AT-type i8042&squot;s. Unfortunately&n; * SiS screwed up and their 5597 doesn&squot;t support the LOOP command even&n; * though it has an AUX port.&n; */
 id|param
 op_assign
 l_int|0x5a
@@ -2684,11 +2674,8 @@ id|param
 op_ne
 l_int|0xa5
 )paren
-r_return
-op_minus
-l_int|1
-suffix:semicolon
-multiline_comment|/*&n; * External connection test - filters out AT-soldered PS/2 i8042&squot;s&n; * 0x00 - no error, 0x01-0x03 - clock/data stuck, 0xff - general error&n; * 0xfa - no error on some notebooks which ignore the spec&n; * We ignore general error, since some chips report it even under normal&n; * operation.&n; */
+(brace
+multiline_comment|/*&n; * External connection test - filters out AT-soldered PS/2 i8042&squot;s&n; * 0x00 - no error, 0x01-0x03 - clock/data stuck, 0xff - general error&n; * 0xfa - no error on some notebooks which ignore the spec&n; * Because it&squot;s common for chipsets to return error on perfectly functioning&n; * AUX ports, we test for this only when the LOOP command failed.&n; */
 r_if
 c_cond
 (paren
@@ -2717,6 +2704,7 @@ r_return
 op_minus
 l_int|1
 suffix:semicolon
+)brace
 multiline_comment|/*&n; * Bit assignment test - filters out PS/2 i8042&squot;s in AT mode&n; */
 r_if
 c_cond
@@ -3287,6 +3275,14 @@ c_func
 r_return
 op_minus
 id|EBUSY
+suffix:semicolon
+id|i8042_aux_values.irq
+op_assign
+id|I8042_AUX_IRQ
+suffix:semicolon
+id|i8042_kbd_values.irq
+op_assign
+id|I8042_KBD_IRQ
 suffix:semicolon
 r_if
 c_cond
