@@ -228,7 +228,7 @@ id|SCC_NUM_BASE
 comma
 multiline_comment|/* SCC1 ttyS2 */
 macro_line|#endif
-macro_line|#if !defined(CONFIG_SBC82xx) &amp;&amp; !defined(CONFIG_SCC2_ENET)
+macro_line|#ifndef CONFIG_SCC2_ENET
 (brace
 l_int|0
 comma
