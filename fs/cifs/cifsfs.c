@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *   fs/cifs/cifsfs.c&n; *&n; *   Copyright (C) International Business Machines  Corp., 2002,2003&n; *   Author(s): Steve French (sfrench@us.ibm.com)&n; *&n; *   Common Internet FileSystem (CIFS) client&n; *&n; *   This library is free software; you can redistribute it and/or modify&n; *   it under the terms of the GNU Lesser General Public License as published&n; *   by the Free Software Foundation; either version 2.1 of the License, or&n; *   (at your option) any later version.&n; *&n; *   This library is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See&n; *   the GNU Lesser General Public License for more details.&n; *&n; *   You should have received a copy of the GNU Lesser General Public License&n; *   along with this library; if not, write to the Free Software&n; *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; */
+multiline_comment|/*&n; *   fs/cifs/cifsfs.c&n; *&n; *   Copyright (C) International Business Machines  Corp., 2002,2004&n; *   Author(s): Steve French (sfrench@us.ibm.com)&n; *&n; *   Common Internet FileSystem (CIFS) client&n; *&n; *   This library is free software; you can redistribute it and/or modify&n; *   it under the terms of the GNU Lesser General Public License as published&n; *   by the Free Software Foundation; either version 2.1 of the License, or&n; *   (at your option) any later version.&n; *&n; *   This library is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See&n; *   the GNU Lesser General Public License for more details.&n; *&n; *   You should have received a copy of the GNU Lesser General Public License&n; *   along with this library; if not, write to the Free Software&n; *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; */
 multiline_comment|/* Note that BB means BUGBUG (ie something to fix eventually) */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
@@ -2129,6 +2129,13 @@ id|sendfile
 op_assign
 id|generic_file_sendfile
 comma
+macro_line|#ifdef CIFS_FCNTL
+dot
+id|fcntl
+op_assign
+id|cifs_fcntl
+comma
+macro_line|#endif
 )brace
 suffix:semicolon
 DECL|variable|cifs_dir_ops
@@ -2152,6 +2159,13 @@ id|read
 op_assign
 id|generic_read_dir
 comma
+macro_line|#ifdef CIFS_FCNTL
+dot
+id|fcntl
+op_assign
+id|cifs_fcntl
+comma
+macro_line|#endif
 )brace
 suffix:semicolon
 r_static

@@ -464,6 +464,24 @@ id|filldir_t
 id|filldir
 )paren
 suffix:semicolon
+r_extern
+r_int
+id|cifs_fcntl
+c_func
+(paren
+r_int
+comma
+r_int
+r_int
+comma
+r_int
+r_int
+comma
+r_struct
+id|file
+op_star
+)paren
+suffix:semicolon
 multiline_comment|/* Functions related to dir entries */
 r_extern
 r_struct
