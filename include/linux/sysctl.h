@@ -797,6 +797,12 @@ DECL|enumerator|NET_CORE_DEV_WEIGHT
 id|NET_CORE_DEV_WEIGHT
 op_assign
 l_int|17
+comma
+DECL|enumerator|NET_CORE_SOMAXCONN
+id|NET_CORE_SOMAXCONN
+op_assign
+l_int|18
+comma
 )brace
 suffix:semicolon
 multiline_comment|/* /proc/sys/net/ethernet */

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Version 2.11&n; *&n; * AMD 755/756/766/8111 and nVidia nForce IDE driver for Linux.&n; *&n; * Copyright (c) 2000-2002 Vojtech Pavlik&n; *&n; * Based on the work of:&n; *      Andre Hedrick&n; */
+multiline_comment|/*&n; * Version 2.13&n; *&n; * AMD 755/756/766/8111 and nVidia nForce/2/2s/3/3s IDE driver for Linux.&n; *&n; * Copyright (c) 2000-2002 Vojtech Pavlik&n; *&n; * Based on the work of:&n; *      Andre Hedrick&n; */
 multiline_comment|/*&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of the GNU General Public License version 2 as published by&n; * the Free Software Foundation.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -33,12 +33,16 @@ DECL|macro|AMD_UDMA_66
 mdefine_line|#define AMD_UDMA_66&t;&t;0x02
 DECL|macro|AMD_UDMA_100
 mdefine_line|#define AMD_UDMA_100&t;&t;0x03
+DECL|macro|AMD_UDMA_133
+mdefine_line|#define AMD_UDMA_133&t;&t;0x04
 DECL|macro|AMD_CHECK_SWDMA
 mdefine_line|#define AMD_CHECK_SWDMA&t;&t;0x08
 DECL|macro|AMD_BAD_SWDMA
 mdefine_line|#define AMD_BAD_SWDMA&t;&t;0x10
 DECL|macro|AMD_BAD_FIFO
 mdefine_line|#define AMD_BAD_FIFO&t;&t;0x20
+DECL|macro|AMD_CHECK_SERENADE
+mdefine_line|#define AMD_CHECK_SERENADE&t;0x40
 multiline_comment|/*&n; * AMD SouthBridge chips.&n; */
 DECL|struct|amd_ide_chip
 r_static
@@ -49,11 +53,6 @@ DECL|member|id
 r_int
 r_int
 id|id
-suffix:semicolon
-DECL|member|rev
-r_int
-r_char
-id|rev
 suffix:semicolon
 DECL|member|base
 r_int
@@ -75,8 +74,6 @@ op_assign
 (brace
 id|PCI_DEVICE_ID_AMD_COBRA_7401
 comma
-l_int|0x00
-comma
 l_int|0x40
 comma
 id|AMD_UDMA_33
@@ -84,11 +81,8 @@ op_or
 id|AMD_BAD_SWDMA
 )brace
 comma
-multiline_comment|/* AMD-755 Cobra */
 (brace
 id|PCI_DEVICE_ID_AMD_VIPER_7409
-comma
-l_int|0x00
 comma
 l_int|0x40
 comma
@@ -97,11 +91,8 @@ op_or
 id|AMD_CHECK_SWDMA
 )brace
 comma
-multiline_comment|/* AMD-756 Viper */
 (brace
 id|PCI_DEVICE_ID_AMD_VIPER_7411
-comma
-l_int|0x00
 comma
 l_int|0x40
 comma
@@ -110,51 +101,88 @@ op_or
 id|AMD_BAD_FIFO
 )brace
 comma
-multiline_comment|/* AMD-766 Viper */
 (brace
 id|PCI_DEVICE_ID_AMD_OPUS_7441
 comma
-l_int|0x00
-comma
 l_int|0x40
 comma
 id|AMD_UDMA_100
 )brace
 comma
-multiline_comment|/* AMD-768 Opus */
 (brace
 id|PCI_DEVICE_ID_AMD_8111_IDE
 comma
-l_int|0x00
-comma
 l_int|0x40
 comma
-id|AMD_UDMA_100
+id|AMD_UDMA_133
+op_or
+id|AMD_CHECK_SERENADE
 )brace
 comma
-multiline_comment|/* AMD-8111 */
 (brace
 id|PCI_DEVICE_ID_NVIDIA_NFORCE_IDE
 comma
-l_int|0x00
-comma
 l_int|0x50
 comma
 id|AMD_UDMA_100
 )brace
 comma
-multiline_comment|/* nVidia nForce */
 (brace
 id|PCI_DEVICE_ID_NVIDIA_NFORCE2_IDE
 comma
-l_int|0x00
+l_int|0x50
+comma
+id|AMD_UDMA_133
+)brace
+comma
+(brace
+id|PCI_DEVICE_ID_NVIDIA_NFORCE2S_IDE
 comma
 l_int|0x50
 comma
-id|AMD_UDMA_100
+id|AMD_UDMA_133
 )brace
 comma
-multiline_comment|/* nVidia nForce 2 */
+(brace
+id|PCI_DEVICE_ID_NVIDIA_NFORCE2S_SATA
+comma
+l_int|0x50
+comma
+id|AMD_UDMA_133
+)brace
+comma
+(brace
+id|PCI_DEVICE_ID_NVIDIA_NFORCE3_IDE
+comma
+l_int|0x50
+comma
+id|AMD_UDMA_133
+)brace
+comma
+(brace
+id|PCI_DEVICE_ID_NVIDIA_NFORCE3S_IDE
+comma
+l_int|0x50
+comma
+id|AMD_UDMA_133
+)brace
+comma
+(brace
+id|PCI_DEVICE_ID_NVIDIA_NFORCE3S_SATA
+comma
+l_int|0x50
+comma
+id|AMD_UDMA_133
+)brace
+comma
+(brace
+id|PCI_DEVICE_ID_NVIDIA_NFORCE3S_SATA2
+comma
+l_int|0x50
+comma
+id|AMD_UDMA_133
+)brace
+comma
 (brace
 l_int|0
 )brace
@@ -166,6 +194,12 @@ r_struct
 id|amd_ide_chip
 op_star
 id|amd_config
+suffix:semicolon
+DECL|variable|amd_chipset
+r_static
+id|ide_pci_device_t
+op_star
+id|amd_chipset
 suffix:semicolon
 DECL|variable|amd_80w
 r_static
@@ -209,6 +243,16 @@ comma
 l_int|3
 comma
 l_int|3
+comma
+l_int|3
+comma
+l_int|3
+comma
+l_int|3
+comma
+l_int|3
+comma
+l_int|7
 )brace
 suffix:semicolon
 DECL|variable|amd_udma2cyc
@@ -234,7 +278,7 @@ l_int|2
 comma
 l_int|1
 comma
-l_int|1
+l_int|15
 )brace
 suffix:semicolon
 DECL|variable|amd_dma
@@ -253,6 +297,8 @@ comma
 l_string|&quot;UDMA66&quot;
 comma
 l_string|&quot;UDMA100&quot;
+comma
+l_string|&quot;UDMA133&quot;
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * AMD /proc entry.&n; */
@@ -412,7 +458,7 @@ suffix:semicolon
 id|amd_print
 c_func
 (paren
-l_string|&quot;Driver Version:                     2.11&quot;
+l_string|&quot;Driver Version:                     2.13&quot;
 )paren
 suffix:semicolon
 id|amd_print
@@ -1018,6 +1064,48 @@ suffix:semicolon
 r_continue
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|den
+(braket
+id|i
+)braket
+op_logical_and
+id|uen
+(braket
+id|i
+)braket
+op_logical_and
+id|udma
+(braket
+id|i
+)braket
+op_eq
+l_int|15
+)paren
+(brace
+id|speed
+(braket
+id|i
+)braket
+op_assign
+id|amd_clock
+op_star
+l_int|4
+suffix:semicolon
+id|cycle
+(braket
+id|i
+)braket
+op_assign
+l_int|500000
+op_div
+id|amd_clock
+suffix:semicolon
+r_continue
+suffix:semicolon
+)brace
 id|speed
 (braket
 id|i
@@ -1573,6 +1661,35 @@ l_int|0x03
 suffix:semicolon
 r_break
 suffix:semicolon
+r_case
+id|AMD_UDMA_133
+suffix:colon
+id|t
+op_assign
+id|timing-&gt;udma
+ques
+c_cond
+(paren
+l_int|0xc0
+op_or
+id|amd_cyc2udma
+(braket
+id|FIT
+c_func
+(paren
+id|timing-&gt;udma
+comma
+l_int|1
+comma
+l_int|15
+)paren
+)braket
+)paren
+suffix:colon
+l_int|0x03
+suffix:semicolon
+r_break
+suffix:semicolon
 r_default
 suffix:colon
 r_return
@@ -1774,6 +1891,21 @@ id|t.udma
 op_assign
 l_int|1
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|speed
+op_eq
+id|XFER_UDMA_6
+op_logical_and
+id|amd_clock
+op_le
+l_int|33333
+)paren
+id|t.udma
+op_assign
+l_int|15
+suffix:semicolon
 id|amd_set_speed
 c_func
 (paren
@@ -1955,6 +2087,23 @@ id|XFER_UDMA_100
 suffix:colon
 l_int|0
 )paren
+op_or
+(paren
+id|w80
+op_logical_and
+(paren
+id|amd_config-&gt;flags
+op_amp
+id|AMD_UDMA
+)paren
+op_ge
+id|AMD_UDMA_133
+ques
+c_cond
+id|XFER_UDMA_133
+suffix:colon
+l_int|0
+)paren
 )paren
 suffix:semicolon
 id|amd_set_drive
@@ -2078,6 +2227,9 @@ id|AMD_UDMA
 )paren
 (brace
 r_case
+id|AMD_UDMA_133
+suffix:colon
+r_case
 id|AMD_UDMA_100
 suffix:colon
 id|pci_read_config_byte
@@ -2182,7 +2334,9 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;AMD_IDE: Bios didn&squot;t set cable bits correctly. Enabling workaround.&bslash;n&quot;
+l_string|&quot;%s: BIOS didn&squot;t set cable bits correctly. Enabling workaround.&bslash;n&quot;
+comma
+id|amd_chipset-&gt;name
 )paren
 suffix:semicolon
 id|amd_80w
@@ -2302,6 +2456,28 @@ l_int|0xf0
 )paren
 )paren
 suffix:semicolon
+multiline_comment|/*&n; * Take care of incorrectly wired Serenade mainboards.&n; */
+r_if
+c_cond
+(paren
+(paren
+id|amd_config-&gt;flags
+op_amp
+id|AMD_CHECK_SERENADE
+)paren
+op_logical_and
+id|dev-&gt;subsystem_vendor
+op_eq
+id|PCI_VENDOR_ID_AMD
+op_logical_and
+id|dev-&gt;subsystem_device
+op_eq
+id|PCI_DEVICE_ID_AMD_SERENADE
+)paren
+id|amd_config-&gt;flags
+op_assign
+id|AMD_UDMA_100
+suffix:semicolon
 multiline_comment|/*&n; * Determine the system bus clock.&n; */
 id|amd_clock
 op_assign
@@ -2358,7 +2534,9 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;AMD_IDE: User given PCI clock speed impossible (%d), using 33 MHz instead.&bslash;n&quot;
+l_string|&quot;%s: User given PCI clock speed impossible (%d), using 33 MHz instead.&bslash;n&quot;
+comma
+id|amd_chipset-&gt;name
 comma
 id|amd_clock
 )paren
@@ -2367,7 +2545,9 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;AMD_IDE: Use ide0=ata66 if you want to assume 80-wire cable&bslash;n&quot;
+l_string|&quot;%s: Use ide0=ata66 if you want to assume 80-wire cable&bslash;n&quot;
+comma
+id|amd_chipset-&gt;name
 )paren
 suffix:semicolon
 id|amd_clock
@@ -2391,7 +2571,9 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;AMD_IDE: %s (rev %02x) %s controller on pci%s&bslash;n&quot;
+l_string|&quot;%s: %s (rev %02x) %s controller&bslash;n&quot;
+comma
+id|amd_chipset-&gt;name
 comma
 id|pci_name
 c_func
@@ -2407,12 +2589,6 @@ id|amd_config-&gt;flags
 op_amp
 id|AMD_UDMA
 )braket
-comma
-id|pci_name
-c_func
-(paren
-id|dev
-)paren
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * Register /proc/ide/amd74xx entry&n; */
@@ -2455,7 +2631,7 @@ suffix:semicolon
 )brace
 macro_line|#endif /* DISPLAY_AMD_TIMINGS &amp;&amp; CONFIG_PROC_FS */
 r_return
-l_int|0
+id|dev-&gt;irq
 suffix:semicolon
 )brace
 DECL|function|init_hwif_amd74xx
@@ -2649,9 +2825,7 @@ op_star
 id|id
 )paren
 (brace
-id|ide_pci_device_t
-op_star
-id|d
+id|amd_chipset
 op_assign
 id|amd74xx_chipsets
 op_plus
@@ -2668,7 +2842,7 @@ c_cond
 (paren
 id|dev-&gt;device
 op_ne
-id|d-&gt;device
+id|amd_chipset-&gt;device
 )paren
 id|BUG
 c_func
@@ -2692,7 +2866,7 @@ c_func
 (paren
 id|dev
 comma
-id|d
+id|amd_chipset
 )paren
 suffix:semicolon
 id|MOD_INC_USE_COUNT
@@ -2820,6 +2994,102 @@ comma
 l_int|0
 comma
 l_int|6
+)brace
+comma
+(brace
+id|PCI_VENDOR_ID_NVIDIA
+comma
+id|PCI_DEVICE_ID_NVIDIA_NFORCE2S_IDE
+comma
+id|PCI_ANY_ID
+comma
+id|PCI_ANY_ID
+comma
+l_int|0
+comma
+l_int|0
+comma
+l_int|7
+)brace
+comma
+(brace
+id|PCI_VENDOR_ID_NVIDIA
+comma
+id|PCI_DEVICE_ID_NVIDIA_NFORCE2S_SATA
+comma
+id|PCI_ANY_ID
+comma
+id|PCI_ANY_ID
+comma
+l_int|0
+comma
+l_int|0
+comma
+l_int|8
+)brace
+comma
+(brace
+id|PCI_VENDOR_ID_NVIDIA
+comma
+id|PCI_DEVICE_ID_NVIDIA_NFORCE3_IDE
+comma
+id|PCI_ANY_ID
+comma
+id|PCI_ANY_ID
+comma
+l_int|0
+comma
+l_int|0
+comma
+l_int|9
+)brace
+comma
+(brace
+id|PCI_VENDOR_ID_NVIDIA
+comma
+id|PCI_DEVICE_ID_NVIDIA_NFORCE3S_IDE
+comma
+id|PCI_ANY_ID
+comma
+id|PCI_ANY_ID
+comma
+l_int|0
+comma
+l_int|0
+comma
+l_int|10
+)brace
+comma
+(brace
+id|PCI_VENDOR_ID_NVIDIA
+comma
+id|PCI_DEVICE_ID_NVIDIA_NFORCE3S_SATA
+comma
+id|PCI_ANY_ID
+comma
+id|PCI_ANY_ID
+comma
+l_int|0
+comma
+l_int|0
+comma
+l_int|11
+)brace
+comma
+(brace
+id|PCI_VENDOR_ID_NVIDIA
+comma
+id|PCI_DEVICE_ID_NVIDIA_NFORCE3S_SATA2
+comma
+id|PCI_ANY_ID
+comma
+id|PCI_ANY_ID
+comma
+l_int|0
+comma
+l_int|0
+comma
+l_int|12
 )brace
 comma
 (brace

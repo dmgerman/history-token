@@ -4557,6 +4557,12 @@ id|err
 suffix:semicolon
 )brace
 multiline_comment|/*&n; *&t;Perform a listen. Basically, we allow the protocol to do anything&n; *&t;necessary for a listen, and if that works, we mark the socket as&n; *&t;ready for listening.&n; */
+DECL|variable|sysctl_somaxconn
+r_int
+id|sysctl_somaxconn
+op_assign
+id|SOMAXCONN
+suffix:semicolon
 DECL|function|sys_listen
 id|asmlinkage
 r_int
@@ -4605,11 +4611,11 @@ r_int
 )paren
 id|backlog
 OG
-id|SOMAXCONN
+id|sysctl_somaxconn
 )paren
 id|backlog
 op_assign
-id|SOMAXCONN
+id|sysctl_somaxconn
 suffix:semicolon
 id|err
 op_assign
