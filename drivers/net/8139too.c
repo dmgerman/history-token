@@ -1726,11 +1726,6 @@ id|u8
 id|version
 suffix:semicolon
 multiline_comment|/* from RTL8139C docs */
-DECL|member|RxConfigMask
-id|u32
-id|RxConfigMask
-suffix:semicolon
-multiline_comment|/* should clear the bits supported by this chip */
 DECL|member|flags
 id|u32
 id|flags
@@ -1747,9 +1742,6 @@ l_string|&quot;RTL-8139&quot;
 comma
 l_int|0x40
 comma
-l_int|0xf0fe0040
-comma
-multiline_comment|/* XXX copied from RTL8139A, verify */
 id|HasHltClk
 comma
 )brace
@@ -1759,8 +1751,6 @@ l_string|&quot;RTL-8139 rev K&quot;
 comma
 l_int|0x60
 comma
-l_int|0xf0fe0040
-comma
 id|HasHltClk
 comma
 )brace
@@ -1769,8 +1759,6 @@ comma
 l_string|&quot;RTL-8139A&quot;
 comma
 l_int|0x70
-comma
-l_int|0xf0fe0040
 comma
 id|HasHltClk
 comma
@@ -1782,8 +1770,6 @@ l_string|&quot;RTL-8139B&quot;
 comma
 l_int|0x78
 comma
-l_int|0xf0fc0040
-comma
 id|HasLWake
 comma
 )brace
@@ -1793,9 +1779,6 @@ l_string|&quot;RTL-8130&quot;
 comma
 l_int|0x7C
 comma
-l_int|0xf0fe0040
-comma
-multiline_comment|/* XXX copied from RTL8139A, verify */
 id|HasLWake
 comma
 )brace
@@ -1805,9 +1788,6 @@ l_string|&quot;RTL-8139C&quot;
 comma
 l_int|0x74
 comma
-l_int|0xf0fc0040
-comma
-multiline_comment|/* XXX copied from RTL8139B, verify */
 id|HasLWake
 comma
 )brace
