@@ -5,23 +5,6 @@ mdefine_line|#define _LINUX_FCDEVICE_H
 macro_line|#include &lt;linux/if_fc.h&gt;
 macro_line|#ifdef __KERNEL__
 r_extern
-r_int
-r_int
-id|fc_type_trans
-c_func
-(paren
-r_struct
-id|sk_buff
-op_star
-id|skb
-comma
-r_struct
-id|net_device
-op_star
-id|dev
-)paren
-suffix:semicolon
-r_extern
 r_struct
 id|net_device
 op_star
