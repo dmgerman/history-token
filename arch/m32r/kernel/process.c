@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  linux/arch/m32r/kernel/process.c&n; *    orig : sh&n; *&n; *  Copyright (c) 2001, 2002  Hiroyuki Kondo, Hirokazu Takata,&n; *                            Hitoshi Yamamoto&n; *  Taken from sh version.&n; *    Copyright (C) 1995  Linus Torvalds&n; *    SuperH version:  Copyright (C) 1999, 2000  Niibe Yutaka &amp; Kaz Kojima&n; */
+multiline_comment|/*&n; *  linux/arch/m32r/kernel/process.c&n; *&n; *  Copyright (c) 2001, 2002  Hiroyuki Kondo, Hirokazu Takata,&n; *                            Hitoshi Yamamoto&n; *  Taken from sh version.&n; *    Copyright (C) 1995  Linus Torvalds&n; *    SuperH version:  Copyright (C) 1999, 2000  Niibe Yutaka &amp; Kaz Kojima&n; */
 DECL|macro|DEBUG_PROCESS
 macro_line|#undef DEBUG_PROCESS
 macro_line|#ifdef DEBUG_PROCESS
@@ -949,11 +949,11 @@ id|newsp
 comma
 r_int
 r_int
-id|r2
+id|parent_tidptr
 comma
 r_int
 r_int
-id|r3
+id|child_tidptr
 comma
 r_int
 r_int
@@ -995,9 +995,19 @@ id|regs
 comma
 l_int|0
 comma
-l_int|NULL
+(paren
+r_int
+id|__user
+op_star
+)paren
+id|parent_tidptr
 comma
-l_int|NULL
+(paren
+r_int
+id|__user
+op_star
+)paren
+id|child_tidptr
 )paren
 suffix:semicolon
 )brace

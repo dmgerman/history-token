@@ -2169,7 +2169,7 @@ comma
 l_string|&quot;r&quot;
 (paren
 op_amp
-id|ipilock-&gt;lock
+id|ipilock-&gt;slock
 )paren
 comma
 l_string|&quot;r&quot;
