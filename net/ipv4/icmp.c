@@ -328,10 +328,6 @@ comma
 comma
 )brace
 suffix:semicolon
-r_extern
-r_int
-id|sysctl_ip_default_ttl
-suffix:semicolon
 multiline_comment|/* Control parameters for ECHO replies. */
 DECL|variable|sysctl_icmp_echo_ignore_all
 r_int
@@ -1006,10 +1002,6 @@ id|inet-&gt;tos
 op_assign
 id|skb-&gt;nh.iph-&gt;tos
 suffix:semicolon
-id|inet-&gt;ttl
-op_assign
-id|sysctl_ip_default_ttl
-suffix:semicolon
 id|daddr
 op_assign
 id|ipc.addr
@@ -1534,16 +1526,6 @@ op_member_access_from_pointer
 id|tos
 op_assign
 id|tos
-suffix:semicolon
-id|inet_sk
-c_func
-(paren
-id|icmp_socket-&gt;sk
-)paren
-op_member_access_from_pointer
-id|ttl
-op_assign
-id|sysctl_ip_default_ttl
 suffix:semicolon
 id|ipc.addr
 op_assign
@@ -3895,9 +3877,10 @@ op_member_access_from_pointer
 id|sk
 )paren
 suffix:semicolon
-id|inet-&gt;ttl
+id|inet-&gt;uc_ttl
 op_assign
-id|MAXTTL
+op_minus
+l_int|1
 suffix:semicolon
 id|inet-&gt;pmtudisc
 op_assign

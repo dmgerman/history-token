@@ -21,10 +21,6 @@ r_extern
 r_int
 id|sysctl_ip_dynaddr
 suffix:semicolon
-r_extern
-r_int
-id|sysctl_ip_default_ttl
-suffix:semicolon
 DECL|variable|sysctl_tcp_tw_reuse
 r_int
 id|sysctl_tcp_tw_reuse
@@ -4984,16 +4980,6 @@ id|check
 )paren
 op_div
 l_int|2
-suffix:semicolon
-id|inet_sk
-c_func
-(paren
-id|tcp_socket-&gt;sk
-)paren
-op_member_access_from_pointer
-id|ttl
-op_assign
-id|sysctl_ip_default_ttl
 suffix:semicolon
 id|ip_send_reply
 c_func
@@ -11341,9 +11327,10 @@ c_func
 id|tcp_socket-&gt;sk
 )paren
 op_member_access_from_pointer
-id|ttl
+id|uc_ttl
 op_assign
-id|MAXTTL
+op_minus
+l_int|1
 suffix:semicolon
 multiline_comment|/* Unhash it so that IP input processing does not even&n;&t; * see it, we do not wish this socket to see incoming&n;&t; * packets.&n;&t; */
 id|tcp_socket-&gt;sk-&gt;prot

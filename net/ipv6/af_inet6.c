@@ -785,9 +785,10 @@ op_assign
 id|sysctl_ipv6_bindv6only
 suffix:semicolon
 multiline_comment|/* Init the ipv4 part of the socket since we can have sockets&n;&t; * using v6 API for ipv4.&n;&t; */
-id|inet-&gt;ttl
+id|inet-&gt;uc_ttl
 op_assign
-l_int|64
+op_minus
+l_int|1
 suffix:semicolon
 id|inet-&gt;mc_loop
 op_assign

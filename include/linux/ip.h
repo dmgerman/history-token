@@ -243,11 +243,11 @@ id|__u32
 id|saddr
 suffix:semicolon
 multiline_comment|/* Sending source */
-DECL|member|ttl
+DECL|member|uc_ttl
 r_int
-id|ttl
+id|uc_ttl
 suffix:semicolon
-multiline_comment|/* TTL setting */
+multiline_comment|/* Unicast TTL */
 DECL|member|tos
 r_int
 id|tos

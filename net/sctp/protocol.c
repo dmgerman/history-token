@@ -1915,9 +1915,10 @@ id|newinet-&gt;id
 op_assign
 l_int|0
 suffix:semicolon
-id|newinet-&gt;ttl
+id|newinet-&gt;uc_ttl
 op_assign
-id|sysctl_ip_default_ttl
+op_minus
+l_int|1
 suffix:semicolon
 id|newinet-&gt;mc_loop
 op_assign
@@ -2113,9 +2114,10 @@ c_func
 id|sctp_ctl_socket-&gt;sk
 )paren
 op_member_access_from_pointer
-id|ttl
+id|uc_ttl
 op_assign
-id|MAXTTL
+op_minus
+l_int|1
 suffix:semicolon
 r_return
 l_int|0

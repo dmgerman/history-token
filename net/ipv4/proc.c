@@ -391,10 +391,6 @@ op_star
 id|v
 )paren
 (brace
-r_extern
-r_int
-id|sysctl_ip_default_ttl
-suffix:semicolon
 r_int
 id|i
 suffix:semicolon

@@ -1096,9 +1096,10 @@ id|sk-&gt;backlog_rcv
 op_assign
 id|sk-&gt;prot-&gt;backlog_rcv
 suffix:semicolon
-id|inet-&gt;ttl
+id|inet-&gt;uc_ttl
 op_assign
-id|sysctl_ip_default_ttl
+op_minus
+l_int|1
 suffix:semicolon
 id|inet-&gt;mc_loop
 op_assign

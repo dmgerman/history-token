@@ -2042,9 +2042,10 @@ op_assign
 id|asoc-&gt;peer.primary_addr.v6.sin6_addr
 suffix:semicolon
 multiline_comment|/* Init the ipv4 part of the socket since we can have sockets&n;&t; * using v6 API for ipv4.&n;&t; */
-id|newinet-&gt;ttl
+id|newinet-&gt;uc_ttl
 op_assign
-id|sysctl_ip_default_ttl
+op_minus
+l_int|1
 suffix:semicolon
 id|newinet-&gt;mc_loop
 op_assign
