@@ -7555,7 +7555,7 @@ id|q
 )paren
 (brace
 r_int
-id|nr_queued
+id|nrq
 op_assign
 id|q-&gt;rq.count
 (braket
@@ -7566,11 +7566,13 @@ id|q-&gt;rq.count
 (braket
 id|WRITE
 )braket
+op_minus
+id|q-&gt;in_flight
 suffix:semicolon
 r_if
 c_cond
 (paren
-id|nr_queued
+id|nrq
 op_eq
 id|q-&gt;unplug_thresh
 op_logical_or

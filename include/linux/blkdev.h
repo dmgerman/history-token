@@ -1006,6 +1006,11 @@ DECL|member|refcnt
 id|atomic_t
 id|refcnt
 suffix:semicolon
+DECL|member|in_flight
+r_int
+r_int
+id|in_flight
+suffix:semicolon
 multiline_comment|/*&n;&t; * sg stuff&n;&t; */
 DECL|member|sg_timeout
 r_int
@@ -1057,6 +1062,10 @@ DECL|macro|blk_pc_request
 mdefine_line|#define blk_pc_request(rq)&t;((rq)-&gt;flags &amp; REQ_BLOCK_PC)
 DECL|macro|blk_noretry_request
 mdefine_line|#define blk_noretry_request(rq)&t;((rq)-&gt;flags &amp; REQ_FAILFAST)
+DECL|macro|blk_rq_started
+mdefine_line|#define blk_rq_started(rq)&t;((rq)-&gt;flags &amp; REQ_STARTED)
+DECL|macro|blk_account_rq
+mdefine_line|#define blk_account_rq(rq)&t;(blk_rq_started(rq) &amp;&amp; blk_fs_request(rq))
 DECL|macro|blk_pm_suspend_request
 mdefine_line|#define blk_pm_suspend_request(rq)&t;((rq)-&gt;flags &amp; REQ_PM_SUSPEND)
 DECL|macro|blk_pm_resume_request
