@@ -1,4 +1,4 @@
-multiline_comment|/**************************************************************************&n; * Initio 9100 device driver for Linux.&n; *&n; * Copyright (c) 1994-1998 Initio Corporation&n; * Copyright (c) 1998 Bas Vermeulen &lt;bvermeul@blackstar.xs4all.nl&gt;&n; * All rights reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; see the file COPYING.  If not, write to&n; * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; * --------------------------------------------------------------------------&n; *&n; * Redistribution and use in source and binary forms, with or without&n; * modification, are permitted provided that the following conditions&n; * are met:&n; * 1. Redistributions of source code must retain the above copyright&n; *    notice, this list of conditions, and the following disclaimer,&n; *    without modification, immediately at the beginning of the file.&n; * 2. Redistributions in binary form must reproduce the above copyright&n; *    notice, this list of conditions and the following disclaimer in the&n; *    documentation and/or other materials provided with the distribution.&n; * 3. The name of the author may not be used to endorse or promote products&n; *    derived from this software without specific prior written permission.&n; *&n; * Where this Software is combined with software released under the terms of &n; * the GNU General Public License (&quot;GPL&quot;) and the terms of the GPL would require the &n; * combined work to also be released under the terms of the GPL, the terms&n; * and conditions of this License will apply in addition to those of the&n; * GPL with the exception of any terms or conditions of this License that&n; * conflict with, or are expressly prohibited by, the GPL.&n; *&n; * THIS SOFTWARE IS PROVIDED BY THE AUTHOR AND CONTRIBUTORS ``AS IS&squot;&squot; AND&n; * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE&n; * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE&n; * ARE DISCLAIMED. IN NO EVENT SHALL THE AUTHOR OR CONTRIBUTORS BE LIABLE FOR&n; * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL&n; * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS&n; * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)&n; * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT&n; * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY&n; * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF&n; * SUCH DAMAGE.&n; *&n; ************************************************************************&n;    Module: i91uscsi.c&n;    Description: PCI I/F for INI-910 SCSI Bus Master Controller&n;    Revision History:&n;&t;11/09/94 Tim Chen, Initiali Version 0.90A&n;&t;01/17/95 TC, release ver 1.01&n;&t;02/09/95 TC  modify ReadPCIConfig, try both mechanisms;&n;&t;02/15/95 TC  add support for INI-9100W&n;&t;06/04/96 HC, Change to fit LINUX from jaspci.c&n;&t;11/18/96 HC, Port for tulip&n;&t;07/08/98 hc, Support 0002134A&n;        07/23/98 wh, Change the abort_srb routine.&n;&t;09/16/98 hl, Support ALPHA, Rewrite the returnNumberAdapters&t;&lt;01&gt;&n;&t;12/09/98 bv, Removed unused code, changed tul_se2_wait to&n;&t;&t;     use udelay(30) and tul_do_pause to enable &n;&t;&t;     interrupts for &gt;= 2.1.95&n;&t;12/13/98 bv, Use spinlocks instead of cli() for serialized&n;&t;&t;     access to HCS_Semaph, HCS_FirstAvail and HCS_LastAvail&n;&t;&t;     members of the HCS structure.&n;&t;01/09/98 bv, Fix a deadlock on SMP system.&n;**********************************************************************/
+multiline_comment|/**************************************************************************&n; *&n; * Copyright (c) 1994-1998 Initio Corporation&n; * Copyright (c) 1998 Bas Vermeulen &lt;bvermeul@blackstar.xs4all.nl&gt;&n; * All rights reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; see the file COPYING.  If not, write to&n; * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; * --------------------------------------------------------------------------&n; *&n; * Redistribution and use in source and binary forms, with or without&n; * modification, are permitted provided that the following conditions&n; * are met:&n; * 1. Redistributions of source code must retain the above copyright&n; *    notice, this list of conditions, and the following disclaimer,&n; *    without modification, immediately at the beginning of the file.&n; * 2. Redistributions in binary form must reproduce the above copyright&n; *    notice, this list of conditions and the following disclaimer in the&n; *    documentation and/or other materials provided with the distribution.&n; * 3. The name of the author may not be used to endorse or promote products&n; *    derived from this software without specific prior written permission.&n; *&n; * Where this Software is combined with software released under the terms of &n; * the GNU General Public License (&quot;GPL&quot;) and the terms of the GPL would require the &n; * combined work to also be released under the terms of the GPL, the terms&n; * and conditions of this License will apply in addition to those of the&n; * GPL with the exception of any terms or conditions of this License that&n; * conflict with, or are expressly prohibited by, the GPL.&n; *&n; * THIS SOFTWARE IS PROVIDED BY THE AUTHOR AND CONTRIBUTORS ``AS IS&squot;&squot; AND&n; * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE&n; * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE&n; * ARE DISCLAIMED. IN NO EVENT SHALL THE AUTHOR OR CONTRIBUTORS BE LIABLE FOR&n; * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL&n; * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS&n; * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)&n; * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT&n; * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY&n; * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF&n; * SUCH DAMAGE.&n; *&n; ************************************************************************&n;    Module: i91uscsi.c&n;    Description: PCI I/F for INI-910 SCSI Bus Master Controller&n;    Revision History:&n;&t;11/09/94 Tim Chen, Initiali Version 0.90A&n;&t;01/17/95 TC, release ver 1.01&n;&t;02/09/95 TC  modify ReadPCIConfig, try both mechanisms;&n;&t;02/15/95 TC  add support for INI-9100W&n;&t;06/04/96 HC, Change to fit LINUX from jaspci.c&n;&t;11/18/96 HC, Port for tulip&n;&t;07/08/98 hc, Support 0002134A&n;        07/23/98 wh, Change the abort_srb routine.&n;&t;09/16/98 hl, Support ALPHA, Rewrite the returnNumberAdapters&t;&lt;01&gt;&n;&t;12/09/98 bv, Removed unused code, changed tul_se2_wait to&n;&t;&t;     use udelay(30) and tul_do_pause to enable &n;&t;&t;     interrupts for &gt;= 2.1.95&n;&t;12/13/98 bv, Use spinlocks instead of cli() for serialized&n;&t;&t;     access to HCS_Semaph, HCS_FirstAvail and HCS_LastAvail&n;&t;&t;     members of the HCS structure.&n;&t;01/09/98 bv, Fix a deadlock on SMP system.&n;**********************************************************************/
 DECL|macro|DEBUG_INTERRUPT
 mdefine_line|#define DEBUG_INTERRUPT 0
 DECL|macro|DEBUG_QUEUE
@@ -11,6 +11,7 @@ macro_line|#include &lt;linux/jiffies.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
+macro_line|#include &lt;scsi/scsi.h&gt;
 macro_line|#include &quot;i91uscsi.h&quot;
 multiline_comment|/*--- external functions --*/
 r_static
@@ -1975,9 +1976,7 @@ op_ne
 l_int|0xFF
 )paren
 r_return
-(paren
-id|FAILURE
-)paren
+l_int|1
 suffix:semicolon
 )brace
 r_else
@@ -2140,15 +2139,11 @@ op_assign
 id|bDevice
 suffix:semicolon
 r_return
-(paren
-id|SUCCESSFUL
-)paren
+l_int|0
 suffix:semicolon
 )brace
 r_return
-(paren
-id|FAILURE
-)paren
+l_int|1
 suffix:semicolon
 )brace
 DECL|function|init_i91uAdapter_table
@@ -4251,7 +4246,9 @@ id|HCS
 op_star
 id|pCurHcb
 comma
-id|ULONG
+r_struct
+id|scsi_cmnd
+op_star
 id|srbp
 )paren
 (brace
@@ -4381,11 +4378,6 @@ c_cond
 (paren
 id|pTmpScb-&gt;SCB_Srb
 op_eq
-(paren
-r_int
-r_char
-op_star
-)paren
 id|srbp
 )paren
 (brace
@@ -4532,11 +4524,6 @@ c_cond
 (paren
 id|pTmpScb-&gt;SCB_Srb
 op_eq
-(paren
-r_int
-r_char
-op_star
-)paren
 id|srbp
 )paren
 (brace
@@ -4811,7 +4798,9 @@ id|HCS
 op_star
 id|pCurHcb
 comma
-id|ULONG
+r_struct
+id|scsi_cmnd
+op_star
 id|pSrb
 comma
 r_int
@@ -4951,11 +4940,6 @@ c_cond
 (paren
 id|pScb-&gt;SCB_Srb
 op_eq
-(paren
-r_int
-r_char
-op_star
-)paren
 id|pSrb
 )paren
 r_break
@@ -5056,11 +5040,6 @@ id|SCSI_RESET_SYNCHRONOUS
 (brace
 id|pScb-&gt;SCB_Srb
 op_assign
-(paren
-r_int
-r_char
-op_star
-)paren
 id|pSrb
 suffix:semicolon
 )brace
@@ -5560,7 +5539,7 @@ c_cond
 (paren
 id|pCurScb-&gt;SCB_TaStat
 op_eq
-id|QUEUE_FULL
+id|INI_QUEUE_FULL
 )paren
 (brace
 id|pCurHcb-&gt;HCS_MaxTags
@@ -6298,17 +6277,6 @@ op_eq
 id|AbortCmd
 )paren
 (brace
-id|ULONG
-id|srbp
-suffix:semicolon
-id|srbp
-op_assign
-(paren
-id|ULONG
-)paren
-id|pCurScb-&gt;SCB_Srb
-suffix:semicolon
-multiline_comment|/* 08/03/98 */
 r_if
 c_cond
 (paren
@@ -6317,7 +6285,7 @@ c_func
 (paren
 id|pCurHcb
 comma
-id|srbp
+id|pCurScb-&gt;SCB_Srb
 )paren
 op_ne
 l_int|0
