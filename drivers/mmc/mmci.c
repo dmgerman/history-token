@@ -165,6 +165,7 @@ comma
 id|irqmask
 suffix:semicolon
 r_void
+id|__iomem
 op_star
 id|base
 suffix:semicolon
@@ -341,6 +342,7 @@ id|c
 )paren
 (brace
 r_void
+id|__iomem
 op_star
 id|base
 op_assign
@@ -627,6 +629,7 @@ id|status
 )paren
 (brace
 r_void
+id|__iomem
 op_star
 id|base
 op_assign
@@ -782,6 +785,7 @@ id|remain
 )paren
 (brace
 r_void
+id|__iomem
 op_star
 id|base
 op_assign
@@ -915,6 +919,7 @@ id|status
 )paren
 (brace
 r_void
+id|__iomem
 op_star
 id|base
 op_assign
@@ -1039,6 +1044,7 @@ op_assign
 id|dev_id
 suffix:semicolon
 r_void
+id|__iomem
 op_star
 id|base
 op_assign

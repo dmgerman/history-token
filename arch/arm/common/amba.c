@@ -693,6 +693,7 @@ comma
 id|cid
 suffix:semicolon
 r_void
+id|__iomem
 op_star
 id|tmp
 suffix:semicolon
