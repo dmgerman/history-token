@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: divamnt.c,v 1.1.2.2 2002/10/02 14:38:37 armin Exp $&n; *&n; * Driver for Eicon DIVA Server ISDN cards.&n; * Maint module&n; *&n; * Copyright 2000,2001 by Armin Schindler (mac@melware.de)&n; * Copyright 2000,2001 Cytronics &amp; Melware (info@melware.de)&n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; */
+multiline_comment|/* $Id: divamnt.c,v 1.1.2.4 2001/05/01 15:48:05 armin Exp $&n; *&n; * Driver for Eicon DIVA Server ISDN cards.&n; * Maint module&n; *&n; * Copyright 2000-2002 by Armin Schindler (mac@melware.de)&n; * Copyright 2000-2002 Cytronics &amp; Melware (info@melware.de)&n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -187,10 +187,10 @@ id|buf
 )paren
 suffix:semicolon
 multiline_comment|/*&n; *  helper functions&n; */
+DECL|function|getrev
 r_static
 r_char
 op_star
-DECL|function|getrev
 id|getrev
 c_func
 (paren
@@ -261,6 +261,7 @@ DECL|function|diva_os_malloc
 r_void
 op_star
 id|diva_os_malloc
+c_func
 (paren
 r_int
 r_int
@@ -274,6 +275,7 @@ id|size
 r_return
 (paren
 id|vmalloc
+c_func
 (paren
 id|size
 )paren
@@ -283,6 +285,7 @@ suffix:semicolon
 DECL|function|diva_os_free
 r_void
 id|diva_os_free
+c_func
 (paren
 r_int
 r_int
@@ -300,6 +303,7 @@ id|ptr
 )paren
 (brace
 id|vfree
+c_func
 (paren
 id|ptr
 )paren
@@ -322,12 +326,14 @@ id|size
 )paren
 (brace
 r_return
+(paren
 id|kmalloc
 c_func
 (paren
 id|size
 comma
 id|GFP_KERNEL
+)paren
 )paren
 suffix:semicolon
 )brace
@@ -352,6 +358,7 @@ id|ptr
 )paren
 (brace
 id|kfree
+c_func
 (paren
 id|ptr
 )paren
@@ -362,6 +369,7 @@ multiline_comment|/*&n; * sleep msec&n; */
 DECL|function|diva_os_sleep
 r_void
 id|diva_os_sleep
+c_func
 (paren
 id|dword
 id|mSec
@@ -452,6 +460,7 @@ id|length
 )paren
 (brace
 r_return
+(paren
 id|copy_from_user
 c_func
 (paren
@@ -461,12 +470,14 @@ id|src
 comma
 id|length
 )paren
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * get time&n; */
 DECL|function|diva_os_get_time
 r_void
 id|diva_os_get_time
+c_func
 (paren
 id|dword
 op_star
@@ -482,6 +493,7 @@ id|timeval
 id|tv
 suffix:semicolon
 id|do_gettimeofday
+c_func
 (paren
 op_amp
 id|tv
@@ -701,6 +713,7 @@ c_loop
 id|pmsg
 op_assign
 id|diva_maint_get_message
+c_func
 (paren
 op_amp
 id|size
@@ -723,6 +736,7 @@ id|MSG_TYPE_STRING
 )paren
 (brace
 id|diva_maint_ack_message
+c_func
 (paren
 l_int|1
 comma
@@ -790,7 +804,7 @@ r_break
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n;      The length of message that shoule be read is:&n;      pmsg-&gt;data_length + label(25) + DrvID(2) + byte CR + trailing zero&n;      */
+multiline_comment|/*&n;&t;&t;   The length of message that shoule be read is:&n;&t;&t;   pmsg-&gt;data_length + label(25) + DrvID(2) + byte CR + trailing zero&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -822,6 +836,7 @@ r_int
 )paren
 (brace
 id|diva_maint_ack_message
+c_func
 (paren
 l_int|0
 comma
@@ -1011,6 +1026,7 @@ suffix:semicolon
 id|str_length
 op_assign
 id|sprintf
+c_func
 (paren
 id|pstr
 comma
@@ -1053,6 +1069,7 @@ op_assign
 id|str_msg
 suffix:semicolon
 id|diva_maint_ack_message
+c_func
 (paren
 l_int|1
 comma
@@ -1225,10 +1242,10 @@ id|ENODEV
 )paren
 suffix:semicolon
 )brace
+DECL|function|maint_poll
 r_static
 r_int
 r_int
-DECL|function|maint_poll
 id|maint_poll
 c_func
 (paren
@@ -1271,6 +1288,7 @@ c_cond
 id|file-&gt;private_data
 op_logical_or
 id|diva_dbg_q_length
+c_func
 (paren
 )paren
 )paren
@@ -1288,9 +1306,9 @@ id|mask
 )paren
 suffix:semicolon
 )brace
+DECL|function|maint_open
 r_static
 r_int
-DECL|function|maint_open
 id|maint_open
 c_func
 (paren
@@ -1326,8 +1344,10 @@ id|opened_sem
 )paren
 suffix:semicolon
 r_return
+(paren
 op_minus
 id|EBUSY
+)paren
 suffix:semicolon
 )brace
 id|opened
@@ -1345,12 +1365,14 @@ op_assign
 l_int|0
 suffix:semicolon
 r_return
+(paren
 l_int|0
+)paren
 suffix:semicolon
 )brace
+DECL|function|maint_close
 r_static
 r_int
-DECL|function|maint_close
 id|maint_close
 c_func
 (paren
@@ -1402,7 +1424,9 @@ id|opened_sem
 )paren
 suffix:semicolon
 r_return
+(paren
 l_int|0
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * fops&n; */
@@ -1449,10 +1473,10 @@ op_assign
 id|maint_close
 )brace
 suffix:semicolon
+DECL|function|create_maint_proc
 r_static
 r_int
 id|DIVA_INIT_FUNCTION
-DECL|function|create_maint_proc
 id|create_maint_proc
 c_func
 (paren
@@ -1482,7 +1506,9 @@ op_logical_neg
 id|maint_proc_entry
 )paren
 r_return
+(paren
 l_int|0
+)paren
 suffix:semicolon
 id|maint_proc_entry-&gt;proc_fops
 op_assign
@@ -1494,12 +1520,14 @@ op_assign
 id|THIS_MODULE
 suffix:semicolon
 r_return
+(paren
 l_int|1
+)paren
 suffix:semicolon
 )brace
+DECL|function|remove_maint_proc
 r_static
 r_void
-DECL|function|remove_maint_proc
 id|remove_maint_proc
 c_func
 (paren
@@ -1552,6 +1580,7 @@ id|ppos
 )paren
 (brace
 r_return
+(paren
 id|maint_read_write
 c_func
 (paren
@@ -1560,6 +1589,7 @@ r_char
 op_star
 )paren
 id|buf
+)paren
 )paren
 suffix:semicolon
 )brace
@@ -1587,10 +1617,12 @@ id|ppos
 )paren
 (brace
 r_return
+(paren
 id|maint_read_write
 c_func
 (paren
 id|buf
+)paren
 )paren
 suffix:semicolon
 )brace
@@ -1652,6 +1684,7 @@ c_cond
 id|devfs_handle
 )paren
 id|devfs_unregister
+c_func
 (paren
 id|devfs_handle
 )paren
@@ -1679,6 +1712,7 @@ r_if
 c_cond
 (paren
 id|register_chrdev
+c_func
 (paren
 id|major
 comma
@@ -1699,7 +1733,9 @@ id|DRIVERLNAME
 )paren
 suffix:semicolon
 r_return
+(paren
 l_int|0
+)paren
 suffix:semicolon
 )brace
 id|devfs_handle
@@ -1730,18 +1766,22 @@ l_int|NULL
 )paren
 suffix:semicolon
 r_return
+(paren
 l_int|1
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * wake up reader&n; */
 DECL|function|diva_maint_wakeup_read
 r_void
 id|diva_maint_wakeup_read
+c_func
 (paren
 r_void
 )paren
 (brace
 id|wake_up_interruptible
+c_func
 (paren
 op_amp
 id|msgwaitq
@@ -1779,6 +1819,7 @@ suffix:semicolon
 id|MOD_INC_USE_COUNT
 suffix:semicolon
 id|do_gettimeofday
+c_func
 (paren
 op_amp
 id|start_time
@@ -1963,7 +2004,9 @@ suffix:colon
 id|MOD_DEC_USE_COUNT
 suffix:semicolon
 r_return
+(paren
 id|ret
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n;**  Driver Unload&n;*/

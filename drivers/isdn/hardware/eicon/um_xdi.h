@@ -137,7 +137,7 @@ DECL|typedef|diva_um_idi_ind_t
 id|diva_um_idi_ind_t
 suffix:semicolon
 DECL|macro|DIVA_UM_IDI_IND_FEATURES
-mdefine_line|#define DIVA_UM_IDI_IND_FEATURES  1  /* features indication */
+mdefine_line|#define DIVA_UM_IDI_IND_FEATURES  1&t;/* features indication */
 DECL|macro|DIVA_UM_IDI_IND
 mdefine_line|#define DIVA_UM_IDI_IND           2
 DECL|macro|DIVA_UM_IDI_IND_RC

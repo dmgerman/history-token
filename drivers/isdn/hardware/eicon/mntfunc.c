@@ -16,6 +16,7 @@ mdefine_line|#define DBG_DEFAULT  (DBG_MINIMUM + DL_XLOG + DL_REG)
 r_extern
 r_void
 id|DIVA_DIDD_Read
+c_func
 (paren
 r_void
 op_star
@@ -135,6 +136,7 @@ DECL|function|no_printf
 r_static
 r_void
 id|no_printf
+c_func
 (paren
 r_int
 r_char
@@ -195,6 +197,7 @@ r_static
 r_void
 op_star
 id|didd_callback
+c_func
 (paren
 r_void
 op_star
@@ -322,7 +325,9 @@ suffix:semicolon
 )brace
 )brace
 r_return
+(paren
 l_int|NULL
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * connect to didd&n; */
@@ -454,7 +459,9 @@ op_ne
 l_int|0xff
 )paren
 r_return
+(paren
 l_int|0
+)paren
 suffix:semicolon
 id|notify_handle
 op_assign
@@ -499,7 +506,9 @@ op_ne
 l_int|0xff
 )paren
 r_return
+(paren
 l_int|0
+)paren
 suffix:semicolon
 )brace
 r_else
@@ -542,7 +551,9 @@ suffix:semicolon
 )brace
 )brace
 r_return
+(paren
 id|dadapter
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * disconnect from didd&n; */
@@ -677,8 +688,10 @@ id|dword
 )paren
 (brace
 r_return
+(paren
 op_minus
 id|EFAULT
+)paren
 suffix:semicolon
 )brace
 id|cmd
@@ -739,6 +752,7 @@ c_cond
 id|ret
 op_assign
 id|diva_get_driver_info
+c_func
 (paren
 id|id
 comma
@@ -758,7 +772,6 @@ r_if
 c_cond
 (paren
 id|diva_os_copy_to_user
-c_func
 (paren
 l_int|NULL
 comma
@@ -803,6 +816,7 @@ c_cond
 id|ret
 op_assign
 id|diva_get_driver_dbg_mask
+c_func
 (paren
 id|id
 comma
@@ -821,7 +835,6 @@ r_if
 c_cond
 (paren
 id|diva_os_copy_to_user
-c_func
 (paren
 l_int|NULL
 comma
@@ -866,6 +879,7 @@ c_cond
 id|ret
 op_assign
 id|diva_set_driver_dbg_mask
+c_func
 (paren
 id|id
 comma
@@ -909,6 +923,7 @@ c_cond
 id|pmsg
 op_assign
 id|diva_maint_get_message
+c_func
 (paren
 op_amp
 id|size
@@ -928,6 +943,7 @@ id|mask
 )paren
 (brace
 id|diva_maint_ack_message
+c_func
 (paren
 l_int|0
 comma
@@ -961,6 +977,7 @@ id|size
 )paren
 (brace
 id|diva_maint_ack_message
+c_func
 (paren
 l_int|0
 comma
@@ -981,6 +998,7 @@ op_assign
 id|size
 suffix:semicolon
 id|memcpy
+c_func
 (paren
 id|pbuf
 comma
@@ -990,6 +1008,7 @@ id|size
 )paren
 suffix:semicolon
 id|diva_maint_ack_message
+c_func
 (paren
 l_int|1
 comma
@@ -1001,7 +1020,6 @@ r_if
 c_cond
 (paren
 id|diva_os_copy_to_user
-c_func
 (paren
 l_int|NULL
 comma
@@ -1122,6 +1140,7 @@ op_logical_neg
 id|pmsg
 op_assign
 id|diva_maint_get_message
+c_func
 (paren
 op_amp
 id|size
@@ -1148,6 +1167,7 @@ id|mask
 )paren
 (brace
 id|diva_maint_ack_message
+c_func
 (paren
 l_int|0
 comma
@@ -1158,7 +1178,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-multiline_comment|/*&n;          Write entry length&n;          */
+multiline_comment|/*&n;&t;&t;&t;&t;   Write entry length&n;&t;&t;&t;&t; */
 id|pbuf
 (braket
 id|written
@@ -1201,8 +1221,9 @@ op_increment
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/*&n;          Write message&n;          */
+multiline_comment|/*&n;&t;&t;&t;&t;   Write message&n;&t;&t;&t;&t; */
 id|memcpy
+c_func
 (paren
 op_amp
 id|pbuf
@@ -1216,6 +1237,7 @@ id|size
 )paren
 suffix:semicolon
 id|diva_maint_ack_message
+c_func
 (paren
 l_int|1
 comma
@@ -1455,7 +1477,9 @@ l_string|&quot;init: Can not alloc trace buffer&quot;
 )paren
 suffix:semicolon
 r_return
+(paren
 l_int|0
+)paren
 suffix:semicolon
 )brace
 )brace
@@ -1463,6 +1487,7 @@ r_if
 c_cond
 (paren
 id|diva_maint_init
+c_func
 (paren
 op_star
 id|buffer
@@ -1504,7 +1529,9 @@ l_string|&quot;init: maint init failed&quot;
 )paren
 suffix:semicolon
 r_return
+(paren
 l_int|0
+)paren
 suffix:semicolon
 )brace
 r_if
@@ -1548,11 +1575,15 @@ id|buffer
 suffix:semicolon
 )brace
 r_return
+(paren
 l_int|0
+)paren
 suffix:semicolon
 )brace
 r_return
+(paren
 l_int|1
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n; *  exit&n; */
@@ -1578,6 +1609,7 @@ r_while
 c_loop
 (paren
 id|diva_mnt_shutdown_xdi_adapters
+c_func
 (paren
 )paren
 op_logical_and
@@ -1604,6 +1636,7 @@ c_cond
 id|buffer
 op_assign
 id|diva_maint_finit
+c_func
 (paren
 )paren
 )paren

@@ -78,6 +78,7 @@ suffix:semicolon
 r_extern
 r_void
 id|callback
+c_func
 (paren
 id|ENTITY
 op_star
@@ -110,6 +111,7 @@ suffix:semicolon
 r_extern
 id|word
 id|api_put
+c_func
 (paren
 id|APPL
 op_star
@@ -142,6 +144,7 @@ suffix:semicolon
 r_static
 r_void
 id|DIRequest
+c_func
 (paren
 id|ENTITY
 op_star
@@ -250,6 +253,7 @@ suffix:semicolon
 r_static
 r_void
 id|no_printf
+c_func
 (paren
 r_int
 r_char
@@ -271,6 +275,7 @@ macro_line|#include &quot;debuglib.c&quot;
 DECL|function|xlog
 r_void
 id|xlog
+c_func
 (paren
 r_char
 op_star
@@ -293,6 +298,7 @@ id|DL_XLOG
 )paren
 (brace
 id|va_start
+c_func
 (paren
 id|ap
 comma
@@ -305,7 +311,10 @@ c_cond
 id|myDriverDebugHandle.dbg_irq
 )paren
 (brace
-id|myDriverDebugHandle.dbg_irq
+id|myDriverDebugHandle
+dot
+id|dbg_irq
+c_func
 (paren
 id|myDriverDebugHandle.id
 comma
@@ -324,7 +333,10 @@ c_cond
 id|myDriverDebugHandle.dbg_old
 )paren
 (brace
-id|myDriverDebugHandle.dbg_old
+id|myDriverDebugHandle
+dot
+id|dbg_old
+c_func
 (paren
 id|myDriverDebugHandle.id
 comma
@@ -335,6 +347,7 @@ id|ap
 suffix:semicolon
 )brace
 id|va_end
+c_func
 (paren
 id|ap
 )paren
@@ -356,7 +369,9 @@ id|ctrl
 )paren
 (brace
 r_return
+(paren
 id|ctrl-&gt;serial
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * stop debugging&n; */
@@ -398,6 +413,7 @@ DECL|function|no_printf
 r_static
 r_void
 id|no_printf
+c_func
 (paren
 r_int
 r_char
@@ -589,6 +605,7 @@ id|diva_os_spin_lock_magic_t
 id|old_irql
 suffix:semicolon
 id|diva_os_enter_spin_lock
+c_func
 (paren
 op_amp
 id|ll_lock
@@ -636,6 +653,7 @@ id|p-&gt;next
 suffix:semicolon
 )brace
 id|diva_os_leave_spin_lock
+c_func
 (paren
 op_amp
 id|ll_lock
@@ -647,13 +665,15 @@ l_string|&quot;find free id&quot;
 )paren
 suffix:semicolon
 r_return
+(paren
 id|num
+)paren
 suffix:semicolon
 id|next_id
 suffix:colon
-suffix:semicolon
 )brace
 id|diva_os_leave_spin_lock
+c_func
 (paren
 op_amp
 id|ll_lock
@@ -665,7 +685,9 @@ l_string|&quot;find free id&quot;
 )paren
 suffix:semicolon
 r_return
+(paren
 l_int|999
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * find a card structure by controller number&n; */
@@ -688,6 +710,7 @@ id|diva_os_spin_lock_magic_t
 id|old_irql
 suffix:semicolon
 id|diva_os_enter_spin_lock
+c_func
 (paren
 op_amp
 id|ll_lock
@@ -720,6 +743,7 @@ id|controller
 )paren
 (brace
 id|diva_os_leave_spin_lock
+c_func
 (paren
 op_amp
 id|ll_lock
@@ -740,6 +764,7 @@ id|p-&gt;next
 suffix:semicolon
 )brace
 id|diva_os_leave_spin_lock
+c_func
 (paren
 op_amp
 id|ll_lock
@@ -827,7 +852,6 @@ id|dword
 id|p
 )braket
 )paren
-(brace
 r_return
 id|appl-&gt;xbuffer_internal
 (braket
@@ -837,7 +861,6 @@ id|dword
 id|p
 )braket
 suffix:semicolon
-)brace
 r_return
 id|appl-&gt;xbuffer_ptr
 (braket
@@ -1009,10 +1032,8 @@ c_cond
 op_logical_neg
 id|appl
 )paren
-(brace
 r_return
 suffix:semicolon
-)brace
 id|DBG_PRV1
 c_func
 (paren
@@ -1062,13 +1083,11 @@ l_int|8
 op_eq
 l_int|0x82
 )paren
-(brace
 id|Number
 op_assign
 id|appl-&gt;Number
 op_increment
 suffix:semicolon
-)brace
 id|WRITE_WORD
 c_func
 (paren
@@ -1192,6 +1211,7 @@ id|dword
 )paren
 suffix:semicolon
 id|WRITE_WORD
+c_func
 (paren
 id|write
 comma
@@ -1286,7 +1306,6 @@ suffix:semicolon
 id|j
 op_increment
 )paren
-(brace
 op_star
 id|write
 op_increment
@@ -1296,7 +1315,6 @@ id|string
 id|j
 )braket
 suffix:semicolon
-)brace
 r_break
 suffix:semicolon
 )brace
@@ -1423,6 +1441,7 @@ id|msg.info.data_b3_ind.Data
 )paren
 suffix:semicolon
 id|memcpy
+c_func
 (paren
 id|write
 op_plus
@@ -1455,6 +1474,7 @@ id|command
 r_default
 suffix:colon
 id|xlog
+c_func
 (paren
 l_string|&quot;&bslash;x00&bslash;x02&quot;
 comma
@@ -1481,6 +1501,7 @@ op_amp
 id|DL_BLK
 )paren
 id|xlog
+c_func
 (paren
 l_string|&quot;&bslash;x00&bslash;x02&quot;
 comma
@@ -1506,6 +1527,7 @@ id|DL_BLK
 )paren
 (brace
 id|xlog
+c_func
 (paren
 l_string|&quot;&bslash;x00&bslash;x02&quot;
 comma
@@ -1542,7 +1564,9 @@ c_func
 r_char
 op_star
 )paren
-id|msg.info.data_b3_ind.Data
+id|msg.info.data_b3_ind
+dot
+id|Data
 )paren
 op_plus
 id|i
@@ -1579,7 +1603,7 @@ id|DL_PRV0
 )paren
 r_break
 suffix:semicolon
-singleline_comment|// not more if not explicitely requested
+multiline_comment|/* not more if not explicitely requested */
 )brace
 )brace
 r_break
@@ -1664,7 +1688,7 @@ id|i
 comma
 id|k
 suffix:semicolon
-macro_line|#endif /* IMPLEMENT_LINE_INTERCONNECT2 */
+macro_line|#endif&t;&t;&t;&t;/* IMPLEMENT_LINE_INTERCONNECT2 */
 id|a
 op_assign
 op_amp
@@ -1685,7 +1709,6 @@ c_cond
 (paren
 id|a-&gt;li_config.pri
 )paren
-(brace
 id|diva_os_free
 c_func
 (paren
@@ -1695,7 +1718,6 @@ id|a-&gt;li_config.pri
 )paren
 suffix:semicolon
 )brace
-)brace
 r_else
 (brace
 r_if
@@ -1703,7 +1725,6 @@ c_cond
 (paren
 id|a-&gt;li_config.bri
 )paren
-(brace
 id|diva_os_free
 c_func
 (paren
@@ -1713,8 +1734,7 @@ id|a-&gt;li_config.bri
 )paren
 suffix:semicolon
 )brace
-)brace
-macro_line|#endif /* IMPLEMENT_LINE_INTERCONNECT */
+macro_line|#endif&t;&t;&t;&t;/* IMPLEMENT_LINE_INTERCONNECT */
 macro_line|#if IMPLEMENT_LINE_INTERCONNECT2
 id|k
 op_assign
@@ -1903,13 +1923,12 @@ op_sub_assign
 id|a-&gt;li_channels
 suffix:semicolon
 )brace
-macro_line|#endif /* IMPLEMENT_LINE_INTERCONNECT2 */
+macro_line|#endif&t;&t;&t;&t;/* IMPLEMENT_LINE_INTERCONNECT2 */
 r_if
 c_cond
 (paren
 id|a-&gt;plci
 )paren
-(brace
 id|diva_os_free
 c_func
 (paren
@@ -1918,7 +1937,6 @@ comma
 id|a-&gt;plci
 )paren
 suffix:semicolon
-)brace
 id|memset
 c_func
 (paren
@@ -1978,6 +1996,7 @@ id|diva_os_spin_lock_magic_t
 id|old_irql
 suffix:semicolon
 id|diva_os_enter_spin_lock
+c_func
 (paren
 op_amp
 id|ll_lock
@@ -2056,6 +2075,7 @@ id|last
 suffix:semicolon
 )brace
 id|diva_os_leave_spin_lock
+c_func
 (paren
 op_amp
 id|ll_lock
@@ -2091,6 +2111,7 @@ id|diva_os_spin_lock_magic_t
 id|old_irql
 suffix:semicolon
 id|diva_os_enter_spin_lock
+c_func
 (paren
 op_amp
 id|ll_lock
@@ -2204,6 +2225,7 @@ id|card-&gt;next
 suffix:semicolon
 )brace
 id|diva_os_leave_spin_lock
+c_func
 (paren
 op_amp
 id|ll_lock
@@ -2244,6 +2266,7 @@ id|e-&gt;Ind
 )paren
 )paren
 id|diva_os_enter_spin_lock
+c_func
 (paren
 op_amp
 id|api_lock
@@ -2261,6 +2284,7 @@ id|e
 )paren
 suffix:semicolon
 id|diva_os_leave_spin_lock
+c_func
 (paren
 op_amp
 id|api_lock
@@ -2332,7 +2356,7 @@ suffix:semicolon
 r_int
 id|j
 suffix:semicolon
-macro_line|#endif /* IMPLEMENT_LINE_INTERCONNECT2 */
+macro_line|#endif&t;&t;&t;&t;/* IMPLEMENT_LINE_INTERCONNECT2 */
 r_if
 c_cond
 (paren
@@ -2365,7 +2389,9 @@ l_string|&quot;diva_add_card: failed to allocate card struct.&quot;
 )paren
 )paren
 r_return
+(paren
 l_int|0
+)paren
 suffix:semicolon
 )brace
 id|memset
@@ -2498,7 +2524,9 @@ id|card
 )paren
 suffix:semicolon
 r_return
+(paren
 l_int|0
+)paren
 suffix:semicolon
 )brace
 id|card-&gt;Id
@@ -2774,7 +2802,9 @@ id|DIVA_CAPI_ADAPTER
 )paren
 suffix:semicolon
 r_return
+(paren
 l_int|0
+)paren
 suffix:semicolon
 )brace
 id|memset
@@ -2996,19 +3026,19 @@ id|a-&gt;profile.Global_Options
 op_or_assign
 l_int|0x8
 suffix:semicolon
-macro_line|#endif /* IMPLEMENT_DTMF */
+macro_line|#endif&t;&t;&t;&t;/* IMPLEMENT_DTMF */
 macro_line|#if (IMPLEMENT_LINE_INTERCONNECT || IMPLEMENT_LINE_INTERCONNECT2)
 id|a-&gt;profile.Global_Options
 op_or_assign
 l_int|0x80
 suffix:semicolon
-macro_line|#endif /* (IMPLEMENT_LINE_INTERCONNECT || IMPLEMENT_LINE_INTERCONNECT2) */
+macro_line|#endif&t;&t;&t;&t;/* (IMPLEMENT_LINE_INTERCONNECT || IMPLEMENT_LINE_INTERCONNECT2) */
 macro_line|#if IMPLEMENT_ECHO_CANCELLER
 id|a-&gt;profile.Global_Options
 op_or_assign
 l_int|0x100
 suffix:semicolon
-macro_line|#endif /* IMPLEMENT_ECHO_CANCELLER */
+macro_line|#endif&t;&t;&t;&t;/* IMPLEMENT_ECHO_CANCELLER */
 id|a-&gt;profile.B1_Protocols
 op_assign
 l_int|0xdf
@@ -3120,7 +3150,9 @@ id|DIVA_CAPI_ADAPTER
 )paren
 suffix:semicolon
 r_return
+(paren
 l_int|0
+)paren
 suffix:semicolon
 )brace
 id|memset
@@ -3138,7 +3170,6 @@ id|LI_CONFIG_PRI
 suffix:semicolon
 )brace
 r_else
-(brace
 r_if
 c_cond
 (paren
@@ -3184,7 +3215,9 @@ id|DIVA_CAPI_ADAPTER
 )paren
 suffix:semicolon
 r_return
+(paren
 l_int|0
+)paren
 suffix:semicolon
 )brace
 id|memset
@@ -3201,7 +3234,7 @@ id|LI_CONFIG_BRI
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif /* IMPLEMENT_LINE_INTERCONNECT */
+macro_line|#endif&t;&t;&t;&t;/* IMPLEMENT_LINE_INTERCONNECT */
 macro_line|#if IMPLEMENT_LINE_INTERCONNECT2
 id|a-&gt;li_pri
 op_assign
@@ -3350,7 +3383,9 @@ id|DIVA_CAPI_ADAPTER
 )paren
 suffix:semicolon
 r_return
+(paren
 l_int|0
+)paren
 suffix:semicolon
 )brace
 id|j
@@ -3847,7 +3882,7 @@ op_add_assign
 id|a-&gt;li_channels
 suffix:semicolon
 )brace
-macro_line|#endif /* IMPLEMENT_LINE_INTERCONNECT2 */
+macro_line|#endif&t;&t;&t;&t;/* IMPLEMENT_LINE_INTERCONNECT2 */
 r_if
 c_cond
 (paren
@@ -3863,6 +3898,7 @@ id|max_adapter
 op_increment
 suffix:semicolon
 id|diva_os_enter_spin_lock
+c_func
 (paren
 op_amp
 id|ll_lock
@@ -3882,6 +3918,7 @@ op_assign
 id|card
 suffix:semicolon
 id|diva_os_leave_spin_lock
+c_func
 (paren
 op_amp
 id|ll_lock
@@ -4001,7 +4038,9 @@ id|max_adapter
 )paren
 suffix:semicolon
 r_return
+(paren
 l_int|1
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n; *  register appl&n; */
@@ -4655,7 +4694,6 @@ id|xbuffer_ptr
 id|j
 )braket
 )paren
-(brace
 id|diva_os_free
 c_func
 (paren
@@ -4667,7 +4705,6 @@ id|j
 )braket
 )paren
 suffix:semicolon
-)brace
 )brace
 id|diva_os_free
 c_func
@@ -4759,6 +4796,7 @@ id|rp-&gt;datablklen
 )paren
 multiline_comment|/* initialize application data */
 id|diva_os_enter_spin_lock
+c_func
 (paren
 op_amp
 id|api_lock
@@ -4911,6 +4949,7 @@ id|this-&gt;Id
 )paren
 suffix:semicolon
 id|diva_os_leave_spin_lock
+c_func
 (paren
 op_amp
 id|api_lock
@@ -4994,6 +5033,7 @@ id|this-&gt;Id
 )paren
 )brace
 id|diva_os_enter_spin_lock
+c_func
 (paren
 op_amp
 id|api_lock
@@ -5141,6 +5181,7 @@ l_int|0
 suffix:semicolon
 )brace
 id|diva_os_leave_spin_lock
+c_func
 (paren
 op_amp
 id|api_lock
@@ -5306,6 +5347,7 @@ l_int|0x80
 suffix:semicolon
 multiline_comment|/* preserve external controller bit */
 id|diva_os_enter_spin_lock
+c_func
 (paren
 op_amp
 id|api_lock
@@ -5325,6 +5367,7 @@ id|command
 r_default
 suffix:colon
 id|xlog
+c_func
 (paren
 l_string|&quot;&bslash;x00&bslash;x02&quot;
 comma
@@ -5350,6 +5393,7 @@ op_amp
 id|DL_BLK
 )paren
 id|xlog
+c_func
 (paren
 l_string|&quot;&bslash;x00&bslash;x02&quot;
 comma
@@ -5373,6 +5417,7 @@ op_amp
 id|DL_BLK
 )paren
 id|xlog
+c_func
 (paren
 l_string|&quot;&bslash;x00&bslash;x02&quot;
 comma
@@ -5500,6 +5545,7 @@ op_assign
 l_int|NULL
 suffix:semicolon
 id|memcpy
+c_func
 (paren
 id|this-&gt;xbuffer_ptr
 (braket
@@ -5622,13 +5668,14 @@ id|DL_PRV0
 )paren
 r_break
 suffix:semicolon
-singleline_comment|// not more if not explicitely requested
+multiline_comment|/* not more if not explicitely requested */
 )brace
 )brace
 r_break
 suffix:semicolon
 )brace
 id|memcpy
+c_func
 (paren
 id|mapped_msg
 comma
@@ -5643,6 +5690,7 @@ suffix:semicolon
 id|mapped_msg-&gt;header.controller
 op_assign
 id|MapController
+c_func
 (paren
 id|mapped_msg-&gt;header.controller
 )paren
@@ -5667,6 +5715,7 @@ suffix:semicolon
 id|ret
 op_assign
 id|api_put
+c_func
 (paren
 id|this
 comma
@@ -5735,6 +5784,7 @@ suffix:semicolon
 id|write_end
 suffix:colon
 id|diva_os_leave_spin_lock
+c_func
 (paren
 op_amp
 id|api_lock
@@ -5760,6 +5810,7 @@ DECL|function|DIRequest
 r_static
 r_void
 id|DIRequest
+c_func
 (paren
 id|ENTITY
 op_star
@@ -6168,7 +6219,9 @@ c_func
 )paren
 suffix:semicolon
 r_return
+(paren
 l_int|0
+)paren
 suffix:semicolon
 )brace
 id|notify_handle
@@ -6230,7 +6283,9 @@ c_func
 suffix:semicolon
 )brace
 r_return
+(paren
 id|dadapter
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * diconnect from didd&n; */
@@ -6281,6 +6336,7 @@ multiline_comment|/*&n; * we do not provide date/time here,&n; * the application
 DECL|function|fax_head_line_time
 r_int
 id|fax_head_line_time
+c_func
 (paren
 r_char
 op_star
@@ -6457,7 +6513,9 @@ id|MAX_APPL
 )paren
 suffix:semicolon
 r_return
+(paren
 l_int|1
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * remove (free) main structures&n; */
@@ -6521,6 +6579,7 @@ r_void
 )paren
 (brace
 id|diva_os_initialize_spin_lock
+c_func
 (paren
 op_amp
 id|ll_lock
@@ -6529,6 +6588,7 @@ l_string|&quot;capifunc&quot;
 )paren
 suffix:semicolon
 id|diva_os_initialize_spin_lock
+c_func
 (paren
 op_amp
 id|api_lock
@@ -6570,7 +6630,9 @@ l_string|&quot;init: failed to init main structs.&quot;
 )paren
 )paren
 r_return
+(paren
 l_int|0
+)paren
 suffix:semicolon
 )brace
 r_if
@@ -6596,11 +6658,15 @@ c_func
 )paren
 suffix:semicolon
 r_return
+(paren
 l_int|0
+)paren
 suffix:semicolon
 )brace
 r_return
+(paren
 l_int|1
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * finit&n; */
