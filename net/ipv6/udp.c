@@ -4381,7 +4381,7 @@ c_func
 id|tmpbuf
 comma
 l_string|&quot;%4d: %08X%08X%08X%08X:%04X %08X%08X%08X%08X:%04X &quot;
-l_string|&quot;%02X %08X:%08X %02X:%08lX %08X %5d %8d %ld %d %p&quot;
+l_string|&quot;%02X %08X:%08X %02X:%08lX %08X %5d %8d %lu %d %p&quot;
 comma
 id|i
 comma
