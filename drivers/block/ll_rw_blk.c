@@ -6214,7 +6214,6 @@ c_func
 id|bio
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * do some validity checks...&n;&t; */
 id|BUG_ON
 c_func
 (paren
@@ -6247,14 +6246,22 @@ id|rw
 op_amp
 id|WRITE
 )paren
-id|kstat.pgpgout
-op_add_assign
+id|mod_page_state
+c_func
+(paren
+id|pgpgout
+comma
 id|count
+)paren
 suffix:semicolon
 r_else
-id|kstat.pgpgin
-op_add_assign
+id|mod_page_state
+c_func
+(paren
+id|pgpgin
+comma
 id|count
+)paren
 suffix:semicolon
 id|generic_make_request
 c_func

@@ -3889,7 +3889,7 @@ l_int|NULL
 suffix:semicolon
 id|page_not_uptodate
 suffix:colon
-id|KERNEL_STAT_INC
+id|inc_page_state
 c_func
 (paren
 id|pgmajfault

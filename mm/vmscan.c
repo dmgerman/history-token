@@ -893,7 +893,7 @@ op_amp
 id|freed_pvec
 )paren
 suffix:semicolon
-id|KERNEL_STAT_ADD
+id|mod_page_state
 c_func
 (paren
 id|pgsteal
@@ -903,7 +903,7 @@ op_minus
 id|nr_pages
 )paren
 suffix:semicolon
-id|KERNEL_STAT_ADD
+id|mod_page_state
 c_func
 (paren
 id|pgactivate
@@ -1158,7 +1158,7 @@ id|max_scan
 op_sub_assign
 id|nr_scan
 suffix:semicolon
-id|KERNEL_STAT_ADD
+id|mod_page_state
 c_func
 (paren
 id|pgscan
@@ -1960,7 +1960,7 @@ op_amp
 id|pvec
 )paren
 suffix:semicolon
-id|KERNEL_STAT_ADD
+id|mod_page_state
 c_func
 (paren
 id|pgscan
@@ -1970,7 +1970,7 @@ op_minus
 id|nr_pages
 )paren
 suffix:semicolon
-id|KERNEL_STAT_ADD
+id|mod_page_state
 c_func
 (paren
 id|pgdeactivate
@@ -2337,7 +2337,7 @@ id|nr_pages
 op_assign
 id|SWAP_CLUSTER_MAX
 suffix:semicolon
-id|KERNEL_STAT_INC
+id|inc_page_state
 c_func
 (paren
 id|pageoutrun

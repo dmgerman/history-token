@@ -83,7 +83,7 @@ comma
 id|page
 )paren
 suffix:semicolon
-id|KERNEL_STAT_INC
+id|inc_page_state
 c_func
 (paren
 id|pgactivate

@@ -1840,10 +1840,6 @@ id|system_running
 op_assign
 l_int|1
 suffix:semicolon
-id|kstat.pgfree
-op_assign
-l_int|0
-suffix:semicolon
 r_if
 c_cond
 (paren
