@@ -573,7 +573,7 @@ l_int|NULL
 )paren
 (brace
 r_return
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 r_if
@@ -599,7 +599,7 @@ id|page
 )paren
 suffix:semicolon
 r_return
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 id|get_page
@@ -1614,7 +1614,7 @@ op_amp
 id|gmch_ctrl
 )paren
 suffix:semicolon
-multiline_comment|/* We obtain the size of the GTT, which is also stored (for some&n;&t; * reason) at the top of stolen memory. Then we add 4KB to that&n; &t; * for the video BIOS popup, which is also stored in there. */
+multiline_comment|/* We obtain the size of the GTT, which is also stored (for some&n;&t; * reason) at the top of stolen memory. Then we add 4KB to that&n;&t; * for the video BIOS popup, which is also stored in there. */
 id|size
 op_assign
 id|agp_bridge-&gt;driver
@@ -3306,7 +3306,7 @@ id|size-&gt;num_entries
 suffix:semicolon
 id|agp_bridge-&gt;gatt_table_real
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|pci_read_config_dword
 c_func
@@ -6744,11 +6744,6 @@ c_func
 (paren
 id|u16
 id|device
-comma
-r_const
-r_char
-op_star
-id|name
 )paren
 (brace
 r_struct
@@ -6774,22 +6769,9 @@ c_cond
 op_logical_neg
 id|i810_dev
 )paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_ERR
-id|PFX
-l_string|&quot;Detected an Intel %s Chipset, &quot;
-l_string|&quot;but could not find the secondary device.&bslash;n&quot;
-comma
-id|name
-)paren
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
-)brace
 id|intel_i810_private.i810_dev
 op_assign
 id|i810_dev
@@ -6987,6 +6969,10 @@ suffix:semicolon
 r_case
 id|PCI_DEVICE_ID_INTEL_82810_MC1
 suffix:colon
+id|name
+op_assign
+l_string|&quot;i810&quot;
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -6995,8 +6981,6 @@ id|find_i810
 c_func
 (paren
 id|PCI_DEVICE_ID_INTEL_82810_IG1
-comma
-l_string|&quot;i810&quot;
 )paren
 )paren
 r_goto
@@ -7007,15 +6991,15 @@ op_assign
 op_amp
 id|intel_810_driver
 suffix:semicolon
-id|name
-op_assign
-l_string|&quot;i810&quot;
-suffix:semicolon
 r_break
 suffix:semicolon
 r_case
 id|PCI_DEVICE_ID_INTEL_82810_MC3
 suffix:colon
+id|name
+op_assign
+l_string|&quot;i810 DC100&quot;
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -7024,8 +7008,6 @@ id|find_i810
 c_func
 (paren
 id|PCI_DEVICE_ID_INTEL_82810_IG3
-comma
-l_string|&quot;i810 DC100&quot;
 )paren
 )paren
 r_goto
@@ -7036,15 +7018,15 @@ op_assign
 op_amp
 id|intel_810_driver
 suffix:semicolon
-id|name
-op_assign
-l_string|&quot;i810 DC100&quot;
-suffix:semicolon
 r_break
 suffix:semicolon
 r_case
 id|PCI_DEVICE_ID_INTEL_82810E_MC
 suffix:colon
+id|name
+op_assign
+l_string|&quot;i810 E&quot;
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -7053,8 +7035,6 @@ id|find_i810
 c_func
 (paren
 id|PCI_DEVICE_ID_INTEL_82810E_IG
-comma
-l_string|&quot;i810 E&quot;
 )paren
 )paren
 r_goto
@@ -7064,10 +7044,6 @@ id|bridge-&gt;driver
 op_assign
 op_amp
 id|intel_810_driver
-suffix:semicolon
-id|name
-op_assign
-l_string|&quot;i810 E&quot;
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -7082,8 +7058,6 @@ id|find_i810
 c_func
 (paren
 id|PCI_DEVICE_ID_INTEL_82815_CGC
-comma
-l_string|&quot;i815&quot;
 )paren
 )paren
 id|bridge-&gt;driver
@@ -7595,6 +7569,17 @@ id|bridge
 suffix:semicolon
 id|fail
 suffix:colon
+id|printk
+c_func
+(paren
+id|KERN_ERR
+id|PFX
+l_string|&quot;Detected an Intel %s chipset, &quot;
+l_string|&quot;but could not find the secondary device.&bslash;n&quot;
+comma
+id|name
+)paren
+suffix:semicolon
 id|agp_put_bridge
 c_func
 (paren
@@ -7743,7 +7728,7 @@ id|agp_intel_pci_table
 op_assign
 (brace
 DECL|macro|ID
-mdefine_line|#define ID(x)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;{ &t;&t;&t;&t;&t;&t;&bslash;&n;&t;.class&t;&t;= (PCI_CLASS_BRIDGE_HOST &lt;&lt; 8),&t;&bslash;&n;&t;.class_mask&t;= ~0,&t;&t;&t;&t;&bslash;&n;&t;.vendor&t;&t;= PCI_VENDOR_ID_INTEL,&t;&t;&bslash;&n;&t;.device&t;&t;= x,&t;&t;&t;&t;&bslash;&n;&t;.subvendor&t;= PCI_ANY_ID,&t;&t;&t;&bslash;&n;&t;.subdevice&t;= PCI_ANY_ID,&t;&t;&t;&bslash;&n;&t;}
+mdefine_line|#define ID(x)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;{&t;&t;&t;&t;&t;&t;&bslash;&n;&t;.class&t;&t;= (PCI_CLASS_BRIDGE_HOST &lt;&lt; 8),&t;&bslash;&n;&t;.class_mask&t;= ~0,&t;&t;&t;&t;&bslash;&n;&t;.vendor&t;&t;= PCI_VENDOR_ID_INTEL,&t;&t;&bslash;&n;&t;.device&t;&t;= x,&t;&t;&t;&t;&bslash;&n;&t;.subvendor&t;= PCI_ANY_ID,&t;&t;&t;&bslash;&n;&t;.subdevice&t;= PCI_ANY_ID,&t;&t;&t;&bslash;&n;&t;}
 id|ID
 c_func
 (paren

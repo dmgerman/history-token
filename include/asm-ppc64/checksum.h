@@ -209,9 +209,9 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|macro|csum_partial_copy_from_user
-mdefine_line|#define csum_partial_copy_from_user(src, dst, len, sum, errp)   &bslash;&n;        csum_partial_copy_generic((src), (dst), (len), (sum), (errp), 0)
+mdefine_line|#define csum_partial_copy_from_user(src, dst, len, sum, errp)   &bslash;&n;        csum_partial_copy_generic((src), (dst), (len), (sum), (errp), NULL)
 DECL|macro|csum_partial_copy_nocheck
-mdefine_line|#define csum_partial_copy_nocheck(src, dst, len, sum)   &bslash;&n;        csum_partial_copy_generic((src), (dst), (len), (sum), 0, 0)
+mdefine_line|#define csum_partial_copy_nocheck(src, dst, len, sum)   &bslash;&n;        csum_partial_copy_generic((src), (dst), (len), (sum), NULL, NULL)
 DECL|function|csum_tcpudp_nofold
 r_static
 r_inline

@@ -154,8 +154,21 @@ mdefine_line|#define lock_cpu_hotplug_interruptible() 0
 DECL|macro|hotcpu_notifier
 mdefine_line|#define hotcpu_notifier(fn, pri)
 multiline_comment|/* CPUs don&squot;t go offline once they&squot;re online w/o CONFIG_HOTPLUG_CPU */
-DECL|macro|cpu_is_offline
-mdefine_line|#define cpu_is_offline(cpu) 0
+DECL|function|cpu_is_offline
+r_static
+r_inline
+r_int
+id|cpu_is_offline
+c_func
+(paren
+r_int
+id|cpu
+)paren
+(brace
+r_return
+l_int|0
+suffix:semicolon
+)brace
 macro_line|#endif
 macro_line|#endif /* _LINUX_CPU_H_ */
 eof

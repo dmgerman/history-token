@@ -3649,10 +3649,6 @@ id|htotal
 comma
 id|vtotal
 suffix:semicolon
-(paren
-r_char
-op_star
-)paren
 id|mode-&gt;name
 op_assign
 l_int|NULL
