@@ -7200,11 +7200,13 @@ op_amp
 id|nfsi-&gt;commit
 )paren
 suffix:semicolon
-id|INIT_LIST_HEAD
+id|INIT_RADIX_TREE
 c_func
 (paren
 op_amp
-id|nfsi-&gt;writeback
+id|nfsi-&gt;nfs_page_tree
+comma
+id|GFP_ATOMIC
 )paren
 suffix:semicolon
 id|nfsi-&gt;ndirty
