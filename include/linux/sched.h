@@ -715,6 +715,12 @@ r_int
 id|mq_bytes
 suffix:semicolon
 multiline_comment|/* How many bytes can be allocated to mqueue? */
+DECL|member|locked_shm
+r_int
+r_int
+id|locked_shm
+suffix:semicolon
+multiline_comment|/* How many pages of mlocked shm ? */
 multiline_comment|/* Hash table maintenance information */
 DECL|member|uidhash_list
 r_struct
