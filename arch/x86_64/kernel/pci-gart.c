@@ -3141,7 +3141,7 @@ id|pci_dev
 op_star
 id|dev
 suffix:semicolon
-macro_line|#ifndef CONFIG_AGP_AMD_8151
+macro_line|#ifndef CONFIG_AGP_AMD64
 id|no_agp
 op_assign
 l_int|1
