@@ -302,10 +302,6 @@ id|PG_maplock
 op_or
 l_int|1
 op_lshift
-id|PG_anon
-op_or
-l_int|1
-op_lshift
 id|PG_swapcache
 op_or
 l_int|1
@@ -854,10 +850,6 @@ id|PG_maplock
 op_or
 l_int|1
 op_lshift
-id|PG_anon
-op_or
-l_int|1
-op_lshift
 id|PG_swapcache
 op_or
 l_int|1
@@ -1372,10 +1364,6 @@ op_or
 l_int|1
 op_lshift
 id|PG_maplock
-op_or
-l_int|1
-op_lshift
-id|PG_anon
 op_or
 l_int|1
 op_lshift
