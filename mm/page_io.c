@@ -409,6 +409,12 @@ op_eq
 l_int|NULL
 )paren
 (brace
+id|set_page_dirty
+c_func
+(paren
+id|page
+)paren
+suffix:semicolon
 id|ret
 op_assign
 op_minus
