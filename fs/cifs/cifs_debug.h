@@ -5,7 +5,7 @@ macro_line|#ifndef _H_CIFS_DEBUG
 DECL|macro|_H_CIFS_DEBUG
 mdefine_line|#define _H_CIFS_DEBUG
 r_void
-id|dump_mem
+id|cifs_dump_mem
 c_func
 (paren
 r_char

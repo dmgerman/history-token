@@ -1,22 +1,22 @@
-multiline_comment|/*&n; * Intermezzo. (C) 1998 Peter J. Braam&n; * Intermezzo. (C) 2000 Red Hat, Inc.&n; * Intermezzo. (C) 2000 Los Alamos National Laboratory&n; * Intermezzo. (C) 2000 TurboLinux, Inc.&n; * Intermezzo. (C) 2001 Mountain View Data, Inc.&n; */
+multiline_comment|/* -*- mode: c; c-basic-offset: 8; indent-tabs-mode: nil; -*-&n; * vim:expandtab:shiftwidth=8:tabstop=8:&n; *&n; *  Copyright (C) 1998 Peter J. Braam &lt;braam@clusterfs.com&gt;&n; *  Copyright (C) 2000 Red Hat, Inc.&n; *  Copyright (C) 2000 Los Alamos National Laboratory&n; *  Copyright (C) 2000 TurboLinux, Inc.&n; *  Copyright (C) 2001 Mountain View Data, Inc.&n; *&n; *   This file is part of InterMezzo, http://www.inter-mezzo.org.&n; *&n; *   InterMezzo is free software; you can redistribute it and/or&n; *   modify it under the terms of version 2 of the GNU General Public&n; *   License as published by the Free Software Foundation.&n; *&n; *   InterMezzo is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *   GNU General Public License for more details.&n; *&n; *   You should have received a copy of the GNU General Public License&n; *   along with InterMezzo; if not, write to the Free Software&n; *   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/param.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
-macro_line|#include &lt;linux/time.h&gt;
+macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/vmalloc.h&gt;
 macro_line|#include &lt;linux/stat.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
+macro_line|#include &lt;linux/smp_lock.h&gt;
+macro_line|#include &lt;asm/segment.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#ifdef CONFIG_OBDFS_FS
 macro_line|#include /usr/src/obd/include/linux/obdfs.h
 macro_line|#endif
 macro_line|#include &lt;linux/intermezzo_fs.h&gt;
-macro_line|#include &lt;linux/intermezzo_upcall.h&gt;
 macro_line|#include &lt;linux/intermezzo_psdev.h&gt;
-macro_line|#include &lt;linux/intermezzo_kml.h&gt;
 macro_line|#ifdef CONFIG_OBDFS_FS
 DECL|function|presto_obdfs_freespace
 r_static
@@ -493,13 +493,7 @@ id|inode
 )paren
 (brace
 macro_line|#ifdef EXT3_JOURNAL_DATA_FL
-id|EXT3_I
-c_func
-(paren
-id|inode
-)paren
-op_member_access_from_pointer
-id|i_flags
+id|inode-&gt;u.ext3_i.i_flags
 op_or_assign
 id|EXT3_JOURNAL_DATA_FL
 suffix:semicolon
@@ -513,20 +507,24 @@ id|journal_ops
 id|presto_obdfs_journal_ops
 op_assign
 (brace
+dot
 id|tr_avail
-suffix:colon
+op_assign
 id|presto_obdfs_freespace
 comma
+dot
 id|tr_start
-suffix:colon
+op_assign
 id|presto_obdfs_trans_start
 comma
+dot
 id|tr_commit
-suffix:colon
+op_assign
 id|presto_obdfs_trans_commit
 comma
+dot
 id|tr_journal_data
-suffix:colon
+op_assign
 id|presto_obdfs_journal_file_data
 )brace
 suffix:semicolon
