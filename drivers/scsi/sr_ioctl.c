@@ -117,6 +117,13 @@ op_assign
 id|CDROM_LEADOUT
 suffix:semicolon
 r_else
+r_if
+c_cond
+(paren
+id|ti-&gt;cdti_trk1
+op_ne
+id|CDROM_LEADOUT
+)paren
 id|ti-&gt;cdti_trk1
 op_increment
 suffix:semicolon

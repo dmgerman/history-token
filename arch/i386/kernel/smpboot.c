@@ -526,6 +526,7 @@ r_static
 r_int
 r_int
 r_int
+id|__init
 id|div64
 (paren
 r_int
