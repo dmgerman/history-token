@@ -2203,6 +2203,11 @@ id|ptype-&gt;dev
 )paren
 op_logical_and
 (paren
+id|ptype-&gt;af_packet_priv
+op_eq
+l_int|NULL
+op_logical_or
+(paren
 r_struct
 id|sock
 op_star
@@ -2210,6 +2215,7 @@ op_star
 id|ptype-&gt;af_packet_priv
 op_ne
 id|skb-&gt;sk
+)paren
 )paren
 (brace
 r_struct
