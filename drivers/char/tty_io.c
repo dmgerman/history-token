@@ -8697,10 +8697,6 @@ id|minor
 )paren
 (brace
 macro_line|#ifdef CONFIG_DEVFS_FS
-r_void
-op_star
-id|handle
-suffix:semicolon
 r_int
 id|idx
 op_assign
@@ -8726,9 +8722,8 @@ op_plus
 id|driver-&gt;name_base
 )paren
 suffix:semicolon
-id|handle
-op_assign
-id|devfs_find_handle
+id|devfs_find_and_unregister
+c_func
 (paren
 l_int|NULL
 comma
@@ -8741,11 +8736,6 @@ comma
 id|DEVFS_SPECIAL_CHR
 comma
 l_int|0
-)paren
-suffix:semicolon
-id|devfs_unregister
-(paren
-id|handle
 )paren
 suffix:semicolon
 macro_line|#endif /* CONFIG_DEVFS_FS */
@@ -8794,7 +8784,7 @@ l_int|0
 suffix:semicolon
 id|error
 op_assign
-id|devfs_register_chrdev
+id|register_chrdev
 c_func
 (paren
 id|driver-&gt;major
@@ -9016,7 +9006,7 @@ l_int|NULL
 (brace
 id|retval
 op_assign
-id|devfs_unregister_chrdev
+id|unregister_chrdev
 c_func
 (paren
 id|driver-&gt;major
@@ -9034,7 +9024,7 @@ id|retval
 suffix:semicolon
 )brace
 r_else
-id|devfs_register_chrdev
+id|register_chrdev
 c_func
 (paren
 id|driver-&gt;major

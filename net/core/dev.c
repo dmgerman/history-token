@@ -7866,14 +7866,6 @@ op_assign
 l_int|1
 suffix:semicolon
 multiline_comment|/**&n; *&t;register_netdevice&t;- register a network device&n; *&t;@dev: device to register&n; *&n; *&t;Take a completed network device structure and add it to the kernel&n; *&t;interfaces. A %NETDEV_REGISTER message is sent to the netdev notifier&n; *&t;chain. 0 is returned on success. A negative errno code is returned&n; *&t;on a failure to set up the device, or if the name is a duplicate.&n; *&n; *&t;Callers must hold the rtnl semaphore.  See the comment at the&n; *&t;end of Space.c for details about the locking.  You may want&n; *&t;register_netdev() instead of this.&n; *&n; *&t;BUGS:&n; *&t;The locking appears insufficient to guarantee two parallel registers&n; *&t;will not get the same name.&n; */
-r_static
-r_int
-id|net_dev_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 DECL|function|register_netdevice
 r_int
 id|register_netdevice
@@ -7896,6 +7888,12 @@ id|dp
 suffix:semicolon
 r_int
 id|ret
+suffix:semicolon
+id|BUG_ON
+c_func
+(paren
+id|dev_boot_phase
+)paren
 suffix:semicolon
 id|spin_lock_init
 c_func
@@ -7922,16 +7920,6 @@ op_assign
 id|RW_LOCK_UNLOCKED
 suffix:semicolon
 macro_line|#endif
-r_if
-c_cond
-(paren
-id|dev_boot_phase
-)paren
-id|net_dev_init
-c_func
-(paren
-)paren
-suffix:semicolon
 macro_line|#ifdef CONFIG_NET_DIVERT
 id|ret
 op_assign
@@ -8282,6 +8270,12 @@ op_star
 op_star
 id|dp
 suffix:semicolon
+id|BUG_ON
+c_func
+(paren
+id|dev_boot_phase
+)paren
+suffix:semicolon
 multiline_comment|/* If device is running, close it first. */
 r_if
 c_cond
@@ -8399,13 +8393,6 @@ c_func
 id|BR_NETPROTO_LOCK
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|dev_boot_phase
-)paren
-(brace
 macro_line|#ifdef CONFIG_NET_FASTROUTE
 id|dev_clear_fastroute
 c_func
@@ -8429,7 +8416,7 @@ comma
 l_string|&quot;unregister&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* Notify protocols, that we are about to destroy&n;&t;&t;   this device. They should clean all the things.&n;&t;&t; */
+multiline_comment|/* Notify protocols, that we are about to destroy&n;&t;   this device. They should clean all the things.&n;&t;*/
 id|notifier_call_chain
 c_func
 (paren
@@ -8441,14 +8428,13 @@ comma
 id|dev
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; *&t;Flush the multicast chain&n;&t;&t; */
+multiline_comment|/*&n;&t; *&t;Flush the multicast chain&n;&t; */
 id|dev_mc_discard
 c_func
 (paren
 id|dev
 )paren
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -8696,7 +8682,7 @@ r_void
 )paren
 suffix:semicolon
 macro_line|#endif /* CONFIG_NET_DIVERT */
-multiline_comment|/*&n; *       Callers must hold the rtnl semaphore.  See the comment at the&n; *       end of Space.c for details about the locking.&n; */
+multiline_comment|/*&n; *       This is called single threaded during boot, so no need&n; *       to take the rtnl semaphore.&n; */
 DECL|function|net_dev_init
 r_static
 r_int
@@ -8719,14 +8705,12 @@ suffix:semicolon
 r_int
 id|i
 suffix:semicolon
-r_if
-c_cond
+id|BUG_ON
+c_func
 (paren
 op_logical_neg
 id|dev_boot_phase
 )paren
-r_return
-l_int|0
 suffix:semicolon
 macro_line|#ifdef CONFIG_NET_DIVERT
 id|dv_init
@@ -9171,7 +9155,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|variable|net_dev_init
-id|__initcall
+id|subsys_initcall
 c_func
 (paren
 id|net_dev_init

@@ -5771,7 +5771,7 @@ macro_line|#endif
 r_if
 c_cond
 (paren
-id|devfs_register_blkdev
+id|register_blkdev
 c_func
 (paren
 id|MAJOR_NR
@@ -6336,7 +6336,7 @@ r_if
 c_cond
 (paren
 (paren
-id|devfs_unregister_blkdev
+id|unregister_blkdev
 c_func
 (paren
 id|MAJOR_NR
@@ -6390,10 +6390,8 @@ c_func
 r_void
 )paren
 (brace
-id|devfs_unregister
+id|devfs_find_and_unregister
 c_func
-(paren
-id|devfs_find_handle
 (paren
 l_int|NULL
 comma
@@ -6406,7 +6404,6 @@ comma
 id|DEVFS_SPECIAL_BLK
 comma
 l_int|0
-)paren
 )paren
 suffix:semicolon
 r_if

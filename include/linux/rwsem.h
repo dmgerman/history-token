@@ -83,6 +83,51 @@ l_string|&quot;Leaving down_read&quot;
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * trylock for reading -- returns 1 if successful, 0 if contention&n; */
+DECL|function|down_read_trylock
+r_static
+r_inline
+r_int
+id|down_read_trylock
+c_func
+(paren
+r_struct
+id|rw_semaphore
+op_star
+id|sem
+)paren
+(brace
+r_int
+id|ret
+suffix:semicolon
+id|rwsemtrace
+c_func
+(paren
+id|sem
+comma
+l_string|&quot;Entering down_read_trylock&quot;
+)paren
+suffix:semicolon
+id|ret
+op_assign
+id|__down_read_trylock
+c_func
+(paren
+id|sem
+)paren
+suffix:semicolon
+id|rwsemtrace
+c_func
+(paren
+id|sem
+comma
+l_string|&quot;Leaving down_read_trylock&quot;
+)paren
+suffix:semicolon
+r_return
+id|ret
+suffix:semicolon
+)brace
 multiline_comment|/*&n; * lock for writing&n; */
 DECL|function|down_write
 r_static
@@ -118,6 +163,51 @@ id|sem
 comma
 l_string|&quot;Leaving down_write&quot;
 )paren
+suffix:semicolon
+)brace
+multiline_comment|/*&n; * trylock for writing -- returns 1 if successful, 0 if contention&n; */
+DECL|function|down_write_trylock
+r_static
+r_inline
+r_int
+id|down_write_trylock
+c_func
+(paren
+r_struct
+id|rw_semaphore
+op_star
+id|sem
+)paren
+(brace
+r_int
+id|ret
+suffix:semicolon
+id|rwsemtrace
+c_func
+(paren
+id|sem
+comma
+l_string|&quot;Entering down_write_trylock&quot;
+)paren
+suffix:semicolon
+id|ret
+op_assign
+id|__down_write_trylock
+c_func
+(paren
+id|sem
+)paren
+suffix:semicolon
+id|rwsemtrace
+c_func
+(paren
+id|sem
+comma
+l_string|&quot;Leaving down_write_trylock&quot;
+)paren
+suffix:semicolon
+r_return
+id|ret
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * release a read lock&n; */

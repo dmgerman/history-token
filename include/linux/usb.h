@@ -976,13 +976,20 @@ r_int
 id|bandwidth_isoc_reqs
 suffix:semicolon
 multiline_comment|/* number of Isoc. requests */
-DECL|member|dentry
+DECL|member|usbfs_dentry
 r_struct
 id|dentry
 op_star
-id|dentry
+id|usbfs_dentry
 suffix:semicolon
 multiline_comment|/* usbfs dentry entry for the bus */
+DECL|member|usbdevfs_dentry
+r_struct
+id|dentry
+op_star
+id|usbdevfs_dentry
+suffix:semicolon
+multiline_comment|/* usbdevfs dentry entry for the bus */
 DECL|member|refcnt
 id|atomic_t
 id|refcnt
@@ -1185,13 +1192,20 @@ r_struct
 id|list_head
 id|filelist
 suffix:semicolon
-DECL|member|dentry
+DECL|member|usbfs_dentry
 r_struct
 id|dentry
 op_star
-id|dentry
+id|usbfs_dentry
 suffix:semicolon
 multiline_comment|/* usbfs dentry entry for the device */
+DECL|member|usbdevfs_dentry
+r_struct
+id|dentry
+op_star
+id|usbdevfs_dentry
+suffix:semicolon
+multiline_comment|/* usbdevfs dentry entry for the device */
 multiline_comment|/*&n;&t; * Child devices - these can be either new devices&n;&t; * (if this is a hub device), or different instances&n;&t; * of this same device.&n;&t; *&n;&t; * Each instance needs its own set of data structures.&n;&t; */
 DECL|member|maxchild
 r_int

@@ -345,7 +345,7 @@ id|dentry
 op_assign
 id|file-&gt;f_dentry
 suffix:semicolon
-id|get_page
+id|page_cache_get
 c_func
 (paren
 id|page
@@ -361,7 +361,7 @@ comma
 id|page
 )paren
 suffix:semicolon
-id|put_page
+id|page_cache_release
 c_func
 (paren
 id|page
@@ -721,7 +721,7 @@ id|EIO
 suffix:semicolon
 id|do_it
 suffix:colon
-id|get_page
+id|page_cache_get
 c_func
 (paren
 id|page
@@ -753,7 +753,7 @@ c_func
 id|page
 )paren
 suffix:semicolon
-id|put_page
+id|page_cache_release
 c_func
 (paren
 id|page

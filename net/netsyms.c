@@ -55,7 +55,7 @@ r_struct
 id|net_proto_family
 id|inet_family_ops
 suffix:semicolon
-macro_line|#if defined(CONFIG_IPV6) || defined (CONFIG_IPV6_MODULE) || defined (CONFIG_KHTTPD) || defined (CONFIG_KHTTPD_MODULE)
+macro_line|#if defined(CONFIG_IPV6) || defined (CONFIG_IPV6_MODULE)
 macro_line|#include &lt;linux/in6.h&gt;
 macro_line|#include &lt;linux/icmpv6.h&gt;
 macro_line|#include &lt;net/ipv6.h&gt;
@@ -1188,7 +1188,7 @@ id|dlci_ioctl_hook
 )paren
 suffix:semicolon
 macro_line|#endif
-macro_line|#if defined (CONFIG_IPV6_MODULE) || defined (CONFIG_KHTTPD) || defined (CONFIG_KHTTPD_MODULE)
+macro_line|#if defined (CONFIG_IPV6_MODULE)
 multiline_comment|/* inet functions common to v4 and v6 */
 DECL|variable|inet_release
 id|EXPORT_SYMBOL
@@ -1374,6 +1374,13 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|udp_sendmsg
+)paren
+suffix:semicolon
+DECL|variable|tcp_bind_hash
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|tcp_bind_hash
 )paren
 suffix:semicolon
 DECL|variable|tcp_close

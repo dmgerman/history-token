@@ -560,9 +560,6 @@ id|page
 suffix:semicolon
 multiline_comment|/* linux/mm/page_alloc.c */
 multiline_comment|/* linux/mm/swap_state.c */
-DECL|macro|SWAP_CACHE_INFO
-mdefine_line|#define SWAP_CACHE_INFO
-macro_line|#ifdef SWAP_CACHE_INFO
 r_extern
 r_void
 id|show_swap_cache_info
@@ -571,7 +568,6 @@ c_func
 r_void
 )paren
 suffix:semicolon
-macro_line|#endif
 r_extern
 r_int
 id|add_to_swap_cache

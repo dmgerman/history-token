@@ -34,6 +34,10 @@ id|mmap
 suffix:colon
 id|generic_file_mmap
 comma
+id|sendfile
+suffix:colon
+id|generic_file_sendfile
+comma
 )brace
 suffix:semicolon
 DECL|function|bfs_move_block

@@ -78,31 +78,13 @@ comma
 l_string|&quot;Disable or enable Receive Checksum offload&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* Receive Interrupt Delay in units of 1.024 microseconds&n; *&n; * Valid Range: 0-65535&n; *&n; * Default Value: 64/128&n; */
+multiline_comment|/* Receive Interrupt Delay in units of 1.024 microseconds&n; *&n; * Valid Range: 0-65535&n; *&n; * Default Value: 0/128&n; */
 id|E1000_PARAM
 c_func
 (paren
 id|RxIntDelay
 comma
 l_string|&quot;Receive Interrupt Delay&quot;
-)paren
-suffix:semicolon
-multiline_comment|/* MDI-X Support Enable/Disable - Applies only to Copper PHY&n; *&n; * Valid Range: 0, 3&n; *  - 0 - Auto in all modes&n; *  - 1 - MDI&n; *  - 2 - MDI-X&n; *  - 3 - Auto in 1000 Base-T mode (MDI in 10 Base-T and 100 Base-T)&n; *&n; * Default Value: 0 (Auto)&n; */
-id|E1000_PARAM
-c_func
-(paren
-id|MdiX
-comma
-l_string|&quot;Set MDI/MDI-X Mode&quot;
-)paren
-suffix:semicolon
-multiline_comment|/* Automatic Correction of Reversed Cable Polarity Enable/Disable&n; * This setting applies only to Copper PHY&n; *&n; * Valid Range: 0, 1&n; *  - 0 - Disabled&n; *  - 1 - Enabled&n; *&n; * Default Value: 1 (Enabled)&n; */
-id|E1000_PARAM
-c_func
-(paren
-id|DisablePolarityCorrection
-comma
-l_string|&quot;Disable or enable Automatic Correction for Reversed Cable Polarity&quot;
 )paren
 suffix:semicolon
 DECL|macro|AUTONEG_ADV_DEFAULT
@@ -128,19 +110,13 @@ mdefine_line|#define MIN_RXD                       80
 DECL|macro|MAX_82544_RXD
 mdefine_line|#define MAX_82544_RXD               4096
 DECL|macro|DEFAULT_RDTR
-mdefine_line|#define DEFAULT_RDTR                  64
+mdefine_line|#define DEFAULT_RDTR                   0
 DECL|macro|DEFAULT_RADV
 mdefine_line|#define DEFAULT_RADV                 128
 DECL|macro|MAX_RXDELAY
 mdefine_line|#define MAX_RXDELAY               0xFFFF
 DECL|macro|MIN_RXDELAY
 mdefine_line|#define MIN_RXDELAY                    0
-DECL|macro|DEFAULT_MDIX
-mdefine_line|#define DEFAULT_MDIX                   0
-DECL|macro|MAX_MDIX
-mdefine_line|#define MAX_MDIX                       3
-DECL|macro|MIN_MDIX
-mdefine_line|#define MIN_MDIX                       0
 DECL|struct|e1000_option
 r_struct
 id|e1000_option
@@ -1982,124 +1958,6 @@ id|BUG
 c_func
 (paren
 )paren
-suffix:semicolon
-)brace
-multiline_comment|/* a few other copper only options */
-(brace
-multiline_comment|/* MDI/MDI-X */
-r_struct
-id|e1000_option
-id|opt
-op_assign
-(brace
-id|type
-suffix:colon
-id|range_option
-comma
-id|name
-suffix:colon
-l_string|&quot;MDI/MDI-X&quot;
-comma
-id|err
-suffix:colon
-l_string|&quot;using default of &quot;
-id|__MODULE_STRING
-c_func
-(paren
-id|DEFAULT_MDIX
-)paren
-comma
-id|def
-suffix:colon
-id|DEFAULT_MDIX
-comma
-id|arg
-suffix:colon
-(brace
-id|r
-suffix:colon
-(brace
-id|min
-suffix:colon
-id|MIN_MDIX
-comma
-id|max
-suffix:colon
-id|MAX_MDIX
-)brace
-)brace
-)brace
-suffix:semicolon
-r_int
-id|mdix
-op_assign
-id|MdiX
-(braket
-id|bd
-)braket
-suffix:semicolon
-id|e1000_validate_option
-c_func
-(paren
-op_amp
-id|mdix
-comma
-op_amp
-id|opt
-)paren
-suffix:semicolon
-id|adapter-&gt;hw.mdix
-op_assign
-id|mdix
-suffix:semicolon
-)brace
-(brace
-multiline_comment|/* Automatic Correction for Reverse Cable Polarity */
-multiline_comment|/* option is actually to disable polarity correction,&n;&t;   * so setting to OPTION_ENABLED turns the hardware feature off */
-r_struct
-id|e1000_option
-id|opt
-op_assign
-(brace
-id|type
-suffix:colon
-id|enable_option
-comma
-id|name
-suffix:colon
-l_string|&quot;Disable Polarity Correction&quot;
-comma
-id|err
-suffix:colon
-l_string|&quot;defaulting to Disabled&quot;
-comma
-id|def
-suffix:colon
-id|OPTION_DISABLED
-comma
-)brace
-suffix:semicolon
-r_int
-id|dpc
-op_assign
-id|DisablePolarityCorrection
-(braket
-id|bd
-)braket
-suffix:semicolon
-id|e1000_validate_option
-c_func
-(paren
-op_amp
-id|dpc
-comma
-op_amp
-id|opt
-)paren
-suffix:semicolon
-id|adapter-&gt;hw.disable_polarity_correction
-op_assign
-id|dpc
 suffix:semicolon
 )brace
 multiline_comment|/* Speed, AutoNeg and MDI/MDI-X must all play nice */

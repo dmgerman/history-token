@@ -7,9 +7,6 @@ DECL|enum|brlock_indices
 r_enum
 id|brlock_indices
 (brace
-DECL|enumerator|BR_GLOBALIRQ_LOCK
-id|BR_GLOBALIRQ_LOCK
-comma
 DECL|enumerator|BR_NETPROTO_LOCK
 id|BR_NETPROTO_LOCK
 comma

@@ -3,7 +3,6 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/sysctl.h&gt;
-macro_line|#include &lt;linux/swapctl.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/ctype.h&gt;
 macro_line|#include &lt;linux/utsname.h&gt;
@@ -30,6 +29,10 @@ suffix:semicolon
 r_extern
 r_int
 id|sysctl_overcommit_memory
+suffix:semicolon
+r_extern
+r_int
+id|sysctl_overcommit_ratio
 suffix:semicolon
 r_extern
 r_int
@@ -379,12 +382,14 @@ id|file_operations
 id|proc_sys_file_operations
 op_assign
 (brace
+dot
 id|read
-suffix:colon
+op_assign
 id|proc_readsys
 comma
+dot
 id|write
-suffix:colon
+op_assign
 id|proc_writesys
 comma
 )brace
@@ -396,8 +401,9 @@ id|inode_operations
 id|proc_sys_inode_operations
 op_assign
 (brace
+dot
 id|permission
-suffix:colon
+op_assign
 id|proc_sys_permission
 comma
 )brace
@@ -1445,16 +1451,16 @@ id|proc_dointvec
 )brace
 comma
 (brace
-id|VM_PAGERDAEMON
+id|VM_OVERCOMMIT_RATIO
 comma
-l_string|&quot;kswapd&quot;
+l_string|&quot;overcommit_ratio&quot;
 comma
 op_amp
-id|pager_daemon
+id|sysctl_overcommit_ratio
 comma
 r_sizeof
 (paren
-id|pager_daemon_t
+id|sysctl_overcommit_ratio
 )paren
 comma
 l_int|0644

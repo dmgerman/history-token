@@ -134,6 +134,10 @@ c_func
 (paren
 r_int
 r_int
+id|cpu
+comma
+r_int
+r_int
 id|khz
 )paren
 (brace

@@ -1453,12 +1453,6 @@ c_func
 id|dip
 )paren
 suffix:semicolon
-id|d_delete
-c_func
-(paren
-id|dentry
-)paren
-suffix:semicolon
 id|out2
 suffix:colon
 id|free_UCSname
@@ -2021,12 +2015,6 @@ id|IWRITE_UNLOCK
 c_func
 (paren
 id|dip
-)paren
-suffix:semicolon
-id|d_delete
-c_func
-(paren
-id|dentry
 )paren
 suffix:semicolon
 id|out1

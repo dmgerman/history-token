@@ -1,13 +1,13 @@
-multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2001, 2002 Red Hat, Inc.&n; *&n; * Created by David Woodhouse &lt;dwmw2@cambridge.redhat.com&gt;&n; *&n; * The original JFFS, from which the design for JFFS2 was derived,&n; * was designed and implemented by Axis Communications AB.&n; *&n; * The contents of this file are subject to the Red Hat eCos Public&n; * License Version 1.1 (the &quot;Licence&quot;); you may not use this file&n; * except in compliance with the Licence.  You may obtain a copy of&n; * the Licence at http://www.redhat.com/&n; *&n; * Software distributed under the Licence is distributed on an &quot;AS IS&quot;&n; * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied.&n; * See the Licence for the specific language governing rights and&n; * limitations under the Licence.&n; *&n; * The Original Code is JFFS2 - Journalling Flash File System, version 2&n; *&n; * Alternatively, the contents of this file may be used under the&n; * terms of the GNU General Public License version 2 (the &quot;GPL&quot;), in&n; * which case the provisions of the GPL are applicable instead of the&n; * above.  If you wish to allow the use of your version of this file&n; * only under the terms of the GPL and not to allow others to use your&n; * version of this file under the RHEPL, indicate your decision by&n; * deleting the provisions above and replace them with the notice and&n; * other provisions required by the GPL.  If you do not delete the&n; * provisions above, a recipient may use your version of this file&n; * under either the RHEPL or the GPL.&n; *&n; * $Id: background.c,v 1.23 2002/03/06 12:37:08 dwmw2 Exp $&n; *&n; */
+multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2001, 2002 Red Hat, Inc.&n; *&n; * Created by David Woodhouse &lt;dwmw2@cambridge.redhat.com&gt;&n; *&n; * For licensing information, see the file &squot;LICENCE&squot; in this directory.&n; *&n; * $Id: background.c,v 1.29 2002/06/07 10:04:28 dwmw2 Exp $&n; *&n; */
 DECL|macro|__KERNEL_SYSCALLS__
 mdefine_line|#define __KERNEL_SYSCALLS__
 macro_line|#include &lt;linux/kernel.h&gt;
-macro_line|#include &lt;linux/unistd.h&gt;
 macro_line|#include &lt;linux/jffs2.h&gt;
 macro_line|#include &lt;linux/mtd/mtd.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/completion.h&gt;
 macro_line|#include &lt;linux/mtd/compatmac.h&gt; /* recalc_sigpending() */
+macro_line|#include &lt;linux/unistd.h&gt;
 macro_line|#include &quot;nodelist.h&quot;
 r_static
 r_int
@@ -203,6 +203,29 @@ op_star
 id|c
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|c-&gt;mtd-&gt;type
+op_eq
+id|MTD_NANDFLASH
+)paren
+(brace
+multiline_comment|/* stop a eventually scheduled wbuf flush timer */
+id|del_timer_sync
+c_func
+(paren
+op_amp
+id|c-&gt;wbuf_timer
+)paren
+suffix:semicolon
+multiline_comment|/* make sure, that a scheduled wbuf flush task is completed */
+id|flush_scheduled_tasks
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
 id|spin_lock_bh
 c_func
 (paren
@@ -632,21 +655,33 @@ op_star
 id|c
 )paren
 (brace
-id|D1
-c_func
+r_uint32
+id|gcnodeofs
+op_assign
+l_int|0
+suffix:semicolon
+r_int
+id|ret
+suffix:semicolon
+multiline_comment|/* Don&squot;t count any progress we&squot;ve already made through the gcblock&n;&t;   as dirty space, for the purposes of this calculation */
+r_if
+c_cond
 (paren
-id|printk
-c_func
-(paren
-id|KERN_DEBUG
-l_string|&quot;thread_should_wake(): nr_free_blocks %d, nr_erasing_blocks %d, dirty_size 0x%x&bslash;n&quot;
-comma
-id|c-&gt;nr_free_blocks
-comma
-id|c-&gt;nr_erasing_blocks
-comma
-id|c-&gt;dirty_size
+id|c-&gt;gcblock
+op_logical_and
+id|c-&gt;gcblock-&gt;gc_node
 )paren
+id|gcnodeofs
+op_assign
+id|c-&gt;gcblock-&gt;gc_node-&gt;flash_offset
+op_amp
+op_complement
+l_int|3
+op_amp
+(paren
+id|c-&gt;sector_size
+op_minus
+l_int|1
 )paren
 suffix:semicolon
 r_if
@@ -658,12 +693,45 @@ id|c-&gt;nr_erasing_blocks
 template_param
 id|c-&gt;sector_size
 )paren
-r_return
+id|ret
+op_assign
 l_int|1
 suffix:semicolon
 r_else
-r_return
+id|ret
+op_assign
 l_int|0
+suffix:semicolon
+id|D1
+c_func
+(paren
+id|printk
+c_func
+(paren
+id|KERN_DEBUG
+l_string|&quot;thread_should_wake(): nr_free_blocks %d, nr_erasing_blocks %d, dirty_size 0x%x (mod 0x%x): %s&bslash;n&quot;
+comma
+id|c-&gt;nr_free_blocks
+comma
+id|c-&gt;nr_erasing_blocks
+comma
+id|c-&gt;dirty_size
+comma
+id|c-&gt;dirty_size
+op_minus
+id|gcnodeofs
+comma
+id|ret
+ques
+c_cond
+l_string|&quot;yes&quot;
+suffix:colon
+l_string|&quot;no&quot;
+)paren
+)paren
+suffix:semicolon
+r_return
+id|ret
 suffix:semicolon
 )brace
 eof

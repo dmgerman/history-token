@@ -3601,9 +3601,9 @@ id|pdev-&gt;devpath
 l_int|0
 )braket
 op_ne
-l_char|&squot;/&squot;
+l_char|&squot;0&squot;
 )paren
-multiline_comment|/* parent not root */
+multiline_comment|/* parent not root? */
 id|len
 op_assign
 id|snprintf
@@ -3622,8 +3622,8 @@ op_plus
 l_int|1
 )paren
 suffix:semicolon
+multiline_comment|/* root == &quot;0&quot;, root port 2 == &quot;2&quot;, port 3 that hub &quot;2.3&quot; */
 r_else
-multiline_comment|/* root == &quot;/&quot;, root port 2 == &quot;2&quot;, port 3 that hub &quot;/2.3&quot; */
 id|len
 op_assign
 id|snprintf
@@ -4361,19 +4361,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|current-&gt;flags
-op_amp
-id|PF_FREEZE
-)paren
-id|refrigerator
-c_func
-(paren
-id|PF_IOTHREAD
-)paren
-suffix:semicolon
 id|wait_event_interruptible
 c_func
 (paren
@@ -4386,6 +4373,19 @@ c_func
 op_amp
 id|hub_event_list
 )paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|current-&gt;flags
+op_amp
+id|PF_FREEZE
+)paren
+id|refrigerator
+c_func
+(paren
+id|PF_IOTHREAD
 )paren
 suffix:semicolon
 )brace

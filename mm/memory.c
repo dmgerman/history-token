@@ -8,7 +8,6 @@ macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/mman.h&gt;
 macro_line|#include &lt;linux/swap.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
-macro_line|#include &lt;linux/swapctl.h&gt;
 macro_line|#include &lt;linux/iobuf.h&gt;
 macro_line|#include &lt;linux/highmem.h&gt;
 macro_line|#include &lt;linux/pagemap.h&gt;
@@ -3830,7 +3829,15 @@ id|prot
 (brace
 r_int
 r_int
+id|base
+comma
 id|end
+suffix:semicolon
+id|base
+op_assign
+id|address
+op_amp
+id|PGDIR_MASK
 suffix:semicolon
 id|address
 op_and_assign
@@ -3871,6 +3878,8 @@ id|mm
 comma
 id|pmd
 comma
+id|base
+op_plus
 id|address
 )paren
 suffix:semicolon
@@ -3889,6 +3898,8 @@ c_func
 (paren
 id|pte
 comma
+id|base
+op_plus
 id|address
 comma
 id|end
@@ -4917,54 +4928,24 @@ c_cond
 id|limit
 op_ne
 id|RLIM_INFINITY
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|inode-&gt;i_size
-op_ge
+op_logical_and
+id|offset
+OG
 id|limit
 )paren
-(brace
-id|send_sig
-c_func
-(paren
-id|SIGXFSZ
-comma
-id|current
-comma
-l_int|0
-)paren
-suffix:semicolon
 r_goto
-id|out
+id|out_sig
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
 id|offset
 OG
-id|limit
+id|inode-&gt;i_sb-&gt;s_maxbytes
 )paren
-(brace
-id|send_sig
-c_func
-(paren
-id|SIGXFSZ
-comma
-id|current
-comma
-l_int|0
-)paren
+r_goto
+id|out
 suffix:semicolon
-id|offset
-op_assign
-id|limit
-suffix:semicolon
-)brace
-)brace
 id|inode-&gt;i_size
 op_assign
 id|offset
@@ -4986,10 +4967,26 @@ c_func
 id|inode
 )paren
 suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+id|out_sig
+suffix:colon
+id|send_sig
+c_func
+(paren
+id|SIGXFSZ
+comma
+id|current
+comma
+l_int|0
+)paren
+suffix:semicolon
 id|out
 suffix:colon
 r_return
-l_int|0
+op_minus
+id|EFBIG
 suffix:semicolon
 )brace
 multiline_comment|/* &n; * Primitive swap readahead code. We simply read an aligned block of&n; * (1 &lt;&lt; page_cluster) entries in the swap area. This method is chosen&n; * because it doesn&squot;t cost us any seek time.  We also make sure to queue&n; * the &squot;original&squot; request together with the readahead ones...  &n; */

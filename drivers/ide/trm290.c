@@ -532,6 +532,10 @@ id|hwif-&gt;chipset
 op_assign
 id|ide_trm290
 suffix:semicolon
+id|hwif-&gt;seg_boundary_mask
+op_assign
+l_int|0xffffffff
+suffix:semicolon
 id|cfgbase
 op_assign
 id|pci_resource_start

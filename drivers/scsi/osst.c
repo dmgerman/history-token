@@ -29973,23 +29973,6 @@ op_logical_neg
 id|osst_registered
 )paren
 (brace
-macro_line|#ifdef CONFIG_DEVFS_FS
-r_if
-c_cond
-(paren
-id|devfs_register_chrdev
-c_func
-(paren
-id|MAJOR_NR
-comma
-l_string|&quot;osst&quot;
-comma
-op_amp
-id|osst_fops
-)paren
-)paren
-(brace
-macro_line|#else
 r_if
 c_cond
 (paren
@@ -30005,7 +29988,6 @@ id|osst_fops
 )paren
 )paren
 (brace
-macro_line|#endif
 id|printk
 c_func
 (paren
@@ -30091,16 +30073,6 @@ id|KERN_ERR
 l_string|&quot;osst :W: Unable to allocate array for OnStream SCSI tapes.&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_DEVFS_FS
-id|devfs_unregister_chrdev
-c_func
-(paren
-id|MAJOR_NR
-comma
-l_string|&quot;osst&quot;
-)paren
-suffix:semicolon
-macro_line|#else
 id|unregister_chrdev
 c_func
 (paren
@@ -30109,7 +30081,6 @@ comma
 l_string|&quot;osst&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 r_return
 l_int|1
 suffix:semicolon
@@ -30172,16 +30143,6 @@ id|KERN_ERR
 l_string|&quot;osst :W: Unable to allocate tape buffer pointers.&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_DEVFS_FS
-id|devfs_unregister_chrdev
-c_func
-(paren
-id|MAJOR_NR
-comma
-l_string|&quot;osst&quot;
-)paren
-suffix:semicolon
-macro_line|#else
 id|unregister_chrdev
 c_func
 (paren
@@ -30190,7 +30151,6 @@ comma
 l_string|&quot;osst&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 id|kfree
 c_func
 (paren
@@ -30418,16 +30378,6 @@ op_amp
 id|osst_template
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_DEVFS_FS
-id|devfs_unregister_chrdev
-c_func
-(paren
-id|MAJOR_NR
-comma
-l_string|&quot;osst&quot;
-)paren
-suffix:semicolon
-macro_line|#else
 id|unregister_chrdev
 c_func
 (paren
@@ -30436,7 +30386,6 @@ comma
 l_string|&quot;osst&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 id|osst_registered
 op_decrement
 suffix:semicolon

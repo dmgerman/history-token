@@ -1190,18 +1190,7 @@ r_int
 op_star
 id|ts_io_bitmap
 suffix:semicolon
-multiline_comment|/* TLS info and cached descriptor */
-DECL|member|tls_base
-DECL|member|tls_limit
-DECL|member|tls_flags
-r_int
-r_int
-id|tls_base
-comma
-id|tls_limit
-comma
-id|tls_flags
-suffix:semicolon
+multiline_comment|/* TLS cached descriptor */
 DECL|member|tls_desc
 r_struct
 id|desc_struct
@@ -1373,6 +1362,10 @@ id|__volatile__
 c_func
 (paren
 l_string|&quot;rep;nop&quot;
+suffix:colon
+suffix:colon
+suffix:colon
+l_string|&quot;memory&quot;
 )paren
 suffix:semicolon
 )brace

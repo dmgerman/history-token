@@ -275,16 +275,6 @@ op_lshift
 l_int|6
 )braket
 suffix:semicolon
-DECL|variable|xd_sizes
-r_static
-r_int
-id|xd_sizes
-(braket
-id|XD_MAXDRIVES
-op_lshift
-l_int|6
-)braket
-suffix:semicolon
 DECL|variable|xd_lock
 r_static
 id|spinlock_t
@@ -319,10 +309,6 @@ comma
 id|part
 suffix:colon
 id|xd_struct
-comma
-id|sizes
-suffix:colon
-id|xd_sizes
 comma
 id|fops
 suffix:colon
@@ -488,7 +474,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|devfs_register_blkdev
+id|register_blkdev
 c_func
 (paren
 id|MAJOR_NR
@@ -6862,7 +6848,7 @@ id|xd_drives
 )paren
 (brace
 multiline_comment|/* no drives detected - unload module */
-id|devfs_unregister_blkdev
+id|unregister_blkdev
 c_func
 (paren
 id|MAJOR_NR
@@ -6894,7 +6880,7 @@ c_func
 r_void
 )paren
 (brace
-id|devfs_unregister_blkdev
+id|unregister_blkdev
 c_func
 (paren
 id|MAJOR_NR

@@ -4820,47 +4820,56 @@ id|address_space_operations
 id|ext3_aops
 op_assign
 (brace
+dot
 id|readpage
-suffix:colon
+op_assign
 id|ext3_readpage
 comma
 multiline_comment|/* BKL not held.  Don&squot;t need */
+dot
 id|readpages
-suffix:colon
+op_assign
 id|ext3_readpages
 comma
 multiline_comment|/* BKL not held.  Don&squot;t need */
+dot
 id|writepage
-suffix:colon
+op_assign
 id|ext3_writepage
 comma
 multiline_comment|/* BKL not held.  We take it */
+dot
 id|sync_page
-suffix:colon
+op_assign
 id|block_sync_page
 comma
+dot
 id|prepare_write
-suffix:colon
+op_assign
 id|ext3_prepare_write
 comma
 multiline_comment|/* BKL not held.  We take it */
+dot
 id|commit_write
-suffix:colon
+op_assign
 id|ext3_commit_write
 comma
 multiline_comment|/* BKL not held.  We take it */
+dot
 id|bmap
-suffix:colon
+op_assign
 id|ext3_bmap
 comma
 multiline_comment|/* BKL held */
+dot
 id|invalidatepage
-suffix:colon
+op_assign
 id|ext3_invalidatepage
 comma
 multiline_comment|/* BKL not held.  Don&squot;t need */
+dot
 id|releasepage
-suffix:colon
+op_assign
 id|ext3_releasepage
 comma
 multiline_comment|/* BKL not held.  Don&squot;t need */
@@ -4929,52 +4938,62 @@ id|address_space_operations
 id|ext3_writeback_aops
 op_assign
 (brace
+dot
 id|readpage
-suffix:colon
+op_assign
 id|ext3_readpage
 comma
 multiline_comment|/* BKL not held.  Don&squot;t need */
+dot
 id|readpages
-suffix:colon
+op_assign
 id|ext3_readpages
 comma
 multiline_comment|/* BKL not held.  Don&squot;t need */
+dot
 id|writepage
-suffix:colon
+op_assign
 id|ext3_writepage
 comma
 multiline_comment|/* BKL not held.  We take it */
+dot
 id|writepages
-suffix:colon
+op_assign
 id|ext3_writepages
 comma
 multiline_comment|/* BKL not held.  Don&squot;t need */
+dot
 id|sync_page
-suffix:colon
+op_assign
 id|block_sync_page
 comma
+dot
 id|prepare_write
-suffix:colon
+op_assign
 id|ext3_prepare_write
 comma
 multiline_comment|/* BKL not held.  We take it */
+dot
 id|commit_write
-suffix:colon
+op_assign
 id|ext3_commit_write
 comma
 multiline_comment|/* BKL not held.  We take it */
+dot
 id|bmap
-suffix:colon
+op_assign
 id|ext3_bmap
 comma
 multiline_comment|/* BKL held */
+dot
 id|invalidatepage
-suffix:colon
+op_assign
 id|ext3_invalidatepage
 comma
 multiline_comment|/* BKL not held.  Don&squot;t need */
+dot
 id|releasepage
-suffix:colon
+op_assign
 id|ext3_releasepage
 comma
 multiline_comment|/* BKL not held.  Don&squot;t need */

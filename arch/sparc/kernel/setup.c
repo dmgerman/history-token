@@ -98,7 +98,6 @@ c_func
 r_void
 )paren
 suffix:semicolon
-macro_line|#if CONFIG_SUN_CONSOLE
 DECL|variable|prom_palette
 r_void
 (paren
@@ -109,7 +108,6 @@ id|prom_palette
 r_int
 )paren
 suffix:semicolon
-macro_line|#endif
 id|asmlinkage
 r_void
 id|sys_sync
@@ -170,7 +168,6 @@ id|trapbase
 )paren
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_SUN_CONSOLE
 r_if
 c_cond
 (paren
@@ -182,7 +179,6 @@ c_func
 l_int|1
 )paren
 suffix:semicolon
-macro_line|#endif
 id|prom_printf
 c_func
 (paren
@@ -277,7 +273,6 @@ DECL|macro|BOOTME_KGDBB
 mdefine_line|#define BOOTME_KGDBB  0x8
 DECL|macro|BOOTME_KGDB
 mdefine_line|#define BOOTME_KGDB   0xc
-macro_line|#ifdef CONFIG_SUN_CONSOLE
 DECL|variable|__initdata
 r_static
 r_int
@@ -286,7 +281,6 @@ id|__initdata
 op_assign
 l_int|0
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/* Exported for mm/init.c:paging_init. */
 DECL|variable|__initdata
 r_int
@@ -361,20 +355,24 @@ id|console
 id|prom_debug_console
 op_assign
 (brace
+dot
 id|name
-suffix:colon
+op_assign
 l_string|&quot;debug&quot;
 comma
+dot
 id|write
-suffix:colon
+op_assign
 id|prom_console_write
 comma
+dot
 id|flags
-suffix:colon
+op_assign
 id|CON_PRINTBUFFER
 comma
+dot
 id|index
-suffix:colon
+op_assign
 op_minus
 l_int|1
 comma
@@ -678,7 +676,6 @@ suffix:semicolon
 )brace
 r_else
 (brace
-macro_line|#if CONFIG_SUN_CONSOLE
 r_if
 c_cond
 (paren
@@ -812,7 +809,6 @@ suffix:semicolon
 )brace
 )brace
 r_else
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -1949,7 +1945,10 @@ id|cputypval
 comma
 id|linux_num_cpus
 comma
-id|smp_num_cpus
+id|num_online_cpus
+c_func
+(paren
+)paren
 macro_line|#ifndef CONFIG_SMP
 comma
 id|loops_per_jiffy
@@ -2089,20 +2088,24 @@ id|seq_operations
 id|cpuinfo_op
 op_assign
 (brace
+dot
 id|start
-suffix:colon
+op_assign
 id|c_start
 comma
+dot
 id|next
-suffix:colon
+op_assign
 id|c_next
 comma
+dot
 id|stop
-suffix:colon
+op_assign
 id|c_stop
 comma
+dot
 id|show
-suffix:colon
+op_assign
 id|show_cpuinfo
 comma
 )brace

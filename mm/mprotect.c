@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&t;linux/mm/mprotect.c&n; *&n; *  (C) Copyright 1994 Linus Torvalds&n; */
+multiline_comment|/*&n; *  mm/mprotect.c&n; *&n; *  (C) Copyright 1994 Linus Torvalds&n; *&n; *  Address space accounting code&t;&lt;alan@redhat.com&gt;&n; *  (C) Copyright 2002 Red Hat Inc, All Rights Reserved&n; */
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
@@ -1267,6 +1267,12 @@ suffix:semicolon
 r_int
 id|error
 suffix:semicolon
+r_int
+r_int
+id|charged
+op_assign
+l_int|0
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1282,6 +1288,59 @@ id|vma
 suffix:semicolon
 r_return
 l_int|0
+suffix:semicolon
+)brace
+multiline_comment|/*&n;&t; * If we make a private mapping writable we increase our commit;&n;&t; * but (without finer accounting) cannot reduce our commit if we&n;&t; * make it unwritable again.&n;&t; *&n;&t; * FIXME? We haven&squot;t defined a VM_NORESERVE flag, so mprotecting&n;&t; * a MAP_NORESERVE private mapping to writable will now reserve.&n;&t; */
+r_if
+c_cond
+(paren
+(paren
+id|newflags
+op_amp
+id|VM_WRITE
+)paren
+op_logical_and
+op_logical_neg
+(paren
+id|vma-&gt;vm_flags
+op_amp
+(paren
+id|VM_ACCOUNT
+op_or
+id|VM_WRITE
+op_or
+id|VM_SHARED
+)paren
+)paren
+)paren
+(brace
+id|charged
+op_assign
+(paren
+id|end
+op_minus
+id|start
+)paren
+op_rshift
+id|PAGE_SHIFT
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|vm_enough_memory
+c_func
+(paren
+id|charged
+)paren
+)paren
+r_return
+op_minus
+id|ENOMEM
+suffix:semicolon
+id|newflags
+op_or_assign
+id|VM_ACCOUNT
 suffix:semicolon
 )brace
 id|newprot
@@ -1388,9 +1447,17 @@ c_cond
 (paren
 id|error
 )paren
+(brace
+id|vm_unacct_memory
+c_func
+(paren
+id|charged
+)paren
+suffix:semicolon
 r_return
 id|error
 suffix:semicolon
+)brace
 id|change_protection
 c_func
 (paren

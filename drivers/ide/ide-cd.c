@@ -11,8 +11,9 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/cdrom.h&gt;
-macro_line|#include &lt;linux/ide.h&gt;
 macro_line|#include &lt;linux/completion.h&gt;
+macro_line|#include &lt;linux/hdreg.h&gt;
+macro_line|#include &lt;linux/ide.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
@@ -5119,19 +5120,12 @@ op_member_access_from_pointer
 id|seeking
 )paren
 (brace
-r_int
-r_int
-id|elpased
-op_assign
-id|jiffies
-op_minus
-id|info-&gt;start_seek
-suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
-id|ata_status
+id|ATA_OP_READY
+op_ne
+id|ata_status_poll
 c_func
 (paren
 id|drive
@@ -5139,29 +5133,13 @@ comma
 id|SEEK_STAT
 comma
 l_int|0
-)paren
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|elpased
-OL
-id|IDECD_SEEK_TIMEOUT
-)paren
-(brace
-id|ide_stall_queue
-c_func
-(paren
-id|drive
 comma
-id|IDECD_SEEK_TIMER
+id|IDECD_SEEK_TIMEOUT
+comma
+id|rq
 )paren
-suffix:semicolon
-r_return
-id|ATA_OP_FINISHED
-suffix:semicolon
-)brace
+)paren
+(brace
 id|printk
 (paren
 l_string|&quot;%s: DSC timeout&bslash;n&quot;
@@ -5169,7 +5147,6 @@ comma
 id|drive-&gt;name
 )paren
 suffix:semicolon
-)brace
 id|CDROM_CONFIG_FLAGS
 c_func
 (paren
@@ -5179,6 +5156,11 @@ op_member_access_from_pointer
 id|seeking
 op_assign
 l_int|0
+suffix:semicolon
+)brace
+r_else
+r_return
+id|ATA_OP_FINISHED
 suffix:semicolon
 )brace
 r_if
@@ -6944,25 +6926,6 @@ id|stat
 id|toc-&gt;capacity
 op_assign
 l_int|0x1fffff
-suffix:semicolon
-id|drive-&gt;channel-&gt;gd-&gt;sizes
-(braket
-id|drive-&gt;select.b.unit
-op_lshift
-id|PARTN_BITS
-)braket
-op_assign
-(paren
-id|toc-&gt;capacity
-op_star
-id|SECTORS_PER_FRAME
-)paren
-op_rshift
-(paren
-id|BLOCK_SIZE_BITS
-op_minus
-l_int|9
-)paren
 suffix:semicolon
 id|drive-&gt;part
 (braket
@@ -11213,13 +11176,6 @@ id|atapi_toc
 op_star
 id|toc
 suffix:semicolon
-r_int
-id|minor
-op_assign
-id|drive-&gt;select.b.unit
-op_lshift
-id|PARTN_BITS
-suffix:semicolon
 r_struct
 id|request_sense
 id|sense
@@ -11262,22 +11218,6 @@ op_assign
 id|toc-&gt;capacity
 op_star
 id|SECTORS_PER_FRAME
-suffix:semicolon
-id|drive-&gt;channel-&gt;gd-&gt;sizes
-(braket
-id|minor
-)braket
-op_assign
-id|toc-&gt;capacity
-op_star
-id|BLOCKS_PER_FRAME
-suffix:semicolon
-id|blk_size
-(braket
-id|drive-&gt;channel-&gt;major
-)braket
-op_assign
-id|drive-&gt;channel-&gt;gd-&gt;sizes
 suffix:semicolon
 )brace
 DECL|function|ide_cdrom_capacity
@@ -11348,7 +11288,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|ide_unregister_subdriver
+id|ata_unregister_device
+c_func
 (paren
 id|drive
 )paren
@@ -11647,7 +11588,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|ide_register_subdriver
+id|ata_register_device
+c_func
 (paren
 id|drive
 comma

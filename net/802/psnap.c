@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&t;SNAP data link layer. Derived from 802.2&n; *&n; *&t;&t;Alan Cox &lt;Alan.Cox@linux.org&gt;, from the 802.2 layer by Greg Page.&n; *&t;&t;Merged in additions from Greg Page&squot;s psnap.c.&n; *&n; *&t;&t;This program is free software; you can redistribute it and/or&n; *&t;&t;modify it under the terms of the GNU General Public License&n; *&t;&t;as published by the Free Software Foundation; either version&n; *&t;&t;2 of the License, or (at your option) any later version.&n; */
+multiline_comment|/*&n; *&t;SNAP data link layer. Derived from 802.2&n; *&n; *&t;&t;Alan Cox &lt;Alan.Cox@linux.org&gt;,&n; *&t;&t;from the 802.2 layer by Greg Page.&n; *&t;&t;Merged in additions from Greg Page&squot;s psnap.c.&n; *&n; *&t;&t;This program is free software; you can redistribute it and/or&n; *&t;&t;modify it under the terms of the GNU General Public License&n; *&t;&t;as published by the Free Software Foundation; either version&n; *&t;&t;2 of the License, or (at your option) any later version.&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
@@ -14,8 +14,6 @@ r_struct
 id|datalink_proto
 op_star
 id|snap_list
-op_assign
-l_int|NULL
 suffix:semicolon
 DECL|variable|snap_dl
 r_static
@@ -23,8 +21,6 @@ r_struct
 id|datalink_proto
 op_star
 id|snap_dl
-op_assign
-l_int|NULL
 suffix:semicolon
 multiline_comment|/* 802.2 DL for SNAP */
 multiline_comment|/*&n; *&t;Find a snap client by matching the 5 bytes.&n; */
@@ -46,17 +42,14 @@ r_struct
 id|datalink_proto
 op_star
 id|proto
+op_assign
+id|snap_list
 suffix:semicolon
 r_for
 c_loop
 (paren
-id|proto
-op_assign
-id|snap_list
 suffix:semicolon
 id|proto
-op_ne
-l_int|NULL
 op_logical_and
 id|memcmp
 c_func
@@ -105,24 +98,25 @@ id|packet_type
 id|psnap_packet_type
 op_assign
 (brace
-l_int|0
+dot
+id|type
+op_assign
+id|__constant_htons
+c_func
+(paren
+id|ETH_P_SNAP
+)paren
 comma
-l_int|NULL
-comma
-multiline_comment|/* All Devices */
+dot
+id|func
+op_assign
 id|snap_rcv
-comma
-l_int|NULL
-comma
-l_int|NULL
 comma
 )brace
 suffix:semicolon
 r_struct
 id|datalink_proto
 op_star
-id|proto
-suffix:semicolon
 id|proto
 op_assign
 id|find_snap_client
@@ -135,11 +129,9 @@ r_if
 c_cond
 (paren
 id|proto
-op_ne
-l_int|NULL
 )paren
 (brace
-multiline_comment|/*&n;&t;&t; *&t;Pass the frame on.&n;&t;&t; */
+multiline_comment|/* Pass the frame on. */
 id|skb-&gt;h.raw
 op_add_assign
 l_int|5
@@ -154,21 +146,6 @@ c_func
 id|skb
 comma
 l_int|5
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|psnap_packet_type.type
-op_eq
-l_int|0
-)paren
-id|psnap_packet_type.type
-op_assign
-id|htons
-c_func
-(paren
-id|ETH_P_SNAP
 )paren
 suffix:semicolon
 r_return
@@ -290,18 +267,16 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|snap_dl
-op_eq
-l_int|NULL
 )paren
-(brace
 id|printk
 c_func
 (paren
+id|KERN_CRIT
 l_string|&quot;SNAP - unable to register with 802.2&bslash;n&quot;
 )paren
 suffix:semicolon
-)brace
 r_return
 l_int|0
 suffix:semicolon
@@ -350,6 +325,8 @@ r_struct
 id|datalink_proto
 op_star
 id|proto
+op_assign
+l_int|NULL
 suffix:semicolon
 r_if
 c_cond
@@ -359,19 +336,12 @@ c_func
 (paren
 id|desc
 )paren
-op_ne
-l_int|NULL
 )paren
-r_return
-l_int|NULL
+r_goto
+id|out
 suffix:semicolon
 id|proto
 op_assign
-(paren
-r_struct
-id|datalink_proto
-op_star
-)paren
 id|kmalloc
 c_func
 (paren
@@ -388,8 +358,6 @@ r_if
 c_cond
 (paren
 id|proto
-op_ne
-l_int|NULL
 )paren
 (brace
 id|memcpy
@@ -433,6 +401,8 @@ op_assign
 id|proto
 suffix:semicolon
 )brace
+id|out
+suffix:colon
 r_return
 id|proto
 suffix:semicolon
@@ -494,6 +464,7 @@ l_int|NULL
 r_if
 c_cond
 (paren
+op_logical_neg
 id|memcmp
 c_func
 (paren
@@ -503,8 +474,6 @@ id|desc
 comma
 l_int|5
 )paren
-op_eq
-l_int|0
 )paren
 (brace
 op_star
@@ -535,4 +504,10 @@ id|flags
 )paren
 suffix:semicolon
 )brace
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 eof

@@ -98,6 +98,7 @@ multiline_comment|/*      Local vars.&n; */
 DECL|variable|busy_flag
 r_static
 r_int
+r_int
 id|busy_flag
 suffix:semicolon
 DECL|variable|orig_sigmask
@@ -1316,7 +1317,7 @@ suffix:semicolon
 id|TRACE_CATCH
 c_func
 (paren
-id|devfs_register_chrdev
+id|register_chrdev
 c_func
 (paren
 id|QIC117_TAPE_MAJOR
@@ -1687,7 +1688,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|devfs_unregister_chrdev
+id|unregister_chrdev
 c_func
 (paren
 id|QIC117_TAPE_MAJOR
@@ -1743,10 +1744,7 @@ comma
 id|i
 )paren
 suffix:semicolon
-id|devfs_unregister
-c_func
-(paren
-id|devfs_find_handle
+id|devfs_find_and_unregister
 c_func
 (paren
 l_int|NULL
@@ -1761,7 +1759,6 @@ id|DEVFS_SPECIAL_CHR
 comma
 l_int|0
 )paren
-)paren
 suffix:semicolon
 id|sprintf
 c_func
@@ -1773,10 +1770,7 @@ comma
 id|i
 )paren
 suffix:semicolon
-id|devfs_unregister
-c_func
-(paren
-id|devfs_find_handle
+id|devfs_find_and_unregister
 c_func
 (paren
 l_int|NULL
@@ -1793,7 +1787,6 @@ id|DEVFS_SPECIAL_CHR
 comma
 l_int|0
 )paren
-)paren
 suffix:semicolon
 id|sprintf
 c_func
@@ -1805,10 +1798,7 @@ comma
 id|i
 )paren
 suffix:semicolon
-id|devfs_unregister
-c_func
-(paren
-id|devfs_find_handle
+id|devfs_find_and_unregister
 c_func
 (paren
 l_int|NULL
@@ -1825,7 +1815,6 @@ id|DEVFS_SPECIAL_CHR
 comma
 l_int|0
 )paren
-)paren
 suffix:semicolon
 id|sprintf
 c_func
@@ -1837,10 +1826,7 @@ comma
 id|i
 )paren
 suffix:semicolon
-id|devfs_unregister
-c_func
-(paren
-id|devfs_find_handle
+id|devfs_find_and_unregister
 c_func
 (paren
 l_int|NULL
@@ -1857,7 +1843,6 @@ id|DEVFS_SPECIAL_CHR
 comma
 l_int|0
 )paren
-)paren
 suffix:semicolon
 id|sprintf
 c_func
@@ -1869,10 +1854,7 @@ comma
 id|i
 )paren
 suffix:semicolon
-id|devfs_unregister
-c_func
-(paren
-id|devfs_find_handle
+id|devfs_find_and_unregister
 c_func
 (paren
 l_int|NULL
@@ -1889,7 +1871,6 @@ id|DEVFS_SPECIAL_CHR
 comma
 l_int|0
 )paren
-)paren
 suffix:semicolon
 id|sprintf
 c_func
@@ -1901,10 +1882,7 @@ comma
 id|i
 )paren
 suffix:semicolon
-id|devfs_unregister
-c_func
-(paren
-id|devfs_find_handle
+id|devfs_find_and_unregister
 c_func
 (paren
 l_int|NULL
@@ -1920,7 +1898,6 @@ comma
 id|DEVFS_SPECIAL_CHR
 comma
 l_int|0
-)paren
 )paren
 suffix:semicolon
 )brace

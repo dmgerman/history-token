@@ -160,23 +160,23 @@ id|__NR_ioctl
 comma
 id|sys_ioctl
 )paren
-DECL|macro|__NR_pread
-mdefine_line|#define __NR_pread                              17
+DECL|macro|__NR_pread64
+mdefine_line|#define __NR_pread64                            17
 id|__SYSCALL
 c_func
 (paren
-id|__NR_pread
+id|__NR_pread64
 comma
-id|sys_pread
+id|sys_pread64
 )paren
-DECL|macro|__NR_pwrite
-mdefine_line|#define __NR_pwrite                             18
+DECL|macro|__NR_pwrite64
+mdefine_line|#define __NR_pwrite64                           18
 id|__SYSCALL
 c_func
 (paren
-id|__NR_pwrite
+id|__NR_pwrite64
 comma
-id|sys_pwrite
+id|sys_pwrite64
 )paren
 DECL|macro|__NR_readv
 mdefine_line|#define __NR_readv                              19

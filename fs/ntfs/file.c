@@ -77,6 +77,12 @@ id|generic_file_mmap
 comma
 multiline_comment|/* Mmap file. */
 dot
+id|sendfile
+op_assign
+id|generic_file_sendfile
+comma
+multiline_comment|/* Zero-copy data send. */
+dot
 id|open
 op_assign
 id|ntfs_file_open

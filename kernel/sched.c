@@ -52,7 +52,7 @@ DECL|macro|DELTA
 mdefine_line|#define DELTA(p) &bslash;&n;&t;(SCALE(TASK_NICE(p), 40, MAX_USER_PRIO*PRIO_BONUS_RATIO/100) + &bslash;&n;&t;&t;INTERACTIVE_DELTA)
 DECL|macro|TASK_INTERACTIVE
 mdefine_line|#define TASK_INTERACTIVE(p) &bslash;&n;&t;((p)-&gt;prio &lt;= (p)-&gt;static_prio - DELTA(p))
-multiline_comment|/*&n; * BASE_TIMESLICE scales user-nice values [ -20 ... 19 ]&n; * to time slice values.&n; *&n; * The higher a process&squot;s priority, the bigger timeslices&n; * it gets during one round of execution. But even the lowest&n; * priority process gets MIN_TIMESLICE worth of execution time.&n; *&n; * task_timeslice() is the interface that is used by the scheduler.&n; */
+multiline_comment|/*&n; * BASE_TIMESLICE scales user-nice values [ -20 ... 19 ]&n; * to time slice values.&n; *&n; * The higher a thread&squot;s priority, the bigger timeslices&n; * it gets during one round of execution. But even the lowest&n; * priority thread gets MIN_TIMESLICE worth of execution time.&n; *&n; * task_timeslice() is the interface that is used by the scheduler.&n; */
 DECL|macro|BASE_TIMESLICE
 mdefine_line|#define BASE_TIMESLICE(p) (MIN_TIMESLICE + &bslash;&n;&t;((MAX_TIMESLICE - MIN_TIMESLICE) * (MAX_PRIO-1-(p)-&gt;static_prio)/(MAX_USER_PRIO - 1)))
 DECL|function|task_timeslice
@@ -110,7 +110,7 @@ id|MAX_PRIO
 suffix:semicolon
 )brace
 suffix:semicolon
-multiline_comment|/*&n; * This is the main, per-CPU runqueue data structure.&n; *&n; * Locking rule: those places that want to lock multiple runqueues&n; * (such as the load balancing or the process migration code), lock&n; * acquire operations must be ordered by ascending &amp;runqueue.&n; */
+multiline_comment|/*&n; * This is the main, per-CPU runqueue data structure.&n; *&n; * Locking rule: those places that want to lock multiple runqueues&n; * (such as the load balancing or the thread migration code), lock&n; * acquire operations must be ordered by ascending &amp;runqueue.&n; */
 DECL|struct|runqueue
 r_struct
 id|runqueue
@@ -472,6 +472,7 @@ op_assign
 id|array
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * effective_prio - return the priority that is based on the static&n; * priority but is modified by bonuses/penalties.&n; *&n; * We scale the actual sleep average [0 .... MAX_SLEEP_AVG]&n; * into the -5 ... 0 ... +5 bonus/penalty range.&n; *&n; * We use 25% of the full 0...39 priority range so that:&n; *&n; * 1) nice +19 interactive tasks do not preempt nice 0 CPU hogs.&n; * 2) nice -20 CPU hogs do not get preempted by nice 0 tasks.&n; *&n; * Both properties are important to certain workloads.&n; */
 DECL|function|effective_prio
 r_static
 r_inline
@@ -489,7 +490,6 @@ id|bonus
 comma
 id|prio
 suffix:semicolon
-multiline_comment|/*&n;&t; * Here we scale the actual sleep average [0 .... MAX_SLEEP_AVG]&n;&t; * into the -5 ... 0 ... +5 bonus/penalty range.&n;&t; *&n;&t; * We use 25% of the full 0...39 priority range so that:&n;&t; *&n;&t; * 1) nice +19 interactive tasks do not preempt nice 0 CPU hogs.&n;&t; * 2) nice -20 CPU hogs do not get preempted by nice 0 tasks.&n;&t; *&n;&t; * Both properties are important to certain workloads.&n;&t; */
 id|bonus
 op_assign
 id|MAX_USER_PRIO
@@ -546,6 +546,7 @@ r_return
 id|prio
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * activate_task - move a task to the runqueue.&n;&n; * Also update all the scheduling statistics stuff. (sleep average&n; * calculation, priority modifiers, etc.)&n; */
 DECL|function|activate_task
 r_static
 r_inline
@@ -626,6 +627,7 @@ id|rq-&gt;nr_running
 op_increment
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * deactivate_task - remove a task from the runqueue.&n; */
 DECL|function|deactivate_task
 r_static
 r_inline
@@ -669,6 +671,7 @@ op_assign
 l_int|NULL
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * resched_task - mark a task &squot;to be rescheduled now&squot;.&n; *&n; * On UP this means the setting of the need_resched flag, on SMP it&n; * might also involve a cross-CPU call to trigger the scheduler on&n; * the target CPU.&n; */
 DECL|function|resched_task
 r_static
 r_inline
@@ -770,7 +773,7 @@ suffix:semicolon
 macro_line|#endif
 )brace
 macro_line|#ifdef CONFIG_SMP
-multiline_comment|/*&n; * Wait for a process to unschedule. This is used by the exit() and&n; * ptrace() code.&n; */
+multiline_comment|/*&n; * wait_task_inactive - wait for a thread to unschedule.&n; *&n; * The caller must ensure that the task *will* unschedule sometime soon,&n; * else this function might spin for a *long* time.&n; */
 DECL|function|wait_task_inactive
 r_void
 id|wait_task_inactive
@@ -896,7 +899,7 @@ c_func
 suffix:semicolon
 )brace
 macro_line|#endif
-multiline_comment|/*&n; * Kick the remote CPU if the task is running currently,&n; * this code is used by the signal code to signal tasks&n; * which are in user-mode as quickly as possible.&n; *&n; * (Note that we do this lockless - if the task does anything&n; * while the message is in flight then it will notice the&n; * sigpending condition anyway.)&n; */
+multiline_comment|/*&n; * kick_if_running - kick the remote CPU if the task is running currently.&n; *&n; * This code is used by the signal code to signal tasks&n; * which are in user-mode, as quickly as possible.&n; *&n; * (Note that we do this lockless - if the task does anything&n; * while the message is in flight then it will notice the&n; * sigpending condition anyway.)&n; */
 DECL|function|kick_if_running
 r_void
 id|kick_if_running
@@ -944,7 +947,7 @@ id|p
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Wake up a process. Put it on the run-queue if it&squot;s not&n; * already there.  The &quot;current&quot; process is always on the&n; * run-queue (except when the actual re-schedule is in&n; * progress), and as such you&squot;re allowed to do the simpler&n; * &quot;current-&gt;state = TASK_RUNNING&quot; to mark yourself runnable&n; * without the overhead of this.&n; *&n; * returns failure only if the task is already active.&n; */
+multiline_comment|/***&n; * try_to_wake_up - wake up a thread&n; * @p: the to-be-woken-up thread&n; * @sync: do a synchronous wakeup?&n; *&n; * Put it on the run-queue if it&squot;s not already there. The &quot;current&quot;&n; * thread is always on the run-queue (except when the actual&n; * re-schedule is in progress), and as such you&squot;re allowed to do&n; * the simpler &quot;current-&gt;state = TASK_RUNNING&quot; to mark yourself&n; * runnable without the overhead of this.&n; *&n; * returns failure only if the task is already active.&n; */
 DECL|function|try_to_wake_up
 r_static
 r_int
@@ -1142,6 +1145,7 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * wake_up_forked_process - wake up a freshly forked process.&n; *&n; * This function will do some initial scheduler statistics housekeeping&n; * that must be done for every newly created process.&n; */
 DECL|function|wake_up_forked_process
 r_void
 id|wake_up_forked_process
@@ -1228,7 +1232,7 @@ id|rq
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Potentially available exiting-child timeslices are&n; * retrieved here - this way the parent does not get&n; * penalized for creating too many processes.&n; *&n; * (this cannot be used to &squot;generate&squot; timeslices&n; * artificially, because any timeslice recovered here&n; * was given away by the parent in the first place.)&n; */
+multiline_comment|/*&n; * Potentially available exiting-child timeslices are&n; * retrieved here - this way the parent does not get&n; * penalized for creating too many threads.&n; *&n; * (this cannot be used to &squot;generate&squot; timeslices&n; * artificially, because any timeslice recovered here&n; * was given away by the parent in the first place.)&n; */
 DECL|function|sched_exit
 r_void
 id|sched_exit
@@ -1300,6 +1304,7 @@ l_int|1
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * schedule_tail - first thing a freshly forked thread must call.&n; * @prev: the thread we just switched away from.&n; */
 macro_line|#if CONFIG_SMP || CONFIG_PREEMPT
 DECL|function|schedule_tail
 id|asmlinkage
@@ -1325,6 +1330,7 @@ id|prev
 suffix:semicolon
 )brace
 macro_line|#endif
+multiline_comment|/*&n; * context_switch - switch to the new MM and the new&n; * thread&squot;s register state.&n; */
 DECL|function|context_switch
 r_static
 r_inline
@@ -1445,6 +1451,7 @@ r_return
 id|prev
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * nr_running, nr_uninterruptible and nr_context_switches:&n; *&n; * externally visible scheduler statistics: current number of runnable&n; * threads, current number of uninterruptible-sleeping threads, total&n; * number of context switches performed since bootup.&n; */
 DECL|function|nr_running
 r_int
 r_int
@@ -1695,7 +1702,7 @@ id|rq2-&gt;lock
 suffix:semicolon
 )brace
 macro_line|#if CONFIG_SMP
-multiline_comment|/*&n; * Lock the busiest runqueue as well, this_rq is locked already.&n; * Recalculate nr_running if we have to drop the runqueue lock.&n; */
+multiline_comment|/*&n; * double_lock_balance - lock the busiest runqueue&n; *&n; * this_rq is locked already. Recalculate nr_running if we have to&n; * drop the runqueue lock.&n; */
 DECL|function|double_lock_balance
 r_static
 r_inline
@@ -1809,6 +1816,7 @@ r_return
 id|nr_running
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * find_busiest_queue - find the busiest runqueue.&n; */
 DECL|function|find_busiest_queue
 r_static
 r_inline
@@ -2075,7 +2083,7 @@ r_return
 id|busiest
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Move a task from a remote runqueue to the local runqueue.&n; * Both runqueues must be locked.&n; */
+multiline_comment|/*&n; * pull_task - move a task from a remote runqueue to the local runqueue.&n; * Both runqueues must be locked.&n; */
 DECL|function|pull_task
 r_static
 r_inline
@@ -2413,7 +2421,7 @@ id|out
 suffix:colon
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * One of the idle_cpu_tick() or the busy_cpu_tick() function will&n; * gets called every timer tick, on every CPU. Our balancing action&n; * frequency and balancing agressivity depends on whether the CPU is&n; * idle or not.&n; *&n; * busy-rebalance every 250 msecs. idle-rebalance every 1 msec. (or on&n; * systems with HZ=100, every 10 msecs.)&n; */
+multiline_comment|/*&n; * One of the idle_cpu_tick() and busy_cpu_tick() functions will&n; * get called every timer tick, on every CPU. Our balancing action&n; * frequency and balancing agressivity depends on whether the CPU is&n; * idle or not.&n; *&n; * busy-rebalance every 250 msecs. idle-rebalance every 1 msec. (or on&n; * systems with HZ=100, every 10 msecs.)&n; */
 DECL|macro|BUSY_REBALANCE_TICK
 mdefine_line|#define BUSY_REBALANCE_TICK (HZ/4 ?: 1)
 DECL|macro|IDLE_REBALANCE_TICK
@@ -2668,7 +2676,7 @@ r_goto
 id|out
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * The task was running during this tick - update the&n;&t; * time slice counter and the sleep average. Note: we&n;&t; * do not update a process&squot;s priority until it either&n;&t; * goes to sleep or uses up its timeslice. This makes&n;&t; * it possible for interactive tasks to use up their&n;&t; * timeslices at their highest priority levels.&n;&t; */
+multiline_comment|/*&n;&t; * The task was running during this tick - update the&n;&t; * time slice counter and the sleep average. Note: we&n;&t; * do not update a thread&squot;s priority until it either&n;&t; * goes to sleep or uses up its timeslice. This makes&n;&t; * it possible for interactive tasks to use up their&n;&t; * timeslices at their highest priority levels.&n;&t; */
 r_if
 c_cond
 (paren
@@ -2804,7 +2812,7 @@ r_void
 )paren
 (brace
 )brace
-multiline_comment|/*&n; * &squot;schedule()&squot; is the main scheduler function.&n; */
+multiline_comment|/*&n; * schedule() is the main scheduler function.&n; */
 DECL|function|schedule
 id|asmlinkage
 r_void
@@ -3404,6 +3412,7 @@ r_break
 suffix:semicolon
 )brace
 )brace
+multiline_comment|/**&n; * __wake_up - wake up threads blocked on a waitqueue.&n; * @q: the waitqueue&n; * @mode: which threads&n; * @nr_exclusive: how many wake-one or wake-many threads to wake up&n; */
 DECL|function|__wake_up
 r_void
 id|__wake_up
@@ -3497,6 +3506,7 @@ l_int|0
 suffix:semicolon
 )brace
 macro_line|#if CONFIG_SMP
+multiline_comment|/**&n; * __wake_up - sync- wake up threads blocked on a waitqueue.&n; * @q: the waitqueue&n; * @mode: which threads&n; * @nr_exclusive: how many wake-one or wake-many threads to wake up&n; *&n; * The sync wakeup differs that the waker knows that it will schedule&n; * away soon, so while the target thread will be woken up, it will not&n; * be migrated to another CPU - ie. the two threads are &squot;synchronized&squot;&n; * with each other. This can prevent needless bouncing between CPUs.&n; */
 DECL|function|__wake_up_sync
 r_void
 id|__wake_up_sync
@@ -4030,7 +4040,7 @@ id|flags
 suffix:semicolon
 )brace
 macro_line|#ifndef __alpha__
-multiline_comment|/*&n; * This has been replaced by sys_setpriority.  Maybe it should be&n; * moved into the arch dependent tree for those ports that require&n; * it for backward compatibility?&n; */
+multiline_comment|/*&n; * sys_nice - change the priority of the current process.&n; * @increment: priority increment&n; *&n; * sys_setpriority is a more generic, but much slower function that&n; * does similar things.&n; */
 DECL|function|sys_nice
 id|asmlinkage
 r_int
@@ -4162,7 +4172,7 @@ l_int|0
 suffix:semicolon
 )brace
 macro_line|#endif
-multiline_comment|/*&n; * This is the priority value as seen by users in /proc&n; *&n; * RT tasks are offset by -200. Normal tasks are centered&n; * around 0, value goes from -16 to +15.&n; */
+multiline_comment|/**&n; * task_prio - return the priority value of a given task.&n; * @p: the task in question.&n; *&n; * This is the priority value as seen by users in /proc.&n; * RT tasks are offset by -200. Normal tasks are centered&n; * around 0, value goes from -16 to +15.&n; */
 DECL|function|task_prio
 r_int
 id|task_prio
@@ -4179,6 +4189,7 @@ op_minus
 id|MAX_USER_RT_PRIO
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * task_nice - return the nice value of a given task.&n; * @p: the task in question.&n; */
 DECL|function|task_nice
 r_int
 id|task_nice
@@ -4197,6 +4208,7 @@ id|p
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * idle_cpu - is a given cpu idle currently?&n; * @cpu: the processor in question.&n; */
 DECL|function|idle_cpu
 r_int
 id|idle_cpu
@@ -4222,6 +4234,7 @@ op_member_access_from_pointer
 id|idle
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * find_process_by_pid - find a process with a matching PID value.&n; * @pid: the pid in question.&n; */
 DECL|function|find_process_by_pid
 r_static
 r_inline
@@ -4247,6 +4260,7 @@ suffix:colon
 id|current
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * setscheduler - change the scheduling policy and/or RT priority of a thread.&n; */
 DECL|function|setscheduler
 r_static
 r_int
@@ -4617,6 +4631,7 @@ r_return
 id|retval
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * sys_sched_setscheduler - set/change the scheduler policy and RT priority&n; * @pid: the pid in question.&n; * @policy: new policy&n; * @param: structure containing the new RT priority.&n; */
 DECL|function|sys_sched_setscheduler
 id|asmlinkage
 r_int
@@ -4647,6 +4662,7 @@ id|param
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * sys_sched_setparam - set/change the RT priority of a thread&n; * @pid: the pid in question.&n; * @param: structure containing the new RT priority.&n; */
 DECL|function|sys_sched_setparam
 id|asmlinkage
 r_int
@@ -4675,6 +4691,7 @@ id|param
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * sys_sched_getscheduler - get the policy (scheduling class) of a thread&n; * @pid: the pid in question.&n; */
 DECL|function|sys_sched_getscheduler
 id|asmlinkage
 r_int
@@ -4765,6 +4782,7 @@ r_return
 id|retval
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * sys_sched_getscheduler - get the RT priority of a thread&n; * @pid: the pid in question.&n; * @param: structure containing the RT priority.&n; */
 DECL|function|sys_sched_getparam
 id|asmlinkage
 r_int
@@ -5220,6 +5238,7 @@ r_return
 id|real_len
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * sys_sched_yield - yield the current processor to other threads.&n; *&n; * this function yields the current CPU by moving the calling thread&n; * to the expired array. If there are no other threads running on this&n; * CPU then this function will return.&n; */
 DECL|function|sys_sched_yield
 id|asmlinkage
 r_int
@@ -5340,6 +5359,7 @@ c_func
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * yield - yield the current processor to other threads.&n; *&n; * this is a shortcut for kernel-space yielding - it marks the&n; * thread runnable and calls sys_sched_yield().&n; */
 DECL|function|yield
 r_void
 id|yield
@@ -5360,6 +5380,7 @@ c_func
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * sys_sched_get_priority_max - return maximum RT priority.&n; * @policy: scheduling class.&n; *&n; * this syscall returns the maximum rt_priority that can be used&n; * by a given scheduling class.&n; */
 DECL|function|sys_sched_get_priority_max
 id|asmlinkage
 r_int
@@ -5410,6 +5431,7 @@ r_return
 id|ret
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * sys_sched_get_priority_mix - return minimum RT priority.&n; * @policy: scheduling class.&n; *&n; * this syscall returns the minimum rt_priority that can be used&n; * by a given scheduling class.&n; */
 DECL|function|sys_sched_get_priority_min
 id|asmlinkage
 r_int
@@ -5456,6 +5478,7 @@ r_return
 id|ret
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * sys_sched_rr_get_interval - return the default timeslice of a process.&n; * @pid: pid of the process.&n; * @interval: userspace pointer to the timeslice value.&n; *&n; * this syscall writes the default timeslice value of a given process&n; * into the user-space timespec buffer. A value of &squot;0&squot; means infinity.&n; */
 DECL|function|sys_sched_rr_get_interval
 id|asmlinkage
 r_int
@@ -6311,7 +6334,7 @@ DECL|typedef|migration_req_t
 )brace
 id|migration_req_t
 suffix:semicolon
-multiline_comment|/*&n; * Change a given task&squot;s CPU affinity. Migrate the process to a&n; * proper CPU and schedule it away if the CPU it&squot;s executing on&n; * is removed from the allowed bitmask.&n; *&n; * NOTE: the caller must have a valid reference to the task, the&n; * task must not exit() &amp; deallocate itself prematurely.  The&n; * call is not atomic; no spinlocks may be held.&n; */
+multiline_comment|/*&n; * Change a given task&squot;s CPU affinity. Migrate the thread to a&n; * proper CPU and schedule it away if the CPU it&squot;s executing on&n; * is removed from the allowed bitmask.&n; *&n; * NOTE: the caller must have a valid reference to the task, the&n; * task must not exit() &amp; deallocate itself prematurely.  The&n; * call is not atomic; no spinlocks may be held.&n; */
 DECL|function|set_cpus_allowed
 r_void
 id|set_cpus_allowed
@@ -6374,7 +6397,7 @@ id|p-&gt;cpus_allowed
 op_assign
 id|new_mask
 suffix:semicolon
-multiline_comment|/*&n;&t; * Can the task run on the task&squot;s current CPU? If not then&n;&t; * migrate the process off to a proper CPU.&n;&t; */
+multiline_comment|/*&n;&t; * Can the task run on the task&squot;s current CPU? If not then&n;&t; * migrate the thread off to a proper CPU.&n;&t; */
 r_if
 c_cond
 (paren
@@ -6497,6 +6520,7 @@ c_func
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * migration_thread - this is a highprio system thread that performs&n; * thread migration by &squot;pulling&squot; threads into the target runqueue.&n; */
 DECL|function|migration_thread
 r_static
 r_int
@@ -6505,31 +6529,29 @@ c_func
 (paren
 r_void
 op_star
-id|bind_cpu
+id|data
 )paren
 (brace
+r_struct
+id|sched_param
+id|param
+op_assign
+(brace
+dot
+id|sched_priority
+op_assign
+id|MAX_RT_PRIO
+op_minus
+l_int|1
+)brace
+suffix:semicolon
 r_int
 id|cpu
 op_assign
 (paren
 r_int
 )paren
-(paren
-r_int
-)paren
-id|bind_cpu
-suffix:semicolon
-r_struct
-id|sched_param
-id|param
-op_assign
-(brace
-id|sched_priority
-suffix:colon
-id|MAX_RT_PRIO
-op_minus
-l_int|1
-)brace
+id|data
 suffix:semicolon
 id|runqueue_t
 op_star
@@ -6566,6 +6588,17 @@ op_lshift
 id|cpu
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t; * Migration can happen without a migration thread on the&n;&t; * target CPU because here we remove the thread from the&n;&t; * runqueue and the helper thread then moves this thread&n;&t; * to the target CPU - we&squot;ll wake up there.&n;&t; */
+r_if
+c_cond
+(paren
+id|smp_processor_id
+c_func
+(paren
+)paren
+op_ne
+id|cpu
+)paren
 id|printk
 c_func
 (paren
@@ -6869,6 +6902,7 @@ id|req-&gt;sem
 suffix:semicolon
 )brace
 )brace
+multiline_comment|/*&n; * migration_call - callback that gets triggered when a CPU is added.&n; * Here we can start up the necessary migration thread for the new CPU.&n; */
 DECL|function|migration_call
 r_static
 r_int
@@ -6923,6 +6957,26 @@ op_or
 id|CLONE_SIGNAL
 )paren
 suffix:semicolon
+r_while
+c_loop
+(paren
+op_logical_neg
+id|cpu_rq
+c_func
+(paren
+(paren
+r_int
+)paren
+id|hcpu
+)paren
+op_member_access_from_pointer
+id|migration_thread
+)paren
+id|yield
+c_func
+(paren
+)paren
+suffix:semicolon
 r_break
 suffix:semicolon
 )brace
@@ -6946,8 +7000,8 @@ l_int|0
 )brace
 suffix:semicolon
 DECL|function|migration_init
-r_int
 id|__init
+r_int
 id|migration_init
 c_func
 (paren
@@ -6984,13 +7038,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|variable|migration_init
-id|__initcall
-c_func
-(paren
-id|migration_init
-)paren
-suffix:semicolon
 macro_line|#endif
 r_extern
 r_void
@@ -7159,7 +7206,7 @@ id|array-&gt;bitmap
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n;&t; * We have to do a little magic to get the first&n;&t; * process right in SMP mode.&n;&t; */
+multiline_comment|/*&n;&t; * We have to do a little magic to get the first&n;&t; * thread right in SMP mode.&n;&t; */
 id|rq
 op_assign
 id|this_rq

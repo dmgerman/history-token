@@ -3,7 +3,6 @@ macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/kernel_stat.h&gt;
 macro_line|#include &lt;linux/swap.h&gt;
-macro_line|#include &lt;linux/swapctl.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/pagemap.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -685,14 +684,14 @@ op_star
 suffix:semicolon
 r_const
 r_int
-id|nr_pages
+id|cluster_size
 op_assign
 id|SWAP_CLUSTER_MAX
 suffix:semicolon
 r_int
 id|nr_to_write
 op_assign
-id|nr_pages
+id|cluster_size
 suffix:semicolon
 id|writeback
 op_assign
@@ -736,7 +735,7 @@ suffix:semicolon
 id|max_scan
 op_sub_assign
 (paren
-id|nr_pages
+id|cluster_size
 op_minus
 id|nr_to_write
 )paren
@@ -1704,7 +1703,7 @@ c_loop
 (paren
 id|pgdat
 op_assign
-id|pgdat-&gt;node_next
+id|pgdat-&gt;pgdat_next
 )paren
 )paren
 suffix:semicolon
@@ -1813,7 +1812,7 @@ c_loop
 (paren
 id|pgdat
 op_assign
-id|pgdat-&gt;node_next
+id|pgdat-&gt;pgdat_next
 )paren
 )paren
 suffix:semicolon

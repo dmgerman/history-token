@@ -3342,9 +3342,14 @@ DECL|struct|tg3
 r_struct
 id|tg3
 (brace
+multiline_comment|/* SMP locking strategy:&n;&t; *&n;&t; * lock: Held during all operations except TX packet&n;&t; *       processing.&n;&t; *&n;&t; * tx_lock: Held during tg3_start_xmit{,_4gbug} and tg3_tx&n;&t; *&n;&t; * If you want to shut up all asynchronous processing you must&n;&t; * acquire both locks, &squot;lock&squot; taken before &squot;tx_lock&squot;.  IRQs must&n;&t; * be disabled to take &squot;lock&squot; but only softirq disabling is&n;&t; * necessary for acquisition of &squot;tx_lock&squot;.&n;&t; */
 DECL|member|lock
 id|spinlock_t
 id|lock
+suffix:semicolon
+DECL|member|tx_lock
+id|spinlock_t
+id|tx_lock
 suffix:semicolon
 DECL|member|tx_prod
 id|u32
@@ -3391,20 +3396,6 @@ r_int
 r_int
 id|phy_crc_errors
 suffix:semicolon
-multiline_comment|/* Adaptive coalescing engine. */
-DECL|member|last_rate_sample
-r_int
-r_int
-id|last_rate_sample
-suffix:semicolon
-DECL|member|last_rx_count
-id|u32
-id|last_rx_count
-suffix:semicolon
-DECL|member|last_tx_count
-id|u32
-id|last_tx_count
-suffix:semicolon
 DECL|member|rx_offset
 id|u32
 id|rx_offset
@@ -3423,10 +3414,6 @@ DECL|macro|TG3_FLAG_USE_LINKCHG_REG
 mdefine_line|#define TG3_FLAG_USE_LINKCHG_REG&t;0x00000008
 DECL|macro|TG3_FLAG_USE_MI_INTERRUPT
 mdefine_line|#define TG3_FLAG_USE_MI_INTERRUPT&t;0x00000010
-DECL|macro|TG3_FLAG_ADAPTIVE_RX
-mdefine_line|#define TG3_FLAG_ADAPTIVE_RX&t;&t;0x00000020
-DECL|macro|TG3_FLAG_ADAPTIVE_TX
-mdefine_line|#define TG3_FLAG_ADAPTIVE_TX&t;&t;0x00000040
 DECL|macro|TG3_FLAG_POLL_SERDES
 mdefine_line|#define TG3_FLAG_POLL_SERDES&t;&t;0x00000080
 DECL|macro|TG3_FLAG_PHY_RESET_ON_INIT

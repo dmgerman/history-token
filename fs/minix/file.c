@@ -43,6 +43,10 @@ id|fsync
 suffix:colon
 id|minix_sync_file
 comma
+id|sendfile
+suffix:colon
+id|generic_file_sendfile
+comma
 )brace
 suffix:semicolon
 DECL|variable|minix_file_inode_operations

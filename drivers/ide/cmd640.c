@@ -13,6 +13,7 @@ macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/hdreg.h&gt;
 macro_line|#include &lt;linux/ide.h&gt;
+macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &quot;timing.h&quot;
 multiline_comment|/*&n; * This flag is set in ide.c by the parameter:  ide0=cmd640_vlb&n; */
@@ -95,6 +96,15 @@ DECL|macro|DRWTIM23
 mdefine_line|#define DRWTIM23&t;0x58
 DECL|macro|BRST
 mdefine_line|#define BRST&t;&t;0x59
+multiline_comment|/*&n; * Protects register file access from overlapping on primary and secondary&n; * channel, since those share hardware resources.&n; */
+DECL|variable|__cacheline_aligned
+r_static
+id|spinlock_t
+id|cmd640_lock
+id|__cacheline_aligned
+op_assign
+id|SPIN_LOCK_UNLOCKED
+suffix:semicolon
 multiline_comment|/*&n; * Registers and masks for easy access by drive index:&n; */
 DECL|variable|prefetch_regs
 r_static
@@ -133,15 +143,6 @@ id|ARTTIM23_DIS_RA3
 )brace
 suffix:semicolon
 macro_line|#ifdef CONFIG_BLK_DEV_CMD640_ENHANCED
-multiline_comment|/*&n; * Protects register file access from overlapping on primary and secondary&n; * channel, since those share hardware resources.&n; */
-DECL|variable|__cacheline_aligned
-r_static
-id|spinlock_t
-id|cmd640_lock
-id|__cacheline_aligned
-op_assign
-id|SPIN_LOCK_UNLOCKED
-suffix:semicolon
 DECL|variable|arttim_regs
 r_static
 id|u8
@@ -303,14 +304,6 @@ r_int
 id|cmd640_chip_version
 suffix:semicolon
 multiline_comment|/*&n; * The CMD640x chip does not support DWORD config write cycles, but some&n; * of the BIOSes use them to implement the config services.&n; * Therefore, we must use direct IO instead.&n; */
-multiline_comment|/* This is broken, but no more so than the old code.. */
-DECL|variable|cmd640_lock
-r_static
-id|spinlock_t
-id|cmd640_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
-suffix:semicolon
 multiline_comment|/* PCI method 1 access */
 DECL|function|put_cmd640_reg_pci1
 r_static
@@ -333,12 +326,12 @@ id|spin_lock_irqsave
 c_func
 (paren
 op_amp
-id|cmd640_lock
+id|pci_lock
 comma
 id|flags
 )paren
 suffix:semicolon
-id|outl_p
+id|outb_p
 c_func
 (paren
 (paren
@@ -370,7 +363,7 @@ id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
-id|cmd640_lock
+id|pci_lock
 comma
 id|flags
 )paren
@@ -397,12 +390,12 @@ id|spin_lock_irqsave
 c_func
 (paren
 op_amp
-id|cmd640_lock
+id|pci_lock
 comma
 id|flags
 )paren
 suffix:semicolon
-id|outl_p
+id|outb_p
 c_func
 (paren
 (paren
@@ -434,7 +427,7 @@ id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
-id|cmd640_lock
+id|pci_lock
 comma
 id|flags
 )paren
@@ -465,7 +458,7 @@ id|spin_lock_irqsave
 c_func
 (paren
 op_amp
-id|cmd640_lock
+id|pci_lock
 comma
 id|flags
 )paren
@@ -500,7 +493,7 @@ id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
-id|cmd640_lock
+id|pci_lock
 comma
 id|flags
 )paren
@@ -527,7 +520,7 @@ id|spin_lock_irqsave
 c_func
 (paren
 op_amp
-id|cmd640_lock
+id|pci_lock
 comma
 id|flags
 )paren
@@ -562,7 +555,7 @@ id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
-id|cmd640_lock
+id|pci_lock
 comma
 id|flags
 )paren
@@ -1935,7 +1928,7 @@ suffix:semicolon
 multiline_comment|/* case 5 */
 )brace
 multiline_comment|/*&n;&t; * Now that everything is ready, program the new timings&n;&t; */
-id|spin_lock
+id|spin_lock_irqsave
 c_func
 (paren
 op_amp
@@ -2503,6 +2496,203 @@ r_return
 suffix:semicolon
 )brace
 macro_line|#endif
+multiline_comment|/**&n; *&t;pci_conf1&t;-&t;check for PCI type 1 configuration&n; *&t;&n; *&t;Issues a safe probe sequence for PCI configuration type 1 and&n; *&t;returns non-zero if conf1 is supported. Takes the pci_config lock&n; */
+DECL|function|pci_conf1
+r_static
+r_int
+id|pci_conf1
+c_func
+(paren
+r_void
+)paren
+(brace
+id|u32
+id|tmp
+suffix:semicolon
+r_int
+r_int
+id|flags
+suffix:semicolon
+id|spin_lock_irqsave
+c_func
+(paren
+op_amp
+id|pci_lock
+comma
+id|flags
+)paren
+suffix:semicolon
+id|OUT_BYTE
+c_func
+(paren
+l_int|0x01
+comma
+l_int|0xCFB
+)paren
+suffix:semicolon
+id|tmp
+op_assign
+id|inl
+c_func
+(paren
+l_int|0xCF8
+)paren
+suffix:semicolon
+id|outl
+c_func
+(paren
+l_int|0x80000000
+comma
+l_int|0xCF8
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|inl
+c_func
+(paren
+l_int|0xCF8
+)paren
+op_eq
+l_int|0x80000000
+)paren
+(brace
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|pci_lock
+comma
+id|flags
+)paren
+suffix:semicolon
+id|outl
+c_func
+(paren
+id|tmp
+comma
+l_int|0xCF8
+)paren
+suffix:semicolon
+r_return
+l_int|1
+suffix:semicolon
+)brace
+id|outl
+c_func
+(paren
+id|tmp
+comma
+l_int|0xCF8
+)paren
+suffix:semicolon
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|pci_lock
+comma
+id|flags
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+multiline_comment|/**&n; *&t;pci_conf2&t;-&t;check for PCI type 2 configuration&n; *&t;&n; *&t;Issues a safe probe sequence for PCI configuration type 2 and&n; *&t;returns non-zero if conf2 is supported. Takes the pci_config lock.&n; */
+DECL|function|pci_conf2
+r_static
+r_int
+id|pci_conf2
+c_func
+(paren
+r_void
+)paren
+(brace
+r_int
+r_int
+id|flags
+suffix:semicolon
+id|spin_lock_irqsave
+c_func
+(paren
+op_amp
+id|pci_lock
+comma
+id|flags
+)paren
+suffix:semicolon
+id|OUT_BYTE
+c_func
+(paren
+l_int|0x00
+comma
+l_int|0xCFB
+)paren
+suffix:semicolon
+id|OUT_BYTE
+c_func
+(paren
+l_int|0x00
+comma
+l_int|0xCF8
+)paren
+suffix:semicolon
+id|OUT_BYTE
+c_func
+(paren
+l_int|0x00
+comma
+l_int|0xCFA
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|IN_BYTE
+c_func
+(paren
+l_int|0xCF8
+)paren
+op_eq
+l_int|0x00
+op_logical_and
+id|IN_BYTE
+c_func
+(paren
+l_int|0xCFA
+)paren
+op_eq
+l_int|0x00
+)paren
+(brace
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|pci_lock
+comma
+id|flags
+)paren
+suffix:semicolon
+r_return
+l_int|1
+suffix:semicolon
+)brace
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|pci_lock
+comma
+id|flags
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
 multiline_comment|/*&n; * Probe for a cmd640 chipset, and initialize it if found.  Called from ide.c&n; */
 DECL|function|ide_probe_for_cmd640x
 r_int
@@ -2567,6 +2757,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|pci_conf1
+c_func
+(paren
+)paren
+op_logical_and
 id|probe_for_cmd640_pci1
 c_func
 (paren
@@ -2580,6 +2775,11 @@ r_else
 r_if
 c_cond
 (paren
+id|pci_conf2
+c_func
+(paren
+)paren
+op_logical_and
 id|probe_for_cmd640_pci2
 c_func
 (paren

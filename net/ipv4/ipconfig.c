@@ -1403,16 +1403,18 @@ id|rarp_packet_type
 id|__initdata
 op_assign
 (brace
+dot
 id|type
-suffix:colon
+op_assign
 id|__constant_htons
 c_func
 (paren
 id|ETH_P_RARP
 )paren
 comma
+dot
 id|func
-suffix:colon
+op_assign
 id|ic_rarp_recv
 comma
 )brace
@@ -1739,7 +1741,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; *  Send RARP request packet over a signle interface.&n; */
+multiline_comment|/*&n; *  Send RARP request packet over a single interface.&n; */
 DECL|function|ic_rarp_send_if
 r_static
 r_void
@@ -1941,16 +1943,18 @@ id|bootp_packet_type
 id|__initdata
 op_assign
 (brace
+dot
 id|type
-suffix:colon
+op_assign
 id|__constant_htons
 c_func
 (paren
 id|ETH_P_IP
 )paren
 comma
+dot
 id|func
-suffix:colon
+op_assign
 id|ic_bootp_recv
 comma
 )brace

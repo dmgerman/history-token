@@ -6907,7 +6907,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|devfs_register_chrdev
+id|register_chrdev
 c_func
 (paren
 id|capi_major
@@ -6980,7 +6980,7 @@ OL
 l_int|0
 )paren
 (brace
-id|devfs_unregister_chrdev
+id|unregister_chrdev
 c_func
 (paren
 id|capi_major
@@ -7053,7 +7053,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|devfs_unregister_chrdev
+id|unregister_chrdev
 c_func
 (paren
 id|capi_major
@@ -7061,10 +7061,7 @@ comma
 l_string|&quot;capi20&quot;
 )paren
 suffix:semicolon
-id|devfs_unregister
-c_func
-(paren
-id|devfs_find_handle
+id|devfs_find_and_unregister
 c_func
 (paren
 l_int|NULL
@@ -7078,7 +7075,6 @@ comma
 id|DEVFS_SPECIAL_CHR
 comma
 l_int|0
-)paren
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_ISDN_CAPI_MIDDLEWARE

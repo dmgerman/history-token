@@ -1,32 +1,16 @@
-multiline_comment|/*&n; *  linux/drivers/char/core.c&n; *&n; *  Driver core for serial ports&n; *&n; *  Based on drivers/char/serial.c, by Linus Torvalds, Theodore Ts&squot;o.&n; *&n; *  Copyright 1999 ARM Limited&n; *  Copyright (C) 2000-2001 Deep Blue Solutions Ltd.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; *&n; *  $Id: core.c,v 1.91 2002/07/22 15:27:32 rmk Exp $&n; *&n; */
+multiline_comment|/*&n; *  linux/drivers/char/core.c&n; *&n; *  Driver core for serial ports&n; *&n; *  Based on drivers/char/serial.c, by Linus Torvalds, Theodore Ts&squot;o.&n; *&n; *  Copyright 1999 ARM Limited&n; *  Copyright (C) 2000-2001 Deep Blue Solutions Ltd.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; *&n; *  $Id: core.c,v 1.100 2002/07/28 10:03:28 rmk Exp $&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
-macro_line|#include &lt;linux/errno.h&gt;
-macro_line|#include &lt;linux/signal.h&gt;
-macro_line|#include &lt;linux/sched.h&gt;
-macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
-macro_line|#include &lt;linux/tty_flip.h&gt;
-macro_line|#include &lt;linux/major.h&gt;
-macro_line|#include &lt;linux/string.h&gt;
-macro_line|#include &lt;linux/fcntl.h&gt;
-macro_line|#include &lt;linux/ptrace.h&gt;
-macro_line|#include &lt;linux/ioport.h&gt;
-macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
-macro_line|#include &lt;linux/circ_buf.h&gt;
 macro_line|#include &lt;linux/console.h&gt;
-macro_line|#include &lt;linux/sysrq.h&gt;
 macro_line|#include &lt;linux/pm.h&gt;
 macro_line|#include &lt;linux/serial_core.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/serial.h&gt; /* for serial_state and serial_icounter_struct */
-macro_line|#include &lt;asm/system.h&gt;
-macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
-macro_line|#include &lt;asm/bitops.h&gt;
 DECL|macro|DEBUG
 macro_line|#undef&t;DEBUG
 macro_line|#ifdef DEBUG
@@ -3498,13 +3482,6 @@ id|uart_icount
 )paren
 )paren
 suffix:semicolon
-id|spin_unlock_irq
-c_func
-(paren
-op_amp
-id|port-&gt;lock
-)paren
-suffix:semicolon
 multiline_comment|/*&n;&t; * Force modem status interrupts on&n;&t; */
 id|port-&gt;ops
 op_member_access_from_pointer
@@ -3512,6 +3489,13 @@ id|enable_ms
 c_func
 (paren
 id|port
+)paren
+suffix:semicolon
+id|spin_unlock_irq
+c_func
+(paren
+op_amp
+id|port-&gt;lock
 )paren
 suffix:semicolon
 id|add_wait_queue
@@ -4555,12 +4539,30 @@ op_amp
 id|UIF_INITIALIZED
 )paren
 (brace
+id|spin_lock_irqsave
+c_func
+(paren
+op_amp
+id|port-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
 id|port-&gt;ops
 op_member_access_from_pointer
 id|stop_rx
 c_func
 (paren
 id|port
+)paren
+suffix:semicolon
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|port-&gt;lock
+comma
+id|flags
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; * Before we drop DTR, make sure the UART transmitter&n;&t;&t; * has completely drained; this is especially&n;&t;&t; * important if there is a transmit FIFO!&n;&t;&t; */
@@ -7351,19 +7353,19 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-id|spin_unlock_irq
-c_func
-(paren
-op_amp
-id|port-&gt;lock
-)paren
-suffix:semicolon
 id|ops
 op_member_access_from_pointer
 id|stop_rx
 c_func
 (paren
 id|port
+)paren
+suffix:semicolon
+id|spin_unlock_irq
+c_func
+(paren
+op_amp
+id|port-&gt;lock
 )paren
 suffix:semicolon
 id|ops

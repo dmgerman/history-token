@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2001, 2002 Red Hat, Inc.&n; *&n; * Created by David Woodhouse &lt;dwmw2@cambridge.redhat.com&gt;&n; *&n; * The original JFFS, from which the design for JFFS2 was derived,&n; * was designed and implemented by Axis Communications AB.&n; *&n; * The contents of this file are subject to the Red Hat eCos Public&n; * License Version 1.1 (the &quot;Licence&quot;); you may not use this file&n; * except in compliance with the Licence.  You may obtain a copy of&n; * the Licence at http://www.redhat.com/&n; *&n; * Software distributed under the Licence is distributed on an &quot;AS IS&quot;&n; * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied.&n; * See the Licence for the specific language governing rights and&n; * limitations under the Licence.&n; *&n; * The Original Code is JFFS2 - Journalling Flash File System, version 2&n; *&n; * Alternatively, the contents of this file may be used under the&n; * terms of the GNU General Public License version 2 (the &quot;GPL&quot;), in&n; * which case the provisions of the GPL are applicable instead of the&n; * above.  If you wish to allow the use of your version of this file&n; * only under the terms of the GPL and not to allow others to use your&n; * version of this file under the RHEPL, indicate your decision by&n; * deleting the provisions above and replace them with the notice and&n; * other provisions required by the GPL.  If you do not delete the&n; * provisions above, a recipient may use your version of this file&n; * under either the RHEPL or the GPL.&n; *&n; * $Id: gc.c,v 1.68 2002/03/08 15:11:24 dwmw2 Exp $&n; *&n; */
+multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2001, 2002 Red Hat, Inc.&n; *&n; * Created by David Woodhouse &lt;dwmw2@cambridge.redhat.com&gt;&n; *&n; * For licensing information, see the file &squot;LICENCE&squot; in this directory.&n; *&n; * $Id: gc.c,v 1.74 2002/05/20 14:56:38 dwmw2 Exp $&n; *&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/mtd/mtd.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
@@ -183,6 +183,7 @@ op_mod
 l_int|128
 suffix:semicolon
 multiline_comment|/* Pick an eraseblock to garbage collect next. This is where we&squot;ll&n;&t;   put the clever wear-levelling algorithms. Eventually.  */
+multiline_comment|/* We possibly want to favour the dirtier blocks more when the&n;&t;   number of free blocks is low. */
 r_if
 c_cond
 (paren
@@ -222,7 +223,7 @@ c_cond
 (paren
 id|n
 OL
-l_int|100
+l_int|50
 op_logical_and
 op_logical_neg
 id|list_empty
@@ -233,6 +234,7 @@ id|c-&gt;erasable_list
 )paren
 )paren
 (brace
+multiline_comment|/* Note that most of them will have gone directly to be erased. &n;&t;&t;   So don&squot;t favour the erasable_list _too_ much. */
 id|D1
 c_func
 (paren
@@ -256,6 +258,41 @@ c_cond
 (paren
 id|n
 OL
+l_int|110
+op_logical_and
+op_logical_neg
+id|list_empty
+c_func
+(paren
+op_amp
+id|c-&gt;very_dirty_list
+)paren
+)paren
+(brace
+multiline_comment|/* Most of the time, pick one off the very_dirty list */
+id|D1
+c_func
+(paren
+id|printk
+c_func
+(paren
+id|KERN_DEBUG
+l_string|&quot;Picking block from very_dirty_list to GC next&bslash;n&quot;
+)paren
+)paren
+suffix:semicolon
+id|nextlist
+op_assign
+op_amp
+id|c-&gt;very_dirty_list
+suffix:semicolon
+)brace
+r_else
+r_if
+c_cond
+(paren
+id|n
+OL
 l_int|126
 op_logical_and
 op_logical_neg
@@ -267,7 +304,6 @@ id|c-&gt;dirty_list
 )paren
 )paren
 (brace
-multiline_comment|/* Most of the time, pick one off the dirty list */
 id|D1
 c_func
 (paren
@@ -354,6 +390,36 @@ id|list_empty
 c_func
 (paren
 op_amp
+id|c-&gt;very_dirty_list
+)paren
+)paren
+(brace
+id|D1
+c_func
+(paren
+id|printk
+c_func
+(paren
+id|KERN_DEBUG
+l_string|&quot;Picking block from very_dirty_list to GC next (clean_list and dirty_list were empty)&bslash;n&quot;
+)paren
+)paren
+suffix:semicolon
+id|nextlist
+op_assign
+op_amp
+id|c-&gt;very_dirty_list
+suffix:semicolon
+)brace
+r_else
+r_if
+c_cond
+(paren
+op_logical_neg
+id|list_empty
+c_func
+(paren
+op_amp
 id|c-&gt;erasable_list
 )paren
 )paren
@@ -365,7 +431,7 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;Picking block from erasable_list to GC next (clean_list and dirty_list were empty)&bslash;n&quot;
+l_string|&quot;Picking block from erasable_list to GC next (clean_list and {very_,}dirty_list were empty)&bslash;n&quot;
 )paren
 )paren
 suffix:semicolon
@@ -377,7 +443,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-multiline_comment|/* Eep. Both were empty */
+multiline_comment|/* Eep. All were empty */
 id|printk
 c_func
 (paren
@@ -439,6 +505,16 @@ c_func
 )paren
 suffix:semicolon
 )brace
+id|D1
+c_func
+(paren
+id|jffs2_dump_block_lists
+c_func
+(paren
+id|c
+)paren
+)paren
+suffix:semicolon
 r_return
 id|ret
 suffix:semicolon
@@ -593,9 +669,38 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;garbage collect from block at phys 0x%08x&bslash;n&quot;
+l_string|&quot;GC from block %08x, used_size %08x, dirty_size %08x, free_size %08x&bslash;n&quot;
 comma
 id|jeb-&gt;offset
+comma
+id|jeb-&gt;used_size
+comma
+id|jeb-&gt;dirty_size
+comma
+id|jeb-&gt;free_size
+)paren
+)paren
+suffix:semicolon
+id|D1
+c_func
+(paren
+r_if
+(paren
+id|c-&gt;nextblock
+)paren
+id|printk
+c_func
+(paren
+id|KERN_DEBUG
+l_string|&quot;Nextblock at  %08x, used_size %08x, dirty_size %08x, free_size %08x&bslash;n&quot;
+comma
+id|c-&gt;nextblock-&gt;offset
+comma
+id|c-&gt;nextblock-&gt;used_size
+comma
+id|c-&gt;nextblock-&gt;dirty_size
+comma
+id|c-&gt;nextblock-&gt;free_size
 )paren
 )paren
 suffix:semicolon
@@ -3318,11 +3423,44 @@ id|f-&gt;metadata
 op_assign
 l_int|NULL
 suffix:semicolon
+)brace
 r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/* &n;&t; * We should only get here in the case where the node we are&n;&t; * replacing had more than one frag, so we kept the same version&n;&t; * number as before. (Except in case of error -- see &squot;goto fill;&squot; &n;&t; * above.)&n;&t; */
+id|D1
+c_func
+(paren
+r_if
+(paren
+id|unlikely
+c_func
+(paren
+id|fn-&gt;frags
+op_le
+l_int|1
+)paren
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;jffs2_garbage_collect_hole: Replacing fn with %d frag(s) but new ver %d != highest_version %d of ino #%d&bslash;n&quot;
+comma
+id|fn-&gt;frags
+comma
+id|ri.version
+comma
+id|f-&gt;highest_version
+comma
+id|ri.ino
+)paren
+suffix:semicolon
 )brace
+)paren
+suffix:semicolon
 r_for
 c_loop
 (paren
@@ -4125,7 +4263,7 @@ id|pg
 )paren
 suffix:semicolon
 multiline_comment|/* XXX: Does the page get freed automatically? */
-multiline_comment|/* AAA: Judging by the unmount getting stuck in __wait_on_page_locked, nope. */
+multiline_comment|/* AAA: Judging by the unmount getting stuck in __wait_on_page, nope. */
 id|page_cache_release
 c_func
 (paren

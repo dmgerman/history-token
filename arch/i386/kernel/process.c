@@ -1549,6 +1549,27 @@ id|regs-&gt;esp
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * This gets run with %ebx containing the&n; * function to call, and %edx containing&n; * the &quot;args&quot;.&n; */
+r_extern
+r_void
+id|kernel_thread_helper
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+id|__asm__
+c_func
+(paren
+l_string|&quot;.align 4&bslash;n&quot;
+l_string|&quot;kernel_thread_helper:&bslash;n&bslash;t&quot;
+l_string|&quot;movl %edx,%eax&bslash;n&bslash;t&quot;
+l_string|&quot;pushl %edx&bslash;n&bslash;t&quot;
+l_string|&quot;call *%ebx&bslash;n&bslash;t&quot;
+l_string|&quot;pushl %eax&bslash;n&bslash;t&quot;
+l_string|&quot;call do_exit&quot;
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Create a kernel thread&n; */
 DECL|function|kernel_thread
 r_int
@@ -1574,74 +1595,107 @@ r_int
 id|flags
 )paren
 (brace
-r_int
-id|retval
-comma
-id|d0
+r_struct
+id|task_struct
+op_star
+id|p
 suffix:semicolon
-id|__asm__
-id|__volatile__
+r_struct
+id|pt_regs
+id|regs
+suffix:semicolon
+id|memset
 c_func
 (paren
-l_string|&quot;movl %%esp,%%esi&bslash;n&bslash;t&quot;
-l_string|&quot;int $0x80&bslash;n&bslash;t&quot;
-multiline_comment|/* Linux/i386 system call */
-l_string|&quot;cmpl %%esp,%%esi&bslash;n&bslash;t&quot;
-multiline_comment|/* child or parent? */
-l_string|&quot;je 1f&bslash;n&bslash;t&quot;
-multiline_comment|/* parent - jump */
-multiline_comment|/* Load the argument into eax, and push it.  That way, it does&n;&t;&t; * not matter whether the called function is compiled with&n;&t;&t; * -mregparm or not.  */
-l_string|&quot;movl %4,%%eax&bslash;n&bslash;t&quot;
-l_string|&quot;pushl %%eax&bslash;n&bslash;t&quot;
-l_string|&quot;call *%5&bslash;n&bslash;t&quot;
-multiline_comment|/* call fn */
-l_string|&quot;movl %3,%0&bslash;n&bslash;t&quot;
-multiline_comment|/* exit */
-l_string|&quot;int $0x80&bslash;n&quot;
-l_string|&quot;1:&bslash;t&quot;
-suffix:colon
-l_string|&quot;=&amp;a&quot;
-(paren
-id|retval
-)paren
+op_amp
+id|regs
 comma
-l_string|&quot;=&amp;S&quot;
-(paren
-id|d0
-)paren
-suffix:colon
-l_string|&quot;0&quot;
-(paren
-id|__NR_clone
-)paren
+l_int|0
 comma
-l_string|&quot;i&quot;
+r_sizeof
 (paren
-id|__NR_exit
+id|regs
 )paren
-comma
-l_string|&quot;r&quot;
-(paren
-id|arg
 )paren
-comma
-l_string|&quot;r&quot;
+suffix:semicolon
+id|regs.ebx
+op_assign
 (paren
+r_int
+r_int
+)paren
 id|fn
+suffix:semicolon
+id|regs.edx
+op_assign
+(paren
+r_int
+r_int
 )paren
-comma
-l_string|&quot;b&quot;
+id|arg
+suffix:semicolon
+id|regs.xds
+op_assign
+id|__KERNEL_DS
+suffix:semicolon
+id|regs.xes
+op_assign
+id|__KERNEL_DS
+suffix:semicolon
+id|regs.orig_eax
+op_assign
+op_minus
+l_int|1
+suffix:semicolon
+id|regs.eip
+op_assign
+(paren
+r_int
+r_int
+)paren
+id|kernel_thread_helper
+suffix:semicolon
+id|regs.xcs
+op_assign
+id|__KERNEL_CS
+suffix:semicolon
+id|regs.eflags
+op_assign
+l_int|0x286
+suffix:semicolon
+multiline_comment|/* Ok, create the new process.. */
+id|p
+op_assign
+id|do_fork
+c_func
 (paren
 id|flags
 op_or
 id|CLONE_VM
-)paren
-suffix:colon
-l_string|&quot;memory&quot;
+comma
+l_int|0
+comma
+op_amp
+id|regs
+comma
+l_int|0
 )paren
 suffix:semicolon
 r_return
-id|retval
+id|IS_ERR
+c_func
+(paren
+id|p
+)paren
+ques
+c_cond
+id|PTR_ERR
+c_func
+(paren
+id|p
+)paren
+suffix:colon
+id|p-&gt;pid
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Free current thread data structures etc..&n; */
@@ -2241,6 +2295,15 @@ id|tss-&gt;esp0
 op_assign
 id|next-&gt;esp0
 suffix:semicolon
+multiline_comment|/*&n;&t; * Load the per-thread Thread-Local Storage descriptor.&n;&t; *&n;&t; * NOTE: it&squot;s faster to do the two stores unconditionally&n;&t; * than to branch away.&n;&t; */
+id|load_TLS_desc
+c_func
+(paren
+id|next
+comma
+id|cpu
+)paren
+suffix:semicolon
 multiline_comment|/*&n;&t; * Save away %fs and %gs. No need to save %es and %ds, as&n;&t; * those are always kernel segments while inside the kernel.&n;&t; */
 id|asm
 r_volatile
@@ -2310,15 +2373,6 @@ id|next-&gt;gs
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * Load the per-thread Thread-Local Storage descriptor.&n;&t; *&n;&t; * NOTE: it&squot;s faster to do the two stores unconditionally&n;&t; * than to branch away.&n;&t; */
-id|load_TLS_desc
-c_func
-(paren
-id|next
-comma
-id|cpu
-)paren
-suffix:semicolon
 multiline_comment|/*&n;&t; * Now maybe reload the debug registers&n;&t; */
 r_if
 c_cond
@@ -2891,10 +2945,6 @@ id|base
 comma
 r_int
 r_int
-id|limit
-comma
-r_int
-r_int
 id|flags
 )paren
 (brace
@@ -2907,10 +2957,6 @@ op_amp
 id|current-&gt;thread
 suffix:semicolon
 r_int
-id|limit_in_pages
-op_assign
-l_int|0
-comma
 id|writable
 op_assign
 l_int|0
@@ -2931,76 +2977,6 @@ r_return
 op_minus
 id|EINVAL
 suffix:semicolon
-multiline_comment|/* check limit */
-r_if
-c_cond
-(paren
-id|limit
-op_amp
-l_int|0xfff00000
-)paren
-r_return
-op_minus
-id|EINVAL
-suffix:semicolon
-multiline_comment|/*&n;&t; * Clear the TLS?&n;&t; */
-r_if
-c_cond
-(paren
-id|flags
-op_amp
-id|TLS_FLAG_CLEAR
-)paren
-(brace
-id|cpu
-op_assign
-id|get_cpu
-c_func
-(paren
-)paren
-suffix:semicolon
-id|t-&gt;tls_base
-op_assign
-id|t-&gt;tls_limit
-op_assign
-id|t-&gt;tls_flags
-op_assign
-l_int|0
-suffix:semicolon
-id|t-&gt;tls_desc.a
-op_assign
-id|t-&gt;tls_desc.b
-op_assign
-l_int|0
-suffix:semicolon
-id|load_TLS_desc
-c_func
-(paren
-id|t
-comma
-id|cpu
-)paren
-suffix:semicolon
-id|put_cpu
-c_func
-(paren
-)paren
-suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-id|flags
-op_amp
-id|TLS_FLAG_LIMIT_IN_PAGES
-)paren
-id|limit_in_pages
-op_assign
-l_int|1
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -3020,18 +2996,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|t-&gt;tls_base
-op_assign
-id|base
-suffix:semicolon
-id|t-&gt;tls_limit
-op_assign
-id|limit
-suffix:semicolon
-id|t-&gt;tls_flags
-op_assign
-id|flags
-suffix:semicolon
 id|t-&gt;tls_desc.a
 op_assign
 (paren
@@ -3044,11 +3008,7 @@ op_lshift
 l_int|16
 )paren
 op_or
-(paren
-id|limit
-op_amp
-l_int|0x0ffff
-)paren
+l_int|0xffff
 suffix:semicolon
 id|t-&gt;tls_desc.b
 op_assign
@@ -3068,11 +3028,7 @@ op_rshift
 l_int|16
 )paren
 op_or
-(paren
-id|limit
-op_amp
 l_int|0xf0000
-)paren
 op_or
 (paren
 id|writable
@@ -3093,7 +3049,7 @@ l_int|22
 )paren
 op_or
 (paren
-id|limit_in_pages
+l_int|1
 op_lshift
 l_int|23
 )paren

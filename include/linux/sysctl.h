@@ -426,8 +426,8 @@ op_assign
 l_int|3
 comma
 multiline_comment|/* was: struct: Set free page thresholds */
-DECL|enumerator|VM_BDFLUSH_UNUSED
-id|VM_BDFLUSH_UNUSED
+DECL|enumerator|VM_UNUSED4
+id|VM_UNUSED4
 op_assign
 l_int|4
 comma
@@ -438,26 +438,26 @@ op_assign
 l_int|5
 comma
 multiline_comment|/* Turn off the virtual memory safety limit */
-DECL|enumerator|VM_UNUSED4
-id|VM_UNUSED4
+DECL|enumerator|VM_UNUSED5
+id|VM_UNUSED5
 op_assign
 l_int|6
 comma
 multiline_comment|/* was: struct: Set buffer memory thresholds */
-DECL|enumerator|VM_UNUSED5
-id|VM_UNUSED5
+DECL|enumerator|VM_UNUSED7
+id|VM_UNUSED7
 op_assign
 l_int|7
 comma
 multiline_comment|/* was: struct: Set cache memory thresholds */
-DECL|enumerator|VM_PAGERDAEMON
-id|VM_PAGERDAEMON
+DECL|enumerator|VM_UNUSED8
+id|VM_UNUSED8
 op_assign
 l_int|8
 comma
-multiline_comment|/* struct: Control kswapd behaviour */
-DECL|enumerator|VM_UNUSED6
-id|VM_UNUSED6
+multiline_comment|/* was: struct: Control kswapd behaviour */
+DECL|enumerator|VM_UNUSED9
+id|VM_UNUSED9
 op_assign
 l_int|9
 comma
@@ -504,6 +504,12 @@ op_assign
 l_int|16
 comma
 multiline_comment|/* nr_pdflush_threads */
+DECL|enumerator|VM_OVERCOMMIT_RATIO
+id|VM_OVERCOMMIT_RATIO
+op_assign
+l_int|17
+comma
+multiline_comment|/* percent of RAM to allow overcommit in */
 )brace
 suffix:semicolon
 multiline_comment|/* CTL_NET names: */
@@ -589,10 +595,6 @@ id|NET_ECONET
 op_assign
 l_int|16
 comma
-DECL|enumerator|NET_KHTTPD
-id|NET_KHTTPD
-op_assign
-l_int|17
 )brace
 suffix:semicolon
 multiline_comment|/* /proc/sys/kernel/random */
@@ -1792,75 +1794,6 @@ DECL|enumerator|NET_DECNET_DEBUG_LEVEL
 id|NET_DECNET_DEBUG_LEVEL
 op_assign
 l_int|255
-)brace
-suffix:semicolon
-multiline_comment|/* /proc/sys/net/khttpd/ */
-r_enum
-(brace
-DECL|enumerator|NET_KHTTPD_DOCROOT
-id|NET_KHTTPD_DOCROOT
-op_assign
-l_int|1
-comma
-DECL|enumerator|NET_KHTTPD_START
-id|NET_KHTTPD_START
-op_assign
-l_int|2
-comma
-DECL|enumerator|NET_KHTTPD_STOP
-id|NET_KHTTPD_STOP
-op_assign
-l_int|3
-comma
-DECL|enumerator|NET_KHTTPD_UNLOAD
-id|NET_KHTTPD_UNLOAD
-op_assign
-l_int|4
-comma
-DECL|enumerator|NET_KHTTPD_CLIENTPORT
-id|NET_KHTTPD_CLIENTPORT
-op_assign
-l_int|5
-comma
-DECL|enumerator|NET_KHTTPD_PERMREQ
-id|NET_KHTTPD_PERMREQ
-op_assign
-l_int|6
-comma
-DECL|enumerator|NET_KHTTPD_PERMFORBID
-id|NET_KHTTPD_PERMFORBID
-op_assign
-l_int|7
-comma
-DECL|enumerator|NET_KHTTPD_LOGGING
-id|NET_KHTTPD_LOGGING
-op_assign
-l_int|8
-comma
-DECL|enumerator|NET_KHTTPD_SERVERPORT
-id|NET_KHTTPD_SERVERPORT
-op_assign
-l_int|9
-comma
-DECL|enumerator|NET_KHTTPD_DYNAMICSTRING
-id|NET_KHTTPD_DYNAMICSTRING
-op_assign
-l_int|10
-comma
-DECL|enumerator|NET_KHTTPD_SLOPPYMIME
-id|NET_KHTTPD_SLOPPYMIME
-op_assign
-l_int|11
-comma
-DECL|enumerator|NET_KHTTPD_THREADS
-id|NET_KHTTPD_THREADS
-op_assign
-l_int|12
-comma
-DECL|enumerator|NET_KHTTPD_MAXCONNECT
-id|NET_KHTTPD_MAXCONNECT
-op_assign
-l_int|13
 )brace
 suffix:semicolon
 multiline_comment|/* /proc/sys/net/decnet/conf/&lt;dev&gt; */

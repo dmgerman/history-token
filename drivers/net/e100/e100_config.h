@@ -191,8 +191,7 @@ id|bdp
 )paren
 suffix:semicolon
 r_extern
-r_int
-r_char
+r_void
 id|e100_config_fc
 c_func
 (paren

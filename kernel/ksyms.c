@@ -301,6 +301,13 @@ c_func
 id|kmem_cache_free
 )paren
 suffix:semicolon
+DECL|variable|kmem_cache_size
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|kmem_cache_size
+)paren
+suffix:semicolon
 DECL|variable|kmalloc
 id|EXPORT_SYMBOL
 c_func
@@ -1066,6 +1073,13 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|generic_file_read
+)paren
+suffix:semicolon
+DECL|variable|generic_file_sendfile
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|generic_file_sendfile
 )paren
 suffix:semicolon
 DECL|variable|do_generic_file_read
@@ -1881,6 +1895,13 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|wipe_partitions
+)paren
+suffix:semicolon
+DECL|variable|generic_file_direct_IO
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|generic_file_direct_IO
 )paren
 suffix:semicolon
 multiline_comment|/* tty routines */

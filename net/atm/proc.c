@@ -104,8 +104,9 @@ id|file_operations
 id|proc_dev_atm_operations
 op_assign
 (brace
+dot
 id|read
-suffix:colon
+op_assign
 id|proc_dev_atm_read
 comma
 )brace
@@ -117,8 +118,9 @@ id|file_operations
 id|proc_spec_atm_operations
 op_assign
 (brace
+dot
 id|read
-suffix:colon
+op_assign
 id|proc_spec_atm_read
 comma
 )brace

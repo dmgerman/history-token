@@ -7278,6 +7278,10 @@ id|fsync
 suffix:colon
 id|jffs_fsync
 comma
+id|sendfile
+suffix:colon
+id|generic_file_sendfile
+comma
 )brace
 suffix:semicolon
 DECL|variable|jffs_file_inode_operations

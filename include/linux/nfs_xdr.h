@@ -106,6 +106,11 @@ DECL|member|ctime
 id|__u64
 id|ctime
 suffix:semicolon
+DECL|member|timestamp
+r_int
+r_int
+id|timestamp
+suffix:semicolon
 )brace
 suffix:semicolon
 DECL|macro|NFS_ATTR_WCC
@@ -374,11 +379,13 @@ suffix:semicolon
 DECL|member|fh
 r_struct
 id|nfs_fh
+op_star
 id|fh
 suffix:semicolon
 DECL|member|fattr
 r_struct
 id|nfs_fattr
+op_star
 id|fattr
 suffix:semicolon
 )brace

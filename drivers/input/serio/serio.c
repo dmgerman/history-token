@@ -265,6 +265,13 @@ c_func
 (paren
 )paren
 suffix:semicolon
+id|interruptible_sleep_on
+c_func
+(paren
+op_amp
+id|serio_wait
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -276,13 +283,6 @@ id|refrigerator
 c_func
 (paren
 id|PF_IOTHREAD
-)paren
-suffix:semicolon
-id|interruptible_sleep_on
-c_func
-(paren
-op_amp
-id|serio_wait
 )paren
 suffix:semicolon
 )brace

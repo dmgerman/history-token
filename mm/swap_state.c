@@ -2,7 +2,6 @@ multiline_comment|/*&n; *  linux/mm/swap_state.c&n; *&n; *  Copyright (C) 1991, 
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/kernel_stat.h&gt;
 macro_line|#include &lt;linux/swap.h&gt;
-macro_line|#include &lt;linux/swapctl.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/pagemap.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
@@ -16,8 +15,9 @@ id|inode
 id|swapper_inode
 op_assign
 (brace
+dot
 id|i_mapping
-suffix:colon
+op_assign
 op_amp
 id|swapper_space
 comma
@@ -34,70 +34,81 @@ id|address_space
 id|swapper_space
 op_assign
 (brace
+dot
 id|page_tree
-suffix:colon
+op_assign
 id|RADIX_TREE_INIT
 c_func
 (paren
 id|GFP_ATOMIC
 )paren
 comma
+dot
 id|page_lock
-suffix:colon
+op_assign
 id|RW_LOCK_UNLOCKED
 comma
+dot
 id|clean_pages
-suffix:colon
+op_assign
 id|LIST_HEAD_INIT
 c_func
 (paren
 id|swapper_space.clean_pages
 )paren
 comma
+dot
 id|dirty_pages
-suffix:colon
+op_assign
 id|LIST_HEAD_INIT
 c_func
 (paren
 id|swapper_space.dirty_pages
 )paren
 comma
+dot
 id|io_pages
-suffix:colon
+op_assign
 id|LIST_HEAD_INIT
 c_func
 (paren
 id|swapper_space.io_pages
 )paren
 comma
+dot
 id|locked_pages
-suffix:colon
+op_assign
 id|LIST_HEAD_INIT
 c_func
 (paren
 id|swapper_space.locked_pages
 )paren
 comma
+dot
 id|host
-suffix:colon
+op_assign
 op_amp
 id|swapper_inode
 comma
+dot
 id|a_ops
-suffix:colon
+op_assign
 op_amp
 id|swap_aops
 comma
+dot
 id|i_shared_lock
-suffix:colon
+op_assign
 id|SPIN_LOCK_UNLOCKED
 comma
+dot
 id|private_lock
-suffix:colon
+op_assign
 id|SPIN_LOCK_UNLOCKED
 comma
+dot
 id|private_list
-suffix:colon
+op_assign
 id|LIST_HEAD_INIT
 c_func
 (paren
@@ -106,9 +117,8 @@ id|swapper_space.private_list
 comma
 )brace
 suffix:semicolon
-macro_line|#ifdef SWAP_CACHE_INFO
 DECL|macro|INC_CACHE_INFO
-mdefine_line|#define INC_CACHE_INFO(x)&t;(swap_cache_info.x++)
+mdefine_line|#define INC_CACHE_INFO(x)&t;do { swap_cache_info.x++; } while (0)
 r_static
 r_struct
 (brace
@@ -173,10 +183,6 @@ id|swap_cache_info.exist_race
 )paren
 suffix:semicolon
 )brace
-macro_line|#else
-DECL|macro|INC_CACHE_INFO
-mdefine_line|#define INC_CACHE_INFO(x)&t;do { } while (0)
-macro_line|#endif
 DECL|function|add_to_swap_cache
 r_int
 id|add_to_swap_cache
