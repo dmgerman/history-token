@@ -170,6 +170,13 @@ op_star
 id|pusb_dev
 suffix:semicolon
 multiline_comment|/* this usb_device */
+DECL|member|pusb_intf
+r_struct
+id|usb_interface
+op_star
+id|pusb_intf
+suffix:semicolon
+multiline_comment|/* this interface */
 DECL|member|flags
 r_int
 r_int
@@ -202,7 +209,7 @@ r_int
 r_int
 id|recv_intr_pipe
 suffix:semicolon
-multiline_comment|/* information about the device -- always good */
+multiline_comment|/* information about the device */
 DECL|member|vendor
 r_char
 id|vendor
@@ -246,27 +253,11 @@ DECL|member|max_lun
 id|u8
 id|max_lun
 suffix:semicolon
-multiline_comment|/* information about the device -- only good if device is attached */
 DECL|member|ifnum
 id|u8
 id|ifnum
 suffix:semicolon
 multiline_comment|/* interface number   */
-DECL|member|ep_in
-id|u8
-id|ep_in
-suffix:semicolon
-multiline_comment|/* bulk in endpoint   */
-DECL|member|ep_out
-id|u8
-id|ep_out
-suffix:semicolon
-multiline_comment|/* bulk out endpoint  */
-DECL|member|ep_int
-id|u8
-id|ep_int
-suffix:semicolon
-multiline_comment|/* interrupt endpoint */
 DECL|member|ep_bInterval
 id|u8
 id|ep_bInterval
