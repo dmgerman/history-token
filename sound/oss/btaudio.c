@@ -1227,7 +1227,7 @@ id|info
 )paren
 )paren
 suffix:semicolon
-id|strlcpy
+id|strncpy
 c_func
 (paren
 id|info.id
@@ -1240,7 +1240,7 @@ id|info.id
 )paren
 )paren
 suffix:semicolon
-id|strlcpy
+id|strncpy
 c_func
 (paren
 id|info.name
@@ -1311,7 +1311,7 @@ id|info
 )paren
 )paren
 suffix:semicolon
-id|strlcpy
+id|strncpy
 c_func
 (paren
 id|info.id
@@ -1326,7 +1326,7 @@ op_minus
 l_int|1
 )paren
 suffix:semicolon
-id|strlcpy
+id|strncpy
 c_func
 (paren
 id|info.name
