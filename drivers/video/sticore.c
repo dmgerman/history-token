@@ -245,8 +245,9 @@ id|sti_conf_outptr_ext
 id|outptr_ext
 op_assign
 (brace
+dot
 id|future_ptr
-suffix:colon
+op_assign
 l_int|NULL
 )brace
 suffix:semicolon
@@ -255,8 +256,9 @@ id|sti_conf_outptr
 id|outptr
 op_assign
 (brace
+dot
 id|ext_ptr
-suffix:colon
+op_assign
 id|STI_PTR
 c_func
 (paren

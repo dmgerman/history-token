@@ -1,5 +1,6 @@
 multiline_comment|/*&n; *  ATI Frame Buffer Device Driver Core Definitions&n; */
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;video/fbcon.h&gt;
 multiline_comment|/*&n;     *  Elements of the hardware specific atyfb_par structure&n;     */
 DECL|struct|crtc
 r_struct
@@ -12,18 +13,6 @@ suffix:semicolon
 DECL|member|vyres
 id|u32
 id|vyres
-suffix:semicolon
-DECL|member|xoffset
-id|u32
-id|xoffset
-suffix:semicolon
-DECL|member|yoffset
-id|u32
-id|yoffset
-suffix:semicolon
-DECL|member|bpp
-id|u32
-id|bpp
 suffix:semicolon
 DECL|member|h_tot_disp
 id|u32
@@ -336,10 +325,6 @@ DECL|member|blitter_may_be_busy
 id|u8
 id|blitter_may_be_busy
 suffix:semicolon
-DECL|member|accel_flags
-id|u32
-id|accel_flags
-suffix:semicolon
 macro_line|#ifdef __sparc__
 DECL|member|mmap_map
 r_struct
@@ -365,6 +350,12 @@ id|open
 suffix:semicolon
 macro_line|#endif
 macro_line|#ifdef CONFIG_PMAC_PBOOK
+DECL|member|next
+r_struct
+id|fb_info
+op_star
+id|next
+suffix:semicolon
 DECL|member|save_framebuffer
 r_int
 r_char
@@ -1121,46 +1112,5 @@ id|fb_info
 op_star
 id|info
 )paren
-suffix:semicolon
-r_extern
-r_void
-id|atyfb_fillrect
-c_func
-(paren
-r_struct
-id|fb_info
-op_star
-id|info
-comma
-r_struct
-id|fb_fillrect
-op_star
-id|rect
-)paren
-suffix:semicolon
-multiline_comment|/*&n;     *  Text console acceleration&n;     */
-r_extern
-r_const
-r_struct
-id|display_switch
-id|fbcon_aty8
-suffix:semicolon
-r_extern
-r_const
-r_struct
-id|display_switch
-id|fbcon_aty16
-suffix:semicolon
-r_extern
-r_const
-r_struct
-id|display_switch
-id|fbcon_aty24
-suffix:semicolon
-r_extern
-r_const
-r_struct
-id|display_switch
-id|fbcon_aty32
 suffix:semicolon
 eof
