@@ -1000,7 +1000,6 @@ comma
 id|expect-&gt;tuple.dst.protonum
 )paren
 suffix:semicolon
-r_return
 id|print_tuple
 c_func
 (paren
@@ -1014,6 +1013,15 @@ c_func
 (paren
 id|expect-&gt;tuple.dst.protonum
 )paren
+)paren
+suffix:semicolon
+r_return
+id|seq_putc
+c_func
+(paren
+id|s
+comma
+l_char|&squot;&bslash;n&squot;
 )paren
 suffix:semicolon
 )brace
