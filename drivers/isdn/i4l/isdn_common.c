@@ -2772,7 +2772,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_ISDN_X25
 multiline_comment|/* Signal hangup to network-devices */
 r_if
 c_cond
@@ -2787,7 +2786,6 @@ id|c
 )paren
 r_break
 suffix:semicolon
-macro_line|#endif
 id|isdn_v110_stat_callback
 c_func
 (paren

@@ -4,6 +4,7 @@ macro_line|#include &lt;linux/isdn.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/poll.h&gt;
 macro_line|#include &lt;linux/ppp-comp.h&gt;
+macro_line|#include &lt;linux/if_arp.h&gt;
 macro_line|#include &quot;isdn_common.h&quot;
 macro_line|#include &quot;isdn_ppp.h&quot;
 macro_line|#include &quot;isdn_net.h&quot;
@@ -551,7 +552,8 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/*&n; * unbind isdn_net_local &lt;=&gt; ippp-device&n; * note: it can happen, that we hangup/free the master before the slaves&n; *       in this case we bind another lp to the master device&n; */
-r_int
+r_static
+r_void
 DECL|function|isdn_ppp_free
 id|isdn_ppp_free
 c_func
@@ -590,7 +592,6 @@ id|lp-&gt;ppp_slot
 )paren
 suffix:semicolon
 r_return
-l_int|0
 suffix:semicolon
 )brace
 id|save_flags
@@ -671,7 +672,6 @@ id|flags
 )paren
 suffix:semicolon
 r_return
-l_int|0
 suffix:semicolon
 )brace
 id|is
@@ -754,7 +754,6 @@ id|flags
 )paren
 suffix:semicolon
 r_return
-l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * bind isdn_net_local &lt;=&gt; ippp-device&n; */
@@ -1097,6 +1096,7 @@ id|retval
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * kick the ipppd on the device&n; * (wakes up daemon after B-channel connect)&n; */
+r_static
 r_void
 DECL|function|isdn_ppp_wakeup_daemon
 id|isdn_ppp_wakeup_daemon
@@ -4519,6 +4519,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * handler for incoming packets on a syncPPP interface&n; */
 DECL|function|isdn_ppp_receive
+r_static
 r_void
 id|isdn_ppp_receive
 c_func
@@ -4548,17 +4549,27 @@ suffix:semicolon
 r_int
 id|proto
 suffix:semicolon
+multiline_comment|/*&n;&t; * If encapsulation is syncppp, don&squot;t reset&n;&t; * huptimer on LCP packets.&n;&t; */
 r_if
 c_cond
 (paren
-id|net_dev-&gt;local.master
-)paren
-id|BUG
+id|PPP_PROTOCOL
 c_func
 (paren
+id|skb-&gt;data
+)paren
+op_ne
+id|PPP_LCP
+)paren
+id|isdn_net_reset_huptimer
+c_func
+(paren
+op_amp
+id|net_dev-&gt;local
+comma
+id|lp
 )paren
 suffix:semicolon
-singleline_comment|// we&squot;re called with the master device always
 id|slot
 op_assign
 id|lp-&gt;ppp_slot
@@ -13055,6 +13066,109 @@ suffix:semicolon
 r_return
 op_minus
 id|EINVAL
+suffix:semicolon
+)brace
+singleline_comment|// ISDN_NET_ENCAP_SYNCPPP
+singleline_comment|// ======================================================================
+r_static
+r_int
+DECL|function|isdn_ppp_header
+id|isdn_ppp_header
+c_func
+(paren
+r_struct
+id|sk_buff
+op_star
+id|skb
+comma
+r_struct
+id|net_device
+op_star
+id|dev
+comma
+r_int
+r_int
+id|type
+comma
+r_void
+op_star
+id|daddr
+comma
+r_void
+op_star
+id|saddr
+comma
+r_int
+id|plen
+)paren
+(brace
+id|skb_push
+c_func
+(paren
+id|skb
+comma
+id|IPPP_MAX_HEADER
+)paren
+suffix:semicolon
+r_return
+id|IPPP_MAX_HEADER
+suffix:semicolon
+)brace
+r_int
+DECL|function|isdn_ppp_setup
+id|isdn_ppp_setup
+c_func
+(paren
+id|isdn_net_dev
+op_star
+id|p
+)paren
+(brace
+id|p-&gt;dev.hard_header
+op_assign
+id|isdn_ppp_header
+suffix:semicolon
+id|p-&gt;dev.hard_header_cache
+op_assign
+l_int|NULL
+suffix:semicolon
+id|p-&gt;dev.header_cache_update
+op_assign
+l_int|NULL
+suffix:semicolon
+id|p-&gt;dev.flags
+op_assign
+id|IFF_NOARP
+op_or
+id|IFF_POINTOPOINT
+suffix:semicolon
+id|p-&gt;dev.type
+op_assign
+id|ARPHRD_PPP
+suffix:semicolon
+multiline_comment|/* change ARP type */
+id|p-&gt;dev.addr_len
+op_assign
+l_int|0
+suffix:semicolon
+id|p-&gt;dev.do_ioctl
+op_assign
+id|isdn_ppp_dev_ioctl
+suffix:semicolon
+id|p-&gt;local.receive
+op_assign
+id|isdn_ppp_receive
+suffix:semicolon
+id|p-&gt;local.connected
+op_assign
+id|isdn_ppp_wakeup_daemon
+suffix:semicolon
+id|p-&gt;local.disconnected
+op_assign
+id|isdn_ppp_free
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 )brace
 eof

@@ -100,8 +100,6 @@ DECL|macro|ISDN_NET_ENCAP_CISCOHDLCK
 mdefine_line|#define ISDN_NET_ENCAP_CISCOHDLCK 6 /* With SLARP and keepalive    */
 DECL|macro|ISDN_NET_ENCAP_X25IFACE
 mdefine_line|#define ISDN_NET_ENCAP_X25IFACE   7 /* Documentation/networking/x25-iface.txt*/
-DECL|macro|ISDN_NET_ENCAP_MAX_ENCAP
-mdefine_line|#define ISDN_NET_ENCAP_MAX_ENCAP  ISDN_NET_ENCAP_X25IFACE
 multiline_comment|/* Facility which currently uses an ISDN-channel */
 DECL|macro|ISDN_USAGE_NONE
 mdefine_line|#define ISDN_USAGE_NONE       0
@@ -793,45 +791,6 @@ suffix:semicolon
 multiline_comment|/* used to protect the xmit path of */
 multiline_comment|/* a particular channel (including  */
 multiline_comment|/* the frame_cnt                    */
-DECL|member|org_hhc
-r_int
-(paren
-op_star
-id|org_hhc
-)paren
-(paren
-r_struct
-id|neighbour
-op_star
-id|neigh
-comma
-r_struct
-id|hh_cache
-op_star
-id|hh
-)paren
-suffix:semicolon
-multiline_comment|/* Ptr to orig. header_cache_update */
-DECL|member|org_hcu
-r_void
-(paren
-op_star
-id|org_hcu
-)paren
-(paren
-r_struct
-id|hh_cache
-op_star
-comma
-r_struct
-id|net_device
-op_star
-comma
-r_int
-r_char
-op_star
-)paren
-suffix:semicolon
 DECL|member|pppbind
 r_int
 id|pppbind
@@ -916,6 +875,55 @@ DECL|member|tqueue
 r_struct
 id|tq_struct
 id|tqueue
+suffix:semicolon
+DECL|member|receive
+r_void
+(paren
+op_star
+id|receive
+)paren
+(paren
+r_struct
+id|isdn_net_dev_s
+op_star
+id|p
+comma
+r_struct
+id|isdn_net_local_s
+op_star
+id|olp
+comma
+r_struct
+id|sk_buff
+op_star
+id|skb
+)paren
+suffix:semicolon
+DECL|member|connected
+r_void
+(paren
+op_star
+id|connected
+)paren
+(paren
+r_struct
+id|isdn_net_local_s
+op_star
+id|lp
+)paren
+suffix:semicolon
+DECL|member|disconnected
+r_void
+(paren
+op_star
+id|disconnected
+)paren
+(paren
+r_struct
+id|isdn_net_local_s
+op_star
+id|lp
+)paren
 suffix:semicolon
 DECL|typedef|isdn_net_local
 )brace
