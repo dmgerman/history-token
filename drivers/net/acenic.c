@@ -619,7 +619,6 @@ op_assign
 l_string|&quot;acenic.c: v0.92 08/05/2002  Jes Sorensen, linux-acenic@SunSITE.dk&bslash;n&quot;
 l_string|&quot;                            http://home.cern.ch/~jes/gige/acenic.html&bslash;n&quot;
 suffix:semicolon
-macro_line|#ifdef SET_ETHTOOL_OPS
 r_static
 r_int
 id|ace_get_settings
@@ -686,7 +685,6 @@ id|ace_get_drvinfo
 comma
 )brace
 suffix:semicolon
-macro_line|#endif
 DECL|function|acenic_probe_one
 r_static
 r_int
@@ -852,7 +850,6 @@ op_assign
 op_amp
 id|ace_set_multicast_list
 suffix:semicolon
-macro_line|#ifdef SET_ETHTOOL_OPS
 id|SET_ETHTOOL_OPS
 c_func
 (paren
@@ -862,7 +859,6 @@ op_amp
 id|ace_ethtool_ops
 )paren
 suffix:semicolon
-macro_line|#endif
 id|dev-&gt;set_mac_address
 op_assign
 op_amp
@@ -10087,7 +10083,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#ifdef SET_ETHTOOL_OPS
 DECL|function|ace_get_settings
 r_static
 r_int
@@ -10671,7 +10666,6 @@ id|info-&gt;bus_info
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif
 multiline_comment|/*&n; * Set the hardware MAC address.&n; */
 DECL|function|ace_set_mac_addr
 r_static
