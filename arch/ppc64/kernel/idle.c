@@ -196,17 +196,6 @@ id|CTRL
 )paren
 suffix:semicolon
 macro_line|#endif
-id|printk
-c_func
-(paren
-l_string|&quot;cpu %d hits idle loop&bslash;n&quot;
-comma
-id|smp_processor_id
-c_func
-(paren
-)paren
-)paren
-suffix:semicolon
 id|paca
 op_assign
 (paren

@@ -4394,11 +4394,7 @@ op_or_assign
 id|put_user
 c_func
 (paren
-id|high2lowuid
-c_func
-(paren
 id|stat-&gt;uid
-)paren
 comma
 op_amp
 id|statbuf-&gt;st_uid
@@ -4409,11 +4405,7 @@ op_or_assign
 id|put_user
 c_func
 (paren
-id|high2lowgid
-c_func
-(paren
 id|stat-&gt;gid
-)paren
 comma
 op_amp
 id|statbuf-&gt;st_gid
