@@ -14,6 +14,7 @@ macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/inet.h&gt;
+macro_line|#include &lt;linux/rcupdate.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
@@ -632,8 +633,15 @@ r_struct
 id|in_device
 op_star
 id|in_dev
+suffix:semicolon
+id|rcu_read_lock
+c_func
+(paren
+)paren
+suffix:semicolon
+id|in_dev
 op_assign
-id|in_dev_get
+id|__in_dev_get
 c_func
 (paren
 id|odev
@@ -660,13 +668,12 @@ op_assign
 id|info-&gt;saddr_min
 suffix:semicolon
 )brace
-id|in_dev_put
+)brace
+id|rcu_read_unlock
 c_func
 (paren
-id|in_dev
 )paren
 suffix:semicolon
-)brace
 )brace
 r_else
 (brace
