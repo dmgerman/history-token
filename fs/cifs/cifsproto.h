@@ -26,7 +26,6 @@ r_void
 op_star
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_CIFS_EXPERIMENTAL
 r_extern
 r_struct
 id|smb_hdr
@@ -46,7 +45,6 @@ r_void
 op_star
 )paren
 suffix:semicolon
-macro_line|#endif /* CIFS_EXPERIMENTAL */
 r_extern
 r_int
 id|smb_send

@@ -920,7 +920,6 @@ id|buf
 op_add_assign
 id|item_length
 suffix:semicolon
-macro_line|#ifdef CONFIG_CIFS_EXPERIMENTAL
 id|item_length
 op_assign
 id|sprintf
@@ -941,7 +940,6 @@ id|buf
 op_add_assign
 id|item_length
 suffix:semicolon
-macro_line|#endif /* CIFS_EXPERIMENTAL */
 id|item_length
 op_assign
 id|sprintf

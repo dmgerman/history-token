@@ -728,7 +728,6 @@ id|kmem_cache_t
 op_star
 id|cifs_oplock_cachep
 suffix:semicolon
-macro_line|#ifdef CONFIG_CIFS_EXPERIMENTAL
 DECL|variable|cifs_sm_req_cachep
 r_static
 id|kmem_cache_t
@@ -740,7 +739,6 @@ id|mempool_t
 op_star
 id|cifs_sm_req_poolp
 suffix:semicolon
-macro_line|#endif /* CIFS_EXPERIMENTAL */
 DECL|variable|cifs_req_poolp
 id|mempool_t
 op_star
@@ -2531,8 +2529,7 @@ op_minus
 id|ENOMEM
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_CIFS_EXPERIMENTAL
-multiline_comment|/* 120 bytes is enough for most SMB responses and handle&n;&t;based requests (but not write response, nor is it&n;&t;sufficient for path based requests).  112 bytes is 75 more than&n;&t;sizeof(struct smb_hdr) but still (with slab hdr) just smaller than&n;&t;128 byte cutoff which should make it easy to alloc off the slab &n;&t;compared to 17K (5page) alloc of large cifs buffers and not &n;&t;so large as to force a single page alloc for each slab entry */
+multiline_comment|/* 256 (MAX_CIFS_HDR_SIZE bytes is enough for most SMB responses and&n;&t;almost all handle based requests (but not write response, nor is it&n;&t;sufficient for path based requests).  A smaller size would have&n;&t;been more efficient (compacting multiple slab items on one 4k page) &n;&t;for the case in which debug was on, but this larger size allows&n;&t;more SMBs to use small buffer alloc and is still much more&n;&t;efficient to alloc 1 per page off the slab compared to 17K (5page) &n;&t;alloc of large cifs buffers even when page debugging is on */
 id|cifs_sm_req_cachep
 op_assign
 id|kmem_cache_create
@@ -2540,7 +2537,7 @@ c_func
 (paren
 l_string|&quot;cifs_small_rq&quot;
 comma
-l_int|112
+id|MAX_CIFS_HDR_SIZE
 comma
 l_int|0
 comma
@@ -2581,7 +2578,7 @@ op_assign
 id|mempool_create
 c_func
 (paren
-l_int|64
+l_int|30
 comma
 id|mempool_alloc_slab
 comma
@@ -2621,7 +2618,6 @@ op_minus
 id|ENOMEM
 suffix:semicolon
 )brace
-macro_line|#endif /* CIFS_EXPERIMENTAL */
 r_return
 l_int|0
 suffix:semicolon
@@ -2657,7 +2653,6 @@ id|KERN_WARNING
 l_string|&quot;cifs_destroy_request_cache: error not all structures were freed&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_CIFS_EXPERIMENTAL
 id|mempool_destroy
 c_func
 (paren
@@ -2680,7 +2675,6 @@ id|KERN_WARNING
 l_string|&quot;cifs_destroy_request_cache: cifs_small_rq free error&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#endif /* CIFS_EXPERIMENTAL */
 )brace
 r_static
 r_int

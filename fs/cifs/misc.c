@@ -8,13 +8,11 @@ macro_line|#include &quot;cifsproto.h&quot;
 macro_line|#include &quot;cifs_debug.h&quot;
 macro_line|#include &quot;smberr.h&quot;
 macro_line|#include &quot;nterr.h&quot;
-macro_line|#ifdef CONFIG_CIFS_EXPERIMENTAL
 r_extern
 id|mempool_t
 op_star
 id|cifs_sm_req_poolp
 suffix:semicolon
-macro_line|#endif /* CIFS_EXPERIMENTAL */
 r_extern
 id|mempool_t
 op_star
@@ -552,7 +550,7 @@ id|SLAB_NOFS
 )paren
 suffix:semicolon
 multiline_comment|/* clear the first few header bytes */
-multiline_comment|/* clear through bcc + 1, making an even 0x40 bytes */
+multiline_comment|/* for most paths, more is cleared in header_assemble */
 r_if
 c_cond
 (paren
@@ -572,7 +570,7 @@ r_struct
 id|smb_hdr
 )paren
 op_plus
-l_int|27
+l_int|3
 )paren
 suffix:semicolon
 id|atomic_inc
@@ -636,7 +634,6 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_CIFS_EXPERIMENTAL
 r_struct
 id|smb_hdr
 op_star
@@ -672,30 +669,14 @@ op_or
 id|SLAB_NOFS
 )paren
 suffix:semicolon
-multiline_comment|/* clear the first few header bytes */
-multiline_comment|/* clear through bcc + 1, making an even 0x40 bytes */
 r_if
 c_cond
 (paren
 id|ret_buf
 )paren
 (brace
-id|memset
-c_func
-(paren
-id|ret_buf
-comma
-l_int|0
-comma
-r_sizeof
-(paren
-r_struct
-id|smb_hdr
-)paren
-op_plus
-l_int|27
-)paren
-suffix:semicolon
+multiline_comment|/* No need to clear memory here, cleared in header assemble */
+multiline_comment|/*&t;memset(ret_buf, 0, sizeof(struct smb_hdr) + 27);*/
 id|atomic_inc
 c_func
 (paren
@@ -757,7 +738,6 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-macro_line|#endif /* CIFS_EXPERIMENTAL */
 r_void
 DECL|function|header_assemble
 id|header_assemble
@@ -783,9 +763,6 @@ id|word_count
 multiline_comment|/* length of fixed section (word count) in two byte units  */
 )paren
 (brace
-r_int
-id|i
-suffix:semicolon
 r_struct
 id|list_head
 op_star
@@ -806,30 +783,16 @@ op_star
 )paren
 id|buffer
 suffix:semicolon
-r_for
-c_loop
+id|memset
+c_func
 (paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-id|MAX_CIFS_HDR_SIZE
-suffix:semicolon
-id|i
-op_increment
-)paren
-(brace
 id|temp
-(braket
-id|i
-)braket
-op_assign
+comma
 l_int|0
+comma
+id|MAX_CIFS_HDR_SIZE
+)paren
 suffix:semicolon
-multiline_comment|/* BB is this needed ?? */
-)brace
 id|buffer-&gt;smb_buf_length
 op_assign
 (paren

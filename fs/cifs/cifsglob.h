@@ -1130,13 +1130,11 @@ id|GLOBAL_EXTERN
 id|atomic_t
 id|bufAllocCount
 suffix:semicolon
-macro_line|#ifdef CONFIG_CIFS_EXPERIMENTAL
 DECL|variable|smBufAllocCount
 id|GLOBAL_EXTERN
 id|atomic_t
 id|smBufAllocCount
 suffix:semicolon
-macro_line|#endif /* CIFS_EXPERIMENTAL */
 DECL|variable|midCount
 id|GLOBAL_EXTERN
 id|atomic_t
