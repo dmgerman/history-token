@@ -9367,6 +9367,12 @@ id|jfs_inode_info
 op_star
 id|jfs_ip
 suffix:semicolon
+r_int
+id|rc
+suffix:semicolon
+id|tid_t
+id|tid
+suffix:semicolon
 id|lock_kernel
 c_func
 (paren
@@ -9475,35 +9481,61 @@ op_assign
 op_amp
 id|jfs_ip-&gt;vfs_inode
 suffix:semicolon
-multiline_comment|/*&n;&t;&t;&t; * We must release the TXN_LOCK since our&n;&t;&t;&t; * IWRITE_TRYLOCK implementation may still block&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * down_trylock returns 0 on success.  This is&n;&t;&t;&t; * inconsistent with spin_trylock.&n;&t;&t;&t; */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|down_trylock
+c_func
+(paren
+op_amp
+id|jfs_ip-&gt;commit_sem
+)paren
+)paren
+(brace
+multiline_comment|/*&n;&t;&t;&t;&t; * inode will be removed from anonymous list&n;&t;&t;&t;&t; * when it is committed&n;&t;&t;&t;&t; */
 id|TXN_UNLOCK
 c_func
 (paren
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|IWRITE_TRYLOCK
+id|tid
+op_assign
+id|txBegin
 c_func
 (paren
-id|ip
+id|ip-&gt;i_sb
+comma
+id|COMMIT_INODE
 )paren
-)paren
-(brace
-multiline_comment|/*&n;&t;&t;&t;&t; * inode will be removed from anonymous list&n;&t;&t;&t;&t; * when it is committed&n;&t;&t;&t;&t; */
-id|jfs_commit_inode
+suffix:semicolon
+id|rc
+op_assign
+id|txCommit
 c_func
 (paren
+id|tid
+comma
+l_int|1
+comma
+op_amp
 id|ip
 comma
 l_int|0
 )paren
 suffix:semicolon
-id|IWRITE_UNLOCK
+id|txEnd
 c_func
 (paren
-id|ip
+id|tid
+)paren
+suffix:semicolon
+id|up
+c_func
+(paren
+op_amp
+id|jfs_ip-&gt;commit_sem
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t;&t;&t;&t; * Just to be safe.  I don&squot;t know how&n;&t;&t;&t;&t; * long we can run without blocking&n;&t;&t;&t;&t; */
@@ -9520,13 +9552,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-multiline_comment|/* We can&squot;t get the write lock.  It may&n;&t;&t;&t;&t; * be held by a thread waiting for tlock&squot;s&n;&t;&t;&t;&t; * so let&squot;s not block here.  Save it to&n;&t;&t;&t;&t; * put back on the anon_list.&n;&t;&t;&t;&t; */
-multiline_comment|/*&n;&t;&t;&t;&t; * We released TXN_LOCK, let&squot;s make sure&n;&t;&t;&t;&t; * this inode is still there&n;&t;&t;&t;&t; */
-id|TXN_LOCK
-c_func
-(paren
-)paren
-suffix:semicolon
+multiline_comment|/* We can&squot;t get the commit semaphore.  It may&n;&t;&t;&t;&t; * be held by a thread waiting for tlock&squot;s&n;&t;&t;&t;&t; * so let&squot;s not block here.  Save it to&n;&t;&t;&t;&t; * put back on the anon_list.&n;&t;&t;&t;&t; */
 r_if
 c_cond
 (paren
