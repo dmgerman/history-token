@@ -634,6 +634,21 @@ id|clist
 op_assign
 id|clist-&gt;next
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|skb-&gt;destructor
+)paren
+(brace
+id|dev_kfree_skb_any
+c_func
+(paren
+id|skb
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/* put this one back */
+r_else
 id|__kfree_skb
 c_func
 (paren
