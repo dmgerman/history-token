@@ -1672,6 +1672,16 @@ id|CLONE_IDLETASK
 suffix:semicolon
 id|printf
 (paren
+l_string|&quot;&bslash;n#define CLONE_SETTLS_BIT&t;%ld&bslash;n&quot;
+comma
+id|ia64_fls
+(paren
+id|CLONE_SETTLS
+)paren
+)paren
+suffix:semicolon
+id|printf
+(paren
 l_string|&quot;&bslash;n#endif /* _ASM_IA64_OFFSETS_H */&bslash;n&quot;
 )paren
 suffix:semicolon

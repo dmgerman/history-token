@@ -91,7 +91,7 @@ l_int|3
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Calcuate the number of registers in the dirty partition starting at&n; * BSPSTORE with a size of DIRTY bytes.  This isn&squot;t simply DIRTY&n; * divided by eight because the 64th slot is used to store ar.rnat.&n; */
+multiline_comment|/*&n; * Calculate the number of registers in the dirty partition starting at BSPSTORE and&n; * ending at BSP.  This isn&squot;t simply (BSP-BSPSTORE)/8 because every 64th slot stores&n; * ar.rnat.&n; */
 r_static
 id|__inline__
 r_int
