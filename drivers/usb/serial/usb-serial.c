@@ -751,7 +751,15 @@ comma
 id|filp
 )paren
 suffix:semicolon
+id|tty-&gt;driver_data
+op_assign
+l_int|NULL
+suffix:semicolon
 )brace
+id|port-&gt;tty
+op_assign
+l_int|NULL
+suffix:semicolon
 )brace
 DECL|function|serial_write
 r_static
