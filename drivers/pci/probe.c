@@ -1112,8 +1112,6 @@ r_if
 c_cond
 (paren
 id|base
-op_logical_and
-id|base
 op_le
 id|limit
 )paren
@@ -1191,8 +1189,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|base
-op_logical_and
 id|base
 op_le
 id|limit
@@ -1356,8 +1352,6 @@ macro_line|#endif
 r_if
 c_cond
 (paren
-id|base
-op_logical_and
 id|base
 op_le
 id|limit
