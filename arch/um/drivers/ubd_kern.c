@@ -4729,6 +4729,8 @@ op_assign
 id|size
 suffix:semicolon
 )brace
+id|out
+suffix:colon
 id|spin_unlock
 c_func
 (paren
@@ -4736,8 +4738,6 @@ op_amp
 id|ubd_lock
 )paren
 suffix:semicolon
-id|out
-suffix:colon
 r_return
 id|err
 suffix:semicolon
