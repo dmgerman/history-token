@@ -903,6 +903,7 @@ id|totalhigh_pages
 op_increment
 suffix:semicolon
 )brace
+macro_line|#ifndef CONFIG_DISCONTIGMEM
 DECL|function|set_highmem_pages_init
 r_void
 id|__init
@@ -954,6 +955,16 @@ op_add_assign
 id|totalhigh_pages
 suffix:semicolon
 )brace
+macro_line|#else
+r_extern
+r_void
+id|set_highmem_pages_init
+c_func
+(paren
+r_int
+)paren
+suffix:semicolon
+macro_line|#endif /* !CONFIG_DISCONTIGMEM */
 macro_line|#else
 DECL|macro|kmap_init
 mdefine_line|#define kmap_init() do { } while (0)
@@ -1178,6 +1189,7 @@ c_func
 )paren
 suffix:semicolon
 )brace
+macro_line|#ifndef CONFIG_DISCONTIGMEM
 DECL|function|zone_sizes_init
 r_void
 id|__init
@@ -1283,6 +1295,16 @@ id|zones_size
 )paren
 suffix:semicolon
 )brace
+macro_line|#else
+r_extern
+r_void
+id|zone_sizes_init
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+macro_line|#endif /* !CONFIG_DISCONTIGMEM */
 multiline_comment|/*&n; * paging_init() sets up the page tables - note that the first 8MB are&n; * already mapped by head.S.&n; *&n; * This routines also unmaps the page at virtual kernel address 0, so&n; * that we can trap those pesky NULL-reference errors in the kernel.&n; */
 DECL|function|paging_init
 r_void
@@ -1497,6 +1519,7 @@ l_string|&quot;Ok.&bslash;n&quot;
 suffix:semicolon
 )brace
 )brace
+macro_line|#ifndef CONFIG_DISCONTIGMEM
 DECL|function|set_max_mapnr_init
 r_static
 r_void
@@ -1529,6 +1552,20 @@ id|max_low_pfn
 suffix:semicolon
 macro_line|#endif
 )brace
+DECL|macro|__free_all_bootmem
+mdefine_line|#define __free_all_bootmem() free_all_bootmem()
+macro_line|#else
+DECL|macro|__free_all_bootmem
+mdefine_line|#define __free_all_bootmem() free_all_bootmem_node(NODE_DATA(0))
+r_extern
+r_void
+id|set_max_mapnr_init
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+macro_line|#endif /* !CONFIG_DISCONTIGMEM */
 DECL|function|mem_init
 r_void
 id|__init
@@ -1612,7 +1649,7 @@ suffix:semicolon
 multiline_comment|/* this will put all low memory onto the freelists */
 id|totalram_pages
 op_add_assign
-id|free_all_bootmem
+id|__free_all_bootmem
 c_func
 (paren
 )paren

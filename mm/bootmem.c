@@ -1479,6 +1479,7 @@ id|pages
 )paren
 suffix:semicolon
 )brace
+macro_line|#ifndef CONFIG_HAVE_ARCH_BOOTMEM_NODE
 DECL|function|reserve_bootmem
 r_void
 id|__init
@@ -1504,6 +1505,7 @@ id|size
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif /* !CONFIG_HAVE_ARCH_BOOTMEM_NODE */
 DECL|function|free_bootmem
 r_void
 id|__init
