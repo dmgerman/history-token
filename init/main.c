@@ -687,6 +687,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;Calibrating delay loop... &quot;
 )paren
 suffix:semicolon
