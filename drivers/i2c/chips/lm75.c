@@ -1,9 +1,5 @@
 multiline_comment|/*&n;    lm75.c - Part of lm_sensors, Linux kernel modules for hardware&n;             monitoring&n;    Copyright (c) 1998, 1999  Frodo Looijaard &lt;frodol@dds.nl&gt;&n;&n;    This program is free software; you can redistribute it and/or modify&n;    it under the terms of the GNU General Public License as published by&n;    the Free Software Foundation; either version 2 of the License, or&n;    (at your option) any later version.&n;&n;    This program is distributed in the hope that it will be useful,&n;    but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;    GNU General Public License for more details.&n;&n;    You should have received a copy of the GNU General Public License&n;    along with this program; if not, write to the Free Software&n;    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n;*/
 macro_line|#include &lt;linux/config.h&gt;
-macro_line|#ifdef CONFIG_I2C_DEBUG_CHIP
-DECL|macro|DEBUG
-mdefine_line|#define DEBUG&t;1
-macro_line|#endif
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
@@ -199,14 +195,16 @@ id|value
 )paren
 suffix:semicolon
 r_static
-r_void
-id|lm75_update_client
+r_struct
+id|lm75_data
+op_star
+id|lm75_update_device
 c_func
 (paren
 r_struct
-id|i2c_client
+id|device
 op_star
-id|client
+id|dev
 )paren
 suffix:semicolon
 multiline_comment|/* This is the driver that will be inserted */
@@ -257,7 +255,7 @@ op_assign
 l_int|0
 suffix:semicolon
 DECL|macro|show
-mdefine_line|#define show(value)&t;&bslash;&n;static ssize_t show_##value(struct device *dev, char *buf)&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;struct i2c_client *client = to_i2c_client(dev);&t;&t;&t;&bslash;&n;&t;struct lm75_data *data = i2c_get_clientdata(client);&t;&t;&bslash;&n;&t;lm75_update_client(client);&t;&t;&t;&t;&t;&bslash;&n;&t;return sprintf(buf, &quot;%d&bslash;n&quot;, LM75_TEMP_FROM_REG(data-&gt;value));&t;&bslash;&n;}
+mdefine_line|#define show(value)&t;&bslash;&n;static ssize_t show_##value(struct device *dev, char *buf)&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;struct lm75_data *data = lm75_update_device(dev);&t;&t;&bslash;&n;&t;return sprintf(buf, &quot;%d&bslash;n&quot;, LM75_TEMP_FROM_REG(data-&gt;value));&t;&bslash;&n;}
 DECL|variable|temp_max
 id|show
 c_func
@@ -301,7 +299,7 @@ r_static
 id|DEVICE_ATTR
 c_func
 (paren
-id|temp_max1
+id|temp1_max
 comma
 id|S_IWUSR
 op_or
@@ -316,7 +314,7 @@ r_static
 id|DEVICE_ATTR
 c_func
 (paren
-id|temp_hyst1
+id|temp1_max_hyst
 comma
 id|S_IWUSR
 op_or
@@ -331,7 +329,7 @@ r_static
 id|DEVICE_ATTR
 c_func
 (paren
-id|temp_input1
+id|temp1_input
 comma
 id|S_IRUGO
 comma
@@ -429,6 +427,8 @@ r_const
 r_char
 op_star
 id|name
+op_assign
+l_string|&quot;&quot;
 suffix:semicolon
 multiline_comment|/* Make sure we aren&squot;t probing the ISA bus!! This is just a safety check&n;&t;   at this moment; i2c_detect really won&squot;t call us. */
 macro_line|#ifdef DEBUG
@@ -711,23 +711,6 @@ op_assign
 l_string|&quot;lm75&quot;
 suffix:semicolon
 )brace
-r_else
-(brace
-id|dev_dbg
-c_func
-(paren
-op_amp
-id|adapter-&gt;dev
-comma
-l_string|&quot;Internal error: unknown kind (%d)?!?&quot;
-comma
-id|kind
-)paren
-suffix:semicolon
-r_goto
-id|exit_free
-suffix:semicolon
-)brace
 multiline_comment|/* Fill in the remaining client fields and put it into the global list */
 id|strlcpy
 c_func
@@ -787,7 +770,7 @@ op_amp
 id|new_client-&gt;dev
 comma
 op_amp
-id|dev_attr_temp_max1
+id|dev_attr_temp1_max
 )paren
 suffix:semicolon
 id|device_create_file
@@ -797,7 +780,7 @@ op_amp
 id|new_client-&gt;dev
 comma
 op_amp
-id|dev_attr_temp_hyst1
+id|dev_attr_temp1_max_hyst
 )paren
 suffix:semicolon
 id|device_create_file
@@ -807,7 +790,7 @@ op_amp
 id|new_client-&gt;dev
 comma
 op_amp
-id|dev_attr_temp_input1
+id|dev_attr_temp1_input
 )paren
 suffix:semicolon
 r_return
@@ -1004,18 +987,31 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
-DECL|function|lm75_update_client
+DECL|function|lm75_update_device
 r_static
-r_void
-id|lm75_update_client
+r_struct
+id|lm75_data
+op_star
+id|lm75_update_device
 c_func
 (paren
+r_struct
+id|device
+op_star
+id|dev
+)paren
+(brace
 r_struct
 id|i2c_client
 op_star
 id|client
+op_assign
+id|to_i2c_client
+c_func
+(paren
+id|dev
 )paren
-(brace
+suffix:semicolon
 r_struct
 id|lm75_data
 op_star
@@ -1113,6 +1109,9 @@ c_func
 op_amp
 id|data-&gt;update_lock
 )paren
+suffix:semicolon
+r_return
+id|data
 suffix:semicolon
 )brace
 DECL|function|sensors_lm75_init

@@ -5,8 +5,6 @@ multiline_comment|/*   Copyright (C) 1995-1997 Simon G. Vogl&n;                 
 multiline_comment|/* ------------------------------------------------------------------------- */
 multiline_comment|/* With some changes from Ky&#xfffd;sti M&#xfffd;lkki &lt;kmalkki@cc.hut.fi&gt; and &n;   Frodo Looijaard &lt;frodol@dds.nl&gt; ,and also from Martin Bailey&n;   &lt;mbailey@littlefeet-inc.com&gt; */
 multiline_comment|/* Partially rewriten by Oleg I. Vdovikin &lt;vdovikin@jscc.ru&gt; to handle multiple&n;   messages, proper stop/repstart signaling during receive,&n;   added detect code */
-multiline_comment|/* #define DEBUG 1 */
-multiline_comment|/* to pick up dev_dbg calls */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
