@@ -5922,6 +5922,8 @@ id|dev_alloc_skb
 c_func
 (paren
 id|len
+op_plus
+l_int|16
 )paren
 suffix:semicolon
 r_if
