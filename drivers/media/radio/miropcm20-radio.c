@@ -4,7 +4,7 @@ multiline_comment|/* What ever you think about the ACI, version 0x07 is not very
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/videodev.h&gt;
-macro_line|#include &quot;../../sound/aci.h&quot;
+macro_line|#include &quot;../../../sound/oss/aci.h&quot;
 macro_line|#include &quot;miropcm20-rds-core.h&quot;
 DECL|variable|users
 r_static

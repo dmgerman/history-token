@@ -7,7 +7,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
-macro_line|#include &quot;../../sound/aci.h&quot;
+macro_line|#include &quot;../../../sound/oss/aci.h&quot;
 macro_line|#include &quot;miropcm20-rds-core.h&quot;
 DECL|macro|DEBUG
 mdefine_line|#define DEBUG 0
