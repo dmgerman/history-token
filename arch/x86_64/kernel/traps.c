@@ -2223,7 +2223,7 @@ comma
 id|reserved
 )paren
 DECL|macro|DO_ERROR_STACK
-mdefine_line|#define DO_ERROR_STACK(trapnr, signr, str, name) &bslash;&n;asmlinkage unsigned long do_##name(struct pt_regs * regs, long error_code) &bslash;&n;{ &bslash;&n;&t;struct pt_regs *pr = ((struct pt_regs *)(current-&gt;thread.rsp0))-1; &bslash;&n;&t;if (notify_die(DIE_TRAP, str, regs, error_code, trapnr, signr) == NOTIFY_BAD) &bslash;&n;&t;&t;return 0; &bslash;&n;&t;if (regs-&gt;cs &amp; 3) &bslash;&n;&t;&t;memcpy(pr, regs, sizeof(struct pt_regs)); &bslash;&n;&t;do_trap(trapnr, signr, str, regs, error_code, NULL); &bslash;&n;&t;return (regs-&gt;cs &amp; 3) ? (unsigned long)pr : 0;&t;&t;&bslash;&n;}
+mdefine_line|#define DO_ERROR_STACK(trapnr, signr, str, name) &bslash;&n;asmlinkage void *do_##name(struct pt_regs * regs, long error_code) &bslash;&n;{ &bslash;&n;&t;struct pt_regs *pr = ((struct pt_regs *)(current-&gt;thread.rsp0))-1; &bslash;&n;&t;if (notify_die(DIE_TRAP, str, regs, error_code, trapnr, signr) == NOTIFY_BAD) &bslash;&n;&t;&t;return regs; &bslash;&n;&t;if (regs-&gt;cs &amp; 3) { &bslash;&n;&t;&t;memcpy(pr, regs, sizeof(struct pt_regs)); &bslash;&n;&t;&t;regs = pr; &bslash;&n;&t;} &bslash;&n;&t;do_trap(trapnr, signr, str, regs, error_code, NULL); &bslash;&n;&t;return regs;&t;&t;&bslash;&n;}
 id|DO_ERROR_STACK
 c_func
 (paren
@@ -2786,8 +2786,8 @@ multiline_comment|/* dummy */
 multiline_comment|/* runs on IST stack. */
 DECL|function|do_debug
 id|asmlinkage
-r_int
-r_int
+r_void
+op_star
 id|do_debug
 c_func
 (paren
@@ -2804,7 +2804,7 @@ id|error_code
 r_struct
 id|pt_regs
 op_star
-id|processregs
+id|pr
 suffix:semicolon
 r_int
 r_int
@@ -2820,7 +2820,7 @@ suffix:semicolon
 id|siginfo_t
 id|info
 suffix:semicolon
-id|processregs
+id|pr
 op_assign
 (paren
 r_struct
@@ -2840,10 +2840,11 @@ id|regs-&gt;cs
 op_amp
 l_int|3
 )paren
+(brace
 id|memcpy
 c_func
 (paren
-id|processregs
+id|pr
 comma
 id|regs
 comma
@@ -2854,6 +2855,11 @@ id|pt_regs
 )paren
 )paren
 suffix:semicolon
+id|regs
+op_assign
+id|pr
+suffix:semicolon
+)brace
 macro_line|#ifdef CONFIG_CHECKING
 (brace
 multiline_comment|/* RED-PEN interaction with debugger - could destroy gs */
@@ -3090,23 +3096,8 @@ comma
 id|SIGTRAP
 )paren
 suffix:semicolon
-id|out
-suffix:colon
 r_return
-(paren
-id|regs-&gt;cs
-op_amp
-l_int|3
-)paren
-ques
-c_cond
-(paren
-r_int
-r_int
-)paren
-id|processregs
-suffix:colon
-l_int|0
+id|regs
 suffix:semicolon
 id|clear_TF_reenable
 suffix:colon
@@ -3153,8 +3144,8 @@ op_and_assign
 op_complement
 id|TF_MASK
 suffix:semicolon
-r_goto
-id|out
+r_return
+id|regs
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Note that we play around with the &squot;TS&squot; bit in an attempt to get&n; * the correct behaviour even in the presence of the asynchronous&n; * IRQ13 behaviour&n; */
