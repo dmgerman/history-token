@@ -2155,14 +2155,6 @@ op_amp
 id|ATTR_SIZE
 )paren
 (brace
-id|i_size_write
-c_func
-(paren
-id|inode
-comma
-id|vattr.va_size
-)paren
-suffix:semicolon
 id|error
 op_assign
 id|vmtruncate
