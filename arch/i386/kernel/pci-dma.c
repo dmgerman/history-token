@@ -252,7 +252,12 @@ id|dma_coherent_mem
 op_star
 id|mem
 op_assign
+id|dev
+ques
+c_cond
 id|dev-&gt;dma_mem
+suffix:colon
+l_int|NULL
 suffix:semicolon
 r_int
 id|order
