@@ -1282,11 +1282,12 @@ op_amp
 id|ST1_UDRN
 )paren
 (brace
-id|hdlc_device
+r_struct
+id|net_device_stats
 op_star
-id|hdlc
+id|stats
 op_assign
-id|dev_to_hdlc
+id|hdlc_stats
 c_func
 (paren
 id|port_to_dev
@@ -1296,11 +1297,11 @@ id|port
 )paren
 )paren
 suffix:semicolon
-id|hdlc-&gt;stats.tx_errors
+id|stats-&gt;tx_errors
 op_increment
 suffix:semicolon
 multiline_comment|/* TX Underrun error detected */
-id|hdlc-&gt;stats.tx_fifo_errors
+id|stats-&gt;tx_fifo_errors
 op_increment
 suffix:semicolon
 )brace
@@ -1377,14 +1378,11 @@ id|net_device_stats
 op_star
 id|stats
 op_assign
-op_amp
-id|dev_to_hdlc
+id|hdlc_stats
 c_func
 (paren
 id|dev
 )paren
-op_member_access_from_pointer
-id|stats
 suffix:semicolon
 r_struct
 id|sk_buff
@@ -1688,8 +1686,7 @@ id|net_device_stats
 op_star
 id|stats
 op_assign
-op_amp
-id|dev_to_hdlc
+id|hdlc_stats
 c_func
 (paren
 id|port_to_dev
@@ -1698,8 +1695,6 @@ c_func
 id|port
 )paren
 )paren
-op_member_access_from_pointer
-id|stats
 suffix:semicolon
 multiline_comment|/* Reset DSR status bits */
 id|sca_out
@@ -1999,14 +1994,11 @@ id|net_device_stats
 op_star
 id|stats
 op_assign
-op_amp
-id|dev_to_hdlc
+id|hdlc_stats
 c_func
 (paren
 id|dev
 )paren
-op_member_access_from_pointer
-id|stats
 suffix:semicolon
 id|u16
 id|dmac

@@ -79,13 +79,13 @@ id|GFP_ATOMIC
 )paren
 )paren
 (brace
-id|dev_to_hdlc
+id|hdlc_stats
 c_func
 (paren
 id|dev
 )paren
 op_member_access_from_pointer
-id|stats.tx_dropped
+id|tx_dropped
 op_increment
 suffix:semicolon
 id|dev_kfree_skb

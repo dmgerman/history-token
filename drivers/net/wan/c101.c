@@ -341,14 +341,11 @@ id|net_device_stats
 op_star
 id|stats
 op_assign
-op_amp
-id|dev_to_hdlc
+id|hdlc_stats
 c_func
 (paren
 id|dev
 )paren
-op_member_access_from_pointer
-id|stats
 suffix:semicolon
 id|stats-&gt;tx_errors
 op_increment

@@ -81,14 +81,11 @@ id|dev
 )paren
 (brace
 r_return
-op_amp
-id|dev_to_hdlc
+id|hdlc_stats
 c_func
 (paren
 id|dev
 )paren
-op_member_access_from_pointer
-id|stats
 suffix:semicolon
 )brace
 DECL|function|hdlc_rcv
