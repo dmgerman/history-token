@@ -1,4 +1,4 @@
-multiline_comment|/*&n;   SCSI Tape Driver for Linux version 1.1 and newer. See the accompanying&n;   file README.st for more information.&n;&n;   History:&n;   Rewritten from Dwayne Forsyth&squot;s SCSI tape driver by Kai Makisara.&n;   Contribution and ideas from several people including (in alphabetical&n;   order) Klaus Ehrenfried, Eugene Exarevsky, Eric Lee Green, Wolfgang Denk,&n;   Steve Hirsch, Andreas Koppenh&quot;ofer, Michael Leodolter, Eyal Lebedinsky,&n;   Michael Schaefer, J&quot;org Weule, and Eric Youngdale.&n;&n;   Copyright 1992 - 2002 Kai Makisara&n;   email Kai.Makisara@metla.fi&n;&n;   Last modified: Tue Oct 15 22:01:04 2002 by makisara&n;   Some small formal changes - aeb, 950809&n;&n;   Last modified: 18-JAN-1998 Richard Gooch &lt;rgooch@atnf.csiro.au&gt; Devfs support&n; */
+multiline_comment|/*&n;   SCSI Tape Driver for Linux version 1.1 and newer. See the accompanying&n;   file Documentation/scsi/st.txt for more information.&n;&n;   History:&n;   Rewritten from Dwayne Forsyth&squot;s SCSI tape driver by Kai Makisara.&n;   Contribution and ideas from several people including (in alphabetical&n;   order) Klaus Ehrenfried, Eugene Exarevsky, Eric Lee Green, Wolfgang Denk,&n;   Steve Hirsch, Andreas Koppenh&quot;ofer, Michael Leodolter, Eyal Lebedinsky,&n;   Michael Schaefer, J&quot;org Weule, and Eric Youngdale.&n;&n;   Copyright 1992 - 2002 Kai Makisara&n;   email Kai.Makisara@metla.fi&n;&n;   Last modified: Tue Oct 15 22:01:04 2002 by makisara&n;   Some small formal changes - aeb, 950809&n;&n;   Last modified: 18-JAN-1998 Richard Gooch &lt;rgooch@atnf.csiro.au&gt; Devfs support&n; */
 DECL|variable|verstr
 r_static
 r_char
@@ -18657,7 +18657,7 @@ id|max_sg_segs
 suffix:semicolon
 )brace
 macro_line|#ifndef MODULE
-multiline_comment|/* Set the boot options. Syntax is defined in README.st.&n; */
+multiline_comment|/* Set the boot options. Syntax is defined in Documenation/scsi/st.txt.&n; */
 DECL|function|st_setup
 r_static
 r_int
