@@ -12,6 +12,7 @@ macro_line|#include &lt;asm/mmu.h&gt;
 macro_line|#include &lt;asm/ocp_ids.h&gt;
 macro_line|#include &lt;asm/rwsem.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
+macro_line|#ifdef CONFIG_PPC_OCP
 DECL|macro|OCP_MAX_IRQS
 mdefine_line|#define OCP_MAX_IRQS&t;7
 DECL|macro|MAX_EMACS
@@ -494,6 +495,7 @@ mdefine_line|#define OCP_SYSFS_ADDTL(type, format, name, field)&t;&t;&t;&bslash;
 macro_line|#ifdef CONFIG_IBM_OCP
 macro_line|#include &lt;asm/ibm_ocp.h&gt;
 macro_line|#endif
+macro_line|#endif&t;&t;&t;&t;/* CONFIG_PPC_OCP */
 macro_line|#endif&t;&t;&t;&t;/* __OCP_H__ */
 macro_line|#endif&t;&t;&t;&t;/* __KERNEL__ */
 eof
