@@ -1004,6 +1004,7 @@ l_int|NULL
 suffix:semicolon
 )brace
 DECL|function|ntfs_destroy_extent_inode
+r_static
 r_void
 id|ntfs_destroy_extent_inode
 c_func
@@ -7522,6 +7523,7 @@ suffix:semicolon
 )brace
 )brace
 DECL|function|__ntfs_clear_inode
+r_static
 r_void
 id|__ntfs_clear_inode
 c_func
