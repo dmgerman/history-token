@@ -3425,7 +3425,7 @@ l_string|&quot;2nd try.&bslash;n&quot;
 )paren
 suffix:semicolon
 r_goto
-id|failed_mount
+id|failed_sbi
 suffix:semicolon
 )brace
 id|es
