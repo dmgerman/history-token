@@ -237,6 +237,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_SMP
 r_while
 c_loop
 (paren
@@ -268,6 +269,7 @@ c_func
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif
 )brace
 DECL|function|pte_chain_unlock
 r_static
@@ -282,6 +284,7 @@ op_star
 id|page
 )paren
 (brace
+macro_line|#ifdef CONFIG_SMP
 id|smp_mb__before_clear_bit
 c_func
 (paren
@@ -296,6 +299,7 @@ op_amp
 id|page-&gt;flags
 )paren
 suffix:semicolon
+macro_line|#endif
 id|preempt_enable
 c_func
 (paren
