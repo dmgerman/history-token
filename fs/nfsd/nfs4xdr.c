@@ -1541,7 +1541,7 @@ id|NFSD_SUPPORTED_ATTRS_WORD1
 )paren
 )paren
 r_return
-id|nfserr_notsupp
+id|nfserr_attrnotsupp
 suffix:semicolon
 r_if
 c_cond
