@@ -2778,11 +2778,12 @@ id|res2
 )paren
 suffix:semicolon
 multiline_comment|/* after flagging the request as done, we&n;&t; * must never even look at it again&n;&t; */
-id|barrier
+id|smp_wmb
 c_func
 (paren
 )paren
 suffix:semicolon
+multiline_comment|/* make event visible before updating tail */
 id|info-&gt;tail
 op_assign
 id|tail
@@ -2790,11 +2791,6 @@ suffix:semicolon
 id|ring-&gt;tail
 op_assign
 id|tail
-suffix:semicolon
-id|wmb
-c_func
-(paren
-)paren
 suffix:semicolon
 id|put_aio_ring_event
 c_func
@@ -2951,11 +2947,6 @@ r_int
 id|ring-&gt;nr
 )paren
 suffix:semicolon
-id|barrier
-c_func
-(paren
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -3018,11 +3009,12 @@ l_int|1
 op_mod
 id|info-&gt;nr
 suffix:semicolon
-id|barrier
+id|smp_mb
 c_func
 (paren
 )paren
 suffix:semicolon
+multiline_comment|/* finish reading the event before updatng the head */
 id|ring-&gt;head
 op_assign
 id|head
