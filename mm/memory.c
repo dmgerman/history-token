@@ -2716,7 +2716,7 @@ c_func
 id|page
 )paren
 )paren
-id|SetPageDirty
+id|set_page_dirty
 c_func
 (paren
 id|page
