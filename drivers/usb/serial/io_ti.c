@@ -1666,6 +1666,7 @@ op_star
 id|oedb
 suffix:semicolon
 id|__u8
+op_star
 id|lsr
 suffix:semicolon
 r_int
@@ -1701,6 +1702,34 @@ comma
 l_string|&quot;%s - out of memory&bslash;n&quot;
 comma
 id|__FUNCTION__
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|ENOMEM
+suffix:semicolon
+)brace
+id|lsr
+op_assign
+id|kmalloc
+(paren
+l_int|1
+comma
+id|GFP_KERNEL
+)paren
+suffix:semicolon
+multiline_comment|/* Sigh, that&squot;s right, just one byte,&n;&t;&t;&t;&t;&t;   as not all platforms can do DMA&n;&t;&t;&t;&t;&t;   from stack */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|lsr
+)paren
+(brace
+id|kfree
+c_func
+(paren
+id|oedb
 )paren
 suffix:semicolon
 r_return
@@ -1760,7 +1789,6 @@ id|UMPMEM_OFFS_UART_LSR
 comma
 l_int|1
 comma
-op_amp
 id|lsr
 )paren
 suffix:semicolon
@@ -1778,6 +1806,7 @@ l_string|&quot;%s - LSR = 0x%X&quot;
 comma
 id|__FUNCTION__
 comma
+op_star
 id|lsr
 )paren
 suffix:semicolon
@@ -1801,6 +1830,7 @@ r_if
 c_cond
 (paren
 (paren
+op_star
 id|lsr
 op_amp
 id|UMP_UART_LSR_TX_MASK
@@ -1822,6 +1852,18 @@ comma
 id|__FUNCTION__
 comma
 id|bytes_left
+)paren
+suffix:semicolon
+id|kfree
+c_func
+(paren
+id|lsr
+)paren
+suffix:semicolon
+id|kfree
+c_func
+(paren
+id|oedb
 )paren
 suffix:semicolon
 r_return
@@ -4327,11 +4369,31 @@ id|status
 )paren
 suffix:semicolon
 multiline_comment|/* return an error on purpose. */
+id|kfree
+(paren
+id|firmware_version
+)paren
+suffix:semicolon
+id|kfree
+(paren
+id|rom_desc
+)paren
+suffix:semicolon
+id|kfree
+(paren
+id|ti_manuf_desc
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|ENODEV
 suffix:semicolon
 )brace
+id|kfree
+(paren
+id|firmware_version
+)paren
+suffix:semicolon
 )brace
 singleline_comment|// Search for type 0xF2 record (firmware blank record)
 r_else

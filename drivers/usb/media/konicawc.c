@@ -108,7 +108,7 @@ op_assign
 l_int|0
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/* Some default values for inital camera settings,&n;   can be set by modprobe */
+multiline_comment|/* Some default values for initial camera settings,&n;   can be set by modprobe */
 DECL|variable|size
 r_static
 r_enum

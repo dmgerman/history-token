@@ -263,6 +263,14 @@ id|inode-&gt;i_cdev
 op_assign
 l_int|NULL
 suffix:semicolon
+id|inode-&gt;i_rdev
+op_assign
+id|to_kdev_t
+c_func
+(paren
+l_int|0
+)paren
+suffix:semicolon
 id|inode-&gt;i_security
 op_assign
 l_int|NULL

@@ -3001,7 +3001,7 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/****************************************************************************&n; *&n; * Video Decoding&n; *&n; ***************************************************************************/
-multiline_comment|/*&n;&t;This shouldn&squot;t really be done in a v4l driver....&n;&t;But it does make the image look a lot more usable.&n;&t;Basicly it lifts the dark pixels more than the light pixels.&n;*/
+multiline_comment|/*&n;&t;This shouldn&squot;t really be done in a v4l driver....&n;&t;But it does make the image look a lot more usable.&n;&t;Basically it lifts the dark pixels more than the light pixels.&n;*/
 DECL|function|enhance_picture
 r_static
 r_inline

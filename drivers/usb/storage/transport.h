@@ -146,7 +146,7 @@ multiline_comment|/*&n; * usb_stor_bulk_transfer_xxx() return codes, in order of
 DECL|macro|USB_STOR_XFER_GOOD
 mdefine_line|#define USB_STOR_XFER_GOOD&t;0&t;/* good transfer                 */
 DECL|macro|USB_STOR_XFER_SHORT
-mdefine_line|#define USB_STOR_XFER_SHORT&t;1&t;/* transfered less than expected */
+mdefine_line|#define USB_STOR_XFER_SHORT&t;1&t;/* transferred less than expected */
 DECL|macro|USB_STOR_XFER_STALLED
 mdefine_line|#define USB_STOR_XFER_STALLED&t;2&t;/* endpoint stalled              */
 DECL|macro|USB_STOR_XFER_ERROR

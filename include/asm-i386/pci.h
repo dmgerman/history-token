@@ -292,5 +292,7 @@ suffix:semicolon
 macro_line|#endif /* __KERNEL__ */
 multiline_comment|/* implement the pci_ DMA API in terms of the generic device dma_ one */
 macro_line|#include &lt;asm-generic/pci-dma-compat.h&gt;
+multiline_comment|/* generic pci stuff */
+macro_line|#include &lt;asm-generic/pci.h&gt;
 macro_line|#endif /* __i386_PCI_H */
 eof

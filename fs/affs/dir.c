@@ -174,11 +174,6 @@ suffix:semicolon
 r_int
 id|res
 suffix:semicolon
-id|lock_kernel
-c_func
-(paren
-)paren
-suffix:semicolon
 id|pr_debug
 c_func
 (paren
@@ -784,11 +779,6 @@ id|affs_unlock_dir
 c_func
 (paren
 id|inode
-)paren
-suffix:semicolon
-id|unlock_kernel
-c_func
-(paren
 )paren
 suffix:semicolon
 id|pr_debug

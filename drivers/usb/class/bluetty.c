@@ -98,7 +98,7 @@ id|tty_struct
 op_star
 id|tty
 suffix:semicolon
-multiline_comment|/* the coresponding tty for this port */
+multiline_comment|/* the corresponding tty for this port */
 DECL|member|minor
 r_int
 r_char
@@ -5352,7 +5352,7 @@ suffix:semicolon
 r_int
 id|result
 suffix:semicolon
-multiline_comment|/* Initalize our global data */
+multiline_comment|/* Initialize our global data */
 r_for
 c_loop
 (paren
