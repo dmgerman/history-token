@@ -17,6 +17,7 @@ id|ACPI_MODULE_NAME
 (paren
 l_string|&quot;acpi_bus&quot;
 )paren
+macro_line|#ifdef&t;CONFIG_X86_64
 r_extern
 r_void
 id|__init
@@ -28,6 +29,22 @@ r_int
 id|irq
 )paren
 suffix:semicolon
+macro_line|#elif&t;defined(CONFIG_X86)
+r_extern
+r_void
+id|__init
+id|acpi_pic_sci_set_trigger
+c_func
+(paren
+r_int
+r_int
+id|irq
+comma
+id|u16
+id|trigger
+)paren
+suffix:semicolon
+macro_line|#endif
 DECL|variable|acpi_fadt
 id|FADT_DESCRIPTOR
 id|acpi_fadt
@@ -2128,7 +2145,7 @@ r_goto
 id|error1
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_X86
+macro_line|#ifdef CONFIG_X86_64
 multiline_comment|/* Ensure the SCI is set to level-triggered, active-low */
 r_if
 c_cond
@@ -2148,6 +2165,40 @@ c_func
 id|acpi_fadt.sci_int
 )paren
 suffix:semicolon
+macro_line|#elif defined(CONFIG_X86)
+r_if
+c_cond
+(paren
+op_logical_neg
+id|acpi_ioapic
+)paren
+(brace
+r_extern
+id|acpi_interrupt_flags
+id|acpi_sci_flags
+suffix:semicolon
+multiline_comment|/* Set PIC-mode SCI trigger type */
+id|acpi_pic_sci_set_trigger
+c_func
+(paren
+id|acpi_fadt.sci_int
+comma
+id|acpi_sci_flags.trigger
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
+r_extern
+r_int
+id|acpi_sci_override_gsi
+suffix:semicolon
+multiline_comment|/*&n;&t;&t; * now that acpi_fadt is initialized,&n;&t;&t; * update it with result from INT_SRC_OVR parsing&n;&t;&t; */
+id|acpi_fadt.sci_int
+op_assign
+id|acpi_sci_override_gsi
+suffix:semicolon
+)brace
 macro_line|#endif
 id|status
 op_assign
