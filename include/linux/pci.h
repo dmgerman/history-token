@@ -832,25 +832,25 @@ suffix:semicolon
 multiline_comment|/* directory entry in /proc/bus/pci */
 DECL|member|number
 r_int
-r_char
+r_int
 id|number
 suffix:semicolon
 multiline_comment|/* bus number */
 DECL|member|primary
 r_int
-r_char
+r_int
 id|primary
 suffix:semicolon
 multiline_comment|/* number of primary bridge */
 DECL|member|secondary
 r_int
-r_char
+r_int
 id|secondary
 suffix:semicolon
 multiline_comment|/* number of secondary bridge */
 DECL|member|subordinate
 r_int
-r_char
+r_int
 id|subordinate
 suffix:semicolon
 multiline_comment|/* max number of subordinate buses */
