@@ -489,9 +489,9 @@ l_string|&quot;Shuttle&quot;
 comma
 l_string|&quot;eUSCSI Bridge&quot;
 comma
-id|US_SC_SCSI
+id|US_SC_DEVICE
 comma
-id|US_PR_BULK
+id|US_PR_DEVICE
 comma
 id|usb_stor_euscsi_init
 comma
