@@ -570,13 +570,14 @@ r_void
 suffix:semicolon
 multiline_comment|/* Detachable devices (&quot;pocket adaptors&quot;) */
 r_extern
-r_int
-id|de620_probe
-c_func
-(paren
 r_struct
 id|net_device
 op_star
+id|de620_probe
+c_func
+(paren
+r_int
+id|unit
 )paren
 suffix:semicolon
 multiline_comment|/* Fibre Channel adapters */
@@ -1198,7 +1199,7 @@ suffix:semicolon
 DECL|variable|__initdata
 r_static
 r_struct
-id|devprobe
+id|devprobe2
 id|parport_probes
 (braket
 )braket
@@ -1505,16 +1506,6 @@ id|isa_probes
 )paren
 op_eq
 l_int|0
-op_logical_or
-id|probe_list
-c_func
-(paren
-id|dev
-comma
-id|parport_probes
-)paren
-op_eq
-l_int|0
 )paren
 id|err
 op_assign
@@ -1571,9 +1562,18 @@ l_int|1
 )paren
 r_return
 suffix:semicolon
-r_return
+id|probe_list2
+c_func
+(paren
+id|unit
+comma
+id|parport_probes
+comma
+id|base_addr
+op_eq
+l_int|0
+)paren
 suffix:semicolon
-multiline_comment|/* nothing yet */
 )brace
 macro_line|#ifdef CONFIG_TR
 multiline_comment|/* Token-ring device probe */
