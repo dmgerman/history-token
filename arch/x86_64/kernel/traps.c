@@ -1600,12 +1600,6 @@ op_amp
 id|die_lock
 )paren
 suffix:semicolon
-id|local_irq_enable
-c_func
-(paren
-)paren
-suffix:semicolon
-multiline_comment|/* make sure back scroll still works */
 r_if
 c_cond
 (paren
