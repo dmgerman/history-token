@@ -6992,6 +6992,11 @@ id|ctx-&gt;mrec-&gt;attrs_offset
 )paren
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t;&t; * This needs resetting due to ntfs_external_attr_find() which&n;&t;&t; * can leave it set despite having zeroed ctx-&gt;base_ntfs_ino.&n;&t;&t; */
+id|ctx-&gt;al_entry
+op_assign
+l_int|NULL
+suffix:semicolon
 r_return
 suffix:semicolon
 )brace
