@@ -1794,6 +1794,13 @@ id|read
 r_int
 id|status
 suffix:semicolon
+r_struct
+id|file
+op_star
+id|filp
+op_assign
+l_int|NULL
+suffix:semicolon
 multiline_comment|/* no need to check permission - this will be done in nfsd_read() */
 r_if
 c_cond
@@ -1828,6 +1835,9 @@ comma
 id|CHECK_FH
 op_or
 id|RD_STATE
+comma
+op_amp
+id|filp
 )paren
 )paren
 )paren
@@ -1860,6 +1870,10 @@ suffix:semicolon
 id|read-&gt;rd_fhp
 op_assign
 id|current_fh
+suffix:semicolon
+id|read-&gt;rd_filp
+op_assign
+id|filp
 suffix:semicolon
 r_return
 id|status
@@ -2311,6 +2325,8 @@ comma
 id|CHECK_FH
 op_or
 id|WR_STATE
+comma
+l_int|NULL
 )paren
 )paren
 )paren
@@ -2428,6 +2444,13 @@ op_assign
 op_amp
 id|write-&gt;wr_stateid
 suffix:semicolon
+r_struct
+id|file
+op_star
+id|filp
+op_assign
+l_int|NULL
+suffix:semicolon
 id|u32
 op_star
 id|p
@@ -2469,6 +2492,9 @@ comma
 id|CHECK_FH
 op_or
 id|WR_STATE
+comma
+op_amp
+id|filp
 )paren
 )paren
 )paren
@@ -2524,6 +2550,8 @@ c_func
 id|rqstp
 comma
 id|current_fh
+comma
+id|filp
 comma
 id|write-&gt;wr_offset
 comma

@@ -430,6 +430,10 @@ r_struct
 id|svc_fh
 op_star
 comma
+r_struct
+id|file
+op_star
+comma
 id|loff_t
 comma
 r_struct
@@ -453,6 +457,10 @@ op_star
 comma
 r_struct
 id|svc_fh
+op_star
+comma
+r_struct
+id|file
 op_star
 comma
 id|loff_t

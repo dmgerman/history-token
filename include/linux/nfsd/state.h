@@ -658,6 +658,12 @@ id|stateid
 comma
 r_int
 id|flags
+comma
+r_struct
+id|file
+op_star
+op_star
+id|filp
 )paren
 suffix:semicolon
 r_extern

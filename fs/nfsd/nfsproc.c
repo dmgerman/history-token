@@ -454,6 +454,8 @@ op_amp
 id|argp-&gt;fh
 )paren
 comma
+l_int|NULL
+comma
 id|argp-&gt;offset
 comma
 id|argp-&gt;vec
@@ -532,6 +534,8 @@ comma
 op_amp
 id|argp-&gt;fh
 )paren
+comma
+l_int|NULL
 comma
 id|argp-&gt;offset
 comma
