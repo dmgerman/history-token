@@ -3429,7 +3429,7 @@ c_func
 )paren
 suffix:semicolon
 )brace
-id|__sti
+id|local_irq_enable
 c_func
 (paren
 )paren

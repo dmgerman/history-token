@@ -821,7 +821,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|__sti
+id|local_irq_enable
 c_func
 (paren
 )paren
@@ -965,7 +965,7 @@ c_func
 l_string|&quot;Entering UltraSMPenguin Mode...&bslash;n&quot;
 )paren
 suffix:semicolon
-id|__sti
+id|local_irq_enable
 c_func
 (paren
 )paren
@@ -4994,7 +4994,7 @@ op_ne
 l_int|0UL
 )paren
 (brace
-id|__save_and_cli
+id|local_irq_save
 c_func
 (paren
 id|flags
@@ -5172,7 +5172,7 @@ l_string|&quot;g5&quot;
 )paren
 suffix:semicolon
 )brace
-id|__restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags

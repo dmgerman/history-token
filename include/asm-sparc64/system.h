@@ -67,41 +67,33 @@ mdefine_line|#define ARCH_SUN4 0
 macro_line|#endif
 DECL|macro|setipl
 mdefine_line|#define setipl(__new_ipl) &bslash;&n;&t;__asm__ __volatile__(&quot;wrpr&t;%0, %%pil&quot;  : : &quot;r&quot; (__new_ipl) : &quot;memory&quot;)
-DECL|macro|__cli
-mdefine_line|#define __cli() &bslash;&n;&t;__asm__ __volatile__(&quot;wrpr&t;15, %%pil&quot; : : : &quot;memory&quot;)
-DECL|macro|__sti
-mdefine_line|#define __sti() &bslash;&n;&t;__asm__ __volatile__(&quot;wrpr&t;0, %%pil&quot; : : : &quot;memory&quot;)
+DECL|macro|local_irq_disable
+mdefine_line|#define local_irq_disable() &bslash;&n;&t;__asm__ __volatile__(&quot;wrpr&t;15, %%pil&quot; : : : &quot;memory&quot;)
+DECL|macro|local_irq_enable
+mdefine_line|#define local_irq_enable() &bslash;&n;&t;__asm__ __volatile__(&quot;wrpr&t;0, %%pil&quot; : : : &quot;memory&quot;)
 DECL|macro|getipl
 mdefine_line|#define getipl() &bslash;&n;({ unsigned long retval; __asm__ __volatile__(&quot;rdpr&t;%%pil, %0&quot; : &quot;=r&quot; (retval)); retval; })
 DECL|macro|swap_pil
 mdefine_line|#define swap_pil(__new_pil) &bslash;&n;({&t;unsigned long retval; &bslash;&n;&t;__asm__ __volatile__(&quot;rdpr&t;%%pil, %0&bslash;n&bslash;t&quot; &bslash;&n;&t;&t;&t;     &quot;wrpr&t;%1, %%pil&quot; &bslash;&n;&t;&t;&t;     : &quot;=&amp;r&quot; (retval) &bslash;&n;&t;&t;&t;     : &quot;r&quot; (__new_pil) &bslash;&n;&t;&t;&t;     : &quot;memory&quot;); &bslash;&n;&t;retval; &bslash;&n;})
 DECL|macro|read_pil_and_cli
 mdefine_line|#define read_pil_and_cli() &bslash;&n;({&t;unsigned long retval; &bslash;&n;&t;__asm__ __volatile__(&quot;rdpr&t;%%pil, %0&bslash;n&bslash;t&quot; &bslash;&n;&t;&t;&t;     &quot;wrpr&t;15, %%pil&quot; &bslash;&n;&t;&t;&t;     : &quot;=r&quot; (retval) &bslash;&n;&t;&t;&t;     : : &quot;memory&quot;); &bslash;&n;&t;retval; &bslash;&n;})
-DECL|macro|__save_flags
-mdefine_line|#define __save_flags(flags)&t;&t;((flags) = getipl())
-DECL|macro|__save_and_cli
-mdefine_line|#define __save_and_cli(flags)&t;&t;((flags) = read_pil_and_cli())
-DECL|macro|__restore_flags
-mdefine_line|#define __restore_flags(flags)&t;&t;setipl((flags))
-DECL|macro|local_irq_disable
-mdefine_line|#define local_irq_disable()&t;&t;__cli()
-DECL|macro|local_irq_enable
-mdefine_line|#define local_irq_enable()&t;&t;__sti()
+DECL|macro|local_save_flags
+mdefine_line|#define local_save_flags(flags)&t;&t;((flags) = getipl())
 DECL|macro|local_irq_save
-mdefine_line|#define local_irq_save(flags)&t;&t;__save_and_cli(flags)
+mdefine_line|#define local_irq_save(flags)&t;&t;((flags) = read_pil_and_cli())
 DECL|macro|local_irq_restore
-mdefine_line|#define local_irq_restore(flags)&t;__restore_flags(flags)
+mdefine_line|#define local_irq_restore(flags)&t;&t;setipl((flags))
 macro_line|#ifndef CONFIG_SMP
 DECL|macro|cli
-mdefine_line|#define cli() __cli()
+mdefine_line|#define cli() local_irq_disable()
 DECL|macro|sti
-mdefine_line|#define sti() __sti()
+mdefine_line|#define sti() local_irq_enable()
 DECL|macro|save_flags
-mdefine_line|#define save_flags(x) __save_flags(x)
+mdefine_line|#define save_flags(x) local_save_flags(x)
 DECL|macro|restore_flags
-mdefine_line|#define restore_flags(x) __restore_flags(x)
+mdefine_line|#define restore_flags(x) local_irq_restore(x)
 DECL|macro|save_and_cli
-mdefine_line|#define save_and_cli(x) __save_and_cli(x)
+mdefine_line|#define save_and_cli(x) local_irq_save(x)
 macro_line|#else
 macro_line|#ifndef __ASSEMBLY__
 r_extern
@@ -224,7 +216,7 @@ mdefine_line|#define finish_arch_schedule(prev)&t;task_unlock(prev)
 DECL|macro|prepare_arch_switch
 mdefine_line|#define prepare_arch_switch(rq)&t;&t;&bslash;&n;do {&t;spin_unlock(&amp;(rq)-&gt;lock);&t;&bslash;&n;&t;flushw_all();&t;&t;&t;&bslash;&n;} while (0)
 DECL|macro|finish_arch_switch
-mdefine_line|#define finish_arch_switch(rq)&t;&t;__sti()
+mdefine_line|#define finish_arch_switch(rq)&t;&t;local_irq_enable()
 macro_line|#ifndef CONFIG_DEBUG_SPINLOCK
 DECL|macro|CHECK_LOCKS
 mdefine_line|#define CHECK_LOCKS(PREV)&t;do { } while(0)

@@ -10142,8 +10142,10 @@ id|Disk
 op_star
 id|disk
 comma
-id|kdev_t
-id|dev
+r_struct
+id|block_device
+op_star
+id|bdev
 comma
 r_int
 id|geom
@@ -10194,7 +10196,7 @@ op_assign
 id|scsi_bios_ptable
 c_func
 (paren
-id|dev
+id|bdev
 )paren
 suffix:semicolon
 r_if

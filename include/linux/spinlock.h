@@ -2,6 +2,7 @@ macro_line|#ifndef __LINUX_SPINLOCK_H
 DECL|macro|__LINUX_SPINLOCK_H
 mdefine_line|#define __LINUX_SPINLOCK_H
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/preempt.h&gt;
 macro_line|#include &lt;linux/linkage.h&gt;
 macro_line|#include &lt;linux/compiler.h&gt;
 macro_line|#include &lt;linux/thread_info.h&gt;
@@ -141,24 +142,6 @@ DECL|macro|_raw_write_unlock
 mdefine_line|#define _raw_write_unlock(lock)&t;do { } while(0)
 macro_line|#endif /* !SMP */
 macro_line|#ifdef CONFIG_PREEMPT
-id|asmlinkage
-r_void
-id|preempt_schedule
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-DECL|macro|preempt_get_count
-mdefine_line|#define preempt_get_count() (current_thread_info()-&gt;preempt_count)
-DECL|macro|preempt_disable
-mdefine_line|#define preempt_disable() &bslash;&n;do { &bslash;&n;&t;++current_thread_info()-&gt;preempt_count; &bslash;&n;&t;barrier(); &bslash;&n;} while (0)
-DECL|macro|preempt_enable_no_resched
-mdefine_line|#define preempt_enable_no_resched() &bslash;&n;do { &bslash;&n;&t;--current_thread_info()-&gt;preempt_count; &bslash;&n;&t;barrier(); &bslash;&n;} while (0)
-DECL|macro|preempt_enable
-mdefine_line|#define preempt_enable() &bslash;&n;do { &bslash;&n;&t;--current_thread_info()-&gt;preempt_count; &bslash;&n;&t;barrier(); &bslash;&n;&t;if (unlikely(test_thread_flag(TIF_NEED_RESCHED))) &bslash;&n;&t;&t;preempt_schedule(); &bslash;&n;} while (0)
-DECL|macro|preempt_check_resched
-mdefine_line|#define preempt_check_resched() &bslash;&n;do { &bslash;&n;&t;if (unlikely(test_thread_flag(TIF_NEED_RESCHED))) &bslash;&n;&t;&t;preempt_schedule(); &bslash;&n;} while (0)
 DECL|macro|spin_lock
 mdefine_line|#define spin_lock(lock)&t;&bslash;&n;do { &bslash;&n;&t;preempt_disable(); &bslash;&n;&t;_raw_spin_lock(lock); &bslash;&n;} while(0)
 DECL|macro|spin_trylock
@@ -178,16 +161,6 @@ mdefine_line|#define write_unlock(lock)&t;({_raw_write_unlock(lock); preempt_ena
 DECL|macro|write_trylock
 mdefine_line|#define write_trylock(lock)&t;({preempt_disable();_raw_write_trylock(lock) ? &bslash;&n;&t;&t;&t;&t;1 : ({preempt_enable(); 0;});})
 macro_line|#else
-DECL|macro|preempt_get_count
-mdefine_line|#define preempt_get_count()&t;&t;(0)
-DECL|macro|preempt_disable
-mdefine_line|#define preempt_disable()&t;&t;do { } while (0)
-DECL|macro|preempt_enable_no_resched
-mdefine_line|#define preempt_enable_no_resched()&t;do {} while(0)
-DECL|macro|preempt_enable
-mdefine_line|#define preempt_enable()&t;&t;do { } while (0)
-DECL|macro|preempt_check_resched
-mdefine_line|#define preempt_check_resched()&t;&t;do { } while (0)
 DECL|macro|spin_lock
 mdefine_line|#define spin_lock(lock)&t;&t;&t;_raw_spin_lock(lock)
 DECL|macro|spin_trylock

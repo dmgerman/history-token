@@ -1,11 +1,5 @@
 multiline_comment|/*&n; *  fs/partitions/amiga.c&n; *&n; *  Code extracted from drivers/block/genhd.c&n; *&n; *  Copyright (C) 1991-1998  Linus Torvalds&n; *  Re-organised Feb 1998 Russell King&n; */
-macro_line|#include &lt;linux/fs.h&gt;
-macro_line|#include &lt;linux/genhd.h&gt;
-macro_line|#include &lt;linux/kernel.h&gt;
-macro_line|#include &lt;linux/major.h&gt;
-macro_line|#include &lt;linux/string.h&gt;
-macro_line|#include &lt;linux/blk.h&gt;
-macro_line|#include &lt;asm/byteorder.h&gt;
+macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/affs_hardblocks.h&gt;
 macro_line|#include &quot;check.h&quot;
 macro_line|#include &quot;amiga.h&quot;
@@ -55,21 +49,14 @@ id|amiga_partition
 c_func
 (paren
 r_struct
-id|gendisk
+id|parsed_partitions
 op_star
-id|hd
+id|state
 comma
 r_struct
 id|block_device
 op_star
 id|bdev
-comma
-r_int
-r_int
-id|first_sector
-comma
-r_int
-id|first_part_minor
 )paren
 (brace
 id|Sector
@@ -102,6 +89,11 @@ comma
 id|res
 op_assign
 l_int|0
+suffix:semicolon
+r_int
+id|slot
+op_assign
+l_int|1
 suffix:semicolon
 r_for
 c_loop
@@ -514,20 +506,18 @@ l_int|5
 )braket
 )paren
 suffix:semicolon
-id|add_gd_partition
+id|put_partition
 c_func
 (paren
-id|hd
+id|state
 comma
-id|first_part_minor
+id|slot
+op_increment
 comma
 id|start_sect
 comma
 id|nr_sects
 )paren
-suffix:semicolon
-id|first_part_minor
-op_increment
 suffix:semicolon
 id|res
 op_assign

@@ -241,13 +241,13 @@ op_amp
 id|SA_INTERRUPT
 )paren
 )paren
-id|__sti
+id|local_irq_enable
 c_func
 (paren
 )paren
 suffix:semicolon
 r_else
-id|__cli
+id|local_irq_disable
 c_func
 (paren
 )paren
@@ -292,7 +292,7 @@ c_func
 id|irq
 )paren
 suffix:semicolon
-id|__cli
+id|local_irq_disable
 c_func
 (paren
 )paren

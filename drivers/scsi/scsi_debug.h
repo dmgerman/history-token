@@ -1,6 +1,5 @@
 macro_line|#ifndef _SCSI_DEBUG_H
 macro_line|#include &lt;linux/types.h&gt;
-macro_line|#include &lt;linux/kdev_t.h&gt;
 r_static
 r_int
 id|scsi_debug_detect
@@ -47,7 +46,9 @@ c_func
 id|Disk
 op_star
 comma
-id|kdev_t
+r_struct
+id|block_device
+op_star
 comma
 r_int
 (braket

@@ -1,11 +1,4 @@
 multiline_comment|/*&n; *  fs/partitions/sun.c&n; *&n; *  Code extracted from drivers/block/genhd.c&n; *&n; *  Copyright (C) 1991-1998  Linus Torvalds&n; *  Re-organised Feb 1998 Russell King&n; */
-macro_line|#include &lt;linux/fs.h&gt;
-macro_line|#include &lt;linux/genhd.h&gt;
-macro_line|#include &lt;linux/kernel.h&gt;
-macro_line|#include &lt;linux/major.h&gt;
-macro_line|#include &lt;linux/string.h&gt;
-macro_line|#include &lt;linux/blk.h&gt;
-macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &quot;check.h&quot;
 macro_line|#include &quot;sun.h&quot;
 DECL|function|sun_partition
@@ -14,27 +7,25 @@ id|sun_partition
 c_func
 (paren
 r_struct
-id|gendisk
+id|parsed_partitions
 op_star
-id|hd
+id|state
 comma
 r_struct
 id|block_device
 op_star
 id|bdev
-comma
-r_int
-r_int
-id|first_sector
-comma
-r_int
-id|first_part_minor
 )paren
 (brace
 r_int
 id|i
 comma
 id|csum
+suffix:semicolon
+r_int
+id|slot
+op_assign
+l_int|1
 suffix:semicolon
 r_int
 r_int
@@ -325,8 +316,6 @@ id|num_sectors
 suffix:semicolon
 id|st_sector
 op_assign
-id|first_sector
-op_plus
 id|be32_to_cpu
 c_func
 (paren
@@ -348,20 +337,18 @@ c_cond
 (paren
 id|num_sectors
 )paren
-id|add_gd_partition
+id|put_partition
 c_func
 (paren
-id|hd
+id|state
 comma
-id|first_part_minor
+id|slot
+op_increment
 comma
 id|st_sector
 comma
 id|num_sectors
 )paren
-suffix:semicolon
-id|first_part_minor
-op_increment
 suffix:semicolon
 )brace
 id|printk

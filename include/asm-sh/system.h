@@ -107,11 +107,11 @@ mdefine_line|#define set_mb(var, value) do { xchg(&amp;var, value); } while (0)
 DECL|macro|set_wmb
 mdefine_line|#define set_wmb(var, value) do { var = value; wmb(); } while (0)
 multiline_comment|/* Interrupt Control */
-DECL|function|__sti
+DECL|function|local_irq_enable
 r_static
 id|__inline__
 r_void
-id|__sti
+id|local_irq_enable
 c_func
 (paren
 r_void
@@ -153,11 +153,11 @@ l_string|&quot;memory&quot;
 )paren
 suffix:semicolon
 )brace
-DECL|function|__cli
+DECL|function|local_irq_disable
 r_static
 id|__inline__
 r_void
-id|__cli
+id|local_irq_disable
 c_func
 (paren
 r_void
@@ -186,14 +186,14 @@ l_string|&quot;memory&quot;
 )paren
 suffix:semicolon
 )brace
-DECL|macro|__save_flags
-mdefine_line|#define __save_flags(x) &bslash;&n;&t;__asm__(&quot;stc sr, %0; and #0xf0, %0&quot; : &quot;=&amp;z&quot; (x) :/**/: &quot;memory&quot; )
-DECL|function|__save_and_cli
+DECL|macro|local_save_flags
+mdefine_line|#define local_save_flags(x) &bslash;&n;&t;__asm__(&quot;stc sr, %0; and #0xf0, %0&quot; : &quot;=&amp;z&quot; (x) :/**/: &quot;memory&quot; )
+DECL|function|local_irq_save
 r_static
 id|__inline__
 r_int
 r_int
-id|__save_and_cli
+id|local_irq_save
 c_func
 (paren
 r_void
@@ -236,11 +236,11 @@ id|flags
 suffix:semicolon
 )brace
 macro_line|#ifdef DEBUG_CLI_STI
-DECL|function|__restore_flags
+DECL|function|local_irq_restore
 r_static
 id|__inline__
 r_void
-id|__restore_flags
+id|local_irq_restore
 c_func
 (paren
 r_int
@@ -259,7 +259,7 @@ l_int|0x000000f0
 op_ne
 l_int|0x000000f0
 )paren
-id|__sti
+id|local_irq_enable
 c_func
 (paren
 )paren
@@ -270,7 +270,7 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-id|__save_flags
+id|local_save_flags
 c_func
 (paren
 id|flags
@@ -304,7 +304,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|__cli
+id|local_irq_disable
 c_func
 (paren
 )paren
@@ -313,11 +313,11 @@ suffix:semicolon
 )brace
 )brace
 macro_line|#else
-DECL|macro|__restore_flags
-mdefine_line|#define __restore_flags(x) do { &t;&t;&t;&bslash;&n;&t;if ((x &amp; 0x000000f0) != 0x000000f0)&t;&t;&bslash;&n;&t;&t;__sti();&t;&t;&t;&t;&bslash;&n;} while (0)
+DECL|macro|local_irq_restore
+mdefine_line|#define local_irq_restore(x) do { &t;&t;&t;&bslash;&n;&t;if ((x &amp; 0x000000f0) != 0x000000f0)&t;&t;&bslash;&n;&t;&t;local_irq_enable();&t;&t;&t;&t;&bslash;&n;} while (0)
 macro_line|#endif
 DECL|macro|really_restore_flags
-mdefine_line|#define really_restore_flags(x) do { &t;&t;&t;&bslash;&n;&t;if ((x &amp; 0x000000f0) != 0x000000f0)&t;&t;&bslash;&n;&t;&t;__sti();&t;&t;&t;&t;&bslash;&n;&t;else&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__cli();&t;&t;&t;&t;&bslash;&n;} while (0)
+mdefine_line|#define really_restore_flags(x) do { &t;&t;&t;&bslash;&n;&t;if ((x &amp; 0x000000f0) != 0x000000f0)&t;&t;&bslash;&n;&t;&t;local_irq_enable();&t;&t;&t;&t;&bslash;&n;&t;else&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;local_irq_disable();&t;&t;&t;&t;&bslash;&n;} while (0)
 multiline_comment|/*&n; * Jump to P2 area.&n; * When handling TLB or caches, we need to do it from P2 area.&n; */
 DECL|macro|jump_to_P2
 mdefine_line|#define jump_to_P2()&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&bslash;&n;&t;unsigned long __dummy;&t;&t;&bslash;&n;&t;__asm__ __volatile__(&t;&t;&bslash;&n;&t;&t;&quot;mov.l&t;1f, %0&bslash;n&bslash;t&quot;&t;&bslash;&n;&t;&t;&quot;or&t;%1, %0&bslash;n&bslash;t&quot;&t;&bslash;&n;&t;&t;&quot;jmp&t;@%0&bslash;n&bslash;t&quot;&t;&bslash;&n;&t;&t;&quot; nop&bslash;n&bslash;t&quot; &t;&t;&bslash;&n;&t;&t;&quot;.balign 4&bslash;n&quot;&t;&t;&bslash;&n;&t;&t;&quot;1:&t;.long 2f&bslash;n&quot;&t;&bslash;&n;&t;&t;&quot;2:&quot;&t;&t;&t;&bslash;&n;&t;&t;: &quot;=&amp;r&quot; (__dummy)&t;&bslash;&n;&t;&t;: &quot;r&quot; (0x20000000));&t;&bslash;&n;} while (0)
@@ -326,13 +326,7 @@ DECL|macro|back_to_P1
 mdefine_line|#define back_to_P1()&t;&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;unsigned long __dummy;&t;&t;&t;&t;&bslash;&n;&t;__asm__ __volatile__(&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;nop;nop;nop;nop;nop;nop;nop&bslash;n&bslash;t&quot;&t;&bslash;&n;&t;&t;&quot;mov.l&t;1f, %0&bslash;n&bslash;t&quot;&t;&t;&t;&bslash;&n;&t;&t;&quot;jmp&t;@%0&bslash;n&bslash;t&quot;&t;&t;&t;&bslash;&n;&t;&t;&quot; nop&bslash;n&bslash;t&quot;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;.balign 4&bslash;n&quot;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;1:&t;.long 2f&bslash;n&quot;&t;&t;&t;&bslash;&n;&t;&t;&quot;2:&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;: &quot;=&amp;r&quot; (__dummy));&t;&t;&t;&bslash;&n;} while (0)
 multiline_comment|/* For spinlocks etc */
 DECL|macro|local_irq_save
-mdefine_line|#define local_irq_save(x)&t;x = __save_and_cli()
-DECL|macro|local_irq_restore
-mdefine_line|#define local_irq_restore(x)&t;__restore_flags(x)
-DECL|macro|local_irq_disable
-mdefine_line|#define local_irq_disable()&t;__cli()
-DECL|macro|local_irq_enable
-mdefine_line|#define local_irq_enable()&t;__sti()
+mdefine_line|#define local_irq_save(x)&t;x = local_irq_save()
 macro_line|#ifdef CONFIG_SMP
 r_extern
 r_void
@@ -378,15 +372,15 @@ DECL|macro|restore_flags
 mdefine_line|#define restore_flags(x) __global_restore_flags(x)
 macro_line|#else
 DECL|macro|cli
-mdefine_line|#define cli() __cli()
+mdefine_line|#define cli() local_irq_disable()
 DECL|macro|sti
-mdefine_line|#define sti() __sti()
+mdefine_line|#define sti() local_irq_enable()
 DECL|macro|save_flags
-mdefine_line|#define save_flags(x) __save_flags(x)
+mdefine_line|#define save_flags(x) local_save_flags(x)
 DECL|macro|save_and_cli
-mdefine_line|#define save_and_cli(x) x = __save_and_cli()
+mdefine_line|#define save_and_cli(x) x = local_irq_save()
 DECL|macro|restore_flags
-mdefine_line|#define restore_flags(x) __restore_flags(x)
+mdefine_line|#define restore_flags(x) local_irq_restore(x)
 macro_line|#endif
 DECL|function|xchg_u32
 r_static

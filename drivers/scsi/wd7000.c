@@ -6127,8 +6127,10 @@ id|Disk
 op_star
 id|disk
 comma
-id|kdev_t
-id|dev
+r_struct
+id|block_device
+op_star
+id|bdev
 comma
 r_int
 op_star
@@ -6140,10 +6142,10 @@ c_func
 (paren
 l_string|&quot;wd7000_biosparam: dev=%s, size=%d, &quot;
 comma
-id|kdevname
+id|bdevname
 c_func
 (paren
-id|dev
+id|bdev
 )paren
 comma
 id|disk-&gt;capacity
@@ -6204,7 +6206,7 @@ id|scsicam_bios_param
 (paren
 id|disk
 comma
-id|dev
+id|bdev
 comma
 id|info
 )paren

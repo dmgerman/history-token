@@ -224,13 +224,13 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-id|__save_flags
+id|local_save_flags
 c_func
 (paren
 id|flags
 )paren
 suffix:semicolon
-id|__cli
+id|local_irq_disable
 c_func
 (paren
 )paren
@@ -278,7 +278,7 @@ comma
 id|cfg
 )paren
 suffix:semicolon
-id|__restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -1206,7 +1206,7 @@ op_amp
 id|cpu_online_map
 )paren
 suffix:semicolon
-id|__cli
+id|local_irq_disable
 c_func
 (paren
 )paren
@@ -1263,7 +1263,7 @@ id|smp_num_cpus
 op_assign
 l_int|1
 suffix:semicolon
-id|__cli
+id|local_irq_disable
 c_func
 (paren
 )paren
@@ -1273,7 +1273,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|__sti
+id|local_irq_enable
 c_func
 (paren
 )paren

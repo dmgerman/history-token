@@ -144,7 +144,7 @@ op_logical_neg
 id|hlt_counter
 )paren
 (brace
-id|__cli
+id|local_irq_disable
 c_func
 (paren
 )paren
@@ -164,7 +164,7 @@ c_func
 )paren
 suffix:semicolon
 r_else
-id|__sti
+id|local_irq_enable
 c_func
 (paren
 )paren
@@ -183,7 +183,7 @@ r_void
 r_int
 id|oldval
 suffix:semicolon
-id|__sti
+id|local_irq_enable
 c_func
 (paren
 )paren
@@ -854,7 +854,7 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-id|cli
+id|local_irq_disable
 c_func
 (paren
 )paren

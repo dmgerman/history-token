@@ -1214,7 +1214,7 @@ suffix:semicolon
 )brace
 id|end_transmit
 suffix:colon
-id|__sti
+id|local_irq_enable
 c_func
 (paren
 )paren
@@ -1284,7 +1284,7 @@ op_amp
 id|bc-&gt;hdrv
 )paren
 suffix:semicolon
-id|__cli
+id|local_irq_disable
 c_func
 (paren
 )paren

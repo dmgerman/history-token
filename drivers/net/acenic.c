@@ -12809,13 +12809,13 @@ op_member_access_from_pointer
 id|regs
 suffix:semicolon
 multiline_comment|/*&n;&t; * Don&squot;t take interrupts on this CPU will bit banging&n;&t; * the %#%#@$ I2C device&n;&t; */
-id|__save_flags
+id|local_save_flags
 c_func
 (paren
 id|flags
 )paren
 suffix:semicolon
-id|__cli
+id|local_irq_disable
 c_func
 (paren
 )paren
@@ -12844,7 +12844,7 @@ id|regs
 )paren
 )paren
 (brace
-id|__restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -12892,7 +12892,7 @@ id|regs
 )paren
 )paren
 (brace
-id|__restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -12936,7 +12936,7 @@ id|regs
 )paren
 )paren
 (brace
-id|__restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -12984,7 +12984,7 @@ id|regs
 )paren
 )paren
 (brace
-id|__restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -13264,7 +13264,7 @@ c_func
 id|regs
 )paren
 suffix:semicolon
-id|__restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags

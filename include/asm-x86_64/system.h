@@ -506,14 +506,14 @@ mdefine_line|#define set_wmb(var, value) do { var = value; wmb(); } while (0)
 DECL|macro|warn_if_not_ulong
 mdefine_line|#define warn_if_not_ulong(x) do { unsigned long foo; (void) (&amp;(x) == &amp;foo); } while (0)
 multiline_comment|/* interrupt control.. */
-DECL|macro|__save_flags
-mdefine_line|#define __save_flags(x)&t;&t;do { warn_if_not_ulong(x); __asm__ __volatile__(&quot;# save_flags &bslash;n&bslash;t pushfq ; popq %q0&quot;:&quot;=g&quot; (x): /* no input */ :&quot;memory&quot;); } while (0)
-DECL|macro|__restore_flags
-mdefine_line|#define __restore_flags(x) &t;__asm__ __volatile__(&quot;# restore_flags &bslash;n&bslash;t pushq %0 ; popfq&quot;: /* no output */ :&quot;g&quot; (x):&quot;memory&quot;, &quot;cc&quot;)
-DECL|macro|__cli
-mdefine_line|#define __cli() &t;&t;__asm__ __volatile__(&quot;cli&quot;: : :&quot;memory&quot;)
-DECL|macro|__sti
-mdefine_line|#define __sti()&t;&t;&t;__asm__ __volatile__(&quot;sti&quot;: : :&quot;memory&quot;)
+DECL|macro|local_save_flags
+mdefine_line|#define local_save_flags(x)&t;do { warn_if_not_ulong(x); __asm__ __volatile__(&quot;# save_flags &bslash;n&bslash;t pushfq ; popq %q0&quot;:&quot;=g&quot; (x): /* no input */ :&quot;memory&quot;); } while (0)
+DECL|macro|local_irq_restore
+mdefine_line|#define local_irq_restore(x) &t;__asm__ __volatile__(&quot;# restore_flags &bslash;n&bslash;t pushq %0 ; popfq&quot;: /* no output */ :&quot;g&quot; (x):&quot;memory&quot;, &quot;cc&quot;)
+DECL|macro|local_irq_disable
+mdefine_line|#define local_irq_disable() &t;__asm__ __volatile__(&quot;cli&quot;: : :&quot;memory&quot;)
+DECL|macro|local_irq_enable
+mdefine_line|#define local_irq_enable()&t;__asm__ __volatile__(&quot;sti&quot;: : :&quot;memory&quot;)
 multiline_comment|/* used in the idle loop; sti takes one instruction cycle to complete */
 DECL|macro|safe_halt
 mdefine_line|#define safe_halt()&t;&t;__asm__ __volatile__(&quot;sti; hlt&quot;: : :&quot;memory&quot;)
@@ -522,10 +522,6 @@ DECL|macro|local_irq_save
 mdefine_line|#define local_irq_save(x) &t;do { warn_if_not_ulong(x); __asm__ __volatile__(&quot;# local_irq_save &bslash;n&bslash;t pushfq ; popq %0 ; cli&quot;:&quot;=g&quot; (x): /* no input */ :&quot;memory&quot;); } while (0)
 DECL|macro|local_irq_restore
 mdefine_line|#define local_irq_restore(x)&t;__asm__ __volatile__(&quot;# local_irq_restore &bslash;n&bslash;t pushq %0 ; popfq&quot;: /* no output */ :&quot;g&quot; (x):&quot;memory&quot;)
-DECL|macro|local_irq_disable
-mdefine_line|#define local_irq_disable()&t;__cli()
-DECL|macro|local_irq_enable
-mdefine_line|#define local_irq_enable()&t;__sti()
 macro_line|#ifdef CONFIG_SMP
 r_extern
 r_void
@@ -571,13 +567,13 @@ DECL|macro|restore_flags
 mdefine_line|#define restore_flags(x) __global_restore_flags(x)
 macro_line|#else
 DECL|macro|cli
-mdefine_line|#define cli() __cli()
+mdefine_line|#define cli() local_irq_disable()
 DECL|macro|sti
-mdefine_line|#define sti() __sti()
+mdefine_line|#define sti() local_irq_enable()
 DECL|macro|save_flags
-mdefine_line|#define save_flags(x) __save_flags(x)
+mdefine_line|#define save_flags(x) local_save_flags(x)
 DECL|macro|restore_flags
-mdefine_line|#define restore_flags(x) __restore_flags(x)
+mdefine_line|#define restore_flags(x) local_irq_restore(x)
 macro_line|#endif
 multiline_comment|/* Default simics &quot;magic&quot; breakpoint */
 DECL|macro|icebp

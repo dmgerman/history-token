@@ -1,7 +1,6 @@
 macro_line|#ifndef _AHA1542_H
 multiline_comment|/* $Id: aha1542.h,v 1.1 1992/07/24 06:27:38 root Exp root $&n; *&n; * Header file for the adaptec 1542 driver for Linux&n; *&n; * $Log: aha1542.h,v $&n; * Revision 1.1  1992/07/24  06:27:38  root&n; * Initial revision&n; *&n; * Revision 1.2  1992/07/04  18:41:49  root&n; * Replaced distribution with current drivers&n; *&n; * Revision 1.3  1992/06/23  23:58:20  root&n; * Fixes.&n; *&n; * Revision 1.2  1992/05/26  22:13:23  root&n; * Changed bug that prevented DMA above first 2 mbytes.&n; *&n; * Revision 1.1  1992/05/22  21:00:29  root&n; * Initial revision&n; *&n; * Revision 1.1  1992/04/24  18:01:50  root&n; * Initial revision&n; *&n; * Revision 1.1  1992/04/02  03:23:13  drew&n; * Initial revision&n; *&n; * Revision 1.3  1992/01/27  14:46:29  tthorn&n; * *** empty log message ***&n; *&n; */
 macro_line|#include &lt;linux/types.h&gt;
-macro_line|#include &lt;linux/kdev_t.h&gt;
 multiline_comment|/* I/O Port interface 4.2 */
 multiline_comment|/* READ */
 DECL|macro|STATUS
@@ -330,7 +329,9 @@ c_func
 id|Disk
 op_star
 comma
-id|kdev_t
+r_struct
+id|block_device
+op_star
 comma
 r_int
 op_star
