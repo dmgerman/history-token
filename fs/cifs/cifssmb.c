@@ -3165,7 +3165,8 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|pSMBr-&gt;DataLength
+id|__u16
+id|data_length
 op_assign
 id|le16_to_cpu
 c_func
@@ -3176,20 +3177,20 @@ suffix:semicolon
 op_star
 id|nbytes
 op_assign
-id|pSMBr-&gt;DataLength
+id|data_length
 suffix:semicolon
 multiline_comment|/*check that DataLength would not go beyond end of SMB */
 r_if
 c_cond
 (paren
 (paren
-id|pSMBr-&gt;DataLength
+id|data_length
 OG
 id|CIFS_MAX_MSGSIZE
 )paren
 op_logical_or
 (paren
-id|pSMBr-&gt;DataLength
+id|data_length
 OG
 id|count
 )paren
@@ -3203,7 +3204,7 @@ comma
 (paren
 l_string|&quot;bad length %d for count %d&quot;
 comma
-id|pSMBr-&gt;DataLength
+id|data_length
 comma
 id|count
 )paren
@@ -3239,7 +3240,7 @@ c_func
 id|pSMBr-&gt;DataOffset
 )paren
 suffix:semicolon
-multiline_comment|/*&t;&t;&t;if(rc = copy_to_user(buf, pReadData, pSMBr-&gt;DataLength)) {&n;&t;&t;&t;&t;cERROR(1,(&quot;Faulting on read rc = %d&quot;,rc));&n;&t;&t;&t;&t;rc = -EFAULT;&n;&t;&t;&t;}*/
+multiline_comment|/*&t;&t;&t;if(rc = copy_to_user(buf, pReadData, data_length)) {&n;&t;&t;&t;&t;cERROR(1,(&quot;Faulting on read rc = %d&quot;,rc));&n;&t;&t;&t;&t;rc = -EFAULT;&n;&t;&t;&t;}*/
 multiline_comment|/* can not use copy_to_user when using page cache*/
 r_if
 c_cond
@@ -3256,7 +3257,7 @@ id|buf
 comma
 id|pReadData
 comma
-id|pSMBr-&gt;DataLength
+id|data_length
 )paren
 suffix:semicolon
 )brace
