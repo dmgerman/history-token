@@ -2,9 +2,9 @@ multiline_comment|/*&n; * arch/v850/kernel/gbus_int.c -- Midas labs GBUS interru
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/irq.h&gt;
-macro_line|#include &lt;linux/sched.h&gt;&t;/* For some unfathomable reason,&n;&t;&t;&t;&t;   request_irq/free_irq are declared here.  */
+macro_line|#include &lt;linux/interrupt.h&gt;
+macro_line|#include &lt;linux/signal.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;
-macro_line|#include &lt;asm/irq.h&gt;
 multiline_comment|/* The number of shared GINT interrupts. */
 DECL|macro|NUM_GINTS
 mdefine_line|#define NUM_GINTS   &t;4
