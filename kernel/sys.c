@@ -562,6 +562,16 @@ c_func
 (paren
 id|sys_epoll_wait
 )paren
+id|cond_syscall
+c_func
+(paren
+id|sys_pciconfig_read
+)paren
+id|cond_syscall
+c_func
+(paren
+id|sys_pciconfig_write
+)paren
 DECL|function|set_one_prio
 r_static
 r_int

@@ -326,6 +326,8 @@ comma
 r_new
 )paren
 suffix:semicolon
+macro_line|#if 0
+multiline_comment|/* THIS CAUSES HANGS! Disabled for now, do not know why */
 multiline_comment|/*&n;&t; * If ISA interrupts don&squot;t work, then fall back to routing card&n;&t; * interrupts to the PCI interrupt of the socket.&n;&t; */
 r_if
 c_cond
@@ -415,6 +417,7 @@ id|devctl
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif
 id|socket-&gt;socket.ss_entry-&gt;init
 op_assign
 id|ti_init

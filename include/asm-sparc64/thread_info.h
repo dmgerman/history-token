@@ -347,8 +347,11 @@ DECL|macro|TIF_BLKCOMMIT
 mdefine_line|#define TIF_BLKCOMMIT&t;&t;9&t;/* use ASI_BLK_COMMIT_* in copy_user_page */
 DECL|macro|TIF_POLLING_NRFLAG
 mdefine_line|#define TIF_POLLING_NRFLAG&t;10
+DECL|macro|TIF_SYSCALL_SUCCESS
+mdefine_line|#define TIF_SYSCALL_SUCCESS&t;11
+multiline_comment|/* NOTE: Thread flags &gt;= 12 should be ones we have no interest&n; *       in using in assembly, else we can&squot;t use the mask as&n; *       an immediate value in instructions such as andcc.&n; */
 DECL|macro|TIF_ABI_PENDING
-mdefine_line|#define TIF_ABI_PENDING&t;&t;11
+mdefine_line|#define TIF_ABI_PENDING&t;&t;12
 DECL|macro|_TIF_SYSCALL_TRACE
 mdefine_line|#define _TIF_SYSCALL_TRACE&t;(1&lt;&lt;TIF_SYSCALL_TRACE)
 DECL|macro|_TIF_NOTIFY_RESUME
@@ -373,6 +376,8 @@ DECL|macro|_TIF_POLLING_NRFLAG
 mdefine_line|#define _TIF_POLLING_NRFLAG&t;(1&lt;&lt;TIF_POLLING_NRFLAG)
 DECL|macro|_TIF_ABI_PENDING
 mdefine_line|#define _TIF_ABI_PENDING&t;(1&lt;&lt;TIF_ABI_PENDING)
+DECL|macro|_TIF_SYSCALL_SUCCESS
+mdefine_line|#define _TIF_SYSCALL_SUCCESS&t;(1&lt;&lt;TIF_SYSCALL_SUCCESS)
 DECL|macro|_TIF_USER_WORK_MASK
 mdefine_line|#define _TIF_USER_WORK_MASK&t;((0xff &lt;&lt; TI_FLAG_WSAVED_SHIFT) | &bslash;&n;&t;&t;&t;&t; (_TIF_NOTIFY_RESUME | _TIF_SIGPENDING | &bslash;&n;&t;&t;&t;&t;  _TIF_NEED_RESCHED | _TIF_PERFCTR))
 macro_line|#endif /* __KERNEL__ */
