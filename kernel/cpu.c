@@ -7,7 +7,6 @@ macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/unistd.h&gt;
 macro_line|#include &lt;linux/cpu.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
-macro_line|#include &lt;linux/kmod.h&gt;&t;&t;/* for hotplug_path */
 macro_line|#include &lt;linux/kthread.h&gt;
 macro_line|#include &lt;linux/stop_machine.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;

@@ -630,6 +630,15 @@ suffix:semicolon
 )brace
 macro_line|#endif /* CONFIG_KOBJECT_UEVENT */
 macro_line|#ifdef CONFIG_HOTPLUG
+DECL|variable|hotplug_path
+r_char
+id|hotplug_path
+(braket
+id|HOTPLUG_PATH_LEN
+)braket
+op_assign
+l_string|&quot;/sbin/hotplug&quot;
+suffix:semicolon
 DECL|variable|hotplug_seqnum
 id|u64
 id|hotplug_seqnum
