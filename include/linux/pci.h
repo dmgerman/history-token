@@ -697,6 +697,15 @@ r_int
 id|regs
 suffix:semicolon
 multiline_comment|/* ISAPnP: supported registers */
+multiline_comment|/* These fields are used by common fixups */
+DECL|member|transparent
+r_int
+r_int
+id|transparent
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* Transparent PCI bridge */
 DECL|member|prepare
 r_int
 (paren
@@ -752,6 +761,10 @@ DECL|macro|PCI_BRIDGE_RESOURCES
 mdefine_line|#define PCI_BRIDGE_RESOURCES 7
 DECL|macro|PCI_NUM_RESOURCES
 mdefine_line|#define PCI_NUM_RESOURCES 11
+macro_line|#ifndef PCI_BUS_NUM_RESOURCES
+DECL|macro|PCI_BUS_NUM_RESOURCES
+mdefine_line|#define PCI_BUS_NUM_RESOURCES 4
+macro_line|#endif
 DECL|macro|PCI_REGION_FLAG_MASK
 mdefine_line|#define PCI_REGION_FLAG_MASK 0x0fU&t;/* These bits of resource flags tell us the PCI region flags */
 DECL|struct|pci_bus
@@ -796,7 +809,7 @@ id|resource
 op_star
 id|resource
 (braket
-l_int|4
+id|PCI_BUS_NUM_RESOURCES
 )braket
 suffix:semicolon
 multiline_comment|/* address space routed to this bus */

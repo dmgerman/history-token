@@ -1410,6 +1410,24 @@ op_assign
 l_int|0xffffff
 suffix:semicolon
 )brace
+DECL|function|quirk_transparent_bridge
+r_static
+r_void
+id|__init
+id|quirk_transparent_bridge
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+id|dev
+)paren
+(brace
+id|dev-&gt;transparent
+op_assign
+l_int|1
+suffix:semicolon
+)brace
 multiline_comment|/*&n; *  The main table of quirks.&n; */
 DECL|variable|__initdata
 r_static
@@ -1832,6 +1850,17 @@ comma
 id|PCI_DEVICE_ID_AMD_FE_GATE_700C
 comma
 id|quirk_amd_ordering
+)brace
+comma
+multiline_comment|/*&n;&t; * i82380FB mobile docking controller: its PCI-to-PCI bridge&n;&t; * is subtractive decoding (transparent), and does indicate this&n;&t; * in the ProgIf. Unfortunately, the ProgIf value is wrong - 0x80&n;&t; * instead of 0x01.&n;&t; */
+(brace
+id|PCI_FIXUP_HEADER
+comma
+id|PCI_VENDOR_ID_INTEL
+comma
+id|PCI_DEVICE_ID_INTEL_82380FB
+comma
+id|quirk_transparent_bridge
 )brace
 comma
 (brace

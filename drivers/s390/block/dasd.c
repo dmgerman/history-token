@@ -1018,10 +1018,7 @@ comma
 id|device
 )paren
 suffix:semicolon
-id|gdp-&gt;de_arr
-(braket
-l_int|0
-)braket
+id|gdp-&gt;de
 op_assign
 id|dir
 suffix:semicolon
@@ -1139,10 +1136,7 @@ suffix:semicolon
 id|devfs_unregister
 c_func
 (paren
-id|gdp-&gt;de_arr
-(braket
-l_int|0
-)braket
+id|gdp-&gt;de
 )paren
 suffix:semicolon
 multiline_comment|/* Forget the discipline information. */

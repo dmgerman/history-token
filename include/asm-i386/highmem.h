@@ -202,7 +202,7 @@ r_int
 r_int
 id|vaddr
 suffix:semicolon
-id|preempt_disable
+id|inc_preempt_count
 c_func
 (paren
 )paren
@@ -345,7 +345,7 @@ id|FIXADDR_START
 )paren
 (brace
 singleline_comment|// FIXME
-id|preempt_enable
+id|dec_preempt_count
 c_func
 (paren
 )paren
@@ -387,7 +387,7 @@ id|vaddr
 )paren
 suffix:semicolon
 macro_line|#endif
-id|preempt_enable
+id|dec_preempt_count
 c_func
 (paren
 )paren

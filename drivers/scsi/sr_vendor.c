@@ -27,11 +27,11 @@ c_func
 (paren
 id|Scsi_CD
 op_star
-id|SCp
+id|cd
 )paren
 (brace
 macro_line|#ifndef CONFIG_BLK_DEV_SR_VENDOR
-id|SCp-&gt;vendor
+id|cd-&gt;vendor
 op_assign
 id|VENDOR_SCSI3
 suffix:semicolon
@@ -40,23 +40,23 @@ r_char
 op_star
 id|vendor
 op_assign
-id|SCp-&gt;device-&gt;vendor
+id|cd-&gt;device-&gt;vendor
 suffix:semicolon
 r_char
 op_star
 id|model
 op_assign
-id|SCp-&gt;device-&gt;model
+id|cd-&gt;device-&gt;model
 suffix:semicolon
 multiline_comment|/* default */
-id|SCp-&gt;vendor
+id|cd-&gt;vendor
 op_assign
 id|VENDOR_SCSI3
 suffix:semicolon
 r_if
 c_cond
 (paren
-id|SCp-&gt;readcd_known
+id|cd-&gt;readcd_known
 )paren
 multiline_comment|/* this is true for scsi3/mmc drives - no more checks */
 r_return
@@ -64,12 +64,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|SCp-&gt;device-&gt;type
+id|cd-&gt;device-&gt;type
 op_eq
 id|TYPE_WORM
 )paren
 (brace
-id|SCp-&gt;vendor
+id|cd-&gt;vendor
 op_assign
 id|VENDOR_WRITER
 suffix:semicolon
@@ -90,7 +90,7 @@ l_int|3
 )paren
 )paren
 (brace
-id|SCp-&gt;vendor
+id|cd-&gt;vendor
 op_assign
 id|VENDOR_NEC
 suffix:semicolon
@@ -156,7 +156,7 @@ l_int|16
 macro_line|#endif
 )paren
 multiline_comment|/* these can&squot;t handle multisession, may hang */
-id|SCp-&gt;cdi.mask
+id|cd-&gt;cdi.mask
 op_or_assign
 id|CDC_MULTI_SESSION
 suffix:semicolon
@@ -177,7 +177,7 @@ l_int|7
 )paren
 )paren
 (brace
-id|SCp-&gt;vendor
+id|cd-&gt;vendor
 op_assign
 id|VENDOR_TOSHIBA
 suffix:semicolon
@@ -190,8 +190,9 @@ r_int
 id|sr_set_blocklength
 c_func
 (paren
-r_int
-id|minor
+id|Scsi_CD
+op_star
+id|cd
 comma
 r_int
 id|blocklength
@@ -216,16 +217,6 @@ id|ccs_modesel_head
 op_star
 id|modesel
 suffix:semicolon
-id|Scsi_CD
-op_star
-id|SCp
-op_assign
-op_amp
-id|scsi_CDs
-(braket
-id|minor
-)braket
-suffix:semicolon
 r_int
 id|rc
 comma
@@ -237,7 +228,7 @@ macro_line|#ifdef CONFIG_BLK_DEV_SR_VENDOR
 r_if
 c_cond
 (paren
-id|SCp-&gt;vendor
+id|cd-&gt;vendor
 op_eq
 id|VENDOR_TOSHIBA
 )paren
@@ -286,9 +277,9 @@ macro_line|#ifdef DEBUG
 id|printk
 c_func
 (paren
-l_string|&quot;sr%d: MODE SELECT 0x%x/%d&bslash;n&quot;
+l_string|&quot;%s: MODE SELECT 0x%x/%d&bslash;n&quot;
 comma
-id|minor
+id|cd-&gt;cdi.name
 comma
 id|density
 comma
@@ -319,14 +310,14 @@ l_int|1
 )braket
 op_assign
 (paren
-id|SCp-&gt;device-&gt;scsi_level
+id|cd-&gt;device-&gt;scsi_level
 op_le
 id|SCSI_2
 )paren
 ques
 c_cond
 (paren
-id|SCp-&gt;device-&gt;lun
+id|cd-&gt;device-&gt;lun
 op_lshift
 l_int|5
 )paren
@@ -409,7 +400,7 @@ op_assign
 id|sr_do_ioctl
 c_func
 (paren
-id|minor
+id|cd
 comma
 id|cmd
 comma
@@ -430,7 +421,7 @@ l_int|NULL
 )paren
 )paren
 (brace
-id|SCp-&gt;device-&gt;sector_size
+id|cd-&gt;device-&gt;sector_size
 op_assign
 id|blocklength
 suffix:semicolon
@@ -440,9 +431,9 @@ r_else
 id|printk
 c_func
 (paren
-l_string|&quot;sr%d: switching blocklength to %d bytes failed&bslash;n&quot;
+l_string|&quot;%s: switching blocklength to %d bytes failed&bslash;n&quot;
 comma
-id|minor
+id|cd-&gt;cdi.name
 comma
 id|blocklength
 )paren
@@ -474,7 +465,7 @@ id|cdi
 (brace
 id|Scsi_CD
 op_star
-id|SCp
+id|cd
 op_assign
 id|cdi-&gt;handle
 suffix:semicolon
@@ -500,21 +491,11 @@ r_int
 id|rc
 comma
 id|no_multi
-comma
-id|minor
-suffix:semicolon
-id|minor
-op_assign
-id|minor
-c_func
-(paren
-id|cdi-&gt;dev
-)paren
 suffix:semicolon
 r_if
 c_cond
 (paren
-id|SCp-&gt;cdi.mask
+id|cd-&gt;cdi.mask
 op_amp
 id|CDC_MULTI_SESSION
 )paren
@@ -565,7 +546,7 @@ suffix:semicolon
 r_switch
 c_cond
 (paren
-id|SCp-&gt;vendor
+id|cd-&gt;vendor
 )paren
 (brace
 r_case
@@ -594,14 +575,14 @@ l_int|1
 )braket
 op_assign
 (paren
-id|SCp-&gt;device-&gt;scsi_level
+id|cd-&gt;device-&gt;scsi_level
 op_le
 id|SCSI_2
 )paren
 ques
 c_cond
 (paren
-id|SCp-&gt;device-&gt;lun
+id|cd-&gt;device-&gt;lun
 op_lshift
 l_int|5
 )paren
@@ -627,7 +608,7 @@ op_assign
 id|sr_do_ioctl
 c_func
 (paren
-id|minor
+id|cd
 comma
 id|cmd
 comma
@@ -675,10 +656,10 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;sr%d: Hmm, seems the drive &quot;
+l_string|&quot;%s: Hmm, seems the drive &quot;
 l_string|&quot;doesn&squot;t support multisession CD&squot;s&bslash;n&quot;
 comma
-id|minor
+id|cd-&gt;cdi.name
 )paren
 suffix:semicolon
 id|no_multi
@@ -777,14 +758,14 @@ l_int|1
 )braket
 op_assign
 (paren
-id|SCp-&gt;device-&gt;scsi_level
+id|cd-&gt;device-&gt;scsi_level
 op_le
 id|SCSI_2
 )paren
 ques
 c_cond
 (paren
-id|SCp-&gt;device-&gt;lun
+id|cd-&gt;device-&gt;lun
 op_lshift
 l_int|5
 )paren
@@ -810,7 +791,7 @@ op_assign
 id|sr_do_ioctl
 c_func
 (paren
-id|minor
+id|cd
 comma
 id|cmd
 comma
@@ -856,10 +837,10 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;sr%d: Hmm, seems the cdrom &quot;
+l_string|&quot;%s: Hmm, seems the cdrom &quot;
 l_string|&quot;doesn&squot;t support multisession CD&squot;s&bslash;n&quot;
 comma
-id|minor
+id|cd-&gt;cdi.name
 )paren
 suffix:semicolon
 id|no_multi
@@ -955,14 +936,14 @@ l_int|1
 )braket
 op_assign
 (paren
-id|SCp-&gt;device-&gt;scsi_level
+id|cd-&gt;device-&gt;scsi_level
 op_le
 id|SCSI_2
 )paren
 ques
 c_cond
 (paren
-id|SCp-&gt;device-&gt;lun
+id|cd-&gt;device-&gt;lun
 op_lshift
 l_int|5
 )paren
@@ -981,7 +962,7 @@ op_assign
 id|sr_do_ioctl
 c_func
 (paren
-id|minor
+id|cd
 comma
 id|cmd
 comma
@@ -1009,10 +990,10 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;sr%d: Hmm, seems the drive &quot;
+l_string|&quot;%s: Hmm, seems the drive &quot;
 l_string|&quot;doesn&squot;t support multisession CD&squot;s&bslash;n&quot;
 comma
-id|minor
+id|cd-&gt;cdi.name
 )paren
 suffix:semicolon
 id|no_multi
@@ -1090,7 +1071,7 @@ suffix:semicolon
 id|sr_set_blocklength
 c_func
 (paren
-id|minor
+id|cd
 comma
 l_int|2048
 )paren
@@ -1124,14 +1105,14 @@ l_int|1
 )braket
 op_assign
 (paren
-id|SCp-&gt;device-&gt;scsi_level
+id|cd-&gt;device-&gt;scsi_level
 op_le
 id|SCSI_2
 )paren
 ques
 c_cond
 (paren
-id|SCp-&gt;device-&gt;lun
+id|cd-&gt;device-&gt;lun
 op_lshift
 l_int|5
 )paren
@@ -1157,7 +1138,7 @@ op_assign
 id|sr_do_ioctl
 c_func
 (paren
-id|minor
+id|cd
 comma
 id|cmd
 comma
@@ -1202,9 +1183,9 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;sr%d: No finished session&bslash;n&quot;
+l_string|&quot;%s: No finished session&bslash;n&quot;
 comma
-id|minor
+id|cd-&gt;cdi.name
 )paren
 suffix:semicolon
 r_break
@@ -1224,14 +1205,14 @@ l_int|1
 )braket
 op_assign
 (paren
-id|SCp-&gt;device-&gt;scsi_level
+id|cd-&gt;device-&gt;scsi_level
 op_le
 id|SCSI_2
 )paren
 ques
 c_cond
 (paren
-id|SCp-&gt;device-&gt;lun
+id|cd-&gt;device-&gt;lun
 op_lshift
 l_int|5
 )paren
@@ -1267,7 +1248,7 @@ op_assign
 id|sr_do_ioctl
 c_func
 (paren
-id|minor
+id|cd
 comma
 id|cmd
 comma
@@ -1337,11 +1318,11 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;sr%d: unknown vendor code (%i), not initialized ?&bslash;n&quot;
+l_string|&quot;%s: unknown vendor code (%i), not initialized ?&bslash;n&quot;
 comma
-id|minor
+id|cd-&gt;cdi.name
 comma
-id|SCp-&gt;vendor
+id|cd-&gt;vendor
 )paren
 suffix:semicolon
 id|sector
@@ -1355,11 +1336,11 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-id|SCp-&gt;ms_offset
+id|cd-&gt;ms_offset
 op_assign
 id|sector
 suffix:semicolon
-id|SCp-&gt;xa_flag
+id|cd-&gt;xa_flag
 op_assign
 l_int|0
 suffix:semicolon
@@ -1379,10 +1360,10 @@ op_eq
 id|sr_is_xa
 c_func
 (paren
-id|minor
+id|cd
 )paren
 )paren
-id|SCp-&gt;xa_flag
+id|cd-&gt;xa_flag
 op_assign
 l_int|1
 suffix:semicolon
@@ -1391,13 +1372,13 @@ c_cond
 (paren
 l_int|2048
 op_ne
-id|SCp-&gt;device-&gt;sector_size
+id|cd-&gt;device-&gt;sector_size
 )paren
 (brace
 id|sr_set_blocklength
 c_func
 (paren
-id|minor
+id|cd
 comma
 l_int|2048
 )paren
@@ -1422,9 +1403,9 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;sr%d: multisession offset=%lu&bslash;n&quot;
+l_string|&quot;%s: multisession offset=%lu&bslash;n&quot;
 comma
-id|minor
+id|cd-&gt;cdi.name
 comma
 id|sector
 )paren
