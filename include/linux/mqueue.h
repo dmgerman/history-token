@@ -33,6 +33,14 @@ r_int
 id|mq_curmsgs
 suffix:semicolon
 multiline_comment|/* number of messages currently queued&t;*/
+DECL|member|__reserved
+r_int
+id|__reserved
+(braket
+l_int|4
+)braket
+suffix:semicolon
+multiline_comment|/* ignored for input, zeroed for output */
 )brace
 suffix:semicolon
 DECL|macro|NOTIFY_NONE
