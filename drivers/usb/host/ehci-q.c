@@ -507,6 +507,7 @@ id|pipe
 )paren
 )paren
 (brace
+macro_line|#ifdef DEBUG
 r_struct
 id|usb_device
 op_star
@@ -532,6 +533,7 @@ id|pipe
 )paren
 )paren
 suffix:semicolon
+macro_line|#endif /* DEBUG */
 id|usb_hub_tt_clear_buffer
 (paren
 id|urb-&gt;dev
