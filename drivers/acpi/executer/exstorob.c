@@ -88,17 +88,12 @@ id|AE_NO_MEMORY
 )paren
 suffix:semicolon
 )brace
-id|target_desc-&gt;common.flags
-op_and_assign
-op_complement
-id|AOPOBJ_STATIC_POINTER
-suffix:semicolon
 id|target_desc-&gt;buffer.length
 op_assign
 id|length
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * Buffer is a static allocation,&n;&t; * only place what will fit in the buffer.&n;&t; */
+multiline_comment|/* Copy source buffer to target buffer */
 r_if
 c_cond
 (paren
@@ -126,10 +121,15 @@ comma
 id|length
 )paren
 suffix:semicolon
+multiline_comment|/* Set the new length of the target */
+id|target_desc-&gt;buffer.length
+op_assign
+id|length
+suffix:semicolon
 )brace
 r_else
 (brace
-multiline_comment|/*&n;&t;&t; * Truncate the source, copy only what will fit&n;&t;&t; */
+multiline_comment|/* Truncate the source, copy only what will fit */
 id|ACPI_MEMCPY
 (paren
 id|target_desc-&gt;buffer.pointer
@@ -144,7 +144,7 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_INFO
 comma
-l_string|&quot;Truncating src buffer from %X to %X&bslash;n&quot;
+l_string|&quot;Truncating source buffer from %X to %X&bslash;n&quot;
 comma
 id|length
 comma
@@ -157,6 +157,11 @@ multiline_comment|/* Copy flags */
 id|target_desc-&gt;buffer.flags
 op_assign
 id|source_desc-&gt;buffer.flags
+suffix:semicolon
+id|target_desc-&gt;common.flags
+op_and_assign
+op_complement
+id|AOPOBJ_STATIC_POINTER
 suffix:semicolon
 id|return_ACPI_STATUS
 (paren

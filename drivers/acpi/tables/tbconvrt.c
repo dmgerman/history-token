@@ -302,7 +302,7 @@ id|new_gas_struct-&gt;register_bit_offset
 op_assign
 l_int|0
 suffix:semicolon
-id|new_gas_struct-&gt;reserved
+id|new_gas_struct-&gt;access_width
 op_assign
 l_int|0
 suffix:semicolon
@@ -1145,7 +1145,7 @@ id|AE_OK
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_tb_convert_table_facs&n; *&n; * PARAMETERS:  table_info      - Info for currently installad FACS&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Convert ACPI 1.0 and ACPI 2.0 FACS to a common internal&n; *              table format.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_tb_convert_table_facs&n; *&n; * PARAMETERS:  table_info      - Info for currently installed FACS&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Convert ACPI 1.0 and ACPI 2.0 FACS to a common internal&n; *              table format.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_tb_build_common_facs
 id|acpi_tb_build_common_facs
