@@ -124,6 +124,7 @@ comma
 id|length
 )paren
 suffix:semicolon
+macro_line|#if ACPI_STRICT_CONFORMANCE
 multiline_comment|/*&n;&t;&t; * If the original source was a string, we must truncate the buffer,&n;&t;&t; * according to the ACPI spec.  Integer-to-Buffer and Buffer-to-Buffer&n;&t;&t; * copy must not truncate the original buffer.&n;&t;&t; */
 r_if
 c_cond
@@ -139,6 +140,7 @@ op_assign
 id|length
 suffix:semicolon
 )brace
+macro_line|#endif
 )brace
 r_else
 (brace
