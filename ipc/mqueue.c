@@ -515,7 +515,7 @@ id|u-&gt;mq_bytes
 op_plus
 id|mq_bytes
 template_param
-id|p-&gt;rlim
+id|p-&gt;signal-&gt;rlim
 (braket
 id|RLIMIT_MSGQUEUE
 )braket

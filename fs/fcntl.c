@@ -291,7 +291,7 @@ c_cond
 (paren
 id|orig_start
 op_ge
-id|current-&gt;rlim
+id|current-&gt;signal-&gt;rlim
 (braket
 id|RLIMIT_NOFILE
 )braket
@@ -354,7 +354,7 @@ c_cond
 (paren
 id|newfd
 op_ge
-id|current-&gt;rlim
+id|current-&gt;signal-&gt;rlim
 (braket
 id|RLIMIT_NOFILE
 )braket
@@ -605,7 +605,7 @@ c_cond
 (paren
 id|newfd
 op_ge
-id|current-&gt;rlim
+id|current-&gt;signal-&gt;rlim
 (braket
 id|RLIMIT_NOFILE
 )braket

@@ -137,7 +137,7 @@ id|do_expand
 suffix:colon
 id|limit
 op_assign
-id|current-&gt;rlim
+id|current-&gt;signal-&gt;rlim
 (braket
 id|RLIMIT_FSIZE
 )braket

@@ -460,7 +460,7 @@ id|current-&gt;mm-&gt;locked_vm
 suffix:semicolon
 id|lock_limit
 op_assign
-id|current-&gt;rlim
+id|current-&gt;signal-&gt;rlim
 (braket
 id|RLIMIT_MEMLOCK
 )braket
@@ -747,7 +747,7 @@ id|current-&gt;mm-&gt;mmap_sem
 suffix:semicolon
 id|lock_limit
 op_assign
-id|current-&gt;rlim
+id|current-&gt;signal-&gt;rlim
 (braket
 id|RLIMIT_MEMLOCK
 )braket
@@ -892,7 +892,7 @@ id|PAGE_SHIFT
 suffix:semicolon
 id|lock_limit
 op_assign
-id|current-&gt;rlim
+id|current-&gt;signal-&gt;rlim
 (braket
 id|RLIMIT_MEMLOCK
 )braket

@@ -646,7 +646,7 @@ op_amp
 id|current-&gt;user-&gt;sigpending
 )paren
 OL
-id|current-&gt;rlim
+id|current-&gt;signal-&gt;rlim
 (braket
 id|RLIMIT_SIGPENDING
 )braket
@@ -2441,7 +2441,7 @@ op_amp
 id|t-&gt;user-&gt;sigpending
 )paren
 OL
-id|t-&gt;rlim
+id|t-&gt;signal-&gt;rlim
 (braket
 id|RLIMIT_SIGPENDING
 )braket

@@ -854,6 +854,15 @@ id|cmin_flt
 comma
 id|cmaj_flt
 suffix:semicolon
+multiline_comment|/*&n;&t; * We don&squot;t bother to synchronize most readers of this at all,&n;&t; * because there is no reader checking a limit that actually needs&n;&t; * to get both rlim_cur and rlim_max atomically, and either one&n;&t; * alone is a single word that can safely be read normally.&n;&t; * getrlimit/setrlimit use task_lock(current-&gt;group_leader) to&n;&t; * protect this instead of the siglock, because they really&n;&t; * have no need to disable irqs.&n;&t; */
+DECL|member|rlim
+r_struct
+id|rlimit
+id|rlim
+(braket
+id|RLIM_NLIMITS
+)braket
+suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * Priority of a process goes from 0..MAX_PRIO-1, valid RT&n; * priority is 0..MAX_RT_PRIO-1, and SCHED_NORMAL tasks are&n; * in the range MAX_RT_PRIO..MAX_PRIO-1. Priority values&n; * are inverted: lower p-&gt;prio value means higher priority.&n; *&n; * The MAX_USER_RT_PRIO value allows the actual maximum&n; * RT priority to be separate from the value exported to&n; * user-space.  This allows kernel threads to set their&n; * priority to a value higher than any user task. Note:&n; * MAX_RT_PRIO must not be smaller than MAX_USER_RT_PRIO.&n; */
@@ -1521,15 +1530,6 @@ r_struct
 id|user_struct
 op_star
 id|user
-suffix:semicolon
-multiline_comment|/* limits */
-DECL|member|rlim
-r_struct
-id|rlimit
-id|rlim
-(braket
-id|RLIM_NLIMITS
-)braket
 suffix:semicolon
 DECL|member|used_math
 r_int

@@ -7523,13 +7523,13 @@ op_increment
 (brace
 id|rlim
 op_assign
-id|current-&gt;rlim
+id|current-&gt;signal-&gt;rlim
 op_plus
 id|i
 suffix:semicolon
 id|initrlim
 op_assign
-id|init_task.rlim
+id|init_task.signal-&gt;rlim
 op_plus
 id|i
 suffix:semicolon
@@ -11115,7 +11115,7 @@ id|rlimit
 op_star
 id|old_rlim
 op_assign
-id|current-&gt;rlim
+id|current-&gt;signal-&gt;rlim
 op_plus
 id|resource
 suffix:semicolon

@@ -1237,6 +1237,12 @@ id|cstime
 op_assign
 l_int|0
 suffix:semicolon
+r_int
+r_int
+id|rsslim
+op_assign
+l_int|0
+suffix:semicolon
 r_char
 id|tcomm
 (braket
@@ -1438,6 +1444,15 @@ id|cstime
 op_assign
 id|task-&gt;signal-&gt;cstime
 suffix:semicolon
+id|rsslim
+op_assign
+id|task-&gt;signal-&gt;rlim
+(braket
+id|RLIMIT_RSS
+)braket
+dot
+id|rlim_cur
+suffix:semicolon
 )brace
 id|read_unlock
 c_func
@@ -1594,12 +1609,7 @@ suffix:colon
 l_int|0
 comma
 multiline_comment|/* you might want to shift this left 3 */
-id|task-&gt;rlim
-(braket
-id|RLIMIT_RSS
-)braket
-dot
-id|rlim_cur
+id|rsslim
 comma
 id|mm
 ques

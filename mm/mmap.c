@@ -434,7 +434,7 @@ suffix:semicolon
 multiline_comment|/* Check against rlimit.. */
 id|rlim
 op_assign
-id|current-&gt;rlim
+id|current-&gt;signal-&gt;rlim
 (braket
 id|RLIMIT_DATA
 )braket
@@ -3289,7 +3289,7 @@ id|PAGE_SHIFT
 suffix:semicolon
 id|lock_limit
 op_assign
-id|current-&gt;rlim
+id|current-&gt;signal-&gt;rlim
 (braket
 id|RLIMIT_MEMLOCK
 )braket
@@ -3585,7 +3585,7 @@ id|PAGE_SHIFT
 op_plus
 id|len
 OG
-id|current-&gt;rlim
+id|current-&gt;signal-&gt;rlim
 (braket
 id|RLIMIT_AS
 )braket
@@ -5295,7 +5295,7 @@ id|address
 op_minus
 id|vma-&gt;vm_start
 OG
-id|current-&gt;rlim
+id|current-&gt;signal-&gt;rlim
 (braket
 id|RLIMIT_STACK
 )braket
@@ -5312,7 +5312,7 @@ op_lshift
 id|PAGE_SHIFT
 )paren
 OG
-id|current-&gt;rlim
+id|current-&gt;signal-&gt;rlim
 (braket
 id|RLIMIT_AS
 )braket
@@ -5561,7 +5561,7 @@ id|vma-&gt;vm_end
 op_minus
 id|address
 OG
-id|current-&gt;rlim
+id|current-&gt;signal-&gt;rlim
 (braket
 id|RLIMIT_STACK
 )braket
@@ -5578,7 +5578,7 @@ op_lshift
 id|PAGE_SHIFT
 )paren
 OG
-id|current-&gt;rlim
+id|current-&gt;signal-&gt;rlim
 (braket
 id|RLIMIT_AS
 )braket
@@ -7060,7 +7060,7 @@ id|PAGE_SHIFT
 suffix:semicolon
 id|lock_limit
 op_assign
-id|current-&gt;rlim
+id|current-&gt;signal-&gt;rlim
 (braket
 id|RLIMIT_MEMLOCK
 )braket
@@ -7157,7 +7157,7 @@ id|PAGE_SHIFT
 op_plus
 id|len
 OG
-id|current-&gt;rlim
+id|current-&gt;signal-&gt;rlim
 (braket
 id|RLIMIT_AS
 )braket

@@ -1556,14 +1556,14 @@ suffix:semicolon
 multiline_comment|/*&n; &t; * Accounting records are not subject to resource limits.&n; &t; */
 id|flim
 op_assign
-id|current-&gt;rlim
+id|current-&gt;signal-&gt;rlim
 (braket
 id|RLIMIT_FSIZE
 )braket
 dot
 id|rlim_cur
 suffix:semicolon
-id|current-&gt;rlim
+id|current-&gt;signal-&gt;rlim
 (braket
 id|RLIMIT_FSIZE
 )braket
@@ -1595,7 +1595,7 @@ op_amp
 id|file-&gt;f_pos
 )paren
 suffix:semicolon
-id|current-&gt;rlim
+id|current-&gt;signal-&gt;rlim
 (braket
 id|RLIMIT_FSIZE
 )braket

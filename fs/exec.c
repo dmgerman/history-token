@@ -1512,7 +1512,7 @@ suffix:semicolon
 multiline_comment|/* Limit stack size to 1GB */
 id|stack_base
 op_assign
-id|current-&gt;rlim
+id|current-&gt;signal-&gt;rlim
 (braket
 id|RLIMIT_STACK
 )braket
@@ -5957,7 +5957,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|current-&gt;rlim
+id|current-&gt;signal-&gt;rlim
 (braket
 id|RLIMIT_CORE
 )braket

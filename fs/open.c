@@ -3801,7 +3801,7 @@ c_cond
 (paren
 id|fd
 op_ge
-id|current-&gt;rlim
+id|current-&gt;signal-&gt;rlim
 (braket
 id|RLIMIT_NOFILE
 )braket
