@@ -7,14 +7,6 @@ DECL|struct|multipath_info
 r_struct
 id|multipath_info
 (brace
-DECL|member|number
-r_int
-id|number
-suffix:semicolon
-DECL|member|raid_disk
-r_int
-id|raid_disk
-suffix:semicolon
 DECL|member|bdev
 r_struct
 id|block_device

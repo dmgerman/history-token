@@ -7578,14 +7578,6 @@ id|rdev-&gt;bdev
 )paren
 )paren
 suffix:semicolon
-id|disk-&gt;number
-op_assign
-id|rdev-&gt;desc_nr
-suffix:semicolon
-id|disk-&gt;raid_disk
-op_assign
-id|raid_disk
-suffix:semicolon
 id|disk-&gt;bdev
 op_assign
 id|rdev-&gt;bdev
@@ -7654,14 +7646,6 @@ comma
 id|raid_disk
 )paren
 suffix:semicolon
-id|disk-&gt;number
-op_assign
-id|rdev-&gt;desc_nr
-suffix:semicolon
-id|disk-&gt;raid_disk
-op_assign
-id|raid_disk
-suffix:semicolon
 id|disk-&gt;bdev
 op_assign
 id|rdev-&gt;bdev
@@ -7693,14 +7677,6 @@ c_func
 id|rdev-&gt;bdev
 )paren
 )paren
-suffix:semicolon
-id|disk-&gt;number
-op_assign
-id|rdev-&gt;desc_nr
-suffix:semicolon
-id|disk-&gt;raid_disk
-op_assign
-id|raid_disk
 suffix:semicolon
 id|disk-&gt;bdev
 op_assign
@@ -7752,14 +7728,6 @@ op_logical_neg
 id|disk-&gt;used_slot
 )paren
 (brace
-id|disk-&gt;number
-op_assign
-id|i
-suffix:semicolon
-id|disk-&gt;raid_disk
-op_assign
-id|i
-suffix:semicolon
 id|disk-&gt;bdev
 op_assign
 l_int|NULL
@@ -8707,17 +8675,13 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot; disk %d, s:%d, o:%d, n:%d rd:%d us:%d dev:%s&bslash;n&quot;
+l_string|&quot; disk %d, s:%d, o:%d, us:%d dev:%s&bslash;n&quot;
 comma
 id|i
 comma
 id|tmp-&gt;spare
 comma
 id|tmp-&gt;operational
-comma
-id|tmp-&gt;number
-comma
-id|tmp-&gt;raid_disk
 comma
 id|tmp-&gt;used_slot
 comma
@@ -8957,22 +8921,6 @@ id|sdisk
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * (careful, &squot;failed&squot; and &squot;spare&squot; are switched from now on)&n;&t; *&n;&t; * we want to preserve linear numbering and we want to&n;&t; * give the proper raid_disk number to the now activated&n;&t; * disk. (this means we switch back these values)&n;&t; */
-id|xchg_values
-c_func
-(paren
-id|sdisk-&gt;raid_disk
-comma
-id|fdisk-&gt;raid_disk
-)paren
-suffix:semicolon
-id|xchg_values
-c_func
-(paren
-id|sdisk-&gt;number
-comma
-id|fdisk-&gt;number
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -9397,14 +9345,6 @@ op_logical_neg
 id|p-&gt;used_slot
 )paren
 (brace
-id|p-&gt;number
-op_assign
-id|rdev-&gt;desc_nr
-suffix:semicolon
-id|p-&gt;raid_disk
-op_assign
-id|rdev-&gt;raid_disk
-suffix:semicolon
 multiline_comment|/* it will be held open by rdev */
 id|p-&gt;bdev
 op_assign

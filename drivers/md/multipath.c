@@ -1017,24 +1017,16 @@ c_cond
 (paren
 id|tmp-&gt;operational
 op_logical_or
-id|tmp-&gt;number
-op_logical_or
-id|tmp-&gt;raid_disk
-op_logical_or
 id|tmp-&gt;used_slot
 )paren
 id|printk
 c_func
 (paren
-l_string|&quot; disk%d, o:%d, n:%d rd:%d us:%d dev:%s&bslash;n&quot;
+l_string|&quot; disk%d, o:%d, us:%d dev:%s&bslash;n&quot;
 comma
 id|i
 comma
 id|tmp-&gt;operational
-comma
-id|tmp-&gt;number
-comma
-id|tmp-&gt;raid_disk
 comma
 id|tmp-&gt;used_slot
 comma
@@ -1104,14 +1096,6 @@ op_logical_neg
 id|p-&gt;used_slot
 )paren
 (brace
-id|p-&gt;number
-op_assign
-id|rdev-&gt;desc_nr
-suffix:semicolon
-id|p-&gt;raid_disk
-op_assign
-id|rdev-&gt;raid_disk
-suffix:semicolon
 id|p-&gt;bdev
 op_assign
 id|rdev-&gt;bdev
@@ -1687,14 +1671,6 @@ op_plus
 id|disk_idx
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; * Mark all disks as active to start with, there are no&n;&t;&t; * spares.  multipath_read_balance deals with choose&n;&t;&t; * the &quot;best&quot; operational device.&n;&t;&t; */
-id|disk-&gt;number
-op_assign
-id|rdev-&gt;desc_nr
-suffix:semicolon
-id|disk-&gt;raid_disk
-op_assign
-id|disk_idx
-suffix:semicolon
 id|disk-&gt;bdev
 op_assign
 id|rdev-&gt;bdev
