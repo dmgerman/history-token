@@ -244,14 +244,6 @@ op_minus
 id|ENOMEM
 suffix:semicolon
 )brace
-id|cifs_sb-&gt;local_nls
-op_assign
-id|load_nls_default
-c_func
-(paren
-)paren
-suffix:semicolon
-multiline_comment|/* needed for ASCII cp to Unicode converts */
 id|rc
 op_assign
 id|cifs_mount

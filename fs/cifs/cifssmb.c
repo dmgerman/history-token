@@ -181,6 +181,12 @@ id|nls_codepage
 suffix:semicolon
 )brace
 )brace
+id|unload_nls
+c_func
+(paren
+id|nls_codepage
+)paren
+suffix:semicolon
 )brace
 )brace
 r_if
