@@ -4773,7 +4773,7 @@ id|dmabuf-&gt;trigger
 op_assign
 id|PCM_ENABLE_OUTPUT
 suffix:semicolon
-id|i810_update_lvi
+id|__i810_update_lvi
 c_func
 (paren
 id|state
