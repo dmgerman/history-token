@@ -4580,6 +4580,11 @@ id|EACCES
 r_goto
 id|out
 suffix:semicolon
+id|lock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 id|error
 op_assign
 id|NFS_PROTO
@@ -4648,6 +4653,11 @@ comma
 id|mask
 comma
 l_int|1
+)paren
+suffix:semicolon
+id|unlock_kernel
+c_func
+(paren
 )paren
 suffix:semicolon
 id|out

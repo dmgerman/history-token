@@ -70,19 +70,9 @@ op_star
 id|timer
 )paren
 suffix:semicolon
-r_extern
-r_void
-id|sync_timers
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 macro_line|#else
 DECL|macro|del_timer_sync
 mdefine_line|#define del_timer_sync(t)&t;del_timer(t)
-DECL|macro|sync_timers
-mdefine_line|#define sync_timers()&t;&t;do { } while (0)
 macro_line|#endif
 multiline_comment|/*&n; * mod_timer is a more efficient way to update the expire field of an&n; * active timer (if the timer is inactive it will be activated)&n; * mod_timer(a,b) is equivalent to del_timer(a); a-&gt;expires = b; add_timer(a).&n; * If the timer is known to be not pending (ie, in the handler), mod_timer&n; * is less efficient than a-&gt;expires = b; add_timer(a).&n; */
 r_int

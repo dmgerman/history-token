@@ -3,6 +3,7 @@ macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/elevator.h&gt;
+macro_line|#include &lt;linux/bio.h&gt;
 macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -1551,6 +1552,20 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|elv_remove_request
+)paren
+suffix:semicolon
+DECL|variable|elevator_exit
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|elevator_exit
+)paren
+suffix:semicolon
+DECL|variable|elevator_init
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|elevator_init
 )paren
 suffix:semicolon
 eof

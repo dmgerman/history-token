@@ -152,7 +152,7 @@ l_int|NULL
 id|perror
 c_func
 (paren
-l_string|&quot;malloc&quot;
+l_string|&quot;fixdep:malloc&quot;
 )paren
 suffix:semicolon
 m_exit
@@ -777,6 +777,14 @@ OL
 l_int|0
 )paren
 (brace
+id|fprintf
+c_func
+(paren
+id|stderr
+comma
+l_string|&quot;fixdep: &quot;
+)paren
+suffix:semicolon
 id|perror
 c_func
 (paren
@@ -848,7 +856,7 @@ l_int|1
 id|perror
 c_func
 (paren
-l_string|&quot;mmap&quot;
+l_string|&quot;fixdep: mmap&quot;
 )paren
 suffix:semicolon
 id|close
@@ -969,7 +977,7 @@ suffix:semicolon
 id|printf
 c_func
 (paren
-l_string|&quot;%s: &bslash;&bslash;&bslash;n&quot;
+l_string|&quot;deps_%s := &bslash;&bslash;&bslash;n&quot;
 comma
 id|target
 )paren
@@ -1133,7 +1141,19 @@ suffix:semicolon
 id|printf
 c_func
 (paren
-l_string|&quot;&bslash;n&quot;
+l_string|&quot;&bslash;n%s: $(deps_%s)&bslash;n&bslash;n&quot;
+comma
+id|target
+comma
+id|target
+)paren
+suffix:semicolon
+id|printf
+c_func
+(paren
+l_string|&quot;$(deps_%s):&bslash;n&quot;
+comma
+id|target
 )paren
 suffix:semicolon
 )brace
@@ -1174,6 +1194,14 @@ OL
 l_int|0
 )paren
 (brace
+id|fprintf
+c_func
+(paren
+id|stderr
+comma
+l_string|&quot;fixdep: &quot;
+)paren
+suffix:semicolon
 id|perror
 c_func
 (paren
@@ -1255,7 +1283,7 @@ l_int|1
 id|perror
 c_func
 (paren
-l_string|&quot;mmap&quot;
+l_string|&quot;fixdep: mmap&quot;
 )paren
 suffix:semicolon
 id|close

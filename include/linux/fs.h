@@ -1644,6 +1644,12 @@ op_star
 id|fl_fasync
 suffix:semicolon
 multiline_comment|/* for lease break notifications */
+DECL|member|fl_break_time
+r_int
+r_int
+id|fl_break_time
+suffix:semicolon
+multiline_comment|/* for nonblocking lease breaks */
 r_union
 (brace
 DECL|member|nfs_fl

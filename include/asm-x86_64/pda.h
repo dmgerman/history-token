@@ -97,6 +97,16 @@ op_star
 id|__ksoftirqd_task
 suffix:semicolon
 multiline_comment|/* waitqueue is too large */
+DECL|member|active_mm
+r_struct
+id|mm_struct
+op_star
+id|active_mm
+suffix:semicolon
+DECL|member|mmu_state
+r_int
+id|mmu_state
+suffix:semicolon
 DECL|variable|____cacheline_aligned
 )brace
 id|____cacheline_aligned

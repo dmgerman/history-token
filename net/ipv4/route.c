@@ -10768,7 +10768,7 @@ suffix:semicolon
 multiline_comment|/* This code sucks.  But you should have seen it before! --RR */
 multiline_comment|/* IP route accounting ptr for this logical cpu number. */
 DECL|macro|IP_RT_ACCT_CPU
-mdefine_line|#define IP_RT_ACCT_CPU(i) (ip_rt_acct + cpu_logical_map(i) * 256)
+mdefine_line|#define IP_RT_ACCT_CPU(i) (ip_rt_acct + i * 256)
 DECL|function|ip_rt_acct_read
 r_static
 r_int
@@ -10895,6 +10895,18 @@ op_increment
 r_int
 r_int
 id|j
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|cpu_online
+c_func
+(paren
+id|i
+)paren
+)paren
+r_continue
 suffix:semicolon
 r_for
 c_loop

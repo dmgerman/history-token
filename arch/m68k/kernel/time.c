@@ -10,6 +10,10 @@ macro_line|#include &lt;linux/rtc.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;linux/timex.h&gt;
+DECL|variable|jiffies_64
+id|u64
+id|jiffies_64
+suffix:semicolon
 DECL|function|set_rtc_mmss
 r_static
 r_inline

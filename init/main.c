@@ -22,7 +22,6 @@ macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/bugs.h&gt;
 macro_line|#if defined(CONFIG_ARCH_S390)
 macro_line|#include &lt;asm/s390mach.h&gt;
-macro_line|#include &lt;asm/ccwcache.h&gt;
 macro_line|#endif
 macro_line|#ifdef CONFIG_MTRR
 macro_line|#  include &lt;asm/mtrr.h&gt;
@@ -1377,13 +1376,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#if defined(CONFIG_ARCH_S390)
-id|ccwcache_init
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
 id|signals_init
 c_func
 (paren

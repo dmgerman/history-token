@@ -70,6 +70,8 @@ mdefine_line|#define pgd_clear(xp)&t;&t;&t;&t;do { } while (0)
 multiline_comment|/*&n; * Certain architectures need to do special things when PTEs&n; * within a page table are directly modified.  Thus, the following&n; * hook is made available.&n; */
 DECL|macro|set_pte
 mdefine_line|#define set_pte(pteptr, pteval) (*(pteptr) = pteval)
+DECL|macro|set_pte_atomic
+mdefine_line|#define set_pte_atomic(pteptr, pteval) set_pte(pteptr,pteval)
 multiline_comment|/*&n; * (pmds are folded into pgds so this doesnt get actually called,&n; * but the define is needed for a generic inline function.)&n; */
 DECL|macro|set_pmd
 mdefine_line|#define set_pmd(pmdptr, pmdval) (*(pmdptr) = pmdval)

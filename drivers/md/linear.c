@@ -2,6 +2,7 @@ multiline_comment|/*&n;   linear.c : Multiple Devices driver for Linux&n;       
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/raid/md.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
+macro_line|#include &lt;linux/bio.h&gt;
 macro_line|#include &lt;linux/raid/linear.h&gt;
 DECL|macro|MAJOR_NR
 mdefine_line|#define MAJOR_NR MD_MAJOR

@@ -139,7 +139,7 @@ c_func
 (paren
 id|page
 comma
-id|KM_BIO_IRQ
+id|KM_BIO_SRC_IRQ
 )paren
 suffix:semicolon
 id|memset
@@ -173,7 +173,7 @@ c_func
 (paren
 id|addr
 comma
-id|KM_BIO_IRQ
+id|KM_BIO_SRC_IRQ
 )paren
 suffix:semicolon
 )brace
@@ -1484,7 +1484,7 @@ c_func
 (paren
 id|page
 comma
-id|KM_BIO_IRQ
+id|KM_BIO_SRC_IRQ
 )paren
 suffix:semicolon
 id|memset
@@ -1518,7 +1518,7 @@ c_func
 (paren
 id|addr
 comma
-id|KM_BIO_IRQ
+id|KM_BIO_SRC_IRQ
 )paren
 suffix:semicolon
 )brace
@@ -2349,7 +2349,7 @@ c_func
 (paren
 id|page
 comma
-id|KM_BIO_IRQ
+id|KM_BIO_SRC_IRQ
 )paren
 suffix:semicolon
 id|memset
@@ -2383,7 +2383,7 @@ c_func
 (paren
 id|addr
 comma
-id|KM_BIO_IRQ
+id|KM_BIO_SRC_IRQ
 )paren
 suffix:semicolon
 )brace
@@ -2534,7 +2534,7 @@ c_func
 (paren
 id|page
 comma
-id|KM_BIO_IRQ
+id|KM_BIO_SRC_IRQ
 )paren
 suffix:semicolon
 r_for
@@ -2629,7 +2629,7 @@ c_func
 (paren
 id|addr
 comma
-id|KM_BIO_IRQ
+id|KM_BIO_SRC_IRQ
 )paren
 suffix:semicolon
 r_if

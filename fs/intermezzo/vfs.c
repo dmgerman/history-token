@@ -1518,7 +1518,7 @@ id|down
 c_func
 (paren
 op_amp
-id|dir-&gt;d_inode-&gt;i_zombie
+id|dir-&gt;d_inode-&gt;i_sem
 )paren
 suffix:semicolon
 id|error
@@ -1543,7 +1543,7 @@ id|up
 c_func
 (paren
 op_amp
-id|dir-&gt;d_inode-&gt;i_zombie
+id|dir-&gt;d_inode-&gt;i_sem
 )paren
 suffix:semicolon
 r_return
@@ -1956,7 +1956,7 @@ id|up
 c_func
 (paren
 op_amp
-id|dir-&gt;d_inode-&gt;i_zombie
+id|dir-&gt;d_inode-&gt;i_sem
 )paren
 suffix:semicolon
 r_return
@@ -2366,7 +2366,7 @@ id|down
 c_func
 (paren
 op_amp
-id|dir-&gt;d_inode-&gt;i_zombie
+id|dir-&gt;d_inode-&gt;i_sem
 )paren
 suffix:semicolon
 id|error
@@ -2391,7 +2391,7 @@ id|up
 c_func
 (paren
 op_amp
-id|dir-&gt;d_inode-&gt;i_zombie
+id|dir-&gt;d_inode-&gt;i_sem
 )paren
 suffix:semicolon
 r_return
@@ -2763,7 +2763,7 @@ id|up
 c_func
 (paren
 op_amp
-id|dir-&gt;d_inode-&gt;i_zombie
+id|dir-&gt;d_inode-&gt;i_sem
 )paren
 suffix:semicolon
 r_return
@@ -3087,7 +3087,7 @@ id|down
 c_func
 (paren
 op_amp
-id|dir-&gt;d_inode-&gt;i_zombie
+id|dir-&gt;d_inode-&gt;i_sem
 )paren
 suffix:semicolon
 id|error
@@ -3114,7 +3114,7 @@ id|up
 c_func
 (paren
 op_amp
-id|dir-&gt;d_inode-&gt;i_zombie
+id|dir-&gt;d_inode-&gt;i_sem
 )paren
 suffix:semicolon
 r_return
@@ -3147,7 +3147,7 @@ id|up
 c_func
 (paren
 op_amp
-id|dir-&gt;d_inode-&gt;i_zombie
+id|dir-&gt;d_inode-&gt;i_sem
 )paren
 suffix:semicolon
 r_return
@@ -3176,7 +3176,7 @@ id|up
 c_func
 (paren
 op_amp
-id|dir-&gt;d_inode-&gt;i_zombie
+id|dir-&gt;d_inode-&gt;i_sem
 )paren
 suffix:semicolon
 r_return
@@ -3241,7 +3241,7 @@ id|up
 c_func
 (paren
 op_amp
-id|dir-&gt;d_inode-&gt;i_zombie
+id|dir-&gt;d_inode-&gt;i_sem
 )paren
 suffix:semicolon
 r_return
@@ -3418,7 +3418,7 @@ id|up
 c_func
 (paren
 op_amp
-id|dir-&gt;d_inode-&gt;i_zombie
+id|dir-&gt;d_inode-&gt;i_sem
 )paren
 suffix:semicolon
 r_if
@@ -3860,7 +3860,7 @@ id|down
 c_func
 (paren
 op_amp
-id|dir-&gt;d_inode-&gt;i_zombie
+id|dir-&gt;d_inode-&gt;i_sem
 )paren
 suffix:semicolon
 multiline_comment|/* record + max path len + space to free */
@@ -3888,7 +3888,7 @@ id|up
 c_func
 (paren
 op_amp
-id|dir-&gt;d_inode-&gt;i_zombie
+id|dir-&gt;d_inode-&gt;i_sem
 )paren
 suffix:semicolon
 r_return
@@ -4300,7 +4300,7 @@ id|up
 c_func
 (paren
 op_amp
-id|dir-&gt;d_inode-&gt;i_zombie
+id|dir-&gt;d_inode-&gt;i_sem
 )paren
 suffix:semicolon
 r_return
@@ -4649,7 +4649,7 @@ id|down
 c_func
 (paren
 op_amp
-id|dir-&gt;d_inode-&gt;i_zombie
+id|dir-&gt;d_inode-&gt;i_sem
 )paren
 suffix:semicolon
 multiline_comment|/* one journal record + directory block + room for removals*/
@@ -4677,7 +4677,7 @@ id|up
 c_func
 (paren
 op_amp
-id|dir-&gt;d_inode-&gt;i_zombie
+id|dir-&gt;d_inode-&gt;i_sem
 )paren
 suffix:semicolon
 r_return
@@ -5104,7 +5104,7 @@ id|up
 c_func
 (paren
 op_amp
-id|dir-&gt;d_inode-&gt;i_zombie
+id|dir-&gt;d_inode-&gt;i_sem
 )paren
 suffix:semicolon
 r_return
@@ -5635,10 +5635,10 @@ id|double_down
 c_func
 (paren
 op_amp
-id|dir-&gt;d_inode-&gt;i_zombie
+id|dir-&gt;d_inode-&gt;i_sem
 comma
 op_amp
-id|dentry-&gt;d_inode-&gt;i_zombie
+id|dentry-&gt;d_inode-&gt;i_sem
 )paren
 suffix:semicolon
 id|d_unhash
@@ -5733,10 +5733,10 @@ id|double_up
 c_func
 (paren
 op_amp
-id|dir-&gt;d_inode-&gt;i_zombie
+id|dir-&gt;d_inode-&gt;i_sem
 comma
 op_amp
-id|dentry-&gt;d_inode-&gt;i_zombie
+id|dentry-&gt;d_inode-&gt;i_sem
 )paren
 suffix:semicolon
 r_if
@@ -6168,7 +6168,7 @@ id|down
 c_func
 (paren
 op_amp
-id|dir-&gt;d_inode-&gt;i_zombie
+id|dir-&gt;d_inode-&gt;i_sem
 )paren
 suffix:semicolon
 multiline_comment|/* one KML entry */
@@ -6194,7 +6194,7 @@ id|up
 c_func
 (paren
 op_amp
-id|dir-&gt;d_inode-&gt;i_zombie
+id|dir-&gt;d_inode-&gt;i_sem
 )paren
 suffix:semicolon
 r_return
@@ -6629,7 +6629,7 @@ id|up
 c_func
 (paren
 op_amp
-id|dir-&gt;d_inode-&gt;i_zombie
+id|dir-&gt;d_inode-&gt;i_sem
 )paren
 suffix:semicolon
 r_return
@@ -7585,13 +7585,13 @@ id|triple_down
 c_func
 (paren
 op_amp
-id|old_dir-&gt;i_zombie
+id|old_dir-&gt;i_sem
 comma
 op_amp
-id|new_dir-&gt;i_zombie
+id|new_dir-&gt;i_sem
 comma
 op_amp
-id|target-&gt;i_zombie
+id|target-&gt;i_sem
 )paren
 suffix:semicolon
 id|d_unhash
@@ -7606,10 +7606,10 @@ id|double_down
 c_func
 (paren
 op_amp
-id|old_dir-&gt;i_zombie
+id|old_dir-&gt;i_sem
 comma
 op_amp
-id|new_dir-&gt;i_zombie
+id|new_dir-&gt;i_sem
 )paren
 suffix:semicolon
 r_if
@@ -7692,13 +7692,13 @@ id|triple_up
 c_func
 (paren
 op_amp
-id|old_dir-&gt;i_zombie
+id|old_dir-&gt;i_sem
 comma
 op_amp
-id|new_dir-&gt;i_zombie
+id|new_dir-&gt;i_sem
 comma
 op_amp
-id|target-&gt;i_zombie
+id|target-&gt;i_sem
 )paren
 suffix:semicolon
 r_if
@@ -7728,10 +7728,10 @@ id|double_up
 c_func
 (paren
 op_amp
-id|old_dir-&gt;i_zombie
+id|old_dir-&gt;i_sem
 comma
 op_amp
-id|new_dir-&gt;i_zombie
+id|new_dir-&gt;i_sem
 )paren
 suffix:semicolon
 r_if
@@ -7922,10 +7922,10 @@ id|double_down
 c_func
 (paren
 op_amp
-id|old_dir-&gt;i_zombie
+id|old_dir-&gt;i_sem
 comma
 op_amp
-id|new_dir-&gt;i_zombie
+id|new_dir-&gt;i_sem
 )paren
 suffix:semicolon
 r_if
@@ -7971,10 +7971,10 @@ id|double_up
 c_func
 (paren
 op_amp
-id|old_dir-&gt;i_zombie
+id|old_dir-&gt;i_sem
 comma
 op_amp
-id|new_dir-&gt;i_zombie
+id|new_dir-&gt;i_sem
 )paren
 suffix:semicolon
 r_if

@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/kernel_stat.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/bio.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/swap.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -6744,11 +6745,11 @@ c_cond
 (paren
 id|queue_nr_requests
 OG
-l_int|512
+l_int|256
 )paren
 id|queue_nr_requests
 op_assign
-l_int|512
+l_int|256
 suffix:semicolon
 multiline_comment|/*&n;&t; * Batch frees according to queue length&n;&t; */
 r_if

@@ -24,6 +24,10 @@ DECL|macro|CLK_TICKS_PER_JIFFY
 mdefine_line|#define CLK_TICKS_PER_JIFFY ((unsigned long) USECS_PER_JIFFY &lt;&lt; 12)
 DECL|macro|TICK_SIZE
 mdefine_line|#define TICK_SIZE tick
+DECL|variable|jiffies_64
+id|u64
+id|jiffies_64
+suffix:semicolon
 DECL|variable|ext_int_info_timer
 r_static
 id|ext_int_info_t

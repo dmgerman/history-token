@@ -70,6 +70,10 @@ DECL|macro|MEMCLKCR_RATIO_MASK
 mdefine_line|#define MEMCLKCR_RATIO_MASK 0x7
 macro_line|#endif /* CONFIG_CPU_SUBTYPE_ST40STB1 */
 macro_line|#endif /* __sh3__ or __SH4__ */
+DECL|variable|jiffies_64
+id|u64
+id|jiffies_64
+suffix:semicolon
 r_extern
 id|rwlock_t
 id|xtime_lock

@@ -17,6 +17,10 @@ macro_line|#include &lt;asm/rtc.h&gt;
 macro_line|#include &lt;linux/timex.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/svinto.h&gt;
+DECL|variable|jiffies_64
+id|u64
+id|jiffies_64
+suffix:semicolon
 DECL|variable|have_rtc
 r_static
 r_int

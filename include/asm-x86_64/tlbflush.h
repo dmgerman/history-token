@@ -194,37 +194,6 @@ DECL|macro|TLBSTATE_OK
 mdefine_line|#define TLBSTATE_OK&t;1
 DECL|macro|TLBSTATE_LAZY
 mdefine_line|#define TLBSTATE_LAZY&t;2
-DECL|struct|tlb_state
-r_struct
-id|tlb_state
-(brace
-DECL|member|active_mm
-r_struct
-id|mm_struct
-op_star
-id|active_mm
-suffix:semicolon
-DECL|member|state
-r_int
-id|state
-suffix:semicolon
-DECL|member|__cacheline_padding
-r_char
-id|__cacheline_padding
-(braket
-l_int|24
-)braket
-suffix:semicolon
-)brace
-suffix:semicolon
-r_extern
-r_struct
-id|tlb_state
-id|cpu_tlbstate
-(braket
-id|NR_CPUS
-)braket
-suffix:semicolon
 macro_line|#endif
 DECL|macro|flush_tlb_kernel_range
 mdefine_line|#define flush_tlb_kernel_range(start, end) flush_tlb_all()

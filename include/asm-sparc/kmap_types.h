@@ -20,8 +20,11 @@ comma
 DECL|enumerator|KM_USER1
 id|KM_USER1
 comma
-DECL|enumerator|KM_BIO_IRQ
-id|KM_BIO_IRQ
+DECL|enumerator|KM_BIO_SRC_IRQ
+id|KM_BIO_SRC_IRQ
+comma
+DECL|enumerator|KM_BIO_DST_IRQ
+id|KM_BIO_DST_IRQ
 comma
 DECL|enumerator|KM_TYPE_NR
 id|KM_TYPE_NR

@@ -356,8 +356,6 @@ id|str
 suffix:semicolon
 r_int
 id|add_or_set
-comma
-id|device_or_range
 suffix:semicolon
 r_int
 id|from
@@ -486,7 +484,7 @@ id|str
 op_increment
 )paren
 suffix:semicolon
-multiline_comment|/* Scan for &quot;device &quot; or &quot;range=&quot;. */
+multiline_comment|/* Scan for &quot;device &quot; and &quot;range=&quot; and ignore it. This is sick. */
 r_if
 c_cond
 (paren
@@ -511,11 +509,6 @@ l_int|6
 )braket
 )paren
 )paren
-(brace
-id|device_or_range
-op_assign
-l_int|0
-suffix:semicolon
 r_for
 c_loop
 (paren
@@ -536,8 +529,6 @@ id|str
 op_increment
 )paren
 suffix:semicolon
-)brace
-r_else
 r_if
 c_cond
 (paren
@@ -553,21 +544,25 @@ l_int|6
 op_eq
 l_int|0
 )paren
-(brace
-id|device_or_range
-op_assign
-l_int|1
-suffix:semicolon
+r_for
+c_loop
+(paren
 id|str
 op_assign
 id|str
 op_plus
 l_int|6
 suffix:semicolon
-)brace
-r_else
-r_goto
-id|out_error
+id|isspace
+c_func
+(paren
+op_star
+id|str
+)paren
+suffix:semicolon
+id|str
+op_increment
+)paren
 suffix:semicolon
 multiline_comment|/* Scan device number range and feature string. */
 id|to

@@ -18,7 +18,7 @@ mdefine_line|#define AUTOFS_MAX_PROTO_VERSION&t;AUTOFS_PROTO_VERSION
 DECL|macro|AUTOFS_MIN_PROTO_VERSION
 mdefine_line|#define AUTOFS_MIN_PROTO_VERSION&t;AUTOFS_PROTO_VERSION
 multiline_comment|/*&n; * Architectures where both 32- and 64-bit binaries can be executed&n; * on 64-bit kernels need this.  This keeps the structure format&n; * uniform, and makes sure the wait_queue_token isn&squot;t too big to be&n; * passed back down to the kernel.&n; *&n; * This assumes that on these architectures:&n; * mode     32 bit    64 bit&n; * -------------------------&n; * int      32 bit    32 bit&n; * long     32 bit    64 bit&n; *&n; * If so, 32-bit user-space code should be backwards compatible.&n; */
-macro_line|#if defined(__sparc__) || defined(__mips__) || defined(__x86_64__) || defined(__powerpc__)
+macro_line|#if defined(__sparc__) || defined(__mips__) || defined(__x86_64) &bslash;&n; || defined(__powerpc__) || defined(__s390__)
 DECL|typedef|autofs_wqt_t
 r_typedef
 r_int

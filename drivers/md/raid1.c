@@ -1,5 +1,6 @@
 multiline_comment|/*&n; * raid1.c : Multiple Devices driver for Linux&n; *&n; * Copyright (C) 1999, 2000, 2001 Ingo Molnar, Red Hat&n; *&n; * Copyright (C) 1996, 1997, 1998 Ingo Molnar, Miguel de Icaza, Gadi Oxman&n; *&n; * RAID-1 management functions.&n; *&n; * Better read-balancing code written by Mika Kuoppala &lt;miku@iki.fi&gt;, 2000&n; *&n; * Fixes to reconstruction by Jakob &#xfffd;stergaard&quot; &lt;jakob@ostenfeld.dk&gt;&n; * Various fixes by Neil Brown &lt;neilb@cse.unsw.edu.au&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * You should have received a copy of the GNU General Public License&n; * (for example /usr/src/linux/COPYING); if not, write to the Free&n; * Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
 macro_line|#include &lt;linux/raid/raid1.h&gt;
+macro_line|#include &lt;linux/bio.h&gt;
 DECL|macro|MAJOR_NR
 mdefine_line|#define MAJOR_NR MD_MAJOR
 DECL|macro|MD_DRIVER

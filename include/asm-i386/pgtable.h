@@ -699,6 +699,8 @@ DECL|macro|pmd_page_kernel
 mdefine_line|#define pmd_page_kernel(pmd) &bslash;&n;((unsigned long) __va(pmd_val(pmd) &amp; PAGE_MASK))
 DECL|macro|pmd_page
 mdefine_line|#define pmd_page(pmd) &bslash;&n;&t;(mem_map + (pmd_val(pmd) &gt;&gt; PAGE_SHIFT))
+DECL|macro|pmd_large
+mdefine_line|#define pmd_large(pmd) &bslash;&n;&t;((pmd_val(pmd) &amp; (_PAGE_PSE|_PAGE_PRESENT)) == (_PAGE_PSE|_PAGE_PRESENT))
 multiline_comment|/* to find an entry in a page-table-directory. */
 DECL|macro|pgd_index
 mdefine_line|#define pgd_index(address) ((address &gt;&gt; PGDIR_SHIFT) &amp; (PTRS_PER_PGD-1))

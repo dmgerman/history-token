@@ -143,10 +143,7 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * ioremap_nocache     -   map bus memory into CPU space&n; * @offset:    bus address of the memory&n; * @size:      size of the resource to map&n; *&n; * ioremap_nocache performs a platform specific sequence of operations to&n; * make bus memory CPU accessible via the readb/readw/readl/writeb/&n; * writew/writel functions and the other mmio helpers. The returned&n; * address is not guaranteed to be usable directly as a virtual&n; * address. &n; *&n; * This version of ioremap ensures that the memory is marked uncachable&n; * on the CPU as well as honouring existing caching rules from things like&n; * the PCI bus. Note that there are other caches and buffers on many &n; * busses. In paticular driver authors should read up on PCI writes&n; *&n; * It&squot;s useful if some control registers are in such an area and&n; * write combining or read caching is not desirable:&n; */
-DECL|function|ioremap_nocache
-r_static
-r_inline
+r_extern
 r_void
 op_star
 id|ioremap_nocache
@@ -159,19 +156,7 @@ r_int
 r_int
 id|size
 )paren
-(brace
-r_return
-id|__ioremap
-c_func
-(paren
-id|offset
-comma
-id|size
-comma
-id|_PAGE_PCD
-)paren
 suffix:semicolon
-)brace
 r_extern
 r_void
 id|iounmap

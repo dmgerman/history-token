@@ -710,6 +710,8 @@ id|mask
 (brace
 r_int
 id|error
+op_assign
+l_int|0
 suffix:semicolon
 r_if
 c_cond
@@ -719,6 +721,11 @@ id|mask
 )paren
 r_return
 l_int|0
+suffix:semicolon
+id|lock_kernel
+c_func
+(paren
+)paren
 suffix:semicolon
 id|coda_vfs_stat.permission
 op_increment
@@ -734,8 +741,8 @@ comma
 id|mask
 )paren
 )paren
-r_return
-l_int|0
+r_goto
+id|out
 suffix:semicolon
 id|error
 op_assign
@@ -765,6 +772,13 @@ c_func
 id|inode
 comma
 id|mask
+)paren
+suffix:semicolon
+id|out
+suffix:colon
+id|unlock_kernel
+c_func
+(paren
 )paren
 suffix:semicolon
 r_return
