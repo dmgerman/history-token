@@ -9,6 +9,7 @@ macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/irq.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/acpi.h&gt;
+macro_line|#include &lt;linux/bootmem.h&gt;
 DECL|macro|PREFIX
 mdefine_line|#define PREFIX&t;&t;&t;&quot;ACPI: &quot;
 DECL|macro|ACPI_MAX_TABLES
@@ -143,20 +144,6 @@ r_int
 r_int
 id|pa
 suffix:semicolon
-multiline_comment|/* Physical Address */
-DECL|member|count
-r_int
-r_int
-id|count
-suffix:semicolon
-multiline_comment|/* Table count */
-r_struct
-(brace
-DECL|member|pa
-r_int
-r_int
-id|pa
-suffix:semicolon
 DECL|member|id
 r_enum
 id|acpi_table_id
@@ -167,13 +154,6 @@ r_int
 r_int
 id|size
 suffix:semicolon
-DECL|member|entry
-)brace
-id|entry
-(braket
-id|ACPI_MAX_TABLES
-)braket
-suffix:semicolon
 )brace
 id|__attribute__
 (paren
@@ -182,11 +162,26 @@ id|packed
 )paren
 )paren
 suffix:semicolon
-DECL|variable|sdt
+DECL|variable|sdt_pa
+r_static
+r_int
+r_int
+id|sdt_pa
+suffix:semicolon
+multiline_comment|/* Physical Address */
+DECL|variable|sdt_count
+r_static
+r_int
+r_int
+id|sdt_count
+suffix:semicolon
+multiline_comment|/* Table count */
+DECL|variable|sdt_entry
 r_static
 r_struct
 id|acpi_table_sdt
-id|sdt
+op_star
+id|sdt_entry
 suffix:semicolon
 r_void
 DECL|function|acpi_table_print
@@ -809,7 +804,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|sdt.count
+id|sdt_count
 suffix:semicolon
 id|i
 op_increment
@@ -818,7 +813,7 @@ op_increment
 r_if
 c_cond
 (paren
-id|sdt.entry
+id|sdt_entry
 (braket
 id|i
 )braket
@@ -839,14 +834,14 @@ op_star
 id|__acpi_map_table
 c_func
 (paren
-id|sdt.entry
+id|sdt_entry
 (braket
 id|i
 )braket
 dot
 id|pa
 comma
-id|sdt.entry
+id|sdt_entry
 (braket
 id|i
 )braket
@@ -1045,7 +1040,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|sdt.count
+id|sdt_count
 suffix:semicolon
 id|i
 op_increment
@@ -1054,7 +1049,7 @@ op_increment
 r_if
 c_cond
 (paren
-id|sdt.entry
+id|sdt_entry
 (braket
 id|i
 )braket
@@ -1074,14 +1069,14 @@ op_star
 id|__acpi_map_table
 c_func
 (paren
-id|sdt.entry
+id|sdt_entry
 (braket
 id|i
 )braket
 dot
 id|pa
 comma
-id|sdt.entry
+id|sdt_entry
 (braket
 id|i
 )braket
@@ -1150,7 +1145,7 @@ r_int
 )paren
 id|madt
 op_plus
-id|sdt.entry
+id|sdt_entry
 (braket
 id|i
 )braket
@@ -1300,7 +1295,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|sdt.count
+id|sdt_count
 suffix:semicolon
 id|i
 op_increment
@@ -1309,7 +1304,7 @@ op_increment
 r_if
 c_cond
 (paren
-id|sdt.entry
+id|sdt_entry
 (braket
 id|i
 )braket
@@ -1323,14 +1318,14 @@ suffix:semicolon
 id|handler
 c_func
 (paren
-id|sdt.entry
+id|sdt_entry
 (braket
 id|i
 )braket
 dot
 id|pa
 comma
-id|sdt.entry
+id|sdt_entry
 (braket
 id|i
 )braket
@@ -1413,7 +1408,7 @@ id|mapped_xsdt
 op_assign
 l_int|NULL
 suffix:semicolon
-id|sdt.pa
+id|sdt_pa
 op_assign
 (paren
 (paren
@@ -1437,7 +1432,7 @@ op_star
 id|__acpi_map_table
 c_func
 (paren
-id|sdt.pa
+id|sdt_pa
 comma
 r_sizeof
 (paren
@@ -1477,7 +1472,7 @@ op_star
 id|__acpi_map_table
 c_func
 (paren
-id|sdt.pa
+id|sdt_pa
 comma
 id|header-&gt;length
 )paren
@@ -1559,7 +1554,7 @@ op_minus
 id|ENODEV
 suffix:semicolon
 )brace
-id|sdt.count
+id|sdt_count
 op_assign
 (paren
 id|header-&gt;length
@@ -1576,7 +1571,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sdt.count
+id|sdt_count
 OG
 id|ACPI_MAX_TABLES
 )paren
@@ -1589,15 +1584,48 @@ id|PREFIX
 l_string|&quot;Truncated %lu XSDT entries&bslash;n&quot;
 comma
 (paren
-id|sdt.count
+id|sdt_count
 op_minus
 id|ACPI_MAX_TABLES
 )paren
 )paren
 suffix:semicolon
-id|sdt.count
+id|sdt_count
 op_assign
 id|ACPI_MAX_TABLES
+suffix:semicolon
+)brace
+id|sdt_entry
+op_assign
+id|alloc_bootmem
+c_func
+(paren
+id|sdt_count
+op_star
+r_sizeof
+(paren
+r_struct
+id|acpi_table_sdt
+)paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|sdt_entry
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;ACPI: Could not allocate mem for SDT entries!&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|ENOMEM
 suffix:semicolon
 )brace
 r_for
@@ -1609,12 +1637,12 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|sdt.count
+id|sdt_count
 suffix:semicolon
 id|i
 op_increment
 )paren
-id|sdt.entry
+id|sdt_entry
 (braket
 id|i
 )braket
@@ -1646,7 +1674,7 @@ id|mapped_rsdt
 op_assign
 l_int|NULL
 suffix:semicolon
-id|sdt.pa
+id|sdt_pa
 op_assign
 id|rsdp-&gt;rsdt_address
 suffix:semicolon
@@ -1661,7 +1689,7 @@ op_star
 id|__acpi_map_table
 c_func
 (paren
-id|sdt.pa
+id|sdt_pa
 comma
 r_sizeof
 (paren
@@ -1701,7 +1729,7 @@ op_star
 id|__acpi_map_table
 c_func
 (paren
-id|sdt.pa
+id|sdt_pa
 comma
 id|header-&gt;length
 )paren
@@ -1783,7 +1811,7 @@ op_minus
 id|ENODEV
 suffix:semicolon
 )brace
-id|sdt.count
+id|sdt_count
 op_assign
 (paren
 id|header-&gt;length
@@ -1800,7 +1828,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sdt.count
+id|sdt_count
 OG
 id|ACPI_MAX_TABLES
 )paren
@@ -1813,15 +1841,48 @@ id|PREFIX
 l_string|&quot;Truncated %lu RSDT entries&bslash;n&quot;
 comma
 (paren
-id|sdt.count
+id|sdt_count
 op_minus
-id|ACPI_TABLE_COUNT
+id|ACPI_MAX_TABLES
 )paren
 )paren
 suffix:semicolon
-id|sdt.count
+id|sdt_count
 op_assign
 id|ACPI_MAX_TABLES
+suffix:semicolon
+)brace
+id|sdt_entry
+op_assign
+id|alloc_bootmem
+c_func
+(paren
+id|sdt_count
+op_star
+r_sizeof
+(paren
+r_struct
+id|acpi_table_sdt
+)paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|sdt_entry
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;ACPI: Could not allocate mem for SDT entries!&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|ENOMEM
 suffix:semicolon
 )brace
 r_for
@@ -1833,12 +1894,12 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|sdt.count
+id|sdt_count
 suffix:semicolon
 id|i
 op_increment
 )paren
-id|sdt.entry
+id|sdt_entry
 (braket
 id|i
 )braket
@@ -1875,7 +1936,7 @@ c_func
 (paren
 id|header
 comma
-id|sdt.pa
+id|sdt_pa
 )paren
 suffix:semicolon
 r_for
@@ -1887,7 +1948,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|sdt.count
+id|sdt_count
 suffix:semicolon
 id|i
 op_increment
@@ -1904,7 +1965,7 @@ op_star
 id|__acpi_map_table
 c_func
 (paren
-id|sdt.entry
+id|sdt_entry
 (braket
 id|i
 )braket
@@ -1937,7 +1998,7 @@ op_star
 id|__acpi_map_table
 c_func
 (paren
-id|sdt.entry
+id|sdt_entry
 (braket
 id|i
 )braket
@@ -1960,7 +2021,7 @@ c_func
 (paren
 id|header
 comma
-id|sdt.entry
+id|sdt_entry
 (braket
 id|i
 )braket
@@ -1990,7 +2051,7 @@ suffix:semicolon
 r_continue
 suffix:semicolon
 )brace
-id|sdt.entry
+id|sdt_entry
 (braket
 id|i
 )braket
@@ -2040,7 +2101,7 @@ id|header-&gt;signature
 )paren
 )paren
 (brace
-id|sdt.entry
+id|sdt_entry
 (braket
 id|i
 )braket
@@ -2105,21 +2166,6 @@ r_int
 id|result
 op_assign
 l_int|0
-suffix:semicolon
-id|memset
-c_func
-(paren
-op_amp
-id|sdt
-comma
-l_int|0
-comma
-r_sizeof
-(paren
-r_struct
-id|acpi_table_sdt
-)paren
-)paren
 suffix:semicolon
 multiline_comment|/* Locate and map the Root System Description Table (RSDP) */
 id|rsdp_phys
