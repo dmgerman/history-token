@@ -5,8 +5,8 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/acpi.h&gt;
+macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
-macro_line|#include &lt;asm/delay.h&gt;
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;driver.h&quot;
 DECL|macro|_COMPONENT

@@ -1,5 +1,5 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: amstorob - AML Interpreter object store support, store to object&n; *              $Revision: 18 $&n; *&n; *****************************************************************************/
-multiline_comment|/*&n; *  Copyright (C) 2000 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: amstorob - AML Interpreter object store support, store to object&n; *              $Revision: 20 $&n; *&n; *****************************************************************************/
+multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acparser.h&quot;
 macro_line|#include &quot;acdispat.h&quot;
@@ -74,7 +74,7 @@ id|destination_type
 (brace
 multiline_comment|/* Type of Name&squot;s existing value */
 r_case
-id|ACPI_TYPE_NUMBER
+id|ACPI_TYPE_INTEGER
 suffix:colon
 multiline_comment|/*&n;&t;&t; *  These cases all require only number values or values that&n;&t;&t; *  can be converted to numbers.&n;&t;&t; *&n;&t;&t; *  If value is not a Number, try to resolve it to one.&n;&t;&t; */
 r_if
@@ -82,7 +82,7 @@ c_cond
 (paren
 id|val_desc-&gt;common.type
 op_ne
-id|ACPI_TYPE_NUMBER
+id|ACPI_TYPE_INTEGER
 )paren
 (brace
 multiline_comment|/*&n;&t;&t;&t; *  Initially not a number, convert&n;&t;&t;&t; */
@@ -107,7 +107,7 @@ op_logical_and
 (paren
 id|val_desc-&gt;common.type
 op_ne
-id|ACPI_TYPE_NUMBER
+id|ACPI_TYPE_INTEGER
 )paren
 )paren
 (brace
@@ -133,7 +133,7 @@ c_cond
 (paren
 id|val_desc-&gt;common.type
 op_ne
-id|ACPI_TYPE_NUMBER
+id|ACPI_TYPE_INTEGER
 )paren
 op_logical_and
 (paren
@@ -171,7 +171,7 @@ op_logical_and
 (paren
 id|val_desc-&gt;common.type
 op_ne
-id|ACPI_TYPE_NUMBER
+id|ACPI_TYPE_INTEGER
 )paren
 op_logical_and
 (paren
@@ -238,7 +238,7 @@ id|val_desc-&gt;common.type
 )paren
 (brace
 r_case
-id|ACPI_TYPE_NUMBER
+id|ACPI_TYPE_INTEGER
 suffix:colon
 id|buffer
 op_assign
@@ -247,13 +247,13 @@ id|u8
 op_star
 )paren
 op_amp
-id|val_desc-&gt;number.value
+id|val_desc-&gt;integer.value
 suffix:semicolon
 id|length
 op_assign
 r_sizeof
 (paren
-id|val_desc-&gt;number.value
+id|val_desc-&gt;integer.value
 )paren
 suffix:semicolon
 r_break
@@ -399,7 +399,7 @@ id|val_desc-&gt;common.type
 )paren
 (brace
 r_case
-id|ACPI_TYPE_NUMBER
+id|ACPI_TYPE_INTEGER
 suffix:colon
 id|buffer
 op_assign
@@ -408,13 +408,13 @@ id|u8
 op_star
 )paren
 op_amp
-id|val_desc-&gt;number.value
+id|val_desc-&gt;integer.value
 suffix:semicolon
 id|length
 op_assign
 r_sizeof
 (paren
-id|val_desc-&gt;number.value
+id|val_desc-&gt;integer.value
 )paren
 suffix:semicolon
 r_break
@@ -539,11 +539,11 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|ACPI_TYPE_NUMBER
+id|ACPI_TYPE_INTEGER
 suffix:colon
-id|dest_desc-&gt;number.value
+id|dest_desc-&gt;integer.value
 op_assign
-id|val_desc-&gt;number.value
+id|val_desc-&gt;integer.value
 suffix:semicolon
 multiline_comment|/* Truncate value if we are executing from a 32-bit ACPI table */
 id|acpi_aml_truncate_for32bit_table

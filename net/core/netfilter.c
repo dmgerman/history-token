@@ -2043,7 +2043,6 @@ r_return
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/* We have BR_NETPROTO_LOCK here */
 DECL|function|nf_hook_slow
 r_int
 id|nf_hook_slow
@@ -2096,6 +2095,13 @@ r_int
 id|ret
 op_assign
 l_int|0
+suffix:semicolon
+multiline_comment|/* We may already have this, but read-locks nest anyway */
+id|br_read_lock_bh
+c_func
+(paren
+id|BR_NETPROTO_LOCK
+)paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_NETFILTER_DEBUG
 r_if
@@ -2245,6 +2251,12 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
+id|br_read_unlock_bh
+c_func
+(paren
+id|BR_NETPROTO_LOCK
+)paren
+suffix:semicolon
 r_return
 id|ret
 suffix:semicolon

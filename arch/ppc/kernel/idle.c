@@ -95,6 +95,48 @@ c_func
 r_void
 )paren
 (brace
+r_int
+id|do_power_save
+op_assign
+l_int|0
+suffix:semicolon
+multiline_comment|/* only sleep on the 603-family/750 processors */
+r_switch
+c_cond
+(paren
+id|_get_PVR
+c_func
+(paren
+)paren
+op_rshift
+l_int|16
+)paren
+(brace
+r_case
+l_int|3
+suffix:colon
+multiline_comment|/* 603 */
+r_case
+l_int|6
+suffix:colon
+multiline_comment|/* 603e */
+r_case
+l_int|7
+suffix:colon
+multiline_comment|/* 603ev */
+r_case
+l_int|8
+suffix:colon
+multiline_comment|/* 750 */
+r_case
+l_int|12
+suffix:colon
+multiline_comment|/* 7400 */
+id|do_power_save
+op_assign
+l_int|1
+suffix:semicolon
+)brace
 multiline_comment|/* endless loop with no priority at all */
 id|current-&gt;nice
 op_assign
@@ -117,17 +159,7 @@ suffix:semicolon
 suffix:semicolon
 )paren
 (brace
-id|__sti
-c_func
-(paren
-)paren
-suffix:semicolon
-id|check_pgt_cache
-c_func
-(paren
-)paren
-suffix:semicolon
-multiline_comment|/*if ( !current-&gt;need_resched &amp;&amp; zero_paged_on ) zero_paged();*/
+multiline_comment|/*if ( !current-&gt;need_resched &amp;&amp; zero_paged_on )&n;&t;&t;&t;zero_paged();*/
 r_if
 c_cond
 (paren
@@ -144,6 +176,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|do_power_save
+op_logical_and
 op_logical_neg
 id|current-&gt;need_resched
 )paren
@@ -152,18 +186,23 @@ c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_SMP
 r_if
 c_cond
 (paren
 id|current-&gt;need_resched
 )paren
-macro_line|#endif
+(brace
 id|schedule
 c_func
 (paren
 )paren
 suffix:semicolon
+id|check_pgt_cache
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
 )brace
 r_return
 l_int|0
@@ -845,51 +884,15 @@ r_void
 (brace
 r_int
 r_int
-id|msr
-comma
 id|hid0
 suffix:semicolon
-multiline_comment|/* only sleep on the 603-family/750 processors */
-r_switch
-c_cond
-(paren
-id|_get_PVR
+multiline_comment|/*&n;&t; * Disable interrupts to prevent a lost wakeup&n;&t; * when going to sleep.  This is necessary even with&n;&t; * RTLinux since we are not guaranteed an interrupt&n;&t; * didn&squot;t come in and is waiting for a __sti() before&n;&t; * emulating one.  This way, we really do hard disable.&n;&t; * &n;&t; * We assume that we&squot;re sti-ed when we come in here.  We&n;&t; * are in the idle loop so if we&squot;re cli-ed then it&squot;s a bug&n;&t; * anyway.&n;&t; *  -- Cort&n;&t; */
+id|_nmask_and_or_msr
 c_func
 (paren
-)paren
-op_rshift
-l_int|16
-)paren
-(brace
-r_case
-l_int|3
-suffix:colon
-multiline_comment|/* 603 */
-r_case
-l_int|6
-suffix:colon
-multiline_comment|/* 603e */
-r_case
-l_int|7
-suffix:colon
-multiline_comment|/* 603ev */
-r_case
-l_int|8
-suffix:colon
-multiline_comment|/* 750 */
-r_case
-l_int|12
-suffix:colon
-multiline_comment|/* 7400 */
-id|save_flags
-c_func
-(paren
-id|msr
-)paren
-suffix:semicolon
-id|__cli
-c_func
-(paren
+id|MSR_EE
+comma
+l_int|0
 )paren
 suffix:semicolon
 r_if
@@ -947,13 +950,7 @@ id|hid0
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* set the POW bit in the MSR, and enable interrupts&n;&t;&t;&t; * so we wake up sometime! */
-id|__sti
-c_func
-(paren
-)paren
-suffix:semicolon
-multiline_comment|/* this keeps rtl from getting confused -- Cort */
+multiline_comment|/* set the POW bit in the MSR, and enable interrupts&n;&t;&t; * so we wake up sometime! */
 id|_nmask_and_or_msr
 c_func
 (paren
@@ -965,16 +962,13 @@ id|MSR_EE
 )paren
 suffix:semicolon
 )brace
-id|restore_flags
+id|_nmask_and_or_msr
 c_func
 (paren
-id|msr
+l_int|0
+comma
+id|MSR_EE
 )paren
 suffix:semicolon
-r_default
-suffix:colon
-r_return
-suffix:semicolon
-)brace
 )brace
 eof

@@ -1,5 +1,5 @@
-multiline_comment|/*******************************************************************************&n; *&n; * Module Name: nsaccess - Top-level functions for accessing ACPI namespace&n; *              $Revision: 117 $&n; *&n; ******************************************************************************/
-multiline_comment|/*&n; *  Copyright (C) 2000 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/*******************************************************************************&n; *&n; * Module Name: nsaccess - Top-level functions for accessing ACPI namespace&n; *              $Revision: 119 $&n; *&n; ******************************************************************************/
+multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;amlcode.h&quot;
 macro_line|#include &quot;acinterp.h&quot;
@@ -142,9 +142,9 @@ id|init_val-&gt;type
 )paren
 (brace
 r_case
-id|ACPI_TYPE_NUMBER
+id|ACPI_TYPE_INTEGER
 suffix:colon
-id|obj_desc-&gt;number.value
+id|obj_desc-&gt;integer.value
 op_assign
 (paren
 id|ACPI_INTEGER
@@ -429,11 +429,14 @@ suffix:semicolon
 id|OBJECT_TYPE_INTERNAL
 id|this_search_type
 suffix:semicolon
-id|DEBUG_ONLY_MEMBERS
-(paren
 id|u32
-id|i
-)paren
+id|local_flags
+op_assign
+id|flags
+op_amp
+op_complement
+id|NS_ERROR_IF_FOUND
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -734,6 +737,10 @@ id|this_search_type
 op_assign
 id|type
 suffix:semicolon
+id|local_flags
+op_assign
+id|flags
+suffix:semicolon
 )brace
 multiline_comment|/* Pluck one ACPI name from the front of the pathname */
 id|MOVE_UNALIGNED32_TO_32
@@ -759,7 +766,7 @@ id|interpreter_mode
 comma
 id|this_search_type
 comma
-id|flags
+id|local_flags
 comma
 op_amp
 id|this_node

@@ -24,14 +24,6 @@ id|core_table
 (braket
 )braket
 suffix:semicolon
-macro_line|#ifdef CONFIG_UNIX
-r_extern
-id|ctl_table
-id|unix_table
-(braket
-)braket
-suffix:semicolon
-macro_line|#endif
 macro_line|#ifdef CONFIG_NET
 r_extern
 id|ctl_table
@@ -89,22 +81,6 @@ comma
 id|core_table
 )brace
 comma
-macro_line|#ifdef CONFIG_UNIX
-(brace
-id|NET_UNIX
-comma
-l_string|&quot;unix&quot;
-comma
-l_int|NULL
-comma
-l_int|0
-comma
-l_int|0555
-comma
-id|unix_table
-)brace
-comma
-macro_line|#endif
 macro_line|#ifdef CONFIG_NET
 (brace
 id|NET_802

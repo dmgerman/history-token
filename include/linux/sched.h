@@ -1537,6 +1537,28 @@ DECL|macro|wake_up_interruptible_sync
 mdefine_line|#define wake_up_interruptible_sync(x)&t;__wake_up_sync((x),TASK_INTERRUPTIBLE, 1)
 DECL|macro|wake_up_interruptible_sync_nr
 mdefine_line|#define wake_up_interruptible_sync_nr(x) __wake_up_sync((x),TASK_INTERRUPTIBLE,  nr)
+id|asmlinkage
+r_int
+id|sys_wait4
+c_func
+(paren
+id|pid_t
+id|pid
+comma
+r_int
+r_int
+op_star
+id|stat_addr
+comma
+r_int
+id|options
+comma
+r_struct
+id|rusage
+op_star
+id|ru
+)paren
+suffix:semicolon
 r_extern
 r_int
 id|in_group_p

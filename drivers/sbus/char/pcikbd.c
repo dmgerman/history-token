@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: pcikbd.c,v 1.49 2000/07/13 08:06:40 davem Exp $&n; * pcikbd.c: Ultra/AX PC keyboard support.&n; *&n; * Copyright (C) 1997  Eddie C. Dost  (ecd@skynet.be)&n; * JavaStation support by Pete A. Zaitcev.&n; *&n; * This code is mainly put together from various places in&n; * drivers/char, please refer to these sources for credits&n; * to the original authors.&n; */
+multiline_comment|/* $Id: pcikbd.c,v 1.50 2001/01/11 15:29:36 davem Exp $&n; * pcikbd.c: Ultra/AX PC keyboard support.&n; *&n; * Copyright (C) 1997  Eddie C. Dost  (ecd@skynet.be)&n; * JavaStation support by Pete A. Zaitcev.&n; *&n; * This code is mainly put together from various places in&n; * drivers/char, please refer to these sources for credits&n; * to the original authors.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -3036,11 +3036,6 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-id|lock_kernel
-c_func
-(paren
-)paren
-suffix:semicolon
 id|aux_fasync
 c_func
 (paren
@@ -3052,15 +3047,6 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_decrement
-id|aux_count
-)paren
-r_goto
-id|out
-suffix:semicolon
 id|spin_lock_irqsave
 c_func
 (paren
@@ -3069,6 +3055,15 @@ id|pcikbd_lock
 comma
 id|flags
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_decrement
+id|aux_count
+)paren
+r_goto
+id|out
 suffix:semicolon
 multiline_comment|/* Disable controller ints */
 id|aux_write_cmd
@@ -3098,6 +3093,8 @@ c_func
 (paren
 )paren
 suffix:semicolon
+id|out
+suffix:colon
 id|spin_unlock_irqrestore
 c_func
 (paren
@@ -3105,13 +3102,6 @@ op_amp
 id|pcikbd_lock
 comma
 id|flags
-)paren
-suffix:semicolon
-id|out
-suffix:colon
-id|unlock_kernel
-c_func
-(paren
 )paren
 suffix:semicolon
 r_return
@@ -3150,15 +3140,6 @@ r_return
 op_minus
 id|ENODEV
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|aux_count
-op_increment
-)paren
-r_return
-l_int|0
-suffix:semicolon
 id|spin_lock_irqsave
 c_func
 (paren
@@ -3168,6 +3149,26 @@ comma
 id|flags
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|aux_count
+op_increment
+)paren
+(brace
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|pcikbd_lock
+comma
+id|flags
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren

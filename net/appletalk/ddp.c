@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&t;DDP:&t;An implementation of the AppleTalk DDP protocol for&n; *&t;&t;Ethernet &squot;ELAP&squot;.&n; *&n; *&t;&t;Alan Cox  &lt;Alan.Cox@linux.org&gt;&n; *&n; *&t;&t;With more than a little assistance from&n; *&n; *&t;&t;Wesley Craig &lt;netatalk@umich.edu&gt;&n; *&n; *&t;Fixes:&n; *&t;&t;Michael Callahan&t;:&t;Made routing work&n; *&t;&t;Wesley Craig&t;&t;:&t;Fix probing to listen to a&n; *&t;&t;&t;&t;&t;&t;passed node id.&n; *&t;&t;Alan Cox&t;&t;:&t;Added send/recvmsg support&n; *&t;&t;Alan Cox&t;&t;:&t;Moved at. to protinfo in&n; *&t;&t;&t;&t;&t;&t;socket.&n; *&t;&t;Alan Cox&t;&t;:&t;Added firewall hooks.&n; *&t;&t;Alan Cox&t;&t;:&t;Supports new ARPHRD_LOOPBACK&n; *&t;&t;Christer Weinigel&t;: &t;Routing and /proc fixes.&n; *&t;&t;Bradford Johnson&t;:&t;LocalTalk.&n; *&t;&t;Tom Dyas&t;&t;:&t;Module support.&n; *&t;&t;Alan Cox&t;&t;:&t;Hooks for PPP (based on the&n; *&t;&t;&t;&t;&t;&t;LocalTalk hook).&n; *&t;&t;Alan Cox&t;&t;:&t;Posix bits&n; *&t;&t;Alan Cox/Mike Freeman&t;:&t;Possible fix to NBP problems&n; *&t;&t;Bradford Johnson&t;:&t;IP-over-DDP (experimental)&n; *&t;&t;Jay Schulist&t;&t;:&t;Moved IP-over-DDP to its own&n; *&t;&t;&t;&t;&t;&t;driver file. (ipddp.c &amp; ipddp.h)&n; *&t;&t;Jay Schulist&t;&t;:&t;Made work as module with &n; *&t;&t;&t;&t;&t;&t;AppleTalk drivers, cleaned it.&n; *&t;&t;Rob Newberry&t;&t;:&t;Added proxy AARP and AARP proc fs, &n; *&t;&t;&t;&t;&t;&t;moved probing to AARP module.&n; *              Adrian Sun/ &n; *              Michael Zuelsdorff      :       fix for net.0 packets. don&squot;t &n; *                                              allow illegal ether/tokentalk&n; *                                              port assignment. we lose a &n; *                                              valid localtalk port as a &n; *                                              result.&n; *              &n; *&n; *&t;&t;This program is free software; you can redistribute it and/or&n; *&t;&t;modify it under the terms of the GNU General Public License&n; *&t;&t;as published by the Free Software Foundation; either version&n; *&t;&t;2 of the License, or (at your option) any later version.&n; * &n; */
+multiline_comment|/*&n; *&t;DDP:&t;An implementation of the AppleTalk DDP protocol for&n; *&t;&t;Ethernet &squot;ELAP&squot;.&n; *&n; *&t;&t;Alan Cox  &lt;Alan.Cox@linux.org&gt;&n; *&n; *&t;&t;With more than a little assistance from&n; *&n; *&t;&t;Wesley Craig &lt;netatalk@umich.edu&gt;&n; *&n; *&t;Fixes:&n; *&t;&t;Michael Callahan&t;:&t;Made routing work&n; *&t;&t;Wesley Craig&t;&t;:&t;Fix probing to listen to a&n; *&t;&t;&t;&t;&t;&t;passed node id.&n; *&t;&t;Alan Cox&t;&t;:&t;Added send/recvmsg support&n; *&t;&t;Alan Cox&t;&t;:&t;Moved at. to protinfo in&n; *&t;&t;&t;&t;&t;&t;socket.&n; *&t;&t;Alan Cox&t;&t;:&t;Added firewall hooks.&n; *&t;&t;Alan Cox&t;&t;:&t;Supports new ARPHRD_LOOPBACK&n; *&t;&t;Christer Weinigel&t;: &t;Routing and /proc fixes.&n; *&t;&t;Bradford Johnson&t;:&t;LocalTalk.&n; *&t;&t;Tom Dyas&t;&t;:&t;Module support.&n; *&t;&t;Alan Cox&t;&t;:&t;Hooks for PPP (based on the&n; *&t;&t;&t;&t;&t;&t;LocalTalk hook).&n; *&t;&t;Alan Cox&t;&t;:&t;Posix bits&n; *&t;&t;Alan Cox/Mike Freeman&t;:&t;Possible fix to NBP problems&n; *&t;&t;Bradford Johnson&t;:&t;IP-over-DDP (experimental)&n; *&t;&t;Jay Schulist&t;&t;:&t;Moved IP-over-DDP to its own&n; *&t;&t;&t;&t;&t;&t;driver file. (ipddp.c &amp; ipddp.h)&n; *&t;&t;Jay Schulist&t;&t;:&t;Made work as module with &n; *&t;&t;&t;&t;&t;&t;AppleTalk drivers, cleaned it.&n; *&t;&t;Rob Newberry&t;&t;:&t;Added proxy AARP and AARP&n; *&t;&t;&t;&t;&t;&t;procfs, moved probing to AARP&n; *&t;&t;&t;&t;&t;&t;module.&n; *              Adrian Sun/ &n; *              Michael Zuelsdorff      :       fix for net.0 packets. don&squot;t &n; *                                              allow illegal ether/tokentalk&n; *                                              port assignment. we lose a &n; *                                              valid localtalk port as a &n; *                                              result.&n; *&t;&t;Arnaldo C. de Melo&t;:&t;Cleanup, in preparation for&n; *&t;&t;&t;&t;&t;&t;shared skb support 8)&n; *&n; *&t;&t;This program is free software; you can redistribute it and/or&n; *&t;&t;modify it under the terms of the GNU General Public License&n; *&t;&t;as published by the Free Software Foundation; either version&n; *&t;&t;2 of the License, or (at your option) any later version.&n; * &n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#if defined(CONFIG_ATALK) || defined(CONFIG_ATALK_MODULE)
 macro_line|#include &lt;linux/module.h&gt;
@@ -54,6 +54,14 @@ r_void
 )paren
 suffix:semicolon
 macro_line|#endif
+r_extern
+r_void
+id|aarp_cleanup_module
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 r_extern
 r_void
 id|aarp_probe_network
@@ -151,8 +159,6 @@ r_struct
 id|sock
 op_star
 id|atalk_sockets
-op_assign
-l_int|NULL
 suffix:semicolon
 DECL|variable|atalk_sockets_lock
 r_static
@@ -181,16 +187,14 @@ op_amp
 id|atalk_sockets_lock
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-(paren
 id|sk-&gt;next
 op_assign
 id|atalk_sockets
-)paren
-op_ne
-l_int|NULL
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|sk-&gt;next
 )paren
 id|atalk_sockets-&gt;pprev
 op_assign
@@ -238,8 +242,6 @@ r_if
 c_cond
 (paren
 id|sk-&gt;pprev
-op_ne
-l_int|NULL
 )paren
 (brace
 r_if
@@ -308,8 +310,6 @@ op_assign
 id|atalk_sockets
 suffix:semicolon
 id|s
-op_ne
-l_int|NULL
 suffix:semicolon
 id|s
 op_assign
@@ -441,14 +441,11 @@ op_assign
 id|atalk_sockets
 suffix:semicolon
 id|s
-op_ne
-l_int|NULL
 suffix:semicolon
 id|s
 op_assign
 id|s-&gt;next
 )paren
-(brace
 r_if
 c_cond
 (paren
@@ -466,7 +463,6 @@ id|sat-&gt;sat_port
 )paren
 r_break
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -475,16 +471,14 @@ id|s
 )paren
 (brace
 multiline_comment|/* Wheee, it&squot;s free, assign and insert. */
-r_if
-c_cond
-(paren
-(paren
 id|sk-&gt;next
 op_assign
 id|atalk_sockets
-)paren
-op_ne
-l_int|NULL
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|sk-&gt;next
 )paren
 id|atalk_sockets-&gt;pprev
 op_assign
@@ -538,23 +532,21 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|atomic_read
 c_func
 (paren
 op_amp
 id|sk-&gt;wmem_alloc
 )paren
-op_eq
-l_int|0
 op_logical_and
+op_logical_neg
 id|atomic_read
 c_func
 (paren
 op_amp
 id|sk-&gt;rmem_alloc
 )paren
-op_eq
-l_int|0
 op_logical_and
 id|sk-&gt;dead
 )paren
@@ -598,59 +590,37 @@ op_star
 id|sk
 )paren
 (brace
-r_struct
-id|sk_buff
-op_star
-id|skb
-suffix:semicolon
 id|atalk_remove_socket
 c_func
 (paren
 id|sk
 )paren
 suffix:semicolon
-r_while
-c_loop
-(paren
-(paren
-id|skb
-op_assign
-id|skb_dequeue
+id|skb_queue_purge
 c_func
 (paren
 op_amp
 id|sk-&gt;receive_queue
 )paren
-)paren
-op_ne
-l_int|NULL
-)paren
-id|kfree_skb
-c_func
-(paren
-id|skb
-)paren
 suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|atomic_read
 c_func
 (paren
 op_amp
 id|sk-&gt;wmem_alloc
 )paren
-op_eq
-l_int|0
 op_logical_and
+op_logical_neg
 id|atomic_read
 c_func
 (paren
 op_amp
 id|sk-&gt;rmem_alloc
 )paren
-op_eq
-l_int|0
 op_logical_and
 id|sk-&gt;dead
 )paren
@@ -700,7 +670,7 @@ id|sk-&gt;timer
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n; * Called from proc fs&n; */
+multiline_comment|/* Called from proc fs */
 DECL|function|atalk_get_info
 r_static
 r_int
@@ -723,16 +693,6 @@ r_int
 id|length
 )paren
 (brace
-r_struct
-id|sock
-op_star
-id|s
-suffix:semicolon
-r_int
-id|len
-op_assign
-l_int|0
-suffix:semicolon
 id|off_t
 id|pos
 op_assign
@@ -743,17 +703,24 @@ id|begin
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/*&n;&t; * Output the AppleTalk data for the /proc filesystem.&n;&t; */
+r_int
 id|len
-op_add_assign
+op_assign
 id|sprintf
 c_func
 (paren
 id|buffer
 comma
-l_string|&quot;Type local_addr  remote_addr tx_queue rx_queue st uid&bslash;n&quot;
+l_string|&quot;Type local_addr  remote_addr tx_queue &quot;
+l_string|&quot;rx_queue st uid&bslash;n&quot;
 )paren
 suffix:semicolon
+r_struct
+id|sock
+op_star
+id|s
+suffix:semicolon
+multiline_comment|/* Output the AppleTalk data for the /proc filesystem */
 id|spin_lock_bh
 c_func
 (paren
@@ -769,8 +736,6 @@ op_assign
 id|atalk_sockets
 suffix:semicolon
 id|s
-op_ne
-l_int|NULL
 suffix:semicolon
 id|s
 op_assign
@@ -934,20 +899,16 @@ id|start
 op_assign
 id|buffer
 op_plus
-(paren
 id|offset
 op_minus
 id|begin
-)paren
 suffix:semicolon
 multiline_comment|/* Start of wanted data */
 id|len
 op_sub_assign
-(paren
 id|offset
 op_minus
 id|begin
-)paren
 suffix:semicolon
 multiline_comment|/* Remove unwanted header data from length */
 r_if
@@ -974,8 +935,6 @@ r_struct
 id|atalk_route
 op_star
 id|atalk_router_list
-op_assign
-l_int|NULL
 suffix:semicolon
 DECL|variable|atalk_router_lock
 r_static
@@ -990,8 +949,6 @@ r_struct
 id|atalk_iface
 op_star
 id|atalk_iface_list
-op_assign
-l_int|NULL
 suffix:semicolon
 DECL|variable|atalk_iface_lock
 r_static
@@ -1000,14 +957,14 @@ id|atalk_iface_lock
 op_assign
 id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
+multiline_comment|/* For probing devices or in a routerless network */
 DECL|variable|atrtr_default
 r_static
 r_struct
 id|atalk_route
 id|atrtr_default
 suffix:semicolon
-multiline_comment|/* For probing devices or in a routerless network */
-multiline_comment|/*&n; * AppleTalk interface control&n; */
+multiline_comment|/* AppleTalk interface control */
 multiline_comment|/*&n; * Drop a device. Doesn&squot;t drop any of its routes - that is the caller&squot;s&n; * problem. Called when we down the interface or delete the address.&n; */
 DECL|function|atif_drop_device
 r_static
@@ -1120,11 +1077,6 @@ id|atalk_iface
 op_star
 id|iface
 op_assign
-(paren
-r_struct
-id|atalk_iface
-op_star
-)paren
 id|kmalloc
 c_func
 (paren
@@ -1140,9 +1092,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|iface
-op_eq
-l_int|NULL
 )paren
 r_return
 l_int|NULL
@@ -1192,7 +1143,7 @@ r_return
 id|iface
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Perform phase 2 AARP probing on our tentative address.&n; */
+multiline_comment|/* Perform phase 2 AARP probing on our tentative address */
 DECL|function|atif_probe_device
 r_static
 r_int
@@ -1241,7 +1192,7 @@ id|netct
 comma
 id|nodect
 suffix:semicolon
-multiline_comment|/*&n;&t; * Offset the network we start probing with.&n;&t; */
+multiline_comment|/* Offset the network we start probing with */
 r_if
 c_cond
 (paren
@@ -1250,12 +1201,6 @@ op_eq
 id|ATADDR_ANYNET
 )paren
 (brace
-r_if
-c_cond
-(paren
-op_logical_neg
-id|netrange
-)paren
 id|probe_net
 op_assign
 id|ntohs
@@ -1264,20 +1209,16 @@ c_func
 id|atif-&gt;nets.nr_firstnet
 )paren
 suffix:semicolon
-r_else
-id|probe_net
-op_assign
-id|ntohs
-c_func
+r_if
+c_cond
 (paren
-id|atif-&gt;nets.nr_firstnet
+id|netrange
 )paren
-op_plus
-(paren
+id|probe_net
+op_add_assign
 id|jiffies
 op_mod
 id|netrange
-)paren
 suffix:semicolon
 )brace
 r_if
@@ -1293,7 +1234,7 @@ id|jiffies
 op_amp
 l_int|0xFF
 suffix:semicolon
-multiline_comment|/*&n;&t; * Scan the networks.&n;&t; */
+multiline_comment|/* Scan the networks */
 id|atif-&gt;status
 op_or_assign
 id|ATIF_PROBE
@@ -1313,7 +1254,7 @@ id|netct
 op_increment
 )paren
 (brace
-multiline_comment|/*&n;&t;&t; * Sweep the available nodes from a given start.&n;&t;&t; */
+multiline_comment|/* Sweep the available nodes from a given start */
 id|atif-&gt;address.s_net
 op_assign
 id|htons
@@ -1361,7 +1302,7 @@ OL
 l_int|254
 )paren
 (brace
-multiline_comment|/*&n;&t;&t;&t;&t; * Probe a proposed address.&n;&t;&t;&t;&t; */
+multiline_comment|/* Probe a proposed address */
 id|aarp_probe_network
 c_func
 (paren
@@ -1429,7 +1370,7 @@ id|EADDRINUSE
 suffix:semicolon
 multiline_comment|/* Network is full... */
 )brace
-multiline_comment|/*&n; * Perform AARP probing for a proxy address&n; */
+multiline_comment|/* Perform AARP probing for a proxy address */
 DECL|function|atif_proxy_probe_device
 r_static
 r_int
@@ -1464,6 +1405,7 @@ id|atif-&gt;nets.nr_firstnet
 op_plus
 l_int|1
 suffix:semicolon
+multiline_comment|/* we probe the interface&squot;s network */
 r_int
 id|probe_net
 op_assign
@@ -1473,7 +1415,6 @@ c_func
 id|atif-&gt;address.s_net
 )paren
 suffix:semicolon
-multiline_comment|/* we probe the interface&squot;s network */
 r_int
 id|probe_node
 op_assign
@@ -1485,7 +1426,7 @@ id|netct
 comma
 id|nodect
 suffix:semicolon
-multiline_comment|/*&n;&t; * Offset the network we start probing with.&n;&t; */
+multiline_comment|/* Offset the network we start probing with */
 r_if
 c_cond
 (paren
@@ -1494,12 +1435,6 @@ op_eq
 id|ATADDR_ANYNET
 )paren
 (brace
-r_if
-c_cond
-(paren
-op_logical_neg
-id|netrange
-)paren
 id|probe_net
 op_assign
 id|ntohs
@@ -1508,20 +1443,16 @@ c_func
 id|atif-&gt;nets.nr_firstnet
 )paren
 suffix:semicolon
-r_else
-id|probe_net
-op_assign
-id|ntohs
-c_func
+r_if
+c_cond
 (paren
-id|atif-&gt;nets.nr_firstnet
+id|netrange
 )paren
-op_plus
-(paren
+id|probe_net
+op_add_assign
 id|jiffies
 op_mod
 id|netrange
-)paren
 suffix:semicolon
 )brace
 r_if
@@ -1537,7 +1468,7 @@ id|jiffies
 op_amp
 l_int|0xFF
 suffix:semicolon
-multiline_comment|/*&n;&t; * Scan the networks.&n;&t; */
+multiline_comment|/* Scan the networks */
 r_for
 c_loop
 (paren
@@ -1553,7 +1484,7 @@ id|netct
 op_increment
 )paren
 (brace
-multiline_comment|/*&n;&t;&t; * Sweep the available nodes from a given start.&n;&t;&t; */
+multiline_comment|/* Sweep the available nodes from a given start */
 id|proxy_addr-&gt;s_net
 op_assign
 id|htons
@@ -1592,22 +1523,18 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-(paren
 id|proxy_addr-&gt;s_node
 OG
 l_int|0
-)paren
 op_logical_and
-(paren
 id|proxy_addr-&gt;s_node
 OL
 l_int|254
 )paren
-)paren
 (brace
-multiline_comment|/*&n;&t;&t;&t;&t; * Tell AARP to probe a proposed address.&n;&t;&t;&t;&t; */
+multiline_comment|/* Tell AARP to probe a proposed address */
 r_int
-id|probe_result
+id|ret
 op_assign
 id|aarp_proxy_probe_network
 c_func
@@ -1620,23 +1547,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|probe_result
-op_eq
-l_int|0
-)paren
-r_return
-l_int|0
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|probe_result
+id|ret
 op_ne
 op_minus
 id|EADDRINUSE
 )paren
 r_return
-id|probe_result
+id|ret
 suffix:semicolon
 )brace
 )brace
@@ -1654,7 +1571,6 @@ c_func
 id|atif-&gt;nets.nr_lastnet
 )paren
 )paren
-(brace
 id|probe_net
 op_assign
 id|ntohs
@@ -1663,7 +1579,6 @@ c_func
 id|atif-&gt;nets.nr_firstnet
 )paren
 suffix:semicolon
-)brace
 )brace
 r_return
 op_minus
@@ -1691,18 +1606,13 @@ id|iface
 op_assign
 id|dev-&gt;atalk_ptr
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|iface
-)paren
-(brace
 r_return
+id|iface
+ques
+c_cond
 op_amp
 id|iface-&gt;address
-suffix:semicolon
-)brace
-r_return
+suffix:colon
 l_int|NULL
 suffix:semicolon
 )brace
@@ -1718,6 +1628,13 @@ r_void
 )paren
 (brace
 r_struct
+id|atalk_iface
+op_star
+id|fiface
+op_assign
+l_int|NULL
+suffix:semicolon
+r_struct
 id|at_addr
 op_star
 id|retval
@@ -1726,13 +1643,6 @@ r_struct
 id|atalk_iface
 op_star
 id|iface
-suffix:semicolon
-r_struct
-id|atalk_iface
-op_star
-id|fiface
-op_assign
-l_int|NULL
 suffix:semicolon
 multiline_comment|/*&n;&t; * Return a point-to-point interface only if&n;&t; * there is no non-ptp interface available.&n;&t; */
 id|spin_lock_bh
@@ -1750,8 +1660,6 @@ op_assign
 id|atalk_iface_list
 suffix:semicolon
 id|iface
-op_ne
-l_int|NULL
 suffix:semicolon
 id|iface
 op_assign
@@ -1805,35 +1713,27 @@ c_cond
 (paren
 id|fiface
 )paren
-(brace
 id|retval
 op_assign
 op_amp
 id|fiface-&gt;address
 suffix:semicolon
-)brace
 r_else
 r_if
 c_cond
 (paren
 id|atalk_iface_list
-op_ne
-l_int|NULL
 )paren
-(brace
 id|retval
 op_assign
 op_amp
 id|atalk_iface_list-&gt;address
 suffix:semicolon
-)brace
 r_else
-(brace
 id|retval
 op_assign
 l_int|NULL
 suffix:semicolon
-)brace
 id|out
 suffix:colon
 id|spin_unlock_bh
@@ -1875,15 +1775,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|iface
-op_eq
-l_int|NULL
 op_logical_or
-(paren
 id|iface-&gt;status
 op_amp
 id|ATIF_PROBE
-)paren
 )paren
 r_return
 l_int|NULL
@@ -1910,7 +1807,7 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Find a match for a specific network:node pair&n; */
+multiline_comment|/* Find a match for a specific network:node pair */
 DECL|function|atalk_find_interface
 r_static
 r_struct
@@ -1946,8 +1843,6 @@ op_assign
 id|atalk_iface_list
 suffix:semicolon
 id|iface
-op_ne
-l_int|NULL
 suffix:semicolon
 id|iface
 op_assign
@@ -1988,19 +1883,14 @@ multiline_comment|/* XXXX.0 -- net.0 returns the iface associated with net */
 r_if
 c_cond
 (paren
-(paren
 id|node
 op_eq
 id|ATADDR_ANYNODE
-)paren
 op_logical_and
-(paren
 id|net
 op_ne
 id|ATADDR_ANYNET
-)paren
 op_logical_and
-(paren
 id|ntohs
 c_func
 (paren
@@ -2012,9 +1902,7 @@ c_func
 (paren
 id|net
 )paren
-)paren
 op_logical_and
-(paren
 id|ntohs
 c_func
 (paren
@@ -2025,7 +1913,6 @@ id|ntohs
 c_func
 (paren
 id|iface-&gt;nets.nr_lastnet
-)paren
 )paren
 )paren
 r_break
@@ -2061,14 +1948,14 @@ multiline_comment|/*&n;&t; * we must search through all routes unless we find a 
 r_struct
 id|atalk_route
 op_star
-id|r
+id|net_route
+op_assign
+l_int|NULL
 suffix:semicolon
 r_struct
 id|atalk_route
 op_star
-id|net_route
-op_assign
-l_int|NULL
+id|r
 suffix:semicolon
 id|read_lock_bh
 c_func
@@ -2085,8 +1972,6 @@ op_assign
 id|atalk_router_list
 suffix:semicolon
 id|r
-op_ne
-l_int|NULL
 suffix:semicolon
 id|r
 op_assign
@@ -2134,7 +2019,6 @@ id|out
 suffix:semicolon
 )brace
 r_else
-(brace
 multiline_comment|/*&n;&t;&t;&t;&t; * this route will work if there isn&squot;t a&n;&t;&t;&t;&t; * direct host route, so cache it&n;&t;&t;&t;&t; */
 id|net_route
 op_assign
@@ -2142,42 +2026,33 @@ id|r
 suffix:semicolon
 )brace
 )brace
-)brace
 multiline_comment|/* &n;&t; * if we found a network route but not a direct host&n;&t; * route, then return it&n;&t; */
 r_if
 c_cond
 (paren
 id|net_route
-op_ne
-l_int|NULL
 )paren
-(brace
 id|r
 op_assign
 id|net_route
 suffix:semicolon
-)brace
 r_else
 r_if
 c_cond
 (paren
 id|atrtr_default.dev
 )paren
-(brace
 id|r
 op_assign
 op_amp
 id|atrtr_default
 suffix:semicolon
-)brace
 r_else
-(brace
-multiline_comment|/*&n;&t;&t; * No route can be found.&n;&t;&t; */
+multiline_comment|/* No route can be found */
 id|r
 op_assign
 l_int|NULL
 suffix:semicolon
-)brace
 id|out
 suffix:colon
 id|read_unlock_bh
@@ -2216,22 +2091,16 @@ c_func
 id|sa
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
+r_return
 id|atr
-op_eq
-l_int|NULL
-)paren
-r_return
-l_int|NULL
-suffix:semicolon
-r_else
-r_return
+ques
+c_cond
 id|atr-&gt;dev
+suffix:colon
+l_int|NULL
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Set up a default router.&n; */
+multiline_comment|/* Set up a default router */
 DECL|function|atrtr_set_default
 r_static
 r_void
@@ -2326,7 +2195,7 @@ r_int
 id|retval
 suffix:semicolon
 multiline_comment|/*&n;&t; * Fixme: Raise/Lower a routing change semaphore for these&n;&t; * operations.&n;&t; */
-multiline_comment|/*&n;&t; * Validate the request&n;&t; */
+multiline_comment|/* Validate the request */
 r_if
 c_cond
 (paren
@@ -2341,9 +2210,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|devhint
-op_eq
-l_int|NULL
 op_logical_and
 id|ga-&gt;sat_family
 op_ne
@@ -2353,7 +2221,7 @@ r_return
 op_minus
 id|EINVAL
 suffix:semicolon
-multiline_comment|/*&n;&t; * Now walk the routing table and make our decisions.&n;&t; */
+multiline_comment|/* Now walk the routing table and make our decisions */
 id|write_lock_bh
 c_func
 (paren
@@ -2369,8 +2237,6 @@ op_assign
 id|atalk_router_list
 suffix:semicolon
 id|rt
-op_ne
-l_int|NULL
 suffix:semicolon
 id|rt
 op_assign
@@ -2420,9 +2286,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|devhint
-op_eq
-l_int|NULL
 )paren
 (brace
 id|riface
@@ -2453,9 +2318,8 @@ id|iface-&gt;next
 r_if
 c_cond
 (paren
+op_logical_neg
 id|riface
-op_eq
-l_int|NULL
 op_logical_and
 id|ntohs
 c_func
@@ -2516,9 +2380,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|riface
-op_eq
-l_int|NULL
 )paren
 r_goto
 id|out
@@ -2531,18 +2394,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|rt
-op_eq
-l_int|NULL
 )paren
 (brace
 id|rt
 op_assign
-(paren
-r_struct
-id|atalk_route
-op_star
-)paren
 id|kmalloc
 c_func
 (paren
@@ -2563,9 +2420,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|rt
-op_eq
-l_int|NULL
 )paren
 r_goto
 id|out
@@ -2579,7 +2435,7 @@ op_assign
 id|rt
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * Fill in the routing entry.&n;&t; */
+multiline_comment|/* Fill in the routing entry */
 id|rt-&gt;target
 op_assign
 id|ta-&gt;sat_addr
@@ -2613,7 +2469,7 @@ r_return
 id|retval
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Delete a route. Find it and discard it.&n; */
+multiline_comment|/* Delete a route. Find it and discard it */
 DECL|function|atrtr_delete
 r_static
 r_int
@@ -2635,15 +2491,15 @@ op_assign
 op_amp
 id|atalk_router_list
 suffix:semicolon
-r_struct
-id|atalk_route
-op_star
-id|tmp
-suffix:semicolon
 r_int
 id|retval
 op_assign
 l_int|0
+suffix:semicolon
+r_struct
+id|atalk_route
+op_star
+id|tmp
 suffix:semicolon
 id|write_lock_bh
 c_func
@@ -2792,13 +2648,11 @@ id|tmp
 suffix:semicolon
 )brace
 r_else
-(brace
 id|r
 op_assign
 op_amp
 id|tmp-&gt;next
 suffix:semicolon
-)brace
 )brace
 id|write_unlock_bh
 c_func
@@ -2821,7 +2675,7 @@ l_int|NULL
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Actually down the interface.&n; */
+multiline_comment|/* Actually down the interface */
 DECL|function|atalk_dev_down
 r_static
 r_inline
@@ -2885,7 +2739,6 @@ id|event
 op_eq
 id|NETDEV_DOWN
 )paren
-(brace
 multiline_comment|/* Discard any use of this */
 id|atalk_dev_down
 c_func
@@ -2898,13 +2751,12 @@ op_star
 id|ptr
 )paren
 suffix:semicolon
-)brace
 r_return
 id|NOTIFY_DONE
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * ioctl calls. Shouldn&squot;t even need touching.&n; */
-multiline_comment|/*&n; * Device configuration ioctl calls.&n; */
+multiline_comment|/* ioctl calls. Shouldn&squot;t even need touching */
+multiline_comment|/* Device configuration ioctl calls */
 DECL|function|atif_ioctl
 r_int
 id|atif_ioctl
@@ -2918,10 +2770,6 @@ op_star
 id|arg
 )paren
 (brace
-r_struct
-id|ifreq
-id|atreq
-suffix:semicolon
 r_static
 r_char
 id|aarp_mcast
@@ -2942,6 +2790,10 @@ l_int|0xFF
 comma
 l_int|0xFF
 )brace
+suffix:semicolon
+r_struct
+id|ifreq
+id|atreq
 suffix:semicolon
 r_struct
 id|netrange
@@ -2997,10 +2849,6 @@ r_return
 op_minus
 id|EFAULT
 suffix:semicolon
-r_if
-c_cond
-(paren
-(paren
 id|dev
 op_assign
 id|__dev_get_by_name
@@ -3008,9 +2856,12 @@ c_func
 (paren
 id|atreq.ifr_name
 )paren
-)paren
-op_eq
-l_int|NULL
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|dev
 )paren
 r_return
 op_minus
@@ -3108,7 +2959,7 @@ id|add_route
 op_assign
 l_int|1
 suffix:semicolon
-multiline_comment|/*&n;&t;&t;&t; * if this is a point-to-point iface, and we already have an &n;&t;&t;&t; * iface for this AppleTalk address, then we should not add a route&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * if this is a point-to-point iface, and we already&n;&t;&t;&t; * have an iface for this AppleTalk address, then we&n;&t;&t;&t; * should not add a route&n;&t;&t;&t; */
 r_if
 c_cond
 (paren
@@ -3131,7 +2982,9 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;AppleTalk: point-to-point interface added with existing address&bslash;n&quot;
+l_string|&quot;AppleTalk: point-to-point &quot;
+l_string|&quot;interface added with &quot;
+l_string|&quot;existing address&bslash;n&quot;
 )paren
 suffix:semicolon
 id|add_route
@@ -3176,7 +3029,7 @@ c_cond
 id|atif
 )paren
 (brace
-multiline_comment|/*&n;&t;&t;&t;&t; * Already setting address.&n;&t;&t;&t;&t; */
+multiline_comment|/* Already setting address */
 r_if
 c_cond
 (paren
@@ -3220,9 +3073,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|atif
-op_eq
-l_int|NULL
 )paren
 r_return
 op_minus
@@ -3272,7 +3124,7 @@ op_minus
 id|EADDRINUSE
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t;&t;&t; * Hey it worked - add the direct routes.&n;&t;&t;&t; */
+multiline_comment|/* Hey it worked - add the direct routes */
 id|sa
 op_assign
 (paren
@@ -3320,23 +3172,19 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-(paren
 id|dev-&gt;flags
 op_amp
 id|IFF_LOOPBACK
-)paren
 op_logical_or
-(paren
 id|dev-&gt;flags
 op_amp
 id|IFF_POINTOPOINT
-)paren
 )paren
 id|rtdef.rt_flags
 op_or_assign
 id|RTF_HOST
 suffix:semicolon
-multiline_comment|/*&n;&t;&t;&t; * Routerless initial state.&n;&t;&t;&t; */
+multiline_comment|/* Routerless initial state */
 r_if
 c_cond
 (paren
@@ -3405,7 +3253,8 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;Too many routes/iface.&bslash;n&quot;
+l_string|&quot;Too many routes/&quot;
+l_string|&quot;iface.&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -3418,7 +3267,6 @@ c_cond
 (paren
 id|add_route
 )paren
-(brace
 r_for
 c_loop
 (paren
@@ -3457,7 +3305,6 @@ id|dev
 suffix:semicolon
 )brace
 )brace
-)brace
 id|dev_mc_add
 c_func
 (paren
@@ -3479,43 +3326,18 @@ suffix:colon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|atif
-op_eq
-l_int|NULL
 )paren
 r_return
 op_minus
 id|EADDRNOTAVAIL
 suffix:semicolon
-(paren
-(paren
-r_struct
-id|sockaddr_at
-op_star
-)paren
-(paren
-op_amp
-id|atreq.ifr_addr
-)paren
-)paren
-op_member_access_from_pointer
-id|sat_family
+id|sa-&gt;sat_family
 op_assign
 id|AF_APPLETALK
 suffix:semicolon
-(paren
-(paren
-r_struct
-id|sockaddr_at
-op_star
-)paren
-(paren
-op_amp
-id|atreq.ifr_addr
-)paren
-)paren
-op_member_access_from_pointer
-id|sat_addr
+id|sa-&gt;sat_addr
 op_assign
 id|atif-&gt;address
 suffix:semicolon
@@ -3527,59 +3349,22 @@ suffix:colon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|atif
-op_eq
-l_int|NULL
 )paren
 r_return
 op_minus
 id|EADDRNOTAVAIL
 suffix:semicolon
-(paren
-(paren
-r_struct
-id|sockaddr_at
-op_star
-)paren
-(paren
-op_amp
-id|atreq.ifr_addr
-)paren
-)paren
-op_member_access_from_pointer
-id|sat_family
+id|sa-&gt;sat_family
 op_assign
 id|AF_APPLETALK
 suffix:semicolon
-(paren
-(paren
-r_struct
-id|sockaddr_at
-op_star
-)paren
-(paren
-op_amp
-id|atreq.ifr_addr
-)paren
-)paren
-op_member_access_from_pointer
-id|sat_addr.s_net
+id|sa-&gt;sat_addr.s_net
 op_assign
 id|atif-&gt;address.s_net
 suffix:semicolon
-(paren
-(paren
-r_struct
-id|sockaddr_at
-op_star
-)paren
-(paren
-op_amp
-id|atreq.ifr_addr
-)paren
-)paren
-op_member_access_from_pointer
-id|sat_addr.s_node
+id|sa-&gt;sat_addr.s_node
 op_assign
 id|ATADDR_BCAST
 suffix:semicolon
@@ -3655,9 +3440,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|atif
-op_eq
-l_int|NULL
 )paren
 r_return
 op_minus
@@ -3675,7 +3459,7 @@ r_return
 op_minus
 id|EPROTONOSUPPORT
 suffix:semicolon
-multiline_comment|/*&n;                         * atif points to the current interface on this network;&n;                         * we aren&squot;t concerned about its current status (at least for now),&n;                         * but it has all the settings about the network we&squot;re going&n;                         * to probe.  consequently, it must exist.&n;                         */
+multiline_comment|/*&n;                         * atif points to the current interface on this network;&n;                         * we aren&squot;t concerned about its current status (at&n;&t;&t;&t; * least for now), but it has all the settings about&n;&t;&t;&t; * the network we&squot;re going to probe. Consequently, it&n;&t;&t;&t; * must exist.&n;                         */
 r_if
 c_cond
 (paren
@@ -3750,7 +3534,7 @@ r_return
 op_minus
 id|EADDRINUSE
 suffix:semicolon
-multiline_comment|/*&n;                         * We now have an address on the local network, and the AARP&n;                         * code will defend it for us until we take it down.&n;                         * We don&squot;t set up any routes right now, because ATCP will&n;                         * install them manually via SIOCADDRT.&n;                         */
+multiline_comment|/*&n;                         * We now have an address on the local network, and&n;&t;&t;&t; * the AARP code will defend it for us until we take it&n;&t;&t;&t; * down. We don&squot;t set up any routes right now, because&n;&t;&t;&t; * ATCP will install them manually via SIOCADDRT.&n;                         */
 r_break
 suffix:semicolon
 r_case
@@ -3784,15 +3568,14 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|atif
-op_eq
-l_int|NULL
 )paren
 r_return
 op_minus
 id|EADDRNOTAVAIL
 suffix:semicolon
-multiline_comment|/*&n;                         * give to aarp module to remove proxy entry&n;                         */
+multiline_comment|/* give to aarp module to remove proxy entry */
 id|aarp_proxy_remove
 c_func
 (paren
@@ -3808,10 +3591,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-suffix:semicolon
-r_if
-c_cond
-(paren
+r_return
 id|copy_to_user
 c_func
 (paren
@@ -3825,16 +3605,15 @@ r_sizeof
 id|atreq
 )paren
 )paren
-)paren
-r_return
+ques
+c_cond
 op_minus
 id|EFAULT
-suffix:semicolon
-r_return
+suffix:colon
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Routing ioctl() calls&n; */
+multiline_comment|/* Routing ioctl() calls */
 DECL|function|atrtr_ioctl
 r_static
 r_int
@@ -3851,15 +3630,15 @@ id|arg
 )paren
 (brace
 r_struct
-id|rtentry
-id|rt
-suffix:semicolon
-r_struct
 id|net_device
 op_star
 id|dev
 op_assign
 l_int|NULL
+suffix:semicolon
+r_struct
+id|rtentry
+id|rt
 suffix:semicolon
 r_if
 c_cond
@@ -3923,19 +3702,13 @@ suffix:semicolon
 r_case
 id|SIOCADDRT
 suffix:colon
-multiline_comment|/* FIX ME: the name of the device is still in user space, isn&squot;t it? */
+multiline_comment|/* FIXME: the name of the device is still in user&n;&t;&t;&t; * space, isn&squot;t it? */
 r_if
 c_cond
 (paren
 id|rt.rt_dev
-op_ne
-l_int|NULL
 )paren
 (brace
-r_if
-c_cond
-(paren
-(paren
 id|dev
 op_assign
 id|__dev_get_by_name
@@ -3943,9 +3716,12 @@ c_func
 (paren
 id|rt.rt_dev
 )paren
-)paren
-op_eq
-l_int|NULL
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|dev
 )paren
 r_return
 op_minus
@@ -3962,13 +3738,10 @@ comma
 id|dev
 )paren
 suffix:semicolon
-r_default
-suffix:colon
+)brace
 r_return
 op_minus
 id|EINVAL
-suffix:semicolon
-)brace
 suffix:semicolon
 )brace
 multiline_comment|/* Called from proc fs - just make it print the ifaces neatly */
@@ -3994,16 +3767,6 @@ r_int
 id|length
 )paren
 (brace
-r_struct
-id|atalk_iface
-op_star
-id|iface
-suffix:semicolon
-r_int
-id|len
-op_assign
-l_int|0
-suffix:semicolon
 id|off_t
 id|pos
 op_assign
@@ -4014,14 +3777,21 @@ id|begin
 op_assign
 l_int|0
 suffix:semicolon
+r_struct
+id|atalk_iface
+op_star
+id|iface
+suffix:semicolon
+r_int
 id|len
-op_add_assign
+op_assign
 id|sprintf
 c_func
 (paren
 id|buffer
 comma
-l_string|&quot;Interface&t;  Address   Networks   Status&bslash;n&quot;
+l_string|&quot;Interface&t;  Address   &quot;
+l_string|&quot;Networks   Status&bslash;n&quot;
 )paren
 suffix:semicolon
 id|spin_lock_bh
@@ -4039,8 +3809,6 @@ op_assign
 id|atalk_iface_list
 suffix:semicolon
 id|iface
-op_ne
-l_int|NULL
 suffix:semicolon
 id|iface
 op_assign
@@ -4156,9 +3924,7 @@ op_assign
 id|length
 suffix:semicolon
 r_return
-(paren
 id|len
-)paren
 suffix:semicolon
 )brace
 multiline_comment|/* Called from proc fs - just make it print the routes neatly */
@@ -4184,16 +3950,6 @@ r_int
 id|length
 )paren
 (brace
-r_struct
-id|atalk_route
-op_star
-id|rt
-suffix:semicolon
-r_int
-id|len
-op_assign
-l_int|0
-suffix:semicolon
 id|off_t
 id|pos
 op_assign
@@ -4204,8 +3960,9 @@ id|begin
 op_assign
 l_int|0
 suffix:semicolon
+r_int
 id|len
-op_add_assign
+op_assign
 id|sprintf
 c_func
 (paren
@@ -4213,6 +3970,11 @@ id|buffer
 comma
 l_string|&quot;Target        Router  Flags Dev&bslash;n&quot;
 )paren
+suffix:semicolon
+r_struct
+id|atalk_route
+op_star
+id|rt
 suffix:semicolon
 r_if
 c_cond
@@ -4265,8 +4027,6 @@ op_assign
 id|atalk_router_list
 suffix:semicolon
 id|rt
-op_ne
-l_int|NULL
 suffix:semicolon
 id|rt
 op_assign
@@ -4463,12 +4223,11 @@ id|data
 op_increment
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-id|sum
-)paren
+multiline_comment|/* Use 0xFFFF for 0. 0 itself means none */
 r_return
+id|sum
+ques
+c_cond
 id|htons
 c_func
 (paren
@@ -4478,11 +4237,9 @@ r_int
 )paren
 id|sum
 )paren
-suffix:semicolon
-r_return
+suffix:colon
 l_int|0xFFFF
 suffix:semicolon
-multiline_comment|/* Use 0xFFFF for 0. 0 itself means none */
 )brace
 multiline_comment|/*&n; * Create a socket. Initialise the socket, blank the addresses&n; * set the state.&n; */
 DECL|function|atalk_create
@@ -4504,8 +4261,6 @@ r_struct
 id|sock
 op_star
 id|sk
-suffix:semicolon
-id|sk
 op_assign
 id|sk_alloc
 c_func
@@ -4520,9 +4275,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|sk
-op_eq
-l_int|NULL
 )paren
 r_return
 op_minus
@@ -4551,17 +4305,13 @@ suffix:semicolon
 r_case
 id|SOCK_STREAM
 suffix:colon
-multiline_comment|/*&n;&t;&t;&t; * TO DO: if you want to implement ADSP, here&squot;s the place to start&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * TODO: if you want to implement ADSP, here&squot;s the&n;&t;&t;&t; * place to start&n;&t;&t;&t; */
 multiline_comment|/*&n;&t;&t;&t;sock-&gt;ops = &amp;atalk_stream_ops;&n;&t;&t;&t;break;&n;&t;&t;&t;*/
 r_default
 suffix:colon
 id|sk_free
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 id|sk
 )paren
 suffix:semicolon
@@ -4570,7 +4320,6 @@ op_minus
 id|ESOCKTNOSUPPORT
 suffix:semicolon
 )brace
-suffix:semicolon
 id|MOD_INC_USE_COUNT
 suffix:semicolon
 id|sock_init_data
@@ -4594,7 +4343,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Free a socket. No work needed&n; */
+multiline_comment|/* Free a socket. No work needed */
 DECL|function|atalk_release
 r_static
 r_int
@@ -4617,9 +4366,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|sk
-op_eq
-l_int|NULL
 )paren
 r_return
 l_int|0
@@ -4712,8 +4460,6 @@ op_assign
 id|atalk_sockets
 suffix:semicolon
 id|s
-op_ne
-l_int|NULL
 suffix:semicolon
 id|s
 op_assign
@@ -4740,16 +4486,14 @@ id|try_next_port
 suffix:semicolon
 )brace
 multiline_comment|/* Wheee, it&squot;s free, assign and insert. */
-r_if
-c_cond
-(paren
-(paren
 id|sk-&gt;next
 op_assign
 id|atalk_sockets
-)paren
-op_ne
-l_int|NULL
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|sk-&gt;next
 )paren
 id|atalk_sockets-&gt;pprev
 op_assign
@@ -4811,6 +4555,13 @@ id|sk
 )paren
 (brace
 r_struct
+id|sockaddr_at
+id|sat
+suffix:semicolon
+r_int
+id|n
+suffix:semicolon
+r_struct
 id|at_addr
 op_star
 id|ap
@@ -4820,19 +4571,11 @@ c_func
 (paren
 )paren
 suffix:semicolon
-r_struct
-id|sockaddr_at
-id|sat
-suffix:semicolon
-r_int
-id|n
-suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|ap
-op_eq
-l_int|NULL
 op_logical_or
 id|ap-&gt;s_net
 op_eq
@@ -4858,10 +4601,6 @@ id|sat.sat_addr.s_node
 op_assign
 id|ap-&gt;s_node
 suffix:semicolon
-r_if
-c_cond
-(paren
-(paren
 id|n
 op_assign
 id|atalk_pick_and_bind_port
@@ -4872,7 +4611,11 @@ comma
 op_amp
 id|sat
 )paren
-)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|n
 OL
 l_int|0
 )paren
@@ -4887,7 +4630,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Set the address &squot;our end&squot; of the connection.&n; */
+multiline_comment|/* Set the address &squot;our end&squot; of the connection */
 DECL|function|atalk_bind
 r_static
 r_int
@@ -4909,11 +4652,6 @@ id|addr_len
 )paren
 (brace
 r_struct
-id|sock
-op_star
-id|sk
-suffix:semicolon
-r_struct
 id|sockaddr_at
 op_star
 id|addr
@@ -4925,6 +4663,9 @@ op_star
 )paren
 id|uaddr
 suffix:semicolon
+r_struct
+id|sock
+op_star
 id|sk
 op_assign
 id|sock-&gt;sk
@@ -4932,19 +4673,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|sk-&gt;zapped
-op_eq
-l_int|0
-)paren
-(brace
-r_return
-op_minus
-id|EINVAL
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
+op_logical_or
 id|addr_len
 op_ne
 r_sizeof
@@ -4953,12 +4684,10 @@ r_struct
 id|sockaddr_at
 )paren
 )paren
-(brace
 r_return
 op_minus
 id|EINVAL
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -4966,12 +4695,10 @@ id|addr-&gt;sat_family
 op_ne
 id|AF_APPLETALK
 )paren
-(brace
 r_return
 op_minus
 id|EAFNOSUPPORT
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -4997,16 +4724,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|ap
-op_eq
-l_int|NULL
 )paren
-(brace
 r_return
 op_minus
 id|EADDRNOTAVAIL
 suffix:semicolon
-)brace
 id|sk-&gt;protinfo.af_at.src_net
 op_assign
 id|addr-&gt;sat_addr.s_net
@@ -5025,6 +4749,7 @@ r_else
 r_if
 c_cond
 (paren
+op_logical_neg
 id|atalk_find_interface
 c_func
 (paren
@@ -5032,8 +4757,6 @@ id|addr-&gt;sat_addr.s_net
 comma
 id|addr-&gt;sat_addr.s_node
 )paren
-op_eq
-l_int|NULL
 )paren
 r_return
 op_minus
@@ -5094,8 +4817,6 @@ id|sk
 comma
 id|addr
 )paren
-op_ne
-l_int|NULL
 )paren
 r_return
 op_minus
@@ -5110,7 +4831,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Set the address we talk to.&n; */
+multiline_comment|/* Set the address we talk to */
 DECL|function|atalk_connect
 r_static
 r_int
@@ -5205,7 +4926,9 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;%s is broken and did not set SO_BROADCAST. It will break when 2.2 is released.&bslash;n&quot;
+l_string|&quot;%s is broken and did not set &quot;
+l_string|&quot;SO_BROADCAST. It will break when 2.2 is &quot;
+l_string|&quot;released.&bslash;n&quot;
 comma
 id|current-&gt;comm
 )paren
@@ -5222,7 +4945,6 @@ c_cond
 (paren
 id|sk-&gt;zapped
 )paren
-(brace
 r_if
 c_cond
 (paren
@@ -5238,18 +4960,16 @@ r_return
 op_minus
 id|EBUSY
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
+op_logical_neg
 id|atrtr_get_dev
 c_func
 (paren
 op_amp
 id|addr-&gt;sat_addr
 )paren
-op_eq
-l_int|NULL
 )paren
 r_return
 op_minus
@@ -5312,8 +5032,6 @@ r_struct
 id|sock
 op_star
 id|sk
-suffix:semicolon
-id|sk
 op_assign
 id|sock-&gt;sk
 suffix:semicolon
@@ -5322,7 +5040,6 @@ c_cond
 (paren
 id|sk-&gt;zapped
 )paren
-(brace
 r_if
 c_cond
 (paren
@@ -5338,7 +5055,6 @@ r_return
 op_minus
 id|ENOBUFS
 suffix:semicolon
-)brace
 op_star
 id|uaddr_len
 op_assign
@@ -5439,11 +5155,6 @@ id|pt
 )paren
 (brace
 r_struct
-id|sock
-op_star
-id|sock
-suffix:semicolon
-r_struct
 id|ddpehdr
 op_star
 id|ddp
@@ -5453,6 +5164,11 @@ r_void
 op_star
 )paren
 id|skb-&gt;h.raw
+suffix:semicolon
+r_struct
+id|sock
+op_star
+id|sock
 suffix:semicolon
 r_struct
 id|atalk_iface
@@ -5482,17 +5198,9 @@ op_star
 id|ddp
 )paren
 )paren
-(brace
-id|kfree_skb
-c_func
-(paren
-id|skb
-)paren
+r_goto
+id|freeit
 suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-)brace
 multiline_comment|/*&n;&t; *&t;Fix up the length field&t;[Ok this is horrible but otherwise&n;&t; *&t;I end up with unions of bit fields and messy bit field order&n;&t; *&t;compiler/endian dependencies..]&n;&t; *&n;&t; *&t;FIXME: This is a write to a shared object. Granted it&n;&t; *&t;happens to be safe BUT.. (Its safe as user space will not&n;&t; *&t;run until we put it back)&n;&t; */
 op_star
 (paren
@@ -5517,7 +5225,7 @@ id|ddp
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Trim buffer in case of stray trailing data&n;&t; */
+multiline_comment|/* Trim buffer in case of stray trailing data */
 id|origlen
 op_assign
 id|skb-&gt;len
@@ -5548,17 +5256,9 @@ op_star
 id|ddp
 )paren
 )paren
-(brace
-id|kfree_skb
-c_func
-(paren
-id|skb
-)paren
+r_goto
+id|freeit
 suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-)brace
 multiline_comment|/*&n;&t; * Any checksums. Note we don&squot;t do htons() on this == is assumed to be&n;&t; * valid for net byte orders all over the networking code...&n;&t; */
 r_if
 c_cond
@@ -5575,25 +5275,16 @@ id|ddphv.deh_len
 op_ne
 id|ddp-&gt;deh_sum
 )paren
-(brace
 multiline_comment|/* Not a valid AppleTalk frame - dustbin time */
-id|kfree_skb
-c_func
-(paren
-id|skb
-)paren
+r_goto
+id|freeit
 suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-)brace
 multiline_comment|/* Check the packet is aimed at us */
 r_if
 c_cond
 (paren
+op_logical_neg
 id|ddp-&gt;deh_dnet
-op_eq
-l_int|0
 )paren
 multiline_comment|/* Net 0 is &squot;this network&squot; */
 id|atif
@@ -5617,13 +5308,12 @@ comma
 id|ddp-&gt;deh_dnode
 )paren
 suffix:semicolon
-multiline_comment|/* &n;&t; * Not ours, so we route the packet via the correct AppleTalk interface.&n;&t; */
+multiline_comment|/* Not ours, so we route the packet via the correct AppleTalk iface */
 r_if
 c_cond
 (paren
+op_logical_neg
 id|atif
-op_eq
-l_int|NULL
 )paren
 (brace
 r_struct
@@ -5643,12 +5333,11 @@ id|skb-&gt;pkt_type
 op_ne
 id|PACKET_HOST
 op_logical_or
+op_logical_neg
 id|ddp-&gt;deh_dnet
-op_eq
-l_int|0
 )paren
 (brace
-multiline_comment|/*&n;&t;&t;&t; * FIX ME:&n;&t;&t;&t; * Can it ever happen that a packet is from a PPP iface and needs to be broadcast onto the default network?&n;&t;&t;&t; */
+multiline_comment|/* FIXME:&n;&t;&t;&t; * Can it ever happen that a packet is from a PPP&n;&t;&t;&t; * iface and needs to be broadcast onto the default&n;&t;&t;&t; * network? */
 r_if
 c_cond
 (paren
@@ -5660,17 +5349,13 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;AppleTalk: didn&squot;t forward broadcast packet received from PPP iface&bslash;n&quot;
+l_string|&quot;AppleTalk: didn&squot;t forward &quot;
+l_string|&quot;broadcast packet received &quot;
+l_string|&quot;from PPP iface&bslash;n&quot;
 )paren
 suffix:semicolon
-id|kfree_skb
-c_func
-(paren
-id|skb
-)paren
-suffix:semicolon
-r_return
-l_int|0
+r_goto
+id|freeit
 suffix:semicolon
 )brace
 id|ta.s_net
@@ -5694,25 +5379,16 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|rt
-op_eq
-l_int|NULL
 op_logical_or
 id|ddphv.deh_hops
 op_eq
 id|DDP_MAXHOPS
 )paren
-(brace
-id|kfree_skb
-c_func
-(paren
-id|skb
-)paren
+r_goto
+id|freeit
 suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-)brace
 id|ddphv.deh_hops
 op_increment
 suffix:semicolon
@@ -5790,13 +5466,11 @@ OL
 l_int|22
 )paren
 (brace
+multiline_comment|/* 22 bytes - 12 ether, 2 len, 3 802.2 5 snap */
 r_struct
 id|sk_buff
 op_star
-id|newskb
-suffix:semicolon
-multiline_comment|/* 22 bytes - 12 ether, 2 len, 3 802.2 5 snap */
-id|newskb
+id|nskb
 op_assign
 id|skb_realloc_headroom
 c_func
@@ -5816,14 +5490,14 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|newskb
+id|nskb
 )paren
-r_return
-l_int|0
+r_goto
+id|out
 suffix:semicolon
 id|skb
 op_assign
-id|newskb
+id|nskb
 suffix:semicolon
 )brace
 r_else
@@ -5842,11 +5516,7 @@ r_if
 c_cond
 (paren
 id|skb
-)paren
-(brace
-r_if
-c_cond
-(paren
+op_logical_and
 id|aarp_send_ddp
 c_func
 (paren
@@ -5863,19 +5533,15 @@ op_eq
 op_minus
 l_int|1
 )paren
-id|kfree_skb
-c_func
-(paren
-id|skb
-)paren
+r_goto
+id|freeit
 suffix:semicolon
-)brace
-r_return
-l_int|0
+r_goto
+id|out
 suffix:semicolon
 )brace
 macro_line|#if defined(CONFIG_IPDDP) || defined(CONFIG_IPDDP_MODULE)
-multiline_comment|/*&n;         *      Check if IP-over-DDP&n;         */
+multiline_comment|/* Check if IP-over-DDP */
 r_if
 c_cond
 (paren
@@ -5891,22 +5557,24 @@ r_struct
 id|net_device
 op_star
 id|dev
-suffix:semicolon
-multiline_comment|/* This needs to be able to handle ipddp&quot;N&quot; devices */
-r_if
-c_cond
-(paren
-(paren
-id|dev
 op_assign
 id|__dev_get_by_name
 c_func
 (paren
 l_string|&quot;ipddp0&quot;
 )paren
-)paren
-op_eq
-l_int|NULL
+suffix:semicolon
+r_struct
+id|net_device_stats
+op_star
+id|stats
+suffix:semicolon
+multiline_comment|/* This needs to be able to handle ipddp&quot;N&quot; devices */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|dev
 )paren
 r_return
 op_minus
@@ -5936,28 +5604,14 @@ id|skb-&gt;h.raw
 op_assign
 id|skb-&gt;data
 suffix:semicolon
-(paren
-(paren
-r_struct
-id|net_device_stats
-op_star
-)paren
+id|stats
+op_assign
 id|dev-&gt;priv
-)paren
-op_member_access_from_pointer
-id|rx_packets
+suffix:semicolon
+id|stats-&gt;rx_packets
 op_increment
 suffix:semicolon
-(paren
-(paren
-r_struct
-id|net_device_stats
-op_star
-)paren
-id|dev-&gt;priv
-)paren
-op_member_access_from_pointer
-id|rx_bytes
+id|stats-&gt;rx_bytes
 op_add_assign
 id|skb-&gt;len
 op_plus
@@ -5970,8 +5624,8 @@ id|skb
 )paren
 suffix:semicolon
 multiline_comment|/* Send the SKB up to a higher place. */
-r_return
-l_int|0
+r_goto
+id|out
 suffix:semicolon
 )brace
 macro_line|#endif
@@ -6002,23 +5656,14 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|sock
-op_eq
-l_int|NULL
 )paren
-(brace
 multiline_comment|/* But not one of our sockets */
-id|kfree_skb
-c_func
-(paren
-id|skb
-)paren
+r_goto
+id|freeit
 suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-)brace
-multiline_comment|/*&n;&t; *&t;Queue packet (standard)&n;&t; */
+multiline_comment|/* Queue packet (standard) */
 id|skb-&gt;sk
 op_assign
 id|sock
@@ -6036,12 +5681,22 @@ id|skb
 OL
 l_int|0
 )paren
+r_goto
+id|freeit
+suffix:semicolon
+r_goto
+id|out
+suffix:semicolon
+id|freeit
+suffix:colon
 id|kfree_skb
 c_func
 (paren
 id|skb
 )paren
 suffix:semicolon
+id|out
+suffix:colon
 r_return
 l_int|0
 suffix:semicolon
@@ -6079,7 +5734,7 @@ id|at_addr
 op_star
 id|ap
 suffix:semicolon
-multiline_comment|/*&n;&t; * Expand any short form frames.&n;&t; */
+multiline_comment|/* Expand any short form frames */
 r_if
 c_cond
 (paren
@@ -6091,7 +5746,7 @@ op_eq
 l_int|1
 )paren
 (brace
-multiline_comment|/*&n;&t;&t; * Find our address.&n;&t;&t; */
+multiline_comment|/* Find our address */
 id|ap
 op_assign
 id|atalk_find_dev_addr
@@ -6103,9 +5758,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|ap
-op_eq
-l_int|NULL
 op_logical_or
 id|skb-&gt;len
 OL
@@ -6150,7 +5804,7 @@ op_star
 )paren
 id|skb-&gt;data
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * Now fill in the long header.&n;&t;&t; */
+multiline_comment|/* Now fill in the long header */
 multiline_comment|/*&n;&t; &t; * These two first. The mac overlays the new source/dest&n;&t; &t; * network information so we MUST copy these before&n;&t; &t; * we write the network numbers !&n;&t; &t; */
 id|ddp-&gt;deh_dnode
 op_assign
@@ -6276,6 +5930,16 @@ op_star
 )paren
 id|msg-&gt;msg_name
 suffix:semicolon
+r_int
+id|flags
+op_assign
+id|msg-&gt;msg_flags
+suffix:semicolon
+r_int
+id|loopback
+op_assign
+l_int|0
+suffix:semicolon
 r_struct
 id|sockaddr_at
 id|local_satalk
@@ -6306,17 +5970,7 @@ op_star
 id|rt
 suffix:semicolon
 r_int
-id|loopback
-op_assign
-l_int|0
-suffix:semicolon
-r_int
 id|err
-suffix:semicolon
-r_int
-id|flags
-op_assign
-id|msg-&gt;msg_flags
 suffix:semicolon
 r_if
 c_cond
@@ -6352,7 +6006,6 @@ c_cond
 (paren
 id|sk-&gt;zapped
 )paren
-(brace
 r_if
 c_cond
 (paren
@@ -6368,7 +6021,6 @@ r_return
 op_minus
 id|EBUSY
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -6379,14 +6031,7 @@ r_sizeof
 op_star
 id|usat
 )paren
-)paren
-r_return
-op_minus
-id|EINVAL
-suffix:semicolon
-r_if
-c_cond
-(paren
+op_logical_or
 id|usat-&gt;sat_family
 op_ne
 id|AF_APPLETALK
@@ -6411,7 +6056,8 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;SO_BROADCAST: Fix your netatalk as it will break before 2.2&bslash;n&quot;
+l_string|&quot;SO_BROADCAST: Fix your netatalk as &quot;
+l_string|&quot;it will break before 2.2&bslash;n&quot;
 )paren
 suffix:semicolon
 macro_line|#if 0
@@ -6485,8 +6131,6 @@ r_if
 c_cond
 (paren
 id|usat-&gt;sat_addr.s_net
-op_ne
-l_int|0
 op_logical_or
 id|usat-&gt;sat_addr.s_node
 op_eq
@@ -6505,9 +6149,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|rt
-op_eq
-l_int|NULL
 )paren
 r_return
 op_minus
@@ -6544,9 +6187,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|rt
-op_eq
-l_int|NULL
 )paren
 r_return
 op_minus
@@ -6599,9 +6241,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|skb
-op_eq
-l_int|NULL
 )paren
 r_return
 id|err
@@ -6806,27 +6447,19 @@ c_cond
 id|ddp-&gt;deh_dnode
 op_eq
 id|ATADDR_BCAST
-)paren
-(brace
-r_if
-c_cond
-(paren
-(paren
+op_logical_and
 op_logical_neg
 (paren
 id|rt-&gt;flags
 op_amp
 id|RTF_GATEWAY
 )paren
-)paren
 op_logical_and
-(paren
 op_logical_neg
 (paren
 id|dev-&gt;flags
 op_amp
 id|IFF_LOOPBACK
-)paren
 )paren
 )paren
 (brace
@@ -6891,15 +6524,12 @@ suffix:semicolon
 multiline_comment|/* else queued/sent above in the aarp queue */
 )brace
 )brace
-)brace
 r_if
 c_cond
-(paren
 (paren
 id|dev-&gt;flags
 op_amp
 id|IFF_LOOPBACK
-)paren
 op_logical_or
 id|loopback
 )paren
@@ -7099,24 +6729,24 @@ id|ddp
 op_assign
 l_int|NULL
 suffix:semicolon
-r_struct
-id|ddpebits
-id|ddphv
-suffix:semicolon
 r_int
 id|copied
 op_assign
 l_int|0
 suffix:semicolon
-r_struct
-id|sk_buff
-op_star
-id|skb
-suffix:semicolon
 r_int
 id|err
 op_assign
 l_int|0
+suffix:semicolon
+r_struct
+id|ddpebits
+id|ddphv
+suffix:semicolon
+r_struct
+id|sk_buff
+op_star
+id|skb
 suffix:semicolon
 id|skb
 op_assign
@@ -7125,18 +6755,14 @@ c_func
 (paren
 id|sk
 comma
-(paren
 id|flags
 op_amp
 op_complement
 id|MSG_DONTWAIT
-)paren
 comma
-(paren
 id|flags
 op_amp
 id|MSG_DONTWAIT
-)paren
 comma
 op_amp
 id|err
@@ -7145,9 +6771,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|skb
-op_eq
-l_int|NULL
 )paren
 r_return
 id|err
@@ -7374,7 +6999,7 @@ c_cond
 id|cmd
 )paren
 (brace
-multiline_comment|/*&n;&t;&t; *&t;Protocol layer&n;&t;&t; */
+multiline_comment|/* Protocol layer */
 r_case
 id|TIOCOUTQ
 suffix:colon
@@ -7396,28 +7021,20 @@ id|amount
 OL
 l_int|0
 )paren
-(brace
 id|amount
 op_assign
 l_int|0
 suffix:semicolon
-)brace
 r_break
 suffix:semicolon
 r_case
 id|TIOCINQ
 suffix:colon
 (brace
+multiline_comment|/* These two are safe on a single CPU system as only&n;&t;&t;&t; * user tasks fiddle here */
 r_struct
 id|sk_buff
 op_star
-id|skb
-suffix:semicolon
-multiline_comment|/* These two are safe on a single CPU system as only user tasks fiddle here */
-r_if
-c_cond
-(paren
-(paren
 id|skb
 op_assign
 id|skb_peek
@@ -7426,11 +7043,12 @@ c_func
 op_amp
 id|sk-&gt;receive_queue
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|skb
 )paren
-op_ne
-l_int|NULL
-)paren
-(brace
 id|amount
 op_assign
 id|skb-&gt;len
@@ -7441,7 +7059,6 @@ r_struct
 id|ddpehdr
 )paren
 suffix:semicolon
-)brace
 r_break
 suffix:semicolon
 )brace
@@ -7451,24 +7068,24 @@ suffix:colon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|sk
 )paren
-(brace
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|sk-&gt;stamp.tv_sec
-op_eq
-l_int|0
 )paren
-(brace
 r_return
 op_minus
 id|ENOENT
 suffix:semicolon
-)brace
 r_return
-(paren
 id|copy_to_user
 c_func
 (paren
@@ -7493,16 +7110,8 @@ op_minus
 id|EFAULT
 suffix:colon
 l_int|0
-)paren
 suffix:semicolon
-)brace
-r_return
-(paren
-op_minus
-id|EINVAL
-)paren
-suffix:semicolon
-multiline_comment|/*&n;&t;&t; * Routing&n;&t;&t; */
+multiline_comment|/* Routing */
 r_case
 id|SIOCADDRT
 suffix:colon
@@ -7519,14 +7128,11 @@ c_func
 id|CAP_NET_ADMIN
 )paren
 )paren
-(brace
 r_return
 op_minus
 id|EPERM
 suffix:semicolon
-)brace
 r_return
-(paren
 id|atrtr_ioctl
 c_func
 (paren
@@ -7538,9 +7144,8 @@ op_star
 )paren
 id|arg
 )paren
-)paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * Interface&n;&t;&t; */
+multiline_comment|/* Interface */
 r_case
 id|SIOCGIFADDR
 suffix:colon
@@ -7565,7 +7170,6 @@ id|SIOCDARP
 suffix:colon
 multiline_comment|/* proxy AARP */
 r_return
-(paren
 id|atif_ioctl
 c_func
 (paren
@@ -7577,9 +7181,8 @@ op_star
 )paren
 id|arg
 )paren
-)paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * Physical layer ioctl calls&n;&t;&t; */
+multiline_comment|/* Physical layer ioctl calls */
 r_case
 id|SIOCSIFLINK
 suffix:colon
@@ -7617,8 +7220,6 @@ r_case
 id|SIOCGIFNAME
 suffix:colon
 r_return
-(paren
-(paren
 id|dev_ioctl
 c_func
 (paren
@@ -7629,8 +7230,6 @@ r_void
 op_star
 )paren
 id|arg
-)paren
-)paren
 )paren
 suffix:semicolon
 r_case
@@ -7658,22 +7257,17 @@ r_case
 id|SIOCSIFDSTADDR
 suffix:colon
 r_return
-(paren
 op_minus
 id|EINVAL
-)paren
 suffix:semicolon
 r_default
 suffix:colon
 r_return
-(paren
 op_minus
 id|EINVAL
-)paren
 suffix:semicolon
 )brace
 r_return
-(paren
 id|put_user
 c_func
 (paren
@@ -7684,7 +7278,6 @@ r_int
 op_star
 )paren
 id|arg
-)paren
 )paren
 suffix:semicolon
 )brace
@@ -7853,7 +7446,7 @@ comma
 l_int|0x9B
 )brace
 suffix:semicolon
-multiline_comment|/*&n; * Export symbols for use by drivers when AppleTalk is a module.&n; */
+multiline_comment|/* Export symbols for use by drivers when AppleTalk is a module */
 DECL|variable|aarp_send_ddp
 id|EXPORT_SYMBOL
 c_func
@@ -7896,10 +7489,6 @@ op_amp
 id|atalk_family_ops
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-(paren
 id|ddp_dl
 op_assign
 id|register_snap_client
@@ -7909,11 +7498,13 @@ id|ddp_snap_id
 comma
 id|atalk_rcv
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|ddp_dl
 )paren
-op_eq
-l_int|NULL
-)paren
-(brace
 id|printk
 c_func
 (paren
@@ -7921,7 +7512,6 @@ id|KERN_CRIT
 l_string|&quot;Unable to register DDP with SNAP.&bslash;n&quot;
 )paren
 suffix:semicolon
-)brace
 id|ltalk_packet_type.type
 op_assign
 id|htons
@@ -7964,7 +7554,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_PROC_FS
 id|proc_net_create
 c_func
 (paren
@@ -7995,6 +7584,7 @@ comma
 id|atalk_if_get_info
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_PROC_FS
 id|aarp_register_proc_fs
 c_func
 (paren
@@ -8012,7 +7602,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;NET4: AppleTalk 0.18 for Linux NET4.0&bslash;n&quot;
+l_string|&quot;NET4: AppleTalk 0.18a for Linux NET4.0&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -8045,7 +7635,6 @@ c_func
 )paren
 suffix:semicolon
 macro_line|#endif /* CONFIG_SYSCTL */
-macro_line|#ifdef CONFIG_PROC_FS
 id|proc_net_remove
 c_func
 (paren
@@ -8064,6 +7653,7 @@ c_func
 l_string|&quot;atalk_iface&quot;
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_PROC_FS
 id|aarp_unregister_proc_fs
 c_func
 (paren
@@ -8108,8 +7698,6 @@ c_func
 (paren
 id|PF_APPLETALK
 )paren
-suffix:semicolon
-r_return
 suffix:semicolon
 )brace
 DECL|variable|atalk_exit

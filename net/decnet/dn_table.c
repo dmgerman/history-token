@@ -133,8 +133,6 @@ DECL|variable|dn_fib_hash_zombies
 r_static
 r_int
 id|dn_fib_hash_zombies
-op_assign
-l_int|0
 suffix:semicolon
 DECL|function|dn_hash
 r_static

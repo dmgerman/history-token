@@ -104,7 +104,7 @@ id|reason
 suffix:semicolon
 r_extern
 r_void
-id|dn_nsp_send_lnk
+id|dn_nsp_send_link
 c_func
 (paren
 r_struct
@@ -113,8 +113,11 @@ op_star
 id|sk
 comma
 r_int
-r_int
-id|flags
+r_char
+id|lsflags
+comma
+r_char
+id|fcval
 )paren
 suffix:semicolon
 r_extern
@@ -182,6 +185,9 @@ r_struct
 id|sk_buff
 op_star
 id|skb
+comma
+r_int
+id|gfp
 comma
 r_int
 id|oob
@@ -592,6 +598,8 @@ DECL|macro|NSP_FC_SRC
 mdefine_line|#define NSP_FC_SRC    0x04            /* Seg Req. Count       */
 DECL|macro|NSP_FC_SCMC
 mdefine_line|#define NSP_FC_SCMC   0x08            /* Sess. Control Mess   */
+DECL|macro|NSP_FC_MASK
+mdefine_line|#define NSP_FC_MASK   0x0c            /* FC type mask         */
 DECL|member|info
 r_int
 r_char
@@ -903,13 +911,17 @@ r_int
 id|off
 )paren
 (brace
+(paren
 op_star
 id|seq
+)paren
 op_add_assign
 id|off
 suffix:semicolon
+(paren
 op_star
 id|seq
+)paren
 op_and_assign
 l_int|0x0fff
 suffix:semicolon
@@ -931,22 +943,14 @@ id|seq2
 )paren
 (brace
 r_return
-(paren
-(paren
-(paren
-id|seq2
-op_amp
-l_int|0x0fff
-)paren
-op_minus
+id|equal
+c_func
 (paren
 id|seq1
-op_amp
-l_int|0x0fff
-)paren
-)paren
-op_eq
+op_plus
 l_int|1
+comma
+id|seq2
 )paren
 suffix:semicolon
 )brace

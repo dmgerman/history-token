@@ -12,6 +12,7 @@ macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/console.h&gt;
 macro_line|#include &lt;linux/irq.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
+macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
@@ -39,6 +40,7 @@ macro_line|#include &lt;asm/mmu_context.h&gt;
 macro_line|#include &lt;asm/backlight.h&gt;
 macro_line|#ifdef CONFIG_SMP
 macro_line|#include &lt;asm/smplock.h&gt;
+macro_line|#include &lt;asm/smp.h&gt;
 macro_line|#endif /* CONFIG_SMP */
 macro_line|#include &lt;asm/time.h&gt;
 multiline_comment|/* Tell string.h we don&squot;t want memcpy etc. as cpp defines */
@@ -119,17 +121,6 @@ id|regs
 )paren
 suffix:semicolon
 r_extern
-r_int
-id|sys_sigreturn
-c_func
-(paren
-r_struct
-id|pt_regs
-op_star
-id|regs
-)paren
-suffix:semicolon
-r_extern
 r_void
 id|do_lost_interrupts
 c_func
@@ -149,6 +140,21 @@ comma
 r_struct
 id|pt_regs
 op_star
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|pmac_newworld
+suffix:semicolon
+r_extern
+r_int
+id|sys_sigreturn
+c_func
+(paren
+r_struct
+id|pt_regs
+op_star
+id|regs
 )paren
 suffix:semicolon
 r_int
@@ -386,22 +392,6 @@ id|ucSystemType
 suffix:semicolon
 macro_line|#endif
 macro_line|#endif
-macro_line|#ifdef CONFIG_PCI
-DECL|variable|pci_dev_io_base
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|pci_dev_io_base
-)paren
-suffix:semicolon
-DECL|variable|pci_dev_mem_base
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|pci_dev_mem_base
-)paren
-suffix:semicolon
-macro_line|#endif
 macro_line|#if !__INLINE_BITOPS
 DECL|variable|set_bit
 id|EXPORT_SYMBOL
@@ -535,6 +525,13 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|strncmp
+)paren
+suffix:semicolon
+DECL|variable|strcasecmp
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|strcasecmp
 )paren
 suffix:semicolon
 multiline_comment|/* EXPORT_SYMBOL(csum_partial); already in net/netsyms.c */
@@ -898,6 +895,34 @@ c_func
 id|_write_unlock
 )paren
 suffix:semicolon
+DECL|variable|smp_call_function
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|smp_call_function
+)paren
+suffix:semicolon
+DECL|variable|smp_hw_index
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|smp_hw_index
+)paren
+suffix:semicolon
+DECL|variable|smp_num_cpus
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|smp_num_cpus
+)paren
+suffix:semicolon
+DECL|variable|synchronize_irq
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|synchronize_irq
+)paren
+suffix:semicolon
 macro_line|#endif
 macro_line|#ifndef CONFIG_MACH_SPECIFIC
 DECL|variable|_machine
@@ -1036,8 +1061,21 @@ c_func
 id|set_backlight_level
 )paren
 suffix:semicolon
+DECL|variable|set_backlight_enable
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|set_backlight_enable
+)paren
+suffix:semicolon
+DECL|variable|register_backlight_controller
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|register_backlight_controller
+)paren
+suffix:semicolon
 macro_line|#endif /* CONFIG_PMAC_BACKLIGHT */
-macro_line|#if defined(CONFIG_ALL_PPC)
 DECL|variable|sys_ctrler
 id|EXPORT_SYMBOL_NOVERS
 c_func
@@ -1054,6 +1092,7 @@ id|have_of
 )paren
 suffix:semicolon
 macro_line|#endif /* CONFIG_MACH_SPECIFIC */
+macro_line|#if defined(CONFIG_ALL_PPC)
 DECL|variable|find_devices
 id|EXPORT_SYMBOL
 c_func
@@ -1103,13 +1142,6 @@ c_func
 id|machine_is_compatible
 )paren
 suffix:semicolon
-DECL|variable|find_pci_device_OFnode
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|find_pci_device_OFnode
-)paren
-suffix:semicolon
 DECL|variable|find_all_nodes
 id|EXPORT_SYMBOL
 c_func
@@ -1124,18 +1156,74 @@ c_func
 id|get_property
 )paren
 suffix:semicolon
-DECL|variable|pci_io_base
+DECL|variable|pci_bus_io_base
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|pci_io_base
+id|pci_bus_io_base
 )paren
 suffix:semicolon
-DECL|variable|pci_device_loc
+DECL|variable|pci_bus_io_base_phys
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|pci_device_loc
+id|pci_bus_io_base_phys
+)paren
+suffix:semicolon
+DECL|variable|pci_bus_mem_base_phys
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|pci_bus_mem_base_phys
+)paren
+suffix:semicolon
+DECL|variable|pci_device_to_OF_node
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|pci_device_to_OF_node
+)paren
+suffix:semicolon
+DECL|variable|pci_device_from_OF_node
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|pci_device_from_OF_node
+)paren
+suffix:semicolon
+DECL|variable|pci_bus_to_hose
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|pci_bus_to_hose
+)paren
+suffix:semicolon
+DECL|variable|pci_resource_to_bus
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|pci_resource_to_bus
+)paren
+suffix:semicolon
+DECL|variable|pci_phys_to_bus
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|pci_phys_to_bus
+)paren
+suffix:semicolon
+DECL|variable|pci_bus_to_phys
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|pci_bus_to_phys
+)paren
+suffix:semicolon
+DECL|variable|pmac_newworld
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|pmac_newworld
 )paren
 suffix:semicolon
 DECL|variable|feature_set
@@ -1166,6 +1254,13 @@ c_func
 id|feature_set_gmac_power
 )paren
 suffix:semicolon
+DECL|variable|feature_set_gmac_phy_reset
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|feature_set_gmac_phy_reset
+)paren
+suffix:semicolon
 DECL|variable|feature_set_usb_power
 id|EXPORT_SYMBOL
 c_func
@@ -1181,6 +1276,15 @@ id|feature_set_firewire_power
 )paren
 suffix:semicolon
 macro_line|#endif /* defined(CONFIG_ALL_PPC) */
+macro_line|#if defined(CONFIG_BOOTX_TEXT)
+DECL|variable|bootx_update_display
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|bootx_update_display
+)paren
+suffix:semicolon
+macro_line|#endif
 macro_line|#if defined(CONFIG_SCSI) &amp;&amp; defined(CONFIG_ALL_PPC)
 DECL|variable|note_scsi_host
 id|EXPORT_SYMBOL
@@ -1306,6 +1410,13 @@ id|screen_info
 )paren
 suffix:semicolon
 macro_line|#endif
+DECL|variable|__delay
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|__delay
+)paren
+suffix:semicolon
 DECL|variable|int_control
 id|EXPORT_SYMBOL
 c_func
@@ -1396,6 +1507,34 @@ id|xmon
 )paren
 suffix:semicolon
 macro_line|#endif
+DECL|variable|__up
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|__up
+)paren
+suffix:semicolon
+DECL|variable|__down
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|__down
+)paren
+suffix:semicolon
+DECL|variable|__down_interruptible
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|__down_interruptible
+)paren
+suffix:semicolon
+DECL|variable|__down_trylock
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|__down_trylock
+)paren
+suffix:semicolon
 DECL|variable|down_read_failed
 id|EXPORT_SYMBOL
 c_func
@@ -1565,6 +1704,32 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|mmu_context_overflow
+)paren
+suffix:semicolon
+macro_line|#if !defined(CONFIG_8xx) &amp;&amp; !defined(CONFIG_4xx)
+r_extern
+r_int
+op_star
+id|intercept_table
+suffix:semicolon
+DECL|variable|intercept_table
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|intercept_table
+)paren
+suffix:semicolon
+macro_line|#endif
+r_extern
+r_int
+op_star
+id|ret_from_intercept
+suffix:semicolon
+DECL|variable|ret_from_intercept
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|ret_from_intercept
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_MOL

@@ -217,6 +217,30 @@ DECL|typedef|ipx_route
 )brace
 id|ipx_route
 suffix:semicolon
+macro_line|#ifdef __KERNEL__
+DECL|struct|ipx_cb
+r_struct
+id|ipx_cb
+(brace
+DECL|member|ipx_tctrl
+id|u8
+id|ipx_tctrl
+suffix:semicolon
+DECL|member|ipx_dest_net
+id|u32
+id|ipx_dest_net
+suffix:semicolon
+DECL|member|ipx_source_net
+id|u32
+id|ipx_source_net
+suffix:semicolon
+DECL|member|last_hop_index
+r_int
+id|last_hop_index
+suffix:semicolon
+)brace
+suffix:semicolon
+macro_line|#endif
 DECL|macro|IPX_MIN_EPHEMERAL_SOCKET
 mdefine_line|#define IPX_MIN_EPHEMERAL_SOCKET&t;0x4000
 DECL|macro|IPX_MAX_EPHEMERAL_SOCKET

@@ -1,6 +1,5 @@
 multiline_comment|/*&n; * vreset.c&n; *&n; * Initialize the VGA control registers to 80x25 text mode.&n; *&n; * Adapted from a program by:&n; *                                      Steve Sellgren&n; *                                      San Francisco Indigo Company&n; *                                      sfindigo!sellgren@uunet.uu.net&n; *&n; * Original concept by:&n; *                                      Gary Thomas &lt;gdt@linuxppc.org&gt;&n; * Adapted for Moto boxes by:&n; *                                      Pat Kane &amp; Mark Scott, 1996&n; * Adapted for IBM portables by:&n; *                                      Takeshi Ishimoto&n; * Multi-console support:&n; *                                      Terje Malmedal &lt;terje.malmedal@usit.uio.no&gt;&n; */
 macro_line|#include &quot;iso_font.h&quot;
-macro_line|#include &lt;linux/delay.h&gt;
 r_extern
 r_char
 op_star
@@ -12,15 +11,34 @@ id|lines
 comma
 id|cols
 suffix:semicolon
-multiline_comment|/* estimate for delay */
-DECL|variable|loops_per_sec
+DECL|function|mdelay
+r_static
+r_void
+id|mdelay
+c_func
+(paren
 r_int
-r_int
-id|loops_per_sec
-op_assign
-l_int|50000000
+id|ms
+)paren
+(brace
+r_for
+c_loop
+(paren
 suffix:semicolon
+id|ms
+OG
+l_int|0
 suffix:semicolon
+op_decrement
+id|ms
+)paren
+id|udelay
+c_func
+(paren
+l_int|1000
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/*&n; * VGA Register  &n; */
 DECL|struct|VgaRegs
 r_struct

@@ -1,5 +1,5 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: evxface - External interfaces for ACPI events&n; *              $Revision: 97 $&n; *&n; *****************************************************************************/
-multiline_comment|/*&n; *  Copyright (C) 2000 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: evxface - External interfaces for ACPI events&n; *              $Revision: 101 $&n; *&n; *****************************************************************************/
+multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;achware.h&quot;
 macro_line|#include &quot;acnamesp.h&quot;
@@ -317,12 +317,12 @@ id|AE_BAD_PARAMETER
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Convert and validate the device handle */
 id|acpi_cm_acquire_mutex
 (paren
 id|ACPI_MTX_NAMESPACE
 )paren
 suffix:semicolon
+multiline_comment|/* Convert and validate the device handle */
 id|device_node
 op_assign
 id|acpi_ns_convert_handle_to_entry
@@ -345,7 +345,7 @@ r_goto
 id|unlock_and_exit
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * Support for global notify handlers.  These handlers are invoked for&n;&t; * every notifiy of the type specifiec&n;&t; */
+multiline_comment|/*&n;&t; * Root Object:&n;&t; * ------------&n;&t; * Registering a notify handler on the root object indicates that the&n;&t; * caller wishes to receive notifications for all objects.  Note that&n;&t; * only one &lt;external&gt; global handler can be regsitered (per notify type).&n;&t; */
 r_if
 c_cond
 (paren
@@ -354,7 +354,7 @@ op_eq
 id|ACPI_ROOT_OBJECT
 )paren
 (brace
-multiline_comment|/*&n;&t;&t; *  Make sure the handler is not already installed.&n;&t;&t; */
+multiline_comment|/* Make sure the handler is not already installed */
 r_if
 c_cond
 (paren
@@ -409,6 +409,7 @@ id|context
 suffix:semicolon
 )brace
 r_else
+multiline_comment|/* ACPI_DEVICE_NOTIFY */
 (brace
 id|acpi_gbl_drv_notify.node
 op_assign
@@ -424,11 +425,11 @@ id|context
 suffix:semicolon
 )brace
 multiline_comment|/* Global notify handler installed */
-r_goto
-id|unlock_and_exit
-suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * These are the ONLY objects that can receive ACPI notifications&n;&t; */
+multiline_comment|/*&n;&t; * Other Objects:&n;&t; * --------------&n;&t; * Caller will only receive notifications specific to the target object.&n;&t; * Note that only certain object types can receive notifications.&n;&t; */
+r_else
+(brace
+multiline_comment|/*&n;&t;&t; * These are the ONLY objects that can receive ACPI notifications&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -482,7 +483,7 @@ c_cond
 id|obj_desc
 )paren
 (brace
-multiline_comment|/*&n;&t;&t; *  The object exists.&n;&t;&t; *  Make sure the handler is not already installed.&n;&t;&t; */
+multiline_comment|/* Object exists - make sure there&squot;s no handler */
 r_if
 c_cond
 (paren
@@ -570,7 +571,7 @@ id|unlock_and_exit
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n;&t; *  If we get here, we know that there is no handler installed&n;&t; *  so let&squot;s party&n;&t; */
+multiline_comment|/* Install the handler */
 id|notify_obj
 op_assign
 id|acpi_cm_create_internal_object
@@ -619,11 +620,13 @@ id|notify_obj
 suffix:semicolon
 )brace
 r_else
+multiline_comment|/* ACPI_DEVICE_NOTIFY */
 (brace
 id|obj_desc-&gt;device.drv_handler
 op_assign
 id|notify_obj
 suffix:semicolon
+)brace
 )brace
 id|unlock_and_exit
 suffix:colon
@@ -720,7 +723,90 @@ r_goto
 id|unlock_and_exit
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * These are the ONLY objects that can receive ACPI notifications&n;&t; */
+multiline_comment|/*&n;&t; * Root Object:&n;&t; * ------------&n;&t; */
+r_if
+c_cond
+(paren
+id|device
+op_eq
+id|ACPI_ROOT_OBJECT
+)paren
+(brace
+r_if
+c_cond
+(paren
+(paren
+(paren
+id|handler_type
+op_eq
+id|ACPI_SYSTEM_NOTIFY
+)paren
+op_logical_and
+op_logical_neg
+id|acpi_gbl_sys_notify.handler
+)paren
+op_logical_or
+(paren
+(paren
+id|handler_type
+op_eq
+id|ACPI_DEVICE_NOTIFY
+)paren
+op_logical_and
+op_logical_neg
+id|acpi_gbl_drv_notify.handler
+)paren
+)paren
+(brace
+id|status
+op_assign
+id|AE_NOT_EXIST
+suffix:semicolon
+r_goto
+id|unlock_and_exit
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|handler_type
+op_eq
+id|ACPI_SYSTEM_NOTIFY
+)paren
+(brace
+id|acpi_gbl_sys_notify.node
+op_assign
+l_int|NULL
+suffix:semicolon
+id|acpi_gbl_sys_notify.handler
+op_assign
+l_int|NULL
+suffix:semicolon
+id|acpi_gbl_sys_notify.context
+op_assign
+l_int|NULL
+suffix:semicolon
+)brace
+r_else
+(brace
+id|acpi_gbl_drv_notify.node
+op_assign
+l_int|NULL
+suffix:semicolon
+id|acpi_gbl_drv_notify.handler
+op_assign
+l_int|NULL
+suffix:semicolon
+id|acpi_gbl_drv_notify.context
+op_assign
+l_int|NULL
+suffix:semicolon
+)brace
+)brace
+multiline_comment|/*&n;&t; * Other Objects:&n;&t; * --------------&n;&t; */
+r_else
+(brace
+multiline_comment|/*&n;&t;&t; * These are the ONLY objects that can receive ACPI notifications&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -783,7 +869,7 @@ r_goto
 id|unlock_and_exit
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; *  The object exists.&n;&t; *&n;&t; *  Make sure the handler is installed.&n;&t; */
+multiline_comment|/* Object exists - make sure there&squot;s an existing handler */
 r_if
 c_cond
 (paren
@@ -827,7 +913,7 @@ r_goto
 id|unlock_and_exit
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * Now we can remove the handler&n;&t; */
+multiline_comment|/* Remove the handler */
 r_if
 c_cond
 (paren
@@ -853,6 +939,7 @@ id|acpi_cm_remove_reference
 id|notify_obj
 )paren
 suffix:semicolon
+)brace
 id|unlock_and_exit
 suffix:colon
 id|acpi_cm_release_mutex

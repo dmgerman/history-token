@@ -1,9 +1,17 @@
-multiline_comment|/******************************************************************************&n; *&n; * Name: acmacros.h - C macros for the entire subsystem.&n; *       $Revision: 59 $&n; *&n; *****************************************************************************/
-multiline_comment|/*&n; *  Copyright (C) 2000 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/******************************************************************************&n; *&n; * Name: acmacros.h - C macros for the entire subsystem.&n; *       $Revision: 62 $&n; *&n; *****************************************************************************/
+multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#ifndef __ACMACROS_H__
 DECL|macro|__ACMACROS_H__
 mdefine_line|#define __ACMACROS_H__
 multiline_comment|/*&n; * Data manipulation macros&n; */
+macro_line|#ifndef LODWORD
+DECL|macro|LODWORD
+mdefine_line|#define LODWORD(l)                      ((u32)(UINT64)(l))
+macro_line|#endif
+macro_line|#ifndef HIDWORD
+DECL|macro|HIDWORD
+mdefine_line|#define HIDWORD(l)                      ((u32)((((UINT64)(l)) &gt;&gt; 32) &amp; 0xFFFFFFFF))
+macro_line|#endif
 macro_line|#ifndef LOWORD
 DECL|macro|LOWORD
 mdefine_line|#define LOWORD(l)                       ((u16)(NATIVE_UINT)(l))
@@ -47,13 +55,15 @@ mdefine_line|#define LOW_LIMIT(w)                    ((u16) ((w) &amp; 0x0000FFF
 DECL|macro|HI_LIMIT
 mdefine_line|#define HI_LIMIT(b)                     ((u8) (((b) &amp; 0x00FF0000) &gt;&gt; 16))
 macro_line|#ifdef _IA16
+multiline_comment|/*&n; * For 16-bit addresses, we have to assume that the upper 32 bits&n; * are zero.&n; */
 DECL|macro|ACPI_GET_ADDRESS
 mdefine_line|#define ACPI_GET_ADDRESS(a)             ((a).lo)
 DECL|macro|ACPI_STORE_ADDRESS
 mdefine_line|#define ACPI_STORE_ADDRESS(a,b)         {(a).hi=0;(a).lo=(b);}
 DECL|macro|ACPI_VALID_ADDRESS
-mdefine_line|#define ACPI_VALID_ADDRESS(a)           ((a).hi &amp;&amp; (a).lo)
+mdefine_line|#define ACPI_VALID_ADDRESS(a)           ((a).hi | (a).lo)
 macro_line|#else
+multiline_comment|/*&n; * Full 64-bit address on 32-bit and 64-bit platforms&n; */
 DECL|macro|ACPI_GET_ADDRESS
 mdefine_line|#define ACPI_GET_ADDRESS(a)             (a)
 DECL|macro|ACPI_STORE_ADDRESS
@@ -282,7 +292,7 @@ mdefine_line|#define return_VOID                     {function_exit(_THIS_MODULE
 DECL|macro|return_ACPI_STATUS
 mdefine_line|#define return_ACPI_STATUS(s)           {function_status_exit(_THIS_MODULE,__LINE__,_COMPONENT,_proc_name,s);return(s);}
 DECL|macro|return_VALUE
-mdefine_line|#define return_VALUE(s)                 {function_value_exit(_THIS_MODULE,__LINE__,_COMPONENT,_proc_name,(NATIVE_UINT)s);return(s);}
+mdefine_line|#define return_VALUE(s)                 {function_value_exit(_THIS_MODULE,__LINE__,_COMPONENT,_proc_name,(ACPI_INTEGER)s);return(s);}
 DECL|macro|return_PTR
 mdefine_line|#define return_PTR(s)                   {function_ptr_exit(_THIS_MODULE,__LINE__,_COMPONENT,_proc_name,(u8 *)s);return(s);}
 multiline_comment|/* Conditional execution */
@@ -294,6 +304,10 @@ DECL|macro|DEBUG_DEFINE
 mdefine_line|#define DEBUG_DEFINE(a)                 a;
 DECL|macro|DEBUG_ONLY_MEMBERS
 mdefine_line|#define DEBUG_ONLY_MEMBERS(a)           a;
+DECL|macro|_OPCODE_NAMES
+mdefine_line|#define _OPCODE_NAMES
+DECL|macro|_VERBOSE_STRUCTURES
+mdefine_line|#define _VERBOSE_STRUCTURES
 multiline_comment|/* Stack and buffer dumping */
 DECL|macro|DUMP_STACK_ENTRY
 mdefine_line|#define DUMP_STACK_ENTRY(a)             acpi_aml_dump_operand(a)
@@ -402,12 +416,10 @@ multiline_comment|/*&n; * For 16-bit code, we want to shrink some things even th
 macro_line|#ifdef _IA16
 DECL|macro|DEBUG_ONLY_MEMBERS
 macro_line|#undef DEBUG_ONLY_MEMBERS
+DECL|macro|_VERBOSE_STRUCTURES
+macro_line|#undef _VERBOSE_STRUCTURES
 DECL|macro|DEBUG_ONLY_MEMBERS
 mdefine_line|#define DEBUG_ONLY_MEMBERS(a)
-DECL|macro|OP_INFO_ENTRY
-macro_line|#undef OP_INFO_ENTRY
-DECL|macro|OP_INFO_ENTRY
-mdefine_line|#define OP_INFO_ENTRY(flags,name,Pargs,Iargs)     {flags,Pargs,Iargs}
 macro_line|#endif
 macro_line|#ifdef ACPI_DEBUG
 multiline_comment|/*&n; * 1) Set name to blanks&n; * 2) Copy the object name&n; */

@@ -1,5 +1,5 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: cmglobal - Global variables for the ACPI subsystem&n; *              $Revision: 112 $&n; *&n; *****************************************************************************/
-multiline_comment|/*&n; *  Copyright (C) 2000 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: cmglobal - Global variables for the ACPI subsystem&n; *              $Revision: 116 $&n; *&n; *****************************************************************************/
+multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 DECL|macro|DEFINE_ACPI_GLOBALS
 mdefine_line|#define DEFINE_ACPI_GLOBALS
 macro_line|#include &quot;acpi.h&quot;
@@ -135,7 +135,7 @@ comma
 (brace
 l_string|&quot;_REV&quot;
 comma
-id|ACPI_TYPE_NUMBER
+id|ACPI_TYPE_INTEGER
 comma
 l_string|&quot;2&quot;
 )brace
@@ -288,6 +288,47 @@ comma
 multiline_comment|/* 33 Extra            */
 id|NSP_NORMAL
 multiline_comment|/* 34 Invalid          */
+)brace
+suffix:semicolon
+multiline_comment|/* Hex to ASCII conversion table */
+DECL|variable|acpi_gbl_hex_to_ascii
+id|NATIVE_CHAR
+id|acpi_gbl_hex_to_ascii
+(braket
+)braket
+op_assign
+(brace
+l_char|&squot;0&squot;
+comma
+l_char|&squot;1&squot;
+comma
+l_char|&squot;2&squot;
+comma
+l_char|&squot;3&squot;
+comma
+l_char|&squot;4&squot;
+comma
+l_char|&squot;5&squot;
+comma
+l_char|&squot;6&squot;
+comma
+l_char|&squot;7&squot;
+comma
+l_char|&squot;8&squot;
+comma
+l_char|&squot;9&squot;
+comma
+l_char|&squot;A&squot;
+comma
+l_char|&squot;B&squot;
+comma
+l_char|&squot;C&squot;
+comma
+l_char|&squot;D&squot;
+comma
+l_char|&squot;E&squot;
+comma
+l_char|&squot;F&squot;
 )brace
 suffix:semicolon
 multiline_comment|/******************************************************************************&n; *&n; * Table globals&n; *&n; * NOTE: This table includes ONLY the ACPI tables that the subsystem consumes.&n; * it is NOT an exhaustive list of all possible ACPI tables.  All ACPI tables&n; * that are not used by the subsystem are simply ignored.&n; *&n; ******************************************************************************/

@@ -826,7 +826,6 @@ suffix:semicolon
 multiline_comment|/*&n; * Find a specific PCI IRQ entry.&n; * Not an __init, possibly needed by modules&n; */
 r_static
 r_int
-id|__init
 id|pin_2_irq
 c_func
 (paren
@@ -1600,7 +1599,6 @@ suffix:semicolon
 DECL|function|pin_2_irq
 r_static
 r_int
-id|__init
 id|pin_2_irq
 c_func
 (paren

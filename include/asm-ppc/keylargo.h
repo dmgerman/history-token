@@ -34,6 +34,16 @@ DECL|macro|KL_GPIO_ETH_PHY_RESET_RELEASE
 mdefine_line|#define KL_GPIO_ETH_PHY_RESET_RELEASE&t;0x05
 DECL|macro|KL_GPIO_ETH_PHY_RESET_TRISTATE
 mdefine_line|#define KL_GPIO_ETH_PHY_RESET_TRISTATE&t;0x00
+DECL|macro|KL_GPIO_KICK_CPU1
+mdefine_line|#define KL_GPIO_KICK_CPU1&t;&t;(KEYLARGO_GPIO_0+0x0a)
+DECL|macro|KL_GPIO_KICK_CPU1_UP
+mdefine_line|#define KL_GPIO_KICK_CPU1_UP&t;&t;0x04
+DECL|macro|KL_GPIO_KICK_CPU1_DOWN
+mdefine_line|#define KL_GPIO_KICK_CPU1_DOWN&t;&t;0x38
+DECL|macro|KL_GPIO_PMU_MESSAGE_IRQ
+mdefine_line|#define KL_GPIO_PMU_MESSAGE_IRQ&t;&t;(KEYLARGO_GPIO_EXTINT_0+0x09)
+DECL|macro|KL_GPIO_PMU_MESSAGE_BIT
+mdefine_line|#define KL_GPIO_PMU_MESSAGE_BIT&t;&t;0x02
 multiline_comment|/*&n; * Bits in feature control register&n; */
 DECL|macro|KL_MBCR_MBDEV_ENABLE
 mdefine_line|#define KL_MBCR_MBDEV_ENABLE&t;&t;0x00001000

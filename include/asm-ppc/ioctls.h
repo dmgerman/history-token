@@ -14,6 +14,8 @@ DECL|macro|FIONREAD
 mdefine_line|#define FIONREAD&t;_IOR(&squot;f&squot;, 127, int)
 DECL|macro|TIOCINQ
 mdefine_line|#define TIOCINQ&t;&t;FIONREAD
+DECL|macro|FIOQSIZE
+mdefine_line|#define FIOQSIZE&t;_IOR(&squot;f&squot;, 128, loff_t)
 DECL|macro|TIOCGETP
 mdefine_line|#define TIOCGETP&t;_IOR(&squot;t&squot;, 8, struct sgttyb)
 DECL|macro|TIOCSETP

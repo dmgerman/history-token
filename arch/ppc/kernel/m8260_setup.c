@@ -143,7 +143,7 @@ macro_line|#endif
 r_extern
 r_int
 r_int
-id|loops_per_sec
+id|loops_per_jiffy
 suffix:semicolon
 DECL|variable|__res
 r_int
@@ -872,21 +872,9 @@ id|ppc_ide_md.default_io_base
 op_assign
 id|m8xx_ide_default_io_base
 suffix:semicolon
-id|ppc_ide_md.check_region
-op_assign
-id|m8xx_ide_check_region
-suffix:semicolon
-id|ppc_ide_md.request_region
-op_assign
-id|m8xx_ide_request_region
-suffix:semicolon
-id|ppc_ide_md.release_region
-op_assign
-id|m8xx_ide_release_region
-suffix:semicolon
 id|ppc_ide_md.fix_driveid
 op_assign
-id|m8xx_ide_fix_driveid
+id|ppc_generic_ide_fix_driveid
 suffix:semicolon
 id|ppc_ide_md.ide_init_hwif
 op_assign
@@ -902,7 +890,21 @@ id|_IO_BASE
 suffix:semicolon
 macro_line|#endif&t;&t;
 )brace
+multiline_comment|/*&n; * Copied from prom.c so I don&squot;t have include all of that crap.&n; *&t;&t;&t;&t;-- Dan&n; *&n; * prom_init() is called very early on, before the kernel text&n; * and data have been mapped to KERNELBASE.  At this point the code&n; * is running at whatever address it has been loaded at, so&n; * references to extern and static variables must be relocated&n; * explicitly.  The procedure reloc_offset() returns the address&n; * we&squot;re currently running at minus the address we were linked at.&n; * (Note that strings count as static variables.)&n; */
+r_extern
+r_int
+r_int
+id|reloc_offset
+c_func
+(paren
 r_void
+)paren
+suffix:semicolon
+DECL|macro|PTRRELOC
+mdefine_line|#define PTRRELOC(x)&t;((typeof(x))((unsigned long)(x) + offset))
+id|__init
+r_int
+r_int
 DECL|function|prom_init
 id|prom_init
 c_func
@@ -920,7 +922,56 @@ id|uint
 id|r6
 )paren
 (brace
-multiline_comment|/* Nothing to do now, but we are called immediatedly upon&n;&t; * kernel start up with MMU disabled, so if there is&n;&t; * anything we need to do......&n;&t; */
+r_int
+r_int
+id|offset
+op_assign
+id|reloc_offset
+c_func
+(paren
+)paren
+suffix:semicolon
+r_int
+r_int
+id|phys
+suffix:semicolon
+r_extern
+r_char
+id|__bss_start
+comma
+id|_end
+suffix:semicolon
+multiline_comment|/* First zero the BSS -- use memset, some arches don&squot;t have&n;&t; * caches on yet */
+id|memset_io
+c_func
+(paren
+id|PTRRELOC
+c_func
+(paren
+op_amp
+id|__bss_start
+)paren
+comma
+l_int|0
+comma
+op_amp
+id|_end
+op_minus
+op_amp
+id|__bss_start
+)paren
+suffix:semicolon
+multiline_comment|/* Default */
+id|phys
+op_assign
+id|offset
+op_plus
+id|KERNELBASE
+suffix:semicolon
+multiline_comment|/* We are done.&n;&t;*/
+r_return
+id|phys
+suffix:semicolon
 )brace
 multiline_comment|/* Mainly for ksyms.&n;*/
 r_int

@@ -46,6 +46,6 @@ c_func
 r_void
 )paren
 suffix:semicolon
-macro_line|#endif _ASMPPC_RAVEN_H
+macro_line|#endif /* _ASMPPC_RAVEN_H */
 macro_line|#endif /* __KERNEL__ */
 eof

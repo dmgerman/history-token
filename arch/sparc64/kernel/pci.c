@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: pci.c,v 1.20 2000/12/14 22:57:25 davem Exp $&n; * pci.c: UltraSparc PCI controller support.&n; *&n; * Copyright (C) 1997, 1998, 1999 David S. Miller (davem@redhat.com)&n; * Copyright (C) 1998, 1999 Eddie C. Dost   (ecd@skynet.be)&n; * Copyright (C) 1999 Jakub Jelinek   (jj@ultra.linux.cz)&n; */
+multiline_comment|/* $Id: pci.c,v 1.21 2001/01/10 18:22:59 davem Exp $&n; * pci.c: UltraSparc PCI controller support.&n; *&n; * Copyright (C) 1997, 1998, 1999 David S. Miller (davem@redhat.com)&n; * Copyright (C) 1998, 1999 Eddie C. Dost   (ecd@skynet.be)&n; * Copyright (C) 1999 Jakub Jelinek   (jj@ultra.linux.cz)&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
@@ -164,6 +164,16 @@ c_func
 r_int
 )paren
 suffix:semicolon
+macro_line|#if 0
+r_extern
+r_void
+id|schizo_init
+c_func
+(paren
+r_int
+)paren
+suffix:semicolon
+macro_line|#endif
 r_static
 r_struct
 (brace
@@ -212,6 +222,19 @@ l_string|&quot;pci108e,8000&quot;
 comma
 id|psycho_init
 )brace
+macro_line|#if 0
+(brace
+l_string|&quot;SUNW,schizo&quot;
+comma
+id|schizo_init
+)brace
+comma
+(brace
+l_string|&quot;pci108e,8001&quot;
+comma
+id|schizo_init
+)brace
+macro_line|#endif
 )brace
 suffix:semicolon
 DECL|macro|PCI_NUM_CONTROLLER_TYPES

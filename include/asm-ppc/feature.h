@@ -218,6 +218,14 @@ r_int
 id|power
 )paren
 suffix:semicolon
+r_extern
+r_void
+id|feature_core99_kick_cpu1
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Sleep related functions. At term, they should be high-priority notifiers&n; */
 r_extern
 r_void

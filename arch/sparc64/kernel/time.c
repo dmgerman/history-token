@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: time.c,v 1.32 2000/09/22 23:02:13 davem Exp $&n; * time.c: UltraSparc timer and TOD clock support.&n; *&n; * Copyright (C) 1997 David S. Miller (davem@caip.rutgers.edu)&n; * Copyright (C) 1998 Eddie C. Dost   (ecd@skynet.be)&n; *&n; * Based largely on code which is:&n; *&n; * Copyright (C) 1996 Thomas K. Dyas (tdyas@eden.rutgers.edu)&n; */
+multiline_comment|/* $Id: time.c,v 1.33 2001/01/11 15:07:09 davem Exp $&n; * time.c: UltraSparc timer and TOD clock support.&n; *&n; * Copyright (C) 1997 David S. Miller (davem@caip.rutgers.edu)&n; * Copyright (C) 1998 Eddie C. Dost   (ecd@skynet.be)&n; *&n; * Based largely on code which is:&n; *&n; * Copyright (C) 1996 Thomas K. Dyas (tdyas@eden.rutgers.edu)&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -23,6 +23,12 @@ macro_line|#include &lt;asm/starfire.h&gt;
 r_extern
 id|rwlock_t
 id|xtime_lock
+suffix:semicolon
+DECL|variable|mostek_lock
+id|spinlock_t
+id|mostek_lock
+op_assign
+id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
 DECL|variable|mstk48t02_regs
 r_int
@@ -650,6 +656,13 @@ c_func
 l_string|&quot;CLOCK: Clock was stopped. Kick start &quot;
 )paren
 suffix:semicolon
+id|spin_lock_irq
+c_func
+(paren
+op_amp
+id|mostek_lock
+)paren
+suffix:semicolon
 multiline_comment|/* Turn on the kick start bit to start the oscillator. */
 id|tmp
 op_assign
@@ -749,6 +762,13 @@ comma
 id|tmp
 )paren
 suffix:semicolon
+id|spin_unlock_irq
+c_func
+(paren
+op_amp
+id|mostek_lock
+)paren
+suffix:semicolon
 multiline_comment|/* Delay to allow the clock oscillator to start. */
 id|sec
 op_assign
@@ -819,6 +839,13 @@ id|prom_printf
 c_func
 (paren
 l_string|&quot;&bslash;n&quot;
+)paren
+suffix:semicolon
+id|spin_lock_irq
+c_func
+(paren
+op_amp
+id|mostek_lock
 )paren
 suffix:semicolon
 multiline_comment|/* Turn off kick start and set a &quot;valid&quot; time and date. */
@@ -954,6 +981,13 @@ comma
 id|tmp
 )paren
 suffix:semicolon
+id|spin_unlock_irq
+c_func
+(paren
+op_amp
+id|mostek_lock
+)paren
+suffix:semicolon
 multiline_comment|/* Ensure the kick start bit is off. If it isn&squot;t, turn it off. */
 r_while
 c_loop
@@ -973,6 +1007,13 @@ id|prom_printf
 c_func
 (paren
 l_string|&quot;CLOCK: Kick start still on!&bslash;n&quot;
+)paren
+suffix:semicolon
+id|spin_lock_irq
+c_func
+(paren
+op_amp
+id|mostek_lock
 )paren
 suffix:semicolon
 id|tmp
@@ -1049,6 +1090,13 @@ comma
 id|tmp
 )paren
 suffix:semicolon
+id|spin_unlock_irq
+c_func
+(paren
+op_amp
+id|mostek_lock
+)paren
+suffix:semicolon
 )brace
 id|prom_printf
 c_func
@@ -1078,6 +1126,13 @@ id|u8
 id|data1
 comma
 id|data2
+suffix:semicolon
+id|spin_lock_irq
+c_func
+(paren
+op_amp
+id|mostek_lock
+)paren
 suffix:semicolon
 id|data1
 op_assign
@@ -1124,6 +1179,13 @@ id|data1
 )paren
 suffix:semicolon
 multiline_comment|/* Restore original value. */
+id|spin_unlock_irq
+c_func
+(paren
+op_amp
+id|mostek_lock
+)paren
+suffix:semicolon
 r_return
 (paren
 id|data1
@@ -1190,6 +1252,13 @@ c_func
 )paren
 suffix:semicolon
 )brace
+id|spin_lock_irq
+c_func
+(paren
+op_amp
+id|mostek_lock
+)paren
+suffix:semicolon
 id|tmp
 op_assign
 id|mostek_read
@@ -1311,6 +1380,13 @@ op_plus
 id|MOSTEK_CREG
 comma
 id|tmp
+)paren
+suffix:semicolon
+id|spin_unlock_irq
+c_func
+(paren
+op_amp
+id|mostek_lock
 )paren
 suffix:semicolon
 )brace
@@ -2336,6 +2412,10 @@ id|regs
 op_assign
 id|mstk48t02_regs
 suffix:semicolon
+r_int
+r_int
+id|flags
+suffix:semicolon
 id|u8
 id|tmp
 suffix:semicolon
@@ -2349,6 +2429,15 @@ id|regs
 r_return
 op_minus
 l_int|1
+suffix:semicolon
+id|spin_lock_irqsave
+c_func
+(paren
+op_amp
+id|mostek_lock
+comma
+id|flags
+)paren
 suffix:semicolon
 multiline_comment|/* Read the current RTC minutes. */
 id|tmp
@@ -2530,14 +2619,34 @@ comma
 id|tmp
 )paren
 suffix:semicolon
-)brace
-r_else
-r_return
-op_minus
-l_int|1
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|mostek_lock
+comma
+id|flags
+)paren
 suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
+)brace
+r_else
+(brace
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|mostek_lock
+comma
+id|flags
+)paren
+suffix:semicolon
+r_return
+op_minus
+l_int|1
+suffix:semicolon
+)brace
 )brace
 eof

@@ -1,5 +1,5 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: cminit - Common ACPI subsystem initialization&n; *              $Revision: 91 $&n; *&n; *****************************************************************************/
-multiline_comment|/*&n; *  Copyright (C) 2000 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: cminit - Common ACPI subsystem initialization&n; *              $Revision: 93 $&n; *&n; *****************************************************************************/
+multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;achware.h&quot;
 macro_line|#include &quot;acnamesp.h&quot;
@@ -12,6 +12,10 @@ id|MODULE_NAME
 (paren
 l_string|&quot;cminit&quot;
 )paren
+DECL|macro|ACPI_OFFSET
+mdefine_line|#define ACPI_OFFSET(d,o)    ((u32) &amp;(((d *)0)-&gt;o))
+DECL|macro|ACPI_FADT_OFFSET
+mdefine_line|#define ACPI_FADT_OFFSET(o) ACPI_OFFSET (FADT_DESCRIPTOR, o)
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_cm_fadt_register_error&n; *&n; * PARAMETERS:  *Register_name          - Pointer to string identifying register&n; *              Value                   - Actual register contents value&n; *              Acpi_test_spec_section  - TDS section containing assertion&n; *              Acpi_assertion          - Assertion number being tested&n; *&n; * RETURN:      AE_BAD_VALUE&n; *&n; * DESCRIPTION: Display failure message and link failure to TDS assertion&n; *&n; ******************************************************************************/
 r_static
 id|ACPI_STATUS
@@ -24,16 +28,21 @@ id|register_name
 comma
 id|u32
 id|value
+comma
+id|u32
+id|offset
 )paren
 (brace
 id|REPORT_ERROR
 (paren
 (paren
-l_string|&quot;Invalid FADT register value, %s=%X (FADT=%p)&bslash;n&quot;
+l_string|&quot;Invalid FADT value %s=%lX at offset %lX FADT=%p&bslash;n&quot;
 comma
 id|register_name
 comma
 id|value
+comma
+id|offset
 comma
 id|acpi_gbl_FADT
 )paren
@@ -77,6 +86,11 @@ comma
 id|u32
 )paren
 id|acpi_gbl_FADT-&gt;pm1_evt_len
+comma
+id|ACPI_FADT_OFFSET
+(paren
+id|pm1_evt_len
+)paren
 )paren
 suffix:semicolon
 )brace
@@ -94,6 +108,11 @@ id|acpi_cm_fadt_register_error
 l_string|&quot;PM1_CNT_LEN&quot;
 comma
 l_int|0
+comma
+id|ACPI_FADT_OFFSET
+(paren
+id|pm1_cnt_len
+)paren
 )paren
 suffix:semicolon
 )brace
@@ -111,9 +130,14 @@ id|status
 op_assign
 id|acpi_cm_fadt_register_error
 (paren
-l_string|&quot;PM1a_EVT_BLK&quot;
+l_string|&quot;X_PM1a_EVT_BLK&quot;
 comma
 l_int|0
+comma
+id|ACPI_FADT_OFFSET
+(paren
+id|Xpm1a_evt_blk.address
+)paren
 )paren
 suffix:semicolon
 )brace
@@ -131,9 +155,14 @@ id|status
 op_assign
 id|acpi_cm_fadt_register_error
 (paren
-l_string|&quot;PM1a_CNT_BLK&quot;
+l_string|&quot;X_PM1a_CNT_BLK&quot;
 comma
 l_int|0
+comma
+id|ACPI_FADT_OFFSET
+(paren
+id|Xpm1a_cnt_blk.address
+)paren
 )paren
 suffix:semicolon
 )brace
@@ -151,9 +180,14 @@ id|status
 op_assign
 id|acpi_cm_fadt_register_error
 (paren
-l_string|&quot;PM_TMR_BLK&quot;
+l_string|&quot;X_PM_TMR_BLK&quot;
 comma
 l_int|0
+comma
+id|ACPI_FADT_OFFSET
+(paren
+id|Xpm_tmr_blk.address
+)paren
 )paren
 suffix:semicolon
 )brace
@@ -181,6 +215,11 @@ comma
 id|u32
 )paren
 id|acpi_gbl_FADT-&gt;pm2_cnt_len
+comma
+id|ACPI_FADT_OFFSET
+(paren
+id|pm2_cnt_len
+)paren
 )paren
 suffix:semicolon
 )brace
@@ -202,6 +241,11 @@ comma
 id|u32
 )paren
 id|acpi_gbl_FADT-&gt;pm_tm_len
+comma
+id|ACPI_FADT_OFFSET
+(paren
+id|pm_tm_len
+)paren
 )paren
 suffix:semicolon
 )brace
@@ -225,12 +269,17 @@ id|status
 op_assign
 id|acpi_cm_fadt_register_error
 (paren
-l_string|&quot;GPE0_BLK_LEN&quot;
+l_string|&quot;(x)GPE0_BLK_LEN&quot;
 comma
 (paren
 id|u32
 )paren
 id|acpi_gbl_FADT-&gt;gpe0blk_len
+comma
+id|ACPI_FADT_OFFSET
+(paren
+id|gpe0blk_len
+)paren
 )paren
 suffix:semicolon
 )brace
@@ -253,12 +302,17 @@ id|status
 op_assign
 id|acpi_cm_fadt_register_error
 (paren
-l_string|&quot;GPE1_BLK_LEN&quot;
+l_string|&quot;(x)GPE1_BLK_LEN&quot;
 comma
 (paren
 id|u32
 )paren
 id|acpi_gbl_FADT-&gt;gpe1_blk_len
+comma
+id|ACPI_FADT_OFFSET
+(paren
+id|gpe1_blk_len
+)paren
 )paren
 suffix:semicolon
 )brace

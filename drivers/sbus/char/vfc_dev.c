@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
+macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;asm/openprom.h&gt;
 macro_line|#include &lt;asm/oplib.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
@@ -707,6 +708,13 @@ id|instance
 )braket
 suffix:semicolon
 )brace
+DECL|variable|vfc_dev_lock
+r_static
+id|spinlock_t
+id|vfc_dev_lock
+op_assign
+id|SPIN_LOCK_UNLOCKED
+suffix:semicolon
 DECL|function|vfc_open
 r_static
 r_int
@@ -729,6 +737,13 @@ id|vfc_dev
 op_star
 id|dev
 suffix:semicolon
+id|spin_lock
+c_func
+(paren
+op_amp
+id|vfc_dev_lock
+)paren
+suffix:semicolon
 id|dev
 op_assign
 id|vfc_get_dev_ptr
@@ -748,22 +763,47 @@ id|dev
 op_eq
 l_int|NULL
 )paren
+(brace
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|vfc_dev_lock
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|ENODEV
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
 id|dev-&gt;busy
 )paren
+(brace
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|vfc_dev_lock
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|EBUSY
 suffix:semicolon
+)brace
 id|dev-&gt;busy
 op_assign
 l_int|1
+suffix:semicolon
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|vfc_dev_lock
+)paren
 suffix:semicolon
 id|vfc_lock_device
 c_func
@@ -839,9 +879,11 @@ id|vfc_dev
 op_star
 id|dev
 suffix:semicolon
-id|lock_kernel
+id|spin_lock
 c_func
 (paren
+op_amp
+id|vfc_dev_lock
 )paren
 suffix:semicolon
 id|dev
@@ -866,9 +908,11 @@ op_logical_neg
 id|dev-&gt;busy
 )paren
 (brace
-id|unlock_kernel
+id|spin_unlock
 c_func
 (paren
+op_amp
+id|vfc_dev_lock
 )paren
 suffix:semicolon
 r_return
@@ -880,9 +924,11 @@ id|dev-&gt;busy
 op_assign
 l_int|0
 suffix:semicolon
-id|unlock_kernel
+id|spin_unlock
 c_func
 (paren
+op_amp
+id|vfc_dev_lock
 )paren
 suffix:semicolon
 r_return
@@ -2927,11 +2973,6 @@ id|vfc_dev
 op_star
 id|dev
 suffix:semicolon
-id|lock_kernel
-c_func
-(paren
-)paren
-suffix:semicolon
 id|dev
 op_assign
 id|vfc_get_dev_ptr
@@ -2952,11 +2993,6 @@ op_eq
 l_int|NULL
 )paren
 (brace
-id|unlock_kernel
-c_func
-(paren
-)paren
-suffix:semicolon
 r_return
 op_minus
 id|ENODEV
@@ -3030,11 +3066,6 @@ comma
 id|vma-&gt;vm_page_prot
 comma
 id|dev-&gt;which_io
-)paren
-suffix:semicolon
-id|unlock_kernel
-c_func
-(paren
 )paren
 suffix:semicolon
 r_if

@@ -22,7 +22,6 @@ macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/console.h&gt;
 macro_line|#include &lt;linux/timex.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
-macro_line|#include &lt;linux/openpic.h&gt;
 macro_line|#include &lt;linux/ide.h&gt;
 macro_line|#include &lt;asm/init.h&gt;
 macro_line|#include &lt;asm/mmu.h&gt;
@@ -37,6 +36,7 @@ macro_line|#include &lt;asm/mk48t59.h&gt;
 macro_line|#include &lt;asm/prep_nvram.h&gt;
 macro_line|#include &lt;asm/raven.h&gt;
 macro_line|#include &lt;asm/keyboard.h&gt;
+macro_line|#include &lt;asm/vga.h&gt;
 macro_line|#include &lt;asm/time.h&gt;
 macro_line|#include &quot;local_irq.h&quot;
 macro_line|#include &quot;i8259.h&quot;
@@ -227,7 +227,7 @@ l_int|128
 suffix:semicolon
 r_extern
 r_void
-id|prep_setup_pci_ptrs
+id|prep_find_bridges
 c_func
 (paren
 r_void
@@ -291,7 +291,7 @@ suffix:semicolon
 r_extern
 r_int
 r_int
-id|loops_per_sec
+id|loops_per_jiffy
 suffix:semicolon
 macro_line|#ifdef CONFIG_BLK_DEV_RAM
 r_extern
@@ -309,13 +309,6 @@ r_int
 id|rd_image_start
 suffix:semicolon
 multiline_comment|/* starting block # of image */
-macro_line|#endif
-macro_line|#ifdef CONFIG_VGA_CONSOLE
-DECL|variable|vgacon_remap_base
-r_int
-r_int
-id|vgacon_remap_base
-suffix:semicolon
 macro_line|#endif
 r_int
 id|__prep
@@ -335,9 +328,12 @@ id|Motherboard_map_name
 suffix:semicolon
 r_int
 id|len
-comma
+suffix:semicolon
+macro_line|#ifdef CONFIG_PREP_RESIDUAL
+r_int
 id|i
 suffix:semicolon
+macro_line|#endif
 macro_line|#ifdef CONFIG_SMP
 DECL|macro|CD
 mdefine_line|#define CD(X)&t;&t;(cpu_data[n].X)  
@@ -786,6 +782,11 @@ suffix:semicolon
 )brace
 id|no_l2
 suffix:colon
+macro_line|#ifndef CONFIG_PREP_RESIDUAL
+r_return
+id|len
+suffix:semicolon
+macro_line|#else&t;
 r_if
 c_cond
 (paren
@@ -900,6 +901,7 @@ suffix:semicolon
 r_return
 id|len
 suffix:semicolon
+macro_line|#endif
 )brace
 r_void
 id|__init
@@ -920,6 +922,7 @@ r_int
 r_char
 id|reg
 suffix:semicolon
+macro_line|#if 0 /* unused?? */
 r_int
 r_char
 id|ucMothMemType
@@ -928,10 +931,17 @@ r_int
 r_char
 id|ucEquipPres1
 suffix:semicolon
+macro_line|#endif
 multiline_comment|/* init to some ~sane value until calibrate_delay() runs */
-id|loops_per_sec
+id|loops_per_jiffy
 op_assign
 l_int|50000000
+suffix:semicolon
+multiline_comment|/* Lookup PCI host bridges */
+id|prep_find_bridges
+c_func
+(paren
+)paren
 suffix:semicolon
 multiline_comment|/* Set up floppy in PS/2 mode */
 id|outb
@@ -1045,121 +1055,6 @@ l_int|0x0802
 )paren
 suffix:semicolon
 multiline_comment|/* sda2 */
-r_break
-suffix:semicolon
-r_case
-id|_PREP_Radstone
-suffix:colon
-id|ROOT_DEV
-op_assign
-id|to_kdev_t
-c_func
-(paren
-l_int|0x0801
-)paren
-suffix:semicolon
-multiline_comment|/* sda1 */
-multiline_comment|/*&n;&t;&t; * Determine system type&n;&t;&t; */
-id|ucMothMemType
-op_assign
-id|inb
-c_func
-(paren
-l_int|0x866
-)paren
-suffix:semicolon
-id|ucEquipPres1
-op_assign
-id|inb
-c_func
-(paren
-l_int|0x80c
-)paren
-suffix:semicolon
-id|ucSystemType
-op_assign
-(paren
-(paren
-id|ucMothMemType
-op_amp
-l_int|0x03
-)paren
-op_lshift
-l_int|1
-)paren
-op_or
-(paren
-(paren
-id|ucEquipPres1
-op_amp
-l_int|0x80
-)paren
-op_rshift
-l_int|7
-)paren
-suffix:semicolon
-id|ucSystemType
-op_xor_assign
-l_int|7
-suffix:semicolon
-multiline_comment|/*&n;&t;&t; * Determine board revision for use by&n;&t;&t; * rev. specific code&n;&t;&t; */
-id|ucBoardRev
-op_assign
-id|inb
-c_func
-(paren
-l_int|0x854
-)paren
-suffix:semicolon
-id|ucBoardRevMaj
-op_assign
-id|ucBoardRev
-op_rshift
-l_int|5
-suffix:semicolon
-id|ucBoardRevMin
-op_assign
-id|ucBoardRev
-op_amp
-l_int|0x1f
-suffix:semicolon
-multiline_comment|/*&n;&t;&t; * Most Radstone boards have memory mapped NvRAM&n;&t;&t; */
-r_if
-c_cond
-(paren
-(paren
-id|ucSystemType
-op_eq
-id|RS_SYS_TYPE_PPC1
-)paren
-op_logical_and
-(paren
-id|ucBoardRevMaj
-OL
-l_int|5
-)paren
-)paren
-(brace
-id|ppc_md.nvram_read_val
-op_assign
-id|prep_nvram_read_val
-suffix:semicolon
-id|ppc_md.nvram_write_val
-op_assign
-id|prep_nvram_write_val
-suffix:semicolon
-)brace
-r_else
-(brace
-id|ppc_md.nvram_read_val
-op_assign
-id|rs_nvram_read_val
-suffix:semicolon
-id|ppc_md.nvram_write_val
-op_assign
-id|rs_nvram_write_val
-suffix:semicolon
-)brace
 r_break
 suffix:semicolon
 )brace
@@ -1341,66 +1236,6 @@ suffix:semicolon
 )brace
 macro_line|#endif /* CONFIG_SOUND_CS4232 */&t;
 multiline_comment|/*print_residual_device_info();*/
-id|request_region
-c_func
-(paren
-l_int|0x20
-comma
-l_int|0x20
-comma
-l_string|&quot;pic1&quot;
-)paren
-suffix:semicolon
-id|request_region
-c_func
-(paren
-l_int|0xa0
-comma
-l_int|0x20
-comma
-l_string|&quot;pic2&quot;
-)paren
-suffix:semicolon
-id|request_region
-c_func
-(paren
-l_int|0x00
-comma
-l_int|0x20
-comma
-l_string|&quot;dma1&quot;
-)paren
-suffix:semicolon
-id|request_region
-c_func
-(paren
-l_int|0x40
-comma
-l_int|0x20
-comma
-l_string|&quot;timer&quot;
-)paren
-suffix:semicolon
-id|request_region
-c_func
-(paren
-l_int|0x80
-comma
-l_int|0x10
-comma
-l_string|&quot;dma page reg&quot;
-)paren
-suffix:semicolon
-id|request_region
-c_func
-(paren
-l_int|0xc0
-comma
-l_int|0x20
-comma
-l_string|&quot;dma2&quot;
-)paren
-suffix:semicolon
 id|raven_init
 c_func
 (paren
@@ -1430,6 +1265,7 @@ c_func
 r_void
 )paren
 (brace
+macro_line|#ifdef CONFIG_PREP_RESIDUAL&t;
 r_int
 r_int
 id|freq
@@ -1484,6 +1320,7 @@ comma
 l_int|1000000
 )paren
 suffix:semicolon
+macro_line|#endif&t;
 )brace
 multiline_comment|/*&n; * Uses the on-board timer to calibrate the on-chip decrementer register&n; * for prep systems.  On the pmac the OF tells us what the frequency is&n; * but on prep we have to figure it out.&n; * -- Cort&n; */
 multiline_comment|/* Done with 3 interrupts: the first one primes the cache and the&n; * 2 following ones measure the interval. The precision of the method&n; * is still doubtful due to the short interval sampled.&n; */
@@ -2274,6 +2111,7 @@ comma
 l_string|&quot;clock&bslash;t&bslash;t: &quot;
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_PREP_RESIDUAL&t;
 r_if
 c_cond
 (paren
@@ -2305,6 +2143,7 @@ id|res-&gt;VitalProductData.ProcessorHz
 )paren
 suffix:semicolon
 r_else
+macro_line|#endif /* CONFIG_PREP_RESIDUAL */
 id|len
 op_add_assign
 id|sprintf
@@ -2450,42 +2289,23 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|OpenPIC
+id|OpenPIC_Addr
 op_ne
 l_int|NULL
 )paren
-(brace
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|16
-suffix:semicolon
-id|i
-OL
-l_int|36
-suffix:semicolon
-id|i
-op_increment
-)paren
-id|irq_desc
-(braket
-id|i
-)braket
-dot
-id|handler
-op_assign
-op_amp
-id|open_pic
-suffix:semicolon
 id|openpic_init
 c_func
 (paren
 l_int|1
+comma
+id|NUM_8259_INTERRUPTS
+comma
+l_int|0
+comma
+op_minus
+l_int|1
 )paren
 suffix:semicolon
-)brace
 r_for
 c_loop
 (paren
@@ -2495,7 +2315,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-l_int|16
+id|NUM_8259_INTERRUPTS
 suffix:semicolon
 id|i
 op_increment
@@ -2515,26 +2335,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_SMP
-id|request_irq
-c_func
-(paren
-id|openpic_to_irq
-c_func
-(paren
-id|OPENPIC_VEC_SPURIOUS
-)paren
-comma
-id|openpic_ipi_action
-comma
-l_int|0
-comma
-l_string|&quot;IPI0&quot;
-comma
-l_int|0
-)paren
-suffix:semicolon
-macro_line|#endif /* CONFIG_SMP */
 )brace
 macro_line|#if defined(CONFIG_BLK_DEV_IDE) || defined(CONFIG_BLK_DEV_IDE_MODULE)
 multiline_comment|/*&n; * IDE stuff.&n; */
@@ -2788,19 +2588,6 @@ id|extent
 suffix:semicolon
 )brace
 r_void
-id|__prep
-DECL|function|prep_ide_fix_driveid
-id|prep_ide_fix_driveid
-c_func
-(paren
-r_struct
-id|hd_driveid
-op_star
-id|id
-)paren
-(brace
-)brace
-r_void
 id|__init
 DECL|function|prep_ide_init_hwif_ports
 id|prep_ide_init_hwif_ports
@@ -2898,6 +2685,103 @@ l_int|0
 suffix:semicolon
 )brace
 macro_line|#endif
+DECL|variable|MotSave_SmpIar
+r_int
+r_int
+op_star
+id|MotSave_SmpIar
+suffix:semicolon
+DECL|variable|MotSave_CpusState
+r_int
+r_char
+op_star
+id|MotSave_CpusState
+(braket
+l_int|2
+)braket
+suffix:semicolon
+r_void
+id|__init
+DECL|function|prep_init2
+id|prep_init2
+c_func
+(paren
+r_void
+)paren
+(brace
+macro_line|#ifdef CONFIG_NVRAM  
+id|request_region
+c_func
+(paren
+id|PREP_NVRAM_AS0
+comma
+l_int|0x8
+comma
+l_string|&quot;nvram&quot;
+)paren
+suffix:semicolon
+macro_line|#endif
+id|request_region
+c_func
+(paren
+l_int|0x20
+comma
+l_int|0x20
+comma
+l_string|&quot;pic1&quot;
+)paren
+suffix:semicolon
+id|request_region
+c_func
+(paren
+l_int|0xa0
+comma
+l_int|0x20
+comma
+l_string|&quot;pic2&quot;
+)paren
+suffix:semicolon
+id|request_region
+c_func
+(paren
+l_int|0x00
+comma
+l_int|0x20
+comma
+l_string|&quot;dma1&quot;
+)paren
+suffix:semicolon
+id|request_region
+c_func
+(paren
+l_int|0x40
+comma
+l_int|0x20
+comma
+l_string|&quot;timer&quot;
+)paren
+suffix:semicolon
+id|request_region
+c_func
+(paren
+l_int|0x80
+comma
+l_int|0x10
+comma
+l_string|&quot;dma page reg&quot;
+)paren
+suffix:semicolon
+id|request_region
+c_func
+(paren
+l_int|0xc0
+comma
+l_int|0x20
+comma
+l_string|&quot;dma2&quot;
+)paren
+suffix:semicolon
+)brace
 r_void
 id|__init
 DECL|function|prep_init
@@ -2925,6 +2809,21 @@ r_int
 id|r7
 )paren
 (brace
+macro_line|#ifdef CONFIG_PREP_RESIDUAL&t;
+id|RESIDUAL
+op_star
+id|old_res
+op_assign
+(paren
+id|RESIDUAL
+op_star
+)paren
+(paren
+id|r3
+op_plus
+id|KERNELBASE
+)paren
+suffix:semicolon
 multiline_comment|/* make a copy of residual data */
 r_if
 c_cond
@@ -2957,6 +2856,76 @@ id|RESIDUAL
 )paren
 )paren
 suffix:semicolon
+multiline_comment|/* These need to be saved for the Motorola Prep &n;&t;&t; * MVME4600 and Dual MTX boards.&n;&t;&t; */
+id|MotSave_SmpIar
+op_assign
+op_amp
+id|old_res-&gt;VitalProductData.SmpIar
+suffix:semicolon
+id|MotSave_CpusState
+(braket
+l_int|0
+)braket
+op_assign
+op_amp
+id|old_res-&gt;Cpus
+(braket
+l_int|0
+)braket
+dot
+id|CpuState
+suffix:semicolon
+id|MotSave_CpusState
+(braket
+l_int|1
+)braket
+op_assign
+op_amp
+id|old_res-&gt;Cpus
+(braket
+l_int|1
+)braket
+dot
+id|CpuState
+suffix:semicolon
+)brace
+macro_line|#endif
+multiline_comment|/* Copy cmd_line parameters */
+r_if
+c_cond
+(paren
+id|r6
+)paren
+(brace
+op_star
+(paren
+r_char
+op_star
+)paren
+(paren
+id|r7
+op_plus
+id|KERNELBASE
+)paren
+op_assign
+l_int|0
+suffix:semicolon
+id|strcpy
+c_func
+(paren
+id|cmd_line
+comma
+(paren
+r_char
+op_star
+)paren
+(paren
+id|r6
+op_plus
+id|KERNELBASE
+)paren
+)paren
+suffix:semicolon
 )brace
 id|isa_io_base
 op_assign
@@ -2983,6 +2952,7 @@ op_assign
 l_int|0x48
 suffix:semicolon
 multiline_comment|/* figure out what kind of prep workstation we are */
+macro_line|#ifdef CONFIG_PREP_RESIDUAL&t;
 r_if
 c_cond
 (paren
@@ -3009,37 +2979,6 @@ id|_prep_type
 op_assign
 id|_PREP_IBM
 suffix:semicolon
-r_else
-r_if
-c_cond
-(paren
-op_logical_neg
-id|strncmp
-c_func
-(paren
-id|res-&gt;VitalProductData.PrintableModel
-comma
-l_string|&quot;Radstone&quot;
-comma
-l_int|8
-)paren
-)paren
-(brace
-r_extern
-r_char
-op_star
-id|Motherboard_map_name
-suffix:semicolon
-id|_prep_type
-op_assign
-id|_PREP_Radstone
-suffix:semicolon
-id|Motherboard_map_name
-op_assign
-id|res-&gt;VitalProductData.PrintableModel
-suffix:semicolon
-)brace
-r_else
 id|_prep_type
 op_assign
 id|_PREP_Motorola
@@ -3047,17 +2986,13 @@ suffix:semicolon
 )brace
 r_else
 multiline_comment|/* assume motorola if no residual (netboot?) */
+macro_line|#endif&t;  
 (brace
 id|_prep_type
 op_assign
 id|_PREP_Motorola
 suffix:semicolon
 )brace
-id|prep_setup_pci_ptrs
-c_func
-(paren
-)paren
-suffix:semicolon
 id|ppc_md.setup_arch
 op_assign
 id|prep_setup_arch
@@ -3085,7 +3020,7 @@ id|prep_get_irq
 suffix:semicolon
 id|ppc_md.init
 op_assign
-l_int|NULL
+id|prep_init2
 suffix:semicolon
 id|ppc_md.restart
 op_assign
@@ -3103,75 +3038,6 @@ id|ppc_md.time_init
 op_assign
 l_int|NULL
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|_prep_type
-op_eq
-id|_PREP_Radstone
-)paren
-(brace
-multiline_comment|/*&n;&t;&t; * We require a direct restart as port 92 does not work on&n;&t;&t; * all Radstone boards&n;&t;&t; */
-id|ppc_md.restart
-op_assign
-id|prep_direct_restart
-suffix:semicolon
-multiline_comment|/*&n;&t;&t; * The RTC device used varies according to board type&n;&t;&t; */
-r_if
-c_cond
-(paren
-(paren
-(paren
-id|ucSystemType
-op_eq
-id|RS_SYS_TYPE_PPC1
-)paren
-op_logical_and
-(paren
-id|ucBoardRevMaj
-op_ge
-l_int|5
-)paren
-)paren
-op_logical_or
-(paren
-id|ucSystemType
-op_eq
-id|RS_SYS_TYPE_PPC1a
-)paren
-)paren
-(brace
-id|ppc_md.set_rtc_time
-op_assign
-id|mk48t59_set_rtc_time
-suffix:semicolon
-id|ppc_md.get_rtc_time
-op_assign
-id|mk48t59_get_rtc_time
-suffix:semicolon
-id|ppc_md.time_init
-op_assign
-id|mk48t59_init
-suffix:semicolon
-)brace
-r_else
-(brace
-id|ppc_md.set_rtc_time
-op_assign
-id|mc146818_set_rtc_time
-suffix:semicolon
-id|ppc_md.get_rtc_time
-op_assign
-id|mc146818_get_rtc_time
-suffix:semicolon
-)brace
-multiline_comment|/*&n;&t;&t; * Determine the decrementer rate from the residual data&n;&t;&t; */
-id|ppc_md.calibrate_decr
-op_assign
-id|prep_res_calibrate_decr
-suffix:semicolon
-)brace
-r_else
 r_if
 c_cond
 (paren
@@ -3243,7 +3109,7 @@ id|prep_ide_release_region
 suffix:semicolon
 id|ppc_ide_md.fix_driveid
 op_assign
-id|prep_ide_fix_driveid
+l_int|NULL
 suffix:semicolon
 id|ppc_ide_md.ide_init_hwif
 op_assign

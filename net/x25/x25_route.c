@@ -1,6 +1,5 @@
 multiline_comment|/*&n; *&t;X.25 Packet Layer release 002&n; *&n; *&t;This is ALPHA test software. This code may break your machine, randomly fail to work with new &n; *&t;releases, misbehave and/or generally screw up. It might even work. &n; *&n; *&t;This code REQUIRES 2.1.15 or higher&n; *&n; *&t;This module:&n; *&t;&t;This module is free software; you can redistribute it and/or&n; *&t;&t;modify it under the terms of the GNU General Public License&n; *&t;&t;as published by the Free Software Foundation; either version&n; *&t;&t;2 of the License, or (at your option) any later version.&n; *&n; *&t;History&n; *&t;X.25 001&t;Jonathan Naylor&t;Started coding.&n; */
 macro_line|#include &lt;linux/config.h&gt;
-macro_line|#if defined(CONFIG_X25) || defined(CONFIG_X25_MODULE)
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/socket.h&gt;
@@ -25,6 +24,7 @@ macro_line|#include &lt;linux/termios.h&gt;&t;/* For TIOCINQ/OUTQ */
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/notifier.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;net/x25.h&gt;
 DECL|variable|x25_route_list
 r_static
@@ -32,8 +32,7 @@ r_struct
 id|x25_route
 op_star
 id|x25_route_list
-op_assign
-l_int|NULL
+multiline_comment|/* = NULL initially */
 suffix:semicolon
 multiline_comment|/*&n; *&t;Add a new route.&n; */
 DECL|function|x25_add_route
@@ -972,10 +971,10 @@ r_return
 id|len
 suffix:semicolon
 )brace
-macro_line|#ifdef MODULE
 multiline_comment|/*&n; *&t;Release all memory associated with X.25 routing structures.&n; */
 DECL|function|x25_route_free
 r_void
+id|__exit
 id|x25_route_free
 c_func
 (paren
@@ -1016,6 +1015,4 @@ id|route
 suffix:semicolon
 )brace
 )brace
-macro_line|#endif
-macro_line|#endif
 eof

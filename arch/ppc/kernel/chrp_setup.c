@@ -20,7 +20,6 @@ macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/console.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
-macro_line|#include &lt;linux/openpic.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/adb.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -44,13 +43,6 @@ macro_line|#include &quot;local_irq.h&quot;
 macro_line|#include &quot;i8259.h&quot;
 macro_line|#include &quot;open_pic.h&quot;
 macro_line|#include &quot;xics.h&quot;
-r_extern
-r_volatile
-r_int
-r_char
-op_star
-id|chrp_int_ack_special
-suffix:semicolon
 r_int
 r_int
 id|chrp_get_rtc_time
@@ -83,7 +75,7 @@ r_void
 )paren
 suffix:semicolon
 r_void
-id|chrp_setup_pci_ptrs
+id|chrp_find_bridges
 c_func
 (paren
 r_void
@@ -311,7 +303,7 @@ suffix:semicolon
 r_extern
 r_int
 r_int
-id|loops_per_sec
+id|loops_per_jiffy
 suffix:semicolon
 r_extern
 r_int
@@ -1062,9 +1054,11 @@ op_star
 id|device
 suffix:semicolon
 multiline_comment|/* init to some ~sane value until calibrate_delay() runs */
-id|loops_per_sec
+id|loops_per_jiffy
 op_assign
 l_int|50000000
+op_div
+id|HZ
 suffix:semicolon
 macro_line|#ifdef CONFIG_BLK_DEV_INITRD
 multiline_comment|/* this is fine for chrp */
@@ -1106,6 +1100,12 @@ comma
 id|cmd_line
 )paren
 suffix:semicolon
+multiline_comment|/* Lookup PCI host bridges */
+id|chrp_find_bridges
+c_func
+(paren
+)paren
+suffix:semicolon
 macro_line|#ifndef CONFIG_PPC64BRIDGE
 multiline_comment|/* PCI bridge config space access area -&n;&t; * appears to be not in devtree on longtrail. */
 id|ioremap
@@ -1130,7 +1130,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|OpenPIC
+id|OpenPIC_Addr
 )paren
 (brace
 r_int
@@ -1188,7 +1188,7 @@ l_int|2
 )braket
 )paren
 suffix:semicolon
-id|OpenPIC
+id|OpenPIC_Addr
 op_assign
 id|ioremap
 c_func
@@ -1198,11 +1198,7 @@ id|opprop
 l_int|0
 )braket
 comma
-r_sizeof
-(paren
-r_struct
-id|OpenPIC
-)paren
+l_int|0x40000
 )paren
 suffix:semicolon
 )brace
@@ -1221,13 +1217,6 @@ op_amp
 id|dummy_con
 suffix:semicolon
 macro_line|#endif
-macro_line|#ifndef CONFIG_PPC64BRIDGE
-id|pmac_find_bridges
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif /* CONFIG_PPC64BRIDGE */
 multiline_comment|/* Get the event scan rate for the rtas so we know how&n;&t; * often it expects a heartbeat. -- Cort&n;&t; */
 r_if
 c_cond
@@ -1508,124 +1497,6 @@ id|irq
 suffix:semicolon
 )brace
 )brace
-DECL|function|chrp_get_irq
-r_int
-id|__chrp
-id|chrp_get_irq
-c_func
-(paren
-r_struct
-id|pt_regs
-op_star
-id|regs
-)paren
-(brace
-r_int
-id|irq
-suffix:semicolon
-id|irq
-op_assign
-id|openpic_irq
-c_func
-(paren
-id|smp_processor_id
-c_func
-(paren
-)paren
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|irq
-op_eq
-id|IRQ_8259_CASCADE
-)paren
-(brace
-multiline_comment|/*&n;                 * This magic address generates a PCI IACK cycle.&n;                 */
-r_if
-c_cond
-(paren
-id|chrp_int_ack_special
-)paren
-id|irq
-op_assign
-op_star
-id|chrp_int_ack_special
-suffix:semicolon
-r_else
-id|irq
-op_assign
-id|i8259_irq
-c_func
-(paren
-id|smp_processor_id
-c_func
-(paren
-)paren
-)paren
-suffix:semicolon
-id|openpic_eoi
-c_func
-(paren
-id|smp_processor_id
-c_func
-(paren
-)paren
-)paren
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-id|irq
-op_eq
-id|OPENPIC_VEC_SPURIOUS
-)paren
-multiline_comment|/*&n;                 * Spurious interrupts should never be&n;                 * acknowledged&n;                 */
-id|irq
-op_assign
-op_minus
-l_int|1
-suffix:semicolon
-multiline_comment|/*&n;&t; * I would like to openpic_eoi here but there seem to be timing problems&n;&t; * between the openpic ack and the openpic eoi.&n;&t; *   -- Cort&n;&t; */
-r_return
-id|irq
-suffix:semicolon
-)brace
-DECL|function|chrp_post_irq
-r_void
-id|__chrp
-id|chrp_post_irq
-c_func
-(paren
-r_struct
-id|pt_regs
-op_star
-id|regs
-comma
-r_int
-id|irq
-)paren
-(brace
-multiline_comment|/*&n;&t; * If it&squot;s an i8259 irq then we&squot;ve already done the&n;&t; * openpic irq.  So we just check to make sure the controller&n;&t; * is an openpic and if it is then eoi&n;&t; *&n;&t; * We do it this way since our irq_desc[irq].handler can change&n;&t; * with RTL and no longer be open_pic -- Cort&n;&t; */
-r_if
-c_cond
-(paren
-id|irq
-op_ge
-id|open_pic_irq_offset
-)paren
-id|openpic_eoi
-c_func
-(paren
-id|smp_processor_id
-c_func
-(paren
-)paren
-)paren
-suffix:semicolon
-)brace
 DECL|function|chrp_init_IRQ
 r_void
 id|__init
@@ -1648,6 +1519,35 @@ r_int
 op_star
 id|addrp
 suffix:semicolon
+r_int
+r_char
+op_star
+id|chrp_int_ack_special
+op_assign
+l_int|0
+suffix:semicolon
+r_int
+r_char
+id|init_senses
+(braket
+id|NR_IRQS
+op_minus
+id|NUM_8259_INTERRUPTS
+)braket
+suffix:semicolon
+r_int
+id|nmi_irq
+op_assign
+op_minus
+l_int|1
+suffix:semicolon
+macro_line|#if defined(CONFIG_VT) &amp;&amp; defined(CONFIG_ADB_KEYBOARD) &amp;&amp; defined(XMON)&t;
+r_struct
+id|device_node
+op_star
+id|kbd
+suffix:semicolon
+macro_line|#endif
 r_if
 c_cond
 (paren
@@ -1692,7 +1592,6 @@ r_else
 id|chrp_int_ack_special
 op_assign
 (paren
-r_volatile
 r_int
 r_char
 op_star
@@ -1706,44 +1605,46 @@ comma
 l_int|1
 )paren
 suffix:semicolon
-id|open_pic_irq_offset
-op_assign
-l_int|16
-suffix:semicolon
-r_for
-c_loop
+multiline_comment|/* hydra still sets OpenPIC_InitSenses to a static set of values */
+r_if
+c_cond
 (paren
-id|i
-op_assign
-l_int|16
-suffix:semicolon
-id|i
-OL
-id|NR_IRQS
-suffix:semicolon
-id|i
-op_increment
+id|OpenPIC_InitSenses
+op_eq
+l_int|NULL
 )paren
-id|irq_desc
-(braket
-id|i
-)braket
-dot
-id|handler
-op_assign
-op_amp
-id|open_pic
+(brace
+id|prom_get_irq_senses
+c_func
+(paren
+id|init_senses
+comma
+id|NUM_8259_INTERRUPTS
+comma
+id|NR_IRQS
+)paren
 suffix:semicolon
+id|OpenPIC_InitSenses
+op_assign
+id|init_senses
+suffix:semicolon
+id|OpenPIC_NumInitSenses
+op_assign
+id|NR_IRQS
+op_minus
+id|NUM_8259_INTERRUPTS
+suffix:semicolon
+)brace
 id|openpic_init
 c_func
 (paren
 l_int|1
-)paren
-suffix:semicolon
-id|enable_irq
-c_func
-(paren
-id|IRQ_8259_CASCADE
+comma
+id|NUM_8259_INTERRUPTS
+comma
+id|chrp_int_ack_special
+comma
+id|nmi_irq
 )paren
 suffix:semicolon
 r_for
@@ -1755,7 +1656,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-l_int|16
+id|NUM_8259_INTERRUPTS
 suffix:semicolon
 id|i
 op_increment
@@ -1775,46 +1676,64 @@ c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_XMON
+macro_line|#if defined(CONFIG_VT) &amp;&amp; defined(CONFIG_ADB_KEYBOARD) &amp;&amp; defined(XMON)
+multiline_comment|/* see if there is a keyboard in the device tree&n;&t;   with a parent of type &quot;adb&quot; */
+r_for
+c_loop
+(paren
+id|kbd
+op_assign
+id|find_devices
+c_func
+(paren
+l_string|&quot;keyboard&quot;
+)paren
+suffix:semicolon
+id|kbd
+suffix:semicolon
+id|kbd
+op_assign
+id|kbd-&gt;next
+)paren
+r_if
+c_cond
+(paren
+id|kbd-&gt;parent
+op_logical_and
+id|kbd-&gt;parent-&gt;type
+op_logical_and
+id|strcmp
+c_func
+(paren
+id|kbd-&gt;parent-&gt;type
+comma
+l_string|&quot;adb&quot;
+)paren
+op_eq
+l_int|0
+)paren
+r_break
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|kbd
+)paren
 id|request_irq
 c_func
 (paren
-id|openpic_to_irq
-c_func
-(paren
 id|HYDRA_INT_ADB_NMI
-)paren
 comma
 id|xmon_irq
 comma
 l_int|0
 comma
-l_string|&quot;NMI&quot;
+l_string|&quot;XMON break&quot;
 comma
 l_int|0
 )paren
 suffix:semicolon
-macro_line|#endif&t;/* CONFIG_XMON */
-macro_line|#ifdef CONFIG_SMP
-id|request_irq
-c_func
-(paren
-id|openpic_to_irq
-c_func
-(paren
-id|OPENPIC_VEC_IPI
-)paren
-comma
-id|openpic_ipi_action
-comma
-l_int|0
-comma
-l_string|&quot;IPI0&quot;
-comma
-l_int|0
-)paren
-suffix:semicolon
-macro_line|#endif&t;/* CONFIG_SMP */
+macro_line|#endif
 )brace
 r_void
 id|__init
@@ -2288,25 +2207,6 @@ suffix:semicolon
 )brace
 r_void
 id|__chrp
-DECL|function|chrp_ide_fix_driveid
-id|chrp_ide_fix_driveid
-c_func
-(paren
-r_struct
-id|hd_driveid
-op_star
-id|id
-)paren
-(brace
-id|ppc_generic_ide_fix_driveid
-c_func
-(paren
-id|id
-)paren
-suffix:semicolon
-)brace
-r_void
-id|__chrp
 DECL|function|chrp_ide_init_hwif_ports
 id|chrp_ide_init_hwif_ports
 c_func
@@ -2425,11 +2325,6 @@ r_int
 id|r7
 )paren
 (brace
-id|chrp_setup_pci_ptrs
-c_func
-(paren
-)paren
-suffix:semicolon
 macro_line|#ifdef CONFIG_BLK_DEV_INITRD
 multiline_comment|/* take care of initrd if we have one */
 r_if
@@ -2454,7 +2349,6 @@ id|KERNELBASE
 suffix:semicolon
 )brace
 macro_line|#endif /* CONFIG_BLK_DEV_INITRD */
-multiline_comment|/* pci_dram_offset/isa_io_base/isa_mem_base set by setup_pci_ptrs() */
 id|ISA_DMA_THRESHOLD
 op_assign
 op_complement
@@ -2468,6 +2362,11 @@ id|DMA_MODE_WRITE
 op_assign
 l_int|0x48
 suffix:semicolon
+id|isa_io_base
+op_assign
+id|CHRP_ISA_IO_BASE
+suffix:semicolon
+multiline_comment|/* default value */
 id|ppc_md.setup_arch
 op_assign
 id|chrp_setup_arch
@@ -2491,11 +2390,11 @@ id|chrp_init_IRQ
 suffix:semicolon
 id|ppc_md.get_irq
 op_assign
-id|chrp_get_irq
+id|openpic_get_irq
 suffix:semicolon
 id|ppc_md.post_irq
 op_assign
-id|chrp_post_irq
+l_int|NULL
 suffix:semicolon
 macro_line|#else
 id|ppc_md.init_IRQ
@@ -2723,7 +2622,7 @@ id|chrp_ide_release_region
 suffix:semicolon
 id|ppc_ide_md.fix_driveid
 op_assign
-id|chrp_ide_fix_driveid
+id|ppc_generic_ide_fix_driveid
 suffix:semicolon
 id|ppc_ide_md.ide_init_hwif
 op_assign

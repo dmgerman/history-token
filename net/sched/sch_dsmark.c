@@ -24,7 +24,9 @@ mdefine_line|#define D2PRINTK(format,args...)
 macro_line|#endif
 DECL|macro|PRIV
 mdefine_line|#define PRIV(sch) ((struct dsmark_qdisc_data *) (sch)-&gt;data)
-multiline_comment|/*&n; * classid&t;class&t;&t;marking&n; * -------&t;-----&t;&t;-------&n; *   n/a&t;  0&t;&t;n/a&n; *   x:0&t;  1&t;&t;use entry [0]&n; *   ...&t; ...&t;&t;...&n; *   x:y y&gt;0&t; y+1&t;&t;use entry [y]&n; *   ...&t; ...&t;&t;...&n; * x:indices-1&t;indices&t;&t;use entry [indices-1]&n; */
+multiline_comment|/*&n; * classid&t;class&t;&t;marking&n; * -------&t;-----&t;&t;-------&n; *   n/a&t;  0&t;&t;n/a&n; *   x:0&t;  1&t;&t;use entry [0]&n; *   ...&t; ...&t;&t;...&n; *   x:y y&gt;0&t; y+1&t;&t;use entry [y]&n; *   ...&t; ...&t;&t;...&n; * x:indices-1&t;indices&t;&t;use entry [indices-1]&n; *   ...&t; ...&t;&t;...&n; *   x:y&t; y+1&t;&t;use entry [y &amp; (indices-1)]&n; *   ...&t; ...&t;&t;...&n; * 0xffff&t;0x10000&t;&t;use entry [indices-1]&n; */
+DECL|macro|NO_DEFAULT_INDEX
+mdefine_line|#define NO_DEFAULT_INDEX&t;(1 &lt;&lt; 16)
 DECL|struct|dsmark_qdisc_data
 r_struct
 id|dsmark_qdisc_data
@@ -57,9 +59,10 @@ id|__u16
 id|indices
 suffix:semicolon
 DECL|member|default_index
-id|__u16
+id|__u32
 id|default_index
 suffix:semicolon
+multiline_comment|/* index range is 0...0xffff */
 DECL|member|set_tc_index
 r_int
 id|set_tc_index
@@ -962,6 +965,8 @@ r_if
 c_cond
 (paren
 id|p-&gt;default_index
+op_ne
+id|NO_DEFAULT_INDEX
 )paren
 id|skb-&gt;tc_index
 op_assign
@@ -1524,7 +1529,7 @@ suffix:semicolon
 )brace
 id|p-&gt;default_index
 op_assign
-l_int|0
+id|NO_DEFAULT_INDEX
 suffix:semicolon
 r_if
 c_cond
@@ -1577,20 +1582,6 @@ op_minus
 l_int|1
 )braket
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|p-&gt;default_index
-op_logical_or
-id|p-&gt;default_index
-op_ge
-id|p-&gt;indices
-)paren
-r_return
-op_minus
-id|EINVAL
 suffix:semicolon
 )brace
 id|p-&gt;set_tc_index
@@ -2070,7 +2061,15 @@ r_if
 c_cond
 (paren
 id|p-&gt;default_index
+op_ne
+id|NO_DEFAULT_INDEX
 )paren
+(brace
+id|__u16
+id|tmp
+op_assign
+id|p-&gt;default_index
+suffix:semicolon
 id|RTA_PUT
 c_func
 (paren
@@ -2084,9 +2083,10 @@ id|__u16
 )paren
 comma
 op_amp
-id|p-&gt;default_index
+id|tmp
 )paren
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren

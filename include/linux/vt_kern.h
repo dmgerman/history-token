@@ -49,7 +49,7 @@ id|vt_cons
 id|MAX_NR_CONSOLES
 )braket
 suffix:semicolon
-DECL|variable|kd_mksound
+r_extern
 r_void
 (paren
 op_star

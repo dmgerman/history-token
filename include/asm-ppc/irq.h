@@ -4,6 +4,7 @@ DECL|macro|_ASM_IRQ_H
 mdefine_line|#define _ASM_IRQ_H
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;&t;&t;/* ppc_md */
+macro_line|#include &lt;asm/atomic.h&gt;
 r_extern
 r_void
 id|disable_irq
@@ -316,12 +317,6 @@ mdefine_line|#define NR_IRQS&t;&t;&t;256
 macro_line|#ifndef CONFIG_8260
 DECL|macro|NUM_8259_INTERRUPTS
 mdefine_line|#define NUM_8259_INTERRUPTS&t;16
-DECL|macro|IRQ_8259_CASCADE
-mdefine_line|#define IRQ_8259_CASCADE&t;16
-DECL|macro|openpic_to_irq
-mdefine_line|#define openpic_to_irq(n)&t;((n)+NUM_8259_INTERRUPTS)
-DECL|macro|irq_to_openpic
-mdefine_line|#define irq_to_openpic(n)&t;((n)-NUM_8259_INTERRUPTS)
 macro_line|#else /* CONFIG_8260 */
 multiline_comment|/* The 8260 has an internal interrupt controller with a maximum of&n; * 64 IRQs.  We will use NR_IRQs from above since it is large enough.&n; * Don&squot;t be confused by the 8260 documentation where they list an&n; * &quot;interrupt number&quot; and &quot;interrupt vector&quot;.  We are only interested&n; * in the interrupt vector.  There are &quot;reserved&quot; holes where the&n; * vector number increases, but the interrupt number in the table does not.&n; * (Document errata updates have fixed this...make sure you have up to&n; * date processor documentation -- Dan).&n; */
 DECL|macro|NR_SIU_INTS
@@ -384,6 +379,15 @@ suffix:semicolon
 macro_line|#endif
 DECL|macro|NR_MASK_WORDS
 mdefine_line|#define NR_MASK_WORDS&t;((NR_IRQS + 31) / 32)
+multiline_comment|/* pendatic: these are long because they are used with set_bit --RR */
+r_extern
+r_int
+r_int
+id|ppc_cached_irq_mask
+(braket
+id|NR_MASK_WORDS
+)braket
+suffix:semicolon
 r_extern
 r_int
 r_int
@@ -391,6 +395,10 @@ id|ppc_lost_interrupts
 (braket
 id|NR_MASK_WORDS
 )braket
+suffix:semicolon
+r_extern
+id|atomic_t
+id|ppc_n_lost_interrupts
 suffix:semicolon
 macro_line|#endif /* _ASM_IRQ_H */
 macro_line|#endif /* __KERNEL__ */

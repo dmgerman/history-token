@@ -1,5 +1,5 @@
-multiline_comment|/******************************************************************************&n; *&n; * Name: amlcode.h - Definitions for AML, as included in &quot;definition blocks&quot;&n; *                   Declarations and definitions contained herein are derived&n; *                   directly from the ACPI specification.&n; *       $Revision: 42 $&n; *&n; *****************************************************************************/
-multiline_comment|/*&n; *  Copyright (C) 2000 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/******************************************************************************&n; *&n; * Name: amlcode.h - Definitions for AML, as included in &quot;definition blocks&quot;&n; *                   Declarations and definitions contained herein are derived&n; *                   directly from the ACPI specification.&n; *       $Revision: 46 $&n; *&n; *****************************************************************************/
+multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#ifndef __AMLCODE_H__
 DECL|macro|__AMLCODE_H__
 mdefine_line|#define __AMLCODE_H__
@@ -314,35 +314,57 @@ DECL|macro|ARGP_TERMLIST
 mdefine_line|#define ARGP_TERMLIST               0x0F
 DECL|macro|ARGP_WORDDATA
 mdefine_line|#define ARGP_WORDDATA               0x10
-multiline_comment|/*&n; * Resolved argument types for the AML Interpreter&n; * Each field in the Arg_types u32 is 5 bits, allowing for a maximum of 6 arguments.&n; * There can be up to 31 unique argument types&n; */
-DECL|macro|ARGI_ANYTYPE
-mdefine_line|#define ARGI_ANYTYPE                0x01
-DECL|macro|ARGI_TARGETREF
-mdefine_line|#define ARGI_TARGETREF              0x02
-DECL|macro|ARGI_REFERENCE
-mdefine_line|#define ARGI_REFERENCE              0x03
-DECL|macro|ARGI_IF
-mdefine_line|#define ARGI_IF                     0x04
-DECL|macro|ARGI_NUMBER
-mdefine_line|#define ARGI_NUMBER                 0x05
+DECL|macro|ARGP_QWORDDATA
+mdefine_line|#define ARGP_QWORDDATA              0x11
+DECL|macro|ARGP_SIMPLENAME
+mdefine_line|#define ARGP_SIMPLENAME             0x12
+multiline_comment|/*&n; * Resolved argument types for the AML Interpreter&n; * Each field in the Arg_types u32 is 5 bits, allowing for a maximum of 6 arguments.&n; * There can be up to 31 unique argument types (0 is end-of-arg-list indicator)&n; */
+multiline_comment|/* &quot;Standard&quot; ACPI types are 1-15 (0x0F) */
+DECL|macro|ARGI_INTEGER
+mdefine_line|#define ARGI_INTEGER                 ACPI_TYPE_INTEGER        /* 1 */
 DECL|macro|ARGI_STRING
-mdefine_line|#define ARGI_STRING                 0x06
+mdefine_line|#define ARGI_STRING                 ACPI_TYPE_STRING        /* 2 */
 DECL|macro|ARGI_BUFFER
-mdefine_line|#define ARGI_BUFFER                 0x07
+mdefine_line|#define ARGI_BUFFER                 ACPI_TYPE_BUFFER        /* 3 */
 DECL|macro|ARGI_PACKAGE
-mdefine_line|#define ARGI_PACKAGE                0x08
-DECL|macro|ARGI_DATAOBJECT
-mdefine_line|#define ARGI_DATAOBJECT             0x09     /* Buffer, string, package or reference to a Node - Used only by Size_of operator*/
-DECL|macro|ARGI_COMPLEXOBJ
-mdefine_line|#define ARGI_COMPLEXOBJ             0x0A     /* Buffer or package */
-DECL|macro|ARGI_MUTEX
-mdefine_line|#define ARGI_MUTEX                  0x0B
+mdefine_line|#define ARGI_PACKAGE                ACPI_TYPE_PACKAGE       /* 4 */
 DECL|macro|ARGI_EVENT
-mdefine_line|#define ARGI_EVENT                  0x0C
+mdefine_line|#define ARGI_EVENT                  ACPI_TYPE_EVENT
+DECL|macro|ARGI_MUTEX
+mdefine_line|#define ARGI_MUTEX                  ACPI_TYPE_MUTEX
 DECL|macro|ARGI_REGION
-mdefine_line|#define ARGI_REGION                 0x0D
+mdefine_line|#define ARGI_REGION                 ACPI_TYPE_REGION
 DECL|macro|ARGI_DDBHANDLE
-mdefine_line|#define ARGI_DDBHANDLE              0x0E
+mdefine_line|#define ARGI_DDBHANDLE              ACPI_TYPE_DDB_HANDLE
+multiline_comment|/* Custom types are 0x10 through 0x1F */
+DECL|macro|ARGI_IF
+mdefine_line|#define ARGI_IF                     0x10
+DECL|macro|ARGI_ANYOBJECT
+mdefine_line|#define ARGI_ANYOBJECT              0x11
+DECL|macro|ARGI_ANYTYPE
+mdefine_line|#define ARGI_ANYTYPE                0x12
+DECL|macro|ARGI_COMPUTEDATA
+mdefine_line|#define ARGI_COMPUTEDATA            0x13     /* Buffer, String, or Integer */
+DECL|macro|ARGI_DATAOBJECT
+mdefine_line|#define ARGI_DATAOBJECT             0x14     /* Buffer, string, package or reference to a Node - Used only by Size_of operator*/
+DECL|macro|ARGI_COMPLEXOBJ
+mdefine_line|#define ARGI_COMPLEXOBJ             0x15     /* Buffer or package */
+DECL|macro|ARGI_INTEGER_REF
+mdefine_line|#define ARGI_INTEGER_REF            0x16
+DECL|macro|ARGI_OBJECT_REF
+mdefine_line|#define ARGI_OBJECT_REF             0x17
+DECL|macro|ARGI_DEVICE_REF
+mdefine_line|#define ARGI_DEVICE_REF             0x18
+DECL|macro|ARGI_REFERENCE
+mdefine_line|#define ARGI_REFERENCE              0x19
+DECL|macro|ARGI_TARGETREF
+mdefine_line|#define ARGI_TARGETREF              0x1A     /* Target, subject to implicit conversion */
+DECL|macro|ARGI_FIXED_TARGET
+mdefine_line|#define ARGI_FIXED_TARGET           0x1B     /* Target, no implicit conversion */
+DECL|macro|ARGI_SIMPLE_TARGET
+mdefine_line|#define ARGI_SIMPLE_TARGET          0x1C     /* Name, Local, Arg -- no implicit conversion */
+DECL|macro|ARGI_BUFFERSTRING
+mdefine_line|#define ARGI_BUFFERSTRING           0x1D
 DECL|macro|ARGI_INVALID_OPCODE
 mdefine_line|#define ARGI_INVALID_OPCODE         0xFFFFFFFF
 multiline_comment|/*&n; * hash offsets&n; */

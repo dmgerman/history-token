@@ -1,5 +1,5 @@
-multiline_comment|/******************************************************************************&n; *&n; * Name: acobject.h - Definition of ACPI_OPERAND_OBJECT  (Internal object only)&n; *       $Revision: 75 $&n; *&n; *****************************************************************************/
-multiline_comment|/*&n; *  Copyright (C) 2000 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/******************************************************************************&n; *&n; * Name: acobject.h - Definition of ACPI_OPERAND_OBJECT  (Internal object only)&n; *       $Revision: 78 $&n; *&n; *****************************************************************************/
+multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#ifndef _ACOBJECT_H
 DECL|macro|_ACOBJECT_H
 mdefine_line|#define _ACOBJECT_H
@@ -53,13 +53,13 @@ DECL|member|value
 id|ACPI_INTEGER
 id|value
 suffix:semicolon
-DECL|typedef|ACPI_OBJECT_NUMBER
+DECL|typedef|ACPI_OBJECT_INTEGER
 )brace
-id|ACPI_OBJECT_NUMBER
+id|ACPI_OBJECT_INTEGER
 suffix:semicolon
 r_typedef
 r_struct
-multiline_comment|/* STRING - has length and pointer */
+multiline_comment|/* STRING - has length and pointer - Null terminated, ASCII characters only */
 (brace
 id|ACPI_OBJECT_COMMON_HEADER
 DECL|member|length
@@ -78,18 +78,13 @@ id|ACPI_OBJECT_STRING
 suffix:semicolon
 r_typedef
 r_struct
-multiline_comment|/* BUFFER - has length, sequence, and pointer */
+multiline_comment|/* BUFFER - has length and pointer - not null terminated */
 (brace
 id|ACPI_OBJECT_COMMON_HEADER
 DECL|member|length
 id|u32
 id|length
 suffix:semicolon
-DECL|member|sequence
-id|u32
-id|sequence
-suffix:semicolon
-multiline_comment|/* Sequential count of buffers created */
 DECL|member|pointer
 id|u8
 op_star
@@ -659,9 +654,9 @@ DECL|member|cache
 id|ACPI_OBJECT_CACHE_LIST
 id|cache
 suffix:semicolon
-DECL|member|number
-id|ACPI_OBJECT_NUMBER
-id|number
+DECL|member|integer
+id|ACPI_OBJECT_INTEGER
+id|integer
 suffix:semicolon
 DECL|member|string
 id|ACPI_OBJECT_STRING

@@ -124,6 +124,9 @@ op_star
 comma
 r_int
 r_int
+comma
+r_int
+id|sig
 )paren
 suffix:semicolon
 r_void
@@ -278,6 +281,8 @@ c_func
 id|regs
 comma
 id|address
+comma
+id|SIGSEGV
 )paren
 suffix:semicolon
 r_return
@@ -553,6 +558,8 @@ c_func
 id|regs
 comma
 id|address
+comma
+id|SIGSEGV
 )paren
 suffix:semicolon
 r_return
@@ -596,6 +603,8 @@ c_func
 id|regs
 comma
 id|address
+comma
+id|SIGKILL
 )paren
 suffix:semicolon
 r_return
@@ -655,6 +664,8 @@ c_func
 id|regs
 comma
 id|address
+comma
+id|SIGBUS
 )paren
 suffix:semicolon
 )brace
@@ -672,8 +683,27 @@ comma
 r_int
 r_int
 id|address
+comma
+r_int
+id|sig
 )paren
 (brace
+r_extern
+r_void
+id|die
+c_func
+(paren
+r_const
+r_char
+op_star
+comma
+r_struct
+id|pt_regs
+op_star
+comma
+r_int
+)paren
+suffix:semicolon
 r_int
 r_int
 id|fixup
@@ -703,12 +733,6 @@ r_return
 suffix:semicolon
 )brace
 multiline_comment|/* kernel has accessed a bad area */
-id|show_regs
-c_func
-(paren
-id|regs
-)paren
-suffix:semicolon
 macro_line|#if defined(CONFIG_XMON) || defined(CONFIG_KGDB)
 r_if
 c_cond
@@ -722,34 +746,14 @@ id|regs
 )paren
 suffix:semicolon
 macro_line|#endif
-id|print_backtrace
+id|die
 c_func
 (paren
-(paren
-r_int
-r_int
-op_star
-)paren
-id|regs-&gt;gpr
-(braket
-l_int|1
-)braket
-)paren
-suffix:semicolon
-id|panic
-c_func
-(paren
-l_string|&quot;kernel access of bad area pc %lx lr %lx address %lX tsk %s/%d&quot;
+l_string|&quot;kernel access of bad area&quot;
 comma
-id|regs-&gt;nip
+id|regs
 comma
-id|regs-&gt;link
-comma
-id|address
-comma
-id|current-&gt;comm
-comma
-id|current-&gt;pid
+id|sig
 )paren
 suffix:semicolon
 )brace

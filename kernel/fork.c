@@ -1745,6 +1745,8 @@ c_func
 id|newf
 comma
 id|size
+op_minus
+l_int|1
 )paren
 suffix:semicolon
 id|write_unlock
@@ -1819,6 +1821,8 @@ c_func
 id|newf
 comma
 id|open_files
+op_minus
+l_int|1
 )paren
 suffix:semicolon
 id|write_unlock

@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: flash.c,v 1.20 2000/11/08 04:57:49 davem Exp $&n; * flash.c: Allow mmap access to the OBP Flash, for OBP updates.&n; *&n; * Copyright (C) 1997  Eddie C. Dost  (ecd@skynet.be)&n; */
+multiline_comment|/* $Id: flash.c,v 1.21 2001/01/11 15:29:36 davem Exp $&n; * flash.c: Allow mmap access to the OBP Flash, for OBP updates.&n; *&n; * Copyright (C) 1997  Eddie C. Dost  (ecd@skynet.be)&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -9,12 +9,20 @@ macro_line|#include &lt;linux/fcntl.h&gt;
 macro_line|#include &lt;linux/poll.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
+macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/sbus.h&gt;
 macro_line|#include &lt;asm/ebus.h&gt;
+DECL|variable|flash_lock
+r_static
+id|spinlock_t
+id|flash_lock
+op_assign
+id|SPIN_LOCK_UNLOCKED
+suffix:semicolon
 r_static
 r_struct
 (brace
@@ -79,9 +87,11 @@ r_int
 r_int
 id|size
 suffix:semicolon
-id|lock_kernel
+id|spin_lock
 c_func
 (paren
+op_amp
+id|flash_lock
 )paren
 suffix:semicolon
 r_if
@@ -119,9 +129,11 @@ id|VM_WRITE
 )paren
 )paren
 (brace
-id|unlock_kernel
+id|spin_unlock
 c_func
 (paren
+op_amp
+id|flash_lock
 )paren
 suffix:semicolon
 r_return
@@ -166,9 +178,11 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|unlock_kernel
+id|spin_unlock
 c_func
 (paren
+op_amp
+id|flash_lock
 )paren
 suffix:semicolon
 r_return
@@ -177,9 +191,11 @@ id|ENXIO
 suffix:semicolon
 )brace
 )brace
-id|unlock_kernel
+id|spin_unlock
 c_func
 (paren
+op_amp
+id|flash_lock
 )paren
 suffix:semicolon
 r_if
@@ -494,18 +510,22 @@ op_star
 id|file
 )paren
 (brace
-id|lock_kernel
+id|spin_lock
 c_func
 (paren
+op_amp
+id|flash_lock
 )paren
 suffix:semicolon
 id|flash.busy
 op_assign
 l_int|0
 suffix:semicolon
-id|unlock_kernel
+id|spin_unlock
 c_func
 (paren
+op_amp
+id|flash_lock
 )paren
 suffix:semicolon
 r_return

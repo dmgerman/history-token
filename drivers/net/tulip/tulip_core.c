@@ -15,7 +15,7 @@ id|version
 )braket
 id|__devinitdata
 op_assign
-l_string|&quot;Linux Tulip driver version 0.9.13 (January 2, 2001)&bslash;n&quot;
+l_string|&quot;Linux Tulip driver version 0.9.13a (January 20, 2001)&bslash;n&quot;
 suffix:semicolon
 multiline_comment|/* A few user-configurable values. */
 multiline_comment|/* Maximum events (Rx packets, etc.) to handle at each interrupt. */

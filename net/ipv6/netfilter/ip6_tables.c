@@ -7,7 +7,7 @@ macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/tcp.h&gt;
 macro_line|#include &lt;linux/udp.h&gt;
-macro_line|#include &lt;linux/icmp.h&gt;
+macro_line|#include &lt;linux/icmpv6.h&gt;
 macro_line|#include &lt;net/ip.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
@@ -7218,8 +7218,8 @@ multiline_comment|/* Returns 1 if the type and code is matched by the range, 0 o
 r_static
 r_inline
 r_int
-DECL|function|icmp_type_code_match
-id|icmp_type_code_match
+DECL|function|icmp6_type_code_match
+id|icmp6_type_code_match
 c_func
 (paren
 id|u_int8_t
@@ -7261,8 +7261,8 @@ suffix:semicolon
 )brace
 r_static
 r_int
-DECL|function|icmp_match
-id|icmp_match
+DECL|function|icmp6_match
+id|icmp6_match
 c_func
 (paren
 r_const
@@ -7306,7 +7306,7 @@ id|hotdrop
 (brace
 r_const
 r_struct
-id|icmphdr
+id|icmp6hdr
 op_star
 id|icmp
 op_assign
@@ -7353,7 +7353,7 @@ r_return
 op_logical_neg
 id|offset
 op_logical_and
-id|icmp_type_code_match
+id|icmp6_type_code_match
 c_func
 (paren
 id|icmpinfo-&gt;type
@@ -7368,9 +7368,9 @@ id|icmpinfo-&gt;code
 l_int|1
 )braket
 comma
-id|icmp-&gt;type
+id|icmp-&gt;icmp6_type
 comma
-id|icmp-&gt;code
+id|icmp-&gt;icmp6_code
 comma
 op_logical_neg
 op_logical_neg
@@ -7385,8 +7385,8 @@ suffix:semicolon
 multiline_comment|/* Called when user tries to insert an entry of this type. */
 r_static
 r_int
-DECL|function|icmp_checkentry
-id|icmp_checkentry
+DECL|function|icmp6_checkentry
+id|icmp6_checkentry
 c_func
 (paren
 r_const
@@ -7425,7 +7425,7 @@ multiline_comment|/* Must specify proto == ICMP, and no unknown invflags */
 r_return
 id|ipv6-&gt;proto
 op_eq
-id|IPPROTO_ICMP
+id|IPPROTO_ICMPV6
 op_logical_and
 op_logical_neg
 (paren
@@ -7584,11 +7584,11 @@ comma
 l_int|NULL
 )brace
 suffix:semicolon
-DECL|variable|icmp_matchstruct
+DECL|variable|icmp6_matchstruct
 r_static
 r_struct
 id|ip6t_match
-id|icmp_matchstruct
+id|icmp6_matchstruct
 op_assign
 (brace
 (brace
@@ -7597,13 +7597,13 @@ comma
 l_int|NULL
 )brace
 comma
-l_string|&quot;icmp&quot;
+l_string|&quot;icmp6&quot;
 comma
 op_amp
-id|icmp_match
+id|icmp6_match
 comma
 op_amp
-id|icmp_checkentry
+id|icmp6_checkentry
 comma
 l_int|NULL
 )brace
@@ -7870,7 +7870,7 @@ op_amp
 id|ip6t_match
 comma
 op_amp
-id|icmp_matchstruct
+id|icmp6_matchstruct
 )paren
 suffix:semicolon
 id|up

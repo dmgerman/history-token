@@ -38,25 +38,5 @@ id|ppc_irq_action
 id|NR_IRQS
 )braket
 suffix:semicolon
-r_extern
-r_int
-r_int
-id|ppc_cached_irq_mask
-(braket
-id|NR_MASK_WORDS
-)braket
-suffix:semicolon
-r_extern
-r_int
-r_int
-id|ppc_lost_interrupts
-(braket
-id|NR_MASK_WORDS
-)braket
-suffix:semicolon
-r_extern
-id|atomic_t
-id|ppc_n_lost_interrupts
-suffix:semicolon
 macro_line|#endif /* _PPC_KERNEL_LOCAL_IRQ_H */
 eof

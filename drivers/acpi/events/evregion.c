@@ -1,5 +1,5 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: evregion - ACPI Address_space (Op_region) handler dispatch&n; *              $Revision: 93 $&n; *&n; *****************************************************************************/
-multiline_comment|/*&n; *  Copyright (C) 2000 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: evregion - ACPI Address_space (Op_region) handler dispatch&n; *              $Revision: 94 $&n; *&n; *****************************************************************************/
+multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acevents.h&quot;
 macro_line|#include &quot;acnamesp.h&quot;
@@ -166,10 +166,10 @@ l_int|3
 )braket
 suffix:semicolon
 id|ACPI_OPERAND_OBJECT
-id|space_iD_obj
+id|space_id_desc
 suffix:semicolon
 id|ACPI_OPERAND_OBJECT
-id|function_obj
+id|function_desc
 suffix:semicolon
 id|ACPI_STATUS
 id|status
@@ -192,13 +192,13 @@ multiline_comment|/*&n;&t; *  _REG method has two arguments&n;&t; *  Arg0:   Int
 id|acpi_cm_init_static_object
 (paren
 op_amp
-id|space_iD_obj
+id|space_id_desc
 )paren
 suffix:semicolon
 id|acpi_cm_init_static_object
 (paren
 op_amp
-id|function_obj
+id|function_desc
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; *  Method requires two parameters.&n;&t; */
@@ -208,7 +208,7 @@ l_int|0
 )braket
 op_assign
 op_amp
-id|space_iD_obj
+id|space_id_desc
 suffix:semicolon
 id|params
 (braket
@@ -216,7 +216,7 @@ l_int|1
 )braket
 op_assign
 op_amp
-id|function_obj
+id|function_desc
 suffix:semicolon
 id|params
 (braket
@@ -226,19 +226,19 @@ op_assign
 l_int|NULL
 suffix:semicolon
 multiline_comment|/*&n;&t; *  Set up the parameter objects&n;&t; */
-id|space_iD_obj.common.type
+id|space_id_desc.common.type
 op_assign
-id|ACPI_TYPE_NUMBER
+id|ACPI_TYPE_INTEGER
 suffix:semicolon
-id|space_iD_obj.number.value
+id|space_id_desc.integer.value
 op_assign
 id|region_obj-&gt;region.space_id
 suffix:semicolon
-id|function_obj.common.type
+id|function_desc.common.type
 op_assign
-id|ACPI_TYPE_NUMBER
+id|ACPI_TYPE_INTEGER
 suffix:semicolon
-id|function_obj.number.value
+id|function_desc.integer.value
 op_assign
 id|function
 suffix:semicolon

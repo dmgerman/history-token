@@ -58,8 +58,18 @@ DECL|macro|DSO_STREAM
 mdefine_line|#define DSO_STREAM      8        /* Set socket type to stream           */
 DECL|macro|DSO_SEQPACKET
 mdefine_line|#define DSO_SEQPACKET   9        /* Set socket type to sequenced packet */
+DECL|macro|DSO_MAXWINDOW
+mdefine_line|#define DSO_MAXWINDOW   11       /* Maximum window size allowed         */
+DECL|macro|DSO_NODELAY
+mdefine_line|#define DSO_NODELAY&t;12       /* Turn off nagle                      */
+DECL|macro|DSO_CORK
+mdefine_line|#define DSO_CORK        13       /* Wait for more data!                 */
+DECL|macro|DSO_SERVICES
+mdefine_line|#define DSO_SERVICES&t;14       /* NSP Services field                  */
+DECL|macro|DSO_INFO
+mdefine_line|#define DSO_INFO&t;15       /* NSP Info field                      */
 DECL|macro|DSO_MAX
-mdefine_line|#define DSO_MAX         10       /* Maximum option number               */
+mdefine_line|#define DSO_MAX         15       /* Maximum option number               */
 multiline_comment|/* LINK States */
 DECL|macro|LL_INACTIVE
 mdefine_line|#define LL_INACTIVE&t;0
@@ -305,5 +315,6 @@ DECL|macro|OSIOCSNETADDR
 mdefine_line|#define OSIOCSNETADDR _IOW(DECNET_IOCTL_BASE, 0xe0, int)
 DECL|macro|OSIOCGNETADDR
 mdefine_line|#define OSIOCGNETADDR _IOR(DECNET_IOCTL_BASE, 0xe1, int)
+multiline_comment|/* #define SIOCATEOR _IOR(DECNET_IOCTL_BASE, 0x01, int) */
 macro_line|#endif /* _LINUX_DN_H */
 eof

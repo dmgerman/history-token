@@ -1886,6 +1886,8 @@ c_func
 (paren
 )paren
 suffix:semicolon
+r_break
+suffix:semicolon
 r_case
 l_char|&squot;S&squot;
 suffix:colon
@@ -4233,6 +4235,13 @@ c_func
 l_string|&quot;System.map: &bslash;n%s&quot;
 comma
 id|sysmap
+)paren
+suffix:semicolon
+r_else
+id|printf
+c_func
+(paren
+l_string|&quot;No System.map&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace

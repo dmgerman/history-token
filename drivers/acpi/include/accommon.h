@@ -1,5 +1,5 @@
-multiline_comment|/******************************************************************************&n; *&n; * Name: accommon.h -- prototypes for the common (subsystem-wide) procedures&n; *       $Revision: 82 $&n; *&n; *****************************************************************************/
-multiline_comment|/*&n; *  Copyright (C) 2000 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/******************************************************************************&n; *&n; * Name: accommon.h -- prototypes for the common (subsystem-wide) procedures&n; *       $Revision: 86 $&n; *&n; *****************************************************************************/
+multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#ifndef _ACCOMMON_H
 DECL|macro|_ACCOMMON_H
 mdefine_line|#define _ACCOMMON_H
@@ -92,6 +92,7 @@ id|id_type
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * Cm_clib - Local implementations of C library functions&n; */
+macro_line|#ifndef ACPI_USE_SYSTEM_CLIBRARY
 id|NATIVE_UINT
 id|acpi_cm_strlen
 (paren
@@ -207,7 +208,7 @@ op_star
 op_star
 id|terminator
 comma
-id|u32
+id|NATIVE_UINT
 id|base
 )paren
 suffix:semicolon
@@ -258,7 +259,7 @@ r_void
 op_star
 id|dest
 comma
-id|u32
+id|NATIVE_UINT
 id|value
 comma
 id|NATIVE_UINT
@@ -279,6 +280,7 @@ id|u32
 id|c
 )paren
 suffix:semicolon
+macro_line|#endif /* ACPI_USE_SYSTEM_CLIBRARY */
 multiline_comment|/*&n; * Cm_copy - Object construction and conversion interfaces&n; */
 id|ACPI_STATUS
 id|acpi_cm_build_simple_object
@@ -561,7 +563,7 @@ id|NATIVE_CHAR
 op_star
 id|function_name
 comma
-id|NATIVE_UINT
+id|ACPI_INTEGER
 id|value
 )paren
 suffix:semicolon
@@ -1115,7 +1117,7 @@ DECL|macro|acpi_cm_callocate
 mdefine_line|#define acpi_cm_callocate(a)            _cm_callocate(a, _COMPONENT,_THIS_MODULE,__LINE__)
 DECL|macro|acpi_cm_free
 mdefine_line|#define acpi_cm_free(a)                 _cm_free(a,_COMPONENT,_THIS_MODULE,__LINE__)
-macro_line|#ifndef ACPI_DEBUG
+macro_line|#ifndef ACPI_DEBUG_TRACK_ALLOCATIONS
 DECL|macro|acpi_cm_add_element_to_alloc_list
 mdefine_line|#define acpi_cm_add_element_to_alloc_list(a,b,c,d,e,f)
 DECL|macro|acpi_cm_delete_element_from_alloc_list

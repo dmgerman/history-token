@@ -136,13 +136,13 @@ mdefine_line|#define __cli() int_control.int_cli()
 DECL|macro|__sti
 mdefine_line|#define __sti() int_control.int_sti()
 DECL|macro|__save_flags
-mdefine_line|#define __save_flags(flags) int_control.int_save_flags(&amp;flags)
+mdefine_line|#define __save_flags(flags) int_control.int_save_flags((unsigned long *)&amp;flags)
 DECL|macro|__restore_flags
-mdefine_line|#define __restore_flags(flags) int_control.int_restore_flags(flags)
+mdefine_line|#define __restore_flags(flags) int_control.int_restore_flags((unsigned long)flags)
 DECL|macro|__save_and_cli
 mdefine_line|#define __save_and_cli(flags) ({__save_flags(flags);__cli();})
 DECL|macro|__set_lost
-mdefine_line|#define __set_lost(irq) ({ if ((ulong)int_control.int_set_lost) int_control.int_set_lost(irq); })
+mdefine_line|#define __set_lost(irq) ({ if ((unsigned long)int_control.int_set_lost) int_control.int_set_lost(irq); })
 r_extern
 r_void
 id|do_lost_interrupts
@@ -152,16 +152,34 @@ r_int
 r_int
 )paren
 suffix:semicolon
-r_extern
-id|atomic_t
-id|ppc_n_lost_interrupts
-suffix:semicolon
 DECL|macro|mask_irq
 mdefine_line|#define mask_irq(irq) ({if (irq_desc[irq].handler &amp;&amp; irq_desc[irq].handler-&gt;disable) irq_desc[irq].handler-&gt;disable(irq);})
 DECL|macro|unmask_irq
 mdefine_line|#define unmask_irq(irq) ({if (irq_desc[irq].handler &amp;&amp; irq_desc[irq].handler-&gt;enable) irq_desc[irq].handler-&gt;enable(irq);})
-DECL|macro|mask_and_ack_irq
-mdefine_line|#define mask_and_ack_irq(irq) ({if (irq_desc[irq].handler &amp;&amp; irq_desc[irq].handler-&gt;ack) irq_desc[irq].handler-&gt;ack(irq);})
+DECL|macro|ack_irq
+mdefine_line|#define ack_irq(irq) ({if (irq_desc[irq].handler &amp;&amp; irq_desc[irq].handler-&gt;ack) irq_desc[irq].handler-&gt;ack(irq);})
+multiline_comment|/* Should we handle this via lost interrupts and IPIs or should we don&squot;t care like&n; * we do now ? --BenH.&n; */
+r_struct
+id|hw_interrupt_type
+suffix:semicolon
+DECL|function|hw_resend_irq
+r_static
+r_inline
+r_void
+id|hw_resend_irq
+c_func
+(paren
+r_struct
+id|hw_interrupt_type
+op_star
+id|h
+comma
+r_int
+r_int
+id|i
+)paren
+(brace
+)brace
 macro_line|#endif /* _PPC_HW_IRQ_H */
 macro_line|#endif /* __KERNEL__ */
 eof

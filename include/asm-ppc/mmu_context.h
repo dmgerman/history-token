@@ -69,29 +69,6 @@ op_star
 id|pgd
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_8xx
-DECL|function|mmu_context_overflow
-r_extern
-r_inline
-r_void
-id|mmu_context_overflow
-c_func
-(paren
-r_void
-)paren
-(brace
-id|atomic_set
-c_func
-(paren
-op_amp
-id|next_mmu_context
-comma
-op_minus
-l_int|1
-)paren
-suffix:semicolon
-)brace
-macro_line|#endif
 multiline_comment|/*&n; * Get a new mmu context for task tsk if necessary.&n; */
 DECL|macro|get_mmu_context
 mdefine_line|#define get_mmu_context(mm)&t;&t;&t;&t;&t;&bslash;&n;do { &t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (mm-&gt;context == NO_CONTEXT) {&t;&t;&t;&bslash;&n;&t;&t;if (atomic_read(&amp;next_mmu_context) == LAST_CONTEXT)&t;&t;&bslash;&n;&t;&t;&t;mmu_context_overflow();&t;&t;&t;&bslash;&n;&t;&t;mm-&gt;context = MUNGE_CONTEXT(atomic_inc_return(&amp;next_mmu_context));&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&bslash;&n;} while (0)

@@ -3,8 +3,8 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;linux/ip.h&gt;
 macro_line|#include &lt;net/checksum.h&gt;
-macro_line|#include &lt;linux/netfilter_ipv4/ip_tables.h&gt;
-macro_line|#include &lt;linux/netfilter_ipv4/ipt_MARK.h&gt;
+macro_line|#include &lt;linux/netfilter_ipv6/ip6_tables.h&gt;
+macro_line|#include &lt;linux/netfilter_ipv6/ip6t_MARK.h&gt;
 r_static
 r_int
 r_int
@@ -46,7 +46,7 @@ id|userinfo
 (brace
 r_const
 r_struct
-id|ipt_mark_target_info
+id|ip6t_mark_target_info
 op_star
 id|markinfo
 op_assign
@@ -85,7 +85,7 @@ id|NFC_ALTERED
 suffix:semicolon
 )brace
 r_return
-id|IPT_CONTINUE
+id|IP6T_CONTINUE
 suffix:semicolon
 )brace
 r_static
@@ -101,7 +101,7 @@ id|tablename
 comma
 r_const
 r_struct
-id|ipt_entry
+id|ip6t_entry
 op_star
 id|e
 comma
@@ -123,13 +123,13 @@ c_cond
 (paren
 id|targinfosize
 op_ne
-id|IPT_ALIGN
+id|IP6T_ALIGN
 c_func
 (paren
 r_sizeof
 (paren
 r_struct
-id|ipt_mark_target_info
+id|ip6t_mark_target_info
 )paren
 )paren
 )paren
@@ -142,13 +142,13 @@ l_string|&quot;MARK: targinfosize %u != %Zu&bslash;n&quot;
 comma
 id|targinfosize
 comma
-id|IPT_ALIGN
+id|IP6T_ALIGN
 c_func
 (paren
 r_sizeof
 (paren
 r_struct
-id|ipt_mark_target_info
+id|ip6t_mark_target_info
 )paren
 )paren
 )paren
@@ -188,11 +188,11 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
-DECL|variable|ipt_mark_reg
+DECL|variable|ip6t_mark_reg
 r_static
 r_struct
-id|ipt_target
-id|ipt_mark_reg
+id|ip6t_target
+id|ip6t_mark_reg
 op_assign
 (brace
 (brace
@@ -222,14 +222,21 @@ c_func
 r_void
 )paren
 (brace
+id|printk
+c_func
+(paren
+id|KERN_DEBUG
+l_string|&quot;registreing ipv6 mark target&bslash;n&quot;
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
-id|ipt_register_target
+id|ip6t_register_target
 c_func
 (paren
 op_amp
-id|ipt_mark_reg
+id|ip6t_mark_reg
 )paren
 )paren
 r_return
@@ -250,11 +257,11 @@ c_func
 r_void
 )paren
 (brace
-id|ipt_unregister_target
+id|ip6t_unregister_target
 c_func
 (paren
 op_amp
-id|ipt_mark_reg
+id|ip6t_mark_reg
 )paren
 suffix:semicolon
 )brace

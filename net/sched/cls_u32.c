@@ -932,6 +932,7 @@ suffix:semicolon
 r_while
 c_loop
 (paren
+op_decrement
 id|i
 OG
 l_int|0

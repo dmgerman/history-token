@@ -8,7 +8,7 @@ macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/atmlec.h&gt;
 macro_line|#if defined (CONFIG_BRIDGE) || defined(CONFIG_BRIDGE_MODULE)
 macro_line|#include &lt;linux/if_bridge.h&gt;
-DECL|variable|br_fdb_get_hook
+r_extern
 r_struct
 id|net_bridge_fdb_entry
 op_star
@@ -28,7 +28,7 @@ op_star
 id|addr
 )paren
 suffix:semicolon
-DECL|variable|br_fdb_put_hook
+r_extern
 r_void
 (paren
 op_star

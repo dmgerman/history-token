@@ -1,5 +1,5 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: amutils - interpreter/scanner utilities&n; *              $Revision: 66 $&n; *&n; *****************************************************************************/
-multiline_comment|/*&n; *  Copyright (C) 2000 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: amutils - interpreter/scanner utilities&n; *              $Revision: 68 $&n; *&n; *****************************************************************************/
+multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acparser.h&quot;
 macro_line|#include &quot;acinterp.h&quot;
@@ -36,53 +36,13 @@ DECL|typedef|INTERNAL_PKG_SEARCH_INFO
 id|INTERNAL_PKG_SEARCH_INFO
 suffix:semicolon
 multiline_comment|/* Used to traverse nested packages when copying*/
+multiline_comment|/* TBD: This must be removed! */
 DECL|variable|copy_level
 id|INTERNAL_PKG_SEARCH_INFO
 id|copy_level
 (braket
 id|MAX_PACKAGE_DEPTH
 )braket
-suffix:semicolon
-DECL|variable|hex
-r_static
-id|NATIVE_CHAR
-id|hex
-(braket
-)braket
-op_assign
-(brace
-l_char|&squot;0&squot;
-comma
-l_char|&squot;1&squot;
-comma
-l_char|&squot;2&squot;
-comma
-l_char|&squot;3&squot;
-comma
-l_char|&squot;4&squot;
-comma
-l_char|&squot;5&squot;
-comma
-l_char|&squot;6&squot;
-comma
-l_char|&squot;7&squot;
-comma
-l_char|&squot;8&squot;
-comma
-l_char|&squot;9&squot;
-comma
-l_char|&squot;A&squot;
-comma
-l_char|&squot;B&squot;
-comma
-l_char|&squot;C&squot;
-comma
-l_char|&squot;D&squot;
-comma
-l_char|&squot;E&squot;
-comma
-l_char|&squot;F&squot;
-)brace
 suffix:semicolon
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_aml_enter_interpreter&n; *&n; * PARAMETERS:  None&n; *&n; * DESCRIPTION: Enter the interpreter execution region&n; *&n; ******************************************************************************/
 r_void
@@ -183,7 +143,7 @@ op_logical_or
 (paren
 id|obj_desc-&gt;common.type
 op_ne
-id|ACPI_TYPE_NUMBER
+id|ACPI_TYPE_INTEGER
 )paren
 op_logical_or
 (paren
@@ -204,7 +164,7 @@ id|ANOBJ_DATA_WIDTH_32
 )paren
 (brace
 multiline_comment|/*&n;&t;&t; * We are running a method that exists in a 32-bit ACPI table.&n;&t;&t; * Truncate the value to 32 bits by zeroing out the upper 32-bit field&n;&t;&t; */
-id|obj_desc-&gt;number.value
+id|obj_desc-&gt;integer.value
 op_and_assign
 (paren
 id|ACPI_INTEGER
@@ -569,7 +529,7 @@ id|out_string
 l_int|3
 )braket
 op_assign
-id|hex
+id|acpi_gbl_hex_to_ascii
 (braket
 (paren
 id|id
@@ -585,7 +545,7 @@ id|out_string
 l_int|4
 )braket
 op_assign
-id|hex
+id|acpi_gbl_hex_to_ascii
 (braket
 (paren
 id|id
@@ -601,7 +561,7 @@ id|out_string
 l_int|5
 )braket
 op_assign
-id|hex
+id|acpi_gbl_hex_to_ascii
 (braket
 (paren
 id|id
@@ -617,7 +577,7 @@ id|out_string
 l_int|6
 )braket
 op_assign
-id|hex
+id|acpi_gbl_hex_to_ascii
 (braket
 id|id
 op_amp

@@ -1,12 +1,4 @@
-multiline_comment|/* $Id: sunbmac.c,v 1.21 2000/10/22 16:08:38 davem Exp $&n; * sunbmac.c: Driver for Sparc BigMAC 100baseT ethernet adapters.&n; *&n; * Copyright (C) 1997, 1998, 1999 David S. Miller (davem@redhat.com)&n; */
-DECL|variable|version
-r_static
-r_char
-op_star
-id|version
-op_assign
-l_string|&quot;sunbmac.c:v1.9 11/Sep/99 David S. Miller (davem@redhat.com)&bslash;n&quot;
-suffix:semicolon
+multiline_comment|/* $Id: sunbmac.c,v 1.23 2001/01/20 03:36:40 davem Exp $&n; * sunbmac.c: Driver for Sparc BigMAC 100baseT ethernet adapters.&n; *&n; * Copyright (C) 1997, 1998, 1999 David S. Miller (davem@redhat.com)&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -36,6 +28,16 @@ macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/etherdevice.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &quot;sunbmac.h&quot;
+DECL|variable|__initdata
+r_static
+r_char
+id|version
+(braket
+)braket
+id|__initdata
+op_assign
+l_string|&quot;sunbmac.c:v1.9 11/Sep/99 David S. Miller (davem@redhat.com)&bslash;n&quot;
+suffix:semicolon
 DECL|macro|DEBUG_PROBE
 macro_line|#undef DEBUG_PROBE
 DECL|macro|DEBUG_TX
@@ -5272,15 +5274,11 @@ id|qec_sdev
 r_static
 r_int
 id|version_printed
-op_assign
-l_int|0
 suffix:semicolon
 r_struct
 id|bigmac
 op_star
 id|bp
-op_assign
-l_int|0
 suffix:semicolon
 id|u8
 id|bsizes
@@ -5289,10 +5287,6 @@ id|bsizes_more
 suffix:semicolon
 r_int
 id|i
-comma
-id|res
-op_assign
-id|ENOMEM
 suffix:semicolon
 multiline_comment|/* Get a new device struct for this interface. */
 id|dev
@@ -5325,6 +5319,16 @@ l_string|&quot;%s&quot;
 comma
 id|version
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|dev
+)paren
+r_return
+op_minus
+id|ENOMEM
 suffix:semicolon
 multiline_comment|/* Report what we have found to the user. */
 id|printk
@@ -5412,11 +5416,6 @@ c_func
 op_amp
 id|bp-&gt;lock
 )paren
-suffix:semicolon
-multiline_comment|/* All further failures we find return this. */
-id|res
-op_assign
-id|ENODEV
 suffix:semicolon
 multiline_comment|/* Verify the registers we expect, are actually there. */
 r_if
@@ -5879,12 +5878,6 @@ suffix:semicolon
 id|fail_and_cleanup
 suffix:colon
 multiline_comment|/* Something went wrong, undo whatever we did so far. */
-r_if
-c_cond
-(paren
-id|bp
-)paren
-(brace
 multiline_comment|/* Free register mappings if any. */
 r_if
 c_cond
@@ -5955,22 +5948,22 @@ comma
 id|bp-&gt;bblock_dvma
 )paren
 suffix:semicolon
-multiline_comment|/* Free the BigMAC softc. */
+id|unregister_netdev
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
 id|kfree
 c_func
 (paren
-id|bp
+id|dev
 )paren
 suffix:semicolon
-id|dev-&gt;priv
-op_assign
-l_int|0
-suffix:semicolon
-)brace
 r_return
-id|res
+op_minus
+id|ENODEV
 suffix:semicolon
-multiline_comment|/* Return error code. */
 )brace
 multiline_comment|/* QEC can be the parent of either QuadEthernet or&n; * a BigMAC.  We want the latter.&n; */
 DECL|function|bigmac_match

@@ -1,6 +1,5 @@
 multiline_comment|/*&n; *&t;X.25 Packet Layer release 002&n; *&n; *&t;This is ALPHA test software. This code may break your machine, randomly fail to work with new &n; *&t;releases, misbehave and/or generally screw up. It might even work. &n; *&n; *&t;This code REQUIRES 2.1.15 or higher&n; *&n; *&t;This module:&n; *&t;&t;This module is free software; you can redistribute it and/or&n; *&t;&t;modify it under the terms of the GNU General Public License&n; *&t;&t;as published by the Free Software Foundation; either version&n; *&t;&t;2 of the License, or (at your option) any later version.&n; *&n; *&t;History&n; *&t;X.25 001&t;Jonathan Naylor&t;  Started coding.&n; *&t;X.25 002&t;Jonathan Naylor&t;  New timer architecture.&n; *&t;mar/20/00&t;Daniela Squassoni Disabling/enabling of facilities &n; *&t;&t;&t;&t;&t;  negotiation.&n; *&t;2000-09-04&t;Henner Eisen&t;  dev_hold() / dev_put() for x25_neigh.&n; */
 macro_line|#include &lt;linux/config.h&gt;
-macro_line|#if defined(CONFIG_X25) || defined(CONFIG_X25_MODULE)
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/socket.h&gt;
@@ -21,6 +20,7 @@ macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/fcntl.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;net/x25.h&gt;
 DECL|variable|x25_neigh_list
 r_static
@@ -28,8 +28,7 @@ r_struct
 id|x25_neigh
 op_star
 id|x25_neigh_list
-op_assign
-l_int|NULL
+multiline_comment|/* = NULL initially */
 suffix:semicolon
 r_static
 r_void
@@ -1609,10 +1608,10 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#ifdef MODULE
 multiline_comment|/*&n; *&t;Release all memory associated with X.25 neighbour structures.&n; */
 DECL|function|x25_link_free
 r_void
+id|__exit
 id|x25_link_free
 c_func
 (paren
@@ -1653,6 +1652,4 @@ id|neigh
 suffix:semicolon
 )brace
 )brace
-macro_line|#endif
-macro_line|#endif
 eof

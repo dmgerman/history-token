@@ -1,5 +1,5 @@
-multiline_comment|/******************************************************************************&n; *&n; * Name: acexcep.h - Exception codes returned by the ACPI subsystem&n; *       $Revision: 37 $&n; *&n; *****************************************************************************/
-multiline_comment|/*&n; *  Copyright (C) 2000 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/******************************************************************************&n; *&n; * Name: acexcep.h - Exception codes returned by the ACPI subsystem&n; *       $Revision: 41 $&n; *&n; *****************************************************************************/
+multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#ifndef __ACEXCEP_H__
 DECL|macro|__ACEXCEP_H__
 mdefine_line|#define __ACEXCEP_H__
@@ -126,8 +126,12 @@ DECL|macro|AE_AML_INTERNAL
 mdefine_line|#define AE_AML_INTERNAL                 (ACPI_STATUS) (0x0011 | AE_CODE_AML)
 DECL|macro|AE_AML_INVALID_SPACE_ID
 mdefine_line|#define AE_AML_INVALID_SPACE_ID         (ACPI_STATUS) (0x0012 | AE_CODE_AML)
+DECL|macro|AE_AML_STRING_LIMIT
+mdefine_line|#define AE_AML_STRING_LIMIT             (ACPI_STATUS) (0x0013 | AE_CODE_AML)
+DECL|macro|AE_AML_NO_RETURN_VALUE
+mdefine_line|#define AE_AML_NO_RETURN_VALUE          (ACPI_STATUS) (0x0014 | AE_CODE_AML)
 DECL|macro|AE_CODE_AML_MAX
-mdefine_line|#define AE_CODE_AML_MAX                 0x0012
+mdefine_line|#define AE_CODE_AML_MAX                 0x0014
 multiline_comment|/*&n; * Internal exceptions used for control&n; */
 DECL|macro|AE_CTRL_RETURN_VALUE
 mdefine_line|#define AE_CTRL_RETURN_VALUE            (ACPI_STATUS) (0x0001 | AE_CODE_CONTROL)
@@ -286,6 +290,10 @@ comma
 l_string|&quot;AE_AML_INTERNAL&quot;
 comma
 l_string|&quot;AE_AML_INVALID_SPACE_ID&quot;
+comma
+l_string|&quot;AE_AML_STRING_LIMIT&quot;
+comma
+l_string|&quot;AE_AML_NO_RETURN_VALUE&quot;
 comma
 )brace
 suffix:semicolon

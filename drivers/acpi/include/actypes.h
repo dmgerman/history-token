@@ -1,5 +1,5 @@
-multiline_comment|/******************************************************************************&n; *&n; * Name: actypes.h - Common data types for the entire ACPI subsystem&n; *       $Revision: 159 $&n; *&n; *****************************************************************************/
-multiline_comment|/*&n; *  Copyright (C) 2000 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/******************************************************************************&n; *&n; * Name: actypes.h - Common data types for the entire ACPI subsystem&n; *       $Revision: 162 $&n; *&n; *****************************************************************************/
+multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#ifndef __ACTYPES_H__
 DECL|macro|__ACTYPES_H__
 mdefine_line|#define __ACTYPES_H__
@@ -154,7 +154,7 @@ id|ACPI_IO_ADDRESS
 suffix:semicolon
 DECL|typedef|ACPI_PHYSICAL_ADDRESS
 r_typedef
-r_void
+r_char
 op_star
 id|ACPI_PHYSICAL_ADDRESS
 suffix:semicolon
@@ -438,10 +438,60 @@ r_typedef
 id|u8
 id|OBJECT_TYPE_INTERNAL
 suffix:semicolon
+DECL|macro|ACPI_BTYPE_ANY
+mdefine_line|#define ACPI_BTYPE_ANY                  0x00000000
+DECL|macro|ACPI_BTYPE_INTEGER
+mdefine_line|#define ACPI_BTYPE_INTEGER               0x00000001
+DECL|macro|ACPI_BTYPE_STRING
+mdefine_line|#define ACPI_BTYPE_STRING               0x00000002
+DECL|macro|ACPI_BTYPE_BUFFER
+mdefine_line|#define ACPI_BTYPE_BUFFER               0x00000004
+DECL|macro|ACPI_BTYPE_PACKAGE
+mdefine_line|#define ACPI_BTYPE_PACKAGE              0x00000008
+DECL|macro|ACPI_BTYPE_FIELD_UNIT
+mdefine_line|#define ACPI_BTYPE_FIELD_UNIT           0x00000010
+DECL|macro|ACPI_BTYPE_DEVICE
+mdefine_line|#define ACPI_BTYPE_DEVICE               0x00000020
+DECL|macro|ACPI_BTYPE_EVENT
+mdefine_line|#define ACPI_BTYPE_EVENT                0x00000040
+DECL|macro|ACPI_BTYPE_METHOD
+mdefine_line|#define ACPI_BTYPE_METHOD               0x00000080
+DECL|macro|ACPI_BTYPE_MUTEX
+mdefine_line|#define ACPI_BTYPE_MUTEX                0x00000100
+DECL|macro|ACPI_BTYPE_REGION
+mdefine_line|#define ACPI_BTYPE_REGION               0x00000200
+DECL|macro|ACPI_BTYPE_POWER
+mdefine_line|#define ACPI_BTYPE_POWER                0x00000400
+DECL|macro|ACPI_BTYPE_PROCESSOR
+mdefine_line|#define ACPI_BTYPE_PROCESSOR            0x00000800
+DECL|macro|ACPI_BTYPE_THERMAL
+mdefine_line|#define ACPI_BTYPE_THERMAL              0x00001000
+DECL|macro|ACPI_BTYPE_BUFFER_FIELD
+mdefine_line|#define ACPI_BTYPE_BUFFER_FIELD         0x00002000
+DECL|macro|ACPI_BTYPE_DDB_HANDLE
+mdefine_line|#define ACPI_BTYPE_DDB_HANDLE           0x00004000
+DECL|macro|ACPI_BTYPE_DEBUG_OBJECT
+mdefine_line|#define ACPI_BTYPE_DEBUG_OBJECT         0x00008000
+DECL|macro|ACPI_BTYPE_REFERENCE
+mdefine_line|#define ACPI_BTYPE_REFERENCE            0x00010000
+DECL|macro|ACPI_BTYPE_RESOURCE
+mdefine_line|#define ACPI_BTYPE_RESOURCE             0x00020000
+DECL|macro|ACPI_BTYPE_COMPUTE_DATA
+mdefine_line|#define ACPI_BTYPE_COMPUTE_DATA         (ACPI_BTYPE_INTEGER | ACPI_BTYPE_STRING | ACPI_BTYPE_BUFFER)
+DECL|macro|ACPI_BTYPE_DATA
+mdefine_line|#define ACPI_BTYPE_DATA                 (ACPI_BTYPE_COMPUTE_DATA  | ACPI_BTYPE_PACKAGE)
+DECL|macro|ACPI_BTYPE_DATA_REFERENCE
+mdefine_line|#define ACPI_BTYPE_DATA_REFERENCE       (ACPI_BTYPE_DATA | ACPI_BTYPE_REFERENCE | ACPI_BTYPE_DDB_HANDLE)
+DECL|macro|ACPI_BTYPE_DEVICE_OBJECTS
+mdefine_line|#define ACPI_BTYPE_DEVICE_OBJECTS       (ACPI_BTYPE_DEVICE | ACPI_BTYPE_THERMAL | ACPI_BTYPE_PROCESSOR)
+DECL|macro|ACPI_BTYPE_OBJECTS_AND_REFS
+mdefine_line|#define ACPI_BTYPE_OBJECTS_AND_REFS     0x00017FFF  /* ARG or LOCAL */
+DECL|macro|ACPI_BTYPE_ALL_OBJECTS
+mdefine_line|#define ACPI_BTYPE_ALL_OBJECTS          0x00007FFF
 DECL|macro|ACPI_TYPE_ANY
 mdefine_line|#define ACPI_TYPE_ANY                   0  /* 0x00  */
-DECL|macro|ACPI_TYPE_NUMBER
-mdefine_line|#define ACPI_TYPE_NUMBER                1  /* 0x01  Byte/Word/Dword/Zero/One/Ones */
+DECL|macro|ACPI_TYPE_INTEGER
+mdefine_line|#define ACPI_TYPE_INTEGER               1  /* 0x01  Byte/Word/Dword/Zero/One/Ones */
 DECL|macro|ACPI_TYPE_STRING
 mdefine_line|#define ACPI_TYPE_STRING                2  /* 0x02  */
 DECL|macro|ACPI_TYPE_BUFFER
@@ -623,9 +673,9 @@ id|ACPI_INTEGER
 id|value
 suffix:semicolon
 multiline_comment|/* The actual number */
-DECL|member|number
+DECL|member|integer
 )brace
-id|number
+id|integer
 suffix:semicolon
 r_struct
 (brace

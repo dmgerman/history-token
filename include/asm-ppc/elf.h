@@ -80,6 +80,29 @@ DECL|macro|ELF_PLATFORM
 mdefine_line|#define ELF_PLATFORM&t;(NULL)
 DECL|macro|SET_PERSONALITY
 mdefine_line|#define SET_PERSONALITY(ex, ibcs2) set_personality((ibcs2)?PER_SVR4:PER_LINUX)
+multiline_comment|/*&n; * We need to put in some extra aux table entries to tell glibc what&n; * the cache block size is, so it can use the dcbz instruction safely.&n; */
+DECL|macro|AT_DCACHEBSIZE
+mdefine_line|#define AT_DCACHEBSIZE&t;&t;17
+DECL|macro|AT_ICACHEBSIZE
+mdefine_line|#define AT_ICACHEBSIZE&t;&t;18
+DECL|macro|AT_UCACHEBSIZE
+mdefine_line|#define AT_UCACHEBSIZE&t;&t;19
+r_extern
+r_int
+id|dcache_bsize
+suffix:semicolon
+r_extern
+r_int
+id|icache_bsize
+suffix:semicolon
+r_extern
+r_int
+id|ucache_bsize
+suffix:semicolon
+DECL|macro|DLINFO_EXTRA_ITEMS
+mdefine_line|#define DLINFO_EXTRA_ITEMS&t;3
+DECL|macro|EXTRA_DLINFO
+mdefine_line|#define EXTRA_DLINFO&t;&t;do {&t;&t;&t;&bslash;&n;&t;NEW_AUX_ENT(0, AT_DCACHEBSIZE, dcache_bsize);&t;&bslash;&n;&t;NEW_AUX_ENT(1, AT_ICACHEBSIZE, icache_bsize);&t;&bslash;&n;&t;NEW_AUX_ENT(2, AT_UCACHEBSIZE, ucache_bsize);&t;&bslash;&n;} while (0)
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif
 eof

@@ -1,5 +1,5 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: tbconvrt - ACPI Table conversion utilities&n; *              $Revision: 15 $&n; *&n; *****************************************************************************/
-multiline_comment|/*&n; *  Copyright (C) 2000 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: tbconvrt - ACPI Table conversion utilities&n; *              $Revision: 18 $&n; *&n; *****************************************************************************/
+multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;achware.h&quot;
 macro_line|#include &quot;actables.h&quot;
@@ -12,7 +12,7 @@ l_string|&quot;tbconvrt&quot;
 )paren
 multiline_comment|/*&n; * Build a GAS structure from earlier ACPI table entries (V1.0 and 0.71 extensions)&n; *&n; * 1) Address space&n; * 2) Length in bytes -- convert to length in bits&n; * 3) Bit offset is zero&n; * 4) Reserved field is zero&n; * 5) Expand address to 64 bits&n; */
 DECL|macro|ASL_BUILD_GAS_FROM_ENTRY
-mdefine_line|#define ASL_BUILD_GAS_FROM_ENTRY(a,b,c,d)   {a.address_space_id = (u8) d;&bslash;&n;&t;&t;&t;   a.register_bit_width = (u8) MUL_8 (b);&bslash;&n;&t;&t;&t;   a.register_bit_offset = 0;&bslash;&n;&t;&t;&t;   a.reserved = 0;&bslash;&n;&t;&t;&t;   a.address = (UINT64) c;}
+mdefine_line|#define ASL_BUILD_GAS_FROM_ENTRY(a,b,c,d)   {a.address_space_id = (u8) d;&bslash;&n;&t;&t;&t;   a.register_bit_width = (u8) MUL_8 (b);&bslash;&n;&t;&t;&t;   a.register_bit_offset = 0;&bslash;&n;&t;&t;&t;   a.reserved = 0;&bslash;&n;&t;&t;&t;   ACPI_STORE_ADDRESS (a.address,c);}
 multiline_comment|/* ACPI V1.0 entries -- address space is always I/O */
 DECL|macro|ASL_BUILD_GAS_FROM_V1_ENTRY
 mdefine_line|#define ASL_BUILD_GAS_FROM_V1_ENTRY(a,b,c)  ASL_BUILD_GAS_FROM_ENTRY(a,b,c,ADDRESS_SPACE_SYSTEM_IO)
@@ -191,11 +191,13 @@ id|i
 )braket
 suffix:semicolon
 macro_line|#else
+id|ACPI_STORE_ADDRESS
+(paren
 id|new_table-&gt;table_offset_entry
 (braket
 id|i
 )braket
-op_assign
+comma
 (paren
 (paren
 id|RSDT_DESCRIPTOR_REV1
@@ -208,6 +210,7 @@ id|table_offset_entry
 (braket
 id|i
 )braket
+)paren
 suffix:semicolon
 macro_line|#endif
 )brace
@@ -745,19 +748,19 @@ id|FADT_DESCRIPTOR_REV1
 )paren
 suffix:semicolon
 multiline_comment|/* Convert table pointers to 64-bit fields */
+id|ACPI_STORE_ADDRESS
+(paren
 id|FADT2-&gt;Xfirmware_ctrl
-op_assign
-(paren
-id|UINT64
-)paren
+comma
 id|FADT1-&gt;firmware_ctrl
-suffix:semicolon
-id|FADT2-&gt;Xdsdt
-op_assign
-(paren
-id|UINT64
 )paren
+suffix:semicolon
+id|ACPI_STORE_ADDRESS
+(paren
+id|FADT2-&gt;Xdsdt
+comma
 id|FADT1-&gt;dsdt
+)paren
 suffix:semicolon
 multiline_comment|/* System Interrupt Model isn&squot;t used in ACPI 2.0*/
 multiline_comment|/* FADT2-&gt;Reserved1 = 0; */
@@ -869,6 +872,13 @@ id|acpi_gbl_FADT
 op_assign
 id|FADT2
 suffix:semicolon
+id|acpi_gbl_FADT-&gt;header.length
+op_assign
+r_sizeof
+(paren
+id|FADT_DESCRIPTOR
+)paren
+suffix:semicolon
 multiline_comment|/* Free the original table */
 id|table_desc
 op_assign
@@ -907,7 +917,6 @@ r_sizeof
 id|FADT_DESCRIPTOR_REV2
 )paren
 suffix:semicolon
-multiline_comment|/* Dump the FADT Header */
 multiline_comment|/* Dump the entire FADT */
 r_return
 (paren

@@ -47,17 +47,17 @@ comma
 id|ppc_cs4232_dma2
 suffix:semicolon
 macro_line|#if defined(CONFIG_CS4232)
-macro_line|#if defined(CONFIG_PREP) || defined(CONFIG_ALL_PPC)
+macro_line|#if defined(CONFIG_ALL_PPC)
 DECL|macro|SND_DMA1
 mdefine_line|#define SND_DMA1 ppc_cs4232_dma
 DECL|macro|SND_DMA2
 mdefine_line|#define SND_DMA2 ppc_cs4232_dma2
-macro_line|#else /* !CONFIG_PREP &amp;&amp; !CONFIG_ALL_PPC */
+macro_line|#else /* !CONFIG_ALL_PPC */
 DECL|macro|SND_DMA1
 mdefine_line|#define SND_DMA1 -1
 DECL|macro|SND_DMA2
 mdefine_line|#define SND_DMA2 -1
-macro_line|#endif /* !CONFIG_PREP */
+macro_line|#endif /* CONFIG_ALL_PPC */
 macro_line|#elif defined(CONFIG_MSS)
 DECL|macro|SND_DMA1
 mdefine_line|#define SND_DMA1 CONFIG_MSS_DMA
@@ -250,58 +250,12 @@ r_int
 id|dmanr
 )paren
 (brace
-multiline_comment|/*&n;&t; * The Radstone PPC2 and PPC2a boards have inverted DREQ&n;&t; * lines (active low) so each command needs to be logically&n;&t; * ORed with 0x40&n;&t; */
 r_int
 r_char
 id|ucDmaCmd
 op_assign
 l_int|0x00
 suffix:semicolon
-macro_line|#if defined(CONFIG_PREP) || defined(CONFIG_ALL_PPC)
-r_if
-c_cond
-(paren
-id|_prep_type
-op_eq
-id|_PREP_Radstone
-)paren
-(brace
-r_switch
-c_cond
-(paren
-id|ucSystemType
-)paren
-(brace
-r_case
-id|RS_SYS_TYPE_PPC2
-suffix:colon
-r_case
-id|RS_SYS_TYPE_PPC2a
-suffix:colon
-r_case
-id|RS_SYS_TYPE_PPC2ep
-suffix:colon
-(brace
-multiline_comment|/*&n;&t;&t;&t;&t; * DREQ lines are active low&n;&t;&t;&t;&t; */
-id|ucDmaCmd
-op_assign
-l_int|0x40
-suffix:semicolon
-r_break
-suffix:semicolon
-)brace
-r_default
-suffix:colon
-(brace
-)brace
-(brace
-multiline_comment|/*&n;&t;&t;&t;&t; * DREQ lines are active high&n;&t;&t;&t;&t; */
-r_break
-suffix:semicolon
-)brace
-)brace
-)brace
-macro_line|#endif /* CONFIG_PREP || CONFIG_ALL_PPC */
 r_if
 c_cond
 (paren

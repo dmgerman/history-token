@@ -9,9 +9,18 @@ DECL|macro|IOBASE_MEMORY
 mdefine_line|#define IOBASE_MEMORY&t;&t;1
 DECL|macro|IOBASE_IO
 mdefine_line|#define IOBASE_IO&t;&t;2
-multiline_comment|/* Can be used to override the logic in pci_scan_bus for skipping&n; * already-configured bus numbers - to be used for buggy BIOSes&n; * or architectures with incomplete PCI setup by the loader.&n; */
-DECL|macro|pcibios_assign_all_busses
-mdefine_line|#define pcibios_assign_all_busses()&t;0
+DECL|macro|IOBASE_ISA_IO
+mdefine_line|#define IOBASE_ISA_IO&t;&t;3
+DECL|macro|IOBASE_ISA_MEM
+mdefine_line|#define IOBASE_ISA_MEM&t;&t;4
+r_extern
+r_int
+id|pcibios_assign_all_busses
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 DECL|macro|PCIBIOS_MIN_IO
 mdefine_line|#define PCIBIOS_MIN_IO&t;&t;0x1000
 DECL|macro|PCIBIOS_MIN_MEM
@@ -44,6 +53,52 @@ id|irq
 (brace
 multiline_comment|/* We don&squot;t do dynamic PCI IRQ allocation */
 )brace
+r_extern
+r_int
+r_int
+id|pci_resource_to_bus
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+id|pdev
+comma
+r_struct
+id|resource
+op_star
+id|res
+)paren
+suffix:semicolon
+multiline_comment|/*&n; * The PCI bus bridge can translate addresses issued by the processor(s)&n; * into a different address on the PCI bus.  On 32-bit cpus, we assume&n; * this mapping is 1-1, but on 64-bit systems it often isn&squot;t.&n; * &n; * Obsolete ! Drivers should now use pci_resource_to_bus&n; */
+r_extern
+r_int
+r_int
+id|pci_phys_to_bus
+c_func
+(paren
+r_int
+r_int
+id|pa
+comma
+r_int
+id|busnr
+)paren
+suffix:semicolon
+r_extern
+r_int
+r_int
+id|pci_bus_to_phys
+c_func
+(paren
+r_int
+r_int
+id|ba
+comma
+r_int
+id|busnr
+)paren
+suffix:semicolon
 multiline_comment|/* Dynamic DMA Mapping stuff&n; * &t;++ajoshi&n; */
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;

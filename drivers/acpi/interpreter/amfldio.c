@@ -1,5 +1,5 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: amfldio - Aml Field I/O&n; *              $Revision: 32 $&n; *&n; *****************************************************************************/
-multiline_comment|/*&n; *  Copyright (C) 2000 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: amfldio - Aml Field I/O&n; *              $Revision: 35 $&n; *&n; *****************************************************************************/
+multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acinterp.h&quot;
 macro_line|#include &quot;amlcode.h&quot;
@@ -190,6 +190,8 @@ id|previous_raw_datum
 suffix:semicolon
 id|u32
 id|this_raw_datum
+op_assign
+l_int|0
 suffix:semicolon
 id|u32
 id|valid_field_bits
@@ -418,7 +420,36 @@ OL
 id|datum_length
 )paren
 (brace
-multiline_comment|/*&n;&t;&t;&t; * Get the next raw datum, it contains bits of the current&n;&t;&t;&t; * field datum&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * If the field is aligned on a byte boundary, we don&squot;t want&n;&t;&t;&t; * to perform a final read, since this would potentially read&n;&t;&t;&t; * past the end of the region.&n;&t;&t;&t; *&n;&t;&t;&t; * TBD: [Investigate] It may make more sense to just split the aligned&n;&t;&t;&t; * and non-aligned cases since the aligned case is so very simple,&n;&t;&t;&t; */
+r_if
+c_cond
+(paren
+(paren
+id|obj_desc-&gt;field.bit_offset
+op_ne
+l_int|0
+)paren
+op_logical_or
+(paren
+(paren
+id|obj_desc-&gt;field.bit_offset
+op_eq
+l_int|0
+)paren
+op_logical_and
+(paren
+id|this_field_datum_offset
+OL
+(paren
+id|datum_length
+op_minus
+l_int|1
+)paren
+)paren
+)paren
+)paren
+(brace
+multiline_comment|/*&n;&t;&t;&t;&t; * Get the next raw datum, it contains some or all bits&n;&t;&t;&t;&t; * of the current field datum&n;&t;&t;&t;&t; */
 id|status
 op_assign
 id|acpi_aml_read_field_data
@@ -481,6 +512,7 @@ l_int|0x0000FFFF
 suffix:semicolon
 r_break
 suffix:semicolon
+)brace
 )brace
 multiline_comment|/*&n;&t;&t;&t; * Put together bits of the two raw data to make a complete&n;&t;&t;&t; * field datum&n;&t;&t;&t; */
 r_if

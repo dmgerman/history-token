@@ -55,8 +55,6 @@ r_struct
 id|dn_fib_info
 op_star
 id|dn_fib_info_list
-op_assign
-l_int|NULL
 suffix:semicolon
 DECL|variable|dn_fib_info_lock
 r_static
@@ -2989,14 +2987,12 @@ c_func
 r_void
 )paren
 (brace
-macro_line|#ifdef CONFIG_PROC_FS
 id|proc_net_remove
 c_func
 (paren
 l_string|&quot;decnet_route&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 id|dn_fib_table_cleanup
 c_func
 (paren

@@ -8,13 +8,6 @@ macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/wait.h&gt;
 macro_line|#endif /* __KERNEL__ */
-id|u64
-id|acpi_get_rsdp_ptr
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 multiline_comment|/*&n; * System sleep states&n; */
 r_enum
 (brace

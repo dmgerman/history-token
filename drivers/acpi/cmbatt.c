@@ -304,7 +304,7 @@ id|objs
 l_int|0
 )braket
 dot
-id|number.value
+id|integer.value
 suffix:semicolon
 id|result-&gt;present_rate
 op_assign
@@ -313,7 +313,7 @@ id|objs
 l_int|1
 )braket
 dot
-id|number.value
+id|integer.value
 suffix:semicolon
 id|result-&gt;remaining_capacity
 op_assign
@@ -322,7 +322,7 @@ id|objs
 l_int|2
 )braket
 dot
-id|number.value
+id|integer.value
 suffix:semicolon
 id|result-&gt;present_voltage
 op_assign
@@ -331,7 +331,7 @@ id|objs
 l_int|3
 )braket
 dot
-id|number.value
+id|integer.value
 suffix:semicolon
 id|kfree
 c_func
@@ -485,7 +485,7 @@ id|objs
 l_int|0
 )braket
 dot
-id|number.value
+id|integer.value
 suffix:semicolon
 id|result-&gt;design_capacity
 op_assign
@@ -494,7 +494,7 @@ id|objs
 l_int|1
 )braket
 dot
-id|number.value
+id|integer.value
 suffix:semicolon
 id|result-&gt;last_full_capacity
 op_assign
@@ -503,7 +503,7 @@ id|objs
 l_int|2
 )braket
 dot
-id|number.value
+id|integer.value
 suffix:semicolon
 id|result-&gt;battery_technology
 op_assign
@@ -512,7 +512,7 @@ id|objs
 l_int|3
 )braket
 dot
-id|number.value
+id|integer.value
 suffix:semicolon
 id|result-&gt;design_voltage
 op_assign
@@ -521,7 +521,7 @@ id|objs
 l_int|4
 )braket
 dot
-id|number.value
+id|integer.value
 suffix:semicolon
 id|result-&gt;design_capacity_warning
 op_assign
@@ -530,7 +530,7 @@ id|objs
 l_int|5
 )braket
 dot
-id|number.value
+id|integer.value
 suffix:semicolon
 id|result-&gt;design_capacity_low
 op_assign
@@ -539,7 +539,7 @@ id|objs
 l_int|6
 )braket
 dot
-id|number.value
+id|integer.value
 suffix:semicolon
 id|result-&gt;battery_capacity_granularity_1
 op_assign
@@ -548,7 +548,7 @@ id|objs
 l_int|7
 )braket
 dot
-id|number.value
+id|integer.value
 suffix:semicolon
 id|result-&gt;battery_capacity_granularity_2
 op_assign
@@ -557,7 +557,7 @@ id|objs
 l_int|8
 )braket
 dot
-id|number.value
+id|integer.value
 suffix:semicolon
 multiline_comment|/* BUG: trailing NULL issue */
 id|strncpy

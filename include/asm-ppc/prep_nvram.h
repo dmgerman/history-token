@@ -6,6 +6,14 @@ macro_line|#ifdef __KERNEL__
 macro_line|#ifndef _PPC_PREP_NVRAM_H
 DECL|macro|_PPC_PREP_NVRAM_H
 mdefine_line|#define _PPC_PREP_NVRAM_H
+DECL|macro|MAX_PREP_NVRAM
+mdefine_line|#define MAX_PREP_NVRAM 0x8000
+DECL|macro|PREP_NVRAM_AS0
+mdefine_line|#define PREP_NVRAM_AS0&t;0x74
+DECL|macro|PREP_NVRAM_AS1
+mdefine_line|#define PREP_NVRAM_AS1&t;0x75
+DECL|macro|PREP_NVRAM_DATA
+mdefine_line|#define PREP_NVRAM_DATA&t;0x77
 DECL|macro|NVSIZE
 mdefine_line|#define NVSIZE 4096&t;/* size of NVRAM */
 DECL|macro|OSAREASIZE

@@ -897,38 +897,6 @@ id|status
 suffix:semicolon
 )brace
 r_static
-id|ACPI_STATUS
-DECL|function|ec_space_setup
-id|ec_space_setup
-(paren
-id|ACPI_HANDLE
-id|region_handle
-comma
-id|UINT32
-id|function
-comma
-r_void
-op_star
-id|handler_context
-comma
-r_void
-op_star
-op_star
-id|return_context
-)paren
-(brace
-singleline_comment|// TODO: What is this function for?
-multiline_comment|/* &n;&t; * The ec object is in the handler context and is needed&n;&t; * when calling the ec_space_handler.&n;&t; */
-op_star
-id|return_context
-op_assign
-id|handler_context
-suffix:semicolon
-r_return
-id|AE_OK
-suffix:semicolon
-)brace
-r_static
 r_void
 DECL|function|ec_query_handler
 id|ec_query_handler
@@ -1860,14 +1828,14 @@ id|buf
 op_logical_or
 id|obj.type
 op_ne
-id|ACPI_TYPE_NUMBER
+id|ACPI_TYPE_INTEGER
 )paren
 r_return
 id|AE_OK
 suffix:semicolon
 id|ec_cxt-&gt;gpe_bit
 op_assign
-id|obj.number.value
+id|obj.integer.value
 suffix:semicolon
 multiline_comment|/* determine if we need the Global Lock when accessing */
 id|buf.length
@@ -1921,7 +1889,7 @@ id|status
 op_logical_or
 id|obj.type
 op_ne
-id|ACPI_TYPE_NUMBER
+id|ACPI_TYPE_INTEGER
 )paren
 (brace
 id|DEBUG_PRINT
@@ -1940,7 +1908,7 @@ suffix:semicolon
 )brace
 id|ec_cxt-&gt;need_global_lock
 op_assign
-id|obj.number.value
+id|obj.integer.value
 suffix:semicolon
 id|printk
 c_func

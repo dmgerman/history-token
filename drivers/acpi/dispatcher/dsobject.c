@@ -1,5 +1,5 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: dsobject - Dispatcher object management routines&n; *              $Revision: 53 $&n; *&n; *****************************************************************************/
-multiline_comment|/*&n; *  Copyright (C) 2000 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: dsobject - Dispatcher object management routines&n; *              $Revision: 56 $&n; *&n; *****************************************************************************/
+multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acparser.h&quot;
 macro_line|#include &quot;amlcode.h&quot;
@@ -383,7 +383,7 @@ c_cond
 (paren
 id|arg_desc-&gt;common.type
 op_ne
-id|ACPI_TYPE_NUMBER
+id|ACPI_TYPE_INTEGER
 )paren
 (brace
 id|acpi_cm_remove_reference
@@ -408,7 +408,7 @@ op_assign
 (paren
 id|u32
 )paren
-id|arg_desc-&gt;number.value
+id|arg_desc-&gt;integer.value
 suffix:semicolon
 id|acpi_cm_remove_reference
 (paren
@@ -567,14 +567,14 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|ACPI_TYPE_NUMBER
+id|ACPI_TYPE_INTEGER
 suffix:colon
 (paren
 op_star
 id|obj_desc
 )paren
 op_member_access_from_pointer
-id|number.value
+id|integer.value
 op_assign
 id|op-&gt;value.integer
 suffix:semicolon
@@ -849,7 +849,7 @@ id|name
 id|REPORT_WARNING
 (paren
 (paren
-l_string|&quot;Reference %s AML %X not found&bslash;n&quot;
+l_string|&quot;Reference %s at AML %X not found&bslash;n&quot;
 comma
 id|name
 comma
@@ -868,7 +868,7 @@ r_else
 id|REPORT_WARNING
 (paren
 (paren
-l_string|&quot;Reference %s AML %X not found&bslash;n&quot;
+l_string|&quot;Reference %s at AML %X not found&bslash;n&quot;
 comma
 id|op-&gt;value.string
 comma
@@ -883,11 +883,14 @@ op_assign
 l_int|NULL
 suffix:semicolon
 )brace
+r_else
+(brace
 r_return
 (paren
 id|status
 )paren
 suffix:semicolon
+)brace
 )brace
 )brace
 multiline_comment|/*&n;&t;&t; * The reference will be a Reference&n;&t;&t; * TBD: [Restructure] unless we really need a separate&n;&t;&t; *  type of INTERNAL_TYPE_REFERENCE change&n;&t;&t; *  Acpi_ds_map_opcode_to_data_type to handle this case&n;&t;&t; */

@@ -5095,6 +5095,17 @@ comma
 id|GFP_KERNEL
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|fep
+op_eq
+l_int|NULL
+)paren
+r_return
+op_minus
+id|ENOMEM
+suffix:semicolon
 id|__clear_user
 c_func
 (paren

@@ -845,6 +845,8 @@ r_void
 id|ax25_ctrl_t
 op_star
 id|axp
+op_assign
+l_int|NULL
 suffix:semicolon
 r_int
 id|i

@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: ioctl32.c,v 1.104 2001/01/03 09:28:19 anton Exp $&n; * ioctl32.c: Conversion between 32bit and 64bit native ioctls.&n; *&n; * Copyright (C) 1997-2000  Jakub Jelinek  (jakub@redhat.com)&n; * Copyright (C) 1998  Eddie C. Dost  (ecd@skynet.be)&n; *&n; * These routines maintain argument size conversion between 32bit and 64bit&n; * ioctls.&n; */
+multiline_comment|/* $Id: ioctl32.c,v 1.105 2001/01/18 04:47:44 davem Exp $&n; * ioctl32.c: Conversion between 32bit and 64bit native ioctls.&n; *&n; * Copyright (C) 1997-2000  Jakub Jelinek  (jakub@redhat.com)&n; * Copyright (C) 1998  Eddie C. Dost  (ecd@skynet.be)&n; *&n; * These routines maintain argument size conversion between 32bit and 64bit&n; * ioctls.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -66,6 +66,7 @@ macro_line|#include &lt;asm/envctrl.h&gt;
 macro_line|#include &lt;asm/audioio.h&gt;
 macro_line|#include &lt;linux/ethtool.h&gt;
 macro_line|#include &lt;asm/display7seg.h&gt;
+macro_line|#include &lt;asm/watchdog.h&gt;
 macro_line|#include &lt;asm/module.h&gt;
 macro_line|#include &lt;linux/soundcard.h&gt;
 macro_line|#include &lt;linux/atm.h&gt;
@@ -22139,6 +22140,48 @@ id|COMPATIBLE_IOCTL
 c_func
 (paren
 id|BLKELVSET
+)paren
+multiline_comment|/* Big W */
+multiline_comment|/* WIOC_GETSUPPORT not yet implemented -E */
+id|COMPATIBLE_IOCTL
+c_func
+(paren
+id|WDIOC_GETSTATUS
+)paren
+id|COMPATIBLE_IOCTL
+c_func
+(paren
+id|WDIOC_GETBOOTSTATUS
+)paren
+id|COMPATIBLE_IOCTL
+c_func
+(paren
+id|WDIOC_GETTEMP
+)paren
+id|COMPATIBLE_IOCTL
+c_func
+(paren
+id|WDIOC_SETOPTIONS
+)paren
+id|COMPATIBLE_IOCTL
+c_func
+(paren
+id|WDIOC_KEEPALIVE
+)paren
+id|COMPATIBLE_IOCTL
+c_func
+(paren
+id|WIOCSTART
+)paren
+id|COMPATIBLE_IOCTL
+c_func
+(paren
+id|WIOCSTOP
+)paren
+id|COMPATIBLE_IOCTL
+c_func
+(paren
+id|WIOCGSTAT
 )paren
 multiline_comment|/* And these ioctls need translation */
 id|HANDLE_IOCTL

@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
+macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/major.h&gt;
@@ -1558,6 +1559,13 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|variable|bpp_open_lock
+r_static
+id|spinlock_t
+id|bpp_open_lock
+op_assign
+id|SPIN_LOCK_UNLOCKED
+suffix:semicolon
 multiline_comment|/*&n; * Allow only one process to open the device at a time.&n; */
 DECL|function|bpp_open
 r_static
@@ -1585,6 +1593,20 @@ c_func
 id|inode-&gt;i_rdev
 )paren
 suffix:semicolon
+r_int
+id|ret
+suffix:semicolon
+id|spin_lock
+c_func
+(paren
+op_amp
+id|bpp_open_lock
+)paren
+suffix:semicolon
+id|ret
+op_assign
+l_int|0
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1592,10 +1614,15 @@ id|minor
 op_ge
 id|BPP_NO
 )paren
-r_return
+(brace
+id|ret
+op_assign
 op_minus
 id|ENODEV
 suffix:semicolon
+)brace
+r_else
+(brace
 r_if
 c_cond
 (paren
@@ -1607,10 +1634,15 @@ id|minor
 dot
 id|present
 )paren
-r_return
+(brace
+id|ret
+op_assign
 op_minus
 id|ENODEV
 suffix:semicolon
+)brace
+r_else
+(brace
 r_if
 c_cond
 (paren
@@ -1621,10 +1653,12 @@ id|minor
 dot
 id|opened
 )paren
-r_return
+id|ret
+op_assign
 op_minus
 id|EBUSY
 suffix:semicolon
+r_else
 id|instances
 (braket
 id|minor
@@ -1634,8 +1668,17 @@ id|opened
 op_assign
 l_int|1
 suffix:semicolon
+)brace
+)brace
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|bpp_open_lock
+)paren
+suffix:semicolon
 r_return
-l_int|0
+id|ret
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * When the process closes the device, this method is called to clean&n; * up and reset the hardware. Always leave the device in compatibility&n; * mode as this is a reasonable place to clean up from messes made by&n; * ioctls, or other mayhem.&n; */
@@ -1665,9 +1708,11 @@ c_func
 id|inode-&gt;i_rdev
 )paren
 suffix:semicolon
-id|lock_kernel
+id|spin_lock
 c_func
 (paren
+op_amp
+id|bpp_open_lock
 )paren
 suffix:semicolon
 id|instances
@@ -1697,9 +1742,11 @@ c_func
 id|minor
 )paren
 suffix:semicolon
-id|unlock_kernel
+id|spin_unlock
 c_func
 (paren
+op_amp
+id|bpp_open_lock
 )paren
 suffix:semicolon
 r_return

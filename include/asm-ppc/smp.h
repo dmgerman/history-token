@@ -11,10 +11,10 @@ DECL|struct|cpuinfo_PPC
 r_struct
 id|cpuinfo_PPC
 (brace
-DECL|member|loops_per_sec
+DECL|member|loops_per_jiffy
 r_int
 r_int
-id|loops_per_sec
+id|loops_per_jiffy
 suffix:semicolon
 DECL|member|pvr
 r_int

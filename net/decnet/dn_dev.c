@@ -114,8 +114,6 @@ r_struct
 id|net_device
 op_star
 id|decnet_default_device
-op_assign
-l_int|NULL
 suffix:semicolon
 r_static
 r_struct
@@ -5906,14 +5904,12 @@ suffix:semicolon
 )brace
 )brace
 macro_line|#endif /* CONFIG_SYSCTL */
-macro_line|#ifdef CONFIG_PROC_FS
 id|proc_net_remove
 c_func
 (paren
 l_string|&quot;decnet_dev&quot;
 )paren
 suffix:semicolon
-macro_line|#endif /* CONFIG_PROC_FS */
 id|dn_dev_devices_off
 c_func
 (paren

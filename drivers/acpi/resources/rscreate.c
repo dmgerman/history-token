@@ -1,5 +1,5 @@
-multiline_comment|/*******************************************************************************&n; *&n; * Module Name: rscreate - Acpi_rs_create_resource_list&n; *                         Acpi_rs_create_pci_routing_table&n; *                         Acpi_rs_create_byte_stream&n; *              $Revision: 22 $&n; *&n; ******************************************************************************/
-multiline_comment|/*&n; *  Copyright (C) 2000 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/*******************************************************************************&n; *&n; * Module Name: rscreate - Acpi_rs_create_resource_list&n; *                         Acpi_rs_create_pci_routing_table&n; *                         Acpi_rs_create_byte_stream&n; *              $Revision: 24 $&n; *&n; ******************************************************************************/
+multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acresrc.h&quot;
 DECL|macro|_COMPONENT
@@ -339,7 +339,7 @@ multiline_comment|/*&n;&t;&t;&t; * Dereference the Address&n;&t;&t;&t; */
 r_if
 c_cond
 (paren
-id|ACPI_TYPE_NUMBER
+id|ACPI_TYPE_INTEGER
 op_eq
 (paren
 op_star
@@ -356,7 +356,7 @@ op_star
 id|sub_object_list
 )paren
 op_member_access_from_pointer
-id|number.value
+id|integer.value
 suffix:semicolon
 )brace
 r_else
@@ -374,7 +374,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|ACPI_TYPE_NUMBER
+id|ACPI_TYPE_INTEGER
 op_eq
 (paren
 op_star
@@ -394,7 +394,7 @@ op_star
 id|sub_object_list
 )paren
 op_member_access_from_pointer
-id|number.value
+id|integer.value
 suffix:semicolon
 )brace
 r_else
@@ -451,7 +451,7 @@ multiline_comment|/*&n;&t;&t;&t;&t; * If this is a number, then the Source Name&
 r_if
 c_cond
 (paren
-id|ACPI_TYPE_NUMBER
+id|ACPI_TYPE_INTEGER
 op_eq
 (paren
 op_star
@@ -494,7 +494,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|ACPI_TYPE_NUMBER
+id|ACPI_TYPE_INTEGER
 op_eq
 (paren
 op_star
@@ -514,7 +514,7 @@ op_star
 id|sub_object_list
 )paren
 op_member_access_from_pointer
-id|number.value
+id|integer.value
 suffix:semicolon
 )brace
 r_else

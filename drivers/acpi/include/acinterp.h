@@ -1,5 +1,5 @@
-multiline_comment|/******************************************************************************&n; *&n; * Name: acinterp.h - Interpreter subcomponent prototypes and defines&n; *       $Revision: 86 $&n; *&n; *****************************************************************************/
-multiline_comment|/*&n; *  Copyright (C) 2000 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/******************************************************************************&n; *&n; * Name: acinterp.h - Interpreter subcomponent prototypes and defines&n; *       $Revision: 89 $&n; *&n; *****************************************************************************/
+multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#ifndef __ACINTERP_H__
 DECL|macro|__ACINTERP_H__
 mdefine_line|#define __ACINTERP_H__
@@ -63,6 +63,46 @@ id|ACPI_OPERAND_OBJECT
 op_star
 op_star
 id|return_obj_desc
+)paren
+suffix:semicolon
+multiline_comment|/*&n; * amconvrt - object conversion&n; */
+id|ACPI_STATUS
+id|acpi_aml_convert_to_integer
+(paren
+id|ACPI_OPERAND_OBJECT
+op_star
+op_star
+id|obj_desc
+comma
+id|ACPI_WALK_STATE
+op_star
+id|walk_state
+)paren
+suffix:semicolon
+id|ACPI_STATUS
+id|acpi_aml_convert_to_buffer
+(paren
+id|ACPI_OPERAND_OBJECT
+op_star
+op_star
+id|obj_desc
+comma
+id|ACPI_WALK_STATE
+op_star
+id|walk_state
+)paren
+suffix:semicolon
+id|ACPI_STATUS
+id|acpi_aml_convert_to_string
+(paren
+id|ACPI_OPERAND_OBJECT
+op_star
+op_star
+id|obj_desc
+comma
+id|ACPI_WALK_STATE
+op_star
+id|walk_state
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * amfield - ACPI AML (p-code) execution - field manipulation&n; */

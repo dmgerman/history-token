@@ -1,5 +1,5 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: ammonad - ACPI AML (p-code) execution for monadic operators&n; *              $Revision: 88 $&n; *&n; *****************************************************************************/
-multiline_comment|/*&n; *  Copyright (C) 2000 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: ammonad - ACPI AML (p-code) execution for monadic operators&n; *              $Revision: 89 $&n; *&n; *****************************************************************************/
+multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acparser.h&quot;
 macro_line|#include &quot;acdispat.h&quot;
@@ -288,7 +288,7 @@ id|acpi_aml_system_do_suspend
 (paren
 id|u32
 )paren
-id|obj_desc-&gt;number.value
+id|obj_desc-&gt;integer.value
 )paren
 suffix:semicolon
 r_break
@@ -302,7 +302,7 @@ id|acpi_aml_system_do_stall
 (paren
 id|u32
 )paren
-id|obj_desc-&gt;number.value
+id|obj_desc-&gt;integer.value
 )paren
 suffix:semicolon
 r_break
@@ -469,7 +469,7 @@ id|ret_desc
 op_assign
 id|acpi_cm_create_internal_object
 (paren
-id|ACPI_TYPE_NUMBER
+id|ACPI_TYPE_INTEGER
 )paren
 suffix:semicolon
 r_if
@@ -500,10 +500,10 @@ multiline_comment|/*  Def_not :=  Not_op  Operand Result  */
 r_case
 id|AML_BIT_NOT_OP
 suffix:colon
-id|ret_desc-&gt;number.value
+id|ret_desc-&gt;integer.value
 op_assign
 op_complement
-id|obj_desc-&gt;number.value
+id|obj_desc-&gt;integer.value
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -511,9 +511,9 @@ multiline_comment|/*  Def_find_set_left_bit := Find_set_left_bit_op Operand Resu
 r_case
 id|AML_FIND_SET_LEFT_BIT_OP
 suffix:colon
-id|ret_desc-&gt;number.value
+id|ret_desc-&gt;integer.value
 op_assign
-id|obj_desc-&gt;number.value
+id|obj_desc-&gt;integer.value
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; * Acpi specification describes Integer type as a little&n;&t;&t; * endian unsigned value, so this boundry condition is valid.&n;&t;&t; */
 r_for
@@ -523,7 +523,7 @@ id|res_val
 op_assign
 l_int|0
 suffix:semicolon
-id|ret_desc-&gt;number.value
+id|ret_desc-&gt;integer.value
 op_logical_and
 id|res_val
 OL
@@ -533,12 +533,12 @@ op_increment
 id|res_val
 )paren
 (brace
-id|ret_desc-&gt;number.value
+id|ret_desc-&gt;integer.value
 op_rshift_assign
 l_int|1
 suffix:semicolon
 )brace
-id|ret_desc-&gt;number.value
+id|ret_desc-&gt;integer.value
 op_assign
 id|res_val
 suffix:semicolon
@@ -548,9 +548,9 @@ multiline_comment|/*  Def_find_set_right_bit := Find_set_right_bit_op Operand Re
 r_case
 id|AML_FIND_SET_RIGHT_BIT_OP
 suffix:colon
-id|ret_desc-&gt;number.value
+id|ret_desc-&gt;integer.value
 op_assign
-id|obj_desc-&gt;number.value
+id|obj_desc-&gt;integer.value
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; * Acpi specification describes Integer type as a little&n;&t;&t; * endian unsigned value, so this boundry condition is valid.&n;&t;&t; */
 r_for
@@ -560,7 +560,7 @@ id|res_val
 op_assign
 l_int|0
 suffix:semicolon
-id|ret_desc-&gt;number.value
+id|ret_desc-&gt;integer.value
 op_logical_and
 id|res_val
 OL
@@ -570,13 +570,13 @@ op_increment
 id|res_val
 )paren
 (brace
-id|ret_desc-&gt;number.value
+id|ret_desc-&gt;integer.value
 op_lshift_assign
 l_int|1
 suffix:semicolon
 )brace
 multiline_comment|/* Since returns must be 1-based, subtract from 33 (65) */
-id|ret_desc-&gt;number.value
+id|ret_desc-&gt;integer.value
 op_assign
 id|res_val
 op_eq
@@ -600,7 +600,7 @@ r_case
 id|AML_FROM_BCD_OP
 suffix:colon
 multiline_comment|/*&n;&t;&t; * The 64-bit ACPI integer can hold 16 4-bit BCD integers&n;&t;&t; */
-id|ret_desc-&gt;number.value
+id|ret_desc-&gt;integer.value
 op_assign
 l_int|0
 suffix:semicolon
@@ -627,7 +627,7 @@ id|ACPI_INTEGER
 )paren
 (paren
 (paren
-id|obj_desc-&gt;number.value
+id|obj_desc-&gt;integer.value
 op_rshift
 (paren
 id|i
@@ -685,7 +685,7 @@ op_mul_assign
 l_int|10
 suffix:semicolon
 )brace
-id|ret_desc-&gt;number.value
+id|ret_desc-&gt;integer.value
 op_add_assign
 id|digit
 suffix:semicolon
@@ -700,7 +700,7 @@ suffix:colon
 r_if
 c_cond
 (paren
-id|obj_desc-&gt;number.value
+id|obj_desc-&gt;integer.value
 OG
 id|ACPI_MAX_BCD_VALUE
 )paren
@@ -713,7 +713,7 @@ r_goto
 id|cleanup
 suffix:semicolon
 )brace
-id|ret_desc-&gt;number.value
+id|ret_desc-&gt;integer.value
 op_assign
 l_int|0
 suffix:semicolon
@@ -735,7 +735,7 @@ op_increment
 multiline_comment|/* Divide by nth factor of 10 */
 id|digit
 op_assign
-id|obj_desc-&gt;number.value
+id|obj_desc-&gt;integer.value
 suffix:semicolon
 r_for
 c_loop
@@ -766,7 +766,7 @@ OG
 l_int|0
 )paren
 (brace
-id|ret_desc-&gt;number.value
+id|ret_desc-&gt;integer.value
 op_add_assign
 (paren
 id|ACPI_MODULO
@@ -805,7 +805,7 @@ id|acpi_gbl_root_node
 )paren
 (brace
 multiline_comment|/*&n;&t;&t;&t; * This means that the object does not exist in the namespace,&n;&t;&t;&t; * return FALSE&n;&t;&t;&t; */
-id|ret_desc-&gt;number.value
+id|ret_desc-&gt;integer.value
 op_assign
 l_int|0
 suffix:semicolon
@@ -857,7 +857,7 @@ id|walk_state
 )paren
 suffix:semicolon
 multiline_comment|/* The object exists in the namespace, return TRUE */
-id|ret_desc-&gt;number.value
+id|ret_desc-&gt;integer.value
 op_assign
 id|ACPI_INTEGER_MAX
 suffix:semicolon
@@ -1139,7 +1139,7 @@ id|ret_desc
 op_assign
 id|acpi_cm_create_internal_object
 (paren
-id|ACPI_TYPE_NUMBER
+id|ACPI_TYPE_INTEGER
 )paren
 suffix:semicolon
 r_if
@@ -1157,10 +1157,10 @@ r_goto
 id|cleanup
 suffix:semicolon
 )brace
-id|ret_desc-&gt;number.value
+id|ret_desc-&gt;integer.value
 op_assign
 op_logical_neg
-id|obj_desc-&gt;number.value
+id|obj_desc-&gt;integer.value
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -1262,13 +1262,13 @@ op_eq
 id|opcode
 )paren
 (brace
-id|ret_desc-&gt;number.value
+id|ret_desc-&gt;integer.value
 op_increment
 suffix:semicolon
 )brace
 r_else
 (brace
-id|ret_desc-&gt;number.value
+id|ret_desc-&gt;integer.value
 op_decrement
 suffix:semicolon
 )brace
@@ -1322,7 +1322,7 @@ suffix:colon
 multiline_comment|/* Constants are of type Number */
 id|type
 op_assign
-id|ACPI_TYPE_NUMBER
+id|ACPI_TYPE_INTEGER
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -1442,7 +1442,7 @@ id|ret_desc
 op_assign
 id|acpi_cm_create_internal_object
 (paren
-id|ACPI_TYPE_NUMBER
+id|ACPI_TYPE_INTEGER
 )paren
 suffix:semicolon
 r_if
@@ -1460,7 +1460,7 @@ r_goto
 id|cleanup
 suffix:semicolon
 )brace
-id|ret_desc-&gt;number.value
+id|ret_desc-&gt;integer.value
 op_assign
 id|type
 suffix:semicolon
@@ -1561,7 +1561,7 @@ id|ret_desc
 op_assign
 id|acpi_cm_create_internal_object
 (paren
-id|ACPI_TYPE_NUMBER
+id|ACPI_TYPE_INTEGER
 )paren
 suffix:semicolon
 r_if
@@ -1579,7 +1579,7 @@ r_goto
 id|cleanup
 suffix:semicolon
 )brace
-id|ret_desc-&gt;number.value
+id|ret_desc-&gt;integer.value
 op_assign
 id|value
 suffix:semicolon
@@ -1788,7 +1788,7 @@ id|ret_desc
 op_assign
 id|acpi_cm_create_internal_object
 (paren
-id|ACPI_TYPE_NUMBER
+id|ACPI_TYPE_INTEGER
 )paren
 suffix:semicolon
 r_if
@@ -1810,7 +1810,7 @@ id|tmp_desc
 op_assign
 id|obj_desc-&gt;reference.object
 suffix:semicolon
-id|ret_desc-&gt;number.value
+id|ret_desc-&gt;integer.value
 op_assign
 id|tmp_desc-&gt;buffer.pointer
 (braket

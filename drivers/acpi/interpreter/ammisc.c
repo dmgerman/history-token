@@ -1,5 +1,5 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: ammisc - ACPI AML (p-code) execution - specific opcodes&n; *              $Revision: 71 $&n; *&n; *****************************************************************************/
-multiline_comment|/*&n; *  Copyright (C) 2000 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: ammisc - ACPI AML (p-code) execution - specific opcodes&n; *              $Revision: 73 $&n; *&n; *****************************************************************************/
+multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acparser.h&quot;
 macro_line|#include &quot;acinterp.h&quot;
@@ -261,7 +261,7 @@ multiline_comment|/* Object to be indexed is a Package */
 r_if
 c_cond
 (paren
-id|idx_desc-&gt;number.value
+id|idx_desc-&gt;integer.value
 op_ge
 id|obj_desc-&gt;package.count
 )paren
@@ -304,7 +304,7 @@ id|tmp_desc
 op_assign
 id|obj_desc-&gt;package.elements
 (braket
-id|idx_desc-&gt;number.value
+id|idx_desc-&gt;integer.value
 )braket
 suffix:semicolon
 id|ret_desc-&gt;reference.op_code
@@ -349,7 +349,7 @@ op_assign
 op_amp
 id|obj_desc-&gt;package.elements
 (braket
-id|idx_desc-&gt;number.value
+id|idx_desc-&gt;integer.value
 )braket
 suffix:semicolon
 )brace
@@ -359,7 +359,7 @@ multiline_comment|/* Object to be indexed is a Buffer */
 r_if
 c_cond
 (paren
-id|idx_desc-&gt;number.value
+id|idx_desc-&gt;integer.value
 op_ge
 id|obj_desc-&gt;buffer.length
 )paren
@@ -389,7 +389,7 @@ op_assign
 (paren
 id|u32
 )paren
-id|idx_desc-&gt;number.value
+id|idx_desc-&gt;integer.value
 suffix:semicolon
 id|status
 op_assign
@@ -612,13 +612,13 @@ r_if
 c_cond
 (paren
 (paren
-id|op1_desc-&gt;number.value
+id|op1_desc-&gt;integer.value
 OG
 id|MAX_MATCH_OPERATOR
 )paren
 op_logical_or
 (paren
-id|op2_desc-&gt;number.value
+id|op2_desc-&gt;integer.value
 OG
 id|MAX_MATCH_OPERATOR
 )paren
@@ -637,7 +637,7 @@ op_assign
 (paren
 id|u32
 )paren
-id|start_desc-&gt;number.value
+id|start_desc-&gt;integer.value
 suffix:semicolon
 r_if
 c_cond
@@ -662,7 +662,7 @@ id|ret_desc
 op_assign
 id|acpi_cm_create_internal_object
 (paren
-id|ACPI_TYPE_NUMBER
+id|ACPI_TYPE_INTEGER
 )paren
 suffix:semicolon
 r_if
@@ -703,7 +703,7 @@ id|pkg_desc-&gt;package.elements
 id|index
 )braket
 op_logical_or
-id|ACPI_TYPE_NUMBER
+id|ACPI_TYPE_INTEGER
 op_ne
 id|pkg_desc-&gt;package.elements
 (braket
@@ -720,7 +720,7 @@ multiline_comment|/*&n;&t;&t; * Within these switch statements:&n;&t;&t; *      
 r_switch
 c_cond
 (paren
-id|op1_desc-&gt;number.value
+id|op1_desc-&gt;integer.value
 )paren
 (brace
 r_case
@@ -741,9 +741,9 @@ id|pkg_desc-&gt;package.elements
 id|index
 )braket
 op_member_access_from_pointer
-id|number.value
+id|integer.value
 op_ne
-id|V1_desc-&gt;number.value
+id|V1_desc-&gt;integer.value
 )paren
 (brace
 r_continue
@@ -763,9 +763,9 @@ id|pkg_desc-&gt;package.elements
 id|index
 )braket
 op_member_access_from_pointer
-id|number.value
+id|integer.value
 OG
-id|V1_desc-&gt;number.value
+id|V1_desc-&gt;integer.value
 )paren
 (brace
 r_continue
@@ -785,9 +785,9 @@ id|pkg_desc-&gt;package.elements
 id|index
 )braket
 op_member_access_from_pointer
-id|number.value
+id|integer.value
 op_ge
-id|V1_desc-&gt;number.value
+id|V1_desc-&gt;integer.value
 )paren
 (brace
 r_continue
@@ -807,9 +807,9 @@ id|pkg_desc-&gt;package.elements
 id|index
 )braket
 op_member_access_from_pointer
-id|number.value
+id|integer.value
 OL
-id|V1_desc-&gt;number.value
+id|V1_desc-&gt;integer.value
 )paren
 (brace
 r_continue
@@ -829,9 +829,9 @@ id|pkg_desc-&gt;package.elements
 id|index
 )braket
 op_member_access_from_pointer
-id|number.value
+id|integer.value
 op_le
-id|V1_desc-&gt;number.value
+id|V1_desc-&gt;integer.value
 )paren
 (brace
 r_continue
@@ -848,7 +848,7 @@ suffix:semicolon
 r_switch
 c_cond
 (paren
-id|op2_desc-&gt;number.value
+id|op2_desc-&gt;integer.value
 )paren
 (brace
 r_case
@@ -867,9 +867,9 @@ id|pkg_desc-&gt;package.elements
 id|index
 )braket
 op_member_access_from_pointer
-id|number.value
+id|integer.value
 op_ne
-id|V2_desc-&gt;number.value
+id|V2_desc-&gt;integer.value
 )paren
 (brace
 r_continue
@@ -888,9 +888,9 @@ id|pkg_desc-&gt;package.elements
 id|index
 )braket
 op_member_access_from_pointer
-id|number.value
+id|integer.value
 OG
-id|V2_desc-&gt;number.value
+id|V2_desc-&gt;integer.value
 )paren
 (brace
 r_continue
@@ -909,9 +909,9 @@ id|pkg_desc-&gt;package.elements
 id|index
 )braket
 op_member_access_from_pointer
-id|number.value
+id|integer.value
 op_ge
-id|V2_desc-&gt;number.value
+id|V2_desc-&gt;integer.value
 )paren
 (brace
 r_continue
@@ -930,9 +930,9 @@ id|pkg_desc-&gt;package.elements
 id|index
 )braket
 op_member_access_from_pointer
-id|number.value
+id|integer.value
 OL
-id|V2_desc-&gt;number.value
+id|V2_desc-&gt;integer.value
 )paren
 (brace
 r_continue
@@ -951,9 +951,9 @@ id|pkg_desc-&gt;package.elements
 id|index
 )braket
 op_member_access_from_pointer
-id|number.value
+id|integer.value
 op_le
-id|V2_desc-&gt;number.value
+id|V2_desc-&gt;integer.value
 )paren
 (brace
 r_continue
@@ -975,7 +975,7 @@ r_break
 suffix:semicolon
 )brace
 multiline_comment|/* Match_value is the return value */
-id|ret_desc-&gt;number.value
+id|ret_desc-&gt;integer.value
 op_assign
 id|match_value
 suffix:semicolon

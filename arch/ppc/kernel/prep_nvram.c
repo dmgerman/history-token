@@ -9,9 +9,6 @@ macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;
 macro_line|#include &lt;asm/prep_nvram.h&gt;
-multiline_comment|/*&n; * Allow for a maximum of 32K of PReP NvRAM data&n; */
-DECL|macro|MAX_PREP_NVRAM
-mdefine_line|#define MAX_PREP_NVRAM 0x8000
 DECL|variable|nvramData
 r_static
 r_char
@@ -35,18 +32,6 @@ id|nvramData
 (braket
 l_int|0
 )braket
-suffix:semicolon
-DECL|macro|PREP_NVRAM_AS0
-mdefine_line|#define PREP_NVRAM_AS0&t;0x74
-DECL|macro|PREP_NVRAM_AS1
-mdefine_line|#define PREP_NVRAM_AS1&t;0x75
-DECL|macro|PREP_NVRAM_DATA
-mdefine_line|#define PREP_NVRAM_DATA&t;0x77
-DECL|variable|rs_pcNvRAM
-r_int
-r_char
-op_star
-id|rs_pcNvRAM
 suffix:semicolon
 DECL|function|prep_nvram_read_val
 r_int
@@ -126,47 +111,6 @@ id|PREP_NVRAM_DATA
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Most Radstone boards have NvRAM memory mapped at offset 8M in ISA space&n; */
-DECL|function|rs_nvram_read_val
-r_int
-r_char
-id|__prep
-id|rs_nvram_read_val
-c_func
-(paren
-r_int
-id|addr
-)paren
-(brace
-r_return
-id|rs_pcNvRAM
-(braket
-id|addr
-)braket
-suffix:semicolon
-)brace
-DECL|function|rs_nvram_write_val
-r_void
-id|__prep
-id|rs_nvram_write_val
-c_func
-(paren
-r_int
-id|addr
-comma
-r_int
-r_char
-id|val
-)paren
-(brace
-id|rs_pcNvRAM
-(braket
-id|addr
-)braket
-op_assign
-id|val
-suffix:semicolon
-)brace
 DECL|function|init_prep_nvram
 r_void
 id|__init
@@ -186,43 +130,6 @@ id|i
 suffix:semicolon
 r_int
 id|nvramSize
-suffix:semicolon
-multiline_comment|/*&n;&t; * I&squot;m making the assumption that 32k will always cover the&n;&t; * nvramsize.  If this isn&squot;t the case please let me know and we can&n;&t; * map the header, then get the size from the header, then map&n;&t; * the whole size. -- Cort&n;&t; */
-r_if
-c_cond
-(paren
-id|_prep_type
-op_eq
-id|_PREP_Radstone
-)paren
-id|rs_pcNvRAM
-op_assign
-(paren
-r_int
-r_char
-op_star
-)paren
-id|ioremap
-c_func
-(paren
-id|_ISA_MEM_BASE
-op_plus
-l_int|0x00800000
-comma
-l_int|32
-op_lshift
-l_int|10
-)paren
-suffix:semicolon
-id|request_region
-c_func
-(paren
-id|PREP_NVRAM_AS0
-comma
-l_int|0x8
-comma
-l_string|&quot;PReP NVRAM&quot;
-)paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * The following could fail if the NvRAM were corrupt but&n;&t; * we expect the boot firmware to have checked its checksum&n;&t; * before boot&n;&t; */
 id|nvp

@@ -1,5 +1,5 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: amresnte - AML Interpreter object resolution&n; *              $Revision: 25 $&n; *&n; *****************************************************************************/
-multiline_comment|/*&n; *  Copyright (C) 2000 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: amresnte - AML Interpreter object resolution&n; *              $Revision: 27 $&n; *&n; *****************************************************************************/
+multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;amlcode.h&quot;
 macro_line|#include &quot;acparser.h&quot;
@@ -14,7 +14,7 @@ id|MODULE_NAME
 (paren
 l_string|&quot;amresnte&quot;
 )paren
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_aml_resolve_node_to_value&n; *&n; * PARAMETERS:  Stack_ptr       - Pointer to a location on a stack that contains&n; *                                a pointer to an Node&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Resolve a ACPI_NAMESPACE_NODE (Node,&n; *              A.K.A. a &quot;direct name pointer&quot;)&n; *&n; * Note: for some of the data types, the pointer attached to the Node&n; * can be either a pointer to an actual internal object or a pointer into the&n; * AML stream itself.  These types are currently:&n; *&n; *      ACPI_TYPE_NUMBER&n; *      ACPI_TYPE_STRING&n; *      ACPI_TYPE_BUFFER&n; *      ACPI_TYPE_MUTEX&n; *      ACPI_TYPE_PACKAGE&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_aml_resolve_node_to_value&n; *&n; * PARAMETERS:  Stack_ptr       - Pointer to a location on a stack that contains&n; *                                a pointer to an Node&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Resolve a ACPI_NAMESPACE_NODE (Node,&n; *              A.K.A. a &quot;direct name pointer&quot;)&n; *&n; * Note: for some of the data types, the pointer attached to the Node&n; * can be either a pointer to an actual internal object or a pointer into the&n; * AML stream itself.  These types are currently:&n; *&n; *      ACPI_TYPE_INTEGER&n; *      ACPI_TYPE_STRING&n; *      ACPI_TYPE_BUFFER&n; *      ACPI_TYPE_MUTEX&n; *      ACPI_TYPE_PACKAGE&n; *&n; ******************************************************************************/
 id|ACPI_STATUS
 DECL|function|acpi_aml_resolve_node_to_value
 id|acpi_aml_resolve_node_to_value
@@ -351,13 +351,13 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|ACPI_TYPE_NUMBER
+id|ACPI_TYPE_INTEGER
 suffix:colon
 multiline_comment|/*&n;&t;&t; * The Node has an attached internal object, make sure that it&squot;s a&n;&t;&t; * number&n;&t;&t; */
 r_if
 c_cond
 (paren
-id|ACPI_TYPE_NUMBER
+id|ACPI_TYPE_INTEGER
 op_ne
 id|val_desc-&gt;common.type
 )paren
@@ -401,7 +401,7 @@ r_else
 (brace
 id|object_type
 op_assign
-id|ACPI_TYPE_NUMBER
+id|ACPI_TYPE_INTEGER
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t;&t; * Create the destination buffer object and the buffer space.&n;&t;&t; */
@@ -533,7 +533,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-id|obj_desc-&gt;number.value
+id|obj_desc-&gt;integer.value
 op_assign
 id|temp_val
 suffix:semicolon
@@ -666,7 +666,7 @@ id|obj_desc
 op_assign
 id|acpi_cm_create_internal_object
 (paren
-id|ACPI_TYPE_NUMBER
+id|ACPI_TYPE_INTEGER
 )paren
 suffix:semicolon
 r_if
@@ -682,7 +682,7 @@ id|AE_NO_MEMORY
 )paren
 suffix:semicolon
 )brace
-id|obj_desc-&gt;number.value
+id|obj_desc-&gt;integer.value
 op_assign
 id|temp_val
 suffix:semicolon
@@ -811,7 +811,7 @@ id|obj_desc
 op_assign
 id|acpi_cm_create_internal_object
 (paren
-id|ACPI_TYPE_NUMBER
+id|ACPI_TYPE_INTEGER
 )paren
 suffix:semicolon
 r_if
@@ -827,7 +827,7 @@ id|AE_NO_MEMORY
 )paren
 suffix:semicolon
 )brace
-id|obj_desc-&gt;number.value
+id|obj_desc-&gt;integer.value
 op_assign
 id|temp_val
 suffix:semicolon
@@ -1015,7 +1015,7 @@ id|obj_desc
 op_assign
 id|acpi_cm_create_internal_object
 (paren
-id|ACPI_TYPE_NUMBER
+id|ACPI_TYPE_INTEGER
 )paren
 suffix:semicolon
 r_if
@@ -1031,7 +1031,7 @@ id|AE_NO_MEMORY
 )paren
 suffix:semicolon
 )brace
-id|obj_desc-&gt;number.value
+id|obj_desc-&gt;integer.value
 op_assign
 id|temp_val
 suffix:semicolon

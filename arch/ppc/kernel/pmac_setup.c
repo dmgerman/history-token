@@ -25,6 +25,7 @@ macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/adb.h&gt;
 macro_line|#include &lt;linux/cuda.h&gt;
 macro_line|#include &lt;linux/pmu.h&gt;
+macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/init.h&gt;
 macro_line|#include &lt;asm/prom.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
@@ -89,7 +90,15 @@ r_void
 suffix:semicolon
 r_extern
 r_void
-id|pmac_setup_pci_ptrs
+id|pmac_pcibios_fixup
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|pmac_find_bridges
 c_func
 (paren
 r_void
@@ -293,50 +302,17 @@ r_void
 )paren
 suffix:semicolon
 r_extern
-r_void
+r_int
+id|pmac_pci_enable_device_hook
+c_func
+(paren
+r_struct
+id|pci_dev
 op_star
-id|pmac_pci_dev_io_base
-c_func
-(paren
-r_int
-r_char
-id|bus
+id|dev
 comma
 r_int
-r_char
-id|devfn
-comma
-r_int
-id|physical
-)paren
-suffix:semicolon
-r_extern
-r_void
-op_star
-id|pmac_pci_dev_mem_base
-c_func
-(paren
-r_int
-r_char
-id|bus
-comma
-r_int
-r_char
-id|devfn
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|pmac_pci_dev_root_bridge
-c_func
-(paren
-r_int
-r_char
-id|bus
-comma
-r_int
-r_char
-id|devfn
+id|initial
 )paren
 suffix:semicolon
 DECL|variable|drive_info
@@ -397,14 +373,6 @@ c_func
 r_void
 )paren
 suffix:semicolon
-r_static
-r_void
-id|init_p2pbridge
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 macro_line|#ifdef CONFIG_BOOTX_TEXT
 r_void
 id|pmac_progress
@@ -426,6 +394,121 @@ id|sys_ctrler
 op_assign
 id|SYS_CTRLER_UNKNOWN
 suffix:semicolon
+macro_line|#ifdef CONFIG_SMP
+DECL|variable|core99_l2_cache
+r_volatile
+r_static
+r_int
+r_int
+id|core99_l2_cache
+suffix:semicolon
+DECL|function|core99_init_l2
+r_void
+id|core99_init_l2
+c_func
+(paren
+r_void
+)paren
+(brace
+r_int
+id|cpu
+op_assign
+id|smp_processor_id
+c_func
+(paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|_get_PVR
+c_func
+(paren
+)paren
+op_rshift
+l_int|16
+)paren
+op_ne
+l_int|8
+op_logical_and
+(paren
+id|_get_PVR
+c_func
+(paren
+)paren
+op_rshift
+l_int|16
+)paren
+op_ne
+l_int|12
+)paren
+r_return
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|cpu
+op_eq
+l_int|0
+)paren
+(brace
+id|core99_l2_cache
+op_assign
+id|_get_L2CR
+c_func
+(paren
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;CPU0: L2CR is %lx&bslash;n&quot;
+comma
+id|core99_l2_cache
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;CPU%d: L2CR was %lx&bslash;n&quot;
+comma
+id|cpu
+comma
+id|_get_L2CR
+c_func
+(paren
+)paren
+)paren
+suffix:semicolon
+id|_set_L2CR
+c_func
+(paren
+l_int|0
+)paren
+suffix:semicolon
+id|_set_L2CR
+c_func
+(paren
+id|core99_l2_cache
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;CPU%d: L2CR set to %lx&bslash;n&quot;
+comma
+id|cpu
+comma
+id|core99_l2_cache
+)paren
+suffix:semicolon
+)brace
+)brace
+macro_line|#endif /* CONFIG_SMP */
 id|__pmac
 r_int
 DECL|function|pmac_get_cpuinfo
@@ -1101,7 +1184,7 @@ r_int
 op_star
 id|fp
 suffix:semicolon
-multiline_comment|/* Set loops_per_sec to a half-way reasonable value,&n;&t;   for use until calibrate_delay gets called. */
+multiline_comment|/* Set loops_per_jiffy to a half-way reasonable value,&n;&t;   for use until calibrate_delay gets called. */
 id|cpu
 op_assign
 id|find_type_devices
@@ -1177,29 +1260,37 @@ r_case
 l_int|20
 suffix:colon
 multiline_comment|/* 620 */
-id|loops_per_sec
+id|loops_per_jiffy
 op_assign
 op_star
 id|fp
+op_div
+id|HZ
 suffix:semicolon
 r_break
 suffix:semicolon
 r_default
 suffix:colon
 multiline_comment|/* 601, 603, etc. */
-id|loops_per_sec
+id|loops_per_jiffy
 op_assign
 op_star
 id|fp
 op_div
+(paren
 l_int|2
+op_star
+id|HZ
+)paren
 suffix:semicolon
 )brace
 )brace
 r_else
-id|loops_per_sec
+id|loops_per_jiffy
 op_assign
 l_int|50000000
+op_div
+id|HZ
 suffix:semicolon
 )brace
 multiline_comment|/* this area has the CPU identification register&n;&t;   and some registers used by smp boards */
@@ -1237,12 +1328,8 @@ c_func
 (paren
 )paren
 suffix:semicolon
+multiline_comment|/* Lookup PCI hosts */
 id|pmac_find_bridges
-c_func
-(paren
-)paren
-suffix:semicolon
-id|init_p2pbridge
 c_func
 (paren
 )paren
@@ -1385,6 +1472,14 @@ suffix:colon
 l_string|&quot;disabled&quot;
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_SMP
+multiline_comment|/* somewhat of a hack */
+id|core99_init_l2
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif
 macro_line|#ifdef CONFIG_KGDB
 id|zs_kgdb_hook
 c_func
@@ -1449,149 +1544,6 @@ id|to_kdev_t
 c_func
 (paren
 id|DEFAULT_ROOT_DEVICE
-)paren
-suffix:semicolon
-)brace
-multiline_comment|/*&n; * Tweak the PCI-PCI bridge chip on the blue &amp; white G3s.&n; */
-DECL|function|init_p2pbridge
-r_static
-r_void
-id|__init
-id|init_p2pbridge
-c_func
-(paren
-r_void
-)paren
-(brace
-r_struct
-id|device_node
-op_star
-id|p2pbridge
-suffix:semicolon
-r_int
-r_char
-id|bus
-comma
-id|devfn
-suffix:semicolon
-r_int
-r_int
-id|val
-suffix:semicolon
-multiline_comment|/* XXX it would be better here to identify the specific&n;&t;   PCI-PCI bridge chip we have. */
-r_if
-c_cond
-(paren
-(paren
-id|p2pbridge
-op_assign
-id|find_devices
-c_func
-(paren
-l_string|&quot;pci-bridge&quot;
-)paren
-)paren
-op_eq
-l_int|0
-op_logical_or
-id|p2pbridge-&gt;parent
-op_eq
-l_int|NULL
-op_logical_or
-id|strcmp
-c_func
-(paren
-id|p2pbridge-&gt;parent-&gt;name
-comma
-l_string|&quot;pci&quot;
-)paren
-op_ne
-l_int|0
-)paren
-r_return
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|pci_device_loc
-c_func
-(paren
-id|p2pbridge
-comma
-op_amp
-id|bus
-comma
-op_amp
-id|devfn
-)paren
-OL
-l_int|0
-)paren
-r_return
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ppc_md
-dot
-id|pcibios_read_config_word
-c_func
-(paren
-id|bus
-comma
-id|devfn
-comma
-id|PCI_BRIDGE_CONTROL
-comma
-op_amp
-id|val
-)paren
-OL
-l_int|0
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;init_p2pbridge: couldn&squot;t read bridge control&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-suffix:semicolon
-)brace
-id|val
-op_and_assign
-op_complement
-id|PCI_BRIDGE_CTL_MASTER_ABORT
-suffix:semicolon
-id|ppc_md
-dot
-id|pcibios_write_config_word
-c_func
-(paren
-id|bus
-comma
-id|devfn
-comma
-id|PCI_BRIDGE_CONTROL
-comma
-id|val
-)paren
-suffix:semicolon
-id|ppc_md
-dot
-id|pcibios_read_config_word
-c_func
-(paren
-id|bus
-comma
-id|devfn
-comma
-id|PCI_BRIDGE_CONTROL
-comma
-op_amp
-id|val
 )paren
 suffix:semicolon
 )brace
@@ -1969,7 +1921,7 @@ c_func
 r_void
 )paren
 (brace
-macro_line|#ifdef CONFIG_SCSI
+macro_line|#if defined(CONFIG_SCSI) &amp;&amp; defined(CONFIG_BLK_DEV_SD)
 r_if
 c_cond
 (paren
@@ -2166,11 +2118,13 @@ id|adb_request
 id|req
 suffix:semicolon
 macro_line|#endif /* CONFIG_ADB_CUDA */
+macro_line|#ifdef CONFIG_NVRAM
 id|pmac_nvram_update
 c_func
 (paren
 )paren
 suffix:semicolon
+macro_line|#endif
 r_switch
 c_cond
 (paren
@@ -2224,8 +2178,7 @@ suffix:semicolon
 macro_line|#endif /* CONFIG_ADB_PMU */&t;&t;
 r_default
 suffix:colon
-(brace
-)brace
+suffix:semicolon
 )brace
 )brace
 r_void
@@ -2242,11 +2195,13 @@ id|adb_request
 id|req
 suffix:semicolon
 macro_line|#endif /* CONFIG_ADB_CUDA */
+macro_line|#ifdef CONFIG_NVRAM
 id|pmac_nvram_update
 c_func
 (paren
 )paren
 suffix:semicolon
+macro_line|#endif
 r_switch
 c_cond
 (paren
@@ -2300,8 +2255,7 @@ suffix:semicolon
 macro_line|#endif /* CONFIG_ADB_PMU */
 r_default
 suffix:colon
-(brace
-)brace
+suffix:semicolon
 )brace
 )brace
 r_void
@@ -2401,21 +2355,29 @@ id|ide_ioreg_t
 id|base
 )paren
 (brace
+macro_line|#if defined(CONFIG_BLK_DEV_IDE) &amp;&amp; defined(CONFIG_BLK_DEV_IDE_PMAC)
+r_extern
+r_int
+id|pmac_ide_get_irq
+c_func
+(paren
+id|ide_ioreg_t
+id|base
+)paren
+suffix:semicolon
+r_return
+id|pmac_ide_get_irq
+c_func
+(paren
+id|base
+)paren
+suffix:semicolon
+macro_line|#else
 r_return
 l_int|0
 suffix:semicolon
-)brace
-macro_line|#if defined(CONFIG_BLK_DEV_IDE) &amp;&amp; defined(CONFIG_BLK_DEV_IDE_PMAC)
-r_extern
-id|ide_ioreg_t
-id|pmac_ide_get_base
-c_func
-(paren
-r_int
-id|index
-)paren
-suffix:semicolon
 macro_line|#endif
+)brace
 id|ide_ioreg_t
 DECL|function|pmac_ide_default_io_base
 id|pmac_ide_default_io_base
@@ -2426,6 +2388,15 @@ id|index
 )paren
 (brace
 macro_line|#if defined(CONFIG_BLK_DEV_IDE) &amp;&amp; defined(CONFIG_BLK_DEV_IDE_PMAC)
+r_extern
+id|ide_ioreg_t
+id|pmac_ide_get_base
+c_func
+(paren
+r_int
+id|index
+)paren
+suffix:semicolon
 r_return
 id|pmac_ide_get_base
 c_func
@@ -2452,8 +2423,26 @@ r_int
 id|extent
 )paren
 (brace
+multiline_comment|/*&n;&t; * We only do the check_region if `from&squot; looks like a genuine&n;&t; * I/O port number.  If it actually refers to a memory-mapped&n;&t; * register, it should be OK.&n;&t; */
+r_if
+c_cond
+(paren
+id|from
+OL
+op_complement
+id|_IO_BASE
+)paren
 r_return
 l_int|0
+suffix:semicolon
+r_return
+id|check_region
+c_func
+(paren
+id|from
+comma
+id|extent
+)paren
 suffix:semicolon
 )brace
 r_void
@@ -2474,6 +2463,24 @@ op_star
 id|name
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|from
+OL
+op_complement
+id|_IO_BASE
+)paren
+id|request_region
+c_func
+(paren
+id|from
+comma
+id|extent
+comma
+id|name
+)paren
+suffix:semicolon
 )brace
 r_void
 DECL|function|pmac_ide_release_region
@@ -2488,23 +2495,20 @@ r_int
 id|extent
 )paren
 (brace
-)brace
-multiline_comment|/* Convert the shorts/longs in hd_driveid from little to big endian;&n; * chars are endian independant, of course, but strings need to be flipped.&n; * (Despite what it says in drivers/block/ide.h, they come up as little&n; * endian...)&n; *&n; * Changes to linux/hdreg.h may require changes here. */
-r_void
-DECL|function|pmac_ide_fix_driveid
-id|pmac_ide_fix_driveid
-c_func
+r_if
+c_cond
 (paren
-r_struct
-id|hd_driveid
-op_star
-id|id
+id|from
+OL
+op_complement
+id|_IO_BASE
 )paren
-(brace
-id|ppc_generic_ide_fix_driveid
+id|release_region
 c_func
 (paren
-id|id
+id|from
+comma
+id|extent
 )paren
 suffix:semicolon
 )brace
@@ -2580,11 +2584,6 @@ r_int
 id|r7
 )paren
 (brace
-id|pmac_setup_pci_ptrs
-c_func
-(paren
-)paren
-suffix:semicolon
 multiline_comment|/* isa_io_base gets set in pmac_find_bridges */
 id|isa_mem_base
 op_assign
@@ -2631,9 +2630,18 @@ id|ppc_md.get_irq
 op_assign
 id|pmac_get_irq
 suffix:semicolon
+multiline_comment|/* Changed later on ... */
 id|ppc_md.init
 op_assign
 id|pmac_init2
+suffix:semicolon
+id|ppc_md.pcibios_fixup
+op_assign
+id|pmac_pcibios_fixup
+suffix:semicolon
+id|ppc_md.pcibios_enable_device_hook
+op_assign
+id|pmac_pci_enable_device_hook
 suffix:semicolon
 id|ppc_md.restart
 op_assign
@@ -2663,20 +2671,8 @@ id|ppc_md.calibrate_decr
 op_assign
 id|pmac_calibrate_decr
 suffix:semicolon
-id|ppc_md.pci_dev_io_base
-op_assign
-id|pmac_pci_dev_io_base
-suffix:semicolon
-id|ppc_md.pci_dev_mem_base
-op_assign
-id|pmac_pci_dev_mem_base
-suffix:semicolon
-id|ppc_md.pci_dev_root_bridge
-op_assign
-id|pmac_pci_dev_root_bridge
-suffix:semicolon
 macro_line|#ifdef CONFIG_VT
-macro_line|#ifdef CONFIG_INPUT_ADBHID
+macro_line|#ifdef CONFIG_INPUT
 id|ppc_md.kbd_init_hw
 op_assign
 id|mac_hid_init_hw
@@ -2796,24 +2792,19 @@ id|pmac_ide_release_region
 suffix:semicolon
 id|ppc_ide_md.fix_driveid
 op_assign
-id|pmac_ide_fix_driveid
+id|ppc_generic_ide_fix_driveid
 suffix:semicolon
 id|ppc_ide_md.ide_init_hwif
 op_assign
 id|pmac_ide_init_hwif_ports
 suffix:semicolon
-id|ppc_ide_md.io_base
-op_assign
-id|_IO_BASE
-suffix:semicolon
-multiline_comment|/* actually too early for this :-( */
-macro_line|#endif
+macro_line|#endif /* CONFIG_BLK_DEV_IDE &amp;&amp; CONFIG_BLK_DEV_IDE_PMAC */
 macro_line|#ifdef CONFIG_BOOTX_TEXT
 id|ppc_md.progress
 op_assign
 id|pmac_progress
 suffix:semicolon
-macro_line|#endif
+macro_line|#endif /* CONFIG_BOOTX_TEXT */
 r_if
 c_cond
 (paren
@@ -2892,5 +2883,5 @@ l_char|&squot;&bslash;n&squot;
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif CONFIG_BOOTX_TEXT
+macro_line|#endif /* CONFIG_BOOTX_TEXT */
 eof

@@ -1,9 +1,9 @@
-multiline_comment|/******************************************************************************&n; *&n; * Name: acenv.h - Generation environment specific items&n; *       $Revision: 65 $&n; *&n; *****************************************************************************/
-multiline_comment|/*&n; *  Copyright (C) 2000 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/******************************************************************************&n; *&n; * Name: acenv.h - Generation environment specific items&n; *       $Revision: 70 $&n; *&n; *****************************************************************************/
+multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#ifndef __ACENV_H__
 DECL|macro|__ACENV_H__
 mdefine_line|#define __ACENV_H__
-multiline_comment|/*&n; * Configuration for ACPI Utilities&n; */
+multiline_comment|/*&n; * Configuration for ACPI tools and utilities&n; */
 macro_line|#ifdef _ACPI_DUMP_APP
 DECL|macro|ACPI_DEBUG
 mdefine_line|#define ACPI_DEBUG
@@ -39,6 +39,13 @@ DECL|macro|ENABLE_DEBUGGER
 mdefine_line|#define ENABLE_DEBUGGER
 DECL|macro|ACPI_USE_SYSTEM_CLIBRARY
 mdefine_line|#define ACPI_USE_SYSTEM_CLIBRARY
+macro_line|#endif
+multiline_comment|/*&n; * Memory allocation tracking.  Used only if&n; * 1) This is the debug version&n; * 2) This is NOT a 16-bit version of the code (not enough real-mode memory)&n; */
+macro_line|#ifdef ACPI_DEBUG
+macro_line|#ifndef _IA16
+DECL|macro|ACPI_DEBUG_TRACK_ALLOCATIONS
+mdefine_line|#define ACPI_DEBUG_TRACK_ALLOCATIONS
+macro_line|#endif
 macro_line|#endif
 multiline_comment|/*&n; * Environment configuration.  The purpose of this file is to interface to the&n; * local generation environment.&n; *&n; * 1) ACPI_USE_SYSTEM_CLIBRARY - Define this if linking to an actual C library.&n; *      Otherwise, local versions of string/memory functions will be used.&n; * 2) ACPI_USE_STANDARD_HEADERS - Define this if linking to a C library and&n; *      the standard header files may be used.&n; *&n; * The ACPI subsystem only uses low level C library functions that do not call&n; * operating system services and may therefore be inlined in the code.&n; *&n; * It may be necessary to tailor these include files to the target&n; * generation environment.&n; *&n; *&n; * Functions and constants used from each header:&n; *&n; * string.h:    memcpy&n; *              memset&n; *              strcat&n; *              strcmp&n; *              strcpy&n; *              strlen&n; *              strncmp&n; *              strncat&n; *              strncpy&n; *&n; * stdlib.h:    strtoul&n; *&n; * stdarg.h:    va_list&n; *              va_arg&n; *              va_start&n; *              va_end&n; *&n; */
 multiline_comment|/*! [Begin] no source code translation */
@@ -79,25 +86,27 @@ mdefine_line|#define STRLEN(s)       strlen((s))
 DECL|macro|STRCPY
 mdefine_line|#define STRCPY(d,s)     strcpy((d), (s))
 DECL|macro|STRNCPY
-mdefine_line|#define STRNCPY(d,s,n)  strncpy((d), (s), (n))
+mdefine_line|#define STRNCPY(d,s,n)  strncpy((d), (s), (NATIVE_INT)(n))
 DECL|macro|STRNCMP
-mdefine_line|#define STRNCMP(d,s,n)  strncmp((d), (s), (n))
+mdefine_line|#define STRNCMP(d,s,n)  strncmp((d), (s), (NATIVE_INT)(n))
 DECL|macro|STRCMP
 mdefine_line|#define STRCMP(d,s)     strcmp((d), (s))
 DECL|macro|STRCAT
 mdefine_line|#define STRCAT(d,s)     strcat((d), (s))
 DECL|macro|STRNCAT
-mdefine_line|#define STRNCAT(d,s,n)  strncat((d), (s), (n))
+mdefine_line|#define STRNCAT(d,s,n)  strncat((d), (s), (NATIVE_INT)(n))
 DECL|macro|STRTOUL
-mdefine_line|#define STRTOUL(d,s,n)  strtoul((d), (s), (n))
+mdefine_line|#define STRTOUL(d,s,n)  strtoul((d), (s), (NATIVE_INT)(n))
 DECL|macro|MEMCPY
-mdefine_line|#define MEMCPY(d,s,n)   memcpy((d), (s), (n))
+mdefine_line|#define MEMCPY(d,s,n)   memcpy((d), (s), (NATIVE_INT)(n))
 DECL|macro|MEMSET
-mdefine_line|#define MEMSET(d,s,n)   memset((d), (s), (n))
+mdefine_line|#define MEMSET(d,s,n)   memset((d), (s), (NATIVE_INT)(n))
 DECL|macro|TOUPPER
 mdefine_line|#define TOUPPER         toupper
 DECL|macro|TOLOWER
 mdefine_line|#define TOLOWER         tolower
+DECL|macro|IS_XDIGIT
+mdefine_line|#define IS_XDIGIT       isxdigit
 multiline_comment|/******************************************************************************&n; *&n; * Not using native C library, use local implementations&n; *&n; *****************************************************************************/
 macro_line|#else
 multiline_comment|/*&n; * Use local definitions of C library macros and functions&n; * NOTE: The function implementations may not be as efficient&n; * as an inline or assembly code implementation provided by a&n; * native C library.&n; */

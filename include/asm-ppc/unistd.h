@@ -404,6 +404,14 @@ DECL|macro|__NR_multiplexer
 mdefine_line|#define __NR_multiplexer&t;201
 DECL|macro|__NR_getdents64
 mdefine_line|#define __NR_getdents64&t;&t;202
+DECL|macro|__NR_pivot_root
+mdefine_line|#define __NR_pivot_root&t;&t;203
+DECL|macro|__NR_fcntl64
+mdefine_line|#define __NR_fcntl64&t;&t;204
+DECL|macro|__NR_madvise
+mdefine_line|#define __NR_madvise&t;&t;205
+DECL|macro|__NR_mincore
+mdefine_line|#define __NR_mincore&t;&t;206
 DECL|macro|__NR
 mdefine_line|#define __NR(n)&t;#n
 DECL|macro|__syscall_return

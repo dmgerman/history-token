@@ -3247,6 +3247,8 @@ id|flags
 suffix:semicolon
 r_int
 id|i
+op_assign
+l_int|0
 comma
 id|received
 comma

@@ -389,8 +389,7 @@ suffix:semicolon
 macro_line|#endif /* CONFIG_ADB_PMU */
 r_default
 suffix:colon
-(brace
-)brace
+suffix:semicolon
 )brace
 r_return
 l_int|0
@@ -474,7 +473,21 @@ c_func
 (paren
 )paren
 suffix:semicolon
-singleline_comment|//&t;&t;if (req.reply_len != 7)
+r_if
+c_cond
+(paren
+(paren
+id|req.reply_len
+op_ne
+l_int|3
+)paren
+op_logical_and
+(paren
+id|req.reply_len
+op_ne
+l_int|7
+)paren
+)paren
 id|printk
 c_func
 (paren

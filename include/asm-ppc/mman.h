@@ -23,6 +23,8 @@ DECL|macro|MAP_RENAME
 mdefine_line|#define MAP_RENAME      MAP_ANONYMOUS   /* In SunOS terminology */
 DECL|macro|MAP_NORESERVE
 mdefine_line|#define MAP_NORESERVE   0x40            /* don&squot;t reserve swap pages */
+DECL|macro|MAP_LOCKED
+mdefine_line|#define MAP_LOCKED&t;0x80
 DECL|macro|MAP_GROWSDOWN
 mdefine_line|#define MAP_GROWSDOWN&t;0x0100&t;&t;/* stack-like segment */
 DECL|macro|MAP_DENYWRITE

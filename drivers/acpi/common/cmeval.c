@@ -1,5 +1,5 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: cmeval - Object evaluation&n; *              $Revision: 19 $&n; *&n; *****************************************************************************/
-multiline_comment|/*&n; *  Copyright (C) 2000 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: cmeval - Object evaluation&n; *              $Revision: 21 $&n; *&n; *****************************************************************************/
+multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acnamesp.h&quot;
 macro_line|#include &quot;acinterp.h&quot;
@@ -84,7 +84,7 @@ c_cond
 (paren
 id|obj_desc-&gt;common.type
 op_ne
-id|ACPI_TYPE_NUMBER
+id|ACPI_TYPE_INTEGER
 )paren
 (brace
 id|status
@@ -98,7 +98,7 @@ multiline_comment|/*&n;&t;&t; * Since the structure is a union, setting any fiel
 op_star
 id|address
 op_assign
-id|obj_desc-&gt;number.value
+id|obj_desc-&gt;integer.value
 suffix:semicolon
 )brace
 multiline_comment|/* On exit, we must delete the return object */
@@ -185,7 +185,7 @@ c_cond
 (paren
 id|obj_desc-&gt;common.type
 op_ne
-id|ACPI_TYPE_NUMBER
+id|ACPI_TYPE_INTEGER
 )paren
 op_logical_and
 (paren
@@ -207,7 +207,7 @@ c_cond
 (paren
 id|obj_desc-&gt;common.type
 op_eq
-id|ACPI_TYPE_NUMBER
+id|ACPI_TYPE_INTEGER
 )paren
 (brace
 multiline_comment|/* Convert the Numeric HID to string */
@@ -216,7 +216,7 @@ id|acpi_aml_eisa_id_to_string
 (paren
 id|u32
 )paren
-id|obj_desc-&gt;number.value
+id|obj_desc-&gt;integer.value
 comma
 id|hid-&gt;buffer
 )paren
@@ -324,7 +324,7 @@ c_cond
 (paren
 id|obj_desc-&gt;common.type
 op_ne
-id|ACPI_TYPE_NUMBER
+id|ACPI_TYPE_INTEGER
 )paren
 op_logical_and
 (paren
@@ -346,13 +346,13 @@ c_cond
 (paren
 id|obj_desc-&gt;common.type
 op_eq
-id|ACPI_TYPE_NUMBER
+id|ACPI_TYPE_INTEGER
 )paren
 (brace
 multiline_comment|/* Convert the Numeric UID to string */
 id|acpi_aml_unsigned_integer_to_string
 (paren
-id|obj_desc-&gt;number.value
+id|obj_desc-&gt;integer.value
 comma
 id|uid-&gt;buffer
 )paren
@@ -465,7 +465,7 @@ c_cond
 (paren
 id|obj_desc-&gt;common.type
 op_ne
-id|ACPI_TYPE_NUMBER
+id|ACPI_TYPE_INTEGER
 )paren
 (brace
 id|status
@@ -482,7 +482,7 @@ op_assign
 (paren
 id|u32
 )paren
-id|obj_desc-&gt;number.value
+id|obj_desc-&gt;integer.value
 suffix:semicolon
 )brace
 multiline_comment|/* On exit, we must delete the return object */

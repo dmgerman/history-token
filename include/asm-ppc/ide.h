@@ -70,6 +70,17 @@ c_func
 r_void
 )paren
 suffix:semicolon
+r_extern
+r_void
+id|ppc_generic_ide_fix_driveid
+c_func
+(paren
+r_struct
+id|hd_driveid
+op_star
+id|id
+)paren
+suffix:semicolon
 DECL|struct|ide_machdep_calls
 r_struct
 id|ide_machdep_calls
@@ -342,10 +353,8 @@ c_func
 id|index
 )paren
 suffix:semicolon
-r_else
 r_return
-op_minus
-l_int|1
+l_int|0
 suffix:semicolon
 )brace
 DECL|function|ide_init_hwif_ports
@@ -507,10 +516,8 @@ comma
 id|extent
 )paren
 suffix:semicolon
-r_else
 r_return
-op_minus
-l_int|1
+l_int|0
 suffix:semicolon
 )brace
 DECL|function|ide_request_region
@@ -606,16 +613,6 @@ id|id
 )paren
 suffix:semicolon
 )brace
-macro_line|#if 0&t;/* inb/outb from io.h is OK now -- paulus */
-macro_line|#undef inb
-mdefine_line|#define inb(port)&t;in_8((unsigned char *)((port) + ppc_ide_md.io_base))
-macro_line|#undef inb_p
-mdefine_line|#define inb_p(port)&t;inb(port)
-macro_line|#undef outb
-mdefine_line|#define outb(val, port)&t;&bslash;&n;&t;out_8((unsigned char *)((port) + ppc_ide_md.io_base), (val) )
-macro_line|#undef outb_p
-mdefine_line|#define outb_p(val, port)&t;outb(val, port)
-macro_line|#endif
 r_typedef
 r_union
 (brace

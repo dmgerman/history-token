@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: pci_psycho.c,v 1.17 2000/09/21 06:25:14 anton Exp $&n; * pci_psycho.c: PSYCHO/U2P specific PCI controller support.&n; *&n; * Copyright (C) 1997, 1998, 1999 David S. Miller (davem@caipfs.rutgers.edu)&n; * Copyright (C) 1998, 1999 Eddie C. Dost   (ecd@skynet.be)&n; * Copyright (C) 1999 Jakub Jelinek   (jakub@redhat.com)&n; */
+multiline_comment|/* $Id: pci_psycho.c,v 1.18 2001/01/11 16:26:45 davem Exp $&n; * pci_psycho.c: PSYCHO/U2P specific PCI controller support.&n; *&n; * Copyright (C) 1997, 1998, 1999 David S. Miller (davem@caipfs.rutgers.edu)&n; * Copyright (C) 1998, 1999 Eddie C. Dost   (ecd@skynet.be)&n; * Copyright (C) 1999 Jakub Jelinek   (jakub@redhat.com)&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
@@ -2386,6 +2386,13 @@ id|psycho_error_type
 id|type
 )paren
 (brace
+r_struct
+id|pci_iommu
+op_star
+id|iommu
+op_assign
+id|p-&gt;pbm_A.iommu
+suffix:semicolon
 r_int
 r_int
 id|iommu_tag
@@ -2414,7 +2421,7 @@ id|spin_lock_irqsave
 c_func
 (paren
 op_amp
-id|p-&gt;iommu.lock
+id|iommu-&gt;lock
 comma
 id|flags
 )paren
@@ -2424,7 +2431,7 @@ op_assign
 id|psycho_read
 c_func
 (paren
-id|p-&gt;iommu.iommu_control
+id|iommu-&gt;iommu_control
 )paren
 suffix:semicolon
 r_if
@@ -2448,7 +2455,7 @@ suffix:semicolon
 id|psycho_write
 c_func
 (paren
-id|p-&gt;iommu.iommu_control
+id|iommu-&gt;iommu_control
 comma
 id|control
 )paren
@@ -2519,7 +2526,7 @@ multiline_comment|/* Put the IOMMU into diagnostic mode and probe&n;&t;&t; * it&
 id|psycho_write
 c_func
 (paren
-id|p-&gt;iommu.iommu_control
+id|iommu-&gt;iommu_control
 comma
 id|control
 op_or
@@ -2623,7 +2630,7 @@ multiline_comment|/* Leave diagnostic mode. */
 id|psycho_write
 c_func
 (paren
-id|p-&gt;iommu.iommu_control
+id|iommu-&gt;iommu_control
 comma
 id|control
 )paren
@@ -2848,7 +2855,7 @@ id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
-id|p-&gt;iommu.lock
+id|iommu-&gt;lock
 comma
 id|flags
 )paren
@@ -5282,6 +5289,13 @@ op_star
 id|p
 )paren
 (brace
+r_struct
+id|pci_iommu
+op_star
+id|iommu
+op_assign
+id|p-&gt;pbm_A.iommu
+suffix:semicolon
 r_int
 r_int
 id|tsbbase
@@ -5296,39 +5310,39 @@ id|spin_lock_init
 c_func
 (paren
 op_amp
-id|p-&gt;iommu.lock
+id|iommu-&gt;lock
 )paren
 suffix:semicolon
-id|p-&gt;iommu.iommu_cur_ctx
+id|iommu-&gt;iommu_cur_ctx
 op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* Register addresses. */
-id|p-&gt;iommu.iommu_control
+id|iommu-&gt;iommu_control
 op_assign
 id|p-&gt;controller_regs
 op_plus
 id|PSYCHO_IOMMU_CONTROL
 suffix:semicolon
-id|p-&gt;iommu.iommu_tsbbase
+id|iommu-&gt;iommu_tsbbase
 op_assign
 id|p-&gt;controller_regs
 op_plus
 id|PSYCHO_IOMMU_TSBBASE
 suffix:semicolon
-id|p-&gt;iommu.iommu_flush
+id|iommu-&gt;iommu_flush
 op_assign
 id|p-&gt;controller_regs
 op_plus
 id|PSYCHO_IOMMU_FLUSH
 suffix:semicolon
 multiline_comment|/* PSYCHO&squot;s IOMMU lacks ctx flushing. */
-id|p-&gt;iommu.iommu_ctxflush
+id|iommu-&gt;iommu_ctxflush
 op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* We use the main control register of PSYCHO as the write&n;&t; * completion register.&n;&t; */
-id|p-&gt;iommu.write_complete_reg
+id|iommu-&gt;write_complete_reg
 op_assign
 id|p-&gt;controller_regs
 op_plus
@@ -5438,7 +5452,7 @@ c_func
 )paren
 suffix:semicolon
 )brace
-id|p-&gt;iommu.page_table
+id|iommu-&gt;page_table
 op_assign
 (paren
 id|iopte_t
@@ -5446,15 +5460,15 @@ op_star
 )paren
 id|tsbbase
 suffix:semicolon
-id|p-&gt;iommu.page_table_sz_bits
+id|iommu-&gt;page_table_sz_bits
 op_assign
 l_int|17
 suffix:semicolon
-id|p-&gt;iommu.page_table_map_base
+id|iommu-&gt;page_table_map_base
 op_assign
 l_int|0xc0000000
 suffix:semicolon
-id|p-&gt;iommu.dma_addr_mask
+id|iommu-&gt;dma_addr_mask
 op_assign
 l_int|0xffffffff
 suffix:semicolon
@@ -5475,12 +5489,12 @@ l_int|7
 )paren
 suffix:semicolon
 multiline_comment|/* We start with no consistent mappings. */
-id|p-&gt;iommu.lowest_consistent_map
+id|iommu-&gt;lowest_consistent_map
 op_assign
 l_int|1
 op_lshift
 (paren
-id|p-&gt;iommu.page_table_sz_bits
+id|iommu-&gt;page_table_sz_bits
 op_minus
 id|PBM_LOGCLUSTERS
 )paren
@@ -5500,7 +5514,7 @@ id|i
 op_increment
 )paren
 (brace
-id|p-&gt;iommu.alloc_info
+id|iommu-&gt;alloc_info
 (braket
 id|i
 )braket
@@ -5509,7 +5523,7 @@ id|flush
 op_assign
 l_int|0
 suffix:semicolon
-id|p-&gt;iommu.alloc_info
+id|iommu-&gt;alloc_info
 (braket
 id|i
 )braket
@@ -6385,6 +6399,11 @@ id|pci_controller_info
 op_star
 id|p
 suffix:semicolon
+r_struct
+id|pci_iommu
+op_star
+id|iommu
+suffix:semicolon
 r_int
 r_int
 id|flags
@@ -6526,6 +6545,59 @@ op_star
 id|p
 )paren
 )paren
+suffix:semicolon
+id|iommu
+op_assign
+id|kmalloc
+c_func
+(paren
+r_sizeof
+(paren
+r_struct
+id|pci_iommu
+)paren
+comma
+id|GFP_ATOMIC
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|iommu
+)paren
+(brace
+id|prom_printf
+c_func
+(paren
+l_string|&quot;PSYCHO: Fatal memory allocation error.&bslash;n&quot;
+)paren
+suffix:semicolon
+id|prom_halt
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
+id|memset
+c_func
+(paren
+id|iommu
+comma
+l_int|0
+comma
+r_sizeof
+(paren
+op_star
+id|iommu
+)paren
+)paren
+suffix:semicolon
+id|p-&gt;pbm_A.iommu
+op_assign
+id|p-&gt;pbm_B.iommu
+op_assign
+id|iommu
 suffix:semicolon
 id|spin_lock_irqsave
 c_func

@@ -1787,9 +1787,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
 id|attr-&gt;ia_valid
 op_amp
 id|ATTR_SIZE
+)paren
 op_logical_and
 id|attr-&gt;ia_size
 OG
@@ -1797,7 +1799,7 @@ id|inode-&gt;i_size
 )paren
 r_return
 op_minus
-id|EPERM
+id|EINVAL
 suffix:semicolon
 r_if
 c_cond

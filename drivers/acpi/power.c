@@ -239,7 +239,7 @@ id|buf
 op_logical_or
 id|obj.type
 op_ne
-id|ACPI_TYPE_NUMBER
+id|ACPI_TYPE_INTEGER
 )paren
 (brace
 id|p
@@ -259,7 +259,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|obj.number.value
+id|obj.integer.value
 )paren
 id|p
 op_add_assign

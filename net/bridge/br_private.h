@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&t;Linux ethernet bridge&n; *&n; *&t;Authors:&n; *&t;Lennert Buytenhek&t;&t;&lt;buytenh@gnu.org&gt;&n; *&n; *&t;$Id: br_private.h,v 1.3 2000/05/05 02:17:17 davem Exp $&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *&t;modify it under the terms of the GNU General Public License&n; *&t;as published by the Free Software Foundation; either version&n; *&t;2 of the License, or (at your option) any later version.&n; */
+multiline_comment|/*&n; *&t;Linux ethernet bridge&n; *&n; *&t;Authors:&n; *&t;Lennert Buytenhek&t;&t;&lt;buytenh@gnu.org&gt;&n; *&n; *&t;$Id: br_private.h,v 1.4 2001/01/19 04:51:48 davem Exp $&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *&t;modify it under the terms of the GNU General Public License&n; *&t;as published by the Free Software Foundation; either version&n; *&t;2 of the License, or (at your option) any later version.&n; */
 macro_line|#ifndef _BR_PRIVATE_H
 DECL|macro|_BR_PRIVATE_H
 mdefine_line|#define _BR_PRIVATE_H
@@ -348,12 +348,12 @@ id|gc_interval
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|variable|br_device_notifier
+r_extern
 r_struct
 id|notifier_block
 id|br_device_notifier
 suffix:semicolon
-DECL|variable|bridge_ula
+r_extern
 r_int
 r_char
 id|bridge_ula

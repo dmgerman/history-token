@@ -1,5 +1,5 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: cmclib - Local implementation of C library functions&n; * $Revision: 28 $&n; *&n; *****************************************************************************/
-multiline_comment|/*&n; *  Copyright (C) 2000 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: cmclib - Local implementation of C library functions&n; * $Revision: 32 $&n; *&n; *****************************************************************************/
+multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acevents.h&quot;
 macro_line|#include &quot;achware.h&quot;
@@ -564,7 +564,7 @@ r_void
 op_star
 id|dest
 comma
-id|u32
+id|NATIVE_UINT
 id|value
 comma
 id|NATIVE_UINT
@@ -1357,6 +1357,8 @@ DECL|macro|IS_DIGIT
 mdefine_line|#define IS_DIGIT(c)  (_acpi_ctype[(unsigned char)(c)] &amp; (_ACPI_DI))
 DECL|macro|IS_SPACE
 mdefine_line|#define IS_SPACE(c)  (_acpi_ctype[(unsigned char)(c)] &amp; (_ACPI_SP))
+DECL|macro|IS_XDIGIT
+mdefine_line|#define IS_XDIGIT(c) (_acpi_ctype[(unsigned char)(c)] &amp; (_ACPI_XD))
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_cm_to_upper&n; *&n; * PARAMETERS:&n; *&n; * RETURN:&n; *&n; * DESCRIPTION: Convert character to uppercase&n; *&n; ******************************************************************************/
 id|u32
 DECL|function|acpi_cm_to_upper
@@ -1567,7 +1569,7 @@ op_star
 op_star
 id|terminator
 comma
-id|u32
+id|NATIVE_UINT
 id|base
 )paren
 (brace

@@ -1,6 +1,5 @@
 multiline_comment|/*&n; *&t;X.25 Packet Layer release 002&n; *&n; *&t;This is ALPHA test software. This code may break your machine, randomly fail to work with new &n; *&t;releases, misbehave and/or generally screw up. It might even work. &n; *&n; *&t;This code REQUIRES 2.1.15 or higher&n; *&n; *&t;This module:&n; *&t;&t;This module is free software; you can redistribute it and/or&n; *&t;&t;modify it under the terms of the GNU General Public License&n; *&t;&t;as published by the Free Software Foundation; either version&n; *&t;&t;2 of the License, or (at your option) any later version.&n; *&n; *&t;History&n; *&t;X.25 001&t;Jonathan Naylor&t;  Started coding.&n; *&t;X.25 002&t;Jonathan Naylor&t;  Centralised disconnection processing.&n; *&t;mar/20/00&t;Daniela Squassoni Disabling/enabling of facilities &n; *&t;&t;&t;&t;&t;  negotiation.&n; */
 macro_line|#include &lt;linux/config.h&gt;
-macro_line|#if defined(CONFIG_X25) || defined(CONFIG_X25_MODULE)
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/socket.h&gt;
@@ -1505,5 +1504,69 @@ op_assign
 l_int|1
 suffix:semicolon
 )brace
-macro_line|#endif
+multiline_comment|/*&n; * Clear an own-rx-busy condition and tell the peer about this, provided&n; * that there is a significant amount of free receive buffer space available.&n; */
+DECL|function|x25_check_rbuf
+r_void
+id|x25_check_rbuf
+c_func
+(paren
+r_struct
+id|sock
+op_star
+id|sk
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|atomic_read
+c_func
+(paren
+op_amp
+id|sk-&gt;rmem_alloc
+)paren
+OL
+(paren
+id|sk-&gt;rcvbuf
+op_div
+l_int|2
+)paren
+op_logical_and
+(paren
+id|sk-&gt;protinfo.x25-&gt;condition
+op_amp
+id|X25_COND_OWN_RX_BUSY
+)paren
+)paren
+(brace
+id|sk-&gt;protinfo.x25-&gt;condition
+op_and_assign
+op_complement
+id|X25_COND_OWN_RX_BUSY
+suffix:semicolon
+id|sk-&gt;protinfo.x25-&gt;condition
+op_and_assign
+op_complement
+id|X25_COND_ACK_PENDING
+suffix:semicolon
+id|sk-&gt;protinfo.x25-&gt;vl
+op_assign
+id|sk-&gt;protinfo.x25-&gt;vr
+suffix:semicolon
+id|x25_write_internal
+c_func
+(paren
+id|sk
+comma
+id|X25_RR
+)paren
+suffix:semicolon
+id|x25_stop_timer
+c_func
+(paren
+id|sk
+)paren
+suffix:semicolon
+)brace
+)brace
 eof

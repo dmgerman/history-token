@@ -1,7 +1,7 @@
 multiline_comment|/* Kernel module to match NFMARK values. */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
-macro_line|#include &lt;linux/netfilter_ipv4/ipt_mark.h&gt;
+macro_line|#include &lt;linux/netfilter_ipv6/ip6t_mark.h&gt;
 macro_line|#include &lt;linux/netfilter_ipv6/ip6_tables.h&gt;
 r_static
 r_int
@@ -50,7 +50,7 @@ id|hotdrop
 (brace
 r_const
 r_struct
-id|ipt_mark_info
+id|ip6t_mark_info
 op_star
 id|info
 op_assign
@@ -111,7 +111,7 @@ c_func
 r_sizeof
 (paren
 r_struct
-id|ipt_mark_info
+id|ip6t_mark_info
 )paren
 )paren
 )paren

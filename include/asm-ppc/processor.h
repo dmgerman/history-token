@@ -368,6 +368,18 @@ DECL|macro|SPRN_IMMR
 mdefine_line|#define&t;SPRN_IMMR&t;0x27E  &t;/* Internal Memory Map Register */
 DECL|macro|SPRN_L2CR
 mdefine_line|#define&t;SPRN_L2CR&t;0x3F9&t;/* Level 2 Cache Control Regsiter */
+DECL|macro|L2CR_PIPE_LATEWR
+mdefine_line|#define   L2CR_PIPE_LATEWR   (0x01800000)   /* late-write SRAM */
+DECL|macro|L2CR_L2CTL
+mdefine_line|#define   L2CR_L2CTL         (0x00100000)   /* RAM control */
+DECL|macro|L2CR_INST_DISABLE
+mdefine_line|#define   L2CR_INST_DISABLE  (0x00400000)   /* disable for insn&squot;s */
+DECL|macro|L2CR_L2I
+mdefine_line|#define   L2CR_L2I           (0x00200000)   /* global invalidate */
+DECL|macro|L2CR_L2E
+mdefine_line|#define   L2CR_L2E           (0x80000000)   /* enable */
+DECL|macro|L2CR_L2WT
+mdefine_line|#define   L2CR_L2WT          (0x00080000)   /* write-through */
 DECL|macro|SPRN_LR
 mdefine_line|#define&t;SPRN_LR&t;&t;0x008&t;/* Link Register */
 DECL|macro|SPRN_MMCR0
@@ -428,22 +440,22 @@ DECL|macro|SPRN_SRR2
 mdefine_line|#define&t;SPRN_SRR2&t;0x3DE&t;/* Save/Restore Register 2 */
 DECL|macro|SPRN_SRR3
 mdefine_line|#define&t;SPRN_SRR3 &t;0x3DF&t;/* Save/Restore Register 3 */
-DECL|macro|SPRN_TBHI
-mdefine_line|#define&t;SPRN_TBHI&t;0x3DC&t;/* Time Base High */
-DECL|macro|SPRN_TBHU
-mdefine_line|#define&t;SPRN_TBHU&t;0x3CC&t;/* Time Base High User-mode */
-DECL|macro|SPRN_TBLO
-mdefine_line|#define&t;SPRN_TBLO&t;0x3DD&t;/* Time Base Low */
-DECL|macro|SPRN_TBLU
-mdefine_line|#define&t;SPRN_TBLU&t;0x3CD&t;/* Time Base Low User-mode */
 DECL|macro|SPRN_TBRL
-mdefine_line|#define&t;SPRN_TBRL&t;0x10D&t;/* Time Base Read Lower Register */
+mdefine_line|#define&t;SPRN_TBRL&t;0x10C&t;/* Time Base Read Lower Register (user, R/O) */
 DECL|macro|SPRN_TBRU
-mdefine_line|#define&t;SPRN_TBRU&t;0x10C&t;/* Time Base Read Upper Register */
+mdefine_line|#define&t;SPRN_TBRU&t;0x10D&t;/* Time Base Read Upper Register (user, R/O) */
 DECL|macro|SPRN_TBWL
-mdefine_line|#define&t;SPRN_TBWL&t;0x11D&t;/* Time Base Write Lower Register */
+mdefine_line|#define&t;SPRN_TBWL&t;0x11C&t;/* Time Base Lower Register (supervisor, R/W) */
 DECL|macro|SPRN_TBWU
-mdefine_line|#define&t;SPRN_TBWU&t;0x11C&t;/* Time Base Write Upper Register */
+mdefine_line|#define&t;SPRN_TBWU&t;0x11D&t;/* Time Base Upper Register (supervisor, R/W) */
+DECL|macro|SPRN_TBHI
+mdefine_line|#define&t;SPRN_TBHI&t;0x3DC&t;/* Time Base High (4xx) */
+DECL|macro|SPRN_TBHU
+mdefine_line|#define&t;SPRN_TBHU&t;0x3CC&t;/* Time Base High User-mode (4xx) */
+DECL|macro|SPRN_TBLO
+mdefine_line|#define&t;SPRN_TBLO&t;0x3DD&t;/* Time Base Low (4xx) */
+DECL|macro|SPRN_TBLU
+mdefine_line|#define&t;SPRN_TBLU&t;0x3CD&t;/* Time Base Low User-mode (4xx) */
 DECL|macro|SPRN_TCR
 mdefine_line|#define&t;SPRN_TCR&t;0x3DA&t;/* Timer Control Register */
 DECL|macro|TCR_WP
@@ -486,24 +498,27 @@ DECL|macro|TCR_ARE
 mdefine_line|#define&t;  TCR_ARE&t;&t;0x00400000&t;/* Auto Reload Enable */
 DECL|macro|SPRN_THRM1
 mdefine_line|#define&t;SPRN_THRM1&t;0x3FC&t;/* Thermal Management Register 1 */
+multiline_comment|/* these bits were defined in inverted endian sense originally, ugh, confusing */
 DECL|macro|THRM1_TIN
-mdefine_line|#define&t;  THRM1_TIN&t;&t;(1&lt;&lt;0)
+mdefine_line|#define&t;  THRM1_TIN&t;&t;(1 &lt;&lt; 31)
 DECL|macro|THRM1_TIV
-mdefine_line|#define&t;  THRM1_TIV&t;&t;(1&lt;&lt;1)
+mdefine_line|#define&t;  THRM1_TIV&t;&t;(1 &lt;&lt; 30)
 DECL|macro|THRM1_THRES
-mdefine_line|#define&t;  THRM1_THRES&t;&t;(0x7f&lt;&lt;2)
+mdefine_line|#define&t;  THRM1_THRES(x)&t;((x&amp;0x7f)&lt;&lt;23)
+DECL|macro|THRM3_SITV
+mdefine_line|#define   THRM3_SITV(x)&t;&t;((x&amp;0x3fff)&lt;&lt;1)
 DECL|macro|THRM1_TID
-mdefine_line|#define&t;  THRM1_TID&t;&t;(1&lt;&lt;29)
+mdefine_line|#define&t;  THRM1_TID&t;&t;(1&lt;&lt;2)
 DECL|macro|THRM1_TIE
-mdefine_line|#define&t;  THRM1_TIE&t;&t;(1&lt;&lt;30)
+mdefine_line|#define&t;  THRM1_TIE&t;&t;(1&lt;&lt;1)
 DECL|macro|THRM1_V
-mdefine_line|#define&t;  THRM1_V&t;&t;(1&lt;&lt;31)
+mdefine_line|#define&t;  THRM1_V&t;&t;(1&lt;&lt;0)
 DECL|macro|SPRN_THRM2
 mdefine_line|#define&t;SPRN_THRM2&t;0x3FD&t;/* Thermal Management Register 2 */
 DECL|macro|SPRN_THRM3
 mdefine_line|#define&t;SPRN_THRM3&t;0x3FE&t;/* Thermal Management Register 3 */
 DECL|macro|THRM3_E
-mdefine_line|#define&t;  THRM3_E&t;&t;(1&lt;&lt;31)
+mdefine_line|#define&t;  THRM3_E&t;&t;(1&lt;&lt;0)
 DECL|macro|SPRN_TSR
 mdefine_line|#define&t;SPRN_TSR&t;0x3D8&t;/* Timer Status Register */
 DECL|macro|TSR_ENW
@@ -894,10 +909,10 @@ DECL|macro|_MACH_rpxlite
 mdefine_line|#define _MACH_rpxlite&t;0x00000040&t;/* RPCG RPX-Lite 8xx board */
 DECL|macro|_MACH_bseip
 mdefine_line|#define _MACH_bseip&t;0x00000080&t;/* Bright Star Engineering ip-Engine */
-DECL|macro|_MACH_yk
-mdefine_line|#define _MACH_yk&t;0x00000100&t;/* Motorola Yellowknife */
-DECL|macro|_MACH_gemini
-mdefine_line|#define _MACH_gemini&t;0x00000200&t;/* Synergy Microsystems gemini board */
+DECL|macro|_MACH_unused0
+mdefine_line|#define _MACH_unused0&t;0x00000100&t;/* Now free to be used */
+DECL|macro|_MACH_unused1
+mdefine_line|#define _MACH_unused1&t;0x00000200&t;/* Now free to be used */
 DECL|macro|_MACH_classic
 mdefine_line|#define _MACH_classic&t;0x00000400&t;/* RPCG RPX-Classic 8xx board */
 DECL|macro|_MACH_oak
@@ -919,23 +934,6 @@ DECL|macro|_PREP_IBM
 mdefine_line|#define _PREP_IBM      0x00  /* ibm prep */
 DECL|macro|_PREP_Bull
 mdefine_line|#define _PREP_Bull     0x03  /* bull prep */
-DECL|macro|_PREP_Radstone
-mdefine_line|#define _PREP_Radstone 0x04  /* Radstone Technology PLC prep */
-multiline_comment|/*&n; * Radstone board types&n; */
-DECL|macro|RS_SYS_TYPE_PPC1
-mdefine_line|#define RS_SYS_TYPE_PPC1   0
-DECL|macro|RS_SYS_TYPE_PPC2
-mdefine_line|#define RS_SYS_TYPE_PPC2   1
-DECL|macro|RS_SYS_TYPE_PPC1a
-mdefine_line|#define RS_SYS_TYPE_PPC1a  2
-DECL|macro|RS_SYS_TYPE_PPC2a
-mdefine_line|#define RS_SYS_TYPE_PPC2a  3
-DECL|macro|RS_SYS_TYPE_PPC4
-mdefine_line|#define RS_SYS_TYPE_PPC4   4
-DECL|macro|RS_SYS_TYPE_PPC4a
-mdefine_line|#define RS_SYS_TYPE_PPC4a  5
-DECL|macro|RS_SYS_TYPE_PPC2ep
-mdefine_line|#define RS_SYS_TYPE_PPC2ep 6
 multiline_comment|/* these are arbitrary */
 DECL|macro|_CHRP_Motorola
 mdefine_line|#define _CHRP_Motorola 0x04  /* motorola chrp, the cobra */
@@ -1325,11 +1323,6 @@ mdefine_line|#define have_of 0
 macro_line|#elif defined(CONFIG_APUS)
 DECL|macro|_machine
 mdefine_line|#define _machine _MACH_apus
-DECL|macro|have_of
-mdefine_line|#define have_of 0
-macro_line|#elif defined(CONFIG_GEMINI)
-DECL|macro|_machine
-mdefine_line|#define _machine _MACH_gemini
 DECL|macro|have_of
 mdefine_line|#define have_of 0
 macro_line|#elif defined(CONFIG_8260)

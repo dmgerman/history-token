@@ -2311,26 +2311,8 @@ suffix:semicolon
 id|_set_L2CR
 c_func
 (paren
-l_int|0
-)paren
-suffix:semicolon
-id|_set_L2CR
-c_func
-(paren
 id|val
 )paren
-suffix:semicolon
-r_while
-c_loop
-(paren
-id|_get_L2CR
-c_func
-(paren
-)paren
-op_amp
-l_int|0x1
-)paren
-multiline_comment|/* wait for invalidate to finish */
 suffix:semicolon
 )brace
 r_else

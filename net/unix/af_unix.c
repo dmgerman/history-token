@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * NET3:&t;Implementation of BSD Unix domain sockets.&n; *&n; * Authors:&t;Alan Cox, &lt;alan.cox@linux.org&gt;&n; *&n; *&t;&t;This program is free software; you can redistribute it and/or&n; *&t;&t;modify it under the terms of the GNU General Public License&n; *&t;&t;as published by the Free Software Foundation; either version&n; *&t;&t;2 of the License, or (at your option) any later version.&n; *&n; * Version:&t;$Id: af_unix.c,v 1.108 2000/11/10 04:02:04 davem Exp $&n; *&n; * Fixes:&n; *&t;&t;Linus Torvalds&t;:&t;Assorted bug cures.&n; *&t;&t;Niibe Yutaka&t;:&t;async I/O support.&n; *&t;&t;Carsten Paeth&t;:&t;PF_UNIX check, address fixes.&n; *&t;&t;Alan Cox&t;:&t;Limit size of allocated blocks.&n; *&t;&t;Alan Cox&t;:&t;Fixed the stupid socketpair bug.&n; *&t;&t;Alan Cox&t;:&t;BSD compatibility fine tuning.&n; *&t;&t;Alan Cox&t;:&t;Fixed a bug in connect when interrupted.&n; *&t;&t;Alan Cox&t;:&t;Sorted out a proper draft version of&n; *&t;&t;&t;&t;&t;file descriptor passing hacked up from&n; *&t;&t;&t;&t;&t;Mike Shaver&squot;s work.&n; *&t;&t;Marty Leisner&t;:&t;Fixes to fd passing&n; *&t;&t;Nick Nevin&t;:&t;recvmsg bugfix.&n; *&t;&t;Alan Cox&t;:&t;Started proper garbage collector&n; *&t;&t;Heiko EiBfeldt&t;:&t;Missing verify_area check&n; *&t;&t;Alan Cox&t;:&t;Started POSIXisms&n; *&t;&t;Andreas Schwab&t;:&t;Replace inode by dentry for proper&n; *&t;&t;&t;&t;&t;reference counting&n; *&t;&t;Kirk Petersen&t;:&t;Made this a module&n; *&t;    Christoph Rohland&t;:&t;Elegant non-blocking accept/connect algorithm.&n; *&t;&t;&t;&t;&t;Lots of bug fixes.&n; *&t;     Alexey Kuznetosv&t;:&t;Repaired (I hope) bugs introduces&n; *&t;&t;&t;&t;&t;by above two patches.&n; *&t;     Andrea Arcangeli&t;:&t;If possible we block in connect(2)&n; *&t;&t;&t;&t;&t;if the max backlog of the listen socket&n; *&t;&t;&t;&t;&t;is been reached. This won&squot;t break&n; *&t;&t;&t;&t;&t;old apps and it will avoid huge amount&n; *&t;&t;&t;&t;&t;of socks hashed (this for unix_gc()&n; *&t;&t;&t;&t;&t;performances reasons).&n; *&t;&t;&t;&t;&t;Security fix that limits the max&n; *&t;&t;&t;&t;&t;number of socks to 2*max_files and&n; *&t;&t;&t;&t;&t;the number of skb queueable in the&n; *&t;&t;&t;&t;&t;dgram receiver.&n; *&t;&t;Artur Skawina   :&t;Hash function optimizations&n; *&t;     Alexey Kuznetsov   :&t;Full scale SMP. Lot of bugs are introduced 8)&n; *&t;      Malcolm Beattie   :&t;Set peercred for socketpair&n; *&t;     Michal Ostrowski   :       Module initialization cleanup.&n; *&n; *&n; * Known differences from reference BSD that was tested:&n; *&n; *&t;[TO FIX]&n; *&t;ECONNREFUSED is not returned from one end of a connected() socket to the&n; *&t;&t;other the moment one end closes.&n; *&t;fstat() doesn&squot;t return st_dev=NODEV, and give the blksize as high water mark&n; *&t;&t;and a fake inode identifier (nor the BSD first socket fstat twice bug).&n; *&t;[NOT TO FIX]&n; *&t;accept() returns a path name even if the connecting socket has closed&n; *&t;&t;in the meantime (BSD loses the path and gives up).&n; *&t;accept() returns 0 length path for an unbound connector. BSD returns 16&n; *&t;&t;and a null first byte in the path (but not for gethost/peername - BSD bug ??)&n; *&t;socketpair(...SOCK_RAW..) doesn&squot;t panic the kernel.&n; *&t;BSD af_unix apparently has connect forgetting to block properly.&n; *&t;&t;(need to check this with the POSIX spec in detail)&n; *&n; * Differences from 2.0.0-11-... (ANK)&n; *&t;Bug fixes and improvements.&n; *&t;&t;- client shutdown killed server socket.&n; *&t;&t;- removed all useless cli/sti pairs.&n; *&n; *&t;Semantic changes/extensions.&n; *&t;&t;- generic control message passing.&n; *&t;&t;- SCM_CREDENTIALS control message.&n; *&t;&t;- &quot;Abstract&quot; (not FS based) socket bindings.&n; *&t;&t;  Abstract names are sequences of bytes (not zero terminated)&n; *&t;&t;  started by 0, so that this name space does not intersect&n; *&t;&t;  with BSD names.&n; */
+multiline_comment|/*&n; * NET4:&t;Implementation of BSD Unix domain sockets.&n; *&n; * Authors:&t;Alan Cox, &lt;alan.cox@linux.org&gt;&n; *&n; *&t;&t;This program is free software; you can redistribute it and/or&n; *&t;&t;modify it under the terms of the GNU General Public License&n; *&t;&t;as published by the Free Software Foundation; either version&n; *&t;&t;2 of the License, or (at your option) any later version.&n; *&n; * Version:&t;$Id: af_unix.c,v 1.109 2001/01/06 00:42:23 davem Exp $&n; *&n; * Fixes:&n; *&t;&t;Linus Torvalds&t;:&t;Assorted bug cures.&n; *&t;&t;Niibe Yutaka&t;:&t;async I/O support.&n; *&t;&t;Carsten Paeth&t;:&t;PF_UNIX check, address fixes.&n; *&t;&t;Alan Cox&t;:&t;Limit size of allocated blocks.&n; *&t;&t;Alan Cox&t;:&t;Fixed the stupid socketpair bug.&n; *&t;&t;Alan Cox&t;:&t;BSD compatibility fine tuning.&n; *&t;&t;Alan Cox&t;:&t;Fixed a bug in connect when interrupted.&n; *&t;&t;Alan Cox&t;:&t;Sorted out a proper draft version of&n; *&t;&t;&t;&t;&t;file descriptor passing hacked up from&n; *&t;&t;&t;&t;&t;Mike Shaver&squot;s work.&n; *&t;&t;Marty Leisner&t;:&t;Fixes to fd passing&n; *&t;&t;Nick Nevin&t;:&t;recvmsg bugfix.&n; *&t;&t;Alan Cox&t;:&t;Started proper garbage collector&n; *&t;&t;Heiko EiBfeldt&t;:&t;Missing verify_area check&n; *&t;&t;Alan Cox&t;:&t;Started POSIXisms&n; *&t;&t;Andreas Schwab&t;:&t;Replace inode by dentry for proper&n; *&t;&t;&t;&t;&t;reference counting&n; *&t;&t;Kirk Petersen&t;:&t;Made this a module&n; *&t;    Christoph Rohland&t;:&t;Elegant non-blocking accept/connect algorithm.&n; *&t;&t;&t;&t;&t;Lots of bug fixes.&n; *&t;     Alexey Kuznetosv&t;:&t;Repaired (I hope) bugs introduces&n; *&t;&t;&t;&t;&t;by above two patches.&n; *&t;     Andrea Arcangeli&t;:&t;If possible we block in connect(2)&n; *&t;&t;&t;&t;&t;if the max backlog of the listen socket&n; *&t;&t;&t;&t;&t;is been reached. This won&squot;t break&n; *&t;&t;&t;&t;&t;old apps and it will avoid huge amount&n; *&t;&t;&t;&t;&t;of socks hashed (this for unix_gc()&n; *&t;&t;&t;&t;&t;performances reasons).&n; *&t;&t;&t;&t;&t;Security fix that limits the max&n; *&t;&t;&t;&t;&t;number of socks to 2*max_files and&n; *&t;&t;&t;&t;&t;the number of skb queueable in the&n; *&t;&t;&t;&t;&t;dgram receiver.&n; *&t;&t;Artur Skawina   :&t;Hash function optimizations&n; *&t;     Alexey Kuznetsov   :&t;Full scale SMP. Lot of bugs are introduced 8)&n; *&t;      Malcolm Beattie   :&t;Set peercred for socketpair&n; *&t;     Michal Ostrowski   :       Module initialization cleanup.&n; *&n; *&n; * Known differences from reference BSD that was tested:&n; *&n; *&t;[TO FIX]&n; *&t;ECONNREFUSED is not returned from one end of a connected() socket to the&n; *&t;&t;other the moment one end closes.&n; *&t;fstat() doesn&squot;t return st_dev=NODEV, and give the blksize as high water mark&n; *&t;&t;and a fake inode identifier (nor the BSD first socket fstat twice bug).&n; *&t;[NOT TO FIX]&n; *&t;accept() returns a path name even if the connecting socket has closed&n; *&t;&t;in the meantime (BSD loses the path and gives up).&n; *&t;accept() returns 0 length path for an unbound connector. BSD returns 16&n; *&t;&t;and a null first byte in the path (but not for gethost/peername - BSD bug ??)&n; *&t;socketpair(...SOCK_RAW..) doesn&squot;t panic the kernel.&n; *&t;BSD af_unix apparently has connect forgetting to block properly.&n; *&t;&t;(need to check this with the POSIX spec in detail)&n; *&n; * Differences from 2.0.0-11-... (ANK)&n; *&t;Bug fixes and improvements.&n; *&t;&t;- client shutdown killed server socket.&n; *&t;&t;- removed all useless cli/sti pairs.&n; *&n; *&t;Semantic changes/extensions.&n; *&t;&t;- generic control message passing.&n; *&t;&t;- SCM_CREDENTIALS control message.&n; *&t;&t;- &quot;Abstract&quot; (not FS based) socket bindings.&n; *&t;&t;  Abstract names are sequences of bytes (not zero terminated)&n; *&t;&t;  started by 0, so that this name space does not intersect&n; *&t;&t;  with BSD names.&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -68,10 +68,10 @@ DECL|macro|unix_sockets_unbound
 mdefine_line|#define unix_sockets_unbound&t;(unix_socket_table[UNIX_HASH_SIZE])
 DECL|macro|UNIX_ABSTRACT
 mdefine_line|#define UNIX_ABSTRACT(sk)&t;((sk)-&gt;protinfo.af_unix.addr-&gt;hash!=UNIX_HASH_SIZE)
-multiline_comment|/*&n;   SMP locking strategy.&n;   * hash table is protceted with rwlock unix_table_lock&n;   * each socket state is protected by separate rwlock.&n;&n; */
+multiline_comment|/*&n; *  SMP locking strategy:&n; *    hash table is protected with rwlock unix_table_lock&n; *    each socket state is protected by separate rwlock.&n; */
 DECL|function|unix_hash_fold
-r_extern
-id|__inline__
+r_static
+r_inline
 r_int
 id|unix_hash_fold
 c_func
@@ -105,8 +105,8 @@ suffix:semicolon
 DECL|macro|unix_peer
 mdefine_line|#define unix_peer(sk) ((sk)-&gt;pair)
 DECL|function|unix_our_peer
-r_extern
-id|__inline__
+r_static
+r_inline
 r_int
 id|unix_our_peer
 c_func
@@ -131,8 +131,8 @@ id|sk
 suffix:semicolon
 )brace
 DECL|function|unix_may_send
-r_extern
-id|__inline__
+r_static
+r_inline
 r_int
 id|unix_may_send
 c_func
@@ -168,7 +168,7 @@ suffix:semicolon
 )brace
 DECL|function|unix_peer_get
 r_static
-id|__inline__
+r_inline
 id|unix_socket
 op_star
 id|unix_peer_get
@@ -220,7 +220,7 @@ suffix:semicolon
 )brace
 DECL|function|unix_release_addr
 r_extern
-id|__inline__
+r_inline
 r_void
 id|unix_release_addr
 c_func
@@ -531,7 +531,7 @@ suffix:semicolon
 )brace
 DECL|function|unix_remove_socket
 r_static
-id|__inline__
+r_inline
 r_void
 id|unix_remove_socket
 c_func
@@ -564,7 +564,7 @@ suffix:semicolon
 )brace
 DECL|function|unix_insert_socket
 r_static
-id|__inline__
+r_inline
 r_void
 id|unix_insert_socket
 c_func
@@ -677,7 +677,7 @@ l_int|NULL
 suffix:semicolon
 )brace
 r_static
-id|__inline__
+r_inline
 id|unix_socket
 op_star
 DECL|function|unix_find_socket_byname
@@ -833,7 +833,7 @@ suffix:semicolon
 )brace
 DECL|function|unix_writable
 r_static
-id|__inline__
+r_inline
 r_int
 id|unix_writable
 c_func
@@ -7478,8 +7478,12 @@ id|net_proto_family
 id|unix_family_ops
 op_assign
 (brace
+id|family
+suffix:colon
 id|PF_UNIX
 comma
+id|create
+suffix:colon
 id|unix_create
 )brace
 suffix:semicolon
@@ -7500,7 +7504,40 @@ c_func
 r_void
 )paren
 suffix:semicolon
+macro_line|#else
+DECL|function|unix_sysctl_register
+r_static
+r_inline
+id|unix_sysctl_register
+c_func
+(paren
+)paren
+(brace
+)brace
+suffix:semicolon
+DECL|function|unix_sysctl_unregister
+r_static
+r_inline
+id|unix_sysctl_unregister
+c_func
+(paren
+)paren
+(brace
+)brace
+suffix:semicolon
 macro_line|#endif
+DECL|variable|__initdata
+r_static
+r_const
+r_char
+id|banner
+(braket
+)braket
+id|__initdata
+op_assign
+id|KERN_INFO
+l_string|&quot;NET4: Unix domain sockets 1.0/SMP for Linux NET4.0.&bslash;n&quot;
+suffix:semicolon
 DECL|function|af_unix_init
 r_static
 r_int
@@ -7519,8 +7556,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-id|KERN_INFO
-l_string|&quot;NET4: Unix domain sockets 1.0/SMP for Linux NET4.0.&bslash;n&quot;
+id|banner
 )paren
 suffix:semicolon
 r_if
@@ -7573,13 +7609,11 @@ l_int|NULL
 )paren
 suffix:semicolon
 macro_line|#endif
-macro_line|#ifdef CONFIG_SYSCTL
 id|unix_sysctl_register
 c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#endif
 r_return
 l_int|0
 suffix:semicolon
@@ -7600,14 +7634,11 @@ c_func
 id|PF_UNIX
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_SYSCTL
 id|unix_sysctl_unregister
 c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef CONFIG_PROC_FS
 id|remove_proc_entry
 c_func
 (paren
@@ -7616,7 +7647,6 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-macro_line|#endif
 )brace
 DECL|variable|af_unix_init
 id|module_init

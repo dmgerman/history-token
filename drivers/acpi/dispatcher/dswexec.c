@@ -1,5 +1,5 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: dswexec - Dispatcher method execution callbacks;&n; *                        dispatch to interpreter.&n; *              $Revision: 50 $&n; *&n; *****************************************************************************/
-multiline_comment|/*&n; *  Copyright (C) 2000 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: dswexec - Dispatcher method execution callbacks;&n; *                        dispatch to interpreter.&n; *              $Revision: 54 $&n; *&n; *****************************************************************************/
+multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acparser.h&quot;
 macro_line|#include &quot;amlcode.h&quot;
@@ -13,7 +13,7 @@ id|MODULE_NAME
 (paren
 l_string|&quot;dswexec&quot;
 )paren
-multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    Acpi_ds_get_predicate_value&n; *&n; * PARAMETERS:  Walk_state      - Current state of the parse tree walk&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION:&n; *&n; ****************************************************************************/
+multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    Acpi_ds_get_predicate_value&n; *&n; * PARAMETERS:  Walk_state      - Current state of the parse tree walk&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Get the result of a predicate evaluation&n; *&n; ****************************************************************************/
 id|ACPI_STATUS
 DECL|function|acpi_ds_get_predicate_value
 id|acpi_ds_get_predicate_value
@@ -158,7 +158,7 @@ c_cond
 (paren
 id|obj_desc-&gt;common.type
 op_ne
-id|ACPI_TYPE_NUMBER
+id|ACPI_TYPE_INTEGER
 )paren
 (brace
 id|status
@@ -169,19 +169,19 @@ r_goto
 id|cleanup
 suffix:semicolon
 )brace
-multiline_comment|/* TBD: 64/32-bit */
-id|obj_desc-&gt;number.value
-op_and_assign
+multiline_comment|/* Truncate the predicate to 32-bits if necessary */
+id|acpi_aml_truncate_for32bit_table
 (paren
-id|UINT64
+id|obj_desc
+comma
+id|walk_state
 )paren
-l_int|0x00000000FFFFFFFF
 suffix:semicolon
 multiline_comment|/*&n;&t; * Save the result of the predicate evaluation on&n;&t; * the control stack&n;&t; */
 r_if
 c_cond
 (paren
-id|obj_desc-&gt;number.value
+id|obj_desc-&gt;integer.value
 )paren
 (brace
 id|walk_state-&gt;control_state-&gt;common.value

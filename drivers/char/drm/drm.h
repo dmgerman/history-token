@@ -1040,24 +1040,22 @@ DECL|macro|DRM_IOCTL_R128_CCE_IDLE
 mdefine_line|#define DRM_IOCTL_R128_CCE_IDLE&t;&t;DRM_IO(  0x44)
 DECL|macro|DRM_IOCTL_R128_RESET
 mdefine_line|#define DRM_IOCTL_R128_RESET&t;&t;DRM_IO(  0x46)
-DECL|macro|DRM_IOCTL_R128_FULLSCREEN
-mdefine_line|#define DRM_IOCTL_R128_FULLSCREEN&t;DRM_IOW( 0x47, drm_r128_fullscreen_t)
 DECL|macro|DRM_IOCTL_R128_SWAP
-mdefine_line|#define DRM_IOCTL_R128_SWAP&t;&t;DRM_IO(  0x48)
+mdefine_line|#define DRM_IOCTL_R128_SWAP&t;&t;DRM_IO(  0x47)
 DECL|macro|DRM_IOCTL_R128_CLEAR
-mdefine_line|#define DRM_IOCTL_R128_CLEAR&t;&t;DRM_IOW( 0x49, drm_r128_clear_t)
+mdefine_line|#define DRM_IOCTL_R128_CLEAR&t;&t;DRM_IOW( 0x48, drm_r128_clear_t)
 DECL|macro|DRM_IOCTL_R128_VERTEX
-mdefine_line|#define DRM_IOCTL_R128_VERTEX&t;&t;DRM_IOW( 0x4a, drm_r128_vertex_t)
+mdefine_line|#define DRM_IOCTL_R128_VERTEX&t;&t;DRM_IOW( 0x49, drm_r128_vertex_t)
 DECL|macro|DRM_IOCTL_R128_INDICES
-mdefine_line|#define DRM_IOCTL_R128_INDICES&t;&t;DRM_IOW( 0x4b, drm_r128_indices_t)
+mdefine_line|#define DRM_IOCTL_R128_INDICES&t;&t;DRM_IOW( 0x4a, drm_r128_indices_t)
 DECL|macro|DRM_IOCTL_R128_BLIT
-mdefine_line|#define DRM_IOCTL_R128_BLIT&t;&t;DRM_IOW( 0x4c, drm_r128_blit_t)
+mdefine_line|#define DRM_IOCTL_R128_BLIT&t;&t;DRM_IOW( 0x4b, drm_r128_blit_t)
 DECL|macro|DRM_IOCTL_R128_DEPTH
-mdefine_line|#define DRM_IOCTL_R128_DEPTH&t;&t;DRM_IOW( 0x4d, drm_r128_depth_t)
+mdefine_line|#define DRM_IOCTL_R128_DEPTH&t;&t;DRM_IOW( 0x4c, drm_r128_depth_t)
 DECL|macro|DRM_IOCTL_R128_STIPPLE
-mdefine_line|#define DRM_IOCTL_R128_STIPPLE&t;&t;DRM_IOW( 0x4e, drm_r128_stipple_t)
-DECL|macro|DRM_IOCTL_R128_INDIRECT
-mdefine_line|#define DRM_IOCTL_R128_INDIRECT&t;&t;DRM_IOWR(0x4f, drm_r128_indirect_t)
+mdefine_line|#define DRM_IOCTL_R128_STIPPLE&t;&t;DRM_IOW( 0x4d, drm_r128_stipple_t)
+DECL|macro|DRM_IOCTL_R128_PACKET
+mdefine_line|#define DRM_IOCTL_R128_PACKET&t;&t;DRM_IOWR(0x4e, drm_r128_packet_t)
 multiline_comment|/* Radeon specific ioctls */
 DECL|macro|DRM_IOCTL_RADEON_CP_INIT
 mdefine_line|#define DRM_IOCTL_RADEON_CP_INIT&t;DRM_IOW( 0x40, drm_radeon_init_t)

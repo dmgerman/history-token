@@ -805,7 +805,7 @@ id|prev
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_ALTIVEC&t;
-multiline_comment|/*&n;&t; * If the previous thread 1) has some altivec regs it wants saved&n;&t; * (has bits in vrsave set) and 2) used altivec in the last quantum&n;&t; * (thus changing altivec regs) then save them.&n;&t; *&n;&t; * On SMP we always save/restore altivec regs just to avoid the&n;&t; * complexity of changing processors.&n;&t; *  -- Cort&n;&t; */
+multiline_comment|/*&n;&t; * If the previous thread used altivec in the last quantum&n;&t; * (thus changing altivec regs) then save them.&n;&t; * We used to check the VRSAVE register but not all apps&n;&t; * set it, so we don&squot;t rely on it now (and in fact we need&n;&t; * to save &amp; restore VSCR even if VRSAVE == 0).  -- paulus&n;&t; *&n;&t; * On SMP we always save/restore altivec regs just to avoid the&n;&t; * complexity of changing processors.&n;&t; *  -- Cort&n;&t; */
 r_if
 c_cond
 (paren
@@ -818,8 +818,6 @@ op_amp
 id|MSR_VEC
 )paren
 )paren
-op_logical_and
-id|prev-&gt;thread.vrsave
 )paren
 id|giveup_altivec
 c_func
@@ -900,13 +898,18 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;NIP: %08lX XER: %08lX LR: %08lX REGS: %p TRAP: %04lx&bslash;n&quot;
+l_string|&quot;NIP: %08lX XER: %08lX LR: %08lX SP: %08lX REGS: %p TRAP: %04lx&bslash;n&quot;
 comma
 id|regs-&gt;nip
 comma
 id|regs-&gt;xer
 comma
 id|regs-&gt;link
+comma
+id|regs-&gt;gpr
+(braket
+l_int|1
+)braket
 comma
 id|regs
 comma
@@ -973,6 +976,27 @@ c_cond
 l_int|1
 suffix:colon
 l_int|0
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|regs-&gt;trap
+op_eq
+l_int|0x300
+op_logical_or
+id|regs-&gt;trap
+op_eq
+l_int|0x600
+)paren
+id|printk
+c_func
+(paren
+l_string|&quot;DAR: %08lX, DSISR: %08lX&bslash;n&quot;
+comma
+id|regs-&gt;dar
+comma
+id|regs-&gt;dsisr
 )paren
 suffix:semicolon
 id|printk
@@ -1110,6 +1134,7 @@ suffix:semicolon
 )brace
 id|out
 suffix:colon
+suffix:semicolon
 )brace
 DECL|function|exit_thread
 r_void

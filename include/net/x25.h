@@ -1085,6 +1085,16 @@ id|sock
 op_star
 )paren
 suffix:semicolon
+r_extern
+r_void
+id|x25_check_rbuf
+c_func
+(paren
+r_struct
+id|sock
+op_star
+)paren
+suffix:semicolon
 multiline_comment|/* sysctl_net_x25.c */
 r_extern
 r_void

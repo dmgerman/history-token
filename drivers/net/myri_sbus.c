@@ -4792,6 +4792,16 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
+id|dev
+)paren
+r_return
+op_minus
+id|ENOMEM
+suffix:semicolon
+r_if
+c_cond
+(paren
 id|version_printed
 op_increment
 op_eq
@@ -5371,9 +5381,8 @@ c_func
 l_string|&quot;MyriCOM: Cannot map MyriCOM registers.&bslash;n&quot;
 )paren
 suffix:semicolon
-r_return
-op_minus
-id|ENODEV
+r_goto
+id|err
 suffix:semicolon
 )brace
 id|mp-&gt;lanai
@@ -5798,9 +5807,8 @@ c_func
 l_string|&quot;MyriCOM: Cannot register interrupt handler.&bslash;n&quot;
 )paren
 suffix:semicolon
-r_return
-op_minus
-id|ENODEV
+r_goto
+id|err
 suffix:semicolon
 )brace
 id|DET
@@ -5883,6 +5891,24 @@ suffix:semicolon
 macro_line|#endif
 r_return
 l_int|0
+suffix:semicolon
+id|err
+suffix:colon
+id|unregister_netdev
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
+id|kfree
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|ENODEV
 suffix:semicolon
 )brace
 DECL|function|myri_sbus_match

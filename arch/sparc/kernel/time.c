@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: time.c,v 1.57 2000/09/16 07:33:45 davem Exp $&n; * linux/arch/sparc/kernel/time.c&n; *&n; * Copyright (C) 1995 David S. Miller (davem@caip.rutgers.edu)&n; * Copyright (C) 1996 Thomas K. Dyas (tdyas@eden.rutgers.edu)&n; *&n; * Chris Davis (cdavis@cois.on.ca) 03/27/1998&n; * Added support for the intersil on the sun4/4200&n; *&n; * Gleb Raiko (rajko@mech.math.msu.su) 08/18/1998&n; * Support for MicroSPARC-IIep, PCI CPU.&n; *&n; * This file handles the Sparc specific time handling details.&n; *&n; * 1997-09-10&t;Updated NTP code according to technical memorandum Jan &squot;96&n; *&t;&t;&quot;A Kernel Model for Precision Timekeeping&quot; by Dave Mills&n; */
+multiline_comment|/* $Id: time.c,v 1.58 2001/01/11 15:07:09 davem Exp $&n; * linux/arch/sparc/kernel/time.c&n; *&n; * Copyright (C) 1995 David S. Miller (davem@caip.rutgers.edu)&n; * Copyright (C) 1996 Thomas K. Dyas (tdyas@eden.rutgers.edu)&n; *&n; * Chris Davis (cdavis@cois.on.ca) 03/27/1998&n; * Added support for the intersil on the sun4/4200&n; *&n; * Gleb Raiko (rajko@mech.math.msu.su) 08/18/1998&n; * Support for MicroSPARC-IIep, PCI CPU.&n; *&n; * This file handles the Sparc specific time handling details.&n; *&n; * 1997-09-10&t;Updated NTP code according to technical memorandum Jan &squot;96&n; *&t;&t;&quot;A Kernel Model for Precision Timekeeping&quot; by Dave Mills&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -31,6 +31,12 @@ DECL|variable|sp_clock_typ
 r_enum
 id|sparc_clock_type
 id|sp_clock_typ
+suffix:semicolon
+DECL|variable|mostek_lock
+id|spinlock_t
+id|mostek_lock
+op_assign
+id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
 DECL|variable|mstk48t02_regs
 r_int
@@ -527,6 +533,13 @@ c_func
 l_string|&quot;CLOCK: Clock was stopped. Kick start &quot;
 )paren
 suffix:semicolon
+id|spin_lock_irq
+c_func
+(paren
+op_amp
+id|mostek_lock
+)paren
+suffix:semicolon
 multiline_comment|/* Turn on the kick start bit to start the oscillator. */
 id|regs-&gt;creg
 op_or_assign
@@ -545,6 +558,13 @@ id|regs-&gt;creg
 op_and_assign
 op_complement
 id|MSTK_CREG_WRITE
+suffix:semicolon
+id|spin_unlock_irq
+c_func
+(paren
+op_amp
+id|mostek_lock
+)paren
 suffix:semicolon
 multiline_comment|/* Delay to allow the clock oscillator to start. */
 id|sec
@@ -612,6 +632,13 @@ id|prom_printf
 c_func
 (paren
 l_string|&quot;&bslash;n&quot;
+)paren
+suffix:semicolon
+id|spin_lock_irq
+c_func
+(paren
+op_amp
+id|mostek_lock
 )paren
 suffix:semicolon
 multiline_comment|/* Turn off kick start and set a &quot;valid&quot; time and date. */
@@ -687,6 +714,13 @@ op_and_assign
 op_complement
 id|MSTK_CREG_WRITE
 suffix:semicolon
+id|spin_unlock_irq
+c_func
+(paren
+op_amp
+id|mostek_lock
+)paren
+suffix:semicolon
 multiline_comment|/* Ensure the kick start bit is off. If it isn&squot;t, turn it off. */
 r_while
 c_loop
@@ -702,6 +736,13 @@ c_func
 l_string|&quot;CLOCK: Kick start still on!&bslash;n&quot;
 )paren
 suffix:semicolon
+id|spin_lock_irq
+c_func
+(paren
+op_amp
+id|mostek_lock
+)paren
+suffix:semicolon
 id|regs-&gt;creg
 op_or_assign
 id|MSTK_CREG_WRITE
@@ -715,6 +756,13 @@ id|regs-&gt;creg
 op_and_assign
 op_complement
 id|MSTK_CREG_WRITE
+suffix:semicolon
+id|spin_unlock_irq
+c_func
+(paren
+op_amp
+id|mostek_lock
+)paren
 suffix:semicolon
 )brace
 id|prom_printf
@@ -753,6 +801,13 @@ id|data1
 comma
 id|data2
 suffix:semicolon
+id|spin_lock_irq
+c_func
+(paren
+op_amp
+id|mostek_lock
+)paren
+suffix:semicolon
 id|data1
 op_assign
 id|regs-&gt;eeprom
@@ -786,6 +841,13 @@ op_assign
 id|data1
 suffix:semicolon
 multiline_comment|/* Restore the original value. */
+id|spin_unlock_irq
+c_func
+(paren
+op_amp
+id|mostek_lock
+)paren
+suffix:semicolon
 r_return
 (paren
 id|data1
@@ -1674,6 +1736,13 @@ c_func
 )paren
 suffix:semicolon
 )brace
+id|spin_lock_irq
+c_func
+(paren
+op_amp
+id|mostek_lock
+)paren
+suffix:semicolon
 id|mregs-&gt;creg
 op_or_assign
 id|MSTK_CREG_READ
@@ -1756,6 +1825,13 @@ id|mregs-&gt;creg
 op_and_assign
 op_complement
 id|MSTK_CREG_READ
+suffix:semicolon
+id|spin_unlock_irq
+c_func
+(paren
+op_amp
+id|mostek_lock
+)paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_SUN4
 )brace
@@ -2448,6 +2524,10 @@ op_star
 )paren
 id|mstk48t02_regs
 suffix:semicolon
+r_int
+r_int
+id|flags
+suffix:semicolon
 macro_line|#ifdef CONFIG_SUN4
 r_struct
 id|intersil
@@ -2592,6 +2672,15 @@ suffix:semicolon
 )brace
 macro_line|#endif
 )brace
+id|spin_lock_irqsave
+c_func
+(paren
+op_amp
+id|mostek_lock
+comma
+id|flags
+)paren
+suffix:semicolon
 multiline_comment|/* Read the current RTC minutes. */
 id|regs-&gt;creg
 op_or_assign
@@ -2692,14 +2781,34 @@ op_and_assign
 op_complement
 id|MSTK_CREG_WRITE
 suffix:semicolon
-)brace
-r_else
-r_return
-op_minus
-l_int|1
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|mostek_lock
+comma
+id|flags
+)paren
 suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
+)brace
+r_else
+(brace
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|mostek_lock
+comma
+id|flags
+)paren
+suffix:semicolon
+r_return
+op_minus
+l_int|1
+suffix:semicolon
+)brace
 )brace
 eof

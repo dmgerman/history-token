@@ -1,5 +1,5 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: amresop - AML Interpreter operand/object resolution&n; *              $Revision: 18 $&n; *&n; *****************************************************************************/
-multiline_comment|/*&n; *  Copyright (C) 2000 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: amresop - AML Interpreter operand/object resolution&n; *              $Revision: 22 $&n; *&n; *****************************************************************************/
+multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;amlcode.h&quot;
 macro_line|#include &quot;acparser.h&quot;
@@ -358,10 +358,28 @@ id|this_arg_type
 r_case
 id|ARGI_REFERENCE
 suffix:colon
-multiline_comment|/* Reference */
+multiline_comment|/* References */
+r_case
+id|ARGI_INTEGER_REF
+suffix:colon
+r_case
+id|ARGI_OBJECT_REF
+suffix:colon
+r_case
+id|ARGI_DEVICE_REF
+suffix:colon
 r_case
 id|ARGI_TARGETREF
 suffix:colon
+multiline_comment|/* TBD: must implement implicit conversion rules before store */
+r_case
+id|ARGI_FIXED_TARGET
+suffix:colon
+multiline_comment|/* No implicit conversion before store to target */
+r_case
+id|ARGI_SIMPLE_TARGET
+suffix:colon
+multiline_comment|/* Name, Local, or Arg - no implicit conversion */
 multiline_comment|/* Need an operand of type INTERNAL_TYPE_REFERENCE */
 r_if
 c_cond
@@ -513,27 +531,6 @@ id|this_arg_type
 (brace
 multiline_comment|/*&n;&t;&t; * For the simple cases, only one type of resolved object&n;&t;&t; * is allowed&n;&t;&t; */
 r_case
-id|ARGI_NUMBER
-suffix:colon
-multiline_comment|/* Number */
-multiline_comment|/* Need an operand of type ACPI_TYPE_NUMBER */
-id|type_needed
-op_assign
-id|ACPI_TYPE_NUMBER
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-id|ARGI_BUFFER
-suffix:colon
-multiline_comment|/* Need an operand of type ACPI_TYPE_BUFFER */
-id|type_needed
-op_assign
-id|ACPI_TYPE_BUFFER
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
 id|ARGI_MUTEX
 suffix:colon
 multiline_comment|/* Need an operand of type ACPI_TYPE_MUTEX */
@@ -597,12 +594,165 @@ r_break
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; * The more complex cases allow multiple resolved object types&n;&t;&t; */
 r_case
-id|ARGI_STRING
+id|ARGI_INTEGER
 suffix:colon
-multiline_comment|/* Need an operand of type ACPI_TYPE_STRING or ACPI_TYPE_BUFFER */
+multiline_comment|/* Number */
+multiline_comment|/*&n;&t;&t;&t; * Need an operand of type ACPI_TYPE_INTEGER,&n;&t;&t;&t; * But we can implicitly convert from a STRING or BUFFER&n;&t;&t;&t; */
+id|status
+op_assign
+id|acpi_aml_convert_to_integer
+(paren
+id|stack_ptr
+comma
+id|walk_state
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
+id|ACPI_FAILURE
+(paren
+id|status
+)paren
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|status
+op_eq
+id|AE_TYPE
+)paren
+(brace
+r_return
+(paren
+id|AE_AML_OPERAND_TYPE
+)paren
+suffix:semicolon
+)brace
+r_return
+(paren
+id|status
+)paren
+suffix:semicolon
+)brace
+r_goto
+id|next_operand
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|ARGI_BUFFER
+suffix:colon
+multiline_comment|/*&n;&t;&t;&t; * Need an operand of type ACPI_TYPE_BUFFER,&n;&t;&t;&t; * But we can implicitly convert from a STRING or INTEGER&n;&t;&t;&t; */
+id|status
+op_assign
+id|acpi_aml_convert_to_buffer
+(paren
+id|stack_ptr
+comma
+id|walk_state
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ACPI_FAILURE
+(paren
+id|status
+)paren
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|status
+op_eq
+id|AE_TYPE
+)paren
+(brace
+r_return
+(paren
+id|AE_AML_OPERAND_TYPE
+)paren
+suffix:semicolon
+)brace
+r_return
+(paren
+id|status
+)paren
+suffix:semicolon
+)brace
+r_goto
+id|next_operand
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|ARGI_STRING
+suffix:colon
+multiline_comment|/*&n;&t;&t;&t; * Need an operand of type ACPI_TYPE_STRING,&n;&t;&t;&t; * But we can implicitly convert from a BUFFER or INTEGER&n;&t;&t;&t; */
+id|status
+op_assign
+id|acpi_aml_convert_to_string
+(paren
+id|stack_ptr
+comma
+id|walk_state
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ACPI_FAILURE
+(paren
+id|status
+)paren
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|status
+op_eq
+id|AE_TYPE
+)paren
+(brace
+r_return
+(paren
+id|AE_AML_OPERAND_TYPE
+)paren
+suffix:semicolon
+)brace
+r_return
+(paren
+id|status
+)paren
+suffix:semicolon
+)brace
+r_goto
+id|next_operand
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|ARGI_COMPUTEDATA
+suffix:colon
+multiline_comment|/* Need an operand of type INTEGER, STRING or BUFFER */
+r_if
+c_cond
+(paren
+(paren
+id|ACPI_TYPE_INTEGER
+op_ne
+(paren
+op_star
+id|stack_ptr
+)paren
+op_member_access_from_pointer
+id|common.type
+)paren
+op_logical_and
 (paren
 id|ACPI_TYPE_STRING
 op_ne

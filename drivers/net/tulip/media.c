@@ -865,6 +865,8 @@ id|tp-&gt;mtable
 suffix:semicolon
 id|u32
 id|new_csr6
+op_assign
+l_int|0
 suffix:semicolon
 r_int
 id|i
@@ -1824,15 +1826,11 @@ id|setup
 l_int|5
 )braket
 suffix:semicolon
-id|u32
-id|csr13val
-comma
-id|csr14val
-comma
-id|csr15dir
-comma
-id|csr15val
+id|new_csr6
+op_assign
+l_int|0
 suffix:semicolon
+multiline_comment|/* FIXME */
 r_for
 c_loop
 (paren

@@ -1,5 +1,5 @@
-multiline_comment|/*******************************************************************************&n; *&n; * Module Name: cmutils - common utility procedures&n; *              $Revision: 21 $&n; *&n; ******************************************************************************/
-multiline_comment|/*&n; *  Copyright (C) 2000 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/*******************************************************************************&n; *&n; * Module Name: cmutils - common utility procedures&n; *              $Revision: 23 $&n; *&n; ******************************************************************************/
+multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acevents.h&quot;
 macro_line|#include &quot;achware.h&quot;
@@ -1055,9 +1055,9 @@ id|AML_ZERO_OP
 (brace
 id|sub_object-&gt;common.type
 op_assign
-id|ACPI_TYPE_NUMBER
+id|ACPI_TYPE_INTEGER
 suffix:semicolon
-id|sub_object-&gt;number.value
+id|sub_object-&gt;integer.value
 op_assign
 l_int|0
 suffix:semicolon
@@ -1073,9 +1073,9 @@ id|AML_ONE_OP
 (brace
 id|sub_object-&gt;common.type
 op_assign
-id|ACPI_TYPE_NUMBER
+id|ACPI_TYPE_INTEGER
 suffix:semicolon
-id|sub_object-&gt;number.value
+id|sub_object-&gt;integer.value
 op_assign
 l_int|1
 suffix:semicolon
@@ -1091,9 +1091,9 @@ id|AML_ONES_OP
 (brace
 id|sub_object-&gt;common.type
 op_assign
-id|ACPI_TYPE_NUMBER
+id|ACPI_TYPE_INTEGER
 suffix:semicolon
-id|sub_object-&gt;number.value
+id|sub_object-&gt;integer.value
 op_assign
 id|ACPI_INTEGER_MAX
 suffix:semicolon

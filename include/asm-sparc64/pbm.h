@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: pbm.h,v 1.22 2000/03/25 05:18:30 davem Exp $&n; * pbm.h: UltraSparc PCI controller software state.&n; *&n; * Copyright (C) 1997, 1998, 1999 David S. Miller (davem@redhat.com)&n; */
+multiline_comment|/* $Id: pbm.h,v 1.23 2001/01/11 16:26:45 davem Exp $&n; * pbm.h: UltraSparc PCI controller software state.&n; *&n; * Copyright (C) 1997, 1998, 1999 David S. Miller (davem@redhat.com)&n; */
 macro_line|#ifndef __SPARC64_PBM_H
 DECL|macro|__SPARC64_PBM_H
 mdefine_line|#define __SPARC64_PBM_H
@@ -9,7 +9,7 @@ macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/oplib.h&gt;
-multiline_comment|/* The abstraction used here is that there are PCI controllers,&n; * each with one (Sabre) or two (PSYCHO/SCHIZO) PCI bus modules&n; * underneath.  Each PCI controller has a single IOMMU shared&n; * by the PCI bus modules underneath, and if a streaming buffer&n; * is present, each PCI bus module has it&squot;s own. (ie. the IOMMU&n; * is shared between PBMs, the STC is not)  Furthermore, each&n; * PCI bus module controls it&squot;s own autonomous PCI bus.&n; */
+multiline_comment|/* The abstraction used here is that there are PCI controllers,&n; * each with one (Sabre) or two (PSYCHO/SCHIZO) PCI bus modules&n; * underneath.  Each PCI bus module uses an IOMMU (shared by both&n; * PBMs of a controller, or per-PBM), and if a streaming buffer&n; * is present, each PCI bus module has it&squot;s own. (ie. the IOMMU&n; * might be shared between PBMs, the STC is never shared)&n; * Furthermore, each PCI bus module controls it&squot;s own autonomous&n; * PCI bus.&n; */
 DECL|macro|PBM_LOGCLUSTERS
 mdefine_line|#define PBM_LOGCLUSTERS 3
 DECL|macro|PBM_NCLUSTERS
@@ -286,6 +286,13 @@ r_struct
 id|pci_strbuf
 id|stc
 suffix:semicolon
+multiline_comment|/* IOMMU state, potentially shared by both PBM segments. */
+DECL|member|iommu
+r_struct
+id|pci_iommu
+op_star
+id|iommu
+suffix:semicolon
 multiline_comment|/* Now things for the actual PCI bus probes. */
 DECL|member|pci_first_busno
 r_int
@@ -431,12 +438,6 @@ DECL|member|pci_last_busno
 r_int
 r_int
 id|pci_last_busno
-suffix:semicolon
-multiline_comment|/* IOMMU state shared by both PBM segments. */
-DECL|member|iommu
-r_struct
-id|pci_iommu
-id|iommu
 suffix:semicolon
 DECL|member|starfire_cookie
 r_void

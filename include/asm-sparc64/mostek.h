@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: mostek.h,v 1.3 1999/08/30 10:14:50 davem Exp $&n; * mostek.h:  Describes the various Mostek time of day clock registers.&n; *&n; * Copyright (C) 1995 David S. Miller (davem@caip.rutgers.edu)&n; * Copyright (C) 1996 Thomas K. Dyas (tdyas@eden.rutgers.edu)&n; */
+multiline_comment|/* $Id: mostek.h,v 1.4 2001/01/11 15:07:09 davem Exp $&n; * mostek.h:  Describes the various Mostek time of day clock registers.&n; *&n; * Copyright (C) 1995 David S. Miller (davem@caip.rutgers.edu)&n; * Copyright (C) 1996 Thomas K. Dyas (tdyas@eden.rutgers.edu)&n; */
 macro_line|#ifndef _SPARC64_MOSTEK_H
 DECL|macro|_SPARC64_MOSTEK_H
 mdefine_line|#define _SPARC64_MOSTEK_H
@@ -106,6 +106,10 @@ DECL|macro|MOSTEK_MONTH
 mdefine_line|#define MOSTEK_MONTH&t;&t;0x07feUL
 DECL|macro|MOSTEK_YEAR
 mdefine_line|#define MOSTEK_YEAR&t;&t;0x07ffUL
+r_extern
+id|spinlock_t
+id|mostek_lock
+suffix:semicolon
 r_extern
 r_int
 r_int

@@ -1,8 +1,7 @@
-multiline_comment|/*&n; * NET3:&t;Sysctl interface to net af_unix subsystem.&n; *&n; * Authors:&t;Mike Shaver.&n; *&n; *&t;&t;Added /proc/sys/net/unix directory entry (empty =) ).&n; *&n; *&t;&t;This program is free software; you can redistribute it and/or&n; *&t;&t;modify it under the terms of the GNU General Public License&n; *&t;&t;as published by the Free Software Foundation; either version&n; *&t;&t;2 of the License, or (at your option) any later version.&n; */
+multiline_comment|/*&n; * NET4:&t;Sysctl interface to net af_unix subsystem.&n; *&n; * Authors:&t;Mike Shaver.&n; *&n; *&t;&t;This program is free software; you can redistribute it and/or&n; *&t;&t;modify it under the terms of the GNU General Public License&n; *&t;&t;as published by the Free Software Foundation; either version&n; *&t;&t;2 of the License, or (at your option) any later version.&n; */
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/sysctl.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
-macro_line|#ifdef CONFIG_SYSCTL
 r_extern
 r_int
 id|sysctl_unix_max_dgram_qlen
@@ -40,30 +39,35 @@ l_int|0
 )brace
 )brace
 suffix:semicolon
-DECL|variable|unix_sysctl_header
-r_static
-r_struct
-id|ctl_table_header
-op_star
-id|unix_sysctl_header
-suffix:semicolon
-DECL|variable|unix_root_table
-r_static
-r_struct
-id|ctl_table
-id|unix_root_table
-(braket
-)braket
-suffix:semicolon
 DECL|variable|unix_net_table
 r_static
-r_struct
 id|ctl_table
 id|unix_net_table
 (braket
 )braket
+op_assign
+(brace
+(brace
+id|NET_UNIX
+comma
+l_string|&quot;unix&quot;
+comma
+l_int|NULL
+comma
+l_int|0
+comma
+l_int|0555
+comma
+id|unix_table
+)brace
+comma
+(brace
+l_int|0
+)brace
+)brace
 suffix:semicolon
 DECL|variable|unix_root_table
+r_static
 id|ctl_table
 id|unix_root_table
 (braket
@@ -89,31 +93,12 @@ l_int|0
 )brace
 )brace
 suffix:semicolon
-DECL|variable|unix_net_table
-id|ctl_table
-id|unix_net_table
-(braket
-)braket
-op_assign
-(brace
-(brace
-id|NET_UNIX
-comma
-l_string|&quot;unix&quot;
-comma
-l_int|NULL
-comma
-l_int|0
-comma
-l_int|0555
-comma
-id|unix_table
-)brace
-comma
-(brace
-l_int|0
-)brace
-)brace
+DECL|variable|unix_sysctl_header
+r_static
+r_struct
+id|ctl_table_header
+op_star
+id|unix_sysctl_header
 suffix:semicolon
 DECL|function|unix_sysctl_register
 r_void
@@ -149,5 +134,4 @@ id|unix_sysctl_header
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif&t;/* CONFIG_SYSCTL */
 eof

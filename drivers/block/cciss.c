@@ -5083,6 +5083,14 @@ id|bh-&gt;b_reqnext
 op_assign
 l_int|NULL
 suffix:semicolon
+id|blk_finished_io
+c_func
+(paren
+id|bh-&gt;b_size
+op_rshift
+l_int|9
+)paren
+suffix:semicolon
 id|bh
 op_member_access_from_pointer
 id|b_end_io

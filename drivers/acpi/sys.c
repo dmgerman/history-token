@@ -125,9 +125,9 @@ id|arg
 suffix:semicolon
 id|arg.type
 op_assign
-id|ACPI_TYPE_NUMBER
+id|ACPI_TYPE_INTEGER
 suffix:semicolon
-id|arg.number.value
+id|arg.integer.value
 op_assign
 id|ctx-&gt;state
 suffix:semicolon
@@ -296,9 +296,9 @@ id|arg
 suffix:semicolon
 id|arg.type
 op_assign
-id|ACPI_TYPE_NUMBER
+id|ACPI_TYPE_INTEGER
 suffix:semicolon
-id|arg.number.value
+id|arg.integer.value
 op_assign
 id|ctx-&gt;state
 suffix:semicolon

@@ -1,5 +1,5 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: tbget - ACPI Table get* routines&n; *              $Revision: 40 $&n; *&n; *****************************************************************************/
-multiline_comment|/*&n; *  Copyright (C) 2000 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: tbget - ACPI Table get* routines&n; *              $Revision: 43 $&n; *&n; *****************************************************************************/
+multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;achware.h&quot;
 macro_line|#include &quot;actables.h&quot;
@@ -409,10 +409,13 @@ id|acpi_tb_get_table
 (paren
 id|ACPI_PHYSICAL_ADDRESS
 )paren
+id|ACPI_GET_ADDRESS
+(paren
 id|acpi_gbl_XSDT-&gt;table_offset_entry
 (braket
 id|index
 )braket
+)paren
 comma
 id|table_ptr
 comma
@@ -581,7 +584,13 @@ id|status
 op_assign
 id|acpi_tb_get_table
 (paren
+(paren
+id|ACPI_PHYSICAL_ADDRESS
+)paren
+id|ACPI_GET_ADDRESS
+(paren
 id|acpi_gbl_FADT-&gt;Xdsdt
+)paren
 comma
 id|table_ptr
 comma
@@ -899,6 +908,9 @@ suffix:semicolon
 macro_line|#else
 id|physical_address
 op_assign
+(paren
+id|ACPI_PHYSICAL_ADDRESS
+)paren
 id|acpi_gbl_RSDP-&gt;rsdt_physical_address
 suffix:semicolon
 macro_line|#endif
@@ -923,7 +935,10 @@ op_assign
 (paren
 id|ACPI_PHYSICAL_ADDRESS
 )paren
+id|ACPI_GET_ADDRESS
+(paren
 id|acpi_gbl_RSDP-&gt;xsdt_physical_address
+)paren
 suffix:semicolon
 id|table_signature
 op_assign
@@ -1176,7 +1191,13 @@ id|status
 op_assign
 id|acpi_tb_map_acpi_table
 (paren
+(paren
+id|ACPI_PHYSICAL_ADDRESS
+)paren
+id|ACPI_GET_ADDRESS
+(paren
 id|acpi_gbl_FADT-&gt;Xfirmware_ctrl
+)paren
 comma
 op_amp
 id|size

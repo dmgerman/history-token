@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: pci_iommu.c,v 1.11 2000/03/10 02:42:15 davem Exp $&n; * pci_iommu.c: UltraSparc PCI controller IOM/STC support.&n; *&n; * Copyright (C) 1999 David S. Miller (davem@redhat.com)&n; * Copyright (C) 1999, 2000 Jakub Jelinek (jakub@redhat.com)&n; */
+multiline_comment|/* $Id: pci_iommu.c,v 1.12 2001/01/11 16:26:45 davem Exp $&n; * pci_iommu.c: UltraSparc PCI controller IOM/STC support.&n; *&n; * Copyright (C) 1999 David S. Miller (davem@redhat.com)&n; * Copyright (C) 1999, 2000 Jakub Jelinek (jakub@redhat.com)&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
@@ -733,8 +733,7 @@ id|pdev-&gt;sysdata
 suffix:semicolon
 id|iommu
 op_assign
-op_amp
-id|pcp-&gt;pbm-&gt;parent-&gt;iommu
+id|pcp-&gt;pbm-&gt;iommu
 suffix:semicolon
 id|spin_lock_irqsave
 c_func
@@ -1015,8 +1014,7 @@ id|pdev-&gt;sysdata
 suffix:semicolon
 id|iommu
 op_assign
-op_amp
-id|pcp-&gt;pbm-&gt;parent-&gt;iommu
+id|pcp-&gt;pbm-&gt;iommu
 suffix:semicolon
 id|iopte
 op_assign
@@ -1329,8 +1327,7 @@ id|pdev-&gt;sysdata
 suffix:semicolon
 id|iommu
 op_assign
-op_amp
-id|pcp-&gt;pbm-&gt;parent-&gt;iommu
+id|pcp-&gt;pbm-&gt;iommu
 suffix:semicolon
 id|strbuf
 op_assign
@@ -1593,8 +1590,7 @@ id|pdev-&gt;sysdata
 suffix:semicolon
 id|iommu
 op_assign
-op_amp
-id|pcp-&gt;pbm-&gt;parent-&gt;iommu
+id|pcp-&gt;pbm-&gt;iommu
 suffix:semicolon
 id|strbuf
 op_assign
@@ -2347,8 +2343,7 @@ id|pdev-&gt;sysdata
 suffix:semicolon
 id|iommu
 op_assign
-op_amp
-id|pcp-&gt;pbm-&gt;parent-&gt;iommu
+id|pcp-&gt;pbm-&gt;iommu
 suffix:semicolon
 id|strbuf
 op_assign
@@ -2606,8 +2601,7 @@ id|pdev-&gt;sysdata
 suffix:semicolon
 id|iommu
 op_assign
-op_amp
-id|pcp-&gt;pbm-&gt;parent-&gt;iommu
+id|pcp-&gt;pbm-&gt;iommu
 suffix:semicolon
 id|strbuf
 op_assign
@@ -2979,8 +2973,7 @@ id|pdev-&gt;sysdata
 suffix:semicolon
 id|iommu
 op_assign
-op_amp
-id|pcp-&gt;pbm-&gt;parent-&gt;iommu
+id|pcp-&gt;pbm-&gt;iommu
 suffix:semicolon
 id|strbuf
 op_assign
@@ -3268,8 +3261,7 @@ id|pdev-&gt;sysdata
 suffix:semicolon
 id|iommu
 op_assign
-op_amp
-id|pcp-&gt;pbm-&gt;parent-&gt;iommu
+id|pcp-&gt;pbm-&gt;iommu
 suffix:semicolon
 id|strbuf
 op_assign
@@ -3602,8 +3594,7 @@ id|pci_iommu
 op_star
 id|iommu
 op_assign
-op_amp
-id|pcp-&gt;pbm-&gt;parent-&gt;iommu
+id|pcp-&gt;pbm-&gt;iommu
 suffix:semicolon
 id|dma_addr_mask
 op_assign

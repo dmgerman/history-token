@@ -53,7 +53,7 @@ mdefine_line|#define LVX(r,a,b)&t;.long&t;(31&lt;&lt;26)+((r)&lt;&lt;21)+((a)&lt
 DECL|macro|STVX
 mdefine_line|#define STVX(r,a,b)&t;.long&t;(31&lt;&lt;26)+((r)&lt;&lt;21)+((a)&lt;&lt;16)+((b)&lt;&lt;11)+(231&lt;&lt;1)
 DECL|macro|MFVSCR
-mdefine_line|#define MFVSCR(r)&t;.long&t;(4&lt;&lt;26)+((r)&lt;&lt;21)+(1540&lt;&lt;1)
+mdefine_line|#define MFVSCR(r)&t;.long&t;(4&lt;&lt;26)+((r)&lt;&lt;21)+(770&lt;&lt;1)
 DECL|macro|MTVSCR
 mdefine_line|#define MTVSCR(r)&t;.long&t;(4&lt;&lt;26)+((r)&lt;&lt;11)+(802&lt;&lt;1)
 DECL|macro|SAVE_VR
@@ -80,8 +80,13 @@ DECL|macro|REST_16VR
 mdefine_line|#define REST_16VR(n,b,base)&t;REST_8VR(n,b,base); REST_8VR(n+8,b,base) 
 DECL|macro|REST_32VR
 mdefine_line|#define REST_32VR(n,b,base)&t;REST_16VR(n,b,base); REST_16VR(n+16,b,base)
+macro_line|#ifdef CONFIG_PPC601_SYNC_FIX
 DECL|macro|SYNC
 mdefine_line|#define SYNC &bslash;&n;&t;sync; &bslash;&n;&t;isync
+macro_line|#else
+DECL|macro|SYNC
+mdefine_line|#define&t;SYNC
+macro_line|#endif
 multiline_comment|/*&n; * This instruction is not implemented on the PPC 603 or 601; however, on&n; * the 403GCX and 405GP tlbia IS defined and tlbie is not.&n; * All of these instructions exist in the 8xx, they have magical powers,&n; * and they must be used.&n; */
 macro_line|#if !defined(CONFIG_4xx) &amp;&amp; !defined(CONFIG_8xx)
 DECL|macro|tlbia

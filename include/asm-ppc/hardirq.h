@@ -166,10 +166,7 @@ id|global_irq_lock
 r_if
 c_cond
 (paren
-id|smp_processor_id
-c_func
-(paren
-)paren
+id|cpu
 op_eq
 id|global_irq_holder
 )paren
@@ -177,7 +174,9 @@ id|global_irq_holder
 id|printk
 c_func
 (paren
-l_string|&quot;uh oh, interrupt while we hold global irq lock!&bslash;n&quot;
+l_string|&quot;uh oh, interrupt while we hold global irq lock! (CPU %d)&bslash;n&quot;
+comma
+id|cpu
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_XMON

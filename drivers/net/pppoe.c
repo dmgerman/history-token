@@ -1,4 +1,4 @@
-multiline_comment|/** -*- linux-c -*- ***********************************************************&n; * Linux PPP over Ethernet (PPPoX/PPPoE) Sockets&n; *&n; * PPPoX --- Generic PPP encapsulation socket family&n; * PPPoE --- PPP over Ethernet (RFC 2516)&n; *&n; *&n; * Version:    0.6.4&n; *&n; * 030700 :     Fixed connect logic to allow for disconnect.&n; * 270700 :&t;Fixed potential SMP problems; we must protect against &n; *&t;&t;simultaneous invocation of ppp_input &n; *&t;&t;and ppp_unregister_channel.&n; * 040800 :&t;Respect reference count mechanisms on net-devices.&n; * 200800 :     fix kfree(skb) in pppoe_rcv (acme)&n; *&t;&t;Module reference count is decremented in the right spot now,&n; *&t;&t;guards against sock_put not actually freeing the sk &n; *&t;&t;in pppoe_release.&n; * 051000 :&t;Initialization cleanup.&n; * 111100 :&t;Fix recvmsg.&n; *&n; * Author:&t;Michal Ostrowski &lt;mostrows@styx.uwaterloo.ca&gt;&n; * Contributors:&n; * &t;&t;Arnaldo Carvalho de Melo &lt;acme@conectiva.com.br&gt;&n; *&n; * License:&n; *&t;&t;This program is free software; you can redistribute it and/or&n; *&t;&t;modify it under the terms of the GNU General Public License&n; *&t;&t;as published by the Free Software Foundation; either version&n; *&t;&t;2 of the License, or (at your option) any later version.&n; *&n; */
+multiline_comment|/** -*- linux-c -*- ***********************************************************&n; * Linux PPP over Ethernet (PPPoX/PPPoE) Sockets&n; *&n; * PPPoX --- Generic PPP encapsulation socket family&n; * PPPoE --- PPP over Ethernet (RFC 2516)&n; *&n; *&n; * Version:    0.6.5&n; *&n; * 030700 :     Fixed connect logic to allow for disconnect.&n; * 270700 :&t;Fixed potential SMP problems; we must protect against&n; *&t;&t;simultaneous invocation of ppp_input&n; *&t;&t;and ppp_unregister_channel.&n; * 040800 :&t;Respect reference count mechanisms on net-devices.&n; * 200800 :     fix kfree(skb) in pppoe_rcv (acme)&n; *&t;&t;Module reference count is decremented in the right spot now,&n; *&t;&t;guards against sock_put not actually freeing the sk&n; *&t;&t;in pppoe_release.&n; * 051000 :&t;Initialization cleanup.&n; * 111100 :&t;Fix recvmsg.&n; * 050101 :&t;Fix PADT procesing.&n; *&n; * Author:&t;Michal Ostrowski &lt;mostrows@styx.uwaterloo.ca&gt;&n; * Contributors:&n; * &t;&t;Arnaldo Carvalho de Melo &lt;acme@xconectiva.com.br&gt;&n; *&n; * License:&n; *&t;&t;This program is free software; you can redistribute it and/or&n; *&t;&t;modify it under the terms of the GNU General Public License&n; *&t;&t;as published by the Free Software Foundation; either version&n; *&t;&t;2 of the License, or (at your option) any later version.&n; *&n; */
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
@@ -3797,7 +3797,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;Registered PPPoE v0.6.4&bslash;n&quot;
+l_string|&quot;Registered PPPoE v0.6.5&bslash;n&quot;
 )paren
 suffix:semicolon
 id|dev_add_pack
@@ -3805,6 +3805,13 @@ c_func
 (paren
 op_amp
 id|pppoes_ptype
+)paren
+suffix:semicolon
+id|dev_add_pack
+c_func
+(paren
+op_amp
+id|pppoed_ptype
 )paren
 suffix:semicolon
 id|register_netdevice_notifier
@@ -3849,6 +3856,13 @@ c_func
 (paren
 op_amp
 id|pppoes_ptype
+)paren
+suffix:semicolon
+id|dev_remove_pack
+c_func
+(paren
+op_amp
+id|pppoed_ptype
 )paren
 suffix:semicolon
 id|unregister_netdevice_notifier

@@ -229,9 +229,8 @@ id|xor_block_template
 op_star
 id|template_list
 suffix:semicolon
-multiline_comment|/* The -6*32 shift factor colors the cache.  */
 DECL|macro|BENCH_SIZE
-mdefine_line|#define BENCH_SIZE (PAGE_SIZE-6*32)
+mdefine_line|#define BENCH_SIZE (PAGE_SIZE)
 r_static
 r_void
 DECL|function|do_xor_speed

@@ -171,13 +171,19 @@ id|lp-&gt;lock
 id|printk
 c_func
 (paren
-l_string|&quot;_spin_unlock(%p): no lock cpu %d %s/%d&bslash;n&quot;
+l_string|&quot;_spin_unlock(%p): no lock cpu %d curr PC %p %s/%d&bslash;n&quot;
 comma
 id|lp
 comma
 id|smp_processor_id
 c_func
 (paren
+)paren
+comma
+id|__builtin_return_address
+c_func
+(paren
+l_int|0
 )paren
 comma
 id|current-&gt;comm

@@ -8,6 +8,7 @@ macro_line|#include &lt;linux/reboot.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#include &lt;linux/ide.h&gt;
+macro_line|#include &lt;linux/bootmem.h&gt;
 macro_line|#include &lt;asm/init.h&gt;
 macro_line|#include &lt;asm/residual.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
@@ -164,32 +165,6 @@ r_int
 id|r7
 )paren
 suffix:semicolon
-r_extern
-r_void
-id|gemini_init
-c_func
-(paren
-r_int
-r_int
-id|r3
-comma
-r_int
-r_int
-id|r4
-comma
-r_int
-r_int
-id|r5
-comma
-r_int
-r_int
-id|r6
-comma
-r_int
-r_int
-id|r7
-)paren
-suffix:semicolon
 macro_line|#ifdef CONFIG_XMON
 r_extern
 r_void
@@ -278,6 +253,13 @@ r_int
 id|SYSRQ_KEY
 suffix:semicolon
 macro_line|#endif /* CONFIG_MAGIC_SYSRQ */
+macro_line|#ifdef CONFIG_VGA_CONSOLE
+DECL|variable|vgacon_remap_base
+r_int
+r_int
+id|vgacon_remap_base
+suffix:semicolon
+macro_line|#endif
 DECL|variable|ppc_md
 r_struct
 id|machdep_calls
@@ -1447,25 +1429,33 @@ comma
 id|CD
 c_func
 (paren
-id|loops_per_sec
+id|loops_per_jiffy
 )paren
 op_plus
 l_int|2500
 )paren
 op_div
+(paren
 l_int|500000
+op_div
+id|HZ
+)paren
 comma
 (paren
 id|CD
 c_func
 (paren
-id|loops_per_sec
+id|loops_per_jiffy
 )paren
 op_plus
 l_int|2500
 )paren
 op_div
+(paren
 l_int|5000
+op_div
+id|HZ
+)paren
 op_mod
 l_int|100
 )paren
@@ -1475,7 +1465,7 @@ op_add_assign
 id|CD
 c_func
 (paren
-id|loops_per_sec
+id|loops_per_jiffy
 )paren
 suffix:semicolon
 )brace
@@ -2237,27 +2227,6 @@ suffix:semicolon
 r_break
 suffix:semicolon
 macro_line|#endif
-macro_line|#ifdef CONFIG_GEMINI
-r_case
-id|_MACH_gemini
-suffix:colon
-id|gemini_init
-c_func
-(paren
-id|r3
-comma
-id|r4
-comma
-id|r5
-comma
-id|r6
-comma
-id|r7
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
-macro_line|#endif
 r_default
 suffix:colon
 id|printk
@@ -2879,7 +2848,7 @@ dot
 id|progress
 c_func
 (paren
-l_string|&quot; &quot;
+l_string|&quot;             &quot;
 comma
 l_int|0xffff
 )paren
@@ -2901,6 +2870,7 @@ c_func
 suffix:semicolon
 )brace
 )brace
+multiline_comment|/* Warning, IO base is not yet inited */
 DECL|function|setup_arch
 r_void
 id|__init
@@ -2941,9 +2911,11 @@ r_void
 )paren
 suffix:semicolon
 multiline_comment|/* so udelay does something sensible, assume &lt;= 1000 bogomips */
-id|loops_per_sec
+id|loops_per_jiffy
 op_assign
 l_int|500000000
+op_div
+id|HZ
 suffix:semicolon
 macro_line|#ifdef CONFIG_ALL_PPC
 id|feature_init
@@ -3147,6 +3119,103 @@ comma
 l_int|0x3eab
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_PCI
+multiline_comment|/* We create the &quot;pci-OF-bus-map&quot; property now so it appear in the&n;&t; * /proc device tree&n;&t; */
+r_if
+c_cond
+(paren
+id|have_of
+)paren
+(brace
+r_struct
+id|property
+op_star
+id|of_prop
+suffix:semicolon
+id|of_prop
+op_assign
+(paren
+r_struct
+id|property
+op_star
+)paren
+id|alloc_bootmem
+c_func
+(paren
+r_sizeof
+(paren
+r_struct
+id|property
+)paren
+op_plus
+l_int|256
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|of_prop
+op_logical_and
+id|find_path_device
+c_func
+(paren
+l_string|&quot;/&quot;
+)paren
+)paren
+(brace
+id|memset
+c_func
+(paren
+id|of_prop
+comma
+op_minus
+l_int|1
+comma
+r_sizeof
+(paren
+r_struct
+id|property
+)paren
+op_plus
+l_int|256
+)paren
+suffix:semicolon
+id|of_prop-&gt;name
+op_assign
+l_string|&quot;pci-OF-bus-map&quot;
+suffix:semicolon
+id|of_prop-&gt;length
+op_assign
+l_int|256
+suffix:semicolon
+id|of_prop-&gt;value
+op_assign
+(paren
+r_int
+r_char
+op_star
+)paren
+op_amp
+id|of_prop
+(braket
+l_int|1
+)braket
+suffix:semicolon
+id|prom_add_property
+c_func
+(paren
+id|find_path_device
+c_func
+(paren
+l_string|&quot;/&quot;
+)paren
+comma
+id|of_prop
+)paren
+suffix:semicolon
+)brace
+)brace
+macro_line|#endif /* CONFIG_PCI */
 id|paging_init
 c_func
 (paren
@@ -3158,6 +3227,7 @@ c_func
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* Convert the shorts/longs in hd_driveid from little to big endian;&n; * chars are endian independant, of course, but strings need to be flipped.&n; * (Despite what it says in drivers/block/ide.h, they come up as little&n; * endian...)&n; *&n; * Changes to linux/hdreg.h may require changes here. */
 DECL|function|ppc_generic_ide_fix_driveid
 r_void
 id|ppc_generic_ide_fix_driveid

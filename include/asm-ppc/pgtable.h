@@ -64,7 +64,7 @@ id|end
 )paren
 suffix:semicolon
 DECL|function|flush_hash_page
-r_extern
+r_static
 r_inline
 r_void
 id|flush_hash_page
@@ -83,7 +83,7 @@ macro_line|#elif defined(CONFIG_8xx)
 DECL|macro|__tlbia
 mdefine_line|#define __tlbia()&t;asm volatile (&quot;tlbia&quot; : : )
 DECL|function|local_flush_tlb_all
-r_extern
+r_static
 r_inline
 r_void
 id|local_flush_tlb_all
@@ -99,7 +99,7 @@ c_func
 suffix:semicolon
 )brace
 DECL|function|local_flush_tlb_mm
-r_extern
+r_static
 r_inline
 r_void
 id|local_flush_tlb_mm
@@ -118,7 +118,7 @@ c_func
 suffix:semicolon
 )brace
 DECL|function|local_flush_tlb_page
-r_extern
+r_static
 r_inline
 r_void
 id|local_flush_tlb_page
@@ -141,7 +141,7 @@ c_func
 suffix:semicolon
 )brace
 DECL|function|local_flush_tlb_range
-r_extern
+r_static
 r_inline
 r_void
 id|local_flush_tlb_range
@@ -168,7 +168,7 @@ c_func
 suffix:semicolon
 )brace
 DECL|function|flush_hash_page
-r_extern
+r_static
 r_inline
 r_void
 id|flush_hash_page
@@ -253,7 +253,7 @@ mdefine_line|#define flush_tlb_page local_flush_tlb_page
 DECL|macro|flush_tlb_range
 mdefine_line|#define flush_tlb_range local_flush_tlb_range
 DECL|function|flush_tlb_pgtables
-r_extern
+r_static
 r_inline
 r_void
 id|flush_tlb_pgtables
@@ -596,7 +596,7 @@ mdefine_line|#define pte_page(x)&t;&t;(mem_map+(unsigned long)((pte_val(x) &gt;&
 macro_line|#ifndef __ASSEMBLY__
 multiline_comment|/*&n; * The &quot;pgd_xxx()&quot; functions here are trivial for a folded two-level&n; * setup: the pgd is never bad, and a pmd always exists (as it&squot;s folded&n; * into the pgd entry)&n; */
 DECL|function|pgd_none
-r_extern
+r_static
 r_inline
 r_int
 id|pgd_none
@@ -611,7 +611,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|pgd_bad
-r_extern
+r_static
 r_inline
 r_int
 id|pgd_bad
@@ -626,7 +626,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|pgd_present
-r_extern
+r_static
 r_inline
 r_int
 id|pgd_present
@@ -646,7 +646,7 @@ DECL|macro|pgd_page
 mdefine_line|#define pgd_page(pgd) &bslash;&n;&t;((unsigned long) __va(pgd_val(pgd) &amp; PAGE_MASK))
 multiline_comment|/*&n; * The following only work if pte_present() is true.&n; * Undefined behaviour if not..&n; */
 DECL|function|pte_read
-r_extern
+r_static
 r_inline
 r_int
 id|pte_read
@@ -667,7 +667,7 @@ id|_PAGE_USER
 suffix:semicolon
 )brace
 DECL|function|pte_write
-r_extern
+r_static
 r_inline
 r_int
 id|pte_write
@@ -688,7 +688,7 @@ id|_PAGE_RW
 suffix:semicolon
 )brace
 DECL|function|pte_exec
-r_extern
+r_static
 r_inline
 r_int
 id|pte_exec
@@ -709,7 +709,7 @@ id|_PAGE_USER
 suffix:semicolon
 )brace
 DECL|function|pte_dirty
-r_extern
+r_static
 r_inline
 r_int
 id|pte_dirty
@@ -730,7 +730,7 @@ id|_PAGE_DIRTY
 suffix:semicolon
 )brace
 DECL|function|pte_young
-r_extern
+r_static
 r_inline
 r_int
 id|pte_young
@@ -751,7 +751,7 @@ id|_PAGE_ACCESSED
 suffix:semicolon
 )brace
 DECL|function|pte_uncache
-r_extern
+r_static
 r_inline
 r_void
 id|pte_uncache
@@ -771,7 +771,7 @@ id|_PAGE_NO_CACHE
 suffix:semicolon
 )brace
 DECL|function|pte_cache
-r_extern
+r_static
 r_inline
 r_void
 id|pte_cache
@@ -792,7 +792,7 @@ id|_PAGE_NO_CACHE
 suffix:semicolon
 )brace
 DECL|function|pte_rdprotect
-r_extern
+r_static
 r_inline
 id|pte_t
 id|pte_rdprotect
@@ -816,7 +816,7 @@ id|pte
 suffix:semicolon
 )brace
 DECL|function|pte_exprotect
-r_extern
+r_static
 r_inline
 id|pte_t
 id|pte_exprotect
@@ -840,7 +840,7 @@ id|pte
 suffix:semicolon
 )brace
 DECL|function|pte_wrprotect
-r_extern
+r_static
 r_inline
 id|pte_t
 id|pte_wrprotect
@@ -868,7 +868,7 @@ id|pte
 suffix:semicolon
 )brace
 DECL|function|pte_mkclean
-r_extern
+r_static
 r_inline
 id|pte_t
 id|pte_mkclean
@@ -896,7 +896,7 @@ id|pte
 suffix:semicolon
 )brace
 DECL|function|pte_mkold
-r_extern
+r_static
 r_inline
 id|pte_t
 id|pte_mkold
@@ -920,7 +920,7 @@ id|pte
 suffix:semicolon
 )brace
 DECL|function|pte_mkread
-r_extern
+r_static
 r_inline
 id|pte_t
 id|pte_mkread
@@ -943,7 +943,7 @@ id|pte
 suffix:semicolon
 )brace
 DECL|function|pte_mkexec
-r_extern
+r_static
 r_inline
 id|pte_t
 id|pte_mkexec
@@ -966,7 +966,7 @@ id|pte
 suffix:semicolon
 )brace
 DECL|function|pte_mkwrite
-r_extern
+r_static
 r_inline
 id|pte_t
 id|pte_mkwrite
@@ -1008,7 +1008,7 @@ id|pte
 suffix:semicolon
 )brace
 DECL|function|pte_mkdirty
-r_extern
+r_static
 r_inline
 id|pte_t
 id|pte_mkdirty
@@ -1050,7 +1050,7 @@ id|pte
 suffix:semicolon
 )brace
 DECL|function|pte_mkyoung
-r_extern
+r_static
 r_inline
 id|pte_t
 id|pte_mkyoung
@@ -1077,7 +1077,7 @@ DECL|macro|set_pte
 mdefine_line|#define set_pte(pteptr, pteval)&t;((*(pteptr)) = (pteval))
 multiline_comment|/*&n; * Conversion functions: convert a page and protection to a page entry,&n; * and a page entry and page directory to the page they refer to.&n; */
 DECL|function|mk_pte_phys
-r_extern
+r_static
 r_inline
 id|pte_t
 id|mk_pte_phys
@@ -1115,7 +1115,7 @@ suffix:semicolon
 DECL|macro|mk_pte
 mdefine_line|#define mk_pte(page,pgprot) &bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;pte_t pte;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;pte_val(pte) = ((page - mem_map) &lt;&lt; PAGE_SHIFT) | pgprot_val(pgprot); &bslash;&n;&t;pte;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
 DECL|function|pte_modify
-r_extern
+r_static
 r_inline
 id|pte_t
 id|pte_modify
@@ -1154,6 +1154,268 @@ r_return
 id|pte
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * Atomic PTE updates.&n; *&n; * pte_update clears and sets bit atomically, and returns&n; * the old pte value.&n; */
+DECL|function|pte_update
+r_static
+r_inline
+r_int
+r_int
+id|pte_update
+c_func
+(paren
+id|pte_t
+op_star
+id|p
+comma
+r_int
+r_int
+id|clr
+comma
+r_int
+r_int
+id|set
+)paren
+(brace
+r_int
+r_int
+id|old
+comma
+id|tmp
+suffix:semicolon
+id|__asm__
+id|__volatile__
+c_func
+(paren
+"&quot;&bslash;"
+l_int|1
+suffix:colon
+id|lwarx
+op_mod
+l_int|0
+comma
+l_int|0
+comma
+op_mod
+l_int|3
+id|andc
+op_mod
+l_int|1
+comma
+op_mod
+l_int|0
+comma
+op_mod
+l_int|4
+op_logical_or
+op_mod
+l_int|1
+comma
+op_mod
+l_int|1
+comma
+op_mod
+l_int|5
+id|stwcx
+dot
+op_mod
+l_int|1
+comma
+l_int|0
+comma
+op_mod
+l_int|3
+id|bne
+op_minus
+l_int|1
+id|b
+"&quot;"
+suffix:colon
+l_string|&quot;=&amp;r&quot;
+(paren
+id|old
+)paren
+comma
+l_string|&quot;=&amp;r&quot;
+(paren
+id|tmp
+)paren
+comma
+l_string|&quot;=m&quot;
+(paren
+op_star
+id|p
+)paren
+suffix:colon
+l_string|&quot;r&quot;
+(paren
+id|p
+)paren
+comma
+l_string|&quot;r&quot;
+(paren
+id|clr
+)paren
+comma
+l_string|&quot;r&quot;
+(paren
+id|set
+)paren
+comma
+l_string|&quot;m&quot;
+(paren
+op_star
+id|p
+)paren
+suffix:colon
+l_string|&quot;cc&quot;
+)paren
+suffix:semicolon
+r_return
+id|old
+suffix:semicolon
+)brace
+DECL|function|ptep_test_and_clear_young
+r_static
+r_inline
+r_int
+id|ptep_test_and_clear_young
+c_func
+(paren
+id|pte_t
+op_star
+id|ptep
+)paren
+(brace
+r_return
+(paren
+id|pte_update
+c_func
+(paren
+id|ptep
+comma
+id|_PAGE_ACCESSED
+comma
+l_int|0
+)paren
+op_amp
+id|_PAGE_ACCESSED
+)paren
+op_ne
+l_int|0
+suffix:semicolon
+)brace
+DECL|function|ptep_test_and_clear_dirty
+r_static
+r_inline
+r_int
+id|ptep_test_and_clear_dirty
+c_func
+(paren
+id|pte_t
+op_star
+id|ptep
+)paren
+(brace
+r_return
+(paren
+id|pte_update
+c_func
+(paren
+id|ptep
+comma
+id|_PAGE_DIRTY
+op_or
+id|_PAGE_HWWRITE
+comma
+l_int|0
+)paren
+op_amp
+id|_PAGE_DIRTY
+)paren
+op_ne
+l_int|0
+suffix:semicolon
+)brace
+DECL|function|ptep_get_and_clear
+r_static
+r_inline
+id|pte_t
+id|ptep_get_and_clear
+c_func
+(paren
+id|pte_t
+op_star
+id|ptep
+)paren
+(brace
+r_return
+id|__pte
+c_func
+(paren
+id|pte_update
+c_func
+(paren
+id|ptep
+comma
+op_complement
+l_int|0UL
+comma
+l_int|0
+)paren
+)paren
+suffix:semicolon
+)brace
+DECL|function|ptep_set_wrprotect
+r_static
+r_inline
+r_void
+id|ptep_set_wrprotect
+c_func
+(paren
+id|pte_t
+op_star
+id|ptep
+)paren
+(brace
+id|pte_update
+c_func
+(paren
+id|ptep
+comma
+id|_PAGE_RW
+op_or
+id|_PAGE_HWWRITE
+comma
+l_int|0
+)paren
+suffix:semicolon
+)brace
+DECL|function|ptep_mkdirty
+r_static
+r_inline
+r_void
+id|ptep_mkdirty
+c_func
+(paren
+id|pte_t
+op_star
+id|ptep
+)paren
+(brace
+multiline_comment|/*&n;&t; * N.B. this doesn&squot;t set the _PAGE_HWWRITE bit in the case&n;&t; * where _PAGE_RW is set and _PAGE_DIRTY was clear.  This&n;&t; * doesn&squot;t matter; all it will mean is that if the next call&n;&t; * to hash_page for this page is for a read, it will put a&n;&t; * readonly HPTE into the hash table rather than a R/W HPTE.&n;&t; * A call to hash_page for a write to this page will set&n;&t; * _PAGE_HWWRITE and put a R/W HPTE into the hash table.&n;&t; *  -- paulus.&n;&t; */
+id|pte_update
+c_func
+(paren
+id|ptep
+comma
+l_int|0
+comma
+id|_PAGE_DIRTY
+)paren
+suffix:semicolon
+)brace
+DECL|macro|pte_same
+mdefine_line|#define pte_same(A,B)&t;(pte_val(A) == pte_val(B))
 DECL|macro|pmd_page
 mdefine_line|#define pmd_page(pmd)&t;(pmd_val(pmd))
 multiline_comment|/* to find an entry in a kernel page-table-directory */
@@ -1166,7 +1428,7 @@ DECL|macro|pgd_offset
 mdefine_line|#define pgd_offset(mm, address)&t; ((mm)-&gt;pgd + pgd_index(address))
 multiline_comment|/* Find an entry in the second-level page table.. */
 DECL|function|pmd_offset
-r_extern
+r_static
 r_inline
 id|pmd_t
 op_star
@@ -1192,7 +1454,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* Find an entry in the third-level page table.. */
 DECL|function|pte_offset
-r_extern
+r_static
 r_inline
 id|pte_t
 op_star
@@ -1415,8 +1677,7 @@ DECL|macro|kern_addr_valid
 mdefine_line|#define kern_addr_valid(addr)&t;(1)
 DECL|macro|io_remap_page_range
 mdefine_line|#define io_remap_page_range remap_page_range 
-macro_line|#include &lt;asm-generic/pgtable.h&gt;
-macro_line|#endif __ASSEMBLY__
+macro_line|#endif /* __ASSEMBLY__ */
 macro_line|#endif /* _PPC_PGTABLE_H */
 macro_line|#endif /* __KERNEL__ */
 eof

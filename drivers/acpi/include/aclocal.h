@@ -1,5 +1,5 @@
-multiline_comment|/******************************************************************************&n; *&n; * Name: aclocal.h - Internal data types used across the ACPI subsystem&n; *       $Revision: 95 $&n; *&n; *****************************************************************************/
-multiline_comment|/*&n; *  Copyright (C) 2000 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/******************************************************************************&n; *&n; * Name: aclocal.h - Internal data types used across the ACPI subsystem&n; *       $Revision: 97 $&n; *&n; *****************************************************************************/
+multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#ifndef __ACLOCAL_H__
 DECL|macro|__ACLOCAL_H__
 mdefine_line|#define __ACLOCAL_H__
@@ -798,13 +798,14 @@ id|u32
 id|runtime_args
 suffix:semicolon
 multiline_comment|/* Interpret time arguments */
-id|DEBUG_ONLY_MEMBERS
-(paren
+macro_line|#ifdef _OPCODE_NAMES
+DECL|member|name
 id|NATIVE_CHAR
 op_star
 id|name
-)paren
+suffix:semicolon
 multiline_comment|/* op name (debug only) */
+macro_line|#endif
 DECL|typedef|ACPI_OPCODE_INFO
 )brace
 id|ACPI_OPCODE_INFO
@@ -1351,96 +1352,96 @@ DECL|macro|GPE1_BLK_ADDRESS_SPACE
 mdefine_line|#define GPE1_BLK_ADDRESS_SPACE      0x20
 multiline_comment|/*&n; * Control bit definitions&n; */
 DECL|macro|TMR_STS
-mdefine_line|#define TMR_STS     (PM1_STS | 0x01)
+mdefine_line|#define TMR_STS                     (PM1_STS | 0x01)
 DECL|macro|BM_STS
-mdefine_line|#define BM_STS      (PM1_STS | 0x02)
+mdefine_line|#define BM_STS                      (PM1_STS | 0x02)
 DECL|macro|GBL_STS
-mdefine_line|#define GBL_STS     (PM1_STS | 0x03)
+mdefine_line|#define GBL_STS                     (PM1_STS | 0x03)
 DECL|macro|PWRBTN_STS
-mdefine_line|#define PWRBTN_STS  (PM1_STS | 0x04)
+mdefine_line|#define PWRBTN_STS                  (PM1_STS | 0x04)
 DECL|macro|SLPBTN_STS
-mdefine_line|#define SLPBTN_STS  (PM1_STS | 0x05)
+mdefine_line|#define SLPBTN_STS                  (PM1_STS | 0x05)
 DECL|macro|RTC_STS
-mdefine_line|#define RTC_STS     (PM1_STS | 0x06)
+mdefine_line|#define RTC_STS                     (PM1_STS | 0x06)
 DECL|macro|WAK_STS
-mdefine_line|#define WAK_STS     (PM1_STS | 0x07)
+mdefine_line|#define WAK_STS                     (PM1_STS | 0x07)
 DECL|macro|TMR_EN
-mdefine_line|#define TMR_EN      (PM1_EN | 0x01)
+mdefine_line|#define TMR_EN                      (PM1_EN | 0x01)
 multiline_comment|/* no BM_EN */
 DECL|macro|GBL_EN
-mdefine_line|#define GBL_EN      (PM1_EN | 0x03)
+mdefine_line|#define GBL_EN                      (PM1_EN | 0x03)
 DECL|macro|PWRBTN_EN
-mdefine_line|#define PWRBTN_EN   (PM1_EN | 0x04)
+mdefine_line|#define PWRBTN_EN                   (PM1_EN | 0x04)
 DECL|macro|SLPBTN_EN
-mdefine_line|#define SLPBTN_EN   (PM1_EN | 0x05)
+mdefine_line|#define SLPBTN_EN                   (PM1_EN | 0x05)
 DECL|macro|RTC_EN
-mdefine_line|#define RTC_EN      (PM1_EN | 0x06)
+mdefine_line|#define RTC_EN                      (PM1_EN | 0x06)
 DECL|macro|WAK_EN
-mdefine_line|#define WAK_EN      (PM1_EN | 0x07)
+mdefine_line|#define WAK_EN                      (PM1_EN | 0x07)
 DECL|macro|SCI_EN
-mdefine_line|#define SCI_EN      (PM1_CONTROL | 0x01)
+mdefine_line|#define SCI_EN                      (PM1_CONTROL | 0x01)
 DECL|macro|BM_RLD
-mdefine_line|#define BM_RLD      (PM1_CONTROL | 0x02)
+mdefine_line|#define BM_RLD                      (PM1_CONTROL | 0x02)
 DECL|macro|GBL_RLS
-mdefine_line|#define GBL_RLS     (PM1_CONTROL | 0x03)
+mdefine_line|#define GBL_RLS                     (PM1_CONTROL | 0x03)
 DECL|macro|SLP_TYPE_A
-mdefine_line|#define SLP_TYPE_A  (PM1_CONTROL | 0x04)
+mdefine_line|#define SLP_TYPE_A                  (PM1_CONTROL | 0x04)
 DECL|macro|SLP_TYPE_B
-mdefine_line|#define SLP_TYPE_B  (PM1_CONTROL | 0x05)
+mdefine_line|#define SLP_TYPE_B                  (PM1_CONTROL | 0x05)
 DECL|macro|SLP_EN
-mdefine_line|#define SLP_EN      (PM1_CONTROL | 0x06)
+mdefine_line|#define SLP_EN                      (PM1_CONTROL | 0x06)
 DECL|macro|ARB_DIS
-mdefine_line|#define ARB_DIS     (PM2_CONTROL | 0x01)
+mdefine_line|#define ARB_DIS                     (PM2_CONTROL | 0x01)
 DECL|macro|TMR_VAL
-mdefine_line|#define TMR_VAL     (PM_TIMER | 0x01)
+mdefine_line|#define TMR_VAL                     (PM_TIMER | 0x01)
 DECL|macro|GPE0_STS
-mdefine_line|#define GPE0_STS    (GPE0_STS_BLOCK | 0x01)
+mdefine_line|#define GPE0_STS                    (GPE0_STS_BLOCK | 0x01)
 DECL|macro|GPE0_EN
-mdefine_line|#define GPE0_EN     (GPE0_EN_BLOCK  | 0x01)
+mdefine_line|#define GPE0_EN                     (GPE0_EN_BLOCK  | 0x01)
 DECL|macro|GPE1_STS
-mdefine_line|#define GPE1_STS    (GPE1_STS_BLOCK | 0x01)
+mdefine_line|#define GPE1_STS                    (GPE1_STS_BLOCK | 0x01)
 DECL|macro|GPE1_EN
-mdefine_line|#define GPE1_EN     (GPE1_EN_BLOCK  | 0x01)
+mdefine_line|#define GPE1_EN                     (GPE1_EN_BLOCK  | 0x01)
 DECL|macro|TMR_STS_MASK
-mdefine_line|#define TMR_STS_MASK        0x0001
+mdefine_line|#define TMR_STS_MASK                0x0001
 DECL|macro|BM_STS_MASK
-mdefine_line|#define BM_STS_MASK         0x0010
+mdefine_line|#define BM_STS_MASK                 0x0010
 DECL|macro|GBL_STS_MASK
-mdefine_line|#define GBL_STS_MASK        0x0020
+mdefine_line|#define GBL_STS_MASK                0x0020
 DECL|macro|PWRBTN_STS_MASK
-mdefine_line|#define PWRBTN_STS_MASK     0x0100
+mdefine_line|#define PWRBTN_STS_MASK             0x0100
 DECL|macro|SLPBTN_STS_MASK
-mdefine_line|#define SLPBTN_STS_MASK     0x0200
+mdefine_line|#define SLPBTN_STS_MASK             0x0200
 DECL|macro|RTC_STS_MASK
-mdefine_line|#define RTC_STS_MASK        0x0400
+mdefine_line|#define RTC_STS_MASK                0x0400
 DECL|macro|WAK_STS_MASK
-mdefine_line|#define WAK_STS_MASK        0x8000
+mdefine_line|#define WAK_STS_MASK                0x8000
 DECL|macro|ALL_FIXED_STS_BITS
-mdefine_line|#define ALL_FIXED_STS_BITS  (TMR_STS_MASK   | BM_STS_MASK  | GBL_STS_MASK &bslash;&n;&t;&t;&t;&t;&t;   | PWRBTN_STS_MASK | SLPBTN_STS_MASK &bslash;&n;&t;&t;&t;&t;&t;   | RTC_STS_MASK | WAK_STS_MASK)
+mdefine_line|#define ALL_FIXED_STS_BITS          (TMR_STS_MASK   | BM_STS_MASK  | GBL_STS_MASK &bslash;&n;&t;&t;&t;&t;&t; | PWRBTN_STS_MASK | SLPBTN_STS_MASK &bslash;&n;&t;&t;&t;&t;&t; | RTC_STS_MASK | WAK_STS_MASK)
 DECL|macro|TMR_EN_MASK
-mdefine_line|#define TMR_EN_MASK         0x0001
+mdefine_line|#define TMR_EN_MASK                 0x0001
 DECL|macro|GBL_EN_MASK
-mdefine_line|#define GBL_EN_MASK         0x0020
+mdefine_line|#define GBL_EN_MASK                 0x0020
 DECL|macro|PWRBTN_EN_MASK
-mdefine_line|#define PWRBTN_EN_MASK      0x0100
+mdefine_line|#define PWRBTN_EN_MASK              0x0100
 DECL|macro|SLPBTN_EN_MASK
-mdefine_line|#define SLPBTN_EN_MASK      0x0200
+mdefine_line|#define SLPBTN_EN_MASK              0x0200
 DECL|macro|RTC_EN_MASK
-mdefine_line|#define RTC_EN_MASK         0x0400
+mdefine_line|#define RTC_EN_MASK                 0x0400
 DECL|macro|SCI_EN_MASK
-mdefine_line|#define SCI_EN_MASK         0x0001
+mdefine_line|#define SCI_EN_MASK                 0x0001
 DECL|macro|BM_RLD_MASK
-mdefine_line|#define BM_RLD_MASK         0x0002
+mdefine_line|#define BM_RLD_MASK                 0x0002
 DECL|macro|GBL_RLS_MASK
-mdefine_line|#define GBL_RLS_MASK        0x0004
+mdefine_line|#define GBL_RLS_MASK                0x0004
 DECL|macro|SLP_TYPE_X_MASK
-mdefine_line|#define SLP_TYPE_X_MASK     0x1C00
+mdefine_line|#define SLP_TYPE_X_MASK             0x1C00
 DECL|macro|SLP_EN_MASK
-mdefine_line|#define SLP_EN_MASK         0x2000
+mdefine_line|#define SLP_EN_MASK                 0x2000
 DECL|macro|ARB_DIS_MASK
-mdefine_line|#define ARB_DIS_MASK        0x0001
+mdefine_line|#define ARB_DIS_MASK                0x0001
 DECL|macro|TMR_VAL_MASK
-mdefine_line|#define TMR_VAL_MASK        0xFFFFFFFF
+mdefine_line|#define TMR_VAL_MASK                0xFFFFFFFF
 DECL|macro|GPE0_STS_MASK
 mdefine_line|#define GPE0_STS_MASK
 DECL|macro|GPE0_EN_MASK
@@ -1450,9 +1451,9 @@ mdefine_line|#define GPE1_STS_MASK
 DECL|macro|GPE1_EN_MASK
 mdefine_line|#define GPE1_EN_MASK
 DECL|macro|ACPI_READ
-mdefine_line|#define ACPI_READ           1
+mdefine_line|#define ACPI_READ                   1
 DECL|macro|ACPI_WRITE
-mdefine_line|#define ACPI_WRITE          2
+mdefine_line|#define ACPI_WRITE                  2
 multiline_comment|/* Plug and play */
 multiline_comment|/* Pnp and ACPI data */
 DECL|macro|VERSION_NO
