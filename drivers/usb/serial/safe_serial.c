@@ -2,18 +2,15 @@ multiline_comment|/*&n; * Safe Encapsulated USB Serial Driver&n; *&n; *      Cop
 multiline_comment|/* &n; * The encapsultaion is designed to overcome difficulties with some USB hardware.&n; *&n; * While the USB protocol has a CRC over the data while in transit, i.e. while&n; * being carried over the bus, there is no end to end protection. If the hardware&n; * has any problems getting the data into or out of the USB transmit and receive&n; * FIFO&squot;s then data can be lost. &n; *&n; * This protocol adds a two byte trailer to each USB packet to specify the number&n; * of bytes of valid data and a 10 bit CRC that will allow the receiver to verify&n; * that the entire USB packet was received without error.&n; *&n; * Because in this case the sender and receiver are the class and function drivers&n; * there is now end to end protection.&n; *&n; * There is an additional option that can be used to force all transmitted packets&n; * to be padded to the maximum packet size. This provides a work around for some&n; * devices which have problems with small USB packets.&n; *&n; * Assuming a packetsize of N:&n; *&n; *      0..N-2  data and optional padding&n; *&n; *      N-2     bits 7-2 - number of bytes of valid data&n; *              bits 1-0 top two bits of 10 bit CRC&n; *      N-1     bottom 8 bits of 10 bit CRC&n; *&n; *&n; *      | Data Length       | 10 bit CRC                                |&n; *      + 7 . 6 . 5 . 4 . 3 . 2 . 1 . 0 | 7 . 6 . 5 . 4 . 3 . 2 . 1 . 0 +&n; *&n; * The 10 bit CRC is computed across the sent data, followed by the trailer with&n; * the length set and the CRC set to zero. The CRC is then OR&squot;d into the trailer.&n; *&n; * When received a 10 bit CRC is computed over the entire frame including the trailer&n; * and should be equal to zero.&n; *&n; * Two module parameters are used to control the encapsulation, if both are&n; * turned of the module works as a simple serial device with NO&n; * encapsulation.&n; *&n; * See linux/drivers/usbd/serial_fd for a device function driver&n; * implementation of this.&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
-macro_line|#include &lt;linux/sched.h&gt;
-macro_line|#include &lt;linux/signal.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
-macro_line|#include &lt;linux/poll.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
-macro_line|#include &lt;linux/fcntl.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/tty_driver.h&gt;
 macro_line|#include &lt;linux/tty_flip.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
+macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/usb.h&gt;
 macro_line|#ifndef CONFIG_USB_SERIAL_DEBUG
 DECL|macro|CONFIG_USB_SERIAL_DEBUG

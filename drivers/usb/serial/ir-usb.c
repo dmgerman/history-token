@@ -1,18 +1,15 @@
 multiline_comment|/*&n; * USB IR Dongle driver&n; *&n; *&t;Copyright (C) 2001-2002&t;Greg Kroah-Hartman (greg@kroah.com)&n; *&t;Copyright (C) 2002&t;Gary Brubaker (xavyer@ix.netcom.com)&n; *&n; *&t;This program is free software; you can redistribute it and/or modify&n; *&t;it under the terms of the GNU General Public License as published by&n; *&t;the Free Software Foundation; either version 2 of the License, or&n; *&t;(at your option) any later version.&n; *&n; * This driver allows a USB IrDA device to be used as a &quot;dumb&quot; serial device.&n; * This can be useful if you do not have access to a full IrDA stack on the&n; * other side of the connection.  If you do have an IrDA stack on both devices,&n; * please use the usb-irda driver, as it contains the proper error checking and&n; * other goodness of a full IrDA stack.&n; *&n; * Portions of this driver were taken from drivers/net/irda/irda-usb.c, which&n; * was written by Roman Weissgaerber &lt;weissg@vienna.at&gt;, Dag Brattli&n; * &lt;dag@brattli.net&gt;, and Jean Tourrilhes &lt;jt@hpl.hp.com&gt;&n; *&n; * See Documentation/usb/usb-serial.txt for more information on using this driver&n; *&n; * 2002_Mar_07&t;greg kh&n; *&t;moved some needed structures and #define values from the&n; *&t;net/irda/irda-usb.h file into our file, as we don&squot;t want to depend on&n; *&t;that codebase compiling correctly :)&n; *&n; * 2002_Jan_14  gb&n; *&t;Added module parameter to force specific number of XBOFs.&n; *&t;Added ir_xbof_change().&n; *&t;Reorganized read_bulk_callback error handling.&n; *&t;Switched from FILL_BULK_URB() to usb_fill_bulk_urb().&n; *&n; * 2001_Nov_08  greg kh&n; *&t;Changed the irda_usb_find_class_desc() function based on comments and&n; *&t;code from Martin Diehl.&n; *&n; * 2001_Nov_01&t;greg kh&n; *&t;Added support for more IrDA USB devices.&n; *&t;Added support for zero packet.  Added buffer override paramater, so&n; *&t;users can transfer larger packets at once if they wish.  Both patches&n; *&t;came from Dag Brattli &lt;dag@obexcode.com&gt;.&n; *&n; * 2001_Oct_07&t;greg kh&n; *&t;initial version released.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
-macro_line|#include &lt;linux/sched.h&gt;
-macro_line|#include &lt;linux/signal.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
-macro_line|#include &lt;linux/poll.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
-macro_line|#include &lt;linux/fcntl.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/tty_driver.h&gt;
 macro_line|#include &lt;linux/tty_flip.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
+macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/usb.h&gt;
 macro_line|#ifdef CONFIG_USB_SERIAL_DEBUG
 DECL|variable|debug
