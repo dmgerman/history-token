@@ -4,9 +4,6 @@ DECL|macro|__XFS_DIR_LEAF_H__
 mdefine_line|#define __XFS_DIR_LEAF_H__
 multiline_comment|/*&n; * Directory layout, internal structure, access macros, etc.&n; *&n; * Large directories are structured around Btrees where all the data&n; * elements are in the leaf nodes.  Filenames are hashed into an int,&n; * then that int is used as the index into the Btree.  Since the hashval&n; * of a filename may not be unique, we may have duplicate keys.&t; The&n; * internal links in the Btree are logical block offsets into the file.&n; */
 r_struct
-id|dirent
-suffix:semicolon
-r_struct
 id|uio
 suffix:semicolon
 r_struct
