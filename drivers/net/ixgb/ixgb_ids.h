@@ -10,9 +10,9 @@ mdefine_line|#define INTEL_SUBVENDOR_ID      0x8086
 DECL|macro|IXGB_DEVICE_ID_82597EX
 mdefine_line|#define IXGB_DEVICE_ID_82597EX &t;0x1048
 DECL|macro|IXGB_SUBDEVICE_ID_A11F
-mdefine_line|#define IXGB_SUBDEVICE_ID_A11F  0xA11F   /* Adapter-OEM-1310nm-Fiber */
+mdefine_line|#define IXGB_SUBDEVICE_ID_A11F  0xA11F&t;/* Adapter-OEM-1310nm-Fiber */
 DECL|macro|IXGB_SUBDEVICE_ID_A01F
-mdefine_line|#define IXGB_SUBDEVICE_ID_A01F&t;0xA01F   /* Adapter-Retail-1310nm-Fiber */
-macro_line|#endif /* #ifndef _IXGB_IDS_H_ */
+mdefine_line|#define IXGB_SUBDEVICE_ID_A01F&t;0xA01F&t;/* Adapter-Retail-1310nm-Fiber */
+macro_line|#endif&t;&t;&t;&t;/* #ifndef _IXGB_IDS_H_ */
 multiline_comment|/* End of File */
 eof

@@ -795,11 +795,11 @@ l_string|&quot;GPL&quot;
 suffix:semicolon
 multiline_comment|/* some defines for controlling descriptor fetches in h/w */
 DECL|macro|RXDCTL_PTHRESH_DEFAULT
-mdefine_line|#define RXDCTL_PTHRESH_DEFAULT 128 /* chip considers prefech below this */
+mdefine_line|#define RXDCTL_PTHRESH_DEFAULT 128&t;/* chip considers prefech below this */
 DECL|macro|RXDCTL_HTHRESH_DEFAULT
-mdefine_line|#define RXDCTL_HTHRESH_DEFAULT 16  /* chip will only prefetch if tail is &n;                                      pushed this many descriptors from head */
+mdefine_line|#define RXDCTL_HTHRESH_DEFAULT 16&t;/* chip will only prefetch if tail is &n;&t;&t;&t;&t;&t;   pushed this many descriptors from head */
 DECL|macro|RXDCTL_WTHRESH_DEFAULT
-mdefine_line|#define RXDCTL_WTHRESH_DEFAULT 16  /* chip writes back at this many or RXT0 */
+mdefine_line|#define RXDCTL_WTHRESH_DEFAULT 16&t;/* chip writes back at this many or RXT0 */
 multiline_comment|/**&n; * ixgb_init_module - Driver Registration Routine.&n; *&n; * ixgb_init_module is the first routine called when the driver is&n; * loaded. All it does is register with the PCI subsystem.&n; **/
 r_static
 r_int
@@ -1128,7 +1128,6 @@ c_cond
 (paren
 id|kill_watchdog
 )paren
-(brace
 id|del_timer_sync
 c_func
 (paren
@@ -1136,7 +1135,6 @@ op_amp
 id|adapter-&gt;watchdog_timer
 )paren
 suffix:semicolon
-)brace
 id|adapter-&gt;link_speed
 op_assign
 l_int|0
@@ -1212,14 +1210,12 @@ op_amp
 id|adapter-&gt;hw
 )paren
 )paren
-(brace
 id|IXGB_DBG
 c_func
 (paren
 l_string|&quot;ixgb_init_hw failed.&bslash;n&quot;
 )paren
 suffix:semicolon
-)brace
 )brace
 multiline_comment|/**&n; * ixgb_probe - Device Initialization Routine.&n; * @param pdev PCI device information struct&n; * @param ent entry in ixgb_pci_table&n; *&n; * Returns 0 on success, negative on failure&n; **/
 r_static
@@ -1485,11 +1481,9 @@ c_cond
 op_logical_neg
 id|adapter-&gt;hw.hw_addr
 )paren
-(brace
 r_goto
 id|err_ioremap
 suffix:semicolon
-)brace
 r_for
 c_loop
 (paren
@@ -1518,10 +1512,8 @@ id|i
 op_eq
 l_int|0
 )paren
-(brace
 r_continue
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -1699,12 +1691,10 @@ c_cond
 (paren
 id|pci_using_dac
 )paren
-(brace
 id|netdev-&gt;features
 op_or_assign
 id|NETIF_F_HIGHDMA
 suffix:semicolon
-)brace
 multiline_comment|/* make sure the EEPROM is good */
 r_if
 c_cond
@@ -2112,12 +2102,10 @@ id|hw-&gt;device_id
 op_eq
 id|IXGB_DEVICE_ID_82597EX
 )paren
-(brace
 id|hw-&gt;mac_type
 op_assign
 id|ixgb_82597
 suffix:semicolon
-)brace
 r_else
 (brace
 multiline_comment|/* should never have loaded on this device */
@@ -2221,11 +2209,9 @@ c_func
 id|adapter
 )paren
 )paren
-(brace
 r_goto
 id|err_up
 suffix:semicolon
-)brace
 r_return
 l_int|0
 suffix:semicolon
@@ -2591,7 +2577,7 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-multiline_comment|/* don&squot;t set up txdctl, it induces performance problems if&n;&t; * configured incorrectly&n;&t;txdctl  = TXDCTL_PTHRESH_DEFAULT; // prefetch txds below this threshold&n;&t;txdctl |= (TXDCTL_HTHRESH_DEFAULT // only prefetch if there are this many ready&n;&t;           &lt;&lt; IXGB_TXDCTL_HTHRESH_SHIFT);&n;&t;IXGB_WRITE_REG (hw, TXDCTL, txdctl);&n;&t;*/
+multiline_comment|/* don&squot;t set up txdctl, it induces performance problems if&n;&t; * configured incorrectly&n;&t; txdctl  = TXDCTL_PTHRESH_DEFAULT; // prefetch txds below this threshold&n;&t; txdctl |= (TXDCTL_HTHRESH_DEFAULT // only prefetch if there are this many ready&n;&t; &lt;&lt; IXGB_TXDCTL_HTHRESH_SHIFT);&n;&t; IXGB_WRITE_REG (hw, TXDCTL, txdctl);&n;&t; */
 multiline_comment|/* Set the Tx Interrupt Delay register */
 id|IXGB_WRITE_REG
 c_func
@@ -3089,7 +3075,7 @@ suffix:semicolon
 r_uint32
 id|rxdctl
 suffix:semicolon
-multiline_comment|/* burst 16 or burst when RXT0*/
+multiline_comment|/* burst 16 or burst when RXT0 */
 id|rxdctl
 op_assign
 id|RXDCTL_WTHRESH_DEFAULT
@@ -3128,9 +3114,9 @@ r_uint8
 id|poll_threshold
 suffix:semicolon
 multiline_comment|/* Poll every rx_int_delay period, if RBD exists&n;&t;&t; * Receive Backlog Detection is set to &lt;threshold&gt; &n;&t;&t; * Rx Descriptors&n;&t;&t; * max is 0x3F == set to poll when 504 RxDesc left &n;&t;&t; * min is 0 */
-multiline_comment|/* polling times are 1 == 0.8192us&n;&t;&t;                     2 == 1.6384us&n;&t;&t;                     3 == 3.2768us etc&n;&t;&t;                     ...&n;&t;&t;                   511 == 418 us&n;&t;&t; */
+multiline_comment|/* polling times are 1 == 0.8192us&n;&t;&t;   2 == 1.6384us&n;&t;&t;   3 == 3.2768us etc&n;&t;&t;   ...&n;&t;&t;   511 == 418 us&n;&t;&t; */
 DECL|macro|IXGB_RAIDC_POLL_DEFAULT
-mdefine_line|#define IXGB_RAIDC_POLL_DEFAULT 122 /* set to poll every ~100 us under load &n;                                       also known as 10000 interrupts / sec */
+mdefine_line|#define IXGB_RAIDC_POLL_DEFAULT 122&t;/* set to poll every ~100 us under load &n;&t;&t;&t;&t;&t;   also known as 10000 interrupts / sec */
 multiline_comment|/* divide this by 2^3 (8) to get a register size count */
 id|poll_threshold
 op_assign
@@ -3161,7 +3147,7 @@ op_or
 multiline_comment|/* turn on raidc style moderation */
 id|IXGB_RAIDC_RXT_GATE
 op_or
-multiline_comment|/* don&squot;t interrupt with rxt0 while&n;&t;&t;                             in RBD mode (polling) */
+multiline_comment|/* don&squot;t interrupt with rxt0 while&n;&t;&t;&t;&t;&t;&t;   in RBD mode (polling) */
 (paren
 id|IXGB_RAIDC_POLL_DEFAULT
 op_lshift
@@ -3170,9 +3156,7 @@ id|IXGB_RAIDC_POLL_SHIFT
 op_or
 multiline_comment|/* this sets the regular &quot;min interrupt delay&quot; */
 (paren
-id|adapter
-op_member_access_from_pointer
-id|rx_int_delay
+id|adapter-&gt;rx_int_delay
 op_lshift
 id|IXGB_RAIDC_DELAY_SHIFT
 )paren
@@ -3855,7 +3839,6 @@ id|mc_ptr
 op_assign
 id|mc_ptr-&gt;next
 )paren
-(brace
 id|memcpy
 c_func
 (paren
@@ -3872,7 +3855,6 @@ comma
 id|IXGB_ETH_LENGTH_OF_ADDRESS
 )paren
 suffix:semicolon
-)brace
 id|ixgb_mc_addr_list_update
 c_func
 (paren
@@ -4114,7 +4096,6 @@ id|IXGB_STATUS_TXOFF
 )paren
 (brace
 id|IXGB_DBG
-c_func
 (paren
 l_string|&quot;ixgb: %s Hung controller? Watchdog stopping queue&bslash;n&quot;
 comma
@@ -4131,6 +4112,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* generate an interrupt to force clean up of any stragglers */
 id|IXGB_WRITE_REG
+c_func
 (paren
 op_amp
 id|adapter-&gt;hw
@@ -4957,12 +4939,10 @@ id|tx_flags
 op_amp
 id|IXGB_TX_FLAGS_CSUM
 )paren
-(brace
 id|popts
 op_or_assign
 id|IXGB_TX_DESC_POPTS_TXSM
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -5175,7 +5155,6 @@ suffix:semicolon
 id|f
 op_increment
 )paren
-(brace
 id|count
 op_add_assign
 id|TXD_USE_COUNT
@@ -5197,7 +5176,6 @@ comma
 id|adapter-&gt;max_data_per_txd
 )paren
 suffix:semicolon
-)brace
 macro_line|#ifdef NETIF_F_TSO
 r_if
 c_cond
@@ -5218,11 +5196,9 @@ op_eq
 id|CHECKSUM_HW
 )paren
 )paren
-(brace
 id|count
 op_increment
 suffix:semicolon
-)brace
 macro_line|#else
 r_if
 c_cond
@@ -5231,11 +5207,9 @@ id|skb-&gt;ip_summed
 op_eq
 id|CHECKSUM_HW
 )paren
-(brace
 id|count
 op_increment
 suffix:semicolon
-)brace
 macro_line|#endif
 r_if
 c_cond
@@ -5300,12 +5274,10 @@ comma
 id|skb
 )paren
 )paren
-(brace
 id|tx_flags
 op_or_assign
 id|IXGB_TX_FLAGS_TSO
 suffix:semicolon
-)brace
 r_else
 r_if
 c_cond
@@ -5318,12 +5290,10 @@ comma
 id|skb
 )paren
 )paren
-(brace
 id|tx_flags
 op_or_assign
 id|IXGB_TX_FLAGS_CSUM
 suffix:semicolon
-)brace
 id|count
 op_assign
 id|ixgb_tx_map
@@ -6514,7 +6484,7 @@ op_plus
 id|adapter-&gt;stats.ruc
 op_plus
 id|adapter-&gt;stats.roc
-multiline_comment|/*+ adapter-&gt;stats.rlec*/
+multiline_comment|/*+ adapter-&gt;stats.rlec */
 op_plus
 id|adapter-&gt;stats.icbc
 op_plus
@@ -6782,12 +6752,10 @@ id|icr
 op_amp
 id|IXGB_INT_RXDMT0
 )paren
-(brace
 id|rxdmt0
 op_assign
 id|TRUE
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -6863,7 +6831,7 @@ id|IXGB_INT_RXDMT0
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif 
+macro_line|#endif&t;&t;&t;&t;
 singleline_comment|// NAPI else
 )brace
 macro_line|#ifdef CONFIG_IXGB_NAPI
@@ -7279,12 +7247,10 @@ id|rx_work_limit
 OG
 id|netdev-&gt;quota
 )paren
-(brace
 id|rx_work_limit
 op_assign
 id|netdev-&gt;quota
 suffix:semicolon
-)brace
 id|ixgb_process_intr
 c_func
 (paren
@@ -7324,11 +7290,9 @@ id|rx_work_limit
 OL
 l_int|0
 )paren
-(brace
 r_goto
 id|not_done
 suffix:semicolon
-)brace
 id|pci_unmap_single
 c_func
 (paren
@@ -7548,7 +7512,9 @@ comma
 id|adapter-&gt;vlgrp
 comma
 (paren
-id|rx_desc-&gt;special
+id|rx_desc
+op_member_access_from_pointer
+id|special
 op_amp
 id|IXGB_RX_DESC_SPECIAL_VLAN_MASK
 )paren
@@ -7612,12 +7578,10 @@ c_cond
 op_logical_neg
 id|received
 )paren
-(brace
 id|received
 op_assign
 l_int|1
 suffix:semicolon
-)brace
 id|ixgb_alloc_rx_buffers
 c_func
 (paren
@@ -7983,7 +7947,9 @@ comma
 id|adapter-&gt;vlgrp
 comma
 (paren
-id|rx_desc-&gt;special
+id|rx_desc
+op_member_access_from_pointer
+id|special
 op_amp
 id|IXGB_RX_DESC_SPECIAL_VLAN_MASK
 )paren
@@ -8119,6 +8085,7 @@ suffix:semicolon
 id|cleancount
 op_assign
 id|IXGB_DESC_UNUSED
+c_func
 (paren
 id|rx_ring
 )paren
@@ -8631,7 +8598,6 @@ c_cond
 (paren
 id|adapter-&gt;vlgrp
 )paren
-(brace
 id|adapter-&gt;vlgrp-&gt;vlan_devices
 (braket
 id|vid
@@ -8639,14 +8605,13 @@ id|vid
 op_assign
 l_int|NULL
 suffix:semicolon
-)brace
 id|ixgb_irq_enable
 c_func
 (paren
 id|adapter
 )paren
 suffix:semicolon
-multiline_comment|/* remove VID from filter table*/
+multiline_comment|/* remove VID from filter table */
 id|index
 op_assign
 (paren
@@ -8749,10 +8714,8 @@ id|adapter-&gt;vlgrp-&gt;vlan_devices
 id|vid
 )braket
 )paren
-(brace
 r_continue
 suffix:semicolon
-)brace
 id|ixgb_vlan_rx_add_vid
 c_func
 (paren
@@ -8949,7 +8912,6 @@ op_eq
 op_amp
 id|ixgb_driver
 )paren
-(brace
 id|ixgb_suspend
 c_func
 (paren
@@ -8958,7 +8920,6 @@ comma
 l_int|3
 )paren
 suffix:semicolon
-)brace
 )brace
 )brace
 r_return
@@ -9014,7 +8975,6 @@ c_func
 id|netdev
 )paren
 )paren
-(brace
 id|ixgb_down
 c_func
 (paren
@@ -9023,7 +8983,6 @@ comma
 id|TRUE
 )paren
 suffix:semicolon
-)brace
 id|pci_save_state
 c_func
 (paren

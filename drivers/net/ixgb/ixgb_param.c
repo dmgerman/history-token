@@ -428,7 +428,6 @@ l_int|0
 op_ne
 l_char|&squot;&bslash;0&squot;
 )paren
-(brace
 id|printk
 c_func
 (paren
@@ -438,7 +437,6 @@ comma
 id|ent-&gt;str
 )paren
 suffix:semicolon
-)brace
 r_return
 l_int|0
 suffix:semicolon
@@ -1006,6 +1004,7 @@ id|ixgb_fc_rx_pause
 )paren
 )paren
 id|printk
+c_func
 (paren
 id|KERN_INFO
 l_string|&quot;Ignoring RxFCHighThresh when no RxFC&bslash;n&quot;
@@ -1093,6 +1092,7 @@ id|ixgb_fc_rx_pause
 )paren
 )paren
 id|printk
+c_func
 (paren
 id|KERN_INFO
 l_string|&quot;Ignoring RxFCLowThresh when no RxFC&bslash;n&quot;
@@ -1100,7 +1100,7 @@ l_string|&quot;Ignoring RxFCLowThresh when no RxFC&bslash;n&quot;
 suffix:semicolon
 )brace
 (brace
-multiline_comment|/* Flow Control Pause Time Request*/
+multiline_comment|/* Flow Control Pause Time Request */
 r_struct
 id|ixgb_option
 id|fcpap
@@ -1181,6 +1181,7 @@ id|ixgb_fc_rx_pause
 )paren
 )paren
 id|printk
+c_func
 (paren
 id|KERN_INFO
 l_string|&quot;Ignoring FCReqTimeout when no RxFC&bslash;n&quot;
@@ -1215,6 +1216,7 @@ l_int|8
 (brace
 multiline_comment|/* set defaults */
 id|printk
+c_func
 (paren
 id|KERN_INFO
 l_string|&quot;RxFCHighThresh must be &gt;= (RxFCLowThresh + 8), &quot;

@@ -3,20 +3,20 @@ macro_line|#ifndef _IXGB_EE_H_
 DECL|macro|_IXGB_EE_H_
 mdefine_line|#define _IXGB_EE_H_
 DECL|macro|IXGB_EEPROM_SIZE
-mdefine_line|#define IXGB_EEPROM_SIZE    64   /* Size in words */
+mdefine_line|#define IXGB_EEPROM_SIZE    64&t;/* Size in words */
 DECL|macro|IXGB_ETH_LENGTH_OF_ADDRESS
 mdefine_line|#define IXGB_ETH_LENGTH_OF_ADDRESS   6
 multiline_comment|/* EEPROM Commands */
 DECL|macro|EEPROM_READ_OPCODE
-mdefine_line|#define EEPROM_READ_OPCODE  0x6  /* EERPOM read opcode */
+mdefine_line|#define EEPROM_READ_OPCODE  0x6&t;&t;/* EERPOM read opcode */
 DECL|macro|EEPROM_WRITE_OPCODE
-mdefine_line|#define EEPROM_WRITE_OPCODE 0x5  /* EERPOM write opcode */
+mdefine_line|#define EEPROM_WRITE_OPCODE 0x5&t;&t;/* EERPOM write opcode */
 DECL|macro|EEPROM_ERASE_OPCODE
-mdefine_line|#define EEPROM_ERASE_OPCODE 0x7  /* EERPOM erase opcode */
+mdefine_line|#define EEPROM_ERASE_OPCODE 0x7&t;&t;/* EERPOM erase opcode */
 DECL|macro|EEPROM_EWEN_OPCODE
-mdefine_line|#define EEPROM_EWEN_OPCODE  0x13 /* EERPOM erase/write enable */
+mdefine_line|#define EEPROM_EWEN_OPCODE  0x13&t;/* EERPOM erase/write enable */
 DECL|macro|EEPROM_EWDS_OPCODE
-mdefine_line|#define EEPROM_EWDS_OPCODE  0x10 /* EERPOM erast/write disable */
+mdefine_line|#define EEPROM_EWDS_OPCODE  0x10&t;/* EERPOM erast/write disable */
 multiline_comment|/* EEPROM MAP (Word Offsets) */
 DECL|macro|EEPROM_IA_1_2_REG
 mdefine_line|#define EEPROM_IA_1_2_REG        0x0000
@@ -201,5 +201,5 @@ r_uint16
 id|data
 )paren
 suffix:semicolon
-macro_line|#endif /* IXGB_EE_H */
+macro_line|#endif&t;&t;&t;&t;/* IXGB_EE_H */
 eof

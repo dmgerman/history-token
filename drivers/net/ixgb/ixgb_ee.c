@@ -80,7 +80,7 @@ op_star
 id|eecd_reg
 )paren
 (brace
-multiline_comment|/* Raise the clock input to the EEPROM (by setting the SK bit), and then&n;     *  wait 50 microseconds.&n;     */
+multiline_comment|/* Raise the clock input to the EEPROM (by setting the SK bit), and then&n;&t; *  wait 50 microseconds.&n;&t; */
 op_star
 id|eecd_reg
 op_assign
@@ -126,7 +126,7 @@ op_star
 id|eecd_reg
 )paren
 (brace
-multiline_comment|/* Lower the clock input to the EEPROM (by clearing the SK bit), and then &n;     * wait 50 microseconds. &n;     */
+multiline_comment|/* Lower the clock input to the EEPROM (by clearing the SK bit), and then &n;&t; * wait 50 microseconds. &n;&t; */
 op_star
 id|eecd_reg
 op_assign
@@ -181,7 +181,7 @@ suffix:semicolon
 r_uint32
 id|mask
 suffix:semicolon
-multiline_comment|/* We need to shift &quot;count&quot; bits out to the EEPROM. So, value in the&n;     * &quot;data&quot; parameter will be shifted out to the EEPROM one bit at a time.&n;     * In order to do this, &quot;data&quot; must be broken down into bits. &n;     */
+multiline_comment|/* We need to shift &quot;count&quot; bits out to the EEPROM. So, value in the&n;&t; * &quot;data&quot; parameter will be shifted out to the EEPROM one bit at a time.&n;&t; * In order to do this, &quot;data&quot; must be broken down into bits. &n;&t; */
 id|mask
 op_assign
 l_int|0x01
@@ -213,7 +213,7 @@ id|IXGB_EECD_DI
 suffix:semicolon
 r_do
 (brace
-multiline_comment|/* A &quot;1&quot; is shifted out to the EEPROM by setting bit &quot;DI&quot; to a &quot;1&quot;,&n;         * and then raising and then lowering the clock (the SK bit controls&n;         * the clock input to the EEPROM).  A &quot;0&quot; is shifted out to the EEPROM&n;         * by setting &quot;DI&quot; to &quot;0&quot; and then raising and then lowering the clock.&n;         */
+multiline_comment|/* A &quot;1&quot; is shifted out to the EEPROM by setting bit &quot;DI&quot; to a &quot;1&quot;,&n;&t;&t; * and then raising and then lowering the clock (the SK bit controls&n;&t;&t; * the clock input to the EEPROM).  A &quot;0&quot; is shifted out to the EEPROM&n;&t;&t; * by setting &quot;DI&quot; to &quot;0&quot; and then raising and then lowering the clock.&n;&t;&t; */
 id|eecd_reg
 op_and_assign
 op_complement
@@ -226,12 +226,10 @@ id|data
 op_amp
 id|mask
 )paren
-(brace
 id|eecd_reg
 op_or_assign
 id|IXGB_EECD_DI
 suffix:semicolon
-)brace
 id|IXGB_WRITE_REG
 c_func
 (paren
@@ -278,9 +276,7 @@ c_loop
 (paren
 id|mask
 )paren
-(brace
 suffix:semicolon
-)brace
 multiline_comment|/* We leave the &quot;DI&quot; bit set to &quot;0&quot; when we leave this routine. */
 id|eecd_reg
 op_and_assign
@@ -322,7 +318,7 @@ suffix:semicolon
 r_uint16
 id|data
 suffix:semicolon
-multiline_comment|/* In order to read a register from the EEPROM, we need to shift 16 bits &n;     * in from the EEPROM. Bits are &quot;shifted in&quot; by raising the clock input to&n;     * the EEPROM (setting the SK bit), and then reading the value of the &quot;DO&quot;&n;     * bit.  During this &quot;shifting in&quot; process the &quot;DI&quot; bit should always be &n;     * clear..&n;     */
+multiline_comment|/* In order to read a register from the EEPROM, we need to shift 16 bits &n;&t; * in from the EEPROM. Bits are &quot;shifted in&quot; by raising the clock input to&n;&t; * the EEPROM (setting the SK bit), and then reading the value of the &quot;DO&quot;&n;&t; * bit.  During this &quot;shifting in&quot; process the &quot;DI&quot; bit should always be &n;&t; * clear..&n;&t; */
 id|eecd_reg
 op_assign
 id|IXGB_READ_REG
@@ -400,12 +396,10 @@ id|eecd_reg
 op_amp
 id|IXGB_EECD_DO
 )paren
-(brace
 id|data
 op_or_assign
 l_int|1
 suffix:semicolon
-)brace
 id|ixgb_lower_clock
 c_func
 (paren
@@ -748,14 +742,14 @@ suffix:semicolon
 r_uint32
 id|i
 suffix:semicolon
-multiline_comment|/* Toggle the CS line.  This in effect tells to EEPROM to actually execute &n;     * the command in question.&n;     */
+multiline_comment|/* Toggle the CS line.  This in effect tells to EEPROM to actually execute &n;&t; * the command in question.&n;&t; */
 id|ixgb_standby_eeprom
 c_func
 (paren
 id|hw
 )paren
 suffix:semicolon
-multiline_comment|/* Now read DO repeatedly until is high (equal to &squot;1&squot;).  The EEEPROM will&n;     * signal that the command has been completed by raising the DO signal.&n;     * If DO does not go high in 10 milliseconds, then error out.&n;     */
+multiline_comment|/* Now read DO repeatedly until is high (equal to &squot;1&squot;).  The EEEPROM will&n;&t; * signal that the command has been completed by raising the DO signal.&n;&t; * If DO does not go high in 10 milliseconds, then error out.&n;&t; */
 r_for
 c_loop
 (paren
@@ -788,13 +782,11 @@ id|eecd_reg
 op_amp
 id|IXGB_EECD_DO
 )paren
-(brace
 r_return
 (paren
 id|TRUE
 )paren
 suffix:semicolon
-)brace
 id|usec_delay
 c_func
 (paren
@@ -852,7 +844,6 @@ suffix:semicolon
 id|i
 op_increment
 )paren
-(brace
 id|checksum
 op_add_assign
 id|ixgb_read_eeprom
@@ -863,7 +854,6 @@ comma
 id|i
 )paren
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -874,13 +864,11 @@ r_uint16
 )paren
 id|EEPROM_SUM
 )paren
-(brace
 r_return
 (paren
 id|TRUE
 )paren
 suffix:semicolon
-)brace
 r_else
 r_return
 (paren
@@ -922,7 +910,6 @@ suffix:semicolon
 id|i
 op_increment
 )paren
-(brace
 id|checksum
 op_add_assign
 id|ixgb_read_eeprom
@@ -933,7 +920,6 @@ comma
 id|i
 )paren
 suffix:semicolon
-)brace
 id|checksum
 op_assign
 (paren
@@ -981,7 +967,7 @@ c_func
 id|hw
 )paren
 suffix:semicolon
-multiline_comment|/*  Send the 9-bit EWEN (write enable) command to the EEPROM (5-bit opcode&n;     *  plus 4-bit dummy).  This puts the EEPROM into write/erase mode. &n;     */
+multiline_comment|/*  Send the 9-bit EWEN (write enable) command to the EEPROM (5-bit opcode&n;&t; *  plus 4-bit dummy).  This puts the EEPROM into write/erase mode. &n;&t; */
 id|ixgb_shift_out_bits
 c_func
 (paren
@@ -1054,7 +1040,7 @@ c_func
 id|hw
 )paren
 suffix:semicolon
-multiline_comment|/* Send the 9-bit EWDS (write disable) command to the EEPROM (5-bit&n;     * opcode plus 4-bit dummy).  This takes the EEPROM out of write/erase&n;     * mode.&n;     */
+multiline_comment|/* Send the 9-bit EWDS (write disable) command to the EEPROM (5-bit&n;&t; * opcode plus 4-bit dummy).  This takes the EEPROM out of write/erase&n;&t; * mode.&n;&t; */
 id|ixgb_shift_out_bits
 c_func
 (paren
@@ -1121,7 +1107,7 @@ comma
 l_int|3
 )paren
 suffix:semicolon
-multiline_comment|/* &n;     * We have a 64 word EEPROM, there are 6 address bits&n;     */
+multiline_comment|/* &n;&t; * We have a 64 word EEPROM, there are 6 address bits&n;&t; */
 id|ixgb_shift_out_bits
 c_func
 (paren
@@ -1238,6 +1224,7 @@ id|i
 )braket
 op_assign
 id|le16_to_cpu
+c_func
 (paren
 id|ee_data
 )paren
@@ -1293,11 +1280,15 @@ l_string|&quot;ixgb_ee: Signature invalid.&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
+(paren
 id|FALSE
+)paren
 suffix:semicolon
 )brace
 r_return
+(paren
 id|TRUE
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/******************************************************************************&n; * Local function to check if the eeprom signature is good&n; * If the eeprom signature is good, calls ixgb)get_eeprom_data.&n; *&n; * hw - Struct containing variables accessed by shared code &n; *&n; * Returns:&n; *      TRUE: eeprom signature was good and the eeprom read was successful&n; *      FALSE: otherwise.&n; ******************************************************************************/
@@ -1305,6 +1296,7 @@ r_static
 id|boolean_t
 DECL|function|ixgb_check_and_get_eeprom_data
 id|ixgb_check_and_get_eeprom_data
+c_func
 (paren
 r_struct
 id|ixgb_hw
@@ -1402,6 +1394,7 @@ r_if
 c_cond
 (paren
 id|ixgb_check_and_get_eeprom_data
+c_func
 (paren
 id|hw
 )paren
@@ -1478,6 +1471,7 @@ r_if
 c_cond
 (paren
 id|ixgb_check_and_get_eeprom_data
+c_func
 (paren
 id|hw
 )paren
@@ -1485,10 +1479,14 @@ op_eq
 id|TRUE
 )paren
 r_return
+(paren
 id|ee_map-&gt;compatibility
+)paren
 suffix:semicolon
 r_return
+(paren
 l_int|0
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/******************************************************************************&n; * return the Printed Board Assembly number from EEPROM&n; *&n; * hw - Struct containing variables accessed by shared code &n; *&n; * Returns: &n; *          PBA number if EEPROM contents are valid, 0 otherwise&n; ******************************************************************************/
@@ -1507,6 +1505,7 @@ r_if
 c_cond
 (paren
 id|ixgb_check_and_get_eeprom_data
+c_func
 (paren
 id|hw
 )paren
@@ -1539,7 +1538,9 @@ l_int|16
 )paren
 suffix:semicolon
 r_return
+(paren
 l_int|0
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/******************************************************************************&n; * return the Initialization Control Word 1 from EEPROM&n; *&n; * hw - Struct containing variables accessed by shared code&n; *&n; * Returns:&n; *          Initialization Control Word 1 if EEPROM contents are valid, 0 otherwise&n; ******************************************************************************/
@@ -1570,6 +1571,7 @@ r_if
 c_cond
 (paren
 id|ixgb_check_and_get_eeprom_data
+c_func
 (paren
 id|hw
 )paren
@@ -1577,10 +1579,14 @@ op_eq
 id|TRUE
 )paren
 r_return
+(paren
 id|ee_map-&gt;init_ctrl_reg_1
+)paren
 suffix:semicolon
 r_return
+(paren
 l_int|0
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/******************************************************************************&n; * return the Initialization Control Word 2 from EEPROM&n; *&n; * hw - Struct containing variables accessed by shared code &n; *&n; * Returns: &n; *          Initialization Control Word 2 if EEPROM contents are valid, 0 otherwise&n; ******************************************************************************/
@@ -1611,6 +1617,7 @@ r_if
 c_cond
 (paren
 id|ixgb_check_and_get_eeprom_data
+c_func
 (paren
 id|hw
 )paren
@@ -1618,10 +1625,14 @@ op_eq
 id|TRUE
 )paren
 r_return
+(paren
 id|ee_map-&gt;init_ctrl_reg_2
+)paren
 suffix:semicolon
 r_return
+(paren
 l_int|0
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/******************************************************************************&n; * return the Subsystem Id from EEPROM&n; *&n; * hw - Struct containing variables accessed by shared code &n; *&n; * Returns: &n; *          Subsystem Id if EEPROM contents are valid, 0 otherwise&n; ******************************************************************************/
@@ -1652,6 +1663,7 @@ r_if
 c_cond
 (paren
 id|ixgb_check_and_get_eeprom_data
+c_func
 (paren
 id|hw
 )paren
@@ -1659,10 +1671,14 @@ op_eq
 id|TRUE
 )paren
 r_return
+(paren
 id|ee_map-&gt;subsystem_id
+)paren
 suffix:semicolon
 r_return
+(paren
 l_int|0
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/******************************************************************************&n; * return the Sub Vendor Id from EEPROM&n; *&n; * hw - Struct containing variables accessed by shared code &n; *&n; * Returns: &n; *          Sub Vendor Id if EEPROM contents are valid, 0 otherwise&n; ******************************************************************************/
@@ -1693,6 +1709,7 @@ r_if
 c_cond
 (paren
 id|ixgb_check_and_get_eeprom_data
+c_func
 (paren
 id|hw
 )paren
@@ -1700,10 +1717,14 @@ op_eq
 id|TRUE
 )paren
 r_return
+(paren
 id|ee_map-&gt;subvendor_id
+)paren
 suffix:semicolon
 r_return
+(paren
 l_int|0
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/******************************************************************************&n; * return the Device Id from EEPROM&n; *&n; * hw - Struct containing variables accessed by shared code &n; *&n; * Returns: &n; *          Device Id if EEPROM contents are valid, 0 otherwise&n; ******************************************************************************/
@@ -1734,6 +1755,7 @@ r_if
 c_cond
 (paren
 id|ixgb_check_and_get_eeprom_data
+c_func
 (paren
 id|hw
 )paren
@@ -1741,10 +1763,14 @@ op_eq
 id|TRUE
 )paren
 r_return
+(paren
 id|ee_map-&gt;device_id
+)paren
 suffix:semicolon
 r_return
+(paren
 l_int|0
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/******************************************************************************&n; * return the Vendor Id from EEPROM&n; *&n; * hw - Struct containing variables accessed by shared code &n; *&n; * Returns: &n; *          Device Id if EEPROM contents are valid, 0 otherwise&n; ******************************************************************************/
@@ -1775,6 +1801,7 @@ r_if
 c_cond
 (paren
 id|ixgb_check_and_get_eeprom_data
+c_func
 (paren
 id|hw
 )paren
@@ -1782,10 +1809,14 @@ op_eq
 id|TRUE
 )paren
 r_return
+(paren
 id|ee_map-&gt;vendor_id
+)paren
 suffix:semicolon
 r_return
+(paren
 l_int|0
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/******************************************************************************&n; * return the Software Defined Pins Register from EEPROM&n; *&n; * hw - Struct containing variables accessed by shared code &n; *&n; * Returns: &n; *          SDP Register if EEPROM contents are valid, 0 otherwise&n; ******************************************************************************/
@@ -1816,6 +1847,7 @@ r_if
 c_cond
 (paren
 id|ixgb_check_and_get_eeprom_data
+c_func
 (paren
 id|hw
 )paren
@@ -1823,10 +1855,14 @@ op_eq
 id|TRUE
 )paren
 r_return
+(paren
 id|ee_map-&gt;swdpins_reg
+)paren
 suffix:semicolon
 r_return
+(paren
 l_int|0
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/******************************************************************************&n; * return the D3 Power Management Bits from EEPROM&n; *&n; * hw - Struct containing variables accessed by shared code &n; *&n; * Returns: &n; *          D3 Power Management Bits if EEPROM contents are valid, 0 otherwise&n; ******************************************************************************/
@@ -1857,6 +1893,7 @@ r_if
 c_cond
 (paren
 id|ixgb_check_and_get_eeprom_data
+c_func
 (paren
 id|hw
 )paren
@@ -1864,10 +1901,14 @@ op_eq
 id|TRUE
 )paren
 r_return
+(paren
 id|ee_map-&gt;d3_power
+)paren
 suffix:semicolon
 r_return
+(paren
 l_int|0
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/******************************************************************************&n; * return the D0 Power Management Bits from EEPROM&n; *&n; * hw - Struct containing variables accessed by shared code &n; *&n; * Returns: &n; *          D0 Power Management Bits if EEPROM contents are valid, 0 otherwise&n; ******************************************************************************/
@@ -1898,6 +1939,7 @@ r_if
 c_cond
 (paren
 id|ixgb_check_and_get_eeprom_data
+c_func
 (paren
 id|hw
 )paren
@@ -1905,10 +1947,14 @@ op_eq
 id|TRUE
 )paren
 r_return
+(paren
 id|ee_map-&gt;d0_power
+)paren
 suffix:semicolon
 r_return
+(paren
 l_int|0
+)paren
 suffix:semicolon
 )brace
 eof

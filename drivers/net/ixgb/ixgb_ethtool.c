@@ -173,12 +173,10 @@ id|SPEED_10000
 op_plus
 id|DUPLEX_FULL
 )paren
-(brace
 r_return
 op_minus
 id|EINVAL
 suffix:semicolon
-)brace
 r_else
 (brace
 id|ixgb_down
@@ -236,12 +234,10 @@ c_cond
 (paren
 id|pmode-&gt;upe
 )paren
-(brace
 id|rctl
 op_or_assign
 id|IXGB_RCTL_UPE
 suffix:semicolon
-)brace
 r_else
 id|rctl
 op_and_assign
@@ -253,12 +249,10 @@ c_cond
 (paren
 id|pmode-&gt;mpe
 )paren
-(brace
 id|rctl
 op_or_assign
 id|IXGB_RCTL_MPE
 suffix:semicolon
-)brace
 r_else
 id|rctl
 op_and_assign
@@ -356,7 +350,7 @@ id|drvinfo-&gt;regdump_len
 op_assign
 id|IXGB_REG_DUMP_LEN
 suffix:semicolon
-macro_line|#endif /* ETHTOOL_GREGS */
+macro_line|#endif&t;&t;&t;&t;/* ETHTOOL_GREGS */
 id|drvinfo-&gt;eedump_len
 op_assign
 id|ixgb_eeprom_size
@@ -1924,7 +1918,7 @@ r_uint32
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif  /* ETHTOOL_GREGS */
+macro_line|#endif&t;&t;&t;&t;/* ETHTOOL_GREGS */
 r_static
 r_int
 DECL|function|ixgb_ethtool_geeprom
@@ -2014,12 +2008,10 @@ id|eeprom-&gt;offset
 op_plus
 id|eeprom-&gt;len
 )paren
-(brace
 r_return
 op_minus
 id|EINVAL
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -2031,7 +2023,6 @@ id|eeprom-&gt;len
 OG
 id|max_len
 )paren
-(brace
 id|eeprom-&gt;len
 op_assign
 (paren
@@ -2040,7 +2031,6 @@ op_minus
 id|eeprom-&gt;offset
 )paren
 suffix:semicolon
-)brace
 id|first_word
 op_assign
 id|eeprom-&gt;offset
@@ -2158,12 +2148,10 @@ l_int|16
 )paren
 )paren
 )paren
-(brace
 r_return
 op_minus
 id|EFAULT
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -2171,12 +2159,10 @@ id|eeprom-&gt;len
 op_eq
 l_int|0
 )paren
-(brace
 r_return
 op_minus
 id|EINVAL
 suffix:semicolon
-)brace
 id|max_len
 op_assign
 id|ixgb_eeprom_size
@@ -2194,12 +2180,10 @@ id|eeprom-&gt;offset
 op_plus
 id|eeprom-&gt;len
 )paren
-(brace
 r_return
 op_minus
 id|EINVAL
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -2211,7 +2195,6 @@ id|eeprom-&gt;len
 OG
 id|max_len
 )paren
-(brace
 id|eeprom-&gt;len
 op_assign
 (paren
@@ -2220,7 +2203,6 @@ op_minus
 id|eeprom-&gt;offset
 )paren
 suffix:semicolon
-)brace
 id|first_word
 op_assign
 id|eeprom-&gt;offset
@@ -2317,12 +2299,10 @@ comma
 id|eeprom-&gt;len
 )paren
 )paren
-(brace
 r_return
 op_minus
 id|EFAULT
 suffix:semicolon
-)brace
 r_for
 c_loop
 (paren
@@ -2341,7 +2321,6 @@ suffix:semicolon
 id|i
 op_increment
 )paren
-(brace
 id|ixgb_write_eeprom
 c_func
 (paren
@@ -2357,7 +2336,6 @@ id|i
 )braket
 )paren
 suffix:semicolon
-)brace
 multiline_comment|/* Update the checksum over the first part of the EEPROM if needed */
 r_if
 c_cond
@@ -2366,14 +2344,12 @@ id|first_word
 op_le
 id|EEPROM_CHECKSUM_REG
 )paren
-(brace
 id|ixgb_update_eeprom_checksum
 c_func
 (paren
 id|hw
 )paren
 suffix:semicolon
-)brace
 r_return
 l_int|0
 suffix:semicolon
@@ -2420,7 +2396,6 @@ op_amp
 id|adapter-&gt;led_status
 )paren
 )paren
-(brace
 id|ixgb_led_off
 c_func
 (paren
@@ -2428,7 +2403,6 @@ op_amp
 id|adapter-&gt;hw
 )paren
 suffix:semicolon
-)brace
 r_else
 id|ixgb_led_on
 c_func
@@ -2513,7 +2487,6 @@ c_cond
 (paren
 id|id-&gt;data
 )paren
-(brace
 id|schedule_timeout
 c_func
 (paren
@@ -2522,7 +2495,6 @@ op_star
 id|HZ
 )paren
 suffix:semicolon
-)brace
 r_else
 id|schedule_timeout
 c_func
@@ -2557,7 +2529,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#endif /* ETHTOOL_PHYS_ID */
+macro_line|#endif&t;&t;&t;&t;/* ETHTOOL_PHYS_ID */
 r_int
 DECL|function|ixgb_ethtool_ioctl
 id|ixgb_ethtool_ioctl
@@ -2605,12 +2577,10 @@ op_star
 id|addr
 )paren
 )paren
-(brace
 r_return
 op_minus
 id|EFAULT
 suffix:semicolon
-)brace
 r_switch
 c_cond
 (paren
@@ -2643,12 +2613,10 @@ id|pmode
 )paren
 )paren
 )paren
-(brace
 r_return
 op_minus
 id|EFAULT
 suffix:semicolon
-)brace
 id|ixgb_ethtool_promiscuous
 c_func
 (paren
@@ -2675,12 +2643,10 @@ id|pmode
 )paren
 )paren
 )paren
-(brace
 r_return
 op_minus
 id|EFAULT
 suffix:semicolon
-)brace
 r_return
 l_int|0
 suffix:semicolon
@@ -2742,12 +2708,10 @@ id|ecmd
 )paren
 )paren
 )paren
-(brace
 r_return
 op_minus
 id|EFAULT
 suffix:semicolon
-)brace
 r_return
 l_int|0
 suffix:semicolon
@@ -2770,12 +2734,10 @@ c_func
 id|CAP_NET_ADMIN
 )paren
 )paren
-(brace
 r_return
 op_minus
 id|EPERM
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -2793,12 +2755,10 @@ id|ecmd
 )paren
 )paren
 )paren
-(brace
 r_return
 op_minus
 id|EFAULT
 suffix:semicolon
-)brace
 r_return
 id|ixgb_ethtool_sset
 c_func
@@ -2848,12 +2808,10 @@ id|drvinfo
 )paren
 )paren
 )paren
-(brace
 r_return
 op_minus
 id|EFAULT
 suffix:semicolon
-)brace
 r_return
 l_int|0
 suffix:semicolon
@@ -2905,12 +2863,10 @@ id|regs
 )paren
 )paren
 )paren
-(brace
 r_return
 op_minus
 id|EFAULT
 suffix:semicolon
-)brace
 id|addr
 op_add_assign
 m_offsetof
@@ -2934,17 +2890,15 @@ comma
 id|regs.len
 )paren
 )paren
-(brace
 r_return
 op_minus
 id|EFAULT
 suffix:semicolon
-)brace
 r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#endif /* ETHTOOL_GREGS */
+macro_line|#endif&t;&t;&t;&t;/* ETHTOOL_GREGS */
 r_case
 id|ETHTOOL_NWAY_RST
 suffix:colon
@@ -2965,12 +2919,10 @@ c_func
 id|CAP_NET_ADMIN
 )paren
 )paren
-(brace
 r_return
 op_minus
 id|EPERM
 suffix:semicolon
-)brace
 id|ixgb_down
 c_func
 (paren
@@ -3019,12 +2971,10 @@ id|id
 )paren
 )paren
 )paren
-(brace
 r_return
 op_minus
 id|EFAULT
 suffix:semicolon
-)brace
 r_return
 id|ixgb_ethtool_led_blink
 c_func
@@ -3036,7 +2986,7 @@ id|id
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif /* ETHTOOL_PHYS_ID */
+macro_line|#endif&t;&t;&t;&t;/* ETHTOOL_PHYS_ID */
 r_case
 id|ETHTOOL_GLINK
 suffix:colon
@@ -3080,12 +3030,10 @@ id|link
 )paren
 )paren
 )paren
-(brace
 r_return
 op_minus
 id|EFAULT
 suffix:semicolon
-)brace
 r_return
 l_int|0
 suffix:semicolon
@@ -3138,12 +3086,10 @@ id|eeprom
 )paren
 )paren
 )paren
-(brace
 r_return
 op_minus
 id|EFAULT
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -3184,12 +3130,10 @@ id|eeprom
 )paren
 )paren
 )paren
-(brace
 r_return
 op_minus
 id|EFAULT
 suffix:semicolon
-)brace
 id|addr
 op_add_assign
 m_offsetof
@@ -3229,12 +3173,10 @@ comma
 id|eeprom.len
 )paren
 )paren
-(brace
 r_return
 op_minus
 id|EFAULT
 suffix:semicolon
-)brace
 r_return
 l_int|0
 suffix:semicolon
@@ -3263,12 +3205,10 @@ c_func
 id|CAP_NET_ADMIN
 )paren
 )paren
-(brace
 r_return
 op_minus
 id|EPERM
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -3286,12 +3226,10 @@ id|eeprom
 )paren
 )paren
 )paren
-(brace
 r_return
 op_minus
 id|EFAULT
 suffix:semicolon
-)brace
 id|addr
 op_add_assign
 m_offsetof

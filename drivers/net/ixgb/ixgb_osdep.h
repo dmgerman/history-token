@@ -68,5 +68,5 @@ DECL|macro|IXGB_READ_REG_ARRAY
 mdefine_line|#define IXGB_READ_REG_ARRAY(a, reg, offset) ( &bslash;&n;    readl((a)-&gt;hw_addr + IXGB_##reg + ((offset) &lt;&lt; 2)))
 DECL|macro|IXGB_MEMCPY
 mdefine_line|#define IXGB_MEMCPY memcpy
-macro_line|#endif /* IXGB_OSDEP_H */
+macro_line|#endif&t;&t;&t;&t;/* IXGB_OSDEP_H */
 eof

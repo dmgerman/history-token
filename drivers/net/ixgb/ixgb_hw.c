@@ -76,6 +76,7 @@ id|hw
 suffix:semicolon
 r_uint32
 id|ixgb_mac_reset
+c_func
 (paren
 r_struct
 id|ixgb_hw
@@ -83,9 +84,10 @@ op_star
 id|hw
 )paren
 suffix:semicolon
-DECL|function|ixgb_mac_reset
 r_uint32
+DECL|function|ixgb_mac_reset
 id|ixgb_mac_reset
+c_func
 (paren
 r_struct
 id|ixgb_hw
@@ -213,7 +215,7 @@ c_func
 l_string|&quot;ixgb_adapter_stop&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* If we are stopped or resetting exit gracefully and wait to be&n;     * started again before accessing the hardware.&n;     */
+multiline_comment|/* If we are stopped or resetting exit gracefully and wait to be&n;&t; * started again before accessing the hardware.&n;&t; */
 r_if
 c_cond
 (paren
@@ -230,7 +232,7 @@ r_return
 id|FALSE
 suffix:semicolon
 )brace
-multiline_comment|/* Set the Adapter Stopped flag so other driver functions stop&n;     * touching the Hardware.&n;     */
+multiline_comment|/* Set the Adapter Stopped flag so other driver functions stop&n;&t; * touching the Hardware.&n;&t; */
 id|hw-&gt;adapter_stopped
 op_assign
 id|TRUE
@@ -252,7 +254,7 @@ comma
 l_int|0xFFFFFFFF
 )paren
 suffix:semicolon
-multiline_comment|/* Disable the Transmit and Receive units.  Then delay to allow&n;     * any pending transactions to complete before we hit the MAC with&n;     * the global reset.&n;     */
+multiline_comment|/* Disable the Transmit and Receive units.  Then delay to allow&n;&t; * any pending transactions to complete before we hit the MAC with&n;&t; * the global reset.&n;&t; */
 id|IXGB_WRITE_REG
 c_func
 (paren
@@ -297,7 +299,7 @@ c_func
 id|IXGB_DELAY_BEFORE_RESET
 )paren
 suffix:semicolon
-multiline_comment|/* Issue a global reset to the MAC.  This will reset the chip&squot;s&n;     * transmit, receive, DMA, and link units.  It will not effect&n;     * the current PCI configuration.  The global reset bit is self-&n;     * clearing, and should clear within a microsecond.&n;     */
+multiline_comment|/* Issue a global reset to the MAC.  This will reset the chip&squot;s&n;&t; * transmit, receive, DMA, and link units.  It will not effect&n;&t; * the current PCI configuration.  The global reset bit is self-&n;&t; * clearing, and should clear within a microsecond.&n;&t; */
 id|DEBUGOUT
 c_func
 (paren
@@ -375,7 +377,7 @@ c_func
 l_string|&quot;ixgb_init_hw&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* Issue a global reset to the MAC.  This will reset the chip&squot;s&n;     * transmit, receive, DMA, and link units.  It will not effect&n;     * the current PCI configuration.  The global reset bit is self-&n;     * clearing, and should clear within a microsecond.&n;     */
+multiline_comment|/* Issue a global reset to the MAC.  This will reset the chip&squot;s&n;&t; * transmit, receive, DMA, and link units.  It will not effect&n;&t; * the current PCI configuration.  The global reset bit is self-&n;&t; * clearing, and should clear within a microsecond.&n;&t; */
 id|DEBUGOUT
 c_func
 (paren
@@ -447,17 +449,19 @@ id|FALSE
 )paren
 (brace
 r_return
+(paren
 id|FALSE
+)paren
 suffix:semicolon
 )brace
-multiline_comment|/* Setup the receive addresses. &n;     * Receive Address Registers (RARs 0 - 15).&n;     */
+multiline_comment|/* Setup the receive addresses. &n;&t; * Receive Address Registers (RARs 0 - 15).&n;&t; */
 id|ixgb_init_rx_addrs
 c_func
 (paren
 id|hw
 )paren
 suffix:semicolon
-multiline_comment|/* &n;     * Check that a valid MAC address has been set.&n;     * If it is not valid, we fail hardware init.&n;     */
+multiline_comment|/* &n;&t; * Check that a valid MAC address has been set.&n;&t; * If it is not valid, we fail hardware init.&n;&t; */
 r_if
 c_cond
 (paren
@@ -476,7 +480,9 @@ l_string|&quot;MAC address invalid after ixgb_init_rx_addrs&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
+(paren
 id|FALSE
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/* tell the routines in this file they can access hardware again */
@@ -512,7 +518,6 @@ suffix:semicolon
 id|i
 op_increment
 )paren
-(brace
 id|IXGB_WRITE_REG_ARRAY
 c_func
 (paren
@@ -525,7 +530,6 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-)brace
 multiline_comment|/* Zero out the VLAN Filter Table Array */
 id|ixgb_clear_vfta
 c_func
@@ -583,7 +587,7 @@ c_func
 l_string|&quot;ixgb_init_rx_addrs&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* &n;     * If the current mac address is valid, assume it is a software override&n;     * to the permanent address.&n;     * Otherwise, use the permanent address from the eeprom.&n;     */
+multiline_comment|/* &n;&t; * If the current mac address is valid, assume it is a software override&n;&t; * to the permanent address.&n;&t; * Otherwise, use the permanent address from the eeprom.&n;&t; */
 r_if
 c_cond
 (paren
@@ -1016,7 +1020,7 @@ l_int|5
 )braket
 )paren
 suffix:semicolon
-multiline_comment|/* Place this multicast address in the RAR if there is room, *&n;         * else put it in the MTA            &n;         */
+multiline_comment|/* Place this multicast address in the RAR if there is room, *&n;&t;&t; * else put it in the MTA            &n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -1134,14 +1138,14 @@ c_func
 l_string|&quot;ixgb_hash_mc_addr&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* The portion of the address that is used for the hash table is&n;     * determined by the mc_filter_type setting.  &n;     */
+multiline_comment|/* The portion of the address that is used for the hash table is&n;&t; * determined by the mc_filter_type setting.  &n;&t; */
 r_switch
 c_cond
 (paren
 id|hw-&gt;mc_filter_type
 )paren
 (brace
-multiline_comment|/* [0] [1] [2] [3] [4] [5]&n;         * 01  AA  00  12  34  56&n;         * LSB                 MSB - According to H/W docs */
+multiline_comment|/* [0] [1] [2] [3] [4] [5]&n;&t;&t; * 01  AA  00  12  34  56&n;&t;&t; * LSB                 MSB - According to H/W docs */
 r_case
 l_int|0
 suffix:colon
@@ -1324,7 +1328,7 @@ suffix:semicolon
 r_uint32
 id|mta_reg
 suffix:semicolon
-multiline_comment|/* The MTA is a register array of 128 32-bit registers.  &n;     * It is treated like an array of 4096 bits.  We want to set &n;     * bit BitArray[hash_value]. So we figure out what register&n;     * the bit is in, read it, OR in the new bit, then write&n;     * back the new value.  The register is determined by the &n;     * upper 7 bits of the hash value and the bit within that &n;     * register are determined by the lower 5 bits of the value.&n;     */
+multiline_comment|/* The MTA is a register array of 128 32-bit registers.  &n;&t; * It is treated like an array of 4096 bits.  We want to set &n;&t; * bit BitArray[hash_value]. So we figure out what register&n;&t; * the bit is in, read it, OR in the new bit, then write&n;&t; * back the new value.  The register is determined by the &n;&t; * upper 7 bits of the hash value and the bit within that &n;&t; * register are determined by the lower 5 bits of the value.&n;&t; */
 id|hash_reg
 op_assign
 (paren
@@ -1406,7 +1410,7 @@ c_func
 l_string|&quot;ixgb_rar_set&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* HW expects these in little endian so we reverse the byte order&n;     * from network order (big endian) to little endian              &n;     */
+multiline_comment|/* HW expects these in little endian so we reverse the byte order&n;&t; * from network order (big endian) to little endian              &n;&t; */
 id|rar_low
 op_assign
 (paren
@@ -1582,7 +1586,6 @@ suffix:semicolon
 id|offset
 op_increment
 )paren
-(brace
 id|IXGB_WRITE_REG_ARRAY
 c_func
 (paren
@@ -1595,7 +1598,6 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-)brace
 r_return
 suffix:semicolon
 )brace
@@ -1652,7 +1654,7 @@ op_or
 id|IXGB_CTRL0_TPE
 )paren
 suffix:semicolon
-multiline_comment|/* The possible values of the &quot;flow_control&quot; parameter are:&n;     *      0:  Flow control is completely disabled&n;     *      1:  Rx flow control is enabled (we can receive pause frames&n;     *          but not send pause frames).&n;     *      2:  Tx flow control is enabled (we can send pause frames&n;     *          but we do not support receiving pause frames).&n;     *      3:  Both Rx and TX flow control (symmetric) are enabled.&n;     *  other:  Invalid.&n;     */
+multiline_comment|/* The possible values of the &quot;flow_control&quot; parameter are:&n;&t; *      0:  Flow control is completely disabled&n;&t; *      1:  Rx flow control is enabled (we can receive pause frames&n;&t; *          but not send pause frames).&n;&t; *      2:  Tx flow control is enabled (we can send pause frames&n;&t; *          but we do not support receiving pause frames).&n;&t; *      3:  Both Rx and TX flow control (symmetric) are enabled.&n;&t; *  other:  Invalid.&n;&t; */
 r_switch
 c_cond
 (paren
@@ -1669,7 +1671,7 @@ r_case
 id|ixgb_fc_rx_pause
 suffix:colon
 multiline_comment|/* 1 */
-multiline_comment|/* RX Flow control is enabled, and TX Flow control is&n;         * disabled.&n;         */
+multiline_comment|/* RX Flow control is enabled, and TX Flow control is&n;&t;&t; * disabled.&n;&t;&t; */
 id|ctrl_reg
 op_or_assign
 (paren
@@ -1682,7 +1684,7 @@ r_case
 id|ixgb_fc_tx_pause
 suffix:colon
 multiline_comment|/* 2 */
-multiline_comment|/* TX Flow control is enabled, and RX Flow control is&n;         * disabled, by a software over-ride.&n;         */
+multiline_comment|/* TX Flow control is enabled, and RX Flow control is&n;&t;&t; * disabled, by a software over-ride.&n;&t;&t; */
 id|ctrl_reg
 op_or_assign
 (paren
@@ -1699,7 +1701,7 @@ r_case
 id|ixgb_fc_full
 suffix:colon
 multiline_comment|/* 3 */
-multiline_comment|/* Flow control (both RX and TX) is enabled by a software&n;         * over-ride.&n;         */
+multiline_comment|/* Flow control (both RX and TX) is enabled by a software&n;&t;&t; * over-ride.&n;&t;&t; */
 id|ctrl_reg
 op_or_assign
 (paren
@@ -1762,7 +1764,7 @@ id|pap_reg
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Set the flow control receive threshold registers.  Normally,&n;     * these registers will be set to a default threshold that may be&n;     * adjusted later by the driver&squot;s runtime code.  However, if the&n;     * ability to transmit pause frames in not enabled, then these&n;     * registers will be set to 0. &n;     */
+multiline_comment|/* Set the flow control receive threshold registers.  Normally,&n;&t; * these registers will be set to a default threshold that may be&n;&t; * adjusted later by the driver&squot;s runtime code.  However, if the&n;&t; * ability to transmit pause frames in not enabled, then these&n;&t; * registers will be set to 0. &n;&t; */
 r_if
 c_cond
 (paren
@@ -1797,7 +1799,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-multiline_comment|/* We need to set up the Receive Threshold high and low water&n;        * marks as well as (optionally) enabling the transmission of XON frames.&n;        */
+multiline_comment|/* We need to set up the Receive Threshold high and low water&n;&t;&t; * marks as well as (optionally) enabling the transmission of XON frames.&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -2099,7 +2101,7 @@ op_eq
 l_int|0
 )paren
 suffix:semicolon
-multiline_comment|/* Operation is complete, get the data from the MDIO Read/Write Data&n;     * register and return. &n;     */
+multiline_comment|/* Operation is complete, get the data from the MDIO Read/Write Data&n;&t; * register and return. &n;&t; */
 id|data
 op_assign
 id|IXGB_READ_REG
@@ -2116,9 +2118,11 @@ id|IXGB_MSRWD_READ_DATA_SHIFT
 suffix:semicolon
 r_return
 (paren
+(paren
 r_uint16
 )paren
 id|data
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/******************************************************************************&n; * Writes a word to a device over the Management Data Interface (MDI) bus.&n; * This interface is used to manage Physical layer devices.&n; *&n; * hw          - Struct containing variables accessed by hw code&n; * reg_address - Offset of device register being read.&n; * phy_address - Address of device on MDI.&n; * device_type - Also known as the Device ID or DID.&n; * data        - 16-bit value to be written&n; *&n; * Returns:  void.&n; *&n; * This routine uses the new protocol MDI Single Command and Address Operation.&n; * This requires that first an address cycle command is sent, followed by a&n; * write command.&n; *****************************************************************************/
@@ -2498,8 +2502,8 @@ suffix:semicolon
 )brace
 multiline_comment|/*  Anything else for 10 Gig?? */
 )brace
-DECL|function|ixgb_check_for_bad_link
 id|boolean_t
+DECL|function|ixgb_check_for_bad_link
 id|ixgb_check_for_bad_link
 c_func
 (paren

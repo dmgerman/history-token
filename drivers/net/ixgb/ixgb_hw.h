@@ -139,261 +139,261 @@ suffix:semicolon
 DECL|macro|IXGB_ETH_LENGTH_OF_ADDRESS
 mdefine_line|#define IXGB_ETH_LENGTH_OF_ADDRESS   6
 DECL|macro|IXGB_EEPROM_SIZE
-mdefine_line|#define IXGB_EEPROM_SIZE    64   /* Size in words */
+mdefine_line|#define IXGB_EEPROM_SIZE    64&t;/* Size in words */
 DECL|macro|SPEED_10000
 mdefine_line|#define SPEED_10000  10000
 DECL|macro|FULL_DUPLEX
 mdefine_line|#define FULL_DUPLEX  2
 DECL|macro|IXGB_DELAY_BEFORE_RESET
-mdefine_line|#define IXGB_DELAY_BEFORE_RESET        10  /* allow 10ms after idling rx/tx units      */
+mdefine_line|#define IXGB_DELAY_BEFORE_RESET        10&t;/* allow 10ms after idling rx/tx units      */
 DECL|macro|IXGB_DELAY_AFTER_RESET
-mdefine_line|#define IXGB_DELAY_AFTER_RESET          1  /* allow 1ms after the reset                */
+mdefine_line|#define IXGB_DELAY_AFTER_RESET          1&t;/* allow 1ms after the reset                */
 DECL|macro|IXGB_DELAY_AFTER_EE_RESET
-mdefine_line|#define IXGB_DELAY_AFTER_EE_RESET      10  /* allow 10ms after the EEPROM reset        */
+mdefine_line|#define IXGB_DELAY_AFTER_EE_RESET      10&t;/* allow 10ms after the EEPROM reset        */
 DECL|macro|IXGB_DELAY_USECS_AFTER_LINK_RESET
-mdefine_line|#define IXGB_DELAY_USECS_AFTER_LINK_RESET    13  /* allow 13 microseconds after the reset    */
+mdefine_line|#define IXGB_DELAY_USECS_AFTER_LINK_RESET    13&t;/* allow 13 microseconds after the reset    */
 multiline_comment|/* NOTE: this is MICROSECONDS               */
 DECL|macro|MAX_RESET_ITERATIONS
-mdefine_line|#define MAX_RESET_ITERATIONS            8  /* number of iterations to get things right */
+mdefine_line|#define MAX_RESET_ITERATIONS            8&t;/* number of iterations to get things right */
 multiline_comment|/* General Registers */
 DECL|macro|IXGB_CTRL0
-mdefine_line|#define IXGB_CTRL0   0x00000 /* Device Control Register 0 - RW */
+mdefine_line|#define IXGB_CTRL0   0x00000&t;/* Device Control Register 0 - RW */
 DECL|macro|IXGB_CTRL1
-mdefine_line|#define IXGB_CTRL1   0x00008 /* Device Control Register 1 - RW */
+mdefine_line|#define IXGB_CTRL1   0x00008&t;/* Device Control Register 1 - RW */
 DECL|macro|IXGB_STATUS
-mdefine_line|#define IXGB_STATUS  0x00010 /* Device Status Register - RO */
+mdefine_line|#define IXGB_STATUS  0x00010&t;/* Device Status Register - RO */
 DECL|macro|IXGB_EECD
-mdefine_line|#define IXGB_EECD    0x00018 /* EEPROM/Flash Control/Data Register - RW */
+mdefine_line|#define IXGB_EECD    0x00018&t;/* EEPROM/Flash Control/Data Register - RW */
 DECL|macro|IXGB_MFS
-mdefine_line|#define IXGB_MFS     0x00020 /* Maximum Frame Size - RW */
+mdefine_line|#define IXGB_MFS     0x00020&t;/* Maximum Frame Size - RW */
 multiline_comment|/* Interrupt */
 DECL|macro|IXGB_ICR
-mdefine_line|#define IXGB_ICR     0x00080 /* Interrupt Cause Read - R/clr */
+mdefine_line|#define IXGB_ICR     0x00080&t;/* Interrupt Cause Read - R/clr */
 DECL|macro|IXGB_ICS
-mdefine_line|#define IXGB_ICS     0x00088 /* Interrupt Cause Set - RW */
+mdefine_line|#define IXGB_ICS     0x00088&t;/* Interrupt Cause Set - RW */
 DECL|macro|IXGB_IMS
-mdefine_line|#define IXGB_IMS     0x00090 /* Interrupt Mask Set/Read - RW */
+mdefine_line|#define IXGB_IMS     0x00090&t;/* Interrupt Mask Set/Read - RW */
 DECL|macro|IXGB_IMC
-mdefine_line|#define IXGB_IMC     0x00098 /* Interrupt Mask Clear - WO */
+mdefine_line|#define IXGB_IMC     0x00098&t;/* Interrupt Mask Clear - WO */
 multiline_comment|/* Receive */
 DECL|macro|IXGB_RCTL
-mdefine_line|#define IXGB_RCTL    0x00100 /* RX Control - RW */
+mdefine_line|#define IXGB_RCTL    0x00100&t;/* RX Control - RW */
 DECL|macro|IXGB_FCRTL
-mdefine_line|#define IXGB_FCRTL   0x00108 /* Flow Control Receive Threshold Low - RW */
+mdefine_line|#define IXGB_FCRTL   0x00108&t;/* Flow Control Receive Threshold Low - RW */
 DECL|macro|IXGB_FCRTH
-mdefine_line|#define IXGB_FCRTH   0x00110 /* Flow Control Receive Threshold High - RW */
+mdefine_line|#define IXGB_FCRTH   0x00110&t;/* Flow Control Receive Threshold High - RW */
 DECL|macro|IXGB_RDBAL
-mdefine_line|#define IXGB_RDBAL   0x00118 /* RX Descriptor Base Low - RW */
+mdefine_line|#define IXGB_RDBAL   0x00118&t;/* RX Descriptor Base Low - RW */
 DECL|macro|IXGB_RDBAH
-mdefine_line|#define IXGB_RDBAH   0x0011C /* RX Descriptor Base High - RW */
+mdefine_line|#define IXGB_RDBAH   0x0011C&t;/* RX Descriptor Base High - RW */
 DECL|macro|IXGB_RDLEN
-mdefine_line|#define IXGB_RDLEN   0x00120 /* RX Descriptor Length - RW */
+mdefine_line|#define IXGB_RDLEN   0x00120&t;/* RX Descriptor Length - RW */
 DECL|macro|IXGB_RDH
-mdefine_line|#define IXGB_RDH     0x00128 /* RX Descriptor Head - RW */
+mdefine_line|#define IXGB_RDH     0x00128&t;/* RX Descriptor Head - RW */
 DECL|macro|IXGB_RDT
-mdefine_line|#define IXGB_RDT     0x00130 /* RX Descriptor Tail - RW */
+mdefine_line|#define IXGB_RDT     0x00130&t;/* RX Descriptor Tail - RW */
 DECL|macro|IXGB_RDTR
-mdefine_line|#define IXGB_RDTR    0x00138 /* RX Delay Timer Ring - RW */
+mdefine_line|#define IXGB_RDTR    0x00138&t;/* RX Delay Timer Ring - RW */
 DECL|macro|IXGB_RXDCTL
-mdefine_line|#define IXGB_RXDCTL  0x00140 /* Receive Descriptor Control - RW */
+mdefine_line|#define IXGB_RXDCTL  0x00140&t;/* Receive Descriptor Control - RW */
 DECL|macro|IXGB_RAIDC
-mdefine_line|#define IXGB_RAIDC   0x00148 /* Receive Adaptive Interrupt Delay Control - RW */
+mdefine_line|#define IXGB_RAIDC   0x00148&t;/* Receive Adaptive Interrupt Delay Control - RW */
 DECL|macro|IXGB_RXCSUM
-mdefine_line|#define IXGB_RXCSUM  0x00158 /* Receive Checksum Control - RW */
+mdefine_line|#define IXGB_RXCSUM  0x00158&t;/* Receive Checksum Control - RW */
 DECL|macro|IXGB_RA
-mdefine_line|#define IXGB_RA      0x00180 /* Receive Address Array Base - RW */
+mdefine_line|#define IXGB_RA      0x00180&t;/* Receive Address Array Base - RW */
 DECL|macro|IXGB_RAL
-mdefine_line|#define IXGB_RAL     0x00180 /* Receive Address Low [0:15] - RW */
+mdefine_line|#define IXGB_RAL     0x00180&t;/* Receive Address Low [0:15] - RW */
 DECL|macro|IXGB_RAH
-mdefine_line|#define IXGB_RAH     0x00184 /* Receive Address High [0:15] - RW */
+mdefine_line|#define IXGB_RAH     0x00184&t;/* Receive Address High [0:15] - RW */
 DECL|macro|IXGB_MTA
-mdefine_line|#define IXGB_MTA     0x00200 /* Multicast Table Array [0:127] - RW */
+mdefine_line|#define IXGB_MTA     0x00200&t;/* Multicast Table Array [0:127] - RW */
 DECL|macro|IXGB_VFTA
-mdefine_line|#define IXGB_VFTA    0x00400 /* VLAN Filter Table Array [0:127] - RW */
+mdefine_line|#define IXGB_VFTA    0x00400&t;/* VLAN Filter Table Array [0:127] - RW */
 DECL|macro|IXGB_REQ_RX_DESCRIPTOR_MULTIPLE
 mdefine_line|#define IXGB_REQ_RX_DESCRIPTOR_MULTIPLE 8
 multiline_comment|/* Transmit */
 DECL|macro|IXGB_TCTL
-mdefine_line|#define IXGB_TCTL    0x00600 /* TX Control - RW */
+mdefine_line|#define IXGB_TCTL    0x00600&t;/* TX Control - RW */
 DECL|macro|IXGB_TDBAL
-mdefine_line|#define IXGB_TDBAL   0x00608 /* TX Descriptor Base Low - RW */
+mdefine_line|#define IXGB_TDBAL   0x00608&t;/* TX Descriptor Base Low - RW */
 DECL|macro|IXGB_TDBAH
-mdefine_line|#define IXGB_TDBAH   0x0060C /* TX Descriptor Base High - RW */
+mdefine_line|#define IXGB_TDBAH   0x0060C&t;/* TX Descriptor Base High - RW */
 DECL|macro|IXGB_TDLEN
-mdefine_line|#define IXGB_TDLEN   0x00610 /* TX Descriptor Length - RW */
+mdefine_line|#define IXGB_TDLEN   0x00610&t;/* TX Descriptor Length - RW */
 DECL|macro|IXGB_TDH
-mdefine_line|#define IXGB_TDH     0x00618 /* TX Descriptor Head - RW */
+mdefine_line|#define IXGB_TDH     0x00618&t;/* TX Descriptor Head - RW */
 DECL|macro|IXGB_TDT
-mdefine_line|#define IXGB_TDT     0x00620 /* TX Descriptor Tail - RW */
+mdefine_line|#define IXGB_TDT     0x00620&t;/* TX Descriptor Tail - RW */
 DECL|macro|IXGB_TIDV
-mdefine_line|#define IXGB_TIDV    0x00628 /* TX Interrupt Delay Value - RW */
+mdefine_line|#define IXGB_TIDV    0x00628&t;/* TX Interrupt Delay Value - RW */
 DECL|macro|IXGB_TXDCTL
-mdefine_line|#define IXGB_TXDCTL  0x00630 /* Transmit Descriptor Control - RW */
+mdefine_line|#define IXGB_TXDCTL  0x00630&t;/* Transmit Descriptor Control - RW */
 DECL|macro|IXGB_TSPMT
-mdefine_line|#define IXGB_TSPMT   0x00638 /* TCP Segmentation PAD &amp; Min Threshold - RW */
+mdefine_line|#define IXGB_TSPMT   0x00638&t;/* TCP Segmentation PAD &amp; Min Threshold - RW */
 DECL|macro|IXGB_PAP
-mdefine_line|#define IXGB_PAP     0x00640 /* Pause and Pace - RW */
+mdefine_line|#define IXGB_PAP     0x00640&t;/* Pause and Pace - RW */
 DECL|macro|IXGB_REQ_TX_DESCRIPTOR_MULTIPLE
 mdefine_line|#define IXGB_REQ_TX_DESCRIPTOR_MULTIPLE 8
 multiline_comment|/* Physical */
 DECL|macro|IXGB_PCSC1
-mdefine_line|#define IXGB_PCSC1   0x00700 /* PCS Control 1 - RW */
+mdefine_line|#define IXGB_PCSC1   0x00700&t;/* PCS Control 1 - RW */
 DECL|macro|IXGB_PCSC2
-mdefine_line|#define IXGB_PCSC2   0x00708 /* PCS Control 2 - RW */
+mdefine_line|#define IXGB_PCSC2   0x00708&t;/* PCS Control 2 - RW */
 DECL|macro|IXGB_PCSS1
-mdefine_line|#define IXGB_PCSS1   0x00710 /* PCS Status 1 - RO */
+mdefine_line|#define IXGB_PCSS1   0x00710&t;/* PCS Status 1 - RO */
 DECL|macro|IXGB_PCSS2
-mdefine_line|#define IXGB_PCSS2   0x00718 /* PCS Status 2 - RO */
+mdefine_line|#define IXGB_PCSS2   0x00718&t;/* PCS Status 2 - RO */
 DECL|macro|IXGB_XPCSS
-mdefine_line|#define IXGB_XPCSS   0x00720 /* 10GBASE-X PCS Status (or XGXS Lane Status) - RO */
+mdefine_line|#define IXGB_XPCSS   0x00720&t;/* 10GBASE-X PCS Status (or XGXS Lane Status) - RO */
 DECL|macro|IXGB_UCCR
-mdefine_line|#define IXGB_UCCR    0x00728 /* Unilink Circuit Control Register */
+mdefine_line|#define IXGB_UCCR    0x00728&t;/* Unilink Circuit Control Register */
 DECL|macro|IXGB_XPCSTC
-mdefine_line|#define IXGB_XPCSTC  0x00730 /* 10GBASE-X PCS Test Control */
+mdefine_line|#define IXGB_XPCSTC  0x00730&t;/* 10GBASE-X PCS Test Control */
 DECL|macro|IXGB_MACA
-mdefine_line|#define IXGB_MACA    0x00738 /* MDI Autoscan Command and Address - RW */
+mdefine_line|#define IXGB_MACA    0x00738&t;/* MDI Autoscan Command and Address - RW */
 DECL|macro|IXGB_APAE
-mdefine_line|#define IXGB_APAE    0x00740 /* Autoscan PHY Address Enable - RW */
+mdefine_line|#define IXGB_APAE    0x00740&t;/* Autoscan PHY Address Enable - RW */
 DECL|macro|IXGB_ARD
-mdefine_line|#define IXGB_ARD     0x00748 /* Autoscan Read Data - RO */
+mdefine_line|#define IXGB_ARD     0x00748&t;/* Autoscan Read Data - RO */
 DECL|macro|IXGB_AIS
-mdefine_line|#define IXGB_AIS     0x00750 /* Autoscan Interrupt Status - RO */
+mdefine_line|#define IXGB_AIS     0x00750&t;/* Autoscan Interrupt Status - RO */
 DECL|macro|IXGB_MSCA
-mdefine_line|#define IXGB_MSCA    0x00758 /* MDI Single Command and Address - RW */
+mdefine_line|#define IXGB_MSCA    0x00758&t;/* MDI Single Command and Address - RW */
 DECL|macro|IXGB_MSRWD
-mdefine_line|#define IXGB_MSRWD   0x00760 /* MDI Single Read and Write Data - RW, RO */
+mdefine_line|#define IXGB_MSRWD   0x00760&t;/* MDI Single Read and Write Data - RW, RO */
 multiline_comment|/* Wake-up */
 DECL|macro|IXGB_WUFC
-mdefine_line|#define IXGB_WUFC    0x00808 /* Wake Up Filter Control - RW */
+mdefine_line|#define IXGB_WUFC    0x00808&t;/* Wake Up Filter Control - RW */
 DECL|macro|IXGB_WUS
-mdefine_line|#define IXGB_WUS     0x00810 /* Wake Up Status - RO */
+mdefine_line|#define IXGB_WUS     0x00810&t;/* Wake Up Status - RO */
 DECL|macro|IXGB_FFLT
-mdefine_line|#define IXGB_FFLT    0x01000 /* Flexible Filter Length Table - RW */
+mdefine_line|#define IXGB_FFLT    0x01000&t;/* Flexible Filter Length Table - RW */
 DECL|macro|IXGB_FFMT
-mdefine_line|#define IXGB_FFMT    0x01020 /* Flexible Filter Mask Table - RW */
+mdefine_line|#define IXGB_FFMT    0x01020&t;/* Flexible Filter Mask Table - RW */
 DECL|macro|IXGB_FTVT
-mdefine_line|#define IXGB_FTVT    0x01420 /* Flexible Filter Value Table - RW */
+mdefine_line|#define IXGB_FTVT    0x01420&t;/* Flexible Filter Value Table - RW */
 multiline_comment|/* Statistics */
 DECL|macro|IXGB_TPRL
-mdefine_line|#define IXGB_TPRL    0x02000 /* Total Packets Received (Low) */
+mdefine_line|#define IXGB_TPRL    0x02000&t;/* Total Packets Received (Low) */
 DECL|macro|IXGB_TPRH
-mdefine_line|#define IXGB_TPRH    0x02004 /* Total Packets Received (High) */
+mdefine_line|#define IXGB_TPRH    0x02004&t;/* Total Packets Received (High) */
 DECL|macro|IXGB_GPRCL
-mdefine_line|#define IXGB_GPRCL   0x02008 /* Good Packets Received Count (Low) */
+mdefine_line|#define IXGB_GPRCL   0x02008&t;/* Good Packets Received Count (Low) */
 DECL|macro|IXGB_GPRCH
-mdefine_line|#define IXGB_GPRCH   0x0200C /* Good Packets Received Count (High) */
+mdefine_line|#define IXGB_GPRCH   0x0200C&t;/* Good Packets Received Count (High) */
 DECL|macro|IXGB_BPRCL
-mdefine_line|#define IXGB_BPRCL   0x02010 /* Broadcast Packets Received Count (Low) */
+mdefine_line|#define IXGB_BPRCL   0x02010&t;/* Broadcast Packets Received Count (Low) */
 DECL|macro|IXGB_BPRCH
-mdefine_line|#define IXGB_BPRCH   0x02014 /* Broadcast Packets Received Count (High) */
+mdefine_line|#define IXGB_BPRCH   0x02014&t;/* Broadcast Packets Received Count (High) */
 DECL|macro|IXGB_MPRCL
-mdefine_line|#define IXGB_MPRCL   0x02018 /* Multicast Packets Received Count (Low) */
+mdefine_line|#define IXGB_MPRCL   0x02018&t;/* Multicast Packets Received Count (Low) */
 DECL|macro|IXGB_MPRCH
-mdefine_line|#define IXGB_MPRCH   0x0201C /* Multicast Packets Received Count (High) */
+mdefine_line|#define IXGB_MPRCH   0x0201C&t;/* Multicast Packets Received Count (High) */
 DECL|macro|IXGB_UPRCL
-mdefine_line|#define IXGB_UPRCL   0x02020 /* Unicast Packets Received Count (Low) */
+mdefine_line|#define IXGB_UPRCL   0x02020&t;/* Unicast Packets Received Count (Low) */
 DECL|macro|IXGB_UPRCH
-mdefine_line|#define IXGB_UPRCH   0x02024 /* Unicast Packets Received Count (High) */
+mdefine_line|#define IXGB_UPRCH   0x02024&t;/* Unicast Packets Received Count (High) */
 DECL|macro|IXGB_VPRCL
-mdefine_line|#define IXGB_VPRCL   0x02028 /* VLAN Packets Received Count (Low) */
+mdefine_line|#define IXGB_VPRCL   0x02028&t;/* VLAN Packets Received Count (Low) */
 DECL|macro|IXGB_VPRCH
-mdefine_line|#define IXGB_VPRCH   0x0202C /* VLAN Packets Received Count (High) */
+mdefine_line|#define IXGB_VPRCH   0x0202C&t;/* VLAN Packets Received Count (High) */
 DECL|macro|IXGB_JPRCL
-mdefine_line|#define IXGB_JPRCL   0x02030 /* Jumbo Packets Received Count (Low) */
+mdefine_line|#define IXGB_JPRCL   0x02030&t;/* Jumbo Packets Received Count (Low) */
 DECL|macro|IXGB_JPRCH
-mdefine_line|#define IXGB_JPRCH   0x02034 /* Jumbo Packets Received Count (High) */
+mdefine_line|#define IXGB_JPRCH   0x02034&t;/* Jumbo Packets Received Count (High) */
 DECL|macro|IXGB_GORCL
-mdefine_line|#define IXGB_GORCL   0x02038 /* Good Octets Received Count (Low) */
+mdefine_line|#define IXGB_GORCL   0x02038&t;/* Good Octets Received Count (Low) */
 DECL|macro|IXGB_GORCH
-mdefine_line|#define IXGB_GORCH   0x0203C /* Good Octets Received Count (High) */
+mdefine_line|#define IXGB_GORCH   0x0203C&t;/* Good Octets Received Count (High) */
 DECL|macro|IXGB_TORL
-mdefine_line|#define IXGB_TORL    0x02040 /* Total Octets Received (Low) */
+mdefine_line|#define IXGB_TORL    0x02040&t;/* Total Octets Received (Low) */
 DECL|macro|IXGB_TORH
-mdefine_line|#define IXGB_TORH    0x02044 /* Total Octets Received (High) */
+mdefine_line|#define IXGB_TORH    0x02044&t;/* Total Octets Received (High) */
 DECL|macro|IXGB_RNBC
-mdefine_line|#define IXGB_RNBC    0x02048 /* Receive No Buffers Count */
+mdefine_line|#define IXGB_RNBC    0x02048&t;/* Receive No Buffers Count */
 DECL|macro|IXGB_RUC
-mdefine_line|#define IXGB_RUC     0x02050 /* Receive Undersize Count */
+mdefine_line|#define IXGB_RUC     0x02050&t;/* Receive Undersize Count */
 DECL|macro|IXGB_ROC
-mdefine_line|#define IXGB_ROC     0x02058 /* Receive Oversize Count */
+mdefine_line|#define IXGB_ROC     0x02058&t;/* Receive Oversize Count */
 DECL|macro|IXGB_RLEC
-mdefine_line|#define IXGB_RLEC    0x02060 /* Receive Length Error Count */
+mdefine_line|#define IXGB_RLEC    0x02060&t;/* Receive Length Error Count */
 DECL|macro|IXGB_CRCERRS
-mdefine_line|#define IXGB_CRCERRS 0x02068 /* CRC Error Count */
+mdefine_line|#define IXGB_CRCERRS 0x02068&t;/* CRC Error Count */
 DECL|macro|IXGB_ICBC
-mdefine_line|#define IXGB_ICBC    0x02070 /* Illegal control byte in mid-packet Count */
+mdefine_line|#define IXGB_ICBC    0x02070&t;/* Illegal control byte in mid-packet Count */
 DECL|macro|IXGB_ECBC
-mdefine_line|#define IXGB_ECBC    0x02078 /* Error Control byte in mid-packet Count */
+mdefine_line|#define IXGB_ECBC    0x02078&t;/* Error Control byte in mid-packet Count */
 DECL|macro|IXGB_MPC
-mdefine_line|#define IXGB_MPC     0x02080 /* Missed Packets Count */
+mdefine_line|#define IXGB_MPC     0x02080&t;/* Missed Packets Count */
 DECL|macro|IXGB_TPTL
-mdefine_line|#define IXGB_TPTL    0x02100 /* Total Packets Transmitted (Low) */
+mdefine_line|#define IXGB_TPTL    0x02100&t;/* Total Packets Transmitted (Low) */
 DECL|macro|IXGB_TPTH
-mdefine_line|#define IXGB_TPTH    0x02104 /* Total Packets Transmitted (High) */
+mdefine_line|#define IXGB_TPTH    0x02104&t;/* Total Packets Transmitted (High) */
 DECL|macro|IXGB_GPTCL
-mdefine_line|#define IXGB_GPTCL   0x02108 /* Good Packets Transmitted Count (Low) */
+mdefine_line|#define IXGB_GPTCL   0x02108&t;/* Good Packets Transmitted Count (Low) */
 DECL|macro|IXGB_GPTCH
-mdefine_line|#define IXGB_GPTCH   0x0210C /* Good Packets Transmitted Count (High) */
+mdefine_line|#define IXGB_GPTCH   0x0210C&t;/* Good Packets Transmitted Count (High) */
 DECL|macro|IXGB_BPTCL
-mdefine_line|#define IXGB_BPTCL   0x02110 /* Broadcast Packets Transmitted Count (Low) */
+mdefine_line|#define IXGB_BPTCL   0x02110&t;/* Broadcast Packets Transmitted Count (Low) */
 DECL|macro|IXGB_BPTCH
-mdefine_line|#define IXGB_BPTCH   0x02114 /* Broadcast Packets Transmitted Count (High) */
+mdefine_line|#define IXGB_BPTCH   0x02114&t;/* Broadcast Packets Transmitted Count (High) */
 DECL|macro|IXGB_MPTCL
-mdefine_line|#define IXGB_MPTCL   0x02118 /* Multicast Packets Transmitted Count (Low) */
+mdefine_line|#define IXGB_MPTCL   0x02118&t;/* Multicast Packets Transmitted Count (Low) */
 DECL|macro|IXGB_MPTCH
-mdefine_line|#define IXGB_MPTCH   0x0211C /* Multicast Packets Transmitted Count (High) */
+mdefine_line|#define IXGB_MPTCH   0x0211C&t;/* Multicast Packets Transmitted Count (High) */
 DECL|macro|IXGB_UPTCL
-mdefine_line|#define IXGB_UPTCL   0x02120 /* Unicast Packets Transmitted Count (Low) */
+mdefine_line|#define IXGB_UPTCL   0x02120&t;/* Unicast Packets Transmitted Count (Low) */
 DECL|macro|IXGB_UPTCH
-mdefine_line|#define IXGB_UPTCH   0x02124 /* Unicast Packets Transmitted Count (High) */
+mdefine_line|#define IXGB_UPTCH   0x02124&t;/* Unicast Packets Transmitted Count (High) */
 DECL|macro|IXGB_VPTCL
-mdefine_line|#define IXGB_VPTCL   0x02128 /* VLAN Packets Transmitted Count (Low) */
+mdefine_line|#define IXGB_VPTCL   0x02128&t;/* VLAN Packets Transmitted Count (Low) */
 DECL|macro|IXGB_VPTCH
-mdefine_line|#define IXGB_VPTCH   0x0212C /* VLAN Packets Transmitted Count (High) */
+mdefine_line|#define IXGB_VPTCH   0x0212C&t;/* VLAN Packets Transmitted Count (High) */
 DECL|macro|IXGB_JPTCL
-mdefine_line|#define IXGB_JPTCL   0x02130 /* Jumbo Packets Transmitted Count (Low) */
+mdefine_line|#define IXGB_JPTCL   0x02130&t;/* Jumbo Packets Transmitted Count (Low) */
 DECL|macro|IXGB_JPTCH
-mdefine_line|#define IXGB_JPTCH   0x02134 /* Jumbo Packets Transmitted Count (High) */
+mdefine_line|#define IXGB_JPTCH   0x02134&t;/* Jumbo Packets Transmitted Count (High) */
 DECL|macro|IXGB_GOTCL
-mdefine_line|#define IXGB_GOTCL   0x02138 /* Good Octets Transmitted Count (Low) */
+mdefine_line|#define IXGB_GOTCL   0x02138&t;/* Good Octets Transmitted Count (Low) */
 DECL|macro|IXGB_GOTCH
-mdefine_line|#define IXGB_GOTCH   0x0213C /* Good Octets Transmitted Count (High) */
+mdefine_line|#define IXGB_GOTCH   0x0213C&t;/* Good Octets Transmitted Count (High) */
 DECL|macro|IXGB_TOTL
-mdefine_line|#define IXGB_TOTL    0x02140 /* Total Octets Transmitted Count (Low) */
+mdefine_line|#define IXGB_TOTL    0x02140&t;/* Total Octets Transmitted Count (Low) */
 DECL|macro|IXGB_TOTH
-mdefine_line|#define IXGB_TOTH    0x02144 /* Total Octets Transmitted Count (High) */
+mdefine_line|#define IXGB_TOTH    0x02144&t;/* Total Octets Transmitted Count (High) */
 DECL|macro|IXGB_DC
-mdefine_line|#define IXGB_DC      0x02148 /* Defer Count */
+mdefine_line|#define IXGB_DC      0x02148&t;/* Defer Count */
 DECL|macro|IXGB_PLT64C
-mdefine_line|#define IXGB_PLT64C  0x02150 /* Packet Transmitted was less than 64 bytes Count */
+mdefine_line|#define IXGB_PLT64C  0x02150&t;/* Packet Transmitted was less than 64 bytes Count */
 DECL|macro|IXGB_TSCTC
-mdefine_line|#define IXGB_TSCTC   0x02170 /* TCP Segmentation Context Transmitted Count */
+mdefine_line|#define IXGB_TSCTC   0x02170&t;/* TCP Segmentation Context Transmitted Count */
 DECL|macro|IXGB_TSCTFC
-mdefine_line|#define IXGB_TSCTFC  0x02178 /* TCP Segmentation Context Tx Fail Count */
+mdefine_line|#define IXGB_TSCTFC  0x02178&t;/* TCP Segmentation Context Tx Fail Count */
 DECL|macro|IXGB_IBIC
-mdefine_line|#define IXGB_IBIC    0x02180 /* Illegal byte during Idle stream count */
+mdefine_line|#define IXGB_IBIC    0x02180&t;/* Illegal byte during Idle stream count */
 DECL|macro|IXGB_RFC
-mdefine_line|#define IXGB_RFC     0x02188 /* Remote Fault Count */
+mdefine_line|#define IXGB_RFC     0x02188&t;/* Remote Fault Count */
 DECL|macro|IXGB_LFC
-mdefine_line|#define IXGB_LFC     0x02190 /* Local Fault Count */
+mdefine_line|#define IXGB_LFC     0x02190&t;/* Local Fault Count */
 DECL|macro|IXGB_PFRC
-mdefine_line|#define IXGB_PFRC    0x02198 /* Pause Frame Receive Count */
+mdefine_line|#define IXGB_PFRC    0x02198&t;/* Pause Frame Receive Count */
 DECL|macro|IXGB_PFTC
-mdefine_line|#define IXGB_PFTC    0x021A0 /* Pause Frame Transmit Count */
+mdefine_line|#define IXGB_PFTC    0x021A0&t;/* Pause Frame Transmit Count */
 DECL|macro|IXGB_MCFRC
-mdefine_line|#define IXGB_MCFRC   0x021A8 /* MAC Control Frames (non-Pause) Received Count */
+mdefine_line|#define IXGB_MCFRC   0x021A8&t;/* MAC Control Frames (non-Pause) Received Count */
 DECL|macro|IXGB_MCFTC
-mdefine_line|#define IXGB_MCFTC   0x021B0 /* MAC Control Frames (non-Pause) Transmitted Count */
+mdefine_line|#define IXGB_MCFTC   0x021B0&t;/* MAC Control Frames (non-Pause) Transmitted Count */
 DECL|macro|IXGB_XONRXC
-mdefine_line|#define IXGB_XONRXC  0x021B8 /* XON Received Count */
+mdefine_line|#define IXGB_XONRXC  0x021B8&t;/* XON Received Count */
 DECL|macro|IXGB_XONTXC
-mdefine_line|#define IXGB_XONTXC  0x021C0 /* XON Transmitted Count */
+mdefine_line|#define IXGB_XONTXC  0x021C0&t;/* XON Transmitted Count */
 DECL|macro|IXGB_XOFFRXC
-mdefine_line|#define IXGB_XOFFRXC 0x021C8 /* XOFF Received Count */
+mdefine_line|#define IXGB_XOFFRXC 0x021C8&t;/* XOFF Received Count */
 DECL|macro|IXGB_XOFFTXC
-mdefine_line|#define IXGB_XOFFTXC 0x021D0 /* XOFF Transmitted Count */
+mdefine_line|#define IXGB_XOFFTXC 0x021D0&t;/* XOFF Transmitted Count */
 DECL|macro|IXGB_RJC
-mdefine_line|#define IXGB_RJC     0x021D8 /* Receive Jabber Count */
+mdefine_line|#define IXGB_RJC     0x021D8&t;/* Receive Jabber Count */
 multiline_comment|/* CTRL0 Bit Masks */
 DECL|macro|IXGB_CTRL0_LRST
 mdefine_line|#define IXGB_CTRL0_LRST     0x00000008
@@ -506,16 +506,16 @@ DECL|macro|IXGB_FCRTL_XONE
 mdefine_line|#define IXGB_FCRTL_XONE       0x80000000
 multiline_comment|/* RXDCTL Bit Masks */
 DECL|macro|IXGB_RXDCTL_PTHRESH_SHIFT
-mdefine_line|#define IXGB_RXDCTL_PTHRESH_SHIFT 0         
+mdefine_line|#define IXGB_RXDCTL_PTHRESH_SHIFT 0
 DECL|macro|IXGB_RXDCTL_HTHRESH_SHIFT
-mdefine_line|#define IXGB_RXDCTL_HTHRESH_SHIFT 9         
+mdefine_line|#define IXGB_RXDCTL_HTHRESH_SHIFT 9
 DECL|macro|IXGB_RXDCTL_WTHRESH_SHIFT
-mdefine_line|#define IXGB_RXDCTL_WTHRESH_SHIFT 18        
+mdefine_line|#define IXGB_RXDCTL_WTHRESH_SHIFT 18
 multiline_comment|/* RAIDC Bit Masks */
 DECL|macro|IXGB_RAIDC_DELAY_SHIFT
-mdefine_line|#define IXGB_RAIDC_DELAY_SHIFT   11        
+mdefine_line|#define IXGB_RAIDC_DELAY_SHIFT   11
 DECL|macro|IXGB_RAIDC_POLL_SHIFT
-mdefine_line|#define IXGB_RAIDC_POLL_SHIFT    20        
+mdefine_line|#define IXGB_RAIDC_POLL_SHIFT    20
 DECL|macro|IXGB_RAIDC_RXT_GATE
 mdefine_line|#define IXGB_RAIDC_RXT_GATE      0x40000000
 DECL|macro|IXGB_RAIDC_EN
@@ -535,7 +535,7 @@ DECL|macro|IXGB_TCTL_TPDE
 mdefine_line|#define IXGB_TCTL_TPDE 0x00000004
 multiline_comment|/* TXDCTL Bit Masks */
 DECL|macro|IXGB_TXDCTL_HTHRESH_SHIFT
-mdefine_line|#define IXGB_TXDCTL_HTHRESH_SHIFT 8         
+mdefine_line|#define IXGB_TXDCTL_HTHRESH_SHIFT 8
 multiline_comment|/* TSPMT Bit Masks */
 multiline_comment|/* PAP Bit Masks */
 multiline_comment|/* PCSC1 Bit Masks */
@@ -570,7 +570,7 @@ DECL|macro|IXGB_MSRWD_READ_DATA_SHIFT
 mdefine_line|#define IXGB_MSRWD_READ_DATA_SHIFT  16
 multiline_comment|/* Definitions for the TXN17401 devices on the MDIO bus. */
 DECL|macro|IXGB_PHY_ADDRESS
-mdefine_line|#define IXGB_PHY_ADDRESS             0x0  /* Single PHY, multiple &quot;Devices&quot; */
+mdefine_line|#define IXGB_PHY_ADDRESS             0x0&t;/* Single PHY, multiple &quot;Devices&quot; */
 multiline_comment|/* Five bit Device IDs */
 DECL|macro|TXN17401_PMA_PMD_DID
 mdefine_line|#define TXN17401_PMA_PMD_DID    0x01
@@ -636,7 +636,7 @@ mdefine_line|#define IXGB_RX_DESC_ERRORS_TCPE 0x20
 DECL|macro|IXGB_RX_DESC_ERRORS_RXE
 mdefine_line|#define IXGB_RX_DESC_ERRORS_RXE  0x80
 DECL|macro|IXGB_RX_DESC_SPECIAL_VLAN_MASK
-mdefine_line|#define IXGB_RX_DESC_SPECIAL_VLAN_MASK  0x0FFF      /* VLAN ID is in lower 12 bits */
+mdefine_line|#define IXGB_RX_DESC_SPECIAL_VLAN_MASK  0x0FFF&t;/* VLAN ID is in lower 12 bits */
 DECL|struct|ixgb_tx_desc
 r_struct
 id|ixgb_tx_desc
@@ -741,11 +741,11 @@ DECL|macro|IXGB_CONTEXT_DESC_TYPE
 mdefine_line|#define IXGB_CONTEXT_DESC_TYPE 0x00000000
 multiline_comment|/* Filters */
 DECL|macro|IXGB_RAR_ENTRIES
-mdefine_line|#define IXGB_RAR_ENTRIES          16   /* Number of entries in Rx Address array */
+mdefine_line|#define IXGB_RAR_ENTRIES          16&t;/* Number of entries in Rx Address array */
 DECL|macro|IXGB_MC_TBL_SIZE
-mdefine_line|#define IXGB_MC_TBL_SIZE          128  /* Multicast Filter Table (4096 bits) */
+mdefine_line|#define IXGB_MC_TBL_SIZE          128&t;/* Multicast Filter Table (4096 bits) */
 DECL|macro|IXGB_VLAN_FILTER_TBL_SIZE
-mdefine_line|#define IXGB_VLAN_FILTER_TBL_SIZE 128  /* VLAN Filter Table (4096 bits) */
+mdefine_line|#define IXGB_VLAN_FILTER_TBL_SIZE 128&t;/* VLAN Filter Table (4096 bits) */
 DECL|macro|ENET_HEADER_SIZE
 mdefine_line|#define ENET_HEADER_SIZE            14
 DECL|macro|ENET_FCS_LENGTH
@@ -881,7 +881,7 @@ DECL|member|num_mc_addrs
 r_uint32
 id|num_mc_addrs
 suffix:semicolon
-multiline_comment|/* Number of current Multicast addrs*/
+multiline_comment|/* Number of current Multicast addrs */
 DECL|member|curr_mac_addr
 r_uint8
 id|curr_mac_addr
@@ -1598,5 +1598,5 @@ op_star
 id|value
 )paren
 suffix:semicolon
-macro_line|#endif /* _IXGB_HW_H_ */
+macro_line|#endif&t;&t;&t;&t;/* _IXGB_HW_H_ */
 eof

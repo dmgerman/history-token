@@ -40,7 +40,7 @@ mdefine_line|#define BAR_0           0
 DECL|macro|BAR_1
 mdefine_line|#define BAR_1           1
 DECL|macro|BAR_5
-mdefine_line|#define BAR_5           5 
+mdefine_line|#define BAR_5           5
 DECL|macro|PCI_DMA_64BIT
 mdefine_line|#define PCI_DMA_64BIT   0xffffffffffffffffULL
 DECL|macro|PCI_DMA_32BIT
@@ -344,5 +344,5 @@ id|IFNAMSIZ
 suffix:semicolon
 )brace
 suffix:semicolon
-macro_line|#endif /* _IXGB_H_ */
+macro_line|#endif&t;&t;&t;&t;/* _IXGB_H_ */
 eof
