@@ -9365,12 +9365,6 @@ op_star
 )paren
 id|info-&gt;par
 suffix:semicolon
-id|riva_create_i2c_busses
-c_func
-(paren
-id|par
-)paren
-suffix:semicolon
 r_for
 c_loop
 (paren
@@ -9415,12 +9409,6 @@ r_break
 suffix:semicolon
 )brace
 )brace
-id|riva_delete_i2c_busses
-c_func
-(paren
-id|par
-)paren
-suffix:semicolon
 macro_line|#endif
 macro_line|#endif
 id|NVTRACE_LEAVE
@@ -10095,6 +10083,19 @@ suffix:semicolon
 )brace
 )brace
 macro_line|#endif /* CONFIG_MTRR */
+macro_line|#ifdef CONFIG_FB_RIVA_I2C
+id|riva_create_i2c_busses
+c_func
+(paren
+(paren
+r_struct
+id|riva_par
+op_star
+)paren
+id|info-&gt;par
+)paren
+suffix:semicolon
+macro_line|#endif
 id|info-&gt;fbops
 op_assign
 op_amp
@@ -10230,6 +10231,19 @@ l_int|0
 suffix:semicolon
 id|err_out_iounmap_fb
 suffix:colon
+macro_line|#ifdef CONFIG_FB_RIVA_I2C
+id|riva_delete_i2c_busses
+c_func
+(paren
+(paren
+r_struct
+id|riva_par
+op_star
+)paren
+id|info-&gt;par
+)paren
+suffix:semicolon
+macro_line|#endif
 id|iounmap
 c_func
 (paren
@@ -10358,6 +10372,14 @@ id|info
 )paren
 r_return
 suffix:semicolon
+macro_line|#ifdef CONFIG_FB_RIVA_I2C
+id|riva_delete_i2c_busses
+c_func
+(paren
+id|par
+)paren
+suffix:semicolon
+macro_line|#endif
 id|unregister_framebuffer
 c_func
 (paren
