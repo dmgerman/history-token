@@ -2769,6 +2769,27 @@ DECL|macro|DT_SOCK
 mdefine_line|#define DT_SOCK&t;&t;12
 DECL|macro|DT_WHT
 mdefine_line|#define DT_WHT&t;&t;14
+DECL|macro|OSYNC_METADATA
+mdefine_line|#define OSYNC_METADATA&t;(1&lt;&lt;0)
+DECL|macro|OSYNC_DATA
+mdefine_line|#define OSYNC_DATA&t;(1&lt;&lt;1)
+DECL|macro|OSYNC_INODE
+mdefine_line|#define OSYNC_INODE&t;(1&lt;&lt;2)
+r_int
+id|generic_osync_inode
+c_func
+(paren
+r_struct
+id|inode
+op_star
+comma
+r_struct
+id|address_space
+op_star
+comma
+r_int
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * This is the &quot;filldir&quot; function type, used by readdir() to let&n; * the kernel specify what kind of dirent layout it wants to have.&n; * This allows the kernel to read directories into kernel space or&n; * to have different dirent layouts depending on the binary type.&n; */
 DECL|typedef|filldir_t
 r_typedef

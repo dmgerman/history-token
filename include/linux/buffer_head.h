@@ -1051,27 +1051,6 @@ comma
 id|loff_t
 )paren
 suffix:semicolon
-DECL|macro|OSYNC_METADATA
-mdefine_line|#define OSYNC_METADATA&t;(1&lt;&lt;0)
-DECL|macro|OSYNC_DATA
-mdefine_line|#define OSYNC_DATA&t;(1&lt;&lt;1)
-DECL|macro|OSYNC_INODE
-mdefine_line|#define OSYNC_INODE&t;(1&lt;&lt;2)
-r_int
-id|generic_osync_inode
-c_func
-(paren
-r_struct
-id|inode
-op_star
-comma
-r_struct
-id|address_space
-op_star
-comma
-r_int
-)paren
-suffix:semicolon
 multiline_comment|/*&n; * inline definitions&n; */
 DECL|function|get_bh
 r_static

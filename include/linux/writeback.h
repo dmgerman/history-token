@@ -340,6 +340,27 @@ op_star
 id|wbc
 )paren
 suffix:semicolon
+r_int
+id|sync_page_range
+c_func
+(paren
+r_struct
+id|inode
+op_star
+id|inode
+comma
+r_struct
+id|address_space
+op_star
+id|mapping
+comma
+id|loff_t
+id|pos
+comma
+r_int
+id|count
+)paren
+suffix:semicolon
 multiline_comment|/* pdflush.c */
 r_extern
 r_int
