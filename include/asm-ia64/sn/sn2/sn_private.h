@@ -883,6 +883,10 @@ r_extern
 id|xtalk_provider_t
 id|hub_provider
 suffix:semicolon
+r_extern
+r_int
+id|numionodes
+suffix:semicolon
 multiline_comment|/* du.c */
 r_int
 id|ducons_write
