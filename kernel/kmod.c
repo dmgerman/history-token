@@ -16,6 +16,8 @@ macro_line|#include &lt;asm/uaccess.h&gt;
 r_extern
 r_int
 id|max_threads
+comma
+id|system_running
 suffix:semicolon
 r_static
 r_inline
@@ -529,6 +531,16 @@ suffix:semicolon
 r_int
 id|ret
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|system_running
+)paren
+r_return
+op_minus
+id|EBUSY
+suffix:semicolon
 id|ret
 op_assign
 id|exec_usermodehelper
@@ -647,19 +659,19 @@ id|current-&gt;policy
 op_assign
 id|SCHED_NORMAL
 suffix:semicolon
-multiline_comment|/* Don&squot;t allow request_module() before the root fs is mounted!  */
+multiline_comment|/* Don&squot;t allow request_module() when the system isn&squot;t set up */
 r_if
 c_cond
 (paren
 op_logical_neg
-id|current-&gt;fs-&gt;root
+id|system_running
 )paren
 (brace
 id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;request_module[%s]: Root fs not mounted&bslash;n&quot;
+l_string|&quot;request_module[%s]: not ready&bslash;n&quot;
 comma
 id|module_name
 )paren
@@ -1160,6 +1172,16 @@ op_amp
 id|sub_info
 comma
 )brace
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|system_running
+)paren
+r_return
+op_minus
+id|EBUSY
 suffix:semicolon
 r_if
 c_cond
