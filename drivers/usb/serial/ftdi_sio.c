@@ -5122,7 +5122,7 @@ comma
 )brace
 suffix:semicolon
 DECL|macro|WDR_TIMEOUT
-mdefine_line|#define WDR_TIMEOUT (HZ * 5 ) /* default urb timeout */
+mdefine_line|#define WDR_TIMEOUT 5000 /* default urb timeout */
 multiline_comment|/* High and low are for DTR, RTS etc etc */
 DECL|macro|HIGH
 mdefine_line|#define HIGH 1
