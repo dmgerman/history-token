@@ -12195,34 +12195,6 @@ id|info
 op_assign
 id|drive-&gt;driver_data
 suffix:semicolon
-r_int
-id|error
-suffix:semicolon
-multiline_comment|/* Try the generic SCSI command ioctl&squot;s first.. */
-id|error
-op_assign
-id|scsi_cmd_ioctl
-c_func
-(paren
-id|inode-&gt;i_bdev
-comma
-id|cmd
-comma
-id|arg
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|error
-op_ne
-op_minus
-id|ENOTTY
-)paren
-r_return
-id|error
-suffix:semicolon
-multiline_comment|/* Then the generic cdrom ioctl&squot;s.. */
 r_return
 id|cdrom_ioctl
 c_func
