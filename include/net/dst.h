@@ -340,6 +340,7 @@ DECL|function|dst_metric
 id|dst_metric
 c_func
 (paren
+r_const
 r_struct
 id|dst_entry
 op_star
@@ -365,6 +366,7 @@ DECL|function|dst_path_metric
 id|dst_path_metric
 c_func
 (paren
+r_const
 r_struct
 id|dst_entry
 op_star
@@ -390,6 +392,7 @@ DECL|function|dst_pmtu
 id|dst_pmtu
 c_func
 (paren
+r_const
 r_struct
 id|dst_entry
 op_star
