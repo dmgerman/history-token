@@ -1,5 +1,5 @@
 multiline_comment|/******************************************************************************&n; *&n; * Name: actbl.h - Table data structures defined in ACPI specification&n; *&n; *****************************************************************************/
-multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/*&n; *  Copyright (C) 2000 - 2003, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#ifndef __ACTBL_H__
 DECL|macro|__ACTBL_H__
 mdefine_line|#define __ACTBL_H__
@@ -37,24 +37,25 @@ DECL|macro|DUAL_PIC
 mdefine_line|#define DUAL_PIC                0
 DECL|macro|MULTIPLE_APIC
 mdefine_line|#define MULTIPLE_APIC           1
-multiline_comment|/* values of Type in APIC_HEADER */
+multiline_comment|/* values of Type in struct apic_header */
 DECL|macro|APIC_PROC
 mdefine_line|#define APIC_PROC               0
 DECL|macro|APIC_IO
 mdefine_line|#define APIC_IO                 1
 multiline_comment|/*&n; * Common table types.  The base code can remain&n; * constant if the underlying tables are changed&n; */
 DECL|macro|RSDT_DESCRIPTOR
-mdefine_line|#define RSDT_DESCRIPTOR         RSDT_DESCRIPTOR_REV2
-DECL|macro|xsdt_descriptor
-mdefine_line|#define xsdt_descriptor         XSDT_DESCRIPTOR_REV2
+mdefine_line|#define RSDT_DESCRIPTOR         struct rsdt_descriptor_rev2
+DECL|macro|XSDT_DESCRIPTOR
+mdefine_line|#define XSDT_DESCRIPTOR         struct xsdt_descriptor_rev2
 DECL|macro|FACS_DESCRIPTOR
-mdefine_line|#define FACS_DESCRIPTOR         facs_descriptor_rev2
+mdefine_line|#define FACS_DESCRIPTOR         struct facs_descriptor_rev2
 DECL|macro|FADT_DESCRIPTOR
-mdefine_line|#define FADT_DESCRIPTOR         fadt_descriptor_rev2
+mdefine_line|#define FADT_DESCRIPTOR         struct fadt_descriptor_rev2
 macro_line|#pragma pack(1)
 multiline_comment|/*&n; * Architecture-independent tables&n; * The architecture dependent tables are in separate files&n; */
-r_typedef
+DECL|struct|rsdp_descriptor
 r_struct
+id|rsdp_descriptor
 multiline_comment|/* Root System Descriptor Pointer */
 (brace
 DECL|member|signature
@@ -111,12 +112,11 @@ l_int|3
 )braket
 suffix:semicolon
 multiline_comment|/* Reserved field must be 0 */
-DECL|typedef|rsdp_descriptor
 )brace
-id|rsdp_descriptor
 suffix:semicolon
-r_typedef
+DECL|struct|acpi_table_header
 r_struct
+id|acpi_table_header
 multiline_comment|/* ACPI common table header */
 (brace
 DECL|member|signature
@@ -176,12 +176,11 @@ id|u32
 id|asl_compiler_revision
 suffix:semicolon
 multiline_comment|/* ASL compiler revision number */
-DECL|typedef|acpi_table_header
 )brace
-id|acpi_table_header
 suffix:semicolon
-r_typedef
+DECL|struct|acpi_common_facs
 r_struct
+id|acpi_common_facs
 multiline_comment|/* Common FACS for internal use */
 (brace
 DECL|member|global_lock
@@ -198,15 +197,14 @@ DECL|member|vector_width
 id|u8
 id|vector_width
 suffix:semicolon
-DECL|typedef|acpi_common_facs
 )brace
-id|acpi_common_facs
 suffix:semicolon
-r_typedef
+DECL|struct|apic_table
 r_struct
-multiline_comment|/* APIC Table */
+id|apic_table
 (brace
 DECL|member|header
+r_struct
 id|acpi_table_header
 id|header
 suffix:semicolon
@@ -229,13 +227,11 @@ id|reserved1
 suffix:colon
 l_int|31
 suffix:semicolon
-DECL|typedef|APIC_TABLE
 )brace
-id|APIC_TABLE
 suffix:semicolon
-r_typedef
+DECL|struct|apic_header
 r_struct
-multiline_comment|/* APIC Header */
+id|apic_header
 (brace
 DECL|member|type
 id|u8
@@ -247,16 +243,15 @@ id|u8
 id|length
 suffix:semicolon
 multiline_comment|/* Length of APIC structure */
-DECL|typedef|APIC_HEADER
 )brace
-id|APIC_HEADER
 suffix:semicolon
-r_typedef
+DECL|struct|processor_apic
 r_struct
-multiline_comment|/* Processor APIC */
+id|processor_apic
 (brace
 DECL|member|header
-id|APIC_HEADER
+r_struct
+id|apic_header
 id|header
 suffix:semicolon
 DECL|member|processor_apic_id
@@ -282,16 +277,15 @@ id|reserved1
 suffix:colon
 l_int|31
 suffix:semicolon
-DECL|typedef|PROCESSOR_APIC
 )brace
-id|PROCESSOR_APIC
 suffix:semicolon
-r_typedef
+DECL|struct|io_apic
 r_struct
-multiline_comment|/* IO APIC */
+id|io_apic
 (brace
 DECL|member|header
-id|APIC_HEADER
+r_struct
+id|apic_header
 id|header
 suffix:semicolon
 DECL|member|io_apic_id
@@ -314,17 +308,16 @@ id|u32
 id|vector
 suffix:semicolon
 multiline_comment|/* Interrupt vector index where INTI&n;&t;&t;&t;  * lines start */
-DECL|typedef|IO_APIC
 )brace
-id|IO_APIC
 suffix:semicolon
 multiline_comment|/*&n; *  IA64 TBD:  Add SAPIC Tables&n; */
 multiline_comment|/*&n; *  IA64 TBD:   Modify Smart Battery Description to comply with ACPI IA64&n; *              extensions.&n; */
-r_typedef
+DECL|struct|smart_battery_description_table
 r_struct
-multiline_comment|/* Smart Battery Description Table */
+id|smart_battery_description_table
 (brace
 DECL|member|header
+r_struct
 id|acpi_table_header
 id|header
 suffix:semicolon
@@ -340,9 +333,7 @@ DECL|member|critical_level
 id|u32
 id|critical_level
 suffix:semicolon
-DECL|typedef|SMART_BATTERY_DESCRIPTION_TABLE
 )brace
-id|SMART_BATTERY_DESCRIPTION_TABLE
 suffix:semicolon
 macro_line|#pragma pack()
 multiline_comment|/*&n; * ACPI Table information.  We save the table address, length,&n; * and type of memory allocation (mapped or allocated) for each&n; * table for 1) when we exit, and 2) if a new table is installed&n; */
@@ -352,7 +343,7 @@ DECL|macro|ACPI_MEM_ALLOCATED
 mdefine_line|#define ACPI_MEM_ALLOCATED      1
 DECL|macro|ACPI_MEM_MAPPED
 mdefine_line|#define ACPI_MEM_MAPPED         2
-multiline_comment|/* Definitions for the Flags bitfield member of ACPI_TABLE_SUPPORT */
+multiline_comment|/* Definitions for the Flags bitfield member of struct acpi_table_support */
 DECL|macro|ACPI_TABLE_SINGLE
 mdefine_line|#define ACPI_TABLE_SINGLE       0x00
 DECL|macro|ACPI_TABLE_MULTIPLE
@@ -370,10 +361,9 @@ mdefine_line|#define ACPI_TABLE_OTHER        0x30
 DECL|macro|ACPI_TABLE_TYPE_MASK
 mdefine_line|#define ACPI_TABLE_TYPE_MASK    0x30
 multiline_comment|/* Data about each known table type */
-DECL|struct|_acpi_table_support
-r_typedef
+DECL|struct|acpi_table_support
 r_struct
-id|_acpi_table_support
+id|acpi_table_support
 (brace
 DECL|member|name
 r_char
@@ -399,9 +389,7 @@ DECL|member|flags
 id|u8
 id|flags
 suffix:semicolon
-DECL|typedef|ACPI_TABLE_SUPPORT
 )brace
-id|ACPI_TABLE_SUPPORT
 suffix:semicolon
 multiline_comment|/*&n; * Get the architecture-specific tables&n; */
 macro_line|#include &quot;actbl1.h&quot;   /* Acpi 1.0 table definitions */

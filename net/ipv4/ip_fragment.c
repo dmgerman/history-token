@@ -538,7 +538,6 @@ suffix:semicolon
 multiline_comment|/* Kill ipq entry. It is not destroyed immediately,&n; * because caller (and someone more) holds reference count.&n; */
 DECL|function|ipq_kill
 r_static
-id|__inline__
 r_void
 id|ipq_kill
 c_func

@@ -1,7 +1,7 @@
 macro_line|#ifndef _GDTH_H
 DECL|macro|_GDTH_H
 mdefine_line|#define _GDTH_H
-multiline_comment|/*&n; * Header file for the GDT ISA/EISA/PCI Disk Array Controller driver for Linux&n; * &n; * gdth.h Copyright (C) 1995-01 ICP vortex Computersysteme GmbH, Achim Leubner&n; * See gdth.c for further informations and &n; * below for supported controller types&n; *&n; * &lt;achim@vortex.de&gt;&n; *&n; * $Id: gdth.h,v 1.44 2001/08/21 11:19:05 achim Exp $&n; */
+multiline_comment|/*&n; * Header file for the GDT Disk Array/Storage RAID controllers driver for Linux&n; * &n; * gdth.h Copyright (C) 1995-02 ICP vortex, an Intel company, Achim Leubner&n; * See gdth.c for further informations and &n; * below for supported controller types&n; *&n; * &lt;achim.leubner@intel.com&gt;&n; *&n; * $Id: gdth.h,v 1.46 2002/02/05 09:39:53 achim Exp $&n; */
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#ifndef NULL
@@ -19,11 +19,11 @@ macro_line|#endif
 multiline_comment|/* defines, macros */
 multiline_comment|/* driver version */
 DECL|macro|GDTH_VERSION_STR
-mdefine_line|#define GDTH_VERSION_STR        &quot;2.03&quot;
+mdefine_line|#define GDTH_VERSION_STR        &quot;2.05&quot;
 DECL|macro|GDTH_VERSION
 mdefine_line|#define GDTH_VERSION            2
 DECL|macro|GDTH_SUBVERSION
-mdefine_line|#define GDTH_SUBVERSION         3
+mdefine_line|#define GDTH_SUBVERSION         5
 multiline_comment|/* protocol version */
 DECL|macro|PROTOCOL_VERSION
 mdefine_line|#define PROTOCOL_VERSION        1
@@ -384,6 +384,8 @@ DECL|macro|S_RAW_SCSI
 mdefine_line|#define S_RAW_SCSI      12                      /* raw serv.: target error */
 DECL|macro|S_RAW_ILL
 mdefine_line|#define S_RAW_ILL       0xff                    /* raw serv.: illegal */
+DECL|macro|S_CACHE_RESERV
+mdefine_line|#define S_CACHE_RESERV&t;-24&t;&t;&t;/* cache: reserv. conflict */&t;
 multiline_comment|/* timeout values */
 DECL|macro|INIT_RETRIES
 mdefine_line|#define INIT_RETRIES    100000                  /* 100000 * 1ms = 100s */

@@ -83,6 +83,7 @@ op_minus
 l_int|1
 )brace
 suffix:semicolon
+macro_line|#ifdef MODULE
 DECL|variable|poll_only
 r_static
 r_int
@@ -90,7 +91,6 @@ id|poll_only
 op_assign
 l_int|0
 suffix:semicolon
-macro_line|#ifdef MODULE
 macro_line|#&t;if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,1,0)
 id|MODULE_AUTHOR
 c_func

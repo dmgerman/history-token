@@ -1,7 +1,7 @@
-multiline_comment|/*&n; *&n; *  General SAR library for ATM devices.&n; *&n; *  Copyright (c) 2000, Johan Verrept&n; *&n; *  This code falls under the GNU General Public License, see COPYING for details.&n; *&n; */
 macro_line|#ifndef _ATMSAR_H_
 DECL|macro|_ATMSAR_H_
 mdefine_line|#define _ATMSAR_H_
+multiline_comment|/******************************************************************************&n; *  atmsar.h  --  General SAR library for ATM devices.&n; *&n; *  Copyright (C) 2000, Johan Verrept&n; *&n; *  This program is free software; you can redistribute it and/or modify it&n; *  under the terms of the GNU General Public License as published by the Free&n; *  Software Foundation; either version 2 of the License, or (at your option)&n; *  any later version.&n; *&n; *  This program is distributed in the hope that it will be useful, but WITHOUT&n; *  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or&n; *  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for&n; *  more details.&n; *&n; *  You should have received a copy of the GNU General Public License along with&n; *  this program; if not, write to the Free Software Foundation, Inc., 59&n; *  Temple Place - Suite 330, Boston, MA  02111-1307, USA.&n; *&n; ******************************************************************************/
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;

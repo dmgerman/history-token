@@ -1,5 +1,5 @@
 multiline_comment|/******************************************************************************&n; *&n; * Name: acresrc.h - Resource Manager function prototypes&n; *&n; *****************************************************************************/
-multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/*&n; *  Copyright (C) 2000 - 2003, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#ifndef __ACRESRC_H__
 DECL|macro|__ACRESRC_H__
 mdefine_line|#define __ACRESRC_H__
@@ -10,6 +10,7 @@ id|acpi_rs_get_prt_method_data
 id|acpi_handle
 id|handle
 comma
+r_struct
 id|acpi_buffer
 op_star
 id|ret_buffer
@@ -21,6 +22,7 @@ id|acpi_rs_get_crs_method_data
 id|acpi_handle
 id|handle
 comma
+r_struct
 id|acpi_buffer
 op_star
 id|ret_buffer
@@ -32,6 +34,7 @@ id|acpi_rs_get_prs_method_data
 id|acpi_handle
 id|handle
 comma
+r_struct
 id|acpi_buffer
 op_star
 id|ret_buffer
@@ -43,6 +46,7 @@ id|acpi_rs_set_srs_method_data
 id|acpi_handle
 id|handle
 comma
+r_struct
 id|acpi_buffer
 op_star
 id|ret_buffer
@@ -51,10 +55,12 @@ suffix:semicolon
 id|acpi_status
 id|acpi_rs_create_resource_list
 (paren
+r_union
 id|acpi_operand_object
 op_star
 id|byte_stream_buffer
 comma
+r_struct
 id|acpi_buffer
 op_star
 id|output_buffer
@@ -63,10 +69,12 @@ suffix:semicolon
 id|acpi_status
 id|acpi_rs_create_byte_stream
 (paren
+r_struct
 id|acpi_resource
 op_star
 id|linked_list_buffer
 comma
+r_struct
 id|acpi_buffer
 op_star
 id|output_buffer
@@ -75,10 +83,12 @@ suffix:semicolon
 id|acpi_status
 id|acpi_rs_create_pci_routing_table
 (paren
+r_union
 id|acpi_operand_object
 op_star
 id|package_object
 comma
+r_struct
 id|acpi_buffer
 op_star
 id|output_buffer
@@ -88,6 +98,7 @@ multiline_comment|/*&n; * Function prototypes called from acpi_rs_create*&n; */
 r_void
 id|acpi_rs_dump_irq
 (paren
+r_union
 id|acpi_resource_data
 op_star
 id|data
@@ -96,6 +107,7 @@ suffix:semicolon
 r_void
 id|acpi_rs_dump_address16
 (paren
+r_union
 id|acpi_resource_data
 op_star
 id|data
@@ -104,6 +116,7 @@ suffix:semicolon
 r_void
 id|acpi_rs_dump_address32
 (paren
+r_union
 id|acpi_resource_data
 op_star
 id|data
@@ -112,6 +125,7 @@ suffix:semicolon
 r_void
 id|acpi_rs_dump_address64
 (paren
+r_union
 id|acpi_resource_data
 op_star
 id|data
@@ -120,6 +134,7 @@ suffix:semicolon
 r_void
 id|acpi_rs_dump_dma
 (paren
+r_union
 id|acpi_resource_data
 op_star
 id|data
@@ -128,6 +143,7 @@ suffix:semicolon
 r_void
 id|acpi_rs_dump_io
 (paren
+r_union
 id|acpi_resource_data
 op_star
 id|data
@@ -136,6 +152,7 @@ suffix:semicolon
 r_void
 id|acpi_rs_dump_extended_irq
 (paren
+r_union
 id|acpi_resource_data
 op_star
 id|data
@@ -144,6 +161,7 @@ suffix:semicolon
 r_void
 id|acpi_rs_dump_fixed_io
 (paren
+r_union
 id|acpi_resource_data
 op_star
 id|data
@@ -152,6 +170,7 @@ suffix:semicolon
 r_void
 id|acpi_rs_dump_fixed_memory32
 (paren
+r_union
 id|acpi_resource_data
 op_star
 id|data
@@ -160,6 +179,7 @@ suffix:semicolon
 r_void
 id|acpi_rs_dump_memory24
 (paren
+r_union
 id|acpi_resource_data
 op_star
 id|data
@@ -168,6 +188,7 @@ suffix:semicolon
 r_void
 id|acpi_rs_dump_memory32
 (paren
+r_union
 id|acpi_resource_data
 op_star
 id|data
@@ -176,6 +197,7 @@ suffix:semicolon
 r_void
 id|acpi_rs_dump_start_depend_fns
 (paren
+r_union
 id|acpi_resource_data
 op_star
 id|data
@@ -184,6 +206,7 @@ suffix:semicolon
 r_void
 id|acpi_rs_dump_vendor_specific
 (paren
+r_union
 id|acpi_resource_data
 op_star
 id|data
@@ -192,6 +215,7 @@ suffix:semicolon
 r_void
 id|acpi_rs_dump_resource_list
 (paren
+r_struct
 id|acpi_resource
 op_star
 id|resource
@@ -240,6 +264,7 @@ suffix:semicolon
 id|acpi_status
 id|acpi_rs_get_byte_stream_length
 (paren
+r_struct
 id|acpi_resource
 op_star
 id|linked_list_buffer
@@ -252,6 +277,7 @@ suffix:semicolon
 id|acpi_status
 id|acpi_rs_get_pci_routing_table_length
 (paren
+r_union
 id|acpi_operand_object
 op_star
 id|package_object
@@ -279,6 +305,7 @@ suffix:semicolon
 id|acpi_status
 id|acpi_rs_list_to_byte_stream
 (paren
+r_struct
 id|acpi_resource
 op_star
 id|linked_list
@@ -336,6 +363,7 @@ suffix:semicolon
 id|acpi_status
 id|acpi_rs_io_stream
 (paren
+r_struct
 id|acpi_resource
 op_star
 id|linked_list
@@ -353,6 +381,7 @@ suffix:semicolon
 id|acpi_status
 id|acpi_rs_fixed_io_stream
 (paren
+r_struct
 id|acpi_resource
 op_star
 id|linked_list
@@ -391,6 +420,7 @@ suffix:semicolon
 id|acpi_status
 id|acpi_rs_irq_stream
 (paren
+r_struct
 id|acpi_resource
 op_star
 id|linked_list
@@ -429,6 +459,7 @@ suffix:semicolon
 id|acpi_status
 id|acpi_rs_dma_stream
 (paren
+r_struct
 id|acpi_resource
 op_star
 id|linked_list
@@ -467,6 +498,7 @@ suffix:semicolon
 id|acpi_status
 id|acpi_rs_address16_stream
 (paren
+r_struct
 id|acpi_resource
 op_star
 id|linked_list
@@ -505,6 +537,7 @@ suffix:semicolon
 id|acpi_status
 id|acpi_rs_address32_stream
 (paren
+r_struct
 id|acpi_resource
 op_star
 id|linked_list
@@ -543,6 +576,7 @@ suffix:semicolon
 id|acpi_status
 id|acpi_rs_address64_stream
 (paren
+r_struct
 id|acpi_resource
 op_star
 id|linked_list
@@ -602,6 +636,7 @@ suffix:semicolon
 id|acpi_status
 id|acpi_rs_start_depend_fns_stream
 (paren
+r_struct
 id|acpi_resource
 op_star
 id|linked_list
@@ -619,6 +654,7 @@ suffix:semicolon
 id|acpi_status
 id|acpi_rs_end_depend_fns_stream
 (paren
+r_struct
 id|acpi_resource
 op_star
 id|linked_list
@@ -657,6 +693,7 @@ suffix:semicolon
 id|acpi_status
 id|acpi_rs_memory24_stream
 (paren
+r_struct
 id|acpi_resource
 op_star
 id|linked_list
@@ -716,6 +753,7 @@ suffix:semicolon
 id|acpi_status
 id|acpi_rs_memory32_range_stream
 (paren
+r_struct
 id|acpi_resource
 op_star
 id|linked_list
@@ -733,6 +771,7 @@ suffix:semicolon
 id|acpi_status
 id|acpi_rs_fixed_memory32_stream
 (paren
+r_struct
 id|acpi_resource
 op_star
 id|linked_list
@@ -771,6 +810,7 @@ suffix:semicolon
 id|acpi_status
 id|acpi_rs_extended_irq_stream
 (paren
+r_struct
 id|acpi_resource
 op_star
 id|linked_list
@@ -809,6 +849,7 @@ suffix:semicolon
 id|acpi_status
 id|acpi_rs_end_tag_stream
 (paren
+r_struct
 id|acpi_resource
 op_star
 id|linked_list
@@ -847,6 +888,7 @@ suffix:semicolon
 id|acpi_status
 id|acpi_rs_vendor_stream
 (paren
+r_struct
 id|acpi_resource
 op_star
 id|linked_list

@@ -1,5 +1,5 @@
 multiline_comment|/******************************************************************************&n; *&n; * Module Name: dsfield - Dispatcher field routines&n; *&n; *****************************************************************************/
-multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/*&n; *  Copyright (C) 2000 - 2003, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;amlcode.h&quot;
 macro_line|#include &quot;acdispat.h&quot;
@@ -17,19 +17,23 @@ id|acpi_status
 DECL|function|acpi_ds_create_buffer_field
 id|acpi_ds_create_buffer_field
 (paren
+r_union
 id|acpi_parse_object
 op_star
 id|op
 comma
+r_struct
 id|acpi_walk_state
 op_star
 id|walk_state
 )paren
 (brace
+r_union
 id|acpi_parse_object
 op_star
 id|arg
 suffix:semicolon
+r_struct
 id|acpi_namespace_node
 op_star
 id|node
@@ -37,10 +41,12 @@ suffix:semicolon
 id|acpi_status
 id|status
 suffix:semicolon
+r_union
 id|acpi_operand_object
 op_star
 id|obj_desc
 suffix:semicolon
+r_union
 id|acpi_operand_object
 op_star
 id|second_desc
@@ -282,14 +288,17 @@ id|acpi_status
 DECL|function|acpi_ds_get_field_names
 id|acpi_ds_get_field_names
 (paren
+r_struct
 id|acpi_create_field_info
 op_star
 id|info
 comma
+r_struct
 id|acpi_walk_state
 op_star
 id|walk_state
 comma
+r_union
 id|acpi_parse_object
 op_star
 id|arg
@@ -596,14 +605,17 @@ id|acpi_status
 DECL|function|acpi_ds_create_field
 id|acpi_ds_create_field
 (paren
+r_union
 id|acpi_parse_object
 op_star
 id|op
 comma
+r_struct
 id|acpi_namespace_node
 op_star
 id|region_node
 comma
+r_struct
 id|acpi_walk_state
 op_star
 id|walk_state
@@ -612,10 +624,12 @@ id|walk_state
 id|acpi_status
 id|status
 suffix:semicolon
+r_union
 id|acpi_parse_object
 op_star
 id|arg
 suffix:semicolon
+r_struct
 id|acpi_create_field_info
 id|info
 suffix:semicolon
@@ -726,10 +740,12 @@ id|acpi_status
 DECL|function|acpi_ds_init_field_objects
 id|acpi_ds_init_field_objects
 (paren
+r_union
 id|acpi_parse_object
 op_star
 id|op
 comma
+r_struct
 id|acpi_walk_state
 op_star
 id|walk_state
@@ -738,12 +754,14 @@ id|walk_state
 id|acpi_status
 id|status
 suffix:semicolon
+r_union
 id|acpi_parse_object
 op_star
 id|arg
 op_assign
 l_int|NULL
 suffix:semicolon
+r_struct
 id|acpi_namespace_node
 op_star
 id|node
@@ -936,14 +954,17 @@ id|acpi_status
 DECL|function|acpi_ds_create_bank_field
 id|acpi_ds_create_bank_field
 (paren
+r_union
 id|acpi_parse_object
 op_star
 id|op
 comma
+r_struct
 id|acpi_namespace_node
 op_star
 id|region_node
 comma
+r_struct
 id|acpi_walk_state
 op_star
 id|walk_state
@@ -952,10 +973,12 @@ id|walk_state
 id|acpi_status
 id|status
 suffix:semicolon
+r_union
 id|acpi_parse_object
 op_star
 id|arg
 suffix:semicolon
+r_struct
 id|acpi_create_field_info
 id|info
 suffix:semicolon
@@ -1118,14 +1141,17 @@ id|acpi_status
 DECL|function|acpi_ds_create_index_field
 id|acpi_ds_create_index_field
 (paren
+r_union
 id|acpi_parse_object
 op_star
 id|op
 comma
+r_struct
 id|acpi_namespace_node
 op_star
 id|region_node
 comma
+r_struct
 id|acpi_walk_state
 op_star
 id|walk_state
@@ -1134,10 +1160,12 @@ id|walk_state
 id|acpi_status
 id|status
 suffix:semicolon
+r_union
 id|acpi_parse_object
 op_star
 id|arg
 suffix:semicolon
+r_struct
 id|acpi_create_field_info
 id|info
 suffix:semicolon

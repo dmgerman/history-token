@@ -2279,6 +2279,7 @@ id|serial
 id|dev_err
 c_func
 (paren
+op_amp
 id|dev-&gt;dev
 comma
 l_string|&quot;%s - out of memory&bslash;n&quot;
@@ -2556,6 +2557,7 @@ id|serial
 id|dev_err
 c_func
 (paren
+op_amp
 id|interface-&gt;dev
 comma
 l_string|&quot;%s - out of memory&bslash;n&quot;
@@ -2589,6 +2591,7 @@ id|type-&gt;owner
 id|dev_err
 c_func
 (paren
+op_amp
 id|interface-&gt;dev
 comma
 l_string|&quot;module get failed, exiting&bslash;n&quot;
@@ -2609,6 +2612,8 @@ op_assign
 id|type-&gt;probe
 (paren
 id|serial
+comma
+id|id
 )paren
 suffix:semicolon
 id|module_put
@@ -2843,19 +2848,15 @@ l_int|0
 )paren
 (brace
 multiline_comment|/* check out the endpoints of the other interface*/
-singleline_comment|//interface = &amp;dev-&gt;actconfig-&gt;interface[ifnum ^ 1];
-id|interface
+id|iface_desc
 op_assign
 op_amp
 id|dev-&gt;actconfig-&gt;interface
 (braket
 l_int|0
 )braket
-suffix:semicolon
-id|iface_desc
-op_assign
-op_amp
-id|interface-&gt;altsetting
+dot
+id|altsetting
 (braket
 l_int|0
 )braket
@@ -2941,6 +2942,7 @@ l_int|0
 id|dev_info
 c_func
 (paren
+op_amp
 id|interface-&gt;dev
 comma
 l_string|&quot;PL-2303 hack: descriptors matched but endpoints did not&bslash;n&quot;
@@ -2963,6 +2965,7 @@ multiline_comment|/* found all that we need */
 id|dev_info
 c_func
 (paren
+op_amp
 id|interface-&gt;dev
 comma
 l_string|&quot;%s converter detected&bslash;n&quot;
@@ -2995,6 +2998,7 @@ l_int|0
 id|dev_err
 c_func
 (paren
+op_amp
 id|interface-&gt;dev
 comma
 l_string|&quot;Generic device with no bulk out, not allowed.&bslash;n&quot;
@@ -3040,6 +3044,7 @@ id|type-&gt;owner
 id|dev_err
 c_func
 (paren
+op_amp
 id|interface-&gt;dev
 comma
 l_string|&quot;module get failed, exiting&bslash;n&quot;
@@ -3099,6 +3104,7 @@ l_int|NULL
 id|dev_err
 c_func
 (paren
+op_amp
 id|interface-&gt;dev
 comma
 l_string|&quot;No more free serial devices&bslash;n&quot;
@@ -3184,6 +3190,7 @@ id|port-&gt;read_urb
 id|dev_err
 c_func
 (paren
+op_amp
 id|interface-&gt;dev
 comma
 l_string|&quot;No free urbs available&bslash;n&quot;
@@ -3220,6 +3227,7 @@ id|port-&gt;bulk_in_buffer
 id|dev_err
 c_func
 (paren
+op_amp
 id|interface-&gt;dev
 comma
 l_string|&quot;Couldn&squot;t allocate bulk_in_buffer&bslash;n&quot;
@@ -3311,6 +3319,7 @@ id|port-&gt;write_urb
 id|dev_err
 c_func
 (paren
+op_amp
 id|interface-&gt;dev
 comma
 l_string|&quot;No free urbs available&bslash;n&quot;
@@ -3351,6 +3360,7 @@ id|port-&gt;bulk_out_buffer
 id|dev_err
 c_func
 (paren
+op_amp
 id|interface-&gt;dev
 comma
 l_string|&quot;Couldn&squot;t allocate bulk_out_buffer&bslash;n&quot;
@@ -3442,6 +3452,7 @@ id|port-&gt;interrupt_in_urb
 id|dev_err
 c_func
 (paren
+op_amp
 id|interface-&gt;dev
 comma
 l_string|&quot;No free urbs available&bslash;n&quot;
@@ -3478,6 +3489,7 @@ id|port-&gt;interrupt_in_buffer
 id|dev_err
 c_func
 (paren
+op_amp
 id|interface-&gt;dev
 comma
 l_string|&quot;Couldn&squot;t allocate interrupt_in_buffer&bslash;n&quot;
@@ -3633,6 +3645,7 @@ id|type-&gt;owner
 id|dev_err
 c_func
 (paren
+op_amp
 id|interface-&gt;dev
 comma
 l_string|&quot;module get failed, exiting&bslash;n&quot;
@@ -4291,7 +4304,6 @@ suffix:semicolon
 id|dev_info
 c_func
 (paren
-op_star
 id|dev
 comma
 l_string|&quot;device disconnected&bslash;n&quot;

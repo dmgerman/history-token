@@ -178,6 +178,10 @@ r_struct
 id|timer_list
 id|watchdog
 suffix:semicolon
+DECL|member|stamp
+r_int
+id|stamp
+suffix:semicolon
 macro_line|#ifdef EHCI_STATS
 DECL|member|stats
 r_struct
@@ -666,6 +670,10 @@ suffix:semicolon
 DECL|member|refcount
 id|atomic_t
 id|refcount
+suffix:semicolon
+DECL|member|stamp
+r_int
+id|stamp
 suffix:semicolon
 DECL|member|qh_state
 id|u8

@@ -313,6 +313,7 @@ id|status
 op_assign
 l_int|0
 suffix:semicolon
+r_struct
 id|acpi_buffer
 id|buffer
 op_assign
@@ -322,6 +323,7 @@ comma
 l_int|NULL
 )brace
 suffix:semicolon
+r_struct
 id|acpi_buffer
 id|format
 op_assign
@@ -334,6 +336,7 @@ comma
 id|ACPI_BATTERY_FORMAT_BIF
 )brace
 suffix:semicolon
+r_struct
 id|acpi_buffer
 id|data
 op_assign
@@ -343,6 +346,7 @@ comma
 l_int|NULL
 )brace
 suffix:semicolon
+r_union
 id|acpi_object
 op_star
 id|package
@@ -418,6 +422,7 @@ suffix:semicolon
 id|package
 op_assign
 (paren
+r_union
 id|acpi_object
 op_star
 )paren
@@ -610,6 +615,7 @@ id|status
 op_assign
 l_int|0
 suffix:semicolon
+r_struct
 id|acpi_buffer
 id|buffer
 op_assign
@@ -619,6 +625,7 @@ comma
 l_int|NULL
 )brace
 suffix:semicolon
+r_struct
 id|acpi_buffer
 id|format
 op_assign
@@ -631,6 +638,7 @@ comma
 id|ACPI_BATTERY_FORMAT_BST
 )brace
 suffix:semicolon
+r_struct
 id|acpi_buffer
 id|data
 op_assign
@@ -640,6 +648,7 @@ comma
 l_int|NULL
 )brace
 suffix:semicolon
+r_union
 id|acpi_object
 op_star
 id|package
@@ -715,6 +724,7 @@ suffix:semicolon
 id|package
 op_assign
 (paren
+r_union
 id|acpi_object
 op_star
 )paren
@@ -900,6 +910,7 @@ id|status
 op_assign
 l_int|0
 suffix:semicolon
+r_union
 id|acpi_object
 id|arg0
 op_assign
@@ -907,6 +918,7 @@ op_assign
 id|ACPI_TYPE_INTEGER
 )brace
 suffix:semicolon
+r_struct
 id|acpi_object_list
 id|arg_list
 op_assign

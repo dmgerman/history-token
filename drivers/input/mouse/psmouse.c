@@ -942,7 +942,7 @@ id|psmouse-&gt;last
 op_plus
 id|HZ
 op_div
-l_int|20
+l_int|2
 )paren
 )paren
 (brace

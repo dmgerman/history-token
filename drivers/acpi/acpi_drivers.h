@@ -31,6 +31,7 @@ multiline_comment|/* ACPI PCI Root Bridge (pci_root.c) */
 r_void
 id|acpi_pci_get_translations
 (paren
+r_struct
 id|acpi_pci_id
 op_star
 id|id
@@ -96,6 +97,7 @@ id|acpi_device
 op_star
 id|device
 comma
+r_struct
 id|acpi_pci_id
 op_star
 id|id

@@ -998,6 +998,7 @@ c_func
 (paren
 l_string|&quot;xorl %%eax,%%eax; movl %%eax,%%fs; movl %%eax,%%gs&bslash;n&bslash;t&quot;
 l_string|&quot;movl %0,%%esp&bslash;n&bslash;t&quot;
+l_string|&quot;movl %1,%%ebp&bslash;n&bslash;t&quot;
 l_string|&quot;jmp resume_userspace&quot;
 suffix:colon
 multiline_comment|/* no outputs */
@@ -1008,7 +1009,7 @@ op_amp
 id|info-&gt;regs
 )paren
 comma
-l_string|&quot;b&quot;
+l_string|&quot;r&quot;
 (paren
 id|tsk-&gt;thread_info
 )paren
@@ -1056,6 +1057,7 @@ id|__volatile__
 c_func
 (paren
 l_string|&quot;movl %0,%%esp&bslash;n&bslash;t&quot;
+l_string|&quot;movl %1,%%ebp&bslash;n&bslash;t&quot;
 l_string|&quot;jmp resume_userspace&quot;
 suffix:colon
 suffix:colon
@@ -1064,7 +1066,7 @@ l_string|&quot;r&quot;
 id|regs32
 )paren
 comma
-l_string|&quot;b&quot;
+l_string|&quot;r&quot;
 (paren
 id|current_thread_info
 c_func

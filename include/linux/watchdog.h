@@ -65,6 +65,8 @@ DECL|macro|WDIOF_POWEROVER
 mdefine_line|#define WDIOF_POWEROVER&t;&t;0x0040&t;/* Power over voltage */
 DECL|macro|WDIOF_SETTIMEOUT
 mdefine_line|#define WDIOF_SETTIMEOUT&t;0x0080  /* Set timeout (in seconds) */
+DECL|macro|WDIOF_MAGICCLOSE
+mdefine_line|#define WDIOF_MAGICCLOSE&t;0x0100&t;/* Supports magic close char */
 DECL|macro|WDIOF_KEEPALIVEPING
 mdefine_line|#define&t;WDIOF_KEEPALIVEPING&t;0x8000&t;/* Keep alive ping reply */
 DECL|macro|WDIOS_DISABLECARD

@@ -272,6 +272,10 @@ DECL|member|blitter_may_be_busy
 id|u8
 id|blitter_may_be_busy
 suffix:semicolon
+DECL|member|accel_flags
+id|u32
+id|accel_flags
+suffix:semicolon
 macro_line|#ifdef __sparc__
 DECL|member|mmap_map
 r_struct

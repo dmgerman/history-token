@@ -232,16 +232,6 @@ op_star
 )paren
 suffix:semicolon
 r_extern
-r_int
-r_int
-id|usb_stor_transfer_length
-c_func
-(paren
-id|Scsi_Cmnd
-op_star
-)paren
-suffix:semicolon
-r_extern
 r_void
 id|usb_stor_invoke_transport
 c_func

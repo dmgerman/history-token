@@ -176,8 +176,6 @@ op_amp
 id|rio-&gt;wait_q
 )paren
 suffix:semicolon
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 id|unlock_kernel
 c_func
 (paren
@@ -221,8 +219,6 @@ suffix:semicolon
 id|rio-&gt;isopen
 op_assign
 l_int|0
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 id|info
 c_func
@@ -1728,6 +1724,11 @@ id|file_operations
 id|usb_rio_fops
 op_assign
 (brace
+dot
+id|owner
+op_assign
+id|THIS_MODULE
+comma
 dot
 id|read
 op_assign

@@ -635,5 +635,78 @@ multiline_comment|/* the ctl_table entry for each CPU */
 DECL|macro|CPU_ENUM
 mdefine_line|#define CPU_ENUM(s) { &bslash;&n;                .ctl_name&t;= (CPU_NR + s), &bslash;&n;                .procname&t;= #s, &bslash;&n;                .mode&t;&t;= 0555, &bslash;&n;                .child&t;&t;= ctl_cpu_vars_##s }
 macro_line|#endif /* CONFIG_CPU_FREQ_24_API */
+multiline_comment|/*********************************************************************&n; *                     FREQUENCY TABLE HELPERS                       *&n; *********************************************************************/
+DECL|macro|CPUFREQ_ENTRY_INVALID
+mdefine_line|#define CPUFREQ_ENTRY_INVALID ~0
+DECL|macro|CPUFREQ_TABLE_END
+mdefine_line|#define CPUFREQ_TABLE_END     ~1
+DECL|struct|cpufreq_frequency_table
+r_struct
+id|cpufreq_frequency_table
+(brace
+DECL|member|index
+r_int
+r_int
+id|index
+suffix:semicolon
+multiline_comment|/* any */
+DECL|member|frequency
+r_int
+r_int
+id|frequency
+suffix:semicolon
+multiline_comment|/* kHz - doesn&squot;t need to be in ascending&n;&t;&t;&t;&t;    * order */
+)brace
+suffix:semicolon
+r_int
+id|cpufreq_frequency_table_cpuinfo
+c_func
+(paren
+r_struct
+id|cpufreq_policy
+op_star
+id|policy
+comma
+r_struct
+id|cpufreq_frequency_table
+op_star
+id|table
+)paren
+suffix:semicolon
+r_int
+id|cpufreq_frequency_table_verify
+c_func
+(paren
+r_struct
+id|cpufreq_policy
+op_star
+id|policy
+comma
+r_struct
+id|cpufreq_frequency_table
+op_star
+id|table
+)paren
+suffix:semicolon
+r_int
+id|cpufreq_frequency_table_setpolicy
+c_func
+(paren
+r_struct
+id|cpufreq_policy
+op_star
+id|policy
+comma
+r_struct
+id|cpufreq_frequency_table
+op_star
+id|table
+comma
+r_int
+r_int
+op_star
+id|index
+)paren
+suffix:semicolon
 macro_line|#endif /* _LINUX_CPUFREQ_H */
 eof

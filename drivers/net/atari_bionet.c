@@ -37,22 +37,6 @@ macro_line|#include &lt;asm/atarihw.h&gt;
 macro_line|#include &lt;asm/atariints.h&gt;
 macro_line|#include &lt;asm/atari_acsi.h&gt;
 macro_line|#include &lt;asm/atari_stdma.h&gt;
-r_extern
-r_struct
-id|net_device
-op_star
-id|init_etherdev
-c_func
-(paren
-r_struct
-id|net_device
-op_star
-id|dev
-comma
-r_int
-id|sizeof_private
-)paren
-suffix:semicolon
 multiline_comment|/* use 0 for production, 1 for verification, &gt;2 for debug&n; */
 macro_line|#ifndef NET_DEBUG
 DECL|macro|NET_DEBUG

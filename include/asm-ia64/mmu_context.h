@@ -468,6 +468,8 @@ id|mm-&gt;context
 )paren
 suffix:semicolon
 )brace
+DECL|macro|deactivate_mm
+mdefine_line|#define deactivate_mm(tsk,mm)&t;do { } while (0)
 multiline_comment|/*&n; * Switch from address space PREV to address space NEXT.&n; */
 r_static
 r_inline

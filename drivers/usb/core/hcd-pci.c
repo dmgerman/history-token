@@ -481,7 +481,6 @@ suffix:semicolon
 )brace
 id|dev_info
 (paren
-op_star
 id|hcd-&gt;controller
 comma
 l_string|&quot;%s&bslash;n&quot;
@@ -530,7 +529,6 @@ l_int|0
 (brace
 id|dev_err
 (paren
-op_star
 id|hcd-&gt;controller
 comma
 l_string|&quot;request interrupt %s failed&bslash;n&quot;
@@ -561,7 +559,6 @@ id|region
 suffix:semicolon
 id|dev_info
 (paren
-op_star
 id|hcd-&gt;controller
 comma
 l_string|&quot;irq %s, %s %p&bslash;n&quot;
@@ -683,7 +680,6 @@ r_return
 suffix:semicolon
 id|dev_info
 (paren
-op_star
 id|hcd-&gt;controller
 comma
 l_string|&quot;remove, state %x&bslash;n&quot;
@@ -823,7 +819,6 @@ l_int|1
 (brace
 id|dev_warn
 (paren
-op_star
 id|hcd-&gt;controller
 comma
 l_string|&quot;dangling refs (%d) to bus %d!&bslash;n&quot;
@@ -888,7 +883,6 @@ id|dev
 suffix:semicolon
 id|dev_info
 (paren
-op_star
 id|hcd-&gt;controller
 comma
 l_string|&quot;suspend to state %d&bslash;n&quot;
@@ -966,7 +960,6 @@ id|dev
 suffix:semicolon
 id|dev_info
 (paren
-op_star
 id|hcd-&gt;controller
 comma
 l_string|&quot;resume&bslash;n&quot;
@@ -993,7 +986,6 @@ l_int|1
 (brace
 id|dev_err
 (paren
-op_star
 id|hcd-&gt;controller
 comma
 l_string|&quot;concurrent PCI resumes&bslash;n&quot;

@@ -1695,6 +1695,7 @@ id|oedb
 (brace
 id|dev_err
 (paren
+op_amp
 id|port-&gt;port-&gt;dev
 comma
 l_string|&quot;%s - out of memory&bslash;n&quot;
@@ -2131,6 +2132,7 @@ l_int|1
 (brace
 id|dev_err
 (paren
+op_amp
 id|dev-&gt;dev
 comma
 l_string|&quot;%s - bNumInterfaces is not 1, ERROR!&bslash;n&quot;
@@ -2524,7 +2526,6 @@ id|rom_desc
 (brace
 id|dev_err
 (paren
-op_star
 id|dev
 comma
 l_string|&quot;%s - out of memory&bslash;n&quot;
@@ -2555,7 +2556,6 @@ id|buffer
 (brace
 id|dev_err
 (paren
-op_star
 id|dev
 comma
 l_string|&quot;%s - out of memory when allocating buffer&bslash;n&quot;
@@ -2606,7 +2606,6 @@ l_int|0x52
 (brace
 id|dev_err
 (paren
-op_star
 id|dev
 comma
 l_string|&quot;%s - invalid buffer signature&bslash;n&quot;
@@ -2873,6 +2872,7 @@ id|rom_desc
 (brace
 id|dev_err
 (paren
+op_amp
 id|serial-&gt;serial-&gt;dev-&gt;dev
 comma
 l_string|&quot;%s - out of memory&bslash;n&quot;
@@ -3122,7 +3122,6 @@ id|buffer
 (brace
 id|dev_err
 (paren
-op_star
 id|dev
 comma
 l_string|&quot;%s - out of memory&bslash;n&quot;
@@ -3724,6 +3723,7 @@ id|interface
 (brace
 id|dev_err
 (paren
+op_amp
 id|serial-&gt;serial-&gt;dev-&gt;dev
 comma
 l_string|&quot;%s - no interface set, error!&quot;
@@ -3838,7 +3838,6 @@ id|ti_manuf_desc
 (brace
 id|dev_err
 (paren
-op_star
 id|dev
 comma
 l_string|&quot;%s - out of memory.&bslash;n&quot;
@@ -3940,7 +3939,6 @@ id|rom_desc
 (brace
 id|dev_err
 (paren
-op_star
 id|dev
 comma
 l_string|&quot;%s - out of memory.&bslash;n&quot;
@@ -4015,7 +4013,6 @@ id|firmware_version
 (brace
 id|dev_err
 (paren
-op_star
 id|dev
 comma
 l_string|&quot;%s - out of memory.&bslash;n&quot;
@@ -4263,7 +4260,6 @@ id|I2C_DESC_TYPE_FIRMWARE_BLANK
 (brace
 id|dev_err
 (paren
-op_star
 id|dev
 comma
 l_string|&quot;%s - error resetting device&bslash;n&quot;
@@ -4386,7 +4382,6 @@ id|header
 (brace
 id|dev_err
 (paren
-op_star
 id|dev
 comma
 l_string|&quot;%s - out of memory.&bslash;n&quot;
@@ -4427,7 +4422,6 @@ id|vheader
 (brace
 id|dev_err
 (paren
-op_star
 id|dev
 comma
 l_string|&quot;%s - out of memory.&bslash;n&quot;
@@ -4881,7 +4875,6 @@ id|ti_manuf_desc
 (brace
 id|dev_err
 (paren
-op_star
 id|dev
 comma
 l_string|&quot;%s - out of memory.&bslash;n&quot;
@@ -5011,7 +5004,6 @@ id|buffer
 (brace
 id|dev_err
 (paren
-op_star
 id|dev
 comma
 l_string|&quot;%s - out of memory&bslash;n&quot;
@@ -6444,6 +6436,7 @@ r_default
 suffix:colon
 id|dev_err
 (paren
+op_amp
 id|urb-&gt;dev-&gt;dev
 comma
 l_string|&quot;%s - Unknown Interrupt code from UMP %x&bslash;n&quot;
@@ -6477,6 +6470,7 @@ id|status
 )paren
 id|dev_err
 (paren
+op_amp
 id|urb-&gt;dev-&gt;dev
 comma
 l_string|&quot;%s - usb_submit_urb failed with result %d&bslash;n&quot;
@@ -6761,6 +6755,7 @@ id|status
 )paren
 id|dev_err
 (paren
+op_amp
 id|urb-&gt;dev-&gt;dev
 comma
 l_string|&quot;%s - usb_submit_urb failed with result %d&bslash;n&quot;
@@ -7064,6 +7059,7 @@ r_default
 suffix:colon
 id|dev_err
 (paren
+op_amp
 id|port-&gt;dev
 comma
 l_string|&quot;Unknown port number!!!&bslash;n&quot;
@@ -7347,6 +7343,7 @@ id|urb
 (brace
 id|dev_err
 (paren
+op_amp
 id|port-&gt;dev
 comma
 l_string|&quot;%s - no interrupt urb present, exiting&bslash;n&quot;
@@ -7388,6 +7385,7 @@ id|status
 (brace
 id|dev_err
 (paren
+op_amp
 id|port-&gt;dev
 comma
 l_string|&quot;%s - usb_submit_urb failed with value %d&bslash;n&quot;
@@ -7431,6 +7429,7 @@ id|urb
 (brace
 id|dev_err
 (paren
+op_amp
 id|port-&gt;dev
 comma
 l_string|&quot;%s - no read urb present, exiting&bslash;n&quot;
@@ -7472,6 +7471,7 @@ id|status
 (brace
 id|dev_err
 (paren
+op_amp
 id|port-&gt;dev
 comma
 l_string|&quot;%s - read bulk usb_submit_urb failed with value %d&bslash;n&quot;
@@ -7925,6 +7925,7 @@ id|result
 id|dev_err
 c_func
 (paren
+op_amp
 id|port-&gt;dev
 comma
 l_string|&quot;%s - failed submitting write urb, error %d&bslash;n&quot;
@@ -8434,6 +8435,7 @@ id|status
 (brace
 id|dev_err
 (paren
+op_amp
 id|port-&gt;dev
 comma
 l_string|&quot;%s - usb_submit_urb failed with value %d&bslash;n&quot;
@@ -8551,6 +8553,7 @@ id|config
 (brace
 id|dev_err
 (paren
+op_amp
 id|edge_port-&gt;port-&gt;dev
 comma
 l_string|&quot;%s - out of memory&bslash;n&quot;
@@ -10308,6 +10311,7 @@ l_int|NULL
 id|dev_err
 c_func
 (paren
+op_amp
 id|serial-&gt;dev-&gt;dev
 comma
 l_string|&quot;%s - Out of memory&bslash;n&quot;
@@ -10407,6 +10411,7 @@ l_int|NULL
 id|dev_err
 c_func
 (paren
+op_amp
 id|serial-&gt;dev-&gt;dev
 comma
 l_string|&quot;%s - Out of memory&bslash;n&quot;

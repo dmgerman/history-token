@@ -14,7 +14,7 @@ l_string|&quot;acpi_utils&quot;
 multiline_comment|/* --------------------------------------------------------------------------&n;                            Object Evaluation Helpers&n;   -------------------------------------------------------------------------- */
 macro_line|#ifdef ACPI_DEBUG_OUTPUT
 DECL|macro|acpi_util_eval_error
-mdefine_line|#define acpi_util_eval_error(h,p,s) {&bslash;&n;&t;char prefix[80] = {&squot;&bslash;0&squot;};&bslash;&n;&t;acpi_buffer buffer = {sizeof(prefix), prefix};&bslash;&n;&t;acpi_get_name(h, ACPI_FULL_PATHNAME, &amp;buffer);&bslash;&n;&t;ACPI_DEBUG_PRINT((ACPI_DB_INFO, &quot;Evaluate [%s.%s]: %s&bslash;n&quot;,&bslash;&n;&t;&t;(char *) prefix, p, acpi_format_exception(s))); }
+mdefine_line|#define acpi_util_eval_error(h,p,s) {&bslash;&n;&t;char prefix[80] = {&squot;&bslash;0&squot;};&bslash;&n;&t;struct acpi_buffer buffer = {sizeof(prefix), prefix};&bslash;&n;&t;acpi_get_name(h, ACPI_FULL_PATHNAME, &amp;buffer);&bslash;&n;&t;ACPI_DEBUG_PRINT((ACPI_DB_INFO, &quot;Evaluate [%s.%s]: %s&bslash;n&quot;,&bslash;&n;&t;&t;(char *) prefix, p, acpi_format_exception(s))); }
 macro_line|#else
 mdefine_line|#define acpi_util_eval_error(h,p,s)
 macro_line|#endif
@@ -22,14 +22,17 @@ id|acpi_status
 DECL|function|acpi_extract_package
 id|acpi_extract_package
 (paren
+r_union
 id|acpi_object
 op_star
 id|package
 comma
+r_struct
 id|acpi_buffer
 op_star
 id|format
 comma
+r_struct
 id|acpi_buffer
 op_star
 id|buffer
@@ -238,6 +241,7 @@ id|i
 op_increment
 )paren
 (brace
+r_union
 id|acpi_object
 op_star
 id|element
@@ -572,6 +576,7 @@ id|pointer
 op_assign
 l_int|NULL
 suffix:semicolon
+r_union
 id|acpi_object
 op_star
 id|element
@@ -867,6 +872,7 @@ comma
 id|acpi_string
 id|pathname
 comma
+r_struct
 id|acpi_object_list
 op_star
 id|arguments
@@ -882,15 +888,18 @@ id|status
 op_assign
 id|AE_OK
 suffix:semicolon
+r_union
 id|acpi_object
 id|element
 suffix:semicolon
+r_struct
 id|acpi_buffer
 id|buffer
 op_assign
 (brace
 r_sizeof
 (paren
+r_union
 id|acpi_object
 )paren
 comma
@@ -1250,6 +1259,7 @@ comma
 id|acpi_string
 id|pathname
 comma
+r_struct
 id|acpi_object_list
 op_star
 id|arguments
@@ -1265,18 +1275,21 @@ id|status
 op_assign
 id|AE_OK
 suffix:semicolon
+r_union
 id|acpi_object
 op_star
 id|package
 op_assign
 l_int|NULL
 suffix:semicolon
+r_union
 id|acpi_object
 op_star
 id|element
 op_assign
 l_int|NULL
 suffix:semicolon
+r_struct
 id|acpi_buffer
 id|buffer
 op_assign
@@ -1342,6 +1355,7 @@ suffix:semicolon
 id|package
 op_assign
 (paren
+r_union
 id|acpi_object
 op_star
 )paren

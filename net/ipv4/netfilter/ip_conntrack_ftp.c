@@ -1037,7 +1037,7 @@ id|i
 op_increment
 )paren
 (brace
-id|DEBUGFTP
+id|DEBUGP
 c_func
 (paren
 l_string|&quot;ftp:char %u `%c&squot;(%u) vs `%c&squot;(%u)&bslash;n&quot;

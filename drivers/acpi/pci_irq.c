@@ -157,6 +157,7 @@ comma
 r_int
 id|bus
 comma
+r_struct
 id|acpi_pci_routing_table
 op_star
 id|prt
@@ -365,6 +366,7 @@ op_assign
 l_int|0
 )brace
 suffix:semicolon
+r_struct
 id|acpi_buffer
 id|buffer
 op_assign
@@ -374,12 +376,14 @@ comma
 l_int|NULL
 )brace
 suffix:semicolon
+r_struct
 id|acpi_pci_routing_table
 op_star
 id|prt
 op_assign
 l_int|NULL
 suffix:semicolon
+r_struct
 id|acpi_pci_routing_table
 op_star
 id|entry
@@ -623,6 +627,7 @@ suffix:semicolon
 id|entry
 op_assign
 (paren
+r_struct
 id|acpi_pci_routing_table
 op_star
 )paren

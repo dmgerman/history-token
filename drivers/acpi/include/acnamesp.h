@@ -1,5 +1,5 @@
 multiline_comment|/******************************************************************************&n; *&n; * Name: acnamesp.h - Namespace subcomponent prototypes and defines&n; *&n; *****************************************************************************/
-multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/*&n; *  Copyright (C) 2000 - 2003, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#ifndef __ACNAMESP_H__
 DECL|macro|__ACNAMESP_H__
 mdefine_line|#define __ACNAMESP_H__
@@ -124,6 +124,7 @@ op_star
 id|return_value
 )paren
 suffix:semicolon
+r_struct
 id|acpi_namespace_node
 op_star
 id|acpi_ns_get_next_node
@@ -131,10 +132,12 @@ id|acpi_ns_get_next_node
 id|acpi_object_type
 id|type
 comma
+r_struct
 id|acpi_namespace_node
 op_star
 id|parent
 comma
+r_struct
 id|acpi_namespace_node
 op_star
 id|child
@@ -154,6 +157,7 @@ id|acpi_ns_one_complete_parse
 id|u32
 id|pass_number
 comma
+r_struct
 id|acpi_table_desc
 op_star
 id|table_desc
@@ -162,10 +166,12 @@ suffix:semicolon
 id|acpi_status
 id|acpi_ns_parse_table
 (paren
+r_struct
 id|acpi_table_desc
 op_star
 id|table_desc
 comma
+r_struct
 id|acpi_namespace_node
 op_star
 id|scope
@@ -174,10 +180,12 @@ suffix:semicolon
 id|acpi_status
 id|acpi_ns_load_table
 (paren
+r_struct
 id|acpi_table_desc
 op_star
 id|table_desc
 comma
+r_struct
 id|acpi_namespace_node
 op_star
 id|node
@@ -200,6 +208,7 @@ suffix:semicolon
 id|acpi_status
 id|acpi_ns_lookup
 (paren
+r_union
 id|acpi_generic_state
 op_star
 id|scope_info
@@ -217,10 +226,12 @@ comma
 id|u32
 id|flags
 comma
+r_struct
 id|acpi_walk_state
 op_star
 id|walk_state
 comma
+r_struct
 id|acpi_namespace_node
 op_star
 op_star
@@ -228,6 +239,7 @@ id|ret_node
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * Named object allocation/deallocation - nsalloc&n; */
+r_struct
 id|acpi_namespace_node
 op_star
 id|acpi_ns_create_node
@@ -239,6 +251,7 @@ suffix:semicolon
 r_void
 id|acpi_ns_delete_node
 (paren
+r_struct
 id|acpi_namespace_node
 op_star
 id|node
@@ -247,6 +260,7 @@ suffix:semicolon
 r_void
 id|acpi_ns_delete_namespace_subtree
 (paren
+r_struct
 id|acpi_namespace_node
 op_star
 id|parent_handle
@@ -255,6 +269,7 @@ suffix:semicolon
 r_void
 id|acpi_ns_detach_object
 (paren
+r_struct
 id|acpi_namespace_node
 op_star
 id|node
@@ -263,6 +278,7 @@ suffix:semicolon
 r_void
 id|acpi_ns_delete_children
 (paren
+r_struct
 id|acpi_namespace_node
 op_star
 id|parent
@@ -411,15 +427,18 @@ multiline_comment|/*&n; * Namespace evaluation functions - nseval&n; */
 id|acpi_status
 id|acpi_ns_evaluate_by_handle
 (paren
+r_struct
 id|acpi_namespace_node
 op_star
 id|prefix_node
 comma
+r_union
 id|acpi_operand_object
 op_star
 op_star
 id|params
 comma
+r_union
 id|acpi_operand_object
 op_star
 op_star
@@ -433,11 +452,13 @@ r_char
 op_star
 id|pathname
 comma
+r_union
 id|acpi_operand_object
 op_star
 op_star
 id|params
 comma
+r_union
 id|acpi_operand_object
 op_star
 op_star
@@ -447,6 +468,7 @@ suffix:semicolon
 id|acpi_status
 id|acpi_ns_evaluate_relative
 (paren
+r_struct
 id|acpi_namespace_node
 op_star
 id|prefix_node
@@ -455,11 +477,13 @@ r_char
 op_star
 id|pathname
 comma
+r_union
 id|acpi_operand_object
 op_star
 op_star
 id|params
 comma
+r_union
 id|acpi_operand_object
 op_star
 op_star
@@ -469,15 +493,18 @@ suffix:semicolon
 id|acpi_status
 id|acpi_ns_execute_control_method
 (paren
+r_struct
 id|acpi_namespace_node
 op_star
 id|method_node
 comma
+r_union
 id|acpi_operand_object
 op_star
 op_star
 id|params
 comma
+r_union
 id|acpi_operand_object
 op_star
 op_star
@@ -487,10 +514,12 @@ suffix:semicolon
 id|acpi_status
 id|acpi_ns_get_object_value
 (paren
+r_struct
 id|acpi_namespace_node
 op_star
 id|object_node
 comma
+r_union
 id|acpi_operand_object
 op_star
 op_star
@@ -501,6 +530,7 @@ multiline_comment|/*&n; * Parent/Child/Peer utility functions&n; */
 id|acpi_name
 id|acpi_ns_find_parent_name
 (paren
+r_struct
 id|acpi_namespace_node
 op_star
 id|node_to_search
@@ -517,6 +547,7 @@ suffix:semicolon
 r_void
 id|acpi_ns_build_external_path
 (paren
+r_struct
 id|acpi_namespace_node
 op_star
 id|node
@@ -533,6 +564,7 @@ r_char
 op_star
 id|acpi_ns_get_external_pathname
 (paren
+r_struct
 id|acpi_namespace_node
 op_star
 id|node
@@ -542,6 +574,7 @@ r_char
 op_star
 id|acpi_ns_name_of_current_scope
 (paren
+r_struct
 id|acpi_walk_state
 op_star
 id|walk_state
@@ -553,6 +586,7 @@ id|acpi_ns_handle_to_pathname
 id|acpi_handle
 id|target_handle
 comma
+r_struct
 id|acpi_buffer
 op_star
 id|buffer
@@ -561,6 +595,7 @@ suffix:semicolon
 id|u8
 id|acpi_ns_pattern_match
 (paren
+r_struct
 id|acpi_namespace_node
 op_star
 id|obj_node
@@ -577,6 +612,7 @@ r_char
 op_star
 id|external_pathname
 comma
+r_struct
 id|acpi_namespace_node
 op_star
 id|in_prefix_node
@@ -584,6 +620,7 @@ comma
 id|u32
 id|flags
 comma
+r_struct
 id|acpi_namespace_node
 op_star
 op_star
@@ -593,6 +630,7 @@ suffix:semicolon
 id|acpi_size
 id|acpi_ns_get_pathname_length
 (paren
+r_struct
 id|acpi_namespace_node
 op_star
 id|node
@@ -602,10 +640,12 @@ multiline_comment|/*&n; * Object management for namespace nodes - nsobject&n; */
 id|acpi_status
 id|acpi_ns_attach_object
 (paren
+r_struct
 id|acpi_namespace_node
 op_star
 id|node
 comma
+r_union
 id|acpi_operand_object
 op_star
 id|object
@@ -614,19 +654,23 @@ id|acpi_object_type
 id|type
 )paren
 suffix:semicolon
+r_union
 id|acpi_operand_object
 op_star
 id|acpi_ns_get_attached_object
 (paren
+r_struct
 id|acpi_namespace_node
 op_star
 id|node
 )paren
 suffix:semicolon
+r_union
 id|acpi_operand_object
 op_star
 id|acpi_ns_get_secondary_object
 (paren
+r_union
 id|acpi_operand_object
 op_star
 id|obj_desc
@@ -635,6 +679,7 @@ suffix:semicolon
 id|acpi_status
 id|acpi_ns_attach_data
 (paren
+r_struct
 id|acpi_namespace_node
 op_star
 id|node
@@ -650,6 +695,7 @@ suffix:semicolon
 id|acpi_status
 id|acpi_ns_detach_data
 (paren
+r_struct
 id|acpi_namespace_node
 op_star
 id|node
@@ -661,6 +707,7 @@ suffix:semicolon
 id|acpi_status
 id|acpi_ns_get_attached_data
 (paren
+r_struct
 id|acpi_namespace_node
 op_star
 id|node
@@ -681,10 +728,12 @@ id|acpi_ns_search_and_enter
 id|u32
 id|entry_name
 comma
+r_struct
 id|acpi_walk_state
 op_star
 id|walk_state
 comma
+r_struct
 id|acpi_namespace_node
 op_star
 id|node
@@ -698,6 +747,7 @@ comma
 id|u32
 id|flags
 comma
+r_struct
 id|acpi_namespace_node
 op_star
 op_star
@@ -710,6 +760,7 @@ id|acpi_ns_search_node
 id|u32
 id|entry_name
 comma
+r_struct
 id|acpi_namespace_node
 op_star
 id|node
@@ -717,6 +768,7 @@ comma
 id|acpi_object_type
 id|type
 comma
+r_struct
 id|acpi_namespace_node
 op_star
 op_star
@@ -726,14 +778,17 @@ suffix:semicolon
 r_void
 id|acpi_ns_install_node
 (paren
+r_struct
 id|acpi_walk_state
 op_star
 id|walk_state
 comma
+r_struct
 id|acpi_namespace_node
 op_star
 id|parent_node
 comma
+r_struct
 id|acpi_namespace_node
 op_star
 id|node
@@ -760,6 +815,7 @@ suffix:semicolon
 id|acpi_object_type
 id|acpi_ns_get_type
 (paren
+r_struct
 id|acpi_namespace_node
 op_star
 id|node
@@ -810,6 +866,7 @@ r_char
 op_star
 id|message
 comma
+r_struct
 id|acpi_namespace_node
 op_star
 id|node
@@ -825,6 +882,7 @@ suffix:semicolon
 r_void
 id|acpi_ns_print_node_pathname
 (paren
+r_struct
 id|acpi_namespace_node
 op_star
 id|node
@@ -837,6 +895,7 @@ suffix:semicolon
 id|acpi_status
 id|acpi_ns_build_internal_name
 (paren
+r_struct
 id|acpi_namestring_info
 op_star
 id|info
@@ -845,6 +904,7 @@ suffix:semicolon
 r_void
 id|acpi_ns_get_internal_name_length
 (paren
+r_struct
 id|acpi_namestring_info
 op_star
 id|info
@@ -883,6 +943,7 @@ op_star
 id|converted_name
 )paren
 suffix:semicolon
+r_struct
 id|acpi_namespace_node
 op_star
 id|acpi_ns_map_handle_to_node
@@ -895,6 +956,7 @@ id|acpi_handle
 id|acpi_ns_convert_entry_to_handle
 c_func
 (paren
+r_struct
 id|acpi_namespace_node
 op_star
 id|node
@@ -906,19 +968,23 @@ id|acpi_ns_terminate
 r_void
 )paren
 suffix:semicolon
+r_struct
 id|acpi_namespace_node
 op_star
 id|acpi_ns_get_parent_node
 (paren
+r_struct
 id|acpi_namespace_node
 op_star
 id|node
 )paren
 suffix:semicolon
+r_struct
 id|acpi_namespace_node
 op_star
 id|acpi_ns_get_next_valid_node
 (paren
+r_struct
 id|acpi_namespace_node
 op_star
 id|node

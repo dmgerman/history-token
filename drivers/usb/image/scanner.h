@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Driver for USB Scanners (linux-2.5.52)&n; *&n; * Copyright (C) 1999, 2000, 2001, 2002 David E. Nelson&n; *&n; * Brian Beattie &lt;beattie@beattie-home.net&gt;&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License as&n; * published by the Free Software Foundation; either version 2 of the&n; * License, or (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU&n; * General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; * 05/21/02 Currently maintained by Brian Beattie &lt;beattie@beattie-home.net&gt;&n; *&n; *&n; */
+multiline_comment|/*&n; * Driver for USB Scanners (linux-2.5.54)&n; *&n; * Copyright (C) 1999, 2000, 2001, 2002 David E. Nelson&n; *&n; * Brian Beattie &lt;beattie@beattie-home.net&gt;&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License as&n; * published by the Free Software Foundation; either version 2 of the&n; * License, or (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU&n; * General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; * 05/21/02 Currently maintained by Brian Beattie &lt;beattie@beattie-home.net&gt;&n; *&n; *&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
@@ -11,10 +11,8 @@ macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
 singleline_comment|// #define DEBUG
-multiline_comment|/* Enable this to support the older ioctl interfaces scanners that&n; * a PV8630 Scanner-On-Chip.  The prefered method is the&n; * SCANNER_IOCTL_CTRLMSG ioctl.&n; */
-singleline_comment|// #define PV8630 
 DECL|macro|DRIVER_VERSION
-mdefine_line|#define DRIVER_VERSION &quot;0.4.9&quot;
+mdefine_line|#define DRIVER_VERSION &quot;0.4.10&quot;
 DECL|macro|DRIVER_DESC
 mdefine_line|#define DRIVER_DESC &quot;USB Scanner Driver&quot;
 macro_line|#include &lt;linux/usb.h&gt;
@@ -615,6 +613,17 @@ c_func
 (paren
 l_int|0x03f0
 comma
+l_int|0x0605
+)paren
+)brace
+comma
+multiline_comment|/* 2200C */
+(brace
+id|USB_DEVICE
+c_func
+(paren
+l_int|0x03f0
+comma
 l_int|0x0901
 )paren
 )brace
@@ -731,17 +740,6 @@ l_int|0x0601
 )brace
 comma
 multiline_comment|/* 6300C */
-(brace
-id|USB_DEVICE
-c_func
-(paren
-l_int|0x03f0
-comma
-l_int|0x605
-)paren
-)brace
-comma
-multiline_comment|/* 2200C */
 multiline_comment|/* iVina */
 (brace
 id|USB_DEVICE
@@ -1670,6 +1668,28 @@ l_int|0x0331
 comma
 multiline_comment|/* OneTouch 8600 EPP/USB */
 (brace
+id|USB_DEVICE
+c_func
+(paren
+l_int|0x0461
+comma
+l_int|0x0345
+)paren
+)brace
+comma
+multiline_comment|/* 6200 (actually Primax?) */
+(brace
+id|USB_DEVICE
+c_func
+(paren
+l_int|0x0461
+comma
+l_int|0x0371
+)paren
+)brace
+comma
+multiline_comment|/* Onetouch 8920 USB (actually Primax?) */
+(brace
 )brace
 multiline_comment|/* Terminating entry */
 )brace
@@ -1707,13 +1727,6 @@ DECL|macro|RD_NAK_TIMEOUT
 mdefine_line|#define RD_NAK_TIMEOUT (10*HZ)&t;/* Default number of X seconds to wait */
 DECL|macro|RD_EXPIRE
 mdefine_line|#define RD_EXPIRE 12&t;&t;/* Number of attempts to wait X seconds */
-multiline_comment|/* FIXME: These are NOT registered ioctls()&squot;s */
-macro_line|#ifdef PV8630
-DECL|macro|PV8630_IOCTL_INREQUEST
-mdefine_line|#define PV8630_IOCTL_INREQUEST 69
-DECL|macro|PV8630_IOCTL_OUTREQUEST
-mdefine_line|#define PV8630_IOCTL_OUTREQUEST 70
-macro_line|#endif /* PV8630 */
 multiline_comment|/* read vendor and product IDs from the scanner */
 DECL|macro|SCANNER_IOCTL_VENDOR
 mdefine_line|#define SCANNER_IOCTL_VENDOR _IOR(&squot;U&squot;, 0x20, int)
@@ -1722,6 +1735,9 @@ mdefine_line|#define SCANNER_IOCTL_PRODUCT _IOR(&squot;U&squot;, 0x21, int)
 multiline_comment|/* send/recv a control message to the scanner */
 DECL|macro|SCANNER_IOCTL_CTRLMSG
 mdefine_line|#define SCANNER_IOCTL_CTRLMSG _IOWR(&squot;U&squot;, 0x22, struct usb_ctrlrequest)
+multiline_comment|/* USB bInterfaceClass used by Hewlett-Packard ScanJet 3300c and Genius HR6&n;   USB - Vivid III */
+DECL|macro|SCN_CLASS_SCANJET
+mdefine_line|#define SCN_CLASS_SCANJET 16
 macro_line|#ifdef CONFIG_USB_DYNAMIC_MINORS
 DECL|macro|SCN_MAX_MNR
 mdefine_line|#define SCN_MAX_MNR 256

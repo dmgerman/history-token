@@ -579,6 +579,23 @@ id|__u16
 id|vfmax
 suffix:semicolon
 multiline_comment|/* vfreq upper limit (Hz) */
+DECL|member|dclkmin
+id|__u32
+id|dclkmin
+suffix:semicolon
+multiline_comment|/* pixelclock lower limit (Hz) */
+DECL|member|dclkmax
+id|__u32
+id|dclkmax
+suffix:semicolon
+multiline_comment|/* pixelclock upper limit (Hz) */
+DECL|member|gtf
+r_int
+id|gtf
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* supports GTF */
 DECL|member|dpms
 r_int
 id|dpms
@@ -1532,6 +1549,16 @@ r_int
 id|num_registered_fb
 suffix:semicolon
 multiline_comment|/* drivers/video/fbmon.c */
+DECL|macro|FB_MAXTIMINGS
+mdefine_line|#define FB_MAXTIMINGS       0
+DECL|macro|FB_VSYNCTIMINGS
+mdefine_line|#define FB_VSYNCTIMINGS     1
+DECL|macro|FB_HSYNCTIMINGS
+mdefine_line|#define FB_HSYNCTIMINGS     2
+DECL|macro|FB_DCLKTIMINGS
+mdefine_line|#define FB_DCLKTIMINGS      3
+DECL|macro|FB_IGNOREMON
+mdefine_line|#define FB_IGNOREMON    0x100
 r_extern
 r_int
 id|fbmon_valid_timings

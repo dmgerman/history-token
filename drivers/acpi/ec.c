@@ -164,14 +164,17 @@ r_int
 id|gpe_bit
 suffix:semicolon
 DECL|member|status_addr
+r_struct
 id|acpi_generic_address
 id|status_addr
 suffix:semicolon
 DECL|member|command_addr
+r_struct
 id|acpi_generic_address
 id|command_addr
 suffix:semicolon
 DECL|member|data_addr
+r_struct
 id|acpi_generic_address
 id|data_addr
 suffix:semicolon
@@ -2449,6 +2452,7 @@ id|ec
 op_assign
 l_int|NULL
 suffix:semicolon
+r_struct
 id|acpi_buffer
 id|buffer
 op_assign
@@ -2458,6 +2462,7 @@ comma
 l_int|NULL
 )brace
 suffix:semicolon
+r_struct
 id|acpi_resource
 op_star
 id|resource
@@ -2547,6 +2552,7 @@ suffix:semicolon
 id|resource
 op_assign
 (paren
+r_struct
 id|acpi_resource
 op_star
 )paren
@@ -2924,6 +2930,7 @@ comma
 id|ACPI_LOGICAL_ADDRESSING
 comma
 (paren
+r_struct
 id|acpi_table_header
 op_star
 op_star
