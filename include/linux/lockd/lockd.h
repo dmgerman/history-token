@@ -690,6 +690,19 @@ r_int
 id|action
 )paren
 suffix:semicolon
+r_void
+id|nlmsvc_grant_reply
+c_func
+(paren
+r_struct
+id|nlm_cookie
+op_star
+id|cookie
+comma
+id|u32
+id|status
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * File handling for the server personality&n; */
 id|u32
 id|nlm_lookup_file
