@@ -12,7 +12,6 @@ macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/buffer_head.h&gt;
 macro_line|#include &lt;linux/uio.h&gt;
-multiline_comment|/*&n; * Turn this on to get pagebuf lock ownership&n;#define PAGEBUF_LOCK_TRACKING&n;*/
 multiline_comment|/*&n; *&t;Base types&n; */
 multiline_comment|/* daddr must be signed since -1 is used for bmaps that are not yet allocated */
 DECL|typedef|page_buf_daddr_t
@@ -22,12 +21,6 @@ id|page_buf_daddr_t
 suffix:semicolon
 DECL|macro|PAGE_BUF_DADDR_NULL
 mdefine_line|#define PAGE_BUF_DADDR_NULL ((page_buf_daddr_t) (-1LL))
-DECL|typedef|page_buf_dsize_t
-r_typedef
-r_int
-id|page_buf_dsize_t
-suffix:semicolon
-multiline_comment|/* size of buffer in blocks */
 DECL|macro|page_buf_ctob
 mdefine_line|#define page_buf_ctob(pp)&t;((pp) * PAGE_CACHE_SIZE)
 DECL|macro|page_buf_btoc
