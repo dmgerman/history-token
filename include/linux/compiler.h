@@ -12,6 +12,7 @@ macro_line|# define __user
 DECL|macro|__kernel
 macro_line|# define __kernel
 macro_line|#endif
+macro_line|#ifndef __ASSEMBLY__
 macro_line|#if __GNUC__ &gt; 3
 macro_line|# include &lt;linux/compiler-gcc+.h&gt;&t;/* catch-all for GCC 4, 5, etc. */
 macro_line|#elif __GNUC__ == 3
@@ -20,6 +21,7 @@ macro_line|#elif __GNUC__ == 2
 macro_line|# include &lt;linux/compiler-gcc2.h&gt;
 macro_line|#else
 macro_line|# error Sorry, your compiler is too old/not recognized.
+macro_line|#endif
 macro_line|#endif
 multiline_comment|/* Intel compiler defines __GNUC__. So we will overwrite implementations&n; * coming from above header files here&n; */
 macro_line|#ifdef __INTEL_COMPILER
