@@ -3950,66 +3950,6 @@ id|len
 )paren
 suffix:semicolon
 )brace
-macro_line|#if defined(CONFIG_ATM_LANE) || defined(CONFIG_ATM_LANE_MODULE)
-macro_line|#if defined(CONFIG_BRIDGE) || defined(CONFIG_BRIDGE_MODULE)
-r_struct
-id|net_bridge
-suffix:semicolon
-DECL|variable|br_fdb_get_hook
-r_struct
-id|net_bridge_fdb_entry
-op_star
-(paren
-op_star
-id|br_fdb_get_hook
-)paren
-(paren
-r_struct
-id|net_bridge
-op_star
-id|br
-comma
-r_int
-r_char
-op_star
-id|addr
-)paren
-op_assign
-l_int|NULL
-suffix:semicolon
-DECL|variable|br_fdb_put_hook
-r_void
-(paren
-op_star
-id|br_fdb_put_hook
-)paren
-(paren
-r_struct
-id|net_bridge_fdb_entry
-op_star
-id|ent
-)paren
-op_assign
-l_int|NULL
-suffix:semicolon
-macro_line|#if defined(CONFIG_ATM_LANE_MODULE) || defined(CONFIG_BRIDGE_MODULE)
-DECL|variable|br_fdb_get_hook
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|br_fdb_get_hook
-)paren
-suffix:semicolon
-DECL|variable|br_fdb_put_hook
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|br_fdb_put_hook
-)paren
-suffix:semicolon
-macro_line|#endif /* defined(CONFIG_ATM_LANE_MODULE) || defined(CONFIG_BRIDGE_MODULE) */
-macro_line|#endif /* defined(CONFIG_BRIDGE) || defined(CONFIG_BRIDGE_MODULE) */
-macro_line|#endif /* defined(CONFIG_ATM_LANE) || defined(CONFIG_ATM_LANE_MODULE) */
 DECL|function|atm_init
 r_static
 r_int
