@@ -57,16 +57,17 @@ id|u64
 id|xCurrent
 suffix:semicolon
 multiline_comment|/* Pointer to current&t;&t;&t;0x10 */
+multiline_comment|/* Note: the spinlock functions in arch/ppc64/lib/locks.c load lock_token and&n;&t;   xPacaIndex with a single lwz instruction, using the constant offset 24.&n;&t;   If you move either field, fix the spinlocks and rwlocks. */
+DECL|member|lock_token
+id|u16
+id|lock_token
+suffix:semicolon
+multiline_comment|/* Constant 0x8000, used in spinlocks&t;0x18 */
 DECL|member|xPacaIndex
 id|u16
 id|xPacaIndex
 suffix:semicolon
-multiline_comment|/* Logical processor number&t;&t;0x18 */
-DECL|member|xHwProcNum
-id|u16
-id|xHwProcNum
-suffix:semicolon
-multiline_comment|/* Physical processor number            0x1A */
+multiline_comment|/* Logical processor number&t;&t;0x1A */
 DECL|member|default_decr
 id|u32
 id|default_decr
@@ -110,14 +111,19 @@ id|u8
 id|prof_enabled
 suffix:semicolon
 multiline_comment|/* 1=iSeries profiling enabled          0x59 */
+DECL|member|xHwProcNum
+id|u16
+id|xHwProcNum
+suffix:semicolon
+multiline_comment|/* Physical processor number&t;&t;0x5a */
 DECL|member|resv1
 id|u8
 id|resv1
 (braket
-l_int|38
+l_int|36
 )braket
 suffix:semicolon
-multiline_comment|/*&t;&t;&t;&t;&t;0x5a-0x7f*/
+multiline_comment|/*&t;&t;&t;&t;&t;0x5c */
 multiline_comment|/*=====================================================================================&n; * CACHE_LINE_2 0x0080 - 0x00FF&n; *=====================================================================================&n; */
 DECL|member|spare1
 id|u64
