@@ -3116,10 +3116,10 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|cmd680_dmaproc
+DECL|function|cmd680_udma_setup
 r_static
 r_int
-id|cmd680_dmaproc
+id|cmd680_udma_setup
 c_func
 (paren
 r_struct
@@ -3444,10 +3444,10 @@ l_int|4
 suffix:semicolon
 multiline_comment|/* return 1 if INTR asserted */
 )brace
-DECL|function|cmd64x_dmaproc
+DECL|function|cmd64x_udma_setup
 r_static
 r_int
-id|cmd64x_dmaproc
+id|cmd64x_udma_setup
 c_func
 (paren
 r_struct
@@ -3555,10 +3555,10 @@ suffix:semicolon
 multiline_comment|/* verify good DMA status */
 )brace
 multiline_comment|/*&n; * ASUS P55T2P4D with CMD646 chipset revision 0x01 requires the old&n; * event order for DMA transfers.&n; */
-DECL|function|cmd646_1_dmaproc
+DECL|function|cmd646_1_udma_setup
 r_static
 r_int
-id|cmd646_1_dmaproc
+id|cmd646_1_udma_setup
 c_func
 (paren
 r_struct
@@ -4602,9 +4602,9 @@ c_cond
 (paren
 id|hwif-&gt;dma_base
 )paren
-id|hwif-&gt;XXX_udma
+id|hwif-&gt;udma_setup
 op_assign
-id|cmd680_dmaproc
+id|cmd680_udma_setup
 suffix:semicolon
 macro_line|#endif
 id|hwif-&gt;resetproc
@@ -4637,9 +4637,9 @@ c_cond
 id|hwif-&gt;dma_base
 )paren
 (brace
-id|hwif-&gt;XXX_udma
+id|hwif-&gt;udma_setup
 op_assign
-id|cmd64x_dmaproc
+id|cmd64x_udma_setup
 suffix:semicolon
 id|hwif-&gt;udma_stop
 op_assign
@@ -4683,9 +4683,9 @@ op_eq
 l_int|0x01
 )paren
 (brace
-id|hwif-&gt;XXX_udma
+id|hwif-&gt;udma_setup
 op_assign
-id|cmd646_1_dmaproc
+id|cmd646_1_udma_setup
 suffix:semicolon
 id|hwif-&gt;udma_stop
 op_assign
@@ -4694,9 +4694,9 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|hwif-&gt;XXX_udma
+id|hwif-&gt;udma_setup
 op_assign
-id|cmd64x_dmaproc
+id|cmd64x_udma_setup
 suffix:semicolon
 id|hwif-&gt;udma_stop
 op_assign

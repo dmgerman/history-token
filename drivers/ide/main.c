@@ -1870,9 +1870,9 @@ id|ch-&gt;atapi_write
 op_assign
 id|old.atapi_write
 suffix:semicolon
-id|ch-&gt;XXX_udma
+id|ch-&gt;udma_setup
 op_assign
-id|old.XXX_udma
+id|old.udma_setup
 suffix:semicolon
 id|ch-&gt;udma_enable
 op_assign
@@ -1886,13 +1886,9 @@ id|ch-&gt;udma_stop
 op_assign
 id|old.udma_stop
 suffix:semicolon
-id|ch-&gt;udma_read
+id|ch-&gt;udma_init
 op_assign
-id|old.udma_read
-suffix:semicolon
-id|ch-&gt;udma_write
-op_assign
-id|old.udma_write
+id|old.udma_init
 suffix:semicolon
 id|ch-&gt;udma_irq_status
 op_assign
@@ -4340,7 +4336,7 @@ l_int|2
 r_if
 c_cond
 (paren
-id|drive-&gt;channel-&gt;XXX_udma
+id|drive-&gt;channel-&gt;udma_setup
 )paren
 (brace
 multiline_comment|/*&n;&t;&t;&t; * Force DMAing for the beginning of the check.  Some&n;&t;&t;&t; * chipsets appear to do interesting things, if not&n;&t;&t;&t; * checked and cleared.&n;&t;&t;&t; *&n;&t;&t;&t; *   PARANOIA!!!&n;&t;&t;&t; */
@@ -4356,7 +4352,7 @@ l_int|0
 suffix:semicolon
 id|drive-&gt;channel
 op_member_access_from_pointer
-id|XXX_udma
+id|udma_setup
 c_func
 (paren
 id|drive

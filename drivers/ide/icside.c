@@ -1803,10 +1803,10 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|icside_dma_write
+DECL|function|icside_dma_init
 r_static
 r_int
-id|icside_dma_write
+id|icside_dma_init
 c_func
 (paren
 r_struct
@@ -2111,7 +2111,7 @@ id|ch-&gt;speedproc
 op_assign
 id|icside_set_speed
 suffix:semicolon
-id|ch-&gt;XXX_udma
+id|ch-&gt;udma_setup
 op_assign
 id|icside_dma_check
 suffix:semicolon
@@ -2127,13 +2127,9 @@ id|ch-&gt;udma_stop
 op_assign
 id|icside_dma_stop
 suffix:semicolon
-id|ch-&gt;udma_read
+id|ch-&gt;udma_init
 op_assign
-id|icside_dma_read
-suffix:semicolon
-id|ch-&gt;udma_write
-op_assign
-id|icside_dma_write
+id|icside_dma_init
 suffix:semicolon
 id|ch-&gt;udma_irq_status
 op_assign

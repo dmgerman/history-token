@@ -860,7 +860,7 @@ l_int|1
 )paren
 op_logical_or
 op_logical_neg
-id|drive-&gt;channel-&gt;XXX_udma
+id|drive-&gt;channel-&gt;udma_setup
 )paren
 r_return
 op_minus

@@ -767,9 +767,10 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|cs5530_dmaproc
+DECL|function|cs5530_udma_setup
+r_static
 r_int
-id|cs5530_dmaproc
+id|cs5530_udma_setup
 c_func
 (paren
 r_struct
@@ -1053,9 +1054,9 @@ comma
 id|d0_timings
 suffix:semicolon
 macro_line|#ifdef CONFIG_BLK_DEV_IDEDMA
-id|hwif-&gt;XXX_udma
+id|hwif-&gt;udma_setup
 op_assign
-id|cs5530_dmaproc
+id|cs5530_udma_setup
 suffix:semicolon
 id|hwif-&gt;highmem
 op_assign

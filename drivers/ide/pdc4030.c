@@ -2340,53 +2340,18 @@ comma
 l_int|1
 )paren
 suffix:semicolon
-multiline_comment|/* clear nIEN */
 id|ata_mask
 c_func
 (paren
 id|drive
 )paren
 suffix:semicolon
-id|outb
+id|ata_out_regfile
 c_func
 (paren
-id|taskfile-&gt;feature
+id|drive
 comma
-id|IDE_FEATURE_REG
-)paren
-suffix:semicolon
-id|outb
-c_func
-(paren
-id|taskfile-&gt;sector_count
-comma
-id|IDE_NSECTOR_REG
-)paren
-suffix:semicolon
-multiline_comment|/* refers to number of sectors to transfer */
-id|outb
-c_func
-(paren
-id|taskfile-&gt;sector_number
-comma
-id|IDE_SECTOR_REG
-)paren
-suffix:semicolon
-multiline_comment|/* refers to sector offset or start sector */
-id|outb
-c_func
-(paren
-id|taskfile-&gt;low_cylinder
-comma
-id|IDE_LCYL_REG
-)paren
-suffix:semicolon
-id|outb
-c_func
-(paren
-id|taskfile-&gt;high_cylinder
-comma
-id|IDE_HCYL_REG
+id|taskfile
 )paren
 suffix:semicolon
 id|outb
@@ -2724,7 +2689,6 @@ id|PROMISE_READ
 suffix:colon
 id|PROMISE_WRITE
 suffix:semicolon
-multiline_comment|/* We can&squot;t call ide_cmd_type_parser here, since it won&squot;t understand&n;&t;   our command, but that doesn&squot;t matter, since we don&squot;t use the&n;&t;   generic interrupt handlers either. Setup the bits of args that we&n;&t;   will need. */
 id|args.handler
 op_assign
 l_int|NULL

@@ -3648,10 +3648,10 @@ id|IDE_CONTROL_OFFSET
 suffix:semicolon
 )brace
 )brace
-DECL|function|config_drive_xfer_rate
+DECL|function|hpt3xx_udma_setup
 r_static
 r_int
-id|config_drive_xfer_rate
+id|hpt3xx_udma_setup
 c_func
 (paren
 r_struct
@@ -3986,27 +3986,6 @@ id|reg5ah
 op_amp
 op_complement
 l_int|0x10
-)paren
-suffix:semicolon
-)brace
-multiline_comment|/*&n; * This is specific to the HPT366 UDMA bios chipset&n; * by HighPoint|Triones Technologies, Inc.&n; */
-DECL|function|hpt366_dmaproc
-r_static
-r_int
-id|hpt366_dmaproc
-c_func
-(paren
-r_struct
-id|ata_device
-op_star
-id|drive
-)paren
-(brace
-r_return
-id|config_drive_xfer_rate
-c_func
-(paren
-id|drive
 )paren
 suffix:semicolon
 )brace
@@ -4439,26 +4418,6 @@ l_int|0
 suffix:semicolon
 multiline_comment|/* verify good DMA status */
 )brace
-DECL|function|hpt370_dmaproc
-r_static
-r_int
-id|hpt370_dmaproc
-c_func
-(paren
-r_struct
-id|ata_device
-op_star
-id|drive
-)paren
-(brace
-r_return
-id|config_drive_xfer_rate
-c_func
-(paren
-id|drive
-)paren
-suffix:semicolon
-)brace
 DECL|function|hpt374_udma_stop
 r_static
 r_int
@@ -4634,26 +4593,6 @@ suffix:colon
 l_int|0
 suffix:semicolon
 multiline_comment|/* verify good DMA status */
-)brace
-DECL|function|hpt374_dmaproc
-r_static
-r_int
-id|hpt374_dmaproc
-c_func
-(paren
-r_struct
-id|ata_device
-op_star
-id|drive
-)paren
-(brace
-r_return
-id|config_drive_xfer_rate
-c_func
-(paren
-id|drive
-)paren
-suffix:semicolon
 )brace
 macro_line|#endif
 multiline_comment|/*&n; * Since SUN Cobalt is attempting to do this operation, I should disclose&n; * this has been a long time ago Thu Jul 27 16:40:57 2000 was the patch date&n; * HOTSWAP ATA Infrastructure.&n; */
@@ -6292,9 +6231,9 @@ id|ch-&gt;udma_stop
 op_assign
 id|hpt374_udma_stop
 suffix:semicolon
-id|ch-&gt;XXX_udma
+id|ch-&gt;udma_setup
 op_assign
-id|hpt374_dmaproc
+id|hpt3xx_udma_setup
 suffix:semicolon
 )brace
 r_else
@@ -6314,9 +6253,9 @@ id|ch-&gt;udma_stop
 op_assign
 id|hpt374_udma_stop
 suffix:semicolon
-id|ch-&gt;XXX_udma
+id|ch-&gt;udma_setup
 op_assign
-id|hpt374_dmaproc
+id|hpt3xx_udma_setup
 suffix:semicolon
 )brace
 r_else
@@ -6348,9 +6287,9 @@ id|ch-&gt;udma_irq_lost
 op_assign
 id|hpt370_udma_irq_lost
 suffix:semicolon
-id|ch-&gt;XXX_udma
+id|ch-&gt;udma_setup
 op_assign
-id|hpt370_dmaproc
+id|hpt3xx_udma_setup
 suffix:semicolon
 )brace
 )brace
@@ -6373,9 +6312,9 @@ id|hpt366_udma_irq_lost
 suffix:semicolon
 singleline_comment|//&t;&t;&t;ch-&gt;resetproc = hpt3xx_reset;
 singleline_comment|//&t;&t;&t;ch-&gt;busproc = hpt3xx_tristate;
-id|ch-&gt;XXX_udma
+id|ch-&gt;udma_setup
 op_assign
-id|hpt366_dmaproc
+id|hpt3xx_udma_setup
 suffix:semicolon
 )brace
 r_else
@@ -6386,9 +6325,9 @@ id|hpt366_udma_irq_lost
 suffix:semicolon
 singleline_comment|//&t;&t;&t;ch-&gt;resetproc = hpt3xx_reset;
 singleline_comment|//&t;&t;&t;ch-&gt;busproc = hpt3xx_tristate;
-id|ch-&gt;XXX_udma
+id|ch-&gt;udma_setup
 op_assign
-id|hpt366_dmaproc
+id|hpt3xx_udma_setup
 suffix:semicolon
 )brace
 r_if
