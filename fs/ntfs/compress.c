@@ -443,6 +443,10 @@ op_logical_neg
 id|le16_to_cpup
 c_func
 (paren
+(paren
+id|u16
+op_star
+)paren
 id|cb
 )paren
 )paren
@@ -651,6 +655,10 @@ op_plus
 id|le16_to_cpup
 c_func
 (paren
+(paren
+id|u16
+op_star
+)paren
 id|cb
 )paren
 op_amp
@@ -750,6 +758,10 @@ op_logical_neg
 id|le16_to_cpup
 c_func
 (paren
+(paren
+id|u16
+op_star
+)paren
 id|cb
 )paren
 op_amp
@@ -1087,6 +1099,10 @@ op_assign
 id|le16_to_cpup
 c_func
 (paren
+(paren
+id|u16
+op_star
+)paren
 id|cb
 )paren
 suffix:semicolon
