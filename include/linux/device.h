@@ -399,5 +399,28 @@ op_star
 id|dev
 )paren
 suffix:semicolon
+multiline_comment|/* drivers/base/sys.c */
+r_extern
+r_int
+id|register_sys_device
+c_func
+(paren
+r_struct
+id|device
+op_star
+id|dev
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|unregister_sys_device
+c_func
+(paren
+r_struct
+id|device
+op_star
+id|dev
+)paren
+suffix:semicolon
 macro_line|#endif /* _DEVICE_H_ */
 eof
