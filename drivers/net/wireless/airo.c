@@ -12221,6 +12221,14 @@ id|dev_kfree_skb_irq
 id|skb
 )paren
 suffix:semicolon
+macro_line|#else
+r_if
+c_cond
+(paren
+l_int|0
+)paren
+(brace
+macro_line|#endif
 id|badrx
 suffix:colon
 id|OUT4500
@@ -12237,7 +12245,6 @@ r_goto
 id|exitrx
 suffix:semicolon
 )brace
-macro_line|#endif
 )brace
 macro_line|#if WIRELESS_EXT &gt; 15
 macro_line|#ifdef IW_WIRELESS_SPY&t;&t;/* defined in iw_handler.h */
