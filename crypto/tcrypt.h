@@ -187,6 +187,7 @@ multiline_comment|/*&n; * MD4 test vectors from RFC1320&n; */
 DECL|macro|MD4_TEST_VECTORS
 mdefine_line|#define MD4_TEST_VECTORS&t;7
 DECL|variable|md4_tv_template
+r_static
 r_struct
 id|hash_testvec
 id|md4_tv_template
@@ -560,6 +561,7 @@ multiline_comment|/*&n; * MD5 test vectors from RFC1321&n; */
 DECL|macro|MD5_TEST_VECTORS
 mdefine_line|#define MD5_TEST_VECTORS&t;7
 DECL|variable|md5_tv_template
+r_static
 r_struct
 id|hash_testvec
 id|md5_tv_template
@@ -926,6 +928,7 @@ multiline_comment|/*&n; * SHA1 test vectors  from from FIPS PUB 180-1&n; */
 DECL|macro|SHA1_TEST_VECTORS
 mdefine_line|#define SHA1_TEST_VECTORS&t;2
 DECL|variable|sha1_tv_template
+r_static
 r_struct
 id|hash_testvec
 id|sha1_tv_template
@@ -1067,6 +1070,7 @@ multiline_comment|/*&n; * SHA256 test vectors from from NIST&n; */
 DECL|macro|SHA256_TEST_VECTORS
 mdefine_line|#define SHA256_TEST_VECTORS&t;2
 DECL|variable|sha256_tv_template
+r_static
 r_struct
 id|hash_testvec
 id|sha256_tv_template
@@ -1257,6 +1261,7 @@ multiline_comment|/*&n; * SHA384 test vectors from from NIST and kerneli&n; */
 DECL|macro|SHA384_TEST_VECTORS
 mdefine_line|#define SHA384_TEST_VECTORS&t;4
 DECL|variable|sha384_tv_template
+r_static
 r_struct
 id|hash_testvec
 id|sha384_tv_template
@@ -1745,6 +1750,7 @@ multiline_comment|/*&n; * SHA512 test vectors from from NIST and kerneli&n; */
 DECL|macro|SHA512_TEST_VECTORS
 mdefine_line|#define SHA512_TEST_VECTORS&t;4
 DECL|variable|sha512_tv_template
+r_static
 r_struct
 id|hash_testvec
 id|sha512_tv_template
@@ -2361,6 +2367,7 @@ multiline_comment|/*&n; * WHIRLPOOL test vectors from Whirlpool package &n; * by
 DECL|macro|WP512_TEST_VECTORS
 mdefine_line|#define WP512_TEST_VECTORS&t;8
 DECL|variable|wp512_tv_template
+r_static
 r_struct
 id|hash_testvec
 id|wp512_tv_template
@@ -3543,6 +3550,7 @@ suffix:semicolon
 DECL|macro|WP384_TEST_VECTORS
 mdefine_line|#define WP384_TEST_VECTORS&t;8
 DECL|variable|wp384_tv_template
+r_static
 r_struct
 id|hash_testvec
 id|wp384_tv_template
@@ -4469,6 +4477,7 @@ suffix:semicolon
 DECL|macro|WP256_TEST_VECTORS
 mdefine_line|#define WP256_TEST_VECTORS&t;8
 DECL|variable|wp256_tv_template
+r_static
 r_struct
 id|hash_testvec
 id|wp256_tv_template
@@ -5141,6 +5150,7 @@ multiline_comment|/*&n; * HMAC-MD5 test vectors from RFC2202&n; * (These need to
 DECL|macro|HMAC_MD5_TEST_VECTORS
 mdefine_line|#define HMAC_MD5_TEST_VECTORS&t;7
 DECL|variable|hmac_md5_tv_template
+r_static
 r_struct
 id|hmac_testvec
 id|hmac_md5_tv_template
@@ -5717,6 +5727,7 @@ multiline_comment|/*&n; * HMAC-SHA1 test vectors from RFC2202&n; */
 DECL|macro|HMAC_SHA1_TEST_VECTORS
 mdefine_line|#define HMAC_SHA1_TEST_VECTORS&t;7
 DECL|variable|hmac_sha1_tv_template
+r_static
 r_struct
 id|hmac_testvec
 id|hmac_sha1_tv_template
@@ -6346,6 +6357,7 @@ multiline_comment|/*&n; * HMAC-SHA256 test vectors from&n; * draft-ietf-ipsec-ci
 DECL|macro|HMAC_SHA256_TEST_VECTORS
 mdefine_line|#define HMAC_SHA256_TEST_VECTORS&t;10
 DECL|variable|hmac_sha256_tv_template
+r_static
 r_struct
 id|hmac_testvec
 id|hmac_sha256_tv_template
@@ -7641,6 +7653,7 @@ mdefine_line|#define DES3_EDE_ENC_TEST_VECTORS&t;3
 DECL|macro|DES3_EDE_DEC_TEST_VECTORS
 mdefine_line|#define DES3_EDE_DEC_TEST_VECTORS&t;3
 DECL|variable|des_enc_tv_template
+r_static
 r_struct
 id|cipher_testvec
 id|des_enc_tv_template
@@ -8855,6 +8868,7 @@ comma
 )brace
 suffix:semicolon
 DECL|variable|des_dec_tv_template
+r_static
 r_struct
 id|cipher_testvec
 id|des_dec_tv_template
@@ -9284,6 +9298,7 @@ comma
 )brace
 suffix:semicolon
 DECL|variable|des_cbc_enc_tv_template
+r_static
 r_struct
 id|cipher_testvec
 id|des_cbc_enc_tv_template
@@ -9949,6 +9964,7 @@ comma
 )brace
 suffix:semicolon
 DECL|variable|des_cbc_dec_tv_template
+r_static
 r_struct
 id|cipher_testvec
 id|des_cbc_dec_tv_template
@@ -10383,6 +10399,7 @@ comma
 suffix:semicolon
 multiline_comment|/*&n; * We really need some more test vectors, especially for DES3 CBC.&n; */
 DECL|variable|des3_ede_enc_tv_template
+r_static
 r_struct
 id|cipher_testvec
 id|des3_ede_enc_tv_template
@@ -10733,6 +10750,7 @@ comma
 )brace
 suffix:semicolon
 DECL|variable|des3_ede_dec_tv_template
+r_static
 r_struct
 id|cipher_testvec
 id|des3_ede_dec_tv_template
@@ -11092,6 +11110,7 @@ mdefine_line|#define BF_CBC_ENC_TEST_VECTORS&t;1
 DECL|macro|BF_CBC_DEC_TEST_VECTORS
 mdefine_line|#define BF_CBC_DEC_TEST_VECTORS&t;1
 DECL|variable|bf_enc_tv_template
+r_static
 r_struct
 id|cipher_testvec
 id|bf_enc_tv_template
@@ -11730,6 +11749,7 @@ comma
 )brace
 suffix:semicolon
 DECL|variable|bf_dec_tv_template
+r_static
 r_struct
 id|cipher_testvec
 id|bf_dec_tv_template
@@ -12367,6 +12387,7 @@ comma
 )brace
 suffix:semicolon
 DECL|variable|bf_cbc_enc_tv_template
+r_static
 r_struct
 id|cipher_testvec
 id|bf_cbc_enc_tv_template
@@ -12592,6 +12613,7 @@ comma
 )brace
 suffix:semicolon
 DECL|variable|bf_cbc_dec_tv_template
+r_static
 r_struct
 id|cipher_testvec
 id|bf_cbc_dec_tv_template
@@ -12826,6 +12848,7 @@ mdefine_line|#define TF_CBC_ENC_TEST_VECTORS&t;&t;4
 DECL|macro|TF_CBC_DEC_TEST_VECTORS
 mdefine_line|#define TF_CBC_DEC_TEST_VECTORS&t;&t;4
 DECL|variable|tf_enc_tv_template
+r_static
 r_struct
 id|cipher_testvec
 id|tf_enc_tv_template
@@ -13183,6 +13206,7 @@ comma
 )brace
 suffix:semicolon
 DECL|variable|tf_dec_tv_template
+r_static
 r_struct
 id|cipher_testvec
 id|tf_dec_tv_template
@@ -13540,6 +13564,7 @@ comma
 )brace
 suffix:semicolon
 DECL|variable|tf_cbc_enc_tv_template
+r_static
 r_struct
 id|cipher_testvec
 id|tf_cbc_enc_tv_template
@@ -14059,6 +14084,7 @@ comma
 )brace
 suffix:semicolon
 DECL|variable|tf_cbc_dec_tv_template
+r_static
 r_struct
 id|cipher_testvec
 id|tf_cbc_dec_tv_template
@@ -14587,6 +14613,7 @@ mdefine_line|#define TNEPRES_ENC_TEST_VECTORS&t;4
 DECL|macro|TNEPRES_DEC_TEST_VECTORS
 mdefine_line|#define TNEPRES_DEC_TEST_VECTORS&t;4
 DECL|variable|serpent_enc_tv_template
+r_static
 r_struct
 id|cipher_testvec
 id|serpent_enc_tv_template
@@ -15055,6 +15082,7 @@ comma
 )brace
 suffix:semicolon
 DECL|variable|tnepres_enc_tv_template
+r_static
 r_struct
 id|cipher_testvec
 id|tnepres_enc_tv_template
@@ -15665,6 +15693,7 @@ comma
 )brace
 suffix:semicolon
 DECL|variable|serpent_dec_tv_template
+r_static
 r_struct
 id|cipher_testvec
 id|serpent_dec_tv_template
@@ -16133,6 +16162,7 @@ comma
 )brace
 suffix:semicolon
 DECL|variable|tnepres_dec_tv_template
+r_static
 r_struct
 id|cipher_testvec
 id|tnepres_dec_tv_template
@@ -16607,6 +16637,7 @@ mdefine_line|#define CAST6_ENC_TEST_VECTORS&t;3
 DECL|macro|CAST6_DEC_TEST_VECTORS
 mdefine_line|#define CAST6_DEC_TEST_VECTORS  3
 DECL|variable|cast6_enc_tv_template
+r_static
 r_struct
 id|cipher_testvec
 id|cast6_enc_tv_template
@@ -16986,6 +17017,7 @@ comma
 )brace
 suffix:semicolon
 DECL|variable|cast6_dec_tv_template
+r_static
 r_struct
 id|cipher_testvec
 id|cast6_dec_tv_template
@@ -17370,6 +17402,7 @@ mdefine_line|#define AES_ENC_TEST_VECTORS 3
 DECL|macro|AES_DEC_TEST_VECTORS
 mdefine_line|#define AES_DEC_TEST_VECTORS 3
 DECL|variable|aes_enc_tv_template
+r_static
 r_struct
 id|cipher_testvec
 id|aes_enc_tv_template
@@ -17816,6 +17849,7 @@ comma
 )brace
 suffix:semicolon
 DECL|variable|aes_dec_tv_template
+r_static
 r_struct
 id|cipher_testvec
 id|aes_dec_tv_template
@@ -18267,6 +18301,7 @@ mdefine_line|#define CAST5_ENC_TEST_VECTORS&t;3
 DECL|macro|CAST5_DEC_TEST_VECTORS
 mdefine_line|#define CAST5_DEC_TEST_VECTORS&t;3
 DECL|variable|cast5_enc_tv_template
+r_static
 r_struct
 id|cipher_testvec
 id|cast5_enc_tv_template
@@ -18534,6 +18569,7 @@ comma
 )brace
 suffix:semicolon
 DECL|variable|cast5_dec_tv_template
+r_static
 r_struct
 id|cipher_testvec
 id|cast5_dec_tv_template
@@ -18806,6 +18842,7 @@ mdefine_line|#define ARC4_ENC_TEST_VECTORS&t;7
 DECL|macro|ARC4_DEC_TEST_VECTORS
 mdefine_line|#define ARC4_DEC_TEST_VECTORS&t;7
 DECL|variable|arc4_enc_tv_template
+r_static
 r_struct
 id|cipher_testvec
 id|arc4_enc_tv_template
@@ -19519,6 +19556,7 @@ comma
 )brace
 suffix:semicolon
 DECL|variable|arc4_dec_tv_template
+r_static
 r_struct
 id|cipher_testvec
 id|arc4_dec_tv_template
@@ -20236,10 +20274,11 @@ DECL|macro|TEA_ENC_TEST_VECTORS
 mdefine_line|#define TEA_ENC_TEST_VECTORS&t;4
 DECL|macro|TEA_DEC_TEST_VECTORS
 mdefine_line|#define TEA_DEC_TEST_VECTORS&t;4
-DECL|variable|tea_enc_tv_template
+DECL|variable|xtea_enc_tv_template
+r_static
 r_struct
 id|cipher_testvec
-id|tea_enc_tv_template
+id|xtea_enc_tv_template
 (braket
 )braket
 op_assign
@@ -20734,6 +20773,7 @@ comma
 )brace
 suffix:semicolon
 DECL|variable|tea_dec_tv_template
+r_static
 r_struct
 id|cipher_testvec
 id|tea_dec_tv_template
@@ -21235,10 +21275,11 @@ DECL|macro|XTEA_ENC_TEST_VECTORS
 mdefine_line|#define XTEA_ENC_TEST_VECTORS&t;4
 DECL|macro|XTEA_DEC_TEST_VECTORS
 mdefine_line|#define XTEA_DEC_TEST_VECTORS&t;4
-DECL|variable|xtea_enc_tv_template
+DECL|variable|tea_enc_tv_template
+r_static
 r_struct
 id|cipher_testvec
-id|xtea_enc_tv_template
+id|tea_enc_tv_template
 (braket
 )braket
 op_assign
@@ -21733,6 +21774,7 @@ comma
 )brace
 suffix:semicolon
 DECL|variable|xtea_dec_tv_template
+r_static
 r_struct
 id|cipher_testvec
 id|xtea_dec_tv_template
@@ -22235,6 +22277,7 @@ mdefine_line|#define KHAZAD_ENC_TEST_VECTORS 5
 DECL|macro|KHAZAD_DEC_TEST_VECTORS
 mdefine_line|#define KHAZAD_DEC_TEST_VECTORS 5
 DECL|variable|khazad_enc_tv_template
+r_static
 r_struct
 id|cipher_testvec
 id|khazad_enc_tv_template
@@ -22762,6 +22805,7 @@ comma
 )brace
 suffix:semicolon
 DECL|variable|khazad_dec_tv_template
+r_static
 r_struct
 id|cipher_testvec
 id|khazad_dec_tv_template
@@ -23298,6 +23342,7 @@ mdefine_line|#define ANUBIS_CBC_ENC_TEST_VECTORS&t;&t;2
 DECL|macro|ANUBIS_CBC_DEC_TEST_VECTORS
 mdefine_line|#define ANUBIS_CBC_DEC_TEST_VECTORS&t;&t;2
 DECL|variable|anubis_enc_tv_template
+r_static
 r_struct
 id|cipher_testvec
 id|anubis_enc_tv_template
@@ -24065,6 +24110,7 @@ comma
 )brace
 suffix:semicolon
 DECL|variable|anubis_dec_tv_template
+r_static
 r_struct
 id|cipher_testvec
 id|anubis_dec_tv_template
@@ -24832,6 +24878,7 @@ comma
 )brace
 suffix:semicolon
 DECL|variable|anubis_cbc_enc_tv_template
+r_static
 r_struct
 id|cipher_testvec
 id|anubis_cbc_enc_tv_template
@@ -25276,6 +25323,7 @@ comma
 )brace
 suffix:semicolon
 DECL|variable|anubis_cbc_dec_tv_template
+r_static
 r_struct
 id|cipher_testvec
 id|anubis_cbc_dec_tv_template
@@ -25755,6 +25803,7 @@ mdefine_line|#define DEFLATE_COMP_TEST_VECTORS 2
 DECL|macro|DEFLATE_DECOMP_TEST_VECTORS
 mdefine_line|#define DEFLATE_DECOMP_TEST_VECTORS 2
 DECL|variable|deflate_comp_tv_template
+r_static
 r_struct
 id|comp_testvec
 id|deflate_comp_tv_template
@@ -26134,6 +26183,7 @@ comma
 )brace
 suffix:semicolon
 DECL|variable|deflate_decomp_tv_template
+r_static
 r_struct
 id|comp_testvec
 id|deflate_decomp_tv_template
@@ -26516,6 +26566,7 @@ multiline_comment|/*&n; * Michael MIC test vectors from IEEE 802.11i&n; */
 DECL|macro|MICHAEL_MIC_TEST_VECTORS
 mdefine_line|#define MICHAEL_MIC_TEST_VECTORS 6
 DECL|variable|michael_mic_tv_template
+r_static
 r_struct
 id|hash_testvec
 id|michael_mic_tv_template
