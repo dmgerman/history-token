@@ -10,19 +10,6 @@ macro_line|#include &lt;asm/apic.h&gt;
 macro_line|#include &lt;asm/i8259.h&gt;
 macro_line|#include &quot;cobalt.h&quot;
 macro_line|#include &quot;irq_vectors.h&quot;
-DECL|variable|irq_vector
-r_int
-id|irq_vector
-(braket
-id|NR_IRQS
-)braket
-op_assign
-(brace
-id|FIRST_EXTERNAL_VECTOR
-comma
-l_int|0
-)brace
-suffix:semicolon
 DECL|variable|cobalt_lock
 r_static
 id|spinlock_t
@@ -56,10 +43,11 @@ id|entry
 comma
 id|CO_APIC_LEVEL
 op_or
-id|irq_vector
-(braket
+(paren
 id|irq
-)braket
+op_plus
+id|FIRST_EXTERNAL_VECTOR
+)paren
 )paren
 suffix:semicolon
 id|co_apic_write
@@ -1127,15 +1115,6 @@ op_amp
 id|cobalt_irq_type
 suffix:semicolon
 )brace
-id|irq_vector
-(braket
-id|i
-)braket
-op_assign
-id|i
-op_plus
-id|FIRST_EXTERNAL_VECTOR
-suffix:semicolon
 )brace
 id|setup_irq
 c_func

@@ -6165,7 +6165,7 @@ id|v.green.offset
 op_assign
 l_int|5
 suffix:semicolon
-id|v.red.offset
+id|v.blue.offset
 op_assign
 l_int|0
 suffix:semicolon
