@@ -2593,13 +2593,9 @@ id|ret-&gt;nr_page_table_pages
 op_add_assign
 id|ps-&gt;nr_page_table_pages
 suffix:semicolon
-id|ret-&gt;nr_pte_chain_pages
+id|ret-&gt;nr_reverse_maps
 op_add_assign
-id|ps-&gt;nr_pte_chain_pages
-suffix:semicolon
-id|ret-&gt;used_pte_chains_bytes
-op_add_assign
-id|ps-&gt;used_pte_chains_bytes
+id|ps-&gt;nr_reverse_maps
 suffix:semicolon
 )brace
 )brace

@@ -76,15 +76,10 @@ r_int
 r_int
 id|nr_page_table_pages
 suffix:semicolon
-DECL|member|nr_pte_chain_pages
+DECL|member|nr_reverse_maps
 r_int
 r_int
-id|nr_pte_chain_pages
-suffix:semicolon
-DECL|member|used_pte_chains_bytes
-r_int
-r_int
-id|used_pte_chains_bytes
+id|nr_reverse_maps
 suffix:semicolon
 )brace
 id|____cacheline_aligned_in_smp

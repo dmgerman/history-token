@@ -588,8 +588,7 @@ l_string|&quot;SwapFree:     %8lu kB&bslash;n&quot;
 l_string|&quot;Dirty:        %8lu kB&bslash;n&quot;
 l_string|&quot;Writeback:    %8lu kB&bslash;n&quot;
 l_string|&quot;PageTables:   %8lu kB&bslash;n&quot;
-l_string|&quot;PteChainTot:  %8lu kB&bslash;n&quot;
-l_string|&quot;PteChainUsed: %8lu kB&bslash;n&quot;
+l_string|&quot;ReverseMaps:  %8lu&bslash;n&quot;
 comma
 id|K
 c_func
@@ -693,15 +692,7 @@ c_func
 id|ps.nr_page_table_pages
 )paren
 comma
-id|K
-c_func
-(paren
-id|ps.nr_pte_chain_pages
-)paren
-comma
-id|ps.used_pte_chains_bytes
-op_rshift
-l_int|10
+id|ps.nr_reverse_maps
 )paren
 suffix:semicolon
 r_return
