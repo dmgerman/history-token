@@ -3075,7 +3075,7 @@ c_func
 id|inode
 )paren
 op_assign
-id|jiffies
+id|fattr-&gt;timestamp
 suffix:semicolon
 id|NFS_CACHE_CTIME
 c_func
@@ -3119,7 +3119,7 @@ c_func
 id|inode
 )paren
 op_assign
-id|jiffies
+id|fattr-&gt;timestamp
 suffix:semicolon
 id|NFS_CACHE_ISIZE
 c_func
@@ -4494,6 +4494,25 @@ r_goto
 id|out_err
 suffix:semicolon
 )brace
+multiline_comment|/* Throw out obsolete READDIRPLUS attributes */
+r_if
+c_cond
+(paren
+id|time_before
+c_func
+(paren
+id|fattr-&gt;timestamp
+comma
+id|NFS_READTIME
+c_func
+(paren
+id|inode
+)paren
+)paren
+)paren
+r_return
+l_int|0
+suffix:semicolon
 multiline_comment|/*&n;&t; * Make sure the inode&squot;s type hasn&squot;t changed.&n;&t; */
 r_if
 c_cond
@@ -4559,7 +4578,7 @@ c_func
 id|inode
 )paren
 op_assign
-id|jiffies
+id|fattr-&gt;timestamp
 suffix:semicolon
 multiline_comment|/*&n;&t; * Note: NFS_CACHE_ISIZE(inode) reflects the state of the cache.&n;&t; *       NOT inode-&gt;i_size!!!&n;&t; */
 r_if
@@ -4716,7 +4735,7 @@ c_func
 id|inode
 )paren
 op_assign
-id|jiffies
+id|fattr-&gt;timestamp
 suffix:semicolon
 id|NFS_CACHE_MTIME
 c_func

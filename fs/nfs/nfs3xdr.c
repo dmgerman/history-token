@@ -677,6 +677,10 @@ op_or
 id|NFS_ATTR_FATTR_V3
 )paren
 suffix:semicolon
+id|fattr-&gt;timestamp
+op_assign
+id|jiffies
+suffix:semicolon
 r_return
 id|p
 suffix:semicolon
