@@ -59,12 +59,6 @@ c_func
 (paren
 id|outer_iph-&gt;tos
 )paren
-op_logical_and
-id|INET_ECN_is_not_ce
-c_func
-(paren
-id|inner_iph-&gt;tos
-)paren
 )paren
 id|IP_ECN_set_ce
 c_func
