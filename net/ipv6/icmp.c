@@ -565,6 +565,7 @@ l_int|0x80
 suffix:semicolon
 )brace
 DECL|function|icmpv6_push_pending_frames
+r_static
 r_int
 id|icmpv6_push_pending_frames
 c_func

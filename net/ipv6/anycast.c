@@ -25,6 +25,22 @@ macro_line|#include &lt;net/ndisc.h&gt;
 macro_line|#include &lt;net/addrconf.h&gt;
 macro_line|#include &lt;net/ip6_route.h&gt;
 macro_line|#include &lt;net/checksum.h&gt;
+r_static
+r_int
+id|ipv6_dev_ac_dec
+c_func
+(paren
+r_struct
+id|net_device
+op_star
+id|dev
+comma
+r_struct
+id|in6_addr
+op_star
+id|addr
+)paren
+suffix:semicolon
 multiline_comment|/* Big ac list lock for all the sockets */
 r_static
 id|DEFINE_RWLOCK
@@ -1692,6 +1708,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|ipv6_dev_ac_dec
+r_static
 r_int
 id|ipv6_dev_ac_dec
 c_func

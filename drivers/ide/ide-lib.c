@@ -2489,19 +2489,13 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;%s: %s: status=0x%02x&quot;
+l_string|&quot;%s: %s: status=0x%02x { &quot;
 comma
 id|drive-&gt;name
 comma
 id|msg
 comma
 id|stat
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot; { &quot;
 )paren
 suffix:semicolon
 r_if
@@ -2598,13 +2592,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;}&quot;
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;&bslash;n&quot;
+l_string|&quot;}&bslash;n&quot;
 )paren
 suffix:semicolon
 r_if
@@ -2640,7 +2628,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;%s: %s: error=0x%02x&quot;
+l_string|&quot;%s: %s: error=0x%02x { &quot;
 comma
 id|drive-&gt;name
 comma
@@ -2679,7 +2667,7 @@ id|error.b.abrt
 id|printk
 c_func
 (paren
-l_string|&quot;Aborted Command &quot;
+l_string|&quot;AbortedCommand &quot;
 )paren
 suffix:semicolon
 r_if
@@ -2701,7 +2689,7 @@ id|error.b.sense_key
 id|printk
 c_func
 (paren
-l_string|&quot;LastFailedSense 0x%02x &quot;
+l_string|&quot;LastFailedSense=0x%02x &quot;
 comma
 id|error.b.sense_key
 )paren
@@ -2709,7 +2697,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;&bslash;n&quot;
+l_string|&quot;}&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace

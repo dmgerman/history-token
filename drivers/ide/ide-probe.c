@@ -2612,6 +2612,9 @@ c_func
 (paren
 id|hwif
 )paren
+op_eq
+op_minus
+id|EBUSY
 )paren
 id|printk
 c_func

@@ -443,7 +443,7 @@ op_assign
 id|uart
 suffix:semicolon
 )brace
-multiline_comment|/* s3c2410_map_io&n; *&n; * register the standard cpu IO areas, and any passed in from the&n; * machine specific initialisation.&n; *&n; * this function also sets the initial clock frequencies from the&n; * settings passed in&n;*/
+multiline_comment|/* s3c2410_map_io&n; *&n; * register the standard cpu IO areas, and any passed in from the&n; * machine specific initialisation.&n;*/
 DECL|function|s3c2410_map_io
 r_void
 id|__init
@@ -459,10 +459,6 @@ r_int
 id|mach_size
 )paren
 (brace
-r_int
-r_int
-id|tmp
-suffix:semicolon
 multiline_comment|/* register our io-tables */
 id|iotable_init
 c_func
@@ -483,6 +479,21 @@ id|mach_desc
 comma
 id|mach_size
 )paren
+suffix:semicolon
+)brace
+DECL|function|s3c2410_init_clocks
+r_void
+id|__init
+id|s3c2410_init_clocks
+c_func
+(paren
+r_int
+id|xtal
+)paren
+(brace
+r_int
+r_int
+id|tmp
 suffix:semicolon
 multiline_comment|/* now we&squot;ve got our machine bits initialised, work out what&n;&t; * clocks we&squot;ve got */
 id|s3c24xx_fclk
@@ -568,7 +579,7 @@ id|s3c24xx_pclk
 )paren
 suffix:semicolon
 multiline_comment|/* initialise the clocks here, to allow other things like the&n;&t; * console to use them&n;&t; */
-id|s3c2410_init_clocks
+id|s3c24xx_setup_clocks
 c_func
 (paren
 )paren

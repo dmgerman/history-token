@@ -317,7 +317,7 @@ l_int|32
 id|__u32
 id|data
 op_assign
-id|raw4_sk
+id|raw_sk
 c_func
 (paren
 id|sk
@@ -2503,11 +2503,11 @@ id|sk
 )paren
 (brace
 r_struct
-id|raw_opt
+id|raw_sock
 op_star
-id|tp
+id|rp
 op_assign
-id|raw4_sk
+id|raw_sk
 c_func
 (paren
 id|sk
@@ -2530,13 +2530,13 @@ id|memset
 c_func
 (paren
 op_amp
-id|tp-&gt;filter
+id|rp-&gt;filter
 comma
 l_int|0
 comma
 r_sizeof
 (paren
-id|tp-&gt;filter
+id|rp-&gt;filter
 )paren
 )paren
 suffix:semicolon
@@ -2590,7 +2590,7 @@ id|copy_from_user
 c_func
 (paren
 op_amp
-id|raw4_sk
+id|raw_sk
 c_func
 (paren
 id|sk
@@ -2711,7 +2711,7 @@ c_func
 id|optval
 comma
 op_amp
-id|raw4_sk
+id|raw_sk
 c_func
 (paren
 id|sk
