@@ -1,4 +1,4 @@
-multiline_comment|/* $Id$&n; *&n; * apc - Driver implementation for power management functions&n; * of Aurora Personality Chip (APC) on SPARCstation-4/5 and&n; * derivatives.&n; *&n; * Copyright (c) 2002 Eric Brower (ebrower@usa.net)&n; */
+multiline_comment|/* apc - Driver implementation for power management functions&n; * of Aurora Personality Chip (APC) on SPARCstation-4/5 and&n; * derivatives.&n; *&n; * Copyright (c) 2002 Eric Brower (ebrower@usa.net)&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;

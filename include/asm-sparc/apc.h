@@ -1,4 +1,4 @@
-multiline_comment|/* $Id$&n; *&n; * apc - Driver definitions for power management functions&n; * of Aurora Personality Chip (APC) on SPARCstation-4/5 and &n; * derivatives&n; *&n; * Copyright (c) 2001 Eric Brower (ebrower@usa.net)&n; *&n; */
+multiline_comment|/* apc - Driver definitions for power management functions&n; * of Aurora Personality Chip (APC) on SPARCstation-4/5 and &n; * derivatives&n; *&n; * Copyright (c) 2001 Eric Brower (ebrower@usa.net)&n; *&n; */
 macro_line|#ifndef _SPARC_APC_H
 DECL|macro|_SPARC_APC_H
 mdefine_line|#define _SPARC_APC_H

@@ -1,4 +1,4 @@
-multiline_comment|/* $Id$&n; *&n; * pmc - Driver implementation for power management functions&n; * of Power Management Controller (PMC) on SPARCstation-Voyager.&n; *&n; * Copyright (c) 2002 Eric Brower (ebrower@usa.net)&n; */
+multiline_comment|/* pmc - Driver implementation for power management functions&n; * of Power Management Controller (PMC) on SPARCstation-Voyager.&n; *&n; * Copyright (c) 2002 Eric Brower (ebrower@usa.net)&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
