@@ -791,6 +791,7 @@ r_void
 id|tr_static_init
 c_func
 (paren
+r_void
 )paren
 (brace
 r_static
@@ -1258,12 +1259,10 @@ r_void
 id|zlib_tr_init
 c_func
 (paren
-id|s
-)paren
 id|deflate_state
 op_star
 id|s
-suffix:semicolon
+)paren
 (brace
 id|tr_static_init
 c_func
@@ -1335,12 +1334,10 @@ r_void
 id|init_block
 c_func
 (paren
-id|s
-)paren
 id|deflate_state
 op_star
 id|s
-suffix:semicolon
+)paren
 (brace
 r_int
 id|n
