@@ -169,14 +169,6 @@ DECL|macro|TEMP_TO_REG
 mdefine_line|#define TEMP_TO_REG(val)&t;(SENSORS_LIMIT((val &lt; 0 ? (val/1000)+256 : val/1000),0,255))
 multiline_comment|/* Initial values */
 multiline_comment|/* Note: Even though I left the low and high limits named os and hyst, &n;they don&squot;t quite work like a thermostat the way the LM75 does.  I.e., &n;a lower temp than THYST actually triggers an alarm instead of &n;clearing it.  Weird, ey?   --Phil  */
-DECL|macro|adm1021_INIT_TOS
-mdefine_line|#define adm1021_INIT_TOS&t;&t;60
-DECL|macro|adm1021_INIT_THYST
-mdefine_line|#define adm1021_INIT_THYST&t;&t;20
-DECL|macro|adm1021_INIT_REMOTE_TOS
-mdefine_line|#define adm1021_INIT_REMOTE_TOS&t;&t;60
-DECL|macro|adm1021_INIT_REMOTE_THYST
-mdefine_line|#define adm1021_INIT_REMOTE_THYST&t;20
 multiline_comment|/* Each client has this additional data */
 DECL|struct|adm1021_data
 r_struct
@@ -1160,7 +1152,7 @@ id|new_client
 )paren
 )paren
 r_goto
-id|error3
+id|error1
 suffix:semicolon
 multiline_comment|/* Initialize the ADM1021 chip */
 id|adm1021_init_client
@@ -1260,8 +1252,6 @@ suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
-id|error3
-suffix:colon
 id|error1
 suffix:colon
 id|kfree
@@ -1288,47 +1278,6 @@ op_star
 id|client
 )paren
 (brace
-multiline_comment|/* Initialize the adm1021 chip */
-id|adm1021_write_value
-c_func
-(paren
-id|client
-comma
-id|ADM1021_REG_TOS_W
-comma
-id|adm1021_INIT_TOS
-)paren
-suffix:semicolon
-id|adm1021_write_value
-c_func
-(paren
-id|client
-comma
-id|ADM1021_REG_THYST_W
-comma
-id|adm1021_INIT_THYST
-)paren
-suffix:semicolon
-id|adm1021_write_value
-c_func
-(paren
-id|client
-comma
-id|ADM1021_REG_REMOTE_TOS_W
-comma
-id|adm1021_INIT_REMOTE_TOS
-)paren
-suffix:semicolon
-id|adm1021_write_value
-c_func
-(paren
-id|client
-comma
-id|ADM1021_REG_REMOTE_THYST_W
-comma
-id|adm1021_INIT_REMOTE_THYST
-)paren
-suffix:semicolon
 multiline_comment|/* Enable ADC and disable suspend mode */
 id|adm1021_write_value
 c_func
@@ -1337,7 +1286,15 @@ id|client
 comma
 id|ADM1021_REG_CONFIG_W
 comma
-l_int|0
+id|adm1021_read_value
+c_func
+(paren
+id|client
+comma
+id|ADM1021_REG_CONFIG_R
+)paren
+op_amp
+l_int|0xBF
 )paren
 suffix:semicolon
 multiline_comment|/* Set Conversion rate to 1/sec (this can be tinkered with) */
