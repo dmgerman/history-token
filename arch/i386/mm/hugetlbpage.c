@@ -2869,7 +2869,7 @@ suffix:semicolon
 id|set_page_count
 c_func
 (paren
-id|page
+id|map
 comma
 l_int|0
 )paren
