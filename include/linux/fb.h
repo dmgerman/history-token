@@ -175,6 +175,14 @@ DECL|macro|FB_ACCEL_SIS_XABRE
 mdefine_line|#define FB_ACCEL_SIS_XABRE      41&t;/* SiS 330 (&quot;Xabre&quot;)&t;&t;*/
 DECL|macro|FB_ACCEL_I830
 mdefine_line|#define FB_ACCEL_I830           42      /* Intel 830M/845G/85x/865G     */
+DECL|macro|FB_ACCEL_NV_10
+mdefine_line|#define FB_ACCEL_NV_10          43      /* nVidia Arch 10               */
+DECL|macro|FB_ACCEL_NV_20
+mdefine_line|#define FB_ACCEL_NV_20          44      /* nVidia Arch 20               */
+DECL|macro|FB_ACCEL_NV_30
+mdefine_line|#define FB_ACCEL_NV_30          45      /* nVidia Arch 30               */
+DECL|macro|FB_ACCEL_NV_40
+mdefine_line|#define FB_ACCEL_NV_40          46      /* nVidia Arch 40               */
 DECL|macro|FB_ACCEL_NEOMAGIC_NM2070
 mdefine_line|#define FB_ACCEL_NEOMAGIC_NM2070 90&t;/* NeoMagic NM2070              */
 DECL|macro|FB_ACCEL_NEOMAGIC_NM2090
