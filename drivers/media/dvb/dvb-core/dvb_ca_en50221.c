@@ -2653,8 +2653,6 @@ comma
 id|buf
 comma
 id|bytes_read
-comma
-l_int|0
 )paren
 suffix:semicolon
 )brace
