@@ -2435,12 +2435,8 @@ id|ipv6hdr
 )paren
 op_plus
 id|fq-&gt;len
-suffix:semicolon
-id|nhoff
-op_assign
-id|head-&gt;h.raw
 op_minus
-id|head-&gt;nh.raw
+l_int|8
 suffix:semicolon
 r_if
 c_cond
@@ -2448,8 +2444,6 @@ c_cond
 id|payload_len
 OG
 l_int|65535
-op_plus
-l_int|8
 )paren
 r_goto
 id|out_oversize
