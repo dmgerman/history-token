@@ -115,14 +115,6 @@ id|dev-&gt;bus
 op_ne
 op_amp
 id|pci_bus_type
-op_logical_or
-(paren
-id|flag
-op_amp
-id|GFP_ATOMIC
-)paren
-op_ne
-id|GFP_ATOMIC
 )paren
 suffix:semicolon
 r_return
