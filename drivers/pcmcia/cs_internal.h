@@ -456,10 +456,6 @@ r_int
 r_int
 id|align
 comma
-r_char
-op_star
-id|name
-comma
 r_struct
 id|pcmcia_socket
 op_star
@@ -506,10 +502,6 @@ id|align
 comma
 r_int
 id|low
-comma
-r_char
-op_star
-id|name
 comma
 r_struct
 id|pcmcia_socket

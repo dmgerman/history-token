@@ -2763,10 +2763,6 @@ id|num
 comma
 id|u_int
 id|lines
-comma
-r_char
-op_star
-id|name
 )paren
 (brace
 r_int
@@ -3011,8 +3007,6 @@ comma
 id|num
 comma
 id|align
-comma
-id|name
 comma
 id|s
 )paren
@@ -6520,8 +6514,6 @@ comma
 id|req-&gt;NumPorts1
 comma
 id|req-&gt;IOAddrLines
-comma
-id|handle-&gt;dev_info
 )paren
 )paren
 r_return
@@ -6549,8 +6541,6 @@ comma
 id|req-&gt;NumPorts2
 comma
 id|req-&gt;IOAddrLines
-comma
-id|handle-&gt;dev_info
 )paren
 )paren
 (brace
@@ -7222,13 +7212,6 @@ id|req-&gt;Attributes
 op_amp
 id|WIN_MAP_BELOW_1MB
 )paren
-comma
-(paren
-op_star
-id|handle
-)paren
-op_member_access_from_pointer
-id|dev_info
 comma
 id|s
 )paren

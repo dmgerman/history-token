@@ -241,8 +241,6 @@ id|s-&gt;map_size
 comma
 l_int|0
 comma
-l_string|&quot;card services&quot;
-comma
 id|s
 )paren
 suffix:semicolon
