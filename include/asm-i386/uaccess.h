@@ -213,6 +213,7 @@ DECL|macro|__get_user_asm
 mdefine_line|#define __get_user_asm(x, addr, err, itype, rtype, ltype, errret)&t;&bslash;&n;&t;__asm__ __volatile__(&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;1:&t;mov&quot;itype&quot; %2,%&quot;rtype&quot;1&bslash;n&quot;&t;&t;&t;&bslash;&n;&t;&t;&quot;2:&bslash;n&quot;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;.section .fixup,&bslash;&quot;ax&bslash;&quot;&bslash;n&quot;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;3:&t;movl %3,%0&bslash;n&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;&t;xor&quot;itype&quot; %&quot;rtype&quot;1,%&quot;rtype&quot;1&bslash;n&quot;&t;&t;&bslash;&n;&t;&t;&quot;&t;jmp 2b&bslash;n&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;.previous&bslash;n&quot;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;.section __ex_table,&bslash;&quot;a&bslash;&quot;&bslash;n&quot;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;&t;.align 4&bslash;n&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;&t;.long 1b,3b&bslash;n&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;.previous&quot;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;: &quot;=r&quot;(err), ltype (x)&t;&t;&t;&t;&t;&bslash;&n;&t;&t;: &quot;m&quot;(__m(addr)), &quot;i&quot;(errret), &quot;0&quot;(err))
 r_int
 r_int
+id|__must_check
 id|__copy_to_user_ll
 c_func
 (paren
@@ -233,6 +234,7 @@ id|n
 suffix:semicolon
 r_int
 r_int
+id|__must_check
 id|__copy_from_user_ll
 c_func
 (paren
@@ -257,6 +259,7 @@ r_static
 r_inline
 r_int
 r_int
+id|__must_check
 DECL|function|__copy_to_user_inatomic
 id|__copy_to_user_inatomic
 c_func
@@ -404,6 +407,7 @@ r_static
 r_inline
 r_int
 r_int
+id|__must_check
 DECL|function|__copy_to_user
 id|__copy_to_user
 c_func
@@ -615,6 +619,7 @@ suffix:semicolon
 )brace
 r_int
 r_int
+id|__must_check
 id|copy_to_user
 c_func
 (paren
@@ -635,6 +640,7 @@ id|n
 suffix:semicolon
 r_int
 r_int
+id|__must_check
 id|copy_from_user
 c_func
 (paren
@@ -654,6 +660,7 @@ id|n
 )paren
 suffix:semicolon
 r_int
+id|__must_check
 id|strncpy_from_user
 c_func
 (paren
@@ -672,6 +679,7 @@ id|count
 )paren
 suffix:semicolon
 r_int
+id|__must_check
 id|__strncpy_from_user
 c_func
 (paren
@@ -708,6 +716,7 @@ id|n
 suffix:semicolon
 r_int
 r_int
+id|__must_check
 id|clear_user
 c_func
 (paren
@@ -723,6 +732,7 @@ id|len
 suffix:semicolon
 r_int
 r_int
+id|__must_check
 id|__clear_user
 c_func
 (paren
