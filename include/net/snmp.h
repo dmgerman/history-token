@@ -25,8 +25,8 @@ DECL|macro|SNMP_MIB_ITEM
 mdefine_line|#define SNMP_MIB_ITEM(_name,_entry)&t;{&t;&bslash;&n;&t;.name = _name,&t;&t;&t;&t;&bslash;&n;&t;.entry = _entry,&t;&t;&t;&bslash;&n;}
 DECL|macro|SNMP_MIB_SENTINEL
 mdefine_line|#define SNMP_MIB_SENTINEL {&t;&bslash;&n;&t;.name = NULL,&t;&t;&bslash;&n;&t;.entry = 0,&t;&t;&bslash;&n;}
-multiline_comment|/*&n; *&t;We use all unsigned longs. Linux will soon be so reliable that even these&n; *&t;will rapidly get too small 8-). Seriously consider the IpInReceives count&n; *&t;on the 20Gb/s + networks people expect in a few years time!&n; */
-multiline_comment|/* &n; * The rule for padding: &n; * Best is power of two because then the right structure can be found by a simple&n; * shift. The structure should be always cache line aligned.&n; * gcc needs n=alignto(cachelinesize, popcnt(sizeof(bla_mib))) shift/add instructions&n; * to emulate multiply in case it is not power-of-two. Currently n is always &lt;=3 for&n; * all sizes so simple cache line alignment is enough. &n; * &n; * The best solution would be a global CPU local area , especially on 64 and 128byte &n; * cacheline machine it makes a *lot* of sense -AK&n; */
+multiline_comment|/*&n; * We use all unsigned longs. Linux will soon be so reliable that even &n; * these will rapidly get too small 8-). Seriously consider the IpInReceives &n; * count on the 20Gb/s + networks people expect in a few years time!&n; */
+multiline_comment|/* &n; * The rule for padding: &n; * Best is power of two because then the right structure can be found by a &n; * simple shift. The structure should be always cache line aligned.&n; * gcc needs n=alignto(cachelinesize, popcnt(sizeof(bla_mib))) shift/add &n; * instructions to emulate multiply in case it is not power-of-two. &n; * Currently n is always &lt;=3 for all sizes so simple cache line alignment &n; * is enough. &n; * &n; * The best solution would be a global CPU local area , especially on 64 &n; * and 128byte cacheline machine it makes a *lot* of sense -AK&n; */
 DECL|macro|__SNMP_MIB_ALIGN__
 mdefine_line|#define __SNMP_MIB_ALIGN__&t;____cacheline_aligned
 multiline_comment|/* IPstats */
@@ -162,7 +162,7 @@ id|LINUX_MIB_MAX
 suffix:semicolon
 )brace
 suffix:semicolon
-multiline_comment|/* &n; * FIXME: On x86 and some other CPUs the split into user and softirq parts is not needed because &n; * addl $1,memory is atomic against interrupts (but atomic_inc would be overkill because of the lock &n; * cycles). Wants new nonlocked_atomic_inc() primitives -AK&n; */
+multiline_comment|/* &n; * FIXME: On x86 and some other CPUs the split into user and softirq parts&n; * is not needed because addl $1,memory is atomic against interrupts (but &n; * atomic_inc would be overkill because of the lock cycles). Wants new &n; * nonlocked_atomic_inc() primitives -AK&n; */
 DECL|macro|DEFINE_SNMP_STAT
 mdefine_line|#define DEFINE_SNMP_STAT(type, name)&t;&bslash;&n;&t;__typeof__(type) *name[2]
 DECL|macro|DECLARE_SNMP_STAT
