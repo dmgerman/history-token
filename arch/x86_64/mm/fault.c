@@ -17,6 +17,7 @@ macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/vt_kern.h&gt;&t;&t;/* For unblank_screen() */
 macro_line|#include &lt;linux/compiler.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/kprobes.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
@@ -25,6 +26,7 @@ macro_line|#include &lt;asm/tlbflush.h&gt;
 macro_line|#include &lt;asm/proto.h&gt;
 macro_line|#include &lt;asm/kdebug.h&gt;
 macro_line|#include &lt;asm-generic/sections.h&gt;
+macro_line|#include &lt;asm/kdebug.h&gt;
 DECL|function|bust_spinlocks
 r_void
 id|bust_spinlocks
@@ -1050,6 +1052,29 @@ l_string|&quot;=r&quot;
 id|address
 )paren
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|notify_die
+c_func
+(paren
+id|DIE_PAGE_FAULT
+comma
+l_string|&quot;page fault&quot;
+comma
+id|regs
+comma
+id|error_code
+comma
+l_int|14
+comma
+id|SIGSEGV
+)paren
+op_eq
+id|NOTIFY_STOP
+)paren
+r_return
 suffix:semicolon
 r_if
 c_cond

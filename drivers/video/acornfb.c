@@ -5276,11 +5276,6 @@ r_break
 suffix:semicolon
 )brace
 )brace
-id|fb_info.currcon
-op_assign
-op_minus
-l_int|1
-suffix:semicolon
 id|fb_info.screen_base
 op_assign
 (paren

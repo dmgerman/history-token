@@ -1,22 +1,15 @@
-multiline_comment|/* &n; * Copyright (C) 2002 Jeff Dike (jdike@karaya.com)&n; * Licensed under the GPL&n; */
-macro_line|#ifndef __SKAS_MODE_KERN_H__
-DECL|macro|__SKAS_MODE_KERN_H__
-mdefine_line|#define __SKAS_MODE_KERN_H__
+multiline_comment|/*&n; * Copyright (C) 2002 Jeff Dike (jdike@karaya.com)&n; * Licensed under the GPL&n; */
+macro_line|#ifndef __TT_MODE_KERN_H__
+DECL|macro|__TT_MODE_KERN_H__
+mdefine_line|#define __TT_MODE_KERN_H__
 macro_line|#include &quot;linux/sched.h&quot;
 macro_line|#include &quot;asm/page.h&quot;
 macro_line|#include &quot;asm/ptrace.h&quot;
-r_extern
-r_void
-id|flush_thread_skas
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
+macro_line|#include &quot;asm/uaccess.h&quot;
 r_extern
 r_void
 op_star
-id|switch_to_skas
+id|switch_to_tt
 c_func
 (paren
 r_void
@@ -30,7 +23,15 @@ id|next
 suffix:semicolon
 r_extern
 r_void
-id|start_thread_skas
+id|flush_thread_tt
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|start_thread_tt
 c_func
 (paren
 r_struct
@@ -49,7 +50,7 @@ id|esp
 suffix:semicolon
 r_extern
 r_int
-id|copy_thread_skas
+id|copy_thread_tt
 c_func
 (paren
 r_int
@@ -80,7 +81,7 @@ id|regs
 suffix:semicolon
 r_extern
 r_void
-id|release_thread_skas
+id|release_thread_tt
 c_func
 (paren
 r_struct
@@ -91,7 +92,7 @@ id|task
 suffix:semicolon
 r_extern
 r_void
-id|exit_thread_skas
+id|exit_thread_tt
 c_func
 (paren
 r_void
@@ -99,7 +100,7 @@ r_void
 suffix:semicolon
 r_extern
 r_void
-id|initial_thread_cb_skas
+id|initial_thread_cb_tt
 c_func
 (paren
 r_void
@@ -119,7 +120,7 @@ id|arg
 suffix:semicolon
 r_extern
 r_void
-id|init_idle_skas
+id|init_idle_tt
 c_func
 (paren
 r_void
@@ -127,7 +128,7 @@ r_void
 suffix:semicolon
 r_extern
 r_void
-id|flush_tlb_kernel_range_skas
+id|flush_tlb_kernel_range_tt
 c_func
 (paren
 r_int
@@ -141,7 +142,7 @@ id|end
 suffix:semicolon
 r_extern
 r_void
-id|flush_tlb_kernel_vm_skas
+id|flush_tlb_kernel_vm_tt
 c_func
 (paren
 r_void
@@ -149,7 +150,7 @@ r_void
 suffix:semicolon
 r_extern
 r_void
-id|__flush_tlb_one_skas
+id|__flush_tlb_one_tt
 c_func
 (paren
 r_int
@@ -159,7 +160,7 @@ id|addr
 suffix:semicolon
 r_extern
 r_void
-id|flush_tlb_range_skas
+id|flush_tlb_range_tt
 c_func
 (paren
 r_struct
@@ -178,7 +179,7 @@ id|end
 suffix:semicolon
 r_extern
 r_void
-id|flush_tlb_mm_skas
+id|flush_tlb_mm_tt
 c_func
 (paren
 r_struct
@@ -189,7 +190,7 @@ id|mm
 suffix:semicolon
 r_extern
 r_void
-id|force_flush_all_skas
+id|force_flush_all_tt
 c_func
 (paren
 r_void
@@ -197,7 +198,7 @@ r_void
 suffix:semicolon
 r_extern
 r_int
-id|execute_syscall_skas
+id|execute_syscall_tt
 c_func
 (paren
 r_void
@@ -207,18 +208,18 @@ id|r
 suffix:semicolon
 r_extern
 r_void
-id|before_mem_skas
+id|before_mem_tt
 c_func
 (paren
 r_int
 r_int
-id|unused
+id|brk_start
 )paren
 suffix:semicolon
 r_extern
 r_int
 r_int
-id|set_task_sizes_skas
+id|set_task_sizes_tt
 c_func
 (paren
 r_int
@@ -237,7 +238,7 @@ id|task_size_out
 suffix:semicolon
 r_extern
 r_int
-id|start_uml_skas
+id|start_uml_tt
 c_func
 (paren
 r_void
@@ -245,7 +246,7 @@ r_void
 suffix:semicolon
 r_extern
 r_int
-id|external_pid_skas
+id|external_pid_tt
 c_func
 (paren
 r_struct
@@ -256,7 +257,7 @@ id|task
 suffix:semicolon
 r_extern
 r_int
-id|thread_pid_skas
+id|thread_pid_tt
 c_func
 (paren
 r_struct
@@ -265,8 +266,8 @@ op_star
 id|task
 )paren
 suffix:semicolon
-DECL|macro|kmem_end_skas
-mdefine_line|#define kmem_end_skas (host_task_size - 1024 * 1024)
+DECL|macro|kmem_end_tt
+mdefine_line|#define kmem_end_tt (host_task_size - ABOVE_KMEM)
 macro_line|#endif
 multiline_comment|/*&n; * Overrides for Emacs so that we follow Linus&squot;s tabbing style.&n; * Emacs will notice this stuff at the end of the file and automatically&n; * adjust the settings for this buffer only.  This must remain at the end&n; * of the file.&n; * ---------------------------------------------------------------------------&n; * Local variables:&n; * c-file-style: &quot;linux&quot;&n; * End:&n; */
 eof

@@ -129,12 +129,10 @@ id|kprobe_opcode_t
 id|opcode
 suffix:semicolon
 multiline_comment|/* copy of the original instruction */
-DECL|member|insn
-id|kprobe_opcode_t
-id|insn
-(braket
-id|MAX_INSN_SIZE
-)braket
+DECL|member|ainsn
+r_struct
+id|arch_specific_insn
+id|ainsn
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -198,8 +196,19 @@ c_func
 suffix:semicolon
 )brace
 r_extern
-r_void
+r_int
 id|arch_prepare_kprobe
+c_func
+(paren
+r_struct
+id|kprobe
+op_star
+id|p
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|arch_remove_kprobe
 c_func
 (paren
 r_struct

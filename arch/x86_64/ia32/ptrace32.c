@@ -534,7 +534,7 @@ op_and_assign
 op_complement
 id|DR_CONTROL_RESERVED
 suffix:semicolon
-multiline_comment|/* You are not expected to understand this ... I don&squot;t neither. */
+multiline_comment|/* See arch/i386/kernel/ptrace.c for an explanation of&n;&t;&t; * this awkward check.*/
 r_for
 c_loop
 (paren

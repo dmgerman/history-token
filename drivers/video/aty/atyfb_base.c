@@ -999,7 +999,7 @@ comma
 dot
 id|fb_cursor
 op_assign
-id|atyfb_cursor
+id|soft_cursor
 comma
 macro_line|#ifdef __sparc__
 dot
@@ -10858,6 +10858,28 @@ op_plus
 l_int|0xc0
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_PPC_PMAC
+multiline_comment|/* The Apple iBook1 uses non-standard memory frequencies. We detect it&n;&t; * and set the frequency manually. */
+r_if
+c_cond
+(paren
+id|machine_is_compatible
+c_func
+(paren
+l_string|&quot;PowerBook2,1&quot;
+)paren
+)paren
+(brace
+id|par-&gt;pll_limits.mclk
+op_assign
+l_int|70
+suffix:semicolon
+id|par-&gt;pll_limits.xclk
+op_assign
+l_int|53
+suffix:semicolon
+)brace
+macro_line|#endif
 r_if
 c_cond
 (paren

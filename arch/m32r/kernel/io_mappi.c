@@ -5,7 +5,7 @@ macro_line|#include &lt;asm/m32r.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
-macro_line|#if defined(CONFIG_PCMCIA) &amp;&amp; defined(CONFIG_M32RPCC)
+macro_line|#if defined(CONFIG_PCMCIA) &amp;&amp; defined(CONFIG_M32R_PCC)
 macro_line|#include &lt;linux/types.h&gt;
 DECL|macro|M32R_PCC_IOMAP_SIZE
 mdefine_line|#define M32R_PCC_IOMAP_SIZE 0x1000
@@ -57,7 +57,7 @@ comma
 r_int
 )paren
 suffix:semicolon
-macro_line|#endif /* CONFIG_PCMCIA &amp;&amp; CONFIG_M32RPCC */
+macro_line|#endif /* CONFIG_PCMCIA &amp;&amp; CONFIG_M32R_PCC */
 DECL|macro|PORT2ADDR
 mdefine_line|#define PORT2ADDR(port)  _port2addr(port)
 DECL|function|_port2addr
@@ -302,7 +302,7 @@ id|port
 )paren
 suffix:semicolon
 r_else
-macro_line|#if defined(CONFIG_PCMCIA) &amp;&amp; defined(CONFIG_M32RPCC)
+macro_line|#if defined(CONFIG_PCMCIA) &amp;&amp; defined(CONFIG_M32R_PCC)
 r_if
 c_cond
 (paren
@@ -435,7 +435,7 @@ id|port
 )paren
 suffix:semicolon
 r_else
-macro_line|#if defined(CONFIG_PCMCIA) &amp;&amp; defined(CONFIG_M32RPCC)
+macro_line|#if defined(CONFIG_PCMCIA) &amp;&amp; defined(CONFIG_M32R_PCC)
 r_if
 c_cond
 (paren
@@ -545,7 +545,7 @@ r_int
 id|port
 )paren
 (brace
-macro_line|#if defined(CONFIG_PCMCIA) &amp;&amp; defined(CONFIG_M32RPCC)
+macro_line|#if defined(CONFIG_PCMCIA) &amp;&amp; defined(CONFIG_M32R_PCC)
 r_if
 c_cond
 (paren
@@ -683,7 +683,7 @@ id|port
 )paren
 suffix:semicolon
 r_else
-macro_line|#if defined(CONFIG_PCMCIA) &amp;&amp; defined(CONFIG_M32RPCC)
+macro_line|#if defined(CONFIG_PCMCIA) &amp;&amp; defined(CONFIG_M32R_PCC)
 r_if
 c_cond
 (paren
@@ -832,7 +832,7 @@ id|port
 )paren
 suffix:semicolon
 r_else
-macro_line|#if defined(CONFIG_PCMCIA) &amp;&amp; defined(CONFIG_M32RPCC)
+macro_line|#if defined(CONFIG_PCMCIA) &amp;&amp; defined(CONFIG_M32R_PCC)
 r_if
 c_cond
 (paren
@@ -1021,7 +1021,7 @@ id|port
 )paren
 suffix:semicolon
 r_else
-macro_line|#if defined(CONFIG_PCMCIA) &amp;&amp; defined(CONFIG_M32RPCC)
+macro_line|#if defined(CONFIG_PCMCIA) &amp;&amp; defined(CONFIG_M32R_PCC)
 r_if
 c_cond
 (paren
@@ -1145,7 +1145,7 @@ id|port
 )paren
 suffix:semicolon
 r_else
-macro_line|#if defined(CONFIG_PCMCIA) &amp;&amp; defined(CONFIG_M32RPCC)
+macro_line|#if defined(CONFIG_PCMCIA) &amp;&amp; defined(CONFIG_M32R_PCC)
 r_if
 c_cond
 (paren
@@ -1245,7 +1245,7 @@ r_int
 id|port
 )paren
 (brace
-macro_line|#if defined(CONFIG_PCMCIA) &amp;&amp; defined(CONFIG_M32RPCC)
+macro_line|#if defined(CONFIG_PCMCIA) &amp;&amp; defined(CONFIG_M32R_PCC)
 r_if
 c_cond
 (paren
@@ -1369,7 +1369,7 @@ id|port
 )paren
 suffix:semicolon
 r_else
-macro_line|#if defined(CONFIG_PCMCIA) &amp;&amp; defined(CONFIG_M32RPCC)
+macro_line|#if defined(CONFIG_PCMCIA) &amp;&amp; defined(CONFIG_M32R_PCC)
 r_if
 c_cond
 (paren
@@ -1498,7 +1498,7 @@ id|port
 )paren
 suffix:semicolon
 r_else
-macro_line|#if defined(CONFIG_PCMCIA) &amp;&amp; defined(CONFIG_M32RPCC)
+macro_line|#if defined(CONFIG_PCMCIA) &amp;&amp; defined(CONFIG_M32R_PCC)
 r_if
 c_cond
 (paren
@@ -1695,7 +1695,7 @@ op_star
 id|portp
 suffix:semicolon
 )brace
-macro_line|#if defined(CONFIG_PCMCIA) &amp;&amp; defined(CONFIG_M32RPCC)
+macro_line|#if defined(CONFIG_PCMCIA) &amp;&amp; defined(CONFIG_M32R_PCC)
 )brace
 r_else
 r_if
@@ -1873,7 +1873,7 @@ c_func
 id|portp
 )paren
 suffix:semicolon
-macro_line|#if defined(CONFIG_PCMCIA) &amp;&amp; defined(CONFIG_M32RPCC)
+macro_line|#if defined(CONFIG_PCMCIA) &amp;&amp; defined(CONFIG_M32R_PCC)
 )brace
 r_else
 r_if
@@ -2109,7 +2109,7 @@ comma
 id|portp
 )paren
 suffix:semicolon
-macro_line|#if defined(CONFIG_PCMCIA) &amp;&amp; defined(CONFIG_M32RPCC)
+macro_line|#if defined(CONFIG_PCMCIA) &amp;&amp; defined(CONFIG_M32R_PCC)
 )brace
 r_else
 r_if
@@ -2289,7 +2289,7 @@ comma
 id|portp
 )paren
 suffix:semicolon
-macro_line|#if defined(CONFIG_PCMCIA) &amp;&amp; defined(CONFIG_M32RPCC)
+macro_line|#if defined(CONFIG_PCMCIA) &amp;&amp; defined(CONFIG_M32R_PCC)
 )brace
 r_else
 r_if

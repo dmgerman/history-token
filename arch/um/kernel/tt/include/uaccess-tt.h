@@ -1,4 +1,4 @@
-multiline_comment|/* &n; * Copyright (C) 2000 - 2003 Jeff Dike (jdike@addtoit.com)&n; * Licensed under the GPL&n; */
+multiline_comment|/*&n; * Copyright (C) 2000 - 2003 Jeff Dike (jdike@addtoit.com)&n; * Licensed under the GPL&n; */
 macro_line|#ifndef __TT_UACCESS_H
 DECL|macro|__TT_UACCESS_H
 mdefine_line|#define __TT_UACCESS_H

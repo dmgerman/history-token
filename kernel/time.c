@@ -1785,13 +1785,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|variable|do_settimeofday
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|do_settimeofday
-)paren
-suffix:semicolon
 DECL|function|do_gettimeofday
 r_void
 id|do_gettimeofday

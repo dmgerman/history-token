@@ -47,6 +47,10 @@ r_int
 r_int
 id|trap_no
 suffix:semicolon
+DECL|member|singlestep_syscall
+r_int
+id|singlestep_syscall
+suffix:semicolon
 DECL|member|fault_addr
 r_void
 op_star
@@ -97,10 +101,6 @@ id|switch_pipe
 (braket
 l_int|2
 )braket
-suffix:semicolon
-DECL|member|singlestep_syscall
-r_int
-id|singlestep_syscall
 suffix:semicolon
 DECL|member|vm_seq
 r_int

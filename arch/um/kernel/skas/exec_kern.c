@@ -8,7 +8,7 @@ macro_line|#include &quot;asm/uaccess.h&quot;
 macro_line|#include &quot;asm/mmu_context.h&quot;
 macro_line|#include &quot;tlb.h&quot;
 macro_line|#include &quot;skas.h&quot;
-macro_line|#include &quot;mmu.h&quot;
+macro_line|#include &quot;um_mmu.h&quot;
 macro_line|#include &quot;os.h&quot;
 DECL|function|flush_thread_skas
 r_void

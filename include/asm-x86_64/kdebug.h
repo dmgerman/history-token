@@ -36,6 +36,16 @@ suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/* Note - you should never unregister because that can race with NMIs.&n;   If you really want to do it first unregister - then synchronize_kernel - then free. &n;  */
+r_int
+id|register_die_notifier
+c_func
+(paren
+r_struct
+id|notifier_block
+op_star
+id|nb
+)paren
+suffix:semicolon
 r_extern
 r_struct
 id|notifier_block
@@ -84,6 +94,9 @@ id|DIE_CALL
 comma
 DECL|enumerator|DIE_NMI_IPI
 id|DIE_NMI_IPI
+comma
+DECL|enumerator|DIE_PAGE_FAULT
+id|DIE_PAGE_FAULT
 comma
 )brace
 suffix:semicolon

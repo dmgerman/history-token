@@ -2494,6 +2494,20 @@ r_int
 r_char
 id|reason
 op_assign
+l_int|0
+suffix:semicolon
+multiline_comment|/* Only the BSP gets external NMIs from the system.  */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|smp_processor_id
+c_func
+(paren
+)paren
+)paren
+id|reason
+op_assign
 id|get_nmi_reason
 c_func
 (paren

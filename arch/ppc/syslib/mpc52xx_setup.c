@@ -1,5 +1,6 @@
 multiline_comment|/*&n; * arch/ppc/syslib/mpc52xx_setup.c&n; *&n; * Common code for the boards based on Freescale MPC52xx embedded CPU.&n; *&n; * &n; * Maintainer : Sylvain Munaut &lt;tnt@246tNt.com&gt;&n; *&n; * Support for other bootloaders than UBoot by Dale Farnsworth &n; * &lt;dfarnsworth@mvista.com&gt;&n; * &n; * Copyright (C) 2004 Sylvain Munaut &lt;tnt@246tNt.com&gt;&n; * Copyright (C) 2003 Montavista Software, Inc&n; * &n; * This file is licensed under the terms of the GNU General Public License&n; * version 2. This program is licensed &quot;as is&quot; without any warranty of any&n; * kind, whether express or implied.&n; */
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/time.h&gt;
 macro_line|#include &lt;asm/mpc52xx.h&gt;
 macro_line|#include &lt;asm/mpc52xx_psc.h&gt;

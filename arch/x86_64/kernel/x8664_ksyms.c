@@ -31,6 +31,7 @@ macro_line|#include &lt;asm/kdebug.h&gt;
 macro_line|#include &lt;asm/unistd.h&gt;
 macro_line|#include &lt;asm/delay.h&gt;
 macro_line|#include &lt;asm/tlbflush.h&gt;
+macro_line|#include &lt;asm/kdebug.h&gt;
 r_extern
 id|spinlock_t
 id|rtc_lock
@@ -900,6 +901,13 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|die_chain
+)paren
+suffix:semicolon
+DECL|variable|register_die_notifier
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|register_die_notifier
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_SMP

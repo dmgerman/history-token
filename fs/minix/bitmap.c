@@ -931,6 +931,8 @@ r_struct
 id|buffer_head
 op_star
 id|bh
+op_assign
+l_int|NULL
 suffix:semicolon
 r_if
 c_cond
@@ -1064,10 +1066,14 @@ r_int
 r_int
 id|ino
 suffix:semicolon
+id|ino
+op_assign
+id|inode-&gt;i_ino
+suffix:semicolon
 r_if
 c_cond
 (paren
-id|inode-&gt;i_ino
+id|ino
 template_param
 id|sbi-&gt;s_ninodes
 )paren
@@ -1075,16 +1081,13 @@ id|sbi-&gt;s_ninodes
 id|printk
 c_func
 (paren
-l_string|&quot;free_inode: inode 0 or nonexistent inode&bslash;n&quot;
+l_string|&quot;minix_free_inode: inode 0 or nonexistent inode&bslash;n&quot;
 )paren
 suffix:semicolon
-r_return
+r_goto
+id|out
 suffix:semicolon
 )brace
-id|ino
-op_assign
-id|inode-&gt;i_ino
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1100,12 +1103,20 @@ id|sbi-&gt;s_imap_blocks
 id|printk
 c_func
 (paren
-l_string|&quot;free_inode: nonexistent imap in superblock&bslash;n&quot;
+l_string|&quot;minix_free_inode: nonexistent imap in superblock&bslash;n&quot;
 )paren
 suffix:semicolon
-r_return
+r_goto
+id|out
 suffix:semicolon
 )brace
+id|minix_clear_inode
+c_func
+(paren
+id|inode
+)paren
+suffix:semicolon
+multiline_comment|/* clear on-disk copy */
 id|bh
 op_assign
 id|sbi-&gt;s_imap
@@ -1114,18 +1125,6 @@ id|ino
 op_rshift
 l_int|13
 )braket
-suffix:semicolon
-id|minix_clear_inode
-c_func
-(paren
-id|inode
-)paren
-suffix:semicolon
-id|clear_inode
-c_func
-(paren
-id|inode
-)paren
 suffix:semicolon
 id|lock_kernel
 c_func
@@ -1149,7 +1148,7 @@ id|bh-&gt;b_data
 id|printk
 c_func
 (paren
-l_string|&quot;free_inode: bit %lu already cleared.&bslash;n&quot;
+l_string|&quot;minix_free_inode: bit %lu already cleared.&bslash;n&quot;
 comma
 id|ino
 )paren
@@ -1165,6 +1164,15 @@ c_func
 id|bh
 )paren
 suffix:semicolon
+id|out
+suffix:colon
+id|clear_inode
+c_func
+(paren
+id|inode
+)paren
+suffix:semicolon
+multiline_comment|/* clear in-memory copy */
 )brace
 DECL|function|minix_new_inode
 r_struct

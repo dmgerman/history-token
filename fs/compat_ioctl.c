@@ -82,6 +82,7 @@ macro_line|#include &lt;linux/dm-ioctl.h&gt;
 macro_line|#include &lt;asm/module.h&gt;
 macro_line|#include &lt;linux/soundcard.h&gt;
 macro_line|#include &lt;linux/lp.h&gt;
+macro_line|#include &lt;linux/ppdev.h&gt;
 macro_line|#include &lt;linux/atm.h&gt;
 macro_line|#include &lt;linux/atmarp.h&gt;
 macro_line|#include &lt;linux/atmclip.h&gt;

@@ -3,6 +3,7 @@ macro_line|#ifndef __UM_THREAD_INFO_H
 DECL|macro|__UM_THREAD_INFO_H
 mdefine_line|#define __UM_THREAD_INFO_H
 macro_line|#ifndef __ASSEMBLY__
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/types.h&gt;
 DECL|struct|thread_info

@@ -2182,7 +2182,7 @@ op_star
 id|call
 )paren
 suffix:semicolon
-id|print_symbol
+id|print_fn_descriptor_symbol
 c_func
 (paren
 l_string|&quot;: %s()&quot;

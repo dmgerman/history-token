@@ -7728,11 +7728,6 @@ id|info
 op_assign
 id|rinfo-&gt;info
 suffix:semicolon
-id|info-&gt;currcon
-op_assign
-op_minus
-l_int|1
-suffix:semicolon
 id|info-&gt;par
 op_assign
 id|rinfo

@@ -85,5 +85,29 @@ r_int
 id|data
 )paren
 suffix:semicolon
+multiline_comment|/* syscall emulation path in ptrace */
+macro_line|#ifndef PTRACE_SYSEMU
+DECL|macro|PTRACE_SYSEMU
+mdefine_line|#define PTRACE_SYSEMU 31
+macro_line|#endif
+r_void
+id|set_using_sysemu
+c_func
+(paren
+r_int
+id|value
+)paren
+suffix:semicolon
+r_int
+id|get_using_sysemu
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|sysemu_supported
+suffix:semicolon
 macro_line|#endif
 eof

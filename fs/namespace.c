@@ -442,13 +442,6 @@ r_return
 id|found
 suffix:semicolon
 )brace
-DECL|variable|lookup_mnt
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|lookup_mnt
-)paren
-suffix:semicolon
 DECL|function|check_mnt
 r_static
 r_inline

@@ -649,12 +649,25 @@ id|arg
 )paren
 (brace
 r_int
+id|ret
+suffix:semicolon
+r_int
 id|pid
 op_assign
 id|os_getpid
 c_func
 (paren
 )paren
+comma
+id|ppid
+op_assign
+id|getppid
+c_func
+(paren
+)paren
+suffix:semicolon
+r_int
+id|sc_result
 suffix:semicolon
 r_if
 c_cond
@@ -695,15 +708,49 @@ c_func
 id|pid
 )paren
 suffix:semicolon
-id|_exit
-c_func
-(paren
+multiline_comment|/*This syscall will be intercepted by the parent. Don&squot;t call more than&n;&t; * once, please.*/
+id|sc_result
+op_assign
 id|os_getpid
 c_func
 (paren
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|sc_result
 op_eq
 id|pid
+)paren
+id|ret
+op_assign
+l_int|1
+suffix:semicolon
+multiline_comment|/*Nothing modified by the parent, we are running&n;&t;&t;&t;   normally.*/
+r_else
+r_if
+c_cond
+(paren
+id|sc_result
+op_eq
+id|ppid
+)paren
+id|ret
+op_assign
+l_int|0
+suffix:semicolon
+multiline_comment|/*Expected in check_ptrace and check_sysemu when they&n;&t;&t;&t;   succeed in modifying the stack frame*/
+r_else
+id|ret
+op_assign
+l_int|2
+suffix:semicolon
+multiline_comment|/*Serious trouble! This could be caused by a bug in&n;&t;&t;&t;   host 2.6 SKAS3/2.6 patch before release -V6, together&n;&t;&t;&t;   with a bug in the UML code itself.*/
+id|_exit
+c_func
+(paren
+id|ret
 )paren
 suffix:semicolon
 )brace
@@ -900,9 +947,10 @@ r_return
 id|pid
 suffix:semicolon
 )brace
+multiline_comment|/* When testing for SYSEMU support, if it is one of the broken versions, we must&n; * just avoid using sysemu, not panic, but only if SYSEMU features are broken.&n; * So only for SYSEMU features we test mustpanic, while normal host features&n; * must work anyway!*/
 DECL|function|stop_ptraced_child
 r_static
-r_void
+r_int
 id|stop_ptraced_child
 c_func
 (paren
@@ -915,12 +963,19 @@ id|stack
 comma
 r_int
 id|exitcode
+comma
+r_int
+id|mustpanic
 )paren
 (brace
 r_int
 id|status
 comma
 id|n
+comma
+id|ret
+op_assign
+l_int|0
 suffix:semicolon
 r_if
 c_cond
@@ -987,13 +1042,65 @@ id|exitcode
 )paren
 )paren
 (brace
-id|panic
+r_int
+id|exit_with
+op_assign
+id|WEXITSTATUS
 c_func
 (paren
-l_string|&quot;check_ptrace : child exited with status 0x%x&quot;
+id|status
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|exit_with
+op_eq
+l_int|2
+)paren
+id|printk
+c_func
+(paren
+l_string|&quot;check_ptrace : child exited with status 2. &quot;
+l_string|&quot;Serious trouble happening! Try updating your &quot;
+l_string|&quot;host skas patch!&bslash;nDisabling SYSEMU support.&quot;
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;check_ptrace : child exited with exitcode %d, while &quot;
+l_string|&quot;expecting %d; status 0x%x&quot;
+comma
+id|exit_with
+comma
+id|exitcode
 comma
 id|status
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|mustpanic
+)paren
+id|panic
+c_func
+(paren
+l_string|&quot;&bslash;n&quot;
+)paren
+suffix:semicolon
+r_else
+id|printk
+c_func
+(paren
+l_string|&quot;&bslash;n&quot;
+)paren
+suffix:semicolon
+id|ret
+op_assign
+op_minus
+l_int|1
 suffix:semicolon
 )brace
 r_if
@@ -1019,6 +1126,9 @@ id|errno
 )paren
 suffix:semicolon
 )brace
+r_return
+id|ret
+suffix:semicolon
 )brace
 DECL|variable|force_sysemu_disabled
 r_static
@@ -1063,14 +1173,9 @@ l_string|&quot;    Turns off syscall emulation patch for ptrace (SYSEMU) on.&bsl
 l_string|&quot;    SYSEMU is a performance-patch introduced by Laurent Vivier. It changes&bslash;n&quot;
 l_string|&quot;    behaviour of ptrace() and helps reducing host context switch rate.&bslash;n&quot;
 l_string|&quot;    To make it working, you need a kernel patch for your host, too.&bslash;n&quot;
-l_string|&quot;    See http://perso.wanadoo.fr/laurent.vivier/UML/ for further information.&bslash;n&quot;
+l_string|&quot;    See http://perso.wanadoo.fr/laurent.vivier/UML/ for further information.&bslash;n&bslash;n&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* Ugly hack for now... --cw */
-macro_line|#ifndef PTRACE_SYSEMU
-DECL|macro|PTRACE_SYSEMU
-mdefine_line|#define PTRACE_SYSEMU 31
-macro_line|#endif
 DECL|function|check_sysemu
 r_static
 r_void
@@ -1092,25 +1197,16 @@ id|n
 comma
 id|status
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|mode_tt
-)paren
-r_return
-suffix:semicolon
 id|printk
 c_func
 (paren
 l_string|&quot;Checking syscall emulation patch for ptrace...&quot;
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_MODE_SKAS
 id|sysemu_supported
 op_assign
 l_int|0
 suffix:semicolon
-macro_line|#endif /* CONFIG_MODE_SKAS */
 id|pid
 op_assign
 id|start_ptraced_child
@@ -1134,14 +1230,14 @@ l_int|0
 comma
 l_int|0
 )paren
-op_ge
+OL
 l_int|0
 )paren
 (brace
-r_struct
-id|user_regs_struct
-id|regs
+r_goto
+id|fail
 suffix:semicolon
+)brace
 id|CATCH_EINTR
 c_func
 (paren
@@ -1169,7 +1265,7 @@ l_int|0
 id|panic
 c_func
 (paren
-l_string|&quot;check_ptrace : wait failed, errno = %d&quot;
+l_string|&quot;check_sysemu : wait failed, errno = %d&quot;
 comma
 id|errno
 )paren
@@ -1198,96 +1294,51 @@ id|SIGTRAP
 id|panic
 c_func
 (paren
-l_string|&quot;check_ptrace : expected SIGTRAP, &quot;
+l_string|&quot;check_sysemu : expected SIGTRAP, &quot;
 l_string|&quot;got status = %d&quot;
 comma
 id|status
 )paren
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
+id|n
+op_assign
 id|ptrace
 c_func
 (paren
-id|PTRACE_GETREGS
+id|PTRACE_POKEUSER
 comma
 id|pid
 comma
-l_int|0
+id|PT_SYSCALL_RET_OFFSET
 comma
-op_amp
-id|regs
-)paren
-OL
-l_int|0
-)paren
-id|panic
+id|os_getpid
 c_func
 (paren
-l_string|&quot;check_ptrace : failed to read child &quot;
-l_string|&quot;registers, errno = %d&quot;
-comma
-id|errno
 )paren
-suffix:semicolon
-id|regs.orig_eax
-op_assign
-id|pid
+)paren
 suffix:semicolon
 r_if
 c_cond
 (paren
-id|ptrace
-c_func
-(paren
-id|PTRACE_SETREGS
-comma
-id|pid
-comma
-l_int|0
-comma
-op_amp
-id|regs
-)paren
+id|n
 OL
 l_int|0
 )paren
-id|panic
-c_func
-(paren
-l_string|&quot;check_ptrace : failed to modify child &quot;
-l_string|&quot;registers, errno = %d&quot;
-comma
-id|errno
-)paren
-suffix:semicolon
-id|stop_ptraced_child
-c_func
-(paren
-id|pid
-comma
-id|stack
-comma
-l_int|0
-)paren
-suffix:semicolon
-macro_line|#ifdef CONFIG_MODE_SKAS
-id|sysemu_supported
-op_assign
-l_int|1
-suffix:semicolon
-macro_line|#endif /* CONFIG_MODE_SKAS */
-id|printk
-c_func
-(paren
-l_string|&quot;found&bslash;n&quot;
-)paren
-suffix:semicolon
-)brace
-r_else
 (brace
+id|panic
+c_func
+(paren
+l_string|&quot;check_sysemu : failed to modify system &quot;
+l_string|&quot;call return, errno = %d&quot;
+comma
+id|errno
+)paren
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
 id|stop_ptraced_child
 c_func
 (paren
@@ -1295,23 +1346,26 @@ id|pid
 comma
 id|stack
 comma
-l_int|1
+l_int|0
+comma
+l_int|0
 )paren
+OL
+l_int|0
+)paren
+r_goto
+id|fail_stopped
 suffix:semicolon
-macro_line|#ifdef CONFIG_MODE_SKAS
 id|sysemu_supported
 op_assign
-l_int|0
+l_int|1
 suffix:semicolon
-macro_line|#endif /* CONFIG_MODE_SKAS */
 id|printk
 c_func
 (paren
-l_string|&quot;missing&bslash;n&quot;
+l_string|&quot;OK&bslash;n&quot;
 )paren
 suffix:semicolon
-)brace
-macro_line|#ifdef CONFIG_MODE_SKAS
 id|set_using_sysemu
 c_func
 (paren
@@ -1319,7 +1373,34 @@ op_logical_neg
 id|force_sysemu_disabled
 )paren
 suffix:semicolon
-macro_line|#endif
+r_return
+suffix:semicolon
+id|fail
+suffix:colon
+id|stop_ptraced_child
+c_func
+(paren
+id|pid
+comma
+id|stack
+comma
+l_int|1
+comma
+l_int|0
+)paren
+suffix:semicolon
+id|fail_stopped
+suffix:colon
+id|sysemu_supported
+op_assign
+l_int|0
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;missing&bslash;n&quot;
+)paren
+suffix:semicolon
 )brace
 DECL|function|check_ptrace
 r_void
@@ -1522,6 +1603,8 @@ comma
 id|stack
 comma
 l_int|0
+comma
+l_int|1
 )paren
 suffix:semicolon
 id|printk
@@ -1772,6 +1855,8 @@ c_func
 id|pid
 comma
 id|stack
+comma
+l_int|1
 comma
 l_int|1
 )paren

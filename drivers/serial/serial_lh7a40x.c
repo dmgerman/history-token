@@ -15,7 +15,6 @@ DECL|macro|SUPPORT_SYSRQ
 mdefine_line|#define SUPPORT_SYSRQ
 macro_line|#endif
 macro_line|#include &lt;linux/serial_core.h&gt;
-macro_line|#include &lt;asm/arch/serial.h&gt;
 DECL|macro|DEV_MAJOR
 mdefine_line|#define DEV_MAJOR&t;204
 DECL|macro|DEV_MINOR
@@ -34,6 +33,22 @@ DECL|macro|BIT_SET
 mdefine_line|#define BIT_SET(p,o,m)&t;UR(p,o) = UR(p,o) | ( (unsigned int)m)
 DECL|macro|UART_REG_SIZE
 mdefine_line|#define UART_REG_SIZE&t;32
+DECL|macro|UART_R_DATA
+mdefine_line|#define UART_R_DATA&t;(0x00)
+DECL|macro|UART_R_FCON
+mdefine_line|#define UART_R_FCON&t;(0x04)
+DECL|macro|UART_R_BRCON
+mdefine_line|#define UART_R_BRCON&t;(0x08)
+DECL|macro|UART_R_CON
+mdefine_line|#define UART_R_CON&t;(0x0c)
+DECL|macro|UART_R_STATUS
+mdefine_line|#define UART_R_STATUS&t;(0x10)
+DECL|macro|UART_R_RAWISR
+mdefine_line|#define UART_R_RAWISR&t;(0x14)
+DECL|macro|UART_R_INTEN
+mdefine_line|#define UART_R_INTEN&t;(0x18)
+DECL|macro|UART_R_ISR
+mdefine_line|#define UART_R_ISR&t;(0x1c)
 DECL|macro|UARTEN
 mdefine_line|#define UARTEN&t;&t;(0x01)&t;&t;/* UART enable */
 DECL|macro|SIRDIS

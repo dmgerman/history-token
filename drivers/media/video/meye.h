@@ -1,14 +1,17 @@
-multiline_comment|/* &n; * Motion Eye video4linux driver for Sony Vaio PictureBook&n; *&n; * Copyright (C) 2001-2003 Stelian Pop &lt;stelian@popies.net&gt;&n; *&n; * Copyright (C) 2001-2002 Alc&#xfffd;ve &lt;www.alcove.com&gt;&n; *&n; * Copyright (C) 2000 Andrew Tridgell &lt;tridge@valinux.com&gt;&n; *&n; * Earlier work by Werner Almesberger, Paul `Rusty&squot; Russell and Paul Mackerras.&n; * &n; * Some parts borrowed from various video4linux drivers, especially&n; * bttv-driver.c and zoran.c, see original files for credits.&n; * &n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; * &n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; * &n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
+multiline_comment|/*&n; * Motion Eye video4linux driver for Sony Vaio PictureBook&n; *&n; * Copyright (C) 2001-2004 Stelian Pop &lt;stelian@popies.net&gt;&n; *&n; * Copyright (C) 2001-2002 Alc&#xfffd;ve &lt;www.alcove.com&gt;&n; *&n; * Copyright (C) 2000 Andrew Tridgell &lt;tridge@valinux.com&gt;&n; *&n; * Earlier work by Werner Almesberger, Paul `Rusty&squot; Russell and Paul Mackerras.&n; *&n; * Some parts borrowed from various video4linux drivers, especially&n; * bttv-driver.c and zoran.c, see original files for credits.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
 macro_line|#ifndef _MEYE_PRIV_H_
 DECL|macro|_MEYE_PRIV_H_
 mdefine_line|#define _MEYE_PRIV_H_
 DECL|macro|MEYE_DRIVER_MAJORVERSION
-mdefine_line|#define MEYE_DRIVER_MAJORVERSION&t;1
+mdefine_line|#define MEYE_DRIVER_MAJORVERSION&t; 1
 DECL|macro|MEYE_DRIVER_MINORVERSION
-mdefine_line|#define MEYE_DRIVER_MINORVERSION&t;10
+mdefine_line|#define MEYE_DRIVER_MINORVERSION&t;11
+DECL|macro|MEYE_DRIVER_VERSION
+mdefine_line|#define MEYE_DRIVER_VERSION __stringify(MEYE_DRIVER_MAJORVERSION) &quot;.&quot; &bslash;&n;&t;&t;&t;    __stringify(MEYE_DRIVER_MINORVERSION)
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
+macro_line|#include &lt;linux/kfifo.h&gt;
 multiline_comment|/****************************************************************************/
 multiline_comment|/* Motion JPEG chip registers                                               */
 multiline_comment|/****************************************************************************/
@@ -16,7 +19,7 @@ multiline_comment|/* Motion JPEG chip PCI configuration registers */
 DECL|macro|MCHIP_PCI_POWER_CSR
 mdefine_line|#define MCHIP_PCI_POWER_CSR&t;&t;0x54
 DECL|macro|MCHIP_PCI_MCORE_STATUS
-mdefine_line|#define MCHIP_PCI_MCORE_STATUS&t;&t;0x60&t;/* see HIC_STATUS   */
+mdefine_line|#define MCHIP_PCI_MCORE_STATUS&t;&t;0x60&t;&t;/* see HIC_STATUS   */
 DECL|macro|MCHIP_PCI_HOSTUSEREQ_SET
 mdefine_line|#define MCHIP_PCI_HOSTUSEREQ_SET&t;0x64
 DECL|macro|MCHIP_PCI_HOSTUSEREQ_CLR
@@ -67,7 +70,7 @@ mdefine_line|#define MCHIP_MM_INTA_PCI_ERR&t;&t;0x00000040&t;/* PCI error */
 DECL|macro|MCHIP_MM_INTA_PCI_ERR_MASK
 mdefine_line|#define MCHIP_MM_INTA_PCI_ERR_MASK&t;0x00004000
 DECL|macro|MCHIP_MM_PT_ADDR
-mdefine_line|#define MCHIP_MM_PT_ADDR&t;&t;0x08&t;&t;/* page table address */
+mdefine_line|#define MCHIP_MM_PT_ADDR&t;&t;0x08&t;&t;/* page table address*/
 multiline_comment|/* n*4kB */
 DECL|macro|MCHIP_NB_PAGES
 mdefine_line|#define MCHIP_NB_PAGES&t;&t;&t;1024&t;&t;/* pages for display */
@@ -388,59 +391,28 @@ r_int
 id|size
 suffix:semicolon
 multiline_comment|/* size of jpg frame */
+DECL|member|timestamp
+r_struct
+id|timeval
+id|timestamp
+suffix:semicolon
+multiline_comment|/* timestamp */
+DECL|member|sequence
+r_int
+r_int
+id|sequence
+suffix:semicolon
+multiline_comment|/* sequence number */
 )brace
 suffix:semicolon
-multiline_comment|/* queues containing the buffer indices */
+multiline_comment|/* size of kfifos containings buffer indices */
 DECL|macro|MEYE_QUEUE_SIZE
 mdefine_line|#define MEYE_QUEUE_SIZE&t;MEYE_MAX_BUFNBRS
-DECL|struct|meye_queue
-r_struct
-id|meye_queue
-(brace
-DECL|member|head
-r_int
-r_int
-id|head
-suffix:semicolon
-multiline_comment|/* queue head */
-DECL|member|tail
-r_int
-r_int
-id|tail
-suffix:semicolon
-multiline_comment|/* queue tail */
-DECL|member|len
-r_int
-r_int
-id|len
-suffix:semicolon
-multiline_comment|/* queue length */
-DECL|member|s_lock
-id|spinlock_t
-id|s_lock
-suffix:semicolon
-multiline_comment|/* spinlock protecting the queue */
-DECL|member|proc_list
-id|wait_queue_head_t
-id|proc_list
-suffix:semicolon
-multiline_comment|/* wait queue */
-DECL|member|buf
-r_int
-id|buf
-(braket
-id|MEYE_QUEUE_SIZE
-)braket
-suffix:semicolon
-multiline_comment|/* queue contents */
-)brace
-suffix:semicolon
 multiline_comment|/* Motion Eye device structure */
 DECL|struct|meye
 r_struct
 id|meye
 (brace
-multiline_comment|/* mchip related */
 DECL|member|mchip_dev
 r_struct
 id|pci_dev
@@ -497,6 +469,13 @@ op_star
 id|grab_fbuffer
 suffix:semicolon
 multiline_comment|/* capture framebuffer */
+DECL|member|grab_temp
+r_int
+r_char
+op_star
+id|grab_temp
+suffix:semicolon
+multiline_comment|/* temporary buffer */
 multiline_comment|/* list of buffers */
 DECL|member|grab_buffer
 r_struct
@@ -506,7 +485,14 @@ id|grab_buffer
 id|MEYE_MAX_BUFNBRS
 )braket
 suffix:semicolon
-multiline_comment|/* other */
+DECL|member|vma_use_count
+r_int
+id|vma_use_count
+(braket
+id|MEYE_MAX_BUFNBRS
+)braket
+suffix:semicolon
+multiline_comment|/* mmap count */
 DECL|member|lock
 r_struct
 id|semaphore
@@ -515,10 +501,33 @@ suffix:semicolon
 multiline_comment|/* semaphore for open/mmap... */
 DECL|member|grabq
 r_struct
-id|meye_queue
+id|kfifo
+op_star
 id|grabq
 suffix:semicolon
 multiline_comment|/* queue for buffers to be grabbed */
+DECL|member|grabq_lock
+id|spinlock_t
+id|grabq_lock
+suffix:semicolon
+multiline_comment|/* lock protecting the queue */
+DECL|member|doneq
+r_struct
+id|kfifo
+op_star
+id|doneq
+suffix:semicolon
+multiline_comment|/* queue for grabbed buffers */
+DECL|member|doneq_lock
+id|spinlock_t
+id|doneq_lock
+suffix:semicolon
+multiline_comment|/* lock protecting the queue */
+DECL|member|proc_list
+id|wait_queue_head_t
+id|proc_list
+suffix:semicolon
+multiline_comment|/* wait queue */
 DECL|member|video_dev
 r_struct
 id|video_device

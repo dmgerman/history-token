@@ -2675,6 +2675,16 @@ op_amp
 id|forced
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|ret
+op_ne
+l_int|0
+)paren
+r_goto
+id|out
+suffix:semicolon
 multiline_comment|/* Never wait if forced. */
 r_if
 c_cond

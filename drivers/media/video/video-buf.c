@@ -5099,7 +5099,7 @@ op_member_access_from_pointer
 id|buf_release
 c_func
 (paren
-id|vma-&gt;vm_file
+id|vma-&gt;vm_file-&gt;private_data
 comma
 id|map-&gt;q-&gt;bufs
 (braket

@@ -12,30 +12,7 @@ macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/mach/arch.h&gt;
 macro_line|#include &lt;asm/hardware.h&gt;
-r_extern
-r_void
-id|h720x_init_irq
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|h7201_init_time
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|__init
-id|h720x_map_io
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
+macro_line|#include &quot;common.h&quot;
 id|MACHINE_START
 c_func
 (paren
@@ -72,10 +49,11 @@ c_func
 (paren
 id|h720x_init_irq
 )paren
-id|INITTIME
-c_func
-(paren
-id|h7201_init_time
-)paren
+dot
+id|timer
+op_assign
+op_amp
+id|h7201_timer
+comma
 id|MACHINE_END
 eof

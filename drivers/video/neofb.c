@@ -6486,6 +6486,8 @@ comma
 id|par-&gt;mmio_vbase
 op_plus
 l_int|0x100000
+op_plus
+id|i
 )paren
 suffix:semicolon
 )brace

@@ -1472,6 +1472,7 @@ l_int|7
 )braket
 )paren
 suffix:colon
+multiline_comment|/* See arch/i386/kernel/ptrace.c for an explanation of&n;&t;&t;&t; * this awkward check.*/
 id|data
 op_and_assign
 op_complement

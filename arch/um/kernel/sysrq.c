@@ -18,9 +18,7 @@ op_star
 id|stack
 )paren
 (brace
-r_int
-id|i
-suffix:semicolon
+multiline_comment|/* XXX: Copy the CONFIG_FRAME_POINTER stack-walking backtrace from&n;&t; * arch/i386/kernel/traps.c. */
 r_int
 r_int
 id|addr
@@ -44,12 +42,8 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;Call Trace:&bslash;n&quot;
+l_string|&quot;Call Trace: &bslash;n&quot;
 )paren
-suffix:semicolon
-id|i
-op_assign
-l_int|1
 suffix:semicolon
 r_while
 c_loop
@@ -89,7 +83,7 @@ id|addr
 id|printk
 c_func
 (paren
-l_string|&quot;[&lt;%08lx&gt;] &quot;
+l_string|&quot; [&lt;%08lx&gt;]&quot;
 comma
 id|addr
 )paren
@@ -97,7 +91,7 @@ suffix:semicolon
 id|print_symbol
 c_func
 (paren
-l_string|&quot;%s&quot;
+l_string|&quot; %s&quot;
 comma
 id|addr
 )paren
@@ -108,11 +102,14 @@ c_func
 l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
-id|i
-op_increment
+)brace
+)brace
+id|printk
+c_func
+(paren
+l_string|&quot;&bslash;n&quot;
+)paren
 suffix:semicolon
-)brace
-)brace
 )brace
 multiline_comment|/*&n; * The architecture-independent dump_stack generator&n; */
 DECL|function|dump_stack

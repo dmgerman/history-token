@@ -383,11 +383,11 @@ suffix:semicolon
 )brace
 )brace
 DECL|macro|PCIX_READW
-mdefine_line|#define PCIX_READW(offset) &bslash;&n;&t;(readw((u32)pcix_reg_base+offset))
+mdefine_line|#define PCIX_READW(offset) &bslash;&n;&t;(readw(pcix_reg_base+offset))
 DECL|macro|PCIX_WRITEW
-mdefine_line|#define PCIX_WRITEW(value, offset) &bslash;&n;&t;(writew(value, (u32)pcix_reg_base+offset))
+mdefine_line|#define PCIX_WRITEW(value, offset) &bslash;&n;&t;(writew(value, pcix_reg_base+offset))
 DECL|macro|PCIX_WRITEL
-mdefine_line|#define PCIX_WRITEL(value, offset) &bslash;&n;&t;(writel(value, (u32)pcix_reg_base+offset))
+mdefine_line|#define PCIX_WRITEL(value, offset) &bslash;&n;&t;(writel(value, pcix_reg_base+offset))
 multiline_comment|/*&n; * FIXME: This is only here to &quot;make it work&quot;.  This will move&n; * to a ibm_pcix.c which will contain a generic IBM PCIX bridge&n; * configuration library. -Matt&n; */
 r_static
 r_void
@@ -968,6 +968,24 @@ l_string|&quot;IBM Ocotea port (MontaVista Software, Inc. &lt;source@mvista.com&
 )paren
 suffix:semicolon
 )brace
+DECL|function|ocotea_init
+r_static
+r_void
+id|__init
+id|ocotea_init
+c_func
+(paren
+r_void
+)paren
+(brace
+id|ibm440gx_l2c_setup
+c_func
+(paren
+op_amp
+id|clocks
+)paren
+suffix:semicolon
+)brace
 DECL|function|platform_init
 r_void
 id|__init
@@ -1041,10 +1059,27 @@ id|ocp_sys_info.opb_bus_freq
 op_assign
 id|clocks.opb
 suffix:semicolon
-multiline_comment|/*&n;&t; * Always disable L2 cache. All revs/speeds of silicon&n;&t; * have parity error problems despite errata claims to&n;&t; * the contrary.&n;&t; */
-id|ibm440gx_l2c_disable
+multiline_comment|/* XXX Fix L2C IRQ triggerring setting (edge-sensitive).&n;&t; * Firmware (at least PIBS v1.72 OCT/28/2003) sets it incorrectly&n;&t; * --ebs&n;&t; */
+id|mtdcr
 c_func
 (paren
+id|DCRN_UIC_TR
+c_func
+(paren
+id|UIC2
+)paren
+comma
+id|mfdcr
+c_func
+(paren
+id|DCRN_UIC_TR
+c_func
+(paren
+id|UIC2
+)paren
+)paren
+op_or
+l_int|0x00000100
 )paren
 suffix:semicolon
 id|ibm44x_platform_init
@@ -1095,5 +1130,9 @@ op_assign
 id|ocotea_early_serial_map
 suffix:semicolon
 macro_line|#endif
+id|ppc_md.init
+op_assign
+id|ocotea_init
+suffix:semicolon
 )brace
 eof

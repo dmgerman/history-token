@@ -1,24 +1,11 @@
 multiline_comment|/*&n; * arch/ppc64/kernel/iSeries_iommu.c&n; *&n; * Copyright (C) 2001 Mike Corrigan &amp; Dave Engebretsen, IBM Corporation&n; *&n; * Rewrite, cleanup:&n; *&n; * Copyright (C) 2004 Olof Johansson &lt;olof@austin.ibm.com&gt;, IBM Corporation&n; *&n; * Dynamic DMA mapping support, iSeries-specific parts.&n; *&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA&n; */
-macro_line|#include &lt;linux/config.h&gt;
-macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
-macro_line|#include &lt;linux/slab.h&gt;
-macro_line|#include &lt;linux/mm.h&gt;
-macro_line|#include &lt;linux/spinlock.h&gt;
-macro_line|#include &lt;linux/string.h&gt;
-macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/dma-mapping.h&gt;
-macro_line|#include &lt;asm/io.h&gt;
-macro_line|#include &lt;asm/prom.h&gt;
-macro_line|#include &lt;asm/rtas.h&gt;
-macro_line|#include &lt;asm/ppcdebug.h&gt;
-macro_line|#include &lt;asm/iSeries/HvCallXm.h&gt;
-macro_line|#include &lt;asm/iSeries/LparData.h&gt;
+macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;asm/iommu.h&gt;
-macro_line|#include &lt;asm/pci-bridge.h&gt;
-macro_line|#include &lt;asm/iSeries/iSeries_pci.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;
-macro_line|#include &quot;pci.h&quot;
+macro_line|#include &lt;asm/iSeries/HvCallXm.h&gt;
+macro_line|#include &lt;asm/iSeries/iSeries_pci.h&gt;
 r_extern
 r_struct
 id|list_head
@@ -188,10 +175,6 @@ id|npages
 id|u64
 id|rc
 suffix:semicolon
-r_union
-id|tce_entry
-id|tce
-suffix:semicolon
 r_while
 c_loop
 (paren
@@ -199,10 +182,6 @@ id|npages
 op_decrement
 )paren
 (brace
-id|tce.te_word
-op_assign
-l_int|0
-suffix:semicolon
 id|rc
 op_assign
 id|HvCallXm_setTce
@@ -218,7 +197,7 @@ id|u64
 )paren
 id|index
 comma
-id|tce.te_word
+l_int|0
 )paren
 suffix:semicolon
 r_if
@@ -259,63 +238,54 @@ id|iSeries_Device_Node
 op_star
 id|dp
 suffix:semicolon
-r_for
-c_loop
+id|list_for_each_entry
+c_func
 (paren
 id|dp
-op_assign
-(paren
-r_struct
-id|iSeries_Device_Node
-op_star
-)paren
-id|iSeries_Global_Device_List.next
-suffix:semicolon
-id|dp
-op_ne
-(paren
-r_struct
-id|iSeries_Device_Node
-op_star
-)paren
+comma
 op_amp
 id|iSeries_Global_Device_List
-suffix:semicolon
-id|dp
-op_assign
-(paren
-r_struct
-id|iSeries_Device_Node
-op_star
+comma
+id|Device_List
 )paren
-id|dp-&gt;Device_List.next
-)paren
+(brace
 r_if
 c_cond
+(paren
 (paren
 id|dp-&gt;iommu_table
 op_ne
 l_int|NULL
+)paren
 op_logical_and
+(paren
 id|dp-&gt;iommu_table-&gt;it_type
 op_eq
 id|TCE_PCI
+)paren
 op_logical_and
+(paren
 id|dp-&gt;iommu_table-&gt;it_offset
 op_eq
 id|tbl-&gt;it_offset
+)paren
 op_logical_and
+(paren
 id|dp-&gt;iommu_table-&gt;it_index
 op_eq
 id|tbl-&gt;it_index
+)paren
 op_logical_and
+(paren
 id|dp-&gt;iommu_table-&gt;it_size
 op_eq
 id|tbl-&gt;it_size
 )paren
+)paren
 r_return
 id|dp-&gt;iommu_table
 suffix:semicolon
+)brace
 r_return
 l_int|NULL
 suffix:semicolon
@@ -345,11 +315,6 @@ id|parms
 suffix:semicolon
 id|parms
 op_assign
-(paren
-r_struct
-id|iommu_table_cb
-op_star
-)paren
 id|kmalloc
 c_func
 (paren
@@ -469,9 +434,9 @@ id|parms
 )paren
 suffix:semicolon
 )brace
-DECL|function|iommu_devnode_init
+DECL|function|iommu_devnode_init_iSeries
 r_void
-id|iommu_devnode_init
+id|iommu_devnode_init_iSeries
 c_func
 (paren
 r_struct
@@ -487,11 +452,6 @@ id|tbl
 suffix:semicolon
 id|tbl
 op_assign
-(paren
-r_struct
-id|iommu_table
-op_star
-)paren
 id|kmalloc
 c_func
 (paren
@@ -542,8 +502,6 @@ c_func
 (paren
 id|tbl
 )paren
-suffix:semicolon
-r_return
 suffix:semicolon
 )brace
 DECL|function|tce_init_iSeries

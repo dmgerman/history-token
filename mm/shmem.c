@@ -9155,6 +9155,11 @@ id|sb-&gt;s_xattr
 op_assign
 id|shmem_xattr_handlers
 suffix:semicolon
+macro_line|#else
+id|sb-&gt;s_flags
+op_or_assign
+id|MS_NOUSER
+suffix:semicolon
 macro_line|#endif
 id|sb-&gt;s_maxbytes
 op_assign

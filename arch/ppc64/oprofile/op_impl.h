@@ -115,6 +115,11 @@ r_int
 r_int
 id|enable_user
 suffix:semicolon
+DECL|member|backtrace_spinlocks
+r_int
+r_int
+id|backtrace_spinlocks
+suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/* Per-arch configuration */

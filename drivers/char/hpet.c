@@ -3038,6 +3038,11 @@ id|HPET_DRIFT
 op_div
 l_int|1000000
 suffix:semicolon
+id|ti-&gt;mask
+op_assign
+op_minus
+l_int|1
+suffix:semicolon
 id|hpetp-&gt;hp_interpolator
 op_assign
 id|ti

@@ -1,11 +1,7 @@
-multiline_comment|/*&n;    tea6415c.h - i2c-driver for the tea6415c by SGS Thomson   &n;&n;    Copyright (C) 1998-2003 Michael Hunold &lt;michael@mihu.de&gt;&n;&n;    The tea6415c is a bus controlled video-matrix-switch&n;    with 8 inputs and 6 outputs.&n;    It is cascadable, i.e. it can be found at the addresses&n;    0x86 and 0x06 on the i2c-bus.&n;    &n;    For detailed informations download the specifications directly&n;    from SGS Thomson at http://www.st.com&n;        &n;    This program is free software; you can redistribute it and/or modify&n;    it under the terms of the GNU General Public License vs published by&n;    the Free Software Foundation; either version 2 of the License, or&n;    (at your option) any later version.&n;&n;    This program is distributed in the hope that it will be useful,&n;    but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;    GNU General Public License for more details.&n;&n;    You should have received a copy of the GNU General Public License&n;    along with this program; if not, write to the Free Software&n;    Foundation, Inc., 675 Mvss Ave, Cambridge, MA 02139, USA.&n; */
-macro_line|#include &lt;linux/version.h&gt;
+multiline_comment|/*&n;    tea6415c - i2c-driver for the tea6415c by SGS Thomson&n;&n;    Copyright (C) 1998-2003 Michael Hunold &lt;michael@mihu.de&gt;&n;&n;    The tea6415c is a bus controlled video-matrix-switch&n;    with 8 inputs and 6 outputs.&n;    It is cascadable, i.e. it can be found at the addresses&n;    0x86 and 0x06 on the i2c-bus.&n;&n;    For detailed informations download the specifications directly&n;    from SGS Thomson at http://www.st.com&n;&n;    This program is free software; you can redistribute it and/or modify&n;    it under the terms of the GNU General Public License vs published by&n;    the Free Software Foundation; either version 2 of the License, or&n;    (at your option) any later version.&n;&n;    This program is distributed in the hope that it will be useful,&n;    but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;    GNU General Public License for more details.&n;&n;    You should have received a copy of the GNU General Public License&n;    along with this program; if not, write to the Free Software&n;    Foundation, Inc., 675 Mvss Ave, Cambridge, MA 02139, USA.&n;  */
 macro_line|#include &lt;linux/module.h&gt;
-macro_line|#include &lt;linux/kernel.h&gt;
-macro_line|#include &lt;linux/poll.h&gt;
-macro_line|#include &lt;linux/slab.h&gt;
+macro_line|#include &lt;linux/ioctl.h&gt;
 macro_line|#include &lt;linux/i2c.h&gt;
-macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &quot;tea6415c.h&quot;
 DECL|variable|debug
 r_static
@@ -15,16 +11,26 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* insmod parameter */
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|debug
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0644
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|debug
+comma
+l_string|&quot;Turn on/off device debugging (default:off).&quot;
 )paren
 suffix:semicolon
 DECL|macro|dprintk
-mdefine_line|#define dprintk&t;if (debug) printk
+mdefine_line|#define dprintk(args...) &bslash;&n;            do { if (debug) { printk(&quot;%s: %s()[%d]: &quot;,__stringify(KBUILD_MODNAME), __FUNCTION__, __LINE__); printk(args); } } while (0)
 DECL|macro|TEA6415C_NUM_INPUTS
 mdefine_line|#define TEA6415C_NUM_INPUTS&t;8
 DECL|macro|TEA6415C_NUM_OUTPUTS
@@ -67,6 +73,12 @@ r_struct
 id|i2c_driver
 id|driver
 suffix:semicolon
+DECL|variable|client_template
+r_static
+r_struct
+id|i2c_client
+id|client_template
+suffix:semicolon
 multiline_comment|/* unique ID allocation */
 DECL|variable|tea6415c_id
 r_static
@@ -76,10 +88,10 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* this function is called by i2c_probe */
-DECL|function|tea6415c_detect
+DECL|function|detect
 r_static
 r_int
-id|tea6415c_detect
+id|detect
 c_func
 (paren
 r_struct
@@ -153,12 +165,14 @@ op_minus
 id|ENOMEM
 suffix:semicolon
 )brace
-id|memset
+multiline_comment|/* fill client structure */
+id|memcpy
 c_func
 (paren
 id|client
 comma
-l_int|0
+op_amp
+id|client_template
 comma
 r_sizeof
 (paren
@@ -167,25 +181,10 @@ id|i2c_client
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* fill client structure */
-id|sprintf
-c_func
-(paren
-id|client-&gt;name
-comma
-l_string|&quot;tea6415c (0x%02x)&quot;
-comma
-id|address
-)paren
-suffix:semicolon
 id|client-&gt;id
 op_assign
 id|tea6415c_id
 op_increment
-suffix:semicolon
-id|client-&gt;flags
-op_assign
-l_int|0
 suffix:semicolon
 id|client-&gt;addr
 op_assign
@@ -194,11 +193,6 @@ suffix:semicolon
 id|client-&gt;adapter
 op_assign
 id|adapter
-suffix:semicolon
-id|client-&gt;driver
-op_assign
-op_amp
-id|driver
 suffix:semicolon
 multiline_comment|/* tell the i2c layer a new client has arrived */
 r_if
@@ -230,10 +224,8 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;tea6415c.o: detected @ 0x%02x on adapter %s&bslash;n&quot;
+l_string|&quot;tea6415c: detected @ 0x%02x on adapter %s&bslash;n&quot;
 comma
-l_int|2
-op_star
 id|address
 comma
 op_amp
@@ -247,10 +239,10 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|tea6415c_attach
+DECL|function|attach
 r_static
 r_int
-id|tea6415c_attach
+id|attach
 c_func
 (paren
 r_struct
@@ -271,7 +263,7 @@ id|I2C_ALGO_SAA7146
 id|dprintk
 c_func
 (paren
-l_string|&quot;tea6415c.o: refusing to probe on unknown adapter [name=&squot;%s&squot;,id=0x%x]&bslash;n&quot;
+l_string|&quot;refusing to probe on unknown adapter [name=&squot;%s&squot;,id=0x%x]&bslash;n&quot;
 comma
 id|adapter-&gt;name
 comma
@@ -293,14 +285,14 @@ op_amp
 id|addr_data
 comma
 op_amp
-id|tea6415c_detect
+id|detect
 )paren
 suffix:semicolon
 )brace
-DECL|function|tea6415c_detach
+DECL|function|detach
 r_static
 r_int
-id|tea6415c_detach
+id|detach
 c_func
 (paren
 r_struct
@@ -310,36 +302,14 @@ id|client
 )paren
 (brace
 r_int
-id|err
-op_assign
-l_int|0
-suffix:semicolon
-r_if
-c_cond
-(paren
-l_int|0
-op_ne
-(paren
-id|err
+id|ret
 op_assign
 id|i2c_detach_client
 c_func
 (paren
 id|client
 )paren
-)paren
-)paren
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot;tea6415c.o: Client deregistration failed, client not detached.&bslash;n&quot;
-)paren
 suffix:semicolon
-r_return
-id|err
-suffix:semicolon
-)brace
 id|kfree
 c_func
 (paren
@@ -347,14 +317,14 @@ id|client
 )paren
 suffix:semicolon
 r_return
-l_int|0
+id|ret
 suffix:semicolon
 )brace
 multiline_comment|/* makes a connection between the input-pin &squot;i&squot; and the output-pin &squot;o&squot;&n;   for the tea6415c-client &squot;client&squot; */
-DECL|function|tea6415c_switch
+DECL|function|switch_matrix
 r_static
 r_int
-id|tea6415c_switch
+id|switch_matrix
 c_func
 (paren
 r_struct
@@ -374,10 +344,13 @@ id|byte
 op_assign
 l_int|0
 suffix:semicolon
+r_int
+id|ret
+suffix:semicolon
 id|dprintk
 c_func
 (paren
-l_string|&quot;tea6415c.o: tea6415c_switch: adr:0x%02x, i:%d, o:%d&bslash;n&quot;
+l_string|&quot;adr:0x%02x, i:%d, o:%d&bslash;n&quot;
 comma
 id|client-&gt;addr
 comma
@@ -601,11 +574,8 @@ r_break
 suffix:semicolon
 )brace
 suffix:semicolon
-r_if
-c_cond
-(paren
-l_int|0
-op_ne
+id|ret
+op_assign
 id|i2c_smbus_write_byte
 c_func
 (paren
@@ -613,27 +583,34 @@ id|client
 comma
 id|byte
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ret
 )paren
 (brace
 id|dprintk
 c_func
 (paren
-l_string|&quot;tea6415c.o: tea6415c_switch: could not write to tea6415c&bslash;n&quot;
+l_string|&quot;i2c_smbus_write_byte() failed, ret:%d&bslash;n&quot;
+comma
+id|ret
 )paren
 suffix:semicolon
 r_return
 op_minus
-l_int|1
+id|EIO
 suffix:semicolon
 )brace
 r_return
-l_int|0
+id|ret
 suffix:semicolon
 )brace
-DECL|function|tea6415c_command
+DECL|function|command
 r_static
 r_int
-id|tea6415c_command
+id|command
 c_func
 (paren
 r_struct
@@ -676,10 +653,9 @@ id|cmd
 r_case
 id|TEA6415C_SWITCH
 suffix:colon
-(brace
 id|result
 op_assign
-id|tea6415c_switch
+id|switch_matrix
 c_func
 (paren
 id|client
@@ -691,30 +667,15 @@ id|v-&gt;out
 suffix:semicolon
 r_break
 suffix:semicolon
-)brace
 r_default
 suffix:colon
-(brace
-)brace
-(brace
 r_return
 op_minus
 id|ENOIOCTLCMD
 suffix:semicolon
 )brace
-)brace
-r_if
-c_cond
-(paren
-l_int|0
-op_ne
-id|result
-)paren
 r_return
 id|result
-suffix:semicolon
-r_return
-l_int|0
 suffix:semicolon
 )brace
 DECL|variable|driver
@@ -732,7 +693,7 @@ comma
 dot
 id|name
 op_assign
-l_string|&quot;tea6415c driver&quot;
+l_string|&quot;tea6415c&quot;
 comma
 dot
 id|id
@@ -747,25 +708,46 @@ comma
 dot
 id|attach_adapter
 op_assign
-id|tea6415c_attach
+id|attach
 comma
 dot
 id|detach_client
 op_assign
-id|tea6415c_detach
+id|detach
 comma
 dot
 id|command
 op_assign
-id|tea6415c_command
+id|command
 comma
 )brace
 suffix:semicolon
-DECL|function|tea6415c_init_module
+DECL|variable|client_template
+r_static
+r_struct
+id|i2c_client
+id|client_template
+op_assign
+(brace
+id|I2C_DEVNAME
+c_func
+(paren
+l_string|&quot;tea6415c&quot;
+)paren
+comma
+dot
+id|driver
+op_assign
+op_amp
+id|driver
+comma
+)brace
+suffix:semicolon
+DECL|function|this_module_init
 r_static
 r_int
 id|__init
-id|tea6415c_init_module
+id|this_module_init
 c_func
 (paren
 r_void
@@ -780,11 +762,11 @@ id|driver
 )paren
 suffix:semicolon
 )brace
-DECL|function|tea6415c_cleanup_module
+DECL|function|this_module_exit
 r_static
 r_void
 id|__exit
-id|tea6415c_cleanup_module
+id|this_module_exit
 c_func
 (paren
 r_void
@@ -798,18 +780,18 @@ id|driver
 )paren
 suffix:semicolon
 )brace
-DECL|variable|tea6415c_init_module
+DECL|variable|this_module_init
 id|module_init
 c_func
 (paren
-id|tea6415c_init_module
+id|this_module_init
 )paren
 suffix:semicolon
-DECL|variable|tea6415c_cleanup_module
+DECL|variable|this_module_exit
 id|module_exit
 c_func
 (paren
-id|tea6415c_cleanup_module
+id|this_module_exit
 )paren
 suffix:semicolon
 id|MODULE_AUTHOR

@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/pm.h&gt;
+macro_line|#include &lt;linux/serial_8250.h&gt;
 macro_line|#include &lt;asm/mach-types.h&gt;
 macro_line|#include &lt;asm/hardware.h&gt;
 macro_line|#include &lt;asm/arch/trizeps.h&gt;
@@ -17,9 +18,6 @@ macro_line|#include &lt;asm/mach/arch.h&gt;
 macro_line|#include &lt;asm/mach/map.h&gt;
 macro_line|#include &lt;asm/mach/irq.h&gt;
 macro_line|#include &lt;asm/mach/serial_sa1100.h&gt;
-macro_line|#include &lt;linux/serial_core.h&gt;
-macro_line|#include &lt;linux/serial_reg.h&gt;
-macro_line|#include &lt;asm/arch/serial.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/arch/irqs.h&gt;
@@ -507,6 +505,120 @@ op_assign
 id|PMCR_SF
 suffix:semicolon
 )brace
+DECL|variable|serial_platform_data
+r_static
+r_struct
+id|plat_serial8250_port
+id|serial_platform_data
+(braket
+)braket
+op_assign
+(brace
+(brace
+dot
+id|mapbase
+op_assign
+id|TRIZEPS_UART5
+comma
+dot
+id|irq
+op_assign
+id|IRQ_GPIO16
+comma
+dot
+id|uartclk
+op_assign
+l_int|24000000
+comma
+dot
+id|regshift
+op_assign
+l_int|0
+comma
+dot
+id|iotype
+op_assign
+id|UPIO_PORT
+comma
+dot
+id|flags
+op_assign
+id|UPF_BOOT_AUTOCONF
+op_or
+id|UPF_SKIP_TEST
+comma
+)brace
+comma
+(brace
+dot
+id|mapbase
+op_assign
+id|TRIZEPS_UART6
+comma
+dot
+id|irq
+op_assign
+id|IRQ_GPIO17
+comma
+dot
+id|uartclk
+op_assign
+l_int|24000000
+comma
+dot
+id|regshift
+op_assign
+l_int|0
+comma
+dot
+id|iotype
+op_assign
+id|UPIO_PORT
+comma
+dot
+id|flags
+op_assign
+id|UPF_BOOT_AUTOCONF
+op_or
+id|UPF_SKIP_TEST
+comma
+)brace
+comma
+(brace
+)brace
+comma
+)brace
+suffix:semicolon
+DECL|variable|serial_device
+r_static
+r_struct
+id|platform_device
+id|serial_device
+op_assign
+(brace
+dot
+id|name
+op_assign
+l_string|&quot;serial8250&quot;
+comma
+dot
+id|id
+op_assign
+l_int|0
+comma
+dot
+id|dev
+op_assign
+(brace
+dot
+id|platform_data
+op_assign
+id|serial_platform_data
+comma
+)brace
+comma
+)brace
+suffix:semicolon
 DECL|function|trizeps_init
 r_static
 r_int
@@ -601,6 +713,13 @@ c_func
 id|IRQ_GPIO17
 comma
 id|IRQT_RISING
+)paren
+suffix:semicolon
+id|platform_device_register
+c_func
+(paren
+op_amp
+id|serial_device
 )paren
 suffix:semicolon
 r_return

@@ -270,11 +270,22 @@ r_int
 id|bg
 )paren
 suffix:semicolon
+DECL|member|cursor_timer
+r_struct
+id|timer_list
+id|cursor_timer
+suffix:semicolon
+multiline_comment|/* Cursor timer */
 DECL|member|cursor_state
 r_struct
 id|fb_cursor
 id|cursor_state
 suffix:semicolon
+DECL|member|currcon
+r_int
+id|currcon
+suffix:semicolon
+multiline_comment|/* Current VC. */
 DECL|member|cursor_flash
 r_int
 id|cursor_flash
