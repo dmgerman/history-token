@@ -4,7 +4,43 @@ macro_line|#ifndef _PPC_KGDB_H
 DECL|macro|_PPC_KGDB_H
 mdefine_line|#define _PPC_KGDB_H
 macro_line|#ifndef __ASSEMBLY__
-multiline_comment|/* To initialize the serial, first thing called */
+multiline_comment|/* Things specific to the gen550 backend. */
+r_struct
+id|uart_port
+suffix:semicolon
+r_extern
+r_void
+id|gen550_progress
+c_func
+(paren
+r_char
+op_star
+comma
+r_int
+r_int
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|gen550_kgdb_map_scc
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|gen550_init
+c_func
+(paren
+r_int
+comma
+r_struct
+id|uart_port
+op_star
+)paren
+suffix:semicolon
+multiline_comment|/* Things specific to the pmac backend. */
 r_extern
 r_void
 id|zs_kgdb_hook
