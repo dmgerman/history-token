@@ -3466,6 +3466,12 @@ suffix:colon
 r_case
 id|R128_DATATYPE_ARGB4444
 suffix:colon
+r_case
+id|R128_DATATYPE_YVYU422
+suffix:colon
+r_case
+id|R128_DATATYPE_VYUY422
+suffix:colon
 id|dword_shift
 op_assign
 l_int|1
