@@ -940,6 +940,11 @@ r_struct
 id|video_device
 id|v4l_dev
 suffix:semicolon
+DECL|member|vbi_dev
+r_struct
+id|video_device
+id|vbi_dev
+suffix:semicolon
 DECL|member|dev
 r_struct
 id|saa7146_dev
