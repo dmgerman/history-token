@@ -2742,7 +2742,7 @@ id|scsi_request
 op_star
 id|sreq
 suffix:semicolon
-r_char
+id|u8
 op_star
 id|data
 suffix:semicolon
@@ -3081,7 +3081,7 @@ multiline_comment|/*&n;&t; * Get the length from the first four bytes of lun_dat
 id|data
 op_assign
 (paren
-r_char
+id|u8
 op_star
 )paren
 id|lun_data-&gt;scsi_lun
