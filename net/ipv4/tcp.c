@@ -1662,25 +1662,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|tcp_memory_free
-r_static
-r_inline
-r_int
-id|tcp_memory_free
-c_func
-(paren
-r_struct
-id|sock
-op_star
-id|sk
-)paren
-(brace
-r_return
-id|sk-&gt;sk_wmem_queued
-OL
-id|sk-&gt;sk_sndbuf
-suffix:semicolon
-)brace
 multiline_comment|/*&n; *&t;Wait for more memory for a socket&n; */
 DECL|function|wait_for_tcp_memory
 r_static
@@ -1734,7 +1715,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|tcp_memory_free
+id|sk_stream_memory_free
 c_func
 (paren
 id|sk
@@ -1834,7 +1815,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|tcp_memory_free
+id|sk_stream_memory_free
 c_func
 (paren
 id|sk
@@ -1867,7 +1848,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|tcp_memory_free
+id|sk_stream_memory_free
 c_func
 (paren
 id|sk
@@ -2662,7 +2643,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|tcp_memory_free
+id|sk_stream_memory_free
 c_func
 (paren
 id|sk
@@ -3494,7 +3475,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|tcp_memory_free
+id|sk_stream_memory_free
 c_func
 (paren
 id|sk
