@@ -12,6 +12,11 @@ macro_line|#endif
 macro_line|#ifdef CONFIG_40x
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#endif
+r_extern
+r_int
+r_int
+id|timebase_period_ns
+suffix:semicolon
 multiline_comment|/* For those boards that don&squot;t provide one.&n;*/
 macro_line|#if !defined(CONFIG_MBX)
 DECL|variable|bdinfo
@@ -2476,6 +2481,12 @@ op_star
 l_int|1000
 suffix:semicolon
 macro_line|#endif
+id|timebase_period_ns
+op_assign
+l_int|1000000000
+op_div
+id|bd-&gt;bi_tbfreq
+suffix:semicolon
 )brace
 macro_line|#endif /* CONFIG_BEECH */
 macro_line|#endif /* CONFIG_IBM_OPENBIOS */

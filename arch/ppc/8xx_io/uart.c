@@ -3505,7 +3505,7 @@ r_char
 op_star
 id|cp
 suffix:semicolon
-macro_line|#ifdef CONFIG_KGDB
+macro_line|#ifdef CONFIG_KGDB_CONSOLE
 multiline_comment|/* Try to let stub handle output. Returns true if it did. */
 r_if
 c_cond
@@ -8308,7 +8308,7 @@ r_int
 id|count
 )paren
 (brace
-macro_line|#ifdef CONFIG_KGDB
+macro_line|#ifdef CONFIG_KGDB_CONSOLE
 multiline_comment|/* Try to let stub handle output. Returns true if it did. */
 r_if
 c_cond
