@@ -39,6 +39,7 @@ l_int|7
 )brace
 suffix:semicolon
 DECL|variable|sim710
+r_static
 r_char
 op_star
 id|sim710
@@ -79,6 +80,7 @@ macro_line|#else
 DECL|macro|ARG_SEP
 mdefine_line|#define ARG_SEP &squot;,&squot;
 macro_line|#endif
+r_static
 id|__init
 r_int
 DECL|function|param_setup
@@ -1265,6 +1267,7 @@ id|scsi_id
 suffix:semicolon
 )brace
 DECL|variable|sim710_eisa_driver
+r_static
 r_struct
 id|eisa_driver
 id|sim710_eisa_driver

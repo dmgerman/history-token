@@ -1898,6 +1898,7 @@ id|media_changed
 op_assign
 id|sr_block_media_changed
 comma
+multiline_comment|/* &n;&t; * No compat_ioctl for now because sr_block_ioctl never&n;&t; * seems to pass arbitary ioctls down to host drivers.&n;&t; */
 )brace
 suffix:semicolon
 DECL|function|sr_open

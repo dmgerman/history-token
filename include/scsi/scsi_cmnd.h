@@ -140,7 +140,7 @@ op_star
 )paren
 suffix:semicolon
 multiline_comment|/* Mid-level done function */
-multiline_comment|/*&n;&t; * A SCSI Command is assigned a nonzero serial_number when internal_cmnd&n;&t; * passes it to the driver&squot;s queue command function.  The serial_number&n;&t; * is cleared when scsi_done is entered indicating that the command has&n;&t; * been completed.  If a timeout occurs, the serial number at the moment&n;&t; * of timeout is copied into serial_number_at_timeout.  By subsequently&n;&t; * comparing the serial_number and serial_number_at_timeout fields&n;&t; * during abort or reset processing, we can detect whether the command&n;&t; * has already completed.  This also detects cases where the command has&n;&t; * completed and the SCSI Command structure has already being reused&n;&t; * for another command, so that we can avoid incorrectly aborting or&n;&t; * resetting the new command.&n;&t; */
+multiline_comment|/*&n;&t; * A SCSI Command is assigned a nonzero serial_number when internal_cmnd&n;&t; * passes it to the driver&squot;s queue command function.  The serial_number&n;&t; * is cleared when scsi_done is entered indicating that the command has&n;&t; * been completed.  If a timeout occurs, the serial number at the moment&n;&t; * of timeout is copied into serial_number_at_timeout.  By subsequently&n;&t; * comparing the serial_number and serial_number_at_timeout fields&n;&t; * during abort or reset processing, we can detect whether the command&n;&t; * has already completed.  This also detects cases where the command has&n;&t; * completed and the SCSI Command structure has already being reused&n;&t; * for another command, so that we can avoid incorrectly aborting or&n;&t; * resetting the new command.&n;&t; * The serial number is only unique per host.&n;&t; */
 DECL|member|serial_number
 r_int
 r_int
@@ -351,7 +351,7 @@ r_int
 r_int
 id|pid
 suffix:semicolon
-multiline_comment|/* Process ID, starts at 0 */
+multiline_comment|/* Process ID, starts at 0. Unique per host. */
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * These are the values that scsi_cmd-&gt;state can take.&n; */

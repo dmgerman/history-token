@@ -108,35 +108,47 @@ multiline_comment|/*&n; *  For this one, we want a short name :-)&n; */
 DECL|macro|MAX_QUEUE
 mdefine_line|#define MAX_QUEUE&t;SYM_CONF_MAX_QUEUE
 multiline_comment|/*&n; *  Common definitions for both bus space based and legacy IO methods.&n; */
+DECL|macro|INB_OFF
+mdefine_line|#define INB_OFF(np, o)&t;&t;ioread8(np-&gt;s.ioaddr + (o))
+DECL|macro|INW_OFF
+mdefine_line|#define INW_OFF(np, o)&t;&t;ioread16(np-&gt;s.ioaddr + (o))
+DECL|macro|INL_OFF
+mdefine_line|#define INL_OFF(np, o)&t;&t;ioread32(np-&gt;s.ioaddr + (o))
+DECL|macro|OUTB_OFF
+mdefine_line|#define OUTB_OFF(np, o, val)&t;iowrite8((val), np-&gt;s.ioaddr + (o))
+DECL|macro|OUTW_OFF
+mdefine_line|#define OUTW_OFF(np, o, val)&t;iowrite16((val), np-&gt;s.ioaddr + (o))
+DECL|macro|OUTL_OFF
+mdefine_line|#define OUTL_OFF(np, o, val)&t;iowrite32((val), np-&gt;s.ioaddr + (o))
 DECL|macro|INB
-mdefine_line|#define INB(r)&t;&t;INB_OFF(offsetof(struct sym_reg,r))
+mdefine_line|#define INB(np, r)&t;&t;INB_OFF(np, offsetof(struct sym_reg, r))
 DECL|macro|INW
-mdefine_line|#define INW(r)&t;&t;INW_OFF(offsetof(struct sym_reg,r))
+mdefine_line|#define INW(np, r)&t;&t;INW_OFF(np, offsetof(struct sym_reg, r))
 DECL|macro|INL
-mdefine_line|#define INL(r)&t;&t;INL_OFF(offsetof(struct sym_reg,r))
+mdefine_line|#define INL(np, r)&t;&t;INL_OFF(np, offsetof(struct sym_reg, r))
 DECL|macro|OUTB
-mdefine_line|#define OUTB(r, v)&t;OUTB_OFF(offsetof(struct sym_reg,r), (v))
+mdefine_line|#define OUTB(np, r, v)&t;&t;OUTB_OFF(np, offsetof(struct sym_reg, r), (v))
 DECL|macro|OUTW
-mdefine_line|#define OUTW(r, v)&t;OUTW_OFF(offsetof(struct sym_reg,r), (v))
+mdefine_line|#define OUTW(np, r, v)&t;&t;OUTW_OFF(np, offsetof(struct sym_reg, r), (v))
 DECL|macro|OUTL
-mdefine_line|#define OUTL(r, v)&t;OUTL_OFF(offsetof(struct sym_reg,r), (v))
+mdefine_line|#define OUTL(np, r, v)&t;&t;OUTL_OFF(np, offsetof(struct sym_reg, r), (v))
 DECL|macro|OUTONB
-mdefine_line|#define OUTONB(r, m)&t;OUTB(r, INB(r) | (m))
+mdefine_line|#define OUTONB(np, r, m)&t;OUTB(np, r, INB(np, r) | (m))
 DECL|macro|OUTOFFB
-mdefine_line|#define OUTOFFB(r, m)&t;OUTB(r, INB(r) &amp; ~(m))
+mdefine_line|#define OUTOFFB(np, r, m)&t;OUTB(np, r, INB(np, r) &amp; ~(m))
 DECL|macro|OUTONW
-mdefine_line|#define OUTONW(r, m)&t;OUTW(r, INW(r) | (m))
+mdefine_line|#define OUTONW(np, r, m)&t;OUTW(np, r, INW(np, r) | (m))
 DECL|macro|OUTOFFW
-mdefine_line|#define OUTOFFW(r, m)&t;OUTW(r, INW(r) &amp; ~(m))
+mdefine_line|#define OUTOFFW(np, r, m)&t;OUTW(np, r, INW(np, r) &amp; ~(m))
 DECL|macro|OUTONL
-mdefine_line|#define OUTONL(r, m)&t;OUTL(r, INL(r) | (m))
+mdefine_line|#define OUTONL(np, r, m)&t;OUTL(np, r, INL(np, r) | (m))
 DECL|macro|OUTOFFL
-mdefine_line|#define OUTOFFL(r, m)&t;OUTL(r, INL(r) &amp; ~(m))
+mdefine_line|#define OUTOFFL(np, r, m)&t;OUTL(np, r, INL(np, r) &amp; ~(m))
 multiline_comment|/*&n; *  We normally want the chip to have a consistent view&n; *  of driver internal data structures when we restart it.&n; *  Thus these macros.&n; */
 DECL|macro|OUTL_DSP
-mdefine_line|#define OUTL_DSP(v)&t;&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&bslash;&n;&t;&t;MEMORY_WRITE_BARRIER();&t;&t;&bslash;&n;&t;&t;OUTL (nc_dsp, (v));&t;&t;&bslash;&n;&t;} while (0)
+mdefine_line|#define OUTL_DSP(np, v)&t;&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&bslash;&n;&t;&t;MEMORY_WRITE_BARRIER();&t;&t;&bslash;&n;&t;&t;OUTL(np, nc_dsp, (v));&t;&t;&bslash;&n;&t;} while (0)
 DECL|macro|OUTONB_STD
-mdefine_line|#define OUTONB_STD()&t;&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&bslash;&n;&t;&t;MEMORY_WRITE_BARRIER();&t;&t;&bslash;&n;&t;&t;OUTONB (nc_dcntl, (STD|NOCOM));&t;&bslash;&n;&t;} while (0)
+mdefine_line|#define OUTONB_STD()&t;&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&bslash;&n;&t;&t;MEMORY_WRITE_BARRIER();&t;&t;&bslash;&n;&t;&t;OUTONB(np, nc_dcntl, (STD|NOCOM));&t;&bslash;&n;&t;} while (0)
 multiline_comment|/*&n; *  Command control block states.&n; */
 DECL|macro|HS_IDLE
 mdefine_line|#define HS_IDLE&t;&t;(0)
@@ -265,8 +277,6 @@ mdefine_line|#define SYM_SCAN_LUNS_DISABLED&t;(1&lt;&lt;3)
 multiline_comment|/*&n; *  Host adapter miscellaneous flags.&n; */
 DECL|macro|SYM_AVOID_BUS_RESET
 mdefine_line|#define SYM_AVOID_BUS_RESET&t;(1)
-DECL|macro|SYM_SCAN_TARGETS_HILO
-mdefine_line|#define SYM_SCAN_TARGETS_HILO&t;(1&lt;&lt;1)
 multiline_comment|/*&n; *  Misc.&n; */
 DECL|macro|SYM_SNOOP_TIMEOUT
 mdefine_line|#define SYM_SNOOP_TIMEOUT (10000000)
@@ -279,14 +289,6 @@ DECL|struct|sym_trans
 r_struct
 id|sym_trans
 (brace
-DECL|member|scsi_version
-id|u8
-id|scsi_version
-suffix:semicolon
-DECL|member|spi_version
-id|u8
-id|spi_version
-suffix:semicolon
 DECL|member|period
 id|u8
 id|period
@@ -296,37 +298,40 @@ id|u8
 id|offset
 suffix:semicolon
 DECL|member|width
-id|u8
+r_int
+r_int
 id|width
+suffix:colon
+l_int|1
 suffix:semicolon
-DECL|member|options
-id|u8
-id|options
+DECL|member|iu
+r_int
+r_int
+id|iu
+suffix:colon
+l_int|1
 suffix:semicolon
-multiline_comment|/* PPR options */
-)brace
+DECL|member|dt
+r_int
+r_int
+id|dt
+suffix:colon
+l_int|1
 suffix:semicolon
-DECL|struct|sym_tinfo
-r_struct
-id|sym_tinfo
-(brace
-DECL|member|curr
-r_struct
-id|sym_trans
-id|curr
+DECL|member|qas
+r_int
+r_int
+id|qas
+suffix:colon
+l_int|1
 suffix:semicolon
-DECL|member|goal
-r_struct
-id|sym_trans
-id|goal
+DECL|member|check_nego
+r_int
+r_int
+id|check_nego
+suffix:colon
+l_int|1
 suffix:semicolon
-macro_line|#ifdef&t;SYM_OPT_ANNOUNCE_TRANSFER_RATE
-DECL|member|prev
-r_struct
-id|sym_trans
-id|prev
-suffix:semicolon
-macro_line|#endif
 )brace
 suffix:semicolon
 multiline_comment|/*&n; *  Global TCB HEADER.&n; *&n; *  Due to lack of indirect addressing on earlier NCR chips,&n; *  this substructure is copied from the TCB to a global &n; *  address after selection.&n; *  For SYMBIOS chips that support LOAD/STORE this copy is &n; *  not needed and thus not performed.&n; */
@@ -392,13 +397,17 @@ suffix:semicolon
 multiline_comment|/* LCBs bus address table&t;*/
 multiline_comment|/*&n;&t; *  LUN table used by the C code.&n;&t; */
 DECL|member|lun0p
-id|lcb_p
+r_struct
+id|sym_lcb
+op_star
 id|lun0p
 suffix:semicolon
 multiline_comment|/* LCB of LUN #0 (usual case)&t;*/
 macro_line|#if SYM_CONF_MAX_LUN &gt; 1
 DECL|member|lunmp
-id|lcb_p
+r_struct
+id|sym_lcb
+op_star
 op_star
 id|lunmp
 suffix:semicolon
@@ -440,15 +449,17 @@ id|sym_stcb
 id|s
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/*&n;&t; *  Transfer capabilities (SIP)&n;&t; */
-DECL|member|tinfo
+multiline_comment|/* Transfer goal */
+DECL|member|tgoal
 r_struct
-id|sym_tinfo
-id|tinfo
+id|sym_trans
+id|tgoal
 suffix:semicolon
 multiline_comment|/*&n;&t; * Keep track of the CCB used for the negotiation in order&n;&t; * to ensure that only 1 negotiation is queued at a time.&n;&t; */
 DECL|member|nego_cp
-id|ccb_p
+r_struct
+id|sym_ccb
+op_star
 id|nego_cp
 suffix:semicolon
 multiline_comment|/* CCB used for the nego&t;&t;*/
@@ -554,12 +565,12 @@ suffix:semicolon
 macro_line|#endif
 macro_line|#ifdef SYM_OPT_HANDLE_DEVICE_QUEUEING
 multiline_comment|/*&n;&t; *  Optionnaly the driver can handle device queueing, &n;&t; *  and requeues internally command to redo.&n;&t; */
-id|SYM_QUEHEAD
 DECL|member|waiting_ccbq
+id|SYM_QUEHEAD
 id|waiting_ccbq
 suffix:semicolon
-id|SYM_QUEHEAD
 DECL|member|started_ccbq
+id|SYM_QUEHEAD
 id|started_ccbq
 suffix:semicolon
 DECL|member|num_sgood
@@ -584,7 +595,7 @@ id|started_limit
 suffix:semicolon
 macro_line|#endif
 macro_line|#ifdef SYM_OPT_LIMIT_COMMAND_REORDERING
-multiline_comment|/*&n;&t; *  Optionnaly the driver can try to prevent SCSI &n;&t; *  IOs from being too much reordering.&n;&t; */
+multiline_comment|/*&n;&t; *  Optionally the driver can try to prevent SCSI &n;&t; *  IOs from being reordered too much.&n;&t; */
 DECL|member|tags_si
 id|u_char
 id|tags_si
@@ -658,10 +669,10 @@ suffix:semicolon
 multiline_comment|/*&n; *  LUN control block lookup.&n; *  We use a direct pointer for LUN #0, and a table of &n; *  pointers which is only allocated for devices that support &n; *  LUN(s) &gt; 0.&n; */
 macro_line|#if SYM_CONF_MAX_LUN &lt;= 1
 DECL|macro|sym_lp
-mdefine_line|#define sym_lp(np, tp, lun) (!lun) ? (tp)-&gt;lun0p : NULL
+mdefine_line|#define sym_lp(tp, lun) (!lun) ? (tp)-&gt;lun0p : NULL
 macro_line|#else
 DECL|macro|sym_lp
-mdefine_line|#define sym_lp(np, tp, lun) &bslash;&n;&t;(!lun) ? (tp)-&gt;lun0p : (tp)-&gt;lunmp ? (tp)-&gt;lunmp[(lun)] : NULL
+mdefine_line|#define sym_lp(tp, lun) &bslash;&n;&t;(!lun) ? (tp)-&gt;lun0p : (tp)-&gt;lunmp ? (tp)-&gt;lunmp[(lun)] : NULL
 macro_line|#endif
 multiline_comment|/*&n; *  Status are used by the host and the script processor.&n; *&n; *  The last four bytes (status[4]) are copied to the &n; *  scratchb register (declared as scr0..scr3) just after the &n; *  select/reselect, and copied back just after disconnecting.&n; *  Inside the script the XX_REG are used.&n; */
 multiline_comment|/*&n; *  Last four bytes (script)&n; */
@@ -841,11 +852,11 @@ id|sym_dsb
 id|phys
 suffix:semicolon
 multiline_comment|/*&n;&t; *  Pointer to CAM ccb and related stuff.&n;&t; */
-DECL|member|cam_ccb
+DECL|member|cmd
 r_struct
 id|scsi_cmnd
 op_star
-id|cam_ccb
+id|cmd
 suffix:semicolon
 multiline_comment|/* CAM scsiio ccb&t;&t;*/
 DECL|member|cdb_buf
@@ -856,16 +867,16 @@ l_int|16
 )braket
 suffix:semicolon
 multiline_comment|/* Copy of CDB&t;&t;&t;*/
+DECL|macro|SYM_SNS_BBUF_LEN
+mdefine_line|#define&t;SYM_SNS_BBUF_LEN 32
 DECL|member|sns_bbuf
 id|u8
-op_star
 id|sns_bbuf
+(braket
+id|SYM_SNS_BBUF_LEN
+)braket
 suffix:semicolon
-multiline_comment|/* Bounce buffer for sense data&t;*/
-macro_line|#ifndef&t;SYM_SNS_BBUF_LEN
-DECL|macro|SYM_SNS_BBUF_LEN
-mdefine_line|#define&t;SYM_SNS_BBUF_LEN (32)
-macro_line|#endif&t;
+multiline_comment|/* Bounce buffer for sense data */
 DECL|member|data_len
 r_int
 id|data_len
@@ -936,14 +947,6 @@ r_int
 id|sv_resid
 suffix:semicolon
 multiline_comment|/* Saved residual&t;&t;*/
-multiline_comment|/*&n;&t; *  O/S specific data structure.&n;&t; */
-macro_line|#ifdef&t;SYM_HAVE_SCCB
-DECL|member|s
-r_struct
-id|sym_sccb
-id|s
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/*&n;&t; *  Other fields.&n;&t; */
 DECL|member|ccb_ba
 id|u32
@@ -965,12 +968,14 @@ id|u_char
 id|lun
 suffix:semicolon
 DECL|member|link_ccbh
-id|ccb_p
+r_struct
+id|sym_ccb
+op_star
 id|link_ccbh
 suffix:semicolon
 multiline_comment|/* Host adapter CCB hash chain&t;*/
-id|SYM_QUEHEAD
 DECL|member|link_ccbq
+id|SYM_QUEHEAD
 id|link_ccbq
 suffix:semicolon
 multiline_comment|/* Link to free/busy CCB queue&t;*/
@@ -1001,8 +1006,8 @@ id|ext_ofs
 suffix:semicolon
 multiline_comment|/*  to calculate the residual.&t;*/
 macro_line|#ifdef SYM_OPT_HANDLE_DEVICE_QUEUEING
-id|SYM_QUEHEAD
 DECL|member|link2_ccbq
+id|SYM_QUEHEAD
 id|link2_ccbq
 suffix:semicolon
 multiline_comment|/* Link for device queueing&t;*/
@@ -1035,6 +1040,13 @@ macro_line|#else
 DECL|macro|sym_goalp
 mdefine_line|#define&t;sym_goalp(cp) (cp-&gt;goalp)
 macro_line|#endif
+DECL|typedef|m_pool_ident_t
+r_typedef
+r_struct
+id|device
+op_star
+id|m_pool_ident_t
+suffix:semicolon
 multiline_comment|/*&n; *  Host Control Block&n; */
 DECL|struct|sym_hcb
 r_struct
@@ -1501,7 +1513,9 @@ suffix:semicolon
 multiline_comment|/* Verbosity for this controller*/
 multiline_comment|/*&n;&t; *  CCB lists and queue.&n;&t; */
 DECL|member|ccbh
-id|ccb_p
+r_struct
+id|sym_ccb
+op_star
 op_star
 id|ccbh
 suffix:semicolon
@@ -1541,7 +1555,9 @@ id|iarb_count
 suffix:semicolon
 multiline_comment|/* Actual # of these hints&t;*/
 DECL|member|last_cp
-id|ccb_p
+r_struct
+id|sym_ccb
+op_star
 id|last_cp
 suffix:semicolon
 macro_line|#endif
@@ -1606,13 +1622,14 @@ id|sym_find_firmware
 c_func
 (paren
 r_struct
-id|sym_pci_chip
+id|sym_chip
 op_star
 id|chip
 )paren
 suffix:semicolon
 r_void
 id|sym_fw_bind_script
+c_func
 (paren
 r_struct
 id|sym_hcb
@@ -1640,8 +1657,10 @@ r_void
 id|sym_print_xerr
 c_func
 (paren
-id|ccb_p
-id|cp
+r_struct
+id|scsi_cmnd
+op_star
+id|cmd
 comma
 r_int
 id|x_status
@@ -1661,9 +1680,10 @@ id|enab_int
 )paren
 suffix:semicolon
 r_struct
-id|sym_pci_chip
+id|sym_chip
 op_star
-id|sym_lookup_pci_chip_table
+id|sym_lookup_chip_table
+c_func
 (paren
 id|u_short
 id|device_id
@@ -1681,7 +1701,9 @@ id|sym_hcb
 op_star
 id|np
 comma
-id|ccb_p
+r_struct
+id|sym_ccb
+op_star
 id|cp
 )paren
 suffix:semicolon
@@ -1695,7 +1717,9 @@ id|sym_hcb
 op_star
 id|np
 comma
-id|lcb_p
+r_struct
+id|sym_lcb
+op_star
 id|lp
 comma
 r_int
@@ -1705,6 +1729,7 @@ suffix:semicolon
 macro_line|#endif
 r_void
 id|sym_start_up
+c_func
 (paren
 r_struct
 id|sym_hcb
@@ -1717,6 +1742,7 @@ id|reason
 suffix:semicolon
 r_void
 id|sym_interrupt
+c_func
 (paren
 r_struct
 id|sym_hcb
@@ -1746,19 +1772,21 @@ r_int
 id|task
 )paren
 suffix:semicolon
-id|ccb_p
+r_struct
+id|sym_ccb
+op_star
 id|sym_get_ccb
+c_func
 (paren
 r_struct
 id|sym_hcb
 op_star
 id|np
 comma
-id|u_char
-id|tn
-comma
-id|u_char
-id|ln
+r_struct
+id|scsi_cmnd
+op_star
+id|cmd
 comma
 id|u_char
 id|tag_order
@@ -1766,18 +1794,24 @@ id|tag_order
 suffix:semicolon
 r_void
 id|sym_free_ccb
+c_func
 (paren
 r_struct
 id|sym_hcb
 op_star
 id|np
 comma
-id|ccb_p
+r_struct
+id|sym_ccb
+op_star
 id|cp
 )paren
 suffix:semicolon
-id|lcb_p
+r_struct
+id|sym_lcb
+op_star
 id|sym_alloc_lcb
+c_func
 (paren
 r_struct
 id|sym_hcb
@@ -1805,7 +1839,9 @@ id|scsi_cmnd
 op_star
 id|csio
 comma
-id|ccb_p
+r_struct
+id|sym_ccb
+op_star
 id|cp
 )paren
 suffix:semicolon
@@ -1822,22 +1858,6 @@ r_struct
 id|scsi_cmnd
 op_star
 id|ccb
-comma
-r_int
-id|timed_out
-)paren
-suffix:semicolon
-r_int
-id|sym_abort_ccb
-c_func
-(paren
-r_struct
-id|sym_hcb
-op_star
-id|np
-comma
-id|ccb_p
-id|cp
 comma
 r_int
 id|timed_out
@@ -1871,9 +1891,9 @@ id|sym_hcb_attach
 c_func
 (paren
 r_struct
-id|sym_hcb
+id|Scsi_Host
 op_star
-id|np
+id|shost
 comma
 r_struct
 id|sym_fw
@@ -1886,22 +1906,6 @@ op_star
 id|nvram
 )paren
 suffix:semicolon
-multiline_comment|/*&n; *  Optionnaly, the driver may provide a function&n; *  to announce transfer rate changes.&n; */
-macro_line|#ifdef&t;SYM_OPT_ANNOUNCE_TRANSFER_RATE
-r_void
-id|sym_announce_transfer_rate
-c_func
-(paren
-r_struct
-id|sym_hcb
-op_star
-id|np
-comma
-r_int
-id|target
-)paren
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/*&n; *  Build a scatter/gather entry.&n; *&n; *  For 64 bit systems, we use the 8 upper bits of the size field &n; *  to provide bus address bits 32-39 to the SCRIPTS processor.&n; *  This allows the 895A, 896, 1010 to address up to 1 TB of memory.&n; */
 macro_line|#if   SYM_CONF_DMA_ADDRESSING_MODE == 0
 DECL|macro|sym_build_sge
@@ -2092,6 +2096,7 @@ suffix:colon
 id|goalp
 op_assign
 id|SCRIPTA_BA
+c_func
 (paren
 id|np
 comma
@@ -2157,6 +2162,7 @@ suffix:semicolon
 id|goalp
 op_assign
 id|SCRIPTA_BA
+c_func
 (paren
 id|np
 comma
@@ -2199,6 +2205,7 @@ op_assign
 id|goalp
 op_assign
 id|SCRIPTB_BA
+c_func
 (paren
 id|np
 comma
@@ -2252,6 +2259,7 @@ id|cpu_to_scr
 c_func
 (paren
 id|SCRIPTB_BA
+c_func
 (paren
 id|np
 comma
@@ -2262,6 +2270,18 @@ suffix:semicolon
 macro_line|#endif
 )brace
 multiline_comment|/*&n; *  MEMORY ALLOCATOR.&n; */
+DECL|macro|SYM_MEM_PAGE_ORDER
+mdefine_line|#define SYM_MEM_PAGE_ORDER 0&t;/* 1 PAGE  maximum */
+DECL|macro|SYM_MEM_CLUSTER_SHIFT
+mdefine_line|#define SYM_MEM_CLUSTER_SHIFT&t;(PAGE_SHIFT+SYM_MEM_PAGE_ORDER)
+DECL|macro|SYM_MEM_FREE_UNUSED
+mdefine_line|#define SYM_MEM_FREE_UNUSED&t;/* Free unused pages immediately */
+DECL|macro|SYM_MEM_WARN
+mdefine_line|#define SYM_MEM_WARN&t;1&t;/* Warn on failed operations */
+DECL|macro|sym_get_mem_cluster
+mdefine_line|#define sym_get_mem_cluster()&t;&bslash;&n;&t;(void *) __get_free_pages(GFP_ATOMIC, SYM_MEM_PAGE_ORDER)
+DECL|macro|sym_free_mem_cluster
+mdefine_line|#define sym_free_mem_cluster(p)&t;&bslash;&n;&t;free_pages((unsigned long)p, SYM_MEM_PAGE_ORDER)
 multiline_comment|/*&n; *  Link between free memory chunks of a given size.&n; */
 DECL|struct|sym_m_link
 r_typedef
@@ -2292,21 +2312,14 @@ id|sym_m_vtob
 op_star
 id|next
 suffix:semicolon
-macro_line|#ifdef&t;SYM_HAVE_M_SVTOB
-DECL|member|s
-r_struct
-id|sym_m_svtob
-id|s
-suffix:semicolon
-multiline_comment|/* OS specific data structure */
-macro_line|#endif
 DECL|member|vaddr
-id|m_addr_t
+r_void
+op_star
 id|vaddr
 suffix:semicolon
 multiline_comment|/* Virtual address */
 DECL|member|baddr
-id|m_addr_t
+id|dma_addr_t
 id|baddr
 suffix:semicolon
 multiline_comment|/* Bus physical address */
@@ -2323,7 +2336,7 @@ mdefine_line|#define VTOB_HASH_SIZE&t;&t;(1UL &lt;&lt; VTOB_HASH_SHIFT)
 DECL|macro|VTOB_HASH_MASK
 mdefine_line|#define VTOB_HASH_MASK&t;&t;(VTOB_HASH_SIZE-1)
 DECL|macro|VTOB_HASH_CODE
-mdefine_line|#define VTOB_HASH_CODE(m)&t;&bslash;&n;&t;((((m_addr_t) (m)) &gt;&gt; SYM_MEM_CLUSTER_SHIFT) &amp; VTOB_HASH_MASK)
+mdefine_line|#define VTOB_HASH_CODE(m)&t;&bslash;&n;&t;((((unsigned long)(m)) &gt;&gt; SYM_MEM_CLUSTER_SHIFT) &amp; VTOB_HASH_MASK)
 multiline_comment|/*&n; *  Memory pool of a given kind.&n; *  Ideally, we want to use:&n; *  1) 1 pool for memory we donnot need to involve in DMA.&n; *  2) The same pool for controllers that require same DMA &n; *     constraints and features.&n; *     The OS specific m_pool_id_t thing and the sym_m_pool_match() &n; *     method are expected to tell the driver about.&n; */
 DECL|struct|sym_m_pool
 r_typedef
@@ -2336,7 +2349,8 @@ id|dev_dmat
 suffix:semicolon
 multiline_comment|/* Identifies the pool (see above) */
 DECL|member|get_mem_cluster
-id|m_addr_t
+r_void
+op_star
 (paren
 op_star
 id|get_mem_cluster
@@ -2359,7 +2373,8 @@ r_struct
 id|sym_m_pool
 op_star
 comma
-id|m_addr_t
+r_void
+op_star
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -2367,14 +2382,6 @@ DECL|macro|M_GET_MEM_CLUSTER
 mdefine_line|#define M_GET_MEM_CLUSTER()&t;&t;mp-&gt;get_mem_cluster(mp)
 DECL|macro|M_FREE_MEM_CLUSTER
 mdefine_line|#define M_FREE_MEM_CLUSTER(p)&t;&t;mp-&gt;free_mem_cluster(mp, p)
-macro_line|#ifdef&t;SYM_HAVE_M_SPOOL
-DECL|member|s
-r_struct
-id|sym_m_spool
-id|s
-suffix:semicolon
-multiline_comment|/* OS specific data structure */
-macro_line|#endif
 DECL|member|nump
 r_int
 id|nump
@@ -2409,40 +2416,10 @@ DECL|typedef|m_pool_p
 op_star
 id|m_pool_p
 suffix:semicolon
-multiline_comment|/*&n; *  Alloc and free non DMAable memory.&n; */
-r_void
-id|sym_mfree_unlocked
-c_func
-(paren
-r_void
-op_star
-id|ptr
-comma
-r_int
-id|size
-comma
-r_char
-op_star
-id|name
-)paren
-suffix:semicolon
-r_void
-op_star
-id|sym_calloc_unlocked
-c_func
-(paren
-r_int
-id|size
-comma
-r_char
-op_star
-id|name
-)paren
-suffix:semicolon
 multiline_comment|/*&n; *  Alloc, free and translate addresses to bus physical &n; *  for DMAable memory.&n; */
 r_void
 op_star
-id|__sym_calloc_dma_unlocked
+id|__sym_calloc_dma
 c_func
 (paren
 id|m_pool_ident_t
@@ -2457,7 +2434,7 @@ id|name
 )paren
 suffix:semicolon
 r_void
-id|__sym_mfree_dma_unlocked
+id|__sym_mfree_dma
 c_func
 (paren
 id|m_pool_ident_t
@@ -2475,8 +2452,8 @@ op_star
 id|name
 )paren
 suffix:semicolon
-id|u32
-id|__vtobus_unlocked
+id|dma_addr_t
+id|__vtobus
 c_func
 (paren
 id|m_pool_ident_t
@@ -2498,18 +2475,97 @@ DECL|macro|sym_calloc_dma
 mdefine_line|#define sym_calloc_dma(l, n)&t;&t;_sym_calloc_dma(np, l, n)
 DECL|macro|sym_mfree_dma
 mdefine_line|#define sym_mfree_dma(p, l, n)&t;&t;_sym_mfree_dma(np, p, l, n)
-DECL|macro|_vtobus
-mdefine_line|#define _vtobus(np, p)&t;&t;&t;__vtobus(np-&gt;bus_dmat, _uvptv_(p))
 DECL|macro|vtobus
-mdefine_line|#define vtobus(p)&t;&t;&t;_vtobus(np, p)
-multiline_comment|/*&n; *  Override some function names.&n; */
-DECL|macro|PRINT_ADDR
-mdefine_line|#define PRINT_ADDR&t;sym_print_addr
-DECL|macro|PRINT_TARGET
-mdefine_line|#define PRINT_TARGET&t;sym_print_target
-DECL|macro|PRINT_LUN
-mdefine_line|#define PRINT_LUN&t;sym_print_lun
-DECL|macro|UDELAY
-mdefine_line|#define UDELAY&t;&t;sym_udelay
+mdefine_line|#define vtobus(p)&t;&t;&t;__vtobus(np-&gt;bus_dmat, _uvptv_(p))
+multiline_comment|/*&n; *  We have to provide the driver memory allocator with methods for &n; *  it to maintain virtual to bus physical address translations.&n; */
+DECL|macro|sym_m_pool_match
+mdefine_line|#define sym_m_pool_match(mp_id1, mp_id2)&t;(mp_id1 == mp_id2)
+DECL|function|sym_m_get_dma_mem_cluster
+r_static
+id|__inline
+r_void
+op_star
+id|sym_m_get_dma_mem_cluster
+c_func
+(paren
+id|m_pool_p
+id|mp
+comma
+id|m_vtob_p
+id|vbp
+)paren
+(brace
+r_void
+op_star
+id|vaddr
+op_assign
+l_int|NULL
+suffix:semicolon
+id|dma_addr_t
+id|baddr
+op_assign
+l_int|0
+suffix:semicolon
+id|vaddr
+op_assign
+id|dma_alloc_coherent
+c_func
+(paren
+id|mp-&gt;dev_dmat
+comma
+id|SYM_MEM_CLUSTER_SIZE
+comma
+op_amp
+id|baddr
+comma
+id|GFP_ATOMIC
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|vaddr
+)paren
+(brace
+id|vbp-&gt;vaddr
+op_assign
+id|vaddr
+suffix:semicolon
+id|vbp-&gt;baddr
+op_assign
+id|baddr
+suffix:semicolon
+)brace
+r_return
+id|vaddr
+suffix:semicolon
+)brace
+DECL|function|sym_m_free_dma_mem_cluster
+r_static
+id|__inline
+r_void
+id|sym_m_free_dma_mem_cluster
+c_func
+(paren
+id|m_pool_p
+id|mp
+comma
+id|m_vtob_p
+id|vbp
+)paren
+(brace
+id|dma_free_coherent
+c_func
+(paren
+id|mp-&gt;dev_dmat
+comma
+id|SYM_MEM_CLUSTER_SIZE
+comma
+id|vbp-&gt;vaddr
+comma
+id|vbp-&gt;baddr
+)paren
+suffix:semicolon
+)brace
 macro_line|#endif /* SYM_HIPD_H */
 eof

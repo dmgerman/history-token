@@ -7,27 +7,20 @@ DECL|struct|scsi_transport_template
 r_struct
 id|scsi_transport_template
 (brace
-multiline_comment|/* The statistics attached to the host class only */
-DECL|member|host_statistics
-r_struct
-id|attribute_group
-op_star
-id|host_statistics
-suffix:semicolon
 multiline_comment|/* the attribute containers */
 DECL|member|host_attrs
 r_struct
-id|attribute_container
+id|transport_container
 id|host_attrs
 suffix:semicolon
 DECL|member|target_attrs
 r_struct
-id|attribute_container
+id|transport_container
 id|target_attrs
 suffix:semicolon
 DECL|member|device_attrs
 r_struct
-id|attribute_container
+id|transport_container
 id|device_attrs
 suffix:semicolon
 multiline_comment|/* The size of the specific transport attribute structure (a&n;&t; * space of this size will be left at the end of the&n;&t; * scsi_* structure */

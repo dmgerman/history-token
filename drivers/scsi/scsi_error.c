@@ -15,6 +15,7 @@ macro_line|#include &lt;scsi/scsi_eh.h&gt;
 macro_line|#include &lt;scsi/scsi_host.h&gt;
 macro_line|#include &lt;scsi/scsi_ioctl.h&gt;
 macro_line|#include &lt;scsi/scsi_request.h&gt;
+macro_line|#include &lt;scsi/scsi_devinfo.h&gt;
 macro_line|#include &quot;scsi_priv.h&quot;
 macro_line|#include &quot;scsi_logging.h&quot;
 DECL|macro|SENSE_TIMEOUT
@@ -902,6 +903,31 @@ r_return
 id|NEEDS_RETRY
 suffix:semicolon
 r_case
+id|HARDWARE_ERROR
+suffix:colon
+r_if
+c_cond
+(paren
+id|scsi_get_device_flags
+c_func
+(paren
+id|scmd-&gt;device
+comma
+id|scmd-&gt;device-&gt;vendor
+comma
+id|scmd-&gt;device-&gt;model
+)paren
+op_amp
+id|BLIST_RETRY_HWERROR
+)paren
+r_return
+id|NEEDS_RETRY
+suffix:semicolon
+r_else
+r_return
+id|SUCCESS
+suffix:semicolon
+r_case
 id|ILLEGAL_REQUEST
 suffix:colon
 r_case
@@ -909,9 +935,6 @@ id|BLANK_CHECK
 suffix:colon
 r_case
 id|DATA_PROTECT
-suffix:colon
-r_case
-id|HARDWARE_ERROR
 suffix:colon
 r_default
 suffix:colon

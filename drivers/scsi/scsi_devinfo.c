@@ -251,6 +251,17 @@ id|BLIST_NOLUN
 comma
 multiline_comment|/* responds to all lun */
 (brace
+l_string|&quot;MICROTEK&quot;
+comma
+l_string|&quot;ScanMakerIII&quot;
+comma
+l_string|&quot;2.30&quot;
+comma
+id|BLIST_NOLUN
+)brace
+comma
+multiline_comment|/* responds to all lun */
+(brace
 l_string|&quot;NEC&quot;
 comma
 l_string|&quot;CD-ROM DRIVE:841&quot;
@@ -1070,6 +1081,16 @@ id|BLIST_LARGELUN
 )brace
 comma
 (brace
+l_string|&quot;IBM&quot;
+comma
+l_string|&quot;2105&quot;
+comma
+l_int|NULL
+comma
+id|BLIST_RETRY_HWERROR
+)brace
+comma
+(brace
 l_string|&quot;iomega&quot;
 comma
 l_string|&quot;jaz 1GB&quot;
@@ -1434,6 +1455,16 @@ id|BLIST_FORCELUN
 comma
 multiline_comment|/* DDS3 &amp; DDS4 autoloaders */
 (brace
+l_string|&quot;ST650211&quot;
+comma
+l_string|&quot;CF&quot;
+comma
+l_int|NULL
+comma
+id|BLIST_RETRY_HWERROR
+)brace
+comma
+(brace
 l_string|&quot;SUN&quot;
 comma
 l_string|&quot;T300&quot;
@@ -1523,6 +1554,16 @@ comma
 l_string|&quot;02.4&quot;
 comma
 id|BLIST_SELECT_NO_ATN
+)brace
+comma
+(brace
+l_string|&quot;WDC WD25&quot;
+comma
+l_string|&quot;00JB-00FUA0&quot;
+comma
+l_int|NULL
+comma
+id|BLIST_NOREPORTLUN
 )brace
 comma
 (brace
