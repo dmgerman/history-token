@@ -18,46 +18,13 @@ mdefine_line|#define DRIVER_VERSION &t;        &quot;2.2.0&quot;
 DECL|macro|DRIVER_AUTHOR
 mdefine_line|#define DRIVER_AUTHOR           &quot;Torrey Hoffman &lt;thoffman@arnor.net&gt;&quot;
 DECL|macro|DRIVER_DESC
-mdefine_line|#define DRIVER_DESC             &quot;USB driver for ATI/X10 RF Remote Control&quot;
+mdefine_line|#define DRIVER_DESC             &quot;ATI/X10 RF USB Remote Control&quot;
 DECL|macro|NAME_BUFSIZE
 mdefine_line|#define NAME_BUFSIZE      80    /* size of product name, path buffers */
 DECL|macro|DATA_BUFSIZE
 mdefine_line|#define DATA_BUFSIZE      63    /* size of URB data buffers */
 DECL|macro|ATI_INPUTNUM
 mdefine_line|#define ATI_INPUTNUM      1     /* Which input device to register as */
-macro_line|#ifdef CONFIG_USB_DEBUG
-DECL|variable|debug
-r_static
-r_int
-id|debug
-op_assign
-l_int|1
-suffix:semicolon
-macro_line|#else
-DECL|variable|debug
-r_static
-r_int
-id|debug
-suffix:semicolon
-macro_line|#endif
-id|module_param
-c_func
-(paren
-id|debug
-comma
-r_int
-comma
-l_int|444
-)paren
-suffix:semicolon
-id|MODULE_PARM_DESC
-c_func
-(paren
-id|debug
-comma
-l_string|&quot;Enable / disable debug messages&quot;
-)paren
-suffix:semicolon
 DECL|variable|channel_mask
 r_int
 r_int
@@ -83,10 +50,36 @@ comma
 l_string|&quot;Bitmask of remote control channels to ignore&quot;
 )paren
 suffix:semicolon
-DECL|macro|dbg
-macro_line|#undef dbg
-DECL|macro|dbg
-mdefine_line|#define dbg(format, arg...) do { if (debug) printk(KERN_DEBUG __FILE__ &quot;: &quot; format &quot;&bslash;n&quot; , ## arg); } while (0)
+DECL|variable|debug
+r_int
+id|debug
+op_assign
+l_int|0
+suffix:semicolon
+id|module_param
+c_func
+(paren
+id|debug
+comma
+r_int
+comma
+l_int|444
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|debug
+comma
+l_string|&quot;Enable extra debug messages and information&quot;
+)paren
+suffix:semicolon
+DECL|macro|dbginfo
+mdefine_line|#define dbginfo(dev, format, arg...) do { if (debug) dev_info(dev , format , ## arg); } while (0)
+DECL|macro|err
+macro_line|#undef err
+DECL|macro|err
+mdefine_line|#define err(format, arg...) printk(KERN_ERR format , ## arg)
 DECL|variable|ati_remote_table
 r_static
 r_struct
@@ -169,6 +162,33 @@ comma
 l_int|0x20
 )brace
 suffix:semicolon
+multiline_comment|/* Acceleration curve for directional control pad */
+DECL|variable|accel
+r_static
+r_char
+id|accel
+(braket
+)braket
+op_assign
+(brace
+l_int|1
+comma
+l_int|2
+comma
+l_int|4
+comma
+l_int|6
+comma
+l_int|9
+comma
+l_int|13
+comma
+l_int|20
+)brace
+suffix:semicolon
+multiline_comment|/* Duplicate event filtering time. &n; * Sequential, identical KIND_FILTERED inputs with less than&n; * FILTER_TIME jiffies between them are dropped.  &n; * (HZ &gt;&gt; 4) == 1/16th of a second and works well for me.&n; */
+DECL|macro|FILTER_TIME
+mdefine_line|#define FILTER_TIME (HZ &gt;&gt; 4)
 DECL|struct|ati_remote
 r_struct
 id|ati_remote
@@ -1420,7 +1440,7 @@ l_int|0x00
 id|warn
 c_func
 (paren
-l_string|&quot;Weird byte 0x%02x&quot;
+l_string|&quot;Weird byte 0x%02x&bslash;n&quot;
 comma
 id|data
 (braket
@@ -1439,7 +1459,7 @@ l_int|4
 id|warn
 c_func
 (paren
-l_string|&quot;Weird key %02x %02x %02x %02x&quot;
+l_string|&quot;Weird key %02x %02x %02x %02x&bslash;n&quot;
 comma
 id|data
 (braket
@@ -1466,7 +1486,7 @@ r_else
 id|warn
 c_func
 (paren
-l_string|&quot;Weird data, len=%d %02x %02x %02x %02x %02x %02x ...&quot;
+l_string|&quot;Weird data, len=%d %02x %02x %02x %02x %02x %02x ...&bslash;n&quot;
 comma
 id|len
 comma
@@ -1550,10 +1570,13 @@ id|GFP_KERNEL
 )paren
 )paren
 (brace
-id|err
+id|dev_err
 c_func
 (paren
-l_string|&quot; %s: usb_submit_urb failed!&quot;
+op_amp
+id|ati_remote-&gt;interface-&gt;dev
+comma
+l_string|&quot;%s: usb_submit_urb failed!&bslash;n&quot;
 comma
 id|__FUNCTION__
 )paren
@@ -1600,10 +1623,10 @@ op_eq
 l_int|NULL
 )paren
 (brace
-id|dbg
+id|err
 c_func
 (paren
-l_string|&quot;%s - object is NULL !&quot;
+l_string|&quot;ati_remote: %s: object is NULL!&bslash;n&quot;
 comma
 id|__FUNCTION__
 )paren
@@ -1618,10 +1641,13 @@ id|ati_remote-&gt;open
 op_le
 l_int|0
 )paren
-id|dbg
+id|dev_dbg
 c_func
 (paren
-l_string|&quot;%s - ati_remote not open.&quot;
+op_amp
+id|ati_remote-&gt;interface-&gt;dev
+comma
+l_string|&quot;%s: Not open.&bslash;n&quot;
 comma
 id|__FUNCTION__
 )paren
@@ -1678,10 +1704,15 @@ c_cond
 id|urb-&gt;status
 )paren
 (brace
-id|warn
+id|dev_dbg
 c_func
 (paren
-l_string|&quot;output urb completion status %d received&quot;
+op_amp
+id|ati_remote-&gt;interface-&gt;dev
+comma
+l_string|&quot;%s: status %d&bslash;n&quot;
+comma
+id|__FUNCTION__
 comma
 id|urb-&gt;status
 )paren
@@ -1856,10 +1887,13 @@ op_amp
 id|wait
 )paren
 suffix:semicolon
-id|dbg
+id|dev_dbg
 c_func
 (paren
-l_string|&quot;sendpacket: usb_submit_urb failed: %d&quot;
+op_amp
+id|ati_remote-&gt;interface-&gt;dev
+comma
+l_string|&quot;sendpacket: usb_submit_urb failed: %d&bslash;n&quot;
 comma
 id|retval
 )paren
@@ -2137,7 +2171,7 @@ r_return
 suffix:semicolon
 )brace
 multiline_comment|/* Mask unwanted remote channels.  */
-multiline_comment|/* note: remote_num is 0-based, channel 1 selected on remote == 0 here */
+multiline_comment|/* note: remote_num is 0-based, channel 1 on remote == 0 here */
 id|remote_num
 op_assign
 (paren
@@ -2167,23 +2201,13 @@ l_int|1
 )paren
 )paren
 (brace
-id|dbg
+id|dbginfo
 c_func
 (paren
-l_string|&quot;Remote 0x02%x masked. mask = 0x%02lx&quot;
+op_amp
+id|ati_remote-&gt;interface-&gt;dev
 comma
-id|remote_num
-comma
-id|channel_mask
-)paren
-suffix:semicolon
-r_return
-suffix:semicolon
-)brace
-id|dbg
-c_func
-(paren
-l_string|&quot;Remote channel 0x%02x: %02x%02x&quot;
+l_string|&quot;Masked input from channel 0x%02x: data %02x,%02x, mask= 0x%02lx&bslash;n&quot;
 comma
 id|remote_num
 comma
@@ -2196,8 +2220,13 @@ id|data
 (braket
 l_int|2
 )braket
+comma
+id|channel_mask
 )paren
 suffix:semicolon
+r_return
+suffix:semicolon
+)brace
 multiline_comment|/* Look up event code index in translation table */
 id|index
 op_assign
@@ -2225,10 +2254,15 @@ OL
 l_int|0
 )paren
 (brace
-id|warn
+id|dev_warn
 c_func
 (paren
-l_string|&quot;Unknown key=%02x%02x&quot;
+op_amp
+id|ati_remote-&gt;interface-&gt;dev
+comma
+l_string|&quot;Unknown input from channel 0x%02x: data %02x,%02x&bslash;n&quot;
+comma
+id|remote_num
 comma
 id|data
 (braket
@@ -2244,6 +2278,36 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
+id|dbginfo
+c_func
+(paren
+op_amp
+id|ati_remote-&gt;interface-&gt;dev
+comma
+l_string|&quot;channel 0x%02x; data %02x,%02x; index %d; keycode %d&bslash;n&quot;
+comma
+id|remote_num
+comma
+id|data
+(braket
+l_int|1
+)braket
+comma
+id|data
+(braket
+l_int|2
+)braket
+comma
+id|index
+comma
+id|ati_remote_tbl
+(braket
+id|index
+)braket
+dot
+id|code
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2318,7 +2382,7 @@ op_eq
 id|KIND_FILTERED
 )paren
 (brace
-multiline_comment|/* Filter duplicate events which happen &quot;too close&quot; together,&n; &t;&t; * considered here to be anything less than a quarter second */
+multiline_comment|/* Filter duplicate events which happen &quot;too close&quot; together. */
 r_if
 c_cond
 (paren
@@ -2350,11 +2414,7 @@ op_logical_and
 (paren
 id|ati_remote-&gt;old_jiffies
 op_plus
-(paren
-id|HZ
-op_rshift
-l_int|2
-)paren
+id|FILTER_TIME
 )paren
 OG
 id|jiffies
@@ -2453,7 +2513,7 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-multiline_comment|/* &n;&t; * Other event kinds are from the directional control pad, and have an&n;&t; * acceleration factor applied to them.  Without added acceleration, the&n;&t; * control pad is pretty unusable.&n;&t; * &n;&t; * If elapsed time since last event is &gt; 1/4 second, user &quot;stopped&quot;,&n;&t; * so reset acceleration. Otherwise, user is probably holding the control&n;&t; * pad down, so we increase acceleration, ramping up over two seconds to&n;&t; * a maximum speed.&n;&t; */
+multiline_comment|/* &n;&t; * Other event kinds are from the directional control pad, and have an&n;&t; * acceleration factor applied to them.  Without this acceleration, the&n;&t; * control pad is mostly unusable.&n;&t; * &n;&t; * If elapsed time since last event is &gt; 1/4 second, user &quot;stopped&quot;,&n;&t; * so reset acceleration. Otherwise, user is probably holding the control&n;&t; * pad down, so we increase acceleration, ramping up over two seconds to&n;&t; * a maximum speed.  The acceleration curve is #defined above.&n;&t; */
 r_if
 c_cond
 (paren
@@ -2497,7 +2557,10 @@ l_int|3
 )paren
 id|acc
 op_assign
-l_int|1
+id|accel
+(braket
+l_int|0
+)braket
 suffix:semicolon
 r_else
 r_if
@@ -2517,7 +2580,10 @@ l_int|2
 )paren
 id|acc
 op_assign
-l_int|2
+id|accel
+(braket
+l_int|1
+)braket
 suffix:semicolon
 r_else
 r_if
@@ -2537,23 +2603,29 @@ l_int|1
 )paren
 id|acc
 op_assign
+id|accel
+(braket
+l_int|2
+)braket
+suffix:semicolon
+r_else
+r_if
+c_cond
+(paren
+(paren
+id|jiffies
+op_minus
+id|ati_remote-&gt;acc_jiffies
+)paren
+OL
+id|HZ
+)paren
+id|acc
+op_assign
+id|accel
+(braket
 l_int|3
-suffix:semicolon
-r_else
-r_if
-c_cond
-(paren
-(paren
-id|jiffies
-op_minus
-id|ati_remote-&gt;acc_jiffies
-)paren
-OL
-id|HZ
-)paren
-id|acc
-op_assign
-l_int|4
+)braket
 suffix:semicolon
 r_else
 r_if
@@ -2575,7 +2647,10 @@ l_int|1
 )paren
 id|acc
 op_assign
-l_int|6
+id|accel
+(braket
+l_int|4
+)braket
 suffix:semicolon
 r_else
 r_if
@@ -2595,12 +2670,18 @@ l_int|1
 )paren
 id|acc
 op_assign
-l_int|10
+id|accel
+(braket
+l_int|5
+)braket
 suffix:semicolon
 r_else
 id|acc
 op_assign
-l_int|16
+id|accel
+(braket
+l_int|6
+)braket
 suffix:semicolon
 id|input_regs
 c_func
@@ -2761,10 +2842,13 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
-id|dbg
+id|dev_dbg
 c_func
 (paren
-l_string|&quot;ati_remote kind=%d&quot;
+op_amp
+id|ati_remote-&gt;interface-&gt;dev
+comma
+l_string|&quot;ati_remote kind=%d&bslash;n&quot;
 comma
 id|ati_remote_tbl
 (braket
@@ -2867,10 +2951,13 @@ r_case
 op_minus
 id|ESHUTDOWN
 suffix:colon
-id|dbg
+id|dev_dbg
 c_func
 (paren
-l_string|&quot;%s: urb error status (unlink?)&quot;
+op_amp
+id|ati_remote-&gt;interface-&gt;dev
+comma
+l_string|&quot;%s: urb error status, unlink? &bslash;n&quot;
 comma
 id|__FUNCTION__
 )paren
@@ -2880,10 +2967,13 @@ suffix:semicolon
 r_default
 suffix:colon
 multiline_comment|/* error */
-id|dbg
+id|dev_dbg
 c_func
 (paren
-l_string|&quot;%s: Nonzero urb status %d&quot;
+op_amp
+id|ati_remote-&gt;interface-&gt;dev
+comma
+l_string|&quot;%s: Nonzero urb status %d&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
@@ -2906,18 +2996,15 @@ c_cond
 (paren
 id|retval
 )paren
-id|err
+id|dev_err
 c_func
 (paren
-l_string|&quot;%s: can&squot;t resubmit urb, %s-%s/input%d, status %d&quot;
+op_amp
+id|ati_remote-&gt;interface-&gt;dev
+comma
+l_string|&quot;%s: usb_submit_urb()=%d&bslash;n&quot;
 comma
 id|__FUNCTION__
-comma
-id|ati_remote-&gt;udev-&gt;bus-&gt;bus_name
-comma
-id|ati_remote-&gt;udev-&gt;devpath
-comma
-id|ATI_INPUTNUM
 comma
 id|retval
 )paren
@@ -3402,10 +3489,13 @@ id|init2
 )paren
 )paren
 (brace
-id|err
+id|dev_err
 c_func
 (paren
-l_string|&quot;Initializing ati_remote hardware failed.&quot;
+op_amp
+id|ati_remote-&gt;interface-&gt;dev
+comma
+l_string|&quot;Initializing ati_remote hardware failed.&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -3553,10 +3643,12 @@ op_ne
 l_int|2
 )paren
 (brace
-id|dbg
+id|err
 c_func
 (paren
-l_string|&quot;Unexpected desc.bNumEndpoints.&quot;
+l_string|&quot;%s: Unexpected desc.bNumEndpoints&bslash;n&quot;
+comma
+id|__FUNCTION__
 )paren
 suffix:semicolon
 id|retval
@@ -3611,10 +3703,12 @@ l_int|0x80
 )paren
 )paren
 (brace
-id|dbg
+id|err
 c_func
 (paren
-l_string|&quot;Unexpected endpoint_in-&gt;bEndpointAddress.&quot;
+l_string|&quot;%s: Unexpected endpoint_in-&gt;bEndpointAddress&bslash;n&quot;
+comma
+id|__FUNCTION__
 )paren
 suffix:semicolon
 id|retval
@@ -3638,10 +3732,12 @@ op_ne
 l_int|3
 )paren
 (brace
-id|dbg
+id|err
 c_func
 (paren
-l_string|&quot;Unexpected endpoint_in-&gt;bmAttributes.&quot;
+l_string|&quot;%s: Unexpected endpoint_in-&gt;bmAttributes&bslash;n&quot;
+comma
+id|__FUNCTION__
 )paren
 suffix:semicolon
 id|retval
@@ -3661,10 +3757,12 @@ op_eq
 l_int|0
 )paren
 (brace
-id|dbg
+id|err
 c_func
 (paren
-l_string|&quot;endpoint_in message size = 0?&quot;
+l_string|&quot;%s: endpoint_in message size==0? &bslash;n&quot;
+comma
+id|__FUNCTION__
 )paren
 suffix:semicolon
 id|retval
@@ -3881,14 +3979,15 @@ c_func
 (paren
 id|ati_remote-&gt;name
 comma
-l_string|&quot;USB ATI (X10) remote %04x:%04x&quot;
+id|DRIVER_DESC
+l_string|&quot;(%04x,%04x)&quot;
 comma
-id|ati_remote-&gt;idev.id.vendor
+id|ati_remote-&gt;udev-&gt;descriptor.idVendor
 comma
-id|ati_remote-&gt;idev.id.product
+id|ati_remote-&gt;udev-&gt;descriptor.idProduct
 )paren
 suffix:semicolon
-multiline_comment|/* Device Hardware Initialization */
+multiline_comment|/* Device Hardware Initialization - fills in ati_remote-&gt;idev from udev. */
 id|retval
 op_assign
 id|ati_remote_initialize
@@ -3919,24 +4018,17 @@ op_amp
 id|ati_remote-&gt;idev
 )paren
 suffix:semicolon
-id|info
+id|dev_info
 c_func
 (paren
-l_string|&quot;Input registered: %s on %s&quot;
+op_amp
+id|ati_remote-&gt;interface-&gt;dev
+comma
+l_string|&quot;Input registered: %s on %s&bslash;n&quot;
 comma
 id|ati_remote-&gt;name
 comma
 id|path
-)paren
-suffix:semicolon
-id|info
-c_func
-(paren
-l_string|&quot;USB (bus:dev)=(%d:%d)&quot;
-comma
-id|udev-&gt;bus-&gt;busnum
-comma
-id|udev-&gt;devnum
 )paren
 suffix:semicolon
 id|usb_set_intfdata
@@ -4027,7 +4119,7 @@ id|ati_remote
 id|warn
 c_func
 (paren
-l_string|&quot;%s - null device?&quot;
+l_string|&quot;%s - null device?&bslash;n&quot;
 comma
 id|__FUNCTION__
 )paren
@@ -4092,7 +4184,7 @@ id|result
 id|err
 c_func
 (paren
-l_string|&quot;usb_register error #%d&quot;
+l_string|&quot;usb_register error #%d&bslash;n&quot;
 comma
 id|result
 )paren
@@ -4101,9 +4193,9 @@ r_else
 id|info
 c_func
 (paren
-l_string|&quot;USB registered &quot;
+l_string|&quot;Registered USB driver &quot;
 id|DRIVER_DESC
-l_string|&quot; ver. &quot;
+l_string|&quot; v. &quot;
 id|DRIVER_VERSION
 )paren
 suffix:semicolon
