@@ -331,6 +331,15 @@ id|saved_command_line
 id|COMMAND_LINE_SIZE
 )braket
 suffix:semicolon
+DECL|variable|boot_params
+r_int
+r_char
+id|__initdata
+id|boot_params
+(braket
+id|PARAM_SIZE
+)braket
+suffix:semicolon
 DECL|variable|code_resource
 r_static
 r_struct
@@ -1766,7 +1775,7 @@ id|edd_disk80_sig
 )paren
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/**&n; * copy_edd() - Copy the BIOS EDD information&n; *              from empty_zero_page into a safe place.&n; *&n; */
+multiline_comment|/**&n; * copy_edd() - Copy the BIOS EDD information&n; *              from boot_params into a safe place.&n; *&n; */
 DECL|function|copy_edd
 r_static
 r_inline
@@ -1865,7 +1874,7 @@ comma
 op_star
 id|from
 op_assign
-id|COMMAND_LINE
+id|saved_command_line
 suffix:semicolon
 r_int
 id|len
@@ -1878,16 +1887,6 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* Save unparsed command line copy for /proc/cmdline */
-id|memcpy
-c_func
-(paren
-id|saved_command_line
-comma
-id|COMMAND_LINE
-comma
-id|COMMAND_LINE_SIZE
-)paren
-suffix:semicolon
 id|saved_command_line
 (braket
 id|COMMAND_LINE_SIZE
