@@ -1822,8 +1822,7 @@ c_cond
 (paren
 id|filp-&gt;f_pos
 op_eq
-op_minus
-l_int|1
+id|EXT3_HTREE_EOF
 )paren
 r_return
 l_int|0
@@ -1978,8 +1977,7 @@ l_int|0
 (brace
 id|filp-&gt;f_pos
 op_assign
-op_minus
-l_int|1
+id|EXT3_HTREE_EOF
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -2058,8 +2056,7 @@ l_int|0
 (brace
 id|filp-&gt;f_pos
 op_assign
-op_minus
-l_int|1
+id|EXT3_HTREE_EOF
 suffix:semicolon
 r_break
 suffix:semicolon
