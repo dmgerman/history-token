@@ -12,6 +12,7 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/atmdev.h&gt;
 macro_line|#include &lt;linux/sonet.h&gt;
 macro_line|#include &lt;linux/atm_suni.h&gt;
+macro_line|#include &lt;linux/dma-mapping.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/string.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
@@ -2383,7 +2384,7 @@ r_struct
 id|prom_data
 )paren
 comma
-id|FORE200E_DMA_FROMDEVICE
+id|DMA_FROM_DEVICE
 )paren
 suffix:semicolon
 id|fore200e-&gt;bus
@@ -2457,7 +2458,7 @@ r_struct
 id|prom_data
 )paren
 comma
-id|FORE200E_DMA_FROMDEVICE
+id|DMA_FROM_DEVICE
 )paren
 suffix:semicolon
 r_if
@@ -3845,7 +3846,7 @@ l_int|0
 dot
 id|length
 comma
-id|FORE200E_DMA_TODEVICE
+id|DMA_TO_DEVICE
 )paren
 suffix:semicolon
 id|vc_map
@@ -4743,7 +4744,7 @@ id|i
 dot
 id|length
 comma
-id|FORE200E_DMA_FROMDEVICE
+id|DMA_FROM_DEVICE
 )paren
 suffix:semicolon
 id|memcpy
@@ -4789,7 +4790,7 @@ id|i
 dot
 id|length
 comma
-id|FORE200E_DMA_FROMDEVICE
+id|DMA_FROM_DEVICE
 )paren
 suffix:semicolon
 )brace
@@ -7359,7 +7360,7 @@ id|data
 comma
 id|tx_len
 comma
-id|FORE200E_DMA_TODEVICE
+id|DMA_TO_DEVICE
 )paren
 suffix:semicolon
 id|tpd-&gt;tsd
@@ -7709,7 +7710,7 @@ r_struct
 id|stats
 )paren
 comma
-id|FORE200E_DMA_FROMDEVICE
+id|DMA_FROM_DEVICE
 )paren
 suffix:semicolon
 id|FORE200E_NEXT_ENTRY
@@ -7799,7 +7800,7 @@ r_struct
 id|stats
 )paren
 comma
-id|FORE200E_DMA_FROMDEVICE
+id|DMA_FROM_DEVICE
 )paren
 suffix:semicolon
 r_if
@@ -7997,7 +7998,7 @@ r_struct
 id|oc3_regs
 )paren
 comma
-id|FORE200E_DMA_FROMDEVICE
+id|DMA_FROM_DEVICE
 )paren
 suffix:semicolon
 id|FORE200E_NEXT_ENTRY
@@ -8095,7 +8096,7 @@ r_struct
 id|oc3_regs
 )paren
 comma
-id|FORE200E_DMA_FROMDEVICE
+id|DMA_FROM_DEVICE
 )paren
 suffix:semicolon
 r_if
@@ -9489,7 +9490,7 @@ id|size
 comma
 id|fore200e-&gt;bus-&gt;buffer_alignment
 comma
-id|FORE200E_DMA_FROMDEVICE
+id|DMA_FROM_DEVICE
 )paren
 OL
 l_int|0
