@@ -1,25 +1,14 @@
-multiline_comment|/* ne.c: A general non-shared-memory NS8390 ethernet driver for linux. */
-multiline_comment|/*&n;    Written 1992-94 by Donald Becker.&n;&n;    Copyright 1993 United States Government as represented by the&n;    Director, National Security Agency.&n;&n;    This software may be used and distributed according to the terms&n;    of the GNU General Public License, incorporated herein by reference.&n;&n;    The author may be reached as becker@scyld.com, or C/O&n;    Scyld Computing Corporation, 410 Severn Ave., Suite 210, Annapolis MD 21403&n;&n;    This driver should work with many programmed-I/O 8390-based ethernet&n;    boards.  Currently it supports the NE1000, NE2000, many clones,&n;    and some Cabletron products.&n;&n;    Changelog:&n;&n;    Paul Gortmaker&t;: use ENISR_RDC to monitor Tx PIO uploads, made&n;&t;&t;&t;  sanity checks and bad clone support optional.&n;    Paul Gortmaker&t;: new reset code, reset card after probe at boot.&n;    Paul Gortmaker&t;: multiple card support for module users.&n;    Paul Gortmaker&t;: Support for PCI ne2k clones, similar to lance.c&n;    Paul Gortmaker&t;: Allow users with bad cards to avoid full probe.&n;    Paul Gortmaker&t;: PCI probe changes, more PCI cards supported.&n;    rjohnson@analogic.com : Changed init order so an interrupt will only&n;    occur after memory is allocated for dev-&gt;priv. Deallocated memory&n;    last in cleanup_modue()&n;    Richard Guenther    : Added support for ISAPnP cards&n;    Paul Gortmaker&t;: Discontinued PCI support - use ne2k-pci.c instead.&n;    Osamu Tomita&t;: Separate driver for NEC PC-9800.&n;&n;*/
+multiline_comment|/*&n;&n;  ne2k_cbus.c: A driver for the NE2000 like ethernet on NEC PC-9800.&n;&n;&t;This is a copy of the 2.5.66 Linux ISA NE2000 driver &quot;ne.c&quot; &n;&t;(Donald Becker/Paul Gortmaker) with the NEC PC-9800 specific&n;&t;changes added by Osamu Tomita. &n;&n;From ne.c:&n;-----------&n;    Copyright 1993 United States Government as represented by the&n;    Director, National Security Agency.&n;&n;    This software may be used and distributed according to the terms&n;    of the GNU General Public License, incorporated herein by reference.&n;-----------&n;&n;*/
 multiline_comment|/* Routines for the NatSemi-based designs (NE[12]000). */
-DECL|variable|version1
+DECL|variable|version
 r_static
 r_const
 r_char
-id|version1
+id|version
 (braket
 )braket
 op_assign
-l_string|&quot;ne.c:v1.10 9/23/94 Donald Becker (becker@scyld.com)&bslash;n&quot;
-suffix:semicolon
-DECL|variable|version2
-r_static
-r_const
-r_char
-id|version2
-(braket
-)braket
-op_assign
-l_string|&quot;Last modified Nov 1, 2000 by Paul Gortmaker&bslash;n&quot;
+l_string|&quot;ne2k_cbus.c:v1.0 3/24/03 Osamu Tomita&bslash;n&quot;
 suffix:semicolon
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -1069,12 +1058,8 @@ c_func
 (paren
 id|KERN_INFO
 l_string|&quot;%s&quot;
-id|KERN_INFO
-l_string|&quot;%s&quot;
 comma
-id|version1
-comma
-id|version2
+id|version
 )paren
 suffix:semicolon
 id|printk
@@ -3997,7 +3982,7 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;ne.c: No NE*000 card found at i/o = %#x&bslash;n&quot;
+l_string|&quot;ne2k_cbus: No NE*000 card found at i/o = %#x&bslash;n&quot;
 comma
 id|io
 (braket
@@ -4010,7 +3995,7 @@ id|printk
 c_func
 (paren
 id|KERN_NOTICE
-l_string|&quot;ne.c: You must supply &bslash;&quot;io=0xNNN&bslash;&quot; value(s) for C-Bus cards.&bslash;n&quot;
+l_string|&quot;ne2k_cbus: You must supply &bslash;&quot;io=0xNNN&bslash;&quot; value(s) for C-Bus cards.&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -4140,6 +4125,4 @@ suffix:semicolon
 )brace
 )brace
 macro_line|#endif /* MODULE */
-"&f;"
-multiline_comment|/*&n; * Local variables:&n; *  compile-command: &quot;gcc -DKERNEL -Wall -O6 -fomit-frame-pointer -I/usr/src/linux/net/tcp -c ne.c&quot;&n; *  version-control: t&n; *  kept-new-versions: 5&n; * End:&n; */
 eof
