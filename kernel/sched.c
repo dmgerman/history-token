@@ -750,8 +750,11 @@ comma
 id|rq-&gt;active
 )paren
 suffix:semicolon
-id|rq-&gt;nr_running
-op_increment
+id|nr_running_inc
+c_func
+(paren
+id|rq
+)paren
 suffix:semicolon
 )brace
 DECL|function|activate_task
@@ -1563,8 +1566,11 @@ suffix:semicolon
 id|p-&gt;array-&gt;nr_active
 op_increment
 suffix:semicolon
-id|rq-&gt;nr_running
-op_increment
+id|nr_running_inc
+c_func
+(paren
+id|rq
+)paren
 suffix:semicolon
 )brace
 id|task_rq_unlock
