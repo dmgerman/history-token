@@ -5508,6 +5508,10 @@ r_return
 id|ret
 suffix:semicolon
 )brace
+id|dev-&gt;state
+op_assign
+id|USB_STATE_CONFIGURED
+suffix:semicolon
 r_for
 c_loop
 (paren
