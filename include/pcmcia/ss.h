@@ -37,42 +37,6 @@ DECL|macro|SS_XVCARD
 mdefine_line|#define SS_XVCARD&t;0x2000
 DECL|macro|SS_PENDING
 mdefine_line|#define SS_PENDING&t;0x4000
-multiline_comment|/* for InquireSocket */
-DECL|struct|socket_cap_t
-r_typedef
-r_struct
-id|socket_cap_t
-(brace
-DECL|member|features
-id|u_int
-id|features
-suffix:semicolon
-DECL|member|irq_mask
-id|u_int
-id|irq_mask
-suffix:semicolon
-DECL|member|map_size
-id|u_int
-id|map_size
-suffix:semicolon
-DECL|member|io_offset
-id|ioaddr_t
-id|io_offset
-suffix:semicolon
-DECL|member|pci_irq
-id|u_char
-id|pci_irq
-suffix:semicolon
-DECL|member|cb_dev
-r_struct
-id|pci_dev
-op_star
-id|cb_dev
-suffix:semicolon
-DECL|typedef|socket_cap_t
-)brace
-id|socket_cap_t
-suffix:semicolon
 multiline_comment|/* InquireSocket capabilities */
 DECL|macro|SS_CAP_PAGE_REGS
 mdefine_line|#define SS_CAP_PAGE_REGS&t;0x0001
@@ -308,23 +272,6 @@ op_star
 id|info
 )paren
 suffix:semicolon
-DECL|member|inquire_socket
-r_int
-(paren
-op_star
-id|inquire_socket
-)paren
-(paren
-r_struct
-id|pcmcia_socket
-op_star
-id|sock
-comma
-id|socket_cap_t
-op_star
-id|cap
-)paren
-suffix:semicolon
 DECL|member|get_status
 r_int
 (paren
@@ -412,66 +359,11 @@ op_star
 id|mem
 )paren
 suffix:semicolon
-DECL|member|proc_setup
-r_void
-(paren
-op_star
-id|proc_setup
-)paren
-(paren
-r_struct
-id|pcmcia_socket
-op_star
-id|sock
-comma
-r_struct
-id|proc_dir_entry
-op_star
-id|base
-)paren
-suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/*&n; *  Calls to set up low-level &quot;Socket Services&quot; drivers&n; */
 r_struct
 id|pcmcia_socket
-suffix:semicolon
-DECL|struct|pcmcia_socket_class_data
-r_struct
-id|pcmcia_socket_class_data
-(brace
-DECL|member|nsock
-r_int
-r_int
-id|nsock
-suffix:semicolon
-multiline_comment|/* number of sockets */
-DECL|member|sock_offset
-r_int
-r_int
-id|sock_offset
-suffix:semicolon
-multiline_comment|/* socket # (which is&n;&t; * returned to driver) = sock_offset + (0, 1, .. , (nsock-1) */
-DECL|member|ops
-r_struct
-id|pccard_operations
-op_star
-id|ops
-suffix:semicolon
-multiline_comment|/* see above */
-DECL|member|s_info
-r_struct
-id|pcmcia_socket
-op_star
-id|s_info
-suffix:semicolon
-DECL|member|class_dev
-r_struct
-id|class_device
-id|class_dev
-suffix:semicolon
-multiline_comment|/* generic class structure */
-)brace
 suffix:semicolon
 DECL|struct|erase_busy_t
 r_typedef
@@ -604,10 +496,6 @@ DECL|member|socket
 id|socket_state_t
 id|socket
 suffix:semicolon
-DECL|member|cap
-id|socket_cap_t
-id|cap
-suffix:semicolon
 DECL|member|state
 id|u_int
 id|state
@@ -711,14 +599,33 @@ r_int
 id|sock
 suffix:semicolon
 multiline_comment|/* socket number */
-macro_line|#ifdef CONFIG_PROC_FS
-DECL|member|proc
-r_struct
-id|proc_dir_entry
-op_star
-id|proc
+multiline_comment|/* socket capabilities */
+DECL|member|features
+id|u_int
+id|features
 suffix:semicolon
-macro_line|#endif
+DECL|member|irq_mask
+id|u_int
+id|irq_mask
+suffix:semicolon
+DECL|member|map_size
+id|u_int
+id|map_size
+suffix:semicolon
+DECL|member|io_offset
+id|ioaddr_t
+id|io_offset
+suffix:semicolon
+DECL|member|pci_irq
+id|u_char
+id|pci_irq
+suffix:semicolon
+DECL|member|cb_dev
+r_struct
+id|pci_dev
+op_star
+id|cb_dev
+suffix:semicolon
 multiline_comment|/* state thread */
 DECL|member|skt_sem
 r_struct
