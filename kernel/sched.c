@@ -170,7 +170,7 @@ mdefine_line|#define cpu_rq(cpu)&t;&t;(runqueues + (cpu))
 DECL|macro|this_rq
 mdefine_line|#define this_rq()&t;&t;cpu_rq(smp_processor_id())
 DECL|macro|task_rq
-mdefine_line|#define task_rq(p)&t;&t;cpu_rq((p)-&gt;thread_info-&gt;cpu)
+mdefine_line|#define task_rq(p)&t;&t;cpu_rq(task_cpu(p))
 DECL|macro|cpu_curr
 mdefine_line|#define cpu_curr(cpu)&t;&t;(cpu_rq(cpu)-&gt;curr)
 DECL|macro|rt_task
@@ -702,7 +702,11 @@ op_logical_neg
 id|nrpolling
 op_logical_and
 (paren
-id|p-&gt;thread_info-&gt;cpu
+id|task_cpu
+c_func
+(paren
+id|p
+)paren
 op_ne
 id|smp_processor_id
 c_func
@@ -713,7 +717,11 @@ c_func
 id|smp_send_reschedule
 c_func
 (paren
-id|p-&gt;thread_info-&gt;cpu
+id|task_cpu
+c_func
+(paren
+id|p
+)paren
 )paren
 suffix:semicolon
 id|preempt_enable
@@ -951,7 +959,11 @@ id|p
 )paren
 op_logical_and
 (paren
-id|p-&gt;thread_info-&gt;cpu
+id|task_cpu
+c_func
+(paren
+id|p
+)paren
 op_ne
 id|smp_processor_id
 c_func
@@ -974,11 +986,15 @@ c_func
 )paren
 )paren
 (brace
-id|p-&gt;thread_info-&gt;cpu
-op_assign
+id|set_task_cpu
+c_func
+(paren
+id|p
+comma
 id|smp_processor_id
 c_func
 (paren
+)paren
 )paren
 suffix:semicolon
 id|task_rq_unlock
@@ -1128,11 +1144,15 @@ id|p
 )paren
 suffix:semicolon
 )brace
-id|p-&gt;thread_info-&gt;cpu
-op_assign
+id|set_task_cpu
+c_func
+(paren
+id|p
+comma
 id|smp_processor_id
 c_func
 (paren
+)paren
 )paren
 suffix:semicolon
 id|activate_task
@@ -2035,9 +2055,13 @@ suffix:semicolon
 id|busiest-&gt;nr_running
 op_decrement
 suffix:semicolon
-id|next-&gt;thread_info-&gt;cpu
-op_assign
+id|set_task_cpu
+c_func
+(paren
+id|next
+comma
 id|this_cpu
+)paren
 suffix:semicolon
 id|this_rq-&gt;nr_running
 op_increment
@@ -2598,7 +2622,7 @@ op_amp
 id|rq-&gt;lock
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * if entering off a kernel preemption go straight&n;&t; * to picking the next task.&n;&t; */
+multiline_comment|/*&n;&t; * if entering off of a kernel preemption go straight&n;&t; * to picking the next task.&n;&t; */
 r_if
 c_cond
 (paren
@@ -2916,7 +2940,7 @@ id|ti-&gt;preempt_count
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* we can miss a preemption opportunity between schedule and now */
+multiline_comment|/* we could miss a preemption opportunity between schedule and now */
 id|barrier
 c_func
 (paren
@@ -5865,7 +5889,11 @@ op_assign
 id|cpu_rq
 c_func
 (paren
-id|idle-&gt;thread_info-&gt;cpu
+id|task_cpu
+c_func
+(paren
+id|idle
+)paren
 )paren
 suffix:semicolon
 r_int
@@ -5917,9 +5945,13 @@ id|idle-&gt;state
 op_assign
 id|TASK_RUNNING
 suffix:semicolon
-id|idle-&gt;thread_info-&gt;cpu
-op_assign
+id|set_task_cpu
+c_func
+(paren
+id|idle
+comma
 id|cpu
+)paren
 suffix:semicolon
 id|double_rq_unlock
 c_func
@@ -6285,7 +6317,11 @@ op_amp
 (paren
 l_int|1UL
 op_lshift
-id|p-&gt;thread_info-&gt;cpu
+id|task_cpu
+c_func
+(paren
+id|p
+)paren
 )paren
 )paren
 (brace
@@ -6316,12 +6352,16 @@ id|rq-&gt;curr
 )paren
 )paren
 (brace
-id|p-&gt;thread_info-&gt;cpu
-op_assign
+id|set_task_cpu
+c_func
+(paren
+id|p
+comma
 id|__ffs
 c_func
 (paren
 id|p-&gt;cpus_allowed
+)paren
 )paren
 suffix:semicolon
 id|task_rq_unlock
@@ -6672,7 +6712,11 @@ id|repeat
 suffix:colon
 id|cpu_src
 op_assign
-id|p-&gt;thread_info-&gt;cpu
+id|task_cpu
+c_func
+(paren
+id|p
+)paren
 suffix:semicolon
 id|rq_src
 op_assign
@@ -6699,7 +6743,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|p-&gt;thread_info-&gt;cpu
+id|task_cpu
+c_func
+(paren
+id|p
+)paren
 op_ne
 id|cpu_src
 )paren
@@ -6730,9 +6778,13 @@ op_eq
 id|rq
 )paren
 (brace
-id|p-&gt;thread_info-&gt;cpu
-op_assign
+id|set_task_cpu
+c_func
+(paren
+id|p
+comma
 id|cpu_dest
+)paren
 suffix:semicolon
 r_if
 c_cond
