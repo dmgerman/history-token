@@ -919,7 +919,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|NUMBER
+id|ARRAY_SIZE
 c_func
 (paren
 id|data-&gt;Sync
@@ -2181,7 +2181,7 @@ suffix:semicolon
 r_int
 id|len
 op_assign
-id|MIN
+id|min
 c_func
 (paren
 id|MSGBUF_SIZE
@@ -2925,7 +2925,7 @@ suffix:semicolon
 )brace
 id|res
 op_assign
-id|MIN
+id|min
 c_func
 (paren
 id|res
@@ -3333,7 +3333,7 @@ suffix:semicolon
 )brace
 id|res
 op_assign
-id|MIN
+id|min
 c_func
 (paren
 id|SCpnt-&gt;SCp.this_residual
@@ -5810,7 +5810,7 @@ l_int|0
 suffix:semicolon
 id|id
 OL
-id|NUMBER
+id|ARRAY_SIZE
 c_func
 (paren
 id|data-&gt;Sync
@@ -5986,7 +5986,7 @@ suffix:semicolon
 )brace
 id|thislength
 op_assign
-id|MIN
+id|min
 c_func
 (paren
 id|thislength

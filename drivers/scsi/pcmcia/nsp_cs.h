@@ -7,12 +7,8 @@ multiline_comment|/* for debugging */
 singleline_comment|//#define NSP_DEBUG 9
 multiline_comment|/*&n;#define static&n;#define inline&n;*/
 multiline_comment|/************************************&n; * Some useful macros...&n; */
-DECL|macro|NUMBER
-mdefine_line|#define NUMBER(arr) ((int) (sizeof(arr) / sizeof(arr[0]))) /* from XtNumber() in /usr/X11R6/include/X11/Intrinsic.h */
 DECL|macro|BIT
 mdefine_line|#define BIT(x)      (1L &lt;&lt; (x))
-DECL|macro|MIN
-mdefine_line|#define MIN(a,b)    ((a) &gt; (b) ? (b) : (a))
 multiline_comment|/* SCSI initiator must be ID 7 */
 DECL|macro|NSP_INITIATOR_ID
 mdefine_line|#define NSP_INITIATOR_ID  7
