@@ -1876,7 +1876,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;rtasd: no RTAS on system&bslash;n&quot;
+l_string|&quot;rtasd: no event-scan on system&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
