@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Adaptec AIC79xx device driver for Linux.&n; *&n; * $Id: //depot/aic7xxx/linux/drivers/scsi/aic7xxx/aic79xx_osm.c#147 $&n; *&n; * --------------------------------------------------------------------------&n; * Copyright (c) 1994-2000 Justin T. Gibbs.&n; * Copyright (c) 1997-1999 Doug Ledford&n; * Copyright (c) 2000-2003 Adaptec Inc.&n; * All rights reserved.&n; *&n; * Redistribution and use in source and binary forms, with or without&n; * modification, are permitted provided that the following conditions&n; * are met:&n; * 1. Redistributions of source code must retain the above copyright&n; *    notice, this list of conditions, and the following disclaimer,&n; *    without modification.&n; * 2. Redistributions in binary form must reproduce at minimum a disclaimer&n; *    substantially similar to the &quot;NO WARRANTY&quot; disclaimer below&n; *    (&quot;Disclaimer&quot;) and any redistribution must be conditioned upon&n; *    including a substantially similar Disclaimer requirement for further&n; *    binary redistribution.&n; * 3. Neither the names of the above-listed copyright holders nor the names&n; *    of any contributors may be used to endorse or promote products derived&n; *    from this software without specific prior written permission.&n; *&n; * Alternatively, this software may be distributed under the terms of the&n; * GNU General Public License (&quot;GPL&quot;) version 2 as published by the Free&n; * Software Foundation.&n; *&n; * NO WARRANTY&n; * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS&n; * &quot;AS IS&quot; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT&n; * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR&n; * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT&n; * HOLDERS OR CONTRIBUTORS BE LIABLE FOR SPECIAL, EXEMPLARY, OR CONSEQUENTIAL&n; * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS&n; * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)&n; * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,&n; * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING&n; * IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE&n; * POSSIBILITY OF SUCH DAMAGES.&n; */
+multiline_comment|/*&n; * Adaptec AIC79xx device driver for Linux.&n; *&n; * $Id: //depot/aic7xxx/linux/drivers/scsi/aic7xxx/aic79xx_osm.c#148 $&n; *&n; * --------------------------------------------------------------------------&n; * Copyright (c) 1994-2000 Justin T. Gibbs.&n; * Copyright (c) 1997-1999 Doug Ledford&n; * Copyright (c) 2000-2003 Adaptec Inc.&n; * All rights reserved.&n; *&n; * Redistribution and use in source and binary forms, with or without&n; * modification, are permitted provided that the following conditions&n; * are met:&n; * 1. Redistributions of source code must retain the above copyright&n; *    notice, this list of conditions, and the following disclaimer,&n; *    without modification.&n; * 2. Redistributions in binary form must reproduce at minimum a disclaimer&n; *    substantially similar to the &quot;NO WARRANTY&quot; disclaimer below&n; *    (&quot;Disclaimer&quot;) and any redistribution must be conditioned upon&n; *    including a substantially similar Disclaimer requirement for further&n; *    binary redistribution.&n; * 3. Neither the names of the above-listed copyright holders nor the names&n; *    of any contributors may be used to endorse or promote products derived&n; *    from this software without specific prior written permission.&n; *&n; * Alternatively, this software may be distributed under the terms of the&n; * GNU General Public License (&quot;GPL&quot;) version 2 as published by the Free&n; * Software Foundation.&n; *&n; * NO WARRANTY&n; * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS&n; * &quot;AS IS&quot; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT&n; * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR&n; * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT&n; * HOLDERS OR CONTRIBUTORS BE LIABLE FOR SPECIAL, EXEMPLARY, OR CONSEQUENTIAL&n; * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS&n; * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)&n; * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,&n; * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING&n; * IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE&n; * POSSIBILITY OF SUCH DAMAGES.&n; */
 macro_line|#include &quot;aic79xx_osm.h&quot;
 macro_line|#include &quot;aic79xx_inline.h&quot;
 macro_line|#include &lt;scsi/scsicam.h&gt;
@@ -67,6 +67,13 @@ l_int|NULL
 comma
 l_int|NULL
 )brace
+suffix:semicolon
+macro_line|#endif
+macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,5,0)
+multiline_comment|/* For dynamic sglist size calculation. */
+DECL|variable|ahd_linux_nseg
+id|u_int
+id|ahd_linux_nseg
 suffix:semicolon
 macro_line|#endif
 multiline_comment|/*&n; * Bucket size for counting good commands in between bad ones.&n; */
@@ -648,6 +655,14 @@ r_struct
 id|ahd_softc
 op_star
 id|ahd
+)paren
+suffix:semicolon
+r_static
+r_void
+id|ahd_linux_size_nseg
+c_func
+(paren
+r_void
 )paren
 suffix:semicolon
 r_static
@@ -2559,6 +2574,133 @@ id|Scsi_Cmnd
 op_star
 )paren
 suffix:semicolon
+multiline_comment|/*&n; * Calculate a safe value for AHD_NSEG (as expressed through ahd_linux_nseg).&n; *&n; * In pre-2.5.X...&n; * The midlayer allocates an S/G array dynamically when a command is issued&n; * using SCSI malloc.  This array, which is in an OS dependent format that&n; * must later be copied to our private S/G list, is sized to house just the&n; * number of segments needed for the current transfer.  Since the code that&n; * sizes the SCSI malloc pool does not take into consideration fragmentation&n; * of the pool, executing transactions numbering just a fraction of our&n; * concurrent transaction limit with SG list lengths aproaching AHC_NSEG will&n; * quickly depleat the SCSI malloc pool of usable space.  Unfortunately, the&n; * mid-layer does not properly handle this scsi malloc failures for the S/G&n; * array and the result can be a lockup of the I/O subsystem.  We try to size&n; * our S/G list so that it satisfies our drivers allocation requirements in&n; * addition to avoiding fragmentation of the SCSI malloc pool.&n; */
+r_static
+r_void
+DECL|function|ahd_linux_size_nseg
+id|ahd_linux_size_nseg
+c_func
+(paren
+r_void
+)paren
+(brace
+macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,5,0)
+id|u_int
+id|cur_size
+suffix:semicolon
+id|u_int
+id|best_size
+suffix:semicolon
+multiline_comment|/*&n;&t; * The SCSI allocator rounds to the nearest 512 bytes&n;&t; * an cannot allocate across a page boundary.  Our algorithm&n;&t; * is to start at 1K of scsi malloc space per-command and&n;&t; * loop through all factors of the PAGE_SIZE and pick the best.&n;&t; */
+id|best_size
+op_assign
+l_int|0
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|cur_size
+op_assign
+l_int|1024
+suffix:semicolon
+id|cur_size
+op_le
+id|PAGE_SIZE
+suffix:semicolon
+id|cur_size
+op_mul_assign
+l_int|2
+)paren
+(brace
+id|u_int
+id|nseg
+suffix:semicolon
+id|nseg
+op_assign
+id|cur_size
+op_div
+r_sizeof
+(paren
+r_struct
+id|scatterlist
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|nseg
+OL
+id|AHD_LINUX_MIN_NSEG
+)paren
+r_continue
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|best_size
+op_eq
+l_int|0
+)paren
+(brace
+id|best_size
+op_assign
+id|cur_size
+suffix:semicolon
+id|ahd_linux_nseg
+op_assign
+id|nseg
+suffix:semicolon
+)brace
+r_else
+(brace
+id|u_int
+id|best_rem
+suffix:semicolon
+id|u_int
+id|cur_rem
+suffix:semicolon
+multiline_comment|/*&n;&t;&t;&t; * Compare the traits of the current &quot;best_size&quot;&n;&t;&t;&t; * with the current size to determine if the&n;&t;&t;&t; * current size is a better size.&n;&t;&t;&t; */
+id|best_rem
+op_assign
+id|best_size
+op_mod
+r_sizeof
+(paren
+r_struct
+id|scatterlist
+)paren
+suffix:semicolon
+id|cur_rem
+op_assign
+id|cur_size
+op_mod
+r_sizeof
+(paren
+r_struct
+id|scatterlist
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|cur_rem
+OL
+id|best_rem
+)paren
+(brace
+id|best_size
+op_assign
+id|cur_size
+suffix:semicolon
+id|ahd_linux_nseg
+op_assign
+id|nseg
+suffix:semicolon
+)brace
+)brace
+)brace
+macro_line|#endif
+)brace
 multiline_comment|/*&n; * Try to detect an Adaptec 79XX controller.&n; */
 r_static
 r_int
@@ -2628,6 +2770,12 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/*&n;&t; * Determine an appropriate size for our Scatter Gatther lists.&n;&t; */
+id|ahd_linux_size_nseg
+c_func
+(paren
+)paren
+suffix:semicolon
 macro_line|#ifdef MODULE
 multiline_comment|/*&n;&t; * If we&squot;ve been passed any parameters, process them now.&n;&t; */
 r_if
@@ -5955,11 +6103,6 @@ op_minus
 l_int|1
 comma
 dot
-id|sg_tablesize
-op_assign
-id|AHD_NSEG
-comma
-dot
 id|cmd_per_lun
 op_assign
 l_int|2
@@ -7977,6 +8120,10 @@ suffix:semicolon
 id|host-&gt;max_channel
 op_assign
 l_int|0
+suffix:semicolon
+id|host-&gt;sg_tablesize
+op_assign
+id|AHD_NSEG
 suffix:semicolon
 id|ahd_set_unit
 c_func
