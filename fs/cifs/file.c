@@ -494,6 +494,13 @@ id|pCifsFile-&gt;pid
 op_assign
 id|current-&gt;pid
 suffix:semicolon
+id|init_MUTEX
+c_func
+(paren
+op_amp
+id|pCifsFile-&gt;fh_sem
+)paren
+suffix:semicolon
 id|pCifsFile-&gt;pfile
 op_assign
 id|file
@@ -6680,6 +6687,13 @@ suffix:semicolon
 id|cifsFile-&gt;invalidHandle
 op_assign
 id|FALSE
+suffix:semicolon
+id|init_MUTEX
+c_func
+(paren
+op_amp
+id|cifsFile-&gt;fh_sem
+)paren
 suffix:semicolon
 )brace
 r_else

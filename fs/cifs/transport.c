@@ -829,6 +829,14 @@ suffix:semicolon
 )brace
 multiline_comment|/* else ok - we are setting up session */
 )brace
+multiline_comment|/* make sure that we sign in the same order that we send on this socket &n;&t;&t;and avoid races inside tcp sendmsg code that could cause corruption&n;&t;&t;of smb data */
+id|down
+c_func
+(paren
+op_amp
+id|ses-&gt;server-&gt;tcpSem
+)paren
+suffix:semicolon
 id|midQ
 op_assign
 id|AllocMidQEntry
@@ -847,6 +855,13 @@ op_eq
 l_int|NULL
 )paren
 (brace
+id|up
+c_func
+(paren
+op_amp
+id|ses-&gt;server-&gt;tcpSem
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|EIO
@@ -864,6 +879,13 @@ op_minus
 l_int|4
 )paren
 (brace
+id|up
+c_func
+(paren
+op_amp
+id|ses-&gt;server-&gt;tcpSem
+)paren
+suffix:semicolon
 id|cERROR
 c_func
 (paren
@@ -939,6 +961,13 @@ op_amp
 (paren
 id|ses-&gt;server-&gt;sockAddr
 )paren
+)paren
+suffix:semicolon
+id|up
+c_func
+(paren
+op_amp
+id|ses-&gt;server-&gt;tcpSem
 )paren
 suffix:semicolon
 r_if

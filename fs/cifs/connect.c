@@ -5130,6 +5130,13 @@ id|srvTcp-&gt;tcpStatus
 op_assign
 id|CifsGood
 suffix:semicolon
+id|init_MUTEX
+c_func
+(paren
+op_amp
+id|srvTcp-&gt;tcpSem
+)paren
+suffix:semicolon
 id|kernel_thread
 c_func
 (paren
