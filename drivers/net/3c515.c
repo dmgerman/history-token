@@ -2344,6 +2344,15 @@ id|cards_found
 op_increment
 )paren
 suffix:semicolon
+id|SET_NETDEV_DEV
+c_func
+(paren
+id|dev
+comma
+op_amp
+id|idev-&gt;dev
+)paren
+suffix:semicolon
 id|pnp_cards
 op_increment
 suffix:semicolon

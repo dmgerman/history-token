@@ -4846,6 +4846,14 @@ dot
 id|st_name
 )paren
 suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;%s: please compile with -fno-common&bslash;n&quot;
+comma
+id|mod-&gt;name
+)paren
+suffix:semicolon
 id|ret
 op_assign
 op_minus
@@ -7955,6 +7963,21 @@ id|strindex
 )braket
 dot
 id|sh_addr
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|setupindex
+)paren
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;%s: Ignoring new-style &quot;
+l_string|&quot;parameters in presence of obsolete ones&bslash;n&quot;
+comma
+id|mod-&gt;name
 )paren
 suffix:semicolon
 )brace

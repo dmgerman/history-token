@@ -1193,7 +1193,7 @@ suffix:semicolon
 )brace
 DECL|function|jfs_direct_IO
 r_static
-r_int
+id|ssize_t
 id|jfs_direct_IO
 c_func
 (paren

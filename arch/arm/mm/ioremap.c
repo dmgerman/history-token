@@ -2,8 +2,7 @@ multiline_comment|/*&n; *  linux/arch/arm/mm/ioremap.c&n; *&n; * Re-map IO memor
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/vmalloc.h&gt;
-macro_line|#include &lt;asm/page.h&gt;
-macro_line|#include &lt;asm/pgalloc.h&gt;
+macro_line|#include &lt;asm/cacheflush.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/tlbflush.h&gt;
 DECL|function|remap_area_pte

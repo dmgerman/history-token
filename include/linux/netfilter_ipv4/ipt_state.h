@@ -5,6 +5,8 @@ DECL|macro|IPT_STATE_BIT
 mdefine_line|#define IPT_STATE_BIT(ctinfo) (1 &lt;&lt; ((ctinfo)%IP_CT_IS_REPLY+1))
 DECL|macro|IPT_STATE_INVALID
 mdefine_line|#define IPT_STATE_INVALID (1 &lt;&lt; 0)
+DECL|macro|IPT_STATE_UNTRACKED
+mdefine_line|#define IPT_STATE_UNTRACKED (1 &lt;&lt; (IP_CT_NUMBER + 1))
 DECL|struct|ipt_state_info
 r_struct
 id|ipt_state_info

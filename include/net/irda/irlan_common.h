@@ -647,13 +647,5 @@ op_star
 id|len
 )paren
 suffix:semicolon
-r_void
-id|print_ret_code
-c_func
-(paren
-id|__u8
-id|code
-)paren
-suffix:semicolon
 macro_line|#endif
 eof

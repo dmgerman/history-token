@@ -21,7 +21,7 @@ macro_line|#include &lt;net/irda/irda.h&gt;
 macro_line|#include &lt;net/irda/irmod.h&gt;
 macro_line|#include &lt;net/irda/wrapper.h&gt;
 macro_line|#include &lt;net/irda/irda_device.h&gt;
-macro_line|#include &quot;net/irda/au1000_ircc.h&quot;
+macro_line|#include &quot;au1000_ircc.h&quot;
 r_static
 r_int
 id|au1k_irda_net_init

@@ -432,7 +432,7 @@ mdefine_line|#define SI_ASYNCIO&t;-2&t;/* sent by AIO completion */
 DECL|macro|SI_TIMER
 mdefine_line|#define SI_TIMER __SI_CODE(__SI_TIMER,-3) /* sent by timer expiration */
 DECL|macro|SI_MESGQ
-mdefine_line|#define SI_MESGQ&t;-4&t;/* sent by real time mesq state change */
+mdefine_line|#define SI_MESGQ __SI_CODE(__SI_MESGQ,-4) /* sent by real time mesq state change */
 macro_line|#ifdef __KERNEL__
 multiline_comment|/*&n; * Duplicated here because of &lt;asm-generic/siginfo.h&gt; braindamage ...&n; */
 macro_line|#include &lt;linux/string.h&gt;

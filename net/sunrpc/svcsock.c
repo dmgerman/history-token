@@ -2300,6 +2300,26 @@ id|err
 )paren
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|skb-&gt;stamp.tv_sec
+op_eq
+l_int|0
+)paren
+(brace
+id|skb-&gt;stamp.tv_sec
+op_assign
+id|xtime.tv_sec
+suffix:semicolon
+id|skb-&gt;stamp.tv_usec
+op_assign
+id|xtime.tv_nsec
+op_star
+l_int|1000
+suffix:semicolon
+multiline_comment|/* Don&squot;t enable netstamp, sunrpc doesn&squot;t &n;&t;&t;   need that much accuracy */
+)brace
 id|svsk-&gt;sk_sk-&gt;sk_stamp
 op_assign
 id|skb-&gt;stamp
@@ -4946,7 +4966,7 @@ id|PF_FREEZE
 id|refrigerator
 c_func
 (paren
-id|PF_IOTHREAD
+id|PF_FREEZE
 )paren
 suffix:semicolon
 id|spin_lock_bh

@@ -784,6 +784,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;%s: Ariadne at 0x%08lx, Ethernet Address &quot;
 l_string|&quot;%02x:%02x:%02x:%02x:%02x:%02x&bslash;n&quot;
 comma
@@ -919,6 +920,7 @@ l_int|0x00000003
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;ariadne_open: Couldn&squot;t find AMD Ethernet Chip&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -942,7 +944,9 @@ l_int|0x00003000
 id|printk
 c_func
 (paren
-l_string|&quot;ariadne_open: Couldn&squot;t find Am79C960 (Wrong part number = %ld)&bslash;n&quot;
+id|KERN_WARNING
+l_string|&quot;ariadne_open: Couldn&squot;t find Am79C960 (Wrong part &quot;
+l_string|&quot;number = %ld)&bslash;n&quot;
 comma
 (paren
 id|version
@@ -962,6 +966,7 @@ macro_line|#if 0
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;ariadne_open: Am79C960 (PCnet-ISA) Revision %ld&bslash;n&quot;
 comma
 (paren
@@ -1507,6 +1512,7 @@ macro_line|#if 0
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;TX Entry %2d at %p, Buf at %p&bslash;n&quot;
 comma
 id|i
@@ -1634,6 +1640,7 @@ macro_line|#if 0
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;RX Entry %2d at %p, Buf at %p&bslash;n&quot;
 comma
 id|i
@@ -1724,6 +1731,7 @@ l_int|1
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;%s: Shutting down ethercard, status was %2.2x.&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -1734,6 +1742,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;%s: %lu packets missed&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -1883,6 +1892,7 @@ l_int|NULL
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;ariadne_interrupt(): irq for unknown device.&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -1975,6 +1985,7 @@ l_int|5
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;%s: interrupt  csr0=%#2.2x new csr=%#2.2x.&quot;
 comma
 id|dev-&gt;name
@@ -2360,6 +2371,7 @@ multiline_comment|/* Remove this verbosity later! */
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;%s: Tx FIFO error! Status %4.4x.&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -2412,7 +2424,9 @@ id|TX_RING_SIZE
 id|printk
 c_func
 (paren
-l_string|&quot;out-of-sync dirty pointer, %d vs. %d, full=%d.&bslash;n&quot;
+id|KERN_ERR
+l_string|&quot;out-of-sync dirty pointer, %d vs. %d, &quot;
+l_string|&quot;full=%d.&bslash;n&quot;
 comma
 id|dirty_tx
 comma
@@ -2514,7 +2528,9 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;%s: Bus master arbitration failure, status %4.4x.&bslash;n&quot;
+id|KERN_ERR
+l_string|&quot;%s: Bus master arbitration failure, status &quot;
+l_string|&quot;%4.4x.&bslash;n&quot;
 comma
 id|dev-&gt;name
 comma
@@ -2559,6 +2575,7 @@ l_int|4
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;%s: exiting interrupt, csr%d=%#4.4x.&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -2696,6 +2713,7 @@ multiline_comment|/* PCnet-ISA Controller Status */
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;%s: ariadne_start_xmit() called, csr0 %4.4x.&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -2748,6 +2766,7 @@ macro_line|#if 0
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;TX pkt type 0x%04x from &quot;
 comma
 (paren
@@ -2971,6 +2990,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;%04x:&quot;
 comma
 id|i
@@ -3098,7 +3118,9 @@ macro_line|#if 0
 id|printk
 c_func
 (paren
-l_string|&quot;*** Subtracting TX_RING_SIZE from cur_tx (%d) and dirty_tx (%d)&bslash;n&quot;
+id|KERN_DEBUG
+l_string|&quot;*** Subtracting TX_RING_SIZE from cur_tx (%d) and &quot;
+l_string|&quot;dirty_tx (%d)&bslash;n&quot;
 comma
 id|priv-&gt;cur_tx
 comma
@@ -3365,6 +3387,7 @@ l_int|NULL
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;%s: Memory squeeze, deferring packet.&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -3492,6 +3515,7 @@ macro_line|#if 0
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;RX pkt type 0x%04x from &quot;
 comma
 (paren
@@ -3819,6 +3843,7 @@ multiline_comment|/* Log any net taps. */
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;%s: Promiscuous mode enabled.&bslash;n&quot;
 comma
 id|dev-&gt;name

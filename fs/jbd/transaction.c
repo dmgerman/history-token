@@ -3126,7 +3126,7 @@ c_cond
 (paren
 id|jh-&gt;b_transaction
 op_eq
-id|handle-&gt;h_transaction
+id|transaction
 op_logical_and
 id|jh-&gt;b_jlist
 op_eq
@@ -3155,27 +3155,10 @@ r_goto
 id|out_unlock_bh
 suffix:semicolon
 )brace
-id|spin_lock
-c_func
-(paren
-op_amp
-id|journal-&gt;j_list_lock
-)paren
-suffix:semicolon
 id|set_buffer_jbddirty
 c_func
 (paren
 id|bh
-)paren
-suffix:semicolon
-id|J_ASSERT_JH
-c_func
-(paren
-id|jh
-comma
-id|jh-&gt;b_transaction
-op_ne
-l_int|NULL
 )paren
 suffix:semicolon
 multiline_comment|/* &n;&t; * Metadata already on the current transaction list doesn&squot;t&n;&t; * need to be filed.  Metadata on another transaction&squot;s list must&n;&t; * be committing, and will be refiled once the commit completes:&n;&t; * leave it alone for now. &n;&t; */
@@ -3216,9 +3199,8 @@ id|transaction
 )paren
 suffix:semicolon
 multiline_comment|/* And this case is illegal: we can&squot;t reuse another&n;&t;&t; * transaction&squot;s data buffer, ever. */
-multiline_comment|/* FIXME: writepage() should be journalled */
 r_goto
-id|out_unlock_list
+id|out_unlock_bh
 suffix:semicolon
 )brace
 multiline_comment|/* That test should have eliminated the following case: */
@@ -3240,6 +3222,13 @@ comma
 l_string|&quot;file as BJ_Metadata&quot;
 )paren
 suffix:semicolon
+id|spin_lock
+c_func
+(paren
+op_amp
+id|journal-&gt;j_list_lock
+)paren
+suffix:semicolon
 id|__journal_file_buffer
 c_func
 (paren
@@ -3250,8 +3239,6 @@ comma
 id|BJ_Metadata
 )paren
 suffix:semicolon
-id|out_unlock_list
-suffix:colon
 id|spin_unlock
 c_func
 (paren

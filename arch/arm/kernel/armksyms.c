@@ -19,7 +19,6 @@ macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#include &lt;asm/elf.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
-macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/proc-fns.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
@@ -251,14 +250,6 @@ op_star
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * This has a special calling convention; it doesn&squot;t&n; * modify any of the usual registers, except for LR.&n; */
-r_extern
-r_void
-id|__do_softirq
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 DECL|macro|EXPORT_SYMBOL_ALIAS
 mdefine_line|#define EXPORT_SYMBOL_ALIAS(sym,orig)&t;&t;&bslash;&n; const struct kernel_symbol __ksymtab_##sym&t;&bslash;&n;  __attribute__((section(&quot;__ksymtab&quot;))) =&t;&bslash;&n;    { (unsigned long)&amp;orig, #sym };
 multiline_comment|/*&n; * floating point math emulator support.&n; * These symbols will never change their calling convention...&n; */
@@ -284,13 +275,6 @@ c_func
 id|fp_send_sig
 comma
 id|send_sig
-)paren
-suffix:semicolon
-DECL|variable|__do_softirq
-id|EXPORT_SYMBOL_NOVERS
-c_func
-(paren
-id|__do_softirq
 )paren
 suffix:semicolon
 DECL|variable|__backtrace

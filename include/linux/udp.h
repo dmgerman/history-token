@@ -31,6 +31,8 @@ mdefine_line|#define UDP_CORK&t;1&t;/* Never send partially complete segments */
 DECL|macro|UDP_ENCAP
 mdefine_line|#define UDP_ENCAP&t;100&t;/* Set the socket to accept encapsulated packets */
 multiline_comment|/* UDP encapsulation types */
+DECL|macro|UDP_ENCAP_ESPINUDP_NON_IKE
+mdefine_line|#define UDP_ENCAP_ESPINUDP_NON_IKE&t;1 /* draft-ietf-ipsec-nat-t-ike-00/01 */
 DECL|macro|UDP_ENCAP_ESPINUDP
 mdefine_line|#define UDP_ENCAP_ESPINUDP&t;2 /* draft-ietf-ipsec-udp-encaps-06 */
 macro_line|#ifdef __KERNEL__

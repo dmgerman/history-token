@@ -1480,6 +1480,15 @@ id|pci_irq_line
 )paren
 )paren
 (brace
+id|SET_NETDEV_DEV
+c_func
+(paren
+id|dev
+comma
+op_amp
+id|pdev-&gt;dev
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon

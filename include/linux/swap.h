@@ -536,16 +536,6 @@ id|page
 )paren
 suffix:semicolon
 macro_line|#endif /* CONFIG_MMU */
-r_extern
-r_void
-id|swap_unplug_io_fn
-c_func
-(paren
-r_struct
-id|backing_dev_info
-op_star
-)paren
-suffix:semicolon
 macro_line|#ifdef CONFIG_SWAP
 multiline_comment|/* linux/mm/page_io.c */
 r_extern
@@ -823,8 +813,15 @@ id|page
 op_star
 )paren
 suffix:semicolon
+r_extern
+r_void
+id|swap_unplug_io_fn
+c_func
+(paren
 r_struct
-id|backing_dev_info
+id|page
+op_star
+)paren
 suffix:semicolon
 r_extern
 r_struct
@@ -878,6 +875,8 @@ DECL|macro|__delete_from_swap_cache
 mdefine_line|#define __delete_from_swap_cache(p)&t;&t;/*NOTHING*/
 DECL|macro|delete_from_swap_cache
 mdefine_line|#define delete_from_swap_cache(p)&t;&t;/*NOTHING*/
+DECL|macro|swap_unplug_io_fn
+mdefine_line|#define swap_unplug_io_fn(p)&t;&t;&t;/*NOTHING*/
 DECL|function|remove_exclusive_swap_page
 r_static
 r_inline

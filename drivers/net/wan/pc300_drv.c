@@ -890,7 +890,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;#CH%d: f_bd = %d(0x%08x), n_bd = %d(0x%08x)&bslash;n&quot;
+l_string|&quot;#CH%d: f_bd = %d(0x%08zx), n_bd = %d(0x%08zx)&bslash;n&quot;
 comma
 id|ch
 comma

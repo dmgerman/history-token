@@ -233,9 +233,8 @@ DECL|macro|MLD2_ALLOW_NEW_SOURCES
 mdefine_line|#define MLD2_ALLOW_NEW_SOURCES&t;5
 DECL|macro|MLD2_BLOCK_OLD_SOURCES
 mdefine_line|#define MLD2_BLOCK_OLD_SOURCES&t;6
-multiline_comment|/* this must be an IANA-assigned value; 206 for testing only */
 DECL|macro|ICMPV6_MLD2_REPORT
-mdefine_line|#define ICMPV6_MLD2_REPORT&t;&t;206
+mdefine_line|#define ICMPV6_MLD2_REPORT&t;&t;143
 DECL|macro|MLD2_ALL_MCR_INIT
 mdefine_line|#define MLD2_ALL_MCR_INIT { { { 0xff,0x02,0,0,0,0,0,0,0,0,0,0,0,0,0,0x16 } } }
 multiline_comment|/*&n; *&t;Codes for Destination Unreachable&n; */

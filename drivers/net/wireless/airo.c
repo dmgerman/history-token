@@ -3257,6 +3257,9 @@ comma
 id|u8
 op_star
 id|mac
+comma
+r_int
+id|lock
 )paren
 suffix:semicolon
 r_static
@@ -6691,6 +6694,9 @@ id|wkr
 comma
 r_int
 id|temp
+comma
+r_int
+id|lock
 )paren
 (brace
 r_int
@@ -6716,7 +6722,7 @@ op_star
 id|wkr
 )paren
 comma
-l_int|1
+id|lock
 )paren
 suffix:semicolon
 id|wkr-&gt;len
@@ -6988,6 +6994,9 @@ comma
 id|SsidRid
 op_star
 id|pssidr
+comma
+r_int
+id|lock
 )paren
 (brace
 r_int
@@ -7061,7 +7070,7 @@ r_sizeof
 id|ssidr
 )paren
 comma
-l_int|1
+id|lock
 )paren
 suffix:semicolon
 r_return
@@ -7787,6 +7796,9 @@ comma
 id|APListRid
 op_star
 id|aplr
+comma
+r_int
+id|lock
 )paren
 (brace
 r_int
@@ -7817,7 +7829,7 @@ op_star
 id|aplr
 )paren
 comma
-l_int|1
+id|lock
 )paren
 suffix:semicolon
 r_return
@@ -7838,6 +7850,9 @@ comma
 id|CapabilityRid
 op_star
 id|capr
+comma
+r_int
+id|lock
 )paren
 (brace
 r_int
@@ -7858,7 +7873,7 @@ op_star
 id|capr
 )paren
 comma
-l_int|1
+id|lock
 )paren
 suffix:semicolon
 id|u16
@@ -9788,6 +9803,22 @@ op_amp
 id|ai-&gt;flags
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|ai-&gt;power
+)paren
+(brace
+id|up
+c_func
+(paren
+op_amp
+id|ai-&gt;sem
+)paren
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
 id|readStatsRid
 c_func
 (paren
@@ -12091,6 +12122,9 @@ r_struct
 id|net_device
 op_star
 id|dev
+comma
+r_int
+id|lock
 )paren
 (brace
 r_struct
@@ -12103,6 +12137,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|lock
+op_logical_and
 id|down_interruptible
 c_func
 (paren
@@ -12158,6 +12194,11 @@ op_div
 l_int|5
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|lock
+)paren
 id|up
 c_func
 (paren
@@ -12482,6 +12523,23 @@ id|dev-&gt;base_addr
 op_assign
 id|port
 suffix:semicolon
+multiline_comment|/* what is with PCMCIA ??? */
+r_if
+c_cond
+(paren
+id|pci
+)paren
+(brace
+id|SET_NETDEV_DEV
+c_func
+(paren
+id|dev
+comma
+op_amp
+id|pci-&gt;dev
+)paren
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -12497,6 +12555,8 @@ id|ai-&gt;flags
 id|reset_mpi_card
 (paren
 id|dev
+comma
+l_int|1
 )paren
 suffix:semicolon
 id|rc
@@ -12629,6 +12689,8 @@ c_func
 id|ai
 comma
 id|dev-&gt;dev_addr
+comma
+l_int|1
 )paren
 op_ne
 id|SUCCESS
@@ -13109,6 +13171,8 @@ c_cond
 id|reset_mpi_card
 (paren
 id|dev
+comma
+l_int|1
 )paren
 )paren
 r_return
@@ -13124,6 +13188,8 @@ c_func
 id|ai
 comma
 id|dev-&gt;dev_addr
+comma
+l_int|1
 )paren
 op_ne
 id|SUCCESS
@@ -13425,7 +13491,7 @@ id|PF_FREEZE
 id|refrigerator
 c_func
 (paren
-id|PF_IOTHREAD
+id|PF_FREEZE
 )paren
 suffix:semicolon
 r_if
@@ -16523,6 +16589,9 @@ comma
 id|u8
 op_star
 id|mac
+comma
+r_int
+id|lock
 )paren
 (brace
 id|Cmd
@@ -16595,6 +16664,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|lock
+op_logical_and
 id|down_interruptible
 c_func
 (paren
@@ -16623,6 +16694,11 @@ op_ne
 id|SUCCESS
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|lock
+)paren
 id|up
 c_func
 (paren
@@ -16679,6 +16755,11 @@ op_ne
 id|SUCCESS
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|lock
+)paren
 id|up
 c_func
 (paren
@@ -16735,6 +16816,11 @@ l_string|&quot;airo: Doing AUX bap_reads&bslash;n&quot;
 suffix:semicolon
 )brace
 )brace
+r_if
+c_cond
+(paren
+id|lock
+)paren
 id|up
 c_func
 (paren
@@ -16798,7 +16884,7 @@ c_func
 (paren
 id|ai
 comma
-l_int|1
+id|lock
 )paren
 suffix:semicolon
 r_if
@@ -16820,6 +16906,8 @@ id|ai
 comma
 op_amp
 id|cap_rid
+comma
+id|lock
 )paren
 suffix:semicolon
 r_if
@@ -16891,7 +16979,7 @@ r_sizeof
 id|rssi_rid
 )paren
 comma
-l_int|1
+id|lock
 )paren
 suffix:semicolon
 r_if
@@ -17304,7 +17392,7 @@ c_func
 (paren
 id|ai
 comma
-l_int|1
+id|lock
 )paren
 suffix:semicolon
 r_if
@@ -17336,6 +17424,8 @@ id|ai
 comma
 op_amp
 id|mySsid
+comma
+id|lock
 )paren
 suffix:semicolon
 r_if
@@ -17359,7 +17449,7 @@ comma
 op_amp
 id|rsp
 comma
-l_int|1
+id|lock
 )paren
 suffix:semicolon
 r_if
@@ -17407,6 +17497,8 @@ op_amp
 id|wkr
 comma
 l_int|1
+comma
+id|lock
 )paren
 suffix:semicolon
 r_if
@@ -17449,6 +17541,8 @@ op_amp
 id|wkr
 comma
 l_int|0
+comma
+id|lock
 )paren
 suffix:semicolon
 )brace
@@ -21648,6 +21742,8 @@ id|apriv
 comma
 op_amp
 id|cap_rid
+comma
+l_int|1
 )paren
 suffix:semicolon
 id|i
@@ -24712,6 +24808,8 @@ id|ai
 comma
 op_amp
 id|SSID_rid
+comma
+l_int|1
 )paren
 suffix:semicolon
 id|enable_MAC
@@ -25031,6 +25129,8 @@ id|ai
 comma
 op_amp
 id|APList_rid
+comma
+l_int|1
 )paren
 suffix:semicolon
 id|enable_MAC
@@ -25153,6 +25253,8 @@ op_amp
 id|wkr
 comma
 l_int|1
+comma
+l_int|1
 )paren
 suffix:semicolon
 r_if
@@ -25204,6 +25306,8 @@ op_amp
 id|wkr
 comma
 l_int|0
+comma
+l_int|1
 )paren
 suffix:semicolon
 )brace
@@ -25965,6 +26069,8 @@ op_amp
 id|wkr
 comma
 l_int|1
+comma
+l_int|1
 )paren
 suffix:semicolon
 r_if
@@ -26043,6 +26149,8 @@ op_amp
 id|wkr
 comma
 l_int|0
+comma
+l_int|1
 )paren
 suffix:semicolon
 )brace
@@ -27877,6 +27985,7 @@ id|cmd
 )paren
 )paren
 suffix:semicolon
+multiline_comment|/* the lock will be released at the end of the resume callback */
 r_if
 c_cond
 (paren
@@ -27923,13 +28032,6 @@ id|cmd
 comma
 op_amp
 id|rsp
-)paren
-suffix:semicolon
-id|up
-c_func
-(paren
-op_amp
-id|ai-&gt;sem
 )paren
 suffix:semicolon
 r_return
@@ -27995,7 +28097,7 @@ c_cond
 (paren
 id|ai-&gt;power
 OG
-l_int|2
+l_int|1
 )paren
 (brace
 id|err
@@ -28004,6 +28106,8 @@ id|reset_mpi_card
 c_func
 (paren
 id|dev
+comma
+l_int|0
 )paren
 suffix:semicolon
 r_if
@@ -28048,6 +28152,8 @@ c_func
 id|ai
 comma
 id|dev-&gt;dev_addr
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|clear_bit
@@ -28122,7 +28228,7 @@ c_func
 (paren
 id|ai
 comma
-l_int|1
+l_int|0
 )paren
 suffix:semicolon
 id|schedule_timeout
@@ -28144,6 +28250,8 @@ c_func
 id|ai
 comma
 id|ai-&gt;SSID
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|kfree
@@ -28169,6 +28277,8 @@ c_func
 id|ai
 comma
 id|ai-&gt;APList
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|kfree
@@ -28187,7 +28297,7 @@ c_func
 (paren
 id|ai
 comma
-l_int|1
+l_int|0
 )paren
 suffix:semicolon
 id|enable_MAC
@@ -28198,7 +28308,7 @@ comma
 op_amp
 id|rsp
 comma
-l_int|1
+l_int|0
 )paren
 suffix:semicolon
 id|ai-&gt;power
@@ -28221,6 +28331,13 @@ id|enable_interrupts
 c_func
 (paren
 id|ai
+)paren
+suffix:semicolon
+id|up
+c_func
+(paren
+op_amp
+id|ai-&gt;sem
 )paren
 suffix:semicolon
 r_return
@@ -28993,6 +29110,8 @@ id|local
 comma
 op_amp
 id|SSID_rid
+comma
+l_int|1
 )paren
 suffix:semicolon
 id|enable_MAC
@@ -29293,6 +29412,8 @@ id|local
 comma
 op_amp
 id|APList_rid
+comma
+l_int|1
 )paren
 suffix:semicolon
 id|enable_MAC
@@ -29608,6 +29729,8 @@ id|local
 comma
 op_amp
 id|cap_rid
+comma
+l_int|1
 )paren
 suffix:semicolon
 multiline_comment|/* Which type of value ? */
@@ -30672,6 +30795,8 @@ id|local
 comma
 op_amp
 id|cap_rid
+comma
+l_int|1
 )paren
 suffix:semicolon
 multiline_comment|/* Older firmware doesn&squot;t support this...&n;&t;if(!(cap_rid.softCap &amp; 2)) {&n;&t;&t;return -EOPNOTSUPP;&n;&t;} */
@@ -31081,6 +31206,8 @@ id|local
 comma
 op_amp
 id|cap_rid
+comma
+l_int|1
 )paren
 suffix:semicolon
 r_if
@@ -31285,6 +31412,8 @@ id|local
 comma
 op_amp
 id|cap_rid
+comma
+l_int|1
 )paren
 suffix:semicolon
 r_if
@@ -31822,6 +31951,8 @@ id|local
 comma
 op_amp
 id|cap_rid
+comma
+l_int|1
 )paren
 suffix:semicolon
 id|dwrq-&gt;length
@@ -34056,6 +34187,8 @@ id|local
 comma
 op_amp
 id|SSID_rid
+comma
+l_int|1
 )paren
 suffix:semicolon
 id|writeAPListRid
@@ -34065,6 +34198,8 @@ id|local
 comma
 op_amp
 id|APList_rid
+comma
+l_int|1
 )paren
 suffix:semicolon
 )brace
@@ -35493,9 +35628,12 @@ id|dev-&gt;priv
 suffix:semicolon
 r_int
 id|ridcode
-comma
+suffix:semicolon
+macro_line|#ifdef MICSUPPORT
+r_int
 id|enabled
 suffix:semicolon
+macro_line|#endif
 id|Resp
 id|rsp
 suffix:semicolon
@@ -37089,6 +37227,8 @@ c_func
 id|ai
 comma
 id|dev-&gt;dev_addr
+comma
+l_int|1
 )paren
 suffix:semicolon
 r_if

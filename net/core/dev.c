@@ -901,6 +901,19 @@ comma
 id|unit
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t; * If device already registered then return base of 1&n;&t; * to indicate not to probe for this interface&n;&t; */
+r_if
+c_cond
+(paren
+id|__dev_get_by_name
+c_func
+(paren
+id|name
+)paren
+)paren
+r_return
+l_int|1
+suffix:semicolon
 r_for
 c_loop
 (paren
@@ -2940,7 +2953,7 @@ id|packet_type
 op_star
 id|ptype
 suffix:semicolon
-id|do_gettimeofday
+id|net_timestamp
 c_func
 (paren
 op_amp
@@ -4589,7 +4602,7 @@ c_cond
 op_logical_neg
 id|skb-&gt;stamp.tv_sec
 )paren
-id|do_gettimeofday
+id|net_timestamp
 c_func
 (paren
 op_amp
@@ -5236,7 +5249,7 @@ c_cond
 op_logical_neg
 id|skb-&gt;stamp.tv_sec
 )paren
-id|do_gettimeofday
+id|net_timestamp
 c_func
 (paren
 op_amp
@@ -5981,6 +5994,7 @@ c_func
 (paren
 r_struct
 id|ifreq
+id|__user
 op_star
 id|arg
 )paren
@@ -6100,6 +6114,7 @@ id|dev_ifconf
 c_func
 (paren
 r_char
+id|__user
 op_star
 id|arg
 )paren
@@ -8390,6 +8405,7 @@ r_int
 id|cmd
 comma
 r_void
+id|__user
 op_star
 id|arg
 )paren
@@ -8426,6 +8442,7 @@ c_func
 (paren
 (paren
 r_char
+id|__user
 op_star
 )paren
 id|arg
@@ -8454,6 +8471,7 @@ c_func
 (paren
 r_struct
 id|ifreq
+id|__user
 op_star
 )paren
 id|arg

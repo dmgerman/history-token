@@ -3810,7 +3810,7 @@ id|PF_FREEZE
 id|refrigerator
 c_func
 (paren
-id|PF_IOTHREAD
+id|PF_FREEZE
 )paren
 suffix:semicolon
 id|prepare_to_wait

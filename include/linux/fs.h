@@ -712,7 +712,7 @@ r_int
 )paren
 suffix:semicolon
 DECL|member|direct_IO
-r_int
+id|ssize_t
 (paren
 op_star
 id|direct_IO
@@ -2502,12 +2502,6 @@ l_int|32
 )braket
 suffix:semicolon
 multiline_comment|/* Informational name */
-DECL|member|kobj
-r_struct
-id|kobject
-id|kobj
-suffix:semicolon
-multiline_comment|/* anchor for sysfs */
 DECL|member|s_fs_info
 r_void
 op_star
@@ -6384,7 +6378,7 @@ r_struct
 id|bio
 suffix:semicolon
 r_extern
-r_int
+r_void
 id|submit_bio
 c_func
 (paren
@@ -6974,7 +6968,7 @@ id|actor
 )paren
 suffix:semicolon
 )brace
-r_int
+id|ssize_t
 id|__blockdev_direct_IO
 c_func
 (paren
@@ -7023,7 +7017,7 @@ multiline_comment|/*&n; * For filesystems which need locking between buffered an
 DECL|function|blockdev_direct_IO
 r_static
 r_inline
-r_int
+id|ssize_t
 id|blockdev_direct_IO
 c_func
 (paren
@@ -7094,7 +7088,7 @@ suffix:semicolon
 DECL|function|blockdev_direct_IO_no_locking
 r_static
 r_inline
-r_int
+id|ssize_t
 id|blockdev_direct_IO_no_locking
 c_func
 (paren

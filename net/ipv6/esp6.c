@@ -1474,15 +1474,9 @@ op_ge
 id|elen
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|net_ratelimit
+id|LIMIT_NETDEBUG
 c_func
 (paren
-)paren
-)paren
-(brace
 id|printk
 c_func
 (paren
@@ -1495,8 +1489,8 @@ l_int|2
 comma
 id|elen
 )paren
+)paren
 suffix:semicolon
-)brace
 id|ret
 op_assign
 op_minus

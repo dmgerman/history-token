@@ -288,24 +288,6 @@ id|pDpa
 op_assign
 id|dev-&gt;priv
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|dev
-)paren
-(brace
-id|printk
-(paren
-id|KERN_ERR
-l_string|&quot;%s: remove non-existent device&bslash;n&quot;
-comma
-id|dev-&gt;name
-)paren
-suffix:semicolon
-r_return
-suffix:semicolon
-)brace
 id|RCResetIOP
 (paren
 id|dev

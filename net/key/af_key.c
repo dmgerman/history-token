@@ -9194,6 +9194,10 @@ id|pol-&gt;sadb_x_policy_id
 op_assign
 id|xp-&gt;index
 suffix:semicolon
+id|pol-&gt;sadb_x_policy_priority
+op_assign
+id|xp-&gt;priority
+suffix:semicolon
 r_for
 c_loop
 (paren
@@ -9677,6 +9681,10 @@ id|XFRM_POLICY_BLOCK
 suffix:colon
 id|XFRM_POLICY_ALLOW
 )paren
+suffix:semicolon
+id|xp-&gt;priority
+op_assign
+id|pol-&gt;sadb_x_policy_priority
 suffix:semicolon
 id|sa
 op_assign
@@ -13827,7 +13835,7 @@ r_uint64
 suffix:semicolon
 id|addr-&gt;sadb_address_exttype
 op_assign
-id|SADB_EXT_ADDRESS_SRC
+id|SADB_EXT_ADDRESS_DST
 suffix:semicolon
 id|addr-&gt;sadb_address_proto
 op_assign

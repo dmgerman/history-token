@@ -4858,21 +4858,6 @@ id|page
 )paren
 )paren
 (brace
-r_if
-c_cond
-(paren
-op_logical_neg
-id|PageUptodate
-c_func
-(paren
-id|page
-)paren
-)paren
-id|buffer_error
-c_func
-(paren
-)paren
-suffix:semicolon
 id|create_empty_buffers
 c_func
 (paren
@@ -5592,7 +5577,7 @@ suffix:semicolon
 multiline_comment|/*&n; * If the O_DIRECT write will extend the file then add this inode to the&n; * orphan list.  So recovery will truncate it back to the original size&n; * if the machine crashes during the write.&n; *&n; * If the O_DIRECT write is intantiating holes inside i_size and the machine&n; * crashes then stale disk data _may_ be exposed inside the file.&n; */
 DECL|function|ext3_direct_IO
 r_static
-r_int
+id|ssize_t
 id|ext3_direct_IO
 c_func
 (paren
@@ -5649,7 +5634,7 @@ id|handle
 op_assign
 l_int|NULL
 suffix:semicolon
-r_int
+id|ssize_t
 id|ret
 suffix:semicolon
 r_int

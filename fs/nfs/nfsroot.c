@@ -182,6 +182,7 @@ suffix:semicolon
 DECL|variable|tokens
 r_static
 id|match_table_t
+id|__initdata
 id|tokens
 op_assign
 (brace

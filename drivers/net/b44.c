@@ -6278,6 +6278,7 @@ op_star
 id|dev
 comma
 r_void
+id|__user
 op_star
 id|useraddr
 )paren
@@ -7431,12 +7432,14 @@ id|cmd
 (brace
 r_struct
 id|mii_ioctl_data
+id|__user
 op_star
 id|data
 op_assign
 (paren
 r_struct
 id|mii_ioctl_data
+id|__user
 op_star
 )paren
 op_amp
@@ -7469,6 +7472,7 @@ id|dev
 comma
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|ifr-&gt;ifr_data

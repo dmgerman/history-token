@@ -413,6 +413,32 @@ id|asoc
 suffix:semicolon
 )brace
 multiline_comment|/* Otherwise this is a UDP-style socket. */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|id
+op_logical_or
+(paren
+id|id
+op_eq
+(paren
+id|sctp_assoc_t
+)paren
+op_minus
+l_int|1
+)paren
+)paren
+r_return
+l_int|NULL
+suffix:semicolon
+id|spin_lock_bh
+c_func
+(paren
+op_amp
+id|sctp_assocs_id_lock
+)paren
+suffix:semicolon
 id|asoc
 op_assign
 (paren
@@ -420,19 +446,38 @@ r_struct
 id|sctp_association
 op_star
 )paren
+id|idr_find
+c_func
+(paren
+op_amp
+id|sctp_assocs_id
+comma
+(paren
+r_int
+)paren
 id|id
+)paren
+suffix:semicolon
+id|spin_unlock_bh
+c_func
+(paren
+op_amp
+id|sctp_assocs_id_lock
+)paren
 suffix:semicolon
 r_if
 c_cond
 (paren
 op_logical_neg
-id|sctp_assoc_valid
-c_func
-(paren
-id|sk
-comma
 id|asoc
+op_logical_or
+(paren
+id|asoc-&gt;base.sk
+op_ne
+id|sk
 )paren
+op_logical_or
+id|asoc-&gt;base.dead
 )paren
 r_return
 l_int|NULL
@@ -3165,7 +3210,7 @@ suffix:semicolon
 id|SCTP_DEBUG_PRINTK
 c_func
 (paren
-l_string|&quot;sctp_sendmsg(sk: %p, msg: %p, msg_len: %u)&bslash;n&quot;
+l_string|&quot;sctp_sendmsg(sk: %p, msg: %p, msg_len: %zu)&bslash;n&quot;
 comma
 id|sk
 comma
@@ -3383,7 +3428,7 @@ suffix:semicolon
 id|SCTP_DEBUG_PRINTK
 c_func
 (paren
-l_string|&quot;msg_len: %u, sinfo_flags: 0x%x&bslash;n&quot;
+l_string|&quot;msg_len: %zu, sinfo_flags: 0x%x&bslash;n&quot;
 comma
 id|msg_len
 comma
@@ -4661,7 +4706,7 @@ suffix:semicolon
 id|SCTP_DEBUG_PRINTK
 c_func
 (paren
-l_string|&quot;sctp_recvmsg(%s: %p, %s: %p, %s: %d, %s: %d, %s: &quot;
+l_string|&quot;sctp_recvmsg(%s: %p, %s: %p, %s: %zd, %s: %d, %s: &quot;
 l_string|&quot;0x%x, %s: %p)&bslash;n&quot;
 comma
 l_string|&quot;sk&quot;
@@ -4930,7 +4975,7 @@ multiline_comment|/* When only partial message is copied to the user, increase&n
 id|sctp_assoc_rwnd_increase
 c_func
 (paren
-id|event-&gt;sndrcvinfo.sinfo_assoc_id
+id|event-&gt;asoc
 comma
 id|copied
 )paren
@@ -14692,7 +14737,7 @@ suffix:semicolon
 id|SCTP_DEBUG_PRINTK
 c_func
 (paren
-l_string|&quot;wait_for_sndbuf: asoc=%p, timeo=%ld, msg_len=%u&bslash;n&quot;
+l_string|&quot;wait_for_sndbuf: asoc=%p, timeo=%ld, msg_len=%zu&bslash;n&quot;
 comma
 id|asoc
 comma
@@ -15640,7 +15685,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|event-&gt;sndrcvinfo.sinfo_assoc_id
+id|event-&gt;asoc
 op_eq
 id|assoc
 )paren
@@ -15741,7 +15786,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|event-&gt;sndrcvinfo.sinfo_assoc_id
+id|event-&gt;asoc
 op_eq
 id|assoc
 )paren

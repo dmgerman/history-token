@@ -100,6 +100,7 @@ id|type
 comma
 r_const
 r_void
+id|__user
 op_star
 id|addr
 comma
@@ -295,6 +296,7 @@ id|to
 comma
 r_const
 r_void
+id|__user
 op_star
 id|from
 comma
@@ -310,6 +312,7 @@ id|__arch_copy_to_user
 c_func
 (paren
 r_void
+id|__user
 op_star
 id|to
 comma
@@ -330,6 +333,7 @@ id|__arch_clear_user
 c_func
 (paren
 r_void
+id|__user
 op_star
 id|addr
 comma
@@ -350,6 +354,7 @@ id|to
 comma
 r_const
 r_char
+id|__user
 op_star
 id|from
 comma
@@ -366,6 +371,7 @@ c_func
 (paren
 r_const
 r_char
+id|__user
 op_star
 id|s
 comma
@@ -375,7 +381,7 @@ id|n
 suffix:semicolon
 DECL|function|copy_from_user
 r_static
-id|__inline__
+r_inline
 r_int
 r_int
 id|copy_from_user
@@ -387,6 +393,7 @@ id|to
 comma
 r_const
 r_void
+id|__user
 op_star
 id|from
 comma
@@ -436,7 +443,7 @@ suffix:semicolon
 )brace
 DECL|function|__copy_from_user
 r_static
-id|__inline__
+r_inline
 r_int
 r_int
 id|__copy_from_user
@@ -448,6 +455,7 @@ id|to
 comma
 r_const
 r_void
+id|__user
 op_star
 id|from
 comma
@@ -470,13 +478,14 @@ suffix:semicolon
 )brace
 DECL|function|copy_to_user
 r_static
-id|__inline__
+r_inline
 r_int
 r_int
 id|copy_to_user
 c_func
 (paren
 r_void
+id|__user
 op_star
 id|to
 comma
@@ -521,13 +530,14 @@ suffix:semicolon
 )brace
 DECL|function|__copy_to_user
 r_static
-id|__inline__
+r_inline
 r_int
 r_int
 id|__copy_to_user
 c_func
 (paren
 r_void
+id|__user
 op_star
 id|to
 comma
@@ -555,12 +565,13 @@ suffix:semicolon
 )brace
 DECL|function|clear_user
 r_static
-id|__inline__
+r_inline
 r_int
 r_int
 id|clear_user
 (paren
 r_void
+id|__user
 op_star
 id|to
 comma
@@ -598,12 +609,13 @@ suffix:semicolon
 )brace
 DECL|function|__clear_user
 r_static
-id|__inline__
+r_inline
 r_int
 r_int
 id|__clear_user
 (paren
 r_void
+id|__user
 op_star
 id|to
 comma
@@ -624,7 +636,7 @@ suffix:semicolon
 )brace
 DECL|function|strncpy_from_user
 r_static
-id|__inline__
+r_inline
 r_int
 id|strncpy_from_user
 (paren
@@ -634,6 +646,7 @@ id|dst
 comma
 r_const
 r_char
+id|__user
 op_star
 id|src
 comma
@@ -678,7 +691,7 @@ suffix:semicolon
 )brace
 DECL|function|__strncpy_from_user
 r_static
-id|__inline__
+r_inline
 r_int
 id|__strncpy_from_user
 (paren
@@ -688,6 +701,7 @@ id|dst
 comma
 r_const
 r_char
+id|__user
 op_star
 id|src
 comma
@@ -718,6 +732,7 @@ c_func
 (paren
 r_const
 r_char
+id|__user
 op_star
 id|s
 comma

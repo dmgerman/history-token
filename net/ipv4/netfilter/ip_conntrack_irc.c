@@ -159,7 +159,7 @@ op_assign
 id|THIS_MODULE
 suffix:semicolon
 macro_line|#if 0
-mdefine_line|#define DEBUGP(format, args...) printk(KERN_DEBUG __FILE__ &quot;:&quot; __FUNCTION__ &bslash;&n;&t;&t;&t;&t;&t;&quot;:&quot; format, ## args)
+mdefine_line|#define DEBUGP(format, args...) printk(KERN_DEBUG &quot;%s:%s:&quot; format, &bslash;&n;                                       __FILE__, __FUNCTION__ , ## args)
 macro_line|#else
 DECL|macro|DEBUGP
 mdefine_line|#define DEBUGP(format, args...)
@@ -334,21 +334,15 @@ id|ctinfo
 suffix:semicolon
 r_struct
 id|ip_conntrack_expect
-id|expect
-comma
 op_star
 id|exp
-op_assign
-op_amp
-id|expect
 suffix:semicolon
 r_struct
 id|ip_ct_irc_expect
 op_star
 id|exp_irc_info
 op_assign
-op_amp
-id|exp-&gt;help.exp_irc_info
+l_int|NULL
 suffix:semicolon
 id|u_int32_t
 id|dcc_ip
@@ -754,19 +748,27 @@ suffix:semicolon
 r_continue
 suffix:semicolon
 )brace
-id|memset
+id|exp
+op_assign
+id|ip_conntrack_expect_alloc
 c_func
 (paren
-op_amp
-id|expect
-comma
-l_int|0
-comma
-r_sizeof
+)paren
+suffix:semicolon
+r_if
+c_cond
 (paren
-id|expect
+id|exp
+op_eq
+l_int|NULL
 )paren
-)paren
+r_goto
+id|out
+suffix:semicolon
+id|exp_irc_info
+op_assign
+op_amp
+id|exp-&gt;help.exp_irc_info
 suffix:semicolon
 multiline_comment|/* save position of address in dcc string,&n;&t;&t;&t; * necessary for NAT */
 id|DEBUGP
@@ -931,10 +933,9 @@ suffix:semicolon
 id|ip_conntrack_expect_related
 c_func
 (paren
-id|ct
+id|exp
 comma
-op_amp
-id|expect
+id|ct
 )paren
 suffix:semicolon
 r_goto

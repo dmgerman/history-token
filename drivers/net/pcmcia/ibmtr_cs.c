@@ -1604,16 +1604,18 @@ id|DEV_CONFIG
 )paren
 (brace
 multiline_comment|/* set flag to bypass normal interrupt code */
-(paren
-(paren
 r_struct
 id|tok_info
 op_star
+id|priv
+op_assign
+id|netdev_priv
+c_func
+(paren
+id|dev
 )paren
-id|dev-&gt;priv
-)paren
-op_member_access_from_pointer
-id|sram_virt
+suffix:semicolon
+id|priv-&gt;sram_virt
 op_or_assign
 l_int|1
 suffix:semicolon

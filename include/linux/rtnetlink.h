@@ -60,8 +60,12 @@ DECL|macro|RTM_NEWPREFIX
 mdefine_line|#define RTM_NEWPREFIX&t;(RTM_BASE+36)
 DECL|macro|RTM_GETPREFIX
 mdefine_line|#define RTM_GETPREFIX&t;(RTM_BASE+38)
+DECL|macro|RTM_GETMULTICAST
+mdefine_line|#define&t;RTM_GETMULTICAST (RTM_BASE+42)
+DECL|macro|RTM_GETANYCAST
+mdefine_line|#define&t;RTM_GETANYCAST&t;(RTM_BASE+46)
 DECL|macro|RTM_MAX
-mdefine_line|#define&t;RTM_MAX&t;&t;(RTM_BASE+39)
+mdefine_line|#define&t;RTM_MAX&t;&t;(RTM_BASE+47)
 multiline_comment|/* &n;   Generic structure for encapsulation of optional route information.&n;   It is reminiscent of sockaddr, but with sa_family replaced&n;   with attribute type.&n; */
 DECL|struct|rtattr
 r_struct
@@ -632,6 +636,9 @@ id|IFA_ANYCAST
 comma
 DECL|enumerator|IFA_CACHEINFO
 id|IFA_CACHEINFO
+comma
+DECL|enumerator|IFA_MULTICAST
+id|IFA_MULTICAST
 )brace
 suffix:semicolon
 DECL|macro|IFA_MAX

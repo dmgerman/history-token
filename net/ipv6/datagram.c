@@ -2091,16 +2091,9 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
-(brace
-)brace
-r_if
-c_cond
-(paren
-id|net_ratelimit
+id|LIMIT_NETDEBUG
 c_func
 (paren
-)paren
-)paren
 id|printk
 c_func
 (paren
@@ -2108,6 +2101,7 @@ id|KERN_DEBUG
 l_string|&quot;invalid cmsg type: %d&bslash;n&quot;
 comma
 id|cmsg-&gt;cmsg_type
+)paren
 )paren
 suffix:semicolon
 id|err

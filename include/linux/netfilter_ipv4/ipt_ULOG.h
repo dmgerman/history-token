@@ -6,6 +6,10 @@ macro_line|#ifndef NETLINK_NFLOG
 DECL|macro|NETLINK_NFLOG
 mdefine_line|#define NETLINK_NFLOG &t;5
 macro_line|#endif
+DECL|macro|ULOG_DEFAULT_NLGROUP
+mdefine_line|#define ULOG_DEFAULT_NLGROUP&t;1
+DECL|macro|ULOG_DEFAULT_QTHRESHOLD
+mdefine_line|#define ULOG_DEFAULT_QTHRESHOLD&t;1
 DECL|macro|ULOG_MAC_LEN
 mdefine_line|#define ULOG_MAC_LEN&t;80
 DECL|macro|ULOG_PREFIX_LEN

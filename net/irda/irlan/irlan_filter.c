@@ -3,10 +3,10 @@ macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;linux/random.h&gt;
 macro_line|#include &lt;linux/seq_file.h&gt;
 macro_line|#include &lt;net/irda/irlan_common.h&gt;
-multiline_comment|/*&n; * Function handle_filter_request (self, skb)&n; *&n; *    Handle filter request from client peer device&n; *&n; */
-DECL|function|handle_filter_request
+multiline_comment|/*&n; * Function irlan_filter_request (self, skb)&n; *&n; *    Handle filter request from client peer device&n; *&n; */
+DECL|function|irlan_filter_request
 r_void
-id|handle_filter_request
+id|irlan_filter_request
 c_func
 (paren
 r_struct

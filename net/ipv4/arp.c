@@ -3181,7 +3181,7 @@ c_cond
 (paren
 id|skb-&gt;stamp.tv_sec
 op_eq
-l_int|0
+id|LOCALLY_ENQUEUED
 op_logical_or
 id|skb-&gt;pkt_type
 op_eq

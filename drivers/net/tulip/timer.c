@@ -770,11 +770,6 @@ id|dev
 )paren
 suffix:semicolon
 r_int
-id|ioaddr
-op_assign
-id|dev-&gt;base_addr
-suffix:semicolon
-r_int
 id|next_tick
 op_assign
 l_int|60
