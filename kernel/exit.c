@@ -2966,7 +2966,7 @@ id|PF_DEAD
 suffix:semicolon
 )brace
 DECL|function|do_exit
-id|asmlinkage
+id|fastcall
 id|NORET_TYPE
 r_void
 id|do_exit

@@ -594,6 +594,11 @@ op_assign
 op_amp
 id|usb_hcd_operations
 suffix:semicolon
+id|hcd-&gt;self.release
+op_assign
+op_amp
+id|usb_hcd_release
+suffix:semicolon
 id|hcd-&gt;self.hcpriv
 op_assign
 (paren
@@ -664,21 +669,14 @@ id|hcd_buffer_destroy
 id|hcd
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|hcd
-)paren
-id|driver
-op_member_access_from_pointer
-id|hcd_free
+id|err1
+suffix:colon
+id|kfree
 c_func
 (paren
 id|hcd
 )paren
 suffix:semicolon
-id|err1
-suffix:colon
 id|sa1111_stop_hc
 c_func
 (paren
@@ -719,10 +717,6 @@ op_star
 id|dev
 )paren
 (brace
-r_void
-op_star
-id|base
-suffix:semicolon
 id|info
 (paren
 l_string|&quot;remove: %s, state %x&quot;
@@ -785,15 +779,6 @@ id|usb_deregister_bus
 (paren
 op_amp
 id|hcd-&gt;self
-)paren
-suffix:semicolon
-id|base
-op_assign
-id|hcd-&gt;regs
-suffix:semicolon
-id|hcd-&gt;driver-&gt;hcd_free
-(paren
-id|hcd
 )paren
 suffix:semicolon
 id|sa1111_stop_hc
@@ -939,11 +924,6 @@ dot
 id|hcd_alloc
 op_assign
 id|ohci_hcd_alloc
-comma
-dot
-id|hcd_free
-op_assign
-id|ohci_hcd_free
 comma
 multiline_comment|/*&n;&t; * managing i/o requests and associated device resources&n;&t; */
 dot

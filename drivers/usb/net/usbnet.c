@@ -1,5 +1,5 @@
 multiline_comment|/*&n; * USB Networking Links&n; * Copyright (C) 2000-2003 by David Brownell &lt;dbrownell@users.sourceforge.net&gt;&n; * Copyright (C) 2002 Pavel Machek &lt;pavel@ucw.cz&gt;&n; * Copyright (C) 2003 David Hollis &lt;dhollis@davehollis.com&gt;&n; * Copyright (c) 2002-2003 TiVo Inc.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
-multiline_comment|/*&n; * This is a generic &quot;USB networking&quot; framework that works with several&n; * kinds of full and high speed networking devices:&n; *&n; *   + USB host-to-host &quot;network cables&quot;, used for IP-over-USB links.&n; *     These are often used for Laplink style connectivity products.&n; *&t;- AnchorChip 2720&n; *&t;- Belkin, eTEK (interops with Win32 drivers)&n; *&t;- GeneSys GL620USB-A&n; *&t;- NetChip 1080 (interoperates with NetChip Win32 drivers)&n; *&t;- Prolific PL-2301/2302 (replaces &quot;plusb&quot; driver)&n; *&n; *   + Smart USB devices can support such links directly, using Internet&n; *     standard protocols instead of proprietary host-to-device links.&n; *&t;- Linux PDAs like iPaq, Yopy, and Zaurus&n; *&t;- The BLOB boot loader (for diskless booting)&n; *&t;- Linux &quot;gadgets&quot;, perhaps using PXA-2xx or Net2280 controllers&n; *&t;- Devices using EPSON&squot;s sample USB firmware&n; *&t;- CDC-Ethernet class devices, such as many cable modems&n; *&n; *   + Adapters to networks such as Ethernet.&n; *&t;- AX8817X based USB 2.0 products&n; *&n; * Links to these devices can be bridged using Linux Ethernet bridging.&n; * With minor exceptions, these all use similar USB framing for network&n; * traffic, but need different protocols for control traffic.&n; *&n; * USB devices can implement their side of this protocol at the cost&n; * of two bulk endpoints; it&squot;s not restricted to &quot;cable&quot; applications.&n; * See the SA1110, Zaurus, or EPSON device/client support in this driver;&n; * slave/target drivers such as &quot;usb-eth&quot; (on most SA-1100 PDAs) or&n; * &quot;g_ether&quot; (in the Linux &quot;gadget&quot; framework) implement that behavior&n; * within devices.&n; *&n; *&n; * CHANGELOG:&n; *&n; * 13-sep-2000&t;experimental, new&n; * 10-oct-2000&t;usb_device_id table created. &n; * 28-oct-2000&t;misc fixes; mostly, discard more TTL-mangled rx packets.&n; * 01-nov-2000&t;usb_device_id table and probing api update by&n; *&t;&t;Adam J. Richter &lt;adam@yggdrasil.com&gt;.&n; * 18-dec-2000&t;(db) tx watchdog, &quot;net1080&quot; renaming to &quot;usbnet&quot;, device_info&n; *&t;&t;and prolific support, isolate net1080-specific bits, cleanup.&n; *&t;&t;fix unlink_urbs oops in D3 PM resume code path.&n; *&n; * 02-feb-2001&t;(db) fix tx skb sharing, packet length, match_flags, ...&n; * 08-feb-2001&t;stubbed in &quot;linuxdev&quot;, maybe the SA-1100 folk can use it;&n; *&t;&t;AnchorChips 2720 support (from spec) for testing;&n; *&t;&t;fix bit-ordering problem with ethernet multicast addr&n; * 19-feb-2001  Support for clearing halt conditions. SA1100 UDC support&n; *&t;&t;updates. Oleg Drokin (green@iXcelerator.com)&n; * 25-mar-2001&t;More SA-1100 updates, including workaround for ip problem&n; *&t;&t;expecting cleared skb-&gt;cb and framing change to match latest&n; *&t;&t;handhelds.org version (Oleg).  Enable device IDs from the&n; *&t;&t;Win32 Belkin driver; other cleanups (db).&n; * 16-jul-2001&t;Bugfixes for uhci oops-on-unplug, Belkin support, various&n; *&t;&t;cleanups for problems not yet seen in the field. (db)&n; * 17-oct-2001&t;Handle &quot;Advance USBNET&quot; product, like Belkin/eTEK devices,&n; *&t;&t;from Ioannis Mavroukakis &lt;i.mavroukakis@btinternet.com&gt;;&n; *&t;&t;rx unlinks somehow weren&squot;t async; minor cleanup.&n; * 03-nov-2001&t;Merged GeneSys driver; original code from Jiun-Jie Huang&n; *&t;&t;&lt;huangjj@genesyslogic.com.tw&gt;, updated by Stanislav Brabec&n; *&t;&t;&lt;utx@penguin.cz&gt;.  Made framing options (NetChip/GeneSys)&n; *&t;&t;tie mostly to (sub)driver info.  Workaround some PL-2302&n; *&t;&t;chips that seem to reject SET_INTERFACE requests.&n; *&n; * 06-apr-2002&t;Added ethtool support, based on a patch from Brad Hards.&n; *&t;&t;Level of diagnostics is more configurable; they use device&n; *&t;&t;location (usb_device-&gt;devpath) instead of address (2.5).&n; *&t;&t;For tx_fixup, memflags can&squot;t be NOIO.&n; * 07-may-2002&t;Generalize/cleanup keventd support, handling rx stalls (mostly&n; *&t;&t;for USB 2.0 TTs) and memory shortages (potential) too. (db)&n; *&t;&t;Use &quot;locally assigned&quot; IEEE802 address space. (Brad Hards)&n; * 18-oct-2002&t;Support for Zaurus (Pavel Machek), related cleanup (db).&n; * 14-dec-2002&t;Remove Zaurus-private crc32 code (Pavel); 2.5 oops fix,&n; * &t;&t;cleanups and stubbed PXA-250 support (db), fix for framing&n; * &t;&t;issues on Z, net1080, and gl620a (Toby Milne)&n; *&n; * 31-mar-2003&t;Use endpoint descriptors:  high speed support, simpler sa1100&n; * &t;&t;vs pxa25x, and CDC Ethernet.  Throttle down log floods on&n; * &t;&t;disconnect; other cleanups. (db)  Flush net1080 fifos&n; * &t;&t;after several sequential framing errors. (Johannes Erdfelt)&n; * 22-aug-2003&t;AX8817X support (Dave Hollis).&n; * 14-jun-2004  Trivial patch for AX8817X based Buffalo LUA-U2-KTX in Japan&n; *&t;&t;(Neil Bortnak)&n; *&n; *-------------------------------------------------------------------------*/
+multiline_comment|/*&n; * This is a generic &quot;USB networking&quot; framework that works with several&n; * kinds of full and high speed networking devices:&n; *&n; *   + USB host-to-host &quot;network cables&quot;, used for IP-over-USB links.&n; *     These are often used for Laplink style connectivity products.&n; *&t;- AnchorChip 2720&n; *&t;- Belkin, eTEK (interops with Win32 drivers)&n; *&t;- GeneSys GL620USB-A&n; *&t;- NetChip 1080 (interoperates with NetChip Win32 drivers)&n; *&t;- Prolific PL-2301/2302 (replaces &quot;plusb&quot; driver)&n; *&t;- KC Technology KC2190&n; *&n; *   + Smart USB devices can support such links directly, using Internet&n; *     standard protocols instead of proprietary host-to-device links.&n; *&t;- Linux PDAs like iPaq, Yopy, and Zaurus&n; *&t;- The BLOB boot loader (for diskless booting)&n; *&t;- Linux &quot;gadgets&quot;, perhaps using PXA-2xx or Net2280 controllers&n; *&t;- Devices using EPSON&squot;s sample USB firmware&n; *&t;- CDC-Ethernet class devices, such as many cable modems&n; *&n; *   + Adapters to networks such as Ethernet.&n; *&t;- AX8817X based USB 2.0 products&n; *&n; * Links to these devices can be bridged using Linux Ethernet bridging.&n; * With minor exceptions, these all use similar USB framing for network&n; * traffic, but need different protocols for control traffic.&n; *&n; * USB devices can implement their side of this protocol at the cost&n; * of two bulk endpoints; it&squot;s not restricted to &quot;cable&quot; applications.&n; * See the SA1110, Zaurus, or EPSON device/client support in this driver;&n; * slave/target drivers such as &quot;usb-eth&quot; (on most SA-1100 PDAs) or&n; * &quot;g_ether&quot; (in the Linux &quot;gadget&quot; framework) implement that behavior&n; * within devices.&n; *&n; *&n; * CHANGELOG:&n; *&n; * 13-sep-2000&t;experimental, new&n; * 10-oct-2000&t;usb_device_id table created. &n; * 28-oct-2000&t;misc fixes; mostly, discard more TTL-mangled rx packets.&n; * 01-nov-2000&t;usb_device_id table and probing api update by&n; *&t;&t;Adam J. Richter &lt;adam@yggdrasil.com&gt;.&n; * 18-dec-2000&t;(db) tx watchdog, &quot;net1080&quot; renaming to &quot;usbnet&quot;, device_info&n; *&t;&t;and prolific support, isolate net1080-specific bits, cleanup.&n; *&t;&t;fix unlink_urbs oops in D3 PM resume code path.&n; *&n; * 02-feb-2001&t;(db) fix tx skb sharing, packet length, match_flags, ...&n; * 08-feb-2001&t;stubbed in &quot;linuxdev&quot;, maybe the SA-1100 folk can use it;&n; *&t;&t;AnchorChips 2720 support (from spec) for testing;&n; *&t;&t;fix bit-ordering problem with ethernet multicast addr&n; * 19-feb-2001  Support for clearing halt conditions. SA1100 UDC support&n; *&t;&t;updates. Oleg Drokin (green@iXcelerator.com)&n; * 25-mar-2001&t;More SA-1100 updates, including workaround for ip problem&n; *&t;&t;expecting cleared skb-&gt;cb and framing change to match latest&n; *&t;&t;handhelds.org version (Oleg).  Enable device IDs from the&n; *&t;&t;Win32 Belkin driver; other cleanups (db).&n; * 16-jul-2001&t;Bugfixes for uhci oops-on-unplug, Belkin support, various&n; *&t;&t;cleanups for problems not yet seen in the field. (db)&n; * 17-oct-2001&t;Handle &quot;Advance USBNET&quot; product, like Belkin/eTEK devices,&n; *&t;&t;from Ioannis Mavroukakis &lt;i.mavroukakis@btinternet.com&gt;;&n; *&t;&t;rx unlinks somehow weren&squot;t async; minor cleanup.&n; * 03-nov-2001&t;Merged GeneSys driver; original code from Jiun-Jie Huang&n; *&t;&t;&lt;huangjj@genesyslogic.com.tw&gt;, updated by Stanislav Brabec&n; *&t;&t;&lt;utx@penguin.cz&gt;.  Made framing options (NetChip/GeneSys)&n; *&t;&t;tie mostly to (sub)driver info.  Workaround some PL-2302&n; *&t;&t;chips that seem to reject SET_INTERFACE requests.&n; *&n; * 06-apr-2002&t;Added ethtool support, based on a patch from Brad Hards.&n; *&t;&t;Level of diagnostics is more configurable; they use device&n; *&t;&t;location (usb_device-&gt;devpath) instead of address (2.5).&n; *&t;&t;For tx_fixup, memflags can&squot;t be NOIO.&n; * 07-may-2002&t;Generalize/cleanup keventd support, handling rx stalls (mostly&n; *&t;&t;for USB 2.0 TTs) and memory shortages (potential) too. (db)&n; *&t;&t;Use &quot;locally assigned&quot; IEEE802 address space. (Brad Hards)&n; * 18-oct-2002&t;Support for Zaurus (Pavel Machek), related cleanup (db).&n; * 14-dec-2002&t;Remove Zaurus-private crc32 code (Pavel); 2.5 oops fix,&n; * &t;&t;cleanups and stubbed PXA-250 support (db), fix for framing&n; * &t;&t;issues on Z, net1080, and gl620a (Toby Milne)&n; *&n; * 31-mar-2003&t;Use endpoint descriptors:  high speed support, simpler sa1100&n; * &t;&t;vs pxa25x, and CDC Ethernet.  Throttle down log floods on&n; * &t;&t;disconnect; other cleanups. (db)  Flush net1080 fifos&n; * &t;&t;after several sequential framing errors. (Johannes Erdfelt)&n; * 22-aug-2003&t;AX8817X support (Dave Hollis).&n; * 14-jun-2004  Trivial patch for AX8817X based Buffalo LUA-U2-KTX in Japan&n; *&t;&t;(Neil Bortnak)&n; * 03-nov-2004&t;Trivial patch for KC2190 (KC-190) chip. (Jonathan McDowell)&n; *&n; *-------------------------------------------------------------------------*/
 singleline_comment|// #define&t;DEBUG&t;&t;&t;// error path messages, extra info
 singleline_comment|// #define&t;VERBOSE&t;&t;&t;// more; success messages
 macro_line|#include &lt;linux/config.h&gt;
@@ -25,7 +25,7 @@ macro_line|#include &lt;asm/scatterlist.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/dma-mapping.h&gt;
 DECL|macro|DRIVER_VERSION
-mdefine_line|#define DRIVER_VERSION&t;&t;&quot;25-Aug-2003&quot;
+mdefine_line|#define DRIVER_VERSION&t;&t;&quot;03-Nov-2004&quot;
 multiline_comment|/*-------------------------------------------------------------------------*/
 multiline_comment|/*&n; * Nineteen USB 1.1 max size bulk transactions per frame (ms), max.&n; * Several dozen bytes of IPv4 data can fit in two such transactions.&n; * One maximum size Ethernet packet takes twenty four of them.&n; * For high speed, each frame comfortably fits almost 36 max size&n; * Ethernet packets (so queues should be bigger).&n; */
 DECL|macro|RX_QLEN
@@ -7520,6 +7520,26 @@ comma
 suffix:semicolon
 macro_line|#endif /* CONFIG_USB_PL2301 */
 "&f;"
+macro_line|#ifdef CONFIG_USB_KC2190
+DECL|macro|HAVE_HARDWARE
+mdefine_line|#define HAVE_HARDWARE
+DECL|variable|kc2190_info
+r_static
+r_const
+r_struct
+id|driver_info
+id|kc2190_info
+op_assign
+(brace
+dot
+id|description
+op_assign
+l_string|&quot;KC Technology KC-190&quot;
+comma
+)brace
+suffix:semicolon
+macro_line|#endif /* CONFIG_USB_KC2190 */
+"&f;"
 macro_line|#ifdef&t;CONFIG_USB_ARMLINUX
 DECL|macro|HAVE_HARDWARE
 mdefine_line|#define&t;HAVE_HARDWARE
@@ -12055,6 +12075,29 @@ r_int
 )paren
 op_amp
 id|prolific_info
+comma
+)brace
+comma
+macro_line|#endif
+macro_line|#ifdef CONFIG_USB_KC2190
+(brace
+id|USB_DEVICE
+(paren
+l_int|0x050f
+comma
+l_int|0x0190
+)paren
+comma
+singleline_comment|// KC-190
+dot
+id|driver_info
+op_assign
+(paren
+r_int
+r_int
+)paren
+op_amp
+id|kc2190_info
 comma
 )brace
 comma

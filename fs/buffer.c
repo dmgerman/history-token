@@ -187,7 +187,7 @@ c_func
 id|bh
 )paren
 suffix:semicolon
-id|smp_mb
+id|smp_mb__after_clear_bit
 c_func
 (paren
 )paren
