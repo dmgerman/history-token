@@ -1,4 +1,4 @@
-multiline_comment|/* &n; * File...........: linux/drivers/s390/block/dasd_3990_erp.c&n; * Author(s)......: Horst  Hummel    &lt;Horst.Hummel@de.ibm.com&gt; &n; *&t;&t;    Holger Smolinski &lt;Holger.Smolinski@de.ibm.com&gt;&n; * Bugreports.to..: &lt;Linux390@de.ibm.com&gt;&n; * (C) IBM Corporation, IBM Deutschland Entwicklung GmbH, 2000, 2001&n; *&n; * $Revision: 1.19 $&n; *&n; * History of changes:&n; * 05/14/01 fixed PL030160GTO (BUG() in erp_action_5)&n; * 05/04/02 code restructuring.&n; */
+multiline_comment|/* &n; * File...........: linux/drivers/s390/block/dasd_3990_erp.c&n; * Author(s)......: Horst  Hummel    &lt;Horst.Hummel@de.ibm.com&gt; &n; *&t;&t;    Holger Smolinski &lt;Holger.Smolinski@de.ibm.com&gt;&n; * Bugreports.to..: &lt;Linux390@de.ibm.com&gt;&n; * (C) IBM Corporation, IBM Deutschland Entwicklung GmbH, 2000, 2001&n; *&n; * $Revision: 1.20 $&n; *&n; * History of changes:&n; * 05/14/01 fixed PL030160GTO (BUG() in erp_action_5)&n; * 05/04/02 code restructuring.&n; */
 macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;asm/idals.h&gt;
@@ -919,7 +919,7 @@ id|sense
 (braket
 l_int|25
 )braket
-op_amp
+op_eq
 l_int|0x1D
 )paren
 (brace
@@ -951,6 +951,18 @@ suffix:semicolon
 r_else
 (brace
 multiline_comment|/* no state change pending - retry */
+id|DEV_MESSAGE
+(paren
+id|KERN_INFO
+comma
+id|device
+comma
+l_string|&quot;redriving request immediately, &quot;
+l_string|&quot;%d retries left&quot;
+comma
+id|erp-&gt;retries
+)paren
+suffix:semicolon
 id|erp-&gt;status
 op_assign
 id|DASD_CQR_QUEUED
@@ -6358,6 +6370,11 @@ id|device
 op_assign
 id|cqr-&gt;device
 suffix:semicolon
+r_struct
+id|ccw1
+op_star
+id|ccw
+suffix:semicolon
 multiline_comment|/* allocate additional request block */
 id|dasd_ccw_req_t
 op_star
@@ -6375,7 +6392,7 @@ op_star
 op_amp
 id|cqr-&gt;magic
 comma
-l_int|1
+l_int|2
 comma
 l_int|0
 comma
@@ -6390,6 +6407,14 @@ c_func
 (paren
 id|erp
 )paren
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|cqr-&gt;retries
+op_le
+l_int|0
 )paren
 (brace
 id|DEV_MESSAGE
@@ -6408,16 +6433,65 @@ id|cqr-&gt;status
 op_assign
 id|DASD_CQR_FAILED
 suffix:semicolon
+id|cqr-&gt;stopclk
+op_assign
+id|get_clock
+(paren
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
+id|DEV_MESSAGE
+(paren
+id|KERN_ERR
+comma
+id|device
+comma
+l_string|&quot;Unable to allocate ERP request &quot;
+l_string|&quot;(%i retries left)&quot;
+comma
+id|cqr-&gt;retries
+)paren
+suffix:semicolon
+id|dasd_set_timer
+c_func
+(paren
+id|device
+comma
+(paren
+id|HZ
+op_lshift
+l_int|3
+)paren
+)paren
+suffix:semicolon
+)brace
 r_return
 id|cqr
 suffix:semicolon
 )brace
 multiline_comment|/* initialize request with default TIC to current ERP/CQR */
-id|erp-&gt;cpaddr-&gt;cmd_code
+id|ccw
+op_assign
+id|erp-&gt;cpaddr
+suffix:semicolon
+id|ccw-&gt;cmd_code
+op_assign
+id|CCW_CMD_NOOP
+suffix:semicolon
+id|ccw-&gt;flags
+op_assign
+id|CCW_FLAG_CC
+suffix:semicolon
+id|ccw
+op_increment
+suffix:semicolon
+id|ccw-&gt;cmd_code
 op_assign
 id|CCW_CMD_TIC
 suffix:semicolon
-id|erp-&gt;cpaddr-&gt;cda
+id|ccw-&gt;cda
 op_assign
 (paren
 r_int
@@ -6543,8 +6617,7 @@ c_cond
 op_logical_neg
 (paren
 (paren
-id|strncmp
-c_func
+id|memcmp
 (paren
 id|cqr1-&gt;dstat-&gt;ecw
 comma
@@ -7047,7 +7120,7 @@ r_char
 op_star
 id|sense
 op_assign
-id|erp-&gt;dstat-&gt;ecw
+id|erp-&gt;refers-&gt;dstat-&gt;ecw
 suffix:semicolon
 multiline_comment|/* check for special retries */
 r_if
@@ -7419,17 +7492,9 @@ multiline_comment|/* enqueue added ERP request */
 r_if
 c_cond
 (paren
-(paren
-id|erp
-op_ne
-id|cqr
-)paren
-op_logical_and
-(paren
 id|erp-&gt;status
 op_eq
 id|DASD_CQR_FILLED
-)paren
 )paren
 (brace
 id|erp-&gt;status
@@ -7446,99 +7511,6 @@ op_amp
 id|device-&gt;ccw_queue
 )paren
 suffix:semicolon
-)brace
-r_else
-(brace
-r_if
-c_cond
-(paren
-(paren
-id|erp-&gt;status
-op_eq
-id|DASD_CQR_FILLED
-)paren
-op_logical_or
-(paren
-id|erp
-op_ne
-id|cqr
-)paren
-)paren
-(brace
-multiline_comment|/* something strange happened - log the error and throw a BUG() */
-id|DEV_MESSAGE
-c_func
-(paren
-id|KERN_ERR
-comma
-id|device
-comma
-l_string|&quot;%s&quot;
-comma
-l_string|&quot;Problems with ERP chain!!! BUG&quot;
-)paren
-suffix:semicolon
-multiline_comment|/* print current erp_chain */
-id|DEV_MESSAGE
-c_func
-(paren
-id|KERN_DEBUG
-comma
-id|device
-comma
-l_string|&quot;%s&quot;
-comma
-l_string|&quot;ERP chain at END of ERP-ACTION&quot;
-)paren
-suffix:semicolon
-(brace
-id|dasd_ccw_req_t
-op_star
-id|temp_erp
-op_assign
-l_int|NULL
-suffix:semicolon
-r_for
-c_loop
-(paren
-id|temp_erp
-op_assign
-id|erp
-suffix:semicolon
-id|temp_erp
-op_ne
-l_int|NULL
-suffix:semicolon
-id|temp_erp
-op_assign
-id|temp_erp-&gt;refers
-)paren
-(brace
-id|DEV_MESSAGE
-c_func
-(paren
-id|KERN_DEBUG
-comma
-id|device
-comma
-l_string|&quot;&t;   erp %p (function %p)&quot;
-l_string|&quot; refers to %p&quot;
-comma
-id|temp_erp
-comma
-id|temp_erp-&gt;function
-comma
-id|temp_erp-&gt;refers
-)paren
-suffix:semicolon
-)brace
-)brace
-id|BUG
-c_func
-(paren
-)paren
-suffix:semicolon
-)brace
 )brace
 r_return
 id|erp
