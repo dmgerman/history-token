@@ -924,6 +924,30 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
+r_static
+r_inline
+r_void
+DECL|function|mark_bsp_online
+id|mark_bsp_online
+(paren
+r_void
+)paren
+(brace
+macro_line|#ifdef CONFIG_SMP
+multiline_comment|/* If we register an early console, allow CPU 0 to printk */
+id|cpu_set
+c_func
+(paren
+id|smp_processor_id
+c_func
+(paren
+)paren
+comma
+id|cpu_online_map
+)paren
+suffix:semicolon
+macro_line|#endif
+)brace
 r_void
 id|__init
 DECL|function|setup_arch
@@ -995,31 +1019,23 @@ c_func
 )paren
 suffix:semicolon
 macro_line|#endif
-macro_line|#ifdef CONFIG_SMP
-multiline_comment|/* If we register an early console, allow CPU 0 to printk */
 r_if
 c_cond
 (paren
-op_logical_neg
 id|early_console_setup
 c_func
 (paren
 op_star
 id|cmdline_p
 )paren
+op_eq
+l_int|0
 )paren
-id|cpu_set
+id|mark_bsp_online
 c_func
 (paren
-id|smp_processor_id
-c_func
-(paren
-)paren
-comma
-id|cpu_online_map
 )paren
 suffix:semicolon
-macro_line|#endif
 macro_line|#ifdef CONFIG_ACPI_BOOT
 multiline_comment|/* Initialize the ACPI boot-time table parser */
 id|acpi_table_init
