@@ -4745,6 +4745,13 @@ id|count
 op_assign
 id|dmabuf-&gt;count
 suffix:semicolon
+multiline_comment|/* It seems that we have to set the current state to&n;&t;&t; * TASK_INTERRUPTIBLE every time to make the process&n;&t;&t; * really go to sleep.  This also has to be *after* the&n;&t;&t; * update_ptr() call because update_ptr is likely to&n;&t;&t; * do a wake_up() which will unset this before we ever&n;&t;&t; * try to sleep, resuling in a tight loop in this code&n;&t;&t; * instead of actually sleeping and waiting for an&n;&t;&t; * interrupt to wake us up!&n;&t;&t; */
+id|__set_current_state
+c_func
+(paren
+id|TASK_INTERRUPTIBLE
+)paren
+suffix:semicolon
 id|spin_unlock_irqrestore
 c_func
 (paren
@@ -4799,13 +4806,6 @@ id|signals_allowed
 r_break
 suffix:semicolon
 )brace
-multiline_comment|/* It seems that we have to set the current state to&n;&t;&t; * TASK_INTERRUPTIBLE every time to make the process&n;&t;&t; * really go to sleep.  This also has to be *after* the&n;&t;&t; * update_ptr() call because update_ptr is likely to&n;&t;&t; * do a wake_up() which will unset this before we ever&n;&t;&t; * try to sleep, resuling in a tight loop in this code&n;&t;&t; * instead of actually sleeping and waiting for an&n;&t;&t; * interrupt to wake us up!&n;&t;&t; */
-id|set_current_state
-c_func
-(paren
-id|TASK_INTERRUPTIBLE
-)paren
-suffix:semicolon
 multiline_comment|/*&n;&t;&t; * set the timeout to significantly longer than it *should*&n;&t;&t; * take for the DAC to drain the DMA buffer&n;&t;&t; */
 id|tmo
 op_assign
