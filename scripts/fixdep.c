@@ -702,6 +702,11 @@ c_func
 op_star
 id|q
 )paren
+op_logical_or
+op_star
+id|q
+op_eq
+l_char|&squot;_&squot;
 )paren
 )paren
 r_goto
