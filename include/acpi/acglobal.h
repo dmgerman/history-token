@@ -39,6 +39,17 @@ r_extern
 id|u32
 id|acpi_gbl_nesting_level
 suffix:semicolon
+multiline_comment|/*****************************************************************************&n; *&n; * Runtime configuration&n; *&n; ****************************************************************************/
+DECL|variable|acpi_gbl_create_osi_method
+id|ACPI_EXTERN
+id|u8
+id|acpi_gbl_create_osi_method
+suffix:semicolon
+DECL|variable|acpi_gbl_all_methods_serialized
+id|ACPI_EXTERN
+id|u8
+id|acpi_gbl_all_methods_serialized
+suffix:semicolon
 multiline_comment|/*****************************************************************************&n; *&n; * ACPI Table globals&n; *&n; ****************************************************************************/
 multiline_comment|/*&n; * Table pointers.&n; * Although these pointers are somewhat redundant with the global acpi_table,&n; * they are convenient because they are typed pointers.&n; *&n; * These tables are single-table only; meaning that there can be at most one&n; * of each in the system.  Each global points to the actual table.&n; *&n; */
 DECL|variable|acpi_gbl_table_flags
@@ -299,10 +310,19 @@ id|acpi_gbl_region_types
 id|ACPI_NUM_PREDEFINED_REGIONS
 )braket
 suffix:semicolon
+r_extern
+r_const
+r_char
+op_star
+id|acpi_gbl_valid_osi_strings
+(braket
+id|ACPI_NUM_OSI_STRINGS
+)braket
+suffix:semicolon
 multiline_comment|/*****************************************************************************&n; *&n; * Namespace globals&n; *&n; ****************************************************************************/
 DECL|macro|NUM_NS_TYPES
 mdefine_line|#define NUM_NS_TYPES                    ACPI_TYPE_INVALID+1
-macro_line|#if defined (ACPI_NO_METHOD_EXECUTION) || defined (ACPI_CONSTANT_EVAL_ONLY)
+macro_line|#if !defined (ACPI_NO_METHOD_EXECUTION) || defined (ACPI_CONSTANT_EVAL_ONLY)
 DECL|macro|NUM_PREDEFINED_NAMES
 mdefine_line|#define NUM_PREDEFINED_NAMES            10
 macro_line|#else

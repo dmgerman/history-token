@@ -115,6 +115,25 @@ id|init_val
 op_increment
 )paren
 (brace
+multiline_comment|/* _OSI is optional for now, will be permanent later */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|ACPI_STRCMP
+(paren
+id|init_val-&gt;name
+comma
+l_string|&quot;_OSI&quot;
+)paren
+op_logical_and
+op_logical_neg
+id|acpi_gbl_create_osi_method
+)paren
+(brace
+r_continue
+suffix:semicolon
+)brace
 id|status
 op_assign
 id|acpi_ns_lookup
@@ -268,11 +287,21 @@ id|obj_desc-&gt;common.flags
 op_or_assign
 id|AOPOBJ_DATA_VALID
 suffix:semicolon
-macro_line|#if defined (ACPI_NO_METHOD_EXECUTION) || defined (ACPI_CONSTANT_EVAL_ONLY)
-multiline_comment|/* Compiler cheats by putting parameter count in the owner_iD */
+macro_line|#if defined (_ACPI_ASL_COMPILER) || defined (_ACPI_DUMP_App)
+multiline_comment|/* i_aSL Compiler cheats by putting parameter count in the owner_iD */
 id|new_node-&gt;owner_id
 op_assign
 id|obj_desc-&gt;method.param_count
+suffix:semicolon
+macro_line|#else
+multiline_comment|/* Mark this as a very SPECIAL method */
+id|obj_desc-&gt;method.method_flags
+op_assign
+id|AML_METHOD_INTERNAL_ONLY
+suffix:semicolon
+id|obj_desc-&gt;method.implementation
+op_assign
+id|acpi_ut_osi_implementation
 suffix:semicolon
 macro_line|#endif
 r_break

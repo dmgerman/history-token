@@ -582,7 +582,5 @@ mdefine_line|#define ACPI_MEM_FREE(a)                acpi_ut_free_and_track(a,_C
 DECL|macro|ACPI_MEM_TRACKING
 mdefine_line|#define ACPI_MEM_TRACKING(a)            a
 macro_line|#endif /* ACPI_DBG_TRACK_ALLOCATIONS */
-DECL|macro|ACPI_GET_STACK_POINTER
-mdefine_line|#define ACPI_GET_STACK_POINTER          _asm {mov eax, ebx}
 macro_line|#endif /* ACMACROS_H */
 eof
