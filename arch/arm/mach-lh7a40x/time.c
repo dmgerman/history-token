@@ -157,7 +157,7 @@ dot
 id|init
 op_assign
 op_amp
-id|lh7a40x_timer
+id|lh7a40x_timer_init
 comma
 )brace
 suffix:semicolon
