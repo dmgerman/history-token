@@ -150,7 +150,7 @@ c_func
 id|page
 )paren
 comma
-id|PAGE_READONLY
+id|PAGE_READONLY_EXEC
 )paren
 suffix:semicolon
 r_if

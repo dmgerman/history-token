@@ -176,6 +176,8 @@ DECL|macro|_PAGE_BIT_UNUSED2
 mdefine_line|#define _PAGE_BIT_UNUSED2&t;10
 DECL|macro|_PAGE_BIT_UNUSED3
 mdefine_line|#define _PAGE_BIT_UNUSED3&t;11
+DECL|macro|_PAGE_BIT_NX
+mdefine_line|#define _PAGE_BIT_NX&t;&t;63
 DECL|macro|_PAGE_PRESENT
 mdefine_line|#define _PAGE_PRESENT&t;0x001
 DECL|macro|_PAGE_RW
@@ -204,6 +206,13 @@ DECL|macro|_PAGE_FILE
 mdefine_line|#define _PAGE_FILE&t;0x040&t;/* set:pagecache unset:swap */
 DECL|macro|_PAGE_PROTNONE
 mdefine_line|#define _PAGE_PROTNONE&t;0x080&t;/* If not present */
+macro_line|#ifdef CONFIG_X86_PAE
+DECL|macro|_PAGE_NX
+mdefine_line|#define _PAGE_NX&t;(1ULL&lt;&lt;_PAGE_BIT_NX)
+macro_line|#else
+DECL|macro|_PAGE_NX
+mdefine_line|#define _PAGE_NX&t;0
+macro_line|#endif
 DECL|macro|_PAGE_TABLE
 mdefine_line|#define _PAGE_TABLE&t;(_PAGE_PRESENT | _PAGE_RW | _PAGE_USER | _PAGE_ACCESSED | _PAGE_DIRTY)
 DECL|macro|_KERNPG_TABLE
@@ -211,34 +220,53 @@ mdefine_line|#define _KERNPG_TABLE&t;(_PAGE_PRESENT | _PAGE_RW | _PAGE_ACCESSED 
 DECL|macro|_PAGE_CHG_MASK
 mdefine_line|#define _PAGE_CHG_MASK&t;(PTE_MASK | _PAGE_ACCESSED | _PAGE_DIRTY)
 DECL|macro|PAGE_NONE
-mdefine_line|#define PAGE_NONE&t;__pgprot(_PAGE_PROTNONE | _PAGE_ACCESSED)
+mdefine_line|#define PAGE_NONE &bslash;&n;&t;__pgprot(_PAGE_PROTNONE | _PAGE_ACCESSED)
 DECL|macro|PAGE_SHARED
-mdefine_line|#define PAGE_SHARED&t;__pgprot(_PAGE_PRESENT | _PAGE_RW | _PAGE_USER | _PAGE_ACCESSED)
+mdefine_line|#define PAGE_SHARED &bslash;&n;&t;__pgprot(_PAGE_PRESENT | _PAGE_RW | _PAGE_USER | _PAGE_ACCESSED)
+DECL|macro|PAGE_SHARED_EXEC
+mdefine_line|#define PAGE_SHARED_EXEC &bslash;&n;&t;__pgprot(_PAGE_PRESENT | _PAGE_RW | _PAGE_USER | _PAGE_ACCESSED)
+DECL|macro|PAGE_COPY_NOEXEC
+mdefine_line|#define PAGE_COPY_NOEXEC &bslash;&n;&t;__pgprot(_PAGE_PRESENT | _PAGE_USER | _PAGE_ACCESSED | _PAGE_NX)
+DECL|macro|PAGE_COPY_EXEC
+mdefine_line|#define PAGE_COPY_EXEC &bslash;&n;&t;__pgprot(_PAGE_PRESENT | _PAGE_USER | _PAGE_ACCESSED)
 DECL|macro|PAGE_COPY
-mdefine_line|#define PAGE_COPY&t;__pgprot(_PAGE_PRESENT | _PAGE_USER | _PAGE_ACCESSED)
+mdefine_line|#define PAGE_COPY &bslash;&n;&t;PAGE_COPY_NOEXEC
 DECL|macro|PAGE_READONLY
-mdefine_line|#define PAGE_READONLY&t;__pgprot(_PAGE_PRESENT | _PAGE_USER | _PAGE_ACCESSED)
+mdefine_line|#define PAGE_READONLY &bslash;&n;&t;__pgprot(_PAGE_PRESENT | _PAGE_USER | _PAGE_ACCESSED | _PAGE_NX)
+DECL|macro|PAGE_READONLY_EXEC
+mdefine_line|#define PAGE_READONLY_EXEC &bslash;&n;&t;__pgprot(_PAGE_PRESENT | _PAGE_USER | _PAGE_ACCESSED)
 DECL|macro|_PAGE_KERNEL
-mdefine_line|#define _PAGE_KERNEL &bslash;&n;&t;(_PAGE_PRESENT | _PAGE_RW | _PAGE_DIRTY | _PAGE_ACCESSED)
+mdefine_line|#define _PAGE_KERNEL &bslash;&n;&t;(_PAGE_PRESENT | _PAGE_RW | _PAGE_DIRTY | _PAGE_ACCESSED | _PAGE_NX)
+DECL|macro|_PAGE_KERNEL_EXEC
+mdefine_line|#define _PAGE_KERNEL_EXEC &bslash;&n;&t;(_PAGE_PRESENT | _PAGE_RW | _PAGE_DIRTY | _PAGE_ACCESSED)
 r_extern
 r_int
 r_int
+r_int
 id|__PAGE_KERNEL
+comma
+id|__PAGE_KERNEL_EXEC
 suffix:semicolon
 DECL|macro|__PAGE_KERNEL_RO
-mdefine_line|#define __PAGE_KERNEL_RO&t;(__PAGE_KERNEL &amp; ~_PAGE_RW)
+mdefine_line|#define __PAGE_KERNEL_RO&t;&t;(__PAGE_KERNEL &amp; ~_PAGE_RW)
 DECL|macro|__PAGE_KERNEL_NOCACHE
-mdefine_line|#define __PAGE_KERNEL_NOCACHE&t;(__PAGE_KERNEL | _PAGE_PCD)
+mdefine_line|#define __PAGE_KERNEL_NOCACHE&t;&t;(__PAGE_KERNEL | _PAGE_PCD)
 DECL|macro|__PAGE_KERNEL_LARGE
-mdefine_line|#define __PAGE_KERNEL_LARGE&t;(__PAGE_KERNEL | _PAGE_PSE)
+mdefine_line|#define __PAGE_KERNEL_LARGE&t;&t;(__PAGE_KERNEL | _PAGE_PSE)
+DECL|macro|__PAGE_KERNEL_LARGE_EXEC
+mdefine_line|#define __PAGE_KERNEL_LARGE_EXEC&t;(__PAGE_KERNEL_EXEC | _PAGE_PSE)
 DECL|macro|PAGE_KERNEL
 mdefine_line|#define PAGE_KERNEL&t;&t;__pgprot(__PAGE_KERNEL)
 DECL|macro|PAGE_KERNEL_RO
 mdefine_line|#define PAGE_KERNEL_RO&t;&t;__pgprot(__PAGE_KERNEL_RO)
+DECL|macro|PAGE_KERNEL_EXEC
+mdefine_line|#define PAGE_KERNEL_EXEC&t;__pgprot(__PAGE_KERNEL_EXEC)
 DECL|macro|PAGE_KERNEL_NOCACHE
 mdefine_line|#define PAGE_KERNEL_NOCACHE&t;__pgprot(__PAGE_KERNEL_NOCACHE)
 DECL|macro|PAGE_KERNEL_LARGE
 mdefine_line|#define PAGE_KERNEL_LARGE&t;__pgprot(__PAGE_KERNEL_LARGE)
+DECL|macro|PAGE_KERNEL_LARGE_EXEC
+mdefine_line|#define PAGE_KERNEL_LARGE_EXEC&t;__pgprot(__PAGE_KERNEL_LARGE_EXEC)
 multiline_comment|/*&n; * The i386 can&squot;t do page protection for execute, and considers that&n; * the same are read. Also, write permissions imply read permissions.&n; * This is the closest we can get..&n; */
 DECL|macro|__P000
 mdefine_line|#define __P000&t;PAGE_NONE
@@ -249,13 +277,13 @@ mdefine_line|#define __P010&t;PAGE_COPY
 DECL|macro|__P011
 mdefine_line|#define __P011&t;PAGE_COPY
 DECL|macro|__P100
-mdefine_line|#define __P100&t;PAGE_READONLY
+mdefine_line|#define __P100&t;PAGE_READONLY_EXEC
 DECL|macro|__P101
-mdefine_line|#define __P101&t;PAGE_READONLY
+mdefine_line|#define __P101&t;PAGE_READONLY_EXEC
 DECL|macro|__P110
-mdefine_line|#define __P110&t;PAGE_COPY
+mdefine_line|#define __P110&t;PAGE_COPY_EXEC
 DECL|macro|__P111
-mdefine_line|#define __P111&t;PAGE_COPY
+mdefine_line|#define __P111&t;PAGE_COPY_EXEC
 DECL|macro|__S000
 mdefine_line|#define __S000&t;PAGE_NONE
 DECL|macro|__S001
@@ -265,13 +293,13 @@ mdefine_line|#define __S010&t;PAGE_SHARED
 DECL|macro|__S011
 mdefine_line|#define __S011&t;PAGE_SHARED
 DECL|macro|__S100
-mdefine_line|#define __S100&t;PAGE_READONLY
+mdefine_line|#define __S100&t;PAGE_READONLY_EXEC
 DECL|macro|__S101
-mdefine_line|#define __S101&t;PAGE_READONLY
+mdefine_line|#define __S101&t;PAGE_READONLY_EXEC
 DECL|macro|__S110
-mdefine_line|#define __S110&t;PAGE_SHARED
+mdefine_line|#define __S110&t;PAGE_SHARED_EXEC
 DECL|macro|__S111
-mdefine_line|#define __S111&t;PAGE_SHARED
+mdefine_line|#define __S111&t;PAGE_SHARED_EXEC
 multiline_comment|/*&n; * Define this if things work differently on an i386 and an i486:&n; * it will (on an i486) warn about kernel memory accesses that are&n; * done without a &squot;verify_area(VERIFY_WRITE,..)&squot;&n; */
 DECL|macro|TEST_VERIFY_AREA
 macro_line|#undef TEST_VERIFY_AREA
@@ -833,6 +861,43 @@ c_func
 id|newprot
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_X86_PAE
+multiline_comment|/*&n;&t; * Chop off the NX bit (if present), and add the NX portion of&n;&t; * the newprot (if present):&n;&t; */
+id|pte.pte_high
+op_and_assign
+op_minus
+l_int|1
+op_xor
+(paren
+l_int|1
+op_lshift
+(paren
+id|_PAGE_BIT_NX
+op_minus
+l_int|32
+)paren
+)paren
+suffix:semicolon
+id|pte.pte_high
+op_or_assign
+(paren
+id|pgprot_val
+c_func
+(paren
+id|newprot
+)paren
+op_rshift
+l_int|32
+)paren
+op_amp
+"&bslash;"
+(paren
+id|__supported_pte_mask
+op_rshift
+l_int|32
+)paren
+suffix:semicolon
+macro_line|#endif
 r_return
 id|pte
 suffix:semicolon

@@ -2009,6 +2009,12 @@ id|executable_stack
 op_assign
 id|EXSTACK_DEFAULT
 suffix:semicolon
+r_int
+r_int
+id|def_flags
+op_assign
+l_int|0
+suffix:semicolon
 multiline_comment|/* Get the exec-header */
 id|elf_ex
 op_assign
@@ -2540,7 +2546,22 @@ id|executable_stack
 op_assign
 id|EXSTACK_DISABLE_X
 suffix:semicolon
+r_break
+suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|i
+op_eq
+id|elf_ex.e_phnum
+)paren
+id|def_flags
+op_or_assign
+id|VM_EXEC
+op_or
+id|VM_MAYEXEC
+suffix:semicolon
 multiline_comment|/* Some simple consistency checks for the interpreter */
 r_if
 c_cond
@@ -2808,6 +2829,10 @@ id|current-&gt;flags
 op_and_assign
 op_complement
 id|PF_FORKNOEXEC
+suffix:semicolon
+id|current-&gt;mm-&gt;def_flags
+op_assign
+id|def_flags
 suffix:semicolon
 multiline_comment|/* Do this immediately, since STACK_TOP as used in setup_arg_pages&n;&t;   may depend on the personality.  */
 id|SET_PERSONALITY

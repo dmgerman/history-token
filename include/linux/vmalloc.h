@@ -69,6 +69,17 @@ suffix:semicolon
 r_extern
 r_void
 op_star
+id|vmalloc_exec
+c_func
+(paren
+r_int
+r_int
+id|size
+)paren
+suffix:semicolon
+r_extern
+r_void
+op_star
 id|vmalloc_32
 c_func
 (paren
