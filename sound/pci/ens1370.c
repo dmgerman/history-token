@@ -8788,10 +8788,14 @@ id|ensoniq-&gt;pci
 )paren
 )paren
 suffix:semicolon
-id|gp-&gt;dev.parent
-op_assign
+id|gameport_set_dev_parent
+c_func
+(paren
+id|gp
+comma
 op_amp
 id|ensoniq-&gt;pci-&gt;dev
+)paren
 suffix:semicolon
 id|gp-&gt;io
 op_assign
