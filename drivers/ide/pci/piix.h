@@ -31,7 +31,6 @@ op_star
 suffix:semicolon
 DECL|macro|DECLARE_PIIX_DEV
 mdefine_line|#define DECLARE_PIIX_DEV(name_str) &bslash;&n;&t;{&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;.name&t;&t;= name_str,&t;&t;&bslash;&n;&t;&t;.init_chipset&t;= init_chipset_piix,&t;&bslash;&n;&t;&t;.init_hwif&t;= init_hwif_piix,&t;&bslash;&n;&t;&t;.channels&t;= 2,&t;&t;&t;&bslash;&n;&t;&t;.autodma&t;= AUTODMA,&t;&t;&bslash;&n;&t;&t;.enablebits&t;= {{0x41,0x80,0x80}, {0x43,0x80,0x80}}, &bslash;&n;&t;&t;.bootable&t;= ON_BOARD,&t;&t;&bslash;&n;&t;}
-multiline_comment|/*&n; *&t;Table of the various PIIX capability blocks&n; *&n; */
 DECL|variable|__devinitdata
 r_static
 id|ide_pci_device_t
