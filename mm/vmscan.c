@@ -17,6 +17,7 @@ macro_line|#include &lt;linux/backing-dev.h&gt;
 macro_line|#include &lt;linux/rmap-locking.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/tlbflush.h&gt;
+macro_line|#include &lt;asm/topology.h&gt;
 macro_line|#include &lt;linux/swapops.h&gt;
 multiline_comment|/*&n; * The &quot;priority&quot; of VM scanning is how much of the queues we&n; * will scan in one go. A value of 12 for DEF_PRIORITY implies&n; * that we&squot;ll scan 1/4096th of the queues (&quot;queue_length &gt;&gt; 12&quot;)&n; * during a normal aging round.&n; */
 DECL|macro|DEF_PRIORITY
@@ -2703,6 +2704,18 @@ suffix:semicolon
 id|daemonize
 c_func
 (paren
+)paren
+suffix:semicolon
+id|set_cpus_allowed
+c_func
+(paren
+id|tsk
+comma
+id|__node_to_cpu_mask
+c_func
+(paren
+id|pgdat-&gt;node_id
+)paren
 )paren
 suffix:semicolon
 id|sprintf

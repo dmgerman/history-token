@@ -144,8 +144,6 @@ r_return
 id|node
 suffix:semicolon
 )brace
-DECL|macro|numa_node_id
-mdefine_line|#define numa_node_id()&t;__cpu_to_node(smp_processor_id())
 macro_line|#endif /* CONFIG_NUMA */
 multiline_comment|/*&n; * Following are macros that each numa implmentation must define.&n; */
 multiline_comment|/*&n; * Given a kernel address, find the home node of the underlying memory.&n; */
