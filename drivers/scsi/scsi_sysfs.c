@@ -229,10 +229,12 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * shost_show_function: macro to create an attr function that can be used to&n; * show a non-bit field.&n; */
 DECL|macro|shost_show_function
-mdefine_line|#define shost_show_function(field, format_string)&t;&t;&t;&bslash;&n;static ssize_t&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;show_##field (struct class_device *class_dev, char *buf)&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;struct Scsi_Host *shost = class_to_shost(class_dev);&t;&t;&bslash;&n;&t;return snprintf (buf, 20, format_string, shost-&gt;field);&t;&bslash;&n;}
+mdefine_line|#define shost_show_function(name, field, format_string)&t;&t;&t;&bslash;&n;static ssize_t&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;show_##name (struct class_device *class_dev, char *buf)&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;struct Scsi_Host *shost = class_to_shost(class_dev);&t;&t;&bslash;&n;&t;return snprintf (buf, 20, format_string, shost-&gt;field);&t;&t;&bslash;&n;}
 multiline_comment|/*&n; * shost_rd_attr: macro to create a function and attribute variable for a&n; * read only field.&n; */
+DECL|macro|shost_rd_attr2
+mdefine_line|#define shost_rd_attr2(name, field, format_string)&t;&t;&t;&bslash;&n;&t;shost_show_function(name, field, format_string)&t;&t;&t;&bslash;&n;static CLASS_DEVICE_ATTR(name, S_IRUGO, show_##name, NULL)
 DECL|macro|shost_rd_attr
-mdefine_line|#define shost_rd_attr(field, format_string)&t;&t;&t;&t;&bslash;&n;&t;shost_show_function(field, format_string)&t;&t;&t;&bslash;&n;static CLASS_DEVICE_ATTR(field, S_IRUGO, show_##field, NULL)
+mdefine_line|#define shost_rd_attr(field, format_string) &bslash;&n;shost_rd_attr2(field, field, format_string)
 multiline_comment|/*&n; * Create the actual show/store functions and data structures.&n; */
 DECL|function|store_scan
 r_static
@@ -347,6 +349,16 @@ comma
 l_string|&quot;%d&bslash;n&quot;
 )paren
 suffix:semicolon
+id|shost_rd_attr2
+c_func
+(paren
+id|proc_name
+comma
+id|hostt-&gt;proc_name
+comma
+l_string|&quot;%s&bslash;n&quot;
+)paren
+suffix:semicolon
 DECL|variable|scsi_sysfs_shost_attrs
 r_static
 r_struct
@@ -371,6 +383,9 @@ id|class_device_attr_sg_tablesize
 comma
 op_amp
 id|class_device_attr_unchecked_isa_dma
+comma
+op_amp
+id|class_device_attr_proc_name
 comma
 op_amp
 id|class_device_attr_scan
