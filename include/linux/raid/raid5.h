@@ -197,13 +197,9 @@ op_star
 id|mddev
 suffix:semicolon
 DECL|member|thread
-DECL|member|resync_thread
 id|mdk_thread_t
 op_star
 id|thread
-comma
-op_star
-id|resync_thread
 suffix:semicolon
 DECL|member|disks
 r_struct
@@ -238,10 +234,6 @@ comma
 id|working_disks
 comma
 id|failed_disks
-suffix:semicolon
-DECL|member|resync_parity
-r_int
-id|resync_parity
 suffix:semicolon
 DECL|member|max_nr_stripes
 r_int
