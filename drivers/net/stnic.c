@@ -377,7 +377,7 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-id|dev-&gt;probe
+id|dev-&gt;priv
 op_assign
 l_int|NULL
 suffix:semicolon
