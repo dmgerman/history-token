@@ -518,11 +518,11 @@ multiline_comment|/* 1111 -&gt;  6.5x */
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * VIA C3 (Ezra-T) [C5M].&n; */
-DECL|variable|longhaul3_clock_ratio
+DECL|variable|ezrat_clock_ratio
 r_static
 r_int
 id|__initdata
-id|longhaul3_clock_ratio
+id|ezrat_clock_ratio
 (braket
 l_int|32
 )braket
@@ -630,11 +630,11 @@ comma
 multiline_comment|/* 1111 -&gt; RESERVED (12.0x) */
 )brace
 suffix:semicolon
-DECL|variable|c5m_eblcr
+DECL|variable|ezrat_eblcr
 r_static
 r_int
 id|__initdata
-id|c5m_eblcr
+id|ezrat_eblcr
 (braket
 l_int|32
 )braket

@@ -1670,11 +1670,11 @@ id|memcpy
 (paren
 id|clock_ratio
 comma
-id|longhaul3_clock_ratio
+id|ezrat_clock_ratio
 comma
 r_sizeof
 (paren
-id|longhaul3_clock_ratio
+id|ezrat_clock_ratio
 )paren
 )paren
 suffix:semicolon
@@ -1682,11 +1682,11 @@ id|memcpy
 (paren
 id|eblcr_table
 comma
-id|c5m_eblcr
+id|ezrat_eblcr
 comma
 r_sizeof
 (paren
-id|c5m_eblcr
+id|ezrat_eblcr
 )paren
 )paren
 suffix:semicolon
