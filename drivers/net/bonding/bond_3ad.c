@@ -8131,7 +8131,8 @@ op_star
 id|dev
 )paren
 (brace
-id|slave_t
+r_struct
+id|slave
 op_star
 id|slave
 comma
@@ -8418,7 +8419,8 @@ c_loop
 id|slave
 op_ne
 (paren
-id|slave_t
+r_struct
+id|slave
 op_star
 )paren
 id|bond
@@ -8508,7 +8510,8 @@ c_cond
 id|slave
 op_eq
 (paren
-id|slave_t
+r_struct
+id|slave
 op_star
 )paren
 id|bond

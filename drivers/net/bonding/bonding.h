@@ -27,7 +27,6 @@ multiline_comment|/* Checks whether the dev is ready for transmit. We do not che
 DECL|macro|SLAVE_IS_OK
 mdefine_line|#define SLAVE_IS_OK(slave) &bslash;&n;&t;&t;     ((((slave)-&gt;dev-&gt;flags &amp; (IFF_UP)) == (IFF_UP)) &amp;&amp; &bslash;&n;&t;&t;     netif_carrier_ok((slave)-&gt;dev) &amp;&amp; &bslash;&n;&t;&t;     ((slave)-&gt;link == BOND_LINK_UP) &amp;&amp; &bslash;&n;&t;&t;     ((slave)-&gt;state == BOND_STATE_ACTIVE))
 DECL|struct|slave
-r_typedef
 r_struct
 id|slave
 (brace
@@ -103,38 +102,40 @@ r_struct
 id|tlb_slave_info
 id|tlb_info
 suffix:semicolon
-DECL|typedef|slave_t
 )brace
-id|slave_t
 suffix:semicolon
 multiline_comment|/*&n; * Here are the locking policies for the two bonding locks:&n; *&n; * 1) Get bond-&gt;lock when reading/writing slave list.&n; * 2) Get bond-&gt;ptrlock when reading/writing bond-&gt;current_slave.&n; *    (It is unnecessary when the write-lock is put with bond-&gt;lock.)&n; * 3) When we lock with bond-&gt;ptrlock, we must lock with bond-&gt;lock&n; *    beforehand.&n; */
 DECL|struct|bonding
-r_typedef
 r_struct
 id|bonding
 (brace
 DECL|member|next
-id|slave_t
+r_struct
+id|slave
 op_star
 id|next
 suffix:semicolon
 DECL|member|prev
-id|slave_t
+r_struct
+id|slave
 op_star
 id|prev
 suffix:semicolon
 DECL|member|current_slave
-id|slave_t
+r_struct
+id|slave
 op_star
 id|current_slave
 suffix:semicolon
 DECL|member|primary_slave
-id|slave_t
+r_struct
+id|slave
 op_star
 id|primary_slave
 suffix:semicolon
 DECL|member|current_arp_slave
-id|slave_t
+r_struct
+id|slave
 op_star
 id|current_arp_slave
 suffix:semicolon
@@ -212,16 +213,15 @@ r_struct
 id|alb_bond_info
 id|alb_info
 suffix:semicolon
-DECL|typedef|bonding_t
 )brace
-id|bonding_t
 suffix:semicolon
 multiline_comment|/* Forward declarations */
 r_void
 id|bond_set_slave_active_flags
 c_func
 (paren
-id|slave_t
+r_struct
+id|slave
 op_star
 id|slave
 )paren
@@ -230,7 +230,8 @@ r_void
 id|bond_set_slave_inactive_flags
 c_func
 (paren
-id|slave_t
+r_struct
+id|slave
 op_star
 id|slave
 )paren
@@ -258,7 +259,8 @@ c_cond
 id|bond-&gt;next
 op_eq
 (paren
-id|slave_t
+r_struct
+id|slave
 op_star
 )paren
 id|bond
@@ -345,7 +347,8 @@ c_cond
 id|our_slave
 op_eq
 (paren
-id|slave_t
+r_struct
+id|slave
 op_star
 )paren
 id|bond
@@ -423,9 +426,7 @@ r_struct
 id|bonding
 op_star
 )paren
-(paren
 id|slave-&gt;dev-&gt;master-&gt;priv
-)paren
 suffix:semicolon
 )brace
 macro_line|#endif /* _LINUX_BONDING_H */

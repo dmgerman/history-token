@@ -5972,6 +5972,11 @@ id|bonding
 op_star
 id|bond
 op_assign
+(paren
+r_struct
+id|bonding
+op_star
+)paren
 id|dev-&gt;priv
 suffix:semicolon
 r_struct
