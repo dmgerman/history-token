@@ -124,6 +124,56 @@ mdefine_line|#define DLI_NAME(x)  ((x) &amp; 0xFF00)
 multiline_comment|/*&n; * Debug mask for kernel mode tracing, if set the output is also sent to&n; * the system debug function. Requires that the project is compiled&n; * with _KERNEL_DBG_PRINT_&n; */
 DECL|macro|DL_TO_KERNEL
 mdefine_line|#define DL_TO_KERNEL    0x40000000
+macro_line|#ifdef DIVA_NO_DEBUGLIB
+DECL|macro|myDbgPrint_LOG
+mdefine_line|#define myDbgPrint_LOG(x,...) do { } while(0);
+DECL|macro|myDbgPrint_FTL
+mdefine_line|#define myDbgPrint_FTL(x,...) do { } while(0);
+DECL|macro|myDbgPrint_ERR
+mdefine_line|#define myDbgPrint_ERR(x,...) do { } while(0);
+DECL|macro|myDbgPrint_TRC
+mdefine_line|#define myDbgPrint_TRC(x,...) do { } while(0);
+DECL|macro|myDbgPrint_MXLOG
+mdefine_line|#define myDbgPrint_MXLOG(x,...) do { } while(0);
+DECL|macro|myDbgPrint_EVL
+mdefine_line|#define myDbgPrint_EVL(x,...) do { } while(0);
+DECL|macro|myDbgPrint_REG
+mdefine_line|#define myDbgPrint_REG(x,...) do { } while(0);
+DECL|macro|myDbgPrint_MEM
+mdefine_line|#define myDbgPrint_MEM(x,...) do { } while(0);
+DECL|macro|myDbgPrint_SPL
+mdefine_line|#define myDbgPrint_SPL(x,...) do { } while(0);
+DECL|macro|myDbgPrint_IRP
+mdefine_line|#define myDbgPrint_IRP(x,...) do { } while(0);
+DECL|macro|myDbgPrint_TIM
+mdefine_line|#define myDbgPrint_TIM(x,...) do { } while(0);
+DECL|macro|myDbgPrint_BLK
+mdefine_line|#define myDbgPrint_BLK(x,...) do { } while(0);
+DECL|macro|myDbgPrint_TAPI
+mdefine_line|#define myDbgPrint_TAPI(x,...) do { } while(0);
+DECL|macro|myDbgPrint_NDIS
+mdefine_line|#define myDbgPrint_NDIS(x,...) do { } while(0);
+DECL|macro|myDbgPrint_CONN
+mdefine_line|#define myDbgPrint_CONN(x,...) do { } while(0);
+DECL|macro|myDbgPrint_STAT
+mdefine_line|#define myDbgPrint_STAT(x,...) do { } while(0);
+DECL|macro|myDbgPrint_SEND
+mdefine_line|#define myDbgPrint_SEND(x,...) do { } while(0);
+DECL|macro|myDbgPrint_RECV
+mdefine_line|#define myDbgPrint_RECV(x,...) do { } while(0);
+DECL|macro|myDbgPrint_PRV0
+mdefine_line|#define myDbgPrint_PRV0(x,...) do { } while(0);
+DECL|macro|myDbgPrint_PRV1
+mdefine_line|#define myDbgPrint_PRV1(x,...) do { } while(0);
+DECL|macro|myDbgPrint_PRV2
+mdefine_line|#define myDbgPrint_PRV2(x,...) do { } while(0);
+DECL|macro|myDbgPrint_PRV3
+mdefine_line|#define myDbgPrint_PRV3(x,...) do { } while(0);
+DECL|macro|DBG_TEST
+mdefine_line|#define DBG_TEST(func,args) do { } while(0);
+DECL|macro|DBG_EVL_ID
+mdefine_line|#define DBG_EVL_ID(args) do { } while(0);
+macro_line|#else /* DIVA_NO_DEBUGLIB */
 multiline_comment|/*&n; * define low level macros for formatted &amp; raw debugging&n; */
 DECL|macro|DBG_DECL
 mdefine_line|#define DBG_DECL(func) extern void  myDbgPrint_##func (char *, ...) ;
@@ -259,6 +309,7 @@ macro_line|#endif
 multiline_comment|/*&n; * For event level debug use a separate define, the paramete are&n; * different and cause compiler errors on some systems.&n; */
 DECL|macro|DBG_EVL_ID
 mdefine_line|#define DBG_EVL_ID(args) &bslash;&n;{ if ( (myDriverDebugHandle.dbgMask) &amp; (unsigned long)DL_EVL ) &bslash;&n; { myDbgPrint_EVL args ; &bslash;&n;} }
+macro_line|#endif /* DIVA_NO_DEBUGLIB */
 DECL|macro|DBG_LOG
 mdefine_line|#define DBG_LOG(args)  DBG_TEST(LOG, args)
 DECL|macro|DBG_FTL
@@ -306,6 +357,18 @@ mdefine_line|#define DBG_PRV2(args)  DBG_TEST(PRV2, args)
 DECL|macro|DBG_PRV3
 mdefine_line|#define DBG_PRV3(args)  DBG_TEST(PRV3, args)
 multiline_comment|/*&n; * prototypes for debug register/deregister functions in &quot;debuglib.c&quot;&n; */
+macro_line|#ifdef DIVA_NO_DEBUGLIB
+DECL|macro|DbgRegister
+mdefine_line|#define DbgRegister(name,tag, mask) do { } while(0)
+DECL|macro|DbgDeregister
+mdefine_line|#define DbgDeregister() do { } while(0)
+DECL|macro|DbgSetLevel
+mdefine_line|#define DbgSetLevel(mask) do { } while(0)
+macro_line|#else
+r_extern
+id|DIVA_DI_PRINTF
+id|dprintf
+suffix:semicolon
 r_extern
 r_int
 id|DbgRegister
@@ -339,6 +402,7 @@ r_int
 id|dbgMask
 )paren
 suffix:semicolon
+macro_line|#endif
 multiline_comment|/*&n; * driver internal structure for debug handling;&n; * in client drivers this structure is maintained in &quot;debuglib.c&quot;,&n; * in the debug driver &quot;debug.c&quot; maintains a chain of such structs.&n; */
 DECL|typedef|pDbgHandle
 r_typedef
@@ -657,6 +721,7 @@ DECL|typedef|_DbgExtendedInfo_
 )brace
 id|_DbgExtendedInfo_
 suffix:semicolon
+macro_line|#ifndef DIVA_NO_DEBUGLIB
 multiline_comment|/* -------------------------------------------------------------&n;    Function used for xlog-style debug&n;   ------------------------------------------------------------- */
 DECL|macro|XDI_USE_XLOG
 mdefine_line|#define XDI_USE_XLOG 1
@@ -672,5 +737,6 @@ dot
 dot
 )paren
 suffix:semicolon
+macro_line|#endif /* DIVA_NO_DEBUGLIB */
 macro_line|#endif /* __DEBUGLIB_H__ */
 eof
