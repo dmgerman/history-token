@@ -3210,10 +3210,18 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
+id|total_scanned
+op_add_assign
+id|sc.nr_scanned
+suffix:semicolon
+id|total_reclaimed
+op_add_assign
+id|sc.nr_reclaimed
+suffix:semicolon
 r_if
 c_cond
 (paren
-id|sc.nr_reclaimed
+id|total_reclaimed
 op_ge
 id|SWAP_CLUSTER_MAX
 )paren
@@ -3226,14 +3234,6 @@ r_goto
 id|out
 suffix:semicolon
 )brace
-id|total_scanned
-op_add_assign
-id|sc.nr_scanned
-suffix:semicolon
-id|total_reclaimed
-op_add_assign
-id|sc.nr_reclaimed
-suffix:semicolon
 multiline_comment|/*&n;&t;&t; * Try to write back as many pages as we just scanned.  This&n;&t;&t; * tends to cause slow streaming writers to write data to the&n;&t;&t; * disk smoothly, at the dirtying rate, which is nice.   But&n;&t;&t; * that&squot;s undesirable in laptop mode, where we *want* lumpy&n;&t;&t; * writeout.  So in laptop mode, write out the whole world.&n;&t;&t; */
 r_if
 c_cond
