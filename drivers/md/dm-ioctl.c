@@ -10,7 +10,7 @@ macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
 macro_line|#include &lt;linux/dm-ioctl.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 DECL|macro|DM_DRIVER_EMAIL
-mdefine_line|#define DM_DRIVER_EMAIL &quot;dm@uk.sistina.com&quot;
+mdefine_line|#define DM_DRIVER_EMAIL &quot;dm-devel@redhat.com&quot;
 multiline_comment|/*-----------------------------------------------------------------&n; * The ioctl interface needs to be able to look up devices by&n; * name or uuid.&n; *---------------------------------------------------------------*/
 DECL|struct|hash_cell
 r_struct
@@ -834,6 +834,14 @@ c_func
 id|md
 )paren
 suffix:semicolon
+id|dm_set_mdptr
+c_func
+(paren
+id|md
+comma
+id|cell
+)paren
+suffix:semicolon
 id|up_write
 c_func
 (paren
@@ -895,6 +903,14 @@ id|unregister_with_devfs
 c_func
 (paren
 id|hc
+)paren
+suffix:semicolon
+id|dm_set_mdptr
+c_func
+(paren
+id|hc-&gt;md
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 id|dm_put
@@ -2303,7 +2319,7 @@ r_return
 id|r
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Always use UUID for lookups if it&squot;s present, otherwise use name.&n; */
+multiline_comment|/*&n; * Always use UUID for lookups if it&squot;s present, otherwise use name or dev.&n; */
 DECL|function|__find_device_hash_cell
 r_static
 r_inline
@@ -2319,21 +2335,43 @@ op_star
 id|param
 )paren
 (brace
-r_return
+r_if
+c_cond
+(paren
 op_star
 id|param-&gt;uuid
-ques
-c_cond
+)paren
+r_return
 id|__get_uuid_cell
 c_func
 (paren
 id|param-&gt;uuid
 )paren
-suffix:colon
+suffix:semicolon
+r_else
+r_if
+c_cond
+(paren
+op_star
+id|param-&gt;name
+)paren
+r_return
 id|__get_name_cell
 c_func
 (paren
 id|param-&gt;name
+)paren
+suffix:semicolon
+r_else
+r_return
+id|dm_get_mdptr
+c_func
+(paren
+id|huge_decode_dev
+c_func
+(paren
+id|param-&gt;dev
+)paren
 )paren
 suffix:semicolon
 )brace
@@ -2388,6 +2426,12 @@ id|hc
 id|md
 op_assign
 id|hc-&gt;md
+suffix:semicolon
+id|dm_get
+c_func
+(paren
+id|md
+)paren
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; * Sneakily write in both the name and the uuid&n;&t;&t; * while we have the cell.&n;&t;&t; */
 id|strncpy
@@ -2445,12 +2489,6 @@ id|param-&gt;flags
 op_and_assign
 op_complement
 id|DM_INACTIVE_PRESENT_FLAG
-suffix:semicolon
-id|dm_get
-c_func
-(paren
-id|md
-)paren
 suffix:semicolon
 )brace
 id|up_read
@@ -5246,28 +5284,40 @@ id|DM_LIST_VERSIONS_CMD
 r_return
 l_int|0
 suffix:semicolon
-multiline_comment|/* Unless creating, either name or uuid but not both */
 r_if
 c_cond
 (paren
+(paren
 id|cmd
-op_ne
+op_eq
 id|DM_DEV_CREATE_CMD
+)paren
 )paren
 (brace
 r_if
 c_cond
 (paren
-(paren
-op_logical_neg
-op_star
-id|param-&gt;uuid
-op_logical_and
 op_logical_neg
 op_star
 id|param-&gt;name
 )paren
-op_logical_or
+(brace
+id|DMWARN
+c_func
+(paren
+l_string|&quot;name not supplied when creating device&quot;
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
+)brace
+)brace
+r_else
+r_if
+c_cond
+(paren
 (paren
 op_star
 id|param-&gt;uuid
@@ -5280,7 +5330,7 @@ id|param-&gt;name
 id|DMWARN
 c_func
 (paren
-l_string|&quot;one of name or uuid must be supplied, cmd(%u)&quot;
+l_string|&quot;only supply one of name or uuid, cmd(%u)&quot;
 comma
 id|cmd
 )paren
@@ -5289,7 +5339,6 @@ r_return
 op_minus
 id|EINVAL
 suffix:semicolon
-)brace
 )brace
 multiline_comment|/* Ensure strings are terminated */
 id|param-&gt;name

@@ -340,11 +340,11 @@ mdefine_line|#define DM_TARGET_MSG&t; _IOWR(DM_IOCTL, DM_TARGET_MSG_CMD, struct 
 DECL|macro|DM_VERSION_MAJOR
 mdefine_line|#define DM_VERSION_MAJOR&t;4
 DECL|macro|DM_VERSION_MINOR
-mdefine_line|#define DM_VERSION_MINOR&t;2
+mdefine_line|#define DM_VERSION_MINOR&t;3
 DECL|macro|DM_VERSION_PATCHLEVEL
 mdefine_line|#define DM_VERSION_PATCHLEVEL&t;0
 DECL|macro|DM_VERSION_EXTRA
-mdefine_line|#define DM_VERSION_EXTRA&t;&quot;-ioctl (2004-06-08)&quot;
+mdefine_line|#define DM_VERSION_EXTRA&t;&quot;-ioctl (2004-09-30)&quot;
 multiline_comment|/* Status bits */
 DECL|macro|DM_READONLY_FLAG
 mdefine_line|#define DM_READONLY_FLAG&t;(1 &lt;&lt; 0) /* In/Out */
