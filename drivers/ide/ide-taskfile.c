@@ -1816,10 +1816,6 @@ op_star
 id|SECTOR_WORDS
 )paren
 suffix:semicolon
-id|rq-&gt;errors
-op_assign
-l_int|0
-suffix:semicolon
 id|rq-&gt;current_nr_sectors
 op_sub_assign
 id|nsect
@@ -2137,10 +2133,6 @@ id|pBuf
 comma
 id|SECTOR_WORDS
 )paren
-suffix:semicolon
-id|rq-&gt;errors
-op_assign
-l_int|0
 suffix:semicolon
 id|rq-&gt;current_nr_sectors
 op_decrement
@@ -2575,10 +2567,6 @@ c_loop
 id|msect
 )paren
 suffix:semicolon
-id|rq-&gt;errors
-op_assign
-l_int|0
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2644,7 +2632,12 @@ c_cond
 (paren
 id|rq-&gt;cbio
 )paren
+(brace
 multiline_comment|/* fs request */
+id|rq-&gt;errors
+op_assign
+l_int|0
+suffix:semicolon
 id|task_bio_sectors
 c_func
 (paren
@@ -2657,6 +2650,7 @@ comma
 id|rw
 )paren
 suffix:semicolon
+)brace
 r_else
 multiline_comment|/* task request */
 id|task_buffer_sectors
@@ -2699,10 +2693,6 @@ comma
 id|msect
 op_assign
 id|drive-&gt;mult_count
-suffix:semicolon
-id|rq-&gt;errors
-op_assign
-l_int|0
 suffix:semicolon
 r_do
 (brace
@@ -2780,7 +2770,12 @@ c_cond
 (paren
 id|rq-&gt;cbio
 )paren
+(brace
 multiline_comment|/* fs request */
+id|rq-&gt;errors
+op_assign
+l_int|0
+suffix:semicolon
 id|task_bio_multi_sectors
 c_func
 (paren
@@ -2791,6 +2786,7 @@ comma
 id|rw
 )paren
 suffix:semicolon
+)brace
 r_else
 multiline_comment|/* task request */
 id|task_buffer_multi_sectors
@@ -3048,10 +3044,6 @@ r_return
 id|ide_stopped
 suffix:semicolon
 )brace
-id|rq-&gt;errors
-op_assign
-l_int|0
-suffix:semicolon
 id|task_sectors
 c_func
 (paren
@@ -3638,10 +3630,6 @@ id|WAIT_WORSTCASE
 comma
 l_int|NULL
 )paren
-suffix:semicolon
-id|rq-&gt;errors
-op_assign
-l_int|0
 suffix:semicolon
 id|task_sectors
 c_func
