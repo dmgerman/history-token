@@ -4900,7 +4900,7 @@ DECL|macro|ADJUST_ARGS
 mdefine_line|#define ADJUST_ARGS()&t;&t;resp-&gt;p = p
 multiline_comment|/*&n; * Routine for encoding the result of a&n; * &quot;seqid-mutating&quot; NFSv4 operation.  This is&n; * where seqids are incremented&n; */
 DECL|macro|ENCODE_SEQID_OP_TAIL
-mdefine_line|#define ENCODE_SEQID_OP_TAIL(stateowner)&t;&t;&bslash;&n;&t;BUG_ON(!stateowner);&t;&t;&t;&t;&bslash;&n;&t;if (seqid_mutating_err(nfserr) &amp;&amp; stateowner) {&t;&bslash;&n;&t;&t;if (stateowner-&gt;so_confirmed)&t;&t;&bslash;&n;&t;&t;&t;stateowner-&gt;so_seqid++;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&bslash;&n;&t;return nfserr;
+mdefine_line|#define ENCODE_SEQID_OP_TAIL(stateowner) do {&t;&t;&bslash;&n;&t;BUG_ON(!stateowner);&t;&t;&t;&t;&bslash;&n;&t;if (seqid_mutating_err(nfserr) &amp;&amp; stateowner) {&t;&bslash;&n;&t;&t;if (stateowner-&gt;so_confirmed)&t;&t;&bslash;&n;&t;&t;&t;stateowner-&gt;so_seqid++;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&bslash;&n;} while(0)
 DECL|variable|nfs4_ftypes
 r_static
 id|u32
@@ -8144,7 +8144,7 @@ id|open-&gt;op_stateowner
 suffix:semicolon
 )brace
 r_static
-r_int
+r_void
 DECL|function|nfsd4_encode_open_confirm
 id|nfsd4_encode_open_confirm
 c_func
@@ -8213,7 +8213,7 @@ id|oc-&gt;oc_stateowner
 suffix:semicolon
 )brace
 r_static
-r_int
+r_void
 DECL|function|nfsd4_encode_open_downgrade
 id|nfsd4_encode_open_downgrade
 c_func
