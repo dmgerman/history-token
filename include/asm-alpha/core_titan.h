@@ -1774,9 +1774,9 @@ mdefine_line|#define __writel(x,a)&t;&t;titan_writel((x),(unsigned long)(a))
 DECL|macro|__writeq
 mdefine_line|#define __writeq(x,a)&t;&t;titan_writeq((x),(unsigned long)(a))
 DECL|macro|__ioremap
-mdefine_line|#define __ioremap(a,s)&t;&t;alpha_mv.mv_ioremap((unsigned long)(a),(s))
+mdefine_line|#define __ioremap(a,s)&t;&t;titan_ioremap((unsigned long)(a),(s))
 DECL|macro|__iounmap
-mdefine_line|#define __iounmap(a)&t;&t;alpha_mv.mv_iounmap((unsigned long)(a))
+mdefine_line|#define __iounmap(a)&t;&t;titan_iounmap((unsigned long)(a))
 DECL|macro|__is_ioaddr
 mdefine_line|#define __is_ioaddr(a)&t;&t;titan_is_ioaddr((unsigned long)(a))
 DECL|macro|inb

@@ -1,5 +1,6 @@
 multiline_comment|/*&n; *&t;linux/arch/alpha/kernel/core_titan.c&n; *&n; * Code common to all TITAN core logic chips.&n; */
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
@@ -2442,6 +2443,20 @@ id|addr
 )paren
 suffix:semicolon
 )brace
+DECL|variable|titan_ioremap
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|titan_ioremap
+)paren
+suffix:semicolon
+DECL|variable|titan_iounmap
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|titan_iounmap
+)paren
+suffix:semicolon
 "&f;"
 multiline_comment|/*&n; * AGP GART Support&n; */
 macro_line|#if defined(CONFIG_ALPHA_CORE_AGP)
