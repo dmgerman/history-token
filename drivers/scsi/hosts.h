@@ -810,6 +810,16 @@ id|Scsi_Host
 op_star
 )paren
 suffix:semicolon
+r_extern
+r_void
+id|scsi_forget_host
+c_func
+(paren
+r_struct
+id|Scsi_Host
+op_star
+)paren
+suffix:semicolon
 DECL|struct|Scsi_Device_Template
 r_struct
 id|Scsi_Device_Template
