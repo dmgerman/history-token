@@ -359,7 +359,7 @@ op_assign
 (paren
 id|rbuf-&gt;pread
 op_plus
-id|len
+id|todo
 )paren
 op_mod
 id|rbuf-&gt;size
@@ -517,7 +517,7 @@ op_assign
 (paren
 id|rbuf-&gt;pwrite
 op_plus
-id|len
+id|todo
 )paren
 op_mod
 id|rbuf-&gt;size
