@@ -2,6 +2,8 @@ multiline_comment|/*&n; *  linux/arch/arm/mm/mm-tbox.c&n; *&n; *  Copyright (C) 
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/interrupt.h&gt;
+macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;asm/elf.h&gt;
 macro_line|#include &lt;asm/setup.h&gt;
 macro_line|#include &lt;asm/mach-types.h&gt;
@@ -10,6 +12,7 @@ macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/mach/arch.h&gt;
 macro_line|#include &lt;asm/mach/map.h&gt;
+macro_line|#include &lt;asm/mach/time.h&gt;
 r_extern
 r_int
 r_int
@@ -251,6 +254,97 @@ id|tbox_io_desc
 )paren
 suffix:semicolon
 )brace
+r_static
+id|irqreturn_t
+DECL|function|tbox_timer_interrupt
+id|tbox_timer_interrupt
+(paren
+r_int
+id|irq
+comma
+r_void
+op_star
+id|dev_id
+comma
+r_struct
+id|pt_regs
+op_star
+id|regs
+)paren
+(brace
+multiline_comment|/* Clear irq */
+id|__raw_writel
+c_func
+(paren
+l_int|1
+comma
+id|FPGA1CONT
+op_plus
+l_int|0xc
+)paren
+suffix:semicolon
+id|__raw_writel
+c_func
+(paren
+l_int|0
+comma
+id|FPGA1CONT
+op_plus
+l_int|0xc
+)paren
+suffix:semicolon
+id|do_timer
+c_func
+(paren
+id|regs
+)paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
+)brace
+DECL|variable|tbox_timer_irq
+r_static
+r_struct
+id|irqaction
+id|tbox_timer_irq
+op_assign
+(brace
+dot
+id|name
+op_assign
+l_string|&quot;TBOX Timer Tick&quot;
+comma
+dot
+id|flags
+op_assign
+id|SA_INTERRUPT
+comma
+dot
+id|handler
+op_assign
+id|tbox_timer_interrupt
+)brace
+suffix:semicolon
+DECL|function|tbox_init_time
+r_void
+id|__init
+id|tbox_init_time
+c_func
+(paren
+r_void
+)paren
+(brace
+id|setup_irq
+c_func
+(paren
+id|IRQ_TIMER
+comma
+op_amp
+id|timer_irq
+)paren
+suffix:semicolon
+)brace
 id|MACHINE_START
 c_func
 (paren
@@ -281,6 +375,11 @@ id|INITIRQ
 c_func
 (paren
 id|tbox_init_irq
+)paren
+id|INITIME
+c_func
+(paren
+id|tbox_init_time
 )paren
 id|MACHINE_END
 eof

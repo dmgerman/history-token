@@ -3,11 +3,20 @@ DECL|macro|RTC_PORT
 mdefine_line|#define RTC_PORT(x)&t;&t;(rtc_base+(x))
 DECL|macro|RTC_ALWAYS_BCD
 mdefine_line|#define RTC_ALWAYS_BCD&t;&t;0
+macro_line|#include &lt;linux/timex.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/interrupt.h&gt;
+macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/mc146818rtc.h&gt;
 macro_line|#include &lt;linux/bcd.h&gt;
 macro_line|#include &lt;asm/hardware/dec21285.h&gt;
+macro_line|#include &lt;asm/hardware.h&gt;
+macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/leds.h&gt;
 macro_line|#include &lt;asm/mach-types.h&gt;
+macro_line|#include &lt;asm/io.h&gt;
+macro_line|#include &lt;asm/hardware/clps7111.h&gt;
+macro_line|#include &lt;asm/mach/time.h&gt;
 DECL|variable|rtc_base
 r_static
 r_int
@@ -807,19 +816,29 @@ r_return
 id|IRQ_HANDLED
 suffix:semicolon
 )brace
+DECL|variable|footbridge_timer_irq
+r_static
+r_struct
+id|irqaction
+id|footbridge_timer_irq
+op_assign
+(brace
+dot
+id|flags
+op_assign
+id|SA_INTERRUPT
+)brace
+suffix:semicolon
 multiline_comment|/*&n; * Set up timer interrupt.&n; */
-DECL|function|time_init
+DECL|function|footbridge_init_time
 r_void
 id|__init
-id|time_init
+id|footbridge_init_time
 c_func
 (paren
 r_void
 )paren
 (brace
-r_int
-id|irq
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1029,13 +1048,22 @@ id|TIMER_CNTL_AUTORELOAD
 op_or
 id|TIMER_CNTL_DIV16
 suffix:semicolon
-id|timer_irq.handler
+id|footbridge_timer_irq.name
+op_assign
+l_string|&quot;Timer1 Timer Tick&quot;
+suffix:semicolon
+id|footbrdige_timer_irq.handler
 op_assign
 id|timer1_interrupt
 suffix:semicolon
-id|irq
-op_assign
+id|setup_irq
+c_func
+(paren
 id|IRQ_TIMER1
+comma
+op_amp
+id|footbridge_timer_irq
+)paren
 suffix:semicolon
 )brace
 r_else
@@ -1082,23 +1110,23 @@ id|gettimeoffset
 op_assign
 id|isa_gettimeoffset
 suffix:semicolon
-id|timer_irq.handler
+id|footbridge_timer_irq.name
+op_assign
+l_string|&quot;ISA Timer Tick&quot;
+suffix:semicolon
+id|footbrdige_timer_irq.handler
 op_assign
 id|isa_timer_interrupt
 suffix:semicolon
-id|irq
-op_assign
-id|IRQ_ISA_TIMER
-suffix:semicolon
-)brace
 id|setup_irq
 c_func
 (paren
-id|irq
+id|IRQ_ISA
 comma
 op_amp
-id|timer_irq
+id|footbridge_timer_irq
 )paren
 suffix:semicolon
+)brace
 )brace
 eof

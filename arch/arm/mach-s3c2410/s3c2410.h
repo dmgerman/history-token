@@ -19,4 +19,11 @@ c_func
 r_void
 )paren
 suffix:semicolon
+r_extern
+id|s3c2410_init_time
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 eof
