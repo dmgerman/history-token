@@ -145,7 +145,7 @@ multiline_comment|/* slot 7 */
 id|AC97_PCM_LFE_DAC_RATE
 comma
 multiline_comment|/* slot 8 */
-id|AC97_PCM_FRONT_DAC_RATE
+l_int|0xff
 comma
 multiline_comment|/* slot 9 */
 id|AC97_PCM_FRONT_DAC_RATE
@@ -273,7 +273,7 @@ multiline_comment|/* slot 7 */
 id|AC97_PCM_LFE_DAC_RATE
 comma
 multiline_comment|/* slot 8 */
-id|AC97_PCM_FRONT_DAC_RATE
+l_int|0xff
 comma
 multiline_comment|/* slot 9 */
 id|AC97_PCM_FRONT_DAC_RATE

@@ -2279,6 +2279,16 @@ id|ac97
 comma
 id|AC97_AD_SERIAL_CFG
 comma
+(paren
+id|ac97-&gt;regs
+(braket
+id|AC97_AD_SERIAL_CFG
+)braket
+op_amp
+op_complement
+l_int|0x7000
+)paren
+op_or
 id|ac97-&gt;spec.ad18xx.unchained
 (braket
 id|codec
@@ -2313,6 +2323,11 @@ id|ac97
 comma
 id|AC97_AD_SERIAL_CFG
 comma
+id|ac97-&gt;regs
+(braket
+id|AC97_AD_SERIAL_CFG
+)braket
+op_or
 l_int|0x7000
 )paren
 suffix:semicolon
@@ -12683,14 +12698,14 @@ id|codec
 r_continue
 suffix:semicolon
 multiline_comment|/* select single codec */
-id|ac97-&gt;bus
-op_member_access_from_pointer
-id|write
+id|snd_ac97_update_bits
 c_func
 (paren
 id|ac97
 comma
 id|AC97_AD_SERIAL_CFG
+comma
+l_int|0x7000
 comma
 id|ac97-&gt;spec.ad18xx.unchained
 (braket
@@ -12720,14 +12735,14 @@ id|codec
 suffix:semicolon
 )brace
 multiline_comment|/* select all codecs */
-id|ac97-&gt;bus
-op_member_access_from_pointer
-id|write
+id|snd_ac97_update_bits
 c_func
 (paren
 id|ac97
 comma
 id|AC97_AD_SERIAL_CFG
+comma
+l_int|0x7000
 comma
 l_int|0x7000
 )paren
@@ -12818,14 +12833,14 @@ id|codec
 r_continue
 suffix:semicolon
 multiline_comment|/* select single codec */
-id|ac97-&gt;bus
-op_member_access_from_pointer
-id|write
+id|snd_ac97_update_bits
 c_func
 (paren
 id|ac97
 comma
 id|AC97_AD_SERIAL_CFG
+comma
+l_int|0x7000
 comma
 id|ac97-&gt;spec.ad18xx.unchained
 (braket
@@ -12856,14 +12871,14 @@ id|codec
 suffix:semicolon
 )brace
 multiline_comment|/* select all codecs */
-id|ac97-&gt;bus
-op_member_access_from_pointer
-id|write
+id|snd_ac97_update_bits
 c_func
 (paren
 id|ac97
 comma
 id|AC97_AD_SERIAL_CFG
+comma
+l_int|0x7000
 comma
 l_int|0x7000
 )paren

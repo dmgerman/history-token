@@ -272,6 +272,9 @@ suffix:semicolon
 r_case
 id|ICE1712_SUBDEVICE_AUDIOPHILE
 suffix:colon
+r_case
+id|ICE1712_SUBDEVICE_DELTA410
+suffix:colon
 id|tmp
 op_or_assign
 id|ICE1712_DELTA_AP_CCLK
@@ -362,6 +365,9 @@ r_break
 suffix:semicolon
 r_case
 id|ICE1712_SUBDEVICE_AUDIOPHILE
+suffix:colon
+r_case
+id|ICE1712_SUBDEVICE_DELTA410
 suffix:colon
 id|tmp
 op_or_assign
