@@ -1517,9 +1517,6 @@ comma
 r_int
 id|mode
 comma
-id|dev_t
-id|rdev
-comma
 r_struct
 id|CodaFid
 op_star
@@ -1594,14 +1591,6 @@ suffix:semicolon
 id|inp-&gt;coda_create.attr.va_mode
 op_assign
 id|mode
-suffix:semicolon
-id|inp-&gt;coda_create.attr.va_rdev
-op_assign
-id|huge_encode_dev
-c_func
-(paren
-id|rdev
-)paren
 suffix:semicolon
 id|inp-&gt;coda_create.excl
 op_assign
