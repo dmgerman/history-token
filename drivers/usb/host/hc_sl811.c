@@ -3667,6 +3667,18 @@ id|DBGFUNC
 l_string|&quot;Enter hci_hcd_init&bslash;n&quot;
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|usb_disabled
+c_func
+(paren
+)paren
+)paren
+r_return
+op_minus
+id|ENODEV
+suffix:semicolon
 id|ret
 op_assign
 id|hc_found_hci

@@ -58,9 +58,6 @@ r_struct
 id|page
 suffix:semicolon
 r_struct
-id|kiobuf
-suffix:semicolon
-r_struct
 id|buffer_head
 suffix:semicolon
 r_struct

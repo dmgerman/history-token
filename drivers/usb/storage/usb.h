@@ -321,6 +321,27 @@ r_int
 id|flags
 suffix:semicolon
 multiline_comment|/* from filter initially */
+DECL|member|send_bulk_pipe
+r_int
+r_int
+id|send_bulk_pipe
+suffix:semicolon
+multiline_comment|/* cached pipe values */
+DECL|member|recv_bulk_pipe
+r_int
+r_int
+id|recv_bulk_pipe
+suffix:semicolon
+DECL|member|send_ctrl_pipe
+r_int
+r_int
+id|send_ctrl_pipe
+suffix:semicolon
+DECL|member|recv_ctrl_pipe
+r_int
+r_int
+id|recv_ctrl_pipe
+suffix:semicolon
 multiline_comment|/* information about the device -- always good */
 DECL|member|vendor
 r_char

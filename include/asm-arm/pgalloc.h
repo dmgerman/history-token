@@ -3,8 +3,6 @@ macro_line|#ifndef _ASMARM_PGALLOC_H
 DECL|macro|_ASMARM_PGALLOC_H
 mdefine_line|#define _ASMARM_PGALLOC_H
 macro_line|#include &lt;asm/processor.h&gt;
-macro_line|#include &lt;asm/cacheflush.h&gt;
-macro_line|#include &lt;asm/tlbflush.h&gt;
 macro_line|#include &lt;asm/proc/pgalloc.h&gt;
 multiline_comment|/*&n; * Since we have only two-level page tables, these are trivial&n; */
 DECL|macro|pmd_alloc_one

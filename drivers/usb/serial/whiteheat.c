@@ -1160,6 +1160,15 @@ comma
 id|command_port-&gt;bulk_out_endpointAddress
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t; * When the module is reloaded the firmware is still there and&n;&t; * the endpoints are still in the usb core unchanged. This is the&n;         * unlinking bug in disguise. Same for the call below.&n;         */
+id|usb_clear_halt
+c_func
+(paren
+id|serial-&gt;dev
+comma
+id|pipe
+)paren
+suffix:semicolon
 id|ret
 op_assign
 id|usb_bulk_msg
@@ -1234,6 +1243,15 @@ id|usb_rcvbulkpipe
 id|serial-&gt;dev
 comma
 id|command_port-&gt;bulk_in_endpointAddress
+)paren
+suffix:semicolon
+multiline_comment|/* See the comment on the usb_clear_halt() above */
+id|usb_clear_halt
+c_func
+(paren
+id|serial-&gt;dev
+comma
+id|pipe
 )paren
 suffix:semicolon
 id|ret
@@ -1723,6 +1741,23 @@ id|retval
 r_goto
 m_exit
 suffix:semicolon
+multiline_comment|/* Work around HCD bugs */
+id|usb_clear_halt
+c_func
+(paren
+id|port-&gt;serial-&gt;dev
+comma
+id|port-&gt;read_urb-&gt;pipe
+)paren
+suffix:semicolon
+id|usb_clear_halt
+c_func
+(paren
+id|port-&gt;serial-&gt;dev
+comma
+id|port-&gt;write_urb-&gt;pipe
+)paren
+suffix:semicolon
 multiline_comment|/* Start reading from the device */
 id|port-&gt;read_urb-&gt;dev
 op_assign
@@ -1957,13 +1992,18 @@ comma
 id|port-&gt;number
 )paren
 suffix:semicolon
+multiline_comment|/* filp is NULL when called from usb_serial_disconnect */
 r_if
 c_cond
+(paren
+id|filp
+op_logical_and
 (paren
 id|tty_hung_up_p
 c_func
 (paren
 id|filp
+)paren
 )paren
 )paren
 (brace
@@ -5011,6 +5051,15 @@ op_logical_neg
 id|command_info-&gt;port_running
 )paren
 (brace
+multiline_comment|/* Work around HCD bugs */
+id|usb_clear_halt
+c_func
+(paren
+id|serial-&gt;dev
+comma
+id|command_port-&gt;read_urb-&gt;pipe
+)paren
+suffix:semicolon
 id|command_port-&gt;read_urb-&gt;dev
 op_assign
 id|serial-&gt;dev

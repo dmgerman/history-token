@@ -867,23 +867,6 @@ c_func
 )paren
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/*&n;&t;&t; * When Neponset is attached, the first UART should be&n;&t;&t; * UART3.  That&squot;s what Angel is doing and many documents&n;&t;&t; * are stating this.&n;&t;&t; * We do the Neponset mapping even if Neponset support&n;&t;&t; * isn&squot;t compiled in so the user will still get something on&n;&t;&t; * the expected physical serial port.&n;&t;&t; */
-id|sa1100_register_uart
-c_func
-(paren
-l_int|0
-comma
-l_int|3
-)paren
-suffix:semicolon
-id|sa1100_register_uart
-c_func
-(paren
-l_int|2
-comma
-l_int|1
-)paren
-suffix:semicolon
 )brace
 r_else
 (brace
@@ -894,6 +877,8 @@ op_amp
 id|assabet_port_fns
 )paren
 suffix:semicolon
+)brace
+multiline_comment|/*&n;&t; * When Neponset is attached, the first UART should be&n;&t; * UART3.  That&squot;s what Angel is doing and many documents&n;&t; * are stating this.&n;&t; *&n;&t; * We do the Neponset mapping even if Neponset support&n;&t; * isn&squot;t compiled in so the user will still get something on&n;&t; * the expected physical serial port.&n;&t; *&n;&t; * We no longer do this; not all boot loaders support it,&n;&t; * and UART3 appears to be somewhat unreliable with blob.&n;&t; */
 id|sa1100_register_uart
 c_func
 (paren
@@ -902,7 +887,6 @@ comma
 l_int|1
 )paren
 suffix:semicolon
-multiline_comment|/* com port */
 id|sa1100_register_uart
 c_func
 (paren
@@ -911,8 +895,6 @@ comma
 l_int|3
 )paren
 suffix:semicolon
-multiline_comment|/* radio module */
-)brace
 )brace
 id|MACHINE_START
 c_func

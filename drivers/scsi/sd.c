@@ -3422,7 +3422,7 @@ op_star
 )paren
 id|buffer
 comma
-l_int|24
+l_int|128
 comma
 id|SD_TIMEOUT
 comma

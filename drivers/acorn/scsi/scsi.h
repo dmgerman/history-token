@@ -174,6 +174,7 @@ id|SCp
 r_char
 id|c
 op_assign
+op_star
 id|SCp-&gt;ptr
 suffix:semicolon
 id|SCp-&gt;ptr
@@ -217,6 +218,7 @@ r_char
 id|c
 )paren
 (brace
+op_star
 id|SCp-&gt;ptr
 op_assign
 id|c

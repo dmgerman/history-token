@@ -523,6 +523,10 @@ id|allowed
 op_or_assign
 id|URB_NO_DMA_MAP
 suffix:semicolon
+id|allowed
+op_or_assign
+id|URB_NO_INTERRUPT
+suffix:semicolon
 r_switch
 c_cond
 (paren
@@ -532,10 +536,6 @@ id|temp
 r_case
 id|PIPE_BULK
 suffix:colon
-id|allowed
-op_or_assign
-id|URB_NO_INTERRUPT
-suffix:semicolon
 r_if
 c_cond
 (paren

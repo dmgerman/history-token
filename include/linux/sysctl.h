@@ -486,12 +486,12 @@ op_assign
 l_int|11
 comma
 multiline_comment|/* dirty_background_ratio */
-DECL|enumerator|VM_DIRTY_ASYNC
-id|VM_DIRTY_ASYNC
+DECL|enumerator|VM_DIRTY_RATIO
+id|VM_DIRTY_RATIO
 op_assign
 l_int|12
 comma
-multiline_comment|/* dirty_async_ratio */
+multiline_comment|/* dirty_ratio */
 DECL|enumerator|VM_DIRTY_WB_CS
 id|VM_DIRTY_WB_CS
 op_assign
@@ -528,6 +528,12 @@ op_assign
 l_int|18
 comma
 multiline_comment|/* int: Number of available Huge Pages */
+DECL|enumerator|VM_SWAPPINESS
+id|VM_SWAPPINESS
+op_assign
+l_int|19
+comma
+multiline_comment|/* Tendency to steal mapped memory */
 )brace
 suffix:semicolon
 multiline_comment|/* CTL_NET names: */

@@ -4,6 +4,7 @@ macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/hardware.h&gt;   
 singleline_comment|// included trizeps.h
+macro_line|#include &lt;asm/mach-types.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &quot;sa1100_generic.h&quot;
@@ -663,32 +664,39 @@ id|pcmcia_low_level
 id|trizeps_pcmcia_ops
 op_assign
 (brace
+dot
 id|init
-suffix:colon
+op_assign
 id|trizeps_pcmcia_init
 comma
+dot
 id|shutdown
-suffix:colon
+op_assign
 id|trizeps_pcmcia_shutdown
 comma
+dot
 id|socket_state
-suffix:colon
+op_assign
 id|trizeps_pcmcia_socket_state
 comma
+dot
 id|get_irq_info
-suffix:colon
+op_assign
 id|trizeps_pcmcia_get_irq_info
 comma
+dot
 id|configure_socket
-suffix:colon
+op_assign
 id|trizeps_pcmcia_configure_socket
 comma
+dot
 id|socket_init
-suffix:colon
+op_assign
 id|trizeps_pcmcia_socket_init
 comma
+dot
 id|socket_suspend
-suffix:colon
+op_assign
 id|trizeps_pcmcia_socket_suspend
 comma
 )brace

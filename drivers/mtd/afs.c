@@ -1,4 +1,4 @@
-multiline_comment|/*======================================================================&n;&n;    drivers/mtd/afs.c: ARM Flash Layout/Partitioning&n;  &n;    Copyright (C) 2000 ARM Limited&n;  &n;   This program is free software; you can redistribute it and/or modify&n;   it under the terms of the GNU General Public License as published by&n;   the Free Software Foundation; either version 2 of the License, or&n;   (at your option) any later version.&n;  &n;   This program is distributed in the hope that it will be useful,&n;   but WITHOUT ANY WARRANTY; without even the implied warranty of&n;   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;   GNU General Public License for more details.&n;  &n;   You should have received a copy of the GNU General Public License&n;   along with this program; if not, write to the Free Software&n;   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n;  &n;   This is access code for flashes using ARM&squot;s flash partitioning &n;   standards.&n;&n;   $Id: afs.c,v 1.6 2001/10/02 10:04:51 rmk Exp $&n;&n;======================================================================*/
+multiline_comment|/*======================================================================&n;&n;    drivers/mtd/afs.c: ARM Flash Layout/Partitioning&n;  &n;    Copyright (C) 2000 ARM Limited&n;  &n;   This program is free software; you can redistribute it and/or modify&n;   it under the terms of the GNU General Public License as published by&n;   the Free Software Foundation; either version 2 of the License, or&n;   (at your option) any later version.&n;  &n;   This program is distributed in the hope that it will be useful,&n;   but WITHOUT ANY WARRANTY; without even the implied warranty of&n;   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;   GNU General Public License for more details.&n;  &n;   You should have received a copy of the GNU General Public License&n;   along with this program; if not, write to the Free Software&n;   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n;  &n;   This is access code for flashes using ARM&squot;s flash partitioning &n;   standards.&n;&n;   $Id: afs.c,v 1.8 2002/05/04 08:49:09 rmk Exp $&n;&n;======================================================================*/
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -222,6 +222,18 @@ c_cond
 id|fs.signature
 op_ne
 l_int|0xa0ffff9f
+)paren
+id|ret
+op_assign
+l_int|1
+suffix:semicolon
+multiline_comment|/*&n;&t; * Don&squot;t touch the SIB.&n;&t; */
+r_if
+c_cond
+(paren
+id|fs.type
+op_eq
+l_int|2
 )paren
 id|ret
 op_assign
@@ -566,6 +578,16 @@ id|parts
 r_return
 op_minus
 id|ENOMEM
+suffix:semicolon
+id|memset
+c_func
+(paren
+id|parts
+comma
+l_int|0
+comma
+id|sz
+)paren
 suffix:semicolon
 id|str
 op_assign
