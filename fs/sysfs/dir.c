@@ -453,6 +453,8 @@ op_amp
 id|dcache_lock
 )paren
 suffix:semicolon
+id|restart
+suffix:colon
 id|node
 op_assign
 id|dentry-&gt;d_subdirs.next
@@ -482,11 +484,9 @@ comma
 id|d_child
 )paren
 suffix:semicolon
-id|list_del_init
-c_func
-(paren
 id|node
-)paren
+op_assign
+id|node-&gt;next
 suffix:semicolon
 id|pr_debug
 c_func
@@ -506,7 +506,16 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
+id|d_unhashed
+c_func
+(paren
+id|d
+)paren
+op_logical_and
+(paren
 id|d-&gt;d_inode
+)paren
 )paren
 (brace
 id|d
@@ -551,6 +560,12 @@ c_func
 id|d
 )paren
 suffix:semicolon
+id|pr_debug
+c_func
+(paren
+l_string|&quot; done&bslash;n&quot;
+)paren
+suffix:semicolon
 id|spin_lock
 c_func
 (paren
@@ -558,25 +573,12 @@ op_amp
 id|dcache_lock
 )paren
 suffix:semicolon
-)brace
-id|pr_debug
-c_func
-(paren
-l_string|&quot; done&bslash;n&quot;
-)paren
-suffix:semicolon
-id|node
-op_assign
-id|dentry-&gt;d_subdirs.next
+multiline_comment|/* re-acquired dcache_lock, need to restart */
+r_goto
+id|restart
 suffix:semicolon
 )brace
-id|list_del_init
-c_func
-(paren
-op_amp
-id|dentry-&gt;d_child
-)paren
-suffix:semicolon
+)brace
 id|spin_unlock
 c_func
 (paren
