@@ -2191,7 +2191,7 @@ id|jh
 comma
 l_int|0
 comma
-l_int|NULL
+id|credits
 )paren
 suffix:semicolon
 id|journal_put_journal_head
