@@ -1220,10 +1220,6 @@ comma
 op_star
 id|next
 suffix:semicolon
-id|next
-op_assign
-l_int|NULL
-suffix:semicolon
 r_for
 c_loop
 (paren
