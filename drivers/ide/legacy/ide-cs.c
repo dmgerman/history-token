@@ -662,11 +662,14 @@ id|idecs_register
 c_func
 (paren
 r_int
+r_int
 id|io
 comma
 r_int
+r_int
 id|ctl
 comma
+r_int
 r_int
 id|irq
 )paren
@@ -680,14 +683,8 @@ c_func
 op_amp
 id|hw
 comma
-(paren
-id|ide_ioreg_t
-)paren
 id|io
 comma
-(paren
-id|ide_ioreg_t
-)paren
 id|ctl
 comma
 l_int|NULL
@@ -773,13 +770,15 @@ id|last_fn
 comma
 id|hd
 comma
-id|io_base
-comma
-id|ctl_base
-comma
 id|is_kme
 op_assign
 l_int|0
+suffix:semicolon
+r_int
+r_int
+id|io_base
+comma
+id|ctl_base
 suffix:semicolon
 id|DEBUG
 c_func
@@ -1575,7 +1574,7 @@ id|printk
 c_func
 (paren
 id|KERN_NOTICE
-l_string|&quot;ide-cs: ide_register() at 0x%3x &amp; 0x%3x&quot;
+l_string|&quot;ide-cs: ide_register() at 0x%3lx &amp; 0x%3lx&quot;
 l_string|&quot;, irq %u failed&bslash;n&quot;
 comma
 id|io_base
