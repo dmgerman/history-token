@@ -7651,7 +7651,7 @@ suffix:semicolon
 id|PRINTK
 c_func
 (paren
-l_string|&quot;raid5: make_request, sector %Lu logical %Lu&bslash;n&quot;
+l_string|&quot;raid5: make_request, sector %llu logical %llu&bslash;n&quot;
 comma
 (paren
 r_int
