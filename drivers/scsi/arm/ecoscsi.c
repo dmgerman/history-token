@@ -13,8 +13,8 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
-macro_line|#include &quot;../../scsi/scsi.h&quot;
-macro_line|#include &quot;../../scsi/hosts.h&quot;
+macro_line|#include &quot;../scsi.h&quot;
+macro_line|#include &quot;../hosts.h&quot;
 DECL|macro|NCR5380_implementation_fields
 mdefine_line|#define NCR5380_implementation_fields&t;int port, ctrl
 DECL|macro|NCR5380_local_declare
@@ -31,7 +31,7 @@ DECL|macro|NCR5380_queue_command
 mdefine_line|#define NCR5380_queue_command&t;&t;ecoscsi_queue_command
 DECL|macro|NCR5380_proc_info
 mdefine_line|#define NCR5380_proc_info&t;&t;ecoscsi_proc_info
-macro_line|#include &quot;../../scsi/NCR5380.h&quot;
+macro_line|#include &quot;../NCR5380.h&quot;
 DECL|macro|ECOSCSI_PUBLIC_RELEASE
 mdefine_line|#define ECOSCSI_PUBLIC_RELEASE 1
 DECL|function|ecoscsi_read
@@ -800,7 +800,7 @@ DECL|macro|BOARD_NORMAL
 mdefine_line|#define BOARD_NORMAL&t;0
 DECL|macro|BOARD_NCR53C400
 mdefine_line|#define BOARD_NCR53C400&t;1
-macro_line|#include &quot;../../scsi/NCR5380.c&quot;
+macro_line|#include &quot;../NCR5380.c&quot;
 DECL|variable|ecoscsi_template
 r_static
 id|Scsi_Host_Template

@@ -1832,7 +1832,7 @@ suffix:semicolon
 )brace
 DECL|function|sa1100_irda_irq
 r_static
-r_void
+id|irqreturn_t
 id|sa1100_irda_irq
 c_func
 (paren
@@ -1884,6 +1884,9 @@ c_func
 (paren
 id|dev
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * TX DMA completion handler.&n; */

@@ -7,7 +7,7 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
-macro_line|#include &quot;../../scsi/scsi.h&quot;
+macro_line|#include &quot;../scsi.h&quot;
 DECL|macro|DEBUG
 mdefine_line|#define DEBUG
 DECL|struct|queue_entry
