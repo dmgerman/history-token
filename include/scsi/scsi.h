@@ -176,6 +176,8 @@ DECL|macro|READ_16
 mdefine_line|#define READ_16               0x88
 DECL|macro|WRITE_16
 mdefine_line|#define WRITE_16              0x8a
+DECL|macro|VERIFY_16
+mdefine_line|#define VERIFY_16&t;      0x8f
 DECL|macro|SERVICE_ACTION_IN
 mdefine_line|#define SERVICE_ACTION_IN     0x9e
 multiline_comment|/* values for service action in */

@@ -921,6 +921,10 @@ DECL|macro|ata_id_rahead_enabled
 mdefine_line|#define ata_id_rahead_enabled(dev) ((dev)-&gt;id[85] &amp; (1 &lt;&lt; 6))
 DECL|macro|ata_id_wcache_enabled
 mdefine_line|#define ata_id_wcache_enabled(dev) ((dev)-&gt;id[85] &amp; (1 &lt;&lt; 5))
+DECL|macro|ata_id_has_flush
+mdefine_line|#define ata_id_has_flush(dev) ((dev)-&gt;id[83] &amp; (1 &lt;&lt; 12))
+DECL|macro|ata_id_has_flush_ext
+mdefine_line|#define ata_id_has_flush_ext(dev) ((dev)-&gt;id[83] &amp; (1 &lt;&lt; 13))
 DECL|macro|ata_id_has_lba48
 mdefine_line|#define ata_id_has_lba48(dev)&t;((dev)-&gt;id[83] &amp; (1 &lt;&lt; 10))
 DECL|macro|ata_id_has_wcache
