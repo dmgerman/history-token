@@ -2154,7 +2154,7 @@ id|i830_dev
 suffix:semicolon
 id|i830_dev
 op_assign
-id|pci_find_device
+id|pci_get_device
 c_func
 (paren
 id|PCI_VENDOR_ID_INTEL
@@ -2180,7 +2180,7 @@ l_int|0
 (brace
 id|i830_dev
 op_assign
-id|pci_find_device
+id|pci_get_device
 c_func
 (paren
 id|PCI_VENDOR_ID_INTEL
@@ -2515,6 +2515,12 @@ op_star
 id|bridge
 op_assign
 id|pci_get_drvdata
+c_func
+(paren
+id|pdev
+)paren
+suffix:semicolon
+id|pci_dev_put
 c_func
 (paren
 id|pdev
