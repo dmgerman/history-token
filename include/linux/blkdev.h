@@ -1675,6 +1675,17 @@ id|q
 suffix:semicolon
 r_extern
 r_void
+id|blk_sync_queue
+c_func
+(paren
+r_struct
+id|request_queue
+op_star
+id|q
+)paren
+suffix:semicolon
+r_extern
+r_void
 id|__blk_stop_queue
 c_func
 (paren
