@@ -3480,7 +3480,7 @@ id|dst1-&gt;flags
 op_or_assign
 id|DST_NOHASH
 suffix:semicolon
-id|dst_clone
+id|dst_hold
 c_func
 (paren
 id|dst1
@@ -3588,7 +3588,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|dst_clone
+id|dst_hold
 c_func
 (paren
 op_amp
@@ -4045,7 +4045,7 @@ id|fl
 )paren
 )paren
 (brace
-id|dst_clone
+id|dst_hold
 c_func
 (paren
 id|dst
@@ -4376,7 +4376,7 @@ id|policy-&gt;bundles
 op_assign
 id|dst
 suffix:semicolon
-id|dst_clone
+id|dst_hold
 c_func
 (paren
 id|dst
