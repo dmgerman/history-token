@@ -6,12 +6,12 @@ macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;asm/dec/ioasic.h&gt;
 macro_line|#include &lt;asm/dec/ioasic_addrs.h&gt;
 macro_line|#include &lt;asm/dec/ioasic_ints.h&gt;
-DECL|variable|ioasic_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|ioasic_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|variable|ioasic_irq_base
 r_static
