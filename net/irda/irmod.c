@@ -1,28 +1,16 @@
-multiline_comment|/*********************************************************************&n; *                &n; * Filename:      irsyms.c&n; * Version:       0.9&n; * Description:   IrDA module symbols&n; * Status:        Experimental.&n; * Author:        Dag Brattli &lt;dagb@cs.uit.no&gt;&n; * Created at:    Mon Dec 15 13:55:39 1997&n; * Modified at:   Wed Jan  5 15:12:41 2000&n; * Modified by:   Dag Brattli &lt;dagb@cs.uit.no&gt;&n; * &n; *     Copyright (c) 1997, 1999-2000 Dag Brattli, All Rights Reserved.&n; *     Copyright (c) 2000-2001 Jean Tourrilhes &lt;jt@hpl.hp.com&gt;&n; *      &n; *     This program is free software; you can redistribute it and/or &n; *     modify it under the terms of the GNU General Public License as &n; *     published by the Free Software Foundation; either version 2 of &n; *     the License, or (at your option) any later version.&n; *  &n; *     Neither Dag Brattli nor University of Troms&#xfffd; admit liability nor&n; *     provide warranty for any of this software. This material is &n; *     provided &quot;AS-IS&quot; and at no charge.&n; *     &n; ********************************************************************/
+multiline_comment|/*********************************************************************&n; *                &n; * Filename:      irmod.c&n; * Version:       0.9&n; * Description:   IrDA stack main entry points&n; * Status:        Experimental.&n; * Author:        Dag Brattli &lt;dagb@cs.uit.no&gt;&n; * Created at:    Mon Dec 15 13:55:39 1997&n; * Modified at:   Wed Jan  5 15:12:41 2000&n; * Modified by:   Dag Brattli &lt;dagb@cs.uit.no&gt;&n; * &n; *     Copyright (c) 1997, 1999-2000 Dag Brattli, All Rights Reserved.&n; *     Copyright (c) 2000-2004 Jean Tourrilhes &lt;jt@hpl.hp.com&gt;&n; *      &n; *     This program is free software; you can redistribute it and/or &n; *     modify it under the terms of the GNU General Public License as &n; *     published by the Free Software Foundation; either version 2 of &n; *     the License, or (at your option) any later version.&n; *  &n; *     Neither Dag Brattli nor University of Troms&#xfffd; admit liability nor&n; *     provide warranty for any of this software. This material is &n; *     provided &quot;AS-IS&quot; and at no charge.&n; *     &n; ********************************************************************/
+multiline_comment|/*&n; * This file contains the main entry points of the IrDA stack.&n; * They are in this file and not af_irda.c because some developpers&n; * are using the IrDA stack without the socket API (compiling out&n; * af_irda.c).&n; * Jean II&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
-macro_line|#include &lt;linux/init.h&gt;
-macro_line|#include &lt;linux/poll.h&gt;
-macro_line|#include &lt;linux/proc_fs.h&gt;
-macro_line|#include &lt;linux/smp_lock.h&gt;
-macro_line|#include &lt;linux/if_arp.h&gt;&t;&t;/* ARPHRD_IRDA */
+macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;net/irda/irda.h&gt;
-macro_line|#include &lt;net/irda/irlap.h&gt;
-macro_line|#include &lt;net/irda/irlmp.h&gt;
-macro_line|#include &lt;net/irda/iriap.h&gt;
-macro_line|#include &lt;net/irda/irias_object.h&gt;
-macro_line|#include &lt;net/irda/irttp.h&gt;
-macro_line|#include &lt;net/irda/irda_device.h&gt;
-macro_line|#include &lt;net/irda/wrapper.h&gt;
-macro_line|#include &lt;net/irda/timer.h&gt;
-macro_line|#include &lt;net/irda/parameters.h&gt;
-macro_line|#include &lt;net/irda/crc.h&gt;
-r_extern
-r_struct
-id|proc_dir_entry
-op_star
-id|proc_irda
-suffix:semicolon
+macro_line|#include &lt;net/irda/irmod.h&gt;&t;&t;/* notify_t */
+macro_line|#include &lt;net/irda/irlap.h&gt;&t;&t;/* irlap_init */
+macro_line|#include &lt;net/irda/irlmp.h&gt;&t;&t;/* irlmp_init */
+macro_line|#include &lt;net/irda/iriap.h&gt;&t;&t;/* iriap_init */
+macro_line|#include &lt;net/irda/irttp.h&gt;&t;&t;/* irttp_init */
+macro_line|#include &lt;net/irda/irda_device.h&gt;&t;/* irda_device_init */
+multiline_comment|/* irproc.c */
 r_extern
 r_void
 id|irda_proc_register
@@ -39,6 +27,7 @@ c_func
 r_void
 )paren
 suffix:semicolon
+multiline_comment|/* irsysctl.c */
 r_extern
 r_int
 id|irda_sysctl_register
@@ -55,86 +44,7 @@ c_func
 r_void
 )paren
 suffix:semicolon
-r_extern
-r_int
-id|irda_proto_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|irda_proto_cleanup
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|irda_device_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|irlan_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|irlan_client_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|irlan_server_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|ircomm_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|ircomm_tty_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|irlpt_client_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|irlpt_server_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
+multiline_comment|/* af_irda.c */
 r_extern
 r_int
 id|irsock_init
@@ -151,6 +61,7 @@ c_func
 r_void
 )paren
 suffix:semicolon
+multiline_comment|/* irlap_frame.c */
 r_extern
 r_int
 id|irlap_driver_rcv
@@ -169,30 +80,41 @@ id|packet_type
 op_star
 )paren
 suffix:semicolon
-multiline_comment|/* Main IrDA module */
+multiline_comment|/*&n; * Module parameters&n; */
 macro_line|#ifdef CONFIG_IRDA_DEBUG
 DECL|variable|irda_debug
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|irda_debug
-)paren
-suffix:semicolon
-macro_line|#endif
-DECL|variable|irda_notify_init
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|irda_notify_init
-)paren
-suffix:semicolon
-multiline_comment|/* IrLAP */
-macro_line|#ifdef CONFIG_IRDA_DEBUG
-DECL|variable|irda_debug
-id|__u32
+r_int
+r_int
 id|irda_debug
 op_assign
 id|IRDA_DEBUG_LEVEL
+suffix:semicolon
+id|module_param_named
+c_func
+(paren
+id|debug
+comma
+id|irda_debug
+comma
+id|uint
+comma
+l_int|0
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|irda_debug
+comma
+l_string|&quot;IRDA debugging level&quot;
+)paren
+suffix:semicolon
+DECL|variable|irda_debug
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|irda_debug
+)paren
 suffix:semicolon
 macro_line|#endif
 multiline_comment|/* Packet type handler.&n; * Tell the kernel how IrDA packets should be handled.&n; */
@@ -277,6 +199,13 @@ id|notify-&gt;name
 )paren
 suffix:semicolon
 )brace
+DECL|variable|irda_notify_init
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|irda_notify_init
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Function irda_init (void)&n; *&n; *  Protocol stack initialisation entry point.&n; *  Initialise the various components of the IrDA stack&n; */
 DECL|function|irda_init
 r_int
@@ -458,16 +387,6 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_IRDA_DEBUG
-id|MODULE_PARM
-c_func
-(paren
-id|irda_debug
-comma
-l_string|&quot;1l&quot;
-)paren
-suffix:semicolon
-macro_line|#endif
 DECL|variable|PF_IRDA
 id|MODULE_ALIAS_NETPROTO
 c_func
