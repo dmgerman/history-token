@@ -191,6 +191,7 @@ r_int
 r_int
 id|closing_wait2
 suffix:semicolon
+multiline_comment|/* obsolete */
 DECL|member|IER
 r_int
 id|IER
