@@ -21,7 +21,7 @@ DECL|macro|SISUSB_PATCHLEVEL
 mdefine_line|#define SISUSB_PATCHLEVEL&t;7
 multiline_comment|/* USB related */
 DECL|macro|SISUSB_MINOR
-mdefine_line|#define SISUSB_MINOR&t;64&t;&t;/* FIXME */
+mdefine_line|#define SISUSB_MINOR&t;133&t;&t;/* FIXME */
 multiline_comment|/* Size of the sisusb input/output buffers */
 DECL|macro|SISUSB_IBUF_SIZE
 mdefine_line|#define SISUSB_IBUF_SIZE  0x01000
