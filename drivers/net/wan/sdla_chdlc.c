@@ -15457,6 +15457,10 @@ id|serial_driver.magic
 op_assign
 id|TTY_DRIVER_MAGIC
 suffix:semicolon
+id|serial_driver.owner
+op_assign
+id|THIS_MODULE
+suffix:semicolon
 id|serial_driver.driver_name
 op_assign
 l_string|&quot;wanpipe_tty&quot;
