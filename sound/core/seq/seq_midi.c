@@ -1279,21 +1279,17 @@ id|rmidi-&gt;name
 suffix:colon
 l_string|&quot;External MIDI&quot;
 suffix:semicolon
-id|snprintf
+id|strlcpy
 c_func
 (paren
 id|cinfo.name
+comma
+id|name
 comma
 r_sizeof
 (paren
 id|cinfo.name
 )paren
-comma
-l_string|&quot;%s - Rawmidi %d&quot;
-comma
-id|name
-comma
-id|card-&gt;number
 )paren
 suffix:semicolon
 r_return
