@@ -427,6 +427,10 @@ macro_line|#ifdef CONFIG_USB_GADGET_GOKU
 DECL|macro|DEV_CONFIG_CDC
 mdefine_line|#define&t;DEV_CONFIG_CDC
 macro_line|#endif
+macro_line|#ifdef CONFIG_USB_GADGET_LH7A40X
+DECL|macro|DEV_CONFIG_CDC
+mdefine_line|#define DEV_CONFIG_CDC
+macro_line|#endif
 macro_line|#ifdef CONFIG_USB_GADGET_MQ11XX
 DECL|macro|DEV_CONFIG_CDC
 mdefine_line|#define&t;DEV_CONFIG_CDC
@@ -439,6 +443,10 @@ macro_line|#ifdef CONFIG_USB_GADGET_N9604
 DECL|macro|DEV_CONFIG_CDC
 mdefine_line|#define&t;DEV_CONFIG_CDC
 macro_line|#endif
+macro_line|#ifdef CONFIG_USB_GADGET_PXA27X
+DECL|macro|DEV_CONFIG_CDC
+mdefine_line|#define DEV_CONFIG_CDC
+macro_line|#endif
 multiline_comment|/* For CDC-incapable hardware, choose the simple cdc subset.&n; * Anything that talks bulk (without notable bugs) can do this.&n; */
 macro_line|#ifdef CONFIG_USB_GADGET_PXA2XX
 DECL|macro|DEV_CONFIG_SUBSET
@@ -447,10 +455,6 @@ macro_line|#endif
 macro_line|#ifdef CONFIG_USB_GADGET_SH
 DECL|macro|DEV_CONFIG_SUBSET
 mdefine_line|#define&t;DEV_CONFIG_SUBSET
-macro_line|#endif
-macro_line|#ifdef CONFIG_USB_GADGET_LH7A40X
-DECL|macro|DEV_CONFIG_CDC
-mdefine_line|#define DEV_CONFIG_CDC
 macro_line|#endif
 macro_line|#ifdef CONFIG_USB_GADGET_SA1100
 multiline_comment|/* use non-CDC for backwards compatibility */
@@ -8114,6 +8118,25 @@ op_assign
 id|__constant_cpu_to_le16
 (paren
 l_int|0x0210
+)paren
+suffix:semicolon
+)brace
+r_else
+r_if
+c_cond
+(paren
+id|gadget_is_pxa27x
+c_func
+(paren
+id|gadget
+)paren
+)paren
+(brace
+id|device_desc.bcdDevice
+op_assign
+id|__constant_cpu_to_le16
+(paren
+l_int|0x0211
 )paren
 suffix:semicolon
 )brace
