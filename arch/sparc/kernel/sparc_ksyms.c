@@ -606,9 +606,8 @@ suffix:semicolon
 multiline_comment|/* P3: iounit_xxx may be needed, sun4d users */
 multiline_comment|/* EXPORT_SYMBOL(iounit_map_dma_init); */
 multiline_comment|/* EXPORT_SYMBOL(iounit_map_dma_page); */
-multiline_comment|/* Btfixup stuff cannot have versions, it would be complicated too much */
 macro_line|#ifndef CONFIG_SMP
-id|EXPORT_SYMBOL_NOVERS
+id|EXPORT_SYMBOL
 c_func
 (paren
 id|BTFIXUP_CALL
@@ -619,7 +618,7 @@ id|___xchg32
 )paren
 suffix:semicolon
 macro_line|#else
-id|EXPORT_SYMBOL_NOVERS
+id|EXPORT_SYMBOL
 c_func
 (paren
 id|BTFIXUP_CALL
@@ -630,7 +629,7 @@ id|__smp_processor_id
 )paren
 suffix:semicolon
 macro_line|#endif
-id|EXPORT_SYMBOL_NOVERS
+id|EXPORT_SYMBOL
 c_func
 (paren
 id|BTFIXUP_CALL
@@ -640,7 +639,7 @@ id|enable_irq
 )paren
 )paren
 suffix:semicolon
-id|EXPORT_SYMBOL_NOVERS
+id|EXPORT_SYMBOL
 c_func
 (paren
 id|BTFIXUP_CALL
@@ -650,7 +649,7 @@ id|disable_irq
 )paren
 )paren
 suffix:semicolon
-id|EXPORT_SYMBOL_NOVERS
+id|EXPORT_SYMBOL
 c_func
 (paren
 id|BTFIXUP_CALL
@@ -660,7 +659,7 @@ id|__irq_itoa
 )paren
 )paren
 suffix:semicolon
-id|EXPORT_SYMBOL_NOVERS
+id|EXPORT_SYMBOL
 c_func
 (paren
 id|BTFIXUP_CALL
@@ -670,7 +669,7 @@ id|mmu_unlockarea
 )paren
 )paren
 suffix:semicolon
-id|EXPORT_SYMBOL_NOVERS
+id|EXPORT_SYMBOL
 c_func
 (paren
 id|BTFIXUP_CALL
@@ -680,7 +679,7 @@ id|mmu_lockarea
 )paren
 )paren
 suffix:semicolon
-id|EXPORT_SYMBOL_NOVERS
+id|EXPORT_SYMBOL
 c_func
 (paren
 id|BTFIXUP_CALL
@@ -690,7 +689,7 @@ id|mmu_get_scsi_sgl
 )paren
 )paren
 suffix:semicolon
-id|EXPORT_SYMBOL_NOVERS
+id|EXPORT_SYMBOL
 c_func
 (paren
 id|BTFIXUP_CALL
@@ -700,7 +699,7 @@ id|mmu_get_scsi_one
 )paren
 )paren
 suffix:semicolon
-id|EXPORT_SYMBOL_NOVERS
+id|EXPORT_SYMBOL
 c_func
 (paren
 id|BTFIXUP_CALL
@@ -710,7 +709,7 @@ id|mmu_release_scsi_sgl
 )paren
 )paren
 suffix:semicolon
-id|EXPORT_SYMBOL_NOVERS
+id|EXPORT_SYMBOL
 c_func
 (paren
 id|BTFIXUP_CALL
@@ -1145,14 +1144,14 @@ id|memchr
 )paren
 suffix:semicolon
 DECL|variable|memscan
-id|EXPORT_SYMBOL_NOVERS
+id|EXPORT_SYMBOL
 c_func
 (paren
 id|memscan
 )paren
 suffix:semicolon
 DECL|variable|strlen
-id|EXPORT_SYMBOL_NOVERS
+id|EXPORT_SYMBOL
 c_func
 (paren
 id|strlen
@@ -1201,7 +1200,7 @@ id|strcmp
 )paren
 suffix:semicolon
 DECL|variable|strncmp
-id|EXPORT_SYMBOL_NOVERS
+id|EXPORT_SYMBOL
 c_func
 (paren
 id|strncmp
@@ -1351,73 +1350,71 @@ c_func
 id|sparc_flush_page_to_ram
 )paren
 suffix:semicolon
-multiline_comment|/* No version information on this, heavily used in inline asm,&n; * and will always be &squot;void __ret_efault(void)&squot;.&n; */
 DECL|variable|__ret_efault
-id|EXPORT_SYMBOL_NOVERS
+id|EXPORT_SYMBOL
 c_func
 (paren
 id|__ret_efault
 )paren
 suffix:semicolon
-multiline_comment|/* No version information on these, as gcc produces such symbols. */
 DECL|variable|memcmp
-id|EXPORT_SYMBOL_NOVERS
+id|EXPORT_SYMBOL
 c_func
 (paren
 id|memcmp
 )paren
 suffix:semicolon
 DECL|variable|memcpy
-id|EXPORT_SYMBOL_NOVERS
+id|EXPORT_SYMBOL
 c_func
 (paren
 id|memcpy
 )paren
 suffix:semicolon
 DECL|variable|memset
-id|EXPORT_SYMBOL_NOVERS
+id|EXPORT_SYMBOL
 c_func
 (paren
 id|memset
 )paren
 suffix:semicolon
 DECL|variable|memmove
-id|EXPORT_SYMBOL_NOVERS
+id|EXPORT_SYMBOL
 c_func
 (paren
 id|memmove
 )paren
 suffix:semicolon
 DECL|variable|__ashrdi3
-id|EXPORT_SYMBOL_NOVERS
+id|EXPORT_SYMBOL
 c_func
 (paren
 id|__ashrdi3
 )paren
 suffix:semicolon
 DECL|variable|__ashldi3
-id|EXPORT_SYMBOL_NOVERS
+id|EXPORT_SYMBOL
 c_func
 (paren
 id|__ashldi3
 )paren
 suffix:semicolon
 DECL|variable|__lshrdi3
-id|EXPORT_SYMBOL_NOVERS
+id|EXPORT_SYMBOL
 c_func
 (paren
 id|__lshrdi3
 )paren
 suffix:semicolon
 DECL|variable|__muldi3
-id|EXPORT_SYMBOL_NOVERS
+id|EXPORT_SYMBOL
 c_func
 (paren
 id|__muldi3
 )paren
 suffix:semicolon
 DECL|variable|__divdi3
-id|EXPORT_SYMBOL_NOVERS
+id|EXPORT_SYMBOL
 c_func
 (paren
 id|__divdi3
