@@ -524,7 +524,7 @@ id|ACPI_DEBUG_PRINT
 c_func
 (paren
 (paren
-id|ACPI_DB_ERROR
+id|ACPI_DB_WARN
 comma
 l_string|&quot;Device %02x:%02x:%02x.%02x not present in PCI namespace&bslash;n&quot;
 comma
