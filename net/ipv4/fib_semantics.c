@@ -25,6 +25,7 @@ macro_line|#include &lt;net/route.h&gt;
 macro_line|#include &lt;net/tcp.h&gt;
 macro_line|#include &lt;net/sock.h&gt;
 macro_line|#include &lt;net/ip_fib.h&gt;
+macro_line|#include &quot;fib_lookup.h&quot;
 DECL|macro|FSprintk
 mdefine_line|#define FSprintk(a...)
 DECL|variable|fib_info_lock
