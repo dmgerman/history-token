@@ -304,7 +304,7 @@ suffix:semicolon
 multiline_comment|/* Private functions with odd calling conventions. */
 r_extern
 r_void
-id|___atomic_add
+id|___atomic24_add
 c_func
 (paren
 r_void
@@ -312,7 +312,7 @@ r_void
 suffix:semicolon
 r_extern
 r_void
-id|___atomic_sub
+id|___atomic24_sub
 c_func
 (paren
 r_void
@@ -470,18 +470,18 @@ id|phys_base
 )paren
 suffix:semicolon
 multiline_comment|/* Atomic operations. */
-DECL|variable|___atomic_add
+DECL|variable|___atomic24_add
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|___atomic_add
+id|___atomic24_add
 )paren
 suffix:semicolon
-DECL|variable|___atomic_sub
+DECL|variable|___atomic24_sub
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|___atomic_sub
+id|___atomic24_sub
 )paren
 suffix:semicolon
 multiline_comment|/* Bit operations. */
