@@ -803,9 +803,37 @@ id|fp
 id|printk
 c_func
 (paren
-l_string|&quot;unexpected interrupt %x&bslash;n&quot;
+l_string|&quot;unexpected interrupt vec=%x, pc=%lx, d0=%lx, d0_orig=%lx, d1=%lx, d2=%lx&bslash;n&quot;
 comma
 id|level
+comma
+id|fp-&gt;pc
+comma
+id|fp-&gt;d0
+comma
+id|fp-&gt;orig_d0
+comma
+id|fp-&gt;d1
+comma
+id|fp-&gt;d2
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;&bslash;tIIRQ_REG = %x, EIRQ_REG = %x&bslash;n&quot;
+comma
+id|master_inb
+c_func
+(paren
+id|IIRQ_REG
+)paren
+comma
+id|master_inb
+c_func
+(paren
+id|EIRQ_REG
+)paren
 )paren
 suffix:semicolon
 r_return
