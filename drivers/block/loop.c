@@ -1762,9 +1762,6 @@ r_struct
 id|bio
 op_star
 id|rbh
-comma
-r_int
-id|gfp_mask
 )paren
 (brace
 r_struct
@@ -1785,7 +1782,7 @@ op_assign
 id|bio_alloc
 c_func
 (paren
-id|gfp_mask
+id|__GFP_NOWARN
 comma
 id|rbh-&gt;bi_vcnt
 )paren
@@ -1828,7 +1825,9 @@ op_assign
 id|alloc_page
 c_func
 (paren
-id|gfp_mask
+id|__GFP_NOWARN
+op_or
+id|__GFP_HIGHMEM
 )paren
 suffix:semicolon
 r_if
@@ -1935,15 +1934,6 @@ id|loop_copy_bio
 c_func
 (paren
 id|rbh
-comma
-(paren
-id|GFP_ATOMIC
-op_amp
-op_complement
-id|__GFP_HIGH
-)paren
-op_or
-id|__GFP_NOWARN
 )paren
 suffix:semicolon
 id|current-&gt;flags
