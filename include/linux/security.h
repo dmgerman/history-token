@@ -7,12 +7,14 @@ macro_line|#include &lt;linux/binfmts.h&gt;
 macro_line|#include &lt;linux/signal.h&gt;
 macro_line|#include &lt;linux/resource.h&gt;
 macro_line|#include &lt;linux/sem.h&gt;
-macro_line|#include &lt;linux/sysctl.h&gt;
 macro_line|#include &lt;linux/shm.h&gt;
 macro_line|#include &lt;linux/msg.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;linux/netlink.h&gt;
+r_struct
+id|ctl_table
+suffix:semicolon
 multiline_comment|/*&n; * These functions are in security/capability.c and are used&n; * as the default capabilities functions&n; */
 r_extern
 r_int
@@ -440,6 +442,7 @@ op_star
 id|sysctl
 )paren
 (paren
+r_struct
 id|ctl_table
 op_star
 id|table
@@ -2970,6 +2973,7 @@ r_int
 id|security_sysctl
 c_func
 (paren
+r_struct
 id|ctl_table
 op_star
 id|table
@@ -6076,6 +6080,7 @@ r_int
 id|security_sysctl
 c_func
 (paren
+r_struct
 id|ctl_table
 op_star
 id|table

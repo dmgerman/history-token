@@ -47,6 +47,7 @@ macro_line|#include &lt;linux/nfs_mount.h&gt;
 macro_line|#include &lt;net/ipv6.h&gt;
 macro_line|#include &lt;linux/hugetlb.h&gt;
 macro_line|#include &lt;linux/personality.h&gt;
+macro_line|#include &lt;linux/sysctl.h&gt;
 macro_line|#include &quot;avc.h&quot;
 macro_line|#include &quot;objsec.h&quot;
 macro_line|#include &quot;netif.h&quot;
