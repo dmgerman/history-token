@@ -127,7 +127,7 @@ id|init_task
 )brace
 suffix:semicolon
 macro_line|#ifdef __LP64__
-multiline_comment|/* NOTE: This layout exactly conforms to the hybrid L2/L3 page table layout&n; * with the first pmd adjacent to the pgd and below it */
+multiline_comment|/* NOTE: This layout exactly conforms to the hybrid L2/L3 page table layout&n; * with the first pmd adjacent to the pgd and below it. gcc doesn&squot;t actually&n; * guarantee that global objects will be laid out in memory in the same order &n; * as the order of declaration, so put these in different sections and use&n; * the linker script to order them. */
 DECL|variable|pmd0
 id|pmd_t
 id|pmd0
@@ -141,6 +141,15 @@ id|aligned
 c_func
 (paren
 id|PAGE_SIZE
+)paren
+)paren
+)paren
+id|__attribute__
+(paren
+(paren
+id|__section__
+(paren
+l_string|&quot;.data.vm0.pmd&quot;
 )paren
 )paren
 )paren
@@ -169,6 +178,15 @@ id|PAGE_SIZE
 )paren
 )paren
 )paren
+id|__attribute__
+(paren
+(paren
+id|__section__
+(paren
+l_string|&quot;.data.vm0.pgd&quot;
+)paren
+)paren
+)paren
 op_assign
 (brace
 (brace
@@ -192,6 +210,15 @@ id|aligned
 c_func
 (paren
 id|PAGE_SIZE
+)paren
+)paren
+)paren
+id|__attribute__
+(paren
+(paren
+id|__section__
+(paren
+l_string|&quot;.data.vm0.pte&quot;
 )paren
 )paren
 )paren
