@@ -121,10 +121,12 @@ id|io_tra
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|variable|acpi_pci_roots
-r_struct
-id|list_head
+r_static
+id|LIST_HEAD
+c_func
+(paren
 id|acpi_pci_roots
+)paren
 suffix:semicolon
 DECL|variable|sub_driver
 r_static
@@ -1240,13 +1242,6 @@ l_int|0
 )paren
 suffix:semicolon
 multiline_comment|/* DEBUG:&n;&t;acpi_dbg_layer = ACPI_PCI_COMPONENT;&n;&t;acpi_dbg_level = 0xFFFFFFFF;&n;&t; */
-id|INIT_LIST_HEAD
-c_func
-(paren
-op_amp
-id|acpi_pci_roots
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
