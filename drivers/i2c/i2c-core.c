@@ -1100,12 +1100,9 @@ c_func
 op_amp
 id|adapter-&gt;dev
 comma
-l_string|&quot;client [%s] registered to adapter &quot;
-l_string|&quot;(pos. %d).&bslash;n&quot;
+l_string|&quot;client [%s] registered to adapter&bslash;n&quot;
 comma
 id|client-&gt;dev.name
-comma
-id|i
 )paren
 )paren
 suffix:semicolon
