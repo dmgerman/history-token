@@ -5925,7 +5925,7 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;CallcFreeChan b_st ch%d allready freed&bslash;n&quot;
+l_string|&quot;CallcFreeChan b_st ch%d already freed&bslash;n&quot;
 comma
 id|i
 )paren
