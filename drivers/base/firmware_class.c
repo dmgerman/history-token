@@ -438,7 +438,7 @@ suffix:semicolon
 r_case
 l_int|1
 suffix:colon
-id|kfree
+id|vfree
 c_func
 (paren
 id|fw_priv-&gt;fw-&gt;data
@@ -1280,6 +1280,11 @@ id|fw_priv-&gt;fw
 )paren
 )paren
 suffix:semicolon
+op_star
+id|class_dev_p
+op_assign
+id|class_dev
+suffix:semicolon
 r_goto
 id|out
 suffix:semicolon
@@ -1335,11 +1340,6 @@ l_int|NULL
 suffix:semicolon
 id|out
 suffix:colon
-op_star
-id|class_dev_p
-op_assign
-id|class_dev
-suffix:semicolon
 r_return
 id|retval
 suffix:semicolon
@@ -1973,6 +1973,9 @@ l_string|&quot;%s: class_register failed&bslash;n&quot;
 comma
 id|__FUNCTION__
 )paren
+suffix:semicolon
+r_return
+id|error
 suffix:semicolon
 )brace
 id|error
