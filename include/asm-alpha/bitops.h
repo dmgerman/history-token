@@ -2,7 +2,6 @@ macro_line|#ifndef _ALPHA_BITOPS_H
 DECL|macro|_ALPHA_BITOPS_H
 mdefine_line|#define _ALPHA_BITOPS_H
 macro_line|#include &lt;linux/config.h&gt;
-macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;asm/compiler.h&gt;
 multiline_comment|/*&n; * Copyright 1994, Linus Torvalds.&n; */
 multiline_comment|/*&n; * These have to be done with inline assembly: that way the bit-setting&n; * is guaranteed to be atomic. All bit operations return 0 if the bit&n; * was cleared before the operation and != 0 if it was not.&n; *&n; * To get proper branch prediction for the main line, we must branch&n; * forward to code at the end of this object&squot;s .text section, then&n; * branch back to restart the operation.&n; *&n; * bit 0 is the LSB of addr; bit 64 is the LSB of (addr+1).&n; */
