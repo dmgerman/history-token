@@ -63,13 +63,6 @@ op_star
 id|auth
 )paren
 (brace
-id|atomic_dec
-c_func
-(paren
-op_amp
-id|null_auth.au_count
-)paren
-suffix:semicolon
 )brace
 multiline_comment|/*&n; * Lookup NULL creds for current process&n; */
 r_static
