@@ -2,9 +2,9 @@ multiline_comment|/*&n;    A Davicom DM9102/DM9102A/DM9102A+DM9801/DM9102A+DM980
 DECL|macro|DRV_NAME
 mdefine_line|#define DRV_NAME&t;&quot;dmfe&quot;
 DECL|macro|DRV_VERSION
-mdefine_line|#define DRV_VERSION&t;&quot;1.36.3&quot;
+mdefine_line|#define DRV_VERSION&t;&quot;1.36.4&quot;
 DECL|macro|DRV_RELDATE
-mdefine_line|#define DRV_RELDATE&t;&quot;2001-11-06&quot;
+mdefine_line|#define DRV_RELDATE&t;&quot;2002-01-17&quot;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -39,8 +39,6 @@ DECL|macro|PCI_DM9100_ID
 mdefine_line|#define PCI_DM9100_ID   0x91001282      /* Davicom DM9100 ID */
 DECL|macro|PCI_DM9009_ID
 mdefine_line|#define PCI_DM9009_ID   0x90091282      /* Davicom DM9009 ID */
-DECL|macro|DMFE_SUCC
-mdefine_line|#define DMFE_SUCC       0
 DECL|macro|DM9102_IO_SIZE
 mdefine_line|#define DM9102_IO_SIZE  0x80
 DECL|macro|DM9102A_IO_SIZE
