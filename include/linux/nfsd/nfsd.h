@@ -801,12 +801,18 @@ DECL|macro|nfserr_symlink
 mdefine_line|#define&t;nfserr_symlink&t;&t;__constant_htonl(NFSERR_SYMLINK)
 DECL|macro|nfserr_not_same
 mdefine_line|#define&t;nfserr_not_same&t;&t;__constant_htonl(NFSERR_NOT_SAME)
-DECL|macro|nfserr_readdir_nospc
-mdefine_line|#define&t;nfserr_readdir_nospc&t;__constant_htonl(NFSERR_READDIR_NOSPC)
+DECL|macro|nfserr_restorefh
+mdefine_line|#define&t;nfserr_restorefh&t;__constant_htonl(NFSERR_RESTOREFH)
+DECL|macro|nfserr_attrnotsupp
+mdefine_line|#define&t;nfserr_attrnotsupp&t;__constant_htonl(NFSERR_ATTRNOTSUPP)
 DECL|macro|nfserr_bad_xdr
 mdefine_line|#define&t;nfserr_bad_xdr&t;&t;__constant_htonl(NFSERR_BAD_XDR)
 DECL|macro|nfserr_openmode
 mdefine_line|#define&t;nfserr_openmode&t;&t;__constant_htonl(NFSERR_OPENMODE)
+DECL|macro|nfserr_locks_held
+mdefine_line|#define&t;nfserr_locks_held&t;__constant_htonl(NFSERR_LOCKS_HELD)
+DECL|macro|nfserr_op_illegal
+mdefine_line|#define&t;nfserr_op_illegal&t;__constant_htonl(NFSERR_OP_ILLEGAL)
 multiline_comment|/* error codes for internal use */
 multiline_comment|/* if a request fails due to kmalloc failure, it gets dropped.&n; *  Client should resend eventually&n; */
 DECL|macro|nfserr_dropit

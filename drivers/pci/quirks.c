@@ -2804,6 +2804,9 @@ suffix:colon
 r_case
 l_int|0x25b0
 suffix:colon
+r_case
+l_int|0x2562
+suffix:colon
 r_break
 suffix:semicolon
 r_default

@@ -42,6 +42,8 @@ DECL|macro|NFS4_SHARE_DENY_READ
 mdefine_line|#define NFS4_SHARE_DENY_READ&t;0x0001
 DECL|macro|NFS4_SHARE_DENY_WRITE
 mdefine_line|#define NFS4_SHARE_DENY_WRITE&t;0x0002
+DECL|macro|NFS4_SHARE_DENY_BOTH
+mdefine_line|#define NFS4_SHARE_DENY_BOTH&t;0x0003
 DECL|macro|NFS4_SET_TO_SERVER_TIME
 mdefine_line|#define NFS4_SET_TO_SERVER_TIME&t;0
 DECL|macro|NFS4_SET_TO_CLIENT_TIME
@@ -265,6 +267,16 @@ DECL|enumerator|OP_WRITE
 id|OP_WRITE
 op_assign
 l_int|38
+comma
+DECL|enumerator|OP_RELEASE_LOCKOWNER
+id|OP_RELEASE_LOCKOWNER
+op_assign
+l_int|39
+comma
+DECL|enumerator|OP_ILLEGAL
+id|OP_ILLEGAL
+op_assign
+l_int|10044
 comma
 )brace
 suffix:semicolon

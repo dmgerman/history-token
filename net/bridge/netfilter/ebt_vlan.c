@@ -10,8 +10,8 @@ r_int
 r_char
 id|debug
 suffix:semicolon
-DECL|macro|MODULE_VERSION
-mdefine_line|#define MODULE_VERSION &quot;0.6&quot;
+DECL|macro|MODULE_VERS
+mdefine_line|#define MODULE_VERS &quot;0.6&quot;
 id|MODULE_PARM
 c_func
 (paren
@@ -38,7 +38,7 @@ id|MODULE_DESCRIPTION
 c_func
 (paren
 l_string|&quot;802.1Q match module (ebtables extension), v&quot;
-id|MODULE_VERSION
+id|MODULE_VERS
 )paren
 suffix:semicolon
 id|MODULE_LICENSE
@@ -572,7 +572,7 @@ id|DEBUG_MSG
 c_func
 (paren
 l_string|&quot;ebtables 802.1Q extension module v&quot;
-id|MODULE_VERSION
+id|MODULE_VERS
 l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon

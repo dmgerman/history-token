@@ -9,7 +9,6 @@ macro_line|#include &lt;linux/sunrpc/gss_err.h&gt;
 macro_line|#include &lt;linux/sunrpc/sched.h&gt;
 macro_line|#include &lt;linux/sunrpc/gss_api.h&gt;
 macro_line|#include &lt;linux/sunrpc/clnt.h&gt;
-macro_line|#include &lt;linux/sunrpc/name_lookup.h&gt;
 macro_line|#ifdef RPC_DEBUG
 DECL|macro|RPCDBG_FACILITY
 macro_line|# define RPCDBG_FACILITY        RPCDBG_AUTH
@@ -522,6 +521,83 @@ c_cond
 l_string|&quot;found&quot;
 suffix:colon
 l_string|&quot;didn&squot;t find&quot;
+)paren
+suffix:semicolon
+r_return
+id|gm
+suffix:semicolon
+)brace
+r_struct
+id|gss_api_mech
+op_star
+DECL|function|gss_mech_get_by_name
+id|gss_mech_get_by_name
+c_func
+(paren
+r_char
+op_star
+id|name
+)paren
+(brace
+r_struct
+id|gss_api_mech
+op_star
+id|pos
+comma
+op_star
+id|gm
+op_assign
+l_int|NULL
+suffix:semicolon
+id|spin_lock
+c_func
+(paren
+op_amp
+id|registered_mechs_lock
+)paren
+suffix:semicolon
+id|list_for_each_entry
+c_func
+(paren
+id|pos
+comma
+op_amp
+id|registered_mechs
+comma
+id|gm_list
+)paren
+(brace
+r_if
+c_cond
+(paren
+l_int|0
+op_eq
+id|strcmp
+c_func
+(paren
+id|name
+comma
+id|pos-&gt;gm_ops-&gt;name
+)paren
+)paren
+(brace
+id|gm
+op_assign
+id|gss_mech_get
+c_func
+(paren
+id|pos
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
+)brace
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|registered_mechs_lock
 )paren
 suffix:semicolon
 r_return

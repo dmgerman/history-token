@@ -914,38 +914,38 @@ id|u8
 op_star
 id|addr
 suffix:semicolon
-multiline_comment|/* pointer to memory                    */
+multiline_comment|/* pointer to memory&t;&t;&t;*/
 DECL|member|size
 id|u32
 id|size
 suffix:semicolon
-multiline_comment|/* size of buffer in bytes              */
+multiline_comment|/* size of buffer in bytes&t;&t;*/
 DECL|member|offset
 id|u32
 id|offset
 suffix:semicolon
-multiline_comment|/* current offset to buffer             */
+multiline_comment|/* current offset to buffer&t;&t;*/
 DECL|member|buf_align
 id|u32
 id|buf_align
 suffix:semicolon
-multiline_comment|/* byte alignment of each bitmap        */
+multiline_comment|/* byte alignment of each bitmap&t;*/
 DECL|member|scan_align
 id|u32
 id|scan_align
 suffix:semicolon
-multiline_comment|/* alignment per scanline               */
+multiline_comment|/* alignment per scanline&t;&t;*/
 DECL|member|access_align
 id|u32
 id|access_align
 suffix:semicolon
-multiline_comment|/* alignment per read/write             */
+multiline_comment|/* alignment per read/write&t;&t;*/
 DECL|member|flags
 id|u32
 id|flags
 suffix:semicolon
-multiline_comment|/* see FB_PIXMAP_*                      */
-multiline_comment|/* access methods                */
+multiline_comment|/* see FB_PIXMAP_*&t;&t;&t;*/
+multiline_comment|/* access methods&t;&t;&t;*/
 DECL|member|outbuf
 r_void
 (paren
@@ -953,13 +953,18 @@ op_star
 id|outbuf
 )paren
 (paren
-id|u8
+r_struct
+id|fb_info
 op_star
-id|dst
+id|info
 comma
 id|u8
 op_star
 id|addr
+comma
+id|u8
+op_star
+id|src
 comma
 r_int
 r_int
@@ -973,6 +978,11 @@ op_star
 id|inbuf
 )paren
 (paren
+r_struct
+id|fb_info
+op_star
+id|info
+comma
 id|u8
 op_star
 id|addr
@@ -1027,7 +1037,6 @@ suffix:semicolon
 multiline_comment|/* For framebuffers with strange non linear layouts */
 DECL|member|fb_read
 id|ssize_t
-c_func
 (paren
 op_star
 id|fb_read
@@ -1052,7 +1061,6 @@ id|ppos
 suffix:semicolon
 DECL|member|fb_write
 id|ssize_t
-c_func
 (paren
 op_star
 id|fb_write
@@ -1174,7 +1182,7 @@ op_star
 id|info
 )paren
 suffix:semicolon
-multiline_comment|/* draws a rectangle */
+multiline_comment|/* Draws a rectangle */
 DECL|member|fb_fillrect
 r_void
 (paren
@@ -1397,6 +1405,12 @@ id|fb_pixmap
 id|pixmap
 suffix:semicolon
 multiline_comment|/* Image Hardware Mapper */
+DECL|member|sprite
+r_struct
+id|fb_pixmap
+id|sprite
+suffix:semicolon
+multiline_comment|/* Cursor hardware Mapper */
 DECL|member|cmap
 r_struct
 id|fb_cmap
@@ -1676,7 +1690,8 @@ id|fb_info
 )paren
 suffix:semicolon
 r_extern
-id|u32
+r_char
+op_star
 id|fb_get_buffer_offset
 c_func
 (paren
@@ -1685,13 +1700,18 @@ id|fb_info
 op_star
 id|info
 comma
+r_struct
+id|fb_pixmap
+op_star
+id|buf
+comma
 id|u32
 id|size
 )paren
 suffix:semicolon
 r_extern
 r_void
-id|move_buf_unaligned
+id|fb_move_buf_unaligned
 c_func
 (paren
 r_struct
@@ -1699,22 +1719,27 @@ id|fb_info
 op_star
 id|info
 comma
+r_struct
+id|fb_pixmap
+op_star
+id|buf
+comma
 id|u8
 op_star
 id|dst
+comma
+id|u32
+id|d_pitch
 comma
 id|u8
 op_star
 id|src
 comma
 id|u32
-id|d_pitch
+id|idx
 comma
 id|u32
 id|height
-comma
-id|u32
-id|mask
 comma
 id|u32
 id|shift_high
@@ -1724,14 +1749,11 @@ id|shift_low
 comma
 id|u32
 id|mod
-comma
-id|u32
-id|idx
 )paren
 suffix:semicolon
 r_extern
 r_void
-id|move_buf_aligned
+id|fb_move_buf_aligned
 c_func
 (paren
 r_struct
@@ -1739,22 +1761,37 @@ id|fb_info
 op_star
 id|info
 comma
+r_struct
+id|fb_pixmap
+op_star
+id|buf
+comma
 id|u8
 op_star
 id|dst
+comma
+id|u32
+id|d_pitch
 comma
 id|u8
 op_star
 id|src
 comma
 id|u32
-id|d_pitch
-comma
-id|u32
 id|s_pitch
 comma
 id|u32
 id|height
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|fb_load_cursor_image
+c_func
+(paren
+r_struct
+id|fb_info
+op_star
 )paren
 suffix:semicolon
 r_extern
