@@ -36,11 +36,6 @@ suffix:semicolon
 r_static
 r_enum
 (brace
-DECL|enumerator|BOOT_BIOS
-id|BOOT_BIOS
-op_assign
-l_char|&squot;b&squot;
-comma
 DECL|enumerator|BOOT_TRIPLE
 id|BOOT_TRIPLE
 op_assign
@@ -63,7 +58,7 @@ id|reboot_mode
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* reboot=b[ios] | t[riple] | k[bd] [, [w]arm | [c]old]&n;   bios&t;  Use the CPU reboot vector for warm reset&n;   warm   Don&squot;t set the cold reboot flag&n;   cold   Set the cold reboot flag&n;   triple Force a triple fault (init)&n;   kbd    Use the keyboard controller. cold reset (default)&n; */
+multiline_comment|/* reboot=t[riple] | k[bd] [, [w]arm | [c]old]&n;   warm   Don&squot;t set the cold reboot flag&n;   cold   Set the cold reboot flag&n;   triple Force a triple fault (init)&n;   kbd    Use the keyboard controller. cold reset (default)&n; */
 DECL|function|reboot_setup
 r_static
 r_int
@@ -163,112 +158,6 @@ comma
 id|reboot_setup
 )paren
 suffix:semicolon
-multiline_comment|/* overwrites random kernel memory. Should not be kernel .text */
-DECL|macro|WARMBOOT_TRAMP
-mdefine_line|#define WARMBOOT_TRAMP 0x1000UL
-DECL|function|reboot_warm
-r_static
-r_void
-id|reboot_warm
-c_func
-(paren
-r_void
-)paren
-(brace
-r_extern
-r_int
-r_char
-id|warm_reboot
-(braket
-)braket
-comma
-id|warm_reboot_end
-(braket
-)braket
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;warm reboot&bslash;n&quot;
-)paren
-suffix:semicolon
-id|local_irq_disable
-c_func
-(paren
-)paren
-suffix:semicolon
-multiline_comment|/* restore identity mapping */
-id|init_level4_pgt
-(braket
-l_int|0
-)braket
-op_assign
-id|__pgd
-c_func
-(paren
-id|__pa
-c_func
-(paren
-id|level3_ident_pgt
-)paren
-op_or
-l_int|7
-)paren
-suffix:semicolon
-id|__flush_tlb_all
-c_func
-(paren
-)paren
-suffix:semicolon
-multiline_comment|/* Move the trampoline to low memory */
-id|memcpy
-c_func
-(paren
-id|__va
-c_func
-(paren
-id|WARMBOOT_TRAMP
-)paren
-comma
-id|warm_reboot
-comma
-id|warm_reboot_end
-op_minus
-id|warm_reboot
-)paren
-suffix:semicolon
-multiline_comment|/* Start it in compatibility mode. */
-id|asm
-r_volatile
-(paren
-l_string|&quot;   pushq $0&bslash;n&quot;
-multiline_comment|/* ss */
-l_string|&quot;   pushq $0x2000&bslash;n&quot;
-multiline_comment|/* rsp */
-l_string|&quot;   pushfq&bslash;n&quot;
-multiline_comment|/* eflags */
-l_string|&quot;   pushq %[cs]&bslash;n&quot;
-l_string|&quot;   pushq %[target]&bslash;n&quot;
-l_string|&quot;   iretq&quot;
-op_scope_resolution
-(braket
-id|cs
-)braket
-l_string|&quot;i&quot;
-(paren
-id|__KERNEL_COMPAT32_CS
-)paren
-comma
-(braket
-id|target
-)braket
-l_string|&quot;b&quot;
-(paren
-id|WARMBOOT_TRAMP
-)paren
-)paren
-suffix:semicolon
-)brace
 macro_line|#ifdef CONFIG_SMP
 DECL|function|smp_halt
 r_static
@@ -483,14 +372,6 @@ c_cond
 id|reboot_type
 )paren
 (brace
-r_case
-id|BOOT_BIOS
-suffix:colon
-id|reboot_warm
-c_func
-(paren
-)paren
-suffix:semicolon
 r_case
 id|BOOT_KBD
 suffix:colon
