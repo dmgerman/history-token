@@ -558,8 +558,29 @@ DECL|macro|__NR_mq_getsetattr
 mdefine_line|#define __NR_mq_getsetattr&t;(__NR_mq_open+5)
 DECL|macro|__NR_sys_kexec_load
 mdefine_line|#define __NR_sys_kexec_load&t;283
+DECL|macro|__NR_waitid
+mdefine_line|#define __NR_waitid&t;&t;284
+multiline_comment|/* #define __NR_sys_setaltroot&t;285 */
+DECL|macro|__NR_add_key
+mdefine_line|#define __NR_add_key&t;&t;286
+DECL|macro|__NR_request_key
+mdefine_line|#define __NR_request_key&t;287
+DECL|macro|__NR_keyctl
+mdefine_line|#define __NR_keyctl&t;&t;288
+DECL|macro|__NR_perfctr_info
+mdefine_line|#define __NR_perfctr_info&t;289
+DECL|macro|__NR_vperfctr_open
+mdefine_line|#define __NR_vperfctr_open&t;(__NR_perfctr_info+1)
+DECL|macro|__NR_vperfctr_control
+mdefine_line|#define __NR_vperfctr_control&t;(__NR_perfctr_info+2)
+DECL|macro|__NR_vperfctr_unlink
+mdefine_line|#define __NR_vperfctr_unlink&t;(__NR_perfctr_info+3)
+DECL|macro|__NR_vperfctr_iresume
+mdefine_line|#define __NR_vperfctr_iresume&t;(__NR_perfctr_info+4)
+DECL|macro|__NR_vperfctr_read
+mdefine_line|#define __NR_vperfctr_read&t;(__NR_perfctr_info+5)
 DECL|macro|NR_syscalls
-mdefine_line|#define NR_syscalls 284
+mdefine_line|#define NR_syscalls 295
 multiline_comment|/*&n; * process the return value of a syscall, consigning it to one of two possible fates&n; * - user-visible error numbers are in the range -1 - -4095: see &lt;asm-frv/errno.h&gt;&n; */
 DECL|macro|__syscall_return
 macro_line|#undef __syscall_return
