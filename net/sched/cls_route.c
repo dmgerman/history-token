@@ -1770,7 +1770,7 @@ r_goto
 id|errout
 suffix:semicolon
 id|nhandle
-op_assign
+op_or_assign
 (paren
 id|id
 op_or
@@ -1782,7 +1782,7 @@ suffix:semicolon
 )brace
 r_else
 id|nhandle
-op_assign
+op_or_assign
 l_int|0xFFFF
 op_lshift
 l_int|16
