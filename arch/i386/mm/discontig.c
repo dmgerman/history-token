@@ -950,7 +950,7 @@ id|node_zones
 id|ZONE_HIGHMEM
 )braket
 dot
-id|size
+id|spanned_pages
 suffix:semicolon
 id|zone_mem_map
 op_assign
