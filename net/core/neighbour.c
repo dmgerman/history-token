@@ -4742,6 +4742,10 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
+id|p-&gt;sysctl_table
+op_assign
+l_int|NULL
+suffix:semicolon
 id|write_lock_bh
 c_func
 (paren
@@ -4854,14 +4858,6 @@ op_amp
 id|tbl-&gt;lock
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_SYSCTL
-id|neigh_sysctl_unregister
-c_func
-(paren
-id|parms
-)paren
-suffix:semicolon
-macro_line|#endif
 id|kfree
 c_func
 (paren
@@ -5154,15 +5150,6 @@ op_amp
 id|neigh_tbl_lock
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_SYSCTL
-id|neigh_sysctl_unregister
-c_func
-(paren
-op_amp
-id|tbl-&gt;parms
-)paren
-suffix:semicolon
-macro_line|#endif
 r_return
 l_int|0
 suffix:semicolon

@@ -298,7 +298,7 @@ c_func
 id|KERN_INFO
 l_string|&quot;%s: port %i(%s) entering %s state&bslash;n&quot;
 comma
-id|br-&gt;dev.name
+id|br-&gt;dev-&gt;name
 comma
 id|p-&gt;port_no
 comma
@@ -449,7 +449,7 @@ suffix:semicolon
 id|memcpy
 c_func
 (paren
-id|br-&gt;dev.dev_addr
+id|br-&gt;dev-&gt;dev_addr
 comma
 id|addr
 comma
