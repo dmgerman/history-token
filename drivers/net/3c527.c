@@ -3311,16 +3311,6 @@ id|lp-&gt;tx_ring_head
 dot
 id|p
 suffix:semicolon
-multiline_comment|/* We will need this to flush the buffer out */
-id|lp-&gt;tx_ring
-(braket
-id|lp-&gt;tx_ring_head
-)braket
-dot
-id|skb
-op_assign
-id|skb
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -3350,6 +3340,16 @@ r_goto
 id|out
 suffix:semicolon
 )brace
+multiline_comment|/* We will need this to flush the buffer out */
+id|lp-&gt;tx_ring
+(braket
+id|lp-&gt;tx_ring_head
+)braket
+dot
+id|skb
+op_assign
+id|skb
+suffix:semicolon
 id|np-&gt;length
 op_assign
 (paren
