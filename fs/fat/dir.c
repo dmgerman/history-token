@@ -1,4 +1,5 @@
 multiline_comment|/*&n; *  linux/fs/fat/dir.c&n; *&n; *  directory handling functions for fat-based filesystems&n; *&n; *  Written 1992,1993 by Werner Almesberger&n; *&n; *  Hidden files 1995 by Albert Cahalan &lt;albert@ccs.neu.edu&gt; &lt;adc@coe.neu.edu&gt;&n; *&n; *  VFAT extensions by Gordon Chaffee &lt;chaffee@plateau.cs.berkeley.edu&gt;&n; *  Merged with msdos fs by Henrik Storner &lt;storner@osiris.ping.dk&gt;&n; *  Rewritten for constant inumbers. Plugged buffer overrun in readdir(). AV&n; *  Short name translation 1999, 2001 by Wolfram Pienkoss &lt;wp@bszh.de&gt;&n; */
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/msdos_fs.h&gt;
@@ -1843,6 +1844,13 @@ r_int
 id|short_len
 suffix:semicolon
 )brace
+suffix:semicolon
+DECL|variable|fat_search_long
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|fat_search_long
+)paren
 suffix:semicolon
 DECL|function|fat_readdirx
 r_static
@@ -4278,6 +4286,13 @@ r_return
 id|offset
 suffix:semicolon
 )brace
+DECL|variable|fat_add_entries
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|fat_add_entries
+)paren
+suffix:semicolon
 DECL|function|fat_new_dir
 r_int
 id|fat_new_dir
@@ -4604,6 +4619,13 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|variable|fat_new_dir
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|fat_new_dir
+)paren
+suffix:semicolon
 DECL|function|fat_get_short_entry
 r_static
 r_int
@@ -4800,6 +4822,13 @@ r_return
 id|result
 suffix:semicolon
 )brace
+DECL|variable|fat_dir_empty
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|fat_dir_empty
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * fat_subdirs counts the number of sub-directories of dir. It can be run&n; * on directories being created.&n; */
 DECL|function|fat_subdirs
 r_int
@@ -4980,4 +5009,11 @@ op_minus
 id|ENOENT
 suffix:semicolon
 )brace
+DECL|variable|fat_scan
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|fat_scan
+)paren
+suffix:semicolon
 eof

@@ -1,4 +1,5 @@
 multiline_comment|/*&n; *  linux/fs/fat/misc.c&n; *&n; *  Written 1992,1993 by Werner Almesberger&n; *  22/11/2000 - Fixed fat_date_unix2dos for dates earlier than 01/01/1980&n; *&t;&t; and date_dos2unix for date==0 by Igor Zhbanov(bsg@uniyar.ac.ru)&n; */
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/msdos_fs.h&gt;
 macro_line|#include &lt;linux/buffer_head.h&gt;
@@ -1496,6 +1497,13 @@ l_int|9
 )paren
 suffix:semicolon
 )brace
+DECL|variable|fat_date_unix2dos
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|fat_date_unix2dos
+)paren
+suffix:semicolon
 multiline_comment|/* Returns the inode number of the directory entry at offset pos. If bh is&n;   non-NULL, it is brelse&squot;d before. Pos is incremented. The buffer header is&n;   returned in bh.&n;   AV. Most often we do it item-by-item. Makes sense to optimize.&n;   AV. OK, there we go: if both bh and de are non-NULL we assume that we just&n;   AV. want the next entry (took one explicit de=NULL in vfat/namei.c).&n;   AV. It&squot;s done in fat_get_entry() (inlined), here the slow case lives.&n;   AV. Additionally, when we return -1 (i.e. reached the end of directory)&n;   AV. we make bh NULL. &n; */
 DECL|function|fat__get_entry
 r_int
@@ -1721,4 +1729,11 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|variable|fat__get_entry
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|fat__get_entry
+)paren
+suffix:semicolon
 eof
