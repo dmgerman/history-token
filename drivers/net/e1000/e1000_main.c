@@ -24,7 +24,7 @@ id|e1000_driver_version
 (braket
 )braket
 op_assign
-l_string|&quot;4.2.4-k2&quot;
+l_string|&quot;4.2.8&quot;
 suffix:semicolon
 DECL|variable|e1000_copyright
 r_char
@@ -1033,6 +1033,8 @@ c_func
 l_string|&quot;Dual BSD/GPL&quot;
 )paren
 suffix:semicolon
+id|EXPORT_NO_SYMBOLS
+suffix:semicolon
 multiline_comment|/**&n; * e1000_init_module - Driver Registration Routine&n; *&n; * e1000_init_module is the first routine called when the driver is&n; * loaded. All it does is register with the PCI subsystem.&n; **/
 r_static
 r_int
@@ -1245,6 +1247,14 @@ c_func
 op_amp
 id|adapter-&gt;phy_info_timer
 )paren
+suffix:semicolon
+id|adapter-&gt;link_speed
+op_assign
+l_int|0
+suffix:semicolon
+id|adapter-&gt;link_duplex
+op_assign
+l_int|0
 suffix:semicolon
 id|netif_carrier_off
 c_func
@@ -4740,6 +4750,19 @@ c_func
 id|netdev
 )paren
 suffix:semicolon
+id|mod_timer
+c_func
+(paren
+op_amp
+id|adapter-&gt;phy_info_timer
+comma
+id|jiffies
+op_plus
+l_int|2
+op_star
+id|HZ
+)paren
+suffix:semicolon
 )brace
 )brace
 id|e1000_update_stats
@@ -7215,7 +7238,11 @@ id|rx_desc
 comma
 l_int|0
 comma
-l_int|16
+r_sizeof
+(paren
+r_struct
+id|e1000_rx_desc
+)paren
 )paren
 suffix:semicolon
 id|mb
@@ -7345,7 +7372,11 @@ id|rx_desc
 comma
 l_int|0
 comma
-l_int|16
+r_sizeof
+(paren
+r_struct
+id|e1000_rx_desc
+)paren
 )paren
 suffix:semicolon
 id|mb
@@ -7395,7 +7426,7 @@ id|skb
 comma
 id|length
 op_minus
-id|CRC_LENGTH
+id|ETHERNET_FCS_SIZE
 )paren
 suffix:semicolon
 multiline_comment|/* Receive Checksum Offload */
