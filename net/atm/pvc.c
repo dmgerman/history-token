@@ -1,7 +1,7 @@
 multiline_comment|/* net/atm/pvc.c - ATM PVC sockets */
 multiline_comment|/* Written 1995-2000 by Werner Almesberger, EPFL LRC/ICA */
 macro_line|#include &lt;linux/config.h&gt;
-macro_line|#include &lt;linux/net.h&gt;&t;&t;/* struct socket, struct net_proto,&n;&t;&t;&t;&t;   struct proto_ops */
+macro_line|#include &lt;linux/net.h&gt;&t;&t;/* struct socket, struct proto_ops */
 macro_line|#include &lt;linux/atm.h&gt;&t;&t;/* ATM stuff */
 macro_line|#include &lt;linux/atmdev.h&gt;&t;/* ATM devices */
 macro_line|#include &lt;linux/atmclip.h&gt;&t;/* Classical IP over ATM */
