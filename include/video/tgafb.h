@@ -20,8 +20,14 @@ DECL|macro|TGA_24PLANE_FB_OFFSET
 mdefine_line|#define&t;TGA_24PLANE_FB_OFFSET&t;&t;0x0804000
 DECL|macro|TGA_24PLUSZ_FB_OFFSET
 mdefine_line|#define&t;TGA_24PLUSZ_FB_OFFSET&t;&t;0x1004000
+DECL|macro|TGA_FOREGROUND_REG
+mdefine_line|#define TGA_FOREGROUND_REG&t;&t;0x0020
+DECL|macro|TGA_BACKGROUND_REG
+mdefine_line|#define TGA_BACKGROUND_REG&t;&t;0x0024
 DECL|macro|TGA_PLANEMASK_REG
 mdefine_line|#define&t;TGA_PLANEMASK_REG&t;&t;0x0028
+DECL|macro|TGA_PIXELMASK_ONESHOT_REG
+mdefine_line|#define TGA_PIXELMASK_ONESHOT_REG&t;0x002c
 DECL|macro|TGA_MODE_REG
 mdefine_line|#define&t;TGA_MODE_REG&t;&t;&t;0x0030
 DECL|macro|TGA_RASTEROP_REG
@@ -52,6 +58,22 @@ DECL|macro|TGA_BLOCK_COLOR0_REG
 mdefine_line|#define&t;TGA_BLOCK_COLOR0_REG&t;&t;0x0140
 DECL|macro|TGA_BLOCK_COLOR1_REG
 mdefine_line|#define&t;TGA_BLOCK_COLOR1_REG&t;&t;0x0144
+DECL|macro|TGA_BLOCK_COLOR2_REG
+mdefine_line|#define&t;TGA_BLOCK_COLOR2_REG&t;&t;0x0148
+DECL|macro|TGA_BLOCK_COLOR3_REG
+mdefine_line|#define&t;TGA_BLOCK_COLOR3_REG&t;&t;0x014c
+DECL|macro|TGA_BLOCK_COLOR4_REG
+mdefine_line|#define&t;TGA_BLOCK_COLOR4_REG&t;&t;0x0150
+DECL|macro|TGA_BLOCK_COLOR5_REG
+mdefine_line|#define&t;TGA_BLOCK_COLOR5_REG&t;&t;0x0154
+DECL|macro|TGA_BLOCK_COLOR6_REG
+mdefine_line|#define&t;TGA_BLOCK_COLOR6_REG&t;&t;0x0158
+DECL|macro|TGA_BLOCK_COLOR7_REG
+mdefine_line|#define&t;TGA_BLOCK_COLOR7_REG&t;&t;0x015c
+DECL|macro|TGA_COPY64_SRC
+mdefine_line|#define TGA_COPY64_SRC&t;&t;&t;0x0160
+DECL|macro|TGA_COPY64_DST
+mdefine_line|#define TGA_COPY64_DST&t;&t;&t;0x0164
 DECL|macro|TGA_CLOCK_REG
 mdefine_line|#define&t;TGA_CLOCK_REG&t;&t;&t;0x01e8
 DECL|macro|TGA_RAMDAC_REG
@@ -93,6 +115,34 @@ DECL|macro|TGA_VALID_BLANK
 mdefine_line|#define TGA_VALID_BLANK&t;&t;&t;0x02
 DECL|macro|TGA_VALID_CURSOR
 mdefine_line|#define TGA_VALID_CURSOR&t;&t;0x04
+DECL|macro|TGA_MODE_SBM_8BPP
+mdefine_line|#define TGA_MODE_SBM_8BPP&t;&t;0x000
+DECL|macro|TGA_MODE_SBM_24BPP
+mdefine_line|#define TGA_MODE_SBM_24BPP&t;&t;0x300
+DECL|macro|TGA_MODE_SIMPLE
+mdefine_line|#define TGA_MODE_SIMPLE&t;&t;&t;0x00
+DECL|macro|TGA_MODE_SIMPLEZ
+mdefine_line|#define TGA_MODE_SIMPLEZ&t;&t;0x10
+DECL|macro|TGA_MODE_OPAQUE_STIPPLE
+mdefine_line|#define TGA_MODE_OPAQUE_STIPPLE&t;&t;0x01
+DECL|macro|TGA_MODE_OPAQUE_FILL
+mdefine_line|#define TGA_MODE_OPAQUE_FILL&t;&t;0x21
+DECL|macro|TGA_MODE_TRANSPARENT_STIPPLE
+mdefine_line|#define TGA_MODE_TRANSPARENT_STIPPLE&t;0x03
+DECL|macro|TGA_MODE_TRANSPARENT_FILL
+mdefine_line|#define TGA_MODE_TRANSPARENT_FILL&t;0x23
+DECL|macro|TGA_MODE_BLOCK_STIPPLE
+mdefine_line|#define TGA_MODE_BLOCK_STIPPLE&t;&t;0x0d
+DECL|macro|TGA_MODE_BLOCK_FILL
+mdefine_line|#define TGA_MODE_BLOCK_FILL&t;&t;0x2d
+DECL|macro|TGA_MODE_COPY
+mdefine_line|#define TGA_MODE_COPY&t;&t;&t;0x07
+DECL|macro|TGA_MODE_DMA_READ_COPY_ND
+mdefine_line|#define TGA_MODE_DMA_READ_COPY_ND&t;0x17
+DECL|macro|TGA_MODE_DMA_READ_COPY_D
+mdefine_line|#define TGA_MODE_DMA_READ_COPY_D&t;0x37
+DECL|macro|TGA_MODE_DMA_WRITE_COPY
+mdefine_line|#define TGA_MODE_DMA_WRITE_COPY&t;&t;0x1f
 multiline_comment|/*&n; * Useful defines for managing the ICS1562 PLL clock&n; */
 DECL|macro|TGA_PLL_BASE_FREQ
 mdefine_line|#define TGA_PLL_BASE_FREQ &t;&t;14318&t;&t;/* .18 */
