@@ -55,9 +55,53 @@ DECL|macro|page_to_pfn
 mdefine_line|#define page_to_pfn(pg)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;struct page *__page = pg;&t;&t;&t;&t;&t;&bslash;&n;&t;struct zone *__zone = page_zone(__page);&t;&t;&t;&bslash;&n;&t;(unsigned long)(__page - __zone-&gt;zone_mem_map)&t;&t;&t;&bslash;&n;&t;&t;+ __zone-&gt;zone_start_pfn;&t;&t;&t;&t;&bslash;&n;})
 DECL|macro|pmd_page
 mdefine_line|#define pmd_page(pmd)&t;&t;(pfn_to_page(pmd_val(pmd) &gt;&gt; PAGE_SHIFT))
-multiline_comment|/*&n; * pfn_valid should be made as fast as possible, and the current definition &n; * is valid for machines that are NUMA, but still contiguous, which is what&n; * is currently supported. A more generalised, but slower definition would&n; * be something like this - mbligh:&n; * ( pfn_to_pgdat(pfn) &amp;&amp; ((pfn) &lt; node_end_pfn(pfn_to_nid(pfn))) ) &n; */
+macro_line|#ifdef CONFIG_X86_NUMAQ            /* we have contiguous memory on NUMA-Q */
 DECL|macro|pfn_valid
 mdefine_line|#define pfn_valid(pfn)          ((pfn) &lt; num_physpages)
+macro_line|#else
+DECL|function|pfn_valid
+r_static
+r_inline
+r_int
+id|pfn_valid
+c_func
+(paren
+r_int
+id|pfn
+)paren
+(brace
+r_int
+id|nid
+op_assign
+id|pfn_to_nid
+c_func
+(paren
+id|pfn
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|nid
+op_ge
+l_int|0
+)paren
+r_return
+(paren
+id|pfn
+OL
+id|node_end_pfn
+c_func
+(paren
+id|nid
+)paren
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+macro_line|#endif
 multiline_comment|/*&n; * generic node memory support, the following assumptions apply:&n; *&n; * 1) memory comes in 256Mb contigious chunks which are either present or not&n; * 2) we will not have more than 64Gb in total&n; *&n; * for now assume that 64Gb is max amount of RAM for whole system&n; *    64Gb / 4096bytes/page = 16777216 pages&n; */
 DECL|macro|MAX_NR_PAGES
 mdefine_line|#define MAX_NR_PAGES 16777216
