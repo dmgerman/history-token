@@ -19,10 +19,6 @@ macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/io_apic.h&gt;
 macro_line|#include &lt;asm/proto.h&gt;
 macro_line|#include &lt;asm/tlbflush.h&gt;
-r_extern
-r_int
-id|acpi_disabled
-suffix:semicolon
 DECL|variable|acpi_lapic
 r_int
 id|acpi_lapic
@@ -34,10 +30,6 @@ r_int
 id|acpi_ioapic
 op_assign
 l_int|0
-suffix:semicolon
-r_extern
-r_int
-id|disable_apic
 suffix:semicolon
 DECL|macro|PREFIX
 mdefine_line|#define PREFIX&t;&t;&t;&quot;ACPI: &quot;
@@ -755,6 +747,9 @@ r_if
 c_cond
 (paren
 id|acpi_disabled
+op_logical_and
+op_logical_neg
+id|acpi_ht
 )paren
 r_return
 l_int|1
@@ -809,18 +804,24 @@ r_return
 id|result
 suffix:semicolon
 )brace
-r_extern
-r_int
-id|disable_apic
-suffix:semicolon
 r_if
 c_cond
 (paren
 id|disable_apic
 )paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_INFO
+id|PREFIX
+l_string|&quot;Skipping MADT probe because local APIC is disabled&bslash;n&quot;
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
+)brace
 macro_line|#ifdef CONFIG_X86_LOCAL_APIC
 multiline_comment|/* &n;&t; * MADT&n;&t; * ----&n;&t; * Parse the Multiple APIC Description Table (MADT), if exists.&n;&t; * Note that this table provides platform SMP configuration &n;&t; * information -- the successor to MPS tables.&n;&t; */
 id|result
@@ -1032,7 +1033,7 @@ multiline_comment|/*&n;&t; * if &quot;noapic&quot; boot option, don&squot;t look
 r_if
 c_cond
 (paren
-id|disable_apic
+id|skip_ioapic_setup
 )paren
 (brace
 id|printk
