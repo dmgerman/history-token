@@ -1017,8 +1017,6 @@ r_int
 id|count
 )paren
 suffix:semicolon
-DECL|macro|strlen_user
-mdefine_line|#define strlen_user(str) strnlen_user(str, ~0UL &gt;&gt; 1)
 r_int
 id|strnlen_user
 c_func
@@ -1030,6 +1028,16 @@ id|str
 comma
 r_int
 id|n
+)paren
+suffix:semicolon
+r_int
+id|strlen_user
+c_func
+(paren
+r_const
+r_char
+op_star
+id|str
 )paren
 suffix:semicolon
 r_int

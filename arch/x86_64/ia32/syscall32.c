@@ -1,12 +1,14 @@
-multiline_comment|/* Copyright 2002 Andi Kleen, SuSE Labs */
+multiline_comment|/* Copyright 2002,2003 Andi Kleen, SuSE Labs */
 multiline_comment|/* vsyscall handling for 32bit processes. Map a stub page into it &n;   on demand because 32bit cannot reach the kernel&squot;s fixmaps */
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/gfp.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/stringify.h&gt;
 macro_line|#include &lt;asm/proto.h&gt;
 macro_line|#include &lt;asm/tlbflush.h&gt;
+macro_line|#include &lt;asm/ia32_unistd.h&gt;
 multiline_comment|/* 32bit SYSCALL stub mapped into user space. */
 id|asm
 c_func
@@ -19,6 +21,28 @@ l_string|&quot;&t;syscall&bslash;n&quot;
 l_string|&quot;&t;popl  %ebp&bslash;n&quot;
 l_string|&quot;&t;ret&bslash;n&quot;
 l_string|&quot;syscall32_end:&bslash;n&quot;
+multiline_comment|/* signal trampolines */
+l_string|&quot;sig32_rt_tramp:&bslash;n&quot;
+l_string|&quot;&t;movl $&quot;
+id|__stringify
+c_func
+(paren
+id|__NR_ia32_rt_sigreturn
+)paren
+l_string|&quot;,%eax&bslash;n&quot;
+l_string|&quot;   int $0x80&bslash;n&quot;
+l_string|&quot;sig32_rt_tramp_end:&bslash;n&quot;
+l_string|&quot;sig32_tramp:&bslash;n&quot;
+l_string|&quot;&t;popl %eax&bslash;n&quot;
+l_string|&quot;&t;movl $&quot;
+id|__stringify
+c_func
+(paren
+id|__NR_ia32_sigreturn
+)paren
+l_string|&quot;,%eax&bslash;n&quot;
+l_string|&quot;&t;int $0x80&bslash;n&quot;
+l_string|&quot;sig32_tramp_end:&bslash;n&quot;
 l_string|&quot;&t;.code64&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -33,10 +57,31 @@ id|syscall32_end
 (braket
 )braket
 suffix:semicolon
+r_extern
+r_int
+r_char
+id|sig32_rt_tramp
+(braket
+)braket
+comma
+id|sig32_rt_tramp_end
+(braket
+)braket
+suffix:semicolon
+r_extern
+r_int
+r_char
+id|sig32_tramp
+(braket
+)braket
+comma
+id|sig32_tramp_end
+(braket
+)braket
+suffix:semicolon
 DECL|variable|syscall32_page
-r_static
-r_int
-r_int
+r_char
+op_star
 id|syscall32_page
 suffix:semicolon
 multiline_comment|/* RED-PEN: This knows too much about high level VM */
@@ -195,6 +240,10 @@ r_void
 (brace
 id|syscall32_page
 op_assign
+(paren
+r_void
+op_star
+)paren
 id|get_zeroed_page
 c_func
 (paren
@@ -226,10 +275,6 @@ suffix:semicolon
 id|memcpy
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 id|syscall32_page
 comma
 id|syscall32
@@ -238,6 +283,37 @@ id|syscall32_end
 op_minus
 id|syscall32
 )paren
+suffix:semicolon
+id|memcpy
+c_func
+(paren
+id|syscall32_page
+op_plus
+l_int|32
+comma
+id|sig32_rt_tramp
+comma
+id|sig32_rt_tramp_end
+op_minus
+id|sig32_rt_tramp
+)paren
+suffix:semicolon
+id|memcpy
+c_func
+(paren
+id|syscall32_page
+op_plus
+l_int|64
+comma
+id|sig32_tramp
+comma
+id|sig32_tramp_end
+op_minus
+id|sig32_tramp
+)paren
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 )brace
 DECL|variable|init_syscall32

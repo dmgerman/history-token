@@ -2159,6 +2159,15 @@ l_int|NULL
 )paren
 suffix:semicolon
 )brace
+r_extern
+r_void
+id|dump_pagetable
+c_func
+(paren
+r_int
+r_int
+)paren
+suffix:semicolon
 DECL|function|do_general_protection
 id|asmlinkage
 r_void
@@ -2187,7 +2196,7 @@ id|pda
 op_assign
 id|cpu_pda
 op_plus
-id|stack_smp_processor_id
+id|hard_smp_processor_id
 c_func
 (paren
 )paren
@@ -2220,6 +2229,9 @@ comma
 id|pda
 )paren
 suffix:semicolon
+id|oops_in_progress
+op_increment
+suffix:semicolon
 id|printk
 c_func
 (paren
@@ -2229,6 +2241,9 @@ id|gs
 comma
 id|pda
 )paren
+suffix:semicolon
+id|oops_in_progress
+op_decrement
 suffix:semicolon
 )brace
 )brace

@@ -8474,7 +8474,6 @@ c_func
 id|pdev
 )paren
 suffix:semicolon
-multiline_comment|/* No need to check MOD_IN_USE, as sys_delete_module() checks. */
 r_if
 c_cond
 (paren
