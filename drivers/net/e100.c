@@ -2458,32 +2458,6 @@ c_func
 l_int|20
 )paren
 suffix:semicolon
-multiline_comment|/* TCO workaround - 82559 and greater */
-r_if
-c_cond
-(paren
-id|nic-&gt;mac
-op_ge
-id|mac_82559_D101M
-)paren
-(brace
-multiline_comment|/* Issue a redundant CU load base without setting&n;&t;&t; * general pointer, and without waiting for scb to&n;&t;&t; * clear.  This gets us into post-driver.  Finally,&n;&t;&t; * wait 20 msec for reset to take effect. */
-id|writeb
-c_func
-(paren
-id|cuc_load_base
-comma
-op_amp
-id|nic-&gt;csr-&gt;scb.cmd_lo
-)paren
-suffix:semicolon
-id|mdelay
-c_func
-(paren
-l_int|20
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/* Mask off our interrupt line - it&squot;s unmasked after reset */
 id|e100_disable_irq
 c_func
