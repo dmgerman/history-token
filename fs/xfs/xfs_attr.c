@@ -6002,6 +6002,10 @@ c_func
 (paren
 )paren
 suffix:semicolon
+id|state-&gt;holeok
+op_assign
+l_int|1
+suffix:semicolon
 id|state-&gt;args
 op_assign
 id|args
