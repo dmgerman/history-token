@@ -1485,16 +1485,16 @@ comma
 id|euid
 suffix:semicolon
 multiline_comment|/* uid/euid of process setting the owner */
-DECL|member|signum
-r_int
-id|signum
-suffix:semicolon
-multiline_comment|/* posix.1b rt signal to be delivered on IO */
 DECL|member|security
 r_void
 op_star
 id|security
 suffix:semicolon
+DECL|member|signum
+r_int
+id|signum
+suffix:semicolon
+multiline_comment|/* posix.1b rt signal to be delivered on IO */
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * Track a single file&squot;s readahead state&n; */
@@ -1608,6 +1608,10 @@ DECL|member|f_mode
 id|mode_t
 id|f_mode
 suffix:semicolon
+DECL|member|f_error
+r_int
+id|f_error
+suffix:semicolon
 DECL|member|f_pos
 id|loff_t
 id|f_pos
@@ -1624,10 +1628,6 @@ r_int
 id|f_uid
 comma
 id|f_gid
-suffix:semicolon
-DECL|member|f_error
-r_int
-id|f_error
 suffix:semicolon
 DECL|member|f_ra
 r_struct
