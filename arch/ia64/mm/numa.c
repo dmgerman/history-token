@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/node.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/bootmem.h&gt;
+macro_line|#include &lt;asm/mmzone.h&gt;
 macro_line|#include &lt;asm/numa.h&gt;
 DECL|variable|sysfs_memblks
 r_static
@@ -33,8 +34,6 @@ multiline_comment|/*&n; * The following structures are usually initialized by AC
 DECL|variable|num_memblks
 r_int
 id|num_memblks
-op_assign
-l_int|0
 suffix:semicolon
 DECL|variable|node_memblk
 r_struct
