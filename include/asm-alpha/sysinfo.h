@@ -21,6 +21,8 @@ DECL|macro|SSI_IEEE_STATE_AT_SIGNAL
 mdefine_line|#define SSI_IEEE_STATE_AT_SIGNAL&t;15
 DECL|macro|SSI_IEEE_IGNORE_STATE_AT_SIGNAL
 mdefine_line|#define SSI_IEEE_IGNORE_STATE_AT_SIGNAL&t;16
+DECL|macro|SSI_IEEE_RAISE_EXCEPTION
+mdefine_line|#define SSI_IEEE_RAISE_EXCEPTION&t;1001&t;/* linux specific */
 DECL|macro|SSIN_UACPROC
 mdefine_line|#define SSIN_UACPROC&t;&t;&t;6
 DECL|macro|UAC_BITMASK
