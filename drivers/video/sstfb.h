@@ -500,17 +500,11 @@ DECL|struct|sstfb_par
 r_struct
 id|sstfb_par
 (brace
-DECL|member|bpp
+DECL|member|yDim
 r_int
 r_int
-id|bpp
+id|yDim
 suffix:semicolon
-DECL|member|xDim
-r_int
-r_int
-id|xDim
-suffix:semicolon
-multiline_comment|/* xres */
 DECL|member|hSyncOn
 r_int
 r_int
@@ -529,11 +523,6 @@ r_int
 id|hBackPorch
 suffix:semicolon
 multiline_comment|/* left_margin */
-DECL|member|yDim
-r_int
-r_int
-id|yDim
-suffix:semicolon
 DECL|member|vSyncOn
 r_int
 r_int
@@ -549,12 +538,6 @@ r_int
 r_int
 id|vBackPorch
 suffix:semicolon
-DECL|member|freq
-r_int
-r_int
-id|freq
-suffix:semicolon
-multiline_comment|/* freq in kHz */
 DECL|member|pll
 r_struct
 id|pll_timing
@@ -566,24 +549,6 @@ r_int
 id|tiles_in_X
 suffix:semicolon
 multiline_comment|/* num of tiles in X res */
-DECL|member|vmode
-r_int
-r_int
-id|vmode
-suffix:semicolon
-multiline_comment|/* doublescan/interlaced */
-DECL|member|sync
-r_int
-r_int
-id|sync
-suffix:semicolon
-multiline_comment|/* H/V sync polarity */
-DECL|member|valid
-r_int
-r_int
-id|valid
-suffix:semicolon
-multiline_comment|/* par is correct (fool proof) */
 DECL|member|mmio_vbase
 r_int
 r_int
