@@ -804,5 +804,27 @@ op_star
 id|tlck
 )paren
 suffix:semicolon
+r_extern
+r_void
+id|txQuiesce
+c_func
+(paren
+r_struct
+id|super_block
+op_star
+id|sb
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|txResume
+c_func
+(paren
+r_struct
+id|super_block
+op_star
+id|sb
+)paren
+suffix:semicolon
 macro_line|#endif&t;&t;&t;&t;/* _H_JFS_TXNMGR */
 eof

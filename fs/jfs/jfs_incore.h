@@ -369,6 +369,11 @@ id|pxd_t
 id|logpxd
 suffix:semicolon
 multiline_comment|/* 8: pxd describing log&t;*/
+DECL|member|fsckpxd
+id|pxd_t
+id|fsckpxd
+suffix:semicolon
+multiline_comment|/* 8: pxd describing fsck wkspc */
 DECL|member|ait2
 id|pxd_t
 id|ait2
