@@ -146,6 +146,30 @@ l_string|&quot;Forcibly enable the PIIX4 at the given address. &quot;
 l_string|&quot;EXTREMELY DANGEROUS!&quot;
 )paren
 suffix:semicolon
+multiline_comment|/* If fix_hstcfg is set to anything different from 0, we reset one of the&n;   registers to be a valid value. */
+DECL|variable|fix_hstcfg
+r_static
+r_int
+id|fix_hstcfg
+op_assign
+l_int|0
+suffix:semicolon
+id|MODULE_PARM
+c_func
+(paren
+id|fix_hstcfg
+comma
+l_string|&quot;i&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|fix_hstcfg
+comma
+l_string|&quot;Fix config register. Needed on some boards (Force CPCI735).&quot;
+)paren
+suffix:semicolon
 r_static
 r_int
 id|piix4_transaction
@@ -394,19 +418,24 @@ op_amp
 l_int|0x02
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|fix_hstcfg
+)paren
+(brace
 id|dev_info
 c_func
 (paren
 op_amp
 id|PIIX4_dev-&gt;dev
 comma
-l_string|&quot;Worked around buggy BIOS (I2C)&bslash;n&quot;
+l_string|&quot;Working around buggy BIOS &quot;
+l_string|&quot;(I2C)&bslash;n&quot;
 )paren
 suffix:semicolon
 id|temp
-op_assign
-id|temp
-op_amp
+op_and_assign
 l_int|0xfd
 suffix:semicolon
 id|pci_write_config_byte
@@ -419,6 +448,30 @@ comma
 id|temp
 )paren
 suffix:semicolon
+)brace
+r_else
+(brace
+id|dev_info
+c_func
+(paren
+op_amp
+id|PIIX4_dev-&gt;dev
+comma
+l_string|&quot;Unusual config register &quot;
+l_string|&quot;value&bslash;n&quot;
+)paren
+suffix:semicolon
+id|dev_info
+c_func
+(paren
+op_amp
+id|PIIX4_dev-&gt;dev
+comma
+l_string|&quot;Try using fix_hstcfg=1 if &quot;
+l_string|&quot;you experience problems&bslash;n&quot;
+)paren
+suffix:semicolon
+)brace
 )brace
 multiline_comment|/* If force_addr is set, we program the new address here. Just to make&n;&t;   sure, we disable the PIIX4 first. */
 r_if

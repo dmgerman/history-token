@@ -651,7 +651,6 @@ comma
 id|SMB_HOST_ADDRESS
 )paren
 suffix:semicolon
-multiline_comment|/* TODO: Why only during write? */
 r_if
 c_cond
 (paren
@@ -664,7 +663,7 @@ c_func
 (paren
 id|command
 comma
-id|SMB_HOST_COMMAND
+id|SMB_HOST_DATA
 )paren
 suffix:semicolon
 id|size
