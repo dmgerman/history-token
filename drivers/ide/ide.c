@@ -6321,7 +6321,7 @@ c_func
 (paren
 id|t
 comma
-l_int|10
+l_int|10L
 op_star
 id|WAIT_MIN_SLEEP
 )paren
