@@ -44,7 +44,7 @@ suffix:semicolon
 DECL|macro|PREEMPT_ACTIVE
 mdefine_line|#define PREEMPT_ACTIVE&t;&t;0x4000000
 DECL|macro|INIT_THREAD_INFO
-mdefine_line|#define INIT_THREAD_INFO(tsk)&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&bslash;&n;&t;task:&t;&t;&amp;tsk,&t;&t;&t;&bslash;&n;&t;exec_domain:&t;&amp;default_exec_domain,&t;&bslash;&n;}
+mdefine_line|#define INIT_THREAD_INFO(tsk)&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&bslash;&n;&t;.task&t;&t;= &amp;tsk,&t;&t;&t;&bslash;&n;&t;.exec_domain&t;= &amp;default_exec_domain,&t;&bslash;&n;}
 multiline_comment|/* THREAD_SIZE should be 8k, so handle differently for 4k and 8k machines */
 macro_line|#if PAGE_SHIFT == 13 /* 8k machines */
 DECL|macro|alloc_thread_info
