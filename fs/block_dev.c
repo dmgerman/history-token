@@ -1285,10 +1285,6 @@ id|inode-&gt;i_rdev
 op_assign
 id|kdev
 suffix:semicolon
-id|inode-&gt;i_dev
-op_assign
-id|kdev
-suffix:semicolon
 id|inode-&gt;i_bdev
 op_assign
 id|new_bdev

@@ -897,7 +897,7 @@ id|atomic_t
 id|i_count
 suffix:semicolon
 DECL|member|i_dev
-id|kdev_t
+id|dev_t
 id|i_dev
 suffix:semicolon
 DECL|member|i_mode
