@@ -329,6 +329,11 @@ op_div
 l_int|8
 )braket
 suffix:semicolon
+DECL|member|buffer_dma
+id|dma_addr_t
+id|buffer_dma
+suffix:semicolon
+multiline_comment|/* DMA address for buffer */
 r_union
 (brace
 DECL|member|hub

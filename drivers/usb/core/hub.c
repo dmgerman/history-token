@@ -1233,9 +1233,11 @@ id|message
 suffix:semicolon
 id|hub-&gt;buffer
 op_assign
-id|kmalloc
+id|usb_buffer_alloc
 c_func
 (paren
+id|dev
+comma
 r_sizeof
 (paren
 op_star
@@ -1243,6 +1245,9 @@ id|hub-&gt;buffer
 )paren
 comma
 id|GFP_KERNEL
+comma
+op_amp
+id|hub-&gt;buffer_dma
 )paren
 suffix:semicolon
 r_if
@@ -1254,7 +1259,7 @@ id|hub-&gt;buffer
 (brace
 id|message
 op_assign
-l_string|&quot;can&squot;t kmalloc hub irq buffer&quot;
+l_string|&quot;can&squot;t allocate hub irq buffer&quot;
 suffix:semicolon
 id|ret
 op_assign
@@ -1986,6 +1991,14 @@ comma
 id|endpoint-&gt;bInterval
 )paren
 suffix:semicolon
+id|hub-&gt;urb-&gt;transfer_dma
+op_assign
+id|hub-&gt;buffer_dma
+suffix:semicolon
+id|hub-&gt;urb-&gt;transfer_flags
+op_or_assign
+id|URB_NO_DMA_MAP
+suffix:semicolon
 id|ret
 op_assign
 id|usb_submit_urb
@@ -2222,10 +2235,24 @@ c_cond
 id|hub-&gt;buffer
 )paren
 (brace
-id|kfree
+id|usb_buffer_free
 c_func
 (paren
+id|interface_to_usbdev
+c_func
+(paren
+id|intf
+)paren
+comma
+r_sizeof
+(paren
+op_star
 id|hub-&gt;buffer
+)paren
+comma
+id|hub-&gt;buffer
+comma
+id|hub-&gt;buffer_dma
 )paren
 suffix:semicolon
 id|hub-&gt;buffer
