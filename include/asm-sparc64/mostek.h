@@ -194,20 +194,10 @@ DECL|macro|MOSTEK_48T08_OFFSET
 mdefine_line|#define MOSTEK_48T08_OFFSET&t;0x0000UL&t;/* Lower NVRAM portions */
 DECL|macro|MOSTEK_48T08_48T02
 mdefine_line|#define MOSTEK_48T08_48T02&t;0x1800UL&t;/* Offset to 48T02 chip */
-r_extern
-r_int
-r_int
-id|mstk48t08_regs
-suffix:semicolon
 multiline_comment|/* SUN5 systems usually have 48t59 model clock chipsets.  But we keep the older&n; * clock chip definitions around just in case.&n; */
 DECL|macro|MOSTEK_48T59_OFFSET
 mdefine_line|#define MOSTEK_48T59_OFFSET&t;0x0000UL&t;/* Lower NVRAM portions */
 DECL|macro|MOSTEK_48T59_48T02
 mdefine_line|#define MOSTEK_48T59_48T02&t;0x1800UL&t;/* Offset to 48T02 chip */
-r_extern
-r_int
-r_int
-id|mstk48t59_regs
-suffix:semicolon
 macro_line|#endif /* !(_SPARC64_MOSTEK_H) */
 eof

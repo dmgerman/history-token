@@ -216,12 +216,6 @@ multiline_comment|/* Here is what we are interested in.   */
 )brace
 suffix:semicolon
 r_extern
-r_struct
-id|mostek48t08
-op_star
-id|mstk48t08_regs
-suffix:semicolon
-r_extern
 r_enum
 id|sparc_clock_type
 id|sp_clock_typ
