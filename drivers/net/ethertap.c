@@ -178,7 +178,7 @@ id|ENOMEM
 suffix:semicolon
 id|dev
 op_assign
-id|alloc_netdev
+id|alloc_etherdev
 c_func
 (paren
 r_sizeof
@@ -186,10 +186,6 @@ r_sizeof
 r_struct
 id|net_local
 )paren
-comma
-l_string|&quot;tap%d&quot;
-comma
-id|ether_setup
 )paren
 suffix:semicolon
 r_if
