@@ -373,7 +373,7 @@ op_assign
 l_string|&quot;Copyright (c) 2002 Intel Corporation&quot;
 suffix:semicolon
 DECL|macro|E100_VERSION
-mdefine_line|#define E100_VERSION  &quot;2.0.27-pre1&quot;
+mdefine_line|#define E100_VERSION  &quot;2.0.27-pre2&quot;
 DECL|macro|E100_FULL_DRIVER_NAME
 mdefine_line|#define E100_FULL_DRIVER_NAME &t;&quot;Intel(R) PRO/100 Fast Ethernet Adapter - Loadable driver, ver &quot;
 DECL|variable|e100_version
@@ -1700,6 +1700,16 @@ id|bdp-&gt;scb-&gt;scb_cmd_low
 )paren
 )paren
 suffix:semicolon
+id|readw
+c_func
+(paren
+op_amp
+(paren
+id|bdp-&gt;scb-&gt;scb_status
+)paren
+)paren
+suffix:semicolon
+multiline_comment|/* flashes last write, read-safe */
 )brace
 multiline_comment|/**&n; * e100_wait_scb - wait for SCB to clear&n; * @bdp: atapter&squot;s private data struct&n; *&n; * This routine checks to see if the e100 has accepted a command.&n; * It does so by checking the command field in the SCB, which will&n; * be zeroed by the e100 upon accepting a command.  The loop waits&n; * for up to 1 millisecond for command acceptance.&n; *&n; * Returns:&n; *      true if the SCB cleared within 1 millisecond.&n; *      false if it didn&squot;t clear within 1 millisecond&n; */
 r_int
