@@ -1272,6 +1272,15 @@ id|irq_edge_mask_hi
 )paren
 suffix:semicolon
 r_extern
+r_int
+r_int
+id|residual_isapic_addr
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
 id|PnP_TAG_PACKET
 op_star
 id|PnP_find_packet

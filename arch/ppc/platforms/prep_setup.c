@@ -3480,6 +3480,24 @@ op_assign
 op_amp
 id|i8259_pic
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|have_residual_data
+)paren
+(brace
+id|i8259_init
+c_func
+(paren
+id|residual_isapic_addr
+c_func
+(paren
+)paren
+)paren
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
 multiline_comment|/* If we have a Raven PCI bridge or a Hawk PCI bridge / Memory&n;&t; * controller, we poll (as they have a different int-ack address). */
 id|early_read_config_dword
 c_func
