@@ -38800,6 +38800,8 @@ id|grc_misc_cfg
 op_and_assign
 id|GRC_MISC_CFG_BOARD_ID_MASK
 suffix:semicolon
+multiline_comment|/* Broadcom&squot;s driver says that CIOBE multisplit has a bug */
+macro_line|#if 0
 r_if
 c_cond
 (paren
@@ -38825,6 +38827,7 @@ op_assign
 id|SPLIT_MODE_5704_MAX_REQ
 suffix:semicolon
 )brace
+macro_line|#endif
 r_if
 c_cond
 (paren
