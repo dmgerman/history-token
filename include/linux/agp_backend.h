@@ -10,10 +10,6 @@ macro_line|#ifndef FALSE
 DECL|macro|FALSE
 mdefine_line|#define FALSE 0
 macro_line|#endif
-DECL|macro|AGPGART_VERSION_MAJOR
-mdefine_line|#define AGPGART_VERSION_MAJOR 0
-DECL|macro|AGPGART_VERSION_MINOR
-mdefine_line|#define AGPGART_VERSION_MINOR 99
 DECL|enum|chipset_type
 r_enum
 id|chipset_type
@@ -86,6 +82,12 @@ id|VIA_APOLLO_KT133
 comma
 DECL|enumerator|VIA_APOLLO_KT400
 id|VIA_APOLLO_KT400
+comma
+DECL|enumerator|VIA_APOLLO_PRO_266
+id|VIA_APOLLO_PRO_266
+comma
+DECL|enumerator|VIA_VT8605
+id|VIA_VT8605
 comma
 DECL|enumerator|SIS_GENERIC
 id|SIS_GENERIC
