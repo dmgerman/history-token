@@ -299,7 +299,7 @@ op_assign
 l_string|&quot;Copyright (c) 2002 Intel Corporation&quot;
 suffix:semicolon
 DECL|macro|E100_VERSION
-mdefine_line|#define E100_VERSION  &quot;2.0.24-pre1&quot;
+mdefine_line|#define E100_VERSION  &quot;2.0.25-pre1&quot;
 DECL|macro|E100_FULL_DRIVER_NAME
 mdefine_line|#define E100_FULL_DRIVER_NAME &t;&quot;Intel(R) PRO/100 Fast Ethernet Adapter - Loadable driver, ver &quot;
 DECL|variable|e100_version
@@ -1490,6 +1490,8 @@ c_func
 (paren
 l_string|&quot;Dual BSD/GPL&quot;
 )paren
+suffix:semicolon
+id|EXPORT_NO_SYMBOLS
 suffix:semicolon
 id|E100_PARAM
 c_func
@@ -9732,11 +9734,28 @@ id|in_interrupt
 c_func
 (paren
 )paren
-op_logical_or
+)paren
+r_return
+id|e100_delayed_exec_non_cu_cmd
+c_func
+(paren
+id|bdp
+comma
+id|command
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
 id|netif_running
 c_func
 (paren
 id|bdp-&gt;device
+)paren
+op_logical_and
+(paren
+op_logical_neg
+id|bdp-&gt;driver_isolated
 )paren
 )paren
 r_return
