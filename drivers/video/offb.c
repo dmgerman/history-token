@@ -15,6 +15,9 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/prom.h&gt;
+macro_line|#ifdef CONFIG_PPC64
+macro_line|#include &lt;asm/pci-bridge.h&gt;
+macro_line|#endif
 macro_line|#ifdef CONFIG_PPC32
 macro_line|#include &lt;asm/bootx.h&gt;
 macro_line|#endif
@@ -1393,7 +1396,9 @@ suffix:semicolon
 r_int
 op_star
 id|up
-comma
+suffix:semicolon
+r_int
+r_int
 id|address
 suffix:semicolon
 r_if
@@ -1665,6 +1670,12 @@ id|i
 dot
 id|address
 suffix:semicolon
+macro_line|#ifdef CONFIG_PPC64
+id|address
+op_add_assign
+id|dp-&gt;phb-&gt;pci_mem_offset
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/* kludge for valkyrie */
 r_if
 c_cond
