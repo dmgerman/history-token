@@ -345,7 +345,8 @@ op_star
 id|ev
 )paren
 (brace
-id|llc_pdu_un_t
+r_struct
+id|llc_pdu_un
 op_star
 id|pdu
 suffix:semicolon
@@ -412,7 +413,8 @@ suffix:semicolon
 id|pdu
 op_assign
 (paren
-id|llc_pdu_un_t
+r_struct
+id|llc_pdu_un
 op_star
 )paren
 id|skb-&gt;nh.raw
@@ -593,12 +595,14 @@ op_eq
 id|LLC_SAP_EV_TYPE_PDU
 )paren
 (brace
-id|llc_pdu_un_t
+r_struct
+id|llc_pdu_un
 op_star
 id|pdu
 op_assign
 (paren
-id|llc_pdu_un_t
+r_struct
+id|llc_pdu_un
 op_star
 )paren
 id|ev-&gt;data.pdu.skb-&gt;nh.raw
