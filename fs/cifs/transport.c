@@ -825,7 +825,7 @@ op_amp
 id|ses-&gt;server-&gt;inFlight
 )paren
 OG
-l_int|50
+id|CIFS_MAX_REQ
 )paren
 (brace
 id|wait_event
@@ -840,7 +840,7 @@ op_amp
 id|ses-&gt;server-&gt;inFlight
 )paren
 op_le
-l_int|50
+id|CIFS_MAX_REQ
 )paren
 suffix:semicolon
 )brace
@@ -985,7 +985,7 @@ suffix:semicolon
 )brace
 r_return
 op_minus
-id|EIO
+id|ENOMEM
 suffix:semicolon
 )brace
 r_if
