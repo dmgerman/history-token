@@ -67,6 +67,11 @@ DECL|member|dma
 r_int
 id|dma
 suffix:semicolon
+DECL|member|fifo_size
+r_int
+r_int
+id|fifo_size
+suffix:semicolon
 DECL|member|bEndpointAddress
 id|u8
 id|bEndpointAddress
@@ -106,12 +111,19 @@ id|u32
 op_star
 id|reg_uddr
 suffix:semicolon
+macro_line|#ifdef USE_DMA
 DECL|member|reg_drcmr
 r_volatile
 id|u32
 op_star
 id|reg_drcmr
 suffix:semicolon
+DECL|macro|drcmr
+mdefine_line|#define&t;drcmr(n)  .reg_drcmr = &amp; DRCMR ## n ,
+macro_line|#else
+DECL|macro|drcmr
+mdefine_line|#define&t;drcmr(n)  
+macro_line|#endif
 )brace
 suffix:semicolon
 DECL|struct|pxa2xx_request
@@ -387,7 +399,7 @@ op_member_access_from_pointer
 id|udc_command
 c_func
 (paren
-id|PXA2XX_UDC_CMD_CONNECT
+id|PXA2XX_UDC_CMD_DISCONNECT
 )paren
 suffix:semicolon
 )brace
@@ -414,7 +426,7 @@ op_member_access_from_pointer
 id|udc_command
 c_func
 (paren
-id|PXA2XX_UDC_CMD_DISCONNECT
+id|PXA2XX_UDC_CMD_CONNECT
 )paren
 suffix:semicolon
 )brace
@@ -924,5 +936,7 @@ DECL|macro|DBG
 mdefine_line|#define DBG(lvl, stuff...) do{if ((lvl) &lt;= UDC_DEBUG) DMSG(stuff);}while(0)
 DECL|macro|WARN
 mdefine_line|#define WARN(stuff...) printk(KERN_WARNING &quot;udc: &quot; stuff)
+DECL|macro|INFO
+mdefine_line|#define INFO(stuff...) printk(KERN_INFO &quot;udc: &quot; stuff)
 macro_line|#endif /* __LINUX_USB_GADGET_PXA2XX_H */
 eof

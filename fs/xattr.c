@@ -708,6 +708,8 @@ l_int|0
 r_if
 c_cond
 (paren
+id|size
+op_logical_and
 id|copy_to_user
 c_func
 (paren
@@ -1112,6 +1114,8 @@ l_int|0
 r_if
 c_cond
 (paren
+id|size
+op_logical_and
 id|copy_to_user
 c_func
 (paren

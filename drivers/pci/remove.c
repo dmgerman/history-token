@@ -247,10 +247,11 @@ op_amp
 id|pci_bus_lock
 )paren
 suffix:semicolon
-id|kfree
+id|class_device_unregister
 c_func
 (paren
-id|b
+op_amp
+id|b-&gt;class_dev
 )paren
 suffix:semicolon
 id|dev-&gt;subordinate

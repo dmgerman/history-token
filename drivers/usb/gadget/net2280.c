@@ -1850,12 +1850,19 @@ suffix:semicolon
 multiline_comment|/* write just one packet at a time */
 id|count
 op_assign
-id|min
-(paren
 id|ep-&gt;ep.maxpacket
-comma
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|count
+OG
 id|total
 )paren
+multiline_comment|/* min() cannot be used on a bitfield */
+id|count
+op_assign
+id|total
 suffix:semicolon
 id|VDEBUG
 (paren
@@ -9086,14 +9093,16 @@ id|req-&gt;req.length
 op_minus
 id|req-&gt;req.actual
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|len
+OG
+id|ep-&gt;ep.maxpacket
+)paren
 id|len
 op_assign
-id|min
-(paren
 id|ep-&gt;ep.maxpacket
-comma
-id|len
-)paren
 suffix:semicolon
 id|req-&gt;req.actual
 op_add_assign

@@ -1,8 +1,7 @@
-multiline_comment|/*&n; *&t;../include/linux/pci_msi.h&n; *&n; */
-macro_line|#ifndef _ASM_PCI_MSI_H
-DECL|macro|_ASM_PCI_MSI_H
-mdefine_line|#define _ASM_PCI_MSI_H
-macro_line|#include &lt;linux/pci.h&gt;
+multiline_comment|/*&n; *&t;msi.h&n; *&n; */
+macro_line|#ifndef MSI_H
+DECL|macro|MSI_H
+mdefine_line|#define MSI_H
 DECL|macro|MSI_AUTO
 mdefine_line|#define MSI_AUTO -1
 DECL|macro|NR_REPEATS
@@ -161,33 +160,6 @@ DECL|macro|msix_mask
 mdefine_line|#define msix_mask(address)&t;&t;(address | PCI_MSIX_FLAGS_BITMASK)
 DECL|macro|msix_is_pending
 mdefine_line|#define msix_is_pending(address) &t;(address &amp; PCI_MSIX_FLAGS_PENDMASK)
-r_extern
-r_char
-id|__dbg_str_buf
-(braket
-l_int|256
-)braket
-suffix:semicolon
-DECL|macro|_DEFINE_DBG_BUFFER
-mdefine_line|#define _DEFINE_DBG_BUFFER&t;char __dbg_str_buf[256];
-DECL|macro|_DBG_K_TRACE_ENTRY
-mdefine_line|#define _DBG_K_TRACE_ENTRY&t;((unsigned int)0x00000001)
-DECL|macro|_DBG_K_TRACE_EXIT
-mdefine_line|#define _DBG_K_TRACE_EXIT&t;((unsigned int)0x00000002)
-DECL|macro|_DBG_K_INFO
-mdefine_line|#define _DBG_K_INFO&t;&t;((unsigned int)0x00000004)
-DECL|macro|_DBG_K_ERROR
-mdefine_line|#define _DBG_K_ERROR&t;&t;((unsigned int)0x00000008)
-DECL|macro|_DBG_K_TRACE
-mdefine_line|#define _DBG_K_TRACE&t;(_DBG_K_TRACE_ENTRY | _DBG_K_TRACE_EXIT)
-DECL|macro|_DEBUG_LEVEL
-mdefine_line|#define _DEBUG_LEVEL&t;(_DBG_K_INFO | _DBG_K_ERROR | _DBG_K_TRACE)
-DECL|macro|_DBG_PRINT
-mdefine_line|#define _DBG_PRINT( dbg_flags, args... )&t;&t;&bslash;&n;if ( _DEBUG_LEVEL &amp; (dbg_flags) )&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;int len;&t;&t;&t;&t;&t;&bslash;&n;&t;len = sprintf(__dbg_str_buf, &quot;%s:%d: %s &quot;, &t;&bslash;&n;&t;&t;__FILE__, __LINE__, __FUNCTION__ ); &t;&bslash;&n;&t;sprintf(__dbg_str_buf + len, args);&t;&t;&bslash;&n;&t;printk(KERN_INFO &quot;%s&bslash;n&quot;, __dbg_str_buf);&t;&bslash;&n;}
-DECL|macro|MSI_FUNCTION_TRACE_ENTER
-mdefine_line|#define MSI_FUNCTION_TRACE_ENTER&t;&bslash;&n;&t;_DBG_PRINT (_DBG_K_TRACE_ENTRY, &quot;%s&quot;, &quot;[Entry]&quot;);
-DECL|macro|MSI_FUNCTION_TRACE_EXIT
-mdefine_line|#define MSI_FUNCTION_TRACE_EXIT&t;&t;&bslash;&n;&t;_DBG_PRINT (_DBG_K_TRACE_EXIT, &quot;%s&quot;, &quot;[Entry]&quot;);
 multiline_comment|/*&n; * MSI Defined Data Structures&n; */
 DECL|macro|MSI_ADDRESS_HEADER
 mdefine_line|#define MSI_ADDRESS_HEADER&t;&t;0xfee
@@ -476,5 +448,5 @@ id|dev
 suffix:semicolon
 )brace
 suffix:semicolon
-macro_line|#endif /* _ASM_PCI_MSI_H */
+macro_line|#endif /* MSI_H */
 eof

@@ -2340,6 +2340,16 @@ c_func
 (paren
 id|KEYSPAN_VENDOR_ID
 comma
+id|keyspan_usa19hs_product_id
+)paren
+)brace
+comma
+(brace
+id|USB_DEVICE
+c_func
+(paren
+id|KEYSPAN_VENDOR_ID
+comma
 id|keyspan_mpr_pre_product_id
 )paren
 )brace

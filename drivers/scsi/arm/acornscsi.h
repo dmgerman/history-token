@@ -3,8 +3,8 @@ macro_line|#ifndef ACORNSCSI_H
 DECL|macro|ACORNSCSI_H
 mdefine_line|#define ACORNSCSI_H
 multiline_comment|/* SBIC registers */
-DECL|macro|OWNID
-mdefine_line|#define OWNID&t;&t;&t;0
+DECL|macro|SBIC_OWNID
+mdefine_line|#define SBIC_OWNID&t;&t;0
 DECL|macro|OWNID_FS1
 mdefine_line|#define OWNID_FS1&t;&t;(1&lt;&lt;7)
 DECL|macro|OWNID_FS2
@@ -13,8 +13,8 @@ DECL|macro|OWNID_EHP
 mdefine_line|#define OWNID_EHP&t;&t;(1&lt;&lt;4)
 DECL|macro|OWNID_EAF
 mdefine_line|#define OWNID_EAF&t;&t;(1&lt;&lt;3)
-DECL|macro|CTRL
-mdefine_line|#define CTRL&t;&t;&t;1
+DECL|macro|SBIC_CTRL
+mdefine_line|#define SBIC_CTRL&t;&t;1
 DECL|macro|CTRL_DMAMODE
 mdefine_line|#define CTRL_DMAMODE&t;&t;(1&lt;&lt;7)
 DECL|macro|CTRL_DMADBAMODE
@@ -33,42 +33,42 @@ DECL|macro|CTRL_HA
 mdefine_line|#define CTRL_HA&t;&t;&t;(1&lt;&lt;1)
 DECL|macro|CTRL_HSP
 mdefine_line|#define CTRL_HSP&t;&t;(1&lt;&lt;0)
-DECL|macro|TIMEOUT
-mdefine_line|#define TIMEOUT&t;&t;&t;2
-DECL|macro|TOTSECTS
-mdefine_line|#define TOTSECTS&t;&t;3
-DECL|macro|TOTHEADS
-mdefine_line|#define TOTHEADS&t;&t;4
-DECL|macro|TOTCYLH
-mdefine_line|#define TOTCYLH&t;&t;&t;5
-DECL|macro|TOTCYLL
-mdefine_line|#define TOTCYLL&t;&t;&t;6
-DECL|macro|LOGADDRH
-mdefine_line|#define LOGADDRH&t;&t;7
-DECL|macro|LOGADDRM2
-mdefine_line|#define LOGADDRM2&t;&t;8
-DECL|macro|LOGADDRM1
-mdefine_line|#define LOGADDRM1&t;&t;9
-DECL|macro|LOGADDRL
-mdefine_line|#define LOGADDRL&t;&t;10
-DECL|macro|SECTORNUM
-mdefine_line|#define SECTORNUM&t;&t;11
-DECL|macro|HEADNUM
-mdefine_line|#define HEADNUM&t;&t;&t;12
-DECL|macro|CYLH
-mdefine_line|#define CYLH&t;&t;&t;13
-DECL|macro|CYLL
-mdefine_line|#define CYLL&t;&t;&t;14
-DECL|macro|TARGETLUN
-mdefine_line|#define TARGETLUN&t;&t;15
+DECL|macro|SBIC_TIMEOUT
+mdefine_line|#define SBIC_TIMEOUT&t;&t;2
+DECL|macro|SBIC_TOTSECTS
+mdefine_line|#define SBIC_TOTSECTS&t;&t;3
+DECL|macro|SBIC_TOTHEADS
+mdefine_line|#define SBIC_TOTHEADS&t;&t;4
+DECL|macro|SBIC_TOTCYLH
+mdefine_line|#define SBIC_TOTCYLH&t;&t;5
+DECL|macro|SBIC_TOTCYLL
+mdefine_line|#define SBIC_TOTCYLL&t;&t;6
+DECL|macro|SBIC_LOGADDRH
+mdefine_line|#define SBIC_LOGADDRH&t;&t;7
+DECL|macro|SBIC_LOGADDRM2
+mdefine_line|#define SBIC_LOGADDRM2&t;&t;8
+DECL|macro|SBIC_LOGADDRM1
+mdefine_line|#define SBIC_LOGADDRM1&t;&t;9
+DECL|macro|SBIC_LOGADDRL
+mdefine_line|#define SBIC_LOGADDRL&t;&t;10
+DECL|macro|SBIC_SECTORNUM
+mdefine_line|#define SBIC_SECTORNUM&t;&t;11
+DECL|macro|SBIC_HEADNUM
+mdefine_line|#define SBIC_HEADNUM&t;&t;12
+DECL|macro|SBIC_CYLH
+mdefine_line|#define SBIC_CYLH&t;&t;13
+DECL|macro|SBIC_CYLL
+mdefine_line|#define SBIC_CYLL&t;&t;14
+DECL|macro|SBIC_TARGETLUN
+mdefine_line|#define SBIC_TARGETLUN&t;&t;15
 DECL|macro|TARGETLUN_TLV
 mdefine_line|#define TARGETLUN_TLV&t;&t;(1&lt;&lt;7)
 DECL|macro|TARGETLUN_DOK
 mdefine_line|#define TARGETLUN_DOK&t;&t;(1&lt;&lt;6)
-DECL|macro|CMNDPHASE
-mdefine_line|#define CMNDPHASE&t;&t;16
-DECL|macro|SYNCHTRANSFER
-mdefine_line|#define SYNCHTRANSFER&t;&t;17
+DECL|macro|SBIC_CMNDPHASE
+mdefine_line|#define SBIC_CMNDPHASE&t;&t;16
+DECL|macro|SBIC_SYNCHTRANSFER
+mdefine_line|#define SBIC_SYNCHTRANSFER&t;17
 DECL|macro|SYNCHTRANSFER_OF0
 mdefine_line|#define SYNCHTRANSFER_OF0&t;0x00
 DECL|macro|SYNCHTRANSFER_OF1
@@ -109,20 +109,20 @@ DECL|macro|SYNCHTRANSFER_6DBA
 mdefine_line|#define SYNCHTRANSFER_6DBA&t;0x60
 DECL|macro|SYNCHTRANSFER_7DBA
 mdefine_line|#define SYNCHTRANSFER_7DBA&t;0x70
-DECL|macro|TRANSCNTH
-mdefine_line|#define TRANSCNTH&t;&t;18
-DECL|macro|TRANSCNTM
-mdefine_line|#define TRANSCNTM&t;&t;19
-DECL|macro|TRANSCNTL
-mdefine_line|#define TRANSCNTL&t;&t;20
-DECL|macro|DESTID
-mdefine_line|#define DESTID&t;&t;&t;21
+DECL|macro|SBIC_TRANSCNTH
+mdefine_line|#define SBIC_TRANSCNTH&t;&t;18
+DECL|macro|SBIC_TRANSCNTM
+mdefine_line|#define SBIC_TRANSCNTM&t;&t;19
+DECL|macro|SBIC_TRANSCNTL
+mdefine_line|#define SBIC_TRANSCNTL&t;&t;20
+DECL|macro|SBIC_DESTID
+mdefine_line|#define SBIC_DESTID&t;&t;21
 DECL|macro|DESTID_SCC
 mdefine_line|#define DESTID_SCC&t;&t;(1&lt;&lt;7)
 DECL|macro|DESTID_DPD
 mdefine_line|#define DESTID_DPD&t;&t;(1&lt;&lt;6)
-DECL|macro|SOURCEID
-mdefine_line|#define SOURCEID&t;&t;22
+DECL|macro|SBIC_SOURCEID
+mdefine_line|#define SBIC_SOURCEID&t;&t;22
 DECL|macro|SOURCEID_ER
 mdefine_line|#define SOURCEID_ER&t;&t;(1&lt;&lt;7)
 DECL|macro|SOURCEID_ES
@@ -131,10 +131,10 @@ DECL|macro|SOURCEID_DSP
 mdefine_line|#define SOURCEID_DSP&t;&t;(1&lt;&lt;5)
 DECL|macro|SOURCEID_SIV
 mdefine_line|#define SOURCEID_SIV&t;&t;(1&lt;&lt;4)
-DECL|macro|SSR
-mdefine_line|#define SSR&t;&t;&t;23
-DECL|macro|CMND
-mdefine_line|#define CMND&t;&t;&t;24
+DECL|macro|SBIC_SSR
+mdefine_line|#define SBIC_SSR&t;&t;23
+DECL|macro|SBIC_CMND
+mdefine_line|#define SBIC_CMND&t;&t;24
 DECL|macro|CMND_RESET
 mdefine_line|#define CMND_RESET&t;&t;0x00
 DECL|macro|CMND_ABORT
@@ -189,10 +189,10 @@ DECL|macro|CMND_XFERINFO
 mdefine_line|#define CMND_XFERINFO&t;&t;0x20
 DECL|macro|CMND_SBT
 mdefine_line|#define CMND_SBT&t;&t;(1&lt;&lt;7)
-DECL|macro|DATA
-mdefine_line|#define DATA&t;&t;&t;25
-DECL|macro|ASR
-mdefine_line|#define ASR&t;&t;&t;26
+DECL|macro|SBIC_DATA
+mdefine_line|#define SBIC_DATA&t;&t;25
+DECL|macro|SBIC_ASR
+mdefine_line|#define SBIC_ASR&t;&t;26
 DECL|macro|ASR_INT
 mdefine_line|#define ASR_INT&t;&t;&t;(1&lt;&lt;7)
 DECL|macro|ASR_LCI
@@ -206,12 +206,12 @@ mdefine_line|#define ASR_PE&t;&t;&t;(1&lt;&lt;1)
 DECL|macro|ASR_DBR
 mdefine_line|#define ASR_DBR&t;&t;&t;(1&lt;&lt;0)
 multiline_comment|/* DMAC registers */
-DECL|macro|INIT
-mdefine_line|#define INIT&t;&t;&t;0x00
+DECL|macro|DMAC_INIT
+mdefine_line|#define DMAC_INIT&t;&t;0x00
 DECL|macro|INIT_8BIT
 mdefine_line|#define INIT_8BIT&t;&t;(1)
-DECL|macro|CHANNEL
-mdefine_line|#define CHANNEL&t;&t;&t;0x80
+DECL|macro|DMAC_CHANNEL
+mdefine_line|#define DMAC_CHANNEL&t;&t;0x80
 DECL|macro|CHANNEL_0
 mdefine_line|#define CHANNEL_0&t;&t;0x00
 DECL|macro|CHANNEL_1
@@ -220,18 +220,18 @@ DECL|macro|CHANNEL_2
 mdefine_line|#define CHANNEL_2&t;&t;0x02
 DECL|macro|CHANNEL_3
 mdefine_line|#define CHANNEL_3&t;&t;0x03
-DECL|macro|TXCNTLO
-mdefine_line|#define TXCNTLO&t;&t;&t;0x01
-DECL|macro|TXCNTHI
-mdefine_line|#define TXCNTHI&t;&t;&t;0x81
-DECL|macro|TXADRLO
-mdefine_line|#define TXADRLO&t;&t;&t;0x02
-DECL|macro|TXADRMD
-mdefine_line|#define TXADRMD&t;&t;&t;0x82
-DECL|macro|TXADRHI
-mdefine_line|#define TXADRHI&t;&t;&t;0x03
-DECL|macro|DEVCON0
-mdefine_line|#define DEVCON0&t;&t;&t;0x04
+DECL|macro|DMAC_TXCNTLO
+mdefine_line|#define DMAC_TXCNTLO&t;&t;0x01
+DECL|macro|DMAC_TXCNTHI
+mdefine_line|#define DMAC_TXCNTHI&t;&t;0x81
+DECL|macro|DMAC_TXADRLO
+mdefine_line|#define DMAC_TXADRLO&t;&t;0x02
+DECL|macro|DMAC_TXADRMD
+mdefine_line|#define DMAC_TXADRMD&t;&t;0x82
+DECL|macro|DMAC_TXADRHI
+mdefine_line|#define DMAC_TXADRHI&t;&t;0x03
+DECL|macro|DMAC_DEVCON0
+mdefine_line|#define DMAC_DEVCON0&t;&t;0x04
 DECL|macro|DEVCON0_AKL
 mdefine_line|#define DEVCON0_AKL&t;&t;(1&lt;&lt;7)
 DECL|macro|DEVCON0_RQL
@@ -248,14 +248,14 @@ DECL|macro|DEVCON0_AHLD
 mdefine_line|#define DEVCON0_AHLD&t;&t;(1&lt;&lt;1)
 DECL|macro|DEVCON0_MTM
 mdefine_line|#define DEVCON0_MTM&t;&t;(1&lt;&lt;0)
-DECL|macro|DEVCON1
-mdefine_line|#define DEVCON1&t;&t;&t;0x84
+DECL|macro|DMAC_DEVCON1
+mdefine_line|#define DMAC_DEVCON1&t;&t;0x84
 DECL|macro|DEVCON1_WEV
 mdefine_line|#define DEVCON1_WEV&t;&t;(1&lt;&lt;1)
 DECL|macro|DEVCON1_BHLD
 mdefine_line|#define DEVCON1_BHLD&t;&t;(1&lt;&lt;0)
-DECL|macro|MODECON
-mdefine_line|#define MODECON&t;&t;&t;0x05
+DECL|macro|DMAC_MODECON
+mdefine_line|#define DMAC_MODECON&t;&t;0x05
 DECL|macro|MODECON_WOED
 mdefine_line|#define MODECON_WOED&t;&t;0x01
 DECL|macro|MODECON_VERIFY
@@ -276,20 +276,20 @@ DECL|macro|MODECON_BLOCK
 mdefine_line|#define MODECON_BLOCK&t;&t;0x80
 DECL|macro|MODECON_CASCADE
 mdefine_line|#define MODECON_CASCADE&t;&t;0xC0
-DECL|macro|STATUS
-mdefine_line|#define STATUS&t;&t;&t;0x85
+DECL|macro|DMAC_STATUS
+mdefine_line|#define DMAC_STATUS&t;&t;0x85
 DECL|macro|STATUS_TC0
 mdefine_line|#define STATUS_TC0&t;&t;(1&lt;&lt;0)
 DECL|macro|STATUS_RQ0
 mdefine_line|#define STATUS_RQ0&t;&t;(1&lt;&lt;4)
-DECL|macro|TEMPLO
-mdefine_line|#define TEMPLO&t;&t;&t;0x06
-DECL|macro|TEMPHI
-mdefine_line|#define TEMPHI&t;&t;&t;0x86
-DECL|macro|REQREG
-mdefine_line|#define REQREG&t;&t;&t;0x07
-DECL|macro|MASKREG
-mdefine_line|#define MASKREG&t;&t;&t;0x87
+DECL|macro|DMAC_TEMPLO
+mdefine_line|#define DMAC_TEMPLO&t;&t;0x06
+DECL|macro|DMAC_TEMPHI
+mdefine_line|#define DMAC_TEMPHI&t;&t;0x86
+DECL|macro|DMAC_REQREG
+mdefine_line|#define DMAC_REQREG&t;&t;0x07
+DECL|macro|DMAC_MASKREG
+mdefine_line|#define DMAC_MASKREG&t;&t;0x87
 DECL|macro|MASKREG_M0
 mdefine_line|#define MASKREG_M0&t;&t;0x01
 DECL|macro|MASKREG_M1

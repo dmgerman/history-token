@@ -2436,7 +2436,7 @@ id|dev_dbg
 c_func
 (paren
 op_amp
-id|client-&gt;dev
+id|client-&gt;adapter-&gt;dev
 comma
 l_string|&quot;master_recv: return:%d (count:%d, addr:0x%02x)&bslash;n&quot;
 comma

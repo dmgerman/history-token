@@ -660,12 +660,6 @@ id|u64
 id|dma_mask
 suffix:semicolon
 multiline_comment|/* Mask of the bits of bus address this&n;&t;&t;&t;&t;&t;   device implements.  Normally this is&n;&t;&t;&t;&t;&t;   0xffffffff.  You only need to change&n;&t;&t;&t;&t;&t;   this if your device has broken DMA&n;&t;&t;&t;&t;&t;   or supports 64-bit transfers.  */
-DECL|member|pools
-r_struct
-id|list_head
-id|pools
-suffix:semicolon
-multiline_comment|/* pci_pools tied to this device */
 DECL|member|consistent_dma_mask
 id|u64
 id|consistent_dma_mask
@@ -714,22 +708,6 @@ id|DEVICE_COUNT_RESOURCE
 )braket
 suffix:semicolon
 multiline_comment|/* I/O and memory regions + expansion ROMs */
-DECL|member|dma_resource
-r_struct
-id|resource
-id|dma_resource
-(braket
-id|DEVICE_COUNT_DMA
-)braket
-suffix:semicolon
-DECL|member|irq_resource
-r_struct
-id|resource
-id|irq_resource
-(braket
-id|DEVICE_COUNT_IRQ
-)braket
-suffix:semicolon
 DECL|member|slot_name
 r_char
 op_star
@@ -2408,73 +2386,17 @@ id|pass
 )paren
 suffix:semicolon
 multiline_comment|/* kmem_cache style wrapper around pci_alloc_consistent() */
-r_struct
-id|pci_pool
-op_star
-id|pci_pool_create
-(paren
-r_const
-r_char
-op_star
-id|name
-comma
-r_struct
-id|pci_dev
-op_star
-id|dev
-comma
-r_int
-id|size
-comma
-r_int
-id|align
-comma
-r_int
-id|allocation
-)paren
-suffix:semicolon
-r_void
-id|pci_pool_destroy
-(paren
-r_struct
-id|pci_pool
-op_star
-id|pool
-)paren
-suffix:semicolon
-r_void
-op_star
-id|pci_pool_alloc
-(paren
-r_struct
-id|pci_pool
-op_star
-id|pool
-comma
-r_int
-id|flags
-comma
-id|dma_addr_t
-op_star
-id|handle
-)paren
-suffix:semicolon
-r_void
-id|pci_pool_free
-(paren
-r_struct
-id|pci_pool
-op_star
-id|pool
-comma
-r_void
-op_star
-id|vaddr
-comma
-id|dma_addr_t
-id|addr
-)paren
-suffix:semicolon
+macro_line|#include &lt;linux/dmapool.h&gt;
+DECL|macro|pci_pool
+mdefine_line|#define&t;pci_pool dma_pool
+DECL|macro|pci_pool_create
+mdefine_line|#define pci_pool_create(name, pdev, size, align, allocation) &bslash;&n;&t;&t;dma_pool_create(name, &amp;pdev-&gt;dev, size, align, allocation)
+DECL|macro|pci_pool_destroy
+mdefine_line|#define&t;pci_pool_destroy(pool) dma_pool_destroy(pool)
+DECL|macro|pci_pool_alloc
+mdefine_line|#define&t;pci_pool_alloc(pool, flags, handle) dma_pool_alloc(pool, flags, handle)
+DECL|macro|pci_pool_free
+mdefine_line|#define&t;pci_pool_free(pool, vaddr, addr) dma_pool_free(pool, vaddr, addr)
 macro_line|#if defined(CONFIG_ISA) || defined(CONFIG_EISA)
 r_extern
 r_struct

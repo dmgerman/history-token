@@ -214,6 +214,12 @@ l_int|0
 suffix:semicolon
 id|err_unlock
 suffix:colon
+id|kfree
+c_func
+(paren
+id|triple
+)paren
+suffix:semicolon
 id|spin_unlock
 c_func
 (paren

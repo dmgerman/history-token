@@ -7530,7 +7530,11 @@ id|self-&gt;lock
 )paren
 suffix:semicolon
 r_return
-id|IRQ_HANDLED
+id|IRQ_RETVAL
+c_func
+(paren
+id|eir
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Function nsc_ircc_is_receiving (self)&n; *&n; *    Return TRUE is we are currently receiving a frame&n; *&n; */
