@@ -4013,12 +4013,17 @@ op_ne
 id|DIO_NO_LOCKING
 )paren
 (brace
+multiline_comment|/* watch out for a 0 len io from a tricksy fs */
 r_if
 c_cond
 (paren
 id|rw
 op_eq
 id|READ
+op_logical_and
+id|end
+OG
+id|offset
 )paren
 (brace
 r_struct
@@ -4052,10 +4057,16 @@ suffix:semicolon
 )brace
 id|retval
 op_assign
-id|filemap_write_and_wait
+id|filemap_write_and_wait_range
 c_func
 (paren
 id|mapping
+comma
+id|offset
+comma
+id|end
+op_minus
+l_int|1
 )paren
 suffix:semicolon
 r_if
