@@ -497,7 +497,7 @@ op_star
 suffix:semicolon
 multiline_comment|/* inode.c */
 r_extern
-r_void
+r_int
 id|sysv_write_inode
 c_func
 (paren

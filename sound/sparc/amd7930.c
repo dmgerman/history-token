@@ -616,8 +616,9 @@ id|spinlock_t
 id|lock
 suffix:semicolon
 DECL|member|regs
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|regs
 suffix:semicolon
 DECL|member|flags

@@ -201,7 +201,14 @@ id|printk
 c_func
 (paren
 l_string|&quot;write_debugregs - ptrace failed on &quot;
-l_string|&quot;register %d, errno = %d&bslash;n&quot;
+l_string|&quot;register %d, value = 0x%x, errno = %d&bslash;n&quot;
+comma
+id|i
+comma
+id|regs
+(braket
+id|i
+)braket
 comma
 id|errno
 )paren

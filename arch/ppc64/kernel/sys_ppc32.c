@@ -55,7 +55,6 @@ macro_line|#include &lt;asm/unistd.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#include &lt;asm/ppcdebug.h&gt;
 macro_line|#include &lt;asm/time.h&gt;
-macro_line|#include &lt;asm/ppc32.h&gt;
 macro_line|#include &lt;asm/mmu_context.h&gt;
 macro_line|#include &quot;pci.h&quot;
 multiline_comment|/* readdir &amp; getdents */
@@ -3548,13 +3547,7 @@ r_int
 )paren
 id|len
 comma
-(paren
-r_int
-r_char
-id|__user
-op_star
-)paren
-id|AA
+id|compat_ptr
 c_func
 (paren
 id|ubuf
@@ -3612,13 +3605,7 @@ r_int
 )paren
 id|len
 comma
-(paren
-r_int
-r_char
-id|__user
-op_star
-)paren
-id|AA
+id|compat_ptr
 c_func
 (paren
 id|ubuf
@@ -4871,7 +4858,6 @@ suffix:semicolon
 )brace
 suffix:semicolon
 DECL|function|sys32_sysctl
-r_extern
 id|asmlinkage
 r_int
 id|sys32_sysctl
@@ -4972,11 +4958,11 @@ c_func
 id|oldlen
 comma
 (paren
-id|u32
+id|compat_size_t
 id|__user
 op_star
 )paren
-id|A
+id|compat_ptr
 c_func
 (paren
 id|tmp.oldlenp
@@ -5006,12 +4992,7 @@ op_assign
 id|do_sysctl
 c_func
 (paren
-(paren
-r_int
-id|__user
-op_star
-)paren
-id|A
+id|compat_ptr
 c_func
 (paren
 id|tmp.name
@@ -5019,12 +5000,7 @@ id|tmp.name
 comma
 id|tmp.nlen
 comma
-(paren
-r_void
-id|__user
-op_star
-)paren
-id|A
+id|compat_ptr
 c_func
 (paren
 id|tmp.oldval
@@ -5032,12 +5008,7 @@ id|tmp.oldval
 comma
 id|oldlenp
 comma
-(paren
-r_void
-id|__user
-op_star
-)paren
-id|A
+id|compat_ptr
 c_func
 (paren
 id|tmp.newval
@@ -5081,11 +5052,11 @@ c_func
 id|oldlen
 comma
 (paren
-id|u32
+id|compat_size_t
 id|__user
 op_star
 )paren
-id|A
+id|compat_ptr
 c_func
 (paren
 id|tmp.oldlenp

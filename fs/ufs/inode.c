@@ -4114,7 +4114,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|ufs_write_inode
-r_void
+r_int
 id|ufs_write_inode
 (paren
 r_struct
@@ -4126,11 +4126,16 @@ r_int
 id|wait
 )paren
 (brace
+r_int
+id|ret
+suffix:semicolon
 id|lock_kernel
 c_func
 (paren
 )paren
 suffix:semicolon
+id|ret
+op_assign
 id|ufs_update_inode
 (paren
 id|inode
@@ -4142,6 +4147,9 @@ id|unlock_kernel
 c_func
 (paren
 )paren
+suffix:semicolon
+r_return
+id|ret
 suffix:semicolon
 )brace
 DECL|function|ufs_sync_inode

@@ -147,14 +147,16 @@ r_struct
 id|esp
 (brace
 DECL|member|eregs
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|eregs
 suffix:semicolon
 multiline_comment|/* ESP controller registers */
 DECL|member|dregs
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|dregs
 suffix:semicolon
 multiline_comment|/* DMA controller registers */

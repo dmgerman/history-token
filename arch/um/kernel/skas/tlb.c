@@ -440,11 +440,11 @@ c_loop
 (paren
 id|addr
 op_assign
-id|start_vm
+id|start
 suffix:semicolon
 id|addr
 OL
-id|end_vm
+id|end
 suffix:semicolon
 )paren
 (brace

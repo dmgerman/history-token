@@ -1419,7 +1419,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * write an existing inode back to the directory, and therefore the disk.&n; * The adfs-specific inode data has already been updated by&n; * adfs_notify_change()&n; */
 DECL|function|adfs_write_inode
-r_void
+r_int
 id|adfs_write_inode
 c_func
 (paren
@@ -1442,6 +1442,9 @@ suffix:semicolon
 r_struct
 id|object_info
 id|obj
+suffix:semicolon
+r_int
+id|ret
 suffix:semicolon
 id|lock_kernel
 c_func
@@ -1500,6 +1503,8 @@ id|obj.size
 op_assign
 id|inode-&gt;i_size
 suffix:semicolon
+id|ret
+op_assign
 id|adfs_dir_update
 c_func
 (paren
@@ -1513,6 +1518,9 @@ id|unlock_kernel
 c_func
 (paren
 )paren
+suffix:semicolon
+r_return
+id|ret
 suffix:semicolon
 )brace
 id|MODULE_LICENSE

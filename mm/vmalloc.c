@@ -1218,6 +1218,21 @@ c_func
 id|area
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|printk_ratelimit
+c_func
+(paren
+)paren
+)paren
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;allocation failed: out of vmalloc space - use vmalloc=&lt;size&gt; to increase size.&bslash;n&quot;
+)paren
+suffix:semicolon
 r_return
 l_int|NULL
 suffix:semicolon

@@ -1070,7 +1070,7 @@ comma
 r_int
 id|wait
 )paren
-multiline_comment|/*&n; * [SUMMARY] Run a function on all other CPUs.&n; * &lt;func&gt; The function to run. This must be fast and non-blocking.&n; * &lt;info&gt; An arbitrary pointer to pass to the function.&n; * &lt;nonatomic&gt; currently unused.&n; * &lt;wait&gt; If true, wait (atomically) until function has completed on other CPUs.&n; * [RETURNS] 0 on success, else a negative status code. Does not return until&n; * remote CPUs are nearly ready to execute &lt;&lt;func&gt;&gt; or are or have executed.&n; *&n; * You must not call this function with disabled interrupts or from a&n; * hardware interrupt handler or from a bottom half handler.&n; */
+multiline_comment|/*&n; * [SUMMARY] Run a function on all other CPUs.&n; * &lt;func&gt; The function to run. This must be fast and non-blocking.&n; * &lt;info&gt; An arbitrary pointer to pass to the function.&n; * &lt;nonatomic&gt; currently unused.&n; * &lt;wait&gt; If true, wait (atomically) until function has completed on other CPUs.&n; * [RETURNS] 0 on success, else a negative status code. Does not return until&n; * remote CPUs are nearly ready to execute &lt;&lt;func&gt;&gt; or are or have executed.&n; *&n; * You must not call this function with disabled interrupts or from a&n; * hardware interrupt handler or from a bottom half handler.&n; * Actually there are a few legal cases, like panic.&n; */
 (brace
 r_struct
 id|call_data_struct
@@ -1094,16 +1094,6 @@ id|cpus
 )paren
 r_return
 l_int|0
-suffix:semicolon
-multiline_comment|/* Can deadlock when called with interrupts disabled */
-id|WARN_ON
-c_func
-(paren
-id|irqs_disabled
-c_func
-(paren
-)paren
-)paren
 suffix:semicolon
 id|data.func
 op_assign

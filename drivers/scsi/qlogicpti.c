@@ -4966,7 +4966,7 @@ c_func
 (paren
 id|buf
 comma
-l_string|&quot;PTI Qlogic,ISP SBUS SCSI irq %s regs at %lx&quot;
+l_string|&quot;PTI Qlogic,ISP SBUS SCSI irq %s regs at %p&quot;
 comma
 id|__irq_itoa
 c_func

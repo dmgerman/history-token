@@ -723,6 +723,9 @@ op_eq
 l_int|NULL
 )paren
 (brace
+id|CATCH_EINTR
+c_func
+(paren
 id|pid
 op_assign
 id|waitpid
@@ -734,6 +737,7 @@ op_amp
 id|status
 comma
 l_int|0
+)paren
 )paren
 suffix:semicolon
 r_if
@@ -823,6 +827,9 @@ id|block
 r_int
 id|ret
 suffix:semicolon
+id|CATCH_EINTR
+c_func
+(paren
 id|ret
 op_assign
 id|waitpid
@@ -833,6 +840,7 @@ comma
 l_int|NULL
 comma
 id|WNOHANG
+)paren
 )paren
 suffix:semicolon
 r_if

@@ -662,8 +662,9 @@ r_struct
 id|happy_meal
 (brace
 DECL|member|gregs
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|gregs
 suffix:semicolon
 multiline_comment|/* Happy meal global registers       */
@@ -843,8 +844,9 @@ op_star
 id|read32
 )paren
 (paren
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 )paren
 suffix:semicolon
 DECL|member|write32
@@ -854,37 +856,42 @@ op_star
 id|write32
 )paren
 (paren
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 comma
 id|u32
 )paren
 suffix:semicolon
 macro_line|#endif
 DECL|member|etxregs
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|etxregs
 suffix:semicolon
-multiline_comment|/* External transmitter regs         */
+multiline_comment|/* External transmitter regs        */
 DECL|member|erxregs
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|erxregs
 suffix:semicolon
-multiline_comment|/* External receiver regs            */
+multiline_comment|/* External receiver regs           */
 DECL|member|bigmacregs
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|bigmacregs
 suffix:semicolon
 multiline_comment|/* BIGMAC core regs&t;&t;     */
 DECL|member|tcvregs
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|tcvregs
 suffix:semicolon
-multiline_comment|/* MIF transceiver regs              */
+multiline_comment|/* MIF transceiver regs             */
 DECL|member|hblock_dvma
 id|dma_addr_t
 id|hblock_dvma

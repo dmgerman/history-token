@@ -11,7 +11,6 @@ macro_line|#include &lt;linux/wait.h&gt;
 macro_line|#include &lt;linux/unistd.h&gt;
 macro_line|#include &lt;linux/stddef.h&gt;
 macro_line|#include &lt;linux/elf.h&gt;
-macro_line|#include &lt;asm/ppc32.h&gt;
 macro_line|#include &lt;asm/sigcontext.h&gt;
 macro_line|#include &lt;asm/ucontext.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
@@ -1534,11 +1533,16 @@ id|uc-&gt;uc_mcontext
 )paren
 suffix:semicolon
 macro_line|#endif
-id|do_exit
+id|force_sig
 c_func
 (paren
 id|SIGSEGV
+comma
+id|current
 )paren
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 )brace
 DECL|function|setup_rt_frame
@@ -1996,10 +2000,12 @@ id|newsp
 )paren
 suffix:semicolon
 macro_line|#endif
-id|do_exit
+id|force_sigsegv
 c_func
 (paren
-id|SIGSEGV
+id|signr
+comma
+id|current
 )paren
 suffix:semicolon
 )brace

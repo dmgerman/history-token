@@ -1,5 +1,5 @@
 multiline_comment|/* ne.c: A general non-shared-memory NS8390 ethernet driver for linux. */
-multiline_comment|/*&n;    Written 1992-94 by Donald Becker.&n;&n;    Copyright 1993 United States Government as represented by the&n;    Director, National Security Agency.&n;&n;    This software may be used and distributed according to the terms&n;    of the GNU General Public License, incorporated herein by reference.&n;&n;    The author may be reached as becker@scyld.com, or C/O&n;    Scyld Computing Corporation, 410 Severn Ave., Suite 210, Annapolis MD 21403&n;&n;    This driver should work with many programmed-I/O 8390-based ethernet&n;    boards.  Currently it supports the NE1000, NE2000, many clones,&n;    and some Cabletron products.&n;&n;    Changelog:&n;&n;    Paul Gortmaker&t;: use ENISR_RDC to monitor Tx PIO uploads, made&n;&t;&t;&t;  sanity checks and bad clone support optional.&n;    Paul Gortmaker&t;: new reset code, reset card after probe at boot.&n;    Paul Gortmaker&t;: multiple card support for module users.&n;    Paul Gortmaker&t;: Support for PCI ne2k clones, similar to lance.c&n;    Paul Gortmaker&t;: Allow users with bad cards to avoid full probe.&n;    Paul Gortmaker&t;: PCI probe changes, more PCI cards supported.&n;    rjohnson@analogic.com : Changed init order so an interrupt will only&n;    occur after memory is allocated for dev-&gt;priv. Deallocated memory&n;    last in cleanup_modue()&n;    Richard Guenther    : Added support for ISAPnP cards&n;    Paul Gortmaker&t;: Discontinued PCI support - use ne2k-pci.c instead.&n;&n;*/
+multiline_comment|/*&n;    Written 1992-94 by Donald Becker.&n;&n;    Copyright 1993 United States Government as represented by the&n;    Director, National Security Agency.&n;&n;    This software may be used and distributed according to the terms&n;    of the GNU General Public License, incorporated herein by reference.&n;&n;    The author may be reached as becker@scyld.com, or C/O&n;    Scyld Computing Corporation, 410 Severn Ave., Suite 210, Annapolis MD 21403&n;&n;    This driver should work with many programmed-I/O 8390-based ethernet&n;    boards.  Currently it supports the NE1000, NE2000, many clones,&n;    and some Cabletron products.&n;&n;    Changelog:&n;&n;    Paul Gortmaker&t;: use ENISR_RDC to monitor Tx PIO uploads, made&n;&t;&t;&t;  sanity checks and bad clone support optional.&n;    Paul Gortmaker&t;: new reset code, reset card after probe at boot.&n;    Paul Gortmaker&t;: multiple card support for module users.&n;    Paul Gortmaker&t;: Support for PCI ne2k clones, similar to lance.c&n;    Paul Gortmaker&t;: Allow users with bad cards to avoid full probe.&n;    Paul Gortmaker&t;: PCI probe changes, more PCI cards supported.&n;    rjohnson@analogic.com : Changed init order so an interrupt will only&n;    occur after memory is allocated for dev-&gt;priv. Deallocated memory&n;    last in cleanup_modue()&n;    Richard Guenther    : Added support for ISAPnP cards&n;    Paul Gortmaker&t;: Discontinued PCI support - use ne2k-pci.c instead.&n;    Hayato Fujiwara&t;: Add m32r support.&n;&n;*/
 multiline_comment|/* Routines for the NatSemi-based designs (NE[12]000). */
 DECL|variable|version1
 r_static
@@ -453,6 +453,16 @@ DECL|macro|NESM_START_PG
 mdefine_line|#define NESM_START_PG&t;0x40&t;/* First page of TX buffer */
 DECL|macro|NESM_STOP_PG
 mdefine_line|#define NESM_STOP_PG&t;0x80&t;/* Last page +1 of RX ring */
+macro_line|#ifdef CONFIG_PLAT_MAPPI
+DECL|macro|DCR_VAL
+macro_line|#  define DCR_VAL 0x4b
+macro_line|#elif CONFIG_PLAT_OAKS32R
+DECL|macro|DCR_VAL
+macro_line|#  define DCR_VAL 0x48
+macro_line|#else
+DECL|macro|DCR_VAL
+macro_line|#  define DCR_VAL 0x49
+macro_line|#endif
 r_static
 r_int
 id|ne_probe1
@@ -1748,7 +1758,7 @@ multiline_comment|/* We must set the 8390 for word mode. */
 id|outb_p
 c_func
 (paren
-l_int|0x49
+id|DCR_VAL
 comma
 id|ioaddr
 op_plus
@@ -1775,6 +1785,44 @@ op_assign
 id|NE1SM_STOP_PG
 suffix:semicolon
 )brace
+macro_line|#if  defined(CONFIG_PLAT_MAPPI) || defined(CONFIG_PLAT_OAKS32R)
+id|neX000
+op_assign
+(paren
+(paren
+id|SA_prom
+(braket
+l_int|14
+)braket
+op_eq
+l_int|0x57
+op_logical_and
+id|SA_prom
+(braket
+l_int|15
+)braket
+op_eq
+l_int|0x57
+)paren
+op_logical_or
+(paren
+id|SA_prom
+(braket
+l_int|14
+)braket
+op_eq
+l_int|0x42
+op_logical_and
+id|SA_prom
+(braket
+l_int|15
+)braket
+op_eq
+l_int|0x42
+)paren
+)paren
+suffix:semicolon
+macro_line|#else
 id|neX000
 op_assign
 (paren
@@ -1793,6 +1841,7 @@ op_eq
 l_int|0x57
 )paren
 suffix:semicolon
+macro_line|#endif
 id|ctron
 op_assign
 (paren
@@ -2235,6 +2284,72 @@ id|dev-&gt;base_addr
 op_assign
 id|ioaddr
 suffix:semicolon
+macro_line|#ifdef CONFIG_PLAT_MAPPI
+id|outb_p
+c_func
+(paren
+id|E8390_NODMA
+op_plus
+id|E8390_PAGE1
+op_plus
+id|E8390_STOP
+comma
+id|ioaddr
+op_plus
+id|E8390_CMD
+)paren
+suffix:semicolon
+multiline_comment|/* 0x61 */
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+id|ETHER_ADDR_LEN
+suffix:semicolon
+id|i
+op_increment
+)paren
+(brace
+id|dev-&gt;dev_addr
+(braket
+id|i
+)braket
+op_assign
+id|SA_prom
+(braket
+id|i
+)braket
+op_assign
+id|inb_p
+c_func
+(paren
+id|ioaddr
+op_plus
+id|EN1_PHYS_SHIFT
+c_func
+(paren
+id|i
+)paren
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot; %2.2x&quot;
+comma
+id|SA_prom
+(braket
+id|i
+)braket
+)paren
+suffix:semicolon
+)brace
+macro_line|#else
 r_for
 c_loop
 (paren
@@ -2272,6 +2387,7 @@ id|i
 )braket
 suffix:semicolon
 )brace
+macro_line|#endif
 id|printk
 c_func
 (paren
@@ -2298,6 +2414,12 @@ id|ei_status.stop_page
 op_assign
 id|stop_page
 suffix:semicolon
+macro_line|#ifdef CONFIG_PLAT_OAKS32R
+id|ei_status.word16
+op_assign
+l_int|0
+suffix:semicolon
+macro_line|#else
 id|ei_status.word16
 op_assign
 (paren
@@ -2306,6 +2428,7 @@ op_eq
 l_int|2
 )paren
 suffix:semicolon
+macro_line|#endif
 id|ei_status.rx_start_page
 op_assign
 id|start_page

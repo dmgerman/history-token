@@ -1293,8 +1293,8 @@ r_if
 c_cond
 (paren
 id|system_state
-op_eq
-id|SYSTEM_BOOTING
+OL
+id|SYSTEM_RUNNING
 )paren
 r_return
 l_int|1
@@ -2944,8 +2944,8 @@ r_if
 c_cond
 (paren
 id|system_state
-op_eq
-id|SYSTEM_BOOTING
+OL
+id|SYSTEM_RUNNING
 op_logical_and
 op_logical_neg
 id|cpu_present
@@ -3064,8 +3064,8 @@ r_if
 c_cond
 (paren
 id|system_state
-op_eq
-id|SYSTEM_BOOTING
+OL
+id|SYSTEM_RUNNING
 )paren
 r_for
 c_loop

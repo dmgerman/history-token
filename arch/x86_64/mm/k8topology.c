@@ -469,13 +469,13 @@ c_cond
 (paren
 id|limit
 OG
-id|end_pfn_map
+id|end_pfn
 op_lshift
 id|PAGE_SHIFT
 )paren
 id|limit
 op_assign
-id|end_pfn_map
+id|end_pfn
 op_lshift
 id|PAGE_SHIFT
 suffix:semicolon

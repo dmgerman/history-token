@@ -406,6 +406,7 @@ r_return
 id|n
 suffix:semicolon
 )brace
+multiline_comment|/* XXX Trivial wrapper around os_write_file */
 DECL|function|generic_write
 r_int
 id|generic_write

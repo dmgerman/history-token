@@ -3271,11 +3271,10 @@ op_increment
 suffix:semicolon
 id|initial_apic_id
 op_assign
-id|ebx
-op_rshift
-l_int|24
-op_amp
-l_int|0xff
+id|hard_smp_processor_id
+c_func
+(paren
+)paren
 suffix:semicolon
 id|phys_proc_id
 (braket

@@ -523,8 +523,9 @@ r_struct
 id|sunqec
 (brace
 DECL|member|gregs
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|gregs
 suffix:semicolon
 multiline_comment|/* QEC Global Registers         */
@@ -604,14 +605,16 @@ r_struct
 id|sunqe
 (brace
 DECL|member|qcregs
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|qcregs
 suffix:semicolon
 multiline_comment|/* QEC per-channel Registers   */
 DECL|member|mregs
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|mregs
 suffix:semicolon
 multiline_comment|/* Per-channel MACE Registers  */

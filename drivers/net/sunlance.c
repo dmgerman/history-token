@@ -340,19 +340,20 @@ r_struct
 id|lance_private
 (brace
 DECL|member|lregs
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|lregs
 suffix:semicolon
 multiline_comment|/* Lance RAP/RDP regs.&t;&t;*/
 DECL|member|dregs
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|dregs
 suffix:semicolon
 multiline_comment|/* DMA controller regs.&t;&t;*/
 DECL|member|init_block
-r_volatile
 r_struct
 id|lance_init_block
 op_star
@@ -494,7 +495,7 @@ mdefine_line|#define RAP&t;&t;0x02UL&t;&t;/* register address port&t;*/
 DECL|macro|LANCE_REG_SIZE
 mdefine_line|#define LANCE_REG_SIZE&t;0x04UL
 DECL|macro|STOP_LANCE
-mdefine_line|#define STOP_LANCE(__lp) &bslash;&n;do {&t;unsigned long __base = (__lp)-&gt;lregs; &bslash;&n;&t;sbus_writew(LE_CSR0,&t;__base + RAP); &bslash;&n;&t;sbus_writew(LE_C0_STOP,&t;__base + RDP); &bslash;&n;} while (0)
+mdefine_line|#define STOP_LANCE(__lp) &bslash;&n;do {&t;void __iomem *__base = (__lp)-&gt;lregs; &bslash;&n;&t;sbus_writew(LE_CSR0,&t;__base + RAP); &bslash;&n;&t;sbus_writew(LE_C0_STOP,&t;__base + RDP); &bslash;&n;} while (0)
 DECL|variable|sparc_lance_debug
 r_int
 id|sparc_lance_debug
@@ -648,7 +649,6 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-r_volatile
 r_struct
 id|lance_init_block
 op_star
@@ -1006,7 +1006,6 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-r_volatile
 r_struct
 id|lance_init_block
 op_star
@@ -1772,7 +1771,6 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-r_volatile
 r_struct
 id|lance_init_block
 op_star
@@ -1780,7 +1778,6 @@ id|ib
 op_assign
 id|lp-&gt;init_block
 suffix:semicolon
-r_volatile
 r_struct
 id|lance_rx_desc
 op_star
@@ -2096,7 +2093,6 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-r_volatile
 r_struct
 id|lance_init_block
 op_star
@@ -2136,7 +2132,6 @@ op_assign
 id|j
 )paren
 (brace
-r_volatile
 r_struct
 id|lance_tx_desc
 op_star
@@ -2428,8 +2423,8 @@ id|sk_buff
 op_star
 id|skb
 comma
-r_volatile
 r_void
+id|__iomem
 op_star
 id|piobuf
 comma
@@ -2455,14 +2450,11 @@ id|u8
 op_star
 id|p8
 suffix:semicolon
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|pbuf
 op_assign
-(paren
-r_int
-r_int
-)paren
 id|piobuf
 suffix:semicolon
 multiline_comment|/* We know here that both src and dest are on a 16bit boundary. */
@@ -2610,7 +2602,6 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-r_volatile
 r_struct
 id|lance_init_block
 op_star
@@ -2618,7 +2609,6 @@ id|ib
 op_assign
 id|lp-&gt;init_block
 suffix:semicolon
-r_volatile
 r_struct
 id|lance_rx_desc
 op_star
@@ -2959,7 +2949,6 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-r_volatile
 r_struct
 id|lance_init_block
 op_star
@@ -2999,7 +2988,6 @@ op_assign
 id|j
 )paren
 (brace
-r_volatile
 r_struct
 id|lance_tx_desc
 op_star
@@ -3621,7 +3609,6 @@ id|dev
 op_assign
 id|lp-&gt;dev
 suffix:semicolon
-r_volatile
 r_struct
 id|lance_init_block
 op_star
@@ -3933,7 +3920,6 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-r_volatile
 r_struct
 id|lance_init_block
 op_star
@@ -4347,8 +4333,8 @@ r_void
 id|lance_piocopy_from_skb
 c_func
 (paren
-r_volatile
 r_void
+id|__iomem
 op_star
 id|dest
 comma
@@ -4361,14 +4347,11 @@ r_int
 id|len
 )paren
 (brace
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|piobuf
 op_assign
-(paren
-r_int
-r_int
-)paren
 id|dest
 suffix:semicolon
 id|u32
@@ -4671,8 +4654,8 @@ r_void
 id|lance_piozero
 c_func
 (paren
-r_volatile
 r_void
+id|__iomem
 op_star
 id|dest
 comma
@@ -4680,19 +4663,20 @@ r_int
 id|len
 )paren
 (brace
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|piobuf
 op_assign
-(paren
-r_int
-r_int
-)paren
 id|dest
 suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
+r_int
+r_int
+)paren
 id|piobuf
 op_amp
 l_int|1
@@ -4746,6 +4730,10 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
+r_int
+r_int
+)paren
 id|piobuf
 op_amp
 l_int|2
@@ -4924,7 +4912,6 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-r_volatile
 r_struct
 id|lance_init_block
 op_star
@@ -5283,7 +5270,6 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-r_volatile
 r_struct
 id|lance_init_block
 op_star
@@ -5291,7 +5277,6 @@ id|ib
 op_assign
 id|lp-&gt;init_block
 suffix:semicolon
-r_volatile
 id|u16
 op_star
 id|mcast_table
@@ -5572,7 +5557,6 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-r_volatile
 r_struct
 id|lance_init_block
 op_star
@@ -5818,10 +5802,6 @@ id|lp-&gt;pio_buffer
 id|sbus_iounmap
 c_func
 (paren
-(paren
-r_int
-r_int
-)paren
 id|lp-&gt;init_block
 comma
 r_sizeof
@@ -5845,10 +5825,6 @@ r_struct
 id|lance_init_block
 )paren
 comma
-(paren
-r_void
-op_star
-)paren
 id|lp-&gt;init_block
 comma
 id|lp-&gt;init_block_dvma
@@ -6121,12 +6097,6 @@ id|lebuffer
 (brace
 id|lp-&gt;init_block
 op_assign
-(paren
-r_volatile
-r_struct
-id|lance_init_block
-op_star
-)paren
 id|sbus_ioremap
 c_func
 (paren
@@ -6191,12 +6161,6 @@ r_else
 (brace
 id|lp-&gt;init_block
 op_assign
-(paren
-r_volatile
-r_struct
-id|lance_init_block
-op_star
-)paren
 id|sbus_alloc_consistent
 c_func
 (paren

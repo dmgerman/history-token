@@ -214,10 +214,6 @@ id|decr_overclock_proc0_set
 op_assign
 l_int|0
 suffix:semicolon
-DECL|variable|powersave_nap
-r_int
-id|powersave_nap
-suffix:semicolon
 DECL|variable|aux_device_present
 r_int
 r_char
@@ -1400,7 +1396,7 @@ id|boot_cpuid
 suffix:semicolon
 macro_line|#endif /* CONFIG_PPC_PSERIES */
 macro_line|#endif /* CONFIG_SMP */
-macro_line|#if defined(CONFIG_HOTPLUG_CPU) &amp;&amp;  !defined(CONFIG_PPC_PMAC)
+macro_line|#if defined(CONFIG_HOTPLUG_CPU)
 id|rtas_stop_self_args.token
 op_assign
 id|rtas_token
@@ -1409,7 +1405,7 @@ c_func
 l_string|&quot;stop-self&quot;
 )paren
 suffix:semicolon
-macro_line|#endif /* CONFIG_HOTPLUG_CPU &amp;&amp; !CONFIG_PPC_PMAC */
+macro_line|#endif /* CONFIG_HOTPLUG_CPU */
 multiline_comment|/* Finish initializing the hash table (do the dynamic&n;&t; * patching for the fast-path hashtable.S code)&n;&t; */
 id|htab_finish_init
 c_func

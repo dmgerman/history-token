@@ -6770,12 +6770,18 @@ id|duplex
 id|fccp-&gt;fcc_fpsmr
 op_or_assign
 id|FCC_PSMR_FDE
+op_or
+id|FCC_PSMR_LPB
 suffix:semicolon
 r_else
 id|fccp-&gt;fcc_fpsmr
 op_and_assign
 op_complement
+(paren
 id|FCC_PSMR_FDE
+op_or
+id|FCC_PSMR_LPB
+)paren
 suffix:semicolon
 multiline_comment|/* Enable transmit/receive */
 id|fccp-&gt;fcc_gfmr

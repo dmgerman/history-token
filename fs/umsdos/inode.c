@@ -1226,7 +1226,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Update the disk with the inode content&n; */
 DECL|function|UMSDOS_write_inode
-r_void
+r_int
 id|UMSDOS_write_inode
 (paren
 r_struct
@@ -1242,6 +1242,11 @@ r_struct
 id|iattr
 id|newattrs
 suffix:semicolon
+r_int
+id|ret
+suffix:semicolon
+id|ret
+op_assign
 id|fat_write_inode
 (paren
 id|inode
@@ -1271,6 +1276,9 @@ id|ATTR_CTIME
 suffix:semicolon
 multiline_comment|/*&n;&t; * UMSDOS_notify_change is convenient to call here&n;&t; * to update the EMD entry associated with this inode.&n;&t; * But it has the side effect to re&quot;dirt&quot; the inode.&n;&t; */
 multiline_comment|/*      &n; * UMSDOS_notify_change (inode, &amp;newattrs);&n;&n; * inode-&gt;i_state &amp;= ~I_DIRTY; / * FIXME: this doesn&squot;t work.  We need to remove ourselves from list on dirty inodes. /mn/ */
+r_return
+id|ret
+suffix:semicolon
 )brace
 DECL|variable|umsdos_sops
 r_static

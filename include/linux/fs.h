@@ -4028,7 +4028,7 @@ op_star
 )paren
 suffix:semicolon
 DECL|member|write_inode
-r_void
+r_int
 (paren
 op_star
 id|write_inode

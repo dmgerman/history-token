@@ -8595,10 +8595,6 @@ suffix:colon
 id|iounmap
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 id|bp-&gt;regs
 )paren
 suffix:semicolon
@@ -8688,10 +8684,6 @@ suffix:semicolon
 id|iounmap
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 id|bp-&gt;regs
 )paren
 suffix:semicolon

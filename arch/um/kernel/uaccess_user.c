@@ -68,7 +68,7 @@ id|fault_addr
 comma
 id|ret
 suffix:semicolon
-id|jmp_buf
+id|sigjmp_buf
 id|jbuf
 suffix:semicolon
 op_star

@@ -18,7 +18,7 @@ id|inode
 )paren
 suffix:semicolon
 r_static
-r_void
+r_int
 id|minix_write_inode
 c_func
 (paren
@@ -2562,7 +2562,7 @@ suffix:semicolon
 )brace
 DECL|function|minix_write_inode
 r_static
-r_void
+r_int
 id|minix_write_inode
 c_func
 (paren
@@ -2584,6 +2584,9 @@ c_func
 id|inode
 )paren
 )paren
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 )brace
 DECL|function|minix_sync_inode

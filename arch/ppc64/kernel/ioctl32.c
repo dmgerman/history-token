@@ -2,9 +2,7 @@ multiline_comment|/* &n; * ioctl32.c: Conversion between 32bit and 64bit native 
 DECL|macro|INCLUDES
 mdefine_line|#define INCLUDES
 macro_line|#include &quot;compat_ioctl.c&quot;
-macro_line|#include &lt;linux/ncp_fs.h&gt;
 macro_line|#include &lt;linux/syscalls.h&gt;
-macro_line|#include &lt;asm/ppc32.h&gt;
 DECL|macro|CODE
 mdefine_line|#define CODE
 macro_line|#include &quot;compat_ioctl.c&quot;

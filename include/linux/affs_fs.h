@@ -540,7 +540,7 @@ id|inode
 )paren
 suffix:semicolon
 r_extern
-r_void
+r_int
 id|affs_write_inode
 c_func
 (paren

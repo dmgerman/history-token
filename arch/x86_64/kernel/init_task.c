@@ -111,14 +111,15 @@ id|init_task
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * per-CPU TSS segments. Threads are completely &squot;soft&squot; on Linux,&n; * no more per-task TSS&squot;s. The TSS size is kept cacheline-aligned&n; * so they are allowed to end up in the .data.cacheline_aligned&n; * section. Since TSS&squot;s are completely CPU-local, we want them&n; * on exact cacheline boundaries, to eliminate cacheline ping-pong.&n; */
-DECL|variable|__cacheline_aligned
+id|DEFINE_PER_CPU
+c_func
+(paren
 r_struct
 id|tss_struct
+comma
 id|init_tss
-(braket
-id|NR_CPUS
-)braket
-id|__cacheline_aligned
+)paren
+id|____cacheline_maxaligned_in_smp
 suffix:semicolon
 DECL|macro|ALIGN_TO_4K
 mdefine_line|#define ALIGN_TO_4K __attribute__((section(&quot;.data.init_task&quot;)))

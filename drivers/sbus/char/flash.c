@@ -16,6 +16,7 @@ macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/sbus.h&gt;
 macro_line|#include &lt;asm/ebus.h&gt;
+macro_line|#include &lt;asm/upa.h&gt;
 DECL|variable|flash_lock
 r_static
 id|spinlock_t
@@ -460,7 +461,7 @@ op_increment
 id|u8
 id|data
 op_assign
-id|readb
+id|upa_readb
 c_func
 (paren
 id|flash.read_base

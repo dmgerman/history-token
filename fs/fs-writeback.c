@@ -305,7 +305,7 @@ id|__mark_inode_dirty
 suffix:semicolon
 DECL|function|write_inode
 r_static
-r_void
+r_int
 id|write_inode
 c_func
 (paren
@@ -330,6 +330,7 @@ c_func
 id|inode
 )paren
 )paren
+r_return
 id|inode-&gt;i_sb-&gt;s_op
 op_member_access_from_pointer
 id|write_inode
@@ -339,6 +340,9 @@ id|inode
 comma
 id|sync
 )paren
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Write a single inode&squot;s dirty pages and inode data out to disk.&n; * If `wait&squot; is set, wait on the writeout.&n; *&n; * The whole writeout design is quite complex and fragile.  We want to avoid&n; * starvation of particular inodes when others are being redirtied, prevent&n; * livelocks, etc.&n; *&n; * Called under inode_lock.&n; */
@@ -439,6 +443,10 @@ op_or
 id|I_DIRTY_DATASYNC
 )paren
 )paren
+(brace
+r_int
+id|err
+op_assign
 id|write_inode
 c_func
 (paren
@@ -447,6 +455,18 @@ comma
 id|wait
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|ret
+op_eq
+l_int|0
+)paren
+id|ret
+op_assign
+id|err
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren

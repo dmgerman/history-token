@@ -5907,7 +5907,7 @@ r_int
 r_int
 id|written
 suffix:semicolon
-r_int
+id|ssize_t
 id|err
 suffix:semicolon
 r_if

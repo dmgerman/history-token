@@ -146,7 +146,7 @@ op_star
 id|printer
 )paren
 (paren
-l_string|&quot;Unique machine name is being truncated to %s &quot;
+l_string|&quot;Unique machine name is being truncated to %d &quot;
 l_string|&quot;characters&bslash;n&quot;
 comma
 id|UMID_LEN
@@ -1113,7 +1113,7 @@ c_func
 id|name
 )paren
 op_plus
-l_int|1
+l_int|2
 )paren
 suffix:semicolon
 r_if
@@ -1136,6 +1136,7 @@ id|uml_dir
 op_assign
 id|name
 suffix:semicolon
+multiline_comment|/* Return 0 here because do_initcalls doesn&squot;t look at&n;&t;&t;&t; * the return value.&n;&t;&t;&t; */
 r_return
 l_int|0
 suffix:semicolon

@@ -33,6 +33,8 @@ DECL|macro|DMAPI_MINOR
 mdefine_line|#define DMAPI_MINOR&t;&t;140&t;/* DMAPI */
 DECL|macro|NVRAM_MINOR
 mdefine_line|#define NVRAM_MINOR 144
+DECL|macro|SGI_MMTIMER
+mdefine_line|#define SGI_MMTIMER        153
 DECL|macro|STORE_QUEUE_MINOR
 mdefine_line|#define STORE_QUEUE_MINOR&t;155
 DECL|macro|I2O_MINOR

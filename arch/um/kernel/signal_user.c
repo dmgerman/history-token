@@ -377,6 +377,7 @@ id|SIG_UNBLOCK
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* These are the asynchronous signals.  SIGVTALRM and SIGARLM are handled&n; * together under SIGVTALRM_BIT.  SIGPROF is excluded because we want to&n; * be able to profile all of UML, not just the non-critical sections.  If&n; * profiling is not thread-safe, then that is not my problem.  We can disable&n; * profiling when SMP is enabled in that case.&n; */
 DECL|macro|SIGIO_BIT
 mdefine_line|#define SIGIO_BIT 0
 DECL|macro|SIGVTALRM_BIT
@@ -569,6 +570,7 @@ id|SIGALRM
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* This is safe - sigprocmask is guaranteed to copy locally the&n;&t; * value of new_set, do his work and then, at the end, write to&n;&t; * old_set.&n;&t; */
 r_if
 c_cond
 (paren

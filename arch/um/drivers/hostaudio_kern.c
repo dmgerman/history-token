@@ -52,7 +52,7 @@ suffix:semicolon
 DECL|macro|DSP_HELP
 mdefine_line|#define DSP_HELP &bslash;&n;&quot;    This is used to specify the host dsp device to the hostaudio driver.&bslash;n&quot; &bslash;&n;&quot;    The default is &bslash;&quot;&quot; HOSTAUDIO_DEV_DSP &quot;&bslash;&quot;.&bslash;n&bslash;n&quot;
 DECL|macro|MIXER_HELP
-mdefine_line|#define MIXER_HELP &bslash;&n;&quot;    This is used to specify the host mixer device to the hostaudio driver.&bslash;n&quot; &bslash;&n;&quot;    The default is &bslash;&quot;&quot; HOSTAUDIO_DEV_MIXER &quot;&bslash;&quot;.&bslash;n&bslash;n&quot;
+mdefine_line|#define MIXER_HELP &bslash;&n;&quot;    This is used to specify the host mixer device to the hostaudio driver.&bslash;n&quot;&bslash;&n;&quot;    The default is &bslash;&quot;&quot; HOSTAUDIO_DEV_MIXER &quot;&bslash;&quot;.&bslash;n&bslash;n&quot;
 macro_line|#ifndef MODULE
 DECL|function|set_dsp
 r_static
@@ -192,7 +192,7 @@ op_star
 id|kbuf
 suffix:semicolon
 r_int
-id|ret
+id|err
 suffix:semicolon
 macro_line|#ifdef DEBUG
 id|printk
@@ -227,7 +227,7 @@ op_minus
 id|ENOMEM
 suffix:semicolon
 )brace
-id|ret
+id|err
 op_assign
 id|os_read_file
 c_func
@@ -242,7 +242,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|ret
+id|err
 OL
 l_int|0
 )paren
@@ -261,11 +261,11 @@ id|buffer
 comma
 id|kbuf
 comma
-id|ret
+id|err
 )paren
 )paren
 (brace
-id|ret
+id|err
 op_assign
 op_minus
 id|EFAULT
@@ -280,7 +280,7 @@ id|kbuf
 )paren
 suffix:semicolon
 r_return
-id|ret
+id|err
 suffix:semicolon
 )brace
 DECL|function|hostaudio_write
@@ -319,7 +319,7 @@ op_star
 id|kbuf
 suffix:semicolon
 r_int
-id|ret
+id|err
 suffix:semicolon
 macro_line|#ifdef DEBUG
 id|printk
@@ -354,7 +354,7 @@ op_minus
 id|ENOMEM
 suffix:semicolon
 )brace
-id|ret
+id|err
 op_assign
 op_minus
 id|EFAULT
@@ -377,7 +377,7 @@ r_goto
 id|out
 suffix:semicolon
 )brace
-id|ret
+id|err
 op_assign
 id|os_write_file
 c_func
@@ -392,7 +392,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|ret
+id|err
 OL
 l_int|0
 )paren
@@ -401,6 +401,11 @@ r_goto
 id|out
 suffix:semicolon
 )brace
+op_star
+id|ppos
+op_add_assign
+id|err
+suffix:semicolon
 id|out
 suffix:colon
 id|kfree
@@ -410,7 +415,7 @@ id|kbuf
 )paren
 suffix:semicolon
 r_return
-id|ret
+id|err
 suffix:semicolon
 )brace
 DECL|function|hostaudio_poll
@@ -488,7 +493,7 @@ op_assign
 l_int|0
 suffix:semicolon
 r_int
-id|ret
+id|err
 suffix:semicolon
 macro_line|#ifdef DEBUG
 id|printk
@@ -552,7 +557,7 @@ suffix:colon
 r_break
 suffix:semicolon
 )brace
-id|ret
+id|err
 op_assign
 id|os_ioctl_generic
 c_func
@@ -622,7 +627,7 @@ r_break
 suffix:semicolon
 )brace
 r_return
-id|ret
+id|err
 suffix:semicolon
 )brace
 DECL|function|hostaudio_open
@@ -753,17 +758,6 @@ OL
 l_int|0
 )paren
 (brace
-id|printk
-c_func
-(paren
-l_string|&quot;hostaudio_open failed to open &squot;%s&squot;, err = %d&bslash;n&quot;
-comma
-id|dsp
-comma
-op_minus
-id|ret
-)paren
-suffix:semicolon
 id|kfree
 c_func
 (paren
@@ -818,26 +812,12 @@ l_string|&quot;hostaudio: release called&bslash;n&quot;
 )paren
 suffix:semicolon
 macro_line|#endif
-r_if
-c_cond
-(paren
-id|state-&gt;fd
-op_ge
-l_int|0
-)paren
-(brace
 id|os_close_file
 c_func
 (paren
 id|state-&gt;fd
 )paren
 suffix:semicolon
-id|state-&gt;fd
-op_assign
-op_minus
-l_int|1
-suffix:semicolon
-)brace
 id|kfree
 c_func
 (paren
@@ -1050,10 +1030,6 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-id|state-&gt;fd
-op_assign
-id|ret
-suffix:semicolon
 id|file-&gt;private_data
 op_assign
 id|state
@@ -1094,26 +1070,12 @@ l_string|&quot;hostmixer: release called&bslash;n&quot;
 )paren
 suffix:semicolon
 macro_line|#endif
-r_if
-c_cond
-(paren
-id|state-&gt;fd
-op_ge
-l_int|0
-)paren
-(brace
 id|os_close_file
 c_func
 (paren
 id|state-&gt;fd
 )paren
 suffix:semicolon
-id|state-&gt;fd
-op_assign
-op_minus
-l_int|1
-suffix:semicolon
-)brace
 id|kfree
 c_func
 (paren

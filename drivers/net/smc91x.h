@@ -196,6 +196,25 @@ DECL|macro|SMC_insw
 mdefine_line|#define SMC_insw(a, r, p, l)&t;insw((a) + (r), p, l)
 DECL|macro|SMC_outsw
 mdefine_line|#define SMC_outsw(a, r, p, l)&t;outsw((a) + (r), p, l)
+macro_line|#elif   defined(CONFIG_M32R)
+DECL|macro|SMC_CAN_USE_8BIT
+mdefine_line|#define SMC_CAN_USE_8BIT&t;0
+DECL|macro|SMC_CAN_USE_16BIT
+mdefine_line|#define SMC_CAN_USE_16BIT&t;1
+DECL|macro|SMC_CAN_USE_32BIT
+mdefine_line|#define SMC_CAN_USE_32BIT&t;0
+DECL|macro|SMC_inb
+mdefine_line|#define SMC_inb(a, r)&t;&t;inb((a) + (r) - 0xa0000000)
+DECL|macro|SMC_inw
+mdefine_line|#define SMC_inw(a, r)&t;&t;inw((a) + (r) - 0xa0000000)
+DECL|macro|SMC_outb
+mdefine_line|#define SMC_outb(v, a, r)&t;outb(v, (a) + (r) - 0xa0000000)
+DECL|macro|SMC_outw
+mdefine_line|#define SMC_outw(v, a, r)&t;outw(v, (a) + (r) - 0xa0000000)
+DECL|macro|SMC_insw
+mdefine_line|#define SMC_insw(a, r, p, l)&t;insw((a) + (r) - 0xa0000000, p, l)
+DECL|macro|SMC_outsw
+mdefine_line|#define SMC_outsw(a, r, p, l)&t;outsw((a) + (r) - 0xa0000000, p, l)
 macro_line|#else
 DECL|macro|SMC_CAN_USE_8BIT
 mdefine_line|#define SMC_CAN_USE_8BIT&t;1

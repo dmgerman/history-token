@@ -2,34 +2,12 @@ multiline_comment|/*&n; * COM1 NS16550 support&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/serial.h&gt;
-macro_line|#include &lt;linux/serialP.h&gt;
 macro_line|#include &lt;linux/serial_reg.h&gt;
 macro_line|#include &lt;asm/serial.h&gt;
+macro_line|#include &quot;nonstdio.h&quot;
+macro_line|#include &quot;serial.h&quot;
 DECL|macro|SERIAL_BAUD
 mdefine_line|#define SERIAL_BAUD&t;9600
-r_extern
-r_void
-id|outb
-c_func
-(paren
-r_int
-id|port
-comma
-r_int
-r_char
-id|val
-)paren
-suffix:semicolon
-r_extern
-r_int
-r_char
-id|inb
-c_func
-(paren
-r_int
-id|port
-)paren
-suffix:semicolon
 r_extern
 r_int
 r_int

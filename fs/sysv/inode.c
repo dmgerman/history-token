@@ -1414,7 +1414,7 @@ id|bh
 suffix:semicolon
 )brace
 DECL|function|sysv_write_inode
-r_void
+r_int
 id|sysv_write_inode
 c_func
 (paren
@@ -1455,6 +1455,9 @@ id|unlock_kernel
 c_func
 (paren
 )paren
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 )brace
 DECL|function|sysv_sync_inode

@@ -6998,7 +6998,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * udf_write_inode&n; *&n; * PURPOSE&n; *&t;Write out the specified inode.&n; *&n; * DESCRIPTION&n; *&t;This routine is called whenever an inode is synced.&n; *&t;Currently this routine is just a placeholder.&n; *&n; * HISTORY&n; *&t;July 1, 1997 - Andrew E. Mileski&n; *&t;Written, tested, and released.&n; */
 DECL|function|udf_write_inode
-r_void
+r_int
 id|udf_write_inode
 c_func
 (paren
@@ -7011,11 +7011,16 @@ r_int
 id|sync
 )paren
 (brace
+r_int
+id|ret
+suffix:semicolon
 id|lock_kernel
 c_func
 (paren
 )paren
 suffix:semicolon
+id|ret
+op_assign
 id|udf_update_inode
 c_func
 (paren
@@ -7028,6 +7033,9 @@ id|unlock_kernel
 c_func
 (paren
 )paren
+suffix:semicolon
+r_return
+id|ret
 suffix:semicolon
 )brace
 DECL|function|udf_sync_inode

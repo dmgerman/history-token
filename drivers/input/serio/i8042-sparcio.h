@@ -35,8 +35,9 @@ DECL|macro|I8042_MUX_PHYS_DESC
 mdefine_line|#define I8042_MUX_PHYS_DESC &quot;sparcps2/serio%d&quot;
 DECL|variable|kbd_iobase
 r_static
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|kbd_iobase
 suffix:semicolon
 DECL|macro|I8042_COMMAND_REG
@@ -222,10 +223,6 @@ l_int|0x20
 suffix:semicolon
 id|kbd_iobase
 op_assign
-(paren
-r_int
-r_int
-)paren
 id|ioremap
 c_func
 (paren
@@ -338,10 +335,6 @@ l_int|0
 suffix:semicolon
 id|kbd_iobase
 op_assign
-(paren
-r_int
-r_int
-)paren
 id|ioremap
 c_func
 (paren
@@ -435,10 +428,6 @@ macro_line|#ifdef CONFIG_PCI
 id|iounmap
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 id|kbd_iobase
 )paren
 suffix:semicolon

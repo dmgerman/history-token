@@ -3135,6 +3135,13 @@ op_amp
 id|oldsig-&gt;count
 )paren
 )paren
+(brace
+id|exit_itimers
+c_func
+(paren
+id|oldsig
+)paren
+suffix:semicolon
 id|kmem_cache_free
 c_func
 (paren
@@ -3143,6 +3150,7 @@ comma
 id|oldsig
 )paren
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren

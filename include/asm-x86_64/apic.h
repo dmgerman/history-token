@@ -6,16 +6,23 @@ macro_line|#include &lt;linux/pm.h&gt;
 macro_line|#include &lt;asm/fixmap.h&gt;
 macro_line|#include &lt;asm/apicdef.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
-macro_line|#ifdef CONFIG_X86_LOCAL_APIC
-DECL|macro|APIC_DEBUG
-mdefine_line|#define APIC_DEBUG 0
-macro_line|#if APIC_DEBUG
-DECL|macro|Dprintk
-mdefine_line|#define Dprintk(x...) printk(x)
-macro_line|#else
 DECL|macro|Dprintk
 mdefine_line|#define Dprintk(x...)
-macro_line|#endif
+multiline_comment|/*&n; * Debugging macros&n; */
+DECL|macro|APIC_QUIET
+mdefine_line|#define APIC_QUIET   0
+DECL|macro|APIC_VERBOSE
+mdefine_line|#define APIC_VERBOSE 1
+DECL|macro|APIC_DEBUG
+mdefine_line|#define APIC_DEBUG   2
+r_extern
+r_int
+id|apic_verbosity
+suffix:semicolon
+multiline_comment|/*&n; * Define the default level of output to be very little&n; * This can be turned up by using apic=verbose for more&n; * information and apic=debug for _lots_ of information.&n; * apic_verbosity is defined in apic.c&n; */
+DECL|macro|apic_printk
+mdefine_line|#define apic_printk(v, s, a...) do {       &bslash;&n;&t;&t;if ((v) &lt;= apic_verbosity) &bslash;&n;&t;&t;&t;printk(s, ##a);    &bslash;&n;&t;} while (0)
+macro_line|#ifdef CONFIG_X86_LOCAL_APIC
 r_struct
 id|pt_regs
 suffix:semicolon
