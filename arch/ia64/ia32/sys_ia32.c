@@ -10763,13 +10763,11 @@ r_struct
 id|ipc_kludge
 (brace
 DECL|member|msgp
-r_struct
-id|msgbuf
-op_star
+id|u32
 id|msgp
 suffix:semicolon
 DECL|member|msgtyp
-r_int
+id|s32
 id|msgtyp
 suffix:semicolon
 )brace
