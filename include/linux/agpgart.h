@@ -235,12 +235,6 @@ suffix:semicolon
 macro_line|#else&t;&t;&t;&t;/* __KERNEL__ */
 DECL|macro|AGPGART_MINOR
 mdefine_line|#define AGPGART_MINOR 175
-DECL|macro|AGP_UNLOCK
-mdefine_line|#define AGP_UNLOCK()      &t;up(&amp;(agp_fe.agp_mutex));
-DECL|macro|AGP_LOCK
-mdefine_line|#define AGP_LOCK()    &t;&t;down(&amp;(agp_fe.agp_mutex));
-DECL|macro|AGP_LOCK_INIT
-mdefine_line|#define AGP_LOCK_INIT() &t;sema_init(&amp;(agp_fe.agp_mutex), 1)
 macro_line|#ifndef _AGP_BACKEND_H
 DECL|struct|_agp_version
 r_struct
