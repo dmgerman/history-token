@@ -925,6 +925,11 @@ l_int|0
 op_assign
 (brace
 dot
+id|name
+op_assign
+l_string|&quot;smc91x-regs&quot;
+comma
+dot
 id|start
 op_assign
 id|SA1100_CS3_PHYS
@@ -970,6 +975,11 @@ l_int|2
 )braket
 op_assign
 (brace
+dot
+id|name
+op_assign
+l_string|&quot;smc91x-attrib&quot;
+comma
 dot
 id|start
 op_assign
