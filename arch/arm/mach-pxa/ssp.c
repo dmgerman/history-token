@@ -469,7 +469,7 @@ c_func
 id|SSCR0_P
 c_func
 (paren
-id|dev-&gt;port
+id|port
 )paren
 )paren
 comma
