@@ -3572,7 +3572,7 @@ c_func
 (paren
 id|PCI_VENDOR_ID_ATI
 comma
-id|PCI_DEVICE_ID_ATI_RADEON_IGP
+id|PCI_DEVICE_ID_ATI_RS100
 comma
 l_int|NULL
 )paren
