@@ -6095,7 +6095,7 @@ comma
 id|buf
 )paren
 suffix:semicolon
-id|put_module
+id|module_put
 (paren
 id|driver-&gt;owner
 )paren

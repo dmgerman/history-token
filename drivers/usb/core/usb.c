@@ -164,9 +164,6 @@ op_assign
 op_minus
 id|ENODEV
 suffix:semicolon
-r_int
-id|m
-suffix:semicolon
 id|dbg
 c_func
 (paren
@@ -194,9 +191,18 @@ c_func
 id|driver-&gt;owner
 )paren
 )paren
+(brace
+id|err
+(paren
+l_string|&quot;Can&squot;t get a module reference for %s&quot;
+comma
+id|driver-&gt;name
+)paren
+suffix:semicolon
 r_return
 id|error
 suffix:semicolon
+)brace
 id|id
 op_assign
 id|usb_match_id
@@ -251,7 +257,7 @@ id|intf-&gt;driver
 op_assign
 id|driver
 suffix:semicolon
-id|put_module
+id|module_put
 c_func
 (paren
 id|driver-&gt;owner
@@ -281,9 +287,6 @@ r_struct
 id|usb_driver
 op_star
 id|driver
-suffix:semicolon
-r_int
-id|m
 suffix:semicolon
 id|intf
 op_assign
@@ -326,20 +329,15 @@ op_minus
 id|ENODEV
 suffix:semicolon
 )brace
-id|m
-op_assign
+r_if
+c_cond
+(paren
+op_logical_neg
 id|try_module_get
 c_func
 (paren
 id|driver-&gt;owner
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|m
-op_eq
-l_int|0
 )paren
 (brace
 singleline_comment|// FIXME this happens even when we just rmmod
@@ -404,6 +402,7 @@ c_func
 (paren
 id|driver-&gt;owner
 )paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
