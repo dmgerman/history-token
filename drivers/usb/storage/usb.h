@@ -77,8 +77,10 @@ DECL|macro|US_FLIDX_ABORTING
 mdefine_line|#define US_FLIDX_ABORTING&t;20  /* 0x00100000  abort is in progress   */
 DECL|macro|US_FLIDX_DISCONNECTING
 mdefine_line|#define US_FLIDX_DISCONNECTING&t;21  /* 0x00200000  disconnect in progress */
-DECL|macro|DONT_SUBMIT
-mdefine_line|#define DONT_SUBMIT&t;((1UL &lt;&lt; US_FLIDX_ABORTING) | &bslash;&n;&t;&t;&t; (1UL &lt;&lt; US_FLIDX_DISCONNECTING))
+DECL|macro|ABORTING_OR_DISCONNECTING
+mdefine_line|#define ABORTING_OR_DISCONNECTING&t;((1UL &lt;&lt; US_FLIDX_ABORTING) | &bslash;&n;&t;&t;&t;&t;&t; (1UL &lt;&lt; US_FLIDX_DISCONNECTING))
+DECL|macro|US_FLIDX_RESETTING
+mdefine_line|#define US_FLIDX_RESETTING&t;22  /* 0x00400000  device reset in progress */
 multiline_comment|/* processing state machine states */
 DECL|macro|US_STATE_IDLE
 mdefine_line|#define US_STATE_IDLE&t;&t;1

@@ -131,7 +131,7 @@ c_cond
 (paren
 id|us-&gt;flags
 op_amp
-id|DONT_SUBMIT
+id|ABORTING_OR_DISCONNECTING
 )paren
 r_return
 op_minus
@@ -227,7 +227,7 @@ c_cond
 (paren
 id|us-&gt;flags
 op_amp
-id|DONT_SUBMIT
+id|ABORTING_OR_DISCONNECTING
 )paren
 (brace
 multiline_comment|/* cancel the URB, if it hasn&squot;t been cancelled already */
@@ -1214,7 +1214,7 @@ c_cond
 (paren
 id|us-&gt;flags
 op_amp
-id|DONT_SUBMIT
+id|ABORTING_OR_DISCONNECTING
 )paren
 r_return
 id|USB_STOR_XFER_ERROR
@@ -1289,7 +1289,7 @@ c_cond
 (paren
 id|us-&gt;flags
 op_amp
-id|DONT_SUBMIT
+id|ABORTING_OR_DISCONNECTING
 )paren
 (brace
 multiline_comment|/* cancel the request, if it hasn&squot;t been cancelled already */
@@ -2133,17 +2133,6 @@ id|us-&gt;protocol
 op_eq
 id|US_PR_BULK
 )paren
-(brace
-multiline_comment|/* permit the reset transfer to take place */
-id|clear_bit
-c_func
-(paren
-id|US_FLIDX_ABORTING
-comma
-op_amp
-id|us-&gt;flags
-)paren
-suffix:semicolon
 id|us
 op_member_access_from_pointer
 id|transport_reset
@@ -2152,7 +2141,6 @@ c_func
 id|us
 )paren
 suffix:semicolon
-)brace
 )brace
 multiline_comment|/* Stop the current URB transfer */
 DECL|function|usb_stor_stop_transport
@@ -3369,14 +3357,49 @@ suffix:semicolon
 r_int
 id|result2
 suffix:semicolon
-multiline_comment|/* Let the SCSI layer know we are doing a reset */
+r_int
+id|rc
+op_assign
+id|FAILED
+suffix:semicolon
+multiline_comment|/* Let the SCSI layer know we are doing a reset, set the&n;&t; * RESETTING bit, and clear the ABORTING bit so that the reset&n;&t; * may proceed.&n;&t; */
+id|scsi_lock
+c_func
+(paren
+id|us-&gt;host
+)paren
+suffix:semicolon
 id|usb_stor_report_device_reset
 c_func
 (paren
 id|us
 )paren
 suffix:semicolon
-multiline_comment|/* A 20-second timeout may seem rather long, but a LaCie&n;&t; *  StudioDrive USB2 device takes 16+ seconds to get going&n;&t; *  following a powerup or USB attach event. */
+id|set_bit
+c_func
+(paren
+id|US_FLIDX_RESETTING
+comma
+op_amp
+id|us-&gt;flags
+)paren
+suffix:semicolon
+id|clear_bit
+c_func
+(paren
+id|US_FLIDX_ABORTING
+comma
+op_amp
+id|us-&gt;flags
+)paren
+suffix:semicolon
+id|scsi_unlock
+c_func
+(paren
+id|us-&gt;host
+)paren
+suffix:semicolon
+multiline_comment|/* A 20-second timeout may seem rather long, but a LaCie&n;&t; * StudioDrive USB2 device takes 16+ seconds to get going&n;&t; * following a powerup or USB attach event.&n;&t; */
 id|result
 op_assign
 id|usb_stor_control_msg
@@ -3419,8 +3442,8 @@ comma
 id|result
 )paren
 suffix:semicolon
-r_return
-id|FAILED
+r_goto
+id|Done
 suffix:semicolon
 )brace
 multiline_comment|/* long wait for reset, so unlock to allow disconnects */
@@ -3471,20 +3494,10 @@ c_func
 l_string|&quot;Reset interrupted by disconnect&bslash;n&quot;
 )paren
 suffix:semicolon
-r_return
-id|FAILED
+r_goto
+id|Done
 suffix:semicolon
 )brace
-multiline_comment|/* permit the clear-halt transfers to take place */
-id|clear_bit
-c_func
-(paren
-id|US_FLIDX_ABORTING
-comma
-op_amp
-id|us-&gt;flags
-)paren
-suffix:semicolon
 id|US_DEBUGP
 c_func
 (paren
@@ -3536,8 +3549,8 @@ c_func
 l_string|&quot;Soft reset failed&bslash;n&quot;
 )paren
 suffix:semicolon
-r_return
-id|FAILED
+r_goto
+id|Done
 suffix:semicolon
 )brace
 id|US_DEBUGP
@@ -3546,8 +3559,23 @@ c_func
 l_string|&quot;Soft reset done&bslash;n&quot;
 )paren
 suffix:semicolon
-r_return
+id|rc
+op_assign
 id|SUCCESS
+suffix:semicolon
+id|Done
+suffix:colon
+id|clear_bit
+c_func
+(paren
+id|US_FLIDX_RESETTING
+comma
+op_amp
+id|us-&gt;flags
+)paren
+suffix:semicolon
+r_return
+id|rc
 suffix:semicolon
 )brace
 multiline_comment|/* This issues a CB[I] Reset to the device in question&n; */
