@@ -51,6 +51,19 @@ id|flen
 op_assign
 l_int|0
 suffix:semicolon
+macro_line|#ifndef DEBUG
+r_if
+c_cond
+(paren
+op_logical_neg
+id|printk_ratelimit
+c_func
+(paren
+)paren
+)paren
+r_return
+suffix:semicolon
+macro_line|#endif
 r_if
 c_cond
 (paren
@@ -183,6 +196,19 @@ id|flen
 op_assign
 l_int|0
 suffix:semicolon
+macro_line|#ifndef DEBUG
+r_if
+c_cond
+(paren
+op_logical_neg
+id|printk_ratelimit
+c_func
+(paren
+)paren
+)paren
+r_return
+suffix:semicolon
+macro_line|#endif
 r_if
 c_cond
 (paren
