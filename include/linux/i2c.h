@@ -1267,13 +1267,6 @@ mdefine_line|#define I2C_MDELAY&t;0x0706&t;/* millisec delay between written byt
 multiline_comment|/* ----- I2C-DEV: char device interface stuff ------------------------- */
 DECL|macro|I2C_MAJOR
 mdefine_line|#define I2C_MAJOR&t;89&t;&t;/* Device major number&t;&t;*/
-macro_line|#  ifndef NULL
-DECL|macro|NULL
-macro_line|#    define NULL ( (void *) 0 )
-macro_line|#  endif
-macro_line|#  ifndef ENODEV
-macro_line|#    include &lt;asm/errno.h&gt;
-macro_line|#  endif
 multiline_comment|/* These defines are used for probing i2c client addresses */
 multiline_comment|/* Default fill of many variables */
 DECL|macro|I2C_CLIENT_DEFAULTS
