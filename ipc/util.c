@@ -213,6 +213,7 @@ id|max_id
 op_assign
 id|ids-&gt;max_id
 suffix:semicolon
+multiline_comment|/*&n;&t; * read_barrier_depends is not needed here&n;&t; * since ipc_ids.sem is held&n;&t; */
 r_for
 c_loop
 (paren
@@ -393,21 +394,23 @@ id|i
 op_assign
 id|ids-&gt;size
 suffix:semicolon
-multiline_comment|/*&n;&t; * before setting the ids-&gt;entries to the new array, there must be a&n;&t; * wmb() to make sure that the memcpyed contents of the new array are&n;&t; * visible before the new array becomes visible.&n;&t; */
-id|wmb
+multiline_comment|/*&n;&t; * before setting the ids-&gt;entries to the new array, there must be a&n;&t; * smp_wmb() to make sure the memcpyed contents of the new array are&n;&t; * visible before the new array becomes visible.&n;&t; */
+id|smp_wmb
 c_func
 (paren
 )paren
 suffix:semicolon
+multiline_comment|/* prevent seeing new array uninitialized. */
 id|ids-&gt;entries
 op_assign
 r_new
 suffix:semicolon
-id|wmb
+id|smp_wmb
 c_func
 (paren
 )paren
 suffix:semicolon
+multiline_comment|/* prevent indexing into old array based on new size. */
 id|ids-&gt;size
 op_assign
 id|newsize
@@ -430,7 +433,7 @@ r_return
 id|ids-&gt;size
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;ipc_addid &t;-&t;add an IPC identifier&n; *&t;@ids: IPC identifier set&n; *&t;@new: new IPC permission set&n; *&t;@size: new size limit for the id array&n; *&n; *&t;Add an entry &squot;new&squot; to the IPC arrays. The permissions object is&n; *&t;initialised and the first free entry is set up and the id assigned&n; *&t;is returned. The list is returned in a locked state on success.&n; *&t;On failure the list is not locked and -1 is returned.&n; */
+multiline_comment|/**&n; *&t;ipc_addid &t;-&t;add an IPC identifier&n; *&t;@ids: IPC identifier set&n; *&t;@new: new IPC permission set&n; *&t;@size: new size limit for the id array&n; *&n; *&t;Add an entry &squot;new&squot; to the IPC arrays. The permissions object is&n; *&t;initialised and the first free entry is set up and the id assigned&n; *&t;is returned. The list is returned in a locked state on success.&n; *&t;On failure the list is not locked and -1 is returned.&n; *&n; *&t;Called with ipc_ids.sem held.&n; */
 DECL|function|ipc_addid
 r_int
 id|ipc_addid
@@ -463,6 +466,7 @@ comma
 id|size
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t; * read_barrier_depends() is not needed here since&n;&t; * ipc_ids.sem is held&n;&t; */
 r_for
 c_loop
 (paren
@@ -638,6 +642,7 @@ c_func
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* &n;&t; * do not need a read_barrier_depends() here to force ordering&n;&t; * on Alpha, since the ipc_ids.sem is held.&n;&t; */
 id|p
 op_assign
 id|ids-&gt;entries
@@ -1321,7 +1326,7 @@ op_assign
 id|in-&gt;seq
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * ipc_get() requires ipc_ids.sem down, otherwise we need a rmb() here&n; * to sync with grow_ary();&n; *&n; * So far only shm_get_stat() uses ipc_get() via shm_get().  So ipc_get()&n; * is called with shm_ids.sem locked.  Thus a rmb() is not needed here,&n; * as grow_ary() also requires shm_ids.sem down(for shm).&n; *&n; * But if ipc_get() is used in the future without ipc_ids.sem down,&n; * we need to add a rmb() before accessing the entries array&n; */
+multiline_comment|/*&n; * So far only shm_get_stat() calls ipc_get() via shm_get(), so ipc_get()&n; * is called with shm_ids.sem locked.  Since grow_ary() is also called with&n; * shm_ids.sem down(for Shared Memory), there is no need to add read &n; * barriers here to gurantee the writes in grow_ary() are seen in order &n; * here (for Alpha).&n; *&n; * However ipc_get() itself does not necessary require ipc_ids.sem down. So&n; * if in the future ipc_get() is used by other places without ipc_ids.sem&n; * down, then ipc_get() needs read memery barriers as ipc_lock() does.&n; */
 DECL|function|ipc_get
 r_struct
 id|kern_ipc_perm
@@ -1362,11 +1367,6 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
-id|rmb
-c_func
-(paren
-)paren
-suffix:semicolon
 id|out
 op_assign
 id|ids-&gt;entries
@@ -1408,6 +1408,11 @@ id|id
 op_mod
 id|SEQ_MULTIPLIER
 suffix:semicolon
+r_struct
+id|ipc_id
+op_star
+id|entries
+suffix:semicolon
 id|rcu_read_lock
 c_func
 (paren
@@ -1430,15 +1435,26 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
-multiline_comment|/* we need a barrier here to sync with grow_ary() */
-id|rmb
+multiline_comment|/* &n;&t; * Note: The following two read barriers are corresponding&n;&t; * to the two write barriers in grow_ary(). They guarantee &n;&t; * the writes are seen in the same order on the read side. &n;&t; * smp_rmb() has effect on all CPUs.  read_barrier_depends() &n;&t; * is used if there are data dependency between two reads, and &n;&t; * has effect only on Alpha.&n;&t; */
+id|smp_rmb
 c_func
 (paren
 )paren
 suffix:semicolon
-id|out
+multiline_comment|/* prevent indexing old array with new size */
+id|entries
 op_assign
 id|ids-&gt;entries
+suffix:semicolon
+id|read_barrier_depends
+c_func
+(paren
+)paren
+suffix:semicolon
+multiline_comment|/*prevent seeing new array unitialized */
+id|out
+op_assign
+id|entries
 (braket
 id|lid
 )braket
