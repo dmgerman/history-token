@@ -802,6 +802,14 @@ id|v
 )paren
 suffix:semicolon
 macro_line|#endif
+macro_line|#ifdef CONFIG_SMP
+id|show_ipi_list
+c_func
+(paren
+id|p
+)paren
+suffix:semicolon
+macro_line|#endif
 id|seq_printf
 c_func
 (paren
