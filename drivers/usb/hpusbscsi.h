@@ -353,10 +353,6 @@ id|use_clustering
 suffix:colon
 id|TRUE
 comma
-id|use_new_eh_code
-suffix:colon
-id|TRUE
-comma
 id|emulated
 suffix:colon
 id|TRUE

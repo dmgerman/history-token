@@ -8,6 +8,7 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/random.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
+macro_line|#include &lt;linux/seq_file.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 multiline_comment|/*&n; * Controller mappings for all interrupt sources:&n; */
 DECL|variable|__cacheline_aligned
@@ -161,14 +162,19 @@ comma
 id|spurious_count
 suffix:semicolon
 multiline_comment|/*&n; * Generic, controller-independent functions:&n; */
-DECL|function|get_irq_list
+DECL|function|show_interrupts
 r_int
-id|get_irq_list
+id|show_interrupts
 c_func
 (paren
-r_char
+r_struct
+id|seq_file
 op_star
-id|buf
+id|p
+comma
+r_void
+op_star
+id|v
 )paren
 (brace
 r_struct
@@ -176,18 +182,10 @@ id|irqaction
 op_star
 id|action
 suffix:semicolon
-r_char
-op_star
-id|p
-op_assign
-id|buf
-suffix:semicolon
 r_int
 id|i
 suffix:semicolon
-id|p
-op_add_assign
-id|sprintf
+id|seq_puts
 c_func
 (paren
 id|p
@@ -210,9 +208,7 @@ suffix:semicolon
 id|i
 op_increment
 )paren
-id|p
-op_add_assign
-id|sprintf
+id|seq_printf
 c_func
 (paren
 id|p
@@ -222,11 +218,13 @@ comma
 id|i
 )paren
 suffix:semicolon
-op_star
+id|seq_putc
+c_func
+(paren
 id|p
-op_increment
-op_assign
+comma
 l_char|&squot;&bslash;n&squot;
+)paren
 suffix:semicolon
 r_for
 c_loop
@@ -260,9 +258,7 @@ id|action
 )paren
 r_continue
 suffix:semicolon
-id|p
-op_add_assign
-id|sprintf
+id|seq_printf
 c_func
 (paren
 id|p
@@ -272,9 +268,7 @@ comma
 id|i
 )paren
 suffix:semicolon
-id|p
-op_add_assign
-id|sprintf
+id|seq_printf
 c_func
 (paren
 id|p
@@ -288,9 +282,7 @@ id|i
 )paren
 )paren
 suffix:semicolon
-id|p
-op_add_assign
-id|sprintf
+id|seq_printf
 c_func
 (paren
 id|p
@@ -307,9 +299,7 @@ op_member_access_from_pointer
 r_typename
 )paren
 suffix:semicolon
-id|p
-op_add_assign
-id|sprintf
+id|seq_printf
 c_func
 (paren
 id|p
@@ -332,9 +322,7 @@ id|action
 op_assign
 id|action-&gt;next
 )paren
-id|p
-op_add_assign
-id|sprintf
+id|seq_printf
 c_func
 (paren
 id|p
@@ -344,16 +332,16 @@ comma
 id|action-&gt;name
 )paren
 suffix:semicolon
-op_star
+id|seq_putc
+c_func
+(paren
 id|p
-op_increment
-op_assign
+comma
 l_char|&squot;&bslash;n&squot;
+)paren
 suffix:semicolon
 )brace
-id|p
-op_add_assign
-id|sprintf
+id|seq_printf
 c_func
 (paren
 id|p
@@ -364,9 +352,7 @@ id|irq_err_count
 )paren
 suffix:semicolon
 r_return
-id|p
-op_minus
-id|buf
+l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * This should really return information about whether&n; * we should do bottom half handling etc. Right now we&n; * end up _always_ checking the bottom half, which is a&n; * waste of time and is not what some drivers would&n; * prefer.&n; */

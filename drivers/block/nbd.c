@@ -2183,8 +2183,6 @@ id|MAJOR_NR
 )paren
 comma
 id|do_nbd_request
-comma
-l_string|&quot;nbd&quot;
 )paren
 suffix:semicolon
 id|blk_queue_headactive

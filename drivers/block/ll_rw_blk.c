@@ -388,6 +388,26 @@ op_assign
 id|size
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * blk_queue_segment_boundary - set boundary rules for segment merging&n; * @q:  the request queue for the device&n; * @mask:  the memory boundary mask&n; **/
+DECL|function|blk_queue_segment_boundary
+r_void
+id|blk_queue_segment_boundary
+c_func
+(paren
+id|request_queue_t
+op_star
+id|q
+comma
+r_int
+r_int
+id|mask
+)paren
+(brace
+id|q-&gt;seg_boundary_mask
+op_assign
+id|mask
+suffix:semicolon
+)brace
 multiline_comment|/*&n; * can we merge the two segments, or do we need to start a new one?&n; */
 DECL|function|blk_same_segment
 r_inline
@@ -426,13 +446,15 @@ id|nxt
 r_return
 l_int|0
 suffix:semicolon
-multiline_comment|/*&n;&t; * bio and nxt are contigous, if they don&squot;t span a 4GB mem boundary&n;&t; * return ok&n;&t; */
+multiline_comment|/*&n;&t; * bio and nxt are contigous in memory, check if the queue allows&n;&t; * these two to be merged into one&n;&t; */
 r_if
 c_cond
 (paren
-id|BIO_PHYS_4G
+id|BIO_SEG_BOUNDARY
 c_func
 (paren
+id|q
+comma
 id|bio
 comma
 id|nxt
@@ -485,6 +507,8 @@ r_int
 id|nsegs
 comma
 id|i
+comma
+id|cluster
 suffix:semicolon
 id|nsegs
 op_assign
@@ -498,6 +522,16 @@ id|lastend
 op_assign
 op_complement
 l_int|0ULL
+suffix:semicolon
+id|cluster
+op_assign
+id|q-&gt;queue_flags
+op_amp
+(paren
+l_int|1
+op_lshift
+id|QUEUE_FLAG_CLUSTER
+)paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * for each bio in rq&n;&t; */
 id|rq_for_each_bio
@@ -529,8 +563,17 @@ c_func
 (paren
 id|i
 OG
-id|bio-&gt;bi_io_vec-&gt;bvl_cnt
+id|bio-&gt;bi_vcnt
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|cluster
+)paren
+r_goto
+id|new_segment
 suffix:semicolon
 r_if
 c_cond
@@ -560,25 +603,15 @@ id|nbytes
 OG
 id|q-&gt;max_segment_size
 )paren
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot;blk_rq_map_sg: %d segment size exceeded&bslash;n&quot;
-comma
-id|q-&gt;max_segment_size
-)paren
-suffix:semicolon
 r_goto
 id|new_segment
 suffix:semicolon
-)brace
-multiline_comment|/*&n;&t;&t;&t;&t; * make sure to not map a 4GB boundary into&n;&t;&t;&t;&t; * same sg entry&n;&t;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t;&t; * make sure to not map a segment across a&n;&t;&t;&t;&t; * boundary that the queue doesn&squot;t want&n;&t;&t;&t;&t; */
 r_if
 c_cond
 (paren
 op_logical_neg
-id|__BIO_PHYS_4G
+id|__BIO_SEG_BOUNDARY
 c_func
 (paren
 id|lastend
@@ -586,21 +619,15 @@ comma
 id|lastend
 op_plus
 id|nbytes
+comma
+id|q-&gt;seg_boundary_mask
 )paren
 )paren
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot;blk_rq_map_sg: 4GB cross&bslash;n&quot;
-)paren
-suffix:semicolon
 id|lastend
 op_assign
 op_complement
 l_int|0ULL
 suffix:semicolon
-)brace
 r_else
 id|lastend
 op_add_assign
@@ -1490,10 +1517,6 @@ comma
 id|request_fn_proc
 op_star
 id|rfn
-comma
-r_char
-op_star
-id|name
 )paren
 (brace
 r_int
@@ -1527,8 +1550,6 @@ op_amp
 id|q-&gt;elevator
 comma
 id|ELEVATOR_LINUS
-comma
-id|name
 )paren
 )paren
 )paren
@@ -1574,7 +1595,11 @@ id|q
 suffix:semicolon
 id|q-&gt;queue_flags
 op_assign
-l_int|0
+(paren
+l_int|1
+op_lshift
+id|QUEUE_FLAG_CLUSTER
+)paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * by default assume old behaviour and bounce for any highmem page&n;&t; */
 id|blk_queue_bounce_limit
@@ -1583,6 +1608,14 @@ c_func
 id|q
 comma
 id|BLK_BOUNCE_HIGH
+)paren
+suffix:semicolon
+id|blk_queue_segment_boundary
+c_func
+(paren
+id|q
+comma
+l_int|0xffffffff
 )paren
 suffix:semicolon
 id|blk_queue_make_request
@@ -2248,31 +2281,6 @@ id|req-&gt;q
 op_assign
 l_int|NULL
 suffix:semicolon
-multiline_comment|/*&n;&t; * should only happen on freereq logic in __make_request, in which&n;&t; * case we don&squot;t want to prune these entries from the hash&n;&t; */
-macro_line|#if 1
-r_if
-c_cond
-(paren
-id|req-&gt;bio
-)paren
-id|bio_hash_remove
-c_func
-(paren
-id|req-&gt;bio
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|req-&gt;biotail
-)paren
-id|bio_hash_remove
-c_func
-(paren
-id|req-&gt;biotail
-)paren
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/*&n;&t; * Request may not have originated from ll_rw_blk. if not,&n;&t; * assume it has free buffers and check waiters&n;&t; */
 r_if
 c_cond
@@ -2426,13 +2434,6 @@ comma
 id|next
 )paren
 suffix:semicolon
-id|bio_hash_remove
-c_func
-(paren
-id|req-&gt;biotail
-)paren
-suffix:semicolon
-multiline_comment|/*&n;&t;&t; * will handle dangling hash too&n;&t;&t; */
 id|blkdev_dequeue_request
 c_func
 (paren
@@ -2452,16 +2453,6 @@ op_assign
 id|next-&gt;biotail
 op_assign
 l_int|NULL
-suffix:semicolon
-id|bio_hash_add_unique
-c_func
-(paren
-id|req-&gt;biotail
-comma
-id|req
-comma
-id|q-&gt;hash_valid_counter
-)paren
 suffix:semicolon
 id|req-&gt;nr_sectors
 op_assign
@@ -2797,20 +2788,10 @@ op_logical_and
 op_logical_neg
 id|freereq
 )paren
-(brace
 id|latency
 op_assign
 l_int|0
 suffix:semicolon
-id|bio_hash_invalidate
-c_func
-(paren
-id|q
-comma
-id|bio-&gt;bi_dev
-)paren
-suffix:semicolon
-)brace
 id|insert_here
 op_assign
 id|head-&gt;prev
@@ -2961,12 +2942,6 @@ comma
 id|nr_sectors
 )paren
 suffix:semicolon
-id|bio_hash_remove
-c_func
-(paren
-id|req-&gt;biotail
-)paren
-suffix:semicolon
 id|req-&gt;biotail-&gt;bi_next
 op_assign
 id|bio
@@ -3051,12 +3026,6 @@ comma
 id|req
 comma
 id|nr_sectors
-)paren
-suffix:semicolon
-id|bio_hash_remove
-c_func
-(paren
-id|req-&gt;bio
 )paren
 suffix:semicolon
 id|bio-&gt;bi_next
@@ -3267,7 +3236,7 @@ id|cur_nr_sectors
 suffix:semicolon
 id|req-&gt;nr_segments
 op_assign
-id|bio-&gt;bi_io_vec-&gt;bvl_cnt
+id|bio-&gt;bi_vcnt
 suffix:semicolon
 id|req-&gt;nr_hw_segments
 op_assign
@@ -3332,16 +3301,6 @@ c_func
 (paren
 op_amp
 id|q-&gt;queue_lock
-)paren
-suffix:semicolon
-id|bio_hash_add_unique
-c_func
-(paren
-id|bio
-comma
-id|req
-comma
-id|q-&gt;hash_valid_counter
 )paren
 suffix:semicolon
 r_return
@@ -3477,7 +3436,7 @@ suffix:semicolon
 multiline_comment|/* lots of checks are possible */
 )brace
 )brace
-multiline_comment|/**&n; * generic_make_request: hand a buffer to it&squot;s device driver for I/O&n; * @bio:  The bio describing the location in memory and on the device.&n; *&n; * generic_make_request() is used to make I/O requests of block&n; * devices. It is passed a &amp;struct bio, which describes the I/O that needs&n; * to be done.&n; *&n; * generic_make_request() does not return any status.  The&n; * success/failure status of the request, along with notification of&n; * completion, is delivered asynchronously through the bio-&gt;bi_end_io&n; * function described (one day) else where.&n; *&n; * The caller of generic_make_request must make sure that bi_io_vec&n; * are set to describe the memory buffer, and that bi_dev and bi_sector are&n; &amp; set to describe the device address, and the&n; * bi_end_io and optionally bi_private are set to describe how&n; * completion notification should be signaled.&n; *&n; * generic_make_request and the drivers it calls may use bi_next if this&n; * bio happens to be merged with someone else, and may change bi_dev and&n; * bi_rsector for remaps as it sees fit.  So the values of these fields&n; * should NOT be depended on after the call to generic_make_request.&n; *&n; * */
+multiline_comment|/**&n; * generic_make_request: hand a buffer to it&squot;s device driver for I/O&n; * @bio:  The bio describing the location in memory and on the device.&n; *&n; * generic_make_request() is used to make I/O requests of block&n; * devices. It is passed a &amp;struct bio, which describes the I/O that needs&n; * to be done.&n; *&n; * generic_make_request() does not return any status.  The&n; * success/failure status of the request, along with notification of&n; * completion, is delivered asynchronously through the bio-&gt;bi_end_io&n; * function described (one day) else where.&n; *&n; * The caller of generic_make_request must make sure that bi_io_vec&n; * are set to describe the memory buffer, and that bi_dev and bi_sector are&n; * set to describe the device address, and the&n; * bi_end_io and optionally bi_private are set to describe how&n; * completion notification should be signaled.&n; *&n; * generic_make_request and the drivers it calls may use bi_next if this&n; * bio happens to be merged with someone else, and may change bi_dev and&n; * bi_sector for remaps as it sees fit.  So the values of these fields&n; * should NOT be depended on after the call to generic_make_request.&n; *&n; * */
 DECL|function|generic_make_request
 r_void
 id|generic_make_request
@@ -3777,13 +3736,6 @@ l_int|9
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * I/O is complete -- remove from hash, end buffer_head, put bio&n;&t; */
-id|bio_hash_remove
-c_func
-(paren
-id|bio
-)paren
-suffix:semicolon
 id|bh
 op_member_access_from_pointer
 id|b_end_io
@@ -4001,7 +3953,7 @@ id|bio-&gt;bi_end_io
 op_assign
 id|end_bio_bh_io_sync
 suffix:semicolon
-id|bio-&gt;bi_io_vec-&gt;bvl_vec
+id|bio-&gt;bi_io_vec
 (braket
 l_int|0
 )braket
@@ -4010,7 +3962,7 @@ id|bv_page
 op_assign
 id|bh-&gt;b_page
 suffix:semicolon
-id|bio-&gt;bi_io_vec-&gt;bvl_vec
+id|bio-&gt;bi_io_vec
 (braket
 l_int|0
 )braket
@@ -4019,7 +3971,7 @@ id|bv_len
 op_assign
 id|bh-&gt;b_size
 suffix:semicolon
-id|bio-&gt;bi_io_vec-&gt;bvl_vec
+id|bio-&gt;bi_io_vec
 (braket
 l_int|0
 )braket
@@ -4032,15 +3984,15 @@ c_func
 id|bh
 )paren
 suffix:semicolon
-id|bio-&gt;bi_io_vec-&gt;bvl_cnt
+id|bio-&gt;bi_vcnt
 op_assign
 l_int|1
 suffix:semicolon
-id|bio-&gt;bi_io_vec-&gt;bvl_idx
+id|bio-&gt;bi_idx
 op_assign
 l_int|0
 suffix:semicolon
-id|bio-&gt;bi_io_vec-&gt;bvl_size
+id|bio-&gt;bi_size
 op_assign
 id|bh-&gt;b_size
 suffix:semicolon
@@ -4408,7 +4360,7 @@ r_void
 )paren
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/**&n; * end_that_request_first - end I/O on one buffer.&n; * &amp;q:        queue that finished request&n; * @req:      the request being processed&n; * @uptodate: 0 for I/O error&n; *&n; * Description:&n; *     Ends I/O on the first buffer attached to @req, and sets it up&n; *     for the next buffer_head (if any) in the cluster.&n; *     &n; * Return:&n; *     0 - we are done with this request, call end_that_request_last()&n; *     1 - still buffers pending for this request&n; **/
+multiline_comment|/**&n; * end_that_request_first - end I/O on one buffer.&n; * @req:      the request being processed&n; * @uptodate: 0 for I/O error&n; * @nr_sectors: number of sectors to end I/O on&n; *&n; * Description:&n; *     Ends I/O on the first buffer attached to @req, and sets it up&n; *     for the next buffer_head (if any) in the cluster.&n; *     &n; * Return:&n; *     0 - we are done with this request, call end_that_request_last()&n; *     1 - still buffers pending for this request&n; **/
 DECL|function|end_that_request_first
 r_int
 id|end_that_request_first
@@ -4534,16 +4486,6 @@ op_ne
 l_int|NULL
 )paren
 (brace
-id|bio_hash_add_unique
-c_func
-(paren
-id|bio
-comma
-id|req
-comma
-id|req-&gt;q-&gt;hash_valid_counter
-)paren
-suffix:semicolon
 id|req-&gt;hard_sector
 op_add_assign
 id|nsect

@@ -2492,12 +2492,6 @@ c_func
 id|mempages
 )paren
 suffix:semicolon
-id|bio_hash_init
-c_func
-(paren
-id|mempages
-)paren
-suffix:semicolon
 macro_line|#if defined(CONFIG_ARCH_S390)
 id|ccwcache_init
 c_func

@@ -2091,7 +2091,7 @@ suffix:semicolon
 id|__asm__
 c_func
 (paren
-l_string|&quot;lcall (%%edi); cld&quot;
+l_string|&quot;lcall *(%%edi); cld&quot;
 suffix:colon
 l_string|&quot;=a&quot;
 (paren
@@ -2279,7 +2279,7 @@ suffix:semicolon
 id|__asm__
 c_func
 (paren
-l_string|&quot;lcall (%%edi); cld&bslash;n&bslash;t&quot;
+l_string|&quot;lcall *(%%edi); cld&bslash;n&bslash;t&quot;
 l_string|&quot;jc 1f&bslash;n&bslash;t&quot;
 l_string|&quot;xor %%ah, %%ah&bslash;n&quot;
 l_string|&quot;1:&quot;
@@ -2503,7 +2503,7 @@ suffix:semicolon
 id|__asm__
 c_func
 (paren
-l_string|&quot;lcall (%%edi); cld&bslash;n&bslash;t&quot;
+l_string|&quot;lcall *(%%edi); cld&bslash;n&bslash;t&quot;
 l_string|&quot;jc 1f&bslash;n&bslash;t&quot;
 l_string|&quot;xor %%ah, %%ah&bslash;n&quot;
 l_string|&quot;1:&quot;
@@ -2692,7 +2692,7 @@ suffix:colon
 id|__asm__
 c_func
 (paren
-l_string|&quot;lcall (%%esi); cld&bslash;n&bslash;t&quot;
+l_string|&quot;lcall *(%%esi); cld&bslash;n&bslash;t&quot;
 l_string|&quot;jc 1f&bslash;n&bslash;t&quot;
 l_string|&quot;xor %%ah, %%ah&bslash;n&quot;
 l_string|&quot;1:&quot;
@@ -2741,7 +2741,7 @@ suffix:colon
 id|__asm__
 c_func
 (paren
-l_string|&quot;lcall (%%esi); cld&bslash;n&bslash;t&quot;
+l_string|&quot;lcall *(%%esi); cld&bslash;n&bslash;t&quot;
 l_string|&quot;jc 1f&bslash;n&bslash;t&quot;
 l_string|&quot;xor %%ah, %%ah&bslash;n&quot;
 l_string|&quot;1:&quot;
@@ -2790,7 +2790,7 @@ suffix:colon
 id|__asm__
 c_func
 (paren
-l_string|&quot;lcall (%%esi); cld&bslash;n&bslash;t&quot;
+l_string|&quot;lcall *(%%esi); cld&bslash;n&bslash;t&quot;
 l_string|&quot;jc 1f&bslash;n&bslash;t&quot;
 l_string|&quot;xor %%ah, %%ah&bslash;n&quot;
 l_string|&quot;1:&quot;
@@ -2967,7 +2967,7 @@ suffix:colon
 id|__asm__
 c_func
 (paren
-l_string|&quot;lcall (%%esi); cld&bslash;n&bslash;t&quot;
+l_string|&quot;lcall *(%%esi); cld&bslash;n&bslash;t&quot;
 l_string|&quot;jc 1f&bslash;n&bslash;t&quot;
 l_string|&quot;xor %%ah, %%ah&bslash;n&quot;
 l_string|&quot;1:&quot;
@@ -3015,7 +3015,7 @@ suffix:colon
 id|__asm__
 c_func
 (paren
-l_string|&quot;lcall (%%esi); cld&bslash;n&bslash;t&quot;
+l_string|&quot;lcall *(%%esi); cld&bslash;n&bslash;t&quot;
 l_string|&quot;jc 1f&bslash;n&bslash;t&quot;
 l_string|&quot;xor %%ah, %%ah&bslash;n&quot;
 l_string|&quot;1:&quot;
@@ -3063,7 +3063,7 @@ suffix:colon
 id|__asm__
 c_func
 (paren
-l_string|&quot;lcall (%%esi); cld&bslash;n&bslash;t&quot;
+l_string|&quot;lcall *(%%esi); cld&bslash;n&bslash;t&quot;
 l_string|&quot;jc 1f&bslash;n&bslash;t&quot;
 l_string|&quot;xor %%ah, %%ah&bslash;n&quot;
 l_string|&quot;1:&quot;
@@ -4064,7 +4064,7 @@ c_func
 l_string|&quot;push %%es&bslash;n&bslash;t&quot;
 l_string|&quot;push %%ds&bslash;n&bslash;t&quot;
 l_string|&quot;pop  %%es&bslash;n&bslash;t&quot;
-l_string|&quot;lcall (%%esi); cld&bslash;n&bslash;t&quot;
+l_string|&quot;lcall *(%%esi); cld&bslash;n&bslash;t&quot;
 l_string|&quot;pop %%es&bslash;n&bslash;t&quot;
 l_string|&quot;jc 1f&bslash;n&bslash;t&quot;
 l_string|&quot;xor %%ah, %%ah&bslash;n&quot;
@@ -4252,7 +4252,7 @@ suffix:semicolon
 id|__asm__
 c_func
 (paren
-l_string|&quot;lcall (%%esi); cld&bslash;n&bslash;t&quot;
+l_string|&quot;lcall *(%%esi); cld&bslash;n&bslash;t&quot;
 l_string|&quot;jc 1f&bslash;n&bslash;t&quot;
 l_string|&quot;xor %%ah, %%ah&bslash;n&quot;
 l_string|&quot;1:&quot;

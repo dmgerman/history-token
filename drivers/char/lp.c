@@ -1809,11 +1809,6 @@ id|minor
 )braket
 )paren
 suffix:semicolon
-id|lock_kernel
-c_func
-(paren
-)paren
-suffix:semicolon
 id|kfree
 c_func
 (paren
@@ -1842,11 +1837,6 @@ id|minor
 op_and_assign
 op_complement
 id|LP_BUSY
-suffix:semicolon
-id|unlock_kernel
-c_func
-(paren
-)paren
 suffix:semicolon
 r_return
 l_int|0

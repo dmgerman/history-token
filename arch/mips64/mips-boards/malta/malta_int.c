@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/kernel_stat.h&gt;
 macro_line|#include &lt;linux/random.h&gt;
+macro_line|#include &lt;linux/seq_file.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/mips-boards/malta.h&gt;
@@ -363,22 +364,23 @@ id|flags
 )paren
 suffix:semicolon
 )brace
-DECL|function|get_irq_list
+DECL|function|show_interrupts
 r_int
-id|get_irq_list
+id|show_interrupts
 c_func
 (paren
-r_char
+r_struct
+id|seq_file
 op_star
-id|buf
+id|p
+comma
+r_void
+op_star
+id|v
 )paren
 (brace
 r_int
 id|i
-comma
-id|len
-op_assign
-l_int|0
 suffix:semicolon
 r_int
 id|num
@@ -423,14 +425,10 @@ id|action
 )paren
 r_continue
 suffix:semicolon
-id|len
-op_add_assign
-id|sprintf
+id|seq_printf
 c_func
 (paren
-id|buf
-op_plus
-id|len
+id|p
 comma
 l_string|&quot;%2d: %8d %c %s&quot;
 comma
@@ -472,14 +470,10 @@ op_assign
 id|action-&gt;next
 )paren
 (brace
-id|len
-op_add_assign
-id|sprintf
+id|seq_printf
 c_func
 (paren
-id|buf
-op_plus
-id|len
+id|p
 comma
 l_string|&quot;,%s %s&quot;
 comma
@@ -498,14 +492,10 @@ id|action-&gt;name
 )paren
 suffix:semicolon
 )brace
-id|len
-op_add_assign
-id|sprintf
+id|seq_puts
 c_func
 (paren
-id|buf
-op_plus
-id|len
+id|p
 comma
 l_string|&quot; [on-chip]&bslash;n&quot;
 )paren
@@ -544,14 +534,10 @@ id|action
 )paren
 r_continue
 suffix:semicolon
-id|len
-op_add_assign
-id|sprintf
+id|seq_printf
 c_func
 (paren
-id|buf
-op_plus
-id|len
+id|p
 comma
 l_string|&quot;%2d: %8d %c %s&quot;
 comma
@@ -593,14 +579,10 @@ op_assign
 id|action-&gt;next
 )paren
 (brace
-id|len
-op_add_assign
-id|sprintf
+id|seq_printf
 c_func
 (paren
-id|buf
-op_plus
-id|len
+id|p
 comma
 l_string|&quot;,%s %s&quot;
 comma
@@ -619,21 +601,17 @@ id|action-&gt;name
 )paren
 suffix:semicolon
 )brace
-id|len
-op_add_assign
-id|sprintf
+id|seq_puts
 c_func
 (paren
-id|buf
-op_plus
-id|len
+id|p
 comma
 l_string|&quot; [hw0]&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
 r_return
-id|len
+l_int|0
 suffix:semicolon
 )brace
 DECL|function|request_irq

@@ -198,11 +198,6 @@ op_star
 id|file
 )paren
 (brace
-id|lock_kernel
-c_func
-(paren
-)paren
-suffix:semicolon
 macro_line|#ifndef CONFIG_WATCHDOG_NOWAYOUT
 r_if
 c_cond
@@ -215,11 +210,6 @@ c_func
 (paren
 id|KERN_ERR
 l_string|&quot;mixcomwd: release called while internal timer alive&quot;
-)paren
-suffix:semicolon
-id|unlock_kernel
-c_func
-(paren
 )paren
 suffix:semicolon
 r_return
@@ -269,11 +259,6 @@ l_int|0
 comma
 op_amp
 id|mixcomwd_opened
-)paren
-suffix:semicolon
-id|unlock_kernel
-c_func
-(paren
 )paren
 suffix:semicolon
 r_return

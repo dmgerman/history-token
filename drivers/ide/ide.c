@@ -13119,12 +13119,6 @@ suffix:colon
 r_case
 id|BLKBSZSET
 suffix:colon
-r_case
-id|BLKHASHPROF
-suffix:colon
-r_case
-id|BLKHASHCLEAR
-suffix:colon
 r_return
 id|blk_ioctl
 c_func

@@ -2,6 +2,7 @@ multiline_comment|/*&n; * arch/m68k/mvme147/147ints.c&n; *&n; * Copyright (C) 19
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
+macro_line|#include &lt;linux/seq_file.h&gt;
 macro_line|#include &lt;asm/ptrace.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
@@ -493,21 +494,22 @@ id|fp
 suffix:semicolon
 )brace
 )brace
-DECL|function|mvme147_get_irq_list
+DECL|function|show_mvme147_interrupts
 r_int
-id|mvme147_get_irq_list
+id|show_mvme147_interrupts
 (paren
-r_char
+r_struct
+id|seq_file
 op_star
-id|buf
+id|p
+comma
+r_void
+op_star
+id|v
 )paren
 (brace
 r_int
 id|i
-comma
-id|len
-op_assign
-l_int|0
 suffix:semicolon
 r_for
 c_loop
@@ -534,13 +536,10 @@ id|i
 dot
 id|count
 )paren
-id|len
-op_add_assign
-id|sprintf
+id|seq_printf
+c_func
 (paren
-id|buf
-op_plus
-id|len
+id|p
 comma
 l_string|&quot;Vec 0x%02x: %8d  %s&bslash;n&quot;
 comma
@@ -573,7 +572,7 @@ l_string|&quot;free&quot;
 suffix:semicolon
 )brace
 r_return
-id|len
+l_int|0
 suffix:semicolon
 )brace
 DECL|function|mvme147_defhand

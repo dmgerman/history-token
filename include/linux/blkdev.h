@@ -363,14 +363,14 @@ r_int
 r_int
 id|max_segment_size
 suffix:semicolon
+DECL|member|seg_boundary_mask
+r_int
+r_int
+id|seg_boundary_mask
+suffix:semicolon
 DECL|member|queue_wait
 id|wait_queue_head_t
 id|queue_wait
-suffix:semicolon
-DECL|member|hash_valid_counter
-r_int
-r_int
-id|hash_valid_counter
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -388,6 +388,8 @@ DECL|macro|QUEUE_FLAG_PLUGGED
 mdefine_line|#define QUEUE_FLAG_PLUGGED&t;0&t;/* queue is plugged */
 DECL|macro|QUEUE_FLAG_NOSPLIT
 mdefine_line|#define QUEUE_FLAG_NOSPLIT&t;1&t;/* can process bio over several goes */
+DECL|macro|QUEUE_FLAG_CLUSTER
+mdefine_line|#define QUEUE_FLAG_CLUSTER&t;2&t;/* cluster several segments into 1 */
 DECL|macro|blk_queue_plugged
 mdefine_line|#define blk_queue_plugged(q)&t;test_bit(QUEUE_FLAG_PLUGGED, &amp;(q)-&gt;queue_flags)
 DECL|macro|blk_mark_plugged
@@ -448,28 +450,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|rq-&gt;bio
-)paren
-id|bio_hash_remove
-c_func
-(paren
-id|rq-&gt;bio
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|rq-&gt;biotail
-)paren
-id|bio_hash_remove
-c_func
-(paren
-id|rq-&gt;biotail
-)paren
-suffix:semicolon
 )brace
 r_return
 id|rq
@@ -528,10 +508,18 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
 id|page
 op_minus
 id|page-&gt;zone-&gt;zone_mem_map
-OG
+)paren
+op_plus
+(paren
+id|page-&gt;zone-&gt;zone_start_paddr
+op_rshift
+id|PAGE_SHIFT
+)paren
+OL
 id|q-&gt;bounce_pfn
 )paren
 id|create_bounce
@@ -706,9 +694,6 @@ op_star
 comma
 id|request_fn_proc
 op_star
-comma
-r_char
-op_star
 )paren
 suffix:semicolon
 r_extern
@@ -787,6 +772,19 @@ suffix:semicolon
 r_extern
 r_void
 id|blk_queue_hardsect_size
+c_func
+(paren
+id|request_queue_t
+op_star
+id|q
+comma
+r_int
+r_int
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|blk_queue_segment_boundary
 c_func
 (paren
 id|request_queue_t

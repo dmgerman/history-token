@@ -1815,10 +1815,6 @@ id|host-&gt;max_lun
 op_assign
 id|QLOGICFC_MAX_LUN
 suffix:semicolon
-id|host-&gt;hostt-&gt;use_new_eh_code
-op_assign
-l_int|1
-suffix:semicolon
 id|hostdata
 op_assign
 (paren

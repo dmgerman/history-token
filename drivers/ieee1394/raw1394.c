@@ -4241,11 +4241,6 @@ l_int|0
 comma
 id|i
 suffix:semicolon
-id|lock_kernel
-c_func
-(paren
-)paren
-suffix:semicolon
 r_for
 c_loop
 (paren
@@ -4437,11 +4432,6 @@ id|fi
 )paren
 suffix:semicolon
 id|V22_COMPAT_MOD_DEC_USE_COUNT
-suffix:semicolon
-id|unlock_kernel
-c_func
-(paren
-)paren
 suffix:semicolon
 r_return
 l_int|0

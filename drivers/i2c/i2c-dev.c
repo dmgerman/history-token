@@ -1776,12 +1776,6 @@ macro_line|#endif
 macro_line|#if LINUX_KERNEL_VERSION &lt; KERNEL_VERSION(2,4,0)
 id|MOD_DEC_USE_COUNT
 suffix:semicolon
-macro_line|#else /* LINUX_KERNEL_VERSION &gt;= KERNEL_VERSION(2,4,0) */
-id|lock_kernel
-c_func
-(paren
-)paren
-suffix:semicolon
 macro_line|#endif /* LINUX_KERNEL_VERSION &lt; KERNEL_VERSION(2,4,0) */
 r_if
 c_cond
@@ -1807,13 +1801,6 @@ id|minor
 )braket
 )paren
 suffix:semicolon
-macro_line|#if LINUX_KERNEL_VERSION &gt;= KERNEL_VERSION(2,4,0)
-id|unlock_kernel
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif /* LINUX_KERNEL_VERSION &gt;= KERNEL_VERSION(2,4,0) */
 r_return
 l_int|0
 suffix:semicolon

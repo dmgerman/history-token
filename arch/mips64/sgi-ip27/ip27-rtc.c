@@ -84,18 +84,17 @@ op_star
 id|rtc_tm
 )paren
 suffix:semicolon
-multiline_comment|/*&n; *&t;Bits in rtc_status. (6 bits of room for future expansion)&n; */
-DECL|macro|RTC_IS_OPEN
-mdefine_line|#define RTC_IS_OPEN&t;&t;0x01&t;/* means /dev/rtc is in use&t;*/
-DECL|macro|RTC_TIMER_ON
-mdefine_line|#define RTC_TIMER_ON&t;&t;0x02&t;/* missed irq timer active&t;*/
-DECL|variable|rtc_status
+DECL|variable|rtc_ready
 r_static
-r_int
-r_char
-id|rtc_status
+id|atomic_t
+id|rtc_ready
+op_assign
+id|ATOMIC_INIT
+c_func
+(paren
+l_int|1
+)paren
 suffix:semicolon
-multiline_comment|/* bitmapped status byte.&t;*/
 DECL|variable|rtc_freq
 r_static
 r_int
@@ -604,20 +603,26 @@ id|file
 r_if
 c_cond
 (paren
-id|rtc_status
+id|atomic_dec_and_test
+c_func
+(paren
 op_amp
-id|RTC_IS_OPEN
+id|rtc_ready
+)paren
 )paren
 (brace
+id|atomic_inc
+c_func
+(paren
+op_amp
+id|rtc_ready
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|EBUSY
 suffix:semicolon
 )brace
-id|rtc_status
-op_or_assign
-id|RTC_IS_OPEN
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -639,20 +644,11 @@ op_star
 id|file
 )paren
 (brace
-multiline_comment|/*&n;&t; * Turn off all interrupts once the device is no longer&n;&t; * in use, and clear the data.&n;&t; */
-id|lock_kernel
+id|atomic_inc
 c_func
 (paren
-)paren
-suffix:semicolon
-id|rtc_status
-op_and_assign
-op_complement
-id|RTC_IS_OPEN
-suffix:semicolon
-id|unlock_kernel
-c_func
-(paren
+op_amp
+id|rtc_ready
 )paren
 suffix:semicolon
 r_return

@@ -594,14 +594,6 @@ r_void
 )paren
 suffix:semicolon
 r_extern
-r_void
-id|console_map_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
 r_int
 id|soc_probe
 c_func
@@ -700,13 +692,6 @@ macro_line|#ifdef CONFIG_ATM
 r_void
 )paren
 id|atmdev_init
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef CONFIG_VT
-id|console_map_init
 c_func
 (paren
 )paren

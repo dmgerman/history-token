@@ -680,11 +680,6 @@ id|inode-&gt;i_rdev
 )paren
 suffix:semicolon
 multiline_comment|/* Tell the rendering manager that one client is going away */
-id|lock_kernel
-c_func
-(paren
-)paren
-suffix:semicolon
 id|rrm_close
 (paren
 id|inode
@@ -742,11 +737,6 @@ id|enable_gconsole
 )paren
 suffix:semicolon
 )brace
-id|unlock_kernel
-c_func
-(paren
-)paren
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon

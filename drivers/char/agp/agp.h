@@ -694,6 +694,8 @@ DECL|macro|I830_RDRAM_ND
 mdefine_line|#define I830_RDRAM_ND(x)           (((x) &amp; 0x20) &gt;&gt; 5)
 DECL|macro|I830_RDRAM_DDT
 mdefine_line|#define I830_RDRAM_DDT(x)          (((x) &amp; 0x18) &gt;&gt; 3)
+DECL|macro|INTEL_I830_ERRSTS
+mdefine_line|#define INTEL_I830_ERRSTS          0x92
 multiline_comment|/* intel i820 registers */
 DECL|macro|INTEL_I820_RDCR
 mdefine_line|#define INTEL_I820_RDCR     0x51

@@ -4071,11 +4071,6 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-id|lock_kernel
-c_func
-(paren
-)paren
-suffix:semicolon
 id|p1
 op_assign
 id|p2
@@ -4169,11 +4164,6 @@ op_amp
 id|i2o_config_lock
 comma
 id|flags
-)paren
-suffix:semicolon
-id|unlock_kernel
-c_func
-(paren
 )paren
 suffix:semicolon
 r_return

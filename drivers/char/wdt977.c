@@ -246,11 +246,6 @@ id|file
 (brace
 multiline_comment|/*&n;&t; *&t;Shut off the timer.&n;&t; * &t;Lock it in if it&squot;s a module and we defined ...NOWAYOUT&n;&t; */
 macro_line|#ifndef CONFIG_WATCHDOG_NOWAYOUT
-id|lock_kernel
-c_func
-(paren
-)paren
-suffix:semicolon
 singleline_comment|// unlock the SuperIO chip
 id|outb
 c_func
@@ -397,11 +392,6 @@ suffix:semicolon
 id|timer_alive
 op_assign
 l_int|0
-suffix:semicolon
-id|unlock_kernel
-c_func
-(paren
-)paren
 suffix:semicolon
 id|printk
 c_func

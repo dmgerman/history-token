@@ -2663,11 +2663,6 @@ c_func
 l_string|&quot;dabusb_release&quot;
 )paren
 suffix:semicolon
-id|lock_kernel
-c_func
-(paren
-)paren
-suffix:semicolon
 id|down
 (paren
 op_amp
@@ -2728,11 +2723,6 @@ suffix:semicolon
 id|s-&gt;opened
 op_assign
 l_int|0
-suffix:semicolon
-id|unlock_kernel
-c_func
-(paren
-)paren
 suffix:semicolon
 r_return
 l_int|0

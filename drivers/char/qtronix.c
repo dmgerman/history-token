@@ -1853,11 +1853,6 @@ op_star
 id|file
 )paren
 (brace
-id|lock_kernel
-c_func
-(paren
-)paren
-suffix:semicolon
 id|fasync_aux
 c_func
 (paren
@@ -1871,11 +1866,6 @@ l_int|0
 suffix:semicolon
 id|aux_count
 op_decrement
-suffix:semicolon
-id|unlock_kernel
-c_func
-(paren
-)paren
 suffix:semicolon
 r_return
 l_int|0

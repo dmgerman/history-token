@@ -234,11 +234,6 @@ c_func
 id|inode-&gt;i_rdev
 )paren
 suffix:semicolon
-id|lock_kernel
-c_func
-(paren
-)paren
-suffix:semicolon
 id|joystick
 (braket
 id|minor
@@ -283,11 +278,6 @@ l_int|0
 )paren
 )paren
 id|ikbd_joystick_disable
-c_func
-(paren
-)paren
-suffix:semicolon
-id|unlock_kernel
 c_func
 (paren
 )paren

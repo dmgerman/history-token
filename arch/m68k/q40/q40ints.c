@@ -5,6 +5,7 @@ macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
+macro_line|#include &lt;linux/seq_file.h&gt;
 macro_line|#include &lt;asm/rtc.h&gt;
 macro_line|#include &lt;asm/ptrace.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
@@ -1661,21 +1662,22 @@ id|fp
 suffix:semicolon
 )brace
 )brace
-DECL|function|q40_get_irq_list
+DECL|function|show_q40_interrupts
 r_int
-id|q40_get_irq_list
+id|show_q40_interrupts
 (paren
-r_char
+r_struct
+id|seq_file
 op_star
-id|buf
+id|p
+comma
+r_void
+op_star
+id|v
 )paren
 (brace
 r_int
 id|i
-comma
-id|len
-op_assign
-l_int|0
 suffix:semicolon
 r_for
 c_loop
@@ -1702,13 +1704,10 @@ id|i
 dot
 id|count
 )paren
-id|len
-op_add_assign
-id|sprintf
+id|seq_printf
+c_func
 (paren
-id|buf
-op_plus
-id|len
+id|p
 comma
 l_string|&quot;%sIRQ %02d: %8d  %s%s&bslash;n&quot;
 comma
@@ -1769,7 +1768,7 @@ l_string|&quot;&quot;
 suffix:semicolon
 )brace
 r_return
-id|len
+l_int|0
 suffix:semicolon
 )brace
 DECL|function|q40_defhand

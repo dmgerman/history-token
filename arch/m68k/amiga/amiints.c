@@ -4,6 +4,7 @@ macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/kernel_stat.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/seq_file.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/traps.h&gt;
@@ -93,9 +94,10 @@ id|ciabase
 op_star
 id|base
 comma
-r_char
+r_struct
+id|seq_file
 op_star
-id|buf
+id|p
 )paren
 suffix:semicolon
 multiline_comment|/* irq node variables for amiga interrupt sources */
@@ -1963,22 +1965,23 @@ comma
 id|ami_int7
 )brace
 suffix:semicolon
-DECL|function|amiga_get_irq_list
+DECL|function|show_amiga_interrupts
 r_int
-id|amiga_get_irq_list
+id|show_amiga_interrupts
 c_func
 (paren
-r_char
+r_struct
+id|seq_file
 op_star
-id|buf
+id|p
+comma
+r_void
+op_star
+id|v
 )paren
 (brace
 r_int
 id|i
-comma
-id|len
-op_assign
-l_int|0
 suffix:semicolon
 id|irq_node_t
 op_star
@@ -2014,14 +2017,10 @@ id|i
 )paren
 r_continue
 suffix:semicolon
-id|len
-op_add_assign
-id|sprintf
+id|seq_printf
 c_func
 (paren
-id|buf
-op_plus
-id|len
+id|p
 comma
 l_string|&quot;ami  %2d: %10u &quot;
 comma
@@ -2047,39 +2046,27 @@ id|node-&gt;flags
 op_amp
 id|SA_INTERRUPT
 )paren
-id|len
-op_add_assign
-id|sprintf
+id|seq_puts
 c_func
 (paren
-id|buf
-op_plus
-id|len
+id|p
 comma
 l_string|&quot;F &quot;
 )paren
 suffix:semicolon
 r_else
-id|len
-op_add_assign
-id|sprintf
+id|seq_puts
 c_func
 (paren
-id|buf
-op_plus
-id|len
+id|p
 comma
 l_string|&quot;  &quot;
 )paren
 suffix:semicolon
-id|len
-op_add_assign
-id|sprintf
+id|seq_printf
 c_func
 (paren
-id|buf
-op_plus
-id|len
+id|p
 comma
 l_string|&quot;%s&bslash;n&quot;
 comma
@@ -2095,14 +2082,10 @@ op_assign
 id|node-&gt;next
 )paren
 )paren
-id|len
-op_add_assign
-id|sprintf
+id|seq_puts
 c_func
 (paren
-id|buf
-op_plus
-id|len
+id|p
 comma
 l_string|&quot;                    &quot;
 )paren
@@ -2115,34 +2098,26 @@ id|node
 )paren
 suffix:semicolon
 )brace
-id|len
-op_add_assign
 id|cia_get_irq_list
 c_func
 (paren
 op_amp
 id|ciaa_base
 comma
-id|buf
-op_plus
-id|len
+id|p
 )paren
 suffix:semicolon
-id|len
-op_add_assign
 id|cia_get_irq_list
 c_func
 (paren
 op_amp
 id|ciab_base
 comma
-id|buf
-op_plus
-id|len
+id|p
 )paren
 suffix:semicolon
 r_return
-id|len
+l_int|0
 suffix:semicolon
 )brace
 eof

@@ -86,6 +86,14 @@ r_int
 id|nvram_open_mode
 suffix:semicolon
 multiline_comment|/* special open modes */
+DECL|variable|nvram_open_lock
+r_static
+id|spinlock_t
+id|nvram_open_lock
+op_assign
+id|SPIN_LOCK_UNLOCKED
+suffix:semicolon
+multiline_comment|/* guards nvram_open_cnt and&n;                                         nvram_open_mode */
 DECL|macro|NVRAM_WRITE
 mdefine_line|#define&t;NVRAM_WRITE&t;&t;1&t;&t;/* opened for writing (exclusive) */
 DECL|macro|NVRAM_EXCL
@@ -911,6 +919,13 @@ op_star
 id|file
 )paren
 (brace
+id|spin_lock
+c_func
+(paren
+op_amp
+id|nvram_open_lock
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -944,10 +959,19 @@ id|NVRAM_WRITE
 )paren
 )paren
 )paren
+(brace
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|nvram_open_lock
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|EBUSY
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -973,6 +997,13 @@ suffix:semicolon
 id|nvram_open_cnt
 op_increment
 suffix:semicolon
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|nvram_open_lock
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -994,9 +1025,11 @@ op_star
 id|file
 )paren
 (brace
-id|lock_kernel
+id|spin_lock
 c_func
 (paren
+op_amp
+id|nvram_open_lock
 )paren
 suffix:semicolon
 id|nvram_open_cnt
@@ -1026,9 +1059,11 @@ op_and_assign
 op_complement
 id|NVRAM_WRITE
 suffix:semicolon
-id|unlock_kernel
+id|spin_unlock
 c_func
 (paren
+op_amp
+id|nvram_open_lock
 )paren
 suffix:semicolon
 r_return

@@ -1386,6 +1386,8 @@ id|req
 comma
 op_logical_neg
 id|req-&gt;errors
+comma
+id|req-&gt;hard_cur_sectors
 )paren
 )paren
 suffix:semicolon
@@ -1604,14 +1606,6 @@ op_amp
 l_int|0xF0
 )paren
 )braket
-suffix:semicolon
-multiline_comment|/*&n;&t; *&t;Pull the lock over ready&n;&t; */
-id|spin_lock_prefetch
-c_func
-(paren
-op_amp
-id|io_request_lock
-)paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * FAILed message&n;&t; */
 r_if
@@ -5197,12 +5191,6 @@ r_int
 id|unit
 )paren
 (brace
-r_char
-id|name
-(braket
-l_int|16
-)braket
-suffix:semicolon
 r_int
 id|i
 suffix:semicolon
@@ -5352,16 +5340,6 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-id|sprintf
-c_func
-(paren
-id|name
-comma
-l_string|&quot;i2o%d&quot;
-comma
-id|unit
-)paren
-suffix:semicolon
 id|blk_init_queue
 c_func
 (paren
@@ -5374,8 +5352,6 @@ op_member_access_from_pointer
 id|req_queue
 comma
 id|i2ob_request
-comma
-id|name
 )paren
 suffix:semicolon
 id|blk_queue_headactive
@@ -6772,8 +6748,6 @@ id|MAJOR_NR
 )paren
 comma
 id|i2ob_request
-comma
-l_string|&quot;i2o&quot;
 )paren
 suffix:semicolon
 id|blk_queue_headactive

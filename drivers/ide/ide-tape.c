@@ -21926,11 +21926,6 @@ id|MINOR
 id|inode-&gt;i_rdev
 )paren
 suffix:semicolon
-id|lock_kernel
-c_func
-(paren
-)paren
-suffix:semicolon
 id|tape
 op_assign
 id|drive-&gt;driver_data
@@ -22083,11 +22078,6 @@ id|IDETAPE_BUSY
 comma
 op_amp
 id|tape-&gt;flags
-)paren
-suffix:semicolon
-id|unlock_kernel
-c_func
-(paren
 )paren
 suffix:semicolon
 r_return
@@ -26224,6 +26214,12 @@ id|MODULE_DESCRIPTION
 c_func
 (paren
 l_string|&quot;ATAPI Streaming TAPE Driver&quot;
+)paren
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
 DECL|function|idetape_exit

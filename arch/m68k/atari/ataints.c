@@ -4,6 +4,7 @@ macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;linux/kernel_stat.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/seq_file.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/traps.h&gt;
 macro_line|#include &lt;asm/atarihw.h&gt;
@@ -1801,22 +1802,23 @@ id|irq
 suffix:semicolon
 )brace
 )brace
-DECL|function|atari_get_irq_list
+DECL|function|show_atari_interrupts
 r_int
-id|atari_get_irq_list
+id|show_atari_interrupts
 c_func
 (paren
-r_char
+r_struct
+id|seq_file
 op_star
-id|buf
+id|p
+comma
+r_void
+op_star
+id|v
 )paren
 (brace
 r_int
 id|i
-comma
-id|len
-op_assign
-l_int|0
 suffix:semicolon
 r_for
 c_loop
@@ -1856,14 +1858,11 @@ id|i
 OL
 id|STMFP_SOURCE_BASE
 )paren
-id|len
-op_add_assign
-id|sprintf
+id|seq_printf
 c_func
 (paren
-id|buf
-op_plus
-id|len
+id|p
+comma
 comma
 l_string|&quot;auto %2d: %10u &quot;
 comma
@@ -1879,14 +1878,11 @@ id|i
 )paren
 suffix:semicolon
 r_else
-id|len
-op_add_assign
-id|sprintf
+id|seq_printf
 c_func
 (paren
-id|buf
-op_plus
-id|len
+id|p
+comma
 comma
 l_string|&quot;vec $%02x: %10u &quot;
 comma
@@ -1918,14 +1914,11 @@ op_ne
 id|atari_call_irq_list
 )paren
 (brace
-id|len
-op_add_assign
-id|sprintf
+id|seq_printf
 c_func
 (paren
-id|buf
-op_plus
-id|len
+id|p
+comma
 comma
 l_string|&quot;%s&bslash;n&quot;
 comma
@@ -1967,14 +1960,11 @@ op_assign
 id|p-&gt;next
 )paren
 (brace
-id|len
-op_add_assign
-id|sprintf
+id|seq_printf
 c_func
 (paren
-id|buf
-op_plus
-id|len
+id|p
+comma
 comma
 l_string|&quot;%s&bslash;n&quot;
 comma
@@ -1986,14 +1976,11 @@ c_cond
 (paren
 id|p-&gt;next
 )paren
-id|len
-op_add_assign
-id|sprintf
+id|seq_puts
 c_func
 (paren
-id|buf
-op_plus
-id|len
+id|p
+comma
 comma
 l_string|&quot;                    &quot;
 )paren
@@ -2006,14 +1993,10 @@ c_cond
 (paren
 id|num_spurious
 )paren
-id|len
-op_add_assign
-id|sprintf
+id|seq_printf
 c_func
 (paren
-id|buf
-op_plus
-id|len
+id|p
 comma
 l_string|&quot;spurio.: %10u&bslash;n&quot;
 comma
@@ -2021,7 +2004,7 @@ id|num_spurious
 )paren
 suffix:semicolon
 r_return
-id|len
+l_int|0
 suffix:semicolon
 )brace
 eof

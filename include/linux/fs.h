@@ -280,15 +280,6 @@ DECL|macro|UPDATE_ATIME
 mdefine_line|#define UPDATE_ATIME(inode) update_atime (inode)
 r_extern
 r_void
-id|bio_hash_init
-c_func
-(paren
-r_int
-r_int
-)paren
-suffix:semicolon
-r_extern
-r_void
 id|buffer_init
 c_func
 (paren

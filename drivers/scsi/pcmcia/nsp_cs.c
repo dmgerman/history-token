@@ -323,10 +323,6 @@ id|use_clustering
 suffix:colon
 id|DISABLE_CLUSTERING
 comma
-id|use_new_eh_code
-suffix:colon
-l_int|0
-comma
 multiline_comment|/*&t;emulated:&t;&t;0,*/
 )brace
 suffix:semicolon

@@ -2419,9 +2419,11 @@ op_ne
 id|oldsig
 )paren
 (brace
-id|kfree
+id|kmem_cache_free
 c_func
 (paren
+id|sigact_cachep
+comma
 id|current-&gt;sig
 )paren
 suffix:semicolon

@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/kernel_stat.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/seq_file.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/amigahw.h&gt;
 macro_line|#include &lt;asm/amigaints.h&gt;
@@ -932,19 +933,16 @@ id|ciabase
 op_star
 id|base
 comma
-r_char
+r_struct
+id|seq_file
 op_star
-id|buf
+id|p
 )paren
 (brace
 r_int
 id|i
 comma
 id|j
-comma
-id|len
-op_assign
-l_int|0
 suffix:semicolon
 id|j
 op_assign
@@ -965,14 +963,10 @@ id|i
 op_increment
 )paren
 (brace
-id|len
-op_add_assign
-id|sprintf
+id|seq_printf
 c_func
 (paren
-id|buf
-op_plus
-id|len
+id|p
 comma
 l_string|&quot;cia  %2d: %10d &quot;
 comma
@@ -993,26 +987,18 @@ id|i
 )braket
 )paren
 suffix:semicolon
-id|len
-op_add_assign
-id|sprintf
+id|seq_puts
 c_func
 (paren
-id|buf
-op_plus
-id|len
+id|p
 comma
 l_string|&quot;  &quot;
 )paren
 suffix:semicolon
-id|len
-op_add_assign
-id|sprintf
+id|seq_printf
 c_func
 (paren
-id|buf
-op_plus
-id|len
+id|p
 comma
 l_string|&quot;%s&bslash;n&quot;
 comma
@@ -1026,7 +1012,7 @@ id|devname
 suffix:semicolon
 )brace
 r_return
-id|len
+l_int|0
 suffix:semicolon
 )brace
 eof

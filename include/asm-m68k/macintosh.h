@@ -1,6 +1,7 @@
 macro_line|#ifndef __ASM_MACINTOSH_H
 DECL|macro|__ASM_MACINTOSH_H
 mdefine_line|#define __ASM_MACINTOSH_H
+macro_line|#include &lt;linux/seq_file.h&gt;
 multiline_comment|/*&n; *&t;Apple Macintoshisms&n; */
 r_extern
 r_void
@@ -100,10 +101,14 @@ r_int
 suffix:semicolon
 r_extern
 r_int
-id|mac_get_irq_list
+id|show_mac_interrupts
 c_func
 (paren
-r_char
+r_struct
+id|seq_file
+op_star
+comma
+r_void
 op_star
 )paren
 suffix:semicolon

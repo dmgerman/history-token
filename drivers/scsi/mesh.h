@@ -65,7 +65,7 @@ r_int
 )paren
 suffix:semicolon
 DECL|macro|SCSI_MESH
-mdefine_line|#define SCSI_MESH {&t;&t;&t;&t;&t;&bslash;&n;&t;proc_name:&t;&quot;mesh&quot;,&t;&t;&t;&t;&bslash;&n;&t;name:&t;&t;&quot;MESH&quot;,&t;&t;&t;&t;&bslash;&n;&t;detect:&t;&t;mesh_detect,&t;&t;&t;&bslash;&n;&t;release:&t;mesh_release,&t;&t;&t;&bslash;&n;&t;command:&t;mesh_command,&t;&t;&t;&bslash;&n;&t;queuecommand:&t;mesh_queue,&t;&t;&t;&bslash;&n;&t;abort:&t;&t;mesh_abort,&t;&t;&t;&bslash;&n;&t;reset:&t;&t;mesh_reset,&t;&t;&t;&bslash;&n;&t;can_queue:&t;20,&t;&t;&t;&t;&bslash;&n;&t;this_id:&t;7,&t;&t;&t;&t;&bslash;&n;&t;sg_tablesize:&t;SG_ALL,&t;&t;&t;&t;&bslash;&n;&t;cmd_per_lun:&t;2,&t;&t;&t;&t;&bslash;&n;&t;use_clustering:&t;DISABLE_CLUSTERING,&t;&t;&bslash;&n;&t;use_new_eh_code: 1,&t;&t;&t;&t;&bslash;&n;}
+mdefine_line|#define SCSI_MESH {&t;&t;&t;&t;&t;&bslash;&n;&t;proc_name:&t;&quot;mesh&quot;,&t;&t;&t;&t;&bslash;&n;&t;name:&t;&t;&quot;MESH&quot;,&t;&t;&t;&t;&bslash;&n;&t;detect:&t;&t;mesh_detect,&t;&t;&t;&bslash;&n;&t;release:&t;mesh_release,&t;&t;&t;&bslash;&n;&t;command:&t;mesh_command,&t;&t;&t;&bslash;&n;&t;queuecommand:&t;mesh_queue,&t;&t;&t;&bslash;&n;&t;abort:&t;&t;mesh_abort,&t;&t;&t;&bslash;&n;&t;reset:&t;&t;mesh_reset,&t;&t;&t;&bslash;&n;&t;can_queue:&t;20,&t;&t;&t;&t;&bslash;&n;&t;this_id:&t;7,&t;&t;&t;&t;&bslash;&n;&t;sg_tablesize:&t;SG_ALL,&t;&t;&t;&t;&bslash;&n;&t;cmd_per_lun:&t;2,&t;&t;&t;&t;&bslash;&n;&t;use_clustering:&t;DISABLE_CLUSTERING,&t;&t;&bslash;&n;}
 multiline_comment|/*&n; * Registers in the MESH controller.&n; */
 DECL|struct|mesh_regs
 r_struct

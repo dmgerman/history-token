@@ -1,6 +1,7 @@
 macro_line|#ifndef _M68K_MACHDEP_H
 DECL|macro|_M68K_MACHDEP_H
 mdefine_line|#define _M68K_MACHDEP_H
+macro_line|#include &lt;linux/seq_file.h&gt;
 r_struct
 id|pt_regs
 suffix:semicolon
@@ -215,9 +216,14 @@ op_star
 id|mach_get_irq_list
 )paren
 (paren
-r_char
+r_struct
+id|seq_file
 op_star
-id|buf
+id|p
+comma
+r_void
+op_star
+id|v
 )paren
 suffix:semicolon
 r_extern

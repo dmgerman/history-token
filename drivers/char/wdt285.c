@@ -198,11 +198,6 @@ id|file
 )paren
 (brace
 macro_line|#ifdef ONLY_TESTING
-id|lock_kernel
-c_func
-(paren
-)paren
-suffix:semicolon
 id|free_irq
 c_func
 (paren
@@ -214,11 +209,6 @@ suffix:semicolon
 id|timer_alive
 op_assign
 l_int|0
-suffix:semicolon
-id|unlock_kernel
-c_func
-(paren
-)paren
 suffix:semicolon
 macro_line|#else
 multiline_comment|/*&n;&t; *&t;It&squot;s irreversible!&n;&t; */

@@ -21,7 +21,6 @@ macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/ptrace.h&gt;
 macro_line|#include &lt;asm/mmu.h&gt;
 macro_line|#include &lt;linux/smp.h&gt;
-macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/sem.h&gt;
 macro_line|#include &lt;linux/signal.h&gt;
 macro_line|#include &lt;linux/securebits.h&gt;

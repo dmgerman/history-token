@@ -8014,11 +8014,6 @@ id|dev
 op_assign
 id|inode-&gt;i_rdev
 suffix:semicolon
-id|lock_kernel
-c_func
-(paren
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -8116,11 +8111,6 @@ id|TIM_R
 suffix:semicolon
 )brace
 )brace
-id|unlock_kernel
-c_func
-(paren
-)paren
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon

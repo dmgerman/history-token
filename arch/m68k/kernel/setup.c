@@ -307,7 +307,11 @@ op_star
 id|mach_get_irq_list
 )paren
 (paren
-r_char
+r_struct
+id|seq_file
+op_star
+comma
+r_void
 op_star
 )paren
 op_assign

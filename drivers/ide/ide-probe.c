@@ -2825,8 +2825,14 @@ c_func
 id|q
 comma
 id|do_ide_request
+)paren
+suffix:semicolon
+id|blk_queue_segment_boundary
+c_func
+(paren
+id|q
 comma
-id|drive-&gt;name
+l_int|0xffff
 )paren
 suffix:semicolon
 multiline_comment|/* IDE can do up to 128K per request, pdc4030 needs smaller limit */

@@ -182,13 +182,6 @@ c_func
 id|scsi_block_when_processing_errors
 )paren
 suffix:semicolon
-DECL|variable|scsi_mark_host_reset
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|scsi_mark_host_reset
-)paren
-suffix:semicolon
 DECL|variable|scsi_ioctl_send_command
 id|EXPORT_SYMBOL
 c_func

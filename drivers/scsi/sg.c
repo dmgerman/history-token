@@ -1494,11 +1494,6 @@ id|Sg_fd
 op_star
 id|sfp
 suffix:semicolon
-id|lock_kernel
-c_func
-(paren
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1525,11 +1520,6 @@ id|sfp-&gt;parentdp
 )paren
 )paren
 (brace
-id|unlock_kernel
-c_func
-(paren
-)paren
-suffix:semicolon
 r_return
 op_minus
 id|ENXIO
@@ -1614,11 +1604,6 @@ id|sdp-&gt;o_excl_wait
 )paren
 suffix:semicolon
 )brace
-id|unlock_kernel
-c_func
-(paren
-)paren
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon

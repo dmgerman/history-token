@@ -114,9 +114,13 @@ op_star
 suffix:semicolon
 r_extern
 r_int
-id|q40_get_irq_list
+id|show_q40_interrupts
 (paren
-r_char
+r_struct
+id|seq_file
+op_star
+comma
+r_void
 op_star
 )paren
 suffix:semicolon
@@ -1024,7 +1028,7 @@ id|q40_process_int
 suffix:semicolon
 id|mach_get_irq_list
 op_assign
-id|q40_get_irq_list
+id|show_q40_interrupts
 suffix:semicolon
 id|mach_request_irq
 op_assign

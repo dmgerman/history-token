@@ -7504,8 +7504,6 @@ c_func
 id|RequestQueue
 comma
 id|DAC960_RequestFunction
-comma
-l_string|&quot;dac960&quot;
 )paren
 suffix:semicolon
 id|blk_queue_headactive

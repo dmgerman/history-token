@@ -15,6 +15,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/kernel_stat.h&gt;
 macro_line|#include &lt;linux/irq.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
+macro_line|#include &lt;linux/seq_file.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/smp.h&gt;
@@ -212,14 +213,19 @@ id|irq_mis_count
 suffix:semicolon
 macro_line|#endif
 multiline_comment|/*&n; * Generic, controller-independent functions:&n; */
-DECL|function|get_irq_list
+DECL|function|show_interrupts
 r_int
-id|get_irq_list
+id|show_interrupts
 c_func
 (paren
-r_char
+r_struct
+id|seq_file
 op_star
-id|buf
+id|p
+comma
+r_void
+op_star
+id|v
 )paren
 (brace
 r_int
@@ -236,15 +242,7 @@ id|irq_desc_t
 op_star
 id|idesc
 suffix:semicolon
-r_char
-op_star
-id|p
-op_assign
-id|buf
-suffix:semicolon
-id|p
-op_add_assign
-id|sprintf
+id|seq_puts
 c_func
 (paren
 id|p
@@ -266,9 +264,7 @@ suffix:semicolon
 id|j
 op_increment
 )paren
-id|p
-op_add_assign
-id|sprintf
+id|seq_printf
 c_func
 (paren
 id|p
@@ -278,11 +274,13 @@ comma
 id|j
 )paren
 suffix:semicolon
-op_star
+id|seq_putc
+c_func
+(paren
 id|p
-op_increment
-op_assign
+comma
 l_char|&squot;&bslash;n&squot;
+)paren
 suffix:semicolon
 r_for
 c_loop
@@ -319,9 +317,7 @@ id|action
 )paren
 r_continue
 suffix:semicolon
-id|p
-op_add_assign
-id|sprintf
+id|seq_printf
 c_func
 (paren
 id|p
@@ -332,9 +328,7 @@ id|i
 )paren
 suffix:semicolon
 macro_line|#ifndef CONFIG_SMP
-id|p
-op_add_assign
-id|sprintf
+id|seq_printf
 c_func
 (paren
 id|p
@@ -363,9 +357,7 @@ suffix:semicolon
 id|j
 op_increment
 )paren
-id|p
-op_add_assign
-id|sprintf
+id|seq_printf
 c_func
 (paren
 id|p
@@ -386,9 +378,7 @@ id|i
 )paren
 suffix:semicolon
 macro_line|#endif
-id|p
-op_add_assign
-id|sprintf
+id|seq_printf
 c_func
 (paren
 id|p
@@ -400,9 +390,7 @@ op_member_access_from_pointer
 r_typename
 )paren
 suffix:semicolon
-id|p
-op_add_assign
-id|sprintf
+id|seq_printf
 c_func
 (paren
 id|p
@@ -425,9 +413,7 @@ id|action
 op_assign
 id|action-&gt;next
 )paren
-id|p
-op_add_assign
-id|sprintf
+id|seq_printf
 c_func
 (paren
 id|p
@@ -437,16 +423,14 @@ comma
 id|action-&gt;name
 )paren
 suffix:semicolon
-op_star
-id|p
-op_increment
-op_assign
+id|seq_putc
+c_func
+(paren
 l_char|&squot;&bslash;n&squot;
+)paren
 suffix:semicolon
 )brace
-id|p
-op_add_assign
-id|sprintf
+id|seq_puts
 c_func
 (paren
 id|p
@@ -468,9 +452,7 @@ suffix:semicolon
 id|j
 op_increment
 )paren
-id|p
-op_add_assign
-id|sprintf
+id|seq_printf
 c_func
 (paren
 id|p
@@ -488,20 +470,16 @@ id|j
 )paren
 )paren
 suffix:semicolon
-id|p
-op_add_assign
-id|sprintf
+id|seq_putc
 c_func
 (paren
 id|p
 comma
-l_string|&quot;&bslash;n&quot;
+l_char|&squot;&bslash;n&squot;
 )paren
 suffix:semicolon
 macro_line|#if defined(CONFIG_SMP) &amp;&amp; defined(CONFIG_X86)
-id|p
-op_add_assign
-id|sprintf
+id|seq_puts
 c_func
 (paren
 id|p
@@ -523,9 +501,7 @@ suffix:semicolon
 id|j
 op_increment
 )paren
-id|p
-op_add_assign
-id|sprintf
+id|seq_printf
 c_func
 (paren
 id|p
@@ -542,20 +518,16 @@ id|j
 )braket
 )paren
 suffix:semicolon
-id|p
-op_add_assign
-id|sprintf
+id|seq_putc
 c_func
 (paren
 id|p
 comma
-l_string|&quot;&bslash;n&quot;
+l_char|&squot;&bslash;n&squot;
 )paren
 suffix:semicolon
 macro_line|#endif
-id|p
-op_add_assign
-id|sprintf
+id|seq_printf
 c_func
 (paren
 id|p
@@ -571,9 +543,7 @@ id|irq_err_count
 )paren
 suffix:semicolon
 macro_line|#if defined(CONFIG_X86) &amp;&amp; defined(CONFIG_X86_IO_APIC) &amp;&amp; defined(APIC_MISMATCH_DEBUG)
-id|p
-op_add_assign
-id|sprintf
+id|seq_printf
 c_func
 (paren
 id|p
@@ -590,9 +560,7 @@ id|irq_mis_count
 suffix:semicolon
 macro_line|#endif
 r_return
-id|p
-op_minus
-id|buf
+l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Global interrupt locks for SMP. Allow interrupts to come in on any&n; * CPU, yet make cli/sti act globally to protect critical regions..&n; */

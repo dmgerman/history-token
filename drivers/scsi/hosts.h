@@ -366,13 +366,6 @@ id|use_clustering
 suffix:colon
 l_int|1
 suffix:semicolon
-multiline_comment|/*&n;     * True if this driver uses the new error handling code.  This flag is&n;     * really only temporary until all of the other drivers get converted&n;     * to use the new error handling code.&n;     */
-DECL|member|use_new_eh_code
-r_int
-id|use_new_eh_code
-suffix:colon
-l_int|1
-suffix:semicolon
 multiline_comment|/*&n;     * True for emulated SCSI host adapters (e.g. ATAPI)&n;     */
 DECL|member|emulated
 r_int

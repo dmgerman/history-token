@@ -2217,9 +2217,6 @@ id|eh_abort_handler
 suffix:colon
 id|fas216_eh_abort
 comma
-id|use_new_eh_code
-suffix:colon
-l_int|1
 )brace
 suffix:semicolon
 DECL|function|eesox_init

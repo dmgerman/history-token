@@ -2472,11 +2472,6 @@ l_int|0
 r_return
 l_int|0
 suffix:semicolon
-id|lock_kernel
-c_func
-(paren
-)paren
-suffix:semicolon
 id|s
 op_assign
 op_amp
@@ -2580,11 +2575,6 @@ id|user
 suffix:semicolon
 id|out
 suffix:colon
-id|unlock_kernel
-c_func
-(paren
-)paren
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon

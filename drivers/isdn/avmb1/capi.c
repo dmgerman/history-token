@@ -4938,11 +4938,6 @@ op_star
 )paren
 id|file-&gt;private_data
 suffix:semicolon
-id|lock_kernel
-c_func
-(paren
-)paren
-suffix:semicolon
 id|capincci_free
 c_func
 (paren
@@ -4978,11 +4973,6 @@ id|THIS_MODULE
 )paren
 suffix:semicolon
 macro_line|#endif
-id|unlock_kernel
-c_func
-(paren
-)paren
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -5887,11 +5877,6 @@ c_cond
 id|mp
 )paren
 (brace
-id|lock_kernel
-c_func
-(paren
-)paren
-suffix:semicolon
 id|mp-&gt;file
 op_assign
 l_int|0
@@ -5915,11 +5900,6 @@ op_assign
 l_int|NULL
 suffix:semicolon
 )brace
-id|unlock_kernel
-c_func
-(paren
-)paren
-suffix:semicolon
 )brace
 macro_line|#ifdef _DEBUG_REFCOUNT
 id|printk

@@ -42,12 +42,15 @@ op_star
 suffix:semicolon
 r_extern
 r_int
-id|hp300_get_irq_list
+id|show_hp300_interrupts
 c_func
 (paren
-r_char
+r_struct
+id|seq_file
 op_star
-id|buf
+comma
+r_void
+op_star
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_VT
@@ -194,7 +197,7 @@ id|hp300_get_model
 suffix:semicolon
 id|mach_get_irq_list
 op_assign
-id|hp300_get_irq_list
+id|show_hp300_interrupts
 suffix:semicolon
 id|mach_gettimeoffset
 op_assign

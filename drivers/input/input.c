@@ -1577,11 +1577,6 @@ id|file-&gt;f_op
 op_assign
 id|new_fops
 suffix:semicolon
-id|lock_kernel
-c_func
-(paren
-)paren
-suffix:semicolon
 id|err
 op_assign
 id|new_fops
@@ -1592,11 +1587,6 @@ c_func
 id|inode
 comma
 id|file
-)paren
-suffix:semicolon
-id|unlock_kernel
-c_func
-(paren
 )paren
 suffix:semicolon
 r_if

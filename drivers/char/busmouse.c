@@ -469,6 +469,14 @@ comma
 l_int|0
 )paren
 suffix:semicolon
+id|down
+c_func
+(paren
+op_amp
+id|mouse_sem
+)paren
+suffix:semicolon
+multiline_comment|/* to protect mse-&gt;active */
 r_if
 c_cond
 (paren
@@ -514,6 +522,13 @@ suffix:semicolon
 id|unlock_kernel
 c_func
 (paren
+)paren
+suffix:semicolon
+id|up
+c_func
+(paren
+op_amp
+id|mouse_sem
 )paren
 suffix:semicolon
 r_return

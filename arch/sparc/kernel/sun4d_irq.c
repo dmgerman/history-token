@@ -13,6 +13,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/smp.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
+macro_line|#include &lt;linux/seq_file.h&gt;
 macro_line|#include &lt;asm/ptrace.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
@@ -176,14 +177,19 @@ op_assign
 id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
 macro_line|#endif
-DECL|function|sun4d_get_irq_list
+DECL|function|show_sun4d_interrupts
 r_int
-id|sun4d_get_irq_list
+id|show_sun4d_interrupts
 c_func
 (paren
-r_char
+r_struct
+id|seq_file
 op_star
-id|buf
+id|p
+comma
+r_void
+op_star
+id|v
 )paren
 (brace
 r_int
@@ -194,10 +200,6 @@ op_assign
 l_int|0
 comma
 id|k
-op_assign
-l_int|0
-comma
-id|len
 op_assign
 l_int|0
 comma
@@ -326,14 +328,10 @@ suffix:semicolon
 )brace
 id|found_it
 suffix:colon
-id|len
-op_add_assign
-id|sprintf
+id|seq_printf
 c_func
 (paren
-id|buf
-op_plus
-id|len
+id|p
 comma
 l_string|&quot;%3d: &quot;
 comma
@@ -341,14 +339,10 @@ id|i
 )paren
 suffix:semicolon
 macro_line|#ifndef CONFIG_SMP
-id|len
-op_add_assign
-id|sprintf
+id|seq_printf
 c_func
 (paren
-id|buf
-op_plus
-id|len
+id|p
 comma
 l_string|&quot;%10u &quot;
 comma
@@ -374,14 +368,10 @@ suffix:semicolon
 id|x
 op_increment
 )paren
-id|len
-op_add_assign
-id|sprintf
+id|seq_printf
 c_func
 (paren
-id|buf
-op_plus
-id|len
+id|p
 comma
 l_string|&quot;%10u &quot;
 comma
@@ -399,14 +389,10 @@ id|i
 )paren
 suffix:semicolon
 macro_line|#endif
-id|len
-op_add_assign
-id|sprintf
+id|seq_printf
 c_func
 (paren
-id|buf
-op_plus
-id|len
+id|p
 comma
 l_string|&quot;%c %s&quot;
 comma
@@ -446,14 +432,10 @@ op_assign
 id|action-&gt;next
 )paren
 (brace
-id|len
-op_add_assign
-id|sprintf
+id|seq_printf
 c_func
 (paren
-id|buf
-op_plus
-id|len
+id|p
 comma
 l_string|&quot;,%s %s&quot;
 comma
@@ -550,21 +532,17 @@ id|action
 suffix:semicolon
 )brace
 )brace
-id|len
-op_add_assign
-id|sprintf
+id|seq_putc
 c_func
 (paren
-id|buf
-op_plus
-id|len
+id|p
 comma
-l_string|&quot;&bslash;n&quot;
+l_char|&squot;&bslash;n&squot;
 )paren
 suffix:semicolon
 )brace
 r_return
-id|len
+l_int|0
 suffix:semicolon
 )brace
 DECL|function|sun4d_free_irq

@@ -2537,11 +2537,6 @@ suffix:semicolon
 r_int
 id|compat_negot
 suffix:semicolon
-id|lock_kernel
-c_func
-(paren
-)paren
-suffix:semicolon
 id|compat_negot
 op_assign
 l_int|0
@@ -2750,11 +2745,6 @@ id|minor
 )paren
 suffix:semicolon
 )brace
-id|unlock_kernel
-c_func
-(paren
-)paren
-suffix:semicolon
 id|kfree
 (paren
 id|pp

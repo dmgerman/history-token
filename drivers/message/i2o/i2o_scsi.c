@@ -377,6 +377,10 @@ id|Scsi_Cmnd
 op_star
 id|current_command
 suffix:semicolon
+id|spinlock_t
+op_star
+id|lock
+suffix:semicolon
 id|u32
 op_star
 id|m
@@ -393,13 +397,6 @@ comma
 id|ds
 comma
 id|st
-suffix:semicolon
-id|spin_lock_prefetch
-c_func
-(paren
-op_amp
-id|io_request_lock
-)paren
 suffix:semicolon
 r_if
 c_cond
@@ -649,6 +646,11 @@ id|m
 l_int|3
 )braket
 suffix:semicolon
+id|lock
+op_assign
+op_amp
+id|current_command-&gt;host-&gt;host_lock
+suffix:semicolon
 id|printk
 c_func
 (paren
@@ -660,8 +662,7 @@ suffix:semicolon
 id|spin_lock_irq
 c_func
 (paren
-op_amp
-id|io_request_lock
+id|lock
 )paren
 suffix:semicolon
 id|current_command-&gt;result
@@ -681,8 +682,7 @@ suffix:semicolon
 id|spin_unlock_irq
 c_func
 (paren
-op_amp
-id|io_request_lock
+id|lock
 )paren
 suffix:semicolon
 multiline_comment|/* Now flush the message by making it a NOP */
@@ -1069,11 +1069,15 @@ l_int|16
 op_or
 id|ds
 suffix:semicolon
+id|lock
+op_assign
+op_amp
+id|current_command-&gt;host-&gt;host_lock
+suffix:semicolon
 id|spin_lock
 c_func
 (paren
-op_amp
-id|io_request_lock
+id|lock
 )paren
 suffix:semicolon
 id|current_command
@@ -1087,8 +1091,7 @@ suffix:semicolon
 id|spin_unlock
 c_func
 (paren
-op_amp
-id|io_request_lock
+id|lock
 )paren
 suffix:semicolon
 r_return

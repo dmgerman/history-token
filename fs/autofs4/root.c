@@ -867,11 +867,6 @@ id|autofs_info
 op_star
 id|inf
 suffix:semicolon
-id|lock_kernel
-c_func
-(paren
-)paren
-suffix:semicolon
 id|DPRINTK
 c_func
 (paren
@@ -915,11 +910,6 @@ id|inf
 )paren
 suffix:semicolon
 )brace
-id|unlock_kernel
-c_func
-(paren
-)paren
-suffix:semicolon
 )brace
 multiline_comment|/* For dentries of directories in the root dir */
 DECL|variable|autofs4_root_dentry_operations

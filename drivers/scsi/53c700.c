@@ -532,10 +532,6 @@ id|tpnt-&gt;use_clustering
 op_assign
 id|DISABLE_CLUSTERING
 suffix:semicolon
-id|tpnt-&gt;use_new_eh_code
-op_assign
-l_int|1
-suffix:semicolon
 id|tpnt-&gt;proc_info
 op_assign
 id|NCR_700_proc_directory_info

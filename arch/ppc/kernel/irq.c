@@ -17,6 +17,7 @@ macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/irq.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/random.h&gt;
+macro_line|#include &lt;linux/seq_file.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/hydra.h&gt;
@@ -1118,30 +1119,34 @@ id|flags
 )paren
 suffix:semicolon
 )brace
-DECL|function|get_irq_list
+DECL|function|show_interrupts
 r_int
-id|get_irq_list
+id|show_interrupts
 c_func
 (paren
-r_char
+r_struct
+id|seq_file
 op_star
-id|buf
+id|p
+comma
+r_void
+op_star
+id|v
 )paren
 (brace
 macro_line|#ifdef CONFIG_APUS
 r_return
-id|apus_get_irq_list
+id|show_apus_interrupts
+c_func
 (paren
-id|buf
+id|p
+comma
+id|v
 )paren
 suffix:semicolon
 macro_line|#else
 r_int
 id|i
-comma
-id|len
-op_assign
-l_int|0
 comma
 id|j
 suffix:semicolon
@@ -1150,14 +1155,10 @@ id|irqaction
 op_star
 id|action
 suffix:semicolon
-id|len
-op_add_assign
-id|sprintf
+id|seq_puts
 c_func
 (paren
-id|buf
-op_plus
-id|len
+id|p
 comma
 l_string|&quot;           &quot;
 )paren
@@ -1176,33 +1177,23 @@ suffix:semicolon
 id|j
 op_increment
 )paren
-id|len
-op_add_assign
-id|sprintf
+id|seq_printf
 c_func
 (paren
-id|buf
-op_plus
-id|len
+id|p
 comma
 l_string|&quot;CPU%d       &quot;
 comma
 id|j
 )paren
 suffix:semicolon
-op_star
+id|seq_putc
+c_func
 (paren
-r_char
-op_star
-)paren
-(paren
-id|buf
-op_plus
-id|len
-op_increment
-)paren
-op_assign
+id|p
+comma
 l_char|&squot;&bslash;n&squot;
+)paren
 suffix:semicolon
 r_for
 c_loop
@@ -1239,14 +1230,10 @@ id|action-&gt;handler
 )paren
 r_continue
 suffix:semicolon
-id|len
-op_add_assign
-id|sprintf
+id|seq_printf
 c_func
 (paren
-id|buf
-op_plus
-id|len
+id|p
 comma
 l_string|&quot;%3d: &quot;
 comma
@@ -1268,14 +1255,10 @@ suffix:semicolon
 id|j
 op_increment
 )paren
-id|len
-op_add_assign
-id|sprintf
+id|seq_printf
 c_func
 (paren
-id|buf
-op_plus
-id|len
+id|p
 comma
 l_string|&quot;%10u &quot;
 comma
@@ -1293,14 +1276,10 @@ id|i
 )paren
 suffix:semicolon
 macro_line|#else&t;&t;
-id|len
-op_add_assign
-id|sprintf
+id|seq_printf
 c_func
 (paren
-id|buf
-op_plus
-id|len
+id|p
 comma
 l_string|&quot;%10u &quot;
 comma
@@ -1322,14 +1301,10 @@ id|i
 dot
 id|handler
 )paren
-id|len
-op_add_assign
-id|sprintf
+id|seq_printf
 c_func
 (paren
-id|buf
-op_plus
-id|len
+id|p
 comma
 l_string|&quot; %s &quot;
 comma
@@ -1344,26 +1319,18 @@ r_typename
 )paren
 suffix:semicolon
 r_else
-id|len
-op_add_assign
-id|sprintf
+id|seq_puts
 c_func
 (paren
-id|buf
-op_plus
-id|len
+id|p
 comma
 l_string|&quot;  None      &quot;
 )paren
 suffix:semicolon
-id|len
-op_add_assign
-id|sprintf
+id|seq_printf
 c_func
 (paren
-id|buf
-op_plus
-id|len
+id|p
 comma
 l_string|&quot;%s&quot;
 comma
@@ -1384,14 +1351,10 @@ suffix:colon
 l_string|&quot;Edge  &quot;
 )paren
 suffix:semicolon
-id|len
-op_add_assign
-id|sprintf
+id|seq_printf
 c_func
 (paren
-id|buf
-op_plus
-id|len
+id|p
 comma
 l_string|&quot;    %s&quot;
 comma
@@ -1412,14 +1375,10 @@ op_assign
 id|action-&gt;next
 )paren
 (brace
-id|len
-op_add_assign
-id|sprintf
+id|seq_printf
 c_func
 (paren
-id|buf
-op_plus
-id|len
+id|p
 comma
 l_string|&quot;, %s&quot;
 comma
@@ -1427,16 +1386,12 @@ id|action-&gt;name
 )paren
 suffix:semicolon
 )brace
-id|len
-op_add_assign
-id|sprintf
+id|seq_putc
 c_func
 (paren
-id|buf
-op_plus
-id|len
+id|p
 comma
-l_string|&quot;&bslash;n&quot;
+l_char|&squot;&bslash;n&squot;
 )paren
 suffix:semicolon
 )brace
@@ -1447,14 +1402,10 @@ c_cond
 id|tau_initialized
 )paren
 (brace
-id|len
-op_add_assign
-id|sprintf
+id|seq_puts
 c_func
 (paren
-id|buf
-op_plus
-id|len
+id|p
 comma
 l_string|&quot;TAU: &quot;
 )paren
@@ -1473,14 +1424,10 @@ suffix:semicolon
 id|j
 op_increment
 )paren
-id|len
-op_add_assign
-id|sprintf
+id|seq_printf
 c_func
 (paren
-id|buf
-op_plus
-id|len
+id|p
 comma
 l_string|&quot;%10u &quot;
 comma
@@ -1491,14 +1438,10 @@ id|j
 )paren
 )paren
 suffix:semicolon
-id|len
-op_add_assign
-id|sprintf
+id|seq_puts
 c_func
 (paren
-id|buf
-op_plus
-id|len
+id|p
 comma
 l_string|&quot;  PowerPC             Thermal Assist (cpu temp)&bslash;n&quot;
 )paren
@@ -1507,14 +1450,10 @@ suffix:semicolon
 macro_line|#endif
 macro_line|#ifdef CONFIG_SMP
 multiline_comment|/* should this be per processor send/receive? */
-id|len
-op_add_assign
-id|sprintf
+id|seq_printf
 c_func
 (paren
-id|buf
-op_plus
-id|len
+id|p
 comma
 l_string|&quot;IPI (recv/sent): %10u/%u&bslash;n&quot;
 comma
@@ -1534,14 +1473,10 @@ id|ipi_sent
 )paren
 suffix:semicolon
 macro_line|#endif&t;&t;
-id|len
-op_add_assign
-id|sprintf
+id|seq_printf
 c_func
 (paren
-id|buf
-op_plus
-id|len
+id|p
 comma
 l_string|&quot;BAD: %10u&bslash;n&quot;
 comma
@@ -1549,7 +1484,7 @@ id|ppc_spurious_interrupts
 )paren
 suffix:semicolon
 r_return
-id|len
+l_int|0
 suffix:semicolon
 macro_line|#endif /* CONFIG_APUS */
 )brace

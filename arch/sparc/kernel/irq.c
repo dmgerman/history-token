@@ -15,6 +15,7 @@ macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/threads.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
+macro_line|#include &lt;linux/seq_file.h&gt;
 macro_line|#include &lt;asm/ptrace.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
@@ -170,22 +171,23 @@ comma
 l_int|NULL
 )brace
 suffix:semicolon
-DECL|function|get_irq_list
+DECL|function|show_interrupts
 r_int
-id|get_irq_list
+id|show_interrupts
 c_func
 (paren
-r_char
+r_struct
+id|seq_file
 op_star
-id|buf
+id|p
+comma
+r_void
+op_star
+id|v
 )paren
 (brace
 r_int
 id|i
-comma
-id|len
-op_assign
-l_int|0
 suffix:semicolon
 r_struct
 id|irqaction
@@ -207,18 +209,24 @@ id|sun4d
 (brace
 r_extern
 r_int
-id|sun4d_get_irq_list
+id|show_sun4d_interrupts
 c_func
 (paren
-r_char
+r_struct
+id|seq_file
+op_star
+comma
+r_void
 op_star
 )paren
 suffix:semicolon
 r_return
-id|sun4d_get_irq_list
+id|show_sun4d_interrupts
 c_func
 (paren
-id|buf
+id|p
+comma
+id|v
 )paren
 suffix:semicolon
 )brace
@@ -258,14 +266,10 @@ id|action
 )paren
 r_continue
 suffix:semicolon
-id|len
-op_add_assign
-id|sprintf
+id|seq_printf
 c_func
 (paren
-id|buf
-op_plus
-id|len
+id|p
 comma
 l_string|&quot;%3d: &quot;
 comma
@@ -273,14 +277,10 @@ id|i
 )paren
 suffix:semicolon
 macro_line|#ifndef CONFIG_SMP
-id|len
-op_add_assign
-id|sprintf
+id|seq_printf
 c_func
 (paren
-id|buf
-op_plus
-id|len
+id|p
 comma
 l_string|&quot;%10u &quot;
 comma
@@ -306,14 +306,10 @@ suffix:semicolon
 id|j
 op_increment
 )paren
-id|len
-op_add_assign
-id|sprintf
+id|seq_printf
 c_func
 (paren
-id|buf
-op_plus
-id|len
+id|p
 comma
 l_string|&quot;%10u &quot;
 comma
@@ -331,14 +327,10 @@ id|i
 )paren
 suffix:semicolon
 macro_line|#endif
-id|len
-op_add_assign
-id|sprintf
+id|seq_printf
 c_func
 (paren
-id|buf
-op_plus
-id|len
+id|p
 comma
 l_string|&quot; %c %s&quot;
 comma
@@ -370,14 +362,10 @@ op_assign
 id|action-&gt;next
 )paren
 (brace
-id|len
-op_add_assign
-id|sprintf
+id|seq_printf
 c_func
 (paren
-id|buf
-op_plus
-id|len
+id|p
 comma
 l_string|&quot;,%s %s&quot;
 comma
@@ -396,21 +384,17 @@ id|action-&gt;name
 )paren
 suffix:semicolon
 )brace
-id|len
-op_add_assign
-id|sprintf
+id|seq_putc
 c_func
 (paren
-id|buf
-op_plus
-id|len
+id|p
 comma
-l_string|&quot;&bslash;n&quot;
+l_char|&squot;&bslash;n&squot;
 )paren
 suffix:semicolon
 )brace
 r_return
-id|len
+l_int|0
 suffix:semicolon
 )brace
 DECL|function|free_irq

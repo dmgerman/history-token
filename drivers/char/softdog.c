@@ -180,11 +180,6 @@ id|file
 )paren
 (brace
 multiline_comment|/*&n;&t; *&t;Shut off the timer.&n;&t; * &t;Lock it in if it&squot;s a module and we defined ...NOWAYOUT&n;&t; */
-id|lock_kernel
-c_func
-(paren
-)paren
-suffix:semicolon
 macro_line|#ifndef CONFIG_WATCHDOG_NOWAYOUT&t; 
 id|del_timer
 c_func
@@ -197,11 +192,6 @@ macro_line|#endif&t;
 id|timer_alive
 op_assign
 l_int|0
-suffix:semicolon
-id|unlock_kernel
-c_func
-(paren
-)paren
 suffix:semicolon
 r_return
 l_int|0

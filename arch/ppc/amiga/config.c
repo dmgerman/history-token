@@ -14,6 +14,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#ifdef CONFIG_ZORRO
 macro_line|#include &lt;linux/zorro.h&gt;
 macro_line|#endif
+macro_line|#include &lt;linux/seq_file.h&gt;
 macro_line|#include &lt;asm/bootinfo.h&gt;
 macro_line|#include &lt;asm/setup.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
@@ -438,9 +439,13 @@ id|buffer
 suffix:semicolon
 r_extern
 r_int
-id|amiga_get_irq_list
+id|show_amiga_interrupts
 (paren
-r_char
+r_struct
+id|seq_file
+op_star
+comma
+r_void
 op_star
 )paren
 suffix:semicolon
@@ -1896,7 +1901,7 @@ id|amiga_get_hardware_list
 suffix:semicolon
 id|mach_get_irq_list
 op_assign
-id|amiga_get_irq_list
+id|show_amiga_interrupts
 suffix:semicolon
 id|mach_gettimeoffset
 op_assign

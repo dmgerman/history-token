@@ -9622,7 +9622,17 @@ c_func
 l_string|&quot;Couldn&squot;t register /dev/tty0 driver&bslash;n&quot;
 )paren
 suffix:semicolon
+id|vcs_init
+c_func
+(paren
+)paren
+suffix:semicolon
 id|kbd_init
+c_func
+(paren
+)paren
+suffix:semicolon
+id|console_map_init
 c_func
 (paren
 )paren
@@ -9731,13 +9741,6 @@ c_func
 )paren
 suffix:semicolon
 macro_line|#endif&t;
-macro_line|#ifdef CONFIG_VT
-id|vcs_init
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
 macro_line|#ifdef CONFIG_TN3270
 id|tub3270_init
 c_func

@@ -4378,11 +4378,6 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-id|lock_kernel
-c_func
-(paren
-)paren
-suffix:semicolon
 id|cosa
 op_assign
 id|channel-&gt;cosa
@@ -4409,11 +4404,6 @@ op_amp
 id|cosa-&gt;lock
 comma
 id|flags
-)paren
-suffix:semicolon
-id|unlock_kernel
-c_func
-(paren
 )paren
 suffix:semicolon
 r_return

@@ -639,11 +639,6 @@ op_star
 op_star
 id|listptr
 suffix:semicolon
-id|lock_kernel
-c_func
-(paren
-)paren
-suffix:semicolon
 id|listptr
 op_assign
 op_amp
@@ -744,11 +739,6 @@ id|kfree
 c_func
 (paren
 id|list
-)paren
-suffix:semicolon
-id|unlock_kernel
-c_func
-(paren
 )paren
 suffix:semicolon
 r_return

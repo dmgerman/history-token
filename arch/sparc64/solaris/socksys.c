@@ -479,11 +479,6 @@ op_star
 id|it
 suffix:semicolon
 multiline_comment|/* XXX: check this */
-id|lock_kernel
-c_func
-(paren
-)paren
-suffix:semicolon
 id|sock
 op_assign
 (paren
@@ -571,11 +566,6 @@ r_char
 op_star
 )paren
 id|sock
-)paren
-suffix:semicolon
-id|unlock_kernel
-c_func
-(paren
 )paren
 suffix:semicolon
 r_return

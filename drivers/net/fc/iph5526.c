@@ -21878,10 +21878,6 @@ id|host-&gt;max_id
 op_assign
 l_int|5
 suffix:semicolon
-id|host-&gt;hostt-&gt;use_new_eh_code
-op_assign
-l_int|1
-suffix:semicolon
 id|host-&gt;this_id
 op_assign
 id|tmpt-&gt;this_id

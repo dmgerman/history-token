@@ -18270,8 +18270,6 @@ id|MAJOR_NR
 )paren
 comma
 id|DEVICE_REQUEST
-comma
-l_string|&quot;floppy&quot;
 )paren
 suffix:semicolon
 id|reschedule_timeout

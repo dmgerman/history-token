@@ -65,7 +65,7 @@ r_int
 )paren
 suffix:semicolon
 DECL|macro|SCSI_MAC53C94
-mdefine_line|#define SCSI_MAC53C94 {&t;&t;&t;&t;&t;&bslash;&n;&t;proc_name:&t;&quot;53c94&quot;,&t;&t;&t;&bslash;&n;&t;name:&t;&t;&quot;53C94&quot;,&t;&t;&t;&bslash;&n;&t;detect:&t;&t;mac53c94_detect,&t;&t;&bslash;&n;&t;release:&t;mac53c94_release,&t;&t;&bslash;&n;&t;command:&t;mac53c94_command,&t;&t;&bslash;&n;&t;queuecommand:&t;mac53c94_queue,&t;&t;&t;&bslash;&n;&t;abort:&t;&t;mac53c94_abort,&t;&t;&t;&bslash;&n;&t;reset:&t;&t;mac53c94_reset,&t;&t;&t;&bslash;&n;&t;can_queue:&t;1,&t;&t;&t;&t;&bslash;&n;&t;this_id:&t;7,&t;&t;&t;&t;&bslash;&n;&t;sg_tablesize:&t;SG_ALL,&t;&t;&t;&t;&bslash;&n;&t;cmd_per_lun:&t;1,&t;&t;&t;&t;&bslash;&n;&t;use_clustering:&t;DISABLE_CLUSTERING,&t;&t;&bslash;&n;&t;use_new_eh_code: 1,&t;&t;&t;&t;&bslash;&n;}
+mdefine_line|#define SCSI_MAC53C94 {&t;&t;&t;&t;&t;&bslash;&n;&t;proc_name:&t;&quot;53c94&quot;,&t;&t;&t;&bslash;&n;&t;name:&t;&t;&quot;53C94&quot;,&t;&t;&t;&bslash;&n;&t;detect:&t;&t;mac53c94_detect,&t;&t;&bslash;&n;&t;release:&t;mac53c94_release,&t;&t;&bslash;&n;&t;command:&t;mac53c94_command,&t;&t;&bslash;&n;&t;queuecommand:&t;mac53c94_queue,&t;&t;&t;&bslash;&n;&t;abort:&t;&t;mac53c94_abort,&t;&t;&t;&bslash;&n;&t;reset:&t;&t;mac53c94_reset,&t;&t;&t;&bslash;&n;&t;can_queue:&t;1,&t;&t;&t;&t;&bslash;&n;&t;this_id:&t;7,&t;&t;&t;&t;&bslash;&n;&t;sg_tablesize:&t;SG_ALL,&t;&t;&t;&t;&bslash;&n;&t;cmd_per_lun:&t;1,&t;&t;&t;&t;&bslash;&n;&t;use_clustering:&t;DISABLE_CLUSTERING,&t;&t;&bslash;&n;}
 multiline_comment|/*&n; * Registers in the 53C94 controller.&n; */
 DECL|struct|mac53c94_regs
 r_struct

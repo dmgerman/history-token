@@ -6929,11 +6929,6 @@ l_int|NULL
 r_return
 l_int|0
 suffix:semicolon
-id|lock_kernel
-c_func
-(paren
-)paren
-suffix:semicolon
 id|max
 op_assign
 id|get_num_var_ranges
@@ -6995,11 +6990,6 @@ id|i
 suffix:semicolon
 )brace
 )brace
-id|unlock_kernel
-c_func
-(paren
-)paren
-suffix:semicolon
 id|kfree
 (paren
 id|fcount

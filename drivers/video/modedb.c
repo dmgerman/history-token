@@ -2,8 +2,8 @@ multiline_comment|/*&n; *  linux/drivers/video/modedb.c -- Standard video mode d
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/fb.h&gt;
-macro_line|#include &lt;linux/console_struct.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
+macro_line|#include &lt;video/fbcon.h&gt;
 DECL|macro|DEBUG
 macro_line|#undef DEBUG
 DECL|macro|name_matches
@@ -1541,82 +1541,6 @@ id|val
 suffix:semicolon
 )brace
 )brace
-)brace
-DECL|function|PROC_CONSOLE
-r_static
-r_int
-id|PROC_CONSOLE
-c_func
-(paren
-r_const
-r_struct
-id|fb_info
-op_star
-id|info
-)paren
-(brace
-r_int
-id|fgc
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|info-&gt;display_fg
-op_ne
-l_int|NULL
-)paren
-id|fgc
-op_assign
-id|info-&gt;display_fg-&gt;vc_num
-suffix:semicolon
-r_else
-r_return
-op_minus
-l_int|1
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|current-&gt;tty
-)paren
-r_return
-id|fgc
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|current-&gt;tty-&gt;driver.type
-op_ne
-id|TTY_DRIVER_TYPE_CONSOLE
-)paren
-multiline_comment|/* XXX Should report error here? */
-r_return
-id|fgc
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|MINOR
-c_func
-(paren
-id|current-&gt;tty-&gt;device
-)paren
-OL
-l_int|1
-)paren
-r_return
-id|fgc
-suffix:semicolon
-r_return
-id|MINOR
-c_func
-(paren
-id|current-&gt;tty-&gt;device
-)paren
-op_minus
-l_int|1
-suffix:semicolon
 )brace
 multiline_comment|/**&n; *&t;__fb_try_mode - test a video mode&n; *&t;@var: frame buffer user defined part of display&n; *&t;@info: frame buffer info structure&n; *&t;@mode: frame buffer video mode structure&n; *&t;@bpp: color depth in bits per pixel&n; *&n; *&t;Tries a video mode to test it&squot;s validity for device @info.&n; *&n; *&t;Returns 1 on success.&n; *&n; */
 DECL|function|__fb_try_mode

@@ -53,7 +53,7 @@ op_star
 id|dst_err_ptr
 )paren
 suffix:semicolon
-multiline_comment|/*&n; *&t;Note: when you get a NULL pointer exception here this means someone&n; *&t;passed in an incorrect kernel address to one of these functions. &n; *&t;&n; *&t;If you use these functions directly please don&squot;t forget the &n; *&t;verify_area().&n; */
+multiline_comment|/*&n; *&t;Note: when you get a NULL pointer exception here this means someone&n; *&t;passed in an incorrect kernel address to one of these functions.&n; *&n; *&t;If you use these functions directly please don&squot;t forget the&n; *&t;verify_area().&n; */
 r_static
 id|__inline__
 DECL|function|csum_partial_copy_nocheck
@@ -486,17 +486,17 @@ id|sum
 id|__asm__
 c_func
 (paren
-l_string|&quot;addl 0(%1), %0&quot;
-l_string|&quot;adcl 4(%1), %0&quot;
-l_string|&quot;adcl 8(%1), %0&quot;
-l_string|&quot;adcl 12(%1), %0&quot;
-l_string|&quot;adcl 0(%2), %0&quot;
-l_string|&quot;adcl 4(%2), %0&quot;
-l_string|&quot;adcl 8(%2), %0&quot;
-l_string|&quot;adcl 12(%2), %0&quot;
-l_string|&quot;adcl %3, %0&quot;
-l_string|&quot;adcl %4, %0&quot;
-l_string|&quot;adcl $0, %0&quot;
+l_string|&quot;addl 0(%1), %0&t;&t;;&bslash;n&quot;
+l_string|&quot;adcl 4(%1), %0&t;&t;;&bslash;n&quot;
+l_string|&quot;adcl 8(%1), %0&t;&t;;&bslash;n&quot;
+l_string|&quot;adcl 12(%1), %0&t;;&bslash;n&quot;
+l_string|&quot;adcl 0(%2), %0&t;&t;;&bslash;n&quot;
+l_string|&quot;adcl 4(%2), %0&t;&t;;&bslash;n&quot;
+l_string|&quot;adcl 8(%2), %0&t;&t;;&bslash;n&quot;
+l_string|&quot;adcl 12(%2), %0&t;;&bslash;n&quot;
+l_string|&quot;adcl %3, %0&t;&t;;&bslash;n&quot;
+l_string|&quot;adcl %4, %0&t;&t;;&bslash;n&quot;
+l_string|&quot;adcl $0, %0&t;&t;;&bslash;n&quot;
 suffix:colon
 l_string|&quot;=&amp;r&quot;
 (paren
@@ -545,7 +545,7 @@ id|sum
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* &n; *&t;Copy and checksum to user&n; */
+multiline_comment|/*&n; *&t;Copy and checksum to user&n; */
 DECL|macro|HAVE_CSUM_COPY_USER
 mdefine_line|#define HAVE_CSUM_COPY_USER
 DECL|function|csum_and_copy_to_user
@@ -554,6 +554,7 @@ id|__inline__
 r_int
 r_int
 id|csum_and_copy_to_user
+c_func
 (paren
 r_const
 r_char

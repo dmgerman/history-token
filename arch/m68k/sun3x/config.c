@@ -111,7 +111,7 @@ c_func
 suffix:semicolon
 id|mach_get_irq_list
 op_assign
-id|sun3_get_irq_list
+id|show_sun3_interrupts
 suffix:semicolon
 id|mach_max_dma_address
 op_assign

@@ -443,9 +443,13 @@ id|buffer
 suffix:semicolon
 r_extern
 r_int
-id|amiga_get_irq_list
+id|show_amiga_interrupts
 (paren
-r_char
+r_struct
+id|seq_file
+op_star
+comma
+r_void
 op_star
 )paren
 suffix:semicolon
@@ -1859,7 +1863,7 @@ id|amiga_get_hardware_list
 suffix:semicolon
 id|mach_get_irq_list
 op_assign
-id|amiga_get_irq_list
+id|show_amiga_interrupts
 suffix:semicolon
 id|mach_gettimeoffset
 op_assign

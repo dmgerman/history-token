@@ -910,7 +910,14 @@ suffix:colon
 r_if
 c_cond
 (paren
+id|test_and_set_bit
+c_func
+(paren
+l_int|0
+comma
+op_amp
 id|wdt_is_open
+)paren
 )paren
 (brace
 r_return
@@ -923,10 +930,6 @@ id|MOD_INC_USE_COUNT
 suffix:semicolon
 macro_line|#endif
 multiline_comment|/*&n;&t;&t;&t; *&t;Activate &n;&t;&t;&t; */
-id|wdt_is_open
-op_assign
-l_int|1
-suffix:semicolon
 id|inb_p
 c_func
 (paren
@@ -1093,11 +1096,6 @@ op_eq
 id|WATCHDOG_MINOR
 )paren
 (brace
-id|lock_kernel
-c_func
-(paren
-)paren
-suffix:semicolon
 macro_line|#ifndef CONFIG_WATCHDOG_NOWAYOUT&t;
 id|inb_p
 c_func
@@ -1116,13 +1114,13 @@ l_int|0
 suffix:semicolon
 multiline_comment|/* 0 length reset pulses now */
 macro_line|#endif&t;&t;
-id|wdt_is_open
-op_assign
-l_int|0
-suffix:semicolon
-id|unlock_kernel
+id|clear_bit
 c_func
 (paren
+l_int|0
+comma
+op_amp
+id|wdt_is_open
 )paren
 suffix:semicolon
 )brace

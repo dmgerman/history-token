@@ -2477,13 +2477,6 @@ c_func
 id|q
 comma
 id|do_ida_request
-comma
-id|hba
-(braket
-id|i
-)braket
-op_member_access_from_pointer
-id|devname
 )paren
 suffix:semicolon
 id|blk_queue_headactive

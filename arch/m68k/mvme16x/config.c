@@ -64,9 +64,13 @@ op_star
 suffix:semicolon
 r_extern
 r_int
-id|mvme16x_get_irq_list
+id|show_mvme16x_interrupts
 (paren
-r_char
+r_struct
+id|seq_file
+op_star
+comma
+r_void
 op_star
 )paren
 suffix:semicolon
@@ -677,7 +681,7 @@ id|mvme16x_process_int
 suffix:semicolon
 id|mach_get_irq_list
 op_assign
-id|mvme16x_get_irq_list
+id|show_mvme16x_interrupts
 suffix:semicolon
 id|mach_request_irq
 op_assign

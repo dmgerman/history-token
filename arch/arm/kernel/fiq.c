@@ -4,6 +4,7 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/mman.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/seq_file.h&gt;
 macro_line|#include &lt;asm/fiq.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
@@ -147,22 +148,21 @@ op_assign
 op_amp
 id|default_owner
 suffix:semicolon
-DECL|function|get_fiq_list
+DECL|function|show_fiq_list
 r_int
-id|get_fiq_list
+id|show_fiq_list
 c_func
 (paren
-r_char
-op_star
-id|buf
-)paren
-(brace
-r_char
+r_struct
+id|seq_file
 op_star
 id|p
-op_assign
-id|buf
-suffix:semicolon
+comma
+r_void
+op_star
+id|v
+)paren
+(brace
 r_if
 c_cond
 (paren
@@ -171,9 +171,7 @@ op_ne
 op_amp
 id|default_owner
 )paren
-id|p
-op_add_assign
-id|sprintf
+id|seq_printf
 c_func
 (paren
 id|p
@@ -184,9 +182,7 @@ id|current_fiq-&gt;name
 )paren
 suffix:semicolon
 r_return
-id|p
-op_minus
-id|buf
+l_int|0
 suffix:semicolon
 )brace
 DECL|function|set_fiq_handler

@@ -15,6 +15,7 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/random.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/irq.h&gt;
+macro_line|#include &lt;linux/seq_file.h&gt;
 macro_line|#include &lt;asm/cache.h&gt;
 DECL|macro|DEBUG_IRQ
 macro_line|#undef DEBUG_IRQ
@@ -611,23 +612,22 @@ c_func
 )paren
 suffix:semicolon
 )brace
-DECL|function|get_irq_list
+DECL|function|show_interrupts
 r_int
-id|get_irq_list
+id|show_interrupts
 c_func
 (paren
-r_char
+r_struct
+id|seq_file
 op_star
-id|buf
+id|p
+comma
+r_void
+op_star
+id|v
 )paren
 (brace
 macro_line|#ifdef CONFIG_PROC_FS
-r_char
-op_star
-id|p
-op_assign
-id|buf
-suffix:semicolon
 r_int
 id|i
 comma
@@ -651,9 +651,7 @@ comma
 op_star
 id|mainaction
 suffix:semicolon
-id|p
-op_add_assign
-id|sprintf
+id|seq_puts
 c_func
 (paren
 id|p
@@ -675,9 +673,7 @@ suffix:semicolon
 id|j
 op_increment
 )paren
-id|p
-op_add_assign
-id|sprintf
+id|seq_printf
 c_func
 (paren
 id|p
@@ -687,11 +683,13 @@ comma
 id|j
 )paren
 suffix:semicolon
-op_star
+id|seq_putc
+c_func
+(paren
 id|p
-op_increment
-op_assign
+comma
 l_char|&squot;&bslash;n&squot;
+)paren
 suffix:semicolon
 r_for
 c_loop
@@ -771,9 +769,7 @@ id|regnr
 op_plus
 id|i
 suffix:semicolon
-id|p
-op_add_assign
-id|sprintf
+id|seq_printf
 c_func
 (paren
 id|p
@@ -784,9 +780,7 @@ id|irq_no
 )paren
 suffix:semicolon
 macro_line|#ifndef CONFIG_SMP
-id|p
-op_add_assign
-id|sprintf
+id|seq_printf
 c_func
 (paren
 id|p
@@ -815,9 +809,7 @@ suffix:semicolon
 id|j
 op_increment
 )paren
-id|p
-op_add_assign
-id|sprintf
+id|seq_printf
 c_func
 (paren
 id|p
@@ -838,9 +830,7 @@ id|irq_no
 )paren
 suffix:semicolon
 macro_line|#endif
-id|p
-op_add_assign
-id|sprintf
+id|seq_printf
 c_func
 (paren
 id|p
@@ -855,9 +845,7 @@ suffix:colon
 l_string|&quot;N/A&quot;
 )paren
 suffix:semicolon
-id|p
-op_add_assign
-id|sprintf
+id|seq_printf
 c_func
 (paren
 id|p
@@ -880,9 +868,7 @@ id|action
 op_assign
 id|action-&gt;next
 )paren
-id|p
-op_add_assign
-id|sprintf
+id|seq_printf
 c_func
 (paren
 id|p
@@ -892,28 +878,26 @@ comma
 id|action-&gt;name
 )paren
 suffix:semicolon
-op_star
-id|p
-op_increment
-op_assign
-l_char|&squot;&bslash;n&squot;
-suffix:semicolon
-)brace
-)brace
-id|p
-op_add_assign
-id|sprintf
+id|seq_putc
 c_func
 (paren
 id|p
 comma
-l_string|&quot;&bslash;n&quot;
+l_char|&squot;&bslash;n&squot;
+)paren
+suffix:semicolon
+)brace
+)brace
+id|seq_putc
+c_func
+(paren
+id|p
+comma
+l_char|&squot;&bslash;n&squot;
 )paren
 suffix:semicolon
 macro_line|#if CONFIG_SMP
-id|p
-op_add_assign
-id|sprintf
+id|seq_puts
 c_func
 (paren
 id|p
@@ -935,9 +919,7 @@ suffix:semicolon
 id|j
 op_increment
 )paren
-id|p
-op_add_assign
-id|sprintf
+id|seq_printf
 c_func
 (paren
 id|p
@@ -954,27 +936,19 @@ id|j
 )braket
 )paren
 suffix:semicolon
-id|p
-op_add_assign
-id|sprintf
+id|seq_putc
 c_func
 (paren
 id|p
 comma
-l_string|&quot;&bslash;n&quot;
+l_char|&squot;&bslash;n&squot;
 )paren
 suffix:semicolon
 macro_line|#endif
-r_return
-id|p
-op_minus
-id|buf
-suffix:semicolon
-macro_line|#else&t;/* CONFIG_PROC_FS */
+macro_line|#endif&t;/* CONFIG_PROC_FS */
 r_return
 l_int|0
 suffix:semicolon
-macro_line|#endif&t;/* CONFIG_PROC_FS */
 )brace
 multiline_comment|/*&n;** The following form a &quot;set&quot;: Virtual IRQ, Transaction Address, Trans Data.&n;** Respectively, these map to IRQ region+EIRR, Processor HPA, EIRR bit.&n;**&n;** To use txn_XXX() interfaces, get a Virtual IRQ first.&n;** Then use that to get the Transaction address and data.&n;*/
 r_int

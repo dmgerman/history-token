@@ -11,6 +11,7 @@ macro_line|#include &lt;linux/random.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
+macro_line|#include &lt;linux/seq_file.h&gt;
 macro_line|#include &lt;asm/ptrace.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
@@ -184,22 +185,23 @@ DECL|macro|put_smpaff_in_irqaction
 mdefine_line|#define put_smpaff_in_irqaction(action, smpaff)&t;(action)-&gt;mask = (smpaff)
 DECL|macro|get_smpaff_in_irqaction
 mdefine_line|#define get_smpaff_in_irqaction(action) &t;((action)-&gt;mask)
-DECL|function|get_irq_list
+DECL|function|show_interrupts
 r_int
-id|get_irq_list
+id|show_interrupts
 c_func
 (paren
-r_char
+r_struct
+id|seq_file
 op_star
-id|buf
+id|p
+comma
+r_void
+op_star
+id|v
 )paren
 (brace
 r_int
 id|i
-comma
-id|len
-op_assign
-l_int|0
 suffix:semicolon
 r_struct
 id|irqaction
@@ -249,14 +251,10 @@ id|irq_action
 r_continue
 suffix:semicolon
 )brace
-id|len
-op_add_assign
-id|sprintf
+id|seq_print
 c_func
 (paren
-id|buf
-op_plus
-id|len
+id|p
 comma
 l_string|&quot;%3d: &quot;
 comma
@@ -264,14 +262,10 @@ id|i
 )paren
 suffix:semicolon
 macro_line|#ifndef CONFIG_SMP
-id|len
-op_add_assign
-id|sprintf
+id|seq_print
 c_func
 (paren
-id|buf
-op_plus
-id|len
+id|p
 comma
 l_string|&quot;%10u &quot;
 comma
@@ -297,14 +291,10 @@ suffix:semicolon
 id|j
 op_increment
 )paren
-id|len
-op_add_assign
-id|sprintf
+id|seq_print
 c_func
 (paren
-id|buf
-op_plus
-id|len
+id|p
 comma
 l_string|&quot;%10u &quot;
 comma
@@ -322,20 +312,15 @@ id|i
 )paren
 suffix:semicolon
 macro_line|#endif
-id|len
-op_add_assign
-id|sprintf
+id|seq_print
 c_func
 (paren
-id|buf
-op_plus
-id|len
+id|p
 comma
 l_string|&quot; %s:%lx&quot;
 comma
 id|action-&gt;name
 comma
-"&bslash;"
 id|get_ino_in_irqaction
 c_func
 (paren
@@ -357,20 +342,15 @@ op_assign
 id|action-&gt;next
 )paren
 (brace
-id|len
-op_add_assign
-id|sprintf
+id|seq_print
 c_func
 (paren
-id|buf
-op_plus
-id|len
+id|p
 comma
 l_string|&quot;, %s:%lx&quot;
 comma
 id|action-&gt;name
 comma
-"&bslash;"
 id|get_ino_in_irqaction
 c_func
 (paren
@@ -379,21 +359,17 @@ id|action
 )paren
 suffix:semicolon
 )brace
-id|len
-op_add_assign
-id|sprintf
+id|seq_putc
 c_func
 (paren
-id|buf
-op_plus
-id|len
+id|p
 comma
-l_string|&quot;&bslash;n&quot;
+l_char|&squot;&bslash;n&squot;
 )paren
 suffix:semicolon
 )brace
 r_return
-id|len
+l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* Now these are always passed a true fully specified sun4u INO. */

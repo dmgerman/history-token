@@ -165,10 +165,14 @@ r_int
 suffix:semicolon
 r_extern
 r_int
-id|dn_get_irq_list
+id|show_dn_interrupts
 c_func
 (paren
-r_char
+r_struct
+id|seq_file
+op_star
+comma
+r_void
 op_star
 )paren
 suffix:semicolon
@@ -851,7 +855,7 @@ id|dn_disable_irq
 suffix:semicolon
 id|mach_get_irq_list
 op_assign
-id|dn_get_irq_list
+id|show_dn_interrupts
 suffix:semicolon
 id|mach_gettimeoffset
 op_assign

@@ -10,6 +10,7 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/random.h&gt;
 macro_line|#include &lt;linux/smp.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/seq_file.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/mach/irq.h&gt;
@@ -188,14 +189,19 @@ id|flags
 )paren
 suffix:semicolon
 )brace
-DECL|function|get_irq_list
+DECL|function|show_interrupts
 r_int
-id|get_irq_list
+id|show_interrupts
 c_func
 (paren
-r_char
+r_struct
+id|seq_file
 op_star
-id|buf
+id|p
+comma
+r_void
+op_star
+id|v
 )paren
 (brace
 r_int
@@ -205,12 +211,6 @@ r_struct
 id|irqaction
 op_star
 id|action
-suffix:semicolon
-r_char
-op_star
-id|p
-op_assign
-id|buf
 suffix:semicolon
 r_for
 c_loop
@@ -244,9 +244,7 @@ id|action
 )paren
 r_continue
 suffix:semicolon
-id|p
-op_add_assign
-id|sprintf
+id|seq_printf
 c_func
 (paren
 id|p
@@ -262,9 +260,7 @@ id|i
 )paren
 )paren
 suffix:semicolon
-id|p
-op_add_assign
-id|sprintf
+id|seq_printf
 c_func
 (paren
 id|p
@@ -288,9 +284,7 @@ op_assign
 id|action-&gt;next
 )paren
 (brace
-id|p
-op_add_assign
-id|sprintf
+id|seq_printf
 c_func
 (paren
 id|p
@@ -301,26 +295,24 @@ id|action-&gt;name
 )paren
 suffix:semicolon
 )brace
-op_star
+id|seq_putc
+c_func
+(paren
 id|p
-op_increment
-op_assign
+comma
 l_char|&squot;&bslash;n&squot;
+)paren
 suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_ARCH_ACORN
-id|p
-op_add_assign
-id|get_fiq_list
+id|show_fiq_list
 c_func
 (paren
 id|p
 )paren
 suffix:semicolon
 macro_line|#endif
-id|p
-op_add_assign
-id|sprintf
+id|seq_printf
 c_func
 (paren
 id|p
@@ -331,9 +323,7 @@ id|irq_err_count
 )paren
 suffix:semicolon
 r_return
-id|p
-op_minus
-id|buf
+l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * IRQ lock detection.&n; *&n; * Hopefully, this should get us out of a few locked situations.&n; * However, it may take a while for this to happen, since we need&n; * a large number if IRQs to appear in the same jiffie with the&n; * same instruction pointer (or within 2 instructions).&n; */

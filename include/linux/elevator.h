@@ -190,19 +190,6 @@ id|elevator_exit_fn
 op_star
 id|elevator_exit_fn
 suffix:semicolon
-multiline_comment|/*&n;&t; * per-elevator private data&n;&t; */
-DECL|member|elevator_data
-r_void
-op_star
-id|elevator_data
-suffix:semicolon
-DECL|member|queue_name
-r_char
-id|queue_name
-(braket
-l_int|16
-)braket
-suffix:semicolon
 )brace
 suffix:semicolon
 r_int
@@ -391,9 +378,6 @@ id|elevator_t
 op_star
 comma
 id|elevator_t
-comma
-r_char
-op_star
 )paren
 suffix:semicolon
 r_extern

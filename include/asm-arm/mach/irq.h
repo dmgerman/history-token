@@ -163,10 +163,14 @@ op_star
 suffix:semicolon
 r_extern
 r_int
-id|get_fiq_list
+id|show_fiq_list
 c_func
 (paren
-r_char
+r_struct
+id|seq_file
+op_star
+comma
+r_void
 op_star
 )paren
 suffix:semicolon

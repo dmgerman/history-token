@@ -8,6 +8,7 @@ macro_line|#include &lt;asm/segment.h&gt;
 macro_line|#include &lt;asm/intersil.h&gt;
 macro_line|#include &lt;asm/oplib.h&gt;
 macro_line|#include &lt;asm/sun3ints.h&gt;
+macro_line|#include &lt;linux/seq_file.h&gt;
 r_extern
 r_void
 id|sun3_leds
@@ -221,14 +222,19 @@ id|irq
 )paren
 suffix:semicolon
 )brace
-DECL|function|sun3_get_irq_list
+DECL|function|show_sun3_interrupts
 r_int
-id|sun3_get_irq_list
+id|show_sun3_interrupts
 c_func
 (paren
-r_char
+r_struct
+id|seq_file
 op_star
-id|buf
+id|p
+comma
+r_void
+op_star
+id|v
 )paren
 (brace
 r_return

@@ -403,10 +403,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|sht-&gt;use_new_eh_code
-op_assign
-l_int|1
-suffix:semicolon
 id|PINFO
 c_func
 (paren

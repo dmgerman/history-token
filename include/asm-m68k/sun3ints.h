@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/kernel_stat.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
+macro_line|#include &lt;linux/seq_file.h&gt;
 macro_line|#include &lt;asm/segment.h&gt;
 macro_line|#include &lt;asm/intersil.h&gt;
 macro_line|#include &lt;asm/oplib.h&gt;
@@ -140,12 +141,15 @@ r_void
 suffix:semicolon
 r_extern
 r_int
-id|sun3_get_irq_list
+id|show_sun3_interrupts
 c_func
 (paren
-r_char
+r_struct
+id|seq_file
 op_star
-id|buf
+comma
+r_void
+op_star
 )paren
 suffix:semicolon
 r_extern

@@ -211,11 +211,14 @@ r_int
 suffix:semicolon
 r_extern
 r_int
-id|atari_get_irq_list
+id|show_atari_interrupts
 (paren
-r_char
+r_struct
+id|seq_file
 op_star
-id|buf
+comma
+r_void
+op_star
 )paren
 suffix:semicolon
 r_extern
@@ -1009,7 +1012,7 @@ id|atari_get_hardware_list
 suffix:semicolon
 id|mach_get_irq_list
 op_assign
-id|atari_get_irq_list
+id|show_atari_interrupts
 suffix:semicolon
 id|mach_gettimeoffset
 op_assign

@@ -2,8 +2,15 @@ macro_line|#ifndef _LINUX_SEQ_FILE_H
 DECL|macro|_LINUX_SEQ_FILE_H
 mdefine_line|#define _LINUX_SEQ_FILE_H
 macro_line|#ifdef __KERNEL__
+macro_line|#include &lt;linux/types.h&gt;
 r_struct
 id|seq_operations
+suffix:semicolon
+r_struct
+id|file
+suffix:semicolon
+r_struct
+id|inode
 suffix:semicolon
 DECL|struct|seq_file
 r_struct
@@ -40,6 +47,11 @@ r_struct
 id|seq_operations
 op_star
 id|op
+suffix:semicolon
+DECL|member|private
+r_void
+op_star
+r_private
 suffix:semicolon
 )brace
 suffix:semicolon

@@ -5,6 +5,7 @@ macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/kernel_stat.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt; /* for intr_count */
 macro_line|#include &lt;linux/delay.h&gt;
+macro_line|#include &lt;linux/seq_file.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/traps.h&gt;
@@ -1680,21 +1681,23 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/*&n; * Generate a pretty listing for /proc/interrupts&n; *&n; * By the time we&squot;re called the autovector interrupt list has already been&n; * generated, so we just need to do the machspec interrupts.&n; *&n; * 990506 (jmt) - rewritten to handle chained machspec interrupt handlers.&n; *                Also removed display of num_spurious it is already&n; *&t;&t;  displayed for us as autovector irq 0.&n; */
-DECL|function|mac_get_irq_list
+DECL|function|show_mac_interrupts
 r_int
-id|mac_get_irq_list
+id|show_mac_interrupts
+c_func
 (paren
-r_char
+r_struct
+id|seq_file
 op_star
-id|buf
+id|p
+comma
+r_void
+op_star
+id|v
 )paren
 (brace
 r_int
 id|i
-comma
-id|len
-op_assign
-l_int|0
 suffix:semicolon
 id|irq_node_t
 op_star
@@ -1867,14 +1870,10 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-id|len
-op_add_assign
-id|sprintf
+id|seq_printf
 c_func
 (paren
-id|buf
-op_plus
-id|len
+id|p
 comma
 l_string|&quot;%4s %2d: %10u &quot;
 comma
@@ -1901,14 +1900,10 @@ op_amp
 id|IRQ_FLG_FAST
 )paren
 (brace
-id|len
-op_add_assign
-id|sprintf
+id|seq_puts
 c_func
 (paren
-id|buf
-op_plus
-id|len
+id|p
 comma
 l_string|&quot;F &quot;
 )paren
@@ -1923,14 +1918,10 @@ op_amp
 id|IRQ_FLG_SLOW
 )paren
 (brace
-id|len
-op_add_assign
-id|sprintf
+id|seq_puts
 c_func
 (paren
-id|buf
-op_plus
-id|len
+id|p
 comma
 l_string|&quot;S &quot;
 )paren
@@ -1938,27 +1929,19 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|len
-op_add_assign
-id|sprintf
+id|seq_puts
 c_func
 (paren
-id|buf
-op_plus
-id|len
+id|p
 comma
 l_string|&quot;  &quot;
 )paren
 suffix:semicolon
 )brace
-id|len
-op_add_assign
-id|sprintf
+id|seq_printf
 c_func
 (paren
-id|buf
-op_plus
-id|len
+id|p
 comma
 l_string|&quot;%s&bslash;n&quot;
 comma
@@ -1975,14 +1958,10 @@ id|node-&gt;next
 )paren
 )paren
 (brace
-id|len
-op_add_assign
-id|sprintf
+id|seq_puts
 c_func
 (paren
-id|buf
-op_plus
-id|len
+id|p
 comma
 l_string|&quot;                    &quot;
 )paren
@@ -1999,7 +1978,7 @@ suffix:semicolon
 )brace
 )brace
 r_return
-id|len
+l_int|0
 suffix:semicolon
 )brace
 DECL|function|mac_default_handler

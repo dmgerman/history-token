@@ -329,6 +329,11 @@ id|apm_user
 op_star
 id|user_list
 suffix:semicolon
+DECL|variable|user_list_lock
+r_static
+id|spinlock_t
+id|user_list_lock
+suffix:semicolon
 DECL|variable|driver_version
 r_static
 r_char
@@ -580,7 +585,7 @@ c_func
 id|APM_DO_ZERO_SEGS
 l_string|&quot;pushl %%edi&bslash;n&bslash;t&quot;
 l_string|&quot;pushl %%ebp&bslash;n&bslash;t&quot;
-l_string|&quot;lcall %%cs:&quot;
+l_string|&quot;lcall *%%cs:&quot;
 id|SYMBOL_NAME_STR
 c_func
 (paren
@@ -712,7 +717,7 @@ c_func
 id|APM_DO_ZERO_SEGS
 l_string|&quot;pushl %%edi&bslash;n&bslash;t&quot;
 l_string|&quot;pushl %%ebp&bslash;n&bslash;t&quot;
-l_string|&quot;lcall %%cs:&quot;
+l_string|&quot;lcall *%%cs:&quot;
 id|SYMBOL_NAME_STR
 c_func
 (paren
@@ -2172,6 +2177,13 @@ id|apm_user
 op_star
 id|as
 suffix:semicolon
+id|spin_lock
+c_func
+(paren
+op_amp
+id|user_list_lock
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2319,6 +2331,13 @@ r_break
 suffix:semicolon
 )brace
 )brace
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|user_list_lock
+)paren
+suffix:semicolon
 id|wake_up_interruptible
 c_func
 (paren
@@ -2708,6 +2727,13 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
+id|spin_lock
+c_func
+(paren
+op_amp
+id|user_list_lock
+)paren
+suffix:semicolon
 r_for
 c_loop
 (paren
@@ -2745,6 +2771,13 @@ id|EIO
 )paren
 suffix:semicolon
 )brace
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|user_list_lock
+)paren
+suffix:semicolon
 id|ignore_normal_resume
 op_assign
 l_int|1
@@ -4189,11 +4222,6 @@ id|filp-&gt;private_data
 op_assign
 l_int|NULL
 suffix:semicolon
-id|lock_kernel
-c_func
-(paren
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -4247,6 +4275,13 @@ c_func
 )paren
 suffix:semicolon
 )brace
+id|spin_lock
+c_func
+(paren
+op_amp
+id|user_list_lock
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -4309,9 +4344,11 @@ op_assign
 id|as-&gt;next
 suffix:semicolon
 )brace
-id|unlock_kernel
+id|spin_unlock
 c_func
 (paren
+op_amp
+id|user_list_lock
 )paren
 suffix:semicolon
 id|kfree
@@ -4442,6 +4479,13 @@ id|FMODE_READ
 op_eq
 id|FMODE_READ
 suffix:semicolon
+id|spin_lock
+c_func
+(paren
+op_amp
+id|user_list_lock
+)paren
+suffix:semicolon
 id|as-&gt;next
 op_assign
 id|user_list
@@ -4449,6 +4493,13 @@ suffix:semicolon
 id|user_list
 op_assign
 id|as
+suffix:semicolon
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|user_list_lock
+)paren
 suffix:semicolon
 id|filp-&gt;private_data
 op_assign

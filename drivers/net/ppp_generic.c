@@ -1048,11 +1048,6 @@ op_star
 )paren
 id|file-&gt;private_data
 suffix:semicolon
-id|lock_kernel
-c_func
-(paren
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1115,11 +1110,6 @@ suffix:semicolon
 )brace
 )brace
 )brace
-id|unlock_kernel
-c_func
-(paren
-)paren
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon

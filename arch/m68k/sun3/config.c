@@ -44,7 +44,7 @@ r_void
 suffix:semicolon
 r_extern
 r_int
-id|sun3_get_irq_list
+id|show_sun3_interrupts
 (paren
 r_char
 op_star
@@ -563,7 +563,7 @@ id|sun3_process_int
 suffix:semicolon
 id|mach_get_irq_list
 op_assign
-id|sun3_get_irq_list
+id|show_sun3_interrupts
 suffix:semicolon
 id|mach_gettod
 op_assign
