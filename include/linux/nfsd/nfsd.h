@@ -747,6 +747,26 @@ DECL|macro|nfserr_badtype
 mdefine_line|#define&t;nfserr_badtype&t;&t;__constant_htonl(NFSERR_BADTYPE)
 DECL|macro|nfserr_jukebox
 mdefine_line|#define&t;nfserr_jukebox&t;&t;__constant_htonl(NFSERR_JUKEBOX)
+DECL|macro|nfserr_bad_cookie
+mdefine_line|#define&t;nfserr_bad_cookie&t;__constant_htonl(NFSERR_BAD_COOKIE)
+DECL|macro|nfserr_same
+mdefine_line|#define&t;nfserr_same&t;&t;__constant_htonl(NFSERR_SAME)
+DECL|macro|nfserr_clid_inuse
+mdefine_line|#define&t;nfserr_clid_inuse&t;__constant_htonl(NFSERR_CLID_INUSE)
+DECL|macro|nfserr_resource
+mdefine_line|#define&t;nfserr_resource&t;&t;__constant_htonl(NFSERR_RESOURCE)
+DECL|macro|nfserr_nofilehandle
+mdefine_line|#define&t;nfserr_nofilehandle&t;__constant_htonl(NFSERR_NOFILEHANDLE)
+DECL|macro|nfserr_minor_vers_mismatch
+mdefine_line|#define&t;nfserr_minor_vers_mismatch&t;__constant_htonl(NFSERR_MINOR_VERS_MISMATCH)
+DECL|macro|nfserr_symlink
+mdefine_line|#define&t;nfserr_symlink&t;&t;__constant_htonl(NFSERR_SYMLINK)
+DECL|macro|nfserr_not_same
+mdefine_line|#define&t;nfserr_not_same&t;&t;__constant_htonl(NFSERR_NOT_SAME)
+DECL|macro|nfserr_readdir_nospc
+mdefine_line|#define&t;nfserr_readdir_nospc&t;__constant_htonl(NFSERR_READDIR_NOSPC)
+DECL|macro|nfserr_bad_xdr
+mdefine_line|#define&t;nfserr_bad_xdr&t;&t;__constant_htonl(NFSERR_BAD_XDR)
 multiline_comment|/* error code for internal use - if a request fails due to&n; * kmalloc failure, it gets dropped.  Client should resend eventually&n; */
 DECL|macro|nfserr_dropit
 mdefine_line|#define&t;nfserr_dropit&t;&t;__constant_htonl(30000)
