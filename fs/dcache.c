@@ -5438,6 +5438,9 @@ suffix:semicolon
 multiline_comment|/* Base hash sizes on available memory, with a reserve equal to&n;           150% of current kernel size */
 id|reserve
 op_assign
+id|min
+c_func
+(paren
 (paren
 id|mempages
 op_minus
@@ -5450,6 +5453,11 @@ op_star
 l_int|3
 op_div
 l_int|2
+comma
+id|mempages
+op_minus
+l_int|1
+)paren
 suffix:semicolon
 id|mempages
 op_sub_assign
