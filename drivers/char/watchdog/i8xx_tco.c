@@ -1569,7 +1569,7 @@ r_goto
 id|unreg_notifier
 suffix:semicolon
 )brace
-id|tco_timer_keepalive
+id|tco_timer_stop
 (paren
 )paren
 suffix:semicolon
