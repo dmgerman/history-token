@@ -7029,8 +7029,6 @@ op_amp
 id|FB_CUR_SETSHAPE
 op_or
 id|FB_CUR_SETCMAP
-op_or
-id|FB_CUR_SETDEST
 )paren
 )paren
 (brace
