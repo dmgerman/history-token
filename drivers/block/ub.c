@@ -1797,6 +1797,18 @@ op_star
 id|sc
 )paren
 (brace
+multiline_comment|/*&n;&t; * If we zero disk-&gt;private_data BEFORE put_disk, we have to check&n;&t; * for NULL all over the place in open, release, check_media and&n;&t; * revalidate, because the block level semaphore is well inside the&n;&t; * put_disk. But we cannot zero after the call, because *disk is gone.&n;&t; * The sd.c is blatantly racy in this area.&n;&t; */
+multiline_comment|/* disk-&gt;private_data = NULL; */
+id|put_disk
+c_func
+(paren
+id|sc-&gt;disk
+)paren
+suffix:semicolon
+id|sc-&gt;disk
+op_assign
+l_int|NULL
+suffix:semicolon
 id|ub_id_put
 c_func
 (paren
@@ -5347,7 +5359,31 @@ c_func
 id|inode-&gt;i_bdev
 )paren
 suffix:semicolon
-multiline_comment|/* XXX sd.c and floppy.c bail on open if media is not present. */
+multiline_comment|/*&n;&t; * The sd.c considers -&gt;media_present and -&gt;changed not equivalent,&n;&t; * under some pretty murky conditions (a failure of READ CAPACITY).&n;&t; * We may need it one day.&n;&t; */
+r_if
+c_cond
+(paren
+id|sc-&gt;removable
+op_logical_and
+id|sc-&gt;changed
+op_logical_and
+op_logical_neg
+(paren
+id|filp-&gt;f_flags
+op_amp
+id|O_NDELAY
+)paren
+)paren
+(brace
+id|rc
+op_assign
+op_minus
+id|ENOMEDIUM
+suffix:semicolon
+r_goto
+id|err_open
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -5653,6 +5689,8 @@ comma
 id|sc-&gt;capacity.bsize
 )paren
 suffix:semicolon
+multiline_comment|/* XXX Support sector size switching like in sr.c */
+singleline_comment|// blk_queue_hardsect_size(q, sc-&gt;capacity.bsize);
 id|set_capacity
 c_func
 (paren
@@ -6688,8 +6726,7 @@ op_amp
 id|timer
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Most of the time, URB was done and dev set to NULL, and so&n;&t; * the unlink bounces out with ENODEV. We do not call usb_kill_urb&n;&t; * because we still think about a backport to 2.4.&n;&t; */
-id|usb_unlink_urb
+id|usb_kill_urb
 c_func
 (paren
 op_amp
@@ -7623,18 +7660,6 @@ c_func
 (paren
 id|q
 )paren
-suffix:semicolon
-multiline_comment|/*&n;&t; * If we zero disk-&gt;private_data BEFORE put_disk, we have to check&n;&t; * for NULL all over the place in open, release, check_media and&n;&t; * revalidate, because the block level semaphore is well inside the&n;&t; * put_disk. But we cannot zero after the call, because *disk is gone.&n;&t; * The sd.c is blatantly racy in this area.&n;&t; */
-multiline_comment|/* disk-&gt;private_data = NULL; */
-id|put_disk
-c_func
-(paren
-id|disk
-)paren
-suffix:semicolon
-id|sc-&gt;disk
-op_assign
-l_int|NULL
 suffix:semicolon
 multiline_comment|/*&n;&t; * We really expect blk_cleanup_queue() to wait, so no amount&n;&t; * of paranoya is too much.&n;&t; *&n;&t; * Taking a lock on a structure which is about to be freed&n;&t; * is very nonsensual. Here it is largely a way to do a debug freeze,&n;&t; * and a bracket which shows where the nonsensual code segment ends.&n;&t; *&n;&t; * Testing for -EINPROGRESS is always a bug, so we are bending&n;&t; * the rules a little.&n;&t; */
 id|spin_lock_irqsave
