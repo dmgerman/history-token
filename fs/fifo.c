@@ -617,8 +617,9 @@ id|file_operations
 id|def_fifo_fops
 op_assign
 (brace
+dot
 id|open
-suffix:colon
+op_assign
 id|fifo_open
 comma
 multiline_comment|/* will set read or write pipe_fops */

@@ -79,8 +79,9 @@ id|tq_struct
 id|fput_tqueue
 op_assign
 (brace
+dot
 id|routine
-suffix:colon
+op_assign
 id|aio_fput_routine
 comma
 )brace

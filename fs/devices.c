@@ -752,8 +752,9 @@ id|file_operations
 id|def_chr_fops
 op_assign
 (brace
+dot
 id|open
-suffix:colon
+op_assign
 id|chrdev_open
 comma
 )brace
@@ -900,8 +901,9 @@ id|file_operations
 id|bad_sock_fops
 op_assign
 (brace
+dot
 id|open
-suffix:colon
+op_assign
 id|sock_no_open
 )brace
 suffix:semicolon
