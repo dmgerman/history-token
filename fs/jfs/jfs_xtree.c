@@ -2755,13 +2755,13 @@ id|ip-&gt;i_mode
 )paren
 op_logical_and
 (paren
-id|sp-&gt;header.maxentry
-OL
-id|cpu_to_le16
+id|le16_to_cpu
 c_func
 (paren
-id|XTROOTMAXSLOT
+id|sp-&gt;header.maxentry
 )paren
+OL
+id|XTROOTMAXSLOT
 )paren
 op_logical_and
 (paren

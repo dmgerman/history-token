@@ -1183,7 +1183,7 @@ op_star
 id|bmp
 suffix:semicolon
 r_struct
-id|dbmap
+id|dbmap_disk
 op_star
 id|dbmp_le
 suffix:semicolon
@@ -1269,7 +1269,7 @@ id|dbmp_le
 op_assign
 (paren
 r_struct
-id|dbmap
+id|dbmap_disk
 op_star
 )paren
 id|mp-&gt;data
@@ -1602,7 +1602,7 @@ id|ipbmap
 )paren
 (brace
 r_struct
-id|dbmap
+id|dbmap_disk
 op_star
 id|dbmp_le
 suffix:semicolon
@@ -1675,7 +1675,7 @@ id|dbmp_le
 op_assign
 (paren
 r_struct
-id|dbmap
+id|dbmap_disk
 op_star
 )paren
 id|mp-&gt;data
@@ -11591,7 +11591,11 @@ id|dp-&gt;wmap
 id|i
 )braket
 op_assign
+id|cpu_to_le32
+c_func
+(paren
 id|ONES
+)paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * init tree&n;&t; */
 id|initTree

@@ -23,11 +23,11 @@ r_struct
 id|timestruc_t
 (brace
 DECL|member|tv_sec
-id|u32
+id|__le32
 id|tv_sec
 suffix:semicolon
 DECL|member|tv_nsec
-id|u32
+id|__le32
 id|tv_nsec
 suffix:semicolon
 )brace
@@ -119,7 +119,7 @@ suffix:colon
 l_int|8
 suffix:semicolon
 DECL|member|addr2
-id|u32
+id|__le32
 id|addr2
 suffix:semicolon
 DECL|typedef|pxd_t
@@ -177,9 +177,8 @@ id|rsrvd
 suffix:colon
 l_int|24
 suffix:semicolon
-multiline_comment|/* 3: */
 DECL|member|size
-id|u32
+id|__le32
 id|size
 suffix:semicolon
 multiline_comment|/* 4: size in byte */
@@ -198,7 +197,7 @@ l_int|8
 suffix:semicolon
 multiline_comment|/* 1: address in unit of fsblksize */
 DECL|member|addr2
-id|u32
+id|__le32
 id|addr2
 suffix:semicolon
 multiline_comment|/* 4: address in unit of fsblksize */
@@ -272,7 +271,7 @@ id|limit_hi
 suffix:semicolon
 multiline_comment|/* DASD limit (in logical blocks)       */
 DECL|member|limit_lo
-id|u32
+id|__le32
 id|limit_lo
 suffix:semicolon
 multiline_comment|/* DASD limit (in logical blocks)       */
@@ -289,7 +288,7 @@ id|used_hi
 suffix:semicolon
 multiline_comment|/* DASD usage (in logical blocks)       */
 DECL|member|used_lo
-id|u32
+id|__le32
 id|used_lo
 suffix:semicolon
 multiline_comment|/* DASD usage (in logical blocks)       */
