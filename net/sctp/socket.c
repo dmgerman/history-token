@@ -10045,6 +10045,17 @@ id|sk
 op_assign
 id|sock-&gt;sk
 suffix:semicolon
+r_struct
+id|sctp_opt
+op_star
+id|sp
+op_assign
+id|sctp_sk
+c_func
+(paren
+id|sk
+)paren
+suffix:semicolon
 r_int
 r_int
 id|mask
@@ -10058,6 +10069,42 @@ id|sk-&gt;sleep
 comma
 id|wait
 )paren
+suffix:semicolon
+multiline_comment|/* A TCP-style listening socket becomes readable when the accept queue&n;&t; * is not empty.&n;&t; */
+r_if
+c_cond
+(paren
+(paren
+id|SCTP_SOCKET_TCP
+op_eq
+id|sp-&gt;type
+)paren
+op_logical_and
+(paren
+id|SCTP_SS_LISTENING
+op_eq
+id|sk-&gt;state
+)paren
+)paren
+r_return
+(paren
+op_logical_neg
+id|list_empty
+c_func
+(paren
+op_amp
+id|sp-&gt;ep-&gt;asocs
+)paren
+)paren
+ques
+c_cond
+(paren
+id|POLLIN
+op_or
+id|POLLRDNORM
+)paren
+suffix:colon
+l_int|0
 suffix:semicolon
 id|mask
 op_assign
@@ -10116,7 +10163,6 @@ id|POLLIN
 op_or
 id|POLLRDNORM
 suffix:semicolon
-multiline_comment|/*&n;&t; * FIXME: We need to set SCTP_SS_DISCONNECTING for TCP-style and&n;&t; * peeled off sockets.  Additionally, TCP-style needs to consider&n;&t; * other establishment conditions.&n;&t; */
 r_if
 c_cond
 (paren
@@ -10131,18 +10177,6 @@ op_member_access_from_pointer
 id|type
 )paren
 (brace
-multiline_comment|/* The association is going away.  */
-r_if
-c_cond
-(paren
-id|SCTP_SS_DISCONNECTING
-op_eq
-id|sk-&gt;state
-)paren
-id|mask
-op_or_assign
-id|POLLHUP
-suffix:semicolon
 multiline_comment|/* The association is either gone or not ready.  */
 r_if
 c_cond
