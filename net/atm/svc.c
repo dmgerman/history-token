@@ -190,6 +190,14 @@ op_ne
 l_int|NULL
 )paren
 (brace
+id|atm_return
+c_func
+(paren
+id|vcc
+comma
+id|skb-&gt;truesize
+)paren
+suffix:semicolon
 id|DPRINTK
 c_func
 (paren
