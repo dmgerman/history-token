@@ -430,9 +430,7 @@ id|buffer
 comma
 l_int|6
 comma
-l_int|2
-op_star
-id|HZ
+l_int|2000
 )paren
 suffix:semicolon
 id|kfree
@@ -608,9 +606,7 @@ id|buffer
 comma
 l_int|2
 comma
-l_int|2
-op_star
-id|HZ
+l_int|2000
 )paren
 suffix:semicolon
 id|kfree
