@@ -3925,7 +3925,7 @@ suffix:semicolon
 id|i
 op_increment
 )paren
-id|usb_unlink_urb
+id|usb_kill_urb
 c_func
 (paren
 id|ttusb-&gt;iso_urb
