@@ -800,6 +800,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* This routine actually transmits TCP packets queued in by&n; * tcp_do_sendmsg().  This is used by both the initial&n; * transmission and possible later retransmissions.&n; * All SKB&squot;s seen here are completely headerless.  It is our&n; * job to build the TCP header, and pass the packet down to&n; * IP so it can do the same plus pass the packet off to the&n; * device.&n; *&n; * We are working here with either a clone of the original&n; * SKB, or a fresh unique copy made by the retransmit engine.&n; */
 DECL|function|tcp_transmit_skb
+r_static
 r_int
 id|tcp_transmit_skb
 c_func
@@ -6943,13 +6944,6 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|tcp_sync_mss
-)paren
-suffix:semicolon
-DECL|variable|tcp_transmit_skb
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|tcp_transmit_skb
 )paren
 suffix:semicolon
 DECL|variable|tcp_write_wakeup
