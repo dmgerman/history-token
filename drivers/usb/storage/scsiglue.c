@@ -91,6 +91,18 @@ l_int|1
 )paren
 )paren
 suffix:semicolon
+multiline_comment|/* Set the SCSI level to at least 2.  We&squot;ll leave it at 3 if that&squot;s&n;&t; * what is originally reported.  We need this to avoid confusing&n;&t; * the SCSI layer with devices that report 0 or 1, but need 10-byte&n;&t; * commands (ala ATAPI devices behind certain bridges, or devices&n;&t; * which simply have broken INQUIRY data).&n;&t; *&n;&t; * NOTE: This means /dev/sg programs (ala cdrecord) will get the&n;&t; * actual information.  This seems to be the preference for&n;&t; * programs like that.&n;&t; *&n;&t; * NOTE: This also means that /proc/scsi/scsi and sysfs may report&n;&t; * the actual value or the modified one, depending on where the&n;&t; * data comes from.&n;&t; */
+r_if
+c_cond
+(paren
+id|sdev-&gt;scsi_level
+OL
+id|SCSI_2
+)paren
+id|sdev-&gt;scsi_level
+op_assign
+id|SCSI_2
+suffix:semicolon
 multiline_comment|/* According to the technical support people at Genesys Logic,&n;&t; * devices using their chips have problems transferring more than&n;&t; * 32 KB at a time.  In practice people have found that 64 KB&n;&t; * works okay and that&squot;s what Windows does.  But we&squot;ll be&n;&t; * conservative; people can always use the sysfs interface to&n;&t; * increase max_sectors. */
 r_if
 c_cond
