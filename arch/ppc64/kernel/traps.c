@@ -129,9 +129,6 @@ id|regs
 suffix:semicolon
 macro_line|#endif
 multiline_comment|/*&n; * Trap &amp; Exception support&n; */
-multiline_comment|/* Should we panic on bad kernel exceptions or try to recover */
-DECL|macro|PANIC_ON_ERROR
-macro_line|#undef PANIC_ON_ERROR
 DECL|variable|die_lock
 r_static
 id|spinlock_t
@@ -212,21 +209,60 @@ op_amp
 id|die_lock
 )paren
 suffix:semicolon
-macro_line|#ifdef PANIC_ON_ERROR
+r_if
+c_cond
+(paren
+id|in_interrupt
+c_func
+(paren
+)paren
+)paren
 id|panic
 c_func
 (paren
-id|str
+l_string|&quot;Fatal exception in interrupt&quot;
 )paren
 suffix:semicolon
-macro_line|#else
+r_if
+c_cond
+(paren
+id|panic_on_oops
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_EMERG
+l_string|&quot;Fatal exception: panic in 5 seconds&bslash;n&quot;
+)paren
+suffix:semicolon
+id|set_current_state
+c_func
+(paren
+id|TASK_UNINTERRUPTIBLE
+)paren
+suffix:semicolon
+id|schedule_timeout
+c_func
+(paren
+l_int|5
+op_star
+id|HZ
+)paren
+suffix:semicolon
+id|panic
+c_func
+(paren
+l_string|&quot;Fatal exception&quot;
+)paren
+suffix:semicolon
+)brace
 id|do_exit
 c_func
 (paren
 id|SIGSEGV
 )paren
 suffix:semicolon
-macro_line|#endif
 )brace
 r_static
 r_void
@@ -503,15 +539,14 @@ c_func
 id|regs
 )paren
 suffix:semicolon
+r_else
 macro_line|#endif
-macro_line|#ifdef PANIC_ON_ERROR
 id|panic
 c_func
 (paren
 l_string|&quot;System Reset&quot;
 )paren
 suffix:semicolon
-macro_line|#else
 multiline_comment|/* Must die if the interrupt is not recoverable */
 r_if
 c_cond
@@ -529,7 +564,6 @@ c_func
 l_string|&quot;Unrecoverable System Reset&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/* What should we do here? We could issue a shutdown or hard reset. */
 )brace
 multiline_comment|/* &n; * See if we can recover from a machine check exception.&n; * This is only called on power4 (or above) and only via&n; * the Firmware Non-Maskable Interrupts (fwnmi) handler&n; * which provides the error analysis for us.&n; *&n; * Return 1 if corrected (or delivered a signal).&n; * Return 0 if there is nothing we can do.&n; */
