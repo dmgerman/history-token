@@ -2417,7 +2417,8 @@ op_assign
 l_string|&quot;unknown target type&quot;
 suffix:semicolon
 r_return
-id|r
+op_minus
+id|EINVAL
 suffix:semicolon
 )brace
 id|tgt-&gt;table
@@ -2453,6 +2454,11 @@ id|tgt
 id|tgt-&gt;error
 op_assign
 l_string|&quot;Gap in table&quot;
+suffix:semicolon
+id|r
+op_assign
+op_minus
+id|EINVAL
 suffix:semicolon
 r_goto
 id|bad
