@@ -594,6 +594,12 @@ c_func
 l_string|&quot;bus_reset() called&bslash;n&quot;
 )paren
 suffix:semicolon
+id|scsi_unlock
+c_func
+(paren
+id|srb-&gt;device-&gt;host
+)paren
+suffix:semicolon
 id|us
 op_assign
 (paren
