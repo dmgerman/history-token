@@ -10138,6 +10138,12 @@ c_func
 )paren
 suffix:semicolon
 )brace
+DECL|variable|console_driver
+r_struct
+id|tty_driver
+op_star
+id|console_driver
+suffix:semicolon
 macro_line|#ifdef CONFIG_VT_CONSOLE
 multiline_comment|/*&n; *&t;Console on virtual terminal&n; *&n; * The console must be locked when we get here.&n; */
 DECL|function|vt_console_print
@@ -10570,12 +10576,6 @@ id|printing
 )paren
 suffix:semicolon
 )brace
-DECL|variable|console_driver
-r_struct
-id|tty_driver
-op_star
-id|console_driver
-suffix:semicolon
 DECL|function|vt_console_device
 r_static
 r_struct
