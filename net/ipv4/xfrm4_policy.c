@@ -1279,11 +1279,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|xfrm4_input_init
-c_func
-(paren
-)paren
-suffix:semicolon
 )brace
 DECL|function|xfrm4_fini
 r_void

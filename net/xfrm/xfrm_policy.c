@@ -5883,5 +5883,10 @@ c_func
 (paren
 )paren
 suffix:semicolon
+id|xfrm_input_init
+c_func
+(paren
+)paren
+suffix:semicolon
 )brace
 eof
