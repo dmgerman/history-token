@@ -2,7 +2,6 @@ multiline_comment|/*&n; * This file is subject to the terms and conditions of th
 macro_line|#ifndef _ASM_IA64_SN_INTR_H
 DECL|macro|_ASM_IA64_SN_INTR_H
 mdefine_line|#define _ASM_IA64_SN_INTR_H
-macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/sn/sn2/intr.h&gt;
 r_extern
 r_void

@@ -17,6 +17,8 @@ macro_line|#include &lt;asm/machvec.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/numa.h&gt;
+macro_line|#include &lt;asm/sal.h&gt;
+macro_line|#include &lt;asm/cyclone.h&gt;
 DECL|macro|PREFIX
 mdefine_line|#define PREFIX&t;&t;&t;&quot;ACPI: &quot;
 DECL|variable|pm_idle
@@ -915,6 +917,64 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/* Hook from generic ACPI tables.c */
+DECL|function|acpi_madt_oem_check
+r_void
+id|__init
+id|acpi_madt_oem_check
+c_func
+(paren
+r_char
+op_star
+id|oem_id
+comma
+r_char
+op_star
+id|oem_table_id
+)paren
+(brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|strncmp
+c_func
+(paren
+id|oem_id
+comma
+l_string|&quot;IBM&quot;
+comma
+l_int|3
+)paren
+op_logical_and
+(paren
+op_logical_neg
+id|strncmp
+c_func
+(paren
+id|oem_table_id
+comma
+l_string|&quot;SERMOW&quot;
+comma
+l_int|6
+)paren
+)paren
+)paren
+(brace
+multiline_comment|/* Unfortunatly ITC_DRIFT is not yet part of the&n;&t;&t; * official SAL spec, so the ITC_DRIFT bit is not&n;&t;&t; * set by the BIOS on this hardware.&n;&t;&t; */
+id|sal_platform_features
+op_or_assign
+id|IA64_SAL_PLATFORM_FEATURE_ITC_DRIFT
+suffix:semicolon
+multiline_comment|/*Start cyclone clock*/
+id|cyclone_setup
+c_func
+(paren
+l_int|0
+)paren
+suffix:semicolon
+)brace
+)brace
 r_static
 r_int
 id|__init
@@ -1003,6 +1063,14 @@ id|PREFIX
 l_string|&quot;Local APIC address 0x%lx&bslash;n&quot;
 comma
 id|ipi_base_addr
+)paren
+suffix:semicolon
+id|acpi_madt_oem_check
+c_func
+(paren
+id|acpi_madt-&gt;header.oem_id
+comma
+id|acpi_madt-&gt;header.oem_table_id
 )paren
 suffix:semicolon
 r_return

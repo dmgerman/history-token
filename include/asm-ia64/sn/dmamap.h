@@ -2,12 +2,6 @@ multiline_comment|/*&n; * This file is subject to the terms and conditions of th
 macro_line|#ifndef _ASM_IA64_SN_DMAMAP_H
 DECL|macro|_ASM_IA64_SN_DMAMAP_H
 mdefine_line|#define _ASM_IA64_SN_DMAMAP_H
-macro_line|#include &lt;asm/sn/types.h&gt;
-macro_line|#ifdef __cplusplus
-r_extern
-l_string|&quot;C&quot;
-(brace
-macro_line|#endif
 multiline_comment|/*&n; * Definitions for allocating, freeing, and using DMA maps&n; */
 multiline_comment|/*&n; * DMA map types&n; */
 DECL|macro|DMA_SCSI
@@ -65,9 +59,6 @@ DECL|typedef|dmamap_t
 )brace
 id|dmamap_t
 suffix:semicolon
-macro_line|#ifdef __cplusplus
-)brace
-macro_line|#endif
 multiline_comment|/* standard flags values for pio_map routines,&n; * including {xtalk,pciio}_dmamap calls.&n; * NOTE: try to keep these in step with PIOMAP flags.&n; */
 DECL|macro|DMAMAP_FIXED
 mdefine_line|#define DMAMAP_FIXED&t;0x1

@@ -5,7 +5,6 @@ macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;asm/sn/types.h&gt;
 macro_line|#include &lt;asm/sn/sgi.h&gt;
 macro_line|#include &lt;asm/sn/driver.h&gt;
-macro_line|#include &lt;asm/sn/iograph.h&gt;
 macro_line|#include &lt;asm/param.h&gt;
 macro_line|#include &lt;asm/sn/pio.h&gt;
 macro_line|#include &lt;asm/sn/xtalk/xwidget.h&gt;

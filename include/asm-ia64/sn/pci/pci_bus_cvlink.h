@@ -24,14 +24,14 @@ DECL|macro|MAX_PCI_XWIDGET
 mdefine_line|#define MAX_PCI_XWIDGET 256
 DECL|macro|MAX_ATE_MAPS
 mdefine_line|#define MAX_ATE_MAPS 1024
+DECL|macro|SN_DEVICE_SYSDATA
+mdefine_line|#define SN_DEVICE_SYSDATA(dev) &bslash;&n;&t;((struct sn_device_sysdata *) &bslash;&n;&t;(((struct pci_controller *) ((dev)-&gt;sysdata))-&gt;platform_data))
 DECL|macro|IS_PCI32G
 mdefine_line|#define IS_PCI32G(dev)&t;((dev)-&gt;dma_mask &gt;= 0xffffffff)
 DECL|macro|IS_PCI32L
 mdefine_line|#define IS_PCI32L(dev)&t;((dev)-&gt;dma_mask &lt; 0xffffffff)
 DECL|macro|PCIDEV_VERTEX
-mdefine_line|#define PCIDEV_VERTEX(pci_dev) &bslash;&n;&t;(((struct sn_device_sysdata *)((pci_dev)-&gt;sysdata))-&gt;vhdl)
-DECL|macro|PCIBUS_VERTEX
-mdefine_line|#define PCIBUS_VERTEX(pci_bus) &bslash;&n;&t;(((struct sn_widget_sysdata *)((pci_bus)-&gt;sysdata))-&gt;vhdl)
+mdefine_line|#define PCIDEV_VERTEX(pci_dev) &bslash;&n;&t;((SN_DEVICE_SYSDATA(pci_dev))-&gt;vhdl)
 DECL|struct|sn_widget_sysdata
 r_struct
 id|sn_widget_sysdata
@@ -54,6 +54,23 @@ DECL|member|pci_provider
 id|pciio_provider_t
 op_star
 id|pci_provider
+suffix:semicolon
+DECL|member|intr_handle
+id|pciio_intr_t
+id|intr_handle
+suffix:semicolon
+DECL|member|dma_flush_list
+r_struct
+id|sn_flush_device_list
+op_star
+id|dma_flush_list
+suffix:semicolon
+DECL|member|pio_map
+id|pciio_piomap_t
+id|pio_map
+(braket
+id|PCI_ROM_RESOURCE
+)braket
 suffix:semicolon
 )brace
 suffix:semicolon

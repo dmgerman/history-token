@@ -18,11 +18,6 @@ r_typedef
 r_int
 id|ilvl_t
 suffix:semicolon
-macro_line|#ifdef __cplusplus
-r_extern
-l_string|&quot;C&quot;
-(brace
-macro_line|#endif
 r_struct
 id|eframe_s
 suffix:semicolon
