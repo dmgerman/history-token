@@ -4291,6 +4291,11 @@ suffix:semicolon
 r_case
 id|RPC_GSS_PROC_DATA
 suffix:colon
+op_star
+id|authp
+op_assign
+id|rpc_autherr_badcred
+suffix:semicolon
 id|rqstp-&gt;rq_client
 op_assign
 id|find_gss_auth_domain

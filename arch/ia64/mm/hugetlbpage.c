@@ -814,12 +814,6 @@ op_rshift
 id|PAGE_SHIFT
 )paren
 suffix:semicolon
-id|get_page
-c_func
-(paren
-id|page
-)paren
-suffix:semicolon
 r_return
 id|page
 suffix:semicolon
