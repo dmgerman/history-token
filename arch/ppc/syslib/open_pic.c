@@ -2154,7 +2154,7 @@ id|SA_INTERRUPT
 comma
 l_string|&quot;IPI0 (call function)&quot;
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 id|request_irq
@@ -2172,7 +2172,7 @@ id|SA_INTERRUPT
 comma
 l_string|&quot;IPI1 (reschedule)&quot;
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 id|request_irq
@@ -2190,7 +2190,7 @@ id|SA_INTERRUPT
 comma
 l_string|&quot;IPI2 (invalidate tlb)&quot;
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 id|request_irq
@@ -2208,7 +2208,7 @@ id|SA_INTERRUPT
 comma
 l_string|&quot;IPI3 (xmon break)&quot;
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 r_for

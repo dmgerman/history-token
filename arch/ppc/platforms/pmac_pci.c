@@ -154,7 +154,7 @@ id|node
 comma
 l_string|&quot;class-code&quot;
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 r_if
@@ -2131,7 +2131,7 @@ id|nec
 comma
 l_string|&quot;reg&quot;
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 r_if

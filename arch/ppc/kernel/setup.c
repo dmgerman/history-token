@@ -2857,7 +2857,7 @@ l_string|&quot;xmon&quot;
 id|xmon
 c_func
 (paren
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 macro_line|#endif /* CONFIG_XMON */

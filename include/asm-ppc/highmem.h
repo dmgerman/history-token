@@ -252,7 +252,7 @@ suffix:semicolon
 id|flush_tlb_page
 c_func
 (paren
-l_int|0
+l_int|NULL
 comma
 id|vaddr
 )paren
@@ -353,7 +353,7 @@ suffix:semicolon
 id|flush_tlb_page
 c_func
 (paren
-l_int|0
+l_int|NULL
 comma
 id|vaddr
 )paren

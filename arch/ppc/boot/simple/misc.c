@@ -899,7 +899,7 @@ suffix:semicolon
 id|gunzip
 c_func
 (paren
-l_int|0
+l_int|NULL
 comma
 l_int|0x400000
 comma

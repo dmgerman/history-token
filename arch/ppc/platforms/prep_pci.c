@@ -2144,7 +2144,7 @@ multiline_comment|/* Check the first PCI device to see if it is a Raven. */
 id|early_read_config_dword
 c_func
 (paren
-l_int|0
+l_int|NULL
 comma
 l_int|0
 comma
@@ -2196,7 +2196,7 @@ multiline_comment|/* Read the memory base register. */
 id|early_read_config_dword
 c_func
 (paren
-l_int|0
+l_int|NULL
 comma
 l_int|0
 comma

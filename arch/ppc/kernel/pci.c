@@ -3219,7 +3219,7 @@ id|node
 comma
 l_string|&quot;class-code&quot;
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 r_if
@@ -3264,7 +3264,7 @@ id|node
 comma
 l_string|&quot;reg&quot;
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 r_if
@@ -3450,7 +3450,7 @@ l_string|&quot;/&quot;
 comma
 l_string|&quot;pci-OF-bus-map&quot;
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 r_if
@@ -3610,7 +3610,7 @@ id|node
 comma
 l_string|&quot;class-code&quot;
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 r_if
@@ -3721,7 +3721,7 @@ id|node
 comma
 l_string|&quot;reg&quot;
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 r_if
@@ -4184,7 +4184,7 @@ id|node
 comma
 l_string|&quot;reg&quot;
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 r_if
