@@ -7717,17 +7717,6 @@ op_logical_neg
 id|noaccel
 )paren
 suffix:semicolon
-id|par-&gt;FpScale
-op_assign
-(paren
-op_logical_neg
-id|noscale
-)paren
-suffix:semicolon
-id|par-&gt;paneltweak
-op_assign
-id|paneltweak
-suffix:semicolon
 r_switch
 c_cond
 (paren
@@ -8219,6 +8208,17 @@ suffix:semicolon
 id|par-&gt;CRTCnumber
 op_assign
 id|forceCRTC
+suffix:semicolon
+id|par-&gt;FpScale
+op_assign
+(paren
+op_logical_neg
+id|noscale
+)paren
+suffix:semicolon
+id|par-&gt;paneltweak
+op_assign
+id|paneltweak
 suffix:semicolon
 multiline_comment|/* enable IO and mem if not already done */
 id|pci_read_config_word
