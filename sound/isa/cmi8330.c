@@ -2386,12 +2386,7 @@ id|snd_cmi8330
 op_star
 id|chip
 op_assign
-(paren
-r_struct
-id|snd_cmi8330
-op_star
-)paren
-id|_snd_pcm_substream_chip
+id|snd_pcm_substream_chip
 c_func
 (paren
 id|substream
@@ -2436,12 +2431,7 @@ id|snd_cmi8330
 op_star
 id|chip
 op_assign
-(paren
-r_struct
-id|snd_cmi8330
-op_star
-)paren
-id|_snd_pcm_substream_chip
+id|snd_pcm_substream_chip
 c_func
 (paren
 id|substream

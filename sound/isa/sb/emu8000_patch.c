@@ -519,17 +519,7 @@ id|emu
 suffix:semicolon
 id|emu
 op_assign
-id|snd_magic_cast
-c_func
-(paren
-id|emu8000_t
-comma
 id|rec-&gt;hw
-comma
-r_return
-op_minus
-id|EINVAL
-)paren
 suffix:semicolon
 id|snd_assert
 c_func

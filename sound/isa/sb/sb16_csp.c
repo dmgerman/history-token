@@ -8,8 +8,6 @@ macro_line|#include &lt;sound/control.h&gt;
 macro_line|#include &lt;sound/info.h&gt;
 macro_line|#include &lt;sound/sb16_csp.h&gt;
 macro_line|#include &lt;sound/initval.h&gt;
-DECL|macro|chip_t
-mdefine_line|#define chip_t snd_sb_csp_t
 id|MODULE_AUTHOR
 c_func
 (paren
@@ -552,12 +550,16 @@ c_cond
 (paren
 id|p
 op_assign
-id|snd_magic_kcalloc
+id|kcalloc
 c_func
 (paren
-id|snd_sb_csp_t
+l_int|1
 comma
-l_int|0
+r_sizeof
+(paren
+op_star
+id|p
+)paren
 comma
 id|GFP_KERNEL
 )paren
@@ -703,15 +705,7 @@ id|snd_sb_csp_t
 op_star
 id|p
 op_assign
-id|snd_magic_cast
-c_func
-(paren
-id|snd_sb_csp_t
-comma
 id|hwdep-&gt;private_data
-comma
-r_return
-)paren
 suffix:semicolon
 r_if
 c_cond
@@ -732,7 +726,7 @@ c_func
 id|p
 )paren
 suffix:semicolon
-id|snd_magic_kfree
+id|kfree
 c_func
 (paren
 id|p
@@ -762,17 +756,7 @@ id|snd_sb_csp_t
 op_star
 id|p
 op_assign
-id|snd_magic_cast
-c_func
-(paren
-id|snd_sb_csp_t
-comma
 id|hw-&gt;private_data
-comma
-r_return
-op_minus
-id|ENXIO
-)paren
 suffix:semicolon
 r_return
 (paren
@@ -813,17 +797,7 @@ id|snd_sb_csp_t
 op_star
 id|p
 op_assign
-id|snd_magic_cast
-c_func
-(paren
-id|snd_sb_csp_t
-comma
 id|hw-&gt;private_data
-comma
-r_return
-op_minus
-id|ENXIO
-)paren
 suffix:semicolon
 id|snd_sb_csp_info_t
 id|info
@@ -1123,17 +1097,7 @@ id|snd_sb_csp_t
 op_star
 id|p
 op_assign
-id|snd_magic_cast
-c_func
-(paren
-id|snd_sb_csp_t
-comma
 id|hw-&gt;private_data
-comma
-r_return
-op_minus
-id|ENXIO
-)paren
 suffix:semicolon
 r_return
 (paren
@@ -5181,15 +5145,7 @@ id|snd_sb_csp_t
 op_star
 id|p
 op_assign
-id|snd_magic_cast
-c_func
-(paren
-id|snd_sb_csp_t
-comma
 id|entry-&gt;private_data
-comma
-r_return
-)paren
 suffix:semicolon
 id|snd_iprintf
 c_func

@@ -10,8 +10,6 @@ macro_line|#include &lt;sound/opl3.h&gt;
 DECL|macro|SNDRV_LEGACY_AUTO_PROBE
 mdefine_line|#define SNDRV_LEGACY_AUTO_PROBE
 macro_line|#include &lt;sound/initval.h&gt;
-DECL|macro|chip_t
-mdefine_line|#define chip_t sb_t
 id|MODULE_AUTHOR
 c_func
 (paren
@@ -329,16 +327,7 @@ id|sb_t
 op_star
 id|chip
 op_assign
-id|snd_magic_cast
-c_func
-(paren
-id|sb_t
-comma
 id|dev_id
-comma
-r_return
-id|IRQ_NONE
-)paren
 suffix:semicolon
 r_if
 c_cond

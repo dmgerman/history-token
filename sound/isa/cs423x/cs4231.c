@@ -8,8 +8,6 @@ macro_line|#include &lt;sound/core.h&gt;
 macro_line|#include &lt;sound/cs4231.h&gt;
 macro_line|#include &lt;sound/mpu401.h&gt;
 macro_line|#include &lt;sound/initval.h&gt;
-DECL|macro|chip_t
-mdefine_line|#define chip_t cs4231_t
 id|MODULE_AUTHOR
 c_func
 (paren

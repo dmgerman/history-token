@@ -10,8 +10,6 @@ macro_line|#include &lt;sound/sb.h&gt;
 macro_line|#include &lt;sound/initval.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/dma.h&gt;
-DECL|macro|chip_t
-mdefine_line|#define chip_t sb_t
 id|MODULE_AUTHOR
 c_func
 (paren
@@ -788,7 +786,7 @@ id|chip-&gt;dma16
 suffix:semicolon
 )brace
 macro_line|#endif
-id|snd_magic_kfree
+id|kfree
 c_func
 (paren
 id|chip
@@ -813,17 +811,7 @@ id|sb_t
 op_star
 id|chip
 op_assign
-id|snd_magic_cast
-c_func
-(paren
-id|sb_t
-comma
 id|device-&gt;device_data
-comma
-r_return
-op_minus
-id|ENXIO
-)paren
 suffix:semicolon
 r_return
 id|snd_sbdsp_free
@@ -919,12 +907,16 @@ l_int|NULL
 suffix:semicolon
 id|chip
 op_assign
-id|snd_magic_kcalloc
+id|kcalloc
 c_func
 (paren
-id|sb_t
+l_int|1
 comma
-l_int|0
+r_sizeof
+(paren
+op_star
+id|chip
+)paren
 comma
 id|GFP_KERNEL
 )paren

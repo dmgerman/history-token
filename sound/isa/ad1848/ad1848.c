@@ -7,8 +7,6 @@ macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;sound/core.h&gt;
 macro_line|#include &lt;sound/ad1848.h&gt;
 macro_line|#include &lt;sound/initval.h&gt;
-DECL|macro|chip_t
-mdefine_line|#define chip_t ad1848_t
 id|MODULE_AUTHOR
 c_func
 (paren

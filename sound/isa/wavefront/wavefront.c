@@ -9,8 +9,6 @@ macro_line|#include &lt;sound/core.h&gt;
 macro_line|#include &lt;sound/initval.h&gt;
 macro_line|#include &lt;sound/opl3.h&gt;
 macro_line|#include &lt;sound/snd_wavefront.h&gt;
-DECL|macro|chip_t
-mdefine_line|#define chip_t cs4231_t
 id|MODULE_AUTHOR
 c_func
 (paren

@@ -10,8 +10,6 @@ macro_line|#include &lt;sound/initval.h&gt;
 macro_line|#include &lt;sound/ad1816a.h&gt;
 macro_line|#include &lt;sound/mpu401.h&gt;
 macro_line|#include &lt;sound/opl3.h&gt;
-DECL|macro|chip_t
-mdefine_line|#define chip_t ad1816a_t
 DECL|macro|PFX
 mdefine_line|#define PFX &quot;ad1816a: &quot;
 id|MODULE_AUTHOR

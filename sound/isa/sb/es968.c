@@ -7,8 +7,6 @@ macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;sound/core.h&gt;
 macro_line|#include &lt;sound/initval.h&gt;
 macro_line|#include &lt;sound/sb.h&gt;
-DECL|macro|chip_t
-mdefine_line|#define chip_t sb_t
 DECL|macro|PFX
 mdefine_line|#define PFX &quot;es968: &quot;
 id|MODULE_AUTHOR
@@ -362,16 +360,7 @@ id|sb_t
 op_star
 id|chip
 op_assign
-id|snd_magic_cast
-c_func
-(paren
-id|sb_t
-comma
 id|dev_id
-comma
-r_return
-id|IRQ_NONE
-)paren
 suffix:semicolon
 r_if
 c_cond

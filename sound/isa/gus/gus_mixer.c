@@ -5,8 +5,6 @@ macro_line|#include &lt;linux/wait.h&gt;
 macro_line|#include &lt;sound/core.h&gt;
 macro_line|#include &lt;sound/control.h&gt;
 macro_line|#include &lt;sound/gus.h&gt;
-DECL|macro|chip_t
-mdefine_line|#define chip_t snd_gus_card_t
 multiline_comment|/*&n; *&n; */
 DECL|macro|GF1_SINGLE
 mdefine_line|#define GF1_SINGLE(xname, xindex, shift, invert) &bslash;&n;{ .iface = SNDRV_CTL_ELEM_IFACE_MIXER, .name = xname, .index = xindex, &bslash;&n;  .info = snd_gf1_info_single, &bslash;&n;  .get = snd_gf1_get_single, .put = snd_gf1_put_single, &bslash;&n;  .private_value = shift | (invert &lt;&lt; 8) }

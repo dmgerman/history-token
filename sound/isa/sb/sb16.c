@@ -19,8 +19,6 @@ mdefine_line|#define SNDRV_LEGACY_FIND_FREE_IRQ
 DECL|macro|SNDRV_LEGACY_FIND_FREE_DMA
 mdefine_line|#define SNDRV_LEGACY_FIND_FREE_DMA
 macro_line|#include &lt;sound/initval.h&gt;
-DECL|macro|chip_t
-mdefine_line|#define chip_t sb_t
 macro_line|#ifdef SNDRV_SBAWE
 DECL|macro|PFX
 mdefine_line|#define PFX &quot;sbawe: &quot;

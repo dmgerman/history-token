@@ -5293,8 +5293,6 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/*----------------------------------------------------------------&n; * mixer interface&n; *----------------------------------------------------------------*/
-DECL|macro|chip_t
-mdefine_line|#define chip_t&t;emu8000_t
 multiline_comment|/*&n; * bass/treble&n; */
 DECL|function|mixer_bass_treble_info
 r_static
@@ -6376,7 +6374,7 @@ id|hw-&gt;res_port3
 )paren
 suffix:semicolon
 )brace
-id|snd_magic_kfree
+id|kfree
 c_func
 (paren
 id|hw
@@ -6402,17 +6400,7 @@ id|emu8000_t
 op_star
 id|hw
 op_assign
-id|snd_magic_cast
-c_func
-(paren
-id|emu8000_t
-comma
 id|device-&gt;device_data
-comma
-r_return
-op_minus
-id|ENXIO
-)paren
 suffix:semicolon
 r_return
 id|snd_emu8000_free
@@ -6493,12 +6481,16 @@ l_int|0
 suffix:semicolon
 id|hw
 op_assign
-id|snd_magic_kcalloc
+id|kcalloc
 c_func
 (paren
-id|emu8000_t
+l_int|1
 comma
-l_int|0
+r_sizeof
+(paren
+op_star
+id|hw
+)paren
 comma
 id|GFP_KERNEL
 )paren
