@@ -1160,6 +1160,15 @@ c_func
 id|len
 )paren
 suffix:semicolon
+id|clone-&gt;bi_flags
+op_and_assign
+op_complement
+(paren
+l_int|1
+op_lshift
+id|BIO_SEG_VALID
+)paren
+suffix:semicolon
 r_return
 id|clone
 suffix:semicolon
