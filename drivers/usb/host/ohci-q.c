@@ -1908,6 +1908,67 @@ id|ed-&gt;interval
 op_assign
 id|interval
 suffix:semicolon
+macro_line|#ifdef DEBUG
+multiline_comment|/*&n;&t; * There are two other cases we ought to change hwINFO, both during&n;&t; * enumeration.  There, the control request completes, unlinks, and&n;&t; * the next request gets queued before the unlink completes, so it&n;&t; * uses old/wrong hwINFO.  How much of a problem is this?  khubd is&n;&t; * already retrying after such failures...&n;&t; */
+)brace
+r_else
+r_if
+c_cond
+(paren
+id|type
+op_eq
+id|PIPE_CONTROL
+)paren
+(brace
+id|u32
+id|info
+op_assign
+id|le32_to_cpup
+(paren
+op_amp
+id|ed-&gt;hwINFO
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|info
+op_amp
+l_int|0x7f
+)paren
+)paren
+id|dbg
+(paren
+l_string|&quot;RETRY ctrl: address != 0&quot;
+)paren
+suffix:semicolon
+id|info
+op_rshift_assign
+l_int|16
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|info
+op_ne
+id|udev-&gt;epmaxpacketin
+(braket
+l_int|0
+)braket
+)paren
+id|dbg
+(paren
+l_string|&quot;RETRY ctrl: maxpacket %d != 8&quot;
+comma
+id|udev-&gt;epmaxpacketin
+(braket
+l_int|0
+)braket
+)paren
+suffix:semicolon
+macro_line|#endif /* DEBUG */
 )brace
 id|done
 suffix:colon
@@ -2116,7 +2177,7 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-multiline_comment|/* aim for only one interrupt per urb.  mostly applies to control&n;&t; * and iso; other urbs rarely need more than one TD per urb.&n;&t; *&n;&t; * NOTE: could delay interrupts even for the last TD, and get fewer&n;&t; * interrupts ... increasing per-urb latency by sharing interrupts.&n;&t; */
+multiline_comment|/* aim for only one interrupt per urb.  mostly applies to control&n;&t; * and iso; other urbs rarely need more than one TD per urb.&n;&t; * this way, only final tds (or ones with an error) cause IRQs.&n;&t; *&n;&t; * NOTE: could delay interrupts even for the last TD, and get fewer&n;&t; * interrupts ... increasing per-urb latency by sharing interrupts.&n;&t; * Drivers that queue bulk urbs may request that behavior.&n;&t; */
 r_if
 c_cond
 (paren
@@ -2127,20 +2188,18 @@ id|urb_priv-&gt;length
 op_minus
 l_int|1
 )paren
+op_logical_or
+(paren
+id|urb-&gt;transfer_flags
+op_amp
+id|URB_NO_INTERRUPT
+)paren
 )paren
 id|info
 op_or_assign
-id|is_iso
-ques
-c_cond
 id|TD_DI_SET
 (paren
 l_int|7
-)paren
-suffix:colon
-id|TD_DI_SET
-(paren
-l_int|1
 )paren
 suffix:semicolon
 multiline_comment|/* use this td as the next dummy */
@@ -2221,6 +2280,22 @@ op_amp
 l_int|0xFFFFF000
 )paren
 suffix:semicolon
+id|td-&gt;hwPSW
+(braket
+l_int|0
+)braket
+op_assign
+id|cpu_to_le16
+(paren
+(paren
+id|data
+op_amp
+l_int|0x0FFF
+)paren
+op_or
+l_int|0xE000
+)paren
+suffix:semicolon
 id|td-&gt;ed-&gt;intriso.last_iso
 op_assign
 id|info
@@ -2264,22 +2339,6 @@ op_assign
 id|cpu_to_le32
 (paren
 id|td_pt-&gt;td_dma
-)paren
-suffix:semicolon
-id|td-&gt;hwPSW
-(braket
-l_int|0
-)braket
-op_assign
-id|cpu_to_le16
-(paren
-(paren
-id|data
-op_amp
-l_int|0x0FFF
-)paren
-op_or
-l_int|0xE000
 )paren
 suffix:semicolon
 multiline_comment|/* HC might read the TD right after we link it ... */
@@ -2346,6 +2405,14 @@ id|toggle
 op_assign
 l_int|0
 suffix:semicolon
+r_int
+id|is_out
+op_assign
+id|usb_pipeout
+(paren
+id|urb-&gt;pipe
+)paren
+suffix:semicolon
 multiline_comment|/* OHCI handles the DATA-toggles itself, we just use the&n;&t; * USB-toggle bits for resetting&n;&t; */
 r_if
 c_cond
@@ -2359,10 +2426,7 @@ id|usb_pipeendpoint
 id|urb-&gt;pipe
 )paren
 comma
-id|usb_pipeout
-(paren
-id|urb-&gt;pipe
-)paren
+id|is_out
 )paren
 )paren
 (brace
@@ -2386,10 +2450,7 @@ id|usb_pipeendpoint
 id|urb-&gt;pipe
 )paren
 comma
-id|usb_pipeout
-(paren
-id|urb-&gt;pipe
-)paren
+id|is_out
 comma
 l_int|1
 )paren
@@ -2415,10 +2476,7 @@ id|urb-&gt;transfer_buffer
 comma
 id|data_len
 comma
-id|usb_pipeout
-(paren
-id|urb-&gt;pipe
-)paren
+id|is_out
 ques
 c_cond
 id|PCI_DMA_TODEVICE
@@ -2447,10 +2505,7 @@ id|PIPE_BULK
 suffix:colon
 id|info
 op_assign
-id|usb_pipeout
-(paren
-id|urb-&gt;pipe
-)paren
+id|is_out
 ques
 c_cond
 id|TD_CC
@@ -2461,6 +2516,7 @@ id|TD_CC
 op_or
 id|TD_DP_IN
 suffix:semicolon
+multiline_comment|/* TDs _could_ transfer up to 8K each */
 r_while
 c_loop
 (paren
@@ -2505,23 +2561,20 @@ id|cnt
 op_increment
 suffix:semicolon
 )brace
-id|info
-op_assign
-id|usb_pipeout
-(paren
-id|urb-&gt;pipe
-)paren
-ques
+multiline_comment|/* maybe avoid ED halt on final TD short read */
+r_if
 c_cond
-id|TD_CC
-op_or
-id|TD_DP_OUT
-suffix:colon
-id|TD_CC
-op_or
+(paren
+op_logical_neg
+(paren
+id|urb-&gt;transfer_flags
+op_amp
+id|USB_DISABLE_SPD
+)paren
+)paren
+id|info
+op_or_assign
 id|TD_R
-op_or
-id|TD_DP_IN
 suffix:semicolon
 id|td_fill
 (paren
@@ -2618,6 +2671,7 @@ suffix:semicolon
 r_case
 id|PIPE_INTERRUPT
 suffix:colon
+multiline_comment|/* current policy:  only one TD per request.&n;&t;&t;&t; * otherwise identical to bulk, except for BLF&n;&t;&t;&t; */
 id|info
 op_assign
 id|TD_CC
@@ -2626,10 +2680,7 @@ id|toggle
 suffix:semicolon
 id|info
 op_or_assign
-id|usb_pipeout
-(paren
-id|urb-&gt;pipe
-)paren
+id|is_out
 ques
 c_cond
 id|TD_DP_OUT
@@ -2711,10 +2762,7 @@ id|TD_T_DATA1
 suffix:semicolon
 id|info
 op_or_assign
-id|usb_pipeout
-(paren
-id|urb-&gt;pipe
-)paren
+id|is_out
 ques
 c_cond
 id|TD_DP_OUT
@@ -2741,10 +2789,7 @@ suffix:semicolon
 )brace
 id|info
 op_assign
-id|usb_pipeout
-(paren
-id|urb-&gt;pipe
-)paren
+id|is_out
 ques
 c_cond
 id|TD_CC
@@ -3289,6 +3334,13 @@ comma
 id|td_list_hc
 )paren
 suffix:semicolon
+id|td_list-&gt;hwINFO
+op_or_assign
+id|cpu_to_le32
+(paren
+id|TD_DONE
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -3310,7 +3362,7 @@ op_star
 )paren
 id|td_list-&gt;urb-&gt;hcpriv
 suffix:semicolon
-multiline_comment|/* typically the endpoint halts on error; un-halt,&n;&t;&t;&t; * and maybe dequeue other TDs from this urb&n;&t;&t;&t; */
+multiline_comment|/* Non-iso endpoints can halt on error; un-halt,&n;&t;&t;&t; * and dequeue any other TDs from this urb.&n;&t;&t;&t; * No other TD could have caused the halt.&n;&t;&t;&t; */
 r_if
 c_cond
 (paren
