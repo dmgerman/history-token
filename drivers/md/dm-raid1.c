@@ -2427,9 +2427,7 @@ id|from
 comma
 id|to
 (braket
-id|ms-&gt;nr_mirrors
-op_minus
-l_int|1
+id|KCOPYD_MAX_REGIONS
 )braket
 comma
 op_star
@@ -3022,7 +3020,9 @@ r_struct
 id|io_region
 id|io
 (braket
-id|ms-&gt;nr_mirrors
+id|KCOPYD_MAX_REGIONS
+op_plus
+l_int|1
 )braket
 suffix:semicolon
 r_struct
