@@ -496,9 +496,9 @@ id|ide_dma_intr
 suffix:semicolon
 multiline_comment|/**&n; *&t;ide_build_sglist&t;-&t;map IDE scatter gather for DMA I/O&n; *&t;@drive: the drive to build the DMA table for&n; *&t;@rq: the request holding the sg list&n; *&n; *&t;Perform the PCI mapping magic necessary to access the source or&n; *&t;target buffers of a request via PCI DMA. The lower layers of the&n; *&t;kernel provide the necessary cache management so that we can&n; *&t;operate in a portable fashion&n; */
 DECL|function|ide_build_sglist
-r_static
 r_int
 id|ide_build_sglist
+c_func
 (paren
 id|ide_drive_t
 op_star
@@ -586,11 +586,18 @@ id|hwif-&gt;sg_dma_direction
 )paren
 suffix:semicolon
 )brace
+DECL|variable|ide_build_sglist
+id|EXPORT_SYMBOL_GPL
+c_func
+(paren
+id|ide_build_sglist
+)paren
+suffix:semicolon
 multiline_comment|/**&n; *&t;ide_raw_build_sglist&t;-&t;map IDE scatter gather for DMA&n; *&t;@drive: the drive to build the DMA table for&n; *&t;@rq: the request holding the sg list&n; *&n; *&t;Perform the PCI mapping magic necessary to access the source or&n; *&t;target buffers of a taskfile request via PCI DMA. The lower layers &n; *&t;of the  kernel provide the necessary cache management so that we can&n; *&t;operate in a portable fashion&n; */
 DECL|function|ide_raw_build_sglist
-r_static
 r_int
 id|ide_raw_build_sglist
+c_func
 (paren
 id|ide_drive_t
 op_star
@@ -833,6 +840,13 @@ id|hwif-&gt;sg_dma_direction
 )paren
 suffix:semicolon
 )brace
+DECL|variable|ide_raw_build_sglist
+id|EXPORT_SYMBOL_GPL
+c_func
+(paren
+id|ide_raw_build_sglist
+)paren
+suffix:semicolon
 multiline_comment|/**&n; *&t;ide_build_dmatable&t;-&t;build IDE DMA table&n; *&n; *&t;ide_build_dmatable() prepares a dma request. We map the command&n; *&t;to get the pci bus addresses of the buffers and then build up&n; *&t;the PRD table that the IDE layer wants to be fed. The code&n; *&t;knows about the 64K wrap bug in the CS5530.&n; *&n; *&t;Returns 0 if all went okay, returns 1 otherwise.&n; *&t;May also be invoked from trm290.c&n; */
 DECL|function|ide_build_dmatable
 r_int
