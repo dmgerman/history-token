@@ -1,6 +1,7 @@
 multiline_comment|/*&n; * drivers/power/process.c - Functions for starting/stopping processes on &n; *                           suspend transitions.&n; *&n; * Originally from swsusp.&n; */
 DECL|macro|DEBUG
 macro_line|#undef DEBUG
+macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/suspend.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
