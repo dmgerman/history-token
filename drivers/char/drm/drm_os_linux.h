@@ -147,7 +147,7 @@ DECL|macro|DRM_COPY_TO_USER
 mdefine_line|#define DRM_COPY_TO_USER(arg1, arg2, arg3)&t;&t;&bslash;&n;&t;copy_to_user(arg1, arg2, arg3)
 multiline_comment|/* Macros for copyfrom user, but checking readability only once */
 DECL|macro|DRM_VERIFYAREA_READ
-mdefine_line|#define DRM_VERIFYAREA_READ( uaddr, size ) &t;&t;&bslash;&n;&t;verify_area( VERIFY_READ, uaddr, size )
+mdefine_line|#define DRM_VERIFYAREA_READ( uaddr, size ) &t;&t;&bslash;&n;&t;(access_ok( VERIFY_READ, uaddr, size ) ? 0 : -EFAULT)
 DECL|macro|DRM_COPY_FROM_USER_UNCHECKED
 mdefine_line|#define DRM_COPY_FROM_USER_UNCHECKED(arg1, arg2, arg3) &t;&bslash;&n;&t;__copy_from_user(arg1, arg2, arg3)
 DECL|macro|DRM_COPY_TO_USER_UNCHECKED

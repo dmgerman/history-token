@@ -78,6 +78,13 @@ c_func
 id|agp_bridges
 )paren
 suffix:semicolon
+DECL|variable|agp_find_bridge
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|agp_find_bridge
+)paren
+suffix:semicolon
 multiline_comment|/**&n; *&t;agp_backend_acquire  -  attempt to acquire an agp backend.&n; *&n; */
 DECL|function|agp_backend_acquire
 r_struct
