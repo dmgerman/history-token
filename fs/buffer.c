@@ -3194,6 +3194,7 @@ op_assign
 id|alloc_buffer_head
 c_func
 (paren
+id|GFP_NOFS
 )paren
 suffix:semicolon
 r_if
@@ -8743,6 +8744,7 @@ op_assign
 id|alloc_buffer_head
 c_func
 (paren
+id|GFP_NOFS
 )paren
 suffix:semicolon
 r_if
@@ -11101,7 +11103,8 @@ op_star
 id|alloc_buffer_head
 c_func
 (paren
-r_void
+r_int
+id|gfp_flags
 )paren
 (brace
 r_struct
@@ -11114,7 +11117,7 @@ c_func
 (paren
 id|bh_cachep
 comma
-id|GFP_NOFS
+id|gfp_flags
 )paren
 suffix:semicolon
 r_if
