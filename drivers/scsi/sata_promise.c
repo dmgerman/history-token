@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
+macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &quot;scsi.h&quot;
 macro_line|#include &quot;hosts.h&quot;
 macro_line|#include &lt;linux/libata.h&gt;
@@ -52,6 +53,12 @@ op_assign
 l_int|0x44
 comma
 multiline_comment|/* Flash control register */
+DECL|enumerator|PDC_PCI_CTL
+id|PDC_PCI_CTL
+op_assign
+l_int|0x48
+comma
+multiline_comment|/* PCI control and status register */
 DECL|enumerator|PDC_CTLSTAT
 id|PDC_CTLSTAT
 op_assign
@@ -238,6 +245,16 @@ op_assign
 l_int|2
 comma
 multiline_comment|/* FastTrak S150 SX4 */
+DECL|enumerator|PDC_HAS_PATA
+id|PDC_HAS_PATA
+op_assign
+(paren
+l_int|1
+op_lshift
+l_int|1
+)paren
+comma
+multiline_comment|/* PDC20375 has PATA */
 DECL|enumerator|PDC_FLAG_20621
 id|PDC_FLAG_20621
 op_assign
@@ -1901,8 +1918,18 @@ id|tf-&gt;protocol
 )paren
 (brace
 r_case
-id|ATA_PROT_DMA_READ
+id|ATA_PROT_DMA
 suffix:colon
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|tf-&gt;flags
+op_amp
+id|ATA_TFLAG_WRITE
+)paren
+)paren
 id|buf32
 (braket
 l_int|0
@@ -1914,11 +1941,7 @@ c_func
 id|PDC_PKT_READ
 )paren
 suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-id|ATA_PROT_DMA_WRITE
-suffix:colon
+r_else
 id|buf32
 (braket
 l_int|0
@@ -2754,9 +2777,20 @@ multiline_comment|/*&n;&t; * Set up ATA packet&n;&t; */
 r_if
 c_cond
 (paren
+(paren
 id|tf-&gt;protocol
 op_eq
-id|ATA_PROT_DMA_READ
+id|ATA_PROT_DMA
+)paren
+op_logical_and
+(paren
+op_logical_neg
+(paren
+id|tf-&gt;flags
+op_amp
+id|ATA_TFLAG_WRITE
+)paren
+)paren
 )paren
 id|buf
 (braket
@@ -3016,9 +3050,20 @@ multiline_comment|/*&n;&t; * Set up Host DMA packet&n;&t; */
 r_if
 c_cond
 (paren
+(paren
 id|tf-&gt;protocol
 op_eq
-id|ATA_PROT_DMA_READ
+id|ATA_PROT_DMA
+)paren
+op_logical_and
+(paren
+op_logical_neg
+(paren
+id|tf-&gt;flags
+op_amp
+id|ATA_TFLAG_WRITE
+)paren
+)paren
 )paren
 id|tmp
 op_assign
@@ -3972,9 +4017,9 @@ r_int
 id|rw
 op_assign
 (paren
-id|qc-&gt;flags
+id|qc-&gt;tf.flags
 op_amp
-id|ATA_QCFLAG_WRITE
+id|ATA_TFLAG_WRITE
 )paren
 suffix:semicolon
 id|u8
@@ -4222,15 +4267,26 @@ c_func
 l_string|&quot;ENTER&bslash;n&quot;
 )paren
 suffix:semicolon
-r_switch
+r_if
 c_cond
 (paren
+(paren
 id|qc-&gt;tf.protocol
+op_eq
+id|ATA_PROT_DMA
+)paren
+op_logical_and
+multiline_comment|/* read */
+(paren
+op_logical_neg
+(paren
+id|qc-&gt;tf.flags
+op_amp
+id|ATA_TFLAG_WRITE
+)paren
+)paren
 )paren
 (brace
-r_case
-id|ATA_PROT_DMA_READ
-suffix:colon
 multiline_comment|/* step two - DMA from DIMM to host */
 r_if
 c_cond
@@ -4342,11 +4398,17 @@ id|handled
 op_assign
 l_int|1
 suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-id|ATA_PROT_DMA_WRITE
-suffix:colon
+)brace
+r_else
+r_if
+c_cond
+(paren
+id|qc-&gt;tf.protocol
+op_eq
+id|ATA_PROT_DMA
+)paren
+(brace
+multiline_comment|/* write */
 multiline_comment|/* step one - DMA from host to DIMM */
 r_if
 c_cond
@@ -4496,12 +4558,17 @@ id|handled
 op_assign
 l_int|1
 suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-id|ATA_PROT_NODATA
-suffix:colon
 multiline_comment|/* command completion, but no data xfer */
+)brace
+r_else
+r_if
+c_cond
+(paren
+id|qc-&gt;tf.protocol
+op_eq
+id|ATA_PROT_NODATA
+)paren
+(brace
 id|status
 op_assign
 id|ata_busy_wait
@@ -4538,14 +4605,11 @@ id|handled
 op_assign
 l_int|1
 suffix:semicolon
-r_break
-suffix:semicolon
-r_default
-suffix:colon
+)brace
+r_else
+(brace
 id|ap-&gt;stats.idle_irq
 op_increment
-suffix:semicolon
-r_break
 suffix:semicolon
 )brace
 r_return
@@ -5079,10 +5143,7 @@ id|qc-&gt;tf.protocol
 )paren
 (brace
 r_case
-id|ATA_PROT_DMA_READ
-suffix:colon
-r_case
-id|ATA_PROT_DMA_WRITE
+id|ATA_PROT_DMA
 suffix:colon
 id|printk
 c_func
@@ -5245,10 +5306,7 @@ id|qc-&gt;tf.protocol
 )paren
 (brace
 r_case
-id|ATA_PROT_DMA_READ
-suffix:colon
-r_case
-id|ATA_PROT_DMA_WRITE
+id|ATA_PROT_DMA
 suffix:colon
 id|pdc_dma_complete
 c_func
@@ -5721,17 +5779,9 @@ id|tf
 r_if
 c_cond
 (paren
-(paren
 id|tf-&gt;protocol
 op_ne
-id|ATA_PROT_DMA_READ
-)paren
-op_logical_and
-(paren
-id|tf-&gt;protocol
-op_ne
-id|ATA_PROT_DMA_WRITE
-)paren
+id|ATA_PROT_DMA
 )paren
 id|ata_tf_load_mmio
 c_func
@@ -5762,17 +5812,9 @@ id|tf
 r_if
 c_cond
 (paren
-(paren
 id|tf-&gt;protocol
 op_ne
-id|ATA_PROT_DMA_READ
-)paren
-op_logical_and
-(paren
-id|tf-&gt;protocol
-op_ne
-id|ATA_PROT_DMA_WRITE
-)paren
+id|ATA_PROT_DMA
 )paren
 id|ata_exec_command_mmio
 c_func
@@ -8446,9 +8488,13 @@ id|chip_id
 op_eq
 id|board_20621
 )paren
-r_return
+id|BUG
+c_func
+(paren
+)paren
 suffix:semicolon
-multiline_comment|/* change FIFO_SHD to 8 dwords. Promise driver does this...&n;&t; * dunno why.&n;&t; */
+multiline_comment|/*&n;&t; * Except for the hotplug stuff, this is voodoo from the&n;&t; * Promise driver.  Label this entire section&n;&t; * &quot;TODO: figure out why we do this&quot;&n;&t; */
+multiline_comment|/* change FIFO_SHD to 8 dwords, enable BMR_BURST */
 id|tmp
 op_assign
 id|readl
@@ -8459,31 +8505,15 @@ op_plus
 id|PDC_FLASH_CTL
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-(paren
 id|tmp
-op_amp
-(paren
-l_int|1
-op_lshift
-l_int|16
-)paren
-)paren
-op_eq
-l_int|0
-)paren
+op_or_assign
+l_int|0x12000
+suffix:semicolon
+multiline_comment|/* bit 16 (fifo 8 dw) and 13 (bmr burst?) */
 id|writel
 c_func
 (paren
 id|tmp
-op_or
-(paren
-l_int|1
-op_lshift
-l_int|16
-)paren
 comma
 id|mmio
 op_plus
@@ -8536,7 +8566,7 @@ op_plus
 id|PDC_SATA_PLUG_CSR
 )paren
 suffix:semicolon
-multiline_comment|/* reduce TBG clock to 133 Mhz. FIXME: why? */
+multiline_comment|/* reduce TBG clock to 133 Mhz. */
 id|tmp
 op_assign
 id|readl
@@ -8568,7 +8598,32 @@ op_plus
 id|PDC_TBG_MODE
 )paren
 suffix:semicolon
-multiline_comment|/* adjust slew rate control register. FIXME: why? */
+id|readl
+c_func
+(paren
+id|mmio
+op_plus
+id|PDC_TBG_MODE
+)paren
+suffix:semicolon
+multiline_comment|/* flush */
+id|set_current_state
+c_func
+(paren
+id|TASK_UNINTERRUPTIBLE
+)paren
+suffix:semicolon
+id|schedule_timeout
+c_func
+(paren
+id|msecs_to_jiffies
+c_func
+(paren
+l_int|10
+)paren
+)paren
+suffix:semicolon
+multiline_comment|/* adjust slew rate control register. */
 id|tmp
 op_assign
 id|readl
