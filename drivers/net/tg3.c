@@ -49,9 +49,9 @@ mdefine_line|#define DRV_MODULE_NAME&t;&t;&quot;tg3&quot;
 DECL|macro|PFX
 mdefine_line|#define PFX DRV_MODULE_NAME&t;&quot;: &quot;
 DECL|macro|DRV_MODULE_VERSION
-mdefine_line|#define DRV_MODULE_VERSION&t;&quot;3.20&quot;
+mdefine_line|#define DRV_MODULE_VERSION&t;&quot;3.21&quot;
 DECL|macro|DRV_MODULE_RELDATE
-mdefine_line|#define DRV_MODULE_RELDATE&t;&quot;February 2, 2005&quot;
+mdefine_line|#define DRV_MODULE_RELDATE&t;&quot;February 8, 2005&quot;
 DECL|macro|TG3_DEF_MAC_MODE
 mdefine_line|#define TG3_DEF_MAC_MODE&t;0
 DECL|macro|TG3_DEF_RX_MODE
@@ -4097,7 +4097,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-r_int
+id|u32
 id|no_gpio2
 suffix:semicolon
 id|u32
@@ -4123,13 +4123,9 @@ suffix:semicolon
 multiline_comment|/* On 5753 and variants, GPIO2 cannot be used. */
 id|no_gpio2
 op_assign
-(paren
 id|tp-&gt;nic_sram_data_cfg
 op_amp
 id|NIC_SRAM_DATA_CFG_NO_GPIO2
-)paren
-op_ne
-l_int|0
 suffix:semicolon
 id|grc_local_ctrl
 op_assign
@@ -4176,35 +4172,9 @@ l_int|100
 )paren
 suffix:semicolon
 id|grc_local_ctrl
-op_assign
-id|GRC_LCLCTRL_GPIO_OE0
-op_or
-id|GRC_LCLCTRL_GPIO_OE1
-op_or
-id|GRC_LCLCTRL_GPIO_OE2
-op_or
+op_or_assign
 id|GRC_LCLCTRL_GPIO_OUTPUT0
-op_or
-id|GRC_LCLCTRL_GPIO_OUTPUT1
-op_or
-id|GRC_LCLCTRL_GPIO_OUTPUT2
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|no_gpio2
-)paren
-(brace
-id|grc_local_ctrl
-op_and_assign
-op_complement
-(paren
-id|GRC_LCLCTRL_GPIO_OE2
-op_or
-id|GRC_LCLCTRL_GPIO_OUTPUT2
-)paren
-suffix:semicolon
-)brace
 id|tw32_f
 c_func
 (paren
@@ -4220,18 +4190,6 @@ c_func
 (paren
 l_int|100
 )paren
-suffix:semicolon
-id|grc_local_ctrl
-op_assign
-id|GRC_LCLCTRL_GPIO_OE0
-op_or
-id|GRC_LCLCTRL_GPIO_OE1
-op_or
-id|GRC_LCLCTRL_GPIO_OE2
-op_or
-id|GRC_LCLCTRL_GPIO_OUTPUT0
-op_or
-id|GRC_LCLCTRL_GPIO_OUTPUT1
 suffix:semicolon
 r_if
 c_cond
@@ -4240,6 +4198,11 @@ op_logical_neg
 id|no_gpio2
 )paren
 (brace
+id|grc_local_ctrl
+op_and_assign
+op_complement
+id|GRC_LCLCTRL_GPIO_OUTPUT2
+suffix:semicolon
 id|tw32_f
 c_func
 (paren

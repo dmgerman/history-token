@@ -21,6 +21,7 @@ macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/seq_file.h&gt;
 macro_line|#include &lt;linux/major.h&gt;
 macro_line|#include &lt;linux/root_dev.h&gt;
+macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;net/arp.h&gt;
 macro_line|#include &lt;net/ip.h&gt;
 macro_line|#include &lt;net/ipconfig.h&gt;
@@ -55,9 +56,9 @@ mdefine_line|#define IPCONFIG_DYNAMIC
 macro_line|#endif
 multiline_comment|/* Define the friendly delay before and after opening net devices */
 DECL|macro|CONF_PRE_OPEN
-mdefine_line|#define CONF_PRE_OPEN&t;&t;(HZ/2)&t;/* Before opening: 1/2 second */
+mdefine_line|#define CONF_PRE_OPEN&t;&t;500&t;/* Before opening: 1/2 second */
 DECL|macro|CONF_POST_OPEN
-mdefine_line|#define CONF_POST_OPEN&t;&t;(1*HZ)&t;/* After opening: 1 second */
+mdefine_line|#define CONF_POST_OPEN&t;&t;1&t;/* After opening: 1 second */
 multiline_comment|/* Define the timeout for waiting for a DHCP/BOOTP/RARP reply */
 DECL|macro|CONF_OPEN_RETRIES
 mdefine_line|#define CONF_OPEN_RETRIES &t;2&t;/* (Re)open devices twice */
@@ -5119,13 +5120,7 @@ id|try_try_again
 suffix:colon
 macro_line|#endif
 multiline_comment|/* Give hardware a chance to settle */
-id|set_current_state
-c_func
-(paren
-id|TASK_UNINTERRUPTIBLE
-)paren
-suffix:semicolon
-id|schedule_timeout
+id|msleep
 c_func
 (paren
 id|CONF_PRE_OPEN
@@ -5147,13 +5142,7 @@ op_minus
 l_int|1
 suffix:semicolon
 multiline_comment|/* Give drivers a chance to settle */
-id|set_current_state
-c_func
-(paren
-id|TASK_UNINTERRUPTIBLE
-)paren
-suffix:semicolon
-id|schedule_timeout
+id|ssleep
 c_func
 (paren
 id|CONF_POST_OPEN
