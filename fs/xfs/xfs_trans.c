@@ -708,6 +708,16 @@ id|tp-&gt;t_rtx_res
 op_assign
 id|tp-&gt;t_rtx_res_used
 suffix:semicolon
+id|PFLAGS_DUP
+c_func
+(paren
+op_amp
+id|tp-&gt;t_pflags
+comma
+op_amp
+id|ntp-&gt;t_pflags
+)paren
+suffix:semicolon
 id|XFS_TRANS_DUP_DQINFO
 c_func
 (paren
@@ -779,9 +789,12 @@ op_ne
 l_int|0
 suffix:semicolon
 multiline_comment|/* Mark this thread as being in a transaction */
-id|current-&gt;flags
-op_or_assign
-id|PF_FSTRANS
+id|PFLAGS_SET_FSTRANS
+c_func
+(paren
+op_amp
+id|tp-&gt;t_pflags
+)paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Attempt to reserve the needed disk blocks by decrementing&n;&t; * the number needed from the number available.  This will&n;&t; * fail if the count would go below zero.&n;&t; */
 r_if
@@ -815,10 +828,12 @@ op_ne
 l_int|0
 )paren
 (brace
-id|current-&gt;flags
-op_and_assign
-op_complement
-id|PF_FSTRANS
+id|PFLAGS_RESTORE
+c_func
+(paren
+op_amp
+id|tp-&gt;t_pflags
+)paren
 suffix:semicolon
 r_return
 (paren
@@ -1094,10 +1109,12 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
-id|current-&gt;flags
-op_and_assign
-op_complement
-id|PF_FSTRANS
+id|PFLAGS_RESTORE
+c_func
+(paren
+op_amp
+id|tp-&gt;t_pflags
+)paren
 suffix:semicolon
 r_return
 (paren
@@ -2410,6 +2427,13 @@ id|EIO
 )paren
 suffix:semicolon
 )brace
+id|PFLAGS_RESTORE
+c_func
+(paren
+op_amp
+id|tp-&gt;t_pflags
+)paren
+suffix:semicolon
 id|xfs_trans_free_items
 c_func
 (paren
@@ -2450,11 +2474,6 @@ op_star
 id|commit_lsn_p
 op_assign
 id|commit_lsn
-suffix:semicolon
-id|current-&gt;flags
-op_and_assign
-op_complement
-id|PF_FSTRANS
 suffix:semicolon
 r_return
 (paren
@@ -2702,6 +2721,13 @@ op_minus
 l_int|1
 )paren
 (brace
+id|PFLAGS_RESTORE
+c_func
+(paren
+op_amp
+id|tp-&gt;t_pflags
+)paren
+suffix:semicolon
 id|xfs_trans_uncommit
 c_func
 (paren
@@ -2711,11 +2737,6 @@ id|flags
 op_or
 id|XFS_TRANS_ABORT
 )paren
-suffix:semicolon
-id|current-&gt;flags
-op_and_assign
-op_complement
-id|PF_FSTRANS
 suffix:semicolon
 r_return
 id|XFS_ERROR
@@ -2773,6 +2794,14 @@ op_amp
 (paren
 id|tp-&gt;t_logcb
 )paren
+)paren
+suffix:semicolon
+multiline_comment|/* mark this thread as no longer being in a transaction */
+id|PFLAGS_RESTORE
+c_func
+(paren
+op_amp
+id|tp-&gt;t_pflags
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Once all the items of the transaction have been copied&n;&t; * to the in core log and the callback is attached, the&n;&t; * items can be unlocked.&n;&t; *&n;&t; * This will free descriptors pointing to items which were&n;&t; * not logged since there is nothing more to do with them.&n;&t; * For items which were logged, we will keep pointers to them&n;&t; * so they can be unpinned after the transaction commits to disk.&n;&t; * This will also stamp each modified meta-data item with&n;&t; * the commit lsn of this transaction for dependency tracking&n;&t; * purposes.&n;&t; */
@@ -2838,12 +2867,6 @@ id|xfsstats.xs_trans_async
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* mark this thread as no longer being in a transaction */
-id|current-&gt;flags
-op_and_assign
-op_complement
-id|PF_FSTRANS
-suffix:semicolon
 r_return
 (paren
 id|error
@@ -3454,6 +3477,14 @@ id|log_flags
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* mark this thread as no longer being in a transaction */
+id|PFLAGS_RESTORE
+c_func
+(paren
+op_amp
+id|tp-&gt;t_pflags
+)paren
+suffix:semicolon
 id|xfs_trans_free_items
 c_func
 (paren
@@ -3473,12 +3504,6 @@ c_func
 (paren
 id|tp
 )paren
-suffix:semicolon
-multiline_comment|/* mark this thread as no longer being in a transaction */
-id|current-&gt;flags
-op_and_assign
-op_complement
-id|PF_FSTRANS
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Free the transaction structure.  If there is more clean up&n; * to do when the structure is freed, add it here.&n; */

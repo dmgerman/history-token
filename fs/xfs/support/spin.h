@@ -5,6 +5,8 @@ mdefine_line|#define __XFS_SUPPORT_SPIN_H__
 macro_line|#include &lt;linux/sched.h&gt;&t;/* preempt needs this */
 macro_line|#include &lt;linux/spinlock.h&gt;
 multiline_comment|/*&n; * Map lock_t from IRIX to Linux spinlocks.&n; *&n; * Note that linux turns on/off spinlocks depending on CONFIG_SMP.&n; * We don&squot;t need to worry about SMP or not here.&n; */
+DECL|macro|SPLDECL
+mdefine_line|#define SPLDECL(s)&t;&t;unsigned long s
 DECL|typedef|lock_t
 r_typedef
 id|spinlock_t

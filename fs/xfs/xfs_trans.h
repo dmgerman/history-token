@@ -1094,6 +1094,11 @@ id|xfs_log_busy_chunk_t
 id|t_busy
 suffix:semicolon
 multiline_comment|/* busy/async free blocks */
+DECL|member|t_pflags
+id|xfs_pflags_t
+id|t_pflags
+suffix:semicolon
+multiline_comment|/* saved pflags state */
 DECL|typedef|xfs_trans_t
 )brace
 id|xfs_trans_t
