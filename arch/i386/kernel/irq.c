@@ -2590,6 +2590,7 @@ id|parse_hex_value
 (paren
 r_const
 r_char
+id|__user
 op_star
 id|buffer
 comma
@@ -2866,6 +2867,7 @@ id|file
 comma
 r_const
 r_char
+id|__user
 op_star
 id|buffer
 comma
@@ -3044,6 +3046,7 @@ id|file
 comma
 r_const
 r_char
+id|__user
 op_star
 id|buffer
 comma
