@@ -23,6 +23,7 @@ DECL|macro|S3C2410_SUBSRCPND
 mdefine_line|#define S3C2410_SUBSRCPND      S3C2410_IRQREG(0x018)
 DECL|macro|S3C2410_INTSUBMSK
 mdefine_line|#define S3C2410_INTSUBMSK      S3C2410_IRQREG(0x01C)
+multiline_comment|/* mask: 0=enable, 1=disable&n; * 1 bit EINT, 4=EINT4, 23=EINT23&n; * EINT0,1,2,3 are not handled here.&n;*/
 DECL|macro|S3C2410_EINTMASK
 mdefine_line|#define S3C2410_EINTMASK       S3C2410_EINTREG(0x0A4)
 DECL|macro|S3C2410_EINTPEND
