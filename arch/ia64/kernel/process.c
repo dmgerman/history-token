@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Architecture-specific setup.&n; *&n; * Copyright (C) 1998-2002 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; */
+multiline_comment|/*&n; * Architecture-specific setup.&n; *&n; * Copyright (C) 1998-2003 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; */
 DECL|macro|__KERNEL_SYSCALLS__
 mdefine_line|#define __KERNEL_SYSCALLS__&t;/* see &lt;asm/unistd.h&gt; */
 macro_line|#include &lt;linux/config.h&gt;
@@ -272,9 +272,14 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;&bslash;nPid: %d, comm: %20s&bslash;n&quot;
+l_string|&quot;&bslash;nPid: %d, CPU %d, comm: %20s&bslash;n&quot;
 comma
 id|current-&gt;pid
+comma
+id|smp_processor_id
+c_func
+(paren
+)paren
 comma
 id|current-&gt;comm
 )paren
@@ -669,6 +674,47 @@ r_int
 id|in_syscall
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|fsys_mode
+c_func
+(paren
+id|current
+comma
+op_amp
+id|scr-&gt;pt
+)paren
+)paren
+(brace
+multiline_comment|/* defer signal-handling etc. until we return to privilege-level 0.  */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|ia64_psr
+c_func
+(paren
+op_amp
+id|scr-&gt;pt
+)paren
+op_member_access_from_pointer
+id|lp
+)paren
+id|ia64_psr
+c_func
+(paren
+op_amp
+id|scr-&gt;pt
+)paren
+op_member_access_from_pointer
+id|lp
+op_assign
+l_int|1
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
 macro_line|#ifdef CONFIG_PERFMON
 r_if
 c_cond
@@ -823,6 +869,12 @@ op_star
 id|task
 )paren
 (brace
+macro_line|#ifdef CONFIG_PERFMON
+r_int
+r_int
+id|info
+suffix:semicolon
+macro_line|#endif
 r_if
 c_cond
 (paren
@@ -862,19 +914,27 @@ c_func
 id|task
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
+id|info
+op_assign
 id|__get_cpu_var
 c_func
 (paren
-id|pfm_syst_wide
+id|pfm_syst_info
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|info
+op_amp
+id|PFM_CPUINFO_SYST_WIDE
 )paren
 id|pfm_syst_wide_update_task
 c_func
 (paren
 id|task
+comma
+id|info
 comma
 l_int|0
 )paren
@@ -912,6 +972,12 @@ op_star
 id|task
 )paren
 (brace
+macro_line|#ifdef CONFIG_PERFMON
+r_int
+r_int
+id|info
+suffix:semicolon
+macro_line|#endif
 r_if
 c_cond
 (paren
@@ -951,19 +1017,27 @@ c_func
 id|task
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
+id|info
+op_assign
 id|__get_cpu_var
 c_func
 (paren
-id|pfm_syst_wide
+id|pfm_syst_info
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|info
+op_amp
+id|PFM_CPUINFO_SYST_WIDE
 )paren
 id|pfm_syst_wide_update_task
 c_func
 (paren
 id|task
+comma
+id|info
 comma
 l_int|1
 )paren

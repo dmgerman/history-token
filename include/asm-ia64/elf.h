@@ -1,7 +1,8 @@
 macro_line|#ifndef _ASM_IA64_ELF_H
 DECL|macro|_ASM_IA64_ELF_H
 mdefine_line|#define _ASM_IA64_ELF_H
-multiline_comment|/*&n; * ELF-specific definitions.&n; *&n; * Copyright (C) 1998, 1999, 2002 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; */
+multiline_comment|/*&n; * ELF-specific definitions.&n; *&n; * Copyright (C) 1998-1999, 2002-2003 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; */
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/fpu.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 multiline_comment|/*&n; * This is used to ensure we don&squot;t load something for the wrong architecture.&n; */
@@ -99,6 +100,9 @@ mdefine_line|#define ELF_HWCAP &t;0
 multiline_comment|/* This macro yields a string that ld.so will use to load&n;   implementation specific libraries for optimization.  Not terribly&n;   relevant until we have real hardware to play with... */
 DECL|macro|ELF_PLATFORM
 mdefine_line|#define ELF_PLATFORM&t;0
+multiline_comment|/*&n; * This should go into linux/elf.h...&n; */
+DECL|macro|AT_SYSINFO
+mdefine_line|#define AT_SYSINFO&t;32
 macro_line|#ifdef __KERNEL__
 r_struct
 id|elf64_hdr
@@ -147,6 +151,10 @@ DECL|macro|ELF_CORE_COPY_TASK_REGS
 mdefine_line|#define ELF_CORE_COPY_TASK_REGS(tsk, elf_gregs) dump_task_regs(tsk, elf_gregs)
 DECL|macro|ELF_CORE_COPY_FPREGS
 mdefine_line|#define ELF_CORE_COPY_FPREGS(tsk, elf_fpregs) dump_task_fpu(tsk, elf_fpregs)
+macro_line|#ifdef CONFIG_FSYS
+DECL|macro|ARCH_DLINFO
+mdefine_line|#define ARCH_DLINFO&t;&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;extern int syscall_via_epc;&t;&t;&t;&bslash;&n;&t;NEW_AUX_ENT(AT_SYSINFO, syscall_via_epc);&t;&bslash;&n;} while (0)
 macro_line|#endif
+macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* _ASM_IA64_ELF_H */
 eof

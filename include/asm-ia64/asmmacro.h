@@ -1,9 +1,12 @@
 macro_line|#ifndef _ASM_IA64_ASMMACRO_H
 DECL|macro|_ASM_IA64_ASMMACRO_H
 mdefine_line|#define _ASM_IA64_ASMMACRO_H
-multiline_comment|/*&n; * Copyright (C) 2000-2001 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; */
+multiline_comment|/*&n; * Copyright (C) 2000-2001, 2003 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; */
+macro_line|#include &lt;linux/config.h&gt;
 DECL|macro|ENTRY
 mdefine_line|#define ENTRY(name)&t;&t;&t;&t;&bslash;&n;&t;.align 32;&t;&t;&t;&t;&bslash;&n;&t;.proc name;&t;&t;&t;&t;&bslash;&n;name:
+DECL|macro|ENTRY_MIN_ALIGN
+mdefine_line|#define ENTRY_MIN_ALIGN(name)&t;&t;&t;&bslash;&n;&t;.align 16;&t;&t;&t;&t;&bslash;&n;&t;.proc name;&t;&t;&t;&t;&bslash;&n;name:
 DECL|macro|GLOBAL_ENTRY
 mdefine_line|#define GLOBAL_ENTRY(name)&t;&t;&t;&bslash;&n;&t;.global name;&t;&t;&t;&t;&bslash;&n;&t;ENTRY(name)
 DECL|macro|END
@@ -37,6 +40,13 @@ macro_line|# define EXCLR(y,x...)&t;&t;&t;&t;&t;&bslash;&n;&t;.xdata4 &quot;__ex
 macro_line|#else
 macro_line|# define EX(y,x...)&t;&t;&t;&t;&t;&bslash;&n;&t;.xdata4 &quot;__ex_table&quot;, @gprel(99f), @gprel(y);&t;&bslash;&n;  99:&t;x
 macro_line|# define EXCLR(y,x...)&t;&t;&t;&t;&t;&bslash;&n;&t;.xdata4 &quot;__ex_table&quot;, @gprel(99f), @gprel(y)+4;&t;&bslash;&n;  99:&t;x
+macro_line|#endif
+macro_line|#ifdef CONFIG_MCKINLEY
+multiline_comment|/* workaround for Itanium 2 Errata 9: */
+DECL|macro|MCKINLEY_E9_WORKAROUND
+macro_line|# define MCKINLEY_E9_WORKAROUND&t;&t;&t;&bslash;&n;&t;br.call.sptk.many b7=1f;;&t;&t;&bslash;&n;1:
+macro_line|#else
+macro_line|# define MCKINLEY_E9_WORKAROUND
 macro_line|#endif
 macro_line|#endif /* _ASM_IA64_ASMMACRO_H */
 eof

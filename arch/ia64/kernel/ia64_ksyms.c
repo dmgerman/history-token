@@ -609,4 +609,21 @@ c_func
 id|machvec_noop
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_PERFMON
+macro_line|#include &lt;asm/perfmon.h&gt;
+DECL|variable|pfm_install_alternate_syswide_subsystem
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|pfm_install_alternate_syswide_subsystem
+)paren
+suffix:semicolon
+DECL|variable|pfm_remove_alternate_syswide_subsystem
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|pfm_remove_alternate_syswide_subsystem
+)paren
+suffix:semicolon
+macro_line|#endif
 eof

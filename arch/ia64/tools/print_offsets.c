@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Utility to generate asm-ia64/offsets.h.&n; *&n; * Copyright (C) 1999-2002 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; *&n; * Note that this file has dual use: when building the kernel&n; * natively, the file is translated into a binary and executed.  When&n; * building the kernel in a cross-development environment, this file&n; * gets translated into an assembly file which, in turn, is processed&n; * by awk to generate offsets.h.  So if you make any changes to this&n; * file, be sure to verify that the awk procedure still works (see&n; * prin_offsets.awk).&n; */
+multiline_comment|/*&n; * Utility to generate asm-ia64/offsets.h.&n; *&n; * Copyright (C) 1999-2003 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; *&n; * Note that this file has dual use: when building the kernel&n; * natively, the file is translated into a binary and executed.  When&n; * building the kernel in a cross-development environment, this file&n; * gets translated into an assembly file which, in turn, is processed&n; * by awk to generate offsets.h.  So if you make any changes to this&n; * file, be sure to verify that the awk procedure still works (see&n; * prin_offsets.awk).&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;asm-ia64/processor.h&gt;
@@ -148,6 +148,18 @@ id|thread.ksp
 )brace
 comma
 (brace
+l_string|&quot;IA64_TASK_THREAD_ON_USTACK_OFFSET&quot;
+comma
+m_offsetof
+(paren
+r_struct
+id|task_struct
+comma
+id|thread.on_ustack
+)paren
+)brace
+comma
+(brace
 l_string|&quot;IA64_TASK_PID_OFFSET&quot;
 comma
 m_offsetof
@@ -156,6 +168,18 @@ r_struct
 id|task_struct
 comma
 id|pid
+)paren
+)brace
+comma
+(brace
+l_string|&quot;IA64_TASK_TGID_OFFSET&quot;
+comma
+m_offsetof
+(paren
+r_struct
+id|task_struct
+comma
+id|tgid
 )paren
 )brace
 comma

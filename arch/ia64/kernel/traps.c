@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Architecture-specific trap handling.&n; *&n; * Copyright (C) 1998-2002 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; *&n; * 05/12/00 grao &lt;goutham.rao@intel.com&gt; : added isr in siginfo for SIGFPE&n; */
+multiline_comment|/*&n; * Architecture-specific trap handling.&n; *&n; * Copyright (C) 1998-2003 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; *&n; * 05/12/00 grao &lt;goutham.rao@intel.com&gt; : added isr in siginfo for SIGFPE&n; */
 multiline_comment|/*&n; * fp_emulate() needs to be able to access and update all floating point registers.  Those&n; * saved in pt_regs can be accessed through that structure, but those not saved, will be&n; * accessed directly.  To make this work, we need to ensure that the compiler does not end&n; * up using a preserved floating point register on its own.  The following achieves this&n; * by declaring preserved registers that are not marked as &quot;fixed&quot; as global register&n; * variables.&n; */
 r_register
 r_float
@@ -2418,6 +2418,88 @@ r_case
 l_int|36
 suffix:colon
 multiline_comment|/* Single Step Trap */
+r_if
+c_cond
+(paren
+id|fsys_mode
+c_func
+(paren
+id|current
+comma
+id|regs
+)paren
+)paren
+(brace
+r_extern
+r_char
+id|syscall_via_break
+(braket
+)braket
+comma
+id|__start_gate_section
+(braket
+)braket
+suffix:semicolon
+multiline_comment|/*&n;&t;&t;&t; * Got a trap in fsys-mode: Taken Branch Trap and Single Step trap&n;&t;&t;&t; * need special handling; Debug trap is not supposed to happen.&n;&t;&t;&t; */
+r_if
+c_cond
+(paren
+id|unlikely
+c_func
+(paren
+id|vector
+op_eq
+l_int|29
+)paren
+)paren
+(brace
+id|die
+c_func
+(paren
+l_string|&quot;Got debug trap in fsys-mode---not supposed to happen!&quot;
+comma
+id|regs
+comma
+l_int|0
+)paren
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
+multiline_comment|/* re-do the system call via break 0x100000: */
+id|regs-&gt;cr_iip
+op_assign
+id|GATE_ADDR
+op_plus
+(paren
+id|syscall_via_break
+op_minus
+id|__start_gate_section
+)paren
+suffix:semicolon
+id|ia64_psr
+c_func
+(paren
+id|regs
+)paren
+op_member_access_from_pointer
+id|ri
+op_assign
+l_int|0
+suffix:semicolon
+id|ia64_psr
+c_func
+(paren
+id|regs
+)paren
+op_member_access_from_pointer
+id|cpl
+op_assign
+l_int|3
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
 r_switch
 c_cond
 (paren
@@ -2625,7 +2707,32 @@ suffix:semicolon
 r_case
 l_int|34
 suffix:colon
-multiline_comment|/* Unimplemented Instruction Address Trap */
+r_if
+c_cond
+(paren
+id|isr
+op_amp
+l_int|0x2
+)paren
+(brace
+multiline_comment|/* Lower-Privilege Transfer Trap */
+multiline_comment|/*&n;&t;&t;&t; * Just clear PSR.lp and then return immediately: all the&n;&t;&t;&t; * interesting work (e.g., signal delivery is done in the kernel&n;&t;&t;&t; * exit path).&n;&t;&t;&t; */
+id|ia64_psr
+c_func
+(paren
+id|regs
+)paren
+op_member_access_from_pointer
+id|lp
+op_assign
+l_int|0
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
+r_else
+(brace
+multiline_comment|/* Unimplemented Instr. Address Trap */
 r_if
 c_cond
 (paren
@@ -2700,6 +2807,7 @@ comma
 l_string|&quot;Unimplemented Instruction Address fault&quot;
 )paren
 suffix:semicolon
+)brace
 r_break
 suffix:semicolon
 r_case
