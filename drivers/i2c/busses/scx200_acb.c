@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/i2c.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
+macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;linux/scx200.h&gt;
 DECL|macro|NAME
@@ -804,14 +805,10 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-id|schedule_timeout
+id|msleep
 c_func
 (paren
-id|HZ
-op_div
-l_int|100
-op_plus
-l_int|1
+l_int|10
 )paren
 suffix:semicolon
 )brace
