@@ -1550,6 +1550,7 @@ mdefine_line|#define TCP_INC_STATS_USER(field) &t;SNMP_INC_STATS_USER(tcp_statis
 DECL|macro|TCP_DEC_STATS
 mdefine_line|#define TCP_DEC_STATS(field)&t;&t;SNMP_DEC_STATS(tcp_statistics, field)
 r_extern
+id|__inline__
 r_void
 id|tcp_put_port
 c_func
