@@ -612,6 +612,8 @@ mdefine_line|#define IFA_MAX IFA_CACHEINFO
 multiline_comment|/* ifa_flags */
 DECL|macro|IFA_F_SECONDARY
 mdefine_line|#define IFA_F_SECONDARY&t;&t;0x01
+DECL|macro|IFA_F_TEMPORARY
+mdefine_line|#define IFA_F_TEMPORARY&t;&t;IFA_F_SECONDARY
 DECL|macro|IFA_F_DEPRECATED
 mdefine_line|#define IFA_F_DEPRECATED&t;0x20
 DECL|macro|IFA_F_TENTATIVE
