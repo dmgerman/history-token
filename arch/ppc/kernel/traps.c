@@ -1083,11 +1083,7 @@ r_int
 r_int
 id|esr
 op_assign
-id|mfspr
-c_func
-(paren
-id|SPRN_ESR
-)paren
+id|regs-&gt;dsisr
 suffix:semicolon
 r_int
 id|isbpt
