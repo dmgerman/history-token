@@ -1493,7 +1493,7 @@ multiline_comment|/* many common platforms have dma-coherent caches, which means
 macro_line|#if&t;defined(CONFIG_X86)
 DECL|macro|USE_KMALLOC
 mdefine_line|#define USE_KMALLOC
-macro_line|#elif&t;define(CONFIG_PPC) &amp;&amp; !defined(CONFIG_NOT_COHERENT_CACHE)
+macro_line|#elif&t;defined(CONFIG_PPC) &amp;&amp; !defined(CONFIG_NOT_COHERENT_CACHE)
 DECL|macro|USE_KMALLOC
 mdefine_line|#define USE_KMALLOC
 multiline_comment|/* FIXME there are other cases, including an x86-64 one ...  */
@@ -1706,6 +1706,9 @@ id|u8
 op_star
 id|buf
 suffix:semicolon
+id|u32
+id|tmp
+suffix:semicolon
 r_int
 id|count
 comma
@@ -1785,8 +1788,8 @@ l_int|4
 )paren
 (brace
 multiline_comment|/* NOTE be careful if you try to align these. fifo lines&n;&t;&t; * should normally be full (4 bytes) and successive partial&n;&t;&t; * lines are ok only in certain cases.&n;&t;&t; */
-id|writel
-(paren
+id|tmp
+op_assign
 id|get_unaligned
 (paren
 (paren
@@ -1795,6 +1798,16 @@ op_star
 )paren
 id|buf
 )paren
+suffix:semicolon
+id|cpu_to_le32s
+(paren
+op_amp
+id|tmp
+)paren
+suffix:semicolon
+id|writel
+(paren
+id|tmp
 comma
 op_amp
 id|regs-&gt;ep_data
@@ -1818,7 +1831,6 @@ OL
 id|ep-&gt;ep.maxpacket
 )paren
 (brace
-id|u32
 id|tmp
 op_assign
 id|count
@@ -1834,6 +1846,12 @@ id|buf
 )paren
 suffix:colon
 id|count
+suffix:semicolon
+id|cpu_to_le32s
+(paren
+op_amp
+id|tmp
+)paren
 suffix:semicolon
 id|set_fifo_bytecount
 (paren
@@ -2241,13 +2259,23 @@ op_ge
 l_int|4
 )paren
 (brace
-id|put_unaligned
-(paren
+id|tmp
+op_assign
 id|readl
 (paren
 op_amp
 id|regs-&gt;ep_data
 )paren
+suffix:semicolon
+id|cpu_to_le32s
+(paren
+op_amp
+id|tmp
+)paren
+suffix:semicolon
+id|put_unaligned
+(paren
+id|tmp
 comma
 (paren
 id|u32
@@ -2277,6 +2305,12 @@ id|readl
 (paren
 op_amp
 id|regs-&gt;ep_data
+)paren
+suffix:semicolon
+id|cpu_to_le32s
+(paren
+op_amp
+id|tmp
 )paren
 suffix:semicolon
 r_do
@@ -8703,6 +8737,24 @@ id|readl
 (paren
 op_amp
 id|dev-&gt;usb-&gt;setup4567
+)paren
+suffix:semicolon
+id|cpu_to_le32s
+(paren
+op_amp
+id|u.raw
+(braket
+l_int|0
+)braket
+)paren
+suffix:semicolon
+id|cpu_to_le32s
+(paren
+op_amp
+id|u.raw
+(braket
+l_int|1
+)braket
 )paren
 suffix:semicolon
 id|le16_to_cpus
