@@ -915,10 +915,9 @@ id|rt6_dflt_pointer
 op_ne
 id|match
 )paren
-id|RT6_TRACE1
+id|RT6_TRACE
 c_func
 (paren
-id|KERN_INFO
 l_string|&quot;changed default router: %p-&gt;%p&bslash;n&quot;
 comma
 id|rt6_dflt_pointer
