@@ -5003,6 +5003,11 @@ op_amp
 id|modlist_lock
 )paren
 suffix:semicolon
+multiline_comment|/* Note, setting the mod-&gt;live to 1 here is safe because we haven&squot;t&n;&t; * linked the module into the system&squot;s kernel symbol table yet,&n;&t; * which means that the only way any other kernel code can call&n;&t; * into this module right now is if this module hands out entry&n;&t; * pointers to the other code.  We assume that no module hands out&n;&t; * entry pointers to the rest of the kernel unless it is ready to&n;&t; * have them used.&n;&t; */
+id|mod-&gt;live
+op_assign
+l_int|1
+suffix:semicolon
 multiline_comment|/* Start the module */
 id|ret
 op_assign
@@ -5048,18 +5053,20 @@ id|mod-&gt;name
 )paren
 suffix:semicolon
 multiline_comment|/* Mark it &quot;live&quot; so that they can force&n;&t;&t;&t;   deletion later, and we don&squot;t keep getting&n;&t;&t;&t;   woken on every decrement. */
-id|mod-&gt;live
-op_assign
-l_int|1
-suffix:semicolon
 )brace
 r_else
+(brace
+id|mod-&gt;live
+op_assign
+l_int|0
+suffix:semicolon
 id|free_module
 c_func
 (paren
 id|mod
 )paren
 suffix:semicolon
+)brace
 id|up
 c_func
 (paren
@@ -5119,10 +5126,6 @@ op_assign
 l_int|NULL
 suffix:semicolon
 multiline_comment|/* All ok! */
-id|mod-&gt;live
-op_assign
-l_int|1
-suffix:semicolon
 id|up
 c_func
 (paren
