@@ -267,8 +267,6 @@ DECL|macro|inw
 mdefine_line|#define inw(addr)&t;&t;readw(addr)
 DECL|macro|inl
 mdefine_line|#define inl(addr)&t;&t;readl(addr)
-DECL|macro|inb_p
-mdefine_line|#define inb_p(addr)&t;&t;readb(addr)
 DECL|macro|outb_local
 mdefine_line|#define outb_local(b, addr)&t;writeb(b, addr)
 DECL|macro|outb
@@ -277,8 +275,18 @@ DECL|macro|outw
 mdefine_line|#define outw(b, addr)&t;&t;writew(b, addr)
 DECL|macro|outl
 mdefine_line|#define outl(b, addr)&t;&t;writel(b, addr)
+DECL|macro|inb_p
+mdefine_line|#define inb_p inb
 DECL|macro|outb_p
-mdefine_line|#define outb_p(b, addr)&t;&t;writeb(b, addr)
+mdefine_line|#define outb_p outb
+DECL|macro|inw_p
+mdefine_line|#define inw_p inw
+DECL|macro|outw_p
+mdefine_line|#define outw_p outw
+DECL|macro|inl_p
+mdefine_line|#define inl_p inl
+DECL|macro|outl_p
+mdefine_line|#define outl_p outl
 r_extern
 r_void
 id|outsb
