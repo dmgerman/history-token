@@ -39,7 +39,7 @@ op_assign
 l_int|50
 suffix:semicolon
 DECL|macro|IBMVSCSI_VERSION
-mdefine_line|#define IBMVSCSI_VERSION &quot;1.5.1&quot;
+mdefine_line|#define IBMVSCSI_VERSION &quot;1.5.2&quot;
 id|MODULE_DESCRIPTION
 c_func
 (paren
@@ -2124,7 +2124,7 @@ id|printk
 c_func
 (paren
 l_string|&quot;ibmvscsi: host srp version: %s, &quot;
-l_string|&quot;host partition %s (%d), OS %d&bslash;n&quot;
+l_string|&quot;host partition %s (%d), OS %d, max io %u&bslash;n&quot;
 comma
 id|hostdata-&gt;madapter_info.srp_version
 comma
@@ -2133,7 +2133,29 @@ comma
 id|hostdata-&gt;madapter_info.partition_number
 comma
 id|hostdata-&gt;madapter_info.os_type
+comma
+id|hostdata-&gt;madapter_info.port_max_txu
+(braket
+l_int|0
+)braket
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|hostdata-&gt;madapter_info.port_max_txu
+(braket
+l_int|0
+)braket
+)paren
+id|hostdata-&gt;host-&gt;max_sectors
+op_assign
+id|hostdata-&gt;madapter_info.port_max_txu
+(braket
+l_int|0
+)braket
+op_rshift
+l_int|9
 suffix:semicolon
 )brace
 )brace
@@ -4647,6 +4669,13 @@ op_minus
 l_int|1
 )paren
 suffix:semicolon
+id|hostdata-&gt;host-&gt;max_sectors
+op_assign
+l_int|32
+op_star
+l_int|8
+suffix:semicolon
+multiline_comment|/* default max I/O 32 pages */
 r_if
 c_cond
 (paren
