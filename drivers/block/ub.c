@@ -5786,6 +5786,19 @@ id|sc
 )paren
 suffix:semicolon
 multiline_comment|/* This is pretty much a long term P3 */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|atomic_read
+c_func
+(paren
+op_amp
+id|sc-&gt;poison
+)paren
+)paren
+(brace
+multiline_comment|/* Cover sc-&gt;dev */
 id|printk
 c_func
 (paren
@@ -5801,6 +5814,7 @@ comma
 id|sc-&gt;capacity.bsize
 )paren
 suffix:semicolon
+)brace
 multiline_comment|/* XXX Support sector size switching like in sr.c */
 id|blk_queue_hardsect_size
 c_func
