@@ -1103,6 +1103,11 @@ id|resume
 op_assign
 id|speedstep_resume
 comma
+dot
+id|owner
+op_assign
+id|THIS_MODULE
+comma
 )brace
 suffix:semicolon
 multiline_comment|/**&n; * speedstep_init - initializes the SpeedStep CPUFreq driver&n; *&n; *   Initializes the SpeedStep support. Returns -ENODEV on unsupported&n; * BIOS, -EINVAL on problems during initiatization, and zero on&n; * success.&n; */
