@@ -1554,7 +1554,7 @@ op_star
 )paren
 suffix:semicolon
 DECL|member|unlink_done
-r_void
+r_int
 (paren
 op_star
 id|unlink_done
@@ -1565,7 +1565,7 @@ id|dentry
 op_star
 comma
 r_struct
-id|rpc_message
+id|rpc_task
 op_star
 )paren
 suffix:semicolon
