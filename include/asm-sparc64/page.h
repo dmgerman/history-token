@@ -288,10 +288,16 @@ DECL|macro|__pa
 mdefine_line|#define __pa(x)&t;&t;&t;((unsigned long)(x) - PAGE_OFFSET)
 DECL|macro|__va
 mdefine_line|#define __va(x)&t;&t;&t;((void *)((unsigned long) (x) + PAGE_OFFSET))
+DECL|macro|pfn_to_page
+mdefine_line|#define pfn_to_page(pfn)&t;(mem_map + ((pfn)-(pfn_base)))
+DECL|macro|page_to_pfn
+mdefine_line|#define page_to_pfn(page)&t;((unsigned long)((page) - ((pfn)-(pfn_base)) - mem_map))
 DECL|macro|virt_to_page
-mdefine_line|#define virt_to_page(kaddr)&t;(mem_map + ((__pa(kaddr)-phys_base) &gt;&gt; PAGE_SHIFT))
-DECL|macro|VALID_PAGE
-mdefine_line|#define VALID_PAGE(page)&t;((page - mem_map) &lt; max_mapnr)
+mdefine_line|#define virt_to_page(kaddr)&t;pfn_to_page(__pa(kaddr)&gt;&gt;PAGE_SHIFT)
+DECL|macro|pfn_valid
+mdefine_line|#define pfn_valid(pfn)&t;&t;((pfn) &lt; max_mapnr)
+DECL|macro|virt_addr_valid
+mdefine_line|#define virt_addr_valid(kaddr)&t;pfn_valid(__pa(kaddr) &gt;&gt; PAGE_SHIFT)
 DECL|macro|virt_to_phys
 mdefine_line|#define virt_to_phys __pa
 DECL|macro|phys_to_virt
