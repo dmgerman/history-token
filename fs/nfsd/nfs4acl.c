@@ -157,6 +157,7 @@ r_return
 id|ret
 suffix:semicolon
 )brace
+multiline_comment|/* XXX: modify functions to return NFS errors; they&squot;re only ever&n; * used by nfs code, after all.... */
 r_static
 r_int
 DECL|function|mode_from_nfs4
