@@ -19,15 +19,6 @@ macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/leds.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
-multiline_comment|/*&n; * Values for cpu_do_idle()&n; */
-DECL|macro|IDLE_WAIT_SLOW
-mdefine_line|#define IDLE_WAIT_SLOW&t;0
-DECL|macro|IDLE_WAIT_FAST
-mdefine_line|#define IDLE_WAIT_FAST&t;1
-DECL|macro|IDLE_CLOCK_SLOW
-mdefine_line|#define IDLE_CLOCK_SLOW&t;2
-DECL|macro|IDLE_CLOCK_FAST
-mdefine_line|#define IDLE_CLOCK_FAST&t;3
 r_extern
 r_const
 r_char
@@ -153,6 +144,44 @@ id|pm_power_off
 r_void
 )paren
 suffix:semicolon
+multiline_comment|/*&n; * This is our default idle handler.  We need to disable&n; * interrupts here to ensure we don&squot;t miss a wakeup call.&n; */
+DECL|function|default_idle
+r_static
+r_void
+id|default_idle
+c_func
+(paren
+r_void
+)paren
+(brace
+id|__cli
+c_func
+(paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|need_resched
+c_func
+(paren
+)paren
+op_logical_and
+op_logical_neg
+id|hlt_counter
+)paren
+id|arch_idle
+c_func
+(paren
+)paren
+suffix:semicolon
+id|__sti
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/*&n; * The idle thread.  We try to conserve power, while trying to keep&n; * overall latency low.  The architecture specific idle is passed&n; * a value to indicate the level of &quot;idleness&quot; of the system.&n; */
 DECL|function|cpu_idle
 r_void
@@ -193,7 +222,7 @@ id|idle
 )paren
 id|idle
 op_assign
-id|arch_idle
+id|default_idle
 suffix:semicolon
 id|leds_event
 c_func
