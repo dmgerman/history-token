@@ -30,6 +30,7 @@ macro_line|#include &quot;irq_user.h&quot;
 macro_line|#include &quot;frame_user.h&quot;
 macro_line|#include &quot;syscall_user.h&quot;
 macro_line|#include &quot;ptrace_user.h&quot;
+macro_line|#include &quot;time_user.h&quot;
 macro_line|#include &quot;task.h&quot;
 macro_line|#include &quot;os.h&quot;
 DECL|function|signal_segv
@@ -2634,6 +2635,21 @@ id|jail_timer_off
 r_return
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|sig
+op_eq
+id|SIGALRM
+)paren
+(brace
+id|switch_timers
+c_func
+(paren
+l_int|0
+)paren
+suffix:semicolon
+)brace
 id|sig_handler_common
 c_func
 (paren
@@ -2643,6 +2659,21 @@ op_amp
 id|sc
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|sig
+op_eq
+id|SIGALRM
+)paren
+(brace
+id|switch_timers
+c_func
+(paren
+l_int|1
+)paren
+suffix:semicolon
+)brace
 )brace
 DECL|function|do_longjmp
 r_void

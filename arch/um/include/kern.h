@@ -131,6 +131,14 @@ id|sig
 suffix:semicolon
 r_extern
 r_int
+id|getpid
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_int
 id|getuid
 c_func
 (paren
