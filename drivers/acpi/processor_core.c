@@ -414,7 +414,7 @@ r_case
 l_int|1
 suffix:colon
 multiline_comment|/* PIIX4 B-step */
-multiline_comment|/*&n;&t;&t; * See specification changes #13 (&quot;Manual Throttle Duty Cycle&quot;)&n;&t;&t; * and #14 (&quot;Enabling and Disabling Manual Throttle&quot;), plus&n;&t;&t; * erratum #5 (&quot;STPCLK# Deassertion Time&quot;) from the January &n;&t;&t; * 2002 PIIX4 specification update.  Applies to only older &n;&t;&t; * PIIX4 models.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * See specification changes #13 (&quot;Manual Throttle Duty Cycle&quot;)&n;&t;&t; * and #14 (&quot;Enabling and Disabling Manual Throttle&quot;), plus&n;&t;&t; * erratum #5 (&quot;STPCLK# Deassertion Time&quot;) from the January&n;&t;&t; * 2002 PIIX4 specification update.  Applies to only older&n;&t;&t; * PIIX4 models.&n;&t;&t; */
 id|errata.piix4.throttle
 op_assign
 l_int|1
@@ -427,8 +427,8 @@ r_case
 l_int|3
 suffix:colon
 multiline_comment|/* PIIX4M */
-multiline_comment|/*&n;&t;&t; * See erratum #18 (&quot;C3 Power State/BMIDE and Type-F DMA &n;&t;&t; * Livelock&quot;) from the January 2002 PIIX4 specification update.&n;&t;&t; * Applies to all PIIX4 models.&n;&t;&t; */
-multiline_comment|/* &n;&t;&t; * BM-IDE&n;&t;&t; * ------&n;&t;&t; * Find the PIIX4 IDE Controller and get the Bus Master IDE &n;&t;&t; * Status register address.  We&squot;ll use this later to read &n;&t;&t; * each IDE controller&squot;s DMA status to make sure we catch all&n;&t;&t; * DMA activity.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * See erratum #18 (&quot;C3 Power State/BMIDE and Type-F DMA&n;&t;&t; * Livelock&quot;) from the January 2002 PIIX4 specification update.&n;&t;&t; * Applies to all PIIX4 models.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * BM-IDE&n;&t;&t; * ------&n;&t;&t; * Find the PIIX4 IDE Controller and get the Bus Master IDE&n;&t;&t; * Status register address.  We&squot;ll use this later to read&n;&t;&t; * each IDE controller&squot;s DMA status to make sure we catch all&n;&t;&t; * DMA activity.&n;&t;&t; */
 id|dev
 op_assign
 id|pci_get_subsys
@@ -468,7 +468,7 @@ id|dev
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* &n;&t;&t; * Type-F DMA&n;&t;&t; * ----------&n;&t;&t; * Find the PIIX4 ISA Controller and read the Motherboard&n;&t;&t; * DMA controller&squot;s status to see if Type-F (Fast) DMA mode&n;&t;&t; * is enabled (bit 7) on either channel.  Note that we&squot;ll &n;&t;&t; * disable C3 support if this is enabled, as some legacy &n;&t;&t; * devices won&squot;t operate well if fast DMA is disabled.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Type-F DMA&n;&t;&t; * ----------&n;&t;&t; * Find the PIIX4 ISA Controller and read the Motherboard&n;&t;&t; * DMA controller&squot;s status to see if Type-F (Fast) DMA mode&n;&t;&t; * is enabled (bit 7) on either channel.  Note that we&squot;ll&n;&t;&t; * disable C3 support if this is enabled, as some legacy&n;&t;&t; * devices won&squot;t operate well if fast DMA is disabled.&n;&t;&t; */
 id|dev
 op_assign
 id|pci_get_subsys
@@ -1858,7 +1858,7 @@ l_string|&quot;Error installing device notify handler&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * Install the idle handler if processor power management is supported.&n;&t; * Note that we use previously set idle handler will be used on &n;&t; * platforms that only support C1.&n;&t; */
+multiline_comment|/*&n;&t; * Install the idle handler if processor power management is supported.&n;&t; * Note that we use previously set idle handler will be used on&n;&t; * platforms that only support C1.&n;&t; */
 r_if
 c_cond
 (paren
@@ -3461,7 +3461,7 @@ l_int|NULL
 suffix:semicolon
 macro_line|#endif
 )brace
-multiline_comment|/*&n; * We keep the driver loaded even when ACPI is not running. &n; * This is needed for the powernow-k8 driver, that works even without&n; * ACPI, but needs symbols from this driver&n; */
+multiline_comment|/*&n; * We keep the driver loaded even when ACPI is not running.&n; * This is needed for the powernow-k8 driver, that works even without&n; * ACPI, but needs symbols from this driver&n; */
 r_static
 r_int
 id|__init
