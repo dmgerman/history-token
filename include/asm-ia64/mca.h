@@ -356,14 +356,6 @@ c_func
 r_void
 )paren
 suffix:semicolon
-r_extern
-r_int
-id|ia64_mca_check_errors
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 macro_line|#endif /* !__ASSEMBLY__ */
 macro_line|#endif /* _ASM_IA64_MCA_H */
 eof
