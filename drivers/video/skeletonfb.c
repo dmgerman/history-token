@@ -77,13 +77,6 @@ id|xxx_par
 id|__initdata
 id|current_par
 suffix:semicolon
-multiline_comment|/* To go away in the near future */
-DECL|variable|disp
-r_static
-r_struct
-id|display
-id|disp
-suffix:semicolon
 r_int
 id|xxxfb_init
 c_func
@@ -719,16 +712,6 @@ id|info.var
 op_assign
 id|xxxfb_var
 suffix:semicolon
-id|gen_set_disp
-c_func
-(paren
-op_minus
-l_int|1
-comma
-op_amp
-id|fb_info
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -872,16 +855,6 @@ dot
 id|fb_set_var
 op_assign
 id|gen_set_var
-comma
-dot
-id|fb_get_cmap
-op_assign
-id|gen_get_cmap
-comma
-dot
-id|fb_set_cmap
-op_assign
-id|gen_set_cmap
 comma
 dot
 id|fb_check_var

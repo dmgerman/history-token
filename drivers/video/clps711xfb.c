@@ -5,7 +5,6 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/fb.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
-macro_line|#include &lt;video/fbcon.h&gt;
 macro_line|#include &lt;asm/hardware.h&gt;
 macro_line|#include &lt;asm/mach-types.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
@@ -666,16 +665,6 @@ op_assign
 id|gen_set_var
 comma
 dot
-id|fb_set_cmap
-op_assign
-id|gen_set_cmap
-comma
-dot
-id|fb_get_cmap
-op_assign
-id|gen_get_cmap
-comma
-dot
 id|fb_setcolreg
 op_assign
 id|clps7111fb_setcolreg
@@ -929,12 +918,6 @@ r_sizeof
 op_star
 id|cfb
 )paren
-op_plus
-r_sizeof
-(paren
-r_struct
-id|display
-)paren
 comma
 id|GFP_KERNEL
 )paren
@@ -959,12 +942,6 @@ r_sizeof
 (paren
 op_star
 id|cfb
-)paren
-op_plus
-r_sizeof
-(paren
-r_struct
-id|display
 )paren
 )paren
 suffix:semicolon
@@ -1058,14 +1035,6 @@ op_assign
 op_amp
 id|clps7111fb_ops
 suffix:semicolon
-id|cfb-&gt;changevar
-op_assign
-l_int|NULL
-suffix:semicolon
-id|cfb-&gt;switch_con
-op_assign
-id|gen_switch
-suffix:semicolon
 id|cfb-&gt;updatevar
 op_assign
 id|gen_update_var
@@ -1073,19 +1042,6 @@ suffix:semicolon
 id|cfb-&gt;flags
 op_assign
 id|FBINFO_FLAG_DEFAULT
-suffix:semicolon
-id|cfb-&gt;disp
-op_assign
-(paren
-r_struct
-id|display
-op_star
-)paren
-(paren
-id|cfb
-op_plus
-l_int|1
-)paren
 suffix:semicolon
 id|fb_alloc_cmap
 c_func
