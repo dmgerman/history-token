@@ -6,7 +6,6 @@ DECL|macro|IO_SPACE_LIMIT
 mdefine_line|#define IO_SPACE_LIMIT&t;&t;0xffffffff
 DECL|macro|__mem_pci
 mdefine_line|#define __mem_pci(a)&t;&t;(a)
-multiline_comment|/*&n; * Pick up VMALLOC_END&n; */
 DECL|macro|___io
 mdefine_line|#define ___io(p)&t;&t;((void __iomem *)((p)+IXP2000_PCI_IO_VIRT_BASE))
 multiline_comment|/*&n; * The IXP2400 before revision B0 asserts byte lanes for PCI I/O&n; * transactions the other way round (MEM transactions don&squot;t have this&n; * issue), so we need to override the standard functions.  B0 and later&n; * have a bit that can be set to 1 to get the &squot;proper&squot; behavior, but&n; * since that isn&squot;t available on the A? revisions we just keep doing&n; * things manually.&n; */
