@@ -876,12 +876,6 @@ op_assign
 id|sata_phy_reset
 comma
 dot
-id|phy_config
-op_assign
-id|pata_phy_config
-comma
-multiline_comment|/* not a typo */
-dot
 id|bmdma_start
 op_assign
 id|ata_bmdma_start_mmio
@@ -1154,7 +1148,7 @@ c_func
 (paren
 id|pdev
 comma
-l_int|0xFFFFFFFF
+l_int|0xFFFFFFFFULL
 )paren
 suffix:semicolon
 r_if
@@ -1172,7 +1166,7 @@ c_func
 (paren
 id|pdev
 comma
-l_int|0xFFFFFFFF
+l_int|0xFFFFFFFFULL
 )paren
 suffix:semicolon
 r_if
