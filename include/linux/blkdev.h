@@ -57,6 +57,10 @@ id|list_head
 id|queuelist
 suffix:semicolon
 multiline_comment|/* looking for -&gt;queue? you must _not_&n;&t;&t;&t;&t;     * access it directly, use&n;&t;&t;&t;&t;     * blkdev_dequeue_request! */
+DECL|member|ref_count
+r_int
+id|ref_count
+suffix:semicolon
 DECL|member|elevator_private
 r_void
 op_star
