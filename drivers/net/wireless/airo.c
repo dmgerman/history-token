@@ -887,6 +887,8 @@ DECL|macro|NOP
 mdefine_line|#define NOP&t;&t;0x0010
 DECL|macro|CMD_WORKAROUND
 mdefine_line|#define CMD_WORKAROUND&t;0x0011
+DECL|macro|CMD_ALLOCATEAUX
+mdefine_line|#define CMD_ALLOCATEAUX 0x0020
 DECL|macro|CMD_ACCESS
 mdefine_line|#define CMD_ACCESS&t;0x0021
 DECL|macro|CMD_PCIBAP
@@ -1079,6 +1081,8 @@ DECL|macro|EV_LINK
 mdefine_line|#define EV_LINK 0x80
 DECL|macro|EV_AWAKE
 mdefine_line|#define EV_AWAKE 0x100
+DECL|macro|EV_TXCPY
+mdefine_line|#define EV_TXCPY 0x400
 DECL|macro|EV_UNKNOWN
 mdefine_line|#define EV_UNKNOWN 0x800
 DECL|macro|EV_MIC
@@ -1747,7 +1751,7 @@ l_int|16
 )braket
 suffix:semicolon
 DECL|member|bssid
-r_char
+id|u8
 id|bssid
 (braket
 l_int|4
@@ -3524,6 +3528,13 @@ r_struct
 id|work_struct
 id|event_task
 suffix:semicolon
+macro_line|#if WIRELESS_EXT &gt; 15
+DECL|member|spy_data
+r_struct
+id|iw_spy_data
+id|spy_data
+suffix:semicolon
+macro_line|#else /* WIRELESS_EXT &gt; 15 */
 macro_line|#ifdef WIRELESS_SPY
 DECL|member|spy_number
 r_int
@@ -3548,6 +3559,7 @@ id|IW_MAX_SPY
 )braket
 suffix:semicolon
 macro_line|#endif /* WIRELESS_SPY */
+macro_line|#endif /* WIRELESS_EXT &gt; 15 */
 macro_line|#endif /* WIRELESS_EXT */
 multiline_comment|/* MIC stuff */
 DECL|member|mod
@@ -4526,6 +4538,10 @@ c_func
 id|ai
 )paren
 suffix:semicolon
+id|cfgr
+op_assign
+id|ai-&gt;config
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -4546,10 +4562,6 @@ id|ai-&gt;flags
 op_and_assign
 op_complement
 id|FLAG_ADHOC
-suffix:semicolon
-id|cfgr
-op_assign
-id|ai-&gt;config
 suffix:semicolon
 r_for
 c_loop
@@ -6921,11 +6933,6 @@ id|ai
 op_assign
 id|dev-&gt;priv
 suffix:semicolon
-id|flush_scheduled_work
-c_func
-(paren
-)paren
-suffix:semicolon
 id|disable_interrupts
 c_func
 (paren
@@ -6943,23 +6950,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|ai-&gt;flash
+id|auto_wep
 )paren
-id|kfree
+id|del_timer_sync
 c_func
 (paren
-id|ai-&gt;flash
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ai-&gt;rssi
-)paren
-id|kfree
-c_func
-(paren
-id|ai-&gt;rssi
+op_amp
+id|ai-&gt;timer
 )paren
 suffix:semicolon
 id|takedown_proc_entry
@@ -7010,16 +7007,31 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
+id|flush_scheduled_work
+c_func
+(paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
-id|auto_wep
+id|ai-&gt;flash
 )paren
-id|del_timer_sync
+id|kfree
 c_func
 (paren
-op_amp
-id|ai-&gt;timer
+id|ai-&gt;flash
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ai-&gt;rssi
+)paren
+id|kfree
+c_func
+(paren
+id|ai-&gt;rssi
 )paren
 suffix:semicolon
 r_if
@@ -9463,7 +9475,7 @@ c_cond
 id|len
 )paren
 (brace
-macro_line|#if 0 &amp;&amp; WIRELESS_EXT &gt; 15
+macro_line|#if WIRELESS_EXT &gt; 15
 macro_line|#ifdef IW_WIRELESS_SPY&t;&t;/* defined in iw_handler.h */
 r_if
 c_cond
@@ -10972,7 +10984,7 @@ c_cond
 (paren
 (paren
 id|cap_rid.len
-op_eq
+op_ge
 r_sizeof
 (paren
 id|cap_rid
@@ -25754,8 +25766,7 @@ l_int|5
 )braket
 )paren
 op_ne
-op_minus
-l_int|1
+l_int|0xff
 op_logical_and
 (paren
 id|status_rid.bssid
@@ -26147,7 +26158,7 @@ id|CAP_ESS
 (brace
 id|iwe.u.mode
 op_assign
-id|IW_MODE_INFRA
+id|IW_MODE_MASTER
 suffix:semicolon
 )brace
 r_else

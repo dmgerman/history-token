@@ -1943,11 +1943,9 @@ c_func
 suffix:semicolon
 id|dev
 op_assign
-id|init_etherdev
+id|alloc_etherdev
 c_func
 (paren
-l_int|NULL
-comma
 r_sizeof
 (paren
 r_struct
@@ -1971,7 +1969,7 @@ r_goto
 id|out
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * init_etherdev allocs and zeros dev-&gt;priv&n;&t; */
+multiline_comment|/*&n;&t; * alloc_etherdev allocs and zeros dev-&gt;priv&n;&t; */
 id|eh
 op_assign
 id|dev-&gt;priv
@@ -2461,6 +2459,22 @@ comma
 l_int|0
 )paren
 suffix:semicolon
+id|ret
+op_assign
+id|register_netdev
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ret
+)paren
+r_goto
+id|release
+suffix:semicolon
 id|ecard_set_drvdata
 c_func
 (paren
@@ -2484,18 +2498,6 @@ l_int|16
 suffix:semicolon
 id|free
 suffix:colon
-id|unregister_netdev
-c_func
-(paren
-id|dev
-)paren
-suffix:semicolon
-id|kfree
-c_func
-(paren
-id|dev-&gt;priv
-)paren
-suffix:semicolon
 id|kfree
 c_func
 (paren
