@@ -1560,23 +1560,19 @@ suffix:semicolon
 )brace
 DECL|function|raid0_status
 r_static
-r_int
+r_void
 id|raid0_status
 (paren
-r_char
+r_struct
+id|seq_file
 op_star
-id|page
+id|seq
 comma
 id|mddev_t
 op_star
 id|mddev
 )paren
 (brace
-r_int
-id|sz
-op_assign
-l_int|0
-suffix:semicolon
 DECL|macro|MD_DEBUG
 macro_line|#undef MD_DEBUG
 macro_line|#ifdef MD_DEBUG
@@ -1595,14 +1591,10 @@ c_func
 id|mddev
 )paren
 suffix:semicolon
-id|sz
-op_add_assign
-id|sprintf
+id|seq_printf
 c_func
 (paren
-id|page
-op_plus
-id|sz
+id|seq
 comma
 l_string|&quot;      &quot;
 )paren
@@ -1622,14 +1614,10 @@ id|j
 op_increment
 )paren
 (brace
-id|sz
-op_add_assign
-id|sprintf
+id|seq_printf
 c_func
 (paren
-id|page
-op_plus
-id|sz
+id|seq
 comma
 l_string|&quot;[z%d&quot;
 comma
@@ -1653,14 +1641,10 @@ id|j
 dot
 id|zone1
 )paren
-id|sz
-op_add_assign
-id|sprintf
+id|seq_printf
 c_func
 (paren
-id|page
-op_plus
-id|sz
+id|seq
 comma
 l_string|&quot;/z%d] &quot;
 comma
@@ -1675,27 +1659,19 @@ id|conf-&gt;strip_zone
 )paren
 suffix:semicolon
 r_else
-id|sz
-op_add_assign
-id|sprintf
+id|seq_printf
 c_func
 (paren
-id|page
-op_plus
-id|sz
+id|seq
 comma
 l_string|&quot;] &quot;
 )paren
 suffix:semicolon
 )brace
-id|sz
-op_add_assign
-id|sprintf
+id|seq_printf
 c_func
 (paren
-id|page
-op_plus
-id|sz
+id|seq
 comma
 l_string|&quot;&bslash;n&quot;
 )paren
@@ -1715,14 +1691,10 @@ id|j
 op_increment
 )paren
 (brace
-id|sz
-op_add_assign
-id|sprintf
+id|seq_printf
 c_func
 (paren
-id|page
-op_plus
-id|sz
+id|seq
 comma
 l_string|&quot;      z%d=[&quot;
 comma
@@ -1748,13 +1720,9 @@ suffix:semicolon
 id|k
 op_increment
 )paren
-id|sz
-op_add_assign
-id|sprintf
+id|seq_printf
 (paren
-id|page
-op_plus
-id|sz
+id|seq
 comma
 l_string|&quot;%s/&quot;
 comma
@@ -1775,16 +1743,9 @@ id|bdev
 )paren
 )paren
 suffix:semicolon
-id|sz
-op_decrement
-suffix:semicolon
-id|sz
-op_add_assign
-id|sprintf
+id|seq_printf
 (paren
-id|page
-op_plus
-id|sz
+id|seq
 comma
 l_string|&quot;] zo=%d do=%d s=%d&bslash;n&quot;
 comma
@@ -1812,14 +1773,10 @@ id|size
 suffix:semicolon
 )brace
 macro_line|#endif
-id|sz
-op_add_assign
-id|sprintf
+id|seq_printf
 c_func
 (paren
-id|page
-op_plus
-id|sz
+id|seq
 comma
 l_string|&quot; %dk chunks&quot;
 comma
@@ -1829,7 +1786,6 @@ l_int|1024
 )paren
 suffix:semicolon
 r_return
-id|sz
 suffix:semicolon
 )brace
 DECL|variable|raid0_personality

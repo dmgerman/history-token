@@ -8560,12 +8560,13 @@ suffix:semicolon
 macro_line|#endif
 DECL|function|status
 r_static
-r_int
+r_void
 id|status
 (paren
-r_char
+r_struct
+id|seq_file
 op_star
-id|page
+id|seq
 comma
 id|mddev_t
 op_star
@@ -8585,19 +8586,11 @@ op_member_access_from_pointer
 r_private
 suffix:semicolon
 r_int
-id|sz
-op_assign
-l_int|0
-comma
 id|i
 suffix:semicolon
-id|sz
-op_add_assign
-id|sprintf
+id|seq_printf
 (paren
-id|page
-op_plus
-id|sz
+id|seq
 comma
 l_string|&quot; level %d, %dk chunk, algorithm %d&quot;
 comma
@@ -8610,13 +8603,9 @@ comma
 id|mddev-&gt;layout
 )paren
 suffix:semicolon
-id|sz
-op_add_assign
-id|sprintf
+id|seq_printf
 (paren
-id|page
-op_plus
-id|sz
+id|seq
 comma
 l_string|&quot; [%d/%d] [&quot;
 comma
@@ -8639,13 +8628,9 @@ suffix:semicolon
 id|i
 op_increment
 )paren
-id|sz
-op_add_assign
-id|sprintf
+id|seq_printf
 (paren
-id|page
-op_plus
-id|sz
+id|seq
 comma
 l_string|&quot;%s&quot;
 comma
@@ -8669,20 +8654,16 @@ suffix:colon
 l_string|&quot;_&quot;
 )paren
 suffix:semicolon
-id|sz
-op_add_assign
-id|sprintf
+id|seq_printf
 (paren
-id|page
-op_plus
-id|sz
+id|seq
 comma
 l_string|&quot;]&quot;
 )paren
 suffix:semicolon
 macro_line|#if RAID5_DEBUG
 DECL|macro|D
-mdefine_line|#define D(x) &bslash;&n;&t;sz += sprintf (page+sz, &quot;&lt;&quot;#x&quot;:%d&gt;&quot;, atomic_read(&amp;conf-&gt;x))
+mdefine_line|#define D(x) &bslash;&n;&t;seq_printf (seq, &quot;&lt;&quot;#x&quot;:%d&gt;&quot;, atomic_read(&amp;conf-&gt;x))
 id|printall
 c_func
 (paren
@@ -8690,9 +8671,6 @@ id|conf
 )paren
 suffix:semicolon
 macro_line|#endif
-r_return
-id|sz
-suffix:semicolon
 )brace
 DECL|function|print_raid5_conf
 r_static
