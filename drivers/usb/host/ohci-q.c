@@ -3941,7 +3941,11 @@ id|list_empty
 op_amp
 id|ed-&gt;td_list
 )paren
-op_logical_and
+)paren
+(brace
+r_if
+c_cond
+(paren
 id|ed-&gt;state
 op_eq
 id|ED_OPER
@@ -3954,6 +3958,7 @@ id|ed
 )paren
 suffix:semicolon
 multiline_comment|/* ... reenabling halted EDs only after fault cleanup */
+)brace
 r_else
 r_if
 c_cond

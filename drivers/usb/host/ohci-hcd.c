@@ -479,6 +479,10 @@ op_amp
 id|urb-&gt;lock
 )paren
 suffix:semicolon
+id|urb-&gt;hcpriv
+op_assign
+id|urb_priv
+suffix:semicolon
 id|finish_urb
 (paren
 id|ohci
