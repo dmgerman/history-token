@@ -788,5 +788,7 @@ DECL|macro|SERIO_LKKBD
 mdefine_line|#define SERIO_LKKBD&t;0x28
 DECL|macro|SERIO_ELO
 mdefine_line|#define SERIO_ELO&t;0x29
+DECL|macro|SERIO_MICROTOUCH
+mdefine_line|#define SERIO_MICROTOUCH&t;0x30
 macro_line|#endif
 eof
