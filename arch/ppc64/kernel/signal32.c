@@ -81,7 +81,7 @@ id|puc
 suffix:semicolon
 DECL|member|info
 r_struct
-id|siginfo32
+id|compat_siginfo
 id|info
 suffix:semicolon
 DECL|member|uc
@@ -2791,7 +2791,7 @@ r_int
 id|copy_siginfo_to_user32
 c_func
 (paren
-id|siginfo_t32
+id|compat_siginfo_t
 op_star
 id|d
 comma
@@ -3058,7 +3058,7 @@ id|compat_sigset_t
 op_star
 id|uthese
 comma
-id|siginfo_t32
+id|compat_siginfo_t
 op_star
 id|uinfo
 comma
@@ -3330,7 +3330,7 @@ id|siginfo_t
 op_star
 id|d
 comma
-id|siginfo_t32
+id|compat_siginfo_t
 op_star
 id|s
 )paren
@@ -3467,7 +3467,7 @@ comma
 id|u32
 id|sig
 comma
-id|siginfo_t32
+id|compat_siginfo_t
 op_star
 id|uinfo
 )paren
@@ -3475,7 +3475,7 @@ id|uinfo
 id|siginfo_t
 id|info
 suffix:semicolon
-id|siginfo_t32
+id|compat_siginfo_t
 id|info32
 suffix:semicolon
 r_int
@@ -3501,7 +3501,7 @@ id|uinfo
 comma
 r_sizeof
 (paren
-id|siginfo_t32
+id|compat_siginfo_t
 )paren
 )paren
 )paren
