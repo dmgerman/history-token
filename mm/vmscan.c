@@ -3811,6 +3811,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * The background pageout daemon, started as a kernel thread&n; * from the init process. &n; *&n; * This basically trickles out pages so that we have _some_&n; * free memory available even if there is no other activity&n; * that frees anything up. This is needed for things like routing&n; * etc, where we otherwise might have all activity going on in&n; * asynchronous contexts that cannot page things out.&n; *&n; * If there are applications that are active memory-allocators&n; * (most normal use), this basically shouldn&squot;t matter.&n; */
 DECL|function|kswapd
+r_static
 r_int
 id|kswapd
 c_func
@@ -3960,6 +3961,9 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
+r_return
+l_int|0
+suffix:semicolon
 )brace
 multiline_comment|/*&n; * A zone is low on free memory, so wake its kswapd task to service it.&n; */
 DECL|function|wakeup_kswapd
