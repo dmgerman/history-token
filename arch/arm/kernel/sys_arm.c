@@ -110,7 +110,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * This is the lowest virtual address we can permit any user space&n; * mapping to be mapped at.  This is particularly important for&n; * non-high vector CPUs.&n; */
 DECL|macro|MIN_MAP_ADDR
-mdefine_line|#define MIN_MAP_ADDR&t;(vectors_high() ? 0 : PAGE_SIZE)
+mdefine_line|#define MIN_MAP_ADDR&t;(PAGE_SIZE)
 multiline_comment|/* common code for old and new mmaps */
 DECL|function|do_mmap2
 r_inline
