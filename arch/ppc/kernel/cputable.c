@@ -232,24 +232,6 @@ id|spec
 suffix:semicolon
 r_extern
 r_void
-id|__setup_cpu_8xx
-c_func
-(paren
-r_int
-r_int
-id|offset
-comma
-r_int
-id|cpu_nr
-comma
-r_struct
-id|cpu_spec
-op_star
-id|spec
-)paren
-suffix:semicolon
-r_extern
-r_void
 id|__setup_cpu_generic
 c_func
 (paren
@@ -2927,11 +2909,6 @@ id|num_pmcs
 op_assign
 l_int|0
 comma
-dot
-id|cpu_setup
-op_assign
-id|__setup_cpu_8xx
-multiline_comment|/* Empty */
 )brace
 comma
 macro_line|#endif /* CONFIG_8xx */
