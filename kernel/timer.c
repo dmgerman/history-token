@@ -646,6 +646,7 @@ suffix:semicolon
 )brace
 )brace
 r_else
+(brace
 id|spin_lock
 c_func
 (paren
@@ -653,6 +654,26 @@ op_amp
 id|new_base-&gt;lock
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|timer-&gt;base
+op_ne
+id|old_base
+)paren
+(brace
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|new_base-&gt;lock
+)paren
+suffix:semicolon
+r_goto
+id|repeat
+suffix:semicolon
+)brace
+)brace
 multiline_comment|/*&n;&t; * Delete the previous timeout (if there was any), and install&n;&t; * the new one:&n;&t; */
 r_if
 c_cond
