@@ -47,6 +47,7 @@ suffix:semicolon
 multiline_comment|/* IOP unit number */
 DECL|member|msg
 r_void
+id|__user
 op_star
 id|msg
 suffix:semicolon
@@ -65,6 +66,7 @@ suffix:semicolon
 multiline_comment|/* IOP unit number */
 DECL|member|resbuf
 r_void
+id|__user
 op_star
 id|resbuf
 suffix:semicolon
@@ -72,6 +74,7 @@ multiline_comment|/* Buffer for result */
 DECL|member|reslen
 r_int
 r_int
+id|__user
 op_star
 id|reslen
 suffix:semicolon
@@ -96,6 +99,7 @@ suffix:semicolon
 multiline_comment|/* Target device TID */
 DECL|member|opbuf
 r_void
+id|__user
 op_star
 id|opbuf
 suffix:semicolon
@@ -108,6 +112,7 @@ suffix:semicolon
 multiline_comment|/* Operation List buffer length in bytes */
 DECL|member|resbuf
 r_void
+id|__user
 op_star
 id|resbuf
 suffix:semicolon
@@ -115,6 +120,7 @@ multiline_comment|/* Result List buffer */
 DECL|member|reslen
 r_int
 r_int
+id|__user
 op_star
 id|reslen
 suffix:semicolon
@@ -151,6 +157,7 @@ suffix:semicolon
 multiline_comment|/* Software ID */
 DECL|member|buf
 r_void
+id|__user
 op_star
 id|buf
 suffix:semicolon
@@ -158,6 +165,7 @@ multiline_comment|/* Pointer to software buffer */
 DECL|member|swlen
 r_int
 r_int
+id|__user
 op_star
 id|swlen
 suffix:semicolon
@@ -165,6 +173,7 @@ multiline_comment|/* Length of software data */
 DECL|member|maxfrag
 r_int
 r_int
+id|__user
 op_star
 id|maxfrag
 suffix:semicolon
@@ -172,6 +181,7 @@ multiline_comment|/* Maximum fragment count */
 DECL|member|curfrag
 r_int
 r_int
+id|__user
 op_star
 id|curfrag
 suffix:semicolon
@@ -202,6 +212,7 @@ suffix:semicolon
 multiline_comment|/* HTML page */
 DECL|member|resbuf
 r_void
+id|__user
 op_star
 id|resbuf
 suffix:semicolon
@@ -209,12 +220,14 @@ multiline_comment|/* Buffer for reply HTML page */
 DECL|member|reslen
 r_int
 r_int
+id|__user
 op_star
 id|reslen
 suffix:semicolon
 multiline_comment|/* Length in bytes of reply buffer */
 DECL|member|qbuf
 r_void
+id|__user
 op_star
 id|qbuf
 suffix:semicolon
