@@ -101,7 +101,7 @@ r_void
 id|userspace
 c_func
 (paren
-r_struct
+r_union
 id|uml_pt_regs
 op_star
 id|regs
@@ -149,7 +149,7 @@ r_void
 id|handle_syscall
 c_func
 (paren
-r_struct
+r_union
 id|uml_pt_regs
 op_star
 id|regs
@@ -238,7 +238,7 @@ c_func
 r_int
 id|sig
 comma
-r_struct
+r_union
 id|uml_pt_regs
 op_star
 id|regs
@@ -266,7 +266,7 @@ r_void
 id|save_registers
 c_func
 (paren
-r_struct
+r_union
 id|uml_pt_regs
 op_star
 id|regs
@@ -277,7 +277,7 @@ r_void
 id|restore_registers
 c_func
 (paren
-r_struct
+r_union
 id|uml_pt_regs
 op_star
 id|regs

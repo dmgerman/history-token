@@ -342,7 +342,7 @@ c_func
 r_int
 id|sig
 comma
-r_struct
+r_union
 id|uml_pt_regs
 op_star
 id|regs
@@ -494,7 +494,7 @@ c_func
 r_int
 id|irq
 comma
-r_struct
+r_union
 id|uml_pt_regs
 op_star
 id|regs
@@ -644,7 +644,7 @@ c_func
 r_int
 id|sig
 comma
-r_struct
+r_union
 id|uml_pt_regs
 op_star
 id|regs
@@ -673,7 +673,7 @@ r_void
 id|timer_irq
 c_func
 (paren
-r_struct
+r_union
 id|uml_pt_regs
 op_star
 id|regs
@@ -907,7 +907,7 @@ c_func
 r_int
 id|sig
 comma
-r_struct
+r_union
 id|uml_pt_regs
 op_star
 id|regs
