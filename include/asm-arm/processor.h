@@ -107,7 +107,7 @@ id|p
 )paren
 suffix:semicolon
 DECL|macro|cpu_relax
-mdefine_line|#define cpu_relax()&t;&t;&t;do { } while (0)
+mdefine_line|#define cpu_relax()&t;&t;&t;barrier()
 multiline_comment|/*&n; * Create a new kernel thread&n; */
 r_extern
 r_int

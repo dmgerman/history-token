@@ -2171,11 +2171,12 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|byte
+id|u8
 id|irq
 op_assign
 l_int|0
-comma
+suffix:semicolon
+id|u8
 id|irq2
 op_assign
 l_int|0

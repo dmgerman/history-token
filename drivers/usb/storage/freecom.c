@@ -18,12 +18,17 @@ r_int
 )paren
 suffix:semicolon
 macro_line|#endif
+multiline_comment|/* Bits of HD_STATUS */
+DECL|macro|ERR_STAT
+mdefine_line|#define ERR_STAT&t;&t;0x01
+DECL|macro|DRQ_STAT
+mdefine_line|#define DRQ_STAT&t;&t;0x08
 DECL|struct|freecom_udata
 r_struct
 id|freecom_udata
 (brace
 DECL|member|buffer
-id|__u8
+id|u8
 id|buffer
 (braket
 l_int|64
@@ -45,17 +50,17 @@ r_struct
 id|freecom_cb_wrap
 (brace
 DECL|member|Type
-id|__u8
+id|u8
 id|Type
 suffix:semicolon
 multiline_comment|/* Command type. */
 DECL|member|Timeout
-id|__u8
+id|u8
 id|Timeout
 suffix:semicolon
 multiline_comment|/* Timeout in seconds. */
 DECL|member|Atapi
-id|__u8
+id|u8
 id|Atapi
 (braket
 l_int|12
@@ -63,7 +68,7 @@ l_int|12
 suffix:semicolon
 multiline_comment|/* An ATAPI packet. */
 DECL|member|Filler
-id|__u8
+id|u8
 id|Filler
 (braket
 l_int|50
@@ -77,22 +82,22 @@ r_struct
 id|freecom_xfer_wrap
 (brace
 DECL|member|Type
-id|__u8
+id|u8
 id|Type
 suffix:semicolon
 multiline_comment|/* Command type. */
 DECL|member|Timeout
-id|__u8
+id|u8
 id|Timeout
 suffix:semicolon
 multiline_comment|/* Timeout in seconds. */
 DECL|member|Count
-id|__u32
+id|u32
 id|Count
 suffix:semicolon
 multiline_comment|/* Number of bytes to transfer. */
 DECL|member|Pad
-id|__u8
+id|u8
 id|Pad
 (braket
 l_int|58
@@ -111,21 +116,21 @@ r_struct
 id|freecom_ide_out
 (brace
 DECL|member|Type
-id|__u8
+id|u8
 id|Type
 suffix:semicolon
 multiline_comment|/* Type + IDE register. */
 DECL|member|Pad
-id|__u8
+id|u8
 id|Pad
 suffix:semicolon
 DECL|member|Value
-id|__u16
+id|u16
 id|Value
 suffix:semicolon
 multiline_comment|/* Value to write. */
 DECL|member|Pad2
-id|__u8
+id|u8
 id|Pad2
 (braket
 l_int|60
@@ -138,12 +143,12 @@ r_struct
 id|freecom_ide_in
 (brace
 DECL|member|Type
-id|__u8
+id|u8
 id|Type
 suffix:semicolon
 multiline_comment|/* Type | IDE register. */
 DECL|member|Pad
-id|__u8
+id|u8
 id|Pad
 (braket
 l_int|63
@@ -156,19 +161,19 @@ r_struct
 id|freecom_status
 (brace
 DECL|member|Status
-id|__u8
+id|u8
 id|Status
 suffix:semicolon
 DECL|member|Reason
-id|__u8
+id|u8
 id|Reason
 suffix:semicolon
 DECL|member|Count
-id|__u16
+id|u16
 id|Count
 suffix:semicolon
 DECL|member|Pad
-id|__u8
+id|u8
 id|Pad
 (braket
 l_int|60
