@@ -501,6 +501,13 @@ r_return
 id|dst
 suffix:semicolon
 )brace
+r_extern
+r_const
+r_char
+id|dst_underflow_bug_msg
+(braket
+)braket
+suffix:semicolon
 r_static
 r_inline
 DECL|function|dst_release
@@ -532,18 +539,12 @@ id|dst-&gt;__refcnt
 OL
 l_int|1
 )paren
-(brace
 id|printk
 c_func
 (paren
-l_string|&quot;BUG: dst underflow %d: %p&bslash;n&quot;
+id|dst_underflow_bug_msg
 comma
-id|atomic_read
-c_func
-(paren
-op_amp
-id|dst-&gt;__refcnt
-)paren
+id|dst
 comma
 id|current_text_addr
 c_func
@@ -551,7 +552,6 @@ c_func
 )paren
 )paren
 suffix:semicolon
-)brace
 id|atomic_dec
 c_func
 (paren
