@@ -2131,6 +2131,24 @@ op_star
 id|ops
 )paren
 suffix:semicolon
+DECL|member|d_instantiate
+r_void
+(paren
+op_star
+id|d_instantiate
+)paren
+(paren
+r_struct
+id|dentry
+op_star
+id|dentry
+comma
+r_struct
+id|inode
+op_star
+id|inode
+)paren
+suffix:semicolon
 macro_line|#ifdef CONFIG_SECURITY_NETWORK
 DECL|member|unix_stream_connect
 r_int
