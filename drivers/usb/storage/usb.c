@@ -86,6 +86,25 @@ comma
 l_string|&quot;seconds to delay before using a new device&quot;
 )paren
 suffix:semicolon
+multiline_comment|/* These are used to make sure the module doesn&squot;t unload before all the&n; * threads have exited.&n; */
+DECL|variable|total_threads
+r_static
+id|atomic_t
+id|total_threads
+op_assign
+id|ATOMIC_INIT
+c_func
+(paren
+l_int|0
+)paren
+suffix:semicolon
+r_static
+id|DECLARE_COMPLETION
+c_func
+(paren
+id|threads_gone
+)paren
+suffix:semicolon
 r_static
 r_int
 id|storage_probe
@@ -891,6 +910,13 @@ c_func
 (paren
 )paren
 suffix:semicolon
+multiline_comment|/* acquire a reference to the host, so it won&squot;t be deallocated&n;&t; * until we&squot;re ready to exit */
+id|scsi_host_get
+c_func
+(paren
+id|host
+)paren
+suffix:semicolon
 multiline_comment|/* signal that we&squot;ve started the thread */
 id|complete
 c_func
@@ -1275,14 +1301,18 @@ id|us-&gt;dev_semaphore
 suffix:semicolon
 )brace
 multiline_comment|/* for (;;) */
+id|scsi_host_put
+c_func
+(paren
+id|host
+)paren
+suffix:semicolon
 multiline_comment|/* notify the exit routine that we&squot;re actually exiting now &n;&t; *&n;&t; * complete()/wait_for_completion() is similar to up()/down(),&n;&t; * except that complete() is safe in the case where the structure&n;&t; * is getting deleted in a parallel mode of execution (i.e. just&n;&t; * after the down() -- that&squot;s necessary for the thread-shutdown&n;&t; * case.&n;&t; *&n;&t; * complete_and_exit() goes even further than this -- it is safe in&n;&t; * the case that the thread of the caller is going away (not just&n;&t; * the structure) -- this is necessary for the module-remove case.&n;&t; * This is important in preemption kernels, which transfer the flow&n;&t; * of execution immediately upon a complete().&n;&t; */
 id|complete_and_exit
 c_func
 (paren
 op_amp
-(paren
-id|us-&gt;notify
-)paren
+id|threads_gone
 comma
 l_int|0
 )paren
@@ -2467,6 +2497,13 @@ id|us-&gt;pid
 op_assign
 id|p
 suffix:semicolon
+id|atomic_inc
+c_func
+(paren
+op_amp
+id|total_threads
+)paren
+suffix:semicolon
 multiline_comment|/* Wait for the thread to start */
 id|wait_for_completion
 c_func
@@ -2663,6 +2700,27 @@ c_func
 (paren
 )paren
 suffix:semicolon
+multiline_comment|/* Acquire a reference to the host, so it won&squot;t be deallocated&n;&t; * until we&squot;re ready to exit */
+id|scsi_host_get
+c_func
+(paren
+id|us_to_host
+c_func
+(paren
+id|us
+)paren
+)paren
+suffix:semicolon
+multiline_comment|/* Signal that we&squot;ve started the thread */
+id|complete
+c_func
+(paren
+op_amp
+(paren
+id|us-&gt;notify
+)paren
+)paren
+suffix:semicolon
 id|printk
 c_func
 (paren
@@ -2761,12 +2819,23 @@ id|KERN_DEBUG
 l_string|&quot;usb-storage: device scan complete&bslash;n&quot;
 )paren
 suffix:semicolon
+multiline_comment|/* Should we unbind if no devices were detected? */
 )brace
+id|scsi_host_put
+c_func
+(paren
+id|us_to_host
+c_func
+(paren
+id|us
+)paren
+)paren
+suffix:semicolon
 id|complete_and_exit
 c_func
 (paren
 op_amp
-id|us-&gt;scsi_scan_done
+id|threads_gone
 comma
 l_int|0
 )paren
@@ -3176,6 +3245,23 @@ r_goto
 id|BadDevice
 suffix:semicolon
 )brace
+id|atomic_inc
+c_func
+(paren
+op_amp
+id|total_threads
+)paren
+suffix:semicolon
+multiline_comment|/* Wait for the thread to start */
+id|wait_for_completion
+c_func
+(paren
+op_amp
+(paren
+id|us-&gt;notify
+)paren
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -3272,19 +3358,12 @@ op_amp
 id|us-&gt;dev_reset_wait
 )paren
 suffix:semicolon
-multiline_comment|/* Interrupt the SCSI-device-scanning thread&squot;s time delay, and&n;&t; * wait for the thread to finish */
+multiline_comment|/* Interrupt the SCSI-device-scanning thread&squot;s time delay */
 id|wake_up
 c_func
 (paren
 op_amp
 id|us-&gt;scsi_scan_wait
-)paren
-suffix:semicolon
-id|wait_for_completion
-c_func
-(paren
-op_amp
-id|us-&gt;scsi_scan_done
 )paren
 suffix:semicolon
 multiline_comment|/* Wait for the current command to finish, then remove the host */
@@ -3416,6 +3495,35 @@ op_amp
 id|usb_storage_driver
 )paren
 suffix:semicolon
+multiline_comment|/* Don&squot;t return until all of our control and scanning threads&n;&t; * have exited.  Since each thread signals threads_gone as its&n;&t; * last act, we have to call wait_for_completion the right number&n;&t; * of times.&n;&t; */
+r_while
+c_loop
+(paren
+id|atomic_read
+c_func
+(paren
+op_amp
+id|total_threads
+)paren
+OG
+l_int|0
+)paren
+(brace
+id|wait_for_completion
+c_func
+(paren
+op_amp
+id|threads_gone
+)paren
+suffix:semicolon
+id|atomic_dec
+c_func
+(paren
+op_amp
+id|total_threads
+)paren
+suffix:semicolon
+)brace
 )brace
 DECL|variable|usb_stor_init
 id|module_init
