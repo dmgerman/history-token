@@ -459,6 +459,50 @@ c_func
 r_void
 )paren
 suffix:semicolon
+r_extern
+r_int
+id|rtas_get_sensor
+c_func
+(paren
+r_int
+id|sensor
+comma
+r_int
+id|index
+comma
+r_int
+op_star
+id|state
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|rtas_get_power_level
+c_func
+(paren
+r_int
+id|powerdomain
+comma
+r_int
+op_star
+id|level
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|rtas_set_indicator
+c_func
+(paren
+r_int
+id|indicator
+comma
+r_int
+id|index
+comma
+r_int
+id|new_value
+)paren
+suffix:semicolon
 multiline_comment|/* Given an RTAS status code of 9900..9905 compute the hinted delay */
 r_int
 r_int
@@ -493,6 +537,10 @@ suffix:semicolon
 multiline_comment|/* Some RTAS ops require a data buffer and that buffer must be &lt; 4G.&n; * Rather than having a memory allocator, just use this buffer&n; * (get the lock first), make the RTAS call.  Copy the data instead&n; * of holding the buffer for long.&n; */
 DECL|macro|RTAS_DATA_BUF_SIZE
 mdefine_line|#define RTAS_DATA_BUF_SIZE 1024
+DECL|macro|RTAS_UNKNOWN_OP
+mdefine_line|#define RTAS_UNKNOWN_OP&t;-1099&t;/* Return Status - Unknown RTAS Token */
+DECL|macro|RTAS_BUSY
+mdefine_line|#define RTAS_BUSY&t;-2&t;/* RTAS Return Status - Busy */
 r_extern
 id|spinlock_t
 id|rtas_data_buf_lock
