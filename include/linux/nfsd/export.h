@@ -130,14 +130,6 @@ id|dentry
 op_star
 id|ex_dentry
 suffix:semicolon
-DECL|member|ex_dev
-id|dev_t
-id|ex_dev
-suffix:semicolon
-DECL|member|ex_ino
-id|ino_t
-id|ex_ino
-suffix:semicolon
 DECL|member|ex_anon_uid
 id|uid_t
 id|ex_anon_uid
