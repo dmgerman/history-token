@@ -15,6 +15,7 @@ macro_line|#include &quot;ieee1394_core.h&quot;
 macro_line|#include &quot;highlevel.h&quot;
 macro_line|#include &quot;nodemgr.h&quot;
 macro_line|#include &quot;csr.h&quot;
+macro_line|#include &quot;config_roms.h&quot;
 DECL|function|delayed_reset_bus
 r_static
 r_void
@@ -645,7 +646,7 @@ id|h
 suffix:semicolon
 )brace
 DECL|function|hpsb_add_host
-r_void
+r_int
 id|hpsb_add_host
 c_func
 (paren
@@ -655,11 +656,33 @@ op_star
 id|host
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|hpsb_default_host_entry
+c_func
+(paren
+id|host
+)paren
+)paren
+r_return
+op_minus
+id|ENOMEM
+suffix:semicolon
+id|hpsb_add_extra_config_roms
+c_func
+(paren
+id|host
+)paren
+suffix:semicolon
 id|highlevel_add_host
 c_func
 (paren
 id|host
 )paren
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 )brace
 DECL|function|hpsb_remove_host
@@ -683,6 +706,12 @@ op_amp
 id|dummy_driver
 suffix:semicolon
 id|highlevel_remove_host
+c_func
+(paren
+id|host
+)paren
+suffix:semicolon
+id|hpsb_remove_extra_config_roms
 c_func
 (paren
 id|host

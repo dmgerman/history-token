@@ -23,6 +23,7 @@ macro_line|#include &quot;csr.h&quot;
 macro_line|#include &quot;nodemgr.h&quot;
 macro_line|#include &quot;dma.h&quot;
 macro_line|#include &quot;iso.h&quot;
+macro_line|#include &quot;config_roms.h&quot;
 multiline_comment|/*&n; * Disable the nodemgr detection and config rom reading functionality.&n; */
 DECL|variable|disable_nodemgr
 r_static
@@ -4760,6 +4761,28 @@ r_void
 r_int
 id|i
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|hpsb_init_config_roms
+c_func
+(paren
+)paren
+)paren
+(brace
+id|HPSB_ERR
+c_func
+(paren
+l_string|&quot;Failed to initialize some config rom entries.&bslash;n&quot;
+)paren
+suffix:semicolon
+id|HPSB_ERR
+c_func
+(paren
+l_string|&quot;Some features may not be available&bslash;n&quot;
+)paren
+suffix:semicolon
+)brace
 id|khpsbpkt_pid
 op_assign
 id|kernel_thread
@@ -5048,6 +5071,11 @@ id|kmem_cache_destroy
 c_func
 (paren
 id|hpsb_packet_cache
+)paren
+suffix:semicolon
+id|hpsb_cleanup_config_roms
+c_func
+(paren
 )paren
 suffix:semicolon
 id|unregister_chrdev_region
