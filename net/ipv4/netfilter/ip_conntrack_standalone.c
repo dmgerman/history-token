@@ -179,8 +179,18 @@ id|s
 comma
 l_string|&quot;packets=%llu bytes=%llu &quot;
 comma
+(paren
+r_int
+r_int
+r_int
+)paren
 id|counter-&gt;packets
 comma
+(paren
+r_int
+r_int
+r_int
+)paren
 id|counter-&gt;bytes
 )paren
 suffix:semicolon
