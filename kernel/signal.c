@@ -32,16 +32,24 @@ op_assign
 l_int|1024
 suffix:semicolon
 multiline_comment|/*********************************************************&n;&n;    POSIX thread group signal behavior:&n;&n;----------------------------------------------------------&n;|                    |  userspace       |  kernel        |&n;----------------------------------------------------------&n;|  SIGHUP            |  load-balance    |  kill-all      |&n;|  SIGINT            |  load-balance    |  kill-all      |&n;|  SIGQUIT           |  load-balance    |  kill-all+core |&n;|  SIGILL            |  specific        |  kill-all+core |&n;|  SIGTRAP           |  specific        |  kill-all+core |&n;|  SIGABRT/SIGIOT    |  specific        |  kill-all+core |&n;|  SIGBUS            |  specific        |  kill-all+core |&n;|  SIGFPE            |  specific        |  kill-all+core |&n;|  SIGKILL           |  n/a             |  kill-all      |&n;|  SIGUSR1           |  load-balance    |  kill-all      |&n;|  SIGSEGV           |  specific        |  kill-all+core |&n;|  SIGUSR2           |  load-balance    |  kill-all      |&n;|  SIGPIPE           |  specific        |  kill-all      |&n;|  SIGALRM           |  load-balance    |  kill-all      |&n;|  SIGTERM           |  load-balance    |  kill-all      |&n;|  SIGCHLD           |  load-balance    |  ignore        |&n;|  SIGCONT           |  specific        |  continue-all  |&n;|  SIGSTOP           |  n/a             |  stop-all      |&n;|  SIGTSTP           |  load-balance    |  stop-all      |&n;|  SIGTTIN           |  load-balance    |  stop-all      |&n;|  SIGTTOU           |  load-balance    |  stop-all      |&n;|  SIGURG            |  load-balance    |  ignore        |&n;|  SIGXCPU           |  specific        |  kill-all+core |&n;|  SIGXFSZ           |  specific        |  kill-all+core |&n;|  SIGVTALRM         |  load-balance    |  kill-all      |&n;|  SIGPROF           |  specific        |  kill-all      |&n;|  SIGPOLL/SIGIO     |  load-balance    |  kill-all      |&n;|  SIGSYS/SIGUNUSED  |  specific        |  kill-all+core |&n;|  SIGSTKFLT         |  specific        |  kill-all      |&n;|  SIGWINCH          |  load-balance    |  ignore        |&n;|  SIGPWR            |  load-balance    |  kill-all      |&n;|  SIGRTMIN-SIGRTMAX |  load-balance    |  kill-all      |&n;----------------------------------------------------------&n;*/
+multiline_comment|/* Some systems do not have a SIGSTKFLT and the kernel never&n; * generates such signals anyways.&n; */
+macro_line|#ifdef SIGSTKFLT
+DECL|macro|M_SIGSTKFLT
+mdefine_line|#define M_SIGSTKFLT&t;M(SIGSTKFLT)
+macro_line|#else
+DECL|macro|M_SIGSTKFLT
+mdefine_line|#define M_SIGSTKFLT&t;0
+macro_line|#endif
 DECL|macro|M
 mdefine_line|#define M(sig) (1UL &lt;&lt; (sig))
 DECL|macro|SIG_USER_SPECIFIC_MASK
-mdefine_line|#define SIG_USER_SPECIFIC_MASK (&bslash;&n;&t;M(SIGILL)    |  M(SIGTRAP)   |  M(SIGABRT)   |  M(SIGBUS)    | &bslash;&n;&t;M(SIGFPE)    |  M(SIGSEGV)   |  M(SIGPIPE)   |  M(SIGXFSZ)   | &bslash;&n;&t;M(SIGPROF)   |  M(SIGSYS)    |  M(SIGSTKFLT) |  M(SIGCONT)   )
+mdefine_line|#define SIG_USER_SPECIFIC_MASK (&bslash;&n;&t;M(SIGILL)    |  M(SIGTRAP)   |  M(SIGABRT)   |  M(SIGBUS)    | &bslash;&n;&t;M(SIGFPE)    |  M(SIGSEGV)   |  M(SIGPIPE)   |  M(SIGXFSZ)   | &bslash;&n;&t;M(SIGPROF)   |  M(SIGSYS)    |  M_SIGSTKFLT |  M(SIGCONT)   )
 DECL|macro|SIG_USER_LOAD_BALANCE_MASK
 mdefine_line|#define SIG_USER_LOAD_BALANCE_MASK (&bslash;&n;        M(SIGHUP)    |  M(SIGINT)    |  M(SIGQUIT)   |  M(SIGUSR1)   | &bslash;&n;        M(SIGUSR2)   |  M(SIGALRM)   |  M(SIGTERM)   |  M(SIGCHLD)   | &bslash;&n;        M(SIGURG)    |  M(SIGVTALRM) |  M(SIGPOLL)   |  M(SIGWINCH)  | &bslash;&n;        M(SIGPWR)    |  M(SIGTSTP)   |  M(SIGTTIN)   |  M(SIGTTOU)   )
 DECL|macro|SIG_KERNEL_SPECIFIC_MASK
 mdefine_line|#define SIG_KERNEL_SPECIFIC_MASK (&bslash;&n;        M(SIGCHLD)   |   M(SIGURG)   |  M(SIGWINCH)                  )
 DECL|macro|SIG_KERNEL_BROADCAST_MASK
-mdefine_line|#define SIG_KERNEL_BROADCAST_MASK (&bslash;&n;&t;M(SIGHUP)    |  M(SIGINT)    |  M(SIGQUIT)   |  M(SIGILL)    | &bslash;&n;&t;M(SIGTRAP)   |  M(SIGABRT)   |  M(SIGBUS)    |  M(SIGFPE)    | &bslash;&n;&t;M(SIGKILL)   |  M(SIGUSR1)   |  M(SIGSEGV)   |  M(SIGUSR2)   | &bslash;&n;&t;M(SIGPIPE)   |  M(SIGALRM)   |  M(SIGTERM)   |  M(SIGXCPU)   | &bslash;&n;&t;M(SIGXFSZ)   |  M(SIGVTALRM) |  M(SIGPROF)   |  M(SIGPOLL)   | &bslash;&n;&t;M(SIGSYS)    |  M(SIGSTKFLT) |  M(SIGPWR)    |  M(SIGCONT)   | &bslash;&n;        M(SIGSTOP)   |  M(SIGTSTP)   |  M(SIGTTIN)   |  M(SIGTTOU)   )
+mdefine_line|#define SIG_KERNEL_BROADCAST_MASK (&bslash;&n;&t;M(SIGHUP)    |  M(SIGINT)    |  M(SIGQUIT)   |  M(SIGILL)    | &bslash;&n;&t;M(SIGTRAP)   |  M(SIGABRT)   |  M(SIGBUS)    |  M(SIGFPE)    | &bslash;&n;&t;M(SIGKILL)   |  M(SIGUSR1)   |  M(SIGSEGV)   |  M(SIGUSR2)   | &bslash;&n;&t;M(SIGPIPE)   |  M(SIGALRM)   |  M(SIGTERM)   |  M(SIGXCPU)   | &bslash;&n;&t;M(SIGXFSZ)   |  M(SIGVTALRM) |  M(SIGPROF)   |  M(SIGPOLL)   | &bslash;&n;&t;M(SIGSYS)    |  M_SIGSTKFLT  |  M(SIGPWR)    |  M(SIGCONT)   | &bslash;&n;        M(SIGSTOP)   |  M(SIGTSTP)   |  M(SIGTTIN)   |  M(SIGTTOU)   )
 DECL|macro|SIG_KERNEL_ONLY_MASK
 mdefine_line|#define SIG_KERNEL_ONLY_MASK (&bslash;&n;&t;M(SIGKILL)   |  M(SIGSTOP)                                   )
 DECL|macro|SIG_KERNEL_COREDUMP_MASK

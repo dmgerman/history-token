@@ -1255,16 +1255,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-r_extern
-r_void
-id|rs_kgdb_hook
-c_func
-(paren
-r_int
-id|tty_num
-)paren
-suffix:semicolon
-multiline_comment|/* sparc/serial.c */
 DECL|variable|boot_flags
 r_int
 r_int
@@ -1276,8 +1266,6 @@ DECL|macro|BOOTME_DEBUG
 mdefine_line|#define BOOTME_DEBUG  0x1
 DECL|macro|BOOTME_SINGLE
 mdefine_line|#define BOOTME_SINGLE 0x2
-DECL|macro|BOOTME_KGDB
-mdefine_line|#define BOOTME_KGDB   0x4
 DECL|variable|__initdata
 r_static
 r_int
@@ -1524,100 +1512,6 @@ op_star
 id|commands
 op_increment
 )paren
-suffix:semicolon
-)brace
-r_else
-r_if
-c_cond
-(paren
-id|strlen
-c_func
-(paren
-id|commands
-)paren
-op_ge
-l_int|9
-op_logical_and
-op_logical_neg
-id|strncmp
-c_func
-(paren
-id|commands
-comma
-l_string|&quot;kgdb=tty&quot;
-comma
-l_int|8
-)paren
-)paren
-(brace
-id|boot_flags
-op_or_assign
-id|BOOTME_KGDB
-suffix:semicolon
-r_switch
-c_cond
-(paren
-id|commands
-(braket
-l_int|8
-)braket
-)paren
-(brace
-macro_line|#ifdef CONFIG_SUN_SERIAL
-r_case
-l_char|&squot;a&squot;
-suffix:colon
-id|rs_kgdb_hook
-c_func
-(paren
-l_int|0
-)paren
-suffix:semicolon
-id|prom_printf
-c_func
-(paren
-l_string|&quot;KGDB: Using serial line /dev/ttya.&bslash;n&quot;
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-l_char|&squot;b&squot;
-suffix:colon
-id|rs_kgdb_hook
-c_func
-(paren
-l_int|1
-)paren
-suffix:semicolon
-id|prom_printf
-c_func
-(paren
-l_string|&quot;KGDB: Using serial line /dev/ttyb.&bslash;n&quot;
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
-macro_line|#endif
-r_default
-suffix:colon
-id|printk
-c_func
-(paren
-l_string|&quot;KGDB: Unknown tty line.&bslash;n&quot;
-)paren
-suffix:semicolon
-id|boot_flags
-op_and_assign
-op_complement
-id|BOOTME_KGDB
-suffix:semicolon
-r_break
-suffix:semicolon
-)brace
-id|commands
-op_add_assign
-l_int|9
 suffix:semicolon
 )brace
 r_else
@@ -1992,11 +1886,6 @@ op_star
 id|cmdline_p
 )paren
 (brace
-r_extern
-r_int
-id|serial_console
-suffix:semicolon
-multiline_comment|/* in console.c, of course */
 r_int
 r_int
 id|highest_paddr
@@ -2398,7 +2287,6 @@ macro_line|#endif
 )brace
 )brace
 macro_line|#endif
-macro_line|#ifdef CONFIG_SUN_SERIAL
 r_switch
 c_cond
 (paren
@@ -2532,12 +2420,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-macro_line|#else
-id|serial_console
-op_assign
-l_int|0
 suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren

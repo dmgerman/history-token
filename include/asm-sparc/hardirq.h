@@ -57,7 +57,7 @@ id|____cacheline_aligned
 id|irq_cpustat_t
 suffix:semicolon
 macro_line|#include &lt;linux/irq_cpustat.h&gt;&t;/* Standard mappings for irq_cpustat_t above */
-multiline_comment|/*&n; * We put the hardirq and softirq counter into the preemption&n; * counter. The bitmask has the following meaning:&n; *&n; * - bits 0-7 are the preemption count (max preemption depth: 256)&n; * - bits 8-15 are the softirq count (max # of softirqs: 256)&n; * - bits 16-23 are the hardirq count (max # of hardirqs: 256)&n; *&n; * - ( bit 26 is the PREEMPT_ACTIVE flag. )&n; *&n; * PREEMPT_MASK: 0x000000ff&n; * HARDIRQ_MASK: 0x0000ff00&n; * SOFTIRQ_MASK: 0x00ff0000&n; */
+multiline_comment|/*&n; * We put the hardirq and softirq counter into the preemption&n; * counter. The bitmask has the following meaning:&n; *&n; * - bits 0-7 are the preemption count (max preemption depth: 256)&n; * - bits 8-15 are the softirq count (max # of softirqs: 256)&n; * - bits 16-23 are the hardirq count (max # of hardirqs: 256)&n; *&n; * - ( bit 26 is the PREEMPT_ACTIVE flag. )&n; *&n; * PREEMPT_MASK: 0x000000ff&n; * SOFTIRQ_MASK: 0x0000ff00&n; * HARDIRQ_MASK: 0x00ff0000&n; */
 DECL|macro|PREEMPT_BITS
 mdefine_line|#define PREEMPT_BITS    8
 DECL|macro|SOFTIRQ_BITS
@@ -109,9 +109,13 @@ macro_line|#ifndef CONFIG_SMP
 DECL|macro|irq_enter
 mdefine_line|#define irq_enter()             (preempt_count() += HARDIRQ_OFFSET)
 macro_line|#if CONFIG_PREEMPT
+DECL|macro|in_atomic
+macro_line|# define in_atomic()&t;(preempt_count() != kernel_locked())
 DECL|macro|IRQ_EXIT_OFFSET
 macro_line|# define IRQ_EXIT_OFFSET (HARDIRQ_OFFSET-1)
 macro_line|#else
+DECL|macro|in_atomic
+macro_line|# define in_atomic()&t;(preempt_count() != 0)
 DECL|macro|IRQ_EXIT_OFFSET
 macro_line|# define IRQ_EXIT_OFFSET HARDIRQ_OFFSET
 macro_line|#endif
@@ -138,7 +142,7 @@ macro_line|# define in_atomic()&t;(preempt_count() != 0)
 macro_line|#endif
 macro_line|#ifndef CONFIG_SMP
 DECL|macro|synchronize_irq
-mdefine_line|#define synchronize_irq()&t;barrier()
+mdefine_line|#define synchronize_irq(irq)&t;barrier()
 macro_line|#else /* (CONFIG_SMP) */
 DECL|function|irqs_running
 r_static

@@ -150,6 +150,7 @@ l_string|&quot;g5&quot;
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * Tadpole is guaranteed to be UP, using local_irq_save.&n; */
 DECL|function|tsu_clockstop
 r_static
 r_void
@@ -186,7 +187,7 @@ id|CLOCK_INIT_DONE
 )paren
 )paren
 (brace
-id|save_and_cli
+id|local_irq_save
 c_func
 (paren
 id|flags
@@ -202,7 +203,7 @@ op_or_assign
 id|CLOCK_INIT_DONE
 suffix:semicolon
 multiline_comment|/* all done */
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -227,7 +228,7 @@ l_int|1
 r_return
 suffix:semicolon
 multiline_comment|/* no speed up yet */
-id|save_and_cli
+id|local_irq_save
 c_func
 (paren
 id|flags
@@ -254,7 +255,7 @@ op_ne
 l_int|0
 )paren
 (brace
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -269,7 +270,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags

@@ -26,6 +26,10 @@ id|signal_struct
 id|init_signals
 op_assign
 id|INIT_SIGNALS
+c_func
+(paren
+id|init_signals
+)paren
 suffix:semicolon
 DECL|variable|init_mm
 r_struct
