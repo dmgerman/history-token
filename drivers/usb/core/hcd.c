@@ -255,9 +255,9 @@ multiline_comment|/*  __u8  bConfigurationValue; */
 l_int|0x00
 comma
 multiline_comment|/*  __u8  iConfiguration; */
-l_int|0x40
+l_int|0xc0
 comma
-multiline_comment|/*  __u8  bmAttributes; &n;&t;&t;&t;&t; Bit 7: Bus-powered,&n;&t;&t;&t;&t;     6: Self-powered,&n;&t;&t;&t;&t;     5 Remote-wakwup,&n;&t;&t;&t;&t;     4..0: resvd */
+multiline_comment|/*  __u8  bmAttributes; &n;&t;&t;&t;&t; Bit 7: must be set,&n;&t;&t;&t;&t;     6: Self-powered,&n;&t;&t;&t;&t;     5: Remote wakeup,&n;&t;&t;&t;&t;     4..0: resvd */
 l_int|0x00
 comma
 multiline_comment|/*  __u8  MaxPower; */
@@ -342,9 +342,9 @@ multiline_comment|/*  __u8  bConfigurationValue; */
 l_int|0x00
 comma
 multiline_comment|/*  __u8  iConfiguration; */
-l_int|0x40
+l_int|0xc0
 comma
-multiline_comment|/*  __u8  bmAttributes; &n;&t;&t;&t;&t; Bit 7: Bus-powered,&n;&t;&t;&t;&t;     6: Self-powered,&n;&t;&t;&t;&t;     5 Remote-wakwup,&n;&t;&t;&t;&t;     4..0: resvd */
+multiline_comment|/*  __u8  bmAttributes; &n;&t;&t;&t;&t; Bit 7: must be set,&n;&t;&t;&t;&t;     6: Self-powered,&n;&t;&t;&t;&t;     5: Remote wakeup,&n;&t;&t;&t;&t;     4..0: resvd */
 l_int|0x00
 comma
 multiline_comment|/*  __u8  MaxPower; */
@@ -657,13 +657,6 @@ r_struct
 id|usb_ctrlrequest
 op_star
 id|cmd
-op_assign
-(paren
-r_struct
-id|usb_ctrlrequest
-op_star
-)paren
-id|urb-&gt;setup_packet
 suffix:semicolon
 id|u16
 id|typeReq
@@ -693,8 +686,22 @@ op_assign
 l_int|0
 suffix:semicolon
 r_int
+id|patch_wakeup
+op_assign
+l_int|0
+suffix:semicolon
+r_int
 r_int
 id|flags
+suffix:semicolon
+id|cmd
+op_assign
+(paren
+r_struct
+id|usb_ctrlrequest
+op_star
+)paren
+id|urb-&gt;setup_packet
 suffix:semicolon
 id|typeReq
 op_assign
@@ -758,15 +765,23 @@ id|DeviceRequest
 op_or
 id|USB_REQ_GET_STATUS
 suffix:colon
-singleline_comment|// DEVICE_REMOTE_WAKEUP
 id|ubuf
 (braket
 l_int|0
 )braket
 op_assign
+(paren
+id|hcd-&gt;remote_wakeup
+op_lshift
+id|USB_DEVICE_REMOTE_WAKEUP
+)paren
+op_or
+(paren
 l_int|1
+op_lshift
+id|USB_DEVICE_SELF_POWERED
+)paren
 suffix:semicolon
-singleline_comment|// selfpowered
 id|ubuf
 (braket
 l_int|1
@@ -774,23 +789,51 @@ l_int|1
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* FALLTHROUGH */
+r_break
+suffix:semicolon
 r_case
 id|DeviceOutRequest
 op_or
 id|USB_REQ_CLEAR_FEATURE
 suffix:colon
+r_if
+c_cond
+(paren
+id|wValue
+op_eq
+id|USB_DEVICE_REMOTE_WAKEUP
+)paren
+id|hcd-&gt;remote_wakeup
+op_assign
+l_int|0
+suffix:semicolon
+r_else
+r_goto
+id|error
+suffix:semicolon
+r_break
+suffix:semicolon
 r_case
 id|DeviceOutRequest
 op_or
 id|USB_REQ_SET_FEATURE
 suffix:colon
-id|dev_dbg
+r_if
+c_cond
 (paren
-id|hcd-&gt;self.controller
-comma
-l_string|&quot;no device features yet yet&bslash;n&quot;
+id|hcd-&gt;can_wakeup
+op_logical_and
+id|wValue
+op_eq
+id|USB_DEVICE_REMOTE_WAKEUP
 )paren
+id|hcd-&gt;remote_wakeup
+op_assign
+l_int|1
+suffix:semicolon
+r_else
+r_goto
+id|error
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -900,6 +943,15 @@ r_sizeof
 id|fs_rh_config_descriptor
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|hcd-&gt;can_wakeup
+)paren
+id|patch_wakeup
+op_assign
+l_int|1
+suffix:semicolon
 r_break
 suffix:semicolon
 r_case
@@ -1141,6 +1193,25 @@ id|bufp
 comma
 id|len
 )paren
+suffix:semicolon
+multiline_comment|/* report whether RH hardware supports remote wakeup */
+r_if
+c_cond
+(paren
+id|patch_wakeup
+)paren
+(paren
+(paren
+r_struct
+id|usb_config_descriptor
+op_star
+)paren
+id|ubuf
+)paren
+op_member_access_from_pointer
+id|bmAttributes
+op_or_assign
+id|USB_CONFIG_ATT_WAKEUP
 suffix:semicolon
 )brace
 multiline_comment|/* any errors get returned through the urb completion */

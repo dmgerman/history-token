@@ -96,6 +96,20 @@ id|saw_irq
 suffix:colon
 l_int|1
 suffix:semicolon
+DECL|member|can_wakeup
+r_int
+id|can_wakeup
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* hw supports wakeup? */
+DECL|member|remote_wakeup
+r_int
+id|remote_wakeup
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* sw should use wakeup? */
 DECL|member|irq
 r_int
 id|irq
@@ -1096,7 +1110,6 @@ op_star
 id|parent_dev
 )paren
 suffix:semicolon
-multiline_comment|/* for portability to 2.4, hcds should call this */
 DECL|function|hcd_register_root
 r_static
 r_inline
@@ -1109,6 +1122,23 @@ op_star
 id|hcd
 )paren
 (brace
+multiline_comment|/* hcd-&gt;driver-&gt;start() reported can_wakeup, probably with&n;&t; * assistance from board&squot;s boot firmware.&n;&t; * NOTE:  normal devices won&squot;t enable wakeup by default.&n;&t; */
+r_if
+c_cond
+(paren
+id|hcd-&gt;can_wakeup
+)paren
+id|dev_dbg
+(paren
+id|hcd-&gt;self.controller
+comma
+l_string|&quot;supports USB remote wakeup&bslash;n&quot;
+)paren
+suffix:semicolon
+id|hcd-&gt;remote_wakeup
+op_assign
+id|hcd-&gt;can_wakeup
+suffix:semicolon
 r_return
 id|usb_register_root_hub
 (paren
