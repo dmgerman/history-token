@@ -2521,11 +2521,11 @@ r_return
 id|devfs_register
 c_func
 (paren
-id|input_devfs_handle
+l_int|NULL
 comma
 id|devfs_name
 comma
-id|DEVFS_FL_DEFAULT
+l_int|0
 comma
 id|INPUT_MAJOR
 comma

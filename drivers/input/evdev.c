@@ -2626,7 +2626,7 @@ op_assign
 id|input_register_minor
 c_func
 (paren
-l_string|&quot;event%d&quot;
+l_string|&quot;input/event%d&quot;
 comma
 id|minor
 comma
