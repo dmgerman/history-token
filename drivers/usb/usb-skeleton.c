@@ -621,12 +621,14 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
+l_string|&quot;%s&quot;
+comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
 id|subminor
 op_assign
-id|MINOR
+id|minor
 (paren
 id|inode-&gt;i_rdev
 )paren
@@ -772,8 +774,9 @@ l_int|NULL
 (brace
 id|dbg
 (paren
+l_string|&quot;%s - object is NULL&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - object is NULL&quot;
 )paren
 suffix:semicolon
 r_return
@@ -784,8 +787,9 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
+l_string|&quot;%s - minor %d&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - minor %d&quot;
 comma
 id|dev-&gt;minor
 )paren
@@ -814,8 +818,9 @@ l_int|0
 (brace
 id|dbg
 (paren
+l_string|&quot;%s - device not opened&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - device not opened&quot;
 )paren
 suffix:semicolon
 id|retval
@@ -948,8 +953,9 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
+l_string|&quot;%s - minor %d, count = %d&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - minor %d, count = %d&quot;
 comma
 id|dev-&gt;minor
 comma
@@ -1102,8 +1108,9 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
+l_string|&quot;%s - minor %d, count = %d&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - minor %d, count = %d&quot;
 comma
 id|dev-&gt;minor
 comma
@@ -1147,8 +1154,9 @@ l_int|0
 id|dbg
 c_func
 (paren
+l_string|&quot;%s - write request of 0 bytes&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - write request of 0 bytes&quot;
 )paren
 suffix:semicolon
 r_goto
@@ -1167,8 +1175,9 @@ id|EINPROGRESS
 (brace
 id|dbg
 (paren
+l_string|&quot;%s - already writing&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - already writing&quot;
 )paren
 suffix:semicolon
 r_goto
@@ -1268,8 +1277,9 @@ id|retval
 id|err
 c_func
 (paren
+l_string|&quot;%s - failed submitting write urb, error %d&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - failed submitting write urb, error %d&quot;
 comma
 id|retval
 )paren
@@ -1364,8 +1374,9 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
+l_string|&quot;%s - minor %d, cmd 0x%.4x, arg %ld&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - minor %d, cmd 0x%.4x, arg %ld&quot;
 comma
 id|dev-&gt;minor
 comma
@@ -1420,8 +1431,9 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
+l_string|&quot;%s - minor %d&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - minor %d&quot;
 comma
 id|dev-&gt;minor
 )paren
@@ -1447,8 +1459,9 @@ id|ECONNRESET
 id|dbg
 c_func
 (paren
+l_string|&quot;%s - nonzero write bulk status received: %d&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - nonzero write bulk status received: %d&quot;
 comma
 id|urb-&gt;status
 )paren
@@ -1497,7 +1510,7 @@ op_assign
 l_int|NULL
 suffix:semicolon
 r_struct
-id|usb_interface_descriptor
+id|usb_host_interface
 op_star
 id|iface_desc
 suffix:semicolon
@@ -1671,7 +1684,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|iface_desc-&gt;bNumEndpoints
+id|iface_desc-&gt;desc.bNumEndpoints
 suffix:semicolon
 op_increment
 id|i
