@@ -746,10 +746,6 @@ id|agp_bridge.masks
 op_assign
 id|via_generic_masks
 suffix:semicolon
-id|agp_bridge.num_of_masks
-op_assign
-l_int|1
-suffix:semicolon
 id|agp_bridge.aperture_sizes
 op_assign
 (paren
