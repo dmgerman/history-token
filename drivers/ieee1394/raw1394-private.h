@@ -6,6 +6,8 @@ DECL|macro|RAW1394_DEVICE_MAJOR
 mdefine_line|#define RAW1394_DEVICE_MAJOR      171
 DECL|macro|RAW1394_DEVICE_NAME
 mdefine_line|#define RAW1394_DEVICE_NAME       &quot;raw1394&quot;
+DECL|macro|RAW1394_MAX_USER_CSR_DIRS
+mdefine_line|#define RAW1394_MAX_USER_CSR_DIRS&t;16
 DECL|struct|iso_block_store
 r_struct
 id|iso_block_store
@@ -144,6 +146,21 @@ r_struct
 id|hpsb_iso
 op_star
 id|iso_handle
+suffix:semicolon
+multiline_comment|/* User space&squot;s CSR1212 dynamic ConfigROM directories */
+DECL|member|csr1212_dirs
+r_struct
+id|csr1212_keyval
+op_star
+id|csr1212_dirs
+(braket
+id|RAW1394_MAX_USER_CSR_DIRS
+)braket
+suffix:semicolon
+multiline_comment|/* Legacy ConfigROM update flag */
+DECL|member|cfgrom_upd
+id|u8
+id|cfgrom_upd
 suffix:semicolon
 )brace
 suffix:semicolon

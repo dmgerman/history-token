@@ -1278,6 +1278,12 @@ id|node_entry
 op_star
 id|ne
 suffix:semicolon
+DECL|member|ud
+r_struct
+id|unit_directory
+op_star
+id|ud
+suffix:semicolon
 multiline_comment|/* A backlink to our host_info */
 DECL|member|hi
 r_struct
@@ -1463,6 +1469,17 @@ suffix:semicolon
 r_static
 r_void
 id|sbp2_remove_host
+c_func
+(paren
+r_struct
+id|hpsb_host
+op_star
+id|host
+)paren
+suffix:semicolon
+r_static
+r_void
+id|sbp2_host_reset
 c_func
 (paren
 r_struct
@@ -1826,6 +1843,11 @@ r_struct
 id|unit_directory
 op_star
 id|ud
+comma
+r_struct
+id|sbp2scsi_host_info
+op_star
+id|hi
 )paren
 suffix:semicolon
 r_static
