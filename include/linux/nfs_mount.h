@@ -8,7 +8,7 @@ macro_line|#include &lt;linux/nfs2.h&gt;
 macro_line|#include &lt;linux/nfs3.h&gt;
 multiline_comment|/*&n; * WARNING!  Do not delete or change the order of these fields.  If&n; * a new field is required then add it to the end.  The version field&n; * tracks which fields are present.  This will ensure some measure of&n; * mount-to-kernel version compatibility.  Some of these aren&squot;t used yet&n; * but here they are anyway.&n; */
 DECL|macro|NFS_MOUNT_VERSION
-mdefine_line|#define NFS_MOUNT_VERSION&t;4
+mdefine_line|#define NFS_MOUNT_VERSION&t;5
 DECL|struct|nfs_mount_data
 r_struct
 id|nfs_mount_data
@@ -109,7 +109,7 @@ DECL|member|pseudoflavor
 r_int
 id|pseudoflavor
 suffix:semicolon
-multiline_comment|/* 4 */
+multiline_comment|/* 5 */
 )brace
 suffix:semicolon
 multiline_comment|/* bits in the flags field */
@@ -138,7 +138,7 @@ mdefine_line|#define NFS_MOUNT_BROKEN_SUID&t;0x0400&t;/* 4 */
 DECL|macro|NFS_MOUNT_STRICTLOCK
 mdefine_line|#define NFS_MOUNT_STRICTLOCK&t;0x1000&t;/* reserved for NFSv4 */
 DECL|macro|NFS_MOUNT_SECFLAVOUR
-mdefine_line|#define NFS_MOUNT_SECFLAVOUR&t;0x2000&t;/* reserved */
+mdefine_line|#define NFS_MOUNT_SECFLAVOUR&t;0x2000&t;/* 5 */
 DECL|macro|NFS_MOUNT_FLAGMASK
 mdefine_line|#define NFS_MOUNT_FLAGMASK&t;0xFFFF
 macro_line|#endif

@@ -3428,7 +3428,7 @@ op_assign
 id|rpc_call
 c_func
 (paren
-id|server-&gt;client
+id|server-&gt;client_sys
 comma
 id|NFS3PROC_FSINFO
 comma

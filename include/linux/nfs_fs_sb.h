@@ -15,6 +15,13 @@ op_star
 id|client
 suffix:semicolon
 multiline_comment|/* RPC client handle */
+DECL|member|client_sys
+r_struct
+id|rpc_clnt
+op_star
+id|client_sys
+suffix:semicolon
+multiline_comment|/* 2nd handle for FSINFO */
 DECL|member|rpc_ops
 r_struct
 id|nfs_rpc_ops
