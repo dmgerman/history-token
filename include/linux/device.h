@@ -17,7 +17,7 @@ mdefine_line|#define DEVICE_NAME_HALF&t;__stringify(20)&t;/* Less than half to a
 DECL|macro|DEVICE_ID_SIZE
 mdefine_line|#define DEVICE_ID_SIZE&t;&t;32
 DECL|macro|BUS_ID_SIZE
-mdefine_line|#define BUS_ID_SIZE&t;&t;16
+mdefine_line|#define BUS_ID_SIZE&t;&t;20
 r_enum
 (brace
 DECL|enumerator|SUSPEND_NOTIFY
