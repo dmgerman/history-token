@@ -132,5 +132,7 @@ DECL|macro|XFSMNT_SWALLOC
 mdefine_line|#define XFSMNT_SWALLOC&t;&t;0x10000000&t;/* turn on stripe width&n;&t;&t;&t;&t;&t;&t; * allocation */
 DECL|macro|XFSMNT_IHASHSIZE
 mdefine_line|#define XFSMNT_IHASHSIZE&t;0x20000000&t;/* inode hash table size */
+DECL|macro|XFSMNT_DIRSYNC
+mdefine_line|#define XFSMNT_DIRSYNC&t;&t;0x40000000&t;/* sync creat,link,unlink,rename&n;&t;&t;&t;&t;&t;&t; * symlink,mkdir,rmdir,mknod */
 macro_line|#endif&t;/* __XFS_CLNT_H__ */
 eof

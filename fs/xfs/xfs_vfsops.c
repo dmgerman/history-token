@@ -973,6 +973,17 @@ id|mp-&gt;m_flags
 op_or_assign
 id|XFS_MOUNT_IDELETE
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|ap-&gt;flags
+op_amp
+id|XFSMNT_DIRSYNC
+)paren
+id|mp-&gt;m_flags
+op_or_assign
+id|XFS_MOUNT_DIRSYNC
+suffix:semicolon
 multiline_comment|/*&n;&t; * no recovery flag requires a read-only mount&n;&t; */
 r_if
 c_cond

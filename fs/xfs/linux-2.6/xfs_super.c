@@ -124,6 +124,17 @@ c_cond
 (paren
 id|sb-&gt;s_flags
 op_amp
+id|MS_DIRSYNC
+)paren
+id|args-&gt;flags
+op_or_assign
+id|XFSMNT_DIRSYNC
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|sb-&gt;s_flags
+op_amp
 id|MS_SYNCHRONOUS
 )paren
 id|args-&gt;flags

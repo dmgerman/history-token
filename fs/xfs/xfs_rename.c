@@ -1917,7 +1917,11 @@ c_cond
 (paren
 id|mp-&gt;m_flags
 op_amp
+(paren
 id|XFS_MOUNT_WSYNC
+op_or
+id|XFS_MOUNT_DIRSYNC
+)paren
 )paren
 (brace
 id|xfs_trans_set_sync

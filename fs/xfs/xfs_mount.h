@@ -1621,6 +1621,8 @@ DECL|macro|XFS_MOUNT_SWALLOC
 mdefine_line|#define XFS_MOUNT_SWALLOC&t;0x00080000&t;/* turn on stripe width&n;&t;&t;&t;&t;&t;&t; * allocation */
 DECL|macro|XFS_MOUNT_IHASHSIZE
 mdefine_line|#define XFS_MOUNT_IHASHSIZE&t;0x00100000&t;/* inode hash table size */
+DECL|macro|XFS_MOUNT_DIRSYNC
+mdefine_line|#define XFS_MOUNT_DIRSYNC&t;0x00200000&t;/* synchronous directory ops */
 multiline_comment|/*&n; * Default minimum read and write sizes.&n; */
 DECL|macro|XFS_READIO_LOG_LARGE
 mdefine_line|#define XFS_READIO_LOG_LARGE&t;16
