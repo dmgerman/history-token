@@ -9869,14 +9869,9 @@ r_else
 r_if
 c_cond
 (paren
-op_logical_neg
-id|kdev_same
-c_func
-(paren
 id|jdev
-comma
+op_ne
 id|super-&gt;s_dev
-)paren
 )paren
 (brace
 id|set_blocksize
