@@ -5252,6 +5252,12 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
+id|save_flags
+c_func
+(paren
+id|flags
+)paren
+suffix:semicolon
 id|cli
 c_func
 (paren
@@ -5344,6 +5350,12 @@ c_loop
 l_int|1
 )paren
 (brace
+id|save_flags
+c_func
+(paren
+id|flags
+)paren
+suffix:semicolon
 id|cli
 c_func
 (paren
@@ -5764,7 +5776,7 @@ c_func
 (paren
 l_string|&quot;throttle %s: %d....&bslash;n&quot;
 comma
-id|_tty_name
+id|tty_name
 c_func
 (paren
 id|tty
@@ -5924,7 +5936,7 @@ c_func
 (paren
 l_string|&quot;throttle %s: %d....&bslash;n&quot;
 comma
-id|_tty_name
+id|tty_name
 c_func
 (paren
 id|tty
@@ -10157,10 +10169,17 @@ id|cy_serial_driver.magic
 op_assign
 id|TTY_DRIVER_MAGIC
 suffix:semicolon
+macro_line|#ifdef CONFIG_DEVFS_FS
+id|cy_serial_driver.name
+op_assign
+l_string|&quot;tts/%d&quot;
+suffix:semicolon
+macro_line|#else
 id|cy_serial_driver.name
 op_assign
 l_string|&quot;ttyS&quot;
 suffix:semicolon
+macro_line|#endif
 id|cy_serial_driver.major
 op_assign
 id|TTY_MAJOR
@@ -10283,10 +10302,17 @@ id|cy_callout_driver
 op_assign
 id|cy_serial_driver
 suffix:semicolon
+macro_line|#ifdef CONFIG_DEVFS_FS
+id|cy_callout_driver.name
+op_assign
+l_string|&quot;cua/%d&quot;
+suffix:semicolon
+macro_line|#else
 id|cy_callout_driver.name
 op_assign
 l_string|&quot;cua&quot;
 suffix:semicolon
+macro_line|#endif
 id|cy_callout_driver.major
 op_assign
 id|TTYAUX_MAJOR
