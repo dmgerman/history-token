@@ -6046,10 +6046,24 @@ op_star
 id|buffer
 comma
 multiline_comment|/* not used */
+r_int
+id|ubsize
+comma
+multiline_comment|/* not used */
+r_void
+op_star
+id|private_data
+comma
+multiline_comment|/* not used */
 id|xfs_daddr_t
 id|bno
 comma
 multiline_comment|/* starting block of inode cluster */
+r_int
+op_star
+id|ubused
+comma
+multiline_comment|/* not used */
 r_void
 op_star
 id|dip
@@ -6625,6 +6639,8 @@ op_amp
 id|count
 comma
 id|xfs_qm_dqusage_adjust
+comma
+l_int|NULL
 comma
 id|structsz
 comma
