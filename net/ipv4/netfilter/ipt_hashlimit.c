@@ -187,7 +187,7 @@ multiline_comment|/* hashtable itself */
 )brace
 suffix:semicolon
 r_static
-id|DECLARE_RWLOCK
+id|DECLARE_LOCK
 c_func
 (paren
 id|hashlimit_lock
@@ -874,7 +874,7 @@ op_amp
 id|hinfo-&gt;timer
 )paren
 suffix:semicolon
-id|WRITE_LOCK
+id|LOCK_BH
 c_func
 (paren
 op_amp
@@ -891,7 +891,7 @@ op_amp
 id|hashlimit_htables
 )paren
 suffix:semicolon
-id|WRITE_UNLOCK
+id|UNLOCK_BH
 c_func
 (paren
 op_amp
@@ -1189,7 +1189,7 @@ id|ipt_hashlimit_htable
 op_star
 id|hinfo
 suffix:semicolon
-id|READ_LOCK
+id|LOCK_BH
 c_func
 (paren
 op_amp
@@ -1227,7 +1227,7 @@ op_amp
 id|hinfo-&gt;use
 )paren
 suffix:semicolon
-id|READ_UNLOCK
+id|UNLOCK_BH
 c_func
 (paren
 op_amp
@@ -1239,7 +1239,7 @@ id|hinfo
 suffix:semicolon
 )brace
 )brace
-id|READ_UNLOCK
+id|UNLOCK_BH
 c_func
 (paren
 op_amp
@@ -1273,7 +1273,7 @@ id|hinfo-&gt;use
 )paren
 )paren
 (brace
-id|WRITE_LOCK
+id|LOCK_BH
 c_func
 (paren
 op_amp
@@ -1287,7 +1287,7 @@ op_amp
 id|hinfo-&gt;list
 )paren
 suffix:semicolon
-id|WRITE_UNLOCK
+id|UNLOCK_BH
 c_func
 (paren
 op_amp
