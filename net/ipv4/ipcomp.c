@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * IP Payload Compression Protocol (IPComp) - RFC3713.&n; *&n; * Copyright (c) 2003 James Morris &lt;jmorris@intercode.com.au&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of the GNU General Public License as published by the Free&n; * Software Foundation; either version 2 of the License, or (at your option) &n; * any later version.&n; *&n; * Todo:&n; *   - Tunable compression parameters.&n; *   - Compression stats.&n; *   - Adaptive compression.&n; */
+multiline_comment|/*&n; * IP Payload Compression Protocol (IPComp) - RFC3173.&n; *&n; * Copyright (c) 2003 James Morris &lt;jmorris@intercode.com.au&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of the GNU General Public License as published by the Free&n; * Software Foundation; either version 2 of the License, or (at your option) &n; * any later version.&n; *&n; * Todo:&n; *   - Tunable compression parameters.&n; *   - Compression stats.&n; *   - Adaptive compression.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/scatterlist.h&gt;
@@ -8,47 +8,7 @@ macro_line|#include &lt;net/ip.h&gt;
 macro_line|#include &lt;net/xfrm.h&gt;
 macro_line|#include &lt;net/icmp.h&gt;
 macro_line|#include &lt;net/esp.h&gt;
-DECL|macro|IPCOMP_SCRATCH_SIZE
-mdefine_line|#define IPCOMP_SCRATCH_SIZE&t;65400
-DECL|struct|ipcomp_hdr
-r_struct
-id|ipcomp_hdr
-(brace
-DECL|member|nexthdr
-id|u8
-id|nexthdr
-suffix:semicolon
-DECL|member|flags
-id|u8
-id|flags
-suffix:semicolon
-DECL|member|cpi
-id|u16
-id|cpi
-suffix:semicolon
-)brace
-suffix:semicolon
-DECL|struct|ipcomp_data
-r_struct
-id|ipcomp_data
-(brace
-DECL|member|threshold
-id|u16
-id|threshold
-suffix:semicolon
-DECL|member|scratch
-id|u8
-op_star
-id|scratch
-suffix:semicolon
-DECL|member|tfm
-r_struct
-id|crypto_tfm
-op_star
-id|tfm
-suffix:semicolon
-)brace
-suffix:semicolon
+macro_line|#include &lt;net/ipcomp.h&gt;
 DECL|function|ipcomp_decompress
 r_static
 r_int
@@ -142,7 +102,7 @@ op_plus
 r_sizeof
 (paren
 r_struct
-id|ipcomp_hdr
+id|ip_comp_hdr
 )paren
 )paren
 )paren
@@ -348,7 +308,7 @@ comma
 r_sizeof
 (paren
 r_struct
-id|ipcomp_hdr
+id|ip_comp_hdr
 )paren
 )paren
 suffix:semicolon
@@ -357,7 +317,7 @@ op_add_assign
 r_sizeof
 (paren
 r_struct
-id|ipcomp_hdr
+id|ip_comp_hdr
 )paren
 suffix:semicolon
 id|memcpy
@@ -391,7 +351,7 @@ op_minus
 r_sizeof
 (paren
 r_struct
-id|ipcomp_hdr
+id|ip_comp_hdr
 )paren
 )paren
 suffix:semicolon
@@ -524,7 +484,7 @@ op_plus
 r_sizeof
 (paren
 r_struct
-id|ipcomp_hdr
+id|ip_comp_hdr
 )paren
 )paren
 op_ge
@@ -760,7 +720,7 @@ op_star
 id|top_iph
 suffix:semicolon
 r_struct
-id|ipcomp_hdr
+id|ip_comp_hdr
 op_star
 id|ipch
 suffix:semicolon
@@ -1017,7 +977,7 @@ comma
 r_sizeof
 (paren
 r_struct
-id|ipcomp_hdr
+id|ip_comp_hdr
 )paren
 )paren
 suffix:semicolon
@@ -1058,7 +1018,7 @@ id|ipch
 op_assign
 (paren
 r_struct
-id|ipcomp_hdr
+id|ip_comp_hdr
 op_star
 )paren
 (paren
@@ -1213,13 +1173,13 @@ op_star
 id|skb-&gt;data
 suffix:semicolon
 r_struct
-id|ipcomp_hdr
+id|ip_comp_hdr
 op_star
 id|ipch
 op_assign
 (paren
 r_struct
-id|ipcomp_hdr
+id|ip_comp_hdr
 op_star
 )paren
 (paren
@@ -1701,7 +1661,7 @@ op_assign
 r_sizeof
 (paren
 r_struct
-id|ipcomp_hdr
+id|ip_comp_hdr
 )paren
 suffix:semicolon
 r_if
@@ -2057,7 +2017,7 @@ suffix:semicolon
 id|MODULE_DESCRIPTION
 c_func
 (paren
-l_string|&quot;IP Payload Compression Protocol (IPComp) - RFC3713&quot;
+l_string|&quot;IP Payload Compression Protocol (IPComp) - RFC3173&quot;
 )paren
 suffix:semicolon
 id|MODULE_AUTHOR

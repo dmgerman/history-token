@@ -179,6 +179,24 @@ suffix:semicolon
 multiline_comment|/* Length variable but &gt;=8. Mind the 64 bit alignment! */
 )brace
 suffix:semicolon
+DECL|struct|ipv6_comp_hdr
+r_struct
+id|ipv6_comp_hdr
+(brace
+DECL|member|nexthdr
+id|__u8
+id|nexthdr
+suffix:semicolon
+DECL|member|flags
+id|__u8
+id|flags
+suffix:semicolon
+DECL|member|cpi
+id|__u16
+id|cpi
+suffix:semicolon
+)brace
+suffix:semicolon
 multiline_comment|/*&n; *&t;IPv6 fixed header&n; *&n; *&t;BEWARE, it is incorrect. The first 4 bits of flow_lbl&n; *&t;are glued to priority now, forming &quot;class&quot;.&n; */
 DECL|struct|ipv6hdr
 r_struct

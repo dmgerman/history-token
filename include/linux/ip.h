@@ -532,5 +532,23 @@ suffix:semicolon
 multiline_comment|/* Variable len but &gt;=8. Mind the 64 bit alignment! */
 )brace
 suffix:semicolon
+DECL|struct|ip_comp_hdr
+r_struct
+id|ip_comp_hdr
+(brace
+DECL|member|nexthdr
+id|__u8
+id|nexthdr
+suffix:semicolon
+DECL|member|flags
+id|__u8
+id|flags
+suffix:semicolon
+DECL|member|cpi
+id|__u16
+id|cpi
+suffix:semicolon
+)brace
+suffix:semicolon
 macro_line|#endif&t;/* _LINUX_IP_H */
 eof

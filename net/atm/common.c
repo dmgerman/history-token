@@ -188,11 +188,11 @@ c_func
 id|atm_clip_ops
 )paren
 suffix:semicolon
-DECL|variable|atm_clip_ops_mutex
+DECL|variable|try_atm_clip_ops
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|atm_clip_ops_mutex
+id|try_atm_clip_ops
 )paren
 suffix:semicolon
 DECL|variable|atm_clip_ops_set

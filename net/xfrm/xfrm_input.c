@@ -145,7 +145,11 @@ c_func
 (paren
 id|skb
 comma
-l_int|4
+r_sizeof
+(paren
+r_struct
+id|ip_comp_hdr
+)paren
 )paren
 )paren
 r_return
