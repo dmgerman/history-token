@@ -645,6 +645,8 @@ c_func
 id|IXP2000_T1_CLD
 comma
 id|ticks_per_jiffy
+op_minus
+l_int|1
 )paren
 suffix:semicolon
 id|ixp2000_reg_write
@@ -684,8 +686,6 @@ suffix:semicolon
 id|next_jiffy_time
 op_assign
 l_int|0xffffffff
-op_minus
-id|ticks_per_jiffy
 suffix:semicolon
 multiline_comment|/* register for interrupt */
 id|setup_irq
