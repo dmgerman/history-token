@@ -3806,7 +3806,7 @@ op_star
 id|ka
 op_assign
 op_amp
-id|current-&gt;sig-&gt;action
+id|current-&gt;sighand-&gt;action
 (braket
 id|signr
 op_minus
@@ -3944,7 +3944,7 @@ suffix:semicolon
 id|ka
 op_assign
 op_amp
-id|current-&gt;sig-&gt;action
+id|current-&gt;sighand-&gt;action
 (braket
 id|signr
 op_minus
@@ -4071,7 +4071,7 @@ c_cond
 (paren
 op_logical_neg
 (paren
-id|current-&gt;parent-&gt;sig-&gt;action
+id|current-&gt;parent-&gt;sighand-&gt;action
 (braket
 id|SIGCHLD
 op_minus
