@@ -212,6 +212,8 @@ DECL|macro|VIDCFG_VIDPROC_ENABLE
 mdefine_line|#define VIDCFG_VIDPROC_ENABLE           BIT(0)
 DECL|macro|VIDCFG_CURS_X11
 mdefine_line|#define VIDCFG_CURS_X11                 BIT(1)
+DECL|macro|VIDCFG_INTERLACE
+mdefine_line|#define VIDCFG_INTERLACE                BIT(3)
 DECL|macro|VIDCFG_HALF_MODE
 mdefine_line|#define VIDCFG_HALF_MODE                BIT(4)
 DECL|macro|VIDCFG_DESK_ENABLE
