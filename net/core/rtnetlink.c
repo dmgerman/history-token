@@ -1,6 +1,7 @@
 multiline_comment|/*&n; * INET&t;&t;An implementation of the TCP/IP protocol suite for the LINUX&n; *&t;&t;operating system.  INET is implemented using the  BSD Socket&n; *&t;&t;interface as the means of communication with the user level.&n; *&n; *&t;&t;Routing netlink socket interface: protocol independent part.&n; *&n; * Authors:&t;Alexey Kuznetsov, &lt;kuznet@ms2.inr.ac.ru&gt;&n; *&n; *&t;&t;This program is free software; you can redistribute it and/or&n; *&t;&t;modify it under the terms of the GNU General Public License&n; *&t;&t;as published by the Free Software Foundation; either version&n; *&t;&t;2 of the License, or (at your option) any later version.&n; *&n; *&t;Fixes:&n; *&t;Vitaly E. Lavrov&t;&t;RTA_OK arithmetics was wrong.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/socket.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -2802,4 +2803,67 @@ op_assign
 id|link_rtnetlink_table
 suffix:semicolon
 )brace
+DECL|variable|__rta_fill
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|__rta_fill
+)paren
+suffix:semicolon
+DECL|variable|rtattr_parse
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|rtattr_parse
+)paren
+suffix:semicolon
+DECL|variable|rtnetlink_dump_ifinfo
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|rtnetlink_dump_ifinfo
+)paren
+suffix:semicolon
+DECL|variable|rtnetlink_links
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|rtnetlink_links
+)paren
+suffix:semicolon
+DECL|variable|rtnetlink_put_metrics
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|rtnetlink_put_metrics
+)paren
+suffix:semicolon
+DECL|variable|rtnl
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|rtnl
+)paren
+suffix:semicolon
+DECL|variable|rtnl_lock
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|rtnl_lock
+)paren
+suffix:semicolon
+DECL|variable|rtnl_sem
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|rtnl_sem
+)paren
+suffix:semicolon
+DECL|variable|rtnl_unlock
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|rtnl_unlock
+)paren
+suffix:semicolon
 eof

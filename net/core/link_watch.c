@@ -1,5 +1,6 @@
-multiline_comment|/*&n; * Linux network device link state notifaction&n; *&n; * Author:&n; *     Stefan Rompf &lt;sux@loplof.de&gt;&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License&n; * as published by the Free Software Foundation; either version&n; * 2 of the License, or (at your option) any later version.&n; *&n; */
+multiline_comment|/*&n; * Linux network device link state notification&n; *&n; * Author:&n; *     Stefan Rompf &lt;sux@loplof.de&gt;&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License&n; * as published by the Free Software Foundation; either version&n; * 2 of the License, or (at your option) any later version.&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/if.h&gt;
 macro_line|#include &lt;linux/rtnetlink.h&gt;
@@ -464,4 +465,11 @@ suffix:semicolon
 )brace
 )brace
 )brace
+DECL|variable|linkwatch_fire_event
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|linkwatch_fire_event
+)paren
+suffix:semicolon
 eof

@@ -2246,7 +2246,7 @@ id|oldmnt-&gt;version
 suffix:semicolon
 id|mnt-&gt;uid
 op_assign
-id|low2highuid
+id|OLD_TO_NEW_UID
 c_func
 (paren
 id|oldmnt-&gt;uid
@@ -2254,7 +2254,7 @@ id|oldmnt-&gt;uid
 suffix:semicolon
 id|mnt-&gt;gid
 op_assign
-id|low2highuid
+id|OLD_TO_NEW_GID
 c_func
 (paren
 id|oldmnt-&gt;gid

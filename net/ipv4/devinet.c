@@ -3,6 +3,7 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -6435,4 +6436,53 @@ id|ipv4_devconf_dflt
 suffix:semicolon
 macro_line|#endif
 )brace
+DECL|variable|devinet_ioctl
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|devinet_ioctl
+)paren
+suffix:semicolon
+DECL|variable|in_dev_finish_destroy
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|in_dev_finish_destroy
+)paren
+suffix:semicolon
+DECL|variable|inet_select_addr
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|inet_select_addr
+)paren
+suffix:semicolon
+DECL|variable|inetdev_by_index
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|inetdev_by_index
+)paren
+suffix:semicolon
+DECL|variable|inetdev_lock
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|inetdev_lock
+)paren
+suffix:semicolon
+DECL|variable|register_inetaddr_notifier
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|register_inetaddr_notifier
+)paren
+suffix:semicolon
+DECL|variable|unregister_inetaddr_notifier
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|unregister_inetaddr_notifier
+)paren
+suffix:semicolon
 eof

@@ -4,6 +4,7 @@ macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/ioctls.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/fcntl.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/socket.h&gt;
 macro_line|#include &lt;linux/sockios.h&gt;
 macro_line|#include &lt;linux/in.h&gt;
@@ -6463,4 +6464,76 @@ id|udp4_seq_afinfo
 suffix:semicolon
 )brace
 macro_line|#endif /* CONFIG_PROC_FS */
+DECL|variable|udp_connect
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|udp_connect
+)paren
+suffix:semicolon
+DECL|variable|udp_disconnect
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|udp_disconnect
+)paren
+suffix:semicolon
+DECL|variable|udp_hash
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|udp_hash
+)paren
+suffix:semicolon
+DECL|variable|udp_hash_lock
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|udp_hash_lock
+)paren
+suffix:semicolon
+DECL|variable|udp_ioctl
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|udp_ioctl
+)paren
+suffix:semicolon
+DECL|variable|udp_port_rover
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|udp_port_rover
+)paren
+suffix:semicolon
+DECL|variable|udp_prot
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|udp_prot
+)paren
+suffix:semicolon
+DECL|variable|udp_sendmsg
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|udp_sendmsg
+)paren
+suffix:semicolon
+macro_line|#ifdef CONFIG_PROC_FS
+DECL|variable|udp_proc_register
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|udp_proc_register
+)paren
+suffix:semicolon
+DECL|variable|udp_proc_unregister
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|udp_proc_unregister
+)paren
+suffix:semicolon
+macro_line|#endif
 eof

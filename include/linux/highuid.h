@@ -37,6 +37,10 @@ DECL|macro|NEW_TO_OLD_UID
 mdefine_line|#define NEW_TO_OLD_UID(uid)&t;high2lowuid(uid)
 DECL|macro|NEW_TO_OLD_GID
 mdefine_line|#define NEW_TO_OLD_GID(gid)&t;high2lowgid(gid)
+DECL|macro|OLD_TO_NEW_UID
+mdefine_line|#define OLD_TO_NEW_UID(uid)&t;low2highuid(uid)
+DECL|macro|OLD_TO_NEW_GID
+mdefine_line|#define OLD_TO_NEW_GID(gid)&t;low2highgid(gid)
 multiline_comment|/* specific to fs/stat.c */
 DECL|macro|SET_OLDSTAT_UID
 mdefine_line|#define SET_OLDSTAT_UID(stat, uid)&t;(stat).st_uid = high2lowuid(uid)
@@ -55,6 +59,10 @@ DECL|macro|NEW_TO_OLD_UID
 mdefine_line|#define NEW_TO_OLD_UID(uid)&t;(uid)
 DECL|macro|NEW_TO_OLD_GID
 mdefine_line|#define NEW_TO_OLD_GID(gid)&t;(gid)
+DECL|macro|OLD_TO_NEW_UID
+mdefine_line|#define OLD_TO_NEW_UID(uid)&t;(uid)
+DECL|macro|OLD_TO_NEW_GID
+mdefine_line|#define OLD_TO_NEW_GID(gid)&t;(gid)
 DECL|macro|SET_OLDSTAT_UID
 mdefine_line|#define SET_OLDSTAT_UID(stat, uid)&t;(stat).st_uid = (uid)
 DECL|macro|SET_OLDSTAT_GID

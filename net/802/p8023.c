@@ -1,9 +1,10 @@
 multiline_comment|/*&n; *&t;NET3:&t;802.3 data link hooks used for IPX 802.3&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *&t;modify it under the terms of the GNU General Public License&n; *&t;as published by the Free Software Foundation; either version&n; *&t;2 of the License, or (at your option) any later version.&n; *&n; *&t;802.3 isn&squot;t really a protocol data link layer. Some old IPX stuff&n; *&t;uses it however. Note that there is only one 802.3 protocol layer&n; *&t;in the system. We don&squot;t currently support different protocols&n; *&t;running raw 802.3 on different devices. Thankfully nobody else&n; *&t;has done anything like the old IPX.&n; */
+macro_line|#include &lt;linux/in.h&gt;
+macro_line|#include &lt;linux/mm.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;net/datalink.h&gt;
-macro_line|#include &lt;linux/mm.h&gt;
-macro_line|#include &lt;linux/in.h&gt;
 multiline_comment|/*&n; *&t;Place an 802.3 header on a packet. The driver will do the mac&n; *&t;addresses, we just need to give it the buffer length.&n; */
 DECL|function|p8023_request
 r_static
@@ -75,14 +76,7 @@ r_struct
 id|datalink_proto
 op_star
 id|proto
-suffix:semicolon
-id|proto
 op_assign
-(paren
-r_struct
-id|datalink_proto
-op_star
-)paren
 id|kmalloc
 c_func
 (paren
@@ -99,8 +93,6 @@ r_if
 c_cond
 (paren
 id|proto
-op_ne
-l_int|NULL
 )paren
 (brace
 id|proto-&gt;header_length
@@ -140,4 +132,18 @@ id|dl
 )paren
 suffix:semicolon
 )brace
+DECL|variable|destroy_8023_client
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|destroy_8023_client
+)paren
+suffix:semicolon
+DECL|variable|make_8023_client
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|make_8023_client
+)paren
+suffix:semicolon
 eof
