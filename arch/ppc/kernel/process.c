@@ -100,6 +100,31 @@ c_func
 id|init_mm
 )paren
 suffix:semicolon
+multiline_comment|/* this is 8kB-aligned so we can get to the thread_info struct&n;   at the base of it from the stack pointer with 1 integer instruction. */
+DECL|variable|init_thread_union
+r_union
+id|thread_union
+id|init_thread_union
+id|__attribute__
+c_func
+(paren
+(paren
+id|__section__
+c_func
+(paren
+l_string|&quot;.data.init_task&quot;
+)paren
+)paren
+)paren
+op_assign
+(brace
+id|INIT_THREAD_INFO
+c_func
+(paren
+id|init_task
+)paren
+)brace
+suffix:semicolon
 multiline_comment|/* initial task structure */
 DECL|variable|init_task
 r_struct
@@ -658,9 +683,9 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
+DECL|function|switch_to
 r_void
-DECL|function|_switch_to
-id|_switch_to
+id|switch_to
 c_func
 (paren
 r_struct
@@ -672,12 +697,6 @@ r_struct
 id|task_struct
 op_star
 r_new
-comma
-r_struct
-id|task_struct
-op_star
-op_star
-id|last
 )paren
 (brace
 r_struct
@@ -759,16 +778,6 @@ id|prev
 suffix:semicolon
 macro_line|#endif /* CONFIG_ALTIVEC */&t;
 macro_line|#endif /* CONFIG_SMP */
-id|current_set
-(braket
-id|smp_processor_id
-c_func
-(paren
-)paren
-)braket
-op_assign
-r_new
-suffix:semicolon
 multiline_comment|/* Avoid the trap.  On smp this this never happens since&n;&t; * we don&squot;t set last_task_used_altivec -- Cort&n;&t; */
 r_if
 c_cond
@@ -799,9 +808,6 @@ op_assign
 op_amp
 id|current-&gt;thread
 suffix:semicolon
-op_star
-id|last
-op_assign
 id|_switch
 c_func
 (paren
@@ -1026,7 +1032,10 @@ c_func
 (paren
 l_string|&quot; CPU: %d&quot;
 comma
-id|current-&gt;processor
+id|smp_processor_id
+c_func
+(paren
+)paren
 )paren
 suffix:semicolon
 macro_line|#endif /* CONFIG_SMP */
