@@ -374,18 +374,7 @@ multiline_comment|/* Breakpoints and stuff are in sgi_irq_setup() */
 )brace
 )brace
 macro_line|#endif
-macro_line|#ifdef CONFIG_VT
-macro_line|#ifdef CONFIG_SGI_NEWPORT_CONSOLE
-r_if
-c_cond
-(paren
-id|ctype
-op_logical_and
-op_star
-id|ctype
-op_eq
-l_char|&squot;g&squot;
-)paren
+macro_line|#if defined(CONFIG_VT) &amp;&amp; defined(CONFIG_SGI_NEWPORT_CONSOLE)
 (brace
 id|ULONG
 op_star
@@ -485,7 +474,6 @@ id|newport_con
 suffix:semicolon
 )brace
 )brace
-macro_line|#endif
 macro_line|#endif
 r_return
 l_int|0
