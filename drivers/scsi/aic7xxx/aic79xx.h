@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Core definitions and data structures shareable across OS platforms.&n; *&n; * Copyright (c) 1994-2002 Justin T. Gibbs.&n; * Copyright (c) 2000-2002 Adaptec Inc.&n; * All rights reserved.&n; *&n; * Redistribution and use in source and binary forms, with or without&n; * modification, are permitted provided that the following conditions&n; * are met:&n; * 1. Redistributions of source code must retain the above copyright&n; *    notice, this list of conditions, and the following disclaimer,&n; *    without modification.&n; * 2. Redistributions in binary form must reproduce at minimum a disclaimer&n; *    substantially similar to the &quot;NO WARRANTY&quot; disclaimer below&n; *    (&quot;Disclaimer&quot;) and any redistribution must be conditioned upon&n; *    including a substantially similar Disclaimer requirement for further&n; *    binary redistribution.&n; * 3. Neither the names of the above-listed copyright holders nor the names&n; *    of any contributors may be used to endorse or promote products derived&n; *    from this software without specific prior written permission.&n; *&n; * Alternatively, this software may be distributed under the terms of the&n; * GNU General Public License (&quot;GPL&quot;) version 2 as published by the Free&n; * Software Foundation.&n; *&n; * NO WARRANTY&n; * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS&n; * &quot;AS IS&quot; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT&n; * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR&n; * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT&n; * HOLDERS OR CONTRIBUTORS BE LIABLE FOR SPECIAL, EXEMPLARY, OR CONSEQUENTIAL&n; * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS&n; * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)&n; * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,&n; * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING&n; * IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE&n; * POSSIBILITY OF SUCH DAMAGES.&n; *&n; * $Id: //depot/aic7xxx/aic7xxx/aic79xx.h#78 $&n; *&n; * $FreeBSD$&n; */
+multiline_comment|/*&n; * Core definitions and data structures shareable across OS platforms.&n; *&n; * Copyright (c) 1994-2002 Justin T. Gibbs.&n; * Copyright (c) 2000-2002 Adaptec Inc.&n; * All rights reserved.&n; *&n; * Redistribution and use in source and binary forms, with or without&n; * modification, are permitted provided that the following conditions&n; * are met:&n; * 1. Redistributions of source code must retain the above copyright&n; *    notice, this list of conditions, and the following disclaimer,&n; *    without modification.&n; * 2. Redistributions in binary form must reproduce at minimum a disclaimer&n; *    substantially similar to the &quot;NO WARRANTY&quot; disclaimer below&n; *    (&quot;Disclaimer&quot;) and any redistribution must be conditioned upon&n; *    including a substantially similar Disclaimer requirement for further&n; *    binary redistribution.&n; * 3. Neither the names of the above-listed copyright holders nor the names&n; *    of any contributors may be used to endorse or promote products derived&n; *    from this software without specific prior written permission.&n; *&n; * Alternatively, this software may be distributed under the terms of the&n; * GNU General Public License (&quot;GPL&quot;) version 2 as published by the Free&n; * Software Foundation.&n; *&n; * NO WARRANTY&n; * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS&n; * &quot;AS IS&quot; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT&n; * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR&n; * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT&n; * HOLDERS OR CONTRIBUTORS BE LIABLE FOR SPECIAL, EXEMPLARY, OR CONSEQUENTIAL&n; * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS&n; * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)&n; * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,&n; * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING&n; * IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE&n; * POSSIBILITY OF SUCH DAMAGES.&n; *&n; * $Id: //depot/aic7xxx/aic7xxx/aic79xx.h#88 $&n; *&n; * $FreeBSD$&n; */
 macro_line|#ifndef _AIC79XX_H_
 DECL|macro|_AIC79XX_H_
 mdefine_line|#define _AIC79XX_H_
@@ -311,6 +311,12 @@ id|AHD_PCIX_MMAPIO_BUG
 op_assign
 l_int|0x0080
 comma
+multiline_comment|/* Reads to SCBRAM fail to reset the discard timer. */
+DECL|enumerator|AHD_PCIX_SCBRAM_RD_BUG
+id|AHD_PCIX_SCBRAM_RD_BUG
+op_assign
+l_int|0x0100
+comma
 multiline_comment|/* Bug workarounds that can be disabled on non-PCIX busses. */
 DECL|enumerator|AHD_PCIX_BUG_MASK
 id|AHD_PCIX_BUG_MASK
@@ -318,84 +324,98 @@ op_assign
 id|AHD_PCIX_CHIPRST_BUG
 op_or
 id|AHD_PCIX_MMAPIO_BUG
+op_or
+id|AHD_PCIX_SCBRAM_RD_BUG
 comma
 multiline_comment|/*&n;&t; * LQOSTOP0 status set even for forced selections with ATN&n;&t; * to perform non-packetized message delivery.&n;&t; */
 DECL|enumerator|AHD_LQO_ATNO_BUG
 id|AHD_LQO_ATNO_BUG
 op_assign
-l_int|0x0100
+l_int|0x0200
 comma
 multiline_comment|/* FIFO auto-flush does not always trigger.  */
 DECL|enumerator|AHD_AUTOFLUSH_BUG
 id|AHD_AUTOFLUSH_BUG
 op_assign
-l_int|0x0200
+l_int|0x0400
 comma
 multiline_comment|/* The CLRLQO registers are not self-clearing. */
 DECL|enumerator|AHD_CLRLQO_AUTOCLR_BUG
 id|AHD_CLRLQO_AUTOCLR_BUG
 op_assign
-l_int|0x0400
+l_int|0x0800
 comma
 multiline_comment|/* The PACKETIZED status bit refers to the previous connection. */
 DECL|enumerator|AHD_PKTIZED_STATUS_BUG
 id|AHD_PKTIZED_STATUS_BUG
 op_assign
-l_int|0x0800
+l_int|0x1000
 comma
 multiline_comment|/* &quot;Short Luns&quot; are not placed into outgoing LQ packets correctly. */
 DECL|enumerator|AHD_PKT_LUN_BUG
 id|AHD_PKT_LUN_BUG
 op_assign
-l_int|0x1000
+l_int|0x2000
 comma
 multiline_comment|/*&n;&t; * Only the FIFO allocated to the non-packetized connection may&n;&t; * be in use during a non-packetzied connection.&n;&t; */
 DECL|enumerator|AHD_NONPACKFIFO_BUG
 id|AHD_NONPACKFIFO_BUG
 op_assign
-l_int|0x2000
+l_int|0x4000
 comma
 multiline_comment|/*&n;&t; * Writing to a DFF SCBPTR register may fail if concurent with&n;&t; * a hardware write to the other DFF SCBPTR register.  This is&n;&t; * not currently a concern in our sequencer since all chips with&n;&t; * this bug have the AHD_NONPACKFIFO_BUG and all writes of concern&n;&t; * occur in non-packetized connections.&n;&t; */
 DECL|enumerator|AHD_MDFF_WSCBPTR_BUG
 id|AHD_MDFF_WSCBPTR_BUG
 op_assign
-l_int|0x4000
+l_int|0x8000
 comma
 multiline_comment|/* SGHADDR updates are slow. */
 DECL|enumerator|AHD_REG_SLOW_SETTLE_BUG
 id|AHD_REG_SLOW_SETTLE_BUG
 op_assign
-l_int|0x8000
+l_int|0x10000
 comma
 multiline_comment|/*&n;&t; * Changing the MODE_PTR coincident with an interrupt that&n;&t; * switches to a different mode will cause the interrupt to&n;&t; * be in the mode written outside of interrupt context.&n;&t; */
 DECL|enumerator|AHD_SET_MODE_BUG
 id|AHD_SET_MODE_BUG
 op_assign
-l_int|0x10000
+l_int|0x20000
 comma
 multiline_comment|/* Non-packetized busfree revision does not work. */
 DECL|enumerator|AHD_BUSFREEREV_BUG
 id|AHD_BUSFREEREV_BUG
 op_assign
-l_int|0x20000
+l_int|0x40000
 comma
 multiline_comment|/*&n;&t; * Paced transfers are indicated with a non-standard PPR&n;&t; * option bit in the neg table, 160MHz is indicated by&n;&t; * sync factor 0x7, and the offset if off by a factor of 2.&n;&t; */
 DECL|enumerator|AHD_PACED_NEGTABLE_BUG
 id|AHD_PACED_NEGTABLE_BUG
 op_assign
-l_int|0x40000
+l_int|0x80000
 comma
 multiline_comment|/* LQOOVERRUN false positives. */
 DECL|enumerator|AHD_LQOOVERRUN_BUG
 id|AHD_LQOOVERRUN_BUG
 op_assign
-l_int|0x80000
+l_int|0x100000
 comma
 multiline_comment|/*&n;&t; * Controller write to INTSTAT will lose to a host&n;&t; * write to CLRINT.&n;&t; */
 DECL|enumerator|AHD_INTCOLLISION_BUG
 id|AHD_INTCOLLISION_BUG
 op_assign
-l_int|0x100000
+l_int|0x200000
+comma
+multiline_comment|/*&n;&t; * The GEM318 violates the SCSI spec by not waiting&n;&t; * the mandated bus settle delay between phase changes&n;&t; * in some situations.  Some aic79xx chip revs. are more&n;&t; * strict in this regard and will treat REQ assertions&n;&t; * that fall within the bus settle delay window as&n;&t; * glitches.  This flag tells the firmware to tolerate&n;&t; * early REQ assertions.&n;&t; */
+DECL|enumerator|AHD_EARLY_REQ_BUG
+id|AHD_EARLY_REQ_BUG
+op_assign
+l_int|0x400000
+comma
+multiline_comment|/*&n;&t; * The LED does not stay on long enough in packetized modes.&n;&t; */
+DECL|enumerator|AHD_FAINT_LED_BUG
+id|AHD_FAINT_LED_BUG
+op_assign
+l_int|0x800000
 DECL|typedef|ahd_bug
 )brace
 id|ahd_bug
@@ -409,12 +429,12 @@ id|AHD_FNONE
 op_assign
 l_int|0x00000
 comma
-DECL|enumerator|AHD_PRIMARY_CHANNEL
-id|AHD_PRIMARY_CHANNEL
+DECL|enumerator|AHD_BOOT_CHANNEL
+id|AHD_BOOT_CHANNEL
 op_assign
-l_int|0x00003
+l_int|0x00001
 comma
-multiline_comment|/*&n;&t;&t;&t;&t;&t; * The channel that should&n;&t;&t;&t;&t;&t; * be probed first.&n;&t;&t;&t;&t;&t; */
+multiline_comment|/* We were set as the boot channel. */
 DECL|enumerator|AHD_USEDEFAULTS
 id|AHD_USEDEFAULTS
 op_assign
@@ -610,9 +630,19 @@ DECL|union|initiator_data
 r_union
 id|initiator_data
 (brace
+r_struct
+(brace
 DECL|member|cdbptr
 r_uint64
 id|cdbptr
+suffix:semicolon
+DECL|member|cdblen
+r_uint8
+id|cdblen
+suffix:semicolon
+DECL|member|cdb_from_host
+)brace
+id|cdb_from_host
 suffix:semicolon
 DECL|member|cdb
 r_uint8
@@ -1356,7 +1386,7 @@ mdefine_line|#define AHD_WIDTH_UNKNOWN&t;0xFF
 DECL|macro|AHD_PERIOD_UNKNOWN
 mdefine_line|#define AHD_PERIOD_UNKNOWN&t;0xFF
 DECL|macro|AHD_OFFSET_UNKNOWN
-mdefine_line|#define AHD_OFFSET_UNKNOWN&t;0x0
+mdefine_line|#define AHD_OFFSET_UNKNOWN&t;0xFF
 DECL|macro|AHD_PPR_OPTS_UNKNOWN
 mdefine_line|#define AHD_PPR_OPTS_UNKNOWN&t;0xFF
 multiline_comment|/*&n; * Transfer Negotiation Information.&n; */
@@ -1655,6 +1685,139 @@ suffix:semicolon
 multiline_comment|/* word 31 */
 )brace
 suffix:semicolon
+multiline_comment|/*&n; * Vital Product Data used during POST and by the BIOS.&n; */
+DECL|struct|vpd_config
+r_struct
+id|vpd_config
+(brace
+DECL|member|bios_flags
+r_uint8
+id|bios_flags
+suffix:semicolon
+DECL|macro|VPDMASTERBIOS
+mdefine_line|#define&t;&t;VPDMASTERBIOS&t;0x0001
+DECL|macro|VPDBOOTHOST
+mdefine_line|#define&t;&t;VPDBOOTHOST&t;0x0002
+DECL|member|reserved_1
+r_uint8
+id|reserved_1
+(braket
+l_int|21
+)braket
+suffix:semicolon
+DECL|member|resource_type
+r_uint8
+id|resource_type
+suffix:semicolon
+DECL|member|resource_len
+r_uint8
+id|resource_len
+(braket
+l_int|2
+)braket
+suffix:semicolon
+DECL|member|resource_data
+r_uint8
+id|resource_data
+(braket
+l_int|8
+)braket
+suffix:semicolon
+DECL|member|vpd_tag
+r_uint8
+id|vpd_tag
+suffix:semicolon
+DECL|member|vpd_len
+r_uint16
+id|vpd_len
+suffix:semicolon
+DECL|member|vpd_keyword
+r_uint8
+id|vpd_keyword
+(braket
+l_int|2
+)braket
+suffix:semicolon
+DECL|member|length
+r_uint8
+id|length
+suffix:semicolon
+DECL|member|revision
+r_uint8
+id|revision
+suffix:semicolon
+DECL|member|device_flags
+r_uint8
+id|device_flags
+suffix:semicolon
+DECL|member|termnation_menus
+r_uint8
+id|termnation_menus
+(braket
+l_int|2
+)braket
+suffix:semicolon
+DECL|member|fifo_threshold
+r_uint8
+id|fifo_threshold
+suffix:semicolon
+DECL|member|end_tag
+r_uint8
+id|end_tag
+suffix:semicolon
+DECL|member|vpd_checksum
+r_uint8
+id|vpd_checksum
+suffix:semicolon
+DECL|member|default_target_flags
+r_uint16
+id|default_target_flags
+suffix:semicolon
+DECL|member|default_bios_flags
+r_uint16
+id|default_bios_flags
+suffix:semicolon
+DECL|member|default_ctrl_flags
+r_uint16
+id|default_ctrl_flags
+suffix:semicolon
+DECL|member|default_irq
+r_uint8
+id|default_irq
+suffix:semicolon
+DECL|member|pci_lattime
+r_uint8
+id|pci_lattime
+suffix:semicolon
+DECL|member|max_target
+r_uint8
+id|max_target
+suffix:semicolon
+DECL|member|boot_lun
+r_uint8
+id|boot_lun
+suffix:semicolon
+DECL|member|signature
+r_uint16
+id|signature
+suffix:semicolon
+DECL|member|reserved_2
+r_uint8
+id|reserved_2
+suffix:semicolon
+DECL|member|checksum
+r_uint8
+id|checksum
+suffix:semicolon
+DECL|member|reserved_3
+r_uint8
+id|reserved_3
+(braket
+l_int|4
+)braket
+suffix:semicolon
+)brace
+suffix:semicolon
 multiline_comment|/****************************** Flexport Logic ********************************/
 DECL|macro|FLXADDR_TERMCTL
 mdefine_line|#define FLXADDR_TERMCTL&t;&t;&t;0x0
@@ -1732,6 +1895,9 @@ id|start_addr
 comma
 id|u_int
 id|count
+comma
+r_int
+id|bstream
 )paren
 suffix:semicolon
 r_int
@@ -1762,6 +1928,16 @@ r_struct
 id|ahd_softc
 op_star
 id|ahd
+)paren
+suffix:semicolon
+r_int
+id|ahd_verify_vpd_cksum
+c_func
+(paren
+r_struct
+id|vpd_config
+op_star
+id|vpd
 )paren
 suffix:semicolon
 r_int
@@ -2841,6 +3017,21 @@ r_struct
 id|ahd_softc
 op_star
 id|ahd
+)paren
+suffix:semicolon
+r_int
+id|ahd_parse_vpddata
+c_func
+(paren
+r_struct
+id|ahd_softc
+op_star
+id|ahd
+comma
+r_struct
+id|vpd_config
+op_star
+id|vpd
 )paren
 suffix:semicolon
 r_int
