@@ -101,6 +101,7 @@ id|_uuid_buckets
 id|NUM_BUCKETS
 )braket
 suffix:semicolon
+r_static
 r_void
 id|dm_hash_remove_all
 c_func
@@ -156,6 +157,7 @@ id|i
 suffix:semicolon
 )brace
 DECL|function|dm_hash_init
+r_static
 r_int
 id|dm_hash_init
 c_func
@@ -186,6 +188,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|dm_hash_exit
+r_static
 r_void
 id|dm_hash_exit
 c_func
@@ -692,6 +695,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * The kdev_t and uuid of a device can never change once it is&n; * initially inserted.&n; */
 DECL|function|dm_hash_insert
+r_static
 r_int
 id|dm_hash_insert
 c_func
@@ -861,6 +865,7 @@ id|EBUSY
 suffix:semicolon
 )brace
 DECL|function|__hash_remove
+r_static
 r_void
 id|__hash_remove
 c_func
@@ -917,6 +922,7 @@ id|hc
 suffix:semicolon
 )brace
 DECL|function|dm_hash_remove_all
+r_static
 r_void
 id|dm_hash_remove_all
 c_func
@@ -1003,6 +1009,7 @@ id|_hash_lock
 suffix:semicolon
 )brace
 DECL|function|dm_hash_rename
+r_static
 r_int
 id|dm_hash_rename
 c_func

@@ -24,11 +24,6 @@ mdefine_line|#define SECTOR_FORMAT &quot;%lu&quot;
 macro_line|#endif
 DECL|macro|SECTOR_SHIFT
 mdefine_line|#define SECTOR_SHIFT 9
-r_extern
-r_struct
-id|block_device_operations
-id|dm_blk_dops
-suffix:semicolon
 multiline_comment|/*&n; * List of devices that a metadevice uses and should open/close.&n; */
 DECL|struct|dm_dev
 r_struct

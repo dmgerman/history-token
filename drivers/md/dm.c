@@ -193,8 +193,8 @@ id|_tio_cache
 suffix:semicolon
 DECL|function|local_init
 r_static
-id|__init
 r_int
+id|__init
 id|local_init
 c_func
 (paren
@@ -2511,6 +2511,12 @@ r_return
 id|r
 suffix:semicolon
 )brace
+DECL|variable|dm_blk_dops
+r_static
+r_struct
+id|block_device_operations
+id|dm_blk_dops
+suffix:semicolon
 multiline_comment|/*&n; * Allocate and initialise a blank device with a given minor.&n; */
 DECL|function|alloc_dev
 r_static
@@ -4237,6 +4243,7 @@ id|md-&gt;flags
 suffix:semicolon
 )brace
 DECL|variable|dm_blk_dops
+r_static
 r_struct
 id|block_device_operations
 id|dm_blk_dops
