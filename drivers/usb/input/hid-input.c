@@ -3496,8 +3496,14 @@ c_cond
 op_logical_neg
 id|report-&gt;maxfield
 )paren
+(brace
+id|list
+op_assign
+id|list-&gt;next
+suffix:semicolon
 r_continue
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
