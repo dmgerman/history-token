@@ -2445,11 +2445,6 @@ op_assign
 op_amp
 id|info-&gt;elem-&gt;list
 suffix:semicolon
-r_struct
-id|list_head
-op_star
-id|i
-suffix:semicolon
 multiline_comment|/* We don&squot;t have BR_NETPROTO_LOCK here */
 id|br_read_lock_bh
 c_func
