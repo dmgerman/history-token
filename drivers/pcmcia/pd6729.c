@@ -30,7 +30,7 @@ suffix:semicolon
 id|MODULE_AUTHOR
 c_func
 (paren
-l_string|&quot;Jun Komuro &lt;komurojun@mbn.nifty.com&gt;&quot;
+l_string|&quot;Jun Komuro &lt;komurojun-mbn@nifty.com&gt;&quot;
 )paren
 suffix:semicolon
 DECL|macro|MAX_SOCKETS
