@@ -22,7 +22,6 @@ macro_line|#include &lt;pcmcia/ciscode.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;linux/wireless.h&gt;
-macro_line|#include &lt;linux/802_11.h&gt;
 multiline_comment|/*&n;   All the PCMCIA modules use PCMCIA_DEBUG to control debugging.  If&n;   you do not define PCMCIA_DEBUG at all, all the debug code will be&n;   left out.  If you compile with PCMCIA_DEBUG=0, the debug code will&n;   be present but disabled -- but it can then be enabled for specific&n;   modules at load time with a &squot;pc_debug=#&squot; option to insmod.&n;*/
 macro_line|#ifdef PCMCIA_DEBUG
 DECL|variable|pc_debug
@@ -164,7 +163,7 @@ r_int
 )paren
 suffix:semicolon
 r_int
-id|reset_atmel_card
+id|atmel_open
 c_func
 (paren
 r_struct
@@ -866,7 +865,7 @@ l_int|NULL
 comma
 l_string|&quot;atmel_at76c502_3com%s.bin&quot;
 comma
-l_string|&quot;3com 3CRSHPW_96&quot;
+l_string|&quot;3com 3CRSHPW196&quot;
 )brace
 comma
 (brace
@@ -2516,7 +2515,7 @@ op_amp
 id|link-&gt;conf
 )paren
 suffix:semicolon
-id|reset_atmel_card
+id|atmel_open
 c_func
 (paren
 id|local-&gt;eth_dev
