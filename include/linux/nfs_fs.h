@@ -67,10 +67,6 @@ r_struct
 id|nfs_inode
 (brace
 multiline_comment|/*&n;&t; * The 64bit &squot;inode number&squot;&n;&t; */
-DECL|member|fsid
-id|__u64
-id|fsid
-suffix:semicolon
 DECL|member|fileid
 id|__u64
 id|fileid
@@ -115,6 +111,12 @@ r_int
 r_int
 id|attrtimeo_timestamp
 suffix:semicolon
+multiline_comment|/*&n;&t; * Timestamp that dates the change made to read_cache_mtime.&n;&t; * This is of use for dentry revalidation&n;&t; */
+DECL|member|cache_mtime_jiffies
+r_int
+r_int
+id|cache_mtime_jiffies
+suffix:semicolon
 multiline_comment|/*&n;&t; * This is the cookie verifier used for NFSv3 readdir&n;&t; * operations&n;&t; */
 DECL|member|cookieverf
 id|__u32
@@ -157,22 +159,6 @@ id|ncommit
 comma
 DECL|member|npages
 id|npages
-suffix:semicolon
-multiline_comment|/* Flush daemon info */
-DECL|member|hash_next
-r_struct
-id|inode
-op_star
-id|hash_next
-comma
-DECL|member|hash_prev
-op_star
-id|hash_prev
-suffix:semicolon
-DECL|member|nextscan
-r_int
-r_int
-id|nextscan
 suffix:semicolon
 multiline_comment|/* Credentials for shared mmap */
 DECL|member|mm_cred
@@ -247,6 +233,8 @@ DECL|macro|NFS_COOKIEVERF
 mdefine_line|#define NFS_COOKIEVERF(inode)&t;&t;(NFS_I(inode)-&gt;cookieverf)
 DECL|macro|NFS_READTIME
 mdefine_line|#define NFS_READTIME(inode)&t;&t;(NFS_I(inode)-&gt;read_cache_jiffies)
+DECL|macro|NFS_MTIME_UPDATE
+mdefine_line|#define NFS_MTIME_UPDATE(inode)&t;&t;(NFS_I(inode)-&gt;cache_mtime_jiffies)
 DECL|macro|NFS_CACHE_CTIME
 mdefine_line|#define NFS_CACHE_CTIME(inode)&t;&t;(NFS_I(inode)-&gt;read_cache_ctime)
 DECL|macro|NFS_CACHE_MTIME
@@ -275,8 +263,6 @@ DECL|macro|NFS_NEW
 mdefine_line|#define NFS_NEW(inode)&t;&t;&t;(NFS_FLAGS(inode) &amp; NFS_INO_NEW)
 DECL|macro|NFS_FILEID
 mdefine_line|#define NFS_FILEID(inode)&t;&t;(NFS_I(inode)-&gt;fileid)
-DECL|macro|NFS_FSID
-mdefine_line|#define NFS_FSID(inode)&t;&t;&t;(NFS_I(inode)-&gt;fsid)
 multiline_comment|/* Inode Flags */
 DECL|macro|NFS_USE_READDIRPLUS
 mdefine_line|#define NFS_USE_READDIRPLUS(inode)&t;((NFS_FLAGS(inode) &amp; NFS_INO_ADVISE_RDPLUS) ? 1 : 0)

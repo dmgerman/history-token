@@ -363,6 +363,15 @@ comma
 id|status
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|status
+op_ge
+l_int|0
+)paren
+id|status
+op_assign
 id|nfs_refresh_inode
 c_func
 (paren
