@@ -1447,6 +1447,12 @@ op_star
 id|intf
 )paren
 (brace
+r_char
+id|name
+(braket
+l_int|32
+)braket
+suffix:semicolon
 id|ptiglusb_t
 id|s
 op_assign
