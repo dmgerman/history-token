@@ -248,7 +248,9 @@ id|__inline__
 r_int
 id|find_next_zero_bit
 (paren
-r_void
+r_const
+r_int
+r_int
 op_star
 id|addr
 comma
