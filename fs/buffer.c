@@ -5445,6 +5445,13 @@ id|old_bh
 suffix:semicolon
 )brace
 )brace
+DECL|variable|unmap_underlying_metadata
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|unmap_underlying_metadata
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * NOTE! All mapped/uptodate combinations are valid:&n; *&n; *&t;Mapped&t;Uptodate&t;Meaning&n; *&n; *&t;No&t;No&t;&t;&quot;unknown&quot; - must do get_block()&n; *&t;No&t;Yes&t;&t;&quot;hole&quot; - zero-filled&n; *&t;Yes&t;No&t;&t;&quot;allocated&quot; - allocated on disk, not read in&n; *&t;Yes&t;Yes&t;&t;&quot;valid&quot; - allocated and up-to-date in memory.&n; *&n; * &quot;Dirty&quot; is valid only with the last case (mapped+uptodate).&n; */
 multiline_comment|/*&n; * While block_write_full_page is writing back the dirty buffers under&n; * the page lock, whoever dirtied the buffers may decide to clean them&n; * again at any time.  We handle that by only looking at the buffer&n; * state inside lock_buffer().&n; *&n; * If block_write_full_page() is called for regular writeback&n; * (called_for_sync() is false) then it will return -EAGAIN for a locked&n; * buffer.   This only can happen if someone has written the buffer directly,&n; * with submit_bh().  At the address_space level PageWriteback prevents this&n; * contention from occurring.&n; */
 DECL|function|__block_write_full_page
