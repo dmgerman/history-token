@@ -1308,7 +1308,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|check_region
+op_logical_neg
+id|request_region
 c_func
 (paren
 (paren
@@ -1316,6 +1317,8 @@ id|cs-&gt;hw.saphir.cfg_reg
 )paren
 comma
 l_int|6
+comma
+l_string|&quot;saphir&quot;
 )paren
 )paren
 (brace
@@ -1343,17 +1346,6 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
-r_else
-id|request_region
-c_func
-(paren
-id|cs-&gt;hw.saphir.cfg_reg
-comma
-l_int|6
-comma
-l_string|&quot;saphir&quot;
-)paren
-suffix:semicolon
 id|printk
 c_func
 (paren
