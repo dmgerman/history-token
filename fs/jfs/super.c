@@ -1908,13 +1908,6 @@ op_amp
 id|jfs_ip-&gt;anon_inode_list
 )paren
 suffix:semicolon
-id|INIT_LIST_HEAD
-c_func
-(paren
-op_amp
-id|jfs_ip-&gt;mp_list
-)paren
-suffix:semicolon
 id|init_rwsem
 c_func
 (paren
