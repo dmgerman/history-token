@@ -372,7 +372,7 @@ suffix:semicolon
 multiline_comment|/* No CRC added */
 id|packet-&gt;speed_code
 op_assign
-id|SPEED_100
+id|IEEE1394_SPEED_100
 suffix:semicolon
 multiline_comment|/* Force speed to be 100Mbps */
 )brace
@@ -549,7 +549,6 @@ id|packet-&gt;tlabel
 OG
 l_int|63
 )paren
-(brace
 id|packet-&gt;tlabel
 op_assign
 id|find_first_zero_bit
@@ -560,7 +559,6 @@ comma
 l_int|64
 )paren
 suffix:semicolon
-)brace
 id|tp-&gt;next
 op_assign
 (paren

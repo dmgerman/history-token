@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * IBM Hot Plug Controller Driver&n; *&n; * Written By: Chuck Cole, Jyoti Shah, Tong Yu, Irene Zubarev, IBM Corporation&n; *&n; * Copyright (c) 2001 Greg Kroah-Hartman (greg@kroah.com)&n; * Copyright (c) 2001,2002 IBM Corp.&n; *&n; * All rights reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or (at&n; * your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE, GOOD TITLE or&n; * NON INFRINGEMENT.  See the GNU General Public License for more&n; * details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; * Send feedback to &lt;gregkh@us.ibm.com&gt;&n; *&n; */
+multiline_comment|/*&n; * IBM Hot Plug Controller Driver&n; *&n; * Written By: Chuck Cole, Jyoti Shah, Tong Yu, Irene Zubarev, IBM Corporation&n; *&n; * Copyright (c) 2001,2003 Greg Kroah-Hartman (greg@kroah.com)&n; * Copyright (c) 2001-2003 IBM Corp.&n; *&n; * All rights reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or (at&n; * your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE, GOOD TITLE or&n; * NON INFRINGEMENT.  See the GNU General Public License for more&n; * details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; * Send feedback to &lt;gregkh@us.ibm.com&gt;&n; *&n; */
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
@@ -2901,59 +2901,6 @@ id|pci_hp_deregister
 id|slot_cur-&gt;hotplug_slot
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|slot_cur-&gt;hotplug_slot
-)paren
-(brace
-id|kfree
-(paren
-id|slot_cur-&gt;hotplug_slot
-)paren
-suffix:semicolon
-id|slot_cur-&gt;hotplug_slot
-op_assign
-l_int|NULL
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-id|slot_cur-&gt;ctrl
-)paren
-id|slot_cur-&gt;ctrl
-op_assign
-l_int|NULL
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|slot_cur-&gt;bus_on
-)paren
-id|slot_cur-&gt;bus_on
-op_assign
-l_int|NULL
-suffix:semicolon
-id|ibmphp_unconfigure_card
-(paren
-op_amp
-id|slot_cur
-comma
-op_minus
-l_int|1
-)paren
-suffix:semicolon
-multiline_comment|/* we don&squot;t want to actually remove the resources, since free_resources will do just that */
-id|kfree
-(paren
-id|slot_cur
-)paren
-suffix:semicolon
-id|slot_cur
-op_assign
-l_int|NULL
-suffix:semicolon
 )brace
 id|debug
 (paren
@@ -4932,11 +4879,6 @@ suffix:semicolon
 id|u8
 id|flag
 suffix:semicolon
-r_int
-id|parm
-op_assign
-l_int|0
-suffix:semicolon
 id|debug
 (paren
 l_string|&quot;DISABLING SLOT... &bslash;n&quot;
@@ -5125,7 +5067,7 @@ id|ibmphp_unconfigure_card
 op_amp
 id|slot_cur
 comma
-id|parm
+l_int|0
 )paren
 suffix:semicolon
 id|slot_cur-&gt;func

@@ -194,12 +194,10 @@ id|buf_packets
 OL
 l_int|2
 )paren
-(brace
 id|buf_packets
 op_assign
 l_int|2
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -209,14 +207,12 @@ id|buf_packets
 op_div
 l_int|2
 )paren
-(brace
 id|irq_interval
 op_assign
 id|buf_packets
 op_div
 l_int|2
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -229,11 +225,9 @@ id|channel
 op_ge
 l_int|64
 )paren
-(brace
 r_return
 l_int|NULL
 suffix:semicolon
-)brace
 multiline_comment|/* channel = -1 is OK for multi-channel recv but not for xmit */
 r_if
 c_cond
@@ -246,11 +240,9 @@ id|channel
 OL
 l_int|0
 )paren
-(brace
 r_return
 l_int|NULL
 suffix:semicolon
-)brace
 multiline_comment|/* allocate and write the struct hpsb_iso */
 id|iso
 op_assign
@@ -280,11 +272,9 @@ c_cond
 op_logical_neg
 id|iso
 )paren
-(brace
 r_return
 l_int|NULL
 suffix:semicolon
-)brace
 id|iso-&gt;infos
 op_assign
 (paren
@@ -425,11 +415,9 @@ comma
 id|dma_direction
 )paren
 )paren
-(brace
 r_goto
 id|err
 suffix:semicolon
-)brace
 r_return
 id|iso
 suffix:semicolon
@@ -559,11 +547,9 @@ c_cond
 op_logical_neg
 id|iso
 )paren
-(brace
 r_return
 l_int|NULL
 suffix:semicolon
-)brace
 id|iso-&gt;speed
 op_assign
 id|speed
@@ -584,11 +570,9 @@ comma
 l_int|0
 )paren
 )paren
-(brace
 r_goto
 id|err
 suffix:semicolon
-)brace
 id|iso-&gt;flags
 op_or_assign
 id|HPSB_ISO_DRIVER_INIT
@@ -675,11 +659,9 @@ c_cond
 op_logical_neg
 id|iso
 )paren
-(brace
 r_return
 l_int|NULL
 suffix:semicolon
-)brace
 multiline_comment|/* tell the driver to start working */
 r_if
 c_cond
@@ -696,11 +678,9 @@ comma
 l_int|0
 )paren
 )paren
-(brace
 r_goto
 id|err
 suffix:semicolon
-)brace
 id|iso-&gt;flags
 op_or_assign
 id|HPSB_ISO_DRIVER_INIT
@@ -751,12 +731,10 @@ id|channel
 op_ge
 l_int|64
 )paren
-(brace
 r_return
 op_minus
 id|EINVAL
 suffix:semicolon
-)brace
 r_return
 id|iso-&gt;host-&gt;driver
 op_member_access_from_pointer
@@ -802,12 +780,10 @@ id|channel
 op_ge
 l_int|64
 )paren
-(brace
 r_return
 op_minus
 id|EINVAL
 suffix:semicolon
-)brace
 r_return
 id|iso-&gt;host-&gt;driver
 op_member_access_from_pointer
@@ -848,12 +824,10 @@ op_ne
 op_minus
 l_int|1
 )paren
-(brace
 r_return
 op_minus
 id|EINVAL
 suffix:semicolon
-)brace
 r_return
 id|iso-&gt;host-&gt;driver
 op_member_access_from_pointer
@@ -908,11 +882,9 @@ c_cond
 (paren
 id|retval
 )paren
-(brace
 r_return
 id|retval
 suffix:semicolon
-)brace
 id|iso-&gt;flags
 op_or_assign
 id|HPSB_ISO_DRIVER_STARTED
@@ -945,12 +917,10 @@ id|iso-&gt;type
 op_ne
 id|HPSB_ISO_XMIT
 )paren
-(brace
 r_return
 op_minus
 l_int|1
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -958,11 +928,9 @@ id|iso-&gt;flags
 op_amp
 id|HPSB_ISO_DRIVER_STARTED
 )paren
-(brace
 r_return
 l_int|0
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -971,13 +939,11 @@ OL
 op_minus
 l_int|1
 )paren
-(brace
 id|cycle
 op_assign
 op_minus
 l_int|1
 suffix:semicolon
-)brace
 r_else
 r_if
 c_cond
@@ -986,12 +952,10 @@ id|cycle
 op_ge
 l_int|8000
 )paren
-(brace
 id|cycle
 op_mod_assign
 l_int|8000
 suffix:semicolon
-)brace
 id|iso-&gt;xmit_cycle
 op_assign
 id|cycle
@@ -1003,12 +967,10 @@ id|prebuffer
 OL
 l_int|0
 )paren
-(brace
 id|prebuffer
 op_assign
 id|iso-&gt;buf_packets
 suffix:semicolon
-)brace
 r_else
 r_if
 c_cond
@@ -1017,12 +979,10 @@ id|prebuffer
 op_eq
 l_int|0
 )paren
-(brace
 id|prebuffer
 op_assign
 l_int|1
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -1030,12 +990,10 @@ id|prebuffer
 OG
 id|iso-&gt;buf_packets
 )paren
-(brace
 id|prebuffer
 op_assign
 id|iso-&gt;buf_packets
 suffix:semicolon
-)brace
 id|iso-&gt;prebuffer
 op_assign
 id|prebuffer
@@ -1087,12 +1045,10 @@ id|iso-&gt;type
 op_ne
 id|HPSB_ISO_RECV
 )paren
-(brace
 r_return
 op_minus
 l_int|1
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -1100,11 +1056,9 @@ id|iso-&gt;flags
 op_amp
 id|HPSB_ISO_DRIVER_STARTED
 )paren
-(brace
 r_return
 l_int|0
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -1113,13 +1067,11 @@ OL
 op_minus
 l_int|1
 )paren
-(brace
 id|cycle
 op_assign
 op_minus
 l_int|1
 suffix:semicolon
-)brace
 r_else
 r_if
 c_cond
@@ -1128,12 +1080,10 @@ id|cycle
 op_ge
 l_int|8000
 )paren
-(brace
 id|cycle
 op_mod_assign
 l_int|8000
 suffix:semicolon
-)brace
 id|isoctl_args
 (braket
 l_int|0
@@ -1148,13 +1098,11 @@ id|tag_mask
 OL
 l_int|0
 )paren
-(brace
 multiline_comment|/* match all tags */
 id|tag_mask
 op_assign
 l_int|0xF
 suffix:semicolon
-)brace
 id|isoctl_args
 (braket
 l_int|1
@@ -1196,11 +1144,9 @@ c_cond
 (paren
 id|retval
 )paren
-(brace
 r_return
 id|retval
 suffix:semicolon
-)brace
 id|iso-&gt;flags
 op_or_assign
 id|HPSB_ISO_DRIVER_STARTED
@@ -1247,12 +1193,10 @@ id|offset
 op_ge
 id|iso-&gt;buf_size
 )paren
-(brace
 r_return
 op_minus
 id|EFAULT
 suffix:semicolon
-)brace
 multiline_comment|/* make sure the packet does not go beyond the end of the buffer */
 r_if
 c_cond
@@ -1263,12 +1207,10 @@ id|len
 OG
 id|iso-&gt;buf_size
 )paren
-(brace
 r_return
 op_minus
 id|EFAULT
 suffix:semicolon
-)brace
 multiline_comment|/* check for wrap-around */
 r_if
 c_cond
@@ -1279,12 +1221,10 @@ id|len
 OL
 id|offset
 )paren
-(brace
 r_return
 op_minus
 id|EFAULT
 suffix:semicolon
-)brace
 multiline_comment|/* now we can trust &squot;offset&squot; and &squot;length&squot; */
 op_star
 id|out_offset
@@ -1342,12 +1282,10 @@ id|iso-&gt;type
 op_ne
 id|HPSB_ISO_XMIT
 )paren
-(brace
 r_return
 op_minus
 id|EINVAL
 suffix:semicolon
-)brace
 multiline_comment|/* is there space in the buffer? */
 r_if
 c_cond
@@ -1390,12 +1328,10 @@ op_amp
 id|info-&gt;len
 )paren
 )paren
-(brace
 r_return
 op_minus
 id|EFAULT
 suffix:semicolon
-)brace
 id|info-&gt;tag
 op_assign
 id|tag
@@ -1436,11 +1372,9 @@ c_cond
 (paren
 id|rv
 )paren
-(brace
 r_goto
 id|out
 suffix:semicolon
-)brace
 multiline_comment|/* increment cursors */
 id|iso-&gt;first_packet
 op_assign
@@ -1533,12 +1467,10 @@ id|iso-&gt;type
 op_ne
 id|HPSB_ISO_XMIT
 )paren
-(brace
 r_return
 op_minus
 id|EINVAL
 suffix:semicolon
-)brace
 r_return
 id|wait_event_interruptible
 c_func
@@ -1800,12 +1732,10 @@ id|iso-&gt;type
 op_ne
 id|HPSB_ISO_RECV
 )paren
-(brace
 r_return
 op_minus
 l_int|1
 suffix:semicolon
-)brace
 id|spin_lock_irqsave
 c_func
 (paren
@@ -1857,10 +1787,8 @@ c_cond
 (paren
 id|rv
 )paren
-(brace
 r_break
 suffix:semicolon
-)brace
 id|iso-&gt;first_packet
 op_assign
 (paren
@@ -1911,7 +1839,6 @@ c_cond
 (paren
 id|iso-&gt;callback
 )paren
-(brace
 id|iso
 op_member_access_from_pointer
 id|callback
@@ -1920,6 +1847,5 @@ c_func
 id|iso
 )paren
 suffix:semicolon
-)brace
 )brace
 eof

@@ -536,7 +536,11 @@ c_func
 id|KERN_ERR
 l_string|&quot;PCI: Unable to handle 64-bit address for device %s&bslash;n&quot;
 comma
-id|dev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|dev
+)paren
 )paren
 suffix:semicolon
 id|res-&gt;start
@@ -1535,7 +1539,11 @@ c_func
 (paren
 l_string|&quot;Scanning behind PCI bridge %s, config %06x, pass %d&bslash;n&quot;
 comma
-id|dev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|dev
+)paren
 comma
 id|buses
 op_amp
@@ -1875,12 +1883,26 @@ id|dev
 id|u32
 r_class
 suffix:semicolon
+id|dev-&gt;slot_name
+op_assign
+id|dev-&gt;dev.bus_id
+suffix:semicolon
 id|sprintf
 c_func
 (paren
-id|dev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|dev
+)paren
 comma
-l_string|&quot;%02x:%02x.%d&quot;
+l_string|&quot;%04x:%02x:%02x.%d&quot;
+comma
+id|pci_domain_nr
+c_func
+(paren
+id|dev-&gt;bus
+)paren
 comma
 id|dev-&gt;bus-&gt;number
 comma
@@ -2130,7 +2152,11 @@ c_func
 id|KERN_ERR
 l_string|&quot;PCI: device %s has unknown header type %02x, ignoring.&bslash;n&quot;
 comma
-id|dev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|dev
+)paren
 comma
 id|dev-&gt;hdr_type
 )paren
@@ -2147,7 +2173,11 @@ c_func
 id|KERN_ERR
 l_string|&quot;PCI: %s: class %x doesn&squot;t match header type %02x. Ignoring class.&bslash;n&quot;
 comma
-id|dev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|dev
+)paren
 comma
 r_class
 comma
@@ -2432,23 +2462,6 @@ id|pci_name_device
 c_func
 (paren
 id|dev
-)paren
-suffix:semicolon
-multiline_comment|/* now put in global tree */
-id|sprintf
-c_func
-(paren
-id|dev-&gt;dev.bus_id
-comma
-l_string|&quot;%04x:%s&quot;
-comma
-id|pci_domain_nr
-c_func
-(paren
-id|bus
-)paren
-comma
-id|dev-&gt;slot_name
 )paren
 suffix:semicolon
 id|dev-&gt;dev.dma_mask

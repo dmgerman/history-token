@@ -249,11 +249,9 @@ c_cond
 op_logical_neg
 id|f
 )paren
-(brace
 r_return
 l_int|NULL
 suffix:semicolon
-)brace
 id|f-&gt;video
 op_assign
 id|video
@@ -575,12 +573,10 @@ id|video-&gt;pal_or_ntsc
 op_eq
 id|DV1394_PAL
 )paren
-(brace
 id|packets_per_frame
 op_assign
 id|DV1394_PAL_PACKETS_PER_FRAME
 suffix:semicolon
-)brace
 r_else
 id|packets_per_frame
 op_assign
@@ -831,12 +827,10 @@ c_cond
 (paren
 id|empty_packet
 )paren
-(brace
 id|first_packet_empty
 op_assign
 l_int|1
 suffix:semicolon
-)brace
 )brace
 r_else
 r_if
@@ -888,11 +882,9 @@ c_cond
 op_logical_neg
 id|empty_packet
 )paren
-(brace
 id|video-&gt;continuity_counter
 op_increment
 suffix:semicolon
-)brace
 multiline_comment|/******************************/
 multiline_comment|/* setup DMA descriptor block */
 multiline_comment|/******************************/
@@ -972,7 +964,6 @@ c_cond
 (paren
 id|first_packet
 )paren
-(brace
 id|f-&gt;frame_begin_timestamp
 op_assign
 op_amp
@@ -983,14 +974,12 @@ l_int|3
 )braket
 )paren
 suffix:semicolon
-)brace
 r_else
 r_if
 c_cond
 (paren
 id|mid_packet
 )paren
-(brace
 id|f-&gt;mid_frame_timestamp
 op_assign
 op_amp
@@ -1001,7 +990,6 @@ l_int|3
 )braket
 )paren
 suffix:semicolon
-)brace
 r_else
 r_if
 c_cond
@@ -1049,12 +1037,10 @@ c_cond
 (paren
 id|first_packet
 )paren
-(brace
 id|f-&gt;first_n_descriptors
 op_assign
 id|n_descriptors
 suffix:semicolon
-)brace
 )brace
 r_else
 (brace
@@ -1215,7 +1201,6 @@ c_cond
 (paren
 id|first_packet
 )paren
-(brace
 id|f-&gt;frame_begin_timestamp
 op_assign
 op_amp
@@ -1226,14 +1211,12 @@ l_int|3
 )braket
 )paren
 suffix:semicolon
-)brace
 r_else
 r_if
 c_cond
 (paren
 id|mid_packet
 )paren
-(brace
 id|f-&gt;mid_frame_timestamp
 op_assign
 op_amp
@@ -1244,7 +1227,6 @@ l_int|3
 )braket
 )paren
 suffix:semicolon
-)brace
 r_else
 r_if
 c_cond
@@ -1292,12 +1274,10 @@ c_cond
 (paren
 id|first_packet
 )paren
-(brace
 id|f-&gt;first_n_descriptors
 op_assign
 id|n_descriptors
 suffix:semicolon
-)brace
 id|full_packets
 op_increment
 suffix:semicolon
@@ -1366,7 +1346,6 @@ c_cond
 (paren
 id|first_packet
 )paren
-(brace
 id|f-&gt;frame_begin_timestamp
 op_assign
 op_amp
@@ -1377,14 +1356,12 @@ l_int|3
 )braket
 )paren
 suffix:semicolon
-)brace
 r_else
 r_if
 c_cond
 (paren
 id|mid_packet
 )paren
-(brace
 id|f-&gt;mid_frame_timestamp
 op_assign
 op_amp
@@ -1395,7 +1372,6 @@ l_int|3
 )braket
 )paren
 suffix:semicolon
-)brace
 r_else
 r_if
 c_cond
@@ -1443,12 +1419,10 @@ c_cond
 (paren
 id|first_packet
 )paren
-(brace
 id|f-&gt;first_n_descriptors
 op_assign
 id|n_descriptors
 suffix:semicolon
-)brace
 id|full_packets
 op_increment
 suffix:semicolon
@@ -1547,14 +1521,12 @@ op_eq
 op_minus
 l_int|1
 )paren
-(brace
 id|last_frame
 op_assign
 id|video-&gt;n_frames
 op_minus
 l_int|1
 suffix:semicolon
-)brace
 id|video-&gt;first_clear_frame
 op_assign
 (paren
@@ -3051,12 +3023,10 @@ id|init-&gt;api_version
 op_ne
 id|DV1394_API_VERSION
 )paren
-(brace
 r_return
 op_minus
 id|EINVAL
 suffix:semicolon
-)brace
 multiline_comment|/* first sanitize all the parameters */
 r_if
 c_cond
@@ -3073,12 +3043,10 @@ OG
 id|DV1394_MAX_FRAMES
 )paren
 )paren
-(brace
 r_return
 op_minus
 id|EINVAL
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -3094,12 +3062,10 @@ op_ne
 id|DV1394_PAL
 )paren
 )paren
-(brace
 r_return
 op_minus
 id|EINVAL
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -3115,13 +3081,11 @@ OG
 l_int|50
 )paren
 )paren
-(brace
 multiline_comment|/* default SYT offset is 3 cycles */
 id|init-&gt;syt_offset
 op_assign
 l_int|3
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -3137,12 +3101,10 @@ OL
 l_int|0
 )paren
 )paren
-(brace
 id|init-&gt;channel
 op_assign
 l_int|63
 suffix:semicolon
-)brace
 id|chan_mask
 op_assign
 (paren
@@ -3160,14 +3122,12 @@ id|init-&gt;format
 op_eq
 id|DV1394_NTSC
 )paren
-(brace
 id|new_buf_size
 op_assign
 id|DV1394_NTSC_FRAME_SIZE
 op_star
 id|init-&gt;n_frames
 suffix:semicolon
-)brace
 r_else
 id|new_buf_size
 op_assign
@@ -3183,7 +3143,6 @@ id|new_buf_size
 op_mod
 id|PAGE_SIZE
 )paren
-(brace
 id|new_buf_size
 op_add_assign
 id|PAGE_SIZE
@@ -3194,7 +3153,6 @@ op_mod
 id|PAGE_SIZE
 )paren
 suffix:semicolon
-)brace
 multiline_comment|/* don&squot;t allow the user to allocate the DMA buffer more than once */
 r_if
 c_cond
@@ -3624,11 +3582,9 @@ c_cond
 (paren
 id|retval
 )paren
-(brace
 r_goto
 id|err
 suffix:semicolon
-)brace
 id|video-&gt;dv_buf_size
 op_assign
 id|new_buf_size
@@ -3663,7 +3619,6 @@ suffix:semicolon
 id|i
 op_increment
 )paren
-(brace
 id|video-&gt;frames
 (braket
 id|i
@@ -3681,7 +3636,6 @@ id|i
 op_star
 id|video-&gt;frame_size
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -3739,11 +3693,9 @@ c_cond
 (paren
 id|retval
 )paren
-(brace
 r_goto
 id|err
 suffix:semicolon
-)brace
 id|debug_printk
 c_func
 (paren
@@ -3994,11 +3946,9 @@ op_minus
 l_int|1
 )paren
 )paren
-(brace
 r_goto
 id|out
 suffix:semicolon
-)brace
 multiline_comment|/* stop DMA if in progress */
 r_if
 c_cond
@@ -4452,7 +4402,6 @@ id|video-&gt;frames
 id|i
 )braket
 )paren
-(brace
 id|frame_delete
 c_func
 (paren
@@ -4462,7 +4411,6 @@ id|i
 )braket
 )paren
 suffix:semicolon
-)brace
 id|video-&gt;frames
 (braket
 id|i
@@ -4579,11 +4527,9 @@ c_cond
 (paren
 id|retval
 )paren
-(brace
 r_goto
 id|out
 suffix:semicolon
-)brace
 )brace
 id|retval
 op_assign
@@ -4707,14 +4653,12 @@ id|video-&gt;n_clear_frames
 OG
 l_int|0
 )paren
-(brace
 id|mask
 op_or_assign
 id|POLLOUT
 op_or
 id|POLLIN
 suffix:semicolon
-)brace
 )brace
 id|spin_unlock_irqrestore
 c_func
@@ -4864,12 +4808,10 @@ op_amp
 id|video-&gt;sem
 )paren
 )paren
-(brace
 r_return
 op_minus
 id|EAGAIN
 suffix:semicolon
-)brace
 )brace
 r_else
 (brace
@@ -4883,12 +4825,10 @@ op_amp
 id|video-&gt;sem
 )paren
 )paren
-(brace
 r_return
 op_minus
 id|ERESTARTSYS
 suffix:semicolon
-)brace
 )brace
 r_if
 c_cond
@@ -5020,12 +4960,10 @@ id|cnt
 OG
 id|count
 )paren
-(brace
 id|cnt
 op_assign
 id|count
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -5112,13 +5050,11 @@ c_cond
 op_logical_neg
 id|ret
 )paren
-(brace
 id|ret
 op_assign
 op_minus
 id|EFAULT
 suffix:semicolon
-)brace
 r_break
 suffix:semicolon
 )brace
@@ -5165,7 +5101,6 @@ op_mod
 id|video-&gt;n_frames
 )paren
 )paren
-(brace
 id|frame_prepare
 c_func
 (paren
@@ -5174,7 +5109,6 @@ comma
 id|target_frame
 )paren
 suffix:semicolon
-)brace
 )brace
 id|remove_wait_queue
 c_func
@@ -5277,12 +5211,10 @@ op_amp
 id|video-&gt;sem
 )paren
 )paren
-(brace
 r_return
 op_minus
 id|EAGAIN
 suffix:semicolon
-)brace
 )brace
 r_else
 (brace
@@ -5296,12 +5228,10 @@ op_amp
 id|video-&gt;sem
 )paren
 )paren
-(brace
 r_return
 op_minus
 id|ERESTARTSYS
 suffix:semicolon
-)brace
 )brace
 r_if
 c_cond
@@ -5458,12 +5388,10 @@ id|cnt
 OG
 id|count
 )paren
-(brace
 id|cnt
 op_assign
 id|count
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -5550,13 +5478,11 @@ c_cond
 op_logical_neg
 id|ret
 )paren
-(brace
 id|ret
 op_assign
 op_minus
 id|EFAULT
 suffix:semicolon
-)brace
 r_break
 suffix:semicolon
 )brace
@@ -5739,12 +5665,10 @@ op_amp
 id|video-&gt;sem
 )paren
 )paren
-(brace
 r_return
 op_minus
 id|EAGAIN
 suffix:semicolon
-)brace
 )brace
 r_else
 (brace
@@ -5758,12 +5682,10 @@ op_amp
 id|video-&gt;sem
 )paren
 )paren
-(brace
 r_return
 op_minus
 id|ERESTARTSYS
 suffix:semicolon
-)brace
 )brace
 r_switch
 c_cond
@@ -5803,11 +5725,9 @@ c_cond
 (paren
 id|ret
 )paren
-(brace
 r_goto
 id|out
 suffix:semicolon
-)brace
 )brace
 id|n_submit
 op_assign
@@ -6310,11 +6230,9 @@ c_cond
 (paren
 id|ret
 )paren
-(brace
 r_goto
 id|out
 suffix:semicolon
-)brace
 )brace
 id|video-&gt;continuity_counter
 op_assign
@@ -8217,11 +8135,9 @@ c_cond
 op_logical_neg
 id|video-&gt;dma_running
 )paren
-(brace
 r_goto
 id|out
 suffix:semicolon
-)brace
 id|irq_printk
 c_func
 (paren
@@ -8290,12 +8206,10 @@ op_eq
 op_minus
 l_int|1
 )paren
-(brace
 id|frame
 op_assign
 l_int|0
 suffix:semicolon
-)brace
 r_else
 id|frame
 op_assign
@@ -8405,12 +8319,10 @@ op_eq
 op_minus
 l_int|1
 )paren
-(brace
 id|prev_frame
 op_add_assign
 id|video-&gt;n_frames
 suffix:semicolon
-)brace
 id|prev_f
 op_assign
 id|video-&gt;frames
@@ -8703,7 +8615,7 @@ op_increment
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/* for(each frame) */
+multiline_comment|/* for (each frame) */
 )brace
 r_if
 c_cond
@@ -8782,11 +8694,9 @@ c_cond
 op_logical_neg
 id|video-&gt;dma_running
 )paren
-(brace
 r_goto
 id|out
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -9917,7 +9827,6 @@ suffix:semicolon
 id|i
 op_increment
 )paren
-(brace
 id|video-&gt;frames
 (braket
 id|i
@@ -9925,7 +9834,6 @@ id|i
 op_assign
 l_int|NULL
 suffix:semicolon
-)brace
 id|dma_region_init
 c_func
 (paren
@@ -10329,14 +10237,12 @@ l_int|2
 op_eq
 id|ohci-&gt;id
 )paren
-(brace
 id|dv1394_un_init
 c_func
 (paren
 id|video
 )paren
 suffix:semicolon
-)brace
 )brace
 )brace
 id|spin_unlock_irqrestore
@@ -10740,10 +10646,8 @@ l_int|2
 op_eq
 id|ohci-&gt;id
 )paren
-(brace
 r_break
 suffix:semicolon
-)brace
 )brace
 )brace
 id|spin_unlock_irqrestore
@@ -10761,10 +10665,8 @@ c_cond
 op_logical_neg
 id|video
 )paren
-(brace
 r_return
 suffix:semicolon
-)brace
 id|spin_lock_irqsave
 c_func
 (paren
@@ -10780,11 +10682,9 @@ c_cond
 op_logical_neg
 id|video-&gt;dma_running
 )paren
-(brace
 r_goto
 id|out
 suffix:semicolon
-)brace
 multiline_comment|/* check IT context */
 r_if
 c_cond
@@ -10808,7 +10708,7 @@ comma
 id|video-&gt;ohci_IsoXmitContextControlSet
 )paren
 suffix:semicolon
-multiline_comment|/* if(RUN but not ACTIVE) */
+multiline_comment|/* if (RUN but not ACTIVE) */
 r_if
 c_cond
 (paren
@@ -10955,7 +10855,7 @@ comma
 id|video-&gt;ohci_IsoRcvContextControlSet
 )paren
 suffix:semicolon
-multiline_comment|/* if(RUN but not ACTIVE) */
+multiline_comment|/* if (RUN but not ACTIVE) */
 r_if
 c_cond
 (paren

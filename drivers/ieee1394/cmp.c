@@ -438,7 +438,7 @@ id|host
 suffix:semicolon
 id|ch-&gt;u.ompr.rate
 op_assign
-id|SPEED_100
+id|IEEE1394_SPEED_100
 suffix:semicolon
 id|ch-&gt;u.ompr.bcast_channel_base
 op_assign
