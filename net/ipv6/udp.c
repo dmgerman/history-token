@@ -2620,6 +2620,8 @@ id|loc_addr
 r_return
 id|s
 suffix:semicolon
+r_continue
+suffix:semicolon
 )brace
 r_if
 c_cond
