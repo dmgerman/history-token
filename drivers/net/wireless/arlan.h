@@ -1568,10 +1568,9 @@ r_volatile
 r_int
 id|interrupt_ack_requested
 suffix:semicolon
-DECL|member|command_lock
-r_volatile
-r_int
-id|command_lock
+DECL|member|lock
+id|spinlock_t
+id|lock
 suffix:semicolon
 DECL|member|rx_command_needed
 r_volatile
