@@ -2056,6 +2056,12 @@ id|netdev-&gt;mem_start
 op_assign
 id|mmio_start
 suffix:semicolon
+id|netdev-&gt;mem_end
+op_assign
+id|mmio_start
+op_plus
+id|mmio_len
+suffix:semicolon
 id|netdev-&gt;base_addr
 op_assign
 id|adapter-&gt;hw.io_base
@@ -5125,6 +5131,18 @@ op_amp
 id|adapter-&gt;hw
 )paren
 suffix:semicolon
+multiline_comment|/* Cause software interrupt to ensure rx ring is cleaned */
+id|E1000_WRITE_REG
+c_func
+(paren
+op_amp
+id|adapter-&gt;hw
+comma
+id|ICS
+comma
+id|E1000_ICS_RXDMT0
+)paren
+suffix:semicolon
 multiline_comment|/* Early detection of hung controller */
 id|i
 op_assign
@@ -7303,6 +7321,10 @@ id|adapter-&gt;net_stats.tx_window_errors
 op_assign
 id|adapter-&gt;stats.latecol
 suffix:semicolon
+id|adapter-&gt;net_stats.tx_carrier_errors
+op_assign
+id|adapter-&gt;stats.tncrs
+suffix:semicolon
 multiline_comment|/* Tx Dropped needs to be maintained elsewhere */
 multiline_comment|/* Phy Stats */
 r_if
@@ -7349,6 +7371,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
+id|hw-&gt;mac_type
+op_le
+id|e1000_82546
+)paren
+op_logical_and
 op_logical_neg
 id|e1000_read_phy_reg
 c_func
@@ -8953,14 +8981,12 @@ id|i
 suffix:semicolon
 id|skb
 op_assign
-id|alloc_skb
+id|dev_alloc_skb
 c_func
 (paren
 id|adapter-&gt;rx_buffer_len
 op_plus
 id|reserve_len
-comma
-id|GFP_ATOMIC
 )paren
 suffix:semicolon
 r_if
