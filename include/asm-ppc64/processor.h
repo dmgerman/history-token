@@ -973,13 +973,6 @@ DECL|macro|CTRLF
 mdefine_line|#define CTRLF&t;&t;0x088
 DECL|macro|RUNLATCH
 mdefine_line|#define RUNLATCH&t;0x0001
-multiline_comment|/* Macros for adjusting thread priority (hardware multi-threading) */
-DECL|macro|HMT_low
-mdefine_line|#define HMT_low()&t;asm volatile(&quot;or 1,1,1&quot;)
-DECL|macro|HMT_medium
-mdefine_line|#define HMT_medium()&t;asm volatile(&quot;or 2,2,2&quot;)
-DECL|macro|HMT_high
-mdefine_line|#define HMT_high()&t;asm volatile(&quot;or 3,3,3&quot;)
 multiline_comment|/* Size of an exception stack frame contained in the paca. */
 DECL|macro|EXC_FRAME_SIZE
 mdefine_line|#define EXC_FRAME_SIZE 64
