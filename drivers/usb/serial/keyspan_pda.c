@@ -3112,7 +3112,7 @@ comma
 dot
 id|short_name
 op_assign
-l_string|&quot;kyspn_pda_nofirm&quot;
+l_string|&quot;keyspan_pda_pre&quot;
 comma
 dot
 id|id_table
@@ -3168,7 +3168,7 @@ comma
 dot
 id|short_name
 op_assign
-l_string|&quot;xircom_nofirm&quot;
+l_string|&quot;xircom_no_firm&quot;
 comma
 dot
 id|id_table
