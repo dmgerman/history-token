@@ -5754,11 +5754,13 @@ c_func
 (paren
 )paren
 suffix:semicolon
-singleline_comment|// should never happen 
+singleline_comment|// should never happen
 r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|macro|SPRINTK
+mdefine_line|#define SPRINTK(silent, ...)&t;&t;&t;&bslash;&n;&t;if (!(silent))&t;&t;&t;&t;&bslash;&n;&t;&t;printk(__VA_ARGS__)
 DECL|function|reiserfs_fill_super
 r_static
 r_int
@@ -5968,9 +5970,11 @@ c_cond
 id|blocks
 )paren
 (brace
-id|printk
+id|SPRINTK
 c_func
 (paren
+id|silent
+comma
 l_string|&quot;jmacd-7: reiserfs_fill_super: resize option for remount only&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -6007,9 +6011,11 @@ id|REISERFS_DISK_OFFSET_IN_BYTES
 )paren
 )paren
 (brace
-id|printk
+id|SPRINTK
 c_func
 (paren
+id|silent
+comma
 l_string|&quot;sh-2021: reiserfs_fill_super: can not find reiserfs on %s&bslash;n&quot;
 comma
 id|reiserfs_bdevname
@@ -6056,9 +6062,11 @@ id|rs
 )paren
 )paren
 (brace
-id|printk
+id|SPRINTK
 c_func
 (paren
+id|silent
+comma
 l_string|&quot;Filesystem on %s cannot be mounted because it is bigger than the device&bslash;n&quot;
 comma
 id|reiserfs_bdevname
@@ -6068,15 +6076,19 @@ id|s
 )paren
 )paren
 suffix:semicolon
-id|printk
+id|SPRINTK
 c_func
 (paren
+id|silent
+comma
 l_string|&quot;You may need to run fsck or increase size of your LVM partition&bslash;n&quot;
 )paren
 suffix:semicolon
-id|printk
+id|SPRINTK
 c_func
 (paren
+id|silent
+comma
 l_string|&quot;Or may be you forgot to reboot after fdisk when it told you to&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -6115,8 +6127,11 @@ id|s
 )paren
 )paren
 (brace
-id|printk
+id|SPRINTK
+c_func
 (paren
+id|silent
+comma
 l_string|&quot;jmacd-8: reiserfs_fill_super: unable to read bitmap&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -6125,15 +6140,19 @@ id|error
 suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_REISERFS_CHECK
-id|printk
+id|SPRINTK
 c_func
 (paren
+id|silent
+comma
 l_string|&quot;reiserfs:warning: CONFIG_REISERFS_CHECK is set ON&bslash;n&quot;
 )paren
 suffix:semicolon
-id|printk
+id|SPRINTK
 c_func
 (paren
+id|silent
+comma
 l_string|&quot;reiserfs:warning: - it is slow mode for debugging.&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -6153,9 +6172,11 @@ id|old_format
 )paren
 )paren
 (brace
-id|printk
+id|SPRINTK
 c_func
 (paren
+id|silent
+comma
 l_string|&quot;sh-2022: reiserfs_fill_super: unable to initialize journal space&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -6169,7 +6190,7 @@ id|jinit_done
 op_assign
 l_int|1
 suffix:semicolon
-multiline_comment|/* once this is set, journal_release must be called&n;&t;&t;&t; ** if we error out of the mount &n;&t;&t;&t; */
+multiline_comment|/* once this is set, journal_release must be called&n;&t;&t;&t; ** if we error out of the mount&n;&t;&t;&t; */
 )brace
 r_if
 c_cond
@@ -6181,9 +6202,11 @@ id|s
 )paren
 )paren
 (brace
-id|printk
+id|SPRINTK
 c_func
 (paren
+id|silent
+comma
 l_string|&quot;jmacd-9: reiserfs_fill_super: unable to reread meta blocks after journal init&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -6219,9 +6242,11 @@ id|MS_RDONLY
 )paren
 )paren
 (brace
-id|printk
+id|SPRINTK
 c_func
 (paren
+id|silent
+comma
 l_string|&quot;clm-7000: Detected readonly device, marking FS readonly&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -6267,8 +6292,11 @@ op_logical_neg
 id|root_inode
 )paren
 (brace
-id|printk
+id|SPRINTK
+c_func
 (paren
+id|silent
+comma
 l_string|&quot;jmacd-10: reiserfs_fill_super: get root inode failed&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -6472,11 +6500,19 @@ id|s
 )paren
 (brace
 multiline_comment|/* and -o conv is given */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|silent
+)paren
+(brace
 id|reiserfs_warning
 (paren
 l_string|&quot;reiserfs: converting 3.5 filesystem to the 3.6 format&bslash;n&quot;
 )paren
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -6536,6 +6572,12 @@ id|sbi-&gt;s_properties
 suffix:semicolon
 )brace
 r_else
+r_if
+c_cond
+(paren
+op_logical_neg
+id|silent
+)paren
 (brace
 id|reiserfs_warning
 c_func
@@ -6591,6 +6633,9 @@ c_func
 (paren
 id|s
 )paren
+op_logical_and
+op_logical_neg
+id|silent
 )paren
 (brace
 id|reiserfs_warning
