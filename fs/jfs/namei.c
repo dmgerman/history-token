@@ -2513,21 +2513,6 @@ id|DXD_EXTENT
 (brace
 id|s64
 id|xaddr
-suffix:semicolon
-r_int
-id|xlen
-suffix:semicolon
-id|maplock_t
-id|maplock
-suffix:semicolon
-multiline_comment|/* maplock for COMMIT_WMAP */
-id|pxdlock_t
-op_star
-id|pxdlock
-suffix:semicolon
-multiline_comment|/* maplock for COMMIT_WMAP */
-multiline_comment|/* free EA pages from cache */
-id|xaddr
 op_assign
 id|addressDXD
 c_func
@@ -2542,6 +2527,7 @@ op_member_access_from_pointer
 id|ea
 )paren
 suffix:semicolon
+r_int
 id|xlen
 op_assign
 id|lengthDXD
@@ -2557,18 +2543,30 @@ op_member_access_from_pointer
 id|ea
 )paren
 suffix:semicolon
-macro_line|#ifdef _STILL_TO_PORT
-id|bmExtentInvalidate
+id|maplock_t
+id|maplock
+suffix:semicolon
+multiline_comment|/* maplock for COMMIT_WMAP */
+id|pxdlock_t
+op_star
+id|pxdlock
+suffix:semicolon
+multiline_comment|/* maplock for COMMIT_WMAP */
+multiline_comment|/* free EA pages from cache */
+id|invalidate_dxd_metapages
 c_func
 (paren
 id|ip
 comma
-id|xaddr
-comma
-id|xlen
+id|JFS_IP
+c_func
+(paren
+id|ip
+)paren
+op_member_access_from_pointer
+id|ea
 )paren
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/* free EA extent from working block map */
 id|maplock.index
 op_assign
@@ -2635,21 +2633,6 @@ id|DXD_EXTENT
 (brace
 id|s64
 id|xaddr
-suffix:semicolon
-r_int
-id|xlen
-suffix:semicolon
-id|maplock_t
-id|maplock
-suffix:semicolon
-multiline_comment|/* maplock for COMMIT_WMAP */
-id|pxdlock_t
-op_star
-id|pxdlock
-suffix:semicolon
-multiline_comment|/* maplock for COMMIT_WMAP */
-multiline_comment|/* free ACL pages from cache */
-id|xaddr
 op_assign
 id|addressDXD
 c_func
@@ -2664,6 +2647,7 @@ op_member_access_from_pointer
 id|acl
 )paren
 suffix:semicolon
+r_int
 id|xlen
 op_assign
 id|lengthDXD
@@ -2679,18 +2663,29 @@ op_member_access_from_pointer
 id|acl
 )paren
 suffix:semicolon
-macro_line|#ifdef _STILL_TO_PORT
-id|bmExtentInvalidate
+id|maplock_t
+id|maplock
+suffix:semicolon
+multiline_comment|/* maplock for COMMIT_WMAP */
+id|pxdlock_t
+op_star
+id|pxdlock
+suffix:semicolon
+multiline_comment|/* maplock for COMMIT_WMAP */
+id|invalidate_dxd_metapages
 c_func
 (paren
 id|ip
 comma
-id|xaddr
-comma
-id|xlen
+id|JFS_IP
+c_func
+(paren
+id|ip
+)paren
+op_member_access_from_pointer
+id|acl
 )paren
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/* free ACL extent from working block map */
 id|maplock.index
 op_assign
