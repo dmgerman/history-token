@@ -403,11 +403,13 @@ op_le
 l_int|0
 )paren
 (brace
-id|dbg
+id|dev_dbg
+c_func
 (paren
-l_string|&quot;%s: bogus endpoint %d-%s on usb-%s-%s (bad maxpacket %d)&quot;
+op_amp
+id|dev-&gt;dev
 comma
-id|__FUNCTION__
+l_string|&quot;bogus endpoint ep%d%s in %s (bad maxpacket %d)&quot;
 comma
 id|usb_pipeendpoint
 (paren
@@ -417,13 +419,11 @@ comma
 id|is_out
 ques
 c_cond
-l_string|&quot;OUT&quot;
+l_string|&quot;out&quot;
 suffix:colon
-l_string|&quot;IN&quot;
+l_string|&quot;in&quot;
 comma
-id|dev-&gt;bus-&gt;bus_name
-comma
-id|dev-&gt;devpath
+id|__FUNCTION__
 comma
 id|max
 )paren
