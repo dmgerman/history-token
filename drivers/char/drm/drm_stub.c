@@ -94,7 +94,7 @@ id|drm_minors
 suffix:semicolon
 DECL|variable|drm_class
 r_struct
-id|class_simple
+id|drm_sysfs_class
 op_star
 id|drm_class
 suffix:semicolon
@@ -792,7 +792,7 @@ suffix:semicolon
 )brace
 id|dev_class
 op_assign
-id|class_simple_device_add
+id|drm_sysfs_device_add
 c_func
 (paren
 id|drm_class
@@ -827,7 +827,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;DRM: Error class_simple_device_add.&bslash;n&quot;
+l_string|&quot;DRM: Error sysfs_device_add.&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ret
@@ -961,7 +961,7 @@ comma
 id|minors-&gt;dev_root
 )paren
 suffix:semicolon
-id|class_simple_device_remove
+id|drm_sysfs_device_remove
 c_func
 (paren
 id|MKDEV
