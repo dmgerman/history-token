@@ -231,14 +231,13 @@ l_string|&quot;Addtron Technolgy 8139 10/100BaseTX&quot;
 comma
 )brace
 suffix:semicolon
-DECL|variable|__devinitdata
+DECL|variable|netdrv_pci_tbl
 r_static
 r_struct
 id|pci_device_id
 id|netdrv_pci_tbl
 (braket
 )braket
-id|__devinitdata
 op_assign
 (brace
 (brace

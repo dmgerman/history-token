@@ -265,14 +265,13 @@ DECL|enumerator|VX_PCI_VX222_NEW
 id|VX_PCI_VX222_NEW
 )brace
 suffix:semicolon
-DECL|variable|__devinitdata
+DECL|variable|snd_vx222_ids
 r_static
 r_struct
 id|pci_device_id
 id|snd_vx222_ids
 (braket
 )braket
-id|__devinitdata
 op_assign
 (brace
 (brace

@@ -283,14 +283,13 @@ id|SNDRV_ENABLED
 l_string|&quot;,default:8192,skill:advanced&quot;
 )paren
 suffix:semicolon
-DECL|variable|__devinitdata
+DECL|variable|snd_trident_ids
 r_static
 r_struct
 id|pci_device_id
 id|snd_trident_ids
 (braket
 )braket
-id|__devinitdata
 op_assign
 (brace
 (brace

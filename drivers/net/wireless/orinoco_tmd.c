@@ -524,14 +524,13 @@ id|pdev
 )paren
 suffix:semicolon
 )brace
-DECL|variable|__devinitdata
+DECL|variable|orinoco_tmd_pci_id_table
 r_static
 r_struct
 id|pci_device_id
 id|orinoco_tmd_pci_id_table
 (braket
 )braket
-id|__devinitdata
 op_assign
 (brace
 (brace

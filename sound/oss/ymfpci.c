@@ -174,14 +174,13 @@ id|ymf_devs
 )paren
 suffix:semicolon
 multiline_comment|/*&n; *  constants&n; */
-DECL|variable|__devinitdata
+DECL|variable|ymf_id_tbl
 r_static
 r_struct
 id|pci_device_id
 id|ymf_id_tbl
 (braket
 )braket
-id|__devinitdata
 op_assign
 (brace
 DECL|macro|DEV

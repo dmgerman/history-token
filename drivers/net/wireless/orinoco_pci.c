@@ -1019,14 +1019,13 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|variable|__devinitdata
+DECL|variable|orinoco_pci_pci_id_table
 r_static
 r_struct
 id|pci_device_id
 id|orinoco_pci_pci_id_table
 (braket
 )braket
-id|__devinitdata
 op_assign
 (brace
 (brace

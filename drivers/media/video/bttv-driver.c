@@ -16858,14 +16858,13 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-DECL|variable|__devinitdata
+DECL|variable|bttv_pci_tbl
 r_static
 r_struct
 id|pci_device_id
 id|bttv_pci_tbl
 (braket
 )braket
-id|__devinitdata
 op_assign
 (brace
 (brace

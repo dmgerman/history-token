@@ -588,14 +588,13 @@ l_int|NULL
 )paren
 suffix:semicolon
 )brace
-DECL|variable|__devinitdata
+DECL|variable|scb2_flash_pci_ids
 r_static
 r_struct
 id|pci_device_id
 id|scb2_flash_pci_ids
 (braket
 )braket
-id|__devinitdata
 op_assign
 (brace
 (brace

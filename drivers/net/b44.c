@@ -124,14 +124,13 @@ mdefine_line|#define IRQ_RETVAL(x)
 DECL|macro|irqreturn_t
 mdefine_line|#define irqreturn_t void
 macro_line|#endif
-DECL|variable|__devinitdata
+DECL|variable|b44_pci_tbl
 r_static
 r_struct
 id|pci_device_id
 id|b44_pci_tbl
 (braket
 )braket
-id|__devinitdata
 op_assign
 (brace
 (brace

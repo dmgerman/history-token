@@ -7278,14 +7278,13 @@ id|info
 )paren
 suffix:semicolon
 )brace
-DECL|variable|__devinitdata
+DECL|variable|sstfb_id_tbl
 r_static
 r_struct
 id|pci_device_id
 id|sstfb_id_tbl
 (braket
 )braket
-id|__devinitdata
 op_assign
 (brace
 (brace

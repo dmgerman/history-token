@@ -474,14 +474,13 @@ mdefine_line|#define PCI_VENDOR_ESS      0x125D
 macro_line|#endif
 DECL|macro|M3_DEVICE
 mdefine_line|#define M3_DEVICE(DEV, TYPE)&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&bslash;&n;.vendor&t;     = PCI_VENDOR_ESS,&t;&t;&t;&bslash;&n;.device&t;     = DEV,&t;&t;&t;&t;&bslash;&n;.subvendor   = PCI_ANY_ID,&t;&t;&t;&bslash;&n;.subdevice   = PCI_ANY_ID,&t;&t;&t;&bslash;&n;.class&t;     = PCI_CLASS_MULTIMEDIA_AUDIO &lt;&lt; 8,&t;&bslash;&n;.class_mask  = 0xffff &lt;&lt; 8,&t;&t;&t;&bslash;&n;.driver_data = TYPE,&t;&t;&t;&t;&bslash;&n;}
-DECL|variable|__initdata
+DECL|variable|m3_id_table
 r_static
 r_struct
 id|pci_device_id
 id|m3_id_table
 (braket
 )braket
-id|__initdata
 op_assign
 (brace
 id|M3_DEVICE

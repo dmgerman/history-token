@@ -6613,14 +6613,13 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|variable|__devinitdata
+DECL|variable|cyberpro_pci_table
 r_static
 r_struct
 id|pci_device_id
 id|cyberpro_pci_table
 (braket
 )braket
-id|__devinitdata
 op_assign
 (brace
 singleline_comment|//&t;Not yet

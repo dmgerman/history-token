@@ -20,14 +20,13 @@ macro_line|#undef CONFIG_T1PCI_DEBUG
 DECL|macro|CONFIG_T1PCI_POLLDEBUG
 macro_line|#undef CONFIG_T1PCI_POLLDEBUG
 multiline_comment|/* ------------------------------------------------------------- */
-DECL|variable|__devinitdata
+DECL|variable|t1pci_pci_tbl
 r_static
 r_struct
 id|pci_device_id
 id|t1pci_pci_tbl
 (braket
 )braket
-id|__devinitdata
 op_assign
 (brace
 (brace

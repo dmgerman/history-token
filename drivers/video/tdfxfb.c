@@ -230,14 +230,13 @@ op_star
 id|pdev
 )paren
 suffix:semicolon
-DECL|variable|__devinitdata
+DECL|variable|tdfxfb_id_table
 r_static
 r_struct
 id|pci_device_id
 id|tdfxfb_id_table
 (braket
 )braket
-id|__devinitdata
 op_assign
 (brace
 (brace

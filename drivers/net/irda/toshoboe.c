@@ -49,14 +49,13 @@ macro_line|#include &lt;linux/pm.h&gt;
 macro_line|#include &lt;net/irda/toshoboe.h&gt;
 DECL|macro|PCI_DEVICE_ID_FIR701b
 mdefine_line|#define PCI_DEVICE_ID_FIR701b  0x0d01
-DECL|variable|__initdata
+DECL|variable|toshoboe_pci_tbl
 r_static
 r_struct
 id|pci_device_id
 id|toshoboe_pci_tbl
 (braket
 )braket
-id|__initdata
 op_assign
 (brace
 (brace

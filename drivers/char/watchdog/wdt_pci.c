@@ -1876,14 +1876,13 @@ l_int|16
 )paren
 suffix:semicolon
 )brace
-DECL|variable|__initdata
+DECL|variable|wdtpci_pci_tbl
 r_static
 r_struct
 id|pci_device_id
 id|wdtpci_pci_tbl
 (braket
 )braket
-id|__initdata
 op_assign
 (brace
 (brace

@@ -1115,14 +1115,13 @@ id|addr
 suffix:semicolon
 )brace
 macro_line|#endif
-DECL|variable|__devinitdata
+DECL|variable|snd_rme9652_ids
 r_static
 r_struct
 id|pci_device_id
 id|snd_rme9652_ids
 (braket
 )braket
-id|__devinitdata
 op_assign
 (brace
 (brace

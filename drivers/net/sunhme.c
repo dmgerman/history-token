@@ -550,7 +550,7 @@ mdefine_line|#define DEFAULT_IPG2       4 /* For all modes */
 DECL|macro|DEFAULT_JAMSIZE
 mdefine_line|#define DEFAULT_JAMSIZE    4 /* Toe jam */
 macro_line|#ifdef CONFIG_PCI
-multiline_comment|/* This happy_pci_ids is declared __initdata because it is only used&n;   as an advisory to depmod.  If this is ported to the new PCI interface&n;   where it could be referenced at any time due to hot plugging,&n;   it should be changed to __devinitdata. */
+multiline_comment|/* This happy_pci_ids is declared __initdata because it is only used&n;   as an advisory to depmod.  If this is ported to the new PCI interface&n;   where it could be referenced at any time due to hot plugging,&n;   the __initdata reference should be removed. */
 DECL|variable|__initdata
 r_struct
 id|pci_device_id

@@ -35,14 +35,13 @@ op_assign
 l_string|&quot;Copyright (c) 2001-2003 Intel Corporation.&quot;
 suffix:semicolon
 multiline_comment|/* ixgb_pci_tbl - PCI Device ID Table&n; *&n; * For selecting devices to load on private driver_data field (last one) &n; * stores an index into ixgb_strings.&n; * Wildcard entries (PCI_ANY_ID) should come last&n; * Last entry must be all 0s&n; *&n; * { Vendor ID, Device ID, SubVendor ID, SubDevice ID,&n; *   Class, Class Mask, String Index }&n; */
-DECL|variable|__devinitdata
+DECL|variable|ixgb_pci_tbl
 r_static
 r_struct
 id|pci_device_id
 id|ixgb_pci_tbl
 (braket
 )braket
-id|__devinitdata
 op_assign
 (brace
 multiline_comment|/* Intel(R) PRO/10GbE Network Connection */

@@ -52,14 +52,13 @@ id|DRIVER_NAME
 suffix:semicolon
 DECL|macro|PCI_CLASS_WIRELESS_IRDA
 mdefine_line|#define PCI_CLASS_WIRELESS_IRDA 0x0d00
-DECL|variable|__devinitdata
+DECL|variable|vlsi_irda_table
 r_static
 r_struct
 id|pci_device_id
 id|vlsi_irda_table
 (braket
 )braket
-id|__devinitdata
 op_assign
 (brace
 (brace

@@ -412,14 +412,13 @@ id|MT_STV
 multiline_comment|/* S-Video out */
 )brace
 suffix:semicolon
-DECL|variable|__devinitdata
+DECL|variable|radeonfb_pci_table
 r_static
 r_struct
 id|pci_device_id
 id|radeonfb_pci_table
 (braket
 )braket
-id|__devinitdata
 op_assign
 (brace
 (brace

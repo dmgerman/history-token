@@ -16,14 +16,13 @@ macro_line|#include &lt;linux/isdn/capiutil.h&gt;
 macro_line|#include &lt;linux/isdn/capilli.h&gt;
 macro_line|#include &quot;avmcard.h&quot;
 multiline_comment|/* ------------------------------------------------------------- */
-DECL|variable|__devinitdata
+DECL|variable|b1pci_pci_tbl
 r_static
 r_struct
 id|pci_device_id
 id|b1pci_pci_tbl
 (braket
 )braket
-id|__devinitdata
 op_assign
 (brace
 (brace

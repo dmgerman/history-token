@@ -7092,14 +7092,13 @@ l_string|&quot;driver released&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
-DECL|variable|__devinitdata
+DECL|variable|forte_pci_ids
 r_static
 r_struct
 id|pci_device_id
 id|forte_pci_ids
 (braket
 )braket
-id|__devinitdata
 op_assign
 (brace
 (brace

@@ -1472,14 +1472,13 @@ id|bridge
 )paren
 suffix:semicolon
 )brace
-DECL|variable|__initdata
+DECL|variable|agp_amdk8_pci_table
 r_static
 r_struct
 id|pci_device_id
 id|agp_amdk8_pci_table
 (braket
 )braket
-id|__initdata
 op_assign
 (brace
 (brace

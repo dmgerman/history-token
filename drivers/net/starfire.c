@@ -497,14 +497,13 @@ l_int|0
 comma
 )brace
 suffix:semicolon
-DECL|variable|__devinitdata
+DECL|variable|starfire_pci_tbl
 r_static
 r_struct
 id|pci_device_id
 id|starfire_pci_tbl
 (braket
 )braket
-id|__devinitdata
 op_assign
 (brace
 (brace

@@ -232,14 +232,13 @@ DECL|typedef|snd_card_als4000_t
 )brace
 id|snd_card_als4000_t
 suffix:semicolon
-DECL|variable|__devinitdata
+DECL|variable|snd_als4000_ids
 r_static
 r_struct
 id|pci_device_id
 id|snd_als4000_ids
 (braket
 )braket
-id|__devinitdata
 op_assign
 (brace
 (brace

@@ -392,14 +392,13 @@ comma
 comma
 )brace
 suffix:semicolon
-DECL|variable|__devinitdata
+DECL|variable|parport_serial_pci_tbl
 r_static
 r_struct
 id|pci_device_id
 id|parport_serial_pci_tbl
 (braket
 )braket
-id|__devinitdata
 op_assign
 (brace
 multiline_comment|/* PCI cards */

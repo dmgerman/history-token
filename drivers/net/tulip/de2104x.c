@@ -1258,14 +1258,13 @@ id|u32
 id|new_media
 )paren
 suffix:semicolon
-DECL|variable|__initdata
+DECL|variable|de_pci_tbl
 r_static
 r_struct
 id|pci_device_id
 id|de_pci_tbl
 (braket
 )braket
-id|__initdata
 op_assign
 (brace
 (brace

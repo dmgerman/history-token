@@ -1422,14 +1422,13 @@ id|addr
 suffix:semicolon
 )brace
 macro_line|#endif
-DECL|variable|__devinitdata
+DECL|variable|snd_hdsp_ids
 r_static
 r_struct
 id|pci_device_id
 id|snd_hdsp_ids
 (braket
 )braket
-id|__devinitdata
 op_assign
 (brace
 (brace

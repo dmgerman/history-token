@@ -8471,14 +8471,13 @@ l_int|600
 suffix:semicolon
 multiline_comment|/* Match, every 10 minutes, check */
 )brace
-DECL|variable|__devinitdata
+DECL|variable|dmfe_pci_tbl
 r_static
 r_struct
 id|pci_device_id
 id|dmfe_pci_tbl
 (braket
 )braket
-id|__devinitdata
 op_assign
 (brace
 (brace

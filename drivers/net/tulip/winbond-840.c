@@ -411,14 +411,13 @@ macro_line|#else
 DECL|macro|W840_FLAGS
 mdefine_line|#define W840_FLAGS (PCI_USES_MEM | PCI_ADDR1 | PCI_USES_MASTER)
 macro_line|#endif
-DECL|variable|__devinitdata
+DECL|variable|w840_pci_tbl
 r_static
 r_struct
 id|pci_device_id
 id|w840_pci_tbl
 (braket
 )braket
-id|__devinitdata
 op_assign
 (brace
 (brace

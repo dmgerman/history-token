@@ -5319,14 +5319,13 @@ r_return
 suffix:semicolon
 )brace
 multiline_comment|/* -------------------------------------------------------------- */
-DECL|variable|__devinitdata
+DECL|variable|btaudio_pci_tbl
 r_static
 r_struct
 id|pci_device_id
 id|btaudio_pci_tbl
 (braket
 )braket
-id|__devinitdata
 op_assign
 (brace
 (brace

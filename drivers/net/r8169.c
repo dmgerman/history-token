@@ -141,14 +141,13 @@ l_string|&quot;RealTek RTL8169 Gigabit Ethernet&quot;
 comma
 )brace
 suffix:semicolon
-DECL|variable|__devinitdata
+DECL|variable|rtl8169_pci_tbl
 r_static
 r_struct
 id|pci_device_id
 id|rtl8169_pci_tbl
 (braket
 )braket
-id|__devinitdata
 op_assign
 (brace
 (brace

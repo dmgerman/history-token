@@ -7946,14 +7946,13 @@ id|data-&gt;MmioAddress
 )paren
 suffix:semicolon
 )brace
-DECL|variable|__devinitdata
+DECL|variable|nsp32_pci_table
 r_static
 r_struct
 id|pci_device_id
 id|nsp32_pci_table
 (braket
 )braket
-id|__devinitdata
 op_assign
 (brace
 (brace
