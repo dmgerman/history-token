@@ -2543,6 +2543,14 @@ c_func
 suffix:semicolon
 r_int
 r_int
+id|top
+op_assign
+id|base
+op_plus
+id|size
+suffix:semicolon
+r_int
+r_int
 id|cnt
 op_assign
 id|RELOC
@@ -2554,11 +2562,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
 id|size
+op_eq
+l_int|0
 )paren
 r_return
 suffix:semicolon
+multiline_comment|/* We need to always keep one empty entry so that we&n;&t; * have our terminator with &quot;size&quot; set to 0 since we are&n;&t; * dumb and just copy this entire array to the boot params&n;&t; */
 id|base
 op_assign
 id|_ALIGN_DOWN
@@ -2569,17 +2579,22 @@ comma
 id|PAGE_SIZE
 )paren
 suffix:semicolon
-id|size
+id|top
 op_assign
 id|_ALIGN_UP
 c_func
 (paren
-id|size
+id|top
 comma
 id|PAGE_SIZE
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * We need to always keep one empty entry so that we&n;&t; * have our terminator with &quot;size&quot; set to 0 since we are&n;&t; * dumb and just copy this entire array to the boot params&n;&t; */
+id|size
+op_assign
+id|top
+op_minus
+id|base
+suffix:semicolon
 r_if
 c_cond
 (paren
