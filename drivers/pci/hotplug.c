@@ -856,7 +856,7 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-id|pci_put_dev
+id|pci_dev_put
 c_func
 (paren
 id|dev

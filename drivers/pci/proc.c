@@ -1441,7 +1441,7 @@ id|dev
 op_assign
 id|v
 suffix:semicolon
-id|pci_put_dev
+id|pci_dev_put
 c_func
 (paren
 id|dev
@@ -2120,7 +2120,7 @@ comma
 l_string|&quot;PCI devices found:&bslash;n&quot;
 )paren
 suffix:semicolon
-id|pci_put_dev
+id|pci_dev_put
 c_func
 (paren
 id|first_dev

@@ -1444,7 +1444,7 @@ r_extern
 r_struct
 id|pci_dev
 op_star
-id|pci_get_dev
+id|pci_dev_get
 c_func
 (paren
 r_struct
@@ -1455,7 +1455,7 @@ id|dev
 suffix:semicolon
 r_extern
 r_void
-id|pci_put_dev
+id|pci_dev_put
 c_func
 (paren
 r_struct

@@ -630,7 +630,7 @@ l_int|NULL
 suffix:semicolon
 m_exit
 suffix:colon
-id|pci_put_dev
+id|pci_dev_put
 c_func
 (paren
 id|from
@@ -638,7 +638,7 @@ id|from
 suffix:semicolon
 id|dev
 op_assign
-id|pci_get_dev
+id|pci_dev_get
 c_func
 (paren
 id|dev
