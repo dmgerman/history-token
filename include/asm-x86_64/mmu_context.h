@@ -253,10 +253,22 @@ id|next-&gt;cpu_vm_mask
 )paren
 )paren
 (brace
-multiline_comment|/* We were in lazy tlb mode and leave_mm disabled &n;&t;&t;&t; * tlb flush IPI delivery. We must flush our tlb.&n;&t;&t;&t; */
-id|local_flush_tlb
+multiline_comment|/* We were in lazy tlb mode and leave_mm disabled &n;&t;&t;&t; * tlb flush IPI delivery. We must reload CR3&n;&t;&t;&t; * to make sure to use no freed page tables.&n;&t;&t;&t; */
+id|asm
+r_volatile
+(paren
+l_string|&quot;movq %0,%%cr3&quot;
+op_scope_resolution
+l_string|&quot;r&quot;
+(paren
+id|__pa
 c_func
 (paren
+id|next-&gt;pgd
+)paren
+)paren
+suffix:colon
+l_string|&quot;memory&quot;
 )paren
 suffix:semicolon
 id|load_LDT_nolock
