@@ -14,6 +14,7 @@ macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/linux_logo.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
+macro_line|#include &lt;linux/console.h&gt;
 macro_line|#ifdef CONFIG_KMOD
 macro_line|#include &lt;linux/kmod.h&gt;
 macro_line|#endif
@@ -4605,6 +4606,8 @@ id|cmap
 suffix:semicolon
 r_int
 id|i
+comma
+id|rc
 suffix:semicolon
 r_if
 c_cond
@@ -4678,6 +4681,11 @@ r_return
 op_minus
 id|EFAULT
 suffix:semicolon
+id|acquire_console_sem
+c_func
+(paren
+)paren
+suffix:semicolon
 id|i
 op_assign
 id|fb_set_var
@@ -4687,6 +4695,11 @@ id|info
 comma
 op_amp
 id|var
+)paren
+suffix:semicolon
+id|release_console_sem
+c_func
+(paren
 )paren
 suffix:semicolon
 r_if
@@ -4866,10 +4879,11 @@ r_return
 op_minus
 id|EFAULT
 suffix:semicolon
-r_if
-c_cond
+id|acquire_console_sem
+c_func
 (paren
-(paren
+)paren
+suffix:semicolon
 id|i
 op_assign
 id|fb_pan_display
@@ -4880,7 +4894,16 @@ comma
 op_amp
 id|var
 )paren
+suffix:semicolon
+id|release_console_sem
+c_func
+(paren
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|i
 )paren
 r_return
 id|i
@@ -4916,8 +4939,13 @@ suffix:semicolon
 r_case
 id|FBIO_CURSOR
 suffix:colon
-r_return
+id|acquire_console_sem
+c_func
 (paren
+)paren
+suffix:semicolon
+id|rc
+op_assign
 id|fb_cursor
 c_func
 (paren
@@ -4930,7 +4958,14 @@ op_star
 )paren
 id|arg
 )paren
+suffix:semicolon
+id|release_console_sem
+c_func
+(paren
 )paren
+suffix:semicolon
+r_return
+id|rc
 suffix:semicolon
 macro_line|#ifdef CONFIG_FRAMEBUFFER_CONSOLE
 r_case
@@ -5120,7 +5155,13 @@ macro_line|#endif&t;/* CONFIG_FRAMEBUFFER_CONSOLE */
 r_case
 id|FBIOBLANK
 suffix:colon
-r_return
+id|acquire_console_sem
+c_func
+(paren
+)paren
+suffix:semicolon
+id|i
+op_assign
 id|fb_blank
 c_func
 (paren
@@ -5128,6 +5169,14 @@ id|info
 comma
 id|arg
 )paren
+suffix:semicolon
+id|release_console_sem
+c_func
+(paren
+)paren
+suffix:semicolon
+r_return
+id|i
 suffix:semicolon
 r_default
 suffix:colon
