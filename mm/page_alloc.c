@@ -1166,13 +1166,6 @@ id|gfp_mask
 op_amp
 id|__GFP_WAIT
 )paren
-op_logical_and
-op_logical_neg
-(paren
-id|current-&gt;flags
-op_amp
-id|PF_MEMALLOC
-)paren
 )paren
 id|direct_reclaim
 op_assign

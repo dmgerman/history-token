@@ -5,6 +5,7 @@ mdefine_line|#define _HOSTS_H
 multiline_comment|/*&n;    $Header: /vger/u4/cvs/linux/drivers/scsi/hosts.h,v 1.6 1997/01/19 23:07:13 davem Exp $&n;*/
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
+macro_line|#include &lt;linux/pci.h&gt;
 multiline_comment|/* It is senseless to set SG_ALL any higher than this - the performance&n; *  does not get any better, and it wastes memory&n; */
 DECL|macro|SG_NONE
 mdefine_line|#define SG_NONE 0
@@ -627,6 +628,13 @@ id|Scsi_Device
 op_star
 )paren
 suffix:semicolon
+multiline_comment|/*&n;     * For SCSI hosts which are PCI devices, set pci_dev so that&n;     * we can do BIOS EDD 3.0 mappings&n;     */
+DECL|member|pci_dev
+r_struct
+id|pci_dev
+op_star
+id|pci_dev
+suffix:semicolon
 multiline_comment|/*&n;     * We should ensure that this is aligned, both for better performance&n;     * and also because some compilers (m68k) don&squot;t automatically force&n;     * alignment to a long boundary.&n;     */
 DECL|member|hostdata
 r_int
@@ -836,6 +844,29 @@ op_star
 id|SHpnt
 )paren
 suffix:semicolon
+DECL|function|scsi_set_pci_device
+r_static
+r_inline
+r_void
+id|scsi_set_pci_device
+c_func
+(paren
+r_struct
+id|Scsi_Host
+op_star
+id|SHpnt
+comma
+r_struct
+id|pci_dev
+op_star
+id|pdev
+)paren
+(brace
+id|SHpnt-&gt;pci_dev
+op_assign
+id|pdev
+suffix:semicolon
+)brace
 multiline_comment|/*&n; * Prototypes for functions/data in scsi_scan.c&n; */
 r_extern
 r_void

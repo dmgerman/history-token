@@ -7955,6 +7955,14 @@ id|host
 r_goto
 id|err_unmap
 suffix:semicolon
+id|scsi_set_pci_device
+c_func
+(paren
+id|host
+comma
+id|pdev
+)paren
+suffix:semicolon
 id|megaCfg
 op_assign
 (paren

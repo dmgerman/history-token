@@ -911,6 +911,33 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/* Only allow these for NAT. */
+r_if
+c_cond
+(paren
+id|strcmp
+c_func
+(paren
+id|tablename
+comma
+l_string|&quot;nat&quot;
+)paren
+op_ne
+l_int|0
+)paren
+(brace
+id|DEBUGP
+c_func
+(paren
+l_string|&quot;SNAT: wrong table %s&bslash;n&quot;
+comma
+id|tablename
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -1042,6 +1069,33 @@ comma
 id|targinfosize
 comma
 id|mr-&gt;rangesize
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+multiline_comment|/* Only allow these for NAT. */
+r_if
+c_cond
+(paren
+id|strcmp
+c_func
+(paren
+id|tablename
+comma
+l_string|&quot;nat&quot;
+)paren
+op_ne
+l_int|0
+)paren
+(brace
+id|DEBUGP
+c_func
+(paren
+l_string|&quot;SNAT: wrong table %s&bslash;n&quot;
+comma
+id|tablename
 )paren
 suffix:semicolon
 r_return

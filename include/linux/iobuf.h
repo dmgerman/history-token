@@ -8,9 +8,7 @@ macro_line|#include &lt;linux/wait.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
 multiline_comment|/*&n; * The kiobuf structure describes a physical set of pages reserved&n; * locked for IO.  The reference counts on each page will have been&n; * incremented, and the flags field will indicate whether or not we have&n; * pre-locked all of the pages for IO.&n; *&n; * kiobufs may be passed in arrays to form a kiovec, but we must&n; * preserve the property that no page is present more than once over the&n; * entire iovec.&n; */
 DECL|macro|KIO_MAX_ATOMIC_IO
-mdefine_line|#define KIO_MAX_ATOMIC_IO&t;64 /* in kb */
-DECL|macro|KIO_MAX_ATOMIC_BYTES
-mdefine_line|#define KIO_MAX_ATOMIC_BYTES&t;(64 * 1024)
+mdefine_line|#define KIO_MAX_ATOMIC_IO&t;512 /* in kb */
 DECL|macro|KIO_STATIC_PAGES
 mdefine_line|#define KIO_STATIC_PAGES&t;(KIO_MAX_ATOMIC_IO / (PAGE_SIZE &gt;&gt; 10) + 1)
 DECL|macro|KIO_MAX_SECTORS
@@ -56,7 +54,7 @@ suffix:colon
 l_int|1
 suffix:semicolon
 multiline_comment|/* If set, pages has been locked */
-multiline_comment|/* Always embed enough struct pages for 64k of IO */
+multiline_comment|/* Always embed enough struct pages for atomic IO */
 DECL|member|map_array
 r_struct
 id|page
@@ -64,6 +62,23 @@ op_star
 id|map_array
 (braket
 id|KIO_STATIC_PAGES
+)braket
+suffix:semicolon
+DECL|member|bh
+r_struct
+id|buffer_head
+op_star
+id|bh
+(braket
+id|KIO_MAX_SECTORS
+)braket
+suffix:semicolon
+DECL|member|blocks
+r_int
+r_int
+id|blocks
+(braket
+id|KIO_MAX_SECTORS
 )braket
 suffix:semicolon
 multiline_comment|/* Dynamic state for IO completion: */
@@ -159,24 +174,20 @@ id|iovec
 )braket
 )paren
 suffix:semicolon
-multiline_comment|/* fs/iobuf.c */
 r_void
-id|__init
-id|kiobuf_setup
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_void
-id|kiobuf_init
+id|mark_dirty_kiobuf
 c_func
 (paren
 r_struct
 id|kiobuf
 op_star
+id|iobuf
+comma
+r_int
+id|bytes
 )paren
 suffix:semicolon
+multiline_comment|/* fs/iobuf.c */
 r_void
 id|end_kio_request
 c_func
@@ -236,6 +247,26 @@ r_int
 suffix:semicolon
 r_void
 id|kiobuf_wait_for_io
+c_func
+(paren
+r_struct
+id|kiobuf
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|alloc_kiobuf_bhs
+c_func
+(paren
+r_struct
+id|kiobuf
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|free_kiobuf_bhs
 c_func
 (paren
 r_struct

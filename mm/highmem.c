@@ -754,6 +754,16 @@ c_func
 id|bh-&gt;b_page
 )paren
 suffix:semicolon
+macro_line|#ifdef HIGHMEM_DEBUG
+multiline_comment|/* Don&squot;t clobber the constructed slab cache */
+id|init_waitqueue_head
+c_func
+(paren
+op_amp
+id|bh-&gt;b_wait
+)paren
+suffix:semicolon
+macro_line|#endif
 id|kmem_cache_free
 c_func
 (paren
@@ -977,6 +987,7 @@ id|bh-&gt;b_state
 op_assign
 id|bh_orig-&gt;b_state
 suffix:semicolon
+macro_line|#ifdef HIGHMEM_DEBUG
 id|bh-&gt;b_flushtime
 op_assign
 id|jiffies
@@ -998,6 +1009,7 @@ id|bh-&gt;b_pprev
 op_assign
 l_int|NULL
 suffix:semicolon
+macro_line|#endif
 multiline_comment|/* bh-&gt;b_page */
 r_if
 c_cond
@@ -1037,6 +1049,7 @@ id|bh-&gt;b_rsector
 op_assign
 id|bh_orig-&gt;b_rsector
 suffix:semicolon
+macro_line|#ifdef HIGHMEM_DEBUG
 id|memset
 c_func
 (paren
@@ -1052,6 +1065,7 @@ id|bh-&gt;b_wait
 )paren
 )paren
 suffix:semicolon
+macro_line|#endif
 r_return
 id|bh
 suffix:semicolon

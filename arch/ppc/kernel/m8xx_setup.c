@@ -205,23 +205,6 @@ DECL|macro|PCMCIA_MK_CLKS
 mdefine_line|#define PCMCIA_MK_CLKS( t, T ) (( (t) * (T) + 999U ) / 1000U )
 macro_line|#endif&t;/* CONFIG_BLK_DEV_MPC8xx_IDE */
 macro_line|#endif&t;/* CONFIG_BLK_DEV_IDE || CONFIG_BLK_DEV_IDE_MODULE */
-macro_line|#ifdef CONFIG_BLK_DEV_RAM
-r_extern
-r_int
-id|rd_doload
-suffix:semicolon
-multiline_comment|/* 1 = load ramdisk, 0 = don&squot;t load */
-r_extern
-r_int
-id|rd_prompt
-suffix:semicolon
-multiline_comment|/* 1 = prompt for ramdisk, 0 = don&squot;t prompt */
-r_extern
-r_int
-id|rd_image_start
-suffix:semicolon
-multiline_comment|/* starting block # of image */
-macro_line|#endif
 r_extern
 r_char
 id|saved_command_line

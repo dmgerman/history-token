@@ -2913,6 +2913,14 @@ suffix:semicolon
 r_continue
 suffix:semicolon
 )brace
+id|scsi_set_pci_device
+c_func
+(paren
+id|host
+comma
+id|tw_pci_dev
+)paren
+suffix:semicolon
 id|status_reg_value
 op_assign
 id|inl

@@ -3199,6 +3199,14 @@ id|host-&gt;unique_id
 op_assign
 id|ahc-&gt;unit
 suffix:semicolon
+id|scsi_set_pci_device
+c_func
+(paren
+id|host
+comma
+id|ahc-&gt;dev_softc
+)paren
+suffix:semicolon
 id|aic7xxx_initialize_scsi_bus
 c_func
 (paren

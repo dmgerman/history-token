@@ -10,7 +10,7 @@ macro_line|#include &quot;nokernel.h&quot;
 macro_line|#endif
 singleline_comment|// find where objectid map starts
 DECL|macro|objectid_map
-mdefine_line|#define objectid_map(s,rs) (old_format_only (s) ? &bslash;&n;                         (__u32 *)((struct reiserfs_super_block_v1 *)rs + 1) :&bslash;&n;&t;&t;&t; (__u32 *)(rs + 1))
+mdefine_line|#define objectid_map(s,rs) (old_format_only (s) ? &bslash;&n;                         (__u32 *)((struct reiserfs_super_block_v1 *)(rs) + 1) :&bslash;&n;&t;&t;&t; (__u32 *)((rs) + 1))
 macro_line|#ifdef CONFIG_REISERFS_CHECK
 DECL|function|check_objectid_map
 r_static
@@ -44,7 +44,15 @@ id|reiserfs_panic
 (paren
 id|s
 comma
-l_string|&quot;vs-15010: check_objectid_map: map corrupted&quot;
+l_string|&quot;vs-15010: check_objectid_map: map corrupted: %lx&quot;
+comma
+id|le32_to_cpu
+(paren
+id|map
+(braket
+l_int|0
+)braket
+)paren
 )paren
 suffix:semicolon
 singleline_comment|// FIXME: add something else here

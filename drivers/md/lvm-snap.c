@@ -1021,12 +1021,6 @@ id|COW_chunks_per_pe
 comma
 id|COW_entries_per_block
 suffix:semicolon
-id|ulong
-id|blocks
-(braket
-l_int|1
-)braket
-suffix:semicolon
 r_const
 r_char
 op_star
@@ -1172,7 +1166,7 @@ id|lv_COW_table_disk_t
 )paren
 suffix:semicolon
 multiline_comment|/* COW table block to write next */
-id|blocks
+id|iobuf-&gt;blocks
 (braket
 l_int|0
 )braket
@@ -1314,7 +1308,7 @@ id|iobuf
 comma
 id|snap_phys_dev
 comma
-id|blocks
+id|iobuf-&gt;blocks
 comma
 id|blksize_snap
 )paren
@@ -1415,7 +1409,7 @@ c_func
 id|snap_phys_dev
 )paren
 suffix:semicolon
-id|blocks
+id|iobuf-&gt;blocks
 (braket
 l_int|0
 )braket
@@ -1430,7 +1424,7 @@ l_int|10
 suffix:semicolon
 )brace
 r_else
-id|blocks
+id|iobuf-&gt;blocks
 (braket
 l_int|0
 )braket
@@ -1451,7 +1445,7 @@ id|iobuf
 comma
 id|snap_phys_dev
 comma
-id|blocks
+id|iobuf-&gt;blocks
 comma
 id|blksize_snap
 )paren
@@ -1562,13 +1556,6 @@ r_struct
 id|kiobuf
 op_star
 id|iobuf
-suffix:semicolon
-r_int
-r_int
-id|blocks
-(braket
-id|KIO_MAX_SECTORS
-)braket
 suffix:semicolon
 r_int
 id|blksize_snap
@@ -1790,7 +1777,7 @@ suffix:semicolon
 id|lvm_snapshot_prepare_blocks
 c_func
 (paren
-id|blocks
+id|iobuf-&gt;blocks
 comma
 id|org_start
 comma
@@ -1814,7 +1801,7 @@ id|iobuf
 comma
 id|org_phys_dev
 comma
-id|blocks
+id|iobuf-&gt;blocks
 comma
 id|blksize_org
 )paren
@@ -1831,7 +1818,7 @@ suffix:semicolon
 id|lvm_snapshot_prepare_blocks
 c_func
 (paren
-id|blocks
+id|iobuf-&gt;blocks
 comma
 id|snap_start
 comma
@@ -1855,7 +1842,7 @@ id|iobuf
 comma
 id|snap_phys_dev
 comma
-id|blocks
+id|iobuf-&gt;blocks
 comma
 id|blksize_snap
 )paren

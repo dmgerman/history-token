@@ -9596,6 +9596,14 @@ id|instance-&gt;select_queue_depths
 op_assign
 id|ncr53c8xx_select_queue_depths
 suffix:semicolon
+id|scsi_set_pci_device
+c_func
+(paren
+id|instance
+comma
+id|device-&gt;pdev
+)paren
+suffix:semicolon
 macro_line|#ifdef SCSI_NCR_INTEGRITY_CHECKING
 id|np-&gt;check_integrity
 op_assign

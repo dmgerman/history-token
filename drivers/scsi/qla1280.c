@@ -2418,6 +2418,14 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+id|scsi_set_pci_device
+c_func
+(paren
+id|host
+comma
+id|pdev
+)paren
+suffix:semicolon
 id|ha
 op_assign
 (paren

@@ -2225,6 +2225,14 @@ id|hostdata-&gt;pci_dev
 op_assign
 id|pdev
 suffix:semicolon
+id|scsi_set_pci_device
+c_func
+(paren
+id|host
+comma
+id|pdev
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren

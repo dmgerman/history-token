@@ -903,7 +903,6 @@ multiline_comment|/* Called when a new connection for this protocol found. */
 DECL|function|tcp_new
 r_static
 r_int
-r_int
 id|tcp_new
 c_func
 (paren
@@ -987,10 +986,7 @@ op_assign
 id|newconntrack
 suffix:semicolon
 r_return
-id|tcp_timeouts
-(braket
-id|conntrack-&gt;proto.tcp.state
-)braket
+l_int|1
 suffix:semicolon
 )brace
 DECL|variable|ip_conntrack_protocol_tcp

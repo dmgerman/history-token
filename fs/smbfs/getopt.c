@@ -54,6 +54,8 @@ suffix:semicolon
 r_int
 id|i
 suffix:semicolon
+r_do
+(brace
 r_if
 c_cond
 (paren
@@ -73,6 +75,16 @@ l_int|NULL
 )paren
 r_return
 l_int|0
+suffix:semicolon
+)brace
+r_while
+c_loop
+(paren
+op_star
+id|token
+op_eq
+l_char|&squot;&bslash;0&squot;
+)paren
 suffix:semicolon
 op_star
 id|optopt

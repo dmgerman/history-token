@@ -4111,6 +4111,17 @@ id|sh-&gt;use_clustering
 op_assign
 id|sh-&gt;hostt-&gt;use_clustering
 suffix:semicolon
+id|scsi_set_pci_device
+c_func
+(paren
+id|sh
+comma
+id|dev
+(braket
+id|i
+)braket
+)paren
+suffix:semicolon
 macro_line|#if LINUX_VERSION_CODE &lt; LinuxVersionCode(2,3,32)
 id|sh-&gt;wish_block
 op_assign

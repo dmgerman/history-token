@@ -2568,6 +2568,23 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
+multiline_comment|/* This does not belong here, but ipt_REJECT needs it if connection&n;   tracking in use: without this, connection may not be in hash table,&n;   and hence manufactured ICMP or RST packets will not be associated&n;   with it. */
+DECL|variable|ip_ct_attach
+r_void
+(paren
+op_star
+id|ip_ct_attach
+)paren
+(paren
+r_struct
+id|sk_buff
+op_star
+comma
+r_struct
+id|nf_ct_info
+op_star
+)paren
+suffix:semicolon
 DECL|function|netfilter_init
 r_void
 id|__init

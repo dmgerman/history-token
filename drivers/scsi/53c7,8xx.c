@@ -2851,7 +2851,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* &n; * Function : static int normal_init(Scsi_Host_Template *tpnt, int board, &n; *&t;int chip, u32 base, int io_port, int irq, int dma, int pcivalid,&n; *&t;unsigned char pci_bus, unsigned char pci_device_fn,&n; *&t;long long options);&n; *&n; * Purpose : initializes a NCR53c7,8x0 based on base addresses,&n; *&t;IRQ, and DMA channel.&t;&n; *&t;&n; *&t;Useful where a new NCR chip is backwards compatible with&n; *&t;a supported chip, but the DEVICE ID has changed so it &n; *&t;doesn&squot;t show up when the autoprobe does a pcibios_find_device.&n; *&n; * Inputs : tpnt - Template for this SCSI adapter, board - board level&n; *&t;product, chip - 810, 820, or 825, bus - PCI bus, device_fn -&n; *&t;device and function encoding as used by PCI BIOS calls.&n; * &n; * Returns : 0 on success, -1 on failure.&n; *&n; */
+multiline_comment|/* &n; * Function : static int normal_init(Scsi_Host_Template *tpnt, int board, &n; *&t;int chip, u32 base, int io_port, int irq, int dma, int pcivalid,&n; *&t;unsigned char pci_bus, unsigned char pci_device_fn,&n; *      struct pci_dev *pci_dev, long long options);&n; *&n; * Purpose : initializes a NCR53c7,8x0 based on base addresses,&n; *&t;IRQ, and DMA channel.&t;&n; *&t;&n; *&t;Useful where a new NCR chip is backwards compatible with&n; *&t;a supported chip, but the DEVICE ID has changed so it &n; *&t;doesn&squot;t show up when the autoprobe does a pcibios_find_device.&n; *&n; * Inputs : tpnt - Template for this SCSI adapter, board - board level&n; *&t;product, chip - 810, 820, or 825, bus - PCI bus, device_fn -&n; *&t;device and function encoding as used by PCI BIOS calls.&n; * &n; * Returns : 0 on success, -1 on failure.&n; *&n; */
 r_static
 r_int
 id|__init
@@ -2890,6 +2890,11 @@ comma
 r_int
 r_char
 id|pci_device_fn
+comma
+r_struct
+id|pci_dev
+op_star
+id|pci_dev
 comma
 r_int
 r_int
@@ -3328,6 +3333,14 @@ suffix:semicolon
 id|instance-&gt;dma_channel
 op_assign
 id|dma
+suffix:semicolon
+id|scsi_set_pci_device
+c_func
+(paren
+id|instance
+comma
+id|pci_dev
+)paren
 suffix:semicolon
 id|hostdata-&gt;options
 op_assign
@@ -4172,6 +4185,8 @@ id|bus
 comma
 id|device_fn
 comma
+id|pdev
+comma
 id|options
 )paren
 suffix:semicolon
@@ -4365,6 +4380,9 @@ multiline_comment|/* PCI bus place holder */
 comma
 l_int|0
 multiline_comment|/* PCI device_function place holder */
+comma
+l_int|NULL
+multiline_comment|/* PCI pci_dev place holder */
 comma
 id|overrides
 (braket

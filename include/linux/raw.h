@@ -24,16 +24,5 @@ id|block_minor
 suffix:semicolon
 )brace
 suffix:semicolon
-macro_line|#ifdef __KERNEL__
-multiline_comment|/* drivers/char/raw.c */
-r_extern
-r_void
-id|raw_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* __LINUX_RAW_H */
 eof

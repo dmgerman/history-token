@@ -1658,17 +1658,20 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * A state change on a listening socket means there&squot;s a connection&n; * pending.&n; */
+multiline_comment|/*&n; * A data_ready event on a listening socket means there&squot;s a connection&n; * pending. Do not use state_change as a substitute for it.&n; */
 r_static
 r_void
-DECL|function|svc_tcp_state_change1
-id|svc_tcp_state_change1
+DECL|function|svc_tcp_listen_data_ready
+id|svc_tcp_listen_data_ready
 c_func
 (paren
 r_struct
 id|sock
 op_star
 id|sk
+comma
+r_int
+id|count_unused
 )paren
 (brace
 r_struct
@@ -1773,8 +1776,8 @@ suffix:semicolon
 multiline_comment|/*&n; * A state change on a connected socket means it&squot;s dying or dead.&n; */
 r_static
 r_void
-DECL|function|svc_tcp_state_change2
-id|svc_tcp_state_change2
+DECL|function|svc_tcp_state_change
+id|svc_tcp_state_change
 c_func
 (paren
 r_struct
@@ -2928,9 +2931,9 @@ c_func
 l_string|&quot;setting up TCP socket for listening&bslash;n&quot;
 )paren
 suffix:semicolon
-id|sk-&gt;state_change
+id|sk-&gt;data_ready
 op_assign
-id|svc_tcp_state_change1
+id|svc_tcp_listen_data_ready
 suffix:semicolon
 )brace
 r_else
@@ -2943,7 +2946,7 @@ l_string|&quot;setting up TCP socket for reading&bslash;n&quot;
 suffix:semicolon
 id|sk-&gt;state_change
 op_assign
-id|svc_tcp_state_change2
+id|svc_tcp_state_change
 suffix:semicolon
 id|sk-&gt;data_ready
 op_assign

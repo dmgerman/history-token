@@ -153,7 +153,6 @@ suffix:semicolon
 multiline_comment|/* Called when a new connection for this protocol found. */
 r_static
 r_int
-r_int
 DECL|function|new
 r_new
 (paren
@@ -172,7 +171,7 @@ id|len
 )paren
 (brace
 r_return
-id|GENERIC_TIMEOUT
+l_int|1
 suffix:semicolon
 )brace
 DECL|variable|ip_conntrack_generic_protocol

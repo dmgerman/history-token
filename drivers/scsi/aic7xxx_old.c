@@ -33554,6 +33554,14 @@ suffix:semicolon
 )brace
 id|DRIVER_LOCK_INIT
 )brace
+id|scsi_set_pci_device
+c_func
+(paren
+id|host
+comma
+id|p-&gt;pdev
+)paren
+suffix:semicolon
 r_return
 (paren
 id|p

@@ -2375,11 +2375,6 @@ c_func
 )paren
 suffix:semicolon
 macro_line|#endif
-id|kiobuf_setup
-c_func
-(paren
-)paren
-suffix:semicolon
 id|signals_init
 c_func
 (paren

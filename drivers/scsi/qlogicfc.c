@@ -1846,6 +1846,14 @@ suffix:semicolon
 r_continue
 suffix:semicolon
 )brace
+id|scsi_set_pci_device
+c_func
+(paren
+id|host
+comma
+id|pdev
+)paren
+suffix:semicolon
 id|host-&gt;max_id
 op_assign
 id|QLOGICFC_MAX_ID

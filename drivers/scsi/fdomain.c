@@ -2107,6 +2107,12 @@ comma
 r_int
 op_star
 id|iobase
+comma
+r_struct
+id|pci_dev
+op_star
+op_star
+id|ret_pdev
 )paren
 (brace
 r_int
@@ -2241,6 +2247,11 @@ id|iobase
 op_assign
 id|pci_base
 suffix:semicolon
+op_star
+id|ret_pdev
+op_assign
+id|pdev
+suffix:semicolon
 macro_line|#if DEBUG_DETECT
 id|printk
 c_func
@@ -2323,6 +2334,13 @@ r_struct
 id|Scsi_Host
 op_star
 id|shpnt
+suffix:semicolon
+r_struct
+id|pci_dev
+op_star
+id|pdev
+op_assign
+l_int|NULL
 suffix:semicolon
 macro_line|#if DO_DETECT
 r_int
@@ -2504,6 +2522,9 @@ id|interrupt_level
 comma
 op_amp
 id|port_base
+comma
+op_amp
+id|pdev
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -2763,6 +2784,14 @@ suffix:semicolon
 id|shpnt-&gt;io_port
 op_assign
 id|port_base
+suffix:semicolon
+id|scsi_set_pci_device
+c_func
+(paren
+id|shpnt-&gt;pci_dev
+comma
+id|pdev
+)paren
 suffix:semicolon
 id|shpnt-&gt;n_io_port
 op_assign

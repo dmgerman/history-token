@@ -328,11 +328,6 @@ suffix:semicolon
 id|ViceFid
 id|fid
 suffix:semicolon
-id|kdev_t
-id|dev
-op_assign
-id|sb-&gt;s_dev
-suffix:semicolon
 r_int
 id|error
 suffix:semicolon
@@ -485,10 +480,6 @@ suffix:semicolon
 id|sb-&gt;s_magic
 op_assign
 id|CODA_SUPER_MAGIC
-suffix:semicolon
-id|sb-&gt;s_dev
-op_assign
-id|dev
 suffix:semicolon
 id|sb-&gt;s_op
 op_assign

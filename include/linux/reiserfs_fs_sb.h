@@ -739,6 +739,12 @@ id|JOURNAL_HASH_SIZE
 )braket
 suffix:semicolon
 multiline_comment|/* hash table for all the real buffer heads in all &n;  &t;&t;&t;&t;&t;&t;&t;&t;&t;&t;the transactions */
+DECL|member|j_prealloc_list
+r_struct
+id|list_head
+id|j_prealloc_list
+suffix:semicolon
+multiline_comment|/* list of inodes which have preallocated blocks */
 )brace
 suffix:semicolon
 DECL|macro|JOURNAL_DESC_MAGIC

@@ -3408,7 +3408,7 @@ mdefine_line|#define JOURNAL_MAX_COMMIT_AGE 30
 DECL|macro|JOURNAL_MAX_TRANS_AGE
 mdefine_line|#define JOURNAL_MAX_TRANS_AGE 30
 DECL|macro|JOURNAL_PER_BALANCE_CNT
-mdefine_line|#define JOURNAL_PER_BALANCE_CNT 12   /* must be &gt;= (5 + 2 * (MAX_HEIGHT-2) + 1) */
+mdefine_line|#define JOURNAL_PER_BALANCE_CNT (3 * (MAX_HEIGHT-2) + 9)
 multiline_comment|/* both of these can be as low as 1, or as high as you want.  The min is the&n;** number of 4k bitmap nodes preallocated on mount. New nodes are allocated&n;** as needed, and released when transactions are committed.  On release, if &n;** the current number of nodes is &gt; max, the node is freed, otherwise, &n;** it is put on a free list for faster use later.&n;*/
 DECL|macro|REISERFS_MIN_BITMAP_NODES
 mdefine_line|#define REISERFS_MIN_BITMAP_NODES 10 
@@ -6117,6 +6117,15 @@ r_struct
 id|inode
 op_star
 id|inode
+)paren
+suffix:semicolon
+r_void
+id|reiserfs_discard_all_prealloc
+(paren
+r_struct
+id|reiserfs_transaction_handle
+op_star
+id|th
 )paren
 suffix:semicolon
 macro_line|#endif

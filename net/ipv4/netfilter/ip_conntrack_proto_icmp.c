@@ -275,8 +275,7 @@ id|ip_conntrack_info
 id|ctinfo
 )paren
 (brace
-multiline_comment|/* FIXME: Should keep count of orig - reply packets: if == 0,&n;           destroy --RR */
-multiline_comment|/* Delete connection immediately on reply: won&squot;t actually&n;           vanish as we still have skb */
+multiline_comment|/* Try to delete connection immediately after all replies:&n;           won&squot;t actually vanish as we still have skb, and del_timer&n;           means this will only run once even if count hits zero twice&n;           (theoretically possible with SMP) */
 r_if
 c_cond
 (paren
@@ -292,6 +291,13 @@ id|IP_CT_DIR_REPLY
 r_if
 c_cond
 (paren
+id|atomic_dec_and_test
+c_func
+(paren
+op_amp
+id|ct-&gt;proto.icmp.count
+)paren
+op_logical_and
 id|del_timer
 c_func
 (paren
@@ -313,6 +319,14 @@ id|ct
 suffix:semicolon
 )brace
 r_else
+(brace
+id|atomic_inc
+c_func
+(paren
+op_amp
+id|ct-&gt;proto.icmp.count
+)paren
+suffix:semicolon
 id|ip_ct_refresh
 c_func
 (paren
@@ -321,6 +335,7 @@ comma
 id|ICMP_TIMEOUT
 )paren
 suffix:semicolon
+)brace
 r_return
 id|NF_ACCEPT
 suffix:semicolon
@@ -328,7 +343,6 @@ suffix:semicolon
 multiline_comment|/* Called when a new connection for this protocol found. */
 DECL|function|icmp_new
 r_static
-r_int
 r_int
 id|icmp_new
 c_func
@@ -436,8 +450,17 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+id|atomic_set
+c_func
+(paren
+op_amp
+id|conntrack-&gt;proto.icmp.count
+comma
+l_int|0
+)paren
+suffix:semicolon
 r_return
-id|ICMP_TIMEOUT
+l_int|1
 suffix:semicolon
 )brace
 DECL|variable|ip_conntrack_protocol_icmp

@@ -519,6 +519,12 @@ DECL|member|pSRB_lock
 id|spinlock_t
 id|pSRB_lock
 suffix:semicolon
+DECL|member|pci_dev
+r_struct
+id|pci_dev
+op_star
+id|pci_dev
+suffix:semicolon
 DECL|typedef|HCS
 )brace
 id|HCS

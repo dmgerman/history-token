@@ -1058,6 +1058,9 @@ DECL|macro|USB_QUEUE_BULK
 mdefine_line|#define USB_QUEUE_BULK          0x0010
 DECL|macro|USB_NO_FSBR
 mdefine_line|#define USB_NO_FSBR&t;&t;0x0020
+DECL|macro|USB_ZERO_PACKET
+mdefine_line|#define USB_ZERO_PACKET         0x0040  
+singleline_comment|// Finish bulk OUTs always with zero length packet
 DECL|macro|USB_TIMEOUT_KILLED
 mdefine_line|#define USB_TIMEOUT_KILLED&t;0x1000&t;
 singleline_comment|// only set by HCD!

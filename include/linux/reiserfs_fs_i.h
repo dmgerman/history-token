@@ -1,6 +1,7 @@
 macro_line|#ifndef _REISER_FS_I
 DECL|macro|_REISER_FS_I
 mdefine_line|#define _REISER_FS_I
+macro_line|#include &lt;linux/list.h&gt;
 multiline_comment|/* these are used to keep track of the pages that need&n;** flushing before the current transaction can commit&n;*/
 r_struct
 id|reiserfs_page_list
@@ -55,6 +56,12 @@ DECL|member|i_prealloc_count
 r_int
 id|i_prealloc_count
 suffix:semicolon
+DECL|member|i_prealloc_list
+r_struct
+id|list_head
+id|i_prealloc_list
+suffix:semicolon
+multiline_comment|/* per-transaction list of inodes which&n;&t;&t;&t;&t; * have preallocated blocks */
 multiline_comment|/* I regret that you think the below&n;                                   is a comment you should make.... -Hans */
 singleline_comment|//nopack-attribute
 DECL|member|nopack

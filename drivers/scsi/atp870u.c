@@ -10275,6 +10275,17 @@ id|shpnt-&gt;irq
 op_assign
 id|irq
 suffix:semicolon
+id|scsi_set_pci_device
+c_func
+(paren
+id|shpnt
+comma
+id|pdev
+(braket
+id|h
+)braket
+)paren
+suffix:semicolon
 id|restore_flags
 c_func
 (paren

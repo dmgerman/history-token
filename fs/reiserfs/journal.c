@@ -9675,7 +9675,19 @@ id|p_s_sb
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* once the read is done, we can set this where it belongs */
+multiline_comment|/* once the read is done, we can set this&n;                                         where it belongs */
+id|INIT_LIST_HEAD
+(paren
+op_amp
+id|SB_JOURNAL
+c_func
+(paren
+id|p_s_sb
+)paren
+op_member_access_from_pointer
+id|j_prealloc_list
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -14651,6 +14663,15 @@ op_assign
 l_int|1
 suffix:semicolon
 )brace
+macro_line|#ifdef REISERFS_PREALLOCATE
+id|reiserfs_discard_all_prealloc
+c_func
+(paren
+id|th
+)paren
+suffix:semicolon
+multiline_comment|/* it should not involve new blocks into&n;&t;&t;&t;&t;      * the transaction */
+macro_line|#endif
 id|rs
 op_assign
 id|SB_DISK_SUPER_BLOCK

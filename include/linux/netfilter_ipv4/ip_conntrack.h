@@ -39,6 +39,7 @@ macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;linux/netfilter_ipv4/ip_conntrack_tcp.h&gt;
+macro_line|#include &lt;linux/netfilter_ipv4/ip_conntrack_icmp.h&gt;
 macro_line|#ifdef CONFIG_NF_DEBUG
 DECL|macro|IP_NF_ASSERT
 mdefine_line|#define IP_NF_ASSERT(x)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (!(x))&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;/* Wooah!  I&squot;m tripping my conntrack in a frenzy of&t;&bslash;&n;&t;&t;   netplay... */&t;&t;&t;&t;&t;&bslash;&n;&t;&t;printk(&quot;NF_IP_ASSERT: %s:%i(%s)&bslash;n&quot;,&t;&t;&t;&bslash;&n;&t;&t;       __FILE__, __LINE__, __FUNCTION__);&t;&t;&bslash;&n;} while(0)
@@ -81,26 +82,11 @@ op_lshift
 id|IPS_SEEN_REPLY_BIT
 )paren
 comma
-multiline_comment|/* Packet seen leaving box: bit 2 set.  Can be set, not unset. */
-DECL|enumerator|IPS_CONFIRMED_BIT
-id|IPS_CONFIRMED_BIT
-op_assign
-l_int|2
-comma
-DECL|enumerator|IPS_CONFIRMED
-id|IPS_CONFIRMED
-op_assign
-(paren
-l_int|1
-op_lshift
-id|IPS_CONFIRMED_BIT
-)paren
-comma
 multiline_comment|/* Conntrack should never be early-expired. */
 DECL|enumerator|IPS_ASSURED_BIT
 id|IPS_ASSURED_BIT
 op_assign
-l_int|4
+l_int|2
 comma
 DECL|enumerator|IPS_ASSURED
 id|IPS_ASSURED
@@ -163,7 +149,7 @@ DECL|struct|ip_conntrack
 r_struct
 id|ip_conntrack
 (brace
-multiline_comment|/* Usage count in here is 1 for destruct timer, 1 per skb,&n;           plus 1 for any connection(s) we are `master&squot; for */
+multiline_comment|/* Usage count in here is 1 for hash table/destruct timer, 1 per skb,&n;           plus 1 for any connection(s) we are `master&squot; for */
 DECL|member|ct_general
 r_struct
 id|nf_conntrack
@@ -226,6 +212,11 @@ DECL|member|tcp
 r_struct
 id|ip_ct_tcp
 id|tcp
+suffix:semicolon
+DECL|member|icmp
+r_struct
+id|ip_ct_icmp
+id|icmp
 suffix:semicolon
 DECL|member|proto
 )brace
@@ -420,6 +411,36 @@ r_void
 op_star
 id|data
 )paren
+suffix:semicolon
+multiline_comment|/* It&squot;s confirmed if it is, or has been in the hash table. */
+DECL|function|is_confirmed
+r_static
+r_inline
+r_int
+id|is_confirmed
+c_func
+(paren
+r_struct
+id|ip_conntrack
+op_star
+id|ct
+)paren
+(brace
+r_return
+id|ct-&gt;tuplehash
+(braket
+id|IP_CT_DIR_ORIGINAL
+)braket
+dot
+id|list.next
+op_ne
+l_int|NULL
+suffix:semicolon
+)brace
+r_extern
+r_int
+r_int
+id|ip_conntrack_htable_size
 suffix:semicolon
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* _IP_CONNTRACK_H */

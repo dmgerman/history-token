@@ -181,6 +181,14 @@ suffix:semicolon
 r_continue
 suffix:semicolon
 )brace
+id|scsi_set_pci_device
+c_func
+(paren
+id|instance
+comma
+id|pdev
+)paren
+suffix:semicolon
 id|instance-&gt;io_port
 op_assign
 id|port

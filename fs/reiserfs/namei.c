@@ -1710,9 +1710,8 @@ op_star
 )paren
 id|bit_string
 suffix:semicolon
-r_if
-c_cond
-(paren
+id|retval
+op_assign
 id|reiserfs_find_entry
 (paren
 id|dir
@@ -1727,8 +1726,13 @@ comma
 op_amp
 id|de
 )paren
-op_eq
-id|NAME_FOUND
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|retval
+op_ne
+id|NAME_NOT_FOUND
 )paren
 (brace
 r_if
@@ -1753,29 +1757,30 @@ op_amp
 id|path
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|retval
+op_ne
+id|NAME_FOUND
+)paren
+(brace
+id|reiserfs_warning
+(paren
+l_string|&quot;zam-7002:&quot;
+id|__FUNCTION__
+l_string|&quot;: &bslash;&quot;reiserfs_find_entry&bslash;&quot; has returned&quot;
+l_string|&quot; unexpected value (%d)&bslash;n&quot;
+comma
+id|retval
+)paren
+suffix:semicolon
+)brace
 r_return
 op_minus
 id|EEXIST
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-id|find_first_nonzero_bit
-(paren
-id|bit_string
-comma
-id|MAX_GENERATION_NUMBER
-op_plus
-l_int|1
-)paren
-OL
-id|MAX_GENERATION_NUMBER
-op_plus
-l_int|1
-)paren
-(brace
-multiline_comment|/* there are few names with given hash value */
 id|gen_number
 op_assign
 id|find_first_zero_bit
@@ -1827,7 +1832,6 @@ r_return
 op_minus
 id|EBUSY
 suffix:semicolon
-singleline_comment|//HASHCOLLISION;//EBADSLT
 )brace
 multiline_comment|/* adjust offset of directory enrty */
 id|deh-&gt;deh_offset
@@ -1856,7 +1860,15 @@ id|deh-&gt;deh_offset
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* find place for new entry */
+r_if
+c_cond
+(paren
+id|gen_number
+op_ne
+l_int|0
+)paren
+(brace
+multiline_comment|/* we need to re-search for the insertion point */
 r_if
 c_cond
 (paren
@@ -1873,14 +1885,14 @@ comma
 op_amp
 id|de
 )paren
-op_eq
-id|NAME_FOUND
+op_ne
+id|NAME_NOT_FOUND
 )paren
 (brace
 id|reiserfs_warning
 (paren
 l_string|&quot;vs-7032: reiserfs_add_entry: &quot;
-l_string|&quot;entry with this key (%k) already exists&quot;
+l_string|&quot;entry with this key (%k) already exists&bslash;n&quot;
 comma
 op_amp
 id|entry_key
@@ -1913,35 +1925,6 @@ op_minus
 id|EBUSY
 suffix:semicolon
 )brace
-)brace
-r_else
-(brace
-id|deh-&gt;deh_offset
-op_assign
-id|cpu_to_le32
-(paren
-id|SET_GENERATION_NUMBER
-(paren
-id|le32_to_cpu
-(paren
-id|deh-&gt;deh_offset
-)paren
-comma
-l_int|0
-)paren
-)paren
-suffix:semicolon
-id|set_cpu_key_k_offset
-(paren
-op_amp
-id|entry_key
-comma
-id|le32_to_cpu
-(paren
-id|deh-&gt;deh_offset
-)paren
-)paren
-suffix:semicolon
 )brace
 multiline_comment|/* perform the insertion of the entry that we have prepared */
 id|retval

@@ -16946,6 +16946,14 @@ op_minus
 l_int|4
 )paren
 suffix:semicolon
+id|scsi_set_pci_device
+c_func
+(paren
+id|instance
+comma
+id|device-&gt;pdev
+)paren
+suffix:semicolon
 id|np-&gt;check_integrity
 op_assign
 l_int|0

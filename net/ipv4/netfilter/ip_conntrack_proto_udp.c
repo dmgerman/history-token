@@ -213,7 +213,6 @@ multiline_comment|/* Called when a new connection for this protocol found. */
 DECL|function|udp_new
 r_static
 r_int
-r_int
 id|udp_new
 c_func
 (paren
@@ -232,7 +231,7 @@ id|len
 )paren
 (brace
 r_return
-id|UDP_TIMEOUT
+l_int|1
 suffix:semicolon
 )brace
 DECL|variable|ip_conntrack_protocol_udp

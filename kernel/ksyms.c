@@ -1994,13 +1994,6 @@ id|__br_write_unlock
 suffix:semicolon
 macro_line|#endif
 multiline_comment|/* Kiobufs */
-DECL|variable|kiobuf_init
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|kiobuf_init
-)paren
-suffix:semicolon
 DECL|variable|alloc_kiovec
 id|EXPORT_SYMBOL
 c_func

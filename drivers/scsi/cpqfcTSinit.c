@@ -828,6 +828,14 @@ l_int|3
 )paren
 )paren
 suffix:semicolon
+id|scsi_set_pci_device
+c_func
+(paren
+id|HostAdapter
+comma
+id|PciDev
+)paren
+suffix:semicolon
 id|HostAdapter-&gt;irq
 op_assign
 id|PciDev-&gt;irq

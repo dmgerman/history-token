@@ -2706,6 +2706,14 @@ r_goto
 id|unregister
 suffix:semicolon
 )brace
+id|scsi_set_pci_device
+c_func
+(paren
+id|pshost
+comma
+id|pdev
+)paren
+suffix:semicolon
 id|pshost-&gt;irq
 op_assign
 id|pdev-&gt;irq

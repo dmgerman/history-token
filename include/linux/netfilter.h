@@ -475,6 +475,22 @@ r_int
 id|verdict
 )paren
 suffix:semicolon
+r_extern
+r_void
+(paren
+op_star
+id|ip_ct_attach
+)paren
+(paren
+r_struct
+id|sk_buff
+op_star
+comma
+r_struct
+id|nf_ct_info
+op_star
+)paren
+suffix:semicolon
 macro_line|#ifdef CONFIG_NETFILTER_DEBUG
 r_extern
 r_void

@@ -35,13 +35,6 @@ c_func
 id|ip_nat_seqofs_lock
 )paren
 suffix:semicolon
-DECL|variable|helpers
-id|LIST_HEAD
-c_func
-(paren
-id|helpers
-)paren
-suffix:semicolon
 r_static
 r_inline
 r_int

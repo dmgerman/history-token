@@ -7764,6 +7764,14 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
+id|scsi_set_pci_device
+c_func
+(paren
+id|psh
+comma
+id|pdev
+)paren
+suffix:semicolon
 id|pACB
 op_assign
 (paren

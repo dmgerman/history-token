@@ -62,23 +62,6 @@ id|aux_device_present
 op_assign
 l_int|0xaa
 suffix:semicolon
-macro_line|#ifdef CONFIG_BLK_DEV_RAM
-r_extern
-r_int
-id|rd_doload
-suffix:semicolon
-multiline_comment|/* 1 = load ramdisk, 0 = don&squot;t load */
-r_extern
-r_int
-id|rd_prompt
-suffix:semicolon
-multiline_comment|/* 1 = prompt for ramdisk, 0 = don&squot;t prompt */
-r_extern
-r_int
-id|rd_image_start
-suffix:semicolon
-multiline_comment|/* starting block # of image */
-macro_line|#endif
 macro_line|#if defined(CONFIG_SH_GENERIC) || defined(CONFIG_SH_UNKNOWN)
 DECL|variable|sh_mv
 r_struct

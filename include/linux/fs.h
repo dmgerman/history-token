@@ -1984,6 +1984,11 @@ id|dentry
 op_star
 id|s_root
 suffix:semicolon
+DECL|member|s_umount
+r_struct
+id|rw_semaphore
+id|s_umount
+suffix:semicolon
 DECL|member|s_wait
 id|wait_queue_head_t
 id|s_wait
@@ -1994,6 +1999,12 @@ id|list_head
 id|s_dirty
 suffix:semicolon
 multiline_comment|/* dirty inodes */
+DECL|member|s_locked_inodes
+r_struct
+id|list_head
+id|s_locked_inodes
+suffix:semicolon
+multiline_comment|/* inodes being synced */
 DECL|member|s_files
 r_struct
 id|list_head
@@ -4593,6 +4604,14 @@ id|kdev_t
 suffix:semicolon
 r_extern
 r_void
+id|sync_unlocked_inodes
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
 id|write_inode_now
 c_func
 (paren
@@ -4617,6 +4636,26 @@ id|fsync_dev
 c_func
 (paren
 id|kdev_t
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|fsync_super
+c_func
+(paren
+r_struct
+id|super_block
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|sync_inodes_sb
+c_func
+(paren
+r_struct
+id|super_block
+op_star
 )paren
 suffix:semicolon
 r_extern

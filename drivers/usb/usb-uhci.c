@@ -1,4 +1,4 @@
-multiline_comment|/* &n; * Universal Host Controller Interface driver for USB (take II).&n; *&n; * (c) 1999-2000 Georg Acher, acher@in.tum.de (executive slave) (base guitar)&n; *               Deti Fliegl, deti@fliegl.de (executive slave) (lead voice)&n; *               Thomas Sailer, sailer@ife.ee.ethz.ch (chief consultant) (cheer leader)&n; *               Roman Weissgaerber, weissg@vienna.at (virt root hub) (studio porter)&n; * (c) 2000      Yggdrasil Computing, Inc. (port of new PCI interface support&n; *               from usb-ohci.c by Adam Richter, adam@yggdrasil.com).&n; * (C) 2000      David Brownell, david-b@pacbell.net (usb-ohci.c)&n; *          &n; * HW-initalization based on material of&n; *&n; * (C) Copyright 1999 Linus Torvalds&n; * (C) Copyright 1999 Johannes Erdfelt&n; * (C) Copyright 1999 Randy Dunlap&n; * (C) Copyright 1999 Gregory P. Smith&n; *&n; * $Id: usb-uhci.c,v 1.251 2000/11/30 09:47:54 acher Exp $&n; */
+multiline_comment|/* &n; * Universal Host Controller Interface driver for USB (take II).&n; *&n; * (c) 1999-2000 Georg Acher, acher@in.tum.de (executive slave) (base guitar)&n; *               Deti Fliegl, deti@fliegl.de (executive slave) (lead voice)&n; *               Thomas Sailer, sailer@ife.ee.ethz.ch (chief consultant) (cheer leader)&n; *               Roman Weissgaerber, weissg@vienna.at (virt root hub) (studio porter)&n; * (c) 2000      Yggdrasil Computing, Inc. (port of new PCI interface support&n; *               from usb-ohci.c by Adam Richter, adam@yggdrasil.com).&n; * (C) 2000      David Brownell, david-b@pacbell.net (usb-ohci.c)&n; *          &n; * HW-initalization based on material of&n; *&n; * (C) Copyright 1999 Linus Torvalds&n; * (C) Copyright 1999 Johannes Erdfelt&n; * (C) Copyright 1999 Randy Dunlap&n; * (C) Copyright 1999 Gregory P. Smith&n; *&n; * $Id: usb-uhci.c,v 1.259 2001/03/30 14:51:59 acher Exp $&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
@@ -29,7 +29,7 @@ multiline_comment|/* This enables an extra UHCI slab for memory debugging */
 DECL|macro|DEBUG_SLAB
 mdefine_line|#define DEBUG_SLAB
 DECL|macro|VERSTR
-mdefine_line|#define VERSTR &quot;$Revision: 1.251 $ time &quot; __TIME__ &quot; &quot; __DATE__
+mdefine_line|#define VERSTR &quot;$Revision: 1.259 $ time &quot; __TIME__ &quot; &quot; __DATE__
 macro_line|#include &lt;linux/usb.h&gt;
 macro_line|#include &quot;usb-uhci.h&quot;
 macro_line|#include &quot;usb-uhci-debug.h&quot;
@@ -3445,9 +3445,13 @@ id|td
 comma
 op_star
 id|nqh
+op_assign
+l_int|NULL
 comma
 op_star
 id|bqh
+op_assign
+l_int|NULL
 comma
 op_star
 id|first_td
@@ -3919,6 +3923,7 @@ id|len
 op_sub_assign
 id|pktsze
 suffix:semicolon
+singleline_comment|// Use USB_ZERO_PACKET to finish bulk OUTs always with a zero length packet
 id|last
 op_assign
 (paren
@@ -3941,7 +3946,7 @@ op_logical_neg
 (paren
 id|urb-&gt;transfer_flags
 op_amp
-id|USB_DISABLE_SPD
+id|USB_ZERO_PACKET
 )paren
 )paren
 )paren
@@ -5227,6 +5232,15 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
+id|urb_priv
+)paren
+singleline_comment|// avoid crash when URB is corrupted
+r_break
+suffix:semicolon
+r_if
+c_cond
+(paren
 id|force
 op_logical_or
 (paren
@@ -5358,6 +5372,12 @@ id|urb_priv
 op_assign
 id|urb-&gt;hcpriv
 suffix:semicolon
+id|list_del
+(paren
+op_amp
+id|urb-&gt;urb_list
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -5455,12 +5475,6 @@ id|urb_priv
 )paren
 suffix:semicolon
 macro_line|#endif
-id|list_del
-(paren
-op_amp
-id|urb-&gt;urb_list
-)paren
-suffix:semicolon
 )brace
 )brace
 )brace
@@ -10202,10 +10216,32 @@ id|desc-&gt;hw.td.status
 op_amp
 id|TD_CTRL_ACTIVE
 )paren
+(brace
 singleline_comment|// do not process active TDs
+r_if
+c_cond
+(paren
+id|mode
+op_eq
+l_int|2
+)paren
+singleline_comment|// if called from async_unlink
+id|uhci_clean_transfer
+c_func
+(paren
+id|s
+comma
+id|urb
+comma
+id|qh
+comma
+id|mode
+)paren
+suffix:semicolon
 r_return
 id|ret
 suffix:semicolon
+)brace
 id|actual_length
 op_assign
 (paren
@@ -11821,6 +11857,16 @@ c_cond
 id|urb-&gt;complete
 )paren
 (brace
+r_int
+id|was_unlinked
+op_assign
+(paren
+id|urb-&gt;status
+op_eq
+op_minus
+id|ENOENT
+)paren
+suffix:semicolon
 id|urb-&gt;dev
 op_assign
 l_int|NULL
@@ -11848,12 +11894,8 @@ c_cond
 (paren
 id|is_ring
 op_logical_and
-(paren
-id|urb-&gt;status
-op_ne
-op_minus
-id|ENOENT
-)paren
+op_logical_neg
+id|was_unlinked
 op_logical_and
 op_logical_neg
 id|contains_killed
@@ -11869,6 +11911,11 @@ id|urb
 )paren
 suffix:semicolon
 )brace
+r_else
+id|urb
+op_assign
+l_int|0
+suffix:semicolon
 id|spin_lock
 c_func
 (paren
@@ -11882,6 +11929,11 @@ id|usb_dec_dev_use
 id|usb_dev
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|urb
+)paren
 id|spin_unlock
 c_func
 (paren
@@ -13088,6 +13140,12 @@ r_return
 op_minus
 id|ENODEV
 suffix:semicolon
+id|pci_set_master
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
 multiline_comment|/* Search for the IO base address.. */
 r_for
 c_loop
@@ -13167,12 +13225,6 @@ comma
 id|USBLEGSUP
 comma
 l_int|0
-)paren
-suffix:semicolon
-id|pci_set_master
-c_func
-(paren
-id|dev
 )paren
 suffix:semicolon
 r_return

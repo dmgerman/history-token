@@ -924,12 +924,6 @@ id|rd_sz
 macro_line|#ifdef CONFIG_BLK_DEV_RAM
 r_extern
 r_int
-id|rd_doload
-comma
-id|rd_prompt
-comma
-id|rd_image_start
-comma
 id|rd_size
 suffix:semicolon
 id|rd_image_start

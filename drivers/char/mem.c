@@ -2643,11 +2643,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|raw_init
-c_func
-(paren
-)paren
-suffix:semicolon
 macro_line|#ifdef CONFIG_I2C
 id|i2c_init_all
 c_func
