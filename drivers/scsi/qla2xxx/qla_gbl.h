@@ -239,15 +239,6 @@ id|ql2xopts
 suffix:semicolon
 macro_line|#endif
 r_extern
-r_struct
-id|list_head
-id|qla_hostlist
-suffix:semicolon
-r_extern
-id|rwlock_t
-id|qla_hostlist_lock
-suffix:semicolon
-r_extern
 r_char
 op_star
 id|qla2x00_get_fw_version_str
