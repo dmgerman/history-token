@@ -184,9 +184,6 @@ id|bs_mem
 comma
 id|bs_attr
 suffix:semicolon
-r_int
-id|i
-suffix:semicolon
 id|speed
 op_assign
 id|calc_speed
@@ -977,7 +974,7 @@ suffix:semicolon
 multiline_comment|/* sa1100_pcmcia_interrupt()&n; * ^^^^^^^^^^^^^^^^^^^^^^^^^&n; * Service routine for socket driver interrupts (requested by the&n; * low-level PCMCIA init() operation via sa1100_pcmcia_thread()).&n; * The actual interrupt-servicing work is performed by&n; * sa1100_pcmcia_thread(), largely because the Card Services event-&n; * handling code performs scheduling operations which cannot be&n; * executed from within an interrupt context.&n; */
 DECL|function|sa1100_pcmcia_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|sa1100_pcmcia_interrupt
 c_func
 (paren
@@ -1019,6 +1016,9 @@ c_func
 op_amp
 id|skt-&gt;work
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 multiline_comment|/* sa1100_pcmcia_register_callback()&n; * ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^&n; * Implements the register_callback() operation for the in-kernel&n; * PCMCIA service (formerly SS_RegisterCallback in Card Services). If &n; * the function pointer `handler&squot; is not NULL, remember the callback &n; * location in the state for `sock&squot;, and increment the usage counter &n; * for the driver module. (The callback is invoked from the interrupt&n; * service routine, sa1100_pcmcia_interrupt(), to notify Card Services&n; * of interesting events.) Otherwise, clear the callback pointer in the&n; * socket state and decrement the module usage count.&n; *&n; * Returns: 0&n; */

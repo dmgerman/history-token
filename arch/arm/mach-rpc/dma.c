@@ -204,7 +204,7 @@ suffix:semicolon
 )brace
 DECL|function|iomd_dma_handle
 r_static
-r_void
+id|irqreturn_t
 id|iomd_dma_handle
 c_func
 (paren
@@ -264,6 +264,7 @@ id|DMA_ST_INT
 )paren
 )paren
 r_return
+id|IRQ_HANDLED
 suffix:semicolon
 r_if
 c_cond
@@ -383,6 +384,9 @@ c_func
 (paren
 id|irq
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 DECL|function|iomd_request_dma

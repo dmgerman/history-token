@@ -892,7 +892,7 @@ suffix:semicolon
 )brace
 DECL|function|ambauart_int
 r_static
-r_void
+id|irqreturn_t
 id|ambauart_int
 c_func
 (paren
@@ -1020,6 +1020,9 @@ op_or
 id|AMBA_UARTIIR_TIS
 )paren
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 DECL|function|ambauart_tx_empty

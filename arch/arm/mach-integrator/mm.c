@@ -4,7 +4,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/hardware.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/mach/map.h&gt;
-multiline_comment|/*&n; * Logical      Physical&n; * e8000000&t;40000000&t;PCI memory&t;&t;PHYS_PCI_MEM_BASE&t;(max 512M)&n; * ec000000&t;61000000&t;PCI config space&t;PHYS_PCI_CONFIG_BASE&t;(max 16M)&n; * ed000000&t;62000000&t;PCI V3 regs&t;&t;PHYS_PCI_V3_BASE&t;(max 64k)&n; * ee000000&t;60000000&t;PCI IO&t;&t;&t;PHYS_PCI_IO_BASE&t;(max 16M)&n; * ef000000&t;&t;&t;Cache flush&n; * f1000000&t;10000000&t;Core module registers&n; * f1100000&t;11000000&t;System controller registers&n; * f1200000&t;12000000&t;EBI registers&n; * f1300000&t;13000000&t;Counter/Timer&n; * f1400000&t;14000000&t;Interrupt controller&n; * f1500000&t;15000000&t;RTC&n; * f1600000&t;16000000&t;UART 0&n; * f1700000&t;17000000&t;UART 1&n; * f1800000&t;18000000&t;Keyboard&n; * f1900000&t;19000000&t;Mouse&n; * f1a00000&t;1a000000&t;Debug LEDs&n; * f1b00000&t;1b000000&t;GPIO&n; */
+multiline_comment|/*&n; * Logical      Physical&n; * e8000000&t;40000000&t;PCI memory&t;&t;PHYS_PCI_MEM_BASE&t;(max 512M)&n; * ec000000&t;61000000&t;PCI config space&t;PHYS_PCI_CONFIG_BASE&t;(max 16M)&n; * ed000000&t;62000000&t;PCI V3 regs&t;&t;PHYS_PCI_V3_BASE&t;(max 64k)&n; * ee000000&t;60000000&t;PCI IO&t;&t;&t;PHYS_PCI_IO_BASE&t;(max 16M)&n; * ef000000&t;&t;&t;Cache flush&n; * f1000000&t;10000000&t;Core module registers&n; * f1100000&t;11000000&t;System controller registers&n; * f1200000&t;12000000&t;EBI registers&n; * f1300000&t;13000000&t;Counter/Timer&n; * f1400000&t;14000000&t;Interrupt controller&n; * f1500000&t;15000000&t;RTC&n; * f1600000&t;16000000&t;UART 0&n; * f1700000&t;17000000&t;UART 1&n; * f1a00000&t;1a000000&t;Debug LEDs&n; * f1b00000&t;1b000000&t;GPIO&n; */
 DECL|variable|__initdata
 r_static
 r_struct
@@ -121,34 +121,6 @@ id|INTEGRATOR_UART1_BASE
 )paren
 comma
 id|INTEGRATOR_UART1_BASE
-comma
-id|SZ_4K
-comma
-id|MT_DEVICE
-)brace
-comma
-(brace
-id|IO_ADDRESS
-c_func
-(paren
-id|INTEGRATOR_KBD_BASE
-)paren
-comma
-id|INTEGRATOR_KBD_BASE
-comma
-id|SZ_4K
-comma
-id|MT_DEVICE
-)brace
-comma
-(brace
-id|IO_ADDRESS
-c_func
-(paren
-id|INTEGRATOR_MOUSE_BASE
-)paren
-comma
-id|INTEGRATOR_MOUSE_BASE
 comma
 id|SZ_4K
 comma

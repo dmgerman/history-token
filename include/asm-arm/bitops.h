@@ -693,22 +693,22 @@ id|p
 )paren
 (brace
 r_return
+(paren
 id|p
 (braket
 id|nr
 op_rshift
 l_int|5
 )braket
-op_amp
-(paren
-l_int|1UL
-op_lshift
+op_rshift
 (paren
 id|nr
 op_amp
 l_int|31
 )paren
 )paren
+op_amp
+l_int|1UL
 suffix:semicolon
 )brace
 multiline_comment|/*&n; *  A note about Endian-ness.&n; *  -------------------------&n; *&n; * When the ARM is put into big endian mode via CR15, the processor&n; * merely swaps the order of bytes within words, thus:&n; *&n; *          ------------ physical data bus bits -----------&n; *          D31 ... D24  D23 ... D16  D15 ... D8  D7 ... D0&n; * little     byte 3       byte 2       byte 1      byte 0&n; * big        byte 0       byte 1       byte 2      byte 3&n; *&n; * This means that reading a 32-bit word at address 0 returns the same&n; * value irrespective of the endian mode bit.&n; *&n; * Peripheral devices should be connected with the data bus reversed in&n; * &quot;Big Endian&quot; mode.  ARM Application Note 61 is applicable, and is&n; * available from http://www.arm.com/.&n; *&n; * The following assumes that the data bus connectivity for big endian&n; * mode has been followed.&n; *&n; * Note that bit 0 is defined to be 32-bit word bit 0, not byte 0 bit 0.&n; */
@@ -992,6 +992,7 @@ mdefine_line|#define find_next_zero_bit(p,sz,off)&t;_find_next_zero_bit_be(p,sz,
 DECL|macro|WORD_BITOFF_TO_LE
 mdefine_line|#define WORD_BITOFF_TO_LE(x)&t;&t;((x) ^ 0x18)
 macro_line|#endif
+macro_line|#if __LINUX_ARM_ARCH__ &lt; 5
 multiline_comment|/*&n; * ffz = Find First Zero in word. Undefined if no zero exists,&n; * so code should check against ~0UL first..&n; */
 DECL|function|ffz
 r_static
@@ -1215,6 +1216,27 @@ mdefine_line|#define fls(x) generic_fls(x)
 multiline_comment|/*&n; * ffs: find first bit set. This is defined the same way as&n; * the libc and compiler builtin ffs routines, therefore&n; * differs in spirit from the above ffz (man ffs).&n; */
 DECL|macro|ffs
 mdefine_line|#define ffs(x) generic_ffs(x)
+macro_line|#else
+multiline_comment|/*&n; * On ARMv5 and above those functions can be implemented around&n; * the clz instruction for much better code efficiency.&n; */
+r_extern
+id|__inline__
+r_int
+id|generic_fls
+c_func
+(paren
+r_int
+id|x
+)paren
+suffix:semicolon
+DECL|macro|fls
+mdefine_line|#define fls(x) &bslash;&n;&t;( __builtin_constant_p(x) ? generic_fls(x) : &bslash;&n;&t;  ({ int __r; asm(&quot;clz%?&bslash;t%0, %1&quot; : &quot;=r&quot;(__r) : &quot;r&quot;(x)); 32-__r; }) )
+DECL|macro|ffs
+mdefine_line|#define ffs(x) ({ unsigned long __t = (x); fls(__t &amp; -__t); })
+DECL|macro|__ffs
+mdefine_line|#define __ffs(x) (ffs(x) - 1)
+DECL|macro|ffz
+mdefine_line|#define ffz(x) __ffs( ~(x) )
+macro_line|#endif
 multiline_comment|/*&n; * Find first bit set in a 168-bit bitmap, where the first&n; * 128 bits are unlikely to be set.&n; */
 DECL|function|sched_find_first_bit
 r_static

@@ -109,9 +109,9 @@ r_return
 id|offset
 suffix:semicolon
 )brace
-DECL|function|timer_interrupt
 r_static
-r_void
+id|irqreturn_t
+DECL|function|timer_interrupt
 id|timer_interrupt
 c_func
 (paren
@@ -198,6 +198,9 @@ c_func
 (paren
 id|regs
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Set up timer interrupt.&n; */
