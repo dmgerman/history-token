@@ -19,26 +19,6 @@ l_string|&quot;memblk&quot;
 comma
 )brace
 suffix:semicolon
-DECL|variable|memblk_driver
-r_static
-r_struct
-id|device_driver
-id|memblk_driver
-op_assign
-(brace
-dot
-id|name
-op_assign
-l_string|&quot;memblk&quot;
-comma
-dot
-id|bus
-op_assign
-op_amp
-id|system_bus_type
-comma
-)brace
-suffix:semicolon
 multiline_comment|/*&n; * register_memblk - Setup a driverfs device for a MemBlk&n; * @num - MemBlk number to use when creating the device.&n; *&n; * Initialize and register the MemBlk device.&n; */
 DECL|function|register_memblk
 r_int
@@ -104,9 +84,7 @@ op_amp
 id|root-&gt;sysdev.kobj
 comma
 op_amp
-id|memblk-&gt;sysdev
-comma
-id|kobj
+id|memblk-&gt;sysdev.kobj
 comma
 id|memblk-&gt;sysdev.kobj.name
 )paren
