@@ -496,6 +496,12 @@ id|flags
 )paren
 suffix:semicolon
 r_else
+r_if
+c_cond
+(paren
+op_logical_neg
+id|flags
+)paren
 id|serio_rescan
 c_func
 (paren
