@@ -748,12 +748,10 @@ id|f_ops
 )paren
 )paren
 suffix:semicolon
-macro_line|#ifndef LINUX_2_2
 id|f_ops-&gt;owner
 op_assign
 id|file-&gt;f_op-&gt;owner
 suffix:semicolon
-macro_line|#endif
 id|f_ops-&gt;release
 op_assign
 id|file-&gt;f_op-&gt;release

@@ -2150,13 +2150,11 @@ id|file_operations
 id|snd_mixer_oss_f_ops
 op_assign
 (brace
-macro_line|#ifndef LINUX_2_2
 dot
 id|owner
 op_assign
 id|THIS_MODULE
 comma
-macro_line|#endif
 dot
 id|open
 op_assign

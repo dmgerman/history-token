@@ -13137,15 +13137,6 @@ suffix:semicolon
 id|snd_pcm_sframes_t
 id|result
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2, 3, 0)
-id|up
-c_func
-(paren
-op_amp
-id|file-&gt;f_dentry-&gt;d_inode-&gt;i_sem
-)paren
-suffix:semicolon
-macro_line|#endif
 id|pcm_file
 op_assign
 id|snd_magic_cast
@@ -13268,20 +13259,10 @@ id|result
 suffix:semicolon
 id|end
 suffix:colon
-macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2, 3, 0)
-id|down
-c_func
-(paren
-op_amp
-id|file-&gt;f_dentry-&gt;d_inode-&gt;i_sem
-)paren
-suffix:semicolon
-macro_line|#endif
 r_return
 id|result
 suffix:semicolon
 )brace
-macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2, 3, 44)
 DECL|function|snd_pcm_readv
 r_static
 id|ssize_t
@@ -13566,15 +13547,6 @@ suffix:semicolon
 id|snd_pcm_uframes_t
 id|frames
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2, 3, 0)
-id|up
-c_func
-(paren
-op_amp
-id|file-&gt;f_dentry-&gt;d_inode-&gt;i_sem
-)paren
-suffix:semicolon
-macro_line|#endif
 id|pcm_file
 op_assign
 id|snd_magic_cast
@@ -13764,20 +13736,10 @@ id|bufs
 suffix:semicolon
 id|end
 suffix:colon
-macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2, 3, 0)
-id|down
-c_func
-(paren
-op_amp
-id|file-&gt;f_dentry-&gt;d_inode-&gt;i_sem
-)paren
-suffix:semicolon
-macro_line|#endif
 r_return
 id|result
 suffix:semicolon
 )brace
-macro_line|#endif
 DECL|function|snd_pcm_playback_poll
 r_int
 r_int
@@ -14111,48 +14073,6 @@ r_return
 id|mask
 suffix:semicolon
 )brace
-macro_line|#ifndef VM_RESERVED
-macro_line|#ifndef LINUX_2_2
-DECL|function|snd_pcm_mmap_swapout
-r_static
-r_int
-id|snd_pcm_mmap_swapout
-c_func
-(paren
-r_struct
-id|page
-op_star
-id|page
-comma
-r_struct
-id|file
-op_star
-id|file
-)paren
-macro_line|#else
-r_static
-r_int
-id|snd_pcm_mmap_swapout
-c_func
-(paren
-r_struct
-id|vm_area_struct
-op_star
-id|area
-comma
-r_struct
-id|page
-op_star
-id|page
-)paren
-macro_line|#endif
-(brace
-r_return
-l_int|0
-suffix:semicolon
-)brace
-macro_line|#endif
-macro_line|#ifndef LINUX_2_2
 DECL|function|snd_pcm_mmap_status_nopage
 r_static
 r_struct
@@ -14173,26 +14093,6 @@ comma
 r_int
 id|no_share
 )paren
-macro_line|#else
-r_static
-r_int
-r_int
-id|snd_pcm_mmap_status_nopage
-c_func
-(paren
-r_struct
-id|vm_area_struct
-op_star
-id|area
-comma
-r_int
-r_int
-id|address
-comma
-r_int
-id|no_share
-)paren
-macro_line|#endif
 (brace
 id|snd_pcm_substream_t
 op_star
@@ -14241,19 +14141,9 @@ c_func
 id|page
 )paren
 suffix:semicolon
-macro_line|#ifndef LINUX_2_2
 r_return
 id|page
 suffix:semicolon
-macro_line|#else
-r_return
-id|page_address
-c_func
-(paren
-id|page
-)paren
-suffix:semicolon
-macro_line|#endif
 )brace
 DECL|variable|snd_pcm_vm_ops_status
 r_static
@@ -14267,13 +14157,6 @@ id|nopage
 op_assign
 id|snd_pcm_mmap_status_nopage
 comma
-macro_line|#ifndef VM_RESERVED
-dot
-id|swapout
-op_assign
-id|snd_pcm_mmap_swapout
-comma
-macro_line|#endif
 )brace
 suffix:semicolon
 DECL|function|snd_pcm_mmap_status
@@ -14362,31 +14245,18 @@ op_assign
 op_amp
 id|snd_pcm_vm_ops_status
 suffix:semicolon
-macro_line|#ifndef LINUX_2_2
 id|area-&gt;vm_private_data
 op_assign
 id|substream
 suffix:semicolon
-macro_line|#else
-id|area-&gt;vm_private_data
-op_assign
-(paren
-r_int
-)paren
-id|substream
-suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef VM_RESERVED
 id|area-&gt;vm_flags
 op_or_assign
 id|VM_RESERVED
 suffix:semicolon
-macro_line|#endif
 r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#ifndef LINUX_2_2
 DECL|function|snd_pcm_mmap_control_nopage
 r_static
 r_struct
@@ -14407,26 +14277,6 @@ comma
 r_int
 id|no_share
 )paren
-macro_line|#else
-r_static
-r_int
-r_int
-id|snd_pcm_mmap_control_nopage
-c_func
-(paren
-r_struct
-id|vm_area_struct
-op_star
-id|area
-comma
-r_int
-r_int
-id|address
-comma
-r_int
-id|no_share
-)paren
-macro_line|#endif
 (brace
 id|snd_pcm_substream_t
 op_star
@@ -14475,19 +14325,9 @@ c_func
 id|page
 )paren
 suffix:semicolon
-macro_line|#ifndef LINUX_2_2
 r_return
 id|page
 suffix:semicolon
-macro_line|#else
-r_return
-id|page_address
-c_func
-(paren
-id|page
-)paren
-suffix:semicolon
-macro_line|#endif
 )brace
 DECL|variable|snd_pcm_vm_ops_control
 r_static
@@ -14501,13 +14341,6 @@ id|nopage
 op_assign
 id|snd_pcm_mmap_control_nopage
 comma
-macro_line|#ifndef VM_RESERVED
-dot
-id|swapout
-op_assign
-id|snd_pcm_mmap_swapout
-comma
-macro_line|#endif
 )brace
 suffix:semicolon
 DECL|function|snd_pcm_mmap_control
@@ -14597,26 +14430,14 @@ op_assign
 op_amp
 id|snd_pcm_vm_ops_control
 suffix:semicolon
-macro_line|#ifndef LINUX_2_2
 id|area-&gt;vm_private_data
 op_assign
 id|substream
 suffix:semicolon
-macro_line|#else
-id|area-&gt;vm_private_data
-op_assign
-(paren
-r_int
-)paren
-id|substream
-suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef VM_RESERVED
 id|area-&gt;vm_flags
 op_or_assign
 id|VM_RESERVED
 suffix:semicolon
-macro_line|#endif
 r_return
 l_int|0
 suffix:semicolon
@@ -14681,7 +14502,6 @@ id|substream-&gt;runtime-&gt;mmap_count
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifndef LINUX_2_2
 DECL|function|snd_pcm_mmap_data_nopage
 r_static
 r_struct
@@ -14702,26 +14522,6 @@ comma
 r_int
 id|no_share
 )paren
-macro_line|#else
-r_static
-r_int
-r_int
-id|snd_pcm_mmap_data_nopage
-c_func
-(paren
-r_struct
-id|vm_area_struct
-op_star
-id|area
-comma
-r_int
-r_int
-id|address
-comma
-r_int
-id|no_share
-)paren
-macro_line|#endif
 (brace
 id|snd_pcm_substream_t
 op_star
@@ -14767,19 +14567,12 @@ id|runtime
 op_assign
 id|substream-&gt;runtime
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2, 3, 25)
 id|offset
 op_assign
 id|area-&gt;vm_pgoff
 op_lshift
 id|PAGE_SHIFT
 suffix:semicolon
-macro_line|#else
-id|offset
-op_assign
-id|area-&gt;vm_offset
-suffix:semicolon
-macro_line|#endif
 id|offset
 op_add_assign
 id|address
@@ -14872,19 +14665,9 @@ c_func
 id|page
 )paren
 suffix:semicolon
-macro_line|#ifndef LINUX_2_2
 r_return
 id|page
 suffix:semicolon
-macro_line|#else
-r_return
-id|page_address
-c_func
-(paren
-id|page
-)paren
-suffix:semicolon
-macro_line|#endif
 )brace
 DECL|variable|snd_pcm_vm_ops_data
 r_static
@@ -14908,13 +14691,6 @@ id|nopage
 op_assign
 id|snd_pcm_mmap_data_nopage
 comma
-macro_line|#ifndef VM_RESERVED
-dot
-id|swapout
-op_assign
-id|snd_pcm_mmap_swapout
-comma
-macro_line|#endif
 )brace
 suffix:semicolon
 DECL|function|snd_pcm_mmap_data
@@ -15057,19 +14833,12 @@ id|area-&gt;vm_end
 op_minus
 id|area-&gt;vm_start
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2, 3, 25)
 id|offset
 op_assign
 id|area-&gt;vm_pgoff
 op_lshift
 id|PAGE_SHIFT
 suffix:semicolon
-macro_line|#else
-id|offset
-op_assign
-id|area-&gt;vm_offset
-suffix:semicolon
-macro_line|#endif
 id|dma_bytes
 op_assign
 id|PAGE_ALIGN
@@ -15110,26 +14879,14 @@ op_assign
 op_amp
 id|snd_pcm_vm_ops_data
 suffix:semicolon
-macro_line|#ifndef LINUX_2_2
 id|area-&gt;vm_private_data
 op_assign
 id|substream
 suffix:semicolon
-macro_line|#else
-id|area-&gt;vm_private_data
-op_assign
-(paren
-r_int
-)paren
-id|substream
-suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef VM_RESERVED
 id|area-&gt;vm_flags
 op_or_assign
 id|VM_RESERVED
 suffix:semicolon
-macro_line|#endif
 id|atomic_inc
 c_func
 (paren
@@ -15200,19 +14957,12 @@ op_minus
 id|ENXIO
 )paren
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2, 3, 25)
 id|offset
 op_assign
 id|area-&gt;vm_pgoff
 op_lshift
 id|PAGE_SHIFT
 suffix:semicolon
-macro_line|#else
-id|offset
-op_assign
-id|area-&gt;vm_offset
-suffix:semicolon
-macro_line|#endif
 r_switch
 c_cond
 (paren
@@ -15832,25 +15582,21 @@ id|file_operations
 id|snd_pcm_f_ops_playback
 op_assign
 (brace
-macro_line|#ifndef LINUX_2_2
 dot
 id|owner
 op_assign
 id|THIS_MODULE
 comma
-macro_line|#endif
 dot
 id|write
 op_assign
 id|snd_pcm_write
 comma
-macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2, 3, 44)
 dot
 id|writev
 op_assign
 id|snd_pcm_writev
 comma
-macro_line|#endif
 dot
 id|open
 op_assign
@@ -15890,25 +15636,21 @@ id|file_operations
 id|snd_pcm_f_ops_capture
 op_assign
 (brace
-macro_line|#ifndef LINUX_2_2
 dot
 id|owner
 op_assign
 id|THIS_MODULE
 comma
-macro_line|#endif
 dot
 id|read
 op_assign
 id|snd_pcm_read
 comma
-macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2, 3, 44)
 dot
 id|readv
 op_assign
 id|snd_pcm_readv
 comma
-macro_line|#endif
 dot
 id|open
 op_assign

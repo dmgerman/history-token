@@ -6056,7 +6056,7 @@ c_func
 (paren
 id|kctl-&gt;id.name
 comma
-l_char|&squot; &squot;
+l_string|&quot; &quot;
 comma
 r_sizeof
 (paren

@@ -300,7 +300,6 @@ op_assign
 l_int|NULL
 suffix:semicolon
 macro_line|#endif
-macro_line|#ifndef LINUX_2_2
 DECL|function|snd_info_entry_prepare
 r_static
 r_inline
@@ -349,7 +348,6 @@ id|parent
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif
 DECL|function|snd_info_entry_llseek
 r_static
 id|loff_t
@@ -398,13 +396,11 @@ id|entry
 op_assign
 id|data-&gt;entry
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2, 5, 3)
 id|lock_kernel
 c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#endif
 r_switch
 c_cond
 (paren
@@ -508,13 +504,11 @@ id|ENXIO
 suffix:semicolon
 id|out
 suffix:colon
-macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2, 5, 3)
 id|unlock_kernel
 c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#endif
 r_return
 id|ret
 suffix:semicolon
@@ -2144,13 +2138,11 @@ id|file_operations
 id|snd_info_entry_operations
 op_assign
 (brace
-macro_line|#ifndef LINUX_2_2
 dot
 id|owner
 op_assign
 id|THIS_MODULE
 comma
-macro_line|#endif
 dot
 id|llseek
 op_assign
@@ -2193,21 +2185,6 @@ id|snd_info_entry_release
 comma
 )brace
 suffix:semicolon
-macro_line|#ifdef LINUX_2_2
-DECL|variable|snd_info_entry_inode_operations
-r_static
-r_struct
-id|inode_operations
-id|snd_info_entry_inode_operations
-op_assign
-(brace
-op_amp
-id|snd_info_entry_operations
-comma
-multiline_comment|/* default sound info directory file-ops */
-)brace
-suffix:semicolon
-macro_line|#endif&t;/* LINUX_2_2 */
 multiline_comment|/**&n; * snd_create_proc_entry - create a procfs entry&n; * @name: the name of the proc file&n; * @mode: the file permission bits, S_Ixxx&n; * @parent: the parent proc-directory entry&n; *&n; * Creates a new proc file entry with the given name and permission&n; * on the given directory.&n; *&n; * Returns the pointer of new instance or NULL on failure.&n; */
 DECL|function|snd_create_proc_entry
 r_struct
@@ -3703,12 +3680,10 @@ op_minus
 id|ENOMEM
 suffix:semicolon
 )brace
-macro_line|#ifndef LINUX_2_2
 id|p-&gt;owner
 op_assign
 id|entry-&gt;module
 suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -3719,21 +3694,11 @@ c_func
 id|entry-&gt;mode
 )paren
 )paren
-(brace
-macro_line|#ifndef LINUX_2_2
 id|p-&gt;proc_fops
 op_assign
 op_amp
 id|snd_info_entry_operations
 suffix:semicolon
-macro_line|#else
-id|p-&gt;ops
-op_assign
-op_amp
-id|snd_info_entry_inode_operations
-suffix:semicolon
-macro_line|#endif
-)brace
 id|p-&gt;size
 op_assign
 id|entry-&gt;size

@@ -9,7 +9,7 @@ macro_line|#include &lt;sound/core.h&gt;
 macro_line|#include &quot;pmac.h&quot;
 DECL|macro|chip_t
 mdefine_line|#define chip_t pmac_t
-macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,3,0) || defined(CONFIG_ADB_CUDA)
+macro_line|#ifdef CONFIG_ADB_CUDA
 DECL|macro|PMAC_AMP_AVAIL
 mdefine_line|#define PMAC_AMP_AVAIL
 macro_line|#endif
@@ -47,13 +47,8 @@ DECL|typedef|awacs_amp_t
 )brace
 id|awacs_amp_t
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,3,0)
-DECL|macro|CHECK_CUDA_AMP
-mdefine_line|#define CHECK_CUDA_AMP() (adb_hardware == ADB_VIACUDA)
-macro_line|#else
 DECL|macro|CHECK_CUDA_AMP
 mdefine_line|#define CHECK_CUDA_AMP() (sys_ctrler == SYS_CTRLER_CUDA)
-macro_line|#endif
 macro_line|#endif /* PMAC_AMP_AVAIL */
 DECL|function|snd_pmac_screamer_wait
 r_static

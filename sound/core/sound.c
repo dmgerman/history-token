@@ -572,13 +572,11 @@ id|file_operations
 id|snd_fops
 op_assign
 (brace
-macro_line|#ifndef LINUX_2_2
 dot
 id|owner
 op_assign
 id|THIS_MODULE
 comma
-macro_line|#endif
 dot
 id|open
 op_assign
@@ -1542,13 +1540,6 @@ l_string|&quot;.&bslash;n&quot;
 )paren
 suffix:semicolon
 macro_line|#endif
-macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,3,0) &amp;&amp; defined(CONFIG_APM)
-id|pm_init
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
 r_return
 l_int|0
 suffix:semicolon
@@ -1600,13 +1591,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,3,0) &amp;&amp; defined(CONFIG_APM)
-id|pm_done
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
 macro_line|#ifdef CONFIG_SND_DEBUG_MEMORY
 id|snd_memory_done
 c_func

@@ -10673,7 +10673,6 @@ r_return
 op_minus
 id|EIO
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2, 3, 25)
 r_if
 c_cond
 (paren
@@ -10681,15 +10680,6 @@ id|area-&gt;vm_pgoff
 op_ne
 l_int|0
 )paren
-macro_line|#else
-r_if
-c_cond
-(paren
-id|area-&gt;vm_offset
-op_ne
-l_int|0
-)paren
-macro_line|#endif
 r_return
 op_minus
 id|EINVAL
@@ -11638,13 +11628,11 @@ id|file_operations
 id|snd_pcm_oss_f_reg
 op_assign
 (brace
-macro_line|#ifndef LINUX_2_2
 dot
 id|owner
 op_assign
 id|THIS_MODULE
 comma
-macro_line|#endif
 dot
 id|read
 op_assign

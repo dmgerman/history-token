@@ -302,6 +302,12 @@ DECL|macro|ak4117_t_magic
 mdefine_line|#define ak4117_t_magic&t;&t;&t;&t;0xa15a4000
 DECL|macro|psic_t_magic
 mdefine_line|#define psic_t_magic&t;&t;&t;&t;0xa15a4100
+DECL|macro|opl4_t_magic
+mdefine_line|#define opl4_t_magic&t;&t;&t;&t;0xa15a2602
+DECL|macro|vx_core_t_magic
+mdefine_line|#define vx_core_t_magic&t;&t;&t;&t;0xa15a4110
+DECL|macro|vx_pipe_t_magic
+mdefine_line|#define vx_pipe_t_magic&t;&t;&t;&t;0xa15a4112
 macro_line|#else
 DECL|macro|snd_magic_kcalloc
 mdefine_line|#define snd_magic_kcalloc(type, extra, flags) (type *) snd_kcalloc(sizeof(type) + extra, flags)

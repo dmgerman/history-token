@@ -435,19 +435,6 @@ id|snd_ac97_codec_ids
 op_assign
 (brace
 (brace
-l_int|0x014b0502
-comma
-l_int|0xffffffff
-comma
-l_string|&quot;NM256AV&quot;
-comma
-l_int|NULL
-comma
-l_int|NULL
-)brace
-comma
-singleline_comment|// FIXME: which real one?
-(brace
 l_int|0x414b4d00
 comma
 l_int|0xffffffff
@@ -13514,11 +13501,19 @@ id|AC97_REC_GAIN
 op_eq
 l_int|0x8a06
 )paren
-(brace
 id|ac97-&gt;scaps
 op_or_assign
 id|AC97_SCAP_AUDIO
 suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|ac97-&gt;scaps
+op_amp
+id|AC97_SCAP_AUDIO
+)paren
+(brace
 id|ac97-&gt;caps
 op_assign
 id|snd_ac97_read
@@ -13551,7 +13546,6 @@ id|ac97-&gt;ext_id
 op_assign
 l_int|0
 suffix:semicolon
-)brace
 )brace
 multiline_comment|/* test for MC&squot;97 */
 id|ac97-&gt;ext_mid

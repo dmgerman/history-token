@@ -19,10 +19,8 @@ macro_line|#endif&t;/* OPTi93X */
 macro_line|#endif&t;/* CS4231 */
 macro_line|#include &lt;sound/mpu401.h&gt;
 macro_line|#include &lt;sound/opl3.h&gt;
-macro_line|#ifdef USE_OPL4
 macro_line|#ifndef OPTi93X
-macro_line|#include &quot;opl4.h&quot; /* &lt;sound/opl4.h&gt; */
-macro_line|#endif
+macro_line|#include &lt;sound/opl4.h&gt;
 macro_line|#endif
 DECL|macro|SNDRV_LEGACY_FIND_FREE_IRQ
 mdefine_line|#define SNDRV_LEGACY_FIND_FREE_IRQ
@@ -10446,7 +10444,6 @@ id|opl3
 op_assign
 l_int|NULL
 suffix:semicolon
-macro_line|#ifdef USE_OPL4
 macro_line|#ifndef OPTi93X
 r_if
 c_cond
@@ -10531,7 +10528,6 @@ suffix:semicolon
 )brace
 )brace
 macro_line|#endif&t;/* !OPTi93X */
-macro_line|#endif
 r_if
 c_cond
 (paren

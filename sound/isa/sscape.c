@@ -4469,7 +4469,7 @@ r_goto
 id|_release_card
 suffix:semicolon
 )brace
-id|strncpy
+id|strlcpy
 c_func
 (paren
 id|sscape-&gt;hw-&gt;name
@@ -4480,8 +4480,6 @@ r_sizeof
 (paren
 id|sscape-&gt;hw-&gt;name
 )paren
-op_minus
-l_int|1
 )paren
 suffix:semicolon
 id|sscape-&gt;hw-&gt;name

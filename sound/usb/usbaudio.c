@@ -12500,7 +12500,7 @@ c_func
 (paren
 id|card-&gt;longname
 comma
-l_char|&squot; &squot;
+l_string|&quot; &quot;
 comma
 r_sizeof
 (paren
