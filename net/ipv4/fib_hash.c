@@ -2340,7 +2340,7 @@ c_func
 (paren
 id|fa
 comma
-id|fa-&gt;fa_list.prev
+id|fa_orig-&gt;fa_list.prev
 comma
 id|fa_list
 )paren
