@@ -5,6 +5,7 @@ mdefine_line|#define _IPR_H
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/completion.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
+macro_line|#include &lt;linux/kref.h&gt;
 macro_line|#include &lt;scsi/scsi.h&gt;
 macro_line|#include &lt;scsi/scsi_cmnd.h&gt;
 macro_line|#ifdef CONFIG_KDB
@@ -3437,10 +3438,10 @@ DECL|struct|ipr_dump
 r_struct
 id|ipr_dump
 (brace
-DECL|member|kobj
+DECL|member|kref
 r_struct
-id|kobject
-id|kobj
+id|kref
+id|kref
 suffix:semicolon
 DECL|member|ioa_cfg
 r_struct
