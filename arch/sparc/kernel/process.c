@@ -29,6 +29,7 @@ macro_line|#include &lt;asm/delay.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/psr.h&gt;
 macro_line|#include &lt;asm/elf.h&gt;
+macro_line|#include &lt;asm/unistd.h&gt;
 multiline_comment|/* &n; * Power management idle function &n; * Set in pm platform drivers&n; */
 DECL|variable|pm_idle
 r_void
