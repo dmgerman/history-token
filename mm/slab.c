@@ -893,13 +893,6 @@ r_struct
 id|semaphore
 id|cache_chain_sem
 suffix:semicolon
-DECL|variable|cache_chain_lock
-r_static
-id|rwlock_t
-id|cache_chain_lock
-op_assign
-id|RW_LOCK_UNLOCKED
-suffix:semicolon
 DECL|variable|cache_chain
 r_struct
 id|list_head
@@ -3309,13 +3302,6 @@ id|old_fs
 suffix:semicolon
 )brace
 multiline_comment|/* cache setup completed, link it into the list */
-id|write_lock_bh
-c_func
-(paren
-op_amp
-id|cache_chain_lock
-)paren
-suffix:semicolon
 id|list_add
 c_func
 (paren
@@ -3324,13 +3310,6 @@ id|cachep-&gt;next
 comma
 op_amp
 id|cache_chain
-)paren
-suffix:semicolon
-id|write_unlock_bh
-c_func
-(paren
-op_amp
-id|cache_chain_lock
 )paren
 suffix:semicolon
 id|up
@@ -3804,26 +3783,12 @@ op_amp
 id|cache_chain_sem
 )paren
 suffix:semicolon
-multiline_comment|/* the chain is never empty, cache_cache is never destroyed */
-id|write_lock_bh
-c_func
-(paren
-op_amp
-id|cache_chain_lock
-)paren
-suffix:semicolon
+multiline_comment|/*&n;&t; * the chain is never empty, cache_cache is never destroyed&n;&t; */
 id|list_del
 c_func
 (paren
 op_amp
 id|cachep-&gt;next
-)paren
-suffix:semicolon
-id|write_unlock_bh
-c_func
-(paren
-op_amp
-id|cache_chain_lock
 )paren
 suffix:semicolon
 id|up
@@ -3859,13 +3824,6 @@ op_amp
 id|cache_chain_sem
 )paren
 suffix:semicolon
-id|write_lock_bh
-c_func
-(paren
-op_amp
-id|cache_chain_lock
-)paren
-suffix:semicolon
 id|list_add
 c_func
 (paren
@@ -3874,13 +3832,6 @@ id|cachep-&gt;next
 comma
 op_amp
 id|cache_chain
-)paren
-suffix:semicolon
-id|write_unlock_bh
-c_func
-(paren
-op_amp
-id|cache_chain_lock
 )paren
 suffix:semicolon
 id|up
@@ -7158,7 +7109,7 @@ id|err
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * cache_reap - Reclaim memory from caches.&n; *&n; * Called from a timer, every few seconds&n; * Purpuse:&n; * - clear the per-cpu caches for this CPU.&n; * - return freeable pages to the main free memory pool.&n; */
+multiline_comment|/**&n; * cache_reap - Reclaim memory from caches.&n; *&n; * Called from a timer, every few seconds&n; * Purpose:&n; * - clear the per-cpu caches for this CPU.&n; * - return freeable pages to the main free memory pool.&n; *&n; * If we cannot acquire the cache chain semaphore then just give up - we&squot;ll&n; * try again next timer interrupt.&n; */
 DECL|function|cache_reap
 r_static
 r_inline
@@ -7194,12 +7145,17 @@ c_func
 )paren
 suffix:semicolon
 macro_line|#endif
-id|read_lock
+r_if
+c_cond
+(paren
+id|down_trylock
 c_func
 (paren
 op_amp
-id|cache_chain_lock
+id|cache_chain_sem
 )paren
+)paren
+r_return
 suffix:semicolon
 id|list_for_each
 c_func
@@ -7569,11 +7525,11 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|read_unlock
+id|up
 c_func
 (paren
 op_amp
-id|cache_chain_lock
+id|cache_chain_sem
 )paren
 suffix:semicolon
 )brace
