@@ -3678,8 +3678,7 @@ id|cell
 comma
 op_logical_neg
 id|blocking
-op_logical_and
-op_logical_neg
+op_logical_or
 id|atomic
 comma
 id|file
