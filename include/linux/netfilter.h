@@ -10,6 +10,7 @@ macro_line|#include &lt;linux/if.h&gt;
 macro_line|#include &lt;linux/wait.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
 macro_line|#endif
+macro_line|#include &lt;linux/compiler.h&gt;
 multiline_comment|/* Responses from hook functions. */
 DECL|macro|NF_DROP
 mdefine_line|#define NF_DROP 0
