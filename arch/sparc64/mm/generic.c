@@ -524,7 +524,7 @@ id|pte_t
 op_star
 id|pte
 op_assign
-id|pte_alloc
+id|pte_alloc_map
 c_func
 (paren
 id|current-&gt;mm
@@ -562,6 +562,12 @@ comma
 id|prot
 comma
 id|space
+)paren
+suffix:semicolon
+id|pte_unmap
+c_func
+(paren
+id|pte
 )paren
 suffix:semicolon
 id|address

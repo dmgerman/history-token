@@ -8,303 +8,6 @@ macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/spitfire.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
-multiline_comment|/* Cache and TLB flush operations. */
-multiline_comment|/* These are the same regardless of whether this is an SMP kernel or not. */
-DECL|macro|flush_cache_mm
-mdefine_line|#define flush_cache_mm(__mm) &bslash;&n;&t;do { if ((__mm) == current-&gt;mm) flushw_user(); } while(0)
-r_extern
-r_void
-id|flush_cache_range
-c_func
-(paren
-r_struct
-id|vm_area_struct
-op_star
-comma
-r_int
-r_int
-comma
-r_int
-r_int
-)paren
-suffix:semicolon
-DECL|macro|flush_cache_page
-mdefine_line|#define flush_cache_page(vma, page) &bslash;&n;&t;flush_cache_mm((vma)-&gt;vm_mm)
-multiline_comment|/* This is unnecessary on the SpitFire since D-CACHE is write-through. */
-DECL|macro|flush_page_to_ram
-mdefine_line|#define flush_page_to_ram(page)&t;&t;&t;do { } while (0)
-multiline_comment|/* &n; * On spitfire, the icache doesn&squot;t snoop local stores and we don&squot;t&n; * use block commit stores (which invalidate icache lines) during&n; * module load, so we need this.&n; */
-r_extern
-r_void
-id|flush_icache_range
-c_func
-(paren
-r_int
-r_int
-id|start
-comma
-r_int
-r_int
-id|end
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|__flush_dcache_page
-c_func
-(paren
-r_void
-op_star
-id|addr
-comma
-r_int
-id|flush_icache
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|__flush_icache_page
-c_func
-(paren
-r_int
-r_int
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|flush_dcache_page_impl
-c_func
-(paren
-r_struct
-id|page
-op_star
-id|page
-)paren
-suffix:semicolon
-macro_line|#ifdef CONFIG_SMP
-r_extern
-r_void
-id|smp_flush_dcache_page_impl
-c_func
-(paren
-r_struct
-id|page
-op_star
-id|page
-comma
-r_int
-id|cpu
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|flush_dcache_page_all
-c_func
-(paren
-r_struct
-id|mm_struct
-op_star
-id|mm
-comma
-r_struct
-id|page
-op_star
-id|page
-)paren
-suffix:semicolon
-macro_line|#else
-DECL|macro|smp_flush_dcache_page_impl
-mdefine_line|#define smp_flush_dcache_page_impl(page,cpu) flush_dcache_page_impl(page)
-DECL|macro|flush_dcache_page_all
-mdefine_line|#define flush_dcache_page_all(mm,page) flush_dcache_page_impl(page)
-macro_line|#endif
-r_extern
-r_void
-id|flush_dcache_page
-c_func
-(paren
-r_struct
-id|page
-op_star
-id|page
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|__flush_dcache_range
-c_func
-(paren
-r_int
-r_int
-id|start
-comma
-r_int
-r_int
-id|end
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|__flush_cache_all
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|__flush_tlb_all
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|__flush_tlb_mm
-c_func
-(paren
-r_int
-r_int
-id|context
-comma
-r_int
-r_int
-id|r
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|__flush_tlb_range
-c_func
-(paren
-r_int
-r_int
-id|context
-comma
-r_int
-r_int
-id|start
-comma
-r_int
-r_int
-id|r
-comma
-r_int
-r_int
-id|end
-comma
-r_int
-r_int
-id|pgsz
-comma
-r_int
-r_int
-id|size
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|__flush_tlb_page
-c_func
-(paren
-r_int
-r_int
-id|context
-comma
-r_int
-r_int
-id|page
-comma
-r_int
-r_int
-id|r
-)paren
-suffix:semicolon
-macro_line|#ifndef CONFIG_SMP
-DECL|macro|flush_cache_all
-mdefine_line|#define flush_cache_all()&t;__flush_cache_all()
-DECL|macro|flush_tlb_all
-mdefine_line|#define flush_tlb_all()&t;&t;__flush_tlb_all()
-DECL|macro|flush_tlb_mm
-mdefine_line|#define flush_tlb_mm(__mm) &bslash;&n;do { if(CTX_VALID((__mm)-&gt;context)) &bslash;&n;&t;__flush_tlb_mm(CTX_HWBITS((__mm)-&gt;context), SECONDARY_CONTEXT); &bslash;&n;} while(0)
-DECL|macro|flush_tlb_range
-mdefine_line|#define flush_tlb_range(__vma, start, end) &bslash;&n;do { if(CTX_VALID((__vma)-&gt;vm_mm-&gt;context)) { &bslash;&n;&t;unsigned long __start = (start)&amp;PAGE_MASK; &bslash;&n;&t;unsigned long __end = PAGE_ALIGN(end); &bslash;&n;&t;__flush_tlb_range(CTX_HWBITS((__vma)-&gt;vm_mm-&gt;context), __start, &bslash;&n;&t;&t;&t;  SECONDARY_CONTEXT, __end, PAGE_SIZE, &bslash;&n;&t;&t;&t;  (__end - __start)); &bslash;&n;     } &bslash;&n;} while(0)
-DECL|macro|flush_tlb_page
-mdefine_line|#define flush_tlb_page(vma, page) &bslash;&n;do { struct mm_struct *__mm = (vma)-&gt;vm_mm; &bslash;&n;     if(CTX_VALID(__mm-&gt;context)) &bslash;&n;&t;__flush_tlb_page(CTX_HWBITS(__mm-&gt;context), (page)&amp;PAGE_MASK, &bslash;&n;&t;&t;&t; SECONDARY_CONTEXT); &bslash;&n;} while(0)
-macro_line|#else /* CONFIG_SMP */
-r_extern
-r_void
-id|smp_flush_cache_all
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|smp_flush_tlb_all
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|smp_flush_tlb_mm
-c_func
-(paren
-r_struct
-id|mm_struct
-op_star
-id|mm
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|smp_flush_tlb_range
-c_func
-(paren
-r_struct
-id|vm_area_struct
-op_star
-id|vma
-comma
-r_int
-r_int
-id|start
-comma
-r_int
-r_int
-id|end
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|smp_flush_tlb_page
-c_func
-(paren
-r_struct
-id|mm_struct
-op_star
-id|mm
-comma
-r_int
-r_int
-id|page
-)paren
-suffix:semicolon
-DECL|macro|flush_cache_all
-mdefine_line|#define flush_cache_all()&t;smp_flush_cache_all()
-DECL|macro|flush_tlb_all
-mdefine_line|#define flush_tlb_all()&t;&t;smp_flush_tlb_all()
-DECL|macro|flush_tlb_mm
-mdefine_line|#define flush_tlb_mm(mm)&t;smp_flush_tlb_mm(mm)
-DECL|macro|flush_tlb_range
-mdefine_line|#define flush_tlb_range(vma, start, end) &bslash;&n;&t;smp_flush_tlb_range(vma, start, end)
-DECL|macro|flush_tlb_page
-mdefine_line|#define flush_tlb_page(vma, page) &bslash;&n;&t;smp_flush_tlb_page((vma)-&gt;vm_mm, page)
-macro_line|#endif /* ! CONFIG_SMP */
 DECL|macro|VPTE_BASE_SPITFIRE
 mdefine_line|#define VPTE_BASE_SPITFIRE&t;0xfffffffe00000000
 macro_line|#if 1
@@ -315,7 +18,7 @@ DECL|macro|VPTE_BASE_CHEETAH
 mdefine_line|#define VPTE_BASE_CHEETAH&t;0xffe0000000000000
 macro_line|#endif
 DECL|function|flush_tlb_pgtables
-r_extern
+r_static
 id|__inline__
 r_void
 id|flush_tlb_pgtables
@@ -490,7 +193,7 @@ DECL|macro|pgd_cache_size
 mdefine_line|#define pgd_cache_size&t;&t;(pgt_quicklists.pgdcache_size)
 macro_line|#ifndef CONFIG_SMP
 DECL|function|free_pgd_fast
-r_extern
+r_static
 id|__inline__
 r_void
 id|free_pgd_fast
@@ -580,7 +283,7 @@ c_func
 suffix:semicolon
 )brace
 DECL|function|get_pgd_fast
-r_extern
+r_static
 id|__inline__
 id|pgd_t
 op_star
@@ -804,7 +507,7 @@ suffix:semicolon
 )brace
 macro_line|#else /* CONFIG_SMP */
 DECL|function|free_pgd_fast
-r_extern
+r_static
 id|__inline__
 r_void
 id|free_pgd_fast
@@ -853,7 +556,7 @@ c_func
 suffix:semicolon
 )brace
 DECL|function|get_pgd_fast
-r_extern
+r_static
 id|__inline__
 id|pgd_t
 op_star
@@ -960,7 +663,7 @@ id|ret
 suffix:semicolon
 )brace
 DECL|function|free_pgd_slow
-r_extern
+r_static
 id|__inline__
 r_void
 id|free_pgd_slow
@@ -996,59 +699,8 @@ mdefine_line|#define DCACHE_COLOR(address)&t;&t;0
 macro_line|#endif
 DECL|macro|pgd_populate
 mdefine_line|#define pgd_populate(MM, PGD, PMD)&t;pgd_set(PGD, PMD)
-DECL|function|pmd_alloc_one
-r_extern
-id|__inline__
-id|pmd_t
-op_star
-id|pmd_alloc_one
-c_func
-(paren
-r_struct
-id|mm_struct
-op_star
-id|mm
-comma
-r_int
-r_int
-id|address
-)paren
-(brace
-id|pmd_t
-op_star
-id|pmd
-op_assign
-(paren
-id|pmd_t
-op_star
-)paren
-id|__get_free_page
-c_func
-(paren
-id|GFP_KERNEL
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|pmd
-)paren
-id|memset
-c_func
-(paren
-id|pmd
-comma
-l_int|0
-comma
-id|PAGE_SIZE
-)paren
-suffix:semicolon
-r_return
-id|pmd
-suffix:semicolon
-)brace
 DECL|function|pmd_alloc_one_fast
-r_extern
+r_static
 id|__inline__
 id|pmd_t
 op_star
@@ -1075,6 +727,11 @@ id|color
 op_assign
 l_int|0
 suffix:semicolon
+id|preempt_disable
+c_func
+(paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1088,11 +745,6 @@ l_int|NULL
 id|color
 op_assign
 l_int|1
-suffix:semicolon
-id|preempt_disable
-c_func
-(paren
-)paren
 suffix:semicolon
 r_if
 c_cond
@@ -1153,8 +805,79 @@ op_star
 id|ret
 suffix:semicolon
 )brace
+DECL|function|pmd_alloc_one
+r_static
+id|__inline__
+id|pmd_t
+op_star
+id|pmd_alloc_one
+c_func
+(paren
+r_struct
+id|mm_struct
+op_star
+id|mm
+comma
+r_int
+r_int
+id|address
+)paren
+(brace
+id|pmd_t
+op_star
+id|pmd
+suffix:semicolon
+id|pmd
+op_assign
+id|pmd_alloc_one_fast
+c_func
+(paren
+id|mm
+comma
+id|address
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|pmd
+)paren
+(brace
+id|pmd
+op_assign
+(paren
+id|pmd_t
+op_star
+)paren
+id|__get_free_page
+c_func
+(paren
+id|GFP_KERNEL
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|pmd
+)paren
+id|memset
+c_func
+(paren
+id|pmd
+comma
+l_int|0
+comma
+id|PAGE_SIZE
+)paren
+suffix:semicolon
+)brace
+r_return
+id|pmd
+suffix:semicolon
+)brace
 DECL|function|free_pmd_fast
-r_extern
+r_static
 id|__inline__
 r_void
 id|free_pmd_fast
@@ -1223,7 +946,7 @@ c_func
 suffix:semicolon
 )brace
 DECL|function|free_pmd_slow
-r_extern
+r_static
 id|__inline__
 r_void
 id|free_pmd_slow
@@ -1245,12 +968,14 @@ id|pmd
 )paren
 suffix:semicolon
 )brace
+DECL|macro|pmd_populate_kernel
+mdefine_line|#define pmd_populate_kernel(MM, PMD, PTE)&t;pmd_set(PMD, PTE)
 DECL|macro|pmd_populate
-mdefine_line|#define pmd_populate(MM, PMD, PTE)&t;pmd_set(PMD, PTE)
+mdefine_line|#define pmd_populate(MM,PMD,PTE_PAGE)&t;&t;&bslash;&n;&t;pmd_populate_kernel(MM,PMD,page_address(PTE_PAGE))
 r_extern
 id|pte_t
 op_star
-id|pte_alloc_one
+id|pte_alloc_one_kernel
 c_func
 (paren
 r_struct
@@ -1263,8 +988,10 @@ r_int
 id|address
 )paren
 suffix:semicolon
+DECL|macro|pte_alloc_one
+mdefine_line|#define pte_alloc_one(MM,ADDR)&t;virt_to_page(pte_alloc_one_kernel(MM,ADDR))
 DECL|function|pte_alloc_one_fast
-r_extern
+r_static
 id|__inline__
 id|pte_t
 op_star
@@ -1361,7 +1088,7 @@ id|ret
 suffix:semicolon
 )brace
 DECL|function|free_pte_fast
-r_extern
+r_static
 id|__inline__
 r_void
 id|free_pte_fast
@@ -1430,7 +1157,7 @@ c_func
 suffix:semicolon
 )brace
 DECL|function|free_pte_slow
-r_extern
+r_static
 id|__inline__
 r_void
 id|free_pte_slow
@@ -1452,23 +1179,15 @@ id|pte
 )paren
 suffix:semicolon
 )brace
+DECL|macro|pte_free_kernel
+mdefine_line|#define pte_free_kernel(pte)&t;free_pte_fast(pte)
 DECL|macro|pte_free
-mdefine_line|#define pte_free(pte)&t;&t;free_pte_fast(pte)
+mdefine_line|#define pte_free(pte)&t;&t;free_pte_fast(page_address(pte))
 DECL|macro|pmd_free
 mdefine_line|#define pmd_free(pmd)&t;&t;free_pmd_fast(pmd)
 DECL|macro|pgd_free
 mdefine_line|#define pgd_free(pgd)&t;&t;free_pgd_fast(pgd)
 DECL|macro|pgd_alloc
 mdefine_line|#define pgd_alloc(mm)&t;&t;get_pgd_fast()
-r_extern
-r_int
-id|do_check_pgt_cache
-c_func
-(paren
-r_int
-comma
-r_int
-)paren
-suffix:semicolon
 macro_line|#endif /* _SPARC64_PGALLOC_H */
 eof

@@ -3136,6 +3136,11 @@ id|current-&gt;exit_code
 op_assign
 id|SIGTRAP
 suffix:semicolon
+id|preempt_disable
+c_func
+(paren
+)paren
+suffix:semicolon
 id|current-&gt;state
 op_assign
 id|TASK_STOPPED
@@ -3149,6 +3154,11 @@ id|SIGCHLD
 )paren
 suffix:semicolon
 id|schedule
+c_func
+(paren
+)paren
+suffix:semicolon
+id|preempt_enable
 c_func
 (paren
 )paren

@@ -28,6 +28,291 @@ DECL|macro|LOW_OBP_ADDRESS
 mdefine_line|#define LOW_OBP_ADDRESS&t;&t;0x00000000f0000000
 DECL|macro|HI_OBP_ADDRESS
 mdefine_line|#define HI_OBP_ADDRESS&t;&t;0x0000000100000000
+macro_line|#ifndef __ASSEMBLY__
+multiline_comment|/* Cache and TLB flush operations. */
+multiline_comment|/* These are the same regardless of whether this is an SMP kernel or not. */
+DECL|macro|flush_cache_mm
+mdefine_line|#define flush_cache_mm(__mm) &bslash;&n;&t;do { if ((__mm) == current-&gt;mm) flushw_user(); } while(0)
+r_extern
+r_void
+id|flush_cache_range
+c_func
+(paren
+r_struct
+id|vm_area_struct
+op_star
+comma
+r_int
+r_int
+comma
+r_int
+r_int
+)paren
+suffix:semicolon
+DECL|macro|flush_cache_page
+mdefine_line|#define flush_cache_page(vma, page) &bslash;&n;&t;flush_cache_mm((vma)-&gt;vm_mm)
+multiline_comment|/* &n; * On spitfire, the icache doesn&squot;t snoop local stores and we don&squot;t&n; * use block commit stores (which invalidate icache lines) during&n; * module load, so we need this.&n; */
+r_extern
+r_void
+id|flush_icache_range
+c_func
+(paren
+r_int
+r_int
+id|start
+comma
+r_int
+r_int
+id|end
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|__flush_dcache_page
+c_func
+(paren
+r_void
+op_star
+id|addr
+comma
+r_int
+id|flush_icache
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|__flush_icache_page
+c_func
+(paren
+r_int
+r_int
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|flush_dcache_page_impl
+c_func
+(paren
+r_struct
+id|page
+op_star
+id|page
+)paren
+suffix:semicolon
+macro_line|#ifdef CONFIG_SMP
+r_extern
+r_void
+id|smp_flush_dcache_page_impl
+c_func
+(paren
+r_struct
+id|page
+op_star
+id|page
+comma
+r_int
+id|cpu
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|flush_dcache_page_all
+c_func
+(paren
+r_struct
+id|mm_struct
+op_star
+id|mm
+comma
+r_struct
+id|page
+op_star
+id|page
+)paren
+suffix:semicolon
+macro_line|#else
+DECL|macro|smp_flush_dcache_page_impl
+mdefine_line|#define smp_flush_dcache_page_impl(page,cpu) flush_dcache_page_impl(page)
+DECL|macro|flush_dcache_page_all
+mdefine_line|#define flush_dcache_page_all(mm,page) flush_dcache_page_impl(page)
+macro_line|#endif
+r_extern
+r_void
+id|__flush_dcache_range
+c_func
+(paren
+r_int
+r_int
+id|start
+comma
+r_int
+r_int
+id|end
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|__flush_cache_all
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|__flush_tlb_all
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|__flush_tlb_mm
+c_func
+(paren
+r_int
+r_int
+id|context
+comma
+r_int
+r_int
+id|r
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|__flush_tlb_range
+c_func
+(paren
+r_int
+r_int
+id|context
+comma
+r_int
+r_int
+id|start
+comma
+r_int
+r_int
+id|r
+comma
+r_int
+r_int
+id|end
+comma
+r_int
+r_int
+id|pgsz
+comma
+r_int
+r_int
+id|size
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|__flush_tlb_page
+c_func
+(paren
+r_int
+r_int
+id|context
+comma
+r_int
+r_int
+id|page
+comma
+r_int
+r_int
+id|r
+)paren
+suffix:semicolon
+macro_line|#ifndef CONFIG_SMP
+DECL|macro|flush_cache_all
+mdefine_line|#define flush_cache_all()&t;__flush_cache_all()
+DECL|macro|flush_tlb_all
+mdefine_line|#define flush_tlb_all()&t;&t;__flush_tlb_all()
+DECL|macro|flush_tlb_mm
+mdefine_line|#define flush_tlb_mm(__mm) &bslash;&n;do { if(CTX_VALID((__mm)-&gt;context)) &bslash;&n;&t;__flush_tlb_mm(CTX_HWBITS((__mm)-&gt;context), SECONDARY_CONTEXT); &bslash;&n;} while(0)
+DECL|macro|flush_tlb_range
+mdefine_line|#define flush_tlb_range(__vma, start, end) &bslash;&n;do { if(CTX_VALID((__vma)-&gt;vm_mm-&gt;context)) { &bslash;&n;&t;unsigned long __start = (start)&amp;PAGE_MASK; &bslash;&n;&t;unsigned long __end = PAGE_ALIGN(end); &bslash;&n;&t;__flush_tlb_range(CTX_HWBITS((__vma)-&gt;vm_mm-&gt;context), __start, &bslash;&n;&t;&t;&t;  SECONDARY_CONTEXT, __end, PAGE_SIZE, &bslash;&n;&t;&t;&t;  (__end - __start)); &bslash;&n;     } &bslash;&n;} while(0)
+DECL|macro|flush_tlb_page
+mdefine_line|#define flush_tlb_page(vma, page) &bslash;&n;do { struct mm_struct *__mm = (vma)-&gt;vm_mm; &bslash;&n;     if(CTX_VALID(__mm-&gt;context)) &bslash;&n;&t;__flush_tlb_page(CTX_HWBITS(__mm-&gt;context), (page)&amp;PAGE_MASK, &bslash;&n;&t;&t;&t; SECONDARY_CONTEXT); &bslash;&n;} while(0)
+macro_line|#else /* CONFIG_SMP */
+r_extern
+r_void
+id|smp_flush_cache_all
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|smp_flush_tlb_all
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|smp_flush_tlb_mm
+c_func
+(paren
+r_struct
+id|mm_struct
+op_star
+id|mm
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|smp_flush_tlb_range
+c_func
+(paren
+r_struct
+id|vm_area_struct
+op_star
+id|vma
+comma
+r_int
+r_int
+id|start
+comma
+r_int
+r_int
+id|end
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|smp_flush_tlb_page
+c_func
+(paren
+r_struct
+id|mm_struct
+op_star
+id|mm
+comma
+r_int
+r_int
+id|page
+)paren
+suffix:semicolon
+DECL|macro|flush_cache_all
+mdefine_line|#define flush_cache_all()&t;smp_flush_cache_all()
+DECL|macro|flush_tlb_all
+mdefine_line|#define flush_tlb_all()&t;&t;smp_flush_tlb_all()
+DECL|macro|flush_tlb_mm
+mdefine_line|#define flush_tlb_mm(mm)&t;smp_flush_tlb_mm(mm)
+DECL|macro|flush_tlb_range
+mdefine_line|#define flush_tlb_range(vma, start, end) &bslash;&n;&t;smp_flush_tlb_range(vma, start, end)
+DECL|macro|flush_tlb_page
+mdefine_line|#define flush_tlb_page(vma, page) &bslash;&n;&t;smp_flush_tlb_page((vma)-&gt;vm_mm, page)
+macro_line|#endif /* ! CONFIG_SMP */
+macro_line|#endif /* ! __ASSEMBLY__ */
 multiline_comment|/* XXX All of this needs to be rethought so we can take advantage&n; * XXX cheetah&squot;s full 64-bit virtual address space, ie. no more hole&n; * XXX in the middle like on spitfire. -DaveM&n; */
 multiline_comment|/*&n; * Given a virtual address, the lowest PAGE_SHIFT bits determine offset&n; * into the page; the next higher PAGE_SHIFT-3 bits determine the pte#&n; * in the proper pagetable (the -3 is from the 8 byte ptes, and each page&n; * table is a single page long). The next higher PMD_BITS determine pmd# &n; * in the proper pmdtable (where we must have PMD_BITS &lt;= (PAGE_SHIFT-2) &n; * since the pmd entries are 4 bytes, and each pmd page is a single page &n; * long). Finally, the higher few bits determine pgde#.&n; */
 multiline_comment|/* PMD_SHIFT determines the size of the area a second-level page table can map */
@@ -267,8 +552,10 @@ DECL|macro|pmd_set
 mdefine_line|#define pmd_set(pmdp, ptep)&t;&bslash;&n;&t;(pmd_val(*(pmdp)) = (__pa((unsigned long) (ptep)) &gt;&gt; 11UL))
 DECL|macro|pgd_set
 mdefine_line|#define pgd_set(pgdp, pmdp)&t;&bslash;&n;&t;(pgd_val(*(pgdp)) = (__pa((unsigned long) (pmdp)) &gt;&gt; 11UL))
+DECL|macro|__pmd_page
+mdefine_line|#define __pmd_page(pmd)&t;&t;&t;((unsigned long) __va((pmd_val(pmd)&lt;&lt;11UL)))
 DECL|macro|pmd_page
-mdefine_line|#define pmd_page(pmd)&t;&t;&t;((unsigned long) __va((pmd_val(pmd)&lt;&lt;11UL)))
+mdefine_line|#define pmd_page(pmd) &t;&t;&t;virt_to_page((void *)__pmd_page(pmd))
 DECL|macro|pgd_page
 mdefine_line|#define pgd_page(pgd)&t;&t;&t;((unsigned long) __va((pgd_val(pgd)&lt;&lt;11UL)))
 DECL|macro|pte_none
@@ -336,8 +623,18 @@ multiline_comment|/* Find an entry in the second-level page table.. */
 DECL|macro|pmd_offset
 mdefine_line|#define pmd_offset(dir, address)&t;((pmd_t *) pgd_page(*(dir)) + &bslash;&n;&t;&t;&t;&t;&t;((address &gt;&gt; PMD_SHIFT) &amp; (REAL_PTRS_PER_PMD-1)))
 multiline_comment|/* Find an entry in the third-level page table.. */
-DECL|macro|pte_offset
-mdefine_line|#define pte_offset(dir, address)&t;((pte_t *) pmd_page(*(dir)) + &bslash;&n;&t;&t;&t;&t;&t;((address &gt;&gt; PAGE_SHIFT) &amp; (PTRS_PER_PTE - 1)))
+DECL|macro|__pte_offset
+mdefine_line|#define __pte_offset(dir, address)&t;((pte_t *) __pmd_page(*(dir)) + &bslash;&n;&t;&t;&t;&t;&t;((address &gt;&gt; PAGE_SHIFT) &amp; (PTRS_PER_PTE - 1)))
+DECL|macro|pte_offset_kernel
+mdefine_line|#define pte_offset_kernel&t;&t;__pte_offset
+DECL|macro|pte_offset_map
+mdefine_line|#define pte_offset_map&t;&t;&t;__pte_offset
+DECL|macro|pte_offset_map_nested
+mdefine_line|#define pte_offset_map_nested&t;&t;__pte_offset
+DECL|macro|pte_unmap
+mdefine_line|#define pte_unmap(pte)&t;&t;&t;do { } while (0)
+DECL|macro|pte_unmap_nested
+mdefine_line|#define pte_unmap_nested(pte)&t;&t;do { } while (0)
 r_extern
 id|pgd_t
 id|swapper_pg_dir
@@ -527,6 +824,7 @@ suffix:semicolon
 id|pgdp
 op_assign
 id|pgd_offset_k
+c_func
 (paren
 id|addr
 )paren
@@ -534,6 +832,7 @@ suffix:semicolon
 id|pmdp
 op_assign
 id|pmd_offset
+c_func
 (paren
 id|pgdp
 comma
@@ -542,7 +841,8 @@ id|addr
 suffix:semicolon
 id|ptep
 op_assign
-id|pte_offset
+id|pte_offset_kernel
+c_func
 (paren
 id|pmdp
 comma
@@ -551,6 +851,7 @@ id|addr
 suffix:semicolon
 r_return
 id|pte_val
+c_func
 (paren
 op_star
 id|ptep
@@ -673,9 +974,31 @@ r_int
 suffix:semicolon
 DECL|macro|HAVE_ARCH_FB_UNMAPPED_AREA
 mdefine_line|#define HAVE_ARCH_FB_UNMAPPED_AREA
-macro_line|#endif /* !(__ASSEMBLY__) */
 multiline_comment|/*&n; * No page table caches to initialise&n; */
 DECL|macro|pgtable_cache_init
 mdefine_line|#define pgtable_cache_init()&t;do { } while (0)
+r_extern
+r_void
+id|check_pgt_cache
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|flush_dcache_page
+c_func
+(paren
+r_struct
+id|page
+op_star
+id|page
+)paren
+suffix:semicolon
+multiline_comment|/* This is unnecessary on the SpitFire since D-CACHE is write-through. */
+DECL|macro|flush_page_to_ram
+mdefine_line|#define flush_page_to_ram(page)&t;&t;&t;do { } while (0)
+macro_line|#endif /* !(__ASSEMBLY__) */
 macro_line|#endif /* !(_SPARC64_PGTABLE_H) */
 eof

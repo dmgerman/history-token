@@ -1016,11 +1016,11 @@ l_int|0
 comma
 multiline_comment|/* PCI slot 5  Int A, B, C, D&t;*/
 multiline_comment|/*0x18*/
-l_int|3
+l_int|4
 comma
 multiline_comment|/* SCSI&t;&t;&t;&t;*/
 multiline_comment|/*0x19*/
-l_int|3
+l_int|4
 comma
 multiline_comment|/* second SCSI&t;&t;&t;*/
 multiline_comment|/*0x1a*/
@@ -1060,7 +1060,7 @@ l_int|12
 comma
 multiline_comment|/* Serial&t;&t;&t;*/
 multiline_comment|/*0x23*/
-l_int|2
+l_int|4
 comma
 multiline_comment|/* EBUS I2C &t;&t;&t;*/
 multiline_comment|/*0x24*/
@@ -1234,7 +1234,7 @@ l_int|NULL
 (brace
 id|ret
 op_assign
-l_int|2
+l_int|4
 suffix:semicolon
 )brace
 r_else
@@ -1309,7 +1309,7 @@ r_default
 suffix:colon
 id|ret
 op_assign
-l_int|2
+l_int|4
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -4313,10 +4313,12 @@ DECL|macro|SCHIZO_PCIA_CTRL
 mdefine_line|#define SCHIZO_PCIA_CTRL&t;(SCHIZO_PBM_A_REGS_OFF + 0x2000UL)
 DECL|macro|SCHIZO_PCIB_CTRL
 mdefine_line|#define SCHIZO_PCIB_CTRL&t;(SCHIZO_PBM_B_REGS_OFF + 0x2000UL)
-DECL|macro|SCHIZO_PCICTRL_BUNUS
-mdefine_line|#define SCHIZO_PCICTRL_BUNUS&t;(1UL &lt;&lt; 63UL)
+DECL|macro|SCHIZO_PCICTRL_BUS_UNUS
+mdefine_line|#define SCHIZO_PCICTRL_BUS_UNUS&t;(1UL &lt;&lt; 63UL)
 DECL|macro|SCHIZO_PCICTRL_ESLCK
 mdefine_line|#define SCHIZO_PCICTRL_ESLCK&t;(1UL &lt;&lt; 51UL)
+DECL|macro|SCHIZO_PCICTRL_ERRSLOT
+mdefine_line|#define SCHIZO_PCICTRL_ERRSLOT&t;(7UL &lt;&lt; 48UL)
 DECL|macro|SCHIZO_PCICTRL_TTO_ERR
 mdefine_line|#define SCHIZO_PCICTRL_TTO_ERR&t;(1UL &lt;&lt; 38UL)
 DECL|macro|SCHIZO_PCICTRL_RTRY_ERR
@@ -4327,10 +4329,22 @@ DECL|macro|SCHIZO_PCICTRL_SBH_ERR
 mdefine_line|#define SCHIZO_PCICTRL_SBH_ERR&t;(1UL &lt;&lt; 35UL)
 DECL|macro|SCHIZO_PCICTRL_SERR
 mdefine_line|#define SCHIZO_PCICTRL_SERR&t;(1UL &lt;&lt; 34UL)
+DECL|macro|SCHIZO_PCICTRL_PCISPD
+mdefine_line|#define SCHIZO_PCICTRL_PCISPD&t;(1UL &lt;&lt; 33UL)
+DECL|macro|SCHIZO_PCICTRL_PTO
+mdefine_line|#define SCHIZO_PCICTRL_PTO&t;(3UL &lt;&lt; 24UL)
+DECL|macro|SCHIZO_PCICTRL_DTO_INT
+mdefine_line|#define SCHIZO_PCICTRL_DTO_INT&t;(1UL &lt;&lt; 19UL)
 DECL|macro|SCHIZO_PCICTRL_SBH_INT
 mdefine_line|#define SCHIZO_PCICTRL_SBH_INT&t;(1UL &lt;&lt; 18UL)
 DECL|macro|SCHIZO_PCICTRL_EEN
 mdefine_line|#define SCHIZO_PCICTRL_EEN&t;(1UL &lt;&lt; 17UL)
+DECL|macro|SCHIZO_PCICTRL_PARK
+mdefine_line|#define SCHIZO_PCICTRL_PARK&t;(1UL &lt;&lt; 16UL)
+DECL|macro|SCHIZO_PCICTRL_PCIRST
+mdefine_line|#define SCHIZO_PCICTRL_PCIRST&t;(1UL &lt;&lt;  8UL)
+DECL|macro|SCHIZO_PCICTRL_ARB
+mdefine_line|#define SCHIZO_PCICTRL_ARB&t;(0x3fUL &lt;&lt; 0UL)
 DECL|function|schizo_register_error_handlers
 r_static
 r_void
@@ -4854,7 +4868,7 @@ suffix:semicolon
 id|tmp
 op_or_assign
 (paren
-id|SCHIZO_PCICTRL_BUNUS
+id|SCHIZO_PCICTRL_BUS_UNUS
 op_or
 id|SCHIZO_PCICTRL_ESLCK
 op_or
@@ -4896,7 +4910,7 @@ suffix:semicolon
 id|tmp
 op_or_assign
 (paren
-id|SCHIZO_PCICTRL_BUNUS
+id|SCHIZO_PCICTRL_BUS_UNUS
 op_or
 id|SCHIZO_PCICTRL_ESLCK
 op_or
@@ -7341,6 +7355,34 @@ id|is_pbm_a
 )paren
 suffix:semicolon
 )brace
+DECL|macro|SCHIZO_PCIA_IRQ_RETRY
+mdefine_line|#define SCHIZO_PCIA_IRQ_RETRY&t;(SCHIZO_PBM_A_REGS_OFF + 0x1a00UL)
+DECL|macro|SCHIZO_PCIB_IRQ_RETRY
+mdefine_line|#define SCHIZO_PCIB_IRQ_RETRY&t;(SCHIZO_PBM_B_REGS_OFF + 0x1a00UL)
+DECL|macro|SCHIZO_IRQ_RETRY_INF
+mdefine_line|#define  SCHIZO_IRQ_RETRY_INF&t; 0xffUL
+DECL|macro|SCHIZO_PCIA_DIAG
+mdefine_line|#define SCHIZO_PCIA_DIAG&t;(SCHIZO_PBM_A_REGS_OFF + 0x2020UL)
+DECL|macro|SCHIZO_PCIB_DIAG
+mdefine_line|#define SCHIZO_PCIB_DIAG&t;(SCHIZO_PBM_B_REGS_OFF + 0x2020UL)
+DECL|macro|SCHIZO_PCIDIAG_D_BADECC
+mdefine_line|#define  SCHIZO_PCIDIAG_D_BADECC&t;(1UL &lt;&lt; 10UL) /* Disable BAD ECC errors */
+DECL|macro|SCHIZO_PCIDIAG_D_BYPASS
+mdefine_line|#define  SCHIZO_PCIDIAG_D_BYPASS&t;(1UL &lt;&lt;  9UL) /* Disable MMU bypass mode */
+DECL|macro|SCHIZO_PCIDIAG_D_TTO
+mdefine_line|#define  SCHIZO_PCIDIAG_D_TTO&t;&t;(1UL &lt;&lt;  8UL) /* Disable TTO errors */
+DECL|macro|SCHIZO_PCIDIAG_D_RTRYARB
+mdefine_line|#define  SCHIZO_PCIDIAG_D_RTRYARB&t;(1UL &lt;&lt;  7UL) /* Disable retry arbitration */
+DECL|macro|SCHIZO_PCIDIAG_D_RETRY
+mdefine_line|#define  SCHIZO_PCIDIAG_D_RETRY&t;&t;(1UL &lt;&lt;  6UL) /* Disable retry limit */
+DECL|macro|SCHIZO_PCIDIAG_D_INTSYNC
+mdefine_line|#define  SCHIZO_PCIDIAG_D_INTSYNC&t;(1UL &lt;&lt;  5UL) /* Disable interrupt/DMA synch */
+DECL|macro|SCHIZO_PCIDIAG_I_DMA_PARITY
+mdefine_line|#define  SCHIZO_PCIDIAG_I_DMA_PARITY&t;(1UL &lt;&lt;  3UL) /* Invert DMA parity */
+DECL|macro|SCHIZO_PCIDIAG_I_PIOD_PARITY
+mdefine_line|#define  SCHIZO_PCIDIAG_I_PIOD_PARITY&t;(1UL &lt;&lt;  2UL) /* Invert PIO data parity */
+DECL|macro|SCHIZO_PCIDIAG_I_PIOA_PARITY
+mdefine_line|#define  SCHIZO_PCIDIAG_I_PIOA_PARITY&t;(1UL &lt;&lt;  1U)L /* Invert PIO address parity */
 DECL|function|schizo_controller_hwinit
 r_static
 r_void
@@ -7378,44 +7420,49 @@ multiline_comment|/* Set IRQ retry to infinity. */
 id|schizo_write
 c_func
 (paren
-id|pbm_a_base
+id|p-&gt;controller_regs
 op_plus
-l_int|0x1a00UL
+id|SCHIZO_PCIA_IRQ_RETRY
 comma
-l_int|0xff
+id|SCHIZO_IRQ_RETRY_INF
 )paren
 suffix:semicolon
 id|schizo_write
 c_func
 (paren
-id|pbm_b_base
+id|p-&gt;controller_regs
 op_plus
-l_int|0x1a00UL
+id|SCHIZO_PCIB_IRQ_RETRY
 comma
-l_int|0xff
+id|SCHIZO_IRQ_RETRY_INF
 )paren
 suffix:semicolon
-multiline_comment|/* Enable arbiter for all PCI slots. */
+multiline_comment|/* Enable arbiter for all PCI slots.  Also, disable PCI interval&n;&t; * timer so that DTO (Discard TimeOuts) are not reported because&n;&t; * some Schizo revisions report them erroneously.&n;&t; */
 id|tmp
 op_assign
 id|schizo_read
 c_func
 (paren
-id|pbm_a_base
+id|p-&gt;controller_regs
 op_plus
-l_int|0x2000UL
+id|SCHIZO_PCIA_CTRL
 )paren
 suffix:semicolon
 id|tmp
 op_or_assign
-l_int|0x3fUL
+id|SCHIZO_PCICTRL_ARB
+suffix:semicolon
+id|tmp
+op_and_assign
+op_complement
+id|SCHIZO_PCICTRL_PTO
 suffix:semicolon
 id|schizo_write
 c_func
 (paren
-id|pbm_a_base
+id|p-&gt;controller_regs
 op_plus
-l_int|0x2000UL
+id|SCHIZO_PCIA_CTRL
 comma
 id|tmp
 )paren
@@ -7425,21 +7472,83 @@ op_assign
 id|schizo_read
 c_func
 (paren
-id|pbm_b_base
+id|p-&gt;controller_regs
 op_plus
-l_int|0x2000UL
+id|SCHIZO_PCIB_CTRL
 )paren
 suffix:semicolon
 id|tmp
 op_or_assign
-l_int|0x3fUL
+id|SCHIZO_PCICTRL_ARB
+suffix:semicolon
+id|tmp
+op_and_assign
+op_complement
+id|SCHIZO_PCICTRL_PTO
 suffix:semicolon
 id|schizo_write
 c_func
 (paren
-id|pbm_b_base
+id|p-&gt;controller_regs
 op_plus
-l_int|0x2000UL
+id|SCHIZO_PCIB_CTRL
+comma
+id|tmp
+)paren
+suffix:semicolon
+multiline_comment|/* Disable TTO error reporting (won&squot;t happen anyway since we&n;&t; * disabled the PCI interval timer above) and retry arbitration&n;&t; * (can cause hangs in some Schizo revisions).&n;&t; */
+id|tmp
+op_assign
+id|schizo_read
+c_func
+(paren
+id|p-&gt;controller_regs
+op_plus
+id|SCHIZO_PCIA_DIAG
+)paren
+suffix:semicolon
+id|tmp
+op_or_assign
+(paren
+id|SCHIZO_PCIDIAG_D_TTO
+op_or
+id|SCHIZO_PCIDIAG_D_RTRYARB
+)paren
+suffix:semicolon
+id|schizo_write
+c_func
+(paren
+id|p-&gt;controller_regs
+op_plus
+id|SCHIZO_PCIA_DIAG
+comma
+id|tmp
+)paren
+suffix:semicolon
+id|tmp
+op_assign
+id|schizo_read
+c_func
+(paren
+id|p-&gt;controller_regs
+op_plus
+id|SCHIZO_PCIB_DIAG
+)paren
+suffix:semicolon
+id|tmp
+op_or_assign
+(paren
+id|SCHIZO_PCIDIAG_D_TTO
+op_or
+id|SCHIZO_PCIDIAG_D_RTRYARB
+)paren
+suffix:semicolon
+id|schizo_write
+c_func
+(paren
+id|p-&gt;controller_regs
+op_plus
+id|SCHIZO_PCIB_DIAG
 comma
 id|tmp
 )paren

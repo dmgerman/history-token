@@ -869,7 +869,7 @@ id|tcvregs
 suffix:semicolon
 multiline_comment|/* MIF transceiver regs              */
 DECL|member|hblock_dvma
-id|__u32
+id|dma_addr_t
 id|hblock_dvma
 suffix:semicolon
 multiline_comment|/* DVMA visible address happy block  */
