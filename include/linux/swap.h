@@ -93,10 +93,49 @@ mdefine_line|#define __swapoffset(x) ((unsigned long)&amp;((union swap_header *)
 DECL|macro|MAX_SWAP_BADPAGES
 mdefine_line|#define MAX_SWAP_BADPAGES &bslash;&n;&t;((__swapoffset(magic.magic) - __swapoffset(info.badpages)) / sizeof(int))
 macro_line|#include &lt;asm/atomic.h&gt;
-DECL|macro|SWP_USED
-mdefine_line|#define SWP_USED&t;1
-DECL|macro|SWP_WRITEOK
-mdefine_line|#define SWP_WRITEOK&t;3
+r_enum
+(brace
+DECL|enumerator|SWP_USED
+id|SWP_USED
+op_assign
+(paren
+l_int|1
+op_lshift
+l_int|0
+)paren
+comma
+multiline_comment|/* is slot in swap_info[] used? */
+DECL|enumerator|SWP_WRITEOK
+id|SWP_WRITEOK
+op_assign
+(paren
+l_int|1
+op_lshift
+l_int|1
+)paren
+comma
+multiline_comment|/* ok to write to this swap?&t;*/
+DECL|enumerator|SWP_BLOCKDEV
+id|SWP_BLOCKDEV
+op_assign
+(paren
+l_int|1
+op_lshift
+l_int|2
+)paren
+comma
+multiline_comment|/* is this swap a block device? */
+DECL|enumerator|SWP_ACTIVE
+id|SWP_ACTIVE
+op_assign
+(paren
+id|SWP_USED
+op_or
+id|SWP_WRITEOK
+)paren
+comma
+)brace
+suffix:semicolon
 DECL|macro|SWAP_CLUSTER_MAX
 mdefine_line|#define SWAP_CLUSTER_MAX 32
 DECL|macro|SWAP_MAP_MAX
@@ -112,10 +151,6 @@ DECL|member|flags
 r_int
 r_int
 id|flags
-suffix:semicolon
-DECL|member|swap_device
-id|kdev_t
-id|swap_device
 suffix:semicolon
 DECL|member|sdev_lock
 id|spinlock_t
