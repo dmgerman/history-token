@@ -334,6 +334,7 @@ r_struct
 id|kset
 op_star
 comma
+r_const
 r_char
 op_star
 )paren

@@ -879,6 +879,7 @@ id|kset
 op_star
 id|kset
 comma
+r_const
 r_char
 op_star
 id|name
@@ -1201,6 +1202,13 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|kobject_put
+)paren
+suffix:semicolon
+DECL|variable|kset_find_obj
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|kset_find_obj
 )paren
 suffix:semicolon
 DECL|variable|subsystem_init
