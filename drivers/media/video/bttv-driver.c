@@ -1,4 +1,4 @@
-multiline_comment|/*&n;    $Id: bttv-driver.c,v 1.34 2005/01/07 13:11:19 kraxel Exp $&n;&n;    bttv - Bt848 frame grabber driver&n;&n;    Copyright (C) 1996,97,98 Ralph  Metzler &lt;rjkm@thp.uni-koeln.de&gt;&n;                           &amp; Marcus Metzler &lt;mocm@thp.uni-koeln.de&gt;&n;    (c) 1999-2002 Gerd Knorr &lt;kraxel@bytesex.org&gt;&n;&n;    some v4l2 code lines are taken from Justin&squot;s bttv2 driver which is&n;    (c) 2000 Justin Schoeman &lt;justin@suntiger.ee.up.ac.za&gt;&n;&n;    This program is free software; you can redistribute it and/or modify&n;    it under the terms of the GNU General Public License as published by&n;    the Free Software Foundation; either version 2 of the License, or&n;    (at your option) any later version.&n;&n;    This program is distributed in the hope that it will be useful,&n;    but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;    GNU General Public License for more details.&n;&n;    You should have received a copy of the GNU General Public License&n;    along with this program; if not, write to the Free Software&n;    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n;*/
+multiline_comment|/*&n;    $Id: bttv-driver.c,v 1.36 2005/02/15 10:51:53 kraxel Exp $&n;&n;    bttv - Bt848 frame grabber driver&n;&n;    Copyright (C) 1996,97,98 Ralph  Metzler &lt;rjkm@thp.uni-koeln.de&gt;&n;                           &amp; Marcus Metzler &lt;mocm@thp.uni-koeln.de&gt;&n;    (c) 1999-2002 Gerd Knorr &lt;kraxel@bytesex.org&gt;&n;&n;    some v4l2 code lines are taken from Justin&squot;s bttv2 driver which is&n;    (c) 2000 Justin Schoeman &lt;justin@suntiger.ee.up.ac.za&gt;&n;&n;    This program is free software; you can redistribute it and/or modify&n;    it under the terms of the GNU General Public License as published by&n;    the Free Software Foundation; either version 2 of the License, or&n;    (at your option) any later version.&n;&n;    This program is distributed in the hope that it will be useful,&n;    but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;    GNU General Public License for more details.&n;&n;    You should have received a copy of the GNU General Public License&n;    along with this program; if not, write to the Free Software&n;    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n;*/
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/moduleparam.h&gt;
@@ -18780,7 +18780,7 @@ id|pci_dev
 op_star
 id|pci_dev
 comma
-id|u32
+id|pm_message_t
 id|state
 )paren
 (brace
