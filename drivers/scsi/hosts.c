@@ -1450,28 +1450,6 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|shost_tp-&gt;max_sectors
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_WARNING
-l_string|&quot;scsi HBA driver %s didn&squot;t set max_sectors, &quot;
-l_string|&quot;please fix the template&bslash;n&quot;
-comma
-id|shost_tp-&gt;name
-)paren
-suffix:semicolon
-id|shost_tp-&gt;max_sectors
-op_assign
-l_int|1024
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-op_logical_neg
 id|shost_tp-&gt;release
 )paren
 (brace
