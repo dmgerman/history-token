@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  drivers/s390/cio/cio.c&n; *   S/390 common I/O routines -- low level i/o calls&n; *   $Revision: 1.25 $&n; *&n; *    Copyright (C) 1999-2002 IBM Deutschland Entwicklung GmbH,&n; *                            IBM Corporation&n; *    Author(s): Ingo Adlung (adlung@de.ibm.com)&n; *               Cornelia Huck (cohuck@de.ibm.com) &n; *&t;&t; Arnd Bergmann (arndb@de.ibm.com)&n; *    ChangeLog: 11/04/2002 Arnd Bergmann Split s390io.c into multiple files,&n; *&t;&t;&t;&t;&t;  see s390io.c for complete list of&n; * &t;&t;&t;&t;&t;  changes.&n; *               05/06/2002 Cornelia Huck  some cleanups&n; */
+multiline_comment|/*&n; *  drivers/s390/cio/cio.c&n; *   S/390 common I/O routines -- low level i/o calls&n; *   $Revision: 1.26 $&n; *&n; *    Copyright (C) 1999-2002 IBM Deutschland Entwicklung GmbH,&n; *                            IBM Corporation&n; *    Author(s): Ingo Adlung (adlung@de.ibm.com)&n; *               Cornelia Huck (cohuck@de.ibm.com) &n; *&t;&t; Arnd Bergmann (arndb@de.ibm.com)&n; *    ChangeLog: 11/04/2002 Arnd Bergmann Split s390io.c into multiple files,&n; *&t;&t;&t;&t;&t;  see s390io.c for complete list of&n; * &t;&t;&t;&t;&t;  changes.&n; *               05/06/2002 Cornelia Huck  some cleanups&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
@@ -1234,6 +1234,14 @@ id|opm
 op_and_assign
 op_complement
 id|lpm
+suffix:semicolon
+id|switch_off_chpids
+c_func
+(paren
+id|irq
+comma
+id|lpm
+)paren
 suffix:semicolon
 )brace
 r_else
@@ -4489,12 +4497,21 @@ r_if
 c_cond
 (paren
 op_logical_neg
+(paren
 id|ioinfo
 (braket
 id|irq
 )braket
 op_member_access_from_pointer
 id|ui.flags.s_pend
+op_logical_or
+id|ioinfo
+(braket
+id|irq
+)braket
+op_member_access_from_pointer
+id|ui.flags.repnone
+)paren
 )paren
 id|ioinfo
 (braket
