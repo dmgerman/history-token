@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/iobuf.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
+macro_line|#include &lt;linux/security.h&gt;
 multiline_comment|/* sysctl tunables... */
 DECL|variable|files_stat
 r_struct
@@ -120,6 +121,40 @@ id|f
 )paren
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|security_ops
+op_member_access_from_pointer
+id|file_alloc_security
+c_func
+(paren
+id|f
+)paren
+)paren
+(brace
+id|list_add
+c_func
+(paren
+op_amp
+id|f-&gt;f_list
+comma
+op_amp
+id|free_list
+)paren
+suffix:semicolon
+id|files_stat.nr_free_files
+op_increment
+suffix:semicolon
+id|file_list_unlock
+c_func
+(paren
+)paren
+suffix:semicolon
+r_return
+l_int|NULL
+suffix:semicolon
+)brace
 id|atomic_set
 c_func
 (paren
@@ -424,6 +459,14 @@ comma
 id|file
 )paren
 suffix:semicolon
+id|security_ops
+op_member_access_from_pointer
+id|file_free_security
+c_func
+(paren
+id|file
+)paren
+suffix:semicolon
 id|fops_put
 c_func
 (paren
@@ -578,6 +621,14 @@ id|file-&gt;f_count
 )paren
 )paren
 (brace
+id|security_ops
+op_member_access_from_pointer
+id|file_free_security
+c_func
+(paren
+id|file
+)paren
+suffix:semicolon
 id|file_list_lock
 c_func
 (paren

@@ -111,6 +111,8 @@ DECL|macro|MAY_WRITE
 mdefine_line|#define MAY_WRITE 2
 DECL|macro|MAY_READ
 mdefine_line|#define MAY_READ 4
+DECL|macro|MAY_APPEND
+mdefine_line|#define MAY_APPEND 8
 DECL|macro|FMODE_READ
 mdefine_line|#define FMODE_READ 1
 DECL|macro|FMODE_WRITE
@@ -1076,6 +1078,11 @@ DECL|member|i_writecount
 id|atomic_t
 id|i_writecount
 suffix:semicolon
+DECL|member|i_security
+r_void
+op_star
+id|i_security
+suffix:semicolon
 DECL|member|i_generation
 id|__u32
 id|i_generation
@@ -1197,6 +1204,11 @@ r_int
 id|signum
 suffix:semicolon
 multiline_comment|/* posix.1b rt signal to be delivered on IO */
+DECL|member|security
+r_void
+op_star
+id|security
+suffix:semicolon
 )brace
 suffix:semicolon
 DECL|function|inode_add_bytes
@@ -1467,6 +1479,11 @@ DECL|member|f_version
 r_int
 r_int
 id|f_version
+suffix:semicolon
+DECL|member|f_security
+r_void
+op_star
+id|f_security
 suffix:semicolon
 multiline_comment|/* needed for tty driver, and maybe others */
 DECL|member|private_data
@@ -2126,6 +2143,11 @@ suffix:semicolon
 DECL|member|s_active
 id|atomic_t
 id|s_active
+suffix:semicolon
+DECL|member|s_security
+r_void
+op_star
+id|s_security
 suffix:semicolon
 DECL|member|s_dirty
 r_struct

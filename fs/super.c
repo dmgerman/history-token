@@ -9,6 +9,7 @@ macro_line|#include &lt;linux/quotaops.h&gt;
 macro_line|#include &lt;linux/namei.h&gt;
 macro_line|#include &lt;linux/buffer_head.h&gt;&t;&t;/* for fsync_super() */
 macro_line|#include &lt;asm/uaccess.h&gt;
+macro_line|#include &lt;linux/security.h&gt;
 r_void
 id|get_filesystem
 c_func
@@ -103,6 +104,32 @@ id|super_block
 )paren
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|security_ops
+op_member_access_from_pointer
+id|sb_alloc_security
+c_func
+(paren
+id|s
+)paren
+)paren
+(brace
+id|kfree
+c_func
+(paren
+id|s
+)paren
+suffix:semicolon
+id|s
+op_assign
+l_int|NULL
+suffix:semicolon
+r_goto
+id|out
+suffix:semicolon
+)brace
 id|INIT_LIST_HEAD
 c_func
 (paren
@@ -221,6 +248,8 @@ op_assign
 id|sb_quotactl_ops
 suffix:semicolon
 )brace
+id|out
+suffix:colon
 r_return
 id|s
 suffix:semicolon
@@ -239,6 +268,14 @@ op_star
 id|s
 )paren
 (brace
+id|security_ops
+op_member_access_from_pointer
+id|sb_free_security
+c_func
+(paren
+id|s
+)paren
+suffix:semicolon
 id|kfree
 c_func
 (paren

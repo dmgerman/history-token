@@ -6,6 +6,7 @@ macro_line|#include &lt;asm/current.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
+macro_line|#include &lt;linux/security.h&gt;
 multiline_comment|/* Check validity of quotactl */
 DECL|function|check_quotactl_valid
 r_static
@@ -369,7 +370,16 @@ op_minus
 id|EPERM
 suffix:semicolon
 r_return
-l_int|0
+id|security_ops-&gt;quotactl
+(paren
+id|cmd
+comma
+id|type
+comma
+id|id
+comma
+id|sb
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/* Resolve device pathname to superblock */
