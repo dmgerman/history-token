@@ -10,7 +10,6 @@ macro_line|#include &lt;linux/etherdevice.h&gt;
 macro_line|#include &lt;net/datalink.h&gt;
 macro_line|#include &lt;net/p8022.h&gt;
 macro_line|#include &lt;net/arp.h&gt;
-macro_line|#include &lt;linux/brlock.h&gt;
 macro_line|#include &quot;vlan.h&quot;
 macro_line|#include &quot;vlanproc.h&quot;
 macro_line|#include &lt;linux/if_vlan.h&gt;
