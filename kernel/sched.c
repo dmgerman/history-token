@@ -5174,14 +5174,6 @@ id|idle-&gt;thread_info-&gt;cpu
 op_assign
 id|cpu
 suffix:semicolon
-id|idle-&gt;thread_info-&gt;preempt_count
-op_assign
-(paren
-id|idle-&gt;lock_depth
-op_ge
-l_int|0
-)paren
-suffix:semicolon
 id|double_rq_unlock
 c_func
 (paren
@@ -5200,6 +5192,15 @@ id|__restore_flags
 c_func
 (paren
 id|flags
+)paren
+suffix:semicolon
+multiline_comment|/* Set the preempt count _outside_ the spinlocks! */
+id|idle-&gt;thread_info-&gt;preempt_count
+op_assign
+(paren
+id|idle-&gt;lock_depth
+op_ge
+l_int|0
 )paren
 suffix:semicolon
 )brace
