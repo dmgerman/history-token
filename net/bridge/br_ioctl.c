@@ -188,13 +188,6 @@ r_struct
 id|__bridge_info
 id|b
 suffix:semicolon
-id|read_lock
-c_func
-(paren
-op_amp
-id|br-&gt;lock
-)paren
-suffix:semicolon
 id|memset
 c_func
 (paren
@@ -208,6 +201,11 @@ r_sizeof
 r_struct
 id|__bridge_info
 )paren
+)paren
+suffix:semicolon
+id|rcu_read_lock
+c_func
+(paren
 )paren
 suffix:semicolon
 id|memcpy
@@ -322,11 +320,9 @@ op_amp
 id|br-&gt;gc_timer
 )paren
 suffix:semicolon
-id|read_unlock
+id|rcu_read_unlock
 c_func
 (paren
-op_amp
-id|br-&gt;lock
 )paren
 suffix:semicolon
 r_if
@@ -460,7 +456,7 @@ suffix:semicolon
 r_case
 id|BRCTL_SET_BRIDGE_FORWARD_DELAY
 suffix:colon
-id|write_lock
+id|spin_lock_bh
 c_func
 (paren
 op_amp
@@ -488,7 +484,7 @@ id|br-&gt;forward_delay
 op_assign
 id|br-&gt;bridge_forward_delay
 suffix:semicolon
-id|write_unlock
+id|spin_unlock_bh
 c_func
 (paren
 op_amp
@@ -501,7 +497,7 @@ suffix:semicolon
 r_case
 id|BRCTL_SET_BRIDGE_HELLO_TIME
 suffix:colon
-id|write_lock
+id|spin_lock_bh
 c_func
 (paren
 op_amp
@@ -529,7 +525,7 @@ id|br-&gt;hello_time
 op_assign
 id|br-&gt;bridge_hello_time
 suffix:semicolon
-id|write_unlock
+id|spin_unlock_bh
 c_func
 (paren
 op_amp
@@ -542,7 +538,7 @@ suffix:semicolon
 r_case
 id|BRCTL_SET_BRIDGE_MAX_AGE
 suffix:colon
-id|write_lock
+id|spin_lock_bh
 c_func
 (paren
 op_amp
@@ -570,7 +566,7 @@ id|br-&gt;max_age
 op_assign
 id|br-&gt;bridge_max_age
 suffix:semicolon
-id|write_unlock
+id|spin_unlock_bh
 c_func
 (paren
 op_amp
@@ -621,11 +617,9 @@ id|net_bridge_port
 op_star
 id|pt
 suffix:semicolon
-id|read_lock
+id|rcu_read_lock
 c_func
 (paren
-op_amp
-id|br-&gt;lock
 )paren
 suffix:semicolon
 r_if
@@ -646,11 +640,9 @@ op_eq
 l_int|NULL
 )paren
 (brace
-id|read_unlock
+id|rcu_read_unlock
 c_func
 (paren
-op_amp
-id|br-&gt;lock
 )paren
 suffix:semicolon
 r_return
@@ -752,11 +744,9 @@ op_amp
 id|pt-&gt;hold_timer
 )paren
 suffix:semicolon
-id|read_unlock
+id|rcu_read_unlock
 c_func
 (paren
-op_amp
-id|br-&gt;lock
 )paren
 suffix:semicolon
 r_if
@@ -806,7 +796,7 @@ suffix:semicolon
 r_case
 id|BRCTL_SET_BRIDGE_PRIORITY
 suffix:colon
-id|write_lock
+id|spin_lock_bh
 c_func
 (paren
 op_amp
@@ -821,7 +811,7 @@ comma
 id|arg0
 )paren
 suffix:semicolon
-id|write_unlock
+id|spin_unlock_bh
 c_func
 (paren
 op_amp
@@ -845,7 +835,7 @@ id|ret
 op_assign
 l_int|0
 suffix:semicolon
-id|write_lock
+id|spin_lock_bh
 c_func
 (paren
 op_amp
@@ -883,7 +873,7 @@ comma
 id|arg1
 )paren
 suffix:semicolon
-id|write_unlock
+id|spin_unlock_bh
 c_func
 (paren
 op_amp
@@ -908,7 +898,7 @@ id|ret
 op_assign
 l_int|0
 suffix:semicolon
-id|write_lock
+id|spin_lock_bh
 c_func
 (paren
 op_amp
@@ -946,7 +936,7 @@ comma
 id|arg1
 )paren
 suffix:semicolon
-id|write_unlock
+id|spin_unlock_bh
 c_func
 (paren
 op_amp

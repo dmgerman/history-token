@@ -63,6 +63,11 @@ id|info
 )paren
 (brace
 r_struct
+id|inet6_dev
+op_star
+id|idev
+suffix:semicolon
+r_struct
 id|ipv6hdr
 op_star
 id|iph
@@ -122,6 +127,14 @@ id|savesctp
 suffix:semicolon
 r_int
 id|err
+suffix:semicolon
+id|idev
+op_assign
+id|in6_dev_get
+c_func
+(paren
+id|skb-&gt;dev
+)paren
 suffix:semicolon
 multiline_comment|/* Fix up skb to look at the embedded net header. */
 id|saveip
@@ -184,10 +197,13 @@ id|sk
 id|ICMP6_INC_STATS_BH
 c_func
 (paren
+id|idev
+comma
 id|Icmp6InErrors
 )paren
 suffix:semicolon
-r_return
+r_goto
+id|out
 suffix:semicolon
 )brace
 multiline_comment|/* Warning:  The sock lock is held.  Remember to call &n;&t; * sctp_err_finish!&n;&t; */
@@ -287,6 +303,25 @@ comma
 id|ep
 comma
 id|asoc
+)paren
+suffix:semicolon
+id|out
+suffix:colon
+r_if
+c_cond
+(paren
+id|likely
+c_func
+(paren
+id|idev
+op_ne
+l_int|NULL
+)paren
+)paren
+id|in6_dev_put
+c_func
+(paren
+id|idev
 )paren
 suffix:semicolon
 )brace
