@@ -40,7 +40,7 @@ DECL|macro|LAUNCH_STATE_SENT
 mdefine_line|#define LAUNCH_STATE_SENT&t;1
 DECL|macro|LAUNCH_STATE_RECD
 mdefine_line|#define LAUNCH_STATE_RECD&t;2
-multiline_comment|/*&n; * The launch routine is called only if the complement address is correct.&n; *&n; * Before control is transferred to a routine, the compliment address&n; * is zeroed (invalidated) to prevent an accidental call from a spurious&n; * interrupt.&n; *&n; * The slave_launch routine turns on the BUSY flag, and the slave loop&n; * clears the BUSY flag after control is returned to it.&n; */
+multiline_comment|/*&n; * The launch routine is called only if the complement address is correct.&n; *&n; * Before control is transferred to a routine, the complement address&n; * is zeroed (invalidated) to prevent an accidental call from a spurious&n; * interrupt.&n; *&n; * The slave_launch routine turns on the BUSY flag, and the slave loop&n; * clears the BUSY flag after control is returned to it.&n; */
 macro_line|#ifdef _LANGUAGE_C
 DECL|typedef|launch_state_t
 r_typedef

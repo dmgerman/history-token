@@ -21,7 +21,7 @@ DECL|macro|NMI_OFF_CALLPARM
 mdefine_line|#define NMI_OFF_CALLPARM&t;0x20
 DECL|macro|NMI_OFF_GMASTER
 mdefine_line|#define NMI_OFF_GMASTER&t;&t;0x28
-multiline_comment|/*&n; * The NMI routine is called only if the complement address is&n; * correct.&n; *&n; * Before control is transferred to a routine, the compliment address&n; * is zeroed (invalidated) to prevent an accidental call from a spurious&n; * interrupt.&n; *&n; */
+multiline_comment|/*&n; * The NMI routine is called only if the complement address is&n; * correct.&n; *&n; * Before control is transferred to a routine, the complement address&n; * is zeroed (invalidated) to prevent an accidental call from a spurious&n; * interrupt.&n; *&n; */
 macro_line|#ifdef _LANGUAGE_C
 DECL|struct|nmi_s
 r_typedef

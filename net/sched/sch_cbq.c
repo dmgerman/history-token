@@ -2820,7 +2820,7 @@ op_rshift
 id|cl-&gt;ewma_log
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t;&t;   That is not all.&n;&t;&t;&t;   To maintain the rate allocated to the class,&n;&t;&t;&t;   we add to undertime virtual clock,&n;&t;&t;&t;   necesary to complete transmitted packet.&n;&t;&t;&t;   (len/phys_bandwidth has been already passed&n;&t;&t;&t;   to the moment of cbq_update)&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t;   That is not all.&n;&t;&t;&t;   To maintain the rate allocated to the class,&n;&t;&t;&t;   we add to undertime virtual clock,&n;&t;&t;&t;   necessary to complete transmitted packet.&n;&t;&t;&t;   (len/phys_bandwidth has been already passed&n;&t;&t;&t;   to the moment of cbq_update)&n;&t;&t;&t; */
 id|idle
 op_sub_assign
 id|L2T

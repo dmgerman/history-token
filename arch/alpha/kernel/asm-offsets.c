@@ -2,6 +2,7 @@ multiline_comment|/*&n; * Generate definitions needed by assembly language modul
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/stddef.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
+macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 DECL|macro|DEFINE
 mdefine_line|#define DEFINE(sym, val) &bslash;&n;        asm volatile(&quot;&bslash;n-&gt;&quot; #sym &quot; %0 &quot; #val : : &quot;i&quot; (val))

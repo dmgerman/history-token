@@ -479,7 +479,7 @@ id|Probing
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* This flag is set when a dummy seek is necesary to make the WP&n; * status bit accessible.&n; */
+multiline_comment|/* This flag is set when a dummy seek is necessary to make the WP&n; * status bit accessible.&n; */
 DECL|variable|NeedSeek
 r_static
 r_int

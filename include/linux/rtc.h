@@ -99,12 +99,12 @@ DECL|member|pll_posmult
 r_int
 id|pll_posmult
 suffix:semicolon
-multiline_comment|/* factor for +ve corection */
+multiline_comment|/* factor for +ve correction */
 DECL|member|pll_negmult
 r_int
 id|pll_negmult
 suffix:semicolon
-multiline_comment|/* factor for -ve corection */
+multiline_comment|/* factor for -ve correction */
 DECL|member|pll_clock
 r_int
 id|pll_clock

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * include/asm-ppc/platforms/powerpmc250_serial.h&n; * &n; * Motorola PrPMC750 serial support&n; *&n; * Author: Troy Benjegerdes &lt;tbenjegerdes@mvista.com&gt;&n; *&n; * 2001 (c) MontaVista, Software, Inc.  This file is licensed under&n; * the terms of the GNU General Public License version 2.1.  This program&n; * is licensed &quot;as is&quot; without any warranty of any kind, whether express&n; * or implied.&n; */
+multiline_comment|/*&n; * include/asm-ppc/platforms/powerpmc250_serial.h&n; * &n; * Motorola PrPMC750 serial support&n; *&n; * Author: Troy Benjegerdes &lt;tbenjegerdes@mvista.com&gt;&n; *&n; * 2001 (c) MontaVista, Software, Inc.  This file is licensed under&n; * the terms of the GNU General Public License version 2.  This program&n; * is licensed &quot;as is&quot; without any warranty of any kind, whether express&n; * or implied.&n; */
 macro_line|#ifdef __KERNEL__
 macro_line|#ifndef __ASMPPC_POWERPMC250_SERIAL_H
 DECL|macro|__ASMPPC_POWERPMC250_SERIAL_H

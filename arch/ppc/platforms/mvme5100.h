@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * include/asm-ppc/platforms/mvme5100.h&n; * &n; * Definitions for Motorola MVME5100.&n; *&n; * Author: Matt Porter &lt;mporter@mvista.com&gt;&n; *&n; * 2001 (c) MontaVista, Software, Inc.  This file is licensed under&n; * the terms of the GNU General Public License version 2.1.  This program&n; * is licensed &quot;as is&quot; without any warranty of any kind, whether express&n; * or implied.&n; */
+multiline_comment|/*&n; * include/asm-ppc/platforms/mvme5100.h&n; * &n; * Definitions for Motorola MVME5100.&n; *&n; * Author: Matt Porter &lt;mporter@mvista.com&gt;&n; *&n; * 2001 (c) MontaVista, Software, Inc.  This file is licensed under&n; * the terms of the GNU General Public License version 2.  This program&n; * is licensed &quot;as is&quot; without any warranty of any kind, whether express&n; * or implied.&n; */
 macro_line|#ifdef __KERNEL__
 macro_line|#ifndef __ASM_MVME5100_H__
 DECL|macro|__ASM_MVME5100_H__

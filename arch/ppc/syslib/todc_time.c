@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * arch/ppc/syslib/todc_time.c&n; * &n; * Time of Day Clock support for the M48T35, M48T37, M48T59, and MC146818&n; * Real Time Clocks/Timekeepers.&n; *&n; * Author: Mark A. Greer&n; *         mgreer@mvista.com&n; *&n; * 2001 (c) MontaVista, Software, Inc.  This file is licensed under&n; * the terms of the GNU General Public License version 2.1.  This program&n; * is licensed &quot;as is&quot; without any warranty of any kind, whether express&n; * or implied.&n; */
+multiline_comment|/*&n; * arch/ppc/syslib/todc_time.c&n; * &n; * Time of Day Clock support for the M48T35, M48T37, M48T59, and MC146818&n; * Real Time Clocks/Timekeepers.&n; *&n; * Author: Mark A. Greer&n; *         mgreer@mvista.com&n; *&n; * 2001 (c) MontaVista, Software, Inc.  This file is licensed under&n; * the terms of the GNU General Public License version 2.  This program&n; * is licensed &quot;as is&quot; without any warranty of any kind, whether express&n; * or implied.&n; */
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;

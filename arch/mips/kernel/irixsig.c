@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/smp.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/time.h&gt;
+macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;asm/ptrace.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 r_extern

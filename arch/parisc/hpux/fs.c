@@ -4,6 +4,7 @@ macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/file.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
+macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;asm/errno.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 DECL|function|hpux_execve
