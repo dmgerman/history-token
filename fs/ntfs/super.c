@@ -10,6 +10,7 @@ macro_line|#include &lt;linux/vfs.h&gt;
 macro_line|#include &quot;ntfs.h&quot;
 macro_line|#include &quot;sysctl.h&quot;
 macro_line|#include &quot;logfile.h&quot;
+macro_line|#include &quot;index.h&quot;
 multiline_comment|/* Number of mounted file systems which have compression enabled. */
 DECL|variable|ntfs_nr_compression_users
 r_static
@@ -3451,6 +3452,12 @@ id|ntfs_inode
 op_star
 id|tmp_ni
 suffix:semicolon
+id|ntfs_debug
+c_func
+(paren
+l_string|&quot;Entering.&quot;
+)paren
+suffix:semicolon
 multiline_comment|/* Get mft mirror inode. */
 id|tmp_ino
 op_assign
@@ -3556,6 +3563,12 @@ suffix:semicolon
 id|vol-&gt;mftmirr_ino
 op_assign
 id|tmp_ino
+suffix:semicolon
+id|ntfs_debug
+c_func
+(paren
+l_string|&quot;Done.&quot;
+)paren
 suffix:semicolon
 r_return
 id|TRUE
@@ -8004,10 +8017,6 @@ id|vol-&gt;mftmirr_ino
 op_assign
 l_int|NULL
 suffix:semicolon
-id|vol-&gt;mftmirr_size
-op_assign
-l_int|0
-suffix:semicolon
 id|vol-&gt;logfile_ino
 op_assign
 l_int|NULL
@@ -8035,24 +8044,6 @@ suffix:semicolon
 id|vol-&gt;secure_ino
 op_assign
 l_int|NULL
-suffix:semicolon
-id|vol-&gt;uid
-op_assign
-id|vol-&gt;gid
-op_assign
-l_int|0
-suffix:semicolon
-id|vol-&gt;flags
-op_assign
-l_int|0
-suffix:semicolon
-id|vol-&gt;on_errors
-op_assign
-l_int|0
-suffix:semicolon
-id|vol-&gt;mft_zone_multiplier
-op_assign
-l_int|0
 suffix:semicolon
 id|vol-&gt;nls_map
 op_assign
@@ -8519,6 +8510,9 @@ l_string|&quot;Failed to allocate root directory.&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Clean up after the successful load_system_files() call from above. */
+singleline_comment|// TODO: Use ntfs_put_super() instead of repeating all this code...
+singleline_comment|// FIXME: Should mark the volume clean as the error is most likely
+singleline_comment|// &t;  -ENOMEM.
 id|iput
 c_func
 (paren
@@ -8569,7 +8563,40 @@ id|vol-&gt;lcnbmp_ino
 op_assign
 l_int|NULL
 suffix:semicolon
+id|iput
+c_func
+(paren
+id|vol-&gt;mftbmp_ino
+)paren
+suffix:semicolon
+id|vol-&gt;mftbmp_ino
+op_assign
+l_int|NULL
+suffix:semicolon
 macro_line|#ifdef NTFS_RW
+r_if
+c_cond
+(paren
+id|vol-&gt;logfile_ino
+)paren
+(brace
+id|iput
+c_func
+(paren
+id|vol-&gt;logfile_ino
+)paren
+suffix:semicolon
+id|vol-&gt;logfile_ino
+op_assign
+l_int|NULL
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|vol-&gt;mftmirr_ino
+)paren
+(brace
 id|iput
 c_func
 (paren
@@ -8580,17 +8607,8 @@ id|vol-&gt;mftmirr_ino
 op_assign
 l_int|NULL
 suffix:semicolon
+)brace
 macro_line|#endif /* NTFS_RW */
-id|iput
-c_func
-(paren
-id|vol-&gt;mftbmp_ino
-)paren
-suffix:semicolon
-id|vol-&gt;mftbmp_ino
-op_assign
-l_int|NULL
-suffix:semicolon
 id|vol-&gt;upcase_len
 op_assign
 l_int|0
@@ -8704,7 +8722,6 @@ id|vol-&gt;mft_ino
 op_ne
 id|tmp_ino
 )paren
-(brace
 id|iput
 c_func
 (paren
@@ -8715,7 +8732,6 @@ id|vol-&gt;mft_ino
 op_assign
 l_int|NULL
 suffix:semicolon
-)brace
 multiline_comment|/*&n;&t; * This is needed to get ntfs_clear_extent_inode() called for each&n;&t; * inode we have ever called ntfs_iget()/iput() on, otherwise we A)&n;&t; * leak resources and B) a subsequent mount fails automatically due to&n;&t; * ntfs_iget() never calling down into our ntfs_read_locked_inode()&n;&t; * method again... FIXME: Do we need to do this twice now because of&n;&t; * attribute inodes? I think not, so leave as is for now... (AIA)&n;&t; */
 r_if
 c_cond
@@ -8842,11 +8858,16 @@ id|ni
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Slab cache to optimize allocations and deallocations of attribute search&n; * contexts.&n; */
+multiline_comment|/*&n; * Slab caches to optimize allocations and deallocations of attribute search&n; * contexts and index contexts, respectively.&n; */
 DECL|variable|ntfs_attr_ctx_cache
 id|kmem_cache_t
 op_star
 id|ntfs_attr_ctx_cache
+suffix:semicolon
+DECL|variable|ntfs_index_ctx_cache
+id|kmem_cache_t
+op_star
+id|ntfs_index_ctx_cache
 suffix:semicolon
 multiline_comment|/* A global default upcase table and a corresponding reference count. */
 DECL|variable|default_upcase
@@ -8956,6 +8977,16 @@ comma
 )brace
 suffix:semicolon
 multiline_comment|/* Stable names for the slab caches. */
+DECL|variable|ntfs_index_ctx_cache_name
+r_static
+r_const
+r_char
+id|ntfs_index_ctx_cache_name
+(braket
+)braket
+op_assign
+l_string|&quot;ntfs_index_ctx_cache&quot;
+suffix:semicolon
 DECL|variable|ntfs_attr_ctx_cache_name
 r_static
 r_const
@@ -9039,6 +9070,50 @@ c_func
 l_string|&quot;Debug messages are enabled.&quot;
 )paren
 suffix:semicolon
+id|ntfs_index_ctx_cache
+op_assign
+id|kmem_cache_create
+c_func
+(paren
+id|ntfs_index_ctx_cache_name
+comma
+r_sizeof
+(paren
+id|ntfs_index_context
+)paren
+comma
+l_int|0
+multiline_comment|/* offset */
+comma
+id|SLAB_HWCACHE_ALIGN
+comma
+l_int|NULL
+multiline_comment|/* ctor */
+comma
+l_int|NULL
+multiline_comment|/* dtor */
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|ntfs_index_ctx_cache
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_CRIT
+l_string|&quot;NTFS: Failed to create %s!&bslash;n&quot;
+comma
+id|ntfs_index_ctx_cache_name
+)paren
+suffix:semicolon
+r_goto
+id|ictx_err_out
+suffix:semicolon
+)brace
 id|ntfs_attr_ctx_cache
 op_assign
 id|kmem_cache_create
@@ -9080,7 +9155,7 @@ id|ntfs_attr_ctx_cache_name
 )paren
 suffix:semicolon
 r_goto
-id|ctx_err_out
+id|actx_err_out
 suffix:semicolon
 )brace
 id|ntfs_name_cache
@@ -9308,7 +9383,15 @@ c_func
 id|ntfs_attr_ctx_cache
 )paren
 suffix:semicolon
-id|ctx_err_out
+id|actx_err_out
+suffix:colon
+id|kmem_cache_destroy
+c_func
+(paren
+id|ntfs_index_ctx_cache
+)paren
+suffix:semicolon
+id|ictx_err_out
 suffix:colon
 r_if
 c_cond
@@ -9457,6 +9540,30 @@ id|KERN_CRIT
 l_string|&quot;NTFS: Failed to destory %s.&bslash;n&quot;
 comma
 id|ntfs_attr_ctx_cache_name
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|kmem_cache_destroy
+c_func
+(paren
+id|ntfs_index_ctx_cache
+)paren
+op_logical_and
+(paren
+id|err
+op_assign
+l_int|1
+)paren
+)paren
+id|printk
+c_func
+(paren
+id|KERN_CRIT
+l_string|&quot;NTFS: Failed to destory %s.&bslash;n&quot;
+comma
+id|ntfs_index_ctx_cache_name
 )paren
 suffix:semicolon
 r_if

@@ -3135,7 +3135,7 @@ id|KM_USER0
 )paren
 suffix:semicolon
 )brace
-singleline_comment|// TODO: Implement and remove this check.
+multiline_comment|/* Handle mst protected attributes. */
 r_if
 c_cond
 (paren
@@ -3152,19 +3152,18 @@ c_func
 id|page
 )paren
 suffix:semicolon
-id|ntfs_error
+id|ntfs_warning
 c_func
 (paren
 id|vi-&gt;i_sb
 comma
-l_string|&quot;Writing to MST protected &quot;
-l_string|&quot;attributes is not supported yet. &quot;
-l_string|&quot;Sorry.&quot;
+l_string|&quot;Writing to index allocation &quot;
+l_string|&quot;attribute is not supported yet.  &quot;
+l_string|&quot;Discarding written data.&quot;
 )paren
 suffix:semicolon
 r_return
-op_minus
-id|EOPNOTSUPP
+l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* Normal data stream. */
@@ -6199,6 +6198,14 @@ op_assign
 id|block_sync_page
 comma
 multiline_comment|/* Currently, just unplugs the&n;&t;&t;&t;&t;&t;&t;   disk request queue. */
+macro_line|#ifdef NTFS_RW
+dot
+id|writepage
+op_assign
+id|ntfs_writepage
+comma
+multiline_comment|/* Write dirty page to disk. */
+macro_line|#endif /* NTFS_RW */
 )brace
 suffix:semicolon
 eof

@@ -2,6 +2,7 @@ multiline_comment|/*&n; * ntfs.h - Defines for NTFS Linux kernel driver. Part of
 macro_line|#ifndef _LINUX_NTFS_H
 DECL|macro|_LINUX_NTFS_H
 mdefine_line|#define _LINUX_NTFS_H
+macro_line|#include &lt;linux/stddef.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/compiler.h&gt;
@@ -69,6 +70,11 @@ r_extern
 id|kmem_cache_t
 op_star
 id|ntfs_attr_ctx_cache
+suffix:semicolon
+r_extern
+id|kmem_cache_t
+op_star
+id|ntfs_index_ctx_cache
 suffix:semicolon
 multiline_comment|/* The various operations structs defined throughout the driver files. */
 r_extern
