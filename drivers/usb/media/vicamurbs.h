@@ -5,8 +5,8 @@ mdefine_line|#define __LINUX_VICAMURBS_H
 multiline_comment|/* -------------------------------------------------------------------------- */
 multiline_comment|/* FIXME - Figure out transfers so that this doesn&squot;t need to be here&n; *&n; * Notice: in pieces below, &quot;0&quot; means other code will fill it while &quot;0x00&quot; means this is zero */
 multiline_comment|/* Request 0x51 Image Setup */
+macro_line|#if 0
 multiline_comment|/* 128x98 ? 0x3180 size */
-DECL|variable|s128x98bw
 r_static
 r_int
 r_char
@@ -48,6 +48,7 @@ comma
 l_int|0x00
 )brace
 suffix:semicolon
+macro_line|#endif
 multiline_comment|/* 128x122 3D80 size */
 DECL|variable|s128x122bw
 r_static
