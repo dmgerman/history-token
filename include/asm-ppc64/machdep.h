@@ -1,7 +1,7 @@
 macro_line|#ifdef __KERNEL__
-macro_line|#ifndef _PPC_MACHDEP_H
-DECL|macro|_PPC_MACHDEP_H
-mdefine_line|#define _PPC_MACHDEP_H
+macro_line|#ifndef _PPC64_MACHDEP_H
+DECL|macro|_PPC64_MACHDEP_H
+mdefine_line|#define _PPC64_MACHDEP_H
 multiline_comment|/*&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License&n; * as published by the Free Software Foundation; either version&n; * 2 of the License, or (at your option) any later version.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/seq_file.h&gt;
@@ -10,9 +10,6 @@ id|pt_regs
 suffix:semicolon
 r_struct
 id|pci_bus
-suffix:semicolon
-r_struct
-id|pci_dev
 suffix:semicolon
 r_struct
 id|device_node
@@ -343,20 +340,6 @@ op_star
 id|m
 )paren
 suffix:semicolon
-multiline_comment|/* Optional, may be NULL. */
-DECL|member|irq_cannonicalize
-r_int
-r_int
-(paren
-op_star
-id|irq_cannonicalize
-)paren
-(paren
-r_int
-r_int
-id|irq
-)paren
-suffix:semicolon
 DECL|member|init_IRQ
 r_void
 (paren
@@ -389,7 +372,7 @@ id|pt_regs
 op_star
 )paren
 suffix:semicolon
-multiline_comment|/* A general init function, called by ppc_init in init/main.c.&n;&t;   May be NULL. */
+multiline_comment|/* Optional, may be NULL. */
 DECL|member|init
 r_void
 (paren
@@ -432,17 +415,6 @@ id|halt
 r_void
 )paren
 suffix:semicolon
-DECL|member|time_init
-r_int
-(paren
-op_star
-id|time_init
-)paren
-(paren
-r_void
-)paren
-suffix:semicolon
-multiline_comment|/* Optional, may be NULL */
 DECL|member|set_rtc_time
 r_int
 (paren
@@ -501,33 +473,6 @@ op_star
 comma
 r_int
 r_int
-)paren
-suffix:semicolon
-DECL|member|nvram_read_val
-r_int
-r_char
-(paren
-op_star
-id|nvram_read_val
-)paren
-(paren
-r_int
-id|addr
-)paren
-suffix:semicolon
-DECL|member|nvram_write_val
-r_void
-(paren
-op_star
-id|nvram_write_val
-)paren
-(paren
-r_int
-id|addr
-comma
-r_int
-r_char
-id|val
 )paren
 suffix:semicolon
 multiline_comment|/* Debug interface.  Low level I/O to some terminal device */
@@ -621,7 +566,7 @@ id|pcibios_fixup
 r_void
 )paren
 suffix:semicolon
-multiline_comment|/* Called for each PCI bus in the system&n;        * when it&squot;s probed&n;        */
+multiline_comment|/* Called for each PCI bus in the system&n;&t; * when it&squot;s probed&n;&t; */
 DECL|member|pcibios_fixup_bus
 r_void
 (paren
@@ -633,80 +578,6 @@ r_struct
 id|pci_bus
 op_star
 )paren
-suffix:semicolon
-multiline_comment|/* Called when pci_enable_device() is called (initial=0) or&n;        * when a device with no assigned resource is found (initial=1).&n;        * Returns 0 to allow assignement/enabling of the device&n;        */
-DECL|member|pcibios_enable_device_hook
-r_int
-(paren
-op_star
-id|pcibios_enable_device_hook
-)paren
-(paren
-r_struct
-id|pci_dev
-op_star
-comma
-r_int
-id|initial
-)paren
-suffix:semicolon
-DECL|member|pci_dev_io_base
-r_void
-op_star
-(paren
-op_star
-id|pci_dev_io_base
-)paren
-(paren
-r_int
-r_char
-id|bus
-comma
-r_int
-r_char
-id|devfn
-comma
-r_int
-id|physical
-)paren
-suffix:semicolon
-DECL|member|pci_dev_mem_base
-r_void
-op_star
-(paren
-op_star
-id|pci_dev_mem_base
-)paren
-(paren
-r_int
-r_char
-id|bus
-comma
-r_int
-r_char
-id|devfn
-)paren
-suffix:semicolon
-DECL|member|pci_dev_root_bridge
-r_int
-(paren
-op_star
-id|pci_dev_root_bridge
-)paren
-(paren
-r_int
-r_char
-id|bus
-comma
-r_int
-r_char
-id|devfn
-)paren
-suffix:semicolon
-multiline_comment|/* this is for modules, since _machine can be a define -- Cort */
-DECL|member|ppc_machine
-r_int
-id|ppc_machine
 suffix:semicolon
 macro_line|#ifdef CONFIG_SMP
 multiline_comment|/* functions for dealing with other cpus */
@@ -730,14 +601,6 @@ id|cmd_line
 l_int|512
 )braket
 suffix:semicolon
-r_extern
-r_void
-id|setup_pci_ptrs
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-macro_line|#endif /* _PPC_MACHDEP_H */
+macro_line|#endif /* _PPC64_MACHDEP_H */
 macro_line|#endif /* __KERNEL__ */
 eof
