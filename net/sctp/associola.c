@@ -629,11 +629,7 @@ l_int|0
 suffix:semicolon
 id|asoc-&gt;assoc_id
 op_assign
-(paren
-id|sctp_assoc_t
-)paren
-op_minus
-l_int|1L
+l_int|0
 suffix:semicolon
 multiline_comment|/* Assume that peer would support both address types unless we are&n;&t; * told otherwise.&n;&t; */
 id|asoc-&gt;peer.ipv4_address
@@ -972,13 +968,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-(paren
-r_int
-)paren
 id|asoc-&gt;assoc_id
 op_ne
-op_minus
-l_int|1L
+l_int|0
 )paren
 (brace
 id|spin_lock_bh
@@ -994,9 +986,6 @@ c_func
 op_amp
 id|sctp_assocs_id
 comma
-(paren
-r_int
-)paren
 id|asoc-&gt;assoc_id
 )paren
 suffix:semicolon

@@ -3364,7 +3364,7 @@ suffix:semicolon
 id|sctp_assoc_t
 id|associd
 op_assign
-l_int|NULL
+l_int|0
 suffix:semicolon
 id|sctp_cmsgs_t
 id|cmsgs
