@@ -1400,7 +1400,7 @@ op_assign
 id|vmalloc
 c_func
 (paren
-id|rtas_error_log_max
+id|rtas_error_log_buffer_max
 op_star
 id|LOG_NUMBER
 )paren
