@@ -1,6 +1,6 @@
-multiline_comment|/*&n; * forcedeth: Ethernet driver for NVIDIA nForce media access controllers.&n; *&n; * Note: This driver is a cleanroom reimplementation based on reverse&n; *      engineered documentation written by Carl-Daniel Hailfinger&n; *      and Andrew de Quincey. It&squot;s neither supported nor endorsed&n; *      by NVIDIA Corp. Use at your own risk.&n; *&n; * NVIDIA, nForce and other NVIDIA marks are trademarks or registered&n; * trademarks of NVIDIA Corporation in the United States and other&n; * countries.&n; *&n; * Copyright (C) 2003 Manfred Spraul&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; *&n; * Changelog:&n; * &t;0.01: 05 Oct 2003: First release that compiles without warnings.&n; * &t;0.02: 05 Oct 2003: Fix bug for drain_tx: do not try to free NULL skbs.&n; * &t;&t;&t;   Check all PCI BARs for the register window.&n; * &t;&t;&t;   udelay added to mii_rw.&n; * &t;0.03: 06 Oct 2003: Initialize dev-&gt;irq.&n; * &t;0.04: 07 Oct 2003: Initialize np-&gt;lock, reduce handled irqs, add printks.&n; * &t;0.05: 09 Oct 2003: printk removed again, irq status print tx_timeout.&n; * &t;0.06: 10 Oct 2003: MAC Address read updated, pff flag generation updated,&n; * &t;&t;&t;   irq mask updated&n; * &t;0.07: 14 Oct 2003: Further irq mask updates.&n; * &t;0.08: 20 Oct 2003: rx_desc.Length initialization added, alloc_rx refill&n; * &t;&t;&t;   added into irq handler, NULL check for drain_ring.&n; * &t;0.09: 20 Oct 2003: Basic link speed irq implementation. Only handle the&n; * &t;&t;&t;   requested interrupt sources.&n; * &t;0.10: 20 Oct 2003: First cleanup for release.&n; * &t;0.11: 21 Oct 2003: hexdump for tx added, rx buffer sizes increased.&n; * &t;&t;&t;   MAC Address init fix, set_multicast cleanup.&n; * &t;0.12: 23 Oct 2003: Cleanups for release.&n; * &t;0.13: 25 Oct 2003: Limit for concurrent tx packets increased to 10.&n; * &t;&t;&t;   Set link speed correctly. start rx before starting&n; * &t;&t;&t;   tx (start_rx sets the link speed).&n; * &t;0.14: 25 Oct 2003: Nic dependant irq mask.&n; * &t;0.15: 08 Nov 2003: fix smp deadlock with set_multicast_list during&n; * &t;&t;&t;   open.&n; * &t;0.16: 15 Nov 2003: include file cleanup for ppc64, rx buffer size&n; * &t;&t;&t;   increased to 1628 bytes.&n; * &t;0.17: 16 Nov 2003: undo rx buffer size increase. Substract 1 from&n; * &t;&t;&t;   the tx length.&n; * &t;0.18: 17 Nov 2003: fix oops due to late initialization of dev_stats&n; * &t;0.19: 29 Nov 2003: Handle RxNoBuf, detect &amp; handle invalid mac&n; * &t;&t;&t;   addresses, really stop rx if already running&n; * &t;&t;&t;   in start_rx, clean up a bit.&n; * &t;&t;&t;&t;(C) Carl-Daniel Hailfinger&n; * &t;0.20: 07 Dec 2003: alloc fixes&n; * &t;0.21: 12 Jan 2004: additional alloc fix, nic polling fix.&n; *&t;0.22: 19 Jan 2004: reprogram timer to a sane rate, avoid lockup&n; * &t;&t;&t;   on close.&n; * &t;&t;&t;&t;(C) Carl-Daniel Hailfinger, Manfred Spraul&n; *&t;0.23: 26 Jan 2004: various small cleanups&n; *&n; * Known bugs:&n; * We suspect that on some hardware no TX done interrupts are generated.&n; * This means recovery from netif_stop_queue only happens if the hw timer&n; * interrupt fires (100 times/second, configurable with NVREG_POLL_DEFAULT)&n; * and the timer is active in the IRQMask, or if a rx packet arrives by chance.&n; * If your hardware reliably generates tx done interrupts, then you can remove&n; * DEV_NEED_TIMERIRQ from the driver_data flags.&n; * DEV_NEED_TIMERIRQ will not harm you on sane hardware, only generating a few&n; * superfluous timer interrupts from the nic.&n; */
+multiline_comment|/*&n; * forcedeth: Ethernet driver for NVIDIA nForce media access controllers.&n; *&n; * Note: This driver is a cleanroom reimplementation based on reverse&n; *      engineered documentation written by Carl-Daniel Hailfinger&n; *      and Andrew de Quincey. It&squot;s neither supported nor endorsed&n; *      by NVIDIA Corp. Use at your own risk.&n; *&n; * NVIDIA, nForce and other NVIDIA marks are trademarks or registered&n; * trademarks of NVIDIA Corporation in the United States and other&n; * countries.&n; *&n; * Copyright (C) 2003 Manfred Spraul&n; * Copyright (C) 2004 Andrew de Quincey (wol support)&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; *&n; * Changelog:&n; * &t;0.01: 05 Oct 2003: First release that compiles without warnings.&n; * &t;0.02: 05 Oct 2003: Fix bug for nv_drain_tx: do not try to free NULL skbs.&n; * &t;&t;&t;   Check all PCI BARs for the register window.&n; * &t;&t;&t;   udelay added to mii_rw.&n; * &t;0.03: 06 Oct 2003: Initialize dev-&gt;irq.&n; * &t;0.04: 07 Oct 2003: Initialize np-&gt;lock, reduce handled irqs, add printks.&n; * &t;0.05: 09 Oct 2003: printk removed again, irq status print tx_timeout.&n; * &t;0.06: 10 Oct 2003: MAC Address read updated, pff flag generation updated,&n; * &t;&t;&t;   irq mask updated&n; * &t;0.07: 14 Oct 2003: Further irq mask updates.&n; * &t;0.08: 20 Oct 2003: rx_desc.Length initialization added, nv_alloc_rx refill&n; * &t;&t;&t;   added into irq handler, NULL check for drain_ring.&n; * &t;0.09: 20 Oct 2003: Basic link speed irq implementation. Only handle the&n; * &t;&t;&t;   requested interrupt sources.&n; * &t;0.10: 20 Oct 2003: First cleanup for release.&n; * &t;0.11: 21 Oct 2003: hexdump for tx added, rx buffer sizes increased.&n; * &t;&t;&t;   MAC Address init fix, set_multicast cleanup.&n; * &t;0.12: 23 Oct 2003: Cleanups for release.&n; * &t;0.13: 25 Oct 2003: Limit for concurrent tx packets increased to 10.&n; * &t;&t;&t;   Set link speed correctly. start rx before starting&n; * &t;&t;&t;   tx (nv_start_rx sets the link speed).&n; * &t;0.14: 25 Oct 2003: Nic dependant irq mask.&n; * &t;0.15: 08 Nov 2003: fix smp deadlock with set_multicast_list during&n; * &t;&t;&t;   open.&n; * &t;0.16: 15 Nov 2003: include file cleanup for ppc64, rx buffer size&n; * &t;&t;&t;   increased to 1628 bytes.&n; * &t;0.17: 16 Nov 2003: undo rx buffer size increase. Substract 1 from&n; * &t;&t;&t;   the tx length.&n; * &t;0.18: 17 Nov 2003: fix oops due to late initialization of dev_stats&n; * &t;0.19: 29 Nov 2003: Handle RxNoBuf, detect &amp; handle invalid mac&n; * &t;&t;&t;   addresses, really stop rx if already running&n; * &t;&t;&t;   in nv_start_rx, clean up a bit.&n; * &t;&t;&t;&t;(C) Carl-Daniel Hailfinger&n; * &t;0.20: 07 Dec 2003: alloc fixes&n; * &t;0.21: 12 Jan 2004: additional alloc fix, nic polling fix.&n; *&t;0.22: 19 Jan 2004: reprogram timer to a sane rate, avoid lockup&n; * &t;&t;&t;   on close.&n; * &t;&t;&t;&t;(C) Carl-Daniel Hailfinger, Manfred Spraul&n; *&t;0.23: 26 Jan 2004: various small cleanups&n; *&t;0.24: 27 Feb 2004: make driver even less anonymous in backtraces&n; *&t;0.25: 09 Mar 2004: wol support&n; *&n; * Known bugs:&n; * We suspect that on some hardware no TX done interrupts are generated.&n; * This means recovery from netif_stop_queue only happens if the hw timer&n; * interrupt fires (100 times/second, configurable with NVREG_POLL_DEFAULT)&n; * and the timer is active in the IRQMask, or if a rx packet arrives by chance.&n; * If your hardware reliably generates tx done interrupts, then you can remove&n; * DEV_NEED_TIMERIRQ from the driver_data flags.&n; * DEV_NEED_TIMERIRQ will not harm you on sane hardware, only generating a few&n; * superfluous timer interrupts from the nic.&n; */
 DECL|macro|FORCEDETH_VERSION
-mdefine_line|#define FORCEDETH_VERSION&t;&t;&quot;0.23&quot;
+mdefine_line|#define FORCEDETH_VERSION&t;&t;&quot;0.25&quot;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
@@ -348,6 +348,8 @@ DECL|macro|NVREG_WAKEUPFLAGS_ACCEPT_WAKEUPPAT
 mdefine_line|#define NVREG_WAKEUPFLAGS_ACCEPT_WAKEUPPAT&t;0x02
 DECL|macro|NVREG_WAKEUPFLAGS_ACCEPT_LINKCHANGE
 mdefine_line|#define NVREG_WAKEUPFLAGS_ACCEPT_LINKCHANGE&t;0x04
+DECL|macro|NVREG_WAKEUPFLAGS_ENABLE
+mdefine_line|#define NVREG_WAKEUPFLAGS_ENABLE&t;0x1111
 DECL|enumerator|NvRegPatternCRC
 id|NvRegPatternCRC
 op_assign
@@ -541,6 +543,10 @@ suffix:semicolon
 DECL|member|phyaddr
 r_int
 id|phyaddr
+suffix:semicolon
+DECL|member|wolenabled
+r_int
+id|wolenabled
 suffix:semicolon
 multiline_comment|/* General data: RO fields */
 DECL|member|ring_addr
@@ -1173,10 +1179,10 @@ r_return
 id|retval
 suffix:semicolon
 )brace
-DECL|function|start_rx
+DECL|function|nv_start_rx
 r_static
 r_void
-id|start_rx
+id|nv_start_rx
 c_func
 (paren
 r_struct
@@ -1210,7 +1216,7 @@ id|dprintk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;%s: start_rx&bslash;n&quot;
+l_string|&quot;%s: nv_start_rx&bslash;n&quot;
 comma
 id|dev-&gt;name
 )paren
@@ -1280,10 +1286,10 @@ id|base
 )paren
 suffix:semicolon
 )brace
-DECL|function|stop_rx
+DECL|function|nv_stop_rx
 r_static
 r_void
-id|stop_rx
+id|nv_stop_rx
 c_func
 (paren
 r_struct
@@ -1306,7 +1312,7 @@ id|dprintk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;%s: stop_rx&bslash;n&quot;
+l_string|&quot;%s: nv_stop_rx&bslash;n&quot;
 comma
 id|dev-&gt;name
 )paren
@@ -1337,7 +1343,7 @@ comma
 id|NV_RXSTOP_DELAY1MAX
 comma
 id|KERN_INFO
-l_string|&quot;stop_rx: ReceiverStatus remained busy&quot;
+l_string|&quot;nv_stop_rx: ReceiverStatus remained busy&quot;
 )paren
 suffix:semicolon
 id|udelay
@@ -1357,10 +1363,10 @@ id|NvRegLinkSpeed
 )paren
 suffix:semicolon
 )brace
-DECL|function|start_tx
+DECL|function|nv_start_tx
 r_static
 r_void
-id|start_tx
+id|nv_start_tx
 c_func
 (paren
 r_struct
@@ -1383,7 +1389,7 @@ id|dprintk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;%s: start_tx&bslash;n&quot;
+l_string|&quot;%s: nv_start_tx&bslash;n&quot;
 comma
 id|dev-&gt;name
 )paren
@@ -1405,10 +1411,10 @@ id|base
 )paren
 suffix:semicolon
 )brace
-DECL|function|stop_tx
+DECL|function|nv_stop_tx
 r_static
 r_void
-id|stop_tx
+id|nv_stop_tx
 c_func
 (paren
 r_struct
@@ -1431,7 +1437,7 @@ id|dprintk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;%s: stop_tx&bslash;n&quot;
+l_string|&quot;%s: nv_stop_tx&bslash;n&quot;
 comma
 id|dev-&gt;name
 )paren
@@ -1462,7 +1468,7 @@ comma
 id|NV_TXSTOP_DELAY1MAX
 comma
 id|KERN_INFO
-l_string|&quot;stop_tx: TransmitterStatus remained busy&quot;
+l_string|&quot;nv_stop_tx: TransmitterStatus remained busy&quot;
 )paren
 suffix:semicolon
 id|udelay
@@ -1482,10 +1488,10 @@ id|NvRegUnknownTransmitterReg
 )paren
 suffix:semicolon
 )brace
-DECL|function|txrx_reset
+DECL|function|nv_txrx_reset
 r_static
 r_void
-id|txrx_reset
+id|nv_txrx_reset
 c_func
 (paren
 r_struct
@@ -1508,7 +1514,7 @@ id|dprintk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;%s: txrx_reset&bslash;n&quot;
+l_string|&quot;%s: nv_txrx_reset&bslash;n&quot;
 comma
 id|dev-&gt;name
 )paren
@@ -1590,6 +1596,7 @@ DECL|function|nv_ethtool_ioctl
 r_static
 r_int
 id|nv_ethtool_ioctl
+c_func
 (paren
 r_struct
 id|net_device
@@ -1607,6 +1614,16 @@ op_star
 id|np
 op_assign
 id|get_nvpriv
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
+id|u8
+op_star
+id|base
+op_assign
+id|get_hwbase
 c_func
 (paren
 id|dev
@@ -1754,6 +1771,173 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+r_case
+id|ETHTOOL_GWOL
+suffix:colon
+(brace
+r_struct
+id|ethtool_wolinfo
+id|wolinfo
+suffix:semicolon
+id|memset
+c_func
+(paren
+op_amp
+id|wolinfo
+comma
+l_int|0
+comma
+r_sizeof
+(paren
+id|wolinfo
+)paren
+)paren
+suffix:semicolon
+id|wolinfo.supported
+op_assign
+id|WAKE_MAGIC
+suffix:semicolon
+id|spin_lock_irq
+c_func
+(paren
+op_amp
+id|np-&gt;lock
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|np-&gt;wolenabled
+)paren
+id|wolinfo.wolopts
+op_assign
+id|WAKE_MAGIC
+suffix:semicolon
+id|spin_unlock_irq
+c_func
+(paren
+op_amp
+id|np-&gt;lock
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|copy_to_user
+c_func
+(paren
+id|useraddr
+comma
+op_amp
+id|wolinfo
+comma
+r_sizeof
+(paren
+id|wolinfo
+)paren
+)paren
+)paren
+r_return
+op_minus
+id|EFAULT
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+r_case
+id|ETHTOOL_SWOL
+suffix:colon
+(brace
+r_struct
+id|ethtool_wolinfo
+id|wolinfo
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|copy_from_user
+c_func
+(paren
+op_amp
+id|wolinfo
+comma
+id|useraddr
+comma
+r_sizeof
+(paren
+id|wolinfo
+)paren
+)paren
+)paren
+r_return
+op_minus
+id|EFAULT
+suffix:semicolon
+id|spin_lock_irq
+c_func
+(paren
+op_amp
+id|np-&gt;lock
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|wolinfo.wolopts
+op_eq
+l_int|0
+)paren
+(brace
+id|writel
+c_func
+(paren
+l_int|0
+comma
+id|base
+op_plus
+id|NvRegWakeUpFlags
+)paren
+suffix:semicolon
+id|np-&gt;wolenabled
+op_assign
+l_int|0
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|wolinfo.wolopts
+op_amp
+id|WAKE_MAGIC
+)paren
+(brace
+id|writel
+c_func
+(paren
+id|NVREG_WAKEUPFLAGS_ENABLE
+comma
+id|base
+op_plus
+id|NvRegWakeUpFlags
+)paren
+suffix:semicolon
+id|np-&gt;wolenabled
+op_assign
+l_int|1
+suffix:semicolon
+)brace
+id|spin_unlock_irq
+c_func
+(paren
+op_amp
+id|np-&gt;lock
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
 r_default
 suffix:colon
 r_break
@@ -1815,11 +1999,11 @@ id|EOPNOTSUPP
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n; * alloc_rx: fill rx ring entries.&n; * Return 1 if the allocations for the skbs failed and the&n; * rx engine is without Available descriptors&n; */
-DECL|function|alloc_rx
+multiline_comment|/*&n; * nv_alloc_rx: fill rx ring entries.&n; * Return 1 if the allocations for the skbs failed and the&n; * rx engine is without Available descriptors&n; */
+DECL|function|nv_alloc_rx
 r_static
 r_int
-id|alloc_rx
+id|nv_alloc_rx
 c_func
 (paren
 r_struct
@@ -1982,7 +2166,7 @@ id|dprintk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;%s: alloc_rx: Packet  %d marked as Available&bslash;n&quot;
+l_string|&quot;%s: nv_alloc_rx: Packet  %d marked as Available&bslash;n&quot;
 comma
 id|dev-&gt;name
 comma
@@ -2013,10 +2197,10 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|do_rx_refill
+DECL|function|nv_do_rx_refill
 r_static
 r_void
-id|do_rx_refill
+id|nv_do_rx_refill
 c_func
 (paren
 r_int
@@ -2056,7 +2240,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|alloc_rx
+id|nv_alloc_rx
 c_func
 (paren
 id|dev
@@ -2102,10 +2286,10 @@ id|dev-&gt;irq
 )paren
 suffix:semicolon
 )brace
-DECL|function|init_ring
+DECL|function|nv_init_ring
 r_static
 r_int
-id|init_ring
+id|nv_init_ring
 c_func
 (paren
 r_struct
@@ -2193,17 +2377,17 @@ l_int|0
 suffix:semicolon
 )brace
 r_return
-id|alloc_rx
+id|nv_alloc_rx
 c_func
 (paren
 id|dev
 )paren
 suffix:semicolon
 )brace
-DECL|function|drain_tx
+DECL|function|nv_drain_tx
 r_static
 r_void
-id|drain_tx
+id|nv_drain_tx
 c_func
 (paren
 r_struct
@@ -2301,10 +2485,10 @@ suffix:semicolon
 )brace
 )brace
 )brace
-DECL|function|drain_rx
+DECL|function|nv_drain_rx
 r_static
 r_void
-id|drain_rx
+id|nv_drain_rx
 c_func
 (paren
 r_struct
@@ -2416,13 +2600,13 @@ op_star
 id|dev
 )paren
 (brace
-id|drain_tx
+id|nv_drain_tx
 c_func
 (paren
 id|dev
 )paren
 suffix:semicolon
-id|drain_rx
+id|nv_drain_rx
 c_func
 (paren
 id|dev
@@ -2673,11 +2857,11 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * tx_done: check for completed packets, release the skbs.&n; *&n; * Caller must own np-&gt;lock.&n; */
-DECL|function|tx_done
+multiline_comment|/*&n; * nv_tx_done: check for completed packets, release the skbs.&n; *&n; * Caller must own np-&gt;lock.&n; */
+DECL|function|nv_tx_done
 r_static
 r_void
-id|tx_done
+id|nv_tx_done
 c_func
 (paren
 r_struct
@@ -2729,7 +2913,7 @@ id|dprintk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;%s: tx_done: looking at packet %d, Flags 0x%x.&bslash;n&quot;
+l_string|&quot;%s: nv_tx_done: looking at packet %d, Flags 0x%x.&bslash;n&quot;
 comma
 id|dev-&gt;name
 comma
@@ -2935,14 +3119,14 @@ id|np-&gt;lock
 )paren
 suffix:semicolon
 multiline_comment|/* 1) stop tx engine */
-id|stop_tx
+id|nv_stop_tx
 c_func
 (paren
 id|dev
 )paren
 suffix:semicolon
 multiline_comment|/* 2) check that the packets were not sent already: */
-id|tx_done
+id|nv_tx_done
 c_func
 (paren
 id|dev
@@ -2966,7 +3150,7 @@ comma
 id|dev-&gt;name
 )paren
 suffix:semicolon
-id|drain_tx
+id|nv_drain_tx
 c_func
 (paren
 id|dev
@@ -3009,7 +3193,7 @@ id|dev
 suffix:semicolon
 )brace
 multiline_comment|/* 4) restart tx engine */
-id|start_tx
+id|nv_start_tx
 c_func
 (paren
 id|dev
@@ -3023,10 +3207,10 @@ id|np-&gt;lock
 )paren
 suffix:semicolon
 )brace
-DECL|function|rx_process
+DECL|function|nv_rx_process
 r_static
 r_void
-id|rx_process
+id|nv_rx_process
 c_func
 (paren
 r_struct
@@ -3099,7 +3283,7 @@ id|dprintk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;%s: rx_process: looking at packet %d, Flags 0x%x.&bslash;n&quot;
+l_string|&quot;%s: nv_rx_process: looking at packet %d, Flags 0x%x.&bslash;n&quot;
 comma
 id|dev-&gt;name
 comma
@@ -3427,7 +3611,7 @@ id|dprintk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;%s: rx_process: packet %d with %d bytes, proto %d accepted.&bslash;n&quot;
+l_string|&quot;%s: nv_rx_process: packet %d with %d bytes, proto %d accepted.&bslash;n&quot;
 comma
 id|dev-&gt;name
 comma
@@ -3837,7 +4021,7 @@ op_amp
 id|np-&gt;lock
 )paren
 suffix:semicolon
-id|stop_rx
+id|nv_stop_rx
 c_func
 (paren
 id|dev
@@ -3905,7 +4089,7 @@ op_plus
 id|NvRegPacketFilterFlags
 )paren
 suffix:semicolon
-id|start_rx
+id|nv_start_rx
 c_func
 (paren
 id|dev
@@ -3919,10 +4103,10 @@ id|np-&gt;lock
 )paren
 suffix:semicolon
 )brace
-DECL|function|update_linkspeed
+DECL|function|nv_update_linkspeed
 r_static
 r_int
-id|update_linkspeed
+id|nv_update_linkspeed
 c_func
 (paren
 r_struct
@@ -3983,7 +4167,7 @@ id|dprintk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;%s: update_linkspeed: PHY advertises 0x%04x, lpa 0x%04x.&bslash;n&quot;
+l_string|&quot;%s: nv_update_linkspeed: PHY advertises 0x%04x, lpa 0x%04x.&bslash;n&quot;
 comma
 id|dev-&gt;name
 comma
@@ -4130,10 +4314,10 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|link_irq
+DECL|function|nv_link_irq
 r_static
 r_void
-id|link_irq
+id|nv_link_irq
 c_func
 (paren
 r_struct
@@ -4222,7 +4406,7 @@ op_amp
 id|BMSR_ANEGCOMPLETE
 )paren
 (brace
-id|update_linkspeed
+id|nv_update_linkspeed
 c_func
 (paren
 id|dev
@@ -4238,7 +4422,7 @@ id|dev
 )paren
 )paren
 (brace
-id|stop_rx
+id|nv_stop_rx
 c_func
 (paren
 id|dev
@@ -4282,7 +4466,7 @@ op_plus
 id|NvRegMisc1
 )paren
 suffix:semicolon
-id|start_rx
+id|nv_start_rx
 c_func
 (paren
 id|dev
@@ -4316,7 +4500,7 @@ comma
 id|dev-&gt;name
 )paren
 suffix:semicolon
-id|stop_rx
+id|nv_stop_rx
 c_func
 (paren
 id|dev
@@ -4341,10 +4525,10 @@ id|base
 suffix:semicolon
 )brace
 )brace
-DECL|function|nic_irq
+DECL|function|nv_nic_irq
 r_static
 id|irqreturn_t
-id|nic_irq
+id|nv_nic_irq
 c_func
 (paren
 r_int
@@ -4403,7 +4587,7 @@ id|dprintk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;%s: nic_irq&bslash;n&quot;
+l_string|&quot;%s: nv_nic_irq&bslash;n&quot;
 comma
 id|dev-&gt;name
 )paren
@@ -4492,7 +4676,7 @@ op_amp
 id|np-&gt;lock
 )paren
 suffix:semicolon
-id|tx_done
+id|nv_tx_done
 c_func
 (paren
 id|dev
@@ -4518,7 +4702,7 @@ id|NVREG_IRQ_RX_NOBUF
 )paren
 )paren
 (brace
-id|rx_process
+id|nv_rx_process
 c_func
 (paren
 id|dev
@@ -4527,7 +4711,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|alloc_rx
+id|nv_alloc_rx
 c_func
 (paren
 id|dev
@@ -4582,7 +4766,7 @@ op_amp
 id|np-&gt;lock
 )paren
 suffix:semicolon
-id|link_irq
+id|nv_link_irq
 c_func
 (paren
 id|dev
@@ -4693,7 +4877,7 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;%s: too many iterations (%d) in nic_irq.&bslash;n&quot;
+l_string|&quot;%s: too many iterations (%d) in nv_nic_irq.&bslash;n&quot;
 comma
 id|dev-&gt;name
 comma
@@ -4715,7 +4899,7 @@ id|dprintk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;%s: nic_irq completed&bslash;n&quot;
+l_string|&quot;%s: nv_nic_irq completed&bslash;n&quot;
 comma
 id|dev-&gt;name
 )paren
@@ -4728,10 +4912,10 @@ id|i
 )paren
 suffix:semicolon
 )brace
-DECL|function|do_nic_poll
+DECL|function|nv_do_nic_poll
 r_static
 r_void
-id|do_nic_poll
+id|nv_do_nic_poll
 c_func
 (paren
 r_int
@@ -4778,7 +4962,8 @@ c_func
 id|dev-&gt;irq
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * reenable interrupts on the nic, we have to do this before calling&n;&t; * nic_irq because that may decide to do otherwise&n;&t; */
+multiline_comment|/* FIXME: Do we need synchronize_irq(dev-&gt;irq) here? */
+multiline_comment|/*&n;&t; * reenable interrupts on the nic, we have to do this before calling&n;&t; * nv_nic_irq because that may decide to do otherwise&n;&t; */
 id|writel
 c_func
 (paren
@@ -4795,7 +4980,7 @@ c_func
 id|base
 )paren
 suffix:semicolon
-id|nic_irq
+id|nv_nic_irq
 c_func
 (paren
 (paren
@@ -4953,7 +5138,7 @@ op_plus
 id|NvRegUnknownTransmitterReg
 )paren
 suffix:semicolon
-id|txrx_reset
+id|nv_txrx_reset
 c_func
 (paren
 id|dev
@@ -4976,7 +5161,7 @@ l_int|0
 suffix:semicolon
 id|oom
 op_assign
-id|init_ring
+id|nv_init_ring
 c_func
 (paren
 id|dev
@@ -5298,7 +5483,7 @@ op_amp
 id|np-&gt;lock
 )paren
 suffix:semicolon
-id|update_linkspeed
+id|nv_update_linkspeed
 c_func
 (paren
 id|dev
@@ -5720,7 +5905,7 @@ c_func
 id|dev-&gt;irq
 comma
 op_amp
-id|nic_irq
+id|nv_nic_irq
 comma
 id|SA_SHIRQ
 comma
@@ -5806,13 +5991,13 @@ op_plus
 id|NvRegPacketFilterFlags
 )paren
 suffix:semicolon
-id|start_rx
+id|nv_start_rx
 c_func
 (paren
 id|dev
 )paren
 suffix:semicolon
-id|start_tx
+id|nv_start_tx
 c_func
 (paren
 id|dev
@@ -5982,13 +6167,13 @@ op_amp
 id|np-&gt;lock
 )paren
 suffix:semicolon
-id|stop_tx
+id|nv_stop_tx
 c_func
 (paren
 id|dev
 )paren
 suffix:semicolon
-id|stop_rx
+id|nv_stop_rx
 c_func
 (paren
 id|dev
@@ -6044,6 +6229,17 @@ id|dev
 )paren
 suffix:semicolon
 id|drain_ring
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|np-&gt;wolenabled
+)paren
+id|nv_start_rx
 c_func
 (paren
 id|dev
@@ -6174,7 +6370,7 @@ suffix:semicolon
 id|np-&gt;oom_kick.function
 op_assign
 op_amp
-id|do_rx_refill
+id|nv_do_rx_refill
 suffix:semicolon
 multiline_comment|/* timer handler */
 id|init_timer
@@ -6195,7 +6391,7 @@ suffix:semicolon
 id|np-&gt;nic_poll.function
 op_assign
 op_amp
-id|do_nic_poll
+id|nv_do_nic_poll
 suffix:semicolon
 multiline_comment|/* timer handler */
 id|err
@@ -6772,6 +6968,21 @@ id|dev-&gt;dev_addr
 l_int|5
 )braket
 )paren
+suffix:semicolon
+multiline_comment|/* disable WOL */
+id|writel
+c_func
+(paren
+l_int|0
+comma
+id|base
+op_plus
+id|NvRegWakeUpFlags
+)paren
+suffix:semicolon
+id|np-&gt;wolenabled
+op_assign
+l_int|0
 suffix:semicolon
 id|np-&gt;tx_flags
 op_assign
