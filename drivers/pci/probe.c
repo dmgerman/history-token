@@ -1490,10 +1490,6 @@ r_int
 id|pass
 )paren
 (brace
-r_int
-r_int
-id|buses
-suffix:semicolon
 r_struct
 id|pci_bus
 op_star
@@ -1507,6 +1503,9 @@ id|dev-&gt;hdr_type
 op_eq
 id|PCI_HEADER_TYPE_CARDBUS
 )paren
+suffix:semicolon
+id|u32
+id|buses
 suffix:semicolon
 id|pci_read_config_dword
 c_func
