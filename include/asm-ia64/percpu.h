@@ -10,11 +10,18 @@ macro_line|# define THIS_CPU(var)&t;(per_cpu__##var)  /* use this to mark access
 macro_line|#else /* !__ASSEMBLY__ */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/threads.h&gt;
+macro_line|#ifdef HAVE_MODEL_SMALL_ATTRIBUTE
+DECL|macro|__SMALL_ADDR_AREA
+macro_line|# define __SMALL_ADDR_AREA&t;__attribute__((__model__ (__small__)))
+macro_line|#else
+DECL|macro|__SMALL_ADDR_AREA
+macro_line|# define __SMALL_ADDR_AREA
+macro_line|#endif
 DECL|macro|DECLARE_PER_CPU
-mdefine_line|#define DECLARE_PER_CPU(type, name) extern __typeof__(type) per_cpu__##name
+mdefine_line|#define DECLARE_PER_CPU(type, name)&t;&t;&t;&t;&bslash;&n;&t;extern __SMALL_ADDR_AREA __typeof__(type) per_cpu__##name
 multiline_comment|/* Separate out the type, so (int[3], foo) works. */
 DECL|macro|DEFINE_PER_CPU
-mdefine_line|#define DEFINE_PER_CPU(type, name) &bslash;&n;    __attribute__((__section__(&quot;.data.percpu&quot;))) __typeof__(type) per_cpu__##name
+mdefine_line|#define DEFINE_PER_CPU(type, name)&t;&t;&t;&t;&bslash;&n;&t;__attribute__((__section__(&quot;.data.percpu&quot;)))&t;&t;&bslash;&n;&t;__SMALL_ADDR_AREA __typeof__(type) per_cpu__##name
 multiline_comment|/*&n; * Pretty much a literal copy of asm-generic/percpu.h, except that percpu_modcopy() is an&n; * external routine, to avoid include-hell.&n; */
 macro_line|#ifdef CONFIG_SMP
 r_extern
