@@ -19,7 +19,7 @@ macro_line|#ifdef CONFIG_X86_LOCAL_APIC
 macro_line|#include &lt;asm/apic.h&gt;
 macro_line|#endif
 DECL|macro|IPMI_WATCHDOG_VERSION
-mdefine_line|#define IPMI_WATCHDOG_VERSION &quot;v31&quot;
+mdefine_line|#define IPMI_WATCHDOG_VERSION &quot;v32&quot;
 multiline_comment|/*&n; * The IPMI command/response information for the watchdog timer.&n; */
 multiline_comment|/* values for byte 1 of the set command, byte 2 of the get response. */
 DECL|macro|WDOG_DONT_LOG
@@ -3027,12 +3027,6 @@ id|watchdog_user
 op_logical_and
 op_logical_neg
 id|panic_event_handled
-op_logical_and
-(paren
-id|panic_timeout
-OG
-l_int|0
-)paren
 )paren
 (brace
 multiline_comment|/* Make sure the panic doesn&squot;t hang, and make sure we&n;&t;&t;   do this only once. */
@@ -3040,19 +3034,6 @@ id|panic_event_handled
 op_assign
 l_int|1
 suffix:semicolon
-id|timeout
-op_assign
-id|panic_timeout
-op_plus
-l_int|120
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|timeout
-OG
-l_int|255
-)paren
 id|timeout
 op_assign
 l_int|255

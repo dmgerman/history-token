@@ -4,7 +4,7 @@ macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/ipmi_msgdefs.h&gt;&t;&t;/* for completion codes */
 macro_line|#include &quot;ipmi_si_sm.h&quot;
 DECL|macro|IPMI_SMIC_VERSION
-mdefine_line|#define IPMI_SMIC_VERSION &quot;v31&quot;
+mdefine_line|#define IPMI_SMIC_VERSION &quot;v32&quot;
 multiline_comment|/* smic_debug is a bit-field&n; *&t;SMIC_DEBUG_ENABLE -&t;turned on for now&n; *&t;SMIC_DEBUG_MSG -&t;commands and their responses&n; *&t;SMIC_DEBUG_STATES -&t;state machine&n;*/
 DECL|macro|SMIC_DEBUG_STATES
 mdefine_line|#define SMIC_DEBUG_STATES&t;4

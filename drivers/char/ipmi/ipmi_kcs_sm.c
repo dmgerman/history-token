@@ -5,7 +5,7 @@ macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/ipmi_msgdefs.h&gt;&t;&t;/* for completion codes */
 macro_line|#include &quot;ipmi_si_sm.h&quot;
 DECL|macro|IPMI_KCS_VERSION
-mdefine_line|#define IPMI_KCS_VERSION &quot;v31&quot;
+mdefine_line|#define IPMI_KCS_VERSION &quot;v32&quot;
 multiline_comment|/* Set this if you want a printout of why the state machine was hosed&n;   when it gets hosed. */
 DECL|macro|DEBUG_HOSED_REASON
 mdefine_line|#define DEBUG_HOSED_REASON

@@ -133,6 +133,19 @@ r_int
 id|run_to_completion
 )paren
 suffix:semicolon
+multiline_comment|/* Called to poll for work to do.  This is so upper layers can&n;&t;   poll for operations during things like crash dumps. */
+DECL|member|poll
+r_void
+(paren
+op_star
+id|poll
+)paren
+(paren
+r_void
+op_star
+id|send_info
+)paren
+suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/* Add a low-level interface to the IPMI driver. */
