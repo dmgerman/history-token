@@ -980,6 +980,7 @@ id|len
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* SMP-safe */
 DECL|function|shmem_truncate
 r_static
 r_void

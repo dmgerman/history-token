@@ -79,11 +79,6 @@ op_star
 id|inode
 )paren
 (brace
-id|lock_kernel
-c_func
-(paren
-)paren
-suffix:semicolon
 id|inode-&gt;i_size
 op_assign
 l_int|0
@@ -92,6 +87,11 @@ id|minix_truncate
 c_func
 (paren
 id|inode
+)paren
+suffix:semicolon
+id|lock_kernel
+c_func
+(paren
 )paren
 suffix:semicolon
 id|minix_free_inode
@@ -2668,6 +2668,11 @@ op_star
 id|inode
 )paren
 (brace
+id|lock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2690,6 +2695,11 @@ id|V2_minix_truncate
 c_func
 (paren
 id|inode
+)paren
+suffix:semicolon
+id|unlock_kernel
+c_func
+(paren
 )paren
 suffix:semicolon
 )brace

@@ -3,6 +3,7 @@ macro_line|#include &quot;hfs.h&quot;
 macro_line|#include &lt;linux/hfs_fs_sb.h&gt;
 macro_line|#include &lt;linux/hfs_fs_i.h&gt;
 macro_line|#include &lt;linux/hfs_fs.h&gt;
+macro_line|#include &lt;linux/smp_lock.h&gt;
 multiline_comment|/*================ Forward declarations ================*/
 r_static
 id|hfs_rwret_t
@@ -708,6 +709,13 @@ r_struct
 id|hfs_fork
 op_star
 id|fork
+suffix:semicolon
+id|lock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
+id|fork
 op_assign
 id|HFS_I
 c_func
@@ -751,6 +759,11 @@ id|mark_inode_dirty
 c_func
 (paren
 id|inode
+)paren
+suffix:semicolon
+id|unlock_kernel
+c_func
+(paren
 )paren
 suffix:semicolon
 )brace

@@ -1424,11 +1424,6 @@ op_star
 id|inode
 )paren
 (brace
-id|lock_kernel
-c_func
-(paren
-)paren
-suffix:semicolon
 id|inode-&gt;i_size
 op_assign
 l_int|0
@@ -1437,6 +1432,11 @@ id|sysv_truncate
 c_func
 (paren
 id|inode
+)paren
+suffix:semicolon
+id|lock_kernel
+c_func
+(paren
 )paren
 suffix:semicolon
 id|sysv_free_inode

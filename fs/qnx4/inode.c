@@ -165,11 +165,6 @@ id|inode-&gt;i_ino
 )paren
 )paren
 suffix:semicolon
-id|lock_kernel
-c_func
-(paren
-)paren
-suffix:semicolon
 id|inode-&gt;i_size
 op_assign
 l_int|0
@@ -178,6 +173,11 @@ id|qnx4_truncate
 c_func
 (paren
 id|inode
+)paren
+suffix:semicolon
+id|lock_kernel
+c_func
+(paren
 )paren
 suffix:semicolon
 id|qnx4_free_inode

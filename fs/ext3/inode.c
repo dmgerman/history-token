@@ -6301,6 +6301,11 @@ id|inode
 )paren
 r_return
 suffix:semicolon
+id|lock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 id|ext3_discard_prealloc
 c_func
 (paren
@@ -6324,9 +6329,16 @@ c_func
 id|handle
 )paren
 )paren
+(brace
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 suffix:semicolon
 multiline_comment|/* AKPM: return what? */
+)brace
 id|blocksize
 op_assign
 id|inode-&gt;i_sb-&gt;s_blocksize
@@ -6812,6 +6824,11 @@ c_func
 id|handle
 comma
 id|inode
+)paren
+suffix:semicolon
+id|unlock_kernel
+c_func
+(paren
 )paren
 suffix:semicolon
 )brace

@@ -3,6 +3,7 @@ macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/locks.h&gt;
 macro_line|#include &lt;linux/msdos_fs.h&gt;
 macro_line|#include &lt;linux/fat_cvf.h&gt;
+macro_line|#include &lt;linux/smp_lock.h&gt;
 DECL|macro|PRINTK
 mdefine_line|#define PRINTK(x)
 DECL|macro|Printk
@@ -512,6 +513,11 @@ id|mmu_private
 op_assign
 id|inode-&gt;i_size
 suffix:semicolon
+id|lock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 id|fat_free
 c_func
 (paren
@@ -539,6 +545,11 @@ op_member_access_from_pointer
 id|i_attrs
 op_or_assign
 id|ATTR_ARCH
+suffix:semicolon
+id|unlock_kernel
+c_func
+(paren
+)paren
 suffix:semicolon
 id|inode-&gt;i_ctime
 op_assign

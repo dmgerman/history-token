@@ -4797,6 +4797,11 @@ id|u32
 id|inode-&gt;i_size
 )paren
 suffix:semicolon
+id|lock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 id|last_blk
 op_assign
 l_int|0
@@ -4885,8 +4890,15 @@ c_cond
 op_logical_neg
 id|page
 )paren
+(brace
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 suffix:semicolon
+)brace
 id|size
 op_assign
 (paren
@@ -4957,6 +4969,11 @@ c_func
 id|inode
 )paren
 suffix:semicolon
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 suffix:semicolon
 )brace
@@ -4974,8 +4991,15 @@ id|inode
 op_member_access_from_pointer
 id|mmu_private
 )paren
+(brace
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 suffix:semicolon
+)brace
 singleline_comment|// lock cache
 id|ext_bh
 op_assign
@@ -5424,5 +5448,10 @@ id|ext_bh
 )paren
 suffix:semicolon
 )brace
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 )brace
 eof

@@ -114,11 +114,6 @@ id|inode
 )paren
 )paren
 suffix:semicolon
-id|lock_kernel
-c_func
-(paren
-)paren
-suffix:semicolon
 id|inode-&gt;i_size
 op_assign
 l_int|0
@@ -131,6 +126,11 @@ id|inode-&gt;i_blocks
 id|ext2_truncate
 (paren
 id|inode
+)paren
+suffix:semicolon
+id|lock_kernel
+c_func
+(paren
 )paren
 suffix:semicolon
 id|ext2_free_inode
@@ -3060,11 +3060,6 @@ id|inode
 )paren
 r_return
 suffix:semicolon
-id|unlock_kernel
-c_func
-(paren
-)paren
-suffix:semicolon
 id|ext2_discard_prealloc
 c_func
 (paren
@@ -3481,11 +3476,6 @@ id|mark_inode_dirty
 c_func
 (paren
 id|inode
-)paren
-suffix:semicolon
-id|lock_kernel
-c_func
-(paren
 )paren
 suffix:semicolon
 )brace
