@@ -8,6 +8,7 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
+macro_line|#include &lt;linux/brlock.h&gt;
 macro_line|#include &lt;net/checksum.h&gt;
 DECL|macro|ASSERT_READ_LOCK
 mdefine_line|#define ASSERT_READ_LOCK(x) MUST_BE_READ_LOCKED(&amp;ip_conntrack_lock)
@@ -38,6 +39,43 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
+DECL|function|kill_proto
+r_static
+r_int
+id|kill_proto
+c_func
+(paren
+r_const
+r_struct
+id|ip_conntrack
+op_star
+id|i
+comma
+r_void
+op_star
+id|data
+)paren
+(brace
+r_return
+(paren
+id|i-&gt;tuplehash
+(braket
+id|IP_CT_DIR_ORIGINAL
+)braket
+dot
+id|dst.protonum
+op_eq
+op_star
+(paren
+(paren
+id|u_int8_t
+op_star
+)paren
+id|data
+)paren
+)paren
+suffix:semicolon
+)brace
 r_static
 r_int
 r_int
@@ -1402,8 +1440,7 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-multiline_comment|/* FIXME: Implement this --RR */
-macro_line|#if 0
+DECL|function|ip_conntrack_protocol_unregister
 r_void
 id|ip_conntrack_protocol_unregister
 c_func
@@ -1414,8 +1451,56 @@ op_star
 id|proto
 )paren
 (brace
+id|WRITE_LOCK
+c_func
+(paren
+op_amp
+id|ip_conntrack_lock
+)paren
+suffix:semicolon
+multiline_comment|/* find_proto() returns proto_generic in case there is no protocol &n;&t; * helper. So this should be enough - HW */
+id|LIST_DELETE
+c_func
+(paren
+op_amp
+id|protocol_list
+comma
+id|proto
+)paren
+suffix:semicolon
+id|WRITE_UNLOCK
+c_func
+(paren
+op_amp
+id|ip_conntrack_lock
+)paren
+suffix:semicolon
+multiline_comment|/* Somebody could be still looking at the proto in bh. */
+id|br_write_lock_bh
+c_func
+(paren
+id|BR_NETPROTO_LOCK
+)paren
+suffix:semicolon
+id|br_write_unlock_bh
+c_func
+(paren
+id|BR_NETPROTO_LOCK
+)paren
+suffix:semicolon
+multiline_comment|/* Remove all contrack entries for this protocol */
+id|ip_ct_selective_cleanup
+c_func
+(paren
+id|kill_proto
+comma
+op_amp
+id|proto-&gt;proto
+)paren
+suffix:semicolon
+id|MOD_DEC_USE_COUNT
+suffix:semicolon
 )brace
-macro_line|#endif
 DECL|function|init
 r_static
 r_int
@@ -1470,6 +1555,13 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|ip_conntrack_protocol_register
+)paren
+suffix:semicolon
+DECL|variable|ip_conntrack_protocol_unregister
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|ip_conntrack_protocol_unregister
 )paren
 suffix:semicolon
 DECL|variable|invert_tuplepr
@@ -1540,6 +1632,13 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|ip_conntrack_expect_related
+)paren
+suffix:semicolon
+DECL|variable|ip_conntrack_unexpect_related
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|ip_conntrack_unexpect_related
 )paren
 suffix:semicolon
 DECL|variable|ip_conntrack_tuple_taken

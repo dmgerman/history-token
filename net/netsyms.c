@@ -2305,6 +2305,13 @@ c_func
 id|netif_rx
 )paren
 suffix:semicolon
+DECL|variable|netif_receive_skb
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|netif_receive_skb
+)paren
+suffix:semicolon
 DECL|variable|dev_add_pack
 id|EXPORT_SYMBOL
 c_func
