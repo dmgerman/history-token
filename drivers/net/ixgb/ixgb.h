@@ -41,6 +41,10 @@ DECL|macro|BAR_1
 mdefine_line|#define BAR_1           1
 DECL|macro|BAR_5
 mdefine_line|#define BAR_5           5
+DECL|macro|PCI_DMA_64BIT
+mdefine_line|#define PCI_DMA_64BIT   0xffffffffffffffffULL
+DECL|macro|PCI_DMA_32BIT
+mdefine_line|#define PCI_DMA_32BIT   0x00000000ffffffffULL
 macro_line|#include &quot;ixgb_hw.h&quot;
 macro_line|#include &quot;ixgb_ee.h&quot;
 macro_line|#include &quot;ixgb_ids.h&quot;

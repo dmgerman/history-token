@@ -47,6 +47,10 @@ DECL|macro|BAR_1
 mdefine_line|#define BAR_1&t;&t;1
 DECL|macro|BAR_5
 mdefine_line|#define BAR_5&t;&t;5
+DECL|macro|PCI_DMA_64BIT
+mdefine_line|#define PCI_DMA_64BIT&t;0xffffffffffffffffULL
+DECL|macro|PCI_DMA_32BIT
+mdefine_line|#define PCI_DMA_32BIT&t;0x00000000ffffffffULL
 r_struct
 id|e1000_adapter
 suffix:semicolon
