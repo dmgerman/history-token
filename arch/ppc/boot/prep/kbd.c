@@ -1,4 +1,3 @@
-multiline_comment|/*&n; * BK Id: %F% %I% %G% %U% %#%&n; */
 macro_line|#include &lt;linux/keyboard.h&gt;
 macro_line|#include &quot;defkeymap.c&quot;&t;/* yeah I know it&squot;s bad -- Cort */
 DECL|variable|shfts

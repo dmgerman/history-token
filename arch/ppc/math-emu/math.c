@@ -1,4 +1,3 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.math.c 1.6 05/17/01 18:14:23 cort&n; */
 multiline_comment|/*&n; * arch/ppc/math-emu/math.c&n; *&n; * Copyright (C) 1999  Eddie C. Dost  (ecd@atecom.com)&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;

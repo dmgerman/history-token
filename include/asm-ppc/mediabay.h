@@ -1,4 +1,3 @@
-multiline_comment|/*&n; * BK Id: %F% %I% %G% %U% %#%&n; */
 multiline_comment|/*&n; * mediabay.h: definitions for using the media bay&n; * on PowerBook 3400 and similar computers.&n; *&n; * Copyright (C) 1997 Paul Mackerras.&n; */
 macro_line|#ifndef _PPC_MEDIABAY_H
 DECL|macro|_PPC_MEDIABAY_H

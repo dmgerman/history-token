@@ -1,4 +1,3 @@
-multiline_comment|/*&n; * BK Id: %F% %I% %G% %U% %#%&n; */
 multiline_comment|/*&n; * LinuxPPC arch/ppc/kernel/qspan_pci.c   Dan Malek (dmalek@jlc.net)&n; *&n; * QSpan Motorola bus to PCI bridge.  The config address register&n; * is located 0x500 from the base of the bridge control/status registers.&n; * The data register is located at 0x504.&n; * This is a two step operation.  First, the address register is written,&n; * then the data register is read/written as required.&n; * I don&squot;t know what to do about interrupts (yet).&n; */
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;

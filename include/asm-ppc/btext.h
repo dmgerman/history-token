@@ -1,4 +1,3 @@
-multiline_comment|/*&n; * BK Id: %F% %I% %G% %U% %#%&n; */
 multiline_comment|/*&n; * Definitions for using the procedures in btext.c.&n; *&n; * Benjamin Herrenschmidt &lt;benh@kernel.crashing.org&gt;&n; */
 macro_line|#ifndef __PPC_BTEXT_H
 DECL|macro|__PPC_BTEXT_H

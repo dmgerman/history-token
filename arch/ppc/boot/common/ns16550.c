@@ -1,4 +1,3 @@
-multiline_comment|/*&n; * BK Id: %F% %I% %G% %U% %#%&n; */
 multiline_comment|/*&n; * COM1 NS16550 support&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/serialP.h&gt;

@@ -1,4 +1,3 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.m48t35.h 1.8 10/16/01 15:58:42 trini&n; */
 multiline_comment|/*&n; *  Registers for the SGS-Thomson M48T35 Timekeeper RAM chip&n; *  and&n; *  Registers for the SGS-Thomson M48T37 Timekeeper RAM chip&n; *  The 37 is the 35 plus alarm and century thus the offsets&n; *  are shifted by the extra registers.&n; */
 macro_line|#ifndef __PPC_M48T35_H
 DECL|macro|__PPC_M48T35_H

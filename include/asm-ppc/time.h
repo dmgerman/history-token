@@ -1,4 +1,3 @@
-multiline_comment|/*&n; * BK Id: %F% %I% %G% %U% %#%&n; */
 multiline_comment|/*&n; * Common time prototypes and such for all ppc machines.&n; *&n; * Written by Cort Dougan (cort@fsmlabs.com) to merge&n; * Paul Mackerras&squot; version and mine for PReP and Pmac.&n; */
 macro_line|#ifdef __KERNEL__
 macro_line|#ifndef __ASM_TIME_H__

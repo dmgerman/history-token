@@ -1,4 +1,3 @@
-multiline_comment|/*&n; * BK Id: %F% %I% %G% %U% %#%&n; */
 multiline_comment|/*&n; * Miscellaneous procedures for dealing with the PowerMac hardware.&n; * Contains support for the backlight.&n; * &n; *   Copyright (C) 2000 Benjamin Herrenschmidt&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;

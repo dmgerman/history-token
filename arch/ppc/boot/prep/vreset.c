@@ -1,4 +1,3 @@
-multiline_comment|/*&n; * BK Id: %F% %I% %G% %U% %#%&n; */
 multiline_comment|/*&n; * vreset.c&n; *&n; * Initialize the VGA control registers to 80x25 text mode.&n; *&n; * Adapted from a program by:&n; *                                      Steve Sellgren&n; *                                      San Francisco Indigo Company&n; *                                      sfindigo!sellgren@uunet.uu.net&n; *&n; * Original concept by:&n; *                                      Gary Thomas &lt;gdt@linuxppc.org&gt;&n; * Adapted for Moto boxes by:&n; *                                      Pat Kane &amp; Mark Scott, 1996&n; * Adapted for IBM portables by:&n; *                                      Takeshi Ishimoto&n; * Multi-console support:&n; *                                      Terje Malmedal &lt;terje.malmedal@usit.uio.no&gt;&n; */
 macro_line|#include &quot;iso_font.h&quot;
 macro_line|#include &quot;nonstdio.h&quot;
