@@ -11776,6 +11776,17 @@ comma
 (brace
 id|PCI_VENDOR_ID_INTEL
 comma
+l_int|0x1059
+comma
+id|PCI_ANY_ID
+comma
+id|PCI_ANY_ID
+comma
+)brace
+comma
+(brace
+id|PCI_VENDOR_ID_INTEL
+comma
 l_int|0x1227
 comma
 id|PCI_ANY_ID
