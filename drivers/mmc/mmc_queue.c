@@ -224,7 +224,7 @@ c_func
 id|q
 )paren
 suffix:semicolon
-id|spin_unlock
+id|spin_unlock_irq
 c_func
 (paren
 id|q-&gt;queue_lock
