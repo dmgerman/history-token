@@ -503,25 +503,19 @@ id|inode-&gt;i_size
 op_assign
 id|findData.EndOfFile
 suffix:semicolon
-id|inode-&gt;i_blksize
-op_assign
-(paren
-id|pTcon-&gt;ses-&gt;server-&gt;maxBuf
-op_minus
-id|MAX_CIFS_HDR_SIZE
-)paren
-op_amp
-l_int|0xFFFFFE00
-suffix:semicolon
+multiline_comment|/* blksize needs to be multiple of two. So safer to default to blksize&n;&t;and blkbits set in superblock so 2**blkbits and blksize will match */
+multiline_comment|/*&t;&t;inode-&gt;i_blksize =&n;&t;&t;    (pTcon-&gt;ses-&gt;server-&gt;maxBuf - MAX_CIFS_HDR_SIZE) &amp; 0xFFFFFE00;*/
 id|inode-&gt;i_blocks
 op_assign
-id|do_div
-c_func
 (paren
-id|findData.NumOfBytes
-comma
 id|inode-&gt;i_blksize
+op_minus
+l_int|1
+op_plus
+id|findData.NumOfBytes
 )paren
+op_rshift
+id|inode-&gt;i_blkbits
 suffix:semicolon
 r_if
 c_cond
@@ -1118,16 +1112,8 @@ id|cifsInfo-&gt;inUse
 )paren
 suffix:semicolon
 multiline_comment|/* inc on every refresh of inode */
-id|inode-&gt;i_blksize
-op_assign
-(paren
-id|pTcon-&gt;ses-&gt;server-&gt;maxBuf
-op_minus
-id|MAX_CIFS_HDR_SIZE
-)paren
-op_amp
-l_int|0xFFFFFE00
-suffix:semicolon
+multiline_comment|/* blksize needs to be multiple of two. So safer to default to blksize&n;        and blkbits set in superblock so 2**blkbits and blksize will match */
+multiline_comment|/*&t;&t;inode-&gt;i_blksize =&n;&t;&t;    (pTcon-&gt;ses-&gt;server-&gt;maxBuf - MAX_CIFS_HDR_SIZE) &amp; 0xFFFFFE00;*/
 multiline_comment|/* Linux can not store file creation time unfortunately so we ignore it */
 id|inode-&gt;i_atime
 op_assign
@@ -1258,13 +1244,15 @@ id|pfindData-&gt;AllocationSize
 suffix:semicolon
 id|inode-&gt;i_blocks
 op_assign
-id|do_div
-c_func
 (paren
-id|pfindData-&gt;AllocationSize
-comma
 id|inode-&gt;i_blksize
+op_minus
+l_int|1
+op_plus
+id|pfindData-&gt;AllocationSize
 )paren
+op_rshift
+id|inode-&gt;i_blkbits
 suffix:semicolon
 id|cFYI
 c_func
