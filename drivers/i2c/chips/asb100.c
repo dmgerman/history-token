@@ -3436,6 +3436,29 @@ r_return
 id|err
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|i2c_get_clientdata
+c_func
+(paren
+id|client
+)paren
+op_eq
+l_int|NULL
+)paren
+(brace
+multiline_comment|/* subclients */
+id|kfree
+c_func
+(paren
+id|client
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
+multiline_comment|/* main client */
 id|kfree
 c_func
 (paren
@@ -3446,6 +3469,7 @@ id|client
 )paren
 )paren
 suffix:semicolon
+)brace
 r_return
 l_int|0
 suffix:semicolon
