@@ -3175,6 +3175,7 @@ id|zero
 comma
 )brace
 comma
+macro_line|#ifdef CONFIG_MMU
 (brace
 dot
 id|ctl_name
@@ -3212,6 +3213,7 @@ op_amp
 id|proc_dointvec
 )brace
 comma
+macro_line|#endif
 (brace
 dot
 id|ctl_name
@@ -3880,6 +3882,7 @@ comma
 )brace
 comma
 macro_line|#endif
+macro_line|#ifdef CONFIG_MMU
 (brace
 dot
 id|ctl_name
@@ -3994,6 +3997,7 @@ id|proc_dointvec
 comma
 )brace
 comma
+macro_line|#endif
 (brace
 dot
 id|ctl_name

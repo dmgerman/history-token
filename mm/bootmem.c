@@ -9,6 +9,7 @@ macro_line|#include &lt;linux/mmzone.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
+macro_line|#include &quot;internal.h&quot;
 multiline_comment|/*&n; * Access to this subsystem has to be serialized externally. (this is&n; * true for the boot process anyway)&n; */
 DECL|variable|max_low_pfn
 r_int
@@ -1237,6 +1238,8 @@ l_int|0UL
 (brace
 r_int
 id|j
+comma
+id|order
 suffix:semicolon
 id|count
 op_add_assign
@@ -1248,12 +1251,22 @@ c_func
 id|page
 )paren
 suffix:semicolon
-id|set_page_count
+id|order
+op_assign
+id|ffs
+c_func
+(paren
+id|BITS_PER_LONG
+)paren
+op_minus
+l_int|1
+suffix:semicolon
+id|set_page_refs
 c_func
 (paren
 id|page
 comma
-l_int|1
+id|order
 )paren
 suffix:semicolon
 r_for
@@ -1304,13 +1317,7 @@ c_func
 (paren
 id|page
 comma
-id|ffs
-c_func
-(paren
-id|BITS_PER_LONG
-)paren
-op_minus
-l_int|1
+id|order
 )paren
 suffix:semicolon
 id|i
@@ -1374,12 +1381,12 @@ c_func
 id|page
 )paren
 suffix:semicolon
-id|set_page_count
+id|set_page_refs
 c_func
 (paren
 id|page
 comma
-l_int|1
+l_int|0
 )paren
 suffix:semicolon
 id|__free_page
