@@ -167,7 +167,7 @@ id|u32
 id|fib_priority
 suffix:semicolon
 DECL|member|fib_metrics
-r_int
+id|u32
 id|fib_metrics
 (braket
 id|RTAX_MAX

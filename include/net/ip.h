@@ -714,7 +714,13 @@ id|IP_PMTUDISC_WANT
 op_logical_and
 op_logical_neg
 (paren
-id|dst-&gt;mxlock
+id|dst_metric
+c_func
+(paren
+id|dst
+comma
+id|RTAX_LOCK
+)paren
 op_amp
 (paren
 l_int|1

@@ -3511,7 +3511,12 @@ c_cond
 (paren
 id|rt
 )paren
-id|rt-&gt;u.dst.pmtu
+id|rt-&gt;u.dst.metrics
+(braket
+id|RTAX_MTU
+op_minus
+l_int|1
+)braket
 op_assign
 id|mtu
 suffix:semicolon

@@ -450,7 +450,11 @@ id|dst
 (brace
 id|dst_mtu
 op_assign
-id|dst-&gt;pmtu
+id|dst_pmtu
+c_func
+(paren
+id|dst
+)paren
 suffix:semicolon
 id|SCTP_DEBUG_PRINTK
 c_func

@@ -3330,7 +3330,13 @@ id|dst
 (brace
 id|val
 op_assign
-id|dst-&gt;pmtu
+id|dst_pmtu
+c_func
+(paren
+id|dst
+)paren
+op_minus
+id|dst-&gt;header_len
 suffix:semicolon
 id|dst_release
 c_func
