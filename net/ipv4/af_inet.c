@@ -4262,6 +4262,11 @@ c_func
 (paren
 )paren
 suffix:semicolon
+id|udp_proc_init
+c_func
+(paren
+)paren
+suffix:semicolon
 id|fib_proc_init
 c_func
 (paren
