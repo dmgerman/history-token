@@ -9452,6 +9452,7 @@ comma
 suffix:semicolon
 multiline_comment|/* ------------------------------------------------------------------------- */
 DECL|function|usb_midi_init
+r_static
 r_int
 id|__init
 id|usb_midi_init
@@ -9460,27 +9461,17 @@ c_func
 r_void
 )paren
 (brace
-r_if
-c_cond
-(paren
+r_return
 id|usb_register
 c_func
 (paren
 op_amp
 id|usb_midi_driver
 )paren
-OL
-l_int|0
-)paren
-r_return
-op_minus
-l_int|1
-suffix:semicolon
-r_return
-l_int|0
 suffix:semicolon
 )brace
 DECL|function|usb_midi_exit
+r_static
 r_void
 id|__exit
 id|usb_midi_exit
