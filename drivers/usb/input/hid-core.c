@@ -6087,6 +6087,10 @@ DECL|macro|USB_DEVICE_ID_ATEN_2PORTKVM
 mdefine_line|#define USB_DEVICE_ID_ATEN_2PORTKVM    0x2204
 DECL|macro|USB_DEVICE_ID_ATEN_4PORTKVM
 mdefine_line|#define USB_DEVICE_ID_ATEN_4PORTKVM    0x2205
+DECL|macro|USB_VENDOR_ID_TOPMAX
+mdefine_line|#define USB_VENDOR_ID_TOPMAX           0x0663
+DECL|macro|USB_DEVICE_ID_TOPMAX_COBRAPAD
+mdefine_line|#define USB_DEVICE_ID_TOPMAX_COBRAPAD  0x0103
 DECL|macro|USB_VENDOR_ID_MGE
 mdefine_line|#define USB_VENDOR_ID_MGE              0x0463
 DECL|macro|USB_DEVICE_ID_MGE_UPS
@@ -6378,6 +6382,14 @@ comma
 id|USB_DEVICE_ID_MGE_UPS1
 comma
 id|HID_QUIRK_HIDDEV
+)brace
+comma
+(brace
+id|USB_VENDOR_ID_TOPMAX
+comma
+id|USB_DEVICE_ID_TOPMAX_COBRAPAD
+comma
+id|HID_QUIRK_BADPAD
 )brace
 comma
 (brace
