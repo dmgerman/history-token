@@ -203,10 +203,6 @@ r_char
 op_star
 id|s
 comma
-r_char
-op_star
-id|ss
-comma
 id|u_char
 op_star
 id|d

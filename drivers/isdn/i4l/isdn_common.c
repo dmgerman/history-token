@@ -769,13 +769,6 @@ id|slot
 op_assign
 id|fi-&gt;userdata
 suffix:semicolon
-r_int
-id|sl
-op_assign
-id|slot
-op_minus
-id|slots
-suffix:semicolon
 id|isdn_ctrl
 op_star
 id|ctrl
@@ -834,13 +827,6 @@ id|slot
 op_assign
 id|fi-&gt;userdata
 suffix:semicolon
-r_int
-id|sl
-op_assign
-id|slot
-op_minus
-id|slots
-suffix:semicolon
 id|isdn_ctrl
 op_star
 id|ctrl
@@ -892,13 +878,6 @@ op_star
 id|slot
 op_assign
 id|fi-&gt;userdata
-suffix:semicolon
-r_int
-id|sl
-op_assign
-id|slot
-op_minus
-id|slots
 suffix:semicolon
 id|isdn_ctrl
 op_star
@@ -1152,13 +1131,6 @@ op_star
 id|slot
 op_assign
 id|fi-&gt;userdata
-suffix:semicolon
-r_int
-id|sl
-op_assign
-id|slot
-op_minus
-id|slots
 suffix:semicolon
 id|isdn_ctrl
 op_star
@@ -1976,6 +1948,12 @@ op_star
 id|rcvcount
 suffix:semicolon
 multiline_comment|/* Byte-counters for B rx      */
+DECL|member|rpqueue
+r_struct
+id|sk_buff_head
+op_star
+id|rpqueue
+suffix:semicolon
 macro_line|#ifdef CONFIG_ISDN_AUDIO
 DECL|member|DLEflag
 r_int
@@ -1984,13 +1962,6 @@ id|DLEflag
 suffix:semicolon
 multiline_comment|/* Insert DLE at next read     */
 macro_line|#endif
-DECL|member|rpqueue
-r_struct
-id|sk_buff_head
-op_star
-id|rpqueue
-suffix:semicolon
-multiline_comment|/* Pointers to rx queue        */
 DECL|member|msn2eaz
 r_char
 id|msn2eaz
@@ -5728,56 +5699,6 @@ suffix:semicolon
 macro_line|#endif
 macro_line|#if 0 
 singleline_comment|// FIXME
-r_case
-id|ISDN_STAT_NODCH
-suffix:colon
-r_if
-c_cond
-(paren
-id|i
-OL
-l_int|0
-)paren
-r_return
-op_minus
-l_int|1
-suffix:semicolon
-id|dbg_statcallb
-c_func
-(paren
-l_string|&quot;NODCH: %ld&bslash;n&quot;
-comma
-id|c-&gt;arg
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|isdn_net_stat_callback
-c_func
-(paren
-id|i
-comma
-id|c
-)paren
-)paren
-r_break
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|isdn_tty_stat_callback
-c_func
-(paren
-id|i
-comma
-id|c
-)paren
-)paren
-r_break
-suffix:semicolon
-r_break
-suffix:semicolon
 r_case
 id|ISDN_STAT_DISCH
 suffix:colon

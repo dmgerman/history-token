@@ -264,8 +264,6 @@ DECL|macro|ISDN_STAT_UNLOAD
 mdefine_line|#define ISDN_STAT_UNLOAD  266    /* Signal unload of lowlevel-driver      */
 DECL|macro|ISDN_STAT_BSENT
 mdefine_line|#define ISDN_STAT_BSENT   267    /* Signal packet sent                    */
-DECL|macro|ISDN_STAT_NODCH
-mdefine_line|#define ISDN_STAT_NODCH   268    /* Signal no D-Channel                   */
 DECL|macro|ISDN_STAT_ADDCH
 mdefine_line|#define ISDN_STAT_ADDCH   269    /* Add more Channels                     */
 DECL|macro|ISDN_STAT_CAUSE

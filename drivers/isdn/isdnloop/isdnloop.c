@@ -689,15 +689,6 @@ l_int|0
 comma
 multiline_comment|/* Card connected to wallplug */
 (brace
-l_string|&quot;NO D-CHAN&quot;
-comma
-id|ISDN_STAT_NODCH
-comma
-l_int|0
-)brace
-comma
-multiline_comment|/* No D-channel available     */
-(brace
 l_string|&quot;E_L1: ACT FAIL&quot;
 comma
 id|ISDN_STAT_BHUP
