@@ -6554,7 +6554,7 @@ comma
 l_int|1024
 )paren
 suffix:semicolon
-id|pci_dma_sync_single
+id|pci_dma_sync_single_for_device
 c_func
 (paren
 id|pdev
@@ -6594,7 +6594,7 @@ c_func
 l_int|200
 )paren
 suffix:semicolon
-id|pci_dma_sync_single
+id|pci_dma_sync_single_for_cpu
 c_func
 (paren
 id|pdev
