@@ -189,22 +189,10 @@ id|first_voice
 op_eq
 id|last_voice
 )paren
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot;BUG (or not enough voices), number %d, next free %d!&bslash;n&quot;
-comma
-id|number
-comma
-id|emu-&gt;next_free_voice
-)paren
-suffix:semicolon
 r_return
 op_minus
 id|ENOMEM
 suffix:semicolon
-)brace
 r_for
 c_loop
 (paren
