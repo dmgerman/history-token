@@ -27,6 +27,7 @@ singleline_comment|//iospace virtual memory address
 )brace
 suffix:semicolon
 DECL|variable|eng_oper
+r_static
 r_int
 r_char
 id|eng_oper
@@ -282,6 +283,7 @@ r_int
 id|chipcyber
 suffix:semicolon
 DECL|function|is3Dchip
+r_static
 r_int
 id|is3Dchip
 c_func
@@ -397,6 +399,7 @@ id|CYBERBLADEXPAi1
 suffix:semicolon
 )brace
 DECL|function|iscyber
+r_static
 r_int
 id|iscyber
 c_func
@@ -6551,6 +6554,7 @@ id|trident_pci_remove
 )paren
 )brace
 suffix:semicolon
+r_static
 r_int
 id|tridentfb_setup
 c_func
@@ -6561,6 +6565,7 @@ id|options
 )paren
 suffix:semicolon
 DECL|function|tridentfb_init
+r_static
 r_int
 id|__init
 id|tridentfb_init
@@ -6617,6 +6622,7 @@ id|tridentfb_pci_driver
 suffix:semicolon
 )brace
 DECL|function|tridentfb_exit
+r_static
 r_void
 id|__exit
 id|tridentfb_exit
@@ -6634,7 +6640,9 @@ id|tridentfb_pci_driver
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Parse user specified options (`video=trident:&squot;)&n; * example:&n; * &t;video=trident:800x600,bpp=16,noaccel&n; */
+macro_line|#ifndef MODULE
 DECL|function|tridentfb_setup
+r_static
 r_int
 id|tridentfb_setup
 c_func
@@ -6909,6 +6917,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+macro_line|#endif
 DECL|variable|tridentfb_ops
 r_static
 r_struct
