@@ -5015,7 +5015,7 @@ id|ret
 op_assign
 l_int|0
 suffix:semicolon
-macro_line|#ifdef CONFIG_DSCC4_CLOCK_ON_TWO_PORTS_ONLY
+macro_line|#ifdef CONFIG_DSCC4_PCISYNC
 r_if
 c_cond
 (paren
@@ -5436,7 +5436,7 @@ c_func
 (paren
 id|KERN_INFO
 l_string|&quot;%s: please reset the device&quot;
-l_string|&quot;before this command&bslash;n&quot;
+l_string|&quot; before this command&bslash;n&quot;
 comma
 id|dev-&gt;name
 )paren
