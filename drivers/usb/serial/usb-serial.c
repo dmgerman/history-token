@@ -309,6 +309,7 @@ DECL|function|return_serial
 r_static
 r_void
 id|return_serial
+c_func
 (paren
 r_struct
 id|usb_serial
@@ -361,8 +362,6 @@ op_assign
 l_int|NULL
 suffix:semicolon
 )brace
-r_return
-suffix:semicolon
 )brace
 DECL|function|destroy_serial
 r_static
