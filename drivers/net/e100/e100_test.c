@@ -38,6 +38,39 @@ op_star
 id|bdp
 )paren
 suffix:semicolon
+r_extern
+r_void
+id|e100_phy_autoneg
+c_func
+(paren
+r_struct
+id|e100_private
+op_star
+id|bdp
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|e100_phy_set_loopback
+c_func
+(paren
+r_struct
+id|e100_private
+op_star
+id|bdp
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|e100_force_speed_duplex
+c_func
+(paren
+r_struct
+id|e100_private
+op_star
+id|bdp
+)paren
+suffix:semicolon
 r_static
 id|u8
 id|e100_diag_selftest
@@ -859,6 +892,7 @@ c_cond
 id|set_loopback
 )paren
 (brace
+multiline_comment|/* Configure loopback on MAC */
 id|e100_config_loopback_mode
 c_func
 (paren
@@ -893,56 +927,57 @@ op_eq
 id|PHY_LOOPBACK
 )paren
 (brace
-r_int
-r_int
-id|expires
-op_assign
-id|jiffies
-op_plus
-id|HZ
-op_star
-l_int|5
-suffix:semicolon
 r_if
 c_cond
 (paren
 id|set_loopback
 )paren
-id|e100_phy_reset
+multiline_comment|/* Set PHY loopback mode */
+id|e100_phy_set_loopback
 c_func
 (paren
 id|bdp
 )paren
 suffix:semicolon
-multiline_comment|/* wait up to 5 secs for PHY loopback ON/OFF to take effect */
-r_while
-c_loop
+r_else
+(brace
+multiline_comment|/* Back to normal speed and duplex */
+r_if
+c_cond
 (paren
-(paren
-id|e100_get_link_state
+id|bdp-&gt;params.e100_speed_duplex
+op_eq
+id|E100_AUTONEG
+)paren
+multiline_comment|/* Reset PHY and do autoneg */
+id|e100_phy_autoneg
 c_func
 (paren
 id|bdp
 )paren
-op_ne
-id|set_loopback
-)paren
-op_logical_and
-id|time_before
+suffix:semicolon
+r_else
+multiline_comment|/* Reset PHY and force speed and duplex */
+id|e100_force_speed_duplex
 c_func
 (paren
-id|jiffies
-comma
-id|expires
-)paren
-)paren
-(brace
-id|yield
-c_func
-(paren
+id|bdp
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* Wait for PHY state change */
+id|set_current_state
+c_func
+(paren
+id|TASK_UNINTERRUPTIBLE
+)paren
+suffix:semicolon
+id|schedule_timeout
+c_func
+(paren
+id|HZ
+)paren
+suffix:semicolon
 )brace
 r_else
 (brace
@@ -991,6 +1026,7 @@ id|tbd_t
 op_star
 id|tbd
 suffix:semicolon
+multiline_comment|/* tcb, tbd and transmit buffer are allocated */
 id|tcb
 op_assign
 id|pci_alloc_consistent
@@ -1038,6 +1074,11 @@ r_sizeof
 id|tcb_t
 )paren
 op_plus
+r_sizeof
+(paren
+id|tbd_t
+)paren
+op_plus
 id|LB_PACKET_SIZE
 )paren
 suffix:semicolon
@@ -1061,15 +1102,8 @@ op_or
 id|CB_TX_SF_BIT
 )paren
 suffix:semicolon
+multiline_comment|/* Next command is null */
 id|tcb-&gt;tcb_hdr.cb_lnk_ptr
-op_assign
-id|cpu_to_le32
-c_func
-(paren
-id|tcb-&gt;tcb_phys
-)paren
-suffix:semicolon
-id|tcb-&gt;tcb_tbd_ptr
 op_assign
 id|cpu_to_le32
 c_func
@@ -1089,6 +1123,7 @@ id|tcb-&gt;tcb_tbd_num
 op_assign
 l_int|1
 suffix:semicolon
+multiline_comment|/* Set up tcb tbd pointer */
 id|tcb-&gt;tcb_tbd_ptr
 op_assign
 id|cpu_to_le32
@@ -1121,6 +1156,7 @@ id|tcb_t
 )paren
 )paren
 suffix:semicolon
+multiline_comment|/* Set up tbd transmit buffer */
 id|tbd-&gt;tbd_buf_addr
 op_assign
 id|cpu_to_le32
@@ -1146,6 +1182,7 @@ c_func
 l_int|1024
 )paren
 suffix:semicolon
+multiline_comment|/* The value of first 512 bytes is FF */
 id|memset
 c_func
 (paren
@@ -1168,9 +1205,10 @@ id|tbd_t
 comma
 l_int|0xFF
 comma
-l_int|1024
+l_int|512
 )paren
 suffix:semicolon
+multiline_comment|/* The value of second 512 bytes is BA */
 id|memset
 c_func
 (paren
@@ -1267,10 +1305,6 @@ id|rfd_t
 )paren
 suffix:semicolon
 multiline_comment|/* init all fields in rfd */
-id|rfd-&gt;rfd_header.cb_status
-op_assign
-l_int|0
-suffix:semicolon
 id|rfd-&gt;rfd_header.cb_cmd
 op_assign
 id|cpu_to_le16
@@ -1278,10 +1312,6 @@ c_func
 (paren
 id|RFD_EL_BIT
 )paren
-suffix:semicolon
-id|rfd-&gt;rfd_act_cnt
-op_assign
-l_int|0
 suffix:semicolon
 id|rfd-&gt;rfd_sz
 op_assign
@@ -1293,6 +1323,7 @@ op_plus
 id|CHKSUM_SIZE
 )paren
 suffix:semicolon
+multiline_comment|/* dma_handle is physical address of rfd */
 id|bdp-&gt;loopback.dma_handle
 op_assign
 id|dma_handle
@@ -1426,8 +1457,28 @@ op_star
 id|datap
 )paren
 (brace
+r_int
+id|i
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+l_int|512
+suffix:semicolon
+id|i
+op_increment
+)paren
+(brace
 r_if
 c_cond
+(paren
+op_logical_neg
 (paren
 (paren
 op_star
@@ -1435,28 +1486,41 @@ id|datap
 )paren
 op_eq
 l_int|0xFF
-)paren
-(brace
-r_if
-c_cond
+op_logical_and
 (paren
 op_star
 (paren
 id|datap
 op_plus
-l_int|600
+l_int|512
 )paren
 op_eq
 l_int|0xBA
 )paren
+)paren
+)paren
 (brace
+id|printk
+(paren
+id|KERN_ERR
+l_string|&quot;e100: check loopback packet failed at: %x&bslash;n&quot;
+comma
+id|i
+)paren
+suffix:semicolon
 r_return
-l_bool|true
+l_bool|false
 suffix:semicolon
 )brace
 )brace
+id|printk
+(paren
+id|KERN_DEBUG
+l_string|&quot;e100: Check received loopback packet OK&bslash;n&quot;
+)paren
+suffix:semicolon
 r_return
-l_bool|false
+l_bool|true
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * e100_diag_rcv_loopback_pkt - waits for receive and checks lpbk packet&n; * @bdp: atapter&squot;s private data struct&n; *&n; * Returns true if OK false otherwise.&n; */
@@ -1556,6 +1620,14 @@ id|rfd_status
 op_amp
 id|RFD_STATUS_COMPLETE
 )paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_DEBUG
+l_string|&quot;e100: Loopback packet received&bslash;n&quot;
+)paren
+suffix:semicolon
 r_return
 id|e100_diag_check_pkt
 c_func
@@ -1571,10 +1643,20 @@ id|bdp-&gt;rfd_size
 )paren
 )paren
 suffix:semicolon
+)brace
 r_else
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;e100: Loopback packet not received&bslash;n&quot;
+)paren
+suffix:semicolon
 r_return
 l_bool|false
 suffix:semicolon
+)brace
 )brace
 multiline_comment|/**&n; * e100_diag_loopback_free - free data allocated for loopback pkt send/receive&n; * @bdp: atapter&squot;s private data struct&n; *&n; */
 r_static
