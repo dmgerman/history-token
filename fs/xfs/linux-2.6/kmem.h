@@ -55,7 +55,7 @@ id|flags
 r_int
 id|lflags
 suffix:semicolon
-macro_line|#if DEBUG
+macro_line|#ifdef DEBUG
 r_if
 c_cond
 (paren
