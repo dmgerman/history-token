@@ -4846,7 +4846,7 @@ r_int
 r_int
 op_star
 )paren
-id|get_free_page
+id|get_zeroed_page
 c_func
 (paren
 id|GFP_ATOMIC
@@ -4870,7 +4870,7 @@ id|rxr
 id|printk
 c_func
 (paren
-l_string|&quot;ioc3_alloc_rings(): get_free_page() failed!&bslash;n&quot;
+l_string|&quot;ioc3_alloc_rings(): get_zeroed_page() failed!&bslash;n&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Now the rx buffers.  The RX ring may be larger but&n;&t;&t;   we only allocate 16 buffers for now.  Need to tune&n;&t;&t;   this for performance and memory later.  */
@@ -5028,7 +5028,7 @@ id|ip-&gt;txr
 id|printk
 c_func
 (paren
-l_string|&quot;ioc3_alloc_rings(): get_free_page() failed!&bslash;n&quot;
+l_string|&quot;ioc3_alloc_rings(): __get_free_pages() failed!&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ip-&gt;tx_pi

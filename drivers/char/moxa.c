@@ -2765,7 +2765,7 @@ id|moxaXmitBuff
 (brace
 id|page
 op_assign
-id|get_free_page
+id|get_zeroed_page
 c_func
 (paren
 id|GFP_KERNEL

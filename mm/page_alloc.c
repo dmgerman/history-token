@@ -2041,6 +2041,15 @@ id|page
 op_star
 id|page
 suffix:semicolon
+multiline_comment|/*&n;&t; * get_zeroed_page() returns a 32-bit address, which cannot represent&n;&t; * a highmem page&n;&t; */
+id|BUG_ON
+c_func
+(paren
+id|gfp_mask
+op_amp
+id|__GFP_HIGHMEM
+)paren
+suffix:semicolon
 id|page
 op_assign
 id|alloc_pages

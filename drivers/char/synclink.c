@@ -5932,7 +5932,7 @@ r_int
 r_char
 op_star
 )paren
-id|get_free_page
+id|get_zeroed_page
 c_func
 (paren
 id|GFP_KERNEL
@@ -13309,7 +13309,7 @@ id|tmp_buf
 (brace
 id|page
 op_assign
-id|get_free_page
+id|get_zeroed_page
 c_func
 (paren
 id|GFP_KERNEL

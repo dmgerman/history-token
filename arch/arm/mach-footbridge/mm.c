@@ -205,7 +205,7 @@ id|ebsa285_host_io_desc
 suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_FOOTBRIDGE_ADDIN
-multiline_comment|/*&n; * These two functions convert virtual addresses to PCI addresses and PCI&n; * addresses to virtual addresses.  Note that it is only legal to use these&n; * on memory obtained via get_free_page or kmalloc.&n; */
+multiline_comment|/*&n; * These two functions convert virtual addresses to PCI addresses and PCI&n; * addresses to virtual addresses.  Note that it is only legal to use these&n; * on memory obtained via get_zeroed_page or kmalloc.&n; */
 DECL|function|__virt_to_bus
 r_int
 r_int

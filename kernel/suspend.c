@@ -1305,7 +1305,7 @@ r_union
 id|diskpage
 op_star
 )paren
-id|get_free_page
+id|get_zeroed_page
 c_func
 (paren
 id|GFP_ATOMIC
@@ -2261,7 +2261,7 @@ op_decrement
 (brace
 id|p-&gt;address
 op_assign
-id|get_free_page
+id|get_zeroed_page
 c_func
 (paren
 id|GFP_ATOMIC
@@ -3673,7 +3673,7 @@ r_do
 (brace
 id|addr
 op_assign
-id|get_free_page
+id|get_zeroed_page
 c_func
 (paren
 id|GFP_ATOMIC
@@ -4876,7 +4876,7 @@ id|specialfile
 suffix:semicolon
 id|scratch_page
 op_assign
-id|get_free_page
+id|get_zeroed_page
 c_func
 (paren
 id|GFP_ATOMIC

@@ -1117,8 +1117,8 @@ DECL|macro|kmalloc
 mdefine_line|#define kmalloc(x...) (PRINT_INFO(&quot; kmalloc %p&bslash;n&quot;,b=kmalloc(x)),b)
 DECL|macro|kfree
 mdefine_line|#define kfree(x) PRINT_INFO(&quot; kfree %p&bslash;n&quot;,x);kfree(x)
-DECL|macro|get_free_page
-mdefine_line|#define get_free_page(x...) (PRINT_INFO(&quot; gfp %p&bslash;n&quot;,b=get_free_page(x)),b)
+DECL|macro|get_zeroed_page
+mdefine_line|#define get_zeroed_page(x...) (PRINT_INFO(&quot; gfp %p&bslash;n&quot;,b=get_zeroed_page(x)),b)
 DECL|macro|__get_free_pages
 mdefine_line|#define __get_free_pages(x...) (PRINT_INFO(&quot; gfps %p&bslash;n&quot;,b=__get_free_pages(x)),b)
 macro_line|#endif&t;&t;&t;&t;/* DEBUG_MALLOC */

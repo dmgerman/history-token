@@ -881,7 +881,7 @@ l_int|NULL
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n; *   Allocate the MJPEG grab buffers.&n; *&n; *   If the requested buffer size is smaller than MAX_KMALLOC_MEM,&n; *   kmalloc is used to request a physically contiguous area,&n; *   else we allocate the memory in framgents with get_free_page.&n; *&n; *   If a Natoma chipset is present and this is a revision 1 zr36057,&n; *   each MJPEG buffer needs to be physically contiguous.&n; *   (RJ: This statement is from Dave Perks&squot; original driver,&n; *   I could never check it because I have a zr36067)&n; *   The driver cares about this because it reduces the buffer&n; *   size to MAX_KMALLOC_MEM in that case (which forces contiguous allocation).&n; *&n; *   RJ: The contents grab buffers needs never be accessed in the driver.&n; *       Therefore there is no need to allocate them with vmalloc in order&n; *       to get a contiguous virtual memory space.&n; *       I don&squot;t understand why many other drivers first allocate them with&n; *       vmalloc (which uses internally also get_free_page, but delivers you&n; *       virtual addresses) and then again have to make a lot of efforts&n; *       to get the physical address.&n; *&n; */
+multiline_comment|/*&n; *   Allocate the MJPEG grab buffers.&n; *&n; *   If the requested buffer size is smaller than MAX_KMALLOC_MEM,&n; *   kmalloc is used to request a physically contiguous area,&n; *   else we allocate the memory in framgents with get_zeroed_page.&n; *&n; *   If a Natoma chipset is present and this is a revision 1 zr36057,&n; *   each MJPEG buffer needs to be physically contiguous.&n; *   (RJ: This statement is from Dave Perks&squot; original driver,&n; *   I could never check it because I have a zr36067)&n; *   The driver cares about this because it reduces the buffer&n; *   size to MAX_KMALLOC_MEM in that case (which forces contiguous allocation).&n; *&n; *   RJ: The contents grab buffers needs never be accessed in the driver.&n; *       Therefore there is no need to allocate them with vmalloc in order&n; *       to get a contiguous virtual memory space.&n; *       I don&squot;t understand why many other drivers first allocate them with&n; *       vmalloc (which uses internally also get_zeroed_page, but delivers you&n; *       virtual addresses) and then again have to make a lot of efforts&n; *       to get the physical address.&n; *&n; */
 DECL|function|jpg_fbuffer_alloc
 r_static
 r_int
@@ -948,7 +948,7 @@ suffix:semicolon
 multiline_comment|/* Allocate fragment table for this buffer */
 id|mem
 op_assign
-id|get_free_page
+id|get_zeroed_page
 c_func
 (paren
 id|GFP_KERNEL
@@ -966,7 +966,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;%s: jpg_fbuffer_alloc: get_free_page (frag_tab) failed for buffer %d&bslash;n&quot;
+l_string|&quot;%s: jpg_fbuffer_alloc: get_zeroed_page (frag_tab) failed for buffer %d&bslash;n&quot;
 comma
 id|zr-&gt;name
 comma
@@ -1171,7 +1171,7 @@ op_increment
 (brace
 id|mem
 op_assign
-id|get_free_page
+id|get_zeroed_page
 c_func
 (paren
 id|GFP_KERNEL
@@ -1189,7 +1189,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;%s: jpg_fbuffer_alloc: get_free_page failed for buffer %d&bslash;n&quot;
+l_string|&quot;%s: jpg_fbuffer_alloc: get_zeroed_page failed for buffer %d&bslash;n&quot;
 comma
 id|zr-&gt;name
 comma

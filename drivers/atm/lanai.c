@@ -6940,7 +6940,7 @@ multiline_comment|/* Remember to get vcclist_read_lock while looking up VC */
 multiline_comment|/* Remember to increment lvcc-&gt;rx.atmvcc-&gt;stats-&gt;rx */
 )brace
 multiline_comment|/* -------------------- MANAGING HOST-BASED VCC TABLE: */
-multiline_comment|/* Decide whether to use vmalloc or get_free_page for VCC table */
+multiline_comment|/* Decide whether to use vmalloc or get_zeroed_page for VCC table */
 macro_line|#if (NUM_VCI * BITS_PER_LONG) &lt;= PAGE_SIZE
 DECL|macro|VCCTABLE_GETFREEPAGE
 mdefine_line|#define VCCTABLE_GETFREEPAGE
@@ -6988,7 +6988,7 @@ id|lanai_vcc
 op_star
 op_star
 )paren
-id|get_free_page
+id|get_zeroed_page
 c_func
 (paren
 id|GFP_KERNEL

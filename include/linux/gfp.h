@@ -195,9 +195,6 @@ DECL|macro|__get_free_page
 mdefine_line|#define __get_free_page(gfp_mask) &bslash;&n;&t;&t;__get_free_pages((gfp_mask),0)
 DECL|macro|__get_dma_pages
 mdefine_line|#define __get_dma_pages(gfp_mask, order) &bslash;&n;&t;&t;__get_free_pages((gfp_mask) | GFP_DMA,(order))
-multiline_comment|/*&n; * The old interface name will be removed in 2.5:&n; */
-DECL|macro|get_free_page
-mdefine_line|#define get_free_page get_zeroed_page
 multiline_comment|/*&n; * There is only one &squot;core&squot; page-freeing function.&n; */
 r_extern
 r_void

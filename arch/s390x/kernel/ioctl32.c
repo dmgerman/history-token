@@ -948,7 +948,7 @@ op_assign
 (paren
 id|__kernel_caddr_t
 )paren
-id|get_free_page
+id|get_zeroed_page
 c_func
 (paren
 id|GFP_KERNEL

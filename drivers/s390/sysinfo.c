@@ -1053,7 +1053,7 @@ r_int
 r_int
 id|info_page
 op_assign
-id|get_free_page
+id|get_zeroed_page
 (paren
 id|GFP_KERNEL
 )paren

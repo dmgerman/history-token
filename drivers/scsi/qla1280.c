@@ -1660,7 +1660,7 @@ op_assign
 r_char
 op_star
 )paren
-id|get_free_page
+id|get_zeroed_page
 c_func
 (paren
 id|GFP_KERNEL

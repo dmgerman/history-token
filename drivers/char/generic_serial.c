@@ -3539,7 +3539,7 @@ id|tmp_buf
 (brace
 id|page
 op_assign
-id|get_free_page
+id|get_zeroed_page
 c_func
 (paren
 id|GFP_KERNEL
@@ -3606,14 +3606,14 @@ op_logical_neg
 id|port-&gt;xmit_buf
 )paren
 (brace
-multiline_comment|/* We may sleep in get_free_page() */
+multiline_comment|/* We may sleep in get_zeroed_page() */
 r_int
 r_int
 id|tmp
 suffix:semicolon
 id|tmp
 op_assign
-id|get_free_page
+id|get_zeroed_page
 c_func
 (paren
 id|GFP_KERNEL

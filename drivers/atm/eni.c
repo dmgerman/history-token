@@ -4856,7 +4856,7 @@ id|atm_vcc
 op_star
 op_star
 )paren
-id|get_free_page
+id|get_zeroed_page
 c_func
 (paren
 id|GFP_KERNEL

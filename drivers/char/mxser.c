@@ -3222,7 +3222,7 @@ id|mxvar_tmp_buf
 (brace
 id|page
 op_assign
-id|get_free_page
+id|get_zeroed_page
 c_func
 (paren
 id|GFP_KERNEL
@@ -7844,7 +7844,7 @@ id|page
 suffix:semicolon
 id|page
 op_assign
-id|get_free_page
+id|get_zeroed_page
 c_func
 (paren
 id|GFP_KERNEL

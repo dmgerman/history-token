@@ -10758,7 +10758,7 @@ id|flags
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Function static struct NCR53c7x0_cmd *allocate_cmd (Scsi_Cmnd *cmd)&n; * &n; * Purpose : Return the first free NCR53c7x0_cmd structure (which are &n; * &t;reused in a LIFO manner to minimize cache thrashing).&n; *&n; * Side effects : If we haven&squot;t yet scheduled allocation of NCR53c7x0_cmd&n; *&t;structures for this device, do so.  Attempt to complete all scheduled&n; *&t;allocations using get_free_page(), putting NCR53c7x0_cmd structures on&n; *&t;the free list.  Teach programmers not to drink and hack.&n; *&n; * Inputs : cmd - SCSI command&n; *&n; * Returns : NCR53c7x0_cmd structure allocated on behalf of cmd;&n; *&t;NULL on failure.&n; */
+multiline_comment|/*&n; * Function static struct NCR53c7x0_cmd *allocate_cmd (Scsi_Cmnd *cmd)&n; * &n; * Purpose : Return the first free NCR53c7x0_cmd structure (which are &n; * &t;reused in a LIFO manner to minimize cache thrashing).&n; *&n; * Side effects : If we haven&squot;t yet scheduled allocation of NCR53c7x0_cmd&n; *&t;structures for this device, do so.  Attempt to complete all scheduled&n; *&t;allocations using get_zeroed_page(), putting NCR53c7x0_cmd structures on&n; *&t;the free list.  Teach programmers not to drink and hack.&n; *&n; * Inputs : cmd - SCSI command&n; *&n; * Returns : NCR53c7x0_cmd structure allocated on behalf of cmd;&n; *&t;NULL on failure.&n; */
 r_static
 r_void
 DECL|function|my_free_page
@@ -10992,7 +10992,7 @@ suffix:semicolon
 )brace
 id|real
 op_assign
-id|get_free_page
+id|get_zeroed_page
 c_func
 (paren
 id|GFP_ATOMIC
