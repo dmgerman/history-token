@@ -11,11 +11,10 @@ macro_line|#else
 DECL|macro|DEBUGP
 mdefine_line|#define DEBUGP(fmt , ...)
 macro_line|#endif
-DECL|function|alloc_and_zero
-r_static
+DECL|function|module_alloc
 r_void
 op_star
-id|alloc_and_zero
+id|module_alloc
 c_func
 (paren
 r_int
@@ -23,11 +22,6 @@ r_int
 id|size
 )paren
 (brace
-r_void
-op_star
-id|ret
-suffix:semicolon
-multiline_comment|/* We handle the zero case fine, unlike vmalloc */
 r_if
 c_cond
 (paren
@@ -38,45 +32,15 @@ l_int|0
 r_return
 l_int|NULL
 suffix:semicolon
-id|ret
-op_assign
+r_return
 id|vmalloc
 c_func
 (paren
 id|size
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|ret
-)paren
-id|ret
-op_assign
-id|ERR_PTR
-c_func
-(paren
-op_minus
-id|ENOMEM
-)paren
-suffix:semicolon
-r_else
-id|memset
-c_func
-(paren
-id|ret
-comma
-l_int|0
-comma
-id|size
-)paren
-suffix:semicolon
-r_return
-id|ret
-suffix:semicolon
 )brace
-multiline_comment|/* Free memory returned from module_core_alloc/module_init_alloc */
+multiline_comment|/* Free memory returned from module_alloc */
 DECL|function|module_free
 r_void
 id|module_free
@@ -100,10 +64,10 @@ id|module_region
 suffix:semicolon
 multiline_comment|/* FIXME: If module_region == mod-&gt;init_region, trim exception&n;           table entries. */
 )brace
-DECL|function|module_core_alloc
-r_void
-op_star
-id|module_core_alloc
+multiline_comment|/* We don&squot;t need anything special. */
+DECL|function|module_core_size
+r_int
+id|module_core_size
 c_func
 (paren
 r_const
@@ -128,17 +92,12 @@ id|module
 )paren
 (brace
 r_return
-id|alloc_and_zero
-c_func
-(paren
 id|module-&gt;core_size
-)paren
 suffix:semicolon
 )brace
-DECL|function|module_init_alloc
-r_void
-op_star
-id|module_init_alloc
+DECL|function|module_init_size
+r_int
+id|module_init_size
 c_func
 (paren
 r_const
@@ -163,11 +122,7 @@ id|module
 )paren
 (brace
 r_return
-id|alloc_and_zero
-c_func
-(paren
 id|module-&gt;init_size
-)paren
 suffix:semicolon
 )brace
 DECL|function|apply_relocate

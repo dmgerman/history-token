@@ -41,10 +41,9 @@ id|group
 )paren
 suffix:semicolon
 multiline_comment|/* These must be implemented by the specific architecture */
-multiline_comment|/* vmalloc AND zero for the non-releasable code; return ERR_PTR() on error. */
-r_void
-op_star
-id|module_core_alloc
+multiline_comment|/* Total size to allocate for the non-releasable code; return len or&n;   -error.  mod-&gt;core_size is the current generic tally. */
+r_int
+id|module_core_size
 c_func
 (paren
 r_const
@@ -68,10 +67,9 @@ op_star
 id|mod
 )paren
 suffix:semicolon
-multiline_comment|/* vmalloc and zero (if any) for sections to be freed after init.&n;   Return ERR_PTR() on error. */
-r_void
-op_star
-id|module_init_alloc
+multiline_comment|/* Total size of (if any) sections to be freed after init.  Return 0&n;   for none, len, or -error. mod-&gt;init_size is the current generic&n;   tally. */
+r_int
+id|module_init_size
 c_func
 (paren
 r_const
@@ -95,7 +93,18 @@ op_star
 id|mod
 )paren
 suffix:semicolon
-multiline_comment|/* Free memory returned from module_core_alloc/module_init_alloc */
+multiline_comment|/* Allocator used for allocating struct module, core sections and init&n;   sections.  Returns NULL on failure. */
+r_void
+op_star
+id|module_alloc
+c_func
+(paren
+r_int
+r_int
+id|size
+)paren
+suffix:semicolon
+multiline_comment|/* Free memory returned from module_alloc. */
 r_void
 id|module_free
 c_func
