@@ -211,12 +211,11 @@ id|ide_scan_direction
 suffix:semicolon
 multiline_comment|/* THIS was formerly 2.2.x pci=reverse */
 macro_line|#endif
-macro_line|#if defined(__mc68000__) || defined(CONFIG_APUS)
+macro_line|#ifdef ATA_ARCH_LOCK
 multiline_comment|/*&n; * This is used by the Atari code to obtain access to the IDE interrupt,&n; * which is shared between several drivers.&n; */
-DECL|variable|irq_lock
-r_static
+DECL|variable|ide_irq_lock
 r_int
-id|irq_lock
+id|ide_irq_lock
 suffix:semicolon
 macro_line|#endif
 DECL|variable|noautodma
@@ -2516,16 +2515,18 @@ id|max_vals
 r_static
 r_const
 r_char
-op_star
 id|decimal
+(braket
+)braket
 op_assign
 l_string|&quot;0123456789&quot;
 suffix:semicolon
 r_static
 r_const
 r_char
-op_star
 id|hex
+(braket
+)braket
 op_assign
 l_string|&quot;0123456789abcdef&quot;
 suffix:semicolon
@@ -5542,7 +5543,18 @@ id|IDE_DATA_OFFSET
 )braket
 )paren
 (brace
-singleline_comment|// ide_get_lock(&amp;irq_lock, NULL, NULL);/* for atari only */
+id|ide_get_lock
+c_func
+(paren
+op_amp
+id|ide_irq_lock
+comma
+l_int|NULL
+comma
+l_int|NULL
+)paren
+suffix:semicolon
+multiline_comment|/* for atari only */
 id|disable_irq
 c_func
 (paren
@@ -5593,7 +5605,7 @@ id|ide_release_lock
 c_func
 (paren
 op_amp
-id|irq_lock
+id|ide_irq_lock
 )paren
 suffix:semicolon
 multiline_comment|/* for atari only */

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * linux/drivers/ide/ide-pmac.c&t;&t;Version ?.??&t;Mar. 18, 2000&n; *&n; * Support for IDE interfaces on PowerMacs.&n; * These IDE interfaces are memory-mapped and have a DBDMA channel&n; * for doing DMA.&n; *&n; *  Copyright (C) 1998-2001 Paul Mackerras &amp; Ben. Herrenschmidt&n; *&n; *  This program is free software; you can redistribute it and/or&n; *  modify it under the terms of the GNU General Public License&n; *  as published by the Free Software Foundation; either version&n; *  2 of the License, or (at your option) any later version.&n; *&n; * Some code taken from drivers/ide/ide-dma.c:&n; *&n; *  Copyright (c) 1995-1998  Mark Lord&n; *&n; * TODO:&n; *&n; *  - Find a way to duplicate less code with ide-dma and use the&n; *    dma fileds in the hwif structure instead of our own&n; *&n; *  - Fix check_disk_change() call&n; *&n; *  - Make module-able (includes setting ppc_md. hooks from within&n; *    this file and not from arch code, and handling module deps with&n; *    mediabay (by having both modules do dynamic lookup of each other&n; *    symbols or by storing hooks at arch level).&n; *&n; */
+multiline_comment|/*&n; * Support for IDE interfaces on PowerMacs.&n; * These IDE interfaces are memory-mapped and have a DBDMA channel&n; * for doing DMA.&n; *&n; *  Copyright (C) 1998-2001 Paul Mackerras &amp; Ben. Herrenschmidt&n; *&n; *  This program is free software; you can redistribute it and/or&n; *  modify it under the terms of the GNU General Public License&n; *  as published by the Free Software Foundation; either version&n; *  2 of the License, or (at your option) any later version.&n; *&n; * Some code taken from drivers/ide/ide-dma.c:&n; *&n; *  Copyright (c) 1995-1998  Mark Lord&n; *&n; * TODO:&n; *&n; *  - Find a way to duplicate less code with ide-dma and use the&n; *    dma fileds in the hwif structure instead of our own&n; *&n; *  - Fix check_disk_change() call&n; *&n; *  - Make module-able (includes setting ppc_md. hooks from within&n; *    this file and not from arch code, and handling module deps with&n; *    mediabay (by having both modules do dynamic lookup of each other&n; *    symbols or by storing hooks at arch level).&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -6778,7 +6778,7 @@ id|ATA_DISK
 r_return
 l_int|0
 suffix:semicolon
-id|ide_set_handler
+id|ata_set_handler
 c_func
 (paren
 id|drive

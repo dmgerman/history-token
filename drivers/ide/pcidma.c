@@ -152,9 +152,17 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
 id|rq-&gt;flags
 op_amp
 id|REQ_SPECIAL
+)paren
+op_logical_and
+(paren
+id|drive-&gt;type
+op_eq
+id|ATA_DISK
+)paren
 )paren
 (brace
 r_struct
@@ -1587,7 +1595,7 @@ r_return
 id|count
 suffix:semicolon
 )brace
-multiline_comment|/* Teardown mappings after DMA has completed.  */
+multiline_comment|/*&n; * Teardown mappings after DMA has completed.&n; *&n; * Channel lock should be held.&n; */
 DECL|function|udma_destroy_table
 r_void
 id|udma_destroy_table
@@ -1612,7 +1620,7 @@ id|ch-&gt;sg_dma_direction
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Prepare the channel for a DMA startfer. Please note that only the broken&n; * Pacific Digital host chip needs the reques to be passed there to decide&n; * about addressing modes.&n; */
+multiline_comment|/*&n; * Prepare the channel for a DMA startfer. Please note that only the broken&n; * Pacific Digital host chip needs the reques to be passed there to decide&n; * about addressing modes.&n; *&n; * Channel lock should be held.&n; */
 DECL|function|udma_pci_start
 r_int
 id|udma_pci_start
@@ -1662,6 +1670,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * Channel lock should be held.&n; */
 DECL|function|udma_pci_stop
 r_int
 id|udma_pci_stop
@@ -1760,7 +1769,7 @@ l_int|0
 suffix:semicolon
 multiline_comment|/* verify good DMA status */
 )brace
-multiline_comment|/*&n; * FIXME: This should be attached to a channel as we can see now!&n; */
+multiline_comment|/*&n; * FIXME: This should be attached to a channel as we can see now!&n; *&n; * Channel lock should be held.&n; */
 DECL|function|udma_pci_irq_status
 r_int
 id|udma_pci_irq_status
@@ -2124,7 +2133,7 @@ l_string|&quot; -- ERROR, UNABLE TO ALLOCATE DMA TABLES&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * This is the default read write function.&n; *&n; * It&squot;s exported only for host chips which use it for fallback or (too) late&n; * capability checking.&n; */
+multiline_comment|/*&n; * This is the default read write function.&n; *&n; * It&squot;s exported only for host chips which use it for fallback or (too) late&n; * capability checking.&n; *&n; * Channel lock should be held.&n; */
 DECL|function|udma_pci_init
 r_int
 id|udma_pci_init
@@ -2189,7 +2198,7 @@ id|cmd
 op_assign
 l_int|0x00
 suffix:semicolon
-id|ide_set_handler
+id|ata_set_handler
 c_func
 (paren
 id|drive
