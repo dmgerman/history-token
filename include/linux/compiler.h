@@ -45,6 +45,14 @@ macro_line|#else
 DECL|macro|__attribute_used__
 mdefine_line|#define __attribute_used__&t;__attribute__((__unused__))
 macro_line|#endif
+multiline_comment|/*&n; * From the GCC manual:&n; *&n; * Many functions have no effects except the return value and their&n; * return value depends only on the parameters and/or global&n; * variables.  Such a function can be subject to common subexpression&n; * elimination and loop optimization just as an arithmetic operator&n; * would be.&n; * [...]&n; * The attribute `pure&squot; is not implemented in GCC versions earlier&n; * than 2.96.&n; */
+macro_line|#if (__GNUC__ == 2 &amp;&amp; __GNUC_MINOR &gt;= 96) || __GNUC__ &gt; 2
+DECL|macro|__attribute_pure__
+mdefine_line|#define __attribute_pure__&t;__attribute__((pure))
+macro_line|#else
+DECL|macro|__attribute_pure__
+mdefine_line|#define __attribute_pure__&t;/* unimplemented */
+macro_line|#endif
 multiline_comment|/* This macro obfuscates arithmetic on a variable address so that gcc&n;   shouldn&squot;t recognize the original var, and make assumptions about it */
 DECL|macro|RELOC_HIDE
 mdefine_line|#define RELOC_HIDE(ptr, off)&t;&t;&t;&t;&t;&bslash;&n;  ({ unsigned long __ptr;&t;&t;&t;&t;&t;&bslash;&n;    __asm__ (&quot;&quot; : &quot;=g&quot;(__ptr) : &quot;0&quot;(ptr));&t;&t;&bslash;&n;    (typeof(ptr)) (__ptr + (off)); })
