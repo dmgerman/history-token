@@ -1725,7 +1725,7 @@ id|ch_len
 suffix:colon
 l_int|2
 suffix:semicolon
-singleline_comment|// 3th octett in CAI
+multiline_comment|/* 3th octett in CAI */
 )brace
 suffix:semicolon
 multiline_comment|/*------------------------------------------------------------------*/
