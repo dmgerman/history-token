@@ -10,8 +10,8 @@ macro_line|#include &quot;cifsglob.h&quot;
 macro_line|#include &quot;cifsproto.h&quot;
 macro_line|#include &quot;cifs_debug.h&quot;
 macro_line|#include &quot;cifs_fs_sb.h&quot;
-r_int
 DECL|function|cifs_get_inode_info_unix
+r_int
 id|cifs_get_inode_info_unix
 c_func
 (paren
@@ -85,7 +85,7 @@ id|search_path
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* we could have done a find first instead but this returns more info */
+multiline_comment|/* could have done a find first instead but this returns more info */
 id|rc
 op_assign
 id|CIFSSMBUnixQPathInfo
@@ -103,7 +103,7 @@ comma
 id|cifs_sb-&gt;local_nls
 )paren
 suffix:semicolon
-multiline_comment|/* dump_mem(&quot;&bslash;nUnixQPathInfo return data&quot;, &amp;findData, sizeof(findData)); */
+multiline_comment|/*&t;dump_mem(&quot;&bslash;nUnixQPathInfo return data&quot;, &amp;findData,&n;&t;&t; sizeof(findData)); */
 r_if
 c_cond
 (paren
@@ -125,6 +125,7 @@ id|kmalloc
 c_func
 (paren
 id|strnlen
+c_func
 (paren
 id|pTcon-&gt;treeName
 comma
@@ -159,7 +160,7 @@ op_minus
 id|ENOMEM
 suffix:semicolon
 )brace
-multiline_comment|/* have to skip first of the double backslash of UNC name */
+multiline_comment|/* have to skip first of the double backslash of&n;&t;&t;&t;   UNC name */
 id|strncpy
 c_func
 (paren
@@ -283,7 +284,7 @@ id|ENOMEM
 suffix:semicolon
 )brace
 multiline_comment|/* Is an i_ino of zero legal? */
-multiline_comment|/* Are there sanity checks we can use to ensure that&n;&t;&t;&t;the server is really filling in that field? */
+multiline_comment|/* Are there sanity checks we can use to ensure that&n;&t;&t;&t;   the server is really filling in that field? */
 r_if
 c_cond
 (paren
@@ -580,7 +581,7 @@ id|cifsInfo
 )paren
 )paren
 (brace
-multiline_comment|/* can not safely change the file size here if the &n;&t;&t;   client is writing to it due to potential races */
+multiline_comment|/* can not safely change the file size here if the&n;&t;&t;   client is writing to it due to potential races */
 id|i_size_write
 c_func
 (paren
@@ -591,7 +592,6 @@ id|end_of_file
 suffix:semicolon
 multiline_comment|/* blksize needs to be multiple of two. So safer to default to&n;&t;&t;blksize and blkbits set in superblock so 2**blkbits and blksize&n;&t;&t;will match rather than setting to:&n;&t;&t;(pTcon-&gt;ses-&gt;server-&gt;maxBuf - MAX_CIFS_HDR_SIZE) &amp; 0xFFFFFE00;*/
 multiline_comment|/* This seems incredibly stupid but it turns out that i_blocks&n;&t;&t;   is not related to (i_size / i_blksize), instead 512 byte size&n;&t;&t;   is required for calculating num blocks */
-multiline_comment|/* inode-&gt;i_blocks = &n;&t;                (inode-&gt;i_blksize - 1 + num_of_bytes) &gt;&gt; inode-&gt;i_blkbits;*/
 multiline_comment|/* 512 bytes (2**9) is the fake blocksize that must be used */
 multiline_comment|/* for this calculation */
 id|inode-&gt;i_blocks
@@ -630,7 +630,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;Size %ld and blocks %ld &quot;
+l_string|&quot;Size %ld and blocks %ld&quot;
 comma
 (paren
 r_int
@@ -782,8 +782,8 @@ r_return
 id|rc
 suffix:semicolon
 )brace
-r_int
 DECL|function|cifs_get_inode_info
+r_int
 id|cifs_get_inode_info
 c_func
 (paren
@@ -1021,19 +1021,12 @@ op_eq
 l_int|NULL
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|buf
-)paren
-(brace
 id|kfree
 c_func
 (paren
 id|buf
 )paren
 suffix:semicolon
-)brace
 r_return
 op_minus
 id|ENOMEM
@@ -1089,19 +1082,12 @@ c_cond
 id|rc
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|buf
-)paren
-(brace
 id|kfree
 c_func
 (paren
 id|buf
 )paren
 suffix:semicolon
-)brace
 r_return
 id|rc
 suffix:semicolon
@@ -1150,16 +1136,14 @@ id|pinode
 op_eq
 l_int|NULL
 )paren
-(brace
 r_return
 op_minus
 id|ENOMEM
 suffix:semicolon
-)brace
 multiline_comment|/* Is an i_ino of zero legal? */
-multiline_comment|/* Are there sanity checks we can use to ensure that&n;&t;&t;&t;the server is really filling in that field? */
-multiline_comment|/* We can not use the IndexNumber from either&n;&t;&t;&t;Windows or Samba as it is frequently set to zero */
-multiline_comment|/* There may be higher info levels that work but&n;&t;&t;&t;Are there Windows server or network appliances&n;&t;&t;&t;for which IndexNumber field is not guaranteed unique? */
+multiline_comment|/* Are there sanity checks we can use to ensure that&n;&t;&t;&t;   the server is really filling in that field? */
+multiline_comment|/* We can not use the IndexNumber from either Windows&n;&t;&t;&t;   or Samba as it is frequently set to zero */
+multiline_comment|/* There may be higher info levels that work but are&n;&t;&t;&t;   there Windows server or network appliances for which&n;&t;&t;&t;   IndexNumber field is not guaranteed unique? */
 multiline_comment|/* if(cifs_sb-&gt;mnt_cifs_flags &amp; CIFS_MOUNT_SERVER_INUM){&n;&t;&t;&t;&t;(*pinode)-&gt;i_ino = &n;&t;&t;&t;&t;&t;(unsigned long)pfindData-&gt;IndexNumber;&n;&t;&t;&t;} */
 multiline_comment|/*NB: ino incremented to unique num in new_inode*/
 id|insert_inode_hash
@@ -1278,16 +1262,13 @@ id|cifsInfo-&gt;inUse
 op_eq
 l_int|0
 )paren
-(brace
 multiline_comment|/* new inode, can safely set these fields */
 id|inode-&gt;i_mode
 op_assign
 id|cifs_sb-&gt;mnt_file_mode
 suffix:semicolon
-)brace
 multiline_comment|/*&t;&t;if (attr &amp; ATTR_REPARSE)  */
-multiline_comment|/* &t;&t;We no longer handle these as symlinks because we could not */
-multiline_comment|/* &t;&t;follow them due to the absolute path with drive letter */
+multiline_comment|/* We no longer handle these as symlinks because we could not&n;&t;&t;   follow them due to the absolute path with drive letter */
 r_if
 c_cond
 (paren
@@ -1296,7 +1277,7 @@ op_amp
 id|ATTR_DIRECTORY
 )paren
 (brace
-multiline_comment|/* override default perms since we do not do byte range locking on dirs */
+multiline_comment|/* override default perms since we do not do byte range locking&n;&t;&t;   on dirs */
 id|inode-&gt;i_mode
 op_assign
 id|cifs_sb-&gt;mnt_dir_mode
@@ -1312,7 +1293,7 @@ id|inode-&gt;i_mode
 op_or_assign
 id|S_IFREG
 suffix:semicolon
-multiline_comment|/* treat the dos attribute of read-only as read-only mode e.g. 555 */
+multiline_comment|/* treat the dos attribute of read-only as read-only&n;&t;&t;&t;   mode e.g. 555 */
 r_if
 c_cond
 (paren
@@ -1320,7 +1301,6 @@ id|cifsInfo-&gt;cifsAttrs
 op_amp
 id|ATTR_READONLY
 )paren
-(brace
 id|inode-&gt;i_mode
 op_and_assign
 op_complement
@@ -1328,8 +1308,7 @@ op_complement
 id|S_IWUGO
 )paren
 suffix:semicolon
-)brace
-multiline_comment|/* BB add code here - validate if device or weird share or device type? */
+multiline_comment|/* BB add code here -&n;&t;&t;   validate if device or weird share or device type? */
 )brace
 r_if
 c_cond
@@ -1341,7 +1320,7 @@ id|cifsInfo
 )paren
 )paren
 (brace
-multiline_comment|/* can not safely change the file size here if the &n;&t;&t;client is writing to it due to potential races */
+multiline_comment|/* can not safely change the file size here if the&n;&t;&t;&t;   client is writing to it due to potential races */
 id|i_size_write
 c_func
 (paren
@@ -1354,8 +1333,7 @@ id|pfindData-&gt;EndOfFile
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* 512 bytes (2**9) is the fake blocksize that must be used */
-multiline_comment|/* for this calculation */
+multiline_comment|/* 512 bytes (2**9) is the fake blocksize that must be&n;&t;&t;&t;   used for this calculation */
 id|inode-&gt;i_blocks
 op_assign
 (paren
@@ -1381,7 +1359,7 @@ c_func
 id|pfindData-&gt;NumberOfLinks
 )paren
 suffix:semicolon
-multiline_comment|/* BB fill in uid and gid here? with help from winbind? &n;&t;&t;&t;or retrieve from NTFS stream extended attribute */
+multiline_comment|/* BB fill in uid and gid here? with help from winbind? &n;&t;&t;   or retrieve from NTFS stream extended attribute */
 r_if
 c_cond
 (paren
@@ -1403,7 +1381,7 @@ id|inode-&gt;i_gid
 op_assign
 id|cifs_sb-&gt;mnt_gid
 suffix:semicolon
-multiline_comment|/* set so we do not keep refreshing these fields with&n;&t;&t;&t;bad data after user has changed them in memory */
+multiline_comment|/* set so we do not keep refreshing these fields with&n;&t;&t;&t;   bad data after user has changed them in memory */
 id|atomic_set
 c_func
 (paren
@@ -1538,25 +1516,19 @@ id|inode-&gt;i_rdev
 suffix:semicolon
 )brace
 )brace
-r_if
-c_cond
-(paren
-id|buf
-)paren
-(brace
 id|kfree
 c_func
 (paren
 id|buf
 )paren
 suffix:semicolon
-)brace
 r_return
 id|rc
 suffix:semicolon
 )brace
-r_void
+multiline_comment|/* gets root inode */
 DECL|function|cifs_read_inode
+r_void
 id|cifs_read_inode
 c_func
 (paren
@@ -1566,7 +1538,6 @@ op_star
 id|inode
 )paren
 (brace
-multiline_comment|/* gets root inode */
 r_int
 id|xid
 suffix:semicolon
@@ -1634,8 +1605,8 @@ id|xid
 )paren
 suffix:semicolon
 )brace
-r_int
 DECL|function|cifs_unlink
+r_int
 id|cifs_unlink
 c_func
 (paren
@@ -1714,7 +1685,7 @@ id|pTcon
 op_assign
 id|cifs_sb-&gt;tcon
 suffix:semicolon
-multiline_comment|/* Unlink can be called from rename so we can not grab&n;&t;the sem here since we deadlock otherwise */
+multiline_comment|/* Unlink can be called from rename so we can not grab the sem here&n;&t;   since we deadlock otherwise */
 multiline_comment|/*&t;down(&amp;direntry-&gt;d_sb-&gt;s_vfs_rename_sem);*/
 id|full_path
 op_assign
@@ -1884,10 +1855,6 @@ id|EACCES
 multiline_comment|/* try only if r/o attribute set in local lookup data? */
 id|pinfo_buf
 op_assign
-(paren
-id|FILE_BASIC_INFO
-op_star
-)paren
 id|kmalloc
 c_func
 (paren
@@ -1937,7 +1904,6 @@ op_amp
 id|CIFS_SES_NT4
 )paren
 )paren
-(brace
 id|rc
 op_assign
 id|CIFSSMBSetTimes
@@ -1954,7 +1920,6 @@ comma
 id|cifs_sb-&gt;local_nls
 )paren
 suffix:semicolon
-)brace
 r_else
 id|rc
 op_assign
@@ -1978,9 +1943,8 @@ suffix:semicolon
 id|__u16
 id|netfid
 suffix:semicolon
-multiline_comment|/*&t;rc = CIFSSMBSetAttrLegacy(xid, pTcon, full_path,&n;&t;&t;&t;&t;&t;&t;&t;  (__u16)ATTR_NORMAL,&n;&t;&t;&t;&t;&t;&t;&t;  cifs_sb-&gt;local_nls); &n;&t;&t;&t;For some strange reason it seems that NT4 eats the&n;&t;&t;&t;old setattr call without actually setting the attributes&n;&t;&t;&t;so on to the third attempted workaround ... */
-multiline_comment|/* BB could scan to see if we already have it open */
-multiline_comment|/* and pass in pid of opener to function */
+multiline_comment|/*&t;rc = CIFSSMBSetAttrLegacy(xid, pTcon,&n;&t;&t;&t;&t;&t;&t;&t;  full_path,&n;&t;&t;&t;&t;&t;&t;&t;  (__u16)ATTR_NORMAL,&n;&t;&t;&t;&t;&t;&t;&t;  cifs_sb-&gt;local_nls); &n;&t;&t;&t;   For some strange reason it seems that NT4 eats the&n;&t;&t;&t;   old setattr call without actually setting the&n;&t;&t;&t;   attributes so on to the third attempted workaround&n;&t;&t;&t;   */
+multiline_comment|/* BB could scan to see if we already have it open&n;&t;&t;&t;   and pass in pid of opener to function */
 id|rc
 op_assign
 id|CIFSSMBOpen
@@ -2185,7 +2149,7 @@ id|cifsInode-&gt;time
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* will force revalidate to get info when needed */
+multiline_comment|/* will force revalidate to get info when&n;&t;&t;&t;&t;   needed */
 id|direntry-&gt;d_inode-&gt;i_ctime
 op_assign
 id|inode-&gt;i_ctime
@@ -2211,11 +2175,6 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* force revalidate of dir as well */
-r_if
-c_cond
-(paren
-id|full_path
-)paren
 id|kfree
 c_func
 (paren
@@ -2232,8 +2191,8 @@ r_return
 id|rc
 suffix:semicolon
 )brace
-r_int
 DECL|function|cifs_mkdir
+r_int
 id|cifs_mkdir
 c_func
 (paren
@@ -2459,12 +2418,10 @@ c_cond
 (paren
 id|direntry-&gt;d_inode
 )paren
-(brace
 id|direntry-&gt;d_inode-&gt;i_nlink
 op_assign
 l_int|2
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -2542,15 +2499,9 @@ suffix:semicolon
 )brace
 r_else
 (brace
-multiline_comment|/* BB to be implemented via Windows secrty descriptors*/
-multiline_comment|/* eg CIFSSMBWinSetPerms(xid,pTcon,full_path,mode,-1,-1,local_nls);*/
+multiline_comment|/* BB to be implemented via Windows secrty descriptors&n;&t;&t;&t;   eg CIFSSMBWinSetPerms(xid, pTcon, full_path, mode,&n;&t;&t;&t;&t;&t;&t; -1, -1, local_nls); */
 )brace
 )brace
-r_if
-c_cond
-(paren
-id|full_path
-)paren
 id|kfree
 c_func
 (paren
@@ -2567,8 +2518,8 @@ r_return
 id|rc
 suffix:semicolon
 )brace
-r_int
 DECL|function|cifs_rmdir
+r_int
 id|cifs_rmdir
 c_func
 (paren
@@ -2733,7 +2684,7 @@ id|cifsInode-&gt;time
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* force revalidate to go get info when needed */
+multiline_comment|/* force revalidate to go get info when&n;&t;&t;&t;&t;   needed */
 id|direntry-&gt;d_inode-&gt;i_ctime
 op_assign
 id|inode-&gt;i_ctime
@@ -2746,11 +2697,6 @@ c_func
 id|inode-&gt;i_sb
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|full_path
-)paren
 id|kfree
 c_func
 (paren
@@ -2767,8 +2713,8 @@ r_return
 id|rc
 suffix:semicolon
 )brace
-r_int
 DECL|function|cifs_rename
+r_int
 id|cifs_rename
 c_func
 (paren
@@ -2869,9 +2815,9 @@ r_return
 op_minus
 id|EXDEV
 suffix:semicolon
-multiline_comment|/* BB actually could be allowed if same server, but&n;                     different share. Might eventually add support for this */
+multiline_comment|/* BB actually could be allowed if same server,&n;&t;&t;&t;&t;   but different share.&n;&t;&t;&t;&t;   Might eventually add support for this */
 )brace
-multiline_comment|/* we already  have the rename sem so we do not need&n;&t;to grab it again here to protect the path integrity */
+multiline_comment|/* we already  have the rename sem so we do not need to grab it again&n;&t;   here to protect the path integrity */
 id|fromName
 op_assign
 id|build_path_from_dentry
@@ -2938,7 +2884,7 @@ op_minus
 id|EEXIST
 )paren
 (brace
-multiline_comment|/* check if they are the same file &n;&t;&t;because rename of hardlinked files is a noop */
+multiline_comment|/* check if they are the same file because rename of hardlinked&n;&t;&t;   files is a noop */
 id|FILE_UNIX_BASIC_INFO
 op_star
 id|info_buf_source
@@ -3033,11 +2979,11 @@ id|info_buf_target-&gt;UniqueId
 )paren
 )paren
 (brace
-multiline_comment|/* do not rename since the files are hardlinked &n;&t;&t;&t;   which is a noop */
+multiline_comment|/* do not rename since the files are hardlinked which&n;&t;&t;&t;   is a noop */
 )brace
 r_else
 (brace
-multiline_comment|/* we either can not tell the files are hardlinked&n;&t;&t;&t;(as with Windows servers) or files are not hardlinked &n;&t;&t;&t;so delete the target manually before renaming to&n;&t;&t;&t;follow POSIX rather than Windows semantics */
+multiline_comment|/* we either can not tell the files are hardlinked&n;&t;&t;&t;   (as with Windows servers) or files are not&n;&t;&t;&t;   hardlinked so delete the target manually before&n;&t;&t;&t;   renaming to follow POSIX rather than Windows&n;&t;&t;&t;   semantics */
 id|cifs_unlink
 c_func
 (paren
@@ -3119,7 +3065,7 @@ id|__u16
 id|netfid
 suffix:semicolon
 multiline_comment|/* BB FIXME Is Generic Read correct for rename? */
-multiline_comment|/* if renaming directory - we should not say CREATE_NOT_DIR,&n;&t;&t;need to test renaming open directory, also GENERIC_READ&n;&t;&t;might not right be right access to request */
+multiline_comment|/* if renaming directory - we should not say CREATE_NOT_DIR,&n;&t;&t;   need to test renaming open directory, also GENERIC_READ&n;&t;&t;   might not right be right access to request */
 id|rc
 op_assign
 id|CIFSSMBOpen
@@ -3184,22 +3130,12 @@ suffix:semicolon
 )brace
 id|cifs_rename_exit
 suffix:colon
-r_if
-c_cond
-(paren
-id|fromName
-)paren
 id|kfree
 c_func
 (paren
 id|fromName
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|toName
-)paren
 id|kfree
 c_func
 (paren
@@ -3216,8 +3152,8 @@ r_return
 id|rc
 suffix:semicolon
 )brace
-r_int
 DECL|function|cifs_revalidate
+r_int
 id|cifs_revalidate
 c_func
 (paren
@@ -3268,12 +3204,10 @@ id|direntry-&gt;d_inode
 op_eq
 l_int|NULL
 )paren
-(brace
 r_return
 op_minus
 id|ENOENT
 suffix:semicolon
-)brace
 id|cifsInode
 op_assign
 id|CIFS_I
@@ -3289,12 +3223,10 @@ id|cifsInode
 op_eq
 l_int|NULL
 )paren
-(brace
 r_return
 op_minus
 id|ENOENT
 suffix:semicolon
-)brace
 multiline_comment|/* no sense revalidating inode info on file that no one can write */
 r_if
 c_cond
@@ -3307,11 +3239,9 @@ id|direntry-&gt;d_inode
 op_member_access_from_pointer
 id|clientCanCacheRead
 )paren
-(brace
 r_return
 id|rc
 suffix:semicolon
-)brace
 id|xid
 op_assign
 id|GetXid
@@ -3327,7 +3257,7 @@ c_func
 id|direntry-&gt;d_sb
 )paren
 suffix:semicolon
-multiline_comment|/* can not safely grab the rename sem here if&n;&t;rename calls revalidate since that would deadlock */
+multiline_comment|/* can not safely grab the rename sem here if rename calls revalidate&n;&t;   since that would deadlock */
 id|full_path
 op_assign
 id|build_path_from_dentry
@@ -3361,7 +3291,8 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;Revalidate: %s inode 0x%p count %d dentry: 0x%p d_time %ld jiffies %ld&quot;
+l_string|&quot;Revalidate: %s inode 0x%p count %d dentry: 0x%p d_time %ld &quot;
+l_string|&quot;jiffies %ld&quot;
 comma
 id|full_path
 comma
@@ -3424,11 +3355,6 @@ l_int|1
 )paren
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|full_path
-)paren
 id|kfree
 c_func
 (paren
@@ -3509,8 +3435,8 @@ id|rc
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/*&t;&t;&t;if(rc != -ENOENT)&n;&t;&t;&t;&t;rc = 0; */
-multiline_comment|/* BB should we cache info on certain errors? */
+multiline_comment|/*&t;&t;&t;if (rc != -ENOENT)&n;&t;&t;&t;&t;rc = 0; */
+multiline_comment|/* BB should we cache info on&n;&t;&t;&t;&t;&t;&t;   certain errors? */
 )brace
 )brace
 r_else
@@ -3550,12 +3476,12 @@ id|rc
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/*&t;&t;&t;if(rc != -ENOENT)&n;&t;&t;&t;&t;rc = 0; */
-multiline_comment|/* BB should we cache info on certain errors? */
+multiline_comment|/*&t;&t;&t;if (rc != -ENOENT)&n;&t;&t;&t;&t;rc = 0; */
+multiline_comment|/* BB should we cache info on&n;&t;&t;&t;&t;&t;&t;   certain errors? */
 )brace
 )brace
 multiline_comment|/* should we remap certain errors, access denied?, to zero */
-multiline_comment|/* if not oplocked, we invalidate inode pages if mtime &n;&t;   or file size had changed on server */
+multiline_comment|/* if not oplocked, we invalidate inode pages if mtime or file size&n;&t;   had changed on server */
 r_if
 c_cond
 (paren
@@ -3596,7 +3522,7 @@ c_cond
 id|cifsInode-&gt;clientCanCacheRead
 )paren
 (brace
-multiline_comment|/* no need to invalidate inode pages since we were&n;&t;&t;&t;   the only ones who could have modified the file and&n;&t;&t;&t;   the server copy is staler than ours */
+multiline_comment|/* no need to invalidate inode pages since we were the&n;&t;&t;&t;   only ones who could have modified the file and the&n;&t;&t;&t;   server copy is staler than ours */
 )brace
 r_else
 (brace
@@ -3606,7 +3532,7 @@ id|TRUE
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/* can not grab this sem since kernel filesys locking&n;&t;&t;documentation indicates i_sem may be taken by the kernel &n;&t;&t;on lookup and rename which could deadlock if we grab&n;&t;&t;the i_sem here as well */
+multiline_comment|/* can not grab this sem since kernel filesys locking documentation&n;&t;   indicates i_sem may be taken by the kernel on lookup and rename&n;&t;   which could deadlock if we grab the i_sem here as well */
 multiline_comment|/*&t;down(&amp;direntry-&gt;d_inode-&gt;i_sem);*/
 multiline_comment|/* need to write out dirty pages here  */
 r_if
@@ -3615,7 +3541,7 @@ c_cond
 id|direntry-&gt;d_inode-&gt;i_mapping
 )paren
 (brace
-multiline_comment|/* do we need to lock inode until after invalidate completes below? */
+multiline_comment|/* do we need to lock inode until after invalidate completes&n;&t;&t;   below? */
 id|filemap_fdatawrite
 c_func
 (paren
@@ -3634,14 +3560,12 @@ c_cond
 (paren
 id|direntry-&gt;d_inode-&gt;i_mapping
 )paren
-(brace
 id|filemap_fdatawait
 c_func
 (paren
 id|direntry-&gt;d_inode-&gt;i_mapping
 )paren
 suffix:semicolon
-)brace
 multiline_comment|/* may eventually have to do this for open files too */
 r_if
 c_cond
@@ -3663,7 +3587,8 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;Invalidating read ahead data on closed file&quot;
+l_string|&quot;Invalidating read ahead data on &quot;
+l_string|&quot;closed file&quot;
 )paren
 )paren
 suffix:semicolon
@@ -3675,12 +3600,7 @@ id|direntry-&gt;d_inode
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&t;up(&amp;direntry-&gt;d_inode-&gt;i_sem);*/
-r_if
-c_cond
-(paren
-id|full_path
-)paren
+multiline_comment|/*&t;up(&amp;direntry-&gt;d_inode-&gt;i_sem); */
 id|kfree
 c_func
 (paren
@@ -3866,8 +3786,8 @@ r_return
 id|rc
 suffix:semicolon
 )brace
-r_int
 DECL|function|cifs_setattr
+r_int
 id|cifs_setattr
 c_func
 (paren
@@ -4063,7 +3983,7 @@ op_amp
 id|GlobalSMBSeslock
 )paren
 suffix:semicolon
-multiline_comment|/* To avoid spurious oplock breaks from server, in the case&n;&t;&t;&t;of inodes that we already have open, avoid doing path&n;&t;&t;&t;based setting of file size if we can do it by handle.&n;&t;&t;&t;This keeps our caching token (oplock) and avoids&n;&t;&t;&t;timeouts when the local oplock break takes longer to flush&n;&t;&t;&t;writebehind data than the SMB timeout for the SetPathInfo &n;&t;&t;&t;request would allow */
+multiline_comment|/* To avoid spurious oplock breaks from server, in the case of&n;&t;&t;   inodes that we already have open, avoid doing path based&n;&t;&t;   setting of file size if we can do it by handle.&n;&t;&t;   This keeps our caching token (oplock) and avoids timeouts&n;&t;&t;   when the local oplock break takes longer to flush&n;&t;&t;   writebehind data than the SMB timeout for the SetPathInfo&n;&t;&t;   request would allow */
 id|list_for_each
 c_func
 (paren
@@ -4117,7 +4037,7 @@ op_eq
 id|FALSE
 )paren
 (brace
-multiline_comment|/* we found a valid, writeable network file &n;&t;&t;&t;&t;&t;handle to use to try to set the file size */
+multiline_comment|/* we found a valid, writeable network&n;&t;&t;&t;&t;&t;   file handle to use to try to set the&n;&t;&t;&t;&t;&t;   file size */
 id|__u16
 id|nfid
 op_assign
@@ -4163,16 +4083,17 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;SetFileSize by handle (setattrs) rc = %d&quot;
+l_string|&quot;SetFileSize by handle &quot;
+l_string|&quot;(setattrs) rc = %d&quot;
 comma
 id|rc
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* Do not need reopen and retry on EAGAIN since we will&n;&t;&t;&t;&t;&t;retry by pathname below */
+multiline_comment|/* Do not need reopen and retry on&n;&t;&t;&t;&t;&t;   EAGAIN since we will retry by&n;&t;&t;&t;&t;&t;   pathname below */
+multiline_comment|/* now that we found one valid file&n;&t;&t;&t;&t;&t;   handle no sense continuing to loop&n;&t;&t;&t;&t;&t;   trying others, so break here */
 r_break
 suffix:semicolon
-multiline_comment|/* now that we found one valid file handle no&n;&t;&t;&t;&t;&t;&t;sense continuing to loop trying others */
 )brace
 )brace
 )brace
@@ -4183,7 +4104,6 @@ id|found
 op_eq
 id|FALSE
 )paren
-(brace
 id|read_unlock
 c_func
 (paren
@@ -4191,7 +4111,6 @@ op_amp
 id|GlobalSMBSeslock
 )paren
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -4200,7 +4119,7 @@ op_ne
 l_int|0
 )paren
 (brace
-multiline_comment|/* Set file size by pathname rather than by handle either&n;&t;&t;&t;because no valid, writeable file handle for it was found or&n;&t;&t;&t;because there was an error setting it by handle */
+multiline_comment|/* Set file size by pathname rather than by handle&n;&t;&t;&t;   either because no valid, writeable file handle for&n;&t;&t;&t;   it was found or because there was an error setting&n;&t;&t;&t;   it by handle */
 id|rc
 op_assign
 id|CIFSSMBSetEOF
@@ -4232,8 +4151,7 @@ id|rc
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*  Server is ok setting allocation size implicitly - no need to call: */
-multiline_comment|/*CIFSSMBSetEOF(xid, pTcon, full_path, attrs-&gt;ia_size, TRUE, cifs_sb-&gt;local_nls);*/
+multiline_comment|/* Server is ok setting allocation size implicitly - no need&n;&t;&t;   to call:&n;&t;&t;CIFSSMBSetEOF(xid, pTcon, full_path, attrs-&gt;ia_size, TRUE,&n;&t;&t;&t; cifs_sb-&gt;local_nls);&n;&t;&t;   */
 r_if
 c_cond
 (paren
@@ -4286,7 +4204,7 @@ id|uid
 op_assign
 id|attrs-&gt;ia_uid
 suffix:semicolon
-multiline_comment|/*        entry-&gt;uid = cpu_to_le16(attr-&gt;ia_uid); */
+multiline_comment|/* entry-&gt;uid = cpu_to_le16(attr-&gt;ia_uid); */
 )brace
 r_if
 c_cond
@@ -4312,7 +4230,7 @@ id|gid
 op_assign
 id|attrs-&gt;ia_gid
 suffix:semicolon
-multiline_comment|/*      entry-&gt;gid = cpu_to_le16(attr-&gt;ia_gid); */
+multiline_comment|/* entry-&gt;gid = cpu_to_le16(attr-&gt;ia_gid); */
 )brace
 id|time_buf.Attributes
 op_assign
@@ -4421,7 +4339,6 @@ id|ATTR_READONLY
 op_eq
 l_int|0
 )paren
-(brace
 id|time_buf.Attributes
 op_assign
 id|cpu_to_le32
@@ -4432,7 +4349,6 @@ op_or
 id|ATTR_READONLY
 )paren
 suffix:semicolon
-)brace
 )brace
 r_else
 r_if
@@ -4454,7 +4370,6 @@ id|cifsInode-&gt;cifsAttrs
 op_amp
 id|ATTR_READONLY
 )paren
-(brace
 id|time_buf.Attributes
 op_assign
 id|cpu_to_le32
@@ -4469,9 +4384,8 @@ id|ATTR_READONLY
 )paren
 suffix:semicolon
 )brace
-)brace
-multiline_comment|/* BB to be implemented - via Windows security descriptors or streams */
-multiline_comment|/* CIFSSMBWinSetPerms(xid,pTcon,full_path,mode,uid,gid,cifs_sb-&gt;local_nls);*/
+multiline_comment|/* BB to be implemented -&n;&t;&t;   via Windows security descriptors or streams */
+multiline_comment|/* CIFSSMBWinSetPerms(xid, pTcon, full_path, mode, uid, gid,&n;&t;&t;&t;&t;      cifs_sb-&gt;local_nls); */
 )brace
 r_if
 c_cond
@@ -4555,7 +4469,7 @@ l_string|&quot; CIFS - CTIME changed &quot;
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* BB probably do not need */
+multiline_comment|/* BB probably no need */
 id|time_buf.ChangeTime
 op_assign
 id|cpu_to_le64
@@ -4582,13 +4496,13 @@ op_logical_or
 id|time_buf.Attributes
 )paren
 (brace
-multiline_comment|/* BB what if setting one attribute fails  &n;&t;&t;&t;(such as size) but time setting works */
+multiline_comment|/* BB what if setting one attribute fails (such as size) but&n;&t;&t;   time setting works? */
 id|time_buf.CreationTime
 op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* do not change */
-multiline_comment|/* In the future we should experiment - try setting timestamps&n;&t;&t;&t; via Handle (SetFileInfo) instead of by path */
+multiline_comment|/* In the future we should experiment - try setting timestamps&n;&t;&t;   via Handle (SetFileInfo) instead of by path */
 r_if
 c_cond
 (paren
@@ -4599,7 +4513,6 @@ op_amp
 id|CIFS_SES_NT4
 )paren
 )paren
-(brace
 id|rc
 op_assign
 id|CIFSSMBSetTimes
@@ -4617,7 +4530,6 @@ comma
 id|cifs_sb-&gt;local_nls
 )paren
 suffix:semicolon
-)brace
 r_else
 id|rc
 op_assign
@@ -4647,12 +4559,12 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;calling SetFileInfo since SetPathInfo for times not supported by this server&quot;
+l_string|&quot;calling SetFileInfo since SetPathInfo for &quot;
+l_string|&quot;times not supported by this server&quot;
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* BB we could scan to see if we already have it open */
-multiline_comment|/* and pass in pid of opener to function */
+multiline_comment|/* BB we could scan to see if we already have it open&n;&t;&t;&t;   and pass in pid of opener to function */
 id|rc
 op_assign
 id|CIFSSMBOpen
@@ -4719,12 +4631,12 @@ suffix:semicolon
 )brace
 r_else
 (brace
-multiline_comment|/* BB For even older servers we could convert time_buf&n;&t;&t;&t;into old DOS style which uses two second granularity */
-multiline_comment|/* rc = CIFSSMBSetTimesLegacy(xid, pTcon, full_path,&n;        &t;        &amp;time_buf, cifs_sb-&gt;local_nls); */
+multiline_comment|/* BB For even older servers we could convert time_buf&n;&t;&t;&t;   into old DOS style which uses two second&n;&t;&t;&t;   granularity */
+multiline_comment|/* rc = CIFSSMBSetTimesLegacy(xid, pTcon, full_path,&n;        &t;        &t;&t;&amp;time_buf, cifs_sb-&gt;local_nls); */
 )brace
 )brace
 )brace
-multiline_comment|/* do not  need local check to inode_check_ok since the server does that */
+multiline_comment|/* do not need local check to inode_check_ok since the server does&n;&t;   that */
 r_if
 c_cond
 (paren
@@ -4741,11 +4653,6 @@ comma
 id|attrs
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|full_path
-)paren
 id|kfree
 c_func
 (paren
@@ -4762,8 +4669,8 @@ r_return
 id|rc
 suffix:semicolon
 )brace
-r_void
 DECL|function|cifs_delete_inode
+r_void
 id|cifs_delete_inode
 c_func
 (paren
@@ -4785,6 +4692,6 @@ id|inode
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* may have to add back in if and when safe distributed caching of&n;&t;&t;directories added e.g. via FindNotify */
+multiline_comment|/* may have to add back in if and when safe distributed caching of&n;&t;   directories added e.g. via FindNotify */
 )brace
 eof
