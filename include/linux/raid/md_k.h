@@ -905,45 +905,6 @@ mdefine_line|#define ITERATE_RDEV_PENDING(rdev,tmp)&t;&t;&t;&t;&t;&bslash;&n;&t;
 multiline_comment|/*&n; * iterates through all used mddevs in the system.&n; */
 DECL|macro|ITERATE_MDDEV
 mdefine_line|#define ITERATE_MDDEV(mddev,tmp)&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;for (tmp = all_mddevs.next;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;mddev = list_entry(tmp, mddev_t, all_mddevs),&t;&bslash;&n;&t;&t;&t;tmp = tmp-&gt;next, tmp-&gt;prev != &amp;all_mddevs&t;&bslash;&n;&t;&t;; )
-DECL|function|lock_mddev
-r_static
-r_inline
-r_int
-id|lock_mddev
-(paren
-id|mddev_t
-op_star
-id|mddev
-)paren
-(brace
-r_return
-id|down_interruptible
-c_func
-(paren
-op_amp
-id|mddev-&gt;reconfig_sem
-)paren
-suffix:semicolon
-)brace
-DECL|function|unlock_mddev
-r_static
-r_inline
-r_void
-id|unlock_mddev
-(paren
-id|mddev_t
-op_star
-id|mddev
-)paren
-(brace
-id|up
-c_func
-(paren
-op_amp
-id|mddev-&gt;reconfig_sem
-)paren
-suffix:semicolon
-)brace
 DECL|macro|xchg_values
 mdefine_line|#define xchg_values(x,y) do { __typeof__(x) __tmp = x; &bslash;&n;&t;&t;&t;&t;x = y; y = __tmp; } while (0)
 DECL|struct|mdk_thread_s
