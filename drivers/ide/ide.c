@@ -9551,6 +9551,15 @@ op_assign
 l_int|0
 suffix:semicolon
 macro_line|#ifdef CONFIG_PROC_FS
+r_if
+c_cond
+(paren
+id|drive-&gt;driver
+op_ne
+op_amp
+id|idedefault_driver
+)paren
+(brace
 id|ide_add_proc_entries
 c_func
 (paren
@@ -9571,6 +9580,7 @@ comma
 id|drive
 )paren
 suffix:semicolon
+)brace
 macro_line|#endif
 r_return
 l_int|0
