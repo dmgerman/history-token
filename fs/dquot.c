@@ -2,6 +2,7 @@ multiline_comment|/*&n; * Implementation of the diskquota system for the LINUX o
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
+macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
@@ -1878,27 +1879,25 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * This is called from kswapd when we think we need some&n; * more memory&n; */
 DECL|function|shrink_dqcache_memory
+r_static
 r_int
 id|shrink_dqcache_memory
 c_func
 (paren
 r_int
-id|ratio
+id|nr
 comma
 r_int
 r_int
 id|gfp_mask
 )paren
 (brace
-r_int
-id|entries
-op_assign
-id|dqstats.allocated_dquots
-op_div
-id|ratio
-op_plus
-l_int|1
-suffix:semicolon
+r_if
+c_cond
+(paren
+id|nr
+)paren
+(brace
 id|lock_kernel
 c_func
 (paren
@@ -1907,7 +1906,7 @@ suffix:semicolon
 id|prune_dqcache
 c_func
 (paren
-id|entries
+id|nr
 )paren
 suffix:semicolon
 id|unlock_kernel
@@ -1915,8 +1914,9 @@ c_func
 (paren
 )paren
 suffix:semicolon
+)brace
 r_return
-id|entries
+id|dqstats.allocated_dquots
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Put reference to dquot&n; * NOTE: If you change this function please check whether dqput_blocks() works right...&n; */
@@ -7098,6 +7098,12 @@ comma
 comma
 )brace
 suffix:semicolon
+multiline_comment|/* SLAB cache for dquot structures */
+DECL|variable|dquot_cachep
+id|kmem_cache_t
+op_star
+id|dquot_cachep
+suffix:semicolon
 DECL|function|dquot_init
 r_static
 r_int
@@ -7150,12 +7156,60 @@ comma
 id|__DQUOT_VERSION__
 )paren
 suffix:semicolon
+id|dquot_cachep
+op_assign
+id|kmem_cache_create
+c_func
+(paren
+l_string|&quot;dquot&quot;
+comma
+r_sizeof
+(paren
+r_struct
+id|dquot
+)paren
+comma
+r_sizeof
+(paren
+r_int
+r_int
+)paren
+op_star
+l_int|4
+comma
+id|SLAB_HWCACHE_ALIGN
+comma
+l_int|NULL
+comma
+l_int|NULL
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|dquot_cachep
+)paren
+id|panic
+c_func
+(paren
+l_string|&quot;Cannot create dquot SLAB cache&quot;
+)paren
+suffix:semicolon
+id|set_shrinker
+c_func
+(paren
+id|DEFAULT_SEEKS
+comma
+id|shrink_dqcache_memory
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
 )brace
 DECL|variable|dquot_init
-id|__initcall
+id|module_init
 c_func
 (paren
 id|dquot_init
