@@ -2105,6 +2105,7 @@ suffix:semicolon
 )brace
 multiline_comment|/**&n; * usb_bus_init - shared initialization code&n; * @bus: the bus structure being initialized&n; *&n; * This code is used to initialize a usb_bus structure, memory for which is&n; * separately managed.&n; */
 DECL|function|usb_bus_init
+r_static
 r_void
 id|usb_bus_init
 (paren
@@ -2178,12 +2179,6 @@ op_amp
 id|usb_host_class
 suffix:semicolon
 )brace
-DECL|variable|usb_bus_init
-id|EXPORT_SYMBOL
-(paren
-id|usb_bus_init
-)paren
-suffix:semicolon
 multiline_comment|/**&n; * usb_alloc_bus - creates a new USB host controller structure&n; * @op: pointer to a struct usb_operations that this bus structure should use&n; * Context: !in_interrupt()&n; *&n; * Creates a USB host controller bus structure with the specified &n; * usb_operations and initializes all the necessary internal objects.&n; *&n; * If no memory is available, NULL is returned.&n; *&n; * The caller should call usb_put_bus() when it is finished with the structure.&n; */
 DECL|function|usb_alloc_bus
 r_struct
@@ -2249,12 +2244,6 @@ r_return
 id|bus
 suffix:semicolon
 )brace
-DECL|variable|usb_alloc_bus
-id|EXPORT_SYMBOL
-(paren
-id|usb_alloc_bus
-)paren
-suffix:semicolon
 multiline_comment|/*-------------------------------------------------------------------------*/
 multiline_comment|/**&n; * usb_register_bus - registers the USB host controller with the usb core&n; * @bus: pointer to the bus to register&n; * Context: !in_interrupt()&n; *&n; * Assigns a bus number, and links the controller into usbcore data&n; * structures so that it can be seen by scanning the bus list.&n; */
 DECL|function|usb_register_bus
@@ -2422,12 +2411,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|variable|usb_register_bus
-id|EXPORT_SYMBOL
-(paren
-id|usb_register_bus
-)paren
-suffix:semicolon
 multiline_comment|/**&n; * usb_deregister_bus - deregisters the USB host controller&n; * @bus: pointer to the bus to deregister&n; * Context: !in_interrupt()&n; *&n; * Recycles the bus number, and unlinks the controller from usbcore data&n; * structures so that it won&squot;t be seen by scanning the bus list.&n; */
 DECL|function|usb_deregister_bus
 r_void
@@ -2492,12 +2475,6 @@ id|bus-&gt;class_dev
 )paren
 suffix:semicolon
 )brace
-DECL|variable|usb_deregister_bus
-id|EXPORT_SYMBOL
-(paren
-id|usb_deregister_bus
-)paren
-suffix:semicolon
 multiline_comment|/**&n; * usb_register_root_hub - called by HCD to register its root hub &n; * @usb_dev: the usb root hub device to be registered.&n; * @parent_dev: the parent device of this root hub.&n; *&n; * The USB host controller calls this function to register the root hub&n; * properly with the USB subsystem.  It sets up the device properly in&n; * the device tree and stores the root_hub pointer in the bus structure,&n; * then calls usb_new_device() to register the usb device.  It also&n; * assigns the root hub&squot;s USB address (always 1).&n; */
 DECL|function|usb_register_root_hub
 r_int
@@ -4841,12 +4818,6 @@ r_return
 id|IRQ_HANDLED
 suffix:semicolon
 )brace
-DECL|variable|usb_hcd_irq
-id|EXPORT_SYMBOL
-(paren
-id|usb_hcd_irq
-)paren
-suffix:semicolon
 multiline_comment|/*-------------------------------------------------------------------------*/
 multiline_comment|/**&n; * usb_hc_died - report abnormal shutdown of a host controller (bus glue)&n; * @hcd: pointer to the HCD representing the controller&n; *&n; * This is called by bus glue to report a USB host controller that died&n; * while operations may still have been pending.  It&squot;s called automatically&n; * by the PCI glue, so only glue for non-PCI busses should need to call it. &n; */
 DECL|function|usb_hc_died

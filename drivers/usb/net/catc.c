@@ -2904,6 +2904,7 @@ suffix:semicolon
 )brace
 )brace
 DECL|function|catc_get_drvinfo
+r_static
 r_void
 id|catc_get_drvinfo
 c_func

@@ -304,6 +304,7 @@ suffix:semicolon
 multiline_comment|/*-------------------------------------------------------------------*/
 singleline_comment|// returns status (negative) or length (positive)
 DECL|function|usb_internal_control_msg
+r_static
 r_int
 id|usb_internal_control_msg
 c_func
@@ -3442,6 +3443,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * usb_enable_interface - Enable all the endpoints for an interface&n; * @dev: the device whose interface is being enabled&n; * @intf: pointer to the interface descriptor&n; *&n; * Enables all the endpoints for the interface&squot;s current altsetting.&n; */
 DECL|function|usb_enable_interface
+r_static
 r_void
 id|usb_enable_interface
 c_func

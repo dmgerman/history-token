@@ -151,12 +151,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|variable|hcd_buffer_create
-id|EXPORT_SYMBOL
-(paren
-id|hcd_buffer_create
-)paren
-suffix:semicolon
 multiline_comment|/**&n; * hcd_buffer_destroy - deallocate buffer pools&n; * @hcd: the bus whose buffer pools are to be destroyed&n; * Context: !in_interrupt()&n; *&n; * This frees the buffer pools created by hcd_buffer_create().&n; */
 DECL|function|hcd_buffer_destroy
 r_void
@@ -217,12 +211,6 @@ suffix:semicolon
 )brace
 )brace
 )brace
-DECL|variable|hcd_buffer_destroy
-id|EXPORT_SYMBOL
-(paren
-id|hcd_buffer_destroy
-)paren
-suffix:semicolon
 multiline_comment|/* sometimes alloc/free could use kmalloc with SLAB_DMA, for&n; * better sharing and to leverage mm/slab.c intelligence.&n; */
 DECL|function|hcd_buffer_alloc
 r_void

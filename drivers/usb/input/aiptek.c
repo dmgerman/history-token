@@ -2452,6 +2452,8 @@ suffix:semicolon
 )brace
 multiline_comment|/***********************************************************************&n; * These are the USB id&squot;s known so far. We do not identify them to&n; * specific Aiptek model numbers, because there has been overlaps,&n; * use, and reuse of id&squot;s in existing models. Certain models have&n; * been known to use more than one ID, indicative perhaps of&n; * manufacturing revisions. In any event, we consider these &n; * IDs to not be model-specific nor unique.&n; */
 DECL|variable|aiptek_ids
+r_static
+r_const
 r_struct
 id|usb_device_id
 id|aiptek_ids

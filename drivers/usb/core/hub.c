@@ -5825,6 +5825,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Devices on USB hub ports have only one &quot;suspend&quot; state, corresponding&n; * to ACPI D2 (PM_SUSPEND_MEM), &quot;may cause the device to lose some context&quot;.&n; * State transitions include:&n; *&n; *   - suspend, resume ... when the VBUS power link stays live&n; *   - suspend, disconnect ... VBUS lost&n; *&n; * Once VBUS drop breaks the circuit, the port it&squot;s using has to go through&n; * normal re-enumeration procedures, starting with enabling VBUS power.&n; * Other than re-initializing the hub (plug/unplug, except for root hubs),&n; * Linux (2.6) currently has NO mechanisms to initiate that:  no khubd&n; * timer, no SRP, no requests through sysfs.&n; */
 DECL|function|__usb_suspend_device
+r_static
 r_int
 id|__usb_suspend_device
 (paren

@@ -681,16 +681,6 @@ id|regs
 )paren
 suffix:semicolon
 r_extern
-r_void
-id|usb_bus_init
-(paren
-r_struct
-id|usb_bus
-op_star
-id|bus
-)paren
-suffix:semicolon
-r_extern
 r_struct
 id|usb_hcd
 op_star

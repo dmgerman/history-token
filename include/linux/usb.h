@@ -1807,6 +1807,7 @@ id|dma_addr_t
 id|dma
 )paren
 suffix:semicolon
+macro_line|#if 0
 r_struct
 id|urb
 op_star
@@ -1818,7 +1819,6 @@ op_star
 id|urb
 )paren
 suffix:semicolon
-macro_line|#if 0
 r_void
 id|usb_buffer_dmasync
 (paren
@@ -1828,7 +1828,6 @@ op_star
 id|urb
 )paren
 suffix:semicolon
-macro_line|#endif
 r_void
 id|usb_buffer_unmap
 (paren
@@ -1838,6 +1837,7 @@ op_star
 id|urb
 )paren
 suffix:semicolon
+macro_line|#endif
 r_struct
 id|scatterlist
 suffix:semicolon

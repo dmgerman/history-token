@@ -3786,6 +3786,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * ibmcam_ProcessIsocData()&n; *&n; * Generic routine to parse the ring queue data. It employs either&n; * ibmcam_find_header() or ibmcam_parse_lines() to do most&n; * of work.&n; *&n; * History:&n; * 1/21/00  Created.&n; */
 DECL|function|ibmcam_ProcessIsocData
+r_static
 r_void
 id|ibmcam_ProcessIsocData
 c_func

@@ -1015,6 +1015,7 @@ id|i
 suffix:semicolon
 )brace
 DECL|function|usb_parse_configuration
+r_static
 r_int
 id|usb_parse_configuration
 c_func

@@ -12405,6 +12405,7 @@ id|ret
 suffix:semicolon
 )brace
 multiline_comment|/* fops */
+r_static
 r_int
 DECL|function|sisusb_open
 id|sisusb_open
@@ -12771,6 +12772,7 @@ id|sisusb
 )paren
 suffix:semicolon
 )brace
+r_static
 r_int
 DECL|function|sisusb_release
 id|sisusb_release
@@ -12910,6 +12912,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+r_static
 id|ssize_t
 DECL|function|sisusb_read
 id|sisusb_read
@@ -13470,6 +13473,7 @@ suffix:colon
 id|bytes_read
 suffix:semicolon
 )brace
+r_static
 id|ssize_t
 DECL|function|sisusb_write
 id|sisusb_write
