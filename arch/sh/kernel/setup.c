@@ -1897,6 +1897,12 @@ op_assign
 l_string|&quot;SH7760&quot;
 comma
 (braket
+id|CPU_SH73180
+)braket
+op_assign
+l_string|&quot;SH73180&quot;
+comma
+(braket
 id|CPU_ST40RA
 )braket
 op_assign
@@ -1964,6 +1970,8 @@ comma
 l_string|&quot;mmuassoc&quot;
 comma
 l_string|&quot;dsp&quot;
+comma
+l_string|&quot;perfctr&quot;
 comma
 )brace
 suffix:semicolon

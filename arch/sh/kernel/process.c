@@ -699,7 +699,7 @@ c_func
 r_void
 )paren
 (brace
-macro_line|#if defined(CONFIG_CPU_SH4)
+macro_line|#if defined(CONFIG_SH_FPU)
 r_struct
 id|task_struct
 op_star
@@ -788,7 +788,7 @@ id|fpvalid
 op_assign
 l_int|0
 suffix:semicolon
-macro_line|#if defined(CONFIG_CPU_SH4)
+macro_line|#if defined(CONFIG_SH_FPU)
 r_struct
 id|task_struct
 op_star
@@ -925,7 +925,7 @@ id|fpvalid
 op_assign
 l_int|0
 suffix:semicolon
-macro_line|#if defined(CONFIG_CPU_SH4)
+macro_line|#if defined(CONFIG_SH_FPU)
 id|fpvalid
 op_assign
 id|tsk-&gt;used_math
@@ -1041,7 +1041,7 @@ id|pt_regs
 op_star
 id|childregs
 suffix:semicolon
-macro_line|#if defined(CONFIG_CPU_SH4)
+macro_line|#if defined(CONFIG_SH_FPU)
 r_struct
 id|task_struct
 op_star
@@ -1415,7 +1415,7 @@ op_star
 id|next
 )paren
 (brace
-macro_line|#if defined(CONFIG_CPU_SH4)
+macro_line|#if defined(CONFIG_SH_FPU)
 r_struct
 id|pt_regs
 op_star
