@@ -9868,6 +9868,10 @@ id|data
 )paren
 (brace
 r_struct
+id|ethtool_cmd
+id|cmd
+suffix:semicolon
+r_struct
 id|nic
 op_star
 id|nic
@@ -9880,6 +9884,8 @@ id|netdev
 suffix:semicolon
 r_int
 id|i
+comma
+id|err
 suffix:semicolon
 id|memset
 c_func
@@ -9928,6 +9934,19 @@ op_amp
 id|ETH_TEST_FL_OFFLINE
 )paren
 (brace
+multiline_comment|/* save speed, duplex &amp; autoneg settings */
+id|err
+op_assign
+id|mii_ethtool_gset
+c_func
+(paren
+op_amp
+id|nic-&gt;mii
+comma
+op_amp
+id|cmd
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -9980,6 +9999,19 @@ c_func
 id|nic
 comma
 id|lb_phy
+)paren
+suffix:semicolon
+multiline_comment|/* restore speed, duplex &amp; autoneg settings */
+id|err
+op_assign
+id|mii_ethtool_sset
+c_func
+(paren
+op_amp
+id|nic-&gt;mii
+comma
+op_amp
+id|cmd
 )paren
 suffix:semicolon
 r_if
