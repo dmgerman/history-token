@@ -52,6 +52,7 @@ macro_line|#include &lt;asm/a.out.h&gt;
 macro_line|#include &lt;asm/ns87303.h&gt;
 macro_line|#include &lt;asm/timer.h&gt;
 macro_line|#include &lt;asm/cpudata.h&gt;
+macro_line|#include &lt;asm/rwsem.h&gt;
 DECL|struct|poll
 r_struct
 id|poll
@@ -851,6 +852,56 @@ c_func
 id|up
 )paren
 suffix:semicolon
+multiline_comment|/* RW semaphores */
+DECL|variable|__down_read
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|__down_read
+)paren
+suffix:semicolon
+DECL|variable|__down_read_trylock
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|__down_read_trylock
+)paren
+suffix:semicolon
+DECL|variable|__down_write
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|__down_write
+)paren
+suffix:semicolon
+DECL|variable|__down_write_trylock
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|__down_write_trylock
+)paren
+suffix:semicolon
+DECL|variable|__up_read
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|__up_read
+)paren
+suffix:semicolon
+DECL|variable|__up_write
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|__up_write
+)paren
+suffix:semicolon
+DECL|variable|__downgrade_write
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|__downgrade_write
+)paren
+suffix:semicolon
 multiline_comment|/* Atomic counter implementation. */
 DECL|variable|atomic_add
 id|EXPORT_SYMBOL
@@ -1038,6 +1089,7 @@ c_func
 id|flush_dcache_page
 )paren
 suffix:semicolon
+macro_line|#ifdef DCACHE_ALIASING_POSSIBLE
 DECL|variable|__flush_dcache_range
 id|EXPORT_SYMBOL
 c_func
@@ -1045,6 +1097,7 @@ c_func
 id|__flush_dcache_range
 )paren
 suffix:semicolon
+macro_line|#endif
 DECL|variable|mostek_lock
 id|EXPORT_SYMBOL
 c_func

@@ -6,8 +6,8 @@ macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
-macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/spitfire.h&gt;
+macro_line|#include &lt;asm/cacheflush.h&gt;
 macro_line|#ifndef MAX_HWIFS
 macro_line|# ifdef CONFIG_BLK_DEV_IDEPCI
 DECL|macro|MAX_HWIFS
@@ -98,7 +98,7 @@ id|u32
 id|count
 )paren
 (brace
-macro_line|#if (L1DCACHE_SIZE &gt; PAGE_SIZE)&t;&t;/* is there D$ aliasing problem */
+macro_line|#ifdef DCACHE_ALIASING_POSSIBLE
 r_int
 r_int
 id|end
@@ -226,7 +226,7 @@ id|port
 )paren
 suffix:semicolon
 )brace
-macro_line|#if (L1DCACHE_SIZE &gt; PAGE_SIZE)&t;&t;/* is there D$ aliasing problem */
+macro_line|#ifdef DCACHE_ALIASING_POSSIBLE
 id|__flush_dcache_range
 c_func
 (paren
@@ -303,7 +303,7 @@ id|u32
 id|count
 )paren
 (brace
-macro_line|#if (L1DCACHE_SIZE &gt; PAGE_SIZE)&t;&t;/* is there D$ aliasing problem */
+macro_line|#ifdef DCACHE_ALIASING_POSSIBLE
 r_int
 r_int
 id|end
@@ -436,7 +436,7 @@ id|port
 )paren
 suffix:semicolon
 )brace
-macro_line|#if (L1DCACHE_SIZE &gt; PAGE_SIZE)&t;&t;/* is there D$ aliasing problem */
+macro_line|#ifdef DCACHE_ALIASING_POSSIBLE
 id|__flush_dcache_range
 c_func
 (paren

@@ -2,6 +2,13 @@ macro_line|#ifndef _SPARC64_CACHEFLUSH_H
 DECL|macro|_SPARC64_CACHEFLUSH_H
 mdefine_line|#define _SPARC64_CACHEFLUSH_H
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;asm/page.h&gt;
+multiline_comment|/* Flushing for D-cache alias handling is only needed if&n; * the page size is smaller than 16K.&n; */
+macro_line|#if PAGE_SHIFT &lt; 14
+DECL|macro|DCACHE_ALIASING_POSSIBLE
+mdefine_line|#define DCACHE_ALIASING_POSSIBLE
+macro_line|#endif
+macro_line|#ifndef __ASSEMBLY__
 macro_line|#include &lt;linux/mm.h&gt;
 multiline_comment|/* Cache flush operations. */
 multiline_comment|/* These are the same regardless of whether this is an SMP kernel or not. */
@@ -28,6 +35,15 @@ id|end
 suffix:semicolon
 r_extern
 r_void
+id|__flush_icache_page
+c_func
+(paren
+r_int
+r_int
+)paren
+suffix:semicolon
+r_extern
+r_void
 id|__flush_dcache_page
 c_func
 (paren
@@ -37,15 +53,6 @@ id|addr
 comma
 r_int
 id|flush_icache
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|__flush_icache_page
-c_func
-(paren
-r_int
-r_int
 )paren
 suffix:semicolon
 r_extern
@@ -110,14 +117,6 @@ r_int
 id|end
 )paren
 suffix:semicolon
-DECL|macro|flush_icache_page
-mdefine_line|#define flush_icache_page(vma, pg)&t;do { } while(0)
-DECL|macro|flush_icache_user_range
-mdefine_line|#define flush_icache_user_range(vma,pg,adr,len)&t;do { } while (0)
-DECL|macro|copy_to_user_page
-mdefine_line|#define copy_to_user_page(vma, page, vaddr, dst, src, len) &bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;flush_cache_page(vma, vaddr, page_to_pfn(page));&bslash;&n;&t;&t;memcpy(dst, src, len);&t;&t;&t;&t;&bslash;&n;&t;} while (0)
-DECL|macro|copy_from_user_page
-mdefine_line|#define copy_from_user_page(vma, page, vaddr, dst, src, len) &bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;flush_cache_page(vma, vaddr, page_to_pfn(page));&bslash;&n;&t;&t;memcpy(dst, src, len);&t;&t;&t;&t;&bslash;&n;&t;} while (0)
 r_extern
 r_void
 id|flush_dcache_page
@@ -129,6 +128,14 @@ op_star
 id|page
 )paren
 suffix:semicolon
+DECL|macro|flush_icache_page
+mdefine_line|#define flush_icache_page(vma, pg)&t;do { } while(0)
+DECL|macro|flush_icache_user_range
+mdefine_line|#define flush_icache_user_range(vma,pg,adr,len)&t;do { } while (0)
+DECL|macro|copy_to_user_page
+mdefine_line|#define copy_to_user_page(vma, page, vaddr, dst, src, len) &bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;flush_cache_page(vma, vaddr, page_to_pfn(page));&bslash;&n;&t;&t;memcpy(dst, src, len);&t;&t;&t;&t;&bslash;&n;&t;} while (0)
+DECL|macro|copy_from_user_page
+mdefine_line|#define copy_from_user_page(vma, page, vaddr, dst, src, len) &bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;flush_cache_page(vma, vaddr, page_to_pfn(page));&bslash;&n;&t;&t;memcpy(dst, src, len);&t;&t;&t;&t;&bslash;&n;&t;} while (0)
 DECL|macro|flush_dcache_mmap_lock
 mdefine_line|#define flush_dcache_mmap_lock(mapping)&t;&t;do { } while (0)
 DECL|macro|flush_dcache_mmap_unlock
@@ -137,5 +144,6 @@ DECL|macro|flush_cache_vmap
 mdefine_line|#define flush_cache_vmap(start, end)&t;&t;do { } while (0)
 DECL|macro|flush_cache_vunmap
 mdefine_line|#define flush_cache_vunmap(start, end)&t;&t;do { } while (0)
+macro_line|#endif /* !__ASSEMBLY__ */
 macro_line|#endif /* _SPARC64_CACHEFLUSH_H */
 eof

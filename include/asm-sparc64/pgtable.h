@@ -40,7 +40,7 @@ mdefine_line|#define PMD_SIZE&t;(1UL &lt;&lt; PMD_SHIFT)
 DECL|macro|PMD_MASK
 mdefine_line|#define PMD_MASK&t;(~(PMD_SIZE-1))
 DECL|macro|PMD_BITS
-mdefine_line|#define PMD_BITS&t;11
+mdefine_line|#define PMD_BITS&t;(PAGE_SHIFT - 2)
 multiline_comment|/* PGDIR_SHIFT determines what a third-level page table entry can map */
 DECL|macro|PGDIR_SHIFT
 mdefine_line|#define PGDIR_SHIFT&t;(PAGE_SHIFT + (PAGE_SHIFT-3) + PMD_BITS)
@@ -48,33 +48,18 @@ DECL|macro|PGDIR_SIZE
 mdefine_line|#define PGDIR_SIZE&t;(1UL &lt;&lt; PGDIR_SHIFT)
 DECL|macro|PGDIR_MASK
 mdefine_line|#define PGDIR_MASK&t;(~(PGDIR_SIZE-1))
+DECL|macro|PGDIR_BITS
+mdefine_line|#define PGDIR_BITS&t;(PAGE_SHIFT - 2)
 macro_line|#ifndef __ASSEMBLY__
 macro_line|#include &lt;linux/sched.h&gt;
 multiline_comment|/* Entries per page directory level. */
 DECL|macro|PTRS_PER_PTE
-mdefine_line|#define PTRS_PER_PTE&t;&t;(1UL &lt;&lt; (PAGE_SHIFT-3))
-multiline_comment|/* We the first one in this file, what we export to the kernel&n; * is different so we can optimize correctly for 32-bit tasks.&n; */
-DECL|macro|REAL_PTRS_PER_PMD
-mdefine_line|#define REAL_PTRS_PER_PMD&t;(1UL &lt;&lt; PMD_BITS)
-multiline_comment|/* This is gross, but unless we do this gcc retests the&n; * thread flag every interation in pmd traversal loops.&n; */
-r_extern
-r_int
-r_int
-id|__ptrs_per_pmd
-c_func
-(paren
-r_void
-)paren
-id|__attribute_const__
-suffix:semicolon
+mdefine_line|#define PTRS_PER_PTE&t;(1UL &lt;&lt; (PAGE_SHIFT-3))
 DECL|macro|PTRS_PER_PMD
-mdefine_line|#define PTRS_PER_PMD&t;&t;__ptrs_per_pmd()
-multiline_comment|/*&n; * We cannot use the top address range because VPTE table lives there. This&n; * formula finds the total legal virtual space in the processor, subtracts the&n; * vpte size, then aligns it to the number of bytes mapped by one pgde, and&n; * thus calculates the number of pgdes needed.&n; */
+mdefine_line|#define PTRS_PER_PMD&t;(1UL &lt;&lt; PMD_BITS)
 DECL|macro|PTRS_PER_PGD
-mdefine_line|#define PTRS_PER_PGD (((1UL &lt;&lt; VA_BITS) - VPTE_SIZE + (1UL &lt;&lt; (PAGE_SHIFT + &bslash;&n;&t;&t;      (PAGE_SHIFT-3) + PMD_BITS)) - 1) / (1UL &lt;&lt; (PAGE_SHIFT + &bslash;&n;&t;&t;      (PAGE_SHIFT-3) + PMD_BITS)))
+mdefine_line|#define PTRS_PER_PGD&t;(1UL &lt;&lt; PGDIR_BITS)
 multiline_comment|/* Kernel has a separate 44bit address space. */
-DECL|macro|USER_PTRS_PER_PGD
-mdefine_line|#define USER_PTRS_PER_PGD&t;((const int)(test_thread_flag(TIF_32BIT)) ? &bslash;&n;&t;&t;&t;&t; (1) : (PTRS_PER_PGD))
 DECL|macro|FIRST_USER_PGD_NR
 mdefine_line|#define FIRST_USER_PGD_NR&t;0
 DECL|macro|pte_ERROR
@@ -249,7 +234,7 @@ id|mem_map_zero
 suffix:semicolon
 DECL|macro|ZERO_PAGE
 mdefine_line|#define ZERO_PAGE(vaddr)&t;(mem_map_zero)
-multiline_comment|/* PFNs are real physical page numbers.  However, mem_map only begins to record&n; * per-page information starting at pfn_base.  This is to handle systems where&n; * the first physical page in the machine is at some huge physical address, such&n; * as 4GB.   This is common on a partitioned E10000, for example.&n; */
+multiline_comment|/* PFNs are real physical page numbers.  However, mem_map only begins to record&n; * per-page information starting at pfn_base.  This is to handle systems where&n; * the first physical page in the machine is at some huge physical address,&n; * such as 4GB.   This is common on a partitioned E10000, for example.&n; */
 DECL|macro|pfn_pte
 mdefine_line|#define pfn_pte(pfn, prot)&t;&bslash;&n;&t;__pte(((pfn) &lt;&lt; PAGE_SHIFT) | pgprot_val(prot) | _PAGE_SZBITS)
 DECL|macro|mk_pte
@@ -392,7 +377,7 @@ DECL|macro|pte_mkdirty
 mdefine_line|#define pte_mkdirty(pte)&t;(__pte(pte_val(pte) | _PAGE_MODIFIED | _PAGE_W))
 multiline_comment|/* to find an entry in a page-table-directory. */
 DECL|macro|pgd_index
-mdefine_line|#define pgd_index(address)&t;(((address) &gt;&gt; PGDIR_SHIFT) &amp; (PTRS_PER_PGD))
+mdefine_line|#define pgd_index(address)&t;(((address) &gt;&gt; PGDIR_SHIFT) &amp; (PTRS_PER_PGD - 1))
 DECL|macro|pgd_offset
 mdefine_line|#define pgd_offset(mm, address)&t;((mm)-&gt;pgd + pgd_index(address))
 multiline_comment|/* to find an entry in a kernel page-table-directory */
@@ -403,7 +388,7 @@ DECL|macro|get_pgd_cache
 mdefine_line|#define get_pgd_cache(pgd)&t;((unsigned long) pgd_val(*pgd) &lt;&lt; 11)
 multiline_comment|/* Find an entry in the second-level page table.. */
 DECL|macro|pmd_offset
-mdefine_line|#define pmd_offset(pudp, address)&t;&bslash;&n;&t;((pmd_t *) pud_page(*(pudp)) + &bslash;&n;&t; (((address) &gt;&gt; PMD_SHIFT) &amp; (REAL_PTRS_PER_PMD-1)))
+mdefine_line|#define pmd_offset(pudp, address)&t;&bslash;&n;&t;((pmd_t *) pud_page(*(pudp)) + &bslash;&n;&t; (((address) &gt;&gt; PMD_SHIFT) &amp; (PTRS_PER_PMD-1)))
 multiline_comment|/* Find an entry in the third-level page table.. */
 DECL|macro|pte_index
 mdefine_line|#define pte_index(dir, address)&t;&bslash;&n;&t;((pte_t *) __pmd_page(*(dir)) + &bslash;&n;&t; ((address &gt;&gt; PAGE_SHIFT) &amp; (PTRS_PER_PTE - 1)))
