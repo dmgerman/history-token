@@ -8616,12 +8616,6 @@ op_amp
 id|wait
 )paren
 suffix:semicolon
-id|set_current_state
-c_func
-(paren
-id|TASK_RUNNING
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren

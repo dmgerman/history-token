@@ -1718,7 +1718,7 @@ suffix:semicolon
 multiline_comment|/*&n; * copy / silence ops&n; */
 multiline_comment|/*&n; * this macro should be inserted in the copy/silence loops&n; * to reduce the latency.  without this, the system will hang up&n; * during the whole loop.&n; */
 DECL|macro|CHECK_SCHEDULER
-mdefine_line|#define CHECK_SCHEDULER() &bslash;&n;do { &bslash;&n;&t;if (need_resched()) {&bslash;&n;&t;&t;if (current-&gt;state != TASK_RUNNING)&bslash;&n;&t;&t;&t;set_current_state(TASK_RUNNING);&bslash;&n;&t;&t;schedule();&bslash;&n;&t;&t;if (signal_pending(current))&bslash;&n;&t;&t;&t;return -EAGAIN;&bslash;&n;&t;}&bslash;&n;} while (0)
+mdefine_line|#define CHECK_SCHEDULER() &bslash;&n;do { &bslash;&n;&t;cond_resched();&bslash;&n;&t;if (signal_pending(current))&bslash;&n;&t;&t;return -EAGAIN;&bslash;&n;} while (0)
 macro_line|#ifdef USE_NONINTERLEAVE
 multiline_comment|/* copy one channel block */
 DECL|function|emu8k_transfer_block
