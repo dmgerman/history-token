@@ -507,6 +507,19 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
+multiline_comment|/* Disable all interrupts */
+id|SMC_SELECT_BANK
+c_func
+(paren
+l_int|2
+)paren
+suffix:semicolon
+id|SMC_SET_INT_MASK
+c_func
+(paren
+l_int|0
+)paren
+suffix:semicolon
 multiline_comment|/*&n;&t; * This resets the registers mostly to defaults, but doesn&squot;t&n;&t; * affect EEPROM.  That seems unnecessary&n;&t; */
 id|SMC_SELECT_BANK
 c_func
@@ -619,20 +632,13 @@ c_func
 id|ctl
 )paren
 suffix:semicolon
-multiline_comment|/* Disable all interrupts */
+multiline_comment|/* Reset the MMU */
 id|SMC_SELECT_BANK
 c_func
 (paren
 l_int|2
 )paren
 suffix:semicolon
-id|SMC_SET_INT_MASK
-c_func
-(paren
-l_int|0
-)paren
-suffix:semicolon
-multiline_comment|/* Reset the MMU */
 id|SMC_SET_MMU_CMD
 c_func
 (paren
@@ -757,6 +763,7 @@ c_func
 id|mask
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t; * From this point the register bank must _NOT_ be switched away&n;&t; * to something else than bank 2 without proper locking against&n;&t; * races with any tasklet or interrupt handlers until smc_shutdown()&n;&t; * or smc_reset() is called.&n;&t; */
 )brace
 multiline_comment|/*&n; * this puts the device in an inactive state&n; */
 DECL|function|smc_shutdown
@@ -1469,8 +1476,6 @@ comma
 id|poll_count
 comma
 id|status
-comma
-id|saved_bank
 suffix:semicolon
 id|DBG
 c_func
@@ -1557,19 +1562,6 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* now, try to allocate the memory */
-id|saved_bank
-op_assign
-id|SMC_CURRENT_BANK
-c_func
-(paren
-)paren
-suffix:semicolon
-id|SMC_SELECT_BANK
-c_func
-(paren
-l_int|2
-)paren
-suffix:semicolon
 id|SMC_SET_MMU_CMD
 c_func
 (paren
@@ -1677,12 +1669,6 @@ id|IM_TX_EMPTY_INT
 )paren
 suffix:semicolon
 )brace
-id|SMC_SELECT_BANK
-c_func
-(paren
-id|saved_bank
-)paren
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -2196,16 +2182,6 @@ suffix:semicolon
 r_int
 r_int
 id|phydata
-comma
-id|old_bank
-suffix:semicolon
-multiline_comment|/* Save the current bank, and select bank 3 */
-id|old_bank
-op_assign
-id|SMC_CURRENT_BANK
-c_func
-(paren
-)paren
 suffix:semicolon
 id|SMC_SELECT_BANK
 c_func
@@ -2273,13 +2249,6 @@ id|MII_MDO
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* And select original bank */
-id|SMC_SELECT_BANK
-c_func
-(paren
-id|old_bank
-)paren
-suffix:semicolon
 id|DBG
 c_func
 (paren
@@ -2294,6 +2263,12 @@ comma
 id|phyreg
 comma
 id|phydata
+)paren
+suffix:semicolon
+id|SMC_SELECT_BANK
+c_func
+(paren
+l_int|2
 )paren
 suffix:semicolon
 r_return
@@ -2327,18 +2302,6 @@ r_int
 id|ioaddr
 op_assign
 id|dev-&gt;base_addr
-suffix:semicolon
-r_int
-r_int
-id|old_bank
-suffix:semicolon
-multiline_comment|/* Save the current bank, and select bank 3 */
-id|old_bank
-op_assign
-id|SMC_CURRENT_BANK
-c_func
-(paren
-)paren
 suffix:semicolon
 id|SMC_SELECT_BANK
 c_func
@@ -2403,13 +2366,6 @@ id|MII_MDO
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* And select original bank */
-id|SMC_SELECT_BANK
-c_func
-(paren
-id|old_bank
-)paren
-suffix:semicolon
 id|DBG
 c_func
 (paren
@@ -2424,6 +2380,12 @@ comma
 id|phyreg
 comma
 id|phydata
+)paren
+suffix:semicolon
+id|SMC_SELECT_BANK
+c_func
+(paren
+l_int|2
 )paren
 suffix:semicolon
 )brace
@@ -2704,10 +2666,22 @@ id|bmcr
 )paren
 suffix:semicolon
 multiline_comment|/* Re-Configure the Receive/Phy Control register */
+id|SMC_SELECT_BANK
+c_func
+(paren
+l_int|0
+)paren
+suffix:semicolon
 id|SMC_SET_RPC
 c_func
 (paren
 id|lp-&gt;rpc_cur_mode
+)paren
+suffix:semicolon
+id|SMC_SELECT_BANK
+c_func
+(paren
+l_int|2
 )paren
 suffix:semicolon
 r_return
@@ -2948,10 +2922,6 @@ id|init
 )paren
 )paren
 (brace
-r_int
-r_int
-id|old_bank
-suffix:semicolon
 multiline_comment|/* duplex state has changed */
 r_if
 c_cond
@@ -2972,13 +2942,6 @@ op_complement
 id|TCR_SWFDUP
 suffix:semicolon
 )brace
-id|old_bank
-op_assign
-id|SMC_CURRENT_BANK
-c_func
-(paren
-)paren
-suffix:semicolon
 id|SMC_SELECT_BANK
 c_func
 (paren
@@ -2989,12 +2952,6 @@ id|SMC_SET_TCR
 c_func
 (paren
 id|lp-&gt;tcr_cur_mode
-)paren
-suffix:semicolon
-id|SMC_SELECT_BANK
-c_func
-(paren
-id|old_bank
 )paren
 suffix:semicolon
 )brace
@@ -3510,21 +3467,6 @@ r_int
 id|old_carrier
 comma
 id|new_carrier
-comma
-id|old_bank
-suffix:semicolon
-id|old_bank
-op_assign
-id|SMC_CURRENT_BANK
-c_func
-(paren
-)paren
-suffix:semicolon
-id|SMC_SELECT_BANK
-c_func
-(paren
-l_int|0
-)paren
 suffix:semicolon
 id|old_carrier
 op_assign
@@ -3538,6 +3480,12 @@ c_cond
 l_int|1
 suffix:colon
 l_int|0
+suffix:semicolon
+id|SMC_SELECT_BANK
+c_func
+(paren
+l_int|0
+)paren
 suffix:semicolon
 id|new_carrier
 op_assign
@@ -3555,6 +3503,12 @@ c_cond
 l_int|1
 suffix:colon
 l_int|0
+suffix:semicolon
+id|SMC_SELECT_BANK
+c_func
+(paren
+l_int|2
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -3617,12 +3571,6 @@ l_string|&quot;down&quot;
 )paren
 suffix:semicolon
 )brace
-id|SMC_SELECT_BANK
-c_func
-(paren
-id|old_bank
-)paren
-suffix:semicolon
 )brace
 DECL|function|smc_eph_interrupt
 r_static
@@ -3644,8 +3592,6 @@ id|dev-&gt;base_addr
 suffix:semicolon
 r_int
 r_int
-id|old_bank
-comma
 id|ctl
 suffix:semicolon
 id|smc_10bt_check_media
@@ -3654,13 +3600,6 @@ c_func
 id|dev
 comma
 l_int|0
-)paren
-suffix:semicolon
-id|old_bank
-op_assign
-id|SMC_CURRENT_BANK
-c_func
-(paren
 )paren
 suffix:semicolon
 id|SMC_SELECT_BANK
@@ -3694,7 +3633,7 @@ suffix:semicolon
 id|SMC_SELECT_BANK
 c_func
 (paren
-id|old_bank
+l_int|2
 )paren
 suffix:semicolon
 )brace
@@ -3752,8 +3691,6 @@ comma
 id|card_stats
 suffix:semicolon
 r_int
-id|saved_bank
-comma
 id|saved_pointer
 suffix:semicolon
 id|DBG
@@ -3766,19 +3703,6 @@ comma
 id|dev-&gt;name
 comma
 id|__FUNCTION__
-)paren
-suffix:semicolon
-id|saved_bank
-op_assign
-id|SMC_CURRENT_BANK
-c_func
-(paren
-)paren
-suffix:semicolon
-id|SMC_SELECT_BANK
-c_func
-(paren
-l_int|2
 )paren
 suffix:semicolon
 id|saved_pointer
@@ -4174,22 +4098,16 @@ id|timeout
 )paren
 suffix:semicolon
 multiline_comment|/* restore register states */
-id|SMC_SET_INT_MASK
-c_func
-(paren
-id|mask
-)paren
-suffix:semicolon
 id|SMC_SET_PTR
 c_func
 (paren
 id|saved_pointer
 )paren
 suffix:semicolon
-id|SMC_SELECT_BANK
+id|SMC_SET_INT_MASK
 c_func
 (paren
-id|saved_bank
+id|mask
 )paren
 suffix:semicolon
 id|DBG
