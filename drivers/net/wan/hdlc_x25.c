@@ -540,8 +540,6 @@ c_func
 id|hdlc
 )paren
 comma
-id|hdlc
-comma
 op_amp
 id|cb
 )paren

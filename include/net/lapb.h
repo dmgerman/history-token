@@ -163,11 +163,6 @@ id|net_device
 op_star
 id|dev
 suffix:semicolon
-DECL|member|token
-r_void
-op_star
-id|token
-suffix:semicolon
 multiline_comment|/* Link status fields */
 DECL|member|mode
 r_int

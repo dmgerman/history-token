@@ -197,10 +197,6 @@ id|net_device
 op_star
 id|dev
 comma
-r_void
-op_star
-id|token
-comma
 r_struct
 id|lapb_register_struct
 op_star

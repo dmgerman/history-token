@@ -1944,8 +1944,6 @@ c_func
 (paren
 id|dev
 comma
-id|sl
-comma
 op_amp
 id|x25_asy_callbacks
 )paren
