@@ -59,7 +59,6 @@ l_string|&quot;HiSax: waitforCEC timeout&bslash;n&quot;
 suffix:semicolon
 )brace
 r_static
-r_inline
 r_void
 DECL|function|waitforXFW
 id|waitforXFW
@@ -624,13 +623,6 @@ id|BCState
 op_star
 id|bcs
 suffix:semicolon
-id|spin_lock
-c_func
-(paren
-op_amp
-id|cs-&gt;lock
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -833,12 +825,5 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
-id|spin_unlock
-c_func
-(paren
-op_amp
-id|cs-&gt;lock
-)paren
-suffix:semicolon
 )brace
 eof
