@@ -3053,7 +3053,7 @@ op_assign
 dot
 id|name
 op_assign
-l_string|&quot;SGI-IOC4 IDE&quot;
+l_string|&quot;SGI-IOC4_IDE&quot;
 comma
 dot
 id|id_table

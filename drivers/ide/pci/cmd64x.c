@@ -4490,7 +4490,7 @@ op_assign
 dot
 id|name
 op_assign
-l_string|&quot;CMD64x IDE&quot;
+l_string|&quot;CMD64x_IDE&quot;
 comma
 dot
 id|id_table

@@ -248,7 +248,7 @@ op_assign
 dot
 id|name
 op_assign
-l_string|&quot;RZ1000 IDE&quot;
+l_string|&quot;RZ1000_IDE&quot;
 comma
 dot
 id|id_table
