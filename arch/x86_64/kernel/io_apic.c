@@ -5408,7 +5408,7 @@ id|apic
 dot
 id|mpc_apicid
 )paren
-id|panic
+id|printk
 c_func
 (paren
 l_string|&quot;could not set ID!&bslash;n&quot;
