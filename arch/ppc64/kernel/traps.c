@@ -921,11 +921,6 @@ id|info
 suffix:semicolon
 r_int
 r_int
-op_star
-id|tmp
-suffix:semicolon
-r_int
-r_int
 id|fpscr
 suffix:semicolon
 r_if
@@ -941,15 +936,9 @@ c_func
 id|current
 )paren
 suffix:semicolon
-id|tmp
-op_assign
-op_amp
-id|current-&gt;thread.fpscr
-suffix:semicolon
 id|fpscr
 op_assign
-op_star
-id|tmp
+id|current-&gt;thread.fpscr
 suffix:semicolon
 multiline_comment|/* Invalid operation */
 r_if

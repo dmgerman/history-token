@@ -1115,12 +1115,18 @@ r_int
 id|fpscr
 suffix:semicolon
 multiline_comment|/* Floating point status */
+DECL|member|fpexc_mode
+r_int
+r_int
+id|fpexc_mode
+suffix:semicolon
+multiline_comment|/* Floating-point exception mode */
 )brace
 suffix:semicolon
 DECL|macro|INIT_SP
 mdefine_line|#define INIT_SP&t;&t;(sizeof(init_stack) + (unsigned long) &amp;init_stack)
 DECL|macro|INIT_THREAD
-mdefine_line|#define INIT_THREAD  { &bslash;&n;&t;INIT_SP, /* ksp */ &bslash;&n;&t;(struct pt_regs *)INIT_SP - 1, /* regs */ &bslash;&n;&t;KERNEL_DS, /*fs*/ &bslash;&n;&t;{0}, /* fpr */ &bslash;&n;&t;0 /* fpscr */ &bslash;&n;}
+mdefine_line|#define INIT_THREAD  { &bslash;&n;&t;INIT_SP, /* ksp */ &bslash;&n;&t;(struct pt_regs *)INIT_SP - 1, /* regs */ &bslash;&n;&t;KERNEL_DS, /*fs*/ &bslash;&n;&t;{0}, /* fpr */ &bslash;&n;&t;0, /* fpscr */ &bslash;&n;&t;MSR_FE0|MSR_FE1, /* fpexc_mode */ &bslash;&n;}
 multiline_comment|/*&n; * Note: the vm_start and vm_end fields here should *not*&n; * be in kernel space.  (Could vm_end == vm_start perhaps?)&n; */
 DECL|macro|IOREMAP_MMAP
 mdefine_line|#define IOREMAP_MMAP { &amp;ioremap_mm, 0, 0x1000, NULL, &bslash;&n;&t;&t;    PAGE_SHARED, VM_READ | VM_WRITE | VM_EXEC, &bslash;&n;&t;&t;    1, NULL, NULL }
@@ -1153,6 +1159,111 @@ DECL|macro|KSTK_EIP
 mdefine_line|#define KSTK_EIP(tsk)  ((tsk)-&gt;thread.regs? (tsk)-&gt;thread.regs-&gt;nip: 0)
 DECL|macro|KSTK_ESP
 mdefine_line|#define KSTK_ESP(tsk)  ((tsk)-&gt;thread.regs? (tsk)-&gt;thread.regs-&gt;gpr[1]: 0)
+multiline_comment|/* Get/set floating-point exception mode */
+DECL|macro|GET_FPEXC_CTL
+mdefine_line|#define GET_FPEXC_CTL(tsk, adr) get_fpexc_mode((tsk), (adr))
+DECL|macro|SET_FPEXC_CTL
+mdefine_line|#define SET_FPEXC_CTL(tsk, val) set_fpexc_mode((tsk), (val))
+r_extern
+r_int
+id|get_fpexc_mode
+c_func
+(paren
+r_struct
+id|task_struct
+op_star
+id|tsk
+comma
+r_int
+r_int
+id|adr
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|set_fpexc_mode
+c_func
+(paren
+r_struct
+id|task_struct
+op_star
+id|tsk
+comma
+r_int
+r_int
+id|val
+)paren
+suffix:semicolon
+DECL|function|__unpack_fe01
+r_static
+r_inline
+r_int
+r_int
+id|__unpack_fe01
+c_func
+(paren
+r_int
+r_int
+id|msr_bits
+)paren
+(brace
+r_return
+(paren
+(paren
+id|msr_bits
+op_amp
+id|MSR_FE0
+)paren
+op_rshift
+l_int|10
+)paren
+op_or
+(paren
+(paren
+id|msr_bits
+op_amp
+id|MSR_FE1
+)paren
+op_rshift
+l_int|8
+)paren
+suffix:semicolon
+)brace
+DECL|function|__pack_fe01
+r_static
+r_inline
+r_int
+r_int
+id|__pack_fe01
+c_func
+(paren
+r_int
+r_int
+id|fpmode
+)paren
+(brace
+r_return
+(paren
+(paren
+id|fpmode
+op_lshift
+l_int|10
+)paren
+op_amp
+id|MSR_FE0
+)paren
+op_or
+(paren
+(paren
+id|fpmode
+op_lshift
+l_int|8
+)paren
+op_amp
+id|MSR_FE1
+)paren
+suffix:semicolon
+)brace
 DECL|macro|cpu_relax
 mdefine_line|#define cpu_relax()     barrier()
 multiline_comment|/*&n; * Prefetch macros.&n; */

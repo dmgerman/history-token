@@ -30,8 +30,13 @@ macro_line|#endif
 DECL|macro|GP_REGS_SIZE
 mdefine_line|#define GP_REGS_SIZE&t;MIN(sizeof(elf_gregset_t), sizeof(struct pt_regs))
 multiline_comment|/* &n; * These are the flags in the MSR that the user is allowed to change&n; * by modifying the saved value of the MSR on the stack.  SE and BE&n; * should not be in this list since gdb may want to change these.  I.e,&n; * you should be able to step out of a signal handler to see what&n; * instruction executes next after the signal handler completes.&n; * Alternately, if you stepped into a signal handler, you should be&n; * able to continue &squot;til the next breakpoint from within the signal&n; * handler, even if the handler returns.&n; */
-DECL|macro|MSR_USERCHANGE
+macro_line|#if 0
 mdefine_line|#define MSR_USERCHANGE&t;(MSR_FE0 | MSR_FE1)
+macro_line|#else
+multiline_comment|/*&n; * glibc tries to set FE0/FE1 via a signal handler. Since it only ever&n; * sets both bits and this is the default setting we now disable this&n; * behaviour. This is done to insure the new prctl which alters FE0/FE1 does&n; * not get overriden by glibc. Setting and clearing FE0/FE1 via signal&n; * handler has always been bogus since load_up_fpu used to set FE0/FE1&n; * unconditionally.&n; */
+DECL|macro|MSR_USERCHANGE
+mdefine_line|#define MSR_USERCHANGE&t;0
+macro_line|#endif
 multiline_comment|/*&n; * When we have signals to deliver, we set up on the&n; * user stack, going down from the original stack pointer:&n; *&t;a sigregs struct&n; *&t;one or more sigcontext structs with&n; *&t;a gap of __SIGNAL_FRAMESIZE bytes&n; *&n; * Each of these things must be a multiple of 16 bytes in size.&n; *&n; */
 DECL|struct|sigregs
 r_struct

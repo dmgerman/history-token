@@ -15,8 +15,13 @@ macro_line|#include &lt;asm/cacheflush.h&gt;
 DECL|macro|_BLOCKABLE
 mdefine_line|#define _BLOCKABLE (~(sigmask(SIGKILL) | sigmask(SIGSTOP)))
 multiline_comment|/* &n; * These are the flags in the MSR that the user is allowed to change&n; * by modifying the saved value of the MSR on the stack.  SE and BE&n; * should not be in this list since gdb may want to change these.  I.e,&n; * you should be able to step out of a signal handler to see what&n; * instruction executes next after the signal handler completes.&n; * Alternately, if you stepped into a signal handler, you should be&n; * able to continue &squot;til the next breakpoint from within the signal&n; * handler, even if the handler returns.&n; */
-DECL|macro|MSR_USERCHANGE
+macro_line|#if 0
 mdefine_line|#define MSR_USERCHANGE&t;(MSR_FE0 | MSR_FE1)
+macro_line|#else
+multiline_comment|/*&n; * glibc tries to set FE0/FE1 via a signal handler. Since it only ever&n; * sets both bits and this is the default setting we now disable this&n; * behaviour. This is done to insure the new prctl which alters FE0/FE1 does&n; * not get overriden by glibc. Setting and clearing FE0/FE1 via signal&n; * handler has always been bogus since load_up_fpu used to set FE0/FE1&n; * unconditionally.&n; */
+DECL|macro|MSR_USERCHANGE
+mdefine_line|#define MSR_USERCHANGE&t;0
+macro_line|#endif
 DECL|struct|timespec32
 r_struct
 id|timespec32
