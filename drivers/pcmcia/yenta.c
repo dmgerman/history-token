@@ -2346,25 +2346,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|yenta_proc_setup
-r_static
-r_void
-id|yenta_proc_setup
-c_func
-(paren
-r_struct
-id|pcmcia_socket
-op_star
-id|sock
-comma
-r_struct
-id|proc_dir_entry
-op_star
-id|base
-)paren
-(brace
-multiline_comment|/* Not done yet */
-)brace
 DECL|function|yenta_events
 r_static
 r_int
@@ -4253,11 +4234,6 @@ dot
 id|set_mem_map
 op_assign
 id|yenta_set_mem_map
-comma
-dot
-id|proc_setup
-op_assign
-id|yenta_proc_setup
 comma
 )brace
 suffix:semicolon

@@ -412,24 +412,6 @@ op_star
 id|mem
 )paren
 suffix:semicolon
-DECL|member|proc_setup
-r_void
-(paren
-op_star
-id|proc_setup
-)paren
-(paren
-r_struct
-id|pcmcia_socket
-op_star
-id|sock
-comma
-r_struct
-id|proc_dir_entry
-op_star
-id|base
-)paren
-suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/*&n; *  Calls to set up low-level &quot;Socket Services&quot; drivers&n; */
@@ -674,14 +656,6 @@ r_int
 id|sock
 suffix:semicolon
 multiline_comment|/* socket number */
-macro_line|#ifdef CONFIG_PROC_FS
-DECL|member|proc
-r_struct
-id|proc_dir_entry
-op_star
-id|proc
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/* state thread */
 DECL|member|skt_sem
 r_struct

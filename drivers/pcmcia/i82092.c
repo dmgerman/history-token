@@ -215,11 +215,6 @@ id|set_mem_map
 op_assign
 id|i82092aa_set_mem_map
 comma
-dot
-id|proc_setup
-op_assign
-id|i82092aa_proc_setup
-comma
 )brace
 suffix:semicolon
 multiline_comment|/* The card can do upto 4 sockets, allocate a structure for each of them */
@@ -3893,25 +3888,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|i82092aa_proc_setup
-r_static
-r_void
-id|i82092aa_proc_setup
-c_func
-(paren
-r_struct
-id|pcmcia_socket
-op_star
-id|socket
-comma
-r_struct
-id|proc_dir_entry
-op_star
-id|base
-)paren
-(brace
-)brace
-multiline_comment|/* Module stuff */
 DECL|function|i82092aa_module_init
 r_static
 r_int

@@ -11,7 +11,6 @@ macro_line|#include &lt;linux/workqueue.h&gt;
 macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/notifier.h&gt;
-macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;asm/hardware.h&gt;
@@ -2048,7 +2047,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#if defined(CONFIG_PROC_FS)
 DECL|struct|bittbl
 r_struct
 id|bittbl
@@ -2290,35 +2288,21 @@ op_assign
 id|b
 suffix:semicolon
 )brace
-multiline_comment|/* sa1100_pcmcia_proc_status()&n; * ^^^^^^^^^^^^^^^^^^^^^^^^^^^&n; * Implements the /proc/bus/pccard/??/status file.&n; *&n; * Returns: the number of characters added to the buffer&n; */
+multiline_comment|/* show_status()&n; * ^^^^^^^^^^^^^^^^^^^^^^^^^^^&n; * Implements the /sys/class/pcmcia_socket/??/status file.&n; *&n; * Returns: the number of characters added to the buffer&n; */
+DECL|function|show_status
 r_static
-r_int
-DECL|function|sa1100_pcmcia_proc_status
-id|sa1100_pcmcia_proc_status
+id|ssize_t
+id|show_status
 c_func
 (paren
+r_struct
+id|class_device
+op_star
+id|class_dev
+comma
 r_char
 op_star
 id|buf
-comma
-r_char
-op_star
-op_star
-id|start
-comma
-id|off_t
-id|pos
-comma
-r_int
-id|count
-comma
-r_int
-op_star
-id|eof
-comma
-r_void
-op_star
-id|data
 )paren
 (brace
 r_struct
@@ -2326,7 +2310,16 @@ id|sa1100_pcmcia_socket
 op_star
 id|skt
 op_assign
-id|data
+id|container_of
+c_func
+(paren
+id|class_dev
+comma
+r_struct
+id|sa1100_pcmcia_socket
+comma
+id|socket.dev
+)paren
 suffix:semicolon
 r_int
 r_int
@@ -2565,76 +2558,19 @@ op_minus
 id|buf
 suffix:semicolon
 )brace
-multiline_comment|/* sa1100_pcmcia_proc_setup()&n; * ^^^^^^^^^^^^^^^^^^^^^^^^^^&n; * Implements the proc_setup() operation for the in-kernel PCMCIA&n; * service (formerly SS_ProcSetup in Card Services).&n; *&n; * Returns: 0 on success, -1 on error&n; */
 r_static
-r_void
-DECL|function|sa1100_pcmcia_proc_setup
-id|sa1100_pcmcia_proc_setup
+id|CLASS_DEVICE_ATTR
 c_func
 (paren
-r_struct
-id|pcmcia_socket
-op_star
-id|sock
+id|status
 comma
-r_struct
-id|proc_dir_entry
-op_star
-id|base
-)paren
-(brace
-r_struct
-id|proc_dir_entry
-op_star
-id|entry
-suffix:semicolon
-r_if
-c_cond
-(paren
-(paren
-id|entry
-op_assign
-id|create_proc_entry
-c_func
-(paren
-l_string|&quot;status&quot;
+id|S_IRUGO
 comma
-l_int|0
+id|show_status
 comma
-id|base
-)paren
-)paren
-op_eq
 l_int|NULL
 )paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;unable to install &bslash;&quot;status&bslash;&quot; procfs entry&bslash;n&quot;
-)paren
 suffix:semicolon
-r_return
-suffix:semicolon
-)brace
-id|entry-&gt;read_proc
-op_assign
-id|sa1100_pcmcia_proc_status
-suffix:semicolon
-id|entry-&gt;data
-op_assign
-id|to_sa1100_socket
-c_func
-(paren
-id|sock
-)paren
-suffix:semicolon
-)brace
-macro_line|#else
-DECL|macro|sa1100_pcmcia_proc_setup
-mdefine_line|#define sa1100_pcmcia_proc_setup&t;NULL
-macro_line|#endif  /* defined(CONFIG_PROC_FS) */
 DECL|variable|sa11xx_pcmcia_operations
 r_static
 r_struct
@@ -2692,10 +2628,6 @@ id|set_mem_map
 op_assign
 id|sa1100_pcmcia_set_mem_map
 comma
-dot
-id|proc_setup
-op_assign
-id|sa1100_pcmcia_proc_setup
 )brace
 suffix:semicolon
 DECL|function|sa11xx_request_irqs
@@ -3609,6 +3541,16 @@ c_func
 (paren
 op_amp
 id|skt-&gt;poll_timer
+)paren
+suffix:semicolon
+id|class_device_create_file
+c_func
+(paren
+op_amp
+id|skt-&gt;socket.dev
+comma
+op_amp
+id|class_device_attr_status
 )paren
 suffix:semicolon
 )brace

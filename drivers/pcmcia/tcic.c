@@ -10,7 +10,6 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
-macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/workqueue.h&gt;
 macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
@@ -4894,24 +4893,6 @@ suffix:semicolon
 )brace
 multiline_comment|/* tcic_set_mem_map */
 multiline_comment|/*====================================================================*/
-DECL|function|tcic_proc_setup
-r_static
-r_void
-id|tcic_proc_setup
-c_func
-(paren
-r_struct
-id|pcmcia_socket
-op_star
-id|sock
-comma
-r_struct
-id|proc_dir_entry
-op_star
-id|base
-)paren
-(brace
-)brace
 DECL|function|tcic_init
 r_static
 r_int
@@ -5113,11 +5094,6 @@ dot
 id|set_mem_map
 op_assign
 id|tcic_set_mem_map
-comma
-dot
-id|proc_setup
-op_assign
-id|tcic_proc_setup
 comma
 )brace
 suffix:semicolon
