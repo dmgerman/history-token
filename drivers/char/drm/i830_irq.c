@@ -247,7 +247,7 @@ suffix:semicolon
 suffix:semicolon
 )paren
 (brace
-id|set_current_state
+id|__set_current_state
 c_func
 (paren
 id|TASK_INTERRUPTIBLE
@@ -348,7 +348,7 @@ r_break
 suffix:semicolon
 )brace
 )brace
-id|set_current_state
+id|__set_current_state
 c_func
 (paren
 id|TASK_RUNNING
