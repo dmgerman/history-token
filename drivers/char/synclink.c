@@ -2444,8 +2444,6 @@ op_star
 id|info
 )paren
 suffix:semicolon
-DECL|macro|jiffies_from_ms
-mdefine_line|#define jiffies_from_ms(a) ((((a) * HZ)/1000)+1)
 multiline_comment|/* set non-zero on successful registration with PCI subsystem */
 DECL|variable|pci_registered
 r_static
@@ -15177,7 +15175,7 @@ id|info-&gt;tx_timer
 comma
 id|jiffies
 op_plus
-id|jiffies_from_ms
+id|msecs_to_jiffies
 c_func
 (paren
 l_int|5000
@@ -20378,7 +20376,7 @@ id|info-&gt;tx_timer.expires
 op_assign
 id|jiffies
 op_plus
-id|jiffies_from_ms
+id|msecs_to_jiffies
 c_func
 (paren
 l_int|5000
@@ -24274,7 +24272,7 @@ suffix:semicolon
 id|schedule_timeout
 c_func
 (paren
-id|jiffies_from_ms
+id|msecs_to_jiffies
 c_func
 (paren
 l_int|10
@@ -24710,7 +24708,7 @@ id|EndTime
 op_assign
 id|jiffies
 op_plus
-id|jiffies_from_ms
+id|msecs_to_jiffies
 c_func
 (paren
 l_int|100
@@ -24940,7 +24938,7 @@ id|EndTime
 op_assign
 id|jiffies
 op_plus
-id|jiffies_from_ms
+id|msecs_to_jiffies
 c_func
 (paren
 l_int|100
@@ -25109,7 +25107,7 @@ id|EndTime
 op_assign
 id|jiffies
 op_plus
-id|jiffies_from_ms
+id|msecs_to_jiffies
 c_func
 (paren
 l_int|100
@@ -25253,7 +25251,7 @@ id|EndTime
 op_assign
 id|jiffies
 op_plus
-id|jiffies_from_ms
+id|msecs_to_jiffies
 c_func
 (paren
 l_int|100
