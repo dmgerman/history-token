@@ -2,6 +2,7 @@ macro_line|#ifndef __SHMEM_FS_H
 DECL|macro|__SHMEM_FS_H
 mdefine_line|#define __SHMEM_FS_H
 macro_line|#include &lt;linux/swap.h&gt;
+macro_line|#include &lt;linux/mempolicy.h&gt;
 multiline_comment|/* inode in-kernel data */
 DECL|macro|SHMEM_NR_DIRECT
 mdefine_line|#define SHMEM_NR_DIRECT 16
@@ -49,6 +50,11 @@ DECL|member|flags
 r_int
 r_int
 id|flags
+suffix:semicolon
+DECL|member|policy
+r_struct
+id|shared_policy
+id|policy
 suffix:semicolon
 DECL|member|list
 r_struct
