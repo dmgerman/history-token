@@ -314,6 +314,10 @@ DECL|member|tx_fifo_stall
 id|atomic_t
 id|tx_fifo_stall
 suffix:semicolon
+DECL|member|pcix_82544
+id|boolean_t
+id|pcix_82544
+suffix:semicolon
 multiline_comment|/* RX */
 DECL|member|rx_ring
 r_struct
