@@ -98,7 +98,7 @@ suffix:semicolon
 DECL|function|crypto_cipher_flags
 r_static
 r_inline
-r_int
+id|u32
 id|crypto_cipher_flags
 c_func
 (paren

@@ -216,12 +216,14 @@ id|flags
 suffix:semicolon
 r_default
 suffix:colon
+r_break
+suffix:semicolon
+)brace
 id|BUG
 c_func
 (paren
 )paren
 suffix:semicolon
-)brace
 r_return
 op_minus
 id|EINVAL
