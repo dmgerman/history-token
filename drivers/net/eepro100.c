@@ -176,7 +176,6 @@ multiline_comment|/* Size of an pre-allocated Rx buffer: &lt;Ethernet MTU&gt; + 
 DECL|macro|PKT_BUF_SZ
 mdefine_line|#define PKT_BUF_SZ&t;&t;1536
 macro_line|#include &lt;linux/config.h&gt;
-macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
@@ -12070,63 +12069,6 @@ comma
 macro_line|#endif /* CONFIG_PM */
 )brace
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,3,48)
-DECL|function|pci_module_init
-r_static
-r_int
-id|pci_module_init
-c_func
-(paren
-r_struct
-id|pci_driver
-op_star
-id|pdev
-)paren
-(brace
-r_int
-id|rc
-suffix:semicolon
-id|rc
-op_assign
-id|pci_register_driver
-c_func
-(paren
-id|pdev
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|rc
-op_le
-l_int|0
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;%s: No cards found, driver not installed.&bslash;n&quot;
-comma
-id|pdev-&gt;name
-)paren
-suffix:semicolon
-id|pci_unregister_driver
-c_func
-(paren
-id|pdev
-)paren
-suffix:semicolon
-r_return
-op_minus
-id|ENODEV
-suffix:semicolon
-)brace
-r_return
-l_int|0
-suffix:semicolon
-)brace
-macro_line|#endif
 DECL|function|eepro100_init_module
 r_static
 r_int
