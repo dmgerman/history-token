@@ -1825,13 +1825,6 @@ suffix:semicolon
 )brace
 id|J_ASSERT
 (paren
-id|transaction-&gt;t_ilist
-op_eq
-l_int|NULL
-)paren
-suffix:semicolon
-id|J_ASSERT
-(paren
 id|transaction-&gt;t_buffers
 op_eq
 l_int|NULL

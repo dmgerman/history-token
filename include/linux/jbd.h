@@ -394,6 +394,13 @@ id|jbd
 id|BUFFER_FNS
 c_func
 (paren
+id|JWrite
+comma
+id|jwrite
+)paren
+id|BUFFER_FNS
+c_func
+(paren
 id|JBDDirty
 comma
 id|jbddirty
@@ -532,6 +539,7 @@ r_struct
 id|list_head
 id|jcb_list
 suffix:semicolon
+multiline_comment|/* t_jcb_lock */
 DECL|member|jcb_func
 r_void
 (paren
@@ -554,7 +562,7 @@ suffix:semicolon
 r_struct
 id|jbd_revoke_table_s
 suffix:semicolon
-multiline_comment|/**&n; * struct handle_s - The handle_s type is the concrete type associated with handle_t.&n; * @h_transaction: Which compound transaction is this update a part of?&n; * @h_buffer_credits: Number of remaining buffers we are allowed to dirty.&n; * @h_ref: Reference count on this handle&n; * @h_jcb: List of application registered callbacks for this handle.&n; * @h_err: Field for caller&squot;s use to track errors through large fs operations&n; * @h_sync: flag for sync-on-close&n; * @h_jdata: flag to force data journaling&n; * @h_aborted: flag indicating fatal error on handle&n; **/
+multiline_comment|/**&n; * struct handle_s - The handle_s type is the concrete type associated with&n; *     handle_t.&n; * @h_transaction: Which compound transaction is this update a part of?&n; * @h_buffer_credits: Number of remaining buffers we are allowed to dirty.&n; * @h_ref: Reference count on this handle&n; * @h_jcb: List of application registered callbacks for this handle.&n; * @h_err: Field for caller&squot;s use to track errors through large fs operations&n; * @h_sync: flag for sync-on-close&n; * @h_jdata: flag to force data journaling&n; * @h_aborted: flag indicating fatal error on handle&n; **/
 multiline_comment|/* Docbook can&squot;t yet cope with the bit fields, but will leave the documentation&n; * in so it can be fixed later. &n; */
 DECL|struct|handle_s
 r_struct
@@ -582,13 +590,13 @@ DECL|member|h_err
 r_int
 id|h_err
 suffix:semicolon
-multiline_comment|/* List of application registered callbacks for this handle.&n;&t; * The function(s) will be called after the transaction that&n;&t; * this handle is part of has been committed to disk.&n;&t; */
+multiline_comment|/*&n;&t; * List of application registered callbacks for this handle. The&n;&t; * function(s) will be called after the transaction that this handle is&n;&t; * part of has been committed to disk. [t_jcb_lock]&n;&t; */
 DECL|member|h_jcb
 r_struct
 id|list_head
 id|h_jcb
 suffix:semicolon
-multiline_comment|/* Flags */
+multiline_comment|/* Flags [no locking] */
 DECL|member|h_sync
 r_int
 r_int
@@ -616,22 +624,23 @@ multiline_comment|/* fatal error on handle */
 )brace
 suffix:semicolon
 multiline_comment|/* The transaction_t type is the guts of the journaling mechanism.  It&n; * tracks a compound transaction through its various states:&n; *&n; * RUNNING:&t;accepting new updates&n; * LOCKED:&t;Updates still running but we don&squot;t accept new ones&n; * RUNDOWN:&t;Updates are tidying up but have finished requesting&n; *&t;&t;new buffers to modify (state not used for now)&n; * FLUSH:       All updates complete, but we are still writing to disk&n; * COMMIT:      All data on disk, writing commit record&n; * FINISHED:&t;We still have to keep the transaction for checkpointing.&n; *&n; * The transaction keeps track of all of the buffers modified by a&n; * running transaction, and all of the buffers committed but not yet&n; * flushed to home for finished transactions.&n; */
+multiline_comment|/*&n; * Lock ranking:&n; *&n; *    j_list_lock&n; *      -&gt;jbd_lock_bh_journal_head()&t;(This is &quot;innermost&quot;)&n; *&n; *    j_state_lock&n; *    -&gt;jbd_lock_bh_state()&n; *&n; *    jbd_lock_bh_state()&n; *    -&gt;j_list_lock&n; *&n; *    j_state_lock&n; *    -&gt;t_handle_lock&n; *&n; *    j_state_lock&n; *    -&gt;j_list_lock&t;&t;&t;(journal_unmap_buffer)&n; *&n; *    t_handle_lock&n; *    -&gt;t_jcb_lock&n; */
 DECL|struct|transaction_s
 r_struct
 id|transaction_s
 (brace
-multiline_comment|/* Pointer to the journal for this transaction. */
+multiline_comment|/* Pointer to the journal for this transaction. [no locking] */
 DECL|member|t_journal
 id|journal_t
 op_star
 id|t_journal
 suffix:semicolon
-multiline_comment|/* Sequence number for this transaction */
+multiline_comment|/* Sequence number for this transaction [no locking] */
 DECL|member|t_tid
 id|tid_t
 id|t_tid
 suffix:semicolon
-multiline_comment|/* Transaction&squot;s current state */
+multiline_comment|/*&n;&t; * Transaction&squot;s current state&n;&t; * [no locking - only kjournald alters this]&n;&t; * FIXME: needs barriers&n;&t; * KLUDGE: [use j_state_lock]&n;&t; */
 r_enum
 (brace
 DECL|enumerator|T_RUNNING
@@ -655,94 +664,89 @@ DECL|member|t_state
 )brace
 id|t_state
 suffix:semicolon
-multiline_comment|/* Where in the log does this transaction&squot;s commit start? */
+multiline_comment|/*&n;&t; * Where in the log does this transaction&squot;s commit start? [no locking]&n;&t; */
 DECL|member|t_log_start
 r_int
 r_int
 id|t_log_start
 suffix:semicolon
-multiline_comment|/* Doubly-linked circular list of all inodes owned by this&n;           transaction */
-multiline_comment|/* AKPM: unused */
-DECL|member|t_ilist
-r_struct
-id|inode
-op_star
-id|t_ilist
-suffix:semicolon
-multiline_comment|/* Number of buffers on the t_buffers list */
+multiline_comment|/* Number of buffers on the t_buffers list [j_list_lock] */
 DECL|member|t_nr_buffers
 r_int
 id|t_nr_buffers
 suffix:semicolon
-multiline_comment|/* Doubly-linked circular list of all buffers reserved but not&n;           yet modified by this transaction */
+multiline_comment|/*&n;&t; * Doubly-linked circular list of all buffers reserved but not yet&n;&t; * modified by this transaction [j_list_lock]&n;&t; */
 DECL|member|t_reserved_list
 r_struct
 id|journal_head
 op_star
 id|t_reserved_list
 suffix:semicolon
-multiline_comment|/* Doubly-linked circular list of all metadata buffers owned by this&n;           transaction */
+multiline_comment|/*&n;&t; * Doubly-linked circular list of all metadata buffers owned by this&n;&t; * transaction [j_list_lock]&n;&t; */
 DECL|member|t_buffers
 r_struct
 id|journal_head
 op_star
 id|t_buffers
 suffix:semicolon
-multiline_comment|/*&n;&t; * Doubly-linked circular list of all data buffers still to be&n;&t; * flushed before this transaction can be committed.&n;&t; * Protected by journal_datalist_lock.&n;&t; */
+multiline_comment|/*&n;&t; * Doubly-linked circular list of all data buffers still to be&n;&t; * flushed before this transaction can be committed [j_list_lock]&n;&t; */
 DECL|member|t_sync_datalist
 r_struct
 id|journal_head
 op_star
 id|t_sync_datalist
 suffix:semicolon
-multiline_comment|/* Doubly-linked circular list of all forget buffers (superseded&n;           buffers which we can un-checkpoint once this transaction&n;           commits) */
+multiline_comment|/*&n;&t; * Doubly-linked circular list of all forget buffers (superseded&n;&t; * buffers which we can un-checkpoint once this transaction commits)&n;&t; * [j_list_lock]&n;&t; */
 DECL|member|t_forget
 r_struct
 id|journal_head
 op_star
 id|t_forget
 suffix:semicolon
-multiline_comment|/*&n;&t; * Doubly-linked circular list of all buffers still to be&n;&t; * flushed before this transaction can be checkpointed.&n;&t; */
-multiline_comment|/* Protected by journal_datalist_lock */
+multiline_comment|/*&n;&t; * Doubly-linked circular list of all buffers still to be flushed before&n;&t; * this transaction can be checkpointed. [j_list_lock]&n;&t; */
 DECL|member|t_checkpoint_list
 r_struct
 id|journal_head
 op_star
 id|t_checkpoint_list
 suffix:semicolon
-multiline_comment|/* Doubly-linked circular list of temporary buffers currently&n;           undergoing IO in the log */
+multiline_comment|/*&n;&t; * Doubly-linked circular list of temporary buffers currently undergoing&n;&t; * IO in the log [j_list_lock]&n;&t; */
 DECL|member|t_iobuf_list
 r_struct
 id|journal_head
 op_star
 id|t_iobuf_list
 suffix:semicolon
-multiline_comment|/* Doubly-linked circular list of metadata buffers being&n;           shadowed by log IO.  The IO buffers on the iobuf list and the&n;           shadow buffers on this list match each other one for one at&n;           all times. */
+multiline_comment|/*&n;&t; * Doubly-linked circular list of metadata buffers being shadowed by log&n;&t; * IO.  The IO buffers on the iobuf list and the shadow buffers on this&n;&t; * list match each other one for one at all times. [j_list_lock]&n;&t; */
 DECL|member|t_shadow_list
 r_struct
 id|journal_head
 op_star
 id|t_shadow_list
 suffix:semicolon
-multiline_comment|/* Doubly-linked circular list of control buffers being written&n;           to the log. */
+multiline_comment|/*&n;&t; * Doubly-linked circular list of control buffers being written to the&n;&t; * log. [j_list_lock]&n;&t; */
 DECL|member|t_log_list
 r_struct
 id|journal_head
 op_star
 id|t_log_list
 suffix:semicolon
-multiline_comment|/* Number of outstanding updates running on this transaction */
+multiline_comment|/*&n;&t; * Protects info related to handles&n;&t; */
+DECL|member|t_handle_lock
+id|spinlock_t
+id|t_handle_lock
+suffix:semicolon
+multiline_comment|/*&n;&t; * Number of outstanding updates running on this transaction&n;&t; * [t_handle_lock]&n;&t; */
 DECL|member|t_updates
 r_int
 id|t_updates
 suffix:semicolon
-multiline_comment|/* Number of buffers reserved for use by all handles in this&n;&t; * transaction handle but not yet modified. */
+multiline_comment|/*&n;&t; * Number of buffers reserved for use by all handles in this transaction&n;&t; * handle but not yet modified. [t_handle_lock]&n;&t; */
 DECL|member|t_outstanding_credits
 r_int
 id|t_outstanding_credits
 suffix:semicolon
-multiline_comment|/*&n;&t; * Forward and backward links for the circular list of all&n;&t; * transactions awaiting checkpoint.&n;&t; */
-multiline_comment|/* Protected by journal_datalist_lock */
+multiline_comment|/*&n;&t; * Forward and backward links for the circular list of all transactions&n;&t; * awaiting checkpoint. [j_list_lock]&n;&t; */
 DECL|member|t_cpnext
 DECL|member|t_cpprev
 id|transaction_t
@@ -752,18 +756,23 @@ comma
 op_star
 id|t_cpprev
 suffix:semicolon
-multiline_comment|/* When will the transaction expire (become due for commit), in&n;&t; * jiffies ? */
+multiline_comment|/*&n;&t; * When will the transaction expire (become due for commit), in jiffies?&n;&t; * [no locking]&n;&t; */
 DECL|member|t_expires
 r_int
 r_int
 id|t_expires
 suffix:semicolon
-multiline_comment|/* How many handles used this transaction? */
+multiline_comment|/*&n;&t; * How many handles used this transaction? [t_handle_lock]&n;&t; */
 DECL|member|t_handle_count
 r_int
 id|t_handle_count
 suffix:semicolon
-multiline_comment|/* List of registered callback functions for this transaction.&n;&t; * Called when the transaction is committed. */
+multiline_comment|/*&n;&t; * Protects the callback list&n;&t; */
+DECL|member|t_jcb_lock
+id|spinlock_t
+id|t_jcb_lock
+suffix:semicolon
+multiline_comment|/*&n;&t; * List of registered callback functions for this transaction.&n;&t; * Called when the transaction is committed. [t_jcb_lock]&n;&t; */
 DECL|member|t_jcb
 r_struct
 id|list_head
@@ -771,19 +780,18 @@ id|t_jcb
 suffix:semicolon
 )brace
 suffix:semicolon
-multiline_comment|/**&n; * struct journal_s - The journal_s type is the concrete type associated with journal_t.&n; * @j_flags:  General journaling state flags&n; * @j_errno:  Is there an outstanding uncleared error on the journal (from a prior abort)? &n; * @j_sb_buffer: First part of superblock buffer&n; * @j_superblock: Second part of superblock buffer&n; * @j_format_version: Version of the superblock format&n; * @j_barrier_count:  Number of processes waiting to create a barrier lock&n; * @j_barrier: The barrier lock itself&n; * @j_running_transaction: The current running transaction..&n; * @j_committing_transaction: the transaction we are pushing to disk&n; * @j_checkpoint_transactions: a linked circular list of all transactions waiting for checkpointing&n; * @j_wait_transaction_locked: Wait queue for waiting for a locked transaction to start committing, or for a barrier lock to be released&n; * @j_wait_logspace: Wait queue for waiting for checkpointing to complete&n; * @j_wait_done_commit: Wait queue for waiting for commit to complete &n; * @j_wait_checkpoint:  Wait queue to trigger checkpointing&n; * @j_wait_commit: Wait queue to trigger commit&n; * @j_wait_updates: Wait queue to wait for updates to complete&n; * @j_checkpoint_sem: Semaphore for locking against concurrent checkpoints&n; * @j_sem: The main journal lock, used by lock_journal() &n; * @j_head: Journal head - identifies the first unused block in the journal&n; * @j_tail: Journal tail - identifies the oldest still-used block in the journal.&n; * @j_free: Journal free - how many free blocks are there in the journal?&n; * @j_first: The block number of the first usable block &n; * @j_last: The block number one beyond the last usable block&n; * @j_dev: Device where we store the journal&n; * @j_blocksize: blocksize for the location where we store the journal.&n; * @j_blk_offset: starting block offset for into the device where we store the journal&n; * @j_fs_dev: Device which holds the client fs.  For internal journal this will be equal to j_dev&n; * @j_maxlen: Total maximum capacity of the journal region on disk.&n; * @j_inode: Optional inode where we store the journal.  If present, all  journal block numbers are mapped into this inode via bmap().&n; * @j_tail_sequence:  Sequence number of the oldest transaction in the log &n; * @j_transaction_sequence: Sequence number of the next transaction to grant&n; * @j_commit_sequence: Sequence number of the most recently committed transaction&n; * @j_commit_request: Sequence number of the most recent transaction wanting commit &n; * @j_uuid: Uuid of client object.&n; * @j_task: Pointer to the current commit thread for this journal&n; * @j_max_transaction_buffers:  Maximum number of metadata buffers to allow in a single compound commit transaction&n; * @j_commit_interval: What is the maximum transaction lifetime before we begin a commit?&n; * @j_commit_timer:  The timer used to wakeup the commit thread&n; * @j_commit_timer_active: Timer flag&n; * @j_all_journals:  Link all journals together - system-wide &n; * @j_revoke: The revoke table - maintains the list of revoked blocks in the current transaction.&n; **/
+multiline_comment|/**&n; * struct journal_s - The journal_s type is the concrete type associated with&n; *     journal_t.&n; * @j_flags:  General journaling state flags&n; * @j_errno:  Is there an outstanding uncleared error on the journal (from a&n; *     prior abort)? &n; * @j_sb_buffer: First part of superblock buffer&n; * @j_superblock: Second part of superblock buffer&n; * @j_format_version: Version of the superblock format&n; * @j_barrier_count:  Number of processes waiting to create a barrier lock&n; * @j_barrier: The barrier lock itself&n; * @j_running_transaction: The current running transaction..&n; * @j_committing_transaction: the transaction we are pushing to disk&n; * @j_checkpoint_transactions: a linked circular list of all transactions&n; *  waiting for checkpointing&n; * @j_wait_transaction_locked: Wait queue for waiting for a locked transaction&n; *  to start committing, or for a barrier lock to be released&n; * @j_wait_logspace: Wait queue for waiting for checkpointing to complete&n; * @j_wait_done_commit: Wait queue for waiting for commit to complete &n; * @j_wait_checkpoint:  Wait queue to trigger checkpointing&n; * @j_wait_commit: Wait queue to trigger commit&n; * @j_wait_updates: Wait queue to wait for updates to complete&n; * @j_checkpoint_sem: Semaphore for locking against concurrent checkpoints&n; * @j_sem: The main journal lock, used by lock_journal() &n; * @j_head: Journal head - identifies the first unused block in the journal&n; * @j_tail: Journal tail - identifies the oldest still-used block in the&n; *  journal.&n; * @j_free: Journal free - how many free blocks are there in the journal?&n; * @j_first: The block number of the first usable block &n; * @j_last: The block number one beyond the last usable block&n; * @j_dev: Device where we store the journal&n; * @j_blocksize: blocksize for the location where we store the journal.&n; * @j_blk_offset: starting block offset for into the device where we store the&n; *     journal&n; * @j_fs_dev: Device which holds the client fs.  For internal journal this will&n; *     be equal to j_dev&n; * @j_maxlen: Total maximum capacity of the journal region on disk.&n; * @j_inode: Optional inode where we store the journal.  If present, all journal&n; *     block numbers are mapped into this inode via bmap().&n; * @j_tail_sequence:  Sequence number of the oldest transaction in the log &n; * @j_transaction_sequence: Sequence number of the next transaction to grant&n; * @j_commit_sequence: Sequence number of the most recently committed&n; *  transaction&n; * @j_commit_request: Sequence number of the most recent transaction wanting&n; *     commit &n; * @j_uuid: Uuid of client object.&n; * @j_task: Pointer to the current commit thread for this journal&n; * @j_max_transaction_buffers:  Maximum number of metadata buffers to allow in a&n; *     single compound commit transaction&n; * @j_commit_interval: What is the maximum transaction lifetime before we begin&n; *  a commit?&n; * @j_commit_timer:  The timer used to wakeup the commit thread&n; * @j_commit_timer_active: Timer flag&n; * @j_all_journals:  Link all journals together - system-wide &n; * @j_revoke: The revoke table - maintains the list of revoked blocks in the&n; *     current transaction.&n; */
 DECL|struct|journal_s
 r_struct
 id|journal_s
 (brace
-multiline_comment|/* General journaling state flags */
+multiline_comment|/* General journaling state flags [j_state_lock] */
 DECL|member|j_flags
 r_int
 r_int
 id|j_flags
 suffix:semicolon
-multiline_comment|/* Is there an outstanding uncleared error on the journal (from */
-multiline_comment|/* a prior abort)? */
+multiline_comment|/*&n;&t; * Is there an outstanding uncleared error on the journal (from a prior&n;&t; * abort)? [j_state_lock]&n;&t; */
 DECL|member|j_errno
 r_int
 id|j_errno
@@ -805,7 +813,12 @@ DECL|member|j_format_version
 r_int
 id|j_format_version
 suffix:semicolon
-multiline_comment|/* Number of processes waiting to create a barrier lock */
+multiline_comment|/*&n;&t; * Protect the various scalars in the journal&n;&t; */
+DECL|member|j_state_lock
+id|spinlock_t
+id|j_state_lock
+suffix:semicolon
+multiline_comment|/*&n;&t; * Number of processes waiting to create a barrier lock [j_state_lock]&n;&t; */
 DECL|member|j_barrier_count
 r_int
 id|j_barrier_count
@@ -816,28 +829,25 @@ r_struct
 id|semaphore
 id|j_barrier
 suffix:semicolon
-multiline_comment|/* Transactions: The current running transaction... */
+multiline_comment|/*&n;&t; * Transactions: The current running transaction...&n;&t; * [j_state_lock] [caller holding open handle]&n;&t; */
 DECL|member|j_running_transaction
 id|transaction_t
 op_star
 id|j_running_transaction
 suffix:semicolon
-multiline_comment|/* ... the transaction we are pushing to disk ... */
+multiline_comment|/*&n;&t; * the transaction we are pushing to disk&n;&t; * [j_state_lock] [caller holding open handle]&n;&t; */
 DECL|member|j_committing_transaction
 id|transaction_t
 op_star
 id|j_committing_transaction
 suffix:semicolon
-multiline_comment|/* ... and a linked circular list of all transactions waiting */
-multiline_comment|/* for checkpointing. */
-multiline_comment|/* Protected by journal_datalist_lock */
+multiline_comment|/*&n;&t; * ... and a linked circular list of all transactions waiting for&n;&t; * checkpointing. [j_list_lock]&n;&t; */
 DECL|member|j_checkpoint_transactions
 id|transaction_t
 op_star
 id|j_checkpoint_transactions
 suffix:semicolon
-multiline_comment|/* Wait queue for waiting for a locked transaction to start */
-multiline_comment|/*  committing, or for a barrier lock to be released */
+multiline_comment|/*&n;&t; * Wait queue for waiting for a locked transaction to start committing,&n;&t; * or for a barrier lock to be released&n;&t; */
 DECL|member|j_wait_transaction_locked
 id|wait_queue_head_t
 id|j_wait_transaction_locked
@@ -879,37 +889,36 @@ r_struct
 id|semaphore
 id|j_sem
 suffix:semicolon
-multiline_comment|/* Journal head: identifies the first unused block in the journal. */
+multiline_comment|/*&n;&t; * Journal head: identifies the first unused block in the journal.&n;&t; * [j_state_lock]&n;&t; */
 DECL|member|j_head
 r_int
 r_int
 id|j_head
 suffix:semicolon
-multiline_comment|/* Journal tail: identifies the oldest still-used block in the */
-multiline_comment|/* journal. */
+multiline_comment|/*&n;&t; * Journal tail: identifies the oldest still-used block in the journal.&n;&t; * [j_state_lock]&n;&t; */
 DECL|member|j_tail
 r_int
 r_int
 id|j_tail
 suffix:semicolon
-multiline_comment|/* Journal free: how many free blocks are there in the journal? */
+multiline_comment|/*&n;&t; * Journal free: how many free blocks are there in the journal?&n;&t; * [j_state_lock]&n;&t; */
 DECL|member|j_free
 r_int
 r_int
 id|j_free
 suffix:semicolon
-multiline_comment|/* Journal start and end: the block numbers of the first usable */
-multiline_comment|/* block and one beyond the last usable block in the journal.   */
+multiline_comment|/*&n;&t; * Journal start and end: the block numbers of the first usable block&n;&t; * and one beyond the last usable block in the journal. [j_state_lock]&n;&t; */
 DECL|member|j_first
-DECL|member|j_last
 r_int
 r_int
 id|j_first
-comma
+suffix:semicolon
+DECL|member|j_last
+r_int
+r_int
 id|j_last
 suffix:semicolon
-multiline_comment|/* Device, blocksize and starting block offset for the location */
-multiline_comment|/* where we store the journal. */
+multiline_comment|/*&n;&t; * Device, blocksize and starting block offset for the location where we&n;&t; * store the journal.&n;&t; */
 DECL|member|j_dev
 r_struct
 id|block_device
@@ -925,8 +934,7 @@ r_int
 r_int
 id|j_blk_offset
 suffix:semicolon
-multiline_comment|/* Device which holds the client fs.  For internal journal this */
-multiline_comment|/* will be equal to j_dev. */
+multiline_comment|/*&n;&t; * Device which holds the client fs.  For internal journal this will be&n;&t; * equal to j_dev.&n;&t; */
 DECL|member|j_fs_dev
 r_struct
 id|block_device
@@ -939,6 +947,11 @@ r_int
 r_int
 id|j_maxlen
 suffix:semicolon
+multiline_comment|/*&n;&t; * Protects the buffer lists and internal buffer state.&n;&t; */
+DECL|member|j_list_lock
+id|spinlock_t
+id|j_list_lock
+suffix:semicolon
 multiline_comment|/* Optional inode where we store the journal.  If present, all */
 multiline_comment|/* journal block numbers are mapped into this inode via */
 multiline_comment|/* bmap(). */
@@ -948,31 +961,27 @@ id|inode
 op_star
 id|j_inode
 suffix:semicolon
-multiline_comment|/* Sequence number of the oldest transaction in the log */
+multiline_comment|/*&n;&t; * Sequence number of the oldest transaction in the log [j_state_lock]&n;&t; */
 DECL|member|j_tail_sequence
 id|tid_t
 id|j_tail_sequence
 suffix:semicolon
-multiline_comment|/* Sequence number of the next transaction to grant */
+multiline_comment|/*&n;&t; * Sequence number of the next transaction to grant [j_state_lock]&n;&t; */
 DECL|member|j_transaction_sequence
 id|tid_t
 id|j_transaction_sequence
 suffix:semicolon
-multiline_comment|/* Sequence number of the most recently committed transaction */
+multiline_comment|/*&n;&t; * Sequence number of the most recently committed transaction&n;&t; * [j_state_lock].&n;&t; */
 DECL|member|j_commit_sequence
 id|tid_t
 id|j_commit_sequence
 suffix:semicolon
-multiline_comment|/* Sequence number of the most recent transaction wanting commit */
+multiline_comment|/*&n;&t; * Sequence number of the most recent transaction wanting commit&n;&t; * [j_state_lock]&n;&t; */
 DECL|member|j_commit_request
 id|tid_t
 id|j_commit_request
 suffix:semicolon
-multiline_comment|/* Journal uuid: identifies the object (filesystem, LVM volume   */
-multiline_comment|/* etc) backed by this journal.  This will eventually be         */
-multiline_comment|/* replaced by an array of uuids, allowing us to index multiple  */
-multiline_comment|/* devices within a single journal and to perform atomic updates */
-multiline_comment|/* across them.  */
+multiline_comment|/*&n;&t; * Journal uuid: identifies the object (filesystem, LVM volume etc)&n;&t; * backed by this journal.  This will eventually be replaced by an array&n;&t; * of uuids, allowing us to index multiple devices within a single&n;&t; * journal and to perform atomic updates across them.&n;&t; */
 DECL|member|j_uuid
 id|__u8
 id|j_uuid
@@ -987,14 +996,12 @@ id|task_struct
 op_star
 id|j_task
 suffix:semicolon
-multiline_comment|/* Maximum number of metadata buffers to allow in a single */
-multiline_comment|/* compound commit transaction */
+multiline_comment|/*&n;&t; * Maximum number of metadata buffers to allow in a single compound&n;&t; * commit transaction&n;&t; */
 DECL|member|j_max_transaction_buffers
 r_int
 id|j_max_transaction_buffers
 suffix:semicolon
-multiline_comment|/* What is the maximum transaction lifetime before we begin a */
-multiline_comment|/* commit? */
+multiline_comment|/*&n;&t; * What is the maximum transaction lifetime before we begin a commit?&n;&t; */
 DECL|member|j_commit_interval
 r_int
 r_int
@@ -1011,21 +1018,25 @@ DECL|member|j_commit_timer_active
 r_int
 id|j_commit_timer_active
 suffix:semicolon
-multiline_comment|/* Link all journals together - system-wide */
+multiline_comment|/* [j_state_lock] */
+multiline_comment|/* Link all journals together - system-wide [lock_kernel] */
 DECL|member|j_all_journals
 r_struct
 id|list_head
 id|j_all_journals
 suffix:semicolon
-multiline_comment|/* The revoke table: maintains the list of revoked blocks in the */
-multiline_comment|/*  current transaction. */
+multiline_comment|/*&n;&t; * The revoke table: maintains the list of revoked blocks in the&n;&t; * current transaction.  [j_revoke_lock]&n;&t; */
+DECL|member|j_revoke_lock
+id|spinlock_t
+id|j_revoke_lock
+suffix:semicolon
 DECL|member|j_revoke
 r_struct
 id|jbd_revoke_table_s
 op_star
 id|j_revoke
 suffix:semicolon
-multiline_comment|/* An opaque pointer to fs-private information.  ext3 puts its&n;&t; * superblock pointer here */
+multiline_comment|/*&n;&t; * An opaque pointer to fs-private information.  ext3 puts its&n;&t; * superblock pointer here&n;&t; */
 DECL|member|j_private
 r_void
 op_star

@@ -90,6 +90,20 @@ op_amp
 id|transaction-&gt;t_jcb
 )paren
 suffix:semicolon
+id|spin_lock_init
+c_func
+(paren
+op_amp
+id|transaction-&gt;t_handle_lock
+)paren
+suffix:semicolon
+id|spin_lock_init
+c_func
+(paren
+op_amp
+id|transaction-&gt;t_jcb_lock
+)paren
+suffix:semicolon
 multiline_comment|/* Set up the commit timer for the new transaction. */
 id|J_ASSERT
 (paren
