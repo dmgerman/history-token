@@ -182,12 +182,6 @@ id|device
 op_star
 id|socket_dev
 suffix:semicolon
-DECL|member|socket_no
-r_int
-r_int
-id|socket_no
-suffix:semicolon
-multiline_comment|/* deprecated */
 DECL|member|parent
 r_struct
 id|pcmcia_socket
@@ -966,7 +960,7 @@ op_star
 )paren
 id|bind_req.dev_info
 comma
-id|bus_sock-&gt;socket_no
+id|bus_sock-&gt;parent-&gt;sock
 comma
 id|bind_req.CardOffset
 )paren
@@ -1030,7 +1024,7 @@ l_int|2
 comma
 l_string|&quot;bind_request(%d, &squot;%s&squot;)&bslash;n&quot;
 comma
-id|s-&gt;socket_no
+id|s-&gt;parent-&gt;sock
 comma
 (paren
 r_char
@@ -1174,7 +1168,7 @@ op_star
 )paren
 id|dev_info
 comma
-id|s-&gt;socket_no
+id|s-&gt;parent-&gt;sock
 )paren
 suffix:semicolon
 id|module_put
@@ -1618,7 +1612,7 @@ l_int|2
 comma
 l_string|&quot;unbind_request(%d, &squot;%s&squot;)&bslash;n&quot;
 comma
-id|s-&gt;socket_no
+id|s-&gt;parent-&gt;sock
 comma
 (paren
 r_char
@@ -3566,10 +3560,6 @@ id|handle_removal
 comma
 id|s
 )paren
-suffix:semicolon
-id|s-&gt;socket_no
-op_assign
-id|socket-&gt;sock
 suffix:semicolon
 id|s-&gt;parent
 op_assign
