@@ -4436,6 +4436,23 @@ id|sg
 )paren
 suffix:semicolon
 )brace
+r_int
+DECL|function|sba_dma_supported
+id|sba_dma_supported
+(paren
+r_struct
+id|pci_dev
+op_star
+id|dev
+comma
+id|u64
+id|mask
+)paren
+(brace
+r_return
+l_int|1
+suffix:semicolon
+)brace
 multiline_comment|/**************************************************************&n;*&n;*   Initialization and claim&n;*&n;***************************************************************/
 r_static
 r_void
@@ -6533,6 +6550,13 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|sba_dma_address
+)paren
+suffix:semicolon
+DECL|variable|sba_dma_supported
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|sba_dma_supported
 )paren
 suffix:semicolon
 DECL|variable|sba_alloc_consistent

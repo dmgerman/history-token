@@ -832,6 +832,7 @@ l_int|0
 suffix:semicolon
 macro_line|# endif
 macro_line|#endif
+macro_line|#ifdef CONFIG_IA32_SUPPORT
 r_if
 c_cond
 (paren
@@ -851,6 +852,7 @@ c_func
 id|task
 )paren
 suffix:semicolon
+macro_line|#endif
 )brace
 r_void
 DECL|function|ia64_load_extra
@@ -917,6 +919,7 @@ l_int|1
 suffix:semicolon
 macro_line|# endif
 macro_line|#endif
+macro_line|#ifdef CONFIG_IA32_SUPPORT
 r_if
 c_cond
 (paren
@@ -936,6 +939,7 @@ c_func
 id|task
 )paren
 suffix:semicolon
+macro_line|#endif
 )brace
 multiline_comment|/*&n; * Copy the state of an ia-64 thread.&n; *&n; * We get here through the following  call chain:&n; *&n; *&t;&lt;clone syscall&gt;&n; *&t;sys_clone&n; *&t;do_fork&n; *&t;copy_thread&n; *&n; * This means that the stack layout is as follows:&n; *&n; *&t;+---------------------+ (highest addr)&n; *&t;|   struct pt_regs    |&n; *&t;+---------------------+&n; *&t;| struct switch_stack |&n; *&t;+---------------------+&n; *&t;|                     |&n; *&t;|    memory stack     |&n; *&t;|                     | &lt;-- sp (lowest addr)&n; *&t;+---------------------+&n; *&n; * Note: if we get called through kernel_thread() then the memory&n; * above &quot;(highest addr)&quot; is valid kernel stack memory that needs to&n; * be copied as well.&n; *&n; * Observe that we copy the unat values that are in pt_regs and&n; * switch_stack.  Spilling an integer to address X causes bit N in&n; * ar.unat to be set to the NaT bit of the register, with N=(X &amp;&n; * 0x1ff)/8.  Thus, copying the unat value preserves the NaT bits ONLY&n; * if the pt_regs structure in the parent is congruent to that of the&n; * child, modulo 512.  Since the stack is page aligned and the page&n; * size is at least 4KB, this is always the case, so there is nothing&n; * to worry about.&n; */
 r_int
