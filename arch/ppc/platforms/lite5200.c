@@ -82,8 +82,8 @@ multiline_comment|/* Platform specific code                                     
 multiline_comment|/* ======================================================================== */
 r_static
 r_int
-DECL|function|icecube_show_cpuinfo
-id|icecube_show_cpuinfo
+DECL|function|lite5200_show_cpuinfo
+id|lite5200_show_cpuinfo
 c_func
 (paren
 r_struct
@@ -107,8 +107,8 @@ suffix:semicolon
 r_static
 r_void
 id|__init
-DECL|function|icecube_setup_arch
-id|icecube_setup_arch
+DECL|function|lite5200_setup_arch
+id|lite5200_setup_arch
 c_func
 (paren
 r_void
@@ -284,11 +284,11 @@ suffix:semicolon
 multiline_comment|/* Setup the ppc_md struct */
 id|ppc_md.setup_arch
 op_assign
-id|icecube_setup_arch
+id|lite5200_setup_arch
 suffix:semicolon
 id|ppc_md.show_cpuinfo
 op_assign
-id|icecube_show_cpuinfo
+id|lite5200_show_cpuinfo
 suffix:semicolon
 id|ppc_md.show_percpuinfo
 op_assign
@@ -322,7 +322,7 @@ id|ppc_md.halt
 op_assign
 id|mpc52xx_halt
 suffix:semicolon
-multiline_comment|/* No time keeper on the IceCube */
+multiline_comment|/* No time keeper on the LITE5200 */
 id|ppc_md.time_init
 op_assign
 l_int|NULL
