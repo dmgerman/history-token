@@ -6165,6 +6165,11 @@ id|ptr
 op_assign
 id|rsp-&gt;data
 suffix:semicolon
+id|u16
+id|flags
+op_assign
+l_int|0
+suffix:semicolon
 id|BT_DBG
 c_func
 (paren
@@ -6196,6 +6201,11 @@ comma
 op_amp
 id|ptr
 )paren
+suffix:semicolon
+r_else
+id|flags
+op_assign
+l_int|0x0001
 suffix:semicolon
 id|rsp-&gt;scid
 op_assign
@@ -6230,7 +6240,7 @@ op_assign
 id|__cpu_to_le16
 c_func
 (paren
-l_int|0
+id|flags
 )paren
 suffix:semicolon
 r_return
@@ -6852,7 +6862,7 @@ id|sk
 op_member_access_from_pointer
 id|conf_state
 op_or_assign
-id|CONF_REQ_SENT
+id|L2CAP_CONF_REQ_SENT
 suffix:semicolon
 id|l2cap_send_req
 c_func
@@ -7023,7 +7033,7 @@ c_cond
 (paren
 id|flags
 op_amp
-l_int|0x01
+l_int|0x0001
 )paren
 (brace
 multiline_comment|/* Incomplete config. Send empty response. */
@@ -7094,7 +7104,7 @@ id|sk
 op_member_access_from_pointer
 id|conf_state
 op_or_assign
-id|CONF_OUTPUT_DONE
+id|L2CAP_CONF_OUTPUT_DONE
 suffix:semicolon
 r_if
 c_cond
@@ -7107,7 +7117,7 @@ id|sk
 op_member_access_from_pointer
 id|conf_state
 op_amp
-id|CONF_INPUT_DONE
+id|L2CAP_CONF_INPUT_DONE
 )paren
 (brace
 id|sk-&gt;state
@@ -7135,7 +7145,7 @@ id|sk
 op_member_access_from_pointer
 id|conf_state
 op_amp
-id|CONF_REQ_SENT
+id|L2CAP_CONF_REQ_SENT
 )paren
 )paren
 (brace
@@ -7376,7 +7386,7 @@ id|sk
 op_member_access_from_pointer
 id|conf_state
 op_or_assign
-id|CONF_INPUT_DONE
+id|L2CAP_CONF_INPUT_DONE
 suffix:semicolon
 r_if
 c_cond
@@ -7389,7 +7399,7 @@ id|sk
 op_member_access_from_pointer
 id|conf_state
 op_amp
-id|CONF_OUTPUT_DONE
+id|L2CAP_CONF_OUTPUT_DONE
 )paren
 (brace
 id|sk-&gt;state

@@ -600,12 +600,12 @@ id|prev_c
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|macro|CONF_REQ_SENT
-mdefine_line|#define CONF_REQ_SENT    0x01
-DECL|macro|CONF_INPUT_DONE
-mdefine_line|#define CONF_INPUT_DONE  0x02
-DECL|macro|CONF_OUTPUT_DONE
-mdefine_line|#define CONF_OUTPUT_DONE 0x04
+DECL|macro|L2CAP_CONF_REQ_SENT
+mdefine_line|#define L2CAP_CONF_REQ_SENT    0x01
+DECL|macro|L2CAP_CONF_INPUT_DONE
+mdefine_line|#define L2CAP_CONF_INPUT_DONE  0x02
+DECL|macro|L2CAP_CONF_OUTPUT_DONE
+mdefine_line|#define L2CAP_CONF_OUTPUT_DONE 0x04
 r_void
 id|l2cap_load
 c_func
