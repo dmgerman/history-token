@@ -20,6 +20,13 @@ macro_line|#include &lt;asm/edd.h&gt;
 macro_line|#include &lt;asm/setup.h&gt;
 macro_line|#include &lt;asm/arch_hooks.h&gt;
 macro_line|#include &quot;setup_arch_pre.h&quot;
+DECL|variable|__initdata
+r_int
+id|disable_pse
+id|__initdata
+op_assign
+l_int|0
+suffix:semicolon
 r_static
 r_inline
 r_char
@@ -2171,6 +2178,10 @@ id|X86_FEATURE_PSE
 comma
 id|boot_cpu_data.x86_capability
 )paren
+suffix:semicolon
+id|disable_pse
+op_assign
+l_int|1
 suffix:semicolon
 )brace
 r_else
